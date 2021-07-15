@@ -99,7 +99,7 @@ static asset_info_t* asset_loader_zip_load(asset_loader_t* loader, uint16_t type
   uint32_t res_root_len = res_root == NULL ? 0 : strlen(res_root);
   const char* p = path + ((res_root_len == 0) ? 0 : (res_root_len));
 
-  while(*p == '/') p++;
+  while (*p == '/') p++;
   file_index = mz_zip_reader_locate_file(&(zip->archive), p, NULL, 0);
 
   if (file_index < 0) {

@@ -42,7 +42,7 @@ widget_t* widget_factory_create_widget(widget_factory_t* factory, const char* ty
   widget_t* widget = NULL;
   widget_create_t create = NULL;
   return_value_if_fail(factory != NULL && type != NULL, NULL);
- 
+
   create = (widget_create_t)object_get_prop_pointer(factory, type);
   return_value_if_fail(create != NULL, NULL);
 

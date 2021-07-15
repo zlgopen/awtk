@@ -88,7 +88,7 @@ TEST(WidgetFactory, event) {
   button = widget_factory_create_widget(factory, "button", NULL, 10, 20, 30, 40);
   ASSERT_EQ(count, 1);
   widget_destroy(button);
-  
+
   button = widget_factory_create_widget(factory, "button", NULL, 10, 20, 30, 40);
   ASSERT_EQ(count, 2);
   widget_destroy(button);

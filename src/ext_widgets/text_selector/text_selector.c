@@ -798,8 +798,8 @@ ret_t text_selector_reset_options(widget_t* widget) {
   return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
 
   if (text_selector->wa != NULL) {
-    widget_animator_t* ani = widget_animator_manager_find(widget_animator_manager(), widget,
-                                                          TEXT_SELECTOR_WA_NAME);
+    widget_animator_t* ani =
+        widget_animator_manager_find(widget_animator_manager(), widget, TEXT_SELECTOR_WA_NAME);
     if (ani != NULL && text_selector->wa == ani) {
       widget_animator_destroy(text_selector->wa);
     }
