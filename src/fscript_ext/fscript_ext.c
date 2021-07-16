@@ -127,7 +127,7 @@ static ret_t func_char_at(fscript_t* fscript, fscript_args_t* args, value_t* res
 
   if (index >= 0 && index < wstr.size) {
     str_t* str = &(fscript->str);
-    str_from_wstr_with_len(str, wstr.str + index, 1); 
+    str_from_wstr_with_len(str, wstr.str + index, 1);
     value_set_str(result, str->str);
 
     return RET_OK;
@@ -152,17 +152,17 @@ static ret_t func_prompt(fscript_t* fscript, fscript_args_t* args, value_t* resu
   char text[128];
   str_t* str = &(fscript->str);
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
- 
+
   memset(text, 0x00, sizeof(text));
   fprintf(stdout, "%s", value_str(args->args));
-  fgets(text, sizeof(text)-1, stdin);
+  fgets(text, sizeof(text) - 1, stdin);
 
   str_set(str, text);
   value_set_str(result, str->str);
 
   return RET_OK;
 }
-#endif/*HAS_STDIO*/
+#endif /*HAS_STDIO*/
 static ret_t func_trim_right(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   str_t* str = &(fscript->str);
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
@@ -210,7 +210,7 @@ ret_t fscript_ext_init(void) {
   ENSURE(fscript_register_func("char_at", func_char_at) == RET_OK);
 #ifdef HAS_STDIO
   ENSURE(fscript_register_func("prompt", func_prompt) == RET_OK);
-#endif/*HAS_STDIO*/
+#endif /*HAS_STDIO*/
   ENSURE(fscript_register_func("value_is_valid", func_value_is_valid) == RET_OK);
   ENSURE(fscript_register_func("value_is_null", func_value_is_null) == RET_OK);
   ENSURE(fscript_register_func("value_get_binary_data", func_value_get_binary_data) == RET_OK);

@@ -7,6 +7,10 @@
   * fscript ext 增加 trim\_left/trim\_right/ulen/totitle/char\_at
   * 完善 mem\_allocator\_std 内存统计（感谢 QQ276310465 提供补丁）
   * fscript array 增加 min/max/avg/sum 等函数。
+  * 增加了 get\_offset接口以及相关的控件（感谢智明提供补丁）
+  * 修改 lcd\_mem 的编译警告问题（感谢智明提供补丁）
+  * 修复兼容以前开启脏矩形机制，解决以前的三 fb 无脏矩形的情况（感谢智明提供补丁）
+  * 修复滚动条在底部时候 layout 会偏移的问题和修复没有 WITH\_WIDGET\_TYPE\_CHECK 宏会导致非 mobile 的滚动条当做 mobile 滚动条的问题（感谢智明提供补丁）
 
 2021/07/15
   * 完善 widget\_factory，允许覆盖之前注册的控件。
