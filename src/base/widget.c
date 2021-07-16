@@ -3333,14 +3333,25 @@ ret_t widget_get_prop_default_value(widget_t* widget, const char* name, value_t*
   return ret;
 }
 
+static ret_t widget_get_offset(widget_t* widget, xy_t* out_x, xy_t* out_y) {
+  return_value_if_equal(widget != NULL && out_x != NULL && out_y != NULL, RET_BAD_PARAMS);
+  *out_x = 0;
+  *out_y = 0;
+  if (widget->vt != NULL && widget->vt->get_offset != NULL) {
+    return widget->vt->get_offset(widget, out_x, out_y);
+  }
+  return RET_OK;
+}
+
 ret_t widget_to_screen_ex(widget_t* widget, widget_t* parent, point_t* p) {
   widget_t* iter = widget;
   return_value_if_fail(widget != NULL && p != NULL, RET_BAD_PARAMS);
 
   while (iter != NULL && iter != parent) {
-    if (widget_is_scrollable(iter)) {
-      p->x -= widget_get_prop_int(iter, WIDGET_PROP_XOFFSET, 0);
-      p->y -= widget_get_prop_int(iter, WIDGET_PROP_YOFFSET, 0);
+    xy_t offset_x, offset_y;
+    if (widget_get_offset(iter, &offset_x, &offset_y) == RET_OK) {
+      p->x -= offset_x;
+      p->y -= offset_y;
     }
 
     p->x += iter->x;
@@ -3361,9 +3372,10 @@ ret_t widget_to_local(widget_t* widget, point_t* p) {
   return_value_if_fail(widget != NULL && p != NULL, RET_BAD_PARAMS);
 
   while (iter != NULL) {
-    if (widget_is_scrollable(iter)) {
-      p->x += widget_get_prop_int(iter, WIDGET_PROP_XOFFSET, 0);
-      p->y += widget_get_prop_int(iter, WIDGET_PROP_YOFFSET, 0);
+    xy_t offset_x, offset_y;
+    if (widget_get_offset(iter, &offset_x, &offset_y) == RET_OK) {
+      p->x += offset_x;
+      p->y += offset_y;
     }
 
     p->x -= iter->x;

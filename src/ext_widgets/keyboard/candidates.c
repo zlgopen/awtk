@@ -368,6 +368,13 @@ static ret_t candidates_on_keyup(widget_t* widget, key_event_t* e) {
   return ret;
 }
 
+static ret_t candidates_get_offset(widget_t* widget, xy_t* out_x, xy_t* out_y) {
+  return_value_if_fail(widget != NULL && out_x != NULL && out_y != NULL, RET_BAD_PARAMS);
+  *out_x = widget_get_prop_int(widget, WIDGET_PROP_XOFFSET, 0);
+  *out_y = widget_get_prop_int(widget, WIDGET_PROP_YOFFSET, 0);
+  return RET_OK;
+}
+
 static const char* const s_candidates_properties[] = {
     CANDIDATES_PROP_PRE, CANDIDATES_PROP_SELECT_BY_NUM, CANDIDATES_PROP_BUTTON_STYLE,
     CANDIDATES_PROP_AUTO_HIDE, NULL};
@@ -385,6 +392,7 @@ TK_DECL_VTABLE(candidates) = {.size = sizeof(candidates_t),
                               .get_prop = candidates_get_prop,
                               .set_prop = candidates_set_prop,
                               .on_keyup = candidates_on_keyup,
+                              .get_offset = candidates_get_offset,
                               .on_destroy = candidates_on_destroy_default};
 
 static ret_t candidates_on_im_candidates_event(void* ctx, event_t* e) {

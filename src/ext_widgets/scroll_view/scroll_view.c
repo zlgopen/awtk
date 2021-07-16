@@ -655,6 +655,14 @@ static ret_t scroll_view_set_prop(widget_t* widget, const char* name, const valu
   return RET_NOT_FOUND;
 }
 
+static ret_t scroll_view_get_offset(widget_t* widget, xy_t* out_x, xy_t* out_y) {
+  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  return_value_if_fail(scroll_view != NULL && out_x != NULL && out_y != NULL, RET_BAD_PARAMS);
+  *out_x = scroll_view->xoffset;
+  *out_y = scroll_view->yoffset;
+  return RET_OK;
+}
+
 static const char* s_scroll_view_clone_properties[] = {
     WIDGET_PROP_VIRTUAL_W,     WIDGET_PROP_VIRTUAL_H,     WIDGET_PROP_XSLIDABLE,
     WIDGET_PROP_YSLIDABLE,     WIDGET_PROP_XOFFSET,       WIDGET_PROP_YOFFSET,
@@ -671,6 +679,7 @@ TK_DECL_VTABLE(scroll_view) = {.size = sizeof(scroll_view_t),
                                .on_paint_children = scroll_view_on_paint_children,
                                .on_add_child = scroll_view_on_add_child,
                                .find_target = scroll_view_find_target,
+                               .get_offset = scroll_view_get_offset,
                                .get_prop = scroll_view_get_prop,
                                .set_prop = scroll_view_set_prop};
 

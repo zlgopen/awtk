@@ -83,6 +83,7 @@ typedef bool_t (*widget_is_point_in_t)(widget_t* widget, xy_t x, xy_t y);
 typedef widget_t* (*widget_find_target_t)(widget_t* widget, xy_t x, xy_t y);
 typedef widget_t* (*widget_create_t)(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 typedef ret_t (*widget_on_destroy_t)(widget_t* widget);
+typedef ret_t (*widget_get_offset_t)(widget_t* widget, xy_t* out_x, xy_t* out_y);
 
 typedef ret_t (*widget_exec_t)(widget_t* widget, const char* args);
 
@@ -173,6 +174,7 @@ struct _widget_vtable_t {
   widget_invalidate_t invalidate;
   widget_find_target_t find_target;
   widget_is_point_in_t is_point_in;
+  widget_get_offset_t get_offset;
   widget_auto_adjust_size_t auto_adjust_size;
   widget_get_prop_default_value_t get_prop_default_value;
 

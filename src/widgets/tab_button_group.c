@@ -199,6 +199,13 @@ static ret_t tab_button_group_on_destroy(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t tab_button_group_get_offset(widget_t* widget, xy_t* out_x, xy_t* out_y) {
+  return_value_if_fail(widget != NULL && out_x != NULL && out_y != NULL, RET_BAD_PARAMS);
+  *out_x = widget_get_prop_int(widget, WIDGET_PROP_XOFFSET, 0);
+  *out_y = widget_get_prop_int(widget, WIDGET_PROP_YOFFSET, 0);
+  return RET_OK;
+}
+
 TK_DECL_VTABLE(tab_button_group) = {.size = sizeof(tab_button_group_t),
                                     .type = WIDGET_TYPE_TAB_BUTTON_GROUP,
                                     .scrollable = TRUE,
@@ -208,6 +215,7 @@ TK_DECL_VTABLE(tab_button_group) = {.size = sizeof(tab_button_group_t),
                                     .get_prop = tab_button_group_get_prop,
                                     .on_event = tab_button_group_on_event,
                                     .on_destroy = tab_button_group_on_destroy,
+                                    .get_offset = tab_button_group_get_offset,
                                     .on_paint_children = tab_button_group_on_paint_children,
                                     .on_layout_children = tab_button_group_on_layout_children};
 
