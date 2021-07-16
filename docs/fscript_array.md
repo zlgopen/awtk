@@ -74,7 +74,7 @@ func_array_dup(arr, start, end) => object
 ```
 
 start 为开始的位置，默认为 0。
-end 为结束的位置(不包含)
+end 为结束的位置（不包含）
 
 示例：
 
@@ -254,6 +254,50 @@ assert(d == "1:2:3")
 assert(array_sort(a, false));
 d = array_join(a, ":");
 assert(d == "3:2:1")
+```
+
+### 18.array\_min
+
+> 获取最小值。
+----------------------------
+
+#### 原型
+
+```js
+array_min(array) => double
+```
+
+### 19.array\_max
+
+> 获取最大值。
+----------------------------
+
+#### 原型
+
+```js
+array_max(array) => double
+```
+
+### 20.array\_avg
+
+> 求平均值。
+----------------------------
+
+#### 原型
+
+```js
+array_avg(array) => double
+```
+
+### 21.array\_sum
+
+> 求和。
+----------------------------
+
+#### 原型
+
+```js
+array_sum(array) => double
 ```
 
 ### 更多示例

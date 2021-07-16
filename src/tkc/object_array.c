@@ -565,3 +565,86 @@ ret_t object_array_sort_as_str(object_t* obj, bool_t ascending, bool_t ignore_ca
     }
   }
 }
+
+ret_t object_array_min(object_t* obj, value_t* result) {
+  int32_t i = 0;
+  double value = 0;
+  object_array_t* o = OBJECT_ARRAY(obj);
+  return_value_if_fail(result != NULL, RET_BAD_PARAMS);
+  value_set_double(result, 0);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+  if (o->size == 0) {
+    return RET_OK;
+  }
+  value = value_double(o->props);
+  for (i = 1; i < o->size; i++) {
+    double t = value_double(o->props + i);
+    if (value > t) {
+      value = t;
+    }
+  }
+
+  value_set_double(result, value);
+
+  return RET_OK;
+}
+
+ret_t object_array_max(object_t* obj, value_t* result) {
+  int32_t i = 0;
+  double value = 0;
+  object_array_t* o = OBJECT_ARRAY(obj);
+  return_value_if_fail(result != NULL, RET_BAD_PARAMS);
+  value_set_double(result, 0);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+  if (o->size == 0) {
+    return RET_OK;
+  }
+  value = value_double(o->props);
+  for (i = 1; i < o->size; i++) {
+    double t = value_double(o->props + i);
+    if (value < t) {
+      value = t;
+    }
+  }
+
+  value_set_double(result, value);
+
+  return RET_OK;
+}
+
+ret_t object_array_sum(object_t* obj, value_t* result) {
+  int32_t i = 0;
+  double value = 0;
+  object_array_t* o = OBJECT_ARRAY(obj);
+  return_value_if_fail(result != NULL, RET_BAD_PARAMS);
+  value_set_double(result, 0);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  for (i = 0; i < o->size; i++) {
+    value += value_double(o->props + i);
+  }
+
+  value_set_double(result, value);
+
+  return RET_OK;
+}
+
+ret_t object_array_avg(object_t* obj, value_t* result) {
+  int32_t i = 0;
+  double value = 0;
+  object_array_t* o = OBJECT_ARRAY(obj);
+  return_value_if_fail(result != NULL, RET_BAD_PARAMS);
+  value_set_double(result, 0);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  if (o->size > 0) {
+    for (i = 0; i < o->size; i++) {
+      value += value_double(o->props + i);
+    }
+    value /= o->size;
+  }
+
+  value_set_double(result, value);
+
+  return RET_OK;
+}

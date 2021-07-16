@@ -277,6 +277,46 @@ object_t* object_array_create_with_str(const char* str, const char* sep, value_t
 ret_t object_array_join(object_t* obj, const char* sep, str_t* result);
 
 /**
+ * @method object_array_min
+ * 查找最小值。
+ * @param {object_t*} obj 数组对象。
+ * @param {value_t*} result 结果。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_array_min(object_t* obj, value_t* result);
+
+/**
+ * @method object_array_max
+ * 查找最大值。
+ * @param {object_t*} obj 数组对象。
+ * @param {value_t*} result 结果。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_array_max(object_t* obj, value_t* result);
+
+/**
+ * @method object_array_sum
+ * 求和。
+ * @param {object_t*} obj 数组对象。
+ * @param {value_t*} result 结果。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_array_sum(object_t* obj, value_t* result);
+
+/**
+ * @method object_array_avg
+ * 求平均值。
+ * @param {object_t*} obj 数组对象。
+ * @param {value_t*} result 结果。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_array_avg(object_t* obj, value_t* result);
+
+/**
  * @method object_array_dup
  * @annotation ["constructor"]
  *

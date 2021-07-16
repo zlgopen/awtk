@@ -357,6 +357,26 @@ static ret_t func_array_join(fscript_t* fscript, fscript_args_t* args, value_t* 
   return RET_OK;
 }
 
+static ret_t func_array_min(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  return object_array_min(value_object(args->args), result);
+}
+
+static ret_t func_array_max(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  return object_array_max(value_object(args->args), result);
+}
+
+static ret_t func_array_avg(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  return object_array_avg(value_object(args->args), result);
+}
+
+static ret_t func_array_sum(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  return object_array_sum(value_object(args->args), result);
+}
+
 ret_t fscript_array_register(void) {
   ENSURE(fscript_register_func("array_create", func_array_create) == RET_OK);
   ENSURE(fscript_register_func("array_dup", func_array_dup) == RET_OK);
@@ -376,6 +396,10 @@ ret_t fscript_array_register(void) {
   ENSURE(fscript_register_func("array_clear", func_array_clear) == RET_OK);
   ENSURE(fscript_register_func("array_join", func_array_join) == RET_OK);
   ENSURE(fscript_register_func("array_sort", func_array_sort) == RET_OK);
+  ENSURE(fscript_register_func("array_min", func_array_min) == RET_OK);
+  ENSURE(fscript_register_func("array_max", func_array_max) == RET_OK);
+  ENSURE(fscript_register_func("array_avg", func_array_avg) == RET_OK);
+  ENSURE(fscript_register_func("array_sum", func_array_sum) == RET_OK);
 
   return RET_OK;
 }

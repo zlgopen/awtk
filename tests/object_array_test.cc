@@ -649,3 +649,67 @@ TEST(ObjectArray, sort_str3) {
 
   OBJECT_UNREF(obj);
 }
+
+TEST(ObjectArray, min1) {
+  value_t v;
+  object_t* obj = object_array_create_with_str("123,412,199,1,10000,2", ",", VALUE_TYPE_DOUBLE);
+  ASSERT_EQ(object_array_min(obj, &v), RET_OK);
+  ASSERT_EQ(value_double(&v), 1);
+  OBJECT_UNREF(obj);
+}
+
+TEST(ObjectArray, min2) {
+  value_t v;
+  object_t* obj = object_array_create_with_str("", ",", VALUE_TYPE_DOUBLE);
+  ASSERT_EQ(object_array_min(obj, &v), RET_OK);
+  ASSERT_EQ(value_double(&v), 0);
+  OBJECT_UNREF(obj);
+}
+
+TEST(ObjectArray, max1) {
+  value_t v;
+  object_t* obj = object_array_create_with_str("123,412,199,1,10000,2", ",", VALUE_TYPE_DOUBLE);
+  ASSERT_EQ(object_array_max(obj, &v), RET_OK);
+  ASSERT_EQ(value_double(&v), 10000);
+  OBJECT_UNREF(obj);
+}
+
+TEST(ObjectArray, max2) {
+  value_t v;
+  object_t* obj = object_array_create_with_str("", ",", VALUE_TYPE_DOUBLE);
+  ASSERT_EQ(object_array_max(obj, &v), RET_OK);
+  ASSERT_EQ(value_double(&v), 0);
+  OBJECT_UNREF(obj);
+}
+
+TEST(ObjectArray, sum1) {
+  value_t v;
+  object_t* obj = object_array_create_with_str("1,2,3,4", ",", VALUE_TYPE_DOUBLE);
+  ASSERT_EQ(object_array_sum(obj, &v), RET_OK);
+  ASSERT_EQ(value_double(&v), 10);
+  OBJECT_UNREF(obj);
+}
+
+TEST(ObjectArray, sum2) {
+  value_t v;
+  object_t* obj = object_array_create_with_str("", ",", VALUE_TYPE_DOUBLE);
+  ASSERT_EQ(object_array_sum(obj, &v), RET_OK);
+  ASSERT_EQ(value_double(&v), 0);
+  OBJECT_UNREF(obj);
+}
+
+TEST(ObjectArray, avg1) {
+  value_t v;
+  object_t* obj = object_array_create_with_str("0,1,2,3,4", ",", VALUE_TYPE_DOUBLE);
+  ASSERT_EQ(object_array_avg(obj, &v), RET_OK);
+  ASSERT_EQ(value_double(&v), 2);
+  OBJECT_UNREF(obj);
+}
+
+TEST(ObjectArray, avg2) {
+  value_t v;
+  object_t* obj = object_array_create_with_str("", ",", VALUE_TYPE_DOUBLE);
+  ASSERT_EQ(object_array_avg(obj, &v), RET_OK);
+  ASSERT_EQ(value_double(&v), 0);
+  OBJECT_UNREF(obj);
+}
