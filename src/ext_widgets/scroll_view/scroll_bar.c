@@ -459,8 +459,8 @@ ret_t scroll_bar_set_params(widget_t* widget, int32_t virtual_size, int32_t row)
   scroll_bar->virtual_size = virtual_size;
   scroll_bar->row = row;
 
-  if (scroll_bar->value >= virtual_size) {
-    scroll_bar->value = virtual_size - row;
+  if (scroll_bar->value > virtual_size) {
+    scroll_bar->value = virtual_size;
   }
 
   return RET_OK;
@@ -542,7 +542,7 @@ TK_DECL_VTABLE(scroll_bar_desktop) = {.size = sizeof(scroll_bar_t),
                                       .get_prop = scroll_bar_get_prop};
 
 bool_t scroll_bar_is_mobile(widget_t* widget) {
-  return widget && WIDGET_IS_INSTANCE_OF(widget, scroll_bar_mobile);
+  return widget != NULL && tk_str_eq(widget->vt->type, WIDGET_TYPE_SCROLL_BAR_MOBILE);
 }
 
 static ret_t scroll_bar_on_value_animate_end(void* ctx, event_t* e) {
