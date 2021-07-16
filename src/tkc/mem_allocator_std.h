@@ -78,7 +78,7 @@ static inline void* mem_allocator_std_alloc(mem_allocator_t* allocator, uint32_t
   ptr = malloc(size);
   if (ptr != NULL) {
     std_allocator->used_nr++;
-    std_allocator->used_size += size;
+    std_allocator->used_size += msize(ptr);
     mem_allocator_std_update_status(std_allocator);
   }
 
@@ -94,6 +94,7 @@ static inline void* mem_allocator_std_realloc(mem_allocator_t* allocator, void* 
   size = TK_ROUND_TO_MACH(size);
   new_ptr = realloc(ptr, size);
   if (new_ptr != NULL) {
+    size = msize(new_ptr);
     if (ptr != NULL) {
       std_allocator->used_size += size - old_size;
     } else {
