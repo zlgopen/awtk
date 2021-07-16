@@ -22,6 +22,7 @@
 #ifndef TK_LCD_MEM_H
 #define TK_LCD_MEM_H
 
+#include "tkc/mem.h"
 #include "base/lcd.h"
 #include "base/graphic_buffer.h"
 
