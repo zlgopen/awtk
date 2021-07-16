@@ -1,9 +1,10 @@
 # 最新动态
 
 2021/07/16
-  * 增加tk\_str\_totitle。
-  * fscript ext增加 trim\_left/trim\_right/ulen/totitle/char\_at
-  * 增加[字符串扩展模块](fscript_str.md)
+  * 增加 fscript str
+  * 增加 [字符串扩展模块](fscript_str.md)
+  * fscript math 增加 atan2/log/is\_prime/exp 等函数。
+  * fscript ext 增加 trim\_left/trim\_right/ulen/totitle/char\_at
 
 2021/07/15
   * 完善 widget\_factory，允许覆盖之前注册的控件。
