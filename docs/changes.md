@@ -12,6 +12,7 @@
   * 修复兼容以前开启脏矩形机制，解决以前的三 fb 无脏矩形的情况（感谢智明提供补丁）
   * 修复滚动条在底部时候 layout 会偏移的问题和修复没有 WITH\_WIDGET\_TYPE\_CHECK 宏会导致非 mobile 的滚动条当做 mobile 滚动条的问题（感谢智明提供补丁）
   * 完善event source manager（感谢林福提供补丁）
+  * 完善widget\_get，如果类型是wstr，转换成str。
 
 2021/07/15
   * 完善 widget\_factory，允许覆盖之前注册的控件。

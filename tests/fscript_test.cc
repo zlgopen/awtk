@@ -1,5 +1,6 @@
 ﻿#include "tkc/fscript.h"
 #include "tkc/object_default.h"
+#include "widgets/button.h"
 #include "gtest/gtest.h"
 
 TEST(FScript, basic0) {
@@ -1206,5 +1207,32 @@ TEST(FExr, syntax_check) {
 
   fscript_parser_error_deinit(&error);
 
+  OBJECT_UNREF(obj);
+}
+
+TEST(FExr, widget) {
+  value_t v;
+  object_t* obj = object_default_create();
+  widget_t* button = button_create(NULL, 10, 20, 80, 30);
+  object_set_prop_pointer(obj, STR_PROP_SELF, button);
+  widget_set_text_utf8(button, "hello");
+
+  fscript_eval(obj, "widget_get(\"text\")==\"hello\"", &v);
+  ASSERT_EQ(value_bool(&v), TRUE);
+  value_reset(&v);
+  
+  fscript_eval(obj, "widget_get(\"text\")==\"Hello\"", &v);
+  ASSERT_EQ(value_bool(&v), FALSE);
+  value_reset(&v);
+  
+  fscript_eval(obj, "widget_get(\"x\")==10", &v);
+  ASSERT_EQ(value_bool(&v), TRUE);
+  value_reset(&v);
+  
+  fscript_eval(obj, "widget_get(\"y\")==20", &v);
+  ASSERT_EQ(value_bool(&v), TRUE);
+  value_reset(&v);
+
+  widget_destroy(button);
   OBJECT_UNREF(obj);
 }

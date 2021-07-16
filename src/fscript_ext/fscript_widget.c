@@ -15,6 +15,7 @@
  */
 
 #include "awtk_global.h"
+#include "tkc/utf8.h"
 #include "tkc/fscript.h"
 #include "tkc/tokenizer.h"
 #include "base/enums.h"
@@ -145,6 +146,7 @@ static ret_t widget_set(widget_t* self, const char* path, const value_t* v) {
 }
 
 static ret_t widget_get(widget_t* self, const char* path, value_t* v) {
+  ret_t ret = RET_OK;
   widget_t* widget = self;
   const char* prop = strrchr(path, '.');
   if (prop != NULL) {
@@ -155,7 +157,13 @@ static ret_t widget_get(widget_t* self, const char* path, value_t* v) {
   }
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  return widget_get_prop(widget, prop, v);
+  ret = widget_get_prop(widget, prop, v);
+  if (ret == RET_OK && v->type == VALUE_TYPE_WSTRING) {
+    value_set_str(v, tk_utf8_dup_utf16(value_wstr(v), -1));
+    v->free_handle = TRUE;
+  }
+
+  return ret;
 }
 
 static ret_t my_quit_idle(const timer_info_t* timer) {
@@ -229,6 +237,7 @@ static ret_t func_widget_get(fscript_t* fscript, fscript_args_t* args, value_t* 
 
 static ret_t func_widget_eval(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   value_t v;
+  ret_t ret = RET_OK;
   widget_t* widget = NULL;
   const char* path = NULL;
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
@@ -243,10 +252,11 @@ static ret_t func_widget_eval(fscript_t* fscript, fscript_args_t* args, value_t*
   FSCRIPT_FUNC_CHECK(widget != NULL && path != NULL, RET_BAD_PARAMS);
 
   if (widget_get(widget, path, &v) == RET_OK) {
-    return fscript_eval(fscript->obj, value_str(&v), result);
+    ret = fscript_eval(fscript->obj, value_str(&v), result);
+    value_reset(&v);
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t func_widget_set(fscript_t* fscript, fscript_args_t* args, value_t* result) {
