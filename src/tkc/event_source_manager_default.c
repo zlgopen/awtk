@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   event_source_manager_default.c
  * Author: AWTK Develop Team
  * Brief:  event manager_default manager_default
@@ -84,6 +84,9 @@ static ret_t event_source_manager_default_dispatch_fds(event_source_manager_t* m
 
   for (i = 0; i < manager->dispatching_sources.size; i++) {
     iter = sources[i];
+    if (darray_find(&manager->sources, iter) == NULL) {
+      continue;
+    }
     fd = event_source_get_fd(iter);
 
     if (fd >= 0) {
@@ -116,6 +119,9 @@ static ret_t event_source_manager_default_dispatch_no_fd(event_source_manager_t*
 
   for (i = 0; i < manager->dispatching_sources.size; i++) {
     iter = sources[i];
+    if (darray_find(&manager->sources, iter) == NULL) {
+      continue;
+    }
     fd = event_source_get_fd(iter);
     if (fd >= 0) {
       continue;

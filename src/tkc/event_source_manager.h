@@ -38,7 +38,6 @@ typedef ret_t (*event_source_manager_destroy_t)(event_source_manager_t* manager)
  */
 struct _event_source_manager_t {
   darray_t sources;
-  uint32_t last_dispatch_time;
   darray_t dispatching_sources;
 
   event_source_manager_dispatch_t dispatch;
