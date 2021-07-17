@@ -25,11 +25,6 @@
 #include "tkc/time_now.h"
 #include "base/system_info.h"
 
-bool_t lcd_is_compositor(lcd_t* lcd) {
-  return_value_if_fail(lcd != NULL, FALSE);
-  return lcd->type == LCD_COMPOSITOR;
-}
-
 ret_t lcd_begin_frame(lcd_t* lcd, const dirty_rects_t* dirty_rects, lcd_draw_mode_t draw_mode) {
   const rect_t* dirty_rect = dirty_rects != NULL ? &(dirty_rects->max) : NULL;
   return_value_if_fail(lcd != NULL && lcd->begin_frame != NULL, RET_BAD_PARAMS);
@@ -383,4 +378,12 @@ ret_t lcd_set_line_length(lcd_t* lcd, uint32_t line_length) {
     return lcd->set_line_length(lcd, line_length);
   }
   return RET_FAIL;
+}
+
+bool_t lcd_is_support_dirty_rect(lcd_t* lcd) {
+  return_value_if_fail(lcd != NULL, FALSE);
+  if (lcd->is_support_dirty_rect != NULL) {
+    return lcd->is_support_dirty_rect(lcd);
+  }
+  return lcd->support_dirty_rect;
 }

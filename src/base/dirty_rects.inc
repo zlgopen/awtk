@@ -1,3 +1,4 @@
+#include "base/lcd.h"
 #include "base/widget_vtable.h"
 #include "base/dirty_rects.h"
 
@@ -28,12 +29,14 @@ static inline ret_t dirty_rects_paint(dirty_rects_t* dirty_rects, widget_t* widg
   rect_t full_screen;
   rect_t* iter = NULL;
   uint64_t start = time_now_us();
+  bool_t is_support_dirty_rect = TRUE;
   return_value_if_fail(dirty_rects != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget != NULL && c != NULL && on_paint != NULL, RET_BAD_PARAMS);
-  full_screen = rect_init(0, 0, c->lcd->w, c->lcd->h);
+  is_support_dirty_rect = lcd_is_support_dirty_rect(c->lcd);
 
-  if (dirty_rects->disable_multiple || !c->lcd->support_dirty_rect) {
-    iter = c->lcd->support_dirty_rect ? &(dirty_rects->max) : &full_screen;
+  if (dirty_rects->disable_multiple || !is_support_dirty_rect) {
+    full_screen = rect_init(0, 0, canvas_get_width(c), canvas_get_height(c));
+    iter = is_support_dirty_rect ? &(dirty_rects->max) : &full_screen;
     widget_paint_with_clip(widget, iter, c, on_paint);
     if (dirty_rects->profile) {
       cost = time_now_us() - start;

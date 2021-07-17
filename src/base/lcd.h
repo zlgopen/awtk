@@ -40,6 +40,7 @@ typedef struct _draw_image_info_t {
 } draw_image_info_t;
 
 typedef int32_t (*lcd_get_type_t)(lcd_t* lcd);
+typedef bool_t (*lcd_is_support_dirty_rect_t)(lcd_t* lcd);
 typedef ret_t (*lcd_set_vgcanvas_t)(lcd_t* lcd, vgcanvas_t* vg);
 typedef ret_t (*lcd_set_line_length_t)(lcd_t* lcd, uint32_t line_length);
 typedef ret_t (*lcd_set_canvas_t)(lcd_t* lcd, canvas_t* c);
@@ -206,6 +207,7 @@ struct _lcd_t {
   lcd_set_line_length_t set_line_length;
   lcd_get_type_t get_type;
   lcd_get_dirty_rect_t get_dirty_rect;
+  lcd_is_support_dirty_rect_t is_support_dirty_rect;
   lcd_set_canvas_t set_canvas;
   lcd_resize_t resize;
   lcd_destroy_t destroy;
@@ -691,9 +693,17 @@ ret_t lcd_destroy(lcd_t* lcd);
  */
 ret_t lcd_get_dirty_rect(lcd_t* lcd, rect_t* r);
 
+/**
+ * @method lcd_is_support_dirty_rect
+ * 获取 lcd 对象是否支持脏矩形。
+ * @param {lcd_t*} lcd lcd对象。
+ *
+ * @return {bool_t} 返回TRUE表示支持，否则表示不支持。
+ */
+bool_t lcd_is_support_dirty_rect(lcd_t* lcd);
+
 /* private */
 bool_t lcd_is_dirty(lcd_t* lcd);
-bool_t lcd_is_compositor(lcd_t* lcd);
 ret_t lcd_set_canvas(lcd_t* lcd, canvas_t* c);
 ret_t lcd_set_curr_lcd(lcd_t* lcd, uint32_t lcd_id);
 ret_t lcd_invalidate_by_id(lcd_t* lcd, const rect_t* r, uint32_t lcd_id);
