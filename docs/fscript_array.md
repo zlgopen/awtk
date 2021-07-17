@@ -300,6 +300,29 @@ array_avg(array) => double
 array_sum(array) => double
 ```
 
+### 22.array\_clone\_and\_sort
+
+> clone一份数据，根据当前的数据类型排序，以第一个元素类型为准。
+----------------------------
+
+#### 原型
+
+```js
+array_clone_and_sort(array, ascending, ignore_case) => array
+```
+
+* ascending 是否为升序，默认是。
+* ignore_case 是否忽略大小写，仅用于字符串，默认为否。
+
+示例：
+
+```
+a = array_create_with_str("2,1,3", ",", "int");
+b = array_clone_and_sort(a));
+d = array_join(b, ":");
+assert(d == "1:2:3")
+```
+
 ### 更多示例
 
 ```js

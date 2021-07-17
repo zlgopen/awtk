@@ -298,7 +298,8 @@ static ret_t func_array_clear(fscript_t* fscript, fscript_args_t* args, value_t*
   return RET_OK;
 }
 
-static ret_t func_array_sort(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+static ret_t func_array_sort_ex(fscript_t* fscript, fscript_args_t* args, value_t* result,
+                                bool_t clone) {
   ret_t ret = RET_OK;
   object_t* obj = NULL;
   bool_t ascending = TRUE;
@@ -306,6 +307,9 @@ static ret_t func_array_sort(fscript_t* fscript, fscript_args_t* args, value_t* 
   object_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
   obj = value_object(args->args);
+  if (clone) {
+    obj = object_array_clone(obj);
+  }
   arr = OBJECT_ARRAY(obj);
   return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
 
@@ -316,9 +320,7 @@ static ret_t func_array_sort(fscript_t* fscript, fscript_args_t* args, value_t* 
     ignore_case = value_bool(args->args + 2);
   }
 
-  if (arr->size < 2) {
-    value_set_bool(result, ret == RET_OK);
-  } else {
+  if (arr->size > 1) {
     value_t v;
     object_array_get(obj, 0, &v);
 
@@ -329,10 +331,23 @@ static ret_t func_array_sort(fscript_t* fscript, fscript_args_t* args, value_t* 
     } else {
       ret = object_array_sort_as_double(obj, ascending);
     }
+  }
+
+  if (clone) {
+    value_set_object(result, obj);
+  } else {
     value_set_bool(result, ret == RET_OK);
   }
 
   return RET_OK;
+}
+
+static ret_t func_array_sort(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return func_array_sort_ex(fscript, args, result, FALSE);
+}
+
+static ret_t func_array_clone_and_sort(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return func_array_sort_ex(fscript, args, result, TRUE);
 }
 
 static ret_t func_array_join(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -396,6 +411,7 @@ ret_t fscript_array_register(void) {
   ENSURE(fscript_register_func("array_clear", func_array_clear) == RET_OK);
   ENSURE(fscript_register_func("array_join", func_array_join) == RET_OK);
   ENSURE(fscript_register_func("array_sort", func_array_sort) == RET_OK);
+  ENSURE(fscript_register_func("array_clone_and_sort", func_array_clone_and_sort) == RET_OK);
   ENSURE(fscript_register_func("array_min", func_array_min) == RET_OK);
   ENSURE(fscript_register_func("array_max", func_array_max) == RET_OK);
   ENSURE(fscript_register_func("array_avg", func_array_avg) == RET_OK);
