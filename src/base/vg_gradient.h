@@ -23,58 +23,10 @@
 #ifndef TK_VG_GRADIENT_H
 #define TK_VG_GRADIENT_H
 
-#include "tkc/types_def.h"
 #include "tkc/color.h"
+#include "base/gradient.h"
 
 BEGIN_C_DECLS
-
-#ifndef TK_GRADIENT_MAX_STOP_NR
-#define TK_GRADIENT_MAX_STOP_NR 8
-#endif /*TK_GRADIENT_MAX_STOP_NR*/
-
-/**
- * @enum vg_gradient_type_t
- * 渐变色类型。
- */
-typedef enum _vg_gradient_type_t {
-  /**
-   * @const VG_GRADIENT_NONE
-   * 无效类型。
-   */
-  VG_GRADIENT_NONE,
-  /**
-   * @const VG_GRADIENT_LINEAR
-   * 线性渐变。
-   */
-  VG_GRADIENT_LINEAR,
-  /**
-   * @const VG_GRADIENT_RADIAL
-   * 放射渐变。
-   */
-  VG_GRADIENT_RADIAL,
-} vg_gradient_type_t;
-
-struct _vg_gradient_stop_t;
-typedef struct _vg_gradient_stop_t vg_gradient_stop_t;
-
-/**
- * @class vg_gradient_stop_t
- * 渐变关键点。
- */
-struct _vg_gradient_stop_t {
-  /**
-   * @property {color_t} color
-   * @annotation ["readable"]
-   * 颜色。
-   */
-  color_t color;
-  /**
-   * @property {float} offset
-   * @annotation ["readable"]
-   * 偏移量(0-1)。
-   */
-  float offset;
-};
 
 struct _vg_gradient_t;
 typedef struct _vg_gradient_t vg_gradient_t;
@@ -159,12 +111,7 @@ typedef struct _vg_gradient_linear_info_t {
  * 渐变。
  */
 struct _vg_gradient_t {
-  /**
-   * @property {vg_gradient_type_t} type
-   * @annotation ["readable"]
-   * 类型。
-   */
-  vg_gradient_type_t type;
+  gradient_t gradient;
 
   /**
    * @property {vg_gradient_info_t} info
@@ -175,16 +122,6 @@ struct _vg_gradient_t {
     vg_gradient_linear_info_t linear;
     vg_gradient_radial_info_t radial;
   } info;
-
-  /**
-   * @property {uint32_t} nr
-   * @annotation ["readable"]
-   * stop个数。
-   */
-  uint32_t nr;
-
-  /*private*/
-  vg_gradient_stop_t stops[TK_GRADIENT_MAX_STOP_NR];
 };
 
 /**
@@ -246,49 +183,6 @@ vg_gradient_t* vg_gradient_init_linear(vg_gradient_t* gradient, float sx, float 
                                        float ey);
 
 /**
- * @method vg_gradient_add_stop
- * 增加关键点。
- *
- * @param {vg_gradient_t*} gradient gradient对象。
- * @param {color_t} color 颜色。
- * @param {float} stop 位置。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t vg_gradient_add_stop(vg_gradient_t* gradient, color_t color, float stop);
-
-/**
- * @method vg_gradient_get_stop
- * 获取关键点。
- *
- * @param {vg_gradient_t*} gradient gradient对象。
- * @param {uint32_t} index 序数。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-vg_gradient_stop_t* vg_gradient_get_stop(vg_gradient_t* gradient, uint32_t index);
-
-/**
- * @method vg_gradient_get_first_color
- * 获取开始的颜色。
- *
- * @param {vg_gradient_t*} gradient gradient对象。
- *
- * @return {color_t} 返回颜色。
- */
-color_t vg_gradient_get_first_color(vg_gradient_t* gradient);
-
-/**
- * @method vg_gradient_get_last_color
- * 获取结束的颜色。
- *
- * @param {vg_gradient_t*} gradient gradient对象。
- *
- * @return {color_t} 返回颜色。
- */
-color_t vg_gradient_get_last_color(vg_gradient_t* gradient);
-
-/**
  * @method vg_gradient_destroy
  * 销毁gradient对象。
  *
@@ -297,6 +191,11 @@ color_t vg_gradient_get_last_color(vg_gradient_t* gradient);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t vg_gradient_destroy(vg_gradient_t* gradient);
+
+#define vg_gradient_add_stop(gradient, color, stop) gradient_add_stop((gradient_t*)(gradient), color, stop)
+#define vg_gradient_get_stop(gradient, index) gradient_get_stop((gradient_t*)(gradient), index)
+#define vg_gradient_get_first_color(gradient) gradient_get_first_color((gradient_t*)(gradient))
+#define vg_gradient_get_last_color(gradient) gradient_get_last_color((gradient_t*)(gradient))
 
 END_C_DECLS
 
