@@ -2,6 +2,7 @@
 
 2021/07/17
   * 增加array\_clone\_and\_sort。
+  * 用WITHOUT\_WINDOW\_ANIMATORS替代WITH\_WINDOW\_ANIMATORS。
 
 2021/07/16
   * 增加 fscript str
