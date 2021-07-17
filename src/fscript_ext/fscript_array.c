@@ -97,7 +97,7 @@ static ret_t func_array_dup(fscript_t* fscript, fscript_args_t* args, value_t* r
   return RET_OK;
 }
 
-static ret_t func_array_create_with_repeated_value(fscript_t* fscript, fscript_args_t* args,
+static ret_t func_array_create_repeated(fscript_t* fscript, fscript_args_t* args,
                                                    value_t* result) {
   uint32_t i = 0;
   uint32_t n = 0;
@@ -396,8 +396,8 @@ ret_t fscript_array_register(void) {
   ENSURE(fscript_register_func("array_create", func_array_create) == RET_OK);
   ENSURE(fscript_register_func("array_dup", func_array_dup) == RET_OK);
   ENSURE(fscript_register_func("array_create_with_str", func_array_create_with_str) == RET_OK);
-  ENSURE(fscript_register_func("array_create_with_repeated_value",
-                               func_array_create_with_repeated_value) == RET_OK);
+  ENSURE(fscript_register_func("array_create_repeated",
+                               func_array_create_repeated) == RET_OK);
   ENSURE(fscript_register_func("array_push", func_array_push) == RET_OK);
   ENSURE(fscript_register_func("array_pop", func_array_pop) == RET_OK);
   ENSURE(fscript_register_func("array_shift", func_array_shift) == RET_OK);

@@ -50,7 +50,7 @@ a = array_create_with_str("a2,a1,a3", ",");
 #### 原型
 
 ```js
-array_create_with_repeated_value(value, nr) => object
+array_create_repeated(value, nr) => object
 ```
 
 * value 为初始化的值。
@@ -59,7 +59,7 @@ array_create_with_repeated_value(value, nr) => object
 示例：
 
 ```
-a = array_create_with_repeated_value(123, 3);
+a = array_create_repeated(123, 3);
 ```
 
 ### 4.array\_dup
