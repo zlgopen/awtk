@@ -108,7 +108,7 @@ ret_t window_animator_factory_destroy(window_animator_factory_t* factory) {
   return RET_OK;
 }
 
-#ifdef WITH_WINDOW_ANIMATORS
+#ifndef WITHOUT_WINDOW_ANIMATORS
 static window_animator_t* window_animator_create_impl(const char* type, bool_t open) {
   value_t v;
   object_t* args = NULL;
@@ -170,4 +170,4 @@ window_animator_t* window_animator_create_for_open(const char* type, canvas_t* c
                                                    widget_t* prev_win, widget_t* curr_win) {
   return NULL;
 }
-#endif /*WITH_WINDOW_ANIMATORS*/
+#endif /*WITHOUT_WINDOW_ANIMATORS*/

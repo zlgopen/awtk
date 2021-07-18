@@ -2,6 +2,8 @@
 
 2021/07/17
   * 增加array\_clone\_and\_sort。
+  * 增加lcd\_is\_support\_dirty\_rect（感谢智明提供补丁）
+  * 用WITHOUT\_WINDOW\_ANIMATORS替代WITH\_WINDOW\_ANIMATORS（感谢智明提供补丁）。
 
 2021/07/16
   * 增加 fscript str

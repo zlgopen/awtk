@@ -207,7 +207,7 @@ static ret_t window_animator_paint_system_bar(window_animator_t* wa) {
   return RET_OK;
 }
 
-#ifdef WITH_WINDOW_ANIMATORS
+#ifndef WITHOUT_WINDOW_ANIMATORS
 static ret_t window_animator_init(window_animator_t* wa) {
   ret_t ret = RET_NOT_IMPL;
   return_value_if_fail(wa != NULL && wa->vt != NULL, RET_BAD_PARAMS);
@@ -243,7 +243,7 @@ ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_t* prev
                               widget_t* curr_win) {
   return RET_OK;
 }
-#endif /*WITH_WINDOW_ANIMATORS*/
+#endif /*WITHOUT_WINDOW_ANIMATORS*/
 
 window_animator_t* window_animator_create(bool_t open, const window_animator_vtable_t* vt) {
   window_animator_t* wa = NULL;

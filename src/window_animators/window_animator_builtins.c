@@ -33,7 +33,7 @@
 #include "window_animators/window_animator_slide_right.h"
 
 ret_t window_animator_register_builtins(void) {
-#ifdef WITH_WINDOW_ANIMATORS
+#ifndef WITHOUT_WINDOW_ANIMATORS
   window_animator_factory_t* factory = window_animator_factory();
 
   window_animator_factory_register(factory, WINDOW_ANIMATOR_HTRANSLATE,
@@ -59,7 +59,7 @@ ret_t window_animator_register_builtins(void) {
                                    window_animator_slide_left_create);
   window_animator_factory_register(factory, WINDOW_ANIMATOR_SLIDE_RIGHT,
                                    window_animator_slide_right_create);
-#endif /*WITH_WINDOW_ANIMATORS*/
+#endif /*WITHOUT_WINDOW_ANIMATORS*/
 
   return RET_OK;
 }
