@@ -405,3 +405,43 @@ TEST(ThemeGen, selected_state) {
   ASSERT_EQ(style_get_color(s, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x66);
   style_destroy(s);
 }
+
+TEST(ThemeGen, gradient) {
+  gradient_t g;
+  theme_t theme;
+  uint8_t buff[1024];
+  const uint8_t* style_data = NULL;
+  const char* str = "<widget><style><normal fg_color=\"red\" bg_color=\"linear-gradient(180deg, #FF0000 0%, #0000FF 100%)\"/></style></widget>";
+
+  memset(&theme, 0x0, sizeof(theme_t));
+  style_t* s = style_factory_create_style(NULL, theme_get_style_type(&theme));
+
+  xml_gen_buff(str, buff, sizeof(buff));
+  theme.data = buff;
+
+  style_data = theme_find_style(&theme, WIDGET_TYPE_NONE, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
+  ASSERT_EQ(style_data != NULL, true);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
+  ASSERT_EQ(style_get_gradient(s, STYLE_ID_BG_COLOR, &g) != NULL, true);
+  
+  ASSERT_EQ(g.type, GRADIENT_LINEAR);
+  ASSERT_EQ(g.nr, 2);
+  ASSERT_EQ(g.degree, 180);
+  
+  ASSERT_EQ(g.stops[0].offset, 0);
+  ASSERT_EQ(g.stops[0].color.rgba.r, 0xff);
+  ASSERT_EQ(g.stops[1].offset, 1);
+  ASSERT_EQ(g.stops[1].color.rgba.b, 0xff);
+  
+  ASSERT_EQ(style_get_gradient(s, STYLE_ID_FG_COLOR, &g) != NULL, true);
+  ASSERT_EQ(g.nr, 1);
+  ASSERT_EQ(g.degree, 0);
+  
+  ASSERT_EQ(g.stops[0].offset, 0);
+  ASSERT_EQ(g.stops[0].color.rgba.r, 0xff);
+  ASSERT_EQ(g.stops[0].color.rgba.g, 0);
+  ASSERT_EQ(g.stops[0].color.rgba.b, 0);
+  ASSERT_EQ(g.stops[0].color.rgba.a, 0xff);
+  
+  style_destroy(s);
+}

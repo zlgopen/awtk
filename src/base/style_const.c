@@ -214,6 +214,7 @@ static const style_vtable_t style_const_vt = {
     .get_uint = style_const_get_uint,
     .get_str = style_const_get_str,
     .get_color = style_const_get_color,
+    .get_gradient = style_const_get_gradient,
     .get_style_type = style_const_get_style_type,
     .get_style_state = style_const_get_style_state,
     .set_style_data = style_const_set_style_data,

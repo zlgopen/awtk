@@ -197,14 +197,14 @@ ret_t style_normalize_value(const char* name, const char* value, value_t* out) {
     value_set_int(v, to_border(value));
   } else if (strcmp(name, "icon_at") == 0) {
     value_set_int(v, to_icon_at(value));
+  } else if (strstr(value, "linear-gradient") != NULL || strstr(value, "radial-gradient") != NULL) {
+    return gradient_str_to_value(v, value);
   } else if (strstr(name, "color") != NULL) {
     color_t c = color_parse(value);
     value_set_uint32(v, c.color);
   } else if (strstr(name, "image") != NULL || strstr(name, "name") != NULL ||
              strstr(name, "icon") != NULL) {
     value_dup_str(v, value);
-  } else if (strstr(value, "gradient") != NULL) {
-    return gradient_str_to_value(v, value);
   } else {
     if (isdigit(*value)) {
       value_set_uint32(v, tk_atoi(value));

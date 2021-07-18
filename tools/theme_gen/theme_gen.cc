@@ -51,9 +51,15 @@ bool Style::AddValue(const string& name, const char* value) {
   return str_values.AddValue(name, string(value), VALUE_TYPE_STRING);
 }
 
+bool Style::AddValue(const string& name, const binary_data_t* bin) {
+  return bin_values.AddValue(name, BinaryData(bin), VALUE_TYPE_STRING);
+}
+
 bool Style::AddValue(const string& name, const value_t& v) {
   if (v.type == VALUE_TYPE_STRING) {
     return str_values.AddValue(name, string(value_str(&v)), v.type);
+  }else if (v.type == VALUE_TYPE_GRADIENT) {
+    return bin_values.AddValue(name, value_gradient(&v), v.type);
   } else {
     if (v.type == VALUE_TYPE_INT32) {
       return int_values.AddValue(name, value_int(&v), v.type);
@@ -66,6 +72,7 @@ bool Style::AddValue(const string& name, const value_t& v) {
 
 bool Style::Reset() {
   this->str_values.Clear();
+  this->bin_values.Clear();
   this->int_values.Clear();
   this->uint_values.Clear();
   this->datas.clear();
@@ -75,6 +82,7 @@ bool Style::Reset() {
 
 bool Style::Merge(Style& other) {
   str_values.Merge(other.str_values);
+  bin_values.Merge(other.bin_values);
   int_values.Merge(other.int_values);
   uint_values.Merge(other.uint_values);
 
@@ -84,7 +92,7 @@ bool Style::Merge(Style& other) {
 ret_t Style::Output(wbuffer_t* wbuffer) {
   uint32_t size = 0;
 
-  size = uint_values.Size() + int_values.Size() + str_values.Size();
+  size = uint_values.Size() + int_values.Size() + str_values.Size() + bin_values.Size();
   log_debug("  size=%d widget_type=%s name=%s state=%s\n", size, this->widget_type.c_str(),
             this->name.c_str(), this->state.c_str());
 
@@ -92,6 +100,7 @@ ret_t Style::Output(wbuffer_t* wbuffer) {
   int_values.WriteToWbuffer(wbuffer);
   uint_values.WriteToWbuffer(wbuffer);
   str_values.WriteToWbuffer(wbuffer);
+  bin_values.WriteToWbuffer(wbuffer);
 
   return RET_OK;
 }
