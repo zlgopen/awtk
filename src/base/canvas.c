@@ -552,14 +552,20 @@ static ret_t canvas_fill_rect_gradient_impl(canvas_t* c, xy_t x, xy_t y, wh_t w,
     return RET_OK;
   }
 
+  /*FIXME: to support general cases*/
+  return_value_if_fail(gradient->type == GRADIENT_LINEAR && gradient->degree == 180,
+                       RET_BAD_PARAMS);
+
 #ifndef WITH_NANOVG_GPU
   if (gradient->type == GRADIENT_LINEAR) {
     if (gradient->degree == 180) {
       uint32_t i = 0;
+      lcd_t* lcd = c->lcd;
       for (i = 0; i < h; i++) {
-        float offset = (float)i(float) / h;
-        color c = gradient_get_color(gradient, offset);
-        lcd_draw_hline(c->lcd, x, y + i, w);
+        float offset = (float)i / (float)h;
+        color_t color = gradient_get_color(gradient, offset);
+        lcd_set_stroke_color(lcd, color);
+        lcd_draw_hline(lcd, x, y + i, w);
       }
       return RET_OK;
     }
@@ -568,8 +574,7 @@ static ret_t canvas_fill_rect_gradient_impl(canvas_t* c, xy_t x, xy_t y, wh_t w,
   vg = canvas_get_vgcanvas(c);
   if (vg != NULL) {
     vg_gradient_t vg_gradient;
-    /*TODO: support radial graident*/
-    vg_gradient_init_linear(&vg_gradient, x, y, x + w, y + h);
+    vg_gradient_init_linear(&vg_gradient, x, y, x, y + h);
     vg_gradient.gradient = *gradient;
     vgcanvas_set_fill_gradient(vg, &vg_gradient);
     vgcanvas_rect(vg, x, y, w, h);

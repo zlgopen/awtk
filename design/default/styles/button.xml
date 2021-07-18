@@ -44,11 +44,11 @@
   </style>
 
   <style name="close" border_color="#a0a0a0"  text_color="black" self_layout="default(x=center,y=bottom:50,w=50%,h=30)">
-    <normal     bg_color="#f0f0f0" />
-    <pressed    bg_color="#c0c0c0" x_offset="1" y_offset="1"/>
-    <over       bg_color="#e0e0e0" />
-    <focused    bg_color="#e0e0e0" />
-    <disable    bg_color="gray" text_color="#d0d0d0" />
+    <normal bg_color="linear-gradient(180deg, red 60%, cyan);" />
+    <over bg_color="linear-gradient(180deg, orange 60%, red);" />
+    <pressed bg_color="linear-gradient(180deg, orange 60%, blue);" />
+    <focused bg_color="linear-gradient(180deg, orange 60%, green);" />
+    <disable bg_color="gray" text_color="#d0d0d0" />
   </style>
 </button>
 
