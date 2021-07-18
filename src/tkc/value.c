@@ -444,6 +444,7 @@ ret_t value_deep_copy(value_t* dst, const value_t* src) {
       break;
     }
     case VALUE_TYPE_BINARY:
+    case VALUE_TYPE_GRADIENT:
     case VALUE_TYPE_UBJSON: {
       if (src->value.binary_data.data != NULL) {
         uint32_t size = src->value.binary_data.size;
@@ -587,6 +588,7 @@ bool_t value_equal(const value_t* v, const value_t* other) {
       return (v->value.wstr == other->value.wstr) || tk_wstr_eq(v->value.wstr, other->value.wstr);
     }
     case VALUE_TYPE_BINARY:
+    case VALUE_TYPE_GRADIENT:
     case VALUE_TYPE_UBJSON: {
       return (v->value.binary_data.data == other->value.binary_data.data);
     }
@@ -731,7 +733,8 @@ value_t* value_dup_binary_data(value_t* v, const void* data, uint32_t size) {
 
 binary_data_t* value_binary_data(const value_t* v) {
   return_value_if_fail(v != NULL, NULL);
-  return_value_if_fail(v->type == VALUE_TYPE_BINARY, NULL);
+  return_value_if_fail(v->type == VALUE_TYPE_BINARY || v->type == VALUE_TYPE_GRADIENT 
+    || v->type == VALUE_TYPE_UBJSON, NULL);
 
   return (binary_data_t*)&(v->value.binary_data);
 }
@@ -748,6 +751,22 @@ value_t* value_set_ubjson(value_t* v, void* data, uint32_t size) {
 binary_data_t* value_ubjson(const value_t* v) {
   return_value_if_fail(v != NULL, NULL);
   return_value_if_fail(v->type == VALUE_TYPE_UBJSON, NULL);
+
+  return (binary_data_t*)&(v->value.binary_data);
+}
+
+value_t* value_set_gradient(value_t* v, void* data, uint32_t size) {
+  return_value_if_fail(v != NULL, NULL);
+
+  v->value.binary_data.data = data;
+  v->value.binary_data.size = size;
+
+  return value_init(v, VALUE_TYPE_GRADIENT);
+}
+
+binary_data_t* value_gradient(const value_t* v) {
+  return_value_if_fail(v != NULL, NULL);
+  return_value_if_fail(v->type == VALUE_TYPE_GRADIENT, NULL);
 
   return (binary_data_t*)&(v->value.binary_data);
 }

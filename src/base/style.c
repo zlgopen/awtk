@@ -24,6 +24,21 @@
 #include "tkc/value.h"
 #include "base/style.h"
 
+static ret_t gradient_str_to_value(value_t* v, const char* value) {
+  gradient_t g;
+  wbuffer_t wb;
+  return_value_if_fail(v != NULL && value != NULL, RET_BAD_PARAMS);
+
+  wbuffer_init_extendable(&wb);
+  return_value_if_fail(gradient_init_from_str(&g, value) != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(gradient_to_binary(&g, &wb) == RET_OK, RET_OOM);
+
+  value_set_gradient(v, wb.data, wb.cursor);
+  v->free_handle = TRUE;
+
+  return RET_OK;
+}
+
 ret_t style_notify_widget_state_changed(style_t* s, widget_t* widget) {
   return_value_if_fail(
       s != NULL && s->vt != NULL && s->vt->notify_widget_state_changed != NULL && widget != NULL,
@@ -61,6 +76,12 @@ color_t style_get_color(style_t* s, const char* name, color_t defval) {
   return_value_if_fail(s != NULL && s->vt != NULL && s->vt->get_color != NULL, defval);
 
   return s->vt->get_color(s, name, defval);
+}
+
+gradient_t* style_get_gradient(style_t* s, const char* name, gradient_t* gradient) {
+  return_value_if_fail(s != NULL && s->vt != NULL && s->vt->get_gradient != NULL, NULL);
+
+  return s->vt->get_gradient(s, name, gradient);
 }
 
 const char* style_get_str(style_t* s, const char* name, const char* defval) {
@@ -182,6 +203,8 @@ ret_t style_normalize_value(const char* name, const char* value, value_t* out) {
   } else if (strstr(name, "image") != NULL || strstr(name, "name") != NULL ||
              strstr(name, "icon") != NULL) {
     value_dup_str(v, value);
+  } else if (strstr(value, "gradient") != NULL) {
+    return gradient_str_to_value(v, value);
   } else {
     if (isdigit(*value)) {
       value_set_uint32(v, tk_atoi(value));

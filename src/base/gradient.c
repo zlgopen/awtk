@@ -340,3 +340,4 @@ ret_t gradient_deinit(gradient_t* gradient) {
 
   return RET_OK;
 }
+
