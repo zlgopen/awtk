@@ -412,6 +412,22 @@ ret_t canvas_draw_points(canvas_t* c, const point_t* points, uint32_t nr);
 ret_t canvas_fill_rect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method canvas_fill_rect_gradient
+ * 绘制矩形。
+ *
+ * @annotation ["scriptable"]
+ * @param {canvas_t*} c canvas对象。
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y y坐标。
+ * @param {wh_t} w 宽度。
+ * @param {wh_t} h 高度。
+ * @param {gradient_t*} gradient 渐变颜色。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_fill_rect_gradient(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h, gradient_t* gradient);
+
+/**
  * @method canvas_clear_rect
  * 用填充颜色填充指定矩形。
  * 

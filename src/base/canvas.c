@@ -25,6 +25,7 @@
 #include "tkc/utils.h"
 #include "base/bidi.h"
 #include "base/canvas.h"
+#include "base/vgcanvas.h"
 #include "tkc/time_now.h"
 #include "tkc/color_parser.h"
 #include "base/system_info.h"
@@ -529,6 +530,60 @@ ret_t canvas_fill_rect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h) {
 
   fix_xywh(x, y, w, h);
   return canvas_fill_rect_impl(c, c->ox + x, c->oy + y, w, h);
+}
+
+static ret_t canvas_fill_rect_gradient_impl(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h,
+                                            gradient_t* gradient) {
+  xy_t x2 = x + w - 1;
+  xy_t y2 = y + h - 1;
+  vgcanvas_t* vg = NULL;
+
+  if (x > c->clip_right || x2 < c->clip_left || y > c->clip_bottom || y2 < c->clip_top) {
+    return RET_OK;
+  }
+
+  x = tk_max(x, c->clip_left);
+  y = tk_max(y, c->clip_top);
+  x2 = tk_min(x2, c->clip_right);
+  y2 = tk_min(y2, c->clip_bottom);
+  w = x2 - x + 1;
+  h = y2 - y + 1;
+  if (w == 0 || h == 0) {
+    return RET_OK;
+  }
+
+#ifndef WITH_NANOVG_GPU
+  if (gradient->type == GRADIENT_LINEAR) {
+    if (gradient->degree == 180) {
+      uint32_t i = 0;
+      for (i = 0; i < h; i++) {
+        float offset = (float)i(float) / h;
+        color c = gradient_get_color(gradient, offset);
+        lcd_draw_hline(c->lcd, x, y + i, w);
+      }
+      return RET_OK;
+    }
+  }
+#endif /*WITH_NANOVG_GPU*/
+  vg = canvas_get_vgcanvas(c);
+  if (vg != NULL) {
+    vg_gradient_t vg_gradient;
+    /*TODO: support radial graident*/
+    vg_gradient_init_linear(&vg_gradient, x, y, x + w, y + h);
+    vg_gradient.gradient = *gradient;
+    vgcanvas_set_fill_gradient(vg, &vg_gradient);
+    vgcanvas_rect(vg, x, y, w, h);
+    vgcanvas_fill(vg);
+  }
+
+  return RET_NOT_IMPL;
+}
+
+ret_t canvas_fill_rect_gradient(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h, gradient_t* gradient) {
+  return_value_if_fail(c != NULL, RET_BAD_PARAMS);
+
+  fix_xywh(x, y, w, h);
+  return canvas_fill_rect_gradient_impl(c, c->ox + x, c->oy + y, w, h, gradient);
 }
 
 static ret_t canvas_clear_rect_impl(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h) {

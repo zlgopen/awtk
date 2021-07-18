@@ -31,6 +31,7 @@ TEST(Gradient, binary) {
 
 TEST(Gradient, str1) {
   gradient_t a;
+  color_t c;
   gradient_init_from_str(&a, "linear-gradient(#FF0000, #0000FF)");
   ASSERT_EQ(a.type, GRADIENT_LINEAR);
   ASSERT_EQ(a.degree, 0);
@@ -40,6 +41,24 @@ TEST(Gradient, str1) {
   ASSERT_EQ(a.stops[0].color.rgba.r, 0xff);
   ASSERT_EQ(a.stops[1].offset, 1);
   ASSERT_EQ(a.stops[1].color.rgba.b, 0xff);
+
+  c = gradient_get_color(&a, 0);
+  ASSERT_EQ(c.rgba.r, 0xff);
+  ASSERT_EQ(c.rgba.g, 0);
+  ASSERT_EQ(c.rgba.b, 0);
+  ASSERT_EQ(c.rgba.a, 0xff);
+  
+  c = gradient_get_color(&a, 0.5);
+  ASSERT_EQ(c.rgba.r, 0x80);
+  ASSERT_EQ(c.rgba.g, 0);
+  ASSERT_EQ(c.rgba.b, 0x80);
+  ASSERT_EQ(c.rgba.a, 0xff);
+  
+  c = gradient_get_color(&a, 1);
+  ASSERT_EQ(c.rgba.r, 0);
+  ASSERT_EQ(c.rgba.g, 0);
+  ASSERT_EQ(c.rgba.b, 0xff);
+  ASSERT_EQ(c.rgba.a, 0xff);
 
   str_t str;
   str_init(&str, 0);

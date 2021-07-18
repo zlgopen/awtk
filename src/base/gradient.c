@@ -108,7 +108,7 @@ static gradient_t* gradient_parse_linear(gradient_t* gradient, tokenizer_t* t) {
   gradient_set_type(gradient, GRADIENT_LINEAR);
   if (isdigit(*token)) {
     if (strstr(token, "deg") != NULL) {
-    /*
+      /*
      * linear-gradient(0deg, blue, green 40%, red);
      */
       degree = tk_atoi(token);
@@ -217,7 +217,7 @@ ret_t gradient_to_str(gradient_t* gradient, str_t* str) {
     gradient_stop_t* iter = gradient->stops + i;
     color_hex_str(iter->color, color);
     tk_snprintf(offset, sizeof(offset) - 1, "%d", (int)(iter->offset * 100));
-    
+
     str_append_more(str, ", ", color, " ", offset, "%", NULL);
   }
   str_append(str, ")");
@@ -341,3 +341,37 @@ ret_t gradient_deinit(gradient_t* gradient) {
   return RET_OK;
 }
 
+color_t gradient_get_color(gradient_t* gradient, float offset) {
+  color_t c = color_init(0x00, 0, 0, 0);
+  return_value_if_fail(gradient != NULL && gradient->nr > 0, c);
+  return_value_if_fail(offset >= 0 && offset <= 1, c);
+
+  if (gradient->nr == 1) {
+    return gradient_get_first_color(gradient);
+  } else {
+    uint32_t i = 0;
+    for (i = 0; i < gradient->nr; i++) {
+      gradient_stop_t* iter = gradient->stops + i;
+      if (iter->offset == offset || (i + 1) == gradient->nr) {
+        return iter->color;
+      } else if (offset > iter->offset) {
+        gradient_stop_t* next = gradient->stops + i + 1;
+        if (offset == next->offset) {
+          return next->color;
+        } else if (offset < next->offset) {
+          float range = next->offset - iter->offset;
+          float percent = (offset - iter->offset) / range;
+
+          c.rgba.r = (1 - percent) * iter->color.rgba.r + percent * next->color.rgba.r;
+          c.rgba.g = (1 - percent) * iter->color.rgba.g + percent * next->color.rgba.g;
+          c.rgba.b = (1 - percent) * iter->color.rgba.b + percent * next->color.rgba.b;
+          c.rgba.a = (1 - percent) * iter->color.rgba.a + percent * next->color.rgba.a;
+
+          return c;
+        }
+      }
+    }
+  }
+
+  return gradient_get_last_color(gradient);
+}

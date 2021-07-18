@@ -232,6 +232,17 @@ color_t gradient_get_first_color(gradient_t* gradient);
 color_t gradient_get_last_color(gradient_t* gradient);
 
 /**
+ * @method gradient_get_color
+ * 获取颜色。
+ *
+ * @param {gradient_t*} gradient gradient对象。
+ * @param {float} offset 偏移(0-1)。
+ *
+ * @return {color_t} 返回颜色。
+ */
+color_t gradient_get_color(gradient_t* gradient, float offset);
+
+/**
  * @method gradient_deinit
  * 释放gradient对象。
  *
@@ -244,4 +255,3 @@ ret_t gradient_deinit(gradient_t* gradient);
 END_C_DECLS
 
 #endif /*TK_GRADIENT_H*/
-
