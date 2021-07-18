@@ -49,9 +49,9 @@ TEST(Gradient, str1) {
   ASSERT_EQ(c.rgba.a, 0xff);
   
   c = gradient_get_color(&a, 0.5);
-  ASSERT_EQ(c.rgba.r, 0x80);
+  ASSERT_EQ(c.rgba.r, 0x7f);
   ASSERT_EQ(c.rgba.g, 0);
-  ASSERT_EQ(c.rgba.b, 0x80);
+  ASSERT_EQ(c.rgba.b, 0x7f);
   ASSERT_EQ(c.rgba.a, 0xff);
   
   c = gradient_get_color(&a, 1);

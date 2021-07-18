@@ -120,6 +120,16 @@ struct _gradient_t {
 gradient_t* gradient_init(gradient_t* gradient);
 
 /**
+ * @method gradient_init_simple
+ * 初始化gradient对象。
+ * @param {gradient_t*} gradient gradient对象。
+ * @param {uint32_t} color 颜色。
+ *
+ * @return {gradient_t*} 返回gradient对象。
+ */
+gradient_t* gradient_init_simple(gradient_t* gradient, uint32_t color);
+
+/**
  * @method gradient_init_from_str
  * 从字符串初始化gradient对象。
  *

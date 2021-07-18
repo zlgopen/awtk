@@ -89,15 +89,9 @@ gradient_t* style_data_get_gradient(const uint8_t* s, const char* name, gradient
     if (nv->type == VALUE_TYPE_GRADIENT) {
       return gradient_init_from_binary(gradient, p, nv->value_size);
     } else if (nv->type == VALUE_TYPE_UINT32 || nv->type == VALUE_TYPE_INT32) {
-      color_t color;
       uint32_t value = 0;
       load_uint32(p, value);
-      color.color = value;
-      gradient_init(gradient);
-      gradient->type = GRADIENT_LINEAR;
-      gradient_add_stop(gradient, color, 0);
-
-      return gradient;
+      return gradient_init_simple(gradient, value);
     }
   }
 

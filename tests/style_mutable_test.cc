@@ -135,8 +135,8 @@ TEST(StyleMutable, gradient) {
   gradient_t g;
   style_t* m1 = style_mutable_create(NULL);
 
-  style_mutable_set_str(m1, "normal", "bg_gradient", "linear-gradient(180deg, #FF0000 0%, #0000FF 100%)");
-  ASSERT_EQ(style_get_gradient(m1, "bg_gradient", &g) != NULL, true);
+  style_mutable_set_str(m1, "normal", "bg_color", "linear-gradient(180deg, #FF0000 0%, #0000FF 100%)");
+  ASSERT_EQ(style_get_gradient(m1, "bg_color", &g) != NULL, true);
   ASSERT_EQ(g.type, GRADIENT_LINEAR);
   ASSERT_EQ(g.nr, 2);
   ASSERT_EQ(g.degree, 180);
@@ -148,6 +148,22 @@ TEST(StyleMutable, gradient) {
 
   string str1;
   style_mutable_foreach(m1, on_style_item, &str1);
+
+  style_destroy(m1);
+}
+
+TEST(StyleMutable, gradient1) {
+  gradient_t g;
+  style_t* m1 = style_mutable_create(NULL);
+
+  style_mutable_set_str(m1, "normal", "bg_color", "#FF0000");
+  ASSERT_EQ(style_get_gradient(m1, "bg_color", &g) != NULL, true);
+  ASSERT_EQ(g.type, GRADIENT_LINEAR);
+  ASSERT_EQ(g.nr, 1);
+  ASSERT_EQ(g.degree, 0);
+  
+  ASSERT_EQ(g.stops[0].offset, 0);
+  ASSERT_EQ(g.stops[0].color.rgba.r, 0xff);
 
   style_destroy(m1);
 }

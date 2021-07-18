@@ -232,9 +232,12 @@ static gradient_t* style_mutable_get_gradient(style_t* s, const char* name, grad
   return_value_if_fail(style != NULL, NULL);
 
   if (style_mutable_get_value(s, style_get_style_state(s), name, &v) == RET_OK) {
-    binary_data_t* bin = value_gradient(&v);
-    if (bin != NULL) {
+    if (v.type == VALUE_TYPE_GRADIENT) {
+      binary_data_t* bin = value_gradient(&v);
+      return_value_if_fail(bin != NULL, NULL);
       return gradient_init_from_binary(gradient, (uint8_t*)(bin->data), bin->size);
+    } else if (v.type == VALUE_TYPE_UINT32 || v.type == VALUE_TYPE_INT32) {
+      return gradient_init_simple(gradient, value_uint32(&v));
     } else {
       return NULL;
     }

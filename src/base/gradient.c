@@ -32,6 +32,18 @@ gradient_t* gradient_init(gradient_t* gradient) {
   return gradient;
 }
 
+gradient_t* gradient_init_simple(gradient_t* gradient, uint32_t color) {
+  color_t c;
+  return_value_if_fail(gradient != NULL, NULL);
+
+  c.color = color;
+  gradient_init(gradient);
+  gradient->type = GRADIENT_LINEAR;
+  gradient_add_stop(gradient, c, 0); 
+
+  return gradient;
+}
+
 static ret_t gradient_fix_stops(gradient_t* gradient) {
   uint32_t i = 0;
   if (gradient->nr > 1) {
