@@ -28,6 +28,8 @@ print(ulen('致远电子'))
 char_at(str, index) => str
 ```
 
+> index 为负数时，从后往前取。比如-1 表示最后一个元素。
+
 #### 示例
 
 ```
@@ -140,3 +142,21 @@ prompt(tips) => str
 a = prompt('input a number:');
 print(int(a)+100);
 ```
+
+### 9. usubstr
+
+> 取子字符串(unicode)。
+----------------------------
+
+#### 原型
+
+```
+usubstr(str, start, end) => str
+```
+
+> * 不包括end
+> * start 为负数时，从后往前取。比如-1 表示最后一个元素。
+> * end 为负数时，从后往前取。比如-1 表示最后一个元素。
+> * end 省略表示到最后全部元素。
+
+

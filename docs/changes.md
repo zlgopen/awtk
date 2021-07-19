@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/07/19
+  * fscript 增加 usubstr函数。
+
 2021/07/17
   * 增加array\_clone\_and\_sort。
   * 增加lcd\_is\_support\_dirty\_rect（感谢智明提供补丁）
