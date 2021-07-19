@@ -111,12 +111,13 @@
 ## 短期计划（顺序不定）
 * tree view
 * drag & drop
+* image view
+* thumb image view
 
 ## 长期计划
 * Accessibility
 * 支持泰文等特殊文字
 * 支持 vue.js
 * 支持粒子产生器
-* 支持骨骼动画
 * 小程序版本
 * 多进程支持
