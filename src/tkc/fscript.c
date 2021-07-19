@@ -1811,8 +1811,14 @@ static ret_t func_len(fscript_t* fscript, fscript_args_t* args, value_t* result)
   char buff[64];
   const char* str = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  str = value_str_ex(args->args, buff, sizeof(buff) - 1);
-  value_set_uint32(result, tk_strlen(str));
+
+  if (args->args->type == VALUE_TYPE_OBJECT) {
+    object_t* obj = value_object(args->args);
+    value_set_uint32(result, object_get_prop_int32(obj, "size", 0));
+  } else {
+    str = value_str_ex(args->args, buff, sizeof(buff) - 1);
+    value_set_uint32(result, tk_strlen(str));
+  }
 
   return RET_OK;
 }
