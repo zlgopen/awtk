@@ -284,7 +284,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
         double range = slider->max - slider->min;
 
         if (slider->vertical) {
-          value = range * p.y / (widget->h - dr->h);
+          value = range - range * p.y / (widget->h - dr->h);
         } else {
           value = range * p.x / (widget->w - dr->w);
         }
