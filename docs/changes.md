@@ -2,7 +2,7 @@
 
 2021/07/20
   * fscript 修复对负号的处理。
-  * fscript math 增加 d2r。
+  * fscript math 增加 d2r/r2d。
 
 2021/07/19
   * fscript 增加 usubstr函数。

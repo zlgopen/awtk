@@ -125,8 +125,16 @@ static ret_t func_d2r(fscript_t* fscript, fscript_args_t* args, value_t* result)
   return RET_OK;
 }
 
+static ret_t func_r2d(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  value_set_double(result, TK_R2D(value_double(args->args)));
+
+  return RET_OK;
+}
+
 ret_t fscript_math_register(void) {
   ENSURE(fscript_register_func("d2r", func_d2r) == RET_OK);
+  ENSURE(fscript_register_func("r2d", func_r2d) == RET_OK);
   ENSURE(fscript_register_func("acos", func_acos) == RET_OK);
   ENSURE(fscript_register_func("asin", func_asin) == RET_OK);
   ENSURE(fscript_register_func("atan", func_atan) == RET_OK);
