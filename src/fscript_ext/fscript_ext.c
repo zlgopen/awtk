@@ -109,9 +109,54 @@ static ret_t func_totitle(fscript_t* fscript, fscript_args_t* args, value_t* res
   return RET_OK;
 }
 
+static ret_t func_usubstr(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  wstr_t wstr;
+  int32_t start = 0;
+  int32_t end = 0;
+  ret_t ret = RET_OK;
+  const char* str = NULL;
+  FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
+  str = value_str(args->args);
+  return_value_if_fail(str != NULL && *str, RET_BAD_PARAMS);
+
+  wstr_init(&wstr, 0);
+  return_value_if_fail(wstr_set_utf8(&wstr, str) == RET_OK, RET_OOM);
+
+  if (args->size >= 2) {
+    start = value_int(args->args + 1);
+  }
+
+  if (args->size >= 3) {
+    end = value_int(args->args + 2);
+  } else {
+    end = wstr.size;
+  }
+
+  if (start < 0) {
+    start += wstr.size;
+  }
+
+  if (end < 0) {
+    end += wstr.size;
+  }
+
+  if (start >= 0 && start < wstr.size && start < end && end <= wstr.size) {
+    str_t* str = &(fscript->str);
+    str_from_wstr_with_len(str, wstr.str + start, end - start);
+    value_set_str(result, str->str);
+  } else {
+    value_set_str(result, "");
+    ret = RET_FAIL;
+  }
+  wstr_reset(&wstr);
+
+  return ret;
+}
+
 static ret_t func_char_at(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   wstr_t wstr;
   int32_t index = 0;
+  ret_t ret = RET_OK;
   const char* str = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   str = value_str(args->args);
@@ -129,12 +174,12 @@ static ret_t func_char_at(fscript_t* fscript, fscript_args_t* args, value_t* res
     str_t* str = &(fscript->str);
     str_from_wstr_with_len(str, wstr.str + index, 1);
     value_set_str(result, str->str);
-
-    return RET_OK;
+  } else {
+    ret = RET_FAIL;
   }
   wstr_reset(&wstr);
 
-  return RET_FAIL;
+  return ret;
 }
 
 static ret_t func_trim_left(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -184,7 +229,7 @@ static ret_t func_ulen(fscript_t* fscript, fscript_args_t* args, value_t* result
   value_set_int32(result, wstr.size);
   wstr_reset(&wstr);
 
-  return RET_FAIL;
+  return RET_OK;
 }
 
 static ret_t func_value_get_binary_data(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -208,6 +253,7 @@ ret_t fscript_ext_init(void) {
   ENSURE(fscript_register_func("trim_right", func_trim_right) == RET_OK);
   ENSURE(fscript_register_func("totitle", func_totitle) == RET_OK);
   ENSURE(fscript_register_func("char_at", func_char_at) == RET_OK);
+  ENSURE(fscript_register_func("usubstr", func_usubstr) == RET_OK);
 #ifdef HAS_STDIO
   ENSURE(fscript_register_func("prompt", func_prompt) == RET_OK);
 #endif /*HAS_STDIO*/
