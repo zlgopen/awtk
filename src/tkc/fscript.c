@@ -1653,7 +1653,7 @@ static ret_t func_mul(fscript_t* fscript, fscript_args_t* args, value_t* result)
 static ret_t func_sub(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
   if (args->size == 1) {
-    value_set_double(result, -value_double(args->args));
+    func_minus(fscript, args, result);
   } else {
     value_set_double(result, value_double(args->args) - value_double(args->args + 1));
   }
