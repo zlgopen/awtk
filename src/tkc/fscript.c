@@ -541,7 +541,13 @@ static ret_t fscript_parser_skip_seperators_and_comments(fscript_parser_t* parse
       break;
     }
   }
-  fscript_parser_unget_char(parser, c);
+
+  if (c) {
+    parser->cursor--;
+    if (parser->col > 0) {
+      parser->col--;
+    }
+  }
 
   return RET_OK;
 }
@@ -621,6 +627,21 @@ static ret_t fscript_parser_parse_id_or_number(fscript_parser_t* parser, token_t
   if (c != '\0') {
     fscript_parser_unget_char(parser, c);
   }
+
+  return RET_OK;
+}
+
+static ret_t fscript_parser_get_unary(fscript_parser_t* parser, char c, str_t* str) {
+  do {
+    fscript_parser_skip_seperators_and_comments(parser);
+    c = fscript_parser_get_char(parser);
+    if (c == str->str[0]) {
+      str_append_char(str, c);
+    } else {
+      fscript_parser_unget_char(parser, c);
+      break;
+    }
+  } while (TRUE);
 
   return RET_OK;
 }
@@ -706,19 +727,9 @@ static token_t* fscript_parser_get_token_ex(fscript_parser_t* parser, bool_t ope
         str_append_char(str, c);
       } else {
         fscript_parser_unget_char(parser, c);
-        do {
-          fscript_parser_skip_seperators_and_comments(parser);
-          c = fscript_parser_get_char(parser);
-          if (c == str->str[0]) {
-            str_append_char(str, c);
-          } else {
-            fscript_parser_unget_char(parser, c);
-            break;
-          }
-        } while (TRUE);
+        fscript_parser_get_unary(parser, c, str);
       }
-      t->type = TOKEN_FUNC;
-      t->size = str->size;
+      TOKEN_INIT(t, TOKEN_FUNC, str);
       return t;
     }
     case '|':
@@ -740,17 +751,20 @@ static token_t* fscript_parser_get_token_ex(fscript_parser_t* parser, bool_t ope
       return t;
     }
     default: {
-      fscript_parser_unget_char(parser, c);
       if (c == '+' || c == '-') {
-        if (operator) {
-          t->type = TOKEN_FUNC;
-          fscript_parser_get_char(parser);
+        fscript_parser_skip_seperators_and_comments(parser);
+        if (operator|| !isdigit(parser->cursor[0])) {
+          fscript_parser_get_unary(parser, c, str);
+          TOKEN_INIT(t, TOKEN_FUNC, str);
         } else {
+          fscript_parser_unget_char(parser, c);
           fscript_parser_parse_id_or_number(parser, TOKEN_NUMBER);
         }
       } else if (isdigit(c)) {
+        fscript_parser_unget_char(parser, c);
         fscript_parser_parse_id_or_number(parser, TOKEN_NUMBER);
       } else {
+        fscript_parser_unget_char(parser, c);
         fscript_parser_parse_id_or_number(parser, TOKEN_ID);
       }
       return t;
@@ -985,7 +999,7 @@ static ret_t fexpr_parse_unary(fscript_parser_t* parser, value_t* result) {
   }
 
   c = t->token[0];
-  if (c == '!' || c == '~') {
+  if (t->type == TOKEN_FUNC && (c == '!' || c == '~' || c == '-')) {
     value_t v;
     uint32_t i = 0;
     bool_t valid = FALSE;
@@ -1637,8 +1651,12 @@ static ret_t func_mul(fscript_t* fscript, fscript_args_t* args, value_t* result)
 }
 
 static ret_t func_sub(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
-  value_set_double(result, value_double(args->args) - value_double(args->args + 1));
+  FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
+  if (args->size == 1) {
+    value_set_double(result, -value_double(args->args));
+  } else {
+    value_set_double(result, value_double(args->args) - value_double(args->args + 1));
+  }
 
   return RET_OK;
 }

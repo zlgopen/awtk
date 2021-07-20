@@ -1236,3 +1236,38 @@ TEST(FExr, widget) {
   widget_destroy(button);
   OBJECT_UNREF(obj);
 }
+
+TEST(FExr, minus) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  fscript_eval(obj, "a=100;a=-a;a", &v);
+  ASSERT_EQ(value_int(&v), -100);
+  value_reset(&v);
+  
+  fscript_eval(obj, "a=100;a=-  a;a", &v);
+  ASSERT_EQ(value_int(&v), -100);
+  value_reset(&v);
+  
+  fscript_eval(obj, "a=100;a=- /*hello*/ a;a", &v);
+  ASSERT_EQ(value_int(&v), -100);
+  value_reset(&v);
+  
+  fscript_eval(obj, "a=100;a=0-a;a", &v);
+  ASSERT_EQ(value_int(&v), -100);
+  value_reset(&v);
+  
+  fscript_eval(obj, "a=100;a=---a;a", &v);
+  ASSERT_EQ(value_int(&v), -100);
+  value_reset(&v);
+  
+  fscript_eval(obj, "a=100;a=--a;a", &v);
+  ASSERT_EQ(value_int(&v), 100);
+  value_reset(&v);
+  
+  fscript_eval(obj, "a=-(100-300);a", &v);
+  ASSERT_EQ(value_int(&v), 200);
+  value_reset(&v);
+
+  OBJECT_UNREF(obj);
+}
