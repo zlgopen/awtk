@@ -40,7 +40,6 @@ ret_t window_base_on_paint_self(widget_t* widget, canvas_t* c) {
 }
 
 ret_t window_base_on_paint_begin(widget_t* widget, canvas_t* c) {
-  window_base_t* win = WINDOW_BASE(widget);
   font_manager_t* fm = widget_get_font_manager(widget);
   image_manager_t* imm = widget_get_image_manager(widget);
   assets_manager_t* am = widget_get_assets_manager(widget);

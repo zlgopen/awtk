@@ -126,9 +126,9 @@ ret_t dialog_highlighter_set_bg(dialog_highlighter_t* h, bitmap_t* img);
 
 /**
  * @method dialog_highlighter_set_bg_clip_rect
- * 设置背景图片的显示裁减区。
+ * 设置背景图片的显示裁剪区。
  * @param {dialog_highlighter_t*} h 对话框高亮策略对象。
- * @param {rect_t*} clip_rect 背景显示裁减区。
+ * @param {rect_t*} clip_rect 背景显示裁剪区。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

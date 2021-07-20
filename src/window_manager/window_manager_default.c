@@ -1378,7 +1378,7 @@ static ret_t window_manager_default_native_window_resized(widget_t* widget, void
 
   if (wm->dialog_highlighter != NULL) {
     bitmap_t img;
-    widget_t* prev = window_manager_get_prev_window(widget);
+    widget_t* prev = window_manager_find_prev_normal_window(widget);
 
     memset(&img, 0x00, sizeof(img));
     if (prev != NULL) {
