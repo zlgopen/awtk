@@ -3339,7 +3339,7 @@ ret_t widget_get_prop_default_value(widget_t* widget, const char* name, value_t*
 }
 
 static ret_t widget_get_offset(widget_t* widget, xy_t* out_x, xy_t* out_y) {
-  return_value_if_equal(widget != NULL && out_x != NULL && out_y != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && out_x != NULL && out_y != NULL, RET_BAD_PARAMS);
   *out_x = 0;
   *out_y = 0;
   if (widget->vt != NULL && widget->vt->get_offset != NULL) {
