@@ -140,55 +140,64 @@ static ret_t slider_paint_dragger(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t slider_get_bar_rect(widget_t* widget, rect_t* br, rect_t* fr) {
+  slider_t* slider = SLIDER(widget);
+  uint32_t bar_size = 0;
+  uint32_t radius = 0;
+  const char* bg_image = 0;
+  rect_t* dr = NULL;
+
+  return_value_if_fail(widget != NULL && slider != NULL && br != NULL && fr != NULL,
+                       RET_BAD_PARAMS);
+
+  bar_size = slider_get_bar_size(widget);
+  radius = style_get_int(widget->astyle, STYLE_ID_ROUND_RADIUS, 0);
+  bg_image = style_get_str(widget->astyle, STYLE_ID_BG_IMAGE, NULL);
+  dr = &(slider->dragger_rect);
+
+  if (slider->vertical) {
+    bar_size = tk_min(bar_size, widget->w);
+    br->w = bar_size;
+    br->x = (widget->w - br->w) / 2;
+    br->h = (radius || bg_image != NULL) ? (widget->h - dr->h) : dr->y;
+    br->y = dr->h / 2;
+
+    fr->w = br->w;
+    fr->x = br->x;
+    fr->h = widget->h - dr->h - dr->y;
+    fr->y = dr->y + dr->h / 2;
+  } else {
+    bar_size = tk_min(bar_size, widget->h);
+    br->w = (radius || bg_image != NULL) ? (widget->w - dr->w) : (widget->w - dr->w - dr->x);
+    br->x = (radius || bg_image != NULL) ? (dr->w / 2) : (dr->x + dr->w / 2);
+    br->h = bar_size;
+    br->y = (widget->h - br->h) / 2;
+
+    fr->w = dr->x;
+    fr->x = dr->w / 2;
+    fr->h = br->h;
+    fr->y = br->y;
+  }
+
+  return RET_OK;
+}
+
 static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
   rect_t br, fr;
-  rect_t* dr;
-  float_t fvalue = 0;
-  uint32_t radius = 0;
-  uint32_t bar_size = 0;
-
-  const char* bg_image = 0;
   image_draw_type_t draw_type;
   slider_t* slider = SLIDER(widget);
+
   return_value_if_fail(widget != NULL && slider != NULL, RET_BAD_PARAMS);
 
   slider_update_dragger_rect(widget, c);
 
-  dr = &(slider->dragger_rect);
-  fvalue = (float_t)(slider->value - slider->min) / (float_t)(slider->max - slider->min);
-  bar_size = slider_get_bar_size(widget);
-  radius = style_get_int(widget->astyle, STYLE_ID_ROUND_RADIUS, 0);
-  bg_image = style_get_str(widget->astyle, STYLE_ID_BG_IMAGE, NULL);
   draw_type = slider->vertical ? IMAGE_DRAW_PATCH3_Y : IMAGE_DRAW_PATCH3_X;
 
-  if (slider->vertical) {
-    bar_size = tk_min(bar_size, widget->w);
-    br.w = bar_size;
-    br.x = (widget->w - br.w) / 2;
-    br.h = (radius || bg_image != NULL) ? (widget->h - dr->h) : dr->y;
-    br.y = dr->h / 2;
-
-    fr.w = br.w;
-    fr.x = br.x;
-    fr.h = widget->h - dr->h - dr->y;
-    fr.y = dr->y + dr->h / 2;
-  } else {
-    bar_size = tk_min(bar_size, widget->h);
-    br.w = (radius || bg_image != NULL) ? (widget->w - dr->w) : (widget->w - dr->w - dr->x);
-    br.x = (radius || bg_image != NULL) ? (dr->w / 2) : (dr->x + dr->w / 2);
-    br.h = bar_size;
-    br.y = (widget->h - br.h) / 2;
-
-    fr.w = dr->x;
-    fr.x = dr->w / 2;
-    fr.h = br.h;
-    fr.y = br.y;
-  }
+  return_value_if_fail(RET_OK == slider_get_bar_rect(widget, &br, &fr), RET_FAIL);
 
   slider_fill_rect(widget, c, &br, NULL, draw_type);
   slider_fill_rect(widget, c, &fr, &br, draw_type);
   slider_paint_dragger(widget, c);
-  (void)fvalue;
 
   return RET_OK;
 }
@@ -263,18 +272,35 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_DOWN: {
       pointer_event_t* evt = (pointer_event_t*)e;
       point_t p = {evt->x, evt->y};
-      rect_t* r = &(slider->dragger_rect);
+      rect_t* dr = &(slider->dragger_rect);
+      rect_t br, fr;
+
+      return_value_if_fail(RET_OK == slider_get_bar_rect(widget, &br, &fr), RET_STOP);
 
       widget_to_local(widget, &p);
-      if (slider->slide_with_bar || rect_contains(r, p.x, p.y)) {
+      if (slider->slide_with_bar || rect_contains(dr, p.x, p.y) || rect_contains(&br, p.x, p.y) ||
+          rect_contains(&fr, p.x, p.y)) {
+        double value = 0;
+        double range = slider->max - slider->min;
+
+        if (slider->vertical) {
+          value = range * p.y / (widget->h - dr->h);
+        } else {
+          value = range * p.x / (widget->w - dr->w);
+        }
+
+        value = tk_clamp(value, slider->min, slider->max);
+        slider_set_value_internal(widget, (double)value, EVT_VALUE_CHANGING, FALSE);
+
         slider->dragging = TRUE;
         widget_set_state(widget, WIDGET_STATE_PRESSED);
         widget_grab(widget->parent, widget);
         widget_invalidate(widget, NULL);
+
+        slider->down = p;
+        slider->pressed = TRUE;
+        slider->saved_value = slider->value;
       }
-      slider->down = p;
-      slider->pressed = TRUE;
-      slider->saved_value = slider->value;
       ret = slider->dragging ? RET_STOP : RET_OK;
       break;
     }
@@ -288,8 +314,8 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
       double value = 0;
       if (slider->dragging) {
         double delta = 0;
-        widget_to_local(widget, &p);
         double range = slider->max - slider->min;
+        widget_to_local(widget, &p);
 
         if (slider->vertical) {
           delta = range * (slider->down.y - p.y) / (widget->h - slider->dragger_rect.h);
