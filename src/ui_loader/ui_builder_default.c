@@ -91,6 +91,7 @@ static ret_t ui_builder_default_on_end(ui_builder_t* b) {
       event_t e = event_init(EVT_WINDOW_LOAD, widget);
       widget_dispatch_recursive(widget, &e);
     }
+    widget->loading = FALSE;
   }
 
   return RET_OK;
