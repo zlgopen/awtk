@@ -190,7 +190,6 @@
 #include "../res/assets/default/inc/images/red_btn_n.res"
 #include "../res/assets/default/inc/images/arrow_down_p.res"
 #include "../res/assets/default/inc/images/slider_v_bg.res"
-#include "../res/assets/default/inc/images/warn.res"
 #include "../res/assets/default/inc/images/green_btn_p.res"
 #include "../res/assets/default/inc/images/switch.res"
 #include "../res/assets/default/inc/images/radio_unchecked.res"
@@ -493,7 +492,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_num_0);
   assets_manager_add(am, image_arrow_down_p);
   assets_manager_add(am, image_num_1);
-  assets_manager_add(am, image_warn);
   assets_manager_add(am, image_contact_active);
   assets_manager_add(am, image_slider_drag_o);
   assets_manager_add(am, image_battery_4);
