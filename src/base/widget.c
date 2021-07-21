@@ -4494,8 +4494,8 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r) {
   lcd = lcd_mem_rgba8888_create_single_fb(w, h, buff);
   if (lcd != NULL) {
     canvas_init(&canvas, lcd, font_manager());
-    canvas_begin_frame(&canvas, r, LCD_DRAW_OFFLINE);
-    widget_paint(widget, &canvas);
+    canvas_begin_frame(&canvas, NULL, LCD_DRAW_OFFLINE);
+    widget_paint_with_clip(widget, (rect_t*)r, &canvas, widget_paint);
     canvas_end_frame(&canvas);
     canvas_reset(&canvas);
     lcd_destroy(lcd);
