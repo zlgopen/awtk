@@ -44,15 +44,15 @@ static ret_t lcd_mem_fragment_begin_frame(lcd_t* lcd, const dirty_rects_t* dirty
   lcd_mem_fragment_t* mem = (lcd_mem_fragment_t*)lcd;
   uint32_t bpp = bitmap_get_bpp_of_format(LCD_FORMAT);
 
-  mem->x = dirty_rect->x;
-  mem->y = dirty_rect->y;
+  mem->x = dirty_rects->max.x;
+  mem->y = dirty_rects->max.y;
 
   mem->fb.buffer = mem->gb;
-  mem->fb.w = dirty_rect->w;
-  mem->fb.h = dirty_rect->h;
+  mem->fb.w = dirty_rects->max.w;
+  mem->fb.h = dirty_rects->max.h;
   mem->fb.format = LCD_FORMAT;
   mem->fb.flags = BITMAP_FLAG_OPAQUE;
-  mem->fb.line_length = dirty_rect->w * bpp;
+  mem->fb.line_length = dirty_rects->max.w * bpp;
   graphic_buffer_attach(mem->gb, mem->buff, mem->fb.w, mem->fb.h);
 
   return RET_OK;

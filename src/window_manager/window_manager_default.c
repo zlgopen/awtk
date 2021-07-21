@@ -671,6 +671,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
       number = r.h / tmp_h;
 
       for (i = 0; i <= number; i++) {
+        dirty_rects_t tmp_dirty_rects;
         r.y = y + i * tmp_h;
         if (i == number) {
           tmp_h = h % tmp_h;
@@ -679,13 +680,15 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
         if (r.h == 0) {
           break;
         }
-
+        dirty_rects_init(&(tmp_dirty_rects));
+        dirty_rects_add(&(tmp_dirty_rects), (const rect_t*)&r);
         canvas_t* c = native_window_get_canvas(wm->native_window);
-        canvas_begin_frame(c, dirty_rects, LCD_DRAW_NORMAL);
+        canvas_begin_frame(c, (const dirty_rects_t*)&tmp_dirty_rects, LCD_DRAW_NORMAL);
         wm->native_window->dirty = TRUE;
         widget_paint(WIDGET(wm), c);
         window_manager_paint_cursor(widget, c);
         canvas_end_frame(c);
+        dirty_rects_deinit(&(tmp_dirty_rects));
       }
 
       native_window_update_last_dirty_rect(wm->native_window);

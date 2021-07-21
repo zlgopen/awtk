@@ -37,7 +37,11 @@ static ret_t on_timer(const timer_info_t* timer) {
 }
 
 static ret_t on_inc(void* ctx, event_t* e) {
-  window_manager_resize(window_manager(), 800, 480);
+  widget_t* win = WIDGET(ctx);
+  widget_t* progress_bar = widget_lookup(win, "bar2", TRUE);
+
+  float_t value = ((int)(PROGRESS_BAR(progress_bar)->value + 10)) % 100;
+  progress_bar_set_value(progress_bar, value);
 
   return RET_OK;
 }
