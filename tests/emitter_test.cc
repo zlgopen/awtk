@@ -226,3 +226,34 @@ TEST(Emitter, off_by_tag) {
 
   emitter_destroy(emitter);
 }
+
+TEST(Emitter, disable) {
+  event_t e;
+  uint32_t n = 0;
+  emitter_t emitter;
+  emitter_init(&emitter);
+  uint32_t type = 12;
+  e = event_init(type, &emitter);
+
+  ASSERT_EQ(emitter_on(&emitter, type, on_event, &n) > 0, true);
+  ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
+  ASSERT_EQ(n, 1);
+  
+  ASSERT_EQ(emitter_disable(&emitter), RET_OK);
+  ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
+  ASSERT_EQ(emitter_enable(&emitter), RET_OK);
+  ASSERT_EQ(n, 1);
+  
+  ASSERT_EQ(emitter_disable(&emitter), RET_OK);
+  ASSERT_EQ(emitter_disable(&emitter), RET_OK);
+  ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
+  ASSERT_EQ(emitter_enable(&emitter), RET_OK);
+  ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
+  ASSERT_EQ(emitter_enable(&emitter), RET_OK);
+  ASSERT_EQ(n, 1);
+  
+  ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
+  ASSERT_EQ(n, 2);
+
+  emitter_deinit(&emitter);
+}

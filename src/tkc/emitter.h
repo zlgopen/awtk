@@ -62,11 +62,12 @@ typedef struct _emitter_t {
    */
   uint32_t next_id;
   /**
-   * @property {bool_t} enable
+   * @property {int32_t} disable
    * @annotation ["readable"]
    * 禁用标志。禁用时dispatch无效。
    */
-  bool_t enable;
+  int32_t disable;
+
   /**
    * @property {bool_t} remove_curr_iter
    * @annotation ["private"]

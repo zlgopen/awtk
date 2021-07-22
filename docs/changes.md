@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/07/22
+  * 完善emitter\_disable/emitter\_enable支持嵌套调用。
+
 2021/07/21
   * 修复多个脏矩形时没有修改片段式 Framebuffer 的问题（感谢雨欣提供补丁）
   * 修复 agge 模式下 widget\_take\_snapshot\_rect 的逻辑错误问题（感谢智明提供补丁）。
