@@ -2,6 +2,7 @@
 
 2021/07/22
   * 完善emitter\_disable/emitter\_enable支持嵌套调用。
+  * 完善switch（感谢陈谭提供补丁）
 
 2021/07/21
   * 修复多个脏矩形时没有修改片段式 Framebuffer 的问题（感谢雨欣提供补丁）
