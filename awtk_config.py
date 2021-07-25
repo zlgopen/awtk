@@ -172,7 +172,7 @@ OS_PROJECTS=[]
 OS_WHOLE_ARCHIVE=''
 if OS_NAME == 'Darwin':
   TOOLS_NAME = ''
-  OS_FLAGS='-g -Wall -fPIC -DWITHOUT_GLAD=1 '
+  OS_FLAGS='-g -Wall -Wno-unused-function -fPIC -DWITHOUT_GLAD=1 '
   OS_LIBS = ['stdc++', 'iconv','pthread', 'm', 'dl']
   OS_LINKFLAGS='-framework IOKit -framework Cocoa -framework QuartzCore -framework OpenGL -weak_framework Metal -weak_framework MetalKit'
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DHAS_SEM_OPEN '
@@ -183,7 +183,7 @@ if OS_NAME == 'Darwin':
 
 elif OS_NAME == 'Linux':
   TOOLS_NAME = ''
-  OS_FLAGS='-g -Wall -fPIC ' 
+  OS_FLAGS='-g -Wall -Wno-unused-function -fPIC ' 
   OS_LIBS = ['GL', 'gtk-3','gdk-3','Xext', 'X11', 'sndio','stdc++', 'asound', 'pthread', 'm', 'dl']
   COMMON_CFLAGS=COMMON_CFLAGS+' -std=gnu99 '
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DLINUX -DHAS_PTHREAD'
