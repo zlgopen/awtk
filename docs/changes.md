@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/07/24
+  * 完善和重构slider。
+
 2021/07/23
   * 完善fscript的iostream\_serial\_create。
 
