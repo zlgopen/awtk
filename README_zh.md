@@ -345,6 +345,8 @@ npm install -g glob
 
 * [扩展控件实例：Lottie动画](https://github.com/zlgopen/awtk-widget-rlottie)
 
+* [扩展控件实例：Rive动画](https://github.com/zlgopen/awtk-widget-rive)
+
 * [自定义字体加载器：加载部分字体](https://github.com/zlgopen/awtk-custom-font-loader)
 
 第三方提供：
