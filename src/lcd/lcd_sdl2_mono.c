@@ -57,19 +57,20 @@ static ret_t mono_info_destroy(mono_info_t* info) {
 }
 
 static ret_t lcd_sdl2_mono_flush(lcd_t* lcd) {
+  rect_t dr;
   bitmap_t src;
   bitmap_t dst;
   int pitch = 0;
   void* addr = NULL;
   lcd_mono_t* mono = (lcd_mono_t*)(lcd);
-  const rect_t* dr = &(lcd->dirty_rect);
   const rect_t* fps_r = &(lcd->fps_rect);
   mono_info_t* info = (mono_info_t*)(mono->ctx);
 
+  lcd_get_dirty_rect(lcd, &dr);
   memset(&src, 0x00, sizeof(src));
   memset(&dst, 0x00, sizeof(dst));
 
-  if ((dr->w > 0 && dr->h > 0) || (fps_r->w > 0 && fps_r->h > 0)) {
+  if ((dr.w > 0 && dr.h > 0) || (fps_r->w > 0 && fps_r->h > 0)) {
     uint32_t j = 0;
     uint32_t i = 0;
     uint8_t* p = NULL;

@@ -71,23 +71,35 @@ static ret_t lcd_sdl2_flush(lcd_t* lcd) {
   bitmap_t dst;
   int pitch = 0;
   void* addr = NULL;
-  const rect_t* dr = &(lcd->dirty_rect);
-  const rect_t* fps_r = &(lcd->fps_rect);
+  const dirty_rects_t* dirty_rects;
   lcd_mem_t* lcd_mem = (lcd_mem_t*)lcd;
   lcd_mem_special_t* special = (lcd_mem_special_t*)lcd;
   special_info_t* info = (special_info_t*)(special->ctx);
+  uint8_t* offline_fb = lcd_mem_get_offline_fb(lcd_mem);
 
   memset(&src, 0x00, sizeof(src));
   memset(&dst, 0x00, sizeof(dst));
 
-  if ((dr->w > 0 && dr->h > 0) || (fps_r->w > 0 && fps_r->h > 0)) {
+  dirty_rects = lcd_fb_dirty_rects_get_dirty_rects_by_fb(&(lcd_mem->fb_dirty_rects_list), offline_fb);
+  if (dirty_rects != NULL && dirty_rects->nr > 0) {
     SDL_Rect sr = {0, 0, lcd->w, lcd->h};
+
 
     SDL_LockTexture(info->texture, NULL, (void**)&(addr), &pitch);
     bitmap_init(&dst, lcd->w, lcd->h, special->format, addr);
     bitmap_set_line_length(&dst, pitch);
-    bitmap_init(&src, lcd->w, lcd->h, special->format, lcd_mem->offline_fb);
-    image_copy(&dst, &src, dr, dr->x, dr->y);
+    bitmap_init(&src, lcd->w, lcd->h, special->format, offline_fb);
+    if (dirty_rects->disable_multiple) {
+      const rect_t* dr = (const rect_t*)&(dirty_rects->max);
+      image_copy(&dst, &src, dr, dr->x, dr->y);
+    } else {
+      uint32_t i = 0;
+      for (i = 0; i < dirty_rects->nr; i++) {
+        const rect_t* dr = (const rect_t*)dirty_rects->rects + i;
+        image_copy(&dst, &src, dr, dr->x, dr->y);
+      }
+    }
+    
     SDL_UnlockTexture(info->texture);
 
     SDL_RenderCopy(info->render, info->texture, &sr, &sr);

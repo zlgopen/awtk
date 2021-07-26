@@ -91,7 +91,6 @@ struct _native_window_t {
   rect_t rect;
   float_t ratio;
 
-  bool_t dirty;
   dirty_rects_t dirty_rects;
   const native_window_vtable_t* vt;
 };
@@ -243,7 +242,6 @@ ret_t native_window_get_info(native_window_t* win, native_window_info_t* info);
 
 /*public for window manager only*/
 ret_t native_window_begin_frame(native_window_t* win, lcd_draw_mode_t mode);
-ret_t native_window_paint(native_window_t* win, widget_t* widget);
 ret_t native_window_end_frame(native_window_t* win);
 
 rect_t native_window_calc_dirty_rect(native_window_t* win);

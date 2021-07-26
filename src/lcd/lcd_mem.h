@@ -45,6 +45,8 @@ typedef struct _lcd_mem_t {
   graphic_buffer_t* online_gb;
   graphic_buffer_t* offline_gb;
 
+  lcd_fb_dirty_rects_t fb_dirty_rects_list;
+
   /*VBI: vertical blank interrupt。用于2fb等待当前显示完成，以便把下一帧的数据从offline fb拷贝到online fb，从而避免因为同时访问online fb数据造成闪烁。*/
   lcd_mem_wait_vbi_t wait_vbi;
   void* wait_vbi_ctx;
@@ -84,6 +86,7 @@ static inline ret_t lcd_mem_set_wait_vbi(lcd_t* lcd, lcd_mem_wait_vbi_t wait_vbi
 static inline ret_t lcd_mem_deinit(lcd_mem_t* mem) {
   return_value_if_fail(mem != NULL && mem->base.begin_frame != NULL, RET_BAD_PARAMS);
 
+  lcd_fb_dirty_rects_deinit(&(mem->fb_dirty_rects_list));
   if (mem->vgcanvas != NULL) {
     vgcanvas_destroy(mem->vgcanvas);
     mem->vgcanvas = NULL;
@@ -111,7 +114,7 @@ static inline ret_t lcd_mem_deinit(lcd_mem_t* mem) {
 static inline ret_t lcd_mem_set_offline_fb(lcd_mem_t* lcd, uint8_t* offline_fb) {
   return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
   lcd->offline_fb = offline_fb;
-  return RET_OK;
+  return lcd_fb_dirty_rects_add_fb_info(&(lcd->fb_dirty_rects_list), offline_fb);
 }
 
 /**
@@ -139,7 +142,7 @@ static inline uint8_t* lcd_mem_get_offline_fb(lcd_mem_t* lcd) {
 static inline ret_t lcd_mem_set_online_fb(lcd_mem_t* lcd, uint8_t* online_fb) {
   return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
   lcd->online_fb = online_fb;
-  return RET_OK;
+  return lcd_fb_dirty_rects_add_fb_info(&(lcd->fb_dirty_rects_list), online_fb);
 }
 
 /**
@@ -167,7 +170,7 @@ static inline uint8_t* lcd_mem_get_online_fb(lcd_mem_t* lcd) {
 static inline ret_t lcd_mem_set_next_fb(lcd_mem_t* lcd, uint8_t* next_fb) {
   return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
   lcd->next_fb = next_fb;
-  return RET_OK;
+  return lcd_fb_dirty_rects_add_fb_info(&(lcd->fb_dirty_rects_list), next_fb);
 }
 
 /**

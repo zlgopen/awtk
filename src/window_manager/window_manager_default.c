@@ -640,7 +640,6 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
 #endif
   uint64_t start_time = time_now_ms();
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
-  dirty_rects_t* dirty_rects = &(wm->native_window->dirty_rects);
 
   if (WINDOW_MANAGER(wm)->max_fps) {
     uint32_t duration = 1000 / WINDOW_MANAGER(wm)->max_fps;
@@ -702,6 +701,11 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
       canvas_set_fill_color(c, bg);
       canvas_fill_rect(c, 0, 0, widget->w, widget->h);
     } else {
+      /* 
+       * 获取当前帧的脏矩形列表和 fb 的脏矩形列表合并后的新的脏矩形列表，
+       * 如果没有 fb 的脏矩形列表的话，会退化为获取当前帧的脏矩形。
+       */
+      dirty_rects_t* dirty_rects = (dirty_rects_t*)lcd_get_dirty_rects(c->lcd);
       dirty_rects_paint(dirty_rects, WIDGET(wm), c, widget_paint);
     }
     window_manager_paint_cursor(widget, c);
