@@ -177,7 +177,6 @@ static ret_t line_number_set_prop(widget_t* widget, const char* name, const valu
 
 TK_DECL_VTABLE(line_number) = {.size = sizeof(line_number_t),
                                .type = WIDGET_TYPE_LINE_NUMBER,
-                               .enable_pool = TRUE,
                                .parent = TK_PARENT_VTABLE(widget),
                                .create = line_number_create,
                                .set_prop = line_number_set_prop,
