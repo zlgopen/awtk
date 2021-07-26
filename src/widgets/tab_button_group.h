@@ -82,6 +82,7 @@ typedef struct _tab_button_group_t {
   bool_t scrollable;
 
   /*private*/
+  uint32_t active;
   hscrollable_t* hscrollable;
 } tab_button_group_t;
 

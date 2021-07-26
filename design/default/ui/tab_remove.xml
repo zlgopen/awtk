@@ -1,0 +1,27 @@
+<window anim_hint="htranslate" theme="tab_top_compact">
+  <tab_button_group x="c" y="12" w="90%" h="30" compact="true" scrollable="true">
+    <tab_button name="clone_button" text="0      ">
+      <button name="remove_tab" x="r" y="m" w="20" h="20" tr_text="x"/>
+    </tab_button>
+    <tab_button name="clone_button" text="1      ">
+      <button name="remove_tab" x="r" y="m" w="20" h="20" tr_text="x"/>
+    </tab_button>
+    <tab_button name="clone_button" text="2      ">
+      <button name="remove_tab" x="r" y="m" w="20" h="20" tr_text="x"/>
+    </tab_button>
+  </tab_button_group>
+  <pages x="c" y="42" w="90%" h="-60" value="1">
+    <view name="clone_view" w="100%" h="100%">
+      <label x="c" y="m" w="100%" h="60" text="0"/> 
+      <button name="clone_tab" x="c" y="bottom:100" w="80" h="40" tr_text="Clone" />
+    </view>
+    <view name="clone_view" w="100%" h="100%">
+      <label x="c" y="m" w="100%" h="60" text="1"/> 
+      <button name="clone_tab" x="c" y="bottom:100" w="80" h="40" tr_text="Clone" />
+    </view>
+    <view name="clone_view" w="100%" h="100%">
+      <label x="c" y="m" w="100%" h="60" text="2"/> 
+      <button name="clone_tab" x="c" y="bottom:100" w="80" h="40" tr_text="Clone" />
+    </view>
+  </pages>
+</window>

@@ -96,6 +96,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_kb_float[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_htranslate[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_tab_dynamic_list[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_draggable[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_tab_remove[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_list_view_vh[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_rich_text[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_scroll_view[]);
@@ -577,6 +578,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_htranslate);
   assets_manager_add(am, ui_tab_dynamic_list);
   assets_manager_add(am, ui_draggable);
+  assets_manager_add(am, ui_tab_remove);
   assets_manager_add(am, ui_list_view_vh);
   assets_manager_add(am, ui_rich_text);
   assets_manager_add(am, ui_scroll_view);

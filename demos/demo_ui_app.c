@@ -479,6 +479,22 @@ static ret_t on_remove_self(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_remove_view(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  widget_t* iter = widget;
+
+  while (iter != NULL) {
+    if (tk_str_eq(widget_get_type(iter), WIDGET_TYPE_VIEW)) {
+      widget_remove_child(iter->parent, iter);
+      widget_destroy(iter);
+      return RET_OK;
+    }
+    iter = iter->parent;
+  }
+
+  return RET_FAIL;
+}
+
 static ret_t on_clone_self(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   widget_t* clone = widget_clone(widget, widget->parent);
@@ -487,18 +503,82 @@ static ret_t on_clone_self(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_clone_view(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  widget_t* iter = widget;
+
+  while (iter != NULL) {
+    if (tk_str_eq(widget_get_type(iter), WIDGET_TYPE_VIEW)) {
+      widget_t* clone = widget_clone(iter, iter->parent);
+      widget_t* lb_view_index = widget_lookup(clone, "view_index", TRUE);
+
+      if (lb_view_index != NULL) {
+        char text[32];
+        tk_snprintf(text, ARRAY_SIZE(text), "%d", widget_index_of(clone));
+        widget_set_text_utf8(lb_view_index, text);
+      }
+      install_click_hander(clone);
+      return RET_OK;
+    }
+    iter = iter->parent;
+  }
+
+  return RET_FAIL;
+}
+
+static ret_t on_remove_tab_idle(const idle_info_t* idle) {
+  widget_t* iter = WIDGET(idle->ctx);
+  int32_t remove_index = widget_index_of(iter);
+  widget_t* pages = widget_lookup_by_type(iter->parent->parent, WIDGET_TYPE_PAGES, FALSE);
+  widget_t* tab_btn_group =
+      widget_lookup_by_type(iter->parent->parent, WIDGET_TYPE_TAB_BUTTON_GROUP, FALSE);
+
+  return_value_if_fail(remove_index >= 0, RET_BAD_PARAMS);
+
+  widget_remove_child(tab_btn_group, widget_get_child(tab_btn_group, remove_index));
+  widget_remove_child(pages, widget_get_child(pages, remove_index));
+
+  return RET_REMOVE;
+}
+
+static ret_t on_remove_tab(void* ctx, event_t* e) {
+  widget_t* iter = WIDGET(e->target);
+
+  while (iter != NULL && iter->parent != NULL && iter->parent->parent != NULL) {
+    if (tk_str_eq(widget_get_type(iter->parent), WIDGET_TYPE_PAGES) ||
+        tk_str_eq(widget_get_type(iter->parent), WIDGET_TYPE_TAB_BUTTON_GROUP)) {
+      idle_add(on_remove_tab_idle, (void*)iter);
+      return RET_STOP;
+    }
+    iter = iter->parent;
+  }
+
+  return RET_STOP;
+}
+
 static ret_t widget_clone_tab(widget_t* widget) {
   char text[32];
   widget_t* button = widget_lookup(widget, "clone_button", TRUE);
   widget_t* view = widget_lookup(widget, "clone_view", TRUE);
   widget_t* new_button = widget_clone(button, button->parent);
-
   widget_t* new_view = widget_clone(view, view->parent);
-  tk_snprintf(text, sizeof(text), "Clone(%d)", widget_index_of(new_button));
+  widget_t* remove_tab_btn = widget_lookup(new_button, "remove_tab", TRUE);
+
+  if (remove_tab_btn != NULL) {
+    widget_on(remove_tab_btn, EVT_POINTER_UP, on_remove_tab, widget);
+    tk_snprintf(text, sizeof(text), "Clone(%d)    ", widget_index_of(new_button));
+  } else {
+    tk_snprintf(text, sizeof(text), "Clone(%d)", widget_index_of(new_button));
+  }
   widget_set_text_utf8(new_button, text);
   widget_set_value(new_button, TRUE);
 
+  remove_tab_btn = widget_lookup(new_view, "remove_tab", TRUE);
+  if (remove_tab_btn != NULL) {
+    widget_on(remove_tab_btn, EVT_CLICK, on_remove_tab, widget);
+  }
   widget_child_on(new_view, "clone_tab", EVT_CLICK, on_clone_tab, widget_get_window(widget));
+
   widget_set_text_utf8(widget_lookup_by_type(new_view, WIDGET_TYPE_LABEL, TRUE), text);
 
   return RET_OK;
@@ -658,11 +738,22 @@ static ret_t install_one(void* ctx, const void* iter) {
       widget_on(widget, EVT_CLICK, on_show_fps, widget);
     } else if (tk_str_eq(name, "clone_self")) {
       widget_on(widget, EVT_CLICK, on_clone_self, widget);
+    } else if (tk_str_eq(name, "clone_view")) {
+      widget_on(widget, EVT_CLICK, on_clone_view, widget);
     } else if (tk_str_eq(name, "clone_tab")) {
       widget_t* win = widget_get_window(widget);
       widget_on(widget, EVT_CLICK, on_clone_tab, win);
+    } else if (tk_str_eq(name, "remove_tab")) {
+      if (widget->parent != NULL &&
+          tk_str_eq(WIDGET_TYPE_TAB_BUTTON, widget_get_type(widget->parent))) {
+        widget_on(widget, EVT_POINTER_UP, on_remove_tab, widget);
+      } else {
+        widget_on(widget, EVT_CLICK, on_remove_tab, widget);
+      }
     } else if (tk_str_eq(name, "remove_self")) {
       widget_on(widget, EVT_CLICK, on_remove_self, widget);
+    } else if (tk_str_eq(name, "remove_view")) {
+      widget_on(widget, EVT_CLICK, on_remove_view, widget);
     } else if (tk_str_eq(name, "chinese")) {
       widget_on(widget, EVT_CLICK, on_change_locale, (void*)"zh_CN");
     } else if (tk_str_eq(name, "english")) {

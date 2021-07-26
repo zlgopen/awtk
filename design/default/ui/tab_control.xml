@@ -6,5 +6,6 @@
     <button name="open:tab_list" text="List"/>
     <button name="open:tab_scrollable" text="Scrollable"/>
     <button name="open:tab_dynamic_list" text="tab_dynamic_list"/>
+    <button name="open:tab_remove" text="tab_remove"/>
     <button name="close" text="Close"/>
 </window>
