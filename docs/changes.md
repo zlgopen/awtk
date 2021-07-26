@@ -3,6 +3,7 @@
 2021/07/26
   * 完善脏矩形，以便2fb在swap的方式也可以支持脏矩形。
   * 完善pages和button group，处理为空的情况(感谢兆坤提供补丁)。
+  * 修复edit input_type属性为int，当text长度大于32时会有assert的问题(感谢兆坤提供补丁)。
 
 2021/07/24
   * 完善和重构slider。
