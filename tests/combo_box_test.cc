@@ -277,12 +277,12 @@ TEST(ComboBox, events) {
   widget_on(w, EVT_VALUE_CHANGED, on_event, &n);
   combo_box_set_selected_index(w, 1);
   ASSERT_EQ(n, 1);
-  
+
   emitter_disable(w->emitter);
   combo_box_set_selected_index(w, 2);
   emitter_enable(w->emitter);
   ASSERT_EQ(n, 1);
-  
+
   combo_box_set_selected_index(w, 0);
   ASSERT_EQ(n, 2);
 

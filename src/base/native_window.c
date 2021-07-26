@@ -101,7 +101,7 @@ ret_t native_window_get_info(native_window_t* win, native_window_info_t* info) {
 }
 
 ret_t native_window_begin_frame(native_window_t* win, lcd_draw_mode_t mode) {
-   canvas_t* c = NULL;
+  canvas_t* c = NULL;
   const dirty_rects_t* dr = NULL;
   return_value_if_fail(win != NULL, RET_BAD_PARAMS);
 

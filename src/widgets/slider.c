@@ -275,7 +275,7 @@ static ret_t slider_change_value_by_pointer_event(widget_t* widget, pointer_even
   }
   value += slider->min;
   value = tk_clamp(value, slider->min, slider->max);
-  
+
   return slider_set_value_internal(widget, (double)value, EVT_VALUE_CHANGING, FALSE);
 }
 
@@ -299,7 +299,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
       slider->saved_value = slider->value;
       if (slider->slide_with_bar || rect_contains(dr, p.x, p.y) || rect_contains(&br, p.x, p.y) ||
           rect_contains(&fr, p.x, p.y)) {
-        slider_change_value_by_pointer_event(widget, evt); 
+        slider_change_value_by_pointer_event(widget, evt);
 
         slider->down = p;
         slider->pressed = TRUE;
@@ -318,7 +318,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_MOVE: {
       pointer_event_t* evt = (pointer_event_t*)e;
       if (slider->dragging) {
-        slider_change_value_by_pointer_event(widget, evt); 
+        slider_change_value_by_pointer_event(widget, evt);
       }
 
       break;
@@ -328,7 +328,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
         double value = 0;
         pointer_event_t* evt = (pointer_event_t*)e;
 
-        slider_change_value_by_pointer_event(widget, evt); 
+        slider_change_value_by_pointer_event(widget, evt);
 
         value = slider->value;
         slider->dragging = FALSE;

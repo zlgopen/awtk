@@ -238,12 +238,12 @@ TEST(Emitter, disable) {
   ASSERT_EQ(emitter_on(&emitter, type, on_event, &n) > 0, true);
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
   ASSERT_EQ(n, 1);
-  
+
   ASSERT_EQ(emitter_disable(&emitter), RET_OK);
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
   ASSERT_EQ(emitter_enable(&emitter), RET_OK);
   ASSERT_EQ(n, 1);
-  
+
   ASSERT_EQ(emitter_disable(&emitter), RET_OK);
   ASSERT_EQ(emitter_disable(&emitter), RET_OK);
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
@@ -251,7 +251,7 @@ TEST(Emitter, disable) {
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
   ASSERT_EQ(emitter_enable(&emitter), RET_OK);
   ASSERT_EQ(n, 1);
-  
+
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
   ASSERT_EQ(n, 2);
 

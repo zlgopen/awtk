@@ -80,10 +80,10 @@ static ret_t lcd_sdl2_flush(lcd_t* lcd) {
   memset(&src, 0x00, sizeof(src));
   memset(&dst, 0x00, sizeof(dst));
 
-  dirty_rects = lcd_fb_dirty_rects_get_dirty_rects_by_fb(&(lcd_mem->fb_dirty_rects_list), offline_fb);
+  dirty_rects =
+      lcd_fb_dirty_rects_get_dirty_rects_by_fb(&(lcd_mem->fb_dirty_rects_list), offline_fb);
   if (dirty_rects != NULL && dirty_rects->nr > 0) {
     SDL_Rect sr = {0, 0, lcd->w, lcd->h};
-
 
     SDL_LockTexture(info->texture, NULL, (void**)&(addr), &pitch);
     bitmap_init(&dst, lcd->w, lcd->h, special->format, addr);
@@ -99,7 +99,7 @@ static ret_t lcd_sdl2_flush(lcd_t* lcd) {
         image_copy(&dst, &src, dr, dr->x, dr->y);
       }
     }
-    
+
     SDL_UnlockTexture(info->texture);
 
     SDL_RenderCopy(info->render, info->texture, &sr, &sr);

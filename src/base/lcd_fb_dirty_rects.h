@@ -24,7 +24,8 @@ typedef struct _lcd_fb_dirty_rects_t {
  * 
  * @return {const dirty_rects_t*} 成功返回脏矩形对象，失败返回 NULL。
  */
-const dirty_rects_t* lcd_fb_dirty_rects_get_dirty_rects_by_fb(lcd_fb_dirty_rects_t* lcd_fb_dirty_rects, uint8_t* fb);
+const dirty_rects_t* lcd_fb_dirty_rects_get_dirty_rects_by_fb(
+    lcd_fb_dirty_rects_t* lcd_fb_dirty_rects, uint8_t* fb);
 
 /**
  * @method lcd_fb_dirty_rects_update_all_fb_dirty_rects
@@ -35,7 +36,8 @@ const dirty_rects_t* lcd_fb_dirty_rects_get_dirty_rects_by_fb(lcd_fb_dirty_rects
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t lcd_fb_dirty_rects_reset_dirty_rects_by_fb(lcd_fb_dirty_rects_t* lcd_fb_dirty_rects, uint8_t* fb);
+ret_t lcd_fb_dirty_rects_reset_dirty_rects_by_fb(lcd_fb_dirty_rects_t* lcd_fb_dirty_rects,
+                                                 uint8_t* fb);
 
 /**
  * @method lcd_fb_dirty_rects_update_all_fb_dirty_rects
@@ -46,7 +48,8 @@ ret_t lcd_fb_dirty_rects_reset_dirty_rects_by_fb(lcd_fb_dirty_rects_t* lcd_fb_di
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t lcd_fb_dirty_rects_update_all_fb_dirty_rects(lcd_fb_dirty_rects_t* lcd_fb_dirty_rects, const dirty_rects_t* dirty_rects);
+ret_t lcd_fb_dirty_rects_update_all_fb_dirty_rects(lcd_fb_dirty_rects_t* lcd_fb_dirty_rects,
+                                                   const dirty_rects_t* dirty_rects);
 
 /**
  * @method lcd_fb_dirty_rects_add_fb_info
