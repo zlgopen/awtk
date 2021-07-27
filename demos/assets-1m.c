@@ -153,7 +153,6 @@
 #include "../res/assets/default/inc/images/arrow_left_n.res"
 #include "../res/assets/default/inc/images/middle_on.res"
 #include "../res/assets/default/inc/images/bricks.res"
-#include "../res/assets/default/inc/images/msg.res"
 #include "../res/assets/default/inc/images/play_o.res"
 #include "../res/assets/default/inc/images/play_n.res"
 #include "../res/assets/default/inc/images/msg_active.res"
@@ -166,7 +165,6 @@
 #include "../res/assets/default/inc/images/check.res"
 #include "../res/assets/default/inc/images/cursor.res"
 #include "../res/assets/default/inc/images/me.res"
-#include "../res/assets/default/inc/images/info.res"
 #include "../res/assets/default/inc/images/red_btn_p.res"
 #include "../res/assets/default/inc/images/middle_off.res"
 #include "../res/assets/default/inc/images/arrow_down_n.res"
@@ -309,8 +307,6 @@
 #include "../res/assets/default/inc/images/slider_drag_p.data"
 #include "../res/assets/default/inc/images/slider_v_fg.data"
 #include "../res/assets/default/inc/images/arrow_down_n.data"
-#include "../res/assets/default/inc/images/info.data"
-#include "../res/assets/default/inc/images/msg.data"
 #include "../res/assets/default/inc/images/num_7.data"
 #include "../res/assets/default/inc/images/arrow_left_n.data"
 #include "../res/assets/default/inc/images/edit_clear_p.data"
@@ -518,8 +514,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_slider_drag_p);
   assets_manager_add(am, image_slider_v_fg);
   assets_manager_add(am, image_arrow_down_n);
-  assets_manager_add(am, image_info);
-  assets_manager_add(am, image_msg);
   assets_manager_add(am, image_num_7);
   assets_manager_add(am, image_arrow_left_n);
   assets_manager_add(am, image_edit_clear_p);
