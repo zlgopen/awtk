@@ -310,14 +310,14 @@ static const dirty_rects_t* lcd_mem_get_dirty_rects(lcd_t* lcd) {
 }
 
 static ret_t lcd_mem_flush(lcd_t* lcd) {
-  rect_t r;
   bitmap_t online_fb;
   bitmap_t offline_fb;
+  const dirty_rects_t* dirty_rects;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   system_info_t* info = system_info();
+  uint8_t* fb = lcd_mem_get_offline_fb(mem);
   lcd_orientation_t o = info->lcd_orientation;
 
-  lcd_get_dirty_rect(lcd, &r);
   lcd_mem_init_drawing_fb(lcd, &offline_fb);
   lcd_mem_init_online_fb(lcd, &online_fb, o);
 
@@ -325,11 +325,29 @@ static ret_t lcd_mem_flush(lcd_t* lcd) {
     mem->wait_vbi(mem->wait_vbi_ctx);
   }
 
-  if (o == LCD_ORIENTATION_0) {
-    return image_copy(&online_fb, &offline_fb, &r, r.x, r.y);
-  } else {
-    return image_rotate(&online_fb, &offline_fb, &r, o);
+  dirty_rects = lcd_fb_dirty_rects_get_dirty_rects_by_fb(&(mem->fb_dirty_rects_list), fb);
+  if (dirty_rects != NULL && dirty_rects->nr > 0) {
+    if (dirty_rects->disable_multiple) {
+      const rect_t* dr = (const rect_t*)&(dirty_rects->max);
+      if (o == LCD_ORIENTATION_0) {
+        image_copy(&online_fb, &offline_fb,  dr, dr->x, dr->y);
+      } else {
+        image_rotate(&online_fb, &offline_fb, dr, o);
+      }
+    } else {
+      uint32_t i = 0;
+      for (i = 0; i < dirty_rects->nr; i++) {
+        const rect_t* dr = (const rect_t*)dirty_rects->rects + i;
+        if (o == LCD_ORIENTATION_0) {
+          image_copy(&online_fb, &offline_fb, dr, dr->x, dr->y);
+        } else {
+          image_rotate(&online_fb, &offline_fb, dr, o);
+        }
+      }
+    }
+
   }
+  return RET_OK;
 }
 
 static ret_t lcd_mem_end_frame(lcd_t* lcd) {
