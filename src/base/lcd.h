@@ -28,6 +28,7 @@
 #include "base/bitmap.h"
 #include "base/dirty_rects.h"
 #include "base/vgcanvas.h"
+#include "base/lcd_fb_dirty_rects.h"
 
 BEGIN_C_DECLS
 
@@ -45,6 +46,7 @@ typedef ret_t (*lcd_set_vgcanvas_t)(lcd_t* lcd, vgcanvas_t* vg);
 typedef ret_t (*lcd_set_line_length_t)(lcd_t* lcd, uint32_t line_length);
 typedef ret_t (*lcd_set_canvas_t)(lcd_t* lcd, canvas_t* c);
 typedef ret_t (*lcd_get_dirty_rect_t)(lcd_t* lcd, rect_t* r);
+typedef const dirty_rects_t* (*lcd_get_dirty_rects_t)(lcd_t* lcd);
 
 typedef ret_t (*lcd_begin_frame_t)(lcd_t* lcd, const dirty_rects_t* dirty_rects);
 typedef ret_t (*lcd_set_clip_rect_t)(lcd_t* lcd, const rect_t* rect);
@@ -207,6 +209,7 @@ struct _lcd_t {
   lcd_set_line_length_t set_line_length;
   lcd_get_type_t get_type;
   lcd_get_dirty_rect_t get_dirty_rect;
+  lcd_get_dirty_rects_t get_dirty_rects;
   lcd_is_support_dirty_rect_t is_support_dirty_rect;
   lcd_set_canvas_t set_canvas;
   lcd_resize_t resize;
@@ -692,6 +695,15 @@ ret_t lcd_destroy(lcd_t* lcd);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t lcd_get_dirty_rect(lcd_t* lcd, rect_t* r);
+
+/**
+ * @method lcd_get_dirty_rect
+ * 获取 lcd 对象的脏矩形列表。
+ * @param {lcd_t*} lcd lcd对象。
+ *
+ * @return {const dirty_rects_t*} 成功返回脏矩形列表，失败返回 NULL。
+ */
+const dirty_rects_t* lcd_get_dirty_rects(lcd_t* lcd);
 
 /**
  * @method lcd_is_support_dirty_rect

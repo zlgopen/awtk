@@ -96,6 +96,7 @@
 #include "default/inc/ui/htranslate.data"
 #include "default/inc/ui/tab_dynamic_list.data"
 #include "default/inc/ui/draggable.data"
+#include "default/inc/ui/tab_remove.data"
 #include "default/inc/ui/list_view_vh.data"
 #include "default/inc/ui/rich_text.data"
 #include "default/inc/ui/scroll_view.data"
@@ -577,6 +578,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_htranslate);
   assets_manager_add(am, ui_tab_dynamic_list);
   assets_manager_add(am, ui_draggable);
+  assets_manager_add(am, ui_tab_remove);
   assets_manager_add(am, ui_list_view_vh);
   assets_manager_add(am, ui_rich_text);
   assets_manager_add(am, ui_scroll_view);

@@ -150,11 +150,6 @@ struct _widget_vtable_t {
   uint32_t is_keyboard : 1;
 
   /**
-   * 是否启用pool(deprecated)
-   */
-  uint32_t enable_pool : 1;
-
-  /**
    * 是否允许绘制到控件区域外部。
    */
   uint32_t allow_draw_outside : 1;

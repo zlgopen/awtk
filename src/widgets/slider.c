@@ -261,6 +261,24 @@ ret_t slider_dec(widget_t* widget) {
   return ret;
 }
 
+static ret_t slider_change_value_by_pointer_event(widget_t* widget, pointer_event_t* evt) {
+  double value = 0;
+  slider_t* slider = SLIDER(widget);
+  double range = slider->max - slider->min;
+  point_t p = {evt->x, evt->y};
+
+  widget_to_local(widget, &p);
+  if (slider->vertical) {
+    value = range - range * p.y / widget->h;
+  } else {
+    value = range * p.x / widget->w;
+  }
+  value += slider->min;
+  value = tk_clamp(value, slider->min, slider->max);
+
+  return slider_set_value_internal(widget, (double)value, EVT_VALUE_CHANGING, FALSE);
+}
+
 static ret_t slider_on_event(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
   uint16_t type = e->type;
@@ -270,36 +288,25 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
   ret = slider->dragging ? RET_STOP : RET_OK;
   switch (type) {
     case EVT_POINTER_DOWN: {
+      rect_t br, fr;
       pointer_event_t* evt = (pointer_event_t*)e;
       point_t p = {evt->x, evt->y};
       rect_t* dr = &(slider->dragger_rect);
-      rect_t br, fr;
 
       return_value_if_fail(RET_OK == slider_get_bar_rect(widget, &br, &fr), RET_STOP);
 
       widget_to_local(widget, &p);
+      slider->saved_value = slider->value;
       if (slider->slide_with_bar || rect_contains(dr, p.x, p.y) || rect_contains(&br, p.x, p.y) ||
           rect_contains(&fr, p.x, p.y)) {
-        double value = 0;
-        double range = slider->max - slider->min;
+        slider_change_value_by_pointer_event(widget, evt);
 
-        if (slider->vertical) {
-          value = range * p.y / (widget->h - dr->h);
-        } else {
-          value = range * p.x / (widget->w - dr->w);
-        }
-
-        value = tk_clamp(value, slider->min, slider->max);
-        slider_set_value_internal(widget, (double)value, EVT_VALUE_CHANGING, FALSE);
-
+        slider->down = p;
+        slider->pressed = TRUE;
         slider->dragging = TRUE;
         widget_set_state(widget, WIDGET_STATE_PRESSED);
         widget_grab(widget->parent, widget);
         widget_invalidate(widget, NULL);
-
-        slider->down = p;
-        slider->pressed = TRUE;
-        slider->saved_value = slider->value;
       }
       ret = slider->dragging ? RET_STOP : RET_OK;
       break;
@@ -310,46 +317,24 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_POINTER_MOVE: {
       pointer_event_t* evt = (pointer_event_t*)e;
-      point_t p = {evt->x, evt->y};
-      double value = 0;
       if (slider->dragging) {
-        double delta = 0;
-        double range = slider->max - slider->min;
-        widget_to_local(widget, &p);
-
-        if (slider->vertical) {
-          delta = range * (slider->down.y - p.y) / (widget->h - slider->dragger_rect.h);
-        } else {
-          delta = range * (p.x - slider->down.x) / (widget->w - slider->dragger_rect.w);
-        }
-
-        value = slider->saved_value + delta;
-        value = tk_clamp(value, slider->min, slider->max);
-        slider_set_value_internal(widget, (double)value, EVT_VALUE_CHANGING, FALSE);
+        slider_change_value_by_pointer_event(widget, evt);
       }
 
       break;
     }
     case EVT_POINTER_UP: {
-      if (slider->dragging) {
-        slider_set_value_internal(widget, slider->value, EVT_VALUE_CHANGED, TRUE);
-      } else if (slider->pressed) {
+      if (slider->dragging || slider->pressed) {
         double value = 0;
-        double range = slider->max - slider->min;
         pointer_event_t* evt = (pointer_event_t*)e;
-        point_t p = {evt->x, evt->y};
 
-        widget_to_local(widget, &p);
-        if (slider->vertical) {
-          value = slider->min + range - range * p.y / widget->h;
-        } else {
-          value = slider->min + range * p.x / widget->w;
-        }
+        slider_change_value_by_pointer_event(widget, evt);
 
-        value = tk_clamp(value, slider->min, slider->max);
+        value = slider->value;
+        slider->dragging = FALSE;
+        slider->value = slider->saved_value;
         slider_set_value(widget, value);
       }
-
       slider_pointer_up_cleanup(widget);
       break;
     }

@@ -75,8 +75,11 @@ static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientatio
 }
 
 static ret_t lcd_mem_begin_frame(lcd_t* lcd, const dirty_rects_t* dirty_rects) {
-#if WITH_LCD_CLEAR_ALPHA
   bitmap_t fb;
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+  lcd_fb_dirty_rects_update_all_fb_dirty_rects(&(mem->fb_dirty_rects_list), dirty_rects);
+
+#if WITH_LCD_CLEAR_ALPHA
   lcd_mem_init_drawing_fb(lcd, &fb);
 
   if (lcd->draw_mode == LCD_DRAW_OFFLINE || dirty_rects == NULL) {
@@ -95,6 +98,7 @@ static ret_t lcd_mem_begin_frame(lcd_t* lcd, const dirty_rects_t* dirty_rects) {
     }
   }
 #else
+  (void)fb;
   return RET_OK;
 #endif
 }
@@ -281,12 +285,37 @@ static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
   return mem->vgcanvas;
 }
 
+static ret_t lcd_mem_get_dirty_rect(lcd_t* lcd, rect_t* r) {
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+  uint8_t* offline_fb = lcd_mem_get_offline_fb(mem);
+  const dirty_rects_t* dirty_rects = lcd_fb_dirty_rects_get_dirty_rects_by_fb(&(mem->fb_dirty_rects_list), offline_fb);
+  if (dirty_rects != NULL) {
+    r->x = dirty_rects->max.x;
+    r->y = dirty_rects->max.y;
+    r->w = dirty_rects->max.w;
+    r->h = dirty_rects->max.h;
+  } else {
+    r->x = 0;
+    r->y = 0;
+    r->w = lcd->w;
+    r->h = lcd->h;
+  }
+  return RET_OK;
+}
+
+static const dirty_rects_t* lcd_mem_get_dirty_rects(lcd_t* lcd) {
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+  uint8_t* offline_fb = lcd_mem_get_offline_fb(mem);
+  return lcd_fb_dirty_rects_get_dirty_rects_by_fb(&(mem->fb_dirty_rects_list), offline_fb);
+}
+
 static ret_t lcd_mem_flush(lcd_t* lcd) {
   bitmap_t online_fb;
   bitmap_t offline_fb;
+  const dirty_rects_t* dirty_rects;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
-  const rect_t* r = &(lcd->dirty_rect);
   system_info_t* info = system_info();
+  uint8_t* fb = lcd_mem_get_offline_fb(mem);
   lcd_orientation_t o = info->lcd_orientation;
 
   lcd_mem_init_drawing_fb(lcd, &offline_fb);
@@ -296,14 +325,34 @@ static ret_t lcd_mem_flush(lcd_t* lcd) {
     mem->wait_vbi(mem->wait_vbi_ctx);
   }
 
-  if (o == LCD_ORIENTATION_0) {
-    return image_copy(&online_fb, &offline_fb, r, r->x, r->y);
-  } else {
-    return image_rotate(&online_fb, &offline_fb, r, o);
+  dirty_rects = lcd_fb_dirty_rects_get_dirty_rects_by_fb(&(mem->fb_dirty_rects_list), fb);
+  if (dirty_rects != NULL && dirty_rects->nr > 0) {
+    if (dirty_rects->disable_multiple) {
+      const rect_t* dr = (const rect_t*)&(dirty_rects->max);
+      if (o == LCD_ORIENTATION_0) {
+        image_copy(&online_fb, &offline_fb,  dr, dr->x, dr->y);
+      } else {
+        image_rotate(&online_fb, &offline_fb, dr, o);
+      }
+    } else {
+      uint32_t i = 0;
+      for (i = 0; i < dirty_rects->nr; i++) {
+        const rect_t* dr = (const rect_t*)dirty_rects->rects + i;
+        if (o == LCD_ORIENTATION_0) {
+          image_copy(&online_fb, &offline_fb, dr, dr->x, dr->y);
+        } else {
+          image_rotate(&online_fb, &offline_fb, dr, o);
+        }
+      }
+    }
+
   }
+  return RET_OK;
 }
 
 static ret_t lcd_mem_end_frame(lcd_t* lcd) {
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+  uint8_t* offline_fb = lcd_mem_get_offline_fb(mem);
   if (lcd->draw_mode != LCD_DRAW_OFFLINE) {
     if (lcd_is_swappable(lcd)) {
       lcd_swap(lcd);
@@ -314,6 +363,7 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) {
     lcd_sync(lcd);
   }
 
+  lcd_fb_dirty_rects_reset_dirty_rects_by_fb(&(mem->fb_dirty_rects_list), offline_fb);
   return RET_OK;
 }
 
@@ -337,6 +387,7 @@ static ret_t lcd_mem_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length) {
   lcd->h = h;
   mem->line_length = tk_max(mem->base.w * bpp, line_length);
   vgcanvas_clip_rect(mem->vgcanvas, 0, 0, w, h);
+  lcd_fb_dirty_rects_reinit(&(mem->fb_dirty_rects_list), w, h);
 
   return RET_OK;
 }
@@ -368,15 +419,21 @@ static lcd_t* lcd_mem_init(lcd_mem_t* lcd, wh_t w, wh_t h, bool_t alloc) {
   uint32_t bpp = bitmap_get_bpp_of_format(LCD_FORMAT);
 
   return_value_if_fail(lcd != NULL, NULL);
+  base = &(lcd->base);
+
+  lcd_fb_dirty_rects_init(&(lcd->fb_dirty_rects_list), w, h);
 
   if (alloc) {
-    lcd->offline_fb = (uint8_t*)TKMEM_ALLOC(w * h * sizeof(pixel_t));
-    return_value_if_fail(lcd->offline_fb != NULL, NULL);
+    uint8_t* offline_fb = (uint8_t*)TKMEM_ALLOC(w * h * sizeof(pixel_t));
+    ret_t ret = lcd_mem_set_offline_fb(lcd, offline_fb);
+    if (ret != RET_OK && offline_fb != NULL) {
+      TKMEM_FREE(offline_fb);
+    }
+    return_value_if_fail(lcd->offline_fb != NULL && ret == RET_OK, NULL);
   }
 
   lcd->own_offline_fb = alloc;
 
-  base = &(lcd->base);
   base->begin_frame = lcd_mem_begin_frame;
   base->draw_vline = lcd_mem_draw_vline;
   base->draw_hline = lcd_mem_draw_hline;
@@ -395,6 +452,8 @@ static lcd_t* lcd_mem_init(lcd_mem_t* lcd, wh_t w, wh_t h, bool_t alloc) {
   base->flush = lcd_mem_flush;
   base->set_vgcanvas = lcd_mem_set_vgcanvas;
   base->set_line_length = lcd_mem_set_line_length_impl;
+  base->get_dirty_rect = lcd_mem_get_dirty_rect;
+  base->get_dirty_rects = lcd_mem_get_dirty_rects;
 
   base->w = w;
   base->h = h;
@@ -427,8 +486,8 @@ static lcd_t* lcd_mem_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8
   lcd_t* lcd = lcd_mem_create(w, h, FALSE);
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
 
-  mem->offline_fb = offline_fb;
-  mem->online_fb = online_fb;
+  lcd_mem_set_online_fb(mem, online_fb);
+  lcd_mem_set_offline_fb(mem, offline_fb);
 
   return lcd;
 }
@@ -438,10 +497,9 @@ static lcd_t* lcd_mem_create_three_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_
   lcd_t* lcd = lcd_mem_create(w, h, FALSE);
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
 
-  mem->offline_fb = offline_fb;
-  mem->online_fb = online_fb;
-  mem->next_fb = next_fb;
-  lcd->support_dirty_rect = FALSE;
+  lcd_mem_set_next_fb(mem, next_fb);
+  lcd_mem_set_online_fb(mem, online_fb);
+  lcd_mem_set_offline_fb(mem, offline_fb);
 
   return lcd;
 }
@@ -450,7 +508,7 @@ static lcd_t* lcd_mem_create_single_fb(wh_t w, wh_t h, uint8_t* fbuff) {
   lcd_t* lcd = lcd_mem_create(w, h, FALSE);
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
 
-  mem->offline_fb = fbuff;
+  lcd_mem_set_offline_fb(mem, fbuff);
   mem->online_fb = NULL;
   lcd->flush = NULL;
 

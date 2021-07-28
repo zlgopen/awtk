@@ -153,8 +153,8 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r_in) {
   rect_t* r = canvas_fix_rect(r_in, &r_fix);
 
 #ifdef FRAGMENT_FRAME_BUFFER_SIZE
-  rect_t dirty_r = rect_init(c->lcd->dirty_rect.x, c->lcd->dirty_rect.y, c->lcd->dirty_rect.w,
-                             c->lcd->dirty_rect.h);
+  rect_t dirty_r;
+  lcd_get_dirty_rect(c->lcd, &dirty_r);
 #endif
 
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
@@ -340,8 +340,8 @@ float_t canvas_measure_utf8(canvas_t* c, const char* str) {
 }
 
 ret_t canvas_begin_frame(canvas_t* c, const dirty_rects_t* dirty_rects, lcd_draw_mode_t draw_mode) {
+  rect_t dirty_rect;
   ret_t ret = RET_OK;
-  const rect_t* dirty_rect = dirty_rects != NULL ? &(dirty_rects->max) : NULL;
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
   if (c->began_frame) {
     return RET_OK;
@@ -358,14 +358,18 @@ ret_t canvas_begin_frame(canvas_t* c, const dirty_rects_t* dirty_rects, lcd_draw
 
   canvas_set_global_alpha(c, 0xff);
   lcd_set_canvas(c->lcd, c);
+  /* 把当前帧的脏矩形列表传入到 lcd 中和 fb 的脏矩形列表合并得出新的脏矩形列表。*/
   if (c->lcd->support_dirty_rect) {
     ret = lcd_begin_frame(c->lcd, dirty_rects, draw_mode);
   } else {
     ret = lcd_begin_frame(c->lcd, NULL, draw_mode);
   }
-  if (c->lcd->support_dirty_rect && dirty_rect != NULL) {
+  return_value_if_fail(ret == RET_OK, ret);
+  /* 获取新的最大的脏矩形，然后设置裁剪区 */
+  ret = lcd_get_dirty_rect(c->lcd, &dirty_rect);
+  if (c->lcd->support_dirty_rect && ret == RET_OK) {
     if (draw_mode == LCD_DRAW_NORMAL && c->lcd->type == LCD_VGCANVAS) {
-      rect_t r = *dirty_rect;
+      rect_t r = dirty_rect;
 
       /*for vgcanvas anti alias*/
       r.x--;
@@ -375,7 +379,7 @@ ret_t canvas_begin_frame(canvas_t* c, const dirty_rects_t* dirty_rects, lcd_draw
 
       canvas_set_clip_rect(c, &r);
     } else {
-      canvas_set_clip_rect(c, dirty_rect);
+      canvas_set_clip_rect(c, &dirty_rect);
     }
   } else {
     canvas_set_clip_rect(c, NULL);

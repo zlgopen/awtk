@@ -24,6 +24,7 @@
 #include "base/lcd.h"
 #include "tkc/time_now.h"
 #include "base/system_info.h"
+#include "base/lcd_fb_dirty_rects.inc"
 
 ret_t lcd_begin_frame(lcd_t* lcd, const dirty_rects_t* dirty_rects, lcd_draw_mode_t draw_mode) {
   const rect_t* dirty_rect = dirty_rects != NULL ? &(dirty_rects->max) : NULL;
@@ -50,6 +51,14 @@ ret_t lcd_set_canvas(lcd_t* lcd, canvas_t* c) {
     lcd->set_canvas(lcd, c);
   }
   return RET_OK;
+}
+
+const dirty_rects_t* lcd_get_dirty_rects(lcd_t* lcd) {
+  return_value_if_fail(lcd != NULL, NULL);
+  if (lcd->get_dirty_rects != NULL) {
+    return lcd->get_dirty_rects(lcd);
+  }
+  return lcd->dirty_rects;
 }
 
 ret_t lcd_get_dirty_rect(lcd_t* lcd, rect_t* r) {

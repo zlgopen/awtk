@@ -1655,7 +1655,7 @@ static ret_t func_sub(fscript_t* fscript, fscript_args_t* args, value_t* result)
   if (args->size == 1) {
     func_minus(fscript, args, result);
   } else {
-    if(args->args->type == VALUE_TYPE_INT32 && args->args[1].type == VALUE_TYPE_INT32) {
+    if (args->args->type == VALUE_TYPE_INT32 && args->args[1].type == VALUE_TYPE_INT32) {
       value_set_int(result, value_int(args->args) - value_int(args->args + 1));
     } else {
       value_set_double(result, value_double(args->args) - value_double(args->args + 1));

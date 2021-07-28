@@ -640,7 +640,6 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
 #endif
   uint64_t start_time = time_now_ms();
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
-  dirty_rects_t* dirty_rects = &(wm->native_window->dirty_rects);
 
   if (WINDOW_MANAGER(wm)->max_fps) {
     uint32_t duration = 1000 / WINDOW_MANAGER(wm)->max_fps;
@@ -671,6 +670,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
       number = r.h / tmp_h;
 
       for (i = 0; i <= number; i++) {
+        dirty_rects_t tmp_dirty_rects;
         r.y = y + i * tmp_h;
         if (i == number) {
           tmp_h = h % tmp_h;
@@ -679,13 +679,15 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
         if (r.h == 0) {
           break;
         }
-
+        dirty_rects_init(&(tmp_dirty_rects));
+        dirty_rects_add(&(tmp_dirty_rects), (const rect_t*)&r);
         canvas_t* c = native_window_get_canvas(wm->native_window);
-        canvas_begin_frame(c, dirty_rects, LCD_DRAW_NORMAL);
+        canvas_begin_frame(c, (const dirty_rects_t*)&tmp_dirty_rects, LCD_DRAW_NORMAL);
         wm->native_window->dirty = TRUE;
         widget_paint(WIDGET(wm), c);
         window_manager_paint_cursor(widget, c);
         canvas_end_frame(c);
+        dirty_rects_deinit(&(tmp_dirty_rects));
       }
 
       native_window_update_last_dirty_rect(wm->native_window);
@@ -699,6 +701,11 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
       canvas_set_fill_color(c, bg);
       canvas_fill_rect(c, 0, 0, widget->w, widget->h);
     } else {
+      /* 
+       * 获取当前帧的脏矩形列表和 fb 的脏矩形列表合并后的新的脏矩形列表，
+       * 如果没有 fb 的脏矩形列表的话，会退化为获取当前帧的脏矩形。
+       */
+      dirty_rects_t* dirty_rects = (dirty_rects_t*)lcd_get_dirty_rects(c->lcd);
       dirty_rects_paint(dirty_rects, WIDGET(wm), c, widget_paint);
     }
     window_manager_paint_cursor(widget, c);

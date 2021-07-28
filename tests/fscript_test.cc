@@ -1220,15 +1220,15 @@ TEST(FExr, widget) {
   fscript_eval(obj, "widget_get(\"text\")==\"hello\"", &v);
   ASSERT_EQ(value_bool(&v), TRUE);
   value_reset(&v);
-  
+
   fscript_eval(obj, "widget_get(\"text\")==\"Hello\"", &v);
   ASSERT_EQ(value_bool(&v), FALSE);
   value_reset(&v);
-  
+
   fscript_eval(obj, "widget_get(\"x\")==10", &v);
   ASSERT_EQ(value_bool(&v), TRUE);
   value_reset(&v);
-  
+
   fscript_eval(obj, "widget_get(\"y\")==20", &v);
   ASSERT_EQ(value_bool(&v), TRUE);
   value_reset(&v);
@@ -1244,27 +1244,27 @@ TEST(FExr, minus) {
   fscript_eval(obj, "a=100;a=-a;a", &v);
   ASSERT_EQ(value_int(&v), -100);
   value_reset(&v);
-  
+
   fscript_eval(obj, "a=100;a=-  a;a", &v);
   ASSERT_EQ(value_int(&v), -100);
   value_reset(&v);
-  
+
   fscript_eval(obj, "a=100;a=- /*hello*/ a;a", &v);
   ASSERT_EQ(value_int(&v), -100);
   value_reset(&v);
-  
+
   fscript_eval(obj, "a=100;a=0-a;a", &v);
   ASSERT_EQ(value_int(&v), -100);
   value_reset(&v);
-  
+
   fscript_eval(obj, "a=100;a=---a;a", &v);
   ASSERT_EQ(value_int(&v), -100);
   value_reset(&v);
-  
+
   fscript_eval(obj, "a=100;a=--a;a", &v);
   ASSERT_EQ(value_int(&v), 100);
   value_reset(&v);
-  
+
   fscript_eval(obj, "a=-(100-300);a", &v);
   ASSERT_EQ(value_int(&v), 200);
   value_reset(&v);

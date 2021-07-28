@@ -228,8 +228,7 @@ ret_t switch_fill_rect_color(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg
 }
 
 static ret_t switch_on_paint_background_img(widget_t* widget, canvas_t* c, bitmap_t* img) {
-  int32_t w = 0;
-  int32_t h = 0;
+  float_t fw = 0;
   int32_t iw = 0;
   int32_t ih = 0;
   float_t wscale = 0;
@@ -248,15 +247,14 @@ static ret_t switch_on_paint_background_img(widget_t* widget, canvas_t* c, bitma
   xoffset = (float_t)(aswitch->xoffset) / wscale;
   round_radius = style_get_int(widget->astyle, STYLE_ID_ROUND_RADIUS, 0) / hscale;
 
-  h = ih;
-  w = iw * (1 - aswitch->max_xoffset_ratio);
-  wscale = (float_t)(widget->w) / (float_t)w;
+  fw = iw * (1.0f - aswitch->max_xoffset_ratio);
+  wscale = (float_t)(widget->w) / fw;
 
-  if (vg == NULL || (round_radius < 5 && hscale == 1 && wscale == 1)) {
-    int32_t x = (widget->w - w) >> 1;
+  if (vg == NULL || (round_radius < 5 && tk_abs(wscale - 1) <= 0.000001f)) {
+    int32_t x = (widget->w - (int32_t)fw) >> 1;
     int32_t y = (widget->h - ih) >> 1;
-    rect_t src = rect_init(xoffset, 0, w, ih);
-    rect_t dst = rect_init(x, y, w, ih);
+    rect_t src = rect_init(xoffset, 0, (int32_t)fw, ih);
+    rect_t dst = rect_init(x, y, (int32_t)fw, ih);
 
     dst.y = tk_max(0, y);
     dst.h = tk_min(dst.h, widget->h);
@@ -269,7 +267,7 @@ static ret_t switch_on_paint_background_img(widget_t* widget, canvas_t* c, bitma
     vgcanvas_translate(vg, c->ox, c->oy);
     vgcanvas_scale(vg, wscale, hscale);
     vgcanvas_translate(vg, -xoffset, 0);
-    vgcanvas_rounded_rect(vg, xoffset, 0, w, h, round_radius);
+    vgcanvas_rounded_rect(vg, xoffset, 0, fw, ih, round_radius);
     vgcanvas_paint(vg, FALSE, img);
     vgcanvas_restore(vg);
   }
@@ -451,7 +449,7 @@ widget_t* switch_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
   aswitch->value = TRUE;
   aswitch->pressed = FALSE;
-  aswitch->max_xoffset_ratio = 0.34f;
+  aswitch->max_xoffset_ratio = 1.0f / 3.0f;
 
   return widget;
 }

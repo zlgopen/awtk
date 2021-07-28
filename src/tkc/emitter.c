@@ -43,7 +43,7 @@ emitter_t* emitter_init(emitter_t* emitter) {
   return_value_if_fail(emitter, NULL);
 
   memset(emitter, 0x00, sizeof(emitter_t));
-  emitter->enable = TRUE;
+  emitter->disable = FALSE;
   emitter->next_id = TK_INVALID_ID + 1;
 
   return emitter;
@@ -121,7 +121,7 @@ ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
     e->target = emitter;
   }
 
-  if (emitter->enable && emitter->items) {
+  if (emitter->disable == 0 && emitter->items) {
     emitter_item_t* iter = emitter->items;
 
     while (iter != NULL) {
@@ -339,14 +339,14 @@ ret_t emitter_off_by_ctx(emitter_t* emitter, void* ctx) {
 
 ret_t emitter_enable(emitter_t* emitter) {
   return_value_if_fail(emitter != NULL, RET_BAD_PARAMS);
-  emitter->enable = TRUE;
+  emitter->disable--;
 
   return RET_OK;
 }
 
 ret_t emitter_disable(emitter_t* emitter) {
   return_value_if_fail(emitter != NULL, RET_BAD_PARAMS);
-  emitter->enable = FALSE;
+  emitter->disable++;
 
   return RET_OK;
 }

@@ -6,6 +6,14 @@
 
 using std::string;
 
+static ret_t on_event(void* ctx, event_t* e) {
+  uint32_t* p = (uint32_t*)ctx;
+  *p = *p + 1;
+  (void)e;
+
+  return RET_OK;
+}
+
 TEST(ComboBox, basic) {
   value_t v1;
   value_t v2;
@@ -249,6 +257,34 @@ TEST(ComboBOx, change_value_abort) {
   widget_on(w, EVT_VALUE_WILL_CHANGE, on_value_will_changed_abort, NULL);
   ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_VALUE, 3), RET_OK);
   ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_VALUE, 3), 0);
+
+  widget_destroy(w);
+}
+
+TEST(ComboBox, events) {
+  uint32_t n = 0;
+  widget_t* w = combo_box_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(combo_box_append_option(w, 1, "red"), RET_OK);
+  ASSERT_EQ(combo_box_count_options(w), 1);
+
+  ASSERT_EQ(combo_box_append_option(w, 2, "green"), RET_OK);
+  ASSERT_EQ(combo_box_count_options(w), 2);
+
+  ASSERT_EQ(combo_box_append_option(w, 3, "blue"), RET_OK);
+  ASSERT_EQ(combo_box_count_options(w), 3);
+
+  widget_on(w, EVT_VALUE_CHANGED, on_event, &n);
+  combo_box_set_selected_index(w, 1);
+  ASSERT_EQ(n, 1);
+
+  emitter_disable(w->emitter);
+  combo_box_set_selected_index(w, 2);
+  emitter_enable(w->emitter);
+  ASSERT_EQ(n, 1);
+
+  combo_box_set_selected_index(w, 0);
+  ASSERT_EQ(n, 2);
 
   widget_destroy(w);
 }

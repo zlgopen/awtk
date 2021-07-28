@@ -1,10 +1,38 @@
 # 最新动态
 
+2021/07/28
+  * 完善slide\_menu（感谢智明提供补丁）。
+
+2021/07/27
+  * 裁剪了assets-1m的资源（感谢智明提供补丁）。
+  * 修改lcd\_mem\_flush为按照脏矩形列表来拷贝（感谢智明提供补丁）。
+
+2021/07/26
+  * 完善脏矩形，以便2fb在swap的方式也可以支持脏矩形。
+  * 完善pages和button group，处理为空的情况(感谢兆坤提供补丁)。
+  * 修复edit input\_type属性为int，当text长度大于32时会有assert的问题(感谢兆坤提供补丁)。
+
+2021/07/24
+  * 完善和重构slider。
+
+2021/07/23
+  * 完善fscript的iostream\_serial\_create。
+
+2021/07/22
+  * 完善emitter\_disable/emitter\_enable支持嵌套调用。
+  * 完善switch（感谢陈谭提供补丁）
+
+2021/07/21
+  * 修复多个脏矩形时没有修改片段式 Framebuffer 的问题（感谢雨欣提供补丁）
+  * 修复 agge 模式下 widget\_take\_snapshot\_rect 的逻辑错误问题（感谢智明提供补丁）。
+  * 裁剪了 assets-1m 的资源（因为在 429 上面报 flash 不够大（感谢智明提供补丁））。
+
 2021/07/20
   * fscript 修复对负号的处理。
   * fscript math 增加 d2r/r2d。
   * 完善slider（感谢兆坤提供补丁）
   * 完善对话框高亮（感谢兆坤提供补丁）
+  * 修复窗口创建完后的loading状态还是TRUE的问题（感谢智明提供补丁）
 
 2021/07/19
   * fscript 增加 usubstr函数。
