@@ -495,6 +495,9 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
 #ifdef WITH_NANOVG_SOFT
   sdl->render =
       SDL_CreateRenderer(sdl->window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
+  if (sdl->render == NULL) {
+    sdl->render = SDL_CreateRenderer(sdl->window, -1, SDL_RENDERER_SOFTWARE);
+  }
 #endif /*WITH_NANOVG_SOFT*/
 
   win->handle = sdl->window;
