@@ -218,11 +218,12 @@ static int32_t slide_menu_get_delta_index(widget_t* widget) {
 
 static uint32_t slide_menu_get_visible_children(widget_t* widget,
                                                 widget_t* children[MAX_VISIBLE_NR]) {
-  uint32_t i = 0;
-  uint32_t curr = 0;
+  int32_t i = 0;
+  int32_t curr = 0;
   int32_t max_size = widget->h;
   uint32_t nr = widget_count_children(widget);
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
+  rect_t clip_rect = slide_menu_get_clip_r(widget);
   int32_t delta_index = slide_menu_get_delta_index(widget);
   int32_t index = slide_menu_fix_index(widget, slide_menu->value - delta_index);
   int32_t rounded_xoffset = delta_index * max_size;
@@ -258,6 +259,13 @@ static uint32_t slide_menu_get_visible_children(widget_t* widget,
       children[curr + i] = slide_menu_get_child(widget, index + i);
     }
   }
+  /* 保持边缘的 iter 不会突然消失 */
+  if (children[curr - i + 1]->x > clip_rect.x && curr - i >= 0 && nr < widget->children->size) {
+    children[curr - i] = slide_menu_get_child(widget, index - i);
+  }
+  if (children[curr + i - 1]->x + children[curr + i - 1]->w < clip_rect.x + clip_rect.w && curr + i < MAX_VISIBLE_NR && nr < widget->children->size) {
+    children[curr + i] = slide_menu_get_child(widget, index + i);
+  }
 
   for (i = 0; i < MAX_VISIBLE_NR; i++) {
     widget_t* iter = children[i];
@@ -283,7 +291,7 @@ static int32_t slide_menu_calc_child_size(slide_menu_t* slide_menu, int32_t i, i
     scale = min_scale;
   }
 
-  return max_size * scale;
+  return tk_roundi(max_size * scale);
 }
 
 static int32_t slide_menu_calc_child_y(align_v_t align_v, int32_t max_size, int32_t size) {
@@ -320,11 +328,13 @@ static ret_t slide_menu_do_layout_children(widget_t* widget) {
   uint32_t curr = slide_menu_get_visible_children(widget, children);
   int32_t rounded_xoffset = slide_menu_get_delta_index(widget) * max_size;
   int32_t xoffset = slide_menu->xoffset - rounded_xoffset;
+  int32_t curr_min_size = slide_menu_calc_child_size(slide_menu, 0, 0, max_size >> 1);
+  int32_t max_crevice_size = (max_size - curr_min_size) >> 1;
 
   /*curr widget*/
   iter = children[curr];
   size = slide_menu_calc_child_size(slide_menu, curr, curr, xoffset);
-  x = (widget->w - max_size) / 2 + xoffset;
+  x = (widget->w - max_size) / 2 + xoffset - (xoffset * max_crevice_size / (max_size >> 1));
   y = slide_menu_calc_child_y(slide_menu->align_v, max_size, size);
   widget_move_resize(iter, x, y, size, size);
 
