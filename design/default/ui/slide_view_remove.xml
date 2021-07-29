@@ -1,0 +1,20 @@
+<window anim_hint="htranslate" >
+  <slide_view x="0" y="0" w="100%" h="100%" style="dot" child_number="1" >
+    <view x="0" y="0" w="100%" h="100%" children_layout="default(c=1,r=3)">
+        <label name="view_index" text="0"/> 
+        <button x="c" w="50%" h="40" name="clone_view" text="clone"/>
+        <button x="c" w="50%" h="40" name="remove_view" text="remove"/>
+    </view>
+    <view x="0" y="0" w="100%" h="100%" children_layout="default(c=1,r=3)">
+        <label name="view_index" x="c" text="1"/> 
+        <button x="c" w="50%" h="40" name="clone_view" text="clone"/>
+        <button x="c" w="50%" h="40" name="remove_view" text="remove"/>
+    </view>
+    <view x="0" y="0" w="100%" h="100%" children_layout="default(c=1,r=3)">
+        <label name="view_index" x="c" text="2"/> 
+        <button x="c" w="50%" h="40" name="clone_view" text="clone"/>
+        <button x="c" w="50%" h="40" name="remove_view" text="remove"/>
+    </view>
+  </slide_view>
+  <slide_indicator_arc x="0" y="b" w="100%" h="20" default_paint="stroke_dot"/>
+</window>

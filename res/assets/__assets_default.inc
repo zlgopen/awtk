@@ -71,6 +71,7 @@
 #include "default/inc/ui/kb_hex.data"
 #include "default/inc/ui/gauge_h.data"
 #include "default/inc/ui/popdown.data"
+#include "default/inc/ui/slide_view_remove.data"
 #include "default/inc/ui/color.data"
 #include "default/inc/ui/color_picker.data"
 #include "default/inc/ui/switch.data"
@@ -170,6 +171,7 @@
 #include "default/inc/ui/kb_ufloat.data"
 #include "default/inc/ui/kb_default.data"
 #include "default/inc/ui/tab_button_view_page2.data"
+#include "default/inc/ui/slide_view_remove_loop.data"
 #include "default/inc/ui/slide_up.data"
 #include "default/inc/ui/rich_text2.data"
 #include "default/inc/ui/list_view_h.data"
@@ -553,6 +555,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_kb_hex);
   assets_manager_add(am, ui_gauge_h);
   assets_manager_add(am, ui_popdown);
+  assets_manager_add(am, ui_slide_view_remove);
   assets_manager_add(am, ui_color);
   assets_manager_add(am, ui_color_picker);
   assets_manager_add(am, ui_switch);
@@ -652,6 +655,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_kb_ufloat);
   assets_manager_add(am, ui_kb_default);
   assets_manager_add(am, ui_tab_button_view_page2);
+  assets_manager_add(am, ui_slide_view_remove_loop);
   assets_manager_add(am, ui_slide_up);
   assets_manager_add(am, ui_rich_text2);
   assets_manager_add(am, ui_list_view_h);
