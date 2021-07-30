@@ -228,19 +228,19 @@ static ret_t pages_on_destroy(widget_t* widget) {
 }
 
 static ret_t pages_on_remove_child(widget_t* widget, widget_t* child) {
-  int32_t active = -1;
-  int32_t remove_index = -1;
   pages_t* pages = PAGES(widget);
   return_value_if_fail(widget != NULL && pages != NULL && child != NULL, RET_BAD_PARAMS);
 
-  remove_index = widget_index_of(child);
-  return_value_if_fail(remove_index >= 0, RET_BAD_PARAMS);
+  if (!widget->destroying) {
+    int32_t active = (int32_t)(pages->active);
+    int32_t remove_index = widget_index_of(child);
+    return_value_if_fail(remove_index >= 0, RET_BAD_PARAMS);
 
-  active = (int32_t)(pages->active);
-  if (remove_index < active ||
-      (remove_index == active && remove_index == widget->children->size - 1)) {
-    active = tk_max(active - 1, 0);
-    pages->active = (uint32_t)active;
+    if (remove_index < active ||
+        (remove_index == active && remove_index == widget->children->size - 1)) {
+      active = tk_max(active - 1, 0);
+      pages->active = (uint32_t)active;
+    }
   }
   return RET_CONTINUE;
 }

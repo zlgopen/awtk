@@ -2,6 +2,7 @@
 
 2021/07/30
   * 完善ostream的fscript绑定。
+  * 完善pages和button group(感谢兆坤提供补丁)。
 
 2021/07/28
   * 完善slide\_menu（感谢智明提供补丁）。

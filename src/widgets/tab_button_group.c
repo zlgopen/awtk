@@ -236,22 +236,23 @@ static ret_t tab_button_group_get_offset(widget_t* widget, xy_t* out_x, xy_t* ou
 }
 
 static ret_t tab_button_group_on_remove_child(widget_t* widget, widget_t* child) {
-  int32_t remove_index = -1;
   tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
   return_value_if_fail(
       widget != NULL && widget->children != NULL && tab_button_group != NULL && child != NULL,
       RET_BAD_PARAMS);
 
-  remove_index = widget_index_of(child);
-  return_value_if_fail(remove_index >= 0, RET_BAD_PARAMS);
+  if (!widget->destroying) {
+    int32_t remove_index = widget_index_of(child);
+    return_value_if_fail(remove_index >= 0, RET_BAD_PARAMS);
 
-  tab_button_group_update_active(widget);
+    tab_button_group_update_active(widget);
 
-  if (-1 != tab_button_group->active) {
-    uint32_t children_num = widget->children->size;
-    if (remove_index < tab_button_group->active ||
-        (remove_index == tab_button_group->active && remove_index == children_num - 1)) {
-      tab_button_group->active--;
+    if (-1 != tab_button_group->active) {
+      uint32_t children_num = widget->children->size;
+      if (remove_index < tab_button_group->active ||
+          (remove_index == tab_button_group->active && remove_index == children_num - 1)) {
+        tab_button_group->active--;
+      }
     }
   }
 
