@@ -165,8 +165,11 @@ ostream_write_double(ostream, v, ...) => int32_t
 #### 原型
 
 ```js
-ostream_write_string(ostream, v, ...) => int32_t
+ostream_write_string(ostream, v, [size]) => int32_t
 ```
+
+> size为长度(可选)，超过字符串长度时取字符串的长度。
+
 > 返回写入数据的长度（字节数）。
 
 ### 15.ostream\_write\_binary
@@ -177,8 +180,10 @@ ostream_write_string(ostream, v, ...) => int32_t
 #### 原型
 
 ```js
-ostream_write_binary(ostream, v, ...) => int32_t
+ostream_write_binary(ostream, v, [size]) => int32_t
 ```
+> size为长度，在v是binary时可选，为POINTER时则是必选。
+
 > 返回写入数据的长度（字节数）。
 
 ### 更多示例

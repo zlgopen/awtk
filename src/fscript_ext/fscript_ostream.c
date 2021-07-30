@@ -172,23 +172,37 @@ static ret_t func_ostream_write_double(fscript_t* fscript, fscript_args_t* args,
 }
 
 static ret_t func_ostream_write_string(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  uint32_t i = 0;
+  char str[64];
   int32_t ret = 0;
+  uint32_t size = -1;
+  value_t* v = NULL;
+  uint32_t slen = 0;
+  const uint8_t* data = NULL;
   tk_ostream_t* ostream = NULL;
   value_set_uint32(result, 0);
-  FSCRIPT_FUNC_CHECK(args->size > 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2 || args->size == 3, RET_BAD_PARAMS);
   ostream = TK_OSTREAM(value_object(args->args));
   FSCRIPT_FUNC_CHECK(ostream != NULL, RET_BAD_PARAMS);
 
-  for (i = 1; i < args->size; i++) {
-    value_t* iter = args->args + i;
-    const char* v = value_str(iter);
-    if (v != NULL) {
-      ret += my_ostream_write(ostream, v, strlen(v));
-    }
+  v = args->args + 1;
+  if (args->size > 2) {
+    size = value_uint32(args->args + 2);
   }
+  if (v->type == VALUE_TYPE_STRING) {
+    data = (const uint8_t*)value_str(v);
+    if (data != NULL) {
+      slen = strlen((char*)data);
+    }
+  } else {
+    value_str_ex(v, str, sizeof(str)-1);
+    data = (const uint8_t*)str;
+    slen = strlen(str);
+  }
+  size = tk_min(slen, size);
+  return_value_if_fail(data != NULL && size > 0, RET_BAD_PARAMS);
 
-  value_set_int32(result, ret);
+  ret = my_ostream_write(ostream, data, size);
+  value_set_uint32(result, ret);
 
   return ret > 0 ? RET_OK : RET_FAIL;
 }
@@ -205,15 +219,17 @@ static ret_t func_ostream_write_binary(fscript_t* fscript, fscript_args_t* args,
   FSCRIPT_FUNC_CHECK(ostream != NULL, RET_BAD_PARAMS);
 
   v = args->args + 1;
+  if (args->size > 2) {
+    size = value_uint32(args->args + 2);
+  }
   if (v->type == VALUE_TYPE_BINARY) {
     binary_data_t* bin = value_binary_data(v);
     if (bin != NULL) {
       data = bin->data;
-      size = bin->size;
+      size = tk_min(bin->size, size);
     }
   } else {
     data = value_pointer(v);
-    size = value_uint32(args->args + 2);
   }
   return_value_if_fail(data != NULL && size > 0, RET_BAD_PARAMS);
 
