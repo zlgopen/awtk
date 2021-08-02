@@ -117,7 +117,7 @@ ret_t widget_layout_children(widget_t* widget) {
 }
 
 ret_t widget_set_self_layout(widget_t* widget, const char* params) {
-  return_value_if_fail(widget != NULL && params != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (widget->self_layout != NULL) {
     if (tk_str_eq(widget->self_layout->params.str, params)) {
@@ -127,7 +127,7 @@ ret_t widget_set_self_layout(widget_t* widget, const char* params) {
     widget->self_layout = NULL;
   }
 
-  if (params[0] != '\0') {
+  if (params != NULL && params[0] != '\0') {
     widget->self_layout = self_layouter_create(params);
   }
 
