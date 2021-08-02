@@ -49,6 +49,7 @@
       <button focusable="true" name="open:rich_text_view" text="RichTextView"/>
       <button focusable="true" name="open:bidi" text="Bidirectional"/>
       <button focusable="true" name="open:color_tile" text="Color Tile"/>
+      <button focusable="true" name="open:floating_keyboard" text="Floating Keyboard"/>
     </view>
     <view x="0" y="0" w="100%" h="100%" children_layout="default(c=1,r=8,m=5,s=5)">
       <button focusable="true" name="open:memtest" text="MemTest"/>

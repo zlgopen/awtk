@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/08/03
+  * 键盘支持跟随编辑(指定floating=true即可)
+
 2021/08/02
   * 公开函数timer\_manager\_dispatch。
   * 修复fragment fb编译问题（感谢智明提供补丁）。

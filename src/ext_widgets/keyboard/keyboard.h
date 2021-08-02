@@ -120,6 +120,13 @@ BEGIN_C_DECLS
  * </pages>
  * ```
  *
+ * * 键盘跟随。
+ * 默认情况下，键盘从底部弹出。如果需要让键盘在编辑器附近弹出，可以指定floating属性为true。如：
+ * 
+ * ```xml
+ * <keyboard theme="keyboard" w="200" h="200" floating="true">
+ * ```
+ *
  * > 更多用法请参考：
  * [kb_default](https://github.com/zlgopen/awtk/blob/master/design/default/ui/kb_default.xml)
  *
