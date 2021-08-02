@@ -683,7 +683,6 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
         dirty_rects_add(&(tmp_dirty_rects), (const rect_t*)&r);
         canvas_t* c = native_window_get_canvas(wm->native_window);
         canvas_begin_frame(c, (const dirty_rects_t*)&tmp_dirty_rects, LCD_DRAW_NORMAL);
-        wm->native_window->dirty = TRUE;
         widget_paint(WIDGET(wm), c);
         window_manager_paint_cursor(widget, c);
         canvas_end_frame(c);

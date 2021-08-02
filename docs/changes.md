@@ -2,6 +2,7 @@
 
 2021/08/02
   * 公开函数timer\_manager\_dispatch。
+  * 修复fragment fb编译问题（感谢智明提供补丁）。
 
 2021/07/30
   * 完善ostream的fscript绑定。
