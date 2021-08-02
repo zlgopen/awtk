@@ -53,6 +53,15 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml)
 | -------- | ------------ | 
 | <a href="#gif_image_t_gif_image_cast">gif\_image\_cast</a> | 转换为gif_image对象(供脚本语言使用)。 |
 | <a href="#gif_image_t_gif_image_create">gif\_image\_create</a> | 创建gif_image对象 |
+| <a href="#gif_image_t_gif_image_pause">gif\_image\_pause</a> | 暂停。 |
+| <a href="#gif_image_t_gif_image_play">gif\_image\_play</a> | 播放。 |
+| <a href="#gif_image_t_gif_image_stop">gif\_image\_stop</a> | 停止(并重置index为-1)。 |
+### 属性
+<p id="gif_image_t_properties">
+
+| 属性名称 | 类型 | 说明 | 
+| -------- | ----- | ------------ | 
+| <a href="#gif_image_t_running">running</a> | bool\_t | 是否正在运行。 |
 #### gif\_image\_cast 函数
 -----------------------
 
@@ -95,3 +104,70 @@ widget_t* gif_image_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### gif\_image\_pause 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="gif_image_t_gif_image_pause">暂停。
+
+* 函数原型：
+
+```
+ret_t gif_image_pause (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | gif\_image对象。 |
+#### gif\_image\_play 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="gif_image_t_gif_image_play">播放。
+
+* 函数原型：
+
+```
+ret_t gif_image_play (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | gif\_image对象。 |
+#### gif\_image\_stop 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="gif_image_t_gif_image_stop">停止(并重置index为-1)。
+
+* 函数原型：
+
+```
+ret_t gif_image_stop (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | gif\_image对象。 |
+#### running 属性
+-----------------------
+> <p id="gif_image_t_running">是否正在运行。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |

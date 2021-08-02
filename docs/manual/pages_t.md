@@ -46,8 +46,8 @@ widget\_t的函数均适用于pages\_t控件。
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
-| EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(当前页)即将改变事件。 |
-| EVT\_VALUE\_CHANGED | event\_t | 值(当前页)改变事件。 |
+| EVT\_VALUE\_WILL\_CHANGE | value\_change\_event\_t | 值(当前页)即将改变事件。 |
+| EVT\_VALUE\_CHANGED | value\_change\_event\_t | 值(当前页)改变事件。 |
 #### pages\_cast 函数
 -----------------------
 

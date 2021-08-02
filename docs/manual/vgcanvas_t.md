@@ -47,6 +47,7 @@ vgcanvas_restore(vg);
 | <a href="#vgcanvas_t_vgcanvas_cast">vgcanvas\_cast</a> | 转换为vgcanvas对象(供脚本语言使用)。 |
 | <a href="#vgcanvas_t_vgcanvas_clear_cache">vgcanvas\_clear\_cache</a> | 释放vgcanvas对象的缓冲数据。 |
 | <a href="#vgcanvas_t_vgcanvas_clear_rect">vgcanvas\_clear\_rect</a> | 用颜色清除指定矩形区域。 |
+| <a href="#vgcanvas_t_vgcanvas_clip_path">vgcanvas\_clip\_path</a> | 使用当前的path裁剪。 |
 | <a href="#vgcanvas_t_vgcanvas_clip_rect">vgcanvas\_clip\_rect</a> | 矩形裁剪。 |
 | <a href="#vgcanvas_t_vgcanvas_close_path">vgcanvas\_close\_path</a> | 闭合路径。 |
 | <a href="#vgcanvas_t_vgcanvas_create">vgcanvas\_create</a> | 创建vgcanvas。 |
@@ -84,6 +85,7 @@ vgcanvas_restore(vg);
 | <a href="#vgcanvas_t_vgcanvas_set_antialias">vgcanvas\_set\_antialias</a> | 设置是否启用反走样。 |
 | <a href="#vgcanvas_t_vgcanvas_set_fill_color">vgcanvas\_set\_fill\_color</a> | 设置填充颜色。 |
 | <a href="#vgcanvas_t_vgcanvas_set_fill_color_str">vgcanvas\_set\_fill\_color\_str</a> | 设置填充颜色。 |
+| <a href="#vgcanvas_t_vgcanvas_set_fill_gradient">vgcanvas\_set\_fill\_gradient</a> | 设置填充颜色为渐变色。 |
 | <a href="#vgcanvas_t_vgcanvas_set_fill_linear_gradient">vgcanvas\_set\_fill\_linear\_gradient</a> | 设置填充颜色为线性渐变色。 |
 | <a href="#vgcanvas_t_vgcanvas_set_fill_radial_gradient">vgcanvas\_set\_fill\_radial\_gradient</a> | 设置填充颜色为径向渐变色。 |
 | <a href="#vgcanvas_t_vgcanvas_set_font">vgcanvas\_set\_font</a> | 设置字体的名称。 |
@@ -95,6 +97,7 @@ vgcanvas_restore(vg);
 | <a href="#vgcanvas_t_vgcanvas_set_miter_limit">vgcanvas\_set\_miter\_limit</a> | 设置miter limit。 |
 | <a href="#vgcanvas_t_vgcanvas_set_stroke_color">vgcanvas\_set\_stroke\_color</a> | 设置线条颜色。 |
 | <a href="#vgcanvas_t_vgcanvas_set_stroke_color_str">vgcanvas\_set\_stroke\_color\_str</a> | 设置线条颜色。 |
+| <a href="#vgcanvas_t_vgcanvas_set_stroke_gradient">vgcanvas\_set\_stroke\_gradient</a> | 设置线条颜色为渐变色。 |
 | <a href="#vgcanvas_t_vgcanvas_set_stroke_linear_gradient">vgcanvas\_set\_stroke\_linear\_gradient</a> | 设置线条颜色为线性渐变色。 |
 | <a href="#vgcanvas_t_vgcanvas_set_stroke_radial_gradient">vgcanvas\_set\_stroke\_radial\_gradient</a> | 设置线条颜色为径向渐变色。 |
 | <a href="#vgcanvas_t_vgcanvas_set_text_align">vgcanvas\_set\_text\_align</a> | 设置文本水平对齐的方式。 |
@@ -184,7 +187,7 @@ ret_t vgcanvas_arc_to (vgcanvas_t* vg, float_t x1, float_t y1, float_t x2, float
 * 函数原型：
 
 ```
-ret_t vgcanvas_begin_frame (vgcanvas_t* vg, const rect_t* dirty_rect);
+ret_t vgcanvas_begin_frame (vgcanvas_t* vg, const dirty_rects_t* dirty_rects);
 ```
 
 * 参数说明：
@@ -193,7 +196,7 @@ ret_t vgcanvas_begin_frame (vgcanvas_t* vg, const rect_t* dirty_rect);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
-| dirty\_rect | const rect\_t* | 需要绘制的区域。 |
+| dirty\_rects | const dirty\_rects\_t* | 需要绘制的区域。 |
 #### vgcanvas\_begin\_path 函数
 -----------------------
 
@@ -320,6 +323,26 @@ ret_t vgcanvas_clear_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, floa
 | w | float\_t | 宽度。 |
 | h | float\_t | 高度。 |
 | c | color\_t | 颜色。 |
+#### vgcanvas\_clip\_path 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_clip_path">使用当前的path裁剪。
+>目前只有部分backend支持(如cairo)。
+
+* 函数原型：
+
+```
+ret_t vgcanvas_clip_path (vgcanvas_t* vg);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
 #### vgcanvas\_clip\_rect 函数
 -----------------------
 
@@ -1130,6 +1153,28 @@ ret_t vgcanvas_set_fill_color_str (vgcanvas_t* vg, const char* color);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | color | const char* | 颜色。 |
+#### vgcanvas\_set\_fill\_gradient 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_set_fill_gradient">设置填充颜色为渐变色。
+
+>目前只有部分backend支持(如cairo)。
+
+* 函数原型：
+
+```
+ret_t vgcanvas_set_fill_gradient (vgcanvas_t* vg, vg_gradient_t* gradient);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| gradient | vg\_gradient\_t* | gradient对象。 |
 #### vgcanvas\_set\_fill\_linear\_gradient 函数
 -----------------------
 
@@ -1360,6 +1405,28 @@ ret_t vgcanvas_set_stroke_color_str (vgcanvas_t* vg, const char* color);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | color | const char* | 颜色。 |
+#### vgcanvas\_set\_stroke\_gradient 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_set_stroke_gradient">设置线条颜色为渐变色。
+
+>目前只有部分backend支持(如cairo)。
+
+* 函数原型：
+
+```
+ret_t vgcanvas_set_stroke_gradient (vgcanvas_t* vg, vg_gradient_t* gradient);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| gradient | vg\_gradient\_t* | gradient对象。 |
 #### vgcanvas\_set\_stroke\_linear\_gradient 函数
 -----------------------
 

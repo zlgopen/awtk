@@ -51,8 +51,8 @@ color\_picker\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数�
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
-| EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(颜色)即将改变事件。 |
-| EVT\_VALUE\_CHANGED | event\_t | 值(颜色)改变事件。 |
+| EVT\_VALUE\_WILL\_CHANGE | value\_change\_event\_t | 值(颜色)即将改变事件。 |
+| EVT\_VALUE\_CHANGED | value\_change\_event\_t | 值(颜色)改变事件。 |
 #### color\_picker\_cast 函数
 -----------------------
 

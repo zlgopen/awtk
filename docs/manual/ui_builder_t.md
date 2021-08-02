@@ -18,12 +18,32 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#ui_builder_t_ui_builder_destroy">ui\_builder\_destroy</a> | 销毁builder。 |
 | <a href="#ui_builder_t_ui_builder_on_end">ui\_builder\_on\_end</a> | ui\_loader在解析结束时，调用本函数做些收尾工作。 |
 | <a href="#ui_builder_t_ui_builder_on_start">ui\_builder\_on\_start</a> | ui\_loader在解析开始时，调用本函数做些准备工作。 |
 | <a href="#ui_builder_t_ui_builder_on_widget_end">ui\_builder\_on\_widget\_end</a> | ui\_loader在解析到widget结束时，调用本函数进一步处理。 |
 | <a href="#ui_builder_t_ui_builder_on_widget_prop">ui\_builder\_on\_widget\_prop</a> | ui\_loader在解析到widget的属性时，调用本函数进一步处理。 |
 | <a href="#ui_builder_t_ui_builder_on_widget_prop_end">ui\_builder\_on\_widget\_prop\_end</a> | ui\_loader在解析到widget全部属性结束时，调用本函数进一步处理。 |
 | <a href="#ui_builder_t_ui_builder_on_widget_start">ui\_builder\_on\_widget\_start</a> | ui\_loader在解析到widget时，调用本函数进一步处理。 |
+#### ui\_builder\_destroy 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="ui_builder_t_ui_builder_destroy">销毁builder。
+
+* 函数原型：
+
+```
+ret_t ui_builder_destroy (ui_builder_t* builder);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| builder | ui\_builder\_t* | builder对象。 |
 #### ui\_builder\_on\_end 函数
 -----------------------
 

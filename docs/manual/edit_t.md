@@ -119,8 +119,8 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
-| EVT\_VALUE\_CHANGING | event\_t | 文本正在改变事件(编辑中)。 |
-| EVT\_VALUE\_CHANGED | event\_t | 文本改变事件。 |
+| EVT\_VALUE\_CHANGING | value\_change\_event\_t | 文本正在改变事件(编辑中)。 |
+| EVT\_VALUE\_CHANGED | value\_change\_event\_t | 文本改变事件。 |
 #### edit\_cast 函数
 -----------------------
 

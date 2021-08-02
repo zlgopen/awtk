@@ -8,6 +8,7 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#event_t_event_cast">event\_cast</a> | 转换为event对象。 |
+| <a href="#event_t_event_clone">event\_clone</a> | clone事件对象。 |
 | <a href="#event_t_event_create">event\_create</a> | 创建event对象。 |
 | <a href="#event_t_event_destroy">event\_destroy</a> | 销毁事件对象。 |
 | <a href="#event_t_event_get_type">event\_get\_type</a> | 获取event类型。 |
@@ -17,6 +18,7 @@
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
+| <a href="#event_t_native_window_handle">native\_window\_handle</a> | void* | 原生窗口句柄。 |
 | <a href="#event_t_size">size</a> | int32\_t | 结构体的大小。 |
 | <a href="#event_t_target">target</a> | void* | 事件发生的目标对象。 |
 | <a href="#event_t_time">time</a> | uint64\_t | 事件发生的时间。 |
@@ -41,6 +43,25 @@ event_t* event_cast (event_t* event);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | event\_t* | event对象。 |
+| event | event\_t* | event对象。 |
+#### event\_clone 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="event_t_event_clone">clone事件对象。
+
+* 函数原型：
+
+```
+event_t* event_clone (event_t* event);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | event\_t* | 返回事件对象。 |
 | event | event\_t* | event对象。 |
 #### event\_create 函数
 -----------------------
@@ -94,14 +115,14 @@ ret_t event_destroy (event_t* event);
 * 函数原型：
 
 ```
-int event_get_type (event_t* event);
+uint32_t event_get_type (event_t* event);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | int | 返回event类型。 |
+| 返回值 | uint32\_t | 返回event类型。 |
 | event | event\_t* | event对象。 |
 #### event\_init 函数
 -----------------------
@@ -123,6 +144,16 @@ event_t event_init (uint32_t type, void* target);
 | 返回值 | event\_t | 事件对象。 |
 | type | uint32\_t | 事件类型。 |
 | target | void* | 目标对象。 |
+#### native\_window\_handle 属性
+-----------------------
+> <p id="event_t_native_window_handle">原生窗口句柄。
+
+* 类型：void*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
 #### size 属性
 -----------------------
 > <p id="event_t_size">结构体的大小。

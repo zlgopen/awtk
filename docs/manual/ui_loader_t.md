@@ -20,6 +20,7 @@ UI加载器。
 | -------- | ------------ | 
 | <a href="#ui_loader_t_ui_loader_load">ui\_loader\_load</a> | 加载界面描述数据，然后分发给ui\_builder，由ui\_builder进一步处理。 |
 | <a href="#ui_loader_t_ui_loader_load_widget">ui\_loader\_load\_widget</a> | 从指定的资源加载widget对象，通常用于加载非窗口的widget。 |
+| <a href="#ui_loader_t_ui_loader_load_widget_with_parent">ui\_loader\_load\_widget\_with\_parent</a> | 从指定的资源加载widget对象，并为widget对象指定父控件对象，通常用于加载非窗口的widget。 |
 #### ui\_loader\_load 函数
 -----------------------
 
@@ -63,3 +64,23 @@ widget_t* ui_loader_load_widget (const char* name);
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 返回widget对象。 |
 | name | const char* | 资源名。 |
+#### ui\_loader\_load\_widget\_with\_parent 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="ui_loader_t_ui_loader_load_widget_with_parent">从指定的资源加载widget对象，并为widget对象指定父控件对象，通常用于加载非窗口的widget。
+
+* 函数原型：
+
+```
+widget_t* ui_loader_load_widget_with_parent (const char* name, widget_t* parent);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | 返回widget对象。 |
+| name | const char* | 资源名。 |
+| parent | widget\_t* | 父控件对象。 |

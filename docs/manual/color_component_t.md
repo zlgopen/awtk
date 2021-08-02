@@ -24,7 +24,7 @@ COLOR_PICKER_CHILD_H: 水平为同色，垂直为Hue(递减)。
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
-| EVT\_VALUE\_CHANGING | event\_t | 颜色正在改变事件。 |
+| EVT\_VALUE\_CHANGING | value\_change\_event\_t | 颜色正在改变事件。 |
 #### color\_component\_cast 函数
 -----------------------
 

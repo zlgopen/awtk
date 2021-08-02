@@ -10,11 +10,13 @@
 | <a href="#matrix_t_matrix_identity">matrix\_identity</a> | 重置矩阵对象为单位矩阵。 |
 | <a href="#matrix_t_matrix_init">matrix\_init</a> | 初始化矩阵对象。 |
 | <a href="#matrix_t_matrix_invert">matrix\_invert</a> | 求矩阵的逆。 |
+| <a href="#matrix_t_matrix_is_invertible">matrix\_is\_invertible</a> | 判断matrix是否可逆。 |
 | <a href="#matrix_t_matrix_multiply">matrix\_multiply</a> | 矩阵相乘。 |
 | <a href="#matrix_t_matrix_rotate">matrix\_rotate</a> | 旋转。 |
 | <a href="#matrix_t_matrix_scale">matrix\_scale</a> | 缩放。 |
 | <a href="#matrix_t_matrix_set">matrix\_set</a> | 设置矩阵的参数。 |
 | <a href="#matrix_t_matrix_transform_point">matrix\_transform\_point</a> | 对点进行变换。 |
+| <a href="#matrix_t_matrix_transform_pointf">matrix\_transform\_pointf</a> | 对点进行变换。 |
 | <a href="#matrix_t_matrix_translate">matrix\_translate</a> | 平移。 |
 #### matrix\_identity 函数
 -----------------------
@@ -72,6 +74,25 @@ matrix_t* matrix_invert (matrix_t* m);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | matrix\_t* | 矩阵对象。 |
+| m | matrix\_t* | 矩阵对象。 |
+#### matrix\_is\_invertible 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="matrix_t_matrix_is_invertible">判断matrix是否可逆。
+
+* 函数原型：
+
+```
+bool_t matrix_is_invertible (matrix_t* m);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示可逆，否则表示不可逆。 |
 | m | matrix\_t* | 矩阵对象。 |
 #### matrix\_multiply 函数
 -----------------------
@@ -182,6 +203,29 @@ matrix_t* matrix_transform_point (matrix_t* m, xy_t x, xy_t y, xy_t* out_x, xy_t
 | y | xy\_t | y |
 | out\_x | xy\_t* | out\_x |
 | out\_y | xy\_t* | out\_y |
+#### matrix\_transform\_pointf 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="matrix_t_matrix_transform_pointf">对点进行变换。
+
+* 函数原型：
+
+```
+matrix_t* matrix_transform_pointf (matrix_t* m, float x, float y, float* out_x, float* out_y);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | matrix\_t* | 矩阵对象。 |
+| m | matrix\_t* | 矩阵对象。 |
+| x | float | x |
+| y | float | y |
+| out\_x | float* | out\_x |
+| out\_y | float* | out\_y |
 #### matrix\_translate 函数
 -----------------------
 

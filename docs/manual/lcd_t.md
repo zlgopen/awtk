@@ -21,11 +21,15 @@
 | <a href="#lcd_t_lcd_fill_rect">lcd\_fill\_rect</a> | 绘制实心矩形。 |
 | <a href="#lcd_t_lcd_get_clip_rect">lcd\_get\_clip\_rect</a> | 获取裁剪区域。 |
 | <a href="#lcd_t_lcd_get_desired_bitmap_format">lcd\_get\_desired\_bitmap\_format</a> | 获取期望的位图格式。绘制期望的位图格式可以提高绘制性能。 |
+| <a href="#lcd_t_lcd_get_dirty_rect">lcd\_get\_dirty\_rect</a> | 获取 lcd 对象的脏矩形。 |
+| <a href="#lcd_t_lcd_get_dirty_rect">lcd\_get\_dirty\_rect</a> | 获取 lcd 对象的脏矩形列表。 |
 | <a href="#lcd_t_lcd_get_height">lcd\_get\_height</a> | 获取高度。 |
 | <a href="#lcd_t_lcd_get_point_color">lcd\_get\_point\_color</a> | 获取指定点的颜色，对于基于非FrameBuffer的LCD，返回当前的fill_color。 |
 | <a href="#lcd_t_lcd_get_text_metrics">lcd\_get\_text\_metrics</a> | 获取当前字体的度量信息。 |
+| <a href="#lcd_t_lcd_get_type">lcd\_get\_type</a> | 获取 lcd 类型。 |
 | <a href="#lcd_t_lcd_get_vgcanvas">lcd\_get\_vgcanvas</a> | 获取矢量图canvas。 |
 | <a href="#lcd_t_lcd_get_width">lcd\_get\_width</a> | 获取宽度。 |
+| <a href="#lcd_t_lcd_is_support_dirty_rect">lcd\_is\_support\_dirty\_rect</a> | 获取 lcd 对象是否支持脏矩形。 |
 | <a href="#lcd_t_lcd_is_swappable">lcd\_is\_swappable</a> | 判读lcd是否支持swap。 |
 | <a href="#lcd_t_lcd_measure_text">lcd\_measure\_text</a> | 测量字符串占用的宽度。 |
 | <a href="#lcd_t_lcd_resize">lcd\_resize</a> | 基于SDL的PC软件，在SDL窗口resize时，需要调用本函数resize lcd。 |
@@ -34,10 +38,11 @@
 | <a href="#lcd_t_lcd_set_font_name">lcd\_set\_font\_name</a> | 设置字体名称。 |
 | <a href="#lcd_t_lcd_set_font_size">lcd\_set\_font\_size</a> | 设置字体大小。 |
 | <a href="#lcd_t_lcd_set_global_alpha">lcd\_set\_global\_alpha</a> | 设置全局alpha。 |
+| <a href="#lcd_t_lcd_set_line_length">lcd\_set\_line\_length</a> | 设置 line_length 。 |
 | <a href="#lcd_t_lcd_set_stroke_color">lcd\_set\_stroke\_color</a> | 设置线条颜色。 |
 | <a href="#lcd_t_lcd_set_text_color">lcd\_set\_text\_color</a> | 设置文本颜色。 |
+| <a href="#lcd_t_lcd_set_vgcanvas">lcd\_set\_vgcanvas</a> | 设置 vgcanvas。 |
 | <a href="#lcd_t_lcd_stroke_rect">lcd\_stroke\_rect</a> | 绘制矩形边框。 |
-| <a href="#lcd_t_lcd_take_snapshot">lcd\_take\_snapshot</a> | 拍摄快照，一般用于窗口动画，只有framebuffer模式，才支持。 |
 ### 属性
 <p id="lcd_t_properties">
 
@@ -66,7 +71,7 @@
 * 函数原型：
 
 ```
-ret_t lcd_begin_frame (lcd_t* lcd, const rect_t* dirty_rect, lcd_draw_mode_t anim_mode);
+ret_t lcd_begin_frame (lcd_t* lcd, const dirty_rects_t* dirty_rects, lcd_draw_mode_t anim_mode);
 ```
 
 * 参数说明：
@@ -75,7 +80,7 @@ ret_t lcd_begin_frame (lcd_t* lcd, const rect_t* dirty_rect, lcd_draw_mode_t ani
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | lcd | lcd\_t* | lcd对象。 |
-| dirty\_rect | const rect\_t* | 需要绘制的区域。 |
+| dirty\_rects | const dirty\_rects\_t* | 需要绘制的区域。 |
 | anim\_mode | lcd\_draw\_mode\_t | 动画模式，如果可能，直接画到显存而不是离线的framebuffer。 |
 #### lcd\_clear\_rect 函数
 -----------------------
@@ -353,6 +358,45 @@ bitmap_format_t lcd_get_desired_bitmap_format (lcd_t* lcd);
 | -------- | ----- | --------- |
 | 返回值 | bitmap\_format\_t | 返回期望的位图格式。 |
 | lcd | lcd\_t* | lcd对象。 |
+#### lcd\_get\_dirty\_rect 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="lcd_t_lcd_get_dirty_rect">获取 lcd 对象的脏矩形。
+
+* 函数原型：
+
+```
+ret_t lcd_get_dirty_rect (lcd_t* lcd, rect_t* r);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| lcd | lcd\_t* | lcd对象。 |
+| r | rect\_t* | 返回脏矩形。 |
+#### lcd\_get\_dirty\_rect 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="lcd_t_lcd_get_dirty_rect">获取 lcd 对象的脏矩形列表。
+
+* 函数原型：
+
+```
+const dirty_rects_t* lcd_get_dirty_rect (lcd_t* lcd);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const dirty\_rects\_t* | 成功返回脏矩形列表，失败返回 NULL。 |
+| lcd | lcd\_t* | lcd对象。 |
 #### lcd\_get\_height 函数
 -----------------------
 
@@ -415,6 +459,25 @@ ret_t lcd_get_text_metrics (lcd_t* lcd, float_t* ascent, float_t* descent, float
 | ascent | float\_t* | 用于返回ascent。 |
 | descent | float\_t* | 用于返回descent。 |
 | line\_hight | float\_t* | 用于返回line height。 |
+#### lcd\_get\_type 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="lcd_t_lcd_get_type">获取 lcd 类型。
+
+* 函数原型：
+
+```
+lcd_type_t lcd_get_type (lcd_t* lcd);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | lcd\_type\_t | 返回 lcd\_type。 |
+| lcd | lcd\_t* | lcd对象。 |
 #### lcd\_get\_vgcanvas 函数
 -----------------------
 
@@ -452,6 +515,25 @@ wh_t lcd_get_width (lcd_t* lcd);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | wh\_t | 返回宽度。 |
+| lcd | lcd\_t* | lcd对象。 |
+#### lcd\_is\_support\_dirty\_rect 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="lcd_t_lcd_is_support_dirty_rect">获取 lcd 对象是否支持脏矩形。
+
+* 函数原型：
+
+```
+bool_t lcd_is_support_dirty_rect (lcd_t* lcd);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示支持，否则表示不支持。 |
 | lcd | lcd\_t* | lcd对象。 |
 #### lcd\_is\_swappable 函数
 -----------------------
@@ -616,6 +698,26 @@ ret_t lcd_set_global_alpha (lcd_t* lcd, uint8_t alpha);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | lcd | lcd\_t* | lcd对象。 |
 | alpha | uint8\_t | 全局alpha。 |
+#### lcd\_set\_line\_length 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="lcd_t_lcd_set_line_length">设置 line_length 。
+
+* 函数原型：
+
+```
+ret_t lcd_set_line_length (lcd_t* lcd, uint32_t line_length);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| lcd | lcd\_t* | lcd对象。 |
+| line\_length | uint32\_t | 一行的字节长度。 |
 #### lcd\_set\_stroke\_color 函数
 -----------------------
 
@@ -656,6 +758,26 @@ ret_t lcd_set_text_color (lcd_t* lcd, color_t color);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | lcd | lcd\_t* | lcd对象。 |
 | color | color\_t | 颜色。 |
+#### lcd\_set\_vgcanvas 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="lcd_t_lcd_set_vgcanvas">设置 vgcanvas。
+
+* 函数原型：
+
+```
+ret_t lcd_set_vgcanvas (lcd_t* lcd, vgcanvas_t* vgcanvas);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| lcd | lcd\_t* | lcd对象。 |
+| vgcanvas | vgcanvas\_t* | vgcanvas对象。 |
 #### lcd\_stroke\_rect 函数
 -----------------------
 
@@ -679,27 +801,6 @@ ret_t lcd_stroke_rect (lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标。 |
 | w | wh\_t | 宽度。 |
 | h | wh\_t | 高度。 |
-#### lcd\_take\_snapshot 函数
------------------------
-
-* 函数功能：
-
-> <p id="lcd_t_lcd_take_snapshot">拍摄快照，一般用于窗口动画，只有framebuffer模式，才支持。
-
-* 函数原型：
-
-```
-ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| lcd | lcd\_t* | lcd对象。 |
-| img | bitmap\_t* | 返回快照图片。 |
-| auto\_rotate | bool\_t | 是否根据LCD实际方向自动旋转。 |
 #### draw\_mode 属性
 -----------------------
 > <p id="lcd_t_draw_mode">绘制模式。

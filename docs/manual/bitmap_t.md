@@ -16,6 +16,7 @@
 | <a href="#bitmap_t_bitmap_get_line_length">bitmap\_get\_line\_length</a> | 获取每一行占用内存的字节数。 |
 | <a href="#bitmap_t_bitmap_get_pixel">bitmap\_get\_pixel</a> | 获取图片指定像素的rgba颜色值(主要用于测试程序)。 |
 | <a href="#bitmap_t_bitmap_init">bitmap\_init</a> | 初始化图片。 |
+| <a href="#bitmap_t_bitmap_init_from_bgra">bitmap\_init\_from\_bgra</a> | 初始化图片。 |
 | <a href="#bitmap_t_bitmap_init_from_rgba">bitmap\_init\_from\_rgba</a> | 初始化图片。 |
 | <a href="#bitmap_t_bitmap_lock_buffer_for_read">bitmap\_lock\_buffer\_for\_read</a> | 为读取数据而锁定bitmap的图片缓冲区。 |
 | <a href="#bitmap_t_bitmap_lock_buffer_for_write">bitmap\_lock\_buffer\_for\_write</a> | 为修改数据而锁定bitmap的图片缓冲区。 |
@@ -215,6 +216,31 @@ ret_t bitmap_init (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t for
 | h | uint32\_t | 高度。 |
 | format | bitmap\_format\_t | 格式。 |
 | data | const uint8\_t* | 数据，直接引用，但不负责释放。如果为空，由内部自动分配和释放。 |
+#### bitmap\_init\_from\_bgra 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="bitmap_t_bitmap_init_from_bgra">初始化图片。
+数据。3通道时为BGR888格式，4通道时为BGRA888格式(内部拷贝该数据，不会引用，调用者自行释放)。
+
+* 函数原型：
+
+```
+ret_t bitmap_init_from_bgra (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format, const uint8_t* , uint32_t comp);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| bitmap | bitmap\_t* | bitmap对象。 |
+| w | uint32\_t | 宽度。 |
+| h | uint32\_t | 高度。 |
+| format | bitmap\_format\_t | 格式。 |
+|  | const uint8\_t* | a |
+| comp | uint32\_t | 颜色通道数(目前支持3(bgr)和4(bgra))。 |
 #### bitmap\_init\_from\_rgba 函数
 -----------------------
 

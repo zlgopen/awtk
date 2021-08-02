@@ -52,6 +52,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L3
 | <a href="#scroll_bar_t_scroll_bar_is_mobile">scroll\_bar\_is\_mobile</a> | 判断是否是mobile风格的滚动条。 |
 | <a href="#scroll_bar_t_scroll_bar_scroll_delta">scroll\_bar\_scroll\_delta</a> | 在当前的值上增加一个值，并滚动到新的值，并触发EVT_VALUE_CHANGED事件。 |
 | <a href="#scroll_bar_t_scroll_bar_scroll_to">scroll\_bar\_scroll\_to</a> | 滚动到指定的值。 |
+| <a href="#scroll_bar_t_scroll_bar_set_auto_hide">scroll\_bar\_set\_auto\_hide</a> | 设置auto_hide属性。 |
 | <a href="#scroll_bar_t_scroll_bar_set_params">scroll\_bar\_set\_params</a> | 设置参数。 |
 | <a href="#scroll_bar_t_scroll_bar_set_value">scroll\_bar\_set\_value</a> | 设置值，并触发EVT_VALUE_CHANGED事件。 |
 | <a href="#scroll_bar_t_scroll_bar_set_value_only">scroll\_bar\_set\_value\_only</a> | 设置值，但不触发EVT_VALUE_CHANGED事件。 |
@@ -61,6 +62,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L3
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#scroll_bar_t_animatable">animatable</a> | bool\_t | 滚动时是否启用动画。 |
+| <a href="#scroll_bar_t_auto_hide">auto\_hide</a> | bool\_t | 是否自动隐藏(仅对mobile风格的滚动条有效)。 |
 | <a href="#scroll_bar_t_row">row</a> | int32\_t | 行的高度。 |
 | <a href="#scroll_bar_t_value">value</a> | int32\_t | 当前的值。 |
 | <a href="#scroll_bar_t_virtual_size">virtual\_size</a> | int32\_t | 虚拟宽度或高度。 |
@@ -69,8 +71,8 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L3
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
-| EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(滚动值)即将改变事件。 |
-| EVT\_VALUE\_CHANGED | event\_t | 值(滚动值)改变事件。 |
+| EVT\_VALUE\_WILL\_CHANGE | value\_change\_event\_t | 值(滚动值)即将改变事件。 |
+| EVT\_VALUE\_CHANGED | value\_change\_event\_t | 值(滚动值)改变事件。 |
 #### scroll\_bar\_add\_delta 函数
 -----------------------
 
@@ -241,6 +243,28 @@ ret_t scroll_bar_scroll_to (widget_t* widget, int32_t value, int32_t duration);
 | widget | widget\_t* | scroll\_bar控件。 |
 | value | int32\_t | 值。 |
 | duration | int32\_t | 动画持续时间。 |
+#### scroll\_bar\_set\_auto\_hide 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="scroll_bar_t_scroll_bar_set_auto_hide">设置auto_hide属性。
+
+>仅对mobile风格的滚动条有效
+
+* 函数原型：
+
+```
+ret_t scroll_bar_set_auto_hide (widget_t* widget, bool_t auto_hide);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | scroll\_bar控件。 |
+| auto\_hide | bool\_t | 值。 |
 #### scroll\_bar\_set\_params 函数
 -----------------------
 
@@ -305,6 +329,22 @@ ret_t scroll_bar_set_value_only (widget_t* widget, int32_t value);
 #### animatable 属性
 -----------------------
 > <p id="scroll_bar_t_animatable">滚动时是否启用动画。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### auto\_hide 属性
+-----------------------
+> <p id="scroll_bar_t_auto_hide">是否自动隐藏(仅对mobile风格的滚动条有效)。
 
 * 类型：bool\_t
 

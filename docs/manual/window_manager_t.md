@@ -32,6 +32,8 @@
 | <a href="#window_manager_t_window_manager_resize">window\_manager\_resize</a> | 调整原生窗口的大小。 |
 | <a href="#window_manager_t_window_manager_set">window\_manager\_set</a> | 设置缺省的窗口管理器。 |
 | <a href="#window_manager_t_window_manager_set_cursor">window\_manager\_set\_cursor</a> | 设置鼠标指针。 |
+| <a href="#window_manager_t_window_manager_set_ignore_input_events">window\_manager\_set\_ignore\_input\_events</a> | 设置是否忽略用户输入事件。 |
+| <a href="#window_manager_t_window_manager_set_max_fps">window\_manager\_set\_max\_fps</a> | 限制最大帧率。 |
 | <a href="#window_manager_t_window_manager_set_screen_saver_time">window\_manager\_set\_screen\_saver\_time</a> | 设置屏保时间。 |
 | <a href="#window_manager_t_window_manager_set_show_fps">window\_manager\_set\_show\_fps</a> | 设置是否显示FPS。 |
 | <a href="#window_manager_t_window_manager_switch_to">window\_manager\_switch\_to</a> | 切换到指定窗口。 |
@@ -507,6 +509,48 @@ ret_t window_manager_set_cursor (widget_t* widget, const char* cursor);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 窗口管理器对象。 |
 | cursor | const char* | 图片名称(从图片管理器中加载)。 |
+#### window\_manager\_set\_ignore\_input\_events 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_set_ignore_input_events">设置是否忽略用户输入事件。
+
+* 函数原型：
+
+```
+ret_t window_manager_set_ignore_input_events (widget_t* widget, bool_t ignore_input_events);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 窗口管理器对象。 |
+| ignore\_input\_events | bool\_t | 是否忽略用户输入事件。 |
+#### window\_manager\_set\_max\_fps 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_set_max_fps">限制最大帧率。
+
+> TK\_MAX\_LOOP\_FPS/max\_fps最好是整数，比如TK\_MAX\_LOOP\_FPS为120，max\_fps可取60/30/20/10等。
+
+* 函数原型：
+
+```
+ret_t window_manager_set_max_fps (widget_t* widget, uint32_t max_fps);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 窗口管理器对象。 |
+| max\_fps | uint32\_t | 最大帧率。 |
 #### window\_manager\_set\_screen\_saver\_time 函数
 -----------------------
 

@@ -74,7 +74,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/ui/file_chooser_for_o
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
-| EVT\_VALUE\_CHANGED | event\_t | 值(当前显示目录)改变事件。 |
+| EVT\_VALUE\_CHANGED | value\_change\_event\_t | 值(当前显示目录)改变事件。 |
 #### file\_browser\_view\_cast 函数
 -----------------------
 

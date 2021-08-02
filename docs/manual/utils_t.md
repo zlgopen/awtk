@@ -32,6 +32,7 @@
 | <a href="#utils_t_tk_pixel_copy">tk\_pixel\_copy</a> | 已bpp字节为标准拷贝数据。 |
 | <a href="#utils_t_tk_pointer_from_int">tk\_pointer\_from\_int</a> | 将int转换成指针。 |
 | <a href="#utils_t_tk_pointer_to_int">tk\_pointer\_to\_int</a> | 将指针转换成int。 |
+| <a href="#utils_t_tk_qsort">tk\_qsort</a> | 快速排序。 |
 | <a href="#utils_t_tk_skip_to_num">tk\_skip\_to\_num</a> | 跳过字符串函数，如：字符串"hello123world"，返回的结果是"123world"。 |
 | <a href="#utils_t_tk_snprintf">tk\_snprintf</a> | 将可变参数(...)按照format格式化字符串，并将字符串复制到str中。 |
 | <a href="#utils_t_tk_sscanf">tk\_sscanf</a> | 从字符串读取格式化输入。 |
@@ -41,6 +42,7 @@
 | <a href="#utils_t_tk_str_icmp">tk\_str\_icmp</a> | 字符串比较函数（不区分大小写）。 |
 | <a href="#utils_t_tk_str_start_with">tk\_str\_start\_with</a> | 检查字符串是否以指定的字符串prefix开头。 |
 | <a href="#utils_t_tk_str_tolower">tk\_str\_tolower</a> | 将大写字母转换为小写字母。 |
+| <a href="#utils_t_tk_str_totitle">tk\_str\_totitle</a> | 将单词首字母转换为大写字母。 |
 | <a href="#utils_t_tk_str_toupper">tk\_str\_toupper</a> | 将小写字母转换为大写字母。 |
 | <a href="#utils_t_tk_strcpy">tk\_strcpy</a> | 将src所指向的字符串复制到dst。 |
 | <a href="#utils_t_tk_strdup">tk\_strdup</a> | 字符串拷贝函数。 |
@@ -48,6 +50,7 @@
 | <a href="#utils_t_tk_strncpy">tk\_strncpy</a> | 将src所指向的字符串复制到dst，最多复制len个字符串，并在[len]位置添加'\0'。 |
 | <a href="#utils_t_tk_strncpy_s">tk\_strncpy\_s</a> | 将src所指向的字符串复制到dst，最多复制min(dst_len-1, src_len)个字符串，并在[len]位置添加'\0'。 |
 | <a href="#utils_t_tk_strndup">tk\_strndup</a> | 字符串拷贝函数，最多复制len个字符串。 |
+| <a href="#utils_t_tk_strrstr">tk\_strrstr</a> | 从后往前查找指定的字符串。 |
 | <a href="#utils_t_tk_strtoi">tk\_strtoi</a> | 将字符串转换为整型。 |
 | <a href="#utils_t_tk_strtol">tk\_strtol</a> | 将字符串转换为长整型。 |
 | <a href="#utils_t_tk_strtoll">tk\_strtoll</a> | 将字符串转换为长整型。 |
@@ -569,6 +572,27 @@ int32_t tk_pointer_to_int (const void* p);
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回对应的int数据。 |
 | p | const void* | 指针。 |
+#### tk\_qsort 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_qsort">快速排序。
+
+* 函数原型：
+
+```
+ret_t tk_qsort (void** array, size_t nr, tk_compare_t cmp);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| array | void** | 数据。 |
+| nr | size\_t | 元素个数。 |
+| cmp | tk\_compare\_t | 比较函数。 |
 #### tk\_skip\_to\_num 函数
 -----------------------
 
@@ -737,6 +761,7 @@ bool_t tk_str_start_with (const char* str, const char* prefix);
 * 函数功能：
 
 > <p id="utils_t_tk_str_tolower">将大写字母转换为小写字母。
+>修改传入的字符串。
 
 * 函数原型：
 
@@ -750,12 +775,33 @@ char* tk_str_tolower (char* str);
 | -------- | ----- | --------- |
 | 返回值 | char* | 返回转换后的小写字母字符串。 |
 | str | char* | 要被转换成小写字母的字符串。 |
+#### tk\_str\_totitle 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_str_totitle">将单词首字母转换为大写字母。
+>修改传入的字符串。
+
+* 函数原型：
+
+```
+char* tk_str_totitle (char* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | char* | 返回转换后的字符串。 |
+| str | char* | 被转换的字符串。 |
 #### tk\_str\_toupper 函数
 -----------------------
 
 * 函数功能：
 
 > <p id="utils_t_tk_str_toupper">将小写字母转换为大写字母。
+>修改传入的字符串。
 
 * 函数原型：
 
@@ -892,6 +938,26 @@ char* tk_strndup (const char* str, uint32_t len);
 | 返回值 | char* | 返回指向的复制字符串指针，如果失败则返回NULL。 |
 | str | const char* | 原字符串。 |
 | len | uint32\_t | 要复制的字符串个数。 |
+#### tk\_strrstr 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_strrstr">从后往前查找指定的字符串。
+
+* 函数原型：
+
+```
+const char* tk_strrstr (const char* str, const char* substr);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回字符串的位置或者NULL。 |
+| str | const char* | 字符串。 |
+| substr | const char* | 子字符串。 |
 #### tk\_strtoi 函数
 -----------------------
 

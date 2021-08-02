@@ -2,6 +2,7 @@
 
 2021/08/03
   * 键盘支持跟随编辑(指定floating=true即可)
+  * 更新文档。
 
 2021/08/02
   * 公开函数timer\_manager\_dispatch。

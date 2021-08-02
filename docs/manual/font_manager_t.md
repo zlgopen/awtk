@@ -15,6 +15,7 @@
 | <a href="#font_manager_t_font_manager_destroy">font\_manager\_destroy</a> | 析构并释放字体管理器。 |
 | <a href="#font_manager_t_font_manager_get_font">font\_manager\_get\_font</a> | 从缓存中查找字体，如果没找到，再加载字体，并缓存。 |
 | <a href="#font_manager_t_font_manager_init">font\_manager\_init</a> | 初始化字体管理器。 |
+| <a href="#font_manager_t_font_manager_lookup">font\_manager\_lookup</a> | 查找字体。 |
 | <a href="#font_manager_t_font_manager_set">font\_manager\_set</a> | 设置缺省的字体管理器。 |
 | <a href="#font_manager_t_font_manager_set_assets_manager">font\_manager\_set\_assets\_manager</a> | 设置资源管理器对象 |
 | <a href="#font_manager_t_font_manager_shrink_cache">font\_manager\_shrink\_cache</a> | 清除最久没有被使用的缓冲字模。 |
@@ -162,6 +163,27 @@ font_manager_t* font_manager_init (font_manager_t* fm, font_loader_t* loader);
 | 返回值 | font\_manager\_t* | 返回字体管理器对象。 |
 | fm | font\_manager\_t* | 字体管理器对象。 |
 | loader | font\_loader\_t* | 字体加载器。 |
+#### font\_manager\_lookup 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="font_manager_t_font_manager_lookup">查找字体。
+
+* 函数原型：
+
+```
+font_t* font_manager_lookup (font_manager_t* fm, const char* name, int32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | font\_t* | 返回字体对象。 |
+| fm | font\_manager\_t* | 字体管理器对象。 |
+| name | const char* | 字体名称。 |
+| size | int32\_t | 字体大小。 |
 #### font\_manager\_set 函数
 -----------------------
 

@@ -69,8 +69,8 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
-| EVT\_VALUE\_WILL\_CHANGE | event\_t | 值即将改变事件。 |
-| EVT\_VALUE\_CHANGED | event\_t | 值改变事件。 |
+| EVT\_VALUE\_WILL\_CHANGE | value\_change\_event\_t | 值即将改变事件。 |
+| EVT\_VALUE\_CHANGED | value\_change\_event\_t | 值改变事件。 |
 #### progress\_bar\_cast 函数
 -----------------------
 

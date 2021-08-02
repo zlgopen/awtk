@@ -71,8 +71,8 @@ time\_clock一般不需要设置style。
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
-| EVT\_VALUE\_CHANGING | event\_t | 文本正在改变事件(编辑中)。 |
-| EVT\_VALUE\_CHANGED | event\_t | 文本改变事件。 |
+| EVT\_VALUE\_CHANGING | value\_change\_event\_t | 文本正在改变事件(编辑中)。 |
+| EVT\_VALUE\_CHANGED | value\_change\_event\_t | 文本改变事件。 |
 #### mledit\_cast 函数
 -----------------------
 

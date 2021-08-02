@@ -362,7 +362,7 @@ ret_t window_set_fullscreen (widget_t* widget, bool_t fullscreen);
 -----------------------
 > <p id="window_t_fullscreen">是否全屏。
 
->这里全屏是指与LCD相同大小，而非让SDL窗口全屏。
+>对于模拟器，全屏是让窗口和LCD具有相同大小，而非让SDL窗口全屏。
 
 * 类型：bool\_t
 

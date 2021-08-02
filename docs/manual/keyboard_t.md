@@ -20,6 +20,7 @@
 | INPUT\_HEX      | kb\_hex.xml      |
 | INPUT\_EMAIL    | kb\_ascii.xml    |
 | INPUT\_PASSWORD | kb\_ascii.xml    |
+| INPUT\_ASCII    | kb\_ascii.xml    |
 | INPUT\_CUSTOM   | 使用自定义的键盘 |
 | 其它            | kb\_default.xml  |
 
@@ -89,6 +90,13 @@ x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=4,s=2,m=2)">
 ...
 </view>
 </pages>
+```
+
+* 键盘跟随。
+默认情况下，键盘从底部弹出。如果需要让键盘在编辑器附近弹出，可以指定floating属性为true。如：
+
+```xml
+<keyboard theme="keyboard" w="200" h="200" floating="true">
 ```
 
 > 更多用法请参考：

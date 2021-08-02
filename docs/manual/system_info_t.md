@@ -18,6 +18,7 @@
 | <a href="#system_info_t_system_info_set_default_font">system\_info\_set\_default\_font</a> | 设置缺省字体。 |
 | <a href="#system_info_t_system_info_set_device_pixel_ratio">system\_info\_set\_device\_pixel\_ratio</a> | 设置LCD密度。 |
 | <a href="#system_info_t_system_info_set_font_scale">system\_info\_set\_font\_scale</a> | 设置字体缩放比例。 |
+| <a href="#system_info_t_system_info_set_keyboard_type">system\_info\_set\_keyboard\_type</a> | 设置键盘类型。 |
 | <a href="#system_info_t_system_info_set_lcd_h">system\_info\_set\_lcd\_h</a> | 设置LCD高度。 |
 | <a href="#system_info_t_system_info_set_lcd_orientation">system\_info\_set\_lcd\_orientation</a> | 设置LCD的旋转角度。 |
 | <a href="#system_info_t_system_info_set_lcd_type">system\_info\_set\_lcd\_type</a> | 设置LCD类型。 |
@@ -35,6 +36,7 @@
 | <a href="#system_info_t_device_orientation">device\_orientation</a> | const char* | 显示屏的方向名称，可选值："portrait"表示竖屏，"landscape"表示横屏。 |
 | <a href="#system_info_t_device_pixel_ratio">device\_pixel\_ratio</a> | float\_t | 显示屏的密度。 |
 | <a href="#system_info_t_font_scale">font\_scale</a> | float\_t | 字体缩放比例，用于实现字体整体放大。 |
+| <a href="#system_info_t_keyboard_type">keyboard\_type</a> | keyboard\_type\_t | 键盘类型。 |
 | <a href="#system_info_t_language">language</a> | const char* | locale中的语言。 |
 | <a href="#system_info_t_lcd_h">lcd\_h</a> | uint32\_t | 显示屏的高度。 |
 | <a href="#system_info_t_lcd_orientation">lcd\_orientation</a> | lcd\_orientation\_t | 显示屏的旋转角度。 |
@@ -217,6 +219,26 @@ ret_t system_info_set_font_scale (system_info_t* info info, float_t font_scale);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | info | system\_info\_t* info | system\_info对象。 |
 | font\_scale | float\_t | 字体缩放比例。 |
+#### system\_info\_set\_keyboard\_type 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="system_info_t_system_info_set_keyboard_type">设置键盘类型。
+
+* 函数原型：
+
+```
+ret_t system_info_set_keyboard_type (system_info_t* info info, keyboard_type_t keyboard_type);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| info | system\_info\_t* info | system\_info对象。 |
+| keyboard\_type | keyboard\_type\_t | 键盘类型。 |
 #### system\_info\_set\_lcd\_h 函数
 -----------------------
 
@@ -376,6 +398,16 @@ ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
 > <p id="system_info_t_font_scale">字体缩放比例，用于实现字体整体放大。
 
 * 类型：float\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+#### keyboard\_type 属性
+-----------------------
+> <p id="system_info_t_keyboard_type">键盘类型。
+
+* 类型：keyboard\_type\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |
