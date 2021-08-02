@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/08/02
+  * 公开函数timer\_manager\_dispatch。
+
 2021/07/30
   * 完善ostream的fscript绑定。
   * 完善pages和button group(感谢兆坤提供补丁)。
