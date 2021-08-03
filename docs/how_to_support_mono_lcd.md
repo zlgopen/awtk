@@ -54,6 +54,20 @@ python scripts/update_res.py all x1 mono
 ./bin/preview_ui design/default/ui/mono_test.xml 
 ```
 
+## 其它
+
+* 嵌入式系统，请在 awtk\_config.h 中定义下面的宏。
+
+```
+#define WITH_LCD_MONO 1
+```
+
+* awtk-linux-fb，请在 awtk\_config.py 中定义下面的宏。
+
+```
+COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_LCD_MONO=1 '
+```
+
 ## 参考：
 
 * [免费像素字体](https://www.uisdc.com/25-pixel-fonts)
