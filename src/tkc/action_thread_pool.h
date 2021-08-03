@@ -78,7 +78,7 @@ typedef struct _action_thread_pool_t {
 action_thread_pool_t* action_thread_pool_create(uint16_t max_thread_nr, uint16_t min_idle_nr);
 
 /**
- * @method action_thread_pool_create
+ * @method action_thread_pool_create_ex
  * @annotation ["constructor"]
  * 创建action_thread_pool对象。
  *
