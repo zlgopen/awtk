@@ -244,7 +244,9 @@ static ret_t vpage_on_current_page_changed(void* ctx, event_t* e) {
   uint32_t index = widget_index_of(widget);
 
   if (old_index == index) {
-    vpage_on_leave(widget, index, new_index);
+    if (widget_is_window_opened(widget)) {
+      vpage_on_leave(widget, index, new_index);
+    }
     log_debug("leave vpage: %u\r\n", index);
   } else if (new_index == index) {
     vpage_on_enter(widget, index, old_index);
