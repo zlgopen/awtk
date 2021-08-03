@@ -1008,8 +1008,14 @@ event_t* assets_event_init(assets_event_t* event, assets_manager_t* am, uint32_t
                            asset_type_t asset_type, asset_info_t* asset_info);
 
 /**
+ * @class event_t
+ * @annotation ["scriptable"]
+ * 事件基类。
+ */
+/**
  * @method event_from_name
  * 将事件名转换成事件的值。
+ * @annotation ["scriptable", "static"]
  * @param {const char*} name 事件名。
  *
  * @return {int32_t} 返回事件的值。

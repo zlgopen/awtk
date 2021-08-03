@@ -31,7 +31,7 @@ typedef ret_t (*async_on_result_t)(void* ctx, ret_t result);
 
 /**
  * @class async_t
- * 异步请求。
+ * 在后台线程执行指定函数，不会阻塞UI线程。
  *
  * @annotation ["fake"]
  *
