@@ -308,6 +308,9 @@ TEST(ComboBox, remove_option) {
   
   ASSERT_EQ(combo_box_remove_option(w, 2), RET_OK);
   ASSERT_EQ(combo_box_count_options(w), 0);
+  
+  ASSERT_EQ(combo_box_remove_option(w, 2), RET_NOT_FOUND);
+  ASSERT_EQ(combo_box_count_options(w), 0);
 
   widget_destroy(w);
 }
