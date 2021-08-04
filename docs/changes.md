@@ -2,6 +2,7 @@
 
 2021/08/04
   * 增加函数combo\_box\_remove\_option。
+  * 完善demoui(感谢兆坤提供补丁)。
 
 2021/08/03
   * 键盘支持跟随编辑(指定floating=true即可)
