@@ -576,6 +576,34 @@ widget_t* combo_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return widget;
 }
 
+ret_t combo_box_remove_option(widget_t* widget, int32_t value) {
+  combo_box_option_t* iter = NULL;
+  combo_box_option_t* prev = NULL;
+  combo_box_t* combo_box = COMBO_BOX(widget);
+  return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
+
+  iter = combo_box->option_items;
+  prev = combo_box->option_items;
+
+  while (iter != NULL) {
+    if (iter->value == value) {
+      if (iter == combo_box->option_items) {
+        combo_box->option_items = iter->next;
+      } else {
+        prev->next = iter->next;
+      }
+
+      TKMEM_FREE(iter->text);
+      TKMEM_FREE(iter);
+      return RET_OK;
+    }
+    prev = iter;
+    iter = iter->next;
+  }
+
+  return RET_NOT_FOUND;
+}
+
 ret_t combo_box_reset_options(widget_t* widget) {
   combo_box_option_t* iter = NULL;
   combo_box_option_t* next = NULL;
