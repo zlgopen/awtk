@@ -14,3 +14,5 @@
 
 * pc 基于PC(SDL/Posix)的实现，主要用于Windows, MacOS, Linux, Android和iOS等平台。
 
+> 对于嵌入式系统，使用RTOS比裸系统，内存开销多一点点，但是性能会有明显提升，因为sleep/delay函数只会阻塞当前线程，而不会阻塞整个系统。
+
