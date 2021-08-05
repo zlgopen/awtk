@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/08/05
+  * 增加src/platforms/README.md
+
 2021/08/04
   * 增加函数combo\_box\_remove\_option。
   * 完善demoui(感谢兆坤提供补丁)。
