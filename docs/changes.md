@@ -2,6 +2,7 @@
 
 2021/08/05
   * 增加src/platforms/README.md
+  * 增加函数bitmap_transform
 
 2021/08/04
   * 增加函数combo\_box\_remove\_option。
