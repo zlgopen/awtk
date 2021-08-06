@@ -2,7 +2,8 @@
 
 2021/08/06
   * 完善image value。
-  * 完善awtk_version.h（感谢智明提供补丁）。
+  * 完善awtk\_version.h（感谢智明提供补丁）。
+  * 修复vgcanvas\_cairo\_reset中设置global alpha的问题。
 
 2021/08/05
   * 增加src/platforms/README.md
