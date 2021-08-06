@@ -2,6 +2,7 @@
 
 2021/08/06
   * 完善image value。
+  * 完善awtk_version.h（感谢智明提供补丁）。
 
 2021/08/05
   * 增加src/platforms/README.md
