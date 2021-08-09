@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class ext_widgets_t
  * 扩展控件。
- * @annotation ["scriptable"]
+ * @annotation ["scriptable", "fake"]
  *
  */
 
