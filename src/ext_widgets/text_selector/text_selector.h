@@ -132,6 +132,13 @@ typedef struct _text_selector_t {
    */
   bool_t loop_options;
 
+  /**
+   * @property {bool_t} enable_value_animator
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否修改值时启用动画。
+   */
+  bool_t enable_value_animator;
+
   /*private*/
   bool_t pressed;
   bool_t is_init;
@@ -372,11 +379,23 @@ ret_t text_selector_set_yspeed_scale(widget_t* widget, float_t yspeed_scale);
  */
 ret_t text_selector_set_animating_time(widget_t* widget, uint32_t animating_time);
 
+/**
+ * @method text_selector_set_enable_value_animator
+ * 设置是否修改值时启用动画。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} enable_value_animator 是否修改值时启用动画
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_selector_set_enable_value_animator(widget_t* widget, bool_t enable_value_animator);
+
 #define TEXT_SELECTOR_PROP_VISIBLE_NR "visible_nr"
 #define WIDGET_TYPE_TEXT_SELECTOR "text_selector"
 #define TEXT_SELECTOR_PROP_LOOP_OPTIONS "loop_options"
 #define TEXT_SELECTOR_PROP_Y_SPEED_SCALE "yspeed_scale"
 #define TEXT_SELECTOR_PROP_ANIMATION_TIME "animating_time"
+#define TEXT_SELECTOR_PROP_ENABLE_VALUE_ANIMATOR "enable_value_animator"
 #define TEXT_SELECTOR(widget) ((text_selector_t*)(text_selector_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/

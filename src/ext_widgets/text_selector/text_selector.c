@@ -410,6 +410,9 @@ static ret_t text_selector_get_prop(widget_t* widget, const char* name, value_t*
   } else if (tk_str_eq(name, TEXT_SELECTOR_PROP_ANIMATION_TIME)) {
     value_set_uint32(v, text_selector->animating_time);
     return RET_OK;
+  } else if (tk_str_eq(name, TEXT_SELECTOR_PROP_ENABLE_VALUE_ANIMATOR)) {
+    value_set_bool(v, text_selector->enable_value_animator);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -447,6 +450,8 @@ static ret_t text_selector_set_prop(widget_t* widget, const char* name, const va
     return text_selector_set_loop_options(widget, value_bool(v));
   } else if (tk_str_eq(name, TEXT_SELECTOR_PROP_ANIMATION_TIME)) {
     return text_selector_set_animating_time(widget, value_uint32(v));
+  } else if (tk_str_eq(name, TEXT_SELECTOR_PROP_ENABLE_VALUE_ANIMATOR)) {
+    return text_selector_set_enable_value_animator(widget, value_bool(v));
   }
 
   return RET_NOT_FOUND;
@@ -785,6 +790,7 @@ widget_t* text_selector_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
   text_selector->is_init = FALSE;
   text_selector->yspeed_scale = 1.0f;
 
+  text_selector->enable_value_animator = TRUE;
   text_selector->locale_info_id = TK_INVALID_ID;
   text_selector->animating_time = TK_ANIMATING_TIME;
 
@@ -966,7 +972,7 @@ ret_t text_selector_set_selected_index(widget_t* widget, uint32_t index) {
 
   if (index != text_selector->selected_index) {
     text_selector_set_selected_index_only(text_selector, index);
-    text_selector_sync_yoffset_with_selected_index(text_selector, TRUE);
+    text_selector_sync_yoffset_with_selected_index(text_selector, text_selector->enable_value_animator);
   }
 
   return widget_invalidate(widget, NULL);
@@ -1072,6 +1078,15 @@ ret_t text_selector_set_animating_time(widget_t* widget, uint32_t animating_time
   return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
 
   text_selector->animating_time = animating_time;
+
+  return RET_OK;
+}
+
+ret_t text_selector_set_enable_value_animator(widget_t* widget, bool_t enable_value_animator) {
+  text_selector_t* text_selector = TEXT_SELECTOR(widget);
+  return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
+
+  text_selector->enable_value_animator = enable_value_animator;
 
   return RET_OK;
 }
