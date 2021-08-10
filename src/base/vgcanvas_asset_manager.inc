@@ -451,6 +451,8 @@ ret_t vgcanvas_asset_manager_add_vg(vgcanvas_asset_manager_t* vgcanvas_asset_man
 ret_t vgcanvas_asset_manager_remove_vg(vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg) {
   vgcanvas_asset_vg_t* vg_data = NULL;
   return_value_if_fail(vgcanvas_asset_manager != NULL && vg != NULL, RET_BAD_PARAMS);
+  vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager, vg, NULL);
+  vgcanvas_asset_manager_remove_image(vgcanvas_asset_manager, vg, NULL);
   vg_data = (vgcanvas_asset_vg_t*)vgcanvas_asset_manager_darray_find_index(&(vgcanvas_asset_manager->vg_list), vgcanvas_asset_manager_vg_list_compare, vg);
   return darray_remove(&(vgcanvas_asset_manager->vg_list), vg_data);
 }

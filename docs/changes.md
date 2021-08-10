@@ -4,6 +4,7 @@
  * 修复list\_view没有滚动条的警告问题（感谢智明提供补丁）
  * 删除不断打印relayout的信息的代码（感谢智明提供补丁）
  * 给text\_selector增加可以设置是否修改值的时候启动动画（感谢智明提供补丁）
+ * 修复vgcanvas\_asset\_manager内存泄露的问题（感谢智明提供补丁）
 
 2021/08/06
   * 完善image value。
