@@ -134,8 +134,8 @@ ret_t widget_set_self_layout(widget_t* widget, const char* params) {
   if (widget->self_layout != NULL) {
     str_set(&(widget->self_layout->params), params);
   }
-
-  return RET_OK;
+  
+  return widget_set_need_relayout(widget);
 }
 
 ret_t widget_set_children_layout(widget_t* widget, const char* params) {
@@ -152,8 +152,8 @@ ret_t widget_set_children_layout(widget_t* widget, const char* params) {
   if (widget->children_layout != NULL) {
     str_set(&(widget->children_layout->params), params);
   }
-
-  return RET_OK;
+  
+  return widget_set_need_relayout(widget);
 }
 
 ret_t widget_set_self_layout_params(widget_t* widget, const char* x, const char* y, const char* w,
