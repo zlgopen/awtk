@@ -16,7 +16,7 @@ typedef struct _lcd_fb_dirty_rects_t {
 } lcd_fb_dirty_rects_t;
 
 /**
- * @method lcd_fb_dirty_rects_update_all_fb_dirty_rects
+ * @method lcd_fb_dirty_rects_get_dirty_rects_by_fb
  * 根据 fb 来获取脏矩形对象
  * @export none
  * @param {lcd_fb_dirty_rects_t*} lcd_fb_dirty_rects lcd_fb_dirty_rects_t对象。
@@ -28,8 +28,8 @@ const dirty_rects_t* lcd_fb_dirty_rects_get_dirty_rects_by_fb(
     lcd_fb_dirty_rects_t* lcd_fb_dirty_rects, uint8_t* fb);
 
 /**
- * @method lcd_fb_dirty_rects_update_all_fb_dirty_rects
- * 把当前的脏矩形合并到所有 fb 的脏矩形中。
+ * @method lcd_fb_dirty_rects_reset_dirty_rects_by_fb
+ * 清除对应 fb 的脏矩形列表。
  * @export none
  * @param {lcd_fb_dirty_rects_t*} lcd_fb_dirty_rects lcd_fb_dirty_rects_t对象。
  * @param {uint8_t*} fb fb 地址。
@@ -65,7 +65,7 @@ ret_t lcd_fb_dirty_rects_add_fb_info(lcd_fb_dirty_rects_t* lcd_fb_dirty_rects, u
 
 /**
  * @method lcd_fb_dirty_rects_deinit
- * 初始化 lcd_fb_dirty_rects_t 对象
+ * 清除 lcd_fb_dirty_rects_t 对象数据
  * @export none
  * @param {lcd_fb_dirty_rects_t*} lcd_fb_dirty_rects lcd_fb_dirty_rects_t对象。
  * 
@@ -74,8 +74,8 @@ ret_t lcd_fb_dirty_rects_add_fb_info(lcd_fb_dirty_rects_t* lcd_fb_dirty_rects, u
 ret_t lcd_fb_dirty_rects_deinit(lcd_fb_dirty_rects_t* lcd_fb_dirty_rects);
 
 /**
- * @method lcd_fb_dirty_rects_add_fb_info
- * 清除 lcd_fb_dirty_rects_t 对象数据
+ * @method lcd_fb_dirty_rects_init
+ * 初始化 lcd_fb_dirty_rects_t 对象
  * @export none
  * @param {lcd_fb_dirty_rects_t*} lcd_fb_dirty_rects lcd_fb_dirty_rects_t对象。
  * @param {wh_t} lcd_w lcd 的宽。
