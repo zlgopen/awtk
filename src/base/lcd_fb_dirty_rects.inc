@@ -79,10 +79,18 @@ static ret_t lcd_fb_dirty_rects_fb_dirty_list_destroy(void* data) {
 }
 
 ret_t lcd_fb_dirty_rects_reinit(lcd_fb_dirty_rects_t* lcd_fb_dirty_rects, wh_t lcd_w, wh_t lcd_h) {
-  darray_t* tmp = NULL;
+  int32_t i;
   return_value_if_fail(lcd_fb_dirty_rects != NULL, RET_BAD_PARAMS);
   lcd_fb_dirty_rects->lcd_w = lcd_w;
   lcd_fb_dirty_rects->lcd_h = lcd_h;
+  for (i = 0; i < lcd_fb_dirty_rects->fb_dirty_list.size; i++) {
+    lcd_fb_info_t* fb_info = (lcd_fb_info_t*)darray_get(&(lcd_fb_dirty_rects->fb_dirty_list), i);
+    if (fb_info != NULL) {
+      rect_t r = rect_init(0, 0, lcd_fb_dirty_rects->lcd_w,  lcd_fb_dirty_rects->lcd_h);
+      dirty_rects_reset(&(fb_info->dirty_rects));
+      dirty_rects_add(&(fb_info->dirty_rects), &r);
+    }
+  }
   return RET_OK;
 }
 

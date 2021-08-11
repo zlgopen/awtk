@@ -1131,7 +1131,7 @@ ret_t window_manager_default_on_event(widget_t* widget, event_t* e) {
     lcd_t* lcd = native_window_get_canvas(wm->native_window)->lcd;
     return_value_if_fail(lcd != NULL && evt != NULL, RET_FAIL);
     orientation = evt->orientation;
-
+    native_window_clear_dirty_rect(wm->native_window);
     if (orientation == LCD_ORIENTATION_90 || orientation == LCD_ORIENTATION_270) {
       w = wm->lcd_h;
       h = wm->lcd_w;
