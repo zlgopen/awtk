@@ -298,7 +298,7 @@ ret_t widget_layout_self_menu_with_rect(self_layouter_t* layouter, widget_t* wid
 
   if (self_layouter_menu_is_valid(layouter)) {
     widget_layout_calc(l, &r, area->w, area->h);
-    widget_move_resize(widget, r.x + area->x, r.y + area->y, r.w, r.h);
+    widget_move_resize_ex(widget, r.x + area->x, r.y + area->y, r.w, r.h, FALSE);
 
     return RET_OK;
   }
