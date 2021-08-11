@@ -233,6 +233,8 @@ ret_t self_layouter_default_set_param(self_layouter_t* layouter, const char* nam
       } else if (strchr(x, '%') != NULL) {
         layout->x = tk_atof(x);
         layout->x_attr = X_ATTR_PERCENT;
+      } else if (strchr(x, 'n') != NULL) {
+        layout->x_attr = X_ATTR_UNDEF;
       } else {
         layout->x = tk_atof(x);
         layout->x_attr = X_ATTR_DEFAULT;
@@ -264,6 +266,8 @@ ret_t self_layouter_default_set_param(self_layouter_t* layouter, const char* nam
       } else if (strchr(y, '%') != NULL) {
         layout->y = tk_atof(y);
         layout->y_attr = Y_ATTR_PERCENT;
+      } else if (strchr(y, 'n') != NULL) {
+        layout->y_attr = X_ATTR_UNDEF;
       } else {
         layout->y = tk_atof(y);
         layout->y_attr = Y_ATTR_DEFAULT;
@@ -277,6 +281,8 @@ ret_t self_layouter_default_set_param(self_layouter_t* layouter, const char* nam
       if (w != NULL) {
         if (strchr(w, '%') != NULL) {
           layout->w_attr = W_ATTR_PERCENT;
+        } else if (strchr(w, 'n') != NULL) {
+          layout->w_attr = W_ATTR_UNDEF;
         }
       }
       break;
@@ -288,6 +294,8 @@ ret_t self_layouter_default_set_param(self_layouter_t* layouter, const char* nam
       if (h != NULL) {
         if (strchr(h, '%') != NULL) {
           layout->h_attr = H_ATTR_PERCENT;
+        } else if (strchr(h, 'n') != NULL) {
+          layout->h_attr = H_ATTR_UNDEF;
         }
       }
       break;
@@ -406,7 +414,7 @@ ret_t widget_layout_self_with_rect(self_layouter_t* layouter, widget_t* widget, 
       r.h = widget->h;
     }
 
-    widget_move_resize(widget, r.x + area->x, r.y + area->y, r.w, r.h);
+    widget_move_resize_ex(widget, r.x + area->x, r.y + area->y, r.w, r.h, FALSE);
 
     return RET_OK;
   }
