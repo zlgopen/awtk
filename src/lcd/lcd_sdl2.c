@@ -22,12 +22,16 @@
 #include "tkc/mem.h"
 #include "lcd/lcd_sdl2.h"
 #include "blend/image_g2d.h"
+#include "base/system_info.h"
 #include "lcd/lcd_mem_special.h"
 
 typedef struct _special_info_t {
+  uint32_t w;
+  uint32_t h;
   SDL_Renderer* render;
   SDL_Texture* texture;
   bitmap_format_t format;
+  lcd_orientation_t lcd_orientation;
 } special_info_t;
 
 static special_info_t* special_info_create(SDL_Renderer* render) {
@@ -53,7 +57,8 @@ static ret_t special_info_create_texture(special_info_t* info, wh_t w, wh_t h) {
   info->texture = SDL_CreateTexture(info->render, SDL_PIXELFORMAT_RGB565, flags, w, h);
   log_debug("WITH_FB_BGR565\n");
 #endif
-
+  info->w = w;
+  info->h = h;
   return info->texture != NULL ? RET_OK : RET_FAIL;
 }
 
@@ -76,6 +81,7 @@ static ret_t lcd_sdl2_flush(lcd_t* lcd) {
   lcd_mem_special_t* special = (lcd_mem_special_t*)lcd;
   special_info_t* info = (special_info_t*)(special->ctx);
   uint8_t* offline_fb = lcd_mem_get_offline_fb(lcd_mem);
+  lcd_orientation_t o = info->lcd_orientation;
 
   memset(&src, 0x00, sizeof(src));
   memset(&dst, 0x00, sizeof(dst));
@@ -83,20 +89,28 @@ static ret_t lcd_sdl2_flush(lcd_t* lcd) {
   dirty_rects =
       lcd_fb_dirty_rects_get_dirty_rects_by_fb(&(lcd_mem->fb_dirty_rects_list), offline_fb);
   if (dirty_rects != NULL && dirty_rects->nr > 0) {
-    SDL_Rect sr = {0, 0, lcd->w, lcd->h};
+    SDL_Rect sr = {0, 0, info->w, info->h};
 
     SDL_LockTexture(info->texture, NULL, (void**)&(addr), &pitch);
-    bitmap_init(&dst, lcd->w, lcd->h, special->format, addr);
+    bitmap_init(&dst, sr.w, sr.h, special->format, addr);
     bitmap_set_line_length(&dst, pitch);
     bitmap_init(&src, lcd->w, lcd->h, special->format, offline_fb);
     if (dirty_rects->disable_multiple) {
       const rect_t* dr = (const rect_t*)&(dirty_rects->max);
-      image_copy(&dst, &src, dr, dr->x, dr->y);
+      if (o == LCD_ORIENTATION_0) {
+        image_copy(&dst, &src, dr, dr->x, dr->y);
+      } else {
+        image_rotate(&dst, &src, dr, o);
+      }
     } else {
       uint32_t i = 0;
       for (i = 0; i < dirty_rects->nr; i++) {
         const rect_t* dr = (const rect_t*)dirty_rects->rects + i;
-        image_copy(&dst, &src, dr, dr->x, dr->y);
+        if (o == LCD_ORIENTATION_0) {
+          image_copy(&dst, &src, dr, dr->x, dr->y);
+        } else {
+          image_rotate(&dst, &src, dr,o);
+        }
       }
     }
 
@@ -120,13 +134,20 @@ static ret_t lcd_sdl2_flush(lcd_t* lcd) {
 }
 
 static ret_t lcd_sdl2_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length) {
+  system_info_t* sys_info = system_info();
   lcd_mem_special_t* special = (lcd_mem_special_t*)lcd;
   special_info_t* info = (special_info_t*)(special->ctx);
 
-  SDL_DestroyTexture(info->texture);
+  if (info->lcd_orientation == sys_info->lcd_orientation) {
+    SDL_DestroyTexture(info->texture);
 
-  info->texture = NULL;
-  special_info_create_texture(info, w, h);
+    info->texture = NULL;
+    special_info_create_texture(info, w, h);
+  } else {
+    info->lcd_orientation = sys_info->lcd_orientation;
+    system_info_set_lcd_w(sys_info, info->w);
+    system_info_set_lcd_h(sys_info, info->h);
+  }
 
   return RET_OK;
 }
@@ -150,6 +171,7 @@ lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
   info = special_info_create(render);
   return_value_if_fail(info != NULL, NULL);
 
+  info->lcd_orientation = LCD_ORIENTATION_0;
   ENSURE(special_info_create_texture(info, w, h) == RET_OK);
 
   return lcd_mem_special_create(w, h, info->format, lcd_sdl2_flush, lcd_sdl2_resize,
