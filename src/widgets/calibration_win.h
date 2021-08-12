@@ -84,7 +84,7 @@ typedef struct _calibration_win_t {
 
 /**
  * @method calibration_win_create
- * @annotation ["constructor"]
+ * @annotation ["constructor", "scriptable"]
  * 创建calibration_win对象
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标

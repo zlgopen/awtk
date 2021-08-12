@@ -105,7 +105,7 @@ typedef struct _candidates_t {
 /**
  * @method candidates_create
  * 创建candidates对象
- * @annotation ["constructor"]
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
