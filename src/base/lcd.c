@@ -339,6 +339,14 @@ ret_t lcd_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length) {
   return RET_FAIL;
 }
 
+ret_t lcd_set_orientation(lcd_t* lcd, lcd_orientation_t orientation) {
+  return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
+  if (lcd->set_orientation != NULL) {
+    return lcd->set_orientation(lcd, orientation);
+  }
+  return RET_FAIL;
+}
+
 wh_t lcd_get_width(lcd_t* lcd) {
   return_value_if_fail(lcd != NULL, 0);
 

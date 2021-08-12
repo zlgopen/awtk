@@ -45,6 +45,13 @@ static ret_t lcd_vgcanvas_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_lengt
   return RET_OK;
 }
 
+static ret_t lcd_vgcanvas_set_orientation(lcd_t* lcd, lcd_orientation_t orientation) {
+  if (orientation == LCD_ORIENTATION_90 || orientation == LCD_ORIENTATION_270) {
+    return lcd_vgcanvas_resize(lcd, lcd->h, lcd->w, 0);
+  }
+  return RET_OK;
+}
+
 static ret_t lcd_vgcanvas_set_font_name(lcd_t* lcd, const char* name) {
   return vgcanvas_set_font(LCD(lcd)->canvas, name);
 }
@@ -314,6 +321,7 @@ lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
   base->get_height = lcd_vgcanvas_get_height;
   base->destroy = lcd_vgcanvas_destroy;
   base->get_text_metrics = lcd_vgcanvas_get_text_metrics;
+  base->set_orientation = lcd_vgcanvas_set_orientation;
   base->w = (wh_t)w;
   base->h = (wh_t)h;
   base->ratio = canvas->ratio;

@@ -1121,6 +1121,7 @@ static ret_t window_manager_default_is_animating(widget_t* widget, bool_t* playi
 }
 
 ret_t window_manager_default_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
   if (e->type == EVT_ORIENTATION_WILL_CHANGED) {
@@ -1137,7 +1138,8 @@ ret_t window_manager_default_on_event(widget_t* widget, event_t* e) {
       h = wm->lcd_w;
     }
 
-    lcd_resize(lcd, w, h, 0);
+    ret = lcd_set_orientation(lcd, orientation);
+    return_value_if_fail(ret == RET_OK, ret);
     window_manager_default_resize(widget, w, h);
     e->type = EVT_ORIENTATION_CHANGED;
 

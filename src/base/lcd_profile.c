@@ -65,6 +65,13 @@ static ret_t lcd_profile_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length
   return lcd_resize(profile->impl, w, h, line_length);
 }
 
+static ret_t lcd_profile_set_orientation(lcd_t* lcd, lcd_orientation_t orientation) {
+  if (orientation == LCD_ORIENTATION_90 || orientation == LCD_ORIENTATION_270) {
+    return lcd_resize(profile->impl, profile->impl->h, profile->impl->w, 0);
+  }
+  return RET_OK;
+}
+
 static ret_t lcd_profile_set_global_alpha(lcd_t* lcd, uint8_t alpha) {
   lcd_profile_t* profile = LCD_PROFILE(lcd);
 
@@ -370,6 +377,10 @@ lcd_t* lcd_profile_create(lcd_t* impl) {
 
   if (impl->resize != NULL) {
     lcd->resize = lcd_profile_resize;
+  }
+
+  if (lcd->set_orientation != NULL) {
+    lcd->set_orientation = lcd_profile_set_orientation;
   }
 
   if (impl->draw_vline != NULL) {
