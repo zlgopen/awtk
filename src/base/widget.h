@@ -752,6 +752,16 @@ int32_t widget_index_of(widget_t* widget);
 ret_t widget_close_window(widget_t* widget);
 
 /**
+ * @method widget_close_window_force
+ * 关闭控件所在的窗口。
+ * @annotation ["deconstructor", "scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_close_window_force(widget_t* widget);
+
+/**
  * @method widget_back
  * 请求返回到前一个窗口。
  * @annotation ["scriptable"]

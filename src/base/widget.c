@@ -4439,6 +4439,13 @@ ret_t widget_close_window(widget_t* widget) {
   return window_manager_close_window(win->parent, win);
 }
 
+ret_t widget_close_window_force(widget_t* widget) {
+  widget_t* win = widget_get_window(widget);
+  return_value_if_fail(win != NULL, RET_BAD_PARAMS);
+
+  return window_manager_close_window_force(win->parent, win);
+}
+
 ret_t widget_back(widget_t* widget) {
   widget_t* wm = widget_get_window_manager(widget);
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
