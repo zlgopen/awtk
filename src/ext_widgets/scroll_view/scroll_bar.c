@@ -676,11 +676,17 @@ ret_t scroll_bar_set_value_only(widget_t* widget, int32_t value) {
 static ret_t scroll_bar_set_is_mobile(widget_t* widget, bool_t value) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
+  if (value == scroll_bar_is_mobile(widget)) {
+    return RET_OK;
+  }
 
   if (value) {
     widget->vt = TK_REF_VTABLE(scroll_bar_mobile);
+    widget_destroy_children(widget);
+    scroll_bar->dragger = NULL;
   } else {
     widget->vt = TK_REF_VTABLE(scroll_bar_desktop);
+    scroll_bar_create_children(widget);
   }
   scroll_bar->auto_hide = scroll_bar_is_mobile(widget);
 
