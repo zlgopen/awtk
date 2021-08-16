@@ -282,6 +282,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_VALUE "value"
 
 /**
+ * @const WIDGET_PROP_RADIO
+ * CheckButton是否单选。
+ */
+#define WIDGET_PROP_RADIO "radio"
+
+/**
  * @const WIDGET_PROP_REVERSE
  * 进度条反向显示。
  */

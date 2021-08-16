@@ -1,5 +1,9 @@
 # 最新动态
 
+2021/08/16
+  * check button允许使用radio属性控制单选多选。
+  * scroll bar允许使用is_mobile属性控制mobile/desktop
+
 2021/08/12
   * 增加lcd\_set\_orientation（感谢智明提供补丁）。
 

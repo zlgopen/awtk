@@ -269,6 +269,7 @@ bool_t scroll_bar_is_mobile(widget_t* widget);
 ret_t scroll_bar_hide_by_opacity_animation(widget_t* widget, int32_t duration, int32_t delay);
 ret_t scroll_bar_show_by_opacity_animation(widget_t* widget, int32_t duration, int32_t delay);
 
+#define SCROLL_BAR_PROP_IS_MOBILE "is_mobile"
 #define SCROLL_BAR(widget) ((scroll_bar_t*)(scroll_bar_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/

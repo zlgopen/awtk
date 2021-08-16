@@ -94,9 +94,15 @@ typedef struct _check_button_t {
    * 值(勾选为TRUE，非勾选为FALSE)。
    */
   bool_t value;
+  
+  /**
+   * @property {bool_t} radio
+   * @annotation ["set_prop","get_prop"]
+   * 是否是单选按钮。
+   */
+  bool_t radio;
 
   /*private*/
-  bool_t radio;
   bool_t pressed;
   bool_t point_down_aborted;
 } check_button_t;

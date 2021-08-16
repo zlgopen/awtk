@@ -45,6 +45,7 @@
   ((up) != NULL && (up)->style != NULL && (down) != NULL && (down)->style != NULL)
 
 static ret_t scroll_bar_update_dragger(widget_t* widget);
+static ret_t scroll_bar_set_is_mobile(widget_t* widget, bool_t value);
 widget_t* scroll_bar_create_desktop_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /*mobile*/
@@ -485,6 +486,9 @@ static ret_t scroll_bar_get_prop(widget_t* widget, const char* name, value_t* v)
   } else if (tk_str_eq(name, WIDGET_PROP_AUTO_HIDE)) {
     value_set_bool(v, scroll_bar->auto_hide);
     return RET_OK;
+  } else if (tk_str_eq(name, SCROLL_BAR_PROP_IS_MOBILE)) {
+    value_set_bool(v, scroll_bar_is_mobile(widget));
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -508,6 +512,9 @@ static ret_t scroll_bar_set_prop(widget_t* widget, const char* name, const value
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_AUTO_HIDE)) {
     scroll_bar_set_auto_hide(widget, value_bool(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, SCROLL_BAR_PROP_IS_MOBILE)) {
+    scroll_bar_set_is_mobile(widget, value_bool(v));
     return RET_OK;
   }
 
@@ -665,6 +672,20 @@ ret_t scroll_bar_set_value_only(widget_t* widget, int32_t value) {
 }
 
 /*create*/
+
+static ret_t scroll_bar_set_is_mobile(widget_t* widget, bool_t value) {
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
+
+  if (value) {
+    widget->vt = TK_REF_VTABLE(scroll_bar_mobile);
+  } else {
+    widget->vt = TK_REF_VTABLE(scroll_bar_desktop);
+  }
+  scroll_bar->auto_hide = scroll_bar_is_mobile(widget);
+
+  return RET_OK;
+}
 
 static widget_t* scroll_bar_create_internal(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h,
                                             const widget_vtable_t* vt) {

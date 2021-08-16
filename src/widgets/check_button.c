@@ -129,6 +129,8 @@ static ret_t check_button_get_prop(widget_t* widget, const char* name, value_t* 
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_STATE_FOR_STYLE)) {
     value_set_str(v, widget_get_state_for_style(widget, FALSE, check_button->value));
+  } else if (tk_str_eq(name, WIDGET_PROP_RADIO)) {
+    value_set_bool(v, check_button->radio);
     return RET_OK;
   }
 
@@ -136,10 +138,14 @@ static ret_t check_button_get_prop(widget_t* widget, const char* name, value_t* 
 }
 
 static ret_t check_button_set_prop(widget_t* widget, const char* name, const value_t* v) {
+  check_button_t* check_button = CHECK_BUTTON(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     return check_button_set_value(widget, value_bool(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_RADIO)) {
+    check_button->radio = value_bool(v);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
