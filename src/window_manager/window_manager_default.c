@@ -705,6 +705,9 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
        * 如果没有 fb 的脏矩形列表的话，会退化为获取当前帧的脏矩形。
        */
       dirty_rects_t* dirty_rects = (dirty_rects_t*)lcd_get_dirty_rects(c->lcd);
+      if (dirty_rects == NULL && !lcd_is_support_dirty_rect(c->lcd)) {
+        dirty_rects = &(wm->native_window->dirty_rects);
+      }
       dirty_rects_paint(dirty_rects, WIDGET(wm), c, widget_paint);
     }
     window_manager_paint_cursor(widget, c);
