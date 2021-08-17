@@ -7,7 +7,8 @@
   * 修复mono编译和运行错误的问题（感谢智明提供补丁）
   * 修复lcd的脏矩形列表为空时画面不正常的问题（感谢智明提供补丁）
   * 修复top的UI的图片超过overlay导致在mono上面有残留的问题（感谢智明提供补丁）
-
+  * 修复Windows下send/recv无法用errno判读是否正常的问题。
+  
 2021/08/16
   * check button允许使用radio属性控制单选多选。
   * scroll bar允许使用is_mobile属性控制mobile/desktop
