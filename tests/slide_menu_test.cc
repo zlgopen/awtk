@@ -1,6 +1,7 @@
 ﻿#include <stdlib.h>
 #include "gtest/gtest.h"
 #include "widgets/button.h"
+#include "widgets/view.h"
 #include "slide_menu/slide_menu.h"
 #include <string>
 
@@ -57,6 +58,21 @@ TEST(SlideMenu, fix_index) {
   ASSERT_EQ(slide_menu_fix_index(w, -2), 1);
   ASSERT_EQ(slide_menu_fix_index(w, -3), 0);
   ASSERT_EQ(slide_menu_fix_index(w, -4), 2);
+
+  widget_destroy(w);
+}
+
+TEST(SlideMenu, layout_children) {
+  widget_t* w = slide_menu_create(NULL, 0, 0, 600, 300);
+  widget_t* v = view_create(NULL, 0, 0, 0, 0);
+  widget_t* b = button_create(v, 0, 0, 0, 0);
+
+  widget_set_children_layout(v, "default(c=1,r=1,x=5,y=5,s=0)");
+  widget_add_child(w, v);
+  widget_layout_children(w);
+
+  ASSERT_NE(b->w, 0);
+  ASSERT_NE(b->h, 0);
 
   widget_destroy(w);
 }
