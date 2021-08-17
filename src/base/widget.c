@@ -725,7 +725,14 @@ ret_t widget_set_floating(widget_t* widget, bool_t floating) {
 }
 
 ret_t widget_set_focused_internal(widget_t* widget, bool_t focused) {
+  widget_t* win = widget_get_window(widget);
+  int32_t stage = widget_get_prop_int(win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+ 
+  if (WINDOW_STAGE_SUSPEND == stage) {
+    log_debug("You can not set focus of a widget when window is in background");
+    return RET_FAIL;
+  }
 
   if (widget->focused != focused) {
     widget->focused = focused;

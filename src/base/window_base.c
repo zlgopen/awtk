@@ -393,6 +393,9 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
     window_base_load_theme_obj(widget);
     widget_update_style_recursive(widget);
     widget_layout(widget);
+    if (widget->sensitive) {
+      widget_set_focused_internal(widget, TRUE);
+    }
   } else if (e->type == EVT_WINDOW_OPEN) {
     win->stage = WINDOW_STAGE_OPENED;
     if (widget->sensitive) {
