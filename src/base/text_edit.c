@@ -452,7 +452,7 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
   wstr_t* text = &(text_edit->widget->text);
   uint32_t size = text_edit->widget->text.size;
   text_layout_info_t* layout_info = &(impl->layout_info);
-  uint32_t char_w = canvas_measure_text(c, text->str, 1) + CHAR_SPACING;
+  uint32_t char_w = 0;
   uint32_t line_index = 0;
   impl->caret.x = 0;
   impl->caret.y = 0;
@@ -463,6 +463,7 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
   widget_prepare_text_style(text_edit->widget, c);
   impl->line_height = c->font_size * FONT_BASELINE;
   widget_get_text_layout_info(text_edit->widget, layout_info);
+  char_w = canvas_measure_text(c, text->str, 1) + CHAR_SPACING;
 
   if (layout_info->w < char_w) {
     return RET_OK;
