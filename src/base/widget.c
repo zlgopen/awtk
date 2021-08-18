@@ -138,9 +138,14 @@ static ret_t widget_set_need_update_style_recursive(widget_t* widget) {
 }
 
 ret_t widget_update_style(widget_t* widget) {
-  widget->need_update_style = FALSE;
+  return_value_if_fail(widget != NULL && widget->astyle != NULL, RET_BAD_PARAMS);
 
-  return style_notify_widget_state_changed(widget->astyle, widget);
+  if (widget->need_update_style) {
+    widget->need_update_style = FALSE;
+    return style_notify_widget_state_changed(widget->astyle, widget);
+  }
+
+  return RET_OK;
 }
 
 static ret_t widget_real_destroy(widget_t* widget) {
@@ -238,7 +243,8 @@ ret_t widget_resize(widget_t* widget, wh_t w, wh_t h) {
   return RET_OK;
 }
 
-ret_t widget_move_resize_ex(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h, bool_t update_layout) {
+ret_t widget_move_resize_ex(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h,
+                            bool_t update_layout) {
   event_t e = event_init(EVT_WILL_MOVE_RESIZE, widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -728,7 +734,7 @@ ret_t widget_set_focused_internal(widget_t* widget, bool_t focused) {
   widget_t* win = widget_get_window(widget);
   int32_t stage = widget_get_prop_int(win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
- 
+
   if (WINDOW_STAGE_SUSPEND == stage) {
     log_debug("You can not set focus of a widget when window is in background");
     return RET_FAIL;
@@ -1885,9 +1891,9 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_Y)) {
     widget_set_y(widget, (xy_t)value_int(v), TRUE);
   } else if (tk_str_eq(name, WIDGET_PROP_W)) {
-     widget_set_w(widget, (wh_t)value_int(v), TRUE);
+    widget_set_w(widget, (wh_t)value_int(v), TRUE);
   } else if (tk_str_eq(name, WIDGET_PROP_H)) {
-     widget_set_h(widget, (wh_t)value_int(v), TRUE);
+    widget_set_h(widget, (wh_t)value_int(v), TRUE);
   } else if (tk_str_eq(name, WIDGET_PROP_OPACITY)) {
     widget->opacity = (uint8_t)value_int(v);
   } else if (tk_str_eq(name, WIDGET_PROP_VISIBLE)) {
