@@ -4,7 +4,6 @@
 int main(int argc, char* argv[]) {
   int32_t ret = 0;
   int32_t lsock = 0;
-  char buff[2048];
   tk_iostream_t* io = NULL;
   const char* response = "200 OK\n";
 
