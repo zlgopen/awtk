@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/08/20
+  * 修复scroll_view在拖拽时且scroll_view里有子控件进行重新布局时，画面不正常问题(感谢兆坤提供补丁)。
+
 2021/08/18
   * 修复label\_resize\_to\_content导致confirm/info等对话框大小计算有误的问题。
 

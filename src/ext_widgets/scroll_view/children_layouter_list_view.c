@@ -327,22 +327,25 @@ static ret_t children_layouter_list_view_for_list_view_set_scroll_view_info(widg
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
   return_value_if_fail(scroll_view != NULL, RET_BAD_PARAMS);
 
-  if (widget->h >= virtual_h) {
-    scroll_view_set_offset(widget, 0, 0);
-  }
   if (scroll_bar_is_mobile(scroll_bar)) {
     scroll_view_set_yslidable(widget, TRUE);
   }
 
   scroll_view_set_xslidable(widget, FALSE);
   scroll_view_set_virtual_h(widget, virtual_h);
-  scroll_view->xoffset = 0;
-  if (scroll_view->yoffset + widget->h > scroll_view->virtual_h) {
-    scroll_view->yoffset = scroll_view->virtual_h - widget->h;
-    scroll_view->yoffset = scroll_view->yoffset > 0 ? scroll_view->yoffset : 0;
-  }
-  if (scroll_view->on_scroll) {
-    scroll_view->on_scroll(widget, scroll_view->xoffset, scroll_view->yoffset);
+
+  if (!scroll_view->dragged && scroll_view->wa == NULL) {
+    if (widget->h >= virtual_h) {
+      scroll_view_set_offset(widget, 0, 0);
+    }
+    scroll_view->xoffset = 0;
+    if (scroll_view->yoffset + widget->h > scroll_view->virtual_h) {
+      scroll_view->yoffset = scroll_view->virtual_h - widget->h;
+      scroll_view->yoffset = scroll_view->yoffset > 0 ? scroll_view->yoffset : 0;
+    }
+    if (scroll_view->on_scroll) {
+      scroll_view->on_scroll(widget, scroll_view->xoffset, scroll_view->yoffset);
+    }
   }
   return RET_OK;
 }
@@ -352,7 +355,8 @@ static ret_t children_layouter_list_view_for_list_view_set_scroll_bar_info(widge
                                                                            widget_t* scroll_view,
                                                                            int32_t virtual_h,
                                                                            int32_t item_height) {
-  return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
+  scroll_view_t* ascroll_view = SCROLL_VIEW(scroll_view);
+  return_value_if_fail(list_view != NULL && ascroll_view != NULL, RET_BAD_PARAMS);
 
   scroll_bar_set_params(widget, virtual_h, item_height);
   if (scroll_bar_is_mobile(widget)) {
@@ -360,7 +364,7 @@ static ret_t children_layouter_list_view_for_list_view_set_scroll_bar_info(widge
       scroll_bar_set_params(widget, widget->h, item_height);
     }
 
-    if (SCROLL_BAR(widget)->auto_hide) {
+    if (SCROLL_BAR(widget)->auto_hide && !ascroll_view->dragged && ascroll_view->wa == NULL) {
       widget_set_visible_only(widget, FALSE);
     }
   } else {
