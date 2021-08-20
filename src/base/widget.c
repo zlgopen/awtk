@@ -376,6 +376,8 @@ ret_t widget_use_style(widget_t* widget, const char* value) {
   widget->style = tk_str_copy(widget->style, value);
   if (widget_is_window_opened(widget)) {
     widget_update_style(widget);
+  } else {
+    widget_set_need_update_style(widget);
   }
 
   return widget_invalidate(widget, NULL);
