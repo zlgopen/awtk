@@ -24,7 +24,7 @@
 #include "base/lcd_profile.h"
 
 #ifdef ENABLE_PERFORMANCE_PROFILE
-static ret_t lcd_profile_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
+static ret_t lcd_profile_begin_frame(lcd_t* lcd, const dirty_rects_t* dirty_rects) {
   ret_t ret = RET_OK;
   lcd_profile_t* profile = LCD_PROFILE(lcd);
 
@@ -42,12 +42,12 @@ static ret_t lcd_profile_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
   profile->stroke_pixels = 0;
 
   profile->begin_frame_time = time_now_ms();
-  ret = lcd_begin_frame(profile->impl, dirty_rect, lcd->draw_mode);
+  ret = lcd_begin_frame(profile->impl, dirty_rects, lcd->draw_mode);
 
   return ret;
 }
 
-static ret_t lcd_profile_set_clip_rect(lcd_t* lcd, rect_t* rect) {
+static ret_t lcd_profile_set_clip_rect(lcd_t* lcd, const rect_t* rect) {
   lcd_profile_t* profile = LCD_PROFILE(lcd);
 
   return lcd_set_clip_rect(profile->impl, rect);
@@ -66,10 +66,9 @@ static ret_t lcd_profile_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length
 }
 
 static ret_t lcd_profile_set_orientation(lcd_t* lcd, lcd_orientation_t orientation) {
-  if (orientation == LCD_ORIENTATION_90 || orientation == LCD_ORIENTATION_270) {
-    return lcd_resize(profile->impl, profile->impl->h, profile->impl->w, 0);
-  }
-  return RET_OK;
+  lcd_profile_t* profile = LCD_PROFILE(lcd);
+
+  return lcd_set_orientation(profile->impl, orientation);
 }
 
 static ret_t lcd_profile_set_global_alpha(lcd_t* lcd, uint8_t alpha) {
@@ -194,7 +193,7 @@ static ret_t lcd_profile_stroke_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h)
   return ret;
 }
 
-static ret_t lcd_profile_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y) {
+static ret_t lcd_profile_draw_glyph(lcd_t* lcd, glyph_t* glyph, const rect_t* src, xy_t x, xy_t y) {
   ret_t ret = RET_OK;
 
   uint32_t cost = 0;
@@ -232,7 +231,7 @@ static ret_t lcd_profile_draw_text(lcd_t* lcd, const wchar_t* str, uint32_t nr, 
   return ret;
 }
 
-static ret_t lcd_profile_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
+static ret_t lcd_profile_draw_image(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst) {
   ret_t ret = RET_OK;
 
   uint32_t cost = 0;
