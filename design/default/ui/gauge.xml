@@ -7,7 +7,7 @@
    <gauge x="c" y="bottom:60" w="240" h="240" image="gauge_bg" >
     <gauge_pointer x="c" y="50" w="12" h="140" value="-128" 
         animation="value(from=-128, to=128, yoyo_times=1000, duration=3000, delay=1000)"/>
-    <gauge_pointer x="c" y="50" w="12" h="140" value="-128" image="pointer"  
+    <gauge_pointer x="c" y="50" w="32" h="140" value="-128" image="pointer"  
         animation="value(from=-128, to=128, yoyo_times=1000, duration=3000)"/>
   </gauge>
 

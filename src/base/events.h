@@ -557,6 +557,12 @@ typedef struct _orientation_event_t {
    * 屏幕方向。
    */
   lcd_orientation_t orientation;
+  /**
+   * @property {int32_t} old_orientation
+   * @annotation ["readable", "scriptable"]
+   * 旧的屏幕方向。
+   */
+  lcd_orientation_t old_orientation;
 } orientation_event_t;
 
 /**
@@ -573,14 +579,15 @@ orientation_event_t* orientation_event_cast(event_t* event);
  * @method orientation_event_init
  * 初始化事件。
  * @param {orientation_event_t*} event event对象。
- * @param {void*} target 事件目标。
  * @param {uint32_t} type 事件类型。
- * @param {int32_t} dy 滚轮的y值。
+ * @param {void*} target 事件目标。
+ * @param {lcd_orientation_t} old_orientation 旧的屏幕方向。
+ * @param {lcd_orientation_t} new_orientation 新的屏幕方向。
  *
  * @return {event_t*} event对象。
  */
 event_t* orientation_event_init(orientation_event_t* event, uint32_t type, void* target,
-                                lcd_orientation_t orientation);
+                                lcd_orientation_t old_orientation, lcd_orientation_t new_orientation);
 
 /**
  * @class value_change_event_t
@@ -1008,8 +1015,14 @@ event_t* assets_event_init(assets_event_t* event, assets_manager_t* am, uint32_t
                            asset_type_t asset_type, asset_info_t* asset_info);
 
 /**
+ * @class event_t
+ * @annotation ["scriptable"]
+ * 事件基类。
+ */
+/**
  * @method event_from_name
  * 将事件名转换成事件的值。
+ * @annotation ["scriptable", "static"]
  * @param {const char*} name 事件名。
  *
  * @return {int32_t} 返回事件的值。

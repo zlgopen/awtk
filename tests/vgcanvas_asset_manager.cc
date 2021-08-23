@@ -123,7 +123,7 @@ TEST(Vgcanvas_asset_manager, image) {
             RET_OK);
   bitmap_destroy(&image);
   ASSERT_EQ(s_specific_by_vg1, image_ctx1);
-  ASSERT_EQ(s_specific_by_vg2, 0);
+  ASSERT_EQ(s_specific_by_vg2, image_ctx2);
   ASSERT_EQ(s_specific_by_vg3, image_ctx3);
   s_specific_by_vg1 = 0;
   s_specific_by_vg3 = 0;
@@ -153,6 +153,9 @@ TEST(Vgcanvas_asset_manager, font) {
   void* vg1 = tk_pointer_from_int(TEST_VGCANAS1_PTR);
   void* vg2 = tk_pointer_from_int(TEST_VGCANAS2_PTR);
   void* vg3 = tk_pointer_from_int(TEST_VGCANAS3_PTR);
+  s_specific_by_vg1 = 0;
+  s_specific_by_vg2 = 0;
+  s_specific_by_vg3 = 0;
 
   ASSERT_EQ(vgcanvas_asset_manager_set(vgcanvas_asset_manager_create()), RET_OK);
 
@@ -206,7 +209,7 @@ TEST(Vgcanvas_asset_manager, font) {
 
   vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager(), vg3, "default");
   ASSERT_EQ(s_specific_by_vg1, 0);
-  ASSERT_EQ(s_specific_by_vg2, 0);
+  ASSERT_EQ(s_specific_by_vg2, font_ctx2);
   ASSERT_EQ(s_specific_by_vg3, font_ctx3);
   s_specific_by_vg3 = 0;
 

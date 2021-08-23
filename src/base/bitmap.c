@@ -792,3 +792,104 @@ ret_t bitmap_unlock_buffer(bitmap_t* bitmap) {
     return RET_FAIL;
   }
 }
+
+ret_t bitmap_transform(bitmap_t* bitmap, bitmap_transform_t transform, void* ctx) {
+  uint32_t x = 0;
+  uint32_t y = 0;
+  ret_t ret = RET_OK;
+  const uint8_t* data = NULL;
+  uint8_t* bitmap_data = NULL;
+  uint32_t bpp = bitmap_get_bpp(bitmap);
+  return_value_if_fail(transform != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(bitmap != NULL && bitmap->buffer != NULL, RET_BAD_PARAMS);
+
+  bitmap_data = bitmap_lock_buffer_for_write(bitmap);
+  for (y = 0; y < bitmap->h; y++) {
+    data = bitmap_data + bitmap_get_line_length(bitmap) * y;
+    for (x = 0; x < bitmap->w; x++) {
+      switch (bitmap->format) {
+        case BITMAP_FMT_RGBA8888: {
+          pixel_rgba8888_t* p = (pixel_rgba8888_t*)data;
+          rgba_t pixel = pixel_rgba8888_to_rgba((*p));
+          if (transform(ctx, bitmap, x, y, &pixel) == RET_OK) {
+            pixel_rgba8888_t result = pixel_rgba8888_from_rgba(pixel.r, pixel.g, pixel.b, pixel.a);
+            *p = result;
+          }
+          break;
+        }
+        case BITMAP_FMT_ABGR8888: {
+          pixel_abgr8888_t* p = (pixel_abgr8888_t*)data;
+          rgba_t pixel = pixel_abgr8888_to_rgba((*p));
+          if (transform(ctx, bitmap, x, y, &pixel) == RET_OK) {
+            pixel_abgr8888_t result = pixel_abgr8888_from_rgba(pixel.r, pixel.g, pixel.b, pixel.a);
+            *p = result;
+          }
+          break;
+        }
+        case BITMAP_FMT_BGRA8888: {
+          pixel_bgra8888_t* p = (pixel_bgra8888_t*)data;
+          rgba_t pixel = pixel_bgra8888_to_rgba((*p));
+          if (transform(ctx, bitmap, x, y, &pixel) == RET_OK) {
+            pixel_bgra8888_t result = pixel_bgra8888_from_rgba(pixel.r, pixel.g, pixel.b, pixel.a);
+            *p = result;
+          }
+          break;
+        }
+        case BITMAP_FMT_ARGB8888: {
+          pixel_argb8888_t* p = (pixel_argb8888_t*)data;
+          rgba_t pixel = pixel_argb8888_to_rgba((*p));
+          if (transform(ctx, bitmap, x, y, &pixel) == RET_OK) {
+            pixel_argb8888_t result = pixel_argb8888_from_rgba(pixel.r, pixel.g, pixel.b, pixel.a);
+            *p = result;
+          }
+          break;
+        }
+        case BITMAP_FMT_RGB565: {
+          pixel_rgb565_t* p = (pixel_rgb565_t*)data;
+          rgba_t pixel = pixel_rgb565_to_rgba((*p));
+          if (transform(ctx, bitmap, x, y, &pixel) == RET_OK) {
+            pixel_rgb565_t result = pixel_rgb565_from_rgba(pixel.r, pixel.g, pixel.b, pixel.a);
+            *p = result;
+          }
+          break;
+        }
+        case BITMAP_FMT_BGR565: {
+          pixel_bgr565_t* p = (pixel_bgr565_t*)data;
+          rgba_t pixel = pixel_bgr565_to_rgba((*p));
+          if (transform(ctx, bitmap, x, y, &pixel) == RET_OK) {
+            pixel_bgr565_t result = pixel_bgr565_from_rgba(pixel.r, pixel.g, pixel.b, pixel.a);
+            *p = result;
+          }
+          break;
+        }
+        case BITMAP_FMT_RGB888: {
+          pixel_rgb888_t* p = (pixel_rgb888_t*)data;
+          rgba_t pixel = pixel_rgb888_to_rgba((*p));
+          if (transform(ctx, bitmap, x, y, &pixel) == RET_OK) {
+            pixel_rgb888_t result = pixel_rgb888_from_rgba(pixel.r, pixel.g, pixel.b, pixel.a);
+            *p = result;
+          }
+          break;
+        }
+        case BITMAP_FMT_BGR888: {
+          pixel_bgr888_t* p = (pixel_bgr888_t*)data;
+          rgba_t pixel = pixel_bgr888_to_rgba((*p));
+          if (transform(ctx, bitmap, x, y, &pixel) == RET_OK) {
+            pixel_bgr888_t result = pixel_bgr888_from_rgba(pixel.r, pixel.g, pixel.b, pixel.a);
+            *p = result;
+          }
+          break;
+        }
+        default: {
+          ret = RET_NOT_IMPL;
+          break;
+        }
+      }
+      data += bpp;
+    }
+  }
+  bitmap_unlock_buffer(bitmap);
+  bitmap->flags |= BITMAP_FLAG_CHANGED;
+
+  return ret;
+}

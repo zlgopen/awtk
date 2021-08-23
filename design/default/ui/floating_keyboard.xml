@@ -1,0 +1,7 @@
+<window>
+<edit x="10" y="10" w="145" h="30" text="123" input_type="int" keyboard="kb_int_floating" />
+<edit x="10" y="b:10" w="145" h="30" text="123" input_type="int" keyboard="kb_int_floating" />
+<edit x="r:10" y="10" w="145" h="30" text="123" input_type="int" keyboard="kb_int_floating" />
+<edit x="r:10" y="b:10" w="145" h="30" text="123" input_type="int" keyboard="kb_int_floating" />
+<edit x="c" y="m" w="145" h="30" text="123" input_type="int" keyboard="kb_int_floating" />
+</window>

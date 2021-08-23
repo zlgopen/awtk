@@ -1,7 +1,77 @@
 # 最新动态
 
+2021/08/23
+  * 修复多次调用 lcd 旋转的功能的问题（感谢智明提供补丁）
+
+2021/08/21
+  * 修改lcd\_profile编译问题。
+
+2021/08/20
+  * 修复scroll_view在拖拽时且scroll_view里有子控件进行重新布局时，画面不正常问题(感谢兆坤提供补丁)。
+
+2021/08/18
+  * 修复label\_resize\_to\_content导致confirm/info等对话框大小计算有误的问题。
+
+2021/08/17
+  * 修复设置后台窗口焦点导致的问题。
+  * 完善slide menu(感谢兆坤提供补丁)。
+  * 完善text edit(感谢雨欣提供补丁)。
+  * 修复mono编译和运行错误的问题（感谢智明提供补丁）
+  * 修复lcd的脏矩形列表为空时画面不正常的问题（感谢智明提供补丁）
+  * 修复top的UI的图片超过overlay导致在mono上面有残留的问题（感谢智明提供补丁）
+  * 修复Windows下send/recv无法用errno判读是否正常的问题。
+  
+2021/08/16
+  * check button允许使用radio属性控制单选多选。
+  * scroll bar允许使用is_mobile属性控制mobile/desktop
+
+2021/08/12
+  * 增加lcd\_set\_orientation（感谢智明提供补丁）。
+
+2021/08/11
+  * 解决使用self\_layout后不能移动的问题（感谢智明提供补丁）
+  * 修复lcd\_fb\_dirty\_rects头文件注释不对的问题（感谢智明提供补丁）
+  * 修复lcd\_sdl的lcd旋转后画面不正常的问题（感谢智明提供补丁）
+  * 修复lcd旋转导致脏矩形异常后导致中断的问题（感谢智明提供补丁）
+  * 修复vgcanvas\_asset\_manager的gtest失败的问题（感谢智明提供补丁）
+  * 修复其他的layout调用widget\_move\_resize函数的问题（感谢智明提供补丁）
+
+2021/08/10
+ * 修复list\_view没有滚动条的警告问题（感谢智明提供补丁）
+ * 删除不断打印relayout的信息的代码（感谢智明提供补丁）
+ * 给text\_selector增加可以设置是否修改值的时候启动动画（感谢智明提供补丁）
+ * 修复vgcanvas\_asset\_manager内存泄露的问题（感谢智明提供补丁）
+
+2021/08/06
+  * 完善image value。
+  * 完善awtk\_version.h（感谢智明提供补丁）。
+  * 修复vgcanvas\_cairo\_reset中设置global alpha的问题。
+
+2021/08/05
+  * 增加src/platforms/README.md
+  * 增加函数bitmap_transform
+
+2021/08/04
+  * 增加函数combo\_box\_remove\_option。
+  * 完善demoui(感谢兆坤提供补丁)。
+
+2021/08/03
+  * 键盘支持跟随编辑(指定floating=true即可)
+  * 更新文档。
+  * 完善vpage事件处理。
+
+2021/08/02
+  * 公开函数timer\_manager\_dispatch。
+  * 修复fragment fb编译问题（感谢智明提供补丁）。
+
+2021/07/30
+  * 完善ostream的fscript绑定。
+  * 完善pages和button group(感谢兆坤提供补丁)。
+
 2021/07/28
   * 完善slide\_menu（感谢智明提供补丁）。
+  * 修改 agge 兼容没有 d3d 会崩溃的问题（感谢智明提供补丁）。
+  * 完善slide view删除当前view的处理(感谢兆坤提供补丁)。
 
 2021/07/27
   * 裁剪了assets-1m的资源（感谢智明提供补丁）。

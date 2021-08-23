@@ -291,6 +291,7 @@ ret_t label_resize_to_content(widget_t* widget, uint32_t min_w, uint32_t max_w, 
   label_t* label = LABEL(widget);
   canvas_t* c = widget_get_canvas(widget);
   return_value_if_fail(label != NULL && c != NULL && widget->astyle != NULL, RET_BAD_PARAMS);
+  widget_update_style(widget);
 
   return label_auto_adjust_size_impl(widget, c, min_w, max_w, min_h, max_h);
 }

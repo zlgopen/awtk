@@ -45,6 +45,7 @@
 | <a href="#canvas_t_canvas_set_fill_color_str">canvas\_set\_fill\_color\_str</a> | 设置填充颜色。 |
 | <a href="#canvas_t_canvas_set_font">canvas\_set\_font</a> | 设置字体。 |
 | <a href="#canvas_t_canvas_set_font_manager">canvas\_set\_font\_manager</a> | 设置canvas的font_manager对象。 |
+| <a href="#canvas_t_canvas_set_fps">canvas\_set\_fps</a> | 设置FPS。 |
 | <a href="#canvas_t_canvas_set_global_alpha">canvas\_set\_global\_alpha</a> | 设置全局alpha值。 |
 | <a href="#canvas_t_canvas_set_stroke_color">canvas\_set\_stroke\_color</a> | 设置线条颜色。 |
 | <a href="#canvas_t_canvas_set_stroke_color_str">canvas\_set\_stroke\_color\_str</a> | 设置线条颜色。 |
@@ -88,7 +89,7 @@
 * 函数原型：
 
 ```
-ret_t canvas_begin_frame (canvas_t* c, const rect_t* dirty_rect, lcd_draw_mode_t draw_mode);
+ret_t canvas_begin_frame (canvas_t* c, const dirty_rects_t* dirty_rects, lcd_draw_mode_t draw_mode);
 ```
 
 * 参数说明：
@@ -97,7 +98,7 @@ ret_t canvas_begin_frame (canvas_t* c, const rect_t* dirty_rect, lcd_draw_mode_t
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | c | canvas\_t* | canvas对象。 |
-| dirty\_rect | const rect\_t* | 脏矩形。 |
+| dirty\_rects | const dirty\_rects\_t* | 脏矩形。 |
 | draw\_mode | lcd\_draw\_mode\_t | 绘制模式。 |
 #### canvas\_cast 函数
 -----------------------
@@ -894,6 +895,27 @@ ret_t canvas_set_font_manager (canvas_t* c, font_manager_t* font_manager);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | c | canvas\_t* | canvas对象。 |
 | font\_manager | font\_manager\_t* | font\_manager对象。 |
+#### canvas\_set\_fps 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_t_canvas_set_fps">设置FPS。
+
+* 函数原型：
+
+```
+ret_t canvas_set_fps (canvas_t* c, bool_t show_fps, uint32_t fps);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| c | canvas\_t* | canvas对象。 |
+| show\_fps | bool\_t | 是否显示fps。 |
+| fps | uint32\_t | FPS。 |
 #### canvas\_set\_global\_alpha 函数
 -----------------------
 

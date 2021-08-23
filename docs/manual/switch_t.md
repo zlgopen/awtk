@@ -56,8 +56,9 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L4
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
-| EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(开关状态)即将改变事件。 |
-| EVT\_VALUE\_CHANGED | event\_t | 值(开关状态)改变事件。 |
+| EVT\_CLICK | pointer\_event\_t | 点击事件。 |
+| EVT\_VALUE\_WILL\_CHANGE | value\_change\_event\_t | 值(开关状态)即将改变事件。 |
+| EVT\_VALUE\_CHANGED | value\_change\_event\_t | 值(开关状态)改变事件。 |
 #### switch\_cast 函数
 -----------------------
 

@@ -88,8 +88,11 @@ ret_t vgcanvas_cairo_end_frame(vgcanvas_t* vgcanvas) {
 static ret_t vgcanvas_cairo_reset(vgcanvas_t* vgcanvas) {
   vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
   cairo_t* vg = canvas->vg;
+
   cairo_new_path(vg);
-  vgcanvas->global_alpha = 0xff;
+  cairo_identity_matrix(vg);
+  vgcanvas->global_alpha = 1;
+  vg->status = CAIRO_STATUS_SUCCESS;
 
   return RET_OK;
 }

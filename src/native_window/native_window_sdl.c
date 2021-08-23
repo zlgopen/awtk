@@ -90,7 +90,7 @@ static ret_t native_window_sdl_resize(native_window_t* win, wh_t w, wh_t h) {
   win->rect.h = h;
 
 #if !defined(ANDROID) && !defined(IOS)
-  if (system_info()->lcd_orientation == LCD_ORIENTATION_0 && (w != info.w || h != info.h)) {
+  if (w != info.w || h != info.h) {
 #ifdef WIN32
     w = w * win->ratio;
     h = h * win->ratio;
@@ -104,6 +104,24 @@ static ret_t native_window_sdl_resize(native_window_t* win, wh_t w, wh_t h) {
   }
 
   return ret;
+}
+
+static ret_t native_window_sdl_set_orientation(native_window_t* win, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation) {
+  wh_t w, h;
+  native_window_info_t info;
+  native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
+  return_value_if_fail(sdl != NULL, RET_BAD_PARAMS);
+  native_window_get_info(win, &info);
+  w = info.w;
+  h = info.h;
+  if (new_orientation == LCD_ORIENTATION_90 || new_orientation == LCD_ORIENTATION_270) {
+    w = info.h;
+    h = info.w;
+  }
+
+  win->rect.w = w;
+  win->rect.h = h;
+  return RET_OK;
 }
 
 static ret_t native_window_sdl_minimize(native_window_t* win) {
@@ -383,6 +401,7 @@ static const native_window_vtable_t s_native_window_vtable = {
     .type = "native_window_sdl",
     .move = native_window_sdl_move,
     .resize = native_window_sdl_resize,
+    .set_orientation = native_window_sdl_set_orientation,
     .minimize = native_window_sdl_minimize,
     .maximize = native_window_sdl_maximize,
     .restore = native_window_sdl_restore,
@@ -495,6 +514,9 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
 #ifdef WITH_NANOVG_SOFT
   sdl->render =
       SDL_CreateRenderer(sdl->window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
+  if (sdl->render == NULL) {
+    sdl->render = SDL_CreateRenderer(sdl->window, -1, SDL_RENDERER_SOFTWARE);
+  }
 #endif /*WITH_NANOVG_SOFT*/
 
   win->handle = sdl->window;

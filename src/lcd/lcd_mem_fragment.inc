@@ -281,6 +281,14 @@ static ret_t lcd_mem_fragment_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_l
   return RET_OK;
 }
 
+static ret_t lcd_mem_fragment_set_orientation(lcd_t* lcd, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation) {
+  if (tk_is_swap_size_by_orientation(old_orientation, new_orientation)) {
+    return lcd_mem_fragment_resize(lcd, lcd->h, lcd->w, 0);
+  }
+  return RET_OK;
+}
+
+
 static bitmap_format_t lcd_mem_fragment_get_desired_bitmap_format(lcd_t* lcd) {
   return LCD_FORMAT;
 }
@@ -313,6 +321,7 @@ lcd_t* lcd_mem_fragment_create(wh_t w, wh_t h) {
   base->destroy = lcd_mem_fragment_destroy;
   base->resize = lcd_mem_fragment_resize;
   base->flush = lcd_mem_fragment_flush;
+  base->set_orientation = lcd_mem_fragment_set_orientation;
 
   base->w = w;
   base->h = h;

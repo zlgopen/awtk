@@ -15,6 +15,7 @@
 | <a href="#timer_manager_t_timer_manager_create">timer\_manager\_create</a> | 创建定时器管理器。 |
 | <a href="#timer_manager_t_timer_manager_deinit">timer\_manager\_deinit</a> | 析构定时器管理器。 |
 | <a href="#timer_manager_t_timer_manager_destroy">timer\_manager\_destroy</a> | 析构并释放定时器管理器。 |
+| <a href="#timer_manager_t_timer_manager_dispatch">timer\_manager\_dispatch</a> | 检查全部定时器的函数，如果时间到期，调用相应的timer函数。 |
 | <a href="#timer_manager_t_timer_manager_find">timer\_manager\_find</a> | 查找指定ID的定时器。 |
 | <a href="#timer_manager_t_timer_manager_init">timer\_manager\_init</a> | 初始化定时器管理器。 |
 | <a href="#timer_manager_t_timer_manager_next_time">timer\_manager\_next\_time</a> | 返回最近的定时器到期时间。 |
@@ -177,6 +178,24 @@ ret_t timer_manager_destroy (timer_manager_t* timer_manager);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | timer\_manager | timer\_manager\_t* | 定时器管理器对象。 |
+#### timer\_manager\_dispatch 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="timer_manager_t_timer_manager_dispatch">检查全部定时器的函数，如果时间到期，调用相应的timer函数。
+
+* 函数原型：
+
+```
+ret_t timer_manager_dispatch ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 #### timer\_manager\_find 函数
 -----------------------
 

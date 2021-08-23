@@ -10,7 +10,6 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#assets_event_t_assets_event_init">assets\_event\_init</a> | 初始化事件。 |
-| <a href="#assets_event_t_event_from_name">event\_from\_name</a> | 将事件名转换成事件的值。 |
 ### 属性
 <p id="assets_event_t_properties">
 
@@ -41,25 +40,6 @@ event_t* assets_event_init (window_event_t* event, assets_manager_t* am, uint32_
 | type | uint32\_t | 事件类型。 |
 | asset\_type | asset\_type\_t | 资源类型。 |
 | asset\_info | asset\_info\_t* | 资源对象。 |
-#### event\_from\_name 函数
------------------------
-
-* 函数功能：
-
-> <p id="assets_event_t_event_from_name">将事件名转换成事件的值。
-
-* 函数原型：
-
-```
-int32_t event_from_name (const char* name);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | int32\_t | 返回事件的值。 |
-| name | const char* | 事件名。 |
 #### asset\_info 属性
 -----------------------
 > <p id="assets_event_t_asset_info">触发事件的资源对象

@@ -47,3 +47,5 @@ style常量定义。
 | STYLE\_ID\_ROUND\_RADIUS\_BOTTOM\_RIGHT | 右下角圆角半径(仅在WITH\_VGCANVAS定义时生效)。 |
 | STYLE\_ID\_CHILDREN\_LAYOUT | 子控件布局参数。 |
 | STYLE\_ID\_SELF\_LAYOUT | 控件布局参数。 |
+| STYLE\_ID\_FOCUSABLE | 是否支持焦点停留。 |
+| STYLE\_ID\_FEEDBACK | 是否启用按键音、触屏音和震动等反馈。 |

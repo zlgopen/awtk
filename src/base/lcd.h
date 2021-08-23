@@ -51,6 +51,7 @@ typedef const dirty_rects_t* (*lcd_get_dirty_rects_t)(lcd_t* lcd);
 typedef ret_t (*lcd_begin_frame_t)(lcd_t* lcd, const dirty_rects_t* dirty_rects);
 typedef ret_t (*lcd_set_clip_rect_t)(lcd_t* lcd, const rect_t* rect);
 typedef ret_t (*lcd_get_clip_rect_t)(lcd_t* lcd, rect_t* rect);
+typedef ret_t (*lcd_set_orientation_t)(lcd_t* lcd, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation);
 typedef ret_t (*lcd_resize_t)(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length);
 typedef ret_t (*lcd_get_text_metrics_t)(lcd_t* lcd, float_t* ascent, float_t* descent,
                                         float_t* line_hight);
@@ -213,6 +214,7 @@ struct _lcd_t {
   lcd_is_support_dirty_rect_t is_support_dirty_rect;
   lcd_set_canvas_t set_canvas;
   lcd_resize_t resize;
+  lcd_set_orientation_t set_orientation;
   lcd_destroy_t destroy;
 
   /**
@@ -717,8 +719,7 @@ bool_t lcd_is_support_dirty_rect(lcd_t* lcd);
 /* private */
 bool_t lcd_is_dirty(lcd_t* lcd);
 ret_t lcd_set_canvas(lcd_t* lcd, canvas_t* c);
-ret_t lcd_set_curr_lcd(lcd_t* lcd, uint32_t lcd_id);
-ret_t lcd_invalidate_by_id(lcd_t* lcd, const rect_t* r, uint32_t lcd_id);
+ret_t lcd_set_orientation(lcd_t* lcd, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation);
 
 END_C_DECLS
 

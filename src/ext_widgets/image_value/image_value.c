@@ -262,11 +262,17 @@ static ret_t image_value_on_event(widget_t* widget, event_t* e) {
       widget_ungrab(widget->parent, widget);
       break;
     }
+    case EVT_CLICK: {
+      image_value_add_delta(widget);
+      break;
+    }
     case EVT_POINTER_UP: {
       if (image_value->pressed) {
-        image_value_add_delta(widget);
+        pointer_event_t evt = *((pointer_event_t*)e);
+        evt.e.type = EVT_CLICK;
+        widget_dispatch(widget, (event_t*)&evt);
+        image_value->pressed = FALSE;
       }
-      image_value->pressed = FALSE;
       widget_ungrab(widget->parent, widget);
       break;
     }

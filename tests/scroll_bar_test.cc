@@ -78,3 +78,15 @@ TEST(ScrollBar, auto_hide) {
 
   widget_destroy(w);
 }
+
+TEST(ScrollBar, is_mobile_prop) {
+  widget_t* w = scroll_bar_create_mobile(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(widget_set_prop_bool(w, SCROLL_BAR_PROP_IS_MOBILE, TRUE), RET_OK);
+  ASSERT_EQ(widget_get_prop_bool(w, SCROLL_BAR_PROP_IS_MOBILE, FALSE), TRUE);
+  
+  ASSERT_EQ(widget_set_prop_bool(w, SCROLL_BAR_PROP_IS_MOBILE, FALSE), RET_OK);
+  ASSERT_EQ(widget_get_prop_bool(w, SCROLL_BAR_PROP_IS_MOBILE, TRUE), FALSE);
+
+  widget_destroy(w);
+}

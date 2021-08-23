@@ -12,6 +12,7 @@
 | <a href="#rect_t_rect_create">rect\_create</a> | 创建rect对象。 |
 | <a href="#rect_t_rect_destroy">rect\_destroy</a> | 销毁rect对象。 |
 | <a href="#rect_t_rect_fix">rect\_fix</a> | 确保rect在指定的大小范围内。 |
+| <a href="#rect_t_rect_has_intersect">rect\_has\_intersect</a> | 判断两个rect的是否存在交集。 |
 | <a href="#rect_t_rect_init">rect\_init</a> | 初始化rect对象。 |
 | <a href="#rect_t_rect_intersect">rect\_intersect</a> | 求两个rect的交集。 |
 | <a href="#rect_t_rect_merge">rect\_merge</a> | 合并两个rect对象。 |
@@ -57,7 +58,7 @@ rect_t* rect_cast (rect_t* rect);
 * 函数原型：
 
 ```
-bool_t rect_contains (rect_t* r, xy_t x, xy_t y);
+bool_t rect_contains (const rect_t* r, xy_t x, xy_t y);
 ```
 
 * 参数说明：
@@ -65,7 +66,7 @@ bool_t rect_contains (rect_t* r, xy_t x, xy_t y);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回在rect范围内。 |
-| r | rect\_t* | rect对象。 |
+| r | const rect\_t* | rect对象。 |
 | x | xy\_t | x坐标。 |
 | y | xy\_t | y坐标。 |
 #### rect\_create 函数
@@ -132,6 +133,26 @@ rect_t rect_fix (rect_t* r);
 | -------- | ----- | --------- |
 | 返回值 | rect\_t | 返回修复之后的rect对象。 |
 | r | rect\_t* | rect对象。 |
+#### rect\_has\_intersect 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rect_t_rect_has_intersect">判断两个rect的是否存在交集。
+
+* 函数原型：
+
+```
+bool_t rect_has_intersect (const rect_t* r1, const rect_t* r2);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示存在，否则表示不存在。 |
+| r1 | const rect\_t* | rect对象。 |
+| r2 | const rect\_t* | rect对象。 |
 #### rect\_init 函数
 -----------------------
 

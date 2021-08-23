@@ -141,3 +141,11 @@ TEST(CheckButton, change_value_abort) {
 
   widget_destroy(w);
 }
+
+TEST(CheckButton, radio_prop) {
+  widget_t* w = check_button_create(NULL, 0, 0, 100, 100);
+  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_RADIO, TRUE), RET_OK);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_RADIO, FALSE), TRUE);
+
+  widget_destroy(w);
+}

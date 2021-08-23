@@ -54,6 +54,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L4
 | -------- | ------------ | 
 | <a href="#slide_view_t_slide_view_cast">slide\_view\_cast</a> | 转换为slide_view对象(供脚本语言使用)。 |
 | <a href="#slide_view_t_slide_view_create">slide\_view\_create</a> | 创建slide_view对象 |
+| <a href="#slide_view_t_slide_view_remove_index">slide\_view\_remove\_index</a> | 删除指定序号页面。 |
 | <a href="#slide_view_t_slide_view_set_active">slide\_view\_set\_active</a> | 设置当前页的序号(默认启用动画)。 |
 | <a href="#slide_view_t_slide_view_set_active_ex">slide\_view\_set\_active\_ex</a> | 设置当前页的序号。 |
 | <a href="#slide_view_t_slide_view_set_anim_hint">slide\_view\_set\_anim\_hint</a> | 设置页面切换动画。 |
@@ -74,8 +75,8 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L4
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
-| EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(当前页)即将改变事件。 |
-| EVT\_VALUE\_CHANGED | event\_t | 值(当前页)改变事件。 |
+| EVT\_VALUE\_WILL\_CHANGE | value\_change\_event\_t | 值(当前页)即将改变事件。 |
+| EVT\_VALUE\_CHANGED | value\_change\_event\_t | 值(当前页)改变事件。 |
 | EVT\_PAGE\_CHANGED | event\_t | 页面改变事件。 |
 #### slide\_view\_cast 函数
 -----------------------
@@ -119,6 +120,26 @@ widget_t* slide_view_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### slide\_view\_remove\_index 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slide_view_t_slide_view_remove_index">删除指定序号页面。
+
+* 函数原型：
+
+```
+ret_t slide_view_remove_index (widget_t* widget, uint32_t index);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | slide\_view对象。 |
+| index | uint32\_t | 删除页面的序号。 |
 #### slide\_view\_set\_active 函数
 -----------------------
 

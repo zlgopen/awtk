@@ -15,13 +15,13 @@ json_load(data, size) => object
 
 ### 2.json\_save
 
-> 保存 json 数据。
+> 将对象保存为 json 数据。
 ----------------------------
 
 #### 原型
 
 ```js
-json_save(obj, filename) => bool
+json_save(obj) => binary 
 ```
 
 ### 3.ubjson\_load
@@ -38,13 +38,13 @@ ubjson_load(data, size) => object
 
 ### 4.ubjson\_save
 
-> 保存 ubjson 数据。
+> 将对象保存为 ubjson 数据。
 ----------------------------
 
 #### 原型
 
 ```js
-ubjson_save(obj, filename) => bool
+ubjson_save(obj) => binary
 ```
 
 ### 完整示例

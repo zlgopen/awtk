@@ -87,7 +87,7 @@ struct _action_thread_t {
 action_thread_t* action_thread_create(void);
 
 /**
- * @method action_thread_create
+ * @method action_thread_create_ex
  * @annotation ["constructor"]
  * 创建action_thread对象。
  * 
@@ -112,7 +112,7 @@ action_thread_t* action_thread_create_ex(const char* name, uint32_t stack_size,
 action_thread_t* action_thread_create_with_queue(waitable_action_queue_t* queue);
 
 /**
- * @method action_thread_create_with_queue
+ * @method action_thread_create_with_queue_ex
  * @annotation ["constructor"]
  * 创建action_thread对象。
  *

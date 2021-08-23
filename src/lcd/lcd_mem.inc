@@ -386,9 +386,18 @@ static ret_t lcd_mem_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length) {
   lcd->w = w;
   lcd->h = h;
   mem->line_length = tk_max(mem->base.w * bpp, line_length);
-  vgcanvas_clip_rect(mem->vgcanvas, 0, 0, w, h);
+  if (mem->vgcanvas != NULL) {
+    vgcanvas_clip_rect(mem->vgcanvas, 0, 0, w, h);
+  }
   lcd_fb_dirty_rects_reinit(&(mem->fb_dirty_rects_list), w, h);
 
+  return RET_OK;
+}
+
+static ret_t lcd_mem_set_orientation(lcd_t* lcd, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation) {
+  if (tk_is_swap_size_by_orientation(old_orientation, new_orientation)) {
+    return lcd_mem_resize(lcd, lcd->h, lcd->w, 0);
+  }
   return RET_OK;
 }
 
@@ -454,6 +463,7 @@ static lcd_t* lcd_mem_init(lcd_mem_t* lcd, wh_t w, wh_t h, bool_t alloc) {
   base->set_line_length = lcd_mem_set_line_length_impl;
   base->get_dirty_rect = lcd_mem_get_dirty_rect;
   base->get_dirty_rects = lcd_mem_get_dirty_rects;
+  base->set_orientation = lcd_mem_set_orientation;
 
   base->w = w;
   base->h = h;

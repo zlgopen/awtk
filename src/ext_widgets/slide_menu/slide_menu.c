@@ -337,6 +337,7 @@ static ret_t slide_menu_do_layout_children(widget_t* widget) {
   x = (widget->w - max_size) / 2 + xoffset - (xoffset * max_crevice_size / (max_size >> 1));
   y = slide_menu_calc_child_y(slide_menu->align_v, max_size, size);
   widget_move_resize(iter, x, y, size, size);
+  widget_layout_children(iter);
 
   /*left*/
   for (i = curr - 1; i >= 0; i--) {
@@ -347,6 +348,7 @@ static ret_t slide_menu_do_layout_children(widget_t* widget) {
     x = children[i + 1]->x - size;
     y = slide_menu_calc_child_y(slide_menu->align_v, max_size, size);
     widget_move_resize(iter, x, y, size, size);
+    widget_layout_children(iter);
   }
 
   /*right*/
@@ -358,6 +360,7 @@ static ret_t slide_menu_do_layout_children(widget_t* widget) {
     x = children[i - 1]->x + children[i - 1]->w;
     y = slide_menu_calc_child_y(slide_menu->align_v, max_size, size);
     widget_move_resize(iter, x, y, size, size);
+    widget_layout_children(iter);
   }
 
   return RET_OK;

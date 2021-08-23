@@ -153,7 +153,6 @@ const timer_info_t* timer_manager_find(timer_manager_t* timer_manager, uint32_t 
 /**
  * @method timer_manager_dispatch
  * 检查全部定时器的函数，如果时间到期，调用相应的timer函数。
- * @annotation ["private"]
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

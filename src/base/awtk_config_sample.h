@@ -255,4 +255,10 @@
  * #define WITHOUT_WINDOW_ANIMATOR_CACHE 1
  */
 
+/**
+ * 如果需要配置文件或者使用data_reader/data_writer，请定义本宏。
+ *
+ * #define WITH_DATA_READER_WRITER 1
+ */
+
 #endif /*AWTK_CONFIG_H*/

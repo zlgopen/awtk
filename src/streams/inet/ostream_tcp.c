@@ -27,13 +27,14 @@
 #include "tkc/socket_helper.h"
 #include "streams/inet/ostream_tcp.h"
 
+
 static int32_t tk_ostream_tcp_write(tk_ostream_t* stream, const uint8_t* buff, uint32_t max_size) {
   int32_t ret = 0;
   tk_ostream_tcp_t* ostream_tcp = TK_OSTREAM_TCP(stream);
 
   ret = send(ostream_tcp->sock, buff, max_size, 0);
   if (ret <= 0) {
-    if (errno != EAGAIN && errno != 0) {
+    if (socket_is_last_io_ok()) {
       perror("send");
       ostream_tcp->is_broken = TRUE;
     }

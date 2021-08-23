@@ -68,8 +68,8 @@ image_value_set_value(image_value, 100);
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
-| EVT\_VALUE\_WILL\_CHANGE | event\_t | 值即将改变事件(click\_add\_delta为非0时，点击触发)。 |
-| EVT\_VALUE\_CHANGED | event\_t | 值改变事件(click\_add\_delta为非0时，点击触发)。 |
+| EVT\_VALUE\_WILL\_CHANGE | value\_change\_event\_t | 值即将改变事件(click\_add\_delta为非0时，点击触发)。 |
+| EVT\_VALUE\_CHANGED | value\_change\_event\_t | 值改变事件(click\_add\_delta为非0时，点击触发)。 |
 #### image\_value\_cast 函数
 -----------------------
 

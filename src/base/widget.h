@@ -752,6 +752,16 @@ int32_t widget_index_of(widget_t* widget);
 ret_t widget_close_window(widget_t* widget);
 
 /**
+ * @method widget_close_window_force
+ * 关闭控件所在的窗口。
+ * @annotation ["deconstructor", "scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_close_window_force(widget_t* widget);
+
+/**
  * @method widget_back
  * 请求返回到前一个窗口。
  * @annotation ["scriptable"]
@@ -2994,6 +3004,7 @@ bool_t widget_has_focused_widget_in_window(widget_t* widget);
 bool_t widget_is_activate_key(widget_t* widget, key_event_t* e);
 ret_t widget_set_focused_internal(widget_t* widget, bool_t focused);
 ret_t widget_remove_child_prepare(widget_t* widget, widget_t* child);
+ret_t widget_move_resize_ex(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h, bool_t update_layout);
 
 /*public for input_device_status*/
 /**

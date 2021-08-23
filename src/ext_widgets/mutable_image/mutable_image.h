@@ -95,7 +95,7 @@ typedef struct _mutable_image_t {
 /**
  * @method mutable_image_create
  * 创建mutable_image对象
- * @annotation ["constructor"]
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标

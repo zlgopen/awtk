@@ -1,4 +1,4 @@
-/*
+﻿/*
   Simple DirectMedia Layer
   Copyright (C) 1997-2018 Sam Lantinga <slouken@libsdl.org>
 
@@ -1594,7 +1594,8 @@ GL_DestroyRenderer(SDL_Renderer * renderer)
     GL_RenderData *data = (GL_RenderData *) renderer->driverdata;
 
     if (data) {
-        if (data->context != NULL) {
+        /* 判断 OpenGL 的函数是否加载正常 */
+        if (data->context != NULL && data->glViewport != NULL) {
             /* make sure we delete the right resources! */
             GL_ActivateRenderer(renderer);
         }

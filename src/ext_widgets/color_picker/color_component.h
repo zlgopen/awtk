@@ -62,7 +62,7 @@ typedef struct _color_component_t {
 /**
  * @method color_component_create
  * 创建color_component对象
- * @annotation ["constructor"]
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标

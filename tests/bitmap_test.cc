@@ -155,3 +155,50 @@ TEST(Bitmap, clone) {
 
   bitmap_destroy(b1);
 }
+
+static ret_t clear_r(void* ctx, bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* pixel) {
+  
+  pixel->r = *((uint8_t*)ctx);
+
+  return RET_OK;
+}
+
+TEST(Bitmap, transform1) {
+  rgba_t rgba;
+  uint8_t red = 0x88;
+  bitmap_t* b = bitmap_create_ex(10, 20, 0, BITMAP_FMT_BGRA8888);
+  uint8_t* buff = bitmap_lock_buffer_for_write(b);
+  memset(buff, 0x12, b->w * b->h * 4);
+  bitmap_unlock_buffer(b);
+
+  ASSERT_EQ(bitmap_transform(b, clear_r, &red), RET_OK);
+  ASSERT_EQ((b->flags & BITMAP_FLAG_CHANGED) != 0, true);
+
+  bitmap_get_pixel(b, 0, 0, &rgba);
+  ASSERT_EQ(rgba.r, red);
+  
+  bitmap_get_pixel(b, 5, 5, &rgba);
+  ASSERT_EQ(rgba.r, red);
+
+  bitmap_destroy(b);
+}
+
+TEST(Bitmap, transform2) {
+  rgba_t rgba;
+  uint8_t red = 0x80;
+  bitmap_t* b = bitmap_create_ex(10, 20, 0, BITMAP_FMT_BGR565);
+  uint8_t* buff = bitmap_lock_buffer_for_write(b);
+  memset(buff, 0x12, b->w * b->h * 2);
+  bitmap_unlock_buffer(b);
+
+  ASSERT_EQ(bitmap_transform(b, clear_r, &red), RET_OK);
+  ASSERT_EQ((b->flags & BITMAP_FLAG_CHANGED) != 0, true);
+
+  bitmap_get_pixel(b, 0, 0, &rgba);
+  ASSERT_EQ(rgba.r, red);
+  
+  bitmap_get_pixel(b, 5, 5, &rgba);
+  ASSERT_EQ(rgba.r, red);
+
+  bitmap_destroy(b);
+}

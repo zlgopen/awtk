@@ -45,15 +45,15 @@ gauge_pointer_set_image(gauge_pointer, "gauge_pointer");
 | -------- | ----- | ------------ | 
 | <a href="#gauge_pointer_t_anchor_x">anchor\_x</a> | char* | 图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f) |
 | <a href="#gauge_pointer_t_anchor_y">anchor\_y</a> | char* | 图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f) |
-| <a href="#gauge_pointer_t_angle">angle</a> | int32\_t | 指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。 |
+| <a href="#gauge_pointer_t_angle">angle</a> | float\_t | 指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。 |
 | <a href="#gauge_pointer_t_image">image</a> | char* | 指针图片。 |
 ### 事件
 <p id="gauge_pointer_t_events">
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
-| EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(角度)即将改变事件。 |
-| EVT\_VALUE\_CHANGED | event\_t | 值(角度)改变事件。 |
+| EVT\_VALUE\_WILL\_CHANGE | value\_change\_event\_t | 值(角度)即将改变事件。 |
+| EVT\_VALUE\_CHANGED | value\_change\_event\_t | 值(角度)改变事件。 |
 #### gauge\_pointer\_cast 函数
 -----------------------
 
@@ -127,7 +127,7 @@ ret_t gauge_pointer_set_anchor (widget_t* widget, const char* anchor_x, const ch
 * 函数原型：
 
 ```
-ret_t gauge_pointer_set_angle (widget_t* widget, int32_t angle);
+ret_t gauge_pointer_set_angle (widget_t* widget, float_t angle);
 ```
 
 * 参数说明：
@@ -136,7 +136,7 @@ ret_t gauge_pointer_set_angle (widget_t* widget, int32_t angle);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| angle | int32\_t | 指针角度。 |
+| angle | float\_t | 指针角度。 |
 #### gauge\_pointer\_set\_image 函数
 -----------------------
 
@@ -193,7 +193,7 @@ ret_t gauge_pointer_set_image (widget_t* widget, const char* image);
 -----------------------
 > <p id="gauge_pointer_t_angle">指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。
 
-* 类型：int32\_t
+* 类型：float\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

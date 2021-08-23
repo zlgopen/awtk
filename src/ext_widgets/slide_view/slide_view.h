@@ -111,23 +111,24 @@ typedef struct _slide_view_t {
    */
   char* anim_hint;
 
-  /*private*/
+  /* private */
+  velocity_t velocity;
   point_t down;
   int32_t xoffset;
   int32_t yoffset;
   uint32_t active;
-  bool_t animating;
   uint32_t timer_id;
   bool_t dragged;
   bool_t pressed;
-  velocity_t velocity;
+  bool_t animating;
+  bool_t remove_when_anim_done;
 
   /* for save focused child */
   str_t str_target;
   uint32_t init_idle_id;
   uint32_t focused_idle_id;
 
-  /*for animation*/
+  /* for animation */
   widget_t* prev;
   widget_t* next;
 
@@ -250,6 +251,17 @@ ret_t slide_view_set_anim_hint(widget_t* widget, const char* anim_hint);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t slide_view_set_loop(widget_t* widget, bool_t loop);
+
+/**
+ * @method slide_view_remove_index
+ * 删除指定序号页面。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget slide_view对象。
+ * @param {uint32_t} index 删除页面的序号。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t slide_view_remove_index(widget_t* widget, uint32_t index);
 
 /*public for test only*/
 widget_t* slide_view_get_prev(slide_view_t* slide_view);

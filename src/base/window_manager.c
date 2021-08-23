@@ -261,7 +261,6 @@ ret_t window_manager_check_and_layout(widget_t* widget) {
   if (WINDOW_BASE(iter)->need_relayout) {
     widget_layout(iter);
     window_base_set_need_relayout(iter, FALSE);
-    log_debug("relayout %s\n", iter->name);
   }
   WIDGET_FOR_EACH_CHILD_END();
 

@@ -36,6 +36,7 @@
 | <a href="#input_method_t_input_method_dispatch_preedit_confirm">input\_method\_dispatch\_preedit\_confirm</a> | 分发确认预编辑状态的事件(提交预编辑内容，退出预编辑状态)。 |
 | <a href="#input_method_t_input_method_dispatch_to_widget">input\_method\_dispatch\_to\_widget</a> | 分发一个事件当前焦点控件。 |
 | <a href="#input_method_t_input_method_get_lang">input\_method\_get\_lang</a> | 获取语言。 |
+| <a href="#input_method_t_input_method_is_native">input\_method\_is\_native</a> | 是否是平台原生输入法。 |
 | <a href="#input_method_t_input_method_off">input\_method\_off</a> | 注销指定事件的处理函数。 |
 | <a href="#input_method_t_input_method_on">input\_method\_on</a> | 注册指定事件的处理函数。 |
 | <a href="#input_method_t_input_method_request">input\_method\_request</a> | 打开或关闭输入法。 |
@@ -49,6 +50,7 @@
 | -------- | ----- | ------------ | 
 | <a href="#input_method_t_action_button_enable">action\_button\_enable</a> | bool\_t | 软键盘的上的action按钮是否可用。 |
 | <a href="#input_method_t_action_button_enable">action\_button\_enable</a> | bool\_t | 软键盘的上的action按钮文本。 |
+| <a href="#input_method_t_is_native">is\_native</a> | bool\_t | 是否是原生输入法。 |
 | <a href="#input_method_t_keyboard_name">keyboard\_name</a> | char* | 软键盘资源名称。 |
 #### input\_method 函数
 -----------------------
@@ -368,6 +370,25 @@ const char* input_method_get_lang (input_method_t* im);
 | -------- | ----- | --------- |
 | 返回值 | const char* | 返回语言。 |
 | im | input\_method\_t* | 输入法对象。 |
+#### input\_method\_is\_native 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="input_method_t_input_method_is_native">是否是平台原生输入法。
+
+* 函数原型：
+
+```
+bool_t input_method_is_native (input_method_t* im);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示是原生输入法，否则表示不是。 |
+| im | input\_method\_t* | 输入法对象。 |
 #### input\_method\_off 函数
 -----------------------
 
@@ -508,6 +529,16 @@ ret_t input_method_update_action_button_info (input_method_t* im, char* text, bo
 #### action\_button\_enable 属性
 -----------------------
 > <p id="input_method_t_action_button_enable">软键盘的上的action按钮文本。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+#### is\_native 属性
+-----------------------
+> <p id="input_method_t_is_native">是否是原生输入法。
 
 * 类型：bool\_t
 

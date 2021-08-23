@@ -86,8 +86,8 @@ tab\_button\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
-| EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(激活状态)即将改变事件。 |
-| EVT\_VALUE\_CHANGED | event\_t | 值(激活状态)改变事件。 |
+| EVT\_VALUE\_WILL\_CHANGE | value\_change\_event\_t | 值(激活状态)即将改变事件。 |
+| EVT\_VALUE\_CHANGED | value\_change\_event\_t | 值(激活状态)改变事件。 |
 | EVT\_CLICK | pointer\_event\_t | 点击事件。 |
 #### tab\_button\_cast 函数
 -----------------------

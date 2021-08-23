@@ -73,8 +73,8 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L3
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
-| EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(当前页的序号)即将改变事件。 |
-| EVT\_VALUE\_CHANGED | event\_t | 值(当前页的序号)改变事件。 |
+| EVT\_VALUE\_WILL\_CHANGE | value\_change\_event\_t | 值(当前页的序号)即将改变事件。 |
+| EVT\_VALUE\_CHANGED | value\_change\_event\_t | 值(当前页的序号)改变事件。 |
 | EVT\_PAGE\_CHANGED | event\_t | 页面改变事件。 |
 #### slide\_indicator\_cast 函数
 -----------------------

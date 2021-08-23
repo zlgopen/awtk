@@ -473,7 +473,6 @@ static ret_t on_combo_box_changed(void* ctx, event_t* e) {
 
 static ret_t on_remove_self(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
-  widget_remove_child(widget->parent, widget);
   widget_destroy(widget);
 
   return RET_OK;
@@ -485,8 +484,12 @@ static ret_t on_remove_view(void* ctx, event_t* e) {
 
   while (iter != NULL) {
     if (tk_str_eq(widget_get_type(iter), WIDGET_TYPE_VIEW)) {
-      widget_remove_child(iter->parent, iter);
-      widget_destroy(iter);
+      if (iter->parent != NULL &&
+          tk_str_eq(widget_get_type(iter->parent), WIDGET_TYPE_SLIDE_VIEW)) {
+        slide_view_remove_index(iter->parent, widget_index_of(iter));
+      } else {
+        widget_destroy(iter);
+      }
       return RET_OK;
     }
     iter = iter->parent;
@@ -535,8 +538,19 @@ static ret_t on_remove_tab_idle(const idle_info_t* idle) {
 
   return_value_if_fail(remove_index >= 0, RET_BAD_PARAMS);
 
-  widget_remove_child(tab_btn_group, widget_get_child(tab_btn_group, remove_index));
-  widget_remove_child(pages, widget_get_child(pages, remove_index));
+  if (tab_btn_group != NULL) {
+    widget_t* tab_btn = widget_get_child(tab_btn_group, remove_index);
+    if (tab_btn != NULL) {
+      widget_destroy(tab_btn);
+    }
+  }
+
+  if (pages != NULL) {
+    widget_t* page = widget_get_child(pages, remove_index);
+    if (page != NULL) {
+      widget_destroy(page);
+    }
+  }
 
   return RET_REMOVE;
 }
@@ -547,7 +561,7 @@ static ret_t on_remove_tab(void* ctx, event_t* e) {
   while (iter != NULL && iter->parent != NULL && iter->parent->parent != NULL) {
     if (tk_str_eq(widget_get_type(iter->parent), WIDGET_TYPE_PAGES) ||
         tk_str_eq(widget_get_type(iter->parent), WIDGET_TYPE_TAB_BUTTON_GROUP)) {
-      idle_add(on_remove_tab_idle, (void*)iter);
+      widget_add_idle(iter, on_remove_tab_idle);
       return RET_STOP;
     }
     iter = iter->parent;
@@ -558,10 +572,10 @@ static ret_t on_remove_tab(void* ctx, event_t* e) {
 
 static ret_t widget_clone_tab(widget_t* widget) {
   char text[32];
-  widget_t* button = widget_lookup(widget, "clone_button", TRUE);
   widget_t* view = widget_lookup(widget, "clone_view", TRUE);
-  widget_t* new_button = widget_clone(button, button->parent);
+  widget_t* button = widget_lookup(widget, "clone_button", TRUE);
   widget_t* new_view = widget_clone(view, view->parent);
+  widget_t* new_button = widget_clone(button, button->parent);
   widget_t* remove_tab_btn = widget_lookup(new_button, "remove_tab", TRUE);
 
   if (remove_tab_btn != NULL) {
@@ -571,6 +585,14 @@ static ret_t widget_clone_tab(widget_t* widget) {
     tk_snprintf(text, sizeof(text), "Clone(%d)", widget_index_of(new_button));
   }
   widget_set_text_utf8(new_button, text);
+
+  WIDGET_FOR_EACH_CHILD_BEGIN(new_button->parent, iter, i)
+  if (widget_get_value(iter)) {
+    widget_set_value(iter, FALSE);
+  }
+  WIDGET_FOR_EACH_CHILD_END();
+
+  widget_layout_children(new_button->parent);
   widget_set_value(new_button, TRUE);
 
   remove_tab_btn = widget_lookup(new_view, "remove_tab", TRUE);

@@ -29,6 +29,7 @@
 
 static ret_t slide_view_save_target(widget_t* widget);
 static ret_t slide_view_restore_target(widget_t* widget);
+static ret_t slide_view_set_active_no_animate_impl(widget_t* widget, uint32_t active, bool_t force);
 static ret_t slide_view_set_active_no_animate(widget_t* widget, uint32_t active);
 
 static bool_t anim_hint_is_overlap(slide_view_t* slide_view) {
@@ -136,14 +137,25 @@ static ret_t slide_view_on_scroll_done(void* ctx, event_t* e) {
   return_value_if_fail(widget != NULL && slide_view != NULL, RET_BAD_PARAMS);
 
   if (slide_view->xoffset > 0 || slide_view->yoffset > 0) {
-    slide_view_set_active_no_animate(widget, widget_index_of(slide_view->prev));
+    if (slide_view->remove_when_anim_done) {
+      widget_destroy(slide_view->next);
+      slide_view_set_active_no_animate_impl(widget, widget_index_of(slide_view->prev), TRUE);
+    } else {
+      slide_view_set_active_no_animate(widget, widget_index_of(slide_view->prev));
+    }
   } else if (slide_view->xoffset < 0 || slide_view->yoffset < 0) {
-    slide_view_set_active_no_animate(widget, widget_index_of(slide_view->next));
+    if (slide_view->remove_when_anim_done) {
+      widget_destroy(slide_view->prev);
+      slide_view_set_active_no_animate_impl(widget, widget_index_of(slide_view->next), TRUE);
+    } else {
+      slide_view_set_active_no_animate(widget, widget_index_of(slide_view->next));
+    }
   }
 
   slide_view->xoffset = 0;
   slide_view->yoffset = 0;
   slide_view->animating = FALSE;
+  slide_view->remove_when_anim_done = FALSE;
   slide_view->prev = NULL;
   slide_view->next = NULL;
 
@@ -347,9 +359,9 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
 
 static widget_t* slide_view_find_target(widget_t* widget, xy_t x, xy_t y) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
-  return_value_if_fail(widget != NULL && slide_view != NULL, NULL);
+  return_value_if_fail(widget != NULL && slide_view != NULL && widget->children != NULL, NULL);
 
-  if (slide_view->xoffset || slide_view->yoffset) {
+  if (slide_view->xoffset || slide_view->yoffset || slide_view->active >= widget->children->size) {
     return NULL;
   }
 
@@ -667,7 +679,12 @@ static ret_t slide_view_on_paint_children(widget_t* widget, canvas_t* c) {
   uint8_t save_a = c->lcd->global_alpha;
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
   slide_view_t* slide_view = SLIDE_VIEW(widget);
-  return_value_if_fail(widget != NULL && slide_view != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && slide_view != NULL && widget->children != NULL,
+                       RET_BAD_PARAMS);
+
+  if (slide_view->active >= widget->children->size) {
+    return RET_OK;
+  }
 
   active = widget_get_child(widget, slide_view->active);
   return_value_if_fail(active != NULL, RET_BAD_PARAMS);
@@ -756,8 +773,11 @@ static ret_t slide_view_save_target(widget_t* widget) {
   widget_t* target = NULL;
   widget_t* active_view = NULL;
   slide_view_t* slide_view = SLIDE_VIEW(widget);
-  return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
-  active_view = widget_get_child(widget, slide_view->active);
+  return_value_if_fail(slide_view != NULL && widget->children != NULL, RET_BAD_PARAMS);
+
+  if (slide_view->active < widget->children->size) {
+    active_view = widget_get_child(widget, slide_view->active);
+  }
 
   if (active_view != NULL) {
     target = active_view;
@@ -789,8 +809,11 @@ static ret_t slide_view_restore_target(widget_t* widget) {
   widget_t* target = NULL;
   widget_t* active_view = NULL;
   slide_view_t* slide_view = SLIDE_VIEW(widget);
-  return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
-  active_view = widget_get_child(widget, slide_view->active);
+  return_value_if_fail(slide_view != NULL && widget->children != NULL, RET_BAD_PARAMS);
+  
+  if (slide_view->active < widget->children->size) {
+    active_view = widget_get_child(widget, slide_view->active);
+  }
 
   if (active_view != NULL) {
     target = default_focused_child_get_save_target(widget, active_view);
@@ -811,11 +834,12 @@ static ret_t slide_view_restore_target(widget_t* widget) {
   return RET_OK;
 }
 
-static ret_t slide_view_set_active_no_animate(widget_t* widget, uint32_t active) {
+static ret_t slide_view_set_active_no_animate_impl(widget_t* widget, uint32_t active,
+                                                   bool_t force) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
 
-  if (slide_view->active != active && widget->children != NULL) {
+  if ((force || slide_view->active != active) && widget->children != NULL) {
     value_change_event_t evt;
 
     slide_view_save_target(widget);
@@ -840,6 +864,10 @@ static ret_t slide_view_set_active_no_animate(widget_t* widget, uint32_t active)
   return RET_OK;
 }
 
+static ret_t slide_view_set_active_no_animate(widget_t* widget, uint32_t active) {
+  return slide_view_set_active_no_animate_impl(widget, active, FALSE);
+}
+
 static ret_t slide_view_set_active_animate(widget_t* widget, uint32_t active) {
   int32_t xoffset_end = 0;
   int32_t yoffset_end = 0;
@@ -852,13 +880,14 @@ static ret_t slide_view_set_active_animate(widget_t* widget, uint32_t active) {
   }
   old_active = slide_view->active;
 
-  if (old_active < active) {
-    slide_view->prev = NULL;
+  if (old_active < active ||
+      (slide_view->loop && active == 0 && old_active == widget->children->size - 1)) {
+    slide_view->prev = widget_get_child(widget, old_active);
     slide_view->next = widget_get_child(widget, active);
     xoffset_end = slide_view->vertical ? 0 : -widget->w;
     yoffset_end = slide_view->vertical ? -widget->h : 0;
   } else {
-    slide_view->next = NULL;
+    slide_view->next = widget_get_child(widget, old_active);
     slide_view->prev = widget_get_child(widget, active);
     xoffset_end = slide_view->vertical ? 0 : widget->w;
     yoffset_end = slide_view->vertical ? widget->h : 0;
@@ -963,6 +992,48 @@ ret_t slide_view_set_auto_play(widget_t* widget, uint16_t auto_play) {
   }
 
   return RET_OK;
+}
+
+ret_t slide_view_remove_index(widget_t* widget, uint32_t index) {
+  ret_t ret = RET_FAIL;
+  int32_t active = -1;
+  slide_view_t* slide_view = SLIDE_VIEW(widget);
+
+  return_value_if_fail(widget != NULL && slide_view != NULL && widget->children != NULL,
+                       RET_BAD_PARAMS);
+  return_value_if_fail(index < widget->children->size, RET_BAD_PARAMS);
+
+  active = (int32_t)slide_view->active;
+
+  if (widget->children->size > 1) {
+    if (index < active) {
+      ret = widget_destroy(widget_get_child(widget, index));
+
+      if (RET_OK == ret) {
+        active = tk_max(active - 1, 0);
+        slide_view_set_active_no_animate(widget, active);
+      }
+    } else if (index == active) {
+      if (index == widget->children->size - 1) {
+        active = slide_view->loop ? 0 : tk_max(active - 1, 0);
+      } else {
+        active++;
+      }
+
+      slide_view->remove_when_anim_done = TRUE;
+      ret = slide_view_set_active_animate(widget, active);
+
+      if (RET_OK != ret) {
+        slide_view->remove_when_anim_done = FALSE;
+      }
+    } else {
+      ret = widget_destroy(widget_get_child(widget, active));
+    }
+  } else {
+    ret = widget_destroy(widget_get_child(widget, active));
+  }
+
+  return ret;
 }
 
 widget_t* slide_view_cast(widget_t* widget) {

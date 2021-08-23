@@ -203,6 +203,29 @@ ret_t bitmap_set_line_length(bitmap_t* bitmap, uint32_t line_length);
  */
 uint32_t bitmap_get_line_length(bitmap_t* bitmap);
 
+typedef ret_t (*bitmap_transform_t)(void* ctx, bitmap_t* bitmap, uint32_t x, uint32_t y,
+                                    rgba_t* pixel);
+
+/**
+ * @method bitmap_clone
+ * Clone图片。
+ * @param {bitmap_t*} bitmap bitmap对象。
+ *
+ * @return {bitmap_t*} 返回新的bitmap对象。
+ */
+bitmap_t* bitmap_clone(bitmap_t* bitmap);
+
+/**
+ * @method bitmap_transform
+ * 对图片每个像素进行变换。
+ * @param {bitmap_t*} bitmap bitmap对象。
+ * @param {bitmap_transform_t} transform 回调函数。
+ * @param {void*} ctx 回调函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t bitmap_transform(bitmap_t* bitmap, bitmap_transform_t transform, void* ctx);
+
 /**
  * @method bitmap_init_from_rgba
  * 初始化图片。
@@ -450,7 +473,6 @@ typedef enum _image_draw_type_t {
 ret_t bitmap_alloc_data(bitmap_t* bitmap);
 bool_t rgba_data_is_opaque(const uint8_t* data, uint32_t w, uint32_t h, uint8_t comp);
 
-bitmap_t* bitmap_clone(bitmap_t* bitmap);
 ret_t bitmap_premulti_alpha(bitmap_t* bitmap);
 
 #define TK_BITMAP_MONO_LINE_LENGTH(w) (((w + 15) >> 4) << 1)

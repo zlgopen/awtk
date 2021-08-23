@@ -1,12 +1,16 @@
-<window anim_hint="htranslate" children_layout="default(h=30,c=1,m=5,s=10)">
-    <button name="open:slide_view_h" text="slide_view_h"/>
-    <button name="open:slide_view_h1" text="slide_view_h1"/>
-    <button name="open:slide_view_h2" text="slide_view_h2"/>
-    <button name="open:slide_view_v" text="slide_view_v"/>
-    <button name="open:slide_view_v1" text="slide_view_v1"/>
-    <button name="open:slide_view_v2" text="slide_view_v2"/>
-    <button name="open:slide_view_h_loop" text="slide_view_h loop"/>
-    <button name="open:slide_view_v_loop" text="slide_view_v loop"/>
-    <button name="open:auto_play_${device_orientation},auto_play" text="auto_play"/>
-    <button name="close" text="Close"/>
+<window anim_hint="htranslate" name="slide_view">
+  <scroll_view name="scroll_view" x="0" y="0" w="100%" h="100%" children_layout="default(r=0,c=1,x=5,y=5,s=10)" yslidable="true">
+    <button name="open:slide_view_h" h="30" text="slide_view_h"/>
+    <button name="open:slide_view_h1" h="30" text="slide_view_h1"/>
+    <button name="open:slide_view_h2" h="30" text="slide_view_h2"/>
+    <button name="open:slide_view_v" h="30" text="slide_view_v"/>
+    <button name="open:slide_view_v1" h="30" text="slide_view_v1"/>
+    <button name="open:slide_view_v2" h="30" text="slide_view_v2"/>
+    <button name="open:slide_view_h_loop" h="30" text="slide_view_h loop"/>
+    <button name="open:slide_view_v_loop" h="30" text="slide_view_v loop"/>
+    <button name="open:auto_play_${device_orientation},auto_play" h="30" text="auto_play"/>
+    <button name="open:slide_view_remove" h="30" text="remove"/>
+    <button name="open:slide_view_remove_loop" h="30" text="remove loop"/>
+    <button name="close" h="30" text="Close"/>
+  </scroll_view>
 </window>

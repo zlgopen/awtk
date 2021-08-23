@@ -10,9 +10,9 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#action_thread_t_action_thread_create">action\_thread\_create</a> | 创建action_thread对象。 |
-| <a href="#action_thread_t_action_thread_create">action\_thread\_create</a> | 创建action_thread对象。 |
+| <a href="#action_thread_t_action_thread_create_ex">action\_thread\_create\_ex</a> | 创建action_thread对象。 |
 | <a href="#action_thread_t_action_thread_create_with_queue">action\_thread\_create\_with\_queue</a> | 创建action_thread对象。 |
-| <a href="#action_thread_t_action_thread_create_with_queue">action\_thread\_create\_with\_queue</a> | 创建action_thread对象。 |
+| <a href="#action_thread_t_action_thread_create_with_queue_ex">action\_thread\_create\_with\_queue\_ex</a> | 创建action_thread对象。 |
 | <a href="#action_thread_t_action_thread_destroy">action\_thread\_destroy</a> | 销毁。 |
 | <a href="#action_thread_t_action_thread_exec">action\_thread\_exec</a> | 让线程执行action。 |
 | <a href="#action_thread_t_action_thread_set_on_idle">action\_thread\_set\_on\_idle</a> | 设置空闲时的回调函数。 |
@@ -43,17 +43,17 @@ action_thread_t* action_thread_create ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | action\_thread\_t* | action\_thread对象。 |
-#### action\_thread\_create 函数
+#### action\_thread\_create\_ex 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="action_thread_t_action_thread_create">创建action_thread对象。
+> <p id="action_thread_t_action_thread_create_ex">创建action_thread对象。
 
 * 函数原型：
 
 ```
-action_thread_t* action_thread_create (const char* name, uint32_t stack_size, tk_thread_priority_t priority);
+action_thread_t* action_thread_create_ex (const char* name, uint32_t stack_size, tk_thread_priority_t priority);
 ```
 
 * 参数说明：
@@ -83,17 +83,17 @@ action_thread_t* action_thread_create_with_queue (waitable_action_queue_t* queue
 | -------- | ----- | --------- |
 | 返回值 | action\_thread\_t* | action\_thread对象。 |
 | queue | waitable\_action\_queue\_t* | queue对象。 |
-#### action\_thread\_create\_with\_queue 函数
+#### action\_thread\_create\_with\_queue\_ex 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="action_thread_t_action_thread_create_with_queue">创建action_thread对象。
+> <p id="action_thread_t_action_thread_create_with_queue_ex">创建action_thread对象。
 
 * 函数原型：
 
 ```
-action_thread_t* action_thread_create_with_queue (waitable_action_queue_t* queue, const char* name, uint32_t stack_size, tk_thread_priority_t priority);
+action_thread_t* action_thread_create_with_queue_ex (waitable_action_queue_t* queue, const char* name, uint32_t stack_size, tk_thread_priority_t priority);
 ```
 
 * 参数说明：

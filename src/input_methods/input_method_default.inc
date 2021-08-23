@@ -187,6 +187,32 @@ static bool_t is_key_board_overlap_edit(widget_t* keyboard, widget_t* edit) {
   return FALSE;
 }
 
+static ret_t input_type_keyboard_follow_edit(input_method_t* im) {
+  int32_t x = 0;
+  int32_t y = 0;
+  point_t p = {0, 0};
+  widget_t* widget = im->widget;
+  widget_t* wm = window_manager();
+  widget_t* keyboard = im->keyboard;
+
+  widget_to_screen(widget, &p);
+
+  x = p.x;
+  y = p.y + widget->h;
+  if ((y + keyboard->h) > wm->h) {
+    y = p.y - keyboard->h;
+  }
+
+  if ((x + keyboard->w) > wm->w) {
+    x = wm->w - keyboard->w;
+  }
+
+  widget_move(keyboard, x, y);
+  widget_set_self_layout(keyboard, NULL);
+
+  return RET_OK;
+}
+
 static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_name,
                                       bool_t open_anim) {
   value_t v;
@@ -213,7 +239,14 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
   widget_on(im->keyboard, EVT_WINDOW_OPEN, input_method_default_on_keyboard_open, im);
   widget_on(im->keyboard, EVT_DESTROY, input_method_default_on_keyboard_close, im);
 
-  if ((p.y + widget->h) > im->keyboard->y) {
+  if (widget_get_prop_bool(im->keyboard, WIDGET_PROP_FLOATING, FALSE)) {
+    input_type_keyboard_follow_edit(im);
+    if (im->keyboard->y < p.y) {
+      open_anim_hint = close_anim_hint = WINDOW_ANIMATOR_POPUP;
+    } else {
+      open_anim_hint = close_anim_hint = WINDOW_ANIMATOR_POPDOWN;
+    }
+  } else if ((p.y + widget->h) > im->keyboard->y) {
     im->win = win;
     if (is_key_board_overlap_edit(widget, im->keyboard)) {
       im->win_delta_y = win->y + win->h - im->keyboard->y;
@@ -259,9 +292,12 @@ static ret_t input_method_default_show_keyboard(input_method_t* im) {
   if (im->keyboard != NULL) {
     bool_t edit_is_in_view = (p.y >= 0) && ((p.y + widget->h) <= im->keyboard->y);
 
-    if (tk_str_eq(im->keyboard_name, keyboard_name) && edit_is_in_view) {
+    if (widget_get_prop_bool(im->keyboard, WIDGET_PROP_FLOATING, FALSE) &&
+        tk_str_eq(im->keyboard_name, keyboard_name)) {
+      input_type_keyboard_follow_edit(im);
+      return RET_OK;
+    } else if (tk_str_eq(im->keyboard_name, keyboard_name) && edit_is_in_view) {
       /*old edit and new edit has same input type, reuse old keyboard*/
-
       return RET_OK;
     } else {
       /*keyboard is open, close old one, disable open animation of new one*/

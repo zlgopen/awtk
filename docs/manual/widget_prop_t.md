@@ -34,6 +34,7 @@
 | WIDGET\_PROP\_MAX\_W | 最大宽度。 |
 | WIDGET\_PROP\_AUTO\_ADJUST\_SIZE | 根据子控件和文本自动调整大小。 |
 | WIDGET\_PROP\_SINGLE\_INSTANCE | 窗口是否保持单例。 |
+| WIDGET\_PROP\_STRONGLY\_FOCUS | 点击非focusable控件时，是否让当前焦点控件失去焦点。比如点击窗口空白区域，是否让编辑器失去焦点。 |
 | WIDGET\_PROP\_CHILDREN\_LAYOUT | 子控件布局参数。 |
 | WIDGET\_PROP\_LAYOUT | 子控件布局参数(过时)。 |
 | WIDGET\_PROP\_SELF\_LAYOUT | 控件布局参数。 |
@@ -122,6 +123,7 @@
 | WIDGET\_PROP\_ENABLE\_LONG\_PRESS | 是否启用长按。 |
 | WIDGET\_PROP\_CLICK\_THROUGH | 是否启用点击穿透。 |
 | WIDGET\_PROP\_ANIMATABLE | 是否启用动画。 |
+| WIDGET\_PROP\_AUTO\_HIDE | 是否自动隐藏。 |
 | WIDGET\_PROP\_AUTO\_HIDE\_SCROLL\_BAR | 是否自动隐藏滚动条。 |
 | WIDGET\_PROP\_IMAGE | 图片名称。 |
 | WIDGET\_PROP\_FORMAT | 显示格式。 |

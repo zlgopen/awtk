@@ -22,8 +22,8 @@
 #ifndef TK_IOSTREAM_UDP_H
 #define TK_IOSTREAM_UDP_H
 
-#include "tkc/fs.h"
 #include "tkc/iostream.h"
+#include "tkc/socket_helper.h"
 
 BEGIN_C_DECLS
 

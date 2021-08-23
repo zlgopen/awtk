@@ -361,7 +361,7 @@ typedef struct _system_info_t system_info_t;
 #endif /*WITH_STB_FONT or WITH_FT_FONT*/
 
 #if defined(WITH_LCD_MONO)
-#undef WITH_VGCANVAS
+#define WITHOUT_WINDOW_ANIMATORS 1
 #define WITH_BITMAP_FONT 1
 #endif /*WITH_LCD_MONO*/
 

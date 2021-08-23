@@ -683,7 +683,6 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
         dirty_rects_add(&(tmp_dirty_rects), (const rect_t*)&r);
         canvas_t* c = native_window_get_canvas(wm->native_window);
         canvas_begin_frame(c, (const dirty_rects_t*)&tmp_dirty_rects, LCD_DRAW_NORMAL);
-        wm->native_window->dirty = TRUE;
         widget_paint(WIDGET(wm), c);
         window_manager_paint_cursor(widget, c);
         canvas_end_frame(c);
@@ -706,6 +705,9 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
        * 如果没有 fb 的脏矩形列表的话，会退化为获取当前帧的脏矩形。
        */
       dirty_rects_t* dirty_rects = (dirty_rects_t*)lcd_get_dirty_rects(c->lcd);
+      if (dirty_rects == NULL && !lcd_is_support_dirty_rect(c->lcd)) {
+        dirty_rects = &(wm->native_window->dirty_rects);
+      }
       dirty_rects_paint(dirty_rects, WIDGET(wm), c, widget_paint);
     }
     window_manager_paint_cursor(widget, c);
@@ -1121,25 +1123,46 @@ static ret_t window_manager_default_is_animating(widget_t* widget, bool_t* playi
   return RET_OK;
 }
 
+static ret_t window_manager_default_orientation(widget_t* widget, wh_t w, wh_t h, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation) {
+  ret_t ret = RET_OK;
+  rect_t r = rect_init(0, 0, w, h);
+  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
+
+  ret = native_window_set_orientation(wm->native_window, old_orientation, new_orientation);
+  return_value_if_fail(ret == RET_OK, ret);
+
+  widget_move_resize(widget, 0, 0, w, h);
+  native_window_invalidate(wm->native_window, &r);
+  native_window_update_last_dirty_rect(wm->native_window);
+
+  return widget_layout_children(widget);
+}
+
 ret_t window_manager_default_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
   if (e->type == EVT_ORIENTATION_WILL_CHANGED) {
-    wh_t w = wm->lcd_w;
-    wh_t h = wm->lcd_h;
-    lcd_orientation_t orientation;
+    wh_t w, h;
+    lcd_orientation_t new_orientation;
+    lcd_orientation_t old_orientation;
     orientation_event_t* evt = orientation_event_cast(e);
     lcd_t* lcd = native_window_get_canvas(wm->native_window)->lcd;
     return_value_if_fail(lcd != NULL && evt != NULL, RET_FAIL);
-    orientation = evt->orientation;
-
-    if (orientation == LCD_ORIENTATION_90 || orientation == LCD_ORIENTATION_270) {
-      w = wm->lcd_h;
-      h = wm->lcd_w;
+    w = lcd->w;
+    h = lcd->h;
+    new_orientation = evt->orientation;
+    old_orientation = evt->old_orientation;
+    native_window_clear_dirty_rect(wm->native_window);
+    if (tk_is_swap_size_by_orientation(old_orientation, new_orientation)) {
+      w = lcd->h;
+      h = lcd->w;
     }
 
-    lcd_resize(lcd, w, h, 0);
-    window_manager_default_resize(widget, w, h);
+    ret = lcd_set_orientation(lcd, old_orientation, new_orientation);
+    return_value_if_fail(ret == RET_OK, ret);
+    window_manager_default_orientation(widget, w, h, old_orientation, new_orientation);
     e->type = EVT_ORIENTATION_CHANGED;
 
     widget_dispatch(widget, e);
