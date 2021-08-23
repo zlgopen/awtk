@@ -309,6 +309,8 @@ ret_t system_info_set_app_info(system_info_t* info, app_type_t app_type, const c
 ret_t system_info_eval_exprs(system_info_t* info, const char* exprs, tk_visit_t on_expr_result,
                              void* ctx);
 
+bool_t tk_is_swap_size_by_orientation(lcd_orientation_t old_orientation, lcd_orientation_t new_orientation);
+
 END_C_DECLS
 
 #endif /*TK_SYSTEM_INFO_H*/

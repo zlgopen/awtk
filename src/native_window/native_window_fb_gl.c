@@ -102,13 +102,31 @@ static ret_t native_window_fb_gl_resize(native_window_t* win, wh_t w, wh_t h) {
 
   fb_gl->w = win->rect.w = w;
   fb_gl->h = win->rect.h = h;
-  if (system_info()->lcd_orientation == LCD_ORIENTATION_0 && (w != info.w || h != info.h)) {
+  if (w != info.w || h != info.h) {
     ret = lcd_resize(fb_gl->canvas.lcd, w, h, 0);
     return_value_if_fail(ret == RET_OK, ret);
     system_info_set_lcd_w(system_info(), w);
     system_info_set_lcd_h(system_info(), h);
     timer_add(native_window_fg_gl_on_resized_timer, win, 100);
   }
+  return RET_OK;
+}
+
+static ret_t native_window_fb_gl_set_orientation(native_window_t* win, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation) {
+  wh_t w, h;
+  ret_t ret = RET_OK;
+  native_window_info_t info;
+  native_window_fb_gl_t* fb_gl = NATIVE_WINDOW_FB_GL(win);
+  native_window_get_info(win, &info);
+  w = info.w;
+  h = info.h;
+  if (tk_is_swap_size_by_orientation(old_orientation, new_orientation)) {
+    w = info.h;
+    h = info.w;
+  }
+
+  fb_gl->w = win->rect.w = w;
+  fb_gl->h = win->rect.h = h;
   return RET_OK;
 }
 
@@ -153,6 +171,7 @@ static const native_window_vtable_t s_native_window_vtable = {
     .move = native_window_fb_gl_move,
     .get_info = native_window_fb_gl_get_info,
     .resize = native_window_fb_gl_resize,
+    .set_orientation = native_window_fb_gl_set_orientation,
     .swap_buffer = native_window_fb_gl_swap_buffer,
     .gl_make_current = native_window_sdl_gl_make_current,
     .get_canvas = native_window_fb_gl_get_canvas};

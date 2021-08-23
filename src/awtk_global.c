@@ -405,15 +405,16 @@ ret_t tk_quit() {
 
 ret_t tk_set_lcd_orientation(lcd_orientation_t orientation) {
   main_loop_t* loop = main_loop();
+  lcd_orientation_t old_orientation;
   system_info_t* info = system_info();
   return_value_if_fail(loop != NULL && info != NULL, RET_OK);
 
   if (info->lcd_orientation != orientation) {
     orientation_event_t e;
-
+    old_orientation = info->lcd_orientation;
     system_info_set_lcd_orientation(info, orientation);
 
-    orientation_event_init(&e, EVT_ORIENTATION_WILL_CHANGED, NULL, orientation);
+    orientation_event_init(&e, EVT_ORIENTATION_WILL_CHANGED, NULL, old_orientation, orientation);
     widget_dispatch(window_manager(), (event_t*)&e);
   }
 

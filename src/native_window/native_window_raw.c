@@ -54,7 +54,7 @@ static ret_t native_window_raw_resize(native_window_t* win, wh_t w, wh_t h) {
   native_window_info_t info;
   native_window_get_info(win, &info);
 
-  if (system_info()->lcd_orientation == LCD_ORIENTATION_0 && (w != info.w || h != info.h)) {
+  if (w != info.w || h != info.h) {
     native_window_raw_t* raw = NATIVE_WINDOW_RAW(win);
 
     ret = lcd_resize(raw->canvas.lcd, w, h, 0);
@@ -62,6 +62,25 @@ static ret_t native_window_raw_resize(native_window_t* win, wh_t w, wh_t h) {
     system_info_set_lcd_w(system_info(), w);
     system_info_set_lcd_h(system_info(), h);
     timer_add(native_window_raw_on_resized_timer, win, 100);
+  }
+
+  win->rect.w = w;
+  win->rect.h = h;
+
+  return RET_OK;
+}
+
+static ret_t native_window_raw_set_orientation(native_window_t* win, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation) {
+  wh_t w, h;
+  ret_t ret = RET_OK;
+  native_window_info_t info;
+  native_window_get_info(win, &info);
+
+  w = info.w;
+  h = info.h;
+  if (new_orientation == LCD_ORIENTATION_90 || new_orientation == LCD_ORIENTATION_270) {
+    w = info.h;
+    h = info.w;
   }
 
   win->rect.w = w;

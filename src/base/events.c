@@ -135,13 +135,14 @@ event_t* wheel_event_init(wheel_event_t* event, uint32_t type, void* target, int
 }
 
 event_t* orientation_event_init(orientation_event_t* event, uint32_t type, void* target,
-                                lcd_orientation_t orientation) {
+                                lcd_orientation_t old_orientation, lcd_orientation_t new_orientation) {
   return_value_if_fail(event != NULL, NULL);
   memset(event, 0x00, sizeof(orientation_event_t));
 
   event->e = event_init(type, target);
   event->e.size = sizeof(*event);
-  event->orientation = orientation;
+  event->orientation = new_orientation;
+  event->old_orientation = old_orientation;
 
   return (event_t*)event;
 }

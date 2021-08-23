@@ -557,6 +557,12 @@ typedef struct _orientation_event_t {
    * 屏幕方向。
    */
   lcd_orientation_t orientation;
+  /**
+   * @property {int32_t} old_orientation
+   * @annotation ["readable", "scriptable"]
+   * 旧的屏幕方向。
+   */
+  lcd_orientation_t old_orientation;
 } orientation_event_t;
 
 /**
@@ -573,14 +579,15 @@ orientation_event_t* orientation_event_cast(event_t* event);
  * @method orientation_event_init
  * 初始化事件。
  * @param {orientation_event_t*} event event对象。
- * @param {void*} target 事件目标。
  * @param {uint32_t} type 事件类型。
- * @param {int32_t} dy 滚轮的y值。
+ * @param {void*} target 事件目标。
+ * @param {lcd_orientation_t} old_orientation 旧的屏幕方向。
+ * @param {lcd_orientation_t} new_orientation 新的屏幕方向。
  *
  * @return {event_t*} event对象。
  */
 event_t* orientation_event_init(orientation_event_t* event, uint32_t type, void* target,
-                                lcd_orientation_t orientation);
+                                lcd_orientation_t old_orientation, lcd_orientation_t new_orientation);
 
 /**
  * @class value_change_event_t

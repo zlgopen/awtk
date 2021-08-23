@@ -173,8 +173,8 @@ static ret_t lcd_mono_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length) {
   return lcd_sdl2_mono_reinit(lcd, w, h, line_length);
 }
 
-static ret_t lcd_mono_set_orientation(lcd_t* lcd, lcd_orientation_t orientation) {
-  if (orientation == LCD_ORIENTATION_90 || orientation == LCD_ORIENTATION_270) {
+static ret_t lcd_mono_set_orientation(lcd_t* lcd,  lcd_orientation_t old_orientation, lcd_orientation_t new_orientation) {
+  if (tk_is_swap_size_by_orientation(old_orientation, new_orientation)) {
     return lcd_mono_resize(lcd, lcd->h, lcd->w, 0);
   }
   return RET_OK;
