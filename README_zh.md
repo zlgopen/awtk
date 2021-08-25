@@ -349,9 +349,9 @@ npm install -g glob
 
 * [自定义字体加载器：加载部分字体](https://github.com/zlgopen/awtk-custom-font-loader)
 
-第三方提供：
+* [用reactjs开发AWTK应用程序](https://github.com/zlgopen/react-awtk)
 
-* [react-awtk](https://github.com/wenyufei2018/react-awtk)
+第三方提供：
 
 * [扩展控件实例：二维码](https://github.com/CUITzhaoqi/awtk-qr)
 

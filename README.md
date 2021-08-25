@@ -345,9 +345,9 @@ npm install -g glob
 
 * [Examples for Custom Font Loader](https://github.com/zlgopen/awtk-custom-font-loader)
 
-The third party provides: 
+* [Write AWTK App With ReactJS](https://github.com/zlgopen/react-awtk)
 
-* [react-awtk](https://github.com/wenyufei2018/react-awtk)
+The third party provides: 
 
 * [Examples for Custom Widgets: QR code](https://github.com/CUITzhaoqi/awtk-qr)
 
