@@ -550,7 +550,7 @@ static ret_t scroll_view_set_curr_page(widget_t* widget, int32_t new_page) {
   if (scroll_view->xslidable && !scroll_view->yslidable) {
     scroll_view->xoffset_end = new_page * widget->w;
   } else if (!scroll_view->xslidable && scroll_view->yslidable) {
-    scroll_view->xoffset_end = new_page * widget->h;
+    scroll_view->yoffset_end = new_page * widget->h;
   }
   scroll_view->snap_to_page = FALSE;
   scroll_view_scroll_to(widget, scroll_view->xoffset_end, scroll_view->yoffset_end,
