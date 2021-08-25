@@ -21,12 +21,16 @@ static ret_t run_fscript(const char* code, uint32_t times) {
   uint64_t start = time_now_us();
   object_t* obj = object_default_create();
   tk_mem_dump();
+  log_debug("======================\n");
   if (times > 1) {
     /*stress test*/
     uint32_t i = 0;
     fscript_t* fscript = fscript_create(obj, code);
     for (i = 0; i < times; i++) {
+      log_debug("%u times....\n", i);
+      tk_mem_dump();
       fscript_exec(fscript, &v);
+      tk_mem_dump();
       value_reset(&v);
     }
     fscript_destroy(fscript);

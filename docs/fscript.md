@@ -1279,7 +1279,55 @@ fscript_register_func("foo", func_foo);
 
 ```
 
-#### 5.1 定义私有函数
+#### 5.4 定义脚本函数
+
+* 函数定义
+
+```
+function foo1(v1, v2) {
+  return v1 + v2; 
+}
+assert(foo1(100, 200) == 300)
+```
+
+* 使用var定义局部变量。
+
+```
+function foo2(v1, v2) {
+  var v3 = v1 + v2; 
+  return v3
+}
+assert(foo2(100, 200) == 300)
+
+function foo3(v1, v2) {
+  var v3 = v1 + v2; 
+  if(v3 < 100) {
+    return true
+  } else {
+    return false
+  }
+}
+assert(foo3(10, 20))
+assert(!foo3(100, 200))
+```
+
+> 函数内的临时变量，无论在哪里定义，一旦定义，在该函数内都可以使用。
+
+```
+function foo4 (v1, v2) {
+  var v3 = v1 + v2;
+  if(v3 < 100) {
+    var name = "awtk";
+  } else {
+    var name = "react-awtk";
+  }
+
+  return name;
+}
+
+assert(foo4(10, 20) == 'awtk')
+assert(foo4(100, 200) == 'react-awtk')
+```
 
 ### 6. 性能测量与优化
 

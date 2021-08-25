@@ -146,6 +146,11 @@ typedef struct _fscript_t {
   bool_t continued;
   bool_t returned;
   uint8_t while_count;
+
+  /*函数局部变量和参数*/
+  object_t* locals;
+  /*脚本定义的函数*/
+  object_t* funcs_def;
 } fscript_t;
 
 typedef ret_t (*fscript_func_t)(fscript_t* fscript, fscript_args_t* args, value_t* v);
