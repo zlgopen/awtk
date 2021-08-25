@@ -114,6 +114,7 @@ static const native_window_vtable_t s_native_window_vtable = {
     .move = native_window_raw_move,
     .get_info = native_window_raw_get_info,
     .resize = native_window_raw_resize,
+    .set_orientation = native_window_raw_set_orientation,
     .get_canvas = native_window_raw_get_canvas};
 
 static ret_t native_window_raw_set_prop(object_t* obj, const char* name, const value_t* v) {
