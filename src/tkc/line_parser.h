@@ -133,7 +133,7 @@ static ret_t line_parser_next(line_parser_t* parser) {
             }
           }
 
-          if (isspace(*p)) {
+          if (tk_isspace(*p)) {
             p++;
             w += char_w;
           }

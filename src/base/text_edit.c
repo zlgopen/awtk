@@ -1108,7 +1108,7 @@ static ret_t text_edit_handle_shortcut(text_edit_t* text_edit, key_event_t* evt,
         text_edit_paste(text_edit, str.str, str.size);
         wstr_reset(&str);
       }
-    } else if (key > 128 || !isprint(key)) {
+    } else if (key > 128 || !tk_isprint(key)) {
       return RET_FAIL;
     }
 
@@ -1282,7 +1282,7 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
       return RET_OK;
     }
     default: {
-      if (key < 128 && isprint(key)) {
+      if (key < 128 && tk_isprint(key)) {
         app_type_t app_type = system_info()->app_type;
         if (app_type == APP_DESKTOP || app_type == APP_MOBILE) {
           text_edit_handle_shortcut(text_edit, evt, state, text);

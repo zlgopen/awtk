@@ -493,7 +493,7 @@ static ret_t fscript_parser_skip_seperators(fscript_parser_t* parser) {
   char c = '\0';
   do {
     c = fscript_parser_get_char(parser);
-  } while (isspace(c) || (int)c < 0);
+  } while (tk_isspace(c) || (int)c < 0);
   fscript_parser_unget_char(parser, c);
 
   return RET_OK;
@@ -609,7 +609,7 @@ static ret_t fscript_parser_parse_id_or_number(fscript_parser_t* parser, token_t
 
   do {
     c = fscript_parser_get_char(parser);
-    if (isxdigit(c) || isdigit(c) || isalpha(c) || c == '.' || c == '_' || c == '[' || c == ']' ||
+    if (tk_isxdigit(c) || tk_isdigit(c) || tk_isalpha(c) || c == '.' || c == '_' || c == '[' || c == ']' ||
         c == '#') {
       str_append_char(str, c);
     } else {
@@ -617,7 +617,7 @@ static ret_t fscript_parser_parse_id_or_number(fscript_parser_t* parser, token_t
     }
   } while (TRUE);
 
-  if (isspace(c)) {
+  if (tk_isspace(c)) {
     fscript_parser_skip_seperators_and_comments(parser);
     c = fscript_parser_get_char(parser);
   }
@@ -753,14 +753,14 @@ static token_t* fscript_parser_get_token_ex(fscript_parser_t* parser, bool_t ope
     default: {
       if (c == '+' || c == '-') {
         fscript_parser_skip_seperators_and_comments(parser);
-        if (operator|| !isdigit(parser->cursor[0])) {
+        if (operator|| !tk_isdigit(parser->cursor[0])) {
           fscript_parser_get_unary(parser, c, str);
           TOKEN_INIT(t, TOKEN_FUNC, str);
         } else {
           fscript_parser_unget_char(parser, c);
           fscript_parser_parse_id_or_number(parser, TOKEN_NUMBER);
         }
-      } else if (isdigit(c)) {
+      } else if (tk_isdigit(c)) {
         fscript_parser_unget_char(parser, c);
         fscript_parser_parse_id_or_number(parser, TOKEN_NUMBER);
       } else {

@@ -660,7 +660,7 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
     if (key != TK_KEY_LEFT && key != TK_KEY_RIGHT && key != TK_KEY_HOME && key != TK_KEY_END) {
       edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
     }
-  } else if (key < 128 && isprint(key)) {
+  } else if (key < 128 && tk_isprint(key)) {
     if (!input_method_is_native(input_method())) {
       edit_input_char(widget, (wchar_t)key);
     }

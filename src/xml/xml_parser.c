@@ -23,11 +23,11 @@
 #include "tkc/str.h"
 #include "tkc/utils.h"
 #include "xml/xml_parser.h"
-#ifndef isspace
-#define isspace(c) (c == ' ' || c == '\t' || c == '\r' || c == '\n')
+#ifndef tk_isspace
+#define tk_isspace(c) (c == ' ' || c == '\t' || c == '\r' || c == '\n')
 #endif
-#ifndef isalpha
-#define isalpha(c) ((c >= 'a' && c <= 'z') || (c >= 'A' || c <= 'Z'))
+#ifndef tk_isalpha
+#define tk_isalpha(c) ((c >= 'a' && c <= 'z') || (c >= 'A' || c <= 'Z'))
 #endif
 
 struct _XmlParser {
@@ -106,7 +106,7 @@ void xml_parser_parse(XmlParser* parser, const char* xml, int length) {
         if (c == '<') {
           xml_parser_reset_buffer(parser);
           state = STAT_AFTER_LT;
-        } else if (!(parser->trim_text) || !isspace(c)) {
+        } else if (!(parser->trim_text) || !tk_isspace(c)) {
           state = STAT_TEXT;
         }
         break;
@@ -118,7 +118,7 @@ void xml_parser_parse(XmlParser* parser, const char* xml, int length) {
           state = STAT_END_TAG;
         } else if (c == '!') {
           state = STAT_PRE_COMMENT1;
-        } else if (isalpha(c) || c == '_') {
+        } else if (tk_isalpha(c) || c == '_') {
           state = STAT_START_TAG;
         } else {
           xml_builder_on_error(parser->builder, 0, 0, "unexpected char");
@@ -245,7 +245,7 @@ static void xml_parser_parse_attrs(XmlParser* parser, char end_char) {
       case STAT_PRE_KEY: {
         if (c == end_char || c == '>') {
           state = STAT_END;
-        } else if (!isspace(c)) {
+        } else if (!tk_isspace(c)) {
           state = STAT_KEY;
           start = parser->read_ptr;
         }
@@ -306,7 +306,7 @@ static void xml_parser_parse_start_tag(XmlParser* parser) {
 
     switch (state) {
       case STAT_NAME: {
-        if (isspace(c) || c == '>' || c == '/') {
+        if (tk_isspace(c) || c == '>' || c == '/') {
           tag_name =
               tk_pointer_from_int(xml_parser_strdup(parser, start, parser->read_ptr - start, TRUE));
           state = (c != '>' && c != '/') ? STAT_ATTR : STAT_END;
@@ -418,7 +418,7 @@ static void xml_parser_parse_pi(XmlParser* parser) {
 
     switch (state) {
       case STAT_NAME: {
-        if (isspace(c) || c == '>') {
+        if (tk_isspace(c) || c == '>') {
           tag_name =
               tk_pointer_from_int(xml_parser_strdup(parser, start, parser->read_ptr - start, TRUE));
           state = c != '>' ? STAT_ATTR : STAT_END;
@@ -455,11 +455,11 @@ static void xml_parser_on_text(XmlParser* parser) {
     char* end = parser->text.str + parser->text.size - 1;
 
     if (parser->trim_text) {
-      while (isspace(*start) && *start) {
+      while (tk_isspace(*start) && *start) {
         start++;
       }
 
-      while (isspace(*end) && end > start) {
+      while (tk_isspace(*end) && end > start) {
         *end = '\0';
         end--;
       }
@@ -524,13 +524,13 @@ static const char* strtrim(char* str) {
 
   p = str + strlen(str) - 1;
 
-  while (p != str && isspace(*p)) {
+  while (p != str && tk_isspace(*p)) {
     *p = '\0';
     p--;
   }
 
   p = str;
-  while (*p != '\0' && isspace(*p)) p++;
+  while (*p != '\0' && tk_isspace(*p)) p++;
 
   if (p != str) {
     char* s = p;

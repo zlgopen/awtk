@@ -183,9 +183,9 @@ ret_t style_normalize_value(const char* name, const char* value, value_t* out) {
              strstr(name, "icon") != NULL) {
     value_dup_str(v, value);
   } else {
-    if (isdigit(*value)) {
+    if (tk_isdigit(*value)) {
       value_set_uint32(v, tk_atoi(value));
-    } else if (strlen(value) > 1 && *value == '-' && isdigit(*(value + 1))) {
+    } else if (strlen(value) > 1 && *value == '-' && tk_isdigit(*(value + 1))) {
       value_set_int(v, tk_atoi(value));
     } else {
       value_dup_str(v, value);

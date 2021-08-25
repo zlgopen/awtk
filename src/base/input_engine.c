@@ -144,7 +144,7 @@ static ret_t input_engine_append_char(input_engine_t* engine, int key) {
     return RET_OK;
   }
 
-  if (isprint(key)) {
+  if (tk_isprint(key)) {
     str_append_char(&(engine->keys), (char)key);
   }
 

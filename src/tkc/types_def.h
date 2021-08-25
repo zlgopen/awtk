@@ -421,4 +421,10 @@ typedef struct _event_source_manager_t event_source_manager_t;
 #define TK_ISFINITE(x) ((x) * (x) >= 0.) /* check for NaNs */
 #endif
 
+#define tk_isspace(c) (((int)(c) < 128) && isspace(c))
+#define tk_isdigit(c) (((int)(c) < 128) && isdigit(c))
+#define tk_isxdigit(c) (((int)(c) < 128) && isxdigit(c))
+#define tk_isprint(c) (((int)(c) < 128) && isprint(c))
+#define tk_isalpha(c) (((int)(c) < 128) && isalpha(c))
+
 #endif /*TYPES_DEF_H*/

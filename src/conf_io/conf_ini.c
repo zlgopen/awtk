@@ -78,7 +78,7 @@ conf_doc_t* conf_doc_load_ini(const char* data) {
           state = STATE_BEFORE_GROUP;
         } else if (c == '#') {
           state = STATE_COMMENT;
-        } else if (!isspace(c)) {
+        } else if (!tk_isspace(c)) {
           state = STATE_KEY;
           str_set_with_len(s, &c, 1);
         }
@@ -91,7 +91,7 @@ conf_doc_t* conf_doc_load_ini(const char* data) {
         break;
       }
       case STATE_BEFORE_GROUP: {
-        if (!isspace(c)) {
+        if (!tk_isspace(c)) {
           state = STATE_GROUP;
           str_set_with_len(s, &c, 1);
         }
