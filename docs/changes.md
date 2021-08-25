@@ -4,6 +4,7 @@
   * 修改OpenGL的lcd旋转被裁剪的问题（感谢智明提供补丁）
   * 修复linux-fb的lcd旋转异常的问题（感谢智明提供补丁）
   * 修复ctype函数处理中文的问题。
+  * 修复on\_theme\_changed(感谢兆坤提供补丁)。
   * 修复scroll\_view\_set\_curr\_page(感谢Soky智明提供补丁）
 
 2021/08/23
