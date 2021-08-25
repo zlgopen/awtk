@@ -103,10 +103,12 @@
 * 音频接口。
 * 支持文本双向排版
 * 支持 appuim 自动测试
-* table view
-* Lottie动画
+* 千万级别的table view
+* 支持Lottie动画
 * 多点触摸和手势识别
 * tab控件动画(vpage)
+* 支持rive动画
+* 支持reactjs
 
 ## 短期计划（顺序不定）
 * tree view
