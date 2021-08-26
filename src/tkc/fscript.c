@@ -169,6 +169,8 @@ static ret_t fscript_function_def_destroy(fscript_function_def_t* func) {
   darray_deinit(&(func->params));
   fscript_func_call_destroy(func->body);
   memset(func, 0x00, sizeof(fscript_function_def_t));
+  TKMEM_FREE(func);
+
   return RET_OK;
 }
 
