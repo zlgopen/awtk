@@ -154,6 +154,28 @@ void* darray_bsearch(darray_t* darray, tk_compare_t cmp, void* ctx);
 void* darray_get(darray_t* darray, uint32_t index);
 
 /**
+ * @method darray_set
+ * 设置指定序数的元素(不销毁旧的数据)。
+ * @param {darray_t*} darray 数组对象。
+ * @param {uint32_t} index 序数。
+ * @param {void*} data 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t darray_set(darray_t* darray, uint32_t index, void* data);
+
+/**
+ * @method darray_replace
+ * 设置指定序数的元素(销毁旧的数据)。
+ * @param {darray_t*} darray 数组对象。
+ * @param {uint32_t} index 序数。
+ * @param {void*} data 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t darray_replace(darray_t* darray, uint32_t index, void* data);
+
+/**
  * @method darray_find_index
  * 查找第一个满足条件的元素，并返回位置。
  * @param {darray_t*} darray 数组对象。
@@ -272,6 +294,18 @@ ret_t darray_push(darray_t* darray, void* data);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t darray_insert(darray_t* darray, uint32_t index, void* data);
+
+/**
+ * @method darray_sorted_insert
+ * 插入一个元素到有序数组。
+ * @param {darray_t*} darray 数组对象。
+ * @param {void*} data 待插入的元素。
+ * @param {tk_compare_t} compare 元素比较函数。
+ * @param {bool_t} replace_if_exist 如果存在是否替换。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t darray_sorted_insert(darray_t* darray, void* data, tk_compare_t cmp, bool_t replace_if_exist);
 
 /**
  * @method darray_count
