@@ -68,30 +68,3 @@ TEST(WidgetFactory, over_write) {
   widget_factory_destroy(factory);
 }
 
-static ret_t on_widget_created(void* ctx, event_t* e) {
-  widget_t* widget = WIDGET(e->target);
-  *(int32_t*)ctx = (*(int32_t*)ctx) + 1;
-
-  assert(tk_str_eq(widget->vt->type, WIDGET_TYPE_BUTTON));
-
-  return RET_OK;
-}
-
-TEST(WidgetFactory, event) {
-  int32_t count = 0;
-  widget_t* button = NULL;
-  widget_factory_t* factory = widget_factory_create();
-
-  widget_factory_register(factory, "button", button_create);
-  emitter_on(EMITTER(factory), EVT_WIDGET_CREATED, on_widget_created, &count);
-
-  button = widget_factory_create_widget(factory, "button", NULL, 10, 20, 30, 40);
-  ASSERT_EQ(count, 1);
-  widget_destroy(button);
-
-  button = widget_factory_create_widget(factory, "button", NULL, 10, 20, 30, 40);
-  ASSERT_EQ(count, 2);
-  widget_destroy(button);
-
-  widget_factory_destroy(factory);
-}

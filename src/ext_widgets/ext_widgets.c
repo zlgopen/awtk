@@ -81,54 +81,56 @@ static ret_t children_layouter_register_ext_builtins(void) {
 ret_t tk_ext_widgets_init(void) {
   widget_factory_t* f = widget_factory();
 
-  widget_factory_register(f, WIDGET_TYPE_RICH_TEXT, rich_text_create);
-  widget_factory_register(f, WIDGET_TYPE_RICH_TEXT_VIEW, rich_text_view_create);
-  widget_factory_register(f, WIDGET_TYPE_COLOR_PICKER, color_picker_create);
-  widget_factory_register(f, WIDGET_TYPE_COLOR_COMPONENT, color_component_create);
-  widget_factory_register(f, WIDGET_TYPE_SCROLL_VIEW, scroll_view_create);
-  widget_factory_register(f, WIDGET_TYPE_LIST_VIEW, list_view_create);
-  widget_factory_register(f, WIDGET_TYPE_LIST_VIEW_H, list_view_h_create);
-  widget_factory_register(f, WIDGET_TYPE_LIST_ITEM, list_item_create);
-  widget_factory_register(f, WIDGET_TYPE_SCROLL_BAR, scroll_bar_create);
-  widget_factory_register(f, WIDGET_TYPE_SCROLL_BAR_DESKTOP, scroll_bar_create_desktop);
-  widget_factory_register(f, WIDGET_TYPE_SCROLL_BAR_MOBILE, scroll_bar_create_mobile);
-  widget_factory_register(f, WIDGET_TYPE_SLIDE_VIEW, slide_view_create);
-  widget_factory_register(f, WIDGET_TYPE_SLIDE_INDICATOR, slide_indicator_create);
-  widget_factory_register(f, WIDGET_TYPE_SLIDE_INDICATOR_ARC, slide_indicator_create_arc);
-  widget_factory_register(f, WIDGET_TYPE_KEYBOARD, keyboard_create);
-  widget_factory_register(f, WIDGET_TYPE_LANG_INDICATOR, lang_indicator_create);
-  widget_factory_register(f, WIDGET_TYPE_CANDIDATES, candidates_create);
-  widget_factory_register(f, WIDGET_TYPE_TIME_CLOCK, time_clock_create);
-  widget_factory_register(f, WIDGET_TYPE_GAUGE, gauge_create);
-  widget_factory_register(f, WIDGET_TYPE_GAUGE_POINTER, gauge_pointer_create);
-  widget_factory_register(f, WIDGET_TYPE_TEXT_SELECTOR, text_selector_create);
-  widget_factory_register(f, WIDGET_TYPE_SWITCH, switch_create);
-  widget_factory_register(f, WIDGET_TYPE_IMAGE_ANIMATION, image_animation_create);
-  widget_factory_register(f, WIDGET_TYPE_PROGRESS_CIRCLE, progress_circle_create);
-  widget_factory_register(f, WIDGET_TYPE_SVG_IMAGE, svg_image_create);
-  widget_factory_register(f, WIDGET_TYPE_GIF_IMAGE, gif_image_create);
-  widget_factory_register(f, WIDGET_TYPE_CANVAS_WIDGET, canvas_widget_create);
-  widget_factory_register(f, WIDGET_TYPE_IMAGE_VALUE, image_value_create);
-  widget_factory_register(f, WIDGET_TYPE_SLIDE_MENU, slide_menu_create);
-  widget_factory_register(f, WIDGET_TYPE_MUTABLE_IMAGE, mutable_image_create);
-  widget_factory_register(f, WIDGET_TYPE_MLEDIT, mledit_create);
-  widget_factory_register(f, WIDGET_TYPE_LINE_NUMBER, line_number_create);
-  widget_factory_register(f, WIDGET_TYPE_HSCROLL_LABEL, hscroll_label_create);
-  widget_factory_register(f, WIDGET_TYPE_COMBO_BOX_EX, combo_box_ex_create);
-  widget_factory_register(f, WIDGET_TYPE_DRAGGABLE, draggable_create);
+FACTORY_TABLE_BEGIN(s_ext_widgets)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_RICH_TEXT, rich_text_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_RICH_TEXT_VIEW, rich_text_view_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_COLOR_PICKER, color_picker_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_COLOR_COMPONENT, color_component_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_SCROLL_VIEW, scroll_view_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_LIST_VIEW, list_view_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_LIST_VIEW_H, list_view_h_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_LIST_ITEM, list_item_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_SCROLL_BAR, scroll_bar_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_SCROLL_BAR_DESKTOP, scroll_bar_create_desktop)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_SCROLL_BAR_MOBILE, scroll_bar_create_mobile)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_SLIDE_VIEW, slide_view_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_SLIDE_INDICATOR, slide_indicator_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_SLIDE_INDICATOR_ARC, slide_indicator_create_arc)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_KEYBOARD, keyboard_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_LANG_INDICATOR, lang_indicator_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_CANDIDATES, candidates_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_TIME_CLOCK, time_clock_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_GAUGE, gauge_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_GAUGE_POINTER, gauge_pointer_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_TEXT_SELECTOR, text_selector_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_SWITCH, switch_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_IMAGE_ANIMATION, image_animation_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_PROGRESS_CIRCLE, progress_circle_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_SVG_IMAGE, svg_image_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_GIF_IMAGE, gif_image_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_CANVAS_WIDGET, canvas_widget_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_IMAGE_VALUE, image_value_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_SLIDE_MENU, slide_menu_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_MUTABLE_IMAGE, mutable_image_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_MLEDIT, mledit_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_LINE_NUMBER, line_number_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_HSCROLL_LABEL, hscroll_label_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_COMBO_BOX_EX, combo_box_ex_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_DRAGGABLE, draggable_create)
 
-  widget_factory_register(f, "guage", gauge_create);
-  widget_factory_register(f, "guage_pointer", gauge_pointer_create);
+  FACTORY_TABLE_ENTRY("guage", gauge_create)
+  FACTORY_TABLE_ENTRY("guage_pointer", gauge_pointer_create)
 
 #ifdef WITH_WIDGET_VPAGE
-  widget_factory_register(f, WIDGET_TYPE_VPAGE, vpage_create);
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_VPAGE, vpage_create)
 #endif /*WITH_WIDGET_VPAGE*/
 
 #ifdef TK_FILE_BROWSER_VIEW_H
-  widget_factory_register(f, WIDGET_TYPE_FILE_BROWSER_VIEW, file_browser_view_create);
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_FILE_BROWSER_VIEW, file_browser_view_create)
 #endif /*TK_FILE_BROWSER_VIEW_H*/
+FACTORY_TABLE_END()
 
   children_layouter_register_ext_builtins();
 
-  return RET_OK;
+  return widget_factory_register_multi(f, s_ext_widgets);
 }

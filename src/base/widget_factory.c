@@ -28,31 +28,28 @@ widget_factory_t* widget_factory(void) {
 }
 
 widget_factory_t* widget_factory_create(void) {
-  return object_default_create();
+  return general_factory_create();
 }
 
 ret_t widget_factory_register(widget_factory_t* factory, const char* type, widget_create_t create) {
   return_value_if_fail(factory != NULL && type != NULL && create != NULL, RET_BAD_PARAMS);
 
-  return object_set_prop_pointer(factory, type, create);
+  return general_factory_register(factory, type, (tk_create_t)create);
+}
+
+ret_t widget_factory_register_multi(widget_factory_t* factory, const general_factory_table_t* table) {
+  return general_factory_register_table(factory, table);
 }
 
 widget_t* widget_factory_create_widget(widget_factory_t* factory, const char* type,
                                        widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = NULL;
   widget_create_t create = NULL;
   return_value_if_fail(factory != NULL && type != NULL, NULL);
 
-  create = (widget_create_t)object_get_prop_pointer(factory, type);
+  create = (widget_create_t)general_factory_find(factory, type);
   return_value_if_fail(create != NULL, NULL);
 
-  widget = create(parent, x, y, w, h);
-  if (widget != NULL) {
-    event_t e = event_init(EVT_WIDGET_CREATED, widget);
-    emitter_dispatch(EMITTER(factory), &e);
-  }
-
-  return widget;
+  return create(parent, x, y, w, h);
 }
 
 ret_t widget_factory_set(widget_factory_t* factory) {
@@ -62,6 +59,8 @@ ret_t widget_factory_set(widget_factory_t* factory) {
 }
 
 ret_t widget_factory_destroy(widget_factory_t* factory) {
-  OBJECT_UNREF(factory);
-  return RET_OK;
+  if(s_widget_factory == factory) {
+    s_widget_factory = NULL;
+  }
+  return general_factory_destroy(factory);
 }

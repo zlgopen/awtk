@@ -62,45 +62,49 @@
 
 ret_t tk_widgets_init(void) {
   widget_factory_t* f = widget_factory();
-  widget_factory_register(f, WIDGET_TYPE_DIALOG, dialog_create);
-  widget_factory_register(f, WIDGET_TYPE_NORMAL_WINDOW, window_create);
+
+FACTORY_TABLE_BEGIN(s_basic_widgets)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_DIALOG, dialog_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_NORMAL_WINDOW, window_create)
 #ifndef AWTK_NOGUI
-  widget_factory_register(f, WIDGET_TYPE_DIALOG_TITLE, dialog_title_create);
-  widget_factory_register(f, WIDGET_TYPE_DIALOG_CLIENT, dialog_client_create);
-  widget_factory_register(f, WIDGET_TYPE_IMAGE, image_create);
-  widget_factory_register(f, WIDGET_TYPE_BUTTON, button_create);
-  widget_factory_register(f, WIDGET_TYPE_LABEL, label_create);
-  widget_factory_register(f, WIDGET_TYPE_PROGRESS_BAR, progress_bar_create);
-  widget_factory_register(f, WIDGET_TYPE_SLIDER, slider_create);
-  widget_factory_register(f, WIDGET_TYPE_CHECK_BUTTON, check_button_create);
-  widget_factory_register(f, WIDGET_TYPE_RADIO_BUTTON, check_button_create_radio);
-  widget_factory_register(f, WIDGET_TYPE_PAGES, pages_create);
-  widget_factory_register(f, WIDGET_TYPE_BUTTON_GROUP, button_group_create);
-  widget_factory_register(f, WIDGET_TYPE_POPUP, popup_create);
-  widget_factory_register(f, WIDGET_TYPE_COLOR_TILE, color_tile_create);
-  widget_factory_register(f, WIDGET_TYPE_CLIP_VIEW, clip_view_create);
-  widget_factory_register(f, WIDGET_TYPE_GROUP_BOX, group_box_create);
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_DIALOG_TITLE, dialog_title_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_DIALOG_CLIENT, dialog_client_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_IMAGE, image_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_BUTTON, button_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_LABEL, label_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_PROGRESS_BAR, progress_bar_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_SLIDER, slider_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_CHECK_BUTTON, check_button_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_RADIO_BUTTON, check_button_create_radio)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_PAGES, pages_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_BUTTON_GROUP, button_group_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_POPUP, popup_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_COLOR_TILE, color_tile_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_CLIP_VIEW, clip_view_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_GROUP_BOX, group_box_create)
 #ifndef AWTK_LITE
-  widget_factory_register(f, WIDGET_TYPE_SYSTEM_BAR, system_bar_create);
-  widget_factory_register(f, WIDGET_TYPE_SYSTEM_BAR_BOTTOM, system_bar_bottom_create);
-  widget_factory_register(f, WIDGET_TYPE_CALIBRATION_WIN, calibration_win_create);
-  widget_factory_register(f, WIDGET_TYPE_VIEW, view_create);
-  widget_factory_register(f, WIDGET_TYPE_OVERLAY, overlay_create);
-  widget_factory_register(f, WIDGET_TYPE_EDIT, edit_create);
-  widget_factory_register(f, WIDGET_TYPE_TAB_CONTROL, tab_control_create);
-  widget_factory_register(f, WIDGET_TYPE_TAB_BUTTON, tab_button_create);
-  widget_factory_register(f, WIDGET_TYPE_TAB_BUTTON_GROUP, tab_button_group_create);
-  widget_factory_register(f, WIDGET_TYPE_SPIN_BOX, spin_box_create);
-  widget_factory_register(f, WIDGET_TYPE_DRAGGER, dragger_create);
-  widget_factory_register(f, WIDGET_TYPE_COMBO_BOX, combo_box_create);
-  widget_factory_register(f, WIDGET_TYPE_COMBO_BOX_ITEM, combo_box_item_create);
-  widget_factory_register(f, WIDGET_TYPE_GRID, grid_create);
-  widget_factory_register(f, WIDGET_TYPE_GRID_ITEM, grid_item_create);
-  widget_factory_register(f, WIDGET_TYPE_ROW, row_create);
-  widget_factory_register(f, WIDGET_TYPE_COLUMN, column_create);
-  widget_factory_register(f, WIDGET_TYPE_APP_BAR, app_bar_create);
-  widget_factory_register(f, WIDGET_TYPE_DIGIT_CLOCK, digit_clock_create);
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_SYSTEM_BAR, system_bar_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_SYSTEM_BAR_BOTTOM, system_bar_bottom_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_CALIBRATION_WIN, calibration_win_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_VIEW, view_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_OVERLAY, overlay_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_EDIT, edit_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_TAB_CONTROL, tab_control_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_TAB_BUTTON, tab_button_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_TAB_BUTTON_GROUP, tab_button_group_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_SPIN_BOX, spin_box_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_DRAGGER, dragger_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_COMBO_BOX, combo_box_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_COMBO_BOX_ITEM, combo_box_item_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_GRID, grid_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_GRID_ITEM, grid_item_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_ROW, row_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_COLUMN, column_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_APP_BAR, app_bar_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_DIGIT_CLOCK, digit_clock_create)
+FACTORY_TABLE_END()
 #endif /*AWTK_LITE*/
 #endif /**AWTK_NOGUI*/
-  return RET_OK;
+
+  return widget_factory_register_multi(f, s_basic_widgets);
 }

@@ -24,7 +24,7 @@
 
 #include "base/widget.h"
 #include "tkc/emitter.h"
-#include "tkc/object_default.h"
+#include "tkc/general_factory.h"
 
 BEGIN_C_DECLS
 
@@ -37,7 +37,7 @@ BEGIN_C_DECLS
  * 用户注册自定义控件，可以获得内置控件同等待遇。
  *
  */
-typedef object_t widget_factory_t;
+typedef general_factory_t widget_factory_t;
 
 /**
  * @method widget_factory
@@ -76,6 +76,16 @@ widget_factory_t* widget_factory_create(void);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_factory_register(widget_factory_t* factory, const char* type, widget_create_t create);
+
+/**
+ * @method widget_factory_register_multi
+ * 注册控件创建函数。
+ * @param {widget_factory_t*} factory 控件工厂对象。
+ * @param {const general_factory_table_t*} table 表。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_factory_register_multi(widget_factory_t* factory, const general_factory_table_t* table);
 
 /**
  * @method widget_factory_create_widget
