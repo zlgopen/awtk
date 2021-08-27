@@ -30,9 +30,12 @@ static ret_t func_app_conf_save(fscript_t* fscript, fscript_args_t* args, value_
   return RET_OK;
 }
 
-ret_t fscript_app_conf_register(void) {
-  ENSURE(fscript_register_func("app_conf", func_app_conf) == RET_OK);
-  ENSURE(fscript_register_func("app_conf_save", func_app_conf_save) == RET_OK);
+FACTORY_TABLE_BEGIN(s_ext_app_conf)
+  FACTORY_TABLE_ENTRY("app_conf", func_app_conf)
+  FACTORY_TABLE_ENTRY("app_conf_save", func_app_conf_save)
+FACTORY_TABLE_END()
 
-  return RET_OK;
+ret_t fscript_app_conf_register(void) {
+  return fscript_register_funcs(s_ext_app_conf);
 }
+

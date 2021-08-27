@@ -245,22 +245,26 @@ static ret_t func_value_get_binary_data(fscript_t* fscript, fscript_args_t* args
   return RET_FAIL;
 }
 
-ret_t fscript_ext_init(void) {
-  ENSURE(fscript_register_func("index_of", func_index_of) == RET_OK);
-  ENSURE(fscript_register_func("last_index_of", func_last_index_of) == RET_OK);
-  ENSURE(fscript_register_func("ulen", func_ulen) == RET_OK);
-  ENSURE(fscript_register_func("trim_left", func_trim_left) == RET_OK);
-  ENSURE(fscript_register_func("trim_right", func_trim_right) == RET_OK);
-  ENSURE(fscript_register_func("totitle", func_totitle) == RET_OK);
-  ENSURE(fscript_register_func("char_at", func_char_at) == RET_OK);
-  ENSURE(fscript_register_func("usubstr", func_usubstr) == RET_OK);
+FACTORY_TABLE_BEGIN(s_ext_basic)
+  FACTORY_TABLE_ENTRY("index_of", func_index_of)
+  FACTORY_TABLE_ENTRY("last_index_of", func_last_index_of)
+  FACTORY_TABLE_ENTRY("ulen", func_ulen)
+  FACTORY_TABLE_ENTRY("trim_left", func_trim_left)
+  FACTORY_TABLE_ENTRY("trim_right", func_trim_right)
+  FACTORY_TABLE_ENTRY("totitle", func_totitle)
+  FACTORY_TABLE_ENTRY("char_at", func_char_at)
+  FACTORY_TABLE_ENTRY("usubstr", func_usubstr)
 #ifdef HAS_STDIO
-  ENSURE(fscript_register_func("prompt", func_prompt) == RET_OK);
+  FACTORY_TABLE_ENTRY("prompt", func_prompt)
 #endif /*HAS_STDIO*/
-  ENSURE(fscript_register_func("value_is_valid", func_value_is_valid) == RET_OK);
-  ENSURE(fscript_register_func("value_is_null", func_value_is_null) == RET_OK);
-  ENSURE(fscript_register_func("value_get_binary_data", func_value_get_binary_data) == RET_OK);
-  ENSURE(fscript_register_func("value_get_binary_size", func_value_get_binary_size) == RET_OK);
+  FACTORY_TABLE_ENTRY("value_is_valid", func_value_is_valid)
+  FACTORY_TABLE_ENTRY("value_is_null", func_value_is_null)
+  FACTORY_TABLE_ENTRY("value_get_binary_data", func_value_get_binary_data)
+  FACTORY_TABLE_ENTRY("value_get_binary_size", func_value_get_binary_size)
+FACTORY_TABLE_END()
+
+ret_t fscript_ext_init(void) {
+  fscript_register_funcs(s_ext_basic);
 
   fscript_object_register();
 
@@ -307,7 +311,6 @@ ret_t fscript_ext_init(void) {
 #ifdef FSCRIPT_WITH_ENDIAN
   fscript_endian_register();
 #endif /*FSCRIPT_WITH_MATH*/
-
 #ifdef FSCRIPT_WITH_ARRAY
   fscript_array_register();
 #endif /*FSCRIPT_WITH_ARRAY*/

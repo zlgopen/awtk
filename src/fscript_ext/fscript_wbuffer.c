@@ -257,29 +257,31 @@ static ret_t func_wbuffer_write_binary(fscript_t* fscript, fscript_args_t* args,
   return ret;
 }
 
+FACTORY_TABLE_BEGIN(s_ext_wbuffer)
+  FACTORY_TABLE_ENTRY("wbuffer_create", func_wbuffer_create)
+  FACTORY_TABLE_ENTRY("wbuffer_attach", func_wbuffer_attach)
+  FACTORY_TABLE_ENTRY("wbuffer_skip", func_wbuffer_skip)
+  FACTORY_TABLE_ENTRY("wbuffer_rewind", func_wbuffer_rewind)
+
+  FACTORY_TABLE_ENTRY("wbuffer_write_uint8", func_wbuffer_write_uint8)
+  FACTORY_TABLE_ENTRY("wbuffer_write_uint16", func_wbuffer_write_uint16)
+  FACTORY_TABLE_ENTRY("wbuffer_write_uint32", func_wbuffer_write_uint32)
+  FACTORY_TABLE_ENTRY("wbuffer_write_uint64", func_wbuffer_write_uint64)
+  FACTORY_TABLE_ENTRY("wbuffer_write_int8", func_wbuffer_write_uint8)
+  FACTORY_TABLE_ENTRY("wbuffer_write_int16", func_wbuffer_write_uint16)
+  FACTORY_TABLE_ENTRY("wbuffer_write_int32", func_wbuffer_write_uint32)
+  FACTORY_TABLE_ENTRY("wbuffer_write_int64", func_wbuffer_write_uint64)
+
+  FACTORY_TABLE_ENTRY("wbuffer_write_float", func_wbuffer_write_float)
+  FACTORY_TABLE_ENTRY("wbuffer_write_double", func_wbuffer_write_double)
+  FACTORY_TABLE_ENTRY("wbuffer_write_string", func_wbuffer_write_string)
+  FACTORY_TABLE_ENTRY("wbuffer_write_binary", func_wbuffer_write_binary)
+
+  FACTORY_TABLE_ENTRY("wbuffer_get_data", func_wbuffer_get_data)
+  FACTORY_TABLE_ENTRY("wbuffer_get_cursor", func_wbuffer_get_cursor)
+  FACTORY_TABLE_ENTRY("wbuffer_get_capacity", func_wbuffer_get_capacity)
+FACTORY_TABLE_END()
+
 ret_t fscript_wbuffer_register(void) {
-  ENSURE(fscript_register_func("wbuffer_create", func_wbuffer_create) == RET_OK);
-  ENSURE(fscript_register_func("wbuffer_attach", func_wbuffer_attach) == RET_OK);
-  ENSURE(fscript_register_func("wbuffer_skip", func_wbuffer_skip) == RET_OK);
-  ENSURE(fscript_register_func("wbuffer_rewind", func_wbuffer_rewind) == RET_OK);
-
-  ENSURE(fscript_register_func("wbuffer_write_uint8", func_wbuffer_write_uint8) == RET_OK);
-  ENSURE(fscript_register_func("wbuffer_write_uint16", func_wbuffer_write_uint16) == RET_OK);
-  ENSURE(fscript_register_func("wbuffer_write_uint32", func_wbuffer_write_uint32) == RET_OK);
-  ENSURE(fscript_register_func("wbuffer_write_uint64", func_wbuffer_write_uint64) == RET_OK);
-  ENSURE(fscript_register_func("wbuffer_write_int8", func_wbuffer_write_uint8) == RET_OK);
-  ENSURE(fscript_register_func("wbuffer_write_int16", func_wbuffer_write_uint16) == RET_OK);
-  ENSURE(fscript_register_func("wbuffer_write_int32", func_wbuffer_write_uint32) == RET_OK);
-  ENSURE(fscript_register_func("wbuffer_write_int64", func_wbuffer_write_uint64) == RET_OK);
-
-  ENSURE(fscript_register_func("wbuffer_write_float", func_wbuffer_write_float) == RET_OK);
-  ENSURE(fscript_register_func("wbuffer_write_double", func_wbuffer_write_double) == RET_OK);
-  ENSURE(fscript_register_func("wbuffer_write_string", func_wbuffer_write_string) == RET_OK);
-  ENSURE(fscript_register_func("wbuffer_write_binary", func_wbuffer_write_binary) == RET_OK);
-
-  ENSURE(fscript_register_func("wbuffer_get_data", func_wbuffer_get_data) == RET_OK);
-  ENSURE(fscript_register_func("wbuffer_get_cursor", func_wbuffer_get_cursor) == RET_OK);
-  ENSURE(fscript_register_func("wbuffer_get_capacity", func_wbuffer_get_capacity) == RET_OK);
-
-  return RET_OK;
+  return fscript_register_funcs(s_ext_wbuffer);
 }

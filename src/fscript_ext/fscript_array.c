@@ -391,29 +391,32 @@ static ret_t func_array_sum(fscript_t* fscript, fscript_args_t* args, value_t* r
   return object_array_sum(value_object(args->args), result);
 }
 
-ret_t fscript_array_register(void) {
-  ENSURE(fscript_register_func("array_create", func_array_create) == RET_OK);
-  ENSURE(fscript_register_func("array_dup", func_array_dup) == RET_OK);
-  ENSURE(fscript_register_func("array_create_with_str", func_array_create_with_str) == RET_OK);
-  ENSURE(fscript_register_func("array_create_repeated", func_array_create_repeated) == RET_OK);
-  ENSURE(fscript_register_func("array_push", func_array_push) == RET_OK);
-  ENSURE(fscript_register_func("array_pop", func_array_pop) == RET_OK);
-  ENSURE(fscript_register_func("array_shift", func_array_shift) == RET_OK);
-  ENSURE(fscript_register_func("array_get", func_array_get) == RET_OK);
-  ENSURE(fscript_register_func("array_set", func_array_set) == RET_OK);
-  ENSURE(fscript_register_func("array_insert", func_array_insert) == RET_OK);
-  ENSURE(fscript_register_func("array_remove", func_array_remove) == RET_OK);
-  ENSURE(fscript_register_func("array_get_and_remove", func_array_get_and_remove) == RET_OK);
-  ENSURE(fscript_register_func("array_index_of", func_array_index_of) == RET_OK);
-  ENSURE(fscript_register_func("array_last_index_of", func_array_last_index_of) == RET_OK);
-  ENSURE(fscript_register_func("array_clear", func_array_clear) == RET_OK);
-  ENSURE(fscript_register_func("array_join", func_array_join) == RET_OK);
-  ENSURE(fscript_register_func("array_sort", func_array_sort) == RET_OK);
-  ENSURE(fscript_register_func("array_clone_and_sort", func_array_clone_and_sort) == RET_OK);
-  ENSURE(fscript_register_func("array_min", func_array_min) == RET_OK);
-  ENSURE(fscript_register_func("array_max", func_array_max) == RET_OK);
-  ENSURE(fscript_register_func("array_avg", func_array_avg) == RET_OK);
-  ENSURE(fscript_register_func("array_sum", func_array_sum) == RET_OK);
+FACTORY_TABLE_BEGIN(s_ext_array)
+  FACTORY_TABLE_ENTRY("array_create", func_array_create)
+  FACTORY_TABLE_ENTRY("array_dup", func_array_dup)
+  FACTORY_TABLE_ENTRY("array_create_with_str", func_array_create_with_str)
+  FACTORY_TABLE_ENTRY("array_create_repeated", func_array_create_repeated)
+  FACTORY_TABLE_ENTRY("array_push", func_array_push)
+  FACTORY_TABLE_ENTRY("array_pop", func_array_pop)
+  FACTORY_TABLE_ENTRY("array_shift", func_array_shift)
+  FACTORY_TABLE_ENTRY("array_get", func_array_get)
+  FACTORY_TABLE_ENTRY("array_set", func_array_set)
+  FACTORY_TABLE_ENTRY("array_insert", func_array_insert)
+  FACTORY_TABLE_ENTRY("array_remove", func_array_remove)
+  FACTORY_TABLE_ENTRY("array_get_and_remove", func_array_get_and_remove)
+  FACTORY_TABLE_ENTRY("array_index_of", func_array_index_of)
+  FACTORY_TABLE_ENTRY("array_last_index_of", func_array_last_index_of)
+  FACTORY_TABLE_ENTRY("array_clear", func_array_clear)
+  FACTORY_TABLE_ENTRY("array_join", func_array_join)
+  FACTORY_TABLE_ENTRY("array_sort", func_array_sort)
+  FACTORY_TABLE_ENTRY("array_clone_and_sort", func_array_clone_and_sort)
+  FACTORY_TABLE_ENTRY("array_min", func_array_min)
+  FACTORY_TABLE_ENTRY("array_max", func_array_max)
+  FACTORY_TABLE_ENTRY("array_avg", func_array_avg)
+  FACTORY_TABLE_ENTRY("array_sum", func_array_sum)
+FACTORY_TABLE_END()
 
-  return RET_OK;
+ret_t fscript_array_register(void) {
+  return fscript_register_funcs(s_ext_array);
+
 }

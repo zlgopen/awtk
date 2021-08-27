@@ -414,3 +414,91 @@ TEST(DArrayTest, struct) {
 
   darray_deinit(&darray);
 }
+
+TEST(DArrayTest, set) {
+  darray_t darray;
+  darray_init(&darray, 2, NULL, NULL);
+
+  ASSERT_EQ(darray_insert(&darray, 0, tk_pointer_from_int(3)), RET_OK);
+  ASSERT_EQ(darray_insert(&darray, 0, tk_pointer_from_int(2)), RET_OK);
+  ASSERT_EQ(darray_insert(&darray, 0, tk_pointer_from_int(1)), RET_OK);
+  ASSERT_EQ(darray_insert(&darray, 0, tk_pointer_from_int(0)), RET_OK);
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 0)), 0); 
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 1)), 1); 
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 2)), 2); 
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 3)), 3); 
+ 
+  ASSERT_EQ(darray_set(&darray, 0, tk_pointer_from_int(100)), RET_OK);
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 0)), 100); 
+  
+  ASSERT_EQ(darray_set(&darray, 1, tk_pointer_from_int(200)), RET_OK);
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 1)), 200); 
+
+  darray_deinit(&darray);
+}
+
+
+TEST(DArrayTest, insert_order) {
+  darray_t darray;
+  darray_init(&darray, 2, NULL, NULL);
+
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(3), NULL, true), RET_OK);
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(1), NULL, true), RET_OK);
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(2), NULL, true), RET_OK);
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(0), NULL, true), RET_OK);
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(6), NULL, true), RET_OK);
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(5), NULL, true), RET_OK);
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(4), NULL, true), RET_OK);
+  ASSERT_EQ(darray.size, 7);
+
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(3), NULL, true), RET_OK);
+  ASSERT_EQ(darray.size, 7);
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(1), NULL, true), RET_OK);
+  ASSERT_EQ(darray.size, 7);
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(2), NULL, true), RET_OK);
+  ASSERT_EQ(darray.size, 7);
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(0), NULL, true), RET_OK);
+  ASSERT_EQ(darray.size, 7);
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(6), NULL, true), RET_OK);
+  ASSERT_EQ(darray.size, 7);
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(5), NULL, true), RET_OK);
+  ASSERT_EQ(darray.size, 7);
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(4), NULL, true), RET_OK);
+  ASSERT_EQ(darray.size, 7);
+
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 0)), 0); 
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 1)), 1); 
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 2)), 2); 
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 3)), 3); 
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 4)), 4); 
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 5)), 5); 
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 6)), 6); 
+
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(3), NULL, false), RET_OK);
+  ASSERT_EQ(darray.size, 8);
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(1), NULL, false), RET_OK);
+  ASSERT_EQ(darray.size, 9);
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(2), NULL, false), RET_OK);
+  ASSERT_EQ(darray.size, 10);
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(0), NULL, false), RET_OK);
+  ASSERT_EQ(darray.size, 11);
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(6), NULL, false), RET_OK);
+  ASSERT_EQ(darray.size, 12);
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(5), NULL, false), RET_OK);
+  ASSERT_EQ(darray.size, 13);
+  ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(4), NULL, false), RET_OK);
+  ASSERT_EQ(darray.size, 14);
+  
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 0)), 0); 
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 1)), 0); 
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 2)), 1); 
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 3)), 1); 
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 4)), 2); 
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 5)), 2); 
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 6)), 3); 
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 7)), 3); 
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 8)), 4); 
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 9)), 4); 
+
+  darray_deinit(&darray);
+}

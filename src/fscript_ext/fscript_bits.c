@@ -426,17 +426,19 @@ static ret_t func_bit_not(fscript_t* fscript, fscript_args_t* args, value_t* res
   return RET_OK;
 }
 
-ret_t fscript_bits_register(void) {
-  ENSURE(fscript_register_func("&", func_bit_and) == RET_OK);
-  ENSURE(fscript_register_func("^", func_bit_nor) == RET_OK);
-  ENSURE(fscript_register_func("~", func_bit_not) == RET_OK);
-  ENSURE(fscript_register_func("|", func_bit_or) == RET_OK);
-  ENSURE(fscript_register_func("<<", func_lshift) == RET_OK);
-  ENSURE(fscript_register_func(">>", func_rshift) == RET_OK);
-  ENSURE(fscript_register_func("bit_get", func_bit_get) == RET_OK);
-  ENSURE(fscript_register_func("bit_set", func_bit_set) == RET_OK);
-  ENSURE(fscript_register_func("bit_clear", func_bit_clear) == RET_OK);
-  ENSURE(fscript_register_func("bit_toggle", func_bit_toggle) == RET_OK);
+FACTORY_TABLE_BEGIN(s_ext_bits)
+  FACTORY_TABLE_ENTRY("&", func_bit_and)
+  FACTORY_TABLE_ENTRY("^", func_bit_nor)
+  FACTORY_TABLE_ENTRY("~", func_bit_not)
+  FACTORY_TABLE_ENTRY("|", func_bit_or)
+  FACTORY_TABLE_ENTRY("<<", func_lshift)
+  FACTORY_TABLE_ENTRY(">>", func_rshift)
+  FACTORY_TABLE_ENTRY("bit_get", func_bit_get)
+  FACTORY_TABLE_ENTRY("bit_set", func_bit_set)
+  FACTORY_TABLE_ENTRY("bit_clear", func_bit_clear)
+  FACTORY_TABLE_ENTRY("bit_toggle", func_bit_toggle)
+FACTORY_TABLE_END()
 
-  return RET_OK;
+ret_t fscript_bits_register(void) {
+  return fscript_register_funcs(s_ext_bits);
 }

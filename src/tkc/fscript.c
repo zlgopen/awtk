@@ -21,6 +21,7 @@
 #include "tkc/darray.h"
 #include "tkc/fscript.h"
 #include "tkc/object_default.h"
+#include "tkc/general_factory.h"
 
 struct _fscript_func_call_t {
   void* ctx;
@@ -2265,7 +2266,7 @@ static const func_entry_t s_builtin_funcs[] = {
     {"+", func_sum, 8},
 };
 
-static object_t* s_global_funcs;
+static general_factory_t* s_global_funcs;
 static fscript_func_call_t* fscript_func_call_create(fscript_parser_t* parser, const char* name,
                                                      uint32_t size) {
   uint32_t i = 0;
@@ -2288,7 +2289,7 @@ static fscript_func_call_t* fscript_func_call_create(fscript_parser_t* parser, c
   }
 
   if (s_global_funcs != NULL) {
-    func = (fscript_func_t)object_get_prop_pointer(s_global_funcs, func_name);
+    func = (fscript_func_t)general_factory_find(s_global_funcs, func_name);
   }
 
   if (func == NULL) {
@@ -2321,18 +2322,28 @@ ret_t fscript_global_init(void) {
 }
 
 ret_t fscript_global_deinit(void) {
-  OBJECT_UNREF(s_global_funcs);
+  general_factory_destroy(s_global_funcs);
+  s_global_funcs = NULL;
   return RET_OK;
 }
 
-#include "tkc/object_default.h"
+ret_t fscript_register_funcs(const general_factory_table_t* table) {
+  return_value_if_fail(table != NULL, RET_BAD_PARAMS);
+
+  if (s_global_funcs == NULL) {
+    s_global_funcs = general_factory_create();
+  }
+
+  return general_factory_register_table(s_global_funcs, table);
+}
+
 ret_t fscript_register_func(const char* name, fscript_func_t func) {
   return_value_if_fail(name != NULL && func != NULL, RET_BAD_PARAMS);
   if (s_global_funcs == NULL) {
-    s_global_funcs = object_default_create();
+    s_global_funcs = general_factory_create();
   }
 
-  return object_set_prop_pointer(s_global_funcs, name, (void*)func);
+  return general_factory_register(s_global_funcs, name, (tk_create_t)func);
 }
 
 double tk_expr_eval(const char* expr) {

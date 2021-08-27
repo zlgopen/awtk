@@ -19,6 +19,7 @@
 
 #include "tkc/str.h"
 #include "tkc/object.h"
+#include "tkc/general_factory.h"
 
 BEGIN_C_DECLS
 
@@ -243,6 +244,15 @@ ret_t fscript_global_init(void);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t fscript_register_func(const char* name, fscript_func_t func);
+
+/**
+ * @method fscript_register_funcs
+ * 注册全局自定义函数。
+ * @param {const general_factory_table_t*} table 函数表。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_register_funcs(const general_factory_table_t* table);
 
 /**
  * @method fscript_global_deinit

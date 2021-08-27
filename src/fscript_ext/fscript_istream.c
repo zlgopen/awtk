@@ -287,26 +287,25 @@ static ret_t func_istream_read_line(fscript_t* fscript, fscript_args_t* args, va
   return ret >= 0 ? RET_OK : RET_FAIL;
 }
 
+FACTORY_TABLE_BEGIN(s_ext_istream)
+  FACTORY_TABLE_ENTRY("istream_seek", func_istream_seek)
+  FACTORY_TABLE_ENTRY("istream_tell", func_istream_tell)
+  FACTORY_TABLE_ENTRY("istream_read_uint8", func_istream_read_uint8)
+  FACTORY_TABLE_ENTRY("istream_read_uint16", func_istream_read_uint16)
+  FACTORY_TABLE_ENTRY("istream_read_uint32", func_istream_read_uint32)
+  FACTORY_TABLE_ENTRY("istream_read_uint64", func_istream_read_uint64)
+  FACTORY_TABLE_ENTRY("istream_read_int8", func_istream_read_int8)
+  FACTORY_TABLE_ENTRY("istream_read_int16", func_istream_read_int16)
+  FACTORY_TABLE_ENTRY("istream_read_int32", func_istream_read_int32)
+  FACTORY_TABLE_ENTRY("istream_read_int64", func_istream_read_int64)
+  FACTORY_TABLE_ENTRY("istream_read_float", func_istream_read_float)
+  FACTORY_TABLE_ENTRY("istream_read_double", func_istream_read_double)
+  FACTORY_TABLE_ENTRY("istream_read_string", func_istream_read_string)
+  FACTORY_TABLE_ENTRY("istream_read_binary", func_istream_read_binary)
+  FACTORY_TABLE_ENTRY("istream_read_line", func_istream_read_line)
+  FACTORY_TABLE_ENTRY("istream_is_eos", func_istream_is_eos)
+FACTORY_TABLE_END()
+
 ret_t fscript_istream_register(void) {
-  ENSURE(fscript_register_func("istream_seek", func_istream_seek) == RET_OK);
-  ENSURE(fscript_register_func("istream_tell", func_istream_tell) == RET_OK);
-
-  ENSURE(fscript_register_func("istream_read_uint8", func_istream_read_uint8) == RET_OK);
-  ENSURE(fscript_register_func("istream_read_uint16", func_istream_read_uint16) == RET_OK);
-  ENSURE(fscript_register_func("istream_read_uint32", func_istream_read_uint32) == RET_OK);
-  ENSURE(fscript_register_func("istream_read_uint64", func_istream_read_uint64) == RET_OK);
-  ENSURE(fscript_register_func("istream_read_int8", func_istream_read_int8) == RET_OK);
-  ENSURE(fscript_register_func("istream_read_int16", func_istream_read_int16) == RET_OK);
-  ENSURE(fscript_register_func("istream_read_int32", func_istream_read_int32) == RET_OK);
-  ENSURE(fscript_register_func("istream_read_int64", func_istream_read_int64) == RET_OK);
-
-  ENSURE(fscript_register_func("istream_read_float", func_istream_read_float) == RET_OK);
-  ENSURE(fscript_register_func("istream_read_double", func_istream_read_double) == RET_OK);
-  ENSURE(fscript_register_func("istream_read_string", func_istream_read_string) == RET_OK);
-  ENSURE(fscript_register_func("istream_read_binary", func_istream_read_binary) == RET_OK);
-  ENSURE(fscript_register_func("istream_read_line", func_istream_read_line) == RET_OK);
-
-  ENSURE(fscript_register_func("istream_is_eos", func_istream_is_eos) == RET_OK);
-
-  return RET_OK;
+  return fscript_register_funcs(s_ext_istream);
 }

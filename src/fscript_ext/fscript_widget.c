@@ -395,23 +395,24 @@ static ret_t func_widget_send_key(fscript_t* fscript, fscript_args_t* args, valu
   return RET_OK;
 }
 
+FACTORY_TABLE_BEGIN(s_ext_widget)
+  FACTORY_TABLE_ENTRY("open", func_window_open)
+  FACTORY_TABLE_ENTRY("close", func_window_close)
+  FACTORY_TABLE_ENTRY("back", func_back)
+  FACTORY_TABLE_ENTRY("back_to_home", func_back_to_home)
+  FACTORY_TABLE_ENTRY("quit", func_quit)
+  FACTORY_TABLE_ENTRY("tr", func_tr)
+  FACTORY_TABLE_ENTRY("widget_lookup", func_widget_lookup)
+  FACTORY_TABLE_ENTRY("widget_get", func_widget_get)
+  FACTORY_TABLE_ENTRY("widget_eval", func_widget_eval)
+  FACTORY_TABLE_ENTRY("widget_set", func_widget_set)
+  FACTORY_TABLE_ENTRY("widget_create", func_widget_create)
+  FACTORY_TABLE_ENTRY("widget_destroy", func_widget_destroy)
+  FACTORY_TABLE_ENTRY("start_timer", func_widget_add_timer)
+  FACTORY_TABLE_ENTRY("stop_timer", func_widget_remove_timer)
+  FACTORY_TABLE_ENTRY("send_key", func_widget_send_key)
+FACTORY_TABLE_END()
+
 ret_t fscript_widget_register(void) {
-  ENSURE(fscript_register_func("open", func_window_open) == RET_OK);
-  ENSURE(fscript_register_func("close", func_window_close) == RET_OK);
-  ENSURE(fscript_register_func("back", func_back) == RET_OK);
-  ENSURE(fscript_register_func("back_to_home", func_back_to_home) == RET_OK);
-  ENSURE(fscript_register_func("quit", func_quit) == RET_OK);
-  ENSURE(fscript_register_func("tr", func_tr) == RET_OK);
-
-  ENSURE(fscript_register_func("widget_lookup", func_widget_lookup) == RET_OK);
-  ENSURE(fscript_register_func("widget_get", func_widget_get) == RET_OK);
-  ENSURE(fscript_register_func("widget_eval", func_widget_eval) == RET_OK);
-  ENSURE(fscript_register_func("widget_set", func_widget_set) == RET_OK);
-  ENSURE(fscript_register_func("widget_create", func_widget_create) == RET_OK);
-  ENSURE(fscript_register_func("widget_destroy", func_widget_destroy) == RET_OK);
-  ENSURE(fscript_register_func("start_timer", func_widget_add_timer) == RET_OK);
-  ENSURE(fscript_register_func("stop_timer", func_widget_remove_timer) == RET_OK);
-  ENSURE(fscript_register_func("send_key", func_widget_send_key) == RET_OK);
-
-  return RET_OK;
+  return fscript_register_funcs(s_ext_widget);
 }

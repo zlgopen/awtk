@@ -1,5 +1,10 @@
 # 最新动态
 
+2021/08/27
+  * 增加general\_factory。
+  * 增加darray\_set/darray\_replace/darray\_sorted\_insert。
+  * 重构widgets\_factory/fscript\_register\_func，有效降低内存使用。
+
 2021/08/26
   * fscript 支持函数定义。
 2021/08/25

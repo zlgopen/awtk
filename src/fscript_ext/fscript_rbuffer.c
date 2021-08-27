@@ -262,28 +262,30 @@ static ret_t func_rbuffer_read_binary(fscript_t* fscript, fscript_args_t* args, 
   return ret;
 }
 
+FACTORY_TABLE_BEGIN(s_ext_rbuffer)
+  FACTORY_TABLE_ENTRY("rbuffer_create", func_rbuffer_create)
+  FACTORY_TABLE_ENTRY("rbuffer_skip", func_rbuffer_skip)
+  FACTORY_TABLE_ENTRY("rbuffer_rewind", func_rbuffer_rewind)
+
+  FACTORY_TABLE_ENTRY("rbuffer_read_uint8", func_rbuffer_read_uint8)
+  FACTORY_TABLE_ENTRY("rbuffer_read_uint16", func_rbuffer_read_uint16)
+  FACTORY_TABLE_ENTRY("rbuffer_read_uint32", func_rbuffer_read_uint32)
+  FACTORY_TABLE_ENTRY("rbuffer_read_uint64", func_rbuffer_read_uint64)
+  FACTORY_TABLE_ENTRY("rbuffer_read_int8", func_rbuffer_read_int8)
+  FACTORY_TABLE_ENTRY("rbuffer_read_int16", func_rbuffer_read_int16)
+  FACTORY_TABLE_ENTRY("rbuffer_read_int32", func_rbuffer_read_int32)
+  FACTORY_TABLE_ENTRY("rbuffer_read_int64", func_rbuffer_read_int64)
+
+  FACTORY_TABLE_ENTRY("rbuffer_read_float", func_rbuffer_read_float)
+  FACTORY_TABLE_ENTRY("rbuffer_read_double", func_rbuffer_read_double)
+  FACTORY_TABLE_ENTRY("rbuffer_read_string", func_rbuffer_read_string)
+  FACTORY_TABLE_ENTRY("rbuffer_read_binary", func_rbuffer_read_binary)
+
+  FACTORY_TABLE_ENTRY("rbuffer_get_data", func_rbuffer_get_data)
+  FACTORY_TABLE_ENTRY("rbuffer_get_cursor", func_rbuffer_get_cursor)
+  FACTORY_TABLE_ENTRY("rbuffer_get_capacity", func_rbuffer_get_capacity)
+FACTORY_TABLE_END()
+
 ret_t fscript_rbuffer_register(void) {
-  ENSURE(fscript_register_func("rbuffer_create", func_rbuffer_create) == RET_OK);
-  ENSURE(fscript_register_func("rbuffer_skip", func_rbuffer_skip) == RET_OK);
-  ENSURE(fscript_register_func("rbuffer_rewind", func_rbuffer_rewind) == RET_OK);
-
-  ENSURE(fscript_register_func("rbuffer_read_uint8", func_rbuffer_read_uint8) == RET_OK);
-  ENSURE(fscript_register_func("rbuffer_read_uint16", func_rbuffer_read_uint16) == RET_OK);
-  ENSURE(fscript_register_func("rbuffer_read_uint32", func_rbuffer_read_uint32) == RET_OK);
-  ENSURE(fscript_register_func("rbuffer_read_uint64", func_rbuffer_read_uint64) == RET_OK);
-  ENSURE(fscript_register_func("rbuffer_read_int8", func_rbuffer_read_int8) == RET_OK);
-  ENSURE(fscript_register_func("rbuffer_read_int16", func_rbuffer_read_int16) == RET_OK);
-  ENSURE(fscript_register_func("rbuffer_read_int32", func_rbuffer_read_int32) == RET_OK);
-  ENSURE(fscript_register_func("rbuffer_read_int64", func_rbuffer_read_int64) == RET_OK);
-
-  ENSURE(fscript_register_func("rbuffer_read_float", func_rbuffer_read_float) == RET_OK);
-  ENSURE(fscript_register_func("rbuffer_read_double", func_rbuffer_read_double) == RET_OK);
-  ENSURE(fscript_register_func("rbuffer_read_string", func_rbuffer_read_string) == RET_OK);
-  ENSURE(fscript_register_func("rbuffer_read_binary", func_rbuffer_read_binary) == RET_OK);
-
-  ENSURE(fscript_register_func("rbuffer_get_data", func_rbuffer_get_data) == RET_OK);
-  ENSURE(fscript_register_func("rbuffer_get_cursor", func_rbuffer_get_cursor) == RET_OK);
-  ENSURE(fscript_register_func("rbuffer_get_capacity", func_rbuffer_get_capacity) == RET_OK);
-
-  return RET_OK;
+  return fscript_register_funcs(s_ext_rbuffer);
 }

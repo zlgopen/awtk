@@ -51,10 +51,12 @@ static ret_t func_chsum(fscript_t* fscript, fscript_args_t* args, value_t* resul
   return RET_OK;
 }
 
-ret_t fscript_crc_register(void) {
-  ENSURE(fscript_register_func("crc16", func_crc16) == RET_OK);
-  ENSURE(fscript_register_func("crc32", func_crc32) == RET_OK);
-  ENSURE(fscript_register_func("cksum", func_chsum) == RET_OK);
+FACTORY_TABLE_BEGIN(s_ext_crc)
+  FACTORY_TABLE_ENTRY("crc16", func_crc16)
+  FACTORY_TABLE_ENTRY("crc32", func_crc32)
+  FACTORY_TABLE_ENTRY("cksum", func_chsum)
+FACTORY_TABLE_END()
 
-  return RET_OK;
+ret_t fscript_crc_register(void) {
+  return fscript_register_funcs(s_ext_crc);
 }

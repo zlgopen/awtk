@@ -132,21 +132,24 @@ static ret_t func_r2d(fscript_t* fscript, fscript_args_t* args, value_t* result)
   return RET_OK;
 }
 
-ret_t fscript_math_register(void) {
-  ENSURE(fscript_register_func("d2r", func_d2r) == RET_OK);
-  ENSURE(fscript_register_func("r2d", func_r2d) == RET_OK);
-  ENSURE(fscript_register_func("acos", func_acos) == RET_OK);
-  ENSURE(fscript_register_func("asin", func_asin) == RET_OK);
-  ENSURE(fscript_register_func("atan", func_atan) == RET_OK);
-  ENSURE(fscript_register_func("atan2", func_atan2) == RET_OK);
-  ENSURE(fscript_register_func("cos", func_cos) == RET_OK);
-  ENSURE(fscript_register_func("sin", func_sin) == RET_OK);
-  ENSURE(fscript_register_func("exp", func_exp) == RET_OK);
-  ENSURE(fscript_register_func("log", func_log) == RET_OK);
-  ENSURE(fscript_register_func("sqrt", func_sqrt) == RET_OK);
-  ENSURE(fscript_register_func("tan", func_tan) == RET_OK);
-  ENSURE(fscript_register_func("pow", func_pow) == RET_OK);
-  ENSURE(fscript_register_func("is_prime", func_is_prime) == RET_OK);
+FACTORY_TABLE_BEGIN(s_ext_math)
+  FACTORY_TABLE_ENTRY("d2r", func_d2r)
+  FACTORY_TABLE_ENTRY("r2d", func_r2d)
+  FACTORY_TABLE_ENTRY("acos", func_acos)
+  FACTORY_TABLE_ENTRY("asin", func_asin)
+  FACTORY_TABLE_ENTRY("atan", func_atan)
+  FACTORY_TABLE_ENTRY("atan2", func_atan2)
+  FACTORY_TABLE_ENTRY("cos", func_cos)
+  FACTORY_TABLE_ENTRY("sin", func_sin)
+  FACTORY_TABLE_ENTRY("exp", func_exp)
+  FACTORY_TABLE_ENTRY("log", func_log)
+  FACTORY_TABLE_ENTRY("sqrt", func_sqrt)
+  FACTORY_TABLE_ENTRY("tan", func_tan)
+  FACTORY_TABLE_ENTRY("pow", func_pow)
+  FACTORY_TABLE_ENTRY("is_prime", func_is_prime)
+FACTORY_TABLE_END()
 
-  return RET_OK;
+ret_t fscript_math_register(void) {
+  return fscript_register_funcs(s_ext_math);
 }
+

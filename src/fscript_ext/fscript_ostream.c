@@ -239,24 +239,24 @@ static ret_t func_ostream_write_binary(fscript_t* fscript, fscript_args_t* args,
   return ret > 0 ? RET_OK : RET_FAIL;
 }
 
+FACTORY_TABLE_BEGIN(s_ext_ostream)
+  FACTORY_TABLE_ENTRY("ostream_seek", func_ostream_seek)
+  FACTORY_TABLE_ENTRY("ostream_tell", func_ostream_tell)
+  FACTORY_TABLE_ENTRY("ostream_flush", func_ostream_flush)
+  FACTORY_TABLE_ENTRY("ostream_write_uint8", func_ostream_write_uint8)
+  FACTORY_TABLE_ENTRY("ostream_write_uint16", func_ostream_write_uint16)
+  FACTORY_TABLE_ENTRY("ostream_write_uint32", func_ostream_write_uint32)
+  FACTORY_TABLE_ENTRY("ostream_write_uint64", func_ostream_write_uint64)
+  FACTORY_TABLE_ENTRY("ostream_write_int8", func_ostream_write_uint8)
+  FACTORY_TABLE_ENTRY("ostream_write_int16", func_ostream_write_uint16)
+  FACTORY_TABLE_ENTRY("ostream_write_int32", func_ostream_write_uint32)
+  FACTORY_TABLE_ENTRY("ostream_write_int64", func_ostream_write_uint64)
+  FACTORY_TABLE_ENTRY("ostream_write_float", func_ostream_write_float)
+  FACTORY_TABLE_ENTRY("ostream_write_double", func_ostream_write_double)
+  FACTORY_TABLE_ENTRY("ostream_write_string", func_ostream_write_string)
+  FACTORY_TABLE_ENTRY("ostream_write_binary", func_ostream_write_binary)
+FACTORY_TABLE_END()
+
 ret_t fscript_ostream_register(void) {
-  ENSURE(fscript_register_func("ostream_seek", func_ostream_seek) == RET_OK);
-  ENSURE(fscript_register_func("ostream_tell", func_ostream_tell) == RET_OK);
-  ENSURE(fscript_register_func("ostream_flush", func_ostream_flush) == RET_OK);
-
-  ENSURE(fscript_register_func("ostream_write_uint8", func_ostream_write_uint8) == RET_OK);
-  ENSURE(fscript_register_func("ostream_write_uint16", func_ostream_write_uint16) == RET_OK);
-  ENSURE(fscript_register_func("ostream_write_uint32", func_ostream_write_uint32) == RET_OK);
-  ENSURE(fscript_register_func("ostream_write_uint64", func_ostream_write_uint64) == RET_OK);
-  ENSURE(fscript_register_func("ostream_write_int8", func_ostream_write_uint8) == RET_OK);
-  ENSURE(fscript_register_func("ostream_write_int16", func_ostream_write_uint16) == RET_OK);
-  ENSURE(fscript_register_func("ostream_write_int32", func_ostream_write_uint32) == RET_OK);
-  ENSURE(fscript_register_func("ostream_write_int64", func_ostream_write_uint64) == RET_OK);
-
-  ENSURE(fscript_register_func("ostream_write_float", func_ostream_write_float) == RET_OK);
-  ENSURE(fscript_register_func("ostream_write_double", func_ostream_write_double) == RET_OK);
-  ENSURE(fscript_register_func("ostream_write_string", func_ostream_write_string) == RET_OK);
-  ENSURE(fscript_register_func("ostream_write_binary", func_ostream_write_binary) == RET_OK);
-
-  return RET_OK;
+  return fscript_register_funcs(s_ext_ostream);
 }
