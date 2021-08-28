@@ -14,7 +14,6 @@
  *
  */
 
-#include "base/types_def.h"
 #ifndef AWTK_LITE
 #include "tkc/mem.h"
 #include "tkc/utils.h"
