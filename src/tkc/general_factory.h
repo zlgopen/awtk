@@ -79,14 +79,14 @@ static inline ret_t general_factory_item_destroy(general_factory_item_t* item) {
   return RET_OK;
 }
 
-static inline int32_t general_factory_item_compare_by_name(const void* a, const void* b) {
+static inline int general_factory_item_compare_by_name(const void* a, const void* b) {
   const general_factory_item_t* aa = (const general_factory_item_t*)a;
   const char* name = (const char*)b;
 
   return strcmp(aa->name, name);
 }
 
-static inline int32_t general_factory_item_compare(const void* a, const void* b) {
+static inline int general_factory_item_compare(const void* a, const void* b) {
   const general_factory_item_t* aa = (const general_factory_item_t*)a;
   const general_factory_item_t* bb = (const general_factory_item_t*)b;
 
