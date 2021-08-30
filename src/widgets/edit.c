@@ -242,6 +242,8 @@ static bool_t edit_is_valid_char_default(widget_t* widget, wchar_t c) {
     case INPUT_PHONE:
     case INPUT_EMAIL:
     case INPUT_TEXT:
+    case INPUT_CUSTOM:
+    case INPUT_CUSTOM_PASSWORD:
     case INPUT_PASSWORD: {
       if (text->size >= edit->max) {
         ret = FALSE;
@@ -1286,8 +1288,9 @@ static ret_t edit_set_text(widget_t* widget, const value_t* v) {
   return_value_if_fail(wstr_from_value(&str, v) == RET_OK, RET_BAD_PARAMS);
 
   if (!wstr_equal(&(widget->text), &str)) {
-    wstr_set(&(widget->text), str.str);
-
+    uint32_t len = edit->max > 0 ? tk_min(str.size, edit->max) : str.size;
+    wstr_set_with_len(&(widget->text), str.str, len);
+    
     text_edit_set_cursor(edit->model, widget->text.size);
     edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGED);
     edit_update_status(widget);

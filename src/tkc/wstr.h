@@ -88,6 +88,17 @@ wstr_t* wstr_init(wstr_t* str, uint32_t capacity);
 ret_t wstr_set(wstr_t* str, const wchar_t* text);
 
 /**
+ * @method wstr_set_with_len
+ * 设置字符串。
+ * @param {wstr_t*} str str对象。
+ * @param {wchar_t*} text 要设置的字符串。
+ * @param {uint32_t} len 字符串长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wstr_set_with_len(wstr_t* str, const wchar_t* text, uint32_t len);
+
+/**
  * @method wstr_clear
  * 清除字符串内容。
  * @param {wstr_t*} str str对象。

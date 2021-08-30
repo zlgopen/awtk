@@ -547,7 +547,8 @@ TEST(Edit, is_valid_password) {
   ASSERT_EQ(edit_is_valid_value(e), TRUE);
 
   widget_set_text_utf8(e, "1234abcdef");
-  ASSERT_EQ(edit_is_valid_value(e), FALSE);
+  ASSERT_EQ(wcscmp(e->text.str, L"1234abcd"), 0);
+  ASSERT_EQ(edit_is_valid_value(e), TRUE);
 
   widget_destroy(e);
   idle_dispatch();
@@ -572,7 +573,8 @@ TEST(Edit, is_valid_email) {
   ASSERT_EQ(edit_is_valid_value(e), TRUE);
 
   widget_set_text_utf8(e, "1234a@bcdef");
-  ASSERT_EQ(edit_is_valid_value(e), FALSE);
+  ASSERT_EQ(wcscmp(e->text.str, L"1234a@bc"), 0);
+  ASSERT_EQ(edit_is_valid_value(e), TRUE);
 
   widget_destroy(e);
   idle_dispatch();
@@ -590,6 +592,16 @@ TEST(Edit, keys) {
 
   key_event_init(&key, EVT_KEY_DOWN, e, TK_KEY_F10);
   ASSERT_EQ(widget_dispatch(e, (event_t*)&key), RET_OK);
+
+  widget_destroy(e);
+}
+
+TEST(Edit, set_text_exceed_max) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  edit_set_text_limit(e, 0, 3);
+  ASSERT_EQ(widget_set_text_utf8(e, "123456"), RET_OK);
+  ASSERT_EQ(e->text.size, 3);
 
   widget_destroy(e);
 }

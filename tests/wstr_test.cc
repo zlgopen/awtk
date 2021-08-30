@@ -380,3 +380,20 @@ TEST(WStr, set_utf8_with_len) {
 
   wstr_reset(&str);
 }
+
+TEST(WStr, set_with_len) {
+  wstr_t s;
+  uint32_t i = 0;
+  const wchar_t* cstr = L"abc123";
+  uint32_t n = wcslen(cstr);
+
+  wstr_init(&s, 0);
+
+  for(i = 0; i < n; i++) {
+    ASSERT_EQ(wstr_set_with_len(&s, cstr, i), RET_OK);
+    ASSERT_EQ(s.size, i);
+    ASSERT_EQ(wcsncmp(s.str, cstr, i), 0);
+  }
+
+  wstr_reset(&s);
+}

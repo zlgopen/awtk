@@ -131,14 +131,21 @@ wstr_t* wstr_init(wstr_t* str, uint32_t capacity) {
 }
 
 ret_t wstr_set(wstr_t* str, const wchar_t* text) {
-  uint32_t size = 0;
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
 
+  return wstr_set_with_len(str, text, 0xffffffff);
+}
+
+ret_t wstr_set_with_len(wstr_t* str, const wchar_t* text, uint32_t len) {
+  uint32_t size = 0;
+  return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
   size = wcslen(text);
+  size = tk_min(size, len);
   return_value_if_fail(wstr_extend(str, size + 1) == RET_OK, RET_BAD_PARAMS);
 
-  wcscpy(str->str, text);
+  wcsncpy(str->str, text, size);
   str->size = size;
+  str->str[size] = 0;
 
   return RET_OK;
 }

@@ -1,5 +1,9 @@
 # 最新动态
 
+2021/08/30
+  * 增加wstr\_set\_with\_len
+  * 完善edit\_set\_text 
+
 2021/08/27
   * 增加general\_factory。
   * 增加darray\_set/darray\_replace/darray\_sorted\_insert。
