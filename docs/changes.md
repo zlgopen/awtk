@@ -1,9 +1,10 @@
 # 最新动态
 
 2021/08/30
-  * 增加wstr\_set\_with\_len
   * 完善edit\_set\_text 
+  * 增加wstr\_set\_with\_len
   * 修复圆角矩形半透重复绘图的问题（感谢智明提供补丁）
+  * 如果edit的keyboard属性为空字符串，则不弹出软键盘
 
 2021/08/27
   * 增加general\_factory。
