@@ -157,7 +157,6 @@ TEST(Bitmap, clone) {
 }
 
 static ret_t clear_r(void* ctx, bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* pixel) {
-  
   pixel->r = *((uint8_t*)ctx);
 
   return RET_OK;
@@ -176,7 +175,7 @@ TEST(Bitmap, transform1) {
 
   bitmap_get_pixel(b, 0, 0, &rgba);
   ASSERT_EQ(rgba.r, red);
-  
+
   bitmap_get_pixel(b, 5, 5, &rgba);
   ASSERT_EQ(rgba.r, red);
 
@@ -196,7 +195,7 @@ TEST(Bitmap, transform2) {
 
   bitmap_get_pixel(b, 0, 0, &rgba);
   ASSERT_EQ(rgba.r, red);
-  
+
   bitmap_get_pixel(b, 5, 5, &rgba);
   ASSERT_EQ(rgba.r, red);
 

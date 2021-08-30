@@ -101,16 +101,16 @@ static ret_t func_get_days_of_month(fscript_t* fscript, fscript_args_t* args, va
 }
 
 FACTORY_TABLE_BEGIN(s_ext_date_time)
-  FACTORY_TABLE_ENTRY("date_time_create", func_date_time_create)
-  FACTORY_TABLE_ENTRY("date_time_to_time", func_date_time_to_time)
-  FACTORY_TABLE_ENTRY("date_time_from_time", func_date_time_from_time)
-  FACTORY_TABLE_ENTRY("date_time_set", func_date_time_set)
-  FACTORY_TABLE_ENTRY("time_now_us", func_time_now_us)
-  FACTORY_TABLE_ENTRY("time_now_ms", func_time_now_ms)
-  FACTORY_TABLE_ENTRY("time_now_s", func_time_now_s)
-  FACTORY_TABLE_ENTRY("time_now", func_time_now_s)
-  FACTORY_TABLE_ENTRY("is_leap_year", func_year_is_leap)
-  FACTORY_TABLE_ENTRY("get_days_of_month", func_get_days_of_month)
+FACTORY_TABLE_ENTRY("date_time_create", func_date_time_create)
+FACTORY_TABLE_ENTRY("date_time_to_time", func_date_time_to_time)
+FACTORY_TABLE_ENTRY("date_time_from_time", func_date_time_from_time)
+FACTORY_TABLE_ENTRY("date_time_set", func_date_time_set)
+FACTORY_TABLE_ENTRY("time_now_us", func_time_now_us)
+FACTORY_TABLE_ENTRY("time_now_ms", func_time_now_ms)
+FACTORY_TABLE_ENTRY("time_now_s", func_time_now_s)
+FACTORY_TABLE_ENTRY("time_now", func_time_now_s)
+FACTORY_TABLE_ENTRY("is_leap_year", func_year_is_leap)
+FACTORY_TABLE_ENTRY("get_days_of_month", func_get_days_of_month)
 FACTORY_TABLE_END()
 
 ret_t fscript_date_time_register(void) {

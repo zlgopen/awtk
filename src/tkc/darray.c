@@ -231,7 +231,8 @@ ret_t darray_insert(darray_t* darray, uint32_t index, void* data) {
   return RET_OK;
 }
 
-ret_t darray_sorted_insert(darray_t* darray, void* data, tk_compare_t cmp, bool_t replace_if_exist) {
+ret_t darray_sorted_insert(darray_t* darray, void* data, tk_compare_t cmp,
+                           bool_t replace_if_exist) {
   int32_t low = -1;
   int32_t index = 0;
   return_value_if_fail(darray != NULL, RET_BAD_PARAMS);

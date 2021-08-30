@@ -1290,7 +1290,7 @@ static ret_t edit_set_text(widget_t* widget, const value_t* v) {
   if (!wstr_equal(&(widget->text), &str)) {
     uint32_t len = edit->max > 0 ? tk_min(str.size, edit->max) : str.size;
     wstr_set_with_len(&(widget->text), str.str, len);
-    
+
     text_edit_set_cursor(edit->model, widget->text.size);
     edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGED);
     edit_update_status(widget);

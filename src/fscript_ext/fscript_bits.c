@@ -427,16 +427,16 @@ static ret_t func_bit_not(fscript_t* fscript, fscript_args_t* args, value_t* res
 }
 
 FACTORY_TABLE_BEGIN(s_ext_bits)
-  FACTORY_TABLE_ENTRY("&", func_bit_and)
-  FACTORY_TABLE_ENTRY("^", func_bit_nor)
-  FACTORY_TABLE_ENTRY("~", func_bit_not)
-  FACTORY_TABLE_ENTRY("|", func_bit_or)
-  FACTORY_TABLE_ENTRY("<<", func_lshift)
-  FACTORY_TABLE_ENTRY(">>", func_rshift)
-  FACTORY_TABLE_ENTRY("bit_get", func_bit_get)
-  FACTORY_TABLE_ENTRY("bit_set", func_bit_set)
-  FACTORY_TABLE_ENTRY("bit_clear", func_bit_clear)
-  FACTORY_TABLE_ENTRY("bit_toggle", func_bit_toggle)
+FACTORY_TABLE_ENTRY("&", func_bit_and)
+FACTORY_TABLE_ENTRY("^", func_bit_nor)
+FACTORY_TABLE_ENTRY("~", func_bit_not)
+FACTORY_TABLE_ENTRY("|", func_bit_or)
+FACTORY_TABLE_ENTRY("<<", func_lshift)
+FACTORY_TABLE_ENTRY(">>", func_rshift)
+FACTORY_TABLE_ENTRY("bit_get", func_bit_get)
+FACTORY_TABLE_ENTRY("bit_set", func_bit_set)
+FACTORY_TABLE_ENTRY("bit_clear", func_bit_clear)
+FACTORY_TABLE_ENTRY("bit_toggle", func_bit_toggle)
 FACTORY_TABLE_END()
 
 ret_t fscript_bits_register(void) {

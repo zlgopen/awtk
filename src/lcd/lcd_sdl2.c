@@ -108,7 +108,7 @@ static ret_t lcd_sdl2_flush(lcd_t* lcd) {
         if (o == LCD_ORIENTATION_0) {
           image_copy(&dst, &src, dr, dr->x, dr->y);
         } else {
-          image_rotate(&dst, &src, dr,o);
+          image_rotate(&dst, &src, dr, o);
         }
       }
     }

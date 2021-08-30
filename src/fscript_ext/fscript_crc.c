@@ -52,9 +52,9 @@ static ret_t func_chsum(fscript_t* fscript, fscript_args_t* args, value_t* resul
 }
 
 FACTORY_TABLE_BEGIN(s_ext_crc)
-  FACTORY_TABLE_ENTRY("crc16", func_crc16)
-  FACTORY_TABLE_ENTRY("crc32", func_crc32)
-  FACTORY_TABLE_ENTRY("cksum", func_chsum)
+FACTORY_TABLE_ENTRY("crc16", func_crc16)
+FACTORY_TABLE_ENTRY("crc32", func_crc32)
+FACTORY_TABLE_ENTRY("cksum", func_chsum)
 FACTORY_TABLE_END()
 
 ret_t fscript_crc_register(void) {

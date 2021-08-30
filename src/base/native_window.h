@@ -45,7 +45,9 @@ typedef struct _native_window_info_t {
 typedef canvas_t* (*native_window_get_canvas_t)(native_window_t* win);
 typedef ret_t (*native_window_move_t)(native_window_t* win, xy_t x, xy_t y);
 typedef ret_t (*native_window_resize_t)(native_window_t* win, wh_t w, wh_t h);
-typedef ret_t (*native_window_set_orientation_t)(native_window_t* win, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation);
+typedef ret_t (*native_window_set_orientation_t)(native_window_t* win,
+                                                 lcd_orientation_t old_orientation,
+                                                 lcd_orientation_t new_orientation);
 typedef ret_t (*native_window_gl_make_current_t)(native_window_t* win);
 typedef ret_t (*native_window_swap_buffer_t)(native_window_t* win);
 typedef ret_t (*native_window_preprocess_event_t)(native_window_t* win, event_t* e);
@@ -136,7 +138,8 @@ ret_t native_window_resize(native_window_t* win, wh_t w, wh_t h, bool_t force);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t native_window_set_orientation(native_window_t* win, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation);
+ret_t native_window_set_orientation(native_window_t* win, lcd_orientation_t old_orientation,
+                                    lcd_orientation_t new_orientation);
 
 /**
  * @method native_window_minimize

@@ -296,19 +296,19 @@ TEST(ComboBox, remove_option) {
   ASSERT_EQ(combo_box_append_option(w, 2, "green"), RET_OK);
   ASSERT_EQ(combo_box_append_option(w, 3, "blue"), RET_OK);
   ASSERT_EQ(combo_box_count_options(w), 3);
-  
+
   ASSERT_EQ(combo_box_remove_option(w, 1), RET_OK);
   ASSERT_EQ(combo_box_count_options(w), 2);
-  
+
   ASSERT_EQ(combo_box_remove_option(w, 1), RET_NOT_FOUND);
   ASSERT_EQ(combo_box_count_options(w), 2);
-  
+
   ASSERT_EQ(combo_box_remove_option(w, 3), RET_OK);
   ASSERT_EQ(combo_box_count_options(w), 1);
-  
+
   ASSERT_EQ(combo_box_remove_option(w, 2), RET_OK);
   ASSERT_EQ(combo_box_count_options(w), 0);
-  
+
   ASSERT_EQ(combo_box_remove_option(w, 2), RET_NOT_FOUND);
   ASSERT_EQ(combo_box_count_options(w), 0);
 

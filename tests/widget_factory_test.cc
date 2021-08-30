@@ -67,4 +67,3 @@ TEST(WidgetFactory, over_write) {
   widget_destroy(custom);
   widget_factory_destroy(factory);
 }
-

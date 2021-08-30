@@ -104,8 +104,7 @@ static ret_t list_view_on_wheel_before(void* ctx, event_t* e) {
 
 static bool_t list_view_is_play_floating_scroll_bar_animtion(list_view_t* list_view) {
   scroll_view_t* scroll_view = NULL;
-  return_value_if_fail(
-      list_view != NULL && list_view->scroll_view != NULL, FALSE);
+  return_value_if_fail(list_view != NULL && list_view->scroll_view != NULL, FALSE);
 
   if (list_view->scroll_bar != NULL) {
     scroll_view = SCROLL_VIEW(list_view->scroll_view);

@@ -533,7 +533,7 @@ TEST(Utils, isspace) {
   const char* str = "（１）这；这个。（２）他（她，它）”，在“，它）";
   size_t n = strlen(str);
 
-  for(i = 0; i < n; i++) {
+  for (i = 0; i < n; i++) {
     tk_isspace(str[i]);
     tk_isdigit(str[i]);
     tk_isalpha(str[i]);

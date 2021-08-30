@@ -972,7 +972,8 @@ ret_t text_selector_set_selected_index(widget_t* widget, uint32_t index) {
 
   if (index != text_selector->selected_index) {
     text_selector_set_selected_index_only(text_selector, index);
-    text_selector_sync_yoffset_with_selected_index(text_selector, text_selector->enable_value_animator);
+    text_selector_sync_yoffset_with_selected_index(text_selector,
+                                                   text_selector->enable_value_animator);
   }
 
   return widget_invalidate(widget, NULL);

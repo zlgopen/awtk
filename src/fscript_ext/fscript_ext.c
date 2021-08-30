@@ -246,21 +246,21 @@ static ret_t func_value_get_binary_data(fscript_t* fscript, fscript_args_t* args
 }
 
 FACTORY_TABLE_BEGIN(s_ext_basic)
-  FACTORY_TABLE_ENTRY("index_of", func_index_of)
-  FACTORY_TABLE_ENTRY("last_index_of", func_last_index_of)
-  FACTORY_TABLE_ENTRY("ulen", func_ulen)
-  FACTORY_TABLE_ENTRY("trim_left", func_trim_left)
-  FACTORY_TABLE_ENTRY("trim_right", func_trim_right)
-  FACTORY_TABLE_ENTRY("totitle", func_totitle)
-  FACTORY_TABLE_ENTRY("char_at", func_char_at)
-  FACTORY_TABLE_ENTRY("usubstr", func_usubstr)
+FACTORY_TABLE_ENTRY("index_of", func_index_of)
+FACTORY_TABLE_ENTRY("last_index_of", func_last_index_of)
+FACTORY_TABLE_ENTRY("ulen", func_ulen)
+FACTORY_TABLE_ENTRY("trim_left", func_trim_left)
+FACTORY_TABLE_ENTRY("trim_right", func_trim_right)
+FACTORY_TABLE_ENTRY("totitle", func_totitle)
+FACTORY_TABLE_ENTRY("char_at", func_char_at)
+FACTORY_TABLE_ENTRY("usubstr", func_usubstr)
 #ifdef HAS_STDIO
-  FACTORY_TABLE_ENTRY("prompt", func_prompt)
+FACTORY_TABLE_ENTRY("prompt", func_prompt)
 #endif /*HAS_STDIO*/
-  FACTORY_TABLE_ENTRY("value_is_valid", func_value_is_valid)
-  FACTORY_TABLE_ENTRY("value_is_null", func_value_is_null)
-  FACTORY_TABLE_ENTRY("value_get_binary_data", func_value_get_binary_data)
-  FACTORY_TABLE_ENTRY("value_get_binary_size", func_value_get_binary_size)
+FACTORY_TABLE_ENTRY("value_is_valid", func_value_is_valid)
+FACTORY_TABLE_ENTRY("value_is_null", func_value_is_null)
+FACTORY_TABLE_ENTRY("value_get_binary_data", func_value_get_binary_data)
+FACTORY_TABLE_ENTRY("value_get_binary_size", func_value_get_binary_size)
 FACTORY_TABLE_END()
 
 ret_t fscript_ext_init(void) {

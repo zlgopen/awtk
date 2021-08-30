@@ -102,10 +102,10 @@ static ret_t func_ubjson_save(fscript_t* fscript, fscript_args_t* args, value_t*
 }
 
 FACTORY_TABLE_BEGIN(s_ext_json)
-  FACTORY_TABLE_ENTRY("json_load", func_json_load)
-  FACTORY_TABLE_ENTRY("json_save", func_json_save)
-  FACTORY_TABLE_ENTRY("ubjson_load", func_ubjson_load)
-  FACTORY_TABLE_ENTRY("ubjson_save", func_ubjson_save)
+FACTORY_TABLE_ENTRY("json_load", func_json_load)
+FACTORY_TABLE_ENTRY("json_save", func_json_save)
+FACTORY_TABLE_ENTRY("ubjson_load", func_ubjson_load)
+FACTORY_TABLE_ENTRY("ubjson_save", func_ubjson_save)
 FACTORY_TABLE_END()
 
 ret_t fscript_json_register(void) {

@@ -188,15 +188,15 @@ static ret_t func_typed_array_join(fscript_t* fscript, fscript_args_t* args, val
 }
 
 FACTORY_TABLE_BEGIN(s_ext_typed_array)
-  FACTORY_TABLE_ENTRY("typed_array_create", func_typed_array_create)
-  FACTORY_TABLE_ENTRY("typed_array_push", func_typed_array_push)
-  FACTORY_TABLE_ENTRY("typed_array_pop", func_typed_array_pop)
-  FACTORY_TABLE_ENTRY("typed_array_get", func_typed_array_get)
-  FACTORY_TABLE_ENTRY("typed_array_set", func_typed_array_set)
-  FACTORY_TABLE_ENTRY("typed_array_insert", func_typed_array_insert)
-  FACTORY_TABLE_ENTRY("typed_array_remove", func_typed_array_remove)
-  FACTORY_TABLE_ENTRY("typed_array_clear", func_typed_array_clear)
-  FACTORY_TABLE_ENTRY("typed_array_join", func_typed_array_join)
+FACTORY_TABLE_ENTRY("typed_array_create", func_typed_array_create)
+FACTORY_TABLE_ENTRY("typed_array_push", func_typed_array_push)
+FACTORY_TABLE_ENTRY("typed_array_pop", func_typed_array_pop)
+FACTORY_TABLE_ENTRY("typed_array_get", func_typed_array_get)
+FACTORY_TABLE_ENTRY("typed_array_set", func_typed_array_set)
+FACTORY_TABLE_ENTRY("typed_array_insert", func_typed_array_insert)
+FACTORY_TABLE_ENTRY("typed_array_remove", func_typed_array_remove)
+FACTORY_TABLE_ENTRY("typed_array_clear", func_typed_array_clear)
+FACTORY_TABLE_ENTRY("typed_array_join", func_typed_array_join)
 FACTORY_TABLE_END()
 
 ret_t fscript_typed_array_register(void) {

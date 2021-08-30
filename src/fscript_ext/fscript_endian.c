@@ -81,19 +81,19 @@ static ret_t func_ntohll(fscript_t* fscript, fscript_args_t* args, value_t* resu
 }
 
 FACTORY_TABLE_BEGIN(s_ext_endian)
-  FACTORY_TABLE_ENTRY("is_little", func_is_little_endian)
+FACTORY_TABLE_ENTRY("is_little", func_is_little_endian)
 
-  FACTORY_TABLE_ENTRY("htonl", func_htonl)
-  FACTORY_TABLE_ENTRY("ntohl", func_ntohl)
+FACTORY_TABLE_ENTRY("htonl", func_htonl)
+FACTORY_TABLE_ENTRY("ntohl", func_ntohl)
 
-  FACTORY_TABLE_ENTRY("htons", func_htons)
-  FACTORY_TABLE_ENTRY("ntohs", func_ntohs)
+FACTORY_TABLE_ENTRY("htons", func_htons)
+FACTORY_TABLE_ENTRY("ntohs", func_ntohs)
 
-  FACTORY_TABLE_ENTRY("htonf", func_htonf)
-  FACTORY_TABLE_ENTRY("ntohf", func_ntohf)
+FACTORY_TABLE_ENTRY("htonf", func_htonf)
+FACTORY_TABLE_ENTRY("ntohf", func_ntohf)
 
-  FACTORY_TABLE_ENTRY("htonll", func_htonll)
-  FACTORY_TABLE_ENTRY("ntohll", func_ntohll)
+FACTORY_TABLE_ENTRY("htonll", func_htonll)
+FACTORY_TABLE_ENTRY("ntohll", func_ntohll)
 FACTORY_TABLE_END()
 
 ret_t fscript_endian_register(void) {

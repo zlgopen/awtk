@@ -37,7 +37,8 @@ ret_t widget_factory_register(widget_factory_t* factory, const char* type, widge
   return general_factory_register(factory, type, (tk_create_t)create);
 }
 
-ret_t widget_factory_register_multi(widget_factory_t* factory, const general_factory_table_t* table) {
+ret_t widget_factory_register_multi(widget_factory_t* factory,
+                                    const general_factory_table_t* table) {
   return general_factory_register_table(factory, table);
 }
 
@@ -59,7 +60,7 @@ ret_t widget_factory_set(widget_factory_t* factory) {
 }
 
 ret_t widget_factory_destroy(widget_factory_t* factory) {
-  if(s_widget_factory == factory) {
+  if (s_widget_factory == factory) {
     s_widget_factory = NULL;
   }
   return general_factory_destroy(factory);

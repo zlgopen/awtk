@@ -617,7 +617,7 @@ TEST(SelfLayoutDefault, center_middle_and_widget_set_prop) {
   ASSERT_EQ(self_layouter_get_param_int(layouter, "y_attr", 0), Y_ATTR_MIDDLE);
   ASSERT_EQ(self_layouter_get_param_int(layouter, "w_attr", 0), W_ATTR_UNDEF);
   ASSERT_EQ(self_layouter_get_param_int(layouter, "h_attr", 0), H_ATTR_PERCENT);
-  ASSERT_EQ(self_layouter_set_param_str(layouter, "w", "30%"), RET_OK); 
+  ASSERT_EQ(self_layouter_set_param_str(layouter, "w", "30%"), RET_OK);
 
   widget_set_prop_int(b, "h", 10);
   ASSERT_EQ(widget_layout_self(b), RET_OK);

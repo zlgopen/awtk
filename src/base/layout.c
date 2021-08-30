@@ -134,7 +134,7 @@ ret_t widget_set_self_layout(widget_t* widget, const char* params) {
   if (widget->self_layout != NULL) {
     str_set(&(widget->self_layout->params), params);
   }
-  
+
   return widget_set_need_relayout(widget);
 }
 
@@ -152,7 +152,7 @@ ret_t widget_set_children_layout(widget_t* widget, const char* params) {
   if (widget->children_layout != NULL) {
     str_set(&(widget->children_layout->params), params);
   }
-  
+
   return widget_set_need_relayout(widget);
 }
 

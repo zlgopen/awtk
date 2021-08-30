@@ -186,21 +186,20 @@ static ret_t func_path_get_app_root(fscript_t* fscript, fscript_args_t* args, va
 }
 
 FACTORY_TABLE_BEGIN(s_ext_fs)
-  FACTORY_TABLE_ENTRY("file_read_text", func_file_read_text)
-  FACTORY_TABLE_ENTRY("file_read_binary", func_file_read_binary)
-  FACTORY_TABLE_ENTRY("file_write", func_file_write)
-  FACTORY_TABLE_ENTRY("file_exist", func_file_exist)
-  FACTORY_TABLE_ENTRY("file_get_size", func_file_get_size)
-  FACTORY_TABLE_ENTRY("file_remove", func_file_remove)
-  FACTORY_TABLE_ENTRY("path_create", func_path_create)
-  FACTORY_TABLE_ENTRY("path_remove", func_path_remove)
-  FACTORY_TABLE_ENTRY("path_exist", func_path_exist)
-  FACTORY_TABLE_ENTRY("path_get_temp", func_path_get_temp)
-  FACTORY_TABLE_ENTRY("path_get_app_root", func_path_get_app_root)
-  FACTORY_TABLE_ENTRY("path_get_user_storage_root", func_path_get_user_storage_root)
+FACTORY_TABLE_ENTRY("file_read_text", func_file_read_text)
+FACTORY_TABLE_ENTRY("file_read_binary", func_file_read_binary)
+FACTORY_TABLE_ENTRY("file_write", func_file_write)
+FACTORY_TABLE_ENTRY("file_exist", func_file_exist)
+FACTORY_TABLE_ENTRY("file_get_size", func_file_get_size)
+FACTORY_TABLE_ENTRY("file_remove", func_file_remove)
+FACTORY_TABLE_ENTRY("path_create", func_path_create)
+FACTORY_TABLE_ENTRY("path_remove", func_path_remove)
+FACTORY_TABLE_ENTRY("path_exist", func_path_exist)
+FACTORY_TABLE_ENTRY("path_get_temp", func_path_get_temp)
+FACTORY_TABLE_ENTRY("path_get_app_root", func_path_get_app_root)
+FACTORY_TABLE_ENTRY("path_get_user_storage_root", func_path_get_user_storage_root)
 FACTORY_TABLE_END()
 
 ret_t fscript_fs_register(void) {
   return fscript_register_funcs(s_ext_fs);
 }
-

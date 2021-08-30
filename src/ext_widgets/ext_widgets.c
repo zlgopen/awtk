@@ -81,7 +81,7 @@ static ret_t children_layouter_register_ext_builtins(void) {
 ret_t tk_ext_widgets_init(void) {
   widget_factory_t* f = widget_factory();
 
-FACTORY_TABLE_BEGIN(s_ext_widgets)
+  FACTORY_TABLE_BEGIN(s_ext_widgets)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_RICH_TEXT, rich_text_create)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_RICH_TEXT_VIEW, rich_text_view_create)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_COLOR_PICKER, color_picker_create)
@@ -128,7 +128,7 @@ FACTORY_TABLE_BEGIN(s_ext_widgets)
 #ifdef TK_FILE_BROWSER_VIEW_H
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_FILE_BROWSER_VIEW, file_browser_view_create)
 #endif /*TK_FILE_BROWSER_VIEW_H*/
-FACTORY_TABLE_END()
+  FACTORY_TABLE_END()
 
   children_layouter_register_ext_builtins();
 

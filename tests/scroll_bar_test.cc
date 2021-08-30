@@ -84,7 +84,7 @@ TEST(ScrollBar, is_mobile_prop) {
 
   ASSERT_EQ(widget_set_prop_bool(w, SCROLL_BAR_PROP_IS_MOBILE, TRUE), RET_OK);
   ASSERT_EQ(widget_get_prop_bool(w, SCROLL_BAR_PROP_IS_MOBILE, FALSE), TRUE);
-  
+
   ASSERT_EQ(widget_set_prop_bool(w, SCROLL_BAR_PROP_IS_MOBILE, FALSE), RET_OK);
   ASSERT_EQ(widget_get_prop_bool(w, SCROLL_BAR_PROP_IS_MOBILE, TRUE), FALSE);
 

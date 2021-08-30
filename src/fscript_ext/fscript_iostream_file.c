@@ -50,8 +50,8 @@ static ret_t func_ostream_file_create(fscript_t* fscript, fscript_args_t* args, 
 }
 
 FACTORY_TABLE_BEGIN(s_ext_iostream_file)
-  FACTORY_TABLE_ENTRY("istream_file_create", func_istream_file_create)
-  FACTORY_TABLE_ENTRY("ostream_file_create", func_ostream_file_create)
+FACTORY_TABLE_ENTRY("istream_file_create", func_istream_file_create)
+FACTORY_TABLE_ENTRY("ostream_file_create", func_ostream_file_create)
 FACTORY_TABLE_END()
 
 ret_t fscript_iostream_file_register(void) {

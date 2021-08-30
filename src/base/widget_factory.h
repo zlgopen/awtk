@@ -85,7 +85,8 @@ ret_t widget_factory_register(widget_factory_t* factory, const char* type, widge
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_factory_register_multi(widget_factory_t* factory, const general_factory_table_t* table);
+ret_t widget_factory_register_multi(widget_factory_t* factory,
+                                    const general_factory_table_t* table);
 
 /**
  * @method widget_factory_create_widget

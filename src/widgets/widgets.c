@@ -63,7 +63,7 @@
 ret_t tk_widgets_init(void) {
   widget_factory_t* f = widget_factory();
 
-FACTORY_TABLE_BEGIN(s_basic_widgets)
+  FACTORY_TABLE_BEGIN(s_basic_widgets)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_DIALOG, dialog_create)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_NORMAL_WINDOW, window_create)
 #ifndef AWTK_NOGUI
@@ -102,7 +102,7 @@ FACTORY_TABLE_BEGIN(s_basic_widgets)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_COLUMN, column_create)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_APP_BAR, app_bar_create)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_DIGIT_CLOCK, digit_clock_create)
-FACTORY_TABLE_END()
+  FACTORY_TABLE_END()
 #endif /*AWTK_LITE*/
 #endif /**AWTK_NOGUI*/
 

@@ -106,7 +106,9 @@ static ret_t native_window_sdl_resize(native_window_t* win, wh_t w, wh_t h) {
   return ret;
 }
 
-static ret_t native_window_sdl_set_orientation(native_window_t* win, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation) {
+static ret_t native_window_sdl_set_orientation(native_window_t* win,
+                                               lcd_orientation_t old_orientation,
+                                               lcd_orientation_t new_orientation) {
   wh_t w, h;
   native_window_info_t info;
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);

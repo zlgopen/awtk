@@ -87,15 +87,14 @@ static ret_t func_object_create(fscript_t* fscript, fscript_args_t* args, value_
 }
 
 FACTORY_TABLE_BEGIN(s_ext_object)
-  FACTORY_TABLE_ENTRY("object_create", func_object_create)
-  FACTORY_TABLE_ENTRY("object_ref", func_object_ref)
-  FACTORY_TABLE_ENTRY("object_unref", func_object_unref)
-  FACTORY_TABLE_ENTRY("object_set", func_object_set_prop)
-  FACTORY_TABLE_ENTRY("object_get", func_object_get_prop)
-  FACTORY_TABLE_ENTRY("object_remove", func_object_remove_prop)
+FACTORY_TABLE_ENTRY("object_create", func_object_create)
+FACTORY_TABLE_ENTRY("object_ref", func_object_ref)
+FACTORY_TABLE_ENTRY("object_unref", func_object_unref)
+FACTORY_TABLE_ENTRY("object_set", func_object_set_prop)
+FACTORY_TABLE_ENTRY("object_get", func_object_get_prop)
+FACTORY_TABLE_ENTRY("object_remove", func_object_remove_prop)
 FACTORY_TABLE_END()
 
 ret_t fscript_object_register(void) {
   return fscript_register_funcs(s_ext_object);
 }
-

@@ -13,11 +13,11 @@ int main(int argc, char* argv[]) {
   return_value_if_fail(lsock > 0, 0);
 
   log_debug("listen at 8080...\n");
-  while(1) {
+  while (1) {
     int32_t sock = 0;
     sock = tcp_accept(lsock);
-    if(sock < 0) {
-        break;
+    if (sock < 0) {
+      break;
     }
     log_debug("%d client come in...\n", sock);
     io = tk_iostream_tcp_create(sock);
@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
 
       ret = tk_istream_read(in, buff, sizeof(buff));
       log_debug("recv %d %s\n", ret, buff);
-      
+
       ret = tk_ostream_write(out, response, strlen(response));
       log_debug("send %d %s\n", ret, response);
 

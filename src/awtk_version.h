@@ -31,7 +31,6 @@
 /* awtk develop released a stable version  */
 #ifndef AWTK_VERSION_RELEASE_ID
 #define AWTK_VERSION_RELEASE_ID AWTK_VERSION_EXPERIMENTAL
-#endif/*AWTK_VERSION_RELEASE_ID*/
+#endif /*AWTK_VERSION_RELEASE_ID*/
 
-#endif/*AWTK_VERSION_H*/
-
+#endif /*AWTK_VERSION_H*/

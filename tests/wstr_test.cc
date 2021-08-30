@@ -389,7 +389,7 @@ TEST(WStr, set_with_len) {
 
   wstr_init(&s, 0);
 
-  for(i = 0; i < n; i++) {
+  for (i = 0; i < n; i++) {
     ASSERT_EQ(wstr_set_with_len(&s, cstr, i), RET_OK);
     ASSERT_EQ(s.size, i);
     ASSERT_EQ(wcsncmp(s.str, cstr, i), 0);

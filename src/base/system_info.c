@@ -400,7 +400,8 @@ const char* system_info_fix_font_name(const char* name) {
   return (name && *name) ? name : system_info()->default_font;
 }
 
-bool_t tk_is_swap_size_by_orientation(lcd_orientation_t old_orientation, lcd_orientation_t new_orientation) {
+bool_t tk_is_swap_size_by_orientation(lcd_orientation_t old_orientation,
+                                      lcd_orientation_t new_orientation) {
   if (old_orientation == LCD_ORIENTATION_0 || old_orientation == LCD_ORIENTATION_180) {
     if (new_orientation == LCD_ORIENTATION_90 || new_orientation == LCD_ORIENTATION_270) {
       return TRUE;

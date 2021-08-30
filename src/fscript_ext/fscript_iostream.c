@@ -39,10 +39,10 @@ static ret_t func_iostream_get_ostream(fscript_t* fscript, fscript_args_t* args,
 
   return RET_OK;
 }
-  
+
 FACTORY_TABLE_BEGIN(s_ext_iostream)
-  FACTORY_TABLE_ENTRY("iostream_get_istream", func_iostream_get_istream)
-  FACTORY_TABLE_ENTRY("iostream_get_ostream", func_iostream_get_ostream)
+FACTORY_TABLE_ENTRY("iostream_get_istream", func_iostream_get_istream)
+FACTORY_TABLE_ENTRY("iostream_get_ostream", func_iostream_get_ostream)
 FACTORY_TABLE_END()
 
 ret_t fscript_iostream_register(void) {
