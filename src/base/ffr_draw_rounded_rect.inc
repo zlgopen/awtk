@@ -158,71 +158,65 @@ static bool_t ffr_get_circluar_point_to_quadrant(int32_t xc, int32_t yc, int32_t
   return TRUE;
 }
 
-static void ffr_draw_circluar_point_to_quadrant(canvas_t* c,
-                                                          int32_t x_h, int32_t y_v, int32_t xc,
-                                                          int32_t yc, int32_t px, int32_t py,
-                                                          float_t e, frr_quadrant_t type,
-                                                          color_t color) {
+static int32_t ffr_draw_circluar_point_to_quadrant(canvas_t* c,
+                                                  int32_t x_h, int32_t y_v, int32_t x,
+                                                  int32_t y, float_t e, color_t color, int32_t limit_y) {
   int32_t p = 0;
-  int32_t x = 0;
-  int32_t y = 0;
+
   int32_t w = 0;
   int32_t h = 0;
-  if (ffr_get_circluar_point_to_quadrant(xc, yc, px, py, type, &x, &y)) {
-    if (x_h > x) {
-      w = x_h - x;
-      x_h = x;
-    } else {
-      w = x - x_h;
-      x--;
-    }
-
-    if (y_v > y) {
-      h = y_v - y;
-      y_v = y;
-    } else {
-      h = y - y_v;
-      y--;
-    }
-
-    if (w > 0 && h > 0) {
-      ffr_draw_antialiasing_for_point(c, x, y, e, color);
-    }
+  if (x_h > x) {
+    w = x_h - x;
+    x_h = x;
+  } else {
+    w = x - x_h;
+    x--;
   }
+
+  if (y_v > y) {
+    h = y_v - y;
+    y_v = y;
+  } else {
+    h = y - y_v;
+    y--;
+  }
+
+  if (w > 0 && h > 0 && limit_y != y) {
+    ffr_draw_antialiasing_for_point(c, x, y, e, color);
+    return y;
+  }
+  return -1;
 }
 
-static void ffr_draw_circluar_point_to_quadrant_hline(canvas_t* c, int32_t x_h,
-                                                                int32_t y_v, int32_t xc, int32_t yc,
-                                                                int32_t px, int32_t py, float_t e,
-                                                                frr_quadrant_t type, color_t color) {
+static int32_t ffr_draw_circluar_point_to_quadrant_hline(canvas_t* c, int32_t x_h,
+                                                      int32_t y_v, int32_t x, int32_t y,
+                                                      float_t e, color_t color, int32_t limit_y) {
   int32_t p = 0;
-  int32_t x = 0;
-  int32_t y = 0;
   int32_t w = 0;
   int32_t h = 0;
-  if (ffr_get_circluar_point_to_quadrant(xc, yc, px, py, type, &x, &y)) {
-    if (x_h > x) {
-      w = x_h - x - 1;
-      x_h = x + 1;
-    } else {
-      w = x - x_h - 1;
-      x--;
-    }
-
-    if (y_v > y) {
-      h = y_v - y;
-      y_v = y;
-    } else {
-      h = y - y_v;
-      y--;
-    }
-
-    if (w > 0 && h > 0) {
-      canvas_set_fill_color(c, color);
-      canvas_fill_rect(c, x_h, y, w, 1);
-      ffr_draw_antialiasing_for_point(c, x, y, e, color);
-    }
+  if (x_h > x) {
+    w = x_h - x - 1;
+    x_h = x + 1;
+  } else {
+    w = x - x_h - 1;
+    x--;
   }
+
+  if (y_v > y) {
+    h = y_v - y;
+    y_v = y;
+  } else {
+    h = y - y_v;
+    y--;
+  }
+
+  if (w > 0 && h > 0 && limit_y != y) {
+    canvas_set_fill_color(c, color);
+    canvas_fill_rect(c, x_h, y, w, 1);
+    ffr_draw_antialiasing_for_point(c, x, y, e, color);
+    return y;
+  }
+  return -1;
 }
 
 static void Wu_D_Circle(int32_t r, darray_t* point_list,
@@ -249,36 +243,62 @@ static void Wu_D_Circle(int32_t r, darray_t* point_list,
   }
 }
 
-static void ffr_draw_stroke_arc_point_list(canvas_t* c, int32_t x_h,
+static int32_t ffr_draw_stroke_arc_point_list(canvas_t* c, int32_t x_h,
                                               int32_t y_v, int32_t xc, int32_t yc,
                                               frr_quadrant_t type, color_t color,
-                                              darray_t* point_list, bool_t is_last_antialiasing) {
+                                              darray_t* point_list, bool_t is_last_antialiasing, int32_t limit_y) {
   uint32_t i = 0;
+  int32_t end_y = 0;
   void** elms = point_list->elms;
   for (i = 0; i < point_list->size; i++) {
+    int32_t x = 0;
+    int32_t y = 0;
     frr_point_pix_t* iter = (frr_point_pix_t*)elms[i];
 
-    ffr_draw_circluar_point_to_quadrant(c, x_h, y_v, xc, yc, iter->x, iter->y,
-                                           1 - iter->e, type, color);
+    if (ffr_get_circluar_point_to_quadrant(xc, yc, iter->x, iter->y, type, &x, &y)) {
+      int32_t tmp = 0;
+      if (limit_y >= 0 && limit_y == y) {
+        break;
+      }
+      tmp = ffr_draw_circluar_point_to_quadrant(c, x_h, y_v, x, y, 1 - iter->e, color, limit_y);
 
-    if (point_list->size > i + 1 || is_last_antialiasing) {
-      ffr_draw_circluar_point_to_quadrant(c, x_h, y_v, xc, yc, iter->x, iter->y - 1,
-                                             iter->e, type, color);
+      if (tmp >= 0) {
+        end_y = tmp;
+      }
+
+      if (point_list->size > i + 1 || is_last_antialiasing) {
+        if (ffr_get_circluar_point_to_quadrant(xc, yc, iter->x, iter->y - 1, type, &x, &y)) {
+          ffr_draw_circluar_point_to_quadrant(c, x_h, y_v, x, y, iter->e, color, limit_y);
+        }
+      }
     }
   }
+  return end_y;
 }
 
-static void ffr_draw_fill_arc_point_list(canvas_t* c, int32_t x_h,
+static int32_t ffr_draw_fill_arc_point_list(canvas_t* c, int32_t x_h,
                                             int32_t y_v, int32_t xc, int32_t yc, frr_quadrant_t type,
-                                            color_t color, darray_t* point_list) {
+                                            color_t color, darray_t* point_list, int32_t limit_y) {
   uint32_t i = 0;
+  int32_t end_y = 0;
   void** elms = point_list->elms;
   for (i = 0; i < point_list->size; i++) {
+    int32_t x = 0;
+    int32_t y = 0;
     frr_point_pix_t* iter = (frr_point_pix_t*)elms[i];
 
-    ffr_draw_circluar_point_to_quadrant_hline(c, x_h, y_v, xc, yc, iter->x, iter->y,
-                                                 1 - iter->e, type, color);
+    if (ffr_get_circluar_point_to_quadrant(xc, yc, iter->x, iter->y, type, &x, &y)) {
+      int32_t tmp = 0;
+      if (limit_y >= 0 && limit_y == y) {
+        break;
+      }
+      tmp = ffr_draw_circluar_point_to_quadrant_hline(c, x_h, y_v, x, y, 1 - iter->e, color, limit_y);
+      if (tmp >= 0) {
+        end_y = tmp;
+      }
+    }
   }
+  return end_y;
 }
 
 static void ffr_push_arc_point_list(float_t angle_1, float_t angle_2, int32_t r,
@@ -321,6 +341,7 @@ static void ffr_draw_arc_point_list(canvas_t* c, int32_t x_h,
                                        float_t angle_v, int32_t r, uint32_t quadrant_id,
                                        color_t color, darray_t* point_list,
                                        darray_t* point_list_45, bool_t is_fill) {
+  int32_t end_y;
   float_t angle_v_1 = 0.0f;
   float_t angle_h_1 = 0.0f;
   float_t angle_v_2 = M_FRR_PI_4;
@@ -346,30 +367,27 @@ static void ffr_draw_arc_point_list(canvas_t* c, int32_t x_h,
   if (angle_v > M_FRR_PI_4) {
     ffr_push_arc_point_list(angle_v_1, angle_v_2, r, point_list, point_list_45, TRUE);
     if (is_fill) {
-      ffr_draw_fill_arc_point_list(c, x_h, y_v, xc, yc,
-                                      WIDGET_DRAW_ARC_INFO_TABLE[quadrant_id].quadrant_v, color,
-                                      point_list);
+      end_y = ffr_draw_fill_arc_point_list(c, x_h, y_v, xc, yc,
+                                          WIDGET_DRAW_ARC_INFO_TABLE[quadrant_id].quadrant_v, color,
+                                          point_list, -1);
     } else {
-      ffr_draw_stroke_arc_point_list(c, x_h, y_v, xc, yc,
-                                        WIDGET_DRAW_ARC_INFO_TABLE[quadrant_id].quadrant_v, color,
-                                        point_list, TRUE);
+      end_y = ffr_draw_stroke_arc_point_list(c, x_h, y_v, xc, yc,
+                                            WIDGET_DRAW_ARC_INFO_TABLE[quadrant_id].quadrant_v, color,
+                                            point_list, TRUE,  -1);
     }
     point_list->size = 0;
   }
 
   if (angle_h > M_FRR_PI_4) {
     ffr_push_arc_point_list(angle_h_1, angle_h_2, r, point_list, point_list_45, !is_fill);
-    if(point_list->size > 0) {
-      point_list->size--;
-    }
     if (is_fill) {
       ffr_draw_fill_arc_point_list(c, x_h, y_v, xc, yc,
                                       WIDGET_DRAW_ARC_INFO_TABLE[quadrant_id].quadrant_h, color,
-                                      point_list);
+                                      point_list, end_y);
     } else {
       ffr_draw_stroke_arc_point_list(c, x_h, y_v, xc, yc,
                                         WIDGET_DRAW_ARC_INFO_TABLE[quadrant_id].quadrant_h, color,
-                                        point_list, angle_v <= M_FRR_PI_4);
+                                        point_list, angle_v <= M_FRR_PI_4, end_y);
     }
     point_list->size = 0;
   }
