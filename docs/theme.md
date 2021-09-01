@@ -64,7 +64,7 @@ AWTK 的窗体样式按控件进行分类，每种控件可以有多种不同的
 * fg\_image\_draw\_type 前景图片的 [绘制方式](image_draw_type.md)。
 * icon 图标。用途视具体控件而定，如 check\_button 的图标，按钮上的图标，对话框标题上的图标。
 * active\_icon active 图标。用途视具体控件而定，目前 slideview 的页面指示器会用到。
-* icon\_at 图标的位置，取值为 left/right/top/bottom。
+* icon\_at 图标的位置，取值为 left/right/top/bottom/center。
 * x\_offset 在 X 坐标方向上的偏移（可用来实现按下的效果）。 
 * y\_offset 在 Y 坐标方向上的偏移（可用来实现按下的效果）。
 * margin 边距（边距目前只影响 icon/text，不影响子控件，子控件的边距由布局算法参数决定）。
