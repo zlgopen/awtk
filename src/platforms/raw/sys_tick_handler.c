@@ -20,22 +20,17 @@
  */
 
 #include "tkc/types_def.h"
+#include "sys_tick_common.inc"
 
-static volatile uint64_t g_sys_tick;
-
+/* SysTick_Handler 1 milliseconds */
 void SysTick_Handler(void) {
-  g_sys_tick++;
+  tk_sys_tick_inc(1);
 }
 
 uint64_t get_time_ms64() {
-  return g_sys_tick;
+  return tk_sys_tick_get_tick64();
 }
 
 void sleep_ms(uint32_t ms) {
-  uint32_t count = 0;
-  uint64_t start = get_time_ms64();
-
-  while (get_time_ms64() < (start + ms)) {
-    count++;
-  }
+  tk_sys_tick_sleep_tick(ms);
 }
