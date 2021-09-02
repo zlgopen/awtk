@@ -59,7 +59,10 @@ slist_t* slist_init(slist_t* slist, tk_destroy_t destroy, tk_compare_t compare) 
 
 void* slist_find(slist_t* slist, void* ctx) {
   slist_node_t* iter = NULL;
-  return_value_if_fail(slist != NULL && slist->first != NULL, NULL);
+  return_value_if_fail(slist != NULL, NULL);
+  if (slist->first == NULL) {
+    return NULL;
+  }
 
   iter = slist->first;
   while (iter != NULL) {

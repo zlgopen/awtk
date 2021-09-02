@@ -72,6 +72,18 @@ ret_t timer_manager_destroy(timer_manager_t* timer_manager) {
   return RET_OK;
 }
 
+uint32_t timer_manager_get_next_timer_id(timer_manager_t* timer_manager) {
+  uint32_t next_timer_id = 0;
+  return_value_if_fail(timer_manager != NULL, TK_INVALID_ID);
+  do {
+    next_timer_id = timer_manager->next_timer_id++;
+    if (next_timer_id == TK_INVALID_ID) {
+      next_timer_id = timer_manager->next_timer_id++;
+    }
+  } while(timer_manager_find(timer_manager, next_timer_id) != NULL);
+  return  next_timer_id;
+}
+
 ret_t timer_manager_append(timer_manager_t* timer_manager, timer_info_t* timer) {
   return_value_if_fail(timer_manager != NULL && timer != NULL, RET_BAD_PARAMS);
 

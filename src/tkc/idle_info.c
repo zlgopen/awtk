@@ -56,11 +56,15 @@ idle_info_t* idle_info_create(idle_manager_t* idle_manager, idle_func_t on_idle,
   idle->idle_info_type = idle_info_type;
 
   if (idle_manager != NULL) {
-    idle->id = idle_manager->next_idle_id++;
-    if (idle->id == TK_INVALID_ID) {
-      idle->id = idle_manager->next_idle_id++;
+    uint32_t id = idle_manager_get_next_idle_id(idle_manager);
+    idle->id = id;
+
+    if (id != TK_INVALID_ID) {
+      idle_manager_append(idle_manager, idle);
+    } else {
+      object_unref(idle);
+      return_value_if_fail(id != TK_INVALID_ID, NULL);
     }
-    idle_manager_append(idle_manager, idle);
   }
 
   return idle;
