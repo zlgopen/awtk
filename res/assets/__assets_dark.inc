@@ -484,7 +484,6 @@ ret_t assets_init_dark(void) {
   assets_manager_set_theme(am, "dark");
 
 #ifdef WITH_FS_RES
-  assets_manager_preload(am, ASSET_TYPE_FONT, "default");
   assets_manager_preload(am, ASSET_TYPE_STYLE, "default");
 #else
   assets_manager_add(am, strings_zh_CN);
