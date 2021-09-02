@@ -91,3 +91,16 @@ TEST(Idle, idle_remove) {
 
   idle_manager_remove_all(idle_manager());
 }
+
+TEST(Idle, id) {
+  uint32_t id1 = 0;
+  uint32_t id2 = 0;
+  idle_manager_remove_all(idle_manager());
+
+  id1 = idle_add(on_idle_repeat, NULL);
+  idle_manager()->next_idle_id = id1;
+  id2 = idle_add(on_idle_repeat, NULL);
+  ASSERT_NE(id1, id2);
+
+  idle_manager_remove_all(idle_manager());
+}
