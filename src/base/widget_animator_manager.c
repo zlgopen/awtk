@@ -83,7 +83,7 @@ widget_animator_manager_t* widget_animator_manager_create(void) {
 
 static ret_t widget_animator_manager_on_timer(const timer_info_t* info) {
   widget_animator_manager_t* am = (widget_animator_manager_t*)(info->ctx);
-  uint32_t last_dispatch_time = am->last_dispatch_time ? am->last_dispatch_time : info->now;
+  uint64_t last_dispatch_time = am->last_dispatch_time ? am->last_dispatch_time : info->now;
   uint32_t elapsed_time = info->now - last_dispatch_time;
 
   widget_animator_manager_time_elapse(am, elapsed_time);

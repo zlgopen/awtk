@@ -156,7 +156,7 @@ static ret_t window_animator_close_destroy(window_animator_t* wa) {
   return window_animator_open_destroy(wa);
 }
 
-ret_t window_animator_update(window_animator_t* wa, uint32_t time_ms) {
+ret_t window_animator_update(window_animator_t* wa, uint64_t time_ms) {
   return_value_if_fail(wa != NULL, RET_FAIL);
 
   if (wa->start_time == 0) {
