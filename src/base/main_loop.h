@@ -60,7 +60,7 @@ struct _main_loop_t {
   uint8_t running;
   uint8_t quit_num;
   bool_t app_quited;
-  uint32_t last_loop_time;
+  uint64_t last_loop_time;
   uint32_t curr_expected_sleep_time;
   widget_t* wm;
 };

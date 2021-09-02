@@ -29,8 +29,8 @@ typedef struct _bitmap_cache_t {
   bitmap_t image;
   char* name;
   uint32_t access_count;
-  uint32_t created_time;
-  uint32_t last_access_time;
+  uint64_t created_time;
+  uint64_t last_access_time;
 } bitmap_cache_t;
 
 static int bitmap_cache_cmp_time(bitmap_cache_t* a, bitmap_cache_t* b) {

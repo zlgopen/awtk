@@ -75,7 +75,7 @@ static ret_t velocity_do_update(velocity_t* v, uint32_t time, xy_t x, xy_t y) {
   return RET_OK;
 }
 
-ret_t velocity_update(velocity_t* v, uint32_t time, xy_t x, xy_t y) {
+ret_t velocity_update(velocity_t* v, uint64_t time, xy_t x, xy_t y) {
   return_value_if_fail(v != NULL, RET_BAD_PARAMS);
 
   if (v->time) {
