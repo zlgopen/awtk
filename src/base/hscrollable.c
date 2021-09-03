@@ -242,7 +242,7 @@ ret_t hscrollable_get_prop(hscrollable_t* hscrollable, const char* name, value_t
   return_value_if_fail(widget != NULL && hscrollable != NULL && name != NULL && v != NULL,
                        RET_BAD_PARAMS);
 
-  if (tk_str_eq(name, WIDGET_PROP_VIRTUAL_W) || tk_str_eq(name, WIDGET_PROP_LAYOUT_W)) {
+  if (tk_str_eq(name, WIDGET_PROP_VIRTUAL_W)) {
     value_set_int(v, tk_max(widget->w, hscrollable->virtual_w));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VIRTUAL_H) || tk_str_eq(name, WIDGET_PROP_LAYOUT_H)) {

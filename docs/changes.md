@@ -2,6 +2,8 @@
 
 2021/09/03
   * 修复编译警告（感谢智明提供补丁）
+  * 完善list\_view\_h\_on\_scroll\_view\_layout\_children让用户自定义layout失效的问题。
+  * scroll view/hscrollale不支持WIDGET\_PROP\_LAYOUT\_W/WIDGET\_PROP\_LAYOUT\_H属性，因为虚拟高度/宽度本身依赖于children layout的结果，children layout的过程又依赖虚拟高度/宽度，会出现互相依赖。
 
 2021/09/02
   * 修改idle和定时器id翻转的问题（感谢智明提供补丁）

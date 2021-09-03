@@ -17,9 +17,9 @@ TEST(ScrollView, basic) {
   ASSERT_EQ(scroll_view_set_virtual_h(widget, 800), RET_OK);
 
   ASSERT_EQ(widget_get_prop(widget, WIDGET_PROP_LAYOUT_W, &v1), RET_OK);
-  ASSERT_EQ(value_int(&v1), 400);
+  ASSERT_EQ(value_int(&v1), 200);
   ASSERT_EQ(widget_get_prop(widget, WIDGET_PROP_LAYOUT_H, &v1), RET_OK);
-  ASSERT_EQ(value_int(&v1), 800);
+  ASSERT_EQ(value_int(&v1), 400);
 
   value_set_int(&v1, 600);
   ASSERT_EQ(widget_set_prop(widget, WIDGET_PROP_VIRTUAL_W, &v1), RET_OK);
@@ -58,10 +58,10 @@ TEST(ScrollView, layout) {
   widget_set_self_layout_params(button, "right", "bottom", "10%", "10%");
   widget_layout(widget);
 
-  ASSERT_EQ(button->x, 360);
-  ASSERT_EQ(button->y, 720);
-  ASSERT_EQ(button->w, 40);
-  ASSERT_EQ(button->h, 80);
+  ASSERT_EQ(button->x, 180);
+  ASSERT_EQ(button->y, 360);
+  ASSERT_EQ(button->w, 20);
+  ASSERT_EQ(button->h, 40);
 
   widget_destroy(widget);
 }
