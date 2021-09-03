@@ -3424,7 +3424,8 @@ ret_t widget_to_local(widget_t* widget, point_t* p) {
   return_value_if_fail(widget != NULL && p != NULL, RET_BAD_PARAMS);
 
   while (iter != NULL) {
-    xy_t offset_x, offset_y;
+    xy_t offset_x = 0;
+    xy_t offset_y = 0;
     if (widget_get_offset(iter, &offset_x, &offset_y) == RET_OK) {
       p->x += offset_x;
       p->y += offset_y;
