@@ -6,6 +6,7 @@
   * scroll view/hscrollale不支持WIDGET\_PROP\_LAYOUT\_W/WIDGET\_PROP\_LAYOUT\_H属性，因为虚拟高度/宽度本身依赖于children layout的结果，children layout的过程又依赖虚拟高度/宽度，会出现互相依赖。
   * 修复widget\_use\_style的问题。
   * button支持auto\_adjust\_size。
+  * 修复不需要刷新也进入end_frame的问题（感谢智明提供补丁）
 
 2021/09/02
   * 修改idle和定时器id翻转的问题（感谢智明提供补丁）

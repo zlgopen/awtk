@@ -117,6 +117,10 @@ ret_t native_window_begin_frame(native_window_t* win, lcd_draw_mode_t mode) {
   return_value_if_fail(win != NULL, RET_BAD_PARAMS);
 
   dr = &(win->dirty_rects);
+  if (dr->nr == 0) {
+    return RET_FAIL;
+  }
+
   c = native_window_get_canvas(win);
   canvas_begin_frame(c, dr, mode);
 
