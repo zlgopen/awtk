@@ -157,6 +157,7 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
   canvas_set_global_alpha((canvas_t*)canvas, 0xff);
   vgcanvas_create_fbo(vg, w, h, FALSE, fbo);
 #else
+  (void)c;
   canvas = TKMEM_ZALLOC(canvas_offline_t);
   return_value_if_fail(canvas != NULL, NULL);
 

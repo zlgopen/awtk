@@ -161,8 +161,6 @@ static bool_t ffr_get_circluar_point_to_quadrant(int32_t xc, int32_t yc, int32_t
 static int32_t ffr_draw_circluar_point_to_quadrant(canvas_t* c,
                                                   int32_t x_h, int32_t y_v, int32_t x,
                                                   int32_t y, float_t e, color_t color, int32_t limit_y) {
-  int32_t p = 0;
-
   int32_t w = 0;
   int32_t h = 0;
   if (x_h > x) {
@@ -191,7 +189,6 @@ static int32_t ffr_draw_circluar_point_to_quadrant(canvas_t* c,
 static int32_t ffr_draw_circluar_point_to_quadrant_hline(canvas_t* c, int32_t x_h,
                                                       int32_t y_v, int32_t x, int32_t y,
                                                       float_t e, color_t color, int32_t limit_y) {
-  int32_t p = 0;
   int32_t w = 0;
   int32_t h = 0;
   if (x_h > x) {
@@ -341,7 +338,7 @@ static void ffr_draw_arc_point_list(canvas_t* c, int32_t x_h,
                                        float_t angle_v, int32_t r, uint32_t quadrant_id,
                                        color_t color, darray_t* point_list,
                                        darray_t* point_list_45, bool_t is_fill) {
-  int32_t end_y;
+  int32_t end_y = -1;
   float_t angle_v_1 = 0.0f;
   float_t angle_h_1 = 0.0f;
   float_t angle_v_2 = M_FRR_PI_4;
@@ -843,7 +840,8 @@ static ret_t ffr_draw_fill_rounded_rect(canvas_t* c, const rect_t* r, color_t co
   } else {  
     vgcanvas_t* vg = canvas_get_vgcanvas(c);
     if (radius != 0 && vg != NULL) {
-      frr_draw_info_t draw_infos[FRR_VERTEXT_TYPE_COUNT] = {0};
+      frr_draw_info_t draw_infos[FRR_VERTEXT_TYPE_COUNT];
+      memset(draw_infos, 0x0, sizeof(draw_infos));
       ffr_draw_rounded_rect_draw_info_init(draw_infos, r, radius_tl, radius_tr, radius_bl, radius_br);
       ffr_draw_rounded_rect_draw_fill_with_vg(c, vg, color, draw_infos);
     } else {
@@ -1016,7 +1014,8 @@ static ret_t ffr_draw_stroke_rounded_rect(canvas_t* c, const rect_t* r, color_t 
   } else {
     vgcanvas_t* vg = canvas_get_vgcanvas(c);
     if (radius != 0 && vg != NULL) {
-      frr_draw_info_t draw_infos[FRR_VERTEXT_TYPE_COUNT] = {0};
+      frr_draw_info_t draw_infos[FRR_VERTEXT_TYPE_COUNT];
+      memset(draw_infos, 0x0, sizeof(draw_infos));
       ffr_draw_rounded_rect_draw_info_init(draw_infos, r, radius_tl, radius_tr, radius_bl, radius_br);
 
       ffr_draw_rounded_rect_draw_stroke_with_vg(c, vg, border_width, color, draw_infos, border_model);
