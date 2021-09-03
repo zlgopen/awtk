@@ -22,7 +22,7 @@
     </scroll_view>
   </list_view_h>
   
-  <list_view_h name="variable width" x="center"  y="200" w="90%" h="100" item_width="200" spacing="5">
+  <list_view_h name="variable width" x="center"  y="128" w="90%" h="100" spacing="5">
     <scroll_view name="view" w="100%" h="100%">
       <button focusable="true" text="0" w="50%"/>
       <button focusable="true" text="1" w="50px"/>
@@ -36,6 +36,20 @@
       <button focusable="true" text="9.hello AWTK" w="220px"/>
       <button focusable="true" text="10.hello AWTK" w="230px"/>
       <button focusable="true" text="11.hello AWTK" w="240px"/>
+    </scroll_view>
+  </list_view_h>
+  
+  <list_view_h name="variable width" x="center"  y="258" w="90%" h="100" spacing="5">
+    <scroll_view name="view" w="100%" h="100%">
+      <button auto_adjust_size="true" focusable="true" text="a" />
+      <button auto_adjust_size="true" focusable="true" text="ab" />
+      <button auto_adjust_size="true" focusable="true" text="abc" />
+      <button auto_adjust_size="true" focusable="true" text="abcd" />
+      <button auto_adjust_size="true" focusable="true" text="abcde" />
+      <button auto_adjust_size="true" focusable="true" text="abcdef" />
+      <button auto_adjust_size="true" focusable="true" text="abcdef" />
+      <button auto_adjust_size="true" focusable="true" text="abcdefg" />
+      <button auto_adjust_size="true" focusable="true" text="abcdefgh" />
     </scroll_view>
   </list_view_h>
   <button focusable="true" name="close" x="center" y="bottom:10" w="50%" h="30" text="close"/>
