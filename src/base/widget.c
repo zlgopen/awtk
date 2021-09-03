@@ -373,14 +373,15 @@ bool_t widget_is_style_exist(widget_t* widget, const char* style_name, const cha
 ret_t widget_use_style(widget_t* widget, const char* value) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
+  widget_set_need_update_style(widget);
   widget->style = tk_str_copy(widget->style, value);
+
   if (widget_is_window_opened(widget)) {
     widget_update_style(widget);
-  } else {
-    widget_set_need_update_style(widget);
+    return widget_invalidate(widget, NULL);
   }
-
-  return widget_invalidate(widget, NULL);
+  
+  return RET_OK;
 }
 
 ret_t widget_set_text(widget_t* widget, const wchar_t* text) {
