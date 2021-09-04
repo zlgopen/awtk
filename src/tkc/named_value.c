@@ -61,6 +61,7 @@ named_value_t* named_value_create_ex(const char* name, const value_t* value) {
 
   nv = (named_value_t*)TKMEM_ALLOC(sizeof(named_value_t) + slen);
   return_value_if_fail(nv != NULL, NULL);
+  memset(nv, 0x00, sizeof(named_value_t));
 
   p = TK_EXTRA_DATA(nv);
   memcpy(p, name, slen);
