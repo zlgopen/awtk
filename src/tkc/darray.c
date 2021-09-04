@@ -77,22 +77,30 @@ static bool_t darray_extend(darray_t* darray) {
   }
 }
 
-int32_t darray_find_index(darray_t* darray, void* data) {
+int32_t darray_find_index_ex(darray_t* darray, tk_compare_t compare, void* data) {
   int32_t i = 0;
   int32_t size = 0;
   void** elms = NULL;
   return_value_if_fail(darray != NULL, -1);
-
   elms = darray->elms;
   size = darray->size;
+
+  if (compare == NULL) {
+    compare = darray->compare ? darray->compare : pointer_compare;
+  }
+
   for (i = 0; i < size; i++) {
     void* iter = elms[i];
-    if (darray->compare(iter, data) == 0) {
+    if (compare(iter, data) == 0) {
       return i;
     }
   }
 
   return -1;
+}
+
+int32_t darray_find_index(darray_t* darray, void* data) {
+  return darray_find_index_ex(darray, NULL, data);
 }
 
 ret_t darray_remove_index(darray_t* darray, uint32_t index) {
@@ -115,16 +123,20 @@ ret_t darray_remove_index(darray_t* darray, uint32_t index) {
   return RET_OK;
 }
 
-ret_t darray_remove(darray_t* darray, void* data) {
+ret_t darray_remove_ex(darray_t* darray, tk_compare_t cmp, void* ctx) {
   int32_t index = 0;
   return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
 
-  index = darray_find_index(darray, data);
+  index = darray_find_index_ex(darray, cmp, ctx);
   if (index < 0) {
     return RET_NOT_FOUND;
   } else {
     return darray_remove_index(darray, index);
   }
+}
+
+ret_t darray_remove(darray_t* darray, void* data) {
+  return darray_remove_ex(darray, NULL, data);
 }
 
 ret_t darray_remove_all(darray_t* darray, tk_compare_t cmp, void* ctx) {
@@ -182,10 +194,14 @@ ret_t darray_find_all(darray_t* darray, tk_compare_t cmp, void* ctx, darray_t* m
   return RET_OK;
 }
 
-void* darray_find(darray_t* darray, void* data) {
-  int32_t pos = darray_find_index(darray, data);
+void* darray_find_ex(darray_t* darray, tk_compare_t cmp, void* ctx) {
+  int32_t pos = darray_find_index_ex(darray, cmp, ctx);
 
   return pos >= 0 ? darray->elms[pos] : NULL;
+}
+
+void* darray_find(darray_t* darray, void* data) {
+  return darray_find_ex(darray, NULL, data);
 }
 
 void* darray_pop(darray_t* darray) {
@@ -372,8 +388,11 @@ static int32_t darray_bsearch_index_impl(darray_t* darray, tk_compare_t cmp, voi
   int32_t high = 0;
   int32_t result = 0;
   void* iter = NULL;
-  return_value_if_fail(darray != NULL && darray->size > 0, -1);
+  return_value_if_fail(darray != NULL, -1);
 
+  if (darray->size == 0) {
+    return -1;
+  }
   if (cmp == NULL) {
     cmp = darray->compare;
   }

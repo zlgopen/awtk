@@ -120,6 +120,17 @@ darray_t* darray_init(darray_t* darray, uint32_t capacity, tk_destroy_t destroy,
 void* darray_find(darray_t* darray, void* ctx);
 
 /**
+ * @method darray_find_ex
+ * 查找第一个满足条件的元素。
+ * @param {darray_t*} darray 数组对象。
+ * @param {tk_compare_t} cmp 比较函数，为NULL则使用内置的比较函数。
+ * @param {void*} ctx 比较函数的上下文。
+ *
+ * @return {void*} 如果找到，返回满足条件的对象，否则返回NULL。
+ */
+void* darray_find_ex(darray_t* darray, tk_compare_t cmp, void* ctx);
+
+/**
  * @method darray_bsearch_index
  * 二分查找(确保数组有序)。
  * 
@@ -186,6 +197,17 @@ ret_t darray_replace(darray_t* darray, uint32_t index, void* data);
 int32_t darray_find_index(darray_t* darray, void* ctx);
 
 /**
+ * @method darray_find_index_ex
+ * 查找第一个满足条件的元素，并返回位置。
+ * @param {darray_t*} darray 数组对象。
+ * @param {tk_compare_t} cmp 比较函数，为NULL则使用内置的比较函数。
+ * @param {void*} ctx 比较函数的上下文。
+ *
+ * @return {int32_t} 如果找到，返回满足条件的对象的位置，否则返回-1。
+ */
+int32_t darray_find_index_ex(darray_t* darray, tk_compare_t cmp, void* ctx);
+
+/**
  * @method darray_remove
  * 删除第一个满足条件的元素。
  * @param {darray_t*} darray 数组对象。
@@ -194,6 +216,17 @@ int32_t darray_find_index(darray_t* darray, void* ctx);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t darray_remove(darray_t* darray, void* ctx);
+
+/**
+ * @method darray_remove_ex
+ * 删除第一个满足条件的元素。
+ * @param {darray_t*} darray 数组对象。
+ * @param {tk_compare_t} cmp 比较函数，为NULL则使用内置的比较函数。
+ * @param {void*} ctx 比较函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t darray_remove_ex(darray_t* darray, tk_compare_t cmp, void* ctx);
 
 /**
  * @method darray_remove_index
