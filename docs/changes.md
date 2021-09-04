@@ -1,5 +1,9 @@
 # 最新动态
 
+2021/09/04
+  * 用darray重新实现object\_default。
+  * 增加 darray\_find\_ex/darray\_find\_index\_ex/darray\_remove\_ex。
+
 2021/09/03
   * 修复编译警告（感谢智明提供补丁）
   * 完善list\_view\_h\_on\_scroll\_view\_layout\_children让用户自定义layout失效的问题。

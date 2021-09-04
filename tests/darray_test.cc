@@ -501,3 +501,40 @@ TEST(DArrayTest, insert_order) {
 
   darray_deinit(&darray);
 }
+
+TEST(DArrayTest, insert1) {
+  darray_t darray;
+  char name[32];
+  uint32_t i = 0;
+  uint32_t n = 1000;
+
+  darray_init(&darray, 2, default_destroy, NULL);
+
+  for(i = 0; i < n; i++) {
+    tk_snprintf(name, sizeof(name), "%u", i);
+    ASSERT_EQ(darray_sorted_insert(&darray, tk_strdup(name), (tk_compare_t)strcmp, TRUE), RET_OK);
+    ASSERT_STREQ((char*)darray_bsearch(&darray, (tk_compare_t)strcmp, name), name);
+  }
+
+  darray_deinit(&darray);
+}
+
+TEST(DArrayTest, insert2) {
+  darray_t darray;
+  uint32_t i = 0;
+  uint32_t n = 1000;
+
+  darray_init(&darray, 2, NULL, NULL);
+
+  for(i = 0; i < n; i++) {
+    ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(i), NULL, TRUE), RET_OK);
+    ASSERT_EQ(darray_bsearch_index(&darray, NULL, tk_pointer_from_int(i)), i);
+  }
+  
+  for(i = n; i > 0; i--) {
+    ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(i), NULL, TRUE), RET_OK);
+    ASSERT_EQ(darray_bsearch_index(&darray, NULL, tk_pointer_from_int(i)), i);
+  }
+
+  darray_deinit(&darray);
+}

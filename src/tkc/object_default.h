@@ -23,6 +23,7 @@
 #define TK_OBJECT_DEFAULT_H
 
 #include "tkc/object.h"
+#include "tkc/darray.h"
 #include "tkc/named_value.h"
 
 BEGIN_C_DECLS
@@ -40,30 +41,8 @@ BEGIN_C_DECLS
 typedef struct _object_default_t {
   object_t object;
 
-  /**
-   * @property {uint32_t} props_size
-   * @annotation ["readable", "scriptable"]
-   * 属性个数。
-   *
-   */
-  uint32_t props_size;
-
-  /**
-   * @property {uint32_t} props_capacity
-   * @annotation ["readable"]
-   * 属性数组的容量。
-   *
-   */
-  uint32_t props_capacity;
-
-  /**
-   * @property {named_value_t} props
-   * @annotation ["readable"]
-   * 属性数组。
-   *
-   */
-  named_value_t* props;
-
+  /*private*/
+  darray_t props;
 } object_default_t;
 
 /**
