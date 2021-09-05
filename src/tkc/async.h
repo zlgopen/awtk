@@ -57,11 +57,13 @@ ret_t async_call(async_exec_t exec, async_on_result_t on_result, void* ctx);
  * 全局初始化。
  *
  * @annotation ["static"]
+ * @param {uint32_t} max_threads 最大线程数。
+ * @param {uint32_t} min_threads 最小线程数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *
  */
-ret_t async_call_init(void);
+ret_t async_call_init(uint32_t max_threads, uint32_t min_threads);
 
 /**
  * @method async_call_deinit
