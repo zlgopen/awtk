@@ -20,7 +20,7 @@
  */
 
 #include "tkc/types_def.h"
-#include "sys_tick_common.inc"
+#include "../common/sys_tick_common.inc"
 
 /* SysTick_Handler 1 milliseconds */
 void SysTick_Handler(void) {

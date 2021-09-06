@@ -66,7 +66,7 @@ timer_info_t* timer_info_create(timer_manager_t* tm, timer_func_t on_timer, void
     if (id != TK_INVALID_ID) {
       timer_manager_append(tm, timer);
     } else {
-      object_unref(timer);
+      object_unref(obj);
       return_value_if_fail(id != TK_INVALID_ID, NULL);
     }
   }

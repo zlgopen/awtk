@@ -62,7 +62,7 @@ idle_info_t* idle_info_create(idle_manager_t* idle_manager, idle_func_t on_idle,
     if (id != TK_INVALID_ID) {
       idle_manager_append(idle_manager, idle);
     } else {
-      object_unref(idle);
+      object_unref(obj);
       return_value_if_fail(id != TK_INVALID_ID, NULL);
     }
   }
