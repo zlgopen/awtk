@@ -4,6 +4,7 @@
   * inline style改用"."分隔，仍然兼容":"，建议用新的方式书写。请参考[样式](theme.md)
   * 重新开发demoui(之前的改名为demouiold)(感谢兆坤提供补丁)。
   * 完善demoui(感谢兆坤提供补丁)。
+  * 增加wcsncpy（感谢智明提供补丁）
 
 2021/09/04
   * 用darray重新实现object\_default。

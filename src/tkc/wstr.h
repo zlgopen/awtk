@@ -344,6 +344,18 @@ const wchar_t* wcs_chr(const wchar_t* s, wchar_t c);
 wchar_t* wcs_cpy(wchar_t* s1, const wchar_t* s2);
 
 /**
+ * @method wcs_ncpy
+ * 按照长度来复制字符串
+ * @annotation ["global"]
+ * @param {wchar_t*} s1 目标串。
+ * @param {const wchar_t*} s2 源串。
+ * @param {uint32_t} n 拷贝长度。
+ *
+ * @return {const wchar_t*} 复制后的串地址。
+ */
+wchar_t* wcs_ncpy(wchar_t* s1, const wchar_t* s2, uint32_t n);
+
+/**
  * @method wcs_cmp
  * 比较字符串
  * @annotation ["global"]

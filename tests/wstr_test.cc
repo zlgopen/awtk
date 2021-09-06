@@ -259,6 +259,15 @@ TEST(WStr, wcs_cpy) {
   ASSERT_EQ(wcs_len(wcs_cpy(str, L"abc中文测试123")), 10);
 }
 
+TEST(WStr, wcs_ncpy) {
+  wchar_t str[100];
+
+  ASSERT_EQ(wcs_len(wcs_ncpy(str, L"", 1)), 0);
+  ASSERT_EQ(wcs_len(wcs_ncpy(str, L"a", 1)), 1);
+  ASSERT_EQ(wcs_len(wcs_ncpy(str, L"abc", 1)), 1);
+  ASSERT_EQ(wcs_len(wcs_ncpy(str, L"abc中文测试123", 30)), 10);
+}
+
 TEST(WStr, wcs_chr) {
   size_t i = 0;
   const wchar_t* str = L"abc中文测试123";
