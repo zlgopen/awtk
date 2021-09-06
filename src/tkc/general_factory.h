@@ -116,7 +116,6 @@ static inline ret_t general_factory_unregister(general_factory_t* factory, const
   return darray_remove_all(&(factory->creators), general_factory_item_compare_by_name, (void*)name);
 }
 
-
 static inline ret_t general_factory_register_ex(general_factory_t* factory, const char* name,
                                                 tk_create_t create, bool_t is_const_name) {
   general_factory_item_t* item = NULL;

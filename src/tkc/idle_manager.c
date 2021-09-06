@@ -95,8 +95,8 @@ uint32_t idle_manager_get_next_idle_id(idle_manager_t* idle_manager) {
     if (next_idle_id == TK_INVALID_ID) {
       next_idle_id = idle_manager->next_idle_id++;
     }
-  } while(idle_manager_find(idle_manager, next_idle_id) != NULL);
-  return  next_idle_id;
+  } while (idle_manager_find(idle_manager, next_idle_id) != NULL);
+  return next_idle_id;
 }
 
 ret_t idle_manager_append(idle_manager_t* idle_manager, idle_info_t* idle) {

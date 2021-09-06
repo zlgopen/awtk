@@ -380,7 +380,7 @@ ret_t widget_use_style(widget_t* widget, const char* value) {
     widget_update_style(widget);
     return widget_invalidate(widget, NULL);
   }
-  
+
   return RET_OK;
 }
 

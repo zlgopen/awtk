@@ -607,25 +607,25 @@ TEST(ObjectDefault, insert1) {
 
   ASSERT_EQ(o->props.size, 0);
 
-  for(i = 0; i < n; i++) {
+  for (i = 0; i < n; i++) {
     tk_snprintf(name, sizeof(name), "name%u", i);
     ASSERT_EQ(object_set_prop(obj, name, value_set_int(&v, i)), RET_OK);
     ASSERT_EQ(object_get_prop_int(obj, name, 0), i);
   }
   ASSERT_EQ(object_get_prop_int(obj, OBJECT_PROP_SIZE, 0), n);
- 
+
   object_default_clear_props(obj);
   ASSERT_EQ(object_get_prop_int(obj, OBJECT_PROP_SIZE, 0), 0);
-  for(i = n; i > 0; i--) {
+  for (i = n; i > 0; i--) {
     tk_snprintf(name, sizeof(name), "name%u", i);
     ASSERT_EQ(object_set_prop(obj, name, value_set_int(&v, i)), RET_OK);
     ASSERT_EQ(object_get_prop_int(obj, name, 0), i);
   }
   ASSERT_EQ(object_get_prop_int(obj, OBJECT_PROP_SIZE, 0), n);
-  
+
   object_default_clear_props(obj);
   ASSERT_EQ(object_get_prop_int(obj, OBJECT_PROP_SIZE, 0), 0);
-  for(i = n; i > 0; i--) {
+  for (i = n; i > 0; i--) {
     tk_snprintf(name, sizeof(name), "name%u", i);
     ASSERT_EQ(object_set_prop(obj, name, value_set_int(&v, i)), RET_OK);
     ASSERT_EQ(object_get_prop_int(obj, name, 0), i);
@@ -634,4 +634,3 @@ TEST(ObjectDefault, insert1) {
 
   OBJECT_UNREF(obj);
 }
-
