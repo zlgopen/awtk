@@ -72,9 +72,15 @@ named_value_t* named_value_create_ex(const char* name, const value_t* value) {
 }
 
 ret_t named_value_set_name(named_value_t* nv, const char* name) {
+  const char* p = NULL;
   return_value_if_fail(nv != NULL, RET_BAD_PARAMS);
 
-  nv->name = tk_str_copy(nv->name, name);
+  p = TK_EXTRA_DATA(nv);
+  if (p != nv->name) {
+    nv->name = tk_str_copy(nv->name, name);
+  } else {
+    nv->name = tk_strdup(name);
+  }
 
   return RET_OK;
 }
