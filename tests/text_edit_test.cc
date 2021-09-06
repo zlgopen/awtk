@@ -130,7 +130,7 @@ TEST(TextEdit, get_rows_line) {
   canvas_t c;
   lcd_t* lcd = lcd_mem_rgba8888_create(150, 150, TRUE);
   canvas_init(&c, lcd, font_manager());
-  const char* str = "1\n222222222222";
+  const char* str = "1\n22222222222222222222222";
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
   widget_t* w = mledit_create(win, 10, 20, 100, 100);
   text_edit_t* text_edit = text_edit_create(w, FALSE);
