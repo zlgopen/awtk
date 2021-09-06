@@ -1,20 +1,15 @@
 <button>
-  <style name="default" bg_color="#ebebeb" border_color="#c2c2c2" font_size="22" round_radius="4" text_color="#000000">
+  <style name="default" bg_color="#EBEBEB" border_color="#C2C2C2" font_size="22" round_radius="4" text_color="#000000">
     <normal/>
-    <disable bg_color="#ebebeb66" border_color="#c2c2c266" text_color="#00000066"/>
+    <disable bg_color="#EBEBEB66" border_color="#C2C2C266" text_color="#00000066"/>
     <focused/>
     <over/>
     <pressed bg_color="#709918" border_color="#00000000" text_color="#FFFFFF" x_offset="1" y_offset="1"/>
   </style>
-  <style name="close" icon="uiex_close_n" bg_color="#F7F7F7" icon_at="center">
-    <normal />
-    <over />
+  <style name="close" bg_color="#F7F7F7" icon="uiex_close_n" icon_at="center">
+    <normal/>
+    <over/>
     <pressed icon="uiex_close_p"/>
-  </style>
-  <style name="win_close" icon="uiex_Windowclosed_n">
-    <normal />
-    <over />
-    <pressed icon="uiex_Windowclosed_p"/>
   </style>
   <style name="color_update">
     <normal icon="color_update_n"/>
@@ -22,7 +17,7 @@
     <over icon="color_update_o"/>
     <pressed icon="color_update_p"/>
   </style>
-  <style name="combobox_down" bg_color="#FFFFFF" border_color="#c2c2c2" icon="uiex_combobox_btn_n">
+  <style name="combobox_down" bg_color="#FFFFFF" border_color="#C2C2C2" icon="uiex_combobox_btn_n">
     <normal/>
     <disable bg_color="#FFFFFF66" icon="uiex_combobox_btn_d"/>
     <over/>
@@ -63,23 +58,30 @@
     <disable/>
     <focused/>
     <over/>
-    <pressed bg_color="#ffffff" border_color="#c2c2c2" x_offset="1" y_offset="1"/>
+    <pressed bg_color="#FFFFFF" border_color="#C2C2C2" x_offset="1" y_offset="1"/>
   </style>
   <style name="export" bg_color="#00000000" border_color="#00000000" icon="uiex_button_Export">
     <normal/>
     <disable/>
     <focused/>
     <over/>
-    <pressed bg_color="#ffffff" border_color="#c2c2c2" x_offset="1" y_offset="1"/>
+    <pressed bg_color="#FFFFFF" border_color="#C2C2C2" x_offset="1" y_offset="1"/>
+  </style>
+  <style name="highlight" bg_color="#709918" border_color="#00000000" font_size="22" round_radius="4" text_color="#FFFFFF">
+    <normal/>
+    <disable bg_color="#70991866" text_color="#FFFFFF66"/>
+    <focused/>
+    <over/>
+    <pressed bg_color="#678C16" x_offset="1" y_offset="1"/>
   </style>
   <style name="import" bg_color="#00000000" border_color="#00000000" icon="uiex_button_Import">
     <normal/>
     <disable/>
     <focused/>
     <over/>
-    <pressed bg_color="#ffffff" border_color="#c2c2c2" x_offset="1" y_offset="1"/>
+    <pressed bg_color="#FFFFFF" border_color="#C2C2C2" x_offset="1" y_offset="1"/>
   </style>
-  <style name="menu_on" border_color="#00000000" bg_color="#00000000" icon="uiex_Portraitmenu_n">
+  <style name="menu_on" bg_color="#00000000" border_color="#00000000" icon="uiex_Portraitmenu_n">
     <normal/>
     <disable/>
     <over/>
@@ -90,52 +92,38 @@
     <disable/>
     <focused/>
     <over/>
-    <pressed bg_color="#ffffff" border_color="#c2c2c2" x_offset="1" y_offset="1"/>
+    <pressed bg_color="#FFFFFF" border_color="#C2C2C2" x_offset="1" y_offset="1"/>
   </style>
-  <style name="text_bg_color" bg_color="#00000000" icon="uiex_editor_bgcolor" border_color="#00000000">
+  <style name="rounded" bg_color="#EBEBEB" border_color="#C2C2C2" font_size="22" round_radius="18" text_color="#000000">
     <normal/>
-    <disable/>
-    <focused/>
-    <over/>
-    <pressed bg_color="#ffffff" border_color="#c2c2c2" x_offset="1" y_offset="1"/>
-  </style>
-  <style name="text_color" bg_color="#00000000" icon="uiex_editor_Textcolor" border_color="#00000000">
-    <normal/>
-    <disable/>
-    <focused/>
-    <over/>
-    <pressed bg_color="#ffffff" border_color="#c2c2c2" x_offset="1" y_offset="1"/>
-  </style>
-  <style name="rounded" bg_color="#ebebeb" border_color="#c2c2c2" font_size="22" round_radius="18" text_color="#000000">
-    <normal/>
-    <disable bg_color="#ebebeb66" border_color="#c2c2c266" text_color="#00000066"/>
+    <disable bg_color="#EBEBEB66" border_color="#C2C2C266" text_color="#00000066"/>
     <focused/>
     <over/>
     <pressed bg_color="#709918" border_color="#00000000" text_color="#FFFFFF" x_offset="1" y_offset="1"/>
   </style>
-  <style name="rounded_bottom" bg_color="#ebebeb" border_color="#c2c2c2" font_size="22" round_radius="18" round_radius_top_left="0" round_radius_top_right="0" text_color="#000000">
+  <style name="rounded_bottom" bg_color="#EBEBEB" border_color="#C2C2C2" font_size="22" round_radius="18" round_radius_top_left="0" round_radius_top_right="0" text_color="#000000">
     <normal/>
-    <disable bg_color="#ebebeb66" border_color="#c2c2c266" text_color="#00000066"/>
+    <disable bg_color="#EBEBEB66" border_color="#C2C2C266" text_color="#00000066"/>
     <focused/>
     <over/>
     <pressed bg_color="#709918" border_color="#00000000" text_color="#FFFFFF" x_offset="1" y_offset="1"/>
   </style>
-  <style name="rounded_top" bg_color="#ebebeb" border_color="#c2c2c2" font_size="22" round_radius="18" round_radius_bottom_left="0" round_radius_bottom_right="0" text_color="#000000">
+  <style name="rounded_top" bg_color="#EBEBEB" border_color="#C2C2C2" font_size="22" round_radius="18" round_radius_bottom_left="0" round_radius_bottom_right="0" text_color="#000000">
     <normal/>
-    <disable bg_color="#ebebeb66" border_color="#c2c2c266" text_color="#00000066"/>
+    <disable bg_color="#EBEBEB66" border_color="#C2C2C266" text_color="#00000066"/>
     <focused/>
     <over/>
     <pressed bg_color="#709918" border_color="#00000000" text_color="#FFFFFF" x_offset="1" y_offset="1"/>
   </style>
-  <style name="scroll_down" bg_color="#f2f2f2" icon="uiex_arrow_down_n">
+  <style name="scroll_down" bg_color="#F2F2F2" icon="uiex_arrow_down_n">
     <normal/>
-    <disable bg_color="#f2f2f266" icon="uiex_arrow_down_d"/>
+    <disable bg_color="#F2F2F266" icon="uiex_arrow_down_d"/>
     <over/>
     <pressed icon="uiex_arrow_down_p"/>
   </style>
-  <style name="scroll_up" bg_color="#f2f2f2" icon="uiex_arrow_up_n">
+  <style name="scroll_up" bg_color="#F2F2F2" icon="uiex_arrow_up_n">
     <normal/>
-    <disable bg_color="#f2f2f266" icon="uiex_arrow_up_d"/>
+    <disable bg_color="#F2F2F266" icon="uiex_arrow_up_d"/>
     <over/>
     <pressed icon="uiex_arrow_up_p"/>
   </style>
@@ -144,49 +132,68 @@
     <disable/>
     <focused/>
     <over/>
-    <pressed bg_color="#ffffff" border_color="#c2c2c2" x_offset="1" y_offset="1"/>
+    <pressed bg_color="#FFFFFF" border_color="#C2C2C2" x_offset="1" y_offset="1"/>
   </style>
   <style name="slide_button" bg_image="1" bg_image_draw_type="scale" font_size="32" text_color="#000000">
     <normal/>
     <over/>
     <pressed y_offset="1"/>
   </style>
-  <style name="spinbox_down" bg_color="#fafafa" border_color="#C2C2C2" icon="uiex_arrow_down_n">
+  <style name="spinbox_down" bg_color="#FAFAFA" border_color="#C2C2C2" icon="uiex_arrow_down_n">
     <normal/>
-    <disable bg_color="#fafafa66" border_color="#C2C2C266" icon="uiex_arrow_down_d"/>
+    <disable bg_color="#FAFAFA66" border_color="#C2C2C266" icon="uiex_arrow_down_d"/>
     <over/>
     <pressed icon="uiex_arrow_down_p"/>
   </style>
-  <style name="spinbox_up" bg_color="#fafafa" border_color="#C2C2C2" icon="uiex_arrow_up_n">
+  <style name="spinbox_up" bg_color="#FAFAFA" border_color="#C2C2C2" icon="uiex_arrow_up_n">
     <normal/>
-    <disable bg_color="#fafafa66" border_color="#C2C2C266" icon="uiex_arrow_up_d"/>
+    <disable bg_color="#FAFAFA66" border_color="#C2C2C266" icon="uiex_arrow_up_d"/>
     <over/>
     <pressed icon="uiex_arrow_up_p"/>
   </style>
-  <style name="square" bg_color="#ebebeb" border_color="#c2c2c2" font_size="22" round_radius="0" text_color="#000000">
+  <style name="square" bg_color="#EBEBEB" border_color="#C2C2C2" font_size="22" round_radius="0" text_color="#000000">
     <normal/>
-    <disable bg_color="#ebebeb66" border_color="#c2c2c266" text_color="#00000066"/>
+    <disable bg_color="#EBEBEB66" border_color="#C2C2C266" text_color="#00000066"/>
     <focused/>
     <over/>
     <pressed bg_color="#709918" border_color="#00000000" text_color="#FFFFFF" x_offset="1" y_offset="1"/>
   </style>
-  <style name="square_borderless" bg_color="#ebebeb" border_color="#c2c2c2" border_width="0" font_size="22" round_radius="0" text_color="#000000">
+  <style name="square_borderless" bg_color="#EBEBEB" border_color="#C2C2C2" border_width="0" font_size="22" round_radius="0" text_color="#000000">
     <normal/>
-    <disable bg_color="#ebebeb66" border_color="#c2c2c266" text_color="#00000066"/>
+    <disable bg_color="#EBEBEB66" border_color="#C2C2C266" text_color="#00000066"/>
     <focused/>
     <over/>
     <pressed bg_color="#709918" border_color="#00000000" text_color="#FFFFFF" x_offset="1" y_offset="1"/>
+  </style>
+  <style name="text_bg_color" bg_color="#00000000" border_color="#00000000" icon="uiex_editor_bgcolor">
+    <normal/>
+    <disable/>
+    <focused/>
+    <over/>
+    <pressed bg_color="#FFFFFF" border_color="#C2C2C2" x_offset="1" y_offset="1"/>
+  </style>
+  <style name="text_color" bg_color="#00000000" border_color="#00000000" icon="uiex_editor_Textcolor">
+    <normal/>
+    <disable/>
+    <focused/>
+    <over/>
+    <pressed bg_color="#FFFFFF" border_color="#C2C2C2" x_offset="1" y_offset="1"/>
   </style>
   <style name="time" bg_color="#00000000" border_color="#00000000" icon="uiex_button_time">
     <normal/>
     <disable/>
     <focused/>
     <over/>
-    <pressed bg_color="#ffffff" border_color="#c2c2c2" x_offset="1" y_offset="1"/>
+    <pressed bg_color="#FFFFFF" border_color="#C2C2C2" x_offset="1" y_offset="1"/>
   </style>
-  <style name="with_icon_text" bg_color="#ebebeb" border_color="#c2c2c2" font_size="22" icon_at="center" icon="uiex_button_search" round_radius="4" text_color="#000000">
+  <style name="win_close" icon="uiex_Windowclosed_n">
     <normal/>
-    <disable bg_color="#ebebeb66" border_color="#c2c2c266" text_color="#00000066"/>
+    <over/>
+    <pressed icon="uiex_Windowclosed_p"/>
+  </style>
+  <style name="with_icon_text" bg_color="#EBEBEB" border_color="#C2C2C2" font_size="22" icon="uiex_button_search" icon_at="center" round_radius="4" text_color="#000000">
+    <normal/>
+    <disable bg_color="#EBEBEB66" border_color="#C2C2C266" text_color="#00000066"/>
     <focused/>
     <over/>
     <pressed bg_color="#709918" border_color="#00000000" text_color="#FFFFFF" x_offset="1" y_offset="1"/>
@@ -207,11 +214,11 @@
   </style>
   <style name="bold" bg_color="#00000000" border_color="#00000000" icon="uiex_editor_TextBold">
     <normal/>
-    <normal_of_checked bg_color="#ffffff" border_color="#c2c2c2"/>
+    <normal_of_checked bg_color="#FFFFFF" border_color="#C2C2C2"/>
     <over/>
-    <over_of_checked bg_color="#ffffff" border_color="#c2c2c2"/>
+    <over_of_checked bg_color="#FFFFFF" border_color="#C2C2C2"/>
     <pressed x_offset="1" y_offset="1"/>
-    <pressed_of_checked bg_color="#ffffff" border_color="#c2c2c2" x_offset="1" y_offset="1"/>
+    <pressed_of_checked bg_color="#FFFFFF" border_color="#C2C2C2" x_offset="1" y_offset="1"/>
   </style>
   <style name="debug_pause_resume" icon="debug_pause_o">
     <normal icon="debug_pause_n"/>
@@ -233,6 +240,18 @@
     <pressed x_offset="1" y_offset="1"/>
     <pressed_of_checked icon="debug_start_o" x_offset="1" y_offset="1"/>
   </style>
+  <style name="fps" bg_color="#EBEBEB" border_color="#C2C2C2" font_size="22" icon="uiex_texteditorhide" icon_at="center" round_radius="4" spacer="8" text_color="#000000">
+    <normal/>
+    <disable bg_color="#EBEBEB66" border_color="#C2C2C266" text_color="#00000066"/>
+    <disable_of_checked bg_color="#EBEBEB66" border_color="#C2C2C266" icon="uiex_texteditor_show" text_color="#00000066"/>
+    <focused/>
+    <focused_of_checked icon="uiex_texteditor_show"/>
+    <normal_of_checked icon="uiex_texteditor_show"/>
+    <over/>
+    <over_of_checked icon="uiex_texteditor_show"/>
+    <pressed bg_color="#709918" border_color="#00000000" text_color="#FFFFFF" x_offset="1" y_offset="1"/>
+    <pressed_of_checked bg_color="#709918" border_color="#00000000" icon="uiex_texteditor_show" text_color="#FFFFFF" x_offset="1" y_offset="1"/>
+  </style>
   <style name="icon_right" bg_color="#EBEBEB" font_size="22" icon_at="right" margin="4" margin_left="16" margin_right="16" text_color="#000000">
     <normal/>
     <focused/>
@@ -245,35 +264,23 @@
   </style>
   <style name="italic" bg_color="#00000000" border_color="#00000000" icon="uiex_editor_TextItalic">
     <normal/>
-    <normal_of_checked bg_color="#ffffff" border_color="#c2c2c2"/>
+    <normal_of_checked bg_color="#FFFFFF" border_color="#C2C2C2"/>
     <over/>
-    <over_of_checked bg_color="#ffffff" border_color="#c2c2c2"/>
+    <over_of_checked bg_color="#FFFFFF" border_color="#C2C2C2"/>
     <pressed x_offset="1" y_offset="1"/>
-    <pressed_of_checked bg_color="#ffffff" border_color="#c2c2c2" x_offset="1" y_offset="1"/>
+    <pressed_of_checked bg_color="#FFFFFF" border_color="#C2C2C2" x_offset="1" y_offset="1"/>
   </style>
-  <style name="like_btn" bg_color="#709918" border_color="#00000000" font_size="22" round_radius="4" text_color="#000000">
-    <normal bg_color="#ebebeb" border_color="#c2c2c2"/>
-    <disable bg_color="#ebebeb66" border_color="#c2c2c266" text_color="#00000066"/>
-    <disable_of_checked text_color="#ffffff"/>
-    <focused bg_color="#ebebeb" border_color="#c2c2c2"/>
-    <focused_of_checked text_color="#ffffff"/>
-    <normal_of_checked text_color="#ffffff"/>
-    <over bg_color="#ebebeb" border_color="#c2c2c2"/>
-    <over_of_checked text_color="#ffffff"/>
-    <pressed bg_color="#ebebeb" border_color="#c2c2c2" x_offset="1" y_offset="1"/>
-    <pressed_of_checked text_color="#ffffff" x_offset="1" y_offset="1"/>
-  </style>
-  <style name="fps" bg_color="#ebebeb" border_color="#c2c2c2" font_size="22" round_radius="4" text_color="#000000" icon="uiex_texteditorhide" icon_at="center" spacer="8">
-    <normal/>
-    <disable bg_color="#ebebeb66" border_color="#c2c2c266" text_color="#00000066"/>
-    <disable_of_checked bg_color="#ebebeb66" border_color="#c2c2c266" text_color="#00000066" icon="uiex_texteditor_show"/>
-    <focused/>
-    <focused_of_checked icon="uiex_texteditor_show"/>
-    <normal_of_checked icon="uiex_texteditor_show"/>
-    <over/>
-    <over_of_checked icon="uiex_texteditor_show"/>
-    <pressed bg_color="#709918" border_color="#00000000" text_color="#ffffff" x_offset="1" y_offset="1"/>
-    <pressed_of_checked bg_color="#709918" border_color="#00000000" text_color="#ffffff" x_offset="1" y_offset="1" icon="uiex_texteditor_show"/>
+  <style name="like_btn" bg_color="#709918" border_color="#00000000" font_size="22" round_radius="4" text_color="#FFFFFF">
+    <normal bg_color="#EBEBEB" border_color="#C2C2C2" text_color="#000000"/>
+    <disable bg_color="#EBEBEB66" border_color="#C2C2C266" text_color="#00000066"/>
+    <disable_of_checked/>
+    <focused bg_color="#EBEBEB" border_color="#C2C2C2" text_color="#000000"/>
+    <focused_of_checked/>
+    <normal_of_checked/>
+    <over bg_color="#EBEBEB" border_color="#C2C2C2" text_color="#000000"/>
+    <over_of_checked/>
+    <pressed bg_color="#EBEBEB" border_color="#C2C2C2" text_color="#000000" x_offset="1" y_offset="1"/>
+    <pressed_of_checked x_offset="1" y_offset="1"/>
   </style>
   <style name="password_visible" icon="uiex_texteditorhide">
     <normal/>
@@ -283,61 +290,60 @@
     <pressed x_offset="1" y_offset="1"/>
     <pressed_of_checked icon="uiex_texteditor_show" x_offset="1" y_offset="1"/>
   </style>
-  <style name="underscore" bg_color="#00000000" icon="uiex_editor_TextUnderscore" border_color="#00000000">
+  <style name="underscore" bg_color="#00000000" border_color="#00000000" icon="uiex_editor_TextUnderscore">
     <normal/>
-    <normal_of_checked bg_color="#ffffff" border_color="#c2c2c2"/>
+    <normal_of_checked bg_color="#FFFFFF" border_color="#C2C2C2"/>
     <over/>
-    <over_of_checked bg_color="#ffffff" border_color="#c2c2c2"/>
+    <over_of_checked bg_color="#FFFFFF" border_color="#C2C2C2"/>
     <pressed x_offset="1" y_offset="1"/>
-    <pressed_of_checked bg_color="#ffffff" border_color="#c2c2c2" x_offset="1" y_offset="1"/>
+    <pressed_of_checked bg_color="#FFFFFF" border_color="#C2C2C2" x_offset="1" y_offset="1"/>
   </style>
 </check_button>
 <color_component>
   <style name="default">
-    <normal border_color="#ffffff"/>
+    <normal border_color="#FFFFFF"/>
   </style>
 </color_component>
 <color_picker>
   <style name="default">
     <normal bg_color="#00000000"/>
-    <has_value has_value="1"/>
   </style>
 </color_picker>
 <color_tile>
   <style name="default">
-    <normal border_color="#ffffff"/>
+    <normal border_color="#FFFFFF"/>
     <disable border_color="#C2C2C266"/>
     <focused border_color="#709918"/>
   </style>
 </color_tile>
 <combo_box>
-  <style name="default" bg_color="#FFFFFF" border_color="#C2C2C2" font_size="22" margin_left="8" selected_bg_color="#709918" selected_text_color="#FFFFFF" text_align_h="left" text_color="black">
+  <style name="default" bg_color="#FFFFFF" border_color="#C2C2C2" font_size="22" margin_left="8" selected_bg_color="#709918" selected_text_color="#FFFFFF" text_align_h="left" text_color="#000000">
     <normal/>
     <changed border_color="#709918"/>
     <disable bg_color="#FFFFFF66" border_color="#C2C2C266" text_color="#00000066"/>
-    <empty text_color="#ababab"/>
-    <empty_focus text_color="#ababab" border_color="#709918"/>
+    <empty text_color="#ABABAB"/>
+    <empty_focus border_color="#709918" text_color="#ABABAB"/>
     <error border_color="#FF0000"/>
     <focused border_color="#709918"/>
     <over/>
   </style>
 </combo_box>
 <combo_box_ex>
-  <style name="default" bg_color="#FFFFFF" border_color="#C2C2C2" font_size="22" margin_left="8" selected_bg_color="#709918" selected_text_color="#FFFFFF" text_align_h="left" text_color="black">
+  <style name="default" bg_color="#FFFFFF" border_color="#C2C2C2" font_size="22" margin_left="8" selected_bg_color="#709918" selected_text_color="#FFFFFF" text_align_h="left" text_color="#000000">
     <normal/>
     <changed border_color="#709918"/>
     <disable bg_color="#FFFFFF66" border_color="#C2C2C266" text_color="#00000066"/>
-    <empty text_color="#ababab"/>
-    <empty_focus text_color="#ababab" border_color="#709918"/>
+    <empty text_color="#ABABAB"/>
+    <empty_focus border_color="#709918" text_color="#ABABAB"/>
     <error border_color="#FF0000"/>
     <focused border_color="#709918"/>
     <over/>
   </style>
 </combo_box_ex>
 <combo_box_item>
-  <style name="default" bg_color="#ebebeb" font_size="22" icon_at="left" margin_left="26" text_color="#333333">
+  <style name="default" bg_color="#EBEBEB" font_size="22" icon_at="left" margin_left="26" text_color="#333333">
     <normal/>
-    <disable bg_color="#ebebeb66" text_color="#33333366"/>
+    <disable bg_color="#EBEBEB66" text_color="#33333366"/>
     <disable_of_checked bg_color="#70991866" text_color="#FFFFFF66"/>
     <focused/>
     <focused_of_checked bg_color="#709918" text_color="#FFFFFF"/>
@@ -356,17 +362,17 @@
     <normal bg_color="#00000000" border_color="#00000000"/>
   </style>
   <style name="menu_bar">
-    <normal bg_color="#ebebeb" border_color="#00000000"/>
+    <normal bg_color="#EBEBEB" border_color="#00000000"/>
   </style>
 </dialog>
 <dialog_client>
   <style name="default">
-    <normal bg_color="#f7f7f7" border="none"/>
+    <normal bg_color="#F7F7F7" border="left|right|bottom" border_color="#709918"/>
   </style>
 </dialog_client>
 <dialog_title>
   <style name="default">
-    <normal bg_color="#ffffff" font_size="22" margin_left="10" text_align_h="left" text_color="black"/>
+    <normal bg_color="#FFFFFF" border="left|right|top" border_color="#709918" font_size="22" margin_left="10" text_align_h="left" text_color="black"/>
   </style>
 </dialog_title>
 <digit_clock>
@@ -374,7 +380,7 @@
     <normal font_size="22" text_align_h="left" text_color="#000000"/>
   </style>
   <style name="sysbar">
-    <normal border="left" border_color="#cccccc" font_size="26" text_align_h="center" text_color="black"/>
+    <normal border="left" border_color="#CCCCCC" font_size="26" text_align_h="center" text_color="#000000"/>
   </style>
 </digit_clock>
 <dragger>
@@ -391,12 +397,12 @@
   </style>
 </dragger>
 <edit>
-  <style name="default" bg_color="#ffffff" border_color="#C2C2C2" font_size="22" margin_left="8" selected_bg_color="#709918" selected_text_color="#ffffff" text_align_h="left" text_color="black">
+  <style name="default" bg_color="#FFFFFF" border_color="#C2C2C2" font_size="22" margin_left="8" selected_bg_color="#709918" selected_text_color="#FFFFFF" text_align_h="left" text_color="#000000">
     <normal/>
     <changed/>
-    <disable bg_color="#ffffff66" border_color="#C2C2C266" text_color="#44444466"/>
-    <empty text_color="#ababab"/>
-    <empty_focus text_color="#ababab" border_color="#709918"/>
+    <disable bg_color="#FFFFFF66" border_color="#C2C2C266" text_color="#44444466"/>
+    <empty text_color="#ABABAB"/>
+    <empty_focus border_color="#709918" text_color="#ABABAB"/>
     <error border_color="#FF0000"/>
     <focused border_color="#709918"/>
   </style>
@@ -404,7 +410,6 @@
 <gif>
   <style name="default">
     <normal bg_color="#00000000"/>
-    <has_value has_value="1"/>
   </style>
 </gif>
 <hscroll_label>
@@ -426,7 +431,7 @@
 </image>
 <label>
   <style name="default" font_size="22">
-    <normal text_color="black"/>
+    <normal text_color="#000000"/>
     <disable text_color="#00000066"/>
   </style>
   <style name="chat_bubble" bg_image="uiex_Information_chat_bg" bg_image_draw_type="patch9" margin="10" margin_left="15">
@@ -464,7 +469,7 @@
   <style name="menu_title">
     <normal bg_color="#FFFFFF" font_size="22" margin_left="20" text_align_h="left" text_color="#000000"/>
   </style>
-  <style name="sep" bg_color="#c2c2c2">
+  <style name="sep" bg_color="#C2C2C2">
     <normal/>
     <disable/>
   </style>
@@ -477,13 +482,13 @@
     <disable text_color="#00000066"/>
   </style>
   <style name="text_selector_mask">
-    <normal bg_color="#ffffff"/>
+    <normal bg_color="#FFFFFF"/>
   </style>
 </label>
 <line_number>
-  <style name="default" text_align_h="center" font_size="22">
-    <normal bg_color="#f7f7f7" text_color="#808080"/>
-    <disable bg_color="#f7f7f766" text_color="#80808066"/>
+  <style name="default" font_size="22" text_align_h="center">
+    <normal bg_color="#F7F7F7" text_color="#808080"/>
+    <disable bg_color="#F7F7F766" text_color="#80808066"/>
   </style>
 </line_number>
 <list_item>
@@ -505,11 +510,11 @@
     <normal bg_color="#00000000" border_color="#00000000"/>
   </style>
   <style name="list_left">
-    <normal bg_color="#c2c2c2" border="left|top|bottom" border_color="#c2c2c2"/>
+    <normal bg_color="#C2C2C2" border="left|top|bottom" border_color="#C2C2C2"/>
   </style>
   <style name="menu" border_color="#00000000">
-    <normal bg_color="#cccccc"/>
-    <disable bg_color="#cccccc66"/>
+    <normal bg_color="#CCCCCC"/>
+    <disable bg_color="#CCCCCC66"/>
   </style>
 </list_view>
 <list_view_h>
@@ -518,18 +523,18 @@
   </style>
 </list_view_h>
 <mledit>
-  <style name="default" bg_color="#FFFFFF" border="top" border_color="#cccccc" margin_left="34" selected_bg_color="#709918" selected_text_color="#ffffff" text_align_h="left" text_color="black" font_size="22">
+  <style name="default" bg_color="#FFFFFF" border="top" border_color="#CCCCCC" font_size="22" margin_left="34" selected_bg_color="#709918" selected_text_color="#FFFFFF" text_align_h="left" text_color="#000000">
     <normal/>
     <disable bg_color="#FFFFFF66" text_color="#00000066"/>
-    <empty text_color="#ababab"/>
-    <empty_focus text_color="#ababab"/>
-    <focused/>
+    <empty text_color="#ABABAB"/>
+    <empty_focus text_color="#ABABAB"/>
     <error text_color="#FF0000"/>
+    <focused/>
   </style>
 </mledit>
 <overlay>
   <style name="default">
-    <normal bg_color="#f7f7f7" border_color="#cccccc"/>
+    <normal bg_color="#F7F7F7" border_color="#CCCCCC"/>
   </style>
   <style name="lucency">
     <normal bg_color="#00000000" border_color="#00000000"/>
@@ -537,19 +542,19 @@
 </overlay>
 <pages>
   <style name="default">
-    <normal border_color="#cccccc"/>
+    <normal border_color="#CCCCCC"/>
+  </style>
+  <style name="bottom">
+    <normal bg_color="#FFFFFF" border="left|right|top" border_color="#C2C2C2"/>
+  </style>
+  <style name="list_left">
+    <normal bg_color="#FFFFFF" border="right|top|bottom" border_color="#C2C2C2"/>
   </style>
   <style name="lucency">
     <normal border_color="#00000000"/>
   </style>
-  <style name="bottom">
-    <normal bg_color="#ffffff" border="left|right|top" border_color="#c2c2c2"/>
-  </style>
-  <style name="list_left">
-    <normal bg_color="#ffffff" border="right|top|bottom" border_color="#c2c2c2"/>
-  </style>
   <style name="top">
-    <normal bg_color="#ffffff" border="left|right|bottom" border_color="#c2c2c2"/>
+    <normal bg_color="#FFFFFF" border="left|right|bottom" border_color="#C2C2C2"/>
   </style>
 </pages>
 <popup>
@@ -557,13 +562,13 @@
     <normal bg_color="#FFFFFF" border_color="#C2C2C2"/>
   </style>
   <style name="combobox_popup">
-    <normal bg_color="#cccccc" border_color="#cccccc"/>
+    <normal bg_color="#CCCCCC" border_color="#CCCCCC"/>
   </style>
   <style name="dark">
     <normal bg_color="#808080"/>
   </style>
   <style name="menu">
-    <normal bg_color="#ebebeb"/>
+    <normal bg_color="#EBEBEB"/>
   </style>
 </popup>
 <progress_bar>
@@ -633,9 +638,9 @@
     <pressed/>
     <pressed_of_checked icon="uiex_check"/>
   </style>
-  <style name="switch_left" bg_color="#ebebeb" border_color="#c2c2c2" font_size="22" round_radius_bottom_left="4" round_radius_top_left="4" text_color="black">
+  <style name="switch_left" bg_color="#EBEBEB" border_color="#C2C2C2" font_size="22" round_radius_bottom_left="4" round_radius_top_left="4" text_color="#000000">
     <normal/>
-    <disable bg_color="#ebebeb66" border_color="#c2c2c266" text_color="#00000066"/>
+    <disable bg_color="#EBEBEB66" border_color="#C2C2C266" text_color="#00000066"/>
     <disable_of_checked bg_color="#70991866" border_color="#80808066" text_color="#FFFFFFDA"/>
     <normal_of_checked bg_color="#709918" border_color="#808080" text_color="#FFFFFF"/>
     <over/>
@@ -643,9 +648,9 @@
     <pressed x_offset="1" y_offset="1"/>
     <pressed_of_checked bg_color="#709918" border_color="#808080" text_color="#FFFFFF" x_offset="1" y_offset="1"/>
   </style>
-  <style name="switch_right" bg_color="#ebebeb" border_color="#c2c2c2" font_size="22" round_radius_bottom_right="4" round_radius_top_right="4" text_color="black">
+  <style name="switch_right" bg_color="#EBEBEB" border_color="#C2C2C2" font_size="22" round_radius_bottom_right="4" round_radius_top_right="4" text_color="#000000">
     <normal/>
-    <disable bg_color="#ebebeb66" border_color="#c2c2c266" text_color="#00000066"/>
+    <disable bg_color="#EBEBEB66" border_color="#C2C2C266" text_color="#00000066"/>
     <disable_of_checked bg_color="#70991866" border_color="#80808066" text_color="#FFFFFFDA"/>
     <normal_of_checked bg_color="#709918" border_color="#808080" text_color="#FFFFFF"/>
     <over/>
@@ -660,23 +665,22 @@
   </style>
 </rich_text>
 <scroll_bar_d>
-  <style name="default" bg_color="#f2f2f2" border_color="#f2f2f2">
+  <style name="default" bg_color="#F2F2F2" border_color="#F2F2F2">
     <normal/>
-    <disable bg_color="#f2f2f266" border_color="#f2f2f266"/>
+    <disable bg_color="#F2F2F266" border_color="#F2F2F266"/>
     <over/>
     <pressed/>
   </style>
 </scroll_bar_d>
 <scroll_bar_m>
   <style name="default">
-    <normal bg_color="#f2f2f2" fg_color="#808080"/>
-    <disable bg_color="#f2f2f266" fg_color="#80808066"/>
+    <normal bg_color="#F2F2F2" fg_color="#808080"/>
+    <disable bg_color="#F2F2F266" fg_color="#80808066"/>
   </style>
 </scroll_bar_m>
 <scroll_view>
   <style name="default">
     <normal bg_color="#00000000"/>
-    <has_value has_value="1"/>
   </style>
 </scroll_view>
 <slide_indicator>
@@ -699,27 +703,26 @@
 <slide_view>
   <style name="default">
     <normal bg_color="#00000000"/>
-    <has_value has_value="1"/>
   </style>
 </slide_view>
 <slider>
-  <style name="default" bg_color="#d9d9d9" fg_color="#709918" icon="uiex_Sliding_dot" round_radius="5">
+  <style name="default" bg_color="#D9D9D9" fg_color="#709918" icon="uiex_Sliding_dot" round_radius="5">
     <normal/>
-    <disable bg_color="#d9d9d966" fg_color="#70991866"/>
+    <disable bg_color="#D9D9D966" fg_color="#70991866"/>
     <focused/>
     <over/>
     <pressed/>
   </style>
-  <style name="img" bg_color="#d9d9d9" fg_color="#00000000" fg_image="uiex_loading_repeat_bg" fg_image_draw_type="repeat_x" icon="uiex_Sliding_dot" round_radius="5">
+  <style name="img" bg_color="#D9D9D9" fg_color="#00000000" fg_image="uiex_loading_repeat_bg" fg_image_draw_type="repeat_x" icon="uiex_Sliding_dot" round_radius="5">
     <normal/>
-    <disable bg_color="#d9d9d966" fg_color="#70991866"/>
+    <disable bg_color="#D9D9D966" fg_color="#70991866"/>
     <focused/>
     <over/>
     <pressed/>
   </style>
-  <style name="square" bg_color="#d9d9d9" fg_color="#709918" icon="uiex_Sliding_Square" round_radius="5">
+  <style name="square" bg_color="#D9D9D9" fg_color="#709918" icon="uiex_Sliding_Square" round_radius="5">
     <normal/>
-    <disable bg_color="#d9d9d966" fg_color="#70991866"/>
+    <disable bg_color="#D9D9D966" fg_color="#70991866"/>
     <focused/>
     <over/>
     <pressed/>
@@ -735,13 +738,13 @@
     <normal bg_color="#737373" fg_color="#FFFFFF" selected_bg_color="#709918" selected_fg_color="#FFFFFF"/>
     <disable bg_color="#73737366" fg_color="#FFFFFF66" selected_bg_color="#70991866" selected_fg_color="#FFFFFF66"/>
   </style>
-  <style name="img" round_radius="6" bg_image="uiex_switch">
-    <normal/>
+  <style name="img">
+    <normal bg_image="uiex_switch" round_radius="6"/>
   </style>
 </switch>
 <system_bar>
   <style name="default">
-    <normal bg_color="#ebebeb" border="bottom" border_color="#cccccc"/>
+    <normal bg_color="#EBEBEB" border="bottom" border_color="#CCCCCC"/>
   </style>
 </system_bar>
 <tab_button>
@@ -754,6 +757,16 @@
     <over_of_active border="left|right|top" text_color="#1971DD"/>
     <pressed bg_color="#CECDCD"/>
     <pressed_of_active border="left|right|top" text_color="#1971DD"/>
+  </style>
+  <style name="bottom" bg_color="#EBEBEB" border="none" margin_bottom="5" margin_top="5" text_color="#7FAD1C">
+    <normal text_color="#8E8E93"/>
+    <disable bg_color="#EBEBEB66" text_color="#8E8E9366"/>
+    <disable_of_active/>
+    <normal_of_active/>
+    <over text_color="#8E8E93"/>
+    <over_of_active/>
+    <pressed text_color="#8E8E93"/>
+    <pressed_of_active/>
   </style>
   <style name="img_repeat1" bg_color="#00000000" bg_image="repeat1" border_color="#00000000" icon_at="bottom" margin_top="85">
     <normal/>
@@ -795,19 +808,9 @@
     <pressed/>
     <pressed_of_active icon="uiex_arrow_down_p"/>
   </style>
-  <style name="tb_elm" bg_color="#ebebeb" font_size="22" margin_left="20" text_align_h="left" text_color="#333333">
-    <normal/>
-    <disable bg_color="#ebebeb66" text_color="#33333366"/>
-    <disable_of_active bg_color="#80B33F66" text_color="#FFFFFF66"/>
-    <normal_of_active bg_color="#709918" text_color="#FFFFFF"/>
-    <over/>
-    <over_of_active bg_color="#709918" text_color="#FFFFFF"/>
-    <pressed/>
-    <pressed_of_active bg_color="#709918" text_color="#FFFFFF"/>
-  </style>
-  <style name="list_left" bg_color="#ebebeb" border_color="#00000000" font_size="22" margin_left="26" text_align_h="left" text_color="#FFFFFF">
+  <style name="list_left" bg_color="#EBEBEB" border_color="#00000000" font_size="22" margin_left="26" text_align_h="left" text_color="#FFFFFF">
     <normal text_color="#343434"/>
-    <disable bg_color="#ebebeb66" text_color="#34343466"/>
+    <disable bg_color="#EBEBEB66" text_color="#34343466"/>
     <disable_of_active bg_color="#70991866" text_color="#FFFFFF66"/>
     <normal_of_active bg_color="#709918"/>
     <over text_color="#343434"/>
@@ -815,30 +818,30 @@
     <pressed/>
     <pressed_of_active bg_color="#709918"/>
   </style>
-  <style name="bottom" bg_color="#ebebeb" border="none" text_color="#7FAD1C" margin_bottom="5" margin_top="5">
-    <normal text_color="#8E8E93"/>
-    <disable bg_color="#ebebeb66" text_color="#8E8E9366"/>
-    <disable_of_active/>
-    <normal_of_active/>
-    <over text_color="#8E8E93"/>
-    <over_of_active/>
-    <pressed text_color="#8E8E93"/>
-    <pressed_of_active/>
-  </style>
-  <style name="top" bg_color="#ebebeb" border="right|bottom" border_color="#c2c2c2" font_size="22" text_color="#343434">
+  <style name="tb_elm" bg_color="#EBEBEB" font_size="22" margin_left="20" text_align_h="left" text_color="#333333">
     <normal/>
-    <disable bg_color="#ebebeb66" border_color="#c2c2c266" text_color="#34343466"/>
-    <disable_of_active bg_color="#ffffff66" border="right" text_color="#70991866"/>
-    <normal_of_active bg_color="#ffffff" border="right" text_color="#709918"/>
+    <disable bg_color="#EBEBEB66" text_color="#33333366"/>
+    <disable_of_active bg_color="#80B33F66" text_color="#FFFFFF66"/>
+    <normal_of_active bg_color="#709918" text_color="#FFFFFF"/>
     <over/>
-    <over_of_active bg_color="#ffffff" border="right" text_color="#709918"/>
+    <over_of_active bg_color="#709918" text_color="#FFFFFF"/>
     <pressed/>
-    <pressed_of_active bg_color="#ffffff" border="right" text_color="#709918"/>
+    <pressed_of_active bg_color="#709918" text_color="#FFFFFF"/>
   </style>
-  <style name="top2" bg_color="#ebebeb" border="none" border_color="#c2c2c2" border_width="2" font_size="22" text_color="#343434 ">
+  <style name="top" bg_color="#EBEBEB" border="right|bottom" border_color="#C2C2C2" font_size="22" text_color="#343434">
     <normal/>
-    <disable bg_color="#ebebeb66" border_color="#c2c2c266" text_color="#34343466"/>
-    <disable_of_active bg_color="#ebebeb66" border="bottom" border_color="#70991866" text_color="#70991866"/>
+    <disable bg_color="#EBEBEB66" border_color="#C2C2C266" text_color="#34343466"/>
+    <disable_of_active bg_color="#FFFFFF66" border="right" text_color="#70991866"/>
+    <normal_of_active bg_color="#FFFFFF" border="right" text_color="#709918"/>
+    <over/>
+    <over_of_active bg_color="#FFFFFF" border="right" text_color="#709918"/>
+    <pressed/>
+    <pressed_of_active bg_color="#FFFFFF" border="right" text_color="#709918"/>
+  </style>
+  <style name="top2" bg_color="#EBEBEB" border="none" border_color="#C2C2C2" border_width="2" font_size="22" text_color="#343434">
+    <normal/>
+    <disable bg_color="#EBEBEB66" border_color="#C2C2C266" text_color="#34343466"/>
+    <disable_of_active bg_color="#EBEBEB66" border="bottom" border_color="#70991866" text_color="#70991866"/>
     <normal_of_active border="bottom" border_color="#709918" text_color="#709918"/>
     <over/>
     <over_of_active border="bottom" border_color="#709918" text_color="#709918"/>
@@ -848,15 +851,15 @@
 </tab_button>
 <tab_button_group>
   <style name="tab">
-    <normal bg_color="#ebebeb" border="all" border_color="#c2c2c2"/>
+    <normal bg_color="#EBEBEB" border="all" border_color="#C2C2C2"/>
   </style>
   <style name="top">
-    <normal bg_color="#ebebeb" border="left|right|top" border_color="#c2c2c2"/>
+    <normal bg_color="#EBEBEB" border="left|right|top" border_color="#C2C2C2"/>
   </style>
 </tab_button_group>
 <text_selector>
   <style name="default">
-    <normal bg_color="#00000000" border="left|right" border_color="#b3b3b3" fg_color="#00000000" font_size="22" highlight_font_size="26" highlight_text_color="#709918" mask_color="#f7f7f764" text_align_h="center" text_color="black"/>
+    <normal bg_color="#00000000" border="left|right" border_color="#B3B3B3" fg_color="#00000000" font_size="22" highlight_font_size="26" highlight_text_color="#709918" mask_color="#F7F7F764" text_align_h="center" text_color="#000000"/>
   </style>
 </text_selector>
 <view>
@@ -867,7 +870,7 @@
     <normal bg_color="#FFFFFF" border_color="#C2C2C2" border_width="1"/>
   </style>
   <style name="toolbar">
-    <normal border="right" border_color="#cccccc"/>
+    <normal border="right" border_color="#CCCCCC"/>
   </style>
 </view>
 <window>

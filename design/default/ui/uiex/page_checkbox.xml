@@ -13,7 +13,7 @@
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Check Button"/>
       <view h="-22" children_layout="default(r=1,c=0,x=10,y=4,s=10)">
         <check_button name="cb" w="100" tr_text="Book"/>
-		<check_button name="cb1" w="100" tr_text="Pencil"/>
+        <check_button name="cb1" w="100" tr_text="Pencil"/>
         <check_button name="cb2" w="100" tr_text="Food"/>
       </view>
     </view>
@@ -33,7 +33,7 @@
         <view h="118">
           <view name="" x="20" y="0" w="216" h="100%" children_layout="default(r=0,c=1,x=0,y=0,s=1)">
             <check_button name="cb3" style="icon_right" h="36" tr_text="Book"/>
-			<check_button name="cb4" style="icon_right" h="36" tr_text="Pencil"/>
+            <check_button name="cb4" style="icon_right" h="36" tr_text="Pencil"/>
             <check_button name="cb5" style="icon_right" h="36" tr_text="Food"/>
           </view>
         </view>

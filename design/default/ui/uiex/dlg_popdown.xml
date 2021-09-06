@@ -5,7 +5,7 @@
   </dialog_title>
   <dialog_client x="0" y="b" w="100%" h="-36">
     <label x="20" y="20" w="200" h="30" style:normal:text_align_h="left" style="dialog" tr_text="Are you ready?"/>
-    <button name="close()" x="c:45" y="b:25" w="28%" h="30" focusable="true" tr_text="Yes"/>
+    <button name="close()" x="c:45" y="b:25" w="28%" h="30" focusable="true" style="highlight" tr_text="Yes"/>
     <button name="close()" x="c:-45" y="b:25" w="28%" h="30" focusable="true" tr_text="No"/>
   </dialog_client>
 </dialog>

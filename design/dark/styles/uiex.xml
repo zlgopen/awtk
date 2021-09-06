@@ -6,6 +6,13 @@
     <over/>
     <pressed bg_color="#709918" border_color="#00000000" x_offset="1" y_offset="1"/>
   </style>
+  <style name="highlight" bg_color="#709918" border_color="#00000000" font_size="22" round_radius="4" text_color="#ffffff">
+    <normal/>
+    <disable bg_color="#70991866" text_color="#ffffff66"/>
+    <focused/>
+    <over/>
+    <pressed bg_color="#678c16" x_offset="1" y_offset="1"/>
+  </style>
   <style name="close" icon="uiex_close_n" bg_color="#262626" icon_at="center">
     <normal />
     <over />
@@ -374,12 +381,12 @@
 </dialog>
 <dialog_client>
   <style name="default">
-    <normal bg_color="#262626" border="none"/>
+    <normal bg_color="#262626" border="left|right|bottom" border_color="#709918"/>
   </style>
 </dialog_client>
 <dialog_title>
   <style name="default">
-    <normal bg_color="#F5F5F5" font_size="22" margin_left="10" text_align_h="left" text_color="#000000"/>
+    <normal bg_color="#F5F5F5" border="left|right|top" border_color="#709918" font_size="22" margin_left="10" text_align_h="left" text_color="#000000"/>
   </style>
 </dialog_title>
 <digit_clock>
