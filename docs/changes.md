@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/09/06
+  * inline style改用"."分隔，仍然兼容":"，建议用新的方式书写。请参考[样式](theme.md)
+
 2021/09/04
   * 用darray重新实现object\_default。
   * 增加 darray\_find\_ex/darray\_find\_index\_ex/darray\_remove\_ex。

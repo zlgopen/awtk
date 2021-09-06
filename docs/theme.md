@@ -161,29 +161,29 @@ resource_manager_add(theme_default);
 
 * 在 XML UI 描述文件中使用 inline style。
 
-控件的属性名以『style:』开头表示这是一个 inline 属性：
+控件的属性名以『style.』开头表示这是一个 inline 属性：
 
 ```
-style: 状态：名称
+style.状态.名称
 ```
 
 下面表示设置正常状态的字体大小为 16：
 
 ```
-style:normal:font_size="16"
+style.normal.font_size="16"
 ```
 
 状态可以省略，如果省略，表示正常状态 (normal)，下面这个和上面的功能一样：
 
 ```
-style:font_size="16"
+style.font_size="16"
 ```
 
 完整示例：
 
 ```
-<label x="0" y="0" w="100%" h="100%" text="Basic Controls" style:font_size="24" style:text_color="green"/>
-<button name="dec_value" text="Dec" focusable="true" style:focused:text_color="red"/>
+<label x="0" y="0" w="100%" h="100%" text="Basic Controls" style.font_size="24" style.text_color="green"/>
+<button name="dec_value" text="Dec" focusable="true" style.focused.text_color="red"/>
 
 ```
 
@@ -231,7 +231,7 @@ ret_t widget_set_style_str(widget_t* widget, const char* state_and_name, const c
  * 在下面这个例子中，R=0x11 G=0x22 B=0x33 A=0xFF
  * 
  * ```c
- *  widget_set_style_color(label, "normal:bg_color", 0xFF332211);
+ *  widget_set_style_color(label, "normal.bg_color", 0xFF332211);
  * ```
  *
  * @return {ret_t} 返回 RET_OK 表示成功，否则表示失败。
@@ -242,13 +242,14 @@ ret_t widget_set_style_color(widget_t* widget, const char* state_and_name, uint3
 示例：
 
 ```
-  widget_set_style_int(label,  "normal:font_size", 24);
-  widget_set_style_str(label, "normal:text_color", "red");
-  widget_set_style_str(label, "normal:border_color", "#FF0000");
-  widget_set_style_color(label, "normal:bg_color", 0xFF00FF00);
+  widget_set_style_int(label,  "normal.font_size", 24);
+  widget_set_style_str(label, "normal.text_color", "red");
+  widget_set_style_str(label, "normal.border_color", "#FF0000");
+  widget_set_style_color(label, "normal.bg_color", 0xFF00FF00);
 ```
 
 > inline style 会消耗更多内存，而且不方便切换窗体样式，一般应该尽量避免使用。
+> 注意，以前的版本使用:分隔，由于不合XML规范，改为用.分隔，仍然保持对:的兼容。
 
 #### 注意：
 

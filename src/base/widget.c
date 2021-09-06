@@ -1952,7 +1952,7 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
       ret = RET_OK;
     } else if (tk_str_eq(name, WIDGET_PROP_EXEC)) {
       ret = RET_NOT_FOUND;
-    } else if (tk_str_start_with(name, "style:")) {
+    } else if (tk_str_start_with(name, "style:") || tk_str_start_with(name, "style.")) {
       return widget_set_style(widget, name + 6, v);
     } else {
       if (widget->custom_props == NULL) {
@@ -4299,6 +4299,10 @@ ret_t widget_set_style(widget_t* widget, const char* state_and_name, const value
   str[len] = '\0';
 
   name = strchr(str, ':');
+  if (name == NULL) {
+    name = strchr(str, '.');
+  }
+
   if (name != NULL) {
     *name++ = '\0';
     state = str;

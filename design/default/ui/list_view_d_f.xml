@@ -1,5 +1,5 @@
 <window anim_hint="htranslate" >
-  <list_view x="0"  y="0" w="100%" h="200" item_height="60"  floating_scroll_bar="true" auto_hide_scroll_bar="true" style:normal:border_color="#ff0000" >
+  <list_view x="0"  y="0" w="100%" h="200" item_height="60"  floating_scroll_bar="true" auto_hide_scroll_bar="true" style.normal.border_color="#ff0000" >
     <scroll_view name="view" x="0"  y="0" w="-12" h="100%" children_layout="list_view(x_margin=5,spacing=10)">
       <list_item style="odd_clickable" children_layout="default(r=1,c=0)">
         <image draw_type="icon" w="30" image="earth"/>
@@ -64,7 +64,7 @@
     </scroll_view>
     <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" value="0"/>
   </list_view>
-  <list_view x="0"  y="210" w="100%" h="200" item_height="60" floating_scroll_bar="true" auto_hide_scroll_bar="true" style:normal:border_color="#ff0000" >
+  <list_view x="0"  y="210" w="100%" h="200" item_height="60" floating_scroll_bar="true" auto_hide_scroll_bar="true" style.normal.border_color="#ff0000" >
     <scroll_view name="view" x="0"  y="0" w="-12" h="100%" children_layout="list_view(x_margin=5,spacing=10)">
       <list_item style="odd_clickable" children_layout="default(r=1,c=0)">
         <image draw_type="icon" w="30" image="earth"/>
