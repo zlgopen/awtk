@@ -1,0 +1,46 @@
+<window name="menu_landscape" theme="uiex" text="VPage V Translate">
+  <pages name="vpages" x="r" y="40" w="-170" h="-40" style="lucency">
+    <vpage name="page_button" w="100%" h="100%" ui_asset="uiex/page_button" anim_hint="vtranslate" disg:custom="container" tr_text="Button"/>
+    <vpage name="page_checkbox" w="100%" h="100%" ui_asset="uiex/page_checkbox" anim_hint="vtranslate" disg:custom="container" tr_text="Checkbox"/>
+    <vpage name="page_edit" w="100%" h="100%" ui_asset="uiex/page_edit" anim_hint="vtranslate" disg:custom="container" tr_text="Edit"/>
+    <vpage name="page_label" w="100%" h="100%" ui_asset="uiex/page_label" anim_hint="vtranslate" disg:custom="container" tr_text="Label"/>
+    <vpage name="page_progress" w="100%" h="100%" ui_asset="uiex/page_progress" anim_hint="vtranslate" disg:custom="container" tr_text="Progress"/>
+    <vpage name="page_date_time" w="100%" h="100%" ui_asset="uiex/page_date_time" anim_hint="vtranslate" disg:custom="container" tr_text="Date And Time"/>
+    <vpage name="page_slider" w="100%" h="100%" ui_asset="uiex/page_slider" anim_hint="vtranslate" disg:custom="container" tr_text="Slider"/>
+    <vpage name="page_selector" w="100%" h="100%" ui_asset="uiex/page_selector" anim_hint="vtranslate" disg:custom="container" tr_text="Selector"/>
+    <vpage name="page_image" w="100%" h="100%" ui_asset="uiex/page_image" anim_hint="vtranslate" disg:custom="container" tr_text="Image" invisible_in_1m="true"/>
+    <vpage name="page_mledit" w="100%" h="100%" ui_asset="uiex/page_mledit" anim_hint="vtranslate" disg:custom="container" tr_text="MultiLine Edit"/>
+    <vpage name="page_list_view" w="100%" h="100%" ui_asset="uiex/page_list_view" anim_hint="vtranslate" disg:custom="container" tr_text="List View" invisible_in_1m="true"/>
+    <vpage name="page_slide_view" w="100%" h="100%" ui_asset="uiex/page_slide_view" anim_hint="vtranslate" disg:custom="container" tr_text="Slide View" invisible_in_1m="true"/>
+    <vpage name="page_tab_ctrl" w="100%" h="100%" ui_asset="uiex/page_tab_ctrl" anim_hint="vtranslate" disg:custom="container" tr_text="Tab Control"/>
+    <vpage name="page_color" w="100%" h="100%" ui_asset="uiex/page_color" anim_hint="vtranslate" disg:custom="container" tr_text="Color"/>
+    <vpage name="page_animate" w="100%" h="100%" ui_asset="uiex/page_animate" anim_hint="vtranslate" disg:custom="container" tr_text="Animate"/>
+    <vpage name="page_layout" w="100%" h="100%" ui_asset="uiex/page_layout" anim_hint="vtranslate" disg:custom="container" tr_text="Layout"/>
+    <vpage name="page_chart" w="100%" h="100%" ui_asset="uiex/page_chart" anim_hint="vtranslate" disg:custom="container" tr_text="Chart"/>
+    <vpage name="page_window" w="100%" h="100%" ui_asset="uiex/page_window" anim_hint="vtranslate" disg:custom="container" tr_text="Window"/>
+  </pages>
+  <label name="lb_menu_ti" h="40" style="menu_title" x="170" y="0" w="-170" tr_text="Title"/>
+  <list_view h="100%" item_height="40" auto_hide_scroll_bar="true" name="menu" x="0" y="0" w="170" style="menu">
+    <scroll_view name="view_menu" x="0" y="0" w="100%" h="100%" children_layout="list_view(i=0,d=0,x=0,y=0,s=1)">
+      <tab_button name="tb_button" style="tb_elm" value="true" tr_text="Button"/>
+      <tab_button name="tb_checkbox" style="tb_elm" tr_text="Checkbox"/>
+      <tab_button name="tb_edit" style="tb_elm" tr_text="Edit"/>
+      <tab_button name="tb_label" style="tb_elm" tr_text="Label"/>
+      <tab_button name="tb_progress" style="tb_elm" tr_text="Progress"/>
+      <tab_button name="tb_date_time" style="tb_elm" tr_text="Date And Time"/>
+      <tab_button name="tb_slider" style="tb_elm" tr_text="Slider"/>
+      <tab_button name="tb_selector" style="tb_elm" tr_text="Selector"/>
+      <tab_button name="tb_image" style="tb_elm" tr_text="Image" invisible_in_1m="true"/>
+      <tab_button name="tb_mledit" style="tb_elm" tr_text="MultiLine Edit"/>
+      <tab_button name="tb_list_view" style="tb_elm" tr_text="List View" invisible_in_1m="true"/>
+      <tab_button name="tb_slide_view" style="tb_elm" tr_text="Slide View" invisible_in_1m="true"/>
+      <tab_button name="tb_tab_ctrl" style="tb_elm" tr_text="Tab Control"/>
+      <tab_button name="tb_color" style="tb_elm" tr_text="Color"/>
+      <tab_button name="tb_animate" style="tb_elm" tr_text="Animate"/>
+      <tab_button name="tb_layout" style="tb_elm" tr_text="Layout"/>
+      <tab_button name="tb_chart" style="tb_elm" tr_text="Chart"/>
+      <tab_button name="tb_window" style="tb_elm" tr_text="Window"/>
+    </scroll_view>
+    <scroll_bar_m name="bar" x="r" y="0" w="7" h="100%" max="1000"/>
+  </list_view>
+</window>

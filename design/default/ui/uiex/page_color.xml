@@ -1,0 +1,86 @@
+<?xml parent="{&quot;x&quot;:&quot;0&quot;,&quot;y&quot;:&quot;0&quot;,&quot;w&quot;:&quot;100%&quot;,&quot;h&quot;:&quot;100%&quot;,&quot;name&quot;:&quot;page_color&quot;,&quot;theme&quot;:&quot;uiex&quot;}"?>
+<list_view name="list_view" x="0" y="0" w="100%" h="100%" default_item_height="300">
+  <scroll_view name="scroll_view" x="0" y="0" w="100%" h="100%" children_layout="list_view(i=0,d=300,x=0,y=10,s=24)">
+    <view name="view_linear_gradient" h="172">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" x="0" y="0" w="100%" tr_text="Linear Gradient"/>
+      <canvas name="paint_linear_gradient" h="-45" x="20" y="45" w="-40"/>
+    </view>
+    <view name="view_radial_gradient" h="172">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" x="0" y="0" w="100%" tr_text="Radial Gradient"/>
+      <canvas name="paint_radial_gradient" h="-45" x="20" y="45" w="-40"/>
+    </view>
+    <view name="view_stroke_gradient" h="272">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" x="0" y="0" w="800" tr_text="Stroke Gradient"/>
+      <canvas name="paint_stroke_gradient" h="-45" w="-40" x="20" y="45"/>
+    </view>
+    <view name="view_color_picker" h="570">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" x="0" y="0" w="100%" tr_text="Color Picker"/>
+      <color_picker h="-42" value="orange" x="20" y="42" w="-40">
+        <color_component x="0" y="0" w="200" h="200" name="sv" style="default"/>
+        <color_component x="210" y="0" w="20" h="200" name="h"/>
+        <view name="" x="0" y="210" w="100%" h="72">
+          <color_tile x="0" y="0" w="36" h="36" name="new" bg_color="#709918" style:normal:border="left|right|top">
+            <label x="r:-46" y="0" w="100%" h="100%" style:normal:text_align_h="left" tr_text="New"/>
+          </color_tile>
+          <color_tile x="0" y="36" w="36" h="36" name="old" bg_color="#709918" style="default" style:normal:border="left|right|bottom">
+            <label x="r:-46" y="0" w="100%" h="100%" style:normal:text_align_h="left" tr_text="Current"/>
+          </color_tile>
+          <edit x="r" y="36" w="120" h="36" name="new" input_type="hex" style:normal:font_size="18" keyboard="uiex/kb_hex">
+            <label x="-16" y="0" w="8" h="100%" style:normal:text_align_h="left" text="#"/>
+          </edit>
+        </view>
+        <view x="0" y="290" w="100%" h="-290" children_layout="default(r=0,c=1,x=0,y=0,s=4)">
+          <view h="36">
+            <label x="0" y="middle" w="30" h="100%" text="R"/>
+            <edit name="r" x="40" y="middle" w="96" h="100%" input_type="uint" step="1" auto_fix="true" keyboard="uiex/kb_uint" min="0" max="255">
+              <button name="inc" repeat="300" style="spinbox_up" x="r" y="0" w="30" h="50%"/>
+              <button name="dec" repeat="300" style="spinbox_down" x="r" y="b" w="30" h="50%"/>
+            </edit>
+            <slider name="r" x="140" y="middle" w="-140" h="16"/>
+          </view>
+          <view h="36">
+            <label x="0" y="middle" w="30" h="100%" text="G"/>
+            <edit name="g" x="40" y="middle" w="96" h="100%" input_type="uint" step="1" auto_fix="true" keyboard="uiex/kb_uint" min="0" max="255">
+              <button name="inc" repeat="300" style="spinbox_up" x="r" y="0" w="30" h="50%"/>
+              <button name="dec" repeat="300" style="spinbox_down" x="r" y="b" w="30" h="50%"/>
+            </edit>
+            <slider name="g" x="140" y="middle" w="-140" h="16"/>
+          </view>
+          <view h="36">
+            <label x="0" y="middle" w="30" h="100%" text="B"/>
+            <edit name="b" x="40" y="middle" w="96" h="100%" input_type="uint" step="1" auto_fix="true" keyboard="uiex/kb_uint" min="0" max="255">
+              <button name="inc" repeat="300" style="spinbox_up" x="r" y="0" w="30" h="50%"/>
+              <button name="dec" repeat="300" style="spinbox_down" x="r" y="b" w="30" h="50%"/>
+            </edit>
+            <slider name="b" x="140" y="middle" w="-140" h="16"/>
+          </view>
+          <view h="36">
+            <label x="0" y="middle" w="30" h="100%" text="H"/>
+            <edit name="h" x="40" y="middle" w="96" h="100%" input_type="uint" step="1" auto_fix="true" keyboard="uiex/kb_uint" min="0" max="255">
+              <button name="inc" repeat="300" style="spinbox_up" x="r" y="0" w="30" h="50%"/>
+              <button name="dec" repeat="300" style="spinbox_down" x="r" y="b" w="30" h="50%"/>
+            </edit>
+            <slider name="h" x="140" y="middle" w="-140" h="16"/>
+          </view>
+          <view h="36">
+            <label x="0" y="middle" w="30" h="100%" text="S"/>
+            <edit name="s" x="40" y="middle" w="96" h="100%" input_type="uint" step="1" auto_fix="true" keyboard="uiex/kb_uint" min="0" max="255">
+              <button name="inc" repeat="300" style="spinbox_up" x="r" y="0" w="30" h="50%"/>
+              <button name="dec" repeat="300" style="spinbox_down" x="r" y="b" w="30" h="50%"/>
+            </edit>
+            <slider name="s" x="140" y="middle" w="-140" h="16"/>
+          </view>
+          <view h="36">
+            <label x="0" y="middle" w="30" h="100%" text="V"/>
+            <edit name="v" x="40" y="middle" w="96" h="100%" input_type="uint" step="1" auto_fix="true" keyboard="uiex/kb_uint" min="0" max="255">
+              <button name="inc" repeat="300" style="spinbox_up" x="r" y="0" w="30" h="50%"/>
+              <button name="dec" repeat="300" style="spinbox_down" x="r" y="b" w="30" h="50%"/>
+            </edit>
+            <slider name="v" x="140" y="middle" w="-140" h="16"/>
+          </view>
+        </view>
+      </color_picker>
+    </view>
+  </scroll_view>
+  <scroll_bar_m name="bar" x="r" y="0" w="7" h="100%" max="1000"/>
+</list_view>

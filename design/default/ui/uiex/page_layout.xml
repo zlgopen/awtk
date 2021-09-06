@@ -1,0 +1,70 @@
+<?xml parent="{&quot;x&quot;:&quot;0&quot;,&quot;y&quot;:&quot;0&quot;,&quot;w&quot;:&quot;100%&quot;,&quot;h&quot;:&quot;100%&quot;,&quot;name&quot;:&quot;page_layout&quot;,&quot;theme&quot;:&quot;uiex&quot;}"?>
+<list_view name="list_view" x="0" y="0" w="100%" h="100%">
+  <scroll_view name="scroll_view" x="0" y="0" w="100%" h="100%" children_layout="list_view(i=0,d=66,x=0,y=10,s=20)">
+    <view name="view_h_layout" children_layout="default(r=0,c=1,x=0,y=0,s=10)" h="176">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" style:normal:margin_left="20" tr_text="Horizontal Layout"/>
+      <view name="" h="-22" children_layout="default(r=0,c=1,x=20,y=0,s=10)">
+        <view h="40" children_layout="default(r=1,c=0,x=0,y=0,s=1)" style="layout_view">
+          <label w="25%" style="layout_fill_green0" text="25%"/>
+          <label w="25%" style="layout_fill_green1" text="25%"/>
+          <label w="25%" style="layout_fill_green2" text="25%"/>
+          <label w="20%" style="layout_fill_green3" text="20%"/>
+        </view>
+        <view h="40" children_layout="default(r=1,c=0,x=0,y=0,s=1)" style="layout_view">
+          <label w="15%" style="layout_fill_green0" text="15%"/>
+          <label w="45%" style="layout_fill_green1" text="45%"/>
+          <label w="30%" style="layout_fill_green2" text="30%"/>
+        </view>
+        <view h="40" children_layout="default(r=1,c=0,x=0,y=0,s=1)" style="layout_view">
+          <label w="75" style="layout_fill_green0" text="75"/>
+          <label w="50" style="layout_fill_green1" text="50"/>
+          <label w="100" style="layout_fill_green2" text="100"/>
+        </view>
+      </view>
+    </view>
+    <view name="view_v_layout" children_layout="default(r=0,c=1,x=0,y=0,s=10)" h="336">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Vertical Layout"/>
+      <view h="300" children_layout="default(r=1,c=0,x=20,y=0,s=35)">
+        <view children_layout="default(r=0,c=1,x=0,y=0,s=1)" w="70" style="layout_view">
+          <label style="layout_fill_green0" h="25%" text="25%"/>
+          <label style="layout_fill_green1" h="25%" text="25%"/>
+          <label style="layout_fill_green2" h="25%" text="25%"/>
+          <label style="layout_fill_green3" h="25%" text="25%"/>
+        </view>
+        <view children_layout="default(r=0,c=1,x=0,y=0,s=1)" w="70" style="layout_view">
+          <label style="layout_fill_green0" h="15%" text="15%"/>
+          <label style="layout_fill_green1" h="45%" text="45%"/>
+          <label style="layout_fill_green2" h="30%" text="30%"/>
+        </view>
+        <view children_layout="default(r=0,c=1,x=0,y=0,s=1)" w="70" style="layout_view">
+          <label style="layout_fill_green0" h="100" text="100"/>
+          <label style="layout_fill_green1" h="30" text="30"/>
+          <label style="layout_fill_green2" h="75" text="75"/>
+        </view>
+      </view>
+    </view>
+    <view name="view_grid_layout" children_layout="default(r=0,c=1,x=0,y=0,s=10)" h="222">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" style:normal:margin_left="20" tr_text="Grid Layout"/>
+      <view name="" h="-22" children_layout="default(r=0,c=1,x=20,y=0,s=10)">
+        <view h="80" children_layout="default(c=4,r=2,x=0,y=0,s=1)" style="layout_view">
+          <label style="layout_fill_green0" text="1/8"/>
+          <label style="layout_fill_green1" text="1/8"/>
+          <label style="layout_fill_green2" text="1/8"/>
+          <label style="layout_fill_green3" text="1/8"/>
+          <label style="layout_fill_green4" text="1/8"/>
+          <label style="layout_fill_green0" text="1/8"/>
+        </view>
+        <view h="100" children_layout="default(w=100,h=50,x=0,y=0,s=1)" style="layout_view">
+          <label style="layout_fill_green0" text="100*50"/>
+          <label style="layout_fill_green1" text="100*50"/>
+          <label style="layout_fill_green2" text="100*50"/>
+          <label style="layout_fill_green3" text="100*50"/>
+          <label style="layout_fill_green4" text="100*50"/>
+          <label style="layout_fill_green0" text="100*50"/>
+          <label style="layout_fill_green1" text="100*50"/>
+        </view>
+      </view>
+    </view>
+  </scroll_view>
+  <scroll_bar_m name="bar" x="r" y="0" w="7" h="100%" max="1000"/>
+</list_view>

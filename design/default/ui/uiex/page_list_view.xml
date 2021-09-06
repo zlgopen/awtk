@@ -1,0 +1,48 @@
+<?xml parent="{&quot;x&quot;:&quot;0&quot;,&quot;y&quot;:&quot;0&quot;,&quot;w&quot;:&quot;100%&quot;,&quot;h&quot;:&quot;100%&quot;,&quot;name&quot;:&quot;page_list_view&quot;,&quot;theme&quot;:&quot;uiex&quot;}"?>
+<list_view name="list_view" default_item_height="36" x="0" y="0" w="100%" h="100%">
+  <scroll_view name="scroll_view" x="0" y="0" w="-12" h="100%">
+    <list_item style="list_view_option" tr_text="My device">
+      <image name="image" x="20" y="m" w="28" h="28" draw_type="scale_auto" image="uiex_List_Mydevice"/>
+    </list_item>
+    <view name="sep">
+      <label x="20" y="m" w="-40" h="1" style="sep"/>
+    </view>
+    <list_item style="list_view_option" text="WLAN">
+      <image name="image" x="20" y="m" w="28" h="28" draw_type="scale_auto" image="uiex_List_WLAN"/>
+    </list_item>
+    <list_item style="list_view_option" tr_text="Bluetooth">
+      <image name="image" x="20" y="m" w="28" h="28" draw_type="scale_auto" image="uiex_List_Bluetooth"/>
+    </list_item>
+    <list_item style="list_view_option" tr_text="Connection &amp; sharing">
+      <image name="image" x="20" y="m" w="28" h="28" draw_type="scale_auto" image="uiex_List_Connectandshare"/>
+    </list_item>
+    <view name="sep">
+      <label x="20" y="m" w="-40" h="1" style:normal:text_color="#00000000" style="sep"/>
+    </view>
+    <list_item style="list_view_option" tr_text="Display">
+      <image name="image" x="20" y="m" w="28" h="28" draw_type="scale_auto" image="uiex_List_show"/>
+    </list_item>
+    <list_item style="list_view_option" tr_text="Sound &amp; touch">
+      <image name="image" x="20" y="m" w="28" h="28" draw_type="scale_auto" image="uiex_List_sound"/>
+    </list_item>
+    <list_item style="list_view_option" tr_text="Home screen">
+      <image name="image" x="20" y="m" w="28" h="28" draw_type="scale_auto" image="uiex_List_desktop"/>
+    </list_item>
+    <view name="sep">
+      <label x="20" y="m" w="-40" h="1" style:normal:text_color="#00000000" style="sep"/>
+    </view>
+    <list_item style="list_view_option" tr_text="Passwords &amp; security">
+      <image name="image" x="20" y="m" w="28" h="28" draw_type="scale_auto" image="uiex_List_password"/>
+    </list_item>
+    <list_item style="list_view_option" tr_text="Privacy protection">
+      <image name="image" x="20" y="m" w="28" h="28" draw_type="scale_auto" image="uiex_List_privacyprotection"/>
+    </list_item>
+    <list_item style="list_view_option" tr_text="Battery">
+      <image name="image" x="20" y="m" w="28" h="28" draw_type="scale_auto" image="uiex_list_Battery"/>
+    </list_item>
+    <list_item style="list_view_option" tr_text="Additional settings">
+      <image name="image" x="20" y="m" w="28" h="28" draw_type="scale_auto" image="uiex_List_Moresettings"/>
+    </list_item>
+  </scroll_view>
+  <scroll_bar_m name="scroll_bar_m" x="r" y="0" w="7" h="100%" max="1000"/>
+</list_view>

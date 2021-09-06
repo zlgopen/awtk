@@ -1,0 +1,4 @@
+<overlay name="overlay" theme="uiex" x="r" y="m" w="71" h="71" click_through="true" style="lucency">
+  <draggable drag_window="true"/>
+  <image x="0" y="0" w="100%" h="100%" image="uiex_Coverwindow" draw_type="center"/>
+</overlay>

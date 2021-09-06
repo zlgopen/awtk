@@ -1,0 +1,27 @@
+<?xml parent="{&quot;x&quot;:&quot;0&quot;,&quot;y&quot;:&quot;0&quot;,&quot;w&quot;:&quot;100%&quot;,&quot;h&quot;:&quot;100%&quot;,&quot;name&quot;:&quot;page_window&quot;,&quot;theme&quot;:&quot;uiex&quot;}"?>
+<list_view name="list_view" x="0" y="0" w="100%" h="100%" default_item_height="62">
+  <scroll_view name="scroll_view" x="0" y="0" w="100%" h="100%" children_layout="list_view(i=0,d=71,x=0,y=10,s=24)">
+    <view name="view_overlay" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="71">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Overlay"/>
+      <grid h="-22" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
+        <check_button name="open:uiex/overlay" style="like_btn" tr_text="Overlay"/>
+      </grid>
+    </view>
+    <view name="view_popup" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="71" invisible_in_1m="true">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Popup"/>
+      <grid h="36" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
+        <button name="open:uiex/popup" tr_text="Popup"/>
+      </grid>
+    </view>
+    <grid name="view_dialog" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="71">
+      <hscroll_label style="title" loop="true" yoyo="true" h="22" tr_text="Dialog"/>
+      <grid children_layout="default(w=100,h=36,x=20,y=0,s=20)" h="36">
+        <button name="open:toast" tr_text="Toast"/>
+        <button name="open:confirm" tr_text="Confirm"/>
+        <button name="open:info" tr_text="info"/>
+        <button name="open:warn" tr_text="Warning"/>
+      </grid>
+    </grid>
+  </scroll_view>
+  <scroll_bar_m name="bar" x="r" y="0" w="7" h="100%" max="1000"/>
+</list_view>

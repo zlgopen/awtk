@@ -1,0 +1,3 @@
+<window name="vtranslate" theme="uiex" style="default" anim_hint="vtranslate" style:normal:bg_image_draw_type="center" style:normal:bg_image="bg2">
+  <button name="close()" x="r:20" y="20" w="20" h="20" style="close"/>
+</window>

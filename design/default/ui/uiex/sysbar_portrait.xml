@@ -1,0 +1,7 @@
+<system_bar name="sysbar_landscape" theme="uiex" h="50" children_layout="default(r=0,c=1,x=0,y=0,s=0)">
+  <view h="100%">
+    <image name="img_logo" x="40" y="m" w="147" h="35" draw_type="center" image="uiex_logo"/>
+    <digit_clock x="r" y="m" w="100" h="36" format="hh:mm:ss" name="clk" style="sysbar"/>
+    <button name="btn_menu_on" h="15" x="10" y="m" w="15" style="menu_on" style:normal:icon_at="auto"/>
+  </view>
+</system_bar>

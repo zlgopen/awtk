@@ -1,0 +1,39 @@
+<?xml parent="{&quot;x&quot;:&quot;0&quot;,&quot;y&quot;:&quot;0&quot;,&quot;w&quot;:&quot;100%&quot;,&quot;h&quot;:&quot;100%&quot;,&quot;name&quot;:&quot;page_selector&quot;,&quot;theme&quot;:&quot;uiex&quot;}"?>
+<list_view name="list_view" x="0" y="0" w="100%" h="100%">
+  <scroll_view name="scroll_view" x="0" y="0" w="100%" h="100%" children_layout="list_view(i=0,d=66,x=0,y=10,s=24)">
+    <view name="view_text_selector" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="175">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Text Selector"/>
+      <view name="" h="-22">
+        <label name="lb_mask" h="30" w="208" x="20" y="m" style="text_selector_mask" text=""/>
+        <view h="100%" children_layout="default(r=1,c=0,x=20,y=4,s=0)" x="0" y="0" w="100%">
+          <text_selector text="2021" loop_options="true" animating_time="200" w="70" name="ts_year" style:normal:border="left" options="2000-2050"/>
+          <text_selector loop_options="true" animation="selected_index(duration=12000,repeat_times=0,easing=linear,auto_destroy=false,from=11,to=0)" w="70" name="ts_month" options="1-12-%02d"/>
+          <text_selector loop_options="true" animation="selected_index(duration=30000,repeat_times=0,easing=linear,auto_destroy=false,from=0,to=30)" w="70" name="ts_day" style:normal:border="right" options="1-31-%02d"/>
+        </view>
+      </view>
+    </view>
+    <view name="view_slide_menu" children_layout="default(r=0,c=1,x=0,y=0,s=0)" h="92" invisible_in_1m="true">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Slide Menu"/>
+      <view h="-22" style="default">
+        <slide_menu style="default" align_v="middle" h="100%" x="0" y="0" w="320">
+          <view children_layout="default(c=1,r=1,x=5,y=5,s=0)">
+            <image draw_type="scale_auto" image="app1"/>
+          </view>
+          <view children_layout="default(c=1,r=1,x=5,y=5,s=0)">
+            <image draw_type="scale_auto" image="app2"/>
+          </view>
+          <view children_layout="default(c=1,r=1,x=5,y=5,s=0)">
+            <image draw_type="scale_auto" image="app3"/>
+          </view>
+          <view children_layout="default(c=1,r=1,x=5,y=5,s=0)">
+            <image draw_type="scale_auto" image="app4"/>
+          </view>
+          <view children_layout="default(c=1,r=1,x=5,y=5,s=0)">
+            <image draw_type="scale_auto" image="app5"/>
+          </view>
+        </slide_menu>
+      </view>
+    </view>
+  </scroll_view>
+  <scroll_bar_m name="bar" x="r" y="0" w="7" h="100%" max="1000"/>
+</list_view>

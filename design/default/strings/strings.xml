@@ -1,62 +1,51 @@
 <string name="Clone">
-<language name="en_US">Clone</language>
-<language name="zh_CN">克隆</language>
+  <language name="en_US">Clone</language>
+  <language name="zh_CN">克隆</language>
 </string>
-
 <string name="ok">
-<language name="en_US">OK</language>
-<language name="zh_CN">确定</language>
+  <language name="en_US">OK</language>
+  <language name="zh_CN">确定</language>
 </string>
 <string name="next">
-<language name="en_US">Next</language>
-<language name="zh_CN">下一个</language>
+  <language name="en_US">Next</language>
+  <language name="zh_CN">下一个</language>
 </string>
-
 <string name="done">
-<language name="en_US">Done</language>
-<language name="zh_CN">完成</language>
+  <language name="en_US">Done</language>
+  <language name="zh_CN">完成</language>
 </string>
-
 <string name="cancel">
-<language name="en_US">Cancel</language>
-<language name="zh_CN">取消</language>
+  <language name="en_US">Cancel</language>
+  <language name="zh_CN">取消</language>
 </string>
-
 <string name="info">
-<language name="en_US">Information</language>
-<language name="zh_CN">温馨提示</language>
+  <language name="en_US">Information</language>
+  <language name="zh_CN">温馨提示</language>
 </string>
-
 <string name="hello awtk">
-<language name="en_US">Hello AWTK</language>
-<language name="zh_CN">你好，AWTK</language>
+  <language name="en_US">Hello AWTK</language>
+  <language name="zh_CN">你好，AWTK</language>
 </string>
-
 <string name="value is %d">
-<language name="en_US">value is %d</language>
-<language name="zh_CN">值为%d</language>
+  <language name="en_US">value is %d</language>
+  <language name="zh_CN">值为%d</language>
 </string>
-
 <string name="chinese">
-<language name="en_US">Chinese</language>
-<language name="zh_CN">中文</language>
+  <language name="en_US">Chinese</language>
+  <language name="zh_CN">中文</language>
 </string>
-
 <string name="english">
-<language name="en_US">English</language>
-<language name="zh_CN">英文</language>
+  <language name="en_US">English</language>
+  <language name="zh_CN">英文</language>
 </string>
-
 <string name="name">
-<language name="en_US">Name</language>
-<language name="zh_CN">名称</language>
+  <language name="en_US">Name</language>
+  <language name="zh_CN">名称</language>
 </string>
-
 <string name="desc">
-<language name="en_US">Description</language>
-<language name="zh_CN">描述信息</language>
+  <language name="en_US">Description</language>
+  <language name="zh_CN">描述信息</language>
 </string>
-
 <string name="multi line text">
   <language name="en_US">
 it
@@ -67,8 +56,879 @@ Translate text
 (center)
   </language>
 </string>
-
-<string name="&lt;&quot;en&amp;zh&quot;&gt;">
-<language name="en_US">&lt;&quot;en&amp;zh&quot;&gt;</language>
-<language name="zh_CN">&lt;&quot;英文&amp;中文&quot;&gt;</language>
+<string name="<&quot;en&amp;zh&quot;>">
+  <language name="en_US">&lt;"en&amp;zh"&gt;</language>
+  <language name="zh_CN">&lt;"英文&amp;中文"&gt;</language>
+</string>
+<string name="Style">
+  <language name="zh_CN">风格</language>
+  <language name="en_US">Style</language>
+</string>
+<string name="Light">
+  <language name="zh_CN">浅色</language>
+  <language name="en_US">Light</language>
+</string>
+<string name="Light Style">
+  <language name="zh_CN">浅色风格</language>
+  <language name="en_US">Light Style</language>
+</string>
+<string name="Dark">
+  <language name="zh_CN">深色</language>
+  <language name="en_US">Dark</language>
+</string>
+<string name="Dark Style">
+  <language name="zh_CN">深色风格</language>
+  <language name="en_US">Dark Style</language>
+</string>
+<string name="Language">
+  <language name="zh_CN">语言</language>
+  <language name="en_US">Lang</language>
+</string>
+<string name="Chinese">
+  <language name="zh_CN">中文</language>
+  <language name="en_US">Chinese</language>
+</string>
+<string name="English">
+  <language name="zh_CN">英文</language>
+  <language name="en_US">English</language>
+</string>
+<string name="Base">
+  <language name="zh_CN">基础控件</language>
+  <language name="en_US">Base</language>
+</string>
+<string name="Button">
+  <language name="zh_CN">按钮</language>
+  <language name="en_US">Button</language>
+</string>
+<string name="Checkbox">
+  <language name="zh_CN">选择按钮</language>
+  <language name="en_US">Checkbox</language>
+</string>
+<string name="Edit">
+  <language name="zh_CN">单行编辑器</language>
+  <language name="en_US">Edit</language>
+</string>
+<string name="Label">
+  <language name="zh_CN">文本</language>
+  <language name="en_US">Label</language>
+</string>
+<string name="Progress">
+  <language name="zh_CN">进度条</language>
+  <language name="en_US">Progress</language>
+</string>
+<string name="Date And Time">
+  <language name="zh_CN">时间和日期</language>
+  <language name="en_US">Date And Time</language>
+</string>
+<string name="Slider">
+  <language name="zh_CN">滑动条</language>
+  <language name="en_US">Slider</language>
+</string>
+<string name="Selector">
+  <language name="zh_CN">选择器</language>
+  <language name="en_US">Selector</language>
+</string>
+<string name="Image">
+  <language name="zh_CN">图片</language>
+  <language name="en_US">Image</language>
+</string>
+<string name="MultiLine Edit">
+  <language name="zh_CN">多行编辑器</language>
+  <language name="en_US">MultiLine Edit</language>
+</string>
+<string name="List View">
+  <language name="zh_CN">列表视图</language>
+  <language name="en_US">List View</language>
+</string>
+<string name="Slide View">
+  <language name="zh_CN">滑动视图</language>
+  <language name="en_US">Slide View</language>
+</string>
+<string name="Tab Control">
+  <language name="zh_CN">选项卡</language>
+  <language name="en_US">Tab Control</language>
+</string>
+<string name="Color">
+  <language name="zh_CN">颜色</language>
+  <language name="en_US">Color</language>
+</string>
+<string name="Animate">
+  <language name="zh_CN">动画</language>
+  <language name="en_US">Animate</language>
+</string>
+<string name="Layout">
+  <language name="zh_CN">布局</language>
+  <language name="en_US">Layout</language>
+</string>
+<string name="Chart">
+  <language name="zh_CN">图表</language>
+  <language name="en_US">Chart</language>
+</string>
+<string name="Window">
+  <language name="zh_CN">窗口</language>
+  <language name="en_US">Window</language>
+</string>
+<string name="Widget Move">
+  <language name="zh_CN">控件移动</language>
+  <language name="en_US">Widget Move</language>
+</string>
+<string name="Widget Fade">
+  <language name="zh_CN">控件淡入淡出</language>
+  <language name="en_US">Widget Fade</language>
+</string>
+<string name="Widget Value Change">
+  <language name="zh_CN">控件值改变</language>
+  <language name="en_US">Widget Value Change</language>
+</string>
+<string name="Window None">
+  <language name="zh_CN">窗口无动画</language>
+  <language name="en_US">Window None</language>
+</string>
+<string name="None">
+  <language name="zh_CN">无</language>
+  <language name="en_US">None</language>
+</string>
+<string name="Window Center Scale">
+  <language name="zh_CN">窗口剧中拉伸</language>
+  <language name="en_US">Window Center Scale</language>
+</string>
+<string name="Center Scale">
+  <language name="zh_CN">剧中拉伸</language>
+  <language name="en_US">C Scale</language>
+</string>
+<string name="Window Fade">
+  <language name="zh_CN">窗口淡入淡出</language>
+  <language name="en_US">Window Fade</language>
+</string>
+<string name="Fade">
+  <language name="zh_CN">淡入淡出</language>
+  <language name="en_US">Fade</language>
+</string>
+<string name="Window Popup">
+  <language name="zh_CN">窗口向上弹出</language>
+  <language name="en_US">Window Popup</language>
+</string>
+<string name="popup">
+  <language name="zh_CN">向上弹出</language>
+  <language name="en_US">Popup</language>
+</string>
+<string name="Window Popdown">
+  <language name="zh_CN">窗口向下弹出</language>
+  <language name="en_US">Window Popdown</language>
+</string>
+<string name="popdown">
+  <language name="zh_CN">向下弹出</language>
+  <language name="en_US">Popdown</language>
+</string>
+<string name="Window Htranslate">
+  <language name="zh_CN">窗口水平移动</language>
+  <language name="en_US">Window Htranslate</language>
+</string>
+<string name="Htranslate">
+  <language name="zh_CN">水平移动</language>
+  <language name="en_US">Htranslate</language>
+</string>
+<string name="Window Vtranslate">
+  <language name="zh_CN">窗口垂直移动</language>
+  <language name="en_US">Window Vtranslate</language>
+</string>
+<string name="Vtranslate">
+  <language name="zh_CN">垂直移动</language>
+  <language name="en_US">Vtranslate</language>
+</string>
+<string name="Window Slide Left">
+  <language name="zh_CN">窗口向左滑动</language>
+  <language name="en_US">Window Slide Left</language>
+</string>
+<string name="Slide Left">
+  <language name="zh_CN">向左滑动</language>
+  <language name="en_US">Slide Left</language>
+</string>
+<string name="Window Slide Right">
+  <language name="zh_CN">窗口向右滑动</language>
+  <language name="en_US">Window Slide Right</language>
+</string>
+<string name="Slide Right">
+  <language name="zh_CN">向右滑动</language>
+  <language name="en_US">Slide Right</language>
+</string>
+<string name="Window Slide Up">
+  <language name="zh_CN">窗口向上滑动</language>
+  <language name="en_US">Window Slide Up</language>
+</string>
+<string name="Slide Up">
+  <language name="zh_CN">向上滑动</language>
+  <language name="en_US">Slide Up</language>
+</string>
+<string name="Window Slide Down">
+  <language name="zh_CN">窗口向下滑动</language>
+  <language name="en_US">Window Slide Down</language>
+</string>
+<string name="Slide Down">
+  <language name="zh_CN">向下滑动</language>
+  <language name="en_US">Slide Down</language>
+</string>
+<string name="Square Button">
+  <language name="zh_CN">矩形按钮</language>
+  <language name="en_US">Square Button</language>
+</string>
+<string name="Rounded Button">
+  <language name="zh_CN">圆角按钮</language>
+  <language name="en_US">Rounded Button</language>
+</string>
+<string name="Button With Icon">
+  <language name="zh_CN">贴图按钮</language>
+  <language name="en_US">Button With Icon</language>
+</string>
+<string name="Button With Icon And Text">
+  <language name="zh_CN">贴图与文字混合按钮</language>
+  <language name="en_US">Button With Icon And Text</language>
+</string>
+<string name="Switch">
+  <language name="zh_CN">开关</language>
+  <language name="en_US">Switch</language>
+</string>
+<string name="Gauge">
+  <language name="zh_CN">计量表</language>
+  <language name="en_US">Gauge</language>
+</string>
+<string name="Radio Button">
+  <language name="zh_CN">单选按钮</language>
+  <language name="en_US">Radio Button</language>
+</string>
+<string name="Small">
+  <language name="zh_CN">小</language>
+  <language name="en_US">Small</language>
+</string>
+<string name="Normal">
+  <language name="zh_CN">中</language>
+  <language name="en_US">Normal</language>
+</string>
+<string name="Big">
+  <language name="zh_CN">大</language>
+  <language name="en_US">Big</language>
+</string>
+<string name="Check Button">
+  <language name="zh_CN">多选按钮</language>
+  <language name="en_US">Check Button</language>
+</string>
+<string name="Book">
+  <language name="zh_CN">书</language>
+  <language name="en_US">Book</language>
+</string>
+<string name="Food">
+  <language name="zh_CN">食物</language>
+  <language name="en_US">Food</language>
+</string>
+<string name="Pencil">
+  <language name="zh_CN">铅笔</language>
+  <language name="en_US">Pencil</language>
+</string>
+<string name="Radio Button With Icon">
+  <language name="zh_CN">贴图单选按钮</language>
+  <language name="en_US">Radio Button With Icon</language>
+</string>
+<string name="Check Button With Icon">
+  <language name="zh_CN">贴图多选按钮</language>
+  <language name="en_US">Check Button With Icon</language>
+</string>
+<string name="Linear Gradient">
+  <language name="zh_CN">线性渐变</language>
+  <language name="en_US">Linear Gradient</language>
+</string>
+<string name="Radial Gradient">
+  <language name="zh_CN">径向渐变</language>
+  <language name="en_US">Radial Gradient</language>
+</string>
+<string name="Stroke Gradient">
+  <language name="zh_CN">线条渐变</language>
+  <language name="en_US">Stroke Gradient</language>
+</string>
+<string name="Color Picker">
+  <language name="zh_CN">颜色选择器</language>
+  <language name="en_US">Color Picker</language>
+</string>
+<string name="Analog Clock">
+  <language name="zh_CN">模拟时钟</language>
+  <language name="en_US">Analog Clock</language>
+</string>
+<string name="Digital Clock">
+  <language name="zh_CN">数字时钟</language>
+  <language name="en_US">Digital Clock</language>
+</string>
+<string name="Text Edit">
+  <language name="zh_CN">文本编辑器</language>
+  <language name="en_US">Text Edit</language>
+</string>
+<string name="Number Edit">
+  <language name="zh_CN">数字编辑器</language>
+  <language name="en_US">Number Edit</language>
+</string>
+<string name="Number Edit With Button">
+  <language name="zh_CN">带按钮的数字编辑器</language>
+  <language name="en_US">Number Edit With Button</language>
+</string>
+<string name="Combo Box Edit">
+  <language name="zh_CN">下拉编辑器</language>
+  <language name="en_US">Combo Box Edit</language>
+</string>
+<string name="Password Edit">
+  <language name="zh_CN">密码编辑器</language>
+  <language name="en_US">Password Edit</language>
+</string>
+<string name="Special Edit">
+  <language name="zh_CN">特殊编辑器</language>
+  <language name="en_US">Special Edit</language>
+</string>
+<string name="Time">
+  <language name="zh_CN">时间</language>
+  <language name="en_US">Time</language>
+</string>
+<string name="Date">
+  <language name="zh_CN">日期</language>
+  <language name="en_US">Date</language>
+</string>
+<string name="Edit With Custom Keyboard">
+  <language name="zh_CN">使用自定义键盘的编辑器</language>
+  <language name="en_US">Edit With Custom Keyboard</language>
+</string>
+<string name="Image Repeat">
+  <language name="zh_CN">图片平铺</language>
+  <language name="en_US">Image Repeat</language>
+</string>
+<string name="9-Patch Image">
+  <language name="zh_CN">九宫格图片</language>
+  <language name="en_US">9-Patch Image</language>
+</string>
+<string name="Image Sequence Animation">
+  <language name="zh_CN">图片序列动画</language>
+  <language name="en_US">Image Sequence Animation</language>
+</string>
+<string name="Image Value">
+  <language name="zh_CN">图片值</language>
+  <language name="en_US">Image Value</language>
+</string>
+<string name="Hscroll Label">
+  <language name="zh_CN">水平滚动文本</language>
+  <language name="en_US">Hscroll Label</language>
+</string>
+<string name="Rich Text">
+  <language name="zh_CN">富文本</language>
+  <language name="en_US">Rich Text</language>
+</string>
+<string name="Horizontal Layout">
+  <language name="zh_CN">水平布局</language>
+  <language name="en_US">Horizontal Layout</language>
+</string>
+<string name="Vertical Layout">
+  <language name="zh_CN">垂直布局</language>
+  <language name="en_US">Vertical Layout</language>
+</string>
+<string name="Grid Layout">
+  <language name="zh_CN">网格布局</language>
+  <language name="en_US">Grid Layout</language>
+</string>
+<string name="My device">
+  <language name="zh_CN">我的设备</language>
+  <language name="en_US">My device</language>
+</string>
+<string name="SIM cards &amp; mobile newtworks">
+  <language name="zh_CN">电话卡和移动网络</language>
+  <language name="en_US">SIM cards &amp; mobile newtworks</language>
+</string>
+<string name="Bluetooth">
+  <language name="zh_CN">蓝牙</language>
+  <language name="en_US">Bluetooth</language>
+</string>
+<string name="Connection &amp; sharing">
+  <language name="zh_CN">连接与共享</language>
+  <language name="en_US">Connection &amp; sharing</language>
+</string>
+<string name="Wallpaper &amp; personalization">
+  <language name="zh_CN">壁纸与个性化</language>
+  <language name="en_US">Wallpaper &amp; personalization</language>
+</string>
+<string name="Always-on display &amp; Lock screen">
+  <language name="zh_CN">息屏与锁屏</language>
+  <language name="en_US">Always-on display &amp; Lock screen</language>
+</string>
+<string name="Display">
+  <language name="zh_CN">显示</language>
+  <language name="en_US">Display</language>
+</string>
+<string name="Sound &amp; touch">
+  <language name="zh_CN">声音与触感</language>
+  <language name="en_US">Sound &amp; touch</language>
+</string>
+<string name="Notifications &amp; Control center">
+  <language name="zh_CN">通知与控制中心</language>
+  <language name="en_US">Notifications &amp; Control center</language>
+</string>
+<string name="Home screen">
+  <language name="zh_CN">桌面</language>
+  <language name="en_US">Home screen</language>
+</string>
+<string name="Passwords &amp; security">
+  <language name="zh_CN">密码与安全</language>
+  <language name="en_US">Passwords &amp; security</language>
+</string>
+<string name="Privacy protection">
+  <language name="zh_CN">隐私保护</language>
+  <language name="en_US">Privacy protection</language>
+</string>
+<string name="Battery">
+  <language name="zh_CN">电池</language>
+  <language name="en_US">Battery</language>
+</string>
+<string name="Apps">
+  <language name="zh_CN">应用设置</language>
+  <language name="en_US">Apps</language>
+</string>
+<string name="Additional settings">
+  <language name="zh_CN">更多设置</language>
+  <language name="en_US">Additional settings</language>
+</string>
+<string name="Font">
+  <language name="zh_CN">字体</language>
+  <language name="en_US">Font</language>
+</string>
+<string name="uint(0-150) auto_fix">
+  <language name="zh_CN">无符号整型(0-150) 自动修正</language>
+  <language name="en_US">uint(0-150) auto_fix</language>
+</string>
+<string name="Please enter your text">
+  <language name="zh_CN">请输入内容</language>
+  <language name="en_US">Please enter your text</language>
+</string>
+<string name="Horizontal Progress">
+  <language name="zh_CN">水平进度条</language>
+  <language name="en_US">Horizontal Progress</language>
+</string>
+<string name="Progress Circle">
+  <language name="zh_CN">环形进度条</language>
+  <language name="en_US">Progress Circle</language>
+</string>
+<string name="Vertical Progress">
+  <language name="zh_CN">垂直进度条</language>
+  <language name="en_US">Vertical Progress</language>
+</string>
+<string name="Text Selector">
+  <language name="zh_CN">文本选择器</language>
+  <language name="en_US">Text Selector</language>
+</string>
+<string name="Slide Menu">
+  <language name="zh_CN">滑动菜单</language>
+  <language name="en_US">Slide Menu</language>
+</string>
+<string name="Combo Box">
+  <language name="zh_CN">下拉列表</language>
+  <language name="en_US">Combo Box</language>
+</string>
+<string name="Tab At Top">
+  <language name="zh_CN">顶部选项卡</language>
+  <language name="en_US">Tab At Top</language>
+</string>
+<string name="General">
+  <language name="zh_CN">常规</language>
+  <language name="en_US">General</language>
+</string>
+<string name="Example">
+  <language name="zh_CN">例子</language>
+  <language name="en_US">Example</language>
+</string>
+<string name="Synonym">
+  <language name="zh_CN">近义词</language>
+  <language name="en_US">Synonym</language>
+</string>
+<string name="Tab At Bottom">
+  <language name="zh_CN">底部选项卡</language>
+  <language name="en_US">Tab At Bottom</language>
+</string>
+<string name="[message(s)]">
+  <language name="zh_CN">[消息]</language>
+  <language name="en_US">[message(s)]</language>
+</string>
+<string name="Moments">
+  <language name="zh_CN">朋友圈</language>
+  <language name="en_US">Moments</language>
+</string>
+<string name="Scan">
+  <language name="zh_CN">扫一扫</language>
+  <language name="en_US">Scan</language>
+</string>
+<string name="Games">
+  <language name="zh_CN">游戏</language>
+  <language name="en_US">Games</language>
+</string>
+<string name="Mini Programs">
+  <language name="zh_CN">小程序</language>
+  <language name="en_US">Mini Programs</language>
+</string>
+<string name="Pay">
+  <language name="zh_CN">支付</language>
+  <language name="en_US">Pay</language>
+</string>
+<string name="Favorites">
+  <language name="zh_CN">收藏</language>
+  <language name="en_US">Favorites</language>
+</string>
+<string name="My Posts">
+  <language name="zh_CN">朋友圈</language>
+  <language name="en_US">My Posts</language>
+</string>
+<string name="Cards &amp; Offers">
+  <language name="zh_CN">卡包</language>
+  <language name="en_US">Cards &amp; Offers</language>
+</string>
+<string name="Sticker Gallery">
+  <language name="zh_CN">表情</language>
+  <language name="en_US">Sticker Gallery</language>
+</string>
+<string name="Settings">
+  <language name="zh_CN">设置</language>
+  <language name="en_US">Settings</language>
+</string>
+<string name="Receive">
+  <language name="zh_CN">接收</language>
+  <language name="en_US">Receive</language>
+</string>
+<string name="Send">
+  <language name="zh_CN">发送</language>
+  <language name="en_US">Send</language>
+</string>
+<string name="Contents of settings.">
+  <language name="en_US">Contents of settings.</language>
+  <language name="zh_CN">设置内容。</language>
+</string>
+<string name="Contents of receive.">
+  <language name="en_US">Contents of receive.</language>
+  <language name="zh_CN">接收内容。</language>
+</string>
+<string name="Contents of send.">
+  <language name="en_US">Contents of send.</language>
+  <language name="zh_CN">发送内容。</language>
+</string>
+<string name="List Tab">
+  <language name="zh_CN">列表选项卡</language>
+  <language name="en_US">List Tab</language>
+</string>
+<string name="Dialog">
+  <language name="zh_CN">对话框</language>
+  <language name="en_US">Dialog</language>
+</string>
+<string name="Toast">
+  <language name="zh_CN">短暂提示</language>
+  <language name="en_US">Toast</language>
+</string>
+<string name="Confirm">
+  <language name="zh_CN">确认</language>
+  <language name="en_US">Confirm</language>
+</string>
+<string name="info">
+  <language name="zh_CN">提示信息</language>
+  <language name="en_US">Info</language>
+</string>
+<string name="Warning">
+  <language name="zh_CN">警告</language>
+  <language name="en_US">Warning</language>
+</string>
+<string name="Overlay">
+  <language name="zh_CN">覆盖窗口</language>
+  <language name="en_US">Overlay</language>
+</string>
+<string name="Popup">
+  <language name="zh_CN">弹出窗口</language>
+  <language name="en_US">Popup</language>
+</string>
+<string name="Hello! AWTK.">
+  <language name="zh_CN">你好！AWTK。</language>
+  <language name="en_US">Hello! AWTK.</language>
+</string>
+<string name="AWTK: A GUI engine with cool effects.">
+  <language name="zh_CN">AWTK: 拥有炫酷效果的 GUI 引擎。</language>
+  <language name="en_US">AWTK: A GUI engine with cool effects.</language>
+</string>
+<string name="To provide users with a powerful, efficient and reliable, easy to use, can easily make cool GUI engine.">
+  <language name="zh_CN">为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的 GUI 引擎。</language>
+  <language name="en_US">To provide users with a powerful, efficient and reliable, easy to use, can easily make cool GUI engine.</language>
+</string>
+<string name="custom keyboard">
+  <language name="zh_CN">自定义键盘</language>
+  <language name="en_US">custom keyboard</language>
+</string>
+<string name="Sun">
+  <language name="zh_CN">星期日</language>
+  <language name="en_US">Sun</language>
+</string>
+<string name="Mon">
+  <language name="zh_CN">星期一</language>
+  <language name="en_US">Mon</language>
+</string>
+<string name="Tues">
+  <language name="zh_CN">星期二</language>
+  <language name="en_US">Tues</language>
+</string>
+<string name="Wed">
+  <language name="zh_CN">星期三</language>
+  <language name="en_US">Wed</language>
+</string>
+<string name="Thur">
+  <language name="zh_CN">星期四</language>
+  <language name="en_US">Thur</language>
+</string>
+<string name="Fri">
+  <language name="zh_CN">星期五</language>
+  <language name="en_US">Fri</language>
+</string>
+<string name="Sat">
+  <language name="zh_CN">星期六</language>
+  <language name="en_US">Sat</language>
+</string>
+<string name="Jan">
+  <language name="zh_CN">一月</language>
+  <language name="en_US">Jan</language>
+</string>
+<string name="Feb">
+  <language name="zh_CN">二月</language>
+  <language name="en_US">Feb</language>
+</string>
+<string name="Mar">
+  <language name="zh_CN">三月</language>
+  <language name="en_US">Mar</language>
+</string>
+<string name="Apr">
+  <language name="zh_CN">四月</language>
+  <language name="en_US">Apr</language>
+</string>
+<string name="May">
+  <language name="zh_CN">五月</language>
+  <language name="en_US">May</language>
+</string>
+<string name="Jun">
+  <language name="zh_CN">六月</language>
+  <language name="en_US">Jun</language>
+</string>
+<string name="Jul">
+  <language name="zh_CN">七月</language>
+  <language name="en_US">Jul</language>
+</string>
+<string name="Aug">
+  <language name="zh_CN">八月</language>
+  <language name="en_US">Aug</language>
+</string>
+<string name="Sept">
+  <language name="zh_CN">九月</language>
+  <language name="en_US">Sept</language>
+</string>
+<string name="Oct">
+  <language name="zh_CN">十月</language>
+  <language name="en_US">Oct</language>
+</string>
+<string name="Nov">
+  <language name="zh_CN">十一月</language>
+  <language name="en_US">Nov</language>
+</string>
+<string name="Dec">
+  <language name="zh_CN">十二月</language>
+  <language name="en_US">Dec</language>
+</string>
+<string name="Ice cream">
+  <language name="zh_CN">雪糕</language>
+  <language name="en_US">Ice cream</language>
+</string>
+<string name="Chips">
+  <language name="zh_CN">薯条</language>
+  <language name="en_US">Chips</language>
+</string>
+<string name="Hamburger">
+  <language name="zh_CN">汉堡</language>
+  <language name="en_US">hamburger</language>
+</string>
+<string name="What would you like?">
+  <language name="zh_CN">你想要点什么？</language>
+  <language name="en_US">What would you like?</language>
+</string>
+<string name="Cancel">
+  <language name="zh_CN">取消</language>
+  <language name="en_US">Cancel</language>
+</string>
+<string name="Yes">
+  <language name="zh_CN">是</language>
+  <language name="en_US">Yes</language>
+</string>
+<string name="No">
+  <language name="zh_CN">否</language>
+  <language name="en_US">No</language>
+</string>
+<string name="Are you ready?">
+  <language name="zh_CN">你准备好了吗？</language>
+  <language name="en_US">Are you ready?</language>
+</string>
+<string name="Close">
+  <language name="zh_CN">关闭</language>
+  <language name="en_US">Close</language>
+</string>
+<string name="Title">
+  <language name="zh_CN">标题</language>
+  <language name="en_US">Title</language>
+</string>
+<string name="OK">
+  <language name="zh_CN">确定</language>
+  <language name="en_US">OK</language>
+</string>
+<string name="Not sufficient funds!">
+  <language name="zh_CN">余额不足！</language>
+  <language name="en_US">Not sufficient funds!</language>
+</string>
+<string name="Time init...">
+  <language name="zh_CN">时间初始化...</language>
+  <language name="en_US">Time init...</language>
+</string>
+<string name="Memory init...">
+  <language name="zh_CN">内存初始化...</language>
+  <language name="en_US">Memory init...</language>
+</string>
+<string name="System info init...">
+  <language name="zh_CN">系统信息初始化...</language>
+  <language name="en_US">System info init...</language>
+</string>
+<string name="Reource to load...">
+  <language name="zh_CN">资源加载...</language>
+  <language name="en_US">Reource to load...</language>
+</string>
+<string name="plural">
+  <language name="zh_CN">复数</language>
+  <language name="en_US">plural</language>
+</string>
+<string name="3rd person singular">
+  <language name="zh_CN">第三人称单数</language>
+  <language name="en_US">3rd person singular</language>
+</string>
+<string name="present participle">
+  <language name="zh_CN">现在分词</language>
+  <language name="en_US">present participle</language>
+</string>
+<string name="past tense">
+  <language name="zh_CN">过去式</language>
+  <language name="en_US">past tense</language>
+</string>
+<string name="past participle">
+  <language name="zh_CN">过去分词</language>
+  <language name="en_US">past participle</language>
+</string>
+<string name="Just for show!">
+  <language name="zh_CN">仅供展示！</language>
+  <language name="en_US">Just for show!</language>
+</string>
+<string name="AWTK, called Toolkit AnyWhere, is a GUI framework developed by ZLG based on C language. Aims to provide users with a powerful, efficient and reliable, easy to use, can easily make cool effects of THE GUI engine, and support cross-platform synchronous development, programming, lifetime use.">
+  <language name="en_US">AWTK, called Toolkit AnyWhere, is a GUI framework developed by ZLG based on C language. Aims to provide users with a powerful, efficient and reliable, easy to use, can easily make cool effects of THE GUI engine, and support cross-platform synchronous development, programming, lifetime use.</language>
+  <language name="zh_CN">AWTK全称为Toolkit AnyWhere，是ZLG倾心打造的一套基于C语言开发的GUI框架。旨在为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的GUI引擎，并支持跨平台同步开发，一次编程，终生使用。</language>
+</string>
+<string name="memo1">
+  <language name="en_US">memo1</language>
+  <language name="zh_CN">备忘录1</language>
+</string>
+<string name="memo2">
+  <language name="en_US">memo2</language>
+  <language name="zh_CN">备忘录2</language>
+</string>
+<string name="memo3">
+  <language name="en_US">memo3</language>
+  <language name="zh_CN">备忘录3</language>
+</string>
+<string name="memo4">
+  <language name="en_US">memo4</language>
+  <language name="zh_CN">备忘录4</language>
+</string>
+<string name="memo5">
+  <language name="en_US">memo5</language>
+  <language name="zh_CN">备忘录5</language>
+</string>
+<string name="Contents of memo1.">
+  <language name="en_US">Contents of memo1.</language>
+  <language name="zh_CN">备忘录1内容。</language>
+</string>
+<string name="Contents of memo2.">
+  <language name="en_US">Contents of memo2.</language>
+  <language name="zh_CN">备忘录2内容。</language>
+</string>
+<string name="Contents of memo3.">
+  <language name="en_US">Contents of memo3.</language>
+  <language name="zh_CN">备忘录3内容。</language>
+</string>
+<string name="Contents of memo4.">
+  <language name="en_US">Contents of memo4.</language>
+  <language name="zh_CN">备忘录4内容。</language>
+</string>
+<string name="Contents of memo5.">
+  <language name="en_US">Contents of memo5.</language>
+  <language name="zh_CN">备忘录5内容。</language>
+</string>
+<string name="User Management">
+  <language name="en_US">User Management</language>
+  <language name="zh_CN">用户管理</language>
+</string>
+<string name="Config Management">
+  <language name="en_US">Config Management</language>
+  <language name="zh_CN">配置管理</language>
+</string>
+<string name="Role Management">
+  <language name="en_US">Role Management</language>
+  <language name="zh_CN">角色管理</language>
+</string>
+<string name="Common">
+  <language name="en_US">Common</language>
+  <language name="zh_CN">通用</language>
+</string>
+<string name="Contents of user management.">
+  <language name="en_US">Contents of user management.</language>
+  <language name="zh_CN">用户管理内容。</language>
+</string>
+<string name="Contents of config management.">
+  <language name="en_US">Contents of config management.</language>
+  <language name="zh_CN">配置管理内容。</language>
+</string>
+<string name="Contents of role management.">
+  <language name="en_US">Contents of role management.</language>
+  <language name="zh_CN">角色管理内容。</language>
+</string>
+<string name="Contents of common.">
+  <language name="en_US">Contents of common.</language>
+  <language name="zh_CN">通用内容。</language>
+</string>
+<string name="New">
+  <language name="en_US">New</language>
+  <language name="zh_CN">新的</language>
+</string>
+<string name="Current">
+  <language name="en_US">Current</language>
+  <language name="zh_CN">当前</language>
+</string>
+<string name="search">
+  <language name="en_US">search</language>
+  <language name="zh_CN">查找</language>
+</string>
+<string name="time">
+  <language name="en_US">time</language>
+  <language name="zh_CN">时间</language>
+</string>
+<string name="import">
+  <language name="en_US">import</language>
+  <language name="zh_CN">导入</language>
+</string>
+<string name="export">
+  <language name="en_US">export</language>
+  <language name="zh_CN">导出</language>
+</string>
+<string name="empty">
+  <language name="en_US">empty</language>
+  <language name="zh_CN">清空</language>
+</string>
+<string name="<image name=&quot;uiex_logo&quot; draw_type=&quot;center&quot;/><font>Called Toolkit AnyWhere, is a GUI framework developed by </font><font color=&quot;#709918&quot; size=&quot;30&quot;>ZLG</font><font> based on C language. Aims to provide users with a powerful, efficient and reliable, easy to use, can easily make cool effects of THE GUI engine, and support cross-platform synchronous development, programming, lifetime use.</font>">
+  <language name="en_US">&lt;image name="uiex_logo" draw_type="center"/&gt;&lt;font&gt;Called Toolkit AnyWhere, is a GUI framework developed by &lt;/font&gt;&lt;font color="#709918" size="30"&gt;ZLG&lt;/font&gt;&lt;font&gt; based on C language. Aims to provide users with a powerful, efficient and reliable, easy to use, can easily make cool effects of THE GUI engine, and support cross-platform synchronous development, programming, lifetime use.&lt;/font&gt;</language>
+  <language name="zh_CN">&lt;image name="uiex_logo" draw_type="center"/&gt;&lt;font&gt;全称为Toolkit AnyWhere，是&lt;/font&gt;&lt;font color="#709918" size="30"&gt;ZLG&lt;/font&gt;&lt;font&gt;倾心打造的一套基于C语言开发的GUI框架。旨在为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的GUI引擎，并支持跨平台同步开发，一次编程，终生使用。&lt;/font&gt;</language>
+</string>
+<string name="Song">
+  <language name="en_US">Song</language>
+  <language name="zh_CN">宋体</language>
 </string>

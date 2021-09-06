@@ -1,0 +1,21 @@
+<?xml parent="{&quot;x&quot;:&quot;0&quot;,&quot;y&quot;:&quot;0&quot;,&quot;w&quot;:&quot;100%&quot;,&quot;h&quot;:&quot;100%&quot;,&quot;name&quot;:&quot;page_progress&quot;,&quot;theme&quot;:&quot;uiex&quot;}"?>
+<list_view name="list_view" x="0" y="0" w="100%" h="100%">
+  <scroll_view name="scroll_view" x="0" y="0" w="100%" h="100%" children_layout="list_view(i=0,d=0,x=0,y=10,s=24)">
+    <view name="view_progress_h" children_layout="default(r=0,c=1,x=0,y=0,s=10)" h="90">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Horizontal Progress"/>
+      <view h="-22" children_layout="default(r=0,c=1,x=20,y=0,s=36)">
+        <progress_bar name="value" animation="value(from=0, to=100, yoyo_times=1000, duration=1000)" h="10" style="default"/>
+        <progress_bar name="value1" animation="value(from=25, to=100, yoyo_times=1000, duration=1000)" h="10" style:normal:fg_image="uiex_loading_repeat_bg" style:normal:fg_image_draw_type="repeat_x" style:normal:fg_color="#00000000"/>
+      </view>
+    </view>
+    <grid name="view_progress_circle" h="290">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" x="0" y="0" w="800" tr_text="Progress Circle"/>
+      <grid h="256" children_layout="default(w=108,h=108,x=20,y=0,s=40)" x="0" y="35" w="297">
+        <progress_circle style="default" show_text="true" start_angle="90" format="%d%%" animation="value(from=10, to=100, yoyo_times=1000, duration=3000, easing=sin_inout)" line_width="10" line_cap="butt" max="100" value="50"/>
+        <progress_circle style="default" show_text="true" start_angle="90" format="%d%%" animation="value(from=10, to=100, yoyo_times=1000, duration=3000, easing=sin_inout)" line_width="10" line_cap="butt" style:normal:bg_image="uiex_load1_bg" style:normal:fg_image="uiex_load1_loading" invisible_in_1m="true" max="100" value="50"/>
+        <progress_circle style="default" show_text="true" start_angle="90" format="%d%%" animation="value(from=10, to=100, yoyo_times=1000, duration=3000, easing=sin_inout)" line_width="10" line_cap="butt" style:normal:bg_image="uiex_load2_bg" style:normal:fg_image="uiex_load2_loading" invisible_in_1m="true" max="100" value="50"/>
+      </grid>
+    </grid>
+  </scroll_view>
+  <scroll_bar_m name="bar" x="r" y="0" w="7" h="100%" max="1000"/>
+</list_view>

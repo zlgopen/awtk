@@ -1,0 +1,17 @@
+<?xml parent="{&quot;x&quot;:&quot;0&quot;,&quot;y&quot;:&quot;0&quot;,&quot;w&quot;:&quot;100%&quot;,&quot;h&quot;:&quot;100%&quot;,&quot;name&quot;:&quot;page_slider&quot;,&quot;theme&quot;:&quot;uiex&quot;}"?>
+<list_view name="list_view" x="0" y="0" w="100%" h="100%">
+  <scroll_view name="scroll_view" x="0" y="0" w="100%" h="100%" children_layout="list_view(i=0,d=66,x=0,y=10,s=20)">
+    <view name="view_sl" h="-40">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" x="0" y="0" w="100%" tr_text="Slider"/>
+      <view name="h" x="20" y="36" w="62%" h="100" children_layout="default(r=0,c=1,x=0,y=0,s=56)">
+        <slider name="hslider" h="16" value="75"/>
+        <slider name="hslider2" h="16" style="square" value="50"/>
+      </view>
+      <view name="v" x="20" y="160" w="140" h="-200" children_layout="default(r=1,c=0,x=0,y=0,s=86)">
+        <slider name="vslider" w="16" vertical="true" value="75"/>
+        <slider name="vslider2" w="16" vertical="true" style="square" value="50"/>
+      </view>
+    </view>
+  </scroll_view>
+  <scroll_bar_m name="bar" x="r" y="0" w="7" h="100%" max="1000"/>
+</list_view>
