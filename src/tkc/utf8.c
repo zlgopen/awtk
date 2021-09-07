@@ -231,13 +231,13 @@ err_out:
 }
 
 char* tk_utf8_from_utf16_ex(const wchar_t* in, uint32_t in_size, char* out, uint32_t out_size) {
-  return_value_if_fail(in != NULL && out != NULL, NULL);
+  return_value_if_fail(in != NULL && out != NULL && in_size > 0 && out_size > 0, NULL);
 
   return utf16_to_utf8(in, in_size, out, out_size);
 }
 
 char* tk_utf8_from_utf16(const wchar_t* str, char* out, uint32_t size) {
-  return_value_if_fail(str != NULL && out != NULL, NULL);
+  return_value_if_fail(str != NULL && out != NULL && size > 0, NULL);
 
   return utf16_to_utf8(str, wcslen(str), out, size);
 }
