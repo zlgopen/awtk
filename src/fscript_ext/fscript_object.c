@@ -43,12 +43,16 @@ static ret_t func_object_unref(fscript_t* fscript, fscript_args_t* args, value_t
 
 static ret_t func_object_get_prop(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   object_t* obj = NULL;
-  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size >= 2, RET_BAD_PARAMS);
   obj = value_object(args->args);
   return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
 
   if (object_get_prop(obj, value_str(args->args + 1), result) != RET_OK) {
-    result->type = VALUE_TYPE_INVALID;
+    if (args->size > 2) {
+      value_copy(result, args->args + 2);
+    } else {
+      result->type = VALUE_TYPE_INVALID;
+    }
   }
 
   return RET_OK;

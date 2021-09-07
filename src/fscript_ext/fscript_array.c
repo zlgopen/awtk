@@ -147,8 +147,12 @@ static ret_t func_array_pop(fscript_t* fscript, fscript_args_t* args, value_t* r
   obj = value_object(args->args);
   arr = OBJECT_ARRAY(obj);
   return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
-
-  return object_array_pop(obj, result);
+  if (arr->size > 0) {
+    return object_array_pop(obj, result);
+  } else {
+    result->type = VALUE_TYPE_INVALID;
+    return RET_OK;
+  }
 }
 
 static ret_t func_array_shift(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -159,7 +163,12 @@ static ret_t func_array_shift(fscript_t* fscript, fscript_args_t* args, value_t*
   arr = OBJECT_ARRAY(obj);
   return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
 
-  return object_array_shift(obj, result);
+  if (arr->size > 0) {
+    return object_array_shift(obj, result);
+  } else {
+    result->type = VALUE_TYPE_INVALID;
+    return RET_OK;
+  }
 }
 
 static ret_t func_array_set(fscript_t* fscript, fscript_args_t* args, value_t* result) {

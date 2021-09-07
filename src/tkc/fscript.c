@@ -342,7 +342,9 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
 
       if (fscript_get_var(fscript, name, d) != RET_OK) {
         if (name == NULL || *name != '$') {
-          /*if it is not $var, consider id as string*/
+          char msg[128];
+          tk_snprintf(msg, sizeof(msg)-1, "not found var %s", name);
+          fscript_set_error(fscript, RET_NOT_FOUND, "get_var", msg);
           value_copy(d, s);
         }
       }

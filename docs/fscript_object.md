@@ -30,6 +30,7 @@ a = object_create()
 
 ```
 object_get(o, key) => value
+object_get(o, key, defval) => value
 ```
 
 也可以直接访问对象的属性：
