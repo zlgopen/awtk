@@ -58,6 +58,10 @@ struct _image_manager_t {
    * 资源管理器。
    */
   assets_manager_t* assets_manager;
+
+  /*private*/
+  uint32_t mem_size_of_cached_images;
+  uint32_t max_mem_size_of_cached_images;
 };
 
 /**
@@ -96,6 +100,16 @@ image_manager_t* image_manager_create(void);
  * @return {image_manager_t*} 返回图片管理器对象。
  */
 image_manager_t* image_manager_init(image_manager_t* imm);
+
+/**
+ * @method image_manager_set_max_mem_size_of_cached_images
+ * 设置图片缓存占用的最大内存。
+ * @param {image_manager_t*} imm 图片管理器对象。
+ * @param {uint32_t} max_mem_size 最大缓存内存。 
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_manager_set_max_mem_size_of_cached_images(image_manager_t* imm, uint32_t max_mem_size);
 
 /**
  * @method image_manager_get_bitmap

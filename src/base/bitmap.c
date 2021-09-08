@@ -893,3 +893,9 @@ ret_t bitmap_transform(bitmap_t* bitmap, bitmap_transform_t transform, void* ctx
 
   return ret;
 }
+
+uint32_t bitmap_get_mem_size(bitmap_t* bitmap) {
+  return_value_if_fail(bitmap != NULL, 0);
+
+  return bitmap->w * bitmap->h * bitmap_get_bpp(bitmap);
+}
