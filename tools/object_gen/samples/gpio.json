@@ -9,46 +9,147 @@
   "allowSubclass":true,
   "annotation": ["scriptable"],
   "includes":[],
-  "props": [
-  ],
-  "funcs": [
+  "consts": [
     {
-      "name":"set_voltage",
-      "desc":"设置电压值(mV)",
+      "name":"gpio_pin_func",
+      "type":"enum",
+      "desc":"GPIO PIN的功能定义",
       "annotation": ["scriptable"],
-      "return": {
-        "type":"ret_t", 
-        "defvalue":"RET_BAD_PARAMS",
-        "desc":"返回RET_OK表示成功，否则表示失败。"
-      },
-      "virtual": false,
-      "args": [
+      "values": [
         {
-          "name":"chan",
-          "desc":"通道号",
-          "type":"int32_t"
+          "name":"INPUT",
+          "desc":"输入"
         },
         {
-          "name":"voltage",
-          "desc":"电压值(mV)",
-          "type":"uint32_t"
+          "name":"OUTPUT_INIT_HIGH",
+          "desc":"输出高电平"
+        },
+        {
+          "name":"OUTPUT_INIT_LOW",
+          "desc":"引脚输出低电平"
         }
       ]
     },
     {
-      "name":"set_value",
-      "desc":"设置值",
+      "name":"gpio_pin_mode",
+      "type":"enum",
+      "desc":"GPIO PIN的模式定义",
+      "annotation": ["scriptable"],
+      "values": [
+        {
+          "name":"PULLUP",
+          "desc":"上拉模式"
+        },
+        {
+          "name":"PULLDOWN",
+          "desc":"下拉模式"
+        },
+        {
+          "name":"OPEN_DRAIN",
+          "desc":"开漏模式"
+        },
+        {
+          "name":"PUSH_PULL",
+          "desc":"推挽模式"
+        }
+      ]
+    },
+    {
+      "name":"gpio_pin_trigger_mode",
+      "type":"enum",
+      "desc":"GPIO PIN的触发模式定义",
+      "annotation": ["scriptable"],
+      "values": [
+        {
+          "name":"OFF",
+          "desc":"关闭触发"
+        },
+        {
+          "name":"HIGH",
+          "desc":"高电平触发"
+        },
+        {
+          "name":"LOW",
+          "desc":"低电平触发"
+        },
+        {
+          "name":"RISE",
+          "desc":"上升沿触发"
+        },
+        {
+          "name":"FALL",
+          "desc":"下降沿触发"
+        },
+        {
+          "name":"BOTH_EDGES",
+          "desc":"双边沿触发"
+        }
+      ]
+    }
+  ],
+  "props": [
+  ],
+  "funcs": [
+    {
+      "name":"config",
+      "desc":"配置",
       "annotation": ["scriptable"],
       "return": {
         "type":"ret_t", 
         "defvalue":"RET_BAD_PARAMS",
-        "desc":"返回RET_OK表示成功，否则表示失败。"
+        "desc":"返回RET_OK表示成功，否则表示失败"
+      },
+      "virtual": false,
+      "args": [
+        {
+          "name":"pin",
+          "desc":"引脚号",
+          "type":"int32_t"
+        },
+        {
+          "name":"func",
+          "desc":"功能",
+          "type":"uint16_t"
+        },
+        {
+          "name":"mode",
+          "desc":"模式",
+          "type":"uint16_t"
+        }
+      ]
+    },
+    {
+      "name":"get",
+      "desc":"获取引脚输出状态",
+      "annotation": ["scriptable"],
+      "return": {
+        "type":"uint32_t", 
+        "defvalue":"0",
+        "desc":"返回值"
       },
       "virtual": true,
       "args": [
         {
-          "name":"chan",
-          "desc":"通道号",
+          "name":"pin",
+          "desc":"引脚号",
+          "type":"int32_t"
+        }
+      ]
+    },
+    {
+      "name":"set",
+      "desc":"设置引脚输出状态",
+      "annotation": ["scriptable"],
+      "return": {
+        "type":"ret_t", 
+        "defvalue":"RET_BAD_PARAMS",
+        "desc":"返回RET_OK表示成功，否则表示失败"
+      },
+      "virtual": true,
+      "args": [
+        {
+          "name":"pin",
+          "desc":"引脚号",
           "type":"int32_t"
         },
         {
@@ -59,52 +160,80 @@
       ]
     },
     {
-      "name":"set_enable",
-      "desc":"设置值",
+      "name":"toggle",
+      "desc":"翻转GPIO引脚输出状态",
       "annotation": ["scriptable"],
       "return": {
         "type":"ret_t", 
         "defvalue":"RET_BAD_PARAMS",
-        "desc":"返回RET_OK表示成功，否则表示失败。"
+        "desc":"返回RET_OK表示成功，否则表示失败"
       },
       "virtual": true,
       "args": [
         {
-          "name":"chan",
-          "desc":"通道号",
+          "name":"pin",
+          "desc":"引脚号",
           "type":"int32_t"
-        },
-        {
-          "name":"enable",
-          "desc":"是否启用",
-          "type":"bool_t"
         }
       ]
     },
     {
-      "name":"get_bits",
-      "desc":"转换位数",
+      "name":"trigger_cfg",
+      "desc":"配置GPIO引脚触发功能",
       "annotation": ["scriptable"],
       "return": {
-        "type":"int32_t", 
-        "defvalue":"0",
-        "desc":"返回转换位数。"
+        "type":"ret_t", 
+        "defvalue":"RET_BAD_PARAMS",
+        "desc":"返回RET_OK表示成功，否则表示失败"
       },
       "virtual": true,
       "args": [
+        {
+          "name":"pin",
+          "desc":"引脚号",
+          "type":"int32_t"
+        },
+        {
+          "name":"mode",
+          "desc":"触发模式",
+          "type":"uint32_t"
+        }
       ]
     },
     {
-      "name":"get_vref",
-      "desc":"参考电压(mV)",
+      "name":"trigger_on",
+      "desc":"使能引脚触发中断",
       "annotation": ["scriptable"],
       "return": {
-        "type":"int32_t", 
-        "defvalue":"0",
-        "desc":"参考电压(mV)。"
+        "type":"ret_t", 
+        "defvalue":"RET_BAD_PARAMS",
+        "desc":"返回RET_OK表示成功，否则表示失败"
       },
       "virtual": true,
       "args": [
+        {
+          "name":"pin",
+          "desc":"引脚号",
+          "type":"int32_t"
+        }
+      ]
+    },
+    {
+      "name":"trigger_off",
+      "desc":"禁止引脚触发中断",
+      "annotation": ["scriptable"],
+      "return": {
+        "type":"ret_t", 
+        "defvalue":"RET_BAD_PARAMS",
+        "desc":"返回RET_OK表示成功，否则表示失败"
+      },
+      "virtual": true,
+      "args": [
+        {
+          "name":"pin",
+          "desc":"引脚号",
+          "type":"int32_t"
+        }
       ]
     }
   ]
