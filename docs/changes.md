@@ -2,6 +2,7 @@
 
 2021/09/08
   * 增加image\_manager\_set\_max\_mem\_size\_of\_cached\_images用于限制最大图片缓存占用的内存。
+  * window\_open支持打开本地xml文件。
 
 2021/09/07
   * 完善fscript，没有定义的变量，不再当作字符串。 
