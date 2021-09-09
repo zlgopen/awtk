@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/09/09
+  * fscript增加json\_save\_to\_string（感谢雨欣提供补丁）
+
 2021/09/08
   * 增加image\_manager\_set\_max\_mem\_size\_of\_cached\_images用于限制最大图片缓存占用的内存。
   * window\_open支持打开本地xml文件。
