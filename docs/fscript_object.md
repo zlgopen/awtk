@@ -107,6 +107,4 @@ assert(object_set(person, "name", "awtk"))
 assert(person.name == "awtk")
 
 unset(person)
-
-
 ```

@@ -19,7 +19,7 @@ date_time_create() => object
 * hour 时 （读写）
 * minute 分 （读写）
 * second 秒 （读写）
-* wday 周几 （只写）
+* wday 周几 （只读）
 
 ### 2.date\_time\_to\_time
 
@@ -63,7 +63,7 @@ date_time_set(dt) => bool
 #### 原型
 
 ```
-time\_now()  => uint64_t
+time_now()  => uint64_t
 ```
 
 ### 6.time\_now\_ms 
