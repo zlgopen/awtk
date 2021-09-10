@@ -322,6 +322,32 @@ static ret_t object_array_get_prop(object_t* obj, const char* name, value_t* v) 
   return ret;
 }
 
+static bool_t object_array_can_exec(object_t* obj, const char* name, const char* args) {
+  ret_t ret = FALSE;
+  object_array_t* o = OBJECT_ARRAY(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  object_t* sub = object_array_get_sub_object(obj, name, &name);
+  if (sub != NULL) {
+    return object_can_exec(sub, name, args);
+  }
+
+  return ret;
+}
+
+static ret_t object_array_exec(object_t* obj, const char* name, const char* args) {
+  ret_t ret = RET_NOT_FOUND;
+  object_array_t* o = OBJECT_ARRAY(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  object_t* sub = object_array_get_sub_object(obj, name, &name);
+  if (sub != NULL) {
+    return object_exec(sub, name, args);
+  }
+
+  return ret;
+}
+
 static ret_t object_array_foreach_prop(object_t* obj, tk_visit_t on_prop, void* ctx) {
   ret_t ret = RET_OK;
   object_array_t* o = OBJECT_ARRAY(obj);
@@ -362,6 +388,8 @@ static const object_vtable_t s_object_array_vtable = {.type = "object_array",
                                                       .compare = object_array_compare,
                                                       .get_prop = object_array_get_prop,
                                                       .set_prop = object_array_set_prop,
+                                                      .can_exec = object_array_can_exec,
+                                                      .exec = object_array_exec,
                                                       .remove_prop = object_array_remove_prop,
                                                       .foreach_prop = object_array_foreach_prop};
 
