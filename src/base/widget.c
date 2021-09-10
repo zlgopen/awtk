@@ -1793,7 +1793,7 @@ static ret_t widget_on_ungrab_keys(void* ctx, event_t* e) {
 }
 
 static ret_t widget_exec_code(void* ctx, event_t* evt) {
-#ifndef AWTK_LITE
+#ifndef WITHOUT_FSCRIPT
   value_t v;
   value_t result;
   ret_t ret = RET_OK;

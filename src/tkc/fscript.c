@@ -14,7 +14,7 @@
  *
  */
 
-#ifndef AWTK_LITE
+#ifndef WITHOUT_FSCRIPT
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/darray.h"
