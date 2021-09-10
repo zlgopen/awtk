@@ -34,7 +34,6 @@
 
 #define CHAR_SPACING 1
 #define FONT_BASELINE 1.25f
-#define CHAR_IS_LINE_BREAK(c) ((c) == '\r' || (c) == '\n')
 #define STB_TEXTEDIT_CHARTYPE wchar_t
 #define STB_TEXTEDIT_NEWLINE (wchar_t)('\n')
 #define STB_TEXTEDIT_STRING text_edit_t
@@ -91,6 +90,7 @@ typedef struct _text_edit_impl_t {
   rows_t* rows;
   uint32_t max_chars;
   point_t caret;
+  bool_t overwrite;
   bool_t wrap_word;
   bool_t single_line;
   bool_t caret_visible;
@@ -1029,6 +1029,35 @@ const uint32_t* text_edit_get_lines_of_each_row(text_edit_t* text_edit) {
   return lines_of_each_row;
 }
 
+static uint32_t text_edit_get_line_break_offset(text_edit_t* text_edit, uint32_t num) {
+  uint32_t offset = 0;
+  uint32_t i = 0;
+  wstr_t* text = NULL;
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL && text_edit->widget != NULL, -1);
+  return_value_if_fail(0 < num && num < impl->rows->capacity, -1);
+
+  if (num >= impl->rows->size) {
+    return -1;
+  }
+
+  text = &text_edit->widget->text;
+
+  for (i = 0; i < num; i++) {
+    offset += impl->rows->row[i].length;
+  }
+
+  if (offset >= 2 && TWINS_WCHAR_IS_LINE_BREAK(text->str[offset - 2], text->str[offset - 1])) {
+    offset -= 2;
+  } else if (offset >= 1 && WCHAR_IS_LINE_BREAK(text->str[offset - 1])) {
+    offset--;
+  } else {
+    offset = -1;
+  }
+
+  return offset;
+}
+
 ret_t text_edit_set_canvas(text_edit_t* text_edit, canvas_t* canvas) {
   return_value_if_fail(text_edit != NULL && canvas != NULL, RET_BAD_PARAMS);
 
@@ -1419,6 +1448,16 @@ ret_t text_edit_set_wrap_word(text_edit_t* text_edit, bool_t wrap_word) {
   return RET_OK;
 }
 
+ret_t text_edit_set_overwrite(text_edit_t* text_edit, bool_t overwrite) {
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
+
+  impl->overwrite = overwrite;
+  text_edit_notify(text_edit);
+
+  return RET_OK;
+}
+
 ret_t text_edit_set_mask(text_edit_t* text_edit, bool_t mask) {
   DECL_IMPL(text_edit);
   return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
@@ -1512,6 +1551,7 @@ ret_t text_edit_get_state(text_edit_t* text_edit, text_edit_state_t* state) {
   state->select_end = tk_max(impl->state.select_start, impl->state.select_end);
 
   state->mask = impl->mask;
+  state->overwrite = impl->overwrite;
   state->wrap_word = impl->wrap_word;
   state->mask_char = impl->mask_char;
   state->caret_visible = impl->caret_visible;
@@ -1606,4 +1646,132 @@ ret_t text_edit_preedit_abort(text_edit_t* text_edit) {
   text_edit_preedit_clear(text_edit);
 
   return RET_OK;
+}
+
+static ret_t text_edit_insert_wtext_with_len(text_edit_t* text_edit, uint32_t offset,
+                                             const wchar_t* wtext, uint32_t len) {
+  ret_t ret = RET_FAIL;
+  uint32_t size = 0;
+  return_value_if_fail(text_edit != NULL && text_edit->widget != NULL && wtext != NULL,
+                       RET_BAD_PARAMS);
+
+  size = wcslen(wtext);
+  len = tk_min(len, size);
+  offset = tk_min(offset, text_edit->widget->text.size);
+
+  ret = !!text_edit_insert(text_edit, offset, wtext, len) ? RET_OK : RET_SKIP;
+
+  if (ret == RET_OK) {
+    if (offset + len != text_edit_get_cursor(text_edit)) {
+      text_edit_set_cursor(text_edit, offset + len);
+    } else {
+      text_edit_layout(text_edit);
+    }
+  }
+
+  return ret;
+}
+
+static ret_t text_edit_insert_text_with_len(text_edit_t* text_edit, uint32_t offset,
+                                            const char* text, uint32_t len) {
+  ret_t ret = RET_FAIL;
+  wstr_t s = {0};
+  return_value_if_fail(text_edit != NULL && text_edit->widget != NULL && text != NULL,
+                       RET_BAD_PARAMS);
+
+  wstr_set_utf8(&s, text);
+  ret = text_edit_insert_wtext_with_len(text_edit, offset, s.str, len);
+  wstr_reset(&s);
+
+  return ret;
+}
+
+ret_t text_edit_insert_text(text_edit_t* text_edit, uint32_t offset, const char* text) {
+  return text_edit_insert_text_with_len(text_edit, offset, text, tk_strlen(text));
+}
+
+static ret_t text_edit_overwrite_text_not_at_last_row(text_edit_t* text_edit, uint32_t* p_offset,
+                                                      const char* text, uint32_t len) {
+  DECL_IMPL(text_edit);
+  wstr_t* wstr = &text_edit->widget->text;
+  wstr_t s = {0};
+  /* 获取最后一个换行符的偏移位置 */
+  uint32_t last_row_line_break =
+      text_edit_get_line_break_offset(text_edit, impl->rows->capacity - 1);
+
+  if (last_row_line_break < wstr->size) {
+    uint32_t rm_index = tk_max(*p_offset, last_row_line_break);
+    if (wstr->size > rm_index) {
+      wstr_remove(wstr, rm_index, wstr->size - rm_index);
+    }
+  }
+
+  wstr_set_utf8_with_len(&s, text, len);
+  wstr_insert(wstr, *p_offset, s.str, s.size);
+  wstr_reset(&s);
+
+  if (*p_offset + len != text_edit_get_cursor(text_edit)) {
+    text_edit_set_cursor(text_edit, *p_offset + len);
+  } else {
+    text_edit_layout(text_edit);
+  }
+
+  return RET_OK;
+}
+
+static ret_t text_edit_overwrite_text_at_last_row(text_edit_t* text_edit, uint32_t* p_offset,
+                                                  const char* text, uint32_t len) {
+  DECL_IMPL(text_edit);
+  wstr_t* wstr = &text_edit->widget->text;
+  uint32_t line_break_num = impl->rows->capacity > impl->last_row_number
+                                ? impl->rows->capacity - impl->last_row_number
+                                : 0;
+  wstr_t s = {0};
+
+  if (line_break_num <= 1) {
+    uint32_t rm_len = impl->rows->row[0].length;
+    wstr_remove(wstr, 0, rm_len);
+    *p_offset = tk_min(*p_offset > rm_len ? *p_offset - rm_len : 0, wstr->size);
+
+    if (wstr->size > *p_offset) {
+      wstr_remove(wstr, *p_offset, wstr->size - *p_offset);
+    }
+  }
+
+  wstr_set_utf8_with_len(&s, text, len);
+  wstr_insert(wstr, *p_offset, s.str, s.size);
+  wstr_reset(&s);
+
+  if (*p_offset + len != text_edit_get_cursor(text_edit)) {
+    text_edit_set_cursor(text_edit, *p_offset + len);
+  } else {
+    text_edit_layout(text_edit);
+  }
+
+  return RET_OK;
+}
+
+ret_t text_edit_overwrite_text(text_edit_t* text_edit, uint32_t* p_offset, const char* text,
+                               uint32_t len) {
+  DECL_IMPL(text_edit);
+  wstr_t* wstr = NULL;
+  uint32_t text_size = 0;
+  ret_t ret = RET_FAIL;
+  return_value_if_fail(text_edit != NULL && text_edit->widget != NULL && text != NULL,
+                       RET_BAD_PARAMS);
+
+  wstr = &text_edit->widget->text;
+  text_size = tk_strlen(text);
+  *p_offset = tk_min(wstr->size, *p_offset);
+  len = tk_min(len, text_size);
+
+  /* 插入位置 不在最后一行 */
+  if (*p_offset < wstr->size - impl->rows->row[impl->rows->capacity - 1].length) {
+    ret = text_edit_overwrite_text_not_at_last_row(text_edit, p_offset, text, len);
+  } else {
+    ret = text_edit_overwrite_text_at_last_row(text_edit, p_offset, text, len);
+  }
+  *p_offset += len;
+
+  return ret;
 }
