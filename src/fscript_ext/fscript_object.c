@@ -90,6 +90,21 @@ static ret_t func_object_create(fscript_t* fscript, fscript_args_t* args, value_
   return RET_OK;
 }
 
+static ret_t func_object_forward_events(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  object_t* src_obj = NULL;
+  object_t* dst_obj = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  src_obj = value_object(args->args);
+  dst_obj = value_object(args->args + 1);
+  return_value_if_fail(src_obj != NULL && dst_obj != NULL, RET_BAD_PARAMS);
+
+  emitter_on(EMITTER(src_obj), EVT_PROPS_CHANGED, (event_func_t)emitter_dispatch, dst_obj);
+  emitter_on(EMITTER(src_obj), EVT_PROP_CHANGED, (event_func_t)emitter_dispatch, dst_obj);
+  emitter_on(EMITTER(src_obj), EVT_ITEMS_CHANGED, (event_func_t)emitter_dispatch, dst_obj);
+
+  return RET_OK;
+}
+
 FACTORY_TABLE_BEGIN(s_ext_object)
 FACTORY_TABLE_ENTRY("object_create", func_object_create)
 FACTORY_TABLE_ENTRY("object_ref", func_object_ref)
@@ -97,6 +112,7 @@ FACTORY_TABLE_ENTRY("object_unref", func_object_unref)
 FACTORY_TABLE_ENTRY("object_set", func_object_set_prop)
 FACTORY_TABLE_ENTRY("object_get", func_object_get_prop)
 FACTORY_TABLE_ENTRY("object_remove", func_object_remove_prop)
+FACTORY_TABLE_ENTRY("object_forward_events", func_object_forward_events)
 FACTORY_TABLE_END()
 
 ret_t fscript_object_register(void) {

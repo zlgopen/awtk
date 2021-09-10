@@ -27,6 +27,7 @@
 
 static ret_t object_array_clean_invalid_props(object_t* obj) {
   object_array_t* o = OBJECT_ARRAY(obj);
+  event_t e = event_init(EVT_ITEMS_CHANGED, o);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   if (o->size > 0) {
     uint32_t i = 0;
@@ -46,12 +47,15 @@ static ret_t object_array_clean_invalid_props(object_t* obj) {
     o->size = dst - o->props;
   }
 
+  emitter_dispatch(EMITTER(o), &e);
+
   return RET_OK;
 }
 
 ret_t object_array_clear_props(object_t* obj) {
   uint32_t i = 0;
   object_array_t* o = OBJECT_ARRAY(obj);
+  event_t e = event_init(EVT_ITEMS_CHANGED, o);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   for (i = 0; i < o->size; i++) {
@@ -60,6 +64,7 @@ ret_t object_array_clear_props(object_t* obj) {
   }
 
   o->size = 0;
+  emitter_dispatch(EMITTER(o), &e);
 
   return RET_OK;
 }
@@ -106,6 +111,7 @@ ret_t object_array_insert(object_t* obj, uint32_t index, const value_t* v) {
   value_t* d = NULL;
   value_t* p = NULL;
   object_array_t* o = OBJECT_ARRAY(obj);
+  event_t e = event_init(EVT_ITEMS_CHANGED, o);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   return_value_if_fail(o != NULL && v != NULL, RET_BAD_PARAMS);
@@ -121,6 +127,7 @@ ret_t object_array_insert(object_t* obj, uint32_t index, const value_t* v) {
   }
   value_deep_copy(p, v);
   o->size++;
+  emitter_dispatch(EMITTER(o), &e);
 
   return RET_OK;
 }
@@ -210,11 +217,14 @@ static ret_t object_array_remove_prop(object_t* obj, const char* name) {
 ret_t object_array_pop(object_t* obj, value_t* v) {
   value_t* last = NULL;
   object_array_t* o = OBJECT_ARRAY(obj);
+  event_t e = event_init(EVT_ITEMS_CHANGED, o);
   return_value_if_fail(o != NULL && o->size > 0, RET_BAD_PARAMS);
   last = o->props + o->size - 1;
   *v = *last;
   memset(last, 0x00, sizeof(value_t));
   o->size--;
+
+  emitter_dispatch(EMITTER(o), &e);
 
   return RET_OK;
 }
@@ -222,12 +232,14 @@ ret_t object_array_pop(object_t* obj, value_t* v) {
 ret_t object_array_set(object_t* obj, uint32_t index, const value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   object_array_t* o = OBJECT_ARRAY(obj);
+  event_t e = event_init(EVT_ITEMS_CHANGED, o);
   return_value_if_fail(object_array_extend(obj) == RET_OK, RET_OOM);
 
   if (index < o->size) {
     value_t* iter = o->props + index;
     value_reset(iter);
     ret = value_deep_copy(iter, v);
+    emitter_dispatch(EMITTER(o), &e);
   } else if (index == 0xffffffff) {
     ret = object_array_push(obj, v);
   } else {
@@ -237,7 +249,38 @@ ret_t object_array_set(object_t* obj, uint32_t index, const value_t* v) {
   return ret;
 }
 
+static object_t* object_array_get_sub_object(object_t* obj, const char* name, const char** ret) {
+  const char* p = strchr(name, '.');
+  if (p != NULL) {
+    value_t v;
+    int32_t index;
+    char subname[MAX_PATH + 1];
+
+    tk_strncpy_s(subname, MAX_PATH, name, p - name);
+    index = object_array_parse_index(subname);
+    object_array_get(obj, index, &v);
+    if (v.type == VALUE_TYPE_OBJECT) {
+      *ret = p + 1;
+      return value_object(&v);
+    }
+  }
+
+  return NULL;
+}
+
 static ret_t object_array_set_prop(object_t* obj, const char* name, const value_t* v) {
+  object_array_t* o = OBJECT_ARRAY(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  object_t* sub = object_array_get_sub_object(obj, name, &name);
+  if (sub != NULL) {
+    if (object_set_prop(sub, name, v) == RET_OK) {
+      event_t e = event_init(EVT_ITEMS_CHANGED, o);
+      emitter_dispatch(EMITTER(o), &e);
+    }
+    return RET_OK;
+  }
+
   int32_t index = object_array_parse_index(name);
   return object_array_set(obj, index, v);
 }
@@ -266,7 +309,12 @@ static ret_t object_array_get_prop(object_t* obj, const char* name, value_t* v) 
   } else if (tk_str_eq(name, "capacity")) {
     value_set_int(v, o->capacity);
     ret = RET_OK;
-  } else {
+  } else if (o->size > 0) {
+    object_t* sub = object_array_get_sub_object(obj, name, &name);
+    if (sub != NULL) {
+      return object_get_prop(sub, name, v);
+    }
+
     int32_t index = object_array_parse_index(name);
     ret = object_array_get(obj, index, v);
   }
@@ -527,9 +575,11 @@ static int value_cmp_as_str_i_r(const void* a, const void* b) {
 
 ret_t object_array_sort(object_t* obj, tk_compare_t cmp) {
   object_array_t* o = OBJECT_ARRAY(obj);
+  event_t e = event_init(EVT_ITEMS_CHANGED, o);
   return_value_if_fail(obj != NULL && cmp != NULL, RET_BAD_PARAMS);
 
   qsort(o->props, o->size, sizeof(value_t), cmp);
+  emitter_dispatch(EMITTER(o), &e);
 
   return RET_OK;
 }
