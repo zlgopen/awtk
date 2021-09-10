@@ -75,7 +75,7 @@ static ret_t on_close(void* ctx, event_t* e) {
 ret_t application_init() {
   widget_t* system_bar = window_open("system_bar");
   widget_t* win = window_open("basic");
-  
+
   image_manager_set_max_mem_size_of_cached_images(image_manager(), 8 * 1024 * 1024);
 
   (void)system_bar;

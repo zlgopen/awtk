@@ -114,7 +114,7 @@ TEST(ImageManager, limit) {
   memset(&b1, 0x00, sizeof(b1));
   memset(&b2, 0x00, sizeof(b1));
   memset(&b3, 0x00, sizeof(b1));
-  
+
   bitmap_init(&b1, 10, 20, BITMAP_FMT_RGBA8888, NULL);
   bitmap_init(&b2, 10, 30, BITMAP_FMT_RGBA8888, NULL);
   bitmap_init(&b3, 10, 40, BITMAP_FMT_RGBA8888, NULL);
@@ -123,12 +123,12 @@ TEST(ImageManager, limit) {
 
   ASSERT_EQ(image_manager_add(imm, "b1", &b1), RET_OK);
   ASSERT_EQ(imm->images.size, 1);
-  
+
   ASSERT_EQ(image_manager_add(imm, "b2", &b2), RET_OK);
   ASSERT_EQ(imm->images.size, 2);
 
   image_manager_set_max_mem_size_of_cached_images(imm, bitmap_get_mem_size(&b1));
-  
+
   ASSERT_EQ(image_manager_add(imm, "b3", &b3), RET_OK);
   ASSERT_EQ(imm->images.size, 1);
 }

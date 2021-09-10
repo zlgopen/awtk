@@ -116,7 +116,7 @@ static ret_t image_manager_clear_cache(image_manager_t* imm) {
     iter = (bitmap_cache_t*)darray_pop(&(imm->images));
     bitmap_cache_destroy(iter);
     log_debug("clear cache: mem_size_of_cached_images=%u nr=%u", imm->mem_size_of_cached_images,
-      imm->images.size);
+              imm->images.size);
   } while (imm->images.size > 0 &&
            imm->mem_size_of_cached_images > imm->max_mem_size_of_cached_images);
 
