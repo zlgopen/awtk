@@ -7,6 +7,7 @@
   * object\_array 添加事件触发，用于mvvm更新界面，并且在 set\_prop 和 get\_prop 函数中增加路径处理，向下查找一层，以便 mvvm 列表渲染逐层访问属性（感谢雨欣提供补丁）
   * 增加WITHOUT_FSCRIPT，方便低端平台禁用fscript（感谢智明提供补丁）
   * object\_array/object\_default增加exec/can\_exec（感谢雨欣提供补丁）
+  * edit显示支持bidi。
 
 2021/09/09
   * fscript增加json\_save\_to\_string（感谢雨欣提供补丁）

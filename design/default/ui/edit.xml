@@ -94,6 +94,10 @@
       <spin_box w="70%" right_margin="16" tips="uint(0-150) auto_fix" input_type="uint" min="0" max="150" step="1" auto_fix="true" style="number" />
      </list_item>
 
+     <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+      <label w="30%" text="الصين" style.font_name="trado"/>
+      <edit w="70%" style="line" tips="bidi" text="الصين"  action_text="done" style="bidi"/>
+     </list_item>
     </scroll_view>
     <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" value="0"/>
   </list_view>

@@ -25,6 +25,7 @@
 #include "tkc/utf8.h"
 #include "tkc/utils.h"
 #include "tkc/darray.h"
+#include "base/bidi.h"
 #include "base/line_parser.h"
 #include "base/events.h"
 #include "base/text_edit.h"
@@ -642,10 +643,11 @@ static int32_t text_edit_calc_x(text_edit_t* text_edit, line_info_t* iter) {
 
 static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info_t* iter,
                                   uint32_t y) {
+  bidi_t b;
   uint32_t x = 0;
   uint32_t k = 0;
   widget_t* widget = text_edit->widget;
-
+  const char* bidi_type = widget_get_bidi(widget);
   DECL_IMPL(text_edit);
   wstr_t* text = &(widget->text);
   style_t* style = widget->astyle;
@@ -666,9 +668,12 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info
     x = layout_info->margin_l;
   }
 
+  bidi_init(&b, FALSE, FALSE, bidi_type_from_name(bidi_type));
+  ENSURE(bidi_log2vis(&b, text->str + iter->offset, iter->length) == RET_OK);
+
   for (k = 0; k < iter->length; k++) {
     uint32_t offset = iter->offset + k;
-    wchar_t chr = impl->mask ? impl->mask_char : text->str[offset];
+    wchar_t chr = impl->mask ? impl->mask_char : b.vis_str[k];
     uint32_t char_w = canvas_measure_text(c, &chr, 1);
 
     if ((x + char_w) < view_left) {
@@ -713,6 +718,7 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info
       x += char_w + CHAR_SPACING;
     }
   }
+  bidi_deinit(&b);
 
   return RET_OK;
 }
