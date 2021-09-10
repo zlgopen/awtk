@@ -9,7 +9,7 @@
     <radio_button name="rb_en" style="switch_left" w="70" value="true" tr_text="English"/>
     <radio_button name="rb_zh" w="70" style="switch_right" tr_text="Chinese"/>
   </view>
-  <list_view name="menu" h="-105" item_height="40" auto_hide_scroll_bar="true" style="menu" x="0" y="105" w="230">
+  <list_view name="menu" h="-105" item_height="40" auto_hide_scroll_bar="true" style="menu" x="0" y="b" w="230">
     <scroll_view name="view_menu" x="0" y="0" w="100%" h="100%" children_layout="list_view(i=0,d=0,x=0,y=0,s=1)">
       <tab_button name="tb_button" style="tb_elm" value="true" tr_text="Button"/>
       <tab_button name="tb_checkbox" style="tb_elm" tr_text="Checkbox"/>

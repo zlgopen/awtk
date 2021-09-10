@@ -39,7 +39,7 @@
 static const char* s_win_name = "menu_${device_orientation}";
 static const char* s_sysbar_name = "sysbar_${device_orientation}";
 
-/* common **********************************************************************/
+/*** common **********************************************************************/
 extern ret_t assets_set_global_theme(const char* name);
 
 /* 在 dialog 切换语言或主题时，使用此函数刷新 dialog 高亮背景 */
@@ -311,6 +311,11 @@ static ret_t menu_bar_init_widget(void* ctx, const void* iter) {
   return RET_OK;
 }
 
+static ret_t on_menu_bar_move_resize(void* ctx, event_t* e) {
+  widget_t* menu_bar = WIDGET(e->target);
+  return widget_move_resize(menu_bar, 0, 0, menu_bar->w, window_manager()->h);
+}
+
 static ret_t open_menu_bar(widget_t* pages) {
   widget_t* dialog = widget_lookup(window_manager(), MENU_BAR_NAME, FALSE);
   if (dialog != NULL) {
@@ -323,6 +328,7 @@ static ret_t open_menu_bar(widget_t* pages) {
 
   widget_foreach(dialog, menu_bar_init_widget, pages);
   widget_on(dialog, EVT_POINTER_UP, on_dialog_quit, dialog);
+  widget_on(dialog, EVT_MOVE_RESIZE, on_menu_bar_move_resize, NULL);
   dialog_modal(dialog);
   return RET_OK;
 }
