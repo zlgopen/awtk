@@ -57,16 +57,20 @@ static int32_t object_default_compare(object_t* obj, object_t* other) {
 }
 
 static object_t* object_default_get_sub_object(object_t* obj, const char* name, const char** ret) {
-  const char* p = strchr(name, '.');
-  if (p != NULL) {
-    value_t* v = NULL;
-    char subname[MAX_PATH + 1];
+  object_default_t* o = OBJECT_DEFAULT(obj);
 
-    tk_strncpy_s(subname, MAX_PATH, name, p - name);
-    v = object_default_find_prop_by_name(obj, subname);
-    if (v != NULL && v->type == VALUE_TYPE_OBJECT) {
-      *ret = p + 1;
-      return value_object(v);
+  if (o->enable_path) {
+    const char* p = strchr(name, '.');
+    if (p != NULL) {
+      value_t* v = NULL;
+      char subname[MAX_PATH + 1];
+
+      tk_strncpy_s(subname, MAX_PATH, name, p - name);
+      v = object_default_find_prop_by_name(obj, subname);
+      if (v != NULL && v->type == VALUE_TYPE_OBJECT) {
+        *ret = p + 1;
+        return value_object(v);
+      }
     }
   }
 
@@ -221,14 +225,19 @@ static const object_vtable_t s_object_default_vtable = {
     .remove_prop = object_default_remove_prop,
     .foreach_prop = object_default_foreach_prop};
 
-object_t* object_default_create(void) {
+object_t* object_default_create_ex(bool_t enable_path) {
   object_t* obj = object_create(&s_object_default_vtable);
   object_default_t* o = OBJECT_DEFAULT(obj);
   return_value_if_fail(obj != NULL, NULL);
 
+  o->enable_path = enable_path;
   darray_init(&(o->props), 5, (tk_destroy_t)named_value_destroy, (tk_compare_t)named_value_compare);
 
   return obj;
+}
+
+object_t* object_default_create(void) {
+  return object_default_create_ex(TRUE);
 }
 
 object_t* object_default_clone(object_default_t* o) {

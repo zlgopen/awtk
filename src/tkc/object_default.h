@@ -43,6 +43,7 @@ typedef struct _object_default_t {
 
   /*private*/
   darray_t props;
+  bool_t enable_path;
 } object_default_t;
 
 /**
@@ -56,6 +57,18 @@ typedef struct _object_default_t {
  *
  */
 object_t* object_default_create(void);
+
+/**
+ * @method object_default_create_ex
+ *
+ * 创建对象。
+ *
+ * @annotation ["constructor", "scriptable", "gc"]
+ * @param {bool_t} enable_path 是否支持按路径访问属性。
+ * @return {object_t*} 返回object对象。
+ *
+ */
+object_t* object_default_create_ex(bool_t enable_path);
 
 /**
  * @method object_default_clone

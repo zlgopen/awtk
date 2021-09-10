@@ -592,3 +592,13 @@ TEST(ObjectDefault, insert1) {
 
   OBJECT_UNREF(obj);
 }
+
+TEST(ObjectDefault, disable_path) {
+  object_t* obj = object_default_create_ex(FALSE);
+
+  ASSERT_EQ(object_set_prop_int(obj, "tom.age", 123), RET_OK);
+  ASSERT_EQ(object_get_prop_int(obj, "tom.age", 0), 123);
+
+  object_unref(obj);
+}
+
