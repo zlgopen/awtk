@@ -647,7 +647,7 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info
   uint32_t x = 0;
   uint32_t k = 0;
   widget_t* widget = text_edit->widget;
-  const char* bidi_type = widget_get_bidi(widget);
+  const char* bidi_type = widget_get_prop_str(widget, WIDGET_PROP_BIDI, NULL);
   DECL_IMPL(text_edit);
   wstr_t* text = &(widget->text);
   style_t* style = widget->astyle;
@@ -1665,7 +1665,7 @@ static ret_t text_edit_insert_wtext_with_len(text_edit_t* text_edit, uint32_t of
   len = tk_min(len, size);
   offset = tk_min(offset, text_edit->widget->text.size);
 
-  ret = !!text_edit_insert(text_edit, offset, wtext, len) ? RET_OK : RET_SKIP;
+  ret = !!text_edit_insert(text_edit, offset, (wchar_t*)wtext, len) ? RET_OK : RET_SKIP;
 
   if (ret == RET_OK) {
     if (offset + len != text_edit_get_cursor(text_edit)) {
