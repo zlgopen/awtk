@@ -9,6 +9,11 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class lcd_fb_dirty_rects_t
+ * lcd fb脏矩形。
+ *
+ */
 typedef struct _lcd_fb_dirty_rects_t {
   wh_t lcd_w;
   wh_t lcd_h;
