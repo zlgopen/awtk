@@ -6,14 +6,14 @@
   <row x="0" y="40" w="100%" h="30" children_layout="default(r=1,c=4,xm=2,s=10)">
     <button text="Close" focusable="true" focus="true" on:click="close()"/>
     <button text="Back" focusable="true" on:click="back()"/>
-    <button text="Home" focusable="true" style:focused:text_color="red" on:click="back_to_home()"/>
-    <button text="Quit" focusable="true" style:focused:text_color="red" on:click="quit()"/>
+    <button text="Home" focusable="true" style.focused.text_color="red" on:click="back_to_home()"/>
+    <button text="Quit" focusable="true" style.focused.text_color="red" on:click="quit()"/>
   </row>
 
   <row x="0" y="80" w="100%" h="30" children_layout="default(r=1,c=3,xm=2,s=10)">
-    <button text="Open" focusable="true" focus="true" on:click="open(test_fscript)"/>
-    <button text="Close" focusable="true" on:click="open(test_fscript, true)"/>
-    <button text="Switch TO" focusable="true" on:click="open(test_fscript, false, true)"/>
+    <button text="Open" focusable="true" focus="true" on:click="open('test_fscript')"/>
+    <button text="Close" focusable="true" on:click="open('test_fscript', true)"/>
+    <button text="Switch TO" focusable="true" on:click="open('test_fscript', false, true)"/>
   </row>
 
 

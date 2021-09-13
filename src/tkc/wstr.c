@@ -33,6 +33,19 @@ const wchar_t* wcs_chr(const wchar_t* s, wchar_t c) {
   return *p ? p : NULL;
 }
 
+wchar_t* wcs_ncpy(wchar_t* s1, const wchar_t* s2, uint32_t n) {
+  wchar_t* d = s1;
+  const wchar_t* s = s2;
+  return_value_if_fail(s1 != NULL && s2 != NULL, NULL);
+
+  while (*s && n-- > 0) {
+    *d++ = *s++;
+  }
+  *d = '\0';
+
+  return s1;
+}
+
 wchar_t* wcs_cpy(wchar_t* s1, const wchar_t* s2) {
   wchar_t* d = s1;
   const wchar_t* s = s2;
@@ -91,6 +104,10 @@ wchar_t* wcscpy(wchar_t* s1, const wchar_t* s2) {
   return wcs_cpy(s1, s2);
 }
 
+wchar_t* wcsncpy(wchar_t* s1, const wchar_t* s2, uint32_t n) {
+  return wcs_ncpy(s1, s2, n);
+}
+
 wchar_t* wcschr(const wchar_t* s, wchar_t c) {
   return (wchar_t*)wcs_chr(s, c);
 }
@@ -131,14 +148,21 @@ wstr_t* wstr_init(wstr_t* str, uint32_t capacity) {
 }
 
 ret_t wstr_set(wstr_t* str, const wchar_t* text) {
-  uint32_t size = 0;
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
 
+  return wstr_set_with_len(str, text, 0xffffffff);
+}
+
+ret_t wstr_set_with_len(wstr_t* str, const wchar_t* text, uint32_t len) {
+  uint32_t size = 0;
+  return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
   size = wcslen(text);
+  size = tk_min(size, len);
   return_value_if_fail(wstr_extend(str, size + 1) == RET_OK, RET_BAD_PARAMS);
 
-  wcscpy(str->str, text);
+  wcsncpy(str->str, text, size);
   str->size = size;
+  str->str[size] = 0;
 
   return RET_OK;
 }

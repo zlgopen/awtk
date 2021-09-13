@@ -587,7 +587,8 @@ orientation_event_t* orientation_event_cast(event_t* event);
  * @return {event_t*} event对象。
  */
 event_t* orientation_event_init(orientation_event_t* event, uint32_t type, void* target,
-                                lcd_orientation_t old_orientation, lcd_orientation_t new_orientation);
+                                lcd_orientation_t old_orientation,
+                                lcd_orientation_t new_orientation);
 
 /**
  * @class value_change_event_t

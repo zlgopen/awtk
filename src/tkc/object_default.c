@@ -24,69 +24,31 @@
 #include "tkc/utils.h"
 #include "tkc/object_default.h"
 
-static void object_default_check(object_default_t* o) {
-#ifndef NDEBUG
-  uint32_t i = 0;
-  return_if_fail(o != NULL);
-  for (i = 0; i < o->props_size; i++) {
-    named_value_t* iter = o->props + i;
-    if (i > 0) {
-      named_value_t* prev = o->props + i - 1;
-      assert(strcmp(prev->name, iter->name) < 0);
-    }
-  }
-#else
-  (void)o;
-#endif
-}
-
-static ret_t object_default_clean_invalid_props(object_t* obj) {
+static value_t* object_default_find_prop_by_name(object_t* obj, const char* name) {
+  named_value_t* nv = NULL;
   object_default_t* o = OBJECT_DEFAULT(obj);
-  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-  if (o->props_size > 0) {
-    uint32_t i = 0;
-    named_value_t* dst = o->props;
+  return_value_if_fail(o != NULL && name != NULL, NULL);
 
-    for (i = 0; i < o->props_size; i++) {
-      named_value_t* iter = o->props + i;
-
-      if (iter->name != NULL) {
-        if (dst != iter) {
-          memcpy(dst, iter, sizeof(named_value_t));
-        }
-        dst++;
-      }
-    }
-
-    o->props_size = dst - o->props;
+  if (*name == '[') {
+    uint32_t index = tk_atoi(name + 1);
+    return_value_if_fail(index < o->props.size, NULL);
+    nv = (named_value_t*)(o->props.elms[index]);
+  } else {
+    nv = darray_bsearch(&(o->props), (tk_compare_t)named_value_compare_by_name, (void*)name);
   }
 
-  return RET_OK;
+  return nv != NULL ? &(nv->value) : NULL;
 }
 
 ret_t object_default_clear_props(object_t* obj) {
-  uint32_t i = 0;
   object_default_t* o = OBJECT_DEFAULT(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
-  for (i = 0; i < o->props_size; i++) {
-    named_value_t* iter = o->props + i;
-    named_value_deinit(iter);
-  }
-
-  o->props_size = 0;
-
-  return RET_OK;
+  return darray_clear(&(o->props));
 }
 
 static ret_t object_default_on_destroy(object_t* obj) {
-  object_default_t* o = OBJECT_DEFAULT(obj);
-  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-  object_default_clear_props(obj);
-  o->props_capacity = 0;
-  TKMEM_FREE(o->props);
-
-  return RET_OK;
+  return object_default_clear_props(obj);
 }
 
 static int32_t object_default_compare(object_t* obj, object_t* other) {
@@ -94,51 +56,20 @@ static int32_t object_default_compare(object_t* obj, object_t* other) {
   return tk_str_cmp(obj->name, other->name);
 }
 
-static int32_t object_default_find(named_value_t* start, uint32_t nr, const char* name) {
-  int32_t low = 0;
-  int32_t mid = 0;
-  int32_t result = 0;
-  int32_t high = nr - 1;
-  named_value_t* iter = NULL;
-  return_value_if_fail(name != NULL && start != NULL, -1);
+static object_t* object_default_get_sub_object(object_t* obj, const char* name, const char** ret) {
+  object_default_t* o = OBJECT_DEFAULT(obj);
 
-  if (name[0] == '[') {
-    int32_t index = tk_atoi(name + 1);
+  if (o->enable_path) {
+    const char* p = strchr(name, '.');
+    if (p != NULL) {
+      value_t* v = NULL;
+      char subname[MAX_PATH + 1];
 
-    if (index >= 0 && index < nr) {
-      return index;
-    }
-  }
-
-  while (low <= high) {
-    mid = low + ((high - low) >> 1);
-    iter = start + mid;
-    result = tk_str_cmp(name, iter->name);
-
-    if (result == 0) {
-      return mid;
-    } else if (result > 0) {
-      low = mid + 1;
-    } else {
-      high = mid - 1;
-    }
-  }
-
-  return low;
-}
-
-static object_t* object_default_get_sub_object(object_t* obj, const char* name) {
-  char subname[MAX_PATH + 1];
-  const char* p = strchr(name, '.');
-
-  if (p != NULL) {
-    object_default_t* o = OBJECT_DEFAULT(obj);
-    tk_strncpy_s(subname, MAX_PATH, name, p - name);
-    int32_t index = object_default_find(o->props, o->props_size, subname);
-    if (index >= 0 && index < o->props_size) {
-      named_value_t* nv = o->props + index;
-      if (tk_str_eq(nv->name, subname) && nv->value.type == VALUE_TYPE_OBJECT) {
-        return value_object(&(nv->value));
+      tk_strncpy_s(subname, MAX_PATH, name, p - name);
+      v = object_default_find_prop_by_name(obj, subname);
+      if (v != NULL && v->type == VALUE_TYPE_OBJECT) {
+        *ret = p + 1;
+        return value_object(v);
       }
     }
   }
@@ -146,118 +77,50 @@ static object_t* object_default_get_sub_object(object_t* obj, const char* name) 
   return NULL;
 }
 
-static ret_t object_default_extend(object_t* obj) {
-  ret_t ret = RET_OOM;
-  object_default_t* o = OBJECT_DEFAULT(obj);
-  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-  if (o->props_size < o->props_capacity) {
-    ret = RET_OK;
-  } else {
-    named_value_t* props = NULL;
-    uint32_t capacity = o->props_capacity + (o->props_capacity >> 1) + 1;
-    props = TKMEM_REALLOCT(named_value_t, o->props, capacity);
-
-    if (props != NULL) {
-      o->props = props;
-      o->props_capacity = capacity;
-      ret = RET_OK;
-    }
-  }
-
-  return ret;
-}
-
-static ret_t object_default_insert_prop_at(object_t* obj, int32_t index, const char* name,
-                                           const value_t* v) {
-  int32_t i = 0;
-  object_default_t* o = OBJECT_DEFAULT(obj);
-  return_value_if_fail(object_default_extend(obj) == RET_OK, RET_OOM);
-
-  for (i = o->props_size; i > index; i--) {
-    named_value_t* iter = o->props + i;
-    named_value_t* prev = o->props + i - 1;
-
-    memcpy(iter, prev, sizeof(named_value_t));
-  }
-
-  o->props_size++;
-  named_value_init(o->props + index, name, v);
-  object_default_check(o);
-
-  return RET_OK;
-}
-
 static ret_t object_default_remove_prop(object_t* obj, const char* name) {
-  ret_t ret = RET_NOT_FOUND;
+  int32_t index = 0;
   object_default_t* o = OBJECT_DEFAULT(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
-  if (o->props_size > 0) {
-    object_t* sub = object_default_get_sub_object(obj, name);
+  if (o->props.size > 0) {
+    object_t* sub = object_default_get_sub_object(obj, name, &name);
     if (sub != NULL) {
-      name = strchr(name, '.') + 1;
       return object_remove_prop(sub, name);
     }
   }
 
-  if (o->props_size > 0) {
-    named_value_t* iter = NULL;
-    int32_t index = object_default_find(o->props, o->props_size, name);
-
-    if (index < 0 || index >= o->props_size) {
-      return RET_NOT_FOUND;
-    }
-
-    iter = o->props + index;
-    if (tk_str_eq(iter->name, name) || *name == '[') {
-      named_value_deinit(iter);
-      ret = object_default_clean_invalid_props(obj);
-    }
-    object_default_check(o);
+  index = darray_bsearch_index(&(o->props), (tk_compare_t)named_value_compare_by_name, (void*)name);
+  if (index >= 0) {
+    return darray_remove_index(&(o->props), index);
+  } else {
+    return RET_NOT_FOUND;
   }
-
-  return ret;
 }
 
 static ret_t object_default_set_prop(object_t* obj, const char* name, const value_t* v) {
+  value_t* vv = NULL;
   ret_t ret = RET_NOT_FOUND;
   object_default_t* o = OBJECT_DEFAULT(obj);
-  return_value_if_fail(object_default_extend(obj) == RET_OK, RET_OOM);
 
-  if (o->props_size > 0) {
-    object_t* sub = object_default_get_sub_object(obj, name);
+  if (o->props.size > 0) {
+    object_t* sub = object_default_get_sub_object(obj, name, &name);
     if (sub != NULL) {
-      name = strchr(name, '.') + 1;
       return object_set_prop(sub, name, v);
     }
   }
 
-  if (o->props_size > 0) {
-    int32_t index = object_default_find(o->props, o->props_size, name);
-    named_value_t* iter = o->props + index;
-
-    if (index >= o->props_size) {
-      ret = object_default_insert_prop_at(obj, o->props_size, name, v);
-    } else if (index < 0) {
-      ret = object_default_insert_prop_at(obj, 0, name, v);
-    } else if (tk_str_eq(iter->name, name)) {
-      ret = named_value_set_value(iter, v);
-    } else {
-      int32_t i = 0;
-      index = tk_max(0, index - 1);
-
-      for (i = index; i < o->props_size; i++) {
-        named_value_t* iter = o->props + i;
-        int32_t result = tk_str_cmp(name, iter->name);
-
-        if (result < 0) {
-          ret = object_default_insert_prop_at(obj, i, name, v);
-          break;
-        }
-      }
-    }
+  vv = object_default_find_prop_by_name(obj, name);
+  if (vv != NULL) {
+    ret = RET_OK;
+    value_reset(vv);
+    value_deep_copy(vv, v);
   } else {
-    ret = object_default_insert_prop_at(obj, 0, name, v);
+    named_value_t* nv = named_value_create_ex(name, v);
+    return_value_if_fail(nv != NULL, RET_OOM);
+    ret = darray_sorted_insert(&(o->props), nv, (tk_compare_t)named_value_compare, FALSE);
+    if (ret != RET_OK) {
+      named_value_destroy(nv);
+    }
   }
 
   return ret;
@@ -268,30 +131,50 @@ static ret_t object_default_get_prop(object_t* obj, const char* name, value_t* v
   object_default_t* o = OBJECT_DEFAULT(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   if (tk_str_eq(name, OBJECT_PROP_SIZE)) {
-    value_set_uint32(v, o->props_size);
+    value_set_uint32(v, o->props.size);
     return RET_OK;
   }
 
-  if (o->props_size > 0) {
-    object_t* sub = object_default_get_sub_object(obj, name);
+  if (o->props.size > 0) {
+    object_t* sub = object_default_get_sub_object(obj, name, &name);
     if (sub != NULL) {
-      name = strchr(name, '.') + 1;
       return object_get_prop(sub, name, v);
     }
   }
 
-  if (o->props_size > 0) {
-    named_value_t* iter = NULL;
-    int32_t index = object_default_find(o->props, o->props_size, name);
-
-    if (index < 0 || index >= o->props_size) {
-      return RET_NOT_FOUND;
+  if (o->props.size > 0) {
+    const value_t* vv = object_default_find_prop_by_name(obj, name);
+    if (vv != NULL) {
+      ret = value_copy(v, vv);
+    } else {
+      ret = RET_NOT_FOUND;
     }
+  }
 
-    iter = o->props + index;
-    if (tk_str_eq(iter->name, name) || *name == '[') {
-      ret = value_copy(v, &(iter->value));
-    }
+  return ret;
+}
+
+static bool_t object_default_can_exec(object_t* obj, const char* name, const char* args) {
+  ret_t ret = FALSE;
+  object_default_t* o = OBJECT_DEFAULT(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  object_t* sub = object_default_get_sub_object(obj, name, &name);
+  if (sub != NULL) {
+    return object_can_exec(sub, name, args);
+  }
+
+  return ret;
+}
+
+static ret_t object_default_exec(object_t* obj, const char* name, const char* args) {
+  ret_t ret = RET_NOT_FOUND;
+  object_default_t* o = OBJECT_DEFAULT(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  object_t* sub = object_default_get_sub_object(obj, name, &name);
+  if (sub != NULL) {
+    return object_exec(sub, name, args);
   }
 
   return ret;
@@ -300,42 +183,31 @@ static ret_t object_default_get_prop(object_t* obj, const char* name, value_t* v
 static ret_t object_default_foreach_prop(object_t* obj, tk_visit_t on_prop, void* ctx) {
   ret_t ret = RET_OK;
   object_default_t* o = OBJECT_DEFAULT(obj);
-  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-  if (o->props_size > 0) {
+  return_value_if_fail(o != NULL && on_prop != NULL, RET_BAD_PARAMS);
+  if (o->props.size > 0) {
     uint32_t i = 0;
-
-    for (i = 0; i < o->props_size; i++) {
-      named_value_t* iter = o->props + i;
+    for (i = 0; i < o->props.size; i++) {
+      named_value_t* iter = (named_value_t*)(o->props.elms[i]);
       ret = on_prop(ctx, iter);
-
       if (ret == RET_REMOVE) {
-        named_value_deinit(iter);
+        named_value_destroy(iter);
+        o->props.elms[i] = NULL;
       } else if (ret != RET_OK) {
         break;
       }
     }
-
-    object_default_clean_invalid_props(obj);
+    darray_remove_all(&(o->props), pointer_compare, NULL);
   }
 
   return ret;
 }
 
 value_t* object_default_find_prop(object_t* obj, tk_compare_t cmp, const void* ctx) {
+  named_value_t* nv = NULL;
   object_default_t* o = OBJECT_DEFAULT(obj);
   return_value_if_fail(o != NULL && cmp != NULL, NULL);
-
-  if (o->props_size > 0) {
-    uint32_t i = 0;
-    for (i = 0; i < o->props_size; i++) {
-      named_value_t* iter = o->props + i;
-      if (cmp(iter, ctx) == 0) {
-        return &(iter->value);
-      }
-    }
-  }
-
-  return NULL;
+  nv = (named_value_t*)darray_find_ex(&(o->props), cmp, (void*)ctx);
+  return nv != NULL ? &(nv->value) : NULL;
 }
 
 static const object_vtable_t s_object_default_vtable = {
@@ -348,38 +220,43 @@ static const object_vtable_t s_object_default_vtable = {
     .compare = object_default_compare,
     .get_prop = object_default_get_prop,
     .set_prop = object_default_set_prop,
+    .can_exec = object_default_can_exec,
+    .exec = object_default_exec,
     .remove_prop = object_default_remove_prop,
     .foreach_prop = object_default_foreach_prop};
 
-object_t* object_default_create(void) {
-  uint32_t init_capacity = 5;
+object_t* object_default_create_ex(bool_t enable_path) {
   object_t* obj = object_create(&s_object_default_vtable);
+  object_default_t* o = OBJECT_DEFAULT(obj);
   return_value_if_fail(obj != NULL, NULL);
-  if (init_capacity > 0) {
-    object_default_t* o = OBJECT_DEFAULT(obj);
 
-    o->props = TKMEM_ZALLOCN(named_value_t, init_capacity);
-    if (o->props != NULL) {
-      o->props_capacity = init_capacity;
-    }
-  }
+  o->enable_path = enable_path;
+  darray_init(&(o->props), 5, (tk_destroy_t)named_value_destroy, (tk_compare_t)named_value_compare);
 
   return obj;
 }
 
+object_t* object_default_create(void) {
+  return object_default_create_ex(TRUE);
+}
+
 object_t* object_default_clone(object_default_t* o) {
+  uint32_t i = 0;
   object_t* dup = NULL;
+  object_default_t* dupo = NULL;
   return_value_if_fail(o != NULL, NULL);
 
   dup = object_default_create();
   return_value_if_fail(dup != NULL, NULL);
 
-  if (o->props_size > 0) {
-    uint32_t i = 0;
-    for (i = 0; i < o->props_size; i++) {
-      named_value_t* iter = o->props + i;
+  dupo = OBJECT_DEFAULT(dup);
+  for (i = 0; i < o->props.size; i++) {
+    named_value_t* iter = (named_value_t*)(o->props.elms[i]);
+    named_value_t* nv = named_value_create_ex(iter->name, &(iter->value));
 
-      object_set_prop(dup, iter->name, &(iter->value));
+    if (darray_push(&(dupo->props), nv) != RET_OK) {
+      named_value_destroy(nv);
+      break;
     }
   }
 
@@ -388,7 +265,6 @@ object_t* object_default_clone(object_default_t* o) {
 
 object_default_t* object_default_cast(object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt == &s_object_default_vtable, NULL);
-
   return (object_default_t*)(obj);
 }
 

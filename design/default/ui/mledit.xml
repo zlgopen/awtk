@@ -5,6 +5,6 @@
    <scroll_bar_d x="right" y="0" w="14" h="100%" value="0"/>
  </mledit>
  <button name="close" text="Close" focusable="true" x="c" y="m" w="128" h="30"/>
- <mledit x="c" y="b:10" h="40%" w="90%" text="" style:empty:tips_text_color="#ff9900" tips="0123456789qwertyuiopasdfghjklzxcvbnm0123456789qwertyuiopasdfghjklzxcvbnm0123456789qwertyuiopasdfghjklzxcvbnm0123456789qwertyuiopasdfghjklzxcvbnm0123456789qwertyuiopasdfghjklzxcvbnm" wrap_word="false" keyboard="kb_foo" cancelable="true"> 
+ <mledit x="c" y="b:10" h="40%" w="90%" text="" style.empty.tips_text_color="#ff9900" tips="0123456789qwertyuiopasdfghjklzxcvbnm0123456789qwertyuiopasdfghjklzxcvbnm0123456789qwertyuiopasdfghjklzxcvbnm0123456789qwertyuiopasdfghjklzxcvbnm0123456789qwertyuiopasdfghjklzxcvbnm" wrap_word="false" keyboard="kb_foo" cancelable="true"> 
  </mledit>
 </window>

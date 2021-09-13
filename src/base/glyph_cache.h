@@ -27,7 +27,7 @@
 BEGIN_C_DECLS
 
 typedef struct _glyph_cache_item_t {
-  uint32_t last_access_time;
+  uint64_t last_access_time;
   font_size_t size;
   wchar_t code;
   glyph_t* g;

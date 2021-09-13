@@ -51,7 +51,8 @@ typedef const dirty_rects_t* (*lcd_get_dirty_rects_t)(lcd_t* lcd);
 typedef ret_t (*lcd_begin_frame_t)(lcd_t* lcd, const dirty_rects_t* dirty_rects);
 typedef ret_t (*lcd_set_clip_rect_t)(lcd_t* lcd, const rect_t* rect);
 typedef ret_t (*lcd_get_clip_rect_t)(lcd_t* lcd, rect_t* rect);
-typedef ret_t (*lcd_set_orientation_t)(lcd_t* lcd, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation);
+typedef ret_t (*lcd_set_orientation_t)(lcd_t* lcd, lcd_orientation_t old_orientation,
+                                       lcd_orientation_t new_orientation);
 typedef ret_t (*lcd_resize_t)(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length);
 typedef ret_t (*lcd_get_text_metrics_t)(lcd_t* lcd, float_t* ascent, float_t* descent,
                                         float_t* line_hight);
@@ -79,7 +80,7 @@ typedef ret_t (*lcd_draw_glyph_t)(lcd_t* lcd, glyph_t* glyph, const rect_t* src,
 typedef float_t (*lcd_measure_text_t)(lcd_t* lcd, const wchar_t* str, uint32_t nr);
 typedef ret_t (*lcd_draw_text_t)(lcd_t* lcd, const wchar_t* str, uint32_t nr, xy_t x, xy_t y);
 
-typedef ret_t (*lcd_draw_image_t)(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst);
+typedef ret_t (*lcd_draw_image_t)(lcd_t* lcd, bitmap_t* img, const rectf_t* src, const rectf_t* dst);
 typedef ret_t (*lcd_draw_image_matrix_t)(lcd_t* lcd, draw_image_info_t* info);
 typedef vgcanvas_t* (*lcd_get_vgcanvas_t)(lcd_t* lcd);
 typedef bitmap_format_t (*lcd_get_desired_bitmap_format_t)(lcd_t* lcd);
@@ -536,12 +537,12 @@ ret_t lcd_draw_text(lcd_t* lcd, const wchar_t* str, uint32_t nr, xy_t x, xy_t y)
  * 绘制图片。
  * @param {lcd_t*} lcd lcd对象。
  * @param {bitmap_t*} img 图片。
- * @param {const rect_t*} src 只绘制指定区域的部分。
- * @param {const rect_t*} dst 绘制到目标区域。
+ * @param {const rectf_t*} src 只绘制指定区域的部分。
+ * @param {const rectf_t*} dst 绘制到目标区域。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t lcd_draw_image(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst);
+ret_t lcd_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* src, const rectf_t* dst);
 
 /**
  * @method lcd_draw_image_matrix
@@ -719,7 +720,8 @@ bool_t lcd_is_support_dirty_rect(lcd_t* lcd);
 /* private */
 bool_t lcd_is_dirty(lcd_t* lcd);
 ret_t lcd_set_canvas(lcd_t* lcd, canvas_t* c);
-ret_t lcd_set_orientation(lcd_t* lcd, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation);
+ret_t lcd_set_orientation(lcd_t* lcd, lcd_orientation_t old_orientation,
+                          lcd_orientation_t new_orientation);
 
 END_C_DECLS
 

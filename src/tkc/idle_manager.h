@@ -171,6 +171,7 @@ const idle_info_t* idle_manager_find(idle_manager_t* idle_manager, uint32_t idle
 uint32_t idle_manager_add(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx);
 
 /*internal use*/
+uint32_t idle_manager_get_next_idle_id(idle_manager_t* idle_manager);
 ret_t idle_manager_remove_all_by_ctx_and_type(idle_manager_t* idle_manager, uint16_t type,
                                               void* ctx);
 uint32_t idle_manager_add_with_type(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx,

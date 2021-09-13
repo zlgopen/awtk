@@ -112,7 +112,9 @@ static ret_t native_window_fb_gl_resize(native_window_t* win, wh_t w, wh_t h) {
   return RET_OK;
 }
 
-static ret_t native_window_fb_gl_set_orientation(native_window_t* win, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation) {
+static ret_t native_window_fb_gl_set_orientation(native_window_t* win,
+                                                 lcd_orientation_t old_orientation,
+                                                 lcd_orientation_t new_orientation) {
   wh_t w, h;
   ret_t ret = RET_OK;
   native_window_info_t info;

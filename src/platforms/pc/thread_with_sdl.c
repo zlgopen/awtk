@@ -60,14 +60,17 @@ ret_t tk_mutex_lock(tk_mutex_t* mutex) {
 }
 
 ret_t tk_mutex_try_lock(tk_mutex_t* mutex) {
+  int ret = 0;
   return_value_if_fail(mutex != NULL, RET_BAD_PARAMS);
 
-  if (SDL_TryLockMutex(mutex->mutex) != 0) {
-    log_debug("SDL_LockMutex fail\n");
-    return RET_FAIL;
+  ret = SDL_TryLockMutex(mutex->mutex);
+  if (ret == SDL_MUTEX_TIMEDOUT) {
+    return RET_TIMEOUT;
+  } else if (ret == 0) {
+    return RET_OK;
   }
 
-  return RET_OK;
+  return RET_FAIL;
 }
 
 ret_t tk_mutex_unlock(tk_mutex_t* mutex) {

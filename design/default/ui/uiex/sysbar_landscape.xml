@@ -1,0 +1,16 @@
+<system_bar name="sysbar_landscape" theme="uiex" h="50" children_layout="default(r=0,c=1,x=0,y=0,s=0)">
+  <view h="100%">
+    <image name="img_logo" x="10" y="m" w="147" h="35" draw_type="center" image="uiex_logo"/>
+    <digit_clock x="r" y="m" w="100" h="36" format="hh:mm:ss" name="clk" style="sysbar"/>
+    <view name="view_language" x="r:120" y="m" w="200" h="36" children_layout="default(r=1,c=0,x=0,y=0,s=0)" disable_in_1m="true">
+      <label w="-140" style:normal:font_size="22" tr_text="Language"/>
+      <radio_button name="rb_en" style="switch_left" w="70" value="true" tr_text="English"/>
+      <radio_button name="rb_zh" w="70" style="switch_right" tr_text="Chinese"/>
+    </view>
+    <view name="view_style" x="r:340" y="m" w="200" h="36" children_layout="default(r=1,c=0,x=0,y=0,s=0)">
+      <label w="-140" style:normal:font_size="22" tr_text="Style"/>
+      <radio_button name="rb_light" w="70" style="switch_left" value="true" tr_text="Light"/>
+      <radio_button name="rb_dark" w="70" style="switch_right" tr_text="Dark"/>
+    </view>
+  </view>
+</system_bar>

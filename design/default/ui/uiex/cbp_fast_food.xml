@@ -1,0 +1,5 @@
+<popup name="cbp_fast_food" theme="uiex" x="0" y="0" h="92" w="120" close_when_click="true" close_when_click_outside="true" children_layout="default(r=0,c=1,x=0,y=0,s=1)" style="combobox_popup">
+  <combo_box_item name="list_item" h="30" tr_text="Chips"/>
+  <combo_box_item name="list_item" h="30" value="1" tr_text="Hamburger"/>
+  <combo_box_item name="list_item" h="30" value="2" tr_text="Ice cream"/>
+</popup>

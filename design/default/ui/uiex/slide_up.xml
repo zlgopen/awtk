@@ -1,0 +1,3 @@
+<window name="slide_up" theme="uiex" style="default" anim_hint="slide_up(start_alpha=0, end_alpha=200)" style:normal:bg_image="bg5" style:normal:bg_image_draw_type="center">
+  <button name="close()" x="r:20" y="20" w="20" h="20" style="close"/>
+</window>

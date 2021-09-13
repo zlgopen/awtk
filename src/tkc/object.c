@@ -413,7 +413,7 @@ ret_t object_copy_prop(object_t* obj, object_t* src, const char* name) {
   return ret;
 }
 
-#ifndef AWTK_LITE
+#ifndef WITHOUT_FSCRIPT
 ret_t object_eval(object_t* obj, const char* expr, value_t* v) {
   return fscript_eval(obj, expr, v);
 }
@@ -428,7 +428,7 @@ ret_t object_eval(object_t* obj, const char* expr, value_t* v) {
     return RET_FAIL;
   }
 }
-#endif /*AWTK_LITE*/
+#endif /*WITHOUT_FSCRIPT*/
 
 const char* object_get_type(object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt != NULL, NULL);

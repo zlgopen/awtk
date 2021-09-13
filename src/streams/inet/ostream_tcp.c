@@ -27,7 +27,6 @@
 #include "tkc/socket_helper.h"
 #include "streams/inet/ostream_tcp.h"
 
-
 static int32_t tk_ostream_tcp_write(tk_ostream_t* stream, const uint8_t* buff, uint32_t max_size) {
   int32_t ret = 0;
   tk_ostream_tcp_t* ostream_tcp = TK_OSTREAM_TCP(stream);

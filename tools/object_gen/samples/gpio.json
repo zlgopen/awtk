@@ -1,0 +1,240 @@
+{
+  "name":"object_gpio",
+  "date":"2021-09-02",
+  "team":"AWTK Develop Team",
+  "author":"Li XianJing <xianjimli@hotmail.com>",
+  "desc":"GPIO",
+  "copyright":"Guangzhou ZHIYUAN Electronics Co.,Ltd.",
+  "parent": "object",
+  "allowSubclass":true,
+  "annotation": ["scriptable"],
+  "includes":[],
+  "consts": [
+    {
+      "name":"gpio_pin_func",
+      "type":"enum",
+      "desc":"GPIO PIN的功能定义",
+      "annotation": ["scriptable"],
+      "values": [
+        {
+          "name":"INPUT",
+          "desc":"输入"
+        },
+        {
+          "name":"OUTPUT_INIT_HIGH",
+          "desc":"输出高电平"
+        },
+        {
+          "name":"OUTPUT_INIT_LOW",
+          "desc":"引脚输出低电平"
+        }
+      ]
+    },
+    {
+      "name":"gpio_pin_mode",
+      "type":"enum",
+      "desc":"GPIO PIN的模式定义",
+      "annotation": ["scriptable"],
+      "values": [
+        {
+          "name":"PULLUP",
+          "desc":"上拉模式"
+        },
+        {
+          "name":"PULLDOWN",
+          "desc":"下拉模式"
+        },
+        {
+          "name":"OPEN_DRAIN",
+          "desc":"开漏模式"
+        },
+        {
+          "name":"PUSH_PULL",
+          "desc":"推挽模式"
+        }
+      ]
+    },
+    {
+      "name":"gpio_pin_trigger_mode",
+      "type":"enum",
+      "desc":"GPIO PIN的触发模式定义",
+      "annotation": ["scriptable"],
+      "values": [
+        {
+          "name":"OFF",
+          "desc":"关闭触发"
+        },
+        {
+          "name":"HIGH",
+          "desc":"高电平触发"
+        },
+        {
+          "name":"LOW",
+          "desc":"低电平触发"
+        },
+        {
+          "name":"RISE",
+          "desc":"上升沿触发"
+        },
+        {
+          "name":"FALL",
+          "desc":"下降沿触发"
+        },
+        {
+          "name":"BOTH_EDGES",
+          "desc":"双边沿触发"
+        }
+      ]
+    }
+  ],
+  "props": [
+  ],
+  "funcs": [
+    {
+      "name":"config",
+      "desc":"配置",
+      "annotation": ["scriptable"],
+      "return": {
+        "type":"ret_t", 
+        "defvalue":"RET_BAD_PARAMS",
+        "desc":"返回RET_OK表示成功，否则表示失败"
+      },
+      "virtual": false,
+      "args": [
+        {
+          "name":"pin",
+          "desc":"引脚号",
+          "type":"int32_t"
+        },
+        {
+          "name":"func",
+          "desc":"功能",
+          "type":"uint16_t"
+        },
+        {
+          "name":"mode",
+          "desc":"模式",
+          "type":"uint16_t"
+        }
+      ]
+    },
+    {
+      "name":"get",
+      "desc":"获取引脚输出状态",
+      "annotation": ["scriptable"],
+      "return": {
+        "type":"uint32_t", 
+        "defvalue":"0",
+        "desc":"返回值"
+      },
+      "virtual": true,
+      "args": [
+        {
+          "name":"pin",
+          "desc":"引脚号",
+          "type":"int32_t"
+        }
+      ]
+    },
+    {
+      "name":"set",
+      "desc":"设置引脚输出状态",
+      "annotation": ["scriptable"],
+      "return": {
+        "type":"ret_t", 
+        "defvalue":"RET_BAD_PARAMS",
+        "desc":"返回RET_OK表示成功，否则表示失败"
+      },
+      "virtual": true,
+      "args": [
+        {
+          "name":"pin",
+          "desc":"引脚号",
+          "type":"int32_t"
+        },
+        {
+          "name":"value",
+          "desc":"值",
+          "type":"uint32_t"
+        }
+      ]
+    },
+    {
+      "name":"toggle",
+      "desc":"翻转GPIO引脚输出状态",
+      "annotation": ["scriptable"],
+      "return": {
+        "type":"ret_t", 
+        "defvalue":"RET_BAD_PARAMS",
+        "desc":"返回RET_OK表示成功，否则表示失败"
+      },
+      "virtual": true,
+      "args": [
+        {
+          "name":"pin",
+          "desc":"引脚号",
+          "type":"int32_t"
+        }
+      ]
+    },
+    {
+      "name":"trigger_cfg",
+      "desc":"配置GPIO引脚触发功能",
+      "annotation": ["scriptable"],
+      "return": {
+        "type":"ret_t", 
+        "defvalue":"RET_BAD_PARAMS",
+        "desc":"返回RET_OK表示成功，否则表示失败"
+      },
+      "virtual": true,
+      "args": [
+        {
+          "name":"pin",
+          "desc":"引脚号",
+          "type":"int32_t"
+        },
+        {
+          "name":"mode",
+          "desc":"触发模式",
+          "type":"uint32_t"
+        }
+      ]
+    },
+    {
+      "name":"trigger_on",
+      "desc":"使能引脚触发中断",
+      "annotation": ["scriptable"],
+      "return": {
+        "type":"ret_t", 
+        "defvalue":"RET_BAD_PARAMS",
+        "desc":"返回RET_OK表示成功，否则表示失败"
+      },
+      "virtual": true,
+      "args": [
+        {
+          "name":"pin",
+          "desc":"引脚号",
+          "type":"int32_t"
+        }
+      ]
+    },
+    {
+      "name":"trigger_off",
+      "desc":"禁止引脚触发中断",
+      "annotation": ["scriptable"],
+      "return": {
+        "type":"ret_t", 
+        "defvalue":"RET_BAD_PARAMS",
+        "desc":"返回RET_OK表示成功，否则表示失败"
+      },
+      "virtual": true,
+      "args": [
+        {
+          "name":"pin",
+          "desc":"引脚号",
+          "type":"int32_t"
+        }
+      ]
+    }
+  ]
+}

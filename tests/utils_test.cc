@@ -527,3 +527,27 @@ TEST(Utils, totitle) {
   char str[] = "it is nice!";
   ASSERT_STREQ(tk_str_totitle(str), "It Is Nice!");
 }
+
+TEST(Utils, isspace) {
+  uint32_t i = 0;
+  const char* str = "（１）这；这个。（２）他（她，它）”，在“，它）";
+  size_t n = strlen(str);
+
+  for (i = 0; i < n; i++) {
+    tk_isspace(str[i]);
+    tk_isdigit(str[i]);
+    tk_isalpha(str[i]);
+    tk_isprint(str[i]);
+    tk_isxdigit(str[i]);
+  }
+
+  ASSERT_EQ(tk_isspace(' '), true);
+  ASSERT_EQ(tk_isspace('\t'), true);
+  ASSERT_EQ(tk_isspace('\r'), true);
+  ASSERT_EQ(tk_isspace('\n'), true);
+  ASSERT_EQ(tk_isdigit('1'), true);
+  ASSERT_EQ(tk_isdigit('a'), false);
+  ASSERT_EQ(tk_isxdigit('a'), true);
+  ASSERT_EQ(tk_isprint('a'), true);
+  ASSERT_EQ(tk_isalpha('a'), true);
+}

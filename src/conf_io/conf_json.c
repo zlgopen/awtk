@@ -104,7 +104,7 @@ static ret_t conf_json_skip_to_value_end(json_parser_t* parser) {
 
 static ret_t conf_json_skip_spaces(json_parser_t* parser) {
   while (parser->cursor < parser->size) {
-    if (!isspace(parser->data[parser->cursor])) {
+    if (!tk_isspace(parser->data[parser->cursor])) {
       break;
     }
     parser->cursor++;
@@ -247,7 +247,7 @@ static ret_t conf_json_parse_value(json_parser_t* parser) {
       } else {
         return conf_json_parse_object(parser);
       }
-    } else if (!isspace(c)) {
+    } else if (!tk_isspace(c)) {
       if (c == '\"') {
         return conf_json_parse_string(parser);
       } else if (c == 't' || c == 'f') {

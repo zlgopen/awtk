@@ -1,6 +1,6 @@
-<window style:bg_color="black" text="Basic Controls">
+<window style.bg_color="black" text="Basic Controls">
   <app_bar x="0" y="0" w="100%" h="30" >
-    <label x="0" y="0" w="100%" h="100%" text="up/down key change focus" style:font_size="24" style:text_color="white"/>
+    <label x="0" y="0" w="100%" h="100%" text="up/down key change focus" style.font_size="24" style.text_color="white"/>
   </app_bar>
 
   <row x="0" y="40" w="100%" h="30" children_layout="default(r=1,c=3,xm=2,s=10)">
@@ -10,9 +10,9 @@
   </row>
 
   <row x="0" y="80" w="100%" h="30" children_layout="default(r=1,c=3,xm=2,s=10)">
-    <label style="left" name="left" text="Left"  style:text_color="white"/>
-    <label style="center" name="center" text="Center"  style:text_color="white"/>
-    <label style="right" name="right" text="Right"  style:text_color="white"/>
+    <label style="left" name="left" text="Left"  style.text_color="white"/>
+    <label style="center" name="center" text="Center"  style.text_color="white"/>
+    <label style="right" name="right" text="Right"  style.text_color="white"/>
   </row>
 
 

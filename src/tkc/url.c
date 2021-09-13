@@ -74,7 +74,7 @@ static url_t* url_parse(url_t* url, const char* surl) {
   while (TRUE) {
     switch (state) {
       case STATE_START: {
-        if (!isspace(*p)) {
+        if (!tk_isspace(*p)) {
           if (*p == '/' || *p == '\\' || strncmp(p, "./", 2) == 0 || strncmp(p, ".\\", 2) == 0) {
             goto_error_if_fail(url_set_schema(url, STR_FILE) == RET_OK);
             state = STATE_PATH;

@@ -232,3 +232,17 @@ TEST(Timer, addInTimer) {
 
   timer_manager_destroy(tm);
 }
+
+TEST(Timer, id) {
+  uint32_t id1 = 0;
+  uint32_t id2 = 0;
+  timer_set_time(0);
+  timer_manager_t* tm = timer_manager_create(timer_get_time);
+
+  id1 = timer_manager_add(tm, timer_add_in_timer, NULL, 100);
+  tm->next_timer_id = id1;
+  id2 = timer_manager_add(tm, timer_add_in_timer, NULL, 100);
+  ASSERT_NE(id1, id2);
+
+  timer_manager_destroy(tm);
+}

@@ -46,7 +46,8 @@ ret_t native_window_resize(native_window_t* win, wh_t w, wh_t h, bool_t force) {
   return RET_OK;
 }
 
-ret_t native_window_set_orientation(native_window_t* win, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation) {
+ret_t native_window_set_orientation(native_window_t* win, lcd_orientation_t old_orientation,
+                                    lcd_orientation_t new_orientation) {
   return_value_if_fail(win != NULL && win->vt != NULL, RET_BAD_PARAMS);
 
   if (win->vt->set_orientation != NULL) {
@@ -116,6 +117,10 @@ ret_t native_window_begin_frame(native_window_t* win, lcd_draw_mode_t mode) {
   return_value_if_fail(win != NULL, RET_BAD_PARAMS);
 
   dr = &(win->dirty_rects);
+  if (dr->nr == 0) {
+    return RET_FAIL;
+  }
+
   c = native_window_get_canvas(win);
   canvas_begin_frame(c, dr, mode);
 

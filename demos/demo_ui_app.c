@@ -1015,6 +1015,8 @@ ret_t application_init() {
   char path[MAX_PATH + 1];
   widget_t* wm = window_manager();
 
+  image_manager_set_max_mem_size_of_cached_images(image_manager(), 8 * 1024 * 1024);
+
   /*enable screen saver*/
   window_manager_set_screen_saver_time(wm, 180 * 1000);
   widget_on(wm, EVT_SCREEN_SAVER, on_screen_saver, NULL);

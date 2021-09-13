@@ -1,96 +1,171 @@
 # 最新动态
 
+2021/09/13
+  * 修改canvas\_draw\_image改成用rectf类型（感谢智明提供补丁）
+
+2021/09/11
+  * 增加 object\_default\_create\_ex 用于禁止路径访问属性。
+
+2021/09/10
+  * 完善 demo\_ui\_ex\_app（感谢兆坤提供补丁）。
+  * mledit 控件增加追加文本、输入模式（超出最大行数后移除旧的行）功能（感谢兆坤提供补丁）。
+  * fscript\_object 中新增了 object\_forward\_events 接口，并完善了单元测试和说明文档（感谢雨欣提供补丁）
+  * object\_array 添加事件触发，用于 mvvm 更新界面，并且在 set\_prop 和 get\_prop 函数中增加路径处理，向下查找一层，以便 mvvm 列表渲染逐层访问属性（感谢雨欣提供补丁）
+  * 增加 WITHOUT\_FSCRIPT，方便低端平台禁用 fscript（感谢智明提供补丁）
+  * object\_array/object\_default 增加 exec/can\_exec（感谢雨欣提供补丁）
+  * edit 显示支持 bidi。
+
+2021/09/09
+  * fscript 增加 json\_save\_to\_string（感谢雨欣提供补丁）
+  * 完善 fscript 文件系统相关接口（感谢雨欣提供补丁）
+  * 完善 thread\_with\_sdl 中的 mutex（感谢雨欣提供补丁）
+  * 完善 fscript 的文档（感谢雨欣提供补丁）
+  * 增加 conf\_doc\_get\_ex 和 conf\_doc\_find\_node。
+
+2021/09/08
+  * 增加 image\_manager\_set\_max\_mem\_size\_of\_cached\_images 用于限制最大图片缓存占用的内存。
+  * window\_open 支持打开本地 xml 文件。
+
+2021/09/07
+  * 完善 fscript，没有定义的变量，不再当作字符串。 
+  * 完善 utf8（感谢智明提供补丁）
+
+2021/09/06
+  * inline style 改用"."分隔，仍然兼容":"，建议用新的方式书写。请参考 [样式](theme.md)
+  * 重新开发 demoui（之前的改名为 demouiold)（感谢兆坤提供补丁）。
+  * 完善 demoui（感谢兆坤提供补丁）。
+  * 增加 wcsncpy（感谢智明提供补丁）
+  * 修复嵌入式平台编译出错问题（感谢智明提供补丁）
+
+2021/09/04
+  * 用 darray 重新实现 object\_default。
+  * 增加 darray\_find\_ex/darray\_find\_index\_ex/darray\_remove\_ex。
+
+2021/09/03
+  * 修复编译警告（感谢智明提供补丁）
+  * 完善 list\_view\_h\_on\_scroll\_view\_layout\_children 让用户自定义 layout 失效的问题。
+  * scroll view/hscrollale 不支持 WIDGET\_PROP\_LAYOUT\_W/WIDGET\_PROP\_LAYOUT\_H 属性，因为虚拟高度/宽度本身依赖于 children layout 的结果，children layout 的过程又依赖虚拟高度/宽度，会出现互相依赖。
+  * 修复 widget\_use\_style 的问题。
+  * button 支持 auto\_adjust\_size。
+  * 修复不需要刷新也进入 end_frame 的问题（感谢智明提供补丁）
+
+2021/09/02
+  * 修改 idle 和定时器 id 翻转的问题（感谢智明提供补丁）
+  * 完善 tick 的处理方法（感谢智明提供补丁）
+  * 修改部分时间使用 32 位的问题（感谢智明提供补丁）
+  * 修改资源生成脚本不预先加载字体。
+
+2021/08/30
+  * 完善 edit\_set\_text 
+  * 增加 wstr\_set\_with\_len
+  * 修复圆角矩形半透重复绘图的问题（感谢智明提供补丁）
+  * 如果 edit 的 keyboard 属性为空字符串，则不弹出软键盘
+
+2021/08/27
+  * 增加 general\_factory。
+  * 增加 darray\_set/darray\_replace/darray\_sorted\_insert。
+  * 重构 widgets\_factory/fscript\_register\_func，有效降低内存使用。
+
+2021/08/26
+  * fscript 支持函数定义。
+2021/08/25
+  * 修改 OpenGL 的 lcd 旋转被裁剪的问题（感谢智明提供补丁）
+  * 修复 linux-fb 的 lcd 旋转异常的问题（感谢智明提供补丁）
+  * 修复 ctype 函数处理中文的问题。
+  * 修复 on\_theme\_changed（感谢兆坤提供补丁）。
+  * 修复 scroll\_view\_set\_curr\_page（感谢 Soky 智明提供补丁）
+
 2021/08/23
   * 修复多次调用 lcd 旋转的功能的问题（感谢智明提供补丁）
 
 2021/08/21
-  * 修改lcd\_profile编译问题。
+  * 修改 lcd\_profile 编译问题。
 
 2021/08/20
-  * 修复scroll_view在拖拽时且scroll_view里有子控件进行重新布局时，画面不正常问题(感谢兆坤提供补丁)。
+  * 修复 scroll_view 在拖拽时且 scroll_view 里有子控件进行重新布局时，画面不正常问题（感谢兆坤提供补丁）。
 
 2021/08/18
-  * 修复label\_resize\_to\_content导致confirm/info等对话框大小计算有误的问题。
+  * 修复 label\_resize\_to\_content 导致 confirm/info 等对话框大小计算有误的问题。
 
 2021/08/17
   * 修复设置后台窗口焦点导致的问题。
-  * 完善slide menu(感谢兆坤提供补丁)。
-  * 完善text edit(感谢雨欣提供补丁)。
-  * 修复mono编译和运行错误的问题（感谢智明提供补丁）
-  * 修复lcd的脏矩形列表为空时画面不正常的问题（感谢智明提供补丁）
-  * 修复top的UI的图片超过overlay导致在mono上面有残留的问题（感谢智明提供补丁）
-  * 修复Windows下send/recv无法用errno判读是否正常的问题。
+  * 完善 slide menu（感谢兆坤提供补丁）。
+  * 完善 text edit（感谢雨欣提供补丁）。
+  * 修复 mono 编译和运行错误的问题（感谢智明提供补丁）
+  * 修复 lcd 的脏矩形列表为空时画面不正常的问题（感谢智明提供补丁）
+  * 修复 top 的 UI 的图片超过 overlay 导致在 mono 上面有残留的问题（感谢智明提供补丁）
+  * 修复 Windows 下 send/recv 无法用 errno 判读是否正常的问题。
   
 2021/08/16
-  * check button允许使用radio属性控制单选多选。
-  * scroll bar允许使用is_mobile属性控制mobile/desktop
+  * check button 允许使用 radio 属性控制单选多选。
+  * scroll bar 允许使用 is_mobile 属性控制 mobile/desktop
 
 2021/08/12
-  * 增加lcd\_set\_orientation（感谢智明提供补丁）。
+  * 增加 lcd\_set\_orientation（感谢智明提供补丁）。
 
 2021/08/11
-  * 解决使用self\_layout后不能移动的问题（感谢智明提供补丁）
-  * 修复lcd\_fb\_dirty\_rects头文件注释不对的问题（感谢智明提供补丁）
-  * 修复lcd\_sdl的lcd旋转后画面不正常的问题（感谢智明提供补丁）
-  * 修复lcd旋转导致脏矩形异常后导致中断的问题（感谢智明提供补丁）
-  * 修复vgcanvas\_asset\_manager的gtest失败的问题（感谢智明提供补丁）
-  * 修复其他的layout调用widget\_move\_resize函数的问题（感谢智明提供补丁）
+  * 解决使用 self\_layout 后不能移动的问题（感谢智明提供补丁）
+  * 修复 lcd\_fb\_dirty\_rects 头文件注释不对的问题（感谢智明提供补丁）
+  * 修复 lcd\_sdl 的 lcd 旋转后画面不正常的问题（感谢智明提供补丁）
+  * 修复 lcd 旋转导致脏矩形异常后导致中断的问题（感谢智明提供补丁）
+  * 修复 vgcanvas\_asset\_manager 的 gtest 失败的问题（感谢智明提供补丁）
+  * 修复其他的 layout 调用 widget\_move\_resize 函数的问题（感谢智明提供补丁）
 
 2021/08/10
- * 修复list\_view没有滚动条的警告问题（感谢智明提供补丁）
- * 删除不断打印relayout的信息的代码（感谢智明提供补丁）
- * 给text\_selector增加可以设置是否修改值的时候启动动画（感谢智明提供补丁）
- * 修复vgcanvas\_asset\_manager内存泄露的问题（感谢智明提供补丁）
+ * 修复 list\_view 没有滚动条的警告问题（感谢智明提供补丁）
+ * 删除不断打印 relayout 的信息的代码（感谢智明提供补丁）
+ * 给 text\_selector 增加可以设置是否修改值的时候启动动画（感谢智明提供补丁）
+ * 修复 vgcanvas\_asset\_manager 内存泄露的问题（感谢智明提供补丁）
 
 2021/08/06
-  * 完善image value。
-  * 完善awtk\_version.h（感谢智明提供补丁）。
-  * 修复vgcanvas\_cairo\_reset中设置global alpha的问题。
+  * 完善 image value。
+  * 完善 awtk\_version.h（感谢智明提供补丁）。
+  * 修复 vgcanvas\_cairo\_reset 中设置 global alpha 的问题。
 
 2021/08/05
-  * 增加src/platforms/README.md
-  * 增加函数bitmap_transform
+  * 增加 src/platforms/README.md
+  * 增加函数 bitmap_transform
 
 2021/08/04
-  * 增加函数combo\_box\_remove\_option。
-  * 完善demoui(感谢兆坤提供补丁)。
+  * 增加函数 combo\_box\_remove\_option。
+  * 完善 demoui（感谢兆坤提供补丁）。
 
 2021/08/03
-  * 键盘支持跟随编辑(指定floating=true即可)
+  * 键盘支持跟随编辑（指定 floating=true 即可）
   * 更新文档。
-  * 完善vpage事件处理。
+  * 完善 vpage 事件处理。
 
 2021/08/02
-  * 公开函数timer\_manager\_dispatch。
-  * 修复fragment fb编译问题（感谢智明提供补丁）。
+  * 公开函数 timer\_manager\_dispatch。
+  * 修复 fragment fb 编译问题（感谢智明提供补丁）。
 
 2021/07/30
-  * 完善ostream的fscript绑定。
-  * 完善pages和button group(感谢兆坤提供补丁)。
+  * 完善 ostream 的 fscript 绑定。
+  * 完善 pages 和 button group（感谢兆坤提供补丁）。
 
 2021/07/28
-  * 完善slide\_menu（感谢智明提供补丁）。
+  * 完善 slide\_menu（感谢智明提供补丁）。
   * 修改 agge 兼容没有 d3d 会崩溃的问题（感谢智明提供补丁）。
-  * 完善slide view删除当前view的处理(感谢兆坤提供补丁)。
+  * 完善 slide view 删除当前 view 的处理（感谢兆坤提供补丁）。
 
 2021/07/27
-  * 裁剪了assets-1m的资源（感谢智明提供补丁）。
-  * 修改lcd\_mem\_flush为按照脏矩形列表来拷贝（感谢智明提供补丁）。
+  * 裁剪了 assets-1m 的资源（感谢智明提供补丁）。
+  * 修改 lcd\_mem\_flush 为按照脏矩形列表来拷贝（感谢智明提供补丁）。
 
 2021/07/26
-  * 完善脏矩形，以便2fb在swap的方式也可以支持脏矩形。
-  * 完善pages和button group，处理为空的情况(感谢兆坤提供补丁)。
-  * 修复edit input\_type属性为int，当text长度大于32时会有assert的问题(感谢兆坤提供补丁)。
+  * 完善脏矩形，以便 2fb 在 swap 的方式也可以支持脏矩形。
+  * 完善 pages 和 button group，处理为空的情况（感谢兆坤提供补丁）。
+  * 修复 edit input\_type 属性为 int，当 text 长度大于 32 时会有 assert 的问题（感谢兆坤提供补丁）。
 
 2021/07/24
-  * 完善和重构slider。
+  * 完善和重构 slider。
 
 2021/07/23
-  * 完善fscript的iostream\_serial\_create。
+  * 完善 fscript 的 iostream\_serial\_create。
 
 2021/07/22
-  * 完善emitter\_disable/emitter\_enable支持嵌套调用。
-  * 完善switch（感谢陈谭提供补丁）
+  * 完善 emitter\_disable/emitter\_enable 支持嵌套调用。
+  * 完善 switch（感谢陈谭提供补丁）
 
 2021/07/21
   * 修复多个脏矩形时没有修改片段式 Framebuffer 的问题（感谢雨欣提供补丁）
@@ -100,17 +175,17 @@
 2021/07/20
   * fscript 修复对负号的处理。
   * fscript math 增加 d2r/r2d。
-  * 完善slider（感谢兆坤提供补丁）
+  * 完善 slider（感谢兆坤提供补丁）
   * 完善对话框高亮（感谢兆坤提供补丁）
-  * 修复窗口创建完后的loading状态还是TRUE的问题（感谢智明提供补丁）
+  * 修复窗口创建完后的 loading 状态还是 TRUE 的问题（感谢智明提供补丁）
 
 2021/07/19
-  * fscript 增加 usubstr函数。
+  * fscript 增加 usubstr 函数。
 
 2021/07/17
-  * 增加array\_clone\_and\_sort。
-  * 增加lcd\_is\_support\_dirty\_rect（感谢智明提供补丁）
-  * 用WITHOUT\_WINDOW\_ANIMATORS替代WITH\_WINDOW\_ANIMATORS（感谢智明提供补丁）。
+  * 增加 array\_clone\_and\_sort。
+  * 增加 lcd\_is\_support\_dirty\_rect（感谢智明提供补丁）
+  * 用 WITHOUT\_WINDOW\_ANIMATORS 替代 WITH\_WINDOW\_ANIMATORS（感谢智明提供补丁）。
 
 2021/07/16
   * 增加 fscript str
@@ -119,12 +194,12 @@
   * fscript ext 增加 trim\_left/trim\_right/ulen/totitle/char\_at
   * 完善 mem\_allocator\_std 内存统计（感谢 QQ276310465 提供补丁）
   * fscript array 增加 min/max/avg/sum 等函数。
-  * 增加了 get\_offset接口以及相关的控件（感谢智明提供补丁）
+  * 增加了 get\_offset 接口以及相关的控件（感谢智明提供补丁）
   * 修改 lcd\_mem 的编译警告问题（感谢智明提供补丁）
   * 修复兼容以前开启脏矩形机制，解决以前的三 fb 无脏矩形的情况（感谢智明提供补丁）
   * 修复滚动条在底部时候 layout 会偏移的问题和修复没有 WITH\_WIDGET\_TYPE\_CHECK 宏会导致非 mobile 的滚动条当做 mobile 滚动条的问题（感谢智明提供补丁）
-  * 完善event source manager（感谢林福提供补丁）
-  * 完善widget\_get，如果类型是wstr，转换成str。
+  * 完善 event source manager（感谢林福提供补丁）
+  * 完善 widget\_get，如果类型是 wstr，转换成 str。
 
 2021/07/15
   * 完善 widget\_factory，允许覆盖之前注册的控件。

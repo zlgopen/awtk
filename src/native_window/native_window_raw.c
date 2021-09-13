@@ -70,7 +70,9 @@ static ret_t native_window_raw_resize(native_window_t* win, wh_t w, wh_t h) {
   return RET_OK;
 }
 
-static ret_t native_window_raw_set_orientation(native_window_t* win, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation) {
+static ret_t native_window_raw_set_orientation(native_window_t* win,
+                                               lcd_orientation_t old_orientation,
+                                               lcd_orientation_t new_orientation) {
   wh_t w, h;
   ret_t ret = RET_OK;
   native_window_info_t info;
@@ -114,6 +116,7 @@ static const native_window_vtable_t s_native_window_vtable = {
     .move = native_window_raw_move,
     .get_info = native_window_raw_get_info,
     .resize = native_window_raw_resize,
+    .set_orientation = native_window_raw_set_orientation,
     .get_canvas = native_window_raw_get_canvas};
 
 static ret_t native_window_raw_set_prop(object_t* obj, const char* name, const value_t* v) {

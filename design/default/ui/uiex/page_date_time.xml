@@ -1,0 +1,33 @@
+<?xml parent="{&quot;x&quot;:&quot;0&quot;,&quot;y&quot;:&quot;0&quot;,&quot;w&quot;:&quot;100%&quot;,&quot;h&quot;:&quot;100%&quot;,&quot;name&quot;:&quot;page_date_time&quot;,&quot;theme&quot;:&quot;uiex&quot;}"?>
+<list_view name="list_view" x="0" y="0" w="100%" h="100%">
+  <scroll_view name="scroll_view" x="0" y="0" w="100%" h="100%" children_layout="list_view(i=0,d=66,x=0,y=10,s=24)">
+    <grid children_layout="default(w=321,h=350,x=0,y=0,s=0)" h="350">
+      <view name="view_analog_clock" children_layout="default(r=0,c=1,x=0,y=0,s=20)" invisible_in_1m="true">
+        <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Analog Clock"/>
+        <view h="-22">
+          <time_clock h="283" bg_image="uiex_clock_bg" image="uiex_clock_Dots" hour_image="uiex_clock_Hourhand" minute_image="uiex_clock_Minutehand" second_image="uiex_clock_Secondhand" hour_anchor_x="0.5" hour_anchor_y="107px" minute_anchor_x="0.5" minute_anchor_y="138px" second_anchor_x="0.5" second_anchor_y="138px" x="20" y="0" w="283"/>
+        </view>
+      </view>
+      <view name="view_digital_clock" children_layout="default(r=0,c=1,x=0,y=0,s=20)">
+        <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Digital Clock"/>
+        <view name="" h="308">
+          <view h="100%" x="20" y="0" w="70%">
+            <view h="100%" children_layout="default(r=0,c=1,x=0,y=0,s=10)" x="0" y="0" w="100%" name="dc">
+              <digit_clock format="h:m" h="22"/>
+              <digit_clock format="hh:mm" h="22"/>
+              <digit_clock format="h:m:s" h="22"/>
+              <digit_clock format="hh:mm:ss" h="22"/>
+              <digit_clock format="Y/M/D" h="22"/>
+              <digit_clock format="YY-MM-DD" h="22"/>
+              <digit_clock format="Y/M/D h:mm:ss" h="22"/>
+              <digit_clock format="YY/MM/DD h:mm:ss" h="22"/>
+              <digit_clock format="W" h="22"/>
+              <digit_clock format="MMM W" h="22"/>
+            </view>
+          </view>
+        </view>
+      </view>
+    </grid>
+  </scroll_view>
+  <scroll_bar_m name="bar" x="r" y="0" w="7" h="100%" max="1000"/>
+</list_view>

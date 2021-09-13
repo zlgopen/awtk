@@ -261,4 +261,10 @@
  * #define WITH_DATA_READER_WRITER 1
  */
 
+/**
+ * 对于低端平台，如果不使用 fscript 模块，请定义本宏。
+ *
+ * #define WITHOUT_FSCRIPT 1
+ */
+
 #endif /*AWTK_CONFIG_H*/

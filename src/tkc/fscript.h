@@ -19,6 +19,7 @@
 
 #include "tkc/str.h"
 #include "tkc/object.h"
+#include "tkc/general_factory.h"
 
 BEGIN_C_DECLS
 
@@ -146,6 +147,11 @@ typedef struct _fscript_t {
   bool_t continued;
   bool_t returned;
   uint8_t while_count;
+
+  /*函数局部变量和参数*/
+  object_t* locals;
+  /*脚本定义的函数*/
+  object_t* funcs_def;
 } fscript_t;
 
 typedef ret_t (*fscript_func_t)(fscript_t* fscript, fscript_args_t* args, value_t* v);
@@ -238,6 +244,15 @@ ret_t fscript_global_init(void);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t fscript_register_func(const char* name, fscript_func_t func);
+
+/**
+ * @method fscript_register_funcs
+ * 注册全局自定义函数。
+ * @param {const general_factory_table_t*} table 函数表。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_register_funcs(const general_factory_table_t* table);
 
 /**
  * @method fscript_global_deinit

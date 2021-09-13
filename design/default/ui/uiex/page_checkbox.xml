@@ -1,0 +1,44 @@
+<?xml parent="{&quot;x&quot;:&quot;0&quot;,&quot;y&quot;:&quot;0&quot;,&quot;w&quot;:&quot;100%&quot;,&quot;h&quot;:&quot;100%&quot;,&quot;name&quot;:&quot;page_checkbox&quot;,&quot;theme&quot;:&quot;uiex&quot;}"?>
+<list_view name="list_view" x="0" y="0" w="100%" h="100%" default_item_height="66">
+  <scroll_view name="scroll_view" x="0" y="0" w="100%" h="100%" children_layout="list_view(i=0,d=66,x=0,y=10,s=24)">
+    <view name="view_rb" children_layout="default(r=0,c=1,x=0,y=0,s=0)" h="66">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Radio Button"/>
+      <view h="-22" children_layout="default(r=1,c=0,x=10,y=4,s=10)">
+        <radio_button name="rb" w="100" tr_text="Small"/>
+        <radio_button name="rb1" w="100" tr_text="Normal"/>
+        <radio_button name="rb2" w="100" tr_text="Big"/>
+      </view>
+    </view>
+    <view name="view_cb" children_layout="default(r=0,c=1,x=0,y=0,s=0)" h="66">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Check Button"/>
+      <view h="-22" children_layout="default(r=1,c=0,x=10,y=4,s=10)">
+        <check_button name="cb" w="100" tr_text="Book"/>
+        <check_button name="cb1" w="100" tr_text="Pencil"/>
+        <check_button name="cb2" w="100" tr_text="Food"/>
+      </view>
+    </view>
+    <grid children_layout="default(w=250,h=150,x=20,y=0,s=20)" h="150">
+      <view name="view_icon_rb" children_layout="default(r=0,c=1,x=0,y=0,s=20)">
+        <hscroll_label h="22" style="title" loop="true" yoyo="true" style:normal:margin_left="0" tr_text="Radio Button With Icon"/>
+        <view h="-22">
+          <view x="0" y="0" w="100%" h="100%" children_layout="default(r=0,c=1,x=0,y=0,s=1)">
+            <radio_button name="rb3" style="icon_right" h="36" tr_text="Small"/>
+            <radio_button name="rb4" style="icon_right" h="36" tr_text="Normal"/>
+            <radio_button name="rb5" style="icon_right" h="36" tr_text="Big"/>
+          </view>
+        </view>
+      </view>
+      <view name="view_icon_cb" children_layout="default(r=0,c=1,x=0,y=0,s=20)">
+        <hscroll_label h="22" style="title" loop="true" yoyo="true" style:normal:margin_left="0" tr_text="Check Button With Icon"/>
+        <view h="-22">
+          <view x="0" y="0" w="100%" h="100%" children_layout="default(r=0,c=1,x=0,y=0,s=1)">
+            <check_button name="cb3" style="icon_right" h="36" tr_text="Book"/>
+            <check_button name="cb4" style="icon_right" h="36" tr_text="Pencil"/>
+            <check_button name="cb5" style="icon_right" h="36" tr_text="Food"/>
+          </view>
+        </view>
+      </view>
+    </grid>
+  </scroll_view>
+  <scroll_bar_m name="bar" x="r" y="0" w="7" h="100%" max="1000"/>
+</list_view>

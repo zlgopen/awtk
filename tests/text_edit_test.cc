@@ -130,7 +130,7 @@ TEST(TextEdit, get_rows_line) {
   canvas_t c;
   lcd_t* lcd = lcd_mem_rgba8888_create(150, 150, TRUE);
   canvas_init(&c, lcd, font_manager());
-  const char* str = "1\n222222222222";
+  const char* str = "1\n22222222222222222222222";
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
   widget_t* w = mledit_create(win, 10, 20, 100, 100);
   text_edit_t* text_edit = text_edit_create(w, FALSE);
@@ -147,6 +147,75 @@ TEST(TextEdit, get_rows_line) {
 
   widget_destroy(win);
   text_edit_destroy(text_edit);
+  canvas_reset(&c);
+  lcd_destroy(lcd);
+}
+
+TEST(TextEdit, insert_text) {
+  char get_text[16] = {0};
+  const char* str = "it ok";
+  const char* str2 = "it\nis";
+  canvas_t c;
+  lcd_t* lcd = lcd_mem_rgba8888_create(150, 150, TRUE);
+  widget_t* win = window_create(NULL, 0, 0, 0, 0);
+  widget_t* w = mledit_create(win, 10, 20, 30, 40);
+  text_edit_t* text_edit = ((mledit_t*)w)->model;
+
+  canvas_init(&c, lcd, font_manager());
+  widget_set_prop_pointer(win, WIDGET_PROP_CANVAS, &c);
+  mledit_set_max_lines(w, 100);
+  mledit_set_max_chars(w, 0);
+
+  widget_set_text_utf8(w, str);
+  text_edit_insert_text(text_edit, 2, " is");
+  widget_get_text_utf8(text_edit->widget, get_text, sizeof(get_text));
+  ASSERT_STREQ("it is ok", get_text);
+  memset(get_text, 0, sizeof(get_text));
+
+  widget_set_text_utf8(w, str);
+  text_edit_insert_text(text_edit, -1, " is");
+  widget_get_text_utf8(text_edit->widget, get_text, sizeof(get_text));
+  ASSERT_STREQ("it ok is", get_text);
+  memset(get_text, 0, sizeof(get_text));
+
+  widget_set_text_utf8(w, str);
+  text_edit_insert_text(text_edit, 0, "");
+  widget_get_text_utf8(text_edit->widget, get_text, sizeof(get_text));
+  ASSERT_STREQ("it ok", get_text);
+  memset(get_text, 0, sizeof(get_text));
+
+  widget_set_text_utf8(w, str);
+  text_edit_insert_text(text_edit, 0, "\0");
+  widget_get_text_utf8(text_edit->widget, get_text, sizeof(get_text));
+  ASSERT_STREQ("it ok", get_text);
+  memset(get_text, 0, sizeof(get_text));
+
+  mledit_set_max_lines(w, 3);
+  widget_set_text_utf8(w, str2);
+  text_edit_insert_text(text_edit, -1, "\nok\n!");
+  widget_get_text_utf8(text_edit->widget, get_text, sizeof(get_text));
+  ASSERT_STREQ("it\nis\nok", get_text);
+  mledit_set_max_lines(w, 100);
+  memset(get_text, 0, sizeof(get_text));
+
+  mledit_set_max_chars(w, 8);
+  widget_set_text_utf8(w, str);
+  text_edit_insert_text(text_edit, -1, " is?");
+  widget_get_text_utf8(text_edit->widget, get_text, sizeof(get_text));
+  ASSERT_STREQ("it ok is", get_text);
+  mledit_set_max_chars(w, 0);
+  memset(get_text, 0, sizeof(get_text));
+
+  widget_set_text_utf8(w, str);
+  text_edit_set_cursor(text_edit, 1);
+  text_edit_insert_text(text_edit, 2, " is");
+  widget_get_text_utf8(text_edit->widget, get_text, sizeof(get_text));
+  ASSERT_STREQ("it is ok", get_text);
+  ASSERT_EQ(text_edit_get_cursor(text_edit), 5);
+  memset(get_text, 0, sizeof(get_text));
+
+  widget_set_prop_pointer(win, WIDGET_PROP_CANVAS, NULL);
+  widget_destroy(win);
   canvas_reset(&c);
   lcd_destroy(lcd);
 }

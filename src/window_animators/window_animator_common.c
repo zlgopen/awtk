@@ -37,14 +37,14 @@ ret_t window_animator_to_bottom_draw_curr(window_animator_t* wa) {
   int32_t y = win->y;
   int32_t h = tk_roundi(win->h * percent);
 
-  rect_t src = rect_init(win->x, win->y + win->h - h, win->w, h);
-  rect_t dst = rect_init(win->x, y, win->w, h);
+  rectf_t src = rectf_init(win->x, win->y + win->h - h, win->w, h);
+  rectf_t dst = rectf_init(win->x, y, win->w, h);
 
   if (h == 0) {
     return RET_OK;
   }
 
-  return lcd_draw_image(c->lcd, &(wa->curr_img), rect_scale(&src, wa->ratio), &dst);
+  return lcd_draw_image(c->lcd, &(wa->curr_img), rectf_scale(&src, wa->ratio), &dst);
 #else
   int32_t y = -win->h * (1 - percent);
   canvas_translate(c, 0, y);
@@ -62,14 +62,14 @@ ret_t window_animator_to_top_draw_curr(window_animator_t* wa) {
   int32_t y = win->y + tk_roundi(win->h * (1 - percent));
   int32_t h = win->y + win->h - y;
 
-  rect_t src = rect_init(win->x, win->y, win->w, h);
-  rect_t dst = rect_init(win->x, y, win->w, h);
+  rectf_t src = rectf_init(win->x, win->y, win->w, h);
+  rectf_t dst = rectf_init(win->x, y, win->w, h);
 
   if (h == 0) {
     return RET_OK;
   }
 
-  return lcd_draw_image(c->lcd, &(wa->curr_img), rect_scale(&src, wa->ratio), &dst);
+  return lcd_draw_image(c->lcd, &(wa->curr_img), rectf_scale(&src, wa->ratio), &dst);
 #else
   int32_t y = win->h * (1 - percent);
   canvas_translate(c, 0, y);
@@ -87,14 +87,14 @@ ret_t window_animator_to_left_draw_curr(window_animator_t* wa) {
   int32_t x = win->x + tk_roundi(win->w * (1 - percent));
   int32_t w = win->x + win->w - x;
 
-  rect_t src = rect_init(win->x, win->y, w, win->h);
-  rect_t dst = rect_init(x, win->y, w, win->h);
+  rectf_t src = rectf_init(win->x, win->y, w, win->h);
+  rectf_t dst = rectf_init(x, win->y, w, win->h);
 
   if (w == 0) {
     return RET_OK;
   }
 
-  return lcd_draw_image(c->lcd, &(wa->curr_img), rect_scale(&src, wa->ratio), &dst);
+  return lcd_draw_image(c->lcd, &(wa->curr_img), rectf_scale(&src, wa->ratio), &dst);
 #else
   int32_t x = -win->w * (1 - percent);
 
@@ -112,14 +112,14 @@ ret_t window_animator_to_right_draw_curr(window_animator_t* wa) {
 #ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
   int32_t x = win->x;
   int32_t w = tk_roundi(win->w * percent);
-  rect_t src = rect_init(win->x + win->w - w, win->y, w, win->h);
-  rect_t dst = rect_init(x, win->y, w, win->h);
+  rectf_t src = rectf_init(win->x + win->w - w, win->y, w, win->h);
+  rectf_t dst = rectf_init(x, win->y, w, win->h);
 
   if (w == 0) {
     return RET_OK;
   }
 
-  return lcd_draw_image(c->lcd, &(wa->curr_img), rect_scale(&src, wa->ratio), &dst);
+  return lcd_draw_image(c->lcd, &(wa->curr_img), rectf_scale(&src, wa->ratio), &dst);
 #else
   int32_t x = win->w * (1 - percent);
 
@@ -156,7 +156,7 @@ static ret_t window_animator_close_destroy(window_animator_t* wa) {
   return window_animator_open_destroy(wa);
 }
 
-ret_t window_animator_update(window_animator_t* wa, uint32_t time_ms) {
+ret_t window_animator_update(window_animator_t* wa, uint64_t time_ms) {
   return_value_if_fail(wa != NULL, RET_FAIL);
 
   if (wa->start_time == 0) {
@@ -309,10 +309,9 @@ ret_t window_animator_overlap_default_draw_prev(window_animator_t* wa) {
   widget_t* win = wa->prev_win;
 
 #ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
-  rect_t src = rect_init(win->x, win->y, win->w, win->h);
-  rect_t dst = rect_init(win->x, win->y, win->w, win->h);
-
-  return lcd_draw_image(c->lcd, &(wa->prev_img), rect_scale(&src, wa->ratio), &dst);
+  rectf_t src = rectf_init(win->x, win->y, win->w, win->h);
+  rectf_t dst = rectf_init(win->x, win->y, win->w, win->h);
+  return lcd_draw_image(c->lcd, &(wa->prev_img), rectf_scale(&src, wa->ratio), &dst);
 #else
   widget_paint(win, c);
   return RET_OK;

@@ -1,0 +1,12 @@
+<dialog name="dlg_center_scale" theme="uiex" anim_hint="center_scale(duration=300)" x="c" y="m" w="294" h="190" text="Dialog" move_focus_prev_key="up" move_focus_next_key="down" style="lucency">
+  <dialog_title x="0" y="0" w="100%" h="36" style="default" tr_text="Center Scale">
+    <draggable drag_window="true"/>
+    <button name="close()" x="r:10" y="10" w="20" h="20" style="win_close"/>
+  </dialog_title>
+  <dialog_client x="0" y="b" w="100%" h="-36" style="default">
+    <combo_box left_margin="6" readonly="true" x="c" y="10" w="-20" h="36" options="Chips;Hamburger;Ice cream;" focusable="true" open_window="uiex/cbp_fast_food" selected_index="0"/>
+    <label x="c" y="m:-5" w="-20" h="30" style="dialog" style:normal:text_align_h="left" tr_text="What would you like?"/>
+    <button name="close()" x="c:45" y="b:25" w="80" h="30" focusable="true" style="highlight" tr_text="Confirm"/>
+    <button name="close()" x="c:-45" y="b:25" w="80" h="30" focusable="true" tr_text="Cancel"/>
+  </dialog_client>
+</dialog>

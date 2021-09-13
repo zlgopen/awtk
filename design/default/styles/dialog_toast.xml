@@ -1,6 +1,6 @@
 <label>
   <style name="default">
-    <normal text_color="white" text_align_h="left" margin="4"/>
+    <normal text_color="white" text_align_h="middle" margin="4"/>
   </style>
 </label>
 

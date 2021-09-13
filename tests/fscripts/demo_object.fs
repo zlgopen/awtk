@@ -21,6 +21,9 @@ assert(person.age ==  123)
 assert(object_set(person, "name", "awtk"))
 assert(person.name == "awtk")
 
+global = object_create()
+global.arr = array_create()
+object_forward_events(global.arr, global)
+
 unset(person)
-
-
+unset(global)

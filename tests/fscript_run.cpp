@@ -21,12 +21,16 @@ static ret_t run_fscript(const char* code, uint32_t times) {
   uint64_t start = time_now_us();
   object_t* obj = object_default_create();
   tk_mem_dump();
+  log_debug("======================\n");
   if (times > 1) {
     /*stress test*/
     uint32_t i = 0;
     fscript_t* fscript = fscript_create(obj, code);
     for (i = 0; i < times; i++) {
+      log_debug("%u times....\n", i);
+      tk_mem_dump();
       fscript_exec(fscript, &v);
+      tk_mem_dump();
       value_reset(&v);
     }
     fscript_destroy(fscript);
@@ -54,8 +58,10 @@ static ret_t run_fscript_file(const char* filename, uint32_t times) {
 int main(int argc, char* argv[]) {
   platform_prepare();
 
+  tk_mem_dump();
   fscript_global_init();
   fscript_ext_init();
+  tk_mem_dump();
   data_writer_factory_set(data_writer_factory_create());
   data_reader_factory_set(data_reader_factory_create());
   data_writer_factory_register(data_writer_factory(), "file", data_writer_file_create);
@@ -63,6 +69,7 @@ int main(int argc, char* argv[]) {
   data_reader_factory_register(data_reader_factory(), "asset", data_reader_asset_create);
   data_reader_factory_register(data_reader_factory(), "mem", data_reader_mem_create);
   data_writer_factory_register(data_writer_factory(), "wbuffer", data_writer_wbuffer_create);
+  tk_mem_dump();
 
   app_conf_init_json("runFScript");
   tk_mem_dump();

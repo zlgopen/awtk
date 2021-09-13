@@ -29,8 +29,8 @@ typedef struct _bitmap_cache_t {
   bitmap_t image;
   char* name;
   uint32_t access_count;
-  uint32_t created_time;
-  uint32_t last_access_time;
+  uint64_t created_time;
+  uint64_t last_access_time;
 } bitmap_cache_t;
 
 static int bitmap_cache_cmp_time(bitmap_cache_t* a, bitmap_cache_t* b) {
@@ -45,9 +45,18 @@ static int bitmap_cache_cmp_data(bitmap_cache_t* a, bitmap_cache_t* b) {
   return (char*)(a->image.buffer) - (char*)(b->image.buffer);
 }
 
+static int bitmap_cache_cmp_access_time_dec(bitmap_cache_t* a, bitmap_cache_t* b) {
+  return (b->last_access_time) - (a->last_access_time);
+}
+
 static ret_t bitmap_cache_destroy(bitmap_cache_t* cache) {
   return_value_if_fail(cache != NULL, RET_BAD_PARAMS);
+  bitmap_t* image = &(cache->image);
+  image_manager_t* imm = image->image_manager;
 
+  if (imm != NULL && image->should_free_data) {
+    imm->mem_size_of_cached_images -= bitmap_get_mem_size(image);
+  }
   log_debug("unload image %s\n", cache->name);
   bitmap_destroy(&(cache->image));
   TKMEM_FREE(cache->name);
@@ -94,6 +103,26 @@ image_manager_t* image_manager_init(image_manager_t* imm) {
   return imm;
 }
 
+static ret_t image_manager_clear_cache(image_manager_t* imm) {
+  bitmap_cache_t* iter = NULL;
+  return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
+  if (imm->images.size == 0 || imm->max_mem_size_of_cached_images == 0 ||
+      imm->mem_size_of_cached_images < imm->max_mem_size_of_cached_images) {
+    return RET_OK;
+  }
+
+  darray_sort(&(imm->images), (tk_compare_t)bitmap_cache_cmp_access_time_dec);
+  do {
+    iter = (bitmap_cache_t*)darray_pop(&(imm->images));
+    bitmap_cache_destroy(iter);
+    log_debug("clear cache: mem_size_of_cached_images=%u nr=%u", imm->mem_size_of_cached_images,
+              imm->images.size);
+  } while (imm->images.size > 0 &&
+           imm->mem_size_of_cached_images > imm->max_mem_size_of_cached_images);
+
+  return RET_OK;
+}
+
 ret_t image_manager_add(image_manager_t* imm, const char* name, const bitmap_t* image) {
   bitmap_cache_t* cache = NULL;
   return_value_if_fail(imm != NULL && name != NULL && image != NULL, RET_BAD_PARAMS);
@@ -108,6 +137,12 @@ ret_t image_manager_add(image_manager_t* imm, const char* name, const bitmap_t* 
   cache->name = tk_strdup(name);
   cache->image.name = cache->name;
   cache->last_access_time = cache->created_time;
+
+  cache->image.image_manager = imm;
+  if (image->should_free_data) {
+    imm->mem_size_of_cached_images += bitmap_get_mem_size((bitmap_t*)image);
+    image_manager_clear_cache(imm);
+  }
 
   return darray_push(&(imm->images), cache);
 }
@@ -322,6 +357,14 @@ ret_t image_manager_destroy(image_manager_t* imm) {
 
   image_manager_deinit(imm);
   TKMEM_FREE(imm);
+
+  return RET_OK;
+}
+
+ret_t image_manager_set_max_mem_size_of_cached_images(image_manager_t* imm, uint32_t max_mem_size) {
+  return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
+
+  imm->max_mem_size_of_cached_images = max_mem_size;
 
   return RET_OK;
 }

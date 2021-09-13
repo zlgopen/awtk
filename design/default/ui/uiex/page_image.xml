@@ -1,0 +1,73 @@
+<?xml parent="{&quot;x&quot;:&quot;0&quot;,&quot;y&quot;:&quot;0&quot;,&quot;w&quot;:&quot;100%&quot;,&quot;h&quot;:&quot;100%&quot;,&quot;name&quot;:&quot;page_image&quot;,&quot;theme&quot;:&quot;uiex&quot;}"?>
+<list_view name="list_view" x="0" y="0" w="100%" h="100%">
+  <scroll_view name="scroll_view_to_top" x="0" y="0" w="100%" h="100%" children_layout="list_view(i=0,d=60,x=0,y=10,s=24)">
+    <view name="view_image" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="220">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Image"/>
+      <view h="-22" children_layout="default(r=0,c=1,x=20,y=0,s=0)">
+        <list_view_h name="list_view_h" h="100%" item_width="180" spacing="6">
+          <scroll_view name="scroll_view_h" x="0" y="0" w="100%" h="100%">
+            <image name="image1" draw_type="center" image="bg1_s"/>
+            <image name="image2" draw_type="center" image="bg2_s"/>
+            <image name="image3" draw_type="center" image="bg3_s"/>
+            <image name="image4" draw_type="center" image="bg4_s"/>
+            <image name="image5" draw_type="center" image="bg5_s"/>
+          </scroll_view>
+        </list_view_h>
+      </view>
+    </view>
+    <view name="view_image_repeat" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="339">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Image Repeat"/>
+      <view name="tab_ctrl_top" children_layout="default(r=0,c=1,x=20,y=0,s=0)" h="-22">
+        <list_view_h name="list_view_h" h="112" item_width="96" spacing="6">
+          <scroll_view name="scroll_view_h" x="0" y="0" w="100%" h="100%">
+            <tab_button style="img_repeat1" value="true"/>
+            <tab_button style="img_repeat2"/>
+            <tab_button style="img_repeat3"/>
+            <tab_button style="img_repeat4"/>
+          </scroll_view>
+        </list_view_h>
+        <pages h="-112" style="lucency">
+          <image name="repeat1" w="100%" h="100%" draw_type="repeat" image="repeat1"/>
+          <image name="repeat2" w="100%" h="100%" draw_type="repeat" image="repeat2"/>
+          <image name="repeat3" w="100%" h="100%" draw_type="repeat" image="repeat3"/>
+          <image name="repeat4" w="100%" h="100%" draw_type="repeat" image="repeat4"/>
+        </pages>
+      </view>
+    </view>
+    <view name="view_9patch_image" children_layout="default(r=0,c=1,x=0,y=0,s=13)" x="0" y="617" w="320" h="73">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="9-Patch Image"/>
+      <view h="-22">
+        <image name="img_portrait" image="uiex_Information_avatar" h="38" x="20" y="0" w="38"/>
+        <label name="lb_chat_bubble" style="chat_bubble" w="245" y="0" h="38" auto_adjust_size="true" x="70" text="AWTK: A GUI engine with cool effects."/>
+      </view>
+    </view>
+    <view name="view_image_seq_animation" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="105" x="0" y="617" w="800">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Image Sequence Animation"/>
+      <view h="-22" children_layout="default(r=1,c=0,x=20,y=0,s=121)">
+        <image_animation image="ani" start_index="1" end_index="9" auto_play="true" interval="50" delay="400" w="70"/>
+        <image_animation image="ani" sequence="987654321" auto_play="true" interval="50" delay="400" w="70"/>
+      </view>
+    </view>
+    <view name="view_image_value" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="60" x="0" y="746" w="800">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Image Value"/>
+      <view h="-22" children_layout="default(r=1,c=0,x=20,y=0,s=134)">
+        <image_value w="52" image="uiex_battery_" value="0" animation="value(duration=10000,yoyo_times=0,from=0,to=5)"/>
+        <image_value w="80" image="uiex_num" value="0" format="%02.1f" animation="value(duration=10000,yoyo_times=0,from=0,to=100)"/>
+      </view>
+    </view>
+    <view name="view_gif" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="115" x="0" y="830" w="320">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" text="Gif"/>
+      <view name="" h="-22" children_layout="default(r=1,c=0,x=20,y=0,s=0)">
+        <gif image="logo_dynamic" w="175"/>
+      </view>
+    </view>
+    <view name="view_svg" children_layout="default(r=0,c=1,x=0,y=0,s=4)" h="80">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" text="Svg"/>
+      <view h="-22" children_layout="default(r=1,c=0,x=20,y=0,s=146)">
+        <svg image="computer" scale_x="0.25" scale_y="0.25" w="54"/>
+        <svg image="windmill" animation="rotation(from=0, to=6.28, yoyo_times=1000, duration=5000)" scale_x="0.35" scale_y="0.35" w="54"/>
+      </view>
+    </view>
+  </scroll_view>
+  <scroll_bar_m name="bar" x="r" y="0" w="7" h="100%" max="2000"/>
+</list_view>

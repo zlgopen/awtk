@@ -208,8 +208,8 @@ static void bitmap_gen(bitmap_t* b, uint32_t w, uint32_t h) {
 static void test_draw_bitmap(lcd_t* lcd, uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
   bitmap_t b;
   bitmap_gen(&b, w, h);
-  rect_t r = rect_init(0, 0, w, h);
-  rect_t d = rect_init(x, y, w, h);
+  rectf_t r = rectf_init(0, 0, w, h);
+  rectf_t d = rectf_init(x, y, w, h);
   uint8_t* bdata = bitmap_lock_buffer_for_write(&b);
   ASSERT_EQ(lcd_draw_image(lcd, &b, &r, &d), RET_OK);
   lcd_check_data(lcd, (uint8_t*)(bdata), x, y, w, h);

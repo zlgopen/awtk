@@ -217,6 +217,34 @@ static ret_t button_on_destroy(widget_t* widget) {
   return button_remove_timer(widget);
 }
 
+static ret_t button_auto_adjust_size(widget_t* widget) {
+  button_t* button = BUTTON(widget);
+  canvas_t* c = widget_get_canvas(widget);
+  return_value_if_fail(c != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(button != NULL && widget->astyle != NULL, RET_BAD_PARAMS);
+
+  if (!widget->auto_adjust_size || !widget_is_window_created(widget)) {
+    return RET_OK;
+  } else {
+    xy_t w = 0;
+    xy_t h = 0;
+    style_t* style = widget->astyle;
+    int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
+    int32_t margin_top = style_get_int(style, STYLE_ID_MARGIN_TOP, margin);
+    int32_t margin_left = style_get_int(style, STYLE_ID_MARGIN_LEFT, margin);
+    int32_t margin_right = style_get_int(style, STYLE_ID_MARGIN_RIGHT, margin);
+    int32_t margin_bottom = style_get_int(style, STYLE_ID_MARGIN_BOTTOM, margin);
+
+    widget_prepare_text_style(widget, c);
+    h = c->font_size + margin_top + margin_bottom;
+    w = canvas_measure_text(c, widget->text.str, widget->text.size) + margin_left + margin_right;
+    widget->w = w;
+    widget->h = h;
+
+    return RET_OK;
+  }
+}
+
 static const char* const s_button_properties[] = {WIDGET_PROP_REPEAT, WIDGET_PROP_LONG_PRESS_TIME,
                                                   WIDGET_PROP_ENABLE_LONG_PRESS, NULL};
 
@@ -232,6 +260,7 @@ TK_DECL_VTABLE(button) = {.size = sizeof(button_t),
                           .set_prop = button_set_prop,
                           .get_prop = button_get_prop,
                           .get_prop_default_value = button_get_prop_default_value,
+                          .auto_adjust_size = button_auto_adjust_size,
                           .on_destroy = button_on_destroy,
                           .on_paint_self = widget_on_paint_self_default};
 

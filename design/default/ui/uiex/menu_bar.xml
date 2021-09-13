@@ -1,0 +1,35 @@
+<dialog name="menu_bar" theme="uiex" x="0" y="m" w="230" h="100%" highlight="default(alpha=100)" anim_hint="slide_right" style="menu_bar">
+  <view name="view_style" h="36" children_layout="default(r=1,c=0,x=0,y=0,s=0)" x="5" y="10" w="200">
+    <label w="-140" style:normal:font_size="22" tr_text="Style"/>
+    <radio_button name="rb_light" w="70" style="switch_left" value="true" tr_text="Light"/>
+    <radio_button name="rb_dark" w="70" style="switch_right" tr_text="Dark"/>
+  </view>
+  <view name="view_language" h="36" children_layout="default(r=1,c=0,x=0,y=0,s=0)" x="5" y="56" w="200" disable_in_1m="true">
+    <label w="-140" style:normal:font_size="22" tr_text="Language"/>
+    <radio_button name="rb_en" style="switch_left" w="70" value="true" tr_text="English"/>
+    <radio_button name="rb_zh" w="70" style="switch_right" tr_text="Chinese"/>
+  </view>
+  <list_view name="menu" h="-105" item_height="40" auto_hide_scroll_bar="true" style="menu" x="0" y="b" w="230">
+    <scroll_view name="view_menu" x="0" y="0" w="100%" h="100%" children_layout="list_view(i=0,d=0,x=0,y=0,s=1)">
+      <tab_button name="tb_button" style="tb_elm" value="true" tr_text="Button"/>
+      <tab_button name="tb_checkbox" style="tb_elm" tr_text="Checkbox"/>
+      <tab_button name="tb_edit" style="tb_elm" tr_text="Edit"/>
+      <tab_button name="tb_label" style="tb_elm" tr_text="Label"/>
+      <tab_button name="tb_progress" style="tb_elm" tr_text="Progress"/>
+      <tab_button name="tb_date_time" style="tb_elm" tr_text="Date And Time"/>
+      <tab_button name="tb_slider" style="tb_elm" tr_text="Slider"/>
+      <tab_button name="tb_selector" style="tb_elm" tr_text="Selector"/>
+      <tab_button name="tb_image" style="tb_elm" tr_text="Image" invisible_in_1m="true"/>
+      <tab_button name="tb_mledit" style="tb_elm" tr_text="MultiLine Edit"/>
+      <tab_button name="tb_list_view" style="tb_elm" tr_text="List View" invisible_in_1m="true"/>
+      <tab_button name="tb_slide_view" style="tb_elm" tr_text="Slide View" invisible_in_1m="true"/>
+      <tab_button name="tb_tab_ctrl" style="tb_elm" tr_text="Tab Control"/>
+      <tab_button name="tb_color" style="tb_elm" tr_text="Color"/>
+      <tab_button name="tb_animate" style="tb_elm" tr_text="Animate"/>
+      <tab_button name="tb_layout" style="tb_elm" tr_text="Layout"/>
+      <tab_button name="tb_chart" style="tb_elm" tr_text="Chart"/>
+      <tab_button name="tb_window" style="tb_elm" tr_text="Window"/>
+    </scroll_view>
+    <scroll_bar_m name="bar" x="r" y="0" w="7" h="100%" style="default" max="1000"/>
+  </list_view>
+</dialog>

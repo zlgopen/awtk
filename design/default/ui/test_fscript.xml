@@ -31,30 +31,30 @@
 
   <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=1,r=12,m=5,s=5)">
     <label name="label" text="label" />
-    <edit name="edit" tips="text edit" on:focus="print(focus)" on:blur="print(blur, widget_get(self,value))"/>
-    <progress_bar name="bar" text="" value="10" on:value_changed="print(widget_get(self,value))"/>
+    <edit name="edit" tips="text edit" on:focus="print(focus)" on:blur="print('blur', widget_get('self','value'))"/>
+    <progress_bar name="bar" text="" value="10" on:value_changed="print(widget_get('self','value'))"/>
     <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=1,m=2,s=2)">
-    <button focusable="true" focused="true" on:click="open(basic_fscript)" text="Basic" />
+    <button focusable="true" focused="true" on:click="open('basic_fscript')" text="Basic" />
     <button focusable="true" text="Buttons">
       <property name="on:click">
-          win = open(button_fscript)
+          win = open('button_fscript')
           assert(!value_is_null(win))
-          widget_set(win, close.text, "Back")
-          assert(widget_get(win, close.text) == "Back");
+          widget_set(win, 'close.text', "Back")
+          assert(widget_get(win, 'close.text') == "Back");
       </property>
     </button>
     </view>
 
     <button focusable="true" text="Test">
       <property name="on:click">
-          widget_set(parent, label.text, "Hello");
-          assert(widget_get(parent, label.text) == "Hello");
+          widget_set('parent', 'label.text', 'Hello');
+          assert(widget_get('parent', 'label.text') == 'Hello');
 
-          widget_set(window, view.label.text, "Hello World");
-          assert(widget_get(window, view.label.text) == "Hello World");
+          widget_set('window', 'view.label.text', 'Hello World');
+          assert(widget_get('window', 'view.label.text') == 'Hello World');
           
-          widget_set(self, text, "Test...");
-          assert(widget_get(self, text) == "Test...");
+          widget_set('self', 'text', 'Test...');
+          assert(widget_get('self', 'text') == 'Test...');
       </property>
     </button>
 
@@ -62,10 +62,10 @@
       <button focusable="true" text="Inc">
         <property name="on:click">
           <![CDATA[
-        a = widget_lookup(window, bar, true)
-        b = widget_get(a, "value")
+        a = widget_lookup('window', 'bar', true)
+        b = widget_get(a, 'value')
         if(b <= 90) {
-          widget_set(a, "value", b + 10)
+          widget_set(a, 'value', b + 10)
         }
 ]]>
         </property>
@@ -73,10 +73,10 @@
       <button focusable="true" text="Dec">
         <property name="on:click">
           <![CDATA[
-        a = widget_lookup(window, bar, true)
-        b = widget_get(a, "value")
+        a = widget_lookup('window', 'bar', true)
+        b = widget_get(a, 'value')
         if(b >= 10) {
-          widget_set(a, "value", b - 10)
+          widget_set(a, 'value', b - 10)
         }
 ]]>
         </property>
@@ -86,15 +86,15 @@
     <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=1,m=2,s=2)">
       <button focusable="true" text="Create">
         <property name="on:click">
-        a = widget_lookup(window, foobar, true)
+        a = widget_lookup('window', 'foobar', true)
         if(value_is_null(a)) {
-          a = widget_create("label", window.view, 0, 0, 0, 0)
+          a = widget_create('label', 'window.view', 0, 0, 0, 0)
           assert(!value_is_null(a))
 
-          widget_set(a, text, "Dynamic created")
-          assert(widget_get(a, text) == "Dynamic created")
-          widget_set(a, name, "foobar")
-          assert(widget_get(a, name) == "foobar")
+          widget_set(a, 'text', 'Dynamic created')
+          assert(widget_get(a, 'text') == 'Dynamic created')
+          widget_set(a, 'name', 'foobar')
+          assert(widget_get(a, 'name') == 'foobar')
         } else {
           print("foobar exist");
         }
@@ -102,11 +102,11 @@
       </button>
       <button focusable="true" text="Destroy">
         <property name="on:click">
-        a = widget_lookup(window, foobar, true)
+        a = widget_lookup('window', 'foobar', true)
         if(!value_is_null(a)) {
           widget_destroy(a)
         } else {
-          print("not found foobar");
+          print('not found foobar');
         }
         </property>
       </button>
@@ -120,18 +120,18 @@
       <button name="timer" focusable="true" on:click="start_timer(100)" text="Start Timer">
         <property name="on:timer">
           <![CDATA[
-        a = widget_lookup(window, bar, true)
-        b = widget_get(a, "value")
+        a = widget_lookup('window', 'bar', true)
+        b = widget_get(a, 'value')
         if(b < 100) {
-          widget_set(a, "value", b + 1)
+          widget_set(a, 'value', b + 1)
         } else {
-          widget_set(a, "value", 0)
+          widget_set(a, 'value', 0)
           stop_timer()
         }
 ]]>
         </property>
       </button>
-      <button focusable="true" on:click="stop_timer(parent.timer)" text="Stop Timer" />
+      <button focusable="true" on:click="stop_timer('parent.timer')" text="Stop Timer" />
     </view>
     <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=1,m=2,s=2)">
       <button focusable="true" on:click="back()" text="Back" />

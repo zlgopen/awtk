@@ -21,6 +21,7 @@
 
 #include "tkc/mem.h"
 #include "tkc/action_thread_pool.h"
+
 action_thread_pool_t* action_thread_pool_create(uint16_t max_thread_nr, uint16_t min_idle_nr) {
   return action_thread_pool_create_ex(max_thread_nr, min_idle_nr, 0, TK_THREAD_PRIORITY_NORMAL);
 }

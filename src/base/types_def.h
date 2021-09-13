@@ -368,6 +368,7 @@ typedef struct _system_info_t system_info_t;
 #ifdef AWTK_LITE
 #define WITH_NULL_IM 1
 #define WITHOUT_LAYOUT 1
+#define WITHOUT_FSCRIPT 1
 #define WITHOUT_CLIPBOARD 1
 #define WITHOUT_EXT_WIDGETS 1
 #define WITHOUT_ROUNDED_RECT 1

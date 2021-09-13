@@ -22,7 +22,7 @@
 
 #include "tkc/mem.h"
 #include "widgets/label.h"
-#include "tkc/line_parser.h"
+#include "base/line_parser.h"
 #include "base/widget_vtable.h"
 #include "base/window_manager.h"
 

@@ -211,7 +211,7 @@ static ret_t check_button_set_radio(widget_t* widget, bool_t radio) {
   check_button_t* check_button = CHECK_BUTTON(widget);
   return_value_if_fail(check_button != NULL, RET_BAD_PARAMS);
   check_button->radio = radio;
-  if(radio) {
+  if (radio) {
     widget->vt = TK_REF_VTABLE(radio_button);
   } else {
     widget->vt = TK_REF_VTABLE(check_button);

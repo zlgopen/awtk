@@ -78,7 +78,6 @@ break_type_t word_break_check(wchar_t c1, wchar_t c2) {
 }
 #else
 /*FIXME:*/
-#define tk_isspace(c) (c == ' ' || c == '\t')
 static const wchar_t* no_start_symbols = L",.?!)>:;，。？！》）：；";
 break_type_t line_break_check(wchar_t c1, wchar_t c2) {
   if (wcschr(no_start_symbols, c2) != NULL) {

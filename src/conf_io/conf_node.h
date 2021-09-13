@@ -100,6 +100,21 @@ ret_t conf_doc_destroy_node(conf_doc_t* doc, conf_node_t* node);
 ret_t conf_doc_append_sibling(conf_doc_t* doc, conf_node_t* node, conf_node_t* sibling);
 
 /**
+ * @method conf_doc_find_node
+ *
+ * 根据path查找节点。
+ *
+ * @param {conf_doc_t*} doc 文档对象。
+ * @param {conf_node_t*} node 从该节点查找。
+ * @param {const char*} path 路径。
+ * @param {bool_t} create_if_not_exist 不存在是否创建。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+conf_node_t* conf_doc_find_node(conf_doc_t* doc, conf_node_t* node, const char* path,
+                                bool_t create_if_not_exist);
+
+/**
  * @method conf_doc_append_child
  *
  * 追加一个子节点。
@@ -240,6 +255,20 @@ ret_t conf_doc_set_str(conf_doc_t* doc, const char* path, const char* v);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t conf_doc_get(conf_doc_t* doc, const char* path, value_t* v);
+
+/**
+ * @method conf_doc_get_ex
+ *
+ * 获取指定路径节点的值。
+ *
+ * @param {conf_doc_t*} doc 文档对象。
+ * @param {conf_node_t*} node 从该节点查找。
+ * @param {const char*} path 节点的路径。
+ * @param {value_t*} v 用于返回值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t conf_doc_get_ex(conf_doc_t* doc, conf_node_t* node, const char* path, value_t* v);
 
 /**
  * @method conf_doc_get_int

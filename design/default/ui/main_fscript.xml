@@ -9,10 +9,10 @@
     print("global key_long_press:", key, "alt=", alt, "ctrl=", ctrl, "cmd=", cmd, "menu=", menu);
   </property>
   <view x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=8,m=5,s=5)">
-    <button focusable="true" focused="true" on:click="open(test_fscript)" text="Test Fscript"/>
-    <button focusable="true" on:click="open(button_fscript)" text="Buttons"/>
-    <button focusable="true" on:click="open(basic_fscript)" text="Basic"/>
-    <button focusable="true" on:click="open(text_selector_fscript)" text="Text Selector"/>
+    <button focusable="true" focused="true" on:click="open('test_fscript')" text="Test Fscript"/>
+    <button focusable="true" on:click="open('button_fscript')" text="Buttons"/>
+    <button focusable="true" on:click="open('basic_fscript')" text="Basic"/>
+    <button focusable="true" on:click="open('text_selector_fscript')" text="Text Selector"/>
     <button focusable="true" on:click="quit()" text="Quit"/>
   </view>
 </window>

@@ -1,0 +1,74 @@
+<button>
+  <style name="default" bg_color="#595959" border_color="#00000000" font_size="22" round_radius="4" text_color="#FFFFFF">
+    <normal/>
+    <disable bg_color="#3B3B3B" text_color="#595959"/>
+    <focused border_color="#709918"/>
+    <over/>
+    <pressed bg_color="#709918" x_offset="1" y_offset="1"/>
+  </style>
+  <style name="candidates" margin="3" text_color="#FFFFFF" font_size="22">
+    <normal/>
+    <over border_color="#4C4C4C"/>
+    <pressed bg_color="#1A1A1A" border_color="#4C4C4C"/>
+  </style>
+  <style name="candidates_focusable" text_color="#FFFFFF" font_size="22">
+    <normal/>
+    <disable text_color="#FFFFFF"/>
+    <focused border_color="#4C4C4C"/>
+    <over border_color="#4C4C4C"/>
+    <pressed bg_color="#1A1A1A" border_color="#4C4C4C"/>
+  </style>
+  <style name="close" icon="uiex_close_n">
+    <normal/>
+    <over/>
+    <pressed icon="uiex_close_p"/>
+  </style>
+  <style name="en" border_color="#00000000" icon="uiex_keyboard_EN" round_radius="4" text_color="#FFFFFF" bg_color="#424242">
+    <normal/>
+    <disable bg_color="#3B3B3B" text_color="#595959"/>
+    <focused border_color="#709918"/>
+    <over/>
+    <pressed bg_color="#709918" text_color="#FFFFFF"/>
+  </style>
+  <style name="highlight" border_color="#00000000" font_size="22" round_radius="4" text_color="#FFFFFF"  bg_color="#424242">
+    <normal/>
+    <disable bg_color="#3B3B3B" text_color="#595959"/>
+    <focused border_color="#709918"/>
+    <over/>
+    <pressed bg_color="#709918" text_color="#FFFFFF"/>
+  </style>
+  <style name="highlight_backspace" border_color="#00000000" icon="uiex_keyboard_backspace_n" round_radius="4" text_color="#FFFFFF" bg_color="#424242">
+    <normal />
+    <disable bg_color="#3B3B3B" text_color="#595959"/>
+    <focused border_color="#709918"/>
+    <over/>
+    <pressed bg_color="#709918" icon="uiex_keyboard_backspace_p" text_color="#FFFFFF"/>
+  </style>
+  <style name="zh" border_color="#00000000" icon="uiex_keyboard_CN" round_radius="4" text_color="#FFFFFF" bg_color="#424242">
+    <normal/>
+    <disable bg_color="#3B3B3B" text_color="#595959"/>
+    <focused border_color="#709918"/>
+    <over/>
+    <pressed bg_color="#709918" text_color="#FFFFFF"/>
+  </style>
+</button>
+<candidates>
+  <style name="default" bg_color="#595959">
+    <normal/>
+  </style>
+</candidates>
+<column>
+  <style name="placeholder">
+    <normal bg_color="#595959"/>
+  </style>
+</column>
+<keyboard>
+  <style name="default">
+    <normal bg_color="#2E2E2E" border_color="#4D4D4D"/>
+  </style>
+</keyboard>
+<pages>
+  <style name="default">
+    <normal border_color="#4D4D4D"/>
+  </style>
+</pages>

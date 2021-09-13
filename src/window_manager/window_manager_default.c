@@ -1123,7 +1123,9 @@ static ret_t window_manager_default_is_animating(widget_t* widget, bool_t* playi
   return RET_OK;
 }
 
-static ret_t window_manager_default_orientation(widget_t* widget, wh_t w, wh_t h, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation) {
+static ret_t window_manager_default_orientation(widget_t* widget, wh_t w, wh_t h,
+                                                lcd_orientation_t old_orientation,
+                                                lcd_orientation_t new_orientation) {
   ret_t ret = RET_OK;
   rect_t r = rect_init(0, 0, w, h);
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);

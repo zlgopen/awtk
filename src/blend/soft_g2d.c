@@ -223,7 +223,7 @@ ret_t soft_rotate_image(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, lcd_o
   return RET_NOT_IMPL;
 }
 
-ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const rect_t* src_r,
+ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r,
                        uint8_t alpha) {
   return_value_if_fail(dst != NULL && src != NULL && src_r != NULL && dst_r != NULL,
                        RET_BAD_PARAMS);
@@ -233,7 +233,8 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const 
       switch (src->format) {
         case BITMAP_FMT_BGR565: {
           if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8) {
-            return soft_copy_image(dst, src, src_r, dst_r->x, dst_r->y);
+            rect_t tmp_src = rect_from_rectf(src_r);
+            return soft_copy_image(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x), (xy_t)(dst_r->y));
           } else {
             return blend_image_bgr565_bgr565(dst, src, dst_r, src_r, alpha);
           }
@@ -259,7 +260,8 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const 
       switch (src->format) {
         case BITMAP_FMT_RGB565: {
           if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8) {
-            return soft_copy_image(dst, src, src_r, dst_r->x, dst_r->y);
+            rect_t tmp_src = rect_from_rectf(src_r);
+            return soft_copy_image(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x), (xy_t)(dst_r->y));
           } else {
             return blend_image_rgb565_rgb565(dst, src, dst_r, src_r, alpha);
           }
@@ -288,7 +290,8 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const 
         }
         case BITMAP_FMT_BGR888: {
           if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8) {
-            return soft_copy_image(dst, src, src_r, dst_r->x, dst_r->y);
+            rect_t tmp_src = rect_from_rectf(src_r);
+            return soft_copy_image(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x), (xy_t)(dst_r->y));
           } else {
             return blend_image_bgr888_bgr888(dst, src, dst_r, src_r, alpha);
           }
@@ -314,7 +317,8 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const 
         }
         case BITMAP_FMT_RGB888: {
           if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8) {
-            return soft_copy_image(dst, src, src_r, dst_r->x, dst_r->y);
+            rect_t tmp_src = rect_from_rectf(src_r);
+            return soft_copy_image(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x), (xy_t)(dst_r->y));
           } else {
             return blend_image_rgb888_rgb888(dst, src, dst_r, src_r, alpha);
           }

@@ -1,0 +1,27 @@
+<keyboard theme="uiex_keyboard" x="0" y="bottom" w="100%" h="40%" name="kb_hex">
+  <column style="placeholder" x="0" y="0" w="100%" h="30">
+    <button name="close" style="close" x="r:2" y="m" w="20" h="20" text="x"/>
+  </column>
+  <pages x="0" y="b" w="100%" h="-30" active="0">
+    <view name="upper" x="0" y="0" w="100%" h="100%" children_layout="default(c=6,r=3,x=4,y=4,s=4)">
+      <button repeat="300" name="0" text="0"/>
+      <button repeat="300" name="1" text="1"/>
+      <button repeat="300" name="2" text="2"/>
+      <button repeat="300" name="3" text="3"/>
+      <button repeat="300" name="4" text="4"/>
+      <button repeat="300" name="5" text="5"/>
+      <button repeat="300" name="6" text="6"/>
+      <button repeat="300" name="7" text="7"/>
+      <button repeat="300" name="8" text="8"/>
+      <button repeat="300" name="9" text="9"/>
+      <button repeat="300" name="A" text="A"/>
+      <button repeat="300" name="B" text="B"/>
+      <button repeat="300" name="C" text="C"/>
+      <button repeat="300" name="D" text="D"/>
+      <button repeat="300" name="E" text="E"/>
+      <button repeat="300" name="F" text="F"/>
+      <button repeat="300" name="X" text="X"/>
+      <button repeat="300" name="key:backspace" style="highlight_backspace"/>
+    </view>
+  </pages>
+</keyboard>

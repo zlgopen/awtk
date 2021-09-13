@@ -810,7 +810,7 @@ static ret_t slide_view_restore_target(widget_t* widget) {
   widget_t* active_view = NULL;
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   return_value_if_fail(slide_view != NULL && widget->children != NULL, RET_BAD_PARAMS);
-  
+
   if (slide_view->active < widget->children->size) {
     active_view = widget_get_child(widget, slide_view->active);
   }

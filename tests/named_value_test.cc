@@ -33,3 +33,25 @@ TEST(NamedValue, init) {
   ASSERT_EQ(nv->name, (char*)NULL);
   ASSERT_EQ(nv->value.type, VALUE_TYPE_INVALID);
 }
+
+TEST(NamedValue, create_ex) {
+  value_t v;
+  named_value_t* nv = named_value_create_ex("name", value_set_str(&v, "jim"));
+
+  ASSERT_STREQ(nv->name, "name");
+  ASSERT_STREQ(value_str(&(nv->value)), "jim");
+
+  named_value_destroy(nv);
+}
+
+TEST(NamedValue, create_ex1) {
+  value_t v;
+  named_value_t* nv = named_value_create_ex("name", value_set_str(&v, "jim"));
+
+  ASSERT_STREQ(nv->name, "name");
+  ASSERT_STREQ(value_str(&(nv->value)), "jim");
+  ASSERT_EQ(named_value_set_name(nv, "tom"), RET_OK);
+  ASSERT_EQ(named_value_set_name(nv, "jike"), RET_OK);
+
+  named_value_destroy(nv);
+}

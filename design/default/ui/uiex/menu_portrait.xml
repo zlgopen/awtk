@@ -1,0 +1,23 @@
+<window name="menu_portrait" theme="uiex" text="VPage V Translate">
+  <pages name="vpages" x="r" y="40" w="100%" h="-40" style="lucency">
+    <vpage name="page_button" w="100%" h="100%" ui_asset="uiex/page_button" anim_hint="vtranslate" disg:custom="container" tr_text="Button"/>
+    <vpage name="page_checkbox" w="100%" h="100%" ui_asset="uiex/page_checkbox" anim_hint="vtranslate" disg:custom="container" tr_text="Checkbox"/>
+    <vpage name="page_edit" w="100%" h="100%" ui_asset="uiex/page_edit" anim_hint="vtranslate" disg:custom="container" tr_text="Edit"/>
+    <vpage name="page_label" w="100%" h="100%" ui_asset="uiex/page_label" anim_hint="vtranslate" disg:custom="container" tr_text="Label"/>
+    <vpage name="page_progress" w="100%" h="100%" ui_asset="uiex/page_progress" anim_hint="vtranslate" disg:custom="container" tr_text="Progress"/>
+    <vpage name="page_date_time" w="100%" h="100%" ui_asset="uiex/page_date_time" anim_hint="vtranslate" disg:custom="container" tr_text="Date And Time"/>
+    <vpage name="page_slider" w="100%" h="100%" ui_asset="uiex/page_slider" anim_hint="vtranslate" disg:custom="container" tr_text="Slider"/>
+    <vpage name="page_selector" w="100%" h="100%" ui_asset="uiex/page_selector" anim_hint="vtranslate" disg:custom="container" tr_text="Selector"/>
+    <vpage name="page_image" w="100%" h="100%" ui_asset="uiex/page_image" anim_hint="vtranslate" disg:custom="container" tr_text="Image" invisible_in_1m="true"/>
+    <vpage name="page_mledit" w="100%" h="100%" ui_asset="uiex/page_mledit" anim_hint="vtranslate" disg:custom="container" tr_text="MultiLine Edit"/>
+    <vpage name="page_list_view" w="100%" h="100%" ui_asset="uiex/page_list_view" anim_hint="vtranslate" disg:custom="container" tr_text="List View" invisible_in_1m="true"/>
+    <vpage name="page_slide_view" w="100%" h="100%" ui_asset="uiex/page_slide_view" anim_hint="vtranslate" disg:custom="container" tr_text="Slide View" invisible_in_1m="true"/>
+    <vpage name="page_tab_ctrl" w="100%" h="100%" ui_asset="uiex/page_tab_ctrl" anim_hint="vtranslate" disg:custom="container" tr_text="Tab Control"/>
+    <vpage name="page_color" w="100%" h="100%" ui_asset="uiex/page_color" anim_hint="vtranslate" disg:custom="container" tr_text="Color"/>
+    <vpage name="page_animate" w="100%" h="100%" ui_asset="uiex/page_animate" anim_hint="vtranslate" disg:custom="container" tr_text="Animate"/>
+    <vpage name="page_layout" w="100%" h="100%" ui_asset="uiex/page_layout" anim_hint="vtranslate" disg:custom="container" tr_text="Layout"/>
+    <vpage name="page_chart" w="100%" h="100%" ui_asset="uiex/page_chart" anim_hint="vtranslate" disg:custom="container" tr_text="Chart"/>
+    <vpage name="page_window" w="100%" h="100%" ui_asset="uiex/page_window" anim_hint="vtranslate" disg:custom="container" tr_text="Window"/>
+  </pages>
+  <label name="lb_menu_ti" h="40" style="menu_title" x="0" y="0" w="100%" tr_text="Title"/>
+</window>

@@ -26,11 +26,11 @@
 #include "widgets/progress_bar.h"
 
 static double progress_bar_get_progress(widget_t* widget) {
+  double range = 0;
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
   return_value_if_fail(progress_bar != NULL, 0);
-  double range = progress_bar->max > 0 ? progress_bar->max : 100;
-
-  range = tk_max(range, progress_bar->value);
+  range = progress_bar->max > 0 ? progress_bar->max : 100;
+  progress_bar->value = tk_clamp(progress_bar->value, 0, range);
 
   return progress_bar->value / range;
 }

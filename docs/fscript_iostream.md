@@ -2,7 +2,25 @@
 
 ### 1.iostream\_get\_istream
 
+> 获取输入流对象。
+----------------------------
+
+#### 原型
+
+```
+iostream_get_istream(iostream) => object
+```
+
 ### 2.iostream\_get\_ostream
+
+> 获取输出流对象。
+----------------------------
+
+#### 原型
+
+```
+iostream _get_ostream(iostream) => object
+```
 
 ### 更多示例
 ```js

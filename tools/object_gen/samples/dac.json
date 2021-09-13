@@ -1,0 +1,111 @@
+{
+  "name":"object_dac",
+  "date":"2021-09-01",
+  "team":"AWTK Develop Team",
+  "author":"Li XianJing <xianjimli@hotmail.com>",
+  "desc":"foobar",
+  "copyright":"Guangzhou ZHIYUAN Electronics Co.,Ltd.",
+  "parent": "object",
+  "allowSubclass":true,
+  "annotation": ["scriptable"],
+  "includes":[],
+  "props": [
+  ],
+  "funcs": [
+    {
+      "name":"set_voltage",
+      "desc":"设置电压值(mV)",
+      "annotation": ["scriptable"],
+      "return": {
+        "type":"ret_t", 
+        "defvalue":"RET_BAD_PARAMS",
+        "desc":"返回RET_OK表示成功，否则表示失败"
+      },
+      "virtual": false,
+      "args": [
+        {
+          "name":"chan",
+          "desc":"通道号",
+          "type":"int32_t"
+        },
+        {
+          "name":"voltage",
+          "desc":"电压值(mV)",
+          "type":"uint32_t"
+        }
+      ]
+    },
+    {
+      "name":"set_value",
+      "desc":"设置值",
+      "annotation": ["scriptable"],
+      "return": {
+        "type":"ret_t", 
+        "defvalue":"RET_BAD_PARAMS",
+        "desc":"返回RET_OK表示成功，否则表示失败"
+      },
+      "virtual": true,
+      "args": [
+        {
+          "name":"chan",
+          "desc":"通道号",
+          "type":"int32_t"
+        },
+        {
+          "name":"value",
+          "desc":"值",
+          "type":"uint32_t"
+        }
+      ]
+    },
+    {
+      "name":"set_enable",
+      "desc":"设置值",
+      "annotation": ["scriptable"],
+      "return": {
+        "type":"ret_t", 
+        "defvalue":"RET_BAD_PARAMS",
+        "desc":"返回RET_OK表示成功，否则表示失败"
+      },
+      "virtual": true,
+      "args": [
+        {
+          "name":"chan",
+          "desc":"通道号",
+          "type":"int32_t"
+        },
+        {
+          "name":"enable",
+          "desc":"是否启用",
+          "type":"bool_t"
+        }
+      ]
+    },
+    {
+      "name":"get_bits",
+      "desc":"转换位数",
+      "annotation": ["scriptable"],
+      "return": {
+        "type":"int32_t", 
+        "defvalue":"0",
+        "desc":"返回转换位数"
+      },
+      "virtual": true,
+      "args": [
+      ]
+    },
+    {
+      "name":"get_vref",
+      "desc":"参考电压(mV)",
+      "annotation": ["scriptable"],
+      "return": {
+        "type":"int32_t", 
+        "defvalue":"0",
+        "desc":"参考电压(mV)"
+      },
+      "virtual": true,
+      "args": [
+      ]
+    }
+  ]
+}

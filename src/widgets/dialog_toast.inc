@@ -39,7 +39,7 @@
 
 typedef struct _dialog_toast_message_t {
   uint32_t duration;
-  uint32_t start_time;
+  uint64_t start_time;
   char text[4];
 }dialog_toast_message_t;
 
@@ -157,7 +157,7 @@ static ret_t dialog_toast_on_destroy(void* ctx, event_t* e) {
 
 static ret_t dialog_toast_quit(dialog_toast_t* dialog_toast) {
   bool_t first = TRUE;
-  uint32_t now = timer_manager()->get_time();
+  uint64_t now = timer_manager()->get_time();
   darray_t* message_list = &(dialog_toast->message_list);
   return_value_if_fail(message_list->size > 0, RET_FAIL);
   if (!dialog_toast->is_opened) {

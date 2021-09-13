@@ -3,16 +3,16 @@
     <text_selector name="year" options="2000-2050" selected_index="9">
       <property name="on:value_changed">
         <![CDATA[
-        a = get_days_of_month(widget_get(parent.year, value), widget_get(parent.month, value))
-        widget_set(parent.day, "options", iformat( "1-%d", a) + "%02d")        
+        a = get_days_of_month(widget_get('parent.year', 'value'), widget_get('parent.month', 'value'))
+        widget_set('parent.day', 'options', iformat( '1-%d', a) + '%02d')        
          ]]>
       </property>
     </text_selector>
     <text_selector name="month" options="1-12-%02d" selected_index="8" loop_options="true">
       <property name="on:value_changed">
         <![CDATA[
-        a = get_days_of_month(widget_get(parent.year, value), widget_get(parent.month, value))
-        widget_set(parent.day, "options", iformat( "1-%d", a) + "%02d")
+        a = get_days_of_month(widget_get('parent.year', 'value'), widget_get('parent.month', 'value'))
+        widget_set('parent.day', 'options', iformat( '1-%d', a) + '%02d')
         ]]>
       </property>
     </text_selector>
@@ -24,14 +24,14 @@
   <row x="10" y="bottom" w="100%" h="150" children_layout="default(row=1,col=3)">
     <property name="handle_value_changed">
       <![CDATA[
-      a = get_days_of_month(widget_get(parent.year, value), widget_get(parent.month, value))
-      widget_set(parent.day, "options", iformat( "1-%d", a) + "%02d")        
+      a = get_days_of_month(widget_get('parent.year', 'value'), widget_get('parent.month', 'value'))
+      widget_set('parent.day', 'options', iformat( '1-%d', a) + '%02d')        
        ]]>
     </property>
     <text_selector name="year" options="2000-2050" selected_index="9" 
-      on:value_changed="widget_eval(parent.handle_value_changed)" />
+      on:value_changed="widget_eval('parent.handle_value_changed')" />
     <text_selector name="month" options="1-12-%02d" selected_index="8" loop_options="true"
-      on:value_changed="widget_eval(parent.handle_value_changed)" />
+      on:value_changed="widget_eval('parent.handle_value_changed')" />
     <text_selector name="day" options="1-31-%02d" selected_index="9" />
   </row>
 

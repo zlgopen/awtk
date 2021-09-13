@@ -912,8 +912,8 @@ char* tk_str_totitle(char* str) {
   return_value_if_fail(str != NULL, NULL);
 
   while (*p) {
-    if (isalpha(*p)) {
-      if (p == str || (!isalpha(*prev) && !isdigit(*prev))) {
+    if (tk_isalpha(*p)) {
+      if (p == str || (!tk_isalpha(*prev) && !tk_isdigit(*prev))) {
         *p = toupper(*p);
       }
     }

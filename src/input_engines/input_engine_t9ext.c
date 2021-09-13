@@ -198,7 +198,7 @@ static ret_t input_engine_t9ext_search_zh(input_engine_t* engine, const char* ke
   input_engine_t9ext_t* t9 = (input_engine_t9ext_t*)engine;
   return_value_if_fail(t9 != NULL, RET_BAD_PARAMS);
 
-  if (isdigit(keys[0])) {
+  if (tk_isdigit(keys[0])) {
     /*map digits to pinyin*/
     const table_entry_t* items = s_t9ext_numbers_pinyin;
     uint32_t items_nr = ARRAY_SIZE(s_t9ext_numbers_pinyin);

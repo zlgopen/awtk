@@ -217,7 +217,7 @@ color_t lcd_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
   }
 }
 
-ret_t lcd_draw_image(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst) {
+ret_t lcd_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* src, const rectf_t* dst) {
   return_value_if_fail(lcd != NULL && lcd->draw_image != NULL && src != NULL && dst != NULL,
                        RET_BAD_PARAMS);
 
@@ -339,7 +339,8 @@ ret_t lcd_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length) {
   return RET_FAIL;
 }
 
-ret_t lcd_set_orientation(lcd_t* lcd, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation) {
+ret_t lcd_set_orientation(lcd_t* lcd, lcd_orientation_t old_orientation,
+                          lcd_orientation_t new_orientation) {
   return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
   if (lcd->set_orientation != NULL) {
     return lcd->set_orientation(lcd, old_orientation, new_orientation);

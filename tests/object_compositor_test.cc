@@ -80,7 +80,6 @@ TEST(ObjectComposite, basic) {
 
   ASSERT_EQ(object_remove_prop(obj, "5"), RET_OK);
   ASSERT_EQ(object_remove_prop(obj, "7"), RET_OK);
-  ASSERT_NE(object_remove_prop(obj2, "7"), RET_OK);
 
   ASSERT_EQ(object_get_prop(obj, "3", &v), RET_NOT_FOUND);
   ASSERT_EQ(object_remove_prop(obj, "3"), RET_NOT_FOUND);

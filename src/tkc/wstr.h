@@ -88,6 +88,17 @@ wstr_t* wstr_init(wstr_t* str, uint32_t capacity);
 ret_t wstr_set(wstr_t* str, const wchar_t* text);
 
 /**
+ * @method wstr_set_with_len
+ * 设置字符串。
+ * @param {wstr_t*} str str对象。
+ * @param {wchar_t*} text 要设置的字符串。
+ * @param {uint32_t} len 字符串长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wstr_set_with_len(wstr_t* str, const wchar_t* text, uint32_t len);
+
+/**
  * @method wstr_clear
  * 清除字符串内容。
  * @param {wstr_t*} str str对象。
@@ -331,6 +342,18 @@ const wchar_t* wcs_chr(const wchar_t* s, wchar_t c);
  * @return {const wchar_t*} 复制后的串地址。
  */
 wchar_t* wcs_cpy(wchar_t* s1, const wchar_t* s2);
+
+/**
+ * @method wcs_ncpy
+ * 按照长度来复制字符串
+ * @annotation ["global"]
+ * @param {wchar_t*} s1 目标串。
+ * @param {const wchar_t*} s2 源串。
+ * @param {uint32_t} n 拷贝长度。
+ *
+ * @return {const wchar_t*} 复制后的串地址。
+ */
+wchar_t* wcs_ncpy(wchar_t* s1, const wchar_t* s2, uint32_t n);
 
 /**
  * @method wcs_cmp

@@ -1,0 +1,61 @@
+<?xml parent="{&quot;x&quot;:&quot;0&quot;,&quot;y&quot;:&quot;0&quot;,&quot;w&quot;:&quot;100%&quot;,&quot;h&quot;:&quot;100%&quot;,&quot;name&quot;:&quot;page_button&quot;,&quot;theme&quot;:&quot;uiex&quot;}"?>
+<list_view name="list_view" x="0" y="0" w="100%" h="100%" default_item_height="62">
+  <scroll_view name="scroll_view" x="0" y="0" w="100%" h="100%" children_layout="list_view(i=0,d=70,x=0,y=10,s=24)">
+    <view name="view_square_btn" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="70">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Square Button"/>
+      <grid h="36" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
+        <button name="btn_border" style="square" tr_text="Button"/>
+        <button name="btn_borderless" style="square_borderless" tr_text="Button"/>
+      </grid>
+    </view>
+    <grid name="view_rounded_btn" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="70">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Rounded Button"/>
+      <grid h="36" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
+        <button name="btn" tr_text="Button"/>
+        <button name="btn1" style="rounded" tr_text="Button"/>
+        <button name="btn2" style="rounded_top" tr_text="Button"/>
+        <button name="btn3" style="rounded_bottom" tr_text="Button"/>
+      </grid>
+    </grid>
+    <view name="view_icon_btn" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="84">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Button With Icon"/>
+      <grid h="50" children_layout="default(w=36,h=36,x=20,y=0,s=20)">
+        <view>
+          <button x="c" y="0" w="30" h="30" style="search"/>
+          <label x="c" y="b" w="40" h="20" style="icon_btn" tr_text="search"/>
+        </view>
+        <view>
+          <button x="c" y="0" w="30" h="30" style="time"/>
+          <label x="c" y="b" w="40" h="20" style="icon_btn" tr_text="time"/>
+        </view>
+        <view>
+          <button x="c" y="0" w="30" h="30" style="import"/>
+          <label x="c" y="b" w="40" h="20" style="icon_btn" tr_text="import"/>
+        </view>
+        <view>
+          <button x="c" y="0" w="30" h="30" style="export"/>
+          <label x="c" y="b" w="40" h="20" style="icon_btn" tr_text="export"/>
+        </view>
+        <view>
+          <button x="c" y="0" w="30" h="30" style="empty"/>
+          <label x="c" y="b" w="40" h="20" style="icon_btn" tr_text="empty"/>
+        </view>
+      </grid>
+    </view>
+    <view name="view_icon_text_btn" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="70">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Button With Icon And Text"/>
+      <grid h="36" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
+        <button name="button" style="with_icon_text" tr_text="Button"/>
+        <check_button name="cb_fps" style="fps" text="FPS"/>
+      </grid>
+    </view>
+    <view name="view_sw" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="65">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Switch"/>
+      <view h="-22">
+        <switch name="switch" value="true" x="20" y="0" w="60" h="30"/>
+        <switch name="switch_img" style="img" value="true" x="100" y="0" w="70" h="30" max_xoffset_ratio="0.343"/>
+      </view>
+    </view>
+  </scroll_view>
+  <scroll_bar_m name="bar" x="r" y="0" w="7" h="100%" max="1000"/>
+</list_view>

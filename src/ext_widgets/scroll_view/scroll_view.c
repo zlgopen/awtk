@@ -550,7 +550,7 @@ static ret_t scroll_view_set_curr_page(widget_t* widget, int32_t new_page) {
   if (scroll_view->xslidable && !scroll_view->yslidable) {
     scroll_view->xoffset_end = new_page * widget->w;
   } else if (!scroll_view->xslidable && scroll_view->yslidable) {
-    scroll_view->xoffset_end = new_page * widget->h;
+    scroll_view->yoffset_end = new_page * widget->h;
   }
   scroll_view->snap_to_page = FALSE;
   scroll_view_scroll_to(widget, scroll_view->xoffset_end, scroll_view->yoffset_end,
@@ -563,10 +563,10 @@ static ret_t scroll_view_get_prop(widget_t* widget, const char* name, value_t* v
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
   return_value_if_fail(scroll_view != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_eq(name, WIDGET_PROP_VIRTUAL_W) || tk_str_eq(name, WIDGET_PROP_LAYOUT_W)) {
+  if (tk_str_eq(name, WIDGET_PROP_VIRTUAL_W)) {
     value_set_int(v, tk_max(widget->w, scroll_view->virtual_w));
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_VIRTUAL_H) || tk_str_eq(name, WIDGET_PROP_LAYOUT_H)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_VIRTUAL_H)) {
     value_set_int(v, tk_max(widget->h, scroll_view->virtual_h));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {

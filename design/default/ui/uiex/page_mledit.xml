@@ -1,0 +1,33 @@
+<?xml parent="{&quot;x&quot;:&quot;0&quot;,&quot;y&quot;:&quot;0&quot;,&quot;w&quot;:&quot;100%&quot;,&quot;h&quot;:&quot;100%&quot;,&quot;name&quot;:&quot;page_mledit&quot;,&quot;theme&quot;:&quot;uiex&quot;}"?>
+<view x="0" y="0" w="100%" h="100%" children_layout="default(r=0,c=1,x=0,y=0,s=0)" name="mledit_view">
+  <scroll_view h="38" xslidable="true">
+    <view name="view_font" w="230" h="100%">
+      <combo_box_ex name="cb_font" w="124" item_height="30" auto_fix="true" h="30" x="10" y="m" readonly="true" open_window="uiex/cbp_font" options="Song;Arial" selected_index="0"/>
+      <combo_box_ex name="cb_font_size" w="88" item_height="30" auto_fix="true" h="30" y="m" x="138" readonly="true" open_window="uiex/cbp_font_size" options="5;5.5;6.5;7.5;8;9;10;10.5;11;12;14;16;18;20" selected_index="0"/>
+    </view>
+    <view name="view_btn" children_layout="default(r=1,c=0,x=0,y=0,s=4)" x="240" h="24" w="146" y="m" style="toolbar">
+      <button name="btn_text_color" style="text_color" w="24">
+        <label name="label" y="b:3" w="60%" h="1" style:normal:bg_color="#FFC000" x="c"/>
+      </button>
+      <button name="btn_text_bg_color" style="text_bg_color" w="24">
+        <label name="label" y="b:3" w="60%" h="1" style:normal:bg_color="#8cb808" x="c"/>
+      </button>
+      <check_button name="cb_bold" style="bold" w="24"/>
+      <check_button name="cb_italic" style="italic" w="24"/>
+      <check_button name="cb_underline" style="underscore" w="24"/>
+    </view>
+    <view name="view_btn" children_layout="default(r=1,c=0,x=0,y=0,s=4)" x="394" h="24" w="123" y="m" style="toolbar">
+      <radio_button name="rb_aligned_l" style="align_left" w="26"/>
+      <radio_button name="rb_aligned_m" style="align_middle" w="26"/>
+      <radio_button name="rb_aligned_r" style="align_right" w="26"/>
+      <radio_button name="rb_aligned_b" style="align_both" w="26" value="true"/>
+    </view>
+    <view name="view_btn" children_layout="default(r=1,c=0,x=0,y=0,s=4)" x="521" h="24" w="39" y="m">
+      <button name="btn_picture" style="picture" w="24"/>
+    </view>
+  </scroll_view>
+  <mledit name="mledit" max_lines="100" wrap_word="true" scroll_line="10" h="-38" keyboard="uiex/kb_default" style="default">
+    <line_number name="line_number" x="0" y="0" w="32" h="100%"/>
+    <scroll_bar_d name="bar" x="r" y="0" w="16" h="100%" value="0"/>
+  </mledit>
+</view>

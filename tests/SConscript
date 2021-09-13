@@ -38,6 +38,7 @@ env.Program(os.path.join(BIN_DIR, 'app_conf_multi_threads'), ["app_conf_multi_th
 env.Program(os.path.join(BIN_DIR, 'json_to_ubjson'), ["json_to_ubjson.cpp"])
 env.Program(os.path.join(BIN_DIR, 'ubjson_to_json'), ["ubjson_to_json.cpp"])
 env.Program(os.path.join(BIN_DIR, 'runFScript'), ["fscript_run.cpp"])
+env.Program(os.path.join(BIN_DIR, 'async_call_test'), ["async_call_test.cpp"])
 
 env.SharedLibrary(os.path.join(BIN_DIR+"/plugins_for_test", 'a'), ["a.c"])
 env.SharedLibrary(os.path.join(BIN_DIR+"/plugins_for_test", 'b'), ["b.c"])

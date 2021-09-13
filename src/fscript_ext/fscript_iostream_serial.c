@@ -74,7 +74,10 @@ static ret_t func_iostream_serial_create(fscript_t* fscript, fscript_args_t* arg
   return RET_OK;
 }
 
+FACTORY_TABLE_BEGIN(s_ext_iostream_serial)
+FACTORY_TABLE_ENTRY("iostream_serial_create", func_iostream_serial_create)
+FACTORY_TABLE_END()
+
 ret_t fscript_iostream_serial_register(void) {
-  ENSURE(fscript_register_func("iostream_serial_create", func_iostream_serial_create) == RET_OK);
-  return RET_OK;
+  return fscript_register_funcs(s_ext_iostream_serial);
 }

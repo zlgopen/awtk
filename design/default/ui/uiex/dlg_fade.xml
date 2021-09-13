@@ -1,0 +1,11 @@
+<dialog name="dlg_fade" theme="uiex" anim_hint="fade(duration=300)" highlight="default(alpha=100)" x="c" y="m" w="294" h="160" style="lucency">
+  <dialog_title x="0" y="0" w="100%" h="36" tr_text="Fade">
+    <draggable drag_window="true"/>
+    <button name="close()" x="r:10" y="10" w="20" h="20" style="win_close"/>
+  </dialog_title>
+  <dialog_client x="0" y="b" w="100%" h="-36">
+    <label x="20" y="20" w="200" h="30" style:normal:text_align_h="left" style="dialog" tr_text="Are you ready?"/>
+    <button name="close()" x="c:45" y="b:25" w="28%" h="30" focusable="true" style="highlight" tr_text="Yes"/>
+    <button name="close()" x="c:-45" y="b:25" w="28%" h="30" focusable="true" tr_text="No"/>
+  </dialog_client>
+</dialog>

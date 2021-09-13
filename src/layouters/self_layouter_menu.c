@@ -88,7 +88,7 @@ ret_t self_layouter_menu_set_param(self_layouter_t* layouter, const char* name, 
       } else if (x[0] == 'r') {
         layout->x_attr = X_ATTR_RIGHT;
       } else {
-        if (isdigit(*x)) {
+        if (tk_isdigit(*x)) {
           layout->x_attr = tk_atoi(x);
         } else {
           layout->x_attr = X_ATTR_DEFAULT;
@@ -103,7 +103,7 @@ ret_t self_layouter_menu_set_param(self_layouter_t* layouter, const char* name, 
       } else if (y[0] == 'b') {
         layout->y_attr = Y_ATTR_BOTTOM;
       } else {
-        if (isdigit(*y)) {
+        if (tk_isdigit(*y)) {
           layout->y_attr = tk_atoi(y);
         } else {
           layout->y_attr = X_ATTR_DEFAULT;

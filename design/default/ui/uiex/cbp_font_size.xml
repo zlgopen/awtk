@@ -1,0 +1,21 @@
+<popup name="cbp_font_size" theme="uiex" x="0" y="0" h="150" w="100" close_when_click="true" close_when_click_outside="true" style="combobox_popup">
+  <list_view name="list_view" x="0" y="0" w="100%" h="100%" default_item_height="30">
+    <scroll_view name="scroll_view" x="0" y="0" w="-10" h="100%" snap_to_page="false" yslidable="true" children_layout="list_view(i=0,d=0,x=0,y=0,s=1)">
+      <combo_box_item name="list_item" text="5"/>
+      <combo_box_item name="list_item" text="5.5"/>
+      <combo_box_item name="list_item" text="6.5"/>
+      <combo_box_item name="list_item" text="7.5"/>
+      <combo_box_item name="list_item" text="8"/>
+      <combo_box_item name="list_item" text="9"/>
+      <combo_box_item name="list_item" text="10"/>
+      <combo_box_item name="list_item" text="10.5"/>
+      <combo_box_item name="list_item" text="11"/>
+      <combo_box_item name="list_item" text="12"/>
+      <combo_box_item name="list_item" text="14"/>
+      <combo_box_item name="list_item" text="16"/>
+      <combo_box_item name="list_item" text="18"/>
+      <combo_box_item name="list_item" text="20"/>
+    </scroll_view>
+    <scroll_bar_d name="scroll_bar" x="r" y="0" w="10" h="100%"/>
+  </list_view>
+</popup>

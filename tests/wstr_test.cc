@@ -259,6 +259,15 @@ TEST(WStr, wcs_cpy) {
   ASSERT_EQ(wcs_len(wcs_cpy(str, L"abc中文测试123")), 10);
 }
 
+TEST(WStr, wcs_ncpy) {
+  wchar_t str[100];
+
+  ASSERT_EQ(wcs_len(wcs_ncpy(str, L"", 1)), 0);
+  ASSERT_EQ(wcs_len(wcs_ncpy(str, L"a", 1)), 1);
+  ASSERT_EQ(wcs_len(wcs_ncpy(str, L"abc", 1)), 1);
+  ASSERT_EQ(wcs_len(wcs_ncpy(str, L"abc中文测试123", 30)), 10);
+}
+
 TEST(WStr, wcs_chr) {
   size_t i = 0;
   const wchar_t* str = L"abc中文测试123";
@@ -379,4 +388,21 @@ TEST(WStr, set_utf8_with_len) {
   ASSERT_EQ(wcscmp(str.str, L"123123"), 0);
 
   wstr_reset(&str);
+}
+
+TEST(WStr, set_with_len) {
+  wstr_t s;
+  uint32_t i = 0;
+  const wchar_t* cstr = L"abc123";
+  uint32_t n = wcslen(cstr);
+
+  wstr_init(&s, 0);
+
+  for (i = 0; i < n; i++) {
+    ASSERT_EQ(wstr_set_with_len(&s, cstr, i), RET_OK);
+    ASSERT_EQ(s.size, i);
+    ASSERT_EQ(wcsncmp(s.str, cstr, i), 0);
+  }
+
+  wstr_reset(&s);
 }

@@ -284,6 +284,37 @@ rect_t rect_intersect(const rect_t* r1, const rect_t* r2);
  */
 bool_t rect_has_intersect(const rect_t* r1, const rect_t* r2);
 
+/**
+ * @method rectf_scale
+ * 缩放rectf对象。
+ *
+ * @param {rectf_t*} r rect对象。
+ * @param {float_t} scale 缩放比例。
+ *
+ * @return {rectf_t*} 返回rect对象。
+ */
+rectf_t* rectf_scale(rectf_t* r, float_t scale);
+
+/**
+ * @method rect_to_rectf
+ * rect 类型转换到 rectf 类型。
+ *
+ * @param {const rect_t*} r1 rect 对象。
+ *
+ * @return {rectf_t} 返回 rectf_t 对象。
+ */
+rectf_t rect_to_rectf(const rect_t* r);
+
+/**
+ * @method rect_from_rectf
+ * rectf 类型转换到 rect 类型。
+ *
+ * @param {const rectf_t*} r rectf 对象。
+ *
+ * @return {rect_t} 返回 rect 对象。
+ */
+rect_t rect_from_rectf(const rectf_t* r);
+
 END_C_DECLS
 
 #endif /*TK_RECT_H*/

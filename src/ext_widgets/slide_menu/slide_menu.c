@@ -263,7 +263,8 @@ static uint32_t slide_menu_get_visible_children(widget_t* widget,
   if (children[curr - i + 1]->x > clip_rect.x && curr - i >= 0 && nr < widget->children->size) {
     children[curr - i] = slide_menu_get_child(widget, index - i);
   }
-  if (children[curr + i - 1]->x + children[curr + i - 1]->w < clip_rect.x + clip_rect.w && curr + i < MAX_VISIBLE_NR && nr < widget->children->size) {
+  if (children[curr + i - 1]->x + children[curr + i - 1]->w < clip_rect.x + clip_rect.w &&
+      curr + i < MAX_VISIBLE_NR && nr < widget->children->size) {
     children[curr + i] = slide_menu_get_child(widget, index + i);
   }
 

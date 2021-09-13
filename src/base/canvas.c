@@ -754,12 +754,13 @@ ret_t canvas_draw_utf8(canvas_t* c, const char* str, xy_t x, xy_t y) {
 static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, const rect_t* s, const rect_t* d) {
   rectf_t src;
   rectf_t dst;
+  float_t scale_w = 0;
+  float_t scale_h = 0;
 
   xy_t x = d->x;
   xy_t y = d->y;
   xy_t x2 = d->x + d->w - 1;
   xy_t y2 = d->y + d->h - 1;
-  vgcanvas_t* vg = canvas_get_vgcanvas(c);
 
   if (d->w <= 0 || d->h <= 0 || s->w <= 0 || s->h <= 0 || x > c->clip_right || x2 < c->clip_left ||
       y > c->clip_bottom || y2 < c->clip_top) {
@@ -771,8 +772,12 @@ static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, const rect_t* s, c
   dst.w = tk_min(x2, c->clip_right) - dst.x + 1;
   dst.h = tk_min(y2, c->clip_bottom) - dst.y + 1;
 
-  src.x = s->x + (dst.x - x) * s->w / d->w;
-  src.y = s->y + (dst.y - y) * s->h / d->h;
+  /* 因为 blend 函数中缩放，使用 256 倍的定点数，所以这里为了减低多次转换数据出现误差 */
+  scale_w = ((s->w << 8) / d->w / 256.0f);
+  scale_h = ((s->h << 8) / d->h / 256.0f);
+
+  src.x = s->x + (dst.x - x) * scale_w;
+  src.y = s->y + (dst.y - y) * scale_h;
   src.w = dst.w * s->w / d->w;
   src.h = dst.h * s->h / d->h;
 
@@ -787,14 +792,7 @@ static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, const rect_t* s, c
     return RET_OK;
   }
 
-  if ((src.w == dst.w && src.h == dst.h) || (src.w == img->w && src.h == img->h) || vg == NULL) {
-    rect_t isrc = rect_init(src.x, src.y, src.w, src.h);
-    rect_t idst = rect_init(dst.x, dst.y, dst.w, dst.h);
-    return lcd_draw_image(c->lcd, img, &isrc, &idst);
-  } else {
-    /*如果图片缩放，而且只是绘制部分，为了避免取整出现坐标异位，使用vgcanvas绘制。*/
-    return vgcanvas_draw_image(vg, img, src.x, src.y, src.w, src.h, dst.x, dst.y, dst.w, dst.h);
-  }
+  return lcd_draw_image(c->lcd, img, &src, &dst);
 }
 
 ret_t canvas_draw_image(canvas_t* c, bitmap_t* img, const rect_t* src, const rect_t* dst_in) {

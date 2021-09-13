@@ -188,7 +188,7 @@ ret_t dialog_toast(const char* text, uint32_t duration) {
 ret_t dialog_info(const char* title, const char* text) {
   return_value_if_fail(text != NULL, RET_BAD_PARAMS);
 
-  title = title != NULL ? title : "Infomation";
+  title = title != NULL ? title : "Information";
   return dialog_simple_show(title, text, DIALOG_INFO_THEME, TRUE, FALSE);
 }
 

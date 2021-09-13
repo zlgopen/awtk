@@ -837,7 +837,6 @@ def gen_assets_c_of_one_theme(with_multi_theme = True):
     result += '\n'
 
     result += '#ifdef WITH_FS_RES\n'
-    result += '  assets_manager_preload(am, ASSET_TYPE_FONT, "default");\n'
     result += '  assets_manager_preload(am, ASSET_TYPE_STYLE, "default");\n'
     result += '#else\n'
     result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/strings/*.data'), join_path(OUTPUT_ROOT, 'default/inc/strings/*.data'))

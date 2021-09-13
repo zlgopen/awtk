@@ -1,0 +1,33 @@
+<label>
+  <style name="default" font_size="22">
+    <normal text_color="#ffffff" text_align_h="meddle"/>
+  </style>
+</label>
+
+<dialog>
+  <style name="default">
+    <normal bg_color="#262626" border_color="#00000000"/>
+  </style>
+</dialog>
+
+<dialog_client>
+  <style name="default">
+    <normal bg_color="#262626" border="left|right|bottom" border_color="#709918"/>
+  </style>
+</dialog_client>
+
+<dialog_title>
+  <style name="default">
+    <normal bg_color="#F5F5F5" border="left|right|top" border_color="#709918" font_size="22" margin_left="10" text_align_h="left" text_color="#000000"/>
+  </style>
+</dialog_title>
+
+<button>
+  <style name="default" bg_color="#404040" border_color="#707070" round_radius="4" text_color="#FFFFFF">
+    <normal/>
+    <disable bg_color="#40404066" border_color="#70707066" text_color="#FFFFFF66"/>
+    <focused/>
+    <over/>
+    <pressed bg_color="#709918" border_color="#00000000" x_offset="1" y_offset="1"/>
+  </style>
+</button>

@@ -1,0 +1,8 @@
+<popup name="popup" theme="uiex" self_layout="menu(p=1,w=180,h=30)" style="menu" close_when_click_outside="true" children_layout="default(r=1,c=0,x=0,y=0,s=0)">
+  <check_button name="cb_resume" w="30" style="debug_pause_resume" text="CheckButton"/>
+  <button name="btn_step_o" w="30" style="debug_step_over" text="Button"/>
+  <button name="btn_step_i" w="30" style="debug_step_into" text="Button"/>
+  <button name="btn_step_r" w="30" style="debug_step_return" text="Button"/>
+  <button name="btn_restart" w="30" style="debug_restart" text="Button"/>
+  <check_button name="cb_start" w="30" style="debug_stop_start" text="CheckButton"/>
+</popup>

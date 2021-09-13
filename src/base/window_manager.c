@@ -483,6 +483,7 @@ static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
 
 static ret_t on_theme_changed(void* ctx, const void* data) {
   widget_t* widget = WIDGET(data);
+  widget_set_need_update_style(widget);
   widget_update_style(widget);
 
   return RET_OK;

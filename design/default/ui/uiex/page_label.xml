@@ -1,0 +1,29 @@
+<?xml parent="{&quot;x&quot;:&quot;0&quot;,&quot;y&quot;:&quot;0&quot;,&quot;w&quot;:&quot;100%&quot;,&quot;h&quot;:&quot;100%&quot;,&quot;name&quot;:&quot;page_label&quot;,&quot;theme&quot;:&quot;uiex&quot;}"?>
+<list_view name="list_view" x="0" y="0" w="100%" h="100%">
+  <scroll_view name="scroll_view" x="0" y="0" w="100%" h="100%" children_layout="list_view(i=0,d=66,x=0,y=10,s=20)">
+    <view name="view_lb" h="280" children_layout="default(r=0,c=1,x=0,y=0,s=13)">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Label"/>
+      <view h="-22" children_layout="default(r=1,c=0,x=20,y=0,s=0)">
+        <view w="280">
+          <label name="lb" w="100%" style:normal:text_align_h="left" line_wrap="true" word_wrap="true" x="0" y="0" h="100%" style:normal:text_align_v="top" tr_text="AWTK, called Toolkit AnyWhere, is a GUI framework developed by ZLG based on C language. Aims to provide users with a powerful, efficient and reliable, easy to use, can easily make cool effects of THE GUI engine, and support cross-platform synchronous development, programming, lifetime use."/>
+        </view>
+      </view>
+    </view>
+    <view name="view_rt" h="350" children_layout="default(r=0,c=1,x=0,y=0,s=13)">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Rich Text"/>
+      <view h="-22" children_layout="default(r=1,c=0,x=20,y=0,s=10)">
+        <view w="280">
+          <rich_text h="100%" w="100%" name="rich_text" x="0" y="0" yslidable="false" text="<image name=&quot;uiex_logo&quot; draw_type=&quot;center&quot;/><font>Called Toolkit AnyWhere, is a GUI framework developed by </font><font color=&quot;#709918&quot; size=&quot;30&quot;>ZLG</font><font> based on C language. Aims to provide users with a powerful, efficient and reliable, easy to use, can easily make cool effects of THE GUI engine, and support cross-platform synchronous development, programming, lifetime use.</font>" tr_text="<image name=&quot;uiex_logo&quot; draw_type=&quot;center&quot;/><font>Called Toolkit AnyWhere, is a GUI framework developed by </font><font color=&quot;#709918&quot; size=&quot;30&quot;>ZLG</font><font> based on C language. Aims to provide users with a powerful, efficient and reliable, easy to use, can easily make cool effects of THE GUI engine, and support cross-platform synchronous development, programming, lifetime use.</font>"/>
+        </view>
+      </view>
+    </view>
+    <view name="view_hscroll_lb" h="90">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" w="100%" tr_text="Hscroll Label"/>
+      <view h="-32" x="0" y="32" w="400">
+        <hscroll_label name="hlb1" lull="1000" loop="true" yoyo="true" ellipses="true" focusable="true" h="22" style="default" x="20" y="0" w="380" tr_text="To provide users with a powerful, efficient and reliable, easy to use, can easily make cool GUI engine."/>
+        <hscroll_label name="hlb2" focusable="true" only_focus="true" h="22" style="default" x="20" y="32" w="380" tr_text="To provide users with a powerful, efficient and reliable, easy to use, can easily make cool GUI engine."/>
+      </view>
+    </view>
+  </scroll_view>
+  <scroll_bar_m name="scroll_bar_m" x="r" y="0" w="7" h="100%" max="1000"/>
+</list_view>

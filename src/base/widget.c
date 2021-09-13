@@ -373,14 +373,15 @@ bool_t widget_is_style_exist(widget_t* widget, const char* style_name, const cha
 ret_t widget_use_style(widget_t* widget, const char* value) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
+  widget_set_need_update_style(widget);
   widget->style = tk_str_copy(widget->style, value);
+
   if (widget_is_window_opened(widget)) {
     widget_update_style(widget);
-  } else {
-    widget_set_need_update_style(widget);
+    return widget_invalidate(widget, NULL);
   }
 
-  return widget_invalidate(widget, NULL);
+  return RET_OK;
 }
 
 ret_t widget_set_text(widget_t* widget, const wchar_t* text) {
@@ -1797,7 +1798,7 @@ static ret_t widget_on_ungrab_keys(void* ctx, event_t* e) {
 }
 
 static ret_t widget_exec_code(void* ctx, event_t* evt) {
-#ifndef AWTK_LITE
+#ifndef WITHOUT_FSCRIPT
   value_t v;
   value_t result;
   ret_t ret = RET_OK;
@@ -1956,7 +1957,7 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
       ret = RET_OK;
     } else if (tk_str_eq(name, WIDGET_PROP_EXEC)) {
       ret = RET_NOT_FOUND;
-    } else if (tk_str_start_with(name, "style:")) {
+    } else if (tk_str_start_with(name, "style:") || tk_str_start_with(name, "style.")) {
       return widget_set_style(widget, name + 6, v);
     } else {
       if (widget->custom_props == NULL) {
@@ -3428,7 +3429,8 @@ ret_t widget_to_local(widget_t* widget, point_t* p) {
   return_value_if_fail(widget != NULL && p != NULL, RET_BAD_PARAMS);
 
   while (iter != NULL) {
-    xy_t offset_x, offset_y;
+    xy_t offset_x = 0;
+    xy_t offset_y = 0;
     if (widget_get_offset(iter, &offset_x, &offset_y) == RET_OK) {
       p->x += offset_x;
       p->y += offset_y;
@@ -4302,6 +4304,10 @@ ret_t widget_set_style(widget_t* widget, const char* state_and_name, const value
   str[len] = '\0';
 
   name = strchr(str, ':');
+  if (name == NULL) {
+    name = strchr(str, '.');
+  }
+
   if (name != NULL) {
     *name++ = '\0';
     state = str;

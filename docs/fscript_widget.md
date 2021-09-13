@@ -14,7 +14,7 @@ fscript 并不是要取代 C 或 JS 来开发 AWTK 应用程序，而是一个�
 >比如下面的代码，点击按钮时打开指定的窗口就非常简洁。
 
 ```xml
-    <button focusable="true" focused="true" on:click="open(basic)" text="Basic" />
+    <button focusable="true" focused="true" on:click="open('basic')" text="Basic" />
 ```
 
 >比如下面的代码，点击按钮时关闭当前的窗口也非常简洁。
@@ -40,16 +40,16 @@ fscript 并不是要取代 C 或 JS 来开发 AWTK 应用程序，而是一个�
     <text_selector name="year" options="2000-2050" selected_index="9">
       <property name="on:value_changed">
         <![CDATA[
-        a = get_days_of_month(widget_get(parent.year, value), widget_get(parent.month, value))
-        widget_set(parent.day, "options", iformat( "1-%d", a) + "%02d")        
+        a = get_days_of_month(widget_get('parent.year', 'value'), widget_get('parent.month', 'value'))
+        widget_set('parent.day', 'options', iformat( '1-%d', a) + '%02d')  
          ]]>
       </property>
     </text_selector>
     <text_selector name="month" options="1-12-%02d" selected_index="8" loop_options="true">
       <property name="on:value_changed">
         <![CDATA[
-        a = get_days_of_month(widget_get(parent.year, value), widget_get(parent.month, value))
-        widget_set(parent.day, "options", iformat( "1-%d", a) + "%02d")
+        a = get_days_of_month(widget_get('parent.year', 'value'), widget_get('parent.month', 'value'))
+        widget_set('parent.day', 'options', iformat( '1-%d', a) + '%02d')      
         ]]>
       </property>
     </text_selector>
@@ -72,14 +72,14 @@ fscript 并不是要取代 C 或 JS 来开发 AWTK 应用程序，而是一个�
 ```xml
 <button name="timer" focusable="true" on:click="start_timer(100)" text="Start Timer">
 <property name="on:timer"><![CDATA[
-  a = widget_lookup(window, bar, true)
-  b = widget_get(a, "value")
-  if(b < 100) {
-    widget_set(a, "value", b + 1)
-  } else {
-    widget_set(a, "value", 0)
-    stop_timer()
-  }
+        a = widget_lookup('window', 'bar', true)
+        b = widget_get(a, 'value')
+        if(b < 100) {
+          widget_set(a, 'value', b + 1)
+        } else {
+          widget_set(a, 'value', 0)
+          stop_timer()
+        }
 ]]></property>
 </button>
 ```      
@@ -145,17 +145,18 @@ fscript 并不是要取代 C 或 JS 来开发 AWTK 应用程序，而是一个�
 ```xml
 <button name="timer" focusable="true" on:click="start_timer(100)" text="Start Timer">
 <property name="on:timer"><![CDATA[
-  a = widget_lookup(window, bar, true)
-  b = widget_get(a, "value")
-  if(b < 100) {
-    widget_set(a, "value", b + 1)
+  a = widget_lookup('window', 'bar', true)
+  b = widget_get(a, 'value')
+    if(b < 100) {
+    widget_set(a, 'value', b + 1)
   } else {
-    widget_set(a, "value", 0)
+    widget_set(a, 'value', 0)
     stop_timer()
   }
 ]]></property>
 </button>
 ```
+
 * window\_close
 * window\_open
 * window\_will\_open
@@ -177,7 +178,7 @@ fscript 并不是要取代 C 或 JS 来开发 AWTK 应用程序，而是一个�
 * value\_changed
 
 ```xml
-<progress_bar name="bar" text="" value="10" on:value_changed="print(widget_get(self,value))"/>
+<progress_bar name="bar" text="" value="10" on:value_changed="print(widget_get('self', 'value'))"/>
 ```
 
 * focus
@@ -186,7 +187,7 @@ fscript 并不是要取代 C 或 JS 来开发 AWTK 应用程序，而是一个�
 示例：
 
 ```
-<edit name="edit" tips="text edit" on:focus="print(focus)" on:blur="print(blur, widget_get(self,value))"/>
+<edit name="edit" tips="text edit" on:focus="print(focus)" on:blur="print('blur', widget_get('self', 'value'))"/>
 ```
 
 * value\_changed\_by\_ui （仅 MVVM 支持）
@@ -222,15 +223,16 @@ RET_STOP=true
 open(name, close_current, switch_to_if_exist)
 ```
 
+* name 窗口的资源名称(字符串)
 * close\_current 可选。为 true 时关闭当前窗口。
 * switch\_to\_if\_exist 可选。为 true 时，如果同名窗口存在，直接切换到指定窗口。
 
 ### 示例
 
 ```xml
-    <button text="Open" focusable="true" focus="true" on:click="open(test_fscript)"/>
-    <button text="Close" focusable="true" on:click="open(test_fscript, true)"/>
-    <button text="Switch TO" focusable="true" on:click="open(test_fscript, false, true)"/>
+    <button text="Open" focusable="true" focus="true" on:click="open('test_fscript')"/>
+    <button text="Close" focusable="true" on:click="open('test_fscript', true)"/>
+    <button text="Switch TO" focusable="true" on:click="open('test_fscript', false, true)"/>
 ```
 
 ### 5.2 close
@@ -244,7 +246,7 @@ open(name, close_current, switch_to_if_exist)
 close(name)
 ```
 
-* name 可选。缺省关闭当前窗口。
+* name 窗口的名称(字符串)，可选。缺省关闭当前窗口。
 
 ### 示例
 
@@ -317,7 +319,7 @@ tr(str)
 ### 示例
 
 ```xml
-<button focusable="true" on:click="print(tr(OK))" text="tr" />
+<button focusable="true" on:click="print(tr('OK'))" text="tr" />
 ```
 
 ### 5.7 widget_lookup
@@ -332,30 +334,30 @@ widget_lookup(widget, path)
 widget_lookup(widget, name, recursive)
 ```
 
-* widget 用作锚点，后面的路径相对于该 widget。self 表示当前控件，parent 表示当前控件的父控件，window 表示当前的窗口，window\_manager 表示窗口管理器。
+* widget 用作锚点，后面的路径相对于该 widget。'self' 表示当前控件，'parent' 表示当前控件的父控件，'window' 表示当前的窗口，'window\_manager' 表示窗口管理器。
 
 ### 示例
 
 > 查找窗口下名为 view 控件下的名为 bar 的控件。
 
 ```js
-  a = widget_lookup(window, view.bar)
+  a = widget_lookup('window', 'view.bar')
 ```
 
 > 递归查找窗口下名为 bar 的控件。
 
 ```js
-  a = widget_lookup(window, bar, true)
+  a = widget_lookup('window', 'bar', true)
 ```
 
 > 递归查找当前控件下名为 bar 的控件。
 ```js
-  a = widget_lookup(self, bar, true)
+  a = widget_lookup('self', 'bar', true)
 ```
 
 > 递归查找当前控件的父控件下名为 bar 的控件。
 ```js
-  a = widget_lookup(self, bar, true)
+  a = widget_lookup('self', 'bar', true)
 ```
 
 ### 5.8 widget_get
@@ -370,7 +372,7 @@ widget_get(widget, prop)
 widget_get(widget, path.prop)
 ```
 
-* widget 用作锚点，后面的路径相对于该 widget。self 表示当前控件，parent 表示当前控件的父控件，window 表示当前的窗口，window\_manager 表示窗口管理器。
+* widget 用作锚点，后面的路径相对于该 widget。'self' 表示当前控件，'parent' 表示当前控件的父控件，'window' 表示当前的窗口，'window\_manager' 表示窗口管理器。
 
 * prop 可以是简单的属性命名，也可以是 widget 路径+属性名。
 
@@ -379,37 +381,37 @@ widget_get(widget, path.prop)
 > 获取当前控件的 value
 
 ```
-widget_get(self, value)
+widget_get('self', 'value')
 ```
 
 > 获取当前控件下名为 bar 控件的 value
 
 ```
-widget_get(self, bar.value)
+widget_get('self', 'bar.value')
 ```
 
 > 获取当前控件的父控件下名为 bar 控件的 value
 
 ```
-widget_get(self, bar.value)
+widget_get('self', 'bar.value')
 ```
 
 > 获取当前控件的父控件下名为 bar 控件的 value
 
 ```
-widget_get(parent, bar.value)
+widget_get('parent', 'bar.value')
 ```
 
 > 获取当前窗口下名为 bar 控件的 value
 
 ```
-widget_get(window, bar.value)
+widget_get('window', 'bar.value')
 ```
 
 > 获取当前窗口下名为 view 控件下名为 bar 控件的 value
 
 ```
-widget_get(window, view.bar.value)
+widget_get('window', 'view.bar.value')
 ```
 
 ### 5.9 widget_set
@@ -424,7 +426,7 @@ widget_set(widget, prop, value)
 widget_set(widget, path.prop, value)
 ```
 
-* widget 用作锚点，后面的路径相对于该 widget。self 表示当前控件，parent 表示当前控件的父控件，window 表示当前的窗口，window\_manager 表示窗口管理器。
+* widget 用作锚点，后面的路径相对于该 widget。'self' 表示当前控件，'parent' 表示当前控件的父控件，'window' 表示当前的窗口，'window\_manager' 表示窗口管理器。
 
 * prop 可以是简单的属性命名，也可以是 widget 路径+属性名。
 
@@ -433,31 +435,31 @@ widget_set(widget, path.prop, value)
 > 设置当前控件的 value
 
 ```
-widget_set(self, value, 12)
+widget_set('self', 'value', 12)
 ```
 
 > 设置当前控件下名为 bar 控件的 value
 
 ```
-widget_set(self, bar.value, 12)
+widget_set('self', 'bar.value', 12)
 ```
 
 > 设置当前控件的父控件下名为 bar 控件的 value
 
 ```
-widget_set(parent, bar.value, 1.2)
+widget_set('parent', 'bar.value', 1.2)
 ```
 
 > 设置当前窗口下名为 bar 控件的 value
 
 ```
-widget_set(window, bar.value, "hello")
+widget_set('window', 'bar.value', 'hello')
 ```
 
 > 设置当前窗口下名为 view 控件下名为 bar 控件的 value
 
 ```
-widget_set(window, view.bar.value, 12)
+widget_set('window', 'view.bar.value', 12)
 ```
 
 ### 5.10 widget_create
@@ -477,18 +479,18 @@ widget_create(type, parent, x, y, w, h)
 ### 示例
 
 ```js
-        a = widget_lookup(window, foobar, true)
-        if(value_is_null(a)) {
-          a = widget_create("label", window.view, 0, 0, 0, 0)
-          assert(!value_is_null(a))
+  a = widget_lookup('window', 'foobar', true)
+  if(value_is_null(a)) {
+    a = widget_create('label', 'window.view', 0, 0, 0, 0)
+    assert(!value_is_null(a))
 
-          widget_set(a, text, "Dynamic created")
-          assert(widget_get(a, text) == "Dynamic created")
-          widget_set(a, name, "foobar")
-          assert(widget_get(a, name) == "foobar")
-        } else {
-          print("foobar exist");
-        }
+    widget_set(a, 'text', 'Dynamic created')
+    assert(widget_get(a, 'text') == 'Dynamic created')
+    widget_set(a, 'name', 'foobar')
+    assert(widget_get(a, 'name') == 'foobar')
+  } else {
+    print("foobar exist");
+  }
 ```        
 
 ### 5.10 widget_destroy
@@ -507,17 +509,17 @@ widget_destroy(widget)
 ### 示例
 
 ```js
-        a = widget_lookup(window, foobar, true)
-        if(!value_is_null(a)) {
-          widget_destroy(a)
-        } else {
-          print("not found foobar");
-        }
+  a = widget_lookup('window', 'foobar', true)
+  if(!value_is_null(a)) {
+    widget_destroy(a)
+  } else {
+    print('not found foobar');
+  }
 ```
 
 ```
-widget_destroy(self.bar)
-widget_destroy(window.view.bar)
+widget_destroy('self.bar')
+widget_destroy('window.view.bar')
 ```
 
 ### 5.11 start_timer
@@ -538,20 +540,20 @@ start_timer(duration)
 ### 示例
 
 ```xml
-      <button name="timer" focusable="true" on:click="start_timer(100)" text="Start Timer">
-        <property name="on:timer">
-          <![CDATA[
-        a = widget_lookup(window, bar, true)
-        b = widget_get(a, "value")
-        if(b < 100) {
-          widget_set(a, "value", b + 1)
-        } else {
-          widget_set(a, "value", 0)
-          stop_timer()
-        }
+<button name="timer" focusable="true" on:click="start_timer(100)" text="Start Timer">
+  <property name="on:timer">
+<![CDATA[
+  a = widget_lookup('window', 'bar', true)
+  b = widget_get(a, 'value')
+  if(b < 100) {
+    widget_set(a, 'value', b + 1)
+  } else {
+    widget_set(a, 'value', 0)
+    stop_timer()
+  }
 ]]>
-        </property>
-      </button>
+  </property>
+</button>
 ```
 
 ### 5.12 stop_timer
@@ -572,7 +574,7 @@ stop_timer(widget)
 ### 示例
 
 ```js
-stop_timer(parent.timer)
+stop_timer('parent.timer')
 ```
 
 ### 5.13 send_key
@@ -591,8 +593,8 @@ send_key(widget, key_name)
 ### 示例
 
 ```js
- <button text="Backspace" on:click="send_key(window.edit, 'backspace')"/>
- <button text="Char" on:click="send_key(window.edit, 'a')"/>
+ <button text="Backspace" on:click="send_key('window.edit', 'backspace')"/>
+ <button text="Char" on:click="send_key('window.edit', 'a')"/>
 ```
 
 ### 5.14 widget\_eval
@@ -608,7 +610,7 @@ widget_eval(widget, prop)
 widget_eval(widget, path.prop)
 ```
 
-* widget 用作锚点，后面的路径相对于该 widget。self 表示当前控件，parent 表示当前控件的父控件，window 表示当前的窗口，window\_manager 表示窗口管理器。
+* widget 用作锚点，后面的路径相对于该 widget。'self' 表示当前控件，'parent' 表示当前控件的父控件，'window' 表示当前的窗口，'window\_manager' 表示窗口管理器。
 
 * prop 可以是简单的属性命名，也可以是 widget 路径+属性名。
 
@@ -621,16 +623,16 @@ widget_eval(widget, path.prop)
     <text_selector name="year" options="2000-2050" selected_index="9">
       <property name="on:value_changed">
         <![CDATA[
-        a = get_days_of_month(widget_get(parent.year, value), widget_get(parent.month, value))
-        widget_set(parent.day, "options", iformat( "1-%d", a) + "%02d")        
+        a = get_days_of_month(widget_get('parent.year', 'value'), widget_get('parent.month', 'value'))
+        widget_set('parent.day', 'options', iformat( '1-%d', a) + '%02d')
          ]]>
       </property>
     </text_selector>
     <text_selector name="month" options="1-12-%02d" selected_index="8" loop_options="true">
       <property name="on:value_changed">
         <![CDATA[
-        a = get_days_of_month(widget_get(parent.year, value), widget_get(parent.month, value))
-        widget_set(parent.day, "options", iformat( "1-%d", a) + "%02d")
+        a = get_days_of_month(widget_get('parent.year', 'value'), widget_get('parent.month', 'value'))
+        widget_set('parent.day', 'options', iformat( '1-%d', a) + '%02d')
         ]]>
       </property>
     </text_selector>
@@ -644,14 +646,14 @@ widget_eval(widget, path.prop)
   <row x="10" y="bottom" w="100%" h="150" children_layout="default(row=1,col=3)">
     <property name="handle_value_changed">
       <![CDATA[
-      a = get_days_of_month(widget_get(parent.year, value), widget_get(parent.month, value))
-      widget_set(parent.day, "options", iformat( "1-%d", a) + "%02d")        
+      a = get_days_of_month(widget_get('parent.year', 'value'), widget_get('parent.month', 'value'))
+      widget_set('parent.day', 'options', iformat( '1-%d', a) + '%02d')
        ]]>
     </property>
-    <text_selector name="year" options="2000-2050" selected_index="9" 
-      on:value_changed="widget_eval(parent.handle_value_changed)" />
+    <text_selector name="year" options="2000-2050" selected_index="9"
+      on:value_changed="widget_eval('parent.handle_value_changed')" />
     <text_selector name="month" options="1-12-%02d" selected_index="8" loop_options="true"
-      on:value_changed="widget_eval(parent.handle_value_changed)" />
+      on:value_changed="widget_eval('parent.handle_value_changed')" />
     <text_selector name="day" options="1-31-%02d" selected_index="9" />
   </row>
 ```

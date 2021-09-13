@@ -337,3 +337,30 @@ TEST(Json, save_as) {
   wbuffer_deinit(&wb);
   OBJECT_UNREF(conf);
 }
+
+TEST(ConfJson, find) {
+  value_t v;
+  const char* data = "{\"tom\": {\"name\":{\"first\":\"bill\", \"last\":\"tom\"}, \"age\":100}} ";
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+  conf_node_t* tom = conf_doc_find_node(doc, doc->root, "tom", FALSE);
+  ASSERT_EQ(tom != NULL, true);
+  conf_node_t* name = conf_doc_find_node(doc, tom, "name", FALSE);
+  ASSERT_EQ(name != NULL, true);
+
+  ASSERT_EQ(conf_doc_get_ex(doc, tom, "age", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 100);
+
+  ASSERT_EQ(conf_doc_get_ex(doc, tom, "name.first", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "bill");
+
+  ASSERT_EQ(conf_doc_get_ex(doc, tom, "name.last", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "tom");
+
+  ASSERT_EQ(conf_doc_get_ex(doc, name, "first", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "bill");
+
+  ASSERT_EQ(conf_doc_get_ex(doc, name, "last", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "tom");
+
+  conf_doc_destroy(doc);
+}
