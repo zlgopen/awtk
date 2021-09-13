@@ -210,7 +210,7 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r_in) {
       rect_t clip_r = rect_init(0, 0, lcd_w, lcd_h);
       lcd_set_clip_rect(c->lcd, &clip_r);
     }
-#ifdef WITH_NANOVG_GPU
+#ifdef WITH_GPU
     /* 把 canvas 的裁剪区设置为无限大，在 opengl 的状态下让 vg 来处理裁剪区的问题 */
     c->clip_left = 0;
     c->clip_top = 0;
