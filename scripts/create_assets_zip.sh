@@ -1,6 +1,13 @@
 #!/bin/bash
 
-SRC=res/assets
+if [ "$1" == "" ]
+then
+  SRC=res/assets
+else
+  SRC="$1"
+fi
+
+echo "SRC=$SRC"
 
 if [ -e "$SRC" ] 
 then
