@@ -250,8 +250,11 @@ typedef enum _app_type_t {
 #endif /*WITH_NANOVG_SOFT*/
 #endif /*defined(WITH_NANOVG_AGGE) || defined(WITH_NANOVG_AGG)*/
 
-#if defined(WITH_NANOVG_SOFT) || defined(WITH_NANOVG_GPU)
-#define WITH_NANOVG 1
+#if defined(WITH_NANOVG_GPU)
+#define WITH_GPU 1
+#endif
+
+#if defined(WITH_NANOVG_SOFT) || defined(WITH_NANOVG_GPU) || defined(WITH_GPU)
 #define WITH_VGCANVAS 1
 #endif /*defined(WITH_NANOVG_SOFT) || defined(WITH_NANOVG_GPU)*/
 
@@ -340,7 +343,23 @@ typedef struct _system_info_t system_info_t;
 
 #if defined(WITH_NANOVG_GL3) || defined(WITH_NANOVG_GL2) || defined(WITH_NANOVG_GLES3) || \
     defined(WITH_NANOVG_GLES2)
-#define WITH_NANOVG_GL 1
+#define WITH_GPU_GL 1
+#endif
+
+#if defined(WITH_NANOVG_GL3)
+#define WITH_GPU_GL3 1
+#endif
+
+#if defined(WITH_NANOVG_GL2)
+#define WITH_GPU_GL2 1
+#endif
+
+#if defined(WITH_NANOVG_GLES3)
+#define WITH_GPU_GLES3 1
+#endif
+
+#if defined(WITH_NANOVG_GLES2)
+#define WITH_GPU_GLES2 1
 #endif
 
 #ifndef TK_GLYPH_CACHE_NR

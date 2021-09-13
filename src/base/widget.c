@@ -4487,7 +4487,7 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r) {
   return NULL;
 }
 
-#elif defined(WITH_NANOVG_GPU)
+#elif defined(WITH_GPU)
 
 bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r) {
   bitmap_t* img;
@@ -4582,7 +4582,7 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r) {
 
   return bitmap;
 }
-#endif /*WITH_NANOVG_GPU*/
+#endif /*WITH_GPU*/
 
 bitmap_t* widget_take_snapshot(widget_t* widget) {
   return widget_take_snapshot_rect(widget, NULL);

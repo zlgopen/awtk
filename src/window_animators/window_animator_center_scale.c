@@ -21,7 +21,7 @@
 
 #include "window_animators/window_animator_center_scale.h"
 
-#ifdef WITH_NANOVG_GPU
+#ifdef WITH_GPU
 #define START_PERCENT 0.5f
 #else
 #define START_PERCENT 0.9f
@@ -60,7 +60,7 @@ static ret_t window_animator_center_scale_draw_curr(window_animator_t* wa) {
 
   return lcd_draw_image(c->lcd, &(wa->curr_img), rectf_scale(&src, wa->ratio), &dst);
 #else
-#ifdef WITH_NANOVG_GPU
+#ifdef WITH_GPU
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
   float x = win->x + (win->w / 2);
   float y = win->y + (win->h / 2);
@@ -77,7 +77,7 @@ static ret_t window_animator_center_scale_draw_curr(window_animator_t* wa) {
 #else
   assert(!"not supported");
   return RET_FAIL;
-#endif /*WITH_NANOVG_GPU*/
+#endif /*WITH_GPU*/
 
 #endif /*WITHOUT_WINDOW_ANIMATOR_CACHE*/
 }

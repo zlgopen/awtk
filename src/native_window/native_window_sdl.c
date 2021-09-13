@@ -23,7 +23,7 @@
 #include "base/system_info.h"
 #include "base/window_manager.h"
 
-#ifdef WITH_NANOVG_GL
+#ifdef WITH_GPU_GL
 #ifndef WITHOUT_GLAD
 #include "glad/glad.h"
 #define loadGL gladLoadGL
@@ -40,7 +40,7 @@
 #endif /*IOS*/
 #endif /*WITHOUT_GLAD*/
 
-#endif /*WITH_NANOVG_GL*/
+#endif /*WITH_GPU_GL*/
 
 #include "lcd/lcd_sdl2.h"
 #include "lcd/lcd_nanovg.h"
@@ -207,7 +207,7 @@ static canvas_t* native_window_sdl_get_canvas(native_window_t* win) {
 }
 
 static ret_t native_window_sdl_gl_make_current(native_window_t* win) {
-#ifdef WITH_NANOVG_GL
+#ifdef WITH_GPU_GL
   int fw = 0;
   int fh = 0;
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
@@ -219,16 +219,16 @@ static ret_t native_window_sdl_gl_make_current(native_window_t* win) {
   glViewport(0, 0, fw, fh);
   glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-#endif /*WITH_NANOVG_GL*/
+#endif /*WITH_GPU_GL*/
   return RET_OK;
 }
 
 static ret_t native_window_sdl_swap_buffer(native_window_t* win) {
-#ifdef WITH_NANOVG_GL
+#ifdef WITH_GPU_GL
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
   SDL_GL_SwapWindow(sdl->window);
 #else
-#endif /*WITH_NANOVG_GL*/
+#endif /*WITH_GPU_GL*/
 
   return RET_OK;
 }
@@ -524,7 +524,7 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
   win->handle = sdl->window;
   win->vt = &s_native_window_vtable;
 
-#ifdef WITH_NANOVG_GL
+#ifdef WITH_GPU_GL
   sdl->context = SDL_GL_CreateContext(sdl->window);
   SDL_GL_SetSwapInterval(1);
 
@@ -533,7 +533,7 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
   glDisable(GL_ALPHA_TEST);
   glDisable(GL_DEPTH_TEST);
   glDisable(GL_SCISSOR_TEST);
-#endif /*WITH_NANOVG_GL*/
+#endif /*WITH_GPU_GL*/
 
   if (native_window_get_info(win, &info) == RET_OK) {
     w = info.w;
@@ -546,7 +546,7 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
 #else
 #ifdef WITH_NANOVG_SOFT
   lcd = lcd_sdl2_init(sdl->render);
-#else
+#elif WITH_NANOVG_GPU
   lcd = lcd_nanovg_init(win);
 #endif /*WITH_NANOVG_SOFT*/
 #endif /*WITH_LCD_MONO*/
@@ -581,7 +581,7 @@ native_window_t* native_window_create(widget_t* widget) {
   return nw;
 }
 
-#ifdef WITH_NANOVG_GL
+#ifdef WITH_GPU_GL
 static ret_t sdl_init_gl(void) {
   SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
   SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
@@ -591,10 +591,10 @@ static ret_t sdl_init_gl(void) {
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
 
-#ifdef WITH_NANOVG_GL2
+#ifdef WITH_GPU_GL2
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
-#elif defined(WITH_NANOVG_GL3)
+#elif defined(WITH_GPU_GL3)
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -604,7 +604,7 @@ static ret_t sdl_init_gl(void) {
   log_debug("Init opengl done.\n");
   return RET_OK;
 }
-#endif /*WITH_NANOVG_GL*/
+#endif /*WITH_GPU_GL*/
 
 ret_t native_window_sdl_init(bool_t shared, uint32_t w, uint32_t h) {
   const char* title = system_info()->app_name;
@@ -616,9 +616,9 @@ ret_t native_window_sdl_init(bool_t shared, uint32_t w, uint32_t h) {
     return RET_FAIL;
   }
 
-#ifdef WITH_NANOVG_GL
+#ifdef WITH_GPU_GL
   sdl_init_gl();
-#endif /*WITH_NANOVG_GL*/
+#endif /*WITH_GPU_GL*/
 
   SDL_StopTextInput();
   if (shared) {
