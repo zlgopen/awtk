@@ -94,7 +94,7 @@ static ret_t lcd_log_draw_glyph(lcd_t* lcd, glyph_t* glyph, const rect_t* src, x
   return RET_OK;
 }
 
-static ret_t lcd_log_draw_image(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst) {
+static ret_t lcd_log_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* src, const rectf_t* dst) {
   lcd_log_t* log = (lcd_log_t*)lcd;
 
   log->str += "dg(" + (itos(src->x)) + string(",") + (itos(src->y)) + string(",") + (itos(src->w)) +

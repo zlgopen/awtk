@@ -247,7 +247,7 @@ static ret_t lcd_mem_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info) {
   return RET_NOT_IMPL;
 }
 
-static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst) {
+static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* src, const rectf_t* dst) {
   bitmap_t fb;
   ret_t ret = RET_OK;
   bool_t is_opaque = (img->flags & BITMAP_FLAG_OPAQUE || img->format == BITMAP_FMT_RGB565);
@@ -256,9 +256,9 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, const rect_t* src, co
 
   if (img->format == fb.format && is_opaque && src->w == dst->w && src->h == dst->h &&
       lcd->global_alpha >= TK_OPACITY_ALPHA) {
-    rect_t r = *src;
-    xy_t dx = dst->x;
-    xy_t dy = dst->y;
+    xy_t dx = (xy_t)(dst->x);
+    xy_t dy = (xy_t)(dst->y);
+    rect_t r = rect_from_rectf(src);
     ret = image_copy(&fb, img, &r, dx, dy);
   } else {
     ret = image_blend(&fb, img, dst, src, lcd->global_alpha);

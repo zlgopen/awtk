@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/09/13
+  * 修改canvas\_draw\_image改成用rectf类型（感谢智明提供补丁）
+
 2021/09/11
   * 增加 object\_default\_create\_ex 用于禁止路径访问属性。
 

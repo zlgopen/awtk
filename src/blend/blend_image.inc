@@ -34,22 +34,24 @@ static inline void blend_a(uint8_t* dst, uint8_t* src, uint8_t alpha, bool_t pre
 }
 #endif /*blend_a*/
 
-static ret_t blend_image_with_alpha(bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const rect_t* src_r,
+#define BLEND_SCALE_IS_SAME_OFFSET(t) (((t) & 0xff) >= (1<<8) + 2 || ((t) & 0xff) <= 0x2)
+
+static ret_t blend_image_with_alpha(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r,
                                     uint8_t a) {
   wh_t i = 0;
   wh_t j = 0;
-  xy_t sx = src_r->x;
-  xy_t sy = src_r->y;
-  wh_t sw = src_r->w;
-  wh_t sh = src_r->h;
-  xy_t dx = dst_r->x;
-  xy_t dy = dst_r->y;
-  wh_t dw = dst_r->w;
-  wh_t dh = dst_r->h;
   wh_t src_iw = src->w;
   wh_t src_ih = src->h;
   wh_t dst_iw = dst->w;
   wh_t dst_ih = dst->h;
+  xy_t sx = (xy_t)(src_r->x);
+  xy_t sy = (xy_t)(src_r->y);
+  wh_t sw = (wh_t)(src_r->w);
+  wh_t sh = (wh_t)(src_r->h);
+  xy_t dx = (xy_t)(dst_r->x);
+  xy_t dy = (xy_t)(dst_r->y);
+  wh_t dw = (wh_t)(dst_r->w);
+  wh_t dh = (wh_t)(dst_r->h);
   uint8_t* srcp = NULL;
   uint8_t* dstp = NULL;
   uint8_t* src_data = NULL;
@@ -62,6 +64,9 @@ static ret_t blend_image_with_alpha(bitmap_t* dst, bitmap_t* src, const rect_t* 
   uint32_t dst_line_offset = dst_line_length - dw * dst_bpp;
   bool_t premulti_alpha = src->flags & BITMAP_FLAG_PREMULTI_ALPHA;
 
+  if (!(src_r->h > 0 && src_r->w > 0 && dst_r->h > 0 && dst_r->w > 0)) {
+    return RET_OK;
+  }
   return_value_if_fail(sx >= 0 && sy >= 0 && (sx + sw) <= src_iw && (sy + sh) <= src_ih,
                        RET_BAD_PARAMS);
   return_value_if_fail(dx >= 0 && dy >= 0 && (dx + dw) <= dst_iw && (dy + dh) <= dst_ih,
@@ -87,25 +92,35 @@ static ret_t blend_image_with_alpha(bitmap_t* dst, bitmap_t* src, const rect_t* 
       srcp += src_line_offset;
     }
   } else {
-    uint32_t right = dw - 1;
-    uint32_t bottom = dh - 1;
+    uint32_t right = tk_max(dw, 1);
+    uint32_t bottom = tk_max(dh, 1);
 
-    uint32_t scale_x = (sw << 8) / dw;
-    uint32_t scale_y = (sh << 8) / dh;
+    uint32_t scale_x = src_r->w * 256.0f / dst_r->w;
+    uint32_t scale_y = src_r->h * 256.0f / dst_r->h;
+
+    uint32_t p_x = 0;
+    uint32_t p_y = 0;
+    uint32_t start_y = 0;
+    uint32_t start_x = 0;
+    uint8_t* row_data = NULL;
+    if (src_r->x != 0) {
+      start_x = (uint32_t)((src_r->x - sx) * 256.0f);
+    }
+    if (src_r->y != 0) {
+      start_y =  (uint32_t)((src_r->y - sy) * 256.0f);
+    }
 
     dstp += (dy * dst_line_length + dx * dst_bpp);
-    for (j = 0; j < dh; j++) {
-      uint32_t y = sy + ((j == bottom) ? (sh - 1) : ((j * scale_y) >> 8));
-      uint8_t* row_data = ((uint8_t*)(src_data)) + y * src_line_length + sx * src_bpp;
+    for (j = 0, p_y = start_y; j < bottom; j++, p_y += scale_y, dstp += dst_line_offset) {
+      uint32_t y = sy + (p_y >> 8);
+      row_data = ((uint8_t*)(src_data)) + y * src_line_length + sx * src_bpp;
 
-      for (i = 0; i < dw; i++) {
-        uint32_t x = (i == right) ? (sw - 1) : ((i * scale_x) >> 8);
+      for (i = 0, p_x = start_x; i < right; i++, p_x += scale_x, dstp += dst_bpp) {
+        uint32_t x = p_x >> 8;
 
         srcp = row_data + x * src_bpp;
         blend_a(dstp, srcp, a, premulti_alpha);
-        dstp += dst_bpp;
       }
-      dstp += dst_line_offset;
     }
   }
   bitmap_unlock_buffer(src);
@@ -114,6 +129,6 @@ static ret_t blend_image_with_alpha(bitmap_t* dst, bitmap_t* src, const rect_t* 
   return RET_OK;
 }
 
-static ret_t blend_image_without_alpha(bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const rect_t* src_r) {
+static ret_t blend_image_without_alpha(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r) {
   return blend_image_with_alpha(dst, src, dst_r, src_r, 0xff);
 }

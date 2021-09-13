@@ -27,12 +27,11 @@ static ret_t window_animator_fade_draw_curr(window_animator_t* wa) {
 
   uint8_t global_alpha = wa->percent * 0xff;
 #ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
-  rect_t dst = rect_init(win->x, win->y, win->w, win->h);
-  rect_t src = rect_init(win->x, win->y, win->w, win->h);
-
+  rectf_t dst = rectf_init(win->x, win->y, win->w, win->h);
+  rectf_t src = rectf_init(win->x, win->y, win->w, win->h);
   lcd_set_global_alpha(c->lcd, global_alpha);
 
-  return lcd_draw_image(c->lcd, &(wa->curr_img), rect_scale(&src, wa->ratio), &dst);
+  return lcd_draw_image(c->lcd, &(wa->curr_img), rectf_scale(&src, wa->ratio), &dst);
 #else
   lcd_set_global_alpha(c->lcd, global_alpha);
 

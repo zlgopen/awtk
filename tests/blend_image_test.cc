@@ -10,6 +10,8 @@ static void test_blend_image(uint32_t stride, bitmap_format_t bgfmt, bitmap_form
   uint32_t h = 8;
   rect_t r = rect_init(2, 2, 3, 3);
   rect_t r_all = rect_init(0, 0, w, h);
+  rectf_t rf = rect_to_rectf((const rect_t*)(&r));
+  rectf_t rf_all = rect_to_rectf((const rect_t*)(&r_all));
   uint32_t bpp = bitmap_get_bpp_of_format(bgfmt);
   bitmap_t* bg = bitmap_create_ex(w, h, bpp * (w + stride), bgfmt);
   bitmap_t* fg = bitmap_create_ex(w, h, bpp * (w + stride), fgfmt);
@@ -18,7 +20,7 @@ static void test_blend_image(uint32_t stride, bitmap_format_t bgfmt, bitmap_form
   color_t c_clear = color_init(0x0, 0x0, 0x0, 0xff);
 
   ASSERT_EQ(image_clear(fg, &r, c), RET_OK);
-  ASSERT_EQ(image_blend(bg, fg, &r, &r, 0xff), RET_OK);
+  ASSERT_EQ(image_blend(bg, fg, &rf, &rf, 0xff), RET_OK);
 
   bitmap_dump(bg);
   bitmap_check(bg, &r, c.rgba);
@@ -26,7 +28,7 @@ static void test_blend_image(uint32_t stride, bitmap_format_t bgfmt, bitmap_form
   ASSERT_EQ(image_clear(bg, &r_all, c_clear), RET_OK);
   bitmap_dump(bg);
 
-  ASSERT_EQ(image_blend(bg, fg, &r_all, &r, 0xff), RET_OK);
+  ASSERT_EQ(image_blend(bg, fg, &rf_all, &rf, 0xff), RET_OK);
   bitmap_dump(bg);
   bitmap_check(bg, &r_all, c.rgba);
 

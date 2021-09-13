@@ -191,15 +191,15 @@ static ret_t lcd_vgcanvas_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) 
   return RET_OK;
 }
 
-static ret_t lcd_vgcanvas_draw_image(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst) {
-  int sx = src->x;
-  int sy = src->y;
-  int sw = src->w;
-  int sh = src->h;
-  int dx = dst->x;
-  int dy = dst->y;
-  int dw = dst->w;
-  int dh = dst->h;
+static ret_t lcd_vgcanvas_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* src, const rectf_t* dst) {
+  float_t sx = src->x;
+  float_t sy = src->y;
+  float_t sw = src->w;
+  float_t sh = src->h;
+  float_t dx = dst->x;
+  float_t dy = dst->y;
+  float_t dw = dst->w;
+  float_t dh = dst->h;
   ret_t ret = RET_OK;
   vgcanvas_t* canvas = LCD(lcd)->canvas;
 

@@ -40,10 +40,9 @@ static ret_t window_animator_htranslate_draw_prev(window_animator_t* wa) {
   float_t w = win->w - x;
 
 #ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
-  rect_t src = rect_init(x, win->y, w, win->h);
-  rect_t dst = rect_init(0, win->y, w, win->h);
-
-  return lcd_draw_image(c->lcd, &(wa->prev_img), rect_scale(&src, wa->ratio), &dst);
+  rectf_t src = rectf_init(x, win->y, w, win->h);
+  rectf_t dst = rectf_init(0.0f, win->y, w, win->h);
+  return lcd_draw_image(c->lcd, &(wa->prev_img), rectf_scale(&src, wa->ratio), &dst);
 #else
   canvas_translate(c, -x, 0);
   widget_paint(win, c);
@@ -60,10 +59,9 @@ static ret_t window_animator_htranslate_draw_curr(window_animator_t* wa) {
   float_t w = win->w - x;
 
 #ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
-  rect_t src = rect_init(0, win->y, w, win->h);
-  rect_t dst = rect_init(x, win->y, w, win->h);
-
-  return lcd_draw_image(c->lcd, &(wa->curr_img), rect_scale(&src, wa->ratio), &dst);
+  rectf_t src = rectf_init(0.0f, win->y, w, win->h);
+  rectf_t dst = rectf_init(x, win->y, w, win->h);
+  return lcd_draw_image(c->lcd, &(wa->curr_img), rectf_scale(&src, wa->ratio), &dst);
 #else
   canvas_translate(c, x, 0);
   widget_paint(win, c);
