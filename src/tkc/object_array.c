@@ -249,36 +249,13 @@ ret_t object_array_set(object_t* obj, uint32_t index, const value_t* v) {
   return ret;
 }
 
-static object_t* object_array_get_sub_object(object_t* obj, const char* name, const char** ret) {
-  const char* p = strchr(name, '.');
-  if (p != NULL) {
-    value_t v;
-    int32_t index;
-    char subname[MAX_PATH + 1];
-
-    tk_strncpy_s(subname, MAX_PATH, name, p - name);
-    index = object_array_parse_index(subname);
-    object_array_get(obj, index, &v);
-    if (v.type == VALUE_TYPE_OBJECT) {
-      *ret = p + 1;
-      return value_object(&v);
-    }
-  }
-
-  return NULL;
-}
-
 static ret_t object_array_set_prop(object_t* obj, const char* name, const value_t* v) {
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
-  object_t* sub = object_array_get_sub_object(obj, name, &name);
+  object_t* sub = object_get_child_object(obj, name, &name);
   if (sub != NULL) {
-    if (object_set_prop(sub, name, v) == RET_OK) {
-      event_t e = event_init(EVT_ITEMS_CHANGED, o);
-      emitter_dispatch(EMITTER(o), &e);
-    }
-    return RET_OK;
+    return object_set_prop(sub, name, v);
   }
 
   int32_t index = object_array_parse_index(name);
@@ -310,7 +287,7 @@ static ret_t object_array_get_prop(object_t* obj, const char* name, value_t* v) 
     value_set_int(v, o->capacity);
     ret = RET_OK;
   } else if (o->size > 0) {
-    object_t* sub = object_array_get_sub_object(obj, name, &name);
+    object_t* sub = object_get_child_object(obj, name, &name);
     if (sub != NULL) {
       return object_get_prop(sub, name, v);
     }
@@ -327,7 +304,7 @@ static bool_t object_array_can_exec(object_t* obj, const char* name, const char*
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
-  object_t* sub = object_array_get_sub_object(obj, name, &name);
+  object_t* sub = object_get_child_object(obj, name, &name);
   if (sub != NULL) {
     return object_can_exec(sub, name, args);
   }
@@ -340,7 +317,7 @@ static ret_t object_array_exec(object_t* obj, const char* name, const char* args
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
-  object_t* sub = object_array_get_sub_object(obj, name, &name);
+  object_t* sub = object_get_child_object(obj, name, &name);
   if (sub != NULL) {
     return object_exec(sub, name, args);
   }

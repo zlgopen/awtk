@@ -920,6 +920,19 @@ uint64_t object_get_prop_uint64(object_t* obj, const char* name, uint64_t defval
  */
 ret_t object_set_prop_uint64(object_t* obj, const char* name, uint64_t value);
 
+/**
+ * @method object_get_child_object
+ * 获取下一级子对象。
+ * > 属性路径之间使用符号"."分割，例如：name.sub_name。
+ *
+ * @param {object_t*} obj object对象。
+ * @param {const char*} path 属性路径。
+ * @param {const char**} next_path 返回下一级属性路径。
+ *
+ * @return {object_t*} 返回下一级子对象，如果找不到则返回 NULL。
+ */
+object_t* object_get_child_object(object_t* obj, const char* path, const char** next_path);
+
 #define OBJECT(obj) ((object_t*)(obj))
 
 #define OBJECT_REF(obj) object_ref((object_t*)(obj))
