@@ -14,5 +14,4 @@ AWTK 渐变色格式兼容 [HTML CSS 的格式](https://developer.mozilla.org/en
 ```
 
 ## TODO
-* 圆角矩形支持渐变色。
 * 优化和完善。

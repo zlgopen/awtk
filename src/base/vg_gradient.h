@@ -23,6 +23,7 @@
 #ifndef TK_VG_GRADIENT_H
 #define TK_VG_GRADIENT_H
 
+#include "tkc/rect.h"
 #include "tkc/color.h"
 #include "base/gradient.h"
 
@@ -154,6 +155,17 @@ vg_gradient_t* vg_gradient_create_radial(float x0, float y0, float r0, float x1,
  */
 vg_gradient_t* vg_gradient_init_radial(vg_gradient_t* gradient, float x0, float y0, float r0,
                                        float x1, float y1, float r1);
+
+/**
+ * @method vg_gradient_init_with_gradient
+ * 初始化矢量画布的渐变对象。
+ * @param {vg_gradient_t*} gradient gradient对象。
+ * @param {const rect_t*} rect 矩形区域。
+ * @param {const gradient_t*} g 渐变对象。
+ *
+ * @return {vg_gradient_t*} 返回gradient对象。
+ */
+vg_gradient_t* vg_gradient_init_with_gradient(vg_gradient_t* gradient, const rect_t* rect, const gradient_t* g);
 
 /**
  * @method vg_gradient_create_linear

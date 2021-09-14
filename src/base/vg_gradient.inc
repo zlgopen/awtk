@@ -47,6 +47,25 @@ vg_gradient_t* vg_gradient_create_radial(float x0, float y0, float r0, float x1,
   return vg_gradient_init_radial(gradient, x0, y0, r0, x1, y1, r1);
 }
 
+vg_gradient_t* vg_gradient_init_with_gradient(vg_gradient_t* gradient, const rect_t* rect, const gradient_t* g) {
+  vg_gradient_linear_info_t* info = NULL;
+  return_value_if_fail(gradient != NULL, NULL);
+
+  memset(gradient, 0x00, sizeof(vg_gradient_t));
+  gradient->gradient.type = g->type;
+  info = &(gradient->info.linear);
+  if (g->type == GRADIENT_LINEAR) {
+    if (g->degree == 180) {
+      info->sx = rect->x;
+      info->sy = rect->y;
+      info->ex = rect->x;
+      info->ey = rect->y + rect->h; 
+    }
+  }
+  gradient->gradient = *g;
+  return gradient;
+}
+
 vg_gradient_t* vg_gradient_init_linear(vg_gradient_t* gradient, float sx, float sy, float ex, float ey) {
   vg_gradient_linear_info_t* info = NULL;
   return_value_if_fail(gradient != NULL, NULL);

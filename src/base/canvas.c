@@ -578,8 +578,8 @@ static ret_t canvas_fill_rect_gradient_impl(canvas_t* c, xy_t x, xy_t y, wh_t w,
   vg = canvas_get_vgcanvas(c);
   if (vg != NULL) {
     vg_gradient_t vg_gradient;
-    vg_gradient_init_linear(&vg_gradient, x, y, x, y + h);
-    vg_gradient.gradient = *gradient;
+    rect_t rect = {x, y, w, h};
+    vg_gradient_init_with_gradient(&vg_gradient, &rect, gradient);
     vgcanvas_set_fill_gradient(vg, &vg_gradient);
     vgcanvas_rect(vg, x, y, w, h);
     vgcanvas_fill(vg);
@@ -2063,7 +2063,14 @@ ret_t canvas_get_text_metrics(canvas_t* c, float_t* ascent, float_t* descent, fl
 
 ret_t canvas_fill_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r,
                                const color_t* color, uint32_t radius) {
-  return ffr_draw_fill_rounded_rect_ex(c, r, bg_r, color, radius, radius, radius, radius);
+  gradient_t gradient;
+  gradient_init_simple(&gradient, color->color);
+  return ffr_draw_fill_rounded_rect_ex(c, r, bg_r, &gradient, radius, radius, radius, radius);
+}
+
+ret_t canvas_fill_rounded_rect_gradient(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                                        const gradient_t* gradient, uint32_t radius) {
+  return ffr_draw_fill_rounded_rect_ex(c, r, bg_r, gradient, radius, radius, radius, radius);
 }
 
 ret_t canvas_stroke_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r,
@@ -2075,7 +2082,16 @@ ret_t canvas_stroke_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_
 ret_t canvas_fill_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
                                   const color_t* color, uint32_t radius_tl, uint32_t radius_tr,
                                   uint32_t radius_bl, uint32_t radius_br) {
-  return ffr_draw_fill_rounded_rect_ex(c, r, bg_r, color, radius_tl, radius_tr, radius_bl,
+  gradient_t gradient;
+  gradient_init_simple(&gradient, color->color);
+  return ffr_draw_fill_rounded_rect_ex(c, r, bg_r, &gradient, radius_tl, radius_tr, radius_bl,
+                                       radius_br);
+}
+
+ret_t canvas_fill_rounded_rect_gradient_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                                          const gradient_t* gradient, uint32_t radius_tl, uint32_t radius_tr,
+                                          uint32_t radius_bl, uint32_t radius_br) {
+  return ffr_draw_fill_rounded_rect_ex(c, r, bg_r, gradient, radius_tl, radius_tr, radius_bl,
                                        radius_br);
 }
 

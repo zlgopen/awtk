@@ -1530,10 +1530,10 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, const rect_t* r, bool_t bg
       if (radius_tl > 3 || radius_tr > 3 || radius_bl > 3 || radius_br > 3) {
         /*TODO: support gradient*/
         if (bg) {
-          ret = canvas_fill_rounded_rect_ex(c, r, NULL, &color, radius_tl, radius_tr, radius_bl,
+          ret = canvas_fill_rounded_rect_gradient_ex(c, r, NULL, gradient, radius_tl, radius_tr, radius_bl,
                                             radius_br);
         } else {
-          ret = canvas_fill_rounded_rect_ex(c, r, &bg_r, &color, radius_tl, radius_tr, radius_bl,
+          ret = canvas_fill_rounded_rect_gradient_ex(c, r, &bg_r, gradient, radius_tl, radius_tr, radius_bl,
                                             radius_br);
         }
         if (ret == RET_FAIL) {
