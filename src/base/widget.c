@@ -3888,9 +3888,7 @@ ret_t widget_set_as_key_target(widget_t* widget) {
       }
       widget_set_as_key_target(parent);
     }
-    if (widget->key_target != NULL && widget->focused != widget->key_target->focused) {
-      widget_set_need_update_style(widget);
-    }
+    widget_set_need_update_style(widget);
   }
 
   return RET_OK;
