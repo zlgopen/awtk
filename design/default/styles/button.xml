@@ -43,12 +43,12 @@
     <over     icon="play_o" />
   </style>
 
-  <style name="close" border_color="#a0a0a0"  text_color="black" self_layout="default(x=center,y=bottom:50,w=50%,h=30)">
-    <normal     bg_color="#f0f0f0" />
-    <pressed    bg_color="#c0c0c0" x_offset="1" y_offset="1"/>
-    <over       bg_color="#e0e0e0" />
-    <focused    bg_color="#e0e0e0" />
-    <disable    bg_color="gray" text_color="#d0d0d0" />
+  <style name="close" border_color="#a0a0a0" round_radius="8"  text_color="black" self_layout="default(x=center,y=bottom:50,w=50%,h=30)">
+    <normal bg_color="linear-gradient(180deg, #6AB2FF, #0D81FF);" />
+    <disable border_color="#D9D9D9" text_color="#BEBEBE"/>
+    <focused border_color="#3B9AFC" text_color="#7A7A7A"/>
+    <over bg_color="linear-gradient(180deg, #6AB2FF, #0D81FF);" />
+    <pressed bg_gcol="#007AEB" border_color="#0071EB" />
   </style>
 </button>
 

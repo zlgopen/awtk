@@ -8,6 +8,7 @@
   * 修复object default中的内存泄漏。
   * 完善widget\_set\_as\_key\_target，修复style没有更新的问题。
   * 去掉tk\_utf8\_from\_utf16\_ex中不必要的警告。
+  * 支持style支持[渐变色](gradient.md)（感谢智明提供补丁）
 
 2021/09/13
   * 修改canvas\_draw\_image改成用rectf类型（感谢智明提供补丁）

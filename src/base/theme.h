@@ -23,6 +23,7 @@
 #define TK_THEME_H
 
 #include "tkc/color.h"
+#include "base/gradient.h"
 #include "base/widget_consts.h"
 
 BEGIN_C_DECLS
@@ -130,6 +131,7 @@ ret_t theme_destroy(theme_t* theme);
 int32_t style_data_get_int(const uint8_t* s, const char* name, int32_t defval);
 uint32_t style_data_get_uint(const uint8_t* s, const char* name, uint32_t defval);
 color_t style_data_get_color(const uint8_t* s, const char* name, color_t defval);
+gradient_t* style_data_get_gradient(const uint8_t* s, const char* name, gradient_t* gradient);
 const char* style_data_get_str(const uint8_t* s, const char* name, const char* defval);
 
 /*public for tools only*/

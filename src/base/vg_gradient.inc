@@ -26,7 +26,8 @@
 vg_gradient_t* vg_gradient_init_radial(vg_gradient_t* gradient, float x0, float y0, float r0, float x1, float y1, float r1) {
   vg_gradient_radial_info_t* info = NULL;
   return_value_if_fail(gradient != NULL, NULL);
- 
+
+  memset(gradient, 0x00, sizeof(vg_gradient_t));
   info = &(gradient->info.radial);
   info->x0 = x0;
   info->y0 = y0;
@@ -34,7 +35,7 @@ vg_gradient_t* vg_gradient_init_radial(vg_gradient_t* gradient, float x0, float 
   info->x1 = x1;
   info->y1 = y1;
   info->r1 = r1;
-  gradient->type = VG_GRADIENT_RADIAL;
+  gradient->gradient.type = GRADIENT_RADIAL;
 
   return gradient;
 }
@@ -46,16 +47,36 @@ vg_gradient_t* vg_gradient_create_radial(float x0, float y0, float r0, float x1,
   return vg_gradient_init_radial(gradient, x0, y0, r0, x1, y1, r1);
 }
 
+vg_gradient_t* vg_gradient_init_with_gradient(vg_gradient_t* gradient, const rect_t* rect, const gradient_t* g) {
+  vg_gradient_linear_info_t* info = NULL;
+  return_value_if_fail(gradient != NULL, NULL);
+
+  memset(gradient, 0x00, sizeof(vg_gradient_t));
+  gradient->gradient.type = g->type;
+  info = &(gradient->info.linear);
+  if (g->type == GRADIENT_LINEAR) {
+    if (g->degree == 180) {
+      info->sx = rect->x;
+      info->sy = rect->y;
+      info->ex = rect->x;
+      info->ey = rect->y + rect->h; 
+    }
+  }
+  gradient->gradient = *g;
+  return gradient;
+}
+
 vg_gradient_t* vg_gradient_init_linear(vg_gradient_t* gradient, float sx, float sy, float ex, float ey) {
   vg_gradient_linear_info_t* info = NULL;
   return_value_if_fail(gradient != NULL, NULL);
 
+  memset(gradient, 0x00, sizeof(vg_gradient_t));
   info = &(gradient->info.linear);
   info->sx = sx;
   info->sy = sy;
   info->ex = ex;
   info->ey = ey;
-  gradient->type = VG_GRADIENT_LINEAR;
+  gradient->gradient.type = GRADIENT_LINEAR;
 
   return gradient;
 }
@@ -65,15 +86,6 @@ vg_gradient_t* vg_gradient_create_linear(float sx, float sy, float ex, float ey)
   return_value_if_fail(gradient != NULL, NULL);
 
   return vg_gradient_init_linear(gradient, sx, sy, ex, ey);
-}
-
-ret_t vg_gradient_add_stop(vg_gradient_t* gradient, color_t color, float offset) {
-  return_value_if_fail(gradient != NULL && gradient->nr < TK_GRADIENT_MAX_STOP_NR, RET_BAD_PARAMS);
-
-  gradient->stops[gradient->nr].color = color;
-  gradient->stops[gradient->nr++].offset = offset;
-
-  return RET_OK;
 }
 
 ret_t vg_gradient_deinit(vg_gradient_t* gradient) {
@@ -92,21 +104,3 @@ ret_t vg_gradient_destroy(vg_gradient_t* gradient) {
   return RET_OK;
 }
 
-vg_gradient_stop_t* vg_gradient_get_stop(vg_gradient_t* gradient, uint32_t index) {
-  return_value_if_fail(gradient != NULL, NULL);
-  return_value_if_fail(gradient->nr > index, NULL);
-
-  return gradient->stops + index;
-}
-
-color_t vg_gradient_get_first_color(vg_gradient_t* gradient) {
-  return_value_if_fail(gradient != NULL && gradient->nr > 0, color_init(0xff, 0xff, 0xff, 0xff));
-
-  return gradient->stops[0].color;
-}
-
-color_t vg_gradient_get_last_color(vg_gradient_t* gradient) {
-  return_value_if_fail(gradient != NULL && gradient->nr > 0, color_init(0xff, 0xff, 0xff, 0xff));
-
-  return gradient->stops[gradient->nr - 1].color;
-}

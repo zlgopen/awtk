@@ -14,6 +14,16 @@ static ret_t on_style_item(void* ctx, const char* widget_state, const char* id,
   char str[128];
   if (val->type == VALUE_TYPE_STRING) {
     snprintf(str, sizeof(str), "%s,%s,\"%s\";", widget_state, id, value_str(val));
+  } else if (val->type == VALUE_TYPE_GRADIENT) {
+    str_t s;
+    gradient_t g;
+    binary_data_t* bin = value_gradient(val);
+
+    str_init(&s, 100);
+    gradient_init_from_binary(&g, (uint8_t*)(bin->data), bin->size); 
+    gradient_to_str(&g, &s);
+
+    snprintf(str, sizeof(str), "%s,%s,\"%s\";", widget_state, id, s.str);
   } else {
     snprintf(str, sizeof(str), "%s,%s,%d;", widget_state, id, value_int(val));
   }
@@ -85,15 +95,10 @@ TEST(StyleMutable, basic) {
 }
 
 TEST(StyleMutable, cast) {
-  widget_t* w = window_create(NULL, 10, 20, 30, 40);
-  widget_t* b = button_create(w, 0, 0, 100, 100);
   style_t* style_mutable = style_mutable_create(NULL);
-
   ASSERT_EQ(style_is_mutable(style_mutable), TRUE);
   ASSERT_EQ(style_mutable, style_mutable_cast(style_mutable));
-
   style_destroy(style_mutable);
-  widget_destroy(w);
 }
 
 TEST(StyleMutable, copy) {
@@ -124,4 +129,41 @@ TEST(StyleMutable, copy) {
 
   style_destroy(m1);
   style_destroy(m2);
+}
+
+TEST(StyleMutable, gradient) {
+  gradient_t g;
+  style_t* m1 = style_mutable_create(NULL);
+
+  style_mutable_set_str(m1, "normal", "bg_color", "linear-gradient(180deg, #FF0000 0%, #0000FF 100%)");
+  ASSERT_EQ(style_get_gradient(m1, "bg_color", &g) != NULL, true);
+  ASSERT_EQ(g.type, GRADIENT_LINEAR);
+  ASSERT_EQ(g.nr, 2);
+  ASSERT_EQ(g.degree, 180);
+  
+  ASSERT_EQ(g.stops[0].offset, 0);
+  ASSERT_EQ(g.stops[0].color.rgba.r, 0xff);
+  ASSERT_EQ(g.stops[1].offset, 1);
+  ASSERT_EQ(g.stops[1].color.rgba.b, 0xff);
+
+  string str1;
+  style_mutable_foreach(m1, on_style_item, &str1);
+
+  style_destroy(m1);
+}
+
+TEST(StyleMutable, gradient1) {
+  gradient_t g;
+  style_t* m1 = style_mutable_create(NULL);
+
+  style_mutable_set_str(m1, "normal", "bg_color", "#FF0000");
+  ASSERT_EQ(style_get_gradient(m1, "bg_color", &g) != NULL, true);
+  ASSERT_EQ(g.type, GRADIENT_LINEAR);
+  ASSERT_EQ(g.nr, 1);
+  ASSERT_EQ(g.degree, 0);
+  
+  ASSERT_EQ(g.stops[0].offset, 0);
+  ASSERT_EQ(g.stops[0].color.rgba.r, 0xff);
+
+  style_destroy(m1);
 }

@@ -190,14 +190,10 @@ static ret_t widget_state_style_get_value(widget_state_style_t* witer, const cha
 
 static int32_t style_mutable_get_int(style_t* s, const char* name, int32_t defval) {
   value_t v;
-  widget_state_style_t* current = NULL;
   style_mutable_t* style = STYLE_MUTABLE(s);
-  const char* state = style_get_style_state(s);
-
   return_value_if_fail(style != NULL, 0);
-  current = widget_state_style_find(style->styles, state);
 
-  if (current != NULL && widget_state_style_get_value(current, name, &v) == RET_OK) {
+  if (style_mutable_get_value(s, style_get_style_state(s), name, &v) == RET_OK) {
     return value_int(&v);
   } else {
     return style_get_int(style->default_style, name, defval);
@@ -206,14 +202,10 @@ static int32_t style_mutable_get_int(style_t* s, const char* name, int32_t defva
 
 static uint32_t style_mutable_get_uint(style_t* s, const char* name, uint32_t defval) {
   value_t v;
-  widget_state_style_t* current = NULL;
   style_mutable_t* style = STYLE_MUTABLE(s);
-  const char* state = style_get_style_state(s);
-
   return_value_if_fail(style != NULL, 0);
-  current = widget_state_style_find(style->styles, state);
 
-  if (current != NULL && widget_state_style_get_value(current, name, &v) == RET_OK) {
+  if (style_mutable_get_value(s, style_get_style_state(s), name, &v) == RET_OK) {
     return value_uint32(&v);
   } else {
     return style_get_uint(style->default_style, name, defval);
@@ -222,13 +214,10 @@ static uint32_t style_mutable_get_uint(style_t* s, const char* name, uint32_t de
 
 static color_t style_mutable_get_color(style_t* s, const char* name, color_t defval) {
   value_t v;
-  widget_state_style_t* current = NULL;
   style_mutable_t* style = STYLE_MUTABLE(s);
-  const char* state = style_get_style_state(s);
   return_value_if_fail(style != NULL, color_init(0x0, 0x0, 0x0, 0x0));
-  current = widget_state_style_find(style->styles, state);
 
-  if (current != NULL && widget_state_style_get_value(current, name, &v) == RET_OK) {
+  if (style_mutable_get_value(s, style_get_style_state(s), name, &v) == RET_OK) {
     color_t c;
     c.color = value_uint32(&v);
     return c;
@@ -237,15 +226,32 @@ static color_t style_mutable_get_color(style_t* s, const char* name, color_t def
   }
 }
 
+static gradient_t* style_mutable_get_gradient(style_t* s, const char* name, gradient_t* gradient) {
+  value_t v;
+  style_mutable_t* style = STYLE_MUTABLE(s);
+  return_value_if_fail(style != NULL, NULL);
+
+  if (style_mutable_get_value(s, style_get_style_state(s), name, &v) == RET_OK) {
+    if (v.type == VALUE_TYPE_GRADIENT) {
+      binary_data_t* bin = value_gradient(&v);
+      return_value_if_fail(bin != NULL, NULL);
+      return gradient_init_from_binary(gradient, (uint8_t*)(bin->data), bin->size);
+    } else if (v.type == VALUE_TYPE_UINT32 || v.type == VALUE_TYPE_INT32) {
+      return gradient_init_simple(gradient, value_uint32(&v));
+    } else {
+      return NULL;
+    }
+  } else {
+    return style_get_gradient(style->default_style, name, gradient);
+  }
+}
+
 const char* style_mutable_get_str(style_t* s, const char* name, const char* defval) {
   value_t v;
-  widget_state_style_t* current = NULL;
   style_mutable_t* style = STYLE_MUTABLE(s);
-  const char* state = style_get_style_state(s);
   return_value_if_fail(style != NULL, NULL);
-  current = widget_state_style_find(style->styles, state);
 
-  if (current != NULL && widget_state_style_get_value(current, name, &v) == RET_OK) {
+  if (style_mutable_get_value(s, style_get_style_state(s), name, &v) == RET_OK) {
     return value_str(&v);
   } else {
     return style_get_str(style->default_style, name, defval);
@@ -317,8 +323,11 @@ ret_t style_mutable_get_value(style_t* s, const char* state, const char* name, v
   style_mutable_t* style = STYLE_MUTABLE(s);
   return_value_if_fail(style != NULL, RET_BAD_PARAMS);
   current = widget_state_style_find(style->styles, state);
+  if (current != NULL) {
+    return widget_state_style_get_value(current, name, v);
+  }
 
-  return widget_state_style_get_value(current, name, v);
+  return RET_FAIL;
 }
 
 ret_t style_mutable_set_value(style_t* s, const char* state, const char* name, const value_t* v) {
@@ -455,6 +464,7 @@ static const style_vtable_t style_mutable_vt = {
     .get_int = style_mutable_get_int,
     .get_str = style_mutable_get_str,
     .get_color = style_mutable_get_color,
+    .get_gradient = style_mutable_get_gradient,
     .set = style_mutable_set_value,
     .set_style_data = style_mutable_set_style_data,
     .get_style_type = style_mutable_get_style_type,

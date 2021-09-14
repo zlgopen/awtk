@@ -1509,8 +1509,8 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, const rect_t* r, bool_t bg
                        image_draw_type_t draw_type) {
   bitmap_t img;
   ret_t ret = RET_OK;
+  gradient_t agradient;
   style_t* style = widget->astyle;
-  color_t trans = color_init(0, 0, 0, 0);
   uint32_t radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
   const char* color_key = bg ? STYLE_ID_BG_COLOR : STYLE_ID_FG_COLOR;
   const char* image_key = bg ? STYLE_ID_BG_IMAGE : STYLE_ID_FG_IMAGE;
@@ -1520,25 +1520,30 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, const rect_t* r, bool_t bg
   uint32_t radius_bl = style_get_int(style, STYLE_ID_ROUND_RADIUS_BOTTOM_LETF, radius);
   uint32_t radius_br = style_get_int(style, STYLE_ID_ROUND_RADIUS_BOTTOM_RIGHT, radius);
   const char* draw_type_key = bg ? STYLE_ID_BG_IMAGE_DRAW_TYPE : STYLE_ID_FG_IMAGE_DRAW_TYPE;
-
-  color_t color = style_get_color(style, color_key, trans);
+  gradient_t* gradient = style_get_gradient(style, color_key, &agradient);
   const char* image_name = style_get_str(style, image_key, NULL);
 
-  if (color.rgba.a && r->w > 0 && r->h > 0) {
+  if (gradient != NULL && r->w > 0 && r->h > 0) {
+    color_t color = gradient_get_first_color(gradient);
     canvas_set_fill_color(c, color);
-    if (radius_tl > 3 || radius_tr > 3 || radius_bl > 3 || radius_br > 3) {
-      if (bg) {
-        ret = canvas_fill_rounded_rect_ex(c, r, NULL, &color, radius_tl, radius_tr, radius_bl,
-                                          radius_br);
+    if (gradient->nr > 1 || color.rgba.a) {
+      if (radius_tl > 3 || radius_tr > 3 || radius_bl > 3 || radius_br > 3) {
+        /*TODO: support gradient*/
+        if (bg) {
+          ret = canvas_fill_rounded_rect_gradient_ex(c, r, NULL, gradient, radius_tl, radius_tr, radius_bl,
+                                            radius_br);
+        } else {
+          ret = canvas_fill_rounded_rect_gradient_ex(c, r, &bg_r, gradient, radius_tl, radius_tr, radius_bl,
+                                            radius_br);
+        }
+        if (ret == RET_FAIL) {
+          canvas_fill_rect(c, r->x, r->y, r->w, r->h);
+        }
+      } else if (gradient->nr > 1) {
+        canvas_fill_rect_gradient(c, r->x, r->y, r->w, r->h, gradient);
       } else {
-        ret = canvas_fill_rounded_rect_ex(c, r, &bg_r, &color, radius_tl, radius_tr, radius_bl,
-                                          radius_br);
-      }
-      if (ret == RET_FAIL) {
         canvas_fill_rect(c, r->x, r->y, r->w, r->h);
       }
-    } else {
-      canvas_fill_rect(c, r->x, r->y, r->w, r->h);
     }
   }
 

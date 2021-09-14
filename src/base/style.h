@@ -24,6 +24,7 @@
 
 #include "tkc/color.h"
 #include "base/theme.h"
+#include "base/gradient.h"
 #include "base/widget_consts.h"
 
 BEGIN_C_DECLS
@@ -298,6 +299,7 @@ typedef bool_t (*style_is_valid_t)(style_t* s);
 typedef int32_t (*style_get_int_t)(style_t* s, const char* name, int32_t defval);
 typedef uint32_t (*style_get_uint_t)(style_t* s, const char* name, uint32_t defval);
 typedef color_t (*style_get_color_t)(style_t* s, const char* name, color_t defval);
+typedef gradient_t* (*style_get_gradient_t)(style_t* s, const char* name, gradient_t* gradient);
 typedef const char* (*style_get_str_t)(style_t* s, const char* name, const char* defval);
 
 typedef ret_t (*style_set_t)(style_t* s, const char* state, const char* name, const value_t* value);
@@ -319,6 +321,7 @@ typedef struct _style_vtable_t {
   style_get_uint_t get_uint;
   style_get_str_t get_str;
   style_get_color_t get_color;
+  style_get_gradient_t get_gradient;
   style_update_state_t update_state;
   style_notify_widget_state_changed_t notify_widget_state_changed;
 
@@ -405,6 +408,17 @@ uint32_t style_get_uint(style_t* s, const char* name, uint32_t defval);
  * @return {color_t} 返回颜色值。
  */
 color_t style_get_color(style_t* s, const char* name, color_t defval);
+
+/**
+ * @method style_get_gradient
+ * 获取指定name的渐变颜色值。
+ * @param {style_t*} s style对象。
+ * @param {const char*} name 属性名。
+ * @param {gradient_t*} gradient 返回值。
+ *
+ * @return {gradient_t*} 返回渐变颜色值。
+ */
+gradient_t* style_get_gradient(style_t* s, const char* name, gradient_t* gradient);
 
 /**
  * @method style_get_str

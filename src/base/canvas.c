@@ -25,6 +25,7 @@
 #include "tkc/utils.h"
 #include "base/bidi.h"
 #include "base/canvas.h"
+#include "base/vgcanvas.h"
 #include "tkc/time_now.h"
 #include "tkc/color_parser.h"
 #include "base/system_info.h"
@@ -533,6 +534,65 @@ ret_t canvas_fill_rect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h) {
 
   fix_xywh(x, y, w, h);
   return canvas_fill_rect_impl(c, c->ox + x, c->oy + y, w, h);
+}
+
+static ret_t canvas_fill_rect_gradient_impl(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h,
+                                            gradient_t* gradient) {
+  xy_t x2 = x + w - 1;
+  xy_t y2 = y + h - 1;
+  vgcanvas_t* vg = NULL;
+
+  if (x > c->clip_right || x2 < c->clip_left || y > c->clip_bottom || y2 < c->clip_top) {
+    return RET_OK;
+  }
+
+  x = tk_max(x, c->clip_left);
+  y = tk_max(y, c->clip_top);
+  x2 = tk_min(x2, c->clip_right);
+  y2 = tk_min(y2, c->clip_bottom);
+  w = x2 - x + 1;
+  h = y2 - y + 1;
+  if (w == 0 || h == 0) {
+    return RET_OK;
+  }
+
+  /*FIXME: to support general cases*/
+  return_value_if_fail(gradient->type == GRADIENT_LINEAR && gradient->degree == 180,
+                       RET_BAD_PARAMS);
+
+#ifndef WITH_NANOVG_GPU
+  if (gradient->type == GRADIENT_LINEAR) {
+    if (gradient->degree == 180) {
+      uint32_t i = 0;
+      lcd_t* lcd = c->lcd;
+      for (i = 0; i < h; i++) {
+        float offset = (float)i / (float)h;
+        color_t color = gradient_get_color(gradient, offset);
+        lcd_set_stroke_color(lcd, color);
+        lcd_draw_hline(lcd, x, y + i, w);
+      }
+      return RET_OK;
+    }
+  }
+#endif /*WITH_NANOVG_GPU*/
+  vg = canvas_get_vgcanvas(c);
+  if (vg != NULL) {
+    vg_gradient_t vg_gradient;
+    rect_t rect = {x, y, w, h};
+    vg_gradient_init_with_gradient(&vg_gradient, &rect, gradient);
+    vgcanvas_set_fill_gradient(vg, &vg_gradient);
+    vgcanvas_rect(vg, x, y, w, h);
+    vgcanvas_fill(vg);
+  }
+
+  return RET_NOT_IMPL;
+}
+
+ret_t canvas_fill_rect_gradient(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h, gradient_t* gradient) {
+  return_value_if_fail(c != NULL, RET_BAD_PARAMS);
+
+  fix_xywh(x, y, w, h);
+  return canvas_fill_rect_gradient_impl(c, c->ox + x, c->oy + y, w, h, gradient);
 }
 
 static ret_t canvas_clear_rect_impl(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h) {
@@ -2003,7 +2063,14 @@ ret_t canvas_get_text_metrics(canvas_t* c, float_t* ascent, float_t* descent, fl
 
 ret_t canvas_fill_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r,
                                const color_t* color, uint32_t radius) {
-  return ffr_draw_fill_rounded_rect_ex(c, r, bg_r, color, radius, radius, radius, radius);
+  gradient_t gradient;
+  gradient_init_simple(&gradient, color->color);
+  return ffr_draw_fill_rounded_rect_ex(c, r, bg_r, &gradient, radius, radius, radius, radius);
+}
+
+ret_t canvas_fill_rounded_rect_gradient(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                                        const gradient_t* gradient, uint32_t radius) {
+  return ffr_draw_fill_rounded_rect_ex(c, r, bg_r, gradient, radius, radius, radius, radius);
 }
 
 ret_t canvas_stroke_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r,
@@ -2015,7 +2082,16 @@ ret_t canvas_stroke_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_
 ret_t canvas_fill_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
                                   const color_t* color, uint32_t radius_tl, uint32_t radius_tr,
                                   uint32_t radius_bl, uint32_t radius_br) {
-  return ffr_draw_fill_rounded_rect_ex(c, r, bg_r, color, radius_tl, radius_tr, radius_bl,
+  gradient_t gradient;
+  gradient_init_simple(&gradient, color->color);
+  return ffr_draw_fill_rounded_rect_ex(c, r, bg_r, &gradient, radius_tl, radius_tr, radius_bl,
+                                       radius_br);
+}
+
+ret_t canvas_fill_rounded_rect_gradient_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                                          const gradient_t* gradient, uint32_t radius_tl, uint32_t radius_tr,
+                                          uint32_t radius_bl, uint32_t radius_br) {
+  return ffr_draw_fill_rounded_rect_ex(c, r, bg_r, gradient, radius_tl, radius_tr, radius_bl,
                                        radius_br);
 }
 

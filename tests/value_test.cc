@@ -319,3 +319,15 @@ TEST(ValueTest, ubjson) {
   ASSERT_EQ(ubjson != NULL, true);
   ASSERT_EQ(ubjson->size, 2);
 }
+
+TEST(ValueTest, gradient) {
+  value_t v;
+  const char* str = "str";
+  binary_data_t* gradient = NULL;
+  ASSERT_EQ(&v, value_set_gradient(&v, (void*)str, 2));
+  ASSERT_EQ(v.type, VALUE_TYPE_GRADIENT);
+
+  gradient = value_gradient(&v);
+  ASSERT_EQ(gradient != NULL, true);
+  ASSERT_EQ(gradient->size, 2);
+}
