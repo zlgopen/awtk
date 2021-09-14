@@ -1,5 +1,12 @@
 # 最新动态
 
+2021/09/14
+  * 根据新增接口，完善 object\_array 以及 object\_default（感谢雨欣提供补丁）
+  * 完善 progress\_circle 控件，兼容旧版的 unit 属性用法i（感谢雨欣提供补丁）
+  * 完善 progress\_bar 控件，format 属性与 designer 显示效果保持一致（感谢雨欣提供补丁）
+  * 新增 object\_get\_child\_object 接口，方便 AWTK 内部的 object\_t 派生类和 mvvm 直接调用（感谢雨欣提供补丁）
+
+
 2021/09/13
   * 修改canvas\_draw\_image改成用rectf类型（感谢智明提供补丁）
   * 增加宏WITH\_GPU/WITH\_GPU\_GLES2（感谢智明提供补丁）
