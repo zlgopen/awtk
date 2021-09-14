@@ -7,7 +7,7 @@
   * 新增 object\_get\_child\_object 接口，方便 AWTK 内部的 object\_t 派生类和 mvvm 直接调用（感谢雨欣提供补丁）
   * 修复object default中的内存泄漏。
   * 完善widget\_set\_as\_key\_target，修复style没有更新的问题。
-
+  * 去掉tk\_utf8\_from\_utf16\_ex中不必要的警告。
 
 2021/09/13
   * 修改canvas\_draw\_image改成用rectf类型（感谢智明提供补丁）
