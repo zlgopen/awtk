@@ -518,8 +518,8 @@ TEST(Utils, strrstr) {
   ASSERT_STREQ(tk_strrstr("abc abc123", "abc"), "abc123");
   ASSERT_STREQ(tk_strrstr("abc abc123aaabc", "abc"), "abc");
 
-  ASSERT_EQ(tk_strrstr("abc" + 1, "abc") == NULL, true);
-  ASSERT_EQ(tk_strrstr("abc" + 1, "123") == NULL, true);
+  ASSERT_EQ(tk_strrstr("bc", "abc") == NULL, true);
+  ASSERT_EQ(tk_strrstr("bc", "123") == NULL, true);
 }
 
 TEST(Utils, totitle) {
