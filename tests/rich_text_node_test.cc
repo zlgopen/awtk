@@ -24,8 +24,8 @@ TEST(RichTextNode, image) {
 
   ASSERT_EQ(image->type, RICH_TEXT_IMAGE);
   ASSERT_EQ(string(image->u.image.name), string("earth"));
-  ASSERT_EQ(image->u.image.w, 12);
-  ASSERT_EQ(image->u.image.h, 24);
+  ASSERT_EQ(image->u.image.w, 12u);
+  ASSERT_EQ(image->u.image.h, 24u);
 
   rich_text_node_destroy(image);
 }

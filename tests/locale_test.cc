@@ -24,7 +24,7 @@ TEST(Locale, basic) {
   ASSERT_EQ(string("OK"), string(locale_info_tr(locale_info, str)));
 
   id = locale_info_on(locale_info, EVT_LOCALE_CHANGED, test_on_locale_changed, locale_info);
-  ASSERT_EQ(id, 1);
+  ASSERT_EQ(id, 1u);
   ASSERT_EQ(locale_info_change(locale_info, "zh", "CN"), RET_OK);
   ASSERT_EQ(s_locale, "zh_CN");
 

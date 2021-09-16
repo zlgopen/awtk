@@ -15,26 +15,26 @@ static char s_buff[1024];
 
 TEST(SVGToBSVG, parseNumbers) {
   float numbers[5] = {0, 0, 0, 0, 0};
-  ASSERT_EQ(svg_parse_numbers("1.0 2.0", numbers, 5), 2);
-  ASSERT_EQ(numbers[0], 1.0);
-  ASSERT_EQ(numbers[1], 2.0);
+  ASSERT_EQ(svg_parse_numbers("1.0 2.0", numbers, 5), 2u);
+  ASSERT_EQ(numbers[0], 1.0f);
+  ASSERT_EQ(numbers[1], 2.0f);
 
-  ASSERT_EQ(svg_parse_numbers("1.0 2.0 ", numbers, 5), 2);
-  ASSERT_EQ(numbers[0], 1.0);
-  ASSERT_EQ(numbers[1], 2.0);
+  ASSERT_EQ(svg_parse_numbers("1.0 2.0 ", numbers, 5), 2u);
+  ASSERT_EQ(numbers[0], 1.0f);
+  ASSERT_EQ(numbers[1], 2.0f);
 
-  ASSERT_EQ(svg_parse_numbers("    1.0 2.0 ", numbers, 5), 2);
-  ASSERT_EQ(numbers[0], 1.0);
-  ASSERT_EQ(numbers[1], 2.0);
+  ASSERT_EQ(svg_parse_numbers("    1.0 2.0 ", numbers, 5), 2u);
+  ASSERT_EQ(numbers[0], 1.0f);
+  ASSERT_EQ(numbers[1], 2.0f);
 
-  ASSERT_EQ(svg_parse_numbers("    1.0 2.0 3.0", numbers, 5), 3);
-  ASSERT_EQ(numbers[0], 1.0);
-  ASSERT_EQ(numbers[1], 2.0);
-  ASSERT_EQ(numbers[2], 3.0);
+  ASSERT_EQ(svg_parse_numbers("    1.0 2.0 3.0", numbers, 5), 3u);
+  ASSERT_EQ(numbers[0], 1.0f);
+  ASSERT_EQ(numbers[1], 2.0f);
+  ASSERT_EQ(numbers[2], 3.0f);
 
-  ASSERT_EQ(svg_parse_numbers(" ", numbers, 5), 0);
+  ASSERT_EQ(svg_parse_numbers(" ", numbers, 5), 0u);
 
-  ASSERT_EQ(svg_parse_numbers(" 1", numbers, 5), 1);
+  ASSERT_EQ(svg_parse_numbers(" 1", numbers, 5), 1u);
 }
 
 TEST(SVGToBSVG, path) {
@@ -69,12 +69,12 @@ TEST(SVGToBSVG, rect) {
   shape = (const svg_shape_rect_t*)bsvg_get_first_shape(&svg);
 
   ASSERT_EQ(shape->shape.type, SVG_SHAPE_RECT);
-  ASSERT_EQ(shape->shape.stroke.color, 0xff000000);
+  ASSERT_EQ(shape->shape.stroke.color, 0xff000000u);
   ASSERT_EQ(shape->shape.stroke_width, 5);
-  ASSERT_EQ(shape->x, 10);
-  ASSERT_EQ(shape->y, 10);
-  ASSERT_EQ(shape->w, 30);
-  ASSERT_EQ(shape->h, 40);
+  ASSERT_EQ(shape->x, 10.0f);
+  ASSERT_EQ(shape->y, 10.0f);
+  ASSERT_EQ(shape->w, 30.0f);
+  ASSERT_EQ(shape->h, 40.0f);
 
   TKMEM_FREE(out);
 }
@@ -95,13 +95,13 @@ TEST(SVGToBSVG, line) {
   shape = (const svg_shape_line_t*)bsvg_get_first_shape(&svg);
 
   ASSERT_EQ(shape->shape.type, SVG_SHAPE_LINE);
-  ASSERT_EQ(shape->shape.stroke.color, 0xff000000);
-  ASSERT_EQ(shape->shape.fill.color, 0xff0000ff);
+  ASSERT_EQ(shape->shape.stroke.color, 0xff000000u);
+  ASSERT_EQ(shape->shape.fill.color, 0xff0000ffu);
   ASSERT_EQ(shape->shape.stroke_width, 5);
-  ASSERT_EQ(shape->x1, 10);
-  ASSERT_EQ(shape->y1, 10);
-  ASSERT_EQ(shape->x2, 30);
-  ASSERT_EQ(shape->y2, 40);
+  ASSERT_EQ(shape->x1, 10.0f);
+  ASSERT_EQ(shape->y1, 10.0f);
+  ASSERT_EQ(shape->x2, 30.0f);
+  ASSERT_EQ(shape->y2, 40.0f);
 
   TKMEM_FREE(out);
 }
@@ -121,12 +121,12 @@ TEST(SVGToBSVG, circle) {
   shape = (const svg_shape_circle_t*)bsvg_get_first_shape(&svg);
 
   ASSERT_EQ(shape->shape.type, SVG_SHAPE_CIRCLE);
-  ASSERT_EQ(shape->shape.stroke.color, 0xff000000);
-  ASSERT_EQ(shape->shape.fill.color, 0xff0000ff);
+  ASSERT_EQ(shape->shape.stroke.color, 0xff000000u);
+  ASSERT_EQ(shape->shape.fill.color, 0xff0000ffu);
   ASSERT_EQ(shape->shape.stroke_width, 5);
-  ASSERT_EQ(shape->cx, 10);
-  ASSERT_EQ(shape->cy, 10);
-  ASSERT_EQ(shape->r, 30);
+  ASSERT_EQ(shape->cx, 10.0f);
+  ASSERT_EQ(shape->cy, 10.0f);
+  ASSERT_EQ(shape->r, 30.0f);
 
   TKMEM_FREE(out);
 }
@@ -146,10 +146,10 @@ TEST(SVGToBSVG, polygon) {
   shape = (const svg_shape_polygon_t*)bsvg_get_first_shape(&svg);
 
   ASSERT_EQ(shape->shape.type, SVG_SHAPE_POLYGON);
-  ASSERT_EQ(shape->shape.stroke.color, 0xff000000);
-  ASSERT_EQ(shape->shape.fill.color, 0xff0000ff);
+  ASSERT_EQ(shape->shape.stroke.color, 0xff000000u);
+  ASSERT_EQ(shape->shape.fill.color, 0xff0000ffu);
   ASSERT_EQ(shape->shape.stroke_width, 5);
-  ASSERT_EQ(shape->nr, 4);
+  ASSERT_EQ(shape->nr, 4u);
 
   TKMEM_FREE(out);
 }
@@ -169,10 +169,10 @@ TEST(SVGToBSVG, polyline) {
   shape = (const svg_shape_polyline_t*)bsvg_get_first_shape(&svg);
 
   ASSERT_EQ(shape->shape.type, SVG_SHAPE_POLYLINE);
-  ASSERT_EQ(shape->shape.stroke.color, 0xff000000);
-  ASSERT_EQ(shape->shape.fill.color, 0xff0000ff);
+  ASSERT_EQ(shape->shape.stroke.color, 0xff000000u);
+  ASSERT_EQ(shape->shape.fill.color, 0xff0000ffu);
   ASSERT_EQ(shape->shape.stroke_width, 5);
-  ASSERT_EQ(shape->nr, 4);
+  ASSERT_EQ(shape->nr, 4u);
 
   TKMEM_FREE(out);
 }
@@ -192,10 +192,10 @@ TEST(SVGToBSVG, polygon_lr) {
   shape = (const svg_shape_polygon_t*)bsvg_get_first_shape(&svg);
 
   ASSERT_EQ(shape->shape.type, SVG_SHAPE_POLYGON);
-  ASSERT_EQ(shape->shape.stroke.color, 0xff000000);
-  ASSERT_EQ(shape->shape.fill.color, 0xff0000ff);
+  ASSERT_EQ(shape->shape.stroke.color, 0xff000000u);
+  ASSERT_EQ(shape->shape.fill.color, 0xff0000ffu);
   ASSERT_EQ(shape->shape.stroke_width, 5);
-  ASSERT_EQ(shape->nr, 4);
+  ASSERT_EQ(shape->nr, 4u);
 
   TKMEM_FREE(out);
 }
@@ -215,10 +215,10 @@ TEST(SVGToBSVG, polygon_no_fill1) {
   shape = (const svg_shape_polygon_t*)bsvg_get_first_shape(&svg);
 
   ASSERT_EQ(shape->shape.type, SVG_SHAPE_POLYGON);
-  ASSERT_EQ(shape->shape.stroke.color, 0xff000000);
+  ASSERT_EQ(shape->shape.stroke.color, 0xff000000u);
   ASSERT_EQ(shape->shape.no_fill, TRUE);
   ASSERT_EQ(shape->shape.stroke_width, 5);
-  ASSERT_EQ(shape->nr, 4);
+  ASSERT_EQ(shape->nr, 4u);
 
   TKMEM_FREE(out);
 }
@@ -238,10 +238,10 @@ TEST(SVGToBSVG, polygon_no_fill2) {
   shape = (const svg_shape_polygon_t*)bsvg_get_first_shape(&svg);
 
   ASSERT_EQ(shape->shape.type, SVG_SHAPE_POLYGON);
-  ASSERT_EQ(shape->shape.stroke.color, 0xff000000);
+  ASSERT_EQ(shape->shape.stroke.color, 0xff000000u);
   ASSERT_EQ(shape->shape.no_fill, TRUE);
   ASSERT_EQ(shape->shape.stroke_width, 5);
-  ASSERT_EQ(shape->nr, 4);
+  ASSERT_EQ(shape->nr, 4u);
 
   TKMEM_FREE(out);
 }
@@ -262,10 +262,10 @@ TEST(SVGToBSVG, polygon_no_fill3) {
   shape = (const svg_shape_polygon_t*)bsvg_get_first_shape(&svg);
 
   ASSERT_EQ(shape->shape.type, SVG_SHAPE_POLYGON);
-  ASSERT_EQ(shape->shape.stroke.color, 0xff000000);
+  ASSERT_EQ(shape->shape.stroke.color, 0xff000000u);
   ASSERT_EQ(shape->shape.no_fill, TRUE);
   ASSERT_EQ(shape->shape.stroke_width, 5);
-  ASSERT_EQ(shape->nr, 4);
+  ASSERT_EQ(shape->nr, 4u);
 
   TKMEM_FREE(out);
 }

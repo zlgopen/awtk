@@ -10,7 +10,7 @@ TEST(TypedArray, basic) {
   ASSERT_EQ(typed_array_insert(a, 0, value_set_uint8(&v, 0)), RET_OK);
   ASSERT_EQ(typed_array_insert(a, 1, value_set_uint8(&v, 1)), RET_OK);
   ASSERT_EQ(typed_array_insert(a, 2, value_set_uint8(&v, 2)), RET_OK);
-  ASSERT_EQ(a->size, 3);
+  ASSERT_EQ(a->size, 3u);
 
   ASSERT_EQ(typed_array_get(a, 0, &v), RET_OK);
   ASSERT_EQ(value_uint8(&v), 0);
@@ -34,17 +34,17 @@ TEST(TypedArray, basic) {
   ASSERT_EQ(typed_array_remove(a, 1), RET_OK);
   ASSERT_EQ(typed_array_get(a, 1, &v), RET_OK);
   ASSERT_EQ(value_uint8(&v), 230);
-  ASSERT_EQ(a->size, 2);
+  ASSERT_EQ(a->size, 2u);
 
   ASSERT_EQ(typed_array_remove(a, 0), RET_OK);
   ASSERT_EQ(typed_array_get(a, 0, &v), RET_OK);
   ASSERT_EQ(value_uint8(&v), 230);
-  ASSERT_EQ(a->size, 1);
+  ASSERT_EQ(a->size, 1u);
 
   ASSERT_EQ(typed_array_remove(a, 0), RET_OK);
-  ASSERT_EQ(a->size, 0);
+  ASSERT_EQ(a->size, 0u);
   ASSERT_EQ(typed_array_remove(a, 0), RET_BAD_PARAMS);
-  ASSERT_EQ(a->size, 0);
+  ASSERT_EQ(a->size, 0u);
 
   ASSERT_EQ(typed_array_tail(a, &v), RET_BAD_PARAMS);
 
@@ -57,14 +57,14 @@ TEST(TypedArray, push) {
   typed_array_t* a = typed_array_create(VALUE_TYPE_UINT8, 0);
   ASSERT_EQ(a != NULL, true);
   for (i = 0; i < 255; i++) {
-    ASSERT_EQ(a->size, i);
+    ASSERT_EQ(a->size, (uint32_t)i);
     ASSERT_EQ(typed_array_push(a, value_set_uint8(&v, i)), RET_OK);
     ASSERT_EQ(typed_array_tail(a, &v), RET_OK);
     ASSERT_EQ(value_uint8(&v), i);
   }
 
   for (; i > 0; i--) {
-    ASSERT_EQ(a->size, i);
+    ASSERT_EQ(a->size, (uint32_t)i);
     ASSERT_EQ(typed_array_tail(a, &v), RET_OK);
     ASSERT_EQ(value_uint8(&v), i - 1);
     ASSERT_EQ(typed_array_pop(a, &v), RET_OK);
@@ -79,14 +79,14 @@ TEST(TypedArray, insert) {
   typed_array_t* a = typed_array_create(VALUE_TYPE_UINT8, 0);
   ASSERT_EQ(a != NULL, true);
   for (i = 0; i < 255; i++) {
-    ASSERT_EQ(a->size, i);
+    ASSERT_EQ(a->size, (uint32_t)i);
     ASSERT_EQ(typed_array_insert(a, 0, value_set_uint8(&v, i)), RET_OK);
     ASSERT_EQ(typed_array_get(a, 0, &v), RET_OK);
     ASSERT_EQ(value_uint8(&v), i);
   }
 
   ASSERT_EQ(typed_array_clear(a), RET_OK);
-  ASSERT_EQ(a->size, 0);
+  ASSERT_EQ(a->size, 0u);
 
   typed_array_destroy(a);
 }
@@ -103,17 +103,17 @@ TEST(TypedArray, insert_uint64) {
   ASSERT_EQ(a != NULL, true);
   ASSERT_EQ(a->element_size, sizeof(uint64_t));
   for (i = 0; i < 255; i++) {
-    ASSERT_EQ(a->size, i);
+    ASSERT_EQ(a->size, (uint32_t)i);
     ASSERT_EQ(typed_array_insert(a, 0, value_set_uint64(&v, i)), RET_OK);
     ASSERT_EQ(typed_array_get(a, 0, &v), RET_OK);
-    ASSERT_EQ(value_uint64(&v), i);
+    ASSERT_EQ(value_uint64(&v), (uint64_t)i);
   }
 
   ASSERT_EQ(typed_array_set(a, 10, value_set_uint64(&v, 0x1122334455667788)), RET_OK);
   ASSERT_EQ(typed_array_get(a, 10, &v), RET_OK);
-  ASSERT_EQ(value_uint64(&v), 0x1122334455667788);
+  ASSERT_EQ(value_uint64(&v), 0x1122334455667788u);
   ASSERT_EQ(typed_array_clear(a), RET_OK);
-  ASSERT_EQ(a->size, 0);
+  ASSERT_EQ(a->size, 0u);
 
   typed_array_destroy(a);
 }
@@ -125,17 +125,17 @@ TEST(TypedArray, insert_double) {
   ASSERT_EQ(a != NULL, true);
   ASSERT_EQ(a->element_size, sizeof(double_t));
   for (i = 0; i < 255; i++) {
-    ASSERT_EQ(a->size, i);
+    ASSERT_EQ(a->size, (uint32_t)i);
     ASSERT_EQ(typed_array_insert(a, 0, value_set_double(&v, i)), RET_OK);
     ASSERT_EQ(typed_array_get(a, 0, &v), RET_OK);
-    ASSERT_EQ(value_double(&v), i);
+    ASSERT_EQ(value_double(&v), (double)i);
   }
 
   ASSERT_EQ(typed_array_set(a, 10, value_set_double(&v, 0x112233)), RET_OK);
   ASSERT_EQ(typed_array_get(a, 10, &v), RET_OK);
-  ASSERT_EQ(value_double(&v), 0x112233);
+  ASSERT_EQ(value_double(&v), (double)0x112233);
   ASSERT_EQ(typed_array_clear(a), RET_OK);
-  ASSERT_EQ(a->size, 0);
+  ASSERT_EQ(a->size, 0u);
 
   typed_array_destroy(a);
 }
@@ -147,17 +147,17 @@ TEST(TypedArray, insert_uint32) {
   ASSERT_EQ(a != NULL, true);
   ASSERT_EQ(a->element_size, sizeof(uint32_t));
   for (i = 0; i < 255; i++) {
-    ASSERT_EQ(a->size, i);
+    ASSERT_EQ(a->size, (uint32_t)i);
     ASSERT_EQ(typed_array_insert(a, 0, value_set_uint32(&v, i)), RET_OK);
     ASSERT_EQ(typed_array_get(a, 0, &v), RET_OK);
-    ASSERT_EQ(value_uint32(&v), i);
+    ASSERT_EQ(value_uint32(&v), (uint32_t)i);
   }
 
   ASSERT_EQ(typed_array_set(a, 10, value_set_uint32(&v, 0x11223344)), RET_OK);
   ASSERT_EQ(typed_array_get(a, 10, &v), RET_OK);
-  ASSERT_EQ(value_uint32(&v), 0x11223344);
+  ASSERT_EQ(value_uint32(&v), 0x11223344u);
   ASSERT_EQ(typed_array_clear(a), RET_OK);
-  ASSERT_EQ(a->size, 0);
+  ASSERT_EQ(a->size, 0u);
 
   typed_array_destroy(a);
 }
@@ -171,14 +171,14 @@ TEST(TypedArray, object1) {
   ASSERT_EQ(a != NULL, true);
   ASSERT_EQ(a->element_size, sizeof(uint32_t));
   for (i = 0; i < 255; i++) {
-    ASSERT_EQ(a->size, i);
+    ASSERT_EQ(a->size, (uint32_t)i);
     ASSERT_EQ(typed_array_insert(a, 0, value_set_uint32(&v, i)), RET_OK);
     ASSERT_EQ(typed_array_get(a, 0, &v), RET_OK);
-    ASSERT_EQ(value_uint32(&v), i);
+    ASSERT_EQ(value_uint32(&v), (uint32_t)i);
   }
 
-  ASSERT_EQ(object_get_prop_int(obj, "size", 0), i);
-  ASSERT_EQ(object_get_prop_int(obj, "bytes", 0), i * sizeof(uint32_t));
+  ASSERT_EQ(object_get_prop_int(obj, "size", 0), (int32_t)i);
+  ASSERT_EQ(object_get_prop_int(obj, "bytes", 0), (int32_t)(i * sizeof(uint32_t)));
   ASSERT_EQ(object_get_prop_pointer(obj, "data"), (void*)a->data);
 
   OBJECT_UNREF(obj);

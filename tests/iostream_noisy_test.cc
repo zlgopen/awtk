@@ -8,7 +8,7 @@ TEST(IOStreamNoisy, noerror) {
   uint8_t buff[62];
   uint8_t rbuff[16];
   const char* str = "12345";
-  uint32_t size = strlen(str) + 1;
+  int32_t size = strlen(str) + 1;
   tk_iostream_t* mem = tk_iostream_mem_create(buff, sizeof(buff), buff, sizeof(buff), FALSE);
   tk_iostream_t* io = tk_iostream_noisy_create(mem);
   tk_ostream_t* os = tk_iostream_get_ostream(io);
@@ -27,7 +27,7 @@ TEST(IOStreamNoisy, all_error) {
   uint8_t buff[62];
   uint8_t rbuff[16];
   const char* str = "12345";
-  uint32_t size = strlen(str) + 1;
+  int32_t size = strlen(str) + 1;
   tk_iostream_t* mem = tk_iostream_mem_create(buff, sizeof(buff), buff, sizeof(buff), FALSE);
   tk_iostream_t* io = tk_iostream_noisy_create(mem);
   tk_ostream_t* os = tk_iostream_get_ostream(io);
@@ -46,7 +46,7 @@ static void test_n(tk_ostream_t* os, tk_istream_t* is, uint32_t level) {
   uint32_t i = 0;
   uint8_t rbuff[16];
   const char* str = "12345";
-  uint32_t size = strlen(str) + 1;
+  int32_t size = strlen(str) + 1;
   object_set_prop_int(OBJECT(os), TK_OSTREAM_NOISY_PROP_ERROR_LEVEL, level);
 
   for (i = 0; i < level; i++) {

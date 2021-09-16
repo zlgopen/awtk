@@ -14,9 +14,9 @@ TEST(EventSourceFd, basic) {
 
   ASSERT_EQ(event_source_get_fd(event_source), 1);
   ASSERT_EQ(event_source_check(event_source), RET_OK);
-  ASSERT_EQ(event_source_get_wakeup_time(event_source), 0xffff);
+  ASSERT_EQ(event_source_get_wakeup_time(event_source), 0xffffu);
   ASSERT_EQ(event_source_dispatch(event_source), RET_OK);
-  ASSERT_EQ(s_fd_times, 1);
+  ASSERT_EQ(s_fd_times, 1u);
 
   object_unref(OBJECT(event_source));
 }

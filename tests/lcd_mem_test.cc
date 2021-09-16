@@ -6,7 +6,7 @@
 #include "lcd/lcd_mem_rgba8888.h"
 
 static void test_draw_points(canvas_t* c) {
-  int i = 0;
+  uint32_t i = 0;
   color_t color;
   color_t stroke_color = color_init(0xff, 0x0, 0x0, 0xff);
   point_t points[] = {{0, 0}, {100, 100}, {100, 101}, {100, 102}, {100, 103}, {199, 199}};
@@ -112,7 +112,7 @@ TEST(LCDMem, resize) {
   lcd_resize(lcd, 200, 100, 0);
   ASSERT_EQ(lcd->w, 200);
   ASSERT_EQ(lcd->h, 100);
-  ASSERT_EQ(mem->line_length, 200 * 4);
+  ASSERT_EQ(mem->line_length, 200u * 4u);
 
   lcd_destroy(lcd);
 }

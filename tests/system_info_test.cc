@@ -11,12 +11,12 @@ TEST(SystemInfo, basic) {
   ASSERT_STREQ(info->app_name, "awtk");
 
   ASSERT_EQ(system_info_set_lcd_w(info, 100), RET_OK);
-  ASSERT_EQ(info->lcd_w, 100);
-  ASSERT_EQ(info->lcd_w, object_get_prop_int(OBJECT(info), SYSTEM_INFO_PROP_LCD_W, 0));
+  ASSERT_EQ(info->lcd_w, 100u);
+  ASSERT_EQ(info->lcd_w, (uint32_t)object_get_prop_int(OBJECT(info), SYSTEM_INFO_PROP_LCD_W, 0));
 
   ASSERT_EQ(system_info_set_lcd_h(info, 200), RET_OK);
-  ASSERT_EQ(info->lcd_h, 200);
-  ASSERT_EQ(info->lcd_h, object_get_prop_int(OBJECT(info), SYSTEM_INFO_PROP_LCD_H, 0));
+  ASSERT_EQ(info->lcd_h, 200u);
+  ASSERT_EQ(info->lcd_h, (uint32_t)object_get_prop_int(OBJECT(info), SYSTEM_INFO_PROP_LCD_H, 0));
 
   ASSERT_EQ(system_info_set_lcd_type(info, LCD_FRAMEBUFFER), RET_OK);
   ASSERT_EQ(info->lcd_type, LCD_FRAMEBUFFER);
@@ -24,7 +24,7 @@ TEST(SystemInfo, basic) {
             object_get_prop_int(OBJECT(info), SYSTEM_INFO_PROP_LCD_TYPE, 111));
 
   ASSERT_EQ(system_info_set_device_pixel_ratio(info, 2), RET_OK);
-  ASSERT_EQ(info->device_pixel_ratio, 2);
+  ASSERT_EQ(info->device_pixel_ratio, 2.0f);
   ASSERT_EQ(info->device_pixel_ratio,
             object_get_prop_float(OBJECT(info), SYSTEM_INFO_PROP_DEVICE_PIXEL_RATIO, 0));
 

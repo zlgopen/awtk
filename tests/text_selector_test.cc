@@ -28,16 +28,16 @@ TEST(TextSelector, basic) {
 
   value_set_int(&v1, 3);
   ASSERT_EQ(widget_set_prop(w, TEXT_SELECTOR_PROP_VISIBLE_NR, &v1), RET_OK);
-  ASSERT_EQ(value_int(&v1), text_selector->visible_nr);
+  ASSERT_EQ(value_int(&v1), (int32_t)text_selector->visible_nr);
 
   /*not eq 3, set it to 5*/
   value_set_int(&v1, 4);
   ASSERT_EQ(widget_set_prop(w, TEXT_SELECTOR_PROP_VISIBLE_NR, &v1), RET_OK);
-  ASSERT_EQ(5, text_selector->visible_nr);
+  ASSERT_EQ(5u, text_selector->visible_nr);
 
   value_set_int(&v1, 5);
   ASSERT_EQ(widget_set_prop(w, TEXT_SELECTOR_PROP_VISIBLE_NR, &v1), RET_OK);
-  ASSERT_EQ(value_int(&v1), text_selector->visible_nr);
+  ASSERT_EQ(value_int(&v1), (int32_t)text_selector->visible_nr);
 
   widget_destroy(w);
 }

@@ -12,7 +12,7 @@ TEST(OStreamBuffered, basic) {
 
   ASSERT_EQ(tk_ostream_write(os, (uint8_t*)"1234", 4), 4);
   ASSERT_STREQ(buff, "");
-  ASSERT_EQ(tk_ostream_buffered_get_size(os), 4);
+  ASSERT_EQ(tk_ostream_buffered_get_size(os), 4u);
   ASSERT_EQ(tk_ostream_flush(os), RET_OK);
   ASSERT_STREQ(buff, "1234");
 
@@ -20,7 +20,7 @@ TEST(OStreamBuffered, basic) {
   ASSERT_EQ(tk_ostream_write(os, (uint8_t*)"abcd", 4), 4);
   ASSERT_STREQ(buff, "1234");
 
-  ASSERT_EQ(tk_ostream_buffered_get_size(os), 8);
+  ASSERT_EQ(tk_ostream_buffered_get_size(os), 8u);
   ASSERT_EQ(tk_ostream_flush(os), RET_OK);
   ASSERT_STREQ(buff, "1234abcdabcd");
 

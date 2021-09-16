@@ -8,17 +8,17 @@
 #include <stdlib.h>
 
 TEST(line_break, line_break_count) {
-  ASSERT_EQ(line_break_count(L"a"), 1);
-  ASSERT_EQ(line_break_count(L"ab"), 1);
-  ASSERT_EQ(line_break_count(L"a\nb"), 2);
-  ASSERT_EQ(line_break_count(L"\na\nb"), 3);
-  ASSERT_EQ(line_break_count(L"\na\nb\n"), 4);
-  ASSERT_EQ(line_break_count(L"\na\nb\r"), 4);
-  ASSERT_EQ(line_break_count(L"\na\nb\r\n"), 4);
-  ASSERT_EQ(line_break_count(L"\na\rb\r"), 4);
-  ASSERT_EQ(line_break_count(L"\na\rb\r\r"), 5);
-  ASSERT_EQ(line_break_count(L"\na\r\nb\r\r"), 5);
-  ASSERT_EQ(line_break_count(L"\na\r\rb\r\r"), 6);
+  ASSERT_EQ(line_break_count(L"a"), 1u);
+  ASSERT_EQ(line_break_count(L"ab"), 1u);
+  ASSERT_EQ(line_break_count(L"a\nb"), 2u);
+  ASSERT_EQ(line_break_count(L"\na\nb"), 3u);
+  ASSERT_EQ(line_break_count(L"\na\nb\n"), 4u);
+  ASSERT_EQ(line_break_count(L"\na\nb\r"), 4u);
+  ASSERT_EQ(line_break_count(L"\na\nb\r\n"), 4u);
+  ASSERT_EQ(line_break_count(L"\na\rb\r"), 4u);
+  ASSERT_EQ(line_break_count(L"\na\rb\r\r"), 5u);
+  ASSERT_EQ(line_break_count(L"\na\r\nb\r\r"), 5u);
+  ASSERT_EQ(line_break_count(L"\na\r\rb\r\r"), 6u);
 }
 
 static void test_str(const wchar_t* s1, const wchar_t* s2, uint32_t size) {

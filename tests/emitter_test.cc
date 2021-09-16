@@ -46,31 +46,31 @@ TEST(Emitter, basic) {
   emitter_init(&emitter);
   uint32_t type = 12;
   e = event_init(type, &emitter);
-  ASSERT_EQ(emitter_on(NULL, type, on_event, NULL), 0);
-  ASSERT_EQ(emitter_on(&emitter, type, NULL, NULL), 0);
+  ASSERT_EQ(emitter_on(NULL, type, on_event, NULL), 0u);
+  ASSERT_EQ(emitter_on(&emitter, type, NULL, NULL), 0u);
 
   ASSERT_EQ(emitter_on(&emitter, type, on_event, &n) > 0, true);
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
-  ASSERT_EQ(n, 1);
+  ASSERT_EQ(n, 1u);
 
   ASSERT_EQ(emitter_off_by_func(&emitter, type, on_event, &n), RET_OK);
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
-  ASSERT_EQ(n, 1);
+  ASSERT_EQ(n, 1u);
 
   n = 0;
   ASSERT_EQ(emitter_on(&emitter, type, on_event, &n) > 0, true);
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
-  ASSERT_EQ(n, 1);
+  ASSERT_EQ(n, 1u);
 
   n = 0;
   ASSERT_EQ(emitter_on(&emitter, type, on_event, &n) > 0, true);
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
-  ASSERT_EQ(n, 2);
+  ASSERT_EQ(n, 2u);
 
   n = 0;
   ASSERT_EQ(emitter_on(&emitter, type, on_event, &n) > 0, true);
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
-  ASSERT_EQ(n, 3);
+  ASSERT_EQ(n, 3u);
 
   emitter_deinit(&emitter);
 }
@@ -86,25 +86,25 @@ TEST(Emitter, off) {
 
   id = emitter_on(emitter, type, on_event, &n);
   ASSERT_EQ(id > TK_INVALID_ID, true);
-  ASSERT_EQ(emitter_size(emitter), 1);
+  ASSERT_EQ(emitter_size(emitter), 1u);
   ASSERT_EQ(emitter_find(emitter, id) != NULL, true);
 
   ASSERT_EQ(emitter_off(emitter, id), RET_OK);
-  ASSERT_EQ(emitter_size(emitter), 0);
+  ASSERT_EQ(emitter_size(emitter), 0u);
   ASSERT_EQ(emitter_find(emitter, id) == NULL, true);
 
   id = emitter_on(emitter, type, on_event, &n);
   ASSERT_EQ(id > TK_INVALID_ID, true);
-  ASSERT_EQ(emitter_size(emitter), 1);
+  ASSERT_EQ(emitter_size(emitter), 1u);
   ASSERT_EQ(emitter_find(emitter, id) != NULL, true);
 
   id = emitter_on(emitter, type, on_event, &n);
   ASSERT_EQ(id > TK_INVALID_ID, true);
-  ASSERT_EQ(emitter_size(emitter), 2);
+  ASSERT_EQ(emitter_size(emitter), 2u);
   ASSERT_EQ(emitter_find(emitter, id) != NULL, true);
 
   ASSERT_EQ(emitter_off(emitter, id), RET_OK);
-  ASSERT_EQ(emitter_size(emitter), 1);
+  ASSERT_EQ(emitter_size(emitter), 1u);
 
   emitter_destroy(emitter);
 }
@@ -124,9 +124,10 @@ TEST(Emitter, remove) {
   id = emitter_on(emitter, type, on_remove, &n);
 
   n = 0;
+  (void)id;
   ASSERT_EQ(emitter_dispatch(emitter, &e), RET_OK);
-  ASSERT_EQ(emitter_size(emitter), 0);
-  ASSERT_EQ(n, 4);
+  ASSERT_EQ(emitter_size(emitter), 0u);
+  ASSERT_EQ(n, 4u);
 
   emitter_destroy(emitter);
 }
@@ -146,10 +147,11 @@ TEST(Emitter, stop) {
   id = emitter_on(emitter, type, on_stop, &n);
 
   n = 0;
-  ASSERT_EQ(emitter_size(emitter), 4);
+  (void)id;
+  ASSERT_EQ(emitter_size(emitter), 4u);
   ASSERT_EQ(emitter_dispatch(emitter, &e), RET_STOP);
-  ASSERT_EQ(emitter_size(emitter), 4);
-  ASSERT_EQ(n, 1);
+  ASSERT_EQ(emitter_size(emitter), 4u);
+  ASSERT_EQ(n, 1u);
 
   emitter_destroy(emitter);
 }
@@ -167,12 +169,12 @@ TEST(Emitter, remove_in_func) {
   id1 = emitter_on(emitter, type, on_event, &n);
   id2 = emitter_on(emitter, type, on_remove_id, &id1);
   ASSERT_EQ(emitter_dispatch(emitter, &e), RET_OK);
-  ASSERT_EQ(emitter_size(emitter), 0);
+  ASSERT_EQ(emitter_size(emitter), 0u);
 
   id1 = emitter_on(emitter, type, on_event, &n);
   id2 = emitter_on(emitter, type, on_remove_id, &id2);
   ASSERT_EQ(emitter_dispatch(emitter, &e), RET_OK);
-  ASSERT_EQ(emitter_size(emitter), 1);
+  ASSERT_EQ(emitter_size(emitter), 1u);
 
   emitter_destroy(emitter);
 }
@@ -184,7 +186,7 @@ TEST(Emitter, remove_item) {
 
   for (i = 0; i < n; i++) {
     emitter_on(emitter, 123, on_event, NULL);
-    ASSERT_EQ(emitter_size(emitter), i + 1);
+    ASSERT_EQ(emitter_size(emitter), i + 1u);
   }
 
   ASSERT_EQ(emitter_get_item(emitter, 0), emitter->items);
@@ -195,7 +197,7 @@ TEST(Emitter, remove_item) {
     uint32_t r = random() % emitter_size(emitter);
     ASSERT_EQ(emitter_remove_item(emitter, emitter_get_item(emitter, r)), RET_OK);
   }
-  ASSERT_EQ(emitter_size(emitter), 0);
+  ASSERT_EQ(emitter_size(emitter), 0u);
 
   emitter_destroy(emitter);
 }
@@ -213,16 +215,16 @@ TEST(Emitter, off_by_tag) {
   emitter_on_with_tag(emitter, type, on_remove, NULL, 1);
   emitter_on_with_tag(emitter, type, on_remove, NULL, 1);
 
-  ASSERT_EQ(emitter_size(emitter), 6);
+  ASSERT_EQ(emitter_size(emitter), 6u);
 
   ASSERT_EQ(emitter_off_by_tag(emitter, 1), RET_OK);
-  ASSERT_EQ(emitter_size(emitter), 2);
+  ASSERT_EQ(emitter_size(emitter), 2u);
 
   ASSERT_EQ(emitter_off_by_tag(emitter, 3), RET_OK);
-  ASSERT_EQ(emitter_size(emitter), 1);
+  ASSERT_EQ(emitter_size(emitter), 1u);
 
   ASSERT_EQ(emitter_off_by_tag(emitter, 2), RET_OK);
-  ASSERT_EQ(emitter_size(emitter), 0);
+  ASSERT_EQ(emitter_size(emitter), 0u);
 
   emitter_destroy(emitter);
 }
@@ -237,12 +239,12 @@ TEST(Emitter, disable) {
 
   ASSERT_EQ(emitter_on(&emitter, type, on_event, &n) > 0, true);
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
-  ASSERT_EQ(n, 1);
+  ASSERT_EQ(n, 1u);
 
   ASSERT_EQ(emitter_disable(&emitter), RET_OK);
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
   ASSERT_EQ(emitter_enable(&emitter), RET_OK);
-  ASSERT_EQ(n, 1);
+  ASSERT_EQ(n, 1u);
 
   ASSERT_EQ(emitter_disable(&emitter), RET_OK);
   ASSERT_EQ(emitter_disable(&emitter), RET_OK);
@@ -250,10 +252,10 @@ TEST(Emitter, disable) {
   ASSERT_EQ(emitter_enable(&emitter), RET_OK);
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
   ASSERT_EQ(emitter_enable(&emitter), RET_OK);
-  ASSERT_EQ(n, 1);
+  ASSERT_EQ(n, 1u);
 
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
-  ASSERT_EQ(n, 2);
+  ASSERT_EQ(n, 2u);
 
   emitter_deinit(&emitter);
 }

@@ -16,8 +16,8 @@ TEST(DArrayTest, init) {
   darray_t darray;
   darray_init(&darray, 10, NULL, NULL);
 
-  ASSERT_EQ(darray.size, 0);
-  ASSERT_EQ(darray.capacity, 10);
+  ASSERT_EQ(darray.size, 0u);
+  ASSERT_EQ(darray.capacity, 10u);
 
   darray_deinit(&darray);
 }
@@ -26,8 +26,8 @@ TEST(DArrayTest, init0) {
   darray_t darray;
   darray_init(&darray, 0, NULL, NULL);
 
-  ASSERT_EQ(darray.size, 0);
-  ASSERT_EQ(darray.capacity, 0);
+  ASSERT_EQ(darray.size, 0u);
+  ASSERT_EQ(darray.capacity, 0u);
   ASSERT_EQ(darray.elms == NULL, TRUE);
 
   darray_deinit(&darray);
@@ -41,7 +41,7 @@ TEST(DArrayTest, insert) {
   ASSERT_EQ(darray_insert(&darray, 0, tk_pointer_from_int(2)), RET_OK);
   ASSERT_EQ(darray_insert(&darray, 0, tk_pointer_from_int(1)), RET_OK);
   ASSERT_EQ(darray_insert(&darray, 0, tk_pointer_from_int(0)), RET_OK);
-  ASSERT_EQ(darray.size, 4);
+  ASSERT_EQ(darray.size, 4u);
   ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 0)), 0);
   ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 1)), 1);
   ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 2)), 2);
@@ -56,24 +56,24 @@ TEST(DArrayTest, insert) {
 
 TEST(DArrayTest, create) {
   darray_t* darray = darray_create(10, NULL, NULL);
-  ASSERT_EQ(darray->size, 0);
-  ASSERT_EQ(darray->capacity, 10);
+  ASSERT_EQ(darray->size, 0u);
+  ASSERT_EQ(darray->capacity, 10u);
   darray_destroy(darray);
 }
 
 TEST(DArrayTest, create0) {
   darray_t* darray = darray_create(0, NULL, NULL);
-  ASSERT_EQ(darray->size, 0);
+  ASSERT_EQ(darray->size, 0u);
   ASSERT_EQ(darray->elms == NULL, true);
-  ASSERT_EQ(darray->capacity, 0);
+  ASSERT_EQ(darray->capacity, 0u);
   darray_destroy(darray);
 }
 
 TEST(DArrayTest, stack) {
   char* p = NULL;
   darray_t* darray = darray_create(10, NULL, NULL);
-  ASSERT_EQ(darray->size, 0);
-  ASSERT_EQ(darray->capacity, 10);
+  ASSERT_EQ(darray->size, 0u);
+  ASSERT_EQ(darray->capacity, 10u);
 
   ASSERT_EQ(darray_tail(darray), p);
   ASSERT_EQ(darray_head(darray), p);
@@ -84,7 +84,7 @@ TEST(DArrayTest, stack) {
   ASSERT_EQ(1, darray_count(darray, p + 1));
 
   ASSERT_EQ(darray_pop(darray), p + 1);
-  ASSERT_EQ(darray->size, 0);
+  ASSERT_EQ(darray->size, 0u);
 
   darray_destroy(darray);
 }
@@ -92,8 +92,8 @@ TEST(DArrayTest, stack) {
 TEST(DArrayTest, basic) {
   char* p = NULL;
   darray_t* darray = darray_create(10, NULL, NULL);
-  ASSERT_EQ(darray->size, 0);
-  ASSERT_EQ(darray->capacity, 10);
+  ASSERT_EQ(darray->size, 0u);
+  ASSERT_EQ(darray->capacity, 10u);
 
   ASSERT_EQ(RET_OK, darray_push(darray, p + 1));
   ASSERT_EQ(1, darray_count(darray, p + 1));
@@ -108,7 +108,7 @@ TEST(DArrayTest, basic) {
   ASSERT_EQ(2, darray_count(darray, p + 1));
 
   ASSERT_EQ(RET_OK, darray_remove_all(darray, NULL, p + 1));
-  ASSERT_EQ(darray->size, 0);
+  ASSERT_EQ(darray->size, 0u);
   ASSERT_EQ(0, darray_count(darray, p + 1));
 
   ASSERT_EQ(RET_OK, darray_push(darray, p + 1));
@@ -116,7 +116,7 @@ TEST(DArrayTest, basic) {
   ASSERT_EQ(RET_OK, darray_push(darray, p + 3));
   ASSERT_EQ(RET_OK, darray_clear(darray));
 
-  ASSERT_EQ(darray->size, 0);
+  ASSERT_EQ(darray->size, 0u);
 
   darray_destroy(darray);
 }
@@ -130,11 +130,11 @@ TEST(DArrayTest, popPush) {
 
   for (i = 0; i < ARRAY_SIZE(cases); i++) {
     ASSERT_EQ(RET_OK, darray_push(&darray, p + cases[i]));
-    ASSERT_EQ(i + 1, darray.size);
+    ASSERT_EQ(i + 1u, darray.size);
   }
 
   for (i = 0; i < ARRAY_SIZE(cases); i++) {
-    int k = ARRAY_SIZE(cases) - i - 1;
+    uint32_t k = ARRAY_SIZE(cases) - i - 1;
     void* data = darray_pop(&darray);
     ASSERT_EQ(data, p + cases[k]);
     ASSERT_EQ(k, darray.size);
@@ -144,8 +144,8 @@ TEST(DArrayTest, popPush) {
 }
 
 TEST(DArrayTest, random) {
-  int i = 0;
-  int n = NR;
+  uint32_t i = 0;
+  uint32_t n = NR;
   char* p = NULL;
   darray_t darray;
   darray_init(&darray, 10, NULL, NULL);
@@ -163,14 +163,14 @@ TEST(DArrayTest, random) {
 
     ASSERT_EQ(RET_OK, darray_remove(&darray, pv));
   }
-  ASSERT_EQ(darray.size, 0);
+  ASSERT_EQ(darray.size, 0u);
 
   darray_deinit(&darray);
 }
 
 TEST(DArrayTest, inc) {
-  int i = 0;
-  int n = NR;
+  uint32_t i = 0;
+  uint32_t n = NR;
   char* p = NULL;
   darray_t darray;
   darray_init(&darray, 10, NULL, NULL);
@@ -187,15 +187,15 @@ TEST(DArrayTest, inc) {
 
     ASSERT_EQ(RET_OK, darray_remove(&darray, pv));
   }
-  ASSERT_EQ(darray.size, 0);
+  ASSERT_EQ(darray.size, 0u);
 
   darray_deinit(&darray);
 }
 
 TEST(DArrayTest, dec) {
-  int i = 0;
+  uint32_t i = 0;
   char* p = NULL;
-  int n = NR;
+  uint32_t n = NR;
   darray_t darray;
   darray_init(&darray, 10, NULL, NULL);
 
@@ -213,7 +213,7 @@ TEST(DArrayTest, dec) {
     ASSERT_EQ(RET_OK, darray_remove(&darray, pv));
     ASSERT_EQ(NULL, darray_find(&darray, pv));
   }
-  ASSERT_EQ(darray.size, 0);
+  ASSERT_EQ(darray.size, 0u);
 
   darray_deinit(&darray);
 }
@@ -227,33 +227,33 @@ TEST(DArrayTest, removeAll) {
 
   for (i = 0; i < ARRAY_SIZE(cases); i++) {
     ASSERT_EQ(RET_OK, darray_push(&darray, p + cases[i]));
-    ASSERT_EQ(i + 1, darray.size);
+    ASSERT_EQ(i + 1u, darray.size);
   }
 
   ASSERT_EQ(darray.size, ARRAY_SIZE(cases));
   ASSERT_EQ(darray_remove_all(&darray, NULL, p + 2), RET_OK);
-  ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4);
+  ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4u);
 
   ASSERT_EQ(darray_remove_all(&darray, NULL, p + 1), RET_OK);
-  ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4 - 2);
+  ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4u - 2u);
 
   ASSERT_EQ(darray_remove_all(&darray, NULL, p + 12), RET_OK);
-  ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4 - 2 - 2);
+  ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4u - 2u - 2u);
 
   ASSERT_EQ(darray_remove_all(&darray, NULL, p + 13), RET_OK);
-  ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4 - 2 - 2 - 1);
+  ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4u - 2u - 2u - 1u);
 
   ASSERT_EQ(darray_remove_all(&darray, NULL, p + 14), RET_OK);
-  ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4 - 2 - 2 - 1 - 1);
+  ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4u - 2u - 2u - 1u - 1u);
 
   ASSERT_EQ(darray_remove_all(&darray, NULL, p + 33), RET_OK);
-  ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4 - 2 - 2 - 1 - 1 - 1);
+  ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4u - 2u - 2u - 1u - 1u - 1u);
 
   ASSERT_EQ(darray_remove_all(&darray, NULL, p + 34), RET_OK);
-  ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4 - 2 - 2 - 1 - 1 - 1 - 2);
+  ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4u - 2u - 2u - 1u - 1u - 1u - 2u);
 
   ASSERT_EQ(darray_remove_all(&darray, NULL, p + 0), RET_OK);
-  ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4 - 2 - 2 - 1 - 1 - 1 - 2);
+  ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4u - 2u - 2u - 1u - 1u - 1u - 2u);
 
   darray_deinit(&darray);
 }
@@ -281,9 +281,9 @@ TEST(DArrayTest, removeAll1) {
     ASSERT_EQ(i + 1, darray.size);
   }
 
-  ASSERT_EQ(darray.size, ARRAY_SIZE(cases));
+  ASSERT_EQ(darray.size, (uint32_t)ARRAY_SIZE(cases));
   ASSERT_EQ(darray_remove_all(&darray, cmp_le, tk_pointer_from_int(100)), RET_OK);
-  ASSERT_EQ(darray.size, 1);
+  ASSERT_EQ(darray.size, 1u);
 
   darray_deinit(&darray);
 }
@@ -303,11 +303,11 @@ TEST(DArrayTest, findAll) {
 
   darray_init(&matched, 10, NULL, NULL);
   ASSERT_EQ(darray_find_all(&darray, cmp_le, tk_pointer_from_int(10), &matched), RET_OK);
-  ASSERT_EQ(matched.size, 7);
+  ASSERT_EQ(matched.size, 7u);
   darray_clear(&matched);
 
   ASSERT_EQ(darray_find_all(&darray, cmp_le, tk_pointer_from_int(100), &matched), RET_OK);
-  ASSERT_EQ(matched.size, ARRAY_SIZE(cases) - 1);
+  ASSERT_EQ(matched.size, ARRAY_SIZE(cases) - 1u);
   darray_clear(&matched);
 
   darray_deinit(&matched);
@@ -402,7 +402,7 @@ TEST(DArrayTest, struct) {
   darray_push(&darray, my_data_create("jack", 100));
   darray_push(&darray, my_data_create("tom", 10));
 
-  ASSERT_EQ(darray.size, 2);
+  ASSERT_EQ(darray.size, 2u);
 
   p = (my_data_t*)darray_get(&darray, 0);
   ASSERT_STREQ(p->name, "jack");
@@ -448,22 +448,22 @@ TEST(DArrayTest, insert_order) {
   ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(6), NULL, true), RET_OK);
   ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(5), NULL, true), RET_OK);
   ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(4), NULL, true), RET_OK);
-  ASSERT_EQ(darray.size, 7);
+  ASSERT_EQ(darray.size, 7u);
 
   ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(3), NULL, true), RET_OK);
-  ASSERT_EQ(darray.size, 7);
+  ASSERT_EQ(darray.size, 7u);
   ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(1), NULL, true), RET_OK);
-  ASSERT_EQ(darray.size, 7);
+  ASSERT_EQ(darray.size, 7u);
   ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(2), NULL, true), RET_OK);
-  ASSERT_EQ(darray.size, 7);
+  ASSERT_EQ(darray.size, 7u);
   ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(0), NULL, true), RET_OK);
-  ASSERT_EQ(darray.size, 7);
+  ASSERT_EQ(darray.size, 7u);
   ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(6), NULL, true), RET_OK);
-  ASSERT_EQ(darray.size, 7);
+  ASSERT_EQ(darray.size, 7u);
   ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(5), NULL, true), RET_OK);
-  ASSERT_EQ(darray.size, 7);
+  ASSERT_EQ(darray.size, 7u);
   ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(4), NULL, true), RET_OK);
-  ASSERT_EQ(darray.size, 7);
+  ASSERT_EQ(darray.size, 7u);
 
   ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 0)), 0);
   ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 1)), 1);
@@ -474,19 +474,19 @@ TEST(DArrayTest, insert_order) {
   ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 6)), 6);
 
   ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(3), NULL, false), RET_OK);
-  ASSERT_EQ(darray.size, 8);
+  ASSERT_EQ(darray.size, 8u);
   ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(1), NULL, false), RET_OK);
-  ASSERT_EQ(darray.size, 9);
+  ASSERT_EQ(darray.size, 9u);
   ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(2), NULL, false), RET_OK);
-  ASSERT_EQ(darray.size, 10);
+  ASSERT_EQ(darray.size, 10u);
   ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(0), NULL, false), RET_OK);
-  ASSERT_EQ(darray.size, 11);
+  ASSERT_EQ(darray.size, 11u);
   ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(6), NULL, false), RET_OK);
-  ASSERT_EQ(darray.size, 12);
+  ASSERT_EQ(darray.size, 12u);
   ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(5), NULL, false), RET_OK);
-  ASSERT_EQ(darray.size, 13);
+  ASSERT_EQ(darray.size, 13u);
   ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(4), NULL, false), RET_OK);
-  ASSERT_EQ(darray.size, 14);
+  ASSERT_EQ(darray.size, 14u);
 
   ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 0)), 0);
   ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 1)), 0);
@@ -528,12 +528,12 @@ TEST(DArrayTest, insert2) {
 
   for (i = 0; i < n; i++) {
     ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(i), NULL, TRUE), RET_OK);
-    ASSERT_EQ(darray_bsearch_index(&darray, NULL, tk_pointer_from_int(i)), i);
+    ASSERT_EQ(darray_bsearch_index(&darray, NULL, tk_pointer_from_int(i)), (int32_t)i);
   }
 
   for (i = n; i > 0; i--) {
     ASSERT_EQ(darray_sorted_insert(&darray, tk_pointer_from_int(i), NULL, TRUE), RET_OK);
-    ASSERT_EQ(darray_bsearch_index(&darray, NULL, tk_pointer_from_int(i)), i);
+    ASSERT_EQ(darray_bsearch_index(&darray, NULL, tk_pointer_from_int(i)), (int32_t)i);
   }
 
   darray_deinit(&darray);

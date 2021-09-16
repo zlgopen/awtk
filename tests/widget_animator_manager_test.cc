@@ -13,10 +13,10 @@ TEST(AnimatorManager, basic) {
   widget_t* widget = WIDGET(image);
 
   ASSERT_EQ(widget_animator_set_name(wa, "foo"), RET_OK);
-  ASSERT_EQ(widget_animator_manager_count(am), 1);
+  ASSERT_EQ(widget_animator_manager_count(am), 1u);
 
   widget_animator_destroy(wa);
-  ASSERT_EQ(widget_animator_manager_count(am), 0);
+  ASSERT_EQ(widget_animator_manager_count(am), 0u);
 
   wa = widget_animator_rotation_create(WIDGET(image), 1000, 0, EASING_LINEAR);
   ASSERT_EQ(widget_animator_set_name(wa, "foo"), RET_OK);
@@ -37,10 +37,10 @@ TEST(AnimatorManager, basic) {
   ASSERT_EQ(widget_animator_manager_stop(am, NULL, "foo"), RET_OK);
   ASSERT_EQ(wa->state, ANIMATOR_STOPPED);
 
-  ASSERT_EQ(widget_animator_manager_count(am), 1);
+  ASSERT_EQ(widget_animator_manager_count(am), 1u);
   widget_destroy(WIDGET(image));
   idle_dispatch();
-  ASSERT_EQ(widget_animator_manager_count(am), 0);
+  ASSERT_EQ(widget_animator_manager_count(am), 0u);
   idle_dispatch();
 }
 
@@ -59,14 +59,14 @@ TEST(AnimatorManager, elapse) {
 
   widget_animator_manager_t* am = widget_animator_manager();
 
-  ASSERT_EQ(widget_animator_manager_count(am), 2);
+  ASSERT_EQ(widget_animator_manager_count(am), 2u);
   ASSERT_EQ(widget_animator_manager_start(am, NULL, NULL), RET_OK);
 
   emitter_on(&(wa1->emitter), EVT_ANIM_END, on_anim_done, NULL);
   widget_animator_manager_time_elapse(am, 1000);
   idle_dispatch();
 
-  ASSERT_EQ(widget_animator_manager_count(am), 0);
+  ASSERT_EQ(widget_animator_manager_count(am), 0u);
   widget_destroy(WIDGET(image));
   idle_dispatch();
 }
@@ -81,7 +81,7 @@ TEST(AnimatorManager, done_and_start) {
   widget_animator_set_destroy_when_done(wa1, FALSE);
   ASSERT_EQ(widget_animator_manager_start(am, NULL, NULL), RET_OK);
   widget_animator_manager_time_elapse(am, 1000);
-  ASSERT_EQ(widget_animator_manager_count(am), 1);
+  ASSERT_EQ(widget_animator_manager_count(am), 1u);
 
   ASSERT_EQ(wa1->state == ANIMATOR_DONE, true);
   ASSERT_EQ(widget_animator_manager_start(am, NULL, NULL), RET_OK);

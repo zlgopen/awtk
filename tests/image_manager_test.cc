@@ -122,13 +122,13 @@ TEST(ImageManager, limit) {
   image_manager_unload_all(imm);
 
   ASSERT_EQ(image_manager_add(imm, "b1", &b1), RET_OK);
-  ASSERT_EQ(imm->images.size, 1);
+  ASSERT_EQ(imm->images.size, 1u);
 
   ASSERT_EQ(image_manager_add(imm, "b2", &b2), RET_OK);
-  ASSERT_EQ(imm->images.size, 2);
+  ASSERT_EQ(imm->images.size, 2u);
 
   image_manager_set_max_mem_size_of_cached_images(imm, bitmap_get_mem_size(&b1));
 
   ASSERT_EQ(image_manager_add(imm, "b3", &b3), RET_OK);
-  ASSERT_EQ(imm->images.size, 1);
+  ASSERT_EQ(imm->images.size, 1u);
 }

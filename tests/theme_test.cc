@@ -106,7 +106,7 @@ TEST(Theme, saveLoad) {
   ASSERT_EQ(i32, -100);
 
   load_uint32(p, v32);
-  ASSERT_EQ(v32, 0x3f3f3f3f);
+  ASSERT_EQ(v32, 0x3f3f3f3fu);
 }
 
 TEST(Theme, basic) {

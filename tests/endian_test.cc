@@ -20,8 +20,8 @@ TEST(Endian, int32) {
 TEST(Endian, int64) {
   int64_t a = 0x1122334455667788;
   ASSERT_EQ(is_little_endian(), TRUE);
-  ASSERT_EQ(int64_endian_invert(a), 0x8877665544332211);
-  ASSERT_EQ(int64_to_big_endian(a), 0x8877665544332211);
+  ASSERT_EQ(int64_endian_invert(a), (int64_t)0x8877665544332211);
+  ASSERT_EQ(int64_to_big_endian(a), (int64_t)0x8877665544332211);
   ASSERT_EQ(int64_from_big_endian(int64_to_big_endian(a)), a);
 }
 

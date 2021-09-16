@@ -363,8 +363,8 @@ TEST(Utils, tk_str_start_with) {
 
 TEST(Utils, ieq) {
   ASSERT_EQ(strcasecmp("Trigger", "trigger"), 0);
-  ASSERT_EQ(tk_str_ieq("Trigger", "trigger"), TRUE);
-  ASSERT_EQ(tk_str_ieq("Trigger", "Trigger"), TRUE);
+  ASSERT_EQ(tk_str_ieq("Trigger", "trigger"), true);
+  ASSERT_EQ(tk_str_ieq("Trigger", "Trigger"), true);
 }
 
 TEST(Utils, tk_under_score_to_camel) {
@@ -426,9 +426,9 @@ TEST(Utils, tk_str_tolower) {
 }
 
 TEST(Utils, tk_wstr_count_c) {
-  ASSERT_EQ(tk_wstr_count_c(L"", 'a'), 0);
-  ASSERT_EQ(tk_wstr_count_c(L"a", 'a'), 1);
-  ASSERT_EQ(tk_wstr_count_c(L"abcaba", 'a'), 3);
+  ASSERT_EQ(tk_wstr_count_c(L"", 'a'), 0u);
+  ASSERT_EQ(tk_wstr_count_c(L"a", 'a'), 1u);
+  ASSERT_EQ(tk_wstr_count_c(L"abcaba", 'a'), 3u);
 }
 
 TEST(Utils, tk_watoi_n) {
@@ -511,7 +511,6 @@ TEST(Utils, to_json) {
 }
 
 TEST(Utils, strrstr) {
-  const char* p = NULL;
   ASSERT_STREQ(tk_strrstr("abc", "abc"), "abc");
   ASSERT_STREQ(tk_strrstr("1abc", "abc"), "abc");
   ASSERT_STREQ(tk_strrstr("1abc2", "abc"), "abc2");
@@ -541,13 +540,23 @@ TEST(Utils, isspace) {
     tk_isxdigit(str[i]);
   }
 
-  ASSERT_EQ(tk_isspace(' '), true);
-  ASSERT_EQ(tk_isspace('\t'), true);
-  ASSERT_EQ(tk_isspace('\r'), true);
-  ASSERT_EQ(tk_isspace('\n'), true);
-  ASSERT_EQ(tk_isdigit('1'), true);
-  ASSERT_EQ(tk_isdigit('a'), false);
-  ASSERT_EQ(tk_isxdigit('a'), true);
-  ASSERT_EQ(tk_isprint('a'), true);
-  ASSERT_EQ(tk_isalpha('a'), true);
+  bool_t is_s = tk_isspace(' ');
+  ASSERT_EQ(is_s, TRUE);
+  is_s = tk_isspace('\t');
+  ASSERT_EQ(is_s, TRUE);
+  is_s = tk_isspace('\r');
+  ASSERT_EQ(is_s, TRUE);
+  is_s = tk_isspace('\n');
+  ASSERT_EQ(is_s, TRUE);
+  is_s = tk_isdigit('1');
+  ASSERT_EQ(is_s, TRUE);
+  is_s = tk_isdigit('a');
+  ASSERT_EQ(is_s, FALSE);
+  is_s = tk_isxdigit('a');
+  ASSERT_EQ(is_s, TRUE);
+  is_s = tk_isprint('a');
+  ASSERT_EQ(is_s, TRUE);
+  is_s = tk_isalpha('a');
+  ASSERT_EQ(is_s, TRUE);
+  
 }

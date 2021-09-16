@@ -4,7 +4,7 @@
 
 TEST(DataReaderAsset, basic) {
   char data[256];
-  uint32_t size = 0;
+  int32_t size = 0;
   data_reader_t* reader = NULL;
   data_reader_factory_t* f = data_reader_factory_create();
 
@@ -14,7 +14,7 @@ TEST(DataReaderAsset, basic) {
   ASSERT_EQ(reader != NULL, true);
 
   memset(data, 0x00, sizeof(data));
-  size = data_reader_get_size(reader);
+  size = (int32_t)data_reader_get_size(reader);
   ASSERT_EQ(size >= 24, true);
   ASSERT_EQ(data_reader_read(reader, 0, data, sizeof(data)), size);
 
@@ -24,7 +24,7 @@ TEST(DataReaderAsset, basic) {
 
 TEST(DataReaderAsset, data) {
   char data[256];
-  uint32_t size = 0;
+  int32_t size = 0;
   char url[MAX_PATH + 1];
   data_reader_t* reader = NULL;
   data_reader_factory_t* f = data_reader_factory_create();
@@ -36,7 +36,7 @@ TEST(DataReaderAsset, data) {
   ASSERT_EQ(reader != NULL, true);
 
   memset(data, 0x00, sizeof(data));
-  size = data_reader_get_size(reader);
+  size = (int32_t)data_reader_get_size(reader);
   ASSERT_EQ(size >= 24, true);
   ASSERT_EQ(data_reader_read(reader, 0, data, sizeof(data)), size);
 
@@ -46,7 +46,7 @@ TEST(DataReaderAsset, data) {
 
 TEST(DataReaderAsset, ui) {
   char data[32];
-  uint32_t size = 0;
+  int32_t size = 0;
   char url[MAX_PATH + 1];
   data_reader_t* reader = NULL;
   data_reader_factory_t* f = data_reader_factory_create();
@@ -58,9 +58,9 @@ TEST(DataReaderAsset, ui) {
   ASSERT_EQ(reader != NULL, true);
 
   memset(data, 0x00, sizeof(data));
-  size = data_reader_get_size(reader);
+  size = (int32_t)data_reader_get_size(reader);
   ASSERT_EQ(size >= 24, true);
-  ASSERT_EQ(data_reader_read(reader, 0, data, sizeof(data)), sizeof(data));
+  ASSERT_EQ(data_reader_read(reader, 0, data, sizeof(data)), (int32_t)sizeof(data));
 
   data_reader_destroy(reader);
   data_reader_factory_destroy(f);
@@ -68,7 +68,7 @@ TEST(DataReaderAsset, ui) {
 
 TEST(DataReaderAsset, style) {
   char data[32];
-  uint32_t size = 0;
+  int32_t size = 0;
   char url[MAX_PATH + 1];
   data_reader_t* reader = NULL;
   data_reader_factory_t* f = data_reader_factory_create();
@@ -80,9 +80,9 @@ TEST(DataReaderAsset, style) {
   ASSERT_EQ(reader != NULL, true);
 
   memset(data, 0x00, sizeof(data));
-  size = data_reader_get_size(reader);
+  size = (int32_t)data_reader_get_size(reader);
   ASSERT_EQ(size >= 24, true);
-  ASSERT_EQ(data_reader_read(reader, 0, data, sizeof(data)), sizeof(data));
+  ASSERT_EQ(data_reader_read(reader, 0, data, sizeof(data)), (int32_t)sizeof(data));
 
   data_reader_destroy(reader);
   data_reader_factory_destroy(f);

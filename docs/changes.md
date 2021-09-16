@@ -7,6 +7,7 @@
   * 将demo\_ui\_ex\_app.c改名为demo\_ui\_app.c，而之前的demo\_ui\_app.c改名为demo\_ui\_old\_app.c（感谢兆坤提供补丁）。
   * 新demoui增加渐变色按钮示例（感谢兆坤提供补丁）。
   * 补充新demoui键盘中文翻译，修改kb\_foo样式（感谢兆坤提供补丁）。
+  * 修复gtest编译警告（感谢智明提供补丁）
 
 2021/09/14
   * 根据新增接口，完善 object\_array 以及 object\_default（感谢雨欣提供补丁）

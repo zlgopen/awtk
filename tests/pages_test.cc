@@ -32,19 +32,19 @@ TEST(Pages, basic) {
   widget_on(pages, EVT_VALUE_WILL_CHANGE, pages_on_change, &str);
 
   pages_set_active(pages, 0);
-  ASSERT_EQ(PAGES(pages)->active, 0);
+  ASSERT_EQ(PAGES(pages)->active, 0u);
   str = "";
 
   pages_set_active(pages, 1);
-  ASSERT_EQ(PAGES(pages)->active, 1);
+  ASSERT_EQ(PAGES(pages)->active, 1u);
   ASSERT_EQ(str, "will_change:changed:");
 
   pages_set_active_by_name(pages, "p2");
-  ASSERT_EQ(PAGES(pages)->active, 2);
+  ASSERT_EQ(PAGES(pages)->active, 2u);
   ASSERT_EQ(str, "will_change:changed:will_change:changed:");
 
   pages_set_active_by_name(pages, "not found");
-  ASSERT_EQ(PAGES(pages)->active, 2);
+  ASSERT_EQ(PAGES(pages)->active, 2u);
 
   widget_destroy(pages);
 }

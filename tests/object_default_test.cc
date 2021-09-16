@@ -63,65 +63,65 @@ TEST(ObjectDefault, basic) {
   object_t* obj = object_default_create();
   object_default_t* o = OBJECT_DEFAULT(obj);
 
-  ASSERT_EQ(o->props.size, 0);
+  ASSERT_EQ(o->props.size, 0u);
 
   ASSERT_EQ(object_set_prop(obj, "5", value_set_int(&v, 50)), RET_OK);
-  ASSERT_EQ(o->props.size, 1);
+  ASSERT_EQ(o->props.size, 1u);
   ASSERT_EQ(object_get_prop(obj, "5", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 50);
 
   ASSERT_EQ(object_set_prop(obj, "5", value_set_int(&v, 51)), RET_OK);
-  ASSERT_EQ(o->props.size, 1);
+  ASSERT_EQ(o->props.size, 1u);
   ASSERT_EQ(object_get_prop(obj, "5", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 51);
 
   ASSERT_EQ(object_set_prop(obj, "6", value_set_int(&v, 60)), RET_OK);
-  ASSERT_EQ(o->props.size, 2);
+  ASSERT_EQ(o->props.size, 2u);
   ASSERT_EQ(object_get_prop(obj, "6", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 60);
 
   ASSERT_EQ(object_set_prop(obj, "6", value_set_int(&v, 61)), RET_OK);
-  ASSERT_EQ(o->props.size, 2);
+  ASSERT_EQ(o->props.size, 2u);
   ASSERT_EQ(object_get_prop(obj, "6", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 61);
 
   ASSERT_EQ(object_set_prop(obj, "4", value_set_int(&v, 40)), RET_OK);
-  ASSERT_EQ(o->props.size, 3);
+  ASSERT_EQ(o->props.size, 3u);
   ASSERT_EQ(object_get_prop(obj, "4", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 40);
 
   ASSERT_EQ(object_set_prop(obj, "4", value_set_int(&v, 41)), RET_OK);
-  ASSERT_EQ(o->props.size, 3);
+  ASSERT_EQ(o->props.size, 3u);
   ASSERT_EQ(object_get_prop(obj, "4", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 41);
 
   ASSERT_EQ(object_set_prop(obj, "2", value_set_int(&v, 20)), RET_OK);
-  ASSERT_EQ(o->props.size, 4);
+  ASSERT_EQ(o->props.size, 4u);
   ASSERT_EQ(object_get_prop(obj, "2", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 20);
 
   ASSERT_EQ(object_set_prop(obj, "2", value_set_int(&v, 21)), RET_OK);
-  ASSERT_EQ(o->props.size, 4);
+  ASSERT_EQ(o->props.size, 4u);
   ASSERT_EQ(object_get_prop(obj, "2", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 21);
 
   ASSERT_EQ(object_set_prop(obj, "3", value_set_int(&v, 30)), RET_OK);
-  ASSERT_EQ(o->props.size, 5);
+  ASSERT_EQ(o->props.size, 5u);
   ASSERT_EQ(object_get_prop(obj, "3", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 30);
 
   ASSERT_EQ(object_set_prop(obj, "3", value_set_int(&v, 31)), RET_OK);
-  ASSERT_EQ(o->props.size, 5);
+  ASSERT_EQ(o->props.size, 5u);
   ASSERT_EQ(object_get_prop(obj, "3", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 31);
 
   ASSERT_EQ(object_set_prop(obj, "9", value_set_int(&v, 90)), RET_OK);
-  ASSERT_EQ(o->props.size, 6);
+  ASSERT_EQ(o->props.size, 6u);
   ASSERT_EQ(object_get_prop(obj, "9", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 90);
 
   ASSERT_EQ(object_set_prop(obj, "9", value_set_int(&v, 91)), RET_OK);
-  ASSERT_EQ(o->props.size, 6);
+  ASSERT_EQ(o->props.size, 6u);
   ASSERT_EQ(object_get_prop(obj, "9", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 91);
 
@@ -130,7 +130,7 @@ TEST(ObjectDefault, basic) {
   ASSERT_EQ(log, "234569");
 
   ASSERT_EQ(object_remove_prop(obj, "3"), RET_OK);
-  ASSERT_EQ(o->props.size, 5);
+  ASSERT_EQ(o->props.size, 5u);
   ASSERT_EQ(object_get_prop(obj, "3", &v), RET_NOT_FOUND);
   ASSERT_EQ(object_remove_prop(obj, "3"), RET_NOT_FOUND);
 
@@ -139,7 +139,7 @@ TEST(ObjectDefault, basic) {
   ASSERT_EQ(log, "24569");
 
   ASSERT_EQ(object_remove_prop(obj, "9"), RET_OK);
-  ASSERT_EQ(o->props.size, 4);
+  ASSERT_EQ(o->props.size, 4u);
   ASSERT_EQ(object_get_prop(obj, "9", &v), RET_NOT_FOUND);
   ASSERT_EQ(object_remove_prop(obj, "9"), RET_NOT_FOUND);
   log = "";
@@ -147,14 +147,14 @@ TEST(ObjectDefault, basic) {
   ASSERT_EQ(log, "2456");
 
   ASSERT_EQ(object_remove_prop(obj, "4"), RET_OK);
-  ASSERT_EQ(o->props.size, 3);
+  ASSERT_EQ(o->props.size, 3u);
   ASSERT_EQ(object_get_prop(obj, "4", &v), RET_NOT_FOUND);
   log = "";
   object_foreach_prop(obj, visit_dump, &log);
   ASSERT_EQ(log, "256");
 
   ASSERT_EQ(object_remove_prop(obj, "2"), RET_OK);
-  ASSERT_EQ(o->props.size, 2);
+  ASSERT_EQ(o->props.size, 2u);
   ASSERT_EQ(object_get_prop(obj, "2", &v), RET_NOT_FOUND);
   log = "";
   object_foreach_prop(obj, visit_dump, &log);
@@ -214,7 +214,7 @@ TEST(ObjectDefault, visis_remove) {
   ASSERT_EQ(object_set_prop(obj, "6", value_set_int(&v, 6)), RET_OK);
   ASSERT_EQ(object_set_prop(obj, "5", value_set_int(&v, 5)), RET_OK);
 
-  ASSERT_EQ(o->props.size, 6);
+  ASSERT_EQ(o->props.size, 6u);
   log = "";
   object_foreach_prop(obj, visit_dump, &log);
   ASSERT_EQ(log, "123456");
@@ -223,13 +223,13 @@ TEST(ObjectDefault, visis_remove) {
   log = "";
   object_foreach_prop(obj, visit_dump, &log);
   ASSERT_EQ(log, "246");
-  ASSERT_EQ(o->props.size, 3);
+  ASSERT_EQ(o->props.size, 3u);
 
   object_foreach_prop(obj, visit_remove_all, &log);
   log = "";
   object_foreach_prop(obj, visit_dump, &log);
   ASSERT_EQ(log, "");
-  ASSERT_EQ(o->props.size, 0);
+  ASSERT_EQ(o->props.size, 0u);
 
   object_foreach_prop(obj, visit_test_busy, obj);
 
@@ -558,12 +558,12 @@ TEST(ObjectDefault, insert1) {
   value_t v;
   string log;
   char name[32];
-  uint32_t i = 0;
-  uint32_t n = 1000;
+  int32_t i = 0;
+  int32_t n = 1000;
   object_t* obj = object_default_create();
   object_default_t* o = OBJECT_DEFAULT(obj);
 
-  ASSERT_EQ(o->props.size, 0);
+  ASSERT_EQ(o->props.size, 0u);
 
   for (i = 0; i < n; i++) {
     tk_snprintf(name, sizeof(name), "name%u", i);

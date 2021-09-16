@@ -20,7 +20,7 @@ TEST(Str, basic) {
   str_t* s = NULL;
   s = str_init(&str, 0);
 
-  ASSERT_EQ(s->size, 0);
+  ASSERT_EQ(s->size, 0u);
 
   ASSERT_EQ(str_set(s, "hello"), RET_OK);
   ASSERT_EQ(str_eq(s, "hello"), TRUE);
@@ -263,7 +263,7 @@ TEST(Str, from_wstr) {
   str_t* s = NULL;
   s = str_init(&str, 0);
 
-  ASSERT_EQ(s->size, 0);
+  ASSERT_EQ(s->size, 0u);
   str_from_wstr(s, L"123456");
   ASSERT_STREQ(s->str, "123456");
 

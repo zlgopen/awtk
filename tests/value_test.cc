@@ -95,19 +95,19 @@ TEST(value, wstri32) {
 TEST(value, u32) {
   value_t v;
   ASSERT_EQ(&v, value_set_uint32(&v, 10));
-  ASSERT_EQ(value_uint32(&v), 10);
+  ASSERT_EQ(value_uint32(&v), 10u);
 }
 
 TEST(value, stru32) {
   value_t v;
   ASSERT_EQ(&v, value_set_str(&v, "10"));
-  ASSERT_EQ(value_uint32(&v), 10);
+  ASSERT_EQ(value_uint32(&v), 10u);
 }
 
 TEST(value, wstru32) {
   value_t v;
   ASSERT_EQ(&v, value_set_wstr(&v, L"10"));
-  ASSERT_EQ(value_uint32(&v), 10);
+  ASSERT_EQ(value_uint32(&v), 10u);
 }
 
 TEST(value, i64) {
@@ -131,61 +131,61 @@ TEST(value, wstri64) {
 TEST(value, u64) {
   value_t v;
   ASSERT_EQ(&v, value_set_uint64(&v, 10));
-  ASSERT_EQ(value_uint64(&v), 10);
+  ASSERT_EQ(value_uint64(&v), 10u);
 }
 
 TEST(value, stru64) {
   value_t v;
   ASSERT_EQ(&v, value_set_str(&v, "10"));
-  ASSERT_EQ(value_uint64(&v), 10);
+  ASSERT_EQ(value_uint64(&v), 10u);
 }
 
 TEST(value, wstru64) {
   value_t v;
   ASSERT_EQ(&v, value_set_wstr(&v, L"10"));
-  ASSERT_EQ(value_uint64(&v), 10);
+  ASSERT_EQ(value_uint64(&v), 10u);
 }
 
 TEST(value, float) {
   value_t v;
   ASSERT_EQ(&v, value_set_float(&v, 10));
-  ASSERT_EQ(value_float(&v), 10);
+  ASSERT_EQ(value_float(&v), 10.0f);
 }
 
 TEST(value, strfloat) {
   value_t v;
   ASSERT_EQ(&v, value_set_str(&v, "10"));
-  ASSERT_EQ(value_float(&v), 10);
+  ASSERT_EQ(value_float(&v), 10.0f);
 }
 
 TEST(value, wstrfloat) {
   value_t v;
   ASSERT_EQ(&v, value_set_wstr(&v, L"10"));
-  ASSERT_EQ(value_float(&v), 10);
+  ASSERT_EQ(value_float(&v), 10.0f);
 }
 
 TEST(value, double) {
   value_t v;
   ASSERT_EQ(&v, value_set_double(&v, 10));
-  ASSERT_EQ(value_double(&v), 10);
+  ASSERT_EQ(value_double(&v), 10.0);
 }
 
 TEST(value, bool_to_double) {
   value_t v;
   ASSERT_EQ(&v, value_set_bool(&v, true));
-  ASSERT_EQ(value_double(&v), 1);
+  ASSERT_EQ(value_double(&v), 1.0);
 }
 
 TEST(value, strdouble) {
   value_t v;
   ASSERT_EQ(&v, value_set_str(&v, "10"));
-  ASSERT_EQ(value_double(&v), 10);
+  ASSERT_EQ(value_double(&v), 10.0);
 }
 
 TEST(value, wstrdouble) {
   value_t v;
   ASSERT_EQ(&v, value_set_wstr(&v, L"10"));
-  ASSERT_EQ(value_double(&v), 10);
+  ASSERT_EQ(value_double(&v), 10.0);
 }
 
 TEST(ValueTest, str) {
@@ -203,7 +203,7 @@ TEST(ValueTest, sized_str) {
   ASSERT_EQ(&v, value_set_sized_str(&v, (char*)str, 2));
   sized_str = value_sized_str(&v);
   ASSERT_EQ(sized_str != NULL, true);
-  ASSERT_EQ(sized_str->size, 2);
+  ASSERT_EQ(sized_str->size, 2u);
 }
 
 TEST(ValueTest, binary_data) {
@@ -213,14 +213,14 @@ TEST(ValueTest, binary_data) {
   ASSERT_EQ(&v, value_set_binary_data(&v, (void*)str, 2));
   binary_data = value_binary_data(&v);
   ASSERT_EQ(binary_data != NULL, true);
-  ASSERT_EQ(binary_data->size, 2);
+  ASSERT_EQ(binary_data->size, 2u);
 }
 
 TEST(ValueTest, token) {
   value_t v;
 
   ASSERT_EQ(&v, value_set_token(&v, 123));
-  ASSERT_EQ(value_token(&v), 123);
+  ASSERT_EQ(value_token(&v), 123u);
 }
 
 TEST(ValueTest, wstr) {
@@ -313,11 +313,11 @@ TEST(ValueTest, ubjson) {
   const char* str = "str";
   binary_data_t* ubjson = NULL;
   ASSERT_EQ(&v, value_set_ubjson(&v, (void*)str, 2));
-  ASSERT_EQ(v.type, VALUE_TYPE_UBJSON);
+  ASSERT_EQ(v.type, (uint32_t)VALUE_TYPE_UBJSON);
 
   ubjson = value_ubjson(&v);
   ASSERT_EQ(ubjson != NULL, true);
-  ASSERT_EQ(ubjson->size, 2);
+  ASSERT_EQ(ubjson->size, 2u);
 }
 
 TEST(ValueTest, gradient) {
@@ -325,9 +325,9 @@ TEST(ValueTest, gradient) {
   const char* str = "str";
   binary_data_t* gradient = NULL;
   ASSERT_EQ(&v, value_set_gradient(&v, (void*)str, 2));
-  ASSERT_EQ(v.type, VALUE_TYPE_GRADIENT);
+  ASSERT_EQ(v.type, (uint32_t)VALUE_TYPE_GRADIENT);
 
   gradient = value_gradient(&v);
   ASSERT_EQ(gradient != NULL, true);
-  ASSERT_EQ(gradient->size, 2);
+  ASSERT_EQ(gradient->size, 2u);
 }

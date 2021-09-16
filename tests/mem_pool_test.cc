@@ -11,10 +11,10 @@ TEST(MemPool, basic1) {
   uint8_t buff[256];
   void* addr = NULL;
   mem_pool_t* pool = mem_pool_init(buff, sizeof(buff), 8, 1);
-  ASSERT_EQ(pool->block_nr, 1);
-  ASSERT_EQ(pool->block_size, 8);
-  ASSERT_EQ(pool->used, 0);
-  ASSERT_EQ(pool->bits_size, 2);
+  ASSERT_EQ(pool->block_nr, 1u);
+  ASSERT_EQ(pool->block_size, 8u);
+  ASSERT_EQ(pool->used, 0u);
+  ASSERT_EQ(pool->bits_size, 2u);
 
   addr = mem_pool_get(pool);
   ASSERT_EQ(addr != NULL, true);
@@ -30,10 +30,10 @@ TEST(MemPool, basic2) {
   void* addrs[100];
 
   mem_pool_t* pool = mem_pool_init(buff, sizeof(buff), 16, nr);
-  ASSERT_EQ(pool->block_nr, 100);
-  ASSERT_EQ(pool->block_size, 16);
-  ASSERT_EQ(pool->used, 0);
-  ASSERT_EQ(pool->bits_size, 4);
+  ASSERT_EQ(pool->block_nr, 100u);
+  ASSERT_EQ(pool->block_size, 16u);
+  ASSERT_EQ(pool->used, 0u);
+  ASSERT_EQ(pool->bits_size, 4u);
   ASSERT_EQ(mem_pool_match_size(pool, 9), TRUE);
   addr = mem_pool_get(pool);
   ASSERT_EQ(addr != NULL, true);
@@ -54,5 +54,5 @@ TEST(MemPool, basic2) {
     ASSERT_EQ(mem_pool_put(pool, addrs[i]), RET_OK);
     ASSERT_NE(mem_pool_put(pool, addrs[i]), RET_OK);
   }
-  ASSERT_EQ(pool->used, 0);
+  ASSERT_EQ(pool->used, 0u);
 }

@@ -16,5 +16,5 @@ TEST(FPS, basic) {
   cost = time_now_ms() - start;
   log_debug("cost=%u\n", cost);
 
-  ASSERT_EQ(fps_get(&fps), 60);
+  ASSERT_EQ(fps_get(&fps), 60u);
 }

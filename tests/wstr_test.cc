@@ -6,10 +6,10 @@ static void testSetWStr(const char* utf8, const wchar_t* cstr) {
   wstr_t str;
   char sutf8[256];
   ASSERT_EQ(wstr_init(&str, 100), &str);
-  ASSERT_EQ(str.capacity, 100);
+  ASSERT_EQ(str.capacity, 100u);
 
   ASSERT_EQ(wstr_set(&str, cstr), RET_OK);
-  ASSERT_EQ(str.size, wcslen(cstr));
+  ASSERT_EQ(str.size, (uint32_t)wcslen(cstr));
   ASSERT_EQ(wcs_cmp(str.str, cstr), 0);
 
   ASSERT_EQ(wstr_get_utf8(&str, sutf8, sizeof(sutf8)), RET_OK);
@@ -37,10 +37,10 @@ static void testSetUtf8(const char* utf8, const wchar_t* cstr) {
   wstr_t str;
   char sutf8[256];
   ASSERT_EQ(wstr_init(&str, 100), &str);
-  ASSERT_EQ(str.capacity, 100);
+  ASSERT_EQ(str.capacity, 100u);
 
   ASSERT_EQ(wstr_set_utf8(&str, utf8), RET_OK);
-  ASSERT_EQ(str.size, wcslen(cstr));
+  ASSERT_EQ(str.size, (uint32_t)wcslen(cstr));
   ASSERT_EQ(wcs_cmp(str.str, cstr), 0);
 
   ASSERT_EQ(wstr_get_utf8(&str, sutf8, sizeof(sutf8)), RET_OK);
@@ -58,10 +58,10 @@ static void testRemove(const wchar_t* cstr, uint16_t offset, uint16_t nr, ret_t 
                        const wchar_t* expected) {
   wstr_t str;
   ASSERT_EQ(wstr_init(&str, 100), &str);
-  ASSERT_EQ(str.capacity, 100);
+  ASSERT_EQ(str.capacity, 100u);
 
   ASSERT_EQ(wstr_set(&str, cstr), RET_OK);
-  ASSERT_EQ(str.size, wcslen(cstr));
+  ASSERT_EQ(str.size, (uint32_t)wcslen(cstr));
   ASSERT_EQ(wcs_cmp(str.str, cstr), 0);
 
   ASSERT_EQ(wstr_remove(&str, offset, nr), ret);
@@ -92,10 +92,10 @@ static void testInsert(const wchar_t* cstr, const wchar_t* insert, uint16_t offs
                        const wchar_t* expected) {
   wstr_t str;
   ASSERT_EQ(wstr_init(&str, 100), &str);
-  ASSERT_EQ(str.capacity, 100);
+  ASSERT_EQ(str.capacity, 100u);
 
   ASSERT_EQ(wstr_set(&str, cstr), RET_OK);
-  ASSERT_EQ(str.size, wcslen(cstr));
+  ASSERT_EQ(str.size, (uint32_t)wcslen(cstr));
   ASSERT_EQ(wcs_cmp(str.str, cstr), 0);
 
   ASSERT_EQ(wstr_insert(&str, offset, insert, wcslen(insert)), ret);
@@ -117,14 +117,14 @@ TEST(WStr, poppush) {
   wstr_t str;
   const wchar_t* cstr = L"汉字测试";
   ASSERT_EQ(wstr_init(&str, 100), &str);
-  ASSERT_EQ(str.capacity, 100);
+  ASSERT_EQ(str.capacity, 100u);
 
   ASSERT_EQ(wstr_set(&str, cstr), RET_OK);
-  ASSERT_EQ(str.size, wcslen(cstr));
+  ASSERT_EQ(str.size, (uint32_t)wcslen(cstr));
   ASSERT_EQ(wcs_cmp(str.str, cstr), 0);
 
   ASSERT_EQ(wstr_push(&str, 'a'), RET_OK);
-  ASSERT_EQ(str.size, wcslen(cstr) + 1);
+  ASSERT_EQ(str.size, (uint32_t)(wcslen(cstr) + 1));
   ASSERT_EQ(str.str[str.size - 1], (wchar_t)'a');
 
   ASSERT_EQ(wstr_reset(&str), RET_OK);
@@ -135,7 +135,7 @@ TEST(WStr, int) {
   int32_t v1 = 123;
   int32_t v2 = 0;
   ASSERT_EQ(wstr_init(&str, 100), &str);
-  ASSERT_EQ(str.capacity, 100);
+  ASSERT_EQ(str.capacity, 100u);
 
   ASSERT_EQ(wstr_from_int(&str, v1), RET_OK);
   ASSERT_EQ(wstr_to_int(&str, &v2), RET_OK);
@@ -149,7 +149,7 @@ TEST(WStr, double) {
   double v1 = 123;
   double v2 = 0;
   ASSERT_EQ(wstr_init(&str, 100), &str);
-  ASSERT_EQ(str.capacity, 100);
+  ASSERT_EQ(str.capacity, 100u);
 
   ASSERT_EQ(wstr_from_float(&str, v1), RET_OK);
   ASSERT_EQ(wstr_to_float(&str, &v2), RET_OK);
@@ -212,7 +212,7 @@ TEST(WStr, value) {
   int32_t vi;
   double vf;
   ASSERT_EQ(wstr_init(&str, 0), &str);
-  ASSERT_EQ(str.capacity, 0);
+  ASSERT_EQ(str.capacity, 0u);
 
   value_set_int(&v1, 123);
   ASSERT_EQ(wstr_from_value(&str, &v1), RET_OK);
@@ -246,26 +246,26 @@ TEST(WStr, value) {
 }
 
 TEST(WStr, wcs_len) {
-  ASSERT_EQ(wcs_len(L""), 0);
-  ASSERT_EQ(wcs_len(L"a"), 1);
-  ASSERT_EQ(wcs_len(L"abc中文测试123"), 10);
+  ASSERT_EQ(wcs_len(L""), 0u);
+  ASSERT_EQ(wcs_len(L"a"), 1u);
+  ASSERT_EQ(wcs_len(L"abc中文测试123"), 10u);
 }
 
 TEST(WStr, wcs_cpy) {
   wchar_t str[100];
 
-  ASSERT_EQ(wcs_len(wcs_cpy(str, L"")), 0);
-  ASSERT_EQ(wcs_len(wcs_cpy(str, L"a")), 1);
-  ASSERT_EQ(wcs_len(wcs_cpy(str, L"abc中文测试123")), 10);
+  ASSERT_EQ(wcs_len(wcs_cpy(str, L"")), 0u);
+  ASSERT_EQ(wcs_len(wcs_cpy(str, L"a")), 1u);
+  ASSERT_EQ(wcs_len(wcs_cpy(str, L"abc中文测试123")), 10u);
 }
 
 TEST(WStr, wcs_ncpy) {
   wchar_t str[100];
 
-  ASSERT_EQ(wcs_len(wcs_ncpy(str, L"", 1)), 0);
-  ASSERT_EQ(wcs_len(wcs_ncpy(str, L"a", 1)), 1);
-  ASSERT_EQ(wcs_len(wcs_ncpy(str, L"abc", 1)), 1);
-  ASSERT_EQ(wcs_len(wcs_ncpy(str, L"abc中文测试123", 30)), 10);
+  ASSERT_EQ(wcs_len(wcs_ncpy(str, L"", 1)), 0u);
+  ASSERT_EQ(wcs_len(wcs_ncpy(str, L"a", 1)), 1u);
+  ASSERT_EQ(wcs_len(wcs_ncpy(str, L"abc", 1)), 1u);
+  ASSERT_EQ(wcs_len(wcs_ncpy(str, L"abc中文测试123", 30)), 10u);
 }
 
 TEST(WStr, wcs_chr) {
@@ -302,12 +302,12 @@ TEST(WStr, push) {
   ASSERT_EQ(wstr_init(&str, 0), &str);
 
   ASSERT_EQ(wstr_push(s, (wchar_t)'1'), RET_OK);
-  ASSERT_EQ(s->size, 1);
+  ASSERT_EQ(s->size, 1u);
   ASSERT_EQ(wstr_push(s, (wchar_t)'2'), RET_OK);
-  ASSERT_EQ(s->size, 2);
+  ASSERT_EQ(s->size, 2u);
 
   ASSERT_EQ(wstr_append_with_len(s, L"345", 3), RET_OK);
-  ASSERT_EQ(s->size, 5);
+  ASSERT_EQ(s->size, 5u);
   ASSERT_EQ(wstr_to_int(s, &v), RET_OK);
   ASSERT_EQ(v, 12345);
   wstr_reset(&str);
@@ -320,7 +320,7 @@ TEST(WStr, push_int) {
   ASSERT_EQ(wstr_init(&str, 0), &str);
 
   ASSERT_EQ(wstr_push_int(s, "%d", 12345), RET_OK);
-  ASSERT_EQ(s->size, 5);
+  ASSERT_EQ(s->size, 5u);
   ASSERT_EQ(wstr_to_int(s, &v), RET_OK);
   ASSERT_EQ(v, 12345);
   s->size = 0;
@@ -332,9 +332,9 @@ TEST(WStr, append) {
 
   wstr_init(&str, 0);
   ASSERT_EQ(wstr_append(&str, L"123"), RET_OK);
-  ASSERT_EQ(str.size, 3);
+  ASSERT_EQ(str.size, 3u);
   ASSERT_EQ(wstr_append(&str, L"abc"), RET_OK);
-  ASSERT_EQ(str.size, 6);
+  ASSERT_EQ(str.size, 6u);
   ASSERT_EQ(wcscmp(str.str, L"123abc"), 0);
 
   wstr_reset(&str);
@@ -345,9 +345,9 @@ TEST(WStr, append_len) {
 
   wstr_init(&str, 0);
   ASSERT_EQ(wstr_append_with_len(&str, L"123123", 3), RET_OK);
-  ASSERT_EQ(str.size, 3);
+  ASSERT_EQ(str.size, 3u);
   ASSERT_EQ(wstr_append_with_len(&str, L"abcabc", 3), RET_OK);
-  ASSERT_EQ(str.size, 6);
+  ASSERT_EQ(str.size, 6u);
   ASSERT_EQ(wcscmp(str.str, L"123abc"), 0);
 
   wstr_reset(&str);
@@ -357,9 +357,9 @@ TEST(WStr, count) {
   wstr_t str;
   wstr_init(&str, 0);
   ASSERT_EQ(wstr_set(&str, L"123@123"), RET_OK);
-  ASSERT_EQ(wstr_count_char(&str, '#'), 0);
-  ASSERT_EQ(wstr_count_char(&str, '@'), 1);
-  ASSERT_EQ(wstr_count_char(&str, '1'), 2);
+  ASSERT_EQ(wstr_count_char(&str, '#'), 0u);
+  ASSERT_EQ(wstr_count_char(&str, '@'), 1u);
+  ASSERT_EQ(wstr_count_char(&str, '1'), 2u);
   wstr_reset(&str);
 }
 
@@ -368,23 +368,23 @@ TEST(WStr, set_utf8_with_len) {
 
   wstr_init(&str, 0);
   ASSERT_EQ(wstr_set_utf8_with_len(&str, "123123", 0), RET_OK);
-  ASSERT_EQ(str.size, 0);
+  ASSERT_EQ(str.size, 0u);
   ASSERT_EQ(wcscmp(str.str, L""), 0);
 
   ASSERT_EQ(wstr_set_utf8_with_len(&str, "123123", 1), RET_OK);
-  ASSERT_EQ(str.size, 1);
+  ASSERT_EQ(str.size, 1u);
   ASSERT_EQ(wcscmp(str.str, L"1"), 0);
 
   ASSERT_EQ(wstr_set_utf8_with_len(&str, "123123", 3), RET_OK);
-  ASSERT_EQ(str.size, 3);
+  ASSERT_EQ(str.size, 3u);
   ASSERT_EQ(wcscmp(str.str, L"123"), 0);
 
   ASSERT_EQ(wstr_set_utf8_with_len(&str, "123123", 6), RET_OK);
-  ASSERT_EQ(str.size, 6);
+  ASSERT_EQ(str.size, 6u);
   ASSERT_EQ(wcscmp(str.str, L"123123"), 0);
 
   ASSERT_EQ(wstr_set_utf8_with_len(&str, "123123", 6), RET_OK);
-  ASSERT_EQ(str.size, 6);
+  ASSERT_EQ(str.size, 6u);
   ASSERT_EQ(wcscmp(str.str, L"123123"), 0);
 
   wstr_reset(&str);

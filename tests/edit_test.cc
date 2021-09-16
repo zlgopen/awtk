@@ -9,6 +9,9 @@
 #include "widgets/group_box.h"
 #include "common.h"
 
+#define TK_TRUE 1u
+#define TK_FALSE 0u
+
 TEST(Edit, int) {
   value_t v1;
   value_t v2;
@@ -63,7 +66,7 @@ TEST(Edit, set_text) {
   widget_set_text_utf8(b, "hello");
 
   ASSERT_EQ(text_edit_get_state(EDIT(b)->model, &state), RET_OK);
-  ASSERT_EQ(state.cursor, 5);
+  ASSERT_EQ(state.cursor, 5u);
 
   widget_destroy(b);
 }
@@ -89,13 +92,13 @@ TEST(Edit, action_text) {
 
 TEST(Edit, inputable) {
   widget_t* b = edit_create(NULL, 10, 20, 30, 40);
-  ASSERT_EQ(b->vt->inputable, TRUE);
+  ASSERT_EQ(b->vt->inputable, TK_TRUE);
   widget_destroy(b);
 }
 
 TEST(Edit, focusable) {
   widget_t* b = edit_create(NULL, 10, 20, 30, 40);
-  ASSERT_EQ(b->vt->focusable, TRUE);
+  ASSERT_EQ(b->vt->focusable, TK_TRUE);
   widget_destroy(b);
 }
 
@@ -134,16 +137,16 @@ TEST(Edit, float) {
 
   ASSERT_EQ(edit_set_float_limit(b, 0, 100, 0.1), RET_OK);
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
-  ASSERT_EQ(0, value_float(&v2));
+  ASSERT_EQ(0.0f, value_float(&v2));
 
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_INPUT_TYPE, &v2), RET_OK);
   ASSERT_EQ(INPUT_FLOAT, value_int(&v2));
 
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MAX, &v2), RET_OK);
-  ASSERT_EQ(100, value_float(&v2));
+  ASSERT_EQ(100.0f, value_float(&v2));
 
   ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_STEP, &v2), RET_OK);
-  ASSERT_EQ(0.1 - value_float(&v2) < 0.001, true);
+  ASSERT_EQ(0.1f - value_float(&v2) < 0.001f, true);
 
   value_set_int(&v1, 10);
   ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MIN, &v1), RET_OK);
@@ -164,10 +167,10 @@ TEST(Edit, basic) {
   widget_t* b = edit_create(NULL, 10, 20, 30, 40);
 
   ASSERT_EQ(edit_set_readonly(b, TRUE), RET_OK);
-  ASSERT_EQ(EDIT(b)->readonly, TRUE);
+  ASSERT_EQ(EDIT(b)->readonly, TK_TRUE);
 
   ASSERT_EQ(edit_set_cancelable(b, TRUE), RET_OK);
-  ASSERT_EQ(EDIT(b)->cancelable, TRUE);
+  ASSERT_EQ(EDIT(b)->cancelable, TK_TRUE);
 
   value_set_bool(&v1, FALSE);
   ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_READONLY, &v1), RET_OK);
@@ -175,7 +178,7 @@ TEST(Edit, basic) {
   ASSERT_EQ(value_bool(&v1), value_bool(&v2));
 
   ASSERT_EQ(edit_set_auto_fix(b, TRUE), RET_OK);
-  ASSERT_EQ(EDIT(b)->auto_fix, TRUE);
+  ASSERT_EQ(EDIT(b)->auto_fix, TK_TRUE);
 
   value_set_bool(&v1, FALSE);
   ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_READONLY, &v1), RET_OK);
@@ -277,7 +280,7 @@ TEST(Edit, is_valid_chr_4_str) {
   ASSERT_EQ(edit_input_char(e, L'b'), RET_OK);
   ASSERT_EQ(edit_input_char(e, L'c'), RET_OK);
   ASSERT_NE(edit_input_char(e, L'd'), RET_OK);
-  ASSERT_EQ(e->text.size, 3);
+  ASSERT_EQ(e->text.size, 3u);
 
   widget_destroy(e);
 }
@@ -297,7 +300,7 @@ TEST(Edit, is_valid_chr_4_int) {
 
   ASSERT_NE(edit_input_char(e, L'd'), RET_OK);
 
-  ASSERT_EQ(e->text.size, 5);
+  ASSERT_EQ(e->text.size, 5u);
 
   widget_destroy(e);
 }
@@ -317,7 +320,7 @@ TEST(Edit, is_valid_chr_4_uint) {
 
   ASSERT_NE(edit_input_char(e, L'd'), RET_OK);
 
-  ASSERT_EQ(e->text.size, 4);
+  ASSERT_EQ(e->text.size, 4u);
 
   widget_destroy(e);
 }
@@ -484,22 +487,22 @@ TEST(Edit, value) {
   widget_set_text(w1, L"123");
   edit_set_input_type(w1, INPUT_INT);
   ASSERT_EQ(widget_get_prop(w1, WIDGET_PROP_VALUE, &v), RET_OK);
-  ASSERT_EQ(v.type, VALUE_TYPE_INT32);
+  ASSERT_EQ(v.type, (uint32_t)VALUE_TYPE_INT32);
   ASSERT_EQ(value_int(&v), 123);
 
   edit_set_input_type(w1, INPUT_UINT);
   ASSERT_EQ(widget_get_prop(w1, WIDGET_PROP_VALUE, &v), RET_OK);
-  ASSERT_EQ(v.type, VALUE_TYPE_UINT32);
+  ASSERT_EQ(v.type, (uint32_t)VALUE_TYPE_UINT32);
   ASSERT_EQ(value_int(&v), 123);
 
   edit_set_input_type(w1, INPUT_FLOAT);
   ASSERT_EQ(widget_get_prop(w1, WIDGET_PROP_VALUE, &v), RET_OK);
-  ASSERT_EQ(v.type, VALUE_TYPE_DOUBLE);
+  ASSERT_EQ(v.type, (uint32_t)VALUE_TYPE_DOUBLE);
   ASSERT_EQ(value_int(&v), 123);
 
   edit_set_input_type(w1, INPUT_UFLOAT);
   ASSERT_EQ(widget_get_prop(w1, WIDGET_PROP_VALUE, &v), RET_OK);
-  ASSERT_EQ(v.type, VALUE_TYPE_DOUBLE);
+  ASSERT_EQ(v.type, (uint32_t)VALUE_TYPE_DOUBLE);
   ASSERT_EQ(value_int(&v), 123);
 
   widget_destroy(w1);
@@ -601,7 +604,7 @@ TEST(Edit, set_text_exceed_max) {
 
   edit_set_text_limit(e, 0, 3);
   ASSERT_EQ(widget_set_text_utf8(e, "123456"), RET_OK);
-  ASSERT_EQ(e->text.size, 3);
+  ASSERT_EQ(e->text.size, 3u);
 
   widget_destroy(e);
 }

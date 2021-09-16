@@ -24,13 +24,13 @@ TEST(EventSourceTimer, basic) {
   event_source_t* event_source = event_source_timer_create(tm);
   ASSERT_EQ(event_source_get_fd(event_source), -1);
   ASSERT_EQ(event_source_check(event_source), RET_OK);
-  ASSERT_EQ(event_source_get_wakeup_time(event_source), 100);
+  ASSERT_EQ(event_source_get_wakeup_time(event_source), 100u);
   ASSERT_EQ(event_source_dispatch(event_source), RET_OK);
-  ASSERT_EQ(s_timer_times, 0);
+  ASSERT_EQ(s_timer_times, 0u);
 
   timer_set_time(100);
   ASSERT_EQ(event_source_dispatch(event_source), RET_OK);
-  ASSERT_EQ(s_timer_times, 1);
+  ASSERT_EQ(s_timer_times, 1u);
 
   object_unref(OBJECT(event_source));
   timer_manager_destroy(tm);

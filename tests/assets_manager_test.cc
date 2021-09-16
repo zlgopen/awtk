@@ -188,7 +188,7 @@ TEST(AssetsManager, file_image) {
 
   r = assets_manager_ref(rm, ASSET_TYPE_IMAGE, "earth");
   ASSERT_EQ(r != NULL, true);
-  ASSERT_EQ(r->refcount, 1);
+  ASSERT_EQ(r->refcount, 1u);
   ASSERT_EQ(assets_manager_unref(rm, r), RET_OK);
 
   assets_manager_destroy(rm);
@@ -233,17 +233,17 @@ TEST(AssetsManager, file_script) {
 
   r = assets_manager_ref(rm, ASSET_TYPE_SCRIPT, "dummy");
   ASSERT_EQ(r != NULL, true);
-  ASSERT_EQ(r->refcount, 1);
+  ASSERT_EQ(r->refcount, 1u);
 
   ASSERT_EQ(assets_manager_add(rm, r), RET_OK);
-  ASSERT_EQ(r->refcount, 2);
+  ASSERT_EQ(r->refcount, 2u);
 
   r = assets_manager_find_in_cache(rm, ASSET_TYPE_SCRIPT, 0, "dummy");
   ASSERT_EQ(r != NULL, true);
 
   ASSERT_EQ(assets_manager_unref(rm, r), RET_OK);
   r = assets_manager_find_in_cache(rm, ASSET_TYPE_SCRIPT, 0, "dummy");
-  ASSERT_EQ(r->refcount, 1);
+  ASSERT_EQ(r->refcount, 1u);
 
   assets_manager_destroy(rm);
 }

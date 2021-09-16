@@ -7,7 +7,7 @@ TEST(Pixel, rgb565) {
   ASSERT_EQ(p.r, 1);
   ASSERT_EQ(p.g, 2);
   ASSERT_EQ(p.b, 3);
-  ASSERT_EQ(sizeof(p), pixel_rgb565_BPP);
+  ASSERT_EQ(sizeof(p), (uint32_t)pixel_rgb565_BPP);
 
   rgba_t rgba = pixel_rgb565_to_rgba(p);
   ASSERT_EQ(rgba.r, p.r << 3);
@@ -357,7 +357,7 @@ TEST(Pixel, rgb888) {
   ASSERT_EQ(p.r, 1);
   ASSERT_EQ(p.g, 2);
   ASSERT_EQ(p.b, 3);
-  ASSERT_EQ(sizeof(p), pixel_rgb888_BPP);
+  ASSERT_EQ(sizeof(p), (uint32_t)pixel_rgb888_BPP);
 
   rgba_t rgba = pixel_rgb888_to_rgba(p);
   ASSERT_EQ(rgba.r, p.r);
@@ -371,7 +371,7 @@ TEST(Pixel, bgr888) {
   ASSERT_EQ(p.r, 1);
   ASSERT_EQ(p.g, 2);
   ASSERT_EQ(p.b, 3);
-  ASSERT_EQ(sizeof(p), pixel_bgr888_BPP);
+  ASSERT_EQ(sizeof(p), (uint32_t)pixel_bgr888_BPP);
 
   rgba_t rgba = pixel_bgr888_to_rgba(p);
   ASSERT_EQ(rgba.r, p.r);
@@ -385,7 +385,7 @@ TEST(Pixel, rgba8888) {
   ASSERT_EQ(p.r, 1);
   ASSERT_EQ(p.g, 2);
   ASSERT_EQ(p.b, 3);
-  ASSERT_EQ(sizeof(p), pixel_rgba8888_BPP);
+  ASSERT_EQ(sizeof(p), (uint32_t)pixel_rgba8888_BPP);
 
   rgba_t rgba = pixel_rgba8888_to_rgba(p);
   ASSERT_EQ(rgba.r, p.r);
@@ -399,7 +399,7 @@ TEST(Pixel, abgr8888) {
   ASSERT_EQ(p.r, 1);
   ASSERT_EQ(p.g, 2);
   ASSERT_EQ(p.b, 3);
-  ASSERT_EQ(sizeof(p), pixel_abgr8888_BPP);
+  ASSERT_EQ(sizeof(p), (uint32_t)pixel_abgr8888_BPP);
 
   rgba_t rgba = pixel_abgr8888_to_rgba(p);
   ASSERT_EQ(rgba.r, p.r);
@@ -413,7 +413,7 @@ TEST(Pixel, bgra8888) {
   ASSERT_EQ(p.r, 1);
   ASSERT_EQ(p.g, 2);
   ASSERT_EQ(p.b, 3);
-  ASSERT_EQ(sizeof(p), pixel_bgra8888_BPP);
+  ASSERT_EQ(sizeof(p), (uint32_t)pixel_bgra8888_BPP);
 
   rgba_t rgba = pixel_bgra8888_to_rgba(p);
   ASSERT_EQ(rgba.r, p.r);
@@ -427,7 +427,7 @@ TEST(Pixel, argb8888) {
   ASSERT_EQ(p.r, 1);
   ASSERT_EQ(p.g, 2);
   ASSERT_EQ(p.b, 3);
-  ASSERT_EQ(sizeof(p), pixel_argb8888_BPP);
+  ASSERT_EQ(sizeof(p), (uint32_t)pixel_argb8888_BPP);
 
   rgba_t rgba = pixel_argb8888_to_rgba(p);
   ASSERT_EQ(rgba.r, p.r);

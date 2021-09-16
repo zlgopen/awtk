@@ -6,6 +6,9 @@
 #include "gtest/gtest.h"
 #include <stdlib.h>
 
+#define TK_TRUE 1u
+#define TK_FALSE 0u
+
 TEST(slider, basic) {
   value_t v1;
   value_t v2;
@@ -35,7 +38,7 @@ TEST(slider, basic) {
   ASSERT_EQ(widget_set_prop(s, "bar_size", &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(s, "bar_size", &v2), RET_OK);
   ASSERT_EQ(value_int(&v1), value_int(&v2));
-  ASSERT_EQ(SLIDER(s)->bar_size, value_int(&v2));
+  ASSERT_EQ(SLIDER(s)->bar_size, value_uint32(&v2));
 
   value_set_bool(&v1, TRUE);
   ASSERT_EQ(widget_set_prop(s, "vertical", &v1), RET_OK);
@@ -69,7 +72,7 @@ TEST(Slider, event) {
 
 TEST(Slider, inputable) {
   widget_t* b = slider_create(NULL, 10, 20, 30, 40);
-  ASSERT_EQ(b->vt->inputable, TRUE);
+  ASSERT_EQ(b->vt->inputable, TK_TRUE);
   widget_destroy(b);
 }
 
@@ -89,13 +92,13 @@ TEST(Slider, inc) {
   ASSERT_EQ(slider_inc(w), RET_OK);
   ASSERT_EQ(slider_inc(w), RET_OK);
   ASSERT_EQ(slider_inc(w), RET_OK);
-  ASSERT_EQ(slider->value, 3);
+  ASSERT_EQ(slider->value, 3.0);
 
   slider_set_value(w, 100);
   ASSERT_EQ(slider_inc(w), RET_OK);
   ASSERT_EQ(slider_inc(w), RET_OK);
   ASSERT_EQ(slider_inc(w), RET_OK);
-  ASSERT_EQ(slider->value, 100);
+  ASSERT_EQ(slider->value, 100.0);
 
   widget_destroy(w);
 }
@@ -109,7 +112,7 @@ TEST(Slider, inc_step) {
   ASSERT_EQ(slider_inc(w), RET_OK);
   ASSERT_EQ(slider_inc(w), RET_OK);
   ASSERT_EQ(slider_inc(w), RET_OK);
-  ASSERT_EQ(slider->value, 30);
+  ASSERT_EQ(slider->value, 30.0);
 
   widget_destroy(w);
 }
@@ -122,13 +125,13 @@ TEST(Slider, dec) {
   ASSERT_EQ(slider_dec(w), RET_OK);
   ASSERT_EQ(slider_dec(w), RET_OK);
   ASSERT_EQ(slider_dec(w), RET_OK);
-  ASSERT_EQ(slider->value, 97);
+  ASSERT_EQ(slider->value, 97.0);
 
   slider_set_value(w, 0);
   ASSERT_EQ(slider_dec(w), RET_OK);
   ASSERT_EQ(slider_dec(w), RET_OK);
   ASSERT_EQ(slider_dec(w), RET_OK);
-  ASSERT_EQ(slider->value, 0);
+  ASSERT_EQ(slider->value, 0.0);
 
   widget_destroy(w);
 }
@@ -142,7 +145,7 @@ TEST(Slider, dec_step) {
   ASSERT_EQ(slider_dec(w), RET_OK);
   ASSERT_EQ(slider_dec(w), RET_OK);
   ASSERT_EQ(slider_dec(w), RET_OK);
-  ASSERT_EQ(slider->value, 70);
+  ASSERT_EQ(slider->value, 70.0);
 
   widget_destroy(w);
 }

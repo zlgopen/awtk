@@ -20,9 +20,9 @@ TEST(Buffer, rewind) {
   const char* str = "hello awtk";
   wbuffer_init_extendable(&wbuffer);
   wbuffer_write_string(&wbuffer, str);
-  ASSERT_EQ(wbuffer.cursor, strlen(str) + 1);
+  ASSERT_EQ(wbuffer.cursor, strlen(str) + 1u);
   ASSERT_EQ(wbuffer_rewind(&wbuffer), RET_OK);
-  ASSERT_EQ(wbuffer.cursor, 0);
+  ASSERT_EQ(wbuffer.cursor, 0u);
 
   wbuffer_deinit(&wbuffer);
 }
@@ -40,9 +40,9 @@ TEST(Buffer, demo2) {
   rbuffer_init(&rbuffer, wbuffer.data, wbuffer.cursor);
   rbuffer_read_string(&rbuffer, &rstr);
 
-  ASSERT_EQ(rbuffer.cursor, strlen(wstr) + 1);
+  ASSERT_EQ(rbuffer.cursor, strlen(wstr) + 1u);
   ASSERT_EQ(rbuffer_rewind(&rbuffer), RET_OK);
-  ASSERT_EQ(rbuffer.cursor, 0);
+  ASSERT_EQ(rbuffer.cursor, 0u);
 
   rbuffer_read_string(&rbuffer, &rstr);
 
@@ -105,7 +105,7 @@ TEST(Buffer, basic1) {
   ASSERT_EQ(wbuffer.cursor, sizeof(uint64_t));
   ASSERT_EQ(rbuffer_init(rb, wbuffer.data, wbuffer.cursor) != NULL, true);
   ASSERT_EQ(rbuffer_read_uint64(rb, &v64), RET_OK);
-  ASSERT_EQ(v64, 0x112233445566);
+  ASSERT_EQ(v64, (uint64_t)0x112233445566);
   ASSERT_EQ(rbuffer_has_more(rb), FALSE);
 
   ASSERT_EQ(wbuffer_init(&wbuffer, data, sizeof(data)), &wbuffer);
@@ -148,13 +148,13 @@ TEST(Buffer, WbufferSkipExtendable) {
   ASSERT_EQ(wbuffer_init_extendable(&wbuffer), &wbuffer);
 
   ASSERT_EQ(wbuffer_skip(&wbuffer, 10), RET_OK);
-  ASSERT_EQ(wbuffer.cursor, 10);
+  ASSERT_EQ(wbuffer.cursor, 10u);
 
   ASSERT_EQ(wbuffer_skip(&wbuffer, -10), RET_OK);
-  ASSERT_EQ(wbuffer.cursor, 0);
+  ASSERT_EQ(wbuffer.cursor, 0u);
 
   ASSERT_EQ(wbuffer_skip(&wbuffer, -10), RET_BAD_PARAMS);
-  ASSERT_EQ(wbuffer.cursor, 0);
+  ASSERT_EQ(wbuffer.cursor, 0u);
 
   wbuffer_deinit(&wbuffer);
 }
@@ -165,13 +165,13 @@ TEST(Buffer, WbufferSkip) {
   ASSERT_EQ(wbuffer_init(&wbuffer, data, sizeof(data)), &wbuffer);
 
   ASSERT_EQ(wbuffer_skip(&wbuffer, 10), RET_OK);
-  ASSERT_EQ(wbuffer.cursor, 10);
+  ASSERT_EQ(wbuffer.cursor, 10u);
 
   ASSERT_EQ(wbuffer_skip(&wbuffer, -10), RET_OK);
-  ASSERT_EQ(wbuffer.cursor, 0);
+  ASSERT_EQ(wbuffer.cursor, 0u);
 
   ASSERT_EQ(wbuffer_skip(&wbuffer, -10), RET_BAD_PARAMS);
-  ASSERT_EQ(wbuffer.cursor, 0);
+  ASSERT_EQ(wbuffer.cursor, 0u);
 }
 
 TEST(Buffer, RbufferSkip) {
@@ -180,13 +180,13 @@ TEST(Buffer, RbufferSkip) {
   ASSERT_EQ(rbuffer_init(&rbuffer, data, sizeof(data)), &rbuffer);
 
   ASSERT_EQ(rbuffer_skip(&rbuffer, 10), RET_OK);
-  ASSERT_EQ(rbuffer.cursor, 10);
+  ASSERT_EQ(rbuffer.cursor, 10u);
 
   ASSERT_EQ(rbuffer_skip(&rbuffer, -10), RET_OK);
-  ASSERT_EQ(rbuffer.cursor, 0);
+  ASSERT_EQ(rbuffer.cursor, 0u);
 
   ASSERT_EQ(rbuffer_skip(&rbuffer, -10), RET_BAD_PARAMS);
-  ASSERT_EQ(rbuffer.cursor, 0);
+  ASSERT_EQ(rbuffer.cursor, 0u);
 }
 
 TEST(Buffer, string) {

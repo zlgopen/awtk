@@ -10,13 +10,13 @@ TEST(AnimatorMove, basic) {
   widget_t* button = button_create(NULL, 0, 0, 100, 30);
   widget_animator_t* wa = widget_animator_move_create(button, 1000, 0, EASING_LINEAR);
 
-  ASSERT_EQ(wa->yoyo_times, 0);
+  ASSERT_EQ(wa->yoyo_times, 0u);
   ASSERT_EQ(widget_animator_set_yoyo(wa, 12), RET_OK);
-  ASSERT_EQ(wa->yoyo_times, 12);
+  ASSERT_EQ(wa->yoyo_times, 12u);
 
-  ASSERT_EQ(wa->repeat_times, 0);
+  ASSERT_EQ(wa->repeat_times, 0u);
   ASSERT_EQ(widget_animator_set_repeat(wa, 10), RET_OK);
-  ASSERT_EQ(wa->repeat_times, 10);
+  ASSERT_EQ(wa->repeat_times, 10u);
 
   ASSERT_EQ(wa->reversed, FALSE);
   ASSERT_EQ(widget_animator_set_reversed(wa, TRUE), RET_OK);
@@ -30,9 +30,9 @@ TEST(AnimatorMove, state) {
   widget_t* button = button_create(NULL, 0, 0, 100, 30);
   widget_animator_t* wa = widget_animator_move_create(button, 1000, 0, EASING_LINEAR);
 
-  ASSERT_EQ(wa->repeat_times, 0);
+  ASSERT_EQ(wa->repeat_times, 0u);
   ASSERT_EQ(widget_animator_set_repeat(wa, 10), RET_OK);
-  ASSERT_EQ(wa->repeat_times, 10);
+  ASSERT_EQ(wa->repeat_times, 10u);
 
   ASSERT_EQ(widget_animator_start(wa), RET_OK);
   ASSERT_EQ(wa->state, ANIMATOR_RUNNING);

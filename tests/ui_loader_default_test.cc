@@ -113,7 +113,7 @@ TEST(UILoader, ext) {
   ASSERT_EQ(ui_builder_on_widget_end(writer), RET_OK);
 
   ASSERT_EQ(ui_builder_on_widget_end(writer), RET_OK);
-  ASSERT_EQ(wbuffer.cursor, 194);
+  ASSERT_EQ(wbuffer.cursor, 194u);
 
   ASSERT_EQ(ui_loader_load(loader, wbuffer.data, wbuffer.cursor, builder), RET_OK);
   ASSERT_EQ(tk_str_eq(widget_get_type(builder->root), WIDGET_TYPE_GROUP_BOX), TRUE);

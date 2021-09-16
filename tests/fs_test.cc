@@ -14,9 +14,9 @@ TEST(Fs, read_part) {
 
   file_write(filename, str, strlen(str));
   char* ret = (char*)file_read(filename, &size);
-  ASSERT_EQ(file_read_part(filename, buff, sizeof(buff), 0), strlen(str));
+  ASSERT_EQ(file_read_part(filename, buff, sizeof(buff), 0), (int32_t)strlen(str));
   ASSERT_EQ(strcmp(ret, str), 0);
-  ASSERT_EQ(size, strlen(str));
+  ASSERT_EQ(size, (uint32_t)strlen(str));
   file_remove(filename);
   TKMEM_FREE(ret);
 }

@@ -8,8 +8,8 @@ TEST(Bitmap, basic) {
   for (i = 0; i < n; i++) {
     bitmap_t* b = bitmap_create_ex(i + 1, i + 1, 0, BITMAP_FMT_BGRA8888);
     uint8_t* bdata = bitmap_lock_buffer_for_write(b);
-    ASSERT_EQ(((uint64_t)(bdata)) % BITMAP_ALIGN_SIZE, 0);
-    ASSERT_EQ(bitmap_get_line_length(b), b->w * 4);
+    ASSERT_EQ(((intptr_t)(bdata)) % BITMAP_ALIGN_SIZE, (intptr_t)0);
+    ASSERT_EQ(bitmap_get_line_length(b), b->w * 4u);
     bitmap_unlock_buffer(b);
     bitmap_destroy(b);
   }
@@ -17,8 +17,8 @@ TEST(Bitmap, basic) {
   for (i = 0; i < n; i++) {
     bitmap_t* b = bitmap_create_ex(i + 1, i + 1, 0, BITMAP_FMT_BGR565);
     uint8_t* bdata = bitmap_lock_buffer_for_write(b);
-    ASSERT_EQ(((uint64_t)(bdata)) % BITMAP_ALIGN_SIZE, 0);
-    ASSERT_EQ(bitmap_get_line_length(b), b->w * 2);
+    ASSERT_EQ(((intptr_t)(bdata)) % BITMAP_ALIGN_SIZE, (intptr_t)0);
+    ASSERT_EQ(bitmap_get_line_length(b), b->w * 2u);
     bitmap_unlock_buffer(b);
     bitmap_destroy(b);
   }

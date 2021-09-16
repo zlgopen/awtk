@@ -34,20 +34,20 @@ TEST(SlideView, basic) {
   widget_on(w, EVT_VALUE_CHANGED, slide_view_on_change, &str);
 
   slide_view_set_active(w, 0);
-  ASSERT_EQ(slide_view->active, 0);
+  ASSERT_EQ(slide_view->active, 0u);
   ASSERT_EQ(slide_view_get_prev(slide_view), WIDGET(NULL));
   ASSERT_EQ(slide_view_get_next(slide_view), b2);
 
   ASSERT_EQ(slide_view_activate_prev(slide_view), RET_FAIL);
   ASSERT_EQ(slide_view_activate_next(slide_view), RET_OK);
-  ASSERT_EQ(slide_view->active, 1);
+  ASSERT_EQ(slide_view->active, 1u);
   ASSERT_EQ(str, "will_changed:changed:");
 
   ASSERT_EQ(slide_view_activate_next(slide_view), RET_OK);
-  ASSERT_EQ(slide_view->active, 2);
+  ASSERT_EQ(slide_view->active, 2u);
 
   ASSERT_EQ(slide_view_activate_next(slide_view), RET_FAIL);
-  ASSERT_EQ(slide_view->active, 2);
+  ASSERT_EQ(slide_view->active, 2u);
 
   ASSERT_EQ(slide_view_get_prev(slide_view), b2);
   ASSERT_EQ(slide_view_get_next(slide_view), WIDGET(NULL));

@@ -132,11 +132,11 @@ TEST(FScript, basic9) {
   object_t* obj = object_default_create();
 
   fscript_eval(obj, "0xf0112233", &v);
-  ASSERT_EQ(value_uint32(&v), 0xf0112233);
+  ASSERT_EQ(value_uint32(&v), 0xf0112233u);
   value_reset(&v);
 
   fscript_eval(obj, "0b1100", &v);
-  ASSERT_EQ(value_uint32(&v), 0b1100);
+  ASSERT_EQ(value_uint32(&v), 0b1100u);
   value_reset(&v);
 
   OBJECT_UNREF(obj);
@@ -154,7 +154,7 @@ TEST(FScript, number) {
   value_reset(&v);
 
   fscript_eval(obj, "0x8822334455667788", &v);
-  ASSERT_EQ(value_uint64(&v), 0x8822334455667788);
+  ASSERT_EQ(value_uint64(&v), 0x8822334455667788u);
   value_reset(&v);
 
   OBJECT_UNREF(obj);
@@ -1001,11 +1001,11 @@ TEST(FExr, unary) {
   value_reset(&v);
 
   fscript_eval(obj, "~~1", &v);
-  ASSERT_EQ(value_uint32(&v), 1);
+  ASSERT_EQ(value_uint32(&v), 1u);
   value_reset(&v);
 
   fscript_eval(obj, "~~~1", &v);
-  ASSERT_EQ(value_uint32(&v), -2);
+  ASSERT_EQ(value_uint32(&v), (uint32_t)-2);
   value_reset(&v);
 
   OBJECT_UNREF(obj);

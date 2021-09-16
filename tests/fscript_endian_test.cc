@@ -29,7 +29,7 @@ TEST(FExr, endian_htonl) {
   object_t* obj = object_default_create();
 
   fscript_eval(obj, "htonl(0x11223344)", &v);
-  ASSERT_EQ(value_uint32(&v), 0x44332211);
+  ASSERT_EQ(value_uint32(&v), 0x44332211u);
   value_reset(&v);
 
   OBJECT_UNREF(obj);
@@ -62,7 +62,7 @@ TEST(FExr, endian_ntohl) {
   object_t* obj = object_default_create();
 
   fscript_eval(obj, "ntohl(0x11223344)", &v);
-  ASSERT_EQ(value_uint32(&v), 0x44332211);
+  ASSERT_EQ(value_uint32(&v), 0x44332211u);
   value_reset(&v);
 
   OBJECT_UNREF(obj);
@@ -73,7 +73,7 @@ TEST(FExr, endian_ntohll) {
   object_t* obj = object_default_create();
 
   fscript_eval(obj, "ntohll(0x1122334455667788)", &v);
-  ASSERT_EQ(value_uint64(&v), 0x8877665544332211);
+  ASSERT_EQ(value_uint64(&v), 0x8877665544332211u);
   value_reset(&v);
 
   OBJECT_UNREF(obj);

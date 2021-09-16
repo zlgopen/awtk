@@ -38,20 +38,20 @@ TEST(GlyphCache, shrink) {
   }
 
   ASSERT_EQ(glyph_cache_shrink(c, nr / 4), RET_OK);
-  ASSERT_EQ(c->size, nr / 4);
-  ASSERT_EQ(c->items[0].last_access_time, (nr - 1));
-  ASSERT_EQ(c->items[1].last_access_time, (nr - 2));
-  ASSERT_EQ(c->items[2].last_access_time, (nr - 3));
+  ASSERT_EQ(c->size, (uint32_t)(nr / 4));
+  ASSERT_EQ(c->items[0].last_access_time, (uint64_t)(nr - 1));
+  ASSERT_EQ(c->items[1].last_access_time, (uint64_t)(nr - 2));
+  ASSERT_EQ(c->items[2].last_access_time, (uint64_t)(nr - 3));
 
   ASSERT_EQ(glyph_cache_shrink(c, nr / 8), RET_OK);
-  ASSERT_EQ(c->size, nr / 8);
-  ASSERT_EQ(c->items[0].last_access_time, (nr - 1));
+  ASSERT_EQ(c->size, (uint32_t)(nr / 8));
+  ASSERT_EQ(c->items[0].last_access_time, (uint64_t)(nr - 1));
 
   ASSERT_EQ(glyph_cache_shrink(c, nr / 4), RET_OK);
-  ASSERT_EQ(c->size, nr / 8);
+  ASSERT_EQ(c->size, (uint32_t)(nr / 8));
 
   ASSERT_EQ(glyph_cache_shrink(c, 0), RET_OK);
-  ASSERT_EQ(c->size, 0);
+  ASSERT_EQ(c->size, 0u);
 
   glyph_cache_deinit(c);
 }

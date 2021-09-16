@@ -203,26 +203,26 @@ static bool_t check_candidates_from_chars(const char** candidates1, const char**
 
 TEST(input_engine, add_candidates) {
 #define py_ji s_py_ji
-  const char* key_str = "ji";
 
-  const char key_char = '2';
   const char* test_str = "test";
   input_method_t* im = input_method_create();
   ASSERT_EQ(im != NULL, TRUE);
   ASSERT_EQ(im->engine != NULL, TRUE);
 
   input_engine_reset_candidates(im->engine);
-  ASSERT_EQ(im->engine->candidates_nr, 0);
+  ASSERT_EQ(im->engine->candidates_nr, 0u);
 
   input_engine_add_candidate(im->engine, test_str);
-  ASSERT_EQ(im->engine->candidates_nr, 1);
+  ASSERT_EQ(im->engine->candidates_nr, 1u);
   ASSERT_EQ(im->engine->candidates.data != NULL, TRUE);
   ASSERT_EQ(strncmp((const char*)(im->engine->candidates.data), test_str, strlen(test_str)), 0);
 
 #if defined(WITH_IME_T9) || defined(WITH_IME_T9EXT) || defined(WITH_IME_SPINYIN)
+  const char key_char = '2';
+  const char* key_str = "ji";
   input_engine_reset_candidates(im->engine);
   input_engine_add_candidates_from_char(im->engine, s_table_num_chars, key_char);
-  ASSERT_EQ(im->engine->candidates_nr, 3);
+  ASSERT_EQ(im->engine->candidates_nr, 3u);
   ASSERT_EQ(im->engine->candidates.data != NULL, TRUE);
   ASSERT_EQ(check_candidates_from_wchar((const char*)(im->engine->candidates.data),
                                         s_table_num_chars[2], im->engine->candidates_nr),
@@ -231,7 +231,7 @@ TEST(input_engine, add_candidates) {
   input_engine_reset_candidates(im->engine);
   input_engine_add_candidates_from_string(im->engine, s_pinyin_chinese_items,
                                           ARRAY_SIZE(s_pinyin_chinese_items), key_str, FALSE);
-  ASSERT_EQ(im->engine->candidates_nr, 63);
+  ASSERT_EQ(im->engine->candidates_nr, 63u);
   ASSERT_EQ(im->engine->candidates.data != NULL, TRUE);
   ASSERT_EQ(check_candidates_from_char((const char*)(im->engine->candidates.data), py_ji, 63),
             TRUE);
@@ -259,10 +259,10 @@ TEST(input_engine, dispatch_candidates) {
   ASSERT_EQ(event_id != TK_INVALID_ID, TRUE);
 
   input_engine_reset_candidates(im->engine);
-  ASSERT_EQ(im->engine->candidates_nr, 0);
+  ASSERT_EQ(im->engine->candidates_nr, 0u);
 
   input_engine_add_candidate(im->engine, test_str);
-  ASSERT_EQ(im->engine->candidates_nr, 1);
+  ASSERT_EQ(im->engine->candidates_nr, 1u);
   ASSERT_EQ(im->engine->candidates.data != NULL, TRUE);
   ASSERT_EQ(strncmp((const char*)(im->engine->candidates.data), test_str, strlen(test_str)), 0);
 
@@ -322,7 +322,7 @@ TEST(input_engine, input_key) {
   s_test_py_ji[0][0] = 'j';
   s_test_py_ji[0][1] = 'i';
   s_test_py_ji[0][2] = '\0';
-  for (int32_t i = 1; i < candidate_info.candidates_nr; i++) {
+  for (uint32_t i = 1; i < candidate_info.candidates_nr; i++) {
     int32_t n = strlen(s_py_ji[i - 1]);
     s_test_py_ji[i] = new char[n + 1];
     memset(s_test_py_ji[i], 0x0, n + 1);

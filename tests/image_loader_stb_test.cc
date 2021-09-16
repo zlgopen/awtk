@@ -14,7 +14,7 @@
 static ret_t load_image(const char* filename, bitmap_t* image) {
   ret_t ret = RET_OK;
   image_loader_t* loader = image_loader_stb();
-  uint32_t size = file_get_size(filename);
+  int32_t size = file_get_size(filename);
   asset_info_t* info = asset_info_create(ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_PNG, "name", size);
   return_value_if_fail(info != NULL, RET_OOM);
 

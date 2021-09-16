@@ -21,9 +21,9 @@ TEST(TextEdit, basic) {
   ASSERT_EQ(text_edit_set_cursor(text_edit, -1), RET_OK);
 
   ASSERT_EQ(text_edit_get_state(text_edit, &state), RET_OK);
-  ASSERT_EQ(state.select_start, 1);
-  ASSERT_EQ(state.select_end, 2);
-  ASSERT_EQ(state.cursor, 5);
+  ASSERT_EQ(state.select_start, 1u);
+  ASSERT_EQ(state.select_end, 2u);
+  ASSERT_EQ(state.cursor, 5u);
   ASSERT_EQ(state.mask, FALSE);
   ASSERT_EQ(state.mask_char, FALSE);
   ASSERT_EQ(state.single_line, FALSE);
@@ -38,9 +38,9 @@ TEST(TextEdit, basic) {
   clip_board_clear(clip_board());
   ASSERT_EQ(text_edit_cut(text_edit), RET_OK);
   ASSERT_EQ(text_edit_get_state(text_edit, &state), RET_OK);
-  ASSERT_EQ(state.select_start, 0);
-  ASSERT_EQ(state.select_end, 0);
-  ASSERT_EQ(state.cursor, 0);
+  ASSERT_EQ(state.select_start, 0u);
+  ASSERT_EQ(state.select_end, 0u);
+  ASSERT_EQ(state.cursor, 0u);
 
   key_event_init(&keye, EVT_KEY_DOWN, w, TK_KEY_0);
   ASSERT_EQ(text_edit_key_down(text_edit, &keye), RET_OK);
@@ -61,13 +61,13 @@ TEST(TextEdit, cursor) {
   widget_set_text_utf8(w, str);
 
   ASSERT_EQ(text_edit_set_cursor(text_edit, 0), RET_OK);
-  ASSERT_EQ(text_edit_get_cursor(text_edit), 0);
+  ASSERT_EQ(text_edit_get_cursor(text_edit), 0u);
 
   ASSERT_EQ(text_edit_set_cursor(text_edit, 5), RET_OK);
-  ASSERT_EQ(text_edit_get_cursor(text_edit), 5);
+  ASSERT_EQ(text_edit_get_cursor(text_edit), 5u);
 
   ASSERT_EQ(text_edit_set_cursor(text_edit, 500), RET_OK);
-  ASSERT_EQ(text_edit_get_cursor(text_edit), strlen(str));
+  ASSERT_EQ(text_edit_get_cursor(text_edit), (uint32_t)strlen(str));
 
   widget_destroy(w);
   text_edit_destroy(text_edit);
@@ -117,8 +117,8 @@ TEST(TextEdit, get_height) {
   text_edit_set_canvas(text_edit, widget_get_canvas(w));
   widget_set_prop_pointer(win, WIDGET_PROP_CANVAS, NULL);
 
-  ASSERT_EQ(text_edit_get_height(text_edit, 0), 0);
-  ASSERT_EQ(text_edit_get_height(text_edit, 4), 22);
+  ASSERT_EQ(text_edit_get_height(text_edit, 0), 0u);
+  ASSERT_EQ(text_edit_get_height(text_edit, 4), 22u);
 
   widget_destroy(win);
   text_edit_destroy(text_edit);
@@ -142,8 +142,8 @@ TEST(TextEdit, get_rows_line) {
 
   const uint32_t* rows_line = text_edit_get_lines_of_each_row(text_edit);
 
-  ASSERT_EQ(rows_line[0], 1);
-  ASSERT_EQ(rows_line[1], 2);
+  ASSERT_EQ(rows_line[0], 1u);
+  ASSERT_EQ(rows_line[1], 2u);
 
   widget_destroy(win);
   text_edit_destroy(text_edit);
@@ -211,7 +211,7 @@ TEST(TextEdit, insert_text) {
   text_edit_insert_text(text_edit, 2, " is");
   widget_get_text_utf8(text_edit->widget, get_text, sizeof(get_text));
   ASSERT_STREQ("it is ok", get_text);
-  ASSERT_EQ(text_edit_get_cursor(text_edit), 5);
+  ASSERT_EQ(text_edit_get_cursor(text_edit), 5u);
   memset(get_text, 0, sizeof(get_text));
 
   widget_set_prop_pointer(win, WIDGET_PROP_CANVAS, NULL);

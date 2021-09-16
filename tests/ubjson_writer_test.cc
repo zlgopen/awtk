@@ -12,7 +12,7 @@ TEST(UBJsonWriter, null) {
   ASSERT_EQ(ubjson_writer_write_null(&ub), RET_OK);
 
   ASSERT_EQ(buff[0], UBJSON_MARKER_NULL);
-  ASSERT_EQ(wb.cursor, 1);
+  ASSERT_EQ(wb.cursor, 1u);
 }
 
 TEST(UBJsonWriter, noop) {
@@ -25,7 +25,7 @@ TEST(UBJsonWriter, noop) {
   ASSERT_EQ(ubjson_writer_write_noop(&ub), RET_OK);
 
   ASSERT_EQ(buff[0], UBJSON_MARKER_NOOP);
-  ASSERT_EQ(wb.cursor, 1);
+  ASSERT_EQ(wb.cursor, 1u);
 }
 
 TEST(UBJsonWriter, true) {
@@ -38,7 +38,7 @@ TEST(UBJsonWriter, true) {
   ASSERT_EQ(ubjson_writer_write_true(&ub), RET_OK);
 
   ASSERT_EQ(buff[0], UBJSON_MARKER_TRUE);
-  ASSERT_EQ(wb.cursor, 1);
+  ASSERT_EQ(wb.cursor, 1u);
 }
 
 TEST(UBJsonWriter, false) {
@@ -51,7 +51,7 @@ TEST(UBJsonWriter, false) {
   ASSERT_EQ(ubjson_writer_write_false(&ub), RET_OK);
 
   ASSERT_EQ(buff[0], UBJSON_MARKER_FALSE);
-  ASSERT_EQ(wb.cursor, 1);
+  ASSERT_EQ(wb.cursor, 1u);
 }
 
 TEST(UBJsonWriter, array) {
@@ -66,7 +66,7 @@ TEST(UBJsonWriter, array) {
 
   ASSERT_EQ(buff[0], UBJSON_MARKER_ARRAY_BEGIN);
   ASSERT_EQ(buff[1], UBJSON_MARKER_ARRAY_END);
-  ASSERT_EQ(wb.cursor, 2);
+  ASSERT_EQ(wb.cursor, 2u);
 }
 
 TEST(UBJsonWriter, object) {
@@ -81,7 +81,7 @@ TEST(UBJsonWriter, object) {
 
   ASSERT_EQ(buff[0], UBJSON_MARKER_OBJECT_BEGIN);
   ASSERT_EQ(buff[1], UBJSON_MARKER_OBJECT_END);
-  ASSERT_EQ(wb.cursor, 2);
+  ASSERT_EQ(wb.cursor, 2u);
 }
 
 TEST(UBJsonWriter, int8) {
@@ -95,7 +95,7 @@ TEST(UBJsonWriter, int8) {
 
   ASSERT_EQ(buff[0], UBJSON_MARKER_INT8);
   ASSERT_EQ(buff[1], 0x12);
-  ASSERT_EQ(wb.cursor, 2);
+  ASSERT_EQ(wb.cursor, 2u);
 }
 
 TEST(UBJsonWriter, int16) {
@@ -110,7 +110,7 @@ TEST(UBJsonWriter, int16) {
   ASSERT_EQ(buff[0], UBJSON_MARKER_INT16);
   ASSERT_EQ(buff[1], 0x11);
   ASSERT_EQ(buff[2], 0x22);
-  ASSERT_EQ(wb.cursor, 3);
+  ASSERT_EQ(wb.cursor, 3u);
 }
 
 TEST(UBJsonWriter, int32) {
@@ -127,7 +127,7 @@ TEST(UBJsonWriter, int32) {
   ASSERT_EQ(buff[2], 0x22);
   ASSERT_EQ(buff[3], 0x33);
   ASSERT_EQ(buff[4], 0x44);
-  ASSERT_EQ(wb.cursor, 5);
+  ASSERT_EQ(wb.cursor, 5u);
 }
 
 TEST(UBJsonWriter, int64) {
@@ -148,7 +148,7 @@ TEST(UBJsonWriter, int64) {
   ASSERT_EQ(buff[6], 0x66);
   ASSERT_EQ(buff[7], 0x77);
   ASSERT_EQ(buff[8], 0x88);
-  ASSERT_EQ(wb.cursor, 9);
+  ASSERT_EQ(wb.cursor, 9u);
 }
 
 TEST(UBJsonWriter, float) {
@@ -161,7 +161,7 @@ TEST(UBJsonWriter, float) {
   ASSERT_EQ(ubjson_writer_write_float32(&ub, 1.2), RET_OK);
 
   ASSERT_EQ(buff[0], UBJSON_MARKER_FLOAT32);
-  ASSERT_EQ(wb.cursor, 5);
+  ASSERT_EQ(wb.cursor, 5u);
 }
 
 TEST(UBJsonWriter, double) {
@@ -174,7 +174,7 @@ TEST(UBJsonWriter, double) {
   ASSERT_EQ(ubjson_writer_write_float64(&ub, 1.2), RET_OK);
 
   ASSERT_EQ(buff[0], UBJSON_MARKER_FLOAT64);
-  ASSERT_EQ(wb.cursor, 9);
+  ASSERT_EQ(wb.cursor, 9u);
 }
 
 TEST(UBJsonWriter, string) {
@@ -190,7 +190,7 @@ TEST(UBJsonWriter, string) {
   ASSERT_EQ(buff[1], UBJSON_MARKER_INT8);
   ASSERT_EQ(buff[2], 0x1);
   ASSERT_EQ(buff[3], 'a');
-  ASSERT_EQ(wb.cursor, 4);
+  ASSERT_EQ(wb.cursor, 4u);
 }
 
 TEST(UBJsonWriter, binary) {
@@ -206,7 +206,7 @@ TEST(UBJsonWriter, binary) {
   ASSERT_EQ(buff[1], UBJSON_MARKER_INT8);
   ASSERT_EQ(buff[2], 0x1);
   ASSERT_EQ(buff[3], 'a');
-  ASSERT_EQ(wb.cursor, 4);
+  ASSERT_EQ(wb.cursor, 4u);
 }
 
 TEST(UBJsonWriter, kv_string) {
@@ -226,7 +226,7 @@ TEST(UBJsonWriter, kv_string) {
   ASSERT_EQ(buff[4], UBJSON_MARKER_INT8);
   ASSERT_EQ(buff[5], 0x1);
   ASSERT_EQ(buff[6], 'b');
-  ASSERT_EQ(wb.cursor, 7);
+  ASSERT_EQ(wb.cursor, 7u);
 }
 
 TEST(UBJsonWriter, kv_string_len) {
@@ -246,5 +246,5 @@ TEST(UBJsonWriter, kv_string_len) {
   ASSERT_EQ(buff[4], UBJSON_MARKER_INT8);
   ASSERT_EQ(buff[5], 0x1);
   ASSERT_EQ(buff[6], 'b');
-  ASSERT_EQ(wb.cursor, 7);
+  ASSERT_EQ(wb.cursor, 7u);
 }

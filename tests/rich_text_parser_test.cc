@@ -81,8 +81,8 @@ TEST(RichTextParser, image) {
 
   ASSERT_EQ(node->type, RICH_TEXT_IMAGE);
   ASSERT_EQ(node->u.image.name, string("earth"));
-  ASSERT_EQ(node->u.image.w, 12);
-  ASSERT_EQ(node->u.image.h, 34);
+  ASSERT_EQ(node->u.image.w, 12u);
+  ASSERT_EQ(node->u.image.h, 34u);
 
   ASSERT_EQ(rich_text_node_count(node), 2);
 

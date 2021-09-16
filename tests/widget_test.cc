@@ -302,7 +302,7 @@ TEST(Widget, dirty) {
   ASSERT_EQ(w->dirty, TRUE);
   ASSERT_EQ(b1->dirty, TRUE);
   widget_destroy_children(w);
-  ASSERT_EQ(w->children->size, 0);
+  ASSERT_EQ(w->children->size, 0u);
 
   widget_destroy(w);
 }
@@ -845,12 +845,12 @@ TEST(Widget, calc_icon_text_rect_icon_centre) {
 
   ASSERT_EQ(r_icon.x, ir.x + w / 2);
   ASSERT_EQ(r_icon.y, ir.y + icon_h / 2);
-  ASSERT_EQ(r_icon.w, icon_image_w);
-  ASSERT_EQ(r_icon.h, icon_image_h);
+  ASSERT_EQ(r_icon.w, (int32_t)icon_image_w);
+  ASSERT_EQ(r_icon.h, (int32_t)icon_image_h);
 
-  ASSERT_EQ(r_text.x, ir.x + icon_image_w + spacer + w / 2);
+  ASSERT_EQ(r_text.x, (int32_t)(ir.x + icon_image_w + spacer + w / 2));
   ASSERT_EQ(r_text.y, ir.y);
-  ASSERT_EQ(r_text.w, text_size);
+  ASSERT_EQ(r_text.w, (int32_t)text_size);
   ASSERT_EQ(r_text.h, ir.h);
 }
 
@@ -1150,7 +1150,7 @@ TEST(Widget, off) {
   widget_t* w = button_create(NULL, 0, 0, 0, 0);
 
   ASSERT_EQ(widget_on(w, EVT_MOVE, widget_log_events, NULL) > 0, TRUE);
-  ASSERT_EQ(emitter_size(w->emitter), 1);
+  ASSERT_EQ(emitter_size(w->emitter), 1u);
   ASSERT_EQ(widget_off_by_func(w, EVT_MOVE, widget_log_events, NULL), RET_OK);
 
   widget_destroy(w);
@@ -1165,10 +1165,10 @@ TEST(Widget, off_by_tag) {
   ASSERT_EQ(widget_on_with_tag(w, EVT_MOVE, widget_log_events, NULL, 2) > 0, TRUE);
   ASSERT_EQ(widget_on_with_tag(w, EVT_MOVE, widget_log_events, NULL, 2) > 0, TRUE);
 
-  ASSERT_EQ(emitter_size(w->emitter), 5);
+  ASSERT_EQ(emitter_size(w->emitter), 5u);
 
   ASSERT_EQ(widget_off_by_tag(w, 1), RET_OK);
-  ASSERT_EQ(emitter_size(w->emitter), 2);
+  ASSERT_EQ(emitter_size(w->emitter), 2u);
 
   widget_destroy(w);
 }

@@ -35,12 +35,12 @@ TEST(Idle, basic) {
   for (i = 0; i < nr; i++) {
     ASSERT_EQ(idle_add(on_idle, tk_pointer_from_int(i)) > 0, true);
     ASSERT_EQ(idle_exist(on_idle, tk_pointer_from_int(i)) > 0, true);
-    ASSERT_EQ(idle_count(), i + 1);
+    ASSERT_EQ(idle_count(), i + 1u);
   }
 
   s_log = "";
   ASSERT_EQ(idle_dispatch(), RET_OK);
-  ASSERT_EQ(idle_count(), 0);
+  ASSERT_EQ(idle_count(), 0u);
   ASSERT_EQ(s_log, "o:o:o:o:o:o:o:o:o:o:");
 
   for (i = 0; i < nr; i++) {
@@ -48,7 +48,7 @@ TEST(Idle, basic) {
     ASSERT_EQ(idle_exist(on_idle, tk_pointer_from_int(i)) > 0, true);
     ASSERT_EQ(id > 0, true);
     ASSERT_EQ(idle_remove(id), RET_OK);
-    ASSERT_EQ(idle_count(), 0);
+    ASSERT_EQ(idle_count(), 0u);
   }
 }
 
@@ -82,11 +82,11 @@ TEST(Idle, idle_remove) {
 
   id = idle_add(on_idle_repeat, NULL);
   idle_add(on_idle_remove, ((char*)NULL) + id);
-  ASSERT_EQ(idle_count(), 2);
+  ASSERT_EQ(idle_count(), 2u);
 
   s_log = "";
   ASSERT_EQ(idle_dispatch(), RET_OK);
-  ASSERT_EQ(idle_count(), 0);
+  ASSERT_EQ(idle_count(), 0u);
   ASSERT_EQ(s_log, "r:remove:");
 
   idle_manager_remove_all(idle_manager());

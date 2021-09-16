@@ -6,7 +6,7 @@
 
 static void TestStrGen(const char* strs[]) {
   StrGen sg;
-  size_t nr = 0;
+  uint16_t nr = 0;
   uint8_t buff[1024 * 4];
   vector<string> vstrs;
   for (size_t i = 0; strs[i]; i++) {
@@ -23,7 +23,7 @@ static void TestStrGen(const char* strs[]) {
 
   vector<string> languages = sg.GetLanguages();
 
-  ASSERT_EQ(languages.size(), 3);
+  ASSERT_EQ(languages.size(), (size_t)3);
   for (size_t k = 0; k < languages.size(); k++) {
     string lang = languages[k];
     str_table_t* table = (str_table_t*)buff;
@@ -94,7 +94,7 @@ TEST(StrGen, xml1) {
   xml_buff_to_str_gen(xml, &sg);
   vector<string> languages = sg.GetLanguages();
 
-  ASSERT_EQ(languages.size(), 2);
+  ASSERT_EQ(languages.size(), (size_t)2);
   str_table_t* table = (str_table_t*)buff;
   wbuffer_t wbuffer;
   wbuffer_t* b = wbuffer_init(&wbuffer, buff, sizeof(buff));

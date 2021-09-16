@@ -13,7 +13,7 @@ TEST(Style, normalize_int) {
   ASSERT_EQ(style_normalize_value("font_size", "16", &v), RET_OK);
   ASSERT_EQ(v.type, VALUE_TYPE_UINT32);
   ASSERT_EQ(value_int32(&v), 16);
-  ASSERT_EQ(value_uint32(&v), 16);
+  ASSERT_EQ(value_uint32(&v), 16u);
 
   ASSERT_EQ(style_normalize_value("margin", "-35", &v), RET_OK);
   ASSERT_EQ(v.type, VALUE_TYPE_INT32);
@@ -143,8 +143,8 @@ TEST(Style, normalize_text_align_v) {
 TEST(Style, normalize_color) {
   value_t v;
   ASSERT_EQ(style_normalize_value("bg_color", "#112233", &v), RET_OK);
-  ASSERT_EQ(0xff332211, value_uint32(&v));
+  ASSERT_EQ(0xff332211u, value_uint32(&v));
 
   ASSERT_EQ(style_normalize_value("bg_color", "white", &v), RET_OK);
-  ASSERT_EQ(0xffffffff, value_uint32(&v));
+  ASSERT_EQ(0xffffffffu, value_uint32(&v));
 }

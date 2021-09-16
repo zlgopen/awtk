@@ -15,15 +15,15 @@ TEST(EventSourceIdle, basic) {
 
   ASSERT_EQ(event_source_get_fd(event_source), -1);
   ASSERT_EQ(event_source_check(event_source), RET_OK);
-  ASSERT_EQ(event_source_get_wakeup_time(event_source), 0xffff);
+  ASSERT_EQ(event_source_get_wakeup_time(event_source), 0xffffu);
   ASSERT_EQ(event_source_dispatch(event_source), RET_OK);
-  ASSERT_EQ(s_idle_times, 0);
+  ASSERT_EQ(s_idle_times, 0u);
 
   idle_manager_add(tm, idle_once, NULL);
-  ASSERT_EQ(event_source_get_wakeup_time(event_source), 0);
+  ASSERT_EQ(event_source_get_wakeup_time(event_source), 0u);
 
   ASSERT_EQ(event_source_dispatch(event_source), RET_OK);
-  ASSERT_EQ(s_idle_times, 1);
+  ASSERT_EQ(s_idle_times, 1u);
 
   object_unref(OBJECT(event_source));
   idle_manager_destroy(tm);

@@ -45,7 +45,7 @@ TEST(progress_bar, max) {
   ASSERT_EQ(value_int(&v1), value_int(&v2));
 
   ASSERT_EQ(progress_bar_set_value(s, 500), RET_OK);
-  ASSERT_EQ(progress_bar_get_percent(s), 50);
+  ASSERT_EQ(progress_bar_get_percent(s), 50u);
 
   widget_destroy(s);
 }

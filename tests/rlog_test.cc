@@ -19,9 +19,9 @@ TEST(RLog, basic1) {
   for (i = 0; i < 1000; i++) {
     rlog_print(log, "hello wolrd %04d\n", i);
     if (i >= 60) {
-      ASSERT_EQ(log->index, 1);
+      ASSERT_EQ(log->index, 1u);
     } else {
-      ASSERT_EQ(log->index, 0);
+      ASSERT_EQ(log->index, 0u);
     }
   }
   rlog_destroy(log);

@@ -25,7 +25,7 @@ TEST(ThemeGen, basic0) {
   ASSERT_EQ(style_data != NULL, true);
   ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
   ASSERT_EQ(style_get_int(s, STYLE_ID_MARGIN, 0), -10);
-  ASSERT_EQ(style_get_uint(s, STYLE_ID_BG_COLOR, 0), 0xfffcfbfa);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_BG_COLOR, 0), 0xfffcfbfau);
   style_destroy(s);
 }
 
@@ -46,8 +46,8 @@ TEST(ThemeGen, basic1) {
   style_data = theme_find_style(&theme, WIDGET_TYPE_NONE, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
   ASSERT_EQ(style_data != NULL, true);
   ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
-  ASSERT_EQ(style_get_uint(s, STYLE_ID_BG_COLOR, 0), 0xfffcfbfa);
-  ASSERT_EQ(style_get_uint(s, STYLE_ID_FG_COLOR, 0), 0xff443322);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_BG_COLOR, 0), 0xfffcfbfau);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_FG_COLOR, 0), 0xff443322u);
   ASSERT_EQ(style_get_int(s, STYLE_ID_FONT_SIZE, 0), 12);
   ASSERT_EQ(style_get_str(s, STYLE_ID_FONT_NAME, ""), string("sans"));
   style_destroy(s);
@@ -72,8 +72,8 @@ TEST(ThemeGen, basic2) {
   style_data = theme_find_style(&theme, WIDGET_TYPE_NONE, TK_DEFAULT_STYLE, WIDGET_STATE_OVER);
   ASSERT_EQ(style_data != NULL, true);
   ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_OVER), RET_OK);
-  ASSERT_EQ(style_get_uint(s, STYLE_ID_BG_COLOR, 0), 0xff332211);
-  ASSERT_EQ(style_get_uint(s, STYLE_ID_FG_COLOR, 0), 0xff443322);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_BG_COLOR, 0), 0xff332211u);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_FG_COLOR, 0), 0xff443322u);
   ASSERT_EQ(style_get_int(s, STYLE_ID_FONT_SIZE, 0), 12);
   ASSERT_EQ(style_get_str(s, STYLE_ID_FONT_NAME, ""), string("sans"));
   style_destroy(s);
@@ -109,8 +109,8 @@ TEST(ThemeGen, basic3) {
   style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
   ASSERT_EQ(style_data != NULL, true);
   ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
-  ASSERT_EQ(style_get_uint(s, STYLE_ID_BG_COLOR, 0), 0xff332211);
-  ASSERT_EQ(style_get_uint(s, STYLE_ID_FG_COLOR, 0), 0xff443322);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_BG_COLOR, 0), 0xff332211u);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_FG_COLOR, 0), 0xff443322u);
   ASSERT_EQ(style_get_int(s, STYLE_ID_FONT_SIZE, 0), 12);
   ASSERT_EQ(style_get_str(s, STYLE_ID_FONT_NAME, ""), string("sans"));
   style_destroy(s);
@@ -150,8 +150,8 @@ TEST(ThemeGen, basic4) {
   style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_OVER);
   ASSERT_EQ(style_data != NULL, true);
   ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_OVER), RET_OK);
-  ASSERT_EQ(style_get_uint(s, STYLE_ID_BG_COLOR, 0), 0xff442211);
-  ASSERT_EQ(style_get_uint(s, STYLE_ID_FG_COLOR, 0), 0xff553322);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_BG_COLOR, 0), 0xff442211u);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_FG_COLOR, 0), 0xff553322u);
   ASSERT_EQ(style_get_int(s, STYLE_ID_FONT_SIZE, 0), 12);
   ASSERT_EQ(style_get_str(s, STYLE_ID_FONT_NAME, ""), string("sans"));
   style_destroy(s);
@@ -174,14 +174,14 @@ TEST(ThemeGen, state) {
   ASSERT_EQ(style_data != NULL, true);
   ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_OVER), RET_OK);
   ASSERT_EQ(style_get_int(s, STYLE_ID_FONT_SIZE, 0), 12);
-  ASSERT_EQ(style_get_uint(s, STYLE_ID_BG_COLOR, 0), 0xfff3f2f1);
-  ASSERT_EQ(style_get_uint(s, STYLE_ID_FG_COLOR, 0), 0xfffcfbfa);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_BG_COLOR, 0), 0xfff3f2f1u);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_FG_COLOR, 0), 0xfffcfbfau);
   ASSERT_EQ(style_get_str(s, STYLE_ID_FONT_NAME, ""), string("sans"));
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_PRESSED);
   ASSERT_EQ(style_data != NULL, true);
   ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_PRESSED), RET_OK);
-  ASSERT_EQ(style_get_int(s, STYLE_ID_BG_COLOR, 0), 0xff00ffff);
+  ASSERT_EQ((uint32_t)style_get_int(s, STYLE_ID_BG_COLOR, 0), 0xff00ffffu);
   style_destroy(s);
 }
 
@@ -425,19 +425,19 @@ TEST(ThemeGen, gradient) {
   ASSERT_EQ(style_get_gradient(s, STYLE_ID_BG_COLOR, &g) != NULL, true);
   
   ASSERT_EQ(g.type, GRADIENT_LINEAR);
-  ASSERT_EQ(g.nr, 2);
-  ASSERT_EQ(g.degree, 180);
+  ASSERT_EQ(g.nr, 2u);
+  ASSERT_EQ(g.degree, 180u);
   
-  ASSERT_EQ(g.stops[0].offset, 0);
+  ASSERT_EQ(g.stops[0].offset, 0.0f);
   ASSERT_EQ(g.stops[0].color.rgba.r, 0xff);
-  ASSERT_EQ(g.stops[1].offset, 1);
+  ASSERT_EQ(g.stops[1].offset, 1.0f);
   ASSERT_EQ(g.stops[1].color.rgba.b, 0xff);
   
   ASSERT_EQ(style_get_gradient(s, STYLE_ID_FG_COLOR, &g) != NULL, true);
-  ASSERT_EQ(g.nr, 1);
-  ASSERT_EQ(g.degree, 0);
+  ASSERT_EQ(g.nr, 1u);
+  ASSERT_EQ(g.degree, 0u);
   
-  ASSERT_EQ(g.stops[0].offset, 0);
+  ASSERT_EQ(g.stops[0].offset, 0.0f);
   ASSERT_EQ(g.stops[0].color.rgba.r, 0xff);
   ASSERT_EQ(g.stops[0].color.rgba.g, 0);
   ASSERT_EQ(g.stops[0].color.rgba.b, 0);

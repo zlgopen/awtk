@@ -16,7 +16,7 @@ static void* server_thread_entry1(void* args) {
   tk_ostream_t* os = tk_iostream_get_ostream(b_io);
 
   object_set_prop_int(OBJECT(os), TK_STREAM_PROP_COMPRESS_THRESHOLD, compress_threshold);
-  assert(tk_ostream_write(os, sbuff, data_size) == data_size);
+  assert(tk_ostream_write(os, sbuff, data_size) == (int32_t)data_size);
 
   return NULL;
 }
@@ -70,7 +70,7 @@ TEST(IOStreamSHDLC, small) {
   data_size = 64;
   gen_data();
   tk_thread_start(t);
-  ASSERT_EQ(tk_istream_read_len(is, rbuff, data_size, 30000), data_size);
+  ASSERT_EQ(tk_istream_read_len(is, rbuff, data_size, 30000), (int32_t)data_size);
   ASSERT_EQ(memcmp(rbuff, sbuff, data_size), 0);
 
   tk_thread_join(t);
@@ -95,7 +95,7 @@ TEST(IOStreamSHDLC, large) {
   data_size = sizeof(rbuff);
   gen_data();
   tk_thread_start(t);
-  ASSERT_EQ(tk_istream_read_len(is, rbuff, data_size, 30000), data_size);
+  ASSERT_EQ(tk_istream_read_len(is, rbuff, data_size, 30000), (int32_t)data_size);
   ASSERT_EQ(memcmp(rbuff, sbuff, data_size), 0);
 
   tk_thread_join(t);
@@ -112,7 +112,7 @@ static void* server_thread_entry_noisy(void* args) {
   tk_ostream_t* os = tk_iostream_get_ostream(b_io);
 
   object_set_prop_int(OBJECT(os), TK_STREAM_PROP_COMPRESS_THRESHOLD, compress_threshold);
-  assert(tk_ostream_write(os, sbuff, data_size) == data_size);
+  assert(tk_ostream_write(os, sbuff, data_size) == (int32_t)data_size);
 
   return NULL;
 }
@@ -133,7 +133,7 @@ TEST(IOStreamSHDLC, noisy) {
   data_size = 4;
   gen_data();
   tk_thread_start(t);
-  ASSERT_EQ(tk_istream_read_len(is, rbuff, data_size, 30000), data_size);
+  ASSERT_EQ(tk_istream_read_len(is, rbuff, data_size, 30000u), (int32_t)data_size);
   ASSERT_EQ(memcmp(rbuff, sbuff, data_size), 0);
 
   tk_thread_join(t);

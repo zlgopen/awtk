@@ -199,10 +199,10 @@ static void test_one_path(svg_path_t* path) {
   ASSERT_EQ(w->buff.cursor, sizeof(bsvg_header_t));
 
   ASSERT_EQ(bsvg_builder_add_shape(w, shape), RET_OK);
-  ;
+
   ASSERT_EQ(bsvg_builder_add_sub_path(w, path), RET_OK);
   ASSERT_EQ(bsvg_builder_done(w), RET_OK);
-  ;
+
 
   ASSERT_EQ(bsvg_init(svg, buff, w->buff.cursor), svg);
   ASSERT_EQ(bsvg_visit(svg, path, on_shape_null, on_path), RET_OK);
@@ -371,14 +371,14 @@ TEST(SVGPathParser, move) {
 
   s_on_path_count = 0;
   svg_path_parse("M409.6 281.6 409.6 281.6", &path, on_path);
-  ASSERT_EQ(s_on_path_count, 2);
+  ASSERT_EQ(s_on_path_count, 2u);
 
   svg_path_move_rel_init(&path, 409.6, 281.6);
   svg_path_parse("m409.6 281.6", &path, on_path);
 
   s_on_path_count = 0;
   svg_path_parse("m409.6 281.6 409.6 281.6", &path, on_path);
-  ASSERT_EQ(s_on_path_count, 2);
+  ASSERT_EQ(s_on_path_count, 2u);
 }
 
 TEST(SVGPathParser, line) {
@@ -389,14 +389,14 @@ TEST(SVGPathParser, line) {
 
   s_on_path_count = 0;
   svg_path_parse("L128-128.5 128-128.5", &path, on_path);
-  ASSERT_EQ(s_on_path_count, 2);
+  ASSERT_EQ(s_on_path_count, 2u);
 
   svg_path_line_rel_init(&path, 128, -128.5);
   svg_path_parse("l128-128.5", &path, on_path);
 
   s_on_path_count = 0;
   svg_path_parse("l128-128.5 128-128.5", &path, on_path);
-  ASSERT_EQ(s_on_path_count, 2);
+  ASSERT_EQ(s_on_path_count, 2u);
 }
 
 TEST(SVGPathParser, hline) {
@@ -406,14 +406,14 @@ TEST(SVGPathParser, hline) {
 
   s_on_path_count = 0;
   svg_path_parse("H179.2 179.2", &path, on_path);
-  ASSERT_EQ(s_on_path_count, 2);
+  ASSERT_EQ(s_on_path_count, 2u);
 
   svg_path_hline_rel_init(&path, 179.2);
   svg_path_parse("h179.2", &path, on_path);
 
   s_on_path_count = 0;
   svg_path_parse("h179.2 179.2", &path, on_path);
-  ASSERT_EQ(s_on_path_count, 2);
+  ASSERT_EQ(s_on_path_count, 2u);
 }
 
 TEST(SVGPathParser, vline) {
@@ -423,14 +423,14 @@ TEST(SVGPathParser, vline) {
 
   s_on_path_count = 0;
   svg_path_parse("V-179.2-179.2", &path, on_path);
-  ASSERT_EQ(s_on_path_count, 2);
+  ASSERT_EQ(s_on_path_count, 2u);
 
   svg_path_vline_rel_init(&path, -179.2);
   svg_path_parse("v-179.2", &path, on_path);
 
   s_on_path_count = 0;
   svg_path_parse("v-179.2-179.2", &path, on_path);
-  ASSERT_EQ(s_on_path_count, 2);
+  ASSERT_EQ(s_on_path_count, 2u);
 }
 
 TEST(SVGPathParser, curve) {
@@ -440,14 +440,14 @@ TEST(SVGPathParser, curve) {
 
   s_on_path_count = 0;
   svg_path_parse("C1 2 3 4 5 6 1 2 3 4 5 6 ", &path, on_path);
-  ASSERT_EQ(s_on_path_count, 2);
+  ASSERT_EQ(s_on_path_count, 2u);
 
   svg_path_curve_to_rel_init(&path, 1, 2, 3, 4, 5, 6);
   svg_path_parse("c1 2 3 4 5 6", &path, on_path);
 
   s_on_path_count = 0;
   svg_path_parse("c1 2 3 4 5 6 1 2 3 4 5 6 ", &path, on_path);
-  ASSERT_EQ(s_on_path_count, 2);
+  ASSERT_EQ(s_on_path_count, 2u);
 }
 
 TEST(SVGPathParser, scurve) {
@@ -457,14 +457,14 @@ TEST(SVGPathParser, scurve) {
 
   s_on_path_count = 0;
   svg_path_parse("S1 2 3 4 1 2 3 4", &path, on_path);
-  ASSERT_EQ(s_on_path_count, 2);
+  ASSERT_EQ(s_on_path_count, 2u);
 
   svg_path_scurve_to_rel_init(&path, 1, 2, 3, 4);
   svg_path_parse("s1 2 3 4", &path, on_path);
 
   s_on_path_count = 0;
   svg_path_parse("s1 2 3 4 1 2 3 4", &path, on_path);
-  ASSERT_EQ(s_on_path_count, 2);
+  ASSERT_EQ(s_on_path_count, 2u);
 }
 
 TEST(SVGPathParser, qcurve) {
@@ -474,14 +474,14 @@ TEST(SVGPathParser, qcurve) {
 
   s_on_path_count = 0;
   svg_path_parse("Q1 2 3 4 1 2 3 4", &path, on_path);
-  ASSERT_EQ(s_on_path_count, 2);
+  ASSERT_EQ(s_on_path_count, 2u);
 
   svg_path_qcurve_to_rel_init(&path, 1, 2, 3, 4);
   svg_path_parse("q1 2 3 4", &path, on_path);
 
   s_on_path_count = 0;
   svg_path_parse("q1 2 3 4 1 2 3 4", &path, on_path);
-  ASSERT_EQ(s_on_path_count, 2);
+  ASSERT_EQ(s_on_path_count, 2u);
 }
 
 TEST(SVGPathParser, tcurve) {
@@ -491,14 +491,14 @@ TEST(SVGPathParser, tcurve) {
 
   s_on_path_count = 0;
   svg_path_parse("T1 2 1 2", &path, on_path);
-  ASSERT_EQ(s_on_path_count, 2);
+  ASSERT_EQ(s_on_path_count, 2u);
 
   svg_path_tcurve_to_rel_init(&path, 1, 2);
   svg_path_parse("t1 2", &path, on_path);
 
   s_on_path_count = 0;
   svg_path_parse("t1 2 1 2", &path, on_path);
-  ASSERT_EQ(s_on_path_count, 2);
+  ASSERT_EQ(s_on_path_count, 2u);
 }
 
 TEST(SVGPathParser, arc) {
@@ -508,12 +508,12 @@ TEST(SVGPathParser, arc) {
 
   s_on_path_count = 0;
   svg_path_parse("A1 2 3 1 1 6 7 1 2 3 1 1 6 7", &path, on_path);
-  ASSERT_EQ(s_on_path_count, 2);
+  ASSERT_EQ(s_on_path_count, 2u);
 
   svg_path_arc_rel_init(&path, 1, 2, 3, 1, 1, 6, 7);
   svg_path_parse("a1 2 3 1 1 6 7", &path, on_path);
 
   s_on_path_count = 0;
   svg_path_parse("a1 2 3 1 1 6 7 1 2 3 1 1 6 7", &path, on_path);
-  ASSERT_EQ(s_on_path_count, 2);
+  ASSERT_EQ(s_on_path_count, 2u);
 }

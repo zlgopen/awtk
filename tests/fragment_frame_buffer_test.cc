@@ -40,10 +40,10 @@ TEST(FragmentFrameBuffer, basic) {
   s_log = "";
   fragment_frame_buffer_t* ffb = fragment_frame_buffer_begin_frame(&affb, &r);
 
-  ASSERT_EQ(ffb->x, r.x);
-  ASSERT_EQ(ffb->y, r.y);
-  ASSERT_EQ(ffb->w, r.w);
-  ASSERT_EQ(ffb->h, r.h);
+  ASSERT_EQ((xy_t)ffb->x, r.x);
+  ASSERT_EQ((xy_t)ffb->y, r.y);
+  ASSERT_EQ((wh_t)ffb->w, r.w);
+  ASSERT_EQ((wh_t)ffb->h, r.h);
 
   fragment_frame_buffer_set_window(ffb, 4, 4, 3, 2);
   ASSERT_EQ(ffb->win.x, 4);

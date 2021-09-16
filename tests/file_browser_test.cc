@@ -17,11 +17,11 @@ TEST(FileBrowser, dir) {
   file_browser_t* fb = file_browser_create(os_fs());
   ASSERT_EQ(fb != NULL, true);
   ASSERT_EQ(file_browser_set_cwd(fb, "./tests/fbtest"), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 0);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 0u);
 
   ASSERT_EQ(file_browser_create_dir(fb, "a"), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 1);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 1u);
 
   item = file_browser_get_item(fb, 0);
   ASSERT_EQ(item != NULL, true);
@@ -29,7 +29,7 @@ TEST(FileBrowser, dir) {
   ASSERT_EQ(item->is_dir, TRUE);
   ASSERT_EQ(file_browser_remove(fb, "a"), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 0);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 0u);
 
   file_browser_destroy(fb);
 }
@@ -39,11 +39,11 @@ TEST(FileBrowser, file) {
   file_browser_t* fb = file_browser_create(os_fs());
   ASSERT_EQ(fb != NULL, true);
   ASSERT_EQ(file_browser_set_cwd(fb, "./tests/fbtest"), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 0);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 0u);
 
   ASSERT_EQ(file_browser_create_file(fb, "a", "hello", 5), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 1);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 1u);
 
   item = file_browser_get_item(fb, 0);
   ASSERT_EQ(item != NULL, true);
@@ -51,7 +51,7 @@ TEST(FileBrowser, file) {
   ASSERT_EQ(item->is_reg_file, TRUE);
   ASSERT_EQ(file_browser_remove(fb, "a"), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 0);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 0u);
 
   file_browser_destroy(fb);
 }
@@ -63,12 +63,12 @@ TEST(FileBrowser, basic) {
   ASSERT_EQ(file_browser_create_dir(fb, "a"), RET_OK);
   ASSERT_EQ(file_browser_create_file(fb, "a.txt", "hello", 5), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 2);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 2u);
 
   ASSERT_EQ(file_browser_remove(fb, "a"), RET_OK);
   ASSERT_EQ(file_browser_remove(fb, "a.txt"), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 0);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 0u);
 
   file_browser_destroy(fb);
 }
@@ -81,26 +81,26 @@ TEST(FileBrowser, enter_up) {
   ASSERT_EQ(file_browser_create_file(fb, "a.txt", "hello", 5), RET_OK);
   ASSERT_EQ(file_browser_create_file(fb, "a1.txt", "world", 5), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 3);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 3u);
 
   ASSERT_EQ(file_browser_enter(fb, "a"), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 0);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 0u);
 
   ASSERT_EQ(file_browser_create_dir(fb, "b"), RET_OK);
   ASSERT_EQ(file_browser_create_file(fb, "b.txt", "hello", 5), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 2);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 2u);
 
   ASSERT_EQ(file_browser_remove(fb, "b"), RET_OK);
   ASSERT_EQ(file_browser_remove(fb, "b.txt"), RET_OK);
   ASSERT_EQ(file_browser_up(fb), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 3);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 3u);
 
   ASSERT_EQ(file_browser_remove(fb, "a"), RET_OK);
   ASSERT_EQ(file_browser_remove(fb, "a.txt"), RET_OK);
   ASSERT_EQ(file_browser_remove(fb, "a1.txt"), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 0);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 0u);
 
   file_browser_destroy(fb);
 }
@@ -134,17 +134,17 @@ TEST(FileBrowser, filter) {
   ASSERT_EQ(file_browser_create_dir(fb, "a"), RET_OK);
   ASSERT_EQ(file_browser_create_file(fb, "a.txt", "hello", 5), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 2);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 2u);
 
   ASSERT_EQ(file_browser_set_filter(fb, fb_filter_files_only, NULL), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 1);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 1u);
   item = file_browser_get_item(fb, 0);
   ASSERT_EQ(item->is_reg_file, TRUE);
 
   ASSERT_EQ(file_browser_set_filter(fb, fb_filter_directories_only, NULL), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 1);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 1u);
   item = file_browser_get_item(fb, 0);
   ASSERT_EQ(item->is_dir, TRUE);
 
@@ -153,7 +153,7 @@ TEST(FileBrowser, filter) {
   ASSERT_EQ(file_browser_remove(fb, "a"), RET_OK);
   ASSERT_EQ(file_browser_remove(fb, "a.txt"), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 0);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 0u);
 
   file_browser_destroy(fb);
 }
@@ -167,7 +167,7 @@ static void file_browser_prepare(file_browser_t* fb) {
   ASSERT_EQ(file_browser_create_dir(fb, "dir2"), RET_OK);
   ASSERT_EQ(file_browser_create_dir(fb, "dir1"), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 6);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 6u);
 }
 
 static void file_browser_cleanup(file_browser_t* fb) {
@@ -178,7 +178,7 @@ static void file_browser_cleanup(file_browser_t* fb) {
   ASSERT_EQ(file_browser_remove(fb, "dir1"), RET_OK);
   ASSERT_EQ(file_browser_remove(fb, "dir2"), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 0);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 0u);
   file_browser_destroy(fb);
 }
 
@@ -339,26 +339,26 @@ TEST(FileBrowser, top_dir) {
   ASSERT_EQ(file_browser_create_file(fb, "a.txt", "hello", 5), RET_OK);
   ASSERT_EQ(file_browser_create_file(fb, "a1.txt", "world", 5), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 3);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 3u);
 
   ASSERT_EQ(file_browser_enter(fb, "a"), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 0);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 0u);
 
   ASSERT_EQ(file_browser_create_dir(fb, "b"), RET_OK);
   ASSERT_EQ(file_browser_create_file(fb, "b.txt", "hello", 5), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 2);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 2u);
 
   ASSERT_EQ(file_browser_remove(fb, "b"), RET_OK);
   ASSERT_EQ(file_browser_remove(fb, "b.txt"), RET_OK);
   ASSERT_EQ(file_browser_up(fb), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 3);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 3u);
 
   ASSERT_EQ(file_browser_remove(fb, "a"), RET_OK);
   ASSERT_EQ(file_browser_remove(fb, "a.txt"), RET_OK);
   ASSERT_EQ(file_browser_remove(fb, "a1.txt"), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
-  ASSERT_EQ(file_browser_get_items_nr(fb), 0);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 0u);
 
   ASSERT_EQ(file_browser_up(fb), RET_OK);
   ASSERT_EQ(file_browser_up(fb), RET_OK);

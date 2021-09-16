@@ -23,10 +23,10 @@ TEST(DataWriterWbuffer, wbuffer) {
   ASSERT_EQ(writer != NULL, true);
   data_writer_write(writer, 0, "hello ", 6);
   ASSERT_EQ(memcmp(wb.data, "hello ", 6), 0);
-  ASSERT_EQ(wb.cursor, 6);
+  ASSERT_EQ(wb.cursor, 6u);
 
   data_writer_write(writer, 6, "world", 5);
-  ASSERT_EQ(wb.cursor, 11);
+  ASSERT_EQ(wb.cursor, 11u);
   ASSERT_EQ(memcmp(wb.data, "hello world", 11), 0);
 
   data_writer_destroy(writer);
