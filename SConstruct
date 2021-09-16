@@ -7,7 +7,7 @@ if awtk.TOOLS_NAME != '' :
 
 awtk.genIdlAndDef();
 DefaultEnvironment(TOOLS = APP_TOOLS,
-  CCFLAGS = awtk.AWTK_CCFLAGS,
+  CCFLAGS = awtk.AWTK_CCFLAGS + ' -O2 ',
   LIBS = awtk.LIBS,
   LIBPATH = awtk.LIBPATH,
   CPPPATH = awtk.CPPPATH + [awtk.joinPath(awtk.TK_ROOT, 'res')],

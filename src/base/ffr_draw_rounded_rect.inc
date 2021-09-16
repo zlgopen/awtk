@@ -423,13 +423,17 @@ static float_t ffr_draw_rounded_get_vertex_angle_by_border_model(int32_t border_
 }
 
 static void ffr_draw_rounded_rect_draw_fill_with_vg(canvas_t* c, vgcanvas_t* vg, const gradient_t* gradient, const rect_t* r, frr_draw_info_t draw_infos[FRR_VERTEXT_TYPE_COUNT]) {
-  vg_gradient_t vg_gradient;
-  vg_gradient_init_with_gradient(&vg_gradient, r, gradient);
 
-  vgcanvas_save(vg);
-  vgcanvas_set_fill_gradient(vg, &vg_gradient);
+  vgcanvas_save(vg);  
+  if (gradient->nr > 1) {  
+    vg_gradient_t vg_gradient;
+    vg_gradient_init_with_gradient(&vg_gradient, r, gradient);
+    vgcanvas_set_fill_gradient(vg, &vg_gradient);
+  } else {
+    color_t color = gradient_get_first_color((gradient_t*)gradient);
+    vgcanvas_set_fill_color(vg, color);
+  }
   vgcanvas_translate(vg, (float_t)c->ox, (float_t)c->oy);
-
   vgcanvas_begin_path(vg);
 
   if (draw_infos[FRR_VERTEXT_TYPE_TOP_REIGHT].radius > 0) { // 右上角
@@ -853,7 +857,11 @@ static ret_t ffr_draw_fill_rounded_rect(canvas_t* c, const rect_t* r, const grad
   } else {  
     vgcanvas_t* vg = canvas_get_vgcanvas(c);
     if (radius != 0 && vg != NULL) {
+#if defined(AWTK_WEB)
+      rect_t rect = {r->x, r->y, r->w, r->h};
+#else
       rect_t rect = {r->x + c->ox, r->y + c->oy, r->w, r->h};
+#endif
       frr_draw_info_t draw_infos[FRR_VERTEXT_TYPE_COUNT];
       memset(draw_infos, 0x0, sizeof(draw_infos));
       ffr_draw_rounded_rect_draw_info_init(draw_infos, r, radius_tl, radius_tr, radius_bl, radius_br);
