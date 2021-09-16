@@ -27,13 +27,13 @@ static ret_t fibonacci_async(uint32_t n) {
   return async_call(fibonacci_async_exec, NULL, tk_pointer_from_int(n));
 }
 
-#define NR  10000
+#define NR 10000
 
 void test() {
   uint32_t i = 0;
 
   for (i = 0; i < NR; i++) {
-    uint32_t n = i%30+10;
+    uint32_t n = i % 30 + 10;
     log_debug("%u %u\n", i, n);
     fibonacci_async(n);
   }

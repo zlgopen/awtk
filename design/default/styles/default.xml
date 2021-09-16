@@ -114,6 +114,15 @@
 </button>
 
 <edit selected_fg_color="#020202" selected_text_color="#010101" selected_bg_color="#b5d7fd">
+  <style name="bidi" border_color="#a0a0a0"  text_color="black" text_align_h="left" font_name="trado">
+    <normal     bg_color="#f0f0f0" />
+    <focused    bg_color="#f0f0f0" border_color="black"/>
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+    <changed    bg_color="#f0f0f0" text_color="#ee0000" />
+    <error      bg_color="#f0f0f0" text_color="red" />
+    <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
+    <empty_focus bg_color="#f0f0f0" text_color="#a0a0a0" border_color="black"/>
+  </style>
   <style name="default" border_color="#a0a0a0"  text_color="black" text_align_h="left">
     <normal     bg_color="#f0f0f0" />
     <focused    bg_color="#f0f0f0" border_color="black"/>

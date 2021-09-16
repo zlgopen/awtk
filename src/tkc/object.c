@@ -413,7 +413,7 @@ ret_t object_copy_prop(object_t* obj, object_t* src, const char* name) {
   return ret;
 }
 
-#ifndef AWTK_LITE
+#ifndef WITHOUT_FSCRIPT
 ret_t object_eval(object_t* obj, const char* expr, value_t* v) {
   return fscript_eval(obj, expr, v);
 }
@@ -428,7 +428,7 @@ ret_t object_eval(object_t* obj, const char* expr, value_t* v) {
     return RET_FAIL;
   }
 }
-#endif /*AWTK_LITE*/
+#endif /*WITHOUT_FSCRIPT*/
 
 const char* object_get_type(object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt != NULL, NULL);
@@ -767,4 +767,24 @@ uint64_t object_get_prop_uint64(object_t* obj, const char* name, uint64_t defval
   } else {
     return defval;
   }
+}
+
+object_t* object_get_child_object(object_t* obj, const char* path, const char** next_path) {
+  return_value_if_fail(obj != NULL && path != NULL && next_path != NULL, RET_BAD_PARAMS);
+
+  const char* p = strchr(path, '.');
+  if (p != NULL) {
+    value_t v;
+    int32_t index;
+    char subname[MAX_PATH + 1];
+
+    tk_strncpy_s(subname, MAX_PATH, path, p - path);
+    object_get_prop(obj, subname, &v);
+    if (v.type == VALUE_TYPE_OBJECT) {
+      *next_path = p + 1;
+      return value_object(&v);
+    }
+  }
+
+  return NULL;
 }

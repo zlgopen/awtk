@@ -36,6 +36,9 @@ BEGIN_C_DECLS
     }                                                                  \
   }
 
+#define CHAR_IS_LINE_BREAK(c) ((c) == '\r' || (c) == '\n')
+#define TWINS_CHAR_IS_LINE_BREAK(c1, c2) ((c1) == '\r' && (c2) == '\n')
+
 #define WCHAR_IS_LINE_BREAK(c) ((c) == (wchar_t)'\r' || (c) == (wchar_t)'\n')
 #define TWINS_WCHAR_IS_LINE_BREAK(c1, c2) ((c1) == (wchar_t)'\r' && (c2) == (wchar_t)'\n')
 
@@ -61,6 +64,7 @@ typedef struct _text_edit_state_t {
   bool_t mask;
   bool_t preedit;
   bool_t wrap_word;
+  bool_t overwrite;
   wchar_t mask_char;
   bool_t caret_visible;
   bool_t single_line;
@@ -246,6 +250,16 @@ ret_t text_edit_get_state(text_edit_t* text_edit, text_edit_state_t* state);
 ret_t text_edit_set_wrap_word(text_edit_t* text_edit, bool_t wrap_word);
 
 /**
+ * @method text_edit_set_overwrite
+ * 设置是否覆盖行。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ * @param {bool_t} overwrite 是否覆盖行。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_edit_set_overwrite(text_edit_t* text_edit, bool_t overwrite);
+
+/**
  * @method text_edit_invert_caret_visible
  * 如果caret可见，将其设置为不可见。 如果caret不可见，将其设置为可见。
  * @param {text_edit_t*} text_edit text_edit对象。
@@ -420,6 +434,22 @@ ret_t text_edit_preedit_confirm(text_edit_t* text_edit);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t text_edit_preedit_abort(text_edit_t* text_edit);
+
+/**
+ * @method text_edit_insert_text
+ * 插入一段文本。
+ * @annotation ["scriptable"]
+ * @param {text_edit_t*} text_edit text_edit对象。
+ * @param {uint32_t} offset 插入的偏移位置。
+ * @param {const char*} text 待插入的文本。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_edit_insert_text(text_edit_t* text_edit, uint32_t offset, const char* text);
+
+/* private */
+ret_t text_edit_overwrite_text(text_edit_t* text_edit, uint32_t* p_offset, const char* text,
+                               uint32_t len);
 
 END_C_DECLS
 

@@ -3,7 +3,7 @@
   "date":"2021-09-01",
   "team":"AWTK Develop Team",
   "author":"Li XianJing <xianjimli@hotmail.com>",
-  "desc":"DAC",
+  "desc":"foobar",
   "copyright":"Guangzhou ZHIYUAN Electronics Co.,Ltd.",
   "parent": "object",
   "allowSubclass":true,
@@ -19,7 +19,7 @@
       "return": {
         "type":"ret_t", 
         "defvalue":"RET_BAD_PARAMS",
-        "desc":"返回RET_OK表示成功，否则表示失败。"
+        "desc":"返回RET_OK表示成功，否则表示失败"
       },
       "virtual": false,
       "args": [
@@ -42,7 +42,7 @@
       "return": {
         "type":"ret_t", 
         "defvalue":"RET_BAD_PARAMS",
-        "desc":"返回RET_OK表示成功，否则表示失败。"
+        "desc":"返回RET_OK表示成功，否则表示失败"
       },
       "virtual": true,
       "args": [
@@ -65,7 +65,7 @@
       "return": {
         "type":"ret_t", 
         "defvalue":"RET_BAD_PARAMS",
-        "desc":"返回RET_OK表示成功，否则表示失败。"
+        "desc":"返回RET_OK表示成功，否则表示失败"
       },
       "virtual": true,
       "args": [
@@ -88,7 +88,7 @@
       "return": {
         "type":"int32_t", 
         "defvalue":"0",
-        "desc":"返回转换位数。"
+        "desc":"返回转换位数"
       },
       "virtual": true,
       "args": [
@@ -101,7 +101,7 @@
       "return": {
         "type":"int32_t", 
         "defvalue":"0",
-        "desc":"参考电压(mV)。"
+        "desc":"参考电压(mV)"
       },
       "virtual": true,
       "args": [

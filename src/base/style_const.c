@@ -156,6 +156,12 @@ static color_t style_const_get_color(style_t* s, const char* name, color_t defva
   return style_data_get_color(style->data, name, defval);
 }
 
+static gradient_t* style_const_get_gradient(style_t* s, const char* name, gradient_t* gradient) {
+  style_const_t* style = (style_const_t*)s;
+
+  return style_data_get_gradient(style->data, name, gradient);
+}
+
 static const char* style_const_get_str(style_t* s, const char* name, const char* defval) {
   style_const_t* style = (style_const_t*)s;
 
@@ -208,6 +214,7 @@ static const style_vtable_t style_const_vt = {
     .get_uint = style_const_get_uint,
     .get_str = style_const_get_str,
     .get_color = style_const_get_color,
+    .get_gradient = style_const_get_gradient,
     .get_style_type = style_const_get_style_type,
     .get_style_state = style_const_get_style_state,
     .set_style_data = style_const_set_style_data,

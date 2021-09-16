@@ -218,14 +218,14 @@ static ret_t lcd_mem_fragment_draw_glyph(lcd_t* lcd, glyph_t* glyph, const rect_
   return RET_OK;
 }
 
-static ret_t lcd_mem_fragment_draw_image(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst) {
+static ret_t lcd_mem_fragment_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* src, const rectf_t* dst) {
   lcd_mem_fragment_t* mem = (lcd_mem_fragment_t*)lcd;
 
   ret_t ret = RET_OK;
   bitmap_t* fb = &(mem->fb);
   int32_t x = dst->x - mem->x;
   int32_t y = dst->y - mem->y;
-  rect_t d = rect_init(x, y, dst->w, dst->h);
+  rectf_t d = rectf_init(x, y, dst->w, dst->h);
   bool_t is_opaque = (img->flags & BITMAP_FLAG_OPAQUE || img->format == BITMAP_FMT_RGB565) &&
                      lcd->global_alpha >= TK_OPACITY_ALPHA;
 
@@ -233,7 +233,7 @@ static ret_t lcd_mem_fragment_draw_image(lcd_t* lcd, bitmap_t* img, const rect_t
   assert(dst->w <= mem->fb.w && dst->h <= mem->fb.h);
 
   if (img->format == fb->format && is_opaque && src->w == dst->w && src->h == dst->h) {
-    rect_t s = *src;
+    rect_t s = rect_from_rectf(src);
     ret = image_copy(fb, img, &s, x, y);
   } else {
     ret = image_blend(fb, img, &d, src, lcd->global_alpha);

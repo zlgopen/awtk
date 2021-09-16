@@ -259,6 +259,7 @@ ret_t progress_circle_set_show_text(widget_t* widget, bool_t show_text);
  */
 ret_t progress_circle_set_counter_clock_wise(widget_t* widget, bool_t counter_clock_wise);
 
+#define PROGRESS_CIRCLE_PROP_UNIT "unit"
 #define PROGRESS_CIRCLE_PROP_LINE_CAP "line_cap"
 #define PROGRESS_CIRCLE_PROP_LINE_WIDTH "line_width"
 #define PROGRESS_CIRCLE_PROP_START_ANGLE "start_angle"

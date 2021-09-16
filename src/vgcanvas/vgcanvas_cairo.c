@@ -674,18 +674,18 @@ static cairo_pattern_t* vgcanvas_cairo_create_pattern_from_gradient(const vg_gra
   uint32_t i = 0;
   cairo_pattern_t* pattern = NULL;
 
-  if (gradient->type == VG_GRADIENT_LINEAR) {
+  if (gradient->gradient.type == GRADIENT_LINEAR) {
     const vg_gradient_linear_info_t* info = &(gradient->info.linear);
     pattern = cairo_pattern_create_linear(info->sx, info->sy, info->ex, info->ey);
-  } else if (gradient->type == VG_GRADIENT_RADIAL) {
+  } else if (gradient->gradient.type == GRADIENT_RADIAL) {
     const vg_gradient_radial_info_t* info = &(gradient->info.radial);
     pattern =
         cairo_pattern_create_radial(info->x0, info->y0, info->r0, info->x1, info->y1, info->r1);
   }
   return_value_if_fail(pattern != NULL, NULL);
 
-  for (i = 0; i < gradient->nr; i++) {
-    const vg_gradient_stop_t* iter = vg_gradient_get_stop((vg_gradient_t*)gradient, i);
+  for (i = 0; i < gradient->gradient.nr; i++) {
+    const gradient_stop_t* iter = vg_gradient_get_stop((vg_gradient_t*)gradient, i);
     cairo_pattern_add_color_stop_color(pattern, iter->offset, iter->color);
   }
 

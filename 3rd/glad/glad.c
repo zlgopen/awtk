@@ -131,11 +131,11 @@ int gladLoadGL(void) {
     int status = 0;
 
     if(open_gl()) {
-#ifdef WITH_NANOVG_GLES2
+#ifdef WITH_GPU_GLES2
         status = gladLoadGLES2Loader(&get_proc);
 #else
         status = gladLoadGLLoader(&get_proc);
-#endif/*WITH_NANOVG_GLES2*/        
+#endif/*WITH_GPU_GLES2*/        
         close_gl();
     }
 

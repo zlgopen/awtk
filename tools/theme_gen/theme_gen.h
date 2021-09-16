@@ -31,6 +31,46 @@
 using std::string;
 using std::vector;
 
+class BinaryData {
+public:
+  uint8_t* data;
+  uint32_t size;
+
+  void Reset(void) {
+    delete [] this->data;
+    this->data = NULL;
+    this->size = 0;
+  }
+  void Copy(const void* data, uint32_t size) {
+    this->size = size;
+    this->data = new uint8_t[size];
+    memcpy(this->data, data, size);
+  }
+
+  BinaryData(void) {
+    this->data = NULL;
+    this->size = 0;
+  }
+  
+  BinaryData(const BinaryData& other) {
+    this->Copy(other.data, other.size);
+  }
+ 
+  BinaryData& operator=(const BinaryData& other){
+    this->Reset();
+    this->Copy(other.data, other.size);
+    return *this;
+  }
+
+  BinaryData(const binary_data_t* bin) {
+    this->Copy(bin->data, bin->size);
+  }
+
+  ~BinaryData() {
+    this->Reset();
+  }
+};
+
 template <class T>
 class NameValue {
  public:
@@ -61,6 +101,10 @@ class NameValues {
     wbuffer_write_string(wbuffer, value.c_str());
     log_debug("    %s=%s\n", name.c_str(), value.c_str());
   }
+  void write_value_to_wbuffer(wbuffer_t* wbuffer, const string& name, const BinaryData& value) {
+    wbuffer_write_binary(wbuffer, value.data, value.size);
+    log_debug("    %s=bin(%d)\n", name.c_str(), value.size);
+  }
 
   void write_value_header_to_wbuffer(wbuffer_t* wbuffer, uint32_t type, const string& name,
                                      uint32_t value) {
@@ -86,6 +130,15 @@ class NameValues {
     nv.type = type;
     nv.name_size = name.size() + 1;
     nv.value_size = value.size() + 1;
+    wbuffer_write_binary(wbuffer, &nv, sizeof(nv));
+  }
+  
+  void write_value_header_to_wbuffer(wbuffer_t* wbuffer, uint32_t type, const string& name,
+                                     const BinaryData& value) {
+    style_name_value_header_t nv;
+    nv.type = type;
+    nv.name_size = name.size() + 1;
+    nv.value_size = value.size;
     wbuffer_write_binary(wbuffer, &nv, sizeof(nv));
   }
 
@@ -147,6 +200,7 @@ class Style {
   bool AddValue(const string& name, int32_t value);
   bool AddValue(const string& name, uint32_t value);
   bool AddValue(const string& name, const char* value);
+  bool AddValue(const string& name, const binary_data_t* bin);
   bool AddValue(const string& name, const value_t& v);
   ret_t Output(wbuffer_t* wbuffer);
   bool Merge(Style& other);
@@ -157,6 +211,7 @@ class Style {
   string name;
   string state;
 
+  NameValues<BinaryData> bin_values;
   NameValues<string> str_values;
   NameValues<int32_t> int_values;
   NameValues<uint32_t> uint_values;

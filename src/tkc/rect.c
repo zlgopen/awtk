@@ -198,3 +198,38 @@ rect_t* rect_scale(rect_t* r, float_t scale) {
 
   return r;
 }
+
+rectf_t* rectf_scale(rectf_t* r, float_t scale) {
+  return_value_if_fail(r != NULL, r);
+
+  if (scale != 1.0f) {
+    r->x = r->x * scale;
+    r->y = r->y * scale;
+    r->w = r->w * scale;
+    r->h = r->h * scale;
+  }
+
+  return r;
+}
+
+rectf_t rect_to_rectf(const rect_t* r) {
+  rectf_t tmp_r = {0};
+  return_value_if_fail(r != NULL, tmp_r);
+  tmp_r.x = (float_t)(r->x);
+  tmp_r.y = (float_t)(r->y);
+  tmp_r.w = (float_t)(r->w);
+  tmp_r.h = (float_t)(r->h);
+
+  return tmp_r;
+}
+
+rect_t rect_from_rectf(const rectf_t* r) {
+  rect_t tmp_r = {0};
+  return_value_if_fail(r != NULL, tmp_r);
+  tmp_r.x = tk_roundi(r->x);
+  tmp_r.y = tk_roundi(r->y);
+  tmp_r.w = tk_roundi(r->w);
+  tmp_r.h = tk_roundi(r->h);
+
+  return tmp_r;
+}

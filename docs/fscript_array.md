@@ -26,7 +26,7 @@ array_create() => object
 #### 原型
 
 ```js
-func_array_create_with_str(str, sep, type) => object
+array_create_with_str(str, sep, type) => object
 ```
 
 type 为可选参数，可选取值为：
@@ -42,7 +42,7 @@ a = array_create_with_str("2,1,3", ",", "int");
 a = array_create_with_str("a2,a1,a3", ",");
 ```
 
-### 3.array\_create\_with\_repeated\_value
+### 3.array\_create\_repeated
 
 > 创建 array 对象。
 ----------------------------
@@ -70,7 +70,7 @@ a = array_create_repeated(123, 3);
 #### 原型
 
 ```js
-func_array_dup(arr, start, end) => object
+array_dup(arr, start, end) => object
 ```
 
 start 为开始的位置，默认为 0。
@@ -132,6 +132,8 @@ array_get(array, index) => value
 ```
 
 > index 为负数时，从后往前取。比如-1 表示最后一个元素。
+>
+> 此外，也可以通过 array.[index] 的方式访问数组元素。
 
 ### 9.array\_set
 
@@ -167,7 +169,7 @@ array_insert(array, index, value) => bool
 #### 原型
 
 ```js
-array_index_of((array, value) => index
+array_index_of(array, value) => index
 ```
 
 ### 12.array\_last_index\_of
@@ -178,7 +180,7 @@ array_index_of((array, value) => index
 #### 原型
 
 ```js
-array_last_index_of((array, value) => index
+array_last_index_of(array, value) => index
 ```
 
 ### 13.array\_remove
@@ -202,7 +204,7 @@ array_remove(array, index) => bool
 #### 原型
 
 ```js
-array_get_and_remove((array, index) => value
+array_get_and_remove(array, index) => value
 ```
 
 > index 为负数时，从后往前取。比如-1 表示最后一个元素。

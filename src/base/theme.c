@@ -81,6 +81,23 @@ uint32_t style_data_get_uint(const uint8_t* s, const char* name, uint32_t defval
   return value;
 }
 
+gradient_t* style_data_get_gradient(const uint8_t* s, const char* name, gradient_t* gradient) {
+  const style_name_value_t* nv = style_data_get(s, name);
+
+  if (nv != NULL) {
+    const uint8_t* p = (const uint8_t*)(nv->name) + nv->name_size;
+    if (nv->type == VALUE_TYPE_GRADIENT) {
+      return gradient_init_from_binary(gradient, p, nv->value_size);
+    } else if (nv->type == VALUE_TYPE_UINT32 || nv->type == VALUE_TYPE_INT32) {
+      uint32_t value = 0;
+      load_uint32(p, value);
+      return gradient_init_simple(gradient, value);
+    }
+  }
+
+  return NULL;
+}
+
 const char* style_data_get_str(const uint8_t* s, const char* name, const char* defval) {
   const char* value = defval;
   const style_name_value_t* nv = style_data_get(s, name);

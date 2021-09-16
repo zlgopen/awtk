@@ -217,7 +217,7 @@ color_t lcd_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
   }
 }
 
-ret_t lcd_draw_image(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst) {
+ret_t lcd_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* src, const rectf_t* dst) {
   return_value_if_fail(lcd != NULL && lcd->draw_image != NULL && src != NULL && dst != NULL,
                        RET_BAD_PARAMS);
 

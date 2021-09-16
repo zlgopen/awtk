@@ -82,6 +82,10 @@ TEST(StrGen, xml1) {
     <language name=\"en_US\">en:&quot;&lt;&gt;'</language> \
     <language name=\"zh_CN\">zh:&quot;&lt;&gt;'</language> \
     </string> \
+    <string name=\"with_space\"> \
+    <language name=\"en_US\">  abc  </language> \
+    <language name=\"zh_CN\">  保留空格  </language> \
+    </string> \
     <string name=\"cancel\"> \
     <language name=\"en_US\">Cancel</language> \
     <language name=\"zh_CN\">取消</language> \
@@ -99,11 +103,13 @@ TEST(StrGen, xml1) {
   ASSERT_EQ(string("Cancel"), str_table_lookup(table, "cancel"));
   ASSERT_EQ(string("a<b>c"), str_table_lookup(table, "abc"));
   ASSERT_EQ(string("en:\"<>'"), str_table_lookup(table, "\"<>'"));
+  ASSERT_EQ(string("  abc  "), str_table_lookup(table, "with_space"));
 
   sg.Output("zh_CN", b);
   assert_str_eq(L"确定", str_table_lookup(table, "ok"));
   assert_str_eq(L"取消", str_table_lookup(table, "cancel"));
   assert_str_eq(L"zh:\"<>'", str_table_lookup(table, "\"<>'"));
+  assert_str_eq(L"  保留空格  ", str_table_lookup(table, "with_space"));
 
   ASSERT_EQ(string("a\"b&c"), str_table_lookup(table, "abc"));
   ASSERT_EQ(NULL, str_table_lookup(table, "not exist"));

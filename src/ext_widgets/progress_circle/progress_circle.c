@@ -57,6 +57,30 @@ static ret_t progress_circle_on_paint_background(widget_t* widget, canvas_t* c) 
   return RET_OK;
 }
 
+static ret_t progress_circle_update_text(widget_t* widget) {
+  char format[TK_NUM_MAX_LEN + 1];
+  char str[TK_NUM_MAX_LEN + 1];
+  progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
+  return_value_if_fail(progress_circle != NULL, RET_BAD_PARAMS);
+
+  const char* unit = widget_get_prop_str(widget, PROGRESS_CIRCLE_PROP_UNIT, NULL);
+  if (progress_circle->format == NULL) {
+    const char* temp = unit != NULL ? unit : "";
+    tk_snprintf(format, TK_NUM_MAX_LEN, "%u%s", (uint32_t)progress_circle->value, temp);
+  } else {
+    uint32_t len = tk_strlen(progress_circle->format);
+    tk_strncpy_s(format, TK_NUM_MAX_LEN, progress_circle->format, len);
+  }
+
+  if (strchr(format, 'd') != NULL || strchr(format, 'x') != NULL || strchr(format, 'X') != NULL) {
+    tk_snprintf(str, TK_NUM_MAX_LEN, format, tk_roundi(progress_circle->value));
+  } else {
+    tk_snprintf(str, TK_NUM_MAX_LEN, format, progress_circle->value);
+  }
+
+  return widget_set_text_utf8(widget, str);
+}
+
 static ret_t progress_circle_on_paint_self(widget_t* widget, canvas_t* c) {
   bitmap_t img;
   style_t* style = widget->astyle;
@@ -115,15 +139,7 @@ static ret_t progress_circle_on_paint_self(widget_t* widget, canvas_t* c) {
 
   color = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
   if (progress_circle->show_text && color.rgba.a) {
-    char s[TK_NUM_MAX_LEN + TK_NUM_MAX_LEN + 1];
-    const char* format = progress_circle->format != NULL ? progress_circle->format : "%d";
-    if (strchr(format, 'd') != NULL || strchr(format, 'x') != NULL || strchr(format, 'X') != NULL) {
-      tk_snprintf(s, sizeof(s), format, tk_roundi(progress_circle->value));
-    } else {
-      tk_snprintf(s, sizeof(s), format, progress_circle->value);
-    }
-
-    wstr_set_utf8(&(widget->text), s);
+    progress_circle_update_text(widget);
     widget_paint_helper(widget, c, NULL, NULL);
   }
 

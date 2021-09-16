@@ -41,8 +41,8 @@
 #include "pixel_ops.inc"
 #include "blend_image.inc"
 
-ret_t blend_image_bgr888_bgr565(bitmap_t* dst, bitmap_t* src, const rect_t* dst_r,
-                                const rect_t* src_r, uint8_t a) {
+ret_t blend_image_bgr888_bgr565(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r,
+                                const rectf_t* src_r, uint8_t a) {
   return_value_if_fail(dst != NULL && src != NULL && src_r != NULL && dst_r != NULL,
                        RET_BAD_PARAMS);
   return_value_if_fail(dst->format == BITMAP_FMT_BGR888 && src->format == BITMAP_FMT_BGR565,

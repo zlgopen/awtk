@@ -412,6 +412,22 @@ ret_t canvas_draw_points(canvas_t* c, const point_t* points, uint32_t nr);
 ret_t canvas_fill_rect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method canvas_fill_rect_gradient
+ * 绘制矩形。
+ *
+ * @annotation ["scriptable"]
+ * @param {canvas_t*} c canvas对象。
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y y坐标。
+ * @param {wh_t} w 宽度。
+ * @param {wh_t} h 高度。
+ * @param {gradient_t*} gradient 渐变颜色。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_fill_rect_gradient(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h, gradient_t* gradient);
+
+/**
  * @method canvas_clear_rect
  * 用填充颜色填充指定矩形。
  * 
@@ -797,12 +813,46 @@ ret_t canvas_fill_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r,
                                const color_t* color, uint32_t radius);
 
 /**
- * @method canvas_fill_rounded_rect_ex
- * 填充区域。
+ * @method canvas_fill_rounded_rect_gradient
+ * 填充圆角矩形区域。
+ * @param {canvas_t*} c canvas对象。
+ * @param {const rect_t*} r 矩形。
+ * @param {const gradient_t*} gradient 渐变颜色。
+ * @param {uint32_t} radius 圆角半径。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_fill_rounded_rect_gradient(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                                        const gradient_t* gradient, uint32_t radius);
+
+/**
+ * @method canvas_fill_rounded_rect_gradient_ex
+ * 填充圆角矩形区域。
  * 半径半径小于等于2，则表示该角为直角，如果全部角都为直角则返回RET_FAIL。（如果全是直角，该函数效率没有canvas_fill_rect函数快）
  * 如果各个半径都不一样的话，就是会使用vg，如果不支持vg就会返回RET_FAIL（直角的情况除外）。
  * @param {canvas_t*} c canvas对象。
  * @param {const rect_t*} r 矩形。
+ * @param {const rect_t*} bg_r 矩形。（默认为 NULL，当圆角直径大于 r 矩形的宽高后，会根据 bg_r 矩形来决定是否需要缩小圆角半径）
+ * @param {const gradient_t*} gradient 渐变颜色。
+ * @param {uint32_t} radius_tl 左上角圆角半径。
+ * @param {uint32_t} radius_tr 右上角圆角半径。
+ * @param {uint32_t} radius_bl 左下角圆角半径。
+ * @param {uint32_t} radius_br 右下角圆角半径。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_fill_rounded_rect_gradient_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                                          const gradient_t* gradient, uint32_t radius_tl, uint32_t radius_tr,
+                                          uint32_t radius_bl, uint32_t radius_br);
+
+/**
+ * @method canvas_fill_rounded_rect_ex
+ * 填充圆角矩形区域。
+ * 半径半径小于等于2，则表示该角为直角，如果全部角都为直角则返回RET_FAIL。（如果全是直角，该函数效率没有canvas_fill_rect函数快）
+ * 如果各个半径都不一样的话，就是会使用vg，如果不支持vg就会返回RET_FAIL（直角的情况除外）。
+ * @param {canvas_t*} c canvas对象。
+ * @param {const rect_t*} r 矩形。
+ * @param {const rect_t*} bg_r 矩形。（默认为 NULL，当圆角直径大于 r 矩形的宽高后，会根据 bg_r 矩形来决定是否需要缩小圆角半径）
  * @param {const color_t*} color 颜色。
  * @param {uint32_t} radius_tl 左上角圆角半径。
  * @param {uint32_t} radius_tr 右上角圆角半径。

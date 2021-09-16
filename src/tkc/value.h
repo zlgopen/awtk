@@ -137,6 +137,11 @@ typedef enum _value_type_t {
    * 特殊用途。
    */
   VALUE_TYPE_TOKEN,
+  /**
+   * @const VALUE_TYPE_GRADIENT
+   * 渐变颜色。
+   */
+  VALUE_TYPE_GRADIENT,
 } value_type_t;
 
 typedef struct _binary_data_t {
@@ -689,6 +694,26 @@ value_t* value_set_ubjson(value_t* v, void* data, uint32_t size);
  * @return {binary_data_t*} 值。
  */
 binary_data_t* value_ubjson(const value_t* v);
+
+/**
+ * @method value_set_gradient
+ * 设置类型为gradient的值。
+ * @param {value_t*} v  value对象。
+ * @param {void*}  value 待设置的值。
+ * @param {uint32_t}  size 长度。
+ *
+ * @return {value_t*} value对象本身。
+ */
+value_t* value_set_gradient(value_t* v, void* data, uint32_t size);
+
+/**
+ * @method value_gradient
+ * 获取为gradient的值。
+ * @param {value_t*} v value对象。
+ *
+ * @return {binary_data_t*} 值。
+ */
+binary_data_t* value_gradient(const value_t* v);
 
 /**
  * @method value_copy

@@ -48,7 +48,10 @@ ret_t object_default_clear_props(object_t* obj) {
 }
 
 static ret_t object_default_on_destroy(object_t* obj) {
-  return object_default_clear_props(obj);
+  object_default_t* o = OBJECT_DEFAULT(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+  
+  return darray_deinit(&(o->props));
 }
 
 static int32_t object_default_compare(object_t* obj, object_t* other) {
@@ -56,30 +59,13 @@ static int32_t object_default_compare(object_t* obj, object_t* other) {
   return tk_str_cmp(obj->name, other->name);
 }
 
-static object_t* object_default_get_sub_object(object_t* obj, const char* name, const char** ret) {
-  const char* p = strchr(name, '.');
-  if (p != NULL) {
-    value_t* v = NULL;
-    char subname[MAX_PATH + 1];
-
-    tk_strncpy_s(subname, MAX_PATH, name, p - name);
-    v = object_default_find_prop_by_name(obj, subname);
-    if (v != NULL && v->type == VALUE_TYPE_OBJECT) {
-      *ret = p + 1;
-      return value_object(v);
-    }
-  }
-
-  return NULL;
-}
-
 static ret_t object_default_remove_prop(object_t* obj, const char* name) {
   int32_t index = 0;
   object_default_t* o = OBJECT_DEFAULT(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
-  if (o->props.size > 0) {
-    object_t* sub = object_default_get_sub_object(obj, name, &name);
+  if (o->props.size > 0 && o->enable_path) {
+    object_t* sub = object_get_child_object(obj, name, &name);
     if (sub != NULL) {
       return object_remove_prop(sub, name);
     }
@@ -98,8 +84,8 @@ static ret_t object_default_set_prop(object_t* obj, const char* name, const valu
   ret_t ret = RET_NOT_FOUND;
   object_default_t* o = OBJECT_DEFAULT(obj);
 
-  if (o->props.size > 0) {
-    object_t* sub = object_default_get_sub_object(obj, name, &name);
+  if (o->props.size > 0 && o->enable_path) {
+    object_t* sub = object_get_child_object(obj, name, &name);
     if (sub != NULL) {
       return object_set_prop(sub, name, v);
     }
@@ -131,8 +117,8 @@ static ret_t object_default_get_prop(object_t* obj, const char* name, value_t* v
     return RET_OK;
   }
 
-  if (o->props.size > 0) {
-    object_t* sub = object_default_get_sub_object(obj, name, &name);
+  if (o->props.size > 0 && o->enable_path) {
+    object_t* sub = object_get_child_object(obj, name, &name);
     if (sub != NULL) {
       return object_get_prop(sub, name, v);
     }
@@ -144,6 +130,36 @@ static ret_t object_default_get_prop(object_t* obj, const char* name, value_t* v
       ret = value_copy(v, vv);
     } else {
       ret = RET_NOT_FOUND;
+    }
+  }
+
+  return ret;
+}
+
+static bool_t object_default_can_exec(object_t* obj, const char* name, const char* args) {
+  ret_t ret = FALSE;
+  object_default_t* o = OBJECT_DEFAULT(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  if (o->enable_path) {
+    object_t* sub = object_get_child_object(obj, name, &name);
+    if (sub != NULL) {
+      return object_can_exec(sub, name, args);
+    }
+  }
+
+  return ret;
+}
+
+static ret_t object_default_exec(object_t* obj, const char* name, const char* args) {
+  ret_t ret = RET_NOT_FOUND;
+  object_default_t* o = OBJECT_DEFAULT(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  if (o->enable_path) {
+    object_t* sub = object_get_child_object(obj, name, &name);
+    if (sub != NULL) {
+      return object_exec(sub, name, args);
     }
   }
 
@@ -190,17 +206,24 @@ static const object_vtable_t s_object_default_vtable = {
     .compare = object_default_compare,
     .get_prop = object_default_get_prop,
     .set_prop = object_default_set_prop,
+    .can_exec = object_default_can_exec,
+    .exec = object_default_exec,
     .remove_prop = object_default_remove_prop,
     .foreach_prop = object_default_foreach_prop};
 
-object_t* object_default_create(void) {
+object_t* object_default_create_ex(bool_t enable_path) {
   object_t* obj = object_create(&s_object_default_vtable);
   object_default_t* o = OBJECT_DEFAULT(obj);
   return_value_if_fail(obj != NULL, NULL);
 
+  o->enable_path = enable_path;
   darray_init(&(o->props), 5, (tk_destroy_t)named_value_destroy, (tk_compare_t)named_value_compare);
 
   return obj;
+}
+
+object_t* object_default_create(void) {
+  return object_default_create_ex(TRUE);
 }
 
 object_t* object_default_clone(object_default_t* o) {

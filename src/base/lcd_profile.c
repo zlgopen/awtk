@@ -232,8 +232,7 @@ static ret_t lcd_profile_draw_text(lcd_t* lcd, const wchar_t* str, uint32_t nr, 
   return ret;
 }
 
-static ret_t lcd_profile_draw_image(lcd_t* lcd, bitmap_t* img, const rect_t* src,
-                                    const rect_t* dst) {
+static ret_t lcd_profile_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* src, const rectf_t* dst) {
   ret_t ret = RET_OK;
 
   uint32_t cost = 0;

@@ -315,6 +315,8 @@ npm install -g glob
 
 * [Wonderful Examples](https://github.com/zlgopen/awtk-examples)
 
+* [HTTP Client](https://github.com/zlgopen/awtk-http-client)
+
 * [AWTK-MVVM](https://github.com/zlgopen/awtk-mvvm)
 
 * [MVC/MVVM Example Demonstration](https://github.com/zlgopen/awtk-patterns)

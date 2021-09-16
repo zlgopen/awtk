@@ -85,15 +85,6 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   widget_fill_fg_rect(widget, c, &r, draw_type);
 
   if (progress_bar->show_text) {
-    char s[TK_NUM_MAX_LEN + TK_NUM_MAX_LEN + 1];
-    const char* format = progress_bar->format != NULL ? progress_bar->format : "%d";
-    if (strchr(format, 'd') != NULL || strchr(format, 'x') != NULL || strchr(format, 'X') != NULL) {
-      tk_snprintf(s, sizeof(s), format, tk_roundi(progress_bar->value));
-    } else {
-      tk_snprintf(s, sizeof(s), format, progress_bar->value);
-    }
-
-    wstr_set_utf8(&(widget->text), s);
     return widget_paint_helper(widget, c, NULL, NULL);
   }
 
@@ -108,7 +99,17 @@ static ret_t progress_bar_update_text(widget_t* widget) {
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
   return_value_if_fail(progress_bar != NULL, RET_BAD_PARAMS);
 
-  tk_snprintf(str, TK_NUM_MAX_LEN, "%d%%", progress_bar_get_percent(widget));
+  if (progress_bar->format != NULL) {
+    if (strchr(progress_bar->format, 'd') != NULL || strchr(progress_bar->format, 'x') != NULL ||
+        strchr(progress_bar->format, 'X') != NULL) {
+      tk_snprintf(str, TK_NUM_MAX_LEN, progress_bar->format, tk_roundi(progress_bar->value));
+    } else {
+      tk_snprintf(str, TK_NUM_MAX_LEN, progress_bar->format, progress_bar->value);
+    }
+  } else {
+    tk_snprintf(str, TK_NUM_MAX_LEN, "%d%%", progress_bar_get_percent(widget));
+  }
+
   return widget_set_text_utf8(widget, str);
 }
 

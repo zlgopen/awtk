@@ -156,3 +156,21 @@ TEST(Window, strongly_focus) {
   ASSERT_EQ(WINDOW_BASE(w)->strongly_focus, TRUE);
   ASSERT_EQ(WINDOW_BASE(w)->strongly_focus, value_bool(&v2));
 }
+
+TEST(Window, open_bin) {
+  widget_t* win = window_open("main");
+  ASSERT_EQ(win != NULL, true);
+  widget_destroy(win);
+}
+
+TEST(Window, open_xml) {
+  widget_t* win = window_open("file://./design/default/ui/main.xml");
+  ASSERT_EQ(win != NULL, true);
+  widget_destroy(win);
+}
+
+TEST(Window, open_local_bin) {
+  widget_t* win = window_open("file://./res/assets/default/raw/ui/main.bin");
+  ASSERT_EQ(win != NULL, true);
+  widget_destroy(win);
+}

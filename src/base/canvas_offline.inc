@@ -33,7 +33,7 @@
 #include "window_manager.h"
 #include "canvas_offline.h"
 
-#ifdef WITH_NANOVG_GPU
+#ifdef WITH_GPU
 
 #ifdef WITHOUT_GLAD
 #include <SDL.h>
@@ -85,7 +85,7 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
   canvas_t* c = NULL;
   native_window_t* native_window = NULL;
 
-#ifdef WITH_NANOVG_GPU
+#ifdef WITH_GPU
   float_t ratio = 0.0f;
   vgcanvas_t* vg = NULL;
   framebuffer_object_t* fbo = NULL;
@@ -115,7 +115,7 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
   return_value_if_fail(native_window != NULL, NULL);
 
   c = native_window_get_canvas(native_window);
-#ifdef WITH_NANOVG_GPU
+#ifdef WITH_GPU
 
   if (format != BITMAP_FMT_RGBA8888) {
     assert(!" opengl gpu only supported RGBA foramt ");
@@ -220,7 +220,7 @@ ret_t canvas_offline_clear_canvas(canvas_t* canvas) {
 }
 #else
 ret_t canvas_offline_clear_canvas(canvas_t* canvas) {
-#ifndef WITH_NANOVG_GPU
+#ifndef WITH_GPU
   rect_t rect;
   canvas_offline_t* canvas_offline = NULL;
 #endif
@@ -232,7 +232,7 @@ ret_t canvas_offline_clear_canvas(canvas_t* canvas) {
   }
 #endif
 
-#ifdef WITH_NANOVG_GPU
+#ifdef WITH_GPU
   glEnable(GL_SCISSOR_TEST);
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -249,7 +249,7 @@ ret_t canvas_offline_clear_canvas(canvas_t* canvas) {
 ret_t canvas_offline_begin_draw(canvas_t* canvas) {
   vgcanvas_t* vg = NULL;
   canvas_offline_t* canvas_offline = NULL;
-#ifdef WITH_NANOVG_GPU
+#ifdef WITH_GPU
   canvas_offline_gpu_t* c = NULL;
 #endif
 
@@ -263,7 +263,7 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas) {
   return_value_if_fail(canvas != NULL, RET_BAD_PARAMS);
   vg = lcd_get_vgcanvas(canvas->lcd);
   canvas_offline = (canvas_offline_t*)canvas;
-#ifdef WITH_NANOVG_GPU
+#ifdef WITH_GPU
   c = (canvas_offline_gpu_t*)canvas;
   if (vg != NULL && canvas_offline->begin_draw == 0) {
     canvas_get_clip_rect(canvas, &canvas_offline->canvas_clip_rect);
@@ -302,7 +302,7 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas) {
 ret_t canvas_offline_end_draw(canvas_t* canvas) {
   vgcanvas_t* vg = NULL;
   canvas_offline_t* canvas_offline = NULL;
-#ifdef WITH_NANOVG_GPU
+#ifdef WITH_GPU
   canvas_offline_gpu_t* c = NULL;
 #endif
 
@@ -318,7 +318,7 @@ ret_t canvas_offline_end_draw(canvas_t* canvas) {
   canvas_offline = (canvas_offline_t*)canvas;
 
   canvas_offline->begin_draw--;
-#ifdef WITH_NANOVG_GPU
+#ifdef WITH_GPU
   c = (canvas_offline_gpu_t*)canvas;
   if (vg != NULL && canvas_offline->begin_draw == 0) {
     uint16_t flag = BITMAP_FLAG_CHANGED;
@@ -412,7 +412,7 @@ ret_t canvas_offline_bitmap_move_to_new_bitmap(canvas_t* canvas, bitmap_t* bitma
   bitmap->specific_ctx = ctx;
   bitmap->image_manager = image_manager();
   bitmap->specific_destroy = canvas_offline_web_bitmap_destroy;
-#elif defined(WITH_NANOVG_GPU)
+#elif defined(WITH_GPU)
   bitmap->specific = NULL;
   bitmap->image_manager = image_manager();
 #endif
@@ -423,7 +423,7 @@ ret_t canvas_offline_bitmap_move_to_new_bitmap(canvas_t* canvas, bitmap_t* bitma
 }
 
 ret_t canvas_offline_flush_bitmap(canvas_t* canvas) {
-#ifdef WITH_NANOVG_GPU
+#ifdef WITH_GPU
   rect_t r;
   vgcanvas_t* vg = NULL;
   canvas_offline_gpu_t* c = (canvas_offline_gpu_t*)canvas;
@@ -436,7 +436,7 @@ ret_t canvas_offline_flush_bitmap(canvas_t* canvas) {
   }
 #endif
 
-#ifdef WITH_NANOVG_GPU
+#ifdef WITH_GPU
   vg = lcd_get_vgcanvas(canvas->lcd);
   if (vg != NULL && c->fbo != NULL) {
     c = (canvas_offline_gpu_t*)canvas;
@@ -452,7 +452,7 @@ ret_t canvas_offline_flush_bitmap(canvas_t* canvas) {
 
 ret_t canvas_offline_destroy(canvas_t* canvas) {
   bitmap_t* bitmap = NULL;
-#ifdef WITH_NANOVG_GPU
+#ifdef WITH_GPU
   vgcanvas_t* vg = NULL;
   framebuffer_object_t* fbo = NULL;
 #else
@@ -468,7 +468,7 @@ ret_t canvas_offline_destroy(canvas_t* canvas) {
 #endif
 
   bitmap = ((canvas_offline_t*)canvas)->bitmap;
-#ifdef WITH_NANOVG_GPU
+#ifdef WITH_GPU
   vg = lcd_get_vgcanvas(canvas->lcd);
   fbo = ((canvas_offline_gpu_t*)canvas)->fbo;
   if (fbo != NULL) {

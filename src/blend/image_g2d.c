@@ -82,7 +82,7 @@ ret_t image_rotate(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, lcd_orient
   return soft_rotate_image(dst, src, src_r, o);
 }
 
-ret_t image_blend(bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const rect_t* src_r,
+ret_t image_blend(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r,
                   uint8_t global_alpha) {
   return_value_if_fail(dst != NULL && src != NULL && dst_r != NULL && src_r != NULL,
                        RET_BAD_PARAMS);
@@ -91,8 +91,12 @@ ret_t image_blend(bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const rect_
   assert(dst_r->y >= 0 && (dst_r->y + dst_r->h) <= dst->h);
 
 #ifdef WITH_G2D
-  if (g2d_blend_image(dst, src, dst_r, src_r, global_alpha) == RET_OK) {
-    return RET_OK;
+  if (src_r->w == dst_r->w && src_r->h == dst_r->h) {
+    rect_t tmp_src_r = rect_from_rectf(src_r);
+    rect_t tmp_dst_r = rect_from_rectf(dst_r);
+    if (g2d_blend_image(dst, src, (const rect_t*)&tmp_dst_r, (const rect_t*)&tmp_src_r, global_alpha) == RET_OK) {
+      return RET_OK;
+    }
   }
 #endif /*WITH_G2D*/
 

@@ -191,7 +191,7 @@
     <over/>
     <pressed icon="uiex_Windowclosed_p"/>
   </style>
-  <style name="with_icon_text" bg_color="#EBEBEB" border_color="#C2C2C2" font_size="22" icon="uiex_button_search" icon_at="center" round_radius="4" text_color="#000000">
+  <style name="with_icon_text" bg_color="#EBEBEB" border_color="#C2C2C2" font_size="22" icon="uiex_button_search" icon_at="left" text_align_h="center" round_radius="4" text_color="#000000">
     <normal/>
     <disable bg_color="#EBEBEB66" border_color="#C2C2C266" text_color="#00000066"/>
     <focused/>
@@ -240,7 +240,7 @@
     <pressed x_offset="1" y_offset="1"/>
     <pressed_of_checked icon="debug_start_o" x_offset="1" y_offset="1"/>
   </style>
-  <style name="fps" bg_color="#EBEBEB" border_color="#C2C2C2" font_size="22" icon="uiex_texteditorhide" icon_at="center" round_radius="4" spacer="8" text_color="#000000">
+  <style name="fps" bg_color="#EBEBEB" border_color="#C2C2C2" font_size="22" icon="uiex_texteditorhide" icon_at="left" text_align_h="center" round_radius="4" spacer="8" text_color="#000000">
     <normal/>
     <disable bg_color="#EBEBEB66" border_color="#C2C2C266" text_color="#00000066"/>
     <disable_of_checked bg_color="#EBEBEB66" border_color="#C2C2C266" icon="uiex_texteditor_show" text_color="#00000066"/>

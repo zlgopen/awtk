@@ -7,6 +7,7 @@
 #include "mledit/mledit.h"
 #include "base/window.h"
 #include "common.h"
+#include "lcd/lcd_mem_rgba8888.h"
 
 TEST(MLEdit, basic) {
   widget_t* b = mledit_create(NULL, 10, 20, 30, 40);
@@ -158,4 +159,101 @@ TEST(MLEdit, keys) {
   ASSERT_EQ(widget_dispatch(e, (event_t*)&key), RET_OK);
 
   widget_destroy(e);
+}
+
+TEST(MLEdit, insert_text_overwrite) {
+  char get_text[32] = {0};
+  const char* str = "1\n2\n3\n4\n5";
+  const char* str2 = "1\r\n2\r\n3\r\n4\r\n5";
+  canvas_t c;
+  lcd_t* lcd = lcd_mem_rgba8888_create(150, 150, TRUE);
+  widget_t* win = window_create(NULL, 0, 0, 0, 0);
+  widget_t* e = mledit_create(win, 10, 20, 30, 40);
+
+  canvas_init(&c, lcd, font_manager());
+  widget_set_prop_pointer(win, WIDGET_PROP_CANVAS, &c);
+  mledit_set_max_lines(e, 5);
+  mledit_set_overwrite(e, TRUE);
+
+  widget_set_text_utf8(e, str);
+  mledit_insert_text(e, e->text.size - 1, "6\n7");
+  widget_get_text_utf8(e, get_text, sizeof(get_text));
+  ASSERT_STREQ(get_text, "2\n3\n4\n6\n7");
+
+  memset(get_text, 0, sizeof(get_text));
+  widget_set_text_utf8(e, str2);
+  mledit_insert_text(e, e->text.size - 1, "6\r\n7");
+  widget_get_text_utf8(e, get_text, sizeof(get_text));
+  ASSERT_STREQ(get_text, "2\r\n3\r\n4\r\n6\r\n7");
+
+  memset(get_text, 0, sizeof(get_text));
+  widget_set_text_utf8(e, str);
+  mledit_insert_text(e, e->text.size - 3, "6\n");
+  widget_get_text_utf8(e, get_text, sizeof(get_text));
+  ASSERT_STREQ(get_text, "1\n2\n3\n6\n4");
+
+  memset(get_text, 0, sizeof(get_text));
+  widget_set_text_utf8(e, str);
+  mledit_insert_text(e, -1, "\n6\n7");
+  widget_get_text_utf8(e, get_text, sizeof(get_text));
+  ASSERT_STREQ(get_text, "3\n4\n5\n6\n7");
+
+  memset(get_text, 0, sizeof(get_text));
+  widget_set_text_utf8(e, str);
+  mledit_insert_text(e, 0, "0\n");
+  widget_get_text_utf8(e, get_text, sizeof(get_text));
+  ASSERT_STREQ(get_text, "0\n1\n2\n3\n4");
+
+  memset(get_text, 0, sizeof(get_text));
+  mledit_set_max_lines(e, 7);
+  widget_set_text_utf8(e, str);
+  mledit_insert_text(e, 0, "0\n");
+  widget_get_text_utf8(e, get_text, sizeof(get_text));
+  ASSERT_STREQ(get_text, "0\n1\n2\n3\n4\n5");
+  mledit_set_max_lines(e, 5);
+
+  memset(get_text, 0, sizeof(get_text));
+  mledit_set_max_lines(e, 7);
+  widget_set_text_utf8(e, str);
+  mledit_insert_text(e, e->text.size - 1, "4.5\n");
+  widget_get_text_utf8(e, get_text, sizeof(get_text));
+  ASSERT_STREQ(get_text, "1\n2\n3\n4\n4.5\n5");
+  mledit_set_max_lines(e, 5);
+
+  memset(get_text, 0, sizeof(get_text));
+  mledit_set_max_lines(e, 7);
+  widget_set_text_utf8(e, str);
+  mledit_insert_text(e, -1, "\n6\n7");
+  widget_get_text_utf8(e, get_text, sizeof(get_text));
+  ASSERT_STREQ(get_text, "1\n2\n3\n4\n5\n6\n7");
+  mledit_set_max_lines(e, 5);
+
+  memset(get_text, 0, sizeof(get_text));
+  mledit_set_max_lines(e, 1);
+  widget_set_text_utf8(e, "1");
+  mledit_insert_text(e, -1, "6\n7");
+  widget_get_text_utf8(e, get_text, sizeof(get_text));
+  ASSERT_STREQ(get_text, "7");
+  mledit_set_max_lines(e, 5);
+
+  memset(get_text, 0, sizeof(get_text));
+  mledit_set_max_lines(e, 2);
+  widget_set_text_utf8(e, "1");
+  mledit_insert_text(e, -1, "6\n7\n8");
+  widget_get_text_utf8(e, get_text, sizeof(get_text));
+  ASSERT_STREQ(get_text, "7\n8");
+  mledit_set_max_lines(e, 5);
+
+  memset(get_text, 0, sizeof(get_text));
+  widget_set_text_utf8(e, str);
+  mledit_set_cursor(e, 1);
+  mledit_insert_text(e, e->text.size - 1, "6\n7");
+  widget_get_text_utf8(e, get_text, sizeof(get_text));
+  ASSERT_STREQ(get_text, "2\n3\n4\n6\n7");
+  ASSERT_EQ(mledit_get_cursor(e), e->text.size);
+
+  widget_set_prop_pointer(win, WIDGET_PROP_CANVAS, NULL);
+  widget_destroy(win);
+  canvas_reset(&c);
+  lcd_destroy(lcd);
 }

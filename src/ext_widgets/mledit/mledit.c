@@ -160,6 +160,16 @@ ret_t mledit_set_wrap_word(widget_t* widget, bool_t wrap_word) {
   return RET_OK;
 }
 
+ret_t mledit_set_overwrite(widget_t* widget, bool_t overwrite) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
+
+  mledit->overwrite = overwrite;
+  text_edit_set_overwrite(mledit->model, overwrite);
+
+  return RET_OK;
+}
+
 ret_t mledit_set_max_lines(widget_t* widget, uint32_t max_lines) {
   mledit_t* mledit = MLEDIT(widget);
   return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
@@ -193,6 +203,9 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_WRAP_WORD)) {
     value_set_bool(v, mledit->wrap_word);
+    return RET_OK;
+  } else if (tk_str_eq(name, MLEDIT_PROP_OVERWRITE)) {
+    value_set_bool(v, mledit->overwrite);
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_MAX_LINES)) {
     value_set_int(v, mledit->max_lines);
@@ -323,6 +336,9 @@ static ret_t mledit_set_prop(widget_t* widget, const char* name, const value_t* 
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_WRAP_WORD)) {
     mledit_set_wrap_word(widget, value_bool(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, MLEDIT_PROP_OVERWRITE)) {
+    mledit_set_overwrite(widget, value_bool(v));
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_MAX_LINES)) {
     mledit_set_max_lines(widget, value_int(v));
@@ -931,6 +947,68 @@ char* mledit_get_selected_text(widget_t* widget) {
   return text_edit_get_selected_text(mledit->model);
 }
 
+static slist_t* mledit_get_rows_by_text(widget_t* widget, slist_t* slist, const char* text) {
+  uint32_t text_size = 0;
+  uint32_t i = 0;
+  return_value_if_fail(widget != NULL && slist != NULL && text != NULL, NULL);
+
+  text_size = tk_strlen(text);
+  slist_remove_all(slist);
+
+  for (i = 0; i < text_size; i++) {
+    if (i + 1 < text_size && TWINS_CHAR_IS_LINE_BREAK(text[i], text[i + 1])) {
+      i++;
+      slist_append(slist, (void*)(int64_t)(i + 1));
+    } else if (CHAR_IS_LINE_BREAK(text[i])) {
+      slist_append(slist, (void*)(int64_t)(i + 1));
+    }
+  }
+
+  return slist;
+}
+
+ret_t mledit_insert_text(widget_t* widget, uint32_t offset, const char* text) {
+  ret_t ret = RET_OK;
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL && mledit->model != NULL, RET_BAD_PARAMS);
+
+  if (!mledit->overwrite || mledit->max_chars > 0 || mledit->max_lines == 0) {
+    ret = text_edit_insert_text(mledit->model, offset, text);
+  } else {
+    uint32_t rows_start_offset = 0;
+    slist_t offset_list;
+    slist_init(&offset_list, NULL, NULL);
+    if (mledit_get_rows_by_text(widget, &offset_list, text) != NULL) {
+      uint32_t text_size = tk_strlen(text);
+      if (mledit->max_lines == 1) {
+        rows_start_offset = (uint32_t)(int64_t)slist_tail_pop(&offset_list);
+
+        if (rows_start_offset < text_size) {
+          wstr_reset(&widget->text);
+          ret = text_edit_insert_text(mledit->model, offset, text + rows_start_offset);
+        }
+      } else {
+        slist_node_t* iter = offset_list.first;
+        while (ret == RET_OK && iter != NULL) {
+          uint32_t rows_end_offset = (uint32_t)(int64_t)iter->data;
+
+          ret = text_edit_overwrite_text(mledit->model, &offset, text + rows_start_offset,
+                                         rows_end_offset - rows_start_offset);
+          rows_start_offset = rows_end_offset;
+          iter = iter->next;
+        }
+
+        if (ret == RET_OK && rows_start_offset < text_size) {
+          ret = text_edit_insert_text(mledit->model, offset, text + rows_start_offset);
+        }
+      }
+    }
+    slist_deinit(&offset_list);
+  }
+
+  return ret;
+}
+
 static ret_t mledit_on_add_child(widget_t* widget, widget_t* child) {
   mledit_t* mledit = MLEDIT(widget);
   const char* type = widget_get_type(child);
@@ -973,6 +1051,7 @@ const char* s_mledit_properties[] = {WIDGET_PROP_READONLY,
                                      MLEDIT_PROP_MAX_CHARS,
                                      MLEDIT_PROP_WRAP_WORD,
                                      MLEDIT_PROP_SCROLL_LINE,
+                                     MLEDIT_PROP_OVERWRITE,
                                      NULL};
 
 TK_DECL_VTABLE(mledit) = {.size = sizeof(mledit_t),

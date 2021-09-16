@@ -313,48 +313,6 @@ TEST(ObjectDefault, set_prop_str) {
   object_unref(obj);
 }
 
-TEST(ObjectDefault, exec) {
-  object_t* obj = object_default_create();
-
-  ASSERT_EQ(object_can_exec(obj, "test", "123"), FALSE);
-  ASSERT_EQ(object_exec(obj, "test", "123"), RET_NOT_IMPL);
-
-  object_unref(obj);
-}
-
-TEST(ObjectDefault, exec_by_path) {
-  object_t* root = object_default_create();
-  object_t* obja = object_default_create();
-  object_t* obja1 = object_default_create();
-  object_t* obja2 = object_default_create();
-
-  ASSERT_EQ(object_can_exec(root, "test", "123"), FALSE);
-  ASSERT_EQ(object_exec(root, "test", "123"), RET_NOT_IMPL);
-
-  ASSERT_EQ(object_can_exec_by_path(root, "a.test", "123"), FALSE);
-  ASSERT_EQ(object_exec_by_path(root, "a.test", "123"), RET_NOT_FOUND);
-  ASSERT_EQ(object_can_exec_by_path(root, "a.1.test", "123"), FALSE);
-  ASSERT_EQ(object_exec_by_path(root, "a.1.test", "123"), RET_NOT_FOUND);
-  ASSERT_EQ(object_can_exec_by_path(root, "a.2.test", "123"), FALSE);
-  ASSERT_EQ(object_exec_by_path(root, "a.2.test", "123"), RET_NOT_FOUND);
-
-  ASSERT_EQ(object_set_prop_object(root, "a", obja), RET_OK);
-  ASSERT_EQ(object_set_prop_object(obja, "1", obja1), RET_OK);
-  ASSERT_EQ(object_set_prop_object(obja, "2", obja2), RET_OK);
-
-  ASSERT_EQ(object_can_exec_by_path(root, "a.test", "123"), FALSE);
-  ASSERT_EQ(object_exec_by_path(root, "a.test", "123"), RET_NOT_IMPL);
-  ASSERT_EQ(object_can_exec_by_path(root, "a.1.test", "123"), FALSE);
-  ASSERT_EQ(object_exec_by_path(root, "a.1.test", "123"), RET_NOT_IMPL);
-  ASSERT_EQ(object_can_exec_by_path(root, "a.2.test", "123"), FALSE);
-  ASSERT_EQ(object_exec_by_path(root, "a.2.test", "123"), RET_NOT_IMPL);
-
-  object_unref(root);
-  object_unref(obja);
-  object_unref(obja1);
-  object_unref(obja2);
-}
-
 TEST(ObjectDefault, has_prop) {
   object_t* obj = object_default_create();
 
@@ -634,3 +592,13 @@ TEST(ObjectDefault, insert1) {
 
   OBJECT_UNREF(obj);
 }
+
+TEST(ObjectDefault, disable_path) {
+  object_t* obj = object_default_create_ex(FALSE);
+
+  ASSERT_EQ(object_set_prop_int(obj, "tom.age", 123), RET_OK);
+  ASSERT_EQ(object_get_prop_int(obj, "tom.age", 0), 123);
+
+  object_unref(obj);
+}
+
