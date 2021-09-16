@@ -23,7 +23,7 @@ INCLUDE_PATH = [TK_ROOT,
 
 APP_CXXFLAGS=''
 if platform.system() == 'Windows':
-  APP_CXXFLAGS += ' /std:c++11 '
+  APP_CXXFLAGS += ' '
 else:
   APP_CXXFLAGS += ' -std=c++11 '
 
