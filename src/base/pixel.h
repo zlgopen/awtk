@@ -44,7 +44,7 @@ typedef struct _pixel_rgb565_t {
 #define pixel_rgb565_a(p) 0xff
 #define pixel_rgb565_format BITMAP_FMT_RGB565
 #define pixel_rgb565_to_rgba(p) \
-  { p.r << 3, p.g << 2, p.b << 3, 0xff }
+  { (uint8_t)(p.r << 3), (uint8_t)(p.g << 2), (uint8_t)(p.b << 3), 0xff }
 
 #define pixel_rgb565_from_rgb(r, g, b) \
   { r >> 3, g >> 2, b >> 3 }

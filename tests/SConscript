@@ -1,5 +1,6 @@
 import os
 import sys
+import platform
 import awtk_config as awtk
 
 BIN_DIR=os.environ['BIN_DIR'];
@@ -20,7 +21,14 @@ INCLUDE_PATH = [TK_ROOT,
   os.path.join(GTEST_ROOT, 'include'),
   os.path.join(GTEST_ROOT, 'make')]
 
+APP_CXXFLAGS=''
+if platform.system() == 'Windows':
+  APP_CXXFLAGS += ' /std:c++11 '
+else:
+  APP_CXXFLAGS += ' -std=c++11 '
+
 env['CPPPATH'] = INCLUDE_PATH
+env['CXXFLAGS'] = env['CXXFLAGS'] + APP_CXXFLAGS
 env['LIBS'] = ['assets', 'image_gen', 'theme_gen', 'font_gen', 'str_gen', 'common'] + awtk.STATIC_LIBS
 env['LINKFLAGS'] = env['OS_SUBSYSTEM_CONSOLE'] + env['LINKFLAGS'];
 
