@@ -41,7 +41,7 @@ static ret_t fs_stat_info_from_stat(fs_stat_info_t* fst, struct _stat64i32* st) 
 #else
 static ret_t fs_stat_info_from_stat(fs_stat_info_t* fst, struct stat* st) {
 #endif /*WIN32*/
-  return_value_if_fail(fst != NULL && &st != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(fst != NULL && st != NULL, RET_BAD_PARAMS);
 
   memset(fst, 0x00, sizeof(fs_stat_info_t));
   fst->dev = st->st_dev;

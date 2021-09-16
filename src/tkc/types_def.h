@@ -360,9 +360,9 @@ enum { TK_NAME_LEN = 31, TK_FUNC_NAME_LEN = 63 };
 #define M_PI 3.1415926f
 #endif /*M_PI*/
 
-#define TK_INVALID_ID 0
-#define TK_NUM_MAX_LEN 31
-#define TK_UINT32_MAX 0xffffffff
+#define TK_INVALID_ID 0u
+#define TK_NUM_MAX_LEN 31u
+#define TK_UINT32_MAX 0xffffffffu
 #define TK_LOCALE_MAGIC "$locale$"
 
 #define TK_D2R(d) (((d)*M_PI) / 180)

@@ -42,7 +42,7 @@ typedef struct _bsvg_header_t {
 } bsvg_header_t;
 #pragma pack(pop)
 
-#define BSVG_MAGIC 0x20181115
+#define BSVG_MAGIC 0x20181115u
 #define BSVG_MIN_SIZE (sizeof(bsvg_header_t) + sizeof(svg_shape_t))
 
 END_C_DECLS

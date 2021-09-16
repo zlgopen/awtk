@@ -187,7 +187,7 @@ ret_t typed_array_extend(typed_array_t* typed_array, uint32_t capacity) {
     uint32_t data_size = typed_array->element_size * typed_array->size;
     uint8_t* data = (uint8_t*)TKMEM_REALLOC(typed_array->data, mem_size);
     return_value_if_fail(data != NULL, RET_OOM);
-    ENSURE(((uint64_t)data % 8) == 0);
+    ENSURE(((uintptr_t)data % 8) == 0);
 
     typed_array->data = data;
     typed_array->capacity = capacity;

@@ -45,7 +45,7 @@ static mem_allocator_lock_t s_lock;
 #endif /*ENABLE_MEM_LEAK_CHECK*/
 
 bool_t tk_mem_is_valid_addr(void* addr) {
-  return ((uint64_t)addr > 0x10000);
+  return ((uintptr_t)addr > 0x10000);
 }
 
 static mem_allocator_t* mem_allocator_get(void) {

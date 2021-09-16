@@ -475,7 +475,7 @@ ret_t csv_file_load_buff(csv_file_t* csv, const char* buff, uint32_t size) {
   ret = csv_file_load_input(csv, input) != NULL ? RET_OK : RET_FAIL;
   OBJECT_UNREF(input);
 
-  return RET_OK;
+  return ret;
 }
 
 csv_file_t* csv_file_create_with_buff(const char* buff, uint32_t size, char sep) {

@@ -148,7 +148,7 @@ static bool_t edit_pattern_is_valid_char(widget_t* widget, wchar_t c, wchar_t se
 
       len = pe - ps;
       /*part 字符超长*/
-      if (len >= get_part_max_len(index)) {
+      if (len >= (int)get_part_max_len(index)) {
         if (text->str[cursor] == 0) {
           return FALSE;
         } else if (text->str[cursor] == sep) {

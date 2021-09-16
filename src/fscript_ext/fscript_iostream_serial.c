@@ -69,7 +69,7 @@ static ret_t func_iostream_serial_create(fscript_t* fscript, fscript_args_t* arg
   value_set_object(result, obj);
   result->free_handle = TRUE;
 
-  tk_iostream_serial_config(obj, baudrate, bytesize, parity, stopbits, flowcontrol);
+  tk_iostream_serial_config(TK_IOSTREAM(obj), baudrate, bytesize, parity, stopbits, flowcontrol);
 
   return RET_OK;
 }

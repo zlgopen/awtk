@@ -25,5 +25,5 @@ int main(int argc, char* argv[]) {
     mbedtls_server_destroy(server);
   }
 
-  return 0;
+  return ret;
 }

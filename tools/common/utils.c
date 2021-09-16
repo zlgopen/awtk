@@ -317,7 +317,7 @@ wchar_t** argvw_create(int argc, char* argv[]) {
 
   for (i = 0; i < argc; i++) {
     wstr_set_utf8(&str, argv[i]);
-    argvw[i] = wcsdup(str.str);
+    argvw[i] = wcs_dup(str.str);
   }
   argvw[i] = NULL;
 

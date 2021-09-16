@@ -74,7 +74,6 @@ static ret_t native_window_raw_set_orientation(native_window_t* win,
                                                lcd_orientation_t old_orientation,
                                                lcd_orientation_t new_orientation) {
   wh_t w, h;
-  ret_t ret = RET_OK;
   native_window_info_t info;
   native_window_get_info(win, &info);
 
