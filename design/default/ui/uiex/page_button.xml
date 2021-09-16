@@ -17,6 +17,12 @@
         <button name="btn3" style="rounded_bottom" tr_text="Button"/>
       </grid>
     </grid>
+    <grid name="view_gradient_btn" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="70">
+      <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Gradient Button"/>
+      <grid h="36" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
+        <button name="btn" style="gradient" tr_text="Button"/>
+      </grid>
+    </grid>
     <view name="view_icon_btn" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="84">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Button With Icon"/>
       <grid h="50" children_layout="default(w=36,h=36,x=20,y=0,s=20)">

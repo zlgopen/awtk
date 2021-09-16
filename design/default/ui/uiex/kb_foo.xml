@@ -16,10 +16,10 @@
       <button repeat="300" name="-" style="highlight" text="-"/>
       <button repeat="300" name="0" text="0"/>
       <button repeat="300" name="key:backspace" style="highlight_backspace"/>
-      <button name="clear" text="Clear"/>
-      <button name="cancel" text="Cancel"/>
-      <button name="close" text="Close"/>
-      <button name="back" text="Back"/>
+      <button name=":" style="highlight" text=":"/>
+      <button name="." style="highlight" text="."/>
+      <button name="/" style="highlight" text="/"/>
+      <button name="action" style="highlight" tr_text="Return"/>
     </view>
   </pages>
 </keyboard>

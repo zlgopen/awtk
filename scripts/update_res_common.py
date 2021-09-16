@@ -29,6 +29,7 @@ IS_EXCLUDED_FILE_HANDLER = None
 IS_GENERATE_RAW = True
 IS_GENERATE_INC_RES = True
 IS_GENERATE_INC_BITMAP = True
+ASSETS_SUBNAME = '__assets_'
 ###########################
 
 
@@ -41,6 +42,26 @@ def get_action():
 def set_action(action):
     global ACTION
     ACTION = action
+
+def get_assets_subname():
+    return ASSETS_SUBNAME
+
+def set_assets_subname(subname):
+    global ASSETS_SUBNAME
+    ASSETS_SUBNAME = subname
+
+def get_asset_c():
+    return ASSET_C
+
+def set_asset_c(asset_c):
+    global ASSET_C
+    ASSET_C = asset_c
+
+def get_output_root():
+    return OUTPUT_ROOT
+
+def get_assets_root():
+    return ASSETS_ROOT
 
 def on_generate_res_before(handler):
     global ON_GENERATE_RES_BEFORE
@@ -796,7 +817,7 @@ def gen_assets_c_of_one_theme(with_multi_theme = True):
         return
 
     if with_multi_theme:
-        filename = join_path(OUTPUT_ROOT, '__assets_'+THEME+'.inc')
+        filename = join_path(OUTPUT_ROOT, ASSETS_SUBNAME+THEME+'.inc')
     else:
         filename, extname = os.path.splitext(ASSET_C)
         filename = filename + '_' + THEME + extname
@@ -875,7 +896,7 @@ def gen_asset_c_entry_with_multi_theme():
     for i in range(len(THEMES)):
         set_current_theme(i)
         if THEME_PACKAGED:
-            result += '#include "'+assets_root+'/__assets_'+THEME+'.inc"\n'
+            result += '#include "'+assets_root+'/'+ASSETS_SUBNAME+THEME+'.inc"\n'
 
     result += '\n'
     result += '#ifndef APP_THEME\n'
@@ -1138,7 +1159,7 @@ def clean_res_of_one_theme():
     clean_res_bin(join_path(OUTPUT_DIR, 'raw/strings'))
     clean_res_bin(join_path(OUTPUT_DIR, 'raw/styles'))
     remove_dir(join_path(OUTPUT_DIR, 'inc'))
-    remove_dir(join_path(OUTPUT_ROOT, '__assets_'+THEME+'.inc'))
+    remove_dir(join_path(OUTPUT_ROOT, ASSETS_SUBNAME+THEME+'.inc'))
 
 def clean_res():
     print('=========================================================')

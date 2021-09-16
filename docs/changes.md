@@ -1,7 +1,12 @@
 # 最新动态
 
 2021/09/15
+  * 升级gtest。
   * strgen工具生成国际化字符串时保留文本两端的空格。
+  * 修改自动生成资源文件脚本，分为assets、assets\_old 和 assets\_all，assets包含新demoui的资源，assets\_old包含旧demoui的资源，assets\_all包含所有资源（感谢兆坤提供补丁）。
+  * 将demo\_ui\_ex\_app.c改名为demo\_ui\_app.c，而之前的demo\_ui\_app.c改名为demo\_ui\_old\_app.c（感谢兆坤提供补丁）。
+  * 新demoui增加渐变色按钮示例（感谢兆坤提供补丁）。
+  * 补充新demoui键盘中文翻译，修改kb\_foo样式（感谢兆坤提供补丁）。
 
 2021/09/14
   * 根据新增接口，完善 object\_array 以及 object\_default（感谢雨欣提供补丁）

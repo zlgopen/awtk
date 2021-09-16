@@ -4,19 +4,19 @@
     <view name="view_text_edit" children_layout="default(r=0,c=1,x=0,y=0,s=10)" h="68">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Text Edit"/>
       <view h="-22" children_layout="default(r=1,c=0,x=20,y=0,s=0)">
-        <edit left_margin="34" step="0.1" action_text="next" w="62%" tr_tips="Please enter your text" style="default" keyboard="uiex/kb_default" min="0" max="150"/>
+        <edit action_text="next" w="62%" tr_tips="Please enter your text" keyboard="uiex/kb_default" min="0" max="150"/>
       </view>
     </view>
     <view name="view_num_edit" children_layout="default(r=0,c=1,x=0,y=0,s=10)" h="68">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Number Edit"/>
       <view h="-22" children_layout="default(r=1,c=0,x=20,y=0,s=0)">
-        <edit w="62%" right_margin="16" tips="int" input_type="int" auto_fix="true" style="default" keyboard="uiex/kb_int" min="-4294967295" text="30" max="4294967295"/>
+        <edit w="62%" tips="int" input_type="int" auto_fix="true" keyboard="uiex/kb_int" min="-4294967295" text="30" max="4294967295"/>
       </view>
     </view>
     <view name="view_num_edit_btn" children_layout="default(r=0,c=1,x=0,y=0,s=10)" h="68">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Number Edit With Button"/>
       <view h="-22" children_layout="default(r=1,c=0,x=20,y=0,s=0)">
-        <edit w="62%" right_margin="16" tr_tips="uint(0-150) auto_fix" input_type="uint" step="1" auto_fix="true" style="default" keyboard="uiex/kb_uint" style:normal:margin_right="38" min="0" text="50" max="150">
+        <edit w="62%" right_margin="36" tr_tips="uint(0-150) auto_fix" input_type="uint" step="1" auto_fix="true" keyboard="uiex/kb_uint" style:normal:margin_right="38" min="0" text="50" max="150">
           <button name="inc" repeat="300" style="spinbox_up" x="right" y="0" w="36" h="18" visible="true"/>
           <button name="dec" repeat="300" style="spinbox_down" x="right" y="b" w="36" h="19" visible="true"/>
         </edit>
@@ -31,7 +31,7 @@
     <view name="view_password_edit" children_layout="default(r=0,c=1,x=0,y=0,s=10)" h="68">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Password Edit"/>
       <view h="-22" children_layout="default(r=1,c=0,x=20,y=0,s=0)">
-        <edit w="62%" right_margin="30" input_type="password" action_text="next" style="default" keyboard="uiex/kb_ascii" text="ZLG">
+        <edit w="62%" right_margin="36" input_type="password" keyboard="uiex/kb_ascii" text="ZLG">
           <check_button style="password_visible" name="visible" x="right" y="0" w="36" h="100%"/>
         </edit>
       </view>
@@ -42,19 +42,19 @@
         <view h="36">
           <view h="100%" children_layout="default(r=1,c=0,x=0,y=1,s=0)" x="0" y="0" w="62%">
             <label w="50" tr_text="Time"/>
-            <edit w="-50" tr_tips="custom keyboard" input_type="time_full" auto_fix="true" keyboard="uiex/kb_foo" cancelable="true" style="default"/>
+            <edit w="-50" tr_tips="custom keyboard" input_type="time_full" auto_fix="true" keyboard="uiex/kb_foo" cancelable="true"/>
           </view>
         </view>
         <view h="36">
           <view h="100%" children_layout="default(r=1,c=0,x=0,y=1,s=0)" x="0" y="0" w="62%">
             <label w="50" tr_text="Date"/>
-            <edit w="-50" tr_tips="custom keyboard" input_type="date" auto_fix="true" keyboard="uiex/kb_foo" cancelable="true" style="default"/>
+            <edit w="-50" tr_tips="custom keyboard" input_type="date" auto_fix="true" keyboard="uiex/kb_foo" cancelable="true"/>
           </view>
         </view>
         <view h="36">
           <view h="100%" children_layout="default(r=1,c=0,x=0,y=1,s=0)" x="0" y="0" w="62%">
             <label w="50" text="IPv4"/>
-            <edit w="-50" tr_tips="custom keyboard" input_type="ipv4" auto_fix="true" keyboard="uiex/kb_foo" cancelable="true" style="default"/>
+            <edit w="-50" tr_tips="custom keyboard" input_type="ipv4" auto_fix="true" keyboard="uiex/kb_foo" cancelable="true"/>
           </view>
         </view>
       </view>

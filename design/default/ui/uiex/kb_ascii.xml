@@ -42,8 +42,8 @@
       </group_box>
       <group_box children_layout="default(r=1,c=0,s=4,m=4)">
         <button name="page:symnum" style="highlight" w="15%" text="123"/>
-        <button repeat="300" name="space" w="65%" text="Space"/>
-        <button name="action" style="highlight" w="20%" text="Return"/>
+        <button repeat="300" name="space" w="65%" tr_text="Space"/>
+        <button name="action" style="highlight" w="20%" tr_text="Return"/>
       </group_box>
     </view>
     <view name="lower" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=1,s=2,m=4)">
@@ -85,8 +85,8 @@
       </group_box>
       <group_box children_layout="default(r=1,c=0,s=4,m=4)">
         <button name="page:symnum1" style="highlight" w="15%" text="123"/>
-        <button repeat="300" name="space1" w="65%" text="Space"/>
-        <button name="action1" style="highlight" w="20%" text="Return"/>
+        <button repeat="300" name="space1" w="65%" tr_text="Space"/>
+        <button name="action1" style="highlight" w="20%" tr_text="Return"/>
       </group_box>
     </view>
     <view name="symnum" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=1,s=2,m=4)">
@@ -128,8 +128,8 @@
       </group_box>
       <group_box children_layout="default(r=1,c=0,s=4,m=4)">
         <button name="page:upper1" style="highlight" w="15%" text="ABC"/>
-        <button repeat="300" name="space2" w="65%" text="Space"/>
-        <button name="action2" style="highlight" w="20%" text="Return"/>
+        <button repeat="300" name="space2" w="65%" tr_text="Space"/>
+        <button name="action2" style="highlight" w="20%" tr_text="Return"/>
       </group_box>
     </view>
     <view name="symbol" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=1,s=2,m=4)">
@@ -168,8 +168,8 @@
       </group_box>
       <group_box children_layout="default(r=1,c=0,s=4,m=4)">
         <button name="page:upper2" style="highlight" w="15%" text="ABC"/>
-        <button repeat="300" name="space3" w="65%" text="Space"/>
-        <button name="action3" style="highlight" w="20%" text="Return"/>
+        <button repeat="300" name="space3" w="65%" tr_text="Space"/>
+        <button name="action3" style="highlight" w="20%" tr_text="Return"/>
       </group_box>
     </view>
   </pages>

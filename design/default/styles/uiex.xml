@@ -67,6 +67,13 @@
     <over/>
     <pressed bg_color="#FFFFFF" border_color="#C2C2C2" x_offset="1" y_offset="1"/>
   </style>
+  <style name="gradient" bg_color="linear-gradient(180deg, #8ABC1D, #709918);" border_color="#00000000" font_size="22" round_radius="4" text_color="#FFFFFF">
+    <normal/>
+    <disable bg_color="linear-gradient(180deg, #8ABC1D66, #70991866);" text_color="#FFFFFF66"/>
+    <focused/>
+    <over/>
+    <pressed bg_color="linear-gradient(180deg, #80B01B, #678C16);" x_offset="1" y_offset="1"/>
+  </style>
   <style name="highlight" bg_color="#709918" border_color="#00000000" font_size="22" round_radius="4" text_color="#FFFFFF">
     <normal/>
     <disable bg_color="#70991866" text_color="#FFFFFF66"/>
@@ -191,7 +198,7 @@
     <over/>
     <pressed icon="uiex_Windowclosed_p"/>
   </style>
-  <style name="with_icon_text" bg_color="#EBEBEB" border_color="#C2C2C2" font_size="22" icon="uiex_button_search" icon_at="left" text_align_h="center" round_radius="4" text_color="#000000">
+  <style name="with_icon_text" bg_color="#EBEBEB" border_color="#C2C2C2" font_size="22" icon="uiex_button_search" icon_at="left" margin="6" round_radius="4" text_align_h="right" text_color="#000000">
     <normal/>
     <disable bg_color="#EBEBEB66" border_color="#C2C2C266" text_color="#00000066"/>
     <focused/>
@@ -240,7 +247,7 @@
     <pressed x_offset="1" y_offset="1"/>
     <pressed_of_checked icon="debug_start_o" x_offset="1" y_offset="1"/>
   </style>
-  <style name="fps" bg_color="#EBEBEB" border_color="#C2C2C2" font_size="22" icon="uiex_texteditorhide" icon_at="left" text_align_h="center" round_radius="4" spacer="8" text_color="#000000">
+  <style name="fps" bg_color="#EBEBEB" border_color="#C2C2C2" font_size="22" icon="uiex_texteditorhide" icon_at="left" margin="6" round_radius="4" spacer="8" text_align_h="right" text_color="#000000">
     <normal/>
     <disable bg_color="#EBEBEB66" border_color="#C2C2C266" text_color="#00000066"/>
     <disable_of_checked bg_color="#EBEBEB66" border_color="#C2C2C266" icon="uiex_texteditor_show" text_color="#00000066"/>
@@ -372,7 +379,7 @@
 </dialog_client>
 <dialog_title>
   <style name="default">
-    <normal bg_color="#FFFFFF" border="left|right|top" border_color="#709918" font_size="22" margin_left="10" text_align_h="left" text_color="black"/>
+    <normal bg_color="#FFFFFF" border="left|right|top" border_color="#709918" font_size="22" margin_left="10" text_align_h="left" text_color="#000000"/>
   </style>
 </dialog_title>
 <digit_clock>

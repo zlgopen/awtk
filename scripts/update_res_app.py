@@ -8,6 +8,9 @@ import collections
 # AWTK_ROOT/scripts/update_res_common.py
 import update_res_common as common
 
+def get_theme(i):
+    return THEMES[i]
+
 def use_theme_config_from_project_json():
     global DPI
     global THEMES

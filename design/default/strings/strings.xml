@@ -92,9 +92,13 @@ Translate text
   <language name="zh_CN">英文</language>
   <language name="en_US">English</language>
 </string>
-<string name="Base">
-  <language name="zh_CN">基础控件</language>
-  <language name="en_US">Base</language>
+<string name="Return">
+  <language name="zh_CN">返回</language>
+  <language name="en_US">Return</language>
+</string>
+<string name="Space">
+  <language name="zh_CN">空格</language>
+  <language name="en_US">Space</language>
 </string>
 <string name="Button">
   <language name="zh_CN">按钮</language>
@@ -275,6 +279,10 @@ Translate text
 <string name="Rounded Button">
   <language name="zh_CN">圆角按钮</language>
   <language name="en_US">Rounded Button</language>
+</string>
+<string name="Gradient Button">
+  <language name="zh_CN">渐变色按钮</language>
+  <language name="en_US">Gradient Button</language>
 </string>
 <string name="Button With Icon">
   <language name="zh_CN">贴图按钮</language>

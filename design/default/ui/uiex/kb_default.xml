@@ -40,8 +40,8 @@
       <group_box children_layout="default(r=1,c=0,s=4,m=2)">
         <button name="page:symnum" style="highlight" w="15%" text="123"/>
         <button name="page:chinese" style="zh" w="10%"/>
-        <button repeat="300" name="space" w="55%" text="Space"/>
-        <button name="action" style="highlight" w="20%" text="Return"/>
+        <button repeat="300" name="space" w="55%" tr_text="Space"/>
+        <button name="action" style="highlight" w="20%" tr_text="Return"/>
       </group_box>
     </view>
     <view name="lower" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=1,s=2,m=2)">
@@ -84,8 +84,8 @@
       <group_box children_layout="default(r=1,c=0,s=4,m=2)">
         <button name="page:symnum" style="highlight" w="15%" text="123"/>
         <button name="page:chinese" style="zh" w="10%"/>
-        <button repeat="300" name="space" w="55%" text="Space"/>
-        <button name="action" style="highlight" w="20%" text="Return"/>
+        <button repeat="300" name="space" w="55%" tr_text="Space"/>
+        <button name="action" style="highlight" w="20%" tr_text="Return"/>
       </group_box>
     </view>
     <view name="symnum" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=1,s=2,m=2)">
@@ -128,8 +128,8 @@
       <group_box children_layout="default(r=1,c=0,s=4,m=2)">
         <button name="page:upper" style="highlight" w="15%" text="ABC"/>
         <button repeat="300" name="page:chinese" style="zh" w="10%"/>
-        <button repeat="300" name="space" w="55%" text="Space"/>
-        <button name="action" style="highlight" w="20%" text="Return"/>
+        <button repeat="300" name="space" w="55%" tr_text="Space"/>
+        <button name="action" style="highlight" w="20%" tr_text="Return"/>
       </group_box>
     </view>
     <view name="symbol" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=1,s=2,m=2)">
@@ -169,8 +169,8 @@
       <group_box children_layout="default(r=1,c=0,s=4,m=2)">
         <button name="page:upper" style="highlight" w="15%" text="ABC"/>
         <button name="page:chinese" style="zh" w="10%"/>
-        <button repeat="300" name="space" w="55%" text="Space"/>
-        <button name="action" style="highlight" w="20%" text="Return"/>
+        <button repeat="300" name="space" w="55%" tr_text="Space"/>
+        <button name="action" style="highlight" w="20%" tr_text="Return"/>
       </group_box>
     </view>
     <view name="chinese" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=1,s=2,m=2)">
@@ -213,8 +213,8 @@
       <group_box children_layout="default(r=1,c=0,s=4,m=2)">
         <button name="page:symnum" style="highlight" w="15%" text="123"/>
         <button name="page:lower" style="en" w="10%"/>
-        <button repeat="300" name="space" w="55%" text="Space"/>
-        <button name="action" style="highlight" w="20%" text="Return"/>
+        <button repeat="300" name="space" w="55%" tr_text="Space"/>
+        <button name="action" style="highlight" w="20%" tr_text="Return"/>
       </group_box>
     </view>
   </pages>

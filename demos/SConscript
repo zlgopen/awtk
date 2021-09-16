@@ -4,15 +4,17 @@ env=DefaultEnvironment().Clone();
 BIN_DIR=os.environ['BIN_DIR'];
 LIB_DIR=os.environ['LIB_DIR'];
 
-env.Library(os.path.join(LIB_DIR, 'assets'), ['assets.c']);
-
-env['LIBS'] = ['assets'] + env['LIBS']
 env['LINKFLAGS'] = env['OS_SUBSYSTEM_WINDOWS'] + env['LINKFLAGS'];
+
+env.Library(os.path.join(LIB_DIR, 'assets'), ['assets.c']);
+env.Program(os.path.join(BIN_DIR, 'demoui'), ['demo_ui_app.c'], LIBS=['assets'] + env['LIBS']);
+
+env.Library(os.path.join(LIB_DIR, 'assets_old'), ['assets_old.c']);
+env['LIBS'] = ['assets_old'] + env['LIBS']
 
 env.Program(os.path.join(BIN_DIR, 'demo1'), ['demo1_app.c']);
 env.Program(os.path.join(BIN_DIR, 'demovg'), ['demo_vg_app.c']);
-env.Program(os.path.join(BIN_DIR, 'demouiold'), ['demo_ui_app.c']);
-env.Program(os.path.join(BIN_DIR, 'demoui'), ['demo_ui_ex_app.c']);
+env.Program(os.path.join(BIN_DIR, 'demouiold'), ['demo_ui_old_app.c']);
 env.Program(os.path.join(BIN_DIR, 'demotr'), ['demo_tr_app.c']);
 env.Program(os.path.join(BIN_DIR, 'demo_basic'), ['demo_basic.c']);
 env.Program(os.path.join(BIN_DIR, 'demo_thread'), ['demo_thread_app.c']);
