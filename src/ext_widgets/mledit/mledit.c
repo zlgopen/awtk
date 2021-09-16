@@ -1,5 +1,5 @@
 ﻿/**
- * File:   mledit.h
+ * File:   mledit.c
  * Author: AWTK Develop Team
  * Brief:  mledit
  *
@@ -958,9 +958,9 @@ static slist_t* mledit_get_rows_by_text(widget_t* widget, slist_t* slist, const 
   for (i = 0; i < text_size; i++) {
     if (i + 1 < text_size && TWINS_CHAR_IS_LINE_BREAK(text[i], text[i + 1])) {
       i++;
-      slist_append(slist, (void*)(int64_t)(i + 1));
+      slist_append(slist, tk_pointer_from_int((int32_t)(i + 1)));
     } else if (CHAR_IS_LINE_BREAK(text[i])) {
-      slist_append(slist, (void*)(int64_t)(i + 1));
+      slist_append(slist, tk_pointer_from_int((int32_t)(i + 1)));
     }
   }
 
@@ -981,7 +981,7 @@ ret_t mledit_insert_text(widget_t* widget, uint32_t offset, const char* text) {
     if (mledit_get_rows_by_text(widget, &offset_list, text) != NULL) {
       uint32_t text_size = tk_strlen(text);
       if (mledit->max_lines == 1) {
-        rows_start_offset = (uint32_t)(int64_t)slist_tail_pop(&offset_list);
+        rows_start_offset = (uint32_t)tk_pointer_to_int(slist_tail_pop(&offset_list));
 
         if (rows_start_offset < text_size) {
           wstr_reset(&widget->text);
@@ -990,7 +990,7 @@ ret_t mledit_insert_text(widget_t* widget, uint32_t offset, const char* text) {
       } else {
         slist_node_t* iter = offset_list.first;
         while (ret == RET_OK && iter != NULL) {
-          uint32_t rows_end_offset = (uint32_t)(int64_t)iter->data;
+          uint32_t rows_end_offset = (uint32_t)tk_pointer_to_int(iter->data);
 
           ret = text_edit_overwrite_text(mledit->model, &offset, text + rows_start_offset,
                                          rows_end_offset - rows_start_offset);

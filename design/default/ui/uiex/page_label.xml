@@ -9,7 +9,7 @@
         </view>
       </view>
     </view>
-    <view name="view_rt" h="350" children_layout="default(r=0,c=1,x=0,y=0,s=13)">
+    <view name="view_rt" h="357" children_layout="default(r=0,c=1,x=0,y=0,s=13)">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Rich Text"/>
       <view h="-22" children_layout="default(r=1,c=0,x=20,y=0,s=10)">
         <view w="280">

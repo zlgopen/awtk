@@ -419,17 +419,17 @@ static uint32_t s_chat_bubble_curr_len = 0;
 
 static ret_t add_char_to_chat_bubble(const timer_info_t* timer) {
   widget_t* lb_chat_bubble = timer->ctx;
-  str_t str;
+  wstr_t str;
   return_value_if_fail(lb_chat_bubble != NULL, RET_REMOVE);
 
-  str_init(&str, s_chat_bubble_curr_len);
+  wstr_init(&str, s_chat_bubble_curr_len);
   if (s_chat_bubble_curr_len > 0) {
-    str_append_with_len(&str, s_chat_bubble, s_chat_bubble_curr_len);
+    wstr_set_utf8_with_len(&str, s_chat_bubble, s_chat_bubble_curr_len);
   } else {
-    str_append(&str, " ");
+    wstr_set_utf8(&str, " ");
   }
-  widget_set_text_utf8(lb_chat_bubble, str.str);
-  str_reset(&str);
+  widget_set_text(lb_chat_bubble, str.str);
+  wstr_reset(&str);
 
   s_chat_bubble_curr_len = (s_chat_bubble_curr_len + 1) % (s_chat_bubble_len + 1);
 
@@ -1029,8 +1029,10 @@ static ret_t on_page_switch(void* ctx, event_t* e) {
 #endif /* ENABLE_PAGE_SWITCH */
 
 static ret_t on_page_enter(void* ctx, event_t* e) {
-  widget_t* page = WIDGET(e->target);
+#if defined(ENABLE_PAGE_SWITCH) && ENABLE_PAGE_SWITCH
   widget_t* scroll_view = NULL;
+#endif /* ENABLE_PAGE_SWITCH */
+  widget_t* page = WIDGET(e->target);
   page_enter_func_t enter_func = (page_enter_func_t)ctx;
   return_value_if_fail(page != NULL, RET_BAD_PARAMS);
 
