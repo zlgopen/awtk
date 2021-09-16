@@ -120,7 +120,7 @@ static gradient_t* gradient_parse_linear(gradient_t* gradient, tokenizer_t* t) {
   gradient_set_type(gradient, GRADIENT_LINEAR);
   if (isdigit(*token)) {
     if (strstr(token, "deg") != NULL) {
-      /*
+    /*
      * linear-gradient(0deg, blue, green 40%, red);
      */
       degree = tk_atoi(token);
@@ -196,7 +196,7 @@ static gradient_t* gradient_parse_str(gradient_t* gradient, const char* str) {
   token = tokenizer_next_until(t, "(");
   if (*token == 'l') {
     /*
-     * radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(63,95,131,1) 58%, rgba(0,212,255,1) 100%);
+     * linear-gradient(0deg, blue, green 40%, red);
      */
     t->cursor++;
     gradient_parse_linear(gradient, t);
