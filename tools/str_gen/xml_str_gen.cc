@@ -117,6 +117,7 @@ bool xml_buff_to_str_gen(const char* buff, StrGen* sg) {
   return_value_if_fail(buff != NULL && sg != NULL, false);
 
   XmlParser* parser = xml_parser_create();
+  xml_parser_set_trim_text(parser, FALSE);
   xml_parser_set_builder(parser, builder_init(b, sg));
   xml_parser_parse(parser, buff, strlen(buff));
 
