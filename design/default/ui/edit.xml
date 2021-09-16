@@ -1,5 +1,5 @@
 <window anim_hint="htranslate" >
-  <list_view x="0"  y="0" w="100%" h="-50" item_height="36" auto_hide_scroll_bar="true">
+  <list_view x="0"  y="0" w="100%" h="-50" default_item_height="36" auto_hide_scroll_bar="true">
     <scroll_view name="view" x="0"  y="0" w="-12" h="100%">
      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
       <label w="30%" text="Age"/>
@@ -29,6 +29,24 @@
         <button name="inc" repeat="300" style="spinbox_up" x="right" y="0" w="15" h="50%" />
         <button name="dec" repeat="300" style="spinbox_down" x="right" y="bottom" w="15" h="50%" />
       </edit>
+     </list_item>
+     <list_item style="empty" h="128">
+        <view x="c" y="10" w="200" h="100"> 
+          <edit name="year" style="center" x="0" y="0" w="80" h="100%" top_margin="36" bottom_margin="36" 
+            tips="year" input_type="uint" min="1000" max="3000" step="1" auto_fix="true" text="2021">
+            <button name="inc" repeat="300"  x="0" y="0" w="100%" h="36" text="+"/>
+            <button name="dec" repeat="300"  x="0" y="bottom" w="100%" h="36" text="-"/>
+          </edit>
+          <edit name="month" style="center" x="90" y="0" w="50" h="100%" top_margin="36" bottom_margin="36" 
+            tips="month" input_type="uint" min="1" max="12" step="1" auto_fix="true" text="1">
+            <button name="inc" repeat="300"  x="0" y="0" w="100%" h="36" text="+"/>
+            <button name="dec" repeat="300"  x="0" y="bottom" w="100%" h="36" text="-"/>
+          </edit>
+          <edit name="day" style="center" x="145" y="0" w="50" h="100%" top_margin="36" bottom_margin="36" tips="day" input_type="uint" min="1" max="31" step="1" auto_fix="true" text="1">
+            <button name="inc" repeat="300"  x="0" y="0" w="100%" h="36" text="+"/>
+            <button name="dec" repeat="300"  x="0" y="bottom" w="100%" h="36" text="-"/>
+          </edit>
+        </view>
      </list_item>
 
      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
