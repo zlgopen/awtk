@@ -1104,11 +1104,16 @@ static ret_t on_adject_vpage_in_1m_assets(void* ctx, event_t* e) {
   return widget_foreach(vpage, adject_widget_in_1m_assets, NULL);
 }
 
-ret_t on_adject_win_in_1m_assets(void* ctx, event_t* e) {
+static ret_t on_adject_win_in_1m_assets(void* ctx, event_t* e) {
   window_event_t* we = window_event_cast(e);
   return_value_if_fail(we != NULL, RET_BAD_PARAMS);
 
   return widget_foreach(we->window, adject_widget_in_1m_assets, NULL);
+}
+
+static bool_t check_is_use_1m_assets(void) {
+  const asset_info_t* res = assets_manager_ref(assets_manager(), ASSET_TYPE_IMAGE, "logo_dynamic");
+  return (res == NULL);
 }
 
 static ret_t vpage_change_kb_type_without_zh(void* ctx, const void* iter) {
@@ -1282,6 +1287,10 @@ static ret_t set_win_name(void) {
 ret_t application_init(void) {
   widget_t* win = NULL;
   set_win_name();
+
+  if (check_is_use_1m_assets()) {
+    widget_on(window_manager(), EVT_WINDOW_WILL_OPEN, on_adject_win_in_1m_assets, NULL);
+  }
 
 #if !defined(WITH_SDL) && !defined(LINUX)
   widget_factory_register(widget_factory(), "vpage", vpage_create);

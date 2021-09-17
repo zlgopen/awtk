@@ -577,9 +577,7 @@ static ret_t assets_init_internal(const char* theme) {
   }
 }
 
-extern ret_t on_adject_win_in_1m_assets(void* ctx, event_t* e);
 ret_t assets_init(void) {
-  widget_on(window_manager(), EVT_WINDOW_WILL_OPEN, on_adject_win_in_1m_assets, NULL);
   return assets_init_internal(APP_THEME);
 }
 
