@@ -391,7 +391,7 @@ static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info
   if (window_manager_create_animator(wm, curr_win, TRUE) != RET_OK) {
     widget_t* prev_win = window_manager_find_prev_window(WIDGET(wm));
     if (prev_win != NULL) {
-      if (!widget_is_keyboard(curr_win)) {
+      if (!widget_is_keyboard(curr_win) && !widget_is_overlay(curr_win)) {
         window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_BACKGROUND);
       }
     }
