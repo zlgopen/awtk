@@ -3,6 +3,7 @@
 2021/09/16
   * 解除assets-1m.c和demo\_ui\_app.c之间的耦合（感谢兆坤提供补丁） 
   * object\_array\_set\_prop 函数，在 name 属性不符合要求时，返回设置失败（感谢雨欣提供补丁） 
+  * 修改 gradient.c 文件为 inc
 
 2021/09/15
   * 升级gtest。
