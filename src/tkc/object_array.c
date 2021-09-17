@@ -144,8 +144,10 @@ static int32_t object_array_parse_index(const char* name) {
     return tk_atoi(name);
   } else if (*name == '[') {
     return tk_atoi(name + 1);
-  } else {
+  } else if (tk_str_eq(name, "-1")) {
     return -1;
+  } else {
+    return -2;
   }
 }
 
@@ -250,6 +252,8 @@ ret_t object_array_set(object_t* obj, uint32_t index, const value_t* v) {
 }
 
 static ret_t object_array_set_prop(object_t* obj, const char* name, const value_t* v) {
+  int32_t index = -1;
+  ret_t ret = RET_NOT_FOUND;
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
@@ -258,8 +262,12 @@ static ret_t object_array_set_prop(object_t* obj, const char* name, const value_
     return object_set_prop(sub, name, v);
   }
 
-  int32_t index = object_array_parse_index(name);
-  return object_array_set(obj, index, v);
+  index = object_array_parse_index(name);
+  if (index != -2) {
+    ret = object_array_set(obj, index, v);
+  }
+
+  return ret;
 }
 
 ret_t object_array_get(object_t* obj, uint32_t i, value_t* v) {
