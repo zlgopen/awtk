@@ -4365,24 +4365,34 @@ canvas_t* widget_get_canvas(widget_t* widget) {
 }
 
 bool_t widget_is_system_bar(widget_t* widget) {
-  return tk_str_eq(widget->vt->type, WIDGET_TYPE_SYSTEM_BAR) ||
-         tk_str_eq(widget->vt->type, WIDGET_TYPE_SYSTEM_BAR_BOTTOM);
+  return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
+
+  return widget->vt->is_window && (tk_str_eq(widget->vt->type, WIDGET_TYPE_SYSTEM_BAR) ||
+         tk_str_eq(widget->vt->type, WIDGET_TYPE_SYSTEM_BAR_BOTTOM));
 }
 
 bool_t widget_is_normal_window(widget_t* widget) {
-  return tk_str_eq(widget->vt->type, WIDGET_TYPE_NORMAL_WINDOW);
+  return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
+
+  return widget->vt->is_window && tk_str_eq(widget->vt->type, WIDGET_TYPE_NORMAL_WINDOW);
 }
 
 bool_t widget_is_dialog(widget_t* widget) {
-  return tk_str_eq(widget->vt->type, WIDGET_TYPE_DIALOG);
+  return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
+
+  return widget->vt->is_window && tk_str_eq(widget->vt->type, WIDGET_TYPE_DIALOG);
 }
 
 bool_t widget_is_popup(widget_t* widget) {
-  return tk_str_eq(widget->vt->type, WIDGET_TYPE_POPUP);
+  return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
+
+  return widget->vt->is_window && tk_str_eq(widget->vt->type, WIDGET_TYPE_POPUP);
 }
 
 bool_t widget_is_overlay(widget_t* widget) {
-  return tk_str_eq(widget->vt->type, WIDGET_TYPE_OVERLAY);
+  return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
+
+  return widget->vt->is_window && tk_str_eq(widget->vt->type, WIDGET_TYPE_OVERLAY);
 }
 
 bool_t widget_is_opened_dialog(widget_t* widget) {
