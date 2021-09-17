@@ -13,6 +13,7 @@ TEST(Overlay, props) {
   widget_t* w = overlay_create(NULL, 10, 20, 30, 40);
   overlay_t* overlay = OVERLAY(w);
 
+  ASSERT_EQ(widget_is_overlay(w), TRUE);
   ASSERT_EQ(overlay->click_through, FALSE);
   widget_set_prop_bool(w, WIDGET_PROP_CLICK_THROUGH, TRUE);
   ASSERT_EQ(overlay->click_through, TRUE);

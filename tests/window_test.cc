@@ -13,6 +13,7 @@ TEST(Window, basic) {
   widget_t* w = window_create(NULL, 10, 20, 30, 40);
 
   value_set_wstr(&v1, L"window");
+  ASSERT_EQ(widget_is_normal_window(w), TRUE);
   ASSERT_EQ(widget_set_prop(w, WIDGET_PROP_TEXT, &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_TEXT, &v2), RET_OK);
   ASSERT_EQ(wcscmp(v1.value.wstr, v2.value.wstr), 0);

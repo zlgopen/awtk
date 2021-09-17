@@ -14,6 +14,7 @@ TEST(Popup, cast) {
 TEST(Popup, basic) {
   widget_t* w = popup_create(NULL, 10, 20, 30, 40);
 
+  ASSERT_EQ(widget_is_popup(w), TRUE);
   ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE, TRUE), FALSE);
   ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_CLOSE_WHEN_CLICK, TRUE), FALSE);
   ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_CLOSE_WHEN_TIMEOUT, 1000), 0);

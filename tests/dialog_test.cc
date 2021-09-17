@@ -13,6 +13,7 @@ TEST(Dialog, basic) {
   widget_t* w1 = NULL;
   widget_t* w = dialog_create(NULL, 10, 20, 30, 40);
 
+  ASSERT_EQ(widget_is_dialog(w), TRUE);
   value_set_wstr(&v1, L"dialog");
   ASSERT_EQ(widget_set_prop(w, WIDGET_PROP_TEXT, &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_TEXT, &v2), RET_OK);

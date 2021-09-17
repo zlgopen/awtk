@@ -5,6 +5,8 @@
 TEST(SystemBar, cast) {
   widget_t* w = system_bar_create(NULL, 10, 20, 30, 40);
 
+  ASSERT_EQ(widget_is_system_bar(w), TRUE);
+
   ASSERT_EQ(w, system_bar_cast(w));
   ASSERT_EQ(w, window_base_cast(w));
 
