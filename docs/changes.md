@@ -3,6 +3,7 @@
 2021/09/18
   * 完善 func\_eq（感谢雨欣提供补丁）
   * 取消升级gtest。
+  * 修复asset\_loader\_zip在Windows上的问题。
 
 2021/09/16
   * 解除assets-1m.c和demo\_ui\_app.c之间的耦合（感谢兆坤提供补丁） 
