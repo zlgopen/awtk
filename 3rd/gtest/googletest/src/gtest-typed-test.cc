@@ -26,14 +26,16 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+//
+// Author: wan@google.com (Zhanyong Wan)
 
 #include "gtest/gtest-typed-test.h"
-
 #include "gtest/gtest.h"
 
 namespace testing {
 namespace internal {
+
+#if GTEST_HAS_TYPED_TEST_P
 
 // Skips to the first non-space char in str. Returns an empty string if str
 // contains only whitespace characters.
@@ -46,7 +48,7 @@ static const char* SkipSpaces(const char* str) {
 static std::vector<std::string> SplitIntoTestNames(const char* src) {
   std::vector<std::string> name_vec;
   src = SkipSpaces(src);
-  for (; src != nullptr; src = SkipComma(src)) {
+  for (; src != NULL; src = SkipComma(src)) {
     name_vec.push_back(StripTrailingSpaces(GetPrefixUntilComma(src)));
   }
   return name_vec;
@@ -55,11 +57,8 @@ static std::vector<std::string> SplitIntoTestNames(const char* src) {
 // Verifies that registered_tests match the test names in
 // registered_tests_; returns registered_tests if successful, or
 // aborts the program otherwise.
-const char* TypedTestSuitePState::VerifyRegisteredTestNames(
-    const char* test_suite_name, const char* file, int line,
-    const char* registered_tests) {
-  RegisterTypeParameterizedTestSuite(test_suite_name, CodeLocation(file, line));
-
+const char* TypedTestCasePState::VerifyRegisteredTestNames(
+    const char* file, int line, const char* registered_tests) {
   typedef RegisteredTestsMap::const_iterator RegisteredTestIter;
   registered_ = true;
 
@@ -76,11 +75,21 @@ const char* TypedTestSuitePState::VerifyRegisteredTestNames(
       continue;
     }
 
-    if (registered_tests_.count(name) != 0) {
+    bool found = false;
+    for (RegisteredTestIter it = registered_tests_.begin();
+         it != registered_tests_.end();
+         ++it) {
+      if (name == it->first) {
+        found = true;
+        break;
+      }
+    }
+
+    if (found) {
       tests.insert(name);
     } else {
       errors << "No test named " << name
-             << " can be found in this test suite.\n";
+             << " can be found in this test case.\n";
     }
   }
 
@@ -102,6 +111,8 @@ const char* TypedTestSuitePState::VerifyRegisteredTestNames(
 
   return registered_tests;
 }
+
+#endif  // GTEST_HAS_TYPED_TEST_P
 
 }  // namespace internal
 }  // namespace testing

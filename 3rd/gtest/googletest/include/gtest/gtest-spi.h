@@ -26,18 +26,16 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+//
+// Author: wan@google.com (Zhanyong Wan)
 //
 // Utilities for testing Google Test itself and code that uses Google Test
 // (e.g. frameworks built on top of Google Test).
 
-#ifndef GOOGLETEST_INCLUDE_GTEST_GTEST_SPI_H_
-#define GOOGLETEST_INCLUDE_GTEST_GTEST_SPI_H_
+#ifndef GTEST_INCLUDE_GTEST_GTEST_SPI_H_
+#define GTEST_INCLUDE_GTEST_GTEST_SPI_H_
 
 #include "gtest/gtest.h"
-
-GTEST_DISABLE_MSC_WARNINGS_PUSH_(4251 \
-/* class A needs to have dll-interface to be used by clients of class B */)
 
 namespace testing {
 
@@ -70,15 +68,14 @@ class GTEST_API_ ScopedFakeTestPartResultReporter
                                    TestPartResultArray* result);
 
   // The d'tor restores the previous test part result reporter.
-  ~ScopedFakeTestPartResultReporter() override;
+  virtual ~ScopedFakeTestPartResultReporter();
 
   // Appends the TestPartResult object to the TestPartResultArray
   // received in the constructor.
   //
   // This method is from the TestPartResultReporterInterface
   // interface.
-  void ReportTestPartResult(const TestPartResult& result) override;
-
+  virtual void ReportTestPartResult(const TestPartResult& result);
  private:
   void Init();
 
@@ -113,8 +110,6 @@ class GTEST_API_ SingleFailureChecker {
 }  // namespace internal
 
 }  // namespace testing
-
-GTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251
 
 // A set of macros for testing Google Test assertions or code that's expected
 // to generate Google Test fatal failures.  It verifies that the given
@@ -233,4 +228,4 @@ GTEST_DISABLE_MSC_WARNINGS_POP_()  //  4251
     }\
   } while (::testing::internal::AlwaysFalse())
 
-#endif  // GOOGLETEST_INCLUDE_GTEST_GTEST_SPI_H_
+#endif  // GTEST_INCLUDE_GTEST_GTEST_SPI_H_

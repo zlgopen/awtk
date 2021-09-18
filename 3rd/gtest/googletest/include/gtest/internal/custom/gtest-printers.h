@@ -31,12 +31,12 @@
 // installation of gTest.
 // It will be included from gtest-printers.h and the overrides in this file
 // will be visible to everyone.
-//
-// Injection point for custom user configurations. See README for details
+// See documentation at gtest/gtest-printers.h for details on how to define a
+// custom printer.
 //
 // ** Custom implementation starts here **
 
-#ifndef GOOGLETEST_INCLUDE_GTEST_INTERNAL_CUSTOM_GTEST_PRINTERS_H_
-#define GOOGLETEST_INCLUDE_GTEST_INTERNAL_CUSTOM_GTEST_PRINTERS_H_
+#ifndef GTEST_INCLUDE_GTEST_INTERNAL_CUSTOM_GTEST_PRINTERS_H_
+#define GTEST_INCLUDE_GTEST_INTERNAL_CUSTOM_GTEST_PRINTERS_H_
 
-#endif  // GOOGLETEST_INCLUDE_GTEST_INTERNAL_CUSTOM_GTEST_PRINTERS_H_
+#endif  // GTEST_INCLUDE_GTEST_INTERNAL_CUSTOM_GTEST_PRINTERS_H_
