@@ -80,6 +80,21 @@ static fscript_func_call_t* value_func(const value_t* v) {
   return (fscript_func_call_t*)(v->value.ptr);
 }
 
+static bool_t value_is_digit(value_t* v) {
+  uint32_t type = 0;
+  bool_t ret = TRUE;
+  return_value_if_fail(v != NULL, FALSE);
+
+  type = v->type;
+  if (type == VALUE_TYPE_INVALID || type == VALUE_TYPE_POINTER || type == VALUE_TYPE_STRING ||
+      type == VALUE_TYPE_WSTRING || type == VALUE_TYPE_OBJECT || type == VALUE_TYPE_SIZED_STRING ||
+      type == VALUE_TYPE_BINARY || type == VALUE_TYPE_UBJSON) {
+    ret = FALSE;
+  }
+
+  return ret;
+}
+
 static ret_t func_args_extend(fscript_args_t* args) {
   if (args->size < args->capacity) {
     return RET_OK;
@@ -1938,10 +1953,24 @@ static ret_t func_eq(fscript_t* fscript, fscript_args_t* args, value_t* result) 
 
   if (v1->type == VALUE_TYPE_STRING && v2->type == VALUE_TYPE_STRING) {
     value_set_bool(result, tk_str_eq(value_str(v1), value_str(v2)));
+  } else if (v1->type == VALUE_TYPE_POINTER && v2->type == VALUE_TYPE_POINTER) {
+    value_set_bool(result, value_pointer(v1) == value_pointer(v2));
+  } else if (v1->type == VALUE_TYPE_OBJECT && v2->type == VALUE_TYPE_OBJECT) {
+    value_set_bool(result, value_object(v1) == value_object(v2));
+  } else if (v1->type == VALUE_TYPE_BINARY && v2->type == VALUE_TYPE_BINARY) {
+    binary_data_t* bin1 = value_binary_data(v1);
+    binary_data_t* bin2 = value_binary_data(v2);
+    if (bin1->size == bin2->size) {
+      value_set_bool(result, tk_str_cmp((const char*)bin1->data, (const char*)bin2->data) == 0);
+    } else {
+      value_set_bool(result, FALSE);
+    }
   } else if (v1->type == VALUE_TYPE_INT64 || v2->type == VALUE_TYPE_INT64) {
     value_set_bool(result, value_int64(v1) == value_int64(v2));
   } else if (v1->type == VALUE_TYPE_UINT64 || v2->type == VALUE_TYPE_UINT64) {
     value_set_bool(result, value_uint64(v1) == value_uint64(v2));
+  } else if (v1->type != v2->type && !(value_is_digit(v1) && value_is_digit(v2))) {
+    value_set_bool(result, FALSE);
   } else {
     value_set_bool(result, tk_fequal(value_double(v1), value_double(v2)));
   }
