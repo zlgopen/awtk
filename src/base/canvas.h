@@ -415,7 +415,6 @@ ret_t canvas_fill_rect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h);
  * @method canvas_fill_rect_gradient
  * 绘制矩形。
  *
- * @annotation ["scriptable"]
  * @param {canvas_t*} c canvas对象。
  * @param {xy_t} x x坐标。
  * @param {xy_t} y y坐标。
