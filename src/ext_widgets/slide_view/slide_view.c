@@ -785,9 +785,7 @@ static ret_t slide_view_save_target(widget_t* widget) {
       target = target->target;
     }
 
-    if (target != NULL) {
-      default_focused_child_set_save_target(widget, active_view, slide_view_target_is_slide_view);
-    }
+    default_focused_child_set_save_target(widget, active_view, slide_view_target_is_slide_view);
   }
 
   return RET_OK;

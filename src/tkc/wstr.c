@@ -349,7 +349,8 @@ ret_t wstr_to_int(wstr_t* str, int32_t* v) {
   if (str->size > 0) {
     char buff[TK_NUM_MAX_LEN + 1] = {0};
     wchar_t wbuff[TK_NUM_MAX_LEN] = {0};
-    memcpy(wbuff, str->str, tk_min(str->size, ARRAY_SIZE(wbuff)) * sizeof(wchar_t));
+    uint32_t size = tk_min(str->size, TK_NUM_MAX_LEN) * sizeof(wchar_t);
+    memcpy(wbuff, str->str, size);
     tk_utf8_from_utf16_ex(wbuff, ARRAY_SIZE(wbuff), buff, ARRAY_SIZE(buff));
     *v = tk_atoi(buff);
   } else {
@@ -364,7 +365,9 @@ ret_t wstr_to_float(wstr_t* str, double* v) {
   if (str->size > 0) {
     char buff[TK_NUM_MAX_LEN + 1] = {0};
     wchar_t wbuff[TK_NUM_MAX_LEN] = {0};
-    memcpy(wbuff, str->str, tk_min(str->size, ARRAY_SIZE(wbuff)) * sizeof(wchar_t));
+    uint32_t size = tk_min(str->size, TK_NUM_MAX_LEN) * sizeof(wchar_t);
+
+    memcpy(wbuff, str->str, size);
     tk_utf8_from_utf16_ex(wbuff, ARRAY_SIZE(wbuff), buff, ARRAY_SIZE(buff));
     *v = tk_atof(buff);
   } else {

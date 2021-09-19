@@ -339,7 +339,7 @@ typedef ret_t (*tk_callback_t)(void* ctx);
 enum { TK_NAME_LEN = 31, TK_FUNC_NAME_LEN = 63 };
 
 #ifdef WITH_CPPCHECK
-#define tk_str_eq strcmp
+#define tk_str_eq strcmp("abc", "123")
 #define tk_str_ieq strcasecmp
 #define tk_str_eq_with_len strncmp
 #else

@@ -421,11 +421,6 @@ ret_t list_view_reinit(widget_t* widget) {
   if (iter && tk_str_eq(iter->vt->type, WIDGET_TYPE_SCROLL_VIEW)) {
     if (iter == list_view->scroll_view) break;
     scroll_view_t* scroll_view = SCROLL_VIEW(list_view->scroll_view);
-    if (scroll_view != NULL) {
-      scroll_view->on_scroll = NULL;
-      scroll_view->on_scroll_to = NULL;
-      scroll_view->on_layout_children = NULL;
-    }
     list_view->scroll_view = iter;
     scroll_view->on_scroll = list_view_on_scroll_view_scroll;
     scroll_view->on_scroll_to = list_view_on_scroll_view_scroll_to;

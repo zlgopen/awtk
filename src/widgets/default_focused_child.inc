@@ -129,7 +129,7 @@ static ret_t default_focused_child_set_save_target(widget_t* widget, widget_t* a
     }
   }
 
-  if (target != NULL && active_view != target) {
+  if (active_view != target) {
     str_t str_target;
     str_init(&str_target, DEFAULT_FOCUSED_CHILD_SAVE_TARGET_TAG_LENGT);
     default_focused_child_save_target_to_string(&str_target, target, widget);
