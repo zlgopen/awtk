@@ -4422,7 +4422,6 @@ ret_t widget_reset_canvas(widget_t* widget) {
 }
 
 widget_t* widget_ref(widget_t* widget) {
-  ENSURE(widget != NULL && widget->ref_count > 0 && widget->vt != NULL);
   return_value_if_fail(widget != NULL && widget->ref_count > 0 && widget->vt != NULL, NULL);
 
   widget->ref_count++;
@@ -4432,7 +4431,7 @@ widget_t* widget_ref(widget_t* widget) {
 
 static ret_t widget_unref_in_idle(const idle_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
-  ENSURE(widget != NULL && widget->ref_count > 0 && widget->vt != NULL);
+  return_value_if_fail(widget != NULL && widget->ref_count > 0 && widget->vt != NULL, RET_REMOVE);
 
   if (widget->ref_count > 1) {
     return RET_REPEAT;
@@ -4443,7 +4442,6 @@ static ret_t widget_unref_in_idle(const idle_info_t* info) {
 }
 
 ret_t widget_unref(widget_t* widget) {
-  ENSURE(widget != NULL && widget->ref_count > 0 && widget->vt != NULL);
   return_value_if_fail(widget != NULL && widget->ref_count > 0 && widget->vt != NULL,
                        RET_BAD_PARAMS);
 

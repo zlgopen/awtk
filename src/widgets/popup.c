@@ -96,7 +96,9 @@ static ret_t popup_update_close_timer(widget_t* widget) {
 static ret_t popup_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   popup_t* popup = POPUP(widget);
-  return_value_if_fail(popup && widget != NULL, RET_BAD_PARAMS);
+  window_base_t* window_base = WINDOW_BASE(popup);
+
+  return_value_if_fail(popup != NULL && widget != NULL && window_base != NULL, RET_BAD_PARAMS);
 
   switch (type) {
     case EVT_WINDOW_OPEN: {
@@ -113,9 +115,6 @@ static ret_t popup_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_POINTER_UP: {
-      window_base_t* window_base = WINDOW_BASE(popup);
-      ENSURE(window_base != NULL);
-
       if (window_base->stage != WINDOW_STAGE_CLOSED) {
         bool_t close_window = FALSE;
         pointer_event_t* evt = (pointer_event_t*)e;

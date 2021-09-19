@@ -149,7 +149,7 @@ ret_t canvas_get_clip_rect(canvas_t* c, rect_t* r) {
 ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r_in) {
   wh_t lcd_w = 0;
   wh_t lcd_h = 0;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* r = canvas_fix_rect(r_in, &r_fix);
 
 #ifdef FRAGMENT_FRAME_BUFFER_SIZE
@@ -223,7 +223,7 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r_in) {
 }
 
 ret_t canvas_set_clip_rect_ex(canvas_t* c, const rect_t* r_in, bool_t translate) {
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* r = canvas_fix_rect(r_in, &r_fix);
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
@@ -797,7 +797,7 @@ static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, const rect_t* s, c
 
 ret_t canvas_draw_image(canvas_t* c, bitmap_t* img, const rect_t* src, const rect_t* dst_in) {
   rect_t d;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
 
   return_value_if_fail(c != NULL && img != NULL && src != NULL && dst != NULL, RET_BAD_PARAMS);
@@ -820,7 +820,7 @@ static ret_t canvas_draw_image_repeat_default(canvas_t* c, bitmap_t* img, const 
   wh_t sh = 0;
   wh_t dw = 0;
   wh_t dh = 0;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
   return_value_if_fail(c != NULL && img != NULL && dst != NULL && src_in != NULL && dst_in != NULL,
                        RET_BAD_PARAMS);
@@ -914,7 +914,7 @@ static ret_t canvas_draw_image_repeat_impl(canvas_t* c, bitmap_t* img, const rec
 
 ret_t canvas_draw_image_repeat(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   rect_t s;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
 
@@ -942,7 +942,7 @@ ret_t canvas_draw_image_repeat9(canvas_t* c, bitmap_t* img, const rect_t* dst_in
   wh_t dst_h = 0;
   wh_t image_w = 0;
   wh_t image_h = 0;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
 
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
@@ -1030,7 +1030,7 @@ ret_t canvas_draw_image_repeat9(canvas_t* c, bitmap_t* img, const rect_t* dst_in
 
 ret_t canvas_draw_image_repeat_x(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   rect_t s;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
 
@@ -1056,7 +1056,7 @@ ret_t canvas_draw_image_repeat3_x(canvas_t* c, bitmap_t* img, const rect_t* dst_
   wh_t dst_h = 0;
   wh_t image_w = 0;
   int32_t tmp = 0;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
 
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
@@ -1103,7 +1103,7 @@ ret_t canvas_draw_image_repeat3_x(canvas_t* c, bitmap_t* img, const rect_t* dst_
 
 ret_t canvas_draw_image_repeat_y(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   rect_t s;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
 
@@ -1127,7 +1127,7 @@ ret_t canvas_draw_image_repeat3_y(canvas_t* c, bitmap_t* img, const rect_t* dst_
   wh_t dst_h = 0;
   wh_t image_h = 0;
   int32_t tmp = 0;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
 
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
@@ -1177,7 +1177,7 @@ ret_t canvas_draw_image_repeat_y_inverse(canvas_t* c, bitmap_t* img, const rect_
   rect_t d;
   xy_t y = 0;
   wh_t h = 0;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
 
@@ -1216,7 +1216,7 @@ ret_t canvas_draw_image_patch3_y_scale_x(canvas_t* c, bitmap_t* img, const rect_
   wh_t img_h = 0;
   wh_t dst_w = 0;
   wh_t dst_h = 0;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
 
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
@@ -1261,7 +1261,7 @@ ret_t canvas_draw_image_patch3_y(canvas_t* c, bitmap_t* img, const rect_t* dst_i
   wh_t img_h = 0;
   wh_t dst_w = 0;
   wh_t dst_h = 0;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
 
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
@@ -1307,7 +1307,7 @@ ret_t canvas_draw_image_patch3_x_scale_y(canvas_t* c, bitmap_t* img, const rect_
   wh_t img_h = 0;
   wh_t dst_w = 0;
   wh_t dst_h = 0;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
 
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
@@ -1352,7 +1352,7 @@ ret_t canvas_draw_image_patch3_x(canvas_t* c, bitmap_t* img, const rect_t* dst_i
   wh_t img_h = 0;
   wh_t dst_w = 0;
   wh_t dst_h = 0;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
 
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
@@ -1401,7 +1401,7 @@ ret_t canvas_draw_image_patch9(canvas_t* c, bitmap_t* img, const rect_t* dst_in)
   wh_t img_h = 0;
   wh_t dst_w = 0;
   wh_t dst_h = 0;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
 
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
@@ -1504,7 +1504,7 @@ ret_t canvas_draw_image_scale_w(canvas_t* c, bitmap_t* img, const rect_t* dst_in
   wh_t src_h = 0;
   wh_t dst_h = 0;
   float scale = 0;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
 
@@ -1529,7 +1529,7 @@ ret_t canvas_draw_image_scale_h(canvas_t* c, bitmap_t* img, const rect_t* dst_in
   wh_t src_w = 0;
   wh_t dst_w = 0;
   float scale = 0;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
 
@@ -1554,7 +1554,7 @@ ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, const rect_t* dst_in) 
   float scale = 0;
   float scalex = 0;
   float scaley = 0;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
 
@@ -1581,7 +1581,7 @@ ret_t canvas_draw_image_scale_down(canvas_t* c, bitmap_t* img, const rect_t* src
   float scale = 0;
   float scalex = 0;
   float scaley = 0;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
   return_value_if_fail(c != NULL && img != NULL && src != NULL && dst != NULL, RET_BAD_PARAMS);
 
@@ -1620,7 +1620,7 @@ ret_t canvas_draw_image_matrix(canvas_t* c, bitmap_t* img, matrix_t* matrix) {
 ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_type,
                            const rect_t* dst_in) {
   rect_t src;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
   switch (draw_type) {
@@ -1683,7 +1683,7 @@ ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_ty
 ret_t canvas_draw_image_ex2(canvas_t* c, bitmap_t* img, image_draw_type_t draw_type,
                             const rect_t* src_in, const rect_t* dst_in) {
   rect_t src;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
   return_value_if_fail(bitmap_check_rect(img, src_in), RET_BAD_PARAMS);
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
@@ -1746,7 +1746,7 @@ ret_t canvas_draw_icon(canvas_t* c, bitmap_t* img, xy_t cx, xy_t cy) {
 }
 
 ret_t canvas_draw_icon_in_rect(canvas_t* c, bitmap_t* img, const rect_t* r_in) {
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* r = canvas_fix_rect(r_in, &r_fix);
   return_value_if_fail(c != NULL && c->lcd != NULL && img != NULL && r != NULL, RET_BAD_PARAMS);
 
@@ -1762,7 +1762,7 @@ static ret_t canvas_draw_image_center_ex(canvas_t* c, bitmap_t* img, const rect_
   wh_t sw = 0;
   wh_t sh = 0;
   rect_t src;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
 
@@ -1866,7 +1866,7 @@ float_t canvas_get_font_height(canvas_t* c) {
 ret_t canvas_draw_text_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr, const rect_t* r_in) {
   int x = 0;
   int y = 0;
-  rect_t r_fix;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
   int32_t text_w = 0;
   int32_t height = canvas_get_font_height(c);
   rect_t* r = canvas_fix_rect(r_in, &r_fix);
