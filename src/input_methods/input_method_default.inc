@@ -30,6 +30,7 @@
 #include "base/window_manager.h"
 #include "ui_loader/ui_builder_default.h"
 
+#if !defined(STR_DEFAULT_KEYBOARD)
 #if defined(WITH_IME_T9)
 #define STR_DEFAULT_KEYBOARD "kb_default_t9"
 #elif defined(WITH_IME_T9EXT)
@@ -37,6 +38,17 @@
 #else
 #define STR_DEFAULT_KEYBOARD "kb_default"
 #endif
+#endif/*STR_DEFAULT_KEYBOARD*/
+
+#if !defined(STR_ASCII_KEYBOARD)
+#if defined(WITH_IME_T9)
+#define STR_ASCII_KEYBOARD "kb_ascii_t9"
+#elif defined(WITH_IME_T9EXT)
+#define STR_ASCII_KEYBOARD "kb_default_t9ext"
+#else
+#define STR_ASCII_KEYBOARD "kb_ascii"
+#endif
+#endif/*STR_ASCII_KEYBOARD*/
 
 static ret_t input_method_default_on_edit_destroy(void* ctx, event_t* e);
 static ret_t input_method_default_on_keyboard_close(void* ctx, event_t* e);
@@ -84,7 +96,7 @@ static const char* input_type_to_keyboard_name(int32_t input_type) {
     case INPUT_EMAIL:
     case INPUT_ASCII:
     case INPUT_PASSWORD: {
-      keyboard = "kb_ascii";
+      keyboard = STR_ASCII_KEYBOARD;
       break;
     }
     default: {

@@ -32,7 +32,7 @@
 ### 1.4 带触屏的 T9 输入法引擎
 
 * 文件：input\_engine\_t9.c       
-* 宏：WITHi\_IME\_T9
+* 宏：WITH\_IME\_T9
 * 软键盘：
     * 缺省软键盘：demos/assets/default/raw/ui/kb\_default\_t9.xml
     * ascii 软键盘：demos/assets/default/raw/ui/kb\_ascii\_t9.xml
@@ -72,6 +72,30 @@ INPUT_ENGINE='pinyin'
 ```
 
 ## 4. 指定软键盘
+
+> 新版无需指定软键盘(当然也可以指定)，由src/input\_methods/input\_method\_default.inc中定义的宏决定。
+
+```c
+#if !defined(STR_DEFAULT_KEYBOARD)
+#if defined(WITH_IME_T9)
+#define STR_DEFAULT_KEYBOARD "kb_default_t9"
+#elif defined(WITH_IME_T9EXT)
+#define STR_DEFAULT_KEYBOARD "kb_default_t9ext"
+#else
+#define STR_DEFAULT_KEYBOARD "kb_default"
+#endif
+#endif/*STR_DEFAULT_KEYBOARD*/
+
+#if !defined(STR_ASCII_KEYBOARD)
+#if defined(WITH_IME_T9)
+#define STR_ASCII_KEYBOARD "kb_ascii_t9"
+#elif defined(WITH_IME_T9EXT)
+#define STR_ASCII_KEYBOARD "kb_default_t9ext"
+#else
+#define STR_ASCII_KEYBOARD "kb_ascii"
+#endif
+#endif/*STR_ASCII_KEYBOARD*/
+```
 
 软键盘必须和输入法引擎配套使用 (T9/T9EXT)，可以替换默认的软键盘 UI 文件，也可以在编辑器的属性中指定软键盘。
 
