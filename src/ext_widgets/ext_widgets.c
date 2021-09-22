@@ -19,12 +19,12 @@
  *
  */
 
-#if defined(WITH_SDL) || defined(LINUX)
+#include "base/widget.h"
 
+#if defined(WITH_SDL) || defined(LINUX)
 #ifndef WITH_WIDGET_VPAGE
 #define WITH_WIDGET_VPAGE
 #endif /*WITH_WIDGET_VPAGE*/
-
 #endif /*WITH_SDL*/
 
 #include "ext_widgets.h"
