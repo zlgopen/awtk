@@ -376,6 +376,7 @@ widget_get(widget, path.prop)
 * prop 可以是简单的属性命名，也可以是 widget 路径+属性名。
 * 支持 widget.prop 方式访问控件属性。
 
+
 ### 示例
 
 > 获取当前控件的 value
@@ -412,6 +413,15 @@ widget_get('window', 'bar.value')
 
 ```
 widget_get('window', 'view.bar.value')
+```
+
+>对于控件对象，可以直接访问其属性
+
+```
+a = widget_lookup('window', 'bar', true)
+if(a.value <= 90) {
+  a.value = a.value + 10
+}
 ```
 
 ### 5.9 widget_set
@@ -460,6 +470,15 @@ widget_set('window', 'bar.value', 'hello')
 
 ```
 widget_set('window', 'view.bar.value', 12)
+```
+
+>对于控件对象，可以直接访问其属性
+
+```
+a = widget_lookup('window', 'bar', true)
+if(a.value <= 90) {
+  a.value = a.value + 10
+}
 ```
 
 ### 5.10 widget_create
@@ -603,8 +622,7 @@ send_key(widget, key_name)
 ----------------------------
 
 #### 原型
-```
-​```js
+```js
 widget_eval(path.prop)
 widget_eval(widget, prop)
 widget_eval(widget, path.prop)

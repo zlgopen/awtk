@@ -63,9 +63,8 @@
         <property name="on:click">
           <![CDATA[
         a = widget_lookup('window', 'bar', true)
-        b = widget_get(a, 'value')
-        if(b <= 90) {
-          widget_set(a, 'value', b + 10)
+        if(a.value <= 90) {
+          a.value = a.value + 10
         }
 ]]>
         </property>
@@ -74,9 +73,8 @@
         <property name="on:click">
           <![CDATA[
         a = widget_lookup('window', 'bar', true)
-        b = widget_get(a, 'value')
-        if(b >= 10) {
-          widget_set(a, 'value', b - 10)
+        if(a.value >= 10) {
+          a.value = a.value - 10
         }
 ]]>
         </property>
