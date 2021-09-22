@@ -770,19 +770,19 @@ uint64_t object_get_prop_uint64(object_t* obj, const char* name, uint64_t defval
 }
 
 object_t* object_get_child_object(object_t* obj, const char* path, const char** next_path) {
-  return_value_if_fail(obj != NULL && path != NULL && next_path != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(obj != NULL && path != NULL && next_path != NULL, NULL);
 
   const char* p = strchr(path, '.');
   if (p != NULL) {
     value_t v;
-    int32_t index;
     char subname[MAX_PATH + 1];
 
     tk_strncpy_s(subname, MAX_PATH, path, p - path);
-    object_get_prop(obj, subname, &v);
-    if (v.type == VALUE_TYPE_OBJECT) {
-      *next_path = p + 1;
-      return value_object(&v);
+    if (object_get_prop(obj, subname, &v) == RET_OK) {
+      if (v.type == VALUE_TYPE_OBJECT) {
+        *next_path = p + 1;
+        return value_object(&v);
+      }
     }
   }
 
