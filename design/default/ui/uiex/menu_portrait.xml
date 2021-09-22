@@ -1,4 +1,4 @@
-<window name="menu_portrait" theme="uiex" text="VPage V Translate">
+<window name="menu_portrait" theme="uiex" closable="no" text="VPage V Translate">
   <pages name="vpages" x="r" y="40" w="100%" h="-40" style="lucency">
     <vpage name="page_button" w="100%" h="100%" ui_asset="uiex/page_button" anim_hint="vtranslate" disg:custom="container" tr_text="Button"/>
     <vpage name="page_checkbox" w="100%" h="100%" ui_asset="uiex/page_checkbox" anim_hint="vtranslate" disg:custom="container" tr_text="Checkbox"/>
