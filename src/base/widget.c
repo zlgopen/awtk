@@ -4806,3 +4806,5 @@ ret_t widget_auto_scale_children(widget_t* widget, int32_t design_w, int32_t des
 
   return RET_OK;
 }
+
+#include "object_widget.inc"

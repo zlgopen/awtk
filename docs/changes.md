@@ -4,6 +4,7 @@
   * 完善object\_get\_child\_object（感谢雨欣提供补丁）
   * 完善android版本demo（感谢兆坤提供补丁）
   * 完善ios版本。
+  * 增加object\_widget，把widget包装成object，方便在fscript中访问widget的属性（感谢雨欣提供补丁）
 
 2021/09/19
   * 修复cppcheck的一些警告。

@@ -22,6 +22,7 @@
 #include "base/main_loop.h"
 #include "base/window.h"
 #include "base/locale_info.h"
+#include "base/object_widget.h"
 #include "base/widget_factory.h"
 #include "base/window_manager.h"
 #include "ui_loader/ui_builder_default.h"
@@ -68,6 +69,10 @@ static widget_t* to_widget(fscript_t* fscript, const value_t* v) {
     return find_target_widget(self, path, strlen(path));
   } else if (v->type == VALUE_TYPE_POINTER) {
     return WIDGET(value_pointer(v));
+  } else if (v->type == VALUE_TYPE_OBJECT) {
+    object_widget_t* o = OBJECT_WIDGET(value_object(v));
+    return_value_if_fail(o != NULL, NULL);
+    return o->widget;
   } else {
     return NULL;
   }
@@ -83,6 +88,7 @@ static ret_t func_tr(fscript_t* fscript, fscript_args_t* args, value_t* result) 
 static ret_t func_window_open(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   widget_t* widget = NULL;
   const char* name = NULL;
+  object_t* obj_widget = NULL;
   bool_t close_current = FALSE;
   bool_t switch_to_if_exist = FALSE;
   widget_t* wm = window_manager();
@@ -98,7 +104,9 @@ static ret_t func_window_open(fscript_t* fscript, fscript_args_t* args, value_t*
     widget_t* widget = widget_child(wm, name);
     if (widget != NULL) {
       window_manager_switch_to(wm, curr_win, widget, close_current);
-      value_set_pointer(result, widget);
+      obj_widget = object_widget_create(widget);
+      value_set_object(result, obj_widget);
+      result->free_handle = TRUE;
       return RET_OK;
     }
   }
@@ -109,7 +117,10 @@ static ret_t func_window_open(fscript_t* fscript, fscript_args_t* args, value_t*
     widget = window_open(value_str(args->args));
   }
 
-  value_set_pointer(result, widget);
+  obj_widget = object_widget_create(widget);
+  value_set_object(result, obj_widget);
+  result->free_handle = TRUE;
+
   return RET_OK;
 }
 
@@ -196,6 +207,7 @@ static ret_t func_widget_lookup(fscript_t* fscript, fscript_args_t* args, value_
   widget_t* widget = NULL;
   const char* path = NULL;
   bool_t recursive = FALSE;
+  object_t* obj_widget = NULL;
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
 
   if (args->size == 1) {
@@ -213,7 +225,10 @@ static ret_t func_widget_lookup(fscript_t* fscript, fscript_args_t* args, value_
   } else {
     widget = widget_lookup(widget, path, recursive);
   }
-  value_set_pointer(result, widget);
+
+  obj_widget = object_widget_create(widget);
+  value_set_object(result, obj_widget);
+  result->free_handle = TRUE;
 
   return RET_OK;
 }
@@ -291,6 +306,7 @@ static ret_t func_widget_create(fscript_t* fscript, fscript_args_t* args, value_
   const char* type = NULL;
   widget_t* widget = NULL;
   widget_t* parent = NULL;
+  object_t* obj_widget = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 6, RET_BAD_PARAMS);
   type = value_str(args->args);
   parent = to_widget(fscript, args->args + 1);
@@ -300,7 +316,10 @@ static ret_t func_widget_create(fscript_t* fscript, fscript_args_t* args, value_
   w = value_int(args->args + 4);
   h = value_int(args->args + 5);
   widget = widget_factory_create_widget(widget_factory(), type, parent, x, y, w, h);
-  value_set_pointer(result, widget);
+
+  obj_widget = object_widget_create(widget);
+  value_set_object(result, obj_widget);
+  result->free_handle = TRUE;
 
   return RET_OK;
 }
