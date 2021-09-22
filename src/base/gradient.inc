@@ -207,6 +207,8 @@ static gradient_t* gradient_parse_str(gradient_t* gradient, const char* str) {
     t->cursor++;
     gradient_parse_radial(gradient, t);
   }
+  tokenizer_deinit(t);
+
   return gradient;
 }
 

@@ -24,6 +24,8 @@ static ret_t on_style_item(void* ctx, const char* widget_state, const char* id,
     gradient_to_str(&g, &s);
 
     snprintf(str, sizeof(str), "%s,%s,\"%s\";", widget_state, id, s.str);
+    gradient_deinit(&g);
+    str_reset(&s);
   } else {
     snprintf(str, sizeof(str), "%s,%s,%d;", widget_state, id, value_int(val));
   }
