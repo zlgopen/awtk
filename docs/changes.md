@@ -367,7 +367,7 @@
   * 完善 keyboard 对 hard\_key 的支持。
 
 2021/06/16
-  * 支持 [极简键盘 (3 键键盘、5 键键盘和旋转按钮）](docs/how_to_support_5keys_3keys.md)
+  * 支持 [极简键盘 (3 键键盘、5 键键盘和旋转按钮）](how_to_support_5keys_3keys.md)
   * edit/mledit 不处理 escape 和功能键。 
   * 修复拼音输入法 assert: https://github.com/zlgopen/awtk/issues/563
 
