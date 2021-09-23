@@ -58,7 +58,6 @@ TEST(UILoaderXML, attr) {
 
   ASSERT_EQ(builder->root != NULL, true);
   widget_layout(builder->root);
-  ui_builder_destroy(builder);
   b1 = widget_lookup(builder->root, "b1", TRUE);
   ASSERT_EQ(b1 != NULL, true);
   ASSERT_EQ(b1->x, 10);
@@ -92,6 +91,7 @@ TEST(UILoaderXML, attr) {
   ASSERT_EQ(b4->h, 20);
 
   widget_destroy(builder->root);
+  ui_builder_destroy(builder);
 }
 
 TEST(UILoaderXML, prop1) {

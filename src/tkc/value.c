@@ -619,7 +619,9 @@ ret_t value_reset(value_t* v) {
         TKMEM_FREE(v->value.sized_str.str);
         break;
       }
-      case VALUE_TYPE_BINARY: {
+      case VALUE_TYPE_BINARY: 
+      case VALUE_TYPE_UBJSON: 
+      case VALUE_TYPE_GRADIENT: {
         TKMEM_FREE(v->value.binary_data.data);
         break;
       }
