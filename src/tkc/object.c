@@ -54,6 +54,24 @@ static ret_t object_destroy(object_t* obj) {
   return ret;
 }
 
+object_t* object_create_ex(const object_vtable_t* vt, uint32_t extra_data_size) {
+  uint32_t size = 0;
+  object_t* obj = NULL;
+  return_value_if_fail(vt != NULL && vt->size >= sizeof(object_t), NULL);
+
+  size = vt->size + extra_data_size;
+  obj = (object_t*)TKMEM_ALLOC(size);
+  return_value_if_fail(obj != NULL, NULL);
+
+  memset(obj, 0x00, size);
+
+  obj->vt = vt;
+  obj->ref_count = 1;
+  emitter_init((emitter_t*)obj);
+
+  return obj;
+}
+
 object_t* object_create(const object_vtable_t* vt) {
   object_t* obj = NULL;
   return_value_if_fail(vt != NULL && vt->size >= sizeof(object_t), NULL);

@@ -130,9 +130,22 @@ object_t* object_clone(object_t* obj);
  *
  * @param {const object_vtable_t*} vt 虚函数表。
  *
- * @return {ret_t} 返回object对象。
+ * @return {object_t*} 返回object对象。
  */
 object_t* object_create(const object_vtable_t* vt);
+
+/**
+ * @method object_create_ex
+ * 创建对象。
+ *
+ * > 仅供子类调用。
+ *
+ * @param {const object_vtable_t*} vt 虚函数表。
+ * @param {uint32_t} extra_data_size 额外的内存大小。
+ *
+ * @return {object_t*} 返回object对象。
+ */
+object_t* object_create_ex(const object_vtable_t* vt, uint32_t extra_data_size);
 
 /**
  * @method object_get_type
