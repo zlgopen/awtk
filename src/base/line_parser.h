@@ -88,7 +88,7 @@ static ret_t line_parser_next(line_parser_t* parser) {
   int32_t char_w = 0;
   const wchar_t* p = NULL;
   canvas_t* c = parser->c;
-  return_value_if_fail(parser != NULL && parser->str != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(parser->str != NULL, RET_BAD_PARAMS);
 
   parser->line = parser->line + parser->line_size;
   parser->line_size = 0;
