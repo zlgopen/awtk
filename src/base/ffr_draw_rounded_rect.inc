@@ -424,7 +424,8 @@ static float_t ffr_draw_rounded_get_vertex_angle_by_border_model(int32_t border_
 
 static void ffr_draw_rounded_rect_draw_fill_with_vg(canvas_t* c, vgcanvas_t* vg, const gradient_t* gradient, const rect_t* r, frr_draw_info_t draw_infos[FRR_VERTEXT_TYPE_COUNT]) {
 
-  vgcanvas_save(vg);  
+  vgcanvas_save(vg);
+  vgcanvas_set_global_alpha(vg, c->global_alpha / 255.0f);
   if (gradient->nr > 1) {  
     vg_gradient_t vg_gradient;
     vg_gradient_init_with_gradient(&vg_gradient, r, gradient);
@@ -852,7 +853,7 @@ static ret_t ffr_draw_fill_rounded_rect(canvas_t* c, const rect_t* r, const grad
   lcd_type_t lcd_type = lcd_get_type(c->lcd);
   bool_t is_cpu_lcd = lcd_type != LCD_VGCANVAS && lcd_type != LCD_REGISTER;
   uint32_t radius = radius_tl != 0 ? radius_tl : (radius_tr != 0 ? radius_tr : (radius_bl != 0 ? radius_bl : radius_br));
-  if (is_cpu_lcd && radius != 0 && gradient->nr <= 2 && gradient->degree == 180 && ffr_draw_rounded_radius_equal(radius_tl, radius_tr, radius_bl, radius_br)) {
+  if (is_cpu_lcd && radius != 0 && (gradient->nr == 1 || (gradient->nr == 2 && gradient->degree == 180)) && ffr_draw_rounded_radius_equal(radius_tl, radius_tr, radius_bl, radius_br)) {
     ffr_draw_rounded_rect_draw_fill_with_canvas(c, r, gradient, radius, radius_tl, radius_tr, radius_bl, radius_br);
   } else {  
     vgcanvas_t* vg = canvas_get_vgcanvas(c);
