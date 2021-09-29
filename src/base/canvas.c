@@ -560,7 +560,7 @@ static ret_t canvas_fill_rect_gradient_impl(canvas_t* c, xy_t x, xy_t y, wh_t w,
   return_value_if_fail(gradient->type == GRADIENT_LINEAR && gradient->degree == 180,
                        RET_BAD_PARAMS);
 
-#ifndef WITH_NANOVG_GPU
+#ifndef WITH_GPU
   if (gradient->type == GRADIENT_LINEAR) {
     if (gradient->degree == 180) {
       uint32_t i = 0;
@@ -574,7 +574,7 @@ static ret_t canvas_fill_rect_gradient_impl(canvas_t* c, xy_t x, xy_t y, wh_t w,
       return RET_OK;
     }
   }
-#endif /*WITH_NANOVG_GPU*/
+#endif
   vg = canvas_get_vgcanvas(c);
   if (vg != NULL) {
     vg_gradient_t vg_gradient;
