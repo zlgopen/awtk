@@ -212,5 +212,5 @@ def run(awtk_root, is_excluded_file_handler = None):
         common.update_res()
 
         if isinstance(THEMES[0], dict):
-            if action != 'clean' and action != 'web' and action != 'json' and action != 'pinyin':
+            if action != 'clean' and action != 'web' and action != 'json' and action != 'pinyin' and action != 'res':
                 common.gen_res_c(False)

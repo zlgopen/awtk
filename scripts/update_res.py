@@ -83,7 +83,7 @@ def gen_res(name = 'assets', is_excluded_file_func = default_is_excluded_file_fu
         common.gen_res_web_c()
     elif action == 'json':
         common.gen_res_json()
-    elif action != 'pinyin':
+    elif action != 'pinyin' and action != 'res':
         common.gen_res_c()
         if isinstance(updater.get_theme(0), dict):
             common.gen_res_c(False)
