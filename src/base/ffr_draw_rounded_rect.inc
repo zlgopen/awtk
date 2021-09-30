@@ -208,7 +208,7 @@ static int32_t ffr_draw_circluar_point_to_quadrant_hline(canvas_t* c, const rect
   }
 
   if (w > 0 && h > 0 && limit_y != y) {
-    float_t offset = (float_t)y / (float_t)rect->h;
+    float_t offset = (float_t)(y - rect->y) / (float_t)rect->h;
     color_t color = gradient_get_color((gradient_t*)gradient, offset);
     canvas_set_fill_color(c, color);
     canvas_fill_rect(c, x_h, y, w, 1);
@@ -733,7 +733,7 @@ static void ffr_draw_rounded_rect_draw_info_init(frr_draw_info_t draw_infos[FRR_
 static void ffr_draw_rounded_rect_draw_fill_gradient(canvas_t* c, const rect_t* rect, xy_t x, xy_t y, wh_t w, wh_t h, const gradient_t* gradient) {
   uint32_t i = 0;
   for (i = 0; i < h; i++) {
-    float_t offset = (float_t)(y + i) / (float_t)rect->h;
+    float_t offset = (float_t)(y + i - rect->y) / (float_t)rect->h;
     color_t color = gradient_get_color((gradient_t*)gradient, offset);
     canvas_set_stroke_color(c, color);
     canvas_draw_hline(c, x, y + i, w);
