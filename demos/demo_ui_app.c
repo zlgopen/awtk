@@ -32,7 +32,7 @@
 #error "PAGE_NUM not define or less than or equal to zero!"
 #endif /* PAGE_NUM */
 
-#define LANDSCAPE_WIDTH_THRESHOLD 490 /* 横屏窗口阈值 */
+#define LANDSCAPE_WIDTH_THRESHOLD 540 /* 横屏窗口阈值 */
 
 #define PRELOAD_NAME "preload"
 
@@ -144,6 +144,10 @@ static widget_t* window_open_with_prefix(const char* name) {
   return window_open(name_with_prefix);
 }
 
+static ret_t on_quit(void* ctx, event_t* e) {
+  return tk_quit();
+}
+
 static ret_t on_close_window(void* ctx, event_t* e) {
   widget_t* win = WIDGET(ctx);
   return window_close(win);
@@ -247,6 +251,8 @@ static ret_t common_init_widget(void* ctx, const void* iter) {
       }
     } else if (tk_str_eq(name, "close()")) {
       widget_on(widget, EVT_POINTER_UP, on_close_window, win);
+    } else if (tk_str_eq(name, "quit()")) {
+      widget_on(widget, EVT_POINTER_UP, on_quit, NULL);
     }
   }
 
@@ -1113,7 +1119,12 @@ static ret_t on_adject_win_in_1m_assets(void* ctx, event_t* e) {
 
 static bool_t check_is_use_1m_assets(void) {
   const asset_info_t* res = assets_manager_ref(assets_manager(), ASSET_TYPE_IMAGE, "logo_dynamic");
-  return (res == NULL);
+  bool_t is_use_1m_assets = (res == NULL);
+
+  if (res != NULL) {
+    assets_manager_unref(assets_manager(), res);
+  }
+  return is_use_1m_assets;
 }
 
 static ret_t vpage_change_kb_type_without_zh(void* ctx, const void* iter) {
