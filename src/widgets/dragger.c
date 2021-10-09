@@ -28,26 +28,14 @@ static ret_t dragger_on_paint_self(widget_t* widget, canvas_t* c) {
 }
 
 static ret_t dragger_move(widget_t* widget, xy_t dx, xy_t dy) {
-  xy_t x = 0;
-  xy_t y = 0;
+  point_t p = {0, 0};
   dragger_t* dragger = DRAGGER(widget);
   return_value_if_fail(dragger != NULL, RET_BAD_PARAMS);
 
-  x = dragger->save_x + dx;
-  y = dragger->save_y + dy;
+  p.x = tk_clamp(dragger->save_x + dx, dragger->x_min, dragger->x_max);
+  p.y = tk_clamp(dragger->save_y + dy, dragger->y_min, dragger->y_max);
 
-  x = tk_max(x, dragger->x_min);
-  y = tk_max(y, dragger->y_min);
-  x = tk_min(x, dragger->x_max);
-  y = tk_min(y, dragger->y_max);
-
-  if (x != widget->x || y != widget->y) {
-    event_t evt = event_init(EVT_DRAG, widget);
-    widget_move(widget, x, y);
-    widget_dispatch(widget, (event_t*)&evt);
-  }
-
-  return RET_OK;
+  return widget_move(widget, p.x, p.y);
 }
 
 static ret_t dragger_on_event(widget_t* widget, event_t* e) {
@@ -68,12 +56,14 @@ static ret_t dragger_on_event(widget_t* widget, event_t* e) {
       dragger->save_x = widget->x;
       dragger->save_y = widget->y;
       dragger_move(widget, 0, 0);
+      widget_dispatch_simple_event(widget, EVT_DRAG);
       dragger->dragging = TRUE;
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
       event_t evt = event_init(EVT_DRAG_END, widget);
       dragger_move(widget, 0, 0);
+      widget_dispatch_simple_event(widget, EVT_DRAG);
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       widget_dispatch(widget, (event_t*)&evt);
       widget_ungrab(widget->parent, widget);
@@ -87,6 +77,7 @@ static ret_t dragger_on_event(widget_t* widget, event_t* e) {
       if (dragger->moving) {
         dragger_move(widget, pointer_event->x - dragger->down_x,
                      pointer_event->y - dragger->down_y);
+        widget_dispatch_simple_event(widget, EVT_DRAG);
       }
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       widget_dispatch(widget, (event_t*)&evt);
@@ -100,6 +91,7 @@ static ret_t dragger_on_event(widget_t* widget, event_t* e) {
         pointer_event_t* pointer_event = (pointer_event_t*)e;
         dragger_move(widget, pointer_event->x - dragger->down_x,
                      pointer_event->y - dragger->down_y);
+        widget_dispatch_simple_event(widget, EVT_DRAG);
         dragger->moving = TRUE;
       }
       return RET_STOP;
