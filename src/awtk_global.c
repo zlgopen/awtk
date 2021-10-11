@@ -193,6 +193,9 @@ ret_t tk_init_internal(void) {
 #endif
 #ifdef WITH_FSCRIPT_EXT
   fscript_ext_init();
+#ifndef WITH_DATA_READER_WRITER
+#define WITH_DATA_READER_WRITER
+#endif /*WITH_DATA_READER_WRITER*/
 #endif /*WITH_FSCRIPT_EXT*/
 
 #ifdef WITH_DATA_READER_WRITER

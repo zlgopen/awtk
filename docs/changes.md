@@ -2,6 +2,7 @@
 
 2021/10/11
   * 完善app\_help\_base，修复mvvm-js项目编译时找不到jerryscript路径的问题（感谢雨欣提供补丁）
+  * 启用fscript\_ext时需定义宏WITH\_DATA\_READER\_WRITER （感谢雨欣提供补丁）
 
 2021/10/09
   * 修复拖拽控件在拖拽时且控件不移动时，没有发送drag事件（感谢兆坤提供补丁）
