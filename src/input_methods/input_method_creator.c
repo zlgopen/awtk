@@ -45,7 +45,7 @@ input_method_t* input_method_create(void) {
 #if defined(MOBILE_APP)
   im = input_method_sdl_create();
 #else
-  if (system_info()->app_type == APP_SIMULATOR) {
+  if (system_info()->app_type != APP_DESKTOP) {
     im = input_method_default_create();
   } else {
     im = input_method_sdl_create();
