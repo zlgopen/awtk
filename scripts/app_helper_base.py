@@ -456,6 +456,7 @@ class AppHelperBase:
 
         if self.MVVM_ROOT:
             if self.WITH_JERRYSCRIPT:
+                MVVM_3RD_ROOT = join_path(self.MVVM_ROOT, '3rd')
                 DEPENDS_LIBS += [{
                     'cxxflags': '-DWITH_MVVM -DWITH_JERRYSCRIPT',
                     'cflags': '-DWITH_MVVM -DWITH_JERRYSCRIPT',
@@ -464,6 +465,10 @@ class AppHelperBase:
                     'shared_libs': ['mvvm'],
                     'static_libs': ['']
                 }]
+                CPPPATH += [
+                    join_path(MVVM_3RD_ROOT, 'jerryscript/jerryscript/jerry-ext/include'),
+                    join_path(MVVM_3RD_ROOT, 'jerryscript/jerryscript/jerry-core/include'),
+                ]
             else:
                 DEPENDS_LIBS += [{
                     'cxxflags': '-DWITH_MVVM',
