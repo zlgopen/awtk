@@ -356,7 +356,7 @@ static ret_t slide_menu_do_layout_children(widget_t* widget) {
   for (i = curr + 1; i < visible_nr; i++) {
     iter = children[i];
     if (iter == NULL) break;
-    
+
     if (i > 0) {
       size = slide_menu_calc_child_size(slide_menu, i, curr, xoffset);
       x = children[i - 1]->x + children[i - 1]->w;

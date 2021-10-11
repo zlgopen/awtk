@@ -50,7 +50,7 @@ ret_t object_default_clear_props(object_t* obj) {
 static ret_t object_default_on_destroy(object_t* obj) {
   object_default_t* o = OBJECT_DEFAULT(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-  
+
   return darray_deinit(&(o->props));
 }
 

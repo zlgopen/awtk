@@ -601,4 +601,3 @@ TEST(ObjectDefault, disable_path) {
 
   object_unref(obj);
 }
-

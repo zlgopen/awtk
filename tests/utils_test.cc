@@ -558,5 +558,4 @@ TEST(Utils, isspace) {
   ASSERT_EQ(is_s, TRUE);
   is_s = tk_isalpha('a');
   ASSERT_EQ(is_s, TRUE);
-  
 }

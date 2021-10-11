@@ -76,7 +76,7 @@ TEST(VGGradient, init_gradient) {
 TEST(VGGradient, init_with_gradient) {
   vg_gradient_t gg;
   gradient_t agradient;
-  rect_t rect = { 0, 0, 100, 100 };
+  rect_t rect = {0, 0, 100, 100};
   gradient_init_from_str(&agradient, "linear-gradient(180deg, #6AB2FF, #0D81FF);");
   vg_gradient_t* g = vg_gradient_init_with_gradient(&gg, &rect, &agradient);
   ASSERT_EQ(g->gradient.type, GRADIENT_LINEAR);

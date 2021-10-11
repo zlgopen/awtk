@@ -234,7 +234,8 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const
         case BITMAP_FMT_BGR565: {
           if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8) {
             rect_t tmp_src = rect_from_rectf(src_r);
-            return soft_copy_image(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x), (xy_t)(dst_r->y));
+            return soft_copy_image(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x),
+                                   (xy_t)(dst_r->y));
           } else {
             return blend_image_bgr565_bgr565(dst, src, dst_r, src_r, alpha);
           }
@@ -261,7 +262,8 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const
         case BITMAP_FMT_RGB565: {
           if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8) {
             rect_t tmp_src = rect_from_rectf(src_r);
-            return soft_copy_image(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x), (xy_t)(dst_r->y));
+            return soft_copy_image(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x),
+                                   (xy_t)(dst_r->y));
           } else {
             return blend_image_rgb565_rgb565(dst, src, dst_r, src_r, alpha);
           }
@@ -291,7 +293,8 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const
         case BITMAP_FMT_BGR888: {
           if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8) {
             rect_t tmp_src = rect_from_rectf(src_r);
-            return soft_copy_image(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x), (xy_t)(dst_r->y));
+            return soft_copy_image(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x),
+                                   (xy_t)(dst_r->y));
           } else {
             return blend_image_bgr888_bgr888(dst, src, dst_r, src_r, alpha);
           }
@@ -318,7 +321,8 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const
         case BITMAP_FMT_RGB888: {
           if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8) {
             rect_t tmp_src = rect_from_rectf(src_r);
-            return soft_copy_image(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x), (xy_t)(dst_r->y));
+            return soft_copy_image(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x),
+                                   (xy_t)(dst_r->y));
           } else {
             return blend_image_rgb888_rgb888(dst, src, dst_r, src_r, alpha);
           }

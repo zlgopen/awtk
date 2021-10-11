@@ -165,7 +165,8 @@ vg_gradient_t* vg_gradient_init_radial(vg_gradient_t* gradient, float x0, float 
  *
  * @return {vg_gradient_t*} 返回gradient对象。
  */
-vg_gradient_t* vg_gradient_init_with_gradient(vg_gradient_t* gradient, const rect_t* rect, const gradient_t* g);
+vg_gradient_t* vg_gradient_init_with_gradient(vg_gradient_t* gradient, const rect_t* rect,
+                                              const gradient_t* g);
 
 /**
  * @method vg_gradient_create_linear
@@ -204,7 +205,8 @@ vg_gradient_t* vg_gradient_init_linear(vg_gradient_t* gradient, float sx, float 
  */
 ret_t vg_gradient_destroy(vg_gradient_t* gradient);
 
-#define vg_gradient_add_stop(gradient, color, stop) gradient_add_stop((gradient_t*)(gradient), color, stop)
+#define vg_gradient_add_stop(gradient, color, stop) \
+  gradient_add_stop((gradient_t*)(gradient), color, stop)
 #define vg_gradient_get_stop(gradient, index) gradient_get_stop((gradient_t*)(gradient), index)
 #define vg_gradient_get_first_color(gradient) gradient_get_first_color((gradient_t*)(gradient))
 #define vg_gradient_get_last_color(gradient) gradient_get_last_color((gradient_t*)(gradient))

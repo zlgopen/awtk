@@ -203,7 +203,6 @@ static void test_one_path(svg_path_t* path) {
   ASSERT_EQ(bsvg_builder_add_sub_path(w, path), RET_OK);
   ASSERT_EQ(bsvg_builder_done(w), RET_OK);
 
-
   ASSERT_EQ(bsvg_init(svg, buff, w->buff.cursor), svg);
   ASSERT_EQ(bsvg_visit(svg, path, on_shape_null, on_path), RET_OK);
 }

@@ -58,7 +58,7 @@ bool Style::AddValue(const string& name, const binary_data_t* bin) {
 bool Style::AddValue(const string& name, const value_t& v) {
   if (v.type == VALUE_TYPE_STRING) {
     return str_values.AddValue(name, string(value_str(&v)), v.type);
-  }else if (v.type == VALUE_TYPE_GRADIENT) {
+  } else if (v.type == VALUE_TYPE_GRADIENT) {
     return bin_values.AddValue(name, value_gradient(&v), v.type);
   } else {
     if (v.type == VALUE_TYPE_INT32) {

@@ -20,7 +20,7 @@ static ret_t on_style_item(void* ctx, const char* widget_state, const char* id,
     binary_data_t* bin = value_gradient(val);
 
     str_init(&s, 100);
-    gradient_init_from_binary(&g, (uint8_t*)(bin->data), bin->size); 
+    gradient_init_from_binary(&g, (uint8_t*)(bin->data), bin->size);
     gradient_to_str(&g, &s);
 
     snprintf(str, sizeof(str), "%s,%s,\"%s\";", widget_state, id, s.str);
@@ -137,12 +137,13 @@ TEST(StyleMutable, gradient) {
   gradient_t g;
   style_t* m1 = style_mutable_create(NULL);
 
-  style_mutable_set_str(m1, "normal", "bg_color", "linear-gradient(180deg, #FF0000 0%, #0000FF 100%)");
+  style_mutable_set_str(m1, "normal", "bg_color",
+                        "linear-gradient(180deg, #FF0000 0%, #0000FF 100%)");
   ASSERT_EQ(style_get_gradient(m1, "bg_color", &g) != NULL, true);
   ASSERT_EQ(g.type, GRADIENT_LINEAR);
   ASSERT_EQ(g.nr, 2u);
   ASSERT_EQ(g.degree, 180u);
-  
+
   ASSERT_EQ(g.stops[0].offset, 0.0f);
   ASSERT_EQ(g.stops[0].color.rgba.r, 0xff);
   ASSERT_EQ(g.stops[1].offset, 1.0f);
@@ -163,7 +164,7 @@ TEST(StyleMutable, gradient1) {
   ASSERT_EQ(g.type, GRADIENT_LINEAR);
   ASSERT_EQ(g.nr, 1u);
   ASSERT_EQ(g.degree, 0u);
-  
+
   ASSERT_EQ(g.stops[0].offset, 0.0f);
   ASSERT_EQ(g.stops[0].color.rgba.r, 0xff);
 

@@ -94,7 +94,8 @@ ret_t image_blend(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rect
   if (src_r->w == dst_r->w && src_r->h == dst_r->h) {
     rect_t tmp_src_r = rect_from_rectf(src_r);
     rect_t tmp_dst_r = rect_from_rectf(dst_r);
-    if (g2d_blend_image(dst, src, (const rect_t*)&tmp_dst_r, (const rect_t*)&tmp_src_r, global_alpha) == RET_OK) {
+    if (g2d_blend_image(dst, src, (const rect_t*)&tmp_dst_r, (const rect_t*)&tmp_src_r,
+                        global_alpha) == RET_OK) {
       return RET_OK;
     }
   }

@@ -32,12 +32,12 @@ using std::string;
 using std::vector;
 
 class BinaryData {
-public:
+ public:
   uint8_t* data;
   uint32_t size;
 
   void Reset(void) {
-    delete [] this->data;
+    delete[] this->data;
     this->data = NULL;
     this->size = 0;
   }
@@ -51,12 +51,12 @@ public:
     this->data = NULL;
     this->size = 0;
   }
-  
+
   BinaryData(const BinaryData& other) {
     this->Copy(other.data, other.size);
   }
- 
-  BinaryData& operator=(const BinaryData& other){
+
+  BinaryData& operator=(const BinaryData& other) {
     this->Reset();
     this->Copy(other.data, other.size);
     return *this;
@@ -132,7 +132,7 @@ class NameValues {
     nv.value_size = value.size() + 1;
     wbuffer_write_binary(wbuffer, &nv, sizeof(nv));
   }
-  
+
   void write_value_header_to_wbuffer(wbuffer_t* wbuffer, uint32_t type, const string& name,
                                      const BinaryData& value) {
     style_name_value_header_t nv;

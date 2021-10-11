@@ -1530,11 +1530,11 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, const rect_t* r, bool_t bg
       if (radius_tl > 3 || radius_tr > 3 || radius_bl > 3 || radius_br > 3) {
         /*TODO: support gradient*/
         if (bg) {
-          ret = canvas_fill_rounded_rect_gradient_ex(c, r, NULL, gradient, radius_tl, radius_tr, radius_bl,
-                                            radius_br);
+          ret = canvas_fill_rounded_rect_gradient_ex(c, r, NULL, gradient, radius_tl, radius_tr,
+                                                     radius_bl, radius_br);
         } else {
-          ret = canvas_fill_rounded_rect_gradient_ex(c, r, &bg_r, gradient, radius_tl, radius_tr, radius_bl,
-                                            radius_br);
+          ret = canvas_fill_rounded_rect_gradient_ex(c, r, &bg_r, gradient, radius_tl, radius_tr,
+                                                     radius_bl, radius_br);
         }
         if (ret == RET_FAIL) {
           canvas_fill_rect(c, r->x, r->y, r->w, r->h);
@@ -4368,7 +4368,7 @@ bool_t widget_is_system_bar(widget_t* widget) {
   return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
 
   return widget->vt->is_window && (tk_str_eq(widget->vt->type, WIDGET_TYPE_SYSTEM_BAR) ||
-         tk_str_eq(widget->vt->type, WIDGET_TYPE_SYSTEM_BAR_BOTTOM));
+                                   tk_str_eq(widget->vt->type, WIDGET_TYPE_SYSTEM_BAR_BOTTOM));
 }
 
 bool_t widget_is_normal_window(widget_t* widget) {

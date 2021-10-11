@@ -841,8 +841,9 @@ ret_t canvas_fill_rounded_rect_gradient(canvas_t* c, const rect_t* r, const rect
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t canvas_fill_rounded_rect_gradient_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
-                                          const gradient_t* gradient, uint32_t radius_tl, uint32_t radius_tr,
-                                          uint32_t radius_bl, uint32_t radius_br);
+                                           const gradient_t* gradient, uint32_t radius_tl,
+                                           uint32_t radius_tr, uint32_t radius_bl,
+                                           uint32_t radius_br);
 
 /**
  * @method canvas_fill_rounded_rect_ex

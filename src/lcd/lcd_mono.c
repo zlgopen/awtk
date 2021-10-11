@@ -145,13 +145,15 @@ static ret_t lcd_mono_draw_image_mono(lcd_t* lcd, bitmap_t* img, const rectf_t* 
   return_value_if_fail(src->w == dst->w && src->h == dst->h, RET_OK);
 
   data = bitmap_lock_buffer_for_read(img);
-  ret = lcd_mono_draw_data(lcd, data, img->w, img->h, (const rect_t*)(&tmp_src), (xy_t)(dst->x), (xy_t)(dst->y), FALSE);
+  ret = lcd_mono_draw_data(lcd, data, img->w, img->h, (const rect_t*)(&tmp_src), (xy_t)(dst->x),
+                           (xy_t)(dst->y), FALSE);
   bitmap_unlock_buffer(img);
 
   return ret;
 }
 
-static ret_t lcd_mono_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* src, const rectf_t* dst) {
+static ret_t lcd_mono_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* src,
+                                 const rectf_t* dst) {
   return_value_if_fail(img->format == BITMAP_FMT_MONO, RET_NOT_IMPL);
   return_value_if_fail(src->w == dst->w && src->h == dst->h, RET_NOT_IMPL);
 

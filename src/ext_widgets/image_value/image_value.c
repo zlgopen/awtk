@@ -23,7 +23,9 @@
 #include "tkc/utils.h"
 #include "image_value/image_value.h"
 
-static ret_t image_value_draw_images(widget_t* widget, canvas_t* c, char bitmap_name[IMAGE_VALUE_MAX_CHAR_NR][TK_NAME_LEN + 1], uint32_t nr) {
+static ret_t image_value_draw_images(widget_t* widget, canvas_t* c,
+                                     char bitmap_name[IMAGE_VALUE_MAX_CHAR_NR][TK_NAME_LEN + 1],
+                                     uint32_t nr) {
   int32_t x = 0;
   int32_t y = 0;
   int32_t i = 0;

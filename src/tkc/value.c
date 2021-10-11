@@ -619,8 +619,8 @@ ret_t value_reset(value_t* v) {
         TKMEM_FREE(v->value.sized_str.str);
         break;
       }
-      case VALUE_TYPE_BINARY: 
-      case VALUE_TYPE_UBJSON: 
+      case VALUE_TYPE_BINARY:
+      case VALUE_TYPE_UBJSON:
       case VALUE_TYPE_GRADIENT: {
         TKMEM_FREE(v->value.binary_data.data);
         break;
@@ -735,8 +735,9 @@ value_t* value_dup_binary_data(value_t* v, const void* data, uint32_t size) {
 
 binary_data_t* value_binary_data(const value_t* v) {
   return_value_if_fail(v != NULL, NULL);
-  return_value_if_fail(v->type == VALUE_TYPE_BINARY || v->type == VALUE_TYPE_GRADIENT 
-    || v->type == VALUE_TYPE_UBJSON, NULL);
+  return_value_if_fail(v->type == VALUE_TYPE_BINARY || v->type == VALUE_TYPE_GRADIENT ||
+                           v->type == VALUE_TYPE_UBJSON,
+                       NULL);
 
   return (binary_data_t*)&(v->value.binary_data);
 }
