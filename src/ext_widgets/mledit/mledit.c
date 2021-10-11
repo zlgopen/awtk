@@ -910,6 +910,14 @@ static ret_t mledit_on_scroll_bar_value_changed(void* ctx, event_t* e) {
   value = widget_get_value(vscroll_bar);
   value = (scroll_bar->virtual_size - vscroll_bar->h) * value / scroll_bar->virtual_size;
 
+  if (mledit->overwrite && mledit->max_chars == 0 && mledit->max_lines != 0) {
+    if (value == scroll_bar->virtual_size - vscroll_bar->h) {
+      mledit->lock_scrollbar_value = FALSE;
+    } else {
+      mledit->lock_scrollbar_value = TRUE;
+    }
+    text_edit_set_lock_scrollbar_value(mledit->model, mledit->lock_scrollbar_value);
+  }
   text_edit_set_offset(mledit->model, 0, value);
 
   return RET_OK;

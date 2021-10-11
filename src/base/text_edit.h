@@ -451,6 +451,8 @@ ret_t text_edit_insert_text(text_edit_t* text_edit, uint32_t offset, const char*
 ret_t text_edit_overwrite_text(text_edit_t* text_edit, uint32_t* p_offset, const char* text,
                                uint32_t len);
 
+ret_t text_edit_set_lock_scrollbar_value(text_edit_t* text_edit, bool_t lock);
+
 END_C_DECLS
 
 #endif /*TK_TEXT_EDIT_H*/

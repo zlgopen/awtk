@@ -169,6 +169,9 @@ TEST(MLEdit, insert_text_overwrite) {
   lcd_t* lcd = lcd_mem_rgba8888_create(150, 150, TRUE);
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
   widget_t* e = mledit_create(win, 10, 20, 30, 40);
+  mledit_t* mledit = MLEDIT(e);
+  text_edit_state_t state;
+  text_edit_get_state(mledit->model, &state);
 
   canvas_init(&c, lcd, font_manager());
   widget_set_prop_pointer(win, WIDGET_PROP_CANVAS, &c);
@@ -251,6 +254,25 @@ TEST(MLEdit, insert_text_overwrite) {
   widget_get_text_utf8(e, get_text, sizeof(get_text));
   ASSERT_STREQ(get_text, "2\n3\n4\n6\n7");
   ASSERT_EQ(mledit_get_cursor(e), e->text.size);
+
+  widget_set_text_utf8(e, str);
+  mledit_set_select(e, 2, 4);
+  mledit_insert_text(e, -1, "\n6");
+  text_edit_get_state(mledit->model, &state);
+  ASSERT_EQ(state.select_start, 0);
+  ASSERT_EQ(state.select_end, 2);
+
+  widget_set_text_utf8(e, str);
+  mledit_set_select(e, 2, 4);
+  mledit_insert_text(e, -1, "\n6\n7");
+  text_edit_get_state(mledit->model, &state);
+  ASSERT_EQ(state.select_start, state.select_end);
+
+  widget_set_text_utf8(e, str);
+  mledit_set_select(e, e->text.size - 3, e->text.size);
+  mledit_insert_text(e, e->text.size - 1, "\n6\n7");
+  text_edit_get_state(mledit->model, &state);
+  ASSERT_EQ(state.select_start, state.select_end);
 
   widget_set_prop_pointer(win, WIDGET_PROP_CANVAS, NULL);
   widget_destroy(win);

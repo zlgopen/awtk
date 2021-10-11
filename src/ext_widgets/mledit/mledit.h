@@ -140,6 +140,7 @@ typedef struct _mledit_t {
    */
   bool_t close_im_when_blured;
   /*private*/
+  bool_t lock_scrollbar_value;
   uint8_t margin;
   uint8_t top_margin;
   uint8_t left_margin;
