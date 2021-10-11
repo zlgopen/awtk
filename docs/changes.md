@@ -1,78 +1,79 @@
 # 最新动态
 
 2021/10/11
-  * 完善app\_help\_base，修复mvvm-js项目编译时找不到jerryscript路径的问题（感谢雨欣提供补丁）
-  * 启用fscript\_ext时需定义宏WITH\_DATA\_READER\_WRITER （感谢雨欣提供补丁）
-  * 完善mledit（感谢兆坤提供补丁）。
-    * mledit启动覆盖行时，选中文本不对的问题。
-    * 追加功能：在mledit启动覆盖行时，滚动条值不为最大时，mledit偏移位置则不随光标位置改变。
+  * 完善 app\_help\_base，修复 mvvm-js 项目编译时找不到 jerryscript 路径的问题（感谢雨欣提供补丁）
+  * 启用 fscript\_ext 时需定义宏 WITH\_DATA\_READER\_WRITER （感谢雨欣提供补丁）
+  * 完善 mledit（感谢兆坤提供补丁）。
+    * mledit 启动覆盖行时，选中文本不对的问题。
+    * 追加功能：在 mledit 启动覆盖行时，滚动条值不为最大时，mledit 偏移位置则不随光标位置改变。
+  * 修复当内存不足的时候导致 image\_value 的 bitmap 被释放导致断言的问题（感谢智明提供补丁）
 
 2021/10/09
-  * 修复拖拽控件在拖拽时且控件不移动时，没有发送drag事件（感谢兆坤提供补丁）
+  * 修复拖拽控件在拖拽时且控件不移动时，没有发送 drag 事件（感谢兆坤提供补丁）
 
 2021/09/30
-  * 修复demoui内存泄露和分辨率适配的问题（感谢兆坤提供补丁）
+  * 修复 demoui 内存泄露和分辨率适配的问题（感谢兆坤提供补丁）
 
 2021/09/29
-  * 修改OpenGL宏（感谢智明提供补丁）
-  * AWTK-WEB支持多主题（感谢兆坤提供补丁）
+  * 修改 OpenGL 宏（感谢智明提供补丁）
+  * AWTK-WEB 支持多主题（感谢兆坤提供补丁）
   * 修复圆角矩形渐变偏移不正常的问题（感谢智明提供补丁）
 
 2021/09/28
   * 修复控件使用圆角矩形后半透明的问题（感谢智明提供补丁）
 
 2021/09/25
-  * 增加object\_create\_ex
+  * 增加 object\_create\_ex
 
 2021/09/24
-  * 完善文档[渐变色](gradient.md)（感谢雨欣提供补丁）
+  * 完善文档 [渐变色](gradient.md)（感谢雨欣提供补丁）
 
 2021/09/22
-  * 完善object\_get\_child\_object（感谢雨欣提供补丁）
-  * 完善android版本demo（感谢兆坤提供补丁）
-  * 完善ios版本。
-  * 增加object\_widget，把widget包装成object，方便在fscript中访问widget的属性（感谢雨欣提供补丁）
+  * 完善 object\_get\_child\_object（感谢雨欣提供补丁）
+  * 完善 android 版本 demo（感谢兆坤提供补丁）
+  * 完善 ios 版本。
+  * 增加 object\_widget，把 widget 包装成 object，方便在 fscript 中访问 widget 的属性（感谢雨欣提供补丁）
 
 2021/09/19
-  * 修复cppcheck的一些警告。
+  * 修复 cppcheck 的一些警告。
 
 2021/09/18
   * 完善 func\_eq（感谢雨欣提供补丁）
-  * 取消升级gtest。
-  * 修复asset\_loader\_zip在Windows上的问题。
+  * 取消升级 gtest。
+  * 修复 asset\_loader\_zip 在 Windows 上的问题。
 
 2021/09/16
-  * 解除assets-1m.c和demo\_ui\_app.c之间的耦合（感谢兆坤提供补丁） 
+  * 解除 assets-1m.c 和 demo\_ui\_app.c 之间的耦合（感谢兆坤提供补丁） 
   * object\_array\_set\_prop 函数，在 name 属性不符合要求时，返回设置失败（感谢雨欣提供补丁） 
   * 还原 pc 的编译优化等级（感谢智明提供补丁） 
   * 修改 gradient.c 文件为 inc（感谢智明提供补丁） 
   * 修复 overlay 窗口打开后导致之前的窗口切换到后台而被挂起的问题（感谢智明提供补丁） 
 
 2021/09/15
-  * 升级gtest。
-  * strgen工具生成国际化字符串时保留文本两端的空格。
-  * 修改自动生成资源文件脚本，分为assets、assets\_old 和 assets\_all，assets包含新demoui的资源，assets\_old包含旧demoui的资源，assets\_all包含所有资源（感谢兆坤提供补丁）。
-  * 将demo\_ui\_ex\_app.c改名为demo\_ui\_app.c，而之前的demo\_ui\_app.c改名为demo\_ui\_old\_app.c（感谢兆坤提供补丁）。
-  * 新demoui增加渐变色按钮示例（感谢兆坤提供补丁）。
-  * 补充新demoui键盘中文翻译，修改kb\_foo样式（感谢兆坤提供补丁）。
-  * 修复gtest编译警告（感谢智明提供补丁）
+  * 升级 gtest。
+  * strgen 工具生成国际化字符串时保留文本两端的空格。
+  * 修改自动生成资源文件脚本，分为 assets、assets\_old 和 assets\_all，assets 包含新 demoui 的资源，assets\_old 包含旧 demoui 的资源，assets\_all 包含所有资源（感谢兆坤提供补丁）。
+  * 将 demo\_ui\_ex\_app.c 改名为 demo\_ui\_app.c，而之前的 demo\_ui\_app.c 改名为 demo\_ui\_old\_app.c（感谢兆坤提供补丁）。
+  * 新 demoui 增加渐变色按钮示例（感谢兆坤提供补丁）。
+  * 补充新 demoui 键盘中文翻译，修改 kb\_foo 样式（感谢兆坤提供补丁）。
+  * 修复 gtest 编译警告（感谢智明提供补丁）
   * 修复编译警告（感谢智明和兆坤提供补丁）
-  * 修复编译demoui警告（感谢兆坤提供补丁）
-  * 完善draw\_rounded\_rect（感谢智明提供补丁）
+  * 修复编译 demoui 警告（感谢兆坤提供补丁）
+  * 完善 draw\_rounded\_rect（感谢智明提供补丁）
 
 2021/09/14
   * 根据新增接口，完善 object\_array 以及 object\_default（感谢雨欣提供补丁）
-  * 完善 progress\_circle 控件，兼容旧版的 unit 属性用法i（感谢雨欣提供补丁）
+  * 完善 progress\_circle 控件，兼容旧版的 unit 属性用法 i（感谢雨欣提供补丁）
   * 完善 progress\_bar 控件，format 属性与 designer 显示效果保持一致（感谢雨欣提供补丁）
   * 新增 object\_get\_child\_object 接口，方便 AWTK 内部的 object\_t 派生类和 mvvm 直接调用（感谢雨欣提供补丁）
-  * 修复object default中的内存泄漏。
-  * 完善widget\_set\_as\_key\_target，修复style没有更新的问题。
-  * 去掉tk\_utf8\_from\_utf16\_ex中不必要的警告。
-  * 支持style支持[渐变色](gradient.md)（感谢智明提供补丁）
+  * 修复 object default 中的内存泄漏。
+  * 完善 widget\_set\_as\_key\_target，修复 style 没有更新的问题。
+  * 去掉 tk\_utf8\_from\_utf16\_ex 中不必要的警告。
+  * 支持 style 支持 [渐变色](gradient.md)（感谢智明提供补丁）
 
 2021/09/13
-  * 修改canvas\_draw\_image改成用rectf类型（感谢智明提供补丁）
-  * 增加宏WITH\_GPU/WITH\_GPU\_GLES2（感谢智明提供补丁）
+  * 修改 canvas\_draw\_image 改成用 rectf 类型（感谢智明提供补丁）
+  * 增加宏 WITH\_GPU/WITH\_GPU\_GLES2（感谢智明提供补丁）
 
 2021/09/11
   * 增加 object\_default\_create\_ex 用于禁止路径访问属性。

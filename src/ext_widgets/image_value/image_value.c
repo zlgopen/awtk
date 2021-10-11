@@ -23,7 +23,7 @@
 #include "tkc/utils.h"
 #include "image_value/image_value.h"
 
-static ret_t image_value_draw_images(widget_t* widget, canvas_t* c, bitmap_t* bitmap, uint32_t nr) {
+static ret_t image_value_draw_images(widget_t* widget, canvas_t* c, char bitmap_name[IMAGE_VALUE_MAX_CHAR_NR][TK_NAME_LEN + 1], uint32_t nr) {
   int32_t x = 0;
   int32_t y = 0;
   int32_t i = 0;
@@ -40,10 +40,11 @@ static ret_t image_value_draw_images(widget_t* widget, canvas_t* c, bitmap_t* bi
       (image_draw_type_t)style_get_int(style, STYLE_ID_FG_IMAGE_DRAW_TYPE, IMAGE_DRAW_DEFAULT);
 
   for (i = 0; i < nr; i++) {
-    bitmap_t* b = bitmap + i;
-    w += b->w;
-    if (h < b->h) {
-      h = b->h;
+    bitmap_t b;
+    return_value_if_fail(widget_load_image(widget, bitmap_name[i], &b) == RET_OK, RET_BAD_PARAMS);
+    w += b.w;
+    if (h < b.h) {
+      h = b.h;
     }
   }
 
@@ -111,11 +112,12 @@ static ret_t image_value_draw_images(widget_t* widget, canvas_t* c, bitmap_t* bi
   }
 
   for (i = 0; i < nr; i++) {
-    bitmap_t* b = bitmap + i;
-    rect_t s = rect_init(0, 0, b->w, b->h);
-    rect_t d = rect_init(x, y, scale_w * b->w / ratio, scale_h * b->h / ratio);
+    bitmap_t b;
+    return_value_if_fail(widget_load_image(widget, bitmap_name[i], &b) == RET_OK, RET_BAD_PARAMS);
+    rect_t s = rect_init(0, 0, b.w, b.h);
+    rect_t d = rect_init(x, y, scale_w * b.w / ratio, scale_h * b.h / ratio);
 
-    canvas_draw_image(c, b, &s, &d);
+    canvas_draw_image(c, &b, &s, &d);
 
     x += d.w;
   }
@@ -130,15 +132,15 @@ static ret_t image_value_on_paint_self(widget_t* widget, canvas_t* c) {
   const char* format = NULL;
   char name[TK_NAME_LEN + 1];
   char str[IMAGE_VALUE_MAX_CHAR_NR + 1];
-  bitmap_t bitmap[IMAGE_VALUE_MAX_CHAR_NR];
+  char bitmap_name[IMAGE_VALUE_MAX_CHAR_NR][TK_NAME_LEN + 1];
   image_value_t* image_value = IMAGE_VALUE(widget);
   return_value_if_fail(image_value != NULL && widget != NULL, RET_BAD_PARAMS);
 
   format = image_value->format != NULL ? image_value->format : "%d";
   return_value_if_fail(image_value->image != NULL, RET_BAD_PARAMS);
 
-  memset(bitmap, 0x00, sizeof(bitmap));
-  memset(sub_name, 0x00, sizeof(sub_name));
+  memset(sub_name, 0x0, sizeof(sub_name));
+  memset(bitmap_name, 0x0, sizeof(bitmap_name));
   if (strchr(format, 'd') != NULL || strchr(format, 'x') != NULL || strchr(format, 'X') != NULL) {
     tk_snprintf(str, IMAGE_VALUE_MAX_CHAR_NR, format, tk_roundi(image_value->value));
   } else {
@@ -148,7 +150,6 @@ static ret_t image_value_on_paint_self(widget_t* widget, canvas_t* c) {
   nr = strlen(str);
   return_value_if_fail(nr > 0, RET_BAD_PARAMS);
 
-  name[TK_NAME_LEN] = '\0';
   for (i = 0; i < nr; i++) {
     if (str[i] == '.') {
       strcpy(sub_name, IMAGE_VALUE_MAP_DOT);
@@ -159,11 +160,10 @@ static ret_t image_value_on_paint_self(widget_t* widget, canvas_t* c) {
       sub_name[1] = '\0';
     }
 
-    tk_snprintf(name, TK_NAME_LEN, "%s%s", image_value->image, sub_name);
-    return_value_if_fail(widget_load_image(widget, name, bitmap + i) == RET_OK, RET_BAD_PARAMS);
+    tk_snprintf(bitmap_name[i], TK_NAME_LEN, "%s%s", image_value->image, sub_name);
   }
 
-  return image_value_draw_images(widget, c, bitmap, nr);
+  return image_value_draw_images(widget, c, bitmap_name, nr);
 }
 
 static ret_t image_value_get_prop(widget_t* widget, const char* name, value_t* v) {
