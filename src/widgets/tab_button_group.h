@@ -83,7 +83,7 @@ typedef struct _tab_button_group_t {
 
   /**
    * @property {bool_t} enable_hscroll_animator
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable","fake"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","fake"]
    * 是否开启 tab_button 的左右滚动动画(缺省TRUE)。
    *
    */
