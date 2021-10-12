@@ -1,5 +1,5 @@
 <window anim_hint="htranslate" theme="tab_top_compact">
-  <tab_button_group x="c" y="12" w="90%" h="30" compact="true" scrollable="true">
+  <tab_button_group x="c" y="12" w="90%" h="30" compact="true" scrollable="true" enable_hscroll_animator="false" >
     <tab_button text="General"/>
     <tab_button text="Network" />
     <tab_button name="clone_button" text="Security" value="true"/>
