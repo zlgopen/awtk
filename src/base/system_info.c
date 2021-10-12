@@ -386,6 +386,14 @@ done:
   return ret;
 }
 
+ret_t system_info_set_app_name(system_info_t* info, const char* app_name) {
+  return_value_if_fail(info != NULL, RET_BAD_PARAMS);
+
+  info->app_name = app_name ? app_name : "AWTK Simulator";
+
+  return RET_OK;
+}
+
 ret_t system_info_set_default_font(system_info_t* info, const char* default_font) {
   return_value_if_fail(info != NULL && default_font != NULL, RET_BAD_PARAMS);
 

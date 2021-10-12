@@ -430,6 +430,12 @@ static ret_t native_window_sdl_set_prop(object_t* obj, const char* name, const v
     native_window_sdl_move(win, r->x, r->y);
 
     return RET_OK;
+  } else if (tk_str_eq(NATIVE_WINDOW_PROP_TITLE, name)) {
+    SDL_Window* sdlwin = (SDL_Window*)(win->handle);
+    const char* app_name = value_str(v);
+    SDL_SetWindowTitle(sdlwin, app_name);
+    system_info_set_app_name(system_info(), app_name);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;

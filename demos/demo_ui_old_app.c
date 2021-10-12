@@ -948,6 +948,9 @@ static ret_t on_key_record_play_events(void* ctx, event_t* e) {
 #endif /*WITH_EVENT_RECORDER_PLAYER*/
   if (evt->key == TK_KEY_WHEEL) {
     log_debug("TK_KEY_WHEEL_UP\r\n");
+  } else if (evt->key == TK_KEY_a) {
+    native_window_t* nw = widget_get_native_window(widget_get_child(window_manager(), 0));
+    native_window_set_title(nw, "AWTK Simulator");
   }
   return RET_OK;
 }

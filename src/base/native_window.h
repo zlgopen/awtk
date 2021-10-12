@@ -225,6 +225,18 @@ ret_t native_window_set_fullscreen(native_window_t* win, bool_t fullscreen);
 ret_t native_window_set_cursor(native_window_t* win, const char* name, bitmap_t* img);
 
 /**
+ * @method native_window_set_title
+ * 设置程序窗口的名称。
+ *
+ * @annotation ["scriptable"]
+ * @param {native_window_t*} win win对象。
+ * @param {const char*}  app_name 程序窗口的名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t native_window_set_title(native_window_t* win, const char* app_name);
+
+/**
  * @method native_window_get_canvas
  * 获取canvas。
  *

@@ -226,3 +226,7 @@ ret_t native_window_set_cursor(native_window_t* win, const char* name, bitmap_t*
 
   return RET_NOT_IMPL;
 }
+
+ret_t native_window_set_title(native_window_t* win, const char* app_name) {
+  return object_set_prop_str(OBJECT(win), NATIVE_WINDOW_PROP_TITLE, app_name);
+}
