@@ -940,3 +940,7 @@ Translate text
   <language name="en_US">Song</language>
   <language name="zh_CN">宋体</language>
 </string>
+<string name="Test">
+  <language name="en_US">Test</language>
+  <language name="zh_CN">测试</language>
+</string>

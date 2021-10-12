@@ -142,7 +142,7 @@ ret_t dialog_simple_show(const char* stitle, const char* scontent, const char* t
     widget_set_focusable(ok, TRUE);
     widget_use_style(ok, DIALOG_OK_STYLE);
     if (has_cancel) {
-      widget_set_self_layout(ok, "default(x=10%, y=bottom:10, w=30%, h=30)");
+      widget_set_self_layout(ok, "default(x=10%, y=bottom:10, w=35%, h=30)");
     } else {
       widget_set_self_layout(ok, "default(x=c, y=bottom:10, w=50%, h=30)");
     }
@@ -155,7 +155,7 @@ ret_t dialog_simple_show(const char* stitle, const char* scontent, const char* t
     widget_set_focusable(cancel, TRUE);
     widget_set_tr_text(cancel, "Cancel");
     widget_use_style(cancel, DIALOG_CANCEL_STYLE);
-    widget_set_self_layout(cancel, "default(x=r:10%, y=bottom:10, w=30%, h=30)");
+    widget_set_self_layout(cancel, "default(x=r:10%, y=bottom:10, w=35%, h=30)");
     widget_on(cancel, EVT_CLICK, on_cancel_to_quit, dialog);
   }
 

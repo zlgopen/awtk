@@ -1,5 +1,5 @@
 <?xml parent="{&quot;x&quot;:&quot;0&quot;,&quot;y&quot;:&quot;0&quot;,&quot;w&quot;:&quot;100%&quot;,&quot;h&quot;:&quot;100%&quot;,&quot;name&quot;:&quot;page_animate&quot;,&quot;theme&quot;:&quot;uiex&quot;}"?>
-<list_view name="list_view" x="0" y="0" w="100%" h="100%" default_item_height="68">
+<list_view name="list_view" x="0" y="0" w="100%" h="100%" default_item_height="71">
   <scroll_view name="scroll_view" x="0" y="0" w="100%" h="100%" children_layout="list_view(i=0,d=66,x=0,y=10,s=24)">
     <view name="widget_move" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="70">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Widget Move"/>
@@ -19,71 +19,71 @@
         <progress_bar name="pb_value" w="100%" animation="value(delay=500,duration=1000,yoyo_times=2000,easing=SIN_INOUT,from=0,to=100)"/>
       </view>
     </view>
-    <view name="view_win_none" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="68">
+    <view name="view_win_none" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="71">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Window None"/>
-      <grid h="-22" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
-        <button name="open:confirm" tr_text="None"/>
-      </grid>
+      <view h="-22">
+        <button name="open:confirm" x="20" y="0" w="100" h="100%" tr_text="None"/>
+      </view>
     </view>
-    <view name="view_win_center_scale" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="68">
+    <view name="view_win_center_scale" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="71">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Window Center Scale"/>
-      <grid h="-22" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
-        <button name="open:uiex/dlg_center_scale" tr_text="Center Scale"/>
-      </grid>
+      <view h="-22">
+        <button name="open:uiex/dlg_center_scale" x="20" y="0" w="100" h="100%" tr_text="Center Scale"/>
+      </view>
     </view>
-    <view name="view_win_fade" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="68">
+    <view name="view_win_fade" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="71">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Window Fade"/>
-      <grid h="-22" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
-        <button name="open:uiex/dlg_fade" tr_text="Fade"/>
-      </grid>
+      <view h="-22">
+        <button name="open:uiex/dlg_fade" x="20" y="0" w="100" h="100%" tr_text="Fade"/>
+      </view>
     </view>
-    <view name="view_win_popup" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="68">
+    <view name="view_win_popup" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="71">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Window Popup"/>
-      <grid h="-22" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
-        <button name="open:uiex/dlg_popup" tr_text="popup"/>
-      </grid>
+      <view h="-22">
+        <button name="open:uiex/dlg_popup" x="20" y="0" w="100" h="100%" tr_text="popup"/>
+      </view>
     </view>
-    <view name="view_win_popdown" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="68">
+    <view name="view_win_popdown" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="71">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Window Popdown"/>
-      <grid h="-22" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
-        <button name="open:uiex/dlg_popdown" tr_text="popdown"/>
-      </grid>
+      <view h="-22">
+        <button name="open:uiex/dlg_popdown" x="20" y="0" w="100" h="100%" tr_text="popdown"/>
+      </view>
     </view>
-    <view name="view_win_htranslate" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="68" invisible_in_1m="true">
+    <view name="view_win_htranslate" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="71" invisible_in_1m="true">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Window Htranslate"/>
-      <grid h="-22" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
-        <button name="open:uiex/htranslate" tr_text="Htranslate"/>
-      </grid>
+      <view h="-22">
+        <button name="open:uiex/htranslate" x="20" y="0" w="100" h="100%" tr_text="Htranslate"/>
+      </view>
     </view>
-    <view name="view_win_vtranslate" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="68" invisible_in_1m="true">
+    <view name="view_win_vtranslate" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="71" invisible_in_1m="true">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Window Vtranslate"/>
-      <grid h="-22" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
-        <button name="open:uiex/vtranslate" tr_text="Vtranslate"/>
-      </grid>
+      <view h="-22">
+        <button name="open:uiex/vtranslate" x="20" y="0" w="100" h="100%" tr_text="Vtranslate"/>
+      </view>
     </view>
-    <view name="view_win_slide_left" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="68" invisible_in_1m="true">
+    <view name="view_win_slide_left" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="71" invisible_in_1m="true">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Window Slide Left"/>
-      <grid h="-22" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
-        <button name="open:uiex/slide_left" tr_text="Slide Left"/>
-      </grid>
+      <view h="-22">
+        <button name="open:uiex/slide_left" x="20" y="0" w="100" h="100%" tr_text="Slide Left"/>
+      </view>
     </view>
-    <view name="view_win_slide_right" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="68" invisible_in_1m="true">
+    <view name="view_win_slide_right" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="71" invisible_in_1m="true">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Window Slide Right"/>
-      <grid h="-22" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
-        <button name="open:uiex/slide_right" tr_text="Slide Right"/>
-      </grid>
+      <view h="-22">
+        <button name="open:uiex/slide_right" x="20" y="0" w="100" h="100%" tr_text="Slide Right"/>
+      </view>
     </view>
-    <view name="view_win_slide_up" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="68" invisible_in_1m="true">
+    <view name="view_win_slide_up" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="71" invisible_in_1m="true">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Window Slide Up"/>
-      <grid h="-22" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
-        <button name="open:uiex/slide_up" tr_text="Slide Up"/>
-      </grid>
+      <view h="-22">
+        <button name="open:uiex/slide_up" x="20" y="0" w="100" h="100%" tr_text="Slide Up"/>
+      </view>
     </view>
-    <view name="view_win_slide_down" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="68" invisible_in_1m="true">
+    <view name="view_win_slide_down" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="71" invisible_in_1m="true">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Window Slide Down"/>
-      <grid h="-22" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
-        <button name="open:uiex/slide_down" tr_text="Slide Down"/>
-      </grid>
+      <view h="-22">
+        <button name="open:uiex/slide_down" x="20" y="0" w="100" h="100%" tr_text="Slide Down"/>
+      </view>
     </view>
   </scroll_view>
   <scroll_bar_m name="bar" x="r" y="0" w="7" h="100%" max="1000"/>
