@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/10/12
+  * 修复透明渐变窗口动画影响到顶层悬浮窗口的问题（感谢智明提供补丁）
+
 2021/10/11
   * 完善 app\_help\_base，修复 mvvm-js 项目编译时找不到 jerryscript 路径的问题（感谢雨欣提供补丁）
   * 启用 fscript\_ext 时需定义宏 WITH\_DATA\_READER\_WRITER （感谢雨欣提供补丁）

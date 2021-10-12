@@ -46,6 +46,7 @@ static ret_t window_animator_center_scale_draw_curr(window_animator_t* wa) {
   float_t scale = wa->percent;
 
 #ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
+  ret_t ret = RET_OK;
   rectf_t src = rectf_init(win->x, win->y, win->w, win->h);
   rectf_t dst = rectf_init(0.0f, 0.0f, win->w * scale, win->h * scale);
   if (wa->time_percent < 5) {
@@ -57,8 +58,10 @@ static ret_t window_animator_center_scale_draw_curr(window_animator_t* wa) {
 
   dst.x = win->x + ((win->w - dst.w) / 2.0f);
   dst.y = win->y + ((win->h - dst.h) / 2.0f);
+  ret = lcd_draw_image(c->lcd, &(wa->curr_img), rectf_scale(&src, wa->ratio), &dst);
 
-  return lcd_draw_image(c->lcd, &(wa->curr_img), rectf_scale(&src, wa->ratio), &dst);
+  lcd_set_global_alpha(c->lcd, 0xff);
+  return ret;
 #else
 #ifdef WITH_GPU
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
@@ -73,6 +76,7 @@ static ret_t window_animator_center_scale_draw_curr(window_animator_t* wa) {
   vgcanvas_set_global_alpha(vg, alpha);
   widget_paint(win, c);
   vgcanvas_restore(vg);
+  vgcanvas_set_global_alpha(vg, 0xff);
   return RET_OK;
 #else
   assert(!"not supported");

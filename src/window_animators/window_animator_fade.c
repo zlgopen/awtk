@@ -22,6 +22,7 @@
 #include "window_animators/window_animator_fade.h"
 
 static ret_t window_animator_fade_draw_curr(window_animator_t* wa) {
+  ret_t ret = RET_OK;
   canvas_t* c = wa->canvas;
   widget_t* win = wa->curr_win;
 
@@ -31,12 +32,14 @@ static ret_t window_animator_fade_draw_curr(window_animator_t* wa) {
   rectf_t src = rectf_init(win->x, win->y, win->w, win->h);
   lcd_set_global_alpha(c->lcd, global_alpha);
 
-  return lcd_draw_image(c->lcd, &(wa->curr_img), rectf_scale(&src, wa->ratio), &dst);
+  ret = lcd_draw_image(c->lcd, &(wa->curr_img), rectf_scale(&src, wa->ratio), &dst);
 #else
   lcd_set_global_alpha(c->lcd, global_alpha);
 
-  return widget_paint(win, c);
+  ret = widget_paint(win, c);
 #endif /*WITHOUT_WINDOW_ANIMATOR_CACHE*/
+  lcd_set_global_alpha(c->lcd, 0xff);
+  return ret;
 }
 
 static const window_animator_vtable_t s_window_animator_fade_vt = {
