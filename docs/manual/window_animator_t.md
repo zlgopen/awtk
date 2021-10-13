@@ -101,7 +101,7 @@ ret_t window_animator_end_frame (window_animator_t* wa);
 * 函数原型：
 
 ```
-ret_t window_animator_update (window_animator_t* wa, canvas_t* canvas, uint32_t time_ms);
+ret_t window_animator_update (window_animator_t* wa, canvas_t* canvas, uint64_t time_ms);
 ```
 
 * 参数说明：
@@ -111,4 +111,4 @@ ret_t window_animator_update (window_animator_t* wa, canvas_t* canvas, uint32_t 
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | wa | window\_animator\_t* | 窗口动画对象。 |
 | canvas | canvas\_t* | 画布对象。 |
-| time\_ms | uint32\_t | 当前时间(毫秒)。 |
+| time\_ms | uint64\_t | 当前时间(毫秒)。 |

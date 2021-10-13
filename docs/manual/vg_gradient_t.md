@@ -7,15 +7,12 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#vg_gradient_t_vg_gradient_add_stop">vg\_gradient\_add\_stop</a> | 增加关键点。 |
 | <a href="#vg_gradient_t_vg_gradient_create_linear">vg\_gradient\_create\_linear</a> | 创建线性渐变。 |
 | <a href="#vg_gradient_t_vg_gradient_create_radial">vg\_gradient\_create\_radial</a> | 创建放射渐变。 |
 | <a href="#vg_gradient_t_vg_gradient_destroy">vg\_gradient\_destroy</a> | 销毁gradient对象。 |
-| <a href="#vg_gradient_t_vg_gradient_get_first_color">vg\_gradient\_get\_first\_color</a> | 获取开始的颜色。 |
-| <a href="#vg_gradient_t_vg_gradient_get_last_color">vg\_gradient\_get\_last\_color</a> | 获取结束的颜色。 |
-| <a href="#vg_gradient_t_vg_gradient_get_stop">vg\_gradient\_get\_stop</a> | 获取关键点。 |
 | <a href="#vg_gradient_t_vg_gradient_init_linear">vg\_gradient\_init\_linear</a> | 初始化线性。 |
 | <a href="#vg_gradient_t_vg_gradient_init_radial">vg\_gradient\_init\_radial</a> | 初始化放射渐变。 |
+| <a href="#vg_gradient_t_vg_gradient_init_with_gradient">vg\_gradient\_init\_with\_gradient</a> | 初始化矢量画布的渐变对象。 |
 | <a href="#vg_gradient_t_vgcanvas_asset_manager">vgcanvas\_asset\_manager</a> | 获取缺省矢量画布资源管理器。 |
 | <a href="#vg_gradient_t_vgcanvas_asset_manager_add_font">vgcanvas\_asset\_manager\_add\_font</a> | 添加一个字库资源 |
 | <a href="#vg_gradient_t_vgcanvas_asset_manager_add_image">vgcanvas\_asset\_manager\_add\_image</a> | 添加一个贴图资源 |
@@ -34,29 +31,6 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#vg_gradient_t_info">info</a> | vg\_gradient\_info\_t | 信息。 |
-| <a href="#vg_gradient_t_nr">nr</a> | uint32\_t | stop个数。 |
-| <a href="#vg_gradient_t_type">type</a> | vg\_gradient\_type\_t | 类型。 |
-#### vg\_gradient\_add\_stop 函数
------------------------
-
-* 函数功能：
-
-> <p id="vg_gradient_t_vg_gradient_add_stop">增加关键点。
-
-* 函数原型：
-
-```
-ret_t vg_gradient_add_stop (vg_gradient_t* gradient, color_t color, float stop);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| gradient | vg\_gradient\_t* | gradient对象。 |
-| color | color\_t | 颜色。 |
-| stop | float | 位置。 |
 #### vg\_gradient\_create\_linear 函数
 -----------------------
 
@@ -122,64 +96,6 @@ ret_t vg_gradient_destroy (vg_gradient_t* gradient);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | gradient | vg\_gradient\_t* | gradient对象。 |
-#### vg\_gradient\_get\_first\_color 函数
------------------------
-
-* 函数功能：
-
-> <p id="vg_gradient_t_vg_gradient_get_first_color">获取开始的颜色。
-
-* 函数原型：
-
-```
-color_t vg_gradient_get_first_color (vg_gradient_t* gradient);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | color\_t | 返回颜色。 |
-| gradient | vg\_gradient\_t* | gradient对象。 |
-#### vg\_gradient\_get\_last\_color 函数
------------------------
-
-* 函数功能：
-
-> <p id="vg_gradient_t_vg_gradient_get_last_color">获取结束的颜色。
-
-* 函数原型：
-
-```
-color_t vg_gradient_get_last_color (vg_gradient_t* gradient);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | color\_t | 返回颜色。 |
-| gradient | vg\_gradient\_t* | gradient对象。 |
-#### vg\_gradient\_get\_stop 函数
------------------------
-
-* 函数功能：
-
-> <p id="vg_gradient_t_vg_gradient_get_stop">获取关键点。
-
-* 函数原型：
-
-```
-ret_t vg_gradient_get_stop (vg_gradient_t* gradient, uint32_t index);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| gradient | vg\_gradient\_t* | gradient对象。 |
-| index | uint32\_t | 序数。 |
 #### vg\_gradient\_init\_linear 函数
 -----------------------
 
@@ -228,6 +144,27 @@ vg_gradient_t* vg_gradient_init_radial (vg_gradient_t* gradient, float x0, float
 | x1 | float | 结束圆的x坐标。 |
 | y1 | float | 结束圆的y坐标。 |
 | r1 | float | 结束圆的半径。 |
+#### vg\_gradient\_init\_with\_gradient 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vg_gradient_t_vg_gradient_init_with_gradient">初始化矢量画布的渐变对象。
+
+* 函数原型：
+
+```
+vg_gradient_t* vg_gradient_init_with_gradient (vg_gradient_t* gradient, const rect_t* rect, const gradient_t* g);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | vg\_gradient\_t* | 返回gradient对象。 |
+| gradient | vg\_gradient\_t* | gradient对象。 |
+| rect | const rect\_t* | 矩形区域。 |
+| g | const gradient\_t* | 渐变对象。 |
 #### vgcanvas\_asset\_manager 函数
 -----------------------
 
@@ -481,26 +418,6 @@ ret_t vgcanvas_asset_manager_set (vgcanvas_asset_manager_t* vgcanvas_asset_manag
 > <p id="vg_gradient_t_info">信息。
 
 * 类型：vg\_gradient\_info\_t
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
-#### nr 属性
------------------------
-> <p id="vg_gradient_t_nr">stop个数。
-
-* 类型：uint32\_t
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
-#### type 属性
------------------------
-> <p id="vg_gradient_t_type">类型。
-
-* 类型：vg\_gradient\_type\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

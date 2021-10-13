@@ -15,10 +15,12 @@
 | <a href="#object_t_object_compare">object\_compare</a> | 比较两个对象。 |
 | <a href="#object_t_object_copy_prop">object\_copy\_prop</a> | 拷贝指定的属性。 |
 | <a href="#object_t_object_create">object\_create</a> | 创建对象。 |
+| <a href="#object_t_object_create_ex">object\_create\_ex</a> | 创建对象。 |
 | <a href="#object_t_object_eval">object\_eval</a> | 计算一个表达式，表达式中引用的变量从prop中获取。 |
 | <a href="#object_t_object_exec">object\_exec</a> | 执行指定的命令。 |
 | <a href="#object_t_object_exec_by_path">object\_exec\_by\_path</a> | 执行指定的命令。 |
 | <a href="#object_t_object_foreach_prop">object\_foreach\_prop</a> | 遍历所有属性。 |
+| <a href="#object_t_object_get_child_object">object\_get\_child\_object</a> | 获取下一级子对象。 |
 | <a href="#object_t_object_get_desc">object\_get\_desc</a> | 获取对象的描述信息。 |
 | <a href="#object_t_object_get_prop">object\_get\_prop</a> | 获取指定属性的值。 |
 | <a href="#object_t_object_get_prop_bool">object\_get\_prop\_bool</a> | 获取指定属性的bool类型的值。 |
@@ -197,15 +199,37 @@ ret_t object_copy_prop (object_t* obj, object_t* src, const char* name);
 * 函数原型：
 
 ```
-ret_t object_create (const object_vtable_t* vt);
+object_t* object_create (const object_vtable_t* vt);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回object对象。 |
+| 返回值 | object\_t* | 返回object对象。 |
 | vt | const object\_vtable\_t* | 虚函数表。 |
+#### object\_create\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_create_ex">创建对象。
+
+> 仅供子类调用。
+
+* 函数原型：
+
+```
+object_t* object_create_ex (const object_vtable_t* vt, uint32_t extra_data_size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | object\_t* | 返回object对象。 |
+| vt | const object\_vtable\_t* | 虚函数表。 |
+| extra\_data\_size | uint32\_t | 额外的内存大小。 |
 #### object\_eval 函数
 -----------------------
 
@@ -290,6 +314,28 @@ ret_t object_foreach_prop (object_t* obj, tk_visit_t on_prop, void* ctx);
 | obj | object\_t* | object对象。 |
 | on\_prop | tk\_visit\_t | 回调函数。 |
 | ctx | void* | 回调函数上下文。 |
+#### object\_get\_child\_object 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_get_child_object">获取下一级子对象。
+> 属性路径之间使用符号"."分割，例如：name.sub_name。
+
+* 函数原型：
+
+```
+object_t* object_get_child_object (object_t* obj, const char* path, const char** next_path);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | object\_t* | 返回下一级子对象，如果找不到则返回 NULL。 |
+| obj | object\_t* | object对象。 |
+| path | const char* | 属性路径。 |
+| next\_path | const char** | 返回下一级属性路径。 |
 #### object\_get\_desc 函数
 -----------------------
 

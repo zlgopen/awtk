@@ -20,6 +20,7 @@ uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SI
 | -------- | ------------ | 
 | <a href="#style_t_style_destroy">style\_destroy</a> | 销毁style对象 |
 | <a href="#style_t_style_get_color">style\_get\_color</a> | 获取指定name的颜色值。 |
+| <a href="#style_t_style_get_gradient">style\_get\_gradient</a> | 获取指定name的渐变颜色值。 |
 | <a href="#style_t_style_get_int">style\_get\_int</a> | 获取指定name的整数格式的值。 |
 | <a href="#style_t_style_get_str">style\_get\_str</a> | 获取指定name的字符串格式的值。 |
 | <a href="#style_t_style_get_style_state">style\_get\_style\_state</a> | 获取风格对象的风格状态 |
@@ -72,6 +73,27 @@ color_t style_get_color (style_t* s, const char* name, color_t defval);
 | s | style\_t* | style对象。 |
 | name | const char* | 属性名。 |
 | defval | color\_t | 缺省值。 |
+#### style\_get\_gradient 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="style_t_style_get_gradient">获取指定name的渐变颜色值。
+
+* 函数原型：
+
+```
+gradient_t* style_get_gradient (style_t* s, const char* name, gradient_t* gradient);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | gradient\_t* | 返回渐变颜色值。 |
+| s | style\_t* | style对象。 |
+| name | const char* | 属性名。 |
+| gradient | gradient\_t* | 返回值。 |
 #### style\_get\_int 函数
 -----------------------
 

@@ -26,8 +26,11 @@
 | <a href="#canvas_t_canvas_draw_vline">canvas\_draw\_vline</a> | 画垂直线。 |
 | <a href="#canvas_t_canvas_end_frame">canvas\_end\_frame</a> | 绘制结束。 |
 | <a href="#canvas_t_canvas_fill_rect">canvas\_fill\_rect</a> | 绘制矩形。 |
+| <a href="#canvas_t_canvas_fill_rect_gradient">canvas\_fill\_rect\_gradient</a> | 绘制矩形。 |
 | <a href="#canvas_t_canvas_fill_rounded_rect">canvas\_fill\_rounded\_rect</a> | 填充区域。 |
-| <a href="#canvas_t_canvas_fill_rounded_rect_ex">canvas\_fill\_rounded\_rect\_ex</a> | 填充区域。 |
+| <a href="#canvas_t_canvas_fill_rounded_rect_ex">canvas\_fill\_rounded\_rect\_ex</a> | 填充圆角矩形区域。 |
+| <a href="#canvas_t_canvas_fill_rounded_rect_gradient">canvas\_fill\_rounded\_rect\_gradient</a> | 填充圆角矩形区域。 |
+| <a href="#canvas_t_canvas_fill_rounded_rect_gradient_ex">canvas\_fill\_rounded\_rect\_gradient\_ex</a> | 填充圆角矩形区域。 |
 | <a href="#canvas_t_canvas_get_clip_rect">canvas\_get\_clip\_rect</a> | 获取裁剪区。 |
 | <a href="#canvas_t_canvas_get_font_height">canvas\_get\_font\_height</a> | 获取字体的高度。 |
 | <a href="#canvas_t_canvas_get_height">canvas\_get\_height</a> | 获取画布的高度。 |
@@ -501,6 +504,30 @@ ret_t canvas_fill_rect (canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标。 |
 | w | wh\_t | 宽度。 |
 | h | wh\_t | 高度。 |
+#### canvas\_fill\_rect\_gradient 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_t_canvas_fill_rect_gradient">绘制矩形。
+
+* 函数原型：
+
+```
+ret_t canvas_fill_rect_gradient (canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h, gradient_t* gradient);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| c | canvas\_t* | canvas对象。 |
+| x | xy\_t | x坐标。 |
+| y | xy\_t | y坐标。 |
+| w | wh\_t | 宽度。 |
+| h | wh\_t | 高度。 |
+| gradient | gradient\_t* | 渐变颜色。 |
 #### canvas\_fill\_rounded\_rect 函数
 -----------------------
 
@@ -528,14 +555,14 @@ ret_t canvas_fill_rounded_rect (canvas_t* c, const rect_t* r, const color_t* col
 
 * 函数功能：
 
-> <p id="canvas_t_canvas_fill_rounded_rect_ex">填充区域。
+> <p id="canvas_t_canvas_fill_rounded_rect_ex">填充圆角矩形区域。
 半径半径小于等于2，则表示该角为直角，如果全部角都为直角则返回RET_FAIL。（如果全是直角，该函数效率没有canvas_fill_rect函数快）
 如果各个半径都不一样的话，就是会使用vg，如果不支持vg就会返回RET_FAIL（直角的情况除外）。
 
 * 函数原型：
 
 ```
-ret_t canvas_fill_rounded_rect_ex (canvas_t* c, const rect_t* r, const color_t* color, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br);
+ret_t canvas_fill_rounded_rect_ex (canvas_t* c, const rect_t* r, const rect_t* bg_r, const color_t* color, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br);
 ```
 
 * 参数说明：
@@ -545,7 +572,58 @@ ret_t canvas_fill_rounded_rect_ex (canvas_t* c, const rect_t* r, const color_t* 
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | c | canvas\_t* | canvas对象。 |
 | r | const rect\_t* | 矩形。 |
+| bg\_r | const rect\_t* | 矩形。（默认为 NULL，当圆角直径大于 r 矩形的宽高后，会根据 bg\_r 矩形来决定是否需要缩小圆角半径） |
 | color | const color\_t* | 颜色。 |
+| radius\_tl | uint32\_t | 左上角圆角半径。 |
+| radius\_tr | uint32\_t | 右上角圆角半径。 |
+| radius\_bl | uint32\_t | 左下角圆角半径。 |
+| radius\_br | uint32\_t | 右下角圆角半径。 |
+#### canvas\_fill\_rounded\_rect\_gradient 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_t_canvas_fill_rounded_rect_gradient">填充圆角矩形区域。
+
+* 函数原型：
+
+```
+ret_t canvas_fill_rounded_rect_gradient (canvas_t* c, const rect_t* r, const gradient_t* gradient, uint32_t radius);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| c | canvas\_t* | canvas对象。 |
+| r | const rect\_t* | 矩形。 |
+| gradient | const gradient\_t* | 渐变颜色。 |
+| radius | uint32\_t | 圆角半径。 |
+#### canvas\_fill\_rounded\_rect\_gradient\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_t_canvas_fill_rounded_rect_gradient_ex">填充圆角矩形区域。
+半径半径小于等于2，则表示该角为直角，如果全部角都为直角则返回RET_FAIL。（如果全是直角，该函数效率没有canvas_fill_rect函数快）
+如果各个半径都不一样的话，就是会使用vg，如果不支持vg就会返回RET_FAIL（直角的情况除外）。
+
+* 函数原型：
+
+```
+ret_t canvas_fill_rounded_rect_gradient_ex (canvas_t* c, const rect_t* r, const rect_t* bg_r, const gradient_t* gradient, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| c | canvas\_t* | canvas对象。 |
+| r | const rect\_t* | 矩形。 |
+| bg\_r | const rect\_t* | 矩形。（默认为 NULL，当圆角直径大于 r 矩形的宽高后，会根据 bg\_r 矩形来决定是否需要缩小圆角半径） |
+| gradient | const gradient\_t* | 渐变颜色。 |
 | radius\_tl | uint32\_t | 左上角圆角半径。 |
 | radius\_tr | uint32\_t | 右上角圆角半径。 |
 | radius\_bl | uint32\_t | 左下角圆角半径。 |

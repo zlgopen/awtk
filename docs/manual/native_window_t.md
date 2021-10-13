@@ -20,6 +20,8 @@
 | <a href="#native_window_t_native_window_restore">native\_window\_restore</a> | 恢复窗口大小。 |
 | <a href="#native_window_t_native_window_set_cursor">native\_window\_set\_cursor</a> | 设置鼠标光标。 |
 | <a href="#native_window_t_native_window_set_fullscreen">native\_window\_set\_fullscreen</a> | 是否全屏。 |
+| <a href="#native_window_t_native_window_set_orientation">native\_window\_set\_orientation</a> | 调整窗口旋转。 |
+| <a href="#native_window_t_native_window_set_title">native\_window\_set\_title</a> | 设置程序窗口的名称。 |
 | <a href="#native_window_t_native_window_show_border">native\_window\_show\_border</a> | 是否显示边框。 |
 #### native\_window\_center 函数
 -----------------------
@@ -240,6 +242,47 @@ ret_t native_window_set_fullscreen (native_window_t* win, bool_t fullscreen);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | win | native\_window\_t* | win对象。 |
 | fullscreen | bool\_t | 是否全屏。 |
+#### native\_window\_set\_orientation 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="native_window_t_native_window_set_orientation">调整窗口旋转。
+
+* 函数原型：
+
+```
+ret_t native_window_set_orientation (native_window_t* win, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| win | native\_window\_t* | win对象。 |
+| old\_orientation | lcd\_orientation\_t | 旧的旋转角度。 |
+| new\_orientation | lcd\_orientation\_t | 新的旋转角度。 |
+#### native\_window\_set\_title 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="native_window_t_native_window_set_title">设置程序窗口的名称。
+
+* 函数原型：
+
+```
+ret_t native_window_set_title (native_window_t* win, const char* app_name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| win | native\_window\_t* | win对象。 |
+| app\_name | const char* | 程序窗口的名称。 |
 #### native\_window\_show\_border 函数
 -----------------------
 

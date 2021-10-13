@@ -11,6 +11,7 @@
 | <a href="#socket_socket_close">socket\_close</a> | 关闭socket句柄。 |
 | <a href="#socket_socket_deinit">socket\_deinit</a> | tcp/udp 平台~初始化。 |
 | <a href="#socket_socket_init">socket\_init</a> | tcp/udp 平台初始化。 |
+| <a href="#socket_socket_is_last_io_ok">socket\_is\_last\_io\_ok</a> | 判断最后一次IO操作是否正常。 |
 | <a href="#socket_socket_resolve">socket\_resolve</a> | 解析主机名，并初始化addr对象。 |
 | <a href="#socket_socket_set_blocking">socket\_set\_blocking</a> | 设置为阻塞或非阻塞模式。 |
 | <a href="#socket_socket_wait_for_data">socket\_wait\_for\_data</a> | 等待数据。 |
@@ -89,6 +90,24 @@ ret_t socket_init ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+#### socket\_is\_last\_io\_ok 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="socket_socket_is_last_io_ok">判断最后一次IO操作是否正常。
+
+* 函数原型：
+
+```
+bool_t socket_is_last_io_ok ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示Broken，否则表示正常。 |
 #### socket\_resolve 函数
 -----------------------
 

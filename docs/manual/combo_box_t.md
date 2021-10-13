@@ -125,6 +125,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#combo_box_t_combo_box_get_option">combo\_box\_get\_option</a> | 获取第index个选项。 |
 | <a href="#combo_box_t_combo_box_get_text">combo\_box\_get\_text</a> | 获取combo_box的文本。 |
 | <a href="#combo_box_t_combo_box_get_value">combo\_box\_get\_value</a> | 获取combo_box的值。 |
+| <a href="#combo_box_t_combo_box_remove_option">combo\_box\_remove\_option</a> | 删除选项。 |
 | <a href="#combo_box_t_combo_box_reset_options">combo\_box\_reset\_options</a> | 重置所有选项。 |
 | <a href="#combo_box_t_combo_box_set_custom_open_popup">combo\_box\_set\_custom\_open\_popup</a> | 设置自定义的打开弹出窗口的函数。 |
 | <a href="#combo_box_t_combo_box_set_item_height">combo\_box\_set\_item\_height</a> | 设置item高度。 |
@@ -291,6 +292,26 @@ int32_t combo_box_get_value (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回值。 |
 | widget | widget\_t* | combo\_box对象。 |
+#### combo\_box\_remove\_option 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="combo_box_t_combo_box_remove_option">删除选项。
+
+* 函数原型：
+
+```
+ret_t combo_box_remove_option (widget_t* widget, int32_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | combo\_box对象。 |
+| value | int32\_t | 值。 |
 #### combo\_box\_reset\_options 函数
 -----------------------
 

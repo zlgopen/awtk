@@ -27,3 +27,4 @@
 | VALUE\_TYPE\_BINARY | 二进制数据。 |
 | VALUE\_TYPE\_UBJSON | 二进制数据(UBJSON)。 |
 | VALUE\_TYPE\_TOKEN | 特殊用途。 |
+| VALUE\_TYPE\_GRADIENT | 渐变颜色。 |

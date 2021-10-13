@@ -16,8 +16,10 @@
 | <a href="#conf_doc_t_conf_doc_destroy">conf\_doc\_destroy</a> | 析构函数。 |
 | <a href="#conf_doc_t_conf_doc_destroy_node">conf\_doc\_destroy\_node</a> | 销毁节点对象。 |
 | <a href="#conf_doc_t_conf_doc_exists">conf\_doc\_exists</a> | 判断指定路径的节点是否存在。 |
+| <a href="#conf_doc_t_conf_doc_find_node">conf\_doc\_find\_node</a> | 根据path查找节点。 |
 | <a href="#conf_doc_t_conf_doc_get">conf\_doc\_get</a> | 获取指定路径节点的值。 |
 | <a href="#conf_doc_t_conf_doc_get_bool">conf\_doc\_get\_bool</a> | 获取指定路径节点的值。 |
+| <a href="#conf_doc_t_conf_doc_get_ex">conf\_doc\_get\_ex</a> | 获取指定路径节点的值。 |
 | <a href="#conf_doc_t_conf_doc_get_float">conf\_doc\_get\_float</a> | 获取指定路径节点的值。 |
 | <a href="#conf_doc_t_conf_doc_get_int">conf\_doc\_get\_int</a> | 获取指定路径节点的值。 |
 | <a href="#conf_doc_t_conf_doc_get_str">conf\_doc\_get\_str</a> | 获取指定路径节点的值。 |
@@ -221,6 +223,28 @@ bool_t conf_doc_exists (conf_doc_t* doc, const char* path);
 | 返回值 | bool\_t | 返回TRUE表示成功，FALSE表示失败。 |
 | doc | conf\_doc\_t* | 文档对象。 |
 | path | const char* | 节点的路径。 |
+#### conf\_doc\_find\_node 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_doc_t_conf_doc_find_node">根据path查找节点。
+
+* 函数原型：
+
+```
+ret_t conf_doc_find_node (conf_doc_t* doc, conf_node_t* node, const char* path, bool_t create_if_not_exist);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| doc | conf\_doc\_t* | 文档对象。 |
+| node | conf\_node\_t* | 从该节点查找。 |
+| path | const char* | 路径。 |
+| create\_if\_not\_exist | bool\_t | 不存在是否创建。 |
 #### conf\_doc\_get 函数
 -----------------------
 
@@ -263,6 +287,28 @@ bool_t conf_doc_get_bool (conf_doc_t* doc, const char* path, bool_t defval);
 | doc | conf\_doc\_t* | 文档对象。 |
 | path | const char* | 节点的路径。 |
 | defval | bool\_t | 缺省值。 |
+#### conf\_doc\_get\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_doc_t_conf_doc_get_ex">获取指定路径节点的值。
+
+* 函数原型：
+
+```
+ret_t conf_doc_get_ex (conf_doc_t* doc, conf_node_t* node, const char* path, value_t* v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| doc | conf\_doc\_t* | 文档对象。 |
+| node | conf\_node\_t* | 从该节点查找。 |
+| path | const char* | 节点的路径。 |
+| v | value\_t* | 用于返回值。 |
 #### conf\_doc\_get\_float 函数
 -----------------------
 

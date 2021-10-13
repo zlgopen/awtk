@@ -16,6 +16,7 @@
 | <a href="#image_manager_t_image_manager_preload">image\_manager\_preload</a> | 预加载指定的图片。 |
 | <a href="#image_manager_t_image_manager_set">image\_manager\_set</a> | 设置缺省的图片管理器。 |
 | <a href="#image_manager_t_image_manager_set_assets_manager">image\_manager\_set\_assets\_manager</a> | 设置资源管理器对象。 |
+| <a href="#image_manager_t_image_manager_set_max_mem_size_of_cached_images">image\_manager\_set\_max\_mem\_size\_of\_cached\_images</a> | 设置图片缓存占用的最大内存。 |
 | <a href="#image_manager_t_image_manager_unload_all">image\_manager\_unload\_all</a> | 从图片管理器中卸载全部图片。 |
 | <a href="#image_manager_t_image_manager_unload_bitmap">image\_manager\_unload\_bitmap</a> | 从图片管理器中卸载指定的图片。 |
 | <a href="#image_manager_t_image_manager_unload_unused">image\_manager\_unload\_unused</a> | 从图片管理器中卸载指定时间内没有使用的图片。 |
@@ -207,6 +208,26 @@ ret_t image_manager_set_assets_manager (image_manager_t* imm, assets_manager_t* 
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | imm | image\_manager\_t* | 图片管理器对象。 |
 | assets\_manager | assets\_manager\_t* | 资源管理器。 |
+#### image\_manager\_set\_max\_mem\_size\_of\_cached\_images 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="image_manager_t_image_manager_set_max_mem_size_of_cached_images">设置图片缓存占用的最大内存。
+
+* 函数原型：
+
+```
+ret_t image_manager_set_max_mem_size_of_cached_images (image_manager_t* imm, uint32_t max_mem_size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| imm | image\_manager\_t* | 图片管理器对象。 |
+| max\_mem\_size | uint32\_t | 最大缓存内存。 |
 #### image\_manager\_unload\_all 函数
 -----------------------
 

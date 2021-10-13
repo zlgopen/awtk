@@ -54,6 +54,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L4
 | <a href="#text_selector_t_text_selector_get_value">text\_selector\_get\_value</a> | 获取text_selector的值。 |
 | <a href="#text_selector_t_text_selector_reset_options">text\_selector\_reset\_options</a> | 重置所有选项。 |
 | <a href="#text_selector_t_text_selector_set_animating_time">text\_selector\_set\_animating\_time</a> | 设置滚动动画播放时间。 |
+| <a href="#text_selector_t_text_selector_set_enable_value_animator">text\_selector\_set\_enable\_value\_animator</a> | 设置是否修改值时启用动画。 |
 | <a href="#text_selector_t_text_selector_set_localize_options">text\_selector\_set\_localize\_options</a> | 设置是否本地化(翻译)选项。 |
 | <a href="#text_selector_t_text_selector_set_loop_options">text\_selector\_set\_loop\_options</a> | 设置是否循环选项。 |
 | <a href="#text_selector_t_text_selector_set_options">text\_selector\_set\_options</a> | 设置选项。 |
@@ -70,6 +71,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L4
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#text_selector_t_animating_time">animating\_time</a> | uint32\_t | 滚动动画播放时间。(单位毫秒) |
+| <a href="#text_selector_t_enable_value_animator">enable\_value\_animator</a> | bool\_t | 是否修改值时启用动画。 |
 | <a href="#text_selector_t_localize_options">localize\_options</a> | bool\_t | 是否本地化(翻译)选项(缺省为FALSE)。 |
 | <a href="#text_selector_t_loop_options">loop\_options</a> | bool\_t | 是否循环选项(缺省为FALSE)。 |
 | <a href="#text_selector_t_options">options</a> | char* | 设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。 |
@@ -262,6 +264,26 @@ ret_t text_selector_set_animating_time (widget_t* widget, uint32_t animating_tim
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | animating\_time | uint32\_t | 滚动动画播放时间。(单位毫秒) |
+#### text\_selector\_set\_enable\_value\_animator 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_set_enable_value_animator">设置是否修改值时启用动画。
+
+* 函数原型：
+
+```
+ret_t text_selector_set_enable_value_animator (widget_t* widget, bool_t enable_value_animator);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| enable\_value\_animator | bool\_t | 是否修改值时启用动画 |
 #### text\_selector\_set\_localize\_options 函数
 -----------------------
 
@@ -472,6 +494,22 @@ ret_t text_selector_set_yspeed_scale (widget_t* widget, float_t yspeed_scale);
 > <p id="text_selector_t_animating_time">滚动动画播放时间。(单位毫秒)
 
 * 类型：uint32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### enable\_value\_animator 属性
+-----------------------
+> <p id="text_selector_t_enable_value_animator">是否修改值时启用动画。
+
+* 类型：bool\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

@@ -38,7 +38,7 @@ velocity_t* velocity_reset (velocity_t* v);
 * 函数原型：
 
 ```
-ret_t velocity_update (velocity_t* v, uint32_t time, xy_t x, xy_t y);
+ret_t velocity_update (velocity_t* v, uint64_t time, xy_t x, xy_t y);
 ```
 
 * 参数说明：
@@ -47,6 +47,6 @@ ret_t velocity_update (velocity_t* v, uint32_t time, xy_t x, xy_t y);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | v | velocity\_t* | velocity对象。 |
-| time | uint32\_t | 时间。 |
+| time | uint64\_t | 时间。 |
 | x | xy\_t | x坐标。 |
 | y | xy\_t | y坐标。 |

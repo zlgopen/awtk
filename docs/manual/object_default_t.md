@@ -14,16 +14,9 @@
 | <a href="#object_default_t_object_default_clear_props">object\_default\_clear\_props</a> | 清除全部属性。 |
 | <a href="#object_default_t_object_default_clone">object\_default\_clone</a> | 克隆对象。 |
 | <a href="#object_default_t_object_default_create">object\_default\_create</a> | 创建对象。 |
+| <a href="#object_default_t_object_default_create_ex">object\_default\_create\_ex</a> | 创建对象。 |
 | <a href="#object_default_t_object_default_find_prop">object\_default\_find\_prop</a> | 查找满足条件的属性，并返回它的值。 |
 | <a href="#object_default_t_object_default_unref">object\_default\_unref</a> | for script gc |
-### 属性
-<p id="object_default_t_properties">
-
-| 属性名称 | 类型 | 说明 | 
-| -------- | ----- | ------------ | 
-| <a href="#object_default_t_props">props</a> | named\_value\_t | 属性数组。 |
-| <a href="#object_default_t_props_capacity">props\_capacity</a> | uint32\_t | 属性数组的容量。 |
-| <a href="#object_default_t_props_size">props\_size</a> | uint32\_t | 属性个数。 |
 #### object\_default\_clear\_props 函数
 -----------------------
 
@@ -80,6 +73,25 @@ object_t* object_default_create ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | object\_t* | 返回object对象。 |
+#### object\_default\_create\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_default_t_object_default_create_ex">创建对象。
+
+* 函数原型：
+
+```
+object_t* object_default_create_ex (bool_t enable_path);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | object\_t* | 返回object对象。 |
+| enable\_path | bool\_t | 是否支持按路径访问属性。 |
 #### object\_default\_find\_prop 函数
 -----------------------
 
@@ -120,34 +132,3 @@ ret_t object_default_unref (object_t* obj);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | obj | object\_t* | 对象。 |
-#### props 属性
------------------------
-> <p id="object_default_t_props">属性数组。
-
-* 类型：named\_value\_t
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
-#### props\_capacity 属性
------------------------
-> <p id="object_default_t_props_capacity">属性数组的容量。
-
-* 类型：uint32\_t
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
-#### props\_size 属性
------------------------
-> <p id="object_default_t_props_size">属性个数。
-
-* 类型：uint32\_t
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
-| 可脚本化   | 是 |

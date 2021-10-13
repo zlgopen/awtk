@@ -16,6 +16,7 @@
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
+| <a href="#orientation_event_t_old_orientation">old\_orientation</a> | int32\_t | 旧的屏幕方向。 |
 | <a href="#orientation_event_t_orientation">orientation</a> | int32\_t | 屏幕方向。 |
 #### orientation\_event\_cast 函数
 -----------------------
@@ -46,7 +47,7 @@ orientation_event_t* orientation_event_cast (event_t* event);
 * 函数原型：
 
 ```
-event_t* orientation_event_init (orientation_event_t* event, void* target, uint32_t type, int32_t dy);
+event_t* orientation_event_init (orientation_event_t* event, uint32_t type, void* target, lcd_orientation_t old_orientation, lcd_orientation_t new_orientation);
 ```
 
 * 参数说明：
@@ -55,9 +56,21 @@ event_t* orientation_event_init (orientation_event_t* event, void* target, uint3
 | -------- | ----- | --------- |
 | 返回值 | event\_t* | event对象。 |
 | event | orientation\_event\_t* | event对象。 |
-| target | void* | 事件目标。 |
 | type | uint32\_t | 事件类型。 |
-| dy | int32\_t | 滚轮的y值。 |
+| target | void* | 事件目标。 |
+| old\_orientation | lcd\_orientation\_t | 旧的屏幕方向。 |
+| new\_orientation | lcd\_orientation\_t | 新的屏幕方向。 |
+#### old\_orientation 属性
+-----------------------
+> <p id="orientation_event_t_old_orientation">旧的屏幕方向。
+
+* 类型：int32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可脚本化   | 是 |
 #### orientation 属性
 -----------------------
 > <p id="orientation_event_t_orientation">屏幕方向。

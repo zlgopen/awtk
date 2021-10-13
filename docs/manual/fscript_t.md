@@ -15,6 +15,7 @@
 | <a href="#fscript_t_fscript_global_deinit">fscript\_global\_deinit</a> | 全局释放。 |
 | <a href="#fscript_t_fscript_global_init">fscript\_global\_init</a> | 全局初始化。 |
 | <a href="#fscript_t_fscript_register_func">fscript\_register\_func</a> | 注册全局自定义函数。 |
+| <a href="#fscript_t_fscript_register_funcs">fscript\_register\_funcs</a> | 注册全局自定义函数。 |
 | <a href="#fscript_t_fscript_set_error">fscript\_set\_error</a> | 用于扩展函数设置遇到的错误。 |
 | <a href="#fscript_t_fscript_syntax_check">fscript\_syntax\_check</a> | 解析代码，分析是否有语法错误。 |
 | <a href="#fscript_t_tk_expr_eval">tk\_expr\_eval</a> | 对fscript的简单包装。 |
@@ -162,6 +163,25 @@ ret_t fscript_register_func (const char* name, fscript_func_t* func);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | name | const char* | 函数名(无需加函数前缀)。 |
 | func | fscript\_func\_t* | 函数指针。 |
+#### fscript\_register\_funcs 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="fscript_t_fscript_register_funcs">注册全局自定义函数。
+
+* 函数原型：
+
+```
+ret_t fscript_register_funcs (const general_factory_table_t* table);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| table | const general\_factory\_table\_t* | 函数表。 |
 #### fscript\_set\_error 函数
 -----------------------
 

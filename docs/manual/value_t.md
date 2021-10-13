@@ -30,6 +30,7 @@ value_set_int(&v, 100);
 | <a href="#value_t_value_equal">value\_equal</a> | 判断两个value是否相同。 |
 | <a href="#value_t_value_float">value\_float</a> | 获取类型为float\_t的值。 |
 | <a href="#value_t_value_float32">value\_float32</a> | 获取类型为float的值。 |
+| <a href="#value_t_value_gradient">value\_gradient</a> | 获取为gradient的值。 |
 | <a href="#value_t_value_int">value\_int</a> | 转换为int的值。 |
 | <a href="#value_t_value_int16">value\_int16</a> | 获取类型为int16的值。 |
 | <a href="#value_t_value_int32">value\_int32</a> | 获取类型为int32的值。 |
@@ -44,6 +45,7 @@ value_set_int(&v, 100);
 | <a href="#value_t_value_set_double">value\_set\_double</a> | 设置类型为double的值。 |
 | <a href="#value_t_value_set_float">value\_set\_float</a> | 设置类型为float\_t的值。 |
 | <a href="#value_t_value_set_float32">value\_set\_float32</a> | 设置类型为float的值。 |
+| <a href="#value_t_value_set_gradient">value\_set\_gradient</a> | 设置类型为gradient的值。 |
 | <a href="#value_t_value_set_int">value\_set\_int</a> | 设置类型为int的值。 |
 | <a href="#value_t_value_set_int16">value\_set\_int16</a> | 设置类型为int16的值。 |
 | <a href="#value_t_value_set_int32">value\_set\_int32</a> | 设置类型为int32的值。 |
@@ -346,6 +348,25 @@ float value_float32 (value_t* v);
 | -------- | ----- | --------- |
 | 返回值 | float | 值。 |
 | v | value\_t* | value对象。 |
+#### value\_gradient 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="value_t_value_gradient">获取为gradient的值。
+
+* 函数原型：
+
+```
+binary_data_t* value_gradient (value_t* v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | binary\_data\_t* | 值。 |
+| v | value\_t* | value对象。 |
 #### value\_int 函数
 -----------------------
 
@@ -618,6 +639,27 @@ value_t* value_set_float32 (value_t* v, float value);
 | 返回值 | value\_t* | value对象本身。 |
 | v | value\_t* | value对象。 |
 | value | float | 待设置的值。 |
+#### value\_set\_gradient 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="value_t_value_set_gradient">设置类型为gradient的值。
+
+* 函数原型：
+
+```
+value_t* value_set_gradient (value_t* v, void* value, uint32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | value\_t* | value对象本身。 |
+| v | value\_t* | value对象。 |
+| value | void* | 待设置的值。 |
+| size | uint32\_t | 长度。 |
 #### value\_set\_int 函数
 -----------------------
 

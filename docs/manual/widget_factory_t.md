@@ -17,6 +17,7 @@
 | <a href="#widget_factory_t_widget_factory_create_widget">widget\_factory\_create\_widget</a> | 创建指定类型的控件。 |
 | <a href="#widget_factory_t_widget_factory_destroy">widget\_factory\_destroy</a> | 析构并释放控件工厂对象。 |
 | <a href="#widget_factory_t_widget_factory_register">widget\_factory\_register</a> | 注册控件创建函数。 |
+| <a href="#widget_factory_t_widget_factory_register_multi">widget\_factory\_register\_multi</a> | 注册控件创建函数。 |
 | <a href="#widget_factory_t_widget_factory_set">widget\_factory\_set</a> | 设置缺省的控件工厂对象。 |
 #### widget\_factory 函数
 -----------------------
@@ -118,6 +119,26 @@ ret_t widget_factory_register (widget_factory_t* factory, const char* type, widg
 | factory | widget\_factory\_t* | 控件工厂对象。 |
 | type | const char* | 控件类型。 |
 | create | widget\_create\_t | 创建函数。 |
+#### widget\_factory\_register\_multi 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_factory_t_widget_factory_register_multi">注册控件创建函数。
+
+* 函数原型：
+
+```
+ret_t widget_factory_register_multi (widget_factory_t* factory, const general_factory_table_t* table);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| factory | widget\_factory\_t* | 控件工厂对象。 |
+| table | const general\_factory\_table\_t* | 表。 |
 #### widget\_factory\_set 函数
 -----------------------
 

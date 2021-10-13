@@ -104,7 +104,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#edit_t_cancelable">cancelable</a> | bool\_t | 是否支持撤销编辑。如果为TRUE，在失去焦点之前可以撤销所有修改(恢复获得焦点之前的内容)。 |
 | <a href="#edit_t_close_im_when_blured">close\_im\_when\_blured</a> | bool\_t | 是否在失去焦点时关闭输入法(默认是)。 |
 | <a href="#edit_t_input_type">input\_type</a> | input\_type\_t | 输入类型。 |
-| <a href="#edit_t_keyboard">keyboard</a> | char* | 自定义软键盘名称。AWTK优先查找keyboard属性设置的键盘文件名（该键盘的XML文件需要在default\raw\ui目录下存在），如果keyboard为空就找input_type设置的键盘类型 |
+| <a href="#edit_t_keyboard">keyboard</a> | char* | 自定义软键盘名称。AWTK优先查找keyboard属性设置的键盘文件名（该键盘的XML文件需要在default\raw\ui目录下存在），如果没有指定keyboard，就找input_type设置的键盘类型。如果指定为空字符串，则表示不需要软键盘。 |
 | <a href="#edit_t_max">max</a> | double | 最大值或最大长度。 |
 | <a href="#edit_t_min">min</a> | double | 最小值或最小长度。 |
 | <a href="#edit_t_open_im_when_focused">open\_im\_when\_focused</a> | bool\_t | 获得焦点时打开输入法。 |
@@ -865,7 +865,7 @@ ret_t edit_set_tr_tips (widget_t* widget, const char* tr_tips);
 | 可通过widget\_set\_prop修改 | 是 |
 #### keyboard 属性
 -----------------------
-> <p id="edit_t_keyboard">自定义软键盘名称。AWTK优先查找keyboard属性设置的键盘文件名（该键盘的XML文件需要在default\raw\ui目录下存在），如果keyboard为空就找input_type设置的键盘类型
+> <p id="edit_t_keyboard">自定义软键盘名称。AWTK优先查找keyboard属性设置的键盘文件名（该键盘的XML文件需要在default\raw\ui目录下存在），如果没有指定keyboard，就找input_type设置的键盘类型。如果指定为空字符串，则表示不需要软键盘。
 
 * 类型：char*
 

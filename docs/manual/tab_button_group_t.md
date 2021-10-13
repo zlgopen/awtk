@@ -47,6 +47,7 @@ widget\_t的函数均适用于tab\_button\_group\_t控件。
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#tab_button_group_t_compact">compact</a> | bool\_t | 紧凑型排版子控件(缺省FALSE)。 |
+| <a href="#tab_button_group_t_enable_hscroll_animator">enable\_hscroll\_animator</a> | bool\_t | 是否开启 tab_button 的左右滚动动画(缺省TRUE)。 |
 | <a href="#tab_button_group_t_scrollable">scrollable</a> | bool\_t | 是否支持滚动(缺省FALSE)。 |
 #### tab\_button\_group\_cast 函数
 -----------------------
@@ -142,6 +143,21 @@ ret_t tab_button_group_set_scrollable (widget_t* widget, bool_t scrollable);
 | 可直接修改 | 否 |
 | 可持久化   | 是 |
 | 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### enable\_hscroll\_animator 属性
+-----------------------
+> <p id="tab_button_group_t_enable_hscroll_animator">是否开启 tab_button 的左右滚动动画(缺省TRUE)。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |

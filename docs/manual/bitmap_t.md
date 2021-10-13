@@ -7,6 +7,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#bitmap_t_bitmap_clone">bitmap\_clone</a> | Clone图片。 |
 | <a href="#bitmap_t_bitmap_create">bitmap\_create</a> | 创建图片对象(一般供脚本语言中使用)。 |
 | <a href="#bitmap_t_bitmap_create_ex">bitmap\_create\_ex</a> | 创建图片对象。 |
 | <a href="#bitmap_t_bitmap_destroy">bitmap\_destroy</a> | 销毁图片。 |
@@ -23,6 +24,7 @@
 | <a href="#bitmap_t_bitmap_mono_dump">bitmap\_mono\_dump</a> | dump mono bitmap。 |
 | <a href="#bitmap_t_bitmap_save_png">bitmap\_save\_png</a> | 把bitmap保存为png。 |
 | <a href="#bitmap_t_bitmap_set_line_length">bitmap\_set\_line\_length</a> | 设置line_length。 |
+| <a href="#bitmap_t_bitmap_transform">bitmap\_transform</a> | 对图片每个像素进行变换。 |
 | <a href="#bitmap_t_bitmap_unlock_buffer">bitmap\_unlock\_buffer</a> | 解锁图像缓冲区。 |
 ### 属性
 <p id="bitmap_t_properties">
@@ -36,6 +38,25 @@
 | <a href="#bitmap_t_line_length">line\_length</a> | uint32\_t | 每一行实际占用的内存(也称为stride或pitch)，一般情况下为w*bpp。 |
 | <a href="#bitmap_t_name">name</a> | const char* | 名称。 |
 | <a href="#bitmap_t_w">w</a> | wh\_t | 宽度。 |
+#### bitmap\_clone 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="bitmap_t_bitmap_clone">Clone图片。
+
+* 函数原型：
+
+```
+bitmap_t* bitmap_clone (bitmap_t* bitmap);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bitmap\_t* | 返回新的bitmap对象。 |
+| bitmap | bitmap\_t* | bitmap对象。 |
 #### bitmap\_create 函数
 -----------------------
 
@@ -365,6 +386,27 @@ ret_t bitmap_set_line_length (bitmap_t* bitmap, uint32_t line_length);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | bitmap | bitmap\_t* | bitmap对象。 |
 | line\_length | uint32\_t | line\_length。 |
+#### bitmap\_transform 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="bitmap_t_bitmap_transform">对图片每个像素进行变换。
+
+* 函数原型：
+
+```
+ret_t bitmap_transform (bitmap_t* bitmap, bitmap_transform_t transform, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| bitmap | bitmap\_t* | bitmap对象。 |
+| transform | bitmap\_transform\_t | 回调函数。 |
+| ctx | void* | 回调函数的上下文。 |
 #### bitmap\_unlock\_buffer 函数
 -----------------------
 

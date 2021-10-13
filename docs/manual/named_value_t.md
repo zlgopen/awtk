@@ -8,7 +8,10 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#named_value_t_named_value_cast">named\_value\_cast</a> | 转换为named_value对象(供脚本语言使用)。 |
+| <a href="#named_value_t_named_value_compare">named\_value\_compare</a> | 比较。 |
+| <a href="#named_value_t_named_value_compare_by_name">named\_value\_compare\_by\_name</a> | 比较。 |
 | <a href="#named_value_t_named_value_create">named\_value\_create</a> | 创建named_value对象。 |
+| <a href="#named_value_t_named_value_create_ex">named\_value\_create\_ex</a> | 创建named_value对象。 |
 | <a href="#named_value_t_named_value_deinit">named\_value\_deinit</a> | 重置named_value对象。 |
 | <a href="#named_value_t_named_value_destroy">named\_value\_destroy</a> | 销毁named_value对象。 |
 | <a href="#named_value_t_named_value_get_value">named\_value\_get\_value</a> | 获取值对象(主要给脚本语言使用)。 |
@@ -41,6 +44,46 @@ named_value_t* named_value_cast (named_value_t* nv);
 | -------- | ----- | --------- |
 | 返回值 | named\_value\_t* | 返回named\_value对象。 |
 | nv | named\_value\_t* | named\_value对象。 |
+#### named\_value\_compare 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="named_value_t_named_value_compare">比较。
+
+* 函数原型：
+
+```
+ret_t named_value_compare (named_value_t* nv, named_value_t* other);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| nv | named\_value\_t* | named\_value对象。 |
+| other | named\_value\_t* | named\_value对象。 |
+#### named\_value\_compare\_by\_name 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="named_value_t_named_value_compare_by_name">比较。
+
+* 函数原型：
+
+```
+ret_t named_value_compare_by_name (named_value_t* nv, const char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| nv | named\_value\_t* | named\_value对象。 |
+| name | const char* | 名称。 |
 #### named\_value\_create 函数
 -----------------------
 
@@ -59,6 +102,26 @@ named_value_t* named_value_create ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | named\_value\_t* | 返回named\_value对象。 |
+#### named\_value\_create\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="named_value_t_named_value_create_ex">创建named_value对象。
+
+* 函数原型：
+
+```
+ret_t named_value_create_ex (const char* name, const value_t* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回named\_value对象。 |
+| name | const char* | 名称。 |
+| value | const value\_t* | 值。 |
 #### named\_value\_deinit 函数
 -----------------------
 

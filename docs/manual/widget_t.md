@@ -64,6 +64,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_child_on">widget\_child\_on</a> | 为指定名称的子控件注册指定事件的处理函数。 |
 | <a href="#widget_t_widget_clone">widget\_clone</a> | clone。 |
 | <a href="#widget_t_widget_close_window">widget\_close\_window</a> | 关闭控件所在的窗口。 |
+| <a href="#widget_t_widget_close_window_force">widget\_close\_window\_force</a> | 关闭控件所在的窗口。 |
 | <a href="#widget_t_widget_count_children">widget\_count\_children</a> | 获取子控件的个数。 |
 | <a href="#widget_t_widget_create">widget\_create</a> | 创建控件。仅在子类控件构造函数中使用。 |
 | <a href="#widget_t_widget_create_animator">widget\_create\_animator</a> | 创建动画。 |
@@ -639,6 +640,25 @@ widget_t* widget_clone (widget_t* widget, widget_t* parent);
 
 ```
 ret_t widget_close_window (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+#### widget\_close\_window\_force 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_close_window_force">关闭控件所在的窗口。
+
+* 函数原型：
+
+```
+ret_t widget_close_window_force (widget_t* widget);
 ```
 
 * 参数说明：

@@ -179,7 +179,7 @@ ret_t lcd_draw_hline (lcd_t* lcd, xy_t x, xy_t y, xy_t w);
 * 函数原型：
 
 ```
-ret_t lcd_draw_image (lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst);
+ret_t lcd_draw_image (lcd_t* lcd, bitmap_t* img, const rectf_t* src, const rectf_t* dst);
 ```
 
 * 参数说明：
@@ -189,8 +189,8 @@ ret_t lcd_draw_image (lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | lcd | lcd\_t* | lcd对象。 |
 | img | bitmap\_t* | 图片。 |
-| src | const rect\_t* | 只绘制指定区域的部分。 |
-| dst | const rect\_t* | 绘制到目标区域。 |
+| src | const rectf\_t* | 只绘制指定区域的部分。 |
+| dst | const rectf\_t* | 绘制到目标区域。 |
 #### lcd\_draw\_image\_matrix 函数
 -----------------------
 

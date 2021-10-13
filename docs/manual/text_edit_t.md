@@ -18,6 +18,7 @@
 | <a href="#text_edit_t_text_edit_get_lines_of_each_row">text\_edit\_get\_lines\_of\_each\_row</a> | 获取每一个逻辑行(row)占几个物理行(line)。 |
 | <a href="#text_edit_t_text_edit_get_selected_text">text\_edit\_get\_selected\_text</a> | 获取选中文本。 |
 | <a href="#text_edit_t_text_edit_get_state">text\_edit\_get\_state</a> | 获取编辑器的状态。 |
+| <a href="#text_edit_t_text_edit_insert_text">text\_edit\_insert\_text</a> | 插入一段文本。 |
 | <a href="#text_edit_t_text_edit_invert_caret_visible">text\_edit\_invert\_caret\_visible</a> | 如果caret可见，将其设置为不可见。 如果caret不可见，将其设置为可见。 |
 | <a href="#text_edit_t_text_edit_key_down">text\_edit\_key\_down</a> | 处理按键事件。 |
 | <a href="#text_edit_t_text_edit_key_up">text\_edit\_key\_up</a> | 处理按键事件。 |
@@ -38,6 +39,7 @@
 | <a href="#text_edit_t_text_edit_set_max_rows">text\_edit\_set\_max\_rows</a> | 设置最大行数。 |
 | <a href="#text_edit_t_text_edit_set_offset">text\_edit\_set\_offset</a> | 设置滚动偏移。 |
 | <a href="#text_edit_t_text_edit_set_on_state_changed">text\_edit\_set\_on\_state\_changed</a> | 设置状态改变回调函数。 |
+| <a href="#text_edit_t_text_edit_set_overwrite">text\_edit\_set\_overwrite</a> | 设置是否覆盖行。 |
 | <a href="#text_edit_t_text_edit_set_select">text\_edit\_set\_select</a> | 选择指定范围的文本。 |
 | <a href="#text_edit_t_text_edit_set_tips">text\_edit\_set\_tips</a> | 设置提示信息。 |
 | <a href="#text_edit_t_text_edit_set_wrap_word">text\_edit\_set\_wrap\_word</a> | 设置是否自动折行。 |
@@ -259,6 +261,27 @@ ret_t text_edit_get_state (text_edit_t* text_edit, text_edit_state_t* state);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | text\_edit | text\_edit\_t* | text\_edit对象。 |
 | state | text\_edit\_state\_t* | 状态。 |
+#### text\_edit\_insert\_text 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_edit_t_text_edit_insert_text">插入一段文本。
+
+* 函数原型：
+
+```
+ret_t text_edit_insert_text (text_edit_t* text_edit, uint32_t offset, const char* text);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| text\_edit | text\_edit\_t* | text\_edit对象。 |
+| offset | uint32\_t | 插入的偏移位置。 |
+| text | const char* | 待插入的文本。 |
 #### text\_edit\_invert\_caret\_visible 函数
 -----------------------
 
@@ -655,6 +678,26 @@ ret_t text_edit_set_on_state_changed (text_edit_t* text_edit, text_edit_on_state
 | text\_edit | text\_edit\_t* | text\_edit对象。 |
 | on\_state\_changed | text\_edit\_on\_state\_changed\_t | 回调函数。 |
 | ctx | void* | 回调函数上下文。 |
+#### text\_edit\_set\_overwrite 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_edit_t_text_edit_set_overwrite">设置是否覆盖行。
+
+* 函数原型：
+
+```
+ret_t text_edit_set_overwrite (text_edit_t* text_edit, bool_t overwrite);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| text\_edit | text\_edit\_t* | text\_edit对象。 |
+| overwrite | bool\_t | 是否覆盖行。 |
 #### text\_edit\_set\_select 函数
 -----------------------
 

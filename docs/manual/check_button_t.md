@@ -72,6 +72,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
+| <a href="#check_button_t_radio">radio</a> | bool\_t | 是否是单选按钮。 |
 | <a href="#check_button_t_value">value</a> | bool\_t | 值(勾选为TRUE，非勾选为FALSE)。 |
 ### 事件
 <p id="check_button_t_events">
@@ -185,6 +186,19 @@ ret_t check_button_set_value (widget_t* widget, bool_t value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | check\_button对象。 |
 | value | bool\_t | 值(勾选为TRUE，非勾选为FALSE)。 |
+#### radio 属性
+-----------------------
+> <p id="check_button_t_radio">是否是单选按钮。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 否 |
+| 可直接修改 | 否 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### value 属性
 -----------------------
 > <p id="check_button_t_value">值(勾选为TRUE，非勾选为FALSE)。

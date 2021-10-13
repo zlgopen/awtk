@@ -12,12 +12,15 @@
 | <a href="#rect_t_rect_create">rect\_create</a> | 创建rect对象。 |
 | <a href="#rect_t_rect_destroy">rect\_destroy</a> | 销毁rect对象。 |
 | <a href="#rect_t_rect_fix">rect\_fix</a> | 确保rect在指定的大小范围内。 |
+| <a href="#rect_t_rect_from_rectf">rect\_from\_rectf</a> | rectf 类型转换到 rect 类型。 |
 | <a href="#rect_t_rect_has_intersect">rect\_has\_intersect</a> | 判断两个rect的是否存在交集。 |
 | <a href="#rect_t_rect_init">rect\_init</a> | 初始化rect对象。 |
 | <a href="#rect_t_rect_intersect">rect\_intersect</a> | 求两个rect的交集。 |
 | <a href="#rect_t_rect_merge">rect\_merge</a> | 合并两个rect对象。 |
 | <a href="#rect_t_rect_scale">rect\_scale</a> | 缩放rect对象。 |
 | <a href="#rect_t_rect_set">rect\_set</a> | 设置rect对象的xywh。 |
+| <a href="#rect_t_rect_to_rectf">rect\_to\_rectf</a> | rect 类型转换到 rectf 类型。 |
+| <a href="#rect_t_rectf_scale">rectf\_scale</a> | 缩放rectf对象。 |
 ### 属性
 <p id="rect_t_properties">
 
@@ -133,6 +136,25 @@ rect_t rect_fix (rect_t* r);
 | -------- | ----- | --------- |
 | 返回值 | rect\_t | 返回修复之后的rect对象。 |
 | r | rect\_t* | rect对象。 |
+#### rect\_from\_rectf 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rect_t_rect_from_rectf">rectf 类型转换到 rect 类型。
+
+* 函数原型：
+
+```
+rect_t rect_from_rectf (const rectf_t* r);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | rect\_t | 返回 rect 对象。 |
+| r | const rectf\_t* | rectf 对象。 |
 #### rect\_has\_intersect 函数
 -----------------------
 
@@ -260,6 +282,45 @@ rect_t* rect_set (rect_t* rect, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标。 |
 | w | wh\_t | 宽度。 |
 | h | wh\_t | 高度。 |
+#### rect\_to\_rectf 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rect_t_rect_to_rectf">rect 类型转换到 rectf 类型。
+
+* 函数原型：
+
+```
+rectf_t rect_to_rectf (const rect_t* r1);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | rectf\_t | 返回 rectf\_t 对象。 |
+| r1 | const rect\_t* | rect 对象。 |
+#### rectf\_scale 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rect_t_rectf_scale">缩放rectf对象。
+
+* 函数原型：
+
+```
+rectf_t* rectf_scale (rectf_t* r, float_t scale);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | rectf\_t* | 返回rect对象。 |
+| r | rectf\_t* | rect对象。 |
+| scale | float\_t | 缩放比例。 |
 #### h 属性
 -----------------------
 > <p id="rect_t_h">高度。

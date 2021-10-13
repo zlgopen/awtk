@@ -47,6 +47,7 @@
 | WIDGET\_PROP\_CLOSABLE | 是否可以关闭。 |
 | WIDGET\_PROP\_POINTER\_CURSOR | 鼠标指针。 |
 | WIDGET\_PROP\_VALUE | 值。 |
+| WIDGET\_PROP\_RADIO | CheckButton是否单选。 |
 | WIDGET\_PROP\_REVERSE | 进度条反向显示。 |
 | WIDGET\_PROP\_LENGTH | 长度。 |
 | WIDGET\_PROP\_LINE\_WRAP | 自动换行。 |

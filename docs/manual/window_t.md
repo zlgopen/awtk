@@ -76,7 +76,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 * 函数原型：
 
 ```
-ret_t image_blend (bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const rect_t* src_r, uint8_t global_alpha);
+ret_t image_blend (bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r, uint8_t global_alpha);
 ```
 
 * 参数说明：
@@ -86,8 +86,8 @@ ret_t image_blend (bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const rect
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败，返回失败则上层用软件实现。 |
 | dst | bitmap\_t* | 目标图片对象。 |
 | src | bitmap\_t* | 源图片对象。 |
-| dst\_r | const rect\_t* | 目的区域。 |
-| src\_r | const rect\_t* | 源区域。 |
+| dst\_r | const rectf\_t* | 目的区域。 |
+| src\_r | const rectf\_t* | 源区域。 |
 | global\_alpha | uint8\_t | 全局alpha。 |
 #### image\_clear 函数
 -----------------------
