@@ -60,3 +60,14 @@ ret_t data_writer_clear(const char* url) {
 
   return ret;
 }
+
+int32_t data_writer_write_all(const char* url, const void* data, uint32_t size) {
+  int32_t s = 0;
+  data_writer_t* writer = data_writer_factory_create_writer(data_writer_factory(), url);
+  return_value_if_fail(writer != NULL, NULL);
+
+  s = data_writer_write(writer, 0, data, size);
+  data_writer_destroy(writer);
+
+  return s;
+}

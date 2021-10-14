@@ -34,3 +34,20 @@ TEST(DataWriterWbuffer, wbuffer) {
   data_writer_factory_destroy(f);
   wbuffer_deinit(&wb);
 }
+
+TEST(DataWriterWbuffer, write_all) {
+  wbuffer_t wb;
+  char url[MAX_PATH + 1];
+  data_writer_factory_t* f = data_writer_factory_create();
+
+  wbuffer_init_extendable(&wb);
+  data_writer_wbuffer_build_url(&wb, url);
+
+  ASSERT_EQ(data_writer_factory_register(f, "wbuffer", data_writer_wbuffer_create), RET_OK);
+  ASSERT_EQ(data_writer_write_all(url, "hello world", 11u), 11);
+  ASSERT_EQ(wb.cursor, 11u);
+  ASSERT_EQ(memcmp(wb.data, "hello world", 11), 0);
+
+  data_writer_factory_destroy(f);
+  wbuffer_deinit(&wb);
+}

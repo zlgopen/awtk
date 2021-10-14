@@ -103,6 +103,18 @@ ret_t data_writer_destroy(data_writer_t* writer);
  */
 ret_t data_writer_clear(const char* url);
 
+/**
+ * @method data_writer_write_all
+ * 写入全部数据。
+ *
+ * @param {const char*} url URL。
+ * @param {const void*} data 数据缓冲区。
+ * @param {uint32_t} size 数据长度。
+ *
+ * @return {int32_t} 返回实际写入数据的长度。
+ */
+int32_t data_writer_write_all(const char* url, const void* data, uint32_t size);
+
 #define DATA_WRITER(writer) ((data_writer_t*)(writer))
 
 END_C_DECLS
