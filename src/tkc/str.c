@@ -139,6 +139,17 @@ ret_t str_append_char(str_t* str, char c) {
   return RET_OK;
 }
 
+ret_t str_append_n_chars(str_t* str, char c, uint32_t n) {
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(str_extend(str, str->size + n + 1) == RET_OK, RET_BAD_PARAMS);
+
+  memset(str->str+str->size, c, n);
+  str->size += n;
+  str->str[str->size] = '\0';
+
+  return RET_OK;
+}
+
 ret_t str_decode_xml_entity_with_len(str_t* str, const char* text, uint32_t len) {
   char* d = NULL;
   const char* s = text;

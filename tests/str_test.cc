@@ -358,6 +358,7 @@ TEST(Str, encode_hex_sep1) {
   ASSERT_STREQ(s->str, "0x01 0x01 0x0A 0x2A ");
   str_reset(s);
 }
+
 TEST(Str, decode_hex) {
   str_t str;
   ret_t ret;
@@ -381,5 +382,24 @@ TEST(Str, decode_hex) {
   ASSERT_TRUE(data[4] == 0);
   ASSERT_EQ(data[5], 0xe8);
 
+  str_reset(&str);
+}
+
+TEST(Str, append_n_chars) {
+  str_t str;
+
+  str_init(&str, 100);
+
+  str_clear(&str);
+  ASSERT_EQ(str_append_n_chars(&str, ' ', 1), RET_OK);
+  ASSERT_STREQ(str.str, " ");
+  
+  str_clear(&str);
+  ASSERT_EQ(str_append_n_chars(&str, ' ', 2), RET_OK);
+  ASSERT_STREQ(str.str, "  ");
+  
+  str_clear(&str);
+  ASSERT_EQ(str_append_n_chars(&str, ' ', 5), RET_OK);
+  ASSERT_STREQ(str.str, "     ");
   str_reset(&str);
 }

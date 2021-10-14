@@ -217,6 +217,17 @@ ret_t str_remove(str_t* str, uint32_t offset, uint32_t len);
 ret_t str_append_char(str_t* str, char c);
 
 /**
+ * @method str_append_n_chars
+ * 同一个字符追加n次。
+ * @param {str_t*} str str对象。
+ * @param {char} c 要追加的字符。
+ * @param {uint32_t} n 字符的个数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_n_chars(str_t* str, char c, uint32_t n);
+
+/**
  * @method str_append_int
  * 追加一个整数。
  * @param {str_t*} str str对象。
