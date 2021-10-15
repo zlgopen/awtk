@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/10/15
+  * 完善 mledit（感谢兆坤提供补丁）。
+
 2021/10/13
   * 增加函数str\_append\_n\_chars
   * 增加函数data\_writer\_write\_all

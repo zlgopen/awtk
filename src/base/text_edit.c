@@ -112,6 +112,8 @@ typedef struct _text_edit_impl_t {
   bool_t is_mlines;
 
   bool_t is_first_time_layout;
+  int32_t font_size;
+  const char* font_name;
   void* on_state_changed_ctx;
   text_edit_on_state_changed_t on_state_changed;
 } text_edit_impl_t;
@@ -822,10 +824,24 @@ ret_t text_edit_paint(text_edit_t* text_edit, canvas_t* c) {
   rect_t edit_r;
   DECL_IMPL(text_edit);
   text_layout_info_t* layout_info = &(impl->layout_info);
+  style_t* style = text_edit->widget->astyle;
 
   if (impl->is_first_time_layout) {
     text_edit_layout(text_edit);
     impl->is_first_time_layout = FALSE;
+
+    impl->font_name = style_get_str(style, STYLE_ID_FONT_NAME, "default");
+    impl->font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
+  } else {
+    const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, "default");
+    int32_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
+
+    if (!tk_str_eq(font_name, impl->font_name) || font_size != impl->font_size) {
+      text_edit_layout(text_edit);
+
+      impl->font_name = font_name;
+      impl->font_size = font_size;
+    }
   }
 
   canvas_get_clip_rect(c, &save_r);
