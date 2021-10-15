@@ -212,6 +212,28 @@ static ret_t lcd_vgcanvas_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* s
   return ret;
 }
 
+static ret_t lcd_vgcanvas_draw_image_repeat(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst, wh_t dst_w, wh_t dst_h) {
+  float_t sx = src->x;
+  float_t sy = src->y;
+  float_t sw = src->w;
+  float_t sh = src->h;
+  float_t dx = dst->x;
+  float_t dy = dst->y;
+  float_t dw = dst->w;
+  float_t dh = dst->h;
+  ret_t ret = RET_NOT_IMPL;
+  vgcanvas_t* canvas = LCD(lcd)->canvas;
+  if (canvas != NULL && canvas->vt->draw_image_repeat != NULL) {
+    vgcanvas_save(canvas);
+    vgcanvas_set_antialias(canvas, FALSE);
+    ret = vgcanvas_draw_image_repeat(canvas, img, sx, sy, sw, sh, dx, dy, dw, dh, (float_t)dst_w, (float_t)dst_h);
+    vgcanvas_set_antialias(canvas, TRUE);
+    vgcanvas_restore(canvas);
+
+  }
+  return ret;
+}
+
 static ret_t lcd_vgcanvas_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info) {
   matrix_t* m = &(info->matrix);
   const rect_t* s = &(info->src);
@@ -308,6 +330,7 @@ lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
   base->clear_rect = lcd_vgcanvas_clear_rect;
   base->stroke_rect = lcd_vgcanvas_stroke_rect;
   base->draw_image = lcd_vgcanvas_draw_image;
+  base->draw_image_repeat = lcd_vgcanvas_draw_image_repeat;
   base->draw_image_matrix = lcd_vgcanvas_draw_image_matrix;
   base->draw_points = lcd_vgcanvas_draw_points;
   base->draw_text = lcd_vgcanvas_draw_text;

@@ -1,8 +1,9 @@
 # 最新动态
 
 2021/10/15
-  * 完善 mledit（感谢兆坤提供补丁）。
+  * 完善 mledit（感谢兆坤提供补丁）
   * 完善str\_from\_wstr\_with\_len。
+  * 增加vgcanvas\_draw\_image\_repeat（感谢智明提供补丁）
   * 修复在 opengl 下离线画布不回传数据不能显示的问题 （感谢智明提供补丁）
 
 2021/10/13

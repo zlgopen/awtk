@@ -105,6 +105,10 @@ typedef ret_t (*vgcanvas_draw_image_t)(vgcanvas_t* vg, bitmap_t* img, float_t sx
                                        float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,
                                        float_t dh);
 
+typedef ret_t (*vgcanvas_draw_image_repeat_t)(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy,
+                                            float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,
+                                            float_t dh, float_t dst_w, float_t dst_h);
+
 typedef ret_t (*vgcanvas_set_antialias_t)(vgcanvas_t* vg, bool_t value);
 typedef ret_t (*vgcanvas_set_global_alpha_t)(vgcanvas_t* vg, float_t alpha);
 typedef ret_t (*vgcanvas_set_line_width_t)(vgcanvas_t* vg, float_t value);
@@ -194,6 +198,7 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_fill_text_t fill_text;
   vgcanvas_measure_text_t measure_text;
   vgcanvas_draw_image_t draw_image;
+  vgcanvas_draw_image_repeat_t draw_image_repeat;
 
   vgcanvas_set_antialias_t set_antialias;
   vgcanvas_set_global_alpha_t set_global_alpha;
@@ -960,6 +965,33 @@ float_t vgcanvas_measure_text(vgcanvas_t* vg, const char* text);
  */
 ret_t vgcanvas_draw_image(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy, float_t sw,
                           float_t sh, float_t dx, float_t dy, float_t dw, float_t dh);
+
+/**
+ * @method vgcanvas_draw_image_repeat
+ * 绘制图片。
+ * 
+ * 备注：
+ * 当绘制区域大于原图区域时，多余的绘制区域会重复绘制原图区域的东西。（绘制图区按照绘制图片的宽高来绘制的）
+ * 当绘制图片的宽高和原图的不同，在重复绘制的同时加入缩放。
+ *
+ * @annotation ["scriptable"]
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {bitmap_t*} img 图片。
+ * @param {float_t} sx 原图区域的 x
+ * @param {float_t} sy 原图区域的 y
+ * @param {float_t} sw 原图区域的 w
+ * @param {float_t} sh 原图区域的 h
+ * @param {float_t} dx 绘制区域的 x
+ * @param {float_t} dy 绘制区域的 y
+ * @param {float_t} dw 绘制区域的 w
+ * @param {float_t} dh 绘制区域的 h
+ * @param {float_t} dst_w 绘制图片的宽
+ * @param {float_t} dst_h 绘制图片的高
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_draw_image_repeat(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy, float_t sw,
+                          float_t sh, float_t dx, float_t dy, float_t dw, float_t dh, float_t dst_w, float_t dst_h);
 
 /**
  * @method vgcanvas_draw_icon
