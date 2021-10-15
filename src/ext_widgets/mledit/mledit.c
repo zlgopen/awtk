@@ -864,11 +864,18 @@ static ret_t mledit_sync_line_number(widget_t* widget, text_edit_state_t* state)
 static ret_t mledit_sync_scrollbar(widget_t* widget, text_edit_state_t* state) {
   xy_t y = 0;
   wh_t virtual_h = 0;
+  int32_t margin = 0;
+  int32_t margin_top = 0;
+  int32_t margin_bottom = 0;
   widget_t* vscroll_bar = NULL;
   mledit_t* mledit = MLEDIT(widget);
   return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
-  virtual_h = (state->last_line_number + 1) * state->line_height + mledit->top_margin +
-              mledit->bottom_margin;
+
+  margin = style_get_int(widget->astyle, STYLE_ID_MARGIN, 0);
+  margin_top = style_get_int(widget->astyle, STYLE_ID_MARGIN_TOP, margin);
+  margin_bottom = style_get_int(widget->astyle, STYLE_ID_MARGIN_BOTTOM, margin);
+
+  virtual_h = (state->last_line_number + 1) * state->line_height + margin_top + margin_bottom;
   vscroll_bar = widget_lookup_by_type(widget, WIDGET_TYPE_SCROLL_BAR_DESKTOP, TRUE);
 
   if (vscroll_bar != NULL) {
