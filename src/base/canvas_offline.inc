@@ -32,6 +32,7 @@
 #include "widget_consts.h"
 #include "window_manager.h"
 #include "canvas_offline.h"
+#include "base/vgcanvas_asset_manager.h"
 
 #ifdef WITH_GPU
 
@@ -86,6 +87,7 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
   native_window_t* native_window = NULL;
 
 #ifdef WITH_GPU
+  ret_t ret = RET_OK;
   float_t ratio = 0.0f;
   vgcanvas_t* vg = NULL;
   framebuffer_object_t* fbo = NULL;
@@ -155,7 +157,11 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
   canvas_init((canvas_t*)canvas, c->lcd, widget_get_font_manager(window_manager()));
   canvas_set_assets_manager((canvas_t*)canvas, widget_get_assets_manager(window_manager()));
   canvas_set_global_alpha((canvas_t*)canvas, 0xff);
-  vgcanvas_create_fbo(vg, w, h, FALSE, fbo);
+  ret = vgcanvas_create_fbo(vg, w, h, FALSE, fbo);
+  if (ret != RET_OK) {
+    assert(!" create fbo fail \n");
+    log_warn(" create fbo fail \n");
+  }
 #else
   (void)c;
   canvas = TKMEM_ZALLOC(canvas_offline_t);
@@ -329,10 +335,9 @@ ret_t canvas_offline_end_draw(canvas_t* canvas) {
     vgcanvas_restore(vg);
     vgcanvas_unbind_fbo(vg, c->fbo);
 
-    c->base.bitmap->specific = tk_pointer_from_int(c->fbo->id);
-
     c->base.bitmap->flags &= (~flag);
     c->base.bitmap->flags |= BITMAP_FLAG_TEXTURE;
+    vgcanvas_asset_manager_add_image(vgcanvas_asset_manager(), vg, c->base.bitmap, tk_pointer_from_int(c->fbo->id));
 
     canvas_set_clip_rect(canvas, &canvas_offline->canvas_clip_rect);
   }
@@ -401,24 +406,26 @@ ret_t canvas_offline_bitmap_move_to_new_bitmap(canvas_t* canvas, bitmap_t* bitma
 
   memcpy(bitmap, canvas_bitmap, sizeof(bitmap_t));
 
-  TKMEM_FREE(canvas_bitmap);
   bitmap->should_free_handle = should_free_handle;
   
 #ifdef AWTK_WEB 
   ctx->vg = canvas_get_vgcanvas(canvas);
   ctx->fbo = ((canvas_offline_gpu_t*)canvas)->fbo;
   ((canvas_offline_gpu_t*)canvas)->fbo = NULL;
+  vgcanvas_asset_manager_remove_image(vgcanvas_asset_manager(), lcd_get_vgcanvas(canvas->lcd), canvas_bitmap);
 
   bitmap->specific_ctx = ctx;
   bitmap->image_manager = image_manager();
   bitmap->specific_destroy = canvas_offline_web_bitmap_destroy;
 #elif defined(WITH_GPU)
+  vgcanvas_asset_manager_remove_image(vgcanvas_asset_manager(), lcd_get_vgcanvas(canvas->lcd), canvas_bitmap);
   bitmap->specific = NULL;
   bitmap->image_manager = image_manager();
 #endif
   bitmap->flags = BITMAP_FLAG_IMMUTABLE;
   ((canvas_offline_t*)canvas)->bitmap = NULL;
 
+  TKMEM_FREE(canvas_bitmap);
   return RET_OK;
 }
 

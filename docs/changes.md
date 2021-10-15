@@ -3,6 +3,7 @@
 2021/10/15
   * 完善 mledit（感谢兆坤提供补丁）。
   * 完善str\_from\_wstr\_with\_len。
+  * 修复在 opengl 下离线画布不回传数据不能显示的问题 （感谢智明提供补丁）
 
 2021/10/13
   * 增加函数str\_append\_n\_chars
