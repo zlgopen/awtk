@@ -2,6 +2,7 @@
 
 2021/10/15
   * 完善 mledit（感谢兆坤提供补丁）。
+  * 完善str\_from\_wstr\_with\_len。
 
 2021/10/13
   * 增加函数str\_append\_n\_chars

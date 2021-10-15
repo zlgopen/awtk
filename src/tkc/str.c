@@ -302,7 +302,7 @@ ret_t str_from_wstr_with_len(str_t* str, const wchar_t* wstr, uint32_t len) {
   }
 
   if (wstr != NULL) {
-    uint32_t size = len * 4 + 1;
+    uint32_t size = len * 6 + 1;
     return_value_if_fail(str_extend(str, size + 1) == RET_OK, RET_OOM);
 
     if (size > 0) {
