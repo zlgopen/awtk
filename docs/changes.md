@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/10/16
+  * 增加 WITH\_DEFAULT\_IM，方便在android上使用AWTK内置输入法。
+
 2021/10/15
   * 完善str\_from\_wstr\_with\_len。
   * 增加vgcanvas\_draw\_image\_repeat（感谢智明提供补丁）

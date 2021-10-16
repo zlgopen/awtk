@@ -22,7 +22,7 @@
 #include "base/system_info.h"
 #include "input_method_null.inc"
 
-#if !defined(WITH_NULL_IM) && !defined(MOBILE_APP)
+#if (!defined(WITH_NULL_IM) && !defined(MOBILE_APP)) || defined(WITH_DEFAULT_IM)
 #include "input_method_default.inc"
 #endif /**/
 
@@ -37,7 +37,10 @@ extern input_method_t* input_method_web_create(void);
 input_method_t* input_method_create(void) {
   input_method_t* im = NULL;
 
-#if defined(WITH_NULL_IM)
+/*方便android上强制使用AWTK的内置输入法*/
+#if defined(WITH_DEFAULT_IM)
+  im = input_method_default_create();
+#elif defined(WITH_NULL_IM)
   im = input_method_null_create();
 #elif defined(AWTK_WEB)
   im = input_method_web_create();
