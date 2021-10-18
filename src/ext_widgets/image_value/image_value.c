@@ -132,7 +132,6 @@ static ret_t image_value_on_paint_self(widget_t* widget, canvas_t* c) {
   uint32_t nr = 0;
   char sub_name[8];
   const char* format = NULL;
-  char name[TK_NAME_LEN + 1];
   char str[IMAGE_VALUE_MAX_CHAR_NR + 1];
   char bitmap_name[IMAGE_VALUE_MAX_CHAR_NR][TK_NAME_LEN + 1];
   image_value_t* image_value = IMAGE_VALUE(widget);
