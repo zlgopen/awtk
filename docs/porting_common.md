@@ -282,7 +282,7 @@ awtk-port
 | src/platforms/raw/sys\_tick.c    | 如果需要自己实现 sys tick 中断，可以加入
 | src/vgcanvas                     | 如果需要矢量图或图片旋转（不支持 lcd\_reg) 请加入 vgcanvas\_nanovg_soft.c，否则加入 vgcanvas\_null.c
 | src/widget\_animators            | 除了使用 LCD\_REG 的平台外推荐全部加入
-| src/window\_animators            | 启用 OpenGL(PC/Android/iOS) 时加入 window\_animator\_gpu.c，使用 Framebuffer（一般嵌入式）时加入 window\_animator\_fb.c，低端嵌入式平台请加入 window\_animator\_null.c
+| src/window\_animators            | 加入全部文件，根据宏决定是否启用。
 | src/ubjson                       | 不用不加。
 | src/streams                      | 一般不加。
 | awtk/3rd/agge                    | 在 framebuffer 模式启用 vgcanvas 时加入
