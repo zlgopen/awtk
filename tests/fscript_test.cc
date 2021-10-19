@@ -1302,3 +1302,18 @@ TEST(FExr, dollor) {
   OBJECT_UNREF(obj);
 }
 
+TEST(FExr, get_last_error) {
+  value_t v;
+  object_t* obj = object_default_create();
+  object_t* error = NULL;
+  fscript_eval(obj, "print(123);\nprint(len());\nget_last_error()", &v);
+  error = value_object(&v);
+  ASSERT_EQ(object_get_prop_int(error, "code", 0), 16);
+  ASSERT_EQ(object_get_prop_int(error, "line", 0), 1);
+  ASSERT_EQ(object_get_prop_int(error, "col", 0), 10);
+  ASSERT_STREQ(object_get_prop_str(error, "message"), "args->size == 1 not satisfied.");
+  value_reset(&v);
+  
+  OBJECT_UNREF(obj);
+}
+
