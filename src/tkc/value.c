@@ -807,6 +807,8 @@ const char* value_str_ex(const value_t* v, char* buff, uint32_t size) {
     if (obj != NULL) {
       tk_snprintf(buff, size, "object(%p:%s)", obj, obj->vt->type);
     }
+  } else if (v->type == VALUE_TYPE_INVALID) {
+    *buff = '\0';
   } else {
     tk_snprintf(buff, size, "%d", value_int(v));
   }

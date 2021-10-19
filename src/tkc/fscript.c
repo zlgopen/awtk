@@ -363,6 +363,8 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
           tk_snprintf(msg, sizeof(msg) - 1, "not found var %s", name);
           fscript_set_error(fscript, RET_NOT_FOUND, "get_var", msg);
           value_copy(d, s);
+        } else if (*name == '$') {
+          value_reset(d);
         }
       }
     }
