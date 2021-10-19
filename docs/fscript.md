@@ -378,7 +378,7 @@ print(has_error())
 get_last_error() => object | null
 ```
 
-如果有错，返回系列对象：
+如果有错，返回对象，其成员如下：
 
 * message 错误消息
 * code 错误码
