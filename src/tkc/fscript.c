@@ -62,6 +62,8 @@ static ret_t func_set_local(fscript_t* fscript, fscript_args_t* args, value_t* r
 ret_t fscript_set_error(fscript_t* fscript, ret_t code, const char* func, const char* message) {
   fscript->error_code = code;
   fscript->error_func = fscript->curr;
+  fscript->error_row = fscript->curr->row;
+  fscript->error_col = fscript->curr->col;
   fscript->error_message = tk_str_copy(fscript->error_message, message);
   if (code != RET_OK) {
     log_debug("(%d:%d): %s code=%d %s\n", fscript->curr->row, fscript->curr->col, func, code,
@@ -1547,6 +1549,23 @@ fscript_t* fscript_create(object_t* obj, const char* expr) {
 }
 
 /*functions*/
+static ret_t func_get_last_error(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  if (fscript->error_code != RET_OK) {
+    object_t* obj = object_default_create();
+    return_value_if_fail(obj != NULL, RET_OOM);
+    object_set_prop_int(obj, "col", fscript->error_col);
+    object_set_prop_int(obj, "line", fscript->error_row);
+    object_set_prop_int(obj, "code", fscript->error_code);
+    object_set_prop_str(obj, "message", fscript->error_message);
+    value_set_object(result, obj);
+    result->free_handle = TRUE;
+  } else {
+    value_set_int(result, 0);
+    value_reset(result);
+  }
+
+  return RET_OK;
+}
 
 static ret_t func_has_error(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   value_set_bool(result, fscript->error_code != RET_OK);
@@ -2278,6 +2297,7 @@ static const func_entry_t s_builtin_funcs[] = {
     {"assert", func_assert, 2},
     {"substr", func_substr, 3},
     {"has_error", func_has_error, 0},
+    {"get_last_error", func_get_last_error, 0},
     {"clear_error", func_clear_error, 0},
     {"sum", func_sum, 8},
     {"tolower", func_tolower, 1},

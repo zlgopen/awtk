@@ -140,6 +140,8 @@ typedef struct _fscript_t {
   /*private*/
   ret_t error_code;
   char* error_message;
+  int32_t error_row;
+  int32_t error_col;
   fscript_func_call_t* curr;
   fscript_func_call_t* first;
   fscript_func_call_t* error_func;

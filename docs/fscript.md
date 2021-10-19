@@ -368,6 +368,33 @@ has_error() => bool
 print(has_error())
 ```
 
+### get_last_error
+> 获取前一个错误
+----------------------------
+
+##### 原型
+
+```
+get_last_error() => object | null
+```
+
+如果有错，返回系列对象：
+
+* message 错误消息
+* code 错误码
+* line 出错的行
+* col 出错的列
+
+没有错误，返回无效值。
+
+#### 示例
+
+```
+print(len())
+var error = get_last_error();
+print("XXX:", error.message, error.code, error.line, error.col);
+```
+
 ####  clear_error
 
 > 清除之前遇到错误
