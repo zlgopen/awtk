@@ -140,11 +140,13 @@ while(a < 100) {
 ### 获取变量
 
 ```
-a
+abc
+get(abc)
 ```
 
-> 获取变量时，如果变量不存在，自动当成字符串处理，并打印获取变量失败的警告。如果不希望变量被当成字符串，可以加上$前缀。
->
+> * 获取变量时，如果变量不存在，自动当成字符串处理，并打印获取变量失败的警告。
+> * 如果不希望变量被当成字符串，可以加上$前缀，或者使用get函数。
+> 
 > 注意：fscript 不提倡直接使用变量名当做字符串，如需要如果使用字符串常量，请用双引号包起来。
 
 如：
@@ -165,6 +167,15 @@ get var abc failed
 abc 
 result:true
 cost: 112 us
+```
+
+判断一个变量是否有效，需要使用 get 函数:
+
+```
+print("abc is valid? ", value_is_valid(get(abc)))
+abc=123
+print("abc is valid? ", value_is_valid(get(abc)))
+print(get(abc) + 321)
 ```
 
 ### 函数嵌套调用

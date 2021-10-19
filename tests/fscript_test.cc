@@ -1271,3 +1271,19 @@ TEST(FExr, minus) {
 
   OBJECT_UNREF(obj);
 }
+
+TEST(FExr, get) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  fscript_eval(obj, "value_is_valid(get(abc))", &v);
+  ASSERT_EQ(value_bool(&v), FALSE);
+  value_reset(&v);
+  
+  fscript_eval(obj, "abc=123;value_is_valid(get(abc))", &v);
+  ASSERT_EQ(value_bool(&v), TRUE);
+  value_reset(&v);
+  
+  OBJECT_UNREF(obj);
+}
+

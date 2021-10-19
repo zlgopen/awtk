@@ -53,6 +53,7 @@ static ret_t func_return(fscript_t* fscript, fscript_args_t* args, value_t* resu
   fscript->returned = TRUE;
   return RET_OK;
 }
+static ret_t func_get(fscript_t* fscript, fscript_args_t* args, value_t* result);
 static ret_t func_set(fscript_t* fscript, fscript_args_t* args, value_t* result);
 static ret_t func_unset(fscript_t* fscript, fscript_args_t* args, value_t* result);
 static ret_t fscript_exec_func(fscript_t* fscript, fscript_func_call_t* iter, value_t* result);
@@ -333,7 +334,8 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
   value_set_str(d, NULL);
   if (s->type == VALUE_TYPE_JSCRIPT_ID) {
     s->type = VALUE_TYPE_STRING;
-    if ((iter->func == func_set_local || iter->func == func_set || iter->func == func_unset) &&
+    if ((iter->func == func_set_local || iter->func == func_set || iter->func == func_unset ||
+         iter->func == func_get) &&
         i == 0) {
       value_copy(d, s); /*func_set accept id/str as first param*/
     } else {
@@ -1761,6 +1763,19 @@ static ret_t func_set_local(fscript_t* fscript, fscript_args_t* args, value_t* r
   return RET_OK;
 }
 
+static ret_t func_get(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  const char* name = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  name = value_str(args->args);
+  FSCRIPT_FUNC_CHECK(name != NULL, RET_BAD_PARAMS);
+
+  if (fscript_get_var(fscript, name, result) != RET_OK) {
+    result->type = VALUE_TYPE_INVALID;
+  }
+
+  return RET_OK;
+}
+
 static ret_t func_set(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   const char* name = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
@@ -2220,6 +2235,7 @@ static const func_entry_t s_builtin_funcs[] = {
     {"print", func_print, 4},
     {"expr", func_expr, 4},
     {"=", func_set, 2},
+    {"get", func_get, 1},
     {"set", func_set, 2},
     {"set_local", func_set_local, 2},
     {"max", func_max, 2},
