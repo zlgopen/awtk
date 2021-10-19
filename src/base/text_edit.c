@@ -610,6 +610,7 @@ static ret_t text_edit_paint_tips_text(text_edit_t* text_edit, canvas_t* c) {
         canvas_draw_text_in_rect(c, text->str, text->size, &r);
         canvas_set_text_align(c, align_h, align_v);
       }
+      line_parser_deinit(&p);
     } else {
       rect_t r =
           rect_init(layout_info->margin_l, layout_info->margin_t, layout_info->w, layout_info->h);

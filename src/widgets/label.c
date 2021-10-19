@@ -78,6 +78,7 @@ static ret_t label_paint_text_mlines(widget_t* widget, canvas_t* c, line_parser_
 
 static ret_t label_paint_text(widget_t* widget, canvas_t* c, const wchar_t* str, uint32_t size) {
   line_parser_t p;
+  ret_t ret = RET_OK;
   label_t* label = LABEL(widget);
   rect_t r = widget_get_content_area(widget);
 
@@ -87,13 +88,15 @@ static ret_t label_paint_text(widget_t* widget, canvas_t* c, const wchar_t* str,
                        RET_BAD_PARAMS);
 
   if (p.total_lines > 1) {
-    return label_paint_text_mlines(widget, c, &p, r.x, r.y, r.w, r.h);
+    ret = label_paint_text_mlines(widget, c, &p, r.x, r.y, r.w, r.h);
   } else {
     wstr_t str = widget->text;
     str.size = size;
 
-    return widget_paint_helper(widget, c, NULL, &str);
+    ret = widget_paint_helper(widget, c, NULL, &str);
   }
+  line_parser_deinit(&p);
+  return ret;
 }
 
 static ret_t label_on_paint_self(widget_t* widget, canvas_t* c) {
@@ -127,7 +130,7 @@ static wh_t label_get_text_line_max_w(widget_t* widget, canvas_t* c) {
       line_max_w = line_w;
     }
   }
-
+  line_parser_deinit(p);
   return line_max_w;
 }
 
@@ -264,7 +267,7 @@ static ret_t label_auto_adjust_size_impl(widget_t* widget, canvas_t* c, uint32_t
   if (max_h > 0) {
     widget->h = tk_min(widget->h, max_h);
   }
-
+  line_parser_deinit(&p);
   return RET_OK;
 }
 
