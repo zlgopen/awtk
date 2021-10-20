@@ -66,3 +66,26 @@ typedef enum _keyboard_type_t {
 } keyboard_type_t;
 
 ```
+
+## 示例
+ * [5keys](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/5keys.c)
+
+## 其他
+  如果希望在激活时，控件呈现不同的外观效果，请定义宏 WITH\_STATE\_ACTIVATED。同时在 style 文件中编写 activated状态的参数。如：
+
+```xml
+<slider>
+  <style>
+    <normal bg_color="#a0a0a0" fg_color="blue" border_color="#ffd700"/>
+    <pressed bg_color="#a0a0a0" fg_color="blue" border_color="#ffa700"/>
+    <over bg_color="#a0a0a0" fg_color="blue" border_color="#ffe700"/>
+    <focused bg_color="#a0a0a0" fg_color="blue" border_color="#ffff00"/>
+    <activated bg_color="#a0a0a0" fg_color="blue" border_color="#ff0000"/>
+  </style>
+</slider>
+```
+
+请参考：https://github.com/zlgopen/awtk-c-demos/blob/master/design/default/styles/5keys.xml
+
+ 
+

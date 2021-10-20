@@ -1404,6 +1404,12 @@ typedef enum _window_closable_t {
 #define WIDGET_STATE_NORMAL "normal"
 
 /**
+ * @const WIDGET_STATE_ACTIVATED
+ * 3/5keys模式时，进入激活状态(此时方向键用于修改值)。
+ */
+#define WIDGET_STATE_ACTIVATED "activated"
+
+/**
  * @const WIDGET_STATE_CHANGED
  * 内容被修改的状态。
  */

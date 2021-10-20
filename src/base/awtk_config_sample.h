@@ -267,4 +267,10 @@
  * #define WITHOUT_FSCRIPT 1
  */
 
+/**
+ * 对于极简键盘(3keys/5keys)，如果希望激活状态呈现不同的外观效果，请定义本宏。 
+ *
+ * #define WITH_STATE_ACTIVATED 1
+ */
+
 #endif /*AWTK_CONFIG_H*/

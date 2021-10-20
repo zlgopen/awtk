@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/10/20
+  * 完善极简键盘支持，增加 [activated](how_to_support_5keys_3keys.md) 状态。
+
 2021/10/19
   * 完善 fscript，增加函数 get。
   * 完善 fscript，增加函数 get\_last\_error。

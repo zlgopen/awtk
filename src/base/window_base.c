@@ -487,6 +487,15 @@ static ret_t window_on_keydown_before_children(void* ctx, event_t* e) {
       if (evt->key == TK_KEY_RETURN) {
         base->moving_focus_mode = !base->moving_focus_mode;
         log_debug("change moving_focus_mode:%d\n", base->moving_focus_mode);
+
+#ifdef WITH_STATE_ACTIVATED 
+        if (!base->moving_focus_mode) {
+          widget_set_state(focus, WIDGET_STATE_ACTIVATED);
+        } else {
+          widget_set_state(focus, WIDGET_STATE_FOCUSED);
+        }
+#endif/*WITH_STATE_ACTIVATED*/ 
+
         return RET_OK;
       }
     }
