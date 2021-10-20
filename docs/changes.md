@@ -2,6 +2,7 @@
 
 2021/10/20
   * 完善极简键盘支持，增加 [activated](how_to_support_5keys_3keys.md) 状态。
+  * 修复在agge下程序窗口缩放有概率导致程序崩溃的问题（感谢智明提供补丁）
 
 2021/10/19
   * 完善 fscript，增加函数 get。

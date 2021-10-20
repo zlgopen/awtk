@@ -1405,9 +1405,20 @@ static ret_t window_manager_default_native_window_resized(widget_t* widget, void
   if (widget->w == w && widget->h == h) {
     return RET_OK;
   }
-
+  native_window_clear_dirty_rect(wm->native_window);
   window_manager_default_resize(widget, w, h);
-
+  
+#ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
+  if (wm->animator != NULL) {
+    window_animator_t* wa = wm->animator;
+    if (wa->dialog_highlighter == NULL) {
+      bitmap_destroy(&(wa->prev_img));
+    }
+    bitmap_destroy(&(wa->curr_img));
+    window_manager_snap_prev_window(widget, wa->prev_win, &(wa->prev_img));
+    window_manager_snap_curr_window(widget, wa->curr_win, &(wa->curr_img));
+  }
+#endif
   if (wm->dialog_highlighter != NULL) {
     bitmap_t img;
     widget_t* prev = window_manager_find_prev_normal_window(widget);
