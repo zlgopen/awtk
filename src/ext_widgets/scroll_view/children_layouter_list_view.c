@@ -221,7 +221,9 @@ static ret_t children_layouter_list_view_for_list_view_children_layout_h(
       iter->h = item_height;
     }
 
-    widget_layout(iter);
+    if (iter->auto_adjust_size) {
+      widget_layout(iter);
+    }
 
     h = item_height;
     if (h <= 0) {
@@ -425,7 +427,7 @@ static ret_t children_layouter_list_view_for_list_view_layout(children_layouter_
     scroll_view_w =
         children_layouter_list_view_for_list_view_get_scroll_view_w(list_view, widget, virtual_h);
 
-    widget_resize(widget, scroll_view_w, widget->h);
+    widget_move_resize_ex(widget, widget->x, widget->y, scroll_view_w, widget->h, FALSE);
     children_layouter_list_view_for_list_view_children_layout_w(
         &children_for_layout, cols, l->x_margin, l->y_margin, l->spacing, scroll_view_w);
 
