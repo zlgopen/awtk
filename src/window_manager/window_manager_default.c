@@ -1316,6 +1316,16 @@ static ret_t window_manager_default_dispatch_input_event(widget_t* widget, event
   input_device_status_on_input_event(ids, widget, e);
   window_manager_update_cursor(widget, ids->last_x, ids->last_y);
 
+  /*保证down/up成对发给同一个窗口*/
+  if (e->type == EVT_POINTER_DOWN) {
+    wm->pointer_down_win = widget->grab_widget ? widget->grab_widget : widget->target;
+  } else if (e->type == EVT_POINTER_UP) {
+    if (wm->pointer_down_win != NULL) {
+      widget_on_pointer_up(wm->pointer_down_win, pointer_event_cast(e));
+      wm->pointer_down_win = NULL;
+    }
+  }
+
   return RET_OK;
 }
 
@@ -1407,7 +1417,7 @@ static ret_t window_manager_default_native_window_resized(widget_t* widget, void
   }
   native_window_clear_dirty_rect(wm->native_window);
   window_manager_default_resize(widget, w, h);
-  
+
 #ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
   if (wm->animator != NULL) {
     window_animator_t* wa = wm->animator;
