@@ -831,6 +831,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
 
       edit_update_status(widget);
       edit_check_valid_value(widget);
+      text_edit_preedit_confirm(edit->model);
       text_edit_unselect(edit->model);
       edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGED);
       edit_commit_text(widget);

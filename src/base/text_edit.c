@@ -256,13 +256,17 @@ static ret_t text_edit_set_caret_pos(text_edit_impl_t* impl, uint32_t x, uint32_
   return RET_OK;
 }
 
-static uint32_t text_edit_measure_text(canvas_t* c, wchar_t* str, wchar_t mask_char,
+static uint32_t text_edit_measure_text(text_edit_t* text_edit, wchar_t* str, wchar_t mask_char,
                                        uint32_t size) {
   uint32_t i = 0;
   uint32_t w = 0;
+  canvas_t* c = GET_CANVAS(text_edit);
+  DECL_IMPL(text_edit);
 
   for (i = 0; i < size; i++) {
-    wchar_t chr = mask_char ? mask_char : str[i];
+    bool_t preedit = impl->preedit && i < impl->state.cursor &&
+                     i >= (impl->state.cursor - impl->preedit_chars_nr);
+    wchar_t chr = (mask_char && !preedit) ? mask_char : str[i];
 
     w += canvas_measure_text(c, &chr, 1) + CHAR_SPACING;
   }
@@ -284,8 +288,8 @@ static row_info_t* text_edit_single_line_layout_line(text_edit_t* text_edit, uin
   wchar_t mask_char = impl->mask ? impl->mask_char : 0;
   text_layout_info_t* layout_info = &(impl->layout_info);
   align_h_t align_h = widget_get_text_align_h(text_edit->widget);
-  uint32_t text_w = text_edit_measure_text(c, text->str, mask_char, text->size);
-  uint32_t caret_text_w = text_edit_measure_text(c, text->str, mask_char, state->cursor);
+  uint32_t text_w = text_edit_measure_text(text_edit, text->str, mask_char, text->size);
+  uint32_t caret_text_w = text_edit_measure_text(text_edit, text->str, mask_char, state->cursor);
   line_info_t* line = (line_info_t*)darray_head(&row->info);
 
   assert(offset == 0 && row_num == 0);
@@ -623,14 +627,14 @@ static ret_t text_edit_paint_tips_text(text_edit_t* text_edit, canvas_t* c) {
 
 static int32_t text_edit_calc_x(text_edit_t* text_edit, line_info_t* iter) {
   DECL_IMPL(text_edit);
-  canvas_t* c = GET_CANVAS(text_edit);
   widget_t* widget = text_edit->widget;
   wstr_t* text = &(widget->text);
   wchar_t chr = impl->mask ? impl->mask_char : 0;
   text_layout_info_t* layout_info = &(impl->layout_info);
   align_h_t align_h = widget_get_text_align_h(text_edit->widget);
 
-  uint32_t row_width = text_edit_measure_text(c, text->str + iter->offset, chr, iter->length);
+  uint32_t row_width =
+      text_edit_measure_text(text_edit, text->str + iter->offset, chr, iter->length);
   if (row_width < layout_info->w) {
     switch (align_h) {
       case ALIGN_H_CENTER: {
@@ -680,7 +684,11 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info
 
   for (k = 0; k < iter->length; k++) {
     uint32_t offset = iter->offset + k;
-    wchar_t chr = impl->mask ? impl->mask_char : b.vis_str[k];
+    uint32_t cursor = state->cursor;
+    bool_t selected = offset >= select_start && offset < select_end;
+    bool_t preedit =
+        impl->preedit && offset < cursor && offset >= (cursor - impl->preedit_chars_nr);
+    wchar_t chr = (impl->mask && !preedit) ? impl->mask_char : b.vis_str[k];
     uint32_t char_w = canvas_measure_text(c, &chr, 1);
 
     if ((x + char_w) < view_left) {
@@ -695,11 +703,6 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info
     if (chr != STB_TEXTEDIT_NEWLINE) {
       uint32_t rx = x - layout_info->ox;
       uint32_t ry = y - layout_info->oy;
-      uint32_t cursor = state->cursor;
-
-      bool_t selected = offset >= select_start && offset < select_end;
-      bool_t preedit =
-          impl->preedit && offset < cursor && offset >= (cursor - impl->preedit_chars_nr);
 
       if (selected || preedit) {
         color_t select_bg_color = style_get_color(style, STYLE_ID_SELECTED_BG_COLOR, white);
@@ -715,7 +718,7 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info
       }
 
       /*FIXME: 密码编辑时，*字符本身偏高，看起来不像居中。但是无法拿到字模信息，只好手工修正一下。*/
-      if (impl->mask && impl->mask_char == '*') {
+      if (impl->mask && !preedit && impl->mask_char == '*') {
         int32_t oy = c->font_size / 6;
         canvas_draw_text(c, &chr, 1, rx, ry + oy);
       } else {
