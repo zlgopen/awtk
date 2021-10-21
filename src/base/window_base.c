@@ -444,6 +444,13 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
     }
   } else if (e->type == EVT_WINDOW_TO_BACKGROUND) {
     win->stage = WINDOW_STAGE_SUSPEND;
+
+    if (win->pressed) {
+      pointer_event_t abort;
+      pointer_event_init(&abort, EVT_POINTER_DOWN_ABORT, widget, 0, 0);
+      widget_on_pointer_up(widget, &abort); 
+    }
+
     if (widget->parent != NULL && widget->parent->grab_widget == widget) {
       win->grab_count_when_to_foreground =
           widget->parent->grab_widget_count - widget->grab_widget_count;
@@ -465,6 +472,10 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
         widget_ref(win->save_focus_widget);
       }
     }
+  } else if (e->type == EVT_POINTER_DOWN) {
+    win->pressed = TRUE;
+  } else if (e->type == EVT_POINTER_UP) {
+    win->pressed = FALSE;
   }
 
   return ret;

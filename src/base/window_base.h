@@ -255,6 +255,7 @@ typedef struct _window_base_t {
   uint32_t grab_count_when_to_foreground;
   bool_t need_relayout;
   bool_t moving_focus_mode;
+  bool_t pressed;
 } window_base_t;
 
 /**

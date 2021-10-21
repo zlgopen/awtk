@@ -67,8 +67,6 @@ typedef struct _window_manager_default_t {
   int32_t lcd_w;
   int32_t lcd_h;
 
-  /*收到pointer down的窗口，为了保证down/up成对发给同一个窗口*/
-  widget_t* pointer_down_win;
 } window_manager_default_t;
 
 /**
