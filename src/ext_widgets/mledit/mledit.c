@@ -734,6 +734,8 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       if (mledit->close_im_when_blured) {
         input_method_request(input_method(), NULL);
       }
+      text_edit_preedit_confirm(mledit->model);
+
       mledit_update_status(widget);
       mledit_dispatch_event(widget, EVT_VALUE_CHANGED);
       mledit_commit_text(widget);
