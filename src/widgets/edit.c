@@ -827,8 +827,6 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       if (edit->close_im_when_blured) {
         input_method_request(input_method(), NULL);
       }
-      text_edit_preedit_confirm(edit->model);
-
       edit_update_status(widget);
       edit_check_valid_value(widget);
       text_edit_preedit_confirm(edit->model);
