@@ -825,11 +825,11 @@ ret_t widget_move_resize(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h);
  * 只是对widget\_set\_prop的包装，值的意义由子类控件决定。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {int32_t}  value 值。
+ * @param {float_t}  value 值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_set_value(widget_t* widget, int32_t value);
+ret_t widget_set_value(widget_t* widget, float_t value);
 
 /**
  * @method widget_animate_value_to
@@ -837,12 +837,12 @@ ret_t widget_set_value(widget_t* widget, int32_t value);
  * 只是对widget\_set\_prop的包装，值的意义由子类控件决定。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {int32_t}  value 值。
+ * @param {float_t}  value 值。
  * @param {uint32_t}  duration 动画持续时间(毫秒)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_animate_value_to(widget_t* widget, int32_t value, uint32_t duration);
+ret_t widget_animate_value_to(widget_t* widget, float_t value, uint32_t duration);
 
 /**
  * @method widget_add_value
@@ -850,11 +850,11 @@ ret_t widget_animate_value_to(widget_t* widget, int32_t value, uint32_t duration
  * 只是对widget\_set\_prop的包装，值的意义由子类控件决定。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {int32_t}  delta 增量。
+ * @param {float_t}  delta 增量。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_add_value(widget_t* widget, int32_t delta);
+ret_t widget_add_value(widget_t* widget, float_t delta);
 
 /**
  * @method widget_set_text
@@ -986,9 +986,9 @@ ret_t widget_set_tr_text(widget_t* widget, const char* text);
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  *
- * @return {int32_t} 返回值。
+ * @return {float_t} 返回值。
  */
-int32_t widget_get_value(widget_t* widget);
+float_t widget_get_value(widget_t* widget);
 
 /**
  * @method widget_get_enable
@@ -1795,6 +1795,30 @@ ret_t widget_set_prop_pointer(widget_t* widget, const char* name, void* v);
  * @return {void*} 返回属性的值。
  */
 void* widget_get_prop_pointer(widget_t* widget, const char* name);
+
+/**
+ * @method widget_set_prop_float
+ * 设置浮点数格式的属性。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性的名称。
+ * @param {float_t} v 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_prop_float(widget_t* widget, const char* name, float_t v);
+
+/**
+ * @method widget_get_prop_float
+ * 获取浮点数格式的属性。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性的名称。
+ * @param {float_t} defval 缺省值。
+ *
+ * @return {float_t} 返回属性的值。
+ */
+float_t widget_get_prop_float(widget_t* widget, const char* name, float_t defval);
 
 /**
  * @method widget_set_prop_int

@@ -288,25 +288,27 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
   ret = slider->dragging ? RET_STOP : RET_OK;
   switch (type) {
     case EVT_POINTER_DOWN: {
-      rect_t br, fr;
-      pointer_event_t* evt = (pointer_event_t*)e;
-      point_t p = {evt->x, evt->y};
-      rect_t* dr = &(slider->dragger_rect);
+      if (!widget_find_animator(widget, WIDGET_PROP_VALUE)) {
+        rect_t br, fr;
+        pointer_event_t* evt = (pointer_event_t*)e;
+        point_t p = {evt->x, evt->y};
+        rect_t* dr = &(slider->dragger_rect);
 
-      return_value_if_fail(RET_OK == slider_get_bar_rect(widget, &br, &fr), RET_STOP);
+        return_value_if_fail(RET_OK == slider_get_bar_rect(widget, &br, &fr), RET_STOP);
 
-      widget_to_local(widget, &p);
-      slider->saved_value = slider->value;
-      if (slider->slide_with_bar || rect_contains(dr, p.x, p.y) || rect_contains(&br, p.x, p.y) ||
-          rect_contains(&fr, p.x, p.y)) {
-        slider_change_value_by_pointer_event(widget, evt);
+        widget_to_local(widget, &p);
+        slider->saved_value = slider->value;
+        if (slider->slide_with_bar || rect_contains(dr, p.x, p.y) || rect_contains(&br, p.x, p.y) ||
+            rect_contains(&fr, p.x, p.y)) {
+          slider_change_value_by_pointer_event(widget, evt);
 
-        slider->down = p;
-        slider->pressed = TRUE;
-        slider->dragging = TRUE;
-        widget_set_state(widget, WIDGET_STATE_PRESSED);
-        widget_grab(widget->parent, widget);
-        widget_invalidate(widget, NULL);
+          slider->down = p;
+          slider->pressed = TRUE;
+          slider->dragging = TRUE;
+          widget_set_state(widget, WIDGET_STATE_PRESSED);
+          widget_grab(widget->parent, widget);
+          widget_invalidate(widget, NULL);
+        }
       }
       ret = slider->dragging ? RET_STOP : RET_OK;
       break;

@@ -62,6 +62,7 @@
 #include "default/inc/ui/preload.data"
 #include "default/inc/ui/images.data"
 #include "default/inc/ui/soft_keyboard.data"
+#include "default/inc/ui/animate_widget.data"
 #include "default/inc/ui/edit.data"
 #include "default/inc/ui/menu_up_left.data"
 #include "default/inc/ui/locale.data"
@@ -114,6 +115,7 @@
 #include "default/inc/ui/tab_list.data"
 #include "default/inc/ui/animator.data"
 #include "default/inc/ui/slide_down.data"
+#include "default/inc/ui/value_anim.data"
 #include "default/inc/ui/gauge.data"
 #include "default/inc/ui/file_chooser_for_open.data"
 #include "default/inc/ui/scroll_view_h.data"
@@ -921,6 +923,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_preload);
   assets_manager_add(am, ui_images);
   assets_manager_add(am, ui_soft_keyboard);
+  assets_manager_add(am, ui_animate_widget);
   assets_manager_add(am, ui_edit);
   assets_manager_add(am, ui_menu_up_left);
   assets_manager_add(am, ui_locale);
@@ -973,6 +976,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_tab_list);
   assets_manager_add(am, ui_animator);
   assets_manager_add(am, ui_slide_down);
+  assets_manager_add(am, ui_value_anim);
   assets_manager_add(am, ui_gauge);
   assets_manager_add(am, ui_file_chooser_for_open);
   assets_manager_add(am, ui_scroll_view_h);

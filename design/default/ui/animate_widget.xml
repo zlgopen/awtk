@@ -1,0 +1,5 @@
+<window x="0" y="0" w="320" h="480" children_layout="default(r=8,c=2,s=10,m=10)">
+  <button name="open:animator" text="Animate"/>
+  <button name="open:value_anim" text="Value Change Animate"/>
+  <button name="close" text="Close"/>
+</window>

@@ -1,0 +1,31 @@
+<window name="value_anim">
+  <view x="0" y="0" w="100%" h="100%">
+    <slide_indicator x="0" y="bottom" w="100%" h="10"/>
+    <slide_view x="0" y="0" w="100%" h="-10" loop="true">
+      <view x="0" y="0" w="100%" h="100%">
+        <slider name="bind_value:edit" x="c" y="m" w="200" h="16" min="0" max="100" animate.value="40">
+          <label x="-32" y="m" w="32" h="32" text="0"/>
+          <label x="r:-32" y="m" w="32" h="32" text="100"/>
+        </slider>
+        <edit name="edit" x="c" y="b:15" w="100" h="28" step="1" auto_fix="true" input_type="uint" min="0" max="100" text="40"/>
+      </view>
+      <view x="0" y="0" w="100%" h="100%">
+        <progress_bar name="bind_value:edit" x="c" y="m" w="200" h="8" max="100" animate.value="40">
+          <label x="-32" y="m" w="32" h="32" text="0"/>
+          <label x="r:-32" y="m" w="32" h="32" text="100"/>
+        </progress_bar>
+        <edit name="edit" x="c" y="b:15" w="100" h="28" step="1" auto_fix="true" input_type="ufloat" min="0" max="100" text="40"/>
+      </view>
+      <view x="0" y="0" w="100%" h="100%">
+        <progress_circle name="bind_value:edit" x="c" y="m" w="200" h="200"  max="100" animate.value="40"/>
+        <edit name="edit" x="c" y="b:15" w="100" h="28" step="1" auto_fix="true" input_type="ufloat" min="0" max="100" text="40"/>
+      </view>
+      <view x="0" y="0" w="100%" h="100%">
+        <gauge x="c" y="m" w="250" h="240" image="gauge_bg" style:bg_color="black" disg:custom="container">
+          <gauge_pointer name="bind_value:../edit" x="c" y="50" w="24" h="140" animate.value="40" image="gauge_pointer" disg:custom="container"/>
+        </gauge>
+        <edit name="edit" x="c" y="b:15" w="100" h="28" auto_fix="true" input_type="uint" min="-720" max="720" text="40"/>
+      </view>
+    </slide_view>
+  </view>
+</window>

@@ -8,7 +8,7 @@
       <button focusable="true" name="open:list_view" text="ListView"/>
       <button focusable="true" name="open:slide_view" text="SlideView"/>
       <button focusable="true" name="open:animation" text="Animate Window"/>
-      <button focusable="true" name="open:animator" text="Animate Widget"/>
+      <button focusable="true" name="open:animate_widget" text="Animate Widget"/>
       <button focusable="true" name="open:tab_control" text="Tab Control"/>
       <button focusable="true" name="open:combo_box" text="ComboBox"/>
       <button focusable="true" name="open:rich_text" text="RichText"/>
