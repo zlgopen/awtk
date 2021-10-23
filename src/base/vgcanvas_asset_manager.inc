@@ -195,9 +195,11 @@ static void* vgcanvas_asset_manager_darray_find_index(darray_t* darray, tk_compa
 
 static ret_t vgcanvas_asset_manager_on_bitmap_destroy(bitmap_t* img) {
   vgcanvas_asset_image_t* image = (vgcanvas_asset_image_t*)img->specific;
-  vgcanvas_asset_manager_t* vgcanvas_asset_manager = image->vgcanvas_asset_manager;
-  if (vgcanvas_asset_manager != NULL) {
-    darray_remove(&(vgcanvas_asset_manager->image_list), image);
+  if (image != NULL) {
+    vgcanvas_asset_manager_t* vgcanvas_asset_manager = image->vgcanvas_asset_manager;
+    if (vgcanvas_asset_manager != NULL) {
+      darray_remove(&(vgcanvas_asset_manager->image_list), image);
+    }
   }
   return RET_OK;
 }

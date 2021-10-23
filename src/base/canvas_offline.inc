@@ -420,6 +420,7 @@ ret_t canvas_offline_bitmap_move_to_new_bitmap(canvas_t* canvas, bitmap_t* bitma
 #elif defined(WITH_GPU)
   vgcanvas_asset_manager_remove_image(vgcanvas_asset_manager(), lcd_get_vgcanvas(canvas->lcd), canvas_bitmap);
   bitmap->specific = NULL;
+  bitmap->specific_destroy = NULL;
   bitmap->image_manager = image_manager();
 #endif
   bitmap->flags = BITMAP_FLAG_IMMUTABLE;
