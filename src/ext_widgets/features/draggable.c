@@ -86,6 +86,15 @@ ret_t draggable_set_drag_window(widget_t* widget, bool_t drag_window) {
   return RET_OK;
 }
 
+ret_t draggable_set_drag_parent(widget_t* widget, uint32_t drag_parent) {
+  draggable_t* draggable = DRAGGABLE(widget);
+  return_value_if_fail(draggable != NULL, RET_BAD_PARAMS);
+
+  draggable->drag_parent = drag_parent;
+
+  return RET_OK;
+}
+
 static ret_t draggable_get_prop(widget_t* widget, const char* name, value_t* v) {
   draggable_t* draggable = DRAGGABLE(widget);
   return_value_if_fail(draggable != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -110,6 +119,9 @@ static ret_t draggable_get_prop(widget_t* widget, const char* name, value_t* v) 
     return RET_OK;
   } else if (tk_str_eq(DRAGGABLE_PROP_DRAG_WINDOW, name)) {
     value_set_bool(v, draggable->drag_window);
+    return RET_OK;
+  } else if (tk_str_eq(DRAGGABLE_PROP_DRAG_PARENT, name)) {
+    value_set_uint32(v, draggable->drag_parent);
     return RET_OK;
   }
 
@@ -140,6 +152,9 @@ static ret_t draggable_set_prop(widget_t* widget, const char* name, const value_
   } else if (tk_str_eq(DRAGGABLE_PROP_DRAG_WINDOW, name)) {
     draggable_set_drag_window(widget, value_bool(v));
     return RET_OK;
+  } else if (tk_str_eq(DRAGGABLE_PROP_DRAG_PARENT, name)) {
+    draggable_set_drag_parent(widget, value_uint32(v));
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -158,6 +173,29 @@ static ret_t draggable_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static widget_t* draggable_get_target(widget_t* widget) {
+  widget_t* target = NULL;
+  draggable_t* draggable = DRAGGABLE(widget);
+  return_value_if_fail(draggable != NULL, NULL);
+
+  if (draggable->drag_window) {
+    target = widget_get_window(widget);
+  } else {
+    uint32_t i = draggable->drag_parent;
+    target = widget->parent;
+    while (i > 0 && target != NULL && target->parent != NULL) {
+      target = target->parent;
+      if (widget_is_window(target)) {
+        break;
+      }
+
+      i--;
+    }
+  }
+
+  return target;
+}
+
 static ret_t draggable_on_parent_pointer_down(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
@@ -165,7 +203,7 @@ static ret_t draggable_on_parent_pointer_down(void* ctx, event_t* e) {
     pointer_event_t* evt = (pointer_event_t*)e;
     draggable_t* draggable = DRAGGABLE(widget);
     return_value_if_fail(draggable != NULL, RET_BAD_PARAMS);
-    widget_t* target = draggable->drag_window ? widget_get_window(widget) : widget->parent;
+    widget_t* target = draggable_get_target(widget);
 
     draggable->pressed = TRUE;
     draggable->down.x = evt->x;
@@ -184,7 +222,7 @@ static ret_t draggable_move_target(widget_t* widget, xy_t x, xy_t y) {
   draggable_t* draggable = DRAGGABLE(widget);
   return_value_if_fail(draggable != NULL, RET_BAD_PARAMS);
 
-  target = draggable->drag_window ? widget_get_window(widget) : widget->parent;
+  target = draggable_get_target(widget);
   return_value_if_fail(target != NULL, RET_BAD_PARAMS);
 
   xy_t min_x = draggable->left != DRAGGABLE_UNSPECIFIED_NUM ? draggable->left : 0;
@@ -236,7 +274,7 @@ static ret_t draggable_on_parent_pointer_up(void* ctx, event_t* e) {
     return_value_if_fail(draggable != NULL, RET_BAD_PARAMS);
 
     draggable->pressed = FALSE;
-    target = draggable->drag_window ? widget_get_window(widget) : widget->parent;
+    target = draggable_get_target(widget);
     dx = target->x - draggable->saved_position.x;
     dy = target->y - draggable->saved_position.y;
 
