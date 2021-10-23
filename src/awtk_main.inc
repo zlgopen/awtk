@@ -226,8 +226,9 @@ int main(int argc, char* argv[]) {
   str_reset(&str);
 #endif /*WIN32*/
 
-#ifdef IOS
+#if defined(IOS) || defined(ANDROID)
   exit(0);
-#endif /*IOS*/
+#endif /*IOS | ANDROID*/
+
   return 0;
 }
