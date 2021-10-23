@@ -531,6 +531,16 @@ ret_t str_to_upper(str_t* str);
 ret_t str_expand_vars(str_t* str, const char* src, const object_t* obj);
 
 /**
+ * @method str_common_prefix
+ * 计算str和other的共同前缀，并设置到str中。
+ * @param {str_t*} str str对象。
+ * @param {const char*} other 另外一个字符串。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_common_prefix(str_t* str, const char* other);
+
+/**
  * @method str_reset
  * 重置字符串为空。
  * @param {str_t*} str str对象。

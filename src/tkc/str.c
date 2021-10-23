@@ -143,7 +143,7 @@ ret_t str_append_n_chars(str_t* str, char c, uint32_t n) {
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
   return_value_if_fail(str_extend(str, str->size + n + 1) == RET_OK, RET_BAD_PARAMS);
 
-  memset(str->str+str->size, c, n);
+  memset(str->str + str->size, c, n);
   str->size += n;
   str->str[str->size] = '\0';
 
@@ -717,6 +717,21 @@ ret_t str_decode_hex(str_t* str, uint8_t* data, uint32_t size) {
     *data = tk_strtol(v, 0, 16);
     data++;
   }
+
+  return RET_OK;
+}
+
+ret_t str_common_prefix(str_t* str, const char* other) {
+  uint32_t i = 0;
+  return_value_if_fail(str != NULL && other != NULL, RET_BAD_PARAMS);
+
+  for (i = 0; i < str->size && other[i] != '\0'; i++) {
+    if (str->str[i] != other[i]) {
+      break;
+    }
+  }
+  str->str[i] = '\0';
+  str->size = i;
 
   return RET_OK;
 }

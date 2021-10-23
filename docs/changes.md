@@ -3,6 +3,7 @@
 2021/10/23
   * 完善draggable，可以拖动任意层级的父控件。
   * Android/iOS调用exit退出进程。
+  * 增加函数str\_common\_prefix。
 
 2021/10/22
   * 修改 value 值动画效果 （感谢兆坤提供补丁）
