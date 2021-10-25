@@ -244,6 +244,9 @@ float_t value_float(const value_t* v) {
   return_value_if_fail(v->type != VALUE_TYPE_INVALID, 0);
 
   switch (v->type) {
+    case VALUE_TYPE_BOOL: {
+      return (float_t)v->value.b;
+    }
     case VALUE_TYPE_INT8: {
       return (float_t)v->value.i8;
     }
@@ -407,7 +410,6 @@ value_t* value_set_wstr(value_t* v, const wchar_t* value) {
 
 const char* value_str(const value_t* v) {
   return_value_if_fail(v != NULL, NULL);
-  assert(v->type == VALUE_TYPE_STRING);
   return_value_if_fail(v->type == VALUE_TYPE_STRING, NULL);
 
   return v->value.str;

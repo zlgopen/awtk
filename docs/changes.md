@@ -2,6 +2,7 @@
 
 2021/10/25
   * gif image增加loop属性。
+  * 完善 value\_float（感谢周聪提供补丁）
 
 2021/10/23
   * 完善draggable，可以拖动任意层级的父控件。
