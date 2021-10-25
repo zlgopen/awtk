@@ -86,6 +86,14 @@ typedef struct _gif_image_t {
    *
    */
   bool_t running;
+  
+  /**
+   * @property {uint32_t} loop
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 循环播放的次数。
+   *
+   */
+  uint32_t loop;
 
   /*private*/
   uint32_t index;
@@ -136,6 +144,17 @@ ret_t gif_image_stop(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t gif_image_pause(widget_t* widget);
+
+/**
+ * @method gif_image_set_loop
+ * 设置循环播放次数。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t} loop 循环播放次数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t gif_image_set_loop(widget_t* widget, uint32_t loop);
 
 /**
  * @method gif_image_cast

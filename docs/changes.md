@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/10/25
+  * gif image增加loop属性。
+
 2021/10/23
   * 完善draggable，可以拖动任意层级的父控件。
   * Android/iOS调用exit退出进程。

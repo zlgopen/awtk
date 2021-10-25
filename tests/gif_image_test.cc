@@ -13,6 +13,10 @@ TEST(GifImage, basic) {
   ASSERT_EQ(widget_get_prop(img, WIDGET_PROP_IMAGE, &v1), RET_OK);
   ASSERT_EQ(strcmp(value_str(&v), value_str(&v1)), 0);
   ASSERT_EQ(widget_count_children(w), 1);
+  
+  ASSERT_EQ((uint32_t)widget_get_prop_int(img, WIDGET_PROP_LOOP, 0), 0xffffffff);
+  ASSERT_EQ(widget_set_prop_int(img, WIDGET_PROP_LOOP, 1), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(img, WIDGET_PROP_LOOP, 0), 1);
 
   widget_destroy(w);
 }

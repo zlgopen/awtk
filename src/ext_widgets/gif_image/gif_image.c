@@ -91,10 +91,20 @@ static ret_t gif_image_on_paint_self(widget_t* widget, canvas_t* c) {
 
   if (frames_nr > 0) {
     image->index %= frames_nr;
+    if (image->loop > 0) {
+      image->loop--;
+    }
   } else {
     image->index = 0;
   }
 
+  if (image->loop == 0) {
+    if (frames_nr > 0) {
+      image->index = frames_nr - 1;
+    } else {
+      image->index = 0;
+    }
+  }
 #ifdef AWTK_WEB
   if (image->timer_id == TK_INVALID_ID) {
     image->timer_id = timer_add(gif_image_on_timer, image, 16);
@@ -142,7 +152,7 @@ static ret_t gif_image_on_paint_self(widget_t* widget, canvas_t* c) {
 static const char* s_gif_image_properties[] = {
     WIDGET_PROP_IMAGE,     WIDGET_PROP_SCALE_X,    WIDGET_PROP_SCALE_Y,
     WIDGET_PROP_ANCHOR_X,  WIDGET_PROP_ANCHOR_Y,   WIDGET_PROP_ROTATION,
-    WIDGET_PROP_CLICKABLE, WIDGET_PROP_SELECTABLE, NULL};
+    WIDGET_PROP_CLICKABLE, WIDGET_PROP_SELECTABLE, WIDGET_PROP_LOOP, NULL};
 
 static ret_t gif_image_on_destroy(widget_t* widget) {
   gif_image_t* image = GIF_IMAGE(widget);
@@ -184,6 +194,37 @@ ret_t gif_image_stop(widget_t* widget) {
   return RET_OK;
 }
 
+ret_t gif_image_set_loop(widget_t* widget, uint32_t loop) {
+  gif_image_t* gif_image = GIF_IMAGE(widget);
+  return_value_if_fail(gif_image != NULL, RET_BAD_PARAMS);
+
+  gif_image->loop = loop;
+
+  return RET_OK;
+}
+
+static ret_t gif_image_get_prop(widget_t* widget, const char* name, value_t* v) {
+  gif_image_t* image = GIF_IMAGE(widget);
+  return_value_if_fail(image != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(name, WIDGET_PROP_LOOP)) {
+    value_set_uint32(v, image->loop);
+    return RET_OK;
+  } else {
+    return image_base_get_prop(widget, name, v);
+  }
+}
+
+static ret_t gif_image_set_prop(widget_t* widget, const char* name, const value_t* v) {
+  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(name, WIDGET_PROP_LOOP)) {
+    return gif_image_set_loop(widget, value_uint32(v));
+  } else {
+    return image_base_set_prop(widget, name, v);
+  }
+}
+
 TK_DECL_VTABLE(gif_image) = {.size = sizeof(gif_image_t),
                              .type = WIDGET_TYPE_GIF_IMAGE,
                              .space_key_to_activate = TRUE,
@@ -197,8 +238,8 @@ TK_DECL_VTABLE(gif_image) = {.size = sizeof(gif_image_t),
                              .on_paint_self = gif_image_on_paint_self,
                              .on_paint_background = widget_on_paint_null,
                              .on_copy = image_base_on_copy,
-                             .set_prop = image_base_set_prop,
-                             .get_prop = image_base_get_prop};
+                             .set_prop = gif_image_set_prop,
+                             .get_prop = gif_image_get_prop};
 
 widget_t* gif_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(gif_image), x, y, w, h);
@@ -207,6 +248,7 @@ widget_t* gif_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
   image_base_init(widget);
   gif_image_play(widget);
+  gif_image->loop = 0xffffffff;
 
   return widget;
 }

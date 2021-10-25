@@ -1,8 +1,8 @@
 <window anim_hint="htranslate">
   <view x="0" y="0" w="100%" h="-60" children_layout="default(c=2,r=2)">
-    <gif image="bee"/>
-    <gif image="bee"/>
-    <gif image="bee"/>
+    <gif image="bee" loop="1"/>
+    <gif image="bee" loop="10"/>
+    <gif image="bee" loop="20"/>
     <gif image="bee"/>
   </view>
   <button name="close" self_layout="default(x=center,y=bottom:50,w=50%,h=30)" 
