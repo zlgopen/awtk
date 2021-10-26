@@ -726,43 +726,63 @@ static ret_t on_change_locale(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static widget_t* find_bind_value_target(widget_t* widget, const char* name) {
+  widget_t* target = NULL;
+  return_value_if_fail(widget != NULL && name != NULL, NULL);
+
+  if (tk_str_start_with(name, "bind_value:")) {
+    widget_t* parent = widget->parent;
+    const char* subname = NULL;
+    tokenizer_t t;
+
+    name += 11;
+    tokenizer_init(&t, name, tk_strlen(name), "/");
+
+    while ((subname = tokenizer_next(&t)) != NULL) {
+      if (tokenizer_has_more(&t)) {
+        if (tk_str_eq(subname, "..")) {
+          parent = parent->parent;
+        } else {
+          while (parent != NULL) {
+            widget_t* tmp = widget_lookup(parent, subname, FALSE);
+            if (tmp != NULL) {
+              parent = tmp;
+              break;
+            } else {
+              parent = parent->parent;
+            }
+          }
+        }
+      } else {
+        target = widget_lookup(parent, subname, FALSE);
+      }
+    }
+  }
+  return target;
+}
+
+static ret_t on_kb_destroy_to_change_value(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  widget_t* target = find_bind_value_target(widget, widget->name);
+  return_value_if_fail(widget != NULL && target != NULL, RET_BAD_PARAMS);
+
+  return widget_set_prop_float(widget, "animate.value", widget_get_value(target));
+}
+
 static ret_t on_bind_value_changed(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   widget_t* target = WIDGET(e->target);
   if (widget != NULL && target != NULL) {
-    widget_set_prop_float(widget, "animate.value", widget_get_value(target));
-  }
-  return RET_OK;
-}
+    input_method_t* im = input_method();
 
-static widget_t* find_bind_value_target(widget_t* widget, const char* name) {
-  widget_t* target = NULL;
-  widget_t* parent = widget->parent;
-  const char* subname = NULL;
-  tokenizer_t t;
-
-  tokenizer_init(&t, name, tk_strlen(name), "/");
-
-  while ((subname = tokenizer_next(&t)) != NULL) {
-    if (tokenizer_has_more(&t)) {
-      if (tk_str_eq(subname, "..")) {
-        parent = parent->parent;
-      } else {
-        while (parent != NULL) {
-          widget_t* tmp = widget_lookup(parent, subname, FALSE);
-          if (tmp != NULL) {
-            parent = tmp;
-            break;
-          } else {
-            parent = parent->parent;
-          }
-        }
-      }
+    if (im != NULL && im->keyboard != NULL) {
+      widget_on(im->keyboard, EVT_DESTROY, on_kb_destroy_to_change_value, ctx);
     } else {
-      target = widget_lookup(parent, subname, FALSE);
+      widget_set_prop_float(widget, "animate.value", widget_get_value(target));
     }
   }
-  return target;
+
+  return RET_OK;
 }
 
 static ret_t install_one(void* ctx, const void* iter) {
@@ -863,7 +883,7 @@ static ret_t install_one(void* ctx, const void* iter) {
     } else if (tk_str_eq(name, "pages")) {
       widget_on(widget, EVT_WIDGET_ADD_CHILD, on_pages_add_child, widget);
     } else if (strstr(name, "bind_value:") != NULL) {
-      widget_t* target = find_bind_value_target(widget, name + 11);
+      widget_t* target = find_bind_value_target(widget, name);
       widget_on(target, EVT_VALUE_CHANGED, on_bind_value_changed, (void*)widget);
     }
   } else if (tk_str_eq(widget->vt->type, "combo_box")) {

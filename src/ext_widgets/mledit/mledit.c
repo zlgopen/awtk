@@ -1023,6 +1023,11 @@ ret_t mledit_insert_text(widget_t* widget, uint32_t offset, const char* text) {
     slist_deinit(&offset_list);
   }
 
+  if (ret == RET_OK) {
+    mledit_dispatch_event(widget, EVT_VALUE_CHANGED);
+    mledit_update_status(widget);
+  }
+
   return ret;
 }
 
