@@ -71,7 +71,7 @@
 * [如何用 valgrind 查找内存相关问题](how_to_use_valgrind_detect_memory_bugs.md)
 * [如何定制 combo_box 控件中按钮的风格和大小](how_to_customize_combo_boxox_button.md)
 [如何访问控件的属性](how_to_access_widget_props.md)
-* [如何集成第三方库](docs/how_to_use_3rd_libs.md)
+* [如何集成第三方库](how_to_use_3rd_libs.md)
 * [如何使用对话框](how_toto_use_dialog.md)
 * [如何使用软键盘上的 action 按钮](how_to_use_action_text.md)
 * [如何存取应用程序的配置信息](how_to_use_app_conf.md)
@@ -89,7 +89,8 @@
 * [如何修改 stb\_truetype 获取字模时申请的缓冲区大小](how_to_modify_stb_truetype_buffer_size.md)
 * [如何让内存管理器支持管理多块不连续的内存](how_to_support_multi_mem_block.md)
 * [如何使用keil的AC6工具链编译](how_to_build_with_keil_ac6.md)
-* [如何支持极简键盘 (3 键键盘、5 键键盘和旋转按钮）](docs/how_to_support_5keys_3keys.md)
+* [如何支持极简键盘 (3 键键盘、5 键键盘和旋转按钮）](how_to_support_5keys_3keys.md)
+* [如何在改变控件属性时附带动画](how_to_change_prop_with_animation.md)
 
 ### 3. 内部原理
 * [AWTK 脚本绑定原理](script_binding.md)

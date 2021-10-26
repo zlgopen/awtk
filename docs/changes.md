@@ -2,6 +2,7 @@
 
 2021/10/26
   * 完善socket意外断开处理。
+  * 增加文档 [如何在改变控件属性时附带动画](how_to_change_prop_with_animation.md) （感谢兆坤提供补丁）
 
 2021/10/25
   * gif image增加loop属性。
