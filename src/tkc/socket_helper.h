@@ -75,13 +75,13 @@ ret_t socket_close(int sock);
 ret_t socket_bind(int sock, int port);
 
 /**
- * @method socket_is_last_io_ok
+ * @method socket_last_io_has_error
  * @annotation ["static"]
  * 判断最后一次IO操作是否正常。
  *
- * @return {bool_t} 返回TRUE表示Broken，否则表示正常。
+ * @return {bool_t} 返回TRUE表示有错误，否则表示正常。
  */
-bool_t socket_is_last_io_ok(void);
+bool_t socket_last_io_has_error(void);
 
 /**
  * @method socket_wait_for_data

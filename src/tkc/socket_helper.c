@@ -239,7 +239,7 @@ ret_t socket_wait_for_data(int sock, uint32_t timeout_ms) {
   return ret > 0 ? RET_OK : RET_TIMEOUT;
 }
 
-bool_t socket_is_last_io_ok(void) {
+bool_t socket_last_io_has_error(void) {
 #ifndef WIN32
   int eno = errno;
   return eno != EAGAIN && eno != 0;

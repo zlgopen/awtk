@@ -104,8 +104,14 @@ int32_t tk_istream_read_len(tk_istream_t* stream, void* buff, uint32_t max_size,
         log_debug("stream is broken\n");
         break;
       } else {
-        log_debug("not get data\n");
-        continue;
+        now = time_now_ms();
+        if (now > end) {
+          log_debug("timeout\n");
+          break;
+        } else {
+          log_debug("not get data\n");
+          continue;
+        }
       }
     }
 
