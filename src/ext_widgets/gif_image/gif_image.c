@@ -149,10 +149,11 @@ static ret_t gif_image_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static const char* s_gif_image_properties[] = {
-    WIDGET_PROP_IMAGE,     WIDGET_PROP_SCALE_X,    WIDGET_PROP_SCALE_Y,
-    WIDGET_PROP_ANCHOR_X,  WIDGET_PROP_ANCHOR_Y,   WIDGET_PROP_ROTATION,
-    WIDGET_PROP_CLICKABLE, WIDGET_PROP_SELECTABLE, WIDGET_PROP_LOOP, NULL};
+static const char* s_gif_image_properties[] = {WIDGET_PROP_IMAGE,     WIDGET_PROP_SCALE_X,
+                                               WIDGET_PROP_SCALE_Y,   WIDGET_PROP_ANCHOR_X,
+                                               WIDGET_PROP_ANCHOR_Y,  WIDGET_PROP_ROTATION,
+                                               WIDGET_PROP_CLICKABLE, WIDGET_PROP_SELECTABLE,
+                                               WIDGET_PROP_LOOP,      NULL};
 
 static ret_t gif_image_on_destroy(widget_t* widget) {
   gif_image_t* image = GIF_IMAGE(widget);

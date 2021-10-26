@@ -278,10 +278,10 @@ double tk_expr_eval(const char* expr);
 #define STR_FSCRIPT_FUNCTION_PREFIX "function."
 
 /*用于扩展函数里检查参数*/
-#define FSCRIPT_FUNC_CHECK(predicate, code)                        \
-  if (!(predicate)) {                                              \
+#define FSCRIPT_FUNC_CHECK(predicate, code)                                          \
+  if (!(predicate)) {                                                                \
     fscript_set_error(fscript, code, __FUNCTION__, "" #predicate " not satisfied."); \
-    return code;                                                   \
+    return code;                                                                     \
   }
 
 END_C_DECLS

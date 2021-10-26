@@ -300,8 +300,10 @@ ret_t vgcanvas_draw_image(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy,
 }
 
 ret_t vgcanvas_draw_image_repeat(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy, float_t sw,
-                          float_t sh, float_t dx, float_t dy, float_t dw, float_t dh, float_t dst_w, float_t dst_h) {
-  return_value_if_fail(vg != NULL && vg->vt->draw_image_repeat != NULL && img != NULL, RET_BAD_PARAMS);
+                                 float_t sh, float_t dx, float_t dy, float_t dw, float_t dh,
+                                 float_t dst_w, float_t dst_h) {
+  return_value_if_fail(vg != NULL && vg->vt->draw_image_repeat != NULL && img != NULL,
+                       RET_BAD_PARAMS);
 
   return vg->vt->draw_image_repeat(vg, img, sx, sy, sw, sh, dx, dy, dw, dh, dst_w, dst_h);
 }

@@ -119,7 +119,7 @@ ret_t hscrollable_scroll_to(hscrollable_t* hscrollable, int32_t xoffset_end, int
 
     widget_animator_scroll_set_params(hscrollable->wa, xoffset, 0, xoffset_end, 0);
     widget_animator_on(hscrollable->wa, EVT_ANIM_END, hscrollable_on_scroll_done, hscrollable);
-    widget_animator_start(hscrollable->wa);  
+    widget_animator_start(hscrollable->wa);
     return RET_OK;
   }
 #endif /*WITHOUT_WIDGET_ANIMATORS*/
@@ -327,7 +327,8 @@ ret_t hscrollable_set_virtual_w(hscrollable_t* hscrollable, int32_t virtual_w) {
   return RET_OK;
 }
 
-ret_t hscrollable_set_enable_hscroll_animator(hscrollable_t* hscrollable, bool_t enable_hscroll_animator){
+ret_t hscrollable_set_enable_hscroll_animator(hscrollable_t* hscrollable,
+                                              bool_t enable_hscroll_animator) {
   return_value_if_fail(hscrollable != NULL, RET_BAD_PARAMS);
   hscrollable->enable_hscroll_animator = enable_hscroll_animator;
 

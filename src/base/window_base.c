@@ -448,7 +448,7 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
     if (win->pressed) {
       pointer_event_t abort;
       pointer_event_init(&abort, EVT_POINTER_DOWN_ABORT, widget, 0, 0);
-      widget_on_pointer_up(widget, &abort); 
+      widget_on_pointer_up(widget, &abort);
     }
 
     if (widget->parent != NULL && widget->parent->grab_widget == widget) {
@@ -499,13 +499,13 @@ static ret_t window_on_keydown_before_children(void* ctx, event_t* e) {
         base->moving_focus_mode = !base->moving_focus_mode;
         log_debug("change moving_focus_mode:%d\n", base->moving_focus_mode);
 
-#ifdef WITH_STATE_ACTIVATED 
+#ifdef WITH_STATE_ACTIVATED
         if (!base->moving_focus_mode) {
           widget_set_state(focus, WIDGET_STATE_ACTIVATED);
         } else {
           widget_set_state(focus, WIDGET_STATE_FOCUSED);
         }
-#endif/*WITH_STATE_ACTIVATED*/ 
+#endif /*WITH_STATE_ACTIVATED*/
 
         return RET_OK;
       }

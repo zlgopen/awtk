@@ -122,13 +122,14 @@ static ret_t line_parser_next(line_parser_t* parser) {
       parser->line_size = wcslen(parser->str);
     } else {
       if (line_number + 1 < parser->nline_numbers) {
-        parser->line_size = parser->line_numbers[line_number + 1] - parser->line_numbers[line_number];
+        parser->line_size =
+            parser->line_numbers[line_number + 1] - parser->line_numbers[line_number];
       } else {
         parser->line_size = wcslen(parser->line);
       }
     }
     return RET_OK;
-  } 
+  }
   return RET_EOS;
 }
 

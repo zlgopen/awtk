@@ -86,7 +86,7 @@ typedef struct _gif_image_t {
    *
    */
   bool_t running;
-  
+
   /**
    * @property {uint32_t} loop
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]

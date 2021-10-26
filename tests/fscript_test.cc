@@ -1279,11 +1279,11 @@ TEST(FExr, get) {
   fscript_eval(obj, "value_is_valid(get(abc))", &v);
   ASSERT_EQ(value_bool(&v), FALSE);
   value_reset(&v);
-  
+
   fscript_eval(obj, "abc=123;value_is_valid(get(abc))", &v);
   ASSERT_EQ(value_bool(&v), TRUE);
   value_reset(&v);
-  
+
   OBJECT_UNREF(obj);
 }
 
@@ -1294,11 +1294,11 @@ TEST(FExr, dollor) {
   fscript_eval(obj, "value_is_valid($abc)", &v);
   ASSERT_EQ(value_bool(&v), FALSE);
   value_reset(&v);
-  
+
   fscript_eval(obj, "abc=123;value_is_valid(abc)", &v);
   ASSERT_EQ(value_bool(&v), TRUE);
   value_reset(&v);
-  
+
   OBJECT_UNREF(obj);
 }
 
@@ -1313,7 +1313,6 @@ TEST(FExr, get_last_error) {
   ASSERT_EQ(object_get_prop_int(error, "col", 0), 10);
   ASSERT_STREQ(object_get_prop_str(error, "message"), "args->size == 1 not satisfied.");
   value_reset(&v);
-  
+
   OBJECT_UNREF(obj);
 }
-

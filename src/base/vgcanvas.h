@@ -106,8 +106,8 @@ typedef ret_t (*vgcanvas_draw_image_t)(vgcanvas_t* vg, bitmap_t* img, float_t sx
                                        float_t dh);
 
 typedef ret_t (*vgcanvas_draw_image_repeat_t)(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy,
-                                            float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,
-                                            float_t dh, float_t dst_w, float_t dst_h);
+                                              float_t sw, float_t sh, float_t dx, float_t dy,
+                                              float_t dw, float_t dh, float_t dst_w, float_t dst_h);
 
 typedef ret_t (*vgcanvas_set_antialias_t)(vgcanvas_t* vg, bool_t value);
 typedef ret_t (*vgcanvas_set_global_alpha_t)(vgcanvas_t* vg, float_t alpha);
@@ -991,7 +991,8 @@ ret_t vgcanvas_draw_image(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy,
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t vgcanvas_draw_image_repeat(vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy, float_t sw,
-                          float_t sh, float_t dx, float_t dy, float_t dw, float_t dh, float_t dst_w, float_t dst_h);
+                                 float_t sh, float_t dx, float_t dy, float_t dw, float_t dh,
+                                 float_t dst_w, float_t dst_h);
 
 /**
  * @method vgcanvas_draw_icon

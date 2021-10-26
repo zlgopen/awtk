@@ -393,11 +393,11 @@ TEST(Str, append_n_chars) {
   str_clear(&str);
   ASSERT_EQ(str_append_n_chars(&str, ' ', 1), RET_OK);
   ASSERT_STREQ(str.str, " ");
-  
+
   str_clear(&str);
   ASSERT_EQ(str_append_n_chars(&str, ' ', 2), RET_OK);
   ASSERT_STREQ(str.str, "  ");
-  
+
   str_clear(&str);
   ASSERT_EQ(str_append_n_chars(&str, ' ', 5), RET_OK);
   ASSERT_STREQ(str.str, "     ");
@@ -412,22 +412,22 @@ TEST(Str, common_prefix) {
   str_set(&str, "abc.cde.123");
   ASSERT_EQ(str_common_prefix(&str, "abc.123"), RET_OK);
   ASSERT_STREQ(str.str, "abc.");
-  
+
   str_set(&str, "abc.cde.123");
   ASSERT_EQ(str_common_prefix(&str, "abc.c123"), RET_OK);
   ASSERT_STREQ(str.str, "abc.c");
-  
+
   str_set(&str, "abc.cde.123");
   ASSERT_EQ(str_common_prefix(&str, "c123"), RET_OK);
   ASSERT_STREQ(str.str, "");
-  
+
   str_set(&str, "abc.cde.123");
   ASSERT_EQ(str_common_prefix(&str, "abc.cde.123"), RET_OK);
   ASSERT_STREQ(str.str, "abc.cde.123");
-  
+
   str_set(&str, "");
   ASSERT_EQ(str_common_prefix(&str, "abc.cde.123"), RET_OK);
   ASSERT_STREQ(str.str, "");
-  
+
   str_reset(&str);
 }

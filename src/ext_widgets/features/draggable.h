@@ -113,7 +113,7 @@ typedef struct _draggable_t {
    * 拖动窗口而不是父控件。比如放在对话框的titlebar上，拖动titlebar其实是希望拖动对话框。
    */
   bool_t drag_window;
-  
+
   /**
    * @property {uint32_t} drag_parent
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
