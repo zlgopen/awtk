@@ -2755,7 +2755,8 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r);
 /**
  * @method widget_get_canvas
  * 获取canvas对象。
- *
+ * @param {widget_t*} widget 控件对象。
+ * 
  * @return {canvas_t*} 返回canvas对象。
  */
 canvas_t* widget_get_canvas(widget_t* widget);
