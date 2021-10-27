@@ -6,12 +6,12 @@
     <over/>
     <pressed bg_color="#709918" text_color="#FFFFFF" x_offset="1" y_offset="1"/>
   </style>
-  <style name="candidates" margin="3" text_color="#000000" font_size="22">
+  <style name="candidates" margin="5" text_color="#000000" font_size="22">
     <normal/>
     <over border_color="#c2c2c2"/>
     <pressed bg_color="#ffffff" border_color="#c2c2c2"/>
   </style>
-  <style name="candidates_focusable" text_color="#000000" font_size="22">
+  <style name="candidates_focusable" margin="5" text_color="#000000" font_size="22">
     <normal/>
     <disable text_color="#00000066"/>
     <focused border_color="#c2c2c2"/>

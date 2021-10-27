@@ -120,7 +120,7 @@ static ret_t candidates_ensure_children(widget_t* widget, uint32_t nr) {
 static uint32_t candidates_calc_child_width(canvas_t* c, widget_t* widget) {
   wstr_t* str = &(widget->text);
 
-  return canvas_measure_text(c, str->str, str->size) + 8;
+  return canvas_measure_text(c, str->str, str->size);
 }
 
 static ret_t candidates_relayout_children(widget_t* widget) {
@@ -138,7 +138,7 @@ static ret_t candidates_relayout_children(widget_t* widget) {
   style_t* style = children[0]->astyle;
   canvas_t* c = widget_get_canvas(widget);
   const char* font = system_info_fix_font_name(NULL);
-  int32_t child_margin = style_get_int(style, STYLE_ID_MARGIN, 0);
+  int32_t child_margin = style_get_int(style, STYLE_ID_MARGIN, 2);
   uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
 
   nr = candidates->candidates_nr;
