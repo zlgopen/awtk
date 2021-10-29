@@ -810,7 +810,7 @@ static ret_t window_manager_animate_done(widget_t* widget) {
       /*此时前一个窗口并非是真正的前一个窗口，而是前一个normal窗口，所以这里重新找真正的前一个窗口*/
       prev_win = window_manager_find_prev_window(WIDGET(wm));
       /* 结束打开窗口动画后 */
-      if (!curr_win_is_keyboard) {
+      if (!curr_win_is_keyboard && prev_win != curr_win) {
         window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_BACKGROUND);
       }
       if (!curr_win_is_normal_window) {
