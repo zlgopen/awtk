@@ -62,7 +62,7 @@ static ret_t dialog_toast_set_label_self_layout(widget_t* toast, widget_t* label
 static ret_t dialog_get_size_limits(rect_t* r);
 static ret_t dialog_toast_on_destroy(void* ctx, event_t* e);
 static ret_t dialog_toast_on_click_to_quit(void* ctx, event_t* e);
-static ret_t dialog_toast_set_curr_message(dialog_toast_t* dialog_toast, dialog_toast_message_t* message, uint32_t duration);
+static ret_t dialog_toast_set_curr_message(dialog_toast_t* dialog_toast, dialog_toast_message_t* message, uint32_t duration, bool_t add_timer);
 
 static ret_t dialog_toast_on_dialog_will_open(void* ctx, event_t* e) {
   dialog_toast_t* dialog_toast = DIALOG_TOAST(ctx);
@@ -87,7 +87,7 @@ static ret_t dialog_toast_on_dialog_open(void* ctx, event_t* e) {
   /* 播放完打开窗口动画后，重新显示信息，同时解决有可能在播放动画期间加入信息导致播放动画不正确的问题 */
   if (dialog_toast->message_list.size > 0) {
     dialog_toast_message_t* message = (dialog_toast_message_t*)darray_tail(&(dialog_toast->message_list));
-    dialog_toast_set_curr_message(dialog_toast, message, message->duration);
+    dialog_toast_set_curr_message(dialog_toast, message, message->duration, TRUE);
   }
   return RET_REMOVE;
 }
@@ -131,7 +131,7 @@ static ret_t dialog_toast_on_idle_create_dialog(const idle_info_t* info) {
   /* 检查是否在关闭窗口动画的过程中加入新的信息 */
   if (dialog_toast->message_list.size > 0) {
     dialog_toast_message_t* message = (dialog_toast_message_t*)darray_tail(&(dialog_toast->message_list));
-    dialog_toast_set_curr_message(dialog_toast, message, message->duration);
+    dialog_toast_set_curr_message(dialog_toast, message, message->duration, FALSE);
   } else {
     dialog_toast_close(dialog_toast);
   }
@@ -155,14 +155,11 @@ static ret_t dialog_toast_on_destroy(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t dialog_toast_quit(dialog_toast_t* dialog_toast) {
+static ret_t dialog_toast_quit(dialog_toast_t* dialog_toast, bool_t time_up) {
   bool_t first = TRUE;
   uint64_t now = timer_manager()->get_time();
   darray_t* message_list = &(dialog_toast->message_list);
   return_value_if_fail(message_list->size > 0, RET_FAIL);
-  if (!dialog_toast->is_opened) {
-    return RET_BUSY;
-  }
   do {
     if (message_list->size > 0) {
       dialog_toast_message_t* message = (dialog_toast_message_t*)darray_tail(message_list);
@@ -173,16 +170,16 @@ static ret_t dialog_toast_quit(dialog_toast_t* dialog_toast) {
        */
       if (diff_time > 0 && !first) {
         /* 在宏观时间轴上，之前加入的信息的时间也是在跑的，所以只要显示剩余的时间 */
-        dialog_toast_set_curr_message(dialog_toast, message, diff_time);
+        dialog_toast_set_curr_message(dialog_toast, message, diff_time, TRUE);
         dialog_toast->is_empty = FALSE;
         break;
       } else {
         /* 清除过期的消息和释放其占用的内存 */
         void* data = darray_pop(message_list);
         if (data != NULL) {
-          TKMEM_FREE(data);
+          TKMEM_FREE(data);   
         }
-        if (diff_time > 0 && first) {
+        if ((!time_up || diff_time > 0) && first) {
           timer_remove(dialog_toast->curr_timer_id);
           dialog_toast->curr_timer_id = TK_INVALID_ID;
         }
@@ -205,14 +202,12 @@ static ret_t dialog_toast_quit(dialog_toast_t* dialog_toast) {
 }
 
 static ret_t dialog_toast_on_timer_to_quit(const timer_info_t* info) {
-  dialog_toast_quit(DIALOG_TOAST(info->ctx));
-
+  dialog_toast_quit(DIALOG_TOAST(info->ctx), TRUE);
   return RET_REMOVE;
 }
 
 static ret_t dialog_toast_on_click_to_quit(void* ctx, event_t* e) {
-  dialog_toast_quit(DIALOG_TOAST(ctx));
-
+  dialog_toast_quit(DIALOG_TOAST(ctx), FALSE);
   return RET_REMOVE;
 }
 
@@ -235,15 +230,19 @@ static dialog_toast_t* dialog_toast_manager() {
 }
 
 static ret_t dialog_toast_on_idle_close(const idle_info_t* info) {
-  widget_t* widget = WIDGET(info->ctx);
-  return window_manager_close_window(widget->parent, widget);
+  dialog_toast_t* dialog_toast = DIALOG_TOAST(info->ctx);
+  ENSURE(dialog_toast != NULL);
+  if (!dialog_toast->is_opened) {
+    return RET_REPEAT;
+  }
+  return window_manager_close_window(dialog_toast->toast->parent, dialog_toast->toast);
 }
 
 static ret_t dialog_toast_close(dialog_toast_t* dialog_toast) {
   return_value_if_fail(dialog_toast != NULL, RET_BAD_PARAMS);
   if (dialog_toast != NULL && dialog_toast->is_empty && !dialog_toast->is_closing) {
     dialog_toast->is_closing = TRUE;
-    idle_add(dialog_toast_on_idle_close, dialog_toast->toast);
+    idle_add(dialog_toast_on_idle_close, dialog_toast);
   }
   return RET_OK;
 }
@@ -303,7 +302,7 @@ static ret_t dialog_toast_set_label_self_layout(widget_t* toast, widget_t* label
   return widget_set_self_layout(label, params);
 }
 
-static ret_t dialog_toast_set_curr_message(dialog_toast_t* dialog_toast, dialog_toast_message_t* message, uint32_t duration) {
+static ret_t dialog_toast_set_curr_message(dialog_toast_t* dialog_toast, dialog_toast_message_t* message, uint32_t duration, bool_t add_timer) {
 
   widget_t* label = NULL;
  
@@ -314,9 +313,11 @@ static ret_t dialog_toast_set_curr_message(dialog_toast_t* dialog_toast, dialog_
     ENSURE(timer_remove(dialog_toast->curr_timer_id) == RET_OK);
   }
 
-  /* 添加新一个信息的计时器 */
-  dialog_toast->curr_timer_id = timer_add(dialog_toast_on_timer_to_quit, dialog_toast, duration);
-  ENSURE(dialog_toast->curr_timer_id != TK_INVALID_ID);
+  if (add_timer) {
+    /* 添加新一个信息的计时器 */
+    dialog_toast->curr_timer_id = timer_add(dialog_toast_on_timer_to_quit, dialog_toast, duration);
+    ENSURE(dialog_toast->curr_timer_id != TK_INVALID_ID);
+  }
 
   widget_destroy_children(dialog_toast->toast);
 
@@ -353,7 +354,7 @@ static dialog_toast_message_t* dialog_toast_push_message(dialog_toast_t* dialog_
 
     /* 在关闭 dialog 动画期间不显示消息，等完成关闭动画后重新创建 dialog 再显示消息 */
     if (!dialog_toast->is_closing && !dialog_toast->is_opening) {
-      ret = dialog_toast_set_curr_message(dialog_toast, message, duration);
+      ret = dialog_toast_set_curr_message(dialog_toast, message, duration, FALSE);
       goto_error_if_fail(ret == RET_OK);
     }
 
