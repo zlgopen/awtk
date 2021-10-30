@@ -1,0 +1,36 @@
+import os
+import platform
+
+def joinPath(root, subdir):
+  return os.path.normpath(os.path.join(root, subdir))
+env=DefaultEnvironment().Clone()
+LIB_DIR=os.environ['LIB_DIR'];
+BIN_DIR=os.environ['BIN_DIR'];
+CCFLAGS=os.environ['CCFLAGS'];
+TK_3RD_ROOT=os.environ['TK_3RD_ROOT'];
+OS_NAME=platform.system()
+
+env.Library(os.path.join(LIB_DIR, 'nanovg_plus'), Glob('base/*.c') + Glob('gl/*.c'), CCFLAGS=CCFLAGS)
+
+GTEST_ROOT=os.environ['GTEST_ROOT'];
+# INCLUDE_PATH = [TK_ROOT, 
+#   GTEST_ROOT,
+#   os.path.join(TK_ROOT, 'src'),  
+#   os.path.join(TK_3RD_ROOT, 'SDL/src'), 
+#   os.path.join(TK_3RD_ROOT, 'SDL/include'), 
+#   os.path.join(TK_ROOT, 'src/ext_widgets'),  
+#   os.path.join(TK_ROOT, '3rd/libunibreak'),
+#   os.path.join(GTEST_ROOT, 'src'),
+#   os.path.join(GTEST_ROOT, 'include'),
+#   os.path.join(GTEST_ROOT, 'make')]
+
+# env['CPPPATH'] = INCLUDE_PATH
+env['LIBS'] = ['nanovg_plus'] + env['LIBS']
+env['LINKFLAGS'] = env['OS_SUBSYSTEM_CONSOLE'] + env['LINKFLAGS'];
+
+SOURCES = [
+ os.path.join(GTEST_ROOT, 'src/gtest-all.cc'),
+] + Glob('tests/*.cpp') + Glob('tests/gtest_nvpg.c')
+
+env.Program(os.path.join(BIN_DIR, 'nanovg_plus_test'), SOURCES)
+

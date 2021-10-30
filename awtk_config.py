@@ -48,6 +48,7 @@ AWTK_STATIC_LIBS=['awtk_global', 'extwidgets', 'widgets', 'base', 'gpinyin', 'st
 INPUT_ENGINE='pinyin'
 
 VGCANVAS='NANOVG'
+# VGCANVAS='NANOVG_PLUS'
 if OS_NAME == 'Windows':
   TK_ROOT=TK_ROOT.replace('\\', '\\\\');
   NANOVG_BACKEND='GLES2'
@@ -77,6 +78,7 @@ else:
 
 NANOVG_BACKEND_LIBS=[];
 NANOVG_BACKEND_PROJS=[];
+NANOVG_BACKEND_CPPPATH=[];
 
 NATIVE_WINDOW='sdl'
 TOOLS_NAME = ''
@@ -120,7 +122,7 @@ elif INPUT_ENGINE == 'null' :
     COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_IME_NULL '
 
 if LCD == 'SDL_GPU':
-  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG_GPU -DWITH_VGCANVAS_LCD'
+  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_GPU -DWITH_VGCANVAS_LCD'
   COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITH_STB_FONT '
 elif LCD == 'SDL_FB_MONO':
   NANOVG_BACKEND='AGGE'
@@ -138,7 +140,26 @@ if VGCANVAS == 'CAIRO':
   NANOVG_BACKEND_LIBS=['cairo', 'pixman'];
   NANOVG_BACKEND_PROJS=['3rd/cairo/SConscript', '3rd/pixman/SConscript'];
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_VGCANVAS_CAIRO -DHAVE_CONFIG_H -DCAIRO_WIN32_STATIC_BUILD '
+elif VGCANVAS == 'NANOVG_PLUS':
+  NANOVG_BACKEND_LIBS=['nanovg_plus'];
+  NANOVG_BACKEND_PROJS=['3rd/nanovg_plus/SConscript'];
+  NANOVG_BACKEND_CPPPATH = [joinPath(TK_3RD_ROOT, 'nanovg_plus/gl'), joinPath(TK_3RD_ROOT, 'nanovg_plus/base')]
+  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG_PLUS_GPU -DWITH_NANOVG_GPU -DWITH_GPU_GL '
+  if NANOVG_BACKEND == 'GLES2':
+    COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_GPU_GLES2 -DNVGP_GLES2 '
+  elif NANOVG_BACKEND == 'GLES3':
+    COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_GPU_GLES3 -DNVGP_GLES3 '
+  else:
+    COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_GPU_GL3 -DNVGP_GL3 '
 else:
+  NANOVG_BACKEND_PROJS=['3rd/nanovg/SConscript'];
+  NANOVG_BACKEND_CPPPATH = [
+    joinPath(TK_3RD_ROOT, 'nanovg'), 
+    joinPath(TK_3RD_ROOT, 'nanovg/gl'), 
+    joinPath(TK_3RD_ROOT, 'nanovg/base'), 
+    joinPath(TK_3RD_ROOT, 'nanovg/agge'), 
+    joinPath(TK_3RD_ROOT, 'nanovg/bgfx')]
+  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG_GPU '
   if NANOVG_BACKEND == 'AGG':
     NANOVG_BACKEND_LIBS=['nanovg-agg', 'nanovg', 'agg'];
     NANOVG_BACKEND_PROJS=['3rd/agg/SConscript'];
@@ -240,7 +261,6 @@ elif OS_NAME == 'Windows':
   COMMON_CCFLAGS = COMMON_CCFLAGS + '-D_SECURE_SCL=0 -D_SCL_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_DEPRECATE '
   OS_PROJECTS=['3rd/SDL/SConscript']
 
-  
 CFLAGS=COMMON_CFLAGS
 LINKFLAGS=OS_LINKFLAGS;
 LIBPATH=[TK_LIB_DIR, TK_BIN_DIR] + OS_LIBPATH
@@ -267,11 +287,6 @@ CPPPATH=[TK_ROOT,
   joinPath(TK_3RD_ROOT, 'bgfx/bimg/include'), 
   joinPath(TK_3RD_ROOT, 'agge'), 
   joinPath(TK_3RD_ROOT, 'agg/include'), 
-  joinPath(TK_3RD_ROOT, 'nanovg'), 
-  joinPath(TK_3RD_ROOT, 'nanovg/gl'), 
-  joinPath(TK_3RD_ROOT, 'nanovg/base'), 
-  joinPath(TK_3RD_ROOT, 'nanovg/agge'), 
-  joinPath(TK_3RD_ROOT, 'nanovg/bgfx'), 
   joinPath(TK_3RD_ROOT, 'SDL/src'), 
   joinPath(TK_3RD_ROOT, 'SDL/include'), 
   joinPath(TK_3RD_ROOT, 'agge/src'), 
@@ -280,7 +295,7 @@ CPPPATH=[TK_ROOT,
   joinPath(TK_3RD_ROOT, 'libunibreak'), 
   joinPath(TK_3RD_ROOT, 'gtest/googletest'), 
   joinPath(TK_3RD_ROOT, 'gtest/googletest/include'), 
-  TK_TOOLS_ROOT] + OS_CPPPATH
+  TK_TOOLS_ROOT] + OS_CPPPATH + NANOVG_BACKEND_CPPPATH
 
 os.environ['LCD'] = LCD
 os.environ['TK_ROOT'] = TK_ROOT

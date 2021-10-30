@@ -84,26 +84,34 @@ static ret_t lcd_vgcanvas_set_global_alpha(lcd_t* lcd, uint8_t alpha) {
 static ret_t lcd_vgcanvas_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
   vgcanvas_t* canvas = LCD(lcd)->canvas;
 
+  vgcanvas_save(canvas);
   vgcanvas_begin_path(canvas);
-  vgcanvas_move_to(canvas, x + 0.5f, y);
-  vgcanvas_line_to(canvas, x + 0.5f, y + h);
+  vgcanvas_set_antialias(canvas, FALSE);
+  vgcanvas_translate(canvas, 0.5f, 0.0f);
+  vgcanvas_move_to(canvas, x, y);
+  vgcanvas_line_to(canvas, x, y + h);
   vgcanvas_set_line_width(canvas, 1);
   vgcanvas_set_stroke_color(canvas, lcd->stroke_color);
   vgcanvas_stroke(canvas);
-
+  vgcanvas_set_antialias(canvas, TRUE);
+  vgcanvas_restore(canvas);
   return RET_OK;
 }
 
 static ret_t lcd_vgcanvas_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
   vgcanvas_t* canvas = LCD(lcd)->canvas;
 
+  vgcanvas_save(canvas);
   vgcanvas_begin_path(canvas);
-  vgcanvas_move_to(canvas, x, y + 0.5f);
-  vgcanvas_line_to(canvas, x + w, y + 0.5f);
+  vgcanvas_set_antialias(canvas, FALSE);
+  vgcanvas_translate(canvas, 0.0f, 0.5f);
+  vgcanvas_move_to(canvas, x, y);
+  vgcanvas_line_to(canvas, x + w, y);
   vgcanvas_set_line_width(canvas, 1);
   vgcanvas_set_stroke_color(canvas, lcd->stroke_color);
   vgcanvas_stroke(canvas);
-
+  vgcanvas_set_antialias(canvas, TRUE);
+  vgcanvas_restore(canvas);
   return RET_OK;
 }
 
@@ -120,28 +128,9 @@ static ret_t lcd_vgcanvas_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) 
     vgcanvas_set_antialias(canvas, TRUE);
     vgcanvas_restore(canvas);
   } else if (w <= 1) {
-    vgcanvas_save(canvas);
-    vgcanvas_begin_path(canvas);
-    vgcanvas_set_antialias(canvas, FALSE);
-    vgcanvas_translate(canvas, 0.5f, -0.5f);
-    vgcanvas_move_to(canvas, x, y);
-    vgcanvas_line_to(canvas, x, y + h);
-    vgcanvas_set_line_width(canvas, 1);
-    vgcanvas_set_stroke_color(canvas, lcd->fill_color);
-    vgcanvas_stroke(canvas);
-    vgcanvas_set_antialias(canvas, TRUE);
-    vgcanvas_restore(canvas);
+    lcd_vgcanvas_draw_vline(lcd, x, y, h);
   } else if (h <= 1) {
-    vgcanvas_save(canvas);
-    vgcanvas_begin_path(canvas);
-    vgcanvas_set_antialias(canvas, FALSE);
-    vgcanvas_move_to(canvas, x, y);
-    vgcanvas_line_to(canvas, x + w, y);
-    vgcanvas_set_line_width(canvas, 1);
-    vgcanvas_set_stroke_color(canvas, lcd->fill_color);
-    vgcanvas_stroke(canvas);
-    vgcanvas_set_antialias(canvas, TRUE);
-    vgcanvas_restore(canvas);
+    lcd_vgcanvas_draw_hline(lcd, x, y, w);
   }
 
   return RET_OK;
@@ -351,7 +340,11 @@ lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
   base->h = (wh_t)h;
   base->ratio = canvas->ratio;
   base->type = LCD_VGCANVAS;
+#ifdef WITH_NANOVG_PLUS_GPU
+  base->support_dirty_rect = FALSE;
+#elif defined(WITH_NANOVG_GPU)
   base->support_dirty_rect = TRUE;
+#endif
 
   system_info_set_lcd_w(info, base->w);
   system_info_set_lcd_h(info, base->h);

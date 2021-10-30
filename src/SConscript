@@ -54,6 +54,8 @@ BASE_SOURCES += [
 
 if VGCANVAS == 'CAIRO':
   BASE_SOURCES +=['vgcanvas/vgcanvas_cairo.c'];
+elif VGCANVAS == 'NANOVG_PLUS':
+  BASE_SOURCES +=['vgcanvas/vgcanvas_nanovg_plus.c'];
 else:
   if NANOVG_BACKEND == 'BGFX':
     BASE_SOURCES +=['vgcanvas/vgcanvas_nanovg_bgfx.c'];

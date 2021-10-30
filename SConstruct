@@ -20,7 +20,6 @@ DefaultEnvironment(TOOLS = APP_TOOLS,
 SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
   '3rd/cjson/SConscript',
   '3rd/mbedtls/SConscript',
-  '3rd/nanovg/SConscript',
   '3rd/glad/SConscript',
   '3rd/gpinyin/SConscript', 
   '3rd/libunibreak/SConscript',
