@@ -125,9 +125,11 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdli
   int argc = 1;
   char* argv[MAX_ARGV];
   bool_t is_reboot = FALSE;
+  bool_t enable_console = TRUE;
   int32_t lcd_w = LCD_WIDTH;
   int32_t lcd_h = LCD_HEIGHT;
   char buff[1024];
+
   str_init(&str, 0);
   str.str = buff;
   str.size = 0;
@@ -135,8 +137,6 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdli
   str_from_wstr(&str, lpcmdline);
   command_line_to_argv(str.str, argv, &argc);
   str.str = NULL;
-
-  TK_ENABLE_CONSOLE();
 
   CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
@@ -149,7 +149,15 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdli
   if (argc >= 3) {
     lcd_h = tk_atoi(argv[2]);
   }
+  if (argc >= 4) {
+    enable_console = tk_atob(argv[3]);
+  }
 #endif /*ON_CMD_LINE*/
+
+  if (enable_console) {
+    TK_ENABLE_CONSOLE();
+  }
+
   do {
     tk_init(lcd_w, lcd_h, APP_TYPE, APP_NAME, APP_RES_ROOT);
 #else
