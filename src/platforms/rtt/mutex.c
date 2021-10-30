@@ -27,13 +27,13 @@
 
 struct _tk_mutex_t {
   rt_mutex_t mutex;
-  char name[TK_NAME_LEN+1]
+  char name[TK_NAME_LEN+1];
 };
 
 tk_mutex_t* tk_mutex_create() {
   tk_mutex_t* mutex = TKMEM_ZALLOC(tk_mutex_t);
   return_value_if_fail(mutex != NULL, NULL);
-  tn_snprintf(mutex->name, TK_NAME_LEN, "mutex%d", time_now_ms());
+  tk_snprintf(mutex->name, TK_NAME_LEN, "mutex%d", (int)time_now_ms());
 
   mutex->mutex = rt_mutex_create(mutex->name, 0);
   if (mutex->mutex == NULL) {
