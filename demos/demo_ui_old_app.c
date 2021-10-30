@@ -761,28 +761,12 @@ static widget_t* find_bind_value_target(widget_t* widget, const char* name) {
   return target;
 }
 
-static ret_t on_kb_destroy_to_change_value(void* ctx, event_t* e) {
-  widget_t* widget = WIDGET(ctx);
-  widget_t* target = find_bind_value_target(widget, widget->name);
-  return_value_if_fail(widget != NULL && target != NULL, RET_BAD_PARAMS);
-
-  return widget_set_prop_float(widget, "animate.value", widget_get_value(target));
-}
-
 static ret_t on_bind_value_changed(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   widget_t* target = WIDGET(e->target);
-  if (widget != NULL && target != NULL) {
-    input_method_t* im = input_method();
+  return_value_if_fail(widget != NULL && target != NULL, RET_BAD_PARAMS);
 
-    if (im != NULL && im->keyboard != NULL) {
-      widget_on(im->keyboard, EVT_DESTROY, on_kb_destroy_to_change_value, ctx);
-    } else {
-      widget_set_prop_float(widget, "animate.value", widget_get_value(target));
-    }
-  }
-
-  return RET_OK;
+  return widget_set_prop_float(widget, "animate.value", widget_get_value(target));
 }
 
 static ret_t install_one(void* ctx, const void* iter) {

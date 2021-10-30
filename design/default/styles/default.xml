@@ -182,6 +182,10 @@
     <normal text_color="green" />
   </style>
 
+  <style name="white">
+    <normal text_color="white" />
+  </style>
+
   <style name="left">
     <normal text_color="red" text_align_h="left" border_color="#a0a0a0" margin="4" />
   </style>
@@ -215,6 +219,11 @@
 <progress_bar>
   <style name="default">
     <normal text_color="gold" bg_color="#c0c0c0" fg_color="green" border_color="#333333"/>
+  </style>
+
+  <style name="blue" round_radius="5">
+    <normal text_color="#444444" bg_color="#d8d8d8" fg_color="#338fff" border_color="#d8d8d8"/>
+    <disable text_color="#44444466" bg_color="#d8d8d866" fg_color="#338fff66" border_color="#d8d8d866"/>
   </style>
   
   <style name="round">
@@ -574,6 +583,9 @@
   </style>
   <style name="image">
     <normal text_color="gold" bg_color="#00f6aa" fg_image="progress_circle" />
+  </style>
+  <style name="image2">
+    <normal text_color="white" bg_color="white" fg_image="progress_circle" />
   </style>
 </progress_circle>
 

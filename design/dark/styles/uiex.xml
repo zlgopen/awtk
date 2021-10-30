@@ -594,9 +594,9 @@
   </style>
 </popup>
 <progress_bar>
-  <style name="default">
-    <normal bg_color="#141414" border_color="#141414" fg_color="#709918" round_radius="0" text_color="#FFFFFF"/>
-    <disable bg_color="#14141466" border_color="#14141466" fg_color="#70991866" round_radius="5" text_color="#FFFFFF66"/>
+  <style name="default" round_radius="0">
+    <normal bg_color="#141414" border_color="#141414" fg_color="#709918" text_color="#FFFFFF"/>
+    <disable bg_color="#14141466" border_color="#14141466" fg_color="#70991866" text_color="#FFFFFF66"/>
   </style>
 </progress_bar>
 <progress_circle>
