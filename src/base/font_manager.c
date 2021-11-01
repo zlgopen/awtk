@@ -169,6 +169,7 @@ font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t 
   font_t* font = NULL;
   const char* default_font = system_info()->default_font;
   name = system_info_fix_font_name(name);
+  name = asset_info_get_formatted_name(name);
   return_value_if_fail(fm != NULL, NULL);
 
   font = font_manager_lookup(fm, name, size);
