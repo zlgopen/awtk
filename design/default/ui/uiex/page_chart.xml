@@ -7,9 +7,9 @@
     </view>
     <view name="view_gauge" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="250" invisible_in_1m="true">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Gauge"/>
-      <guage h="-22" image="uiex_RecordForm_bg" disg:custom="container" draw_type="center">
-        <guage_pointer x="c:-5" w="24" h="78%" value="-128" image="gauge_pointer" animation="value(from=-128, to=128, yoyo_times=0, duration=3000, delay=1000, auto_destroy=false)" disg:custom="container" angle="90" y="47"/>
-      </guage>
+      <gauge h="-22" image="uiex_RecordForm_bg" disg:custom="container" draw_type="center">
+        <gauge_pointer x="c:-5" y="47" w="24" h="78%" image="gauge_pointer" angle="-128" animation="value(from=-128, to=128, yoyo_times=0, duration=3000, delay=1000, auto_destroy=false)" disg:custom="container"/>
+      </gauge>
     </view>
   </scroll_view>
   <scroll_bar_m name="bar" x="r" y="0" w="7" h="100%" max="1000"/>

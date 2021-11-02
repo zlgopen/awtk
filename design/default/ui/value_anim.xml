@@ -18,7 +18,7 @@
         <gauge x="c" y="0" w="240" h="240" image="gauge_bg" disg:custom="container">
           <gauge_pointer name="bind_value:../slider" x="c" y="50" w="24" h="140" image="gauge_pointer" animate.value="40" disg:custom="container"/>
         </gauge>
-        <progress_circle name="bind_value:slider" x="c" y="b:50" w="180" h="180" line_width="16" animate.value="40" style="image2" max="360"/>
+        <progress_circle name="bind_value:slider" x="c" y="b:50" w="180" h="180" line_width="16" animate.value="40" style="blue" max="360"/>
         <slider name="slider" x="c:30" y="b:20" w="200" h="16" style="img" min="0" max="360" value="40">
           <label x="-75" y="m" w="75" h="32" style="white" text="move here:"/>
         </slider>

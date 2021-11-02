@@ -944,3 +944,7 @@ Translate text
   <language name="en_US">Test</language>
   <language name="zh_CN">测试</language>
 </string>
+<string name="sliding here:">
+  <language name="en_US">sliding here:</language>
+  <language name="zh_CN">滑动此处：</language>
+</string>

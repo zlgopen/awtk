@@ -1,9 +1,10 @@
 # 最新动态
 
 2021/11/02
-  * 增加str\_append\_int64/str\_append\_uint64
-  * 修复json解析对null的处理。
   * 增加tk\_str\_end\_with
+  * 修复json解析对null的处理。
+  * 增加str\_append\_int64/str\_append\_uint64
+  * 完善 demoui/demouiold 动画演示（感谢兆坤提供补丁）
 
 2021/11/01
   * 修复agge编译缺失的问题（感谢智明提供补丁）。

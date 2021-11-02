@@ -231,6 +231,49 @@ static ret_t on_scroll_to_top(const idle_info_t* idle) {
   return RET_REMOVE;
 }
 
+static widget_t* find_bind_value_target(widget_t* widget, const char* name) {
+  widget_t* target = NULL;
+  return_value_if_fail(widget != NULL && name != NULL, NULL);
+
+  if (tk_str_start_with(name, "bind_value:")) {
+    widget_t* parent = widget->parent;
+    const char* subname = NULL;
+    tokenizer_t t;
+
+    name += 11;
+    tokenizer_init(&t, name, tk_strlen(name), "/");
+
+    while ((subname = tokenizer_next(&t)) != NULL) {
+      if (tokenizer_has_more(&t)) {
+        if (tk_str_eq(subname, "..")) {
+          parent = parent->parent;
+        } else {
+          while (parent != NULL) {
+            widget_t* tmp = widget_lookup(parent, subname, FALSE);
+            if (tmp != NULL) {
+              parent = tmp;
+              break;
+            } else {
+              parent = parent->parent;
+            }
+          }
+        }
+      } else {
+        target = widget_lookup(parent, subname, FALSE);
+      }
+    }
+  }
+  return target;
+}
+
+static ret_t on_bind_value_changed(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  widget_t* target = WIDGET(e->target);
+  return_value_if_fail(widget != NULL && target != NULL, RET_BAD_PARAMS);
+
+  return widget_set_prop_float(widget, "animate.value", widget_get_value(target));
+}
+
 static ret_t common_init_widget(void* ctx, const void* iter) {
   widget_t* widget = WIDGET(iter);
   widget_t* win = widget_get_window(widget);
@@ -253,6 +296,9 @@ static ret_t common_init_widget(void* ctx, const void* iter) {
       widget_on(widget, EVT_POINTER_UP, on_close_window, win);
     } else if (tk_str_eq(name, "quit()")) {
       widget_on(widget, EVT_POINTER_UP, on_quit, NULL);
+    } else if (tk_str_start_with(name, "bind_value:")) {
+      widget_t* target = find_bind_value_target(widget, name);
+      widget_on(target, EVT_VALUE_CHANGED, on_bind_value_changed, (void*)widget);
     }
   }
 
@@ -413,6 +459,12 @@ static ret_t page_label_init(widget_t* page) {
   }
 
   return RET_OK;
+}
+
+/*** page_slider **********************************************************************/
+static ret_t page_slider_init(widget_t* page) {
+  return_value_if_fail(page != NULL, RET_BAD_PARAMS);
+  return widget_foreach(page, common_init_widget, NULL);
 }
 
 /*** page_image **********************************************************************/
@@ -1330,6 +1382,7 @@ ret_t application_init(void) {
 
   s_page_enter_func_array[0] = page_button_init;
   s_page_enter_func_array[3] = page_label_init;
+  s_page_enter_func_array[6] = page_slider_init;
   s_page_enter_func_array[8] = page_image_init;
   s_page_enter_func_array[9] = page_mledit_init;
   s_page_enter_func_array[12] = page_tab_ctrl_init;

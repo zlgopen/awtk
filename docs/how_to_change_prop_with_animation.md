@@ -20,4 +20,4 @@ widget_set_prop_double(slider, "animate.value", 40.0);
 ```
 
 ## demo 演示
-请打开 `demouiold` 中 `Animate Widget/Value Change Animate` 页面查看演示。
+请打开 `demoui` 中 `Slider` 页面或 `demouiold` 中 `Animate Widget/Value Change Animate` 页面查看演示。
