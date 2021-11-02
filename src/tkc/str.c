@@ -129,6 +129,20 @@ ret_t str_append_int(str_t* str, int32_t value) {
   return str_append(str, num);
 }
 
+ret_t str_append_int64(str_t* str, int64_t value) {
+  char num[32];
+  tk_snprintf(num, sizeof(num), "%" PRId64, value);
+
+  return str_append(str, num);
+}
+
+ret_t str_append_uint64(str_t* str, uint64_t value) {
+  char num[32];
+  tk_snprintf(num, sizeof(num), "%" PRIu64, value);
+
+  return str_append(str, num);
+}
+
 ret_t str_append_char(str_t* str, char c) {
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
   return_value_if_fail(str_extend(str, str->size + 2) == RET_OK, RET_BAD_PARAMS);
@@ -735,3 +749,4 @@ ret_t str_common_prefix(str_t* str, const char* other) {
 
   return RET_OK;
 }
+

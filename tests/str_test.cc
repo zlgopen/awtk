@@ -431,3 +431,27 @@ TEST(Str, common_prefix) {
 
   str_reset(&str);
 }
+
+TEST(Str, int64) {
+  str_t str;
+  str_init(&str, 100);
+  ASSERT_EQ(str_append_int64(&str, 123567890123), RET_OK);
+  ASSERT_STREQ(str.str, "123567890123");
+  str_reset(&str);
+  
+  ASSERT_EQ(str_append_int64(&str, -123567890123), RET_OK);
+  ASSERT_STREQ(str.str, "-123567890123");
+  str_reset(&str);
+}
+
+TEST(Str, uint64) {
+  str_t str;
+  str_init(&str, 100);
+  ASSERT_EQ(str_append_uint64(&str, 123567890123), RET_OK);
+  ASSERT_STREQ(str.str, "123567890123");
+  str_reset(&str);
+
+  ASSERT_EQ(str_append_uint64(&str, -1), RET_OK);
+  ASSERT_STREQ(str.str, "18446744073709551615");
+  str_reset(&str);
+}

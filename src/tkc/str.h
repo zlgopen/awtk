@@ -238,6 +238,26 @@ ret_t str_append_n_chars(str_t* str, char c, uint32_t n);
 ret_t str_append_int(str_t* str, int32_t value);
 
 /**
+ * @method str_append_int64
+ * 追加一个int64整数。
+ * @param {str_t*} str str对象。
+ * @param {int64_t} value 要追加的整数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_int64(str_t* str, int64_t value);
+
+/**
+ * @method str_append_uint64
+ * 追加一个uint64整数。
+ * @param {str_t*} str str对象。
+ * @param {uint64_t} value 要追加的整数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_uint64(str_t* str, uint64_t value);
+
+/**
  * @method str_append_double
  * 追加一个浮点数。
  * @param {str_t*} str str对象。
