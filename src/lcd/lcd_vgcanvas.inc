@@ -81,7 +81,7 @@ static ret_t lcd_vgcanvas_set_global_alpha(lcd_t* lcd, uint8_t alpha) {
   return vgcanvas_set_global_alpha(LCD(lcd)->canvas, (float_t)alpha / 255.0);
 }
 
-static ret_t lcd_vgcanvas_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
+static ret_t lcd_vgcanvas_draw_vline_with_color(lcd_t* lcd, xy_t x, xy_t y, wh_t h, color_t stroke_color) {
   vgcanvas_t* canvas = LCD(lcd)->canvas;
 
   vgcanvas_save(canvas);
@@ -91,14 +91,18 @@ static ret_t lcd_vgcanvas_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
   vgcanvas_move_to(canvas, x, y);
   vgcanvas_line_to(canvas, x, y + h);
   vgcanvas_set_line_width(canvas, 1);
-  vgcanvas_set_stroke_color(canvas, lcd->stroke_color);
+  vgcanvas_set_stroke_color(canvas, stroke_color);
   vgcanvas_stroke(canvas);
   vgcanvas_set_antialias(canvas, TRUE);
   vgcanvas_restore(canvas);
   return RET_OK;
 }
 
-static ret_t lcd_vgcanvas_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
+static ret_t lcd_vgcanvas_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
+  return lcd_vgcanvas_draw_vline_with_color(lcd, x, y, h, lcd->stroke_color);
+}
+
+static ret_t lcd_vgcanvas_draw_hline_with_color(lcd_t* lcd, xy_t x, xy_t y, wh_t w, color_t stroke_color) {
   vgcanvas_t* canvas = LCD(lcd)->canvas;
 
   vgcanvas_save(canvas);
@@ -108,11 +112,15 @@ static ret_t lcd_vgcanvas_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
   vgcanvas_move_to(canvas, x, y);
   vgcanvas_line_to(canvas, x + w, y);
   vgcanvas_set_line_width(canvas, 1);
-  vgcanvas_set_stroke_color(canvas, lcd->stroke_color);
+  vgcanvas_set_stroke_color(canvas, stroke_color);
   vgcanvas_stroke(canvas);
   vgcanvas_set_antialias(canvas, TRUE);
   vgcanvas_restore(canvas);
   return RET_OK;
+}
+
+static ret_t lcd_vgcanvas_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
+  return lcd_vgcanvas_draw_hline_with_color(lcd, x, y, w, lcd->stroke_color);
 }
 
 static ret_t lcd_vgcanvas_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
@@ -128,9 +136,9 @@ static ret_t lcd_vgcanvas_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) 
     vgcanvas_set_antialias(canvas, TRUE);
     vgcanvas_restore(canvas);
   } else if (w <= 1) {
-    lcd_vgcanvas_draw_vline(lcd, x, y, h);
+    lcd_vgcanvas_draw_vline_with_color(lcd, x, y, h, lcd->fill_color);
   } else if (h <= 1) {
-    lcd_vgcanvas_draw_hline(lcd, x, y, w);
+    lcd_vgcanvas_draw_hline_with_color(lcd, x, y, w, lcd->fill_color);
   }
 
   return RET_OK;
