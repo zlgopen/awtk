@@ -206,6 +206,14 @@ static ret_t conf_json_parse_number(json_parser_t* parser) {
   return conf_node_set_value(parser->current, &v);
 }
 
+static ret_t conf_json_parse_null_string(json_parser_t* parser) {
+  value_t v;
+  conf_json_skip_to_value_end(parser);
+  value_set_str(&v, NULL);
+
+  return conf_node_set_value(parser->current, &v);
+}
+
 static ret_t conf_json_parse_string(json_parser_t* parser) {
   value_t v;
   uint32_t start = 0;
@@ -252,6 +260,8 @@ static ret_t conf_json_parse_value(json_parser_t* parser) {
         return conf_json_parse_string(parser);
       } else if (c == 't' || c == 'f') {
         return conf_json_parse_bool(parser);
+      } else if (c == 'n' && strncmp(p + parser->cursor, "null", 4) == 0) {
+        return conf_json_parse_null_string(parser);
       } else {
         return conf_json_parse_number(parser);
       }

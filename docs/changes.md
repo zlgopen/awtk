@@ -2,6 +2,7 @@
 
 2021/11/02
   * 增加str\_append\_int64/str\_append\_uint64
+  * 修复json解析对null的处理。
 
 2021/11/01
   * 修复agge编译缺失的问题（感谢智明提供补丁）。

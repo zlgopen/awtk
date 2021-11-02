@@ -364,3 +364,30 @@ TEST(ConfJson, find) {
 
   conf_doc_destroy(doc);
 }
+
+TEST(ConfJson, null) {
+  value_t v;
+  const char* data = " {\"tom\" : { \"name\" : null, \"age\" : 100  }  } ";
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+  ASSERT_EQ(conf_doc_get(doc, "tom.name", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), NULL);
+
+  conf_doc_destroy(doc);
+}
+
+TEST(ConfJson, null_in_array) {
+  value_t v;
+  const char* data = " [null, null] ";
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+
+  value_set_str(&v, "123");
+
+  ASSERT_EQ(conf_doc_get(doc, "[0]", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), NULL);
+  
+  ASSERT_EQ(conf_doc_get(doc, "[1]", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), NULL);
+  
+  conf_doc_destroy(doc);
+}
+
