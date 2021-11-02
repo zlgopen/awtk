@@ -221,7 +221,7 @@ static ret_t children_layouter_list_view_for_list_view_children_layout_h(
       iter->h = item_height;
     }
 
-    if (iter->auto_adjust_size) {
+    if (iter->self_layout != NULL || iter->auto_adjust_size) {
       widget_layout(iter);
     }
 
