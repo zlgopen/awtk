@@ -438,7 +438,7 @@ TEST(Str, int64) {
   ASSERT_EQ(str_append_int64(&str, 123567890123), RET_OK);
   ASSERT_STREQ(str.str, "123567890123");
   str_reset(&str);
-  
+
   ASSERT_EQ(str_append_int64(&str, -123567890123), RET_OK);
   ASSERT_STREQ(str.str, "-123567890123");
   str_reset(&str);

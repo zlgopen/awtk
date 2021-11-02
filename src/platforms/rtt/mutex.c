@@ -27,7 +27,7 @@
 
 struct _tk_mutex_t {
   rt_mutex_t mutex;
-  char name[TK_NAME_LEN+1];
+  char name[TK_NAME_LEN + 1];
 };
 
 tk_mutex_t* tk_mutex_create() {

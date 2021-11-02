@@ -384,10 +384,9 @@ TEST(ConfJson, null_in_array) {
 
   ASSERT_EQ(conf_doc_get(doc, "[0]", &v), RET_OK);
   ASSERT_STREQ(value_str(&v), NULL);
-  
+
   ASSERT_EQ(conf_doc_get(doc, "[1]", &v), RET_OK);
   ASSERT_STREQ(value_str(&v), NULL);
-  
+
   conf_doc_destroy(doc);
 }
-

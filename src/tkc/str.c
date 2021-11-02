@@ -749,4 +749,3 @@ ret_t str_common_prefix(str_t* str, const char* other) {
 
   return RET_OK;
 }
-

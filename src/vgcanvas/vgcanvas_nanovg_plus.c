@@ -21,10 +21,10 @@ typedef struct _vgcanvas_nanovg_plus_t {
   native_window_t* window;
 } vgcanvas_nanovg_plus_t;
 
-#include "vgcanvas_nanovg_plus.inc" 
+#include "vgcanvas_nanovg_plus.inc"
 
 static ret_t vgcanvas_nanovg_plus_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride,
-                                    bitmap_format_t format, void* data) {
+                                         bitmap_format_t format, void* data) {
   (void)vg;
   (void)w;
   (void)h;
@@ -33,7 +33,8 @@ static ret_t vgcanvas_nanovg_plus_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h,
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_plus_begin_frame(vgcanvas_t* vgcanvas, const dirty_rects_t* dirty_rects) {
+static ret_t vgcanvas_nanovg_plus_begin_frame(vgcanvas_t* vgcanvas,
+                                              const dirty_rects_t* dirty_rects) {
   float_t angle = 0.0f;
   float_t anchor_x = 0.0f;
   float_t anchor_y = 0.0f;
@@ -102,12 +103,13 @@ static ret_t vgcanvas_nanovg_plus_end_frame(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_plus_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h, bool_t custom_draw_model, framebuffer_object_t* fbo) {
+static ret_t vgcanvas_nanovg_plus_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h,
+                                             bool_t custom_draw_model, framebuffer_object_t* fbo) {
   nvgp_gl_util_framebuffer* handle = NULL;
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
 
-  handle = nvgp_gl_create_framebuffer(vg, (int)(w * vgcanvas->ratio),
-                                  (int)(h * vgcanvas->ratio), 0);
+  handle =
+      nvgp_gl_create_framebuffer(vg, (int)(w * vgcanvas->ratio), (int)(h * vgcanvas->ratio), 0);
   return_value_if_fail(handle != NULL, RET_FAIL);
 
   fbo->w = w;
@@ -136,11 +138,12 @@ static ret_t vgcanvas_nanovg_plus_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_obj
   nvgp_context_t* vg = NULL;
   vgcanvas_nanovg_plus_t* canvas = (vgcanvas_nanovg_plus_t*)vgcanvas;
   nvgp_gl_util_framebuffer* handle = (nvgp_gl_util_framebuffer*)fbo->handle;
-  
+
   vg = canvas->vg;
 
   fbo->online_fbo = nvgp_gl_get_curr_framebuffer();
-  fbo->online_dirty_rect = rect_init(vgcanvas->dirty_rect.x, vgcanvas->dirty_rect.y, vgcanvas->dirty_rect.w, vgcanvas->dirty_rect.h);
+  fbo->online_dirty_rect = rect_init(vgcanvas->dirty_rect.x, vgcanvas->dirty_rect.y,
+                                     vgcanvas->dirty_rect.w, vgcanvas->dirty_rect.h);
 
   handle->fbo = fbo->offline_fbo;
   vgcanvas->dirty_rect = rect_init(0, 0, fbo->w, fbo->h);
@@ -178,7 +181,8 @@ static ret_t vgcanvas_nanovg_plus_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_o
 
   nvgp_gl_bind_framebuffer(handle);
 
-  vgcanvas->dirty_rect = rect_init(fbo->online_dirty_rect.x, fbo->online_dirty_rect.y, fbo->online_dirty_rect.w, fbo->online_dirty_rect.h);
+  vgcanvas->dirty_rect = rect_init(fbo->online_dirty_rect.x, fbo->online_dirty_rect.y,
+                                   fbo->online_dirty_rect.w, fbo->online_dirty_rect.h);
   glViewport(0, 0, vgcanvas->w * fbo->ratio, vgcanvas->h * fbo->ratio);
   glScissor(0, 0, vgcanvas->w * fbo->ratio, vgcanvas->h * fbo->ratio);
   if (!fbo->custom_draw_model) {
@@ -188,7 +192,7 @@ static ret_t vgcanvas_nanovg_plus_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_o
 }
 
 static ret_t vgcanvas_nanovg_plus_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo,
-                                           bitmap_t* img, const rect_t* r) {
+                                                bitmap_t* img, const rect_t* r) {
   uint32_t i = 0;
   uint32_t x = 0;
   uint32_t y = 0;
@@ -211,7 +215,8 @@ static ret_t vgcanvas_nanovg_plus_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffe
   }
 
   /* 因为 opengles 的原点坐标为左下角，所以需要把 AWTK 的坐标（AWTK 是右上角为原点的坐标系）转换为左下角为原点的坐标系*/
-  nvgp_gl_read_current_framebuffer_data(x, height - img->h - y, img->w, img->h, fbo->w * fbo->ratio, height, data);
+  nvgp_gl_read_current_framebuffer_data(x, height - img->h - y, img->w, img->h, fbo->w * fbo->ratio,
+                                        height, data);
 
   p = data + ((img->h - 1) * img->line_length);
 
@@ -223,20 +228,20 @@ static ret_t vgcanvas_nanovg_plus_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffe
     uint8_t* src_data = p;
     uint8_t* dst_data = img_data;
     for (i = 0; i < img->w; i++) {
-        if (0x0 < src_data[3] && src_data[3] < 0xff) {
-          uint8_t a = src_data[3] >> 2;
-          dst_data[0] = src_data[0] >> 2 == a ? 0xff : (src_data[0] << 8) / src_data[3];
-          dst_data[1] = src_data[1] >> 2 == a ? 0xff : (src_data[1] << 8) / src_data[3];
-          dst_data[2] = src_data[2] >> 2 == a ? 0xff : (src_data[2] << 8) / src_data[3];
-        } else {
-          dst_data[0] = src_data[0];
-          dst_data[1] = src_data[1];
-          dst_data[2] = src_data[2];
-        }
-        dst_data[3] = src_data[3];
+      if (0x0 < src_data[3] && src_data[3] < 0xff) {
+        uint8_t a = src_data[3] >> 2;
+        dst_data[0] = src_data[0] >> 2 == a ? 0xff : (src_data[0] << 8) / src_data[3];
+        dst_data[1] = src_data[1] >> 2 == a ? 0xff : (src_data[1] << 8) / src_data[3];
+        dst_data[2] = src_data[2] >> 2 == a ? 0xff : (src_data[2] << 8) / src_data[3];
+      } else {
+        dst_data[0] = src_data[0];
+        dst_data[1] = src_data[1];
+        dst_data[2] = src_data[2];
+      }
+      dst_data[3] = src_data[3];
 
-        src_data += 4;
-        dst_data += 4;
+      src_data += 4;
+      dst_data += 4;
     }
     if (p == data) {
       break;
@@ -268,7 +273,7 @@ static ret_t vgcanvas_nanovg_plus_destroy(vgcanvas_t* vgcanvas) {
 }
 
 static ret_t vgcanvas_asset_manager_nanovg_plus_font_destroy(void* vg, const char* font_name,
-                                                        void* specific) {
+                                                             void* specific) {
   int32_t id = tk_pointer_to_int(specific);
   vgcanvas_nanovg_plus_t* canvas = (vgcanvas_nanovg_plus_t*)vg;
   if (canvas != NULL && canvas->vg != NULL && id >= 0) {
