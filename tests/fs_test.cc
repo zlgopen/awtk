@@ -1,5 +1,6 @@
 ﻿#include "tkc/fs.h"
 #include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "gtest/gtest.h"
 
 TEST(Fs, basic) {
@@ -194,6 +195,20 @@ TEST(Fs, copy_dir) {
 
   ASSERT_EQ(fs_remove_dir_r(os_fs(), "a"), RET_OK);
   ASSERT_EQ(fs_remove_dir_r(os_fs(), "b"), RET_OK);
+}
+
+static ret_t on_file(void* ctx, const void* data) {
+  const char* filename = (const char*)data;
+  const char* extname = (const char*)ctx;
+
+  if (tk_str_end_with(filename, extname)) {
+    log_debug("%s\n", filename);
+  }
+  return RET_OK;
+}
+
+TEST(Fs, foreach_file) {
+  fs_foreach_file("tests/testdata", on_file, (void*)".json");
 }
 
 #ifdef WIN32

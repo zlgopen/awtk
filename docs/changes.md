@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/11/03
+  * 增加fs\_foreach\_file
+
 2021/11/02
   * 增加tk\_str\_end\_with
   * 修复json解析对null的处理。

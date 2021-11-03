@@ -702,6 +702,34 @@ fs_t* os_fs(void);
 /*wrapper*/
 
 /**
+ * @method fs_foreach_file
+ *
+ * 遍历指定目录下全部常规文件。
+ * 示例:
+ * ```c
+ * static ret_t on_file(void* ctx, const void* data) {
+ *  const char* filename = (const char*)data;
+ *  const char* extname = (const char*)ctx;
+ *
+ *  if (tk_str_end_with(filename, extname)) {
+ *    log_debug("%s\n", filename);
+ *  }
+ *  return RET_OK;
+ * }
+ * ...  
+ * fs_foreach_file("tests/testdata", on_file, (void*)".json");
+ *```
+ *
+ * @param {const char*} path 目录。
+ * @param {tk_visit_t} on_file 回调函数(完整文件名通过data参数传入)。
+ * @param {void*} ctx 回调函数上下文。
+ *
+ * @return {bool_t} 返回TRUE表示成功，否则表示失败。
+ */
+ret_t fs_foreach_file(const char* path, tk_visit_t on_file, void* ctx);
+
+
+/**
  * @method file_exist
  *
  * 判断文件是否存在。

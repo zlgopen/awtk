@@ -642,3 +642,31 @@ ret_t fs_copy_dir(fs_t* fs, const char* src, const char* dst) {
 
   return ret;
 }
+
+ret_t fs_foreach_file(const char* path, tk_visit_t on_file, void* ctx) {
+  fs_item_t item;
+  fs_t* fs = os_fs();
+  fs_dir_t* dir = NULL;
+  char filename[MAX_PATH + 1];
+  return_value_if_fail(fs != NULL && path != NULL && on_file != NULL, RET_BAD_PARAMS);
+
+  dir = fs_open_dir(fs, path);
+  return_value_if_fail(dir != NULL, RET_BAD_PARAMS);
+  while (fs_dir_read(dir, &item) == RET_OK) {
+    if (tk_str_eq(item.name, ".") || tk_str_eq(item.name, "..")) {
+      continue;
+    }
+
+    path_build(filename, MAX_PATH, path, item.name, NULL);
+    if (item.is_reg_file) {
+      if (on_file(ctx, filename) != RET_OK) {
+        break;
+      }
+    } else if (item.is_dir) {
+      fs_foreach_file(filename, on_file, ctx);
+    }
+  }
+  fs_dir_close(dir);
+
+  return RET_OK;
+}
