@@ -449,7 +449,7 @@ ret_t object_copy_prop(object_t* obj, object_t* src, const char* name);
  * 遍历所有属性。
  *
  * @param {object_t*} obj object对象。
- * @param {tk_visit_t} on_prop 回调函数。
+ * @param {tk_visit_t} on_prop 回调函数(data参数为named_value_t类型)。
  * @param {void*} ctx 回调函数上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
