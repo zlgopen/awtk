@@ -1,96 +1,97 @@
 # 最新动态
 
 2021/11/03
-  * 增加fs\_foreach\_file
-  * 修复在linux和mac平台，大键盘上的特殊字符（！@#￥）无法输入到mledit问题（感谢兆坤提供补丁）
-  * 修复在linuxfb平台，mledit下按capslock键会输入字符的问题（感谢兆坤提供补丁）
+  * 增加 fs\_foreach\_file
+  * 完善 demoui 界面（感谢兆坤提供补丁）
+  * 修复在 linuxfb 平台，mledit 下按 capslock 键会输入字符的问题（感谢兆坤提供补丁）
+  * 修复在 linux 和 mac 平台，大键盘上的特殊字符（！@#￥）无法输入到 mledit 问题（感谢兆坤提供补丁）
 
 2021/11/02
-  * 增加tk\_str\_end\_with
-  * 修复json解析对null的处理。
-  * 增加str\_append\_int64/str\_append\_uint64
+  * 增加 tk\_str\_end\_with
+  * 修复 json 解析对 null 的处理。
+  * 增加 str\_append\_int64/str\_append\_uint64
   * 完善 demoui/demouiold 动画演示（感谢兆坤提供补丁）
-  * 修复list下self\_layout不能自动布局的问题（感谢智明提供补丁）。
-  * 修复lcd\_vgcanvas画线颜色不正确的问题（感谢智明提供补丁）。
+  * 修复 list 下 self\_layout 不能自动布局的问题（感谢智明提供补丁）。
+  * 修复 lcd\_vgcanvas 画线颜色不正确的问题（感谢智明提供补丁）。
 
 2021/11/01
-  * 修复agge编译缺失的问题（感谢智明提供补丁）。
-  * 修复当字库名字超过32后导致不断添加新类库的问题（感谢智明提供补丁）。
+  * 修复 agge 编译缺失的问题（感谢智明提供补丁）。
+  * 修复当字库名字超过 32 后导致不断添加新类库的问题（感谢智明提供补丁）。
 
 2021/10/30
-  * 完善RTT mutex封装。
-  * 完善awtk\_main.inc，通过命令行参数决定是否打开控制台（感谢朝泽提供补丁）。
-  * 完善value\_anim功能演示demo的补丁（感谢兆坤提供补丁）
-  * 增加nanovg_plus，优化nanovg性能（感谢智明提供补丁）。
+  * 完善 RTT mutex 封装。
+  * 完善 awtk\_main.inc，通过命令行参数决定是否打开控制台（感谢朝泽提供补丁）。
+  * 完善 value\_anim 功能演示 demo 的补丁（感谢兆坤提供补丁）
+  * 增加 nanovg_plus，优化 nanovg 性能（感谢智明提供补丁）。
 
 2021/10/29
-  * 修复两个窗口同时打开时候会导致第一个窗口丢失EVT\_WINDOW\_OPEN消息（感谢智明提供补丁）
-  * 修复dialog\_toast在窗口动画比较慢的同时快速点击导致出现崩溃问题和窗口动画比dialog_toast要慢会出现断言的问题 （感谢智明提供补丁）
+  * 修复两个窗口同时打开时候会导致第一个窗口丢失 EVT\_WINDOW\_OPEN 消息（感谢智明提供补丁）
+  * 修复 dialog\_toast 在窗口动画比较慢的同时快速点击导致出现崩溃问题和窗口动画比 dialog_toast 要慢会出现断言的问题 （感谢智明提供补丁）
 
 2021/10/27
   * 修复函数注释不正确的问题（感谢智明提供补丁）
-  * 完善candidates\_calc\_child\_width，去掉常数设置，完全由候选字按钮的style控制。
+  * 完善 candidates\_calc\_child\_width，去掉常数设置，完全由候选字按钮的 style 控制。
 
 2021/10/26
-  * 完善socket意外断开处理。
+  * 完善 socket 意外断开处理。
   * 增加文档 [如何在改变控件属性时附带动画](how_to_change_prop_with_animation.md) （感谢兆坤提供补丁）
-  * 修改demouiold，value_anim功能演示改为键盘退出动画结束后再修改值（感谢兆坤提供补丁）
-  * 完善mledit\_insert\_text函数 （感谢兆坤提供补丁）
+  * 修改 demouiold，value_anim 功能演示改为键盘退出动画结束后再修改值（感谢兆坤提供补丁）
+  * 完善 mledit\_insert\_text 函数 （感谢兆坤提供补丁）
 
 2021/10/25
-  * gif image增加loop属性。
+  * gif image 增加 loop 属性。
   * 完善 value\_float（感谢周聪提供补丁）
 
 2021/10/23
-  * 完善draggable，可以拖动任意层级的父控件。
-  * Android/iOS调用exit退出进程。
-  * 增加函数str\_common\_prefix。
+  * 完善 draggable，可以拖动任意层级的父控件。
+  * Android/iOS 调用 exit 退出进程。
+  * 增加函数 str\_common\_prefix。
 
 2021/10/22
   * 修改 value 值动画效果 （感谢兆坤提供补丁）
-  * 完善离线canvas （感谢智明提供补丁）
+  * 完善离线 canvas （感谢智明提供补丁）
 
 2021/10/21
-  * 修改T9输入法某些情况下，编辑器不能退出预编辑状态的问题。
-  * 修复edit在不可视状态下，预编辑时光标位置错误问题（感谢zxc3489和兆坤提供补丁）。
-  * 修复edit在不可视状态下，预编辑时失去焦点，预选字母没有变回\*号（感谢zxc3489和兆坤提供补丁）。
-  * 修复mledit按tab键没有触发value_changing事件的问题（感谢兆坤提供补丁）。
+  * 修改 T9 输入法某些情况下，编辑器不能退出预编辑状态的问题。
+  * 修复 edit 在不可视状态下，预编辑时光标位置错误问题（感谢 zxc3489 和兆坤提供补丁）。
+  * 修复 edit 在不可视状态下，预编辑时失去焦点，预选字母没有变回、*号（感谢 zxc3489 和兆坤提供补丁）。
+  * 修复 mledit 按 tab 键没有触发 value_changing 事件的问题（感谢兆坤提供补丁）。
 
 2021/10/20
   * 完善极简键盘支持，增加 [activated](how_to_support_5keys_3keys.md) 状态。
-  * 修复在agge下程序窗口缩放有概率导致程序崩溃的问题（感谢智明提供补丁）
-  * 修复警告和程序窗口缩放导致layout属性被修改的问题 （感谢智明提供补丁）
-  * 修复释放位图时候vgcanvas\_asset\_manager已经被释放的问题 （感谢智明提供补丁）
-  * 修复长按打开新窗口时，旧窗口收不到pointer up事件的问题。
+  * 修复在 agge 下程序窗口缩放有概率导致程序崩溃的问题（感谢智明提供补丁）
+  * 修复警告和程序窗口缩放导致 layout 属性被修改的问题 （感谢智明提供补丁）
+  * 修复释放位图时候 vgcanvas\_asset\_manager 已经被释放的问题 （感谢智明提供补丁）
+  * 修复长按打开新窗口时，旧窗口收不到 pointer up 事件的问题。
 
 2021/10/19
   * 完善 fscript，增加函数 get。
   * 完善 fscript，增加函数 get\_last\_error。
-  * 完善 fscript 中获取前缀为\$的变量，若变量不存在，则返回无效变量（感谢雨欣提供补丁）
+  * 完善 fscript 中获取前缀为、$的变量，若变量不存在，则返回无效变量（感谢雨欣提供补丁）
 
 2021/10/18
   * 修改编译警告（感谢朝泽提供补丁）
-  * 优化line parser（感谢智明提供补丁）
+  * 优化 line parser（感谢智明提供补丁）
 
 2021/10/16
-  * 增加 WITH\_DEFAULT\_IM，方便在android上使用AWTK内置输入法。
+  * 增加 WITH\_DEFAULT\_IM，方便在 android 上使用 AWTK 内置输入法。
 
 2021/10/15
-  * 完善str\_from\_wstr\_with\_len。
-  * 增加vgcanvas\_draw\_image\_repeat（感谢智明提供补丁）
+  * 完善 str\_from\_wstr\_with\_len。
+  * 增加 vgcanvas\_draw\_image\_repeat（感谢智明提供补丁）
   * 完善 mledit 虚拟高度计算错误问题（感谢兆坤提供补丁）
   * 修复在 opengl 下离线画布不回传数据不能显示的问题 （感谢智明提供补丁）
-  * 完善 mledit修复多行编辑器改变字体时编辑器没有重新布局的问题（感谢兆坤提供补丁）
+  * 完善 mledit 修复多行编辑器改变字体时编辑器没有重新布局的问题（感谢兆坤提供补丁）
 
 2021/10/13
-  * 增加函数str\_append\_n\_chars
-  * 增加函数data\_writer\_write\_all
+  * 增加函数 str\_append\_n\_chars
+  * 增加函数 data\_writer\_write\_all
 
 2021/10/12
   * 修复透明渐变窗口动画影响到顶层悬浮窗口的问题（感谢智明提供补丁）
   * 增加修改 sdl 窗口 title 的接口的功能（感谢智明提供补丁）
   * 增加左右滚动是否禁止动画的功能（感谢智明提供补丁）
-  * 修复demoui在320\*480，agge模式下，字体超出按钮范围的问题（感谢兆坤提供补丁）
+  * 修复 demoui 在 320\*480，agge 模式下，字体超出按钮范围的问题（感谢兆坤提供补丁）
 
 2021/10/11
   * 完善 app\_help\_base，修复 mvvm-js 项目编译时找不到 jerryscript 路径的问题（感谢雨欣提供补丁）
