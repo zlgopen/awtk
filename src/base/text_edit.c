@@ -1228,7 +1228,6 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
     case TK_KEY_KP_PLUS:
     case TK_KEY_KP_PERIOD:
     case TK_KEY_NUMLOCKCLEAR:
-    case TK_KEY_CAPSLOCK:
     case TK_KEY_KP_0:
     case TK_KEY_KP_1:
     case TK_KEY_KP_2:
@@ -1335,6 +1334,7 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
     case TK_KEY_RCTRL:
     case TK_KEY_LALT:
     case TK_KEY_RALT:
+    case TK_KEY_CAPSLOCK:
     case TK_KEY_COMMAND:
     case TK_KEY_MENU:
     case TK_KEY_WHEEL: {
