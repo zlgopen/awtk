@@ -2,6 +2,7 @@
 
 2021/11/03
   * 增加fs\_foreach\_file
+  * 修复在linux和mac平台，大键盘上的特殊字符（！@#￥）无法输入到mledit问题（感谢兆坤提供补丁）
 
 2021/11/02
   * 增加tk\_str\_end\_with
