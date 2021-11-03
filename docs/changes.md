@@ -3,6 +3,7 @@
 2021/11/03
   * 增加 fs\_foreach\_file
   * 完善 demoui 界面（感谢兆坤提供补丁）
+  * 修复 mledit oy 不正确的问题（感谢兆坤提供补丁）
   * 修复在 linuxfb 平台，mledit 下按 capslock 键会输入字符的问题（感谢兆坤提供补丁）
   * 修复在 linux 和 mac 平台，大键盘上的特殊字符（！@#￥）无法输入到 mledit 问题（感谢兆坤提供补丁）
 

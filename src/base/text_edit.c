@@ -224,6 +224,9 @@ static ret_t text_edit_set_caret_pos(text_edit_impl_t* impl, uint32_t x, uint32_
   impl->caret.y = y;
 
   if (!impl->lock_scrollbar_value) {
+    uint32_t total_line_height = (impl->last_line_number + 1) * impl->line_height;
+    uint32_t max_oy = (total_line_height > layout_info->h) ? total_line_height - layout_info->h : 0;
+
     if (view_top > caret_top) {
       layout_info->oy = caret_top - layout_info->margin_t;
     }
@@ -231,6 +234,8 @@ static ret_t text_edit_set_caret_pos(text_edit_impl_t* impl, uint32_t x, uint32_
     if (view_bottom < caret_bottom) {
       layout_info->oy = caret_bottom - layout_info->h;
     }
+
+    layout_info->oy = tk_min(layout_info->oy, max_oy);
 
     if (view_left > caret_left) {
       layout_info->ox = caret_left - layout_info->margin_l;
@@ -407,20 +412,20 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
     row->info.destroy(darray_pop(&row->info));
   }
 
-  if (i == state->cursor && state->cursor == text->size) {
-    if (last_char == STB_TEXTEDIT_NEWLINE) {
-      text_edit_set_caret_pos(impl, 0, y + line_height, c->font_size);
-    } else {
-      text_edit_set_caret_pos(impl, x, y, c->font_size);
-    }
-  }
-
   if (last_char == STB_TEXTEDIT_NEWLINE) {
     impl->last_row_number = row_num + 1;
     impl->last_line_number = line_index + 1;
   } else {
     impl->last_row_number = row_num;
     impl->last_line_number = line_index;
+  }
+
+  if (i == state->cursor && state->cursor == text->size) {
+    if (last_char == STB_TEXTEDIT_NEWLINE) {
+      text_edit_set_caret_pos(impl, 0, y + line_height, c->font_size);
+    } else {
+      text_edit_set_caret_pos(impl, x, y, c->font_size);
+    }
   }
 
   last_line = (line_info_t*)darray_get(&row->info, row->line_num - 1);
@@ -433,14 +438,6 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
   layout_info->virtual_h = tk_max(y0, layout_info->widget_h);
 
   return row;
-}
-
-static ret_t text_edit_fix_oy(text_edit_impl_t* impl) {
-  text_layout_info_t* layout_info = &(impl->layout_info);
-  if ((impl->last_line_number + 1) * impl->line_height < layout_info->h) {
-    layout_info->oy = 0;
-  }
-  return RET_OK;
 }
 
 static row_info_t* text_edit_layout_line(text_edit_t* text_edit, uint32_t row_num,
@@ -496,8 +493,6 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
   }
 
   impl->rows->size = i;
-
-  text_edit_fix_oy(impl);
 
   text_edit_notify(text_edit);
 
