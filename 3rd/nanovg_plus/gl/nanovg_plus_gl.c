@@ -1247,8 +1247,8 @@ static nvgp_bool_t nvgp_gl_verts_in_scissor(nvgp_gl_context_t* gl, const nvgp_ve
 
     for (i = 0; i < nverts; i++) {
       const nvgp_vertex_t* iter = verts + i;
-      int x = iter->x;
-      int y = iter->y;
+      int x = iter->x * gl->pixel_ratio;
+      int y = iter->y * gl->pixel_ratio;
       if (x < l || x > r || y < t || y > b) {
         return FALSE;
       }
