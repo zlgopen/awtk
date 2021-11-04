@@ -256,7 +256,7 @@ static ret_t vgcanvas_nanovg_intersect_clip_rect(vgcanvas_t* vgcanvas, float_t* 
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
   nvgIntersectScissor_ex(vg, x, y, w, h);
-
+  nvgGetCurrScissor(vg, &vgcanvas->clip_rect.x, &vgcanvas->clip_rect.y, &vgcanvas->clip_rect.w, &vgcanvas->clip_rect.h);
   return RET_OK;
 }
 
@@ -331,8 +331,24 @@ static ret_t vgcanvas_nanovg_clip_rect(vgcanvas_t* vgcanvas, float_t x, float_t 
 #else
   nvgScissor(vg, x, y, w, h);
 #endif
-
+  nvgGetCurrScissor(vg, &vgcanvas->clip_rect.x, &vgcanvas->clip_rect.y, &vgcanvas->clip_rect.w, &vgcanvas->clip_rect.h);
   return RET_OK;
+}
+
+static bool_t vgcanvas_nanovg_is_rectf_int_clip_rect(vgcanvas_t* vgcanvas, float_t left, float_t top, float_t right, float_t bottom) {
+  float_t clip_left = vgcanvas->clip_rect.x;
+  float_t clip_right = vgcanvas->clip_rect.x + vgcanvas->clip_rect.w;
+  float_t clip_top = vgcanvas->clip_rect.y;
+  float_t clip_bottom = vgcanvas->clip_rect.y + vgcanvas->clip_rect.h;
+  if (left > clip_right || right < clip_left || top > clip_bottom || bottom < clip_top) {
+    return FALSE;
+  }
+  return TRUE;
+}
+
+
+const rectf_t* vgcanvas_nanovg_get_clip_rect(vgcanvas_t* vgcanvas) {
+  return &(vgcanvas->clip_rect);
 }
 
 static ret_t vgcanvas_nanovg_fill(vgcanvas_t* vgcanvas) {
@@ -717,6 +733,8 @@ static const vgcanvas_vtable_t vt = {
     .transform = vgcanvas_nanovg_transform,
     .set_transform = vgcanvas_nanovg_set_transform,
     .clip_rect = vgcanvas_nanovg_clip_rect,
+    .get_clip_rect = vgcanvas_nanovg_get_clip_rect,
+    .is_rectf_int_clip_rect = vgcanvas_nanovg_is_rectf_int_clip_rect,
     .intersect_clip_rect = vgcanvas_nanovg_intersect_clip_rect,
     .path_winding = vgcanvas_nanovg_path_winding,
     .fill = vgcanvas_nanovg_fill,

@@ -328,8 +328,7 @@ static ret_t list_view_on_scroll_view_paint_children(widget_t* widget, canvas_t*
     continue;
   }
 
-  if (left > c->clip_right || right < c->clip_left || top > c->clip_bottom ||
-      bottom < c->clip_top) {
+  if (!canvas_is_rect_in_clip_rect(c, left, top, right, bottom)) {
     iter->dirty = FALSE;
     continue;
   }

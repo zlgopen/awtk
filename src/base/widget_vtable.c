@@ -114,8 +114,7 @@ ret_t widget_on_paint_children_default(widget_t* widget, canvas_t* c) {
     int32_t bottom = top + iter->h + 2 * tolerance;
     int32_t right = left + iter->w + 2 * tolerance;
 
-    if (left > c->clip_right || right < c->clip_left || top > c->clip_bottom ||
-        bottom < c->clip_top) {
+    if (!canvas_is_rect_in_clip_rect(c, left, top, right, bottom)) {
       iter->dirty = FALSE;
       continue;
     }
@@ -248,7 +247,7 @@ ret_t widget_paint_with_clip(widget_t* widget, rect_t* clip, canvas_t* c,
   canvas_get_clip_rect(c, &r_save);
   if (vg != NULL) {
     vgcanvas_save(vg);
-    r_vg_save = rect_init(vg->clip_rect.x, vg->clip_rect.y, vg->clip_rect.w, vg->clip_rect.h);
+    r_vg_save = rect_from_rectf(vgcanvas_get_clip_rect(vg));
   }
 
   if (clip != NULL) {

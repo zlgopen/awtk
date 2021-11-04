@@ -216,6 +216,19 @@ wh_t canvas_get_height(canvas_t* c);
 ret_t canvas_get_clip_rect(canvas_t* c, rect_t* r);
 
 /**
+ * @method canvas_is_rect_in_clip_rect
+ * 判断改矩形区域是否在裁剪区中
+ * @param {canvas_t*} c canvas对象。
+ * @param {xy_t} left 矩形区域左边。
+ * @param {xy_t} top 矩形区域上边。
+ * @param {xy_t} right 矩形区域右边。
+ * @param {xy_t} bottom 矩形区域下边。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+bool_t canvas_is_rect_in_clip_rect(canvas_t* c, xy_t left, xy_t top, xy_t right, xy_t bottom);
+
+/**
  * @method canvas_set_clip_rect
  * 设置裁剪区。
  *

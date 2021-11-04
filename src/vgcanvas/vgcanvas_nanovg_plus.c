@@ -13,7 +13,6 @@ typedef struct _vgcanvas_nanovg_plus_t {
   vgcanvas_t base;
 
   int font_id;
-  char font_name[TK_NAME_LEN];
   nvgp_context_t* vg;
   uint32_t text_align_v;
   uint32_t text_align_h;

@@ -146,64 +146,30 @@ ret_t canvas_get_clip_rect(canvas_t* c, rect_t* r) {
   return RET_OK;
 }
 
+bool_t canvas_is_rect_in_clip_rect(canvas_t* c, xy_t left, xy_t top, xy_t right, xy_t bottom) {
+  if (c->lcd->is_rect_in_clip_rect != NULL) {
+    return c->lcd->is_rect_in_clip_rect(c->lcd, left, top, right, bottom);
+  } else {
+    if (left > c->clip_right || right < c->clip_left || top > c->clip_bottom || bottom < c->clip_top) {
+      return FALSE;
+    }
+    return TRUE;
+  }
+}
+
 ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r_in) {
   wh_t lcd_w = 0;
   wh_t lcd_h = 0;
   rect_t r_fix = rect_init(0, 0, 0, 0);
   rect_t* r = canvas_fix_rect(r_in, &r_fix);
 
-#ifdef FRAGMENT_FRAME_BUFFER_SIZE
-  rect_t dirty_r;
-  lcd_get_dirty_rect(c->lcd, &dirty_r);
-#endif
-
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
   lcd_w = lcd_get_width(c->lcd);
   lcd_h = lcd_get_height(c->lcd);
 
-  if (r) {
-#ifdef FRAGMENT_FRAME_BUFFER_SIZE
-    r_fix = rect_intersect(&r_fix, &dirty_r);
-#endif
-
-    c->clip_left = tk_max(0, r->x);
-    c->clip_top = tk_max(0, r->y);
-    c->clip_right = r->x + r->w - 1;
-    c->clip_bottom = r->y + r->h - 1;
-  } else {
-#ifdef FRAGMENT_FRAME_BUFFER_SIZE
-    c->clip_left = tk_max(0, dirty_r.x);
-    c->clip_top = tk_max(0, dirty_r.y);
-    c->clip_right = dirty_r.x + dirty_r.w - 1;
-    c->clip_bottom = dirty_r.y + dirty_r.h - 1;
-#else
-    c->clip_left = 0;
-    c->clip_top = 0;
-    c->clip_right = lcd_w - 1;
-    c->clip_bottom = lcd_h - 1;
-#endif
-  }
-
-  if (c->clip_left < 0) {
-    c->clip_left = 0;
-  }
-
-  if (c->clip_top < 0) {
-    c->clip_top = 0;
-  }
-
-  if (c->clip_right >= lcd_w) {
-    c->clip_right = lcd_w - 1;
-  }
-
-  if (c->clip_bottom >= lcd_h) {
-    c->clip_bottom = lcd_h - 1;
-  }
-
   if (c->lcd->set_clip_rect != NULL) {
-    /* 在 opengl 的状态下让 vg 来处理裁剪区的大小直接交给 vg 来处理，去除 LCD 的大小限制的问题 */
-    if (r) {
+    if (r != NULL) {
       rect_t clip_r = rect_init(tk_max(0, r->x), tk_max(0, r->y), tk_max(0, r->w), tk_max(0, r->h));
       lcd_set_clip_rect(c->lcd, &clip_r);
     } else {
@@ -211,12 +177,25 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r_in) {
       lcd_set_clip_rect(c->lcd, &clip_r);
     }
 #ifdef WITH_GPU
+    /* 兼容以前的逻辑，以免以前的用户不使用 canvas_is_rect_in_clip_rect 来判断出问题 */
     /* 把 canvas 的裁剪区设置为无限大，在 opengl 的状态下让 vg 来处理裁剪区的问题 */
     c->clip_left = 0;
     c->clip_top = 0;
     c->clip_right = 0x7fffffff;
     c->clip_bottom = 0x7fffffff;
 #endif
+  } else {
+    if (r != NULL) {
+      c->clip_left = tk_max(0, r->x);
+      c->clip_top = tk_max(0, r->y);
+      c->clip_right = tk_min(lcd_w - 1, r->x + r->w - 1);
+      c->clip_bottom = tk_min(lcd_h - 1, r->y + r->h - 1);
+    } else {
+      c->clip_left = 0;
+      c->clip_top = 0;
+      c->clip_right = lcd_w - 1;
+      c->clip_bottom = lcd_h - 1;
+    }
   }
 
   return RET_OK;
@@ -389,14 +368,16 @@ ret_t canvas_begin_frame(canvas_t* c, const dirty_rects_t* dirty_rects, lcd_draw
 }
 
 static ret_t canvas_draw_hline_impl(canvas_t* c, xy_t x, xy_t y, wh_t w) {
+  rect_t r;
   xy_t x2 = x + w - 1;
 
-  if (y < c->clip_top || y > c->clip_bottom || x2 < c->clip_left || x > c->clip_right) {
+  if (!canvas_is_rect_in_clip_rect(c, x, y, x2, y)) {
     return RET_OK;
   }
+  canvas_get_clip_rect(c, &r);
 
-  x = tk_max(x, c->clip_left);
-  x2 = tk_min(x2, c->clip_right);
+  x = tk_max(x, r.x);
+  x2 = tk_min(x2, r.x + r.w - 1);
   w = x2 - x + 1;
 
   return lcd_draw_hline(c->lcd, x, y, w);
@@ -413,14 +394,16 @@ ret_t canvas_draw_hline(canvas_t* c, xy_t x, xy_t y, wh_t w) {
 }
 
 static ret_t canvas_draw_vline_impl(canvas_t* c, xy_t x, xy_t y, wh_t h) {
+  rect_t r;
   xy_t y2 = y + h - 1;
 
-  if (x < c->clip_left || x > c->clip_right || y2 < c->clip_top || y > c->clip_bottom) {
+  if (!canvas_is_rect_in_clip_rect(c, x, y, x, y2)) {
     return RET_OK;
   }
+  canvas_get_clip_rect(c, &r);
 
-  y = tk_max(y, c->clip_top);
-  y2 = tk_min(y2, c->clip_bottom);
+  y = tk_max(y, r.y);
+  y2 = tk_min(y2, r.y + r.h - 1);
   h = y2 - y + 1;
 
   return lcd_draw_vline(c->lcd, x, y, h);
@@ -438,11 +421,6 @@ ret_t canvas_draw_vline(canvas_t* c, xy_t x, xy_t y, wh_t h) {
 }
 
 static ret_t canvas_draw_line_impl(canvas_t* c, xy_t x1, xy_t y1, xy_t x2, xy_t y2) {
-  if ((x1 < c->clip_left && x2 < c->clip_left) || (x1 > c->clip_right && x2 > c->clip_right) ||
-      (y1 < c->clip_top && y2 < c->clip_top) || (y1 > c->clip_bottom && y2 > c->clip_bottom)) {
-    return RET_OK;
-  }
-
   if (x1 == x2) {
     return canvas_draw_vline_impl(c, x1, y1, tk_abs(y2 - y1) + 1);
   } else if (y1 == y2) {
@@ -464,22 +442,20 @@ ret_t canvas_draw_line(canvas_t* c, xy_t x1, xy_t y1, xy_t x2, xy_t y2) {
 static ret_t canvas_do_draw_points(canvas_t* c, const point_t* points, uint32_t nr) {
   uint32_t i = 0;
   uint32_t real_nr = 0;
-  xy_t left = c->clip_left;
-  xy_t top = c->clip_top;
-  xy_t right = c->clip_right;
-  xy_t bottom = c->clip_bottom;
 
   point_t real_points[MAX_POINTS_PER_DRAW];
   return_value_if_fail(nr <= MAX_POINTS_PER_DRAW, RET_BAD_PARAMS);
 
   for (i = 0; i < nr; i++) {
     const point_t* p = points + i;
-    if (p->x < left || p->x > right || p->y < top || p->y > bottom) {
+    xy_t x = p->x + c->ox;
+    xy_t y = p->y + c->oy;
+    if (!canvas_is_rect_in_clip_rect(c, x, y, x, y)) {
       continue;
     }
 
-    real_points[real_nr].x = p->x + c->ox;
-    real_points[real_nr].y = p->y + c->oy;
+    real_points[real_nr].x = x;
+    real_points[real_nr].y = y;
 
     real_nr++;
   }
@@ -512,17 +488,19 @@ ret_t canvas_draw_points(canvas_t* c, const point_t* points, uint32_t nr) {
 }
 
 static ret_t canvas_fill_rect_impl(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h) {
+  rect_t r;
   xy_t x2 = x + w - 1;
   xy_t y2 = y + h - 1;
 
-  if (x > c->clip_right || x2 < c->clip_left || y > c->clip_bottom || y2 < c->clip_top) {
+  if (!canvas_is_rect_in_clip_rect(c, x, y, x2, y2)) {
     return RET_OK;
   }
+  canvas_get_clip_rect(c, &r);
 
-  x = tk_max(x, c->clip_left);
-  y = tk_max(y, c->clip_top);
-  x2 = tk_min(x2, c->clip_right);
-  y2 = tk_min(y2, c->clip_bottom);
+  x = tk_max(x, r.x);
+  y = tk_max(y, r.y);
+  x2 = tk_min(x2, r.x + r.w - 1);
+  y2 = tk_min(y2, r.y + r.h - 1);
   w = x2 - x + 1;
   h = y2 - y + 1;
 
@@ -538,18 +516,21 @@ ret_t canvas_fill_rect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h) {
 
 static ret_t canvas_fill_rect_gradient_impl(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h,
                                             gradient_t* gradient) {
+  rect_t r;
   xy_t x2 = x + w - 1;
   xy_t y2 = y + h - 1;
   vgcanvas_t* vg = NULL;
 
-  if (x > c->clip_right || x2 < c->clip_left || y > c->clip_bottom || y2 < c->clip_top) {
+  if (!canvas_is_rect_in_clip_rect(c, x, y, x2, y2)) {
     return RET_OK;
   }
 
-  x = tk_max(x, c->clip_left);
-  y = tk_max(y, c->clip_top);
-  x2 = tk_min(x2, c->clip_right);
-  y2 = tk_min(y2, c->clip_bottom);
+  canvas_get_clip_rect(c, &r);
+
+  x = tk_max(x, r.x);
+  y = tk_max(y, r.y);
+  x2 = tk_min(x2, r.x + r.w - 1);
+  y2 = tk_min(y2, r.y + r.h - 1);
   w = x2 - x + 1;
   h = y2 - y + 1;
   if (w == 0 || h == 0) {
@@ -596,17 +577,20 @@ ret_t canvas_fill_rect_gradient(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h, gra
 }
 
 static ret_t canvas_clear_rect_impl(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h) {
+  rect_t r;
   xy_t x2 = x + w - 1;
   xy_t y2 = y + h - 1;
 
-  if (x > c->clip_right || x2 < c->clip_left || y > c->clip_bottom || y2 < c->clip_top) {
+  if (!canvas_is_rect_in_clip_rect(c, x, y, x2, y2)) {
     return RET_OK;
   }
 
-  x = tk_max(x, c->clip_left);
-  y = tk_max(y, c->clip_top);
-  x2 = tk_min(x2, c->clip_right);
-  y2 = tk_min(y2, c->clip_bottom);
+  canvas_get_clip_rect(c, &r);
+
+  x = tk_max(x, r.x);
+  y = tk_max(y, r.y);
+  x2 = tk_min(x2, r.x + r.w - 1);
+  y2 = tk_min(y2, r.y + r.h - 1);
   w = x2 - x + 1;
   h = y2 - y + 1;
 
@@ -643,20 +627,21 @@ ret_t canvas_stroke_rect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 static ret_t canvas_draw_glyph(canvas_t* c, glyph_t* g, xy_t x, xy_t y) {
+  rect_t r;
   rect_t src;
   rect_t dst;
   xy_t x2 = x + g->w - 1;
   xy_t y2 = y + g->h - 1;
 
-  if (g->data == NULL || x > c->clip_right || x2 < c->clip_left || y > c->clip_bottom ||
-      y2 < c->clip_top) {
+  if (g->data == NULL || !canvas_is_rect_in_clip_rect(c, x, y, x2, y2)) {
     return RET_OK;
   }
+  canvas_get_clip_rect(c, &r);
 
-  dst.x = tk_max(x, c->clip_left);
-  dst.y = tk_max(y, c->clip_top);
-  dst.w = tk_min(x2, c->clip_right) - dst.x + 1;
-  dst.h = tk_min(y2, c->clip_bottom) - dst.y + 1;
+  dst.x = tk_max(x, r.x);
+  dst.y = tk_max(y, r.y);
+  dst.w = tk_min(x2, r.x + r.w - 1) - dst.x + 1;
+  dst.h = tk_min(y2, r.y + r.h - 1) - dst.y + 1;
 
   src.x = dst.x - x;
   src.y = dst.y - y;
@@ -752,6 +737,7 @@ ret_t canvas_draw_utf8(canvas_t* c, const char* str, xy_t x, xy_t y) {
 }
 
 static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, const rect_t* s, const rect_t* d) {
+  rect_t r;
   rectf_t src;
   rectf_t dst;
   float_t scale_w = 0;
@@ -762,15 +748,16 @@ static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, const rect_t* s, c
   xy_t x2 = d->x + d->w - 1;
   xy_t y2 = d->y + d->h - 1;
 
-  if (d->w <= 0 || d->h <= 0 || s->w <= 0 || s->h <= 0 || x > c->clip_right || x2 < c->clip_left ||
-      y > c->clip_bottom || y2 < c->clip_top) {
+  if (d->w <= 0 || d->h <= 0 || s->w <= 0 || s->h <= 0 || 
+      !canvas_is_rect_in_clip_rect(c, x, y, x2, y2)) {
     return RET_OK;
   }
+  canvas_get_clip_rect(c, &r);
 
-  dst.x = tk_max(x, c->clip_left);
-  dst.y = tk_max(y, c->clip_top);
-  dst.w = tk_min(x2, c->clip_right) - dst.x + 1;
-  dst.h = tk_min(y2, c->clip_bottom) - dst.y + 1;
+  dst.x = tk_max(x, r.x);
+  dst.y = tk_max(y, r.y);
+  dst.w = tk_min(x2, r.x + r.w - 1) - dst.x + 1;
+  dst.h = tk_min(y2, r.y + r.h - 1) - dst.y + 1;
 
   /* 因为 blend 函数中缩放，使用 256 倍的定点数，所以这里为了减低多次转换数据出现误差 */
   scale_w = ((s->w << 8) / d->w / 256.0f);
@@ -1611,8 +1598,7 @@ ret_t canvas_draw_image_matrix(canvas_t* c, bitmap_t* img, matrix_t* matrix) {
   info.matrix = *matrix;
   info.src = rect_init(0, 0, img->w, img->h);
   info.dst = rect_init(0, 0, img->w, img->h);
-  info.clip = rect_init(c->clip_left, c->clip_top, c->clip_right - c->clip_left,
-                        c->clip_bottom - c->clip_top);
+  canvas_get_clip_rect(c, &info.clip);
 
   return lcd_draw_image_matrix(c->lcd, &info);
 }

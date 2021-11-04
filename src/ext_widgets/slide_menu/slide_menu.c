@@ -124,11 +124,16 @@ static rect_t slide_menu_get_clip_r(widget_t* widget) {
 }
 
 static ret_t slide_menu_paint_children(widget_t* widget, canvas_t* c) {
+  rect_t r;
+  xy_t clip_right, clip_left;
+  canvas_get_clip_rect(c, &r);
+  clip_left = r.x;
+  clip_right = r.x + r.w - 1;
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   int32_t left = c->ox + iter->x;
   int32_t right = left + iter->w;
 
-  if (left >= (c->clip_right - 1) || right <= (c->clip_left + 1)) {
+  if (left >= (clip_right - 1) || right <= (clip_left + 1)) {
     iter->dirty = FALSE;
     continue;
   }

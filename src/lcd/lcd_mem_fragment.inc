@@ -35,6 +35,9 @@ typedef struct _lcd_mem_fragment_t {
   xy_t y;
   wh_t w;
   wh_t h;
+
+  rect_t dirty_rect;
+
   bitmap_t fb;
   graphic_buffer_t* gb;
   pixel_t buff[FRAGMENT_FRAME_BUFFER_SIZE];
@@ -302,12 +305,52 @@ uint8_t* lcd_mem_fragment_get_buff(lcd_t* lcd) {
   return (uint8_t*)mem->buff;
 }
 
+static ret_t lcd_mem_fragment_set_clip_rect(lcd_t* lcd, const rect_t* r) {
+  rect_t dirty_r; 
+  rect_t r_fix = rect_init(0, 0, 0, 0);
+  lcd_mem_fragment_t* mem = (lcd_mem_fragment_t*)lcd;
+  return_value_if_fail(mem != NULL && r != NULL, RET_BAD_PARAMS);
+  lcd_get_dirty_rect(lcd, &dirty_r);
+  mem->dirty_rect = rect_intersect(r, &dirty_r);
+
+  return RET_OK;
+}
+
+static bool_t lcd_mem_fragment_is_rect_in_clip_rect(lcd_t* lcd, xy_t left, xy_t top, xy_t right, xy_t bottom) {
+  lcd_mem_fragment_t* mem = (lcd_mem_fragment_t*)lcd;
+  xy_t clip_left, clip_top, clip_right, clip_bottom;
+  return_value_if_fail(mem != NULL, FALSE);
+  clip_left = mem->dirty_rect.x;
+  clip_top = mem->dirty_rect.y;
+  clip_right = mem->dirty_rect.x + mem->dirty_rect.w - 1;
+  clip_bottom = mem->dirty_rect.y + mem->dirty_rect.h - 1;
+
+  if (left > clip_right || right < clip_left || top > clip_bottom || bottom < clip_top) {
+    return FALSE;
+  }
+  return TRUE;
+}
+
+static ret_t lcd_mem_fragment_get_clip_rect(lcd_t* lcd, rect_t* rect) {
+  lcd_mem_fragment_t* mem = (lcd_mem_fragment_t*)lcd;
+  return_value_if_fail(mem != NULL, RET_BAD_PARAMS);
+  rect->x = mem->dirty_rect.x;
+  rect->y = mem->dirty_rect.y;
+  rect->w = mem->dirty_rect.w;
+  rect->h = mem->dirty_rect.h;
+
+  return RET_OK;
+}
+
 lcd_t* lcd_mem_fragment_create(wh_t w, wh_t h) {
   lcd_mem_fragment_t* mem = &s_lcd_mem_fragment;
   lcd_t* base = (lcd_t*)mem;
   system_info_t* info = system_info();
 
   base->begin_frame = lcd_mem_fragment_begin_frame;
+  base->set_clip_rect = lcd_mem_fragment_set_clip_rect;
+  base->get_clip_rect = lcd_mem_fragment_get_clip_rect;
+  base->is_rect_in_clip_rect = lcd_mem_fragment_is_rect_in_clip_rect;
   base->draw_vline = lcd_mem_fragment_draw_vline;
   base->draw_hline = lcd_mem_fragment_draw_hline;
   base->fill_rect = lcd_mem_fragment_fill_rect;

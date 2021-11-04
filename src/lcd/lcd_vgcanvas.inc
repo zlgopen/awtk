@@ -70,10 +70,14 @@ static ret_t lcd_vgcanvas_set_clip_rect(lcd_t* lcd, const rect_t* r) {
   return vgcanvas_clip_rect(LCD(lcd)->canvas, r->x, r->y, r->w, r->h);
 }
 
+static bool_t lcd_vgcanvas_is_rect_in_clip_rect(lcd_t* lcd, xy_t left, xy_t top, xy_t right, xy_t bottom) {
+  vgcanvas_t* canvas = LCD(lcd)->canvas;
+  return vgcanvas_is_rectf_int_clip_rect(canvas, (float_t)left, (float_t)top, (float_t)right, (float_t)bottom);
+}
+
 static ret_t lcd_vgcanvas_get_clip_rect(lcd_t* lcd, rect_t* r) {
   vgcanvas_t* canvas = LCD(lcd)->canvas;
-  *r = canvas->clip_rect;
-
+  *r = rect_from_rectf(vgcanvas_get_clip_rect(canvas));
   return RET_OK;
 }
 
@@ -321,6 +325,7 @@ lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
   base->begin_frame = lcd_vgcanvas_begin_frame;
   base->set_clip_rect = lcd_vgcanvas_set_clip_rect;
   base->get_clip_rect = lcd_vgcanvas_get_clip_rect;
+  base->is_rect_in_clip_rect = lcd_vgcanvas_is_rect_in_clip_rect;
   base->draw_vline = lcd_vgcanvas_draw_vline;
   base->draw_hline = lcd_vgcanvas_draw_hline;
   base->fill_rect = lcd_vgcanvas_fill_rect;
@@ -361,6 +366,6 @@ lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
 
   str_init(&(lcd->temp_text), 100);
   lcd->canvas = canvas;
-
+  
   return base;
 }

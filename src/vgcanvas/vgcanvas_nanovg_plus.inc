@@ -256,15 +256,33 @@ static ret_t vgcanvas_nanovg_plus_intersect_clip_rect(vgcanvas_t* vgcanvas, floa
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
 
   nvgp_intersect_scissor(vg, x, y, w, h);
+  nvgp_get_curr_clip_rect(vg, &vgcanvas->clip_rect.x, &vgcanvas->clip_rect.y, &vgcanvas->clip_rect.w, &vgcanvas->clip_rect.h);
 
   return RET_OK;
+}
+
+static bool_t vgcanvas_nanovg_plus_is_rectf_int_clip_rect(vgcanvas_t* vgcanvas, float_t left, float_t top, float_t right, float_t bottom) {
+  vgcanvas_nanovg_plus_t* canvas = (vgcanvas_nanovg_plus_t*)vgcanvas;
+  float_t clip_left = vgcanvas->clip_rect.x;
+  float_t clip_right = vgcanvas->clip_rect.x + vgcanvas->clip_rect.w;
+  float_t clip_top = vgcanvas->clip_rect.y;
+  float_t clip_bottom = vgcanvas->clip_rect.y + vgcanvas->clip_rect.h;
+  if (left > clip_right || right < clip_left || top > clip_bottom || bottom < clip_top) {
+    return FALSE;
+  }
+  return TRUE;
 }
 
 static ret_t vgcanvas_nanovg_plus_clip_rect(vgcanvas_t* vgcanvas, float_t x, float_t y, float_t w,
                                        float_t h) {
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
   nvgp_scissor(vg, x, y, w, h);
+  nvgp_get_curr_clip_rect(vg, &vgcanvas->clip_rect.x, &vgcanvas->clip_rect.y, &vgcanvas->clip_rect.w, &vgcanvas->clip_rect.h);
   return RET_OK;
+}
+
+const rectf_t* vgcanvas_nanovg_plus_get_clip_rect(vgcanvas_t* vgcanvas) {
+  return &(vgcanvas->clip_rect);
 }
 
 static ret_t vgcanvas_nanovg_plus_fill(vgcanvas_t* vgcanvas) {
@@ -381,9 +399,6 @@ static ret_t vgcanvas_nanovg_plus_set_font(vgcanvas_t* vgcanvas, const char* nam
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
   vgcanvas_nanovg_plus_t* canvas = (vgcanvas_nanovg_plus_t*)vgcanvas;
   return_value_if_fail(name && *name, RET_BAD_PARAMS);
-  if (tk_str_eq(canvas->font_name, name)) {
-    return RET_OK;
-  }
 
   font_id = tk_pointer_to_int(vgcanvas_asset_manager_get_font_ctx(vgcanvas_asset_manager(), vgcanvas, name, &reuslt));
 
@@ -420,7 +435,6 @@ static ret_t vgcanvas_nanovg_plus_set_font(vgcanvas_t* vgcanvas, const char* nam
   }
 
   canvas->font_id = font_id;
-  memcpy(canvas->font_name, name, sizeof(name));
   nvgp_font_face_id(vg, font_id);
 
   return RET_OK;
@@ -738,6 +752,8 @@ static const vgcanvas_vtable_t vt = {
     .transform = vgcanvas_nanovg_plus_transform,
     .set_transform = vgcanvas_nanovg_plus_set_transform,
     .clip_rect = vgcanvas_nanovg_plus_clip_rect,
+    .get_clip_rect = vgcanvas_nanovg_plus_get_clip_rect,
+    .is_rectf_int_clip_rect = vgcanvas_nanovg_plus_is_rectf_int_clip_rect,
     .intersect_clip_rect = vgcanvas_nanovg_plus_intersect_clip_rect,
     .path_winding = vgcanvas_nanovg_plus_path_winding,
     .fill = vgcanvas_nanovg_plus_fill,

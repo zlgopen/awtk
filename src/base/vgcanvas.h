@@ -85,6 +85,8 @@ typedef ret_t (*vgcanvas_set_transform_t)(vgcanvas_t* vg, float_t a, float_t b, 
                                           float_t d, float_t e, float_t f);
 
 typedef ret_t (*vgcanvas_clip_path_t)(vgcanvas_t* vg);
+typedef const rectf_t* (*vgcanvas_get_clip_rect_t)(vgcanvas_t* vg);
+typedef bool_t(*vgcanvas_is_rectf_int_clip_rect_t)(vgcanvas_t* vg, float_t left, float_t top, float_t right, float_t bottom);
 typedef ret_t (*vgcanvas_clip_rect_t)(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h);
 typedef ret_t (*vgcanvas_nanovg_intersect_clip_rect_t)(vgcanvas_t* vg, float_t* x, float_t* y,
                                                        float_t* w, float_t* h);
@@ -185,6 +187,8 @@ typedef struct _vgcanvas_vtable_t {
 
   vgcanvas_clip_path_t clip_path;
   vgcanvas_clip_rect_t clip_rect;
+  vgcanvas_get_clip_rect_t get_clip_rect;
+  vgcanvas_is_rectf_int_clip_rect_t is_rectf_int_clip_rect;
   vgcanvas_nanovg_intersect_clip_rect_t intersect_clip_rect;
   vgcanvas_fill_t fill;
   vgcanvas_stroke_t stroke;
@@ -398,7 +402,7 @@ struct _vgcanvas_t {
    * frame buffer format
    */
   bitmap_format_t format;
-  rect_t clip_rect;
+  rectf_t clip_rect;
   rect_t dirty_rect;
   const vgcanvas_vtable_t* vt;
   assets_manager_t* assets_manager;
@@ -791,6 +795,32 @@ ret_t vgcanvas_clip_path(vgcanvas_t* vg);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t vgcanvas_clip_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h);
+
+/**
+ * @method vgcanvas_get_clip_rect
+ * 获取矩形裁剪。
+ *
+ * @annotation ["scriptable"]
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ *
+ * @return {const rectf_t*} 返回裁剪区。
+ */
+const rectf_t* vgcanvas_get_clip_rect(vgcanvas_t* vg);
+
+/**
+ * @method vgcanvas_is_rectf_int_clip_rect
+ * 矩形区域是否在矩形裁剪中。
+ *
+ * @annotation ["scriptable"]
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {float_t} left 矩形区域左边。
+ * @param {float_t} top 矩形区域上边。
+ * @param {float_t} right 矩形区域右边。
+ * @param {float_t} bottom 矩形区域下边。
+ *
+ * @return {bool_t} 返回 TURE 则在区域中，返回 FALSE 则不在区域中。
+ */
+bool_t vgcanvas_is_rectf_int_clip_rect(vgcanvas_t* vg, float_t left, float_t top, float_t right, float_t bottom);
 
 /**
  * @method vgcanvas_intersect_clip_rect

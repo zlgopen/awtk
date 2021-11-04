@@ -1062,8 +1062,7 @@ static ret_t ffr_draw_fill_rounded_rect_ex(canvas_t* c, const rect_t* r, const r
   xy_t y2 = y + r->h - 1;
 
   return_value_if_fail(c != NULL && r != NULL && gradient != NULL, RET_BAD_PARAMS);
-  if (x > c->clip_right || x2 < c->clip_left ||
-      y > c->clip_bottom || y2 < c->clip_top) {
+  if (!canvas_is_rect_in_clip_rect(c, x, y, x2, y2)) {
     return RET_OK;
   }
   
@@ -1092,8 +1091,7 @@ static ret_t ffr_draw_stroke_rounded_rect_ex(canvas_t* c, const rect_t* r, const
   xy_t y2 = y + r->h - 1;
   return_value_if_fail(c != NULL && r != NULL && color != NULL, RET_BAD_PARAMS);
   tc = *color;
-  if (x > c->clip_right || x2 < c->clip_left ||
-      y > c->clip_bottom || y2 < c->clip_top || border_model == BORDER_NONE) {
+  if (!canvas_is_rect_in_clip_rect(c, x, y, x2, y2) || border_model == BORDER_NONE) {
     return RET_OK;
   }
 

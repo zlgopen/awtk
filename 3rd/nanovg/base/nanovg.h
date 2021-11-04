@@ -457,13 +457,26 @@ void nvgIntersectScissor(NVGcontext* ctx, float x, float y, float w, float h);
  * @param {float_t} w 裁剪区宽度。
  * @param {float_t} h 裁剪区高度。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 void nvgIntersectScissor_ex(NVGcontext* ctx, float* x, float* y, float* w, float* h);
 
 // Reset and disables scissoring.
 void nvgResetScissor(NVGcontext* ctx);
 
+/**
+ * @method nvgGetCurrScissor
+ * 获取当前裁剪区
+ * 
+ * @annotation ["scriptable"]
+ * @param {NVGcontext*} ctx nanovg的对象
+ * @param {float_t*} x 裁剪区x坐标。
+ * @param {float_t*} y 裁剪区y坐标。
+ * @param {float_t*} w 裁剪区宽度。
+ * @param {float_t*} h 裁剪区高度。
+ *
+ * @return {int} 返回成功返回 1，失败返回 0。
+ */
+int nvgGetCurrScissor(NVGcontext* ctx, float* x, float* y, float* w, float* h);
 
 /**
  * @method nvgIntersectScissorForOtherRect

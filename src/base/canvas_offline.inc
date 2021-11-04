@@ -273,8 +273,7 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas) {
   c = (canvas_offline_gpu_t*)canvas;
   if (vg != NULL && canvas_offline->begin_draw == 0) {
     canvas_get_clip_rect(canvas, &canvas_offline->canvas_clip_rect);
-    canvas_offline->vg_clip_rect =
-        rect_init(vg->clip_rect.x, vg->clip_rect.y, vg->clip_rect.w, vg->clip_rect.h);
+    canvas_offline->vg_clip_rect = rect_from_rectf(vgcanvas_get_clip_rect(vg));
     c->base.lcd_w = canvas->lcd->w;
     c->base.lcd_h = canvas->lcd->h;
 
