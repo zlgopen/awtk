@@ -181,18 +181,20 @@ static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {
   int32_t options_nr, empty_item_height, min_yoffset;
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
   return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
+  options_nr = text_selector_count_options(widget);
+  if (options_nr == 0) {
+    return RET_OK;
+  }
 
   yoffset = text_selector->yoffset;
   visible_nr = text_selector->visible_nr;
   item_height = text_selector->draw_widget_h / visible_nr;
   r = rect_init(0, 0, widget->w, item_height);
 
-  options_nr = text_selector_count_options(widget);
   empty_item_height = (text_selector->visible_nr / 2) * item_height;
   min_yoffset = -empty_item_height;
   max_yoffset = (options_nr * item_height + empty_item_height) - text_selector->draw_widget_h;
   tolal_height = max_yoffset + empty_item_height;
-  return_value_if_fail(options_nr > 0, RET_BAD_PARAMS);
 
   widget_prepare_text_style(widget, c);
   iter = text_selector->option_items;
