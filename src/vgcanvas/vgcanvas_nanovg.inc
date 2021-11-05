@@ -260,86 +260,19 @@ static ret_t vgcanvas_nanovg_intersect_clip_rect(vgcanvas_t* vgcanvas, float_t* 
   return RET_OK;
 }
 
-#if WITH_NANOVG_GPU
-#define CMP_FLOAT_QE(a, b, CMP_ACCURACY) \
-  (-CMP_ACCURACY <= ((a) - (b)) && ((a) - (b)) <= CMP_ACCURACY)
-
-static bool_t vgcanvas_nanovg_is_system_orientation_0_or_180(float_t xform[6]) {
-  float_t sin_180 = sinf(TK_D2R(180));
-  system_info_t* info = system_info();
-
-  if (info->lcd_orientation == LCD_ORIENTATION_0 && xform[0] == 1.0f && xform[1] == 0.0f &&
-      xform[2] == 0.0f && xform[3] == 1.0f) {
-    return TRUE;
-  } else if (info->lcd_orientation == LCD_ORIENTATION_180 && xform[0] == -1.0f &&
-             CMP_FLOAT_QE(xform[1], sin_180, 0.0001f) && CMP_FLOAT_QE(xform[2], sin_180, 0.0001f) &&
-             xform[3] == -1.0f) {
-    return TRUE;
-  }
-  return FALSE;
-}
-
-static bool_t vgcanvas_nanovg_is_system_orientation_90_or_270(float_t xform[6]) {
-  float_t cos_90 = cosf(TK_D2R(90));
-  system_info_t* info = system_info();
-
-  if (CMP_FLOAT_QE(xform[0], cos_90, 0.0001f) && CMP_FLOAT_QE(xform[3], cos_90, 0.0001f)) {
-    if (info->lcd_orientation == LCD_ORIENTATION_90 && xform[1] == 1.0f && xform[2] == -1.0f) {
-      return TRUE;
-    } else if (info->lcd_orientation == LCD_ORIENTATION_270 && xform[1] == -1.0f &&
-               xform[2] == 1.0f) {
-      return TRUE;
-    }
-  }
-  return FALSE;
-}
-#endif
-
 static ret_t vgcanvas_nanovg_clip_rect(vgcanvas_t* vgcanvas, float_t x, float_t y, float_t w,
                                        float_t h) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
-
-#if WITH_NANOVG_GPU
-  rect_t r1;
-  rect_t cilp_rect;
-  float_t xform[6];
-  nvgGetStateXfrom(vg, xform);
-
-  /* 判断如果 vg 没有旋转和缩放的坐标系，直接使用 rect_intersect 函数做交集提高效率 */
-  if (vgcanvas_nanovg_is_system_orientation_0_or_180(xform) ||
-      vgcanvas_nanovg_is_system_orientation_90_or_270(xform)) {
-    bool_t is_int = tk_abs(vgcanvas->ratio - (uint32_t)vgcanvas->ratio) < 0.001f;
-    r1 = rect_init(x, y, w, h);
-    cilp_rect = rect_intersect((const rect_t*)&vgcanvas->dirty_rect, (const rect_t*)&r1);
-    if (is_int) {
-      x = cilp_rect.x;
-      y = cilp_rect.y;
-      w = cilp_rect.w;
-      h = cilp_rect.h;
-    } else {
-      x = ((uint32_t)(cilp_rect.x * vgcanvas->ratio)) / vgcanvas->ratio;
-      y = ((uint32_t)(cilp_rect.y * vgcanvas->ratio)) / vgcanvas->ratio;
-      w = ((uint32_t)(cilp_rect.w * vgcanvas->ratio)) / vgcanvas->ratio;
-      h = ((uint32_t)(cilp_rect.h * vgcanvas->ratio)) / vgcanvas->ratio;
-    }
-    nvgScissor(vg, x, y, w, h);
-  } else {
-    nvgIntersectScissorForOtherRect(
-        vg, x, y, w, h, (float_t)vgcanvas->dirty_rect.x, (float_t)vgcanvas->dirty_rect.y,
-        (float_t)vgcanvas->dirty_rect.w, (float_t)vgcanvas->dirty_rect.h);
-  }
-#else
   nvgScissor(vg, x, y, w, h);
-#endif
   nvgGetCurrScissor(vg, &vgcanvas->clip_rect.x, &vgcanvas->clip_rect.y, &vgcanvas->clip_rect.w, &vgcanvas->clip_rect.h);
   return RET_OK;
 }
 
 static bool_t vgcanvas_nanovg_is_rectf_int_clip_rect(vgcanvas_t* vgcanvas, float_t left, float_t top, float_t right, float_t bottom) {
   float_t clip_left = vgcanvas->clip_rect.x;
-  float_t clip_right = vgcanvas->clip_rect.x + vgcanvas->clip_rect.w;
+  float_t clip_right = vgcanvas->clip_rect.x + vgcanvas->clip_rect.w - 1;
   float_t clip_top = vgcanvas->clip_rect.y;
-  float_t clip_bottom = vgcanvas->clip_rect.y + vgcanvas->clip_rect.h;
+  float_t clip_bottom = vgcanvas->clip_rect.y + vgcanvas->clip_rect.h - 1;
   if (left > clip_right || right < clip_left || top > clip_bottom || bottom < clip_top) {
     return FALSE;
   }

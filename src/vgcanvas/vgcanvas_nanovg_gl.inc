@@ -11,147 +11,6 @@ static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint
   return RET_OK;
 }
 
-static inline rect_t  vgcanvas_nanovg_get_dirty_rect(const rect_t* dirty_rect) {
-  rect_t r;
-  uint32_t w, h;
-  system_info_t* info = system_info();
-  return_value_if_fail(info != NULL, rect_init(0, 0, 0, 0));
-  w = info->lcd_w * info->device_pixel_ratio;
-  h = info->lcd_h * info->device_pixel_ratio;
-  if (dirty_rect == NULL) {
-    switch (info->lcd_orientation) {
-      case LCD_ORIENTATION_0:
-        r = rect_init(0, 0, w, h);
-        break;
-      case LCD_ORIENTATION_90:
-        r = rect_init(w - h, h - w, h, w);
-        break;
-      case LCD_ORIENTATION_180:
-        r = rect_init(0, 0, w, h);
-        break;
-      case LCD_ORIENTATION_270:
-        r = rect_init(0, 0, h, w);
-        break;
-    }
-  } else {
-    switch (info->lcd_orientation) {
-      case LCD_ORIENTATION_0:
-        r = rect_init(dirty_rect->x, h - dirty_rect->h - dirty_rect->y, dirty_rect->w, dirty_rect->h);
-        break;
-      case LCD_ORIENTATION_90:
-        r = rect_init(w - dirty_rect->h - dirty_rect->y, h - dirty_rect->w - dirty_rect->x, dirty_rect->h, dirty_rect->w);
-        break;
-      case LCD_ORIENTATION_180:
-        r = rect_init(w - dirty_rect->w - dirty_rect->x, dirty_rect->y, dirty_rect->w, dirty_rect->h);
-        break;
-      case LCD_ORIENTATION_270:
-        r = rect_init(dirty_rect->y, dirty_rect->x, dirty_rect->h, dirty_rect->w);
-        break;
-    }
-  }
-  return r;
-}
-
-static inline void vgcanvas_nanovg_set_offline_fb(vgcanvas_nanovg_t* canvas, uint32_t w,
-                                                  uint32_t h, const dirty_rects_t* dirty_rects) {
-  GLint default_fbo = 0;
-
-  vgcanvas_nanovg_offline_fb_t* offline_fb = canvas->offline_fb;
-  if (offline_fb != NULL) {
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &default_fbo);
-
-    if (offline_fb->width != w || offline_fb->height != h) {
-      vgcanvas_destroy_offline_fb(canvas->offline_fb);
-      canvas->offline_fb = vgcanvas_create_offline_fb(w, h);
-      offline_fb = canvas->offline_fb;
-    }
-
-    if (offline_fb != NULL) {
-      offline_fb->last_fbo = (GLuint)default_fbo;
-      glBindFramebuffer(GL_FRAMEBUFFER, offline_fb->fbo);
-      glViewport(0, 0, w, h);
-      // 去除这两行注释就可以显示脏矩形的工作原理。
-      // glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-      // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-#if WITH_LCD_CLEAR_ALPHA
-    if (dirty_rects == NULL || dirty_rects->disable_multiple) {
-      const rect_t* dirty_rect = dirty_rects != NULL ? &(dirty_rects->max) : NULL;
-      rect_t r = vgcanvas_nanovg_get_dirty_rect(dirty_rect);
-      // 把脏矩形的区域刷新为黑色透明度为0的颜色
-      glScissor(r.x, r.y, r.w, r.h);
-      glEnable(GL_SCISSOR_TEST);
-      glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-      glDisable(GL_SCISSOR_TEST);
-    } else {
-      int32_t i = 0;
-      for (i = 0; i < dirty_rects->nr; i++) {
-        const rect_t* iter = dirty_rects->rects + i;
-        rect_t r = vgcanvas_nanovg_get_dirty_rect(iter);
-        // 把脏矩形的区域刷新为黑色透明度为0的颜色
-        glScissor(r.x, r.y, r.w, r.h);
-        glEnable(GL_SCISSOR_TEST);
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-        glDisable(GL_SCISSOR_TEST);
-      }
-
-    }
-#else
-      (void)dirty_rects;
-#endif
-
-    }
-  }
-}
-
-static inline void vgcanvas_nanovg_offline_fb_flush(vgcanvas_nanovg_t* canvas) {
-  system_info_t* info = system_info();
-  vgcanvas_nanovg_offline_fb_t* offline_fb = canvas->offline_fb;
-  vgcanvas_nanovg_screen_shader_info_t* shader_info = canvas->shader_program;
-  if (offline_fb != NULL && shader_info != NULL) {
-    glBindFramebuffer(GL_FRAMEBUFFER, offline_fb->last_fbo);
-
-    glViewport(0, 0, info->lcd_w * info->device_pixel_ratio,
-               info->lcd_h * info->device_pixel_ratio);
-
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-    glUseProgram(shader_info->program_object);
-
-#if defined NANOVG_GL3
-    glBindVertexArray(shader_info->vao);
-#endif
-    glEnableVertexAttribArray(shader_info->coord_loc);
-    glEnableVertexAttribArray(shader_info->position_loc);
-
-    glBindBuffer(GL_ARRAY_BUFFER, shader_info->vboIds[0]);
-    glVertexAttribPointer(shader_info->position_loc, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, shader_info->vboIds[1]);
-    glVertexAttribPointer(shader_info->coord_loc, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
-
-    // Bind the texture
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, offline_fb->textureId);
-    glUniform1i(shader_info->screentexture_loc, 0);
-
-    glDrawArrays(GL_TRIANGLES, 0, shader_info->draw_arrays);
-
-    glDisableVertexAttribArray(shader_info->coord_loc);
-    glDisableVertexAttribArray(shader_info->position_loc);
-
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-#if defined NANOVG_GL3
-    glBindVertexArray(0);
-#endif
-  }
-}
-
 static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, const dirty_rects_t* dirty_rects) {
   float_t angle = 0.0f;
   float_t anchor_x = 0.0f;
@@ -173,9 +32,6 @@ static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, const dirty_rects
       canvas->base.dirty_rect = rect_init(0, 0, info->lcd_w, info->lcd_h);
     }
   }
-
-  vgcanvas_nanovg_set_offline_fb(canvas, info->lcd_w * info->device_pixel_ratio,
-                                 info->lcd_h * info->device_pixel_ratio, dirty_rects);
 
   nvgBeginFrame(canvas->vg, info->lcd_w, info->lcd_h, info->device_pixel_ratio);
 
@@ -218,8 +74,6 @@ static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
 
   nvgRestore(vg);
   nvgEndFrame(vg);
-
-  vgcanvas_nanovg_offline_fb_flush(canvas);
 
   native_window_swap_buffer(canvas->window);
 
@@ -391,8 +245,6 @@ static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas) {
   nvgDeleteGLES3(vg);
 #endif
 
-  TKMEM_FREE(canvas->offline_fb);
-  TKMEM_FREE(canvas->shader_program);
   TKMEM_FREE(vgcanvas);
 
   return RET_OK;

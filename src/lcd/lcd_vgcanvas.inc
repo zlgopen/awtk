@@ -353,11 +353,7 @@ lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
   base->h = (wh_t)h;
   base->ratio = canvas->ratio;
   base->type = LCD_VGCANVAS;
-#ifdef WITH_NANOVG_PLUS_GPU
   base->support_dirty_rect = FALSE;
-#elif defined(WITH_NANOVG_GPU)
-  base->support_dirty_rect = TRUE;
-#endif
 
   system_info_set_lcd_w(info, base->w);
   system_info_set_lcd_h(info, base->h);
