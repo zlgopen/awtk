@@ -308,7 +308,9 @@ static ret_t vgcanvas_asset_manager_remove_image_impl(vgcanvas_asset_manager_t* 
     int32_t index = darray_find_index(&(image->image_ctx_list), tk_pointer_from_int(vg_data->vg_id));
     darray_remove_index(&(image->image_ctx_list), index);
     if (image->image_ctx_list.size == 0) {
-      darray_remove(&(vgcanvas_asset_manager->image_list), image);
+      bitmap_t img;
+      img.buffer = buffer;
+      image_manager_unload_bitmap(image_manager(), &img);
     }
   }
   return RET_OK;
