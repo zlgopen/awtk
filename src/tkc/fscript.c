@@ -357,6 +357,9 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
         s->type = save_type;
         value_set_int(d, 0);
         return RET_OK;
+      } else if (*name == '.') {
+        value_copy(d, s);
+        return RET_OK;
       }
 
       if (fscript_get_var(fscript, name, d) != RET_OK) {
@@ -1082,6 +1085,9 @@ static ret_t fexpr_parse_term(fscript_parser_t* parser, value_t* result) {
   return_value_if_fail(t != NULL, RET_BAD_PARAMS);
 
   if (t->type == TOKEN_NUMBER || t->type == TOKEN_ID || t->type == TOKEN_STR) {
+    if (t->type == TOKEN_ID && t->token[0] == '.') {
+      fscript_parser_set_error(parser, "var can't begin with '.'");
+    }
     ret = token_to_value(t, result);
   } else if (t->type == TOKEN_FUNC) {
     fscript_parser_unget_token(parser);

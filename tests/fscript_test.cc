@@ -1206,6 +1206,11 @@ TEST(FExr, syntax_check) {
   ASSERT_EQ(error.offset, 4);
 
   fscript_parser_error_deinit(&error);
+  
+  fscript_syntax_check(obj, "create_array().size", &error);
+  ASSERT_STREQ(error.message, "var can't begin with '.'");
+
+  fscript_parser_error_deinit(&error);
 
   OBJECT_UNREF(obj);
 }
