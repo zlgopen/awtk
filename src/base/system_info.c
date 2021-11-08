@@ -88,7 +88,8 @@ static ret_t system_info_normalize_app_root_try_default(system_info_t* info,
   return RET_FAIL;
 }
 
-static ret_t system_info_normalize_app_root_try_path(system_info_t* info, char* path, bool_t ignore_bin) {
+static ret_t system_info_normalize_app_root_try_path(system_info_t* info, char* path,
+                                                     bool_t ignore_bin) {
   char* last = NULL;
   char app_root[MAX_PATH + 1] = {0};
 

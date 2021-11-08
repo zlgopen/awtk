@@ -728,7 +728,6 @@ fs_t* os_fs(void);
  */
 ret_t fs_foreach_file(const char* path, tk_visit_t on_file, void* ctx);
 
-
 /**
  * @method file_exist
  *

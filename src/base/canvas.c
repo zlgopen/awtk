@@ -150,7 +150,8 @@ bool_t canvas_is_rect_in_clip_rect(canvas_t* c, xy_t left, xy_t top, xy_t right,
   if (c->lcd->is_rect_in_clip_rect != NULL) {
     return c->lcd->is_rect_in_clip_rect(c->lcd, left, top, right, bottom);
   } else {
-    if (left > c->clip_right || right < c->clip_left || top > c->clip_bottom || bottom < c->clip_top) {
+    if (left > c->clip_right || right < c->clip_left || top > c->clip_bottom ||
+        bottom < c->clip_top) {
       return FALSE;
     }
     return TRUE;
@@ -748,7 +749,7 @@ static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, const rect_t* s, c
   xy_t x2 = d->x + d->w - 1;
   xy_t y2 = d->y + d->h - 1;
 
-  if (d->w <= 0 || d->h <= 0 || s->w <= 0 || s->h <= 0 || 
+  if (d->w <= 0 || d->h <= 0 || s->w <= 0 || s->h <= 0 ||
       !canvas_is_rect_in_clip_rect(c, x, y, x2, y2)) {
     return RET_OK;
   }

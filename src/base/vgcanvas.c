@@ -101,7 +101,8 @@ ret_t vgcanvas_clip_path(vgcanvas_t* vg) {
   return vg->vt->clip_path(vg);
 }
 
-bool_t vgcanvas_is_rectf_int_clip_rect(vgcanvas_t* vg, float_t left, float_t top, float_t right, float_t bottom) {
+bool_t vgcanvas_is_rectf_int_clip_rect(vgcanvas_t* vg, float_t left, float_t top, float_t right,
+                                       float_t bottom) {
   return_value_if_fail(vg != NULL && vg->vt->is_rectf_int_clip_rect != NULL, FALSE);
 
   return vg->vt->is_rectf_int_clip_rect(vg, left, top, right, bottom);

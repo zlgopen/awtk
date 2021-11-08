@@ -49,7 +49,8 @@ typedef ret_t (*lcd_get_dirty_rect_t)(lcd_t* lcd, rect_t* r);
 typedef const dirty_rects_t* (*lcd_get_dirty_rects_t)(lcd_t* lcd);
 
 typedef ret_t (*lcd_begin_frame_t)(lcd_t* lcd, const dirty_rects_t* dirty_rects);
-typedef bool_t(*lcd_is_rect_in_clip_rect_t)(lcd_t* lcd, xy_t left, xy_t top, xy_t right, xy_t bottom);
+typedef bool_t (*lcd_is_rect_in_clip_rect_t)(lcd_t* lcd, xy_t left, xy_t top, xy_t right,
+                                             xy_t bottom);
 typedef ret_t (*lcd_set_clip_rect_t)(lcd_t* lcd, const rect_t* rect);
 typedef ret_t (*lcd_get_clip_rect_t)(lcd_t* lcd, rect_t* rect);
 typedef ret_t (*lcd_set_orientation_t)(lcd_t* lcd, lcd_orientation_t old_orientation,
