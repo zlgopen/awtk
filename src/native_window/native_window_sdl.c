@@ -49,7 +49,7 @@
 
 typedef struct _native_window_sdl_t {
   native_window_t native_window;
-
+  bool_t is_init;
   SDL_GLContext context;
   SDL_Renderer* render;
   SDL_Window* window;
@@ -217,8 +217,11 @@ static ret_t native_window_sdl_gl_make_current(native_window_t* win) {
   SDL_GL_GetDrawableSize(window, &fw, &fh);
 
   glViewport(0, 0, fw, fh);
-  glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+  if (!sdl->is_init) {
+    sdl->is_init = TRUE;
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+  }
 #endif /*WITH_GPU_GL*/
   return RET_OK;
 }
