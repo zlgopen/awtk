@@ -930,9 +930,6 @@ def gen_asset_c_entry_with_multi_theme():
     result += '    log_debug(\"%s not support.\\n\", theme);\n'
     result += '    return RET_NOT_IMPL;\n  }\n}\n\n'
 
-    result += 'ret_t assets_init(void) {\n'
-    result += '  return assets_init_internal(APP_THEME);\n}\n\n'
-
     result += '#ifndef WITH_FS_RES\n'
     result += 'static ret_t widget_set_theme_without_file_system(widget_t* widget, const char* name) {\n'
     result += '  const asset_info_t* info = NULL;\n'
@@ -957,15 +954,22 @@ def gen_asset_c_entry_with_multi_theme():
     result += '  widget_invalidate_force(wm, NULL);\n\n'
     result += '  log_debug("theme changed: %s\\n", name);\n\n'
     result += '  return RET_OK;\n'
+    result += '}\n\n'
+    result += 'static ret_t on_set_theme_without_file_system(void* ctx, event_t* e) {\n'
+    result += '  theme_change_event_t* evt = theme_change_event_cast(e);\n'
+    result += '  widget_set_theme_without_file_system(window_manager(), evt->name);\n'
+    result += '  return RET_OK;\n'
     result += '}\n'
     result += '#endif /*WITH_FS_RES*/\n\n'
 
-    result += 'ret_t assets_set_global_theme(const char* name) {\n'
-    result += '#ifdef WITH_FS_RES\n'
-    result += '  return widget_set_theme(window_manager(), name);\n'
-    result += '#else  /*WITH_FS_RES*/\n'
-    result += '  return widget_set_theme_without_file_system(window_manager(), name);\n'
+    result += 'ret_t assets_init(void) {\n'
+    result += '#ifndef WITH_FS_RES\n'
+    result += '  widget_on(window_manager(), EVT_THEME_WILL_CHANGE, on_set_theme_without_file_system, NULL);\n'
     result += '#endif /*WITH_FS_RES*/\n'
+    result += '  return assets_init_internal(APP_THEME);\n}\n\n'
+
+    result += 'ret_t assets_set_global_theme(const char* name) {\n'
+    result += '  return widget_set_theme(window_manager(), name);\n'
     result += '}\n'
 
     write_file(ASSET_C, result)

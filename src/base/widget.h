@@ -1148,9 +1148,6 @@ ret_t widget_set_name(widget_t* widget, const char* name);
 /**
  * @method widget_set_theme
  * 设置theme的名称，用于动态切换主题。名称与当前主题名称相同，则重新加载全部资源。
- *
- * > 目前只支持带有文件系统的平台。
- *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} name 主题的名称。

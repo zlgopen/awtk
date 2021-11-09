@@ -239,6 +239,26 @@ event_t* assets_event_init(assets_event_t* event, assets_manager_t* am, uint32_t
   return (event_t*)event;
 }
 
+theme_change_event_t* theme_change_event_cast(event_t* event) {
+  return_value_if_fail(event != NULL, NULL);
+  return_value_if_fail(event->type == EVT_THEME_CHANGED || event->type == EVT_THEME_WILL_CHANGE,
+                       NULL);
+  return_value_if_fail(event->size == sizeof(theme_change_event_t), NULL);
+
+  return (theme_change_event_t*)event;
+}
+
+event_t* theme_change_event_init(theme_change_event_t* event, uint32_t type, const char* name) {
+  return_value_if_fail(event != NULL, NULL);
+  memset(event, 0x00, sizeof(*event));
+
+  event->e = event_init(type, NULL);
+  event->e.size = sizeof(*event);
+  event->name = name;
+
+  return (event_t*)(event);
+}
+
 int32_t event_from_name(const char* name) {
   return_value_if_fail(name != NULL, EVT_NONE);
 

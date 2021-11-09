@@ -572,16 +572,20 @@ ret_t widget_set_name(widget_t* widget, const char* name) {
 }
 
 ret_t widget_set_theme(widget_t* widget, const char* name) {
+  theme_change_event_t will_event;
+  event_t* will_evt = theme_change_event_init(&will_event, EVT_THEME_WILL_CHANGE, name);
 #ifdef WITH_FS_RES
   const asset_info_t* info = NULL;
-  event_t e = event_init(EVT_THEME_CHANGED, NULL);
+  theme_change_event_t event;
+  event_t* evt = theme_change_event_init(&will_event, EVT_THEME_CHANGED, name);
   widget_t* wm = widget_get_window_manager(widget);
   font_manager_t* fm = widget_get_font_manager(widget);
   image_manager_t* imm = widget_get_image_manager(widget);
   assets_manager_t* am = widget_get_assets_manager(widget);
   locale_info_t* locale_info = widget_get_locale_info(widget);
-
   return_value_if_fail(am != NULL && name != NULL, RET_BAD_PARAMS);
+  
+  widget_dispatch(window_manager(), will_evt);
 
   font_manager_unload_all(fm);
   image_manager_unload_all(imm);
@@ -595,12 +599,10 @@ ret_t widget_set_theme(widget_t* widget, const char* name) {
     theme_set_theme_data(theme(), info->data);
   }
 
-  widget_dispatch(wm, &e);
+  widget_dispatch(wm, evt);
   widget_invalidate_force(wm, NULL);
 
   log_debug("theme changed: %s\n", name);
-#else
-  log_debug("WITH_FS_RES is not defined\n");
 #endif
 
   return RET_OK;

@@ -416,6 +416,11 @@ typedef enum _event_type_t {
    */
   EVT_REQUEST_QUIT_APP,
   /**
+   * @const EVT_THEME_WILL_CHANGE
+   * 即将改变主题(event_t)。
+   */
+  EVT_THEME_WILL_CHANGE,
+  /**
    * @const EVT_THEME_CHANGED
    * 主题变化(event_t)。
    */
@@ -1014,6 +1019,44 @@ typedef struct _assets_event_t {
  */
 event_t* assets_event_init(assets_event_t* event, assets_manager_t* am, uint32_t type,
                            asset_type_t asset_type, asset_info_t* asset_info);
+
+/**
+ * @class theme_change_event_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * 主题变化事件。
+ */
+typedef struct _theme_change_event_t {
+  event_t e;
+  /**
+   * @property {const char*} name
+   * @annotation ["readable", "scriptable"]
+   * 主题名称。
+   */
+  const char* name;
+} theme_change_event_t;
+
+/**
+ * @method theme_change_event_cast
+ * @annotation ["cast", "scriptable"]
+ * 把event对象转theme_change_event_t对象，主要给脚本语言使用。
+ * @param {event_t*} event event对象。
+ *
+ * @return {theme_change_event_t*}  返回event对象。
+ */
+theme_change_event_t* theme_change_event_cast(event_t* event);
+
+/**
+ * @method theme_change_event_init
+ * 初始theme change event。
+ * 
+ * @param {theme_change_event_t*} event event对象。
+ * @param {uint32_t} type 事件类型。
+ * @param {const char*} name 主题名。
+ *
+ * @return {event_t*} 返回event对象。
+ */
+event_t* theme_change_event_init(theme_change_event_t* event, uint32_t type, const char* name);
 
 /**
  * @class event_t
