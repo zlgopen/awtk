@@ -224,9 +224,6 @@ static ret_t text_edit_set_caret_pos(text_edit_impl_t* impl, uint32_t x, uint32_
   impl->caret.y = y;
 
   if (!impl->lock_scrollbar_value) {
-    uint32_t total_line_height = (impl->last_line_number + 1) * impl->line_height;
-    uint32_t max_oy = (total_line_height > layout_info->h) ? total_line_height - layout_info->h : 0;
-
     if (view_top > caret_top) {
       layout_info->oy = caret_top - layout_info->margin_t;
     }
@@ -234,8 +231,6 @@ static ret_t text_edit_set_caret_pos(text_edit_impl_t* impl, uint32_t x, uint32_
     if (view_bottom < caret_bottom) {
       layout_info->oy = caret_bottom - layout_info->h;
     }
-
-    layout_info->oy = tk_min(layout_info->oy, max_oy);
 
     if (view_left > caret_left) {
       layout_info->ox = caret_left - layout_info->margin_l;
@@ -440,6 +435,16 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
   return row;
 }
 
+static ret_t text_edit_fix_oy(text_edit_impl_t* impl) {
+  text_layout_info_t* layout_info = &(impl->layout_info);
+  uint32_t total_line_height = (impl->last_line_number + 1) * impl->line_height;
+  uint32_t max_oy = (total_line_height > layout_info->h) ? total_line_height - layout_info->h : 0;
+
+  layout_info->oy = tk_min(layout_info->oy, max_oy);
+
+  return RET_OK;
+}
+
 static row_info_t* text_edit_layout_line(text_edit_t* text_edit, uint32_t row_num,
                                          uint32_t line_index, uint32_t offset) {
   DECL_IMPL(text_edit);
@@ -493,6 +498,8 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
   }
 
   impl->rows->size = i;
+
+  text_edit_fix_oy(impl);
 
   text_edit_notify(text_edit);
 
