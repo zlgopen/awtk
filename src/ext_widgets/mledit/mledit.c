@@ -619,7 +619,9 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       pointer_event_t evt = *(pointer_event_t*)e;
       if (widget->parent && widget->parent->grab_widget == widget) {
         if (widget->target == NULL) {
+          text_edit_set_lock_scrollbar_value(mledit->model, FALSE);
           text_edit_drag(mledit->model, evt.x, evt.y);
+          text_edit_set_lock_scrollbar_value(mledit->model, mledit->lock_scrollbar_value);
           ret = RET_STOP;
         }
       }
