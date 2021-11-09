@@ -13,6 +13,31 @@
     <button focusable="true" on:click="open('button_fscript')" text="Buttons"/>
     <button focusable="true" on:click="open('basic_fscript')" text="Basic"/>
     <button focusable="true" on:click="open('text_selector_fscript')" text="Text Selector"/>
+    <button focusable="true" tr_text="<&quot;en&amp;zh&quot;>">
+      <property name="on:click">
+        <![CDATA[
+        a = locale_get()
+        b = object_get(a, 'language')
+        if (b == 'en') {
+          locale_set('zh', 'CN')
+        } else {
+          locale_set('en', 'US')
+        }
+        ]]>
+      </property>
+    </button>
+    <button focusable="true" text="Change Theme">
+      <property name="on:click">
+        <![CDATA[
+        a = theme_get()
+        if (a == 'default') {
+          theme_set('dark')
+        } else {
+          theme_set('default')
+        }
+        ]]>
+      </property>
+    </button>
     <button focusable="true" on:click="quit()" text="Quit"/>
   </view>
 </window>

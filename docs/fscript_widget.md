@@ -676,6 +676,141 @@ widget_eval(widget, path.prop)
   </row>
 ```
 
+### 5.15 locale\_get
+
+> 获取本地化信息(国家和语言)
+----------------------------
+
+#### 原型
+
+```js
+locale_get() => object
+locale_get(widget) => object
+```
+
+* widget 参数：'self' 表示当前控件，'parent' 表示当前控件的父控件，'window' 表示当前的窗口，'window\_manager' 表示窗口管理器。
+* 不传入 widget 参数时，默认使用 'self' 当前控件。
+
+返回的本地化信息对象包含以下属性：
+
+| 属性名称 | 属性类型 | 说明               |
+| -------- | -------- | ------------------ |
+| language | string   | 语言。如：zh       |
+| country  | string   | 国家或地区。如：CN |
+
+### 示例
+
+> 获取当前控件的本地化信息
+
+```
+obj = locale_get()
+print(object_get(obj, 'country'))
+print(object_get(obj, 'language'))
+```
+
+> 获取窗口管理器的本地化信息
+
+```
+obj = locale_get('window_manager')
+print(object_get(obj, 'country'))
+print(object_get(obj, 'language'))
+```
+
+获取当前控件的父控件或当前窗口的本地化信息用法类似，此处不多赘述。
+
+### 5.16 locale\_set
+
+> 设置本地化信息(国家和语言)
+----------------------------
+
+#### 原型
+
+```js
+locale_set(language, country)
+locale_set(widget, language, country)
+```
+
+* widget 参数：'self' 表示当前控件，'parent' 表示当前控件的父控件，'window' 表示当前的窗口，'window\_manager' 表示窗口管理器。
+* 不传入 widget 参数时，默认使用 'self' 当前控件。
+
+### 示例
+
+> 设置当前控件使用 "zh_CN" 语言
+
+```
+locale_set('zh', 'CN')
+```
+
+> 设置窗口管理器使用 "en_US" 语言
+
+```
+locale_set('window_manager', 'en', 'US')
+```
+
+设置当前控件的父控件或当前窗口的本地化信息用法类似，此处不多赘述。
+
+### 5.17 theme\_get
+
+> 获取当前主题
+----------------------------
+
+#### 原型
+
+```js
+theme_get() => string
+theme_get(widget) => string
+```
+
+* widget 参数：'self' 表示当前控件，'parent' 表示当前控件的父控件，'window' 表示当前的窗口，'window\_manager' 表示窗口管理器。
+* 不传入 widget 参数时，默认使用 'self' 当前控件。
+
+### 示例
+
+> 获取当前控件的主题
+
+```
+print(theme_get())
+```
+
+> 获取窗口管理器的主题
+
+```
+print(theme_get('window_manager'))
+```
+
+获取当前控件的父控件或当前窗口的主题用法类似，此处不多赘述。
+
+### 5.18 theme\_set
+
+> 设置本地化信息(国家和语言)
+----------------------------
+
+#### 原型
+
+```js
+theme_set(theme_name)
+theme_set(widget, theme_name)
+```
+
+* widget 参数：'self' 表示当前控件，'parent' 表示当前控件的父控件，'window' 表示当前的窗口，'window\_manager' 表示窗口管理器。
+* 不传入 widget 参数时，默认使用 'self' 当前控件。
+
+### 示例
+
+> 设置当前控件使用 "dark" 主题
+
+```
+theme_set('dark')
+```
+
+> 设置窗口管理器使用 "dark" 主题
+
+```
+theme_set('window_manager', 'dark')
+```
+
+设置当前控件的父控件或当前窗口的主题用法类似，此处不多赘述。
+
 ### 示例参考
 
 * https://github.com/zlgopen/awtk/blob/master/design/default/ui/main_fscript.xml

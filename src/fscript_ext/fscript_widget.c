@@ -18,6 +18,7 @@
 #include "tkc/utf8.h"
 #include "tkc/fscript.h"
 #include "tkc/tokenizer.h"
+#include "tkc/object_default.h"
 #include "base/enums.h"
 #include "base/main_loop.h"
 #include "base/window.h"
@@ -414,6 +415,82 @@ static ret_t func_widget_send_key(fscript_t* fscript, fscript_args_t* args, valu
   return RET_OK;
 }
 
+static ret_t func_locale_get(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  object_t* obj = NULL;
+  locale_info_t* info = NULL;
+  widget_t* widget = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  if (args->size > 0) {
+    widget = to_widget(fscript, args->args);
+  }
+  FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
+  info = widget_get_locale_info(widget);
+  FSCRIPT_FUNC_CHECK(info != NULL, RET_BAD_PARAMS);
+
+  obj = object_default_create();
+  FSCRIPT_FUNC_CHECK(obj != NULL, RET_OOM);
+  object_set_prop_str(obj, "language", info->language);
+  object_set_prop_str(obj, "country", info->country);
+  value_set_object(result, obj);
+  result->free_handle = TRUE;
+
+  return RET_OK;
+}
+
+static ret_t func_locale_set(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  locale_info_t* info = NULL;
+  const char* language = NULL;
+  const char* country = NULL;
+  widget_t* widget = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  FSCRIPT_FUNC_CHECK(args->size >= 2, RET_BAD_PARAMS);
+  if (args->size > 2) {
+    widget = to_widget(fscript, args->args);
+    language = value_str(args->args + 1);
+    country = value_str(args->args + 2);
+  } else {
+    language = value_str(args->args);
+    country = value_str(args->args + 1);
+  }
+  FSCRIPT_FUNC_CHECK(widget != NULL && language != NULL && country != NULL, RET_BAD_PARAMS);
+  info = widget_get_locale_info(widget);
+  FSCRIPT_FUNC_CHECK(info != NULL, RET_BAD_PARAMS);
+
+  value_set_bool(result, locale_info_change(info, language, country) == RET_OK);
+
+  return RET_OK;
+}
+
+static ret_t func_theme_get(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  assets_manager_t* am = NULL;
+  widget_t* widget = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  if (args->size > 0) {
+    widget = to_widget(fscript, args->args);
+  }
+  FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
+  am = widget_get_assets_manager(widget);
+  FSCRIPT_FUNC_CHECK(am != NULL, RET_BAD_PARAMS);
+
+  value_dup_str(result, am->theme);
+
+  return RET_OK;
+}
+
+static ret_t func_theme_set(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  const char* name = NULL;
+  widget_t* widget = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
+  if (args->size == 1) {
+    name = value_str(args->args);
+  } else {
+    widget = to_widget(fscript, args->args);
+    name = value_str(args->args + 1);
+  }
+  FSCRIPT_FUNC_CHECK(widget != NULL && name != NULL, RET_BAD_PARAMS);
+
+  value_set_bool(result, widget_set_theme(widget, name) == RET_OK);
+
+  return RET_OK;
+}
+
 FACTORY_TABLE_BEGIN(s_ext_widget)
 FACTORY_TABLE_ENTRY("open", func_window_open)
 FACTORY_TABLE_ENTRY("close", func_window_close)
@@ -430,6 +507,10 @@ FACTORY_TABLE_ENTRY("widget_destroy", func_widget_destroy)
 FACTORY_TABLE_ENTRY("start_timer", func_widget_add_timer)
 FACTORY_TABLE_ENTRY("stop_timer", func_widget_remove_timer)
 FACTORY_TABLE_ENTRY("send_key", func_widget_send_key)
+FACTORY_TABLE_ENTRY("locale_get", func_locale_get)
+FACTORY_TABLE_ENTRY("locale_set", func_locale_set)
+FACTORY_TABLE_ENTRY("theme_get", func_theme_get)
+FACTORY_TABLE_ENTRY("theme_set", func_theme_set)
 FACTORY_TABLE_END()
 
 ret_t fscript_widget_register(void) {
