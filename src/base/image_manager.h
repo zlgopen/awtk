@@ -137,6 +137,16 @@ ret_t image_manager_get_bitmap(image_manager_t* imm, const char* name, bitmap_t*
 ret_t image_manager_preload(image_manager_t* imm, const char* name);
 
 /**
+ * @method image_manager_has_bitmap
+ * 图片是否在图片管理中。
+ * @param {image_manager_t*} imm 图片管理器对象。
+ * @param {bitmap_t*} image 图片。
+ *
+ * @return {bool_t} 返回TRUE表示存在，否则表示不存在。
+ */
+bool_t image_manager_has_bitmap(image_manager_t* imm, bitmap_t* image);
+
+/**
  * @method image_manager_unload_unused
  * 从图片管理器中卸载指定时间内没有使用的图片。
  * @param {image_manager_t*} imm 图片管理器对象。

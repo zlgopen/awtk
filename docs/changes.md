@@ -2,6 +2,7 @@
 
 2021/11/10
   * 增加widget\_get\_value\_int/widget\_set\_value\_int/widget\_add\_value\_int
+  * 修复截屏出现显存泄露的问题（感谢智明提供补丁）。
 
 2021/11/09
   * 修复 mledit oy 计算不正确的问题 （感谢兆坤提供补丁） 

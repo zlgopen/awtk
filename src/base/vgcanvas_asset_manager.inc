@@ -310,7 +310,11 @@ static ret_t vgcanvas_asset_manager_remove_image_impl(vgcanvas_asset_manager_t* 
     if (image->image_ctx_list.size == 0) {
       bitmap_t img;
       img.buffer = buffer;
-      image_manager_unload_bitmap(image_manager(), &img);
+      if (image_manager_has_bitmap(image_manager(), &img)) {
+        image_manager_unload_bitmap(image_manager(), &img);
+      } else {
+        darray_remove(&(vgcanvas_asset_manager->image_list), image);
+      }
     }
   }
   return RET_OK;

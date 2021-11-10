@@ -319,6 +319,19 @@ ret_t image_manager_set_assets_manager(image_manager_t* imm, assets_manager_t* a
   return RET_OK;
 }
 
+bool_t image_manager_has_bitmap(image_manager_t* imm, bitmap_t* image) {
+  bitmap_cache_t b;
+  return_value_if_fail(imm != NULL && image != NULL, RET_BAD_PARAMS);
+
+  b.image.buffer = image->buffer;
+
+  if (darray_find_ex(&(imm->images), (tk_compare_t)bitmap_cache_cmp_data, &b) == NULL) {
+    return FALSE;
+  } else {
+    return TRUE;
+  }
+}
+
 ret_t image_manager_unload_unused(image_manager_t* imm, uint32_t time_delta_s) {
   bitmap_cache_t b;
   b.last_access_time = time_now_s() - time_delta_s;
