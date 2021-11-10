@@ -154,3 +154,98 @@ ret_t rlog_destroy(rlog_t* log) {
 
   return RET_OK;
 }
+ret_t rlog_clear(rlog_t* log) {
+  char filename[MAX_PATH + 1];
+  ret_t ret;
+  my_return_value_if_fail(log, RET_BAD_PARAMS);
+
+  ret = tk_mutex_nest_lock(log->mutex);
+  my_return_value_if_fail(ret == RET_OK, RET_FAIL);
+
+  fs_file_close(log->fp);
+  tk_snprintf(filename, MAX_PATH, log->filename_pattern, (int)0);
+  fs_remove_file(os_fs(), filename);
+  log->fp = fs_open_file(os_fs(), filename, "wb+");
+
+  if (log->index == 1) {
+    tk_snprintf(filename, MAX_PATH, log->filename_pattern, (int)1);
+    fs_remove_file(os_fs(), filename);
+    log->index = 0;
+  }
+  tk_mutex_nest_unlock(log->mutex);
+
+  my_return_value_if_fail(log->fp != NULL, RET_FAIL);
+  return RET_OK;
+}
+
+ret_t rlog_size(rlog_t* log, uint32_t* size) {
+  char filename[MAX_PATH + 1];
+  ret_t ret;
+  int32_t sz = 0;
+  my_return_value_if_fail(log && size, RET_BAD_PARAMS);
+
+  ret = tk_mutex_nest_lock(log->mutex);
+  my_return_value_if_fail(ret == RET_OK, RET_FAIL);
+
+  tk_snprintf(filename, MAX_PATH, log->filename_pattern, (int)0);
+  sz = file_get_size(filename);
+  goto_error_if_fail(sz >= 0);
+
+  *size = sz;
+  if (log->index == 1) {
+    tk_snprintf(filename, MAX_PATH, log->filename_pattern, (int)1);
+    sz = file_get_size(filename);
+    goto_error_if_fail(sz >= 0);
+    *size += sz;
+  }
+  tk_mutex_nest_unlock(log->mutex);
+  return RET_OK;
+
+error:
+  tk_mutex_nest_unlock(log->mutex);
+  return RET_FAIL;
+}
+
+ret_t rlog_read(rlog_t* log, uint32_t offs, char* buff, uint32_t buffsz, uint32_t* readsz) {
+  char filename[MAX_PATH + 1];
+  int32_t ret;
+  int32_t sz = 0;
+  my_return_value_if_fail(log && buff && buffsz && readsz, RET_BAD_PARAMS);
+
+  ret = tk_mutex_nest_lock(log->mutex);
+  my_return_value_if_fail(ret == RET_OK, RET_FAIL);
+
+  tk_snprintf(filename, MAX_PATH, log->filename_pattern, (int)0);
+  sz = file_get_size(filename);
+  goto_error_if_fail(sz >= 0);
+  if (offs < sz) {
+    ret = file_read_part(filename, buff, buffsz, offs);
+    goto_error_if_fail(ret >= 0);
+    offs = 0;
+    buff += ret;
+    buffsz -= ret;
+    *readsz = ret;
+  } else {
+    offs -= sz;
+  }
+  if (buffsz == 0 || log->index == 0) {
+    tk_mutex_nest_unlock(log->mutex);
+    return RET_OK;
+  }
+
+  tk_snprintf(filename, MAX_PATH, log->filename_pattern, (int)1);
+  ret = file_get_size(filename);
+  goto_error_if_fail(ret >= 0);
+  goto_error_if_fail(offs < sz);
+
+  ret = file_read_part(filename, buff, buffsz, offs);
+  goto_error_if_fail(ret >= 0);
+
+  *readsz += ret;
+  tk_mutex_nest_unlock(log->mutex);
+  return RET_OK;
+
+error:
+  tk_mutex_nest_unlock(log->mutex);
+  return RET_FAIL;
+}

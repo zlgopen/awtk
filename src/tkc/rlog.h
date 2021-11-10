@@ -101,6 +101,41 @@ ret_t rlog_print(rlog_t* log, const char* format, ...);
  */
 ret_t rlog_destroy(rlog_t* log);
 
+/**
+ * @method rlog_size
+ * 获取日志大小。
+ *
+ * @param {rlog_t*} log 日志对象。
+ * @param {uint32_t*} size 获取的日志大小。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rlog_size(rlog_t* log, uint32_t* size);
+
+/**
+ * @method rlog_clear
+ * 清空日志。
+ *
+ * @param {rlog_t*} log 日志对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rlog_clear(rlog_t* log);
+
+/**
+ * @method rlog_read
+ * 读取日志。
+ *
+ * @param {rlog_t*} log 日志对象。
+ * @param {uint32_t} offs 日志偏移量。
+ * @param {char*} buff 存放日志的缓存。
+ * @param {uint32_t} buffsz 缓存大小。
+ * @param {uint32_t*} readsz 读取出的日志大小。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rlog_read(rlog_t* log, uint32_t offs, char* buff, uint32_t buffsz, uint32_t* readsz);
+
 END_C_DECLS
 
 #endif /*TK_RLOG_H*/
