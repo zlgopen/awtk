@@ -820,6 +820,16 @@ ret_t widget_resize(widget_t* widget, wh_t w, wh_t h);
 ret_t widget_move_resize(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method widget_get_value
+ * 获取控件的值。只是对widget\_get\_prop的包装，值的意义由子类控件决定。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {float_t} 返回值。
+ */
+float_t widget_get_value(widget_t* widget);
+
+/**
  * @method widget_set_value
  * 设置控件的值。
  * 只是对widget\_set\_prop的包装，值的意义由子类控件决定。
@@ -830,6 +840,52 @@ ret_t widget_move_resize(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_value(widget_t* widget, float_t value);
+
+/**
+ * @method widget_add_value
+ * 增加控件的值。
+ * 只是对widget\_set\_prop的包装，值的意义由子类控件决定。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {float_t}  delta 增量。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_add_value(widget_t* widget, float_t delta);
+
+/**
+ * @method widget_get_value_int
+ * 获取控件的值。只是对widget\_get\_prop的包装，值的意义由子类控件决定。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {int32_t} 返回值。
+ */
+int32_t widget_get_value_int(widget_t* widget);
+
+/**
+ * @method widget_set_value_int
+ * 设置控件的值。
+ * 只是对widget\_set\_prop的包装，值的意义由子类控件决定。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {int32_t}  value 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_value_int(widget_t* widget, int32_t value);
+
+/**
+ * @method widget_add_value_int
+ * 增加控件的值。
+ * 只是对widget\_set\_prop的包装，值的意义由子类控件决定。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {int32_t}  delta 增量。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_add_value_int(widget_t* widget, int32_t delta);
 
 /**
  * @method widget_animate_value_to
@@ -843,18 +899,6 @@ ret_t widget_set_value(widget_t* widget, float_t value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_animate_value_to(widget_t* widget, float_t value, uint32_t duration);
-
-/**
- * @method widget_add_value
- * 增加控件的值。
- * 只是对widget\_set\_prop的包装，值的意义由子类控件决定。
- * @annotation ["scriptable"]
- * @param {widget_t*} widget 控件对象。
- * @param {float_t}  delta 增量。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t widget_add_value(widget_t* widget, float_t delta);
 
 /**
  * @method widget_set_text
@@ -979,16 +1023,6 @@ ret_t widget_set_child_text_with_int(widget_t* widget, const char* name, const c
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_tr_text(widget_t* widget, const char* text);
-
-/**
- * @method widget_get_value
- * 获取控件的值。只是对widget\_get\_prop的包装，值的意义由子类控件决定。
- * @annotation ["scriptable"]
- * @param {widget_t*} widget 控件对象。
- *
- * @return {float_t} 返回值。
- */
-float_t widget_get_value(widget_t* widget);
 
 /**
  * @method widget_get_enable

@@ -88,6 +88,23 @@ TEST(Label, add_value) {
   ASSERT_EQ((int)widget_get_value(label), 10);
   ASSERT_EQ(widget_add_value(label, -1), RET_OK);
   ASSERT_EQ((int)widget_get_value(label), 9);
+  
+  ASSERT_EQ(widget_set_value(label, 100), RET_OK);
+  ASSERT_EQ((int)widget_get_value(label), 100);
+
+  widget_destroy(label);
+}
+
+TEST(Label, add_value_int) {
+  widget_t* label = label_create(NULL, 10, 20, 30, 40);
+
+  widget_set_text_utf8(label, "10");
+  ASSERT_EQ(widget_get_value_int(label), 10);
+  ASSERT_EQ(widget_add_value_int(label, -1), RET_OK);
+  ASSERT_EQ(widget_get_value_int(label), 9);
+  
+  ASSERT_EQ(widget_set_value_int(label, 100), RET_OK);
+  ASSERT_EQ(widget_get_value_int(label), 100);
 
   widget_destroy(label);
 }

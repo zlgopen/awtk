@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/11/10
+  * 增加widget\_get\_value\_int/widget\_set\_value\_int/widget\_add\_value\_int
+
 2021/11/09
   * 修复 mledit oy 计算不正确的问题 （感谢兆坤提供补丁） 
   * fscript 支持多国语言互译和主题切换（感谢雨欣提供补丁）

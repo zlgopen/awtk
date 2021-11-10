@@ -270,6 +270,13 @@ ret_t widget_move_resize(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h) {
   return widget_move_resize_ex(widget, x, y, w, h, TRUE);
 }
 
+float_t widget_get_value(widget_t* widget) {
+  value_t v;
+  return_value_if_fail(widget != NULL, 0);
+
+  return widget_get_prop(widget, WIDGET_PROP_VALUE, &v) == RET_OK ? value_float32(&v) : 0.0f;
+}
+
 ret_t widget_set_value(widget_t* widget, float_t value) {
   value_t v;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
@@ -281,6 +288,26 @@ ret_t widget_add_value(widget_t* widget, float_t delta) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   return widget_set_value(widget, widget_get_value(widget) + delta);
+}
+
+int32_t widget_get_value_int(widget_t* widget) {
+  value_t v;
+  return_value_if_fail(widget != NULL, 0);
+
+  return widget_get_prop(widget, WIDGET_PROP_VALUE, &v) == RET_OK ? value_int(&v) : 0;
+}
+
+ret_t widget_set_value_int(widget_t* widget, int32_t value) {
+  value_t v;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  return widget_set_prop(widget, WIDGET_PROP_VALUE, value_set_int(&v, value));
+}
+
+ret_t widget_add_value_int(widget_t* widget, int32_t delta) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  return widget_set_value_int(widget, widget_get_value_int(widget) + delta);
 }
 
 static ret_t widget_animate_prop_float_to(widget_t* widget, const char* name, float_t value,
@@ -547,13 +574,6 @@ ret_t widget_re_translate_text(widget_t* widget) {
   WIDGET_FOR_EACH_CHILD_END();
 
   return RET_OK;
-}
-
-float_t widget_get_value(widget_t* widget) {
-  value_t v;
-  return_value_if_fail(widget != NULL, 0);
-
-  return widget_get_prop(widget, WIDGET_PROP_VALUE, &v) == RET_OK ? value_float32(&v) : 0.0f;
 }
 
 const wchar_t* widget_get_text(widget_t* widget) {
