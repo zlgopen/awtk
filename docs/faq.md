@@ -309,3 +309,21 @@ alias python=python3
 ```python
 COMMON_CCFLAGS=COMMON_CCFLAGS+' -DNATIVE_WINDOW_NOT_RESIZABLE=1 '
 ```
+
+#### 24. 为什么定义了AWTK\_LITE，还是会占用很大内存？
+  
+AWTK\_LITE 主要是用来在低端平台裁剪代码的，内存占用主要于图片缓存有关。可以通过图片管理器的接口设置缓存大小：
+
+
+```c
+/**
+ * @method image_manager_set_max_mem_size_of_cached_images
+ * 设置图片缓存占用的最大内存。
+ * @param {image_manager_t*} imm 图片管理器对象。
+ * @param {uint32_t} max_mem_size 最大缓存内存。 
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_manager_set_max_mem_size_of_cached_images(image_manager_t* imm, uint32_t max_mem_size);
+```
+
