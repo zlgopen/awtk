@@ -24,6 +24,7 @@
 #include "base/pixel_pack_unpack.h"
 
 #define pixel_dst_t pixel_rgb888_t
+#define pixel_dst_bpp pixel_rgb888_BPP
 #define pixel_dst_format pixel_rgb888_format
 #define pixel_dst_to_rgba pixel_rgb888_to_rgba
 #define pixel_dst_from_rgb pixel_rgb888_from_rgb
