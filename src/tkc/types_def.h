@@ -333,6 +333,7 @@ typedef bool_t (*tk_is_valid_t)(void* data);
 typedef bool_t (*tk_filter_t)(void* ctx, const void* data);
 typedef int (*tk_compare_t)(const void* a, const void* b);
 typedef ret_t (*tk_visit_t)(void* ctx, const void* data);
+typedef uint32_t (*tk_hash_t)(const void* data);
 typedef ret_t (*tk_callback_t)(void* ctx);
 
 /*TK_NAME_LEN+1 must aligned to 4*/
