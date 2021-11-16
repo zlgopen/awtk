@@ -41,6 +41,12 @@
 #include "base/vgcanvas_asset_manager.h"
 #endif
 
+#ifdef WITH_FSCRIPT_EXT 
+#ifndef WITH_DATA_READER_WRITER
+#define WITH_DATA_READER_WRITER
+#endif /*WITH_DATA_READER_WRITER*/
+#endif /*WITH_FSCRIPT_EXT*/
+
 #ifdef WITH_DATA_READER_WRITER
 #include "tkc/data_reader_factory.h"
 #include "tkc/data_writer_factory.h"
@@ -193,9 +199,6 @@ ret_t tk_init_internal(void) {
 #endif
 #ifdef WITH_FSCRIPT_EXT
   fscript_ext_init();
-#ifndef WITH_DATA_READER_WRITER
-#define WITH_DATA_READER_WRITER
-#endif /*WITH_DATA_READER_WRITER*/
 #endif /*WITH_FSCRIPT_EXT*/
 
 #ifdef WITH_DATA_READER_WRITER

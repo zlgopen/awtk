@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/11/16
+  * 修复使用fscript\_ext时rbuffer头文件未定义导致的编译警告，新增文档fscript\_ram\_req（感谢雨欣提供补丁） 
+
 2021/11/15
   * 增加hash table。
 
