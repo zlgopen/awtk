@@ -816,6 +816,7 @@ ret_t canvas_begin_frame(canvas_t* c, const dirty_rects_t* dirty_rects, lcd_draw
  * 填充区域。
  * @param {canvas_t*} c canvas对象。
  * @param {const rect_t*} r 矩形。
+ * @param {const rect_t*} bg_r 矩形（默认为 NULL，当圆角直径大于 r 矩形的宽高后，会根据 bg_r 矩形来决定是否需要缩小圆角半径）。
  * @param {const color_t*} color 颜色。
  * @param {uint32_t} radius 圆角半径。
  *
@@ -829,6 +830,7 @@ ret_t canvas_fill_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r,
  * 填充圆角矩形区域。
  * @param {canvas_t*} c canvas对象。
  * @param {const rect_t*} r 矩形。
+ * @param {const rect_t*} bg_r 矩形（默认为 NULL，当圆角直径大于 r 矩形的宽高后，会根据 bg_r 矩形来决定是否需要缩小圆角半径）。
  * @param {const gradient_t*} gradient 渐变颜色。
  * @param {uint32_t} radius 圆角半径。
  *
@@ -883,6 +885,7 @@ ret_t canvas_fill_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg
  * 绘制边框。
  * @param {canvas_t*} c canvas对象。
  * @param {const rect_t*} r 矩形。
+ * @param {const rect_t*} bg_r 矩形（默认为 NULL，当圆角直径大于 r 矩形的宽高后，会根据 bg_r 矩形来决定是否需要缩小圆角半径）。
  * @param {const color_t*} color 颜色。
  * @param {uint32_t} radius 圆角半径。
  * @param {uint32_t} border_width 边宽。
@@ -899,6 +902,7 @@ ret_t canvas_stroke_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_
  * 如果各个半径都不一样的话，就是会使用vg，如果不支持vg就会返回RET_FAIL（直角的情况除外）。
  * @param {canvas_t*} c canvas对象。
  * @param {const rect_t*} r 矩形。
+ * @param {const rect_t*} bg_r 矩形（默认为 NULL，当圆角直径大于 r 矩形的宽高后，会根据 bg_r 矩形来决定是否需要缩小圆角半径）。
  * @param {const color_t*} color 颜色。
  * @param {uint32_t} radius_tl 左上角圆角半径。
  * @param {uint32_t} radius_tr 右上角圆角半径。
