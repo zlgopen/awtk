@@ -2100,6 +2100,12 @@ ret_t canvas_fill_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r,
   return RET_OK;
 }
 
+ret_t canvas_fill_rounded_rect_gradient(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                                        const gradient_t* gradient, uint32_t radius) {
+  color_t color = gradient_get_first_color(gradient);
+  return canvas_fill_rounded_rect(c, r, bg_r, (const color_t*)&color, radius);
+}
+
 ret_t canvas_stroke_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r,
                                  const color_t* color, uint32_t radius, uint32_t border_width) {
   canvas_set_stroke_color(c, *color);
@@ -2115,6 +2121,15 @@ ret_t canvas_fill_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg
   return RET_OK;
 }
 
+ret_t canvas_fill_rounded_rect_gradient_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                                           const gradient_t* gradient, uint32_t radius_tl,
+                                           uint32_t radius_tr, uint32_t radius_bl,
+                                           uint32_t radius_br) {
+  color_t color = gradient_get_first_color(gradient);
+  return canvas_fill_rounded_rect_ex(c, r, bg_r, (const color_t*)&color, radius_tl, radius_tr, radius_bl,
+                                       radius_br);
+}
+
 ret_t canvas_stroke_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
                                     const color_t* color, uint32_t radius_tl, uint32_t radius_tr,
                                     uint32_t radius_bl, uint32_t radius_br, uint32_t border_width,
@@ -2126,6 +2141,6 @@ ret_t canvas_stroke_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* 
 #endif /*WITHOUT_ROUNDED_RECT*/
 
 #ifndef AWTK_LITE
-#include "gradient.inc"
 #include "canvas_offline.inc"
 #endif
+#include "gradient.inc"
