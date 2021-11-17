@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/11/17
+  * 增加tk\_min\_int/tk\_max\_int/tk\_max\_float/tk\_min\_float。
+
 2021/11/16
   * 修复使用fscript\_ext时rbuffer头文件未定义导致的编译警告，新增文档fscript\_ram\_req（感谢雨欣提供补丁） 
   * 修复 AWTK\_LITE 编译出错的问题 （感谢智明提供补丁）。

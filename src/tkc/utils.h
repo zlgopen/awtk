@@ -751,6 +751,22 @@ const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN 
 /*public for test*/
 ret_t xml_file_expand(const char* filename, str_t* s, const char* data);
 
+static inline int32_t tk_max_int(int32_t a, int32_t b) {
+  return tk_max(a, b);
+}
+
+static inline int32_t tk_min_int(int32_t a, int32_t b) {
+  return tk_min(a, b);
+}
+
+static inline float tk_max_float(float a, float b) {
+  return tk_max(a, b);
+}
+
+static inline float tk_min_float(float a, float b) {
+  return tk_min(a, b);
+}
+
 END_C_DECLS
 
 #endif /*TK_UTILS_H*/
