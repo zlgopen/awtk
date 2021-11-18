@@ -948,3 +948,10 @@ Translate text
   <language name="en_US">sliding here:</language>
   <language name="zh_CN">滑动此处：</language>
 </string>
+
+<string name="hello world">
+  <language name="en_US">hello 
+AWTK!</language>
+  <language name="zh_CN">你好
+AWTK!</language>
+</string>
