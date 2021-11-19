@@ -766,7 +766,7 @@ static ret_t on_bind_value_changed(void* ctx, event_t* e) {
   widget_t* target = WIDGET(e->target);
   return_value_if_fail(widget != NULL && target != NULL, RET_BAD_PARAMS);
 
-  return widget_set_prop_float(widget, "animate.value", widget_get_value(target));
+  return widget_set_prop_float(widget, "animate:value", widget_get_value(target));
 }
 
 static ret_t install_one(void* ctx, const void* iter) {

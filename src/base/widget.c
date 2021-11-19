@@ -596,7 +596,6 @@ ret_t widget_set_theme(widget_t* widget, const char* name) {
   event_t* will_evt = theme_change_event_init(&will_event, EVT_THEME_WILL_CHANGE, name);
 #ifdef WITH_FS_RES
   const asset_info_t* info = NULL;
-  theme_change_event_t event;
   event_t* evt = theme_change_event_init(&will_event, EVT_THEME_CHANGED, name);
   widget_t* wm = widget_get_window_manager(widget);
   font_manager_t* fm = widget_get_font_manager(widget);
@@ -1910,7 +1909,7 @@ static ret_t widget_free_code(void* ctx, event_t* evt) {
   return RET_REMOVE;
 }
 
-#define STR_ANIMATE_PREFIX "animate."
+#define STR_ANIMATE_PREFIX "animate:"
 #define TK_ANIMATING_TIME 500 /* 单位：毫秒（ms） */
 ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   ret_t ret = RET_OK;

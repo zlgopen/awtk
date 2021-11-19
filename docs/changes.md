@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/11/19
+  * 将控件属性动画前缀从 animate. 改为 animate:（感谢兆坤提供补丁） 
+
 2021/11/17
   * 增加tk\_min\_int/tk\_max\_int/tk\_max\_float/tk\_min\_float。
 

@@ -6,15 +6,15 @@
       <label x="20" y="36" w="100" h="22" style="default" style:normal:text_align_h="left" tr_text="sliding here:"/>
       <slider name="sl" h="16" x="120" y="39" w="-140" max="100" value="75"/>
       <view x="20" y="75" w="100" h="280" children_layout="default(r=1,c=0,x=0,y=0,s=56)">
-        <slider name="bind_value:../sl" w="16" vertical="true" animate.value="75" max="100"/>
-        <slider name="bind_value:../sl" w="16" vertical="true" style="square" animate.value="75" max="100"/>
+        <slider name="bind_value:../sl" w="16" vertical="true" animate:value="75" max="100"/>
+        <slider name="bind_value:../sl" w="16" vertical="true" style="square" animate:value="75" max="100"/>
       </view>
       <view x="130" y="75" w="-160" h="280" children_layout="default(r=0,c=1,x=0,y=10,s=46)">
-        <progress_bar name="bind_value:../sl" h="10" animate.value="75" max="100"/>
-        <progress_circle name="bind_value:../sl" h="214" show_text="true" start_angle="90" format="%d%%" line_width="10" line_cap="butt" animate.value="75" max="100"/>
+        <progress_bar name="bind_value:../sl" h="10" animate:value="75" max="100"/>
+        <progress_circle name="bind_value:../sl" h="214" show_text="true" start_angle="90" format="%d%%" line_width="10" line_cap="butt" animate:value="75" max="100"/>
       </view>
       <gauge x="0" y="380" w="100%" h="215" image="uiex_RecordForm_bg" draw_type="center" invisible_in_1m="true">
-        <gauge_pointer name="bind_value:../gauge_sl" x="c:-5" y="47" w="24" h="78%" animate.value="30" image="gauge_pointer"/>
+        <gauge_pointer name="bind_value:../gauge_sl" x="c:-5" y="47" w="24" h="78%" animate:value="30" image="gauge_pointer"/>
       </gauge>
       <label x="20" y="612" w="100" h="22" style:normal:text_align_h="left" invisible_in_1m="true" tr_text="sliding here:"/>
       <slider name="gauge_sl" x="120" y="615" w="-140" h="16" style="square" invisible_in_1m="true" min="-133" max="133" value="30"/>
