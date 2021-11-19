@@ -3,6 +3,7 @@
 2021/11/19
   * 将控件属性动画前缀从 animate. 改为 animate:（感谢兆坤提供补丁） 
   * demoui在stm32f429运行时，程序会先看到主界面闪过后再看到加载界面的问题（感谢兆坤提供补丁） 
+  * 增加修改scroll\_bar翻页动画时间（感谢智明提供补丁）。
 
 2021/11/17
   * 增加tk\_min\_int/tk\_max\_int/tk\_max\_float/tk\_min\_float。

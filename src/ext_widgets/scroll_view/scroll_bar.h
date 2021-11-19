@@ -90,6 +90,12 @@ typedef struct _scroll_bar_t {
    */
   int32_t row;
   /**
+   * @property {uint32_t} animator_time
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 翻页滚动动画时间。
+   */
+  uint32_t animator_time;
+  /**
    * @property {bool_t} animatable
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 滚动时是否启用动画。
@@ -265,11 +271,24 @@ ret_t scroll_bar_set_auto_hide(widget_t* widget, bool_t auto_hide);
  */
 bool_t scroll_bar_is_mobile(widget_t* widget);
 
+/**
+ * @method scroll_bar_set_animator_time
+ * 设置翻页滚动动画时间。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget scroll_bar控件。
+ * @param {uint32_t} animator_time 时间。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t scroll_bar_set_animator_time(widget_t* widget, uint32_t animator_time);
+
 /* private */
 ret_t scroll_bar_hide_by_opacity_animation(widget_t* widget, int32_t duration, int32_t delay);
 ret_t scroll_bar_show_by_opacity_animation(widget_t* widget, int32_t duration, int32_t delay);
 
 #define SCROLL_BAR_PROP_IS_MOBILE "is_mobile"
+#define SCROLL_BAR_PROP_ANIMATOR_TIME "animator_time"
 #define SCROLL_BAR(widget) ((scroll_bar_t*)(scroll_bar_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/

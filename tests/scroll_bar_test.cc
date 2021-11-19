@@ -79,6 +79,20 @@ TEST(ScrollBar, auto_hide) {
   widget_destroy(w);
 }
 
+TEST(ScrollBar, animator_time) {
+  widget_t* w = scroll_bar_create_mobile(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(SCROLL_BAR(w)->animator_time, TK_ANIMATING_TIME);
+  scroll_bar_set_animator_time(w, 0);
+  ASSERT_EQ(SCROLL_BAR(w)->animator_time, 0);
+
+  ASSERT_EQ(widget_set_prop_int(w, SCROLL_BAR_PROP_ANIMATOR_TIME, 200), RET_OK);
+  ASSERT_EQ(SCROLL_BAR(w)->auto_hide, TRUE);
+  ASSERT_EQ(widget_get_prop_int(w, SCROLL_BAR_PROP_ANIMATOR_TIME, 0) == 200, TRUE);
+
+  widget_destroy(w);
+}
+
 TEST(ScrollBar, is_mobile_prop) {
   widget_t* w = scroll_bar_create_mobile(NULL, 10, 20, 30, 40);
 
