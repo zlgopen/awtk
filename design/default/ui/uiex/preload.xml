@@ -1,7 +1,7 @@
-<overlay name="preload" theme="uiex" w="100%" h="100%" close_anim_hint="vtranslate(easing=quadratic_in)">
+<window name="preload" theme="uiex" w="100%" h="100%" close_anim_hint="vtranslate(easing=quadratic_in)" fullscreen="true">
   <label name="lb_progress_c" x="c" y="m:-6" w="48" h="48" text="0%">
     <image name="loading" x="c" y="m" w="100%" h="100%" draw_type="icon" image="uiex_Boot_loading" animation="rotation(duration=1000,repeat_times=0,easing=linear,from=0,to=6.28)"/>
   </label>
   <image name="img_logo" x="c" y="m:-80" w="229" h="54" image="uiex_big_logo" draw_type="center"/>
   <label name="lb_info" x="c" y="m:52" w="90%" h="30" style="default"/>
-</overlay>
+</window>

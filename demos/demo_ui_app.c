@@ -1307,6 +1307,11 @@ static ret_t timer_preload(const timer_info_t* timer) {
   cur_time += timer->duration;
 
   if (cur_time >= PRELOAD_DURATION) {
+    WIDGET_FOR_EACH_CHILD_BEGIN(window_manager(), root, i)
+    if (root != win_preload) {
+      widget_set_visible(root, TRUE);
+    }
+    WIDGET_FOR_EACH_CHILD_END()
     window_close(win_preload);
     return RET_REMOVE;
   }
@@ -1395,6 +1400,7 @@ ret_t application_init(void) {
   win = window_open_with_prefix(s_win_name);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(window_manager(), root, i)
+  widget_set_visible_only(root, FALSE);
   init_children_widget(root, (void*)win);
   WIDGET_FOR_EACH_CHILD_END()
 
