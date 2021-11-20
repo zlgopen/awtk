@@ -461,6 +461,11 @@ typedef enum _event_type_t {
    */
   EVT_PAGE_CHANGED,
   /**
+   * @const EVT_PAGE_CHANGING
+   * 页面正在改变(offset_change_event_t)。
+   */
+  EVT_PAGE_CHANGING,
+  /**
    * @const EVT_ASSET_MANAGER_LOAD_ASSET
    * 资源管理加载某个资源(assets_event_t)。
    */
@@ -638,6 +643,52 @@ value_change_event_t* value_change_event_cast(event_t* event);
  * @return {event_t*} event对象。
  */
 event_t* value_change_event_init(value_change_event_t* event, uint32_t type, void* target);
+
+/**
+ * @class value_change_event_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * 值变化事件。
+ */
+typedef struct _offset_change_event_t {
+  event_t e;
+  /**
+   * @property {float_t} old_offset
+   * @annotation ["readable"]
+   * 旧值。
+   */
+  float_t old_offset;
+
+  /**
+   * @property {float_t} new_offset
+   * @annotation ["readable"]
+   * 新值。
+   */
+  float_t new_offset;
+} offset_change_event_t;
+
+/**
+ * @method value_change_event_cast
+ * @annotation ["cast", "scriptable"]
+ * 把event对象转offset_change_event_t对象，主要给脚本语言使用。
+ * @param {event_t*} event event对象。
+ *
+ * @return {offset_change_event_t*} event对象。
+ */
+offset_change_event_t* offset_change_event_cast(event_t* event);
+
+/**
+ * @method offset_change_event_init
+ * 初始化事件。
+ * @param {offset_change_event_t*} event event对象。
+ * @param {void*} target 事件目标。
+ * @param {uint32_t} type 事件类型。
+ * @param {float_t} old_offset 旧的偏移数据。
+ * @param {float_t} new_offset 新的偏移数据。
+ *
+ * @return {event_t*} event对象。
+ */
+event_t* offset_change_event_init(offset_change_event_t* event, uint32_t type, void* target, float_t old_offset, float_t new_offset);
 
 /**
  * @class pointer_event_t

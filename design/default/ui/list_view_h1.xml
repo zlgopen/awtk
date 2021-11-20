@@ -24,7 +24,7 @@
       <image style="border" draw_type="auto" image="3" text="21"/>
       <image style="border" draw_type="auto" image="1" text="22"/>
     </scroll_view>
-    <slide_indicator x="0" y="b" w="100%" h="20" style="blue"/>
+    <slide_indicator x="0" y="b" w="100%" h="20" transition="true" style="blue"/>
   </list_view_h>
   <button name="close" x="center" y="bottom:10" w="50%" h="30" text="close"/>
 </window>

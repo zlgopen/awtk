@@ -45,6 +45,26 @@ static bool_t slide_view_is_loopable(slide_view_t* slide_view) {
   return slide_view->auto_play || slide_view->loop;
 }
 
+static ret_t slide_view_set_xoffset(slide_view_t* slide_view, int32_t xoffset) {
+  offset_change_event_t evt;
+  if (slide_view->xoffset != xoffset) {
+    offset_change_event_init(&evt, EVT_PAGE_CHANGING, WIDGET(slide_view), 0, -(float_t)xoffset); 
+    slide_view->xoffset = xoffset;
+    widget_dispatch(WIDGET(slide_view), (event_t*)&evt);
+  }
+  return RET_OK;
+}
+
+static ret_t slide_view_set_yoffset(slide_view_t* slide_view, int32_t yoffset) {
+  offset_change_event_t evt;
+  if (slide_view->yoffset != yoffset) {
+    offset_change_event_init(&evt, EVT_PAGE_CHANGING, WIDGET(slide_view), 0, -(float_t)yoffset); 
+    slide_view->yoffset = yoffset;
+    widget_dispatch(WIDGET(slide_view), (event_t*)&evt);
+  }
+  return RET_OK;
+}
+
 static ret_t canvas_set_clip_rect_with_offset(canvas_t* c, rect_t* r, rect_t* save_r, int32_t ox,
                                               int32_t oy) {
   rect_t rr = *r;
@@ -242,11 +262,11 @@ static ret_t slide_view_on_pointer_move(slide_view_t* slide_view, pointer_event_
   velocity_update(v, e->e.time, e->x, e->y);
 
   if (slide_view->vertical) {
-    slide_view->xoffset = 0;
-    slide_view->yoffset = (e->y - slide_view->down.y);
+    slide_view_set_xoffset(slide_view, 0);
+    slide_view_set_yoffset(slide_view, e->y - slide_view->down.y);
   } else {
-    slide_view->yoffset = 0;
-    slide_view->xoffset = (e->x - slide_view->down.x);
+    slide_view_set_yoffset(slide_view, 0);
+    slide_view_set_xoffset(slide_view, e->x - slide_view->down.x);
   }
 
   return RET_OK;
@@ -258,7 +278,7 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   return_value_if_fail(widget != NULL && slide_view != NULL, RET_BAD_PARAMS);
 
-  if (slide_view->animating) {
+  if (slide_view->animating || type == EVT_PAGE_CHANGING) {
     return RET_OK;
   }
 
@@ -421,13 +441,13 @@ static ret_t slide_view_set_prop(widget_t* widget, const char* name, const value
   } else if (tk_str_eq(name, WIDGET_PROP_LOOP)) {
     return slide_view_set_loop(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {
-    slide_view->xoffset = value_int(v);
+    slide_view_set_xoffset(slide_view, value_int(v));
     widget_invalidate(widget, NULL);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_AUTO_PLAY)) {
     return slide_view_set_auto_play(widget, value_int(v));
   } else if (tk_str_eq(name, WIDGET_PROP_YOFFSET)) {
-    slide_view->yoffset = value_int(v);
+    slide_view_set_yoffset(slide_view, value_int(v));
     widget_invalidate(widget, NULL);
     return RET_OK;
   }

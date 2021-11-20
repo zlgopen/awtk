@@ -35,6 +35,27 @@
 static uint32_t scroll_view_get_curr_page(widget_t* widget);
 static uint32_t scroll_view_get_page_max_number(widget_t* widget);
 
+static ret_t scroll_view_set_xoffset(scroll_view_t* scroll_view, int32_t xoffset) {
+  offset_change_event_t evt;
+  if (scroll_view->xoffset != xoffset) {
+    offset_change_event_init(&evt, EVT_PAGE_CHANGING, WIDGET(scroll_view), (float_t)scroll_view->xoffset_save, (float_t)xoffset); 
+
+    scroll_view->xoffset = xoffset;
+    widget_dispatch(WIDGET(scroll_view), (event_t*)&evt);
+  }
+  return RET_OK;
+}
+
+static ret_t scroll_view_set_yoffset(scroll_view_t* scroll_view, int32_t yoffset) {
+  offset_change_event_t evt;
+  if (scroll_view->yoffset != yoffset) {
+    offset_change_event_init(&evt, EVT_PAGE_CHANGING, WIDGET(scroll_view), (float_t)scroll_view->yoffset_save, (float_t)yoffset); 
+    scroll_view->yoffset = yoffset;
+    widget_dispatch(WIDGET(scroll_view), (event_t*)&evt);
+  }
+  return RET_OK;
+}
+
 static ret_t scroll_view_get_item_rect(widget_t* parent, widget_t* widget, rect_t* item_rect) {
   rect_t r;
   point_t p;
@@ -366,11 +387,11 @@ static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_eve
 
   if (scroll_view->wa == NULL) {
     if (scroll_view->xslidable && dx) {
-      scroll_view->xoffset = scroll_view->xoffset_save - dx;
+      scroll_view_set_xoffset(scroll_view, scroll_view->xoffset_save - dx);
     }
 
     if (scroll_view->yslidable && dy) {
-      scroll_view->yoffset = scroll_view->yoffset_save - dy;
+      scroll_view_set_yoffset(scroll_view, scroll_view->yoffset_save - dy);
     }
 
     scroll_view_notify_scrolled(scroll_view);
@@ -627,12 +648,12 @@ static ret_t scroll_view_set_prop(widget_t* widget, const char* name, const valu
     scroll_view->yslidable = value_bool(v);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {
-    scroll_view->xoffset = value_int(v);
+    scroll_view_set_xoffset(scroll_view, value_int(v));
     scroll_view_notify_scrolled(scroll_view);
     widget_invalidate_force(widget, NULL);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_YOFFSET)) {
-    scroll_view->yoffset = value_int(v);
+    scroll_view_set_yoffset(scroll_view, value_int(v));
     scroll_view_notify_scrolled(scroll_view);
     widget_invalidate_force(widget, NULL);
     return RET_OK;
@@ -733,8 +754,8 @@ ret_t scroll_view_set_offset(widget_t* widget, int32_t xoffset, int32_t yoffset)
     yoffset = scroll_view_get_snap_to_page_offset_value(widget, yoffset);
   }
 
-  scroll_view->xoffset = xoffset;
-  scroll_view->yoffset = yoffset;
+  scroll_view_set_xoffset(scroll_view, xoffset);
+  scroll_view_set_yoffset(scroll_view, yoffset);
 
   widget_invalidate_force(widget, NULL);
 

@@ -2,6 +2,7 @@
 
 2021/11/20
   * 增加函数darray\_push\_unique
+  * 增加slide\_indicator控件的过渡效果（感谢智明提供补丁）
 
 2021/11/19
   * 将控件属性动画前缀从 animate. 改为 animate:（感谢兆坤提供补丁） 
