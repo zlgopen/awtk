@@ -318,6 +318,16 @@ void* darray_head(darray_t* darray);
 ret_t darray_push(darray_t* darray, void* data);
 
 /**
+ * @method darray_push_unique
+ * 如果不存在，在尾巴追加一个元素。
+ * @param {darray_t*} darray 数组对象。
+ * @param {void*} data 待追加的元素。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t darray_push_unique(darray_t* darray, void* data);
+
+/**
  * @method darray_insert
  * 插入一个元素。
  * @param {darray_t*} darray 数组对象。

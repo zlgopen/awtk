@@ -279,6 +279,15 @@ ret_t darray_push(darray_t* darray, void* data) {
   return darray_insert(darray, darray->size, data);
 }
 
+ret_t darray_push_unique(darray_t* darray, void* data) {
+  return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
+  if(darray_find_index(darray, data) >= 0) {
+    return RET_FAIL;
+  }
+
+  return darray_insert(darray, darray->size, data);
+}
+
 int32_t darray_count(darray_t* darray, void* data) {
   int32_t n = 0;
   return_value_if_fail(darray != NULL, 0);
