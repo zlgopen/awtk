@@ -1321,3 +1321,25 @@ TEST(FExr, get_last_error) {
 
   OBJECT_UNREF(obj);
 }
+
+TEST(FExr, chinese_var) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  fscript_eval(obj, "set(变量,100);(变量+100)*2", &v);
+  ASSERT_EQ(value_int(&v), 400);
+  value_reset(&v);
+
+  OBJECT_UNREF(obj);
+}
+
+TEST(FScript, chinese_func) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  fscript_eval(obj, "function 求和(数1,数2) {return 数1+数2;}; 求和(100, 23)", &v);
+  ASSERT_EQ(value_int(&v), 123);
+  value_reset(&v);
+
+  OBJECT_UNREF(obj);
+}

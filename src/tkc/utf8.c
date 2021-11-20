@@ -77,6 +77,10 @@ static const char utf8_skip_data[256] = {
     2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
     3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 1, 1};
 
+uint32_t tk_utf8_get_bytes_of_leading(uint8_t c) {
+  return utf8_skip_data[c];
+}
+
 const char* const g_utf8_skip = utf8_skip_data;
 #define g_utf8_next_char(p) (char*)((p) + g_utf8_skip[*(const unsigned char*)(p)])
 

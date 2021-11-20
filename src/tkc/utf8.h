@@ -113,6 +113,15 @@ wchar_t* tk_utf8_to_utf16_ex(const char* str, uint32_t size, wchar_t* out, uint3
  */
 char* tk_utf8_dup_utf16(const wchar_t* in, int32_t size);
 
+/**
+ * @method tk_utf8_get_bytes_of_leading
+ * 获取第一个字节为c的字符的字节数。 
+ * @param {uint8_t} c 字符的第一个字节。
+ *
+ * @return {uint32_t} 返回字符的字节数。
+ */
+uint32_t tk_utf8_get_bytes_of_leading(uint8_t c);
+
 END_C_DECLS
 
 #endif /*TK_UTF8_H*/

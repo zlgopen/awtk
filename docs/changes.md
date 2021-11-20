@@ -2,6 +2,7 @@
 
 2021/11/20
   * 增加函数darray\_push\_unique
+  * fscript支持中文函数名和变量名。
   * 增加slide\_indicator控件的过渡效果（感谢智明提供补丁）
 
 2021/11/19

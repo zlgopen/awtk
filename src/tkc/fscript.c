@@ -16,6 +16,7 @@
 
 #ifndef WITHOUT_FSCRIPT
 #include "tkc/mem.h"
+#include "tkc/utf8.h"
 #include "tkc/utils.h"
 #include "tkc/darray.h"
 #include "tkc/fscript.h"
@@ -597,7 +598,7 @@ static ret_t fscript_parser_skip_seperators(fscript_parser_t* parser) {
   char c = '\0';
   do {
     c = fscript_parser_get_char(parser);
-  } while (tk_isspace(c) || (int)c < 0);
+  } while (tk_isspace(c));
   fscript_parser_unget_char(parser, c);
 
   return RET_OK;
@@ -701,14 +702,28 @@ static ret_t fscript_parser_parse_str(fscript_parser_t* parser, char quota) {
   return RET_OK;
 }
 
+static ret_t fscript_parser_get_non_ascii_char(fscript_parser_t* parser, str_t* str, uint8_t c,
+                                               uint32_t n) {
+  str_append_char(str, c);
+  while (n > 1) {
+    c = fscript_parser_get_char(parser);
+    str_append_char(str, c);
+    n--;
+  }
+
+  return RET_OK;
+}
+
 static ret_t fscript_parser_parse_id_or_number(fscript_parser_t* parser, token_type_t def_type) {
   char c = '\0';
   str_t* str = &(parser->temp);
   token_t* t = &(parser->token);
   c = fscript_parser_get_char(parser);
 
+  str_set(str, "");
   if (c) {
-    str_set_with_len(str, &c, 1);
+    int32_t n = tk_utf8_get_bytes_of_leading((uint8_t)c);
+    fscript_parser_get_non_ascii_char(parser, str, c, n);
   }
 
   do {
@@ -717,7 +732,12 @@ static ret_t fscript_parser_parse_id_or_number(fscript_parser_t* parser, token_t
         c == ']' || c == '#') {
       str_append_char(str, c);
     } else {
-      break;
+      int32_t n = tk_utf8_get_bytes_of_leading((uint8_t)c);
+      if (n > 1) {
+        fscript_parser_get_non_ascii_char(parser, str, c, n);
+      } else {
+        break;
+      }
     }
   } while (TRUE);
 
