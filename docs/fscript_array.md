@@ -35,7 +35,7 @@ type 为可选参数，可选取值为：
 * double 表示浮点数。
 * 其它或默认为字符串。
 
-示例：
+#### 示例
 
 ```
 a = array_create_with_str("2,1,3", ",", "int");
@@ -56,7 +56,7 @@ array_create_repeated(value, nr) => object
 * value 为初始化的值。
 * nr 为值的个数。
 
-示例：
+#### 示例
 
 ```
 a = array_create_repeated(123, 3);
@@ -76,7 +76,7 @@ array_dup(arr, start, end) => object
 start 为开始的位置，默认为 0。
 end 为结束的位置（不包含）
 
-示例：
+#### 示例
 
 ```
 a = array_create_with_str("2,1,3", ",", "int");
@@ -196,7 +196,7 @@ array_remove(array, index) => bool
 
 > index 为负数时，从后往前取。比如-1 表示最后一个元素。
 
-### 14.array\_get\_and\_remove(
+### 14.array\_get\_and\_remove
 
 > 删除指定位置的元素，并返回改元素。
 ----------------------------
@@ -245,7 +245,7 @@ array_sort(array, ascending, ignore_case) => bool
 * ascending 是否为升序，默认是。
 * ignore_case 是否忽略大小写，仅用于字符串，默认为否。
 
-示例：
+#### 示例
 
 ```
 a = array_create_with_str("2,1,3", ",", "int");
@@ -316,11 +316,11 @@ array_clone_and_sort(array, ascending, ignore_case) => array
 * ascending 是否为升序，默认是。
 * ignore_case 是否忽略大小写，仅用于字符串，默认为否。
 
-示例：
+#### 示例
 
 ```
 a = array_create_with_str("2,1,3", ",", "int");
-b = array_clone_and_sort(a));
+b = array_clone_and_sort(a);
 d = array_join(b, ":");
 assert(d == "1:2:3")
 ```

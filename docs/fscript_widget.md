@@ -227,7 +227,7 @@ open(name, close_current, switch_to_if_exist)
 * close\_current 可选。为 true 时关闭当前窗口。
 * switch\_to\_if\_exist 可选。为 true 时，如果同名窗口存在，直接切换到指定窗口。
 
-### 示例
+##### 示例
 
 ```xml
     <button text="Open" focusable="true" focus="true" on:click="open('test_fscript')"/>
@@ -248,7 +248,7 @@ close(name)
 
 * name 窗口的名称(字符串)，可选。缺省关闭当前窗口。
 
-### 示例
+##### 示例
 
 ```xml
 <button focusable="true" on:click="close()" text="Close" />
@@ -265,7 +265,7 @@ close(name)
 back()
 ```
 
-### 示例
+##### 示例
 
 ```xml
 <button focusable="true" on:click="back()" text="back" />
@@ -282,7 +282,7 @@ back()
 back_to_home()
 ```
 
-### 示例
+##### 示例
 
 ```xml
 <button focusable="true" on:click="back_to_home()" text="home" />
@@ -299,7 +299,7 @@ back_to_home()
 quit()
 ```
 
-### 示例
+##### 示例
 
 ```xml
 <button focusable="true" on:click="quit()" text="quit" />
@@ -316,7 +316,7 @@ quit()
 tr(str)
 ```
 
-### 示例
+##### 示例
 
 ```xml
 <button focusable="true" on:click="print(tr('OK'))" text="tr" />
@@ -336,7 +336,7 @@ widget_lookup(widget, name, recursive)
 
 * widget 用作锚点，后面的路径相对于该 widget。'self' 表示当前控件，'parent' 表示当前控件的父控件，'window' 表示当前的窗口，'window\_manager' 表示窗口管理器。
 
-### 示例
+##### 示例
 
 > 查找窗口下名为 view 控件下的名为 bar 的控件。
 
@@ -377,7 +377,7 @@ widget_get(widget, path.prop)
 * 支持 widget.prop 方式访问控件属性。
 
 
-### 示例
+##### 示例
 
 > 获取当前控件的 value
 
@@ -440,7 +440,7 @@ widget_set(widget, path.prop, value)
 * prop 可以是简单的属性命名，也可以是 widget 路径+属性名。
 * 支持 widget.prop 方式设置控件属性。
 
-### 示例
+#### 示例
 
 > 设置当前控件的 value
 
@@ -495,7 +495,7 @@ widget_create(type, parent, x, y, w, h)
 * type 为控件的字符串名称。
 * parent 为父控件。可以是 widget 对象，也可以是 widget 的路径。
 
-### 示例
+#### 示例
 
 ```js
   a = widget_lookup('window', 'foobar', true)
@@ -525,7 +525,7 @@ widget_destroy(widget)
 
 * widget 可以是 widget 对象，也可以是 widget 的路径。
 
-### 示例
+#### 示例
 
 ```js
   a = widget_lookup('window', 'foobar', true)
@@ -556,7 +556,7 @@ start_timer(duration)
 * 一个控件只能开启一个定时器，如果定时器存在，自动先移除之前的定时器。
 * 定时器时间到了之后，会触发控件的 timer 事件，所以对应的控件需要处理 timer 事件。
 
-### 示例
+#### 示例
 
 ```xml
 <button name="timer" focusable="true" on:click="start_timer(100)" text="Start Timer">
@@ -590,7 +590,7 @@ stop_timer(widget)
 * 不指定 widget 是停止当前控件的定时。
 * widget 可以是 widget 对象，也可以是 widget 的路径。
 
-### 示例
+#### 示例
 
 ```js
 stop_timer('parent.timer')
@@ -609,7 +609,7 @@ send_key(widget, key_name)
 
 * widget 可以是 widget 对象，也可以是 widget 的路径。
 
-### 示例
+#### 示例
 
 ```js
  <button text="Backspace" on:click="send_key('window.edit', 'backspace')"/>
@@ -632,7 +632,7 @@ widget_eval(widget, path.prop)
 
 * prop 可以是简单的属性命名，也可以是 widget 路径+属性名。
 
-### 示例
+#### 示例
 
 下面两个事件处理函数的代码是相同。
 
@@ -698,7 +698,7 @@ locale_get(widget) => object
 | language | string   | 语言。如：zh       |
 | country  | string   | 国家或地区。如：CN |
 
-### 示例
+#### 示例
 
 > 获取当前控件的本地化信息
 
@@ -733,7 +733,7 @@ locale_set(widget, language, country)
 * widget 参数：'self' 表示当前控件，'parent' 表示当前控件的父控件，'window' 表示当前的窗口，'window\_manager' 表示窗口管理器。
 * 不传入 widget 参数时，默认使用 'self' 当前控件。
 
-### 示例
+#### 示例
 
 > 设置当前控件使用 "zh_CN" 语言
 
@@ -764,7 +764,7 @@ theme_get(widget) => string
 * widget 参数：'self' 表示当前控件，'parent' 表示当前控件的父控件，'window' 表示当前的窗口，'window\_manager' 表示窗口管理器。
 * 不传入 widget 参数时，默认使用 'self' 当前控件。
 
-### 示例
+#### 示例
 
 > 获取当前控件的主题
 
@@ -795,7 +795,7 @@ theme_set(widget, theme_name)
 * widget 参数：'self' 表示当前控件，'parent' 表示当前控件的父控件，'window' 表示当前的窗口，'window\_manager' 表示窗口管理器。
 * 不传入 widget 参数时，默认使用 'self' 当前控件。
 
-### 示例
+#### 示例
 
 > 设置当前控件使用 "dark" 主题
 
@@ -811,7 +811,7 @@ theme_set('window_manager', 'dark')
 
 设置当前控件的父控件或当前窗口的主题用法类似，此处不多赘述。
 
-### 示例参考
+#### 示例参考
 
 * https://github.com/zlgopen/awtk/blob/master/design/default/ui/main_fscript.xml
 

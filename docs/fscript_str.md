@@ -105,13 +105,13 @@ trim_right(str) => str
 print(trim_right('   AWTK  ') + "1234")
 ```
 
-#### 7.totitle
+### 7.totitle
 
 > 将字符串中单词的首字母转换成大写。
 
 ----------------------------
 
-##### 原型
+#### 原型
 
 ```
 totitle(str) => str
@@ -123,14 +123,14 @@ totitle(str) => str
 print(totitle("it is ok!"))
 ```
 
-#### 8.prompt
+### 8.prompt
 
 > 在控制台提示用户输入字符串。
 
 > 仅当定义了 HAS\_STIOD 时有效。
 ----------------------------
 
-##### 原型
+#### 原型
 
 ```
 prompt(tips) => str
