@@ -645,7 +645,7 @@ value_change_event_t* value_change_event_cast(event_t* event);
 event_t* value_change_event_init(value_change_event_t* event, uint32_t type, void* target);
 
 /**
- * @class value_change_event_t
+ * @class offset_change_event_t
  * @annotation ["scriptable"]
  * @parent event_t
  * 值变化事件。
@@ -668,7 +668,7 @@ typedef struct _offset_change_event_t {
 } offset_change_event_t;
 
 /**
- * @method value_change_event_cast
+ * @method offset_change_event_cast
  * @annotation ["cast", "scriptable"]
  * 把event对象转offset_change_event_t对象，主要给脚本语言使用。
  * @param {event_t*} event event对象。
