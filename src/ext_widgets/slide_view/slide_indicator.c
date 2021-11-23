@@ -242,6 +242,7 @@ static ret_t slide_indicator_stroke_rect(canvas_t* c, rect_t* r, color_t color) 
 static ret_t slide_indicator_draw_rect_by_vg(canvas_t* c, rectf_t* r, color_t color, bool_t fill) {
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
   vgcanvas_save(vg);
+  vgcanvas_set_global_alpha(vg, c->global_alpha / 255.0f);
   vgcanvas_translate(vg, c->ox, c->oy);
   vgcanvas_begin_path(vg);
   vgcanvas_set_fill_color(vg, color);
@@ -259,6 +260,7 @@ static ret_t slide_indicator_fill_dot(canvas_t* c, rectf_t* r, color_t color) {
   float_t radius = tk_min(r->w, r->h) / 2;
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
   vgcanvas_save(vg);
+  vgcanvas_set_global_alpha(vg, c->global_alpha / 255.0f);
   vgcanvas_translate(vg, c->ox, c->oy);
   vgcanvas_begin_path(vg);
   vgcanvas_set_fill_color(vg, color);
@@ -272,6 +274,7 @@ static ret_t slide_indicator_stroke_dot(canvas_t* c, rectf_t* r, color_t color) 
   float_t radius = tk_min(r->w, r->h) / 2;
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
   vgcanvas_save(vg);
+  vgcanvas_set_global_alpha(vg, c->global_alpha / 255.0f);
   vgcanvas_translate(vg, c->ox, c->oy);
   vgcanvas_begin_path(vg);
   vgcanvas_set_stroke_color(vg, color);
