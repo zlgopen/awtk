@@ -526,8 +526,12 @@ static ret_t scroll_bar_set_prop(widget_t* widget, const char* name, const value
   return RET_NOT_FOUND;
 }
 
-static const char* s_scroll_bar_clone_properties[] = {
-    WIDGET_PROP_MAX, WIDGET_PROP_ROW, WIDGET_PROP_ANIMATABLE, WIDGET_PROP_VALUE, SCROLL_BAR_PROP_ANIMATOR_TIME, NULL};
+static const char* s_scroll_bar_clone_properties[] = {WIDGET_PROP_MAX,
+                                                      WIDGET_PROP_ROW,
+                                                      WIDGET_PROP_ANIMATABLE,
+                                                      WIDGET_PROP_VALUE,
+                                                      SCROLL_BAR_PROP_ANIMATOR_TIME,
+                                                      NULL};
 static const char* s_scroll_bar_persitent_properties[] = {WIDGET_PROP_ANIMATABLE, NULL};
 
 TK_DECL_VTABLE(scroll_bar_mobile) = {.size = sizeof(scroll_bar_t),
@@ -609,14 +613,14 @@ ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration) {
     widget_animator_value_set_params(scroll_bar->wa_value, scroll_bar->value, value);
     widget_animator_start(scroll_bar->wa_value);
     widget_animator_on(scroll_bar->wa_value, EVT_ANIM_END, scroll_bar_on_value_animate_end,
-                      scroll_bar);
+                       scroll_bar);
 
     if (scroll_bar_is_mobile(widget)) {
       scroll_bar_hide_by_opacity_animation(widget, TK_ANIMATING_TIME, TK_ANIMATING_TIME);
     } else {
       scroll_bar->wa_opactiy = NULL;
     }
-  } else 
+  } else
 #endif
   {
     scroll_bar_set_value(widget, value);

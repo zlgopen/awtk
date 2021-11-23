@@ -48,7 +48,7 @@ static bool_t slide_view_is_loopable(slide_view_t* slide_view) {
 static ret_t slide_view_set_xoffset(slide_view_t* slide_view, int32_t xoffset) {
   offset_change_event_t evt;
   if (slide_view->xoffset != xoffset) {
-    offset_change_event_init(&evt, EVT_PAGE_CHANGING, WIDGET(slide_view), 0, -(float_t)xoffset); 
+    offset_change_event_init(&evt, EVT_PAGE_CHANGING, WIDGET(slide_view), 0, -(float_t)xoffset);
     slide_view->xoffset = xoffset;
     widget_dispatch(WIDGET(slide_view), (event_t*)&evt);
   }
@@ -58,7 +58,7 @@ static ret_t slide_view_set_xoffset(slide_view_t* slide_view, int32_t xoffset) {
 static ret_t slide_view_set_yoffset(slide_view_t* slide_view, int32_t yoffset) {
   offset_change_event_t evt;
   if (slide_view->yoffset != yoffset) {
-    offset_change_event_init(&evt, EVT_PAGE_CHANGING, WIDGET(slide_view), 0, -(float_t)yoffset); 
+    offset_change_event_init(&evt, EVT_PAGE_CHANGING, WIDGET(slide_view), 0, -(float_t)yoffset);
     slide_view->yoffset = yoffset;
     widget_dispatch(WIDGET(slide_view), (event_t*)&evt);
   }

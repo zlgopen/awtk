@@ -349,8 +349,10 @@ static ret_t slide_indicator_default_paint_active_indicator(widget_t* widget, ca
   return RET_OK;
 }
 
-static ret_t slide_indicator_default_paint_indicator_by_transition(widget_t* widget, canvas_t* c, rectf_t* r,
-                                                     color_t color, color_t selected_color, float_t active_offset) {
+static ret_t slide_indicator_default_paint_indicator_by_transition(widget_t* widget, canvas_t* c,
+                                                                   rectf_t* r, color_t color,
+                                                                   color_t selected_color,
+                                                                   float_t active_offset) {
   rectf_t new_rect;
   float_t x, y, w, h, transition_size;
   color_t new_color = color_init(0, 0, 0, 0);
@@ -373,7 +375,7 @@ static ret_t slide_indicator_default_paint_indicator_by_transition(widget_t* wid
     new_color1.rgba.b = selected_color.rgba.b * active_offset;
     new_color1.rgba.a = selected_color.rgba.a * active_offset;
   }
-  
+
   transition_size = slide_indicator_get_max_transition_size(slide_indicator) * active_offset;
   w = r->w + transition_size;
   h = r->h + transition_size;
@@ -401,14 +403,16 @@ static ret_t slide_indicator_default_paint_indicator_by_transition(widget_t* wid
   return RET_OK;
 }
 
-static ret_t slide_indicator_paint_one(widget_t* widget, canvas_t* c, rectf_t* r, float_t active_offset) {
+static ret_t slide_indicator_paint_one(widget_t* widget, canvas_t* c, rectf_t* r,
+                                       float_t active_offset) {
   bitmap_t img;
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
   slide_indicator_t* slide_indicator = SLIDE_INDICATOR(widget);
   color_t color = style_get_color(style, STYLE_ID_FG_COLOR, trans);
   color_t selected_color = style_get_color(style, STYLE_ID_SELECTED_FG_COLOR, trans);
-  const char* icon = style_get_str(style, active_offset == 1.0f ? STYLE_ID_ACTIVE_ICON : STYLE_ID_ICON, NULL);
+  const char* icon =
+      style_get_str(style, active_offset == 1.0f ? STYLE_ID_ACTIVE_ICON : STYLE_ID_ICON, NULL);
 
   if (!slide_indicator->transition && icon && widget_load_image(widget, icon, &img) == RET_OK) {
     int32_t x = r->x + ((int32_t)r->w >> 1);
@@ -416,7 +420,8 @@ static ret_t slide_indicator_paint_one(widget_t* widget, canvas_t* c, rectf_t* r
     canvas_draw_icon(c, &img, x, y);
   } else {
     if (slide_indicator->transition && 0.0f < active_offset && active_offset < 1.0f) {
-      slide_indicator_default_paint_indicator_by_transition(widget, c, r, color, selected_color, active_offset);
+      slide_indicator_default_paint_indicator_by_transition(widget, c, r, color, selected_color,
+                                                            active_offset);
     } else if (active_offset == 1.0f) {
       slide_indicator_default_paint_active_indicator(widget, c, r, selected_color);
     } else {
@@ -427,7 +432,8 @@ static ret_t slide_indicator_paint_one(widget_t* widget, canvas_t* c, rectf_t* r
   return RET_OK;
 }
 
-static float_t slide_indicator_get_offset_by_index(slide_indicator_t* slide_indicator, int32_t index) {
+static float_t slide_indicator_get_offset_by_index(slide_indicator_t* slide_indicator,
+                                                   int32_t index) {
   int32_t value = slide_indicator->curr_value;
   float_t value_offset = slide_indicator->value_offset;
   if (value_offset > 0.0f) {
@@ -629,7 +635,8 @@ static ret_t slide_indicator_target_on_value_changing(void* ctx, event_t* e) {
   offset_change_event_t* evt = (offset_change_event_t*)e;
   slide_indicator_t* slide_indicator = SLIDE_INDICATOR(indicator);
   return_value_if_fail(widget != NULL && slide_indicator != NULL && evt != NULL, RET_BAD_PARAMS);
-  if (!slide_indicator->transition || (slide_indicator->transition && slide_indicator->is_value_changing)) {
+  if (!slide_indicator->transition ||
+      (slide_indicator->transition && slide_indicator->is_value_changing)) {
     slide_indicator->value_offset = 0.0f;
     return RET_OK;
   }
@@ -642,7 +649,7 @@ static ret_t slide_indicator_target_on_value_changing(void* ctx, event_t* e) {
     value = offset / widget->h;
     slide_indicator->value_offset = offset / (float_t)widget->h - value;
   }
-  value = slide_indicator->value + value;  
+  value = slide_indicator->value + value;
   if (slide_indicator->loop) {
     if (value < 0) {
       value += slide_indicator->max;

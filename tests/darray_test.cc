@@ -549,7 +549,7 @@ TEST(DArrayTest, push_unique) {
   for (i = 0; i < n; i++) {
     ASSERT_EQ(darray_push_unique(&darray, tk_pointer_from_int(i)), RET_OK);
     ASSERT_NE(darray_push_unique(&darray, tk_pointer_from_int(i)), RET_OK);
-    ASSERT_EQ(darray.size, i+1);
+    ASSERT_EQ(darray.size, i + 1);
   }
 
   darray_deinit(&darray);

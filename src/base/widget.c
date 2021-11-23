@@ -603,7 +603,7 @@ ret_t widget_set_theme(widget_t* widget, const char* name) {
   assets_manager_t* am = widget_get_assets_manager(widget);
   locale_info_t* locale_info = widget_get_locale_info(widget);
   return_value_if_fail(am != NULL && name != NULL, RET_BAD_PARAMS);
-  
+
   widget_dispatch(window_manager(), will_evt);
 
   font_manager_unload_all(fm);

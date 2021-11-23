@@ -41,7 +41,7 @@
 #include "base/vgcanvas_asset_manager.h"
 #endif
 
-#ifdef WITH_FSCRIPT_EXT 
+#ifdef WITH_FSCRIPT_EXT
 #ifndef WITH_DATA_READER_WRITER
 #define WITH_DATA_READER_WRITER
 #endif /*WITH_DATA_READER_WRITER*/

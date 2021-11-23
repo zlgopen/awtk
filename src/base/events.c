@@ -56,7 +56,7 @@ value_change_event_t* value_change_event_cast(event_t* event) {
   return (value_change_event_t*)event;
 }
 
-offset_change_event_t* offset_change_event_cast(event_t* event){
+offset_change_event_t* offset_change_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);
   return_value_if_fail(event->size == sizeof(offset_change_event_t), NULL);
 
@@ -177,12 +177,13 @@ event_t* value_change_event_init(value_change_event_t* event, uint32_t type, voi
   return (event_t*)event;
 }
 
-event_t* offset_change_event_init(offset_change_event_t* event, uint32_t type, void* target, float_t old_offset, float_t new_offset) {
+event_t* offset_change_event_init(offset_change_event_t* event, uint32_t type, void* target,
+                                  float_t old_offset, float_t new_offset) {
   return_value_if_fail(event != NULL, NULL);
   memset(event, 0x00, sizeof(*event));
   event->e = event_init(type, target);
   event->e.size = sizeof(*event);
-  
+
   event->old_offset = old_offset;
   event->new_offset = new_offset;
 

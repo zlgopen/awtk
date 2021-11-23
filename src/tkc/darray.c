@@ -281,7 +281,7 @@ ret_t darray_push(darray_t* darray, void* data) {
 
 ret_t darray_push_unique(darray_t* darray, void* data) {
   return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
-  if(darray_find_index(darray, data) >= 0) {
+  if (darray_find_index(darray, data) >= 0) {
     return RET_FAIL;
   }
 

@@ -688,7 +688,8 @@ offset_change_event_t* offset_change_event_cast(event_t* event);
  *
  * @return {event_t*} event对象。
  */
-event_t* offset_change_event_init(offset_change_event_t* event, uint32_t type, void* target, float_t old_offset, float_t new_offset);
+event_t* offset_change_event_init(offset_change_event_t* event, uint32_t type, void* target,
+                                  float_t old_offset, float_t new_offset);
 
 /**
  * @class pointer_event_t

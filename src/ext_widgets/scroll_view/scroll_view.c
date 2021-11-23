@@ -38,7 +38,8 @@ static uint32_t scroll_view_get_page_max_number(widget_t* widget);
 static ret_t scroll_view_set_xoffset(scroll_view_t* scroll_view, int32_t xoffset) {
   offset_change_event_t evt;
   if (scroll_view->xoffset != xoffset) {
-    offset_change_event_init(&evt, EVT_PAGE_CHANGING, WIDGET(scroll_view), (float_t)scroll_view->xoffset_save, (float_t)xoffset); 
+    offset_change_event_init(&evt, EVT_PAGE_CHANGING, WIDGET(scroll_view),
+                             (float_t)scroll_view->xoffset_save, (float_t)xoffset);
 
     scroll_view->xoffset = xoffset;
     widget_dispatch(WIDGET(scroll_view), (event_t*)&evt);
@@ -49,7 +50,8 @@ static ret_t scroll_view_set_xoffset(scroll_view_t* scroll_view, int32_t xoffset
 static ret_t scroll_view_set_yoffset(scroll_view_t* scroll_view, int32_t yoffset) {
   offset_change_event_t evt;
   if (scroll_view->yoffset != yoffset) {
-    offset_change_event_init(&evt, EVT_PAGE_CHANGING, WIDGET(scroll_view), (float_t)scroll_view->yoffset_save, (float_t)yoffset); 
+    offset_change_event_init(&evt, EVT_PAGE_CHANGING, WIDGET(scroll_view),
+                             (float_t)scroll_view->yoffset_save, (float_t)yoffset);
     scroll_view->yoffset = yoffset;
     widget_dispatch(WIDGET(scroll_view), (event_t*)&evt);
   }
