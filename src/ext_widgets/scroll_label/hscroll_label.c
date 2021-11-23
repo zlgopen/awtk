@@ -50,7 +50,8 @@ static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t
     }
     hscroll_label->old_text_w = hscroll_label->text_w;
   }
-  if (w < hscroll_label->text_w && hscroll_label->ellipses && !hscroll_label_is_running(widget)) {
+  if (w < hscroll_label->text_w && hscroll_label->ellipses && !hscroll_label->yoyo &&
+      !hscroll_label_is_running(widget)) {
     r = rect_init(left_margin, 0, w, widget->h);
 
     return widget_draw_text_in_rect(widget, c, text->str, text->size, &r, TRUE);
@@ -130,6 +131,16 @@ ret_t hscroll_label_set_duration(widget_t* widget, int32_t duration) {
   return RET_OK;
 }
 
+ret_t hscroll_label_set_speed(widget_t* widget, float_t speed) {
+  hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
+  return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(speed >= 0, RET_BAD_PARAMS);
+
+  hscroll_label->speed = speed;
+
+  return RET_OK;
+}
+
 ret_t hscroll_label_set_loop(widget_t* widget, bool_t loop) {
   hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
   return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
@@ -188,6 +199,9 @@ static ret_t hscroll_label_get_prop(widget_t* widget, const char* name, value_t*
   } else if (tk_str_eq(name, HSCROLL_LABEL_PROP_DURATION)) {
     value_set_int(v, hscroll_label->duration);
     return RET_OK;
+  } else if (tk_str_eq(name, HSCROLL_LABEL_PROP_SPEED)) {
+    value_set_float32(v, hscroll_label->speed);
+    return RET_OK;
   } else if (tk_str_eq(name, HSCROLL_LABEL_PROP_XOFFSET)) {
     value_set_int(v, hscroll_label->xoffset);
     return RET_OK;
@@ -218,6 +232,8 @@ static ret_t hscroll_label_set_prop(widget_t* widget, const char* name, const va
     return hscroll_label_set_lull(widget, value_int(v));
   } else if (tk_str_eq(name, HSCROLL_LABEL_PROP_DURATION)) {
     return hscroll_label_set_duration(widget, value_int(v));
+  } else if (tk_str_eq(name, HSCROLL_LABEL_PROP_SPEED)) {
+    return hscroll_label_set_speed(widget, value_float32(v));
   } else if (tk_str_eq(name, HSCROLL_LABEL_PROP_XOFFSET)) {
     return hscroll_label_set_xoffset(widget, value_int(v));
   } else if (tk_str_eq(name, HSCROLL_LABEL_PROP_YOYO)) {
@@ -238,33 +254,39 @@ static ret_t hscroll_label_set_prop(widget_t* widget, const char* name, const va
   return RET_NOT_FOUND;
 }
 
-ret_t hscroll_label_step(widget_t* widget) {
-  int32_t range = 0;
-  float_t percent = 0;
-  ret_t ret = RET_REPEAT;
+static int32_t hscroll_label_get_range(widget_t* widget) {
   hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
-
   int32_t left_margin = style_get_int(widget->astyle, STYLE_ID_MARGIN_LEFT, 2);
   int32_t right_margin = style_get_int(widget->astyle, STYLE_ID_MARGIN_RIGHT, 2);
   int32_t w = widget->w - left_margin - right_margin;
 
-  if (hscroll_label->elapsed >= hscroll_label->duration) {
-    hscroll_label->elapsed = hscroll_label->duration;
-  }
+  return hscroll_label->text_w - w;
+}
 
-  if (hscroll_label->text_w < w) {
+ret_t hscroll_label_step(widget_t* widget) {
+  ret_t ret = RET_REPEAT;
+  hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
+  float_t percent = 0;
+  uint32_t duration = 0;
+  int32_t range = hscroll_label_get_range(widget);
+
+  if (range < 0) {
     range = 0;
     ret = RET_REMOVE;
-  } else {
-    range = hscroll_label->text_w - w;
   }
 
-  percent = (float_t)hscroll_label->elapsed / (float_t)(hscroll_label->duration);
+  duration = (hscroll_label->speed > 0) ? (range / hscroll_label->speed) : hscroll_label->duration;
+
+  if (hscroll_label->elapsed >= duration) {
+    hscroll_label->elapsed = duration;
+  }
+
+  percent = (float_t)hscroll_label->elapsed / (float_t)(duration);
   if (hscroll_label->reversed) {
     percent = 1 - percent;
   }
 
-  hscroll_label->xoffset += range * percent - hscroll_label->xoffset;
+  hscroll_label->xoffset = range * percent;
   if (hscroll_label->xoffset > range) {
     ret = RET_REMOVE;
   }
@@ -307,6 +329,7 @@ static ret_t hscroll_label_on_timer(const timer_info_t* info) {
   ret_t ret = RET_OK;
   widget_t* widget = WIDGET(info->ctx);
   hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
+  uint32_t duration = 0;
   return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
   if (!hscroll_label->paused) {
     hscroll_label->elapsed += info->duration;
@@ -330,7 +353,16 @@ static ret_t hscroll_label_on_timer(const timer_info_t* info) {
 
   ret = hscroll_label_step(widget);
 
-  if (hscroll_label->elapsed >= hscroll_label->duration) {
+  if (hscroll_label->speed > 0) {
+    int32_t range = hscroll_label_get_range(widget);
+    if (range > 0) {
+      duration = range / hscroll_label->speed;
+    }
+  } else {
+    duration = hscroll_label->duration;
+  }
+
+  if (hscroll_label->elapsed >= duration) {
     uint32_t lull = hscroll_label->lull;
 
     hscroll_label->elapsed = 0;
@@ -339,7 +371,7 @@ static ret_t hscroll_label_on_timer(const timer_info_t* info) {
       ret = RET_REMOVE;
     } else {
       if (hscroll_label->lull > 0) {
-        hscroll_label->timer_id = timer_add(hscroll_label_on_timer_start, widget, lull);
+        hscroll_label->timer_id = widget_add_timer(widget, hscroll_label_on_timer_start, lull);
         ret = RET_REMOVE;
       }
     }
@@ -362,7 +394,7 @@ ret_t hscroll_label_start(widget_t* widget) {
   return_value_if_fail(hscroll_label->timer_id == TK_INVALID_ID, RET_BAD_PARAMS);
 
   hscroll_label->elapsed = 0;
-  hscroll_label->timer_id = timer_add(hscroll_label_on_timer, hscroll_label, 16);
+  hscroll_label->timer_id = widget_add_timer(widget, hscroll_label_on_timer, 16);
 
   return RET_OK;
 }
@@ -468,6 +500,7 @@ static const char* const s_hscroll_label_properties[] = {HSCROLL_LABEL_PROP_YOYO
                                                          HSCROLL_LABEL_PROP_LOOP,
                                                          HSCROLL_LABEL_PROP_LULL,
                                                          HSCROLL_LABEL_PROP_DURATION,
+                                                         HSCROLL_LABEL_PROP_SPEED,
                                                          HSCROLL_LABEL_PROP_ELLIPSES,
                                                          HSCROLL_LABEL_PROP_ONLY_FOCUS,
                                                          HSCROLL_LABEL_PROP_ONLY_PARENT_FOCUS,
