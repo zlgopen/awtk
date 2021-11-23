@@ -67,6 +67,8 @@ static ret_t gen_one(const char* in_filename, const char* out_filename, const ch
     } else if (strstr(in_filename, "images") != NULL) {
       output_res_c_source(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_OTHER, input_buff,
                           size);
+    } else if (strstr(in_filename, "flows") != NULL) {
+      output_res_c_source(out_filename, theme, ASSET_TYPE_FLOW, 0, input_buff, size);
     } else {
       const char* name = strrchr(in_filename, '/');
       if (name == NULL) {

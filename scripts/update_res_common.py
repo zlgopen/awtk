@@ -318,6 +318,7 @@ def to_asset_const_name(filename, root):
     basename = basename.replace('/images/', '/image/')
     basename = basename.replace('/styles/', '/style/')
     basename = basename.replace('/scripts/', '/script/')
+    basename = basename.replace('/flows/', '/flow/')
     basename = basename.replace('./', '')
     basename = re.sub(r'[^a-zA-Z0-9]', '_', basename)
     return basename
@@ -835,6 +836,7 @@ def gen_assets_c_of_one_theme(with_multi_theme = True):
     result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/ui/*.data'), join_path(OUTPUT_ROOT, 'default/inc/ui/*.data'), with_multi_theme)
     result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/xml/*.data'), join_path(OUTPUT_ROOT, 'default/inc/xml/*.data'), with_multi_theme)
     result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/data/*.data'), join_path(OUTPUT_ROOT, 'default/inc/data/*.data'), with_multi_theme)
+    result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/flows/*.flows'), join_path(OUTPUT_ROOT, 'default/inc/flows/*.flows'), with_multi_theme)
     result += "#ifdef WITH_STB_IMAGE\n"
     result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/images/*.res'), join_path(OUTPUT_ROOT, 'default/inc/images/*.res'), with_multi_theme)
     result += "#else\n"
@@ -865,6 +867,7 @@ def gen_assets_c_of_one_theme(with_multi_theme = True):
     result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/ui/*.data'), join_path(OUTPUT_ROOT, 'default/inc/ui/*.data'))
     result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/xml/*.data'), join_path(OUTPUT_ROOT, 'default/inc/xml/*.data'))
     result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/data/*.data'), join_path(OUTPUT_ROOT, 'default/inc/data/*.data'))
+    result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/flows/*.flows'), join_path(OUTPUT_ROOT, 'default/inc/flows/*.flows'))
     if IS_GENERATE_INC_RES:
         result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/images/*.res'), join_path(OUTPUT_ROOT, 'default/inc/images/*.res'))
     else:
@@ -1003,6 +1006,7 @@ def gen_assets_web_c_of_one_theme(with_multi_theme = True):
     result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/ui/*.data'), join_path(OUTPUT_ROOT, 'default/inc/ui/*.data'), with_multi_theme)
     result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/xml/*.data'), join_path(OUTPUT_ROOT, 'default/inc/xml/*.data'), with_multi_theme)
     result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/data/*.data'), join_path(OUTPUT_ROOT, 'default/inc/data/*.data'), with_multi_theme)
+    result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/flows/*.flows'), join_path(OUTPUT_ROOT, 'default/inc/flows/*.flows'), with_multi_theme)
     result += '\n'
 
     result += 'ret_t ' + func_name + '(void) {\n'
@@ -1016,6 +1020,7 @@ def gen_assets_web_c_of_one_theme(with_multi_theme = True):
     result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/ui/*.data'), join_path(OUTPUT_ROOT, 'default/inc/ui/*.data'))
     result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/xml/*.data'), join_path(OUTPUT_ROOT, 'default/inc/xml/*.data'))
     result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/data/*.data'), join_path(OUTPUT_ROOT, 'default/inc/data/*.data'))
+    result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/flows/*.flows'), join_path(OUTPUT_ROOT, 'default/inc/flows/*.flows'))
 
     result += '  tk_init_assets();\n'
     result += '  return RET_OK;\n'
