@@ -40,6 +40,7 @@
 #include "assets/default/inc/ui/vgcanvas.data"
 #include "assets/default/inc/ui/rich_text1.data"
 #include "assets/default/inc/ui/vpage_vtrans.data"
+#include "assets/default/inc/ui/slider.data"
 #include "assets/default/inc/ui/menu_point.data"
 #include "assets/default/inc/ui/slide_menu.data"
 #include "assets/default/inc/ui/radial_gradient.data"
@@ -358,6 +359,7 @@
 #include "assets/default/inc/images/uiex_keyboard_backspace_n.res"
 #include "assets/default/inc/images/msg_active.res"
 #include "assets/default/inc/images/uiex_check_p.res"
+#include "assets/default/inc/images/img_slider_bg.res"
 #include "assets/default/inc/images/app2.res"
 #include "assets/default/inc/images/uiex_check_checked_d.res"
 #include "assets/default/inc/images/radio_checked.res"
@@ -391,6 +393,7 @@
 #include "assets/default/inc/images/middle_off.res"
 #include "assets/default/inc/images/debug_restart_d.res"
 #include "assets/default/inc/images/uiex_editor_bgcolor.res"
+#include "assets/default/inc/images/img_slider_icon.res"
 #include "assets/default/inc/images/arrow_down_n.res"
 #include "assets/default/inc/images/debug_step_into_d.res"
 #include "assets/default/inc/images/return_up.res"
@@ -484,6 +487,7 @@
 #include "assets/default/inc/images/cross.res"
 #include "assets/default/inc/images/repeat2.res"
 #include "assets/default/inc/images/bg2.res"
+#include "assets/default/inc/images/img_slider_fg.res"
 #include "assets/default/inc/images/uiex_Information_avatar.res"
 #include "assets/default/inc/images/uiex_editor_TextCenteralignment.res"
 #include "assets/default/inc/images/clock.res"
@@ -687,7 +691,9 @@
 #include "assets/default/inc/images/uiex_radio_n.data"
 #include "assets/default/inc/images/uiex_editor_TextItalic.data"
 #include "assets/default/inc/images/uiex_num6.data"
+#include "assets/default/inc/images/img_slider_icon.data"
 #include "assets/default/inc/images/repeat4.data"
+#include "assets/default/inc/images/img_slider_bg.data"
 #include "assets/default/inc/images/uiex_check_checked_n.data"
 #include "assets/default/inc/images/cross.data"
 #include "assets/default/inc/images/debug_step_return_n.data"
@@ -747,6 +753,7 @@
 #include "assets/default/inc/images/debug_step_return_o.data"
 #include "assets/default/inc/images/uiex_Boot_loading.data"
 #include "assets/default/inc/images/uiex_radio_checked_d.data"
+#include "assets/default/inc/images/img_slider_fg.data"
 #include "assets/default/inc/images/uiex_editor_TextAlignBoth.data"
 #include "assets/default/inc/images/uiex_numdot.data"
 #include "assets/default/inc/images/ania.data"
@@ -901,6 +908,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_vgcanvas);
   assets_manager_add(am, ui_rich_text1);
   assets_manager_add(am, ui_vpage_vtrans);
+  assets_manager_add(am, ui_slider);
   assets_manager_add(am, ui_menu_point);
   assets_manager_add(am, ui_slide_menu);
   assets_manager_add(am, ui_radial_gradient);
@@ -1218,6 +1226,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_uiex_keyboard_backspace_n);
   assets_manager_add(am, image_msg_active);
   assets_manager_add(am, image_uiex_check_p);
+  assets_manager_add(am, image_img_slider_bg);
   assets_manager_add(am, image_app2);
   assets_manager_add(am, image_uiex_check_checked_d);
   assets_manager_add(am, image_radio_checked);
@@ -1251,6 +1260,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_middle_off);
   assets_manager_add(am, image_debug_restart_d);
   assets_manager_add(am, image_uiex_editor_bgcolor);
+  assets_manager_add(am, image_img_slider_icon);
   assets_manager_add(am, image_arrow_down_n);
   assets_manager_add(am, image_debug_step_into_d);
   assets_manager_add(am, image_return_up);
@@ -1344,6 +1354,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_cross);
   assets_manager_add(am, image_repeat2);
   assets_manager_add(am, image_bg2);
+  assets_manager_add(am, image_img_slider_fg);
   assets_manager_add(am, image_uiex_Information_avatar);
   assets_manager_add(am, image_uiex_editor_TextCenteralignment);
   assets_manager_add(am, image_clock);

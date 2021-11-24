@@ -35,6 +35,7 @@
 #include "assets/default/inc/ui/vgcanvas.data"
 #include "assets/default/inc/ui/rich_text1.data"
 #include "assets/default/inc/ui/vpage_vtrans.data"
+#include "assets/default/inc/ui/slider.data"
 #include "assets/default/inc/ui/menu_point.data"
 #include "assets/default/inc/ui/slide_menu.data"
 #include "assets/default/inc/ui/radial_gradient.data"
@@ -253,6 +254,7 @@
 #include "assets/default/inc/images/play_o.res"
 #include "assets/default/inc/images/play_n.res"
 #include "assets/default/inc/images/msg_active.res"
+#include "assets/default/inc/images/img_slider_bg.res"
 #include "assets/default/inc/images/radio_checked.res"
 #include "assets/default/inc/images/active_dot.res"
 #include "assets/default/inc/images/zh.res"
@@ -267,6 +269,7 @@
 #include "assets/default/inc/images/info.res"
 #include "assets/default/inc/images/red_btn_p.res"
 #include "assets/default/inc/images/middle_off.res"
+#include "assets/default/inc/images/img_slider_icon.res"
 #include "assets/default/inc/images/arrow_down_n.res"
 #include "assets/default/inc/images/return_up.res"
 #include "assets/default/inc/images/green_btn_o.res"
@@ -306,6 +309,7 @@
 #include "assets/default/inc/images/clock_bg.res"
 #include "assets/default/inc/images/clock_minute.res"
 #include "assets/default/inc/images/cross.res"
+#include "assets/default/inc/images/img_slider_fg.res"
 #include "assets/default/inc/images/clock.res"
 #include "assets/default/inc/images/image_packed_fg.res"
 #include "assets/default/inc/images/find.res"
@@ -398,6 +402,8 @@
 #include "assets/default/inc/images/close_d.data"
 #include "assets/default/inc/images/right_off.data"
 #include "assets/default/inc/images/unmuted.data"
+#include "assets/default/inc/images/img_slider_icon.data"
+#include "assets/default/inc/images/img_slider_bg.data"
 #include "assets/default/inc/images/cross.data"
 #include "assets/default/inc/images/backspace.data"
 #include "assets/default/inc/images/arrow_left_p.data"
@@ -423,6 +429,7 @@
 #include "assets/default/inc/images/ani6.data"
 #include "assets/default/inc/images/message.data"
 #include "assets/default/inc/images/edit_clear_o.data"
+#include "assets/default/inc/images/img_slider_fg.data"
 #include "assets/default/inc/images/ania.data"
 #include "assets/default/inc/images/ani1.data"
 #include "assets/default/inc/images/battery_3.data"
@@ -522,6 +529,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_vgcanvas);
   assets_manager_add(am, ui_rich_text1);
   assets_manager_add(am, ui_vpage_vtrans);
+  assets_manager_add(am, ui_slider);
   assets_manager_add(am, ui_menu_point);
   assets_manager_add(am, ui_slide_menu);
   assets_manager_add(am, ui_radial_gradient);
@@ -739,6 +747,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_play_o);
   assets_manager_add(am, image_play_n);
   assets_manager_add(am, image_msg_active);
+  assets_manager_add(am, image_img_slider_bg);
   assets_manager_add(am, image_radio_checked);
   assets_manager_add(am, image_active_dot);
   assets_manager_add(am, image_zh);
@@ -753,6 +762,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_info);
   assets_manager_add(am, image_red_btn_p);
   assets_manager_add(am, image_middle_off);
+  assets_manager_add(am, image_img_slider_icon);
   assets_manager_add(am, image_arrow_down_n);
   assets_manager_add(am, image_return_up);
   assets_manager_add(am, image_green_btn_o);
@@ -792,6 +802,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_clock_bg);
   assets_manager_add(am, image_clock_minute);
   assets_manager_add(am, image_cross);
+  assets_manager_add(am, image_img_slider_fg);
   assets_manager_add(am, image_clock);
   assets_manager_add(am, image_image_packed_fg);
   assets_manager_add(am, image_find);

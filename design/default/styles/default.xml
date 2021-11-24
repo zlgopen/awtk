@@ -266,6 +266,12 @@
     <pressed icon="slider_drag_p"/>
     <over icon="slider_drag_o"/>
   </style>
+
+  <style name="img_slider"  bg_image="img_slider_bg" fg_image="img_slider_fg" bg_image_draw_type="default" fg_image_draw_type="default">
+    <normal icon="img_slider_icon"/>
+    <pressed icon="img_slider_icon"/>
+    <over icon="img_slider_icon"/>
+  </style>
 </slider>
 
 <group_box>
