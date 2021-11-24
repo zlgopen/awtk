@@ -58,16 +58,22 @@ static ret_t button_on_repeat(const timer_info_t* info) {
   return RET_REPEAT;
 }
 
-static ret_t button_pointer_up_cleanup(widget_t* widget) {
+static ret_t button_pointer_up_cleanup_impl(widget_t* widget, bool_t ungrab) {
   button_t* button = BUTTON(widget);
   return_value_if_fail(button != NULL && widget != NULL, RET_BAD_PARAMS);
 
   button->pressed = FALSE;
   button_remove_timer(widget);
-  widget_ungrab(widget->parent, widget);
+  if (ungrab) {
+    widget_ungrab(widget->parent, widget);
+  }
   widget_set_state(widget, WIDGET_STATE_NORMAL);
 
   return RET_OK;
+}
+
+static ret_t button_pointer_up_cleanup(widget_t* widget) {
+  return button_pointer_up_cleanup_impl(widget, TRUE);
 }
 
 static ret_t button_on_long_press(const timer_info_t* info) {
@@ -75,7 +81,7 @@ static ret_t button_on_long_press(const timer_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  button_pointer_up_cleanup(widget);
+  button_pointer_up_cleanup_impl(widget, FALSE);
   widget_dispatch(widget, pointer_event_init(&evt, EVT_LONG_PRESS, widget, 1, 1));
 
   return RET_REMOVE;
