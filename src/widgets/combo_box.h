@@ -374,6 +374,7 @@ combo_box_option_t* combo_box_get_option(widget_t* widget, uint32_t index);
 /**
  * @method combo_box_get_value
  * 获取combo_box的值。
+ * @alias combo_box_get_value_int
  * @annotation ["scriptable"]
  * @param {widget_t*} widget combo_box对象。
  *

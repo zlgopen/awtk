@@ -273,6 +273,7 @@ text_selector_option_t* text_selector_get_option(widget_t* widget, uint32_t inde
 /**
  * @method text_selector_get_value
  * 获取text_selector的值。
+ * @alias text_selector_get_value_int
  * @annotation ["scriptable"]
  * @param {widget_t*} widget text_selector对象。
  *
