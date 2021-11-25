@@ -245,10 +245,10 @@ BEGIN_C_DECLS
 #define STYLE_ID_ROUND_RADIUS "round_radius"
 
 /**
- * @const STYLE_ID_ROUND_RADIUS_TOP_LETF
+ * @const STYLE_ID_ROUND_RADIUS_TOP_LEFT
  * 左上角圆角半径(仅在WITH_VGCANVAS定义时生效)。
  */
-#define STYLE_ID_ROUND_RADIUS_TOP_LETF "round_radius_top_left"
+#define STYLE_ID_ROUND_RADIUS_TOP_LEFT "round_radius_top_left"
 
 /**
  * @const STYLE_ID_ROUND_RADIUS_TOP_RIGHT
@@ -257,10 +257,10 @@ BEGIN_C_DECLS
 #define STYLE_ID_ROUND_RADIUS_TOP_RIGHT "round_radius_top_right"
 
 /**
- * @const STYLE_ID_ROUND_RADIUS_BOTTOM_LETF
+ * @const STYLE_ID_ROUND_RADIUS_BOTTOM_LEFT
  * 左下角圆角半径(仅在WITH_VGCANVAS定义时生效)。
  */
-#define STYLE_ID_ROUND_RADIUS_BOTTOM_LETF "round_radius_bottom_left"
+#define STYLE_ID_ROUND_RADIUS_BOTTOM_LEFT "round_radius_bottom_left"
 
 /**
  * @const STYLE_ID_ROUND_RADIUS_BOTTOM_RIGHT
@@ -522,6 +522,10 @@ ret_t style_destroy(style_t* s);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t style_normalize_value(const char* name, const char* value, value_t* out);
+
+/*for compatibility*/
+#define STYLE_ID_ROUND_RADIUS_BOTTOM_LETF STYLE_ID_ROUND_RADIUS_BOTTOM_LEFT
+#define STYLE_ID_ROUND_RADIUS_TOP_LETF STYLE_ID_ROUND_RADIUS_TOP_LEFT
 
 END_C_DECLS
 

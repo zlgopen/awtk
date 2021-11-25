@@ -13085,7 +13085,7 @@
       },
       {
         "desc": "左上角圆角半径(仅在WITH_VGCANVAS定义时生效)。",
-        "name": "STYLE_ID_ROUND_RADIUS_TOP_LETF"
+        "name": "STYLE_ID_ROUND_RADIUS_TOP_LEFT"
       },
       {
         "desc": "右上角圆角半径(仅在WITH_VGCANVAS定义时生效)。",
@@ -13093,7 +13093,7 @@
       },
       {
         "desc": "左下角圆角半径(仅在WITH_VGCANVAS定义时生效)。",
-        "name": "STYLE_ID_ROUND_RADIUS_BOTTOM_LETF"
+        "name": "STYLE_ID_ROUND_RADIUS_BOTTOM_LEFT"
       },
       {
         "desc": "右下角圆角半径(仅在WITH_VGCANVAS定义时生效)。",
