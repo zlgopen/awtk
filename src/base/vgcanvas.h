@@ -801,7 +801,6 @@ ret_t vgcanvas_clip_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_
  * @method vgcanvas_get_clip_rect
  * 获取矩形裁剪。
  *
- * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
  *
  * @return {const rectf_t*} 返回裁剪区。

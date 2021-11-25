@@ -207,7 +207,6 @@ wh_t canvas_get_height(canvas_t* c);
  * @method canvas_get_clip_rect
  * 获取裁剪区。
  *
- * @annotation ["scriptable"]
  * @param {canvas_t*} c canvas对象。
  * @param {rect_t*} r rect对象。
  *
