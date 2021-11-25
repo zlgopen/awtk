@@ -268,7 +268,7 @@ static ret_t vgcanvas_nanovg_clip_rect(vgcanvas_t* vgcanvas, float_t x, float_t 
   return RET_OK;
 }
 
-static bool_t vgcanvas_nanovg_is_rectf_int_clip_rect(vgcanvas_t* vgcanvas, float_t left, float_t top, float_t right, float_t bottom) {
+static bool_t vgcanvas_nanovg_is_rectf_in_clip_rect(vgcanvas_t* vgcanvas, float_t left, float_t top, float_t right, float_t bottom) {
   float_t clip_left = vgcanvas->clip_rect.x;
   float_t clip_right = vgcanvas->clip_rect.x + vgcanvas->clip_rect.w - 1;
   float_t clip_top = vgcanvas->clip_rect.y;
@@ -667,7 +667,7 @@ static const vgcanvas_vtable_t vt = {
     .set_transform = vgcanvas_nanovg_set_transform,
     .clip_rect = vgcanvas_nanovg_clip_rect,
     .get_clip_rect = vgcanvas_nanovg_get_clip_rect,
-    .is_rectf_int_clip_rect = vgcanvas_nanovg_is_rectf_int_clip_rect,
+    .is_rectf_in_clip_rect = vgcanvas_nanovg_is_rectf_in_clip_rect,
     .intersect_clip_rect = vgcanvas_nanovg_intersect_clip_rect,
     .path_winding = vgcanvas_nanovg_path_winding,
     .fill = vgcanvas_nanovg_fill,

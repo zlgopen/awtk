@@ -72,7 +72,7 @@ static ret_t lcd_vgcanvas_set_clip_rect(lcd_t* lcd, const rect_t* r) {
 
 static bool_t lcd_vgcanvas_is_rect_in_clip_rect(lcd_t* lcd, xy_t left, xy_t top, xy_t right, xy_t bottom) {
   vgcanvas_t* canvas = LCD(lcd)->canvas;
-  return vgcanvas_is_rectf_int_clip_rect(canvas, (float_t)left, (float_t)top, (float_t)right, (float_t)bottom);
+  return vgcanvas_is_rectf_in_clip_rect(canvas, (float_t)left, (float_t)top, (float_t)right, (float_t)bottom);
 }
 
 static ret_t lcd_vgcanvas_get_clip_rect(lcd_t* lcd, rect_t* r) {
