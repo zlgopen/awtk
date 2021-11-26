@@ -46,6 +46,7 @@
 static ret_t edit_auto_fix(widget_t* widget);
 static ret_t edit_reset_layout(widget_t* widget);
 static ret_t edit_update_status(widget_t* widget);
+static ret_t edit_check_valid_value(widget_t* widget);
 static ret_t edit_pre_input(widget_t* widget, uint32_t key);
 static ret_t edit_select_all_async(const idle_info_t* info);
 
@@ -541,6 +542,21 @@ static ret_t edit_request_input_method(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t edit_on_blur(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+  if (edit->close_im_when_blured) {
+    input_method_request(input_method(), NULL);
+  }
+  edit_update_status(widget);
+  edit_check_valid_value(widget);
+  text_edit_preedit_confirm(edit->model);
+  text_edit_unselect(edit->model);
+  edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGED);
+  edit_commit_text(widget);
+  return RET_OK;
+}
+
 static ret_t edit_on_focused(widget_t* widget) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
@@ -688,6 +704,9 @@ static ret_t edit_on_key_up(widget_t* widget, key_event_t* e) {
   if (key_code_is_enter(key)) {
     if (edit->timer_id == TK_INVALID_ID) {
       edit_on_focused(widget);
+    } else {
+      widget_focus_next(widget);
+      widget_set_focused(widget, FALSE);
     }
     ret = RET_STOP;
   } else {
@@ -824,15 +843,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_BLUR: {
-      if (edit->close_im_when_blured) {
-        input_method_request(input_method(), NULL);
-      }
-      edit_update_status(widget);
-      edit_check_valid_value(widget);
-      text_edit_preedit_confirm(edit->model);
-      text_edit_unselect(edit->model);
-      edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGED);
-      edit_commit_text(widget);
+      edit_on_blur(widget);
       break;
     }
     case EVT_FOCUS: {
