@@ -64,3 +64,16 @@ TEST(Rect, intersect) {
   ASSERT_EQ(r.w, 4);
   ASSERT_EQ(r.h, 4);
 }
+
+TEST(Point, init) {
+  point_t p = point_init(10, 20);
+  ASSERT_EQ(p.x, 10);
+  ASSERT_EQ(p.y, 20);
+}
+
+TEST(PointF, init) {
+  pointf_t p = pointf_init(10, 20);
+  ASSERT_EQ(p.x, 10);
+  ASSERT_EQ(p.y, 20);
+}
+

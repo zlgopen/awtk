@@ -48,6 +48,17 @@ typedef struct _point_t {
 } point_t;
 
 /**
+ * @method point_init
+ * 初始化point对象。
+ *
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y y坐标。
+ *
+ * @return {point_t} 返回point对象。
+ */
+point_t point_init(xy_t x, xy_t y);
+
+/**
  * @class pointf_t
  * @order -10
  * @annotation ["scriptable"]
@@ -67,6 +78,17 @@ typedef struct _pointf_t {
    */
   float_t y;
 } pointf_t;
+
+/**
+ * @method pointf_init
+ * 初始化point对象。
+ *
+ * @param {float_t} x x坐标。
+ * @param {float_t} y y坐标。
+ *
+ * @return {pointf_t} 返回point对象。
+ */
+pointf_t pointf_init(float_t x, float_t y);
 
 /**
  * @class rectf_t

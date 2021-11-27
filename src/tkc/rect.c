@@ -233,3 +233,13 @@ rect_t rect_from_rectf(const rectf_t* r) {
 
   return tmp_r;
 }
+
+pointf_t pointf_init(float_t x, float_t y) {
+  pointf_t p = {x, y};
+  return p;
+}
+
+point_t point_init(xy_t x, xy_t y) {
+  point_t p = {x, y};
+  return p;
+}
