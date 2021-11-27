@@ -98,7 +98,9 @@ static ret_t lcd_vgcanvas_draw_vline_with_color(lcd_t* lcd, xy_t x, xy_t y, wh_t
   vgcanvas_set_stroke_color(canvas, stroke_color);
   vgcanvas_stroke(canvas);
   vgcanvas_set_antialias(canvas, TRUE);
+  vgcanvas_begin_path(canvas);
   vgcanvas_restore(canvas);
+
   return RET_OK;
 }
 
@@ -119,6 +121,7 @@ static ret_t lcd_vgcanvas_draw_hline_with_color(lcd_t* lcd, xy_t x, xy_t y, wh_t
   vgcanvas_set_stroke_color(canvas, stroke_color);
   vgcanvas_stroke(canvas);
   vgcanvas_set_antialias(canvas, TRUE);
+  vgcanvas_begin_path(canvas);
   vgcanvas_restore(canvas);
   return RET_OK;
 }
@@ -138,6 +141,7 @@ static ret_t lcd_vgcanvas_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) 
     vgcanvas_set_fill_color(canvas, lcd->fill_color);
     vgcanvas_fill(canvas);
     vgcanvas_set_antialias(canvas, TRUE);
+    vgcanvas_begin_path(canvas);
     vgcanvas_restore(canvas);
   } else if (w <= 1) {
     lcd_vgcanvas_draw_vline_with_color(lcd, x, y, h, lcd->fill_color);
@@ -167,6 +171,7 @@ static ret_t lcd_vgcanvas_stroke_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h
   vgcanvas_set_line_width(canvas, 1);
   vgcanvas_set_stroke_color(canvas, lcd->stroke_color);
   vgcanvas_stroke(canvas);
+  vgcanvas_begin_path(canvas);
 
   return RET_OK;
 }
