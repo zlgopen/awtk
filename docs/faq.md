@@ -327,3 +327,11 @@ AWTK\_LITE 主要是用来在低端平台裁剪代码的，内存占用主要于
 ret_t image_manager_set_max_mem_size_of_cached_images(image_manager_t* imm, uint32_t max_mem_size);
 ```
 
+#### 25. 如何在命令行重新生成资源？
+
+使用下列命令：
+
+```
+python scripts/update_res.py all
+```
+
