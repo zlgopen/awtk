@@ -357,6 +357,12 @@ int32_t event_from_name(const char* name) {
       }
       break;
     }
+    case 'i': {
+      if (tk_str_eq(name, "im_action")) {
+        return EVT_IM_ACTION;
+      }
+      break;
+    }
     default:
       break;
   }

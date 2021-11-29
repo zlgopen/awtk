@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/11/29
+  * 完善event\_from\_name（感谢兆坤提供补丁）
+
 2021/11/27
   * 完善lcd\_vgcanvas，部分函数完成后清除路径。
   * 增加point\_init/pointf\_init。
