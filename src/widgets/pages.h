@@ -61,9 +61,15 @@ typedef struct _pages_t {
   /**
    * @property {uint32_t} active
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 当前活跃的page。
+   * 当前活跃的page。(需要用到 MVVM 数据绑定请设置 value 属性)
    */
   uint32_t active;
+
+  /**
+   * @property {uint32_t} value
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable", "fake"]
+   * 当前活跃的page。
+   */
   /* private */
   str_t str_target;
   uint32_t init_idle_id;
