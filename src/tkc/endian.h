@@ -40,7 +40,12 @@ static inline bool_t is_little_endian(void) {
 }
 
 static inline int16_t int16_endian_invert(int16_t value) {
-  return (value << 8) | (value >> 8);
+  int16_t ret = value;
+  uint8_t* p = (uint8_t*)&ret;
+
+  swap_uint8(p, p + 1);
+
+  return ret;
 }
 
 static inline int16_t int16_to_big_endian(int16_t value) {
