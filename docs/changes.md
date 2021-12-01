@@ -4,6 +4,7 @@
   * edit增加事件EVT\_IM\_ACTION（感谢兆坤提供补丁）
   * 修复 awtk 的 nanovg\_plus 的获取当前裁剪区不正常的问题 （感谢智明提供补丁）
   * 修复 widget\_set\_as\_key\_target 递归各个父集后导致全屏刷新的问题 （感谢智明提供补丁）
+  * 修复 int16\_endian\_invert(严重BUG，请更新代码)。
 
 2021/11/29
   * 完善event\_from\_name（感谢兆坤提供补丁）

@@ -138,6 +138,19 @@ TEST(UBJsonReader, int32) {
   ubjson_reader_reset(&ur);
 }
 
+TEST(UBJsonReader, int) {
+  PREPARE_TEST();
+
+  ASSERT_EQ(ubjson_writer_write_int(&ub, 1000), RET_OK);
+
+  rb.capacity = wb.cursor;
+  ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);
+  ASSERT_EQ(v.type == VALUE_TYPE_INT16, true);
+  ASSERT_EQ(value_int(&v), 1000);
+
+  ubjson_reader_reset(&ur);
+}
+
 TEST(UBJsonReader, int64) {
   PREPARE_TEST();
 
