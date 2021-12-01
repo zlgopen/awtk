@@ -1,5 +1,4 @@
 ﻿#include "gtest/gtest.h"
-#include "base/idle.h"
 #include "tkc/event_source_idle.h"
 
 static uint32_t s_idle_times = 0;

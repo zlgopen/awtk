@@ -1,6 +1,5 @@
 ﻿#include "tkc/fscript.h"
 #include "tkc/object_default.h"
-#include "widgets/button.h"
 #include "gtest/gtest.h"
 
 TEST(FScript, basic0) {
@@ -1215,6 +1214,8 @@ TEST(FExr, syntax_check) {
   OBJECT_UNREF(obj);
 }
 
+#ifdef FSCRIPT_WITH_WIDGET
+#include "widgets/button.h"
 TEST(FExr, widget) {
   value_t v;
   object_t* obj = object_default_create();
@@ -1241,6 +1242,7 @@ TEST(FExr, widget) {
   widget_destroy(button);
   OBJECT_UNREF(obj);
 }
+#endif/*FSCRIPT_WITH_WIDGET*/
 
 TEST(FExr, minus) {
   value_t v;

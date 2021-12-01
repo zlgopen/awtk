@@ -197,7 +197,7 @@ class AppHelperBase:
         self.APP_SRC = os.path.join(APP_ROOT, 'src')
         self.APP_RES = os.path.join(APP_ROOT, 'res')
         self.APP_LIBS = []
-        self.APP_LIBPATH = [self.APP_LIB_DIR]
+        self.APP_LIBPATH = [self.APP_LIB_DIR, self.APP_BIN_DIR]
         self.APP_LINKFLAGS = ''
         self.APP_CPPPATH = [self.APP_SRC, self.APP_RES]
         self.PLATFORM_LIBS = []
@@ -283,7 +283,7 @@ class AppHelperBase:
                 f.write(content)
 
     def isBuildShared(self):
-        return 'WITH_AWTK_SO' in os.environ and os.environ['WITH_AWTK_SO'] == 'true' and self.BUILD_SHARED
+        return self.BUILD_SHARED
 
     def copyAwtkSharedLib(self):
         if self.TKC_ONLY:
