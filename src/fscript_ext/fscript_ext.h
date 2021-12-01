@@ -49,9 +49,10 @@ ret_t fscript_ext_init(void);
 #define FSCRIPT_WITH_STREAM_SERIAL 1
 #define FSCRIPT_WITH_DATE_TIME 1
 
-#ifndef WITHOUT_AWTK
+#if !defined(TKC_ONLY) || defined(WITH_AWTK)
 #define FSCRIPT_WITH_WIDGET 1
-#endif/*WITHOUT_AWTK*/
+#endif/*TKC_ONLY*/
+
 #endif /*PC*/
 
 END_C_DECLS
