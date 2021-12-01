@@ -7,6 +7,12 @@ from SCons import Script
 
 PLATFORM = platform.system()
 
+def getTkcOnly():
+    env = os.environ
+    if 'TKC_ONLY' in env:
+        return env['TKC_ONLY'] == 'True'
+    else:
+        return False
 
 def join_path(root, sub):
     return os.path.abspath(os.path.join(root, sub))
@@ -175,7 +181,7 @@ class AppHelperBase:
         APP_ROOT = os.path.normpath(os.getcwd())
 
         self.SRC_DIR = 'src'
-        self.TKC_ONLY = False
+        self.TKC_ONLY = getTkcOnly();
         self.ARGUMENTS = ARGUMENTS
         self.DEF_FILE = None
         self.DEF_FILE_PROCESSOR = None
@@ -242,6 +248,7 @@ class AppHelperBase:
         self.parseArgs(self.awtk, ARGUMENTS)
 
         print("AWTK_ROOT: " + self.AWTK_ROOT)
+        print("TKC_ONLY: " + str(self.TKC_ONLY))
         print(ARGUMENTS)
 
     def getAwtkConfig(self):

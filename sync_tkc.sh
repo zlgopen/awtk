@@ -1,6 +1,8 @@
 cp -rvf ../tkc/scripts/* scripts
 cp -rfv ../tkc/tests/*test.cc tests
-cp -rfv ../tkc/tools/* tools
+cp -fv ../tkc/tools/dll_def_gen/* tools/dll_def_gen/.
+cp -fv ../tkc/tools/idl_gen/* tools/idl_gen/.
+rm -f tools/dll_def_gen/package-lock.json
 
 for f in compressors fscript_ext platforms conf_io hal streams ubjson charset csv	misc tkc xml
 do
