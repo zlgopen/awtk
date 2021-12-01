@@ -105,13 +105,13 @@ if env['PLATFORM'] == 'win32' and os.environ['TOOLS_NAME'] != '':
   env['SPAWN'] = buf.ourspawn
   
 TK_SOURCES=Glob('tkc/*.c') + Glob('platforms/pc/*.c')
-env.Library(os.path.join(LIB_DIR, 'tkc_static'), TK_SOURCES, LIBS=[])
+env.Library(os.path.join(LIB_DIR, 'tkc_core'), TK_SOURCES, LIBS=[])
 
 TKC_DEPS_LIBS=[]
 OS_NAME = platform.system()
 TKC_LINKFLAGS = env['LINKFLAGS'];
-TKC_STATIC_LIBS = ['conf_io', 'hal', 'csv', 'ubjson', 'streams', 'tkc_static', 'compressors', 'mbedtls', 'miniz']
-TKC_LINK_ALL=' -Wl,--whole-archive -lstreams -lconf_io -lhal -lcsv -lubjson -ltkc_static -lcompressors -lmbedtls -lminiz -Wl,--no-whole-archive'
+TKC_STATIC_LIBS = ['conf_io', 'hal', 'csv', 'ubjson', 'streams', 'tkc_core', 'compressors', 'mbedtls', 'miniz']
+TKC_LINK_ALL=' -Wl,--whole-archive -lstreams -lconf_io -lhal -lcsv -lubjson -ltkc_core -lcompressors -lmbedtls -lminiz -Wl,--no-whole-archive'
 
 if OS_NAME == 'Windows':
   if TOOLS_NAME == '' :
