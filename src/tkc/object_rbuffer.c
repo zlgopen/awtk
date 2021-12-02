@@ -24,15 +24,15 @@
 #include "tkc/utils.h"
 #include "object_rbuffer.h"
 
-static ret_t object_rbuffer_on_destroy(object_t* obj) {
+static ret_t object_rbuffer_on_destroy(tk_object_t* obj) {
   return RET_OK;
 }
 
-static ret_t object_rbuffer_set_prop(object_t* obj, const char* name, const value_t* v) {
+static ret_t object_rbuffer_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   return RET_NOT_FOUND;
 }
 
-static ret_t object_rbuffer_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t object_rbuffer_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   object_rbuffer_t* o = OBJECT_RBUFFER(obj);
   return_value_if_fail(o != NULL && o->rbuffer != NULL, RET_BAD_PARAMS);
@@ -59,10 +59,10 @@ static const object_vtable_t s_object_rbuffer_vtable = {.type = "object_rbuffer"
                                                         .get_prop = object_rbuffer_get_prop,
                                                         .set_prop = object_rbuffer_set_prop};
 
-object_t* object_rbuffer_create(const uint8_t* data, uint32_t capacity) {
-  object_t* o = NULL;
+tk_object_t* object_rbuffer_create(const uint8_t* data, uint32_t capacity) {
+  tk_object_t* o = NULL;
   object_rbuffer_t* wrapper = NULL;
-  o = object_create(&s_object_rbuffer_vtable);
+  o = tk_object_create(&s_object_rbuffer_vtable);
   return_value_if_fail(o != NULL, NULL);
 
   wrapper = OBJECT_RBUFFER(o);
@@ -73,7 +73,7 @@ object_t* object_rbuffer_create(const uint8_t* data, uint32_t capacity) {
   return o;
 }
 
-object_rbuffer_t* object_rbuffer_cast(object_t* obj) {
+object_rbuffer_t* object_rbuffer_cast(tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt == &s_object_rbuffer_vtable, NULL);
 
   return (object_rbuffer_t*)(obj);

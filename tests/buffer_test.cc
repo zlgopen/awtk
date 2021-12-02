@@ -205,25 +205,25 @@ TEST(Buffer, string) {
 
 TEST(Buffer, obj) {
   const char* str = NULL;
-  object_t* wobj = object_wbuffer_create_extendable();
+  tk_object_t* wobj = object_wbuffer_create_extendable();
   wbuffer_t* wbuffer = OBJECT_WBUFFER(wobj)->wbuffer;
 
   wbuffer_write_string(wbuffer, "hello");
   wbuffer_write_string(wbuffer, " world");
-  object_t* robj = object_rbuffer_create(wbuffer->data, wbuffer->cursor);
+  tk_object_t* robj = object_rbuffer_create(wbuffer->data, wbuffer->cursor);
   rbuffer_t* rbuffer = OBJECT_RBUFFER(robj)->rbuffer;
 
-  ASSERT_EQ(object_get_prop_int(wobj, "cursor", 0), 13);
-  ASSERT_EQ(object_get_prop_int(wobj, "capacity", 0), 14);
-  ASSERT_EQ(object_get_prop_pointer(wobj, "data"), (void*)(wbuffer->data));
+  ASSERT_EQ(tk_object_get_prop_int(wobj, "cursor", 0), 13);
+  ASSERT_EQ(tk_object_get_prop_int(wobj, "capacity", 0), 14);
+  ASSERT_EQ(tk_object_get_prop_pointer(wobj, "data"), (void*)(wbuffer->data));
 
   rbuffer_read_string(rbuffer, &str);
   ASSERT_STREQ(str, "hello");
 
-  ASSERT_EQ(object_get_prop_int(robj, "cursor", 0), 6);
-  ASSERT_EQ(object_get_prop_int(robj, "capacity", 0), 13);
-  ASSERT_EQ(object_get_prop_pointer(robj, "data"), (void*)(rbuffer->data));
+  ASSERT_EQ(tk_object_get_prop_int(robj, "cursor", 0), 6);
+  ASSERT_EQ(tk_object_get_prop_int(robj, "capacity", 0), 13);
+  ASSERT_EQ(tk_object_get_prop_pointer(robj, "data"), (void*)(rbuffer->data));
 
-  OBJECT_UNREF(wobj);
-  OBJECT_UNREF(robj);
+  TK_OBJECT_UNREF(wobj);
+  TK_OBJECT_UNREF(robj);
 }

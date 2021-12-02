@@ -23,14 +23,14 @@
 #include "tkc/data_reader_mem.h"
 #include "tkc/data_writer_wbuffer.h"
 
-typedef object_t* (*json_load_t)(const char* url, bool_t create);
-typedef ret_t (*json_save_t)(object_t* obj, const char* url);
+typedef tk_object_t* (*json_load_t)(const char* url, bool_t create);
+typedef ret_t (*json_save_t)(tk_object_t* obj, const char* url);
 
 static ret_t func_json_load_ex(fscript_t* fscript, fscript_args_t* args, value_t* result,
                                json_load_t load) {
   value_t* v = NULL;
   uint32_t size = 0;
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   const void* data = NULL;
   char url[MAX_PATH + 1];
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
@@ -66,7 +66,7 @@ static ret_t func_json_load_ex(fscript_t* fscript, fscript_args_t* args, value_t
 static ret_t func_json_save_ex(fscript_t* fscript, fscript_args_t* args, value_t* result,
                                json_save_t save, uint32_t result_type) {
   wbuffer_t wb;
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   char url[MAX_PATH + 1];
   wbuffer_init_extendable(&wb);
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);

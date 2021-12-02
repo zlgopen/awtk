@@ -24,7 +24,7 @@
 #include "tkc/utils.h"
 #include "object_date_time.h"
 
-static ret_t object_date_time_on_destroy(object_t* obj) {
+static ret_t object_date_time_on_destroy(tk_object_t* obj) {
   object_date_time_t* o = OBJECT_DATE_TIME(obj);
   return_value_if_fail(o != NULL && o->dt != NULL, RET_BAD_PARAMS);
 
@@ -34,7 +34,7 @@ static ret_t object_date_time_on_destroy(object_t* obj) {
   return RET_OK;
 }
 
-static ret_t object_date_time_set_prop(object_t* obj, const char* name, const value_t* v) {
+static ret_t object_date_time_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   ret_t ret = RET_OK;
   object_date_time_t* o = OBJECT_DATE_TIME(obj);
   return_value_if_fail(o != NULL && o->dt != NULL, RET_BAD_PARAMS);
@@ -72,7 +72,7 @@ static ret_t object_date_time_set_prop(object_t* obj, const char* name, const va
   return ret;
 }
 
-static ret_t object_date_time_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t object_date_time_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   ret_t ret = RET_OK;
   object_date_time_t* o = OBJECT_DATE_TIME(obj);
   return_value_if_fail(o != NULL && o->dt != NULL, RET_BAD_PARAMS);
@@ -122,10 +122,10 @@ static const object_vtable_t s_object_date_time_vtable = {.type = "object_date_t
                                                           .get_prop = object_date_time_get_prop,
                                                           .set_prop = object_date_time_set_prop};
 
-object_t* object_date_time_create(void) {
-  object_t* o = NULL;
+tk_object_t* object_date_time_create(void) {
+  tk_object_t* o = NULL;
   object_date_time_t* wrapper = NULL;
-  o = object_create(&s_object_date_time_vtable);
+  o = tk_object_create(&s_object_date_time_vtable);
   return_value_if_fail(o != NULL, NULL);
 
   wrapper = OBJECT_DATE_TIME(o);
@@ -133,13 +133,13 @@ object_t* object_date_time_create(void) {
 
   wrapper->dt = date_time_create();
   if (wrapper->dt == NULL) {
-    OBJECT_UNREF(o);
+    TK_OBJECT_UNREF(o);
   }
 
   return o;
 }
 
-object_date_time_t* object_date_time_cast(object_t* obj) {
+object_date_time_t* object_date_time_cast(tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt == &s_object_date_time_vtable, NULL);
 
   return (object_date_time_t*)(obj);

@@ -47,10 +47,10 @@ static int32_t tk_istream_mbedtls_read(tk_istream_t* stream, uint8_t* buff, uint
 static ret_t tk_istream_mbedtls_wait_for_data(tk_istream_t* stream, uint32_t timeout_ms) {
   tk_istream_mbedtls_t* istream_mbedtls = TK_ISTREAM_MBEDTLS(stream);
 
-  return socket_wait_for_data(istream_mbedtls->sock, timeout_ms);
+  return tk_socket_wait_for_data(istream_mbedtls->sock, timeout_ms);
 }
 
-static ret_t tk_istream_mbedtls_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t tk_istream_mbedtls_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   tk_istream_mbedtls_t* istream_mbedtls = TK_ISTREAM_MBEDTLS(obj);
   if (tk_str_eq(name, TK_STREAM_PROP_FD)) {
     value_set_int(v, istream_mbedtls->sock);
@@ -71,13 +71,13 @@ static const object_vtable_t s_tk_istream_mbedtls_vtable = {
     .get_prop = tk_istream_mbedtls_get_prop};
 
 tk_istream_t* tk_istream_mbedtls_create(mbedtls_ssl_context* ssl) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   mbedtls_net_context* bio = NULL;
   tk_istream_mbedtls_t* istream_mbedtls = NULL;
   return_value_if_fail(ssl != NULL, NULL);
   bio = (mbedtls_net_context*)(ssl->p_bio);
 
-  obj = object_create(&s_tk_istream_mbedtls_vtable);
+  obj = tk_object_create(&s_tk_istream_mbedtls_vtable);
   istream_mbedtls = TK_ISTREAM_MBEDTLS(obj);
   return_value_if_fail(istream_mbedtls != NULL, NULL);
 
@@ -90,7 +90,7 @@ tk_istream_t* tk_istream_mbedtls_create(mbedtls_ssl_context* ssl) {
 }
 
 tk_istream_mbedtls_t* tk_istream_mbedtls_cast(tk_istream_t* s) {
-  return_value_if_fail(s != NULL && OBJECT(s)->vt == &s_tk_istream_mbedtls_vtable, NULL);
+  return_value_if_fail(s != NULL && TK_OBJECT(s)->vt == &s_tk_istream_mbedtls_vtable, NULL);
 
   return (tk_istream_mbedtls_t*)s;
 }

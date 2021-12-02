@@ -38,7 +38,7 @@ typedef ret_t (*dialog_highlighter_draw_t)(dialog_highlighter_t* h, float_t perc
 typedef bool_t (*dialog_highlighter_is_dynamic_t)(dialog_highlighter_t* h);
 typedef ret_t (*dialog_highlighter_on_destroy_t)(dialog_highlighter_t* h);
 
-typedef dialog_highlighter_t* (*dialog_highlighter_create_t)(object_t* args);
+typedef dialog_highlighter_t* (*dialog_highlighter_create_t)(tk_object_t* args);
 
 typedef struct _dialog_highlighter_vtable_t {
   const char* type;

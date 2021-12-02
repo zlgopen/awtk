@@ -45,7 +45,7 @@ static int32_t tk_ostream_shdlc_write(tk_ostream_t* stream, const uint8_t* buff,
   }
 
   while (retry_times < ostream_shdlc->retry_times) {
-    if (!object_get_prop_bool(OBJECT(real_ostream), TK_STREAM_PROP_IS_OK, TRUE)) {
+    if (!tk_object_get_prop_bool(TK_OBJECT(real_ostream), TK_STREAM_PROP_IS_OK, TRUE)) {
       return RET_IO;
     }
 
@@ -70,7 +70,7 @@ static int32_t tk_ostream_shdlc_write(tk_ostream_t* stream, const uint8_t* buff,
   return 0;
 }
 
-static ret_t tk_ostream_shdlc_set_prop(object_t* obj, const char* name, const value_t* v) {
+static ret_t tk_ostream_shdlc_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   tk_ostream_shdlc_t* ostream_shdlc = TK_OSTREAM_SHDLC(obj);
   tk_ostream_t* real_ostream = tk_iostream_get_ostream(ostream_shdlc->iostream->real_iostream);
 
@@ -85,10 +85,10 @@ static ret_t tk_ostream_shdlc_set_prop(object_t* obj, const char* name, const va
     return RET_OK;
   }
 
-  return object_set_prop(OBJECT(real_ostream), name, v);
+  return tk_object_set_prop(TK_OBJECT(real_ostream), name, v);
 }
 
-static ret_t tk_ostream_shdlc_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t tk_ostream_shdlc_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   tk_ostream_shdlc_t* ostream_shdlc = TK_OSTREAM_SHDLC(obj);
   tk_ostream_t* real_ostream = tk_iostream_get_ostream(ostream_shdlc->iostream->real_iostream);
 
@@ -103,10 +103,10 @@ static ret_t tk_ostream_shdlc_get_prop(object_t* obj, const char* name, value_t*
     return RET_OK;
   }
 
-  return object_get_prop(OBJECT(real_ostream), name, v);
+  return tk_object_get_prop(TK_OBJECT(real_ostream), name, v);
 }
 
-static ret_t tk_ostream_shdlc_on_destroy(object_t* obj) {
+static ret_t tk_ostream_shdlc_on_destroy(tk_object_t* obj) {
   tk_ostream_shdlc_t* ostream_shdlc = TK_OSTREAM_SHDLC(obj);
   ENSURE(wbuffer_deinit(&(ostream_shdlc->wb)) == RET_OK);
   ENSURE(wbuffer_deinit(&(ostream_shdlc->wb_compress)) == RET_OK);
@@ -123,11 +123,11 @@ static const object_vtable_t s_tk_ostream_shdlc_vtable = {.type = "tk_ostream_sh
                                                           .set_prop = tk_ostream_shdlc_set_prop};
 
 tk_ostream_t* tk_ostream_shdlc_create(tk_iostream_shdlc_t* iostream) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   tk_ostream_shdlc_t* ostream_shdlc = NULL;
   return_value_if_fail(iostream != NULL, NULL);
 
-  obj = object_create(&s_tk_ostream_shdlc_vtable);
+  obj = tk_object_create(&s_tk_ostream_shdlc_vtable);
   ostream_shdlc = TK_OSTREAM_SHDLC(obj);
   return_value_if_fail(ostream_shdlc != NULL, NULL);
 

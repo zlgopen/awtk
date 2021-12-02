@@ -42,7 +42,7 @@ TEST(SHDLC, ack) {
   ASSERT_EQ(header.s.seqno, 1);
   ASSERT_EQ(header.s.reserve, 0);
 
-  OBJECT_UNREF(istream);
+  TK_OBJECT_UNREF(istream);
   wbuffer_deinit(wb);
   wbuffer_deinit(wb_r);
 }
@@ -78,7 +78,7 @@ TEST(SHDLC, nack) {
   ASSERT_EQ(header.s.seqno, 1);
   ASSERT_EQ(header.s.reserve, 0);
 
-  OBJECT_UNREF(istream);
+  TK_OBJECT_UNREF(istream);
   wbuffer_deinit(wb);
   wbuffer_deinit(wb_r);
 }
@@ -122,7 +122,7 @@ TEST(SHDLC, data_ok) {
   ASSERT_EQ(wb_r->data[2], 'b');
   ASSERT_EQ(wb_r->data[3], 'c');
 
-  OBJECT_UNREF(istream);
+  TK_OBJECT_UNREF(istream);
   wbuffer_deinit(wb);
   wbuffer_deinit(wb_r);
 }
@@ -167,7 +167,7 @@ TEST(SHDLC, data_crc_error) {
   ASSERT_EQ(wb_r->data[2], 'b');
   ASSERT_EQ(wb_r->data[3], 'd');
 
-  OBJECT_UNREF(istream);
+  TK_OBJECT_UNREF(istream);
   wbuffer_deinit(wb);
   wbuffer_deinit(wb_r);
 }
@@ -202,7 +202,7 @@ TEST(SHDLC, data_error) {
 
   ASSERT_EQ(shdlc_read_data(istream, wb_r, 1000), RET_TIMEOUT);
 
-  OBJECT_UNREF(istream);
+  TK_OBJECT_UNREF(istream);
   wbuffer_deinit(wb);
   wbuffer_deinit(wb_r);
 }
@@ -247,7 +247,7 @@ TEST(SHDLC, data_escape) {
   ASSERT_EQ(wb_r->data[2], '\x7d');
   ASSERT_EQ(wb_r->data[3], 'y');
 
-  OBJECT_UNREF(istream);
+  TK_OBJECT_UNREF(istream);
   wbuffer_deinit(wb);
   wbuffer_deinit(wb_r);
 }

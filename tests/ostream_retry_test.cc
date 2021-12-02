@@ -44,8 +44,8 @@ TEST(OStreamRetry, basic) {
   ASSERT_EQ(retry->pending_packets, 0u);
   ASSERT_STREQ((char*)buff, "1234abcd");
 
-  OBJECT_UNREF(osmem);
-  OBJECT_UNREF(osretry);
+  TK_OBJECT_UNREF(osmem);
+  TK_OBJECT_UNREF(osretry);
 }
 
 TEST(OStreamRetry, max_retry) {
@@ -78,6 +78,6 @@ TEST(OStreamRetry, max_retry) {
   ASSERT_EQ(retry->discard_bytes, 8u);
   ASSERT_EQ(retry->discard_packets, 2u);
 
-  OBJECT_UNREF(osmem);
-  OBJECT_UNREF(osretry);
+  TK_OBJECT_UNREF(osmem);
+  TK_OBJECT_UNREF(osretry);
 }

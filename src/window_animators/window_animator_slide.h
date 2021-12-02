@@ -34,7 +34,7 @@ typedef struct _window_animator_slide_t {
 
 ret_t window_animator_slide_init(window_animator_t* wa);
 ret_t window_animator_slide_draw_prev(window_animator_t* wa);
-window_animator_t* window_animator_slide_create(bool_t open, object_t* args,
+window_animator_t* window_animator_slide_create(bool_t open, tk_object_t* args,
                                                 const window_animator_vtable_t* vt);
 
 #define WINDOW_ANIMATOR_SLIDE_ARG_START_ALPHA "start_alpha"

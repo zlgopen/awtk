@@ -420,7 +420,7 @@ static const native_window_vtable_t s_native_window_vtable = {
     .set_cursor = native_window_sdl_set_cursor,
     .get_canvas = native_window_sdl_get_canvas};
 
-static ret_t native_window_sdl_set_prop(object_t* obj, const char* name, const value_t* v) {
+static ret_t native_window_sdl_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   native_window_t* win = NATIVE_WINDOW(obj);
 
   if (tk_str_eq(NATIVE_WINDOW_PROP_SIZE, name)) {
@@ -444,7 +444,7 @@ static ret_t native_window_sdl_set_prop(object_t* obj, const char* name, const v
   return RET_NOT_FOUND;
 }
 
-static ret_t native_window_sdl_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t native_window_sdl_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   native_window_t* win = NATIVE_WINDOW(obj);
 
   if (tk_str_eq(NATIVE_WINDOW_PROP_SIZE, name) || tk_str_eq(NATIVE_WINDOW_PROP_POSITION, name)) {
@@ -465,14 +465,14 @@ static ret_t native_window_sdl_get_prop(object_t* obj, const char* name, value_t
   return RET_NOT_FOUND;
 }
 
-static ret_t native_window_sdl_on_destroy(object_t* obj) {
+static ret_t native_window_sdl_on_destroy(tk_object_t* obj) {
   log_debug("Close native window.\n");
   native_window_sdl_close(NATIVE_WINDOW(obj));
 
   return RET_OK;
 }
 
-static ret_t native_window_sdl_exec(object_t* obj, const char* cmd, const char* args) {
+static ret_t native_window_sdl_exec(tk_object_t* obj, const char* cmd, const char* args) {
 #ifdef WITH_GPU
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(obj);
   if (tk_str_eq(cmd, "reset_canvas")) {
@@ -501,7 +501,7 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
                                                       int32_t y, uint32_t w, uint32_t h) {
   lcd_t* lcd = NULL;
   native_window_info_t info;
-  object_t* obj = object_create(&s_native_window_sdl_vtable);
+  tk_object_t* obj = tk_object_create(&s_native_window_sdl_vtable);
   native_window_t* win = NATIVE_WINDOW(obj);
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
   canvas_t* c = &(sdl->canvas);
@@ -573,7 +573,7 @@ native_window_t* native_window_create(widget_t* widget) {
   native_window_t* nw = NULL;
 
   if (s_shared_win != NULL) {
-    object_ref(OBJECT(s_shared_win));
+    tk_object_ref(TK_OBJECT(s_shared_win));
 
     nw = s_shared_win;
   } else {
@@ -649,7 +649,7 @@ ret_t native_window_sdl_deinit(void) {
       sdl->cursor_surface = NULL;
     }
 
-    object_unref(OBJECT(s_shared_win));
+    tk_object_unref(TK_OBJECT(s_shared_win));
     s_shared_win = NULL;
   }
 

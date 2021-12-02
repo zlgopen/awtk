@@ -26,7 +26,7 @@
 
 BEGIN_C_DECLS
 
-typedef ret_t (*func_exec_t)(void* obj, value_t* ret, object_t* args);
+typedef ret_t (*func_exec_t)(void* obj, value_t* ret, tk_object_t* args);
 
 /**
  * @class func_desc_t

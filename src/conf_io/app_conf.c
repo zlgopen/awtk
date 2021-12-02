@@ -26,13 +26,13 @@
 #include "conf_io/conf_obj.h"
 #include "conf_io/app_conf.h"
 
-static object_t* s_conf;
+static tk_object_t* s_conf;
 
-ret_t app_conf_set_instance(object_t* obj) {
+ret_t app_conf_set_instance(tk_object_t* obj) {
   return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
 
   if (s_conf != NULL) {
-    OBJECT_UNREF(s_conf);
+    TK_OBJECT_UNREF(s_conf);
   }
 
   s_conf = object_locker_create(obj);
@@ -41,34 +41,34 @@ ret_t app_conf_set_instance(object_t* obj) {
   return RET_OK;
 }
 
-object_t* app_conf_get_instance(void) {
+tk_object_t* app_conf_get_instance(void) {
   return s_conf;
 }
 
 ret_t app_conf_save(void) {
-  return object_exec(s_conf, OBJECT_CMD_SAVE, NULL);
+  return tk_object_exec(s_conf, TK_OBJECT_CMD_SAVE, NULL);
 }
 
 ret_t app_conf_reload(void) {
-  return object_exec(s_conf, OBJECT_CMD_RELOAD, NULL);
+  return tk_object_exec(s_conf, TK_OBJECT_CMD_RELOAD, NULL);
 }
 
 ret_t app_conf_deinit(void) {
-  OBJECT_UNREF(s_conf);
+  TK_OBJECT_UNREF(s_conf);
 
   return RET_OK;
 }
 
 ret_t app_conf_set(const char* key, const value_t* v) {
-  return object_set_prop(s_conf, key, v);
+  return tk_object_set_prop(s_conf, key, v);
 }
 
 ret_t app_conf_get(const char* key, value_t* v) {
-  return object_get_prop(s_conf, key, v);
+  return tk_object_get_prop(s_conf, key, v);
 }
 
 bool_t app_conf_exist(const char* key) {
-  return object_has_prop(s_conf, key);
+  return tk_object_has_prop(s_conf, key);
 }
 
 ret_t app_conf_set_int(const char* key, int32_t v) {
@@ -161,9 +161,9 @@ uint32_t app_conf_on_changed(event_func_t on_event, void* ctx) {
   return_value_if_fail(on_event != NULL, ret);
   return_value_if_fail(s_conf != NULL, ret);
 
-  if (object_exec(s_conf, "lock", NULL) == RET_OK) {
+  if (tk_object_exec(s_conf, "lock", NULL) == RET_OK) {
     ret = emitter_on(EMITTER(s_conf), EVT_PROP_CHANGED, on_event, ctx);
-    object_exec(s_conf, "unlock", NULL);
+    tk_object_exec(s_conf, "unlock", NULL);
   }
 
   return ret;
@@ -173,9 +173,9 @@ ret_t app_conf_off_changed(uint32_t id) {
   ret_t ret = RET_FAIL;
   return_value_if_fail(s_conf != NULL, RET_BAD_PARAMS);
 
-  if (object_exec(s_conf, "lock", NULL) == RET_OK) {
+  if (tk_object_exec(s_conf, "lock", NULL) == RET_OK) {
     ret = emitter_off(EMITTER(s_conf), id);
-    object_exec(s_conf, "unlock", NULL);
+    tk_object_exec(s_conf, "unlock", NULL);
   }
 
   return ret;
@@ -185,16 +185,16 @@ ret_t app_conf_off_changed_by_ctx(void* ctx) {
   ret_t ret = RET_FAIL;
   return_value_if_fail(s_conf != NULL, RET_BAD_PARAMS);
 
-  if (object_exec(s_conf, "lock", NULL) == RET_OK) {
+  if (tk_object_exec(s_conf, "lock", NULL) == RET_OK) {
     ret = emitter_off_by_ctx(EMITTER(s_conf), ctx);
-    object_exec(s_conf, "unlock", NULL);
+    tk_object_exec(s_conf, "unlock", NULL);
   }
 
   return ret;
 }
 
 ret_t app_conf_remove(const char* key) {
-  return object_remove_prop(s_conf, key);
+  return tk_object_remove_prop(s_conf, key);
 }
 
 ret_t app_conf_get_wstr(const char* key, wchar_t* str, uint32_t max_size) {

@@ -188,7 +188,7 @@ static ret_t func_file_copy(fscript_t* fscript, fscript_args_t* args, value_t* r
 
 static ret_t func_file_stat(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   fs_stat_info_t fst = {0};
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   const char* filename = NULL;
 
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
@@ -198,20 +198,20 @@ static ret_t func_file_stat(fscript_t* fscript, fscript_args_t* args, value_t* r
   if (fs_stat(os_fs(), filename, &fst) == RET_OK) {
     obj = object_default_create();
     FSCRIPT_FUNC_CHECK(obj != NULL, RET_OOM);
-    object_set_prop_uint32(obj, "dev", fst.dev);
-    object_set_prop_uint16(obj, "ino", fst.ino);
-    object_set_prop_uint16(obj, "mode", fst.mode);
-    object_set_prop_int16(obj, "nlink", fst.nlink);
-    object_set_prop_int16(obj, "uid", fst.uid);
-    object_set_prop_int16(obj, "gid", fst.gid);
-    object_set_prop_uint32(obj, "rdev", fst.rdev);
-    object_set_prop_uint64(obj, "size", fst.size);
-    object_set_prop_uint64(obj, "atime", fst.atime);
-    object_set_prop_uint64(obj, "mtime", fst.mtime);
-    object_set_prop_uint64(obj, "ctime", fst.ctime);
-    object_set_prop_bool(obj, "is_dir", fst.is_dir);
-    object_set_prop_bool(obj, "is_link", fst.is_link);
-    object_set_prop_bool(obj, "is_reg_file", fst.is_reg_file);
+    tk_object_set_prop_uint32(obj, "dev", fst.dev);
+    tk_object_set_prop_uint16(obj, "ino", fst.ino);
+    tk_object_set_prop_uint16(obj, "mode", fst.mode);
+    tk_object_set_prop_int16(obj, "nlink", fst.nlink);
+    tk_object_set_prop_int16(obj, "uid", fst.uid);
+    tk_object_set_prop_int16(obj, "gid", fst.gid);
+    tk_object_set_prop_uint32(obj, "rdev", fst.rdev);
+    tk_object_set_prop_uint64(obj, "size", fst.size);
+    tk_object_set_prop_uint64(obj, "atime", fst.atime);
+    tk_object_set_prop_uint64(obj, "mtime", fst.mtime);
+    tk_object_set_prop_uint64(obj, "ctime", fst.ctime);
+    tk_object_set_prop_bool(obj, "is_dir", fst.is_dir);
+    tk_object_set_prop_bool(obj, "is_link", fst.is_link);
+    tk_object_set_prop_bool(obj, "is_reg_file", fst.is_reg_file);
     value_set_object(result, obj);
     result->free_handle = TRUE;
     return RET_OK;
@@ -239,7 +239,7 @@ static ret_t func_path_list(fscript_t* fscript, fscript_args_t* args, value_t* r
   value_t v = {0};
   fs_item_t info = {0};
   fs_dir_t* dir = NULL;
-  object_t* array = NULL;
+  tk_object_t* array = NULL;
   const char* filename = NULL;
 
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
@@ -255,15 +255,15 @@ static ret_t func_path_list(fscript_t* fscript, fscript_args_t* args, value_t* r
       continue;
     }
 
-    object_t* item = object_default_create();
+    tk_object_t* item = object_default_create();
     if (item != NULL) {
-      object_set_prop_bool(item, "is_dir", info.is_dir);
-      object_set_prop_bool(item, "is_link", info.is_link);
-      object_set_prop_bool(item, "is_reg_file", info.is_reg_file);
-      object_set_prop_str(item, "name", info.name);
+      tk_object_set_prop_bool(item, "is_dir", info.is_dir);
+      tk_object_set_prop_bool(item, "is_link", info.is_link);
+      tk_object_set_prop_bool(item, "is_reg_file", info.is_reg_file);
+      tk_object_set_prop_str(item, "name", info.name);
       value_set_object(&v, item);
       object_array_push(array, &v);
-      OBJECT_UNREF(item);
+      TK_OBJECT_UNREF(item);
     }
   }
   fs_dir_close(dir);
@@ -370,7 +370,7 @@ static ret_t func_path_get_app_root(fscript_t* fscript, fscript_args_t* args, va
 static ret_t func_fs_get_disk_info(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   int32_t free_kb = 0;
   int32_t total_kb = 0;
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   const char* volume = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   volume = value_str(args->args);
@@ -378,8 +378,8 @@ static ret_t func_fs_get_disk_info(fscript_t* fscript, fscript_args_t* args, val
 
   if (fs_get_disk_info(os_fs(), volume, &free_kb, &total_kb) == RET_OK) {
     obj = object_default_create();
-    object_set_prop_int32(obj, "free_kb", free_kb);
-    object_set_prop_int32(obj, "total_kb", total_kb);
+    tk_object_set_prop_int32(obj, "free_kb", free_kb);
+    tk_object_set_prop_int32(obj, "total_kb", total_kb);
     value_set_object(result, obj);
     result->free_handle = TRUE;
     return RET_OK;

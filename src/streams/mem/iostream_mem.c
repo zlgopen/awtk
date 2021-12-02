@@ -24,11 +24,11 @@
 #include "streams/mem/ostream_mem.h"
 #include "streams/mem/iostream_mem.h"
 
-static ret_t tk_iostream_mem_on_destroy(object_t* obj) {
+static ret_t tk_iostream_mem_on_destroy(tk_object_t* obj) {
   tk_iostream_mem_t* iostream_mem = TK_IOSTREAM_MEM(obj);
 
-  object_unref(OBJECT(iostream_mem->istream));
-  object_unref(OBJECT(iostream_mem->ostream));
+  tk_object_unref(TK_OBJECT(iostream_mem->istream));
+  tk_object_unref(TK_OBJECT(iostream_mem->ostream));
 
   return RET_OK;
 }
@@ -52,12 +52,12 @@ static tk_ostream_t* tk_iostream_mem_get_ostream(tk_iostream_t* stream) {
 
 tk_iostream_t* tk_iostream_mem_create(void* buff_in, uint32_t size_in, void* buff_out,
                                       uint32_t size_out, bool_t own_buff) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   tk_iostream_mem_t* iostream_mem = NULL;
   return_value_if_fail(buff_in != NULL && size_in > 0, NULL);
   return_value_if_fail(buff_out != NULL && size_out > 0, NULL);
 
-  obj = object_create(&s_tk_iostream_mem_vtable);
+  obj = tk_object_create(&s_tk_iostream_mem_vtable);
   iostream_mem = TK_IOSTREAM_MEM(obj);
   if (iostream_mem == NULL) {
     return_value_if_fail(iostream_mem != NULL, NULL);

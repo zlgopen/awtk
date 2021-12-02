@@ -29,13 +29,13 @@ BEGIN_C_DECLS
 
 /**
  * @class object_widget_t
- * @parent object_t
+ * @parent tk_object_t
  *
  * 将widget包装成object。
  * > 备注：主要用于 fscript 实现 widget.prop 方式访问控件属性。
  */
 typedef struct _object_widget_t {
-  object_t object;
+  tk_object_t object;
 
   /**
    * @property {widget_t*} widget
@@ -53,12 +53,12 @@ typedef struct _object_widget_t {
  * @annotation ["constructor"]
  * @param {widget_t*} widget 控件。
  *
- * @return {object_t*} 返回object对象。
+ * @return {tk_object_t*} 返回object对象。
  *
  */
-object_t* object_widget_create(widget_t* widget);
+tk_object_t* object_widget_create(widget_t* widget);
 
-object_widget_t* object_widget_cast(object_t* obj);
+object_widget_t* object_widget_cast(tk_object_t* obj);
 #define OBJECT_WIDGET(obj) object_widget_cast(obj)
 
 #define OBJECT_WIDGET_PROP_NATIVE_WIDGET "$widget"

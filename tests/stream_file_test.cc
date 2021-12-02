@@ -12,7 +12,7 @@ static void test_write(const char* filename) {
   ASSERT_EQ(tk_ostream_seek(is, 0), RET_OK);
   ASSERT_EQ(tk_ostream_write(is, (uint8_t*)"1111", 4), 4);
 
-  object_unref(OBJECT(is));
+  tk_object_unref(TK_OBJECT(is));
 }
 
 static void test_read(const char* filename) {
@@ -36,9 +36,9 @@ static void test_read(const char* filename) {
 
   ASSERT_EQ(tk_istream_seek(is, 256), RET_OK);
   ASSERT_EQ(tk_istream_read(is, buff, 4), 0);
-  ASSERT_EQ(object_get_prop_bool(OBJECT(is), TK_STREAM_PROP_IS_EOS, FALSE), TRUE);
+  ASSERT_EQ(tk_object_get_prop_bool(TK_OBJECT(is), TK_STREAM_PROP_IS_EOS, FALSE), TRUE);
 
-  object_unref(OBJECT(is));
+  tk_object_unref(TK_OBJECT(is));
 }
 
 TEST(StreamFile, basic) {

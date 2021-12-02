@@ -35,7 +35,7 @@ void do_echo(tk_iostream_t* iostream) {
 
   TKMEM_FREE(buff);
   sleep_ms(10000);
-  object_unref(OBJECT(iostream));
+  tk_object_unref(TK_OBJECT(iostream));
 
   return;
 }
@@ -48,10 +48,10 @@ int main(int argc, char* argv[]) {
 
   TK_ENABLE_CONSOLE();
 
-  socket_init();
+  tk_socket_init();
   platform_prepare();
   do_echo(tk_iostream_serial_create(argv[1]));
-  socket_deinit();
+  tk_socket_deinit();
 
   return 0;
 }

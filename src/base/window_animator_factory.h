@@ -85,12 +85,12 @@ ret_t window_animator_factory_register(window_animator_factory_t* factory, const
  * @annotation ["constructor"]
  * @param {window_animator_factory_t*} factory 窗口动画工厂对象。
  * @param {bool_t} open TRUE表示打开窗口时的动画，FALSE表示关闭窗口时的动画。
- * @param {object_t*} args 参数。
+ * @param {tk_object_t*} args 参数。
  *
  * @return {window_animator_t*} 返回窗口动画对象。
  */
 window_animator_t* window_animator_factory_create_animator(window_animator_factory_t* factory,
-                                                           bool_t open, object_t* args);
+                                                           bool_t open, tk_object_t* args);
 
 /**
  * @method window_animator_factory_destroy

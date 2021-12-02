@@ -57,15 +57,15 @@ static int32_t tk_ostream_mem_tell(tk_ostream_t* stream) {
   return ostream_mem->cursor;
 }
 
-static ret_t tk_ostream_mem_set_prop(object_t* obj, const char* name, const value_t* v) {
+static ret_t tk_ostream_mem_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   return RET_NOT_FOUND;
 }
 
-static ret_t tk_ostream_mem_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t tk_ostream_mem_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   return RET_NOT_FOUND;
 }
 
-static ret_t tk_ostream_mem_on_destroy(object_t* obj) {
+static ret_t tk_ostream_mem_on_destroy(tk_object_t* obj) {
   tk_ostream_mem_t* ostream_mem = TK_OSTREAM_MEM(obj);
 
   if (ostream_mem->own_the_buff) {
@@ -84,11 +84,11 @@ static const object_vtable_t s_tk_ostream_mem_vtable = {.type = "tk_ostream_mem"
 
 tk_ostream_t* tk_ostream_mem_create(uint8_t* buff, uint32_t size, uint32_t packet_size,
                                     bool_t own_the_buff) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   tk_ostream_mem_t* ostream_mem = NULL;
   return_value_if_fail(buff != NULL && packet_size < size, NULL);
 
-  obj = object_create(&s_tk_ostream_mem_vtable);
+  obj = tk_object_create(&s_tk_ostream_mem_vtable);
   ostream_mem = TK_OSTREAM_MEM(obj);
   return_value_if_fail(ostream_mem != NULL, NULL);
 

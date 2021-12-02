@@ -29,10 +29,10 @@ static ret_t func_iostream_tcp_create(fscript_t* fscript, fscript_args_t* args, 
   host = value_str(args->args);
   port = value_int(args->args + 1);
   return_value_if_fail(host != NULL && port > 0, RET_BAD_PARAMS);
-  sock = tcp_connect(host, port);
+  sock = tk_tcp_connect(host, port);
   return_value_if_fail(sock >= 0, RET_BAD_PARAMS);
 
-  value_set_object(result, OBJECT(tk_iostream_tcp_create(sock)));
+  value_set_object(result, TK_OBJECT(tk_iostream_tcp_create(sock)));
   result->free_handle = TRUE;
 
   return RET_OK;
@@ -47,7 +47,7 @@ static ret_t func_iostream_udp_create(fscript_t* fscript, fscript_args_t* args, 
   port = value_int(args->args + 1);
   return_value_if_fail(host != NULL && port > 0, RET_BAD_PARAMS);
 
-  value_set_object(result, OBJECT(tk_iostream_udp_create_client(host, port)));
+  value_set_object(result, TK_OBJECT(tk_iostream_udp_create_client(host, port)));
   result->free_handle = TRUE;
 
   return RET_OK;

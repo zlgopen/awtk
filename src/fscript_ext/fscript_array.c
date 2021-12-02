@@ -18,7 +18,7 @@
 #include "tkc/object_array.h"
 static ret_t func_array_create(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   uint32_t i = 0;
-  object_t* obj = object_array_create();
+  tk_object_t* obj = object_array_create();
   value_set_object(result, obj);
   result->free_handle = TRUE;
 
@@ -45,7 +45,7 @@ static value_type_t value_type_from_str(const char* type) {
 }
 
 static ret_t func_array_create_with_str(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   const char* str = NULL;
   const char* sep = NULL;
   const char* type = NULL;
@@ -66,8 +66,8 @@ static ret_t func_array_create_with_str(fscript_t* fscript, fscript_args_t* args
 static ret_t func_array_dup(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   uint32_t start = 0;
   uint32_t end = 0;
-  object_t* obj = NULL;
-  object_t* dup = NULL;
+  tk_object_t* obj = NULL;
+  tk_object_t* dup = NULL;
   object_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
 
@@ -100,7 +100,7 @@ static ret_t func_array_dup(fscript_t* fscript, fscript_args_t* args, value_t* r
 static ret_t func_array_create_repeated(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   uint32_t i = 0;
   uint32_t n = 0;
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
 
   obj = object_array_create();
@@ -121,7 +121,7 @@ static ret_t func_array_create_repeated(fscript_t* fscript, fscript_args_t* args
 
 static ret_t func_array_push(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   uint32_t i = 0;
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size > 1, RET_BAD_PARAMS);
   obj = value_object(args->args);
@@ -141,7 +141,7 @@ static ret_t func_array_push(fscript_t* fscript, fscript_args_t* args, value_t* 
 }
 
 static ret_t func_array_pop(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   obj = value_object(args->args);
@@ -156,7 +156,7 @@ static ret_t func_array_pop(fscript_t* fscript, fscript_args_t* args, value_t* r
 }
 
 static ret_t func_array_shift(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   obj = value_object(args->args);
@@ -173,7 +173,7 @@ static ret_t func_array_shift(fscript_t* fscript, fscript_args_t* args, value_t*
 
 static ret_t func_array_set(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   int32_t index = 0;
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 3, RET_BAD_PARAMS);
   obj = value_object(args->args);
@@ -193,7 +193,7 @@ static ret_t func_array_set(fscript_t* fscript, fscript_args_t* args, value_t* r
 
 static ret_t func_array_get(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   int32_t index = 0;
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   obj = value_object(args->args);
@@ -211,7 +211,7 @@ static ret_t func_array_get(fscript_t* fscript, fscript_args_t* args, value_t* r
 
 static ret_t func_array_insert(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   int32_t index = 0;
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 3, RET_BAD_PARAMS);
   obj = value_object(args->args);
@@ -231,7 +231,7 @@ static ret_t func_array_insert(fscript_t* fscript, fscript_args_t* args, value_t
 
 static ret_t func_array_remove(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   int32_t index = 0;
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   obj = value_object(args->args);
@@ -251,7 +251,7 @@ static ret_t func_array_remove(fscript_t* fscript, fscript_args_t* args, value_t
 
 static ret_t func_array_get_and_remove(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   int32_t index = 0;
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   obj = value_object(args->args);
@@ -268,7 +268,7 @@ static ret_t func_array_get_and_remove(fscript_t* fscript, fscript_args_t* args,
 }
 
 static ret_t func_array_index_of(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   obj = value_object(args->args);
@@ -281,7 +281,7 @@ static ret_t func_array_index_of(fscript_t* fscript, fscript_args_t* args, value
 }
 
 static ret_t func_array_last_index_of(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   obj = value_object(args->args);
@@ -294,7 +294,7 @@ static ret_t func_array_last_index_of(fscript_t* fscript, fscript_args_t* args, 
 }
 
 static ret_t func_array_clear(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   obj = value_object(args->args);
@@ -309,7 +309,7 @@ static ret_t func_array_clear(fscript_t* fscript, fscript_args_t* args, value_t*
 static ret_t func_array_sort_ex(fscript_t* fscript, fscript_args_t* args, value_t* result,
                                 bool_t clone) {
   ret_t ret = RET_OK;
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   bool_t ascending = TRUE;
   bool_t ignore_case = FALSE;
   object_array_t* arr = NULL;
@@ -360,7 +360,7 @@ static ret_t func_array_clone_and_sort(fscript_t* fscript, fscript_args_t* args,
 
 static ret_t func_array_join(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   str_t str;
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   const char* sep = NULL;
   object_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);

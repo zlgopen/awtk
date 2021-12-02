@@ -29,13 +29,13 @@ BEGIN_C_DECLS
 
 /**
  * @class object_date_time_t
- * @parent object_t
+ * @parent tk_object_t
  *
  * 将date_time包装成object。
  *
  */
 typedef struct _object_date_time_t {
-  object_t object;
+  tk_object_t object;
 
   /**
    * @property {date_time_t*} dt
@@ -53,12 +53,12 @@ typedef struct _object_date_time_t {
  *
  * @annotation ["constructor"]
  *
- * @return {object_t*} 返回object对象。
+ * @return {tk_object_t*} 返回object对象。
  *
  */
-object_t* object_date_time_create(void);
+tk_object_t* object_date_time_create(void);
 
-object_date_time_t* object_date_time_cast(object_t* obj);
+object_date_time_t* object_date_time_cast(tk_object_t* obj);
 #define OBJECT_DATE_TIME(obj) object_date_time_cast(obj)
 
 END_C_DECLS

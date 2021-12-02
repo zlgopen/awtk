@@ -228,5 +228,5 @@ ret_t native_window_set_cursor(native_window_t* win, const char* name, bitmap_t*
 }
 
 ret_t native_window_set_title(native_window_t* win, const char* app_name) {
-  return object_set_prop_str(OBJECT(win), NATIVE_WINDOW_PROP_TITLE, app_name);
+  return tk_object_set_prop_str(TK_OBJECT(win), NATIVE_WINDOW_PROP_TITLE, app_name);
 }

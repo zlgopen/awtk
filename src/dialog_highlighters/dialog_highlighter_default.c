@@ -155,7 +155,7 @@ static const dialog_highlighter_vtable_t s_dialog_highlighter_default_vt = {
     .is_dynamic = dialog_highlighter_default_is_dynamic,
     .draw = dialog_highlighter_default_draw};
 
-dialog_highlighter_t* dialog_highlighter_default_create(object_t* args) {
+dialog_highlighter_t* dialog_highlighter_default_create(tk_object_t* args) {
   value_t v;
   dialog_highlighter_t* h = dialog_highlighter_create(&s_dialog_highlighter_default_vt);
   dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
@@ -165,16 +165,16 @@ dialog_highlighter_t* dialog_highlighter_default_create(object_t* args) {
   dh->start_alpha = 0;
   dh->system_bar_alpha = 0xff;
 
-  if (object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_ARG_ALPHA, &v) == RET_OK) {
+  if (tk_object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_ARG_ALPHA, &v) == RET_OK) {
     dh->start_alpha = value_int(&v);
     dh->end_alpha = value_int(&v);
   }
 
-  if (object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_ARG_START_ALPHA, &v) == RET_OK) {
+  if (tk_object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_ARG_START_ALPHA, &v) == RET_OK) {
     dh->start_alpha = value_int(&v);
   }
 
-  if (object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_ARG_END_ALPHA, &v) == RET_OK) {
+  if (tk_object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_ARG_END_ALPHA, &v) == RET_OK) {
     dh->end_alpha = value_int(&v);
   }
 

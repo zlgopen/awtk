@@ -30,7 +30,7 @@
 
 #ifdef WIN32
 #pragma comment(lib, "ws2_32")
-ret_t socket_init() {
+ret_t tk_socket_init() {
   int iResult;
   WSADATA wsaData;
   iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -42,32 +42,32 @@ ret_t socket_init() {
   return RET_OK;
 }
 
-ret_t socket_deinit() {
+ret_t tk_socket_deinit() {
   WSACleanup();
   return RET_OK;
 }
 
-ret_t socket_close(int sock) {
+ret_t tk_socket_close(int sock) {
   closesocket(sock);
 
   return RET_OK;
 }
 #else
 
-ret_t socket_init() {
+ret_t tk_socket_init() {
   return RET_OK;
 }
-ret_t socket_deinit() {
+ret_t tk_socket_deinit() {
   return RET_OK;
 }
 
-ret_t socket_close(int sock) {
+ret_t tk_socket_close(int sock) {
   close(sock);
   return RET_OK;
 }
 #endif /*WIN32*/
 
-ret_t socket_bind(int sock, int port) {
+ret_t tk_socket_bind(int sock, int port) {
   struct sockaddr_in s;
   return_value_if_fail(sock >= 0 && port > 0, RET_BAD_PARAMS);
 
@@ -84,7 +84,7 @@ ret_t socket_bind(int sock, int port) {
   return RET_OK;
 }
 
-int tcp_listen(int port) {
+int tk_tcp_listen(int port) {
   int sock;
   int on = 1;
 
@@ -98,7 +98,7 @@ int tcp_listen(int port) {
     return -1;
   }
 
-  return_value_if_fail(socket_bind(sock, port) == RET_OK, -1);
+  return_value_if_fail(tk_socket_bind(sock, port) == RET_OK, -1);
 
   if (listen(sock, 5) < 0) {
     log_debug("listen error\n");
@@ -108,7 +108,7 @@ int tcp_listen(int port) {
   return (sock);
 }
 
-int udp_listen(int port) {
+int tk_udp_listen(int port) {
   int sock;
   int on = 1;
   struct sockaddr_in s;
@@ -153,7 +153,7 @@ struct sockaddr* socket_resolve(const char* host, int port, struct sockaddr_in* 
   return (struct sockaddr*)addr;
 }
 
-int tcp_connect(const char* host, int port) {
+int tk_tcp_connect(const char* host, int port) {
   int sock = 0;
   struct sockaddr_in s_in;
   struct sockaddr* addr = socket_resolve(host, port, &s_in);
@@ -166,14 +166,14 @@ int tcp_connect(const char* host, int port) {
 
   if (connect(sock, addr, sizeof(s_in)) < 0) {
     log_debug("connect error\n");
-    socket_close(sock);
+    tk_socket_close(sock);
     return -1;
   }
 
   return sock;
 }
 
-int udp_connect(const char* host, int port) {
+int tk_udp_connect(const char* host, int port) {
   int sock = 0;
   struct sockaddr_in s_in;
   struct sockaddr* addr = socket_resolve(host, port, &s_in);
@@ -186,14 +186,14 @@ int udp_connect(const char* host, int port) {
 
   if (connect(sock, addr, sizeof(s_in)) < 0) {
     log_debug("connect error\n");
-    socket_close(sock);
+    tk_socket_close(sock);
     return -1;
   }
 
   return sock;
 }
 
-int tcp_accept(int sock) {
+int tk_tcp_accept(int sock) {
   int so;
   struct sockaddr_in s;
   socklen_t namelen;
@@ -208,7 +208,7 @@ int tcp_accept(int sock) {
   return so;
 }
 
-ret_t socket_set_blocking(int sock, bool_t blocking) {
+ret_t tk_socket_set_blocking(int sock, bool_t blocking) {
   return_value_if_fail(sock >= 0, RET_BAD_PARAMS);
 
 #ifdef _WIN32
@@ -222,7 +222,7 @@ ret_t socket_set_blocking(int sock, bool_t blocking) {
 #endif
 }
 
-ret_t socket_wait_for_data(int sock, uint32_t timeout_ms) {
+ret_t tk_socket_wait_for_data(int sock, uint32_t timeout_ms) {
   fd_set fdsr;
   int ret = 0;
   struct timeval tv = {0, 0};

@@ -120,42 +120,42 @@ TEST(ConfUBJson, create_doc) {
 }
 
 TEST(UbJson, file) {
-  object_t* conf = conf_ubjson_load("file://./tests/testdata/test.ubjson", TRUE);
+  tk_object_t* conf = conf_ubjson_load("file://./tests/testdata/test.ubjson", TRUE);
 
-  ASSERT_EQ(object_set_prop_str(conf, "tom.name", "tom"), RET_OK);
-  ASSERT_EQ(object_set_prop_int(conf, "tom.age", 100), RET_OK);
-  ASSERT_EQ(object_set_prop_float(conf, "tom.weight", 60.5), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_str(conf, "tom.name", "tom"), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_int(conf, "tom.age", 100), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_float(conf, "tom.weight", 60.5), RET_OK);
 
-  ASSERT_STREQ(object_get_prop_str(conf, "tom.name"), "tom");
-  ASSERT_EQ(object_get_prop_int(conf, "tom.age", 0), 100);
-  ASSERT_EQ(object_get_prop_float(conf, "tom.weight", 0), 60.5);
+  ASSERT_STREQ(tk_object_get_prop_str(conf, "tom.name"), "tom");
+  ASSERT_EQ(tk_object_get_prop_int(conf, "tom.age", 0), 100);
+  ASSERT_EQ(tk_object_get_prop_float(conf, "tom.weight", 0), 60.5);
 
   ASSERT_EQ(conf_obj_save(conf), RET_OK);
 
-  ASSERT_EQ(object_set_prop_str(conf, "group.key", "value"), RET_OK);
-  ASSERT_STREQ(object_get_prop_str(conf, "group.key"), "value");
-  ASSERT_EQ(object_remove_prop(conf, "group.key"), RET_OK);
-  ASSERT_EQ(object_get_prop_str(conf, "group.key"), (char*)NULL);
+  ASSERT_EQ(tk_object_set_prop_str(conf, "group.key", "value"), RET_OK);
+  ASSERT_STREQ(tk_object_get_prop_str(conf, "group.key"), "value");
+  ASSERT_EQ(tk_object_remove_prop(conf, "group.key"), RET_OK);
+  ASSERT_EQ(tk_object_get_prop_str(conf, "group.key"), (char*)NULL);
 
-  OBJECT_UNREF(conf);
+  TK_OBJECT_UNREF(conf);
 }
 
 TEST(Ubjson, load1) {
-  object_t* conf = conf_ubjson_load(NULL, FALSE);
-  ASSERT_EQ(conf, (object_t*)NULL);
+  tk_object_t* conf = conf_ubjson_load(NULL, FALSE);
+  ASSERT_EQ(conf, (tk_object_t*)NULL);
 
   conf = conf_ubjson_load(NULL, TRUE);
-  ASSERT_NE(conf, (object_t*)NULL);
+  ASSERT_NE(conf, (tk_object_t*)NULL);
 
-  OBJECT_UNREF(conf);
+  TK_OBJECT_UNREF(conf);
 }
 
 TEST(Ubjson, create) {
-  object_t* conf = conf_ubjson_create();
-  ASSERT_NE(conf, (object_t*)NULL);
-  ASSERT_EQ(object_set_prop_int(conf, "value", 123), RET_OK);
-  ASSERT_EQ(object_get_prop_int(conf, "value", 0), 123);
-  OBJECT_UNREF(conf);
+  tk_object_t* conf = conf_ubjson_create();
+  ASSERT_NE(conf, (tk_object_t*)NULL);
+  ASSERT_EQ(tk_object_set_prop_int(conf, "value", 123), RET_OK);
+  ASSERT_EQ(tk_object_get_prop_int(conf, "value", 0), 123);
+  TK_OBJECT_UNREF(conf);
 }
 
 #include "tkc/data_reader_mem.h"
@@ -164,21 +164,21 @@ TEST(Ubjson, create) {
 TEST(Ubjson, save_as) {
   wbuffer_t wb;
   char url[MAX_PATH + 1];
-  object_t* conf = conf_ubjson_create();
-  ASSERT_NE(conf, (object_t*)NULL);
-  ASSERT_EQ(object_set_prop_int(conf, "value", 123), RET_OK);
-  ASSERT_EQ(object_get_prop_int(conf, "value", 0), 123);
+  tk_object_t* conf = conf_ubjson_create();
+  ASSERT_NE(conf, (tk_object_t*)NULL);
+  ASSERT_EQ(tk_object_set_prop_int(conf, "value", 123), RET_OK);
+  ASSERT_EQ(tk_object_get_prop_int(conf, "value", 0), 123);
   wbuffer_init_extendable(&wb);
   data_writer_wbuffer_build_url(&wb, url);
 
   ASSERT_EQ(conf_ubjson_save_as(conf, url), RET_OK);
-  OBJECT_UNREF(conf);
+  TK_OBJECT_UNREF(conf);
 
   data_reader_mem_build_url(wb.data, wb.cursor, url);
   conf = conf_ubjson_load(url, FALSE);
-  ASSERT_NE(conf, (object_t*)NULL);
+  ASSERT_NE(conf, (tk_object_t*)NULL);
 
-  ASSERT_EQ(object_get_prop_int(conf, "value", 0), 123);
+  ASSERT_EQ(tk_object_get_prop_int(conf, "value", 0), 123);
   wbuffer_deinit(&wb);
-  OBJECT_UNREF(conf);
+  TK_OBJECT_UNREF(conf);
 }

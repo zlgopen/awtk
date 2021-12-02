@@ -568,7 +568,7 @@ ret_t str_remove(str_t* s, uint32_t offset, uint32_t size) {
   return RET_OK;
 }
 
-static const char* expand_var(str_t* str, const char* p, const object_t* obj) {
+static const char* expand_var(str_t* str, const char* p, const tk_object_t* obj) {
   value_t v;
   uint32_t len = 0;
   char name[TK_NAME_LEN + 1];
@@ -579,7 +579,7 @@ static const char* expand_var(str_t* str, const char* p, const object_t* obj) {
   return_value_if_fail(len <= TK_NAME_LEN, end + 1);
 
   tk_strncpy(name, p, len);
-  if (object_eval((object_t*)obj, name, &v) != RET_OK) {
+  if (tk_object_eval((tk_object_t*)obj, name, &v) != RET_OK) {
     value_reset(&v);
 
     return end + 1;
@@ -597,7 +597,7 @@ static const char* expand_var(str_t* str, const char* p, const object_t* obj) {
   return end + 1;
 }
 
-ret_t str_expand_vars(str_t* str, const char* src, const object_t* obj) {
+ret_t str_expand_vars(str_t* str, const char* src, const tk_object_t* obj) {
   const char* p = src;
   return_value_if_fail(str != NULL && src != NULL && obj != NULL, RET_BAD_PARAMS);
 

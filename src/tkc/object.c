@@ -25,7 +25,7 @@
 #include "tkc/object.h"
 #include "tkc/fscript.h"
 
-ret_t object_set_name(object_t* obj, const char* name) {
+ret_t tk_object_set_name(tk_object_t* obj, const char* name) {
   ret_t ret = RET_OK;
   return_value_if_fail(obj != NULL && obj->vt != NULL, RET_BAD_PARAMS);
 
@@ -34,7 +34,7 @@ ret_t object_set_name(object_t* obj, const char* name) {
   return ret;
 }
 
-static ret_t object_destroy(object_t* obj) {
+static ret_t object_destroy(tk_object_t* obj) {
   ret_t ret = RET_OK;
   event_t e = event_init(EVT_DESTROY, obj);
   return_value_if_fail(obj != NULL && obj->vt != NULL, RET_BAD_PARAMS);
@@ -54,13 +54,13 @@ static ret_t object_destroy(object_t* obj) {
   return ret;
 }
 
-object_t* object_create_ex(const object_vtable_t* vt, uint32_t extra_data_size) {
+tk_object_t* tk_object_create_ex(const object_vtable_t* vt, uint32_t extra_data_size) {
   uint32_t size = 0;
-  object_t* obj = NULL;
-  return_value_if_fail(vt != NULL && vt->size >= sizeof(object_t), NULL);
+  tk_object_t* obj = NULL;
+  return_value_if_fail(vt != NULL && vt->size >= sizeof(tk_object_t), NULL);
 
   size = vt->size + extra_data_size;
-  obj = (object_t*)TKMEM_ALLOC(size);
+  obj = (tk_object_t*)TKMEM_ALLOC(size);
   return_value_if_fail(obj != NULL, NULL);
 
   memset(obj, 0x00, size);
@@ -72,11 +72,11 @@ object_t* object_create_ex(const object_vtable_t* vt, uint32_t extra_data_size) 
   return obj;
 }
 
-object_t* object_create(const object_vtable_t* vt) {
-  object_t* obj = NULL;
-  return_value_if_fail(vt != NULL && vt->size >= sizeof(object_t), NULL);
+tk_object_t* tk_object_create(const object_vtable_t* vt) {
+  tk_object_t* obj = NULL;
+  return_value_if_fail(vt != NULL && vt->size >= sizeof(tk_object_t), NULL);
 
-  obj = (object_t*)TKMEM_ALLOC(vt->size);
+  obj = (tk_object_t*)TKMEM_ALLOC(vt->size);
   return_value_if_fail(obj != NULL, NULL);
 
   memset(obj, 0x00, vt->size);
@@ -88,7 +88,7 @@ object_t* object_create(const object_vtable_t* vt) {
   return obj;
 }
 
-ret_t object_unref(object_t* obj) {
+ret_t tk_object_unref(tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count > 0, RET_BAD_PARAMS);
   return_value_if_fail(!(obj->visiting), RET_BUSY);
 
@@ -101,7 +101,7 @@ ret_t object_unref(object_t* obj) {
   return RET_OK;
 }
 
-object_t* object_ref(object_t* obj) {
+tk_object_t* tk_object_ref(tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, NULL);
 
   obj->ref_count++;
@@ -109,13 +109,13 @@ object_t* object_ref(object_t* obj) {
   return obj;
 }
 
-object_t* object_clone(object_t* obj) {
+tk_object_t* tk_object_clone(tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->vt->clone != NULL, NULL);
 
   return obj->vt->clone(obj);
 }
 
-static ret_t object_get_prop_by_name(object_t* obj, const char* name, value_t* v) {
+static ret_t object_get_prop_by_name(tk_object_t* obj, const char* name, value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   return_value_if_fail(obj != NULL && obj->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -128,7 +128,7 @@ static ret_t object_get_prop_by_name(object_t* obj, const char* name, value_t* v
   return ret;
 }
 
-static ret_t object_get_prop_by_path_with_len(object_t* obj, const char* path, uint32_t len,
+static ret_t object_get_prop_by_path_with_len(tk_object_t* obj, const char* path, uint32_t len,
                                               value_t* v) {
   char* p = NULL;
   char temp[MAX_PATH + 1];
@@ -167,7 +167,7 @@ static ret_t object_get_prop_by_path_with_len(object_t* obj, const char* path, u
   return ret;
 }
 
-ret_t object_get_prop_by_path(object_t* obj, const char* path, value_t* v) {
+ret_t tk_object_get_prop_by_path(tk_object_t* obj, const char* path, value_t* v) {
   uint32_t len = 0;
   return_value_if_fail(obj != NULL && obj->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(path != NULL && v != NULL, RET_BAD_PARAMS);
@@ -176,80 +176,80 @@ ret_t object_get_prop_by_path(object_t* obj, const char* path, value_t* v) {
   return object_get_prop_by_path_with_len(obj, path, len, v);
 }
 
-ret_t object_get_prop(object_t* obj, const char* name, value_t* v) {
+ret_t tk_object_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   return object_get_prop_by_name(obj, name, v);
 }
 
-const char* object_get_prop_str(object_t* obj, const char* name) {
+const char* tk_object_get_prop_str(tk_object_t* obj, const char* name) {
   value_t v;
-  if (object_get_prop(obj, name, &v) == RET_OK) {
+  if (tk_object_get_prop(obj, name, &v) == RET_OK) {
     return value_str(&v);
   } else {
     return NULL;
   }
 }
 
-void* object_get_prop_pointer(object_t* obj, const char* name) {
+void* tk_object_get_prop_pointer(tk_object_t* obj, const char* name) {
   value_t v;
-  if (object_get_prop(obj, name, &v) == RET_OK) {
+  if (tk_object_get_prop(obj, name, &v) == RET_OK) {
     return value_pointer(&v);
   } else {
     return NULL;
   }
 }
 
-object_t* object_get_prop_object(object_t* obj, const char* name) {
+tk_object_t* tk_object_get_prop_object(tk_object_t* obj, const char* name) {
   value_t v;
-  if (object_get_prop(obj, name, &v) == RET_OK) {
+  if (tk_object_get_prop(obj, name, &v) == RET_OK) {
     return value_object(&v);
   } else {
     return NULL;
   }
 }
 
-int32_t object_get_prop_int(object_t* obj, const char* name, int32_t defval) {
+int32_t tk_object_get_prop_int(tk_object_t* obj, const char* name, int32_t defval) {
   value_t v;
-  if (object_get_prop(obj, name, &v) == RET_OK) {
+  if (tk_object_get_prop(obj, name, &v) == RET_OK) {
     return value_int(&v);
   } else {
     return defval;
   }
 }
 
-bool_t object_get_prop_bool(object_t* obj, const char* name, bool_t defval) {
+bool_t tk_object_get_prop_bool(tk_object_t* obj, const char* name, bool_t defval) {
   value_t v;
-  if (object_get_prop(obj, name, &v) == RET_OK) {
+  if (tk_object_get_prop(obj, name, &v) == RET_OK) {
     return value_bool(&v);
   } else {
     return defval;
   }
 }
 
-float_t object_get_prop_float(object_t* obj, const char* name, float_t defval) {
+float_t tk_object_get_prop_float(tk_object_t* obj, const char* name, float_t defval) {
   value_t v;
-  if (object_get_prop(obj, name, &v) == RET_OK) {
+  if (tk_object_get_prop(obj, name, &v) == RET_OK) {
     return value_float(&v);
   } else {
     return defval;
   }
 }
 
-double object_get_prop_double(object_t* obj, const char* name, double defval) {
+double tk_object_get_prop_double(tk_object_t* obj, const char* name, double defval) {
   value_t v;
-  if (object_get_prop(obj, name, &v) == RET_OK) {
+  if (tk_object_get_prop(obj, name, &v) == RET_OK) {
     return value_double(&v);
   } else {
     return defval;
   }
 }
 
-ret_t object_notify_changed(object_t* obj) {
+ret_t tk_object_notify_changed(tk_object_t* obj) {
   event_t e = event_init(EVT_PROPS_CHANGED, obj);
 
   return emitter_dispatch((emitter_t*)obj, &e);
 }
 
-ret_t object_set_prop(object_t* obj, const char* name, const value_t* v) {
+ret_t tk_object_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   return_value_if_fail(name != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, RET_BAD_PARAMS);
@@ -274,56 +274,56 @@ ret_t object_set_prop(object_t* obj, const char* name, const value_t* v) {
   return ret;
 }
 
-ret_t object_set_prop_str(object_t* obj, const char* name, const char* value) {
+ret_t tk_object_set_prop_str(tk_object_t* obj, const char* name, const char* value) {
   value_t v;
   value_set_str(&v, value);
 
-  return object_set_prop(obj, name, &v);
+  return tk_object_set_prop(obj, name, &v);
 }
 
-ret_t object_set_prop_pointer(object_t* obj, const char* name, void* value) {
+ret_t tk_object_set_prop_pointer(tk_object_t* obj, const char* name, void* value) {
   value_t v;
   value_set_pointer(&v, value);
 
-  return object_set_prop(obj, name, &v);
+  return tk_object_set_prop(obj, name, &v);
 }
 
-ret_t object_set_prop_object(object_t* obj, const char* name, object_t* value) {
+ret_t tk_object_set_prop_object(tk_object_t* obj, const char* name, tk_object_t* value) {
   value_t v;
   value_set_object(&v, value);
 
-  return object_set_prop(obj, name, &v);
+  return tk_object_set_prop(obj, name, &v);
 }
 
-ret_t object_set_prop_int(object_t* obj, const char* name, int32_t value) {
+ret_t tk_object_set_prop_int(tk_object_t* obj, const char* name, int32_t value) {
   value_t v;
   value_set_int(&v, value);
 
-  return object_set_prop(obj, name, &v);
+  return tk_object_set_prop(obj, name, &v);
 }
 
-ret_t object_set_prop_bool(object_t* obj, const char* name, bool_t value) {
+ret_t tk_object_set_prop_bool(tk_object_t* obj, const char* name, bool_t value) {
   value_t v;
   value_set_bool(&v, value);
 
-  return object_set_prop(obj, name, &v);
+  return tk_object_set_prop(obj, name, &v);
 }
 
-ret_t object_set_prop_float(object_t* obj, const char* name, float_t value) {
+ret_t tk_object_set_prop_float(tk_object_t* obj, const char* name, float_t value) {
   value_t v;
   value_set_float(&v, value);
 
-  return object_set_prop(obj, name, &v);
+  return tk_object_set_prop(obj, name, &v);
 }
 
-ret_t object_set_prop_double(object_t* obj, const char* name, double value) {
+ret_t tk_object_set_prop_double(tk_object_t* obj, const char* name, double value) {
   value_t v;
   value_set_double(&v, value);
 
-  return object_set_prop(obj, name, &v);
+  return tk_object_set_prop(obj, name, &v);
 }
 
-ret_t object_remove_prop(object_t* obj, const char* name) {
+ret_t tk_object_remove_prop(tk_object_t* obj, const char* name) {
   ret_t ret = RET_NOT_FOUND;
   return_value_if_fail(name != NULL, RET_BAD_PARAMS);
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, RET_BAD_PARAMS);
@@ -336,7 +336,7 @@ ret_t object_remove_prop(object_t* obj, const char* name) {
   return ret;
 }
 
-ret_t object_foreach_prop(object_t* obj, tk_visit_t on_prop, void* ctx) {
+ret_t tk_object_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, void* ctx) {
   ret_t ret = RET_NOT_IMPL;
   return_value_if_fail(on_prop != NULL, RET_BAD_PARAMS);
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, RET_BAD_PARAMS);
@@ -351,7 +351,7 @@ ret_t object_foreach_prop(object_t* obj, tk_visit_t on_prop, void* ctx) {
   return ret;
 }
 
-int object_compare(object_t* obj, object_t* other) {
+int tk_object_compare(tk_object_t* obj, tk_object_t* other) {
   int32_t ret = -1;
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, -1);
   return_value_if_fail(other != NULL && other->vt != NULL && other->ref_count >= 0, -1);
@@ -363,7 +363,7 @@ int object_compare(object_t* obj, object_t* other) {
   return ret;
 }
 
-bool_t object_can_exec(object_t* obj, const char* name, const char* args) {
+bool_t tk_object_can_exec(tk_object_t* obj, const char* name, const char* args) {
   bool_t ret = FALSE;
   cmd_exec_event_t e;
   return_value_if_fail(name != NULL, FALSE);
@@ -381,7 +381,7 @@ bool_t object_can_exec(object_t* obj, const char* name, const char* args) {
   return ret;
 }
 
-ret_t object_exec(object_t* obj, const char* name, const char* args) {
+ret_t tk_object_exec(tk_object_t* obj, const char* name, const char* args) {
   cmd_exec_event_t e;
   event_t* evt = NULL;
   ret_t ret = RET_NOT_IMPL;
@@ -404,11 +404,11 @@ ret_t object_exec(object_t* obj, const char* name, const char* args) {
   return e.result;
 }
 
-bool_t object_has_prop(object_t* obj, const char* name) {
+bool_t tk_object_has_prop(tk_object_t* obj, const char* name) {
   value_t v;
   ret_t ret = RET_OK;
 
-  ret = object_get_prop(obj, name, &v);
+  ret = tk_object_get_prop(obj, name, &v);
   if (ret == RET_OK) {
     value_reset(&v);
   }
@@ -416,15 +416,15 @@ bool_t object_has_prop(object_t* obj, const char* name) {
   return ret == RET_OK;
 }
 
-ret_t object_copy_prop(object_t* obj, object_t* src, const char* name) {
+ret_t tk_object_copy_prop(tk_object_t* obj, tk_object_t* src, const char* name) {
   value_t v;
   ret_t ret = RET_FAIL;
   return_value_if_fail(name != NULL, RET_BAD_PARAMS);
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, RET_BAD_PARAMS);
   return_value_if_fail(src != NULL && src->vt != NULL && src->ref_count >= 0, RET_BAD_PARAMS);
 
-  if (object_get_prop(src, name, &v) == RET_OK) {
-    ret = object_set_prop(obj, name, &v);
+  if (tk_object_get_prop(src, name, &v) == RET_OK) {
+    ret = tk_object_set_prop(obj, name, &v);
     value_reset(&v);
   }
 
@@ -432,51 +432,51 @@ ret_t object_copy_prop(object_t* obj, object_t* src, const char* name) {
 }
 
 #ifndef WITHOUT_FSCRIPT
-ret_t object_eval(object_t* obj, const char* expr, value_t* v) {
+ret_t tk_object_eval(tk_object_t* obj, const char* expr, value_t* v) {
   return fscript_eval(obj, expr, v);
 }
 #else
-ret_t object_eval(object_t* obj, const char* expr, value_t* v) {
+ret_t tk_object_eval(tk_object_t* obj, const char* expr, value_t* v) {
   return_value_if_fail(expr != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, RET_BAD_PARAMS);
 
   if (tk_is_valid_name(expr)) {
-    return object_get_prop(obj, expr, v);
+    return tk_object_get_prop(obj, expr, v);
   } else {
     return RET_FAIL;
   }
 }
 #endif /*WITHOUT_FSCRIPT*/
 
-const char* object_get_type(object_t* obj) {
+const char* tk_object_get_type(tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt != NULL, NULL);
 
   return obj->vt->type;
 }
 
-const char* object_get_desc(object_t* obj) {
+const char* tk_object_get_desc(tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt != NULL, NULL);
 
   return obj->vt->desc;
 }
 
-bool_t object_is_collection(object_t* obj) {
+bool_t tk_object_is_collection(tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt != NULL, FALSE);
 
   return obj->vt->is_collection;
 }
 
-uint32_t object_get_size(object_t* obj) {
+uint32_t tk_object_get_size(tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt != NULL, 0);
 
   return obj->vt->size;
 }
 
-bool_t object_has_prop_by_path(object_t* obj, const char* path) {
+bool_t tk_object_has_prop_by_path(tk_object_t* obj, const char* path) {
   value_t v;
   ret_t ret = RET_OK;
 
-  ret = object_get_prop_by_path(obj, path, &v);
+  ret = tk_object_get_prop_by_path(obj, path, &v);
   if (ret == RET_OK) {
     value_reset(&v);
   }
@@ -484,61 +484,61 @@ bool_t object_has_prop_by_path(object_t* obj, const char* path) {
   return ret == RET_OK;
 }
 
-const char* object_get_prop_str_by_path(object_t* obj, const char* path) {
+const char* tk_object_get_prop_str_by_path(tk_object_t* obj, const char* path) {
   value_t v;
-  if (object_get_prop_by_path(obj, path, &v) == RET_OK) {
+  if (tk_object_get_prop_by_path(obj, path, &v) == RET_OK) {
     return value_str(&v);
   } else {
     return NULL;
   }
 }
 
-void* object_get_prop_pointer_by_path(object_t* obj, const char* path) {
+void* tk_object_get_prop_pointer_by_path(tk_object_t* obj, const char* path) {
   value_t v;
-  if (object_get_prop_by_path(obj, path, &v) == RET_OK) {
+  if (tk_object_get_prop_by_path(obj, path, &v) == RET_OK) {
     return value_pointer(&v);
   } else {
     return NULL;
   }
 }
 
-object_t* object_get_prop_object_by_path(object_t* obj, const char* path) {
+tk_object_t* tk_object_get_prop_object_by_path(tk_object_t* obj, const char* path) {
   value_t v;
-  if (object_get_prop_by_path(obj, path, &v) == RET_OK) {
+  if (tk_object_get_prop_by_path(obj, path, &v) == RET_OK) {
     return value_object(&v);
   } else {
     return NULL;
   }
 }
 
-int32_t object_get_prop_int_by_path(object_t* obj, const char* path, int32_t defval) {
+int32_t tk_object_get_prop_int_by_path(tk_object_t* obj, const char* path, int32_t defval) {
   value_t v;
-  if (object_get_prop_by_path(obj, path, &v) == RET_OK) {
+  if (tk_object_get_prop_by_path(obj, path, &v) == RET_OK) {
     return value_int(&v);
   } else {
     return defval;
   }
 }
 
-bool_t object_get_prop_bool_by_path(object_t* obj, const char* path, bool_t defval) {
+bool_t tk_object_get_prop_bool_by_path(tk_object_t* obj, const char* path, bool_t defval) {
   value_t v;
-  if (object_get_prop_by_path(obj, path, &v) == RET_OK) {
+  if (tk_object_get_prop_by_path(obj, path, &v) == RET_OK) {
     return value_bool(&v);
   } else {
     return defval;
   }
 }
 
-float_t object_get_prop_float_by_path(object_t* obj, const char* path, float_t defval) {
+float_t tk_object_get_prop_float_by_path(tk_object_t* obj, const char* path, float_t defval) {
   value_t v;
-  if (object_get_prop_by_path(obj, path, &v) == RET_OK) {
+  if (tk_object_get_prop_by_path(obj, path, &v) == RET_OK) {
     return value_float(&v);
   } else {
     return defval;
   }
 }
 
-ret_t object_set_prop_by_path(object_t* obj, const char* path, const value_t* value) {
+ret_t tk_object_set_prop_by_path(tk_object_t* obj, const char* path, const value_t* value) {
   const char* name;
   return_value_if_fail(path != NULL, RET_BAD_PARAMS);
 
@@ -549,7 +549,7 @@ ret_t object_set_prop_by_path(object_t* obj, const char* path, const value_t* va
   name++;
 
   if (name == path) {
-    return object_set_prop(obj, name, value);
+    return tk_object_set_prop(obj, name, value);
   } else {
     ret_t ret = RET_OK;
     value_t v;
@@ -561,53 +561,53 @@ ret_t object_set_prop_by_path(object_t* obj, const char* path, const value_t* va
     if (ret != RET_OK) {
       return ret;
     }
-    return object_set_prop(value_object(&v), name, value);
+    return tk_object_set_prop(value_object(&v), name, value);
   }
 }
 
-ret_t object_set_prop_str_by_path(object_t* obj, const char* name, const char* value) {
+ret_t tk_object_set_prop_str_by_path(tk_object_t* obj, const char* name, const char* value) {
   value_t v;
   value_set_str(&v, value);
 
-  return object_set_prop_by_path(obj, name, &v);
+  return tk_object_set_prop_by_path(obj, name, &v);
 }
 
-ret_t object_set_prop_pointer_by_path(object_t* obj, const char* name, void* value) {
+ret_t tk_object_set_prop_pointer_by_path(tk_object_t* obj, const char* name, void* value) {
   value_t v;
   value_set_pointer(&v, value);
 
-  return object_set_prop_by_path(obj, name, &v);
+  return tk_object_set_prop_by_path(obj, name, &v);
 }
 
-ret_t object_set_prop_object_by_path(object_t* obj, const char* name, object_t* value) {
+ret_t tk_object_set_prop_object_by_path(tk_object_t* obj, const char* name, tk_object_t* value) {
   value_t v;
   value_set_object(&v, value);
 
-  return object_set_prop_by_path(obj, name, &v);
+  return tk_object_set_prop_by_path(obj, name, &v);
 }
 
-ret_t object_set_prop_int_by_path(object_t* obj, const char* name, int32_t value) {
+ret_t tk_object_set_prop_int_by_path(tk_object_t* obj, const char* name, int32_t value) {
   value_t v;
   value_set_int(&v, value);
 
-  return object_set_prop_by_path(obj, name, &v);
+  return tk_object_set_prop_by_path(obj, name, &v);
 }
 
-ret_t object_set_prop_bool_by_path(object_t* obj, const char* name, bool_t value) {
+ret_t tk_object_set_prop_bool_by_path(tk_object_t* obj, const char* name, bool_t value) {
   value_t v;
   value_set_bool(&v, value);
 
-  return object_set_prop_by_path(obj, name, &v);
+  return tk_object_set_prop_by_path(obj, name, &v);
 }
 
-ret_t object_set_prop_float_by_path(object_t* obj, const char* name, float_t value) {
+ret_t tk_object_set_prop_float_by_path(tk_object_t* obj, const char* name, float_t value) {
   value_t v;
   value_set_float(&v, value);
 
-  return object_set_prop_by_path(obj, name, &v);
+  return tk_object_set_prop_by_path(obj, name, &v);
 }
 
-bool_t object_can_exec_by_path(object_t* obj, const char* path, const char* args) {
+bool_t tk_object_can_exec_by_path(tk_object_t* obj, const char* path, const char* args) {
   const char* name;
   return_value_if_fail(path != NULL, FALSE);
 
@@ -618,7 +618,7 @@ bool_t object_can_exec_by_path(object_t* obj, const char* path, const char* args
   name++;
 
   if (name == path) {
-    return object_can_exec(obj, name, args);
+    return tk_object_can_exec(obj, name, args);
   } else {
     value_t v;
     uint32_t len = name - path - 1;
@@ -628,11 +628,11 @@ bool_t object_can_exec_by_path(object_t* obj, const char* path, const char* args
       return FALSE;
     }
 
-    return object_can_exec(value_object(&v), name, args);
+    return tk_object_can_exec(value_object(&v), name, args);
   }
 }
 
-ret_t object_exec_by_path(object_t* obj, const char* path, const char* args) {
+ret_t tk_object_exec_by_path(tk_object_t* obj, const char* path, const char* args) {
   const char* name;
   return_value_if_fail(path != NULL, RET_BAD_PARAMS);
 
@@ -643,7 +643,7 @@ ret_t object_exec_by_path(object_t* obj, const char* path, const char* args) {
   name++;
 
   if (name == path) {
-    return object_exec(obj, name, args);
+    return tk_object_exec(obj, name, args);
   } else {
     ret_t ret = RET_OK;
     value_t v;
@@ -655,139 +655,139 @@ ret_t object_exec_by_path(object_t* obj, const char* path, const char* args) {
       return ret;
     }
 
-    return object_exec(value_object(&v), name, args);
+    return tk_object_exec(value_object(&v), name, args);
   }
 }
 
-ret_t object_set_prop_int8(object_t* obj, const char* name, int8_t value) {
+ret_t tk_object_set_prop_int8(tk_object_t* obj, const char* name, int8_t value) {
   value_t v;
   value_set_int8(&v, value);
 
-  return object_set_prop(obj, name, &v);
+  return tk_object_set_prop(obj, name, &v);
 }
 
-int8_t object_get_prop_int8(object_t* obj, const char* name, int8_t defval) {
+int8_t tk_object_get_prop_int8(tk_object_t* obj, const char* name, int8_t defval) {
   value_t v;
-  if (object_get_prop(obj, name, &v) == RET_OK) {
+  if (tk_object_get_prop(obj, name, &v) == RET_OK) {
     return value_int8(&v);
   } else {
     return defval;
   }
 }
 
-ret_t object_set_prop_uint8(object_t* obj, const char* name, uint8_t value) {
+ret_t tk_object_set_prop_uint8(tk_object_t* obj, const char* name, uint8_t value) {
   value_t v;
   value_set_uint8(&v, value);
 
-  return object_set_prop(obj, name, &v);
+  return tk_object_set_prop(obj, name, &v);
 }
 
-uint8_t object_get_prop_uint8(object_t* obj, const char* name, uint8_t defval) {
+uint8_t tk_object_get_prop_uint8(tk_object_t* obj, const char* name, uint8_t defval) {
   value_t v;
-  if (object_get_prop(obj, name, &v) == RET_OK) {
+  if (tk_object_get_prop(obj, name, &v) == RET_OK) {
     return value_uint8(&v);
   } else {
     return defval;
   }
 }
 
-ret_t object_set_prop_int16(object_t* obj, const char* name, int16_t value) {
+ret_t tk_object_set_prop_int16(tk_object_t* obj, const char* name, int16_t value) {
   value_t v;
   value_set_int16(&v, value);
 
-  return object_set_prop(obj, name, &v);
+  return tk_object_set_prop(obj, name, &v);
 }
 
-int16_t object_get_prop_int16(object_t* obj, const char* name, int16_t defval) {
+int16_t tk_object_get_prop_int16(tk_object_t* obj, const char* name, int16_t defval) {
   value_t v;
-  if (object_get_prop(obj, name, &v) == RET_OK) {
+  if (tk_object_get_prop(obj, name, &v) == RET_OK) {
     return value_int16(&v);
   } else {
     return defval;
   }
 }
 
-ret_t object_set_prop_uint16(object_t* obj, const char* name, uint16_t value) {
+ret_t tk_object_set_prop_uint16(tk_object_t* obj, const char* name, uint16_t value) {
   value_t v;
   value_set_uint16(&v, value);
 
-  return object_set_prop(obj, name, &v);
+  return tk_object_set_prop(obj, name, &v);
 }
 
-uint16_t object_get_prop_uint16(object_t* obj, const char* name, uint16_t defval) {
+uint16_t tk_object_get_prop_uint16(tk_object_t* obj, const char* name, uint16_t defval) {
   value_t v;
-  if (object_get_prop(obj, name, &v) == RET_OK) {
+  if (tk_object_get_prop(obj, name, &v) == RET_OK) {
     return value_uint16(&v);
   } else {
     return defval;
   }
 }
 
-ret_t object_set_prop_int32(object_t* obj, const char* name, int32_t value) {
+ret_t tk_object_set_prop_int32(tk_object_t* obj, const char* name, int32_t value) {
   value_t v;
   value_set_int32(&v, value);
 
-  return object_set_prop(obj, name, &v);
+  return tk_object_set_prop(obj, name, &v);
 }
 
-int32_t object_get_prop_int32(object_t* obj, const char* name, int32_t defval) {
+int32_t tk_object_get_prop_int32(tk_object_t* obj, const char* name, int32_t defval) {
   value_t v;
-  if (object_get_prop(obj, name, &v) == RET_OK) {
+  if (tk_object_get_prop(obj, name, &v) == RET_OK) {
     return value_int32(&v);
   } else {
     return defval;
   }
 }
 
-ret_t object_set_prop_uint32(object_t* obj, const char* name, uint32_t value) {
+ret_t tk_object_set_prop_uint32(tk_object_t* obj, const char* name, uint32_t value) {
   value_t v;
   value_set_uint32(&v, value);
 
-  return object_set_prop(obj, name, &v);
+  return tk_object_set_prop(obj, name, &v);
 }
 
-uint32_t object_get_prop_uint32(object_t* obj, const char* name, uint32_t defval) {
+uint32_t tk_object_get_prop_uint32(tk_object_t* obj, const char* name, uint32_t defval) {
   value_t v;
-  if (object_get_prop(obj, name, &v) == RET_OK) {
+  if (tk_object_get_prop(obj, name, &v) == RET_OK) {
     return value_uint32(&v);
   } else {
     return defval;
   }
 }
 
-ret_t object_set_prop_int64(object_t* obj, const char* name, int64_t value) {
+ret_t tk_object_set_prop_int64(tk_object_t* obj, const char* name, int64_t value) {
   value_t v;
   value_set_int64(&v, value);
 
-  return object_set_prop(obj, name, &v);
+  return tk_object_set_prop(obj, name, &v);
 }
 
-int64_t object_get_prop_int64(object_t* obj, const char* name, int64_t defval) {
+int64_t tk_object_get_prop_int64(tk_object_t* obj, const char* name, int64_t defval) {
   value_t v;
-  if (object_get_prop(obj, name, &v) == RET_OK) {
+  if (tk_object_get_prop(obj, name, &v) == RET_OK) {
     return value_int64(&v);
   } else {
     return defval;
   }
 }
 
-ret_t object_set_prop_uint64(object_t* obj, const char* name, uint64_t value) {
+ret_t tk_object_set_prop_uint64(tk_object_t* obj, const char* name, uint64_t value) {
   value_t v;
   value_set_uint64(&v, value);
 
-  return object_set_prop(obj, name, &v);
+  return tk_object_set_prop(obj, name, &v);
 }
 
-uint64_t object_get_prop_uint64(object_t* obj, const char* name, uint64_t defval) {
+uint64_t tk_object_get_prop_uint64(tk_object_t* obj, const char* name, uint64_t defval) {
   value_t v;
-  if (object_get_prop(obj, name, &v) == RET_OK) {
+  if (tk_object_get_prop(obj, name, &v) == RET_OK) {
     return value_uint64(&v);
   } else {
     return defval;
   }
 }
 
-object_t* object_get_child_object(object_t* obj, const char* path, const char** next_path) {
+tk_object_t* tk_object_get_child_object(tk_object_t* obj, const char* path, const char** next_path) {
   return_value_if_fail(obj != NULL && path != NULL && next_path != NULL, NULL);
 
   const char* p = strchr(path, '.');
@@ -796,7 +796,7 @@ object_t* object_get_child_object(object_t* obj, const char* path, const char** 
     char subname[MAX_PATH + 1];
 
     tk_strncpy_s(subname, MAX_PATH, path, p - path);
-    if (object_get_prop(obj, subname, &v) == RET_OK) {
+    if (tk_object_get_prop(obj, subname, &v) == RET_OK) {
       if (v.type == VALUE_TYPE_OBJECT) {
         *next_path = p + 1;
         return value_object(&v);

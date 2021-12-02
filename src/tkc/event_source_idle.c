@@ -46,12 +46,12 @@ uint32_t event_source_idle_get_wakeup_time(event_source_t* source) {
 }
 
 event_source_t* event_source_idle_create(idle_manager_t* idle_manager) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   event_source_t* event_source = NULL;
   event_source_idle_t* event_source_idle = NULL;
   return_value_if_fail(idle_manager != NULL, NULL);
 
-  obj = object_create(&s_event_source_idle_vtable);
+  obj = tk_object_create(&s_event_source_idle_vtable);
   event_source = EVENT_SOURCE(obj);
   event_source_idle = EVENT_SOURCE_IDLE(obj);
   return_value_if_fail(event_source_idle != NULL, NULL);

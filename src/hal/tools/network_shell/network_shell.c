@@ -337,18 +337,18 @@ static ret_t func_help(network_interface_t* interface, tokenizer_t* tokenizer) {
   return RET_OK;
 }
 
-static ret_t register_functions(object_t* obj) {
+static ret_t register_functions(tk_object_t* obj) {
   uint32_t i = 0;
   while (s_cmds[i].name != NULL) {
     const cmd_entry_t* iter = s_cmds + i;
-    object_set_prop_pointer(obj, iter->alias, iter->func);
-    object_set_prop_pointer(obj, iter->name, iter->func);
+    tk_object_set_prop_pointer(obj, iter->alias, iter->func);
+    tk_object_set_prop_pointer(obj, iter->name, iter->func);
     i++;
   }
   return RET_OK;
 }
 
-static ret_t network_shell_exec(network_interface_t* network_interface, object_t* obj,
+static ret_t network_shell_exec(network_interface_t* network_interface, tk_object_t* obj,
                                 const char* line) {
   tokenizer_t t;
   ret_t ret = RET_OK;
@@ -364,7 +364,7 @@ static ret_t network_shell_exec(network_interface_t* network_interface, object_t
     return RET_OK;
   }
 
-  func = (cmd_line_func_t)object_get_prop_pointer(obj, name);
+  func = (cmd_line_func_t)tk_object_get_prop_pointer(obj, name);
   if (func == NULL) {
     func = func_help;
   }
@@ -378,7 +378,7 @@ static ret_t network_shell_exec(network_interface_t* network_interface, object_t
 }
 
 ret_t network_shell_run(network_interface_t* network_interface) {
-  object_t* obj = object_default_create();
+  tk_object_t* obj = object_default_create();
   return_value_if_fail(network_interface != NULL, RET_BAD_PARAMS);
 
   aw_read_line_init();

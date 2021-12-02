@@ -50,11 +50,11 @@ BEGIN_C_DECLS
  *
  * @annotation ["static"]
  * 
- * @param {object_t*} 配置对象。由app_conf_deinit释放。
+ * @param {tk_object_t*} 配置对象。由app_conf_deinit释放。
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t app_conf_set_instance(object_t* obj);
+ret_t app_conf_set_instance(tk_object_t* obj);
 
 /**
  * @method app_conf_get_instance
@@ -62,9 +62,9 @@ ret_t app_conf_set_instance(object_t* obj);
  *
  * @annotation ["static"]
  * 
- * @return {object_t*} 返回app_conf实例。
+ * @return {tk_object_t*} 返回app_conf实例。
  */
-object_t* app_conf_get_instance(void);
+tk_object_t* app_conf_get_instance(void);
 
 /**
  * @method app_conf_save

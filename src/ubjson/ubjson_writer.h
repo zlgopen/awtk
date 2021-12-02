@@ -251,11 +251,11 @@ ret_t ubjson_writer_write_str_len(ubjson_writer_t* writer, const char* value, ui
  * 写入obj。
  *
  * @param {ubjson_writer_t*} writer writer对象。
- * @param {object_t*} obj 要写入的对象。
+ * @param {tk_object_t*} obj 要写入的对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t ubjson_writer_write_object(ubjson_writer_t* writer, object_t* obj);
+ret_t ubjson_writer_write_object(ubjson_writer_t* writer, tk_object_t* obj);
 
 /**
  * @method ubjson_writer_write_array_begin
@@ -340,11 +340,11 @@ ret_t ubjson_writer_write_kv_object_begin(ubjson_writer_t* writer, const char* k
  *
  * @param {ubjson_writer_t*} writer writer对象。
  * @param {const char*} key 键名。
- * @param {object_t*} value 对象。
+ * @param {tk_object_t*} value 对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t ubjson_writer_write_kv_object(ubjson_writer_t* writer, const char* key, object_t* value);
+ret_t ubjson_writer_write_kv_object(ubjson_writer_t* writer, const char* key, tk_object_t* value);
 
 /**
  * @method ubjson_writer_write_kv_int

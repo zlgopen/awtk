@@ -509,11 +509,11 @@ struct _widget_t {
    */
   self_layouter_t* self_layout;
   /**
-   * @property {object_t*} custom_props
+   * @property {tk_object_t*} custom_props
    * @annotation ["readable"]
    * 自定义属性。
    */
-  object_t* custom_props;
+  tk_object_t* custom_props;
 
   /**
    * @property {widget_vtable_t} vt

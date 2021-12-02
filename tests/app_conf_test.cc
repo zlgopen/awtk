@@ -6,7 +6,7 @@
 #include "tkc/object_default.h"
 
 TEST(AppConf, basic) {
-  object_t* obj = object_default_create();
+  tk_object_t* obj = object_default_create();
 
   ASSERT_EQ(app_conf_set_instance(obj), RET_OK);
 
@@ -23,7 +23,7 @@ TEST(AppConf, basic) {
   ASSERT_STREQ(app_conf_get_str("str", NULL), "123");
 
   ASSERT_EQ(app_conf_deinit(), RET_OK);
-  OBJECT_UNREF(obj);
+  TK_OBJECT_UNREF(obj);
 }
 
 static ret_t on_prop_changed(void* ctx, event_t* e) {
@@ -39,7 +39,7 @@ static ret_t on_prop_changed(void* ctx, event_t* e) {
 
 TEST(AppConf, event) {
   int32_t count = 0;
-  object_t* obj = object_default_create();
+  tk_object_t* obj = object_default_create();
 
   ASSERT_EQ(app_conf_set_instance(obj), RET_OK);
   ASSERT_NE(app_conf_on_changed(on_prop_changed, &count), TK_INVALID_ID);
@@ -54,7 +54,7 @@ TEST(AppConf, event) {
   ASSERT_EQ(count, 2);
 
   ASSERT_EQ(app_conf_deinit(), RET_OK);
-  OBJECT_UNREF(obj);
+  TK_OBJECT_UNREF(obj);
 }
 
 TEST(AppConf, init) {

@@ -31,7 +31,7 @@
 #include "streams/inet/ostream_mbedtls.h"
 #include "streams/inet/iostream_mbedtls.h"
 
-static ret_t tk_iostream_mbedtls_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t tk_iostream_mbedtls_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   tk_iostream_mbedtls_t* iostream_mbedtls = TK_IOSTREAM_MBEDTLS(obj);
 
   if (tk_str_eq(name, TK_STREAM_PROP_FD)) {
@@ -39,9 +39,9 @@ static ret_t tk_iostream_mbedtls_get_prop(object_t* obj, const char* name, value
     return RET_OK;
   } else if (tk_str_eq(name, TK_STREAM_PROP_IS_OK)) {
     bool_t is_ok1 =
-        object_get_prop_bool(OBJECT(iostream_mbedtls->istream), TK_STREAM_PROP_IS_OK, TRUE);
+        tk_object_get_prop_bool(TK_OBJECT(iostream_mbedtls->istream), TK_STREAM_PROP_IS_OK, TRUE);
     bool_t is_ok2 =
-        object_get_prop_bool(OBJECT(iostream_mbedtls->ostream), TK_STREAM_PROP_IS_OK, TRUE);
+        tk_object_get_prop_bool(TK_OBJECT(iostream_mbedtls->ostream), TK_STREAM_PROP_IS_OK, TRUE);
 
     value_set_bool(v, is_ok1 && is_ok2);
 
@@ -51,15 +51,15 @@ static ret_t tk_iostream_mbedtls_get_prop(object_t* obj, const char* name, value
   return RET_NOT_FOUND;
 }
 
-static ret_t tk_iostream_mbedtls_on_destroy(object_t* obj) {
+static ret_t tk_iostream_mbedtls_on_destroy(tk_object_t* obj) {
   tk_iostream_mbedtls_t* iostream_mbedtls = TK_IOSTREAM_MBEDTLS(obj);
 
   if (iostream_mbedtls->conn != NULL) {
     mbedtls_conn_destroy(iostream_mbedtls->conn);
   }
 
-  OBJECT_UNREF(iostream_mbedtls->istream);
-  OBJECT_UNREF(iostream_mbedtls->ostream);
+  TK_OBJECT_UNREF(iostream_mbedtls->istream);
+  TK_OBJECT_UNREF(iostream_mbedtls->ostream);
 
   return RET_OK;
 }
@@ -84,10 +84,10 @@ static tk_ostream_t* tk_iostream_mbedtls_get_ostream(tk_iostream_t* stream) {
 }
 
 tk_iostream_t* tk_iostream_mbedtls_create(mbedtls_conn_t* conn) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   tk_iostream_mbedtls_t* iostream_mbedtls = NULL;
   return_value_if_fail(conn != NULL, NULL);
-  obj = object_create(&s_tk_iostream_mbedtls_vtable);
+  obj = tk_object_create(&s_tk_iostream_mbedtls_vtable);
   iostream_mbedtls = TK_IOSTREAM_MBEDTLS(obj);
   return_value_if_fail(iostream_mbedtls != NULL, NULL);
 

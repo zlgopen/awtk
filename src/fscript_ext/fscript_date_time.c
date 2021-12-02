@@ -19,7 +19,7 @@
 #include "tkc/object_date_time.h"
 
 static ret_t func_date_time_create(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  object_t* obj = object_date_time_create();
+  tk_object_t* obj = object_date_time_create();
 
   value_set_object(result, obj);
   result->free_handle = TRUE;
@@ -28,7 +28,7 @@ static ret_t func_date_time_create(fscript_t* fscript, fscript_args_t* args, val
 }
 
 static date_time_t* get_date_time(fscript_t* fscript, fscript_args_t* args) {
-  object_t* obj = value_object(args->args);
+  tk_object_t* obj = value_object(args->args);
   return_value_if_fail(obj != NULL, NULL);
 
   return OBJECT_DATE_TIME(obj)->dt;

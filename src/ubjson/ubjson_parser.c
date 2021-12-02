@@ -30,15 +30,15 @@ typedef struct _ubjson_parser_t {
   rbuffer_t rb;
   ubjson_reader_t reader;
 
-  object_t* obj;
-  object_t* root;
+  tk_object_t* obj;
+  tk_object_t* root;
 
   void* ctx;
   ubjson_on_key_value_t on_key_value;
 
   bool_t error;
   uint32_t level;
-  object_t* stack[MAX_LEVEL + 1];
+  tk_object_t* stack[MAX_LEVEL + 1];
 } ubjson_parser_t;
 
 static ret_t ubjson_do_parse_object(ubjson_parser_t* parser);
@@ -63,7 +63,7 @@ static ret_t rbuffer_read_binary_if_has_more(rbuffer_t* rbuffer, void* data, uin
   return RET_DONE;
 }
 
-static ret_t ubjson_parser_push(ubjson_parser_t* parser, object_t* obj) {
+static ret_t ubjson_parser_push(ubjson_parser_t* parser, tk_object_t* obj) {
   return_value_if_fail(parser->level < MAX_LEVEL, RET_BAD_PARAMS);
 
   parser->obj = obj;
@@ -135,21 +135,21 @@ static ret_t ubjson_on_key_value_object(void* ctx, const char* key, value_t* v) 
   if (v->type == VALUE_TYPE_TOKEN) {
     uint32_t token = value_token(v);
     if (token == UBJSON_MARKER_OBJECT_BEGIN || token == UBJSON_MARKER_ARRAY_BEGIN) {
-      object_t* obj =
+      tk_object_t* obj =
           token == UBJSON_MARKER_OBJECT_BEGIN ? object_default_create() : object_array_create();
       return_value_if_fail(obj != NULL, RET_OOM);
 
       if (parser->root == NULL) {
-        object_ref(obj);
+        tk_object_ref(obj);
         parser->root = obj;
       }
 
       if (parser->obj != NULL) {
-        ret = object_set_prop_object(parser->obj, key, obj);
+        ret = tk_object_set_prop_object(parser->obj, key, obj);
       }
 
       ret = ubjson_parser_push(parser, obj);
-      object_unref(obj);
+      tk_object_unref(obj);
     } else if (token == UBJSON_MARKER_OBJECT_END || token == UBJSON_MARKER_ARRAY_END) {
       ret = ubjson_parser_pop(parser);
     } else {
@@ -157,7 +157,7 @@ static ret_t ubjson_on_key_value_object(void* ctx, const char* key, value_t* v) 
       ret = RET_NOT_IMPL;
     }
   } else {
-    ret = object_set_prop(parser->obj, key, v);
+    ret = tk_object_set_prop(parser->obj, key, v);
   }
 
   return ret;
@@ -277,7 +277,7 @@ ret_t ubjson_do_parse(ubjson_parser_t* parser) {
   return RET_BAD_PARAMS;
 }
 
-object_t* ubjson_to_object(void* data, uint32_t size) {
+tk_object_t* ubjson_to_object(void* data, uint32_t size) {
   ubjson_parser_t parser;
   return_value_if_fail(data != NULL && size > 0, NULL);
 

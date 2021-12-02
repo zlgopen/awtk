@@ -490,23 +490,23 @@ TEST(Utils, image_region_parse) {
 TEST(Utils, to_json) {
   str_t str;
   value_t v;
-  object_t* obj = object_default_create();
-  object_t* addr = object_default_create();
-  object_t* arr = object_array_create();
-  object_set_prop_str(obj, "name", "jim");
-  object_set_prop_int(obj, "age", 100);
+  tk_object_t* obj = object_default_create();
+  tk_object_t* addr = object_default_create();
+  tk_object_t* arr = object_array_create();
+  tk_object_set_prop_str(obj, "name", "jim");
+  tk_object_set_prop_int(obj, "age", 100);
 
-  object_set_prop_int(arr, "-1", 1);
-  object_set_prop_int(arr, "-1", 2);
-  object_set_prop_str(arr, "-1", "abc");
+  tk_object_set_prop_int(arr, "-1", 1);
+  tk_object_set_prop_int(arr, "-1", 2);
+  tk_object_set_prop_str(arr, "-1", "abc");
   value_set_wstr(&v, L"hello");
-  object_set_prop(arr, "-1", &v);
+  tk_object_set_prop(arr, "-1", &v);
 
-  object_set_prop_str(addr, "country", "zh");
-  object_set_prop_str(addr, "city", "sz");
+  tk_object_set_prop_str(addr, "country", "zh");
+  tk_object_set_prop_str(addr, "city", "sz");
 
-  object_set_prop_object(obj, "addr", addr);
-  object_set_prop_object(obj, "arr", arr);
+  tk_object_set_prop_object(obj, "addr", addr);
+  tk_object_set_prop_object(obj, "arr", arr);
 
   str_init(&str, 1000);
   ASSERT_EQ(object_to_json(obj, &str), RET_OK);
@@ -515,9 +515,9 @@ TEST(Utils, to_json) {
                "\"hello\"],\"name\":\"jim\"}");
 
   str_reset(&str);
-  OBJECT_UNREF(obj);
-  OBJECT_UNREF(arr);
-  OBJECT_UNREF(addr);
+  TK_OBJECT_UNREF(obj);
+  TK_OBJECT_UNREF(arr);
+  TK_OBJECT_UNREF(addr);
 }
 
 TEST(Utils, strrstr) {

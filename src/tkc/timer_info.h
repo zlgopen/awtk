@@ -42,13 +42,13 @@ typedef enum _timer_info_type_t {
 
 /**
  * @class timer_info_t
- * @parent object_t
+ * @parent tk_object_t
  * @annotation ["scriptable"]
  * 单个定时器的信息。
  *
  */
 struct _timer_info_t {
-  object_t object;
+  tk_object_t object;
 
   /**
    * @property {timer_func_t} on_timer

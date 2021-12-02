@@ -548,7 +548,7 @@ ret_t str_to_upper(str_t* str);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t str_expand_vars(str_t* str, const char* src, const object_t* obj);
+ret_t str_expand_vars(str_t* str, const char* src, const tk_object_t* obj);
 
 /**
  * @method str_common_prefix

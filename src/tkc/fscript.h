@@ -125,11 +125,11 @@ typedef struct _fscript_t {
    */
   str_t str;
   /**
-   * @property {object_t*} obj
+   * @property {tk_object_t*} obj
    * @annotation ["readable"]
    * 脚本执行上下文。
    */
-  object_t* obj;
+  tk_object_t* obj;
   /**
    * @property {value_t*} fast_vars
    * @annotation ["readable"]
@@ -151,9 +151,9 @@ typedef struct _fscript_t {
   uint8_t while_count;
 
   /*函数局部变量和参数*/
-  object_t* locals;
+  tk_object_t* locals;
   /*脚本定义的函数*/
-  object_t* funcs_def;
+  tk_object_t* funcs_def;
 } fscript_t;
 
 typedef ret_t (*fscript_func_t)(fscript_t* fscript, fscript_args_t* args, value_t* v);
@@ -161,12 +161,12 @@ typedef ret_t (*fscript_func_t)(fscript_t* fscript, fscript_args_t* args, value_
 /**
  * @method fscript_create
  * 创建引擎对象，并解析代码。
- * @param {object_t*} obj 脚本执行上下文。
+ * @param {tk_object_t*} obj 脚本执行上下文。
  * @param {const char*} script 脚本代码。
  *
  * @return {fscript_t*} 返回fscript对象。
  */
-fscript_t* fscript_create(object_t* obj, const char* script);
+fscript_t* fscript_create(tk_object_t* obj, const char* script);
 
 /**
  * @method fscript_syntax_check
@@ -179,13 +179,13 @@ fscript_t* fscript_create(object_t* obj, const char* script);
  * fscript_parser_error_deinit(&error);
  *```
  *
- * @param {object_t*} obj 脚本执行上下文。
+ * @param {tk_object_t*} obj 脚本执行上下文。
  * @param {const char*} script 脚本代码。
  * @param {fscript_parser_error_t*} error 用于返回错误信息。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t fscript_syntax_check(object_t* obj, const char* script, fscript_parser_error_t* error);
+ret_t fscript_syntax_check(tk_object_t* obj, const char* script, fscript_parser_error_t* error);
 
 /**
  * @method fscript_exec
@@ -221,13 +221,13 @@ ret_t fscript_destroy(fscript_t* fscript);
 /**
  * @method fscript_eval
  * 执行一段脚本。
- * @param {object_t*} obj 脚本执行上下文。
+ * @param {tk_object_t*} obj 脚本执行上下文。
  * @param {const char*} script 脚本代码。
  * @param {value_t*} result 执行结果(调用者需要用value_reset函数清除result)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t fscript_eval(object_t* obj, const char* script, value_t* result);
+ret_t fscript_eval(tk_object_t* obj, const char* script, value_t* result);
 
 /**
  * @method fscript_global_init

@@ -75,7 +75,7 @@ ret_t window_animator_factory_register(window_animator_factory_t* factory, const
 }
 
 window_animator_t* window_animator_factory_create_animator(window_animator_factory_t* factory,
-                                                           bool_t open, object_t* args) {
+                                                           bool_t open, tk_object_t* args) {
   const creator_item_t* iter = NULL;
   return_value_if_fail(factory != NULL && args != NULL, NULL);
 
@@ -111,7 +111,7 @@ ret_t window_animator_factory_destroy(window_animator_factory_t* factory) {
 #ifndef WITHOUT_WINDOW_ANIMATORS
 static window_animator_t* window_animator_create_impl(const char* type, bool_t open) {
   value_t v;
-  object_t* args = NULL;
+  tk_object_t* args = NULL;
   window_animator_t* wa = NULL;
   window_animator_factory_t* factory = window_animator_factory();
 
@@ -124,11 +124,11 @@ static window_animator_t* window_animator_create_impl(const char* type, bool_t o
   wa = window_animator_factory_create_animator(factory, open, args);
   return_value_if_fail(wa != NULL, NULL);
 
-  if (object_get_prop(args, "duration", &v) == RET_OK) {
+  if (tk_object_get_prop(args, "duration", &v) == RET_OK) {
     wa->duration = value_int(&v);
   }
 
-  if (object_get_prop(args, "easing", &v) == RET_OK) {
+  if (tk_object_get_prop(args, "easing", &v) == RET_OK) {
     const key_type_value_t* kv = easing_type_find(value_str(&v));
 
     if (kv != NULL) {
@@ -136,7 +136,7 @@ static window_animator_t* window_animator_create_impl(const char* type, bool_t o
     }
   }
 
-  object_unref(args);
+  tk_object_unref(args);
 
   return wa;
 }

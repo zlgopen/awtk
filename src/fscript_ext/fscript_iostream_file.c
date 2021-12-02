@@ -28,7 +28,7 @@ static ret_t func_istream_file_create(fscript_t* fscript, fscript_args_t* args, 
   mode = args->size > 1 ? value_str(args->args + 1) : "rb";
   return_value_if_fail(filename != NULL && mode != NULL, RET_BAD_PARAMS);
 
-  value_set_object(result, OBJECT(tk_istream_file_create_ex(filename, mode)));
+  value_set_object(result, TK_OBJECT(tk_istream_file_create_ex(filename, mode)));
   result->free_handle = TRUE;
 
   return RET_OK;
@@ -43,7 +43,7 @@ static ret_t func_ostream_file_create(fscript_t* fscript, fscript_args_t* args, 
   mode = args->size > 1 ? value_str(args->args + 1) : "wb+";
   return_value_if_fail(filename != NULL && mode != NULL, RET_BAD_PARAMS);
 
-  value_set_object(result, OBJECT(tk_ostream_file_create_ex(filename, mode)));
+  value_set_object(result, TK_OBJECT(tk_ostream_file_create_ex(filename, mode)));
   result->free_handle = TRUE;
 
   return RET_OK;

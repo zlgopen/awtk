@@ -31,6 +31,6 @@ TEST(EventSourceTimer, basic) {
   ASSERT_EQ(event_source_dispatch(event_source), RET_OK);
   ASSERT_EQ(s_timer_times, 1u);
 
-  object_unref(OBJECT(event_source));
+  tk_object_unref(TK_OBJECT(event_source));
   timer_manager_destroy(tm);
 }

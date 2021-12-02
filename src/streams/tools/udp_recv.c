@@ -15,7 +15,7 @@ void do_recv(int port) {
   struct sockaddr_in addr;
   int sock = socket(AF_INET, SOCK_DGRAM, 0);
 
-  socket_bind(sock, port);
+  tk_socket_bind(sock, port);
 
   while (n > 0) {
     memset(buff, 0x00, sizeof(buff));
@@ -34,7 +34,7 @@ void do_recv(int port) {
     log_debug("remain %d times\n", n);
   }
 
-  socket_close(sock);
+  tk_socket_close(sock);
 
   return;
 }
@@ -47,14 +47,14 @@ int main(int argc, char* argv[]) {
     return 0;
   }
 
-  socket_init();
+  tk_socket_init();
   platform_prepare();
   TK_ENABLE_CONSOLE();
 
   port = tk_atoi(argv[1]);
   do_recv(port);
 
-  socket_deinit();
+  tk_socket_deinit();
 
   return 0;
 }

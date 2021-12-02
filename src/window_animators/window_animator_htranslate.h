@@ -26,7 +26,7 @@
 
 BEGIN_C_DECLS
 
-window_animator_t* window_animator_htranslate_create(bool_t open, object_t* args);
+window_animator_t* window_animator_htranslate_create(bool_t open, tk_object_t* args);
 
 END_C_DECLS
 

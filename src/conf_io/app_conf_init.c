@@ -77,7 +77,7 @@ static ret_t app_conf_get_url(char url[MAX_PATH + 1], const char* app_name, cons
 }
 
 ret_t app_conf_init(conf_load_t load, const char* app_name, const char* extname) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   char path[MAX_PATH + 1];
 #ifdef APP_CONF_URL
   const char* app_conf_name = APP_CONF_URL;
@@ -95,7 +95,7 @@ ret_t app_conf_init(conf_load_t load, const char* app_name, const char* extname)
   app_conf_set_instance(obj);
   app_conf_set_str(CONF_OBJ_PROP_DEFAULT_URL, path);
 
-  OBJECT_UNREF(obj);
+  TK_OBJECT_UNREF(obj);
 
   return RET_OK;
 }

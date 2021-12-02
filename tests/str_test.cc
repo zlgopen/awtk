@@ -202,12 +202,12 @@ TEST(Str, unescap) {
 
 TEST(Str, expand_vars) {
   str_t str;
-  object_t* vars = object_default_create();
-  object_set_prop_int(vars, "x", 100);
-  object_set_prop_int(vars, "y", 200);
-  object_set_prop_int(vars, "w", 300);
-  object_set_prop_int(vars, "h", 400);
-  object_set_prop_str(vars, "os", "mac");
+  tk_object_t* vars = object_default_create();
+  tk_object_set_prop_int(vars, "x", 100);
+  tk_object_set_prop_int(vars, "y", 200);
+  tk_object_set_prop_int(vars, "w", 300);
+  tk_object_set_prop_int(vars, "h", 400);
+  tk_object_set_prop_str(vars, "os", "mac");
 
   str_t* s = str_init(&str, 0);
 
@@ -254,7 +254,7 @@ TEST(Str, expand_vars) {
   ASSERT_EQ(str_expand_vars(s, "123${abc+$x}456", vars), RET_OK);
   ASSERT_STREQ(s->str, "123abc100456");
 
-  object_unref(vars);
+  tk_object_unref(vars);
   str_reset(s);
 }
 

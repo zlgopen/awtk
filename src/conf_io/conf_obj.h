@@ -35,7 +35,7 @@ typedef conf_doc_t* (*conf_doc_load_t)(data_reader_t* reader);
 
 /**
  * @class conf_obj_t
- * @parent object_t
+ * @parent tk_object_t
  * @annotation ["fake"]
  * 
  * conf对象。
@@ -51,9 +51,9 @@ typedef conf_doc_t* (*conf_doc_load_t)(data_reader_t* reader);
  * @param {const char*} url 路径。
  * @param {bool_t} create_if_not_exist 如果不存在是否创建。 
  * 
- * @return {object_t*} 返回配置对象。
+ * @return {tk_object_t*} 返回配置对象。
  */
-object_t* conf_obj_create(conf_doc_save_t save, conf_doc_load_t load, const char* url,
+tk_object_t* conf_obj_create(conf_doc_save_t save, conf_doc_load_t load, const char* url,
                           bool_t create_if_not_exist);
 
 /**
@@ -61,35 +61,35 @@ object_t* conf_obj_create(conf_doc_save_t save, conf_doc_load_t load, const char
  * 
  * 获取doc对象，用于更高级的操作。
  * 
- * @param {object_t*} conf conf对象。
+ * @param {tk_object_t*} conf conf对象。
  * 
  * @return {conf_dot_t} 返回doc对象。
  * 
  */
-conf_doc_t* conf_obj_get_doc(object_t* conf);
+conf_doc_t* conf_obj_get_doc(tk_object_t* conf);
 
 /**
  * @method conf_obj_save 
  * 
  * 保存文档。
  * 
- * @param {object_t*} conf conf对象。
+ * @param {tk_object_t*} conf conf对象。
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败
  */
-ret_t conf_obj_save(object_t* conf);
+ret_t conf_obj_save(tk_object_t* conf);
 
 /**
  * @method conf_obj_set_readonly
  * 
  * 设置为只读模式。
  * 
- * @param {object_t*} conf conf对象。
+ * @param {tk_object_t*} conf conf对象。
  * @param {bool_t} readonly 只读模式。
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败
  */
-ret_t conf_obj_set_readonly(object_t* conf, bool_t readonly);
+ret_t conf_obj_set_readonly(tk_object_t* conf, bool_t readonly);
 
 #define CONF_OBJ_PROP_URL "__URL__"
 #define CONF_OBJ_PROP_DEFAULT_URL "__DEFAULT_URL__"

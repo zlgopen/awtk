@@ -21,7 +21,7 @@
 
 #include "object_widget.h"
 
-static ret_t object_widget_on_destroy(object_t* obj) {
+static ret_t object_widget_on_destroy(tk_object_t* obj) {
   object_widget_t* o = OBJECT_WIDGET(obj);
   return_value_if_fail(o != NULL && o->widget != NULL, RET_BAD_PARAMS);
 
@@ -30,7 +30,7 @@ static ret_t object_widget_on_destroy(object_t* obj) {
   return RET_OK;
 }
 
-static int32_t object_widget_compare(object_t* obj, object_t* other) {
+static int32_t object_widget_compare(tk_object_t* obj, tk_object_t* other) {
   object_widget_t* o1 = OBJECT_WIDGET(obj);
   object_widget_t* o2 = OBJECT_WIDGET(other);
   return_value_if_fail(o1 != NULL, -1);
@@ -39,7 +39,7 @@ static int32_t object_widget_compare(object_t* obj, object_t* other) {
   return o1->widget == o2->widget ? 0 : o1->widget > o2->widget ? 2 : -2;
 }
 
-static ret_t object_widget_set_prop(object_t* obj, const char* name, const value_t* v) {
+static ret_t object_widget_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   object_widget_t* o = OBJECT_WIDGET(obj);
   return_value_if_fail(o != NULL && o->widget != NULL, RET_BAD_PARAMS);
@@ -54,7 +54,7 @@ static ret_t object_widget_set_prop(object_t* obj, const char* name, const value
   return ret;
 }
 
-static ret_t object_widget_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t object_widget_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   object_widget_t* o = OBJECT_WIDGET(obj);
   return_value_if_fail(o != NULL && o->widget != NULL, RET_BAD_PARAMS);
@@ -77,12 +77,12 @@ static const object_vtable_t s_object_widget_vtable = {.type = "object_widget",
                                                        .get_prop = object_widget_get_prop,
                                                        .set_prop = object_widget_set_prop};
 
-object_t* object_widget_create(widget_t* widget) {
-  object_t* o = NULL;
+tk_object_t* object_widget_create(widget_t* widget) {
+  tk_object_t* o = NULL;
   object_widget_t* wrapper = NULL;
   return_value_if_fail(widget != NULL, NULL);
 
-  o = object_create(&s_object_widget_vtable);
+  o = tk_object_create(&s_object_widget_vtable);
   return_value_if_fail(o != NULL, NULL);
 
   wrapper = OBJECT_WIDGET(o);
@@ -93,7 +93,7 @@ object_t* object_widget_create(widget_t* widget) {
   return o;
 }
 
-object_widget_t* object_widget_cast(object_t* obj) {
+object_widget_t* object_widget_cast(tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt == &s_object_widget_vtable, NULL);
 
   return (object_widget_t*)(obj);

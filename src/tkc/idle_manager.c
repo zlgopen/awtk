@@ -45,7 +45,7 @@ idle_manager_t* idle_manager_init(idle_manager_t* idle_manager) {
   return_value_if_fail(idle_manager != NULL, NULL);
 
   idle_manager->next_idle_id = TK_INVALID_ID + 1;
-  slist_init(&(idle_manager->idles), (tk_destroy_t)object_unref, idle_info_compare_by_id);
+  slist_init(&(idle_manager->idles), (tk_destroy_t)tk_object_unref, idle_info_compare_by_id);
 
   return idle_manager;
 }
@@ -145,14 +145,14 @@ static ret_t idle_manager_dispatch_one(idle_manager_t* idle_manager, uint32_t di
   }
 
   if (iter != NULL) {
-    idle_info_t* idle = (idle_info_t*)object_ref((object_t*)(iter->data));
+    idle_info_t* idle = (idle_info_t*)tk_object_ref((tk_object_t*)(iter->data));
     return_value_if_fail(idle != NULL, RET_BAD_PARAMS);
 
     if (idle_info_on_idle(idle, dispatch_id) != RET_REPEAT) {
       idle_manager_remove(idle_manager, idle->id);
     }
 
-    object_unref((object_t*)idle);
+    tk_object_unref((tk_object_t*)idle);
 
     return RET_OK;
   }

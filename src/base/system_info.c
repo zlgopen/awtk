@@ -220,13 +220,13 @@ ret_t system_info_init(app_type_t app_type, const char* app_name, const char* ap
 ret_t system_info_deinit(void) {
   return_value_if_fail(s_system_info != NULL, RET_BAD_PARAMS);
 
-  object_unref(OBJECT(s_system_info));
+  tk_object_unref(TK_OBJECT(s_system_info));
   s_system_info = NULL;
 
   return RET_OK;
 }
 
-static ret_t system_info_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t system_info_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   system_info_t* info = SYSTEM_INFO(obj);
 
   if (tk_str_eq(name, SYSTEM_INFO_PROP_LCD_W)) {
@@ -266,7 +266,7 @@ static ret_t system_info_get_prop(object_t* obj, const char* name, value_t* v) {
   return RET_OK;
 }
 
-static ret_t system_info_on_destroy(object_t* obj) {
+static ret_t system_info_on_destroy(tk_object_t* obj) {
   system_info_t* info = SYSTEM_INFO(obj);
   return_value_if_fail(info != NULL, RET_FAIL);
 
@@ -282,7 +282,7 @@ static const object_vtable_t s_system_info_vtable = {.type = "system_info",
                                                      .on_destroy = system_info_on_destroy};
 
 system_info_t* system_info_create(app_type_t app_type, const char* app_name, const char* app_root) {
-  object_t* obj = object_create(&s_system_info_vtable);
+  tk_object_t* obj = tk_object_create(&s_system_info_vtable);
   system_info_t* info = SYSTEM_INFO(obj);
   return_value_if_fail(info != NULL, NULL);
 
@@ -359,7 +359,7 @@ static ret_t system_info_eval_one(system_info_t* info, str_t* str, const char* e
   if (not_schema && strchr(expr, '$') != NULL) {
     str_set(str, "");
 
-    if (str_expand_vars(str, expr, OBJECT(info)) == RET_OK) {
+    if (str_expand_vars(str, expr, TK_OBJECT(info)) == RET_OK) {
       return on_expr_result(ctx, str->str);
     }
   }

@@ -47,7 +47,7 @@ typedef struct _window_animator_vtable_t {
   window_animator_draw_curr_window_t draw_curr_window;
 } window_animator_vtable_t;
 
-typedef window_animator_t* (*window_animator_create_t)(bool_t open, object_t* args);
+typedef window_animator_t* (*window_animator_create_t)(bool_t open, tk_object_t* args);
 
 /**
  * @enum window_animator_type_t

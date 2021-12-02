@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
     ret = tk_istream_read(in, buff, sizeof(buff));
     ret = tk_ostream_write(out, "hello\r\n", 7);
 
-    OBJECT_UNREF(io);
+    TK_OBJECT_UNREF(io);
     mbedtls_server_destroy(server);
   }
 
