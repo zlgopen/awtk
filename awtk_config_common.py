@@ -28,7 +28,7 @@ def addLibPrefix(iter):
 
 def toWholeArchive(libs):
     wa = ' '.join(list(map(addLibPrefix, libs)))
-    wa = ' -Wl,--whole-archive ' + wa + ' -Wl,--no-whole-archive'
+    return ' -Wl,--whole-archive ' + wa + ' -Wl,--no-whole-archive'
 
 
 def getTkcOnly():
@@ -55,7 +55,7 @@ TK_TOOLS_ROOT = joinPath(TK_ROOT, 'tools')
 TK_DEMO_ROOT = joinPath(TK_ROOT, 'demos')
 GTEST_ROOT = joinPath(TK_ROOT, '3rd/gtest/googletest')
 TKC_STATIC_LIBS = ['fscript_ext', 'streams', 'conf_io', 'hal', 'xml', 'charset',
-                   'csv', 'ubjson', 'compressors', 'mbedtls', 'miniz', 'tkc_core', 'mbedtls']
+                   'csv', 'ubjson', 'compressors', 'miniz', 'tkc_core', 'mbedtls']
 
 TOOLS_NAME = ''
 NANOVG_BACKEND = ''
@@ -230,16 +230,16 @@ def setEnvSpawn(env):
 
 def genDllLinkFlags(libs, defFile):
     linkFlags = ''
-    WholeArch = toWholeArchive(libs)
+    wholeArch = toWholeArchive(libs)
 
     if OS_NAME == 'Windows':
         if TOOLS_NAME == '':
             linkFlags += ' /DEF:"dllexports/'+defFile+'.def" '
         elif TOOLS_NAME == 'mingw':
-            linkFlags += WholeArch
+            linkFlags += wholeArch
     elif OS_NAME == 'Darwin':
         linkFlags += ' -all_load '
     elif OS_NAME == 'Linux':
-        linkFlags += WholeArch
+        linkFlags += wholeArch
 
     return linkFlags
