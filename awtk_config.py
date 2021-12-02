@@ -242,7 +242,7 @@ os.environ['AWTK_CCFLAGS'] = AWTK_CCFLAGS
 
 os.environ['SDL_UBUNTU_USE_IME'] = str(False)
 # os.environ['SDL_UBUNTU_USE_IME'] = str(True)
-
+OS_LIBS = ['SDL2', 'glad'] + OS_LIBS
 
 def genIdlAndDef():
     genIdlAndDefEx(True)
