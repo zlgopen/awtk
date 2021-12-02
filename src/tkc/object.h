@@ -959,7 +959,7 @@ tk_object_t* tk_object_get_child_object(tk_object_t* obj, const char* path, cons
 /**
  * @enum object_cmd_t
  * @annotation ["scriptable", "string"]
- * @prefix OBJECT_CMD_
+ * @prefix TK_OBJECT_CMD_
  * 对象常见命令定义
  */
 
