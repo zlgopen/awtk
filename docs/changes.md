@@ -1,6 +1,7 @@
 # 最新动态
 
 2021/12/01
+  * 将tkc放到独立的仓库(以后通过sync\_tkc.sh同步tkc代码)。
   * edit增加事件EVT\_IM\_ACTION（感谢兆坤提供补丁）
   * 修复 awtk 的 nanovg\_plus 的获取当前裁剪区不正常的问题 （感谢智明提供补丁）
   * 修复 widget\_set\_as\_key\_target 递归各个父集后导致全屏刷新的问题 （感谢智明提供补丁）

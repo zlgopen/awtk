@@ -21,7 +21,6 @@
 
 #include <time.h>
 #include <stdio.h>
-#include "base/timer.h"
 #include "tkc/platform.h"
 #include "tkc/date_time.h"
 #include "tkc/mem.h"

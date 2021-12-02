@@ -9,14 +9,21 @@ def getAwtkConfig(LINUX_FB):
 
     return awtk
 
-
-def getAwtkOrAwtkLinuxFbRoot(LINUX_FB):
-    if LINUX_FB:
-        AWTK_ROOT = getAwtkLinuxFbRoot()
+def getTkcOnly():
+    env = os.environ
+    if 'TKC_ONLY' in env:
+        return env['TKC_ONLY'] == 'True'
     else:
-        AWTK_ROOT = getAwtkRoot()
+        return False
 
-    return AWTK_ROOT
+def getAwtkOrAwtkLinuxFbRoot(is_linux_fb):
+    if getTkcOnly():
+        print('TKC_ONLY == True');
+        return locateAWTK('tkc')
+    elif is_linux_fb:
+        return locateAWTK('awtk-linux-fb')
+    else:
+        return locateAWTK('awtk')
 
 
 def getAwtkScriptsRoot():

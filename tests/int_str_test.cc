@@ -1,6 +1,9 @@
-﻿#include "base/events.h"
-#include "tkc/int_str.h"
+﻿#include "tkc/int_str.h"
 #include "gtest/gtest.h"
+
+#define EVT_CLICK 1
+#define EVT_POINTER_DOWN 2
+#define EVT_NONE 0
 
 #include <string>
 
