@@ -41,10 +41,6 @@
 #include "fscript_ext/fscript_iostream_inet.h"
 #include "fscript_ext/fscript_iostream_serial.h"
 
-#ifdef FSCRIPT_WITH_WIDGET
-#include "fscript_ext/fscript_widget.h"
-#endif /*FSCRIPT_WITH_WIDGET*/
-
 static ret_t func_value_is_valid(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_bool(result, args->args->type != VALUE_TYPE_INVALID);
@@ -326,10 +322,6 @@ ret_t fscript_ext_init(void) {
 #ifdef FSCRIPT_WITH_DATE_TIME
   fscript_date_time_register();
 #endif /*FSCRIPT_WITH_DATE_TIME*/
-
-#ifdef FSCRIPT_WITH_WIDGET
-  fscript_widget_register();
-#endif /*FSCRIPT_WITH_WIDGET*/
 
   return RET_OK;
 }
