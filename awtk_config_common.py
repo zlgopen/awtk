@@ -4,6 +4,10 @@ import platform
 import shutil
 from shutil import copyfile
 
+#######################################################
+# XXX: This file can be edited only in tkc project
+#######################################################
+
 TOOLS_PREFIX = ''
 OS_NAME = platform.system()
 MACH = platform.machine()
