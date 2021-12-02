@@ -207,6 +207,7 @@ wh_t canvas_get_height(canvas_t* c);
  * @method canvas_get_clip_rect
  * 获取裁剪区。
  *
+ * @annotation ["scriptable"]
  * @param {canvas_t*} c canvas对象。
  * @param {rect_t*} r rect对象。
  *
@@ -223,7 +224,7 @@ ret_t canvas_get_clip_rect(canvas_t* c, rect_t* r);
  * @param {xy_t} right 矩形区域右边。
  * @param {xy_t} bottom 矩形区域下边。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {bool_t} 返回TRUE表示是，否则表示不是。
  */
 bool_t canvas_is_rect_in_clip_rect(canvas_t* c, xy_t left, xy_t top, xy_t right, xy_t bottom);
 

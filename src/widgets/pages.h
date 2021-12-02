@@ -67,7 +67,7 @@ typedef struct _pages_t {
 
   /**
    * @property {uint32_t} value
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable", "fake"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","fake"]
    * 当前活跃的page。
    */
   /* private */
