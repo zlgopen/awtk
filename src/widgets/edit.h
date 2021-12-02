@@ -244,6 +244,11 @@ typedef struct _edit_t {
  */
 
 /**
+ * @event {event_t} EVT_IM_ACTION
+ * 软键盘Action点击事件。
+ */
+
+/**
  * @method edit_create
  * 创建edit对象
  * @annotation ["constructor", "scriptable"]

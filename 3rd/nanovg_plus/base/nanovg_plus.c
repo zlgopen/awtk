@@ -1094,7 +1094,7 @@ nvgp_error_t nvgp_get_curr_clip_rect(nvgp_context_t* ctx, float* x, float* y, fl
     ex = state->scissor.extent[0];
     ey = state->scissor.extent[1];
     nvgp_transform_inverse(&invxorm, &state->matrix);
-    nvgp_transform_multiply(&pxform, &invxorm);
+    nvgp_transform_multiply_to_t(&pxform, &invxorm);
     tex = ex * nvgp_abs(pxform.mat.scale_x) + ey * nvgp_abs(pxform.mat.skew_x);
     tey = ex * nvgp_abs(pxform.mat.skew_y) + ey * nvgp_abs(pxform.mat.scale_y);
 
@@ -1129,7 +1129,7 @@ nvgp_error_t nvgp_intersect_scissor(nvgp_context_t* ctx, float* x, float* y, flo
     ex = state->scissor.extent[0];
     ey = state->scissor.extent[1];
     nvgp_transform_inverse(&invxorm, &state->matrix);
-    nvgp_transform_multiply(&pxform, &invxorm);
+    nvgp_transform_multiply_to_t(&pxform, &invxorm);
     tex = ex * nvgp_abs(pxform.mat.scale_x) + ey * nvgp_abs(pxform.mat.skew_x);
     tey = ex * nvgp_abs(pxform.mat.skew_y) + ey * nvgp_abs(pxform.mat.scale_y);
 

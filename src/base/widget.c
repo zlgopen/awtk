@@ -3938,6 +3938,7 @@ ret_t widget_set_as_key_target(widget_t* widget) {
         parent->focused = TRUE;
         event_t e = event_init(EVT_FOCUS, NULL);
         widget_dispatch(parent, &e);
+        widget_set_need_update_style(parent);
       }
 
       if (parent->key_target != NULL && parent->key_target != widget) {
@@ -3948,8 +3949,10 @@ ret_t widget_set_as_key_target(widget_t* widget) {
         parent->key_target = widget;
       }
       widget_set_as_key_target(parent);
+      if (!widget->focused) {
+        widget_set_need_update_style(widget);
+      }
     }
-    widget_set_need_update_style(widget);
   }
 
   return RET_OK;
