@@ -1,144 +1,107 @@
 import os
 import copy
 import platform
+import awtk_config as config
 
-BIN_DIR=os.environ['BIN_DIR'];
-LIB_DIR=os.environ['LIB_DIR'];
-NANOVG_BACKEND=os.environ['NANOVG_BACKEND'];
-VGCANVAS=os.environ['VGCANVAS'];
-NATIVE_WINDOW = os.environ['NATIVE_WINDOW'];
-GRAPHIC_BUFFER = os.environ['GRAPHIC_BUFFER'];
-TOOLS_NAME = os.environ['TOOLS_NAME'] 
+BIN_DIR = os.environ['BIN_DIR']
+LIB_DIR = os.environ['LIB_DIR']
+NANOVG_BACKEND = os.environ['NANOVG_BACKEND']
+VGCANVAS = os.environ['VGCANVAS']
+NATIVE_WINDOW = os.environ['NATIVE_WINDOW']
+GRAPHIC_BUFFER = os.environ['GRAPHIC_BUFFER']
+TOOLS_NAME = os.environ['TOOLS_NAME']
 
-BASE_SOURCES=Glob('layouters/*.c') + \
-  Glob('base/*.c') + \
-  Glob('ui_loader/*.c') + \
-  Glob('fscript_ext/*.c') + \
-  Glob('xml/*.c') + \
-  Glob('svg/*.c') + \
-  Glob('charset/*.c') + \
-  Glob('clip_board/*.c') + \
-  Glob('font_loader/*.c') + \
-  Glob('blend/*.c') + \
-  Glob('image_loader/*.c') + \
-  Glob('designer_support/*.c') + \
-  Glob('widget_animators/*.c') + \
-  Glob('misc/*.cpp') + \
-  Glob('window_animators/*.c') + \
-  Glob('dialog_highlighters/*.c') + \
-  Glob('window_manager/window_manager_default.c') 
+BASE_SOURCES = Glob('layouters/*.c') + \
+    Glob('base/*.c') + \
+    Glob('ui_loader/*.c') + \
+    Glob('svg/*.c') + \
+    Glob('clip_board/*.c') + \
+    Glob('font_loader/*.c') + \
+    Glob('blend/*.c') + \
+    Glob('image_loader/*.c') + \
+    Glob('designer_support/*.c') + \
+    Glob('widget_animators/*.c') + \
+    Glob('window_animators/*.c') + \
+    Glob('dialog_highlighters/*.c') + \
+    Glob('window_manager/window_manager_default.c')
 
 BASE_SOURCES += Glob('graphic_buffer/graphic_buffer_default.c')
 
 if NATIVE_WINDOW == 'sdl':
-  BASE_SOURCES += Glob('native_window/native_window_sdl.c')
+    BASE_SOURCES += Glob('native_window/native_window_sdl.c')
 elif NATIVE_WINDOW == 'fb_gl':
-  BASE_SOURCES += Glob('native_window/native_window_fb_gl.c')
+    BASE_SOURCES += Glob('native_window/native_window_fb_gl.c')
 else:
-  BASE_SOURCES += Glob('native_window/native_window_raw.c')
+    BASE_SOURCES += Glob('native_window/native_window_raw.c')
 
-BASE_SOURCES += ['lcd/lcd_mono.c'];
-BASE_SOURCES += ['main_loop/main_loop_simple.c'];
+BASE_SOURCES += ['lcd/lcd_mono.c']
+BASE_SOURCES += ['main_loop/main_loop_simple.c']
 if os.environ['LCD'] == 'SDL_GPU':
-  BASE_SOURCES += ['lcd/lcd_nanovg.c', 'main_loop/main_loop_sdl.c'];
+    BASE_SOURCES += ['lcd/lcd_nanovg.c', 'main_loop/main_loop_sdl.c']
 elif os.environ['LCD'] == 'SDL_FB':
-  BASE_SOURCES += ['lcd/lcd_sdl2.c', 'main_loop/main_loop_sdl.c']
+    BASE_SOURCES += ['lcd/lcd_sdl2.c', 'main_loop/main_loop_sdl.c']
 elif os.environ['LCD'] == 'SDL_FB_MONO':
-  BASE_SOURCES += ['lcd/lcd_sdl2_mono.c', 'main_loop/main_loop_sdl.c']
+    BASE_SOURCES += ['lcd/lcd_sdl2_mono.c', 'main_loop/main_loop_sdl.c']
 elif os.environ['LCD'] == 'FB_GL':
-  BASE_SOURCES += ['lcd/lcd_nanovg.c']
+    BASE_SOURCES += ['lcd/lcd_nanovg.c']
 
 BASE_SOURCES += [
-  'input_methods/input_method_creator.c'
-  ] + Glob('lcd/lcd_mem_*.c') ;
+    'input_methods/input_method_creator.c'
+] + Glob('lcd/lcd_mem_*.c')
 
 if VGCANVAS == 'CAIRO':
-  BASE_SOURCES +=['vgcanvas/vgcanvas_cairo.c'];
+    BASE_SOURCES += ['vgcanvas/vgcanvas_cairo.c']
 elif VGCANVAS == 'NANOVG_PLUS':
-  BASE_SOURCES +=['vgcanvas/vgcanvas_nanovg_plus.c'];
+    BASE_SOURCES += ['vgcanvas/vgcanvas_nanovg_plus.c']
 else:
-  if NANOVG_BACKEND == 'BGFX':
-    BASE_SOURCES +=['vgcanvas/vgcanvas_nanovg_bgfx.c'];
-  elif NANOVG_BACKEND == 'AGG':
-    BASE_SOURCES +=['vgcanvas/vgcanvas_nanovg_soft.c'];
-  elif NANOVG_BACKEND == 'AGGE':
-    BASE_SOURCES +=['vgcanvas/vgcanvas_nanovg_soft.c'];
-  else:
-    BASE_SOURCES +=['vgcanvas/vgcanvas_nanovg_gl.c'];
+    if NANOVG_BACKEND == 'BGFX':
+        BASE_SOURCES += ['vgcanvas/vgcanvas_nanovg_bgfx.c']
+    elif NANOVG_BACKEND == 'AGG':
+        BASE_SOURCES += ['vgcanvas/vgcanvas_nanovg_soft.c']
+    elif NANOVG_BACKEND == 'AGGE':
+        BASE_SOURCES += ['vgcanvas/vgcanvas_nanovg_soft.c']
+    else:
+        BASE_SOURCES += ['vgcanvas/vgcanvas_nanovg_gl.c']
 
 if os.environ['INPUT_ENGINE'] == 'null':
-  BASE_SOURCES += Glob('input_engines/input_engine_null.c')
+    BASE_SOURCES += Glob('input_engines/input_engine_null.c')
 elif os.environ['INPUT_ENGINE'] == 't9ext':
-  BASE_SOURCES += Glob('input_engines/ime_utils.c')
-  BASE_SOURCES += Glob('input_engines/input_engine_t9ext.c')
+    BASE_SOURCES += Glob('input_engines/ime_utils.c')
+    BASE_SOURCES += Glob('input_engines/input_engine_t9ext.c')
 elif os.environ['INPUT_ENGINE'] == 't9':
-  BASE_SOURCES += Glob('input_engines/ime_utils.c')
-  BASE_SOURCES += Glob('input_engines/input_engine_t9.c')
+    BASE_SOURCES += Glob('input_engines/ime_utils.c')
+    BASE_SOURCES += Glob('input_engines/input_engine_t9.c')
 elif os.environ['INPUT_ENGINE'] == 'spinyin':
-  BASE_SOURCES += Glob('input_engines/ime_utils.c')
-  BASE_SOURCES += Glob('input_engines/input_engine_spinyin.c')
+    BASE_SOURCES += Glob('input_engines/ime_utils.c')
+    BASE_SOURCES += Glob('input_engines/input_engine_spinyin.c')
 else:
-  BASE_SOURCES += Glob('input_engines/input_engine_pinyin.cpp')
+    BASE_SOURCES += Glob('input_engines/input_engine_pinyin.cpp')
 
-env=DefaultEnvironment().Clone()
-
-if env['PLATFORM'] == 'win32' and os.environ['TOOLS_NAME'] != '':
-  import subprocess
-  class ourSpawn:
-    def ourspawn(self, sh, escape, cmd, args, env):
-      newargs = ' '.join(args[1:])
-      cmdline = cmd + " " + newargs
-      startupinfo = subprocess.STARTUPINFO()
-      startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-      proc = subprocess.Popen(cmdline, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-          stderr=subprocess.PIPE, startupinfo=startupinfo, shell = False, env = env)
-      data, err = proc.communicate()
-      rv = proc.wait()
-      if rv:
-        print("=====")
-        print(err)
-        print("=====")
-      return rv
-        
-  buf = ourSpawn()
-  buf.ourenv = env
-  env['SPAWN'] = buf.ourspawn
-  
-TK_SOURCES=Glob('tkc/*.c') + Glob('platforms/pc/*.c')
-env.Library(os.path.join(LIB_DIR, 'tkc_core'), TK_SOURCES, LIBS=[])
-
-TKC_DEPS_LIBS=[]
-OS_NAME = platform.system()
-TKC_LINKFLAGS = env['LINKFLAGS'];
-TKC_STATIC_LIBS = ['conf_io', 'hal', 'csv', 'ubjson', 'streams', 'tkc_core', 'compressors', 'mbedtls', 'miniz']
-TKC_LINK_ALL=' -Wl,--whole-archive -lstreams -lconf_io -lhal -lcsv -lubjson -ltkc_core -lcompressors -lmbedtls -lminiz -Wl,--no-whole-archive'
-
-if OS_NAME == 'Windows':
-  if TOOLS_NAME == '' :
-    TKC_DEPS_LIBS= TKC_STATIC_LIBS + ['SDL2', 'user32','winmm.lib','advapi32.lib','shell32.lib', 'ole32.lib']
-    TKC_LINKFLAGS += ' /DEF:"dllexports/tkc.def" '
-  elif TOOLS_NAME == 'mingw':
-    TKC_DEPS_LIBS= TKC_STATIC_LIBS + ['SDL2', 'user32','winmm','advapi32','shell32', 'ole32', 'ws2_32','Gdi32','Imm32', 'Version', 'OleAut32', 'UUID']
-    TKC_LINKFLAGS += TKC_LINK_ALL
-elif OS_NAME == 'Darwin':
-  TKC_DEPS_LIBS= TKC_STATIC_LIBS
-  TKC_LINKFLAGS +=' -all_load '
-elif OS_NAME == 'Linux':
-  TKC_LINKFLAGS += TKC_LINK_ALL
-
-env.SharedLibrary(os.path.join(BIN_DIR, 'tkc'), [], LIBS=TKC_DEPS_LIBS, LINKFLAGS=TKC_LINKFLAGS); 
+env = DefaultEnvironment().Clone()
 
 env.Library(os.path.join(LIB_DIR, 'base'), BASE_SOURCES, LIBS=[])
-WIDGETS_SOURCES=Glob('widgets/*.c')
+
+WIDGETS_SOURCES = Glob('widgets/*.c')
 env.Library(os.path.join(LIB_DIR, 'widgets'), WIDGETS_SOURCES, LIBS=[])
-EXT_WIDGETS_SOURCES=Glob('ext_widgets/*.c') + Glob('ext_widgets/*/*.c') +  Glob('custom_widgets/*.c') + Glob('custom_widgets/*/*.c')
+
+EXT_WIDGETS_SOURCES = Glob('ext_widgets/*.c') + Glob('ext_widgets/*/*.c') + \
+    Glob('custom_widgets/*.c') + Glob('custom_widgets/*/*.c')
 env.Library(os.path.join(LIB_DIR, 'extwidgets'), EXT_WIDGETS_SOURCES, LIBS=[])
+
 env.Library(os.path.join(LIB_DIR, 'awtk_global'), ['awtk_global.c'], LIBS=[])
 
+TK_SOURCES = Glob('tkc/*.c') + Glob('platforms/pc/*.c')
+env.Library(os.path.join(LIB_DIR, 'tkc_core'), TK_SOURCES, LIBS=[])
 
-if 'WITH_AWTK_SO' in os.environ:
-  print("with awtk so");
-  LIBS=os.environ['AWTK_DLL_DEPS_LIBS'].split(';')
-  LINKFLAGS=env['LINKFLAGS'] + os.environ['OS_WHOLE_ARCHIVE']
-  env.SharedLibrary(os.path.join(BIN_DIR, 'awtk'), [], LIBS=LIBS, LINKFLAGS=LINKFLAGS); 
+TKC_DEPS_LIBS = config.TKC_STATIC_LIBS + config.OS_LIBS
+TKC_LINKFLAGS= env['LINKFLAGS'] + config.genDllLinkFlags(config.TKC_STATIC_LIBS, 'tkc')
+
+env.SharedLibrary(os.path.join(BIN_DIR, 'tkc'), [],
+                  LIBS=TKC_DEPS_LIBS, LINKFLAGS=TKC_LINKFLAGS)
+
+AWTK_DEPS_LIBS = config.AWTK_STATIC_LIBS +  config.OS_LIBS
+AWTK_LINKFLAGS= env['LINKFLAGS'] + config.genDllLinkFlags(config.AWTK_STATIC_LIBS, 'awtk')
+
+env.SharedLibrary(os.path.join(BIN_DIR, 'awtk'), [],
+                  LIBS=AWTK_DEPS_LIBS, LINKFLAGS=AWTK_LINKFLAGS)
 

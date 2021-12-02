@@ -36,6 +36,9 @@
 #include "base/widget_factory.h"
 #include "base/assets_manager.h"
 #include "fscript_ext/fscript_ext.h"
+#ifdef FSCRIPT_WITH_WIDGET
+#include "fscript_ext/fscript_widget.h"
+#endif /*FSCRIPT_WITH_WIDGET*/
 
 #ifdef WITH_VGCANVAS
 #include "base/vgcanvas_asset_manager.h"
@@ -199,6 +202,10 @@ ret_t tk_init_internal(void) {
 #endif
 #ifdef WITH_FSCRIPT_EXT
   fscript_ext_init();
+#ifdef FSCRIPT_WITH_WIDGET
+  fscript_widget_register();
+#endif /*FSCRIPT_WITH_WIDGET*/
+
 #endif /*WITH_FSCRIPT_EXT*/
 
 #ifdef WITH_DATA_READER_WRITER
