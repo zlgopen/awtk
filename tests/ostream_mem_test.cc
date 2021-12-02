@@ -17,7 +17,7 @@ TEST(OStreamMem, basic) {
 
   ASSERT_EQ(tk_ostream_write(os, (uint8_t*)"4444", 4), 0);
 
-  object_unref(OBJECT(os));
+  tk_object_unref(TK_OBJECT(os));
 }
 
 TEST(OStreamMem, packet_size) {
@@ -39,7 +39,7 @@ TEST(OStreamMem, packet_size) {
   ASSERT_EQ(tk_ostream_write(os, (uint8_t*)"4444", 4), 4);
   ASSERT_EQ(memcmp(buff, (uint8_t*)"4444", 4), 0);
 
-  object_unref(OBJECT(os));
+  tk_object_unref(TK_OBJECT(os));
 }
 
 TEST(OStreamMem, write_len) {
@@ -49,5 +49,5 @@ TEST(OStreamMem, write_len) {
   ASSERT_EQ(tk_ostream_write_len(os, (uint8_t*)"1111122223333", 12, 3000), 12);
   ASSERT_EQ(memcmp(buff, (uint8_t*)"1111122223333", 12), 0);
 
-  object_unref(OBJECT(os));
+  tk_object_unref(TK_OBJECT(os));
 }

@@ -98,9 +98,9 @@ ret_t func_call_parser_deinit(func_call_parser_t* parser);
  * @param {const char*} str 要解析的字符串。
  * @param {uint32_t} size 字符串长度。
  *
- * @return {object_t*} 返回object对象。
+ * @return {tk_object_t*} 返回object对象。
  */
-object_t* func_call_parse(const char* str, uint32_t size);
+tk_object_t* func_call_parse(const char* str, uint32_t size);
 
 END_C_DECLS
 

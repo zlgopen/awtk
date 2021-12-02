@@ -29,15 +29,15 @@
 #include "streams/inet/ostream_udp.h"
 #include "streams/inet/iostream_udp.h"
 
-static ret_t tk_iostream_udp_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t tk_iostream_udp_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   tk_iostream_udp_t* iostream_udp = TK_IOSTREAM_UDP(obj);
 
   if (tk_str_eq(name, TK_STREAM_PROP_FD)) {
     value_set_int(v, iostream_udp->sock);
     return RET_OK;
   } else if (tk_str_eq(name, TK_STREAM_PROP_IS_OK)) {
-    bool_t is_ok1 = object_get_prop_bool(OBJECT(iostream_udp->istream), TK_STREAM_PROP_IS_OK, TRUE);
-    bool_t is_ok2 = object_get_prop_bool(OBJECT(iostream_udp->ostream), TK_STREAM_PROP_IS_OK, TRUE);
+    bool_t is_ok1 = tk_object_get_prop_bool(TK_OBJECT(iostream_udp->istream), TK_STREAM_PROP_IS_OK, TRUE);
+    bool_t is_ok2 = tk_object_get_prop_bool(TK_OBJECT(iostream_udp->ostream), TK_STREAM_PROP_IS_OK, TRUE);
 
     value_set_bool(v, is_ok1 && is_ok2);
 
@@ -47,12 +47,12 @@ static ret_t tk_iostream_udp_get_prop(object_t* obj, const char* name, value_t* 
   return RET_NOT_FOUND;
 }
 
-static ret_t tk_iostream_udp_on_destroy(object_t* obj) {
+static ret_t tk_iostream_udp_on_destroy(tk_object_t* obj) {
   tk_iostream_udp_t* iostream_udp = TK_IOSTREAM_UDP(obj);
 
-  socket_close(iostream_udp->sock);
-  object_unref(OBJECT(iostream_udp->istream));
-  object_unref(OBJECT(iostream_udp->ostream));
+  tk_socket_close(iostream_udp->sock);
+  tk_object_unref(TK_OBJECT(iostream_udp->istream));
+  tk_object_unref(TK_OBJECT(iostream_udp->ostream));
 
   return RET_OK;
 }
@@ -76,11 +76,11 @@ static tk_ostream_t* tk_iostream_udp_get_ostream(tk_iostream_t* stream) {
 }
 
 tk_iostream_t* tk_iostream_udp_create(int sock) {
-  object_t* obj = object_create(&s_tk_iostream_udp_vtable);
+  tk_object_t* obj = tk_object_create(&s_tk_iostream_udp_vtable);
   tk_iostream_udp_t* iostream_udp = TK_IOSTREAM_UDP(obj);
 
   if (iostream_udp == NULL) {
-    socket_close(sock);
+    tk_socket_close(sock);
     return_value_if_fail(iostream_udp != NULL, NULL);
   }
 

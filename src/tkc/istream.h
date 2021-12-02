@@ -40,13 +40,13 @@ typedef ret_t (*tk_istream_wait_for_data_t)(tk_istream_t* stream, uint32_t timeo
 
 /**
  * @class tk_istream_t
- * @parent object_t
+ * @parent tk_object_t
  *
  * 输入流的接口。
  *
  */
 struct _tk_istream_t {
-  object_t object;
+  tk_object_t object;
 
   tk_istream_eos_t eos;
   tk_istream_read_t read;

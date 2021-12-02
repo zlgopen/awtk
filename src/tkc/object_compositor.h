@@ -28,17 +28,17 @@ BEGIN_C_DECLS
 
 /**
  * @class object_compositor_t
- * @parent object_t
+ * @parent tk_object_t
  *
  * 将两个对象包装为一个对象，优先访问第一个对象，如果访问失败则访问第二个对象。
  *
  */
 typedef struct _object_compositor_t {
-  object_t object;
+  tk_object_t object;
 
   /*private*/
-  object_t* obj1;
-  object_t* obj2;
+  tk_object_t* obj1;
+  tk_object_t* obj2;
 } object_compositor_t;
 
 /**
@@ -48,15 +48,15 @@ typedef struct _object_compositor_t {
  *
  * @annotation ["constructor"]
  *
- * @param {object_t*} obj1 对象1。
- * @param {object_t*} obj2 对象2。
+ * @param {tk_object_t*} obj1 对象1。
+ * @param {tk_object_t*} obj2 对象2。
  *
- * @return {object_t*} 返回object对象。
+ * @return {tk_object_t*} 返回object对象。
  *
  */
-object_t* object_compositor_create(object_t* obj1, object_t* obj2);
+tk_object_t* object_compositor_create(tk_object_t* obj1, tk_object_t* obj2);
 
-object_compositor_t* object_compositor_cast(object_t* obj);
+object_compositor_t* object_compositor_cast(tk_object_t* obj);
 #define OBJECT_COMPOSITOR(obj) object_compositor_cast(obj)
 
 END_C_DECLS

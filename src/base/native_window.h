@@ -81,13 +81,13 @@ typedef struct _native_window_vtable_t {
 
 /**
  * @class native_window_t
- * @parent object_t
+ * @parent tk_object_t
  * @annotation ["scriptable"]
  * 原生窗口。
  *
  */
 struct _native_window_t {
-  object_t object;
+  tk_object_t object;
 
   void* handle;
   bool_t shared;

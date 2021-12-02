@@ -22,7 +22,7 @@
 static ret_t func_iostream_serial_create(fscript_t* fscript, fscript_args_t* args,
                                          value_t* result) {
   int baudrate = 115200;
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   const char* devname = NULL;
   bytesize_t bytesize = eightbits;
   parity_t parity = parity_none;
@@ -63,7 +63,7 @@ static ret_t func_iostream_serial_create(fscript_t* fscript, fscript_args_t* arg
   }
 
   return_value_if_fail(devname != NULL, RET_BAD_PARAMS);
-  obj = OBJECT(tk_iostream_serial_create(devname));
+  obj = TK_OBJECT(tk_iostream_serial_create(devname));
   return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
 
   value_set_object(result, obj);

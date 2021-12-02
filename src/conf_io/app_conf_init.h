@@ -27,7 +27,7 @@
 
 BEGIN_C_DECLS
 
-typedef object_t* (*conf_load_t)(const char* url, bool_t create_if_not_exist);
+typedef tk_object_t* (*conf_load_t)(const char* url, bool_t create_if_not_exist);
 
 /**
  * @method app_conf_init

@@ -21,7 +21,7 @@ void do_send(tk_iostream_t* iostream, const char* msg) {
   ret = tk_istream_read(istream, (uint8_t*)buff, sizeof(buff));
   log_debug("%d: %s\n", ret, buff);
 
-  object_unref(OBJECT(iostream));
+  tk_object_unref(TK_OBJECT(iostream));
 
   return;
 }
@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
     return 0;
   }
 
-  socket_init();
+  tk_socket_init();
   platform_prepare();
   TK_ENABLE_CONSOLE();
 
@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
 
   do_send(tk_iostream_udp_create_client(host, port), msg);
 
-  socket_deinit();
+  tk_socket_deinit();
 
   return 0;
 }

@@ -114,7 +114,7 @@ typedef enum _value_type_t {
   VALUE_TYPE_WSTRING,
   /**
    * @const VALUE_TYPE_OBJECT
-   * object_t*类型。
+   * tk_object_t*类型。
    */
   VALUE_TYPE_OBJECT,
   /**
@@ -190,7 +190,7 @@ struct _value_t {
     void* ptr;
     const char* str;
     const wchar_t* wstr;
-    object_t* object;
+    tk_object_t* object;
     binary_data_t binary_data;
     sized_str_t sized_str;
   } value;
@@ -587,11 +587,11 @@ value_t* value_set_int(value_t* v, int32_t value);
  * 设置类型为object的值。
  * @annotation ["scriptable"]
  * @param {value_t*} v  value对象。
- * @param {object_t*}  value 待设置的值。
+ * @param {tk_object_t*}  value 待设置的值。
  *
  * @return {value_t*} value对象本身。
  */
-value_t* value_set_object(value_t* v, object_t* value);
+value_t* value_set_object(value_t* v, tk_object_t* value);
 
 /**
  * @method value_object
@@ -599,9 +599,9 @@ value_t* value_set_object(value_t* v, object_t* value);
  * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
- * @return {object_t*} 值。
+ * @return {tk_object_t*} 值。
  */
-object_t* value_object(const value_t* v);
+tk_object_t* value_object(const value_t* v);
 
 /**
  * @method value_set_token

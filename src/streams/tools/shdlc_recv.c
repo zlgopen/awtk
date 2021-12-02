@@ -10,13 +10,13 @@
 
 void do_recv(int port) {
   uint8_t buff[1024];
-  int slisten = tcp_listen(port);
+  int slisten = tk_tcp_listen(port);
   log_debug("listen: %d\n", port);
   return_if_fail(slisten > 0);
 
   do {
     int ret = 0;
-    int sock = tcp_accept(slisten);
+    int sock = tk_tcp_accept(slisten);
     tk_iostream_t* tcp = tk_iostream_tcp_create(sock);
     tk_iostream_t* shdlc = tk_iostream_shdlc_create(tcp);
     tk_istream_t* is = tk_iostream_get_istream(shdlc);
@@ -33,14 +33,14 @@ void do_recv(int port) {
         break;
       }
 
-      if (!object_get_prop_bool(OBJECT(is), TK_STREAM_PROP_IS_OK, FALSE)) {
+      if (!tk_object_get_prop_bool(TK_OBJECT(is), TK_STREAM_PROP_IS_OK, FALSE)) {
         log_debug("client disconnected\n");
         break;
       }
     } while (TRUE);
 
-    OBJECT_UNREF(tcp);
-    OBJECT_UNREF(shdlc);
+    TK_OBJECT_UNREF(tcp);
+    TK_OBJECT_UNREF(shdlc);
   } while (1);
 
   return;
@@ -54,14 +54,14 @@ int main(int argc, char* argv[]) {
     return 0;
   }
 
-  socket_init();
+  tk_socket_init();
   platform_prepare();
   TK_ENABLE_CONSOLE();
 
   port = tk_atoi(argv[1]);
   do_recv(port);
 
-  socket_deinit();
+  tk_socket_deinit();
 
   return 0;
 }

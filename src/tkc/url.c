@@ -291,7 +291,7 @@ ret_t url_set_param(url_t* url, const char* name, const char* value) {
   }
   return_value_if_fail(url->params != NULL, RET_OOM);
 
-  return object_set_prop_str(url->params, name, value);
+  return tk_object_set_prop_str(url->params, name, value);
 }
 
 const char* url_get_param(url_t* url, const char* name) {
@@ -301,7 +301,7 @@ const char* url_get_param(url_t* url, const char* name) {
     return NULL;
   }
 
-  return object_get_prop_str(url->params, name);
+  return tk_object_get_prop_str(url->params, name);
 }
 
 ret_t url_destroy(url_t* url) {
@@ -312,7 +312,7 @@ ret_t url_destroy(url_t* url) {
   TKMEM_FREE(url->user_name);
   TKMEM_FREE(url->password);
   TKMEM_FREE(url->path);
-  OBJECT_UNREF(url->params);
+  TK_OBJECT_UNREF(url->params);
 
   TKMEM_FREE(url);
 

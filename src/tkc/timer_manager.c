@@ -50,7 +50,7 @@ timer_manager_t* timer_manager_init(timer_manager_t* timer_manager, timer_get_ti
   timer_manager->next_timer_id = TK_INVALID_ID + 1;
   timer_manager->last_dispatch_time = get_time();
   timer_manager->get_time = get_time;
-  slist_init(&(timer_manager->timers), (tk_destroy_t)object_unref, timer_info_compare_by_id);
+  slist_init(&(timer_manager->timers), (tk_destroy_t)tk_object_unref, timer_info_compare_by_id);
 
   return timer_manager;
 }
@@ -156,7 +156,7 @@ static ret_t timer_manager_dispatch_one(timer_manager_t* timer_manager, uint64_t
   }
 
   if (iter != NULL) {
-    timer_info_t* timer = (timer_info_t*)object_ref((object_t*)(iter->data));
+    timer_info_t* timer = (timer_info_t*)tk_object_ref((tk_object_t*)(iter->data));
     return_value_if_fail(timer != NULL, RET_BAD_PARAMS);
 
     timer->now = now;
@@ -168,7 +168,7 @@ static ret_t timer_manager_dispatch_one(timer_manager_t* timer_manager, uint64_t
       }
     }
 
-    object_unref((object_t*)timer);
+    tk_object_unref((tk_object_t*)timer);
 
     return RET_OK;
   }

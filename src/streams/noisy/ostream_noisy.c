@@ -47,7 +47,7 @@ static int32_t tk_ostream_noisy_write(tk_ostream_t* stream, const uint8_t* buff,
   return tk_ostream_write(ostream_noisy->real_ostream, buff, size);
 }
 
-static ret_t tk_ostream_noisy_set_prop(object_t* obj, const char* name, const value_t* v) {
+static ret_t tk_ostream_noisy_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   tk_ostream_noisy_t* ostream_noisy = TK_OSTREAM_NOISY(obj);
   tk_ostream_t* real_ostream = ostream_noisy->real_ostream;
 
@@ -62,10 +62,10 @@ static ret_t tk_ostream_noisy_set_prop(object_t* obj, const char* name, const va
     return RET_OK;
   }
 
-  return object_set_prop(OBJECT(real_ostream), name, v);
+  return tk_object_set_prop(TK_OBJECT(real_ostream), name, v);
 }
 
-static ret_t tk_ostream_noisy_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t tk_ostream_noisy_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   tk_ostream_noisy_t* ostream_noisy = TK_OSTREAM_NOISY(obj);
   tk_ostream_t* real_ostream = ostream_noisy->real_ostream;
 
@@ -80,10 +80,10 @@ static ret_t tk_ostream_noisy_get_prop(object_t* obj, const char* name, value_t*
     return RET_OK;
   }
 
-  return object_get_prop(OBJECT(real_ostream), name, v);
+  return tk_object_get_prop(TK_OBJECT(real_ostream), name, v);
 }
 
-static ret_t tk_ostream_noisy_on_destroy(object_t* obj) {
+static ret_t tk_ostream_noisy_on_destroy(tk_object_t* obj) {
   tk_ostream_noisy_t* ostream_noisy = TK_OSTREAM_NOISY(obj);
   wbuffer_deinit(&(ostream_noisy->wb));
 
@@ -98,11 +98,11 @@ static const object_vtable_t s_tk_ostream_noisy_vtable = {.type = "tk_ostream_no
                                                           .set_prop = tk_ostream_noisy_set_prop};
 
 tk_ostream_t* tk_ostream_noisy_create(tk_ostream_t* real_ostream) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   tk_ostream_noisy_t* ostream_noisy = NULL;
   return_value_if_fail(real_ostream != NULL, NULL);
 
-  obj = object_create(&s_tk_ostream_noisy_vtable);
+  obj = tk_object_create(&s_tk_ostream_noisy_vtable);
   ostream_noisy = TK_OSTREAM_NOISY(obj);
   return_value_if_fail(ostream_noisy != NULL, NULL);
 

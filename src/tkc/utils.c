@@ -1042,7 +1042,7 @@ ret_t image_region_parse(uint32_t img_w, uint32_t img_h, const char* region, rec
 }
 
 typedef struct _to_json_ctx_t {
-  object_t* obj;
+  tk_object_t* obj;
   str_t* str;
   uint32_t index;
 } to_json_ctx_t;
@@ -1071,7 +1071,7 @@ static ret_t to_json_on_prop(void* ctx, const void* data) {
     str_append_char(info->str, ',');
   }
 
-  if (!object_is_collection(info->obj)) {
+  if (!tk_object_is_collection(info->obj)) {
     str_append_more(info->str, "\"", nv->name, "\":", NULL);
   }
 
@@ -1107,17 +1107,17 @@ static ret_t to_json_on_prop(void* ctx, const void* data) {
   return RET_OK;
 }
 
-ret_t object_to_json(object_t* obj, str_t* str) {
+ret_t object_to_json(tk_object_t* obj, str_t* str) {
   to_json_ctx_t ctx = {obj, str, 0};
   return_value_if_fail(obj != NULL && str != NULL, RET_BAD_PARAMS);
 
-  if (object_is_collection(obj)) {
+  if (tk_object_is_collection(obj)) {
     str_set(str, "[");
-    object_foreach_prop(obj, to_json_on_prop, &ctx);
+    tk_object_foreach_prop(obj, to_json_on_prop, &ctx);
     str_append_char(str, ']');
   } else {
     str_set(str, "{");
-    object_foreach_prop(obj, to_json_on_prop, &ctx);
+    tk_object_foreach_prop(obj, to_json_on_prop, &ctx);
     str_append_char(str, '}');
   }
 

@@ -7,15 +7,15 @@ int main(int argc, char* argv[]) {
   tk_iostream_t* io = NULL;
   const char* response = "200 OK\n";
 
-  socket_init();
+  tk_socket_init();
   platform_prepare();
-  lsock = tcp_listen(8080);
+  lsock = tk_tcp_listen(8080);
   return_value_if_fail(lsock > 0, 0);
 
   log_debug("listen at 8080...\n");
   while (1) {
     int32_t sock = 0;
-    sock = tcp_accept(lsock);
+    sock = tk_tcp_accept(lsock);
     if (sock < 0) {
       break;
     }
@@ -32,10 +32,10 @@ int main(int argc, char* argv[]) {
       ret = tk_ostream_write(out, response, strlen(response));
       log_debug("send %d %s\n", ret, response);
 
-      OBJECT_UNREF(io);
+      TK_OBJECT_UNREF(io);
     }
   }
-  socket_close(lsock);
+  tk_socket_close(lsock);
 
   return 0;
 }

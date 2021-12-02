@@ -42,7 +42,7 @@ static int32_t tk_ostream_tcp_write(tk_ostream_t* stream, const uint8_t* buff, u
   return ret;
 }
 
-static ret_t tk_ostream_tcp_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t tk_ostream_tcp_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   tk_ostream_tcp_t* ostream_tcp = TK_OSTREAM_TCP(obj);
   if (tk_str_eq(name, TK_STREAM_PROP_FD)) {
     value_set_int(v, ostream_tcp->sock);
@@ -62,11 +62,11 @@ static const object_vtable_t s_tk_ostream_tcp_vtable = {.type = "tk_ostream_tcp"
                                                         .get_prop = tk_ostream_tcp_get_prop};
 
 tk_ostream_t* tk_ostream_tcp_create(int sock) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   tk_ostream_tcp_t* ostream_tcp = NULL;
   return_value_if_fail(sock >= 0, NULL);
 
-  obj = object_create(&s_tk_ostream_tcp_vtable);
+  obj = tk_object_create(&s_tk_ostream_tcp_vtable);
   ostream_tcp = TK_OSTREAM_TCP(obj);
   return_value_if_fail(ostream_tcp != NULL, NULL);
 
@@ -77,7 +77,7 @@ tk_ostream_t* tk_ostream_tcp_create(int sock) {
 }
 
 tk_ostream_tcp_t* tk_ostream_tcp_cast(tk_ostream_t* s) {
-  return_value_if_fail(s != NULL && OBJECT(s)->vt == &s_tk_ostream_tcp_vtable, NULL);
+  return_value_if_fail(s != NULL && TK_OBJECT(s)->vt == &s_tk_ostream_tcp_vtable, NULL);
 
   return (tk_ostream_tcp_t*)s;
 }

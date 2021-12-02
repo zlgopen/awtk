@@ -28,7 +28,7 @@
 #include "tkc/data_writer_factory.h"
 
 typedef struct _conf_obj_t {
-  object_t object;
+  tk_object_t object;
 
   /*private*/
   char* url;
@@ -40,10 +40,10 @@ typedef struct _conf_obj_t {
   bool_t modified;
 } conf_obj_t;
 
-static conf_obj_t* conf_obj_cast(object_t* obj);
-#define CONF_OBJ(obj) conf_obj_cast((object_t*)obj)
+static conf_obj_t* conf_obj_cast(tk_object_t* obj);
+#define CONF_OBJ(obj) conf_obj_cast((tk_object_t*)obj)
 
-static ret_t conf_obj_move_up(object_t* obj, const char* name) {
+static ret_t conf_obj_move_up(tk_object_t* obj, const char* name) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
@@ -51,7 +51,7 @@ static ret_t conf_obj_move_up(object_t* obj, const char* name) {
   return conf_doc_move_up(o->doc, name);
 }
 
-static ret_t conf_obj_move_down(object_t* obj, const char* name) {
+static ret_t conf_obj_move_down(tk_object_t* obj, const char* name) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
@@ -59,7 +59,7 @@ static ret_t conf_obj_move_down(object_t* obj, const char* name) {
   return conf_doc_move_down(o->doc, name);
 }
 
-static ret_t conf_obj_remove_prop(object_t* obj, const char* name) {
+static ret_t conf_obj_remove_prop(tk_object_t* obj, const char* name) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
@@ -71,7 +71,7 @@ static ret_t conf_obj_remove_prop(object_t* obj, const char* name) {
   return conf_doc_remove(o->doc, name);
 }
 
-static ret_t conf_obj_clear(object_t* obj, const char* name) {
+static ret_t conf_obj_clear(tk_object_t* obj, const char* name) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
@@ -83,7 +83,7 @@ static ret_t conf_obj_clear(object_t* obj, const char* name) {
   return conf_doc_clear(o->doc, name);
 }
 
-static ret_t conf_obj_set_prop(object_t* obj, const char* name, const value_t* v) {
+static ret_t conf_obj_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
@@ -100,7 +100,7 @@ static ret_t conf_obj_set_prop(object_t* obj, const char* name, const value_t* v
   return conf_doc_set(o->doc, name, v);
 }
 
-static ret_t conf_obj_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t conf_obj_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
@@ -115,7 +115,7 @@ static ret_t conf_obj_get_prop(object_t* obj, const char* name, value_t* v) {
   return conf_doc_get(o->doc, name, v);
 }
 
-ret_t conf_obj_save(object_t* obj) {
+ret_t conf_obj_save(tk_object_t* obj) {
   ret_t ret = RET_FAIL;
   data_writer_t* writer = NULL;
   conf_obj_t* o = CONF_OBJ(obj);
@@ -134,7 +134,7 @@ ret_t conf_obj_save(object_t* obj) {
   return ret;
 }
 
-static ret_t conf_obj_load(object_t* obj) {
+static ret_t conf_obj_load(tk_object_t* obj) {
   data_reader_t* reader = NULL;
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
@@ -152,7 +152,7 @@ static ret_t conf_obj_load(object_t* obj) {
   return RET_OK;
 }
 
-static ret_t conf_obj_load_or_create(object_t* obj, bool_t create_if_not_exist) {
+static ret_t conf_obj_load_or_create(tk_object_t* obj, bool_t create_if_not_exist) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_FAIL);
 
@@ -173,7 +173,7 @@ static ret_t conf_obj_load_or_create(object_t* obj, bool_t create_if_not_exist) 
   return RET_OK;
 }
 
-static ret_t conf_obj_reload(object_t* obj) {
+static ret_t conf_obj_reload(tk_object_t* obj) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
@@ -183,7 +183,7 @@ static ret_t conf_obj_reload(object_t* obj) {
   return conf_obj_load_or_create(obj, FALSE);
 }
 
-static bool_t conf_obj_can_exec(object_t* obj, const char* name, const char* args) {
+static bool_t conf_obj_can_exec(tk_object_t* obj, const char* name, const char* args) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
@@ -191,26 +191,26 @@ static bool_t conf_obj_can_exec(object_t* obj, const char* name, const char* arg
     return FALSE;
   }
 
-  if (tk_str_ieq(name, OBJECT_CMD_SAVE)) {
+  if (tk_str_ieq(name, TK_OBJECT_CMD_SAVE)) {
     return TRUE;
-  } else if (tk_str_ieq(name, OBJECT_CMD_RELOAD)) {
+  } else if (tk_str_ieq(name, TK_OBJECT_CMD_RELOAD)) {
     return TRUE;
-  } else if (tk_str_ieq(name, OBJECT_CMD_MOVE_UP)) {
+  } else if (tk_str_ieq(name, TK_OBJECT_CMD_MOVE_UP)) {
     return conf_doc_exists(o->doc, args) && !conf_doc_is_first(o->doc, args);
-  } else if (tk_str_ieq(name, OBJECT_CMD_MOVE_DOWN)) {
+  } else if (tk_str_ieq(name, TK_OBJECT_CMD_MOVE_DOWN)) {
     return conf_doc_exists(o->doc, args) && !conf_doc_is_last(o->doc, args);
-  } else if (tk_str_ieq(name, OBJECT_CMD_CLEAR)) {
+  } else if (tk_str_ieq(name, TK_OBJECT_CMD_CLEAR)) {
     return conf_doc_exists(o->doc, args);
-  } else if (tk_str_ieq(name, OBJECT_CMD_REMOVE)) {
+  } else if (tk_str_ieq(name, TK_OBJECT_CMD_REMOVE)) {
     return conf_doc_exists(o->doc, args);
-  } else if (tk_str_ieq(name, OBJECT_CMD_ADD)) {
+  } else if (tk_str_ieq(name, TK_OBJECT_CMD_ADD)) {
     return conf_doc_exists(o->doc, args);
   }
 
   return FALSE;
 }
 
-static ret_t conf_obj_exec(object_t* obj, const char* name, const char* args) {
+static ret_t conf_obj_exec(tk_object_t* obj, const char* name, const char* args) {
   ret_t ret = RET_NOT_IMPL;
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
@@ -219,7 +219,7 @@ static ret_t conf_obj_exec(object_t* obj, const char* name, const char* args) {
     return RET_NOT_IMPL;
   }
 
-  if (tk_str_ieq(name, OBJECT_CMD_SAVE)) {
+  if (tk_str_ieq(name, TK_OBJECT_CMD_SAVE)) {
     if (tk_str_eq(args, "force")) {
       ret = conf_obj_save(obj);
     } else if (o->modified) {
@@ -227,34 +227,34 @@ static ret_t conf_obj_exec(object_t* obj, const char* name, const char* args) {
     } else {
       ret = RET_NOT_MODIFIED;
     }
-  } else if (tk_str_ieq(name, OBJECT_CMD_RELOAD)) {
+  } else if (tk_str_ieq(name, TK_OBJECT_CMD_RELOAD)) {
     conf_obj_reload(obj);
     ret = RET_ITEMS_CHANGED;
-  } else if (tk_str_ieq(name, OBJECT_CMD_MOVE_UP)) {
+  } else if (tk_str_ieq(name, TK_OBJECT_CMD_MOVE_UP)) {
     if (conf_obj_move_up(obj, args) == RET_OK) {
       ret = RET_ITEMS_CHANGED;
     } else {
       ret = RET_FAIL;
     }
-  } else if (tk_str_ieq(name, OBJECT_CMD_MOVE_DOWN)) {
+  } else if (tk_str_ieq(name, TK_OBJECT_CMD_MOVE_DOWN)) {
     if (conf_obj_move_down(obj, args) == RET_OK) {
       ret = RET_ITEMS_CHANGED;
     } else {
       ret = RET_FAIL;
     }
-  } else if (tk_str_ieq(name, OBJECT_CMD_CLEAR)) {
+  } else if (tk_str_ieq(name, TK_OBJECT_CMD_CLEAR)) {
     if (conf_obj_clear(obj, args) == RET_OK) {
       ret = RET_ITEMS_CHANGED;
     } else {
       ret = RET_FAIL;
     }
-  } else if (tk_str_ieq(name, OBJECT_CMD_REMOVE)) {
+  } else if (tk_str_ieq(name, TK_OBJECT_CMD_REMOVE)) {
     if (conf_obj_remove_prop(obj, args) == RET_OK) {
       ret = RET_ITEMS_CHANGED;
     } else {
       ret = RET_FAIL;
     }
-  } else if (tk_str_ieq(name, OBJECT_CMD_ADD)) {
+  } else if (tk_str_ieq(name, TK_OBJECT_CMD_ADD)) {
     if (conf_doc_add_child(o->doc, args) == RET_OK) {
       ret = RET_ITEMS_CHANGED;
     } else {
@@ -272,7 +272,7 @@ static ret_t conf_obj_exec(object_t* obj, const char* name, const char* args) {
   return RET_OK;
 }
 
-static ret_t conf_obj_destroy(object_t* obj) {
+static ret_t conf_obj_destroy(tk_object_t* obj) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
@@ -284,7 +284,7 @@ static ret_t conf_obj_destroy(object_t* obj) {
   return RET_OK;
 }
 
-conf_doc_t* conf_obj_get_doc(object_t* conf) {
+conf_doc_t* conf_obj_get_doc(tk_object_t* conf) {
   conf_obj_t* o = CONF_OBJ(conf);
   return_value_if_fail(o != NULL, NULL);
 
@@ -304,20 +304,20 @@ static const object_vtable_t s_conf_obj_vtable = {.type = "conf_obj",
                                                   .set_prop = conf_obj_set_prop,
                                                   .on_destroy = conf_obj_destroy};
 
-static conf_obj_t* conf_obj_cast(object_t* obj) {
+static conf_obj_t* conf_obj_cast(tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt == &s_conf_obj_vtable, NULL);
 
   return (conf_obj_t*)obj;
 }
 
-object_t* conf_obj_create(conf_doc_save_t save, conf_doc_load_t load, const char* url,
+tk_object_t* conf_obj_create(conf_doc_save_t save, conf_doc_load_t load, const char* url,
                           bool_t create_if_not_exist) {
   conf_obj_t* o = NULL;
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   return_value_if_fail(save != NULL && load != NULL, NULL);
   return_value_if_fail((url != NULL && *url) || create_if_not_exist, NULL);
 
-  obj = object_create(&s_conf_obj_vtable);
+  obj = tk_object_create(&s_conf_obj_vtable);
   o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, NULL);
 
@@ -325,7 +325,7 @@ object_t* conf_obj_create(conf_doc_save_t save, conf_doc_load_t load, const char
   o->load = load;
   o->url = tk_strdup(url);
   if (o->url == NULL && url != NULL) {
-    OBJECT_UNREF(o);
+    TK_OBJECT_UNREF(o);
   }
   return_value_if_fail(o != NULL, NULL);
 
@@ -333,13 +333,13 @@ object_t* conf_obj_create(conf_doc_save_t save, conf_doc_load_t load, const char
 
   if (o->doc == NULL || o->doc->root == NULL) {
     TKMEM_FREE(o->url);
-    OBJECT_UNREF(obj);
+    TK_OBJECT_UNREF(obj);
   }
 
   return obj;
 }
 
-ret_t conf_obj_set_readonly(object_t* conf, bool_t readonly) {
+ret_t conf_obj_set_readonly(tk_object_t* conf, bool_t readonly) {
   conf_obj_t* o = CONF_OBJ(conf);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   o->readonly = readonly;

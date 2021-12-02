@@ -32,7 +32,7 @@ typedef struct _event_source_timer_t event_source_timer_t;
 
 /**
  * @class event_source_timer_t
- * @parent object_t
+ * @parent tk_object_t
  *
  * timer事件源。
  *

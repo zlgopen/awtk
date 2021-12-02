@@ -233,12 +233,12 @@ error:
   return RET_FAIL;
 }
 
-object_t* conf_ubjson_load(const char* url, bool_t create_if_not_exist) {
+tk_object_t* conf_ubjson_load(const char* url, bool_t create_if_not_exist) {
   return conf_obj_create(conf_doc_save_ubjson_writer, conf_doc_load_ubjson_reader, url,
                          create_if_not_exist);
 }
 
-ret_t conf_ubjson_save_as(object_t* obj, const char* url) {
+ret_t conf_ubjson_save_as(tk_object_t* obj, const char* url) {
   data_writer_t* writer = NULL;
   conf_doc_t* doc = conf_obj_get_doc(obj);
   return_value_if_fail(doc != NULL && url != NULL, RET_BAD_PARAMS);
@@ -251,6 +251,6 @@ ret_t conf_ubjson_save_as(object_t* obj, const char* url) {
   return RET_OK;
 }
 
-object_t* conf_ubjson_create(void) {
+tk_object_t* conf_ubjson_create(void) {
   return conf_ubjson_load(NULL, TRUE);
 }

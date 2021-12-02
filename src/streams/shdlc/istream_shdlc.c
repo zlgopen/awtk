@@ -53,12 +53,12 @@ ret_t tk_istream_shdlc_read_frame(tk_istream_t* stream, wbuffer_t* wb, bool_t ex
   uint32_t timeout = istream_shdlc->timeout;
   tk_istream_t* real_istream = istream_shdlc->iostream->real_istream;
 
-  if (!object_get_prop_bool(OBJECT(real_istream), TK_STREAM_PROP_IS_OK, TRUE)) {
+  if (!tk_object_get_prop_bool(TK_OBJECT(real_istream), TK_STREAM_PROP_IS_OK, TRUE)) {
     return RET_IO;
   }
 
   for (retry_times = 0; retry_times < istream_shdlc->retry_times; retry_times++) {
-    if (!object_get_prop_bool(OBJECT(real_istream), TK_STREAM_PROP_IS_OK, TRUE)) {
+    if (!tk_object_get_prop_bool(TK_OBJECT(real_istream), TK_STREAM_PROP_IS_OK, TRUE)) {
       return RET_IO;
     }
 
@@ -178,7 +178,7 @@ static ret_t tk_istream_shdlc_wait_for_data(tk_istream_t* stream, uint32_t timeo
   }
 }
 
-static ret_t tk_istream_shdlc_set_prop(object_t* obj, const char* name, const value_t* v) {
+static ret_t tk_istream_shdlc_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   tk_istream_shdlc_t* istream_shdlc = TK_ISTREAM_SHDLC(obj);
   tk_istream_t* real_istream = tk_iostream_get_istream(istream_shdlc->iostream->real_iostream);
 
@@ -190,10 +190,10 @@ static ret_t tk_istream_shdlc_set_prop(object_t* obj, const char* name, const va
     return RET_OK;
   }
 
-  return object_set_prop(OBJECT(real_istream), name, v);
+  return tk_object_set_prop(TK_OBJECT(real_istream), name, v);
 }
 
-static ret_t tk_istream_shdlc_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t tk_istream_shdlc_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   tk_istream_shdlc_t* istream_shdlc = TK_ISTREAM_SHDLC(obj);
   tk_istream_t* real_istream = tk_iostream_get_istream(istream_shdlc->iostream->real_iostream);
 
@@ -207,10 +207,10 @@ static ret_t tk_istream_shdlc_get_prop(object_t* obj, const char* name, value_t*
     return RET_OK;
   }
 
-  return object_get_prop(OBJECT(real_istream), name, v);
+  return tk_object_get_prop(TK_OBJECT(real_istream), name, v);
 }
 
-static ret_t tk_istream_shdlc_on_destroy(object_t* obj) {
+static ret_t tk_istream_shdlc_on_destroy(tk_object_t* obj) {
   tk_istream_shdlc_t* istream_shdlc = TK_ISTREAM_SHDLC(obj);
 
   ENSURE(ring_buffer_destroy(istream_shdlc->rb) == RET_OK);
@@ -229,11 +229,11 @@ static const object_vtable_t s_tk_istream_shdlc_vtable = {.type = "tk_istream_sh
                                                           .set_prop = tk_istream_shdlc_set_prop};
 
 tk_istream_t* tk_istream_shdlc_create(tk_iostream_shdlc_t* iostream) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   tk_istream_shdlc_t* istream_shdlc = NULL;
   return_value_if_fail(iostream != NULL, NULL);
 
-  obj = object_create(&s_tk_istream_shdlc_vtable);
+  obj = tk_object_create(&s_tk_istream_shdlc_vtable);
   istream_shdlc = TK_ISTREAM_SHDLC(obj);
   return_value_if_fail(istream_shdlc != NULL, NULL);
 

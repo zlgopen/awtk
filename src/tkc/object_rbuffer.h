@@ -29,13 +29,13 @@ BEGIN_C_DECLS
 
 /**
  * @class object_rbuffer_t
- * @parent object_t
+ * @parent tk_object_t
  *
  * 将rbuffer包装成object。
  *
  */
 typedef struct _object_rbuffer_t {
-  object_t object;
+  tk_object_t object;
 
   /**
    * @property {rbuffer_t*} rbuffer
@@ -58,12 +58,12 @@ typedef struct _object_rbuffer_t {
  * @param {const uint8_t*} data 缓冲区。
  * @param {uint16_t} capacity 缓冲区的容量。
  *
- * @return {object_t*} 返回object对象。
+ * @return {tk_object_t*} 返回object对象。
  *
  */
-object_t* object_rbuffer_create(const uint8_t* data, uint32_t capacity);
+tk_object_t* object_rbuffer_create(const uint8_t* data, uint32_t capacity);
 
-object_rbuffer_t* object_rbuffer_cast(object_t* obj);
+object_rbuffer_t* object_rbuffer_cast(tk_object_t* obj);
 #define OBJECT_RBUFFER(obj) object_rbuffer_cast(obj)
 
 END_C_DECLS

@@ -29,13 +29,13 @@ BEGIN_C_DECLS
 
 /**
  * @class object_typed_array_t
- * @parent object_t
+ * @parent tk_object_t
  *
  * 将typed_array包装成object。
  *
  */
 typedef struct _object_typed_array_t {
-  object_t object;
+  tk_object_t object;
 
   /**
    * @property {typed_array_t*} arr
@@ -55,12 +55,12 @@ typedef struct _object_typed_array_t {
  * @param {value_type_t} type 元素的类型。
  * @param {uint32_t} capacity 数组的初始容量(元素个数)。
  *
- * @return {object_t*} 返回object对象。
+ * @return {tk_object_t*} 返回object对象。
  *
  */
-object_t* object_typed_array_create(value_type_t type, uint32_t capacity);
+tk_object_t* object_typed_array_create(value_type_t type, uint32_t capacity);
 
-object_typed_array_t* object_typed_array_cast(object_t* obj);
+object_typed_array_t* object_typed_array_cast(tk_object_t* obj);
 #define OBJECT_TYPED_ARRAY(obj) object_typed_array_cast(obj)
 
 END_C_DECLS

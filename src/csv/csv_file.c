@@ -351,7 +351,7 @@ csv_file_t* csv_file_load(csv_file_t* csv) {
   input = tk_istream_file_create(csv->filename);
   return_value_if_fail(input != NULL, NULL);
   csv_file_load_input(csv, input);
-  OBJECT_UNREF(input);
+  TK_OBJECT_UNREF(input);
 
   return csv;
 }
@@ -473,7 +473,7 @@ ret_t csv_file_load_buff(csv_file_t* csv, const char* buff, uint32_t size) {
 
   csv_file_clear(csv);
   ret = csv_file_load_input(csv, input) != NULL ? RET_OK : RET_FAIL;
-  OBJECT_UNREF(input);
+  TK_OBJECT_UNREF(input);
 
   return ret;
 }

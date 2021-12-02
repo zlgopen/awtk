@@ -30,7 +30,7 @@ void do_send(tk_iostream_t* tcp, const char* msg, uint32_t times) {
     log_debug("send=%d recv=%d data: %s\n", s_ret, r_ret, buff);
   }
 
-  object_unref(OBJECT(iostream));
+  tk_object_unref(TK_OBJECT(iostream));
 
   return;
 }
@@ -48,7 +48,7 @@ int main(int argc, char* argv[]) {
     return 0;
   }
 
-  socket_init();
+  tk_socket_init();
   platform_prepare();
   TK_ENABLE_CONSOLE();
 
@@ -64,13 +64,13 @@ int main(int argc, char* argv[]) {
     msg = content;
   }
 
-  sock = tcp_connect(host, port);
-  socket_set_blocking(sock, FALSE);
+  sock = tk_tcp_connect(host, port);
+  tk_socket_set_blocking(sock, FALSE);
   do_send(tk_iostream_tcp_create(sock), msg, times);
 
   TKMEM_FREE(content);
 
-  socket_deinit();
+  tk_socket_deinit();
 
   return 0;
 }

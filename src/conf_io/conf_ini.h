@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 
 /**
  * @class conf_ini_t
- * @parent object_t
+ * @parent tk_object_t
  * @annotation ["fake"]
  * 
  * conf ini对象。
@@ -40,9 +40,9 @@ BEGIN_C_DECLS
  * 创建一个空的conf对象。 
  * @annotation ["constructor"]
  * 
- * @return {object_t*} 返回配置对象。
+ * @return {tk_object_t*} 返回配置对象。
  */
-object_t* conf_ini_create(void);
+tk_object_t* conf_ini_create(void);
 
 /**
  * @method conf_ini_load 
@@ -53,21 +53,21 @@ object_t* conf_ini_create(void);
  * @param {const char*} url 路径(通常是文件路径)。
  * @param {bool_t} create_if_not_exist 如果不存在是否创建。 
  * 
- * @return {object_t*} 返回配置对象。
+ * @return {tk_object_t*} 返回配置对象。
  */
-object_t* conf_ini_load(const char* url, bool_t create_if_not_exist);
+tk_object_t* conf_ini_load(const char* url, bool_t create_if_not_exist);
 
 /**
  * @method conf_ini_save_as
  * 将doc对象保存到指定URL。
  * @annotation ["static"]
  * 
- * @param {object_t*} obj doc对象。
+ * @param {tk_object_t*} obj doc对象。
  * @param {const char*} url 保存的位置。
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败
  */
-ret_t conf_ini_save_as(object_t* obj, const char* url);
+ret_t conf_ini_save_as(tk_object_t* obj, const char* url);
 
 /*public for test*/
 

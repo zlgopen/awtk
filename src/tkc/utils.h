@@ -714,12 +714,12 @@ ret_t image_region_parse(uint32_t img_w, uint32_t img_h, const char* region, rec
  * @method object_to_json
  * 将对象转换成json字符串。
  *
- * @param {object_t*} obj object对象。
+ * @param {tk_object_t*} obj object对象。
  * @param {str_t*} str 用于返回结果。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t object_to_json(object_t* obj, str_t* str);
+ret_t object_to_json(tk_object_t* obj, str_t* str);
 
 /**
  * @method data_url_copy

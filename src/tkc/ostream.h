@@ -37,13 +37,13 @@ typedef int32_t (*tk_ostream_tell_t)(tk_ostream_t* stream);
 
 /**
  * @class tk_ostream_t
- * @parent object_t
+ * @parent tk_object_t
  *
  * 输出流的接口。
  *
  */
 struct _tk_ostream_t {
-  object_t object;
+  tk_object_t object;
 
   tk_ostream_flush_t flush;
   tk_ostream_write_t write;

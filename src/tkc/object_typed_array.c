@@ -24,7 +24,7 @@
 #include "tkc/utils.h"
 #include "object_typed_array.h"
 
-static ret_t object_typed_array_on_destroy(object_t* obj) {
+static ret_t object_typed_array_on_destroy(tk_object_t* obj) {
   object_typed_array_t* o = OBJECT_TYPED_ARRAY(obj);
   return_value_if_fail(o != NULL && o->arr != NULL, RET_BAD_PARAMS);
 
@@ -34,11 +34,11 @@ static ret_t object_typed_array_on_destroy(object_t* obj) {
   return RET_OK;
 }
 
-static ret_t object_typed_array_set_prop(object_t* obj, const char* name, const value_t* v) {
+static ret_t object_typed_array_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   return RET_NOT_FOUND;
 }
 
-static ret_t object_typed_array_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t object_typed_array_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   object_typed_array_t* o = OBJECT_TYPED_ARRAY(obj);
   return_value_if_fail(o != NULL && o->arr != NULL, RET_BAD_PARAMS);
@@ -72,10 +72,10 @@ static const object_vtable_t s_object_typed_array_vtable = {
     .get_prop = object_typed_array_get_prop,
     .set_prop = object_typed_array_set_prop};
 
-object_t* object_typed_array_create(value_type_t type, uint32_t capacity) {
-  object_t* o = NULL;
+tk_object_t* object_typed_array_create(value_type_t type, uint32_t capacity) {
+  tk_object_t* o = NULL;
   object_typed_array_t* wrapper = NULL;
-  o = object_create(&s_object_typed_array_vtable);
+  o = tk_object_create(&s_object_typed_array_vtable);
   return_value_if_fail(o != NULL, NULL);
 
   wrapper = OBJECT_TYPED_ARRAY(o);
@@ -83,13 +83,13 @@ object_t* object_typed_array_create(value_type_t type, uint32_t capacity) {
 
   wrapper->arr = typed_array_create(type, capacity);
   if (wrapper->arr == NULL) {
-    OBJECT_UNREF(o);
+    TK_OBJECT_UNREF(o);
   }
 
   return o;
 }
 
-object_typed_array_t* object_typed_array_cast(object_t* obj) {
+object_typed_array_t* object_typed_array_cast(tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt == &s_object_typed_array_vtable, NULL);
 
   return (object_typed_array_t*)(obj);

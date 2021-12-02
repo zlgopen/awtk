@@ -178,15 +178,15 @@ static const native_window_vtable_t s_native_window_vtable = {
     .gl_make_current = native_window_sdl_gl_make_current,
     .get_canvas = native_window_fb_gl_get_canvas};
 
-static ret_t native_window_fb_gl_set_prop(object_t* obj, const char* name, const value_t* v) {
+static ret_t native_window_fb_gl_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   return RET_NOT_FOUND;
 }
 
-static ret_t native_window_fb_gl_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t native_window_fb_gl_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   return RET_NOT_FOUND;
 }
 
-static ret_t native_window_fb_gl_on_destroy(object_t* obj) {
+static ret_t native_window_fb_gl_on_destroy(tk_object_t* obj) {
   native_window_fb_gl_t* fb_gl = NATIVE_WINDOW_FB_GL(obj);
   lcd_t* lcd = fb_gl->canvas.lcd;
 
@@ -210,7 +210,7 @@ static const object_vtable_t s_native_window_fb_gl_vtable = {
 
 static native_window_t* native_window_create_internal(uint32_t w, uint32_t h, float_t ratio) {
   lcd_t* lcd = NULL;
-  object_t* obj = object_create(&s_native_window_fb_gl_vtable);
+  tk_object_t* obj = tk_object_create(&s_native_window_fb_gl_vtable);
   native_window_t* win = NATIVE_WINDOW(obj);
   native_window_fb_gl_t* fb_gl = NATIVE_WINDOW_FB_GL(win);
   return_value_if_fail(fb_gl != NULL, NULL);
@@ -250,7 +250,7 @@ native_window_t* native_window_fb_gl_init(uint32_t w, uint32_t h, float_t ratio)
 
 ret_t native_window_fb_gl_deinit(void) {
   if (s_shared_win != NULL) {
-    object_unref(OBJECT(s_shared_win));
+    tk_object_unref(TK_OBJECT(s_shared_win));
     s_shared_win = NULL;
   }
 

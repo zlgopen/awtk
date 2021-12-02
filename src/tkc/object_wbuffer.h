@@ -29,13 +29,13 @@ BEGIN_C_DECLS
 
 /**
  * @class object_wbuffer_t
- * @parent object_t
+ * @parent tk_object_t
  *
  * 将wbuffer包装成object。
  *
  */
 typedef struct _object_wbuffer_t {
-  object_t object;
+  tk_object_t object;
 
   /**
    * @property {wbuffer_t*} wbuffer
@@ -58,10 +58,10 @@ typedef struct _object_wbuffer_t {
  * @param {uint8_t*} data 缓冲区。
  * @param {uint16_t} capacity 缓冲区的容量。
  *
- * @return {object_t*} 返回object对象。
+ * @return {tk_object_t*} 返回object对象。
  *
  */
-object_t* object_wbuffer_create(uint8_t* data, uint32_t capacity);
+tk_object_t* object_wbuffer_create(uint8_t* data, uint32_t capacity);
 
 /**
  * @method object_wbuffer_create_extendable
@@ -70,12 +70,12 @@ object_t* object_wbuffer_create(uint8_t* data, uint32_t capacity);
  *
  * @annotation ["constructor"]
  *
- * @return {object_t*} 返回object对象。
+ * @return {tk_object_t*} 返回object对象。
  *
  */
-object_t* object_wbuffer_create_extendable(void);
+tk_object_t* object_wbuffer_create_extendable(void);
 
-object_wbuffer_t* object_wbuffer_cast(object_t* obj);
+object_wbuffer_t* object_wbuffer_cast(tk_object_t* obj);
 #define OBJECT_WBUFFER(obj) object_wbuffer_cast(obj)
 
 END_C_DECLS

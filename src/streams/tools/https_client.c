@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
     ret = tk_istream_read(in, buff, sizeof(buff));
     log_debug("recv %d %s\n", ret, buff);
 
-    OBJECT_UNREF(io);
+    TK_OBJECT_UNREF(io);
   }
 
   return 0;

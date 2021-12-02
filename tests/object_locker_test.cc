@@ -33,7 +33,7 @@ static ret_t visit_dump(void* ctx, const void* data) {
 TEST(ObjectLocker, events) {
   value_t v;
   string log;
-  object_t* obj = object_default_create();
+  tk_object_t* obj = object_default_create();
   object_default_t* o = OBJECT_DEFAULT(obj);
 
   obj = object_locker_create(obj);
@@ -41,11 +41,11 @@ TEST(ObjectLocker, events) {
   emitter_on(EMITTER(obj), EVT_PROP_CHANGED, event_dump, &log);
   emitter_on(EMITTER(obj), EVT_DESTROY, event_dump, &log);
 
-  ASSERT_EQ(object_set_prop(obj, "6", value_set_int(&v, 50)), RET_OK);
-  ASSERT_EQ(object_set_prop(obj, "8", value_set_int(&v, 50)), RET_OK);
+  ASSERT_EQ(tk_object_set_prop(obj, "6", value_set_int(&v, 50)), RET_OK);
+  ASSERT_EQ(tk_object_set_prop(obj, "8", value_set_int(&v, 50)), RET_OK);
 
-  OBJECT_UNREF(o);
-  OBJECT_UNREF(obj);
+  TK_OBJECT_UNREF(o);
+  TK_OBJECT_UNREF(obj);
 
   ASSERT_EQ(log, "6:6:8:8:destroy:");
 }
@@ -53,27 +53,27 @@ TEST(ObjectLocker, events) {
 TEST(ObjectLocker, basic) {
   value_t v;
   string log;
-  object_t* obj = object_default_create();
+  tk_object_t* obj = object_default_create();
   object_default_t* o = OBJECT_DEFAULT(obj);
 
   obj = object_locker_create(obj);
 
-  ASSERT_EQ(object_set_prop(obj, "5", value_set_int(&v, 50)), RET_OK);
-  ASSERT_EQ(object_get_prop(obj, "5", &v), RET_OK);
+  ASSERT_EQ(tk_object_set_prop(obj, "5", value_set_int(&v, 50)), RET_OK);
+  ASSERT_EQ(tk_object_get_prop(obj, "5", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 50);
 
-  ASSERT_EQ(object_set_prop(obj, "6", value_set_int(&v, 60)), RET_OK);
-  ASSERT_EQ(object_get_prop(obj, "6", &v), RET_OK);
+  ASSERT_EQ(tk_object_set_prop(obj, "6", value_set_int(&v, 60)), RET_OK);
+  ASSERT_EQ(tk_object_get_prop(obj, "6", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 60);
 
   log = "";
-  object_foreach_prop(obj, visit_dump, &log);
+  tk_object_foreach_prop(obj, visit_dump, &log);
   ASSERT_EQ(log, "56");
 
-  ASSERT_EQ(object_remove_prop(obj, "5"), RET_OK);
-  ASSERT_EQ(object_get_prop(obj, "3", &v), RET_NOT_FOUND);
-  ASSERT_EQ(object_remove_prop(obj, "3"), RET_NOT_FOUND);
+  ASSERT_EQ(tk_object_remove_prop(obj, "5"), RET_OK);
+  ASSERT_EQ(tk_object_get_prop(obj, "3", &v), RET_NOT_FOUND);
+  ASSERT_EQ(tk_object_remove_prop(obj, "3"), RET_NOT_FOUND);
 
-  OBJECT_UNREF(o);
-  OBJECT_UNREF(obj);
+  TK_OBJECT_UNREF(o);
+  TK_OBJECT_UNREF(obj);
 }

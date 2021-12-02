@@ -37,7 +37,7 @@ void do_send(tk_iostream_t* iostream, const char* filename) {
   }
 
   TKMEM_FREE(data);
-  OBJECT_UNREF(iostream);
+  TK_OBJECT_UNREF(iostream);
 
   return;
 }
@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
 
   TK_ENABLE_CONSOLE();
 
-  socket_init();
+  tk_socket_init();
   platform_prepare();
 
   serial = tk_iostream_serial_create(argv[1]);
@@ -61,7 +61,7 @@ int main(int argc, char* argv[]) {
 
   do_send(serial, argv[2]);
 
-  socket_deinit();
+  tk_socket_deinit();
 
   return 0;
 }

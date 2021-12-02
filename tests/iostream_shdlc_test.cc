@@ -15,7 +15,7 @@ static void* server_thread_entry1(void* args) {
   tk_iostream_t* b_io = TK_IOSTREAM(args);
   tk_ostream_t* os = tk_iostream_get_ostream(b_io);
 
-  object_set_prop_int(OBJECT(os), TK_STREAM_PROP_COMPRESS_THRESHOLD, compress_threshold);
+  tk_object_set_prop_int(TK_OBJECT(os), TK_STREAM_PROP_COMPRESS_THRESHOLD, compress_threshold);
   assert(tk_ostream_write(os, sbuff, data_size) == (int32_t)data_size);
 
   return NULL;
@@ -31,23 +31,23 @@ TEST(IOStreamSHDLC, basic) {
   tk_istream_t* is = tk_iostream_get_istream(a_io);
   tk_ostream_t* os = tk_iostream_get_ostream(a_io);
 
-  ASSERT_EQ(object_get_prop_int(OBJECT(is), TK_STREAM_PROP_FD, 0), socks[0]);
-  ASSERT_EQ(object_get_prop_int(OBJECT(os), TK_STREAM_PROP_FD, 0), socks[0]);
+  ASSERT_EQ(tk_object_get_prop_int(TK_OBJECT(is), TK_STREAM_PROP_FD, 0), socks[0]);
+  ASSERT_EQ(tk_object_get_prop_int(TK_OBJECT(os), TK_STREAM_PROP_FD, 0), socks[0]);
 
-  ASSERT_EQ(object_set_prop_int(OBJECT(is), TK_STREAM_PROP_TIMEOUT, 1234), RET_OK);
-  ASSERT_EQ(object_set_prop_int(OBJECT(os), TK_STREAM_PROP_TIMEOUT, 1235), RET_OK);
-  ASSERT_EQ(object_set_prop_int(OBJECT(os), TK_STREAM_PROP_COMPRESS_THRESHOLD, 2048), RET_OK);
-  ASSERT_EQ(object_set_prop_int(OBJECT(os), TK_STREAM_PROP_RETRY_TIMES, 12), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_int(TK_OBJECT(is), TK_STREAM_PROP_TIMEOUT, 1234), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_int(TK_OBJECT(os), TK_STREAM_PROP_TIMEOUT, 1235), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_int(TK_OBJECT(os), TK_STREAM_PROP_COMPRESS_THRESHOLD, 2048), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_int(TK_OBJECT(os), TK_STREAM_PROP_RETRY_TIMES, 12), RET_OK);
 
-  ASSERT_EQ(object_get_prop_int(OBJECT(is), TK_STREAM_PROP_TIMEOUT, 0), 1234);
-  ASSERT_EQ(object_get_prop_int(OBJECT(os), TK_STREAM_PROP_TIMEOUT, 0), 1235);
-  ASSERT_EQ(object_get_prop_int(OBJECT(os), TK_STREAM_PROP_COMPRESS_THRESHOLD, 0), 2048);
-  ASSERT_EQ(object_get_prop_int(OBJECT(os), TK_STREAM_PROP_RETRY_TIMES, 0), 12);
+  ASSERT_EQ(tk_object_get_prop_int(TK_OBJECT(is), TK_STREAM_PROP_TIMEOUT, 0), 1234);
+  ASSERT_EQ(tk_object_get_prop_int(TK_OBJECT(os), TK_STREAM_PROP_TIMEOUT, 0), 1235);
+  ASSERT_EQ(tk_object_get_prop_int(TK_OBJECT(os), TK_STREAM_PROP_COMPRESS_THRESHOLD, 0), 2048);
+  ASSERT_EQ(tk_object_get_prop_int(TK_OBJECT(os), TK_STREAM_PROP_RETRY_TIMES, 0), 12);
 
-  OBJECT_UNREF(a_tcp);
-  OBJECT_UNREF(a_io);
-  OBJECT_UNREF(b_tcp);
-  OBJECT_UNREF(b_io);
+  TK_OBJECT_UNREF(a_tcp);
+  TK_OBJECT_UNREF(a_io);
+  TK_OBJECT_UNREF(b_tcp);
+  TK_OBJECT_UNREF(b_io);
 }
 
 static void gen_data() {
@@ -76,10 +76,10 @@ TEST(IOStreamSHDLC, small) {
   tk_thread_join(t);
   tk_thread_destroy(t);
 
-  OBJECT_UNREF(a_tcp);
-  OBJECT_UNREF(a_io);
-  OBJECT_UNREF(b_tcp);
-  OBJECT_UNREF(b_io);
+  TK_OBJECT_UNREF(a_tcp);
+  TK_OBJECT_UNREF(a_io);
+  TK_OBJECT_UNREF(b_tcp);
+  TK_OBJECT_UNREF(b_io);
 }
 
 TEST(IOStreamSHDLC, large) {
@@ -101,17 +101,17 @@ TEST(IOStreamSHDLC, large) {
   tk_thread_join(t);
   tk_thread_destroy(t);
 
-  OBJECT_UNREF(a_tcp);
-  OBJECT_UNREF(a_io);
-  OBJECT_UNREF(b_tcp);
-  OBJECT_UNREF(b_io);
+  TK_OBJECT_UNREF(a_tcp);
+  TK_OBJECT_UNREF(a_io);
+  TK_OBJECT_UNREF(b_tcp);
+  TK_OBJECT_UNREF(b_io);
 }
 
 static void* server_thread_entry_noisy(void* args) {
   tk_iostream_t* b_io = TK_IOSTREAM(args);
   tk_ostream_t* os = tk_iostream_get_ostream(b_io);
 
-  object_set_prop_int(OBJECT(os), TK_STREAM_PROP_COMPRESS_THRESHOLD, compress_threshold);
+  tk_object_set_prop_int(TK_OBJECT(os), TK_STREAM_PROP_COMPRESS_THRESHOLD, compress_threshold);
   assert(tk_ostream_write(os, sbuff, data_size) == (int32_t)data_size);
 
   return NULL;
@@ -139,9 +139,9 @@ TEST(IOStreamSHDLC, noisy) {
   tk_thread_join(t);
   tk_thread_destroy(t);
 
-  OBJECT_UNREF(a_tcp);
-  OBJECT_UNREF(a_io);
-  OBJECT_UNREF(b_tcp);
-  OBJECT_UNREF(b_io);
-  OBJECT_UNREF(b_noisy);
+  TK_OBJECT_UNREF(a_tcp);
+  TK_OBJECT_UNREF(a_io);
+  TK_OBJECT_UNREF(b_tcp);
+  TK_OBJECT_UNREF(b_io);
+  TK_OBJECT_UNREF(b_noisy);
 }

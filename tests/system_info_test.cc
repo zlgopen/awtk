@@ -12,37 +12,37 @@ TEST(SystemInfo, basic) {
 
   ASSERT_EQ(system_info_set_lcd_w(info, 100), RET_OK);
   ASSERT_EQ(info->lcd_w, 100u);
-  ASSERT_EQ(info->lcd_w, (uint32_t)object_get_prop_int(OBJECT(info), SYSTEM_INFO_PROP_LCD_W, 0));
+  ASSERT_EQ(info->lcd_w, (uint32_t)tk_object_get_prop_int(TK_OBJECT(info), SYSTEM_INFO_PROP_LCD_W, 0));
 
   ASSERT_EQ(system_info_set_lcd_h(info, 200), RET_OK);
   ASSERT_EQ(info->lcd_h, 200u);
-  ASSERT_EQ(info->lcd_h, (uint32_t)object_get_prop_int(OBJECT(info), SYSTEM_INFO_PROP_LCD_H, 0));
+  ASSERT_EQ(info->lcd_h, (uint32_t)tk_object_get_prop_int(TK_OBJECT(info), SYSTEM_INFO_PROP_LCD_H, 0));
 
   ASSERT_EQ(system_info_set_lcd_type(info, LCD_FRAMEBUFFER), RET_OK);
   ASSERT_EQ(info->lcd_type, LCD_FRAMEBUFFER);
   ASSERT_EQ((int32_t)(info->lcd_type),
-            object_get_prop_int(OBJECT(info), SYSTEM_INFO_PROP_LCD_TYPE, 111));
+            tk_object_get_prop_int(TK_OBJECT(info), SYSTEM_INFO_PROP_LCD_TYPE, 111));
 
   ASSERT_EQ(system_info_set_device_pixel_ratio(info, 2), RET_OK);
   ASSERT_EQ(info->device_pixel_ratio, 2.0f);
   ASSERT_EQ(info->device_pixel_ratio,
-            object_get_prop_float(OBJECT(info), SYSTEM_INFO_PROP_DEVICE_PIXEL_RATIO, 0));
+            tk_object_get_prop_float(TK_OBJECT(info), SYSTEM_INFO_PROP_DEVICE_PIXEL_RATIO, 0));
 
   ASSERT_EQ(system_info_set_lcd_orientation(info, LCD_ORIENTATION_180), RET_OK);
   ASSERT_EQ(info->lcd_orientation, LCD_ORIENTATION_180);
   ASSERT_EQ((int32_t)(info->lcd_orientation),
-            object_get_prop_int(OBJECT(info), SYSTEM_INFO_PROP_LCD_ORIENTATION, 111));
+            tk_object_get_prop_int(TK_OBJECT(info), SYSTEM_INFO_PROP_LCD_ORIENTATION, 111));
 
-  ASSERT_STREQ("portrait", object_get_prop_str(OBJECT(info), SYSTEM_INFO_PROP_DEVICE_ORIENTATION));
+  ASSERT_STREQ("portrait", tk_object_get_prop_str(TK_OBJECT(info), SYSTEM_INFO_PROP_DEVICE_ORIENTATION));
 
   ASSERT_EQ(system_info_set_lcd_w(info, 1000), RET_OK);
-  ASSERT_STREQ("landscape", object_get_prop_str(OBJECT(info), SYSTEM_INFO_PROP_DEVICE_ORIENTATION));
+  ASSERT_STREQ("landscape", tk_object_get_prop_str(TK_OBJECT(info), SYSTEM_INFO_PROP_DEVICE_ORIENTATION));
 
   locale_info_change(locale_info(), "zh", "CN");
-  ASSERT_STREQ("zh", object_get_prop_str(OBJECT(info), SYSTEM_INFO_PROP_LANGUAGE));
-  ASSERT_STREQ("CN", object_get_prop_str(OBJECT(info), SYSTEM_INFO_PROP_COUNTRY));
+  ASSERT_STREQ("zh", tk_object_get_prop_str(TK_OBJECT(info), SYSTEM_INFO_PROP_LANGUAGE));
+  ASSERT_STREQ("CN", tk_object_get_prop_str(TK_OBJECT(info), SYSTEM_INFO_PROP_COUNTRY));
 
-  object_unref(OBJECT(info));
+  tk_object_unref(TK_OBJECT(info));
 }
 
 static ret_t on_expr(void* ctx, const void* data) {
@@ -89,5 +89,5 @@ TEST(SystemInfo, expr) {
                          &str);
   ASSERT_EQ(str, string("bg_zh_CN;bg_zh;bg_CN"));
 
-  object_unref(OBJECT(info));
+  tk_object_unref(TK_OBJECT(info));
 }

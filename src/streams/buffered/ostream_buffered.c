@@ -57,25 +57,25 @@ static ret_t tk_ostream_buffered_flush(tk_ostream_t* stream) {
   return RET_OK;
 }
 
-static ret_t tk_ostream_buffered_set_prop(object_t* obj, const char* name, const value_t* v) {
+static ret_t tk_ostream_buffered_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   tk_ostream_buffered_t* ostream_buffered = TK_OSTREAM_BUFFERED(obj);
   tk_ostream_t* real_ostream = ostream_buffered->real_ostream;
 
-  return object_set_prop(OBJECT(real_ostream), name, v);
+  return tk_object_set_prop(TK_OBJECT(real_ostream), name, v);
 }
 
-static ret_t tk_ostream_buffered_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t tk_ostream_buffered_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   tk_ostream_buffered_t* ostream_buffered = TK_OSTREAM_BUFFERED(obj);
   tk_ostream_t* real_ostream = ostream_buffered->real_ostream;
 
-  return object_get_prop(OBJECT(real_ostream), name, v);
+  return tk_object_get_prop(TK_OBJECT(real_ostream), name, v);
 }
 
-static ret_t tk_ostream_buffered_on_destroy(object_t* obj) {
+static ret_t tk_ostream_buffered_on_destroy(tk_object_t* obj) {
   tk_ostream_buffered_t* ostream_buffered = TK_OSTREAM_BUFFERED(obj);
 
   wbuffer_deinit(&(ostream_buffered->wb));
-  OBJECT_UNREF(ostream_buffered->real_ostream);
+  TK_OBJECT_UNREF(ostream_buffered->real_ostream);
 
   return RET_OK;
 }
@@ -89,15 +89,15 @@ static const object_vtable_t s_tk_ostream_buffered_vtable = {
     .set_prop = tk_ostream_buffered_set_prop};
 
 tk_ostream_t* tk_ostream_buffered_create(tk_ostream_t* real_ostream) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   tk_ostream_buffered_t* ostream_buffered = NULL;
   return_value_if_fail(real_ostream != NULL, NULL);
 
-  obj = object_create(&s_tk_ostream_buffered_vtable);
+  obj = tk_object_create(&s_tk_ostream_buffered_vtable);
   ostream_buffered = TK_OSTREAM_BUFFERED(obj);
   return_value_if_fail(ostream_buffered != NULL, NULL);
 
-  OBJECT_REF(real_ostream);
+  TK_OBJECT_REF(real_ostream);
   ostream_buffered->real_ostream = real_ostream;
   wbuffer_init_extendable(&(ostream_buffered->wb));
 

@@ -63,7 +63,7 @@ static widget_t* find_target_widget(widget_t* widget, const char* path, uint32_t
 
 static widget_t* to_widget(fscript_t* fscript, const value_t* v) {
   if (v->type == VALUE_TYPE_STRING) {
-    widget_t* self = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+    widget_t* self = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
     const char* path = value_str(v);
     return_value_if_fail(path != NULL, NULL);
 
@@ -89,11 +89,11 @@ static ret_t func_tr(fscript_t* fscript, fscript_args_t* args, value_t* result) 
 static ret_t func_window_open(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   widget_t* widget = NULL;
   const char* name = NULL;
-  object_t* obj_widget = NULL;
+  tk_object_t* obj_widget = NULL;
   bool_t close_current = FALSE;
   bool_t switch_to_if_exist = FALSE;
   widget_t* wm = window_manager();
-  widget_t* self = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  widget_t* self = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
   widget_t* curr_win = widget_get_window(self);
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
   name = value_str(args->args);
@@ -135,7 +135,7 @@ static ret_t func_window_close(fscript_t* fscript, fscript_args_t* args, value_t
     FSCRIPT_FUNC_CHECK(win != NULL, RET_BAD_PARAMS);
     ret = window_manager_close_window_force(wm, win);
   } else {
-    widget_t* self = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+    widget_t* self = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
     ret = window_close(widget_get_window(self));
   }
   value_set_bool(result, ret == RET_OK);
@@ -208,11 +208,11 @@ static ret_t func_widget_lookup(fscript_t* fscript, fscript_args_t* args, value_
   widget_t* widget = NULL;
   const char* path = NULL;
   bool_t recursive = FALSE;
-  object_t* obj_widget = NULL;
+  tk_object_t* obj_widget = NULL;
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
 
   if (args->size == 1) {
-    widget = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+    widget = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
     path = value_str(args->args);
   } else {
     widget = to_widget(fscript, args->args);
@@ -240,7 +240,7 @@ static ret_t func_widget_get(fscript_t* fscript, fscript_args_t* args, value_t* 
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
 
   if (args->size == 1) {
-    widget = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+    widget = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
     path = value_str(args->args);
   } else {
     widget = to_widget(fscript, args->args);
@@ -259,7 +259,7 @@ static ret_t func_widget_eval(fscript_t* fscript, fscript_args_t* args, value_t*
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
 
   if (args->size == 1) {
-    widget = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+    widget = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
     path = value_str(args->args);
   } else {
     widget = to_widget(fscript, args->args);
@@ -283,7 +283,7 @@ static ret_t func_widget_set(fscript_t* fscript, fscript_args_t* args, value_t* 
   FSCRIPT_FUNC_CHECK(args->size >= 2, RET_BAD_PARAMS);
 
   if (args->size == 2) {
-    widget = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+    widget = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
     path = value_str(args->args);
     v = args->args + 1;
   } else {
@@ -307,7 +307,7 @@ static ret_t func_widget_create(fscript_t* fscript, fscript_args_t* args, value_
   const char* type = NULL;
   widget_t* widget = NULL;
   widget_t* parent = NULL;
-  object_t* obj_widget = NULL;
+  tk_object_t* obj_widget = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 6, RET_BAD_PARAMS);
   type = value_str(args->args);
   parent = to_widget(fscript, args->args + 1);
@@ -351,7 +351,7 @@ static ret_t widget_on_timer(const timer_info_t* info) {
 static ret_t func_widget_add_timer(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   uint32_t id = 0;
   uint32_t duration = 0;
-  widget_t* self = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  widget_t* self = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   duration = value_uint32(args->args);
   FSCRIPT_FUNC_CHECK(self != NULL && duration > 0, RET_BAD_PARAMS);
@@ -371,7 +371,7 @@ static ret_t func_widget_add_timer(fscript_t* fscript, fscript_args_t* args, val
 
 static ret_t func_widget_remove_timer(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   uint32_t id = 0;
-  widget_t* widget = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  widget_t* widget = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
   FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
   if (args->size > 0) {
     widget = to_widget(fscript, args->args);
@@ -416,9 +416,9 @@ static ret_t func_widget_send_key(fscript_t* fscript, fscript_args_t* args, valu
 }
 
 static ret_t func_locale_get(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   locale_info_t* info = NULL;
-  widget_t* widget = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  widget_t* widget = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
   if (args->size > 0) {
     widget = to_widget(fscript, args->args);
   }
@@ -428,8 +428,8 @@ static ret_t func_locale_get(fscript_t* fscript, fscript_args_t* args, value_t* 
 
   obj = object_default_create();
   FSCRIPT_FUNC_CHECK(obj != NULL, RET_OOM);
-  object_set_prop_str(obj, "language", info->language);
-  object_set_prop_str(obj, "country", info->country);
+  tk_object_set_prop_str(obj, "language", info->language);
+  tk_object_set_prop_str(obj, "country", info->country);
   value_set_object(result, obj);
   result->free_handle = TRUE;
 
@@ -440,7 +440,7 @@ static ret_t func_locale_set(fscript_t* fscript, fscript_args_t* args, value_t* 
   locale_info_t* info = NULL;
   const char* language = NULL;
   const char* country = NULL;
-  widget_t* widget = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  widget_t* widget = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
   FSCRIPT_FUNC_CHECK(args->size >= 2, RET_BAD_PARAMS);
   if (args->size > 2) {
     widget = to_widget(fscript, args->args);
@@ -461,7 +461,7 @@ static ret_t func_locale_set(fscript_t* fscript, fscript_args_t* args, value_t* 
 
 static ret_t func_theme_get(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   assets_manager_t* am = NULL;
-  widget_t* widget = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  widget_t* widget = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
   if (args->size > 0) {
     widget = to_widget(fscript, args->args);
   }
@@ -476,7 +476,7 @@ static ret_t func_theme_get(fscript_t* fscript, fscript_args_t* args, value_t* r
 
 static ret_t func_theme_set(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   const char* name = NULL;
-  widget_t* widget = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  widget_t* widget = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
   if (args->size == 1) {
     name = value_str(args->args);

@@ -25,5 +25,5 @@ TEST(TimerInfo, basic) {
                                                     &dummy, timer->timer_info_type, timer->ctx)),
       0);
 
-  object_unref((object_t*)timer);
+  tk_object_unref((tk_object_t*)timer);
 }

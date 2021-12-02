@@ -7,9 +7,9 @@ int main(int argc, char* argv[]) {
   tk_iostream_t* io = NULL;
   const char* request = "GET / HTTP/1.1\r\nHost: localhost\r\n";
 
-  socket_init();
+  tk_socket_init();
   platform_prepare();
-  sock = tcp_connect("localhost", 8080);
+  sock = tk_tcp_connect("localhost", 8080);
   return_value_if_fail(sock > 0, 0);
 
   io = tk_iostream_tcp_create(sock);
@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
     ret = tk_istream_read(in, buff, sizeof(buff));
     log_debug("recv %d %s\n", ret, buff);
 
-    OBJECT_UNREF(io);
+    TK_OBJECT_UNREF(io);
   }
 
   return 0;

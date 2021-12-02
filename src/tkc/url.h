@@ -74,11 +74,11 @@ typedef struct _url_t {
   int32_t port;
 
   /**
-   * @property {object_t*} params
+   * @property {tk_object_t*} params
    * @annotation ["readable"]
    * 参数集合。
    */
-  object_t* params;
+  tk_object_t* params;
 } url_t;
 
 /**

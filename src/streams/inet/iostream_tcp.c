@@ -29,15 +29,15 @@
 #include "streams/inet/ostream_tcp.h"
 #include "streams/inet/iostream_tcp.h"
 
-static ret_t tk_iostream_tcp_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t tk_iostream_tcp_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   tk_iostream_tcp_t* iostream_tcp = TK_IOSTREAM_TCP(obj);
 
   if (tk_str_eq(name, TK_STREAM_PROP_FD)) {
     value_set_int(v, iostream_tcp->sock);
     return RET_OK;
   } else if (tk_str_eq(name, TK_STREAM_PROP_IS_OK)) {
-    bool_t is_ok1 = object_get_prop_bool(OBJECT(iostream_tcp->istream), TK_STREAM_PROP_IS_OK, TRUE);
-    bool_t is_ok2 = object_get_prop_bool(OBJECT(iostream_tcp->ostream), TK_STREAM_PROP_IS_OK, TRUE);
+    bool_t is_ok1 = tk_object_get_prop_bool(TK_OBJECT(iostream_tcp->istream), TK_STREAM_PROP_IS_OK, TRUE);
+    bool_t is_ok2 = tk_object_get_prop_bool(TK_OBJECT(iostream_tcp->ostream), TK_STREAM_PROP_IS_OK, TRUE);
 
     value_set_bool(v, is_ok1 && is_ok2);
 
@@ -47,12 +47,12 @@ static ret_t tk_iostream_tcp_get_prop(object_t* obj, const char* name, value_t* 
   return RET_NOT_FOUND;
 }
 
-static ret_t tk_iostream_tcp_on_destroy(object_t* obj) {
+static ret_t tk_iostream_tcp_on_destroy(tk_object_t* obj) {
   tk_iostream_tcp_t* iostream_tcp = TK_IOSTREAM_TCP(obj);
 
-  socket_close(iostream_tcp->sock);
-  object_unref(OBJECT(iostream_tcp->istream));
-  object_unref(OBJECT(iostream_tcp->ostream));
+  tk_socket_close(iostream_tcp->sock);
+  tk_object_unref(TK_OBJECT(iostream_tcp->istream));
+  tk_object_unref(TK_OBJECT(iostream_tcp->ostream));
 
   return RET_OK;
 }
@@ -76,14 +76,14 @@ static tk_ostream_t* tk_iostream_tcp_get_ostream(tk_iostream_t* stream) {
 }
 
 tk_iostream_t* tk_iostream_tcp_create(int sock) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   tk_iostream_tcp_t* iostream_tcp = NULL;
   return_value_if_fail(sock >= 0, NULL);
 
-  obj = object_create(&s_tk_iostream_tcp_vtable);
+  obj = tk_object_create(&s_tk_iostream_tcp_vtable);
   iostream_tcp = TK_IOSTREAM_TCP(obj);
   if (iostream_tcp == NULL) {
-    socket_close(sock);
+    tk_socket_close(sock);
     return_value_if_fail(iostream_tcp != NULL, NULL);
   }
 

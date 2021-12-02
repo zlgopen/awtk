@@ -24,7 +24,7 @@ static ret_t func_iostream_get_istream(fscript_t* fscript, fscript_args_t* args,
   iostream = TK_IOSTREAM(value_object(args->args));
   FSCRIPT_FUNC_CHECK(iostream != NULL, RET_BAD_PARAMS);
 
-  value_set_object(result, OBJECT(tk_iostream_get_istream(iostream)));
+  value_set_object(result, TK_OBJECT(tk_iostream_get_istream(iostream)));
 
   return RET_OK;
 }
@@ -35,7 +35,7 @@ static ret_t func_iostream_get_ostream(fscript_t* fscript, fscript_args_t* args,
   iostream = TK_IOSTREAM(value_object(args->args));
   FSCRIPT_FUNC_CHECK(iostream != NULL, RET_BAD_PARAMS);
 
-  value_set_object(result, OBJECT(tk_iostream_get_ostream(iostream)));
+  value_set_object(result, TK_OBJECT(tk_iostream_get_ostream(iostream)));
 
   return RET_OK;
 }

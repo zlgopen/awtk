@@ -29,11 +29,11 @@ BEGIN_C_DECLS
 
 /**
  * @class system_info_t
- * @parent object_t
+ * @parent tk_object_t
  * 当前系统的信息。
  */
 struct _system_info_t {
-  object_t object;
+  tk_object_t object;
 
   /**
    * @property {uint32_t} lcd_w

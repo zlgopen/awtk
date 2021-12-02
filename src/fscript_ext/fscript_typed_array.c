@@ -18,7 +18,7 @@
 #include "tkc/object_typed_array.h"
 
 static ret_t func_typed_array_create(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   uint32_t capacity = 0;
   const char* stype = NULL;
   value_type_t type = VALUE_TYPE_INT8;
@@ -58,7 +58,7 @@ static ret_t func_typed_array_create(fscript_t* fscript, fscript_args_t* args, v
 }
 
 static typed_array_t* get_typed_array(fscript_t* fscript, fscript_args_t* args) {
-  object_t* obj = value_object(args->args);
+  tk_object_t* obj = value_object(args->args);
   return_value_if_fail(obj != NULL, NULL);
 
   return OBJECT_TYPED_ARRAY(obj)->arr;

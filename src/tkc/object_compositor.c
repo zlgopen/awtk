@@ -24,7 +24,7 @@
 #include "tkc/utils.h"
 #include "tkc/object_compositor.h"
 
-static ret_t object_compositor_on_destroy(object_t* obj) {
+static ret_t object_compositor_on_destroy(tk_object_t* obj) {
   emitter_t* obj1 = NULL;
   emitter_t* obj2 = NULL;
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
@@ -36,76 +36,76 @@ static ret_t object_compositor_on_destroy(object_t* obj) {
 
   emitter_off_by_ctx(obj1, o);
   emitter_off_by_ctx(obj2, o);
-  OBJECT_UNREF(o->obj1);
-  OBJECT_UNREF(o->obj2);
+  TK_OBJECT_UNREF(o->obj1);
+  TK_OBJECT_UNREF(o->obj2);
 
   return RET_OK;
 }
 
-static int32_t object_compositor_compare(object_t* obj, object_t* other) {
+static int32_t object_compositor_compare(tk_object_t* obj, tk_object_t* other) {
   return strcmp(obj->name, other->name);
 }
 
-static ret_t object_compositor_remove_prop(object_t* obj, const char* name) {
+static ret_t object_compositor_remove_prop(tk_object_t* obj, const char* name) {
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-  if (object_remove_prop(o->obj1, name) == RET_OK) {
+  if (tk_object_remove_prop(o->obj1, name) == RET_OK) {
     return RET_OK;
   }
 
-  return object_remove_prop(o->obj2, name);
+  return tk_object_remove_prop(o->obj2, name);
 }
 
-static ret_t object_compositor_set_prop(object_t* obj, const char* name, const value_t* v) {
+static ret_t object_compositor_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-  if (object_set_prop(o->obj1, name, v) == RET_OK) {
+  if (tk_object_set_prop(o->obj1, name, v) == RET_OK) {
     return RET_OK;
   }
 
-  return object_set_prop(o->obj2, name, v);
+  return tk_object_set_prop(o->obj2, name, v);
 }
 
-static ret_t object_compositor_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t object_compositor_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-  if (object_get_prop(o->obj1, name, v) == RET_OK) {
+  if (tk_object_get_prop(o->obj1, name, v) == RET_OK) {
     return RET_OK;
   }
 
-  return object_get_prop(o->obj2, name, v);
+  return tk_object_get_prop(o->obj2, name, v);
 }
 
-static ret_t object_compositor_foreach_prop(object_t* obj, tk_visit_t on_prop, void* ctx) {
+static ret_t object_compositor_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, void* ctx) {
   ret_t ret = RET_OK;
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-  ret = object_foreach_prop(o->obj1, on_prop, ctx);
+  ret = tk_object_foreach_prop(o->obj1, on_prop, ctx);
   if (ret != RET_STOP) {
-    ret = object_foreach_prop(o->obj2, on_prop, ctx);
+    ret = tk_object_foreach_prop(o->obj2, on_prop, ctx);
   }
 
   return ret;
 }
 
-static bool_t object_compositor_can_exec(object_t* obj, const char* name, const char* args) {
+static bool_t object_compositor_can_exec(tk_object_t* obj, const char* name, const char* args) {
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
   return_value_if_fail(o != NULL, FALSE);
-  if (object_can_exec(o->obj1, name, args)) {
+  if (tk_object_can_exec(o->obj1, name, args)) {
     return TRUE;
   }
 
-  return object_can_exec(o->obj2, name, args);
+  return tk_object_can_exec(o->obj2, name, args);
 }
 
-static ret_t object_compositor_exec(object_t* obj, const char* name, const char* args) {
+static ret_t object_compositor_exec(tk_object_t* obj, const char* name, const char* args) {
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-  if (object_exec(o->obj1, name, args) == RET_OK) {
+  if (tk_object_exec(o->obj1, name, args) == RET_OK) {
     return RET_OK;
   }
 
-  return object_exec(o->obj2, name, args);
+  return tk_object_exec(o->obj2, name, args);
 }
 
 static const object_vtable_t s_object_compositor_vtable = {
@@ -130,27 +130,27 @@ static ret_t object_compositor_forward_events(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-object_t* object_compositor_create(object_t* obj1, object_t* obj2) {
-  object_t* o = NULL;
+tk_object_t* object_compositor_create(tk_object_t* obj1, tk_object_t* obj2) {
+  tk_object_t* o = NULL;
   object_compositor_t* wrapper = NULL;
   return_value_if_fail(obj1 != NULL && obj2 != NULL, NULL);
 
-  o = object_create(&s_object_compositor_vtable);
+  o = tk_object_create(&s_object_compositor_vtable);
   wrapper = OBJECT_COMPOSITOR(o);
   return_value_if_fail(wrapper != NULL, NULL);
 
-  wrapper->obj1 = object_ref(obj1);
+  wrapper->obj1 = tk_object_ref(obj1);
   emitter_on(EMITTER(obj1), EVT_ITEMS_CHANGED, object_compositor_forward_events, o);
   emitter_on(EMITTER(obj1), EVT_PROPS_CHANGED, object_compositor_forward_events, o);
 
-  wrapper->obj2 = object_ref(obj2);
+  wrapper->obj2 = tk_object_ref(obj2);
   emitter_on(EMITTER(obj2), EVT_ITEMS_CHANGED, object_compositor_forward_events, o);
   emitter_on(EMITTER(obj2), EVT_PROPS_CHANGED, object_compositor_forward_events, o);
 
   return o;
 }
 
-object_compositor_t* object_compositor_cast(object_t* obj) {
+object_compositor_t* object_compositor_cast(tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt == &s_object_compositor_vtable, NULL);
 
   return (object_compositor_t*)(obj);

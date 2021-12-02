@@ -118,15 +118,15 @@ static const native_window_vtable_t s_native_window_vtable = {
     .set_orientation = native_window_raw_set_orientation,
     .get_canvas = native_window_raw_get_canvas};
 
-static ret_t native_window_raw_set_prop(object_t* obj, const char* name, const value_t* v) {
+static ret_t native_window_raw_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   return RET_NOT_FOUND;
 }
 
-static ret_t native_window_raw_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t native_window_raw_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   return RET_NOT_FOUND;
 }
 
-static ret_t native_window_raw_on_destroy(object_t* obj) {
+static ret_t native_window_raw_on_destroy(tk_object_t* obj) {
   native_window_raw_t* raw = NATIVE_WINDOW_RAW(obj);
   lcd_t* lcd = raw->canvas.lcd;
 
@@ -145,7 +145,7 @@ static const object_vtable_t s_native_window_raw_vtable = {
     .on_destroy = native_window_raw_on_destroy};
 
 static native_window_t* native_window_create_internal(lcd_t* lcd) {
-  object_t* obj = object_create(&s_native_window_raw_vtable);
+  tk_object_t* obj = tk_object_create(&s_native_window_raw_vtable);
   native_window_t* win = NATIVE_WINDOW(obj);
   native_window_raw_t* raw = NATIVE_WINDOW_RAW(win);
   return_value_if_fail(raw != NULL, NULL);

@@ -63,7 +63,7 @@ static void* serial_thread_entry(void* args) {
 
   handle->quited = FALSE;
   while (!handle->closed) {
-    if (socket_wait_for_data(fd, 100) == RET_OK) {
+    if (tk_socket_wait_for_data(fd, 100) == RET_OK) {
       ret = recv(fd, buff, sizeof(buff), 0);
       if (ret > 0) {
         bytes = 0;
@@ -386,8 +386,8 @@ int serial_close(serial_handle_t handle) {
     tk_thread_destroy(handle->thread);
   }
 
-  socket_close(handle->client_fd);
-  socket_close(handle->server_fd);
+  tk_socket_close(handle->client_fd);
+  tk_socket_close(handle->server_fd);
 
   TKMEM_FREE(handle);
 
@@ -874,5 +874,5 @@ int32_t serial_write(serial_handle_t handle, const uint8_t* buff, uint32_t max_s
 ret_t serial_wait_for_data(serial_handle_t handle, uint32_t timeout_ms) {
   int fd = serial_handle_get_fd(handle);
 
-  return socket_wait_for_data(fd, timeout_ms);
+  return tk_socket_wait_for_data(fd, timeout_ms);
 }

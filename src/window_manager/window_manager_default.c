@@ -1063,7 +1063,7 @@ static ret_t window_manager_default_on_destroy(widget_t* widget) {
   }
 #endif /*WITHOUT_WINDOW_ANIMATORS*/
 
-  object_unref(OBJECT(wm->native_window));
+  tk_object_unref(TK_OBJECT(wm->native_window));
 
   return RET_OK;
 }

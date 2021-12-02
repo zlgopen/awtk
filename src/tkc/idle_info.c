@@ -43,11 +43,11 @@ static const object_vtable_t s_idle_info_vtable = {
     .desc = "idle_info",
     .size = sizeof(idle_info_t),
     .is_collection = FALSE,
-    .on_destroy = (object_on_destroy_t)idle_info_on_destroy};
+    .on_destroy = (tk_object_on_destroy_t)idle_info_on_destroy};
 
 idle_info_t* idle_info_create(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx,
                               uint16_t idle_info_type) {
-  object_t* obj = object_create(&s_idle_info_vtable);
+  tk_object_t* obj = tk_object_create(&s_idle_info_vtable);
   idle_info_t* idle = IDLE_INFO(obj);
   return_value_if_fail(idle != NULL, NULL);
 
@@ -62,7 +62,7 @@ idle_info_t* idle_info_create(idle_manager_t* idle_manager, idle_func_t on_idle,
     if (id != TK_INVALID_ID) {
       idle_manager_append(idle_manager, idle);
     } else {
-      object_unref(obj);
+      tk_object_unref(obj);
       return_value_if_fail(id != TK_INVALID_ID, NULL);
     }
   }

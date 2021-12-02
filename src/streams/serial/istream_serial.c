@@ -38,7 +38,7 @@ static int32_t tk_istream_serial_read(tk_istream_t* stream, uint8_t* buff, uint3
   return ret;
 }
 
-static ret_t tk_istream_serial_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t tk_istream_serial_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   tk_istream_serial_t* istream_serial = TK_ISTREAM_SERIAL(obj);
   if (tk_str_eq(name, TK_STREAM_PROP_FD)) {
     value_set_int(v, (int)(serial_handle_get_fd(istream_serial->fd)));
@@ -58,7 +58,7 @@ static ret_t tk_istream_serial_flush(tk_istream_t* stream) {
   return serial_iflush(s->fd);
 }
 
-static ret_t tk_istream_serial_exec(object_t* obj, const char* name, const char* args) {
+static ret_t tk_istream_serial_exec(tk_object_t* obj, const char* name, const char* args) {
   if (tk_str_eq(name, TK_STREAM_CMD_IFLUSH)) {
     return tk_istream_serial_flush(TK_ISTREAM(obj));
   }
@@ -79,11 +79,11 @@ ret_t tk_istream_serial_wait_for_data(tk_istream_t* stream, uint32_t timeout_ms)
 }
 
 tk_istream_t* tk_istream_serial_create(serial_handle_t fd) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   tk_istream_serial_t* istream_serial = NULL;
   return_value_if_fail(fd >= 0, NULL);
 
-  obj = object_create(&s_tk_istream_serial_vtable);
+  obj = tk_object_create(&s_tk_istream_serial_vtable);
   istream_serial = TK_ISTREAM_SERIAL(obj);
   return_value_if_fail(istream_serial != NULL, NULL);
 

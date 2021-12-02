@@ -46,15 +46,15 @@ static ret_t tk_ostream_file_flush(tk_ostream_t* stream) {
   return fs_file_sync(ostream_file->file);
 }
 
-static ret_t tk_ostream_file_set_prop(object_t* obj, const char* name, const value_t* v) {
+static ret_t tk_ostream_file_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   return RET_NOT_FOUND;
 }
 
-static ret_t tk_ostream_file_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t tk_ostream_file_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   return RET_NOT_FOUND;
 }
 
-static ret_t tk_ostream_file_on_destroy(object_t* obj) {
+static ret_t tk_ostream_file_on_destroy(tk_object_t* obj) {
   tk_ostream_file_t* ostream_file = TK_OSTREAM_FILE(obj);
 
   fs_file_close(ostream_file->file);
@@ -75,7 +75,7 @@ tk_ostream_t* tk_ostream_file_create(const char* filename) {
 }
 
 tk_ostream_t* tk_ostream_file_create_ex(const char* filename, const char* mode) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   fs_file_t* file = NULL;
   tk_ostream_file_t* ostream_file = NULL;
   return_value_if_fail(filename != NULL, NULL);
@@ -83,7 +83,7 @@ tk_ostream_t* tk_ostream_file_create_ex(const char* filename, const char* mode) 
   file = fs_open_file(os_fs(), filename, mode);
   return_value_if_fail(file != NULL, NULL);
 
-  obj = object_create(&s_tk_ostream_file_vtable);
+  obj = tk_object_create(&s_tk_ostream_file_vtable);
   ostream_file = TK_OSTREAM_FILE(obj);
   if (ostream_file == NULL) {
     fs_file_close(file);

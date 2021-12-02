@@ -16,7 +16,7 @@ TEST(EventSourceManager, basic) {
   ASSERT_EQ(event_source_manager_remove(manager, source), RET_OK);
   ASSERT_EQ(event_source_manager_exist(manager, source), FALSE);
 
-  object_unref(OBJECT(source));
+  tk_object_unref(TK_OBJECT(source));
   event_source_manager_destroy(manager);
   idle_manager_destroy(tm);
 }
@@ -37,8 +37,8 @@ TEST(EventSourceManager, tag) {
   ASSERT_EQ(event_source_manager_exist(manager, source1), FALSE);
   ASSERT_EQ(event_source_manager_exist(manager, source2), FALSE);
 
-  object_unref(OBJECT(source1));
-  object_unref(OBJECT(source2));
+  tk_object_unref(TK_OBJECT(source1));
+  tk_object_unref(TK_OBJECT(source2));
   event_source_manager_destroy(manager);
   idle_manager_destroy(tm);
 }

@@ -7,11 +7,11 @@
 #include "tkc/data_writer_factory.h"
 
 static ret_t json_to_ubjson(const char* json_filename, const char* ubjson_filename) {
-  object_t* obj = conf_json_load(json_filename, FALSE);
+  tk_object_t* obj = conf_json_load(json_filename, FALSE);
   return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
 
   conf_ubjson_save_as(obj, ubjson_filename);
-  OBJECT_UNREF(obj);
+  TK_OBJECT_UNREF(obj);
 
   return RET_OK;
 }

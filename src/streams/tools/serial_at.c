@@ -28,7 +28,7 @@ void do_send(tk_iostream_t* iostream, const char* msg) {
     log_debug("read failed\n");
   }
 
-  object_unref(OBJECT(iostream));
+  tk_object_unref(TK_OBJECT(iostream));
 
   return;
 }

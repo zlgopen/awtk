@@ -24,7 +24,7 @@
 #include "streams/serial/ostream_serial.h"
 #include "streams/serial/iostream_serial.h"
 
-static ret_t tk_iostream_serial_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t tk_iostream_serial_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   tk_iostream_serial_t* iostream_serial = TK_IOSTREAM_SERIAL(obj);
 
   if (tk_str_eq(name, TK_STREAM_PROP_FD)) {
@@ -47,9 +47,9 @@ static ret_t tk_iostream_serial_get_prop(object_t* obj, const char* name, value_
     return RET_OK;
   } else if (tk_str_eq(name, TK_STREAM_PROP_IS_OK)) {
     bool_t is_ok1 =
-        object_get_prop_bool(OBJECT(iostream_serial->istream), TK_STREAM_PROP_IS_OK, TRUE);
+        tk_object_get_prop_bool(TK_OBJECT(iostream_serial->istream), TK_STREAM_PROP_IS_OK, TRUE);
     bool_t is_ok2 =
-        object_get_prop_bool(OBJECT(iostream_serial->ostream), TK_STREAM_PROP_IS_OK, TRUE);
+        tk_object_get_prop_bool(TK_OBJECT(iostream_serial->ostream), TK_STREAM_PROP_IS_OK, TRUE);
 
     value_set_bool(v, is_ok1 && is_ok2);
 
@@ -59,7 +59,7 @@ static ret_t tk_iostream_serial_get_prop(object_t* obj, const char* name, value_
   return RET_NOT_FOUND;
 }
 
-static ret_t tk_iostream_serial_set_prop(object_t* obj, const char* name, const value_t* v) {
+static ret_t tk_iostream_serial_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   tk_iostream_serial_t* iostream_serial = TK_IOSTREAM_SERIAL(obj);
 
   if (tk_str_eq(name, TK_IOSTREAM_SERIAL_PROP_PARITY)) {
@@ -82,12 +82,12 @@ static ret_t tk_iostream_serial_set_prop(object_t* obj, const char* name, const 
   return RET_NOT_FOUND;
 }
 
-static ret_t tk_iostream_serial_exec(object_t* obj, const char* name, const char* args) {
+static ret_t tk_iostream_serial_exec(tk_object_t* obj, const char* name, const char* args) {
   tk_iostream_serial_t* s = TK_IOSTREAM_SERIAL(obj);
   if (tk_str_eq(name, TK_STREAM_CMD_IFLUSH)) {
-    return object_exec(OBJECT(s->istream), TK_STREAM_CMD_IFLUSH, args);
+    return tk_object_exec(TK_OBJECT(s->istream), TK_STREAM_CMD_IFLUSH, args);
   } else if (tk_str_eq(name, TK_STREAM_CMD_OFLUSH)) {
-    return object_exec(OBJECT(s->ostream), TK_STREAM_CMD_OFLUSH, args);
+    return tk_object_exec(TK_OBJECT(s->ostream), TK_STREAM_CMD_OFLUSH, args);
   } else if (tk_str_eq(name, TK_IOSTREAM_SERIAL_CMD_CONFIG)) {
     int ret =
         serial_config(s->fd, s->baudrate, s->bytesize, s->stopbits, s->flowcontrol, s->parity);
@@ -101,13 +101,13 @@ static ret_t tk_iostream_serial_exec(object_t* obj, const char* name, const char
   return RET_NOT_IMPL;
 }
 
-static ret_t tk_iostream_serial_on_destroy(object_t* obj) {
+static ret_t tk_iostream_serial_on_destroy(tk_object_t* obj) {
   tk_iostream_serial_t* iostream_serial = TK_IOSTREAM_SERIAL(obj);
 
   tk_istream_flush(iostream_serial->istream);
   tk_ostream_flush(iostream_serial->ostream);
-  object_unref(OBJECT(iostream_serial->istream));
-  object_unref(OBJECT(iostream_serial->ostream));
+  tk_object_unref(TK_OBJECT(iostream_serial->istream));
+  tk_object_unref(TK_OBJECT(iostream_serial->ostream));
   serial_close(iostream_serial->fd);
 
   return RET_OK;
@@ -135,7 +135,7 @@ static tk_ostream_t* tk_iostream_serial_get_ostream(tk_iostream_t* stream) {
 }
 
 tk_iostream_t* tk_iostream_serial_create(const char* port) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   serial_handle_t fd = 0;
   tk_iostream_serial_t* iostream_serial = NULL;
   return_value_if_fail(port != NULL, NULL);
@@ -143,7 +143,7 @@ tk_iostream_t* tk_iostream_serial_create(const char* port) {
   fd = serial_open(port);
   return_value_if_fail(fd > 0, NULL);
 
-  obj = object_create(&s_tk_iostream_serial_vtable);
+  obj = tk_object_create(&s_tk_iostream_serial_vtable);
   iostream_serial = TK_IOSTREAM_SERIAL(obj);
   if (iostream_serial == NULL) {
     serial_close(fd);
@@ -162,7 +162,7 @@ tk_iostream_t* tk_iostream_serial_create(const char* port) {
   TK_IOSTREAM(obj)->get_istream = tk_iostream_serial_get_istream;
   TK_IOSTREAM(obj)->get_ostream = tk_iostream_serial_get_ostream;
 
-  object_exec(obj, TK_IOSTREAM_SERIAL_CMD_CONFIG, NULL);
+  tk_object_exec(obj, TK_IOSTREAM_SERIAL_CMD_CONFIG, NULL);
   tk_istream_flush(iostream_serial->istream);
   tk_ostream_flush(iostream_serial->ostream);
 
@@ -173,13 +173,13 @@ ret_t tk_iostream_serial_config(tk_iostream_t* iostream, int32_t baudrate, bytes
                                 parity_t parity, stopbits_t stopbits, flowcontrol_t flowcontrol) {
   return_value_if_fail(iostream != NULL, RET_BAD_PARAMS);
 
-  object_set_prop_int(OBJECT(iostream), TK_IOSTREAM_SERIAL_PROP_STOPBITS, stopbits);
-  object_set_prop_int(OBJECT(iostream), TK_IOSTREAM_SERIAL_PROP_BAUDRATE, baudrate);
-  object_set_prop_int(OBJECT(iostream), TK_IOSTREAM_SERIAL_PROP_PARITY, parity);
-  object_set_prop_int(OBJECT(iostream), TK_IOSTREAM_SERIAL_PROP_BYTESIZE, bytesize);
-  object_set_prop_int(OBJECT(iostream), TK_IOSTREAM_SERIAL_PROP_FLOWCONTROL, flowcontrol);
+  tk_object_set_prop_int(TK_OBJECT(iostream), TK_IOSTREAM_SERIAL_PROP_STOPBITS, stopbits);
+  tk_object_set_prop_int(TK_OBJECT(iostream), TK_IOSTREAM_SERIAL_PROP_BAUDRATE, baudrate);
+  tk_object_set_prop_int(TK_OBJECT(iostream), TK_IOSTREAM_SERIAL_PROP_PARITY, parity);
+  tk_object_set_prop_int(TK_OBJECT(iostream), TK_IOSTREAM_SERIAL_PROP_BYTESIZE, bytesize);
+  tk_object_set_prop_int(TK_OBJECT(iostream), TK_IOSTREAM_SERIAL_PROP_FLOWCONTROL, flowcontrol);
 
-  object_exec(OBJECT(iostream), TK_IOSTREAM_SERIAL_CMD_CONFIG, NULL);
+  tk_object_exec(TK_OBJECT(iostream), TK_IOSTREAM_SERIAL_CMD_CONFIG, NULL);
 
   return RET_OK;
 }

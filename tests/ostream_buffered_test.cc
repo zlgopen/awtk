@@ -24,6 +24,6 @@ TEST(OStreamBuffered, basic) {
   ASSERT_EQ(tk_ostream_flush(os), RET_OK);
   ASSERT_STREQ(buff, "1234abcdabcd");
 
-  object_unref(OBJECT(os));
-  object_unref(OBJECT(mem));
+  tk_object_unref(TK_OBJECT(os));
+  tk_object_unref(TK_OBJECT(mem));
 }

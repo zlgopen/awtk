@@ -24,83 +24,83 @@
 #include "tkc/utils.h"
 #include "tkc/object_locker.h"
 
-static ret_t object_locker_on_destroy(object_t* obj) {
+static ret_t object_locker_on_destroy(tk_object_t* obj) {
   object_locker_t* o = OBJECT_LOCKER(obj);
   return_value_if_fail(o != NULL && o->mutex != NULL, RET_BAD_PARAMS);
   tk_mutex_nest_destroy(o->mutex);
   emitter_off_by_ctx(EMITTER(o->obj), o);
-  OBJECT_UNREF(o->obj);
+  TK_OBJECT_UNREF(o->obj);
 
   return RET_OK;
 }
 
-static int32_t object_locker_compare(object_t* obj, object_t* other) {
+static int32_t object_locker_compare(tk_object_t* obj, tk_object_t* other) {
   object_locker_t* o = OBJECT_LOCKER(obj);
   return_value_if_fail(o != NULL && o->obj != NULL, -1);
-  return object_compare(o->obj, other);
+  return tk_object_compare(o->obj, other);
 }
 
-static ret_t object_locker_remove_prop(object_t* obj, const char* name) {
+static ret_t object_locker_remove_prop(tk_object_t* obj, const char* name) {
   ret_t ret = RET_NOT_FOUND;
   object_locker_t* o = OBJECT_LOCKER(obj);
   return_value_if_fail(o != NULL && o->mutex != NULL, RET_BAD_PARAMS);
   if (tk_mutex_nest_lock(o->mutex) == RET_OK) {
-    ret = object_remove_prop(o->obj, name);
+    ret = tk_object_remove_prop(o->obj, name);
     tk_mutex_nest_unlock(o->mutex);
   }
 
   return ret;
 }
 
-static ret_t object_locker_set_prop(object_t* obj, const char* name, const value_t* v) {
+static ret_t object_locker_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   object_locker_t* o = OBJECT_LOCKER(obj);
   return_value_if_fail(o != NULL && o->mutex != NULL, RET_BAD_PARAMS);
   if (tk_mutex_nest_lock(o->mutex) == RET_OK) {
-    ret = object_set_prop(o->obj, name, v);
+    ret = tk_object_set_prop(o->obj, name, v);
     tk_mutex_nest_unlock(o->mutex);
   }
 
   return ret;
 }
 
-static ret_t object_locker_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t object_locker_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   object_locker_t* o = OBJECT_LOCKER(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   if (tk_mutex_nest_lock(o->mutex) == RET_OK) {
-    ret = object_get_prop(o->obj, name, v);
+    ret = tk_object_get_prop(o->obj, name, v);
     tk_mutex_nest_unlock(o->mutex);
   }
 
   return ret;
 }
 
-static ret_t object_locker_foreach_prop(object_t* obj, tk_visit_t on_prop, void* ctx) {
+static ret_t object_locker_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, void* ctx) {
   ret_t ret = RET_OK;
   object_locker_t* o = OBJECT_LOCKER(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   if (tk_mutex_nest_lock(o->mutex) == RET_OK) {
-    ret = object_foreach_prop(o->obj, on_prop, ctx);
+    ret = tk_object_foreach_prop(o->obj, on_prop, ctx);
     tk_mutex_nest_unlock(o->mutex);
   }
 
   return ret;
 }
 
-static bool_t object_locker_can_exec(object_t* obj, const char* name, const char* args) {
+static bool_t object_locker_can_exec(tk_object_t* obj, const char* name, const char* args) {
   bool_t ret = RET_OK;
   object_locker_t* o = OBJECT_LOCKER(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   if (tk_mutex_nest_lock(o->mutex) == RET_OK) {
-    ret = object_can_exec(o->obj, name, args);
+    ret = tk_object_can_exec(o->obj, name, args);
     tk_mutex_nest_unlock(o->mutex);
   }
 
   return ret;
 }
 
-static ret_t object_locker_exec(object_t* obj, const char* name, const char* args) {
+static ret_t object_locker_exec(tk_object_t* obj, const char* name, const char* args) {
   ret_t ret = RET_OK;
   object_locker_t* o = OBJECT_LOCKER(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
@@ -109,7 +109,7 @@ static ret_t object_locker_exec(object_t* obj, const char* name, const char* arg
   } else if (tk_str_eq(name, "unlock")) {
     return tk_mutex_nest_unlock(o->mutex);
   } else if (tk_mutex_nest_lock(o->mutex) == RET_OK) {
-    ret = object_exec(o->obj, name, args);
+    ret = tk_object_exec(o->obj, name, args);
     tk_mutex_nest_unlock(o->mutex);
   }
 
@@ -137,18 +137,18 @@ static ret_t object_locker_forward_events(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-object_t* object_locker_create(object_t* obj) {
-  object_t* o = NULL;
+tk_object_t* object_locker_create(tk_object_t* obj) {
+  tk_object_t* o = NULL;
   object_locker_t* wrapper = NULL;
   return_value_if_fail(obj != NULL, NULL);
-  o = object_create(&s_object_locker_vtable);
+  o = tk_object_create(&s_object_locker_vtable);
   return_value_if_fail(o != NULL, NULL);
   wrapper = OBJECT_LOCKER(o);
   return_value_if_fail(wrapper != NULL, NULL);
 
   wrapper->mutex = tk_mutex_nest_create();
   if (wrapper->mutex != NULL) {
-    wrapper->obj = object_ref(obj);
+    wrapper->obj = tk_object_ref(obj);
     emitter_on(EMITTER(obj), EVT_ITEMS_CHANGED, object_locker_forward_events, o);
     emitter_on(EMITTER(obj), EVT_PROPS_CHANGED, object_locker_forward_events, o);
   }
@@ -156,7 +156,7 @@ object_t* object_locker_create(object_t* obj) {
   return o;
 }
 
-object_locker_t* object_locker_cast(object_t* obj) {
+object_locker_t* object_locker_cast(tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt == &s_object_locker_vtable, NULL);
 
   return (object_locker_t*)(obj);

@@ -77,22 +77,22 @@ ret_t func_call_parser_deinit(func_call_parser_t* parser) {
 typedef struct _object_parser_t {
   func_call_parser_t base;
 
-  object_t* obj;
+  tk_object_t* obj;
 } object_parser_t;
 
 static ret_t parser_on_param(func_call_parser_t* parser, const char* name, const char* value) {
   object_parser_t* p = (object_parser_t*)parser;
 
-  return object_set_prop_str(p->obj, name, value);
+  return tk_object_set_prop_str(p->obj, name, value);
 }
 
 static ret_t parser_on_name(func_call_parser_t* parser, const char* func_name) {
   object_parser_t* p = (object_parser_t*)parser;
 
-  return object_set_name(p->obj, func_name);
+  return tk_object_set_name(p->obj, func_name);
 }
 
-object_t* func_call_parse(const char* str, uint32_t size) {
+tk_object_t* func_call_parse(const char* str, uint32_t size) {
   object_parser_t parser;
   return_value_if_fail(str != NULL && size > 0, NULL);
 

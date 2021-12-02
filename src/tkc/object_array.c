@@ -25,7 +25,7 @@
 #include "tkc/named_value.h"
 #include "tkc/object_array.h"
 
-static ret_t object_array_clean_invalid_props(object_t* obj) {
+static ret_t object_array_clean_invalid_props(tk_object_t* obj) {
   object_array_t* o = OBJECT_ARRAY(obj);
   event_t e = event_init(EVT_ITEMS_CHANGED, o);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
@@ -52,7 +52,7 @@ static ret_t object_array_clean_invalid_props(object_t* obj) {
   return RET_OK;
 }
 
-ret_t object_array_clear_props(object_t* obj) {
+ret_t object_array_clear_props(tk_object_t* obj) {
   uint32_t i = 0;
   object_array_t* o = OBJECT_ARRAY(obj);
   event_t e = event_init(EVT_ITEMS_CHANGED, o);
@@ -69,7 +69,7 @@ ret_t object_array_clear_props(object_t* obj) {
   return RET_OK;
 }
 
-static ret_t object_array_on_destroy(object_t* obj) {
+static ret_t object_array_on_destroy(tk_object_t* obj) {
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
@@ -80,11 +80,11 @@ static ret_t object_array_on_destroy(object_t* obj) {
   return RET_OK;
 }
 
-static int32_t object_array_compare(object_t* obj, object_t* other) {
+static int32_t object_array_compare(tk_object_t* obj, tk_object_t* other) {
   return tk_str_cmp(obj->name, other->name);
 }
 
-static ret_t object_array_extend(object_t* obj) {
+static ret_t object_array_extend(tk_object_t* obj) {
   ret_t ret = RET_OOM;
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
@@ -106,7 +106,7 @@ static ret_t object_array_extend(object_t* obj) {
   return ret;
 }
 
-ret_t object_array_insert(object_t* obj, uint32_t index, const value_t* v) {
+ret_t object_array_insert(tk_object_t* obj, uint32_t index, const value_t* v) {
   value_t* s = NULL;
   value_t* d = NULL;
   value_t* p = NULL;
@@ -132,7 +132,7 @@ ret_t object_array_insert(object_t* obj, uint32_t index, const value_t* v) {
   return RET_OK;
 }
 
-ret_t object_array_push(object_t* obj, const value_t* v) {
+ret_t object_array_push(tk_object_t* obj, const value_t* v) {
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
@@ -151,7 +151,7 @@ static int32_t object_array_parse_index(const char* name) {
   }
 }
 
-int32_t object_array_index_of(object_t* obj, const value_t* v) {
+int32_t object_array_index_of(tk_object_t* obj, const value_t* v) {
   int32_t i = 0;
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, -1);
@@ -166,7 +166,7 @@ int32_t object_array_index_of(object_t* obj, const value_t* v) {
   return -1;
 }
 
-int32_t object_array_last_index_of(object_t* obj, const value_t* v) {
+int32_t object_array_last_index_of(tk_object_t* obj, const value_t* v) {
   int32_t i = 0;
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, -1);
@@ -183,11 +183,11 @@ int32_t object_array_last_index_of(object_t* obj, const value_t* v) {
   return -1;
 }
 
-ret_t object_array_remove(object_t* obj, uint32_t index) {
+ret_t object_array_remove(tk_object_t* obj, uint32_t index) {
   return object_array_get_and_remove(obj, index, NULL);
 }
 
-ret_t object_array_get_and_remove(object_t* obj, uint32_t index, value_t* v) {
+ret_t object_array_get_and_remove(tk_object_t* obj, uint32_t index, value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
@@ -206,17 +206,17 @@ ret_t object_array_get_and_remove(object_t* obj, uint32_t index, value_t* v) {
   return ret;
 }
 
-ret_t object_array_shift(object_t* obj, value_t* v) {
+ret_t object_array_shift(tk_object_t* obj, value_t* v) {
   return object_array_get_and_remove(obj, 0, v);
 }
 
-static ret_t object_array_remove_prop(object_t* obj, const char* name) {
+static ret_t object_array_remove_prop(tk_object_t* obj, const char* name) {
   int32_t index = object_array_parse_index(name);
 
   return object_array_remove(obj, index);
 }
 
-ret_t object_array_pop(object_t* obj, value_t* v) {
+ret_t object_array_pop(tk_object_t* obj, value_t* v) {
   value_t* last = NULL;
   object_array_t* o = OBJECT_ARRAY(obj);
   event_t e = event_init(EVT_ITEMS_CHANGED, o);
@@ -231,7 +231,7 @@ ret_t object_array_pop(object_t* obj, value_t* v) {
   return RET_OK;
 }
 
-ret_t object_array_set(object_t* obj, uint32_t index, const value_t* v) {
+ret_t object_array_set(tk_object_t* obj, uint32_t index, const value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   object_array_t* o = OBJECT_ARRAY(obj);
   event_t e = event_init(EVT_ITEMS_CHANGED, o);
@@ -251,15 +251,15 @@ ret_t object_array_set(object_t* obj, uint32_t index, const value_t* v) {
   return ret;
 }
 
-static ret_t object_array_set_prop(object_t* obj, const char* name, const value_t* v) {
+static ret_t object_array_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   int32_t index = -1;
   ret_t ret = RET_NOT_FOUND;
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
-  object_t* sub = object_get_child_object(obj, name, &name);
+  tk_object_t* sub = tk_object_get_child_object(obj, name, &name);
   if (sub != NULL) {
-    return object_set_prop(sub, name, v);
+    return tk_object_set_prop(sub, name, v);
   }
 
   index = object_array_parse_index(name);
@@ -270,7 +270,7 @@ static ret_t object_array_set_prop(object_t* obj, const char* name, const value_
   return ret;
 }
 
-ret_t object_array_get(object_t* obj, uint32_t i, value_t* v) {
+ret_t object_array_get(tk_object_t* obj, uint32_t i, value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
@@ -283,7 +283,7 @@ ret_t object_array_get(object_t* obj, uint32_t i, value_t* v) {
   return ret;
 }
 
-static ret_t object_array_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t object_array_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
@@ -295,9 +295,9 @@ static ret_t object_array_get_prop(object_t* obj, const char* name, value_t* v) 
     value_set_int(v, o->capacity);
     ret = RET_OK;
   } else if (o->size > 0) {
-    object_t* sub = object_get_child_object(obj, name, &name);
+    tk_object_t* sub = tk_object_get_child_object(obj, name, &name);
     if (sub != NULL) {
-      return object_get_prop(sub, name, v);
+      return tk_object_get_prop(sub, name, v);
     }
 
     int32_t index = object_array_parse_index(name);
@@ -307,33 +307,33 @@ static ret_t object_array_get_prop(object_t* obj, const char* name, value_t* v) 
   return ret;
 }
 
-static bool_t object_array_can_exec(object_t* obj, const char* name, const char* args) {
+static bool_t object_array_can_exec(tk_object_t* obj, const char* name, const char* args) {
   ret_t ret = FALSE;
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
-  object_t* sub = object_get_child_object(obj, name, &name);
+  tk_object_t* sub = tk_object_get_child_object(obj, name, &name);
   if (sub != NULL) {
-    return object_can_exec(sub, name, args);
+    return tk_object_can_exec(sub, name, args);
   }
 
   return ret;
 }
 
-static ret_t object_array_exec(object_t* obj, const char* name, const char* args) {
+static ret_t object_array_exec(tk_object_t* obj, const char* name, const char* args) {
   ret_t ret = RET_NOT_FOUND;
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
-  object_t* sub = object_get_child_object(obj, name, &name);
+  tk_object_t* sub = tk_object_get_child_object(obj, name, &name);
   if (sub != NULL) {
-    return object_exec(sub, name, args);
+    return tk_object_exec(sub, name, args);
   }
 
   return ret;
 }
 
-static ret_t object_array_foreach_prop(object_t* obj, tk_visit_t on_prop, void* ctx) {
+static ret_t object_array_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, void* ctx) {
   ret_t ret = RET_OK;
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
@@ -378,8 +378,8 @@ static const object_vtable_t s_object_array_vtable = {.type = "object_array",
                                                       .remove_prop = object_array_remove_prop,
                                                       .foreach_prop = object_array_foreach_prop};
 
-static object_t* object_array_create_with_capacity(uint32_t init_capacity) {
-  object_t* obj = object_create(&s_object_array_vtable);
+static tk_object_t* object_array_create_with_capacity(uint32_t init_capacity) {
+  tk_object_t* obj = tk_object_create(&s_object_array_vtable);
   return_value_if_fail(obj != NULL, NULL);
   if (init_capacity > 0) {
     object_array_t* o = OBJECT_ARRAY(obj);
@@ -393,31 +393,31 @@ static object_t* object_array_create_with_capacity(uint32_t init_capacity) {
   return obj;
 }
 
-object_t* object_array_create(void) {
+tk_object_t* object_array_create(void) {
   return object_array_create_with_capacity(5);
 }
 
-object_t* object_array_clone(object_t* o) {
+tk_object_t* object_array_clone(tk_object_t* o) {
   object_array_t* arr = OBJECT_ARRAY(o);
   return_value_if_fail(arr != NULL, NULL);
 
-  return object_array_dup(OBJECT(o), 0, arr->size);
+  return object_array_dup(TK_OBJECT(o), 0, arr->size);
 }
 
-object_array_t* object_array_cast(object_t* obj) {
+object_array_t* object_array_cast(tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt == &s_object_array_vtable, NULL);
 
   return (object_array_t*)(obj);
 }
 
-ret_t object_array_unref(object_t* obj) {
-  return object_unref(obj);
+ret_t object_array_unref(tk_object_t* obj) {
+  return tk_object_unref(obj);
 }
 
-object_t* object_array_create_with_str(const char* str, const char* sep, value_type_t type) {
+tk_object_t* object_array_create_with_str(const char* str, const char* sep, value_type_t type) {
   str_t s;
   value_t v;
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   const char* p = NULL;
   const char* end = NULL;
   return_value_if_fail(str != NULL && sep != NULL && type != VALUE_TYPE_INVALID, NULL);
@@ -425,7 +425,7 @@ object_t* object_array_create_with_str(const char* str, const char* sep, value_t
   return_value_if_fail(obj != NULL, NULL);
 
   if (str_init(&s, 100) == NULL) {
-    OBJECT_UNREF(obj);
+    TK_OBJECT_UNREF(obj);
     return NULL;
   }
 
@@ -499,7 +499,7 @@ object_t* object_array_create_with_str(const char* str, const char* sep, value_t
   return obj;
 }
 
-ret_t object_array_join(object_t* obj, const char* sep, str_t* result) {
+ret_t object_array_join(tk_object_t* obj, const char* sep, str_t* result) {
   str_t s;
   uint32_t i = 0;
   ret_t ret = RET_OK;
@@ -531,9 +531,9 @@ ret_t object_array_join(object_t* obj, const char* sep, str_t* result) {
   return ret;
 }
 
-object_t* object_array_dup(object_t* obj, uint32_t start, uint32_t end) {
+tk_object_t* object_array_dup(tk_object_t* obj, uint32_t start, uint32_t end) {
   uint32_t i = 0;
-  object_t* dup = NULL;
+  tk_object_t* dup = NULL;
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, NULL);
 
@@ -586,7 +586,7 @@ static int value_cmp_as_str_i_r(const void* a, const void* b) {
   return strcasecmp(value_str((const value_t*)b), value_str((const value_t*)a));
 }
 
-ret_t object_array_sort(object_t* obj, tk_compare_t cmp) {
+ret_t object_array_sort(tk_object_t* obj, tk_compare_t cmp) {
   object_array_t* o = OBJECT_ARRAY(obj);
   event_t e = event_init(EVT_ITEMS_CHANGED, o);
   return_value_if_fail(obj != NULL && cmp != NULL, RET_BAD_PARAMS);
@@ -597,7 +597,7 @@ ret_t object_array_sort(object_t* obj, tk_compare_t cmp) {
   return RET_OK;
 }
 
-ret_t object_array_sort_as_int(object_t* obj, bool_t ascending) {
+ret_t object_array_sort_as_int(tk_object_t* obj, bool_t ascending) {
   if (ascending) {
     return object_array_sort(obj, value_cmp_as_int);
   } else {
@@ -605,7 +605,7 @@ ret_t object_array_sort_as_int(object_t* obj, bool_t ascending) {
   }
 }
 
-ret_t object_array_sort_as_double(object_t* obj, bool_t ascending) {
+ret_t object_array_sort_as_double(tk_object_t* obj, bool_t ascending) {
   if (ascending) {
     return object_array_sort(obj, value_cmp_as_double);
   } else {
@@ -613,7 +613,7 @@ ret_t object_array_sort_as_double(object_t* obj, bool_t ascending) {
   }
 }
 
-ret_t object_array_sort_as_str(object_t* obj, bool_t ascending, bool_t ignore_case) {
+ret_t object_array_sort_as_str(tk_object_t* obj, bool_t ascending, bool_t ignore_case) {
   if (ascending) {
     if (ignore_case) {
       return object_array_sort(obj, value_cmp_as_str_i);
@@ -629,7 +629,7 @@ ret_t object_array_sort_as_str(object_t* obj, bool_t ascending, bool_t ignore_ca
   }
 }
 
-ret_t object_array_min(object_t* obj, value_t* result) {
+ret_t object_array_min(tk_object_t* obj, value_t* result) {
   int32_t i = 0;
   double value = 0;
   object_array_t* o = OBJECT_ARRAY(obj);
@@ -652,7 +652,7 @@ ret_t object_array_min(object_t* obj, value_t* result) {
   return RET_OK;
 }
 
-ret_t object_array_max(object_t* obj, value_t* result) {
+ret_t object_array_max(tk_object_t* obj, value_t* result) {
   int32_t i = 0;
   double value = 0;
   object_array_t* o = OBJECT_ARRAY(obj);
@@ -675,7 +675,7 @@ ret_t object_array_max(object_t* obj, value_t* result) {
   return RET_OK;
 }
 
-ret_t object_array_sum(object_t* obj, value_t* result) {
+ret_t object_array_sum(tk_object_t* obj, value_t* result) {
   int32_t i = 0;
   double value = 0;
   object_array_t* o = OBJECT_ARRAY(obj);
@@ -692,7 +692,7 @@ ret_t object_array_sum(object_t* obj, value_t* result) {
   return RET_OK;
 }
 
-ret_t object_array_avg(object_t* obj, value_t* result) {
+ret_t object_array_avg(tk_object_t* obj, value_t* result) {
   int32_t i = 0;
   double value = 0;
   object_array_t* o = OBJECT_ARRAY(obj);

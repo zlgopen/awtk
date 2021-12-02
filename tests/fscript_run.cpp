@@ -19,7 +19,7 @@ static ret_t run_fscript(const char* code, uint32_t times) {
   value_t v;
   char buff[64];
   uint64_t start = time_now_us();
-  object_t* obj = object_default_create();
+  tk_object_t* obj = object_default_create();
   tk_mem_dump();
   log_debug("======================\n");
   if (times > 1) {
@@ -39,7 +39,7 @@ static ret_t run_fscript(const char* code, uint32_t times) {
     log_debug("result:%s\n", value_str_ex(&v, buff, sizeof(buff) - 1));
     value_reset(&v);
   }
-  OBJECT_UNREF(obj);
+  TK_OBJECT_UNREF(obj);
   log_debug("cost: %d us\n", (int)(time_now_us() - start));
 
   return RET_OK;

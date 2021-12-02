@@ -115,8 +115,12 @@ typedef float float_t;
 struct _value_t;
 typedef struct _value_t value_t;
 
-struct _object_t;
-typedef struct _object_t object_t;
+struct _tk_object_t;
+typedef struct _tk_object_t tk_object_t;
+
+#ifndef USE_TK_PREFIX
+#define object_t tk_object_t
+#endif/*USE_TK_PREFIX*/
 
 /**
  * @enum ret_t

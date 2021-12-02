@@ -39,7 +39,7 @@ static int32_t tk_ostream_serial_write(tk_ostream_t* stream, const uint8_t* buff
   return ret;
 }
 
-static ret_t tk_ostream_serial_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t tk_ostream_serial_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   tk_ostream_serial_t* ostream_serial = TK_OSTREAM_SERIAL(obj);
   if (tk_str_eq(name, TK_STREAM_PROP_FD)) {
     value_set_int(v, serial_handle_get_fd(ostream_serial->fd));
@@ -59,7 +59,7 @@ static ret_t tk_ostream_serial_flush(tk_ostream_t* stream) {
   return serial_oflush(ostream_serial->fd);
 }
 
-static ret_t tk_ostream_serial_exec(object_t* obj, const char* name, const char* args) {
+static ret_t tk_ostream_serial_exec(tk_object_t* obj, const char* name, const char* args) {
   if (tk_str_eq(name, TK_STREAM_CMD_OFLUSH)) {
     return tk_ostream_serial_flush(TK_OSTREAM(obj));
   }
@@ -74,11 +74,11 @@ static const object_vtable_t s_tk_ostream_serial_vtable = {.type = "tk_ostream_s
                                                            .get_prop = tk_ostream_serial_get_prop};
 
 tk_ostream_t* tk_ostream_serial_create(serial_handle_t fd) {
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   tk_ostream_serial_t* ostream_serial = NULL;
   return_value_if_fail(fd >= 0, NULL);
 
-  obj = object_create(&s_tk_ostream_serial_vtable);
+  obj = tk_object_create(&s_tk_ostream_serial_vtable);
   ostream_serial = TK_OSTREAM_SERIAL(obj);
   return_value_if_fail(ostream_serial != NULL, NULL);
 

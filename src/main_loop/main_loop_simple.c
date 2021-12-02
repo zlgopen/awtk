@@ -290,8 +290,8 @@ main_loop_simple_t* main_loop_simple_init(int w, int h, main_loop_queue_event_t 
   timer_source = event_source_timer_create(timer_manager());
   event_source_manager_add(loop->event_source_manager, idle_source);
   event_source_manager_add(loop->event_source_manager, timer_source);
-  OBJECT_UNREF(idle_source);
-  OBJECT_UNREF(timer_source);
+  TK_OBJECT_UNREF(idle_source);
+  TK_OBJECT_UNREF(timer_source);
 
   return loop;
 }

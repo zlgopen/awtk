@@ -161,7 +161,7 @@ static ret_t widget_real_destroy(widget_t* widget) {
   TKMEM_FREE(widget->tr_text);
   TKMEM_FREE(widget->animation);
   TKMEM_FREE(widget->pointer_cursor);
-  OBJECT_UNREF(widget->custom_props);
+  TK_OBJECT_UNREF(widget->custom_props);
   wstr_reset(&(widget->text));
   style_destroy(widget->astyle);
 
@@ -1811,7 +1811,7 @@ static widget_t* widget_get_top_widget_grab_key(widget_t* widget) {
   value_t v;
   widget_t* widget_grab_key = widget_get_top_widget_grab_key(iter);
   if (widget_grab_key == NULL && iter != NULL && iter->visible && iter->custom_props != NULL) {
-    ret_t ret = object_get_prop(iter->custom_props, WIDGET_PROP_GRAB_KEYS, &v);
+    ret_t ret = tk_object_get_prop(iter->custom_props, WIDGET_PROP_GRAB_KEYS, &v);
     if (ret == RET_OK && value_bool(&v)) {
       return iter;
     }
@@ -1835,20 +1835,20 @@ static ret_t widget_exec_code(void* ctx, event_t* evt) {
   value_t v;
   value_t result;
   ret_t ret = RET_OK;
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   widget_t* widget = WIDGET(evt->target);
   const char* code = (const char*)ctx;
   if (widget_get_prop(widget, STR_PROP_MODEL, &v) == RET_OK) {
     obj = value_object(&v);
   }
   if (obj != NULL) {
-    OBJECT_REF(obj);
+    TK_OBJECT_REF(obj);
   } else {
     obj = object_default_create();
   }
   return_value_if_fail(obj != NULL && code != NULL, RET_REMOVE);
 
-  object_set_prop_pointer(obj, STR_PROP_SELF, widget);
+  tk_object_set_prop_pointer(obj, STR_PROP_SELF, widget);
 
   switch (evt->type) {
     case EVT_CLICK:
@@ -1856,12 +1856,12 @@ static ret_t widget_exec_code(void* ctx, event_t* evt) {
     case EVT_POINTER_MOVE:
     case EVT_POINTER_UP: {
       pointer_event_t* e = pointer_event_cast(evt);
-      object_set_prop_int(obj, "x", e->x);
-      object_set_prop_int(obj, "y", e->y);
-      object_set_prop_bool(obj, "alt", e->alt);
-      object_set_prop_bool(obj, "cmd", e->cmd);
-      object_set_prop_bool(obj, "menu", e->menu);
-      object_set_prop_bool(obj, "ctrl", e->ctrl);
+      tk_object_set_prop_int(obj, "x", e->x);
+      tk_object_set_prop_int(obj, "y", e->y);
+      tk_object_set_prop_bool(obj, "alt", e->alt);
+      tk_object_set_prop_bool(obj, "cmd", e->cmd);
+      tk_object_set_prop_bool(obj, "menu", e->menu);
+      tk_object_set_prop_bool(obj, "ctrl", e->ctrl);
       break;
     }
     case EVT_KEY_DOWN:
@@ -1870,14 +1870,14 @@ static ret_t widget_exec_code(void* ctx, event_t* evt) {
       key_event_t* e = key_event_cast(evt);
       const key_type_value_t* kv = keys_type_find_by_value(e->key);
       if (kv != NULL) {
-        object_set_prop_str(obj, "key", kv->name);
+        tk_object_set_prop_str(obj, "key", kv->name);
       } else {
-        object_set_prop_str(obj, "key", "unkown");
+        tk_object_set_prop_str(obj, "key", "unkown");
       }
-      object_set_prop_bool(obj, "alt", e->alt);
-      object_set_prop_bool(obj, "cmd", e->cmd);
-      object_set_prop_bool(obj, "menu", e->menu);
-      object_set_prop_bool(obj, "ctrl", e->ctrl);
+      tk_object_set_prop_bool(obj, "alt", e->alt);
+      tk_object_set_prop_bool(obj, "cmd", e->cmd);
+      tk_object_set_prop_bool(obj, "menu", e->menu);
+      tk_object_set_prop_bool(obj, "ctrl", e->ctrl);
       break;
     }
     default:
@@ -1886,14 +1886,14 @@ static ret_t widget_exec_code(void* ctx, event_t* evt) {
 
   value_set_int(&result, 0);
   fscript_eval(obj, code, &result);
-  if (object_get_prop_bool(obj, "RET_STOP", FALSE)) {
+  if (tk_object_get_prop_bool(obj, "RET_STOP", FALSE)) {
     ret = RET_STOP;
   }
-  if (object_get_prop_bool(obj, "RET_REMOVE", FALSE)) {
+  if (tk_object_get_prop_bool(obj, "RET_REMOVE", FALSE)) {
     ret = RET_REMOVE;
   }
   value_reset(&result);
-  OBJECT_UNREF(obj);
+  TK_OBJECT_UNREF(obj);
 
   return ret;
 #else
@@ -2033,7 +2033,7 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
           log_debug("not found event %s\n", name);
         }
       } else {
-        ret = object_set_prop(widget->custom_props, name, v);
+        ret = tk_object_set_prop(widget->custom_props, name, v);
       }
     }
   }
@@ -2133,7 +2133,7 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
 
   if (ret == RET_NOT_FOUND) {
     if (widget->custom_props != NULL) {
-      ret = object_get_prop(widget->custom_props, name, v);
+      ret = tk_object_get_prop(widget->custom_props, name, v);
     }
   }
 
@@ -2356,13 +2356,13 @@ static ret_t widget_map_key(widget_t* widget, key_event_t* e) {
       char fixed_name[TK_NAME_LEN + 1];
 
       tk_snprintf(from, sizeof(from), "map_key:%s", kv->name);
-      if (object_get_prop(widget->custom_props, from, &v) == RET_OK) {
+      if (tk_object_get_prop(widget->custom_props, from, &v) == RET_OK) {
         to = value_str(&v);
       } else if (strlen(kv->name) > 1) {
         tk_strcpy(fixed_name, kv->name);
         tk_str_tolower(fixed_name);
         tk_snprintf(from, sizeof(from), "map_key:%s", fixed_name);
-        if (object_get_prop(widget->custom_props, from, &v) == RET_OK) {
+        if (tk_object_get_prop(widget->custom_props, from, &v) == RET_OK) {
           to = value_str(&v);
         }
       }

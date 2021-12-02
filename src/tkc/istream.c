@@ -100,7 +100,7 @@ int32_t tk_istream_read_len(tk_istream_t* stream, void* buff, uint32_t max_size,
 
     read_bytes = tk_istream_read(stream, p + offset, remain_bytes);
     if (read_bytes <= 0) {
-      if (!object_get_prop_bool(OBJECT(stream), TK_STREAM_PROP_IS_OK, TRUE)) {
+      if (!tk_object_get_prop_bool(TK_OBJECT(stream), TK_STREAM_PROP_IS_OK, TRUE)) {
         log_debug("stream is broken\n");
         break;
       } else {
@@ -122,7 +122,7 @@ int32_t tk_istream_read_len(tk_istream_t* stream, void* buff, uint32_t max_size,
       break;
     }
 
-    if (object_get_prop_bool(OBJECT(stream), TK_STREAM_PROP_IS_EOS, FALSE)) {
+    if (tk_object_get_prop_bool(TK_OBJECT(stream), TK_STREAM_PROP_IS_EOS, FALSE)) {
       log_debug("stream is end\n");
       break;
     }
