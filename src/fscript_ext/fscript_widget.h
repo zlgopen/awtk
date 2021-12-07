@@ -24,6 +24,7 @@ BEGIN_C_DECLS
 
 /**
  * @method fscript_widget_register
+ * @export none
  * 注册widget函数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
