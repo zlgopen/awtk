@@ -1242,7 +1242,7 @@ TEST(FExr, widget) {
   widget_destroy(button);
   TK_OBJECT_UNREF(obj);
 }
-#endif/*FSCRIPT_WITH_WIDGET*/
+#endif /*FSCRIPT_WITH_WIDGET*/
 
 TEST(FExr, minus) {
   value_t v;

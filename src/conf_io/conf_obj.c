@@ -311,7 +311,7 @@ static conf_obj_t* conf_obj_cast(tk_object_t* obj) {
 }
 
 tk_object_t* conf_obj_create(conf_doc_save_t save, conf_doc_load_t load, const char* url,
-                          bool_t create_if_not_exist) {
+                             bool_t create_if_not_exist) {
   conf_obj_t* o = NULL;
   tk_object_t* obj = NULL;
   return_value_if_fail(save != NULL && load != NULL, NULL);

@@ -12,11 +12,13 @@ TEST(SystemInfo, basic) {
 
   ASSERT_EQ(system_info_set_lcd_w(info, 100), RET_OK);
   ASSERT_EQ(info->lcd_w, 100u);
-  ASSERT_EQ(info->lcd_w, (uint32_t)tk_object_get_prop_int(TK_OBJECT(info), SYSTEM_INFO_PROP_LCD_W, 0));
+  ASSERT_EQ(info->lcd_w,
+            (uint32_t)tk_object_get_prop_int(TK_OBJECT(info), SYSTEM_INFO_PROP_LCD_W, 0));
 
   ASSERT_EQ(system_info_set_lcd_h(info, 200), RET_OK);
   ASSERT_EQ(info->lcd_h, 200u);
-  ASSERT_EQ(info->lcd_h, (uint32_t)tk_object_get_prop_int(TK_OBJECT(info), SYSTEM_INFO_PROP_LCD_H, 0));
+  ASSERT_EQ(info->lcd_h,
+            (uint32_t)tk_object_get_prop_int(TK_OBJECT(info), SYSTEM_INFO_PROP_LCD_H, 0));
 
   ASSERT_EQ(system_info_set_lcd_type(info, LCD_FRAMEBUFFER), RET_OK);
   ASSERT_EQ(info->lcd_type, LCD_FRAMEBUFFER);
@@ -33,10 +35,12 @@ TEST(SystemInfo, basic) {
   ASSERT_EQ((int32_t)(info->lcd_orientation),
             tk_object_get_prop_int(TK_OBJECT(info), SYSTEM_INFO_PROP_LCD_ORIENTATION, 111));
 
-  ASSERT_STREQ("portrait", tk_object_get_prop_str(TK_OBJECT(info), SYSTEM_INFO_PROP_DEVICE_ORIENTATION));
+  ASSERT_STREQ("portrait",
+               tk_object_get_prop_str(TK_OBJECT(info), SYSTEM_INFO_PROP_DEVICE_ORIENTATION));
 
   ASSERT_EQ(system_info_set_lcd_w(info, 1000), RET_OK);
-  ASSERT_STREQ("landscape", tk_object_get_prop_str(TK_OBJECT(info), SYSTEM_INFO_PROP_DEVICE_ORIENTATION));
+  ASSERT_STREQ("landscape",
+               tk_object_get_prop_str(TK_OBJECT(info), SYSTEM_INFO_PROP_DEVICE_ORIENTATION));
 
   locale_info_change(locale_info(), "zh", "CN");
   ASSERT_STREQ("zh", tk_object_get_prop_str(TK_OBJECT(info), SYSTEM_INFO_PROP_LANGUAGE));

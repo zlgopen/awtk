@@ -75,7 +75,8 @@ static ret_t func_object_set_prop(fscript_t* fscript, fscript_args_t* args, valu
   obj = value_object(args->args);
   return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
 
-  value_set_bool(result, tk_object_set_prop(obj, value_str(args->args + 1), args->args + 2) == RET_OK);
+  value_set_bool(result,
+                 tk_object_set_prop(obj, value_str(args->args + 1), args->args + 2) == RET_OK);
 
   return RET_OK;
 }

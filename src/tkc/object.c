@@ -787,7 +787,8 @@ uint64_t tk_object_get_prop_uint64(tk_object_t* obj, const char* name, uint64_t 
   }
 }
 
-tk_object_t* tk_object_get_child_object(tk_object_t* obj, const char* path, const char** next_path) {
+tk_object_t* tk_object_get_child_object(tk_object_t* obj, const char* path,
+                                        const char** next_path) {
   return_value_if_fail(obj != NULL && path != NULL && next_path != NULL, NULL);
 
   const char* p = strchr(path, '.');

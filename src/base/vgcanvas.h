@@ -87,7 +87,7 @@ typedef ret_t (*vgcanvas_set_transform_t)(vgcanvas_t* vg, float_t a, float_t b, 
 typedef ret_t (*vgcanvas_clip_path_t)(vgcanvas_t* vg);
 typedef const rectf_t* (*vgcanvas_get_clip_rect_t)(vgcanvas_t* vg);
 typedef bool_t (*vgcanvas_is_rectf_in_clip_rect_t)(vgcanvas_t* vg, float_t left, float_t top,
-                                                    float_t right, float_t bottom);
+                                                   float_t right, float_t bottom);
 typedef ret_t (*vgcanvas_clip_rect_t)(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h);
 typedef ret_t (*vgcanvas_nanovg_intersect_clip_rect_t)(vgcanvas_t* vg, float_t* x, float_t* y,
                                                        float_t* w, float_t* h);
@@ -821,7 +821,7 @@ const rectf_t* vgcanvas_get_clip_rect(vgcanvas_t* vg);
  * @return {bool_t} 返回 TURE 则在区域中，返回 FALSE 则不在区域中。
  */
 bool_t vgcanvas_is_rectf_in_clip_rect(vgcanvas_t* vg, float_t left, float_t top, float_t right,
-                                       float_t bottom);
+                                      float_t bottom);
 
 /**
  * @method vgcanvas_intersect_clip_rect

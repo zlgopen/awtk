@@ -54,7 +54,7 @@ typedef conf_doc_t* (*conf_doc_load_t)(data_reader_t* reader);
  * @return {tk_object_t*} 返回配置对象。
  */
 tk_object_t* conf_obj_create(conf_doc_save_t save, conf_doc_load_t load, const char* url,
-                          bool_t create_if_not_exist);
+                             bool_t create_if_not_exist);
 
 /**
  * @method conf_obj_get_doc 

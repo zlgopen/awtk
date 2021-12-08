@@ -36,8 +36,10 @@ static ret_t tk_iostream_udp_get_prop(tk_object_t* obj, const char* name, value_
     value_set_int(v, iostream_udp->sock);
     return RET_OK;
   } else if (tk_str_eq(name, TK_STREAM_PROP_IS_OK)) {
-    bool_t is_ok1 = tk_object_get_prop_bool(TK_OBJECT(iostream_udp->istream), TK_STREAM_PROP_IS_OK, TRUE);
-    bool_t is_ok2 = tk_object_get_prop_bool(TK_OBJECT(iostream_udp->ostream), TK_STREAM_PROP_IS_OK, TRUE);
+    bool_t is_ok1 =
+        tk_object_get_prop_bool(TK_OBJECT(iostream_udp->istream), TK_STREAM_PROP_IS_OK, TRUE);
+    bool_t is_ok2 =
+        tk_object_get_prop_bool(TK_OBJECT(iostream_udp->ostream), TK_STREAM_PROP_IS_OK, TRUE);
 
     value_set_bool(v, is_ok1 && is_ok2);
 

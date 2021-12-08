@@ -950,10 +950,10 @@ tk_object_t* tk_object_get_child_object(tk_object_t* obj, const char* path, cons
 
 #define TK_OBJECT_REF(obj) tk_object_ref((tk_object_t*)(obj))
 
-#define TK_OBJECT_UNREF(obj)           \
-  if ((obj) != NULL) {              \
+#define TK_OBJECT_UNREF(obj)              \
+  if ((obj) != NULL) {                    \
     tk_object_unref((tk_object_t*)(obj)); \
-    (obj) = NULL;                   \
+    (obj) = NULL;                         \
   }
 
 /**

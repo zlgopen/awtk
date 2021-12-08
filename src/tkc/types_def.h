@@ -120,7 +120,7 @@ typedef struct _tk_object_t tk_object_t;
 
 #ifndef USE_TK_PREFIX
 #define object_t tk_object_t
-#endif/*USE_TK_PREFIX*/
+#endif /*USE_TK_PREFIX*/
 
 /**
  * @enum ret_t

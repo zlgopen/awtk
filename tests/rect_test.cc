@@ -76,4 +76,3 @@ TEST(PointF, init) {
   ASSERT_EQ(p.x, 10);
   ASSERT_EQ(p.y, 20);
 }
-

@@ -51,7 +51,7 @@ ret_t fscript_ext_init(void);
 
 #if !defined(TKC_ONLY) || defined(WITH_AWTK)
 #define FSCRIPT_WITH_WIDGET 1
-#endif/*TKC_ONLY*/
+#endif /*TKC_ONLY*/
 
 #endif /*PC*/
 

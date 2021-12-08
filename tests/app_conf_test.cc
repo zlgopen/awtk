@@ -93,7 +93,7 @@ TEST(AppConf, reload) {
   ASSERT_EQ(app_conf_deinit(), RET_OK);
 }
 
-#ifndef TKC_ONLY 
+#ifndef TKC_ONLY
 TEST(AppConf, reset) {
   app_conf_init_json("conf_test");
 
@@ -114,4 +114,4 @@ TEST(AppConf, reset) {
 
   ASSERT_EQ(app_conf_deinit(), RET_OK);
 }
-#endif/*TKC_ONLY*/
+#endif /*TKC_ONLY*/
