@@ -54,6 +54,19 @@ TEST(Widget, basic1) {
   widget_destroy(w);
 }
 
+TEST(Widget, move_to_center) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b = button_create(w, 0, 0, 100, 60);
+
+  widget_resize(w, 400, 300);
+  ASSERT_EQ(widget_move_to_center(b), RET_OK);
+
+  ASSERT_EQ(b->x, 150);
+  ASSERT_EQ(b->y, 120);
+
+  widget_destroy(w);
+}
+
 TEST(Widget, basic2) {
   value_t t;
   value_t f;

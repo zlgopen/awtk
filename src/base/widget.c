@@ -223,6 +223,17 @@ ret_t widget_move(widget_t* widget, xy_t x, xy_t y) {
   return RET_OK;
 }
 
+ret_t widget_move_to_center(widget_t* widget) {
+  int32_t x = 0;
+  int32_t y = 0;
+  return_value_if_fail(widget != NULL && widget->parent != NULL, RET_BAD_PARAMS);
+
+  x = (widget->parent->w - widget->w)/2;
+  y = (widget->parent->h - widget->h)/2;
+
+  return widget_move(widget, x, y);
+}
+
 ret_t widget_resize(widget_t* widget, wh_t w, wh_t h) {
   event_t e = event_init(EVT_WILL_RESIZE, widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);

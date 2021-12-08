@@ -794,6 +794,16 @@ ret_t widget_back_to_home(widget_t* widget);
 ret_t widget_move(widget_t* widget, xy_t x, xy_t y);
 
 /**
+ * @method widget_move_to_center
+ * 移动控件到父控件中间。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_move_to_center(widget_t* widget);
+
+/**
  * @method widget_resize
  * 调整控件的大小。
  * @annotation ["scriptable"]
