@@ -142,12 +142,14 @@ ret_t gauge_pointer_set_angle(widget_t* widget, float_t angle) {
 bool_t gauge_pointer_value_is_anchor_px(const char* value) {
   const char* tmp = NULL;
   size_t len = strlen(value);
-  return_value_if_fail(len > ANCHOR_PX_STR_LEN, FALSE);
 
-  tmp = value + len - ANCHOR_PX_STR_LEN;
-  if (tk_str_eq(tmp, "px") != 0 || tk_str_eq(tmp, "PX") != 0) {
-    return TRUE;
+  if (len > ANCHOR_PX_STR_LEN) {
+    tmp = value + len - ANCHOR_PX_STR_LEN;
+    if (tk_str_eq(tmp, "px") != 0 || tk_str_eq(tmp, "PX") != 0) {
+      return TRUE;
+    }
   }
+
   return FALSE;
 }
 
