@@ -66,15 +66,8 @@ static ret_t combo_box_ex_on_layout_children_for_combobox_popup(widget_t* widget
     } else {
       h = COMBO_BOX_EX_DEFAULT_MAXNR * item_height + 2 * margin;
     }
-    widget_to_screen(widget, &p);
-    if ((p.y + widget->h + h) < combo_box->combobox_popup->parent->h) {
-      p.y += widget->h;
-    } else if (p.y >= h) {
-      p.y -= combo_box->combobox_popup->h;
-    } else {
-      p.y = 0;
-    }
 
+    combo_box_combobox_popup_calc_position(widget, h, &p);
     widget_move_resize(combo_box->combobox_popup, p.x, p.y, widget->w, h);
   }
   return RET_OK;

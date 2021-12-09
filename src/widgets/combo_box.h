@@ -403,6 +403,7 @@ ret_t combo_box_parse_options(widget_t* widget, const char* str);
 
 /*private*/
 ret_t combo_box_combobox_popup_on_close_func(void* ctx, event_t* e);
+ret_t combo_box_combobox_popup_calc_position(widget_t* widget, wh_t popup_h, point_t* p);
 
 END_C_DECLS
 
