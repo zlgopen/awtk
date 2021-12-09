@@ -201,7 +201,17 @@ static ret_t conf_json_parse_number(json_parser_t* parser) {
 
   conf_json_skip_to_value_end(parser);
   str_set_with_len(s, parser->data + start, parser->cursor - start);
-  value_set_double(&v, tk_atof(s->str));
+
+  if (strchr(s->str, '.') == NULL && strchr(s->str, 'E') == NULL) {
+    int64_t n = tk_atol(s->str);
+    if (n < INT_MAX && n > INT_MIN) {
+      value_set_int32(&v, n);
+    } else {
+      value_set_int64(&v, n);
+    }
+  } else {
+    value_set_double(&v, tk_atof(s->str));
+  }
 
   return conf_node_set_value(parser->current, &v);
 }

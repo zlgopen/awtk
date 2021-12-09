@@ -390,3 +390,31 @@ TEST(ConfJson, null_in_array) {
 
   conf_doc_destroy(doc);
 }
+
+TEST(ConfJson, number) {
+  value_t v;
+  str_t str;
+  const char* data = " [0,1000,-1000,12147483647,-12147483647] ";
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+
+  str_init(&str, 100);
+  conf_doc_save_json(doc, &str);
+  str_reset(&str);
+
+  ASSERT_EQ(conf_doc_get(doc, "[0]", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 0);
+
+  ASSERT_EQ(conf_doc_get(doc, "[1]", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1000);
+  
+  ASSERT_EQ(conf_doc_get(doc, "[2]", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), -1000);
+  
+  ASSERT_EQ(conf_doc_get(doc, "[3]", &v), RET_OK);
+  ASSERT_EQ(value_int64(&v), 12147483647);
+  
+  ASSERT_EQ(conf_doc_get(doc, "[4]", &v), RET_OK);
+  ASSERT_EQ(value_int64(&v), -12147483647);
+
+  conf_doc_destroy(doc);
+}
