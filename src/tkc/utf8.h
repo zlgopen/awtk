@@ -122,6 +122,21 @@ char* tk_utf8_dup_utf16(const wchar_t* in, int32_t size);
  */
 uint32_t tk_utf8_get_bytes_of_leading(uint8_t c);
 
+/**
+ * @method tk_utf8_trim_invalid_char
+ *
+ * 如果字符串最后一个字符串是无效的，删掉该无效字符。
+ *
+ * > 对于用strncpy/snprintf等生成字符串时，如果目标字符串内存大小不够，
+ * > 可能最后一个字符被从中间截断，导致该字符是无效的，这可能会触发assert，
+ * > 本函数可以用来删除最后一个无效字符。
+ *
+ * @param {const char*} str 输入字符串。
+ *
+ * @return {char*} 返回UTF8字符串。
+ */
+char* tk_utf8_trim_invalid_char(char* str);
+
 END_C_DECLS
 
 #endif /*TK_UTF8_H*/

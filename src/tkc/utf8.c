@@ -289,3 +289,25 @@ char* tk_utf8_dup_utf16(const wchar_t* in, int32_t size) {
 
   return tk_utf8_from_utf16_ex(in, size, out, out_size - 1);
 }
+
+char* tk_utf8_trim_invalid_char(char* str) {
+  int32_t i = 0;
+  int32_t n = 0;
+  char* p = str;
+  return_value_if_fail(str != NULL, str);
+
+  while (*p) {
+    n = tk_utf8_get_bytes_of_leading(*p);
+    if (n > 0) {
+      for (i = 0; i < n; i++) {
+        if (p[i] == '\0') {
+          *p = '\0';
+          return str;
+        }
+      }
+    }
+    p += n;
+  }
+
+  return str;
+}

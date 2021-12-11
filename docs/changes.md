@@ -2,6 +2,7 @@
 
 2021/12/11
   * 增加tk\_str\_is\_in\_array。
+  * 增加tk\_utf8\_trim\_invalid\_char。
   * 完善project.json（感谢俊杰提供补丁）
 
 2021/12/09
