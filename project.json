@@ -1,5 +1,5 @@
 {
-  "name": "awtk-demos",
+  "name": "awtk",
   "entry": "main",
   "assets": {
     "activedTheme": "default",
@@ -66,5 +66,6 @@
     "name": "AWTK Designer",
     "version": "1.0.0"
   },
-  "awtkRoot": "."
+  "awtkRoot": ".",
+  "type": "PROJECT_WIDGETS_APPLICATION"
 }
