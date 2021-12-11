@@ -569,3 +569,21 @@ TEST(Utils, isspace) {
   is_s = tk_isalpha('a');
   ASSERT_EQ(is_s, TRUE);
 }
+
+TEST(Utils, is_in_array) {
+  const char* arr1[] = {"abc"};
+  const char* arr2[] = {"abc", "xyz"};
+  const char* arr3[] = {"abc", "xyz", "123"};
+  ASSERT_EQ(tk_str_is_in_array("abc", arr1, ARRAY_SIZE(arr1)), TRUE);
+  ASSERT_EQ(tk_str_is_in_array("abc", arr2, ARRAY_SIZE(arr2)), TRUE);
+  ASSERT_EQ(tk_str_is_in_array("abc", arr3, ARRAY_SIZE(arr3)), TRUE);
+  
+  ASSERT_EQ(tk_str_is_in_array("xyz", arr1, ARRAY_SIZE(arr1)), FALSE);
+  ASSERT_EQ(tk_str_is_in_array("xyz", arr2, ARRAY_SIZE(arr2)), TRUE);
+  ASSERT_EQ(tk_str_is_in_array("xyz", arr3, ARRAY_SIZE(arr3)), TRUE);
+  
+  ASSERT_EQ(tk_str_is_in_array("123", arr1, ARRAY_SIZE(arr1)), FALSE);
+  ASSERT_EQ(tk_str_is_in_array("123", arr2, ARRAY_SIZE(arr2)), FALSE);
+  ASSERT_EQ(tk_str_is_in_array("123", arr3, ARRAY_SIZE(arr3)), TRUE);
+
+}

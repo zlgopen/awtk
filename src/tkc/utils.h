@@ -746,10 +746,20 @@ ret_t data_url_copy(const char* dst_url, const char* src_url);
  */
 ret_t tk_qsort(void** array, size_t nr, tk_compare_t cmp);
 
-const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN + 1]);
+/**
+ * @method tk_str_is_in_array
+ * 
+ * 检查字符串是否在字符串数组中。
+ *
+ * @param {const char*} str 字符串。
+ * @param {const char**} str_array 字符串数组。
+ * @param {uint32_t} array_size 字符串数组中字符串的个数。
+ *
+ * @return {bool_t} 返回TRUE表示在，否则表示不在。
+ */
+bool_t tk_str_is_in_array(const char* str, const char** str_array, uint32_t array_size);
 
-/*public for test*/
-ret_t xml_file_expand(const char* filename, str_t* s, const char* data);
+const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN + 1]);
 
 static inline int32_t tk_max_int(int32_t a, int32_t b) {
   return tk_max(a, b);
@@ -766,6 +776,9 @@ static inline float tk_max_float(float a, float b) {
 static inline float tk_min_float(float a, float b) {
   return tk_min(a, b);
 }
+
+/*public for test*/
+ret_t xml_file_expand(const char* filename, str_t* s, const char* data);
 
 END_C_DECLS
 
