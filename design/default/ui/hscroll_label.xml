@@ -38,8 +38,10 @@
     <hscroll_label 
     name="h7_1"
     focusable="true"
+    loop="true"
+    yoyo="true"
     speed="0.1"
-    text="(noloop speed=0.1)为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的 GUI 引擎。" /> 
+    text="(always loop yoyo speed=0.1)为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的 GUI 引擎。" /> 
 
     <hscroll_label 
     name="h7_2"

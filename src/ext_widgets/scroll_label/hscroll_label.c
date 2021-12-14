@@ -435,6 +435,9 @@ static ret_t hscroll_label_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_BLUR:
+      if (!hscroll_label->only_focus) {
+        break;
+      }
     case EVT_POINTER_DOWN_ABORT: {
       if (hscroll_label_is_running(widget)) {
         hscroll_label_stop(widget);
