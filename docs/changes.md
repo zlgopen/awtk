@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/12/14
+  * 增加工具font\_dump
+
 2021/12/11
   * 增加tk\_str\_is\_in\_array。
   * 增加tk\_utf8\_trim\_invalid\_char。

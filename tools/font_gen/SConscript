@@ -10,6 +10,7 @@ env['LIBS'] = ['font_gen', 'common'] + env['LIBS']
 env['LINKFLAGS'] = env['OS_SUBSYSTEM_CONSOLE'] + env['LINKFLAGS'];
 
 env.Program(os.path.join(BIN_DIR, 'fontgen'), ["main.c"])
+env.Program(os.path.join(BIN_DIR, 'fontdump'), ["font_dump.c"])
 env.Program(os.path.join(BIN_DIR, 'genascii'), ["gen_ascii.c"])
 
 
