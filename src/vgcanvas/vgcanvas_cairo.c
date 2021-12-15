@@ -336,6 +336,24 @@ static ret_t vgcanvas_cairo_fill(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
+static bool_t vgcanvas_cairo_is_rectf_in_clip_rect(vgcanvas_t* vgcanvas, float_t left, float_t top, float_t right, float_t bottom) {
+  cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
+  if (!cairo_in_clip(vg, left, top) && !cairo_in_clip(vg, right, bottom)) {
+    return FALSE;
+  }
+  return TRUE;
+}
+
+
+const rectf_t* vgcanvas_cairo_get_clip_rect(vgcanvas_t* vgcanvas) {
+  cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
+  cairo_rectangle_list_t* list = cairo_copy_clip_rectangle_list(vg);
+  if (list->num_rectangles > 0) {
+    vgcanvas->clip_rect = rectf_init(list->rectangles[0].x, list->rectangles[0].y, list->rectangles[0].width, list->rectangles[0].height);
+  }
+  return &(vgcanvas->clip_rect);
+}
+
 static ret_t vgcanvas_cairo_clip_rect(vgcanvas_t* vgcanvas, float_t x, float_t y, float_t w,
                                       float_t h) {
   cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
@@ -919,6 +937,8 @@ static const vgcanvas_vtable_t vt = {
     .set_stroke_radial_gradient = vgcanvas_cairo_set_stroke_radial_gradient,
     .set_stroke_gradient = vgcanvas_cairo_set_stroke_gradient,
     .set_fill_gradient = vgcanvas_cairo_set_fill_gradient,
+    .is_rectf_in_clip_rect = vgcanvas_cairo_is_rectf_in_clip_rect,
+    .get_clip_rect = vgcanvas_cairo_get_clip_rect,
 
     .set_line_join = vgcanvas_cairo_set_line_join,
     .set_line_cap = vgcanvas_cairo_set_line_cap,

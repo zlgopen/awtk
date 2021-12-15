@@ -109,13 +109,18 @@ bool_t vgcanvas_is_rectf_in_clip_rect(vgcanvas_t* vg, float_t left, float_t top,
 }
 
 const rectf_t* vgcanvas_get_clip_rect(vgcanvas_t* vg) {
-  return_value_if_fail(vg != NULL && vg->vt->get_clip_rect != NULL, NULL);
-  return vg->vt->get_clip_rect(vg);
+  return_value_if_fail(vg != NULL, NULL);
+  if (vg->vt->get_clip_rect == NULL) {
+    return &vg->clip_rect;
+  } else {
+    return vg->vt->get_clip_rect(vg);
+  }
 }
 
 ret_t vgcanvas_clip_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h) {
   return_value_if_fail(vg != NULL && vg->vt->clip_rect != NULL, RET_BAD_PARAMS);
   fix_xywh(x, y, w, h);
+  vg->clip_rect = rectf_init(x, y, w, h);
   return vg->vt->clip_rect(vg, x, y, w, h);
 }
 
