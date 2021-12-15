@@ -315,6 +315,18 @@ ret_t edit_set_int(widget_t* widget, int32_t value);
 ret_t edit_set_double(widget_t* widget, double value);
 
 /**
+ * @method edit_set_double_ex
+ * 设置double类型的值。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {const char*} format 格式(缺省为"%2.2lf")。
+ * @param {double} value 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_double_ex(widget_t* widget, const char* format, double value);
+
+/**
  * @method edit_set_text_limit
  * 设置为文本输入及其长度限制，不允许输入超过max个字符，少于min个字符时进入error状态。
  * @annotation ["scriptable"]

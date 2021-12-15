@@ -2,6 +2,7 @@
 
 2021/12/15
   * 工具font\_gen支持[指定字符的范围](../tools/font_gen/README.md)
+  * 增加函数edit\_set\_double\_ex。
 
 2021/12/14
   * 增加工具font\_dump

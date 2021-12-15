@@ -608,3 +608,27 @@ TEST(Edit, set_text_exceed_max) {
 
   widget_destroy(e);
 }
+
+TEST(Edit, set_double) {
+  char text[64];
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  edit_set_double(e, 10);
+  ASSERT_EQ(edit_get_double(e), 10);
+
+  widget_get_text_utf8(e, text, sizeof(text)-1);
+  ASSERT_STREQ(text, "10.000000");
+
+  edit_set_double_ex(e, NULL, 10);
+  ASSERT_EQ(edit_get_double(e), 10);
+  widget_get_text_utf8(e, text, sizeof(text)-1);
+  ASSERT_STREQ(text, "10.00");
+
+  edit_set_double_ex(e, "%2.1lf", 10);
+  ASSERT_EQ(edit_get_double(e), 10);
+  widget_get_text_utf8(e, text, sizeof(text)-1);
+  ASSERT_STREQ(text, "10.0");
+
+  widget_destroy(e);
+}
+

@@ -1537,9 +1537,22 @@ ret_t edit_set_double(widget_t* widget, double value) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   value_set_double(&v, value);
-  edit_set_text(widget, &v);
+  return edit_set_text(widget, &v);
+}
 
-  return RET_OK;
+ret_t edit_set_double_ex(widget_t* widget, const char* format, double value) {
+  value_t v;
+  char text[64];
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  if (format == NULL) {
+    format = "%2.2lf";
+  }
+
+  tk_snprintf(text, sizeof(text) - 1, format, value);
+  value_set_str(&v, text);
+
+  return edit_set_text(widget, &v);
 }
 
 static ret_t edit_inc_default(edit_t* edit) {
