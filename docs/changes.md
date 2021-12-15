@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/12/15
+  * 工具font\_gen支持[指定字符的范围](../tools/font_gen/README.md)
+
 2021/12/14
   * 增加工具font\_dump
   * 修复hscroll\_label控件失去焦点后停止滚动的问题（感谢智明提供补丁）

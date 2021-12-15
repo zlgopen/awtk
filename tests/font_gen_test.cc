@@ -50,4 +50,53 @@ TEST(FontGen, basic) {
   TKMEM_FREE(bmp_buff);
   TKMEM_FREE(ttf_buff);
 }
+
+TEST(FontGen, expand) {
+  str_t str;
+  str_init(&str, 100);
+
+  str_clear(&str);
+  ASSERT_STREQ(font_gen_expand("[[0-9]][[a-z]][[A-Z]][]!@#$", &str),
+               "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ[]!@#$");
+
+#ifndef WIN32
+  str_clear(&str);
+  ASSERT_STREQ(font_gen_expand("[[0x4e2d-0x4e2f]]", &str), "中丮丯");
+
+  str_clear(&str);
+  ASSERT_STREQ(font_gen_expand("[[0X4e2d-0X4e2f]]", &str), "中丮丯");
+
+  str_clear(&str);
+  ASSERT_STREQ(font_gen_expand("[[0X4E2D-0X4E2F]]", &str), "中丮丯");
+
+  str_clear(&str);
+  ASSERT_STREQ(font_gen_expand("[[20013-20015]]", &str), "中丮丯");
+
+  str_clear(&str);
+  ASSERT_STREQ(font_gen_expand("123[[20013-20015]]abc", &str), "123中丮丯abc");
+
+  str_clear(&str);
+  ASSERT_STREQ(font_gen_expand("[[0-9]][[20013-20015]][[a-c]]", &str), "0123456789中丮丯abc");
+#endif
+
+  str_clear(&str);
+  ASSERT_STREQ(font_gen_expand("[[48-51]]", &str), "0123");
+
+  str_clear(&str);
+  ASSERT_STREQ(font_gen_expand("abc[[d-d]]", &str), "abcd");
+  str_clear(&str);
+  ASSERT_STREQ(font_gen_expand("abc[[d-e]]", &str), "abcde");
+  str_clear(&str);
+  ASSERT_STREQ(font_gen_expand("abc[[", &str), "abc");
+  str_clear(&str);
+  ASSERT_STREQ(font_gen_expand("abc[[]]", &str), "abc");
+  str_clear(&str);
+  ASSERT_STREQ(font_gen_expand("abc[[48-51]]", &str), "abc0123");
+
+  str_clear(&str);
+  ASSERT_STREQ(font_gen_expand("abc[[48-51]][[d-e]]", &str), "abc0123de");
+
+  str_reset(&str);
+}
+
 #endif /**/

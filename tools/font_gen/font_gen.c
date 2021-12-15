@@ -40,12 +40,75 @@ static int char_cmp(const void* a, const void* b) {
   return c1 - c2;
 }
 
+const char* font_gen_expand_one(const char* in, str_t* out) {
+  const char* p = in;
+
+  if (p[0] == '\0' || p[1] == '\0' || p[2] == '\0' || p[3] == '\0') {
+    return p += strlen(p);
+  }
+
+  if (p[1] == '-' && p[3] == ']' && p[4] == ']') {
+    /*[[a-z]]*/
+    char c = p[0];
+    char end = p[2];
+    while (c <= end) {
+      str_append_char(out, c);
+      c++;
+    }
+    p += 5;
+  } else {
+    /* [[1000-2000]] */
+    char buff[32];
+    int c = 0;
+    int end = 0;
+    int n = 0;
+    if (strncmp(p, "0x", 2) == 0) {
+      n = tk_sscanf(p, "0x%x-0x%x]]", &c, &end);
+    } else if (strncmp(p, "0X", 2) == 0) {
+      n = tk_sscanf(p, "0X%x-0X%x]]", &c, &end);
+    } else {
+      n = tk_sscanf(p, "%d-%d]]", &c, &end);
+    }
+    return_value_if_fail(n == 2, in);
+    p = strstr(p, "]]");
+    return_value_if_fail(p != NULL, in);
+    p += 2;
+
+    while (c <= end) {
+      tk_utf8_from_utf16_ex(&c, 1, buff, sizeof(buff));
+      str_append(out, buff);
+      c++;
+    }
+  }
+
+  return p;
+}
+
+const char* font_gen_expand(const char* in, str_t* out) {
+  const char* p = in;
+
+  while (*p) {
+    if (*p == '[' && p[1] == '[') {
+      p = font_gen_expand_one(p + 2, out);
+    } else {
+      str_append_char(out, *p);
+      p++;
+    }
+  }
+
+  return out->str;
+}
+
 ret_t font_gen(font_t* font, uint16_t font_size, const char* str, const char* output_filename,
                const char* theme) {
+  str_t tstr;
   wbuffer_t wbuffer;
+  uint32_t size = 0;
+  str_init(&tstr, 100000);
   wbuffer_init_extendable(&wbuffer);
 
-  uint32_t size = font_gen_buff(font, font_size, str, &wbuffer);
+  str = font_gen_expand(str, &tstr);
+  size = font_gen_buff(font, font_size, str, &wbuffer);
 
   if (strstr(output_filename, ".bin") != NULL) {
     file_write(output_filename, wbuffer.data, size);
@@ -53,6 +116,8 @@ ret_t font_gen(font_t* font, uint16_t font_size, const char* str, const char* ou
     output_res_c_source(output_filename, theme, ASSET_TYPE_FONT, ASSET_TYPE_FONT_BMP, wbuffer.data,
                         size);
   }
+
+  str_reset(&tstr);
   wbuffer_deinit(&wbuffer);
 
   return RET_OK;
@@ -110,16 +175,13 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, wbuffe
       if (g.format == GLYPH_FMT_MONO) {
         bitmap_mono_dump(g.data, g.w, g.h);
       }
-
-    } else if (c > 32 && c != 65279) {
+    } else if (c > 32 && c != 0xfeff) {
       wchar_t arr[] = {c};
-      char utf8_arr[6] = {0};
-      tk_utf8_from_utf16(arr, utf8_arr, 6);
-      printf(
-          "gen fail, filename = ! desc = unable to find '%s' in TTF, please modify the setting of "
-          "font cropping.!\n",
-          utf8_arr);
-      exit(0);
+      char utf8_arr[32] = {0};
+      memset(utf8_arr, 0x00, sizeof(utf8_arr));
+      tk_utf8_from_utf16(arr, utf8_arr, sizeof(utf8_arr));
+      printf("Warnning: not find char 0x%04x('%s') in TTF\n", c, utf8_arr);
+      header->index[i].offset = 0;
     } else {
       header->index[i].offset = 0;
     }
