@@ -200,6 +200,9 @@ int main(int argc, char* argv[]) {
 
     system_info_set_default_font(system_info(), APP_DEFAULT_FONT);
     assets_init();
+#ifndef WITH_FS_RES
+    locale_info_reload(locale_info());
+#endif
 
 #ifndef WITHOUT_EXT_WIDGETS
     tk_ext_widgets_init();
