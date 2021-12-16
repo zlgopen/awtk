@@ -37,6 +37,7 @@
 
 static ret_t window_manager_animate_done(widget_t* widget);
 static ret_t window_manager_default_update_fps(widget_t* widget);
+static ret_t window_manager_invalidate_system_bar(widget_t* widget);
 static ret_t window_manager_default_invalidate(widget_t* widget, const rect_t* r);
 static ret_t window_manager_default_get_client_r(widget_t* widget, rect_t* r);
 static ret_t window_manager_default_do_open_window(widget_t* wm, widget_t* window);
@@ -367,6 +368,7 @@ static ret_t window_manager_create_animator(window_manager_default_t* wm, widget
   } else {
     widget_invalidate_force(prev_win, NULL);
     if (widget_get_prop(curr_win, WIDGET_PROP_HIGHLIGHT, &v) == RET_OK) {
+      window_manager_invalidate_system_bar(WIDGET(wm));
       window_manager_prepare_dialog_highlighter(WIDGET(wm), prev_win, curr_win);
     }
   }
@@ -720,7 +722,6 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-#ifndef WITHOUT_WINDOW_ANIMATORS
 static ret_t window_manager_invalidate_system_bar(widget_t* widget) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
@@ -734,6 +735,7 @@ static ret_t window_manager_invalidate_system_bar(widget_t* widget) {
   return RET_OK;
 }
 
+#ifndef WITHOUT_WINDOW_ANIMATORS
 static ret_t window_manager_animate_done_set_window_foreground(widget_t* widget, widget_t* prev_win,
                                                                widget_t* curr_win) {
   bool_t is_set = FALSE;
