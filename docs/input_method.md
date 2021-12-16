@@ -118,3 +118,11 @@ AWTK 作为一个通用的 GUI，需要考虑以下几种情况：
 #endif /*TK_KEY_TOGGLE_INPUT_METHOD*/
 ```
 
+## 六、其它
+
+* 修改候选字的最大个数，重新定义宏 TK\_IM\_MAX\_CANDIDATE\_CHARS 即可。
+
+```
+#define TK_IM_MAX_CANDIDATE_CHARS 32
+```
+
