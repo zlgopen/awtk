@@ -25,6 +25,7 @@
 #include "base/widget_vtable.h"
 #include "scroll_label/hscroll_label.h"
 
+static ret_t hscroll_label_remove_timer(widget_t* widget);
 static ret_t hscroll_label_check_and_start(widget_t* widget);
 
 static bool_t hscroll_label_is_running(widget_t* widget) {
@@ -293,6 +294,9 @@ ret_t hscroll_label_step(widget_t* widget) {
 
   widget_invalidate_force(widget, NULL);
 
+  if (ret == RET_REMOVE) {
+    hscroll_label_remove_timer(widget);
+  }
   return ret;
 }
 
@@ -369,20 +373,18 @@ static ret_t hscroll_label_on_timer(const timer_info_t* info) {
 
     if (!hscroll_label->loop) {
       ret = RET_REMOVE;
+      hscroll_label_remove_timer(widget);
     } else {
       if (hscroll_label->lull > 0) {
-        hscroll_label->timer_id = widget_add_timer(widget, hscroll_label_on_timer_start, lull);
         ret = RET_REMOVE;
+        hscroll_label_remove_timer(widget);
+        hscroll_label->timer_id = widget_add_timer(widget, hscroll_label_on_timer_start, lull);
       }
     }
 
     if (hscroll_label->yoyo) {
       hscroll_label->reversed = !hscroll_label->reversed;
     }
-  }
-
-  if (ret != RET_REPEAT) {
-    hscroll_label->timer_id = TK_INVALID_ID;
   }
 
   return ret;
@@ -399,12 +401,9 @@ ret_t hscroll_label_start(widget_t* widget) {
   return RET_OK;
 }
 
-ret_t hscroll_label_stop(widget_t* widget) {
+static ret_t hscroll_label_remove_timer(widget_t* widget) {
   hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
   return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
-
-  hscroll_label->xoffset = 0;
-  hscroll_label->reversed = FALSE;
 
   if (hscroll_label->timer_id != TK_INVALID_ID) {
     timer_remove(hscroll_label->timer_id);
@@ -412,6 +411,16 @@ ret_t hscroll_label_stop(widget_t* widget) {
   }
 
   return RET_OK;
+}
+
+ret_t hscroll_label_stop(widget_t* widget) {
+  hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
+  return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
+
+  hscroll_label->xoffset = 0;
+  hscroll_label->reversed = FALSE;
+
+  return hscroll_label_remove_timer(widget);
 }
 
 static ret_t hscroll_label_on_destroy(widget_t* widget) {
