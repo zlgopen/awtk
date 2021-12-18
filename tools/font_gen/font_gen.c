@@ -99,8 +99,8 @@ const char* font_gen_expand(const char* in, str_t* out) {
   return out->str;
 }
 
-ret_t font_gen(font_t* font, uint16_t font_size, const char* str, const char* output_filename,
-               const char* theme) {
+ret_t font_gen(font_t* font, uint16_t font_size, glyph_format_t format, const char* str,
+               const char* output_filename, const char* theme) {
   str_t tstr;
   wbuffer_t wbuffer;
   uint32_t size = 0;
@@ -108,7 +108,7 @@ ret_t font_gen(font_t* font, uint16_t font_size, const char* str, const char* ou
   wbuffer_init_extendable(&wbuffer);
 
   str = font_gen_expand(str, &tstr);
-  size = font_gen_buff(font, font_size, str, &wbuffer);
+  size = font_gen_buff(font, font_size, format, str, &wbuffer);
 
   if (strstr(output_filename, ".bin") != NULL) {
     file_write(output_filename, wbuffer.data, size);
@@ -123,7 +123,8 @@ ret_t font_gen(font_t* font, uint16_t font_size, const char* str, const char* ou
   return RET_OK;
 }
 
-uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, wbuffer_t* wbuffer) {
+uint32_t font_gen_buff(font_t* font, uint16_t font_size, glyph_format_t format, const char* str,
+                       wbuffer_t* wbuffer) {
   int i = 0;
   glyph_t g;
   int size = 0;

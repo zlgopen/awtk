@@ -41,6 +41,7 @@ int wmain(int argc, wchar_t* argv[]) {
   const char* str_filename = NULL;
   const char* out_filename = NULL;
   const char* theme_name = NULL;
+  glyph_format_t format = GLYPH_FMT_ALPHA;
 
   platform_prepare();
 
@@ -52,8 +53,14 @@ int wmain(int argc, wchar_t* argv[]) {
 
   font_size = tk_watoi(argv[4]);
 
-  if (argc > 5 && tk_wstr_eq(argv[5], L"mono")) {
-    mono = TRUE;
+  if (argc > 5) {
+    const char* format_name = argv[5];
+    if (tk_wstr_eq(format_name, L"mono")) {
+      mono = TRUE;
+      format = GLYPH_FMT_MONO;
+    } else if (tk_wstr_eq(format_name, L"4bits")) {
+      format = GLYPH_FMT_ALPHA4;
+    }
   }
 
   str_t str_theme = {0};
@@ -100,7 +107,7 @@ int wmain(int argc, wchar_t* argv[]) {
   return_value_if_fail(str_buff != NULL, 0);
 
   if (font != NULL) {
-    font_gen(font, (uint16_t)font_size, str_buff, out_filename, theme_name);
+    font_gen(font, (uint16_t)font_size, format, str_buff, out_filename, theme_name);
   }
 
   TKMEM_FREE(ttf_buff);
