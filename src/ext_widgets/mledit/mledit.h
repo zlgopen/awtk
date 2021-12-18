@@ -147,12 +147,13 @@ typedef struct _mledit_t {
   uint8_t right_margin;
   uint8_t bottom_margin;
 
+  bool_t is_key_inputing;
+
   text_edit_t* model;
   uint32_t timer_id;
 
   wstr_t temp;
   wstr_t saved_text;
-  uint64_t last_user_action_time;
 } mledit_t;
 
 /**

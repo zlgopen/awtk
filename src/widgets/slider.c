@@ -375,7 +375,6 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
         slider_inc(widget);
         ret = RET_STOP;
       }
-      slider->last_user_action_time = e->time;
       break;
     }
     case EVT_KEY_UP: {
@@ -393,7 +392,6 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
           ret = RET_STOP;
         }
       }
-      slider->last_user_action_time = e->time;
       break;
     }
     case EVT_RESIZE:
@@ -537,11 +535,7 @@ static ret_t slider_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_bool(v, slider->slide_with_bar);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_INPUTING)) {
-    int64_t delta = (time_now_ms() - slider->last_user_action_time);
-    bool_t inputing =
-        (delta < TK_INPUTING_TIMEOUT) && (slider->last_user_action_time > 0) && widget->focused;
-
-    value_set_bool(v, inputing || slider->dragging);
+    value_set_bool(v, slider->dragging);
     return RET_OK;
   }
 

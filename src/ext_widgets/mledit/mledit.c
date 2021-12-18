@@ -286,9 +286,12 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_bool(v, mledit->close_im_when_blured);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_INPUTING)) {
-    int64_t delta = (time_now_ms() - mledit->last_user_action_time);
-    bool_t inputing =
-        (delta < TK_INPUTING_TIMEOUT) && (mledit->last_user_action_time > 0) && widget->focused;
+    input_method_t* im = input_method();
+    bool_t inputing = im != NULL && im->widget == widget || mledit->is_key_inputing;
+    /* 当控件没有父集窗口或者父集窗口没有打开的时候，通过 focused 来判断是否正在输入 */
+    if (!inputing && !widget_is_window_opened(widget)) {
+      inputing = widget->focused;
+    }
     value_set_bool(v, inputing);
     return RET_OK;
   }
@@ -605,7 +608,6 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       if (widget->target == NULL) {
         mledit_request_input_method(widget);
       }
-      mledit->last_user_action_time = e->time;
       mledit_update_status(widget);
       widget_invalidate(widget, NULL);
       break;
@@ -626,15 +628,11 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
         }
       }
 
-      if (evt.pressed) {
-        mledit->last_user_action_time = e->time;
-      }
       widget_invalidate(widget, NULL);
       break;
     }
     case EVT_POINTER_UP: {
       widget_ungrab(widget->parent, widget);
-      mledit->last_user_action_time = e->time;
       widget_invalidate(widget, NULL);
       break;
     }
@@ -665,7 +663,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
 
       mledit_update_status(widget);
       ret = RET_STOP;
-      mledit->last_user_action_time = e->time;
+      mledit->is_key_inputing = TRUE;
       widget_invalidate(widget, NULL);
       break;
     }
@@ -687,22 +685,18 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       }
       mledit_commit_str(widget, evt->text);
       mledit_update_status(widget);
-      mledit->last_user_action_time = e->time;
       widget_invalidate(widget, NULL);
       break;
     }
     case EVT_IM_PREEDIT: {
-      mledit->last_user_action_time = e->time;
       text_edit_preedit(mledit->model);
       break;
     }
     case EVT_IM_PREEDIT_CONFIRM: {
-      mledit->last_user_action_time = e->time;
       text_edit_preedit_confirm(mledit->model);
       break;
     }
     case EVT_IM_PREEDIT_ABORT: {
-      mledit->last_user_action_time = e->time;
       text_edit_preedit_abort(mledit->model);
       break;
     }
@@ -724,7 +718,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       } else {
         ret = text_edit_key_up(mledit->model, evt);
       }
-      mledit->last_user_action_time = e->time;
+      mledit->is_key_inputing = TRUE;
       widget_invalidate(widget, NULL);
       break;
     }
@@ -734,6 +728,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_BLUR: {
       if (mledit->close_im_when_blured) {
+        mledit->is_key_inputing = FALSE;
         input_method_request(input_method(), NULL);
       }
       text_edit_preedit_confirm(mledit->model);
@@ -780,7 +775,6 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
         }
       }
       ret = RET_STOP;
-      mledit->last_user_action_time = e->time;
       widget_invalidate(widget, NULL);
       break;
     }

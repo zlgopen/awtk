@@ -142,7 +142,6 @@ typedef struct _slider_t {
   double saved_value;
   point_t down;
   rect_t dragger_rect;
-  uint64_t last_user_action_time;
 
 } slider_t;
 

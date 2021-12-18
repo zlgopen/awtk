@@ -220,6 +220,8 @@ typedef struct _edit_t {
   uint8_t left_margin;
   uint8_t right_margin;
 
+  bool_t is_key_inputing;
+
   uint32_t idle_id;
   uint32_t timer_id;
   text_edit_t* model;
@@ -230,7 +232,6 @@ typedef struct _edit_t {
   edit_pre_input_t pre_input;
   edit_is_valid_char_t is_valid_char;
   edit_is_valid_value_t is_valid_value;
-  uint64_t last_user_action_time;
 } edit_t;
 
 /**

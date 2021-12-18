@@ -546,6 +546,7 @@ static ret_t edit_on_blur(widget_t* widget) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
   if (edit->close_im_when_blured) {
+    edit->is_key_inputing = FALSE;
     input_method_request(input_method(), NULL);
   }
   edit_update_status(widget);
@@ -771,7 +772,6 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       }
       edit_update_status(widget);
       widget_invalidate(widget, NULL);
-      edit->last_user_action_time = e->time;
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
@@ -786,9 +786,6 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
         ret = RET_STOP;
       }
 
-      if (evt.pressed) {
-        edit->last_user_action_time = e->time;
-      }
       widget_invalidate(widget, NULL);
       break;
     }
@@ -796,17 +793,16 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       ret = RET_STOP;
       widget_ungrab(widget->parent, widget);
       widget_invalidate(widget, NULL);
-      edit->last_user_action_time = e->time;
       break;
     }
     case EVT_KEY_DOWN: {
-      edit->last_user_action_time = e->time;
+      edit->is_key_inputing = TRUE;
       ret = edit_on_key_down(widget, (key_event_t*)e);
       edit_update_status(widget);
       break;
     }
     case EVT_KEY_UP: {
-      edit->last_user_action_time = e->time;
+      edit->is_key_inputing = TRUE;
       ret = edit_on_key_up(widget, (key_event_t*)e);
       widget_invalidate(widget, NULL);
       break;
@@ -816,7 +812,6 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       text_edit_get_state(edit->model, &state);
       im_commit_event_t* evt = (im_commit_event_t*)e;
 
-      edit->last_user_action_time = e->time;
       if (state.preedit) {
         text_edit_preedit_clear(edit->model);
       }
@@ -862,7 +857,6 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
         edit_inc(edit);
       }
       ret = RET_STOP;
-      edit->last_user_action_time = e->time;
       break;
     }
     case EVT_RESIZE:
@@ -885,6 +879,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_IM_ACTION: {
       if (tk_str_eq(edit->action_text, ACTION_TEXT_DONE)) {
+        edit->is_key_inputing = FALSE;
         input_method_request(input_method(), NULL);
       } else if (tk_str_eq(edit->action_text, ACTION_TEXT_NEXT)) {
         widget_focus_next(widget);
@@ -1281,9 +1276,12 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_int(v, state.caret.y);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_INPUTING)) {
-    int64_t delta = (time_now_ms() - edit->last_user_action_time);
-    bool_t inputing =
-        (delta < TK_INPUTING_TIMEOUT) && (edit->last_user_action_time > 0) && widget->focused;
+    input_method_t* im = input_method();
+    bool_t inputing = im != NULL && im->widget == widget || edit->is_key_inputing;
+    /* 当控件没有父集窗口或者父集窗口没有打开的时候，通过 focused 来判断是否正在输入 */
+    if (!inputing && !widget_is_window_opened(widget)) {
+      inputing = widget->focused;
+    }
     value_set_bool(v, inputing);
 
     return RET_OK;
