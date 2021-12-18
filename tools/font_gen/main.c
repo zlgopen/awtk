@@ -104,6 +104,9 @@ int wmain(int argc, wchar_t* argv[]) {
 #endif /*WITH_STB_FONT*/
 
   str_buff = read_file(str_filename, &size);
+  if (str_buff == NULL) {
+    log_debug("read %s failed\n", str_filename);
+  }
   return_value_if_fail(str_buff != NULL, 0);
 
   if (font != NULL) {

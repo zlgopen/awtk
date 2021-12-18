@@ -129,13 +129,13 @@ static ret_t fong_convert_alpha8_to_alpha4(glyph_t* from, glyph_t* to) {
   const uint8_t* pfrom = from->data;
   uint8_t* p = (uint8_t*)(to->data);
 
-  for(y = 0; y < from->h; y++) {
-    for(x = 0; x < from->w; x++) {
-      uint32_t i = x/2;
-      if((x % 2) == 0) {
-        p[i] = (pfrom[x] >> 4) & 0x0f; 
+  for (y = 0; y < from->h; y++) {
+    for (x = 0; x < from->w; x++) {
+      uint32_t i = x / 2;
+      if ((x % 2) == 0) {
+        p[i] = (pfrom[x] >> 4) & 0x0f;
       } else {
-        p[i] |= pfrom[x] & 0xf0; 
+        p[i] |= pfrom[x] & 0xf0;
       }
     }
     p += to->pitch;
@@ -145,8 +145,8 @@ static ret_t fong_convert_alpha8_to_alpha4(glyph_t* from, glyph_t* to) {
   return RET_OK;
 }
 
-static ret_t font_gen_glyph(font_t* font, glyph_format_t format, 
-  wchar_t c, font_size_t font_size, glyph_t* g) {
+static ret_t font_gen_glyph(font_t* font, glyph_format_t format, wchar_t c, font_size_t font_size,
+                            glyph_t* g) {
   static glyph_t gg;
   static uint8_t buff[200 * 200];
 
@@ -155,13 +155,13 @@ static ret_t font_gen_glyph(font_t* font, glyph_format_t format,
       gg.pitch = gg.w;
     }
     *g = gg;
-  
-    if(format != gg.format) {
+
+    if (format != gg.format) {
       g->data = buff;
       g->format = format;
       log_debug("convert %d => %d\n", (int)(gg.format), (int)(format));
-      if(format == GLYPH_FMT_ALPHA4 && gg.format == GLYPH_FMT_ALPHA) {
-        g->pitch = (gg.pitch + 1)/2;
+      if (format == GLYPH_FMT_ALPHA4 && gg.format == GLYPH_FMT_ALPHA) {
+        g->pitch = (gg.pitch + 1) / 2;
 
         return fong_convert_alpha8_to_alpha4(&gg, g);
       } else {
@@ -194,6 +194,7 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, glyph_format_t format, 
   memset(header, 0, header_size);
   wbuffer_write_binary(wbuffer, header, header_size);
 
+  header->format = format;
   header->char_nr = size;
   header->font_size = (uint8_t)font_size;
   header->ascent = vmetrics.ascent;

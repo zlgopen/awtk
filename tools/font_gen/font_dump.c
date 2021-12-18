@@ -42,13 +42,17 @@ static ret_t font_dump(uint8_t* data, uint32_t size, bool_t dump_data) {
     log_debug("char: %u(0x%04x)\n", (uint32_t)(iter->c), (uint32_t)(iter->c));
     log_debug("size: %u(0x%04x)\n", (uint32_t)(iter->size), (uint32_t)(iter->size));
     log_debug("offset:%u(0x%04x)\n", (uint32_t)(iter->offset), (uint32_t)(iter->offset));
-    log_debug("x:%d\n", (int)(g->x));
-    log_debug("y:%d\n", (int)(g->y));
-    log_debug("w:%d\n", (int)(g->w));
-    log_debug("h:%d\n", (int)(g->h));
-    log_debug("foramt:%d\n", (int)(g->format));
-    log_debug("advance:%d\n", (int)(g->advance));
-    log_debug("pitch:%d\n", (int)(g->pitch));
+    if (iter->offset) {
+      log_debug("x:%d\n", (int)(g->x));
+      log_debug("y:%d\n", (int)(g->y));
+      log_debug("w:%d\n", (int)(g->w));
+      log_debug("h:%d\n", (int)(g->h));
+      log_debug("foramt:%d\n", (int)(g->format));
+      log_debug("advance:%d\n", (int)(g->advance));
+      log_debug("pitch:%d\n", (int)(g->pitch));
+    } else {
+      log_debug("no data\n");
+    }
 
     if (dump_data && iter->offset) {
       int32_t x = 0;
@@ -68,16 +72,16 @@ static ret_t font_dump(uint8_t* data, uint32_t size, bool_t dump_data) {
               break;
             }
             case GLYPH_FMT_ALPHA2: {
-              print_pixel(uint8_get_2bit(*p, 0));
-              print_pixel(uint8_get_2bit(*p, 1));
-              print_pixel(uint8_get_2bit(*p, 2));
+              print_pixel(uint8_get_2bit(*p, 0) << 6);
+              print_pixel(uint8_get_2bit(*p, 1) << 4);
+              print_pixel(uint8_get_2bit(*p, 2) << 2);
               print_pixel(uint8_get_2bit(*p, 3));
               x += 4;
               break;
             }
             case GLYPH_FMT_ALPHA4: {
-              print_pixel(uint8_get_4bit(*p, 0));
-              print_pixel(uint8_get_4bit(*p, 1));
+              print_pixel(uint8_get_4bit(*p, 0) << 4);
+              print_pixel(uint8_get_4bit(*p, 1) << 4);
               x += 2;
               break;
             }
