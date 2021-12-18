@@ -40,7 +40,7 @@ TEST(FontGen, basic) {
     ASSERT_EQ(g1.w, g2.w);
     ASSERT_EQ(g1.h, g2.h);
 
-    ASSERT_EQ(memcmp(g1.data, g2.data, g1.w * g1.h), 0);
+    ASSERT_EQ(memcmp(g1.data, g2.data, g1.pitch * g1.h), 0);
   }
 
   ASSERT_EQ(ret > 0, true);

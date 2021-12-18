@@ -123,6 +123,58 @@ ret_t font_gen(font_t* font, uint16_t font_size, glyph_format_t format, const ch
   return RET_OK;
 }
 
+static ret_t fong_convert_alpha8_to_alpha4(glyph_t* from, glyph_t* to) {
+  uint32_t x = 0;
+  uint32_t y = 0;
+  const uint8_t* pfrom = from->data;
+  uint8_t* p = (uint8_t*)(to->data);
+
+  for(y = 0; y < from->h; y++) {
+    for(x = 0; x < from->w; x++) {
+      uint32_t i = x/2;
+      if((x % 2) == 0) {
+        p[i] = (pfrom[x] >> 4) & 0x0f; 
+      } else {
+        p[i] |= pfrom[x] & 0xf0; 
+      }
+    }
+    p += to->pitch;
+    pfrom += from->pitch;
+  }
+
+  return RET_OK;
+}
+
+static ret_t font_gen_glyph(font_t* font, glyph_format_t format, 
+  wchar_t c, font_size_t font_size, glyph_t* g) {
+  static glyph_t gg;
+  static uint8_t buff[200 * 200];
+
+  if (font_get_glyph(font, c, font_size, &gg) == RET_OK) {
+    if (!gg.pitch) {
+      gg.pitch = gg.w;
+    }
+    *g = gg;
+  
+    if(format != gg.format) {
+      g->data = buff;
+      g->format = format;
+      log_debug("convert %d => %d\n", (int)(gg.format), (int)(format));
+      if(format == GLYPH_FMT_ALPHA4 && gg.format == GLYPH_FMT_ALPHA) {
+        g->pitch = (gg.pitch + 1)/2;
+
+        return fong_convert_alpha8_to_alpha4(&gg, g);
+      } else {
+        assert(!"not supported format yet");
+        return RET_FAIL;
+      }
+    }
+    return RET_OK;
+  } else {
+    return RET_FAIL;
+  }
+}
+
 uint32_t font_gen_buff(font_t* font, uint16_t font_size, glyph_format_t format, const char* str,
                        wbuffer_t* wbuffer) {
   int i = 0;
@@ -157,8 +209,8 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, glyph_format_t format, 
     header->index[i].offset = wbuffer->cursor;
 
     printf("%d/%d: 0x%04x\n", i, size, c);
-    if (font_get_glyph(font, c, font_size, &g) == RET_OK) {
-      uint32_t data_size = (g.pitch ? g.pitch : g.w) * g.h;
+    if (font_gen_glyph(font, format, c, font_size, &g) == RET_OK) {
+      uint32_t data_size = g.pitch * g.h;
 
       wbuffer_write_uint16(wbuffer, g.x);
       wbuffer_write_uint16(wbuffer, g.y);

@@ -46,7 +46,7 @@ int wmain(int argc, wchar_t* argv[]) {
   platform_prepare();
 
   if (argc < 5) {
-    printf("Usage: %S ttf_filename str_filename out_filename font_size [mono]\n", argv[0]);
+    printf("Usage: %S ttf_filename str_filename out_filename font_size [mono|4bits]\n", argv[0]);
 
     return 0;
   }
@@ -54,7 +54,7 @@ int wmain(int argc, wchar_t* argv[]) {
   font_size = tk_watoi(argv[4]);
 
   if (argc > 5) {
-    const char* format_name = argv[5];
+    const wchar_t* format_name = argv[5];
     if (tk_wstr_eq(format_name, L"mono")) {
       mono = TRUE;
       format = GLYPH_FMT_MONO;
