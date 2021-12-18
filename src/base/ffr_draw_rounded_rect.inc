@@ -188,7 +188,7 @@ static int32_t ffr_draw_circluar_point_to_quadrant(canvas_t* c,
 
 static int32_t ffr_draw_circluar_point_to_quadrant_hline(canvas_t* c, const rect_t* rect, int32_t x_h,
                                                       int32_t y_v, int32_t x, int32_t y,
-                                                      float_t e, const gradient_t* gradient, int32_t limit_y) {
+                                                      float_t e, const gradient_t* gradient, int32_t limit_y, int32_t* last_y) {
   int32_t w = 0;
   int32_t h = 0;
   if (x_h > x) {
@@ -211,8 +211,11 @@ static int32_t ffr_draw_circluar_point_to_quadrant_hline(canvas_t* c, const rect
     float_t offset = (float_t)(y - rect->y) / (float_t)rect->h;
     color_t color = gradient_get_color((gradient_t*)gradient, offset);
     canvas_set_fill_color(c, color);
-    canvas_fill_rect(c, x_h, y, w, 1);
+    if (*last_y != y) {
+      canvas_fill_rect(c, x_h, y, w, 1);
+    }
     ffr_draw_antialiasing_for_point(c, x, y, e, color);
+    *last_y = y;
     return y;
   }
   return -1;
@@ -280,6 +283,7 @@ static int32_t ffr_draw_fill_arc_point_list(canvas_t* c, const rect_t* rect, int
                                             const gradient_t* gradient, darray_t* point_list, int32_t limit_y) {
   uint32_t i = 0;
   int32_t end_y = 0;
+  int32_t last_y = -1;
   void** elms = point_list->elms;
   for (i = 0; i < point_list->size; i++) {
     int32_t x = 0;
@@ -291,7 +295,7 @@ static int32_t ffr_draw_fill_arc_point_list(canvas_t* c, const rect_t* rect, int
       if (limit_y >= 0 && limit_y == y) {
         break;
       }
-      tmp = ffr_draw_circluar_point_to_quadrant_hline(c, rect, x_h, y_v, x, y, 1 - iter->e, gradient, limit_y);
+      tmp = ffr_draw_circluar_point_to_quadrant_hline(c, rect, x_h, y_v, x, y, 1 - iter->e, gradient, limit_y, &last_y);
       if (tmp >= 0) {
         end_y = tmp;
       }
@@ -301,7 +305,7 @@ static int32_t ffr_draw_fill_arc_point_list(canvas_t* c, const rect_t* rect, int
 }
 
 static void ffr_push_arc_point_list(float_t angle_1, float_t angle_2, int32_t r,
-                                       darray_t* point_list, darray_t* point_list_45, bool_t is_v) {
+                                       darray_t* point_list, darray_t* point_list_45) {
   uint32_t i = 0;
   void** elms = point_list_45->elms;
 
@@ -309,28 +313,11 @@ static void ffr_push_arc_point_list(float_t angle_1, float_t angle_2, int32_t r,
   float_t x2 = CMP_FLOAT_QE(angle_2, M_FFR_PI_4)
                    ? ((ffr_point_pix_t*)elms[point_list_45->size - 1])->x
                    : sinf(angle_2) * r;
-  if (is_v) {
-    for (i = 0; i < point_list_45->size; i++) {
-      ffr_point_pix_t* iter = (ffr_point_pix_t*)elms[i];
-      if ((x1 < iter->x || CMP_FLOAT_QE(x1, iter->x)) &&
-          (iter->x < x2 || CMP_FLOAT_QE(x2, iter->x))) {
-        darray_push(point_list, iter);
-      }
-    }
-  } else {
-    int32_t y = ((ffr_point_pix_t*)darray_head(point_list_45))->y;
-    for (i = 0; i < point_list_45->size; i++) {
-      ffr_point_pix_t* iter = (ffr_point_pix_t*)elms[i];
-      if ((x1 < iter->x || CMP_FLOAT_QE(x1, iter->x)) &&
-          (iter->x < x2 || CMP_FLOAT_QE(x2, iter->x))) {
-        if (y != iter->y && i - 1 > 0) {
-          darray_push(point_list, elms[i - 1]);
-          y = iter->y;
-        }
-        if (i + 1 >= point_list_45->size) {
-          darray_push(point_list, iter);
-        }
-      }
+  for (i = 0; i < point_list_45->size; i++) {
+    ffr_point_pix_t* iter = (ffr_point_pix_t*)elms[i];
+    if ((x1 < iter->x || CMP_FLOAT_QE(x1, iter->x)) &&
+        (iter->x < x2 || CMP_FLOAT_QE(x2, iter->x))) {
+      darray_push(point_list, iter);
     }
   }
 }
@@ -364,7 +351,7 @@ static void ffr_draw_arc_point_list(canvas_t* c, const rect_t* rect, int32_t x_h
   }
 
   if (angle_v > M_FFR_PI_4) {
-    ffr_push_arc_point_list(angle_v_1, angle_v_2, r, point_list, point_list_45, TRUE);
+    ffr_push_arc_point_list(angle_v_1, angle_v_2, r, point_list, point_list_45);
     if (is_fill) {
       end_y = ffr_draw_fill_arc_point_list(c, rect, x_h, y_v, xc, yc,
                                           WIDGET_DRAW_ARC_INFO_TABLE[quadrant_id].quadrant_v, gradient,
@@ -379,7 +366,7 @@ static void ffr_draw_arc_point_list(canvas_t* c, const rect_t* rect, int32_t x_h
   }
 
   if (angle_h > M_FFR_PI_4) {
-    ffr_push_arc_point_list(angle_h_1, angle_h_2, r, point_list, point_list_45, !is_fill);
+    ffr_push_arc_point_list(angle_h_1, angle_h_2, r, point_list, point_list_45);
     if (is_fill) {
       ffr_draw_fill_arc_point_list(c, rect, x_h, y_v, xc, yc,
                                       WIDGET_DRAW_ARC_INFO_TABLE[quadrant_id].quadrant_h, gradient,
