@@ -246,9 +246,11 @@ static ret_t lcd_mem_draw_glyph8(lcd_t* lcd, glyph_t* glyph, const rect_t* src, 
   wh_t sw = src->w;
   wh_t sh = src->h;
   wh_t w = lcd->w;
+  uint8_t a = 0;
+  uint32_t glyph_w = glyph->w;
   color_t color = lcd->text_color;
-  uint8_t color_alpha = color.rgba.a;
   uint8_t global_alpha = lcd->global_alpha;
+  uint8_t color_alpha = (color.rgba.a * global_alpha) >> 8;
   uint32_t line_length = lcd_mem_get_line_length((lcd_mem_t*)lcd);
   uint8_t* fbuff = (uint8_t*)lcd_mem_init_drawing_fb(lcd, NULL);
   const uint8_t* src_p = glyph->data + glyph->w * sy + sx;
@@ -260,8 +262,7 @@ static ret_t lcd_mem_draw_glyph8(lcd_t* lcd, glyph_t* glyph, const rect_t* src, 
     pixel_t* d = dst_p;
 
     for (i = 0; i < sw; i++, d++, s++) {
-      uint8_t a = global_alpha > TK_OPACITY_ALPHA ? *s : ((*s * global_alpha) >> 8);
-      a = (a * color_alpha) >> 8;
+      a = (*s * color_alpha) >> 8;
       if (a >= TK_OPACITY_ALPHA) {
         *d = pixel;
       } else if (a >= TK_TRANSPARENT_ALPHA) {
@@ -269,7 +270,7 @@ static ret_t lcd_mem_draw_glyph8(lcd_t* lcd, glyph_t* glyph, const rect_t* src, 
         *d = blend_pixel(*d, color);
       }
     }
-    src_p += glyph->w;
+    src_p += glyph_w;
     dst_p += w;
   }
 
