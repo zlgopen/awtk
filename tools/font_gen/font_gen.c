@@ -150,6 +150,9 @@ static ret_t font_gen_glyph(font_t* font, glyph_format_t format, wchar_t c, font
   static glyph_t gg;
   static uint8_t buff[200 * 200];
 
+  memset(&gg, 0x00, sizeof(gg));
+  memset(buff, 0x00, sizeof(buff));
+
   if (font_get_glyph(font, c, font_size, &gg) == RET_OK) {
     if (!gg.pitch) {
       gg.pitch = gg.w;
@@ -209,7 +212,8 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, glyph_format_t format, 
     header->index[i].size = 0;
     header->index[i].offset = wbuffer->cursor;
 
-    printf("%d/%d: 0x%04x\n", i, size, c);
+    printf("%d/%d: 0x%04x format=%d w=%d h=%d pitch=%d\n", i, size, c,
+      (int)format, (int)(g.w), (int)(g.h), (int)(g.pitch));
     if (font_gen_glyph(font, format, c, font_size, &g) == RET_OK) {
       uint32_t data_size = g.pitch * g.h;
 
