@@ -89,7 +89,7 @@ typedef struct _tab_button_group_t {
    */
 
   /*private*/
-  uint32_t active;
+  int32_t active;
   hscrollable_t* hscrollable;
 } tab_button_group_t;
 

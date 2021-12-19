@@ -556,7 +556,9 @@ static ret_t window_on_keydown_before_children(void* ctx, event_t* e) {
 }
 
 ret_t window_enable_35keys_mode(widget_t* win) {
-  return widget_on(win, EVT_KEY_DOWN_BEFORE_CHILDREN, window_on_keydown_before_children, win);
+  widget_on(win, EVT_KEY_DOWN_BEFORE_CHILDREN, window_on_keydown_before_children, win);
+
+  return RET_OK;
 }
 
 widget_t* window_base_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
