@@ -137,7 +137,7 @@ static ret_t object_default_get_prop(tk_object_t* obj, const char* name, value_t
 }
 
 static bool_t object_default_can_exec(tk_object_t* obj, const char* name, const char* args) {
-  ret_t ret = FALSE;
+  bool_t ret = FALSE;
   object_default_t* o = OBJECT_DEFAULT(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 

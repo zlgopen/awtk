@@ -308,7 +308,7 @@ static ret_t object_array_get_prop(tk_object_t* obj, const char* name, value_t* 
 }
 
 static bool_t object_array_can_exec(tk_object_t* obj, const char* name, const char* args) {
-  ret_t ret = FALSE;
+  bool_t ret = FALSE;
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
