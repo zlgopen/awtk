@@ -28,10 +28,11 @@
 
 BEGIN_C_DECLS
 
-ret_t font_gen(font_t* font, uint16_t font_size, const char* str, const char* output_filename,
-               const char* theme);
+ret_t font_gen(font_t* font, uint16_t font_size, glyph_format_t format, const char* str,
+               const char* output_filename, const char* theme);
 /*public for test*/
-uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, wbuffer_t* wbuffer);
+uint32_t font_gen_buff(font_t* font, uint16_t font_size, glyph_format_t format, const char* str,
+                       wbuffer_t* wbuffer);
 
 const char* font_gen_expand(const char* in, str_t* out);
 

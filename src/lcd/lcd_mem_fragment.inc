@@ -188,8 +188,10 @@ static ret_t lcd_mem_fragment_draw_glyph(lcd_t* lcd, glyph_t* glyph, const rect_
   wh_t sw = src->w;
   wh_t sh = src->h;
   wh_t w = lcd->w;
+  uint8_t a = 0;
   color_t color = lcd->text_color;
   uint8_t global_alpha = lcd->global_alpha;
+  uint8_t color_alpha = (color.rgba.a * global_alpha) >> 8;
   uint32_t line_length = mem->fb.line_length;
   uint8_t* fbuff = (uint8_t*)(mem->buff);
   const uint8_t* src_p = glyph->data + glyph->w * sy + sx;
@@ -205,8 +207,7 @@ static ret_t lcd_mem_fragment_draw_glyph(lcd_t* lcd, glyph_t* glyph, const rect_
     pixel_t* d = dst_p;
 
     for (i = 0; i < sw; i++, d++, s++) {
-      uint8_t a = global_alpha > TK_OPACITY_ALPHA ? *s : ((*s * global_alpha) >> 8);
-
+      a = (*s * color_alpha) >> 8;
       if (a >= TK_OPACITY_ALPHA) {
         *d = pixel;
       } else if (a >= TK_TRANSPARENT_ALPHA) {

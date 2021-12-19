@@ -25,7 +25,7 @@ TEST(FontGen, basic) {
   const char* str = "helloworld HELLOWORLD 1243541 helloworld HELLOWORLD 1243541";
   wbuffer_t wbuffer;
   wbuffer_init(&wbuffer, bmp_buff, BUFF_SIZE);
-  uint32_t ret = font_gen_buff(ttf_font, font_size, str, &wbuffer);
+  uint32_t ret = font_gen_buff(ttf_font, font_size, GLYPH_FMT_ALPHA, str, &wbuffer);
   font_t* bmp_font = font_bitmap_create("default", bmp_buff, ret);
 
   for (uint32_t i = 0; str[i]; i++) {
@@ -40,7 +40,7 @@ TEST(FontGen, basic) {
     ASSERT_EQ(g1.w, g2.w);
     ASSERT_EQ(g1.h, g2.h);
 
-    ASSERT_EQ(memcmp(g1.data, g2.data, g1.w * g1.h), 0);
+    ASSERT_EQ(memcmp(g1.data, g2.data, g1.pitch * g1.h), 0);
   }
 
   ASSERT_EQ(ret > 0, true);

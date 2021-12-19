@@ -41,19 +41,26 @@ int wmain(int argc, wchar_t* argv[]) {
   const char* str_filename = NULL;
   const char* out_filename = NULL;
   const char* theme_name = NULL;
+  glyph_format_t format = GLYPH_FMT_ALPHA;
 
   platform_prepare();
 
   if (argc < 5) {
-    printf("Usage: %S ttf_filename str_filename out_filename font_size [mono]\n", argv[0]);
+    printf("Usage: %S ttf_filename str_filename out_filename font_size [mono|4bits]\n", argv[0]);
 
     return 0;
   }
 
   font_size = tk_watoi(argv[4]);
 
-  if (argc > 5 && tk_wstr_eq(argv[5], L"mono")) {
-    mono = TRUE;
+  if (argc > 5) {
+    const wchar_t* format_name = argv[5];
+    if (tk_wstr_eq(format_name, L"mono")) {
+      mono = TRUE;
+      format = GLYPH_FMT_MONO;
+    } else if (tk_wstr_eq(format_name, L"4bits")) {
+      format = GLYPH_FMT_ALPHA4;
+    }
   }
 
   str_t str_theme = {0};
@@ -97,10 +104,13 @@ int wmain(int argc, wchar_t* argv[]) {
 #endif /*WITH_STB_FONT*/
 
   str_buff = read_file(str_filename, &size);
+  if (str_buff == NULL) {
+    log_debug("read %s failed\n", str_filename);
+  }
   return_value_if_fail(str_buff != NULL, 0);
 
   if (font != NULL) {
-    font_gen(font, (uint16_t)font_size, str_buff, out_filename, theme_name);
+    font_gen(font, (uint16_t)font_size, format, str_buff, out_filename, theme_name);
   }
 
   TKMEM_FREE(ttf_buff);

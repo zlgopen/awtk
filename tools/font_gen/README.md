@@ -9,7 +9,7 @@ fontgen 从指定的 tff 文件，提取指定字符集（从文件中读取）�
 ### 2. 用法
 
 ```
-./bin/fontgen ttf_filename str_filename output_filename font_size [mono]
+Usage: ./bin/fontgen ttf_filename str_filename out_filename font_size [mono|4bits]
 ```
 
 * ttf\_filename tff 文件名。
@@ -17,6 +17,7 @@ fontgen 从指定的 tff 文件，提取指定字符集（从文件中读取）�
 * output\_filename 输出文件名。如果文件扩展名为“.bin“，生成二进制格式，否则生成 C 语言常量数据。
 * font\_size 字体大小（像素）。
 * mono 是否生成单色字体，目前只有启用 freetype 时才有效。可选。
+* 4bits 每个点用4位表示(可选，默认8位)。
 
 示例：
 
@@ -26,7 +27,7 @@ fontgen 从指定的 tff 文件，提取指定字符集（从文件中读取）�
 
 ### 3. 文本文件格式
 ---------------
-为了使用方便，在文本文件中，除了可以直接列出需要的字符外，也可以指定一个范围。
+为了使用方便，在文本文件中，除了可以直接列出需要的字符外，也可以指定一个范围，或者混合两种用法。
 
 * 范围用 [[和]] 括起来，中间用-分隔。
 
