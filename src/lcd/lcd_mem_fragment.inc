@@ -178,7 +178,61 @@ static color_t lcd_mem_fragment_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
   return c;
 }
 
-static ret_t lcd_mem_fragment_draw_glyph(lcd_t* lcd, glyph_t* glyph, const rect_t* src, xy_t x, xy_t y) {
+static ret_t lcd_mem_fragment_draw_glyph4(lcd_t* lcd, glyph_t* glyph, const rect_t* src, xy_t x, xy_t y) {
+  lcd_mem_fragment_t* mem = (lcd_mem_fragment_t*)lcd;
+
+  wh_t i = 0;
+  wh_t j = 0;
+  wh_t sx = src->x;
+  wh_t sy = src->y;
+  wh_t sw = src->w;
+  wh_t sh = src->h;
+  wh_t w = lcd->w;
+  uint8_t a = 0;
+  uint8_t glyph_a = 0;
+  uint32_t pitch = glyph->pitch;
+  color_t color = lcd->text_color;
+  uint8_t global_alpha = lcd->global_alpha;
+  uint8_t color_alpha = (color.rgba.a * global_alpha) >> 8;
+  uint32_t line_length = mem->fb.line_length;
+  uint8_t* fbuff = (uint8_t*)(mem->buff);
+  const uint8_t* src_p = glyph->data + glyph->w * sy + sx;
+  pixel_t pixel = color_to_pixel(color);
+  int32_t dx = x - mem->x;
+  int32_t dy = y - mem->y;
+
+  assert(x >= mem->x && y >= mem->y);
+
+  for (j = 0; j < sh; j++) {
+    bool_t even = (sx % 2) == 0;
+    pixel_t* dst_p = (pixel_t*)(fbuff + (dy + j) * line_length) + dx;
+    const uint8_t* s = src_p;
+    pixel_t* d = dst_p;
+
+    for (i = 0; i < sw; i++, d++) {
+      if (even) {
+        glyph_a = ((*s & 0x0f) << 4);
+      } else {
+        glyph_a = (*s & 0xf0);
+        s++;
+      }
+      even = !even;	
+      a = (glyph_a * color_alpha) >> 8;
+      if (a >= TK_OPACITY_ALPHA) {
+        *d = pixel;
+      } else if (a >= TK_TRANSPARENT_ALPHA) {
+        color.rgba.a = a;
+        *d = blend_pixel(*d, color);
+      }
+    }
+    src_p += pitch;
+    dst_p += w;
+  }
+
+  return RET_OK;
+}
+
+static ret_t lcd_mem_fragment_draw_glyph8(lcd_t* lcd, glyph_t* glyph, const rect_t* src, xy_t x, xy_t y) {
   lcd_mem_fragment_t* mem = (lcd_mem_fragment_t*)lcd;
 
   wh_t i = 0;
@@ -220,6 +274,16 @@ static ret_t lcd_mem_fragment_draw_glyph(lcd_t* lcd, glyph_t* glyph, const rect_
   }
 
   return RET_OK;
+}
+
+static ret_t lcd_mem_fragment_draw_glyph(lcd_t* lcd, glyph_t* glyph, const rect_t* src, xy_t x, xy_t y) {
+  if (glyph->format == GLYPH_FMT_ALPHA) {
+    return lcd_mem_fragment_draw_glyph8(lcd, glyph, src, x, y);
+  } else if (glyph->format == GLYPH_FMT_ALPHA4) {
+    return lcd_mem_fragment_draw_glyph4(lcd, glyph, src, x, y);
+  } else {
+    return RET_FAIL;
+  }
 }
 
 static ret_t lcd_mem_fragment_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* src, const rectf_t* dst) {
