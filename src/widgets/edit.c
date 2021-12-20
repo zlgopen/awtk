@@ -734,7 +734,16 @@ static ret_t edit_check_valid_value(widget_t* widget) {
   return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
   if (!edit_is_valid_value(widget)) {
     if (edit->auto_fix) {
+      wstr_t old_text;
+      wstr_init(&old_text, 0);
+      wstr_set(&old_text, widget->text.str);
+      
       edit_auto_fix(widget);
+
+      if (!wstr_equal(&old_text, &widget->text)) {
+        edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGED);
+      }
+      wstr_reset(&old_text);  
     } else if (widget->text.size > 0) {
       widget_set_state(widget, WIDGET_STATE_ERROR);
     }
@@ -880,6 +889,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
     case EVT_IM_ACTION: {
       if (tk_str_eq(edit->action_text, ACTION_TEXT_DONE)) {
         edit->is_key_inputing = FALSE;
+        edit_check_valid_value(widget);
         input_method_request(input_method(), NULL);
       } else if (tk_str_eq(edit->action_text, ACTION_TEXT_NEXT)) {
         widget_focus_next(widget);
@@ -1277,7 +1287,7 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_INPUTING)) {
     input_method_t* im = input_method();
-    bool_t inputing = im != NULL && im->widget == widget || edit->is_key_inputing;
+    bool_t inputing = (im != NULL && im->widget == widget) || edit->is_key_inputing;
     /* 当控件没有父集窗口或者父集窗口没有打开的时候，通过 focused 来判断是否正在输入 */
     if (!inputing && !widget_is_window_opened(widget)) {
       inputing = widget->focused;
