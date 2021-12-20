@@ -616,19 +616,18 @@ TEST(Edit, set_double) {
   edit_set_double(e, 10);
   ASSERT_EQ(edit_get_double(e), 10);
 
-  widget_get_text_utf8(e, text, sizeof(text)-1);
+  widget_get_text_utf8(e, text, sizeof(text) - 1);
   ASSERT_STREQ(text, "10.000000");
 
   edit_set_double_ex(e, NULL, 10);
   ASSERT_EQ(edit_get_double(e), 10);
-  widget_get_text_utf8(e, text, sizeof(text)-1);
+  widget_get_text_utf8(e, text, sizeof(text) - 1);
   ASSERT_STREQ(text, "10.00");
 
   edit_set_double_ex(e, "%2.1lf", 10);
   ASSERT_EQ(edit_get_double(e), 10);
-  widget_get_text_utf8(e, text, sizeof(text)-1);
+  widget_get_text_utf8(e, text, sizeof(text) - 1);
   ASSERT_STREQ(text, "10.0");
 
   widget_destroy(e);
 }
-

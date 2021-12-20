@@ -577,13 +577,12 @@ TEST(Utils, is_in_array) {
   ASSERT_EQ(tk_str_is_in_array("abc", arr1, ARRAY_SIZE(arr1)), TRUE);
   ASSERT_EQ(tk_str_is_in_array("abc", arr2, ARRAY_SIZE(arr2)), TRUE);
   ASSERT_EQ(tk_str_is_in_array("abc", arr3, ARRAY_SIZE(arr3)), TRUE);
-  
+
   ASSERT_EQ(tk_str_is_in_array("xyz", arr1, ARRAY_SIZE(arr1)), FALSE);
   ASSERT_EQ(tk_str_is_in_array("xyz", arr2, ARRAY_SIZE(arr2)), TRUE);
   ASSERT_EQ(tk_str_is_in_array("xyz", arr3, ARRAY_SIZE(arr3)), TRUE);
-  
+
   ASSERT_EQ(tk_str_is_in_array("123", arr1, ARRAY_SIZE(arr1)), FALSE);
   ASSERT_EQ(tk_str_is_in_array("123", arr2, ARRAY_SIZE(arr2)), FALSE);
   ASSERT_EQ(tk_str_is_in_array("123", arr3, ARRAY_SIZE(arr3)), TRUE);
-
 }

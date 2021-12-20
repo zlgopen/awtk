@@ -737,13 +737,13 @@ static ret_t edit_check_valid_value(widget_t* widget) {
       wstr_t old_text;
       wstr_init(&old_text, 0);
       wstr_set(&old_text, widget->text.str);
-      
+
       edit_auto_fix(widget);
 
       if (!wstr_equal(&old_text, &widget->text)) {
         edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGED);
       }
-      wstr_reset(&old_text);  
+      wstr_reset(&old_text);
     } else if (widget->text.size > 0) {
       widget_set_state(widget, WIDGET_STATE_ERROR);
     }

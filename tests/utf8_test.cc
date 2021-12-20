@@ -65,25 +65,25 @@ TEST(Utf8, trim_invalid) {
 
   strncpy(text, str, 1);
   ASSERT_STREQ(tk_utf8_trim_invalid_char(text), "");
-  
+
   strncpy(text, str, 2);
   ASSERT_STREQ(tk_utf8_trim_invalid_char(text), "");
-  
+
   strncpy(text, str, 3);
   ASSERT_STREQ(tk_utf8_trim_invalid_char(text), "中");
-  
+
   strncpy(text, str, 4);
   ASSERT_STREQ(tk_utf8_trim_invalid_char(text), "中");
-  
+
   strncpy(text, str, 5);
   ASSERT_STREQ(tk_utf8_trim_invalid_char(text), "中");
-  
+
   strncpy(text, str, 6);
   ASSERT_STREQ(tk_utf8_trim_invalid_char(text), "中文");
-  
+
   strncpy(text, str, 7);
   ASSERT_STREQ(tk_utf8_trim_invalid_char(text), "中文");
-  
+
   strncpy(text, "abc", 4);
   ASSERT_STREQ(tk_utf8_trim_invalid_char(text), "abc");
 }

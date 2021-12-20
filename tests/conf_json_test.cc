@@ -406,13 +406,13 @@ TEST(ConfJson, number) {
 
   ASSERT_EQ(conf_doc_get(doc, "[1]", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 1000);
-  
+
   ASSERT_EQ(conf_doc_get(doc, "[2]", &v), RET_OK);
   ASSERT_EQ(value_int(&v), -1000);
-  
+
   ASSERT_EQ(conf_doc_get(doc, "[3]", &v), RET_OK);
   ASSERT_EQ(value_int64(&v), 12147483647);
-  
+
   ASSERT_EQ(conf_doc_get(doc, "[4]", &v), RET_OK);
   ASSERT_EQ(value_int64(&v), -12147483647);
 
