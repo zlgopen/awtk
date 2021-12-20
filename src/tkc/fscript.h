@@ -274,6 +274,14 @@ ret_t fscript_global_deinit(void);
  */
 double tk_expr_eval(const char* expr);
 
+/**
+ * @method fscript_get_global_object
+ * 获取fscript的全局对象。
+ * 
+ * @return {tk_object_t*} 返回fscript的全局对象。
+ */
+tk_object_t* fscript_get_global_object(void);
+
 /*注册自定义函数时，属性名的前缀。*/
 #define STR_FSCRIPT_FUNCTION_PREFIX "function."
 

@@ -22,6 +22,7 @@
 #include "tkc/fscript.h"
 #include "tkc/object_default.h"
 #include "tkc/general_factory.h"
+#include "tkc/object_locker.h"
 
 struct _fscript_func_call_t {
   void* ctx;
@@ -32,6 +33,8 @@ struct _fscript_func_call_t {
   uint16_t col;
 };
 
+#define STR_GLOBAL_PREFIX "global."
+#define GLOBAL_PREFIX_LEN 7
 #define VALUE_TYPE_JSCRIPT_ID 128
 #define VALUE_TYPE_JSCRIPT_FUNC VALUE_TYPE_JSCRIPT_ID + 1
 
@@ -276,6 +279,10 @@ static ret_t fscript_get_var(fscript_t* fscript, const char* name, value_t* valu
     name += 1;
   }
 
+  if (strncmp(name, STR_GLOBAL_PREFIX, GLOBAL_PREFIX_LEN) == 0) {
+    return tk_object_get_prop(fscript_get_global_object(), name + GLOBAL_PREFIX_LEN, value);
+  }
+
   if (fscript->locals != NULL) {
     if (tk_object_get_prop(fscript->locals, name, value) == RET_OK) {
       return RET_OK;
@@ -303,6 +310,10 @@ static ret_t fscript_get_var(fscript_t* fscript, const char* name, value_t* valu
 
 static ret_t fscript_set_var(fscript_t* fscript, const char* name, const value_t* value) {
   ret_t ret = RET_FAIL;
+  if (strncmp(name, STR_GLOBAL_PREFIX, GLOBAL_PREFIX_LEN) == 0) {
+    return tk_object_set_prop(fscript_get_global_object(), name + GLOBAL_PREFIX_LEN, value);
+  }
+
   if (is_fast_var(name)) {
     value_t* var = fscript_get_fast_var(fscript, name);
     if (name[1] == '.') {
@@ -2411,11 +2422,24 @@ static fscript_func_call_t* fscript_func_call_create(fscript_parser_t* parser, c
   return call;
 }
 
+static tk_object_t* s_global_obj = NULL;
+
+tk_object_t* fscript_get_global_object(void) {
+  return s_global_obj;
+}
+
 ret_t fscript_global_init(void) {
+  tk_object_t* obj = object_default_create_ex(FALSE);
+  return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
+
+  s_global_obj = object_locker_create(obj);
+  TK_OBJECT_UNREF(obj);
+
   return RET_OK;
 }
 
 ret_t fscript_global_deinit(void) {
+  TK_OBJECT_UNREF(s_global_obj);
   general_factory_destroy(s_global_funcs);
   s_global_funcs = NULL;
   return RET_OK;

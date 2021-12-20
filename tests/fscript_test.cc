@@ -1345,3 +1345,19 @@ TEST(FScript, chinese_func) {
 
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(FExr, global) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "global.count=400;global.count", &v);
+  ASSERT_EQ(value_int(&v), 400);
+  fscript_eval(obj, "global.count=global.count+400;global.count", &v);
+  ASSERT_EQ(value_int(&v), 800);
+  fscript_eval(obj, "global.count=global.count+400;global.count", &v);
+  ASSERT_EQ(value_int(&v), 1200);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
