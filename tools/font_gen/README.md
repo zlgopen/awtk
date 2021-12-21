@@ -64,6 +64,14 @@ Usage: ./bin/fontgen ttf_filename str_filename out_filename font_size [mono|4bit
 [[0X4E2D-0X4E2F]]
 ```
 
+## 文本展开工具 
+
+为了方便 fonttools 工具也支持指定范围，提供了一个小工具expand\_text。它将输入文件中的范围展开后写入输出文件。
+
+```
+Usage:./bin/expand_text input_file output_file
+```
+
 ## 从 TTF 字体文件中提取部分字体
 
 可以使用 fonttools 中的 pyftsubset 工具提取：

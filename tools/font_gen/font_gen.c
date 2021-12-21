@@ -26,6 +26,7 @@
 #include "base/bitmap.h"
 #include "common/utils.h"
 #include "font_gen/font_gen.h"
+#include "font_gen/preprocess_text.inc"
 #include "base/assets_manager.h"
 #include "font_loader/font_loader_stb.h"
 #include "font_loader/font_loader_bitmap.h"
@@ -40,65 +41,6 @@ static int char_cmp(const void* a, const void* b) {
   return c1 - c2;
 }
 
-const char* font_gen_expand_one(const char* in, str_t* out) {
-  const char* p = in;
-
-  if (p[0] == '\0' || p[1] == '\0' || p[2] == '\0' || p[3] == '\0') {
-    return p += strlen(p);
-  }
-
-  if (p[1] == '-' && p[3] == ']' && p[4] == ']') {
-    /*[[a-z]]*/
-    char c = p[0];
-    char end = p[2];
-    while (c <= end) {
-      str_append_char(out, c);
-      c++;
-    }
-    p += 5;
-  } else {
-    /* [[1000-2000]] */
-    char buff[32];
-    int c = 0;
-    int end = 0;
-    int n = 0;
-    if (strncmp(p, "0x", 2) == 0) {
-      n = tk_sscanf(p, "0x%x-0x%x]]", &c, &end);
-    } else if (strncmp(p, "0X", 2) == 0) {
-      n = tk_sscanf(p, "0X%x-0X%x]]", &c, &end);
-    } else {
-      n = tk_sscanf(p, "%d-%d]]", &c, &end);
-    }
-    return_value_if_fail(n == 2, in);
-    p = strstr(p, "]]");
-    return_value_if_fail(p != NULL, in);
-    p += 2;
-
-    while (c <= end) {
-      tk_utf8_from_utf16_ex(&c, 1, buff, sizeof(buff));
-      str_append(out, buff);
-      c++;
-    }
-  }
-
-  return p;
-}
-
-const char* font_gen_expand(const char* in, str_t* out) {
-  const char* p = in;
-
-  while (*p) {
-    if (*p == '[' && p[1] == '[') {
-      p = font_gen_expand_one(p + 2, out);
-    } else {
-      str_append_char(out, *p);
-      p++;
-    }
-  }
-
-  return out->str;
-}
-
 ret_t font_gen(font_t* font, uint16_t font_size, glyph_format_t format, const char* str,
                const char* output_filename, const char* theme) {
   str_t tstr;
@@ -107,7 +49,7 @@ ret_t font_gen(font_t* font, uint16_t font_size, glyph_format_t format, const ch
   str_init(&tstr, 100000);
   wbuffer_init_extendable(&wbuffer);
 
-  str = font_gen_expand(str, &tstr);
+  str = font_gen_expand_text(str, &tstr);
   size = font_gen_buff(font, font_size, format, str, &wbuffer);
 
   if (strstr(output_filename, ".bin") != NULL) {
