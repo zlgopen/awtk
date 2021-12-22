@@ -713,9 +713,19 @@ ret_t canvas_reset(canvas_t* c);
  */
 ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y);
 
-/*public for internal use*/
+/**
+ * @method canvas_draw_icon_in_rect
+ * 在指定rect内绘制icon。
+ *
+ * @param {canvas_t*} c canvas对象。
+ * @param {bitmap_t*} img 图片对象。
+ * @param {const rect_t*} r 矩形区域。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t canvas_draw_icon_in_rect(canvas_t* c, bitmap_t* img, const rect_t* r);
 
+/*public for internal use*/
 ret_t canvas_draw_image_center(canvas_t* c, bitmap_t* img, const rect_t* dst);
 ret_t canvas_draw_image_patch3_x(canvas_t* c, bitmap_t* img, const rect_t* dst);
 ret_t canvas_draw_image_patch3_x_scale_y(canvas_t* c, bitmap_t* img, const rect_t* dst);
