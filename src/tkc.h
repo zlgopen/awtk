@@ -116,5 +116,6 @@
 #include "tkc/event_source_manager_default.h"
 #include "tkc/plugin_manager.h"
 #include "tkc/str_str.h"
+#include "tkc/sha256.h"
 
 #endif /*TK_TKC_ONLY_H*/

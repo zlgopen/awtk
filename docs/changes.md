@@ -2,6 +2,7 @@
 
 2021/12/22
   * 复原被覆盖的tools/idl\_gen/README.md(感谢雨欣提供补丁)
+  * 增加tkc/sha256.h
 
 2021/12/21
   * 增加小工具expand\_text。请参考[fongen的说明](../tools/font_gen/README.md)
