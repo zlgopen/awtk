@@ -1360,4 +1360,3 @@ TEST(FExr, global) {
 
   TK_OBJECT_UNREF(obj);
 }
-
