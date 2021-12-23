@@ -35,12 +35,12 @@ BEGIN_C_DECLS
 typedef HANDLE serial_dev_t;
 
 typedef struct _serial_info_t {
-  int client_fd;
-  int server_fd;
-  bool_t closed;
-  bool_t quited;
   serial_dev_t dev;
-  tk_thread_t* thread;
+  int buff_size;
+  int buff_index;
+  char buff[1];
+  OVERLAPPED read_overlapped;
+  OVERLAPPED write_overlapped;
 } serial_info_t;
 
 #else

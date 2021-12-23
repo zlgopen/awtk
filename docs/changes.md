@@ -4,6 +4,7 @@
   * 增加aworkslp平台支持(感谢林福提供补丁)
   * fscript 增加code\_id，方便以后支持调试。
   * 完善fscript widget扩展中的定时器相关接口(感谢雨欣提供补丁)。
+  * 修正Win32串口操作速度被限制的问题(感谢陈谭提供补丁)
 
 2021/12/22
   * 复原被覆盖的tools/idl\_gen/README.md(感谢雨欣提供补丁)
