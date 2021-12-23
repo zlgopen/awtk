@@ -114,7 +114,7 @@
       <button focusable="true" on:click="close()" text="Close" />
       <button focusable="true" on:click="quit()" text="Quit" />
     </view>
-    <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=1,m=2,s=2)">
+    <view name="view_timer" x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=1,m=2,s=2)">
       <button name="timer" focusable="true" on:click="start_timer(100)" text="Start Timer">
         <property name="on:timer">
           <![CDATA[
@@ -130,6 +130,14 @@
         </property>
       </button>
       <button focusable="true" on:click="stop_timer('parent.timer')" text="Stop Timer" />
+    </view>
+    <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=1,m=2,s=2)">
+      <button focusable="true" on:click="reset_timer('window.view.view_timer.timer')" text="Reset Timer" />
+      <button focusable="true" on:click="modify_timer('window.view.view_timer.timer', 1000)" text="Modify Timer" />
+    </view>
+    <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=1,m=2,s=2)">
+      <button focusable="true" on:click="suspend_timer('window.view.view_timer.timer')" text="Suspend Timer" />
+      <button focusable="true" on:click="resume_timer('window.view.view_timer.timer')" text="Resume Timer" />
     </view>
     <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=1,m=2,s=2)">
       <button focusable="true" on:click="back()" text="Back" />

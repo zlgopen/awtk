@@ -351,20 +351,25 @@ static ret_t widget_on_timer(const timer_info_t* info) {
 static ret_t func_widget_add_timer(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   uint32_t id = 0;
   uint32_t duration = 0;
-  widget_t* self = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
-  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  duration = value_uint32(args->args);
-  FSCRIPT_FUNC_CHECK(self != NULL && duration > 0, RET_BAD_PARAMS);
+  widget_t* widget = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
+  if (args->size > 1) {
+    widget = to_widget(fscript, args->args);
+    duration = value_uint32(args->args + 1);
+  } else {
+    duration = value_uint32(args->args);
+  }
+  FSCRIPT_FUNC_CHECK(widget != NULL && duration > 0, RET_BAD_PARAMS);
 
-  id = widget_get_prop_int(self, STR_PROP_TIMER_ID, TK_INVALID_ID);
+  id = widget_get_prop_int(widget, STR_PROP_TIMER_ID, TK_INVALID_ID);
   if (id != TK_INVALID_ID) {
     timer_remove(id);
     log_debug("timer exist, remove it.\n");
   }
 
-  id = widget_add_timer(self, widget_on_timer, duration);
+  id = widget_add_timer(widget, widget_on_timer, duration);
   value_set_uint32(result, id);
-  widget_set_prop_int(self, STR_PROP_TIMER_ID, id);
+  widget_set_prop_int(widget, STR_PROP_TIMER_ID, id);
 
   return RET_OK;
 }
@@ -388,6 +393,92 @@ static ret_t func_widget_remove_timer(fscript_t* fscript, fscript_args_t* args, 
     log_debug("not found timer\n");
   }
 
+  return RET_OK;
+}
+
+static ret_t func_widget_reset_timer(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  uint32_t id = 0;
+  widget_t* widget = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
+  if (args->size > 0) {
+    widget = to_widget(fscript, args->args);
+  }
+  FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
+
+  id = widget_get_prop_int(widget, STR_PROP_TIMER_ID, TK_INVALID_ID);
+  if (id != TK_INVALID_ID) {
+    timer_reset(id);
+    value_set_bool(result, TRUE);
+  } else {
+    value_set_bool(result, FALSE);
+    log_debug("not found timer\n");
+  }
+
+  return RET_OK;
+}
+
+static ret_t func_widget_modify_timer(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  uint32_t id = 0;
+  uint32_t duration = 0;
+  widget_t* widget = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
+  if (args->size > 1) {
+    widget = to_widget(fscript, args->args);
+    duration = value_uint32(args->args + 1);
+  } else {
+    duration = value_uint32(args->args);
+  }
+  FSCRIPT_FUNC_CHECK(widget != NULL && duration > 0, RET_BAD_PARAMS);
+
+  id = widget_get_prop_int(widget, STR_PROP_TIMER_ID, TK_INVALID_ID);
+  if (id != TK_INVALID_ID) {
+    timer_modify(id, duration);
+    value_set_bool(result, TRUE);
+  } else {
+    value_set_bool(result, FALSE);
+    log_debug("not found timer\n");
+  }
+
+  return RET_OK;
+}
+
+static ret_t func_widget_suspend_timer(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  uint32_t id = 0;
+  widget_t* widget = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
+  if (args->size > 0) {
+    widget = to_widget(fscript, args->args);
+  }
+  FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
+
+  id = widget_get_prop_int(widget, STR_PROP_TIMER_ID, TK_INVALID_ID);
+  if (id != TK_INVALID_ID) {
+    timer_suspend(id);
+    value_set_bool(result, TRUE);
+  } else {
+    value_set_bool(result, FALSE);
+    log_debug("not found timer\n");
+  }
+  return RET_OK;
+}
+
+static ret_t func_widget_resume_timer(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  uint32_t id = 0;
+  widget_t* widget = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
+  if (args->size > 0) {
+    widget = to_widget(fscript, args->args);
+  }
+  FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
+
+  id = widget_get_prop_int(widget, STR_PROP_TIMER_ID, TK_INVALID_ID);
+  if (id != TK_INVALID_ID) {
+    timer_resume(id);
+    value_set_bool(result, TRUE);
+  } else {
+    value_set_bool(result, FALSE);
+    log_debug("not found timer\n");
+  }
   return RET_OK;
 }
 
@@ -506,6 +597,10 @@ FACTORY_TABLE_ENTRY("widget_create", func_widget_create)
 FACTORY_TABLE_ENTRY("widget_destroy", func_widget_destroy)
 FACTORY_TABLE_ENTRY("start_timer", func_widget_add_timer)
 FACTORY_TABLE_ENTRY("stop_timer", func_widget_remove_timer)
+FACTORY_TABLE_ENTRY("reset_timer", func_widget_reset_timer)
+FACTORY_TABLE_ENTRY("modify_timer", func_widget_modify_timer)
+FACTORY_TABLE_ENTRY("suspend_timer", func_widget_suspend_timer)
+FACTORY_TABLE_ENTRY("resume_timer", func_widget_resume_timer)
 FACTORY_TABLE_ENTRY("send_key", func_widget_send_key)
 FACTORY_TABLE_ENTRY("locale_get", func_locale_get)
 FACTORY_TABLE_ENTRY("locale_set", func_locale_set)

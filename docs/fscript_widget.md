@@ -550,8 +550,11 @@ widget_destroy('window.view.bar')
 
 ```js
 start_timer(duration)
+start_timer(widget, duration)
 ```
 
+* 不指定 widget 是启动当前控件的定时器。
+* widget 可以是 widget 对象，也可以是 widget 的路径。
 * duration 为定时器时间间隔。
 * 一个控件只能开启一个定时器，如果定时器存在，自动先移除之前的定时器。
 * 定时器时间到了之后，会触发控件的 timer 事件，所以对应的控件需要处理 timer 事件。
@@ -596,7 +599,92 @@ stop_timer(widget)
 stop_timer('parent.timer')
 ```
 
-### 5.13 send_key
+### 5.13 reset_timer
+
+> 重置指定的timer，重置之后定时器重新开始计时。
+----------------------------
+
+#### 原型
+
+```js
+reset_timer()
+reset_timer(widget)
+```
+
+* 不指定 widget 是重置当前控件的定时。
+* widget 可以是 widget 对象，也可以是 widget 的路径。
+
+#### 示例
+
+```js
+reset_timer('parent.timer')
+```
+
+### 5.14 modify_timer
+
+> 修改指定的timer的duration，修改之后定时器重新开始计时。
+----------------------------
+
+#### 原型
+
+```js
+modify_timer(duration)
+modify_timer(widget, duration)
+```
+
+* 不指定 widget 是设置当前控件的定时器。
+* widget 可以是 widget 对象，也可以是 widget 的路径。
+* duration 为定时器时间间隔。
+
+#### 示例
+
+```js
+modify_timer('parent.timer')
+```
+
+### 5.15 suspend_timer
+
+> 挂起指定的timer，一般用于不断循环触发的计时器。
+----------------------------
+
+#### 原型
+
+```js
+suspend_timer()
+suspend_timer(widget)
+```
+
+* 不指定 widget 是挂起当前控件的定时。
+* widget 可以是 widget 对象，也可以是 widget 的路径。
+
+#### 示例
+
+```js
+suspend_timer('parent.timer')
+```
+
+### 5.16 resume_timer
+
+> 唤醒挂起指定的timer，并且重置定时器重新开始计时。
+----------------------------
+
+#### 原型
+
+```js
+resume_timer()
+resume_timer(widget)
+```
+
+* 不指定 widget 是唤醒当前控件的定时。
+* widget 可以是 widget 对象，也可以是 widget 的路径。
+
+#### 示例
+
+```js
+resume_timer('parent.timer')
+```
+
+### 5.17 send_key
 
 > 向指定控件发生按键事件
 ----------------------------
@@ -616,7 +704,7 @@ send_key(widget, key_name)
  <button text="Char" on:click="send_key('window.edit', 'a')"/>
 ```
 
-### 5.14 widget\_eval
+### 5.18 widget\_eval
 
 > 有时，几个事件处理函数的代码是重复的，我们可以把代码放到控件的属性中，通过widget\_eval来执行。
 ----------------------------
@@ -676,7 +764,7 @@ widget_eval(widget, path.prop)
   </row>
 ```
 
-### 5.15 locale\_get
+### 5.19 locale\_get
 
 > 获取本地化信息(国家和语言)
 ----------------------------
@@ -718,7 +806,7 @@ print(object_get(obj, 'language'))
 
 获取当前控件的父控件或当前窗口的本地化信息用法类似，此处不多赘述。
 
-### 5.16 locale\_set
+### 5.20 locale\_set
 
 > 设置本地化信息(国家和语言)
 ----------------------------
@@ -749,7 +837,7 @@ locale_set('window_manager', 'en', 'US')
 
 设置当前控件的父控件或当前窗口的本地化信息用法类似，此处不多赘述。
 
-### 5.17 theme\_get
+### 5.21 theme\_get
 
 > 获取当前主题
 ----------------------------
@@ -780,7 +868,7 @@ print(theme_get('window_manager'))
 
 获取当前控件的父控件或当前窗口的主题用法类似，此处不多赘述。
 
-### 5.18 theme\_set
+### 5.22 theme\_set
 
 > 设置本地化信息(国家和语言)
 ----------------------------
