@@ -2,6 +2,7 @@
 
 2021/12/23
   * 增加aworkslp平台支持(感谢林福提供补丁)
+  * fscript 增加code\_id，方便以后支持调试。
 
 2021/12/22
   * 复原被覆盖的tools/idl\_gen/README.md(感谢雨欣提供补丁)

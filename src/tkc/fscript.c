@@ -231,6 +231,7 @@ typedef struct _token_t {
 typedef struct _fscript_parser_t {
   tk_object_t* obj;
   token_t token;
+  char* code_id;
   const char* str;
   const char* cursor;
 
@@ -532,6 +533,7 @@ ret_t fscript_destroy(fscript_t* fscript) {
   for (i = 0; i < ARRAY_SIZE(fscript->fast_vars); i++) {
     value_reset(fscript->fast_vars + i);
   }
+  TKMEM_FREE(fscript->code_id);
   memset(fscript, 0x00, sizeof(fscript_t));
   TKMEM_FREE(fscript);
 
@@ -615,11 +617,31 @@ static ret_t fscript_parser_skip_seperators(fscript_parser_t* parser) {
   return RET_OK;
 }
 
+#define STR_CODE_ID_START "code_id(\""
+#define STR_CODE_ID_END "\")"
+
 static ret_t fscript_parser_skip_line_comment(fscript_parser_t* parser) {
   char c = '\0';
+  str_t* str = &(parser->temp);
+  str_clear(str);
   do {
     c = fscript_parser_get_char(parser);
+    str_append_char(str, c);
   } while (c != '\0' && c != '\r' && c != '\n');
+
+  if (str->size > 64) {
+    const char* end = NULL;
+    const char* start = strstr(str->str, STR_CODE_ID_START);
+    if (start != NULL) {
+      start += strlen(STR_CODE_ID_START);
+      end = strstr(start, STR_CODE_ID_END);
+      if (end != NULL) {
+        TKMEM_FREE(parser->code_id);
+        parser->code_id = tk_strndup(start, end - start);
+        log_debug("code_id:%s\n", parser->code_id);
+      }
+    }
+  }
 
   return RET_OK;
 }
@@ -1391,11 +1413,13 @@ fscript_t* fscript_create_impl(fscript_parser_t* parser) {
   fscript->obj = parser->obj;
   fscript->first = parser->first;
   fscript->funcs_def = parser->funcs_def;
+  fscript->code_id = parser->code_id;
 
   parser->obj = NULL;
   parser->first = NULL;
   parser->temp.str = NULL;
   parser->funcs_def = NULL;
+  parser->code_id = NULL;
 
   return fscript;
 }

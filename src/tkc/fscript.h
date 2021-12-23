@@ -154,6 +154,7 @@ typedef struct _fscript_t {
   tk_object_t* locals;
   /*脚本定义的函数*/
   tk_object_t* funcs_def;
+  char* code_id;
 } fscript_t;
 
 typedef ret_t (*fscript_func_t)(fscript_t* fscript, fscript_args_t* args, value_t* v);
