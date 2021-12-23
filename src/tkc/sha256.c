@@ -215,7 +215,7 @@ ret_t tk_sha256(const void* data, uint32_t len, str_t* hash) {
   tk_sha256_done(&sha256, result);
 
   for (i = 0; i < TK_SHA256_HASH_LEN; i++) {
-    tk_snprintf(text, sizeof(text), "%2x", (int)(result[i]));
+    tk_snprintf(text, sizeof(text), "%02x", (int)(result[i]));
     str_append(hash, text);
   }
 
