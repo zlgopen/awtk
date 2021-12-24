@@ -29,8 +29,10 @@ TEST(WStr, demo) {
 }
 
 TEST(WStr, basic) {
+  /* 兼容非utf8编码的编译器，采用utf8编码初始化str，编码内容："中文" */
+  char str[7] = {(char)0xe4, (char)0xb8, (char)0xad, (char)0xe6, (char)0x96, (char)0x87, 0};
   testSetWStr("Hello", L"Hello");
-  testSetWStr("中文", L"中文");
+  testSetWStr(str, L"中文");
 }
 
 static void testSetUtf8(const char* utf8, const wchar_t* cstr) {
@@ -50,8 +52,10 @@ static void testSetUtf8(const char* utf8, const wchar_t* cstr) {
 }
 
 TEST(WStr, utf8) {
+  /* 兼容非utf8编码的编译器，采用utf8编码初始化str，编码内容："中文" */
+  char str[7] = {(char)0xe4, (char)0xb8, (char)0xad, (char)0xe6, (char)0x96, (char)0x87, 0};
   testSetUtf8("Hello", L"Hello");
-  testSetUtf8("中文", L"中文");
+  testSetUtf8(str, L"中文");
 }
 
 static void testRemove(const wchar_t* cstr, uint16_t offset, uint16_t nr, ret_t ret,

@@ -1,4 +1,5 @@
-﻿#include "tkc/fscript.h"
+﻿#include "tkc/utf8.h"
+#include "tkc/fscript.h"
 #include "tkc/object_default.h"
 #include "gtest/gtest.h"
 
@@ -1326,9 +1327,13 @@ TEST(FExr, get_last_error) {
 
 TEST(FExr, chinese_var) {
   value_t v;
+  char code[128];
+  const wchar_t* wcode = L"set(变量,100);(变量+100)*2";
   tk_object_t* obj = object_default_create();
 
-  fscript_eval(obj, "set(变量,100);(变量+100)*2", &v);
+  tk_utf8_from_utf16(wcode, code, sizeof(code));
+  fscript_eval(obj, code, &v);
+
   ASSERT_EQ(value_int(&v), 400);
   value_reset(&v);
 
@@ -1337,9 +1342,13 @@ TEST(FExr, chinese_var) {
 
 TEST(FScript, chinese_func) {
   value_t v;
+  char code[128];
   tk_object_t* obj = object_default_create();
+  const wchar_t* wcode = L"function 求和(数1,数2) {return 数1+数2;}; 求和(100, 23)";
 
-  fscript_eval(obj, "function 求和(数1,数2) {return 数1+数2;}; 求和(100, 23)", &v);
+  tk_utf8_from_utf16(wcode, code, sizeof(code));
+  fscript_eval(obj, code, &v);
+
   ASSERT_EQ(value_int(&v), 123);
   value_reset(&v);
 
