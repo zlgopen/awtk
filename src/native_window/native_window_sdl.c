@@ -189,6 +189,10 @@ static ret_t native_window_sdl_close(native_window_t* win) {
     SDL_DestroyRenderer(sdl->render);
   }
 
+  if (sdl->window != NULL) {
+    SDL_DestroyWindow(sdl->window);
+  }
+
   if (sdl->context != NULL) {
     SDL_GL_DeleteContext(sdl->context);
   }
@@ -196,6 +200,8 @@ static ret_t native_window_sdl_close(native_window_t* win) {
   sdl->render = NULL;
   sdl->window = NULL;
   sdl->context = NULL;
+
+  SDL_Quit();
 
   return RET_OK;
 }
@@ -652,8 +658,6 @@ ret_t native_window_sdl_deinit(void) {
     tk_object_unref(TK_OBJECT(s_shared_win));
     s_shared_win = NULL;
   }
-
-  SDL_Quit();
 
   return RET_OK;
 }
