@@ -75,6 +75,14 @@ tk_object_t* object_wbuffer_create(uint8_t* data, uint32_t capacity);
  */
 tk_object_t* object_wbuffer_create_extendable(void);
 
+/**
+ * @method object_wbuffer_cast
+ * 转换为object_wbuffer对象。
+ * @annotation ["cast"]
+ * @param {tk_object_t*} obj object_wbuffer对象。
+ *
+ * @return {object_wbuffer_t*} object_wbuffer对象。
+ */
 object_wbuffer_t* object_wbuffer_cast(tk_object_t* obj);
 #define OBJECT_WBUFFER(obj) object_wbuffer_cast(obj)
 

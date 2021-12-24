@@ -123,6 +123,14 @@ ret_t object_default_clear_props(tk_object_t* obj);
  */
 value_t* object_default_find_prop(tk_object_t* obj, tk_compare_t cmp, const void* data);
 
+/**
+ * @method object_default_cast
+ * 转换为object_default对象。
+ * @annotation ["cast"]
+ * @param {tk_object_t*} obj object_default对象。
+ *
+ * @return {object_default_t*} object_default对象。
+ */
 object_default_t* object_default_cast(tk_object_t* obj);
 #define OBJECT_DEFAULT(obj) object_default_cast(obj)
 

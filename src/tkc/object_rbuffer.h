@@ -63,6 +63,14 @@ typedef struct _object_rbuffer_t {
  */
 tk_object_t* object_rbuffer_create(const uint8_t* data, uint32_t capacity);
 
+/**
+ * @method object_rbuffer_cast
+ * 转换为object_rbuffer对象。
+ * @annotation ["cast"]
+ * @param {tk_object_t*} obj object_rbuffer对象。
+ *
+ * @return {object_rbuffer_t*} object_rbuffer对象。
+ */
 object_rbuffer_t* object_rbuffer_cast(tk_object_t* obj);
 #define OBJECT_RBUFFER(obj) object_rbuffer_cast(obj)
 

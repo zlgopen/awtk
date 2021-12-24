@@ -56,6 +56,14 @@ typedef struct _object_locker_t {
  */
 tk_object_t* object_locker_create(tk_object_t* obj);
 
+/**
+ * @method object_locker_cast
+ * 转换为object_locker对象。
+ * @annotation ["cast"]
+ * @param {tk_object_t*} obj object_locker对象。
+ *
+ * @return {object_locker_t*} object_locker对象。
+ */
 object_locker_t* object_locker_cast(tk_object_t* obj);
 #define OBJECT_LOCKER(obj) object_locker_cast(obj)
 

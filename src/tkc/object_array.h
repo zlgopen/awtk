@@ -370,7 +370,16 @@ ret_t object_array_sort_as_double(tk_object_t* obj, bool_t ascending);
  */
 ret_t object_array_sort_as_str(tk_object_t* obj, bool_t ascending, bool_t ignore_case);
 
+/**
+ * @method object_array_cast
+ * 转换为object_array对象。
+ * @annotation ["cast"]
+ * @param {tk_object_t*} obj object_array对象。
+ *
+ * @return {object_array_t*} object_array对象。
+ */
 object_array_t* object_array_cast(tk_object_t* obj);
+
 #define OBJECT_ARRAY(obj) object_array_cast(obj)
 
 END_C_DECLS

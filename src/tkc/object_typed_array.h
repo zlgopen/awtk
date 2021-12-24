@@ -60,6 +60,14 @@ typedef struct _object_typed_array_t {
  */
 tk_object_t* object_typed_array_create(value_type_t type, uint32_t capacity);
 
+/**
+ * @method object_typed_array_cast
+ * 转换为object_typed_array对象。
+ * @annotation ["cast"]
+ * @param {tk_object_t*} obj object_typed_array对象。
+ *
+ * @return {object_typed_array_t*} object_typed_array对象。
+ */
 object_typed_array_t* object_typed_array_cast(tk_object_t* obj);
 #define OBJECT_TYPED_ARRAY(obj) object_typed_array_cast(obj)
 
