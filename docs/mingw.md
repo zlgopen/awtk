@@ -5,6 +5,8 @@
 * 下载并安装 [mingw](https://udomain.dl.sourceforge.net/project/mingw-w64/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/installer/mingw-w64-install.exe)
 
 > 64 位系统安装时 architecturex 选择 x86_64。
+>
+> 尽量选择最新的版本来安装，版本如果太旧的话，可能编译不通过，如果编译不过的话，可以考虑升级版本来试一下。
 
 > 安装之后将 gcc 的路径加入系统环境变量 PATH 中。默认路径如下：
 
