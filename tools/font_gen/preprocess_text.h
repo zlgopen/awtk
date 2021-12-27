@@ -20,7 +20,6 @@
  */
 #include "tkc/str.h"
 
-
 #ifndef TK_PREPROCESS_TEXT_H
 #define TK_PREPROCESS_TEXT_H
 
@@ -30,4 +29,4 @@ const char* font_gen_expand_text(const char* in, str_t* out);
 
 END_C_DECLS
 
-#endif/*TK_PREPROCESS_TEXT_H*/
+#endif /*TK_PREPROCESS_TEXT_H*/
