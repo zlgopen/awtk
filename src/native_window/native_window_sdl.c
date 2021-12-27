@@ -189,12 +189,12 @@ static ret_t native_window_sdl_close(native_window_t* win) {
     SDL_DestroyRenderer(sdl->render);
   }
 
-  if (sdl->window != NULL) {
-    SDL_DestroyWindow(sdl->window);
-  }
-
   if (sdl->context != NULL) {
     SDL_GL_DeleteContext(sdl->context);
+  }
+
+  if (sdl->window != NULL) {
+    SDL_DestroyWindow(sdl->window);
   }
 
   sdl->render = NULL;

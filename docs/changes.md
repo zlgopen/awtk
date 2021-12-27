@@ -5,6 +5,8 @@
   * 修复demoui kb\_ascii软键盘输入内容错误问题（感谢兆坤提供补丁）。
   * 将page\_tab\_ctrl中的view改为tab\_control，让xml更具有可读性（感谢兆坤提供补丁）。
   * 修复mledit选择文本时鼠标指针拖到滚动条上的滑块后，再拖回mledit时无法继续选择文本的问题（感谢兆坤提供补丁）。
+  * 修复SDL\_DestroyWindow后SDL\_GL\_DeleteContext无法正常释放导致泄漏的问题（感谢朝泽提供补丁）
+  * 修复data\_reader\_factory、data\_writer\_factory重复register会引起内存泄漏的问题（感谢朝泽提供补丁）
 
 2021/12/26
   * 增加函数array\_reverse
