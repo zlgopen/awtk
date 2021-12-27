@@ -711,3 +711,27 @@ ret_t object_array_avg(tk_object_t* obj, value_t* result) {
 
   return RET_OK;
 }
+
+ret_t object_array_reverse(tk_object_t* obj) {
+  uint32_t start = 0;
+  uint32_t end = 0;
+  object_array_t* o = OBJECT_ARRAY(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  if (o->size < 2) {
+    return RET_OK;
+  }
+
+  start = 0;
+  end = o->size - 1;
+
+  while (start < end) {
+    value_t v = o->props[start];
+    o->props[start] = o->props[end];
+    o->props[end] = v;
+    start++;
+    end--;
+  }
+
+  return RET_OK;
+}

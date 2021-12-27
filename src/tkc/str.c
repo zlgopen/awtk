@@ -749,3 +749,28 @@ ret_t str_common_prefix(str_t* str, const char* other) {
 
   return RET_OK;
 }
+
+ret_t str_reverse(str_t* str) {
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+
+  if (str->size > 1) {
+    char* start = str->str;
+    char* end = str->str + str->size - 1;
+
+    while (start < end) {
+      char c = *start;
+      *start = *end;
+      *end = c;
+      start++;
+      end--;
+    }
+  }
+
+  return RET_OK;
+}
+
+uint32_t str_count(str_t* str, const char* substr) {
+  return_value_if_fail(str != NULL && substr != NULL, 0);
+
+  return str_count_sub_str(str, substr);
+}

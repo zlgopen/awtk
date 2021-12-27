@@ -713,3 +713,29 @@ TEST(ObjectArray, avg2) {
   ASSERT_EQ(value_double(&v), 0);
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(ObjectArray, reverse) {
+  str_t s;
+  tk_object_t* obj = object_array_create_with_str("0", ",", VALUE_TYPE_INT32);
+
+  str_init(&s, 100);
+  ASSERT_EQ(object_array_reverse(obj), RET_OK);
+  ASSERT_EQ(object_array_join(obj, ",", &s), RET_OK);
+  ASSERT_STREQ(s.str, "0");
+  str_clear(&s);
+  TK_OBJECT_UNREF(obj);
+
+
+  obj = object_array_create_with_str("0,1", ",", VALUE_TYPE_INT32);
+  ASSERT_EQ(object_array_reverse(obj), RET_OK);
+  ASSERT_EQ(object_array_join(obj, ",", &s), RET_OK);
+  ASSERT_STREQ(s.str, "1,0");
+  str_clear(&s);
+  
+  obj = object_array_create_with_str("0,1,2", ",", VALUE_TYPE_INT32);
+  ASSERT_EQ(object_array_reverse(obj), RET_OK);
+  ASSERT_EQ(object_array_join(obj, ",", &s), RET_OK);
+  ASSERT_STREQ(s.str, "2,1,0");
+  str_reset(&s);
+  TK_OBJECT_UNREF(obj);
+}

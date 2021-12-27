@@ -62,7 +62,8 @@ serial_handle_t serial_open(const char* port) {
     wstr_insert(&str, 0, prefix, wcslen(prefix));
   }
 
-  dev = CreateFileW(str.str, GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED, 0);
+  dev = CreateFileW(str.str, GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING,
+                    FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED, 0);
   wstr_reset(&str);
   return_value_if_fail(dev != INVALID_HANDLE_VALUE, NULL);
 
@@ -411,7 +412,8 @@ ret_t serial_wait_for_data(serial_handle_t handle, uint32_t timeout_ms) {
   while ((time_now_ms() - t1) < timeout_ms) {
     handle->buff_size = 0;
     handle->buff_index = 0;
-    if (!ReadFile(dev, handle->buff, sizeof(handle->buff), &handle->buff_size, &handle->read_overlapped)) {
+    if (!ReadFile(dev, handle->buff, sizeof(handle->buff), &handle->buff_size,
+                  &handle->read_overlapped)) {
       err = GetLastError();
       if (err == ERROR_IO_PENDING) {
         //GetOverlappedResultEx(dev, &handle->read_overlapped, &handle->buff_size, timeout_ms, TRUE);

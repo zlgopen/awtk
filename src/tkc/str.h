@@ -569,6 +569,25 @@ ret_t str_common_prefix(str_t* str, const char* other);
  */
 ret_t str_reset(str_t* str);
 
+/**
+ * @method str_reverse
+ * 前后颠倒字符串。
+ * @param {str_t*} str str对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_reverse(str_t* str);
+
+/**
+ * @method str_count
+ * 统计字串出现的次数。
+ * @param {str_t*} str str对象。
+ * @param {const char*} substr 字串。
+ *
+ * @return {uint32_t} 返回字符串出现的次数。
+ */
+uint32_t str_count(str_t* str, const char* substr);
+
 END_C_DECLS
 
 #endif /*TK_STR_H*/

@@ -105,6 +105,26 @@ static ret_t func_totitle(fscript_t* fscript, fscript_args_t* args, value_t* res
   return RET_OK;
 }
 
+static ret_t func_text_reverse(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  str_t* str = &(fscript->str);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+
+  str_set(str, value_str(args->args));
+  str_reverse(str);
+  value_set_str(result, str->str);
+
+  return RET_OK;
+}
+
+static ret_t func_text_count(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  str_t* str = &(fscript->str);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  str_set(str, value_str(args->args));
+  value_set_int(result, str_count(str, value_str(args->args + 1)));
+
+  return RET_OK;
+}
+
 static ret_t func_usubstr(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   wstr_t wstr;
   int32_t start = 0;
@@ -249,6 +269,8 @@ FACTORY_TABLE_ENTRY("trim_left", func_trim_left)
 FACTORY_TABLE_ENTRY("trim_right", func_trim_right)
 FACTORY_TABLE_ENTRY("totitle", func_totitle)
 FACTORY_TABLE_ENTRY("char_at", func_char_at)
+FACTORY_TABLE_ENTRY("text_count", func_text_count)
+FACTORY_TABLE_ENTRY("text_reverse", func_text_reverse)
 FACTORY_TABLE_ENTRY("usubstr", func_usubstr)
 #ifdef HAS_STDIO
 FACTORY_TABLE_ENTRY("prompt", func_prompt)

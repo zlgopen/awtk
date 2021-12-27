@@ -3,6 +3,13 @@
 2021/12/27
   * 修复T9Ext输入法，输入1后删除1，但是候选栏没有关闭的问题。
 
+2021/12/26
+  * 增加函数array\_reverse
+  * 增加fscript函数array\_reverse
+
+2021/12/25
+  * 增加函数str\_reverse/str\_count。
+  * 增加fscript函数text\_reverse/text\_count。
 
 2021/12/24
   * 修复mingw编译说明文档（感谢智明提供补丁）

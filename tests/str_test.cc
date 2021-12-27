@@ -455,3 +455,42 @@ TEST(Str, uint64) {
   ASSERT_STREQ(str.str, "18446744073709551615");
   str_reset(&str);
 }
+
+TEST(Str, reverse) {
+  str_t str;
+  str_init(&str, 100);
+  str_set(&str, "ABCD");
+  ASSERT_EQ(str_reverse(&str), RET_OK);
+  ASSERT_STREQ(str.str, "DCBA");
+
+  str_set(&str, "A");
+  ASSERT_EQ(str_reverse(&str), RET_OK);
+  ASSERT_STREQ(str.str, "A");
+
+  str_set(&str, "AB");
+  ASSERT_EQ(str_reverse(&str), RET_OK);
+  ASSERT_STREQ(str.str, "BA");
+
+  str_set(&str, "ABC");
+  ASSERT_EQ(str_reverse(&str), RET_OK);
+  ASSERT_STREQ(str.str, "CBA");
+
+  str_reset(&str);
+}
+
+TEST(Str, count) {
+  str_t str;
+  str_init(&str, 100);
+  str_set(&str, "ABCD");
+  ASSERT_EQ(str_count(&str, "BC"), 1);
+  ASSERT_EQ(str_count(&str, "ABC"), 1);
+  ASSERT_EQ(str_count(&str, "ABCD"), 1);
+  ASSERT_EQ(str_count(&str, "ABCDE"), 0);
+
+  str_set(&str, "ABCD ABCD");
+  ASSERT_EQ(str_count(&str, "BC"), 2);
+  ASSERT_EQ(str_count(&str, "ABC"), 2);
+  ASSERT_EQ(str_count(&str, "ABCD"), 2);
+  ASSERT_EQ(str_count(&str, "ABCDE"), 0);
+  str_reset(&str);
+}

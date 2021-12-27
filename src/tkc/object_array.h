@@ -371,6 +371,15 @@ ret_t object_array_sort_as_double(tk_object_t* obj, bool_t ascending);
 ret_t object_array_sort_as_str(tk_object_t* obj, bool_t ascending, bool_t ignore_case);
 
 /**
+ * @method object_array_reverse
+ * 反向。
+ * @param {tk_object_t*} obj 数组对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_array_reverse(tk_object_t* obj);
+
+/**
  * @method object_array_cast
  * 转换为object_array对象。
  * @annotation ["cast"]

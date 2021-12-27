@@ -306,6 +306,19 @@ static ret_t func_array_clear(fscript_t* fscript, fscript_args_t* args, value_t*
   return RET_OK;
 }
 
+static ret_t func_array_reverse(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  tk_object_t* obj = NULL;
+  object_array_t* arr = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  obj = value_object(args->args);
+  arr = OBJECT_ARRAY(obj);
+  return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
+
+  value_set_bool(result, object_array_reverse(obj) == RET_OK);
+
+  return RET_OK;
+}
+
 static ret_t func_array_sort_ex(fscript_t* fscript, fscript_args_t* args, value_t* result,
                                 bool_t clone) {
   ret_t ret = RET_OK;
@@ -416,6 +429,7 @@ FACTORY_TABLE_ENTRY("array_get_and_remove", func_array_get_and_remove)
 FACTORY_TABLE_ENTRY("array_index_of", func_array_index_of)
 FACTORY_TABLE_ENTRY("array_last_index_of", func_array_last_index_of)
 FACTORY_TABLE_ENTRY("array_clear", func_array_clear)
+FACTORY_TABLE_ENTRY("array_reverse", func_array_reverse)
 FACTORY_TABLE_ENTRY("array_join", func_array_join)
 FACTORY_TABLE_ENTRY("array_sort", func_array_sort)
 FACTORY_TABLE_ENTRY("array_clone_and_sort", func_array_clone_and_sort)
