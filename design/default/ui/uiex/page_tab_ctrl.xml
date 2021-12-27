@@ -4,7 +4,7 @@
     <view name="view_tab_list" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="180">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="List Tab"/>
       <view h="-22">
-        <view name="tab_ctrl_list" x="0" y="0" w="100%" h="100%" children_layout="default(r=1,c=0,x=20,y=0,s=0)">
+        <tab_control name="tab_ctrl_list" x="0" y="0" w="100%" h="100%" children_layout="default(r=1,c=0,x=20,y=0,s=0)">
           <list_view item_height="36" w="150" style="list_left">
             <scroll_view name="view" x="0" y="0" w="-15" h="100%" children_layout="list_view(i=0,d=0,x=0,y=0,s=1)">
               <tab_button style="list_left" value="true" tr_text="memo1"/>
@@ -32,13 +32,13 @@
               <label x="20" y="10" w="-40" h="-20" style:normal:text_align_h="left" style:normal:text_align_v="top" line_wrap="true" word_wrap="true" tr_text="Contents of memo5."/>
             </view>
           </pages>
-        </view>
+        </tab_control>
       </view>
     </view>
     <view name="view_tab_top" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="350">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Tab At Top"/>
       <view h="-22" children_layout="default(r=0,c=1,x=0,y=0,s=10)">
-        <view name="tab_ctrl_top" children_layout="default(r=0,c=1,x=20,y=0,s=0)" h="152">
+        <tab_control name="tab_ctrl_top" children_layout="default(r=0,c=1,x=20,y=0,s=0)" h="152">
           <tab_button_group h="40" compact="true" style="top" scrollable="true">
             <tab_button value="true" style="top" tr_text="User Management"/>
             <tab_button style="top" tr_text="Config Management"/>
@@ -59,8 +59,8 @@
               <label x="20" y="10" w="-40" h="-20" style:normal:text_align_h="left" style:normal:text_align_v="top" line_wrap="true" word_wrap="true" tr_text="Contents of common."/>
             </view>
           </pages>
-        </view>
-        <view name="tab_ctrl_top2" children_layout="default(r=0,c=1,x=20,y=0,s=0)" h="152">
+        </tab_control>
+        <tab_control name="tab_ctrl_top2" children_layout="default(r=0,c=1,x=20,y=0,s=0)" h="152">
           <tab_button_group h="40" compact="true" style="tab" scrollable="true">
             <tab_button value="true" style="top2" tr_text="User Management"/>
             <tab_button style="top2" tr_text="Config Management"/>
@@ -81,13 +81,13 @@
               <label x="20" y="10" w="-40" h="-20" style:normal:text_align_h="left" style:normal:text_align_v="top" line_wrap="true" word_wrap="true" tr_text="Contents of common."/>
             </view>
           </pages>
-        </view>
+        </tab_control>
       </view>
     </view>
     <view name="view_tab_bottom" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="300">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Tab At Bottom"/>
       <view h="-22">
-        <view name="tab_ctrl2" children_layout="default(r=0,c=1,x=0,y=0,s=0)" x="20" y="0" w="280" h="100%">
+        <tab_control name="tab_ctrl_bottom" children_layout="default(r=0,c=1,x=0,y=0,s=0)" x="20" y="0" w="280" h="100%">
           <pages h="-62" style="bottom">
             <view w="100%" h="100%">
               <label x="20" y="10" w="-40" h="-20" style:normal:text_align_h="left" style:normal:text_align_v="top" line_wrap="true" word_wrap="true" tr_text="Contents of settings."/>
@@ -108,7 +108,7 @@
             <tab_button icon="uiex_send_nor" active_icon="uiex_send_sel" style="bottom" tr_text="Send"/>
             <tab_button icon="uiex_Universal_nor" active_icon="uiex_Universal_sel" style="bottom" tr_text="Common"/>
           </tab_button_group>
-        </view>
+        </tab_control>
       </view>
     </view>
   </scroll_view>

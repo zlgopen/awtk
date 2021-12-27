@@ -84,9 +84,9 @@
         <button repeat="300" name="key:backspace" style="highlight_backspace"/>
       </group_box>
       <group_box children_layout="default(r=1,c=0,s=4,m=4)">
-        <button name="page:symnum1" style="highlight" w="15%" text="123"/>
-        <button repeat="300" name="space1" w="65%" tr_text="Space"/>
-        <button name="action1" style="highlight" w="20%" tr_text="Return"/>
+        <button name="page:symnum" style="highlight" w="15%" text="123"/>
+        <button repeat="300" name="space" w="65%" tr_text="Space"/>
+        <button name="action" style="highlight" w="20%" tr_text="Return"/>
       </group_box>
     </view>
     <view name="symnum" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=1,s=2,m=4)">
@@ -127,9 +127,9 @@
         <button repeat="300" name="key:backspace" style="highlight_backspace"/>
       </group_box>
       <group_box children_layout="default(r=1,c=0,s=4,m=4)">
-        <button name="page:upper1" style="highlight" w="15%" text="ABC"/>
-        <button repeat="300" name="space2" w="65%" tr_text="Space"/>
-        <button name="action2" style="highlight" w="20%" tr_text="Return"/>
+        <button name="page:upper" style="highlight" w="15%" text="ABC"/>
+        <button repeat="300" name="space" w="65%" tr_text="Space"/>
+        <button name="action" style="highlight" w="20%" tr_text="Return"/>
       </group_box>
     </view>
     <view name="symbol" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=1,s=2,m=4)">
@@ -138,7 +138,7 @@
         <button repeat="300" name="]" text="]"/>
         <button repeat="300" name="{" text="{"/>
         <button repeat="300" name="}" text="}"/>
-        <button repeat="300" name="#1" text="#"/>
+        <button repeat="300" name="#" text="#"/>
         <button repeat="300" name="%" text="%"/>
         <button repeat="300" name="^" text="^"/>
         <button repeat="300" name="*" text="*"/>
@@ -147,29 +147,29 @@
       </group_box>
       <group_box children_layout="default(r=1,c=9,s=4,xm=10,ym=2)">
         <button repeat="300" name="_" text="_"/>
-        <button repeat="300" name="\1" text="\"/>
+        <button repeat="300" name="\" text="\"/>
         <button repeat="300" name="|" text="|"/>
         <button repeat="300" name="~" text="~"/>
-        <button repeat="300" name="<1" text="<"/>
-        <button repeat="300" name=">1" text=">"/>
-        <button repeat="300" name="$1" text="$"/>
-        <button repeat="300" name="@1" text="@"/>
+        <button repeat="300" name="<" text="<"/>
+        <button repeat="300" name=">" text=">"/>
+        <button repeat="300" name="$" text="$"/>
+        <button repeat="300" name="@" text="@"/>
         <button repeat="300" name="`" text="`"/>
       </group_box>
       <group_box children_layout="default(r=1,c=8,s=4,m=4)">
-        <button name="page:symnum2" style="highlight" text="123"/>
-        <button repeat="300" name=".1" text="."/>
-        <button repeat="300" name=",1" text=","/>
-        <button repeat="300" name="?1" text="?"/>
-        <button repeat="300" name="!1" text="!"/>
-        <button repeat="300" name="'1" text="'"/>
-        <button repeat="300" name=">2" text=">"/>
+        <button name="page:symnum" style="highlight" text="123"/>
+        <button repeat="300" name="." text="."/>
+        <button repeat="300" name="," text=","/>
+        <button repeat="300" name="?" text="?"/>
+        <button repeat="300" name="!" text="!"/>
+        <button repeat="300" name="'" text="'"/>
+        <button repeat="300" name=">" text=">"/>
         <button repeat="300" name="key:backspace" style="highlight_backspace"/>
       </group_box>
       <group_box children_layout="default(r=1,c=0,s=4,m=4)">
-        <button name="page:upper2" style="highlight" w="15%" text="ABC"/>
-        <button repeat="300" name="space3" w="65%" tr_text="Space"/>
-        <button name="action3" style="highlight" w="20%" tr_text="Return"/>
+        <button name="page:upper" style="highlight" w="15%" text="ABC"/>
+        <button repeat="300" name="space" w="65%" tr_text="Space"/>
+        <button name="action" style="highlight" w="20%" tr_text="Return"/>
       </group_box>
     </view>
   </pages>
