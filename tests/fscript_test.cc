@@ -1398,7 +1398,9 @@ TEST(FExr, list_reverse) {
   value_t v;
   tk_object_t* obj = object_default_create();
 
-  fscript_eval(obj, "a=array_create_with_str(\"1,2,3\", \",\", \"i\");array_reverse(a);array_join(a,\",\")", &v);
+  fscript_eval(
+      obj, "a=array_create_with_str(\"1,2,3\", \",\", \"i\");array_reverse(a);array_join(a,\",\")",
+      &v);
   ASSERT_STREQ(value_str(&v), "3,2,1");
   value_reset(&v);
 

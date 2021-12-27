@@ -725,13 +725,12 @@ TEST(ObjectArray, reverse) {
   str_clear(&s);
   TK_OBJECT_UNREF(obj);
 
-
   obj = object_array_create_with_str("0,1", ",", VALUE_TYPE_INT32);
   ASSERT_EQ(object_array_reverse(obj), RET_OK);
   ASSERT_EQ(object_array_join(obj, ",", &s), RET_OK);
   ASSERT_STREQ(s.str, "1,0");
   str_clear(&s);
-  
+
   obj = object_array_create_with_str("0,1,2", ",", VALUE_TYPE_INT32);
   ASSERT_EQ(object_array_reverse(obj), RET_OK);
   ASSERT_EQ(object_array_join(obj, ",", &s), RET_OK);
