@@ -93,8 +93,9 @@ static ret_t dragger_on_event(widget_t* widget, event_t* e) {
                      pointer_event->y - dragger->down_y);
         widget_dispatch_simple_event(widget, EVT_DRAG);
         dragger->moving = TRUE;
+        return RET_STOP;
       }
-      return RET_STOP;
+      break;
     }
     case EVT_POINTER_LEAVE:
       widget_set_state(widget, WIDGET_STATE_NORMAL);
