@@ -283,7 +283,6 @@ static ret_t input_engine_t9ext_search(input_engine_t* engine, const char* keys)
         t9->pre_candidates_nr = 1;
         wbuffer_rewind(&(t9->pre_candidates));
         wbuffer_write_string(&(t9->pre_candidates), keys);
-        input_engine_reset_input(engine);
         input_method_dispatch_pre_candidates(engine->im, (const char*)(t9->pre_candidates.data),
                                              t9->pre_candidates_nr, 0);
 

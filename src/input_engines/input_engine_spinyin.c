@@ -43,8 +43,10 @@ static ret_t input_engine_spinyin_search(input_engine_t* engine, const char* key
   uint32_t items_nr = ARRAY_SIZE(s_pinyin_chinese_items);
   input_engine_reset_candidates(engine);
 
-  if (keys_size < 1) {
+  if (keys_size == 0) {
     input_engine_reset_input(engine);
+    input_engine_dispatch_candidates(engine, 0);
+
     return RET_OK;
   }
 
