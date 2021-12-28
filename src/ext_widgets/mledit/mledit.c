@@ -287,7 +287,7 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_INPUTING)) {
     input_method_t* im = input_method();
-    bool_t inputing = im != NULL && im->widget == widget || mledit->is_key_inputing;
+    bool_t inputing = (im != NULL && im->widget == widget) || mledit->is_key_inputing;
     /* 当控件没有父集窗口或者父集窗口没有打开的时候，通过 focused 来判断是否正在输入 */
     if (!inputing && !widget_is_window_opened(widget)) {
       inputing = widget->focused;
