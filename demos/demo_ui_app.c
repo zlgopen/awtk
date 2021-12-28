@@ -132,11 +132,6 @@ static ret_t on_dialog_quit(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t on_invalidate(const idle_info_t* idle) {
-  widget_invalidate_force(window_manager(), NULL);
-  return RET_REMOVE;
-}
-
 static widget_t* window_open_with_prefix(const char* name) {
   char name_with_prefix[TK_NAME_LEN + 1] = {0};
 
@@ -172,7 +167,6 @@ static ret_t on_open_window(void* ctx, event_t* e) {
   const char* path = (const char*)ctx;
   const char* name = get_name(path);
 
-  idle_add(on_invalidate, NULL);
   if (tk_str_eq(name, "toast")) {
     dialog_toast("Hello! AWTK.", 2000);
   } else if (tk_str_eq(name, "info")) {
@@ -192,7 +186,6 @@ static ret_t on_open_window(void* ctx, event_t* e) {
       widget_foreach(win, common_init_widget, NULL);
     }
   }
-  widget_invalidate_force(window_manager(), NULL);
 
   (void)e;
 
