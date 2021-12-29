@@ -1426,3 +1426,59 @@ TEST(FExr, unset) {
   TK_OBJECT_UNREF(obj);
 }
 
+TEST(FScript, convert1) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "i8(\"123\")", &v);
+  ASSERT_EQ(v.type == VALUE_TYPE_INT8, true);
+  ASSERT_EQ(123, value_int8(&v));
+  
+  fscript_eval(obj, "u8(\"123\")", &v);
+  ASSERT_EQ(v.type == VALUE_TYPE_UINT8, true);
+  ASSERT_EQ(123, value_uint8(&v));
+  
+  fscript_eval(obj, "i16(\"123\")", &v);
+  ASSERT_EQ(v.type == VALUE_TYPE_INT16, true);
+  ASSERT_EQ(123, value_int16(&v));
+  
+  fscript_eval(obj, "u16(\"123\")", &v);
+  ASSERT_EQ(v.type == VALUE_TYPE_UINT16, true);
+  ASSERT_EQ(123, value_uint16(&v));
+  
+  fscript_eval(obj, "i32(\"123\")", &v);
+  ASSERT_EQ(v.type == VALUE_TYPE_INT32, true);
+  ASSERT_EQ(123, value_int32(&v));
+  
+  fscript_eval(obj, "u32(\"123\")", &v);
+  ASSERT_EQ(v.type == VALUE_TYPE_UINT32, true);
+  ASSERT_EQ(123, value_uint32(&v));
+  
+  fscript_eval(obj, "i64(\"123\")", &v);
+  ASSERT_EQ(v.type == VALUE_TYPE_INT64, true);
+  ASSERT_EQ(123, value_int64(&v));
+  
+  fscript_eval(obj, "u64(\"123\")", &v);
+  ASSERT_EQ(v.type == VALUE_TYPE_UINT64, true);
+  ASSERT_EQ(123, value_uint64(&v));
+  
+  fscript_eval(obj, "f32(\"123\")", &v);
+  ASSERT_EQ(v.type == VALUE_TYPE_FLOAT32, true);
+  ASSERT_EQ(123, value_float32(&v));
+  
+  fscript_eval(obj, "float(\"123\")", &v);
+  ASSERT_EQ(v.type == VALUE_TYPE_FLOAT32, true);
+  ASSERT_EQ(123, value_float32(&v));
+  
+  fscript_eval(obj, "f64(\"123\")", &v);
+  ASSERT_EQ(v.type == VALUE_TYPE_DOUBLE, true);
+  ASSERT_EQ(123, value_double(&v));
+  
+  fscript_eval(obj, "double(\"123\")", &v);
+  ASSERT_EQ(v.type == VALUE_TYPE_DOUBLE, true);
+  ASSERT_EQ(123, value_double(&v));
+
+  value_reset(&v);
+
+}
+

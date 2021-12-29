@@ -1738,7 +1738,7 @@ static ret_t func_f32(fscript_t* fscript, fscript_args_t* args, value_t* result)
   return RET_OK;
 }
 
-static ret_t func_float(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+static ret_t func_double(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_double(result, value_double(args->args));
   return RET_OK;
@@ -2350,8 +2350,10 @@ static const func_entry_t s_builtin_funcs[] = {
     {"u32", func_u32, 1},
     {"u64", func_u64, 1},
     {"f32", func_f32, 1},
-    {"float", func_float, 1},
-    {"number", func_float, 1},
+    {"f64", func_double, 1},
+    {"float", func_f32, 1},
+    {"number", func_double, 1},
+    {"double", func_double, 1},
     {"iformat", func_iformat, 2},
     {"fformat", func_fformat, 2},
     {"unset", func_unset, 1},

@@ -1,7 +1,8 @@
 # 最新动态
 
 2021/12/29
-  * 修复fscript中unset的问题。
+  * 修复 fscript 中 unset 的问题。
+  * fscript 增加 f64/double 数据类型转换函数。
   * 允许通过 widget\_get\_prop 获取 loading 属性（感谢兆坤提供补丁）
   * 解决 combo\_box 设置 text 后，select\_index 没有跟着变化的问题（感谢兆坤提供补丁）
 
