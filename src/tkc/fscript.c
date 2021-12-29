@@ -2289,7 +2289,10 @@ static ret_t func_unset(fscript_t* fscript, fscript_args_t* args, value_t* resul
   name = value_str(args->args);
   return_value_if_fail(name != NULL, RET_BAD_PARAMS);
 
-  var = fscript_get_fast_var(fscript, name);
+  if (is_fast_var(name)) {
+    var = fscript_get_fast_var(fscript, name);
+  }
+
   if (var != NULL) {
     value_reset(var);
   } else {

@@ -1406,3 +1406,23 @@ TEST(FExr, list_reverse) {
 
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(FExr, unset) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(
+      obj, "a=\"abc\";aaa=123;unset(aaa);a",
+      &v);
+  ASSERT_STREQ(value_str(&v), "abc");
+  value_reset(&v);
+  
+  fscript_eval(
+      obj, "a=\"abc\";aaa=123;unset(a);aaa",
+      &v);
+  ASSERT_EQ(value_int(&v), 123);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
