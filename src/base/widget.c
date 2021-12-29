@@ -2101,6 +2101,8 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_str(v, widget->animation);
   } else if (tk_str_eq(name, WIDGET_PROP_POINTER_CURSOR)) {
     value_set_str(v, widget->pointer_cursor);
+  } else if (tk_str_eq(name, WIDGET_PROP_LOADING)) {
+    value_set_bool(v, widget->loading);
   } else if (tk_str_eq(name, WIDGET_PROP_SELF_LAYOUT)) {
     if (widget->self_layout != NULL) {
       value_set_str(v, self_layouter_to_string(widget->self_layout));

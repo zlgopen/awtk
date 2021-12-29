@@ -251,6 +251,13 @@ BEGIN_C_DECLS
  */
 #define WIDGET_PROP_VIRTUAL_H "virtual_h"
 
+
+/**
+ * @const WIDGET_PROP_LOADING
+ * 控件正在加载。
+ */
+#define WIDGET_PROP_LOADING "loading"
+
 /**
  * @const WIDGET_PROP_NAME
  * 名称。
