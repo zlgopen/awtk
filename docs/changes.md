@@ -1,80 +1,81 @@
 # 最新动态
 
 2021/12/29
-  * 允许通过widget\_get\_prop获取loading属性（感谢兆坤提供补丁）
+  * 允许通过 widget\_get\_prop 获取 loading 属性（感谢兆坤提供补丁）
+  * 解决 combo\_box 设置 text 后，select\_index 没有跟着变化的问题（感谢兆坤提供补丁）
 
 2021/12/28
-  * 完善demoui（感谢兆坤提供补丁）。
-  * 完善serial\_helper.c(感谢朝泽提供补丁)
+  * 完善 demoui（感谢兆坤提供补丁）。
+  * 完善 serial\_helper.c（感谢朝泽提供补丁）
 
 2021/12/27
-  * 修复T9Ext输入法，输入1后删除1，但是候选栏没有关闭的问题。
-  * 修复demoui kb\_ascii软键盘输入内容错误问题（感谢兆坤提供补丁）。
-  * 将page\_tab\_ctrl中的view改为tab\_control，让xml更具有可读性（感谢兆坤提供补丁）。
-  * 修复mledit选择文本时鼠标指针拖到滚动条上的滑块后，再拖回mledit时无法继续选择文本的问题（感谢兆坤提供补丁）。
-  * 修复SDL\_DestroyWindow后SDL\_GL\_DeleteContext无法正常释放导致泄漏的问题（感谢朝泽提供补丁）
-  * 修复data\_reader\_factory、data\_writer\_factory重复register会引起内存泄漏的问题（感谢朝泽提供补丁）
+  * 修复 T9Ext 输入法，输入 1 后删除 1，但是候选栏没有关闭的问题。
+  * 修复 demoui kb\_ascii 软键盘输入内容错误问题（感谢兆坤提供补丁）。
+  * 将 page\_tab\_ctrl 中的 view 改为 tab\_control，让 xml 更具有可读性（感谢兆坤提供补丁）。
+  * 修复 mledit 选择文本时鼠标指针拖到滚动条上的滑块后，再拖回 mledit 时无法继续选择文本的问题（感谢兆坤提供补丁）。
+  * 修复 SDL\_DestroyWindow 后 SDL\_GL\_DeleteContext 无法正常释放导致泄漏的问题（感谢朝泽提供补丁）
+  * 修复 data\_reader\_factory、data\_writer\_factory 重复 register 会引起内存泄漏的问题（感谢朝泽提供补丁）
 
 2021/12/26
-  * 增加函数array\_reverse
-  * 增加fscript函数array\_reverse
+  * 增加函数 array\_reverse
+  * 增加 fscript 函数 array\_reverse
 
 2021/12/25
-  * 增加函数str\_reverse/str\_count。
-  * 增加fscript函数text\_reverse/text\_count。
+  * 增加函数 str\_reverse/str\_count。
+  * 增加 fscript 函数 text\_reverse/text\_count。
 
 2021/12/24
-  * 修复mingw编译说明文档（感谢智明提供补丁）
-  * 修复SDL释放的时候内存泄露的问题（感谢智明提供补丁）
-  * 增加状态机(感谢林福提供补丁)
-  * 修复单元测试：兼容非utf8编码的编译器（VS2015）(感谢雨欣提供补丁)
-  * 完善部分cast函数的文档。
+  * 修复 mingw 编译说明文档（感谢智明提供补丁）
+  * 修复 SDL 释放的时候内存泄露的问题（感谢智明提供补丁）
+  * 增加状态机（感谢林福提供补丁）
+  * 修复单元测试：兼容非 utf8 编码的编译器（VS2015）（感谢雨欣提供补丁）
+  * 完善部分 cast 函数的文档。
 
 2021/12/23
-  * 增加aworkslp平台支持(感谢林福提供补丁)
-  * fscript 增加code\_id，方便以后支持调试。
-  * 完善fscript widget扩展中的定时器相关接口(感谢雨欣提供补丁)。
-  * 修正Win32串口操作速度被限制的问题(感谢陈谭提供补丁)
+  * 增加 aworkslp 平台支持（感谢林福提供补丁）
+  * fscript 增加 code\_id，方便以后支持调试。
+  * 完善 fscript widget 扩展中的定时器相关接口（感谢雨欣提供补丁）。
+  * 修正 Win32 串口操作速度被限制的问题（感谢陈谭提供补丁）
 
 2021/12/22
-  * 复原被覆盖的tools/idl\_gen/README.md(感谢雨欣提供补丁)
-  * 增加tkc/sha256.h
+  * 复原被覆盖的 tools/idl\_gen/README.md（感谢雨欣提供补丁）
+  * 增加 tkc/sha256.h
 
 2021/12/21
-  * 增加小工具expand\_text。请参考[fongen的说明](../tools/font_gen/README.md)
+  * 增加小工具 expand\_text。请参考 [fongen 的说明](../tools/font_gen/README.md)
 
 2021/12/20
-  * 修复在mvvm中edit控件输入值超过限定值后没有 通知数据层修改数据的问题（感谢智明提供补丁）
-  * fscript支持全局变量，可在多个脚本之间共享数据[请参考](docs/fscript.md)
+  * 修复在 mvvm 中 edit 控件输入值超过限定值后没有 通知数据层修改数据的问题（感谢智明提供补丁）
+  * fscript 支持全局变量，可在多个脚本之间共享数据 [请参考](docs/fscript.md)
 
 2021/12/19
-  * 支持4bits的点阵字体。请参考[fongen的说明](../tools/font_gen/README.md)
+  * 支持 4bits 的点阵字体。请参考 [fongen 的说明](../tools/font_gen/README.md)
 
 2021/12/18
   * 修复圆角矩形在画小圆形的时候上下边缘抗锯齿效果不好的问题（感谢智明提供补丁）
-  * 修复edit和slider以及mledit的inputing的状态切换的问题 （感谢智明提供补丁）
+  * 修复 edit 和 slider 以及 mledit 的 inputing 的状态切换的问题 （感谢智明提供补丁）
 
 2021/12/16
-  * 修复在没有窗口动画的时候使用高亮对话框会导致system\_bar画面不正常的问题 （感谢智明提供补丁）
-  * 修复hscroll\_label野计时器的问题 （感谢智明提供补丁）
+  * 修复在没有窗口动画的时候使用高亮对话框会导致 system\_bar 画面不正常的问题 （感谢智明提供补丁）
+  * 修复 hscroll\_label 野计时器的问题 （感谢智明提供补丁）
 
 2021/12/15
-  * 工具font\_gen支持[指定字符的范围](../tools/font_gen/README.md)
-  * 增加函数edit\_set\_double\_ex。
-  * 修复cairo作为vgcanvas时的警告（感谢智明提供补丁）
+  * 工具 font\_gen 支持 [指定字符的范围](../tools/font_gen/README.md)
+  * 增加函数 edit\_set\_double\_ex。
+  * 修复 cairo 作为 vgcanvas 时的警告（感谢智明提供补丁）
   * 修复无文件系统时多国语言初始化失败的问题 （感谢雨欣提供补丁）
 
 2021/12/14
-  * 增加工具font\_dump
-  * 修复hscroll\_label控件失去焦点后停止滚动的问题（感谢智明提供补丁）
+  * 增加工具 font\_dump
+  * 修复 hscroll\_label 控件失去焦点后停止滚动的问题（感谢智明提供补丁）
 
 2021/12/11
-  * 增加tk\_str\_is\_in\_array。
-  * 增加tk\_utf8\_trim\_invalid\_char。
-  * 完善project.json（感谢俊杰提供补丁）
+  * 增加 tk\_str\_is\_in\_array。
+  * 增加 tk\_utf8\_trim\_invalid\_char。
+  * 完善 project.json（感谢俊杰提供补丁）
 
 2021/12/09
-  * 完善json解析对整数的处理。
+  * 完善 json 解析对整数的处理。
   * 修复 guage\_pointer 控件锚点设置为整数时，打印异常警告的问题 （感谢雨欣提供补丁）
   * 将 combo\_box 与 combo\_box\_ex 的 layout 函数整合了一下，共用一个函数（感谢雨欣提供补丁）
 
@@ -83,92 +84,92 @@
   * 增加 widget\_move\_to\_center。
 
 2021/12/02
-  * 完善API注释（感谢朝泽提供补丁）
+  * 完善 API 注释（感谢朝泽提供补丁）
 
 2021/12/01
-  * 将tkc放到独立的仓库(以后通过sync\_tkc.sh同步tkc代码)。
-  * edit增加事件EVT\_IM\_ACTION（感谢兆坤提供补丁）
+  * 将 tkc 放到独立的仓库（以后通过 sync\_tkc.sh 同步 tkc 代码）。
+  * edit 增加事件 EVT\_IM\_ACTION（感谢兆坤提供补丁）
   * 修复 awtk 的 nanovg\_plus 的获取当前裁剪区不正常的问题 （感谢智明提供补丁）
   * 修复 widget\_set\_as\_key\_target 递归各个父集后导致全屏刷新的问题 （感谢智明提供补丁）
-  * 修复 int16\_endian\_invert(严重BUG，请更新代码)。
+  * 修复 int16\_endian\_invert（严重 BUG，请更新代码）。
 
 2021/11/29
-  * 完善event\_from\_name（感谢兆坤提供补丁）
-  * 完善pages方便绑定MVVM  （感谢兆坤提供补丁）
+  * 完善 event\_from\_name（感谢兆坤提供补丁）
+  * 完善 pages 方便绑定 MVVM  （感谢兆坤提供补丁）
 
 2021/11/27
-  * 完善lcd\_vgcanvas，部分函数完成后清除路径。
-  * 增加point\_init/pointf\_init。
+  * 完善 lcd\_vgcanvas，部分函数完成后清除路径。
+  * 增加 point\_init/pointf\_init。
 
 2021/11/26
-  * edit回车切换到下一个焦点。
+  * edit 回车切换到下一个焦点。
   * 修复无文件系统下切换主题失败的问题 （感谢雨欣提供补丁）
 
 2021/11/25
   * 修复部分宏拼写错误（感谢兆坤提供补丁）
-  * 修复API注释错误。
+  * 修复 API 注释错误。
 
 2021/11/24
-  * demouiold增加slider示例（感谢雨欣提供补丁）
-  * 修复触发按钮长按后导致丢失up消息的问题（感谢智明提供补丁）
+  * demouiold 增加 slider 示例（感谢雨欣提供补丁）
+  * 修复触发按钮长按后导致丢失 up 消息的问题（感谢智明提供补丁）
 
 2021/11/23
-  * 完善slide\_indicator支持半透动画效（感谢智明提供补丁）
-  * 完善资源脚本：修正了打包流图文件时生成的inc文件有误和没有include到代码里的问题（感谢朝泽提供补丁）
-  * 增加 hscroll label 滚动速度设置，并在 demoui old 增加示例（感谢yuanyuanyuanquan/兆坤提供补丁）。
+  * 完善 slide\_indicator 支持半透动画效（感谢智明提供补丁）
+  * 完善资源脚本：修正了打包流图文件时生成的 inc 文件有误和没有 include 到代码里的问题（感谢朝泽提供补丁）
+  * 增加 hscroll label 滚动速度设置，并在 demoui old 增加示例（感谢 yuanyuanyuanquan/兆坤提供补丁）。
   * 修复 在控件销毁后，定时器没有销毁而产生的警告 问题（感谢兆坤提供补丁）。
   * 修复 hscroll label 设置为往返滚动（yoyo）时，在滚动间隙时间会回到初始位置问题（感谢兆坤提供补丁）。 
-  * 修复offset\_change\_event一些注释错误(感谢培煌提供补丁)
+  * 修复 offset\_change\_event 一些注释错误（感谢培煌提供补丁）
 
 2021/11/22
-  * 完善fscript的文档（感谢福明提供补丁）
+  * 完善 fscript 的文档（感谢福明提供补丁）
 
 2021/11/20
-  * 增加函数darray\_push\_unique
-  * fscript支持中文函数名和变量名。
-  * 增加slide\_indicator控件的过渡效果（感谢智明提供补丁）
+  * 增加函数 darray\_push\_unique
+  * fscript 支持中文函数名和变量名。
+  * 增加 slide\_indicator 控件的过渡效果（感谢智明提供补丁）
 
 2021/11/19
   * 将控件属性动画前缀从 animate. 改为 animate:（感谢兆坤提供补丁） 
-  * demoui在stm32f429运行时，程序会先看到主界面闪过后再看到加载界面的问题（感谢兆坤提供补丁） 
-  * 增加修改scroll\_bar翻页动画时间（感谢智明提供补丁）。
+  * demoui 在 stm32f429 运行时，程序会先看到主界面闪过后再看到加载界面的问题（感谢兆坤提供补丁） 
+  * 增加修改 scroll\_bar 翻页动画时间（感谢智明提供补丁）。
 
 2021/11/17
-  * 增加tk\_min\_int/tk\_max\_int/tk\_max\_float/tk\_min\_float。
+  * 增加 tk\_min\_int/tk\_max\_int/tk\_max\_float/tk\_min\_float。
 
 2021/11/16
-  * 修复使用fscript\_ext时rbuffer头文件未定义导致的编译警告，新增文档fscript\_ram\_req（感谢雨欣提供补丁） 
+  * 修复使用 fscript\_ext 时 rbuffer 头文件未定义导致的编译警告，新增文档 fscript\_ram\_req（感谢雨欣提供补丁） 
   * 修复 AWTK\_LITE 编译出错的问题 （感谢智明提供补丁）。
 
 2021/11/15
-  * 增加hash table。
+  * 增加 hash table。
 
 2021/11/11
-  * 修复在fb为bgra8888格式时半透明边缘出现明显边缘的问题以及前景和背景色都为半透明时候颜色不正常的问题（感谢智明提供补丁）。
+  * 修复在 fb 为 bgra8888 格式时半透明边缘出现明显边缘的问题以及前景和背景色都为半透明时候颜色不正常的问题（感谢智明提供补丁）。
 
 2021/11/10
-  * 增加widget\_get\_value\_int/widget\_set\_value\_int/widget\_add\_value\_int
+  * 增加 widget\_get\_value\_int/widget\_set\_value\_int/widget\_add\_value\_int
   * 修复截屏出现显存泄露的问题（感谢智明提供补丁）。
-  * 完善rlog（感谢林福提供补丁）。
+  * 完善 rlog（感谢林福提供补丁）。
 
 2021/11/09
   * 修复 mledit oy 计算不正确的问题 （感谢兆坤提供补丁） 
   * fscript 支持多国语言互译和主题切换（感谢雨欣提供补丁）
-  * 修复mledit在overwrite模式下鼠标拖动，mledit没有一起动的问题。（感谢兆坤提供补丁）
+  * 修复 mledit 在 overwrite 模式下鼠标拖动，mledit 没有一起动的问题。（感谢兆坤提供补丁）
   * 新增了主题改变事件结构，并让 widget\_set\_theme 接口支持无文件系统时切换主题 （感谢雨欣提供补丁）
 
 2021/11/08
-  * 优化OpenGL每次全屏clear的逻辑（感谢智明提供补丁）。
+  * 优化 OpenGL 每次全屏 clear 的逻辑（感谢智明提供补丁）。
   * 增加查询上一级目录的资源逻辑（感谢智明提供补丁）。
   * fscript 中变量名以英文点开头时报错并将其直接当做字符串处理（感谢雨欣提供补丁）
-  * 修复tab\_button\_group由小变大后无法复原子控 件的位置的问题（感谢智明提供补丁）。
+  * 修复 tab\_button\_group 由小变大后无法复原子控 件的位置的问题（感谢智明提供补丁）。
 
 2021/11/05
-  * 增加了nanovg获取当前裁剪区的函数和增加矩形是否在裁剪区的函数以及统一修改相关判断是否在裁剪区的代码（感谢智明提供补丁）
+  * 增加了 nanovg 获取当前裁剪区的函数和增加矩形是否在裁剪区的函数以及统一修改相关判断是否在裁剪区的代码（感谢智明提供补丁）
   * 修复在裁剪区下和高分屏情况下字体无法裁剪的情况（感谢智明提供补丁）。
   * 修复离线画布和切换主题同时释放导致位图数据 多次释放的问题（感谢智明提供补丁）。
-  * 取消nanovg的脏矩形机（感谢智明提供补丁）。
-  * 修改text_selector没有选项时打印日志的问题 （感谢智明提供补丁）。
+  * 取消 nanovg 的脏矩形机（感谢智明提供补丁）。
+  * 修改 text_selector 没有选项时打印日志的问题 （感谢智明提供补丁）。
 
 2021/11/03
   * 增加 fs\_foreach\_file
