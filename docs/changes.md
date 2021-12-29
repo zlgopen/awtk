@@ -4,6 +4,7 @@
   * 修复 fscript 中 unset 的问题。
   * fscript 增加 f64/double 数据类型转换函数。
   * 允许通过 widget\_get\_prop 获取 loading 属性（感谢兆坤提供补丁）
+  * 修复t9ext输入法中输入完成后Enter键失效的问题（感谢雨欣提供补丁）
   * 解决 combo\_box 设置 text 后，select\_index 没有跟着变化的问题（感谢兆坤提供补丁）
 
 2021/12/28

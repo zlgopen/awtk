@@ -48,10 +48,12 @@ static ret_t candidates_on_button_focused(void* ctx, event_t* e) {
 
 static ret_t candidates_on_button_click(void* ctx, event_t* e) {
   char str[32];
+  widget_t* widget = WIDGET(ctx);
   widget_t* button = WIDGET(e->target);
+  widget_t* keyboard = widget_get_window(widget);
   input_method_t* im = input_method();
   wstr_t* text = &(button->text);
-  candidates_t* candidates = CANDIDATES(ctx);
+  candidates_t* candidates = CANDIDATES(widget);
   return_value_if_fail(im != NULL, RET_FAIL);
 
   if (text->size > 0) {
@@ -69,6 +71,10 @@ static ret_t candidates_on_button_click(void* ctx, event_t* e) {
           }
           log_debug("suggest_words->words:%s\n", suggest_words->words);
         }
+      }
+      /* After commit text, if candidates is hidden we need to blur it and reset key_target! */
+      if (!widget->visible && keyboard != NULL) {
+        widget_set_focused(widget, FALSE);
       }
     }
   }
