@@ -1411,15 +1411,11 @@ TEST(FExr, unset) {
   value_t v;
   tk_object_t* obj = object_default_create();
 
-  fscript_eval(
-      obj, "a=\"abc\";aaa=123;unset(aaa);a",
-      &v);
+  fscript_eval(obj, "a=\"abc\";aaa=123;unset(aaa);a", &v);
   ASSERT_STREQ(value_str(&v), "abc");
   value_reset(&v);
-  
-  fscript_eval(
-      obj, "a=\"abc\";aaa=123;unset(a);aaa",
-      &v);
+
+  fscript_eval(obj, "a=\"abc\";aaa=123;unset(a);aaa", &v);
   ASSERT_EQ(value_int(&v), 123);
   value_reset(&v);
 
@@ -1433,52 +1429,80 @@ TEST(FScript, convert1) {
   fscript_eval(obj, "i8(\"123\")", &v);
   ASSERT_EQ(v.type == VALUE_TYPE_INT8, true);
   ASSERT_EQ(123, value_int8(&v));
-  
+
   fscript_eval(obj, "u8(\"123\")", &v);
   ASSERT_EQ(v.type == VALUE_TYPE_UINT8, true);
   ASSERT_EQ(123, value_uint8(&v));
-  
+
   fscript_eval(obj, "i16(\"123\")", &v);
   ASSERT_EQ(v.type == VALUE_TYPE_INT16, true);
   ASSERT_EQ(123, value_int16(&v));
-  
+
   fscript_eval(obj, "u16(\"123\")", &v);
   ASSERT_EQ(v.type == VALUE_TYPE_UINT16, true);
   ASSERT_EQ(123, value_uint16(&v));
-  
+
   fscript_eval(obj, "i32(\"123\")", &v);
   ASSERT_EQ(v.type == VALUE_TYPE_INT32, true);
   ASSERT_EQ(123, value_int32(&v));
-  
+
   fscript_eval(obj, "u32(\"123\")", &v);
   ASSERT_EQ(v.type == VALUE_TYPE_UINT32, true);
   ASSERT_EQ(123, value_uint32(&v));
-  
+
   fscript_eval(obj, "i64(\"123\")", &v);
   ASSERT_EQ(v.type == VALUE_TYPE_INT64, true);
   ASSERT_EQ(123, value_int64(&v));
-  
+
   fscript_eval(obj, "u64(\"123\")", &v);
   ASSERT_EQ(v.type == VALUE_TYPE_UINT64, true);
   ASSERT_EQ(123, value_uint64(&v));
-  
+
   fscript_eval(obj, "f32(\"123\")", &v);
   ASSERT_EQ(v.type == VALUE_TYPE_FLOAT32, true);
   ASSERT_EQ(123, value_float32(&v));
-  
+
   fscript_eval(obj, "float(\"123\")", &v);
   ASSERT_EQ(v.type == VALUE_TYPE_FLOAT32, true);
   ASSERT_EQ(123, value_float32(&v));
-  
+
   fscript_eval(obj, "f64(\"123\")", &v);
   ASSERT_EQ(v.type == VALUE_TYPE_DOUBLE, true);
   ASSERT_EQ(123, value_double(&v));
-  
+
   fscript_eval(obj, "double(\"123\")", &v);
   ASSERT_EQ(v.type == VALUE_TYPE_DOUBLE, true);
   ASSERT_EQ(123, value_double(&v));
 
   value_reset(&v);
-
 }
 
+static ret_t my_print(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  uint32_t i = 0;
+  char buff[64];
+  value_set_bool(result, TRUE);
+  str_t* str = (str_t*)tk_object_get_prop_pointer(fscript->obj, "str");
+
+  for (i = 0; i < args->size; i++) {
+    str_append(str, value_str_ex(args->args + i, buff, sizeof(buff) - 1));
+  }
+
+  return RET_OK;
+}
+
+TEST(FScript, print) {
+  value_t v;
+  str_t str;
+  tk_object_t* obj = object_default_create();
+
+  str_init(&str, 10);
+
+  tk_object_set_prop_pointer(obj, "str", &str);
+  tk_object_set_prop_pointer(obj, STR_FSCRIPT_FUNCTION_PREFIX "print", (void*)my_print);
+  fscript_eval(obj, "print(\"hello\")", &v);
+  ASSERT_STREQ(str.str, "hello");
+  str_reset(&str);
+
+  value_reset(&v);
+  TK_OBJECT_UNREF(obj);
+}

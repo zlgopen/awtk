@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/12/31
+  * fscript允许重载print函数。
+
 2021/12/29
   * 修复 fscript 中 unset 的问题。
   * fscript 增加 f64/double 数据类型转换函数。

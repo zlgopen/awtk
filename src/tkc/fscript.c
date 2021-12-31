@@ -1877,16 +1877,22 @@ static ret_t func_expr(fscript_t* fscript, fscript_args_t* args, value_t* result
 }
 
 static ret_t func_print(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  uint32_t i = 0;
-  value_set_bool(result, TRUE);
-  for (i = 0; i < args->size; i++) {
-    char buff[64];
-    log_info("%s ", value_str_ex(args->args + i, buff, sizeof(buff) - 1));
-    (void)buff;
-  }
-  log_info("\n");
+  fscript_func_t func = NULL;
+  func =
+      (fscript_func_t)tk_object_get_prop_pointer(fscript->obj, STR_FSCRIPT_FUNCTION_PREFIX "print");
 
-  return RET_OK;
+  if (func != NULL) {
+    return func(fscript, args, result);
+  } else {
+    uint32_t i = 0;
+    char buff[64];
+    value_set_bool(result, TRUE);
+    for (i = 0; i < args->size; i++) {
+      log_info("%s ", value_str_ex(args->args + i, buff, sizeof(buff) - 1));
+    }
+    log_info("\n");
+    return RET_OK;
+  }
 }
 
 static ret_t func_iformat(fscript_t* fscript, fscript_args_t* args, value_t* result) {
