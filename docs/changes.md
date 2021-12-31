@@ -3,6 +3,7 @@
 2021/12/31
   * fscript允许重载print函数。
   * 修复emitter的事件中删除事件同时递归触发事件导致emitter不正常的问题（感谢zxc3489和智明提供补丁）
+  * 修复使用thread\_with\_pthread时，线程运行完毕后调 用join函数出现内存泄漏的问题 (感谢雨欣提供补丁)
 
 2021/12/29
   * 修复 fscript 中 unset 的问题。

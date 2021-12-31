@@ -390,7 +390,6 @@ static void* entry(void* arg) {
   tk_thread_t* thread = (tk_thread_t*)arg;
 
   thread->entry(thread->args);
-  thread->running = FALSE;
 
   return NULL;
 }
@@ -411,6 +410,7 @@ ret_t tk_thread_join(tk_thread_t* thread) {
     if (thread->thread) {
       pthread_join(thread->thread, &ret);
     }
+    thread->running = FALSE;
   }
 
   return RET_OK;
