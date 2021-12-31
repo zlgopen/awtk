@@ -3,6 +3,20 @@
 #include "tkc/object_default.h"
 #include "gtest/gtest.h"
 
+TEST(FScript, args) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, "sum(1,2)", &v);
+  ASSERT_EQ(3, value_int(&v));
+  
+  fscript_eval(obj, "sum(1,2,3)", &v);
+  ASSERT_EQ(6, value_int(&v));
+
+  fscript_eval(obj, "sum(1,2,3,4,5,6,7,8,9,10,11)", &v);
+  ASSERT_EQ(66, value_int(&v));
+  value_reset(&v);
+}
+
 TEST(FScript, basic0) {
   value_t v;
   tk_object_t* obj = object_default_create();
