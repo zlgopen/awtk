@@ -72,7 +72,7 @@ static ret_t emitter_remove(emitter_t* emitter, emitter_item_t* prev, emitter_it
   return_value_if_fail(emitter != NULL && iter != NULL, RET_BAD_PARAMS);
 
   if (emitter->curr_iter == iter) {
-    emitter->remove_curr_iter = TRUE;
+    iter->pending_remove = TRUE;
     return RET_OK;
   }
 
@@ -111,6 +111,7 @@ ret_t emitter_remove_item(emitter_t* emitter, emitter_item_t* item) {
 
 ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
   ret_t ret = RET_OK;
+  emitter_item_t* emitter_curr_iter = NULL;
   return_value_if_fail(emitter != NULL && e != NULL, RET_BAD_PARAMS);
 
   if (!(e->time)) {
@@ -120,7 +121,7 @@ ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
   if (e->target == NULL) {
     e->target = emitter;
   }
-
+  emitter_curr_iter = emitter->curr_iter;
   if (emitter->disable == 0 && emitter->items) {
     emitter_item_t* iter = emitter->items;
 
@@ -129,17 +130,15 @@ ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
       if (iter->type == e->type) {
         ret = iter->handler(iter->ctx, e);
         if (ret == RET_STOP) {
-          emitter->curr_iter = NULL;
-          if (emitter->remove_curr_iter) {
-            emitter->remove_curr_iter = FALSE;
+          emitter->curr_iter = emitter_curr_iter;
+          if (iter->pending_remove) {
             emitter_remove_item(emitter, iter);
           }
           return ret;
-        } else if (ret == RET_REMOVE || emitter->remove_curr_iter) {
+        } else if (ret == RET_REMOVE || iter->pending_remove) {
           emitter_item_t* next = iter->next;
 
           emitter->curr_iter = NULL;
-          emitter->remove_curr_iter = FALSE;
           emitter_remove_item(emitter, iter);
           iter = next;
 
@@ -150,8 +149,7 @@ ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
       iter = iter->next;
     }
   }
-  emitter->curr_iter = NULL;
-  emitter->remove_curr_iter = FALSE;
+  emitter->curr_iter = emitter_curr_iter;
 
   return RET_OK;
 }
@@ -240,7 +238,7 @@ static ret_t emitter_off_ex(emitter_t* emitter, tk_compare_t cmp, void* ctx) {
     emitter_item_t* prev = emitter->items;
 
     while (iter != NULL) {
-      if ((emitter->curr_iter != iter || !emitter->remove_curr_iter) && cmp(iter, ctx) == 0) {
+      if (!iter->pending_remove && cmp(iter, ctx) == 0) {
         return emitter_remove(emitter, prev, iter);
       }
 
