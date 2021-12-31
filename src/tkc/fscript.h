@@ -108,6 +108,12 @@ typedef struct _fscript_parser_error_t {
  */
 ret_t fscript_parser_error_deinit(fscript_parser_error_t* error);
 
+struct _fscript_t;
+typedef struct _fscript_t fscript_t;
+
+typedef ret_t (*fscript_on_error_t)(void* ctx, fscript_t* fscript);
+typedef ret_t (*fscript_func_t)(fscript_t* fscript, fscript_args_t* args, value_t* v);
+
 /**
  * @class fscript_t
  * @annotation ["fake"]
@@ -116,7 +122,7 @@ ret_t fscript_parser_error_deinit(fscript_parser_error_t* error);
  * 用法请参考：https://github.com/zlgopen/awtk/blob/master/docs/fscript.md
  *
  */
-typedef struct _fscript_t {
+struct _fscript_t {
   /**
    * @property {str_t} str
    * @annotation ["readable"]
@@ -130,11 +136,33 @@ typedef struct _fscript_t {
    */
   tk_object_t* obj;
 
-  /*private*/
+  /**
+   * @property {ret_t} error_code
+   * @annotation ["readable"]
+   * 运行时错误码。
+   */
   ret_t error_code;
+  /**
+   * @property {char*} error_message
+   * @annotation ["readable"]
+   * 运行时错误信息。
+   */
   char* error_message;
+  /**
+   * @property {int32_t} error_row
+   * @annotation ["readable"]
+   * 运行时错误的行号。
+   */
   int32_t error_row;
+  /**
+   * @property {int32_t} error_row
+   * @annotation ["readable"]
+   * 运行时错误的列号。
+   */
   int32_t error_col;
+
+  /*private*/
+  char* code_id;
   fscript_func_call_t* curr;
   fscript_func_call_t* first;
   fscript_func_call_t* error_func;
@@ -147,10 +175,10 @@ typedef struct _fscript_t {
   tk_object_t* locals;
   /*脚本定义的函数*/
   tk_object_t* funcs_def;
-  char* code_id;
-} fscript_t;
 
-typedef ret_t (*fscript_func_t)(fscript_t* fscript, fscript_args_t* args, value_t* v);
+  void* on_error_ctx;
+  fscript_on_error_t on_error;
+};
 
 /**
  * @method fscript_create
@@ -202,6 +230,17 @@ ret_t fscript_exec(fscript_t* fscript, value_t* result);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t fscript_set_error(fscript_t* fscript, ret_t code, const char* func, const char* message);
+
+/**
+ * @method fscript_set_on_error
+ * 设置错误处理函数。
+ * @param {fscript_t*} fscript 脚本引擎对象。
+ * @param {fscript_on_error_t} on_error 错误处理函数。
+ * @param {void*} ctx 错误处理函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_set_on_error(fscript_t* fscript, fscript_on_error_t on_error, void* ctx);
 
 /**
  * @method fscript_destroy
@@ -275,6 +314,43 @@ double tk_expr_eval(const char* expr);
  * @return {tk_object_t*} 返回fscript的全局对象。
  */
 tk_object_t* fscript_get_global_object(void);
+
+/**
+ * @class fscript_func_call_t
+ * 
+ * 函数描述。
+ *
+ */
+struct _fscript_func_call_t {
+  /**
+   * @property {void*} ctx
+   * @annotation ["readable"]
+   * 函数需要的上下文。
+   * >目前主要保持自定义函数的实现。
+   */
+  void* ctx;
+  /**
+   * @property {uint16_t} row
+   * @annotation ["readable"]
+   * 对应源代码行号。
+   */
+  uint16_t row;
+  /**
+   * @property {uint16_t} row
+   * @annotation ["readable"]
+   * 对应源代码列号。
+   */
+  uint16_t col;
+  /**
+   * @property {fscript_func_t} func
+   * @annotation ["readable"]
+   * 函数指针。
+   */
+  fscript_func_t func;
+  /*private*/
+  fscript_args_t args;
+  fscript_func_call_t* next;
+};
 
 /*注册自定义函数时，属性名的前缀。*/
 #define STR_FSCRIPT_FUNCTION_PREFIX "function."

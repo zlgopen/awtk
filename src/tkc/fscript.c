@@ -24,15 +24,6 @@
 #include "tkc/general_factory.h"
 #include "tkc/object_locker.h"
 
-struct _fscript_func_call_t {
-  void* ctx;
-  fscript_func_t func;
-  fscript_args_t args;
-  fscript_func_call_t* next;
-  uint16_t row;
-  uint16_t col;
-};
-
 #define STR_GLOBAL_PREFIX "global."
 #define GLOBAL_PREFIX_LEN 7
 #define VALUE_TYPE_JSCRIPT_ID 128
@@ -73,6 +64,19 @@ ret_t fscript_set_error(fscript_t* fscript, ret_t code, const char* func, const 
     log_debug("(%d:%d): %s code=%d %s\n", fscript->curr->row, fscript->curr->col, func, code,
               message);
   }
+
+  if (fscript->on_error != NULL) {
+    fscript->on_error(fscript->on_error_ctx, fscript);
+  }
+
+  return RET_OK;
+}
+
+ret_t fscript_set_on_error(fscript_t* fscript, fscript_on_error_t on_error, void* ctx) {
+  return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
+  fscript->on_error = on_error;
+  fscript->on_error_ctx = ctx;
+
   return RET_OK;
 }
 
@@ -414,7 +418,7 @@ static ret_t fscript_exec_ext_func(fscript_t* fscript, fscript_func_call_t* iter
   value_t args_values[5];
 
   value_set_int(&v, 0);
-  if(iter->args.size <= ARRAY_SIZE(args_values)) {
+  if (iter->args.size <= ARRAY_SIZE(args_values)) {
     memset(&args, 0x00, sizeof(args));
     memset(&args_values, 0x00, sizeof(args_values));
     args.capacity = ARRAY_SIZE(args_values);
@@ -429,7 +433,7 @@ static ret_t fscript_exec_ext_func(fscript_t* fscript, fscript_func_call_t* iter
     ret = fscript_eval_arg(fscript, iter, i, args.args + i);
     if (fscript->breaked || fscript->continued || fscript->returned) {
       value_deep_copy(result, args.args + i);
-      if(iter->args.size <= ARRAY_SIZE(args_values)) {
+      if (iter->args.size <= ARRAY_SIZE(args_values)) {
         func_args_reset(&args);
       } else {
         func_args_deinit(&args);
@@ -442,7 +446,7 @@ static ret_t fscript_exec_ext_func(fscript_t* fscript, fscript_func_call_t* iter
   fscript->curr = iter;
   ret = iter->func(fscript, &args, result);
 
-  if(iter->args.size <= ARRAY_SIZE(args_values)) {
+  if (iter->args.size <= ARRAY_SIZE(args_values)) {
     func_args_reset(&args);
   } else {
     func_args_deinit(&args);
