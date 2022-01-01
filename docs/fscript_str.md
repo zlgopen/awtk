@@ -160,3 +160,24 @@ usubstr(str, start, end) => str
 > * end 省略表示到最后全部元素。
 
 
+### 10. text\_reverse
+
+> 字符串反向
+----------------------------
+
+#### 原型
+
+```
+text_reverse(str) => str
+```
+
+### 11. text\_count
+
+> 统计子串出现的次数。
+----------------------------
+
+#### 原型
+
+```
+text_count(str, substr) => int
+```

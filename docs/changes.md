@@ -4,6 +4,7 @@
   * 优化fscript函数调用。
   * 公开结构fscript\_func\_call\_t。
   * fscript 支持设置错误处理函数。
+  * fscript 增加函数sleep\_ms。
 
 2021/12/31
   * fscript允许重载print函数。
