@@ -1544,3 +1544,13 @@ TEST(FScript, on_error) {
   value_reset(&v);
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(FScript, while_return) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "while(true){return}", &v);
+  value_reset(&v);
+  
+  TK_OBJECT_UNREF(obj);
+}

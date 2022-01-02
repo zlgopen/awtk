@@ -386,6 +386,8 @@ static ret_t fscript_exec_while(fscript_t* fscript, fscript_func_call_t* iter, v
         done = TRUE;
         fscript->breaked = FALSE;
         break;
+      } else if (fscript->returned) {
+        done = TRUE;
       } else if (fscript->continued) {
         fscript->continued = FALSE;
         break;
