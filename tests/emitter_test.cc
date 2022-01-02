@@ -31,6 +31,26 @@ static ret_t on_remove_id(void* ctx, event_t* e) {
   return RET_REMOVE;
 }
 
+static ret_t on_remove_and_dispatch(void* ctx, event_t* e) {
+  uint32_t type = *((uint32_t*)ctx);
+  emitter_t* emitter = (emitter_t*)e->target;
+
+  emitter_off_by_func(emitter, type, on_remove_and_dispatch, ctx);
+  emitter_dispatch_simple_event(emitter, type + 1);
+
+  return RET_OK;
+}
+
+static ret_t on_dispatch_and_remove(void* ctx, event_t* e) {
+  uint32_t type = *((uint32_t*)ctx);
+  emitter_t* emitter = (emitter_t*)e->target;
+
+  emitter_dispatch_simple_event(emitter, type + 1);
+  emitter_off_by_func(emitter, type, on_dispatch_and_remove, ctx);
+
+  return RET_OK;
+}
+
 static ret_t on_stop(void* ctx, event_t* e) {
   uint32_t* p = (uint32_t*)ctx;
   *p = *p + 1;
@@ -175,6 +195,35 @@ TEST(Emitter, remove_in_func) {
   id2 = emitter_on(emitter, type, on_remove_id, &id2);
   ASSERT_EQ(emitter_dispatch(emitter, &e), RET_OK);
   ASSERT_EQ(emitter_size(emitter), 1u);
+
+  emitter_destroy(emitter);
+}
+
+TEST(Emitter, remove_in_func2) {
+  event_t e;
+  uint32_t n = 0;
+  uint32_t id1 = 0;
+  uint32_t id2 = 0;
+  uint32_t id3 = 0;
+  uint32_t type = 12;
+  emitter_t* emitter = emitter_create();
+
+  e = event_init(type, emitter);
+
+  id1 = emitter_on(emitter, type, on_remove_and_dispatch, &type);
+  id2 = emitter_on(emitter, type + 1, on_event, &n);
+  ASSERT_EQ(emitter_dispatch(emitter, &e), RET_OK);
+  ASSERT_EQ(emitter_size(emitter), 1u);
+  ASSERT_EQ(emitter_find(emitter, id1) == NULL, true);
+  ASSERT_EQ(emitter_find(emitter, id2) != NULL, true);
+
+  id1 = emitter_on(emitter, type, on_dispatch_and_remove, &type);
+  id3 = emitter_on(emitter, type + 1, on_event, &n);
+  ASSERT_EQ(emitter_dispatch(emitter, &e), RET_OK);
+  ASSERT_EQ(emitter_size(emitter), 2u);
+  ASSERT_EQ(emitter_find(emitter, id1) == NULL, true);
+  ASSERT_EQ(emitter_find(emitter, id2) != NULL, true);
+  ASSERT_EQ(emitter_find(emitter, id3) != NULL, true);
 
   emitter_destroy(emitter);
 }

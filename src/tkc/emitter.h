@@ -36,6 +36,7 @@ struct _emitter_item_t {
   event_func_t handler;
 
   uint32_t tag;
+  bool_t pending_remove;
   tk_destroy_t on_destroy;
   void* on_destroy_ctx;
   emitter_item_t* next;
@@ -68,14 +69,6 @@ typedef struct _emitter_t {
    */
   int32_t disable;
 
-  /**
-   * @property {bool_t} remove_curr_iter
-   * @annotation ["private"]
-   * 如果在回调函数中，emitter_off当前正在dispatch的回调函数，
-   * 我们只是设置remove_curr_iter为TRUE，在分发完成后才执行。
-   * XXX: 如果要注销当前正在dispatch的回调函数，直接返回RET_REMOVE是最好的选择。
-   */
-  bool_t remove_curr_iter;
   /**
    * @property {emitter_item_t*} curr_iter
    * @annotation ["private"]
