@@ -191,6 +191,17 @@ struct _fscript_t {
 fscript_t* fscript_create(tk_object_t* obj, const char* script);
 
 /**
+ * @method fscript_create_ex
+ * 创建引擎对象，并解析代码。
+ * @param {tk_object_t*} obj 脚本执行上下文。
+ * @param {const char*} script 脚本代码。
+ * @param {bool_t} keep_func_name 是否在func_call结构后保存函数名。
+ *
+ * @return {fscript_t*} 返回fscript对象。
+ */
+fscript_t* fscript_create_ex(tk_object_t* obj, const char* script, bool_t keep_func_name);
+
+/**
  * @method fscript_syntax_check
  * 解析代码，分析是否有语法错误。
  *

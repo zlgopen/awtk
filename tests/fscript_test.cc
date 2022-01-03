@@ -1551,6 +1551,32 @@ TEST(FScript, while_return) {
 
   fscript_eval(obj, "while(true){return}", &v);
   value_reset(&v);
-  
+
+  TK_OBJECT_UNREF(obj);
+}
+
+#define FUNC_CALL_NAME(func) ((char*)func + sizeof(fscript_func_call_t))
+
+TEST(FScript, create_ex1) {
+  tk_object_t* obj = object_default_create();
+  fscript_t* fscript = fscript_create_ex(obj, "print(123)", TRUE);
+  char* p = FUNC_CALL_NAME(fscript->first);
+  ASSERT_STREQ(p, "expr");
+  p = FUNC_CALL_NAME((fscript_func_call_t*)(fscript->first->args.args->value.ptr));
+  ASSERT_STREQ(p, "print");
+
+  fscript_destroy(fscript);
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, create_ex2) {
+  tk_object_t* obj = object_default_create();
+  fscript_t* fscript = fscript_create_ex(obj, "1+2", TRUE);
+  char* p = FUNC_CALL_NAME(fscript->first);
+  ASSERT_STREQ(p, "expr");
+  p = FUNC_CALL_NAME((fscript_func_call_t*)(fscript->first->args.args->value.ptr));
+  ASSERT_STREQ(p, "+");
+
+  fscript_destroy(fscript);
   TK_OBJECT_UNREF(obj);
 }

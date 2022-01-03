@@ -253,6 +253,7 @@ typedef struct _fscript_parser_t {
   tk_object_t* funcs_def;
   fscript_func_call_t* first;
   fscript_parser_error_t* error;
+  bool_t keep_func_name;
 } fscript_parser_t;
 
 static ret_t fexpr_parse(fscript_parser_t* parser, value_t* result);
@@ -1558,7 +1559,7 @@ ret_t fscript_syntax_check(tk_object_t* obj, const char* script, fscript_parser_
   return ret;
 }
 
-fscript_t* fscript_create(tk_object_t* obj, const char* expr) {
+fscript_t* fscript_create_ex(tk_object_t* obj, const char* expr, bool_t keep_func_name) {
   ret_t ret = RET_OK;
   fscript_parser_t parser;
   fscript_t* fscript = NULL;
@@ -1567,6 +1568,7 @@ fscript_t* fscript_create(tk_object_t* obj, const char* expr) {
 
   fscript_parser_error_init(&error);
   fscript_parser_init(&parser, obj, expr, &error);
+  parser.keep_func_name = keep_func_name;
   parser.first = fscript_func_call_create(&parser, "expr", 4);
   ret = fscript_parse_all(&parser, parser.first);
   if (ret == RET_OK) {
@@ -1579,6 +1581,10 @@ fscript_t* fscript_create(tk_object_t* obj, const char* expr) {
   fscript_parser_error_deinit(&error);
 
   return fscript;
+}
+
+fscript_t* fscript_create(tk_object_t* obj, const char* expr) {
+  return fscript_create_ex(obj, expr, FALSE);
 }
 
 /*functions*/
@@ -2291,92 +2297,90 @@ typedef struct _func_entry_t {
   uint32_t max_args_nr;
 } func_entry_t;
 
-static const func_entry_t s_builtin_funcs[] = {
-    {"func", func_function_def, 4},
-    {"return", func_return, 1},
-    {"print", func_print, 4},
-    {"expr", func_expr, 4},
-    {"=", func_set, 2},
-    {"get", func_get, 1},
-    {"set", func_set, 2},
-    {"set_local", func_set_local, 2},
-    {"max", func_max, 2},
-    {"min", func_min, 2},
-    {"==", func_eq, 2},
-    {"!=", func_not_eq, 2},
-    {">=", func_ge, 2},
-    {">", func_great, 2},
-    {"<=", func_le, 2},
-    {"<", func_less, 2},
-    {"!", func_not, 1},
-    {"minus", func_minus, 1},
-    {"||", func_or, 2},
-    {"and", func_and, 2},
-    {"exec", func_exec, 2},
-    {"join", func_join, 8},
-    {"one_of", func_one_of, 3},
-    {"if", func_if, 3},
-    {"while", func_while, 10},
-    {"int", func_int, 1},
-    {"i8", func_i8, 1},
-    {"i16", func_i16, 1},
-    {"i32", func_i32, 1},
-    {"i64", func_i64, 1},
-    {"u8", func_u8, 1},
-    {"u16", func_u16, 1},
-    {"u32", func_u32, 1},
-    {"u64", func_u64, 1},
-    {"f32", func_f32, 1},
-    {"f64", func_double, 1},
-    {"float", func_f32, 1},
-    {"number", func_double, 1},
-    {"double", func_double, 1},
-    {"iformat", func_iformat, 2},
-    {"fformat", func_fformat, 2},
-    {"unset", func_unset, 1},
-    {"str", func_str, 1},
-    {"string", func_str, 1},
-    {"sub", func_sub, 2},
-    {"assert", func_assert, 2},
-    {"substr", func_substr, 3},
-    {"has_error", func_has_error, 0},
-    {"get_last_error", func_get_last_error, 0},
-    {"clear_error", func_clear_error, 0},
-    {"sum", func_sum, 8},
-    {"tolower", func_tolower, 1},
-    {"toupper", func_toupper, 1},
-    {"eval", func_eval, 1},
-    {"trim", func_trim, 1},
-    {"&&", func_and, 2},
-    {"abs", func_abs, 1},
-    {"round", func_round, 1},
-    {"floor", func_floor, 1},
-    {"ceil", func_ceil, 1},
-    {"clamp", func_clamp, 3},
-    {"contains", func_contains, 2},
-    {"div", func_div, 2},
-    {"eq", func_eq, 2},
-    {"ge", func_ge, 2},
-    {"great", func_great, 2},
-    {"le", func_le, 2},
-    {"len", func_len, 1},
-    {"strlen", func_len, 1},
-    {"less", func_less, 2},
-    {"mul", func_mul, 2},
-    {"#", func_noop, 0},
-    {"noop", func_noop, 0},
-    {"seq", func_noop, 4},
-    {"not", func_not, 1},
-    {"or", func_or, 2},
-    {"random", func_random, 2},
-    {"replace", func_replace, 3},
-    {"/", func_div, 2},
-    {"%", func_mod, 2},
-    {"*", func_mul, 2},
-    {"-", func_sub, 2},
-    {"+", func_sum, 8},
-    {"sleep_ms", func_sleep_ms, 1}
-};
+static const func_entry_t s_builtin_funcs[] = {{"func", func_function_def, 4},
+                                               {"return", func_return, 1},
+                                               {"print", func_print, 4},
+                                               {"expr", func_expr, 4},
+                                               {"=", func_set, 2},
+                                               {"get", func_get, 1},
+                                               {"set", func_set, 2},
+                                               {"set_local", func_set_local, 2},
+                                               {"max", func_max, 2},
+                                               {"min", func_min, 2},
+                                               {"==", func_eq, 2},
+                                               {"!=", func_not_eq, 2},
+                                               {">=", func_ge, 2},
+                                               {">", func_great, 2},
+                                               {"<=", func_le, 2},
+                                               {"<", func_less, 2},
+                                               {"!", func_not, 1},
+                                               {"minus", func_minus, 1},
+                                               {"||", func_or, 2},
+                                               {"and", func_and, 2},
+                                               {"exec", func_exec, 2},
+                                               {"join", func_join, 8},
+                                               {"one_of", func_one_of, 3},
+                                               {"if", func_if, 3},
+                                               {"while", func_while, 10},
+                                               {"int", func_int, 1},
+                                               {"i8", func_i8, 1},
+                                               {"i16", func_i16, 1},
+                                               {"i32", func_i32, 1},
+                                               {"i64", func_i64, 1},
+                                               {"u8", func_u8, 1},
+                                               {"u16", func_u16, 1},
+                                               {"u32", func_u32, 1},
+                                               {"u64", func_u64, 1},
+                                               {"f32", func_f32, 1},
+                                               {"f64", func_double, 1},
+                                               {"float", func_f32, 1},
+                                               {"number", func_double, 1},
+                                               {"double", func_double, 1},
+                                               {"iformat", func_iformat, 2},
+                                               {"fformat", func_fformat, 2},
+                                               {"unset", func_unset, 1},
+                                               {"str", func_str, 1},
+                                               {"string", func_str, 1},
+                                               {"sub", func_sub, 2},
+                                               {"assert", func_assert, 2},
+                                               {"substr", func_substr, 3},
+                                               {"has_error", func_has_error, 0},
+                                               {"get_last_error", func_get_last_error, 0},
+                                               {"clear_error", func_clear_error, 0},
+                                               {"sum", func_sum, 8},
+                                               {"tolower", func_tolower, 1},
+                                               {"toupper", func_toupper, 1},
+                                               {"eval", func_eval, 1},
+                                               {"trim", func_trim, 1},
+                                               {"&&", func_and, 2},
+                                               {"abs", func_abs, 1},
+                                               {"round", func_round, 1},
+                                               {"floor", func_floor, 1},
+                                               {"ceil", func_ceil, 1},
+                                               {"clamp", func_clamp, 3},
+                                               {"contains", func_contains, 2},
+                                               {"div", func_div, 2},
+                                               {"eq", func_eq, 2},
+                                               {"ge", func_ge, 2},
+                                               {"great", func_great, 2},
+                                               {"le", func_le, 2},
+                                               {"len", func_len, 1},
+                                               {"strlen", func_len, 1},
+                                               {"less", func_less, 2},
+                                               {"mul", func_mul, 2},
+                                               {"#", func_noop, 0},
+                                               {"noop", func_noop, 0},
+                                               {"seq", func_noop, 4},
+                                               {"not", func_not, 1},
+                                               {"or", func_or, 2},
+                                               {"random", func_random, 2},
+                                               {"replace", func_replace, 3},
+                                               {"/", func_div, 2},
+                                               {"%", func_mod, 2},
+                                               {"*", func_mul, 2},
+                                               {"-", func_sub, 2},
+                                               {"+", func_sum, 8},
+                                               {"sleep_ms", func_sleep_ms, 1}};
 
 static general_factory_t* s_global_funcs;
 static fscript_func_call_t* fscript_func_call_create(fscript_parser_t* parser, const char* name,
@@ -2385,8 +2389,19 @@ static fscript_func_call_t* fscript_func_call_create(fscript_parser_t* parser, c
   fscript_func_t func = NULL;
   char func_name[TK_NAME_LEN + 1];
   char full_func_name[2 * TK_NAME_LEN + 1];
-  fscript_func_call_t* call = TKMEM_ZALLOC(fscript_func_call_t);
+  uint32_t mem_size = sizeof(fscript_func_call_t);
+  fscript_func_call_t* call = NULL;
+  if (parser->keep_func_name) {
+    mem_size += size + 1;
+  }
+  call = TKMEM_ALLOC(mem_size);
   return_value_if_fail(call != NULL, NULL);
+  memset(call, 0x00, mem_size);
+
+  if (parser->keep_func_name) {
+    char* p = (char*)call + sizeof(fscript_func_call_t);
+    memcpy(p, name, size);
+  }
 
   call->row = parser->row;
   call->col = parser->col;
