@@ -26,8 +26,6 @@
 
 #define STR_GLOBAL_PREFIX "global."
 #define GLOBAL_PREFIX_LEN 7
-#define VALUE_TYPE_JSCRIPT_ID 128
-#define VALUE_TYPE_JSCRIPT_FUNC VALUE_TYPE_JSCRIPT_ID + 1
 
 static ret_t func_function_def(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   return RET_OK;
@@ -84,11 +82,6 @@ static value_t* value_set_func(value_t* v, fscript_func_call_t* func) {
   value_set_pointer(v, func);
   v->type = VALUE_TYPE_JSCRIPT_FUNC;
   return v;
-}
-
-static fscript_func_call_t* value_func(const value_t* v) {
-  return_value_if_fail(v->type == VALUE_TYPE_JSCRIPT_FUNC, NULL);
-  return (fscript_func_call_t*)(v->value.ptr);
 }
 
 static bool_t value_is_digit(value_t* v) {

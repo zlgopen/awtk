@@ -1,4 +1,8 @@
 # 最新动态
+
+2022/01/05
+  * fscript公开函数value\_id/value\_func。
+
 2022/01/04
   * fscript支持保存函数名，方便调试。
 
