@@ -261,6 +261,18 @@ static ret_t func_value_get_binary_data(fscript_t* fscript, fscript_args_t* args
   return RET_FAIL;
 }
 
+static ret_t func_global_var(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  value_set_bool(result, TRUE);
+  return RET_OK;
+}
+
+static ret_t func_member_var(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  value_set_bool(result, TRUE);
+  return RET_OK;
+}
+
 FACTORY_TABLE_BEGIN(s_ext_basic)
 FACTORY_TABLE_ENTRY("index_of", func_index_of)
 FACTORY_TABLE_ENTRY("last_index_of", func_last_index_of)
@@ -272,6 +284,9 @@ FACTORY_TABLE_ENTRY("char_at", func_char_at)
 FACTORY_TABLE_ENTRY("text_count", func_text_count)
 FACTORY_TABLE_ENTRY("text_reverse", func_text_reverse)
 FACTORY_TABLE_ENTRY("usubstr", func_usubstr)
+/*用于反向解析保留信息*/
+FACTORY_TABLE_ENTRY("member_var", func_member_var)
+FACTORY_TABLE_ENTRY("global_var", func_global_var)
 #ifdef HAS_STDIO
 FACTORY_TABLE_ENTRY("prompt", func_prompt)
 #endif /*HAS_STDIO*/

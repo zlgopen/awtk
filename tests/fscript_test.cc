@@ -684,6 +684,59 @@ TEST(FScript, pow) {
   TK_OBJECT_UNREF(obj);
 }
 
+TEST(FScript, pow10) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "pow10(2)", &v);
+  ASSERT_EQ(value_int(&v), 100);
+  value_reset(&v);
+
+  fscript_eval(obj, "pow10(1)", &v);
+  ASSERT_EQ(value_int(&v), 10);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, log10) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "log10(100)", &v);
+  ASSERT_EQ(value_int(&v), 2);
+  value_reset(&v);
+
+  fscript_eval(obj, "log10(10)", &v);
+  ASSERT_EQ(value_int(&v), 1);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, member_var) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "member_var(aaa)", &v);
+  ASSERT_EQ(value_bool(&v), TRUE);
+  value_reset(&v);
+
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, global_var) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "global_var(aaa)", &v);
+  ASSERT_EQ(value_bool(&v), TRUE);
+  value_reset(&v);
+
+
+  TK_OBJECT_UNREF(obj);
+}
 TEST(FScript, sqrt) {
   value_t v;
   tk_object_t* obj = object_default_create();

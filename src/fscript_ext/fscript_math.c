@@ -62,6 +62,20 @@ static ret_t func_log(fscript_t* fscript, fscript_args_t* args, value_t* result)
   return RET_OK;
 }
 
+static ret_t func_log10(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  value_set_double(result, log(value_double(args->args))/log(10));
+
+  return RET_OK;
+}
+
+static ret_t func_pow10(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  value_set_double(result, pow(10, value_double(args->args)));
+
+  return RET_OK;
+}
+
 static ret_t func_exp(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_double(result, exp(value_double(args->args)));
@@ -147,6 +161,9 @@ FACTORY_TABLE_ENTRY("sqrt", func_sqrt)
 FACTORY_TABLE_ENTRY("tan", func_tan)
 FACTORY_TABLE_ENTRY("pow", func_pow)
 FACTORY_TABLE_ENTRY("is_prime", func_is_prime)
+FACTORY_TABLE_ENTRY("log10", func_log10)
+FACTORY_TABLE_ENTRY("pow10", func_pow10)
+
 FACTORY_TABLE_END()
 
 ret_t fscript_math_register(void) {
