@@ -244,7 +244,7 @@ static inline void pixel_rgba8888_blend_rgba_premulti(void* pixel, rgba_t rgba) 
     uint8_t s_a = 0xff - a;
     uint8_t out_a = tk_pixel_limit_uint8(p[3] + s_a - ((p[3] * s_a) >> 8));
     if (out_a > 0) {
-      uint8_t d_a = (p[3] * (0xff - rgba.a)) >> 8;
+      uint8_t d_a = (p[3] * (0xff - s_a)) >> 8;
       p[0] = (p[0] * d_a + (rgba.r << 8)) / out_a;
       p[1] = (p[1] * d_a + (rgba.g << 8)) / out_a;
       p[2] = (p[2] * d_a + (rgba.b << 8)) / out_a;
@@ -299,7 +299,7 @@ static inline void pixel_abgr8888_blend_rgba_premulti(void* pixel, rgba_t rgba) 
     uint8_t s_a = 0xff - a;
     uint8_t out_a = tk_pixel_limit_uint8(p[0] + s_a - ((p[0] * s_a) >> 8));
     if (out_a > 0) {
-      uint8_t d_a = (p[0] * (0xff - rgba.a)) >> 8;
+      uint8_t d_a = (p[0] * (0xff - s_a)) >> 8;
       p[1] = (p[1] * d_a + (rgba.b << 8)) / out_a;
       p[2] = (p[2] * d_a + (rgba.g << 8)) / out_a;
       p[3] = (p[3] * d_a + (rgba.r << 8)) / out_a;
@@ -354,7 +354,7 @@ static inline void pixel_bgra8888_blend_rgba_premulti(void* pixel, rgba_t rgba) 
     uint8_t s_a = 0xff - a;
     uint8_t out_a = tk_pixel_limit_uint8(p[3] + s_a - ((p[3] * s_a) >> 8));
     if (out_a > 0) {
-      uint8_t d_a = (p[3] * (0xff - rgba.a)) >> 8;
+      uint8_t d_a = (p[3] * (0xff - s_a)) >> 8;
       p[0] = (p[0] * d_a + (rgba.b << 8)) / out_a;
       p[1] = (p[1] * d_a + (rgba.g << 8)) / out_a;
       p[2] = (p[2] * d_a + (rgba.r << 8)) / out_a;
@@ -409,7 +409,7 @@ static inline void pixel_argb8888_blend_rgba_premulti(void* pixel, rgba_t rgba) 
     uint8_t s_a = 0xff - a;
     uint8_t out_a = tk_pixel_limit_uint8(p[0] + s_a - ((p[0] * s_a) >> 8));
     if (out_a > 0) {
-      uint8_t d_a = (p[0] * (0xff - rgba.a)) >> 8;
+      uint8_t d_a = (p[0] * (0xff - s_a)) >> 8;
       p[1] = (p[1] * d_a + (rgba.r << 8)) / out_a;
       p[2] = (p[2] * d_a + (rgba.g << 8)) / out_a;
       p[3] = (p[3] * d_a + (rgba.b << 8)) / out_a;
