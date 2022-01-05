@@ -381,7 +381,7 @@ static inline fscript_func_call_t* value_func(const value_t* v) {
   return (fscript_func_call_t*)(v->value.ptr);
 }
 
-static inline fscript_func_call_t* value_id(value_t* v) {
+static inline fscript_func_call_t* value_id(const value_t* v) {
   return_value_if_fail(v->type == VALUE_TYPE_FSCRIPT_ID, NULL);
   return (fscript_func_call_t*)(v->value.str);
 }
