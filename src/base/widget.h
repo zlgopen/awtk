@@ -2521,7 +2521,7 @@ ret_t widget_dispatch_to_key_target(widget_t* widget, event_t* e);
  * @param {xy_t} x x坐标。
  * @param {xy_t} y y坐标。
  *
- * @return {widget*} 子控件或NULL。
+ * @return {widget_t*} 子控件或NULL。
  */
 widget_t* widget_find_target(widget_t* widget, xy_t x, xy_t y);
 

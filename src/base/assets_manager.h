@@ -271,7 +271,7 @@ asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const
  * 从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\_FS\_RES时才生效。
  * @param {assets_manager_t*} am asset manager对象。
  * @param {asset_type_t} type 资源的类型。
- * @param {asset_type_t} type 资源的子类型。
+ * @param {uint16_t} subtype 资源的子类型。
  * @param {char*} name 资源的名称。
  *
  * @return {asset_info_t*} 返回资源。

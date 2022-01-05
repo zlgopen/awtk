@@ -52,7 +52,7 @@ struct _tk_iostream_mem_t {
  * @param {void*} buff_in 输入流缓冲区。
  * @param {uint32_t} size_in 输入流缓冲区大小。
  * @param {void*} buff_out 输入流缓冲区。
- * @param {uoutt32_t} size_out 输入流缓冲区大小。
+ * @param {uint32_t} size_out 输入流缓冲区大小。
  * @param {bool_t} own_the_buff 是否让istream对象拥有buff。
  *
  * @return {tk_iostream_t*} 返回iostream对象。

@@ -445,7 +445,7 @@ ret_t str_to_float(str_t* str, double* v);
 ret_t str_encode_hex(str_t* str, const uint8_t* data, uint32_t size, const char* format);
 
 /**
- * @method str_encode_hex
+ * @method str_decode_hex
  * 把16进制格式的字符串解码成字符串。
  * @param {str_t*} str str对象。
  * @param {uint8_t*} data 数据缓存区(返回)。

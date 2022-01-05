@@ -49,7 +49,7 @@ typedef ret_t (*vgcanvas_asset_manager_font_destroy_t)(void* vg, const char* fon
  * @alias vgcanvas_asset_manager_instance
  * @annotation ["constructor", "scriptable"]
  *
- * @return {vgcanvas_asset_manager*} 返回矢量画布资源管理器对象。
+ * @return {vgcanvas_asset_manager_t*} 返回矢量画布资源管理器对象。
  */
 vgcanvas_asset_manager_t* vgcanvas_asset_manager(void);
 

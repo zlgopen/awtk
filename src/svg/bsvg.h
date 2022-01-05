@@ -45,7 +45,7 @@ const uint8_t* bsvg_visit_path(const uint8_t* p, void* ctx, tk_visit_t on_path);
  *
  * @param {bsvg_t*} svg对象。
  * @param {const uint32_t*} data svg数据。
- * @param {size} size data长度。
+ * @param {uint32_t} size data长度。
  *
  * @return {bsvg_t*} 返回解析后的svg。
  */

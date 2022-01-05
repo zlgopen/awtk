@@ -171,7 +171,7 @@ ret_t system_info_deinit(void);
  * @method system_info_set_font_scale
  * 设置字体缩放比例。
  *
- * @param {system_info_t* info} info system_info对象。
+ * @param {system_info_t*} info system_info对象。
  * @param {float_t} font_scale 字体缩放比例。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -182,7 +182,7 @@ ret_t system_info_set_font_scale(system_info_t* info, float_t font_scale);
  * @method system_info_set_app_root
  * 设置app root。
  *
- * @param {system_info_t* info} info system_info对象。
+ * @param {system_info_t*} info system_info对象。
  * @param {const char*} app_root app root。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -193,7 +193,7 @@ ret_t system_info_set_app_root(system_info_t* info, const char* app_root);
  * @method system_info_set_default_font
  * 设置缺省字体。
  *
- * @param {system_info_t* info} info system_info对象。
+ * @param {system_info_t*} info system_info对象。
  * @param {const char*} default_font 缺省字体。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -204,7 +204,7 @@ ret_t system_info_set_default_font(system_info_t* info, const char* default_font
  * @method system_info_set_lcd_w
  * 设置LCD宽度。
  *
- * @param {system_info_t* info} info system_info对象。
+ * @param {system_info_t*} info system_info对象。
  * @param {uint32_t} lcd_w 设置LCD宽度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -215,7 +215,7 @@ ret_t system_info_set_lcd_w(system_info_t* info, uint32_t lcd_w);
  * @method system_info_set_lcd_h
  * 设置LCD高度。
  *
- * @param {system_info_t* info} info system_info对象。
+ * @param {system_info_t*} info system_info对象。
  * @param {uint32_t} lcd_h 设置LCD高度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -226,7 +226,7 @@ ret_t system_info_set_lcd_h(system_info_t* info, uint32_t lcd_h);
  * @method system_info_set_lcd_type
  * 设置LCD类型。
  *
- * @param {system_info_t* info} info system_info对象。
+ * @param {system_info_t*} info system_info对象。
  * @param {lcd_type_t} lcd_type 设置LCD类型。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -237,7 +237,7 @@ ret_t system_info_set_lcd_type(system_info_t* info, lcd_type_t lcd_type);
  * @method system_info_set_lcd_orientation
  * 设置LCD的旋转角度。
  *
- * @param {system_info_t* info} info system_info对象。
+ * @param {system_info_t*} info system_info对象。
  * @param {lcd_orientation_t} lcd_orientation 设置LCD的旋转角度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -248,7 +248,7 @@ ret_t system_info_set_lcd_orientation(system_info_t* info, lcd_orientation_t lcd
  * @method system_info_set_keyboard_type
  * 设置键盘类型。
  *
- * @param {system_info_t* info} info system_info对象。
+ * @param {system_info_t*} info system_info对象。
  * @param {keyboard_type_t} keyboard_type 键盘类型。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -259,7 +259,7 @@ ret_t system_info_set_keyboard_type(system_info_t* info, keyboard_type_t keyboar
  * @method system_info_set_device_pixel_ratio
  * 设置LCD密度。
  *
- * @param {system_info_t* info} info system_info对象。
+ * @param {system_info_t*} info system_info对象。
  * @param {float_t} device_pixel_ratio 设置LCD密度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

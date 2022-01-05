@@ -63,7 +63,7 @@ tk_object_t* conf_obj_create(conf_doc_save_t save, conf_doc_load_t load, const c
  * 
  * @param {tk_object_t*} conf conf对象。
  * 
- * @return {conf_dot_t} 返回doc对象。
+ * @return {conf_doc_t*} 返回doc对象。
  * 
  */
 conf_doc_t* conf_obj_get_doc(tk_object_t* conf);

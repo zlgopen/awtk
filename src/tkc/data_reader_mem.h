@@ -54,7 +54,7 @@ data_reader_t* data_reader_mem_create(const char* memname);
  * 构造内存URL。
  * @annotation ["static"]
  * 
- * @param {mem_t*} mem 内存的地址。
+ * @param {const void*} mem 内存的地址。
  * @param {uint32_t} size 内存的长度。
  * @param {char*} url 生成的URL。
  *

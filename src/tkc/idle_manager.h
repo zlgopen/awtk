@@ -120,7 +120,7 @@ ret_t idle_manager_dispatch(idle_manager_t* idle_manager);
 ret_t idle_manager_remove_all(idle_manager_t* idle_manager);
 
 /**
- * @method idle_manager_remove_all
+ * @method idle_manager_remove_all_by_ctx
  * 根据上下文删除所有符合条件的idle。
  * @param {idle_manager_t*} idle_manager idle_manager_t管理器对象。
  * @param {void*} ctx idle回调函数的上下文。

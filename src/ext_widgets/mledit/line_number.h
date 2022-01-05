@@ -135,7 +135,7 @@ ret_t line_number_set_line_height(widget_t* widget, int32_t line_height);
 ret_t line_number_set_yoffset(widget_t* widget, int32_t yoffset);
 
 /**
- * @method line_number_set_yoffset
+ * @method line_number_set_lines_of_each_row
  * 设置每一个逻辑行(row)占几个物理行(line)。
  * @param {widget_t*} widget 控件对象。
  * @param {const uint32_t*}  lines_of_each_row 每一个逻辑行占几个物理行。

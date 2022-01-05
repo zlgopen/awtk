@@ -44,6 +44,11 @@ ret_t widget_invalidate_default(widget_t* widget, const rect_t* rect);
 /**
  * @method widget_on_event_default
  * @annotation ["global"]
+ *
+ * @param {widget_t*} widget 控件。
+ * @param {event_t*} e 事件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_on_event_default(widget_t* widget, event_t* e);
 
@@ -86,7 +91,7 @@ ret_t widget_on_paint_children_clip(widget_t* widget, canvas_t* c);
  * @param {widget_t*} widget 控件对象。
  * @param {rect_t*} clip clip区域(为NULL时使用widget的区域)。
  * @param {canvas_t*} c 画布对象。
- * @param (widget_on_paint_t} on_paint 绘制的回调函数。
+ * @param {widget_on_paint_t} on_paint 绘制的回调函数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

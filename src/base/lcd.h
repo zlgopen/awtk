@@ -704,7 +704,7 @@ ret_t lcd_destroy(lcd_t* lcd);
 ret_t lcd_get_dirty_rect(lcd_t* lcd, rect_t* r);
 
 /**
- * @method lcd_get_dirty_rect
+ * @method lcd_get_dirty_rects
  * 获取 lcd 对象的脏矩形列表。
  * @param {lcd_t*} lcd lcd对象。
  *

@@ -84,7 +84,7 @@ typedef struct _text_edit_t {
  * @method text_edit_create
  * 创建text_edit对象
  * @param {widget_t*} widget 控件
- * @param {boo_t} single_line 是否是单行编辑器。
+ * @param {bool_t} single_line 是否是单行编辑器。
  *
  * @return {widget_t*} 对象。
  */
@@ -225,7 +225,7 @@ ret_t text_edit_set_cursor(text_edit_t* text_edit, uint32_t cursor);
  * 获取光标位置。
  * @param {text_edit_t*} text_edit text_edit对象。
  *
- * @return {uin32_t} 返回光标的位置。
+ * @return {uint32_t} 返回光标的位置。
  */
 uint32_t text_edit_get_cursor(text_edit_t* text_edit);
 
