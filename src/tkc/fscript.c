@@ -80,7 +80,7 @@ ret_t fscript_set_on_error(fscript_t* fscript, fscript_on_error_t on_error, void
 
 static value_t* value_set_func(value_t* v, fscript_func_call_t* func) {
   value_set_pointer(v, func);
-  v->type = VALUE_TYPE_JSCRIPT_FUNC;
+  v->type = VALUE_TYPE_FSCRIPT_FUNC;
   return v;
 }
 
@@ -144,10 +144,10 @@ static ret_t func_args_reset(fscript_args_t* args) {
   uint32_t i = 0;
   for (i = 0; i < args->size; i++) {
     value_t* v = args->args + i;
-    if (v->type == VALUE_TYPE_JSCRIPT_FUNC) {
+    if (v->type == VALUE_TYPE_FSCRIPT_FUNC) {
       fscript_func_call_destroy(value_func(v));
     } else {
-      v->type = v->type == VALUE_TYPE_JSCRIPT_ID ? VALUE_TYPE_STRING : v->type;
+      v->type = v->type == VALUE_TYPE_FSCRIPT_ID ? VALUE_TYPE_STRING : v->type;
     }
     value_reset(args->args + i);
   }
@@ -297,7 +297,7 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
   int32_t save_type = s->type;
   value_set_str(&v, NULL);
   value_set_str(d, NULL);
-  if (s->type == VALUE_TYPE_JSCRIPT_ID) {
+  if (s->type == VALUE_TYPE_FSCRIPT_ID) {
     s->type = VALUE_TYPE_STRING;
     if ((iter->func == func_set_local || iter->func == func_set || iter->func == func_unset ||
          iter->func == func_get) &&
@@ -336,7 +336,7 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
         }
       }
     }
-  } else if (s->type == VALUE_TYPE_JSCRIPT_FUNC) {
+  } else if (s->type == VALUE_TYPE_FSCRIPT_FUNC) {
     fscript_exec_func(fscript, value_func(s), d);
   } else {
     value_copy(d, s);
@@ -971,7 +971,7 @@ static ret_t token_to_value(token_t* t, value_t* v) {
       value_set_bool(v, FALSE);
     } else {
       value_dup_str_with_len(v, t->token, t->size);
-      v->type = VALUE_TYPE_JSCRIPT_ID;
+      v->type = VALUE_TYPE_FSCRIPT_ID;
     }
   } else {
     return RET_FAIL;
@@ -1493,7 +1493,7 @@ static ret_t fscript_parse_statements(fscript_parser_t* parser, fscript_func_cal
         return fscript_parser_set_error(parser, "unexpected token\n");
       }
     } else {
-      if (v.type == VALUE_TYPE_JSCRIPT_FUNC) {
+      if (v.type == VALUE_TYPE_FSCRIPT_FUNC) {
         fscript_func_call_destroy(value_func(&v));
       } else {
         value_reset(&v);

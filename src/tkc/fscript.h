@@ -373,16 +373,16 @@ struct _fscript_func_call_t {
     return code;                                                                     \
   }
 
-#define VALUE_TYPE_JSCRIPT_ID 128
-#define VALUE_TYPE_JSCRIPT_FUNC VALUE_TYPE_JSCRIPT_ID + 1
+#define VALUE_TYPE_FSCRIPT_ID 128
+#define VALUE_TYPE_FSCRIPT_FUNC VALUE_TYPE_FSCRIPT_ID + 1
 
 static inline fscript_func_call_t* value_func(const value_t* v) {
-  return_value_if_fail(v->type == VALUE_TYPE_JSCRIPT_FUNC, NULL);
+  return_value_if_fail(v->type == VALUE_TYPE_FSCRIPT_FUNC, NULL);
   return (fscript_func_call_t*)(v->value.ptr);
 }
 
 static inline fscript_func_call_t* value_id(value_t* v) {
-  return_value_if_fail(v->type == VALUE_TYPE_JSCRIPT_ID, NULL);
+  return_value_if_fail(v->type == VALUE_TYPE_FSCRIPT_ID, NULL);
   return (fscript_func_call_t*)(v->value.str);
 }
 
