@@ -1633,3 +1633,76 @@ TEST(FScript, create_ex2) {
   fscript_destroy(fscript);
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(FExr, sin) {
+  value_t v1;
+  value_t v2;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "sin(3.1415926/4)", &v1);
+  fscript_eval(obj, "sin_deg(45)", &v2);
+  ASSERT_EQ(abs(value_double(&v1)-value_double(&v2)) < 0.001, true);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, asin) {
+  value_t v1;
+  value_t v2;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "r2d(asin(sin(3.1415926/4)))", &v1);
+  fscript_eval(obj, "asin_deg(sin_deg(45))", &v2);
+  ASSERT_EQ(abs(value_double(&v1)-value_double(&v2)) < 0.001, true);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, cos) {
+  value_t v1;
+  value_t v2;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "cos(3.1415926/4)", &v1);
+  fscript_eval(obj, "cos_deg(45)", &v2);
+  ASSERT_EQ(abs(value_double(&v1)-value_double(&v2)) < 0.001, true);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, acos) {
+  value_t v1;
+  value_t v2;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "r2d(acos(cos(3.1415926/4)))", &v1);
+  fscript_eval(obj, "acos_deg(cos_deg(45))", &v2);
+  ASSERT_EQ(abs(value_double(&v1)-value_double(&v2)) < 0.001, true);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, atan) {
+  value_t v1;
+  value_t v2;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "r2d(atan(tan(3.1415926/4)))", &v1);
+  fscript_eval(obj, "atan_deg(tan_deg(45))", &v2);
+  ASSERT_EQ(abs(value_double(&v1)-value_double(&v2)) < 0.001, true);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, atan2) {
+  value_t v1;
+  value_t v2;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "r2d(atan2(1,1))", &v1);
+  fscript_eval(obj, "atan2_deg(1, 1)", &v2);
+  ASSERT_EQ(abs(value_double(&v1)-value_double(&v2)) < 0.001, true);
+
+  TK_OBJECT_UNREF(obj);
+}
+
