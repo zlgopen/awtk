@@ -169,7 +169,7 @@ struct _fscript_t {
   bool_t breaked;
   bool_t continued;
   bool_t returned;
-  uint8_t while_count;
+  uint8_t loop_count;
 
   /*函数局部变量和参数*/
   tk_object_t* locals;

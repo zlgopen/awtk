@@ -241,6 +241,14 @@ static ret_t func_is_positive(fscript_t* fscript, fscript_args_t* args, value_t*
   return RET_OK;
 }
 
+static ret_t func_random0to1(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  double v = (double)(random()%100000)/100000.0f;
+
+  value_set_double(result, v);
+
+  return RET_OK;
+}
+
 FACTORY_TABLE_BEGIN(s_ext_math)
 FACTORY_TABLE_ENTRY("d2r", func_d2r)
 FACTORY_TABLE_ENTRY("r2d", func_r2d)
@@ -266,6 +274,7 @@ FACTORY_TABLE_ENTRY("is_odd", func_is_odd)
 FACTORY_TABLE_ENTRY("is_even", func_is_even)
 FACTORY_TABLE_ENTRY("is_negative", func_is_negative)
 FACTORY_TABLE_ENTRY("is_positive", func_is_positive)
+FACTORY_TABLE_ENTRY("random0to1", func_random0to1)
 
 FACTORY_TABLE_ENTRY("exp", func_exp)
 FACTORY_TABLE_ENTRY("log", func_log)
