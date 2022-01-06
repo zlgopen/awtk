@@ -192,14 +192,18 @@ void awtk_ios_log(const char* message, ...);
 #endif
 #elif defined(HAS_STDIO) || defined(AWTK_WEB)
 #include <stdio.h>
-#define log_debug(format, args...) \
-  if (log_get_log_level() <= LOG_LEVEL_DEBUG) printf(format, ##args)
-#define log_info(format, args...) \
-  if (log_get_log_level() <= LOG_LEVEL_INFO) printf(format, ##args)
-#define log_warn(format, args...) \
-  if (log_get_log_level() <= LOG_LEVEL_WARN) printf(format, ##args)
-#define log_error(format, args...) \
-  if (log_get_log_level() <= LOG_LEVEL_ERROR) printf(format, ##args)
+#define log_debug(format, args...)                                    \
+  if (log_get_log_level() <= LOG_LEVEL_DEBUG) printf(format, ##args); \
+  fflush(stdout)
+#define log_info(format, args...)                                     \
+  if (log_get_log_level() <= LOG_LEVEL_INFO) printf(format, ##args);  \
+  fflush(stdout)
+#define log_warn(format, args...)                                     \
+  if (log_get_log_level() <= LOG_LEVEL_WARN) printf(format, ##args);  \
+  fflush(stdout)
+#define log_error(format, args...)                                    \
+  if (log_get_log_level() <= LOG_LEVEL_ERROR) printf(format, ##args); \
+  fflush(stdout)
 #elif defined(log_impl)
 #define log_debug(format, args...) \
   if (log_get_log_level() <= LOG_LEVEL_DEBUG) log_impl(format, ##args)

@@ -4,6 +4,7 @@
   * fscript支持until/repeat_times/repeat语句。
   * fscript中增加is\_int/is\_odd/is\_even等函数
   * 还原awtk\_main.inc文件的循环代码（感谢智明提供补丁）
+  * log后调用fflush（感谢福明提供补丁）
 
 2022/01/05
   * fscript公开函数value\_id/value\_func。
