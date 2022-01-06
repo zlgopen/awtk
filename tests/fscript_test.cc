@@ -722,7 +722,6 @@ TEST(FScript, member_var) {
   ASSERT_EQ(value_bool(&v), TRUE);
   value_reset(&v);
 
-
   TK_OBJECT_UNREF(obj);
 }
 
@@ -733,7 +732,6 @@ TEST(FScript, global_var) {
   fscript_eval(obj, "global_var(aaa)", &v);
   ASSERT_EQ(value_bool(&v), TRUE);
   value_reset(&v);
-
 
   TK_OBJECT_UNREF(obj);
 }
@@ -1641,7 +1639,7 @@ TEST(FExr, sin) {
 
   fscript_eval(obj, "sin(3.1415926/4)", &v1);
   fscript_eval(obj, "sin_deg(45)", &v2);
-  ASSERT_EQ(abs(value_double(&v1)-value_double(&v2)) < 0.001, true);
+  ASSERT_EQ(abs(value_double(&v1) - value_double(&v2)) < 0.001, true);
 
   TK_OBJECT_UNREF(obj);
 }
@@ -1653,7 +1651,7 @@ TEST(FExr, asin) {
 
   fscript_eval(obj, "r2d(asin(sin(3.1415926/4)))", &v1);
   fscript_eval(obj, "asin_deg(sin_deg(45))", &v2);
-  ASSERT_EQ(abs(value_double(&v1)-value_double(&v2)) < 0.001, true);
+  ASSERT_EQ(abs(value_double(&v1) - value_double(&v2)) < 0.001, true);
 
   TK_OBJECT_UNREF(obj);
 }
@@ -1665,7 +1663,7 @@ TEST(FExr, cos) {
 
   fscript_eval(obj, "cos(3.1415926/4)", &v1);
   fscript_eval(obj, "cos_deg(45)", &v2);
-  ASSERT_EQ(abs(value_double(&v1)-value_double(&v2)) < 0.001, true);
+  ASSERT_EQ(abs(value_double(&v1) - value_double(&v2)) < 0.001, true);
 
   TK_OBJECT_UNREF(obj);
 }
@@ -1677,7 +1675,7 @@ TEST(FExr, acos) {
 
   fscript_eval(obj, "r2d(acos(cos(3.1415926/4)))", &v1);
   fscript_eval(obj, "acos_deg(cos_deg(45))", &v2);
-  ASSERT_EQ(abs(value_double(&v1)-value_double(&v2)) < 0.001, true);
+  ASSERT_EQ(abs(value_double(&v1) - value_double(&v2)) < 0.001, true);
 
   TK_OBJECT_UNREF(obj);
 }
@@ -1689,7 +1687,7 @@ TEST(FExr, atan) {
 
   fscript_eval(obj, "r2d(atan(tan(3.1415926/4)))", &v1);
   fscript_eval(obj, "atan_deg(tan_deg(45))", &v2);
-  ASSERT_EQ(abs(value_double(&v1)-value_double(&v2)) < 0.001, true);
+  ASSERT_EQ(abs(value_double(&v1) - value_double(&v2)) < 0.001, true);
 
   TK_OBJECT_UNREF(obj);
 }
@@ -1701,8 +1699,38 @@ TEST(FExr, atan2) {
 
   fscript_eval(obj, "r2d(atan2(1,1))", &v1);
   fscript_eval(obj, "atan2_deg(1, 1)", &v2);
-  ASSERT_EQ(abs(value_double(&v1)-value_double(&v2)) < 0.001, true);
+  ASSERT_EQ(abs(value_double(&v1) - value_double(&v2)) < 0.001, true);
 
   TK_OBJECT_UNREF(obj);
 }
 
+TEST(FExr, is_xxx) {
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "is_int(1)", &v1);
+  ASSERT_EQ(value_bool(&v1), TRUE);
+  fscript_eval(obj, "is_int(1.5)", &v1);
+  ASSERT_EQ(value_bool(&v1), FALSE);
+
+  fscript_eval(obj, "is_odd(1)", &v1);
+  ASSERT_EQ(value_bool(&v1), TRUE);
+  fscript_eval(obj, "is_odd(2)", &v1);
+  ASSERT_EQ(value_bool(&v1), FALSE);
+
+  fscript_eval(obj, "is_even(2)", &v1);
+  ASSERT_EQ(value_bool(&v1), TRUE);
+  fscript_eval(obj, "is_even(1)", &v1);
+  ASSERT_EQ(value_bool(&v1), FALSE);
+
+  fscript_eval(obj, "is_positive(2)", &v1);
+  ASSERT_EQ(value_bool(&v1), TRUE);
+  fscript_eval(obj, "is_positive(-1)", &v1);
+  ASSERT_EQ(value_bool(&v1), FALSE);
+
+  fscript_eval(obj, "is_negative(-2)", &v1);
+  ASSERT_EQ(value_bool(&v1), TRUE);
+  fscript_eval(obj, "is_negative(1)", &v1);
+  ASSERT_EQ(value_bool(&v1), FALSE);
+  TK_OBJECT_UNREF(obj);
+}

@@ -64,7 +64,7 @@ static ret_t func_log(fscript_t* fscript, fscript_args_t* args, value_t* result)
 
 static ret_t func_log10(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_set_double(result, log(value_double(args->args))/log(10));
+  value_set_double(result, log(value_double(args->args)) / log(10));
 
   return RET_OK;
 }
@@ -195,6 +195,52 @@ static ret_t func_atan2_deg(fscript_t* fscript, fscript_args_t* args, value_t* r
   return RET_OK;
 }
 
+static ret_t func_is_int(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  bool_t is_int = FALSE;
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+
+  is_int = (double)value_int(args->args) == value_double(args->args);
+  value_set_bool(result, is_int);
+
+  return RET_OK;
+}
+
+static ret_t func_is_odd(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  bool_t is_int = FALSE;
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+
+  is_int = (double)value_int(args->args) == value_double(args->args);
+  value_set_bool(result, is_int && (value_int(args->args) % 2 == 1));
+
+  return RET_OK;
+}
+
+static ret_t func_is_even(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  bool_t is_int = FALSE;
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+
+  is_int = (double)value_int(args->args) == value_double(args->args);
+  value_set_bool(result, is_int && (value_int(args->args) % 2 == 0));
+
+  return RET_OK;
+}
+
+static ret_t func_is_negative(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+
+  value_set_bool(result, value_double(args->args) < 0);
+
+  return RET_OK;
+}
+
+static ret_t func_is_positive(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+
+  value_set_bool(result, value_double(args->args) > 0);
+
+  return RET_OK;
+}
+
 FACTORY_TABLE_BEGIN(s_ext_math)
 FACTORY_TABLE_ENTRY("d2r", func_d2r)
 FACTORY_TABLE_ENTRY("r2d", func_r2d)
@@ -215,6 +261,11 @@ FACTORY_TABLE_ENTRY("atan2_deg", func_atan2_deg)
 FACTORY_TABLE_ENTRY("cos_deg", func_cos_deg)
 FACTORY_TABLE_ENTRY("sin_deg", func_sin_deg)
 FACTORY_TABLE_ENTRY("tan_deg", func_tan_deg)
+FACTORY_TABLE_ENTRY("is_int", func_is_int)
+FACTORY_TABLE_ENTRY("is_odd", func_is_odd)
+FACTORY_TABLE_ENTRY("is_even", func_is_even)
+FACTORY_TABLE_ENTRY("is_negative", func_is_negative)
+FACTORY_TABLE_ENTRY("is_positive", func_is_positive)
 
 FACTORY_TABLE_ENTRY("exp", func_exp)
 FACTORY_TABLE_ENTRY("log", func_log)
