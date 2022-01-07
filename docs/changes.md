@@ -2,6 +2,9 @@
 
 2022/01/07
   * fscript增加str\_is\_empty/str\_len/array\_is\_empty/array\_size等函数。
+  * object\_typed\_array支持通过TK\_OBJECT\_PROP\_SIZE获取元素个数。
+  * object\_typed\_array支持通过set\_prop/get\_prop访问元素。
+  * fscript支持for/for\_in语句。
 
 2022/01/06
   * fscript增加random0to1。

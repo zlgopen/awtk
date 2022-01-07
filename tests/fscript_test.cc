@@ -1236,6 +1236,17 @@ TEST(FExr, while_statement1) {
   TK_OBJECT_UNREF(obj);
 }
 
+TEST(FExr, for_statement1) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "abc=0;for(a=0;a < 100; a=a+1) {abc = abc+1};abc", &v);
+  ASSERT_EQ(value_int(&v), 100);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
 TEST(FExr, until_statement1) {
   value_t v;
   tk_object_t* obj = object_default_create();
@@ -1313,6 +1324,17 @@ TEST(FExr, while_statement2) {
   TK_OBJECT_UNREF(obj);
 }
 
+TEST(FExr, for_statement2) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "abc=0;for(a=0;a < 100; a=a+1) {abc = abc+1;if(abc > 50) {break}};abc", &v);
+  ASSERT_EQ(value_int(&v), 51);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
 TEST(FExr, until_statement2) {
   value_t v;
   tk_object_t* obj = object_default_create();
@@ -1362,6 +1384,19 @@ TEST(FExr, while_statement3) {
   tk_object_t* obj = object_default_create();
 
   fscript_eval(obj, "a=0;b=0;while(a<100) {a=a+1;if((a > 20) && (a<=50)) {continue};b=b+1};b", &v);
+  ASSERT_EQ(value_int(&v), 70);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, for_statement3) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(
+      obj, "a=0;b=0;for(aa=0;aa < 100; aa=aa+1) {a=a+1;if((a > 20) && (a<=50)) {continue};b=b+1};b",
+      &v);
   ASSERT_EQ(value_int(&v), 70);
   value_reset(&v);
 
@@ -1914,7 +1949,7 @@ TEST(FExr, str_is_empty) {
 
   fscript_eval(obj, "aa=\"hello \";bb=str_is_empty(aa);bb", &v1);
   ASSERT_EQ(value_bool(&v1), FALSE);
-  
+
   fscript_eval(obj, "aa=\"\";bb=str_is_empty(aa);bb", &v1);
   ASSERT_EQ(value_bool(&v1), TRUE);
 
@@ -1927,7 +1962,7 @@ TEST(FExr, str_len) {
 
   fscript_eval(obj, "aa=\"hello \";bb=str_len(aa);bb", &v1);
   ASSERT_EQ(value_int(&v1), 6);
-  
+
   fscript_eval(obj, "aa=\"\";bb=str_len(aa);bb", &v1);
   ASSERT_EQ(value_int(&v1), 0);
 
@@ -1949,12 +1984,92 @@ TEST(FExr, char_at) {
 
   fscript_eval(obj, "char_at_first(\"hello\")", &v1);
   ASSERT_STREQ(value_str(&v1), "h");
-  
+
   fscript_eval(obj, "char_at_last(\"hello\")", &v1);
   ASSERT_STREQ(value_str(&v1), "o");
-  
+
   fscript_eval(obj, "char_at_random(\"hhh\")", &v1);
   ASSERT_STREQ(value_str(&v1), "h");
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, for_in1) {
+  const char* str =
+      "\
+  var b = 0;\
+  var a = array_create(1, 2, 3, 4, 5,6)\
+  for_in(i, a) {\
+    b = b + i;\
+  }\
+  b";
+
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, str, &v1);
+  ASSERT_EQ(value_int(&v1), 21);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, for_in2) {
+  const char* str =
+      "\
+  var b = 0;\
+  var a = array_create(1, 2, 3, 4, 5,6)\
+  for_in(i, a) {\
+    if(i < 3) {\
+      continue\
+    }\
+    b = b + i;\
+  }\
+  b";
+
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, str, &v1);
+  ASSERT_EQ(value_int(&v1), 18);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, for_in5) {
+  const char* str =
+      "\
+  var b = 0;\
+  var a = array_create(1, 2, 3, 4, 5,6)\
+  for_in(i, a) {\
+    if(i > 3) {\
+      break\
+    }\
+    b = b + i;\
+  }\
+  b";
+
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, str, &v1);
+  ASSERT_EQ(value_int(&v1), 6);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, for_in6) {
+  const char* str =
+      "var b = 0;\
+var a = typed_array_create(\"i8\", 100);\
+typed_array_push(a, 1)\
+typed_array_push(a, 2)\
+typed_array_push(a, 3)\
+for_in(i, a) {\
+  b = b + i;\
+}\
+  b";
+
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, str, &v1);
+  ASSERT_EQ(value_int(&v1), 6);
 
   TK_OBJECT_UNREF(obj);
 }

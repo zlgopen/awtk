@@ -35,6 +35,14 @@ static ret_t object_typed_array_on_destroy(tk_object_t* obj) {
 }
 
 static ret_t object_typed_array_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
+  object_typed_array_t* o = OBJECT_TYPED_ARRAY(obj);
+  return_value_if_fail(o != NULL && o->arr != NULL, RET_BAD_PARAMS);
+
+  if (*name == '[') {
+    int32_t index = tk_atoi(name + 1);
+    return typed_array_set(o->arr, index, v);
+  }
+
   return RET_NOT_FOUND;
 }
 
@@ -43,7 +51,7 @@ static ret_t object_typed_array_get_prop(tk_object_t* obj, const char* name, val
   object_typed_array_t* o = OBJECT_TYPED_ARRAY(obj);
   return_value_if_fail(o != NULL && o->arr != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_eq(name, "size")) {
+  if (tk_str_eq(name, "size") || tk_str_eq(name, TK_OBJECT_PROP_SIZE)) {
     value_set_uint32(v, o->arr->size);
     ret = RET_OK;
   } else if (tk_str_eq(name, "capacity")) {
@@ -58,6 +66,9 @@ static ret_t object_typed_array_get_prop(tk_object_t* obj, const char* name, val
   } else if (tk_str_eq(name, "data")) {
     value_set_pointer(v, o->arr->data);
     ret = RET_OK;
+  } else if (*name == '[') {
+    int32_t index = tk_atoi(name + 1);
+    ret = typed_array_get(o->arr, index, v);
   }
 
   return ret;

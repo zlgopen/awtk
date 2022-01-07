@@ -45,6 +45,12 @@ static ret_t func_repeat_times(fscript_t* fscript, fscript_args_t* args, value_t
 static ret_t func_repeat(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   return RET_OK;
 }
+static ret_t func_for(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return RET_OK;
+}
+static ret_t func_for_in(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return RET_OK;
+}
 static ret_t func_noop(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   return RET_OK;
 }
@@ -397,7 +403,7 @@ static ret_t fscript_exec_while_or_until(fscript_t* fscript, fscript_func_call_t
                                          value_t* result, bool_t is_while) {
   value_t condition;
   bool_t done = FALSE;
-  return_value_if_fail(iter->args.size > 1, RET_FAIL);
+  FSCRIPT_FUNC_CHECK(iter->args.size > 1, RET_FAIL);
 
   fscript->loop_count++;
   value_set_int(&condition, 0);
@@ -420,14 +426,14 @@ static ret_t fscript_exec_repeat(fscript_t* fscript, fscript_func_call_t* iter, 
   int32_t delta = 0;
   bool_t done = FALSE;
   const char* id = NULL;
-  return_value_if_fail(iter->args.size > 4, RET_FAIL);
+  FSCRIPT_FUNC_CHECK(iter->args.size > 4, RET_FAIL);
 
   id = value_id(iter->args.args);
-  return_value_if_fail(fscript_eval_arg(fscript, iter, 1, &v) == RET_OK, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(fscript_eval_arg(fscript, iter, 1, &v) == RET_OK, RET_BAD_PARAMS);
   start = value_int(&v);
-  return_value_if_fail(fscript_eval_arg(fscript, iter, 2, &v) == RET_OK, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(fscript_eval_arg(fscript, iter, 2, &v) == RET_OK, RET_BAD_PARAMS);
   end = value_int(&v);
-  return_value_if_fail(fscript_eval_arg(fscript, iter, 3, &v) == RET_OK, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(fscript_eval_arg(fscript, iter, 3, &v) == RET_OK, RET_BAD_PARAMS);
   delta = value_int(&v);
   if (fscript->locals == NULL) {
     fscript->locals = object_default_create();
@@ -436,9 +442,61 @@ static ret_t fscript_exec_repeat(fscript_t* fscript, fscript_func_call_t* iter, 
   fscript->loop_count++;
   while ((start != end) && !done) {
     value_set_int(&v, start);
-    tk_object_set_prop(fscript->locals, id, &v);
+    break_if_fail(tk_object_set_prop(fscript->locals, id, &v) == RET_OK);
     fscript_exec_loop_body(fscript, iter, 4, result, &done);
     start += delta;
+  }
+  fscript->loop_count--;
+
+  return RET_OK;
+}
+
+static ret_t fscript_exec_for(fscript_t* fscript, fscript_func_call_t* iter, value_t* result) {
+  value_t v;
+  bool_t done = FALSE;
+  FSCRIPT_FUNC_CHECK(iter->args.size > 3, RET_FAIL);
+  FSCRIPT_FUNC_CHECK(fscript_eval_arg(fscript, iter, 0, &v) == RET_OK, RET_BAD_PARAMS);
+
+  fscript->loop_count++;
+  while (!done) {
+    break_if_fail(fscript_eval_arg(fscript, iter, 1, &v) == RET_OK);
+    if (!value_bool(&v)) {
+      break;
+    }
+    fscript_exec_loop_body(fscript, iter, 3, result, &done);
+    break_if_fail(fscript_eval_arg(fscript, iter, 2, &v) == RET_OK);
+  }
+  fscript->loop_count--;
+
+  return RET_OK;
+}
+
+static ret_t fscript_exec_for_in(fscript_t* fscript, fscript_func_call_t* iter, value_t* result) {
+  value_t v;
+  char prop[32];
+  uint32_t i = 0;
+  uint32_t n = 0;
+  bool_t done = FALSE;
+  object_t* obj = NULL;
+  const char* id = NULL;
+  FSCRIPT_FUNC_CHECK(iter->args.size > 2, RET_FAIL);
+  id = value_id(iter->args.args);
+  FSCRIPT_FUNC_CHECK(fscript_eval_arg(fscript, iter, 1, &v) == RET_OK, RET_BAD_PARAMS);
+  obj = value_object(&v);
+  FSCRIPT_FUNC_CHECK(id != NULL && obj != NULL, RET_FAIL);
+
+  if (fscript->locals == NULL) {
+    fscript->locals = object_default_create();
+  }
+
+  fscript->loop_count++;
+  n = tk_object_get_prop_int(obj, TK_OBJECT_PROP_SIZE, 0);
+  for (i = 0; ((i < n) && !done); i++) {
+    tk_snprintf(prop, sizeof(prop) - 1, "[%u]", i);
+    break_if_fail(tk_object_get_prop(obj, prop, &v) == RET_OK);
+
+    tk_object_set_prop(fscript->locals, id, &v);
+    fscript_exec_loop_body(fscript, iter, 2, result, &done);
   }
   fscript->loop_count--;
 
@@ -451,8 +509,8 @@ static ret_t fscript_exec_repeat_times(fscript_t* fscript, fscript_func_call_t* 
   uint32_t i = 0;
   uint32_t n = 0;
   bool_t done = FALSE;
-  return_value_if_fail(iter->args.size > 1, RET_FAIL);
-  return_value_if_fail(fscript_eval_arg(fscript, iter, 0, &v) == RET_OK, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(iter->args.size > 1, RET_FAIL);
+  FSCRIPT_FUNC_CHECK(fscript_eval_arg(fscript, iter, 0, &v) == RET_OK, RET_BAD_PARAMS);
 
   n = value_int(&v);
   fscript->loop_count++;
@@ -481,6 +539,10 @@ static ret_t fscript_exec_core_func(fscript_t* fscript, fscript_func_call_t* ite
     return fscript_exec_until(fscript, iter, result);
   } else if (iter->func == func_repeat) {
     return fscript_exec_repeat(fscript, iter, result);
+  } else if (iter->func == func_for) {
+    return fscript_exec_for(fscript, iter, result);
+  } else if (iter->func == func_for_in) {
+    return fscript_exec_for_in(fscript, iter, result);
   } else if (iter->func == func_repeat_times) {
     return fscript_exec_repeat_times(fscript, iter, result);
   } else if (iter->func == func_function_def) {
@@ -1161,7 +1223,11 @@ static ret_t fexpr_parse_function(fscript_parser_t* parser, value_t* result) {
       break;
     }
     fscript_parser_unget_token(parser);
-    fscript_parser_expect_token(parser, TOKEN_COMMA, "expect \",\"");
+    if (acall->func == func_for) {
+      fscript_parser_expect_token(parser, TOKEN_SEMICOLON, "expect \";\"");
+    } else {
+      fscript_parser_expect_token(parser, TOKEN_COMMA, "expect \",\"");
+    }
   } while (TRUE);
 
   if (acall->func == func_if && acall->args.size == 1) {
@@ -1171,6 +1237,14 @@ static ret_t fexpr_parse_function(fscript_parser_t* parser, value_t* result) {
   } else if ((acall->func == func_while || acall->func == func_until ||
               acall->func == func_repeat_times) &&
              acall->args.size == 1) {
+    if (fscript_parser_expect_token(parser, TOKEN_LBRACKET, "expect \"{\"") == RET_OK) {
+      fexpr_parse_block(parser, acall);
+    }
+  } else if (acall->func == func_for && acall->args.size == 3) {
+    if (fscript_parser_expect_token(parser, TOKEN_LBRACKET, "expect \"{\"") == RET_OK) {
+      fexpr_parse_block(parser, acall);
+    }
+  } else if (acall->func == func_for_in && acall->args.size == 2) {
     if (fscript_parser_expect_token(parser, TOKEN_LBRACKET, "expect \"{\"") == RET_OK) {
       fexpr_parse_block(parser, acall);
     }
@@ -2403,6 +2477,8 @@ static const func_entry_t s_builtin_funcs[] = {{"func", func_function_def, 4},
                                                {"while", func_while, 10},
                                                {"until", func_until, 10},
                                                {"repeat", func_repeat, 10},
+                                               {"for", func_for, 10},
+                                               {"for_in", func_for_in, 10},
                                                {"repeat_times", func_repeat_times, 10},
                                                {"int", func_int, 1},
                                                {"i8", func_i8, 1},
