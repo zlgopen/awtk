@@ -1,4 +1,8 @@
 # 最新动态
+
+2022/01/07
+  * fscript增加str\_is\_empty/str\_len/array\_is\_empty/array\_size等函数。
+
 2022/01/06
   * fscript增加random0to1。
   * fscript支持until/repeat_times/repeat语句。

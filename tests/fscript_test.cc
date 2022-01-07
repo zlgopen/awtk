@@ -1898,3 +1898,63 @@ TEST(FExr, random0to1) {
 
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(FExr, str_append) {
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "aa=\"hello \";bb=str_append(aa, \"world\");bb", &v1);
+  ASSERT_STREQ(value_str(&v1), "hello world");
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, str_is_empty) {
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "aa=\"hello \";bb=str_is_empty(aa);bb", &v1);
+  ASSERT_EQ(value_bool(&v1), FALSE);
+  
+  fscript_eval(obj, "aa=\"\";bb=str_is_empty(aa);bb", &v1);
+  ASSERT_EQ(value_bool(&v1), TRUE);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, str_len) {
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "aa=\"hello \";bb=str_len(aa);bb", &v1);
+  ASSERT_EQ(value_int(&v1), 6);
+  
+  fscript_eval(obj, "aa=\"\";bb=str_len(aa);bb", &v1);
+  ASSERT_EQ(value_int(&v1), 0);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, char_at) {
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "char_at(\"hello\", 0)", &v1);
+  ASSERT_STREQ(value_str(&v1), "h");
+  fscript_eval(obj, "char_at(\"hello\", 1)", &v1);
+  ASSERT_STREQ(value_str(&v1), "e");
+  fscript_eval(obj, "char_at(\"hello\", -1)", &v1);
+  ASSERT_STREQ(value_str(&v1), "o");
+  fscript_eval(obj, "char_at(\"hello\", -2)", &v1);
+  ASSERT_STREQ(value_str(&v1), "l");
+
+  fscript_eval(obj, "char_at_first(\"hello\")", &v1);
+  ASSERT_STREQ(value_str(&v1), "h");
+  
+  fscript_eval(obj, "char_at_last(\"hello\")", &v1);
+  ASSERT_STREQ(value_str(&v1), "o");
+  
+  fscript_eval(obj, "char_at_random(\"hhh\")", &v1);
+  ASSERT_STREQ(value_str(&v1), "h");
+
+  TK_OBJECT_UNREF(obj);
+}

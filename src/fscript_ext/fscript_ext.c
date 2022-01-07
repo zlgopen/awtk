@@ -169,21 +169,28 @@ static ret_t func_usubstr(fscript_t* fscript, fscript_args_t* args, value_t* res
   return ret;
 }
 
-static ret_t func_char_at(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+static ret_t func_char_at_impl(fscript_t* fscript, fscript_args_t* args, value_t* result,
+                               int32_t index) {
   wstr_t wstr;
-  int32_t index = 0;
   ret_t ret = RET_OK;
   const char* str = NULL;
-  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
   str = value_str(args->args);
   return_value_if_fail(str != NULL && *str, RET_BAD_PARAMS);
-  index = value_int(args->args + 1);
+
+  if (args->size > 1) {
+    index = value_int(args->args + 1);
+  }
 
   wstr_init(&wstr, 0);
   return_value_if_fail(wstr_set_utf8(&wstr, str) == RET_OK, RET_OOM);
 
   if (index < 0) {
     index += wstr.size;
+  }
+
+  if (index > wstr.size) {
+    index = index % wstr.size;
   }
 
   if (index >= 0 && index < wstr.size) {
@@ -196,6 +203,22 @@ static ret_t func_char_at(fscript_t* fscript, fscript_args_t* args, value_t* res
   wstr_reset(&wstr);
 
   return ret;
+}
+
+static ret_t func_char_at(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return func_char_at_impl(fscript, args, result, 0);
+}
+
+static ret_t func_char_at_first(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return func_char_at_impl(fscript, args, result, 0);
+}
+
+static ret_t func_char_at_last(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return func_char_at_impl(fscript, args, result, -1);
+}
+
+static ret_t func_char_at_random(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return func_char_at_impl(fscript, args, result, random());
 }
 
 static ret_t func_trim_left(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -273,6 +296,29 @@ static ret_t func_member_var(fscript_t* fscript, fscript_args_t* args, value_t* 
   return RET_OK;
 }
 
+static ret_t func_str_is_empty(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  value_set_bool(result, tk_strlen(value_str(args->args)) == 0);
+  return RET_OK;
+}
+
+static ret_t func_str_len(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  value_set_uint32(result, tk_strlen(value_str(args->args)));
+  return RET_OK;
+}
+
+static ret_t func_str_append(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  str_t* str = &(fscript->str);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+
+  str_set(str, value_str(args->args));
+  str_append(str, value_str(args->args + 1));
+  value_set_str(result, str->str);
+
+  return RET_OK;
+}
+
 FACTORY_TABLE_BEGIN(s_ext_basic)
 FACTORY_TABLE_ENTRY("index_of", func_index_of)
 FACTORY_TABLE_ENTRY("last_index_of", func_last_index_of)
@@ -294,6 +340,15 @@ FACTORY_TABLE_ENTRY("value_is_valid", func_value_is_valid)
 FACTORY_TABLE_ENTRY("value_is_null", func_value_is_null)
 FACTORY_TABLE_ENTRY("value_get_binary_data", func_value_get_binary_data)
 FACTORY_TABLE_ENTRY("value_get_binary_size", func_value_get_binary_size)
+
+/*主要给AWBLOCK使用*/
+FACTORY_TABLE_ENTRY("str_len", func_str_len)
+FACTORY_TABLE_ENTRY("str_is_empty", func_str_is_empty)
+FACTORY_TABLE_ENTRY("str_append", func_str_append)
+FACTORY_TABLE_ENTRY("char_at_first", func_char_at_first)
+FACTORY_TABLE_ENTRY("char_at_last", func_char_at_last)
+FACTORY_TABLE_ENTRY("char_at_random", func_char_at_random)
+
 FACTORY_TABLE_END()
 
 ret_t fscript_ext_init(void) {

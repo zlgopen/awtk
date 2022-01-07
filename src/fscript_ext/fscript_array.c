@@ -413,6 +413,30 @@ static ret_t func_array_sum(fscript_t* fscript, fscript_args_t* args, value_t* r
   return object_array_sum(value_object(args->args), result);
 }
 
+static ret_t func_array_size(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  tk_object_t* obj = NULL;
+  object_array_t* arr = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  obj = value_object(args->args);
+  arr = OBJECT_ARRAY(obj);
+  return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
+  value_set_uint32(result, arr->size);
+
+  return RET_OK;
+}
+
+static ret_t func_array_is_empty(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  tk_object_t* obj = NULL;
+  object_array_t* arr = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  obj = value_object(args->args);
+  arr = OBJECT_ARRAY(obj);
+  return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
+  value_set_bool(result, arr->size == 0);
+
+  return RET_OK;
+}
+
 FACTORY_TABLE_BEGIN(s_ext_array)
 FACTORY_TABLE_ENTRY("array_create", func_array_create)
 FACTORY_TABLE_ENTRY("array_dup", func_array_dup)
@@ -437,6 +461,9 @@ FACTORY_TABLE_ENTRY("array_min", func_array_min)
 FACTORY_TABLE_ENTRY("array_max", func_array_max)
 FACTORY_TABLE_ENTRY("array_avg", func_array_avg)
 FACTORY_TABLE_ENTRY("array_sum", func_array_sum)
+/*主要给AWBLOCK使用*/
+FACTORY_TABLE_ENTRY("array_is_empty", func_array_is_empty)
+FACTORY_TABLE_ENTRY("array_size", func_array_size)
 FACTORY_TABLE_END()
 
 ret_t fscript_array_register(void) {
