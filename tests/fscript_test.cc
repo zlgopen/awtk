@@ -2073,3 +2073,21 @@ for_in(i, a) {\
 
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(FScript, flow) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, "flow_set('global', 'value',3);flow_get('global', 'value')", &v);
+  ASSERT_EQ(3, value_int(&v));
+  value_reset(&v);
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, flow1) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, "flow_set('global', 'value',3);flow_get('global', 'age', 100)", &v);
+  ASSERT_EQ(100, value_int(&v));
+  value_reset(&v);
+  TK_OBJECT_UNREF(obj);
+}

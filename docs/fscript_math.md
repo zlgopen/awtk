@@ -136,21 +136,21 @@ atan2(a, b) => double
 atan2(2, 3)
 ```
 
-#### 9.log 
+#### 9.logf 
 
-> log 函数。
+> logf 函数。
 ----------------------------
 
 ##### 原型
 
 ```
-log(a) => double
+logf(a) => double
 ```
 
 ##### 示例
 
 ```
-log(0)
+logf(0)
 ```
 
 #### 10.is_prime

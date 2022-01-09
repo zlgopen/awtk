@@ -100,6 +100,35 @@ static ret_t func_get_days_of_month(fscript_t* fscript, fscript_args_t* args, va
   return RET_OK;
 }
 
+static ret_t func_date_time_get_prop(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  tk_object_t* obj = NULL;
+  FSCRIPT_FUNC_CHECK(args->size >= 2, RET_BAD_PARAMS);
+  obj = value_object(args->args);
+  return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
+
+  if (tk_object_get_prop(obj, value_str(args->args + 1), result) != RET_OK) {
+    if (args->size > 2) {
+      value_copy(result, args->args + 2);
+    } else {
+      result->type = VALUE_TYPE_INVALID;
+    }
+  }
+
+  return RET_OK;
+}
+
+static ret_t func_date_time_set_prop(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  tk_object_t* obj = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 3, RET_BAD_PARAMS);
+  obj = value_object(args->args);
+  return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
+
+  value_set_bool(result,
+                 tk_object_set_prop(obj, value_str(args->args + 1), args->args + 2) == RET_OK);
+
+  return RET_OK;
+}
+
 FACTORY_TABLE_BEGIN(s_ext_date_time)
 FACTORY_TABLE_ENTRY("date_time_create", func_date_time_create)
 FACTORY_TABLE_ENTRY("date_time_to_time", func_date_time_to_time)
@@ -111,6 +140,10 @@ FACTORY_TABLE_ENTRY("time_now_s", func_time_now_s)
 FACTORY_TABLE_ENTRY("time_now", func_time_now_s)
 FACTORY_TABLE_ENTRY("is_leap_year", func_year_is_leap)
 FACTORY_TABLE_ENTRY("get_days_of_month", func_get_days_of_month)
+
+/*主要给AWBLOCK使用*/
+FACTORY_TABLE_ENTRY("date_time_set_prop", func_date_time_set_prop)
+FACTORY_TABLE_ENTRY("date_time_get_prop", func_date_time_get_prop)
 FACTORY_TABLE_END()
 
 ret_t fscript_date_time_register(void) {

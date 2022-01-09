@@ -319,6 +319,42 @@ static ret_t func_str_append(fscript_t* fscript, fscript_args_t* args, value_t* 
   return RET_OK;
 }
 
+static ret_t func_flow_get(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  char name[64];
+  const char* type = NULL;
+  const char* subname = NULL;
+  FSCRIPT_FUNC_CHECK(args->size >= 2, RET_BAD_PARAMS);
+  type = value_str(args->args);
+  subname = value_str(args->args+1);
+  FSCRIPT_FUNC_CHECK(name != NULL && subname != NULL, RET_BAD_PARAMS);
+
+  tk_snprintf(name, sizeof(name)-1, "%s.%s", type, subname);
+  if (tk_object_get_prop(fscript->obj, name, result) != RET_OK) {
+    if(args->size > 2) {
+      value_copy(result, args->args+2);
+    } else {
+      result->type = VALUE_TYPE_INVALID;
+    }
+  }
+
+  return RET_OK;
+}
+
+static ret_t func_flow_set(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  char name[64];
+  const char* type = NULL;
+  const char* subname = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 3, RET_BAD_PARAMS);
+  type = value_str(args->args);
+  subname = value_str(args->args+1);
+  FSCRIPT_FUNC_CHECK(name != NULL && subname != NULL, RET_BAD_PARAMS);
+
+  tk_snprintf(name, sizeof(name)-1, "%s.%s", type, subname);
+  value_set_bool(result, tk_object_set_prop(fscript->obj, name, args->args + 2) == RET_OK);
+
+  return RET_OK;
+}
+
 FACTORY_TABLE_BEGIN(s_ext_basic)
 FACTORY_TABLE_ENTRY("index_of", func_index_of)
 FACTORY_TABLE_ENTRY("last_index_of", func_last_index_of)
@@ -348,6 +384,8 @@ FACTORY_TABLE_ENTRY("str_append", func_str_append)
 FACTORY_TABLE_ENTRY("char_at_first", func_char_at_first)
 FACTORY_TABLE_ENTRY("char_at_last", func_char_at_last)
 FACTORY_TABLE_ENTRY("char_at_random", func_char_at_random)
+FACTORY_TABLE_ENTRY("flow_get", func_flow_get)
+FACTORY_TABLE_ENTRY("flow_set", func_flow_set)
 
 FACTORY_TABLE_END()
 

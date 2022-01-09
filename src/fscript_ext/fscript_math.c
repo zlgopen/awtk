@@ -277,7 +277,7 @@ FACTORY_TABLE_ENTRY("is_positive", func_is_positive)
 FACTORY_TABLE_ENTRY("random0to1", func_random0to1)
 
 FACTORY_TABLE_ENTRY("exp", func_exp)
-FACTORY_TABLE_ENTRY("log", func_log)
+FACTORY_TABLE_ENTRY("logf", func_log)
 FACTORY_TABLE_ENTRY("sqrt", func_sqrt)
 FACTORY_TABLE_ENTRY("pow", func_pow)
 FACTORY_TABLE_ENTRY("is_prime", func_is_prime)

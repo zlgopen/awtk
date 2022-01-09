@@ -183,3 +183,32 @@ TEST(DateTime, object) {
 
   TK_OBJECT_UNREF(obj);
 }
+
+#include "tkc/fscript.h"
+#include "tkc/object_default.h"
+
+TEST(DateTime, fscript_object) {
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "a=date_time_create();date_time_set_prop(a,\"year\",2050);b=date_time_get_prop(a,\"year\");b", &v1);
+  ASSERT_EQ(value_int(&v1), 2050);
+
+  fscript_eval(obj, "a=date_time_create();date_time_set_prop(a,\"month\",10);b=date_time_get_prop(a,\"month\");b", &v1);
+  ASSERT_EQ(value_int(&v1), 10);
+
+  fscript_eval(obj, "a=date_time_create();date_time_set_prop(a,\"day\",11);b=date_time_get_prop(a,\"day\");b", &v1);
+  ASSERT_EQ(value_int(&v1), 11);
+  
+  fscript_eval(obj, "a=date_time_create();date_time_set_prop(a,\"hour\",8);b=date_time_get_prop(a,\"hour\");b", &v1);
+  ASSERT_EQ(value_int(&v1), 8);
+  
+  fscript_eval(obj, "a=date_time_create();date_time_set_prop(a,\"minute\",9);b=date_time_get_prop(a,\"minute\");b", &v1);
+  ASSERT_EQ(value_int(&v1), 9);
+  
+  fscript_eval(obj, "a=date_time_create();date_time_set_prop(a,\"second\",5);b=date_time_get_prop(a,\"second\");b", &v1);
+  ASSERT_EQ(value_int(&v1), 5);
+
+
+  TK_OBJECT_UNREF(obj);
+}

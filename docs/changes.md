@@ -1,5 +1,9 @@
 # 最新动态
 
+2022/01/08
+  * fscript的log函数改名为logf，避免与flow中的log重名。
+  * fscript增加date\_time\_get\_prop/date\_time\_set\_prop等函数。 
+
 2022/01/07
   * fscript增加str\_is\_empty/str\_len/array\_is\_empty/array\_size等函数。
   * object\_typed\_array支持通过TK\_OBJECT\_PROP\_SIZE获取元素个数。
