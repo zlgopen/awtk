@@ -1,4 +1,6 @@
 # 最新动态
+2022/01/10
+  * 完善fscript if/elseif/else语句
 
 2022/01/08
   * fscript的log函数改名为logf，避免与flow中的log重名。

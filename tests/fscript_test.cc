@@ -2091,3 +2091,291 @@ TEST(FScript, flow1) {
   value_reset(&v);
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(FExr, if1) {
+  const char* str =
+      "if(true) { \
+123 \
+} \
+";
+
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, str, &v1);
+  ASSERT_EQ(value_int(&v1), 123);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, if2) {
+  const char* str =
+      "if(true) { \
+123 \
+} else {\
+234\
+}\
+";
+
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, str, &v1);
+  ASSERT_EQ(value_int(&v1), 123);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, if3) {
+  const char* str =
+      "if(false) { \
+234 \
+} else {\
+123\
+}\
+";
+
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, str, &v1);
+  ASSERT_EQ(value_int(&v1), 123);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, if4) {
+  const char* str =
+      "if(false) { \
+234 \
+} else if(false){\
+111\
+} else {\
+123\
+}\
+";
+
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, str, &v1);
+  ASSERT_EQ(value_int(&v1), 123);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, if5) {
+  const char* str =
+      "if(false) { \
+234 \
+} else if(false){\
+111\
+} else if(false){\
+111\
+} else {\
+123\
+}\
+";
+
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, str, &v1);
+  ASSERT_EQ(value_int(&v1), 123);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, if6) {
+  const char* str =
+      "if(false) { \
+234 \
+} else if(false){\
+111\
+} else if(false){\
+111\
+} else if(false){\
+111\
+} else {\
+123\
+}\
+";
+
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, str, &v1);
+  ASSERT_EQ(value_int(&v1), 123);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, if7) {
+  const char* str =
+      "if(false) { \
+234 \
+} else if(true){\
+123\
+} else if(false){\
+111\
+} else if(false){\
+111\
+} else {\
+222\
+}\
+";
+
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, str, &v1);
+  ASSERT_EQ(value_int(&v1), 123);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, if8) {
+  const char* str =
+      "if(false) { \
+234 \
+} else if(false){\
+111\
+} else if(true){\
+123\
+} else if(false){\
+111\
+} else {\
+222\
+}\
+";
+
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, str, &v1);
+  ASSERT_EQ(value_int(&v1), 123);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, if9) {
+  const char* str =
+      "if(false) { \
+234 \
+} else if(false){\
+111\
+} else if(true){\
+123\
+} else if(true){\
+111\
+} else {\
+222\
+}\
+";
+
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, str, &v1);
+  ASSERT_EQ(value_int(&v1), 123);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, if10) {
+  const char* str =
+      "if(false) { \
+234 \
+} else if(true){\
+123\
+} else if(false){\
+111\
+} else if(true){\
+111\
+} else {\
+222\
+}\
+";
+
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, str, &v1);
+  ASSERT_EQ(value_int(&v1), 123);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, if11) {
+  const char* str =
+      "if(true) { \
+123 \
+} else if(true){\
+1123\
+} else if(false){\
+1111\
+} else if(true){\
+1111\
+} else {\
+1222\
+}\
+";
+
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, str, &v1);
+  ASSERT_EQ(value_int(&v1), 123);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, if12) {
+  const char* str =
+      "if(true) { \
+123 \
+} else {\
+1222\
+}\
+if(true) {\
+12345\
+}\
+";
+
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, str, &v1);
+  ASSERT_EQ(value_int(&v1), 12345);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, if13) {
+  const char* str =
+      "if(true) { \
+123 \
+} else if(true){\
+1123\
+} else if(false){\
+1111\
+} else if(true){\
+1111\
+} else {\
+1222\
+}\
+if(true) {\
+12345\
+}\
+";
+
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, str, &v1);
+  ASSERT_EQ(value_int(&v1), 12345);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, if14) {
+  const char* str =
+      "if(false) { \
+123 \
+}\
+";
+
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, str, &v1);
+  ASSERT_EQ(value_int(&v1), 0);
+
+  TK_OBJECT_UNREF(obj);
+}

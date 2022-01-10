@@ -362,20 +362,26 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
 }
 
 static ret_t fscript_exec_if(fscript_t* fscript, fscript_func_call_t* iter, value_t* result) {
+  uint32_t i = 0;
+  uint32_t n = 0;
   value_t condition;
   return_value_if_fail(iter->args.size >= 2, RET_FAIL);
-  value_set_int(&condition, 0);
 
-  fscript_eval_arg(fscript, iter, 0, &condition);
-  if (value_bool(&condition)) {
-    fscript_eval_arg(fscript, iter, 1, result);
-  } else if (iter->args.size > 2) {
-    fscript_eval_arg(fscript, iter, 2, result);
-  } else {
-    value_set_int(result, 0);
+  n = iter->args.size / 2;
+  for (i = 0; i < n; i++) {
+    value_set_bool(&condition, FALSE);
+    return_value_if_fail(fscript_eval_arg(fscript, iter, 2 * i, &condition) == RET_OK, RET_FAIL);
+    if (value_bool(&condition)) {
+      return fscript_eval_arg(fscript, iter, 2 * i + 1, result);
+    }
   }
 
-  return RET_OK;
+  if ((2 * i) < iter->args.size) {
+    return fscript_eval_arg(fscript, iter, 2 * i, result);
+  } else {
+    value_set_int(result, 0);
+    return RET_OK;
+  }
 }
 
 static ret_t fscript_exec_loop_body(fscript_t* fscript, fscript_func_call_t* iter, uint32_t start,
@@ -1161,6 +1167,7 @@ static ret_t fexpr_parse_block(fscript_parser_t* parser, fscript_func_call_t* ac
 static ret_t fexpr_parse_function(fscript_parser_t* parser, value_t* result);
 
 static ret_t fexpr_parse_if(fscript_parser_t* parser, fscript_func_call_t* acall) {
+  uint32_t i = 0;
   token_t* t = NULL;
   fexpr_parse_block(parser, acall);
   t = fscript_parser_get_token(parser);
@@ -1169,9 +1176,15 @@ static ret_t fexpr_parse_if(fscript_parser_t* parser, fscript_func_call_t* acall
     t = fscript_parser_get_token(parser);
     if (t != NULL && t->type == TOKEN_FUNC && tk_str_eq(t->token, "if")) {
       value_t result;
+      fscript_func_call_t* elseif = NULL;
       fscript_parser_unget_token(parser);
-      fexpr_parse_function(parser, &result);
-      func_args_push(&(acall->args), &result);
+      return_value_if_fail(fexpr_parse_function(parser, &result) == RET_OK, RET_FAIL);
+      elseif = value_func(&result);
+      for (i = 0; i < elseif->args.size; i++) {
+        func_args_push(&(acall->args), elseif->args.args + i);
+      }
+      elseif->args.size = 0;
+      fscript_func_call_destroy(elseif);
       return RET_OK;
     } else {
       fscript_parser_unget_token(parser);
