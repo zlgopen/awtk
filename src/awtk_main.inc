@@ -67,16 +67,12 @@ int gui_app_start(int lcd_w, int lcd_h) {
 }
 
 int gui_app_start_ex(int lcd_w, int lcd_h, const char* res_root) {
-  bool_t is_reboot = FALSE;
-  do {
-    tk_init(lcd_w, lcd_h, APP_MOBILE, APP_NAME, res_root);
+  tk_init(lcd_w, lcd_h, APP_MOBILE, APP_NAME, res_root);
 #elif defined(MOBILE_APP) && defined(WITH_SDL)
 int SDL_main(int argc, char* argv[]) {
-  bool_t is_reboot = FALSE;
   int32_t lcd_w = 0;
   int32_t lcd_h = 0;
-  do {
-    tk_init(lcd_w, lcd_h, APP_MOBILE, APP_NAME, APP_RES_ROOT);
+  tk_init(lcd_w, lcd_h, APP_MOBILE, APP_NAME, APP_RES_ROOT);
 
 #elif defined(WIN32) && !defined(MINGW)
 #include <windows.h>
@@ -124,7 +120,6 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdli
   str_t str;
   int argc = 1;
   char* argv[MAX_ARGV];
-  bool_t is_reboot = FALSE;
   bool_t enable_console = TRUE;
   int32_t lcd_w = LCD_WIDTH;
   int32_t lcd_h = LCD_HEIGHT;
@@ -161,7 +156,6 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdli
   tk_init(lcd_w, lcd_h, APP_TYPE, APP_NAME, APP_RES_ROOT);
 #else
 int main(int argc, char* argv[]) {
-  bool_t is_reboot = FALSE;
   int32_t lcd_w = LCD_WIDTH;
   int32_t lcd_h = LCD_HEIGHT;
 
