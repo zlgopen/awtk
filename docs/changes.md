@@ -3,6 +3,7 @@
 2022/01/11
   * 修复awtk_main中reboot残余代码导致嵌入式系统编译失败的问题。
   * 修复WITHOUT_FSCRIPT没有生效的问题。
+  * 完善fscript表达式。
 
 2022/01/10
   * 完善fscript if/elseif/else语句

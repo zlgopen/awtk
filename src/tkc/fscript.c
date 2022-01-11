@@ -1521,7 +1521,13 @@ static ret_t fexpr_parse(fscript_parser_t* parser, value_t* result) {
   value_set_int(result, 0);
 
   t = fscript_parser_get_token_ex(parser, TRUE);
-  if (t != NULL && t->type == TOKEN_VAR) {
+  if (t == NULL || t->type == TOKEN_RBRACKET || t->type == TOKEN_SEMICOLON) {
+    value_reset(result);
+    fscript_parser_unget_token(parser);
+    return RET_OK;
+  }
+
+  if (t->type == TOKEN_VAR) {
     is_local = TRUE;
   } else {
     fscript_parser_unget_token(parser);
@@ -1650,7 +1656,9 @@ static ret_t fscript_parse_statements(fscript_parser_t* parser, fscript_func_cal
     value_set_int(&v, 0);
     ret = fexpr_parse(parser, &v);
     if (ret == RET_OK) {
-      func_args_push(args, &v);
+      if (v.type != VALUE_TYPE_INVALID) {
+        func_args_push(args, &v);
+      }
       t = fscript_parser_get_token(parser);
       if (t == NULL) {
         break;
