@@ -14,7 +14,6 @@
  *
  */
 
-#ifndef WITHOUT_FSCRIPT
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
 #include "tkc/utils.h"
@@ -24,6 +23,7 @@
 #include "tkc/general_factory.h"
 #include "tkc/object_locker.h"
 
+#ifndef WITHOUT_FSCRIPT
 #define STR_GLOBAL_PREFIX "global."
 #define GLOBAL_PREFIX_LEN 7
 
