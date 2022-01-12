@@ -86,4 +86,53 @@ static ret_t on_cmd_line(int argc, char* argv[]) {
 #include "awtk_main.inc"
 ```
 
+* 指定资源路径
+
+```c
+
+#define APP_RES_ROOT "./"
+
+#include "awtk_main.inc"
+```
+
+* 从zip文件加载资源
+
+```c
+
+#define ASSETS_ZIP "./assets.zip"
+
+#include "awtk_main.inc"
+```
+
+* 旋转屏幕 
+
+```c
+
+//横屏当竖屏
+#define WITH_LCD_PORTRAIT 1
+
+//竖屏当横屏
+#define WITH_LCD_LANDSCAPE 1
+
+#include "awtk_main.inc"
+```
+
+* 启用鼠标指针
+
+```c
+#define ENABLE_CURSOR 1
+
+#include "awtk_main.inc"
+```
+
+* 指定默认语言
+
+```c
+
+#define APP_DEFAULT_LANGUAGE "zh"
+#define APP_DEFAULT_COUNTRY "CN"
+
+#include "awtk_main.inc"
+```
+
 > 请参考[完整的例子](https://github.com/zlgopen/awtk-jerryscript/blob/master/src/c/main.c)
