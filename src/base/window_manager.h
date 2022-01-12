@@ -482,6 +482,7 @@ ret_t window_manager_snap_prev_window(widget_t* widget, widget_t* prev_win, bitm
 dialog_highlighter_t* window_manager_get_dialog_highlighter(widget_t* widget);
 
 widget_t* window_manager_create(void);
+ret_t window_manager_destroy(widget_t* widget);
 
 /*helper for sub class*/
 widget_t* window_manager_init(window_manager_t* wm, const widget_vtable_t* wvt,

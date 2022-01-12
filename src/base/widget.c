@@ -51,7 +51,6 @@ ret_t widget_focus_down(widget_t* widget);
 ret_t widget_focus_left(widget_t* widget);
 ret_t widget_focus_right(widget_t* widget);
 static ret_t widget_unref_async(widget_t* widget);
-static ret_t widget_destroy_sync(widget_t* widget);
 static ret_t widget_ensure_style_mutable(widget_t* widget);
 static ret_t widget_dispatch_blur_event(widget_t* widget);
 /*虚函数的包装*/
@@ -3228,7 +3227,7 @@ ret_t widget_remove_idle(widget_t* widget, uint32_t idle_id) {
   return idle_remove(idle_id);
 }
 
-static ret_t widget_destroy_sync(widget_t* widget) {
+ret_t widget_destroy_sync(widget_t* widget) {
   event_t e = event_init(EVT_DESTROY, widget);
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
 

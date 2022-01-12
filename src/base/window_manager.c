@@ -741,3 +741,15 @@ ret_t window_manager_set_curr_expected_sleep_time(widget_t* widget,
   wm->curr_expected_sleep_time = curr_expected_sleep_time;
   return RET_OK;
 }
+
+ret_t window_manager_destroy(widget_t* widget) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);
+
+  if (widget->ref_count > 1) {
+    widget->ref_count = 1;
+    log_warn("window manager will be forcibly destroyed!!!\n");
+  }
+
+  return widget_destroy_sync(widget);
+}
