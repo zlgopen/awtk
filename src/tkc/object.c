@@ -794,9 +794,10 @@ tk_object_t* tk_object_get_child_object(tk_object_t* obj, const char* path,
   const char* p = strchr(path, '.');
   if (p != NULL) {
     value_t v;
-    char subname[MAX_PATH + 1];
+    char subname[TK_NAME_LEN + 1];
+    return_value_if_fail(p - path < TK_NAME_LEN + 1, NULL);
 
-    tk_strncpy_s(subname, MAX_PATH, path, p - path);
+    tk_strncpy_s(subname, sizeof(subname), path, p - path);
     if (tk_object_get_prop(obj, subname, &v) == RET_OK) {
       if (v.type == VALUE_TYPE_OBJECT) {
         *next_path = p + 1;
