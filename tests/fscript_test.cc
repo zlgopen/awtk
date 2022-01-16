@@ -15,6 +15,7 @@ TEST(FScript, args) {
   fscript_eval(obj, "sum(1,2,3,4,5,6,7,8,9,10,11)", &v);
   ASSERT_EQ(66, value_int(&v));
   value_reset(&v);
+  TK_OBJECT_UNREF(obj);
 }
 
 TEST(FScript, basic0) {
@@ -1728,6 +1729,7 @@ TEST(FScript, convert1) {
   ASSERT_EQ(v.type == VALUE_TYPE_DOUBLE, true);
   ASSERT_EQ(123, value_double(&v));
 
+  TK_OBJECT_UNREF(obj);
   value_reset(&v);
 }
 
@@ -1752,10 +1754,12 @@ TEST(FScript, print) {
   str_init(&str, 10);
 
   tk_object_set_prop_pointer(obj, "str", &str);
-  tk_object_set_prop_pointer(obj, STR_FSCRIPT_FUNCTION_PREFIX "print", (void*)my_print);
-  fscript_eval(obj, "print(\"hello\")", &v);
+  fscript_t* fscript = fscript_create(obj, "print(\"hello\")");
+  fscript_set_print_func(fscript, my_print);
+  fscript_exec(fscript, &v);
   ASSERT_STREQ(str.str, "hello");
   str_reset(&str);
+  fscript_destroy(fscript);
 
   value_reset(&v);
   TK_OBJECT_UNREF(obj);
@@ -1783,6 +1787,7 @@ TEST(FScript, on_error) {
 
   value_reset(&v);
   TK_OBJECT_UNREF(obj);
+  fscript_destroy(fscript);
 }
 
 TEST(FScript, while_return) {
@@ -1940,6 +1945,8 @@ TEST(FExr, str_append) {
 
   fscript_eval(obj, "aa=\"hello \";bb=str_append(aa, \"world\");bb", &v1);
   ASSERT_STREQ(value_str(&v1), "hello world");
+  value_reset(&v1);
+
   TK_OBJECT_UNREF(obj);
 }
 
@@ -1975,21 +1982,31 @@ TEST(FExr, char_at) {
 
   fscript_eval(obj, "char_at(\"hello\", 0)", &v1);
   ASSERT_STREQ(value_str(&v1), "h");
+  value_reset(&v1);
+
   fscript_eval(obj, "char_at(\"hello\", 1)", &v1);
   ASSERT_STREQ(value_str(&v1), "e");
+  value_reset(&v1);
+
   fscript_eval(obj, "char_at(\"hello\", -1)", &v1);
   ASSERT_STREQ(value_str(&v1), "o");
+  value_reset(&v1);
+
   fscript_eval(obj, "char_at(\"hello\", -2)", &v1);
   ASSERT_STREQ(value_str(&v1), "l");
+  value_reset(&v1);
 
   fscript_eval(obj, "char_at_first(\"hello\")", &v1);
   ASSERT_STREQ(value_str(&v1), "h");
+  value_reset(&v1);
 
   fscript_eval(obj, "char_at_last(\"hello\")", &v1);
   ASSERT_STREQ(value_str(&v1), "o");
+  value_reset(&v1);
 
   fscript_eval(obj, "char_at_random(\"hhh\")", &v1);
   ASSERT_STREQ(value_str(&v1), "h");
+  value_reset(&v1);
 
   TK_OBJECT_UNREF(obj);
 }

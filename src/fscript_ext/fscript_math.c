@@ -242,7 +242,7 @@ static ret_t func_is_positive(fscript_t* fscript, fscript_args_t* args, value_t*
 }
 
 static ret_t func_random0to1(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  double v = (double)(random()%100000)/100000.0f;
+  double v = (double)(random() % 100000) / 100000.0f;
 
   value_set_double(result, v);
 

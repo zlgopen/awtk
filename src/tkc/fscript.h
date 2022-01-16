@@ -135,7 +135,6 @@ struct _fscript_t {
    * 脚本执行上下文。
    */
   tk_object_t* obj;
-
   /**
    * @property {ret_t} error_code
    * @annotation ["readable"]
@@ -160,6 +159,12 @@ struct _fscript_t {
    * 运行时错误的列号。
    */
   int32_t error_col;
+  /**
+   * @property {uint16_t} lines
+   * @annotation ["readable"]
+   * 代码总行数。
+   */
+  uint16_t lines;
 
   /*private*/
   char* code_id;
@@ -178,6 +183,7 @@ struct _fscript_t {
 
   void* on_error_ctx;
   fscript_on_error_t on_error;
+  fscript_func_t print;
 };
 
 /**
@@ -252,6 +258,16 @@ ret_t fscript_set_error(fscript_t* fscript, ret_t code, const char* func, const 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t fscript_set_on_error(fscript_t* fscript, fscript_on_error_t on_error, void* ctx);
+
+/**
+ * @method fscript_set_print_func
+ * 设置打印日志的函数。
+ * @param {fscript_t*} fscript 脚本引擎对象。
+ * @param {fscript_func_t} print_func 打印日志的函数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_set_print_func(fscript_t* fscript, fscript_func_t print);
 
 /**
  * @method fscript_destroy
@@ -385,6 +401,28 @@ static inline const char* value_id(const value_t* v) {
   return_value_if_fail(v->type == VALUE_TYPE_FSCRIPT_ID, NULL);
   return (const char*)(v->value.str);
 }
+
+typedef ret_t (*fscript_on_init_t)(fscript_t* fscript, const char* code);
+typedef ret_t (*fscript_on_deinit_t)(fscript_t* fscript);
+typedef ret_t (*fscript_before_exec_t)(fscript_t* fscript);
+typedef ret_t (*fscript_after_exec_t)(fscript_t* fscript);
+typedef ret_t (*fscript_set_var_t)(fscript_t* fscript, const char* name, const value_t* v);
+typedef ret_t (*fscript_exec_func_t)(fscript_t* fscript, const char* name,
+                                     fscript_func_call_t* iter, value_t* result);
+
+ret_t fscript_set_var_default(fscript_t* fscript, const char* name, const value_t* value);
+ret_t fscript_exec_func_default(fscript_t* fscript, fscript_func_call_t* iter, value_t* result);
+
+typedef struct _fscript_hooks_t {
+  fscript_on_init_t on_init;
+  fscript_on_deinit_t on_deinit;
+  fscript_set_var_t set_var;
+  fscript_exec_func_t exec_func;
+  fscript_before_exec_t before_exec;
+  fscript_after_exec_t after_exec;
+} fscript_hooks_t;
+
+ret_t fscript_set_hooks(const fscript_hooks_t* hooks);
 
 END_C_DECLS
 

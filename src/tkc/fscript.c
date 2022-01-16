@@ -27,6 +27,13 @@
 #define STR_GLOBAL_PREFIX "global."
 #define GLOBAL_PREFIX_LEN 7
 
+static const fscript_hooks_t* s_hooks;
+
+ret_t fscript_set_hooks(const fscript_hooks_t* hooks) {
+  s_hooks = hooks;
+  return RET_OK;
+}
+
 static ret_t func_function_def(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   return RET_OK;
 }
@@ -64,8 +71,16 @@ static ret_t func_return(fscript_t* fscript, fscript_args_t* args, value_t* resu
 static ret_t func_get(fscript_t* fscript, fscript_args_t* args, value_t* result);
 static ret_t func_set(fscript_t* fscript, fscript_args_t* args, value_t* result);
 static ret_t func_unset(fscript_t* fscript, fscript_args_t* args, value_t* result);
-static ret_t fscript_exec_func(fscript_t* fscript, fscript_func_call_t* iter, value_t* result);
 static ret_t func_set_local(fscript_t* fscript, fscript_args_t* args, value_t* result);
+
+static ret_t fscript_exec_func(fscript_t* fscript, const char* name, fscript_func_call_t* iter,
+                               value_t* result) {
+  if (s_hooks != NULL && s_hooks->exec_func != NULL) {
+    return s_hooks->exec_func(fscript, name, iter, result);
+  } else {
+    return fscript_exec_func_default(fscript, iter, result);
+  }
+}
 
 ret_t fscript_set_error(fscript_t* fscript, ret_t code, const char* func, const char* message) {
   fscript->error_code = code;
@@ -89,6 +104,14 @@ ret_t fscript_set_on_error(fscript_t* fscript, fscript_on_error_t on_error, void
   return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
   fscript->on_error = on_error;
   fscript->on_error_ctx = ctx;
+
+  return RET_OK;
+}
+
+ret_t fscript_set_print_func(fscript_t* fscript, fscript_func_t print) {
+  return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
+
+  fscript->print = print;
 
   return RET_OK;
 }
@@ -193,14 +216,17 @@ static ret_t fscript_func_call_destroy(fscript_func_call_t* call) {
 }
 
 typedef struct _fscript_function_def_t {
+  char* name;
   darray_t params;
   fscript_func_call_t* body;
 } fscript_function_def_t;
 
-static fscript_function_def_t* fscript_function_def_create(fscript_func_call_t* body) {
+static fscript_function_def_t* fscript_function_def_create(const char* name,
+                                                           fscript_func_call_t* body) {
   fscript_function_def_t* func = TKMEM_ZALLOC(fscript_function_def_t);
   return_value_if_fail(func != NULL, NULL);
   func->body = body;
+  func->name = tk_strdup(name);
   darray_init(&(func->params), 3, default_destroy, NULL);
   return func;
 }
@@ -209,6 +235,7 @@ static ret_t fscript_function_def_destroy(fscript_function_def_t* func) {
   return_value_if_fail(func != NULL, RET_BAD_PARAMS);
   darray_deinit(&(func->params));
   fscript_func_call_destroy(func->body);
+  TKMEM_FREE(func->name);
   memset(func, 0x00, sizeof(fscript_function_def_t));
   TKMEM_FREE(func);
 
@@ -288,7 +315,7 @@ static ret_t fscript_get_var(fscript_t* fscript, const char* name, value_t* valu
   return tk_object_get_prop(fscript->obj, name, value);
 }
 
-static ret_t fscript_set_var(fscript_t* fscript, const char* name, const value_t* value) {
+ret_t fscript_set_var_default(fscript_t* fscript, const char* name, const value_t* value) {
   value_t v;
   ret_t ret = RET_FAIL;
 
@@ -303,6 +330,14 @@ static ret_t fscript_set_var(fscript_t* fscript, const char* name, const value_t
   }
 
   return ret;
+}
+
+ret_t fscript_set_var(fscript_t* fscript, const char* name, const value_t* value) {
+  if (s_hooks != NULL && s_hooks->set_var != NULL) {
+    return s_hooks->set_var(fscript, name, value);
+  } else {
+    return fscript_set_var_default(fscript, name, value);
+  }
 }
 
 static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uint32_t i,
@@ -352,7 +387,7 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
       }
     }
   } else if (s->type == VALUE_TYPE_FSCRIPT_FUNC) {
-    fscript_exec_func(fscript, value_func(s), d);
+    fscript_exec_func(fscript, NULL, value_func(s), d);
   } else {
     value_copy(d, s);
   }
@@ -603,7 +638,7 @@ static ret_t fscript_exec_ext_func(fscript_t* fscript, fscript_func_call_t* iter
   return ret;
 }
 
-static ret_t fscript_exec_func(fscript_t* fscript, fscript_func_call_t* iter, value_t* result) {
+ret_t fscript_exec_func_default(fscript_t* fscript, fscript_func_call_t* iter, value_t* result) {
   fscript->curr = iter;
   result->type = VALUE_TYPE_INVALID;
   if (fscript_exec_core_func(fscript, iter, result) == RET_NOT_FOUND) {
@@ -617,17 +652,25 @@ ret_t fscript_exec(fscript_t* fscript, value_t* result) {
   fscript_func_call_t* iter = NULL;
   return_value_if_fail(fscript != NULL, RET_FAIL);
 
+  if (s_hooks != NULL && s_hooks->before_exec != NULL) {
+    s_hooks->before_exec(fscript);
+  }
+
   value_set_str(result, NULL);
   iter = fscript->first;
   while (iter != NULL) {
     return_value_if_fail(iter->func != NULL, RET_FAIL);
     value_reset(result);
-    return_value_if_fail(fscript_exec_func(fscript, iter, result) == RET_OK, RET_FAIL);
+    return_value_if_fail(fscript_exec_func(fscript, NULL, iter, result) == RET_OK, RET_FAIL);
     if (fscript->returned) {
       fscript->returned = FALSE;
       break;
     }
     iter = iter->next;
+  }
+
+  if (s_hooks != NULL && s_hooks->after_exec != NULL) {
+    s_hooks->after_exec(fscript);
   }
 
   return RET_OK;
@@ -642,6 +685,10 @@ static ret_t on_free_func_def(void* ctx, const void* data) {
 
 ret_t fscript_destroy(fscript_t* fscript) {
   return_value_if_fail(fscript != NULL, RET_FAIL);
+
+  if (s_hooks != NULL && s_hooks->on_deinit != NULL) {
+    s_hooks->on_deinit(fscript);
+  }
 
   str_reset(&(fscript->str));
   TK_OBJECT_UNREF(fscript->locals);
@@ -1559,6 +1606,11 @@ fscript_t* fscript_create_impl(fscript_parser_t* parser) {
   fscript->first = parser->first;
   fscript->funcs_def = parser->funcs_def;
   fscript->code_id = parser->code_id;
+  fscript->lines = parser->row + 1;
+
+  if (s_hooks != NULL && s_hooks->on_init != NULL) {
+    s_hooks->on_init(fscript, parser->str);
+  }
 
   parser->obj = NULL;
   parser->first = NULL;
@@ -1588,7 +1640,7 @@ static ret_t func_function(fscript_t* fscript, fscript_args_t* args, value_t* re
     }
   }
 
-  ret = fscript_exec_func(fscript, func, result);
+  ret = fscript_exec_func(fscript, func_def->name, func, result);
 
   TK_OBJECT_UNREF(fscript->locals);
   fscript->locals = saved_locals;
@@ -1617,7 +1669,7 @@ static ret_t fscript_parse_function_def(fscript_parser_t* parser, fscript_func_c
   statements = fscript_func_call_create(parser, "func", 4);
   return_value_if_fail(statements != NULL, RET_OOM);
 
-  func_def = fscript_function_def_create(statements);
+  func_def = fscript_function_def_create(func_name, statements);
   return_value_if_fail(func_def != NULL, RET_OOM);
   tk_object_set_prop_pointer(parser->funcs_def, func_name, func_def);
 
@@ -2029,22 +2081,20 @@ static ret_t func_expr(fscript_t* fscript, fscript_args_t* args, value_t* result
 }
 
 static ret_t func_print(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  fscript_func_t func = NULL;
-  func =
-      (fscript_func_t)tk_object_get_prop_pointer(fscript->obj, STR_FSCRIPT_FUNCTION_PREFIX "print");
+  uint32_t i = 0;
+  char buff[64];
 
-  if (func != NULL) {
-    return func(fscript, args, result);
-  } else {
-    uint32_t i = 0;
-    char buff[64];
-    value_set_bool(result, TRUE);
-    for (i = 0; i < args->size; i++) {
-      log_info("%s ", value_str_ex(args->args + i, buff, sizeof(buff) - 1));
-    }
-    log_info("\n");
-    return RET_OK;
+  value_set_bool(result, TRUE);
+  for (i = 0; i < args->size; i++) {
+    log_info("%s ", value_str_ex(args->args + i, buff, sizeof(buff) - 1));
   }
+  log_info("\n");
+
+  if (fscript->print != NULL) {
+    return fscript->print(fscript, args, result);
+  }
+
+  return RET_OK;
 }
 
 static ret_t func_iformat(fscript_t* fscript, fscript_args_t* args, value_t* result) {

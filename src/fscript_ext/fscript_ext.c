@@ -325,13 +325,13 @@ static ret_t func_flow_get(fscript_t* fscript, fscript_args_t* args, value_t* re
   const char* subname = NULL;
   FSCRIPT_FUNC_CHECK(args->size >= 2, RET_BAD_PARAMS);
   type = value_str(args->args);
-  subname = value_str(args->args+1);
+  subname = value_str(args->args + 1);
   FSCRIPT_FUNC_CHECK(name != NULL && subname != NULL, RET_BAD_PARAMS);
 
-  tk_snprintf(name, sizeof(name)-1, "%s.%s", type, subname);
+  tk_snprintf(name, sizeof(name) - 1, "%s.%s", type, subname);
   if (tk_object_get_prop(fscript->obj, name, result) != RET_OK) {
-    if(args->size > 2) {
-      value_copy(result, args->args+2);
+    if (args->size > 2) {
+      value_copy(result, args->args + 2);
     } else {
       result->type = VALUE_TYPE_INVALID;
     }
@@ -346,10 +346,10 @@ static ret_t func_flow_set(fscript_t* fscript, fscript_args_t* args, value_t* re
   const char* subname = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 3, RET_BAD_PARAMS);
   type = value_str(args->args);
-  subname = value_str(args->args+1);
+  subname = value_str(args->args + 1);
   FSCRIPT_FUNC_CHECK(name != NULL && subname != NULL, RET_BAD_PARAMS);
 
-  tk_snprintf(name, sizeof(name)-1, "%s.%s", type, subname);
+  tk_snprintf(name, sizeof(name) - 1, "%s.%s", type, subname);
   value_set_bool(result, tk_object_set_prop(fscript->obj, name, args->args + 2) == RET_OK);
 
   return RET_OK;
