@@ -98,7 +98,7 @@ ret_t application_init() {
   widget_child_on(win, "file_save", EVT_CLICK, on_file_save, win);
   widget_child_on(win, "file_open", EVT_CLICK, on_file_open, win);
   widget_child_on(win, "folder", EVT_CLICK, on_choose_folder, win);
-  widget_child_on(win, "manager", EVT_CLICK, on_manager, win);
+  widget_child_on(win, "browser", EVT_CLICK, on_manager, win);
   widget_child_on(win, "quit", EVT_CLICK, on_quit, win);
 
   return RET_OK;
