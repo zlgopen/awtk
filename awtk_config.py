@@ -239,6 +239,7 @@ os.environ['STATIC_LIBS'] = ';'.join(STATIC_LIBS)
 
 os.environ['WITH_AWTK_SO'] = 'true'
 os.environ['AWTK_CCFLAGS'] = AWTK_CCFLAGS
+os.environ['CROSS_COMPILE'] = str(not TOOLS_PREFIX == '')
 
 os.environ['SDL_UBUNTU_USE_IME'] = str(False)
 # os.environ['SDL_UBUNTU_USE_IME'] = str(True)
