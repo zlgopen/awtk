@@ -43,10 +43,12 @@ typedef struct _debugger_fscript_t {
 
   uint32_t last_executed_line;
 
-  int32_t next_stop_line;
   int32_t prev_breaked_line;
   uint32_t executed_lines;
-  uint32_t next_stop_executed_line;
+  
+  int32_t next_stop_line;
+  int32_t next_stop_executed_line;
+  int32_t next_stop_call_frame_index;
 
   str_t code;
   bool_t paused;
@@ -54,6 +56,8 @@ typedef struct _debugger_fscript_t {
   tk_mutex_nest_t* mutex;
   tk_cond_var_t* cond_var;
   darray_t break_points;
+  darray_t call_stack_frames;
+  bool_t code_changed;
 } debugger_fscript_t;
 
 /**

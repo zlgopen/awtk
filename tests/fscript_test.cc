@@ -2396,3 +2396,22 @@ TEST(FExr, if14) {
 
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(FExr, reload) {
+  value_t v1;
+  char buff[32];
+  tk_object_t* obj = object_default_create();
+  fscript_t* fscript = fscript_create(obj, "123");
+  fscript_exec(fscript, &v1);
+  ASSERT_EQ(value_int(&v1), 123);
+
+  for (int32_t i = 0; i < 100; i++) {
+    tk_snprintf(buff, sizeof(buff), "%d", i);
+    fscript_reload(fscript, buff);
+    fscript_exec(fscript, &v1);
+    ASSERT_EQ(value_int(&v1), i);
+  }
+
+  fscript_destroy(fscript);
+  TK_OBJECT_UNREF(obj);
+}

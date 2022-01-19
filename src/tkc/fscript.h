@@ -237,6 +237,16 @@ ret_t fscript_syntax_check(tk_object_t* obj, const char* script, fscript_parser_
 ret_t fscript_exec(fscript_t* fscript, value_t* result);
 
 /**
+ * @method fscript_reload
+ * 重新加载代码。 
+ * @param {fscript_t*} fscript 脚本引擎对象。
+ * @param {const char*} script 脚本代码。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_reload(fscript_t* fscript, const char* script);
+
+/**
  * @method fscript_set_error
  * 用于扩展函数设置遇到的错误。
  * @param {fscript_t*} fscript 脚本引擎对象。

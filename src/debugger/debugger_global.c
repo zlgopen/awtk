@@ -33,7 +33,10 @@ static ret_t debugger_fscript_on_connect(fscript_t* fscript) {
 
   debugger = debugger_server_find_debugger(fscript->code_id);
   if (debugger != NULL) {
-    debugger_fscript_set_fscript(debugger, fscript);
+    if (debugger_lock(debugger) == RET_OK) {
+      debugger_fscript_set_fscript(debugger, fscript);
+      debugger_unlock(debugger);
+    }
   }
 
   return RET_FAIL;
@@ -48,14 +51,17 @@ static ret_t debugger_fscript_on_disconnect(fscript_t* fscript) {
 
   debugger = debugger_server_find_debugger(fscript->code_id);
   if (debugger != NULL) {
-    debugger_fscript_set_fscript(debugger, NULL);
+    if (debugger_lock(debugger) == RET_OK) {
+      debugger_fscript_set_fscript(debugger, NULL);
+      debugger_unlock(debugger);
+    }
   }
 
   return RET_FAIL;
 }
 
 static ret_t debugger_fscript_on_fscript_init(fscript_t* fscript, const char* code) {
-  return debugger_fscript_on_connect(fscript);
+  return RET_OK;
 }
 
 static ret_t debugger_fscript_on_fscript_before_exec(fscript_t* fscript) {
@@ -63,11 +69,11 @@ static ret_t debugger_fscript_on_fscript_before_exec(fscript_t* fscript) {
 }
 
 static ret_t debugger_fscript_on_fscript_after_exec(fscript_t* fscript) {
-  return RET_OK;
+  return debugger_fscript_on_disconnect(fscript);
 }
 
 static ret_t debugger_fscript_on_fscript_deinit(fscript_t* fscript) {
-  return debugger_fscript_on_disconnect(fscript);
+  return RET_OK;
 }
 
 static const fscript_hooks_t s_fscript_hooks = {

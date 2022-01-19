@@ -145,18 +145,18 @@ static ret_t debugger_server_send_object(debugger_server_t* server, debugger_res
   ret_t ret = RET_FAIL;
   ubjson_writer_t writer;
   binary_data_t data = {0, NULL};
+  return_value_if_fail(wbuffer_init_extendable(&wb) != NULL, RET_OOM);
 
   if (obj != NULL) {
-    return_value_if_fail(wbuffer_init_extendable(&wb) != NULL, RET_OOM);
-
     ubjson_writer_init(&writer, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
     ret = ubjson_writer_write_object(&writer, obj);
     goto_error_if_fail(ret == RET_OK);
-
-    data.data = wb.data;
-    data.size = wb.cursor;
+  } else {
+    wbuffer_write_string(&wb, "{}"); 
   }
 
+  data.data = wb.data;
+  data.size = wb.cursor;
   ret = debugger_server_send_data(server, resp, &data);
 
 error:

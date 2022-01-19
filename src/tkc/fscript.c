@@ -659,9 +659,9 @@ ret_t fscript_exec(fscript_t* fscript, value_t* result) {
   value_set_str(result, NULL);
   iter = fscript->first;
   while (iter != NULL) {
-    return_value_if_fail(iter->func != NULL, RET_FAIL);
+    break_if_fail(iter->func != NULL);
     value_reset(result);
-    return_value_if_fail(fscript_exec_func(fscript, NULL, iter, result) == RET_OK, RET_FAIL);
+    break_if_fail(fscript_exec_func(fscript, NULL, iter, result) == RET_OK);
     if (fscript->returned) {
       fscript->returned = FALSE;
       break;
@@ -683,7 +683,7 @@ static ret_t on_free_func_def(void* ctx, const void* data) {
   return RET_OK;
 }
 
-ret_t fscript_destroy(fscript_t* fscript) {
+static ret_t fscript_reset(fscript_t* fscript) {
   return_value_if_fail(fscript != NULL, RET_FAIL);
 
   if (s_hooks != NULL && s_hooks->on_deinit != NULL) {
@@ -700,6 +700,14 @@ ret_t fscript_destroy(fscript_t* fscript) {
   fscript_func_call_destroy(fscript->first);
   TKMEM_FREE(fscript->code_id);
   memset(fscript, 0x00, sizeof(fscript_t));
+
+  return RET_OK;
+}
+
+ret_t fscript_destroy(fscript_t* fscript) {
+  return_value_if_fail(fscript != NULL, RET_FAIL);
+  fscript_reset(fscript);
+
   TKMEM_FREE(fscript);
 
   return RET_OK;
@@ -1598,8 +1606,8 @@ static ret_t fexpr_parse(fscript_parser_t* parser, value_t* result) {
   return RET_OK;
 }
 
-fscript_t* fscript_create_impl(fscript_parser_t* parser) {
-  fscript_t* fscript = TKMEM_ZALLOC(fscript_t);
+static fscript_t* fscript_init_with_parser(fscript_t* fscript, fscript_parser_t* parser) {
+  fscript = fscript != NULL ? fscript : TKMEM_ZALLOC(fscript_t);
   return_value_if_fail(fscript != NULL, NULL);
   fscript->str = parser->temp;
   fscript->obj = parser->obj;
@@ -1785,10 +1793,10 @@ ret_t fscript_syntax_check(tk_object_t* obj, const char* script, fscript_parser_
   return ret;
 }
 
-fscript_t* fscript_create_ex(tk_object_t* obj, const char* expr, bool_t keep_func_name) {
+static fscript_t* fscript_load(fscript_t* fscript, tk_object_t* obj, const char* expr,
+                               bool_t keep_func_name) {
   ret_t ret = RET_OK;
   fscript_parser_t parser;
-  fscript_t* fscript = NULL;
   fscript_parser_error_t error;
   return_value_if_fail(expr != NULL, NULL);
 
@@ -1798,7 +1806,7 @@ fscript_t* fscript_create_ex(tk_object_t* obj, const char* expr, bool_t keep_fun
   parser.first = fscript_func_call_create(&parser, "expr", 4);
   ret = fscript_parse_all(&parser, parser.first);
   if (ret == RET_OK) {
-    fscript = fscript_create_impl(&parser);
+    fscript = fscript_init_with_parser(fscript, &parser);
     fscript_parser_deinit(&parser);
   } else {
     log_warn("parser error:%s\n", expr);
@@ -1807,6 +1815,19 @@ fscript_t* fscript_create_ex(tk_object_t* obj, const char* expr, bool_t keep_fun
   fscript_parser_error_deinit(&error);
 
   return fscript;
+}
+
+ret_t fscript_reload(fscript_t* fscript, const char* expr) {
+  tk_object_t* obj = NULL;
+  return_value_if_fail(fscript != NULL && fscript->obj != NULL && expr != NULL, RET_BAD_PARAMS);
+  obj = fscript->obj;
+  fscript_reset(fscript);
+
+  return fscript_load(fscript, obj, expr, FALSE) != NULL ? RET_OK : RET_FAIL;
+}
+
+fscript_t* fscript_create_ex(tk_object_t* obj, const char* expr, bool_t keep_func_name) {
+  return fscript_load(NULL, obj, expr, keep_func_name);
 }
 
 fscript_t* fscript_create(tk_object_t* obj, const char* expr) {
