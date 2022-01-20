@@ -208,6 +208,19 @@ fscript_t* fscript_create(tk_object_t* obj, const char* script);
 fscript_t* fscript_create_ex(tk_object_t* obj, const char* script, bool_t keep_func_name);
 
 /**
+ * @method fscript_init
+ * 初始化引擎对象，并解析代码。
+ * @param {fscript_t*} fscript 初始化 fscript 对象。
+ * @param {tk_object_t*} obj 脚本执行上下文。
+ * @param {const char*} script 脚本代码。
+ * @param {const char*} first_call_name 第一个函数的名字。
+ * @param {bool_t} keep_func_name 是否在func_call结构后保存函数名。
+ *
+ * @return {fscript_t*} 返回fscript对象。
+ */
+fscript_t* fscript_init(fscript_t* fscript, tk_object_t* obj, const char* script, const char* first_call_name, bool_t keep_func_name);
+
+/**
  * @method fscript_syntax_check
  * 解析代码，分析是否有语法错误。
  *
@@ -278,6 +291,15 @@ ret_t fscript_set_on_error(fscript_t* fscript, fscript_on_error_t on_error, void
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t fscript_set_print_func(fscript_t* fscript, fscript_func_t print);
+
+/**
+ * @method fscript_deinit
+ * 清除引擎对象的数据。
+ * @param {fscript_t*} fscript 脚本引擎对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_deinit(fscript_t* fscript);
 
 /**
  * @method fscript_destroy
@@ -398,6 +420,9 @@ struct _fscript_func_call_t {
     fscript_set_error(fscript, code, __FUNCTION__, "" #predicate " not satisfied."); \
     return code;                                                                     \
   }
+
+#define FSCRIPT_STR_GLOBAL_PREFIX "global."
+#define FSCRIPT_GLOBAL_PREFIX_LEN 7
 
 #define VALUE_TYPE_FSCRIPT_ID 128
 #define VALUE_TYPE_FSCRIPT_FUNC VALUE_TYPE_FSCRIPT_ID + 1

@@ -24,8 +24,6 @@
 #include "tkc/object_locker.h"
 
 #ifndef WITHOUT_FSCRIPT
-#define STR_GLOBAL_PREFIX "global."
-#define GLOBAL_PREFIX_LEN 7
 
 static const fscript_hooks_t* s_hooks;
 
@@ -302,8 +300,8 @@ static ret_t fscript_get_var(fscript_t* fscript, const char* name, value_t* valu
     name += 1;
   }
 
-  if (strncmp(name, STR_GLOBAL_PREFIX, GLOBAL_PREFIX_LEN) == 0) {
-    return tk_object_get_prop(fscript_get_global_object(), name + GLOBAL_PREFIX_LEN, value);
+  if (strncmp(name, FSCRIPT_STR_GLOBAL_PREFIX, FSCRIPT_GLOBAL_PREFIX_LEN) == 0) {
+    return tk_object_get_prop(fscript_get_global_object(), name + FSCRIPT_GLOBAL_PREFIX_LEN, value);
   }
 
   if (fscript->locals != NULL) {
@@ -319,8 +317,8 @@ ret_t fscript_set_var_default(fscript_t* fscript, const char* name, const value_
   value_t v;
   ret_t ret = RET_FAIL;
 
-  if (strncmp(name, STR_GLOBAL_PREFIX, GLOBAL_PREFIX_LEN) == 0) {
-    return tk_object_set_prop(fscript_get_global_object(), name + GLOBAL_PREFIX_LEN, value);
+  if (strncmp(name, FSCRIPT_STR_GLOBAL_PREFIX, FSCRIPT_GLOBAL_PREFIX_LEN) == 0) {
+    return tk_object_set_prop(fscript_get_global_object(), name + FSCRIPT_GLOBAL_PREFIX_LEN, value);
   }
 
   if (fscript->locals != NULL && tk_object_get_prop(fscript->locals, name, &v) == RET_OK) {
@@ -704,9 +702,13 @@ static ret_t fscript_reset(fscript_t* fscript) {
   return RET_OK;
 }
 
+ret_t fscript_deinit(fscript_t* fscript) {
+  return fscript_reset(fscript);
+}
+
 ret_t fscript_destroy(fscript_t* fscript) {
   return_value_if_fail(fscript != NULL, RET_FAIL);
-  fscript_reset(fscript);
+  fscript_deinit(fscript);
 
   TKMEM_FREE(fscript);
 
@@ -1793,23 +1795,23 @@ ret_t fscript_syntax_check(tk_object_t* obj, const char* script, fscript_parser_
   return ret;
 }
 
-static fscript_t* fscript_load(fscript_t* fscript, tk_object_t* obj, const char* expr,
-                               bool_t keep_func_name) {
+static fscript_t* fscript_load(fscript_t* fscript, tk_object_t* obj, const char* script,
+                               const char* first_call_name, bool_t keep_func_name) {
   ret_t ret = RET_OK;
   fscript_parser_t parser;
   fscript_parser_error_t error;
-  return_value_if_fail(expr != NULL, NULL);
+  return_value_if_fail(script != NULL, NULL);
 
   fscript_parser_error_init(&error);
-  fscript_parser_init(&parser, obj, expr, &error);
+  fscript_parser_init(&parser, obj, script, &error);
   parser.keep_func_name = keep_func_name;
-  parser.first = fscript_func_call_create(&parser, "expr", 4);
+  parser.first = fscript_func_call_create(&parser, first_call_name, strlen(first_call_name));
   ret = fscript_parse_all(&parser, parser.first);
   if (ret == RET_OK) {
     fscript = fscript_init_with_parser(fscript, &parser);
     fscript_parser_deinit(&parser);
   } else {
-    log_warn("parser error:%s\n", expr);
+    log_warn("parser error:%s\n", script);
     fscript_parser_deinit(&parser);
   }
   fscript_parser_error_deinit(&error);
@@ -1817,21 +1819,25 @@ static fscript_t* fscript_load(fscript_t* fscript, tk_object_t* obj, const char*
   return fscript;
 }
 
-ret_t fscript_reload(fscript_t* fscript, const char* expr) {
+ret_t fscript_reload(fscript_t* fscript, const char* script) {
   tk_object_t* obj = NULL;
-  return_value_if_fail(fscript != NULL && fscript->obj != NULL && expr != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(fscript != NULL && fscript->obj != NULL && script != NULL, RET_BAD_PARAMS);
   obj = fscript->obj;
   fscript_reset(fscript);
 
-  return fscript_load(fscript, obj, expr, FALSE) != NULL ? RET_OK : RET_FAIL;
+  return fscript_load(fscript, obj, script, "expr", FALSE) != NULL ? RET_OK : RET_FAIL;
 }
 
-fscript_t* fscript_create_ex(tk_object_t* obj, const char* expr, bool_t keep_func_name) {
-  return fscript_load(NULL, obj, expr, keep_func_name);
+fscript_t* fscript_init(fscript_t* fscript, tk_object_t* obj, const char* script, const char* first_call_name, bool_t keep_func_name) {
+  return fscript_load(fscript, obj, script, first_call_name, keep_func_name);
 }
 
-fscript_t* fscript_create(tk_object_t* obj, const char* expr) {
-  return fscript_create_ex(obj, expr, FALSE);
+fscript_t* fscript_create_ex(tk_object_t* obj, const char* script, bool_t keep_func_name) {
+  return fscript_load(NULL, obj, script, "expr", keep_func_name);
+}
+
+fscript_t* fscript_create(tk_object_t* obj, const char* script) {
+  return fscript_create_ex(obj, script, FALSE);
 }
 
 /*functions*/
