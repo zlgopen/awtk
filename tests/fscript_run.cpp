@@ -102,7 +102,7 @@ int main(int argc, char* argv[]) {
   tk_mem_dump();
   if (argc < 2) {
     printf("Usage: %s script [debug|times]\n", argv[0]);
-    printf("Usage: %s @filename [debug|times\\n", argv[0]);
+    printf("Usage: %s @filename [debug|times\n", argv[0]);
     return 0;
   } else {
     const char* code = argv[1];

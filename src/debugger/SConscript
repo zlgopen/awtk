@@ -1,12 +1,12 @@
 import os
 import copy
-import awtk_config as awtk
 
 BIN_DIR=os.environ['BIN_DIR'];
 LIB_DIR=os.environ['LIB_DIR'];
 
-sources = Glob('*.c') 
+sources = Glob('*.c')
 
 env=DefaultEnvironment().Clone()
-env.Library(os.path.join(LIB_DIR, 'debugger'), sources, LIBS=['tkc'])
+
+env.Library(os.path.join(LIB_DIR, 'debugger'), sources, LIBS=[])
 
