@@ -1,6 +1,8 @@
 # 最新动态
+
 2022/01/21
   * 完善fscript debugger并增加fdb命令行调试工具。
+  * 完善aworks平台的serial\_helper.c（感谢文静提供）
 
 2022/01/20
   * 增加fscript的构造函数和析构函数（感谢智明提供补丁）
