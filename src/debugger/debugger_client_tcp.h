@@ -25,6 +25,9 @@
 #include "tkc/iostream.h"
 #include "debugger/debugger.h"
 #include "debugger/debugger_client.h"
+#include "debugger/debugger_const.h"
+#include "debugger/debugger_global.h"
+#include "debugger/debugger_message.h"
 
 BEGIN_C_DECLS
 

@@ -114,6 +114,16 @@ typedef enum _debugger_req_type_t {
    */
   DEBUGGER_REQ_GET_CODE,
   /**
+   * @const DEBUGGER_REQ_GET_DEBUGGERS
+   * 获取调试器列表。
+   */
+  DEBUGGER_REQ_GET_DEBUGGERS,
+  /**
+   * @const DEBUGGER_REQ_GET_BREAK_POINTS
+   * 获取断点列表。
+   */
+  DEBUGGER_REQ_GET_BREAK_POINTS,
+  /**
    * @const DEBUGGER_REQ_GET_CALLSTACK
    * 获取callstack请求码。
    */
@@ -217,6 +227,16 @@ typedef enum _debugger_resp_type_t {
    * 获取源代码响应码。
    */
   DEBUGGER_RESP_GET_CODE = DEBUGGER_REQ_GET_CODE,
+  /**
+   * @const DEBUGGER_RESP_GET_DEBUGGERS
+   * 获取调试器列表响应码。
+   */
+  DEBUGGER_RESP_GET_DEBUGGERS = DEBUGGER_REQ_GET_DEBUGGERS,
+  /**
+   * @const DEBUGGER_RESP_GET_BREAK_POINTS
+   * 获取断点列表响应码。
+   */
+  DEBUGGER_RESP_GET_BREAK_POINTS = DEBUGGER_REQ_GET_BREAK_POINTS,
   /**
    * @const DEBUGGER_RESP_GET_CALLSTACK
    * 获取callstack响应码。

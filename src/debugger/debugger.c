@@ -164,6 +164,22 @@ ret_t debugger_get_code(debugger_t* debugger, binary_data_t* code) {
   return debugger->vt->get_code(debugger, code);
 }
 
+ret_t debugger_get_debuggers(debugger_t* debugger, binary_data_t* debuggers) {
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger->vt->get_debuggers != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debuggers != NULL, RET_BAD_PARAMS);
+
+  return debugger->vt->get_debuggers(debugger, debuggers);
+}
+
+ret_t debugger_get_break_points(debugger_t* debugger, binary_data_t* break_points) {
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger->vt->get_break_points != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(break_points != NULL, RET_BAD_PARAMS);
+
+  return debugger->vt->get_break_points(debugger, break_points);
+}
+
 ret_t debugger_update_code(debugger_t* debugger, const binary_data_t* code) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->update_code != NULL, RET_BAD_PARAMS);

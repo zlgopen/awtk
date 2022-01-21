@@ -44,4 +44,12 @@ env.Program(os.path.join(BIN_DIR, 'async_call_test'), ["async_call_test.cpp"])
 env.SharedLibrary(os.path.join(BIN_DIR+"/plugins_for_test", 'a'), ["a.c"])
 env.SharedLibrary(os.path.join(BIN_DIR+"/plugins_for_test", 'b'), ["b.c"])
 
+OS_NAME = platform.system();
+CROSS_COMPILE='CROSS_COMPILE' in os.environ and os.environ['CROSS_COMPILE'] == 'True'
+if not CROSS_COMPILE:
+  LIBS=env['LIBS']
+  if OS_NAME != 'Windows':
+    LIBS = LIBS + ['readline']
+  env.Program(os.path.join(BIN_DIR, 'fdb'), ["fdb.cpp"], LIBS=LIBS);
+
 

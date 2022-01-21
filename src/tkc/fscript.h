@@ -218,7 +218,8 @@ fscript_t* fscript_create_ex(tk_object_t* obj, const char* script, bool_t keep_f
  *
  * @return {fscript_t*} 返回fscript对象。
  */
-fscript_t* fscript_init(fscript_t* fscript, tk_object_t* obj, const char* script, const char* first_call_name, bool_t keep_func_name);
+fscript_t* fscript_init(fscript_t* fscript, tk_object_t* obj, const char* script,
+                        const char* first_call_name, bool_t keep_func_name);
 
 /**
  * @method fscript_syntax_check

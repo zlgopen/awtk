@@ -804,7 +804,7 @@ static ret_t fscript_parser_skip_line_comment(fscript_parser_t* parser) {
     str_append_char(str, c);
   } while (c != '\0' && c != '\r' && c != '\n');
 
-  if (str->size > 64) {
+  if (str->size > sizeof(STR_CODE_ID_START)) {
     const char* end = NULL;
     const char* start = strstr(str->str, STR_CODE_ID_START);
     if (start != NULL) {
@@ -1828,7 +1828,8 @@ ret_t fscript_reload(fscript_t* fscript, const char* script) {
   return fscript_load(fscript, obj, script, "expr", FALSE) != NULL ? RET_OK : RET_FAIL;
 }
 
-fscript_t* fscript_init(fscript_t* fscript, tk_object_t* obj, const char* script, const char* first_call_name, bool_t keep_func_name) {
+fscript_t* fscript_init(fscript_t* fscript, tk_object_t* obj, const char* script,
+                        const char* first_call_name, bool_t keep_func_name) {
   return fscript_load(fscript, obj, script, first_call_name, keep_func_name);
 }
 

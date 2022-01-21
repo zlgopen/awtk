@@ -343,6 +343,22 @@ static ret_t debugger_client_get_code(debugger_t* debugger, binary_data_t* code)
   }
 }
 
+static ret_t debugger_client_get_debuggers(debugger_t* debugger, binary_data_t* debuggers) {
+  if (debugger_client_write_simple(debugger, DEBUGGER_REQ_GET_DEBUGGERS, 0) == RET_OK) {
+    return debugger_client_read_binary(debugger, DEBUGGER_RESP_GET_DEBUGGERS, debuggers);
+  } else {
+    return RET_FAIL;
+  }
+}
+
+static ret_t debugger_client_get_break_points(debugger_t* debugger, binary_data_t* break_points) {
+  if (debugger_client_write_simple(debugger, DEBUGGER_REQ_GET_BREAK_POINTS, 0) == RET_OK) {
+    return debugger_client_read_binary(debugger, DEBUGGER_RESP_GET_BREAK_POINTS, break_points);
+  } else {
+    return RET_FAIL;
+  }
+}
+
 static const debugger_vtable_t s_debugger_client_vtable = {
     .init = debugger_client_init,
     .lang = "client",
@@ -360,6 +376,8 @@ static const debugger_vtable_t s_debugger_client_vtable = {
     .get_self = debugger_client_get_self,
     .get_global = debugger_client_get_global,
     .get_code = debugger_client_get_code,
+    .get_debuggers = debugger_client_get_debuggers,
+    .get_break_points = debugger_client_get_break_points,
     .get_callstack = debugger_client_get_callstack,
     .update_code = debugger_client_update_code,
     .set_break_point = debugger_client_set_break_point,

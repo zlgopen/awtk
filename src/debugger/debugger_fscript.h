@@ -41,18 +41,23 @@ typedef struct _debugger_fscript_t {
   char* code_id;
   fscript_t* fscript;
 
-  uint32_t last_executed_line;
-
+  /*前一次执行代码的行号*/
+  uint32_t prev_executed_line;
+  /*前一次中断执行代码的行号*/
   int32_t prev_breaked_line;
+  /*总共执行的行数(包括重复执行)*/
   uint32_t executed_lines;
-  
+
+  /*下一次停止的物理行号(用以实现step over)*/
   int32_t next_stop_line;
+  /*下一次停止的行号(用以实现step in/next)*/
   int32_t next_stop_executed_line;
+  /*下一次停止的callstack序数(用以实现step over/next)*/
   int32_t next_stop_call_frame_index;
 
   str_t code;
   bool_t paused;
-  str_t callstack;
+  str_t temp_str;
   tk_mutex_nest_t* mutex;
   tk_cond_var_t* cond_var;
   darray_t break_points;
@@ -86,6 +91,17 @@ ret_t debugger_fscript_set_fscript(debugger_t* debugger, fscript_t* fscript);
  * @return {debugger_fscript_t*} 返回debugger对象。
  */
 debugger_fscript_t* debugger_fscript_cast(debugger_t* debugger);
+
+/**
+ * @method debugger_fscript_set_code
+ * 设置代码。
+ * @param {debugger_t*} debugger debugger对象。
+ * @param {const binary_data_t*} code 代码。
+ * @param {bool_t} changed 是否重新加载。
+ *
+ * @return {debugger_t*} 返回debugger对象。
+ */
+ret_t debugger_fscript_set_code(debugger_t* debugger, const binary_data_t* code, bool_t changed);
 
 #define DEBUGGER_FSCRIPT(debugger) debugger_fscript_cast((debugger_t*)debugger);
 

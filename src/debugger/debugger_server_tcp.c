@@ -30,6 +30,7 @@ ret_t debugger_server_tcp_init(uint32_t port) {
   return_value_if_fail(!debugger_server_is_running(), RET_BAD_PARAMS);
 
   sock = tk_tcp_listen(port);
+  log_debug("debugger server listen at: %u\n", port);
   return_value_if_fail(sock >= 0, RET_BAD_PARAMS);
 
   s_server_sock = sock;
