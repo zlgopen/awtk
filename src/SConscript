@@ -13,7 +13,6 @@ TOOLS_NAME = os.environ['TOOLS_NAME']
 
 BASE_SOURCES = Glob('layouters/*.c') + \
     Glob('base/*.c') + \
-    Glob('debugger/*.c') + \
     Glob('ui_loader/*.c') + \
     Glob('svg/*.c') + \
     Glob('clip_board/*.c') + \
