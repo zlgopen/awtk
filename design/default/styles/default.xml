@@ -634,7 +634,9 @@
 
 <line_number>
   <style name="default">
-    <normal text_color="black" bg_color="#d0d0d0" text_align_h="right"/>
+    <normal text_color="black" bg_color="#d0d0d0" highlight_line_bg_color="gold" 
+      active_line_bg_color="green"
+      text_align_h="right"/>
   </style>
 </line_number>
 

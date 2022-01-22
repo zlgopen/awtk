@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/01/22
+  * line_number支持设置高亮行。
+
 2022/01/21
   * 完善fscript debugger并增加fdb命令行调试工具。
   * 完善aworks平台的serial\_helper.c（感谢文静提供）
