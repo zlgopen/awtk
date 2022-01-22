@@ -19,6 +19,7 @@
  *
  */
 
+#include "tkc/thread.h"
 #include "tkc/socket_helper.h"
 #include "streams/inet/iostream_tcp.h"
 #include "debugger/debugger_server_tcp.h"
@@ -58,10 +59,34 @@ ret_t debugger_server_tcp_start(void) {
   return RET_OK;
 }
 
+static tk_thread_t* s_accept_thread = NULL;
+static void* accept_thread(void* arg) {
+  debugger_server_tcp_start();
+  s_accept_thread = NULL;
+  return NULL;
+}
+
+ret_t debugger_server_tcp_start_async(void) {
+  return_value_if_fail(s_accept_thread == NULL, RET_BUSY);
+
+  s_accept_thread = tk_thread_create(accept_thread, NULL);
+  return_value_if_fail(s_accept_thread != NULL, RET_OOM);
+
+  tk_thread_start(s_accept_thread);
+
+  return RET_OK;
+}
+
 ret_t debugger_server_tcp_deinit(void) {
   return_value_if_fail(s_server_sock >= 0, RET_BAD_PARAMS);
   socket_close(s_server_sock);
   s_server_sock = -1;
+
+  if (s_accept_thread != NULL) {
+    tk_thread_destroy(s_accept_thread);
+    s_accept_thread = NULL;
+  }
+
   debugger_server_stop();
 
   return RET_OK;

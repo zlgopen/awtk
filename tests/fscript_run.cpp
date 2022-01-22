@@ -40,22 +40,14 @@ static ret_t run_fscript(const char* code, uint32_t times, bool_t debug) {
     fscript_t* fscript = NULL;
 
     if (debug) {
-      str_t str;
       debugger_global_init();
       debugger_server_tcp_init(DEBUGGER_TCP_PORT);
       debugger_server_tcp_start();
+      debugger_server_set_single_mode(TRUE);
       sleep_ms(1000);
-
-      str_init(&str, 100);
-      str_set(&str, code);
-      str_append_more(&str, "//code_id(\"", DEBUGGER_DEFAULT_CODE_ID, "\")\n", NULL);
-      fscript = fscript_create(obj, str.str);
-      log_debug("%s\n", str.str);
-      str_reset(&str);
-    } else {
-      fscript = fscript_create(obj, code);
     }
 
+    fscript = fscript_create(obj, code);
     fscript_exec(fscript, &v);
     fscript_destroy(fscript);
 
@@ -85,7 +77,7 @@ static ret_t run_fscript_file(const char* filename, uint32_t times, bool_t debug
 
 int main(int argc, char* argv[]) {
   platform_prepare();
-	tk_socket_init();
+  tk_socket_init();
   tk_mem_dump();
   fscript_global_init();
   fscript_ext_init();
@@ -123,7 +115,7 @@ int main(int argc, char* argv[]) {
   data_writer_factory_set(NULL);
   data_reader_factory_set(NULL);
   fscript_global_deinit();
-	tk_socket_deinit();
+  tk_socket_deinit();
 
   return 0;
 }

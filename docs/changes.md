@@ -2,6 +2,7 @@
 
 2022/01/22
   * line_number支持设置高亮行。
+  * 完善fscript debugger
 
 2022/01/21
   * 完善fscript debugger并增加fdb命令行调试工具。

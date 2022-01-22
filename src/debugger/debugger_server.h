@@ -51,6 +51,14 @@ ret_t debugger_server_start(tk_iostream_t* io);
 ret_t debugger_server_stop(void);
 
 /**
+ * @method debugger_server_set_single_mode
+ * 设置为单一debugger模式。
+ * @param {bool_t} single_mode 单一debugger模式
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t debugger_server_set_single_mode(bool_t single_mode);
+
+/**
  * @method debugger_server_is_running
  * 判断服务是否在运行。
  *

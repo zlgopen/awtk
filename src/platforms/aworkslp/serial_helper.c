@@ -65,7 +65,6 @@ static ret_t da_serial_destroy(void* data) {
   return RET_OK;
 }
 
-
 int serial_handle_get_fd(serial_handle_t handle) {
   return handle->dev;
 }
@@ -114,19 +113,17 @@ ret_t serial_oflush(serial_handle_t handle) {
 }
 
 ret_t serial_wait_for_data(serial_handle_t handle, uint32_t timeout_ms) {
-
-    int len = 0;
-    int fd = serial_handle_get_fd(handle);
-    while (timeout_ms) {
-      aw_ioctl(fd, AW_FIONREAD, &len);
-      if (len > 0) {
-        return RET_OK;
-      }
-      sleep_ms(10);
-      timeout_ms -= tk_min(timeout_ms, 10);
+  int len = 0;
+  int fd = serial_handle_get_fd(handle);
+  while (timeout_ms) {
+    aw_ioctl(fd, AW_FIONREAD, &len);
+    if (len > 0) {
+      return RET_OK;
     }
-    return RET_TIMEOUT;
-
+    sleep_ms(10);
+    timeout_ms -= tk_min(timeout_ms, 10);
+  }
+  return RET_TIMEOUT;
 }
 
 int32_t serial_read(serial_handle_t handle, uint8_t* buff, uint32_t max_size) {

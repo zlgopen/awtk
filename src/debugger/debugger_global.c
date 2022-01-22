@@ -27,9 +27,6 @@
 static ret_t debugger_fscript_on_connect(fscript_t* fscript) {
   debugger_t* debugger = NULL;
   return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
-  if (fscript->code_id == NULL) {
-    return RET_OK;
-  }
 
   debugger = debugger_server_find_debugger(fscript->code_id);
   if (debugger != NULL) {
@@ -45,9 +42,6 @@ static ret_t debugger_fscript_on_connect(fscript_t* fscript) {
 static ret_t debugger_fscript_on_disconnect(fscript_t* fscript) {
   debugger_t* debugger = NULL;
   return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
-  if (fscript->code_id == NULL) {
-    return RET_OK;
-  }
 
   debugger = debugger_server_find_debugger(fscript->code_id);
   if (debugger != NULL) {
@@ -63,9 +57,6 @@ static ret_t debugger_fscript_on_disconnect(fscript_t* fscript) {
 static ret_t debugger_fscript_on_fscript_init(fscript_t* fscript, const char* code) {
   debugger_t* debugger = NULL;
   return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
-  if (fscript->code_id == NULL) {
-    return RET_OK;
-  }
 
   debugger = debugger_server_find_debugger(fscript->code_id);
   if (debugger != NULL) {

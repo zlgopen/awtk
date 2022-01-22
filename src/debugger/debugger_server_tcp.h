@@ -24,6 +24,7 @@
 
 #include "tkc/iostream.h"
 #include "debugger/debugger.h"
+#include "debugger/debugger_global.h"
 #include "debugger/debugger_server.h"
 
 BEGIN_C_DECLS
@@ -50,6 +51,14 @@ ret_t debugger_server_tcp_init(uint32_t port);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t debugger_server_tcp_start(void);
+
+/**
+ * @method debugger_server_tcp_start_async
+ * 启动调试器服务。
+ * > 接收客户端请求，并启动服务。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t debugger_server_tcp_start_async(void);
 
 /**
  * @method debugger_server_tcp_deinit

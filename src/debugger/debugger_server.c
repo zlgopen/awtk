@@ -38,7 +38,7 @@ typedef struct _debugger_server_t {
   bool_t quited;
   /*启动完成*/
   bool_t started;
-
+  bool_t single_mode;
   tk_istream_t* in;
   tk_ostream_t* out;
   tk_iostream_t* io;
@@ -53,13 +53,14 @@ static void* debugger_server_run(void* ctx);
 static ret_t debugger_server_send_object(debugger_server_t* server, debugger_resp_t* resp,
                                          tk_object_t* obj);
 
-static debugger_server_t* debugger_server_create(tk_iostream_t* io) {
+static debugger_server_t* debugger_server_create(tk_iostream_t* io, bool_t single_mode) {
   debugger_server_t* server = TKMEM_ZALLOC(debugger_server_t);
   return_value_if_fail(server != NULL, NULL);
 
   assert(io != NULL);
 
   server->io = io;
+  server->single_mode = single_mode;
   server->in = tk_iostream_get_istream(io);
   server->out = tk_iostream_get_ostream(io);
   darray_init(&(server->debuggers), 5, (tk_destroy_t)tk_object_unref, NULL);
@@ -219,15 +220,18 @@ static ret_t debugger_server_get_debuggers(debugger_server_t* server, str_t* deb
 static debugger_t* debugger_server_find(debugger_server_t* server, const char* code_id) {
   uint32_t i = 0;
   debugger_t* debugger = NULL;
-  return_value_if_fail(code_id != NULL, NULL);
   return_value_if_fail(server != NULL, NULL);
 
   if (tk_mutex_nest_lock(server->mutex) == RET_OK) {
-    for (i = 0; i < server->debuggers.size; i++) {
-      debugger_t* iter = (debugger_t*)darray_get(&(server->debuggers), i);
-      if (debugger_match(iter, code_id)) {
-        debugger = iter;
-        break;
+    if (server->single_mode) {
+      debugger = server->debugger;
+    } else {
+      for (i = 0; i < server->debuggers.size; i++) {
+        debugger_t* iter = (debugger_t*)darray_get(&(server->debuggers), i);
+        if (debugger_match(iter, code_id)) {
+          debugger = iter;
+          break;
+        }
       }
     }
     tk_mutex_nest_unlock(server->mutex);
@@ -542,13 +546,14 @@ static void* debugger_server_run(void* ctx) {
   return NULL;
 }
 
+static bool_t s_single_mode = FALSE;
 static debugger_server_t* s_debugger_server = NULL;
 
 ret_t debugger_server_start(tk_iostream_t* io) {
   debugger_server_t* server = NULL;
   return_value_if_fail(io != NULL && s_debugger_server == NULL, RET_BAD_PARAMS);
 
-  server = debugger_server_create(io);
+  server = debugger_server_create(io, s_single_mode);
   return_value_if_fail(server != NULL, RET_BAD_PARAMS);
 
   s_debugger_server = server;
@@ -567,11 +572,21 @@ ret_t debugger_server_stop(void) {
 
 debugger_t* debugger_server_find_debugger(const char* code_id) {
   debugger_server_t* server = s_debugger_server;
-  return_value_if_fail(code_id != NULL, NULL);
 
   return debugger_server_find(server, code_id);
 }
 
 bool_t debugger_server_is_running(void) {
   return s_debugger_server != NULL;
+}
+
+ret_t debugger_server_set_single_mode(bool_t single_mode) {
+  debugger_server_t* server = s_debugger_server;
+
+  s_single_mode = single_mode;
+  if (server != NULL) {
+    server->single_mode = single_mode;
+  }
+
+  return RET_OK;
 }

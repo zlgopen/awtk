@@ -514,11 +514,9 @@ ret_t debugger_fscript_print_func(fscript_t* fscript, fscript_args_t* args, valu
   uint32_t i = 0;
   debugger_log_event_t event;
   debugger_t* debugger = NULL;
+  return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
 
-  if (fscript != NULL && fscript->code_id != NULL) {
-    debugger = debugger_server_find_debugger(fscript->code_id);
-  }
-
+  debugger = debugger_server_find_debugger(fscript->code_id);
   if (debugger != NULL) {
     uint32_t line = fscript->curr->row;
     value_set_bool(result, TRUE);
@@ -685,10 +683,7 @@ ret_t debugger_fscript_exec_func(fscript_t* fscript, const char* name, fscript_f
   debugger_t* debugger = NULL;
   return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
 
-  if (fscript != NULL && fscript->code_id != NULL) {
-    debugger = debugger_server_find_debugger(fscript->code_id);
-  }
-
+  debugger = debugger_server_find_debugger(fscript->code_id);
   if (debugger == NULL) {
     return fscript_exec_func_default(fscript, iter, result);
   } else {
@@ -729,10 +724,7 @@ ret_t debugger_fscript_set_var(fscript_t* fscript, const char* name, const value
   debugger_t* debugger = NULL;
   return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
 
-  if (fscript != NULL && fscript->code_id != NULL) {
-    debugger = debugger_server_find_debugger(fscript->code_id);
-  }
-
+  debugger = debugger_server_find_debugger(fscript->code_id);
   if (debugger == NULL) {
     return fscript_set_var_default(fscript, name, v);
   } else {
