@@ -446,8 +446,36 @@ typedef ret_t (*fscript_set_var_t)(fscript_t* fscript, const char* name, const v
 typedef ret_t (*fscript_exec_func_t)(fscript_t* fscript, const char* name,
                                      fscript_func_call_t* iter, value_t* result);
 
+/**
+ * @method fscript_set_var_default
+ * 设置变量的默认实现。
+ * @param {fscript_t*} fscript 脚本引擎对象。
+ * @param {const char*} name 变量名。
+ * @param {const value_t*} value 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t fscript_set_var_default(fscript_t* fscript, const char* name, const value_t* value);
+
+/**
+ * @method fscript_exec_func_default
+ * 执行函数的默认实现。
+ * @param {fscript_t*} fscript 脚本引擎对象。
+ * @param {fscript_func_call_t*} iter 当前函数。
+ * @param {value_t*} result 返回结果。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t fscript_exec_func_default(fscript_t* fscript, fscript_func_call_t* iter, value_t* result);
+
+/**
+ * @method fscript_set_hooks
+ * 设置回调函数。
+ * @param {const fscript_hooks_t*} hooks 回调函数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_set_hooks(const fscript_hooks_t* hooks);
 
 typedef struct _fscript_hooks_t {
   fscript_on_init_t on_init;
@@ -457,8 +485,6 @@ typedef struct _fscript_hooks_t {
   fscript_before_exec_t before_exec;
   fscript_after_exec_t after_exec;
 } fscript_hooks_t;
-
-ret_t fscript_set_hooks(const fscript_hooks_t* hooks);
 
 END_C_DECLS
 
