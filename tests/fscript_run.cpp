@@ -1,5 +1,6 @@
 #include "tkc/fs.h"
 #include "tkc/mem.h"
+#include "tkc/async.h"
 #include "tkc/utils.h"
 #include "tkc/platform.h"
 #include "tkc/time_now.h"
@@ -82,6 +83,7 @@ int main(int argc, char* argv[]) {
   fscript_global_init();
   fscript_ext_init();
   tk_mem_dump();
+  async_call_init();
   data_writer_factory_set(data_writer_factory_create());
   data_reader_factory_set(data_reader_factory_create());
   data_writer_factory_register(data_writer_factory(), "file", data_writer_file_create);
@@ -116,6 +118,7 @@ int main(int argc, char* argv[]) {
   data_reader_factory_set(NULL);
   fscript_global_deinit();
   tk_socket_deinit();
+  async_call_deinit();
 
   return 0;
 }

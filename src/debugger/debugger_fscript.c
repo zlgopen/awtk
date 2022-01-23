@@ -19,6 +19,7 @@
  *
  */
 
+#include "tkc/async.h"
 #include "tkc/object_default.h"
 #include "debugger/debugger_server.h"
 #include "debugger/debugger_message.h"
@@ -100,7 +101,8 @@ static ret_t debugger_fscript_stop(debugger_t* debugger) {
 
   if (debugger_fscript_lock(debugger) == RET_OK) {
     if (d->fscript != NULL) {
-      /*TODO*/
+      d->fscript->returned = TRUE;
+      debugger_clear_break_points(debugger);
     }
     debugger_fscript_unlock(debugger);
   }
@@ -356,16 +358,15 @@ static ret_t debugger_fscript_clear_break_points(debugger_t* debugger) {
 }
 
 static ret_t debugger_fscript_set_break_point(debugger_t* debugger, uint32_t line) {
-  ret_t ret = RET_FAIL;
   debugger_fscript_t* d = DEBUGGER_FSCRIPT(debugger);
   return_value_if_fail(d != NULL, RET_BAD_PARAMS);
 
   if (debugger_fscript_lock(debugger) == RET_OK) {
-    ret = darray_push_unique(&(d->break_points), tk_pointer_from_int(line));
+    darray_push_unique(&(d->break_points), tk_pointer_from_int(line));
     debugger_fscript_unlock(debugger);
   }
 
-  return ret;
+  return RET_OK;
 }
 
 static ret_t debugger_fscript_remove_break_point(debugger_t* debugger, uint32_t line) {
@@ -381,7 +382,7 @@ static ret_t debugger_fscript_remove_break_point(debugger_t* debugger, uint32_t 
   return ret;
 }
 
-static ret_t debugger_fscript_init(debugger_t* debugger, const char* lang, const char* code_id) {
+static ret_t debugger_fscript_attach(debugger_t* debugger, const char* lang, const char* code_id) {
   ret_t ret = RET_FAIL;
   debugger_fscript_t* d = DEBUGGER_FSCRIPT(debugger);
   return_value_if_fail(d != NULL, RET_BAD_PARAMS);
@@ -420,9 +421,57 @@ static ret_t debugger_fscript_update_code(debugger_t* debugger, const binary_dat
   return debugger_fscript_set_code(debugger, code, TRUE);
 }
 
+static ret_t debugger_fscript_exec_async(void* ctx) {
+  value_t v;
+  fscript_t* fscript = (fscript_t*)ctx;
+
+  value_set_int(&v, 0);
+  fscript_exec(fscript, &v);
+  value_reset(&v);
+  OBJECT_UNREF(fscript->obj);
+  fscript_destroy(fscript);
+
+  return RET_OK;
+}
+
+static ret_t debugger_fscript_wait_for_debugger(debugger_t* debugger) {
+  debugger_fscript_t* d = DEBUGGER_FSCRIPT(debugger);
+  return_value_if_fail(d != NULL, RET_BAD_PARAMS);
+
+  return darray_push_unique(&(d->break_points), tk_pointer_from_int(0));
+}
+
+static ret_t debugger_fscript_launch(debugger_t* debugger, const char* lang,
+                                     const binary_data_t* code) {
+  ret_t ret = RET_FAIL;
+  fscript_t* fscript = NULL;
+  tk_object_t* obj = object_default_create();
+  debugger_fscript_t* d = DEBUGGER_FSCRIPT(debugger);
+  return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
+
+  if (debugger_fscript_lock(debugger) == RET_OK) {
+    fscript = fscript_create(obj, (char*)(code->data));
+    if (fscript != NULL) {
+      debugger_fscript_set_code(debugger, code, TRUE);
+      if (fscript->code_id == NULL) {
+        fscript->code_id = tk_strdup(DEBUGGER_DEFAULT_CODE_ID);
+      }
+      d->code_id = tk_str_copy(d->code_id, fscript->code_id);
+      debugger_fscript_wait_for_debugger(debugger);
+      ret = async_call(debugger_fscript_exec_async, NULL, fscript);
+    } else {
+      TK_OBJECT_UNREF(obj);
+    }
+    debugger_fscript_unlock(debugger);
+  }
+
+  return ret;
+}
+
 static const debugger_vtable_t s_debugger_fscript_vtable = {
     .lang = DEBUGGER_LANG_FSCRIPT,
-    .init = debugger_fscript_init,
+    .attach = debugger_fscript_attach,
+    .launch = debugger_fscript_launch,
     .lock = debugger_fscript_lock,
     .unlock = debugger_fscript_unlock,
     .stop = debugger_fscript_stop,

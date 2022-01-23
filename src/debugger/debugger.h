@@ -55,7 +55,9 @@ typedef ret_t (*debugger_get_code_t)(debugger_t* debugger, binary_data_t* code);
 typedef ret_t (*debugger_get_break_points_t)(debugger_t* debugger, binary_data_t* break_points);
 typedef ret_t (*debugger_get_debuggers_t)(debugger_t* debugger, binary_data_t* debuggers);
 typedef ret_t (*debugger_update_code_t)(debugger_t* debugger, const binary_data_t* code);
-typedef ret_t (*debugger_init_t)(debugger_t* debugger, const char* lang, const char* code_id);
+typedef ret_t (*debugger_launch_t)(debugger_t* debugger, const char* lang,
+                                   const binary_data_t* code);
+typedef ret_t (*debugger_attach_t)(debugger_t* debugger, const char* lang, const char* code_id);
 typedef ret_t (*debugger_deinit_t)(debugger_t* debugger);
 
 typedef debugger_t* (*debugger_fscript_create_t)(void);
@@ -63,7 +65,7 @@ typedef debugger_t* (*debugger_fscript_create_t)(void);
 typedef struct _debugger_vtable_t {
   const char* lang;
 
-  debugger_init_t init;
+  debugger_attach_t attach;
   debugger_lock_t lock;
   debugger_unlock_t unlock;
   debugger_stop_t stop;
@@ -84,6 +86,7 @@ typedef struct _debugger_vtable_t {
   debugger_get_debuggers_t get_debuggers;
   debugger_get_break_points_t get_break_points;
   debugger_update_code_t update_code;
+  debugger_launch_t launch;
   debugger_set_break_point_t set_break_point;
   debugger_remove_break_point_t remove_break_point;
   debugger_clear_break_points_t clear_break_points;
@@ -280,15 +283,26 @@ ret_t debugger_set_break_point(debugger_t* debugger, uint32_t line);
 ret_t debugger_remove_break_point(debugger_t* debugger, uint32_t line);
 
 /**
- * @method debugger_init
- * 初始化
+ * @method debugger_attach
+ * 附近到指定的代码片段。
  * @param {debugger_t*} debugger debugger对象。
  * @param {const char*} lang 代码的语言。
  * @param {const char*} code_id 代码的ID。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t debugger_init(debugger_t* debugger, const char* lang, const char* code_id);
+ret_t debugger_attach(debugger_t* debugger, const char* lang, const char* code_id);
+
+/**
+ * @method debugger_launch
+ * 执行代码。
+ * @param {debugger_t*} debugger debugger对象。
+ * @param {const char*} lang 代码的语言。
+ * @param {const binary_data_t*} code 代码。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t debugger_launch(debugger_t* debugger, const char* lang, const binary_data_t* code);
 
 /**
  * @method debugger_deinit

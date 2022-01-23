@@ -34,10 +34,10 @@ BEGIN_C_DECLS
 typedef enum _debugger_req_type_t {
   DEBUGGER_REQ_NONE = 0,
   /**
-   * @const DEBUGGER_REQ_INIT
-   * 初始化请求码。
+   * @const DEBUGGER_REQ_ATTACH
+   * attach请求码。
    */
-  DEBUGGER_REQ_INIT,
+  DEBUGGER_REQ_ATTACH,
   /**
    * @const DEBUGGER_REQ_STOP
    * 停止运行请求码。
@@ -134,6 +134,11 @@ typedef enum _debugger_req_type_t {
    */
   DEBUGGER_REQ_UPDATE_CODE,
   /**
+   * @const DEBUGGER_REQ_LAUNCH
+   * 执行代码请求码。
+   */
+  DEBUGGER_REQ_LAUNCH,
+  /**
    * @const DEBUGGER_REQ_DEINIT
    * 断开调试器请求码。
    */
@@ -148,10 +153,10 @@ typedef enum _debugger_req_type_t {
 typedef enum _debugger_resp_type_t {
   DEBUGGER_RESP_NONE = 0,
   /**
-   * @const DEBUGGER_RESP_INIT
-   * 初始化响应码。
+   * @const DEBUGGER_RESP_ATTACH
+   * attach响应码。
    */
-  DEBUGGER_RESP_INIT = DEBUGGER_REQ_INIT,
+  DEBUGGER_RESP_ATTACH = DEBUGGER_REQ_ATTACH,
   /**
    * @const DEBUGGER_RESP_STOP
    * 停止运行响应码。
@@ -247,6 +252,11 @@ typedef enum _debugger_resp_type_t {
    * 更新源代码响应码。
    */
   DEBUGGER_RESP_UPDATE_CODE = DEBUGGER_REQ_UPDATE_CODE,
+  /**
+   * @const DEBUGGER_RESP_LAUNCH
+   * 执行代码响应码。
+   */
+  DEBUGGER_RESP_LAUNCH = DEBUGGER_REQ_LAUNCH,
   /**
    * @const DEBUGGER_RESP_DEINIT
    * 断开调试器响应码。

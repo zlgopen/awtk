@@ -295,10 +295,27 @@ static ret_t debugger_server_on_events(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t debugger_server_init_debugger(debugger_server_t* server, const char* arg) {
+static debugger_t* debugger_server_init_debugger(debugger_server_t* server, debugger_t* debugger) {
   ret_t ret = RET_FAIL;
+  return_value_if_fail(debugger != NULL, NULL);
+
+  ret = darray_push(&(server->debuggers), debugger);
+  if (ret != RET_OK) {
+    OBJECT_UNREF(debugger);
+  } else {
+    emitter_on(EMITTER(debugger), DEBUGGER_RESP_MSG_LOG, debugger_server_on_events, server);
+    emitter_on(EMITTER(debugger), DEBUGGER_RESP_MSG_ERROR, debugger_server_on_events, server);
+    emitter_on(EMITTER(debugger), DEBUGGER_RESP_MSG_BREAKED, debugger_server_on_events, server);
+    emitter_on(EMITTER(debugger), DEBUGGER_RESP_MSG_COMPLETED, debugger_server_on_events, server);
+    server->debugger = debugger;
+  }
+
+  return debugger;
+}
+static ret_t debugger_server_attach_debugger(debugger_server_t* server, const char* arg) {
   char lang[TK_NAME_LEN + 1];
   const char* code_id = NULL;
+  debugger_t* debugger = NULL;
   return_value_if_fail(server != NULL, RET_BAD_PARAMS);
   code_id = strchr(arg, ':');
   return_value_if_fail(code_id != NULL, RET_BAD_PARAMS);
@@ -306,33 +323,40 @@ static ret_t debugger_server_init_debugger(debugger_server_t* server, const char
   tk_strncpy_s(lang, TK_NAME_LEN, arg, code_id - arg);
   code_id++;
   if (tk_mutex_nest_lock(server->mutex) == RET_OK) {
-    debugger_t* debugger = debugger_server_find(server, code_id);
+    debugger = debugger_server_find(server, code_id);
     if (debugger == NULL) {
-      debugger = debugger_factory_create_debugger(lang, code_id);
-      if (debugger != NULL) {
-        ret = darray_push(&(server->debuggers), debugger);
-        if (ret != RET_OK) {
-          OBJECT_UNREF(debugger);
-        } else {
-          emitter_on(EMITTER(debugger), DEBUGGER_RESP_MSG_LOG, debugger_server_on_events, server);
-          emitter_on(EMITTER(debugger), DEBUGGER_RESP_MSG_ERROR, debugger_server_on_events, server);
-          emitter_on(EMITTER(debugger), DEBUGGER_RESP_MSG_BREAKED, debugger_server_on_events,
-                     server);
-          emitter_on(EMITTER(debugger), DEBUGGER_RESP_MSG_COMPLETED, debugger_server_on_events,
-                     server);
-        }
-      } else {
-        log_debug("create debugger:%s %s failed\n", lang, code_id);
-      }
+      debugger = debugger_factory_attach_debugger(lang, code_id);
+      debugger_server_init_debugger(server, debugger);
     }
 
-    if (ret == RET_OK) {
-      server->debugger = debugger;
-    }
     tk_mutex_nest_unlock(server->mutex);
   }
 
-  return ret;
+  return debugger != NULL ? RET_OK : RET_FAIL;
+}
+
+static ret_t debugger_server_launch_debugger(debugger_server_t* server, binary_data_t* arg) {
+  const char* code = NULL;
+  char lang[TK_NAME_LEN + 1];
+  debugger_t* debugger = NULL;
+  return_value_if_fail(server != NULL, RET_BAD_PARAMS);
+  code = strchr((char*)(arg->data), ':');
+  return_value_if_fail(code != NULL, RET_BAD_PARAMS);
+
+  tk_strncpy_s(lang, TK_NAME_LEN, (char*)(arg->data), code - (char*)(arg->data));
+  code++;
+  if (tk_mutex_nest_lock(server->mutex) == RET_OK) {
+    binary_data_t data;
+
+    data.data = (uint8_t*)code;
+    data.size = arg->size - (code - (char*)(arg->data));
+    debugger = debugger_factory_launch_debugger(lang, &data);
+    debugger_server_init_debugger(server, debugger);
+
+    tk_mutex_nest_unlock(server->mutex);
+  }
+
+  return debugger != NULL ? RET_OK : RET_FAIL;
 }
 
 static ret_t debugger_server_destroy(debugger_server_t* server) {
@@ -373,8 +397,13 @@ static ret_t debugger_server_dispatch(debugger_server_t* server) {
     resp.code = req.code;
     resp.error = RET_OK;
 
-    if (req.code == DEBUGGER_REQ_INIT) {
-      resp.error = debugger_server_init_debugger(server, (const char*)(server->buff));
+    if (req.code == DEBUGGER_REQ_ATTACH) {
+      resp.error = debugger_server_attach_debugger(server, (const char*)(server->buff));
+      break_if_fail(debugger_server_send_data(server, &resp, NULL) == RET_OK);
+      continue;
+    } else if (req.code == DEBUGGER_REQ_LAUNCH) {
+      binary_data_t code = {req.size, server->buff};
+      resp.error = debugger_server_launch_debugger(server, &code);
       break_if_fail(debugger_server_send_data(server, &resp, NULL) == RET_OK);
       continue;
     }

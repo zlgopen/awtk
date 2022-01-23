@@ -38,7 +38,7 @@ ret_t debugger_factory_reg(const char* lang, debugger_fscript_create_t create) {
   return general_factory_register(s_debugger_factory, lang, (tk_create_t)create);
 }
 
-debugger_t* debugger_factory_create_debugger(const char* lang, const char* code_id) {
+debugger_t* debugger_factory_attach_debugger(const char* lang, const char* code_id) {
   debugger_t* debugger = NULL;
   debugger_fscript_create_t create = NULL;
   return_value_if_fail(s_debugger_factory != NULL, NULL);
@@ -49,7 +49,23 @@ debugger_t* debugger_factory_create_debugger(const char* lang, const char* code_
 
   debugger = create();
   return_value_if_fail(debugger != NULL, NULL);
-  debugger_init(debugger, lang, code_id);
+  debugger_attach(debugger, lang, code_id);
+
+  return debugger;
+}
+
+debugger_t* debugger_factory_launch_debugger(const char* lang, const binary_data_t* code) {
+  debugger_t* debugger = NULL;
+  debugger_fscript_create_t create = NULL;
+  return_value_if_fail(s_debugger_factory != NULL, NULL);
+  return_value_if_fail(lang != NULL && code != NULL, NULL);
+
+  create = (debugger_fscript_create_t)general_factory_find(s_debugger_factory, lang);
+  return_value_if_fail(create != NULL, NULL);
+
+  debugger = create();
+  return_value_if_fail(debugger != NULL, NULL);
+  debugger_launch(debugger, lang, code);
 
   return debugger;
 }

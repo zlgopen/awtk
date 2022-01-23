@@ -481,7 +481,7 @@ int main(int argc, char* argv[]) {
     exit(0);
   }
 
-  debugger_init(client, DEBUGGER_LANG_FSCRIPT, DEBUGGER_DEFAULT_CODE_ID);
+  debugger_attach(client, DEBUGGER_LANG_FSCRIPT, DEBUGGER_DEFAULT_CODE_ID);
   debugger_set_break_point(client, 0);
 
   aw_flow_shell_run(client);

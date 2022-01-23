@@ -148,12 +148,12 @@ ret_t debugger_remove_break_point(debugger_t* debugger, uint32_t line) {
   return debugger->vt->remove_break_point(debugger, line);
 }
 
-ret_t debugger_init(debugger_t* debugger, const char* lang, const char* code_id) {
+ret_t debugger_attach(debugger_t* debugger, const char* lang, const char* code_id) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(debugger->vt->init != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger->vt->attach != NULL, RET_BAD_PARAMS);
   return_value_if_fail(lang != NULL && code_id != NULL, RET_BAD_PARAMS);
 
-  return debugger->vt->init(debugger, lang, code_id);
+  return debugger->vt->attach(debugger, lang, code_id);
 }
 
 ret_t debugger_get_code(debugger_t* debugger, binary_data_t* code) {
@@ -186,6 +186,14 @@ ret_t debugger_update_code(debugger_t* debugger, const binary_data_t* code) {
   return_value_if_fail(code != NULL && code->data != NULL, RET_BAD_PARAMS);
 
   return debugger->vt->update_code(debugger, code);
+}
+
+ret_t debugger_launch(debugger_t* debugger, const char* lang, const binary_data_t* code) {
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger->vt->launch != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(code != NULL && code->data != NULL && lang != NULL, RET_BAD_PARAMS);
+
+  return debugger->vt->launch(debugger, lang, code);
 }
 
 ret_t debugger_deinit(debugger_t* debugger) {

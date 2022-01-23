@@ -1,4 +1,6 @@
 # 最新动态
+2022/01/23
+  * 完善fscript debugger,支持attach/launch两种启动方式。
 
 2022/01/22
   * line_number支持设置高亮行。

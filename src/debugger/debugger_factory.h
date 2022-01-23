@@ -51,14 +51,24 @@ ret_t debugger_factory_init(void);
 ret_t debugger_factory_reg(const char* lang, debugger_fscript_create_t create);
 
 /**
- * @method debugger_factory_create_debugger
+ * @method debugger_factory_attach_debugger
  * 创建调试器。
  * @param {const char*} lang 语言类型。
  * @param {const char*} code_id  代码的ID。
  *
  * @return {debugger_t*} 返回调试器对象。
  */
-debugger_t* debugger_factory_create_debugger(const char* lang, const char* code_id);
+debugger_t* debugger_factory_attach_debugger(const char* lang, const char* code_id);
+
+/**
+ * @method debugger_factory_launch_debugger
+ * 创建调试器。
+ * @param {const char*} lang 语言类型。
+ * @param {const binary_data_t*} code 代码。
+ *
+ * @return {debugger_t*} 返回调试器对象。
+ */
+debugger_t* debugger_factory_launch_debugger(const char* lang, const binary_data_t* code);
 
 /**
  * @method debugger_factory_deinit

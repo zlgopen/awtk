@@ -19,6 +19,7 @@
  *
  */
 
+#include "tkc/buffer.h"
 #include "ubjson/ubjson_parser.h"
 #include "debugger/debugger_message.h"
 #include "debugger/debugger_client.h"
@@ -321,10 +322,10 @@ static ret_t debugger_client_remove_break_point(debugger_t* debugger, uint32_t l
   return debugger_client_request_simple(debugger, DEBUGGER_REQ_REMOVE_BREAK_POINT, line);
 }
 
-static ret_t debugger_client_init(debugger_t* debugger, const char* lang, const char* code_id) {
+static ret_t debugger_client_attach(debugger_t* debugger, const char* lang, const char* code_id) {
   char data[256];
   tk_snprintf(data, sizeof(data) - 1, "%s:%s", lang, code_id);
-  return debugger_client_request_binary(debugger, DEBUGGER_REQ_INIT, data, strlen(data) + 1);
+  return debugger_client_request_binary(debugger, DEBUGGER_REQ_ATTACH, data, strlen(data) + 1);
 }
 
 static ret_t debugger_client_deinit(debugger_t* debugger) {
@@ -333,6 +334,24 @@ static ret_t debugger_client_deinit(debugger_t* debugger) {
 
 static ret_t debugger_client_update_code(debugger_t* debugger, const binary_data_t* code) {
   return debugger_client_request_binary(debugger, DEBUGGER_REQ_UPDATE_CODE, code->data, code->size);
+}
+
+static ret_t debugger_client_launch(debugger_t* debugger, const char* lang,
+                                    const binary_data_t* code) {
+  wbuffer_t wb;
+  ret_t ret = RET_FAIL;
+  wbuffer_init_extendable(&wb);
+  return_value_if_fail(wbuffer_extend_capacity(&wb, strlen(lang) + code->size + 1) == RET_OK,
+                       RET_OOM);
+
+  wbuffer_write_binary(&wb, lang, strlen(lang));
+  wbuffer_write_binary(&wb, ":", 1);
+  wbuffer_write_binary(&wb, code->data, code->size);
+
+  ret = debugger_client_request_binary(debugger, DEBUGGER_REQ_LAUNCH, wb.data, wb.cursor);
+  wbuffer_deinit(&wb);
+
+  return ret;
 }
 
 static ret_t debugger_client_get_code(debugger_t* debugger, binary_data_t* code) {
@@ -360,7 +379,8 @@ static ret_t debugger_client_get_break_points(debugger_t* debugger, binary_data_
 }
 
 static const debugger_vtable_t s_debugger_client_vtable = {
-    .init = debugger_client_init,
+    .attach = debugger_client_attach,
+    .launch = debugger_client_launch,
     .lang = "client",
     .lock = debugger_client_lock,
     .unlock = debugger_client_unlock,
