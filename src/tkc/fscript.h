@@ -468,15 +468,6 @@ ret_t fscript_set_var_default(fscript_t* fscript, const char* name, const value_
  */
 ret_t fscript_exec_func_default(fscript_t* fscript, fscript_func_call_t* iter, value_t* result);
 
-/**
- * @method fscript_set_hooks
- * 设置回调函数。
- * @param {const fscript_hooks_t*} hooks 回调函数。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t fscript_set_hooks(const fscript_hooks_t* hooks);
-
 typedef struct _fscript_hooks_t {
   fscript_on_init_t on_init;
   fscript_on_deinit_t on_deinit;
@@ -485,6 +476,15 @@ typedef struct _fscript_hooks_t {
   fscript_before_exec_t before_exec;
   fscript_after_exec_t after_exec;
 } fscript_hooks_t;
+
+/**
+ * @method fscript_set_hooks
+ * 设置回调函数。
+ * @param {const fscript_hooks_t*} hooks 回调函数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_set_hooks(const fscript_hooks_t* hooks);
 
 END_C_DECLS
 
