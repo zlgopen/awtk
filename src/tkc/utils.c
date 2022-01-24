@@ -310,7 +310,7 @@ char* tk_strncpy(char* dst, const char* src, size_t len) {
   return_value_if_fail(dst != NULL && src != NULL, NULL);
 
   if (dst != src) {
-    tk_memcpy(dst, src, len);
+    strncpy(dst, src, len);
     dst[len] = '\0';
   }
 
@@ -1404,7 +1404,7 @@ void* tk_memcpy(void* dst, const void* src, uint32_t len) {
   if (offset_src_address == offset_dst_address) {
     uint32_t i = 0;
     uint8_t* d = dst;
-    uint8_t* s = src;
+    uint8_t* s = (uint8_t*)src;
     int32_t curr_len = len;
     uint32_t offset = 0x4 - offset_src_address;
     if (offset_src_address != 0) {

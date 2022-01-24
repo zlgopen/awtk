@@ -796,9 +796,11 @@ tk_object_t* tk_object_get_child_object(tk_object_t* obj, const char* path,
     value_t v;
     uint32_t len = p - path;
     char subname[TK_OBJECT_PROP_NAME_MAX_LEN] = {0};
+    uint32_t size = tk_min(TK_OBJECT_PROP_NAME_MAX_LEN - 1, len);
     return_value_if_fail(len < TK_OBJECT_PROP_NAME_MAX_LEN - 1, NULL);
 
-    tk_strncpy_s(subname, TK_OBJECT_PROP_NAME_MAX_LEN - 1, path, len);
+    tk_memcpy(subname, path, size);
+    subname[size] = '\0';
     if (tk_object_get_prop(obj, subname, &v) == RET_OK) {
       if (v.type == VALUE_TYPE_OBJECT) {
         *next_path = p + 1;
