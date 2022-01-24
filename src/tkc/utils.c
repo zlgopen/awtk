@@ -1242,7 +1242,7 @@ bool_t tk_str_is_in_array(const char* str, const char** str_array, uint32_t arra
 }
 
 void* tk_memcpy_by_align_4(void* dst_align_4, const void* src_align_4, uint32_t len) {
-#define MEMCPY_TINY_MAX_LENGTH  64
+#define MEMCPY_TINY_MAX_LENGTH 64
   if (dst_align_4 != NULL && src_align_4 != NULL && len > 0) {
     if (len < MEMCPY_TINY_MAX_LENGTH) {
       register unsigned char* dd = (unsigned char*)dst_align_4 + len;

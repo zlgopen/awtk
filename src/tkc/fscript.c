@@ -1757,6 +1757,9 @@ static ret_t fscript_parse_all(fscript_parser_t* parser, fscript_func_call_t* ac
       ret = fscript_parse_function_def(parser, acall);
     } else if (t == NULL || t->type == TOKEN_EOF) {
       break;
+    } else if (t->type == TOKEN_RBRACKET) {
+      fscript_parser_set_error(parser, "unexpected token");
+      break;
     } else {
       fscript_parser_unget_token(parser);
       ret = fscript_parse_statements(parser, acall);

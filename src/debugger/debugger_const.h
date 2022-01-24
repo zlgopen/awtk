@@ -34,6 +34,8 @@
 #define DEBUGGER_TCP_PORT 6789
 #endif /*DEBUGGER_TCP_PORT*/
 
+#define DEBUGGER_START_LINE 0xffffffff
+
 #define DEBUGGER_DEFAULT_CODE_ID "0"
 
 #endif /*TK_DEBUGGER_CONST_H*/

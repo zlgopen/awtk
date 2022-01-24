@@ -61,6 +61,38 @@ static ret_t on_debugger_client_event(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+TEST(Debugger, start_line1) {
+  const char* code =
+      "//hello\n"
+      "function foo(a, b) {\n"
+      " return a + b;\n"
+      "}\n"
+      "print(foo(1, 2))\n"
+      "//code_id(\"85e86311e2d595c65b745d8143b6085efe819c354584742f72aeacd3336a0a5e\")";
+  tk_object_t* obj = object_default_create();
+  fscript_t* fscript = fscript_create(obj, code);
+  ASSERT_EQ(debugger_fscript_get_start_line(fscript), 4);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(Debugger, start_line2) {
+  const char* code =
+      "\n"
+      "function foo(a, b) {\n"
+      " return a + b;\n"
+      "}\n"
+      "print(foo(1, 2))\n"
+      "//code_id(\"85e86311e2d595c65b745d8143b6085efe819c354584742f72aeacd3336a0a5e\")";
+  tk_object_t* obj = object_default_create();
+  fscript_t* fscript = fscript_create(obj, code);
+  ASSERT_EQ(debugger_fscript_get_start_line(fscript), 4);
+  fscript_destroy(fscript);
+
+  TK_OBJECT_UNREF(obj);
+}
+
 TEST(Debugger, launch) {
   const char* code =
       "var i = 0\n"
@@ -116,9 +148,9 @@ TEST(Debugger, launch) {
   debugger_server_tcp_deinit();
   debugger_global_deinit();
   ASSERT_STREQ(str.str,
-               "breaked(0)breaked(1)log(2,\"0\")breaked(2)breaked(1)log(2,\"1\")breaked(2)breaked("
-               "1)log(2,\"2\")log(2,\"3\")log(2,\"4\")log(2,\"5\")log(2,\"6\")log(2,\"7\")log(2,"
-               "\"8\")log(2,\"9\")log(4,\"10\")completed()");
+               "breaked(0)breaked(1)log(2,\"0\")breaked(2)log(2,\"1\")breaked(1)log(2,\"2\")"
+               "breaked(2)log(2,\"3\")breaked(1)log(2,\"4\")log(2,\"5\")log(2,\"6\")log(2,\"7\")"
+               "log(2,\"8\")log(2,\"9\")log(4,\"10\")completed()");
   str_reset(&str);
   async_call_deinit();
 }
@@ -186,9 +218,9 @@ TEST(Debugger, next) {
   debugger_server_tcp_deinit();
   debugger_global_deinit();
   ASSERT_STREQ(str.str,
-               "breaked(0)breaked(1)log(2,\"0\")breaked(2)breaked(1)log(2,\"1\")breaked(2)breaked("
-               "1)log(2,\"2\")log(2,\"3\")log(2,\"4\")log(2,\"5\")log(2,\"6\")log(2,\"7\")log(2,"
-               "\"8\")log(2,\"9\")log(4,\"10\")completed()");
+               "breaked(0)breaked(1)log(2,\"0\")breaked(2)log(2,\"1\")breaked(1)log(2,\"2\")"
+               "breaked(2)log(2,\"3\")breaked(1)log(2,\"4\")log(2,\"5\")log(2,\"6\")log(2,\"7\")"
+               "log(2,\"8\")log(2,\"9\")log(4,\"10\")completed()");
   str_reset(&str);
 }
 
@@ -447,7 +479,7 @@ TEST(Debugger, step_in) {
   debugger_global_deinit();
   ASSERT_STREQ(
       str.str,
-      "breaked(8)breaked(6)breaked(2)breaked(6)breaked(8)log(9,\"600.000000\")completed()");
+      "breaked(8)breaked(6)breaked(3)breaked(6)breaked(8)log(9,\"600.000000\")completed()");
   str_reset(&str);
 }
 

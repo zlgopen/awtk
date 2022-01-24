@@ -591,11 +591,11 @@ TEST(Utils, memcpy_by_align_4) {
 #define path_max_len 64
   uint8_t path[path_max_len * 2] = {0};
   uint8_t path1[path_max_len * 2] = {0};
-  
+
   for (uint8_t i = 0; i < path_max_len * 2; i++) {
     path1[i] = i;
   }
-  
+
   tk_memcpy_by_align_4(path, path1, path_max_len);
 
   for (uint8_t i = 0; i < path_max_len; i++) {
@@ -623,7 +623,7 @@ TEST(Utils, tk_memcpy) {
   for (uint8_t i = 0; i < path_max_len * 2; i++) {
     path1[i] = i;
   }
-  
+
   tk_memcpy(path, path1, path_max_len);
 
   for (uint8_t i = 0; i < path_max_len; i++) {

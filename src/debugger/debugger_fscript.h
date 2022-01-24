@@ -1,5 +1,5 @@
 ﻿/**
- * File:   fscript_debugger_fscript.h
+ * File:   debugger_fscript.h
  * Author: AWTK Develop Team
  * Brief:  debugger_fscript for fscript
  *
@@ -28,6 +28,14 @@
 #include "debugger/debugger.h"
 
 BEGIN_C_DECLS
+
+typedef enum _debugger_fscript_break_type_t {
+  DEBUGGER_FSCRIPT_BREAK_NONE = 0,
+  DEBUGGER_FSCRIPT_BREAK_NEXT,
+  DEBUGGER_FSCRIPT_BREAK_STEP_IN,
+  DEBUGGER_FSCRIPT_BREAK_STEP_OUT,
+  DEBUGGER_FSCRIPT_BREAK_STEP_OVER
+} debugger_fscript_break_type_t;
 
 /**
  * @class debugger_fscript_t
@@ -63,6 +71,9 @@ typedef struct _debugger_fscript_t {
   darray_t break_points;
   darray_t call_stack_frames;
   bool_t code_changed;
+  bool_t stop_at_start_line;
+  int32_t stop_at_next_line;
+  debugger_fscript_break_type_t break_type;
 } debugger_fscript_t;
 
 /**
@@ -111,6 +122,16 @@ ret_t debugger_fscript_set_code(debugger_t* debugger, const binary_data_t* code,
 ret_t debugger_fscript_set_var(fscript_t* fscript, const char* name, const value_t* v);
 ret_t debugger_fscript_exec_func(fscript_t* fscript, const char* name, fscript_func_call_t* iter,
                                  value_t* result);
+
+/*public for tests*/
+/**
+ * @method debugger_fscript_get_start_line
+ * 获取第一行被执行的代码的行号。
+ * @param {fscript_t*} fscript fscript对象。
+ *
+ * @return {int32_t} 返回行号。
+ */
+int32_t debugger_fscript_get_start_line(fscript_t* fscript);
 
 END_C_DECLS
 
