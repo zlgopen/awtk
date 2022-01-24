@@ -199,6 +199,7 @@ widget_t* line_number_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(line_number), x, y, w, h);
   line_number_t* line_number = LINE_NUMBER(widget);
   return_value_if_fail(line_number != NULL, NULL);
+  line_number->active_line = -1;
 
   return widget;
 }
