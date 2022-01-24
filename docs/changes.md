@@ -1,4 +1,8 @@
 # 最新动态
+
+2022/01/24
+  * 优化tk\_strncpy（感谢智明提供补丁）
+
 2022/01/23
   * 完善fscript debugger,支持attach/launch两种启动方式。
 

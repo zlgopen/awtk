@@ -266,6 +266,7 @@ char* tk_strncpy(char* dst, const char* src, size_t len);
  * @method tk_strncpy_s
  *
  * 将src所指向的字符串复制到dst，最多复制min(dst_len-1, src_len)个字符串，并在[len]位置添加'\0'。
+ * 如果 dst 和 src 的地址对齐的话，效率会比 strncpy 高，如果小于 64 个字节的话，效率是最高的。
  *
  * @param {char*} dst 目标字符串。
  * @param {size_t} dst_len 目标字符串内存长度。
@@ -759,6 +760,21 @@ ret_t tk_qsort(void** array, size_t nr, tk_compare_t cmp);
  */
 bool_t tk_str_is_in_array(const char* str, const char** str_array, uint32_t array_size);
 
+/**
+ * @method tk_memcpy
+ * 
+ * 内存拷贝。
+ * 在地址对齐的情况下并且少于 64 个字节，效率会比 memcpy 要快，否则会退化为 memcpy。
+ *
+ * @param {void*} dst 目标字符串。
+ * @param {const void*} src 源字符串。
+ * @param {uint32_t} len 拷贝长度。
+ *
+ * @return {void*} 返回成功返回 dst 地址，失败返回 NULL。
+ */
+void* tk_memcpy(void* dst, const void* src, uint32_t len);
+
+void* tk_memcpy_by_align_4(void* dst_align_4, const void* src_align_4, uint32_t len);
 const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN + 1]);
 
 static inline int32_t tk_max_int(int32_t a, int32_t b) {

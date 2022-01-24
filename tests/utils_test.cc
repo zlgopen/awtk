@@ -586,3 +586,71 @@ TEST(Utils, is_in_array) {
   ASSERT_EQ(tk_str_is_in_array("123", arr2, ARRAY_SIZE(arr2)), FALSE);
   ASSERT_EQ(tk_str_is_in_array("123", arr3, ARRAY_SIZE(arr3)), TRUE);
 }
+
+TEST(Utils, memcpy_by_align_4) {
+#define path_max_len 64
+  uint8_t path[path_max_len * 2] = {0};
+  uint8_t path1[path_max_len * 2] = {0};
+  
+  for (uint8_t i = 0; i < path_max_len * 2; i++) {
+    path1[i] = i;
+  }
+  
+  tk_memcpy_by_align_4(path, path1, path_max_len);
+
+  for (uint8_t i = 0; i < path_max_len; i++) {
+    ASSERT_EQ(path[i], path1[i]);
+  }
+
+  memset(path, 0x0, sizeof(path));
+
+  tk_memcpy_by_align_4(path, path1, path_max_len * 2);
+
+  for (uint8_t i = 0; i < path_max_len * 2; i++) {
+    ASSERT_EQ(path[i], path1[i]);
+  }
+}
+
+TEST(Utils, tk_memcpy) {
+#define path_max_len 64
+  uint8_t path[path_max_len * 2 + 1] = {0};
+  uint8_t path1[path_max_len * 2 + 1] = {0};
+
+  ASSERT_EQ(tk_memcpy(path, path1, 0) == path, true);
+  ASSERT_EQ(tk_memcpy(path, NULL, path_max_len) == NULL, true);
+  ASSERT_EQ(tk_memcpy(NULL, path1, path_max_len) == NULL, true);
+
+  for (uint8_t i = 0; i < path_max_len * 2; i++) {
+    path1[i] = i;
+  }
+  
+  tk_memcpy(path, path1, path_max_len);
+
+  for (uint8_t i = 0; i < path_max_len; i++) {
+    ASSERT_EQ(path[i], path1[i]);
+  }
+
+  memset(path, 0x0, sizeof(path));
+
+  tk_memcpy(path, path1, path_max_len * 2);
+
+  for (uint8_t i = 0; i < path_max_len * 2; i++) {
+    ASSERT_EQ(path[i], path1[i]);
+  }
+
+  memset(path, 0x0, sizeof(path));
+
+  tk_memcpy(path + 1, path1 + 1, path_max_len * 2);
+
+  for (uint8_t i = 1; i < path_max_len * 2; i++) {
+    ASSERT_EQ(path[i], path1[i]);
+  }
+
+  memset(path, 0x0, sizeof(path));
+
+  tk_memcpy(path, path1 + 1, path_max_len * 2);
+
+  for (uint8_t i = 0; i < path_max_len * 2; i++) {
+    ASSERT_EQ(path[i], path1[i + 1]);
+  }
+}
