@@ -256,11 +256,10 @@ static ret_t text_edit_set_caret_pos(text_edit_impl_t* impl, uint32_t x, uint32_
   return RET_OK;
 }
 
-static uint32_t text_edit_measure_text(text_edit_t* text_edit, wchar_t* str, wchar_t mask_char,
-                                       uint32_t size) {
+static uint32_t text_edit_measure_text_on_canvas(text_edit_t* text_edit, wchar_t* str,
+                                                 wchar_t mask_char, uint32_t size, canvas_t* c) {
   uint32_t i = 0;
   uint32_t w = 0;
-  canvas_t* c = GET_CANVAS(text_edit);
   DECL_IMPL(text_edit);
 
   for (i = 0; i < size; i++) {
@@ -272,6 +271,11 @@ static uint32_t text_edit_measure_text(text_edit_t* text_edit, wchar_t* str, wch
   }
 
   return w;
+}
+
+static uint32_t text_edit_measure_text(text_edit_t* text_edit, wchar_t* str, wchar_t mask_char,
+                                       uint32_t size) {
+  return text_edit_measure_text_on_canvas(text_edit, str, mask_char, size, GET_CANVAS(text_edit));
 }
 
 static row_info_t* text_edit_single_line_layout_line(text_edit_t* text_edit, uint32_t row_num,
@@ -627,7 +631,7 @@ static ret_t text_edit_paint_tips_text(text_edit_t* text_edit, canvas_t* c) {
   return RET_OK;
 }
 
-static int32_t text_edit_calc_x(text_edit_t* text_edit, line_info_t* iter) {
+static int32_t text_edit_calc_x_on_canvas(text_edit_t* text_edit, line_info_t* iter, canvas_t* c) {
   DECL_IMPL(text_edit);
   widget_t* widget = text_edit->widget;
   wstr_t* text = &(widget->text);
@@ -636,7 +640,7 @@ static int32_t text_edit_calc_x(text_edit_t* text_edit, line_info_t* iter) {
   align_h_t align_h = widget_get_text_align_h(text_edit->widget);
 
   uint32_t row_width =
-      text_edit_measure_text(text_edit, text->str + iter->offset, chr, iter->length);
+      text_edit_measure_text_on_canvas(text_edit, text->str + iter->offset, chr, iter->length, c);
   if (row_width < layout_info->w) {
     switch (align_h) {
       case ALIGN_H_CENTER: {
@@ -652,6 +656,10 @@ static int32_t text_edit_calc_x(text_edit_t* text_edit, line_info_t* iter) {
   }
 
   return 0;
+}
+
+static int32_t text_edit_calc_x(text_edit_t* text_edit, line_info_t* iter) {
+  return text_edit_calc_x_on_canvas(text_edit, iter, GET_CANVAS(text_edit));
 }
 
 static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info_t* iter,
@@ -676,7 +684,7 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info
   uint32_t select_end = tk_max(state->select_start, state->select_end);
 
   if (impl->single_line) {
-    x = layout_info->margin_l + text_edit_calc_x(text_edit, iter);
+    x = layout_info->margin_l + text_edit_calc_x_on_canvas(text_edit, iter, c);
   } else {
     x = layout_info->margin_l;
   }
