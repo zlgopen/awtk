@@ -1,5 +1,5 @@
 <window anim_hint="htranslate" name="slider" text="Slider">
-  <slider name="s1" x="c" y="30" w="250" h="16" style="default" value="80"/>
+  <slider name="s1" x="c" y="10" w="250" h="60" style="photo" line_cap="butt" value="80"/>
   <slider name="bind_value:s1" x="c:-110" y="80" w="16" h="214" vertical="true" style="round" value="80"/>
   <slider name="bind_value:s1" x="c:-60" y="72" w="16" h="232" vertical="true" style="img_v" value="80"/>
   <progress_circle name="bind_value:s1" x="c:50" y="112" w="150" h="150" style="default" value="80"/>

@@ -136,6 +136,13 @@ typedef struct _slider_t {
    */
   bool_t slide_with_bar;
 
+  /**
+   * @property {char*} line_cap
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 前景色的线帽形状。（取值：butt|round，默认为跟随风格的圆角设置, 但是在没有设置圆角的时候无法使用 "round" 来设置圆角）
+   */
+  char* line_cap;
+
   /*private*/
   bool_t pressed;
   bool_t dragging;
@@ -218,6 +225,17 @@ ret_t slider_set_min(widget_t* widget, double min);
 ret_t slider_set_max(widget_t* widget, double max);
 
 /**
+ * @method slider_set_line_cap
+ * 设置前景色的线帽形状。（默认为跟随风格的圆角设置，但是在没有设置圆角的时候无法使用 "round" 来设置圆角）
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*}  line_cap 前景色的线帽形状，取值为：butt|round
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t slider_set_line_cap(widget_t* widget, const char* line_cap);
+
+/**
  * @method slider_set_step
  * 设置滑块的拖动的最小单位。
  * @annotation ["scriptable"]
@@ -253,6 +271,7 @@ ret_t slider_set_vertical(widget_t* widget, bool_t vertical);
 #define SLIDER_PROP_DRAGGER_SIZE "dragger_size"
 #define SLIDER_PROP_DRAGGER_ADAPT_TO_ICON "dragger_adapt_to_icon"
 #define SLIDER_PROP_SLIDE_WITH_BAR "slide_with_bar"
+#define SLIDER_PROP_SLIDE_LINE_CAP "line_cap"
 
 #define SLIDER(widget) ((slider_t*)(slider_cast(WIDGET(widget))))
 

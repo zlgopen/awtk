@@ -80,10 +80,40 @@ static ret_t slider_update_dragger_rect(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t slider_fill_fg_rounded_rect_by_butt(canvas_t* c, rect_t fg_rect, rect_t* bg_rect, const color_t* color, uint32_t radius) {
+  rect_t r_save = {0};
+  rect_t r_vg_save = {0};
+  vgcanvas_t* vg = canvas_get_vgcanvas(c);
+  canvas_save(c);
+  canvas_get_clip_rect(c, &r_save);
+  if (vg != NULL) {
+    vgcanvas_save(vg);
+    r_vg_save = rect_from_rectf(vgcanvas_get_clip_rect(vg));
+  }
+
+  fg_rect.x += c->ox;
+  fg_rect.y += c->oy;
+  fg_rect = rect_intersect(&fg_rect, &r_save);
+  canvas_set_clip_rect(c, &fg_rect);
+  if (vg != NULL) {
+    vgcanvas_clip_rect(vg, fg_rect.x, fg_rect.y, fg_rect.w, fg_rect.h);
+  }
+  canvas_fill_rounded_rect(c, bg_rect, NULL, color, radius);
+
+  if (vg != NULL) {
+    vgcanvas_clip_rect(vg, r_vg_save.x, r_vg_save.y, r_vg_save.w, r_vg_save.h);
+    vgcanvas_restore(vg);
+  }
+  canvas_set_clip_rect(c, &r_save);
+  canvas_restore(c);
+  return RET_OK;
+}
+
 static ret_t slider_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, rect_t* br,
                               image_draw_type_t draw_type) {
   bitmap_t img;
   style_t* style = widget->astyle;
+  slider_t* slider = SLIDER(widget);
   color_t trans = color_init(0, 0, 0, 0);
   uint32_t radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
   const char* color_key = br ? STYLE_ID_FG_COLOR : STYLE_ID_BG_COLOR;
@@ -96,7 +126,11 @@ static ret_t slider_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, rect_t* 
   if (color.rgba.a && r->w > 0 && r->h > 0) {
     canvas_set_fill_color(c, color);
     if (radius > 3) {
-      canvas_fill_rounded_rect(c, r, br, &color, radius);
+      if (tk_str_eq(slider->line_cap, VGCANVAS_LINE_CAP_BUTT) && br) {
+        slider_fill_fg_rounded_rect_by_butt(c, *r, br, &color, radius);
+      } else {
+        canvas_fill_rounded_rect(c, r, br, &color, radius);
+      }
     } else {
       canvas_fill_rect(c, r->x, r->y, r->w, r->h);
     }
@@ -503,6 +537,14 @@ ret_t slider_set_vertical(widget_t* widget, bool_t vertical) {
   return widget_invalidate(widget, NULL);
 }
 
+ret_t slider_set_line_cap(widget_t* widget, const char* line_cap) {
+  slider_t* slider = SLIDER(widget);
+  return_value_if_fail(slider != NULL, RET_BAD_PARAMS);
+
+  slider->line_cap = tk_str_copy(slider->line_cap, line_cap);
+  return widget_invalidate(widget, NULL);
+}
+
 static ret_t slider_get_prop(widget_t* widget, const char* name, value_t* v) {
   slider_t* slider = SLIDER(widget);
   return_value_if_fail(slider != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -537,6 +579,9 @@ static ret_t slider_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_INPUTING)) {
     value_set_bool(v, slider->dragging);
     return RET_OK;
+  } else if (tk_str_eq(name, SLIDER_PROP_SLIDE_LINE_CAP)) {
+    value_set_str(v, slider->line_cap);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -567,10 +612,24 @@ static ret_t slider_set_prop(widget_t* widget, const char* name, const value_t* 
   } else if (tk_str_eq(name, SLIDER_PROP_SLIDE_WITH_BAR)) {
     slider->slide_with_bar = value_bool(v);
     return RET_OK;
+  } else if (tk_str_eq(name, SLIDER_PROP_SLIDE_LINE_CAP)) {
+    return slider_set_line_cap(widget, value_str(v));
   }
 
   return RET_NOT_FOUND;
 }
+
+static ret_t slider_on_destroy(widget_t* widget) {
+  slider_t* slider = SLIDER(widget);
+  return_value_if_fail(slider != NULL, RET_BAD_PARAMS);
+
+  if (slider->line_cap != NULL) {
+    TKMEM_FREE(slider->line_cap);
+  }
+
+  return RET_OK;
+}
+
 
 static const char* s_slider_properties[] = {WIDGET_PROP_VALUE,
                                             WIDGET_PROP_VERTICAL,
@@ -594,6 +653,7 @@ TK_DECL_VTABLE(slider) = {.size = sizeof(slider_t),
                           .on_paint_self = slider_on_paint_self,
                           .on_paint_border = widget_on_paint_null,
                           .on_paint_background = widget_on_paint_null,
+                          .on_destroy = slider_on_destroy,
                           .get_prop = slider_get_prop,
                           .set_prop = slider_set_prop};
 

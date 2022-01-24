@@ -272,6 +272,13 @@
     <pressed icon="img_slider_icon"/>
     <over icon="img_slider_icon"/>
   </style>
+
+  <style name="photo" bg_color="#a0a0a0" fg_color="blue" round_radius="30">
+    <normal/>
+    <pressed/>
+    <over/>
+    <focused/>
+  </style>
 </slider>
 
 <group_box>
