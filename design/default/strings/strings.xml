@@ -632,7 +632,7 @@ Translate text
   <language name="zh_CN">确认</language>
   <language name="en_US">Confirm</language>
 </string>
-<string name="info">
+<string name="Info">
   <language name="zh_CN">提示信息</language>
   <language name="en_US">Info</language>
 </string>
@@ -948,7 +948,6 @@ Translate text
   <language name="en_US">sliding here:</language>
   <language name="zh_CN">滑动此处：</language>
 </string>
-
 <string name="hello world">
   <language name="en_US">hello 
 AWTK!</language>

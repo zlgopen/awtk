@@ -18,7 +18,7 @@
       <grid children_layout="default(w=100,h=36,x=20,y=0,s=20)" h="36">
         <button name="open:toast" tr_text="Toast"/>
         <button name="open:confirm" tr_text="Confirm"/>
-        <button name="open:info" tr_text="info"/>
+        <button name="open:info" tr_text="Info"/>
         <button name="open:warn" tr_text="Warning"/>
       </grid>
     </grid>
