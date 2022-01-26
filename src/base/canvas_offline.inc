@@ -282,8 +282,8 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas) {
     vgcanvas_bind_fbo(vg, c->fbo);
     vgcanvas_save(vg);
 
-    canvas->lcd->w = vg->w = canvas_offline->bitmap->w;
-    canvas->lcd->h = vg->h = canvas_offline->bitmap->h;
+    canvas->lcd->w = vg->w = c->fbo->w;
+    canvas->lcd->h = vg->h = c->fbo->h;
     canvas_set_clip_rect(canvas, NULL);
   }
 #else
