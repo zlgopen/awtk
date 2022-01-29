@@ -678,13 +678,13 @@ static bool_t debugger_fscript_should_pause(debugger_fscript_t* d, int32_t line)
 
   switch (d->break_type) {
     case DEBUGGER_FSCRIPT_BREAK_STEP_IN: {
-      if (d->executed_lines >= d->next_stop_executed_line) {
+      if ((d->executed_lines + 1) >= d->next_stop_executed_line) {
         paused = TRUE;
       }
       break;
     }
     case DEBUGGER_FSCRIPT_BREAK_NEXT: {
-      if (d->executed_lines >= d->next_stop_executed_line) {
+      if ((d->executed_lines + 1) >= d->next_stop_executed_line) {
         if (d->next_stop_call_frame_index >= d->call_stack_frames.size) {
           paused = TRUE;
         }
@@ -748,7 +748,7 @@ static ret_t debugger_fscript_after_exec_func(debugger_t* debugger, int32_t line
 
   if (debugger_fscript_lock(debugger) == RET_OK) {
     bool_t paused = FALSE;
-    log_debug("prev_executed_line=%d line=%d executed_lines=%d \n", d->prev_executed_line, line,
+    log_debug("after exec: prev_executed_line=%d line=%d executed_lines=%d \n", d->prev_executed_line, line,
               d->executed_lines);
     if (d->prev_executed_line != line) {
       d->executed_lines++;
