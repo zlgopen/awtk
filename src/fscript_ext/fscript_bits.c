@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  bits functions for fscript
  *
- * Copyright (c) 2020 - 2021  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2020 - 2022  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  */
 
