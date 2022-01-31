@@ -147,10 +147,7 @@ TEST(Debugger, launch) {
   TK_OBJECT_UNREF(client);
   debugger_server_tcp_deinit();
   debugger_global_deinit();
-  ASSERT_STREQ(str.str,
-               "breaked(0)breaked(1)log(2,\"0\")breaked(2)log(2,\"1\")breaked(1)log(2,\"2\")"
-               "breaked(2)log(2,\"3\")breaked(1)log(2,\"4\")log(2,\"5\")log(2,\"6\")log(2,\"7\")"
-               "log(2,\"8\")log(2,\"9\")log(4,\"10\")completed()");
+  ASSERT_STREQ(str.str, "breaked(0)breaked(1)breaked(2)log(2,\"0\")breaked(1)breaked(2)log(2,\"1\")breaked(1)log(2,\"2\")log(2,\"3\")log(2,\"4\")log(2,\"5\")log(2,\"6\")log(2,\"7\")log(2,\"8\")log(2,\"9\")log(4,\"10\")completed()");
   str_reset(&str);
   async_call_deinit();
 }
@@ -217,10 +214,7 @@ TEST(Debugger, next) {
   TK_OBJECT_UNREF(client);
   debugger_server_tcp_deinit();
   debugger_global_deinit();
-  ASSERT_STREQ(str.str,
-               "breaked(0)breaked(1)log(2,\"0\")breaked(2)log(2,\"1\")breaked(1)log(2,\"2\")"
-               "breaked(2)log(2,\"3\")breaked(1)log(2,\"4\")log(2,\"5\")log(2,\"6\")log(2,\"7\")"
-               "log(2,\"8\")log(2,\"9\")log(4,\"10\")completed()");
+  ASSERT_STREQ(str.str, "breaked(0)breaked(1)breaked(2)log(2,\"0\")breaked(1)breaked(2)log(2,\"1\")breaked(1)log(2,\"2\")log(2,\"3\")log(2,\"4\")log(2,\"5\")log(2,\"6\")log(2,\"7\")log(2,\"8\")log(2,\"9\")log(4,\"10\")completed()");
   str_reset(&str);
 }
 
@@ -478,8 +472,7 @@ TEST(Debugger, step_in) {
   debugger_server_tcp_deinit();
   debugger_global_deinit();
   ASSERT_STREQ(
-      str.str,
-      "breaked(8)breaked(6)breaked(3)breaked(6)breaked(8)log(9,\"600.000000\")completed()");
+      str.str, "breaked(8)breaked(6)breaked(2)breaked(6)breaked(8)log(9,\"600.000000\")completed()");
   str_reset(&str);
 }
 
