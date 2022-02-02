@@ -1427,8 +1427,13 @@ static ret_t fsexpr_parse_product(fscript_parser_t* parser, value_t* result) {
       args = &(acall->args);
       func_args_push(args, result);
       value_set_func(result, acall);
+      v.type = VALUE_TYPE_INVALID;
       fexpr_parse_unary(parser, &v);
-      func_args_push(args, &v);
+      if (v.type == VALUE_TYPE_INVALID) {
+        fscript_parser_set_error(parser, "expect an expression");
+      } else {
+        func_args_push(args, &v);
+      }
     } else {
       fscript_parser_unget_token(parser);
       break;
@@ -1459,8 +1464,13 @@ static ret_t fexpr_parse_sum(fscript_parser_t* parser, value_t* result) {
       args = &(acall->args);
       func_args_push(args, result);
       value_set_func(result, acall);
+      v.type = VALUE_TYPE_INVALID;
       fsexpr_parse_product(parser, &v);
-      func_args_push(args, &v);
+      if (v.type == VALUE_TYPE_INVALID) {
+        fscript_parser_set_error(parser, "expect an expression");
+      } else {
+        func_args_push(args, &v);
+      }
     } else {
       fscript_parser_unget_token(parser);
       break;
@@ -1492,8 +1502,13 @@ static ret_t fexpr_parse_compare(fscript_parser_t* parser, value_t* result) {
     args = &(acall->args);
     func_args_push(args, result);
     value_set_func(result, acall);
+    v.type = VALUE_TYPE_INVALID;
     fexpr_parse_sum(parser, &v);
-    func_args_push(args, &v);
+    if (v.type == VALUE_TYPE_INVALID) {
+      fscript_parser_set_error(parser, "expect an expression");
+    } else {
+      func_args_push(args, &v);
+    }
   } else {
     fscript_parser_unget_token(parser);
   }
@@ -1523,8 +1538,13 @@ static ret_t fexpr_parse_logic(fscript_parser_t* parser, value_t* result) {
       args = &(acall->args);
       func_args_push(args, result);
       value_set_func(result, acall);
+      v.type = VALUE_TYPE_INVALID;
       fexpr_parse_compare(parser, &v);
-      func_args_push(args, &v);
+      if (v.type == VALUE_TYPE_INVALID) {
+        fscript_parser_set_error(parser, "expect an expression");
+      } else {
+        func_args_push(args, &v);
+      }
     } else {
       fscript_parser_unget_token(parser);
       break;
@@ -1599,8 +1619,13 @@ static ret_t fexpr_parse(fscript_parser_t* parser, value_t* result) {
     args = &(acall->args);
     func_args_push(args, result);
     value_set_func(result, acall);
+    v.type = VALUE_TYPE_INVALID;
     fexpr_parse_question(parser, &v);
-    func_args_push(args, &v);
+    if (v.type == VALUE_TYPE_INVALID) {
+      fscript_parser_set_error(parser, "expect an expression");
+    } else {
+      func_args_push(args, &v);
+    }
   } else {
     fscript_parser_unget_token(parser);
   }
