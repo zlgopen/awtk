@@ -26,7 +26,7 @@
 
 #define IS_PATH_SEP(c) ((c) == '/' || (c) == '\\')
 
-ret_t path_basename(const char* path, char* result, int32_t size) {
+ret_t path_basename_ex(const char* path, bool_t remove_ext_name, char* result, int32_t size) {
   const char* p = NULL;
   int32_t real_size = 0;
   return_value_if_fail(path != NULL && result != NULL, RET_BAD_PARAMS);
@@ -46,8 +46,18 @@ ret_t path_basename(const char* path, char* result, int32_t size) {
   return_value_if_fail(real_size < size, RET_BAD_PARAMS);
 
   tk_strncpy(result, p, size - 1);
+  if (remove_ext_name) {
+    char* ext = strrchr(result, '.');
+    if (ext != NULL) {
+      *ext = '\0';
+    }
+  }
 
   return RET_OK;
+}
+
+ret_t path_basename(const char* path, char* result, int32_t size) {
+  return path_basename_ex(path, FALSE, result, size);
 }
 
 ret_t path_extname(const char* path, char* result, int32_t size) {

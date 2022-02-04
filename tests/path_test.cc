@@ -11,6 +11,27 @@ TEST(Path, basename) {
 
   ASSERT_EQ(path_basename("test.bin", result, sizeof(result)), RET_OK);
   ASSERT_EQ(string(result), string("test.bin"));
+  
+  ASSERT_EQ(path_basename("test", result, sizeof(result)), RET_OK);
+  ASSERT_EQ(string(result), string("test"));
+  
+  ASSERT_EQ(path_basename("", result, sizeof(result)), RET_OK);
+  ASSERT_EQ(string(result), string(""));
+}
+
+TEST(Path, basename_ex) {
+  char result[MAX_PATH + 1];
+  ASSERT_EQ(path_basename_ex("/a/test.bin", TRUE, result, sizeof(result)), RET_OK);
+  ASSERT_EQ(string(result), string("test"));
+
+  ASSERT_EQ(path_basename_ex("test.bin", TRUE, result, sizeof(result)), RET_OK);
+  ASSERT_EQ(string(result), string("test"));
+  
+  ASSERT_EQ(path_basename_ex("test", TRUE, result, sizeof(result)), RET_OK);
+  ASSERT_EQ(string(result), string("test"));
+  
+  ASSERT_EQ(path_basename_ex("", TRUE, result, sizeof(result)), RET_OK);
+  ASSERT_EQ(string(result), string(""));
 }
 
 TEST(Path, extname_is) {
