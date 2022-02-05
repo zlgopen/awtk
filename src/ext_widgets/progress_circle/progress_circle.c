@@ -81,6 +81,117 @@ static ret_t progress_circle_update_text(widget_t* widget) {
   return widget_set_text_utf8(widget, str);
 }
 
+static float_t progress_circle_value_to_angle(widget_t* widget, float_t value) {
+  float_t end_angle = 0;
+  progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
+  bool_t ccw = progress_circle->counter_clock_wise;
+  float_t start_angle = TK_D2R(progress_circle->start_angle);
+  float_t angle = (M_PI * 2 * value) / progress_circle->max;
+
+  if (ccw) {
+    end_angle = start_angle - angle + M_PI * 2;
+    if (fabs(end_angle - start_angle) < 0.001f) {
+      end_angle = start_angle + 0.001f;
+    }
+  } else {
+    end_angle = start_angle + angle;
+  }
+
+  return end_angle;
+}
+
+static float_t progress_circle_get_radius(widget_t* widget) {
+  xy_t cx = widget->w / 2;
+  xy_t cy = widget->h / 2;
+  progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
+
+  return tk_min(cx, cy) - progress_circle->line_width / 2;
+}
+
+rect_t progress_circle_calc_text_dirty_rect(widget_t* widget) {
+  rect_t r = {0, 0, 0, 0};
+  canvas_t* c = widget_get_canvas(widget);
+  progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
+
+  if (c != NULL && progress_circle->show_text) {
+    wstr_t* text = &(widget->text);
+    widget_prepare_text_style(widget, c);
+    progress_circle_update_text(widget);
+
+    r.w = canvas_measure_text(c, text->str, text->size) + 10;
+    r.h = c->font_size + 4;
+
+    r.x = (widget->w - r.w) / 2;
+    r.y = (widget->h - r.h) / 2;
+  }
+
+  return r;
+}
+
+rect_t progress_circle_calc_line_dirty_rect(widget_t* widget, float_t old_value,
+                                            float_t new_value) {
+  float_t min_x = 0;
+  float_t min_y = 0;
+  float_t max_x = 0;
+  float_t max_y = 0;
+  float_t start_angle = 0;
+  float_t end_angle = 0;
+  rect_t rect = {0, 0, 0, 0};
+  pointf_t start_p = {0, 0};
+  pointf_t end_p = {0, 0};
+  progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
+  float_t line_width = progress_circle->line_width;
+
+  start_angle = progress_circle_value_to_angle(widget, old_value);
+  end_angle = progress_circle_value_to_angle(widget, new_value);
+
+  if (start_angle > end_angle) {
+    float_t t = start_angle;
+    start_angle = end_angle;
+    end_angle = t;
+  }
+
+  if ((end_angle - start_angle) < (M_PI / 2)) {
+    xy_t cx = widget->w / 2;
+    xy_t cy = widget->h / 2;
+    float_t r = progress_circle_get_radius(widget);
+
+    start_p.y = r * sin(start_angle);
+    start_p.x = r * cos(start_angle);
+
+    end_p.y = r * sin(end_angle);
+    end_p.x = r * cos(end_angle);
+
+    min_x = tk_min(start_p.x, end_p.x) - line_width;
+    max_x = tk_max(start_p.x, end_p.x) + line_width;
+    min_y = tk_min(start_p.y, end_p.y) - line_width;
+    max_y = tk_max(start_p.y, end_p.y) + line_width;
+    if (start_p.x > 0 && end_p.x < 0) {
+      /*跨越第1和2象限*/
+      max_y = r;
+    } else if (start_p.y > 0 && end_p.y < 0) {
+      /*跨越第2和3象限*/
+      min_x = -r;
+    } else if (start_p.x < 0 && end_p.x > 0) {
+      /*跨越第3和4象限*/
+      min_y = -r;
+    } else if (start_p.y < 0 && end_p.y > 0) {
+      /*跨越第4和1象限*/
+      max_x = r;
+    }
+
+    assert(min_x <= max_x);
+    assert(min_y <= max_y);
+    rect = rect_init(min_x, min_y, max_x - min_x, max_y - min_y);
+    rect.x += cx;
+    rect.y += cy;
+  } else {
+    rect = rect_init(0, 0, widget->w, widget->h);
+  }
+
+  return rect;
+}
+
 static ret_t progress_circle_on_paint_self(widget_t* widget, canvas_t* c) {
   bitmap_t img;
   style_t* style = widget->astyle;
@@ -98,20 +209,10 @@ static ret_t progress_circle_on_paint_self(widget_t* widget, canvas_t* c) {
   if (vg != NULL && (has_image || color.rgba.a)) {
     xy_t cx = widget->w / 2;
     xy_t cy = widget->h / 2;
-    float_t end_angle = 0;
-    float_t r = tk_min(cx, cy) - progress_circle->line_width / 2;
+    float_t r = progress_circle_get_radius(widget);
     bool_t ccw = progress_circle->counter_clock_wise;
     float_t start_angle = TK_D2R(progress_circle->start_angle);
-    float_t angle = (M_PI * 2 * progress_circle->value) / progress_circle->max;
-
-    if (ccw) {
-      end_angle = start_angle - angle + M_PI * 2;
-      if (fabs(end_angle - start_angle) < 0.001f) {
-        end_angle = start_angle + 0.001f;
-      }
-    } else {
-      end_angle = start_angle + angle;
-    }
+    float_t end_angle = progress_circle_value_to_angle(widget, progress_circle->value);
 
     vgcanvas_save(vg);
     vgcanvas_translate(vg, c->ox, c->oy);
@@ -151,16 +252,24 @@ ret_t progress_circle_set_value(widget_t* widget, float_t value) {
   return_value_if_fail(progress_circle != NULL, RET_BAD_PARAMS);
 
   if (progress_circle->value != value) {
+    float_t old_value = progress_circle->value;
     value_change_event_t evt;
     value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
     value_set_float(&(evt.old_value), progress_circle->value);
     value_set_float(&(evt.new_value), value);
 
     if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
+      rect_t r = progress_circle_calc_line_dirty_rect(widget, old_value, value);
+      widget_invalidate(widget, &r);
+
       progress_circle->value = value;
       evt.e.type = EVT_VALUE_CHANGED;
       widget_dispatch(widget, (event_t*)&evt);
-      widget_invalidate(widget, NULL);
+
+      if (progress_circle->show_text) {
+        r = progress_circle_calc_text_dirty_rect(widget);
+        widget_invalidate_force(widget, &r);
+      }
     }
   }
 

@@ -194,14 +194,9 @@ ret_t widget_animator_pause(widget_animator_t* animator) {
 }
 
 static ret_t widget_animator_update(widget_animator_t* animator, float_t percent) {
-  ret_t ret = RET_OK;
   return_value_if_fail(animator != NULL && animator->update != NULL, RET_BAD_PARAMS);
 
-  widget_invalidate_force(animator->widget, NULL);
-  ret = animator->update(animator, percent);
-  widget_invalidate_force(animator->widget, NULL);
-
-  return ret;
+  return animator->update(animator, percent);
 }
 
 ret_t widget_animator_set_yoyo(widget_animator_t* animator, uint32_t yoyo_times) {

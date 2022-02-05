@@ -3341,7 +3341,7 @@ ret_t widget_invalidate_force(widget_t* widget, const rect_t* r) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   widget->dirty = FALSE;
-  return widget_invalidate(widget, NULL);
+  return widget_invalidate(widget, r);
 }
 
 widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y,
