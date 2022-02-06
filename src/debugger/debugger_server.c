@@ -184,7 +184,7 @@ static ret_t debugger_server_read_request_impl(debugger_server_t* server, debugg
 }
 
 static ret_t debugger_server_read_request(debugger_server_t* server, debugger_req_t* req) {
-  ret_t ret = tk_istream_wait_for_data(server->in, 500);
+  ret_t ret = tk_istream_wait_for_data(server->in, 1000);
 
   if (ret != RET_OK) {
     return ret;
@@ -586,6 +586,15 @@ ret_t debugger_server_start(tk_iostream_t* io) {
   return_value_if_fail(server != NULL, RET_BAD_PARAMS);
 
   s_debugger_server = server;
+
+  return RET_OK;
+}
+
+ret_t debugger_server_wait(void) {
+  debugger_server_t* server = NULL;
+  return_value_if_fail(s_debugger_server != NULL, RET_BAD_PARAMS);
+  server = s_debugger_server;
+  tk_thread_join(server->thread);
 
   return RET_OK;
 }

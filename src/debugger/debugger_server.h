@@ -43,6 +43,14 @@ BEGIN_C_DECLS
 ret_t debugger_server_start(tk_iostream_t* io);
 
 /**
+ * @method debugger_server_wait
+ * 等待调试器服务退出。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t debugger_server_wait(void);
+
+/**
  * @method debugger_server_stop
  * 停用调试器服务。
  *

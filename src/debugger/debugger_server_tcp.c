@@ -60,8 +60,15 @@ ret_t debugger_server_tcp_start(void) {
 }
 
 static tk_thread_t* s_accept_thread = NULL;
+
 static void* accept_thread(void* arg) {
-  debugger_server_tcp_start();
+  while (s_server_sock >= 0) {
+    debugger_server_tcp_start();
+    debugger_server_wait();
+    debugger_server_stop();
+    log_debug("client disconnected\n");
+  }
+
   s_accept_thread = NULL;
   return NULL;
 }
