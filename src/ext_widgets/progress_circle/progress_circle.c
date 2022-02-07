@@ -130,15 +130,15 @@ rect_t progress_circle_calc_text_dirty_rect(widget_t* widget) {
 
 rect_t progress_circle_calc_line_dirty_rect(widget_t* widget, float_t old_value,
                                             float_t new_value) {
-  float_t min_x = 0;
-  float_t min_y = 0;
-  float_t max_x = 0;
-  float_t max_y = 0;
+  int32_t min_x = 0;
+  int32_t min_y = 0;
+  int32_t max_x = 0;
+  int32_t max_y = 0;
   float_t start_angle = 0;
   float_t end_angle = 0;
   rect_t rect = {0, 0, 0, 0};
-  pointf_t start_p = {0, 0};
-  pointf_t end_p = {0, 0};
+  point_t start_p = {0, 0};
+  point_t end_p = {0, 0};
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
   float_t line_width = progress_circle->line_width;
 
@@ -154,30 +154,31 @@ rect_t progress_circle_calc_line_dirty_rect(widget_t* widget, float_t old_value,
   if ((end_angle - start_angle) < (M_PI / 2)) {
     xy_t cx = widget->w / 2;
     xy_t cy = widget->h / 2;
+    int32_t delta = line_width / 2 + 1;
     float_t r = progress_circle_get_radius(widget);
 
-    start_p.y = r * sin(start_angle);
-    start_p.x = r * cos(start_angle);
+    start_p.y = round(r * sin(start_angle));
+    start_p.x = round(r * cos(start_angle));
 
-    end_p.y = r * sin(end_angle);
-    end_p.x = r * cos(end_angle);
+    end_p.y = round(r * sin(end_angle));
+    end_p.x = round(r * cos(end_angle));
 
-    min_x = tk_min(start_p.x, end_p.x) - line_width;
-    max_x = tk_max(start_p.x, end_p.x) + line_width;
-    min_y = tk_min(start_p.y, end_p.y) - line_width;
-    max_y = tk_max(start_p.y, end_p.y) + line_width;
+    min_x = tk_min(start_p.x, end_p.x) - delta;
+    max_x = tk_max(start_p.x, end_p.x) + delta;
+    min_y = tk_min(start_p.y, end_p.y) - delta;
+    max_y = tk_max(start_p.y, end_p.y) + delta;
     if (start_p.x > 0 && end_p.x < 0) {
       /*跨越第1和2象限*/
-      max_y = r;
+      max_y = tk_max_int(r, max_y);
     } else if (start_p.y > 0 && end_p.y < 0) {
       /*跨越第2和3象限*/
-      min_x = -r;
+      min_x = tk_min_int(-r, min_x);
     } else if (start_p.x < 0 && end_p.x > 0) {
       /*跨越第3和4象限*/
-      min_y = -r;
+      min_y = tk_min_int(-r, min_y);
     } else if (start_p.y < 0 && end_p.y > 0) {
       /*跨越第4和1象限*/
-      max_x = r;
+      max_x = tk_max_int(r, max_x);
     }
 
     assert(min_x <= max_x);
