@@ -112,6 +112,10 @@ rect_t progress_circle_calc_text_dirty_rect(widget_t* widget) {
   rect_t r = {0, 0, 0, 0};
   canvas_t* c = widget_get_canvas(widget);
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
+  
+  if (widget->w < 1 || widget->h < 1) {
+    return r;
+  }
 
   if (c != NULL && progress_circle->show_text) {
     wstr_t* text = &(widget->text);
@@ -144,6 +148,10 @@ rect_t progress_circle_calc_line_dirty_rect(widget_t* widget, float_t old_value,
 
   start_angle = progress_circle_value_to_angle(widget, old_value);
   end_angle = progress_circle_value_to_angle(widget, new_value);
+
+  if (widget->w < 1 || widget->h < 1) {
+    return rect;
+  }
 
   if (start_angle > end_angle) {
     float_t t = start_angle;
