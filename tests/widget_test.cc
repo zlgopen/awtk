@@ -1402,3 +1402,31 @@ TEST(Widget, update_style4) {
 
   widget_destroy(w);
 }
+
+TEST(Widget, find_parent_by_name) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* v = view_create(w, 0, 0, 200, 200);
+  widget_t* b = button_create(v, 0, 0, 100, 30);
+
+  widget_set_name(v, "v");
+  widget_set_name(w, "w");
+
+  ASSERT_EQ(widget_find_parent_by_name(b, "v") == v, TRUE);
+  ASSERT_EQ(widget_find_parent_by_name(b, "w") == w, TRUE);
+  ASSERT_EQ(widget_find_parent_by_name(b, "none") == NULL, TRUE);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, find_parent_by_type) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* v = view_create(w, 0, 0, 200, 200);
+  widget_t* b = button_create(v, 0, 0, 100, 30);
+
+  ASSERT_EQ(widget_find_parent_by_type(b, WIDGET_TYPE_VIEW) == v, TRUE);
+  ASSERT_EQ(widget_find_parent_by_type(b, WIDGET_TYPE_NORMAL_WINDOW) == w, TRUE);
+  ASSERT_EQ(widget_find_parent_by_type(b, "none") == NULL, TRUE);
+
+  widget_destroy(w);
+}
+

@@ -712,6 +712,28 @@ int32_t widget_count_children(widget_t* widget);
 widget_t* widget_get_child(widget_t* widget, int32_t index);
 
 /**
+ * @method widget_find_parent_by_name
+ * 通过名称查找父控件。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 名称。
+ *
+ * @return {widget_t*} 父控件。
+ */
+widget_t* widget_find_parent_by_name(widget_t* widget, const char* name);
+
+/**
+ * @method widget_find_parent_by_type
+ * 通过类型查找父控件。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} type 类型。
+ *
+ * @return {widget_t*} 父控件。
+ */
+widget_t* widget_find_parent_by_type(widget_t* widget, const char* type);
+
+/**
  * @method widget_get_focused_widget
  * 获取当前窗口中的焦点控件。
  * @annotation ["scriptable"]

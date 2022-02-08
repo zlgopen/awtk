@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/02/08
+  * 增加widget\_find\_parent\_by\_type/widget\_find\_parent\_by\_name。
+
 2022/02/07
   * 合并对环形进度条的优化。
 

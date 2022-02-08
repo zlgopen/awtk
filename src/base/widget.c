@@ -4878,4 +4878,34 @@ ret_t widget_auto_scale_children(widget_t* widget, int32_t design_w, int32_t des
   return RET_OK;
 }
 
+widget_t* widget_find_parent_by_name(widget_t* widget, const char* name) {
+  widget_t* iter = NULL;
+  return_value_if_fail(widget != NULL && name != NULL, NULL);
+
+  iter = widget->parent;
+  while (iter != NULL) {
+    if (tk_str_eq(iter->name, name)) {
+      break;
+    }
+    iter = iter->parent;
+  }
+
+  return iter;
+}
+
+widget_t* widget_find_parent_by_type(widget_t* widget, const char* type) {
+  widget_t* iter = NULL;
+  return_value_if_fail(widget != NULL && type != NULL, NULL);
+
+  iter = widget->parent;
+  while (iter != NULL) {
+    if (tk_str_eq(widget_get_type(iter), type)) {
+      break;
+    }
+    iter = iter->parent;
+  }
+
+  return iter;
+}
+
 #include "object_widget.inc"
