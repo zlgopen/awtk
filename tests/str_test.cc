@@ -276,6 +276,18 @@ TEST(Str, from_wstr) {
   str_reset(s);
 }
 
+TEST(Str, json0) {
+  str_t str;
+  str_t* s = NULL;
+  s = str_init(&str, 100);
+
+  ASSERT_EQ(str_append_json_str(&str, "\"zhang\r\nshan\""), RET_OK);
+  ASSERT_STREQ(str.str, "\"\\\"zhang\\r\\nshan\\\"\"");
+
+  str_reset(s);
+}
+
+
 TEST(Str, json) {
   str_t str;
   str_t* s = NULL;

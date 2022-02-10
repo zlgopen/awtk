@@ -647,9 +647,14 @@ ret_t str_append_json_str(str_t* str, const char* json_str) {
   if (p != NULL) {
     while (*p) {
       if (*p == '\"') {
-        return_value_if_fail(str_append_char(str, '\\') == RET_OK, RET_OOM);
+        return_value_if_fail(str_append(str, "\\\"") == RET_OK, RET_OOM);
+      } else if (*p == '\n') {
+        return_value_if_fail(str_append(str, "\\n") == RET_OK, RET_OOM);
+      } else if (*p == '\r') {
+        return_value_if_fail(str_append(str, "\\r") == RET_OK, RET_OOM);
+      } else {
+        return_value_if_fail(str_append_char(str, *p) == RET_OK, RET_OOM);
       }
-      return_value_if_fail(str_append_char(str, *p) == RET_OK, RET_OOM);
       p++;
     }
   }

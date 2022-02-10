@@ -1,6 +1,7 @@
 # 最新动态
 
 2022/02/10
+  * 完善str\_append\_json\_str。
   * 完善API注释(感谢朝泽提供补丁)
   * color\_tile 支持渐变色（感谢智明提供补丁）
   * 完善canvas\_draw\_image\_at（感谢智明提供补丁）
