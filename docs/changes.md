@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/02/10
+  * color\_tile 支持渐变色。
+
 2022/02/08
   * 增加widget\_find\_parent\_by\_type/widget\_find\_parent\_by\_name。
 

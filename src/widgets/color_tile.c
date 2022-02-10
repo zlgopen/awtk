@@ -70,9 +70,11 @@ static ret_t color_tile_on_paint_stroke(widget_t* widget, canvas_t* c) {
 
 static ret_t color_tile_on_paint_fill(widget_t* widget, canvas_t* c) {
   rect_t r;
-  color_t color;
+  color_t color = {0};
+  gradient_t agradient;
   ret_t ret = RET_FAIL;
   style_t* style = NULL;
+  gradient_t* gradient = NULL;
   color_tile_t* color_tile = COLOR_TILE(widget);
   uint32_t radius, radius_tl, radius_tr, radius_bl, radius_br;
   return_value_if_fail(color_tile != NULL && widget != NULL, RET_BAD_PARAMS);
@@ -80,12 +82,19 @@ static ret_t color_tile_on_paint_fill(widget_t* widget, canvas_t* c) {
   style = widget->astyle;
   r = rect_init(0, 0, widget->w, widget->h);
   if (color_tile->bg.rgba.a == 0) {
-    color = style_get_color(style, STYLE_ID_BG_COLOR, color_tile->bg);
-    if (color.rgba.a == 0) {
+    gradient = style_get_gradient(style, STYLE_ID_BG_COLOR, &agradient);
+    if (gradient == NULL || gradient->nr == 0) {
       return RET_OK;
+    }
+    if (gradient->nr == 1) {
+      color = gradient_get_first_color(gradient);
+      gradient = NULL;
     }
   } else {
     color = color_tile->bg;
+  }
+  if (gradient == NULL && color.rgba.a == 0) {
+    return RET_OK;
   }
 
   radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
@@ -96,8 +105,13 @@ static ret_t color_tile_on_paint_fill(widget_t* widget, canvas_t* c) {
 
   canvas_set_fill_color(c, color);
   if (radius_tl > 3 || radius_tr > 3 || radius_bl > 3 || radius_br > 3) {
-    ret = canvas_fill_rounded_rect_ex(c, &r, NULL, &color, radius_tl, radius_tr, radius_bl,
+    if (gradient != NULL) {
+      ret = canvas_fill_rounded_rect_gradient_ex(c, &r, NULL, gradient, radius_tl, radius_tr, radius_bl,
+                                        radius_br);
+    } else {
+      ret = canvas_fill_rounded_rect_ex(c, &r, NULL, &color, radius_tl, radius_tr, radius_bl,
                                       radius_br);
+    }
   }
   if (ret == RET_FAIL) {
     ret = canvas_fill_rect(c, r.x, r.y, r.w, r.h);
