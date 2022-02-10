@@ -28,7 +28,7 @@ BEGIN_C_DECLS
 
 /**
  * @enum debugger_req_type_t
- * @prefix DEBUGGER_REQ
+ * @prefix DEBUGGER_REQ_
  * 请求的消息类型。
  */
 typedef enum _debugger_req_type_t {
@@ -146,8 +146,8 @@ typedef enum _debugger_req_type_t {
 } debugger_req_type_t;
 
 /**
- * @class debugger_resp_type_t
- * @prefix DEBUGGER_RESP
+ * @enum debugger_resp_type_t
+ * @prefix DEBUGGER_RESP_
  * 响应/推送的消息类型。
  */
 typedef enum _debugger_resp_type_t {
