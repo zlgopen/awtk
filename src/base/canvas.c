@@ -1795,6 +1795,8 @@ ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y) {
   float_t ratio = 0;
   return_value_if_fail(c != NULL && c->lcd != NULL && img != NULL, RET_BAD_PARAMS);
 
+  x += c->ox;
+  y += c->oy;
   ratio = c->lcd->ratio;
   src = rect_init(0, 0, img->w, img->h);
 
