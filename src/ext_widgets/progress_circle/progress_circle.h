@@ -276,8 +276,7 @@ TK_EXTERN_VTABLE(progress_circle);
 /**
  * @method progress_circle_calc_line_dirty_rect
  */
-rect_t progress_circle_calc_line_dirty_rect(widget_t* widget, float_t old_value,
-                                            float_t new_value);
+rect_t progress_circle_calc_line_dirty_rect(widget_t* widget, float_t old_value, float_t new_value);
 
 END_C_DECLS
 

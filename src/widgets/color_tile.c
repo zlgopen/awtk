@@ -106,11 +106,11 @@ static ret_t color_tile_on_paint_fill(widget_t* widget, canvas_t* c) {
   canvas_set_fill_color(c, color);
   if (radius_tl > 3 || radius_tr > 3 || radius_bl > 3 || radius_br > 3) {
     if (gradient != NULL) {
-      ret = canvas_fill_rounded_rect_gradient_ex(c, &r, NULL, gradient, radius_tl, radius_tr, radius_bl,
-                                        radius_br);
+      ret = canvas_fill_rounded_rect_gradient_ex(c, &r, NULL, gradient, radius_tl, radius_tr,
+                                                 radius_bl, radius_br);
     } else {
       ret = canvas_fill_rounded_rect_ex(c, &r, NULL, &color, radius_tl, radius_tr, radius_bl,
-                                      radius_br);
+                                        radius_br);
     }
   }
   if (ret == RET_FAIL) {

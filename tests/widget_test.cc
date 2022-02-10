@@ -1429,4 +1429,3 @@ TEST(Widget, find_parent_by_type) {
 
   widget_destroy(w);
 }
-

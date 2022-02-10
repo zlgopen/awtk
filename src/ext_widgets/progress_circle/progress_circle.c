@@ -112,7 +112,7 @@ rect_t progress_circle_calc_text_dirty_rect(widget_t* widget) {
   rect_t r = {0, 0, 0, 0};
   canvas_t* c = widget_get_canvas(widget);
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
-  
+
   if (widget->w < 1 || widget->h < 1) {
     return r;
   }

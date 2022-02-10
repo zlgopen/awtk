@@ -117,7 +117,7 @@ static ret_t edit_update_caret(const timer_info_t* timer) {
 }
 
 static ret_t edit_start_update_caret(edit_t* edit) {
-#define UPDATE_CARET_TIME   600
+#define UPDATE_CARET_TIME 600
   if (edit->timer_id == TK_INVALID_ID) {
     edit->timer_id = timer_add(edit_update_caret, WIDGET(edit), UPDATE_CARET_TIME);
   } else {

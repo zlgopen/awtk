@@ -80,7 +80,8 @@ static ret_t slider_update_dragger_rect(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static ret_t slider_fill_fg_rounded_rect_by_butt(canvas_t* c, rect_t fg_rect, rect_t* bg_rect, const color_t* color, uint32_t radius) {
+static ret_t slider_fill_fg_rounded_rect_by_butt(canvas_t* c, rect_t fg_rect, rect_t* bg_rect,
+                                                 const color_t* color, uint32_t radius) {
   rect_t r_save = {0};
   rect_t r_vg_save = {0};
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
@@ -629,7 +630,6 @@ static ret_t slider_on_destroy(widget_t* widget) {
 
   return RET_OK;
 }
-
 
 static const char* s_slider_properties[] = {WIDGET_PROP_VALUE,
                                             WIDGET_PROP_VERTICAL,

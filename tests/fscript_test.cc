@@ -1445,19 +1445,19 @@ TEST(FExr, syntax_check) {
   fscript_syntax_check(obj, "1", &error);
   ASSERT_EQ(error.message, (const char*)NULL);
   fscript_parser_error_deinit(&error);
-  
+
   fscript_syntax_check(obj, "1 <", &error);
   ASSERT_STREQ(error.message, "expect an expression");
   fscript_parser_error_deinit(&error);
-  
+
   fscript_syntax_check(obj, "1 +", &error);
   ASSERT_STREQ(error.message, "expect an expression");
   fscript_parser_error_deinit(&error);
-  
+
   fscript_syntax_check(obj, "1 /", &error);
   ASSERT_STREQ(error.message, "expect an expression");
   fscript_parser_error_deinit(&error);
-  
+
   fscript_syntax_check(obj, "1 -", &error);
   ASSERT_STREQ(error.message, "expect an expression");
   fscript_parser_error_deinit(&error);

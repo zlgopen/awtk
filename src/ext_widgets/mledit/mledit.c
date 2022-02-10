@@ -492,7 +492,7 @@ static ret_t mledit_update_caret(const timer_info_t* timer) {
 }
 
 static ret_t mledit_start_update_caret(mledit_t* mledit) {
-#define UPDATE_CARET_TIME   600
+#define UPDATE_CARET_TIME 600
   if (mledit->timer_id == TK_INVALID_ID) {
     mledit->timer_id = timer_add(mledit_update_caret, WIDGET(mledit), UPDATE_CARET_TIME);
   } else {
