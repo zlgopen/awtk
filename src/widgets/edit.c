@@ -116,6 +116,17 @@ static ret_t edit_update_caret(const timer_info_t* timer) {
   }
 }
 
+static ret_t edit_start_update_caret(edit_t* edit) {
+#define UPDATE_CARET_TIME   600
+  if (edit->timer_id == TK_INVALID_ID) {
+    edit->timer_id = timer_add(edit_update_caret, WIDGET(edit), UPDATE_CARET_TIME);
+  } else {
+    timer_reset(edit->timer_id);
+  }
+  text_edit_set_caret_visible(edit->model, TRUE);
+  return RET_OK;
+}
+
 ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
@@ -561,9 +572,7 @@ static ret_t edit_on_blur(widget_t* widget) {
 static ret_t edit_on_focused(widget_t* widget) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
-  if (edit->timer_id == TK_INVALID_ID) {
-    edit->timer_id = timer_add(edit_update_caret, widget, 600);
-  }
+  edit_start_update_caret(edit);
 
   if (widget->target == NULL) {
     edit_request_input_method(widget);
@@ -781,6 +790,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       }
       edit_update_status(widget);
       widget_invalidate(widget, NULL);
+      edit_start_update_caret(edit);
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
@@ -808,6 +818,8 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       edit->is_key_inputing = TRUE;
       ret = edit_on_key_down(widget, (key_event_t*)e);
       edit_update_status(widget);
+      widget_invalidate(widget, NULL);
+      edit_start_update_caret(edit);
       break;
     }
     case EVT_KEY_UP: {

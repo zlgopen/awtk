@@ -1,8 +1,9 @@
 # 最新动态
 
 2022/02/10
-  * color\_tile 支持渐变色（感谢智明提供补丁）。
+  * color\_tile 支持渐变色（感谢智明提供补丁）
   * 完善canvas\_draw\_image\_at（感谢智明提供补丁）
+  * 增加输入框中支持按键和鼠标输入保持光标常亮的功能（感谢智明提供补丁）
 
 2022/02/08
   * 增加widget\_find\_parent\_by\_type/widget\_find\_parent\_by\_name。

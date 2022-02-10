@@ -491,6 +491,17 @@ static ret_t mledit_update_caret(const timer_info_t* timer) {
   }
 }
 
+static ret_t mledit_start_update_caret(mledit_t* mledit) {
+#define UPDATE_CARET_TIME   600
+  if (mledit->timer_id == TK_INVALID_ID) {
+    mledit->timer_id = timer_add(mledit_update_caret, WIDGET(mledit), UPDATE_CARET_TIME);
+  } else {
+    timer_reset(mledit->timer_id);
+  }
+  text_edit_set_caret_visible(mledit->model, TRUE);
+  return RET_OK;
+}
+
 static ret_t mledit_update_status(widget_t* widget) {
   mledit_t* mledit = MLEDIT(widget);
   return_value_if_fail(mledit != NULL && widget != NULL, RET_BAD_PARAMS);
@@ -610,6 +621,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       }
       mledit_update_status(widget);
       widget_invalidate(widget, NULL);
+      mledit_start_update_caret(mledit);
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
@@ -665,6 +677,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       ret = RET_STOP;
       mledit->is_key_inputing = TRUE;
       widget_invalidate(widget, NULL);
+      mledit_start_update_caret(mledit);
       break;
     }
     case EVT_IM_COMMIT: {
@@ -739,9 +752,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_FOCUS: {
-      if (mledit->timer_id == TK_INVALID_ID) {
-        mledit->timer_id = timer_add(mledit_update_caret, widget, 600);
-      }
+      mledit_start_update_caret(mledit);
 
       if (widget->target == NULL) {
         if (mledit->open_im_when_focused) {
