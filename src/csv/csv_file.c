@@ -404,6 +404,7 @@ static csv_file_t* csv_file_load_input(csv_file_t* csv, tk_istream_t* input) {
 
     index++;
   }
+  str_reset(&str);
 
   r = csv_file_get_row(csv, 0);
   if (r != NULL) {
