@@ -550,7 +550,6 @@ static widget_t* combo_box_create_popup(combo_box_t* combo_box) {
 
 static ret_t combo_box_active(widget_t* widget) {
   point_t p = {0, 0};
-  widget_t* wm = NULL;
   widget_t* win = NULL;
   combo_box_t* combo_box = COMBO_BOX(widget);
   return_value_if_fail(widget != NULL && combo_box != NULL, RET_BAD_PARAMS);
