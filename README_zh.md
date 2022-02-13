@@ -178,7 +178,7 @@
 git clone https://github.com/zlgopen/awtk.git
 ```
 
-> 国内用户推荐使用：https://hub.fastgit.org/zlgopen/awtk.git
+> 国内用户推荐使用：https://hub.fastgit.xyz/zlgopen/awtk.git
 
 > Windows 下可以用带 GUI 的 git 下载代码。
 
