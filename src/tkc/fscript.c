@@ -730,7 +730,6 @@ static ret_t fscript_parser_init(fscript_parser_t* parser, tk_object_t* obj, con
 
 static ret_t fscript_parser_deinit(fscript_parser_t* parser) {
   str_reset(&(parser->temp));
-  TKMEM_FREE(parser->code_id);
   fscript_func_call_destroy(parser->first);
   return RET_OK;
 }
