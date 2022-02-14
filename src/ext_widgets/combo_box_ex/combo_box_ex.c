@@ -55,7 +55,7 @@ static ret_t combo_box_ex_on_layout_children_for_combobox_popup(widget_t* widget
   combo_box_t* combo_box = COMBO_BOX(widget);
   return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
 
-  if (combo_box->combobox_popup != NULL) {
+  if (combo_box->combobox_popup != NULL && combo_box->open_window == NULL) {
     point_t p = {0, 0};
     int32_t margin = COMBO_BOX_EX_DEFAULT_MARGIN;
     int32_t item_height = combo_box->item_height;
