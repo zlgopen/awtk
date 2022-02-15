@@ -1,4 +1,5 @@
 ﻿#include "gtest/gtest.h"
+#include "tkc/named_value.h"
 #include "conf_io/conf_json.h"
 
 TEST(ConfJson, arr) {
@@ -418,3 +419,80 @@ TEST(ConfJson, number) {
 
   conf_doc_destroy(doc);
 }
+
+static ret_t on_prop(void* ctx, const void* data) {
+  char buff[64];
+  str_t* str = (str_t*)ctx;
+  named_value_t* nv = (named_value_t*)data;
+
+  str_append_more(str, nv->name, "=", value_str_ex(&(nv->value), buff, sizeof(buff)), "\n", NULL);
+
+  return RET_OK;
+}
+
+TEST(Json, foreach) {
+  str_t str;
+  tk_object_t* conf = conf_json_create();
+  ASSERT_NE(conf, (tk_object_t*)NULL);
+  ASSERT_EQ(tk_object_set_prop_str(conf, "name", "awtk"), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_int(conf, "value", 123), RET_OK);
+
+  str_init(&str, 100);
+  ASSERT_EQ(tk_object_foreach_prop(conf, on_prop, &str), RET_OK);
+  ASSERT_STREQ(str.str, "name=awtk\nvalue=123\n");
+
+  str_reset(&str);
+  TK_OBJECT_UNREF(conf);
+}
+
+TEST(Json, foreach1) {
+  str_t str;
+  tk_object_t* conf = conf_json_create();
+  ASSERT_NE(conf, (tk_object_t*)NULL);
+  ASSERT_EQ(tk_object_set_prop_str(conf, "name", "awtk"), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_int(conf, "value", 123), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_int(conf, "detail.age", 123), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_int(conf, "detail.salary", 1000), RET_OK);
+
+  str_init(&str, 100);
+  ASSERT_EQ(tk_object_foreach_prop(conf, on_prop, &str), RET_OK);
+  ASSERT_STREQ(str.str, "name=awtk\nvalue=123\n");
+
+  str_reset(&str);
+  TK_OBJECT_UNREF(conf);
+}
+
+TEST(Json, subobject1) {
+  str_t str;
+  tk_object_t* conf = conf_json_create();
+  ASSERT_NE(conf, (tk_object_t*)NULL);
+  ASSERT_EQ(tk_object_set_prop_str(conf, "name", "awtk"), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_int(conf, "value", 123), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_int(conf, "detail.age", 123), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_int(conf, "detail.salary", 1000), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_str(conf, "detail.desc", "hello"), RET_OK);
+  tk_object_t* detail = conf_obj_create_sub_object(conf, "detail");
+
+  str_init(&str, 100);
+  ASSERT_EQ(tk_object_foreach_prop(detail, on_prop, &str), RET_OK);
+  ASSERT_STREQ(str.str, "age=123\nsalary=1000\ndesc=hello\n");
+  
+  ASSERT_EQ(tk_object_get_prop_int(detail, "age", 0), 123);
+  ASSERT_EQ(tk_object_get_prop_int(detail, "salary", 0), 1000);
+  ASSERT_STREQ(tk_object_get_prop_str(detail, "desc"), "hello");
+  
+  ASSERT_EQ(tk_object_set_prop_int(detail, "age", 1000), RET_OK);
+  ASSERT_EQ(tk_object_get_prop_int(detail, "age", 0), 1000);
+  
+  ASSERT_EQ(tk_object_remove_prop(detail, "age"), RET_OK);
+
+  str_reset(&str);
+
+  ASSERT_EQ(tk_object_foreach_prop(detail, on_prop, &str), RET_OK);
+  ASSERT_STREQ(str.str, "salary=1000\ndesc=hello\n");
+
+  str_reset(&str);
+  TK_OBJECT_UNREF(detail);
+  TK_OBJECT_UNREF(conf);
+}
+

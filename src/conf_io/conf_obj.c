@@ -23,6 +23,7 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/object.h"
+#include "tkc/named_value.h"
 #include "conf_io/conf_obj.h"
 #include "tkc/data_reader_factory.h"
 #include "tkc/data_writer_factory.h"
@@ -81,6 +82,34 @@ static ret_t conf_obj_clear(tk_object_t* obj, const char* name) {
 
   o->modified = TRUE;
   return conf_doc_clear(o->doc, name);
+}
+
+static ret_t conf_obj_foreach_node(conf_node_t* root, tk_visit_t on_prop, void* ctx) {
+  named_value_t nv;
+  ret_t ret = RET_FAIL;
+  conf_node_t* iter= conf_node_get_first_child(root);
+  return_value_if_fail(iter != NULL, RET_BAD_PARAMS);
+
+  for (; iter != NULL; iter = iter->next) {
+    nv.name = (char*)conf_node_get_name(iter);
+    if (conf_node_get_value(iter, &(nv.value)) == RET_OK) {
+      ret = on_prop(ctx, &nv);
+      if (ret != RET_OK) {
+        break;
+      }
+    } else {
+      log_debug("skip object\n");
+    }
+  }
+
+  return ret;
+}
+
+static ret_t conf_obj_foreach(tk_object_t* obj, tk_visit_t on_prop, void* ctx) {
+  conf_obj_t* o = CONF_OBJ(obj);
+  return_value_if_fail(o != NULL && o->doc != NULL && o->doc->root != NULL, RET_BAD_PARAMS);
+
+  return conf_obj_foreach_node(o->doc->root, on_prop, ctx);
 }
 
 static ret_t conf_obj_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
@@ -302,6 +331,7 @@ static const object_vtable_t s_conf_obj_vtable = {.type = "conf_obj",
                                                   .remove_prop = conf_obj_remove_prop,
                                                   .get_prop = conf_obj_get_prop,
                                                   .set_prop = conf_obj_set_prop,
+                                                  .foreach_prop = conf_obj_foreach,
                                                   .on_destroy = conf_obj_destroy};
 
 static conf_obj_t* conf_obj_cast(tk_object_t* obj) {
@@ -345,4 +375,121 @@ ret_t conf_obj_set_readonly(tk_object_t* conf, bool_t readonly) {
   o->readonly = readonly;
 
   return RET_OK;
+}
+
+typedef struct _conf_sub_obj_t {
+  tk_object_t object;
+  conf_obj_t* conf;
+  conf_node_t* root;
+  conf_node_t* real_root;
+} conf_sub_obj_t;
+
+static conf_sub_obj_t* conf_sub_obj_cast(tk_object_t* obj);
+#define CONF_SUB_OBJ(obj) conf_sub_obj_cast((tk_object_t*)obj)
+
+static ret_t conf_sub_obj_exec(tk_object_t* obj, const char* name, const char* args) {
+  /*FIXME:暂时不支持*/
+  return RET_NOT_IMPL;
+}
+
+static bool_t conf_sub_obj_can_exec(tk_object_t* obj, const char* name, const char* args) {
+  /*FIXME:暂时不支持*/
+  return FALSE;
+}
+
+static ret_t conf_sub_obj_remove_prop(tk_object_t* obj, const char* name) {
+  ret_t ret =  RET_FAIL;
+  conf_sub_obj_t* o = CONF_SUB_OBJ(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  o->conf->doc->root = o->root;
+  ret = conf_obj_remove_prop(TK_OBJECT(o->conf), name);
+  o->conf->doc->root = o->real_root;
+  
+  return ret;
+}
+
+static ret_t conf_sub_obj_get_prop(tk_object_t* obj, const char* name, value_t* v) {
+  ret_t ret =  RET_FAIL;
+  conf_sub_obj_t* o = CONF_SUB_OBJ(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  o->conf->doc->root = o->root;
+  ret = conf_obj_get_prop(TK_OBJECT(o->conf), name, v);
+  o->conf->doc->root = o->real_root;
+  
+  return ret;
+}
+
+static ret_t conf_sub_obj_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
+  ret_t ret =  RET_FAIL;
+  conf_sub_obj_t* o = CONF_SUB_OBJ(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  o->conf->doc->root = o->root;
+  ret = conf_obj_set_prop(TK_OBJECT(o->conf), name, v);
+  o->conf->doc->root = o->real_root;
+  
+  return ret;
+}
+
+static ret_t conf_sub_obj_foreach(tk_object_t* obj, tk_visit_t on_prop, void* ctx) {
+  conf_sub_obj_t* o = CONF_SUB_OBJ(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  return conf_obj_foreach_node(o->root, on_prop, ctx);
+}
+
+static ret_t conf_sub_obj_destroy(tk_object_t* obj) {
+  conf_sub_obj_t* o = CONF_SUB_OBJ(obj);
+  TK_OBJECT_UNREF(o->conf);
+  o->root = NULL;
+  o->real_root = NULL;
+
+  return RET_OK;
+}
+
+static const object_vtable_t s_conf_sub_obj_vtable = {.type = "conf_sub_obj",
+                                                  .desc = "conf_sub_obj",
+                                                  .size = sizeof(conf_sub_obj_t),
+                                                  .is_collection = FALSE,
+                                                  .exec = conf_sub_obj_exec,
+                                                  .can_exec = conf_sub_obj_can_exec,
+                                                  .remove_prop = conf_sub_obj_remove_prop,
+                                                  .get_prop = conf_sub_obj_get_prop,
+                                                  .set_prop = conf_sub_obj_set_prop,
+                                                  .foreach_prop = conf_sub_obj_foreach,
+                                                  .on_destroy = conf_sub_obj_destroy};
+
+static conf_sub_obj_t* conf_sub_obj_cast(tk_object_t* obj) {
+  return_value_if_fail(obj != NULL && obj->vt == &s_conf_sub_obj_vtable, NULL);
+
+  return (conf_sub_obj_t*)obj;
+}
+
+tk_object_t* conf_sub_obj_create(tk_object_t* conf, const char* path) {
+  tk_object_t* obj = NULL;
+  conf_sub_obj_t* o = NULL;
+  conf_node_t* root = NULL;
+  conf_obj_t* conf_obj = CONF_OBJ(conf);
+  return_value_if_fail(conf_obj != NULL && path != NULL, NULL);
+  return_value_if_fail(conf_obj->doc != NULL && conf_obj->doc->root != NULL, NULL);
+
+  root = conf_doc_find_node(conf_obj->doc, conf_obj->doc->root, path, FALSE);
+  return_value_if_fail(root != NULL, NULL);
+
+  obj = tk_object_create(&s_conf_sub_obj_vtable);
+  o = CONF_SUB_OBJ(obj);
+  return_value_if_fail(o != NULL, NULL);
+
+  o->conf = conf_obj;
+  o->root = root;
+  o->real_root = conf_obj->doc->root;
+  TK_OBJECT_REF(root);
+
+  return obj;
+}
+
+tk_object_t* conf_obj_create_sub_object(tk_object_t* conf, const char* path) {
+  return conf_sub_obj_create(conf, path);
 }

@@ -57,6 +57,18 @@ tk_object_t* conf_obj_create(conf_doc_save_t save, conf_doc_load_t load, const c
                              bool_t create_if_not_exist);
 
 /**
+ * @method conf_obj_create_sub_object 
+ * 根据路径创建一个子对象。 
+ * @annotation ["constructor"]
+ * 
+ * @param {tk_object_t*} conf 配置对象。
+ * @param {const char*} path 路径。
+ * 
+ * @return {tk_object_t*} 返回配置对象。
+ */
+tk_object_t* conf_obj_create_sub_object(tk_object_t* conf, const char* path);
+
+/**
  * @method conf_obj_get_doc 
  * 
  * 获取doc对象，用于更高级的操作。
