@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/02/16
+  * 增加函数ui\_loader\_load\_widget\_from\_xml。
+
 2022/02/15
   * conf对象支持foreach\_prop。
   * conf支持创建子对象。

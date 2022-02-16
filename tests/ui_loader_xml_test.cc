@@ -150,3 +150,28 @@ TEST(UILoaderXML, prop2) {
   widget_destroy(root);
   ui_builder_destroy(builder);
 }
+
+TEST(UILoaderXML, ui_loader_load_widget_from_xml) {
+  const char* str =
+      "<dialog>\
+      <property name=\"x\">1</property>\
+      <property name=\"y\">2</property>\
+      <property name=\"w\">3</property>\
+      <property name=\"h\">4</property>\
+      <property name=\"tr_text\">123<![CDATA[<abc>]]>123</property>\
+       <button name=\"b3\" x=\"center\" y=\"middle\" w=\"80\" h=\"20\" />\
+      </dialog>";
+  widget_t* root = ui_loader_load_widget_from_xml(NULL, str, strlen(str));
+
+  ASSERT_EQ(root != NULL, true);
+
+  ASSERT_EQ(root->x, 1);
+  ASSERT_EQ(root->y, 2);
+  ASSERT_EQ(root->w, 3);
+  ASSERT_EQ(root->h, 4);
+  ASSERT_STREQ(root->tr_text, "123<abc>123");
+  widget_t* button = widget_lookup(root, "b3", TRUE);
+  ASSERT_EQ(button != NULL, TRUE);
+
+  widget_destroy(root);
+}

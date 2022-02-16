@@ -100,6 +100,22 @@ widget_t* ui_loader_load_widget(const char* name);
  */
 widget_t* ui_loader_load_widget_with_parent(const char* name, widget_t* parent);
 
+/**
+ * @method ui_loader_load_widget_from_xml
+ *
+ * 从xml数据创建widget。
+ *
+ *>需要自己将widget加入窗口后，再调用widget\_layout。
+ *
+ * @param {widget_t*} parent 父控件对象。
+ * @param {const char*} xml XML数据。
+ * @param {uint32_t} size XML数据长度。
+ *
+ * @return {widget_t*} 返回widget对象。
+ *
+ */
+widget_t* ui_loader_load_widget_from_xml(widget_t* parent, const char* xml, uint32_t size);
+
 END_C_DECLS
 
 #endif /*TK_UI_LOADER_H*/
