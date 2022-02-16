@@ -354,6 +354,8 @@ static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
         font_t* font = font_manager_get_font(font_manager(), NULL, TK_DEFAULT_FONT_SIZE);
         if (font != NULL) {
           r = assets_manager_ref(assets_manager(), ASSET_TYPE_FONT, font->name);
+        } else {
+          log_warn("not font %s failed \r\n", name);
         }
       }
     }
@@ -361,14 +363,16 @@ static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
     if (r != NULL && r->subtype == ASSET_TYPE_FONT_TTF) {
       font_id = nvgCreateFontMem(vg, name, (unsigned char*)r->data, r->size, 0);
       if (font_id < 0) {
-        log_warn("load font %s failed\n", name);
+        log_warn("load font %s failed \r\n", name);
       }
     }
 
     if (r != NULL) {
       assets_manager_unref(am, r);
     }
-    vgcanvas_asset_manager_add_font(vgcanvas_asset_manager(), vgcanvas, name, tk_pointer_from_int(font_id));
+    if (font_id >= 0) {
+      vgcanvas_asset_manager_add_font(vgcanvas_asset_manager(), vgcanvas, name, tk_pointer_from_int(font_id));
+    }
   }
 
   canvas->font_id = font_id;

@@ -2,6 +2,7 @@
 
 2022/02/16
   * 增加函数ui\_loader\_load\_widget\_from\_xml。
+  * 增加 vg 加载字体的错误判断和提示 （感谢智明提供补丁）。
 
 2022/02/15
   * conf对象支持foreach\_prop。
