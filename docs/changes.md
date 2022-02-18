@@ -1,4 +1,6 @@
 # 最新动态
+2022/02/18
+  * 增加函数fscript\_set\_global\_object。
 
 2022/02/16
   * 增加函数ui\_loader\_load\_widget\_from\_xml。

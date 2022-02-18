@@ -2736,12 +2736,23 @@ tk_object_t* fscript_get_global_object(void) {
   return s_global_obj;
 }
 
-ret_t fscript_global_init(void) {
-  tk_object_t* obj = object_default_create_ex(FALSE);
-  return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
+ret_t fscript_set_global_object(tk_object_t* obj) {
+  TK_OBJECT_UNREF(s_global_obj);
 
-  s_global_obj = object_locker_create(obj);
-  TK_OBJECT_UNREF(obj);
+  TK_OBJECT_REF(obj);
+  s_global_obj = obj;
+
+  return RET_OK;
+}
+
+ret_t fscript_global_init(void) {
+  if (s_global_obj != NULL) {
+    tk_object_t* obj = object_default_create_ex(FALSE);
+    return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
+
+    s_global_obj = object_locker_create(obj);
+    TK_OBJECT_UNREF(obj);
+  }
 
   return RET_OK;
 }

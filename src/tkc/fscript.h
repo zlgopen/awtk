@@ -331,6 +331,16 @@ ret_t fscript_eval(tk_object_t* obj, const char* script, value_t* result);
 ret_t fscript_global_init(void);
 
 /**
+ * @method fscript_set_global_object
+ * 用于替换默认的全局对象。
+ * >仅限于在系统初始化时调用。
+ * @param {tk_object_t*} obj 全局对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_set_global_object(tk_object_t* obj);
+
+/**
  * @method fscript_register_func
  * 注册全局自定义函数。
  * @param {const char*} name 函数名(无需加函数前缀)。
