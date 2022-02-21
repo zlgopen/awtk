@@ -331,3 +331,18 @@ TEST(ValueTest, gradient) {
   ASSERT_EQ(gradient != NULL, true);
   ASSERT_EQ(gradient->size, 2u);
 }
+
+TEST(value, i64_from_str) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_str(&v, "12345678912345"));
+  ASSERT_EQ(value_int64(&v), 12345678912345);
+  
+  ASSERT_EQ(&v, value_set_str(&v, "-12345678912345"));
+  ASSERT_EQ(value_int64(&v), -12345678912345);
+}
+
+TEST(value, ui64_from_str) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_str(&v, "12345678912345"));
+  ASSERT_EQ(value_uint64(&v), 12345678912345);
+}

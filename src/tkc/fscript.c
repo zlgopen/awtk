@@ -2732,7 +2732,21 @@ static fscript_func_call_t* fscript_func_call_create(fscript_parser_t* parser, c
 
 static tk_object_t* s_global_obj = NULL;
 
+ret_t fscript_global_ensure_global_object(void) {
+  if (s_global_obj == NULL) {
+    tk_object_t* obj = object_default_create_ex(FALSE);
+    return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
+
+    s_global_obj = object_locker_create(obj);
+    TK_OBJECT_UNREF(obj);
+  }
+
+  return RET_OK;
+}
+
 tk_object_t* fscript_get_global_object(void) {
+  fscript_global_ensure_global_object();
+
   return s_global_obj;
 }
 
@@ -2746,13 +2760,7 @@ ret_t fscript_set_global_object(tk_object_t* obj) {
 }
 
 ret_t fscript_global_init(void) {
-  if (s_global_obj != NULL) {
-    tk_object_t* obj = object_default_create_ex(FALSE);
-    return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
-
-    s_global_obj = object_locker_create(obj);
-    TK_OBJECT_UNREF(obj);
-  }
+  fscript_global_ensure_global_object();
 
   return RET_OK;
 }

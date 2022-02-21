@@ -177,6 +177,8 @@ int64_t value_int64(const value_t* v) {
     return v->value.i64;
   } else if (v->type == VALUE_TYPE_UINT64) {
     return v->value.u64;
+  } else if (v->type == VALUE_TYPE_STRING) {
+    return tk_atol(v->value.str);
   } else {
     return (int64_t)value_int(v);
   }
@@ -197,6 +199,8 @@ uint64_t value_uint64(const value_t* v) {
     return v->value.u64;
   } else if (v->type == VALUE_TYPE_INT64) {
     return v->value.i64;
+  } else if (v->type == VALUE_TYPE_STRING) {
+    return tk_atoul(v->value.str);
   } else {
     return (uint64_t)value_int(v);
   }

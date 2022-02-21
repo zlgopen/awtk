@@ -324,7 +324,6 @@ tk_object_t* debugger_fscript_get_self(debugger_t* debugger) {
 }
 
 tk_object_t* debugger_fscript_get_global(debugger_t* debugger) {
-  /*FIXME:和awflow统一处理*/
   return TK_OBJECT_REF(fscript_get_global_object());
 }
 
