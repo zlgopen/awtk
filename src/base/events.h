@@ -970,7 +970,7 @@ event_t* window_event_init(window_event_t* event, uint32_t type, void* target, w
 
 /**
  * @method pointer_event_rotate
- * 根据屏幕旋转方向修正pointer_event中的坐标。
+ * 根据屏幕旋转方向修正pointer_event中的坐标。(旋转方向为逆时针)
  * @param {pointer_event_t*} evt 指针事件对象。
  * @param {system_info_t*} info 系统信息。
  *

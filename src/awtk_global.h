@@ -99,7 +99,7 @@ bool_t tk_is_pointer_pressed(void);
 
 /**
  * @method tk_set_lcd_orientation
- * 设置屏幕的旋转方向(XXX:目前仅支持0度和90度)。
+ * 设置屏幕的旋转方向(XXX:目前仅支持0度,90度,180度和270度，旋转方向为逆时针方向)。
  * @param {int} orientation 旋转方向。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
