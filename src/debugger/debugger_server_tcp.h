@@ -45,6 +45,13 @@ BEGIN_C_DECLS
 ret_t debugger_server_tcp_init(uint32_t port);
 
 /**
+ * @method debugger_server_tcp_is_inited
+ * 检查是否已经初始化。
+ * @return {bool_t} 返回TRUE表示已经初始化，否则表示没有。
+ */
+bool_t debugger_server_tcp_is_inited(void);
+
+/**
  * @method debugger_server_tcp_start
  * 启动调试器服务。
  * > 接收客户端请求，并启动服务。

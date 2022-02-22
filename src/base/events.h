@@ -381,7 +381,7 @@ typedef enum _event_type_t {
   EVT_RESET,
   /**
    * @const EVT_SCREEN_SAVER
-   * 在指定的时间内(WITH_SCREEN_SAVER_TIME)，没有用户输入事件，由窗口管理器触发。
+   * 在指定的时间内，没有用户输入事件，由窗口管理器触发。
    */
   EVT_SCREEN_SAVER,
   /**

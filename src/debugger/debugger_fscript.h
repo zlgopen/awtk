@@ -67,6 +67,7 @@ typedef struct _debugger_fscript_t {
   bool_t paused;
   str_t temp_str;
   tk_mutex_nest_t* mutex;
+  tk_mutex_nest_t* mutex_for_destroy;
   tk_cond_var_t* cond_var;
   darray_t break_points;
   darray_t call_stack_frames;
@@ -114,7 +115,7 @@ debugger_fscript_t* debugger_fscript_cast(debugger_t* debugger);
  */
 ret_t debugger_fscript_set_code(debugger_t* debugger, const binary_data_t* code, bool_t changed);
 
-#define DEBUGGER_FSCRIPT(debugger) debugger_fscript_cast((debugger_t*)debugger);
+#define DEBUGGER_FSCRIPT(debugger) debugger_fscript_cast((debugger_t*)debugger)
 
 #define DEBUGGER_LANG_FSCRIPT "fscript"
 

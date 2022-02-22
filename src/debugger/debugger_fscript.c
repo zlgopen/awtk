@@ -101,14 +101,14 @@ static ret_t debugger_fscript_leave_func(debugger_t* debugger) {
 
 static ret_t debugger_fscript_lock(debugger_t* debugger) {
   debugger_fscript_t* d = DEBUGGER_FSCRIPT(debugger);
-  return_value_if_fail(d != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(d != NULL && d->mutex != NULL, RET_BAD_PARAMS);
 
   return tk_mutex_nest_lock(d->mutex);
 }
 
 static ret_t debugger_fscript_unlock(debugger_t* debugger) {
   debugger_fscript_t* d = DEBUGGER_FSCRIPT(debugger);
-  return_value_if_fail(d != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(d != NULL && d->mutex != NULL, RET_BAD_PARAMS);
 
   return tk_mutex_nest_unlock(d->mutex);
 }
@@ -536,13 +536,21 @@ debugger_fscript_t* debugger_fscript_cast(debugger_t* debugger) {
 }
 
 static ret_t debugger_fscript_on_destroy(tk_object_t* obj) {
+  tk_mutex_nest_t* mutex = NULL;
   debugger_fscript_t* debugger = DEBUGGER_FSCRIPT(obj);
   return_value_if_fail(debugger != NULL, RET_BAD_PARAMS);
 
-  tk_mutex_nest_destroy(debugger->mutex);
-  debugger->mutex = NULL;
+  debugger_fscript_clear_break_points(DEBUGGER(obj));
+  debugger_fscript_continue(DEBUGGER(obj));
+
+  mutex = debugger->mutex_for_destroy;
+  
+  tk_mutex_nest_lock(mutex);
   tk_cond_var_destroy(debugger->cond_var);
   debugger->cond_var = NULL;
+  
+  tk_mutex_nest_destroy(debugger->mutex);
+  debugger->mutex = NULL;
 
   TKMEM_FREE(debugger->code_id);
   str_reset(&(debugger->code));
@@ -550,6 +558,8 @@ static ret_t debugger_fscript_on_destroy(tk_object_t* obj) {
   darray_deinit(&(debugger->break_points));
   darray_deinit(&(debugger->call_stack_frames));
 
+  tk_mutex_nest_unlock(mutex);
+ 
   return RET_OK;
 }
 
@@ -579,6 +589,7 @@ debugger_t* debugger_fscript_create(void) {
   return_value_if_fail(debugger != NULL, NULL);
 
   debugger->mutex = tk_mutex_nest_create();
+  debugger->mutex_for_destroy = tk_mutex_nest_create();
   debugger->cond_var = tk_cond_var_create();
   debugger->debugger.vt = &s_debugger_fscript_vtable;
 
@@ -734,7 +745,7 @@ static ret_t debugger_fscript_before_exec_func(debugger_t* debugger, int32_t lin
     }
     debugger_fscript_unlock(debugger);
 
-    if (paused) {
+    if (paused && d->cond_var != NULL) {
       tk_cond_var_wait(d->cond_var, 0xffffff);
     }
   }
@@ -765,7 +776,7 @@ static ret_t debugger_fscript_after_exec_func(debugger_t* debugger, int32_t line
     }
     debugger_fscript_unlock(debugger);
 
-    if (paused) {
+    if (paused && d->cond_var != NULL) {
       log_debug("step for next\n");
       tk_cond_var_wait(d->cond_var, 0xffffff);
     }
@@ -785,6 +796,8 @@ ret_t debugger_fscript_exec_func(fscript_t* fscript, const char* name, fscript_f
     return fscript_exec_func_default(fscript, iter, result);
   } else {
     int32_t line = iter->row;
+    tk_mutex_nest_t* mutex = DEBUGGER_FSCRIPT(debugger)->mutex_for_destroy;
+    return_value_if_fail(tk_mutex_nest_lock(mutex) == RET_OK, RET_FAIL);
 
     /*name不为NUL则是脚本函数*/
     if (name != NULL) {
@@ -811,6 +824,7 @@ ret_t debugger_fscript_exec_func(fscript_t* fscript, const char* name, fscript_f
         debugger_fscript_after_exec_func(debugger, line);
       }
     }
+    tk_mutex_nest_unlock(mutex);
   }
 
   return ret;
@@ -826,10 +840,13 @@ ret_t debugger_fscript_set_var(fscript_t* fscript, const char* name, const value
     return fscript_set_var_default(fscript, name, v);
   } else {
     int32_t line = fscript->curr->row;
+    tk_mutex_nest_t* mutex = DEBUGGER_FSCRIPT(debugger)->mutex_for_destroy;
+    return_value_if_fail(tk_mutex_nest_lock(mutex) == RET_OK, RET_FAIL);
 
     debugger_fscript_before_exec_func(debugger, line);
     ret = fscript_set_var_default(fscript, name, v);
     debugger_fscript_after_exec_func(debugger, line);
+    tk_mutex_nest_unlock(mutex);
   }
 
   return ret;

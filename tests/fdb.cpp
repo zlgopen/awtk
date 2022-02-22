@@ -471,9 +471,13 @@ ret_t aw_flow_shell_run(debugger_t* debugger) {
 int main(int argc, char* argv[]) {
   debugger_t* client = NULL;
   const char* host = argc == 2 ? argv[1] : "localhost";
+  const char* code_id = argc == 3 ? argv[2] : DEBUGGER_DEFAULT_CODE_ID;
 
   platform_prepare();
   tk_socket_init();
+
+  log_debug("Usage: %s [host] [code_id]\n", argv[0]);
+  log_debug("host=%s code_id=%s\n", host, code_id);
 
   client = debugger_client_tcp_create(host, DEBUGGER_TCP_PORT);
   if (client == NULL) {
@@ -481,7 +485,7 @@ int main(int argc, char* argv[]) {
     exit(0);
   }
 
-  debugger_attach(client, DEBUGGER_LANG_FSCRIPT, DEBUGGER_DEFAULT_CODE_ID);
+  debugger_attach(client, DEBUGGER_LANG_FSCRIPT, code_id);
   debugger_set_break_point(client, DEBUGGER_START_LINE);
 
   aw_flow_shell_run(client);

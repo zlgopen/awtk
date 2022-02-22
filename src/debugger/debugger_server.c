@@ -49,6 +49,10 @@ typedef struct _debugger_server_t {
   uint32_t capacity;
 } debugger_server_t;
 
+static bool_t s_single_mode = FALSE;
+static bool_t s_server_running = FALSE;
+static debugger_server_t* s_debugger_server = NULL;
+
 static void* debugger_server_run(void* ctx);
 static ret_t debugger_server_send_object(debugger_server_t* server, debugger_resp_t* resp,
                                          tk_object_t* obj);
@@ -312,16 +316,11 @@ static debugger_t* debugger_server_init_debugger(debugger_server_t* server, debu
 
   return debugger;
 }
-static ret_t debugger_server_attach_debugger(debugger_server_t* server, const char* arg) {
-  char lang[TK_NAME_LEN + 1];
-  const char* code_id = NULL;
+
+ret_t debugger_server_create_debugger(debugger_server_t* server, const char* lang, const char* code_id) {
   debugger_t* debugger = NULL;
   return_value_if_fail(server != NULL, RET_BAD_PARAMS);
-  code_id = strchr(arg, ':');
-  return_value_if_fail(code_id != NULL, RET_BAD_PARAMS);
 
-  tk_strncpy_s(lang, TK_NAME_LEN, arg, code_id - arg);
-  code_id++;
   if (tk_mutex_nest_lock(server->mutex) == RET_OK) {
     debugger = debugger_server_find(server, code_id);
     if (debugger == NULL) {
@@ -333,6 +332,19 @@ static ret_t debugger_server_attach_debugger(debugger_server_t* server, const ch
   }
 
   return debugger != NULL ? RET_OK : RET_FAIL;
+}
+
+static ret_t debugger_server_attach_debugger(debugger_server_t* server, const char* arg) {
+  char lang[TK_NAME_LEN + 1];
+  const char* code_id = NULL;
+  return_value_if_fail(server != NULL, RET_BAD_PARAMS);
+  code_id = strchr(arg, ':');
+  return_value_if_fail(code_id != NULL, RET_BAD_PARAMS);
+
+  tk_strncpy_s(lang, TK_NAME_LEN, arg, code_id - arg);
+  code_id++;
+
+  return debugger_server_create_debugger(server, lang, code_id);
 }
 
 static ret_t debugger_server_launch_debugger(debugger_server_t* server, binary_data_t* arg) {
@@ -361,6 +373,10 @@ static ret_t debugger_server_launch_debugger(debugger_server_t* server, binary_d
 
 static ret_t debugger_server_destroy(debugger_server_t* server) {
   return_value_if_fail(server != NULL, RET_BAD_PARAMS);
+  
+  if (s_debugger_server == server) {
+    s_debugger_server = NULL;
+  }
 
   server->quiting = TRUE;
   while (!server->quited) {
@@ -571,12 +587,12 @@ error:
 }
 
 static void* debugger_server_run(void* ctx) {
+  s_server_running = TRUE;
   debugger_server_dispatch((debugger_server_t*)ctx);
+  s_server_running = FALSE;
+  log_debug("debugger_server quited\n");
   return NULL;
 }
-
-static bool_t s_single_mode = FALSE;
-static debugger_server_t* s_debugger_server = NULL;
 
 ret_t debugger_server_start(tk_iostream_t* io) {
   debugger_server_t* server = NULL;
@@ -591,19 +607,20 @@ ret_t debugger_server_start(tk_iostream_t* io) {
 }
 
 ret_t debugger_server_wait(void) {
-  debugger_server_t* server = NULL;
-  return_value_if_fail(s_debugger_server != NULL, RET_BAD_PARAMS);
-  server = s_debugger_server;
+  debugger_server_t* server = s_debugger_server;
+  return_value_if_fail(server != NULL, RET_BAD_PARAMS);
+
   tk_thread_join(server->thread);
 
   return RET_OK;
 }
 
 ret_t debugger_server_stop(void) {
-  return_value_if_fail(s_debugger_server != NULL, RET_BAD_PARAMS);
+  debugger_server_t* server = s_debugger_server;
+  return_value_if_fail(server != NULL, RET_BAD_PARAMS);
 
-  debugger_server_destroy(s_debugger_server);
   s_debugger_server = NULL;
+  debugger_server_destroy(server);
 
   return RET_OK;
 }
@@ -611,20 +628,31 @@ ret_t debugger_server_stop(void) {
 debugger_t* debugger_server_find_debugger(const char* code_id) {
   debugger_server_t* server = s_debugger_server;
 
+  if (server == NULL) {
+    return NULL;
+  }
+
   return debugger_server_find(server, code_id);
 }
 
 bool_t debugger_server_is_running(void) {
-  return s_debugger_server != NULL;
+  return s_server_running && s_debugger_server != NULL;
 }
 
-ret_t debugger_server_set_single_mode(bool_t single_mode) {
+ret_t debugger_server_set_single_mode_ex(bool_t single_mode, const char* lang, const char* code_id) {
   debugger_server_t* server = s_debugger_server;
 
   s_single_mode = single_mode;
   if (server != NULL) {
     server->single_mode = single_mode;
+    if(lang != NULL && code_id != NULL) {
+      debugger_server_create_debugger(server, lang, code_id);
+    }
   }
 
   return RET_OK;
+}
+
+ret_t debugger_server_set_single_mode(bool_t single_mode) {
+  return debugger_server_set_single_mode_ex(single_mode, NULL, NULL);
 }

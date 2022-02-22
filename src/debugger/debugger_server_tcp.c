@@ -26,8 +26,13 @@
 
 static int s_server_sock = -1;
 
+bool_t debugger_server_tcp_is_inited(void) {
+  return s_server_sock >= 0;
+}
+
 ret_t debugger_server_tcp_init(uint32_t port) {
   int sock = -1;
+  return_value_if_fail(s_server_sock < 0, RET_BAD_PARAMS);
   return_value_if_fail(!debugger_server_is_running(), RET_BAD_PARAMS);
 
   sock = tk_tcp_listen(port);
