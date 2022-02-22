@@ -476,14 +476,14 @@ TEST(Json, subobject1) {
   str_init(&str, 100);
   ASSERT_EQ(tk_object_foreach_prop(detail, on_prop, &str), RET_OK);
   ASSERT_STREQ(str.str, "age=123\nsalary=1000\ndesc=hello\n");
-  
+
   ASSERT_EQ(tk_object_get_prop_int(detail, "age", 0), 123);
   ASSERT_EQ(tk_object_get_prop_int(detail, "salary", 0), 1000);
   ASSERT_STREQ(tk_object_get_prop_str(detail, "desc"), "hello");
-  
+
   ASSERT_EQ(tk_object_set_prop_int(detail, "age", 1000), RET_OK);
   ASSERT_EQ(tk_object_get_prop_int(detail, "age", 0), 1000);
-  
+
   ASSERT_EQ(tk_object_remove_prop(detail, "age"), RET_OK);
 
   str_reset(&str);
@@ -495,4 +495,3 @@ TEST(Json, subobject1) {
   TK_OBJECT_UNREF(detail);
   TK_OBJECT_UNREF(conf);
 }
-

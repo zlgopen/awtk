@@ -336,7 +336,7 @@ TEST(value, i64_from_str) {
   value_t v;
   ASSERT_EQ(&v, value_set_str(&v, "12345678912345"));
   ASSERT_EQ(value_int64(&v), 12345678912345);
-  
+
   ASSERT_EQ(&v, value_set_str(&v, "-12345678912345"));
   ASSERT_EQ(value_int64(&v), -12345678912345);
 }

@@ -317,7 +317,8 @@ static debugger_t* debugger_server_init_debugger(debugger_server_t* server, debu
   return debugger;
 }
 
-ret_t debugger_server_create_debugger(debugger_server_t* server, const char* lang, const char* code_id) {
+ret_t debugger_server_create_debugger(debugger_server_t* server, const char* lang,
+                                      const char* code_id) {
   debugger_t* debugger = NULL;
   return_value_if_fail(server != NULL, RET_BAD_PARAMS);
 
@@ -373,7 +374,7 @@ static ret_t debugger_server_launch_debugger(debugger_server_t* server, binary_d
 
 static ret_t debugger_server_destroy(debugger_server_t* server) {
   return_value_if_fail(server != NULL, RET_BAD_PARAMS);
-  
+
   if (s_debugger_server == server) {
     s_debugger_server = NULL;
   }
@@ -639,13 +640,14 @@ bool_t debugger_server_is_running(void) {
   return s_server_running && s_debugger_server != NULL;
 }
 
-ret_t debugger_server_set_single_mode_ex(bool_t single_mode, const char* lang, const char* code_id) {
+ret_t debugger_server_set_single_mode_ex(bool_t single_mode, const char* lang,
+                                         const char* code_id) {
   debugger_server_t* server = s_debugger_server;
 
   s_single_mode = single_mode;
   if (server != NULL) {
     server->single_mode = single_mode;
-    if(lang != NULL && code_id != NULL) {
+    if (lang != NULL && code_id != NULL) {
       debugger_server_create_debugger(server, lang, code_id);
     }
   }

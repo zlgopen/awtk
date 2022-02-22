@@ -87,7 +87,7 @@ static ret_t conf_obj_clear(tk_object_t* obj, const char* name) {
 static ret_t conf_obj_foreach_node(conf_node_t* root, tk_visit_t on_prop, void* ctx) {
   named_value_t nv;
   ret_t ret = RET_FAIL;
-  conf_node_t* iter= conf_node_get_first_child(root);
+  conf_node_t* iter = conf_node_get_first_child(root);
   return_value_if_fail(iter != NULL, RET_BAD_PARAMS);
 
   for (; iter != NULL; iter = iter->next) {
@@ -398,38 +398,38 @@ static bool_t conf_sub_obj_can_exec(tk_object_t* obj, const char* name, const ch
 }
 
 static ret_t conf_sub_obj_remove_prop(tk_object_t* obj, const char* name) {
-  ret_t ret =  RET_FAIL;
+  ret_t ret = RET_FAIL;
   conf_sub_obj_t* o = CONF_SUB_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   o->conf->doc->root = o->root;
   ret = conf_obj_remove_prop(TK_OBJECT(o->conf), name);
   o->conf->doc->root = o->real_root;
-  
+
   return ret;
 }
 
 static ret_t conf_sub_obj_get_prop(tk_object_t* obj, const char* name, value_t* v) {
-  ret_t ret =  RET_FAIL;
+  ret_t ret = RET_FAIL;
   conf_sub_obj_t* o = CONF_SUB_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   o->conf->doc->root = o->root;
   ret = conf_obj_get_prop(TK_OBJECT(o->conf), name, v);
   o->conf->doc->root = o->real_root;
-  
+
   return ret;
 }
 
 static ret_t conf_sub_obj_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
-  ret_t ret =  RET_FAIL;
+  ret_t ret = RET_FAIL;
   conf_sub_obj_t* o = CONF_SUB_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   o->conf->doc->root = o->root;
   ret = conf_obj_set_prop(TK_OBJECT(o->conf), name, v);
   o->conf->doc->root = o->real_root;
-  
+
   return ret;
 }
 
@@ -450,16 +450,16 @@ static ret_t conf_sub_obj_destroy(tk_object_t* obj) {
 }
 
 static const object_vtable_t s_conf_sub_obj_vtable = {.type = "conf_sub_obj",
-                                                  .desc = "conf_sub_obj",
-                                                  .size = sizeof(conf_sub_obj_t),
-                                                  .is_collection = FALSE,
-                                                  .exec = conf_sub_obj_exec,
-                                                  .can_exec = conf_sub_obj_can_exec,
-                                                  .remove_prop = conf_sub_obj_remove_prop,
-                                                  .get_prop = conf_sub_obj_get_prop,
-                                                  .set_prop = conf_sub_obj_set_prop,
-                                                  .foreach_prop = conf_sub_obj_foreach,
-                                                  .on_destroy = conf_sub_obj_destroy};
+                                                      .desc = "conf_sub_obj",
+                                                      .size = sizeof(conf_sub_obj_t),
+                                                      .is_collection = FALSE,
+                                                      .exec = conf_sub_obj_exec,
+                                                      .can_exec = conf_sub_obj_can_exec,
+                                                      .remove_prop = conf_sub_obj_remove_prop,
+                                                      .get_prop = conf_sub_obj_get_prop,
+                                                      .set_prop = conf_sub_obj_set_prop,
+                                                      .foreach_prop = conf_sub_obj_foreach,
+                                                      .on_destroy = conf_sub_obj_destroy};
 
 static conf_sub_obj_t* conf_sub_obj_cast(tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt == &s_conf_sub_obj_vtable, NULL);

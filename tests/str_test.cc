@@ -287,7 +287,6 @@ TEST(Str, json0) {
   str_reset(s);
 }
 
-
 TEST(Str, json) {
   str_t str;
   str_t* s = NULL;

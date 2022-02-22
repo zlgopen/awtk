@@ -544,11 +544,11 @@ static ret_t debugger_fscript_on_destroy(tk_object_t* obj) {
   debugger_fscript_continue(DEBUGGER(obj));
 
   mutex = debugger->mutex_for_destroy;
-  
+
   tk_mutex_nest_lock(mutex);
   tk_cond_var_destroy(debugger->cond_var);
   debugger->cond_var = NULL;
-  
+
   tk_mutex_nest_destroy(debugger->mutex);
   debugger->mutex = NULL;
 
@@ -559,7 +559,7 @@ static ret_t debugger_fscript_on_destroy(tk_object_t* obj) {
   darray_deinit(&(debugger->call_stack_frames));
 
   tk_mutex_nest_unlock(mutex);
- 
+
   return RET_OK;
 }
 
