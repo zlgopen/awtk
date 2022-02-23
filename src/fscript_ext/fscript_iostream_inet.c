@@ -21,6 +21,7 @@
 #include "streams/inet/iostream_udp.h"
 
 static ret_t func_iostream_tcp_create(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+#ifdef WITH_SOCKET
   int port = 0;
   int sock = 0;
   const char* host = NULL;
@@ -36,9 +37,13 @@ static ret_t func_iostream_tcp_create(fscript_t* fscript, fscript_args_t* args, 
   result->free_handle = TRUE;
 
   return RET_OK;
+#else
+  return RET_NOT_IMPL;
+#endif
 }
 
 static ret_t func_iostream_udp_create(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+#ifdef WITH_SOCKET
   int port = 0;
   const char* host = NULL;
   result->type = VALUE_TYPE_INVALID;
@@ -51,6 +56,9 @@ static ret_t func_iostream_udp_create(fscript_t* fscript, fscript_args_t* args, 
   result->free_handle = TRUE;
 
   return RET_OK;
+#else
+  return RET_NOT_IMPL;
+#endif
 }
 
 FACTORY_TABLE_BEGIN(s_ext_iostream_inet)
