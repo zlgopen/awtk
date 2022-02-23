@@ -308,12 +308,22 @@ class AppHelperBase:
             print(self.DEF_FILE)
         else:
             return
+        defDirlist = ''
+        if self.APP_ROOT != self.AWTK_ROOT:
+            defDirlist += os.path.abspath(self.AWTK_ROOT + '/tools/idl_gen/idl.json') + ';'
+        for defLib in self.DEPENDS_LIBS :
+            tmp_filename = os.path.abspath(defLib["root"] + '/idl/idl.json')
+            if not os.path.exists(tmp_filename) :
+                tmp_filename = os.path.abspath(defLib["root"] + '/idl.json')
+            defDirlist += tmp_filename + ';'
 
         idl_gen_tools = os.path.join(self.AWTK_ROOT, 'tools/idl_gen/index.js')
         dll_def_gen_tools = os.path.join(
             self.AWTK_ROOT, 'tools/dll_def_gen/index.js')
 
         cmd = 'node ' + '"' + idl_gen_tools + '"' + ' idl/idl.json ' + self.SRC_DIR
+        if defDirlist != '' :
+            cmd += ' "' + defDirlist + '" '
         if os.system(cmd) != 0:
             print('exe cmd: ' + cmd + ' failed.')
 

@@ -373,9 +373,23 @@ class IDLGen {
     });
   }
 
+  getClassByDefDir(name) {
+    let v = null;
+    this.defInfoList.find(defInfo => {
+      return defInfo.json.find(cls => {
+        if (cls.type === 'class') {
+          v = cls;
+          return cls.name === name;
+        }
+      });
+    });
+    return v;
+  }
+
   updateLevel() {
     let json = this.result;
     let getClass = this.getClass.bind(this);
+    let getClassByDefDir = this.getClassByDefDir.bind(this);
 
     function updateLevel(cls) {
       if(cls.level) {
@@ -385,6 +399,9 @@ class IDLGen {
       cls.level = 1;
       if(cls.parent) {
         let parent = getClass(cls.parent);
+        if (!parent) {
+          parent = getClassByDefDir(cls.parent);
+        }
         if(parent) {
           cls.level += updateLevel(parent);
         } else {
@@ -436,13 +453,30 @@ class IDLGen {
     }
   }
 
-  static gen(sourcesPath, outputIDL) {
+  getDefInfoList(defDirlist) {
+    if (typeof(defDirlist) !== 'undefined') {
+      let arr = defDirlist.split(';');
+      arr.forEach(filename => {
+        if (filename.length > 0) {
+          let json = JSON.parse(fs.readFileSync(filename).toString());
+          let defInfo = {};
+          defInfo.json = json;
+          this.defInfoList.push(defInfo);
+        }
+      })
+    }
+  }
+  
+  static gen(sourcesPath, outputIDL, defDirlist) {
     let gen = new IDLGen();
     let arr = sourcesPath.split(';');
 
     console.log(sourcesPath, arr);
 
     gen.result = []
+    gen.defInfoList = []
+
+    gen.getDefInfoList(defDirlist);
     arr.forEach(iter => {
       gen.run(path.normalize(iter));
     })
