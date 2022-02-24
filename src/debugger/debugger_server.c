@@ -295,8 +295,8 @@ static ret_t debugger_server_on_events(void* ctx, event_t* e) {
   }
 
   TK_OBJECT_UNREF(obj);
-
-  return RET_OK;
+  
+  return ret == RET_OK ? RET_OK : RET_REMOVE;
 }
 
 static debugger_t* debugger_server_init_debugger(debugger_server_t* server, debugger_t* debugger) {
