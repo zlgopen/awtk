@@ -505,3 +505,39 @@ TEST(Str, count) {
   ASSERT_EQ(str_count(&str, "ABCDE"), 0);
   str_reset(&str);
 }
+
+TEST(Str, format) {
+  str_t str;
+  str_init(&str, 0);
+  str_format(&str, 10, "%d", 123);
+  ASSERT_STREQ(str.str, "123");
+  ASSERT_EQ(str.size, 3);
+
+  str_format(&str, 10, "%s", "abcd");
+  ASSERT_STREQ(str.str, "abcd");
+  ASSERT_EQ(str.size, 4);
+  
+  str_format(&str, 10, "", "abcd");
+  ASSERT_STREQ(str.str, "");
+  ASSERT_EQ(str.size, 0);
+
+  str_reset(&str);
+}
+
+TEST(Str, append_format) {
+  str_t str;
+  str_init(&str, 0);
+  str_append_format(&str, 10, "%d", 123);
+  ASSERT_STREQ(str.str, "123");
+  ASSERT_EQ(str.size, 3);
+
+  str_append_format(&str, 10, "%s", "abcd");
+  ASSERT_STREQ(str.str, "123abcd");
+  ASSERT_EQ(str.size, 7);
+  
+  str_append_format(&str, 10, "", "abcd");
+  ASSERT_STREQ(str.str, "123abcd");
+  ASSERT_EQ(str.size, 7);
+
+  str_reset(&str);
+}

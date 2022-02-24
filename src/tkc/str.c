@@ -779,3 +779,34 @@ uint32_t str_count(str_t* str, const char* substr) {
 
   return str_count_sub_str(str, substr);
 }
+
+ret_t str_format(str_t* str, uint32_t size, const char* format, ...) {
+  va_list va;
+  int32_t ret = 0;
+  return_value_if_fail(str != NULL && format != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(str_extend(str, size + 1) == RET_OK, RET_OOM);
+
+  va_start(va, format);
+  ret = tk_vsnprintf(str->str, size, format, va);
+  va_end(va);
+  return_value_if_fail(ret >= 0, RET_BAD_PARAMS);
+  str->size = ret;
+
+  return RET_OK;
+}
+
+ret_t str_append_format(str_t* str, uint32_t size, const char* format, ...) {
+  va_list va;
+  int32_t ret = 0;
+  return_value_if_fail(str != NULL && format != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(str_extend(str, str->size + size + 1) == RET_OK, RET_OOM);
+
+  va_start(va, format);
+  ret = tk_vsnprintf(str->str + str->size, size, format, va);
+  va_end(va);
+
+  return_value_if_fail(ret >= 0, RET_BAD_PARAMS);
+  str->size += ret;
+
+  return RET_OK;
+}
