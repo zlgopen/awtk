@@ -17,6 +17,7 @@ let sourcesPath = [
     path.normalize(path.join(__dirname, '../../src/csv')), 
     path.normalize(path.join(__dirname, '../../src/streams')), 
     path.normalize(path.join(__dirname, '../../src/hal')), 
+    path.normalize(path.join(__dirname, '../../src/debugger')), 
     path.normalize(path.join(__dirname, '../../src/conf_io'))].join(';');
 
 IDLGen.gen(sourcesPath, outputIDL)
