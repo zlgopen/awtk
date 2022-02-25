@@ -720,6 +720,23 @@ combo_box_option_t* combo_box_get_option(widget_t* widget, uint32_t index) {
   return NULL;
 }
 
+bool_t combo_box_has_option_text(widget_t* widget, const char* text) {
+  combo_box_option_t* iter = NULL;
+  combo_box_t* combo_box = COMBO_BOX(widget);
+  return_value_if_fail(combo_box != NULL, FALSE);
+
+  iter = combo_box->option_items;
+  while (iter != NULL) {
+    if (tk_str_eq(iter->text, text)) {
+      return TRUE;
+    }
+
+    iter = iter->next;
+  }
+
+  return FALSE;
+}
+
 int32_t combo_box_find_option(widget_t* widget, int32_t value) {
   uint32_t i = 0;
   combo_box_option_t* iter = NULL;

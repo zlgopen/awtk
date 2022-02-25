@@ -292,9 +292,18 @@ TEST(ComboBox, events) {
 TEST(ComboBox, remove_option) {
   widget_t* w = combo_box_create(NULL, 10, 20, 30, 40);
 
+  ASSERT_EQ(combo_box_has_option_text(w, "red"), FALSE);
   ASSERT_EQ(combo_box_append_option(w, 1, "red"), RET_OK);
+  ASSERT_EQ(combo_box_has_option_text(w, "red"), TRUE);
+
+  ASSERT_EQ(combo_box_has_option_text(w, "green"), FALSE);
   ASSERT_EQ(combo_box_append_option(w, 2, "green"), RET_OK);
+  ASSERT_EQ(combo_box_has_option_text(w, "green"), TRUE);
+
+  ASSERT_EQ(combo_box_has_option_text(w, "blue"), FALSE);
   ASSERT_EQ(combo_box_append_option(w, 3, "blue"), RET_OK);
+  ASSERT_EQ(combo_box_has_option_text(w, "blue"), TRUE);
+
   ASSERT_EQ(combo_box_count_options(w), 3);
 
   ASSERT_EQ(combo_box_remove_option(w, 1), RET_OK);

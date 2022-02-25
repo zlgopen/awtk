@@ -383,6 +383,17 @@ combo_box_option_t* combo_box_get_option(widget_t* widget, uint32_t index);
 int32_t combo_box_get_value(widget_t* widget);
 
 /**
+ * @method combo_box_has_option_text
+ * 检查选项中是否存在指定的文本。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget combo_box对象。
+ * @param {const char*} text option text
+ *
+ * @return {bool_t} 返回TRUE表示存在，否则表示不存在。
+ */
+bool_t combo_box_has_option_text(widget_t* widget, const char* text);
+
+/**
  * @method combo_box_get_text
  * 获取combo_box的文本。
  * @annotation ["scriptable"]
