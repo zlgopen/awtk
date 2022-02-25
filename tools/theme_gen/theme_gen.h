@@ -160,6 +160,16 @@ class NameValues {
     return true;
   }
 
+  bool RemoveValue(const string& name) {
+    for (iter_type i = values.begin(); i != values.end(); i++) {
+      if (i->name == name) {
+        values.erase(i);
+        return true;
+      }
+    }
+    return false;
+  }
+
   uint32_t Size() {
     return values.size();
   }
@@ -202,6 +212,7 @@ class Style {
   bool AddValue(const string& name, const char* value);
   bool AddValue(const string& name, const binary_data_t* bin);
   bool AddValue(const string& name, const value_t& v);
+  bool RemoveValue(const string& name);
   ret_t Output(wbuffer_t* wbuffer);
   bool Merge(Style& other);
   bool Reset();

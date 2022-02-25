@@ -1,6 +1,8 @@
 # 最新动态
+
 2022/02/25
   * 增加函数combo\_box\_has\_option\_text
+  * 完善themegen （感谢兆坤提供补丁）。
 
 2022/02/24
   * 增加函数str\_format/str\_append\_format。
