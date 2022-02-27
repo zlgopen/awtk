@@ -299,10 +299,11 @@ ret_t ${className}_set_${iter.name}(${className}_t* ${className}, ${paramDecl}) 
     let parentAnnotation = "";
     const className = json.name;
     const uclassName = json.name.toUpperCase();
+    const parentType = json.parent != 'object' ? json.parent + '_t' : 'tk_object_t';
 
     if (json.parent) {
-      parent = `${json.parent}_t ${json.parent};`
-      parentAnnotation = `@parent ${json.parent}`
+      parent = `${parentType} ${json.parent};`
+      parentAnnotation = `@parent ${parentType}`
       if (json.parent != 'object') {
         includes = `#include "${json.parent}.h"\n`
       }
@@ -403,7 +404,7 @@ ret_t ${className}_get_prop(${className}_t* ${className}, const char* name, valu
  *
  * @return {${className}_t*} 返回非NULL表示成功，否则表示失败。
  */
-${className}_t* ${className}_cast(object_t* obj);
+${className}_t* ${className}_cast(tk_object_t* obj);
 
 /**
  * @method ${className}_create
@@ -484,7 +485,7 @@ ${this.genSetPropDispatch(json)}
   return RET_NOT_FOUND;
 }
 
-static ret_t ${className}_set_prop_obj(object_t* obj, const char* name, const value_t* v) {
+static ret_t ${className}_set_prop_obj(tk_object_t* obj, const char* name, const value_t* v) {
   ${className}_t* ${className} = ${uclassName}(obj);
   return_value_if_fail(${className} != NULL && name != NULL && v != NULL , RET_BAD_PARAMS);
 
@@ -500,7 +501,7 @@ ${this.genGetPropDispatch(json)}
   return RET_NOT_FOUND;
 }
 
-static ret_t ${className}_get_prop_obj(object_t* obj, const char* name, value_t* v) {
+static ret_t ${className}_get_prop_obj(tk_object_t* obj, const char* name, value_t* v) {
   ${className}_t* ${className} = ${uclassName}(obj);
   return_value_if_fail(${className} != NULL && name != NULL && v != NULL , RET_BAD_PARAMS);
 
@@ -515,11 +516,11 @@ ${parentDeinit}
   return RET_OK;
 }
 
-static ret_t ${className}_on_destroy(object_t* obj) {
+static ret_t ${className}_on_destroy(tk_object_t* obj) {
   return ${className}_deinit(${uclassName}(obj));
 }
 
-static const object_vtable_t s_${className}_vtable = {.type = "${className}",
+static const tk_object_vtable_t s_${className}_vtable = {.type = "${className}",
                                                         .desc = "${className}",
                                                         .size = sizeof(${className}_t),
                                                         .is_collection = FALSE,
@@ -537,13 +538,13 @@ ${this.genPropInits(json)}
 }
 
 ${className}_t* ${className}_create(void) {
-  object_t* o = object_create(&s_${className}_vtable);
+  tk_object_t* o = tk_object_create(&s_${className}_vtable);
   return_value_if_fail(o != NULL, NULL);
 
   return ${className}_init(${uclassName}(o));
 }
 
-${className}_t* ${className}_cast(object_t* obj) {
+${className}_t* ${className}_cast(tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt == &s_${className}_vtable, NULL);
 
   return (${className}_t*)(obj);
