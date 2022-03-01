@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/02/26
+  * draggable 支持拖动原生窗口。
+
 2022/02/25
   * 增加函数combo\_box\_has\_option\_text
   * 完善themegen （感谢兆坤提供补丁）。

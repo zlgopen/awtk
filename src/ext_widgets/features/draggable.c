@@ -86,6 +86,15 @@ ret_t draggable_set_drag_window(widget_t* widget, bool_t drag_window) {
   return RET_OK;
 }
 
+ret_t draggable_set_drag_native_window(widget_t* widget, bool_t drag_native_window) {
+  draggable_t* draggable = DRAGGABLE(widget);
+  return_value_if_fail(draggable != NULL, RET_BAD_PARAMS);
+
+  draggable->drag_native_window = drag_native_window;
+
+  return RET_OK;
+}
+
 ret_t draggable_set_drag_parent(widget_t* widget, uint32_t drag_parent) {
   draggable_t* draggable = DRAGGABLE(widget);
   return_value_if_fail(draggable != NULL, RET_BAD_PARAMS);
@@ -120,6 +129,9 @@ static ret_t draggable_get_prop(widget_t* widget, const char* name, value_t* v) 
   } else if (tk_str_eq(DRAGGABLE_PROP_DRAG_WINDOW, name)) {
     value_set_bool(v, draggable->drag_window);
     return RET_OK;
+  } else if (tk_str_eq(DRAGGABLE_PROP_DRAG_NATIVE_WINDOW, name)) {
+    value_set_bool(v, draggable->drag_native_window);
+    return RET_OK;
   } else if (tk_str_eq(DRAGGABLE_PROP_DRAG_PARENT, name)) {
     value_set_uint32(v, draggable->drag_parent);
     return RET_OK;
@@ -151,6 +163,9 @@ static ret_t draggable_set_prop(widget_t* widget, const char* name, const value_
     return RET_OK;
   } else if (tk_str_eq(DRAGGABLE_PROP_DRAG_WINDOW, name)) {
     draggable_set_drag_window(widget, value_bool(v));
+    return RET_OK;
+  } else if (tk_str_eq(DRAGGABLE_PROP_DRAG_NATIVE_WINDOW, name)) {
+    draggable_set_drag_native_window(widget, value_bool(v));
     return RET_OK;
   } else if (tk_str_eq(DRAGGABLE_PROP_DRAG_PARENT, name)) {
     draggable_set_drag_parent(widget, value_uint32(v));
@@ -208,8 +223,17 @@ static ret_t draggable_on_parent_pointer_down(void* ctx, event_t* e) {
     draggable->pressed = TRUE;
     draggable->down.x = evt->x;
     draggable->down.y = evt->y;
-    draggable->saved_position.x = target->x;
-    draggable->saved_position.y = target->y;
+
+    if (draggable->drag_native_window) {
+      native_window_info_t info;
+      native_window_t* nw = widget_get_native_window(widget);
+      native_window_get_info(nw, &info);
+      draggable->saved_position.x = info.x;
+      draggable->saved_position.y = info.y;
+    } else {
+      draggable->saved_position.x = target->x;
+      draggable->saved_position.y = target->y;
+    }
 
     widget_grab(widget->parent->parent, widget->parent);
   }
@@ -257,7 +281,12 @@ static ret_t draggable_on_parent_pointer_move(void* ctx, event_t* e) {
     x = draggable->saved_position.x + (draggable->vertical_only ? 0 : dx);
     y = draggable->saved_position.y + (draggable->horizontal_only ? 0 : dy);
 
-    draggable_move_target(widget, x, y);
+    if (draggable->drag_native_window) {
+      native_window_t* nw = widget_get_native_window(widget);
+      native_window_move(nw, x, y, TRUE);
+    } else {
+      draggable_move_target(widget, x, y);
+    }
   }
 
   return RET_OK;

@@ -113,6 +113,13 @@ typedef struct _draggable_t {
    * 拖动窗口而不是父控件。比如放在对话框的titlebar上，拖动titlebar其实是希望拖动对话框。
    */
   bool_t drag_window;
+  
+  /**
+   * @property {bool_t} drag_native_window
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 拖动原生窗口。
+   */
+  bool_t drag_native_window;
 
   /**
    * @property {uint32_t} drag_parent
@@ -222,12 +229,23 @@ ret_t draggable_set_horizontal_only(widget_t* widget, bool_t horizontal_only);
  * 设置drag_window。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {bool_t} drag_window drag_window
+ * @param {bool_t} drag_window 是否拖动窗口。
  * 拖动窗口而不是父控件。比如放在对话框的titlebar上，拖动titlebar其实是希望拖动对话框。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t draggable_set_drag_window(widget_t* widget, bool_t drag_window);
+
+/**
+ * @method draggable_set_drag_native_window
+ * 设置drag_native_window。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {bool_t} drag_native_window 是否拖动原生窗口。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t draggable_set_drag_native_window(widget_t* widget, bool_t drag_native_window);
 
 /**
  * @method draggable_set_drag_parent
@@ -249,6 +267,7 @@ ret_t draggable_set_drag_parent(widget_t* widget, uint32_t drag_parent);
 #define DRAGGABLE_PROP_DRAG_PARENT "drag_parent"
 #define DRAGGABLE_PROP_VERTICAL_ONLY "vertical_only"
 #define DRAGGABLE_PROP_HORIZONTAL_ONLY "horizontal_only"
+#define DRAGGABLE_PROP_DRAG_NATIVE_WINDOW "drag_native_window"
 
 #define WIDGET_TYPE_DRAGGABLE "draggable"
 #define DRAGGABLE_UNSPECIFIED_NUM 0x1fffffff

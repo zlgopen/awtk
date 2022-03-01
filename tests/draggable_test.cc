@@ -45,6 +45,9 @@ TEST(Draggable, basic) {
 
   ASSERT_EQ(widget_set_prop_int(d, DRAGGABLE_PROP_DRAG_WINDOW, 1), RET_OK);
   ASSERT_EQ(widget_get_prop_int(d, DRAGGABLE_PROP_DRAG_WINDOW, 0), 1);
+  
+  ASSERT_EQ(widget_set_prop_int(d, DRAGGABLE_PROP_DRAG_NATIVE_WINDOW, 1), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(d, DRAGGABLE_PROP_DRAG_NATIVE_WINDOW, 0), 1);
 
   widget_destroy(w);
 }
