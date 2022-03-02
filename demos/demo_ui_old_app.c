@@ -420,6 +420,13 @@ static ret_t on_quit_app(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_change_cursor(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(e->target);
+  widget_set_pointer_cursor(widget, widget->name);
+
+  return RET_OK;
+}
+
 static ret_t on_combo_box_will_change(void* ctx, event_t* e) {
   widget_t* combo_box = WIDGET(ctx);
   widget_t* win = widget_get_window(combo_box);
@@ -869,6 +876,8 @@ static ret_t install_one(void* ctx, const void* iter) {
     } else if (strstr(name, "bind_value:") != NULL) {
       widget_t* target = find_bind_value_target(widget, name);
       widget_on(target, EVT_VALUE_CHANGED, on_bind_value_changed, (void*)widget);
+    } else if (strstr(name, "cursor") != NULL) {
+      widget_on(widget, EVT_CLICK, on_change_cursor, win);
     }
   } else if (tk_str_eq(widget->vt->type, "combo_box")) {
     widget_on(widget, EVT_VALUE_CHANGED, on_combo_box_changed, widget);

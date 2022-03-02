@@ -640,7 +640,10 @@ ret_t widget_set_theme(widget_t* widget, const char* name) {
 ret_t widget_set_pointer_cursor(widget_t* widget, const char* cursor) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  widget->pointer_cursor = tk_str_copy(widget->pointer_cursor, cursor);
+  if (!tk_str_eq(widget->pointer_cursor, cursor)) {
+    widget->pointer_cursor = tk_str_copy(widget->pointer_cursor, cursor);
+    widget_update_pointer_cursor(widget);
+  }
 
   return RET_OK;
 }
