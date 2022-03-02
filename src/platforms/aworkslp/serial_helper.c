@@ -115,6 +115,13 @@ ret_t serial_oflush(serial_handle_t handle) {
 ret_t serial_wait_for_data(serial_handle_t handle, uint32_t timeout_ms) {
   int len = 0;
   int fd = serial_handle_get_fd(handle);
+
+  if (timeout_ms == 0) {
+    aw_ioctl(fd, AW_FIONREAD, &len);
+    if (len > 0) {
+      return RET_OK;
+    }
+  }
   while (timeout_ms) {
     aw_ioctl(fd, AW_FIONREAD, &len);
     if (len > 0) {
@@ -193,6 +200,28 @@ ret_t serial_config(serial_handle_t handle, uint32_t baudrate, bytesize_t bytesi
 
   return RET_OK;
 }
+
+ret_t serial_timeout_set(serial_handle_t handle, serial_timeout_t *timeout) {
+  int fd = serial_handle_get_fd(handle);
+  struct aw_serial_timeout cfg;
+  return_value_if_fail(fd >= 0 && timeout, RET_BAD_PARAMS);
+
+  cfg.rd_timeout = timeout->rd_timeout;
+  cfg.rd_interval_timeout = timeout->rd_interval_timeout;
+  return_value_if_fail(aw_serial_timeout_set(fd, &cfg) == AW_OK, RET_FAIL);
+}
+
+ret_t serial_timeout_get(serial_handle_t handle, serial_timeout_t *timeout) {
+  int fd = serial_handle_get_fd(handle);
+  struct aw_serial_timeout cfg;
+  return_value_if_fail(fd >= 0 && timeout, RET_BAD_PARAMS);
+
+  return_value_if_fail(aw_serial_timeout_get(fd, &cfg) == AW_OK, RET_FAIL);
+  timeout->rd_timeout = cfg.rd_timeout;
+  timeout->rd_interval_timeout = cfg.rd_interval_timeout;
+  return RET_OK;
+}
+
 #endif /* __AWORKS_LP__ */
 
 #ifdef __AWORKS__
@@ -283,6 +312,14 @@ ret_t serial_config(serial_handle_t handle, uint32_t baudrate, bytesize_t bytesi
     aw_ioctl(fd, AW_TIOCRDTIMEOUT, &tm);
   }
   return aw_ioctl(fd, AW_TIOSETOPTIONS, &dcb);
+}
+
+ret_t serial_timeout_set(serial_handle_t handle, serial_timeout_t *timeout) {
+  return RET_NOT_IMPL;
+}
+
+ret_t serial_timeout_get(serial_handle_t handle, serial_timeout_t *timeout) {
+  return RET_NOT_IMPL;
 }
 
 #endif /* __AWORKS__ */
