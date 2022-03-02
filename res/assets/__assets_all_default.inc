@@ -396,6 +396,7 @@
 #include "default/inc/images/img_slider_icon.res"
 #include "default/inc/images/arrow_down_n.res"
 #include "default/inc/images/debug_step_into_d.res"
+#include "default/inc/images/num_plus.res"
 #include "default/inc/images/return_up.res"
 #include "default/inc/images/green_btn_o.res"
 #include "default/inc/images/green_btn_n.res"
@@ -446,6 +447,7 @@
 #include "default/inc/images/debug_step_into_n.res"
 #include "default/inc/images/uiex_clock_Dots.res"
 #include "default/inc/images/slider_drag.res"
+#include "default/inc/images/num_minus.res"
 #include "default/inc/images/debug_start_o.res"
 #include "default/inc/images/bg_portrait_1.res"
 #include "default/inc/images/debug_start_n.res"
@@ -557,6 +559,7 @@
 #include "default/inc/images/progress_circle.data"
 #include "default/inc/images/muted.data"
 #include "default/inc/images/file.data"
+#include "default/inc/images/num_plus.data"
 #include "default/inc/images/gauge_bg.data"
 #include "default/inc/images/num_8.data"
 #include "default/inc/images/uiex_num1.data"
@@ -629,6 +632,7 @@
 #include "default/inc/images/middle_off.data"
 #include "default/inc/images/close_p.data"
 #include "default/inc/images/uiex_editor_TextAlignleft.data"
+#include "default/inc/images/num_minus.data"
 #include "default/inc/images/folder.data"
 #include "default/inc/images/app3.data"
 #include "default/inc/images/uiex_editor_Textcolor.data"
@@ -1263,6 +1267,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_img_slider_icon);
   assets_manager_add(am, image_arrow_down_n);
   assets_manager_add(am, image_debug_step_into_d);
+  assets_manager_add(am, image_num_plus);
   assets_manager_add(am, image_return_up);
   assets_manager_add(am, image_green_btn_o);
   assets_manager_add(am, image_green_btn_n);
@@ -1313,6 +1318,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_debug_step_into_n);
   assets_manager_add(am, image_uiex_clock_Dots);
   assets_manager_add(am, image_slider_drag);
+  assets_manager_add(am, image_num_minus);
   assets_manager_add(am, image_debug_start_o);
   assets_manager_add(am, image_bg_portrait_1);
   assets_manager_add(am, image_debug_start_n);

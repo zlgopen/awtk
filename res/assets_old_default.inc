@@ -271,6 +271,7 @@
 #include "assets/default/inc/images/middle_off.res"
 #include "assets/default/inc/images/img_slider_icon.res"
 #include "assets/default/inc/images/arrow_down_n.res"
+#include "assets/default/inc/images/num_plus.res"
 #include "assets/default/inc/images/return_up.res"
 #include "assets/default/inc/images/green_btn_o.res"
 #include "assets/default/inc/images/green_btn_n.res"
@@ -294,6 +295,7 @@
 #include "assets/default/inc/images/progress_circle.res"
 #include "assets/default/inc/images/red_btn_o.res"
 #include "assets/default/inc/images/slider_drag.res"
+#include "assets/default/inc/images/num_minus.res"
 #include "assets/default/inc/images/cursor_text.res"
 #include "assets/default/inc/images/unchecked.res"
 #include "assets/default/inc/images/red_btn_n.res"
@@ -342,6 +344,7 @@
 #include "assets/default/inc/images/progress_circle.data"
 #include "assets/default/inc/images/muted.data"
 #include "assets/default/inc/images/file.data"
+#include "assets/default/inc/images/num_plus.data"
 #include "assets/default/inc/images/gauge_bg.data"
 #include "assets/default/inc/images/num_8.data"
 #include "assets/default/inc/images/earth.data"
@@ -378,6 +381,7 @@
 #include "assets/default/inc/images/checked.data"
 #include "assets/default/inc/images/middle_off.data"
 #include "assets/default/inc/images/close_p.data"
+#include "assets/default/inc/images/num_minus.data"
 #include "assets/default/inc/images/folder.data"
 #include "assets/default/inc/images/zh.data"
 #include "assets/default/inc/images/arrow_right_p.data"
@@ -764,6 +768,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_middle_off);
   assets_manager_add(am, image_img_slider_icon);
   assets_manager_add(am, image_arrow_down_n);
+  assets_manager_add(am, image_num_plus);
   assets_manager_add(am, image_return_up);
   assets_manager_add(am, image_green_btn_o);
   assets_manager_add(am, image_green_btn_n);
@@ -787,6 +792,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_progress_circle);
   assets_manager_add(am, image_red_btn_o);
   assets_manager_add(am, image_slider_drag);
+  assets_manager_add(am, image_num_minus);
   assets_manager_add(am, image_cursor_text);
   assets_manager_add(am, image_unchecked);
   assets_manager_add(am, image_red_btn_n);
