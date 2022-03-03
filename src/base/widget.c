@@ -1430,7 +1430,7 @@ ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, float_t te
       break;
     }
     case ICON_AT_RIGHT: {
-      *r_icon = rect_init(ir->x + ir->w - ir->h, ir->y, ir->h, ir->h);
+      *r_icon = rect_init(ir->x + ir->w - img_w, ir->y, img_w, img_h);
       *r_text = rect_init(ir->x, ir->y, ir->w - ir->h - spacer, ir->h);
       break;
     }
@@ -1448,7 +1448,7 @@ ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, float_t te
     }
     case ICON_AT_LEFT:
     default: {
-      *r_icon = rect_init(ir->x, ir->y, ir->h, ir->h);
+      *r_icon = rect_init(ir->x, ir->y, img_w, img_h);
       *r_text = rect_init(ir->x + ir->h + spacer, ir->y, ir->w - ir->h - spacer, ir->h);
       break;
     }
