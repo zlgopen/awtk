@@ -62,7 +62,11 @@ typedef widget_t* (*widget_find_wanted_focus_widget_t)(widget_t* widget, darray_
 static ret_t widget_move_focus(widget_t* widget, widget_find_wanted_focus_widget_t find);
 
 static ret_t widget_set_x(widget_t* widget, xy_t x, bool_t update_layout) {
-  widget->x = x;
+  if (widget->x != x) {
+    widget_invalidate_force(widget, NULL);
+    widget->x = x;
+    widget_invalidate_force(widget, NULL);
+  }
   if (update_layout && widget->self_layout != NULL) {
     self_layouter_set_param_str(widget->self_layout, "x", "n");
   }
@@ -70,7 +74,11 @@ static ret_t widget_set_x(widget_t* widget, xy_t x, bool_t update_layout) {
 }
 
 static ret_t widget_set_y(widget_t* widget, xy_t y, bool_t update_layout) {
-  widget->y = y;
+  if (widget->y != y) {
+    widget_invalidate_force(widget, NULL);
+    widget->y = y;
+    widget_invalidate_force(widget, NULL);
+  }
   if (update_layout && widget->self_layout != NULL) {
     self_layouter_set_param_str(widget->self_layout, "y", "n");
   }
@@ -78,7 +86,11 @@ static ret_t widget_set_y(widget_t* widget, xy_t y, bool_t update_layout) {
 }
 
 static ret_t widget_set_w(widget_t* widget, wh_t w, bool_t update_layout) {
-  widget->w = w;
+  if (widget->w != w) {
+    widget_invalidate_force(widget, NULL);
+    widget->w = w;
+    widget_invalidate_force(widget, NULL);
+  }
   if (update_layout && widget->self_layout != NULL) {
     self_layouter_set_param_str(widget->self_layout, "w", "n");
   }
@@ -86,7 +98,11 @@ static ret_t widget_set_w(widget_t* widget, wh_t w, bool_t update_layout) {
 }
 
 static ret_t widget_set_h(widget_t* widget, xy_t h, bool_t update_layout) {
-  widget->h = h;
+  if (widget->h != h) {
+    widget_invalidate_force(widget, NULL);
+    widget->h = h;
+    widget_invalidate_force(widget, NULL);
+  }
   if (update_layout && widget->self_layout != NULL) {
     self_layouter_set_param_str(widget->self_layout, "h", "n");
   }
