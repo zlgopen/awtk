@@ -803,17 +803,15 @@ TEST(Widget, calc_icon_text_rect_icon_left) {
   rect_t r_icon;
   rect_t r_text;
   int32_t spacer = 2;
-  uint32_t img_w = 10;
-  uint32_t img_h = 10;
   int32_t font_size = 20;
   rect_t ir = rect_init(10, 20, 200, 80);
 
-  widget_calc_icon_text_rect(&ir, font_size, 10.0f, ICON_AT_LEFT, img_w, img_h, spacer, &r_text, &r_icon);
+  widget_calc_icon_text_rect(&ir, font_size, 10.0f, ICON_AT_LEFT, 10, 10, spacer, &r_text, &r_icon);
 
   ASSERT_EQ(r_icon.x, ir.x);
   ASSERT_EQ(r_icon.y, ir.y);
-  ASSERT_EQ(r_icon.w, img_w);
-  ASSERT_EQ(r_icon.h, img_h);
+  ASSERT_EQ(r_icon.w, ir.h);
+  ASSERT_EQ(r_icon.h, ir.h);
 
   ASSERT_EQ(r_text.x, ir.x + ir.h + spacer);
   ASSERT_EQ(r_text.y, ir.y);
@@ -826,22 +824,38 @@ TEST(Widget, calc_icon_text_rect_icon_right) {
   rect_t r_text;
   int32_t spacer = 2;
   int32_t font_size = 20;
-  uint32_t img_w = 10;
-  uint32_t img_h = 10;
+  uint32_t img_w1 = 100;
+  uint32_t img_w2 = 300;
   rect_t ir = rect_init(10, 20, 200, 80);
 
-  widget_calc_icon_text_rect(&ir, font_size, 10.0f, ICON_AT_RIGHT, img_w, img_h, spacer, &r_text,
+  widget_calc_icon_text_rect(&ir, font_size, 10.0f, ICON_AT_RIGHT, 10, 10, spacer, &r_text,
                              &r_icon);
 
-  ASSERT_EQ(r_icon.x, ir.x + ir.w - img_w);
+  ASSERT_EQ(r_icon.x, ir.x + ir.w - ir.h);
   ASSERT_EQ(r_icon.y, ir.y);
-  ASSERT_EQ(r_icon.w, img_w);
-  ASSERT_EQ(r_icon.h, img_h);
+  ASSERT_EQ(r_icon.w, ir.h);
+  ASSERT_EQ(r_icon.h, ir.h);
 
   ASSERT_EQ(r_text.x, ir.x);
   ASSERT_EQ(r_text.y, ir.y);
   ASSERT_EQ(r_text.w, ir.w - ir.h - spacer);
   ASSERT_EQ(r_text.h, ir.h);
+  /* icon width greater than ir->h, so r_icon->w = icon width */
+  widget_calc_icon_text_rect(&ir, font_size, 10.0f, ICON_AT_RIGHT, img_w1, 10, spacer, &r_text,
+                             &r_icon);
+
+  ASSERT_EQ(r_icon.x, ir.x + ir.w - img_w1);
+  ASSERT_EQ(r_icon.y, ir.y);
+  ASSERT_EQ(r_icon.w, img_w1);
+  ASSERT_EQ(r_icon.h, ir.h);
+
+  widget_calc_icon_text_rect(&ir, font_size, 10.0f, ICON_AT_RIGHT, img_w2, 10, spacer, &r_text,
+                             &r_icon);
+
+  ASSERT_EQ(r_icon.x, ir.x);
+  ASSERT_EQ(r_icon.y, ir.y);
+  ASSERT_EQ(r_icon.w, ir.w);
+  ASSERT_EQ(r_icon.h, ir.h);
 }
 
 TEST(Widget, calc_icon_text_rect_icon_centre) {
