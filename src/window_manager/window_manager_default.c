@@ -1243,8 +1243,10 @@ static ret_t window_manager_default_layout_not_system_bar(widget_t* widget, widg
       h = client_r.h;
     }
   } else if (widget_is_dialog(window)) {
-    x = (widget->w - window->w) >> 1;
-    y = (widget->h - window->h) >> 1;
+    w = tk_min(widget->w, window->w);
+    h = tk_min(widget->h, window->h);
+    x = (widget->w - w) >> 1;
+    y = (widget->h - h) >> 1;
   } else {
     x = window->x;
     y = window->y;
