@@ -78,8 +78,12 @@ ret_t soft_copy_image(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx
   uint8_t* src_data = NULL;
   uint8_t* dst_data = NULL;
   uint32_t bpp = bitmap_get_bpp(dst);
-  uint32_t dst_line_length = bitmap_get_line_length(dst);
-  uint32_t src_line_length = bitmap_get_line_length(src);
+  uint32_t dst_w = bitmap_get_physical_width(dst);
+  uint32_t dst_h = bitmap_get_physical_height(dst);
+  uint32_t src_w = bitmap_get_physical_width(src);
+  uint32_t src_h = bitmap_get_physical_height(src);
+  uint32_t dst_line_length = bitmap_get_physical_line_length(dst);
+  uint32_t src_line_length = bitmap_get_physical_line_length(src);
   return_value_if_fail(dst != NULL && src != NULL && src_r != NULL, RET_BAD_PARAMS);
   return_value_if_fail(dst->format == src->format, RET_BAD_PARAMS);
 
@@ -89,8 +93,8 @@ ret_t soft_copy_image(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx
 
   src_p = (uint8_t*)(src_data) + src_r->y * src_line_length + src_r->x * bpp;
   dst_p = (uint8_t*)(dst_data) + dy * dst_line_length + dx * bpp;
-  if ((dst->w * bpp == dst_line_length) && (src->w * bpp == src_line_length) && dst->w == src->w &&
-      dst->h == src->h && src_r->w == src->w && src_r->x == 0) {
+  if ((dst_w * bpp == dst_line_length) && (src_w * bpp == src_line_length) && dst_w == src_w &&
+      dst_h == src_h && src_r->w == src_w && src_r->x == 0) {
     uint32_t size = (src_r->w * src_r->h);
     tk_pixel_copy(dst_p, src_p, size, bpp);
 
@@ -383,3 +387,219 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const
 
   return RET_NOT_IMPL;
 }
+
+#ifdef WITH_FAST_LCD_PORTRAIT
+
+ret_t soft_rotate_image_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy, lcd_orientation_t o) {
+  return_value_if_fail(dst != NULL && src != NULL && src_r != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(dst->format == src->format, RET_BAD_PARAMS);
+
+  switch (dst->format) {
+    case BITMAP_FMT_BGR565: {
+      return rotate_bgr565_image_ex(dst, src, src_r, dx, dy, o);
+    }
+    case BITMAP_FMT_RGBA8888: {
+      return rotate_rgba8888_image_ex(dst, src, src_r, dx, dy, o);
+    }
+#ifndef LCD_BGR565_LITE
+    case BITMAP_FMT_RGB565: {
+      return rotate_rgb565_image_ex(dst, src, src_r, dx, dy, o);
+    }
+    case BITMAP_FMT_BGR888: {
+      return rotate_bgr888_image_ex(dst, src, src_r, dx, dy, o);
+    }
+    case BITMAP_FMT_RGB888: {
+      return rotate_rgb888_image_ex(dst, src, src_r, dx, dy, o);
+    }
+    case BITMAP_FMT_BGRA8888: {
+      return rotate_bgra8888_image_ex(dst, src, src_r, dx, dy, o);
+    }
+#endif /*LCD_BGR565_LITE*/
+    default:
+      break;
+  }
+
+  assert(!"not supported format");
+
+  return RET_NOT_IMPL;
+}
+
+ret_t soft_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r,
+                       uint8_t alpha, lcd_orientation_t o) {
+  return_value_if_fail(dst != NULL && src != NULL && src_r != NULL && dst_r != NULL,
+                       RET_BAD_PARAMS);
+
+  switch (dst->format) {
+    case BITMAP_FMT_BGR565: {
+      switch (src->format) {
+        case BITMAP_FMT_BGR565: {
+          if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8 && o == LCD_ORIENTATION_0) {
+            rect_t tmp_src = rect_from_rectf(src_r);
+            return soft_copy_image(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x),
+                                  (xy_t)(dst_r->y));
+
+          } else if (alpha > 0xf8) {
+            rect_t tmp_src = rect_from_rectf(src_r);
+            return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x),
+                                    (xy_t)(dst_r->y), o);
+          } else {
+            return blend_image_rotate_bgr565_bgr565(dst, src, dst_r, src_r, alpha, o);
+          }
+        }
+        case BITMAP_FMT_RGBA8888: {
+          return blend_image_rotate_bgr565_rgba8888(dst, src, dst_r, src_r, alpha, o);
+        }
+        case BITMAP_FMT_BGRA8888: {
+          return blend_image_rotate_bgr565_bgra8888(dst, src, dst_r, src_r, alpha, o);
+        }
+#ifndef LCD_BGR565_LITE
+        case BITMAP_FMT_RGB565: {
+          return blend_image_rotate_bgr565_rgb565(dst, src, dst_r, src_r, alpha, o);
+        }
+#endif /*LCD_BGR565_LITE*/
+        default:
+          break;
+      }
+      break;
+    }
+#ifndef LCD_BGR565_LITE
+    case BITMAP_FMT_RGB565: {
+      switch (src->format) {
+        case BITMAP_FMT_RGB565: {
+          if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8 && o == LCD_ORIENTATION_0) {
+            rect_t tmp_src = rect_from_rectf(src_r);
+            return soft_copy_image(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x),
+                                   (xy_t)(dst_r->y));
+          } else if (alpha > 0xf8) {
+            rect_t tmp_src = rect_from_rectf(src_r);
+            return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x),
+                                    (xy_t)(dst_r->y), o);
+          } else {
+            return blend_image_rotate_rgb565_rgb565(dst, src, dst_r, src_r, alpha, o);
+          }
+        }
+        case BITMAP_FMT_BGR565: {
+          return blend_image_rotate_rgb565_bgr565(dst, src, dst_r, src_r, alpha, o);
+        }
+        case BITMAP_FMT_RGBA8888: {
+          return blend_image_rotate_rgb565_rgba8888(dst, src, dst_r, src_r, alpha, o);
+        }
+        case BITMAP_FMT_BGRA8888: {
+          return blend_image_rotate_rgb565_bgra8888(dst, src, dst_r, src_r, alpha, o);
+        }
+        default:
+          break;
+      }
+      break;
+    }
+    case BITMAP_FMT_BGR888: {
+      switch (src->format) {
+        case BITMAP_FMT_BGR565: {
+          return blend_image_rotate_bgr888_bgr565(dst, src, dst_r, src_r, alpha, o);
+        }
+        case BITMAP_FMT_RGB565: {
+          return blend_image_rotate_bgr888_rgb565(dst, src, dst_r, src_r, alpha, o);
+        }
+        case BITMAP_FMT_BGR888: {
+          if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8 && o == LCD_ORIENTATION_0) {
+            rect_t tmp_src = rect_from_rectf(src_r);
+            return soft_copy_image(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x),
+                                   (xy_t)(dst_r->y));
+          } else if (alpha > 0xf8) {
+            rect_t tmp_src = rect_from_rectf(src_r);
+            return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x),
+                                    (xy_t)(dst_r->y), o);
+          } else {
+            return blend_image_rotate_bgr888_bgr888(dst, src, dst_r, src_r, alpha, o);
+          }
+        }
+        case BITMAP_FMT_RGBA8888: {
+          return blend_image_rotate_bgr888_rgba8888(dst, src, dst_r, src_r, alpha, o);
+        }
+        case BITMAP_FMT_BGRA8888: {
+          return blend_image_rotate_bgr888_bgra8888(dst, src, dst_r, src_r, alpha, o);
+        }
+        default:
+          break;
+      }
+      break;
+    }
+    case BITMAP_FMT_RGB888: {
+      switch (src->format) {
+        case BITMAP_FMT_BGR565: {
+          return blend_image_rotate_rgb888_bgr565(dst, src, dst_r, src_r, alpha, o);
+        }
+        case BITMAP_FMT_RGB565: {
+          return blend_image_rotate_rgb888_rgb565(dst, src, dst_r, src_r, alpha, o);
+        }
+        case BITMAP_FMT_RGB888: {
+          if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8 && o == LCD_ORIENTATION_0) {
+            rect_t tmp_src = rect_from_rectf(src_r);
+            return soft_copy_image(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x),
+                                   (xy_t)(dst_r->y));
+          } else if (alpha > 0xf8) {
+            rect_t tmp_src = rect_from_rectf(src_r);
+            return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x),
+                                    (xy_t)(dst_r->y), o);
+          } else {
+            return blend_image_rotate_rgb888_rgb888(dst, src, dst_r, src_r, alpha, o);
+          }
+        }
+        case BITMAP_FMT_RGBA8888: {
+          return blend_image_rotate_rgb888_rgba8888(dst, src, dst_r, src_r, alpha, o);
+        }
+        case BITMAP_FMT_BGRA8888: {
+          return blend_image_rotate_rgb888_bgra8888(dst, src, dst_r, src_r, alpha, o);
+        }
+        default:
+          break;
+      }
+      break;
+    }
+    case BITMAP_FMT_BGRA8888: {
+      switch (src->format) {
+        case BITMAP_FMT_BGR565: {
+          return blend_image_rotate_bgra8888_bgr565(dst, src, dst_r, src_r, alpha, o);
+        }
+        case BITMAP_FMT_RGB565: {
+          return blend_image_rotate_bgra8888_rgb565(dst, src, dst_r, src_r, alpha, o);
+        }
+        case BITMAP_FMT_RGBA8888: {
+          return blend_image_rotate_bgra8888_rgba8888(dst, src, dst_r, src_r, alpha, o);
+        }
+        case BITMAP_FMT_BGRA8888: {
+          return blend_image_rotate_bgra8888_bgra8888(dst, src, dst_r, src_r, alpha, o);
+        }
+        default:
+          break;
+      }
+      break;
+    }
+    case BITMAP_FMT_RGBA8888: {
+      switch (src->format) {
+        case BITMAP_FMT_BGR565: {
+          return blend_image_rotate_rgba8888_bgr565(dst, src, dst_r, src_r, alpha, o);
+        }
+        case BITMAP_FMT_RGB565: {
+          return blend_image_rotate_rgba8888_rgb565(dst, src, dst_r, src_r, alpha, o);
+        }
+        case BITMAP_FMT_RGBA8888: {
+          return blend_image_rotate_rgba8888_rgba8888(dst, src, dst_r, src_r, alpha, o);
+        }
+        case BITMAP_FMT_BGRA8888: {
+          return blend_image_rotate_rgba8888_bgra8888(dst, src, dst_r, src_r, alpha, o);
+        }
+        default:
+          break;
+      }
+      break;
+    }
+#endif /*LCD_BGR565_LITE*/
+    default:
+      break;
+  }
+
+  return RET_NOT_IMPL;
+}
+
+#endif

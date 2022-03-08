@@ -416,8 +416,16 @@ ret_t vgcanvas_set_miter_limit(vgcanvas_t* vg, float_t value) {
 
 ret_t vgcanvas_begin_frame(vgcanvas_t* vg, const dirty_rects_t* dirty_rects) {
   return_value_if_fail(vg != NULL && vg->vt->begin_frame != NULL, RET_BAD_PARAMS);
-
-  return vg->vt->begin_frame(vg, dirty_rects);
+  if (vg->began_frame > 0) {
+    vg->began_frame++;
+    return RET_OK;
+  } else {
+    ret_t ret = vg->vt->begin_frame(vg, dirty_rects);
+    if (ret == RET_OK) {
+      vg->began_frame++;
+    }
+    return ret;
+  }
 }
 
 ret_t vgcanvas_save(vgcanvas_t* vg) {
@@ -433,9 +441,17 @@ ret_t vgcanvas_restore(vgcanvas_t* vg) {
 }
 
 ret_t vgcanvas_end_frame(vgcanvas_t* vg) {
-  return_value_if_fail(vg != NULL && vg->vt->end_frame != NULL, RET_BAD_PARAMS);
-
-  return vg->vt->end_frame(vg);
+  return_value_if_fail(vg != NULL && vg->vt->end_frame != NULL && vg->began_frame > 0, RET_BAD_PARAMS);
+  if (vg->began_frame == 1) {
+    ret_t ret = vg->vt->end_frame(vg);
+    if (ret == RET_OK) {
+      vg->began_frame--;
+    }
+    return ret;
+  } else {
+    vg->began_frame--;
+    return RET_OK;
+  }
 }
 
 ret_t vgcanvas_create_fbo(vgcanvas_t* vg, uint32_t w, uint32_t h, bool_t custom_draw_model,

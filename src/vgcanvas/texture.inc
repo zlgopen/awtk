@@ -32,6 +32,7 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
       return i;
     }
   }
+  assert(img->orientation == LCD_ORIENTATION_0);
 
   flag = (int)vgcanvas_nanovg_bitmap_flag_to_NVGimageFlags((bitmap_flag_t)(img->flags));
 

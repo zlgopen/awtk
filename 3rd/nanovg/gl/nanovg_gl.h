@@ -715,7 +715,7 @@ static int glnvg__renderCreate(void* uptr) {
   return 1;
 }
 
-static int glnvg__renderCreateTexture(void* uptr, int type, int w, int h, int stride, int imageFlags,
+static int glnvg__renderCreateTexture(void* uptr, int type, int w, int h, int stride, int imageFlags, enum NVGorientation orientation,
                                       const unsigned char* data) {
   GLNVGcontext* gl = (GLNVGcontext*)uptr;
   GLNVGtexture* tex = glnvg__allocTexture(gl);

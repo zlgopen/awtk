@@ -38,15 +38,14 @@ BEGIN_C_DECLS
 typedef struct _canvas_offline_t {
   canvas_t base;
   /**
-     * @property {bitmap_t*} bitmap
-     * @annotation ["readable"]
-     * 绑定的离线 bitmap
-     */
+   * @property {bitmap_t*} bitmap
+   * @annotation ["readable"]
+   * 绑定的离线 bitmap
+   */
   bitmap_t* bitmap;
 
   /* private */
-  /* 保存在线的 vg 和 canvas 的裁减区 */
-  rect_t vg_clip_rect;
+  /* 保存在线的 canvas 的裁减区 */
   rect_t canvas_clip_rect;
   /*确保 begin_draw / end_draw 配对使用*/
   int32_t begin_draw;
@@ -59,9 +58,10 @@ typedef struct _canvas_offline_t {
  * 创建一个离线的 canvas
  * 在 opengl 模式下 format 参数只能为 BITMAP_FMT_RGBA8888
  * 在其他模式下，离线 canvas 格式可以为 rgba，bgar，bgr565和rgb565
+ * 旋转方向和 lcd 旋转方向保存一致，旋转方向不同可能会导致 bitmap 的逻辑宽高不同。
  * 
- * @param {uint32_t} w 离线 canvas 的宽。
- * @param {uint32_t} h 离线 canvas 的高。
+ * @param {uint32_t} w 离线 canvas 的物理宽。
+ * @param {uint32_t} h 离线 canvas 的物理高。
  * @param {bitmap_format_t} format 离线 canvas 的格式。
  *
  * @return {canvas_t*} 成功返回 canvas ，失败返回 NULL。

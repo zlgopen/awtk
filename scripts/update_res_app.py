@@ -156,6 +156,7 @@ def run(awtk_root, is_excluded_file_handler = None):
     global IS_GENERATE_INC_BITMAP
 
     GDPI=''
+    LCD_ORIENTATION=''
     IMAGEGEN_OPTIONS=''
     sys_args = common.get_args(sys.argv[1:])
     if len(sys_args) > 0 :
@@ -164,6 +165,8 @@ def run(awtk_root, is_excluded_file_handler = None):
             GDPI = sys_args[1]
         if len(sys_args) > 2:
             IMAGEGEN_OPTIONS = sys_args[2]
+        if len(sys_args) > 3:
+            LCD_ORIENTATION = sys_args[3]
 
     AWTK_ROOT = awtk_root
     APP_ROOT = common.getcwd()
@@ -200,6 +203,9 @@ def run(awtk_root, is_excluded_file_handler = None):
         if IMAGEGEN_OPTIONS != '':
             for theme in THEMES :
                 theme["imagegen_options"] = IMAGEGEN_OPTIONS
+        if LCD_ORIENTATION != '':
+            for theme in THEMES :
+                theme["lcd_orientation"] = LCD_ORIENTATION
 
         common.init(AWTK_ROOT, ASSETS_ROOT, THEMES, ASSET_C, OUTPUT_ROOT)
         common.set_tools_dir(TOOLS_ROOT)

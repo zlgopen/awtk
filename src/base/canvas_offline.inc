@@ -201,6 +201,13 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
 
   if (lcd != NULL) {
     canvas_t* c_tmp = NULL;
+#ifdef WITH_FAST_LCD_PORTRAIT
+    if (info->lcd_orientation != LCD_ORIENTATION_0) {
+      bitmap->orientation = info->lcd_orientation;
+      bitmap->flags |= BITMAP_FLAG_LCD_ORIENTATION;
+      lcd_set_orientation(lcd, LCD_ORIENTATION_0, info->lcd_orientation);
+    }
+#endif
     c_tmp = canvas_init(&(canvas->base), lcd, widget_get_font_manager(window_manager()));
     canvas_set_assets_manager(c_tmp, widget_get_assets_manager(window_manager()));
     canvas_set_global_alpha(&(canvas->base), 0xff);
@@ -209,11 +216,18 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
     TKMEM_FREE(canvas);
     return NULL;
   }
+#ifdef WITH_FAST_LCD_PORTRAIT
+  if (info->lcd_orientation == LCD_ORIENTATION_90 || info->lcd_orientation == LCD_ORIENTATION_270) {
+    bitmap->w = h;
+    bitmap->h = w;
+  }
+#endif
 #endif
   ((canvas_t*)canvas)->end_frame = canvas_offline_end_draw;
   ((canvas_t*)canvas)->begin_frame = canvas_offline_begin_frame;
   return (canvas_t*)canvas; 
 }
+
 #ifdef AWTK_WEB
 ret_t canvas_offline_clear_canvas(canvas_t* canvas) {
 #ifdef WITH_CANVAS_OFFLINE_CUSTION
@@ -273,7 +287,6 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas) {
   c = (canvas_offline_gpu_t*)canvas;
   if (vg != NULL && canvas_offline->begin_draw == 0) {
     canvas_get_clip_rect(canvas, &canvas_offline->canvas_clip_rect);
-    canvas_offline->vg_clip_rect = rect_from_rectf(vgcanvas_get_clip_rect(vg));
     c->base.lcd_w = canvas->lcd->w;
     c->base.lcd_h = canvas->lcd->h;
 
@@ -290,12 +303,8 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas) {
   if (canvas_offline->begin_draw == 0) {
     canvas_get_clip_rect(canvas, &canvas_offline->canvas_clip_rect);
     if (vg != NULL) {
-      canvas_offline->vg_clip_rect =
-          rect_init(vg->clip_rect.x, vg->clip_rect.y, vg->clip_rect.w, vg->clip_rect.h);
-
+      vgcanvas_begin_frame(vg, NULL);
       vgcanvas_save(vg);
-      vgcanvas_reset_curr_state(vg);
-      vgcanvas_clip_rect(vg, 0, 0, vg->w, vg->h);
     }
     canvas_set_clip_rect(canvas, NULL);
   }
@@ -344,9 +353,8 @@ ret_t canvas_offline_end_draw(canvas_t* canvas) {
   if (canvas_offline->begin_draw == 0) {
     canvas_set_clip_rect(canvas, &canvas_offline->canvas_clip_rect);
     if (vg != NULL) {
-      vgcanvas_clip_rect(vg, canvas_offline->vg_clip_rect.x, canvas_offline->vg_clip_rect.y,
-                         canvas_offline->vg_clip_rect.w, canvas_offline->vg_clip_rect.h);
       vgcanvas_restore(vg);
+      vgcanvas_end_frame(vg);
     }
   }
 #endif
@@ -422,7 +430,12 @@ ret_t canvas_offline_bitmap_move_to_new_bitmap(canvas_t* canvas, bitmap_t* bitma
   bitmap->specific_destroy = NULL;
   bitmap->image_manager = image_manager();
 #endif
-  bitmap->flags = BITMAP_FLAG_IMMUTABLE;
+  if (bitmap_flag_is_lcd_orientation(canvas_bitmap)) {
+    bitmap->flags = BITMAP_FLAG_LCD_ORIENTATION;
+  } else {
+    bitmap->flags = BITMAP_FLAG_NONE;
+  }
+  bitmap->flags |= BITMAP_FLAG_IMMUTABLE;
   ((canvas_offline_t*)canvas)->bitmap = NULL;
 
   TKMEM_FREE(canvas_bitmap);

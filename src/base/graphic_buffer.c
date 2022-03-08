@@ -61,6 +61,27 @@ ret_t graphic_buffer_attach(graphic_buffer_t* buffer, void* data, uint32_t w, ui
   return buffer->vt->attach(buffer, data, w, h);
 }
 
+uint32_t graphic_buffer_get_physical_width(graphic_buffer_t* buffer) {
+  return_value_if_fail(buffer != NULL && buffer->vt != NULL && buffer->vt->get_width != NULL,
+                       0);
+
+  return buffer->vt->get_width(buffer);
+}
+
+uint32_t graphic_buffer_get_physical_height(graphic_buffer_t* buffer) {
+  return_value_if_fail(buffer != NULL && buffer->vt != NULL && buffer->vt->get_height != NULL,
+                       0);
+
+  return buffer->vt->get_height(buffer);
+}
+
+uint32_t graphic_buffer_get_physical_line_length(graphic_buffer_t* buffer) {
+  return_value_if_fail(buffer != NULL && buffer->vt != NULL && buffer->vt->get_line_length != NULL,
+                       0);
+
+  return buffer->vt->get_line_length(buffer);
+}
+
 ret_t graphic_buffer_destroy(graphic_buffer_t* buffer) {
   return_value_if_fail(buffer != NULL && buffer->vt != NULL && buffer->vt->destroy != NULL,
                        RET_BAD_PARAMS);

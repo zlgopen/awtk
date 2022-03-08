@@ -11,12 +11,14 @@ namespace agge {
 class raw_bitmap : noncopyable {
  public:  // General
   raw_bitmap(count_t width, count_t height, count_t stride, count_t flags, bits_per_pixel bpp, uint8_t* data);
+  raw_bitmap(count_t width, count_t height, count_t stride, count_t flags, count_t orientation, bits_per_pixel bpp, uint8_t* data);
   ~raw_bitmap() {
   }
 
   count_t flags() const;
   count_t width() const;
   count_t height() const;
+  count_t orientation() const;
 
   void* row_ptr(count_t y);
   const void* row_ptr(count_t y) const;
@@ -30,12 +32,18 @@ class raw_bitmap : noncopyable {
   count_t _width, _height;
   count_t _stride;
   count_t _flags;
+  count_t _orientation;
   const bits_per_pixel _bpp;
   image_handle _native;
 };
 
 inline raw_bitmap::raw_bitmap(count_t width, count_t height, count_t stride, count_t flags, bits_per_pixel bpp, uint8_t* data)
-    : _memory(data), _width(width), _height(height), _stride(stride), _flags(flags), _bpp(bpp), _native(0) {
+    : _memory(data), _width(width), _height(height), _stride(stride), _flags(flags), _orientation(0), _bpp(bpp), _native(0) {
+  
+}
+
+inline raw_bitmap::raw_bitmap(count_t width, count_t height, count_t stride, count_t flags, count_t orientation, bits_per_pixel bpp, uint8_t* data)
+    : _memory(data), _width(width), _height(height), _stride(stride), _flags(flags), _orientation(orientation), _bpp(bpp), _native(0) {
   
 }
 
@@ -49,6 +57,10 @@ inline count_t raw_bitmap::width() const {
 
 inline count_t raw_bitmap::height() const {
   return _height;
+}
+
+inline count_t raw_bitmap::orientation() const {
+  return _orientation;
 }
 
 inline void* raw_bitmap::row_ptr(count_t y) {

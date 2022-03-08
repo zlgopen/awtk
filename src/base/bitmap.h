@@ -79,6 +79,12 @@ struct _bitmap_t {
    * 图片数据。
    */
   graphic_buffer_t* buffer;
+  /**
+   * @property {lcd_orientation_t} orientation
+   * @annotation ["readable"]
+   * 图片数据旋转。（修改了图片数据旋转后 flags 会带有 BITMAP_FLAG_LCD_ORIENTATION）
+   */
+  lcd_orientation_t orientation;
 
   bool_t is_gif;
   /*for gif begin*/
@@ -199,9 +205,37 @@ ret_t bitmap_set_line_length(bitmap_t* bitmap, uint32_t line_length);
  * 获取每一行占用内存的字节数。
  * @param {bitmap_t*} bitmap bitmap对象。
  *
- * @return {ret_t} 返回每一行占用内存的字节数。
+ * @return {uint32_t} 返回每一行占用内存的字节数。
  */
 uint32_t bitmap_get_line_length(bitmap_t* bitmap);
+
+/**
+ * @method bitmap_get_physical_line_length
+ * 获取图片真实物理的每一行占用内存的字节数。
+ * 
+ * @param {bitmap_t*} bitmap bitmap对象。
+ *
+ * @return {uint32_t} 返回每一行占用内存的字节数。
+ */
+uint32_t bitmap_get_physical_line_length(bitmap_t* bitmap);
+
+/**
+ * @method bitmap_get_physical_width
+ * 获取图片真实物理的宽度。
+ * @param {bitmap_t*} bitmap bitmap对象。
+ *
+ * @return {uint32_t} 返回图片宽度。
+ */
+uint32_t bitmap_get_physical_width(bitmap_t* bitmap);
+
+/**
+ * @method bitmap_get_physical_height
+ * 获取图片真实物理的高度。
+ * @param {bitmap_t*} bitmap bitmap对象。
+ *
+ * @return {uint32_t} 返回图片高度。
+ */
+uint32_t bitmap_get_physical_height(bitmap_t* bitmap);
 
 typedef ret_t (*bitmap_transform_t)(void* ctx, bitmap_t* bitmap, uint32_t x, uint32_t y,
                                     rgba_t* pixel);
@@ -236,11 +270,12 @@ ret_t bitmap_transform(bitmap_t* bitmap, bitmap_transform_t transform, void* ctx
  * @param {const uint8_t*} data
  * 数据。3通道时为RGB888格式，4通道时为RGBA888格式(内部拷贝该数据，不会引用，调用者自行释放)。
  * @param {uint32_t} comp 颜色通道数(目前支持3(rgb)和4(rgba))。
+ * @param {lcd_orientation_t} o 旋转方向。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t bitmap_init_from_rgba(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format,
-                            const uint8_t* data, uint32_t comp);
+                            const uint8_t* data, uint32_t comp, lcd_orientation_t o);
 
 /**
  * @method bitmap_init_from_bgra
@@ -252,11 +287,12 @@ ret_t bitmap_init_from_rgba(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_for
  * @param {const uint8_t*} data
  * 数据。3通道时为BGR888格式，4通道时为BGRA888格式(内部拷贝该数据，不会引用，调用者自行释放)。
  * @param {uint32_t} comp 颜色通道数(目前支持3(bgr)和4(bgra))。
+ * @param {lcd_orientation_t} o 旋转方向。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t bitmap_init_from_bgra(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format,
-                            const uint8_t* data, uint32_t comp);
+                            const uint8_t* data, uint32_t comp, lcd_orientation_t o);
 
 /**
  * @method bitmap_init
@@ -471,6 +507,7 @@ typedef enum _image_draw_type_t {
 
 /*private*/
 ret_t bitmap_alloc_data(bitmap_t* bitmap);
+bool_t bitmap_flag_is_lcd_orientation(bitmap_t* bitmap);
 bool_t rgba_data_is_opaque(const uint8_t* data, uint32_t w, uint32_t h, uint8_t comp);
 
 ret_t bitmap_premulti_alpha(bitmap_t* bitmap);

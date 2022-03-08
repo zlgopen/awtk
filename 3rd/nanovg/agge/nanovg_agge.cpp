@@ -36,6 +36,7 @@ struct AGGENVGtexture {
   int flags;
   int stride;
   const uint8_t* data;
+  enum NVGorientation orientation;
 };
 typedef struct AGGENVGtexture AGGENVGtexture;
 
@@ -62,6 +63,8 @@ struct AGGENVGcontext {
   int ctextures;
   int textureId;
   AGGENVGtexture* textures;
+
+  enum NVGorientation sreenOrientation;
 
   /*fill/stroke color*/
   uint8_t r;
@@ -179,7 +182,7 @@ static int aggenvg__renderCreate(void* uptr) {
   return 1;
 }
 
-static int aggenvg__renderCreateTexture(void* uptr, int type, int w, int h, int stride, int imageFlags,
+static int aggenvg__renderCreateTexture(void* uptr, int type, int w, int h, int stride, int imageFlags, enum NVGorientation orientation,
                                         const unsigned char* data) {
   AGGENVGtexture* tex = NULL;
   AGGENVGcontext* agge = (AGGENVGcontext*)uptr;
@@ -199,6 +202,7 @@ static int aggenvg__renderCreateTexture(void* uptr, int type, int w, int h, int 
   tex->data = data;
   tex->stride = stride;
   tex->flags = imageFlags;
+  tex->orientation = orientation;
 
   return tex->id;
 }
@@ -271,6 +275,14 @@ static void prepareRasterizer(AGGENVGcontext* agge, NVGscissor* scissor, NVGpain
   agge::real_t clip_h = scissor->extent[1] * 2;
   agge::real_t clip_x = scissor->xform[4] - scissor->extent[0];
   agge::real_t clip_y = scissor->xform[5] - scissor->extent[1];
+  if (agge->sreenOrientation == NVG_ORIENTATION_90 || agge->sreenOrientation == NVG_ORIENTATION_270) {
+    agge::real_t tmp_w = clip_w;
+    agge::real_t offset = (clip_w - clip_h) / 2;
+    clip_w = clip_h;
+    clip_h = tmp_w;
+    clip_x += offset;
+    clip_y -= offset;
+  }
   agge::rect<agge::real_t> clip_r = mkrect(clip_x, clip_y, clip_x + clip_w, clip_y + clip_h);
 
   ras.reset();
@@ -312,28 +324,28 @@ void renderPaint(AGGENVGcontext* agge, NVGpaint* paint) {
     switch (tex->type) {
       case NVG_TEXTURE_RGBA: {
         typedef agge::bitmap<agge::pixel32_rgba, agge::raw_bitmap> rgba_bitmap_t;
-        rgba_bitmap_t src(tex->width, tex->height, tex->stride, tex->flags, (uint8_t*)(tex->data));
+        rgba_bitmap_t src(tex->width, tex->height, tex->stride, tex->flags, tex->orientation, (uint8_t*)(tex->data));
         agge::nanovg_image_blender<PixelT, rgba_bitmap_t> color(&src, (float*)invxform, paint->innerColor.a);
         ren(surface, 0, ras, color, agge::winding<>());
         break;
       }
       case NVG_TEXTURE_BGRA: {
         typedef agge::bitmap<agge::pixel32_bgra, agge::raw_bitmap> bgra_bitmap_t;
-        bgra_bitmap_t src(tex->width, tex->height, tex->stride, tex->flags, (uint8_t*)(tex->data));
+        bgra_bitmap_t src(tex->width, tex->height, tex->stride, tex->flags, tex->orientation, (uint8_t*)(tex->data));
         agge::nanovg_image_blender<PixelT, bgra_bitmap_t> color(&src, (float*)invxform, paint->innerColor.a);
         ren(surface, 0, ras, color, agge::winding<>());
         break;
       }
       case NVG_TEXTURE_BGR565: {
         typedef agge::bitmap<agge::pixel16_bgr565, agge::raw_bitmap> bgr565_bitmap_t;
-        bgr565_bitmap_t src(tex->width, tex->height, tex->stride, (uint8_t*)(tex->data));
+        bgr565_bitmap_t src(tex->width, tex->height, tex->stride, tex->flags, tex->orientation, (uint8_t*)(tex->data));
         agge::nanovg_image_blender<PixelT, bgr565_bitmap_t> color(&src, (float*)invxform, paint->innerColor.a);
         ren(surface, 0, ras, color, agge::winding<>());
         break;
       }
       case NVG_TEXTURE_RGB: {
         typedef agge::bitmap<agge::pixel24_rgb, agge::raw_bitmap> rgb_bitmap_t;
-        rgb_bitmap_t src(tex->width, tex->height, tex->stride, (uint8_t*)(tex->data));
+        rgb_bitmap_t src(tex->width, tex->height, tex->stride, tex->flags, tex->orientation, (uint8_t*)(tex->data));
         agge::nanovg_image_blender<PixelT, rgb_bitmap_t> color(&src, (float*)invxform, paint->innerColor.a);
         ren(surface, 0, ras, color, agge::winding<>());
         break;
@@ -449,6 +461,12 @@ static int aggenvg__clearCache(void* uptr) {
   return 0;
 }
 
+static void aggenvg__globalSreenOrientation(void* uptr, enum NVGorientation orientation) {
+  AGGENVGcontext* agge = (AGGENVGcontext*)uptr;
+  if (agge == NULL) return;
+  agge->sreenOrientation = orientation;
+}
+
 static void nvgInitAGGE(AGGENVGcontext* agge, NVGparams* params, uint32_t w, uint32_t h, uint32_t stride,
                         enum NVGtexture format, uint8_t* data) {
   agge->w = w;
@@ -525,6 +543,7 @@ NVGcontext* nvgCreateAGGE(uint32_t w, uint32_t h, uint32_t stride, enum NVGtextu
   params.renderFlush = aggenvg__renderFlush;
   params.renderDelete = aggenvg__renderDelete;
   params.clearCache = aggenvg__clearCache;
+  params.globalSreenOrientation = aggenvg__globalSreenOrientation;
   params.userPtr = agge;
   params.edgeAntiAlias = 1;
 

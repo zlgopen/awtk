@@ -118,7 +118,7 @@ static void check_bitmap_mono(bitmap_t* b) {
 static void test_bitmap_mono(uint32_t w, uint32_t h) {
   bitmap_t b;
   uint8_t* data = gen_rgba_data(w, h);
-  bitmap_init_from_rgba(&b, w, h, BITMAP_FMT_MONO, data, 4);
+  bitmap_init_from_rgba(&b, w, h, BITMAP_FMT_MONO, data, 4, LCD_ORIENTATION_0);
   check_bitmap_mono(&b);
   bitmap_destroy(&b);
   TKMEM_FREE(data);

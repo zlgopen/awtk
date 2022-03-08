@@ -49,6 +49,23 @@ static enum NVGtexture bitmap_format_to_nanovg(bitmap_format_t format) {
   return f;
 }
 
+static enum NVGorientation vgcanvas_nanovg_bitmap_orientation_to_NVGorientation(lcd_orientation_t orientation) {
+  switch (orientation) {
+  case LCD_ORIENTATION_0:
+    return NVG_ORIENTATION_0;
+  case LCD_ORIENTATION_90:
+    return NVG_ORIENTATION_90;
+  case LCD_ORIENTATION_180:
+    return NVG_ORIENTATION_180;
+  case LCD_ORIENTATION_270:
+    return NVG_ORIENTATION_270;
+  default :
+    assert(!"not find orientation");
+    break;
+  }
+  return NVG_ORIENTATION_0;
+}
+
 static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h, bool_t custom_draw_model, framebuffer_object_t* fbo) {
   return RET_NOT_IMPL;
 }
@@ -88,8 +105,13 @@ static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h
 static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, const dirty_rects_t* dirty_rects) {
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGcontext* vg = canvas->vg;
+  system_info_t* info = system_info();
 
-  nvgBeginFrame(vg, vgcanvas->w, vgcanvas->h, vgcanvas->ratio);
+#ifdef WITH_FAST_LCD_PORTRAIT
+  nvgBeginFrame(vg, vgcanvas->w, vgcanvas->h, vgcanvas->ratio, vgcanvas_nanovg_bitmap_orientation_to_NVGorientation(info->lcd_orientation));
+#else
+  nvgBeginFrame(vg, vgcanvas->w, vgcanvas->h, vgcanvas->ratio, NVG_ORIENTATION_0);
+#endif
 
   return RET_OK;
 }
@@ -132,6 +154,7 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
   int32_t f = 0;
   uint8_t* img_data = NULL;
   vgcanvas_nanovg_soft_texture_t* texture = NULL;
+  enum NVGorientation image_orientation = NVG_ORIENTATION_0;
 
   if (img->flags & BITMAP_FLAG_TEXTURE) {
     if (img->specific != 0) {
@@ -146,8 +169,9 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
       }
     }
   }
-
+  assert(img->orientation == system_info()->lcd_orientation);
   flag = (int)vgcanvas_nanovg_bitmap_flag_to_NVGimageFlags((bitmap_flag_t)(img->flags));
+  image_orientation = vgcanvas_nanovg_bitmap_orientation_to_NVGorientation(img->orientation);
 
   switch (img->format) {
     case BITMAP_FMT_RGBA8888: {
@@ -171,7 +195,7 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
 
   img_data = bitmap_lock_buffer_for_read(img);
 
-  i = nvgCreateImageRaw(canvas->vg, img->w, img->h, f, img->line_length, flag,
+  i = nvgCreateImageRaw(canvas->vg, img->w, img->h, f, bitmap_get_physical_line_length(img), flag, image_orientation,
                         img_data);
 
   if (i >= 0) {

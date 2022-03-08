@@ -144,6 +144,13 @@ enum NVGimageFlags {
 	NVG_IMAGE_NEAREST			= 1<<5,		// Image interpolation is Nearest instead Linear
 };
 
+enum NVGorientation {
+	NVG_ORIENTATION_0 = 0,
+	NVG_ORIENTATION_90 = 90,
+	NVG_ORIENTATION_180 = 180,
+	NVG_ORIENTATION_270 = 270
+};
+
 // Begin drawing a new frame
 // Calls to nanovg drawing API should be wrapped in nvgBeginFrame() & nvgEndFrame()
 // nvgBeginFrame() defines the size of the window to render to in relation currently
@@ -152,8 +159,8 @@ enum NVGimageFlags {
 // For example, GLFW returns two dimension for an opened window: window size and
 // frame buffer size. In that case you would set windowWidth/Height to the window size
 // devicePixelRatio to: frameBufferWidth / windowWidth.
-void nvgBeginFrame(NVGcontext* ctx, float windowWidth, float windowHeight, float devicePixelRatio);
-void nvgBeginFrameEx(NVGcontext* ctx, float windowWidth, float windowHeight, float devicePixelRatio, int reset);
+void nvgBeginFrame(NVGcontext* ctx, float windowWidth, float windowHeight, float devicePixelRatio, enum NVGorientation orientation);
+void nvgBeginFrameEx(NVGcontext* ctx, float windowWidth, float windowHeight, float devicePixelRatio, int reset, enum NVGorientation orientation);
 
 // Cancels drawing the current frame.
 void nvgCancelFrame(NVGcontext* ctx);
@@ -717,13 +724,14 @@ struct NVGparams {
 	int (*renderCreate)(void* uptr);
 	int (*findTexture)(void* uptr, const void* data);
 	void (*setStateXfrom)(void* uptr, float* xform);
-	int (*renderCreateTexture)(void* uptr, int type, int w, int h, int stride, int imageFlags, const unsigned char* data);
+	int (*renderCreateTexture)(void* uptr, int type, int w, int h, int stride, int imageFlags, enum NVGorientation orientation, const unsigned char* data);
 	int (*renderDeleteTexture)(void* uptr, int image);
 	int (*renderUpdateTexture)(void* uptr, int image, int x, int y, int w, int h, const unsigned char* data);
 	int (*renderGetTextureSize)(void* uptr, int image, int* w, int* h);
 	void (*renderViewport)(void* uptr, float width, float height, float devicePixelRatio);
 	void (*renderCancel)(void* uptr);
 	void (*renderFlush)(void* uptr);
+	void (*globalSreenOrientation)(void* uptr, enum NVGorientation orientation);
 	void (*renderFill)(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation, NVGscissor* scissor, float fringe, const float* bounds, const NVGpath* paths, int npaths);
 	void (*renderStroke)(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation, NVGscissor* scissor, float fringe, float strokeWidth, const NVGpath* paths, int npaths);
 	void (*renderTriangles)(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation, NVGscissor* scissor, const NVGvertex* verts, int nverts);
@@ -747,7 +755,7 @@ void nvgDebugDumpPathCache(NVGcontext* ctx);
 #define NVG_NOTUSED(v) for (;;) { (void)(1 ? (void)0 : ( (void)(v) ) ); break; }
 
 NVGparams* nvgGetParams(NVGcontext* ctx);
-int nvgCreateImageRaw(NVGcontext* ctx, int w, int h, int format, int stride, int imageFlags, const unsigned char* data);
+int nvgCreateImageRaw(NVGcontext* ctx, int w, int h, int format, int stride, int imageFlags, enum NVGorientation orientation, const unsigned char* data);
 
 int nvgFindTextureRaw(NVGcontext* ctx, const void* data);
 

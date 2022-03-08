@@ -439,3 +439,5 @@ bool_t tk_is_swap_size_by_orientation(lcd_orientation_t old_orientation,
   }
   return FALSE;
 }
+
+#include "lcd_orientation_helper.inc"

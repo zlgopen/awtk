@@ -26,6 +26,7 @@
 #include "cairo/cairo.h"
 #include "tkc/mem.h"
 #include "tkc/darray.h"
+#include "base/system_info.h"
 #include "cairo/cairo-private.h"
 
 #define VG_CAIRO_CACHE_MAX_NUMBER 5
@@ -58,7 +59,45 @@ typedef struct _vg_cairo_cache_t {
 
 static darray_t vg_cairo_cache;
 
+ret_t vgcanvas_cairo_set_sreen_orientation(cairo_t* canvas) {
+  float angle = 0.0f;
+  float anchor_x = 0.0f;
+  float anchor_y = 0.0f;
+  system_info_t* info = system_info();
+  lcd_orientation_t orientation = info->lcd_orientation;
+  switch (orientation) {
+	case LCD_ORIENTATION_0:
+		angle = 0.0f;
+		break;
+	case LCD_ORIENTATION_90:
+		angle = TK_D2R(270);
+		break;
+	case LCD_ORIENTATION_180:
+		angle = TK_D2R(180);
+		break;
+	case LCD_ORIENTATION_270:
+		angle = TK_D2R(90);
+		break;
+	default :
+		break;
+	}
+	anchor_x = info->lcd_w / 2.0f;
+	anchor_y = info->lcd_h / 2.0f;
+
+	if (orientation == LCD_ORIENTATION_90 || orientation == LCD_ORIENTATION_270) {
+		cairo_translate(canvas, anchor_x, anchor_y);
+		cairo_rotate(canvas, angle);
+		cairo_translate(canvas, -anchor_y, -anchor_x);
+	} else if (orientation == 180) {
+		cairo_translate(canvas, anchor_x, anchor_y);
+		cairo_rotate(canvas, angle);
+		cairo_translate(canvas, -anchor_x, -anchor_y);
+	}
+  return RET_OK;
+}
+
 ret_t vgcanvas_cairo_begin_frame(vgcanvas_t* vgcanvas, const dirty_rects_t* dirty_rects) {
+  system_info_t* info = system_info();
   const rect_t* dirty_rect = dirty_rects != NULL ? &(dirty_rects->max) : NULL;
   const rect_t* r = dirty_rect;
   vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
@@ -68,12 +107,16 @@ ret_t vgcanvas_cairo_begin_frame(vgcanvas_t* vgcanvas, const dirty_rects_t* dirt
   vg->status = CAIRO_STATUS_SUCCESS;
 
   cairo_new_path(vg);
-  cairo_rectangle(vg, r->x, r->y, r->w, r->h);
+  if (r != NULL) {
+    cairo_rectangle(vg, r->x, r->y, r->w, r->h);
+  } else {
+    cairo_rectangle(vg, 0, 0, info->lcd_h, info->lcd_w);
+  }
   cairo_clip(vg);
   cairo_new_path(vg);
   cairo_save(vg);
   vgcanvas->global_alpha = 1;
-
+  vgcanvas_cairo_set_sreen_orientation(vg);
   return RET_OK;
 }
 

@@ -34,6 +34,7 @@ typedef struct _graphic_buffer_default_t {
   uint8_t* data_head;
   uint32_t w;
   uint32_t h;
+  uint32_t line_length;
 } graphic_buffer_default_t;
 
 static graphic_buffer_default_t* graphic_buffer_default_cast(graphic_buffer_t* buffer);
@@ -43,8 +44,11 @@ static graphic_buffer_default_t* graphic_buffer_default_cast(graphic_buffer_t* b
 static bool_t graphic_buffer_default_is_valid_for(graphic_buffer_t* buffer, bitmap_t* bitmap) {
   graphic_buffer_default_t* b = GRAPHIC_BUFFER_DEFAULT(buffer);
   return_value_if_fail(b != NULL && bitmap != NULL, FALSE);
-
-  return b->w == bitmap->w && b->h == bitmap->h;
+  if (bitmap->orientation == LCD_ORIENTATION_0 || bitmap->orientation == LCD_ORIENTATION_180) {
+    return b->w == bitmap->w && b->h == bitmap->h;
+  } else {
+    return b->w == bitmap->h && b->h == bitmap->w;
+  }
 }
 
 static uint8_t* graphic_buffer_default_lock_for_read(graphic_buffer_t* buffer) {
@@ -90,12 +94,36 @@ static ret_t graphic_buffer_default_destroy(graphic_buffer_t* buffer) {
   return RET_OK;
 }
 
+static uint32_t graphic_buffer_default_get_physical_width(graphic_buffer_t* buffer) {
+  graphic_buffer_default_t* b = GRAPHIC_BUFFER_DEFAULT(buffer);
+  return_value_if_fail(b != NULL, 0);
+
+  return b->w;
+}
+
+static uint32_t graphic_buffer_default_get_physical_height(graphic_buffer_t* buffer) {
+  graphic_buffer_default_t* b = GRAPHIC_BUFFER_DEFAULT(buffer);
+  return_value_if_fail(b != NULL, 0);
+
+  return b->h;
+}
+
+static uint32_t graphic_buffer_default_get_physical_line_length(graphic_buffer_t* buffer) {
+  graphic_buffer_default_t* b = GRAPHIC_BUFFER_DEFAULT(buffer);
+  return_value_if_fail(b != NULL, 0);
+
+  return b->line_length;
+}
+
 static const graphic_buffer_vtable_t s_graphic_buffer_default_vtable = {
     .lock_for_read = graphic_buffer_default_lock_for_read,
     .lock_for_write = graphic_buffer_default_lock_for_write,
     .unlock = graphic_buffer_default_unlock,
     .attach = graphic_buffer_default_attach,
     .is_valid_for = graphic_buffer_default_is_valid_for,
+    .get_width = graphic_buffer_default_get_physical_width,
+    .get_height = graphic_buffer_default_get_physical_height,
+    .get_line_length = graphic_buffer_default_get_physical_line_length,
     .destroy = graphic_buffer_default_destroy};
 
 static graphic_buffer_t* graphic_buffer_default_create(uint32_t w, uint32_t h,
@@ -110,7 +138,8 @@ static graphic_buffer_t* graphic_buffer_default_create(uint32_t w, uint32_t h,
   buffer = TKMEM_ZALLOC(graphic_buffer_default_t);
   return_value_if_fail(buffer != NULL, NULL);
 
-  size = tk_max(min_line_length, line_length) * h;
+  buffer->line_length = tk_max(min_line_length, line_length);
+  size = buffer->line_length * h;
   size = TK_ROUND_TO(size, BITMAP_ALIGN_SIZE) + BITMAP_ALIGN_SIZE;
 
   data = (uint8_t*)TKMEM_ALLOC(size);
@@ -143,6 +172,7 @@ graphic_buffer_t* graphic_buffer_create_with_data(const uint8_t* data, uint32_t 
   buffer->w = w;
   buffer->h = h;
   buffer->data = (uint8_t*)data;
+  buffer->line_length = bitmap_get_bpp_of_format(format) * w;
   buffer->graphic_buffer.vt = &s_graphic_buffer_default_vtable;
 
   return GRAPHIC_BUFFER(buffer);

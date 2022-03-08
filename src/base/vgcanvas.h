@@ -407,6 +407,8 @@ struct _vgcanvas_t {
   rect_t dirty_rect;
   const vgcanvas_vtable_t* vt;
   assets_manager_t* assets_manager;
+  /*确保begin_frame/end_frame配对使用*/
+  uint32_t began_frame;
 };
 
 /**

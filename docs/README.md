@@ -92,6 +92,7 @@
 * [如何使用keil的AC6工具链编译](how_to_build_with_keil_ac6.md)
 * [如何支持极简键盘 (3 键键盘、5 键键盘和旋转按钮）](how_to_support_5keys_3keys.md)
 * [如何在改变控件属性时附带动画](how_to_change_prop_with_animation.md)
+* [LCD快速旋转](how_to_use_fast_lcd_portrait.md)
 
 ### 3. 内部原理
 * [AWTK 脚本绑定原理](script_binding.md)

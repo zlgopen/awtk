@@ -487,22 +487,27 @@ typedef enum _bitmap_flag_t {
    * @const BITMAP_FLAG_IMMUTABLE
    * 图片内容不会变化。
    */
-  BITMAP_FLAG_IMMUTABLE = 2,
+  BITMAP_FLAG_IMMUTABLE = 1 << 1,
   /**
    * @const BITMAP_FLAG_TEXTURE
    * OpenGL Texture, bitmap的id是有效的texture id。
    */
-  BITMAP_FLAG_TEXTURE = 4,
+  BITMAP_FLAG_TEXTURE = 1 << 2,
   /**
    * @const BITMAP_FLAG_CHANGED
    * 如果是MUTABLE的图片，更新时需要设置此标志，底层可能会做特殊处理，比如更新图片到GPU。
    */
-  BITMAP_FLAG_CHANGED = 8,
+  BITMAP_FLAG_CHANGED = 1 << 3,
   /**
    * @const BITMAP_FLAG_PREMULTI_ALPHA
    * 预乘alpha。
    */
-  BITMAP_FLAG_PREMULTI_ALPHA = 16
+  BITMAP_FLAG_PREMULTI_ALPHA = 1 << 4,
+  /**
+   * @const BITMAP_FLAG_LCD_ORIENTATION
+   * 位图数据已经处理了 lcd 旋转，同时说明 bitmap 的宽高和真实数据的宽高可能不一致
+   */
+  BITMAP_FLAG_LCD_ORIENTATION = 1 << 5,
 } bitmap_flag_t;
 
 #ifndef BITMAP_ALIGN_SIZE

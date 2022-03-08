@@ -27,7 +27,7 @@
 BEGIN_C_DECLS
 
 ret_t image_dither_load_image(const uint8_t* buff, uint32_t buff_size, bitmap_t* image,
-                              bitmap_format_t bitmap_format);
+                              bitmap_format_t bitmap_format, lcd_orientation_t o);
 
 ret_t image_dither_image_wirte_png_file(const char* output_file, bitmap_t* image);
 

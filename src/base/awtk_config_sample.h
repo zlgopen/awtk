@@ -273,4 +273,15 @@
  * #define WITH_STATE_ACTIVATED 1
  */
 
+/**
+ * 开启高效的 lcd 旋转功能模块（几乎无损的屏幕旋转效果）
+ * 注意：
+ * 1，需要重新编译资源，把相关图片预先处理旋转后的位图数据。(如果需要实现运行时动态改变旋转的话，图片资源的只能为未旋转)
+ * 2，lcd 适配层需要支持。
+ * 3，vg 的适配层需要支持。
+ * 4，g2d 的适配层获取位图真实的数据需要通过 bitmap_get_physical_XXXX 函数来获取。
+ *
+ * #define WITH_FAST_LCD_PORTRAIT 1
+ */
+
 #endif /*AWTK_CONFIG_H*/

@@ -25,8 +25,9 @@
 #define STBI_REALLOC(p, s) TKMEM_REALLOC(p, s)
 
 #include "tkc/mem.h"
-
+#include "base/bitmap.h"
 #include "stb/stb_image.h"
+#include "base/system_info.h"
 #include "image_loader/image_loader_stb.h"
 
 static uint8_t* convert_2_to_4(uint8_t* src, uint32_t w, uint32_t h) {
@@ -55,7 +56,7 @@ static uint8_t* convert_2_to_4(uint8_t* src, uint32_t w, uint32_t h) {
 }
 
 ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, bitmap_t* image,
-                     bool_t require_bgra, bool_t enable_bgr565, bool_t enable_rgb565) {
+                     bool_t require_bgra, bool_t enable_bgr565, bool_t enable_rgb565, lcd_orientation_t o) {
   int w = 0;
   int h = 0;
   int n = 0;
@@ -76,30 +77,30 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
     }
 #ifdef WITH_LCD_MONO
     if (out_channel_order == STBI_ORDER_RGB) {
-      ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_MONO, data, n);
+      ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_MONO, data, n, o);
     } else {
-      ret = bitmap_init_from_bgra(image, w, h, BITMAP_FMT_MONO, data, n);
+      ret = bitmap_init_from_bgra(image, w, h, BITMAP_FMT_MONO, data, n, o);
     }
 #else
     if (out_channel_order == STBI_ORDER_RGB) {
       if (enable_bgr565 && rgba_data_is_opaque(data, w, h, n)) {
-        ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_BGR565, data, n);
+        ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_BGR565, data, n, o);
       } else if (enable_rgb565 && rgba_data_is_opaque(data, w, h, n)) {
-        ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_RGB565, data, n);
+        ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_RGB565, data, n, o);
       } else if (require_bgra) {
-        ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_BGRA8888, data, n);
+        ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_BGRA8888, data, n, o);
       } else {
-        ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_RGBA8888, data, n);
+        ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_RGBA8888, data, n, o);
       }
     } else {
       if (enable_bgr565 && rgba_data_is_opaque(data, w, h, n)) {
-        ret = bitmap_init_from_bgra(image, w, h, BITMAP_FMT_BGR565, data, n);
+        ret = bitmap_init_from_bgra(image, w, h, BITMAP_FMT_BGR565, data, n, o);
       } else if (enable_rgb565 && rgba_data_is_opaque(data, w, h, n)) {
-        ret = bitmap_init_from_bgra(image, w, h, BITMAP_FMT_RGB565, data, n);
+        ret = bitmap_init_from_bgra(image, w, h, BITMAP_FMT_RGB565, data, n, o);
       } else if (require_bgra) {
-        ret = bitmap_init_from_bgra(image, w, h, BITMAP_FMT_BGRA8888, data, n);
+        ret = bitmap_init_from_bgra(image, w, h, BITMAP_FMT_BGRA8888, data, n, o);
       } else {
-        ret = bitmap_init_from_bgra(image, w, h, BITMAP_FMT_RGBA8888, data, n);
+        ret = bitmap_init_from_bgra(image, w, h, BITMAP_FMT_RGBA8888, data, n, o);
       }
     }
 #endif /*WITH_LCD_MONO*/
@@ -117,14 +118,14 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
 
     total_h = h * z;
 #ifdef WITH_LCD_MONO
-    ret = bitmap_init_from_rgba(image, w, total_h, BITMAP_FMT_MONO, data, n);
+    ret = bitmap_init_from_rgba(image, w, total_h, BITMAP_FMT_MONO, data, n, o);
 #else
     if (enable_bgr565 && rgba_data_is_opaque(data, w, total_h, n)) {
-      ret = bitmap_init_from_rgba(image, w, total_h, BITMAP_FMT_BGR565, data, n);
+      ret = bitmap_init_from_rgba(image, w, total_h, BITMAP_FMT_BGR565, data, n, o);
     } else if (require_bgra) {
-      ret = bitmap_init_from_rgba(image, w, total_h, BITMAP_FMT_BGRA8888, data, n);
+      ret = bitmap_init_from_rgba(image, w, total_h, BITMAP_FMT_BGRA8888, data, n, o);
     } else {
-      ret = bitmap_init_from_rgba(image, w, total_h, BITMAP_FMT_RGBA8888, data, n);
+      ret = bitmap_init_from_rgba(image, w, total_h, BITMAP_FMT_RGBA8888, data, n, o);
     }
 #endif /*WITH_LCD_MONO*/
 
@@ -144,12 +145,22 @@ static ret_t image_loader_stb_load(image_loader_t* l, const asset_info_t* asset,
   bool_t require_bgra = FALSE;
   bool_t enable_bgr565 = FALSE;
   bool_t enable_rgb565 = FALSE;
-  return_value_if_fail(l != NULL && image != NULL, RET_BAD_PARAMS);
+  system_info_t* info = system_info();
+  lcd_orientation_t o = LCD_ORIENTATION_0;
+  return_value_if_fail(l != NULL && image != NULL && info != NULL, RET_BAD_PARAMS);
 
   if (asset->subtype != ASSET_TYPE_IMAGE_JPG && asset->subtype != ASSET_TYPE_IMAGE_PNG &&
       asset->subtype != ASSET_TYPE_IMAGE_GIF && asset->subtype != ASSET_TYPE_IMAGE_BMP) {
     return RET_NOT_IMPL;
   }
+
+#if !defined(WITH_GPU) && !defined(WITH_VGCANVAS_CAIRO) && defined(WITH_FAST_LCD_PORTRAIT)
+  o = info->lcd_orientation;
+#endif
+
+#ifdef WITHOUT_FAST_LCD_PORTRAIT_FOR_IMAGE
+  o = LCD_ORIENTATION_0;
+#endif
 
 #ifdef WITH_BITMAP_BGR565
   enable_bgr565 = TRUE;
@@ -164,7 +175,7 @@ static ret_t image_loader_stb_load(image_loader_t* l, const asset_info_t* asset,
 #endif /*WITH_BITMAP_BGRA*/
 
   ret = stb_load_image(asset->subtype, asset->data, asset->size, image, require_bgra, enable_bgr565,
-                       enable_rgb565);
+                       enable_rgb565, o);
 
 #ifdef WITH_BITMAP_PREMULTI_ALPHA
   if (ret == RET_OK) {

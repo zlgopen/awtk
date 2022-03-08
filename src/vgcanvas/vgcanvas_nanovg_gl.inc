@@ -1,6 +1,23 @@
 ﻿#include "tkc/utils.h"
 #include "vgcanvas_nanovg.inc" 
 
+static enum NVGorientation vgcanvas_nanovg_lcd_orientation_to_NVGorientation(lcd_orientation_t orientation) {
+  switch (orientation) {
+  case LCD_ORIENTATION_0:
+    return NVG_ORIENTATION_0;
+  case LCD_ORIENTATION_90:
+    return NVG_ORIENTATION_90;
+  case LCD_ORIENTATION_180:
+    return NVG_ORIENTATION_180;
+  case LCD_ORIENTATION_270:
+    return NVG_ORIENTATION_270;
+  default :
+    assert(!"not find orientation");
+    break;
+  }
+  return NVG_ORIENTATION_0;
+}
+
 static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride,
                                     bitmap_format_t format, void* data) {
   (void)vg;
@@ -12,10 +29,6 @@ static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint
 }
 
 static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, const dirty_rects_t* dirty_rects) {
-  float_t angle = 0.0f;
-  float_t anchor_x = 0.0f;
-  float_t anchor_y = 0.0f;
-
   system_info_t* info = system_info();
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   const rect_t* dirty_rect = dirty_rects != NULL ? &(dirty_rects->max) : NULL;
@@ -33,37 +46,7 @@ static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, const dirty_rects
     }
   }
 
-  nvgBeginFrame(canvas->vg, info->lcd_w, info->lcd_h, info->device_pixel_ratio);
-
-  switch (info->lcd_orientation) {
-    case LCD_ORIENTATION_0:
-      angle = 0.0f;
-      break;
-    case LCD_ORIENTATION_90:
-      angle = TK_D2R(270);
-      break;
-    case LCD_ORIENTATION_180:
-      angle = TK_D2R(180);
-      break;
-    case LCD_ORIENTATION_270:
-      angle = TK_D2R(90);
-      break;
-  }
-
-  anchor_x = info->lcd_w / 2.0f;
-  anchor_y = info->lcd_h / 2.0f;
-
-  nvgSave(canvas->vg);
-
-  if (info->lcd_orientation == LCD_ORIENTATION_90 || info->lcd_orientation == LCD_ORIENTATION_270) {
-    nvgTranslate(canvas->vg, anchor_x, anchor_y);
-    nvgRotate(canvas->vg, angle);
-    nvgTranslate(canvas->vg, -anchor_y, -anchor_x);
-  } else if (info->lcd_orientation == LCD_ORIENTATION_180) {
-    nvgTranslate(canvas->vg, anchor_x, anchor_y);
-    nvgRotate(canvas->vg, angle);
-    nvgTranslate(canvas->vg, -anchor_x, -anchor_y);
-  }
+  nvgBeginFrame(canvas->vg, info->lcd_w, info->lcd_h, info->device_pixel_ratio, vgcanvas_nanovg_lcd_orientation_to_NVGorientation(info->lcd_orientation));
 
   return RET_OK;
 }
@@ -72,7 +55,6 @@ static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGcontext* vg = canvas->vg;
 
-  nvgRestore(vg);
   nvgEndFrame(vg);
 
   native_window_swap_buffer(canvas->window);
@@ -112,6 +94,7 @@ static ret_t vgcanvas_nanovg_destroy_fbo(vgcanvas_t* vgcanvas, framebuffer_objec
 
 static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
   NVGcontext* vg = NULL;
+  system_info_t* info = system_info();
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGLUframebuffer* handle = (NVGLUframebuffer*)fbo->handle;
   
@@ -133,7 +116,7 @@ static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t
       glDisable(GL_SCISSOR_TEST);
       fbo->init = TRUE;
     }
-    nvgBeginFrameEx(vg, fbo->w, fbo->h, fbo->ratio, FALSE);
+    nvgBeginFrameEx(vg, fbo->w, fbo->h, fbo->ratio, FALSE, vgcanvas_nanovg_lcd_orientation_to_NVGorientation(info->lcd_orientation));
     nvgSave(vg);
     nvgReset(vg);
   }
@@ -143,6 +126,7 @@ static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t
 
 static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
   NVGcontext* vg = NULL;
+  system_info_t* info = system_info();
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGLUframebuffer* handle = (NVGLUframebuffer*)fbo->handle;
 
@@ -160,7 +144,7 @@ static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object
   glViewport(0, 0, vgcanvas->w * fbo->ratio, vgcanvas->h * fbo->ratio);
   glScissor(0, 0, vgcanvas->w * fbo->ratio, vgcanvas->h * fbo->ratio);
   if (!fbo->custom_draw_model) {
-    nvgBeginFrameEx(vg, vgcanvas->w, vgcanvas->h, fbo->ratio, FALSE);
+    nvgBeginFrameEx(vg, vgcanvas->w, vgcanvas->h, fbo->ratio, FALSE, vgcanvas_nanovg_lcd_orientation_to_NVGorientation(info->lcd_orientation));
   }
   return RET_OK;
 }

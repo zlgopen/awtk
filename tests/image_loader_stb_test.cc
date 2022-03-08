@@ -61,7 +61,7 @@ static ret_t load_image_ex(const char* filename, bitmap_t* image, bool_t require
   ret_t ret = RET_OK;
   printf("%s\n", filename);
   uint8_t* buff = (uint8_t*)read_file(filename, &size);
-  ret = stb_load_image(0, buff, size, image, require_bgra, enable_bgr565, FALSE);
+  ret = stb_load_image(0, buff, size, image, require_bgra, enable_bgr565, FALSE, LCD_ORIENTATION_0);
   TKMEM_FREE(buff);
 
   return ret;

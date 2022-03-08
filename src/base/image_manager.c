@@ -229,9 +229,20 @@ static ret_t image_manager_get_bitmap_impl(image_manager_t* imm, const char* nam
     image->format = header->format;
     image->name = res->name;
     image->image_manager = imm;
-    bitmap_set_line_length(image, image->line_length);
-    image->buffer = GRAPHIC_BUFFER_CREATE_WITH_DATA(header->data, header->w, header->h,
+    image->orientation = (header->flags & BITMAP_FLAG_LCD_ORIENTATION) ? header->orientation : LCD_ORIENTATION_0;
+    if (image->orientation != LCD_ORIENTATION_0) {
+      assert(image->orientation == system_info()->lcd_orientation);
+      if (image->orientation == LCD_ORIENTATION_90 || image->orientation == LCD_ORIENTATION_270) {
+        image->w = header->h;
+        image->h = header->w;
+      }
+    }
+    bitmap_set_line_length(image, 0);
+    image->buffer = GRAPHIC_BUFFER_CREATE_WITH_DATA(header->data, image->w, image->h,
                                                     (bitmap_format_t)(header->format));
+    image->w = header->w;
+    image->h = header->h;
+    bitmap_set_line_length(image, 0);
     image->should_free_data = image->buffer != NULL;
     image_manager_add(imm, name, image);
     image->should_free_data = FALSE;

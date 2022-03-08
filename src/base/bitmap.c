@@ -111,6 +111,10 @@ ret_t bitmap_alloc_data(bitmap_t* bitmap) {
   return GRAPHIC_BUFFER_CREATE_FOR_BITMAP(bitmap);
 }
 
+bool_t bitmap_flag_is_lcd_orientation(bitmap_t* bitmap) {
+  return bitmap->flags & BITMAP_FLAG_LCD_ORIENTATION;
+}
+
 #ifdef AWTK_WEB
 #include <emscripten.h>
 static ret_t bitmap_web_destroy(bitmap_t* bitmap) {
@@ -162,16 +166,18 @@ ret_t bitmap_get_pixel(bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* rgba) {
   ret_t ret = RET_OK;
   const uint8_t* data = NULL;
   uint8_t* bitmap_data = NULL;
+  uint32_t w = bitmap_get_physical_width(bitmap);
+  uint32_t h = bitmap_get_physical_height(bitmap);
   uint32_t bpp = bitmap_get_bpp(bitmap);
   return_value_if_fail(bitmap != NULL && bitmap->buffer != NULL && rgba != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(x < bitmap->w && y < bitmap->h, RET_BAD_PARAMS);
+  return_value_if_fail(x < w && y < h, RET_BAD_PARAMS);
 
   bitmap_data = bitmap_lock_buffer_for_read(bitmap);
-  data = bitmap_data + bitmap_get_line_length(bitmap) * y + x * bpp;
+  data = bitmap_data + bitmap_get_physical_line_length(bitmap) * y + x * bpp;
 
   switch (bitmap->format) {
     case BITMAP_FMT_MONO: {
-      bool_t pixel = bitmap_mono_get_pixel(bitmap_data, bitmap->w, bitmap->h, x, y);
+      bool_t pixel = bitmap_mono_get_pixel(bitmap_data, w, h, x, y);
       color_t c = color_from_mono(pixel);
       *rgba = c.rgba;
       break;
@@ -234,108 +240,174 @@ ret_t bitmap_get_pixel(bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* rgba) {
   return ret;
 }
 
-ret_t bitmap_init_rgba8888(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data,
-                           uint32_t comp) {
+static ret_t bitmap_init_data_by_rotate(bitmap_t* bitmap, uint32_t w, uint32_t h, lcd_orientation_t o) {
+  if (o == LCD_ORIENTATION_0 || o == LCD_ORIENTATION_180) {
+    bitmap->w = w;
+    bitmap->h = h;
+  } else {
+    bitmap->w = h;
+    bitmap->h = w;
+  }
+  bitmap_set_line_length(bitmap, 0);
+  return_value_if_fail(bitmap_alloc_data(bitmap) == RET_OK, RET_OOM);
+  if (o != LCD_ORIENTATION_0) {
+    bitmap->orientation = o;
+    bitmap->flags |= BITMAP_FLAG_LCD_ORIENTATION;
+  }
+  bitmap->w = w;
+  bitmap->h = h;
+  bitmap_set_line_length(bitmap, 0);
+  return RET_OK;
+}
+
+
+typedef ret_t (*bitmap_init_fill_color_t)(const uint8_t* s, uint8_t* d, uint32_t comp);
+static ret_t bitmap_init_impl_by_rotate(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data,
+                         uint32_t comp, lcd_orientation_t o, bitmap_init_fill_color_t fill_color) {
   uint32_t i = 0;
   uint32_t j = 0;
-  uint8_t* bdata = bitmap_lock_buffer_for_write(bitmap);
-  return_value_if_fail(bdata != NULL && data != NULL, RET_BAD_PARAMS);
+  uint32_t bpp = 0;
+  uint8_t* d = NULL;
+  uint8_t* bdata = NULL;
+  const uint8_t* s = data;
+  uint32_t line_length = 0;
 
-  if (comp == 4) {
+  ret_t ret = bitmap_init_data_by_rotate(bitmap, w, h, o);
+  return_value_if_fail(ret == RET_OK, ret);
+
+  bpp = bitmap_get_bpp(bitmap);
+  line_length = bitmap_get_physical_line_length(bitmap);
+  bdata = bitmap_lock_buffer_for_write(bitmap);
+
+  switch (o) {
+  case LCD_ORIENTATION_0: {
+    for (j = 0; j < h; j++) {
+      d = bdata + j * line_length;
+      for (i = 0; i < w; i++) {
+        fill_color(s, d, comp);
+        d += bpp;
+        s += comp;
+      }
+    }
+    break;
+  }
+  case LCD_ORIENTATION_90: {
+    bdata = bdata + (w - 1) * line_length;
+    for (i = 0; i < h; i++) {
+      uint8_t* d = bdata;
+      for (j = 0; j < w; j++) {
+        fill_color(s, d, comp);
+        d -= line_length;
+        s += comp;
+      }
+      bdata += bpp;
+    }
+    break;
+  }
+  case LCD_ORIENTATION_180: {
+    uint8_t* d = bdata + h * line_length - bpp;
+    for (i = 0; i < h; i++) {
+      for (j = 0; j < w; j++) {
+        fill_color(s, d, comp);
+        d -= bpp;
+        s += comp;
+      }
+    }
+    break;
+  }
+  case LCD_ORIENTATION_270: {
+    bdata = bdata + line_length - bpp;
+    for (i = 0; i < h; i++) {
+      uint8_t* d = bdata;
+      for (j = 0; j < w; j++) {
+        fill_color(s, d, comp);
+        d += line_length;
+        s += comp;
+      }
+      bdata -= bpp;
+    }
+    break;
+  }
+  default:
+    break;
+  }
+
+  bitmap_unlock_buffer(bitmap);
+  return RET_OK;
+}
+
+static ret_t bitmap_init_rgba8888_fill_color(const uint8_t* s, uint8_t* d, uint32_t comp) {
+  d[0] = s[0];
+  d[1] = s[1];
+  d[2] = s[2];
+  d[3] = (comp == 3) ? 0xff : s[3];
+  return RET_OK;
+}
+
+ret_t bitmap_init_rgba8888(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data,
+                           uint32_t comp, lcd_orientation_t o) {
+
+  return_value_if_fail(data != NULL, RET_BAD_PARAMS);
+
+  if (comp == 4 && o == LCD_ORIENTATION_0) {
+    uint32_t i = 0;
+    uint8_t* bdata = NULL;
+    bitmap->w = w;
+    bitmap->h = h;
+    bitmap_set_line_length(bitmap, 0);
+    return_value_if_fail(bitmap_alloc_data(bitmap) == RET_OK, RET_OOM);
+
+    bdata = bitmap_lock_buffer_for_write(bitmap);
+    return_value_if_fail(bdata != NULL, RET_BAD_PARAMS);
     for (i = 0; i < h; i++) {
       memcpy((uint8_t*)(bdata) + i * bitmap->line_length, data + i * w * 4, w * 4);
     }
+    bitmap_unlock_buffer(bitmap);
+    return RET_OK;
   } else {
-    const uint8_t* s = data;
-    uint8_t* d = (uint8_t*)(bdata);
-    for (j = 0; j < h; j++) {
-      d = (uint8_t*)(bdata) + j * bitmap->line_length;
-      for (i = 0; i < w; i++) {
-        *d++ = *s++;
-        *d++ = *s++;
-        *d++ = *s++;
-        *d++ = 0xff;
-      }
-    }
+    return bitmap_init_impl_by_rotate(bitmap, w, h, data, comp, o, bitmap_init_rgba8888_fill_color);
   }
-  bitmap_unlock_buffer(bitmap);
+}
 
+static ret_t bitmap_init_bgra8888_fill_color(const uint8_t* s, uint8_t* d, uint32_t comp) {
+  d[0] = s[2];
+  d[1] = s[1];
+  d[2] = s[0];
+  d[3] = (comp == 3) ? 0xff : s[3];
   return RET_OK;
 }
 
 ret_t bitmap_init_bgra8888(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data,
-                           uint32_t comp) {
-  uint32_t i = 0;
-  uint32_t j = 0;
-  const uint8_t* s = data;
-  uint8_t* bdata = bitmap_lock_buffer_for_write(bitmap);
-  uint8_t* d = bdata;
+                           uint32_t comp, lcd_orientation_t o) {
+  return bitmap_init_impl_by_rotate(bitmap, w, h, data, comp, o, bitmap_init_bgra8888_fill_color);
+}
 
-  /*bgra=rgba*/
-  for (j = 0; j < h; j++) {
-    d = (uint8_t*)(bdata) + j * bitmap->line_length;
-    for (i = 0; i < w; i++) {
-      d[0] = s[2];
-      d[1] = s[1];
-      d[2] = s[0];
-      d[3] = (comp == 3) ? 0xff : s[3];
-      d += 4;
-      s += comp;
-    }
-  }
-  bitmap_unlock_buffer(bitmap);
-
+static ret_t bitmap_init_rgb565_fill_color(const uint8_t* s, uint8_t* d, uint32_t comp) {
+  uint8_t r = s[0];
+  uint8_t g = s[1];
+  uint8_t b = s[2];
+  *(uint16_t*)d = rgb_to_rgb565(r, g, b);
+  (void)comp;
   return RET_OK;
 }
 
 ret_t bitmap_init_rgb565(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data,
-                         uint32_t comp) {
-  uint32_t i = 0;
-  uint32_t j = 0;
-  const uint8_t* s = data;
-  uint8_t* bdata = bitmap_lock_buffer_for_write(bitmap);
-  uint16_t* d = (uint16_t*)(bdata);
+                         uint32_t comp, lcd_orientation_t o) {
+  return bitmap_init_impl_by_rotate(bitmap, w, h, data, comp, o, bitmap_init_rgb565_fill_color);
+}
 
-  for (j = 0; j < h; j++) {
-    d = (uint16_t*)((bdata) + j * bitmap->line_length);
-    for (i = 0; i < w; i++) {
-      uint8_t r = s[0];
-      uint8_t g = s[1];
-      uint8_t b = s[2];
-
-      *d++ = rgb_to_rgb565(r, g, b);
-
-      s += comp;
-    }
-  }
-  bitmap_unlock_buffer(bitmap);
-
+static ret_t bitmap_init_bgr565_fill_color(const uint8_t* s, uint8_t* d, uint32_t comp) {
+  uint8_t r = s[0];
+  uint8_t g = s[1];
+  uint8_t b = s[2];
+  *(uint16_t*)d = rgb_to_bgr565(r, g, b);
+  (void)comp;
   return RET_OK;
 }
 
 ret_t bitmap_init_bgr565(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data,
-                         uint32_t comp) {
-  uint32_t i = 0;
-  uint32_t j = 0;
-  const uint8_t* s = data;
-  uint8_t* bdata = bitmap_lock_buffer_for_write(bitmap);
-  uint16_t* d = (uint16_t*)(bdata);
-
-  for (j = 0; j < h; j++) {
-    d = (uint16_t*)((bdata) + j * bitmap->line_length);
-    for (i = 0; i < w; i++) {
-      uint8_t r = s[0];
-      uint8_t g = s[1];
-      uint8_t b = s[2];
-
-      *d++ = rgb_to_bgr565(r, g, b);
-
-      s += comp;
-    }
-  }
-  bitmap_unlock_buffer(bitmap);
-
-  return RET_OK;
+                         uint32_t comp, lcd_orientation_t o) {
+  return bitmap_init_impl_by_rotate(bitmap, w, h, data, comp, o, bitmap_init_bgr565_fill_color);
 }
 
 ret_t bitmap_init_mono(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data,
@@ -371,33 +443,24 @@ ret_t bitmap_init_mono(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* 
   return RET_OK;
 }
 
-ret_t bitmap_init_gray(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* data, uint32_t comp) {
-  uint32_t i = 0;
-  uint32_t j = 0;
-  const uint8_t* s = data;
-  uint8_t* bdata = bitmap_lock_buffer_for_write(b);
-  uint8_t* d = (uint8_t*)(bdata);
+static ret_t bitmap_init_gray_fill_color(const uint8_t* s, uint8_t* d, uint32_t comp) {
+  uint8_t r = s[0];
+  uint8_t g = s[1];
+  uint8_t b = s[2];
 
-  for (j = 0; j < h; j++) {
-    for (i = 0; i < w; i++) {
-      uint8_t r = s[0];
-      uint8_t g = s[1];
-      uint8_t b = s[2];
-
-      if (comp == 4) {
-        uint8_t a = s[3];
-        r = (r * a) >> 8;
-        g = (g * a) >> 8;
-        b = (b * a) >> 8;
-      }
-
-      *d++ = rgb_to_gray(r, g, b);
-      s += comp;
-    }
+  if (comp == 4) {
+    uint8_t a = s[3];
+    r = (r * a) >> 8;
+    g = (g * a) >> 8;
+    b = (b * a) >> 8;
   }
-  bitmap_unlock_buffer(b);
 
+  *d = rgb_to_gray(r, g, b);
   return RET_OK;
+}
+
+ret_t bitmap_init_gray(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data, uint32_t comp, lcd_orientation_t o) {
+  return bitmap_init_impl_by_rotate(bitmap, w, h, data, comp, o, bitmap_init_gray_fill_color);
 }
 
 bool_t rgba_data_is_opaque(const uint8_t* data, uint32_t w, uint32_t h, uint8_t comp) {
@@ -418,71 +481,67 @@ bool_t rgba_data_is_opaque(const uint8_t* data, uint32_t w, uint32_t h, uint8_t 
 }
 
 ret_t bitmap_init_from_bgra(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format,
-                            const uint8_t* data, uint32_t comp) {
+                            const uint8_t* data, uint32_t comp, lcd_orientation_t o) {
+  ret_t ret = RET_OK;
   return_value_if_fail(bitmap != NULL && data != NULL && (comp == 3 || comp == 4), RET_BAD_PARAMS);
 
   memset(bitmap, 0x00, sizeof(bitmap_t));
 
-  bitmap->w = w;
-  bitmap->h = h;
   bitmap->format = format;
-  bitmap_set_line_length(bitmap, 0);
   bitmap->flags = BITMAP_FLAG_IMMUTABLE;
-  return_value_if_fail(bitmap_alloc_data(bitmap) == RET_OK, RET_OOM);
 
   if (rgba_data_is_opaque(data, w, h, comp)) {
     bitmap->flags |= BITMAP_FLAG_OPAQUE;
   }
 
   if (format == BITMAP_FMT_BGRA8888) {
-    return bitmap_init_rgba8888(bitmap, w, h, data, comp);
+    ret = bitmap_init_rgba8888(bitmap, w, h, data, comp, o);
   } else if (format == BITMAP_FMT_RGBA8888) {
-    return bitmap_init_bgra8888(bitmap, w, h, data, comp);
+    ret = bitmap_init_bgra8888(bitmap, w, h, data, comp, o);
   } else if (format == BITMAP_FMT_BGR565) {
-    return bitmap_init_rgb565(bitmap, w, h, data, comp);
+    ret = bitmap_init_rgb565(bitmap, w, h, data, comp, o);
   } else if (format == BITMAP_FMT_RGB565) {
-    return bitmap_init_bgr565(bitmap, w, h, data, comp);
+    ret = bitmap_init_bgr565(bitmap, w, h, data, comp, o);
   } else if (format == BITMAP_FMT_MONO) {
-    return bitmap_init_mono(bitmap, w, h, data, comp);
+    ret = bitmap_init_mono(bitmap, w, h, data, comp);
   } else if (format == BITMAP_FMT_GRAY) {
-    return bitmap_init_gray(bitmap, w, h, data, comp);
+    ret = bitmap_init_gray(bitmap, w, h, data, comp, o);
   } else {
     return RET_NOT_IMPL;
   }
+  return ret;
 }
 
 ret_t bitmap_init_from_rgba(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format,
-                            const uint8_t* data, uint32_t comp) {
+                            const uint8_t* data, uint32_t comp, lcd_orientation_t o) {
+  ret_t ret = RET_OK;
   return_value_if_fail(bitmap != NULL && data != NULL && (comp == 3 || comp == 4), RET_BAD_PARAMS);
 
   memset(bitmap, 0x00, sizeof(bitmap_t));
 
-  bitmap->w = w;
-  bitmap->h = h;
   bitmap->format = format;
-  bitmap_set_line_length(bitmap, 0);
   bitmap->flags = BITMAP_FLAG_IMMUTABLE;
-  return_value_if_fail(bitmap_alloc_data(bitmap) == RET_OK, RET_OOM);
 
   if (rgba_data_is_opaque(data, w, h, comp)) {
     bitmap->flags |= BITMAP_FLAG_OPAQUE;
   }
 
   if (format == BITMAP_FMT_BGRA8888) {
-    return bitmap_init_bgra8888(bitmap, w, h, data, comp);
+    ret = bitmap_init_bgra8888(bitmap, w, h, data, comp, o);
   } else if (format == BITMAP_FMT_RGBA8888) {
-    return bitmap_init_rgba8888(bitmap, w, h, data, comp);
+    ret = bitmap_init_rgba8888(bitmap, w, h, data, comp, o);
   } else if (format == BITMAP_FMT_BGR565) {
-    return bitmap_init_bgr565(bitmap, w, h, data, comp);
+    ret = bitmap_init_bgr565(bitmap, w, h, data, comp, o);
   } else if (format == BITMAP_FMT_RGB565) {
-    return bitmap_init_rgb565(bitmap, w, h, data, comp);
+    ret = bitmap_init_rgb565(bitmap, w, h, data, comp, o);
   } else if (format == BITMAP_FMT_MONO) {
-    return bitmap_init_mono(bitmap, w, h, data, comp);
+    ret = bitmap_init_mono(bitmap, w, h, data, comp);
   } else if (format == BITMAP_FMT_GRAY) {
-    return bitmap_init_gray(bitmap, w, h, data, comp);
+    ret = bitmap_init_gray(bitmap, w, h, data, comp, o);
   } else {
     return RET_NOT_IMPL;
   }
+  return ret;
 }
 
 ret_t bitmap_init(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format, uint8_t* data) {
@@ -530,6 +589,45 @@ uint32_t bitmap_get_line_length(bitmap_t* bitmap) {
   }
 
   return bitmap->line_length;
+}
+
+uint32_t bitmap_get_physical_line_length(bitmap_t* bitmap) {
+  return_value_if_fail(bitmap != NULL, 0);
+
+  if (bitmap_flag_is_lcd_orientation(bitmap)) {
+    uint32_t ret = graphic_buffer_get_physical_line_length(bitmap->buffer);
+    if (ret != 0) {
+      return ret;
+    }
+  }
+
+  return bitmap_get_line_length(bitmap);
+}
+
+uint32_t bitmap_get_physical_width(bitmap_t* bitmap) {
+  uint32_t ret = 0;
+  return_value_if_fail(bitmap != NULL, 0);
+
+  if (bitmap_flag_is_lcd_orientation(bitmap)) {
+    ret = graphic_buffer_get_physical_width(bitmap->buffer);
+    if (ret != 0) {
+      return ret;
+    }
+  }
+  return bitmap->w;
+}
+
+uint32_t bitmap_get_physical_height(bitmap_t* bitmap) {
+  uint32_t ret = 0;
+  return_value_if_fail(bitmap != NULL, 0);
+
+  if (bitmap_flag_is_lcd_orientation(bitmap)) {
+    ret = graphic_buffer_get_physical_height(bitmap->buffer);
+    if (ret != 0) {
+      return ret;
+    }
+  }
+  return bitmap->h;
 }
 
 ret_t rgba_data_premulti_alpha(const uint8_t* data, uint8_t a_index, uint32_t w, uint32_t h) {
@@ -626,13 +724,15 @@ bitmap_t* bitmap_rgba8888_from_bitmap(bitmap_t* bitmap) {
   bitmap_t* t = NULL;
   uint32_t* p = NULL;
   uint8_t* tdata = NULL;
-  t = bitmap_create_ex(bitmap->w, bitmap->h, 0, BITMAP_FMT_RGBA8888);
+  uint32_t w = bitmap_get_physical_width(bitmap);
+  uint32_t h = bitmap_get_physical_height(bitmap);
+  t = bitmap_create_ex(w, h, 0, BITMAP_FMT_RGBA8888);
   return_value_if_fail(t != NULL, FALSE);
 
   tdata = (uint8_t*)bitmap_lock_buffer_for_write(t);
-  for (y = 0; y < bitmap->h; y++) {
+  for (y = 0; y < h; y++) {
     p = (uint32_t*)(tdata + (y * t->line_length));
-    for (x = 0; x < bitmap->w; x++) {
+    for (x = 0; x < w; x++) {
       bitmap_get_pixel(bitmap, x, y, &(c.rgba));
       *p++ = c.color;
     }
@@ -805,7 +905,7 @@ ret_t bitmap_transform(bitmap_t* bitmap, bitmap_transform_t transform, void* ctx
 
   bitmap_data = bitmap_lock_buffer_for_write(bitmap);
   for (y = 0; y < bitmap->h; y++) {
-    data = bitmap_data + bitmap_get_line_length(bitmap) * y;
+    data = bitmap_data + bitmap_get_physical_line_length(bitmap) * y;
     for (x = 0; x < bitmap->w; x++) {
       switch (bitmap->format) {
         case BITMAP_FMT_RGBA8888: {

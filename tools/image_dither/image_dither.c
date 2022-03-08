@@ -2120,7 +2120,7 @@ static uint8_t* image_dither_convert_2_to_4(uint8_t* src, uint32_t w, uint32_t h
 }
 
 ret_t image_dither_load_image(const uint8_t* buff, uint32_t buff_size, bitmap_t* image,
-                              bitmap_format_t bitmap_format) {
+                              bitmap_format_t bitmap_format, lcd_orientation_t o) {
   int w = 0;
   int h = 0;
   int n = 0;
@@ -2138,7 +2138,7 @@ ret_t image_dither_load_image(const uint8_t* buff, uint32_t buff_size, bitmap_t*
                                   image_dither_set_rgba_color);
   }
 
-  ret = bitmap_init_from_rgba(image, w, h, bitmap_format, data, n);
+  ret = bitmap_init_from_rgba(image, w, h, bitmap_format, data, n, o);
 
   stbi_image_free((uint8_t*)(stb_data));
 

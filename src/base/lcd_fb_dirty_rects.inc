@@ -25,6 +25,24 @@ ret_t lcd_fb_dirty_rects_reset_dirty_rects_by_fb(lcd_fb_dirty_rects_t* lcd_fb_di
   return RET_NOT_FOUND;
 }
 
+ret_t lcd_fb_dirty_rects_update_all_fb_dirty_rect(lcd_fb_dirty_rects_t* lcd_fb_dirty_rects, const rect_t* dirty_rect) {
+  uint32_t i;
+  lcd_fb_info_t* fb_info = NULL;
+  return_value_if_fail(lcd_fb_dirty_rects != NULL, RET_BAD_PARAMS);
+  for (i = 0; i < lcd_fb_dirty_rects->fb_dirty_list.size; i++) {
+    fb_info = (lcd_fb_info_t*)darray_get(&(lcd_fb_dirty_rects->fb_dirty_list), i);
+    if (fb_info != NULL) {
+      if (dirty_rect == NULL) {
+        rect_t r = rect_init(0, 0, lcd_fb_dirty_rects->lcd_w,  lcd_fb_dirty_rects->lcd_h);
+        dirty_rects_add(&(fb_info->dirty_rects), (const rect_t*)&r);
+      } else {
+        dirty_rects_add(&(fb_info->dirty_rects), dirty_rect);
+      }
+    }
+  }
+  return RET_OK;
+}
+
 ret_t lcd_fb_dirty_rects_update_all_fb_dirty_rects(lcd_fb_dirty_rects_t* lcd_fb_dirty_rects, const dirty_rects_t* dirty_rects) {
   uint32_t i, j;
   lcd_fb_info_t* fb_info = NULL;

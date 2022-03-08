@@ -36,6 +36,7 @@ typedef struct _bitmap_header_t {
   uint16_t h;
   uint16_t flags;  /*bitmap_flag_t*/
   uint16_t format; /*bitmap_format_t*/
+  uint32_t orientation;
   uint8_t data[4];
 } bitmap_header_t;
 

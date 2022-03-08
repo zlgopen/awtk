@@ -318,6 +318,16 @@ bool_t rect_has_intersect(const rect_t* r1, const rect_t* r2);
 rectf_t* rectf_scale(rectf_t* r, float_t scale);
 
 /**
+ * @method rectf_fix
+ * 确保rectf在指定的大小范围内。
+ *
+ * @param {rectf_t*} r rectf对象。
+ *
+ * @return {rectf_t} 返回修复之后的rect对象。
+ */
+rectf_t rectf_fix(rectf_t* r, wh_t max_w, wh_t max_h);
+
+/**
  * @method rect_to_rectf
  * rect 类型转换到 rectf 类型。
  *

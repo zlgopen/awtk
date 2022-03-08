@@ -56,7 +56,7 @@ ret_t image_format_set(image_format_t* image_format, const wchar_t* format) {
 }
 
 ret_t gen_one(const char* input_file, const char* output_file, const char* theme,
-              image_format_t* image_format) {
+              image_format_t* image_format, lcd_orientation_t o) {
   ret_t ret = RET_OK;
   if (!exit_if_need_not_update(input_file, output_file)) {
     bitmap_t image;
@@ -65,7 +65,7 @@ ret_t gen_one(const char* input_file, const char* output_file, const char* theme
     buff = (uint8_t*)read_file(input_file, &size);
     if (buff != NULL) {
       ret = stb_load_image(0, buff, size, &image, image_format->require_bgra,
-                           image_format->enable_bgr565, image_format->enable_rgb565);
+                           image_format->enable_bgr565, image_format->enable_rgb565, o);
       if (ret == RET_OK) {
         ret = image_gen(&image, output_file, theme, image_format->mono);
       }
@@ -81,7 +81,7 @@ ret_t gen_one(const char* input_file, const char* output_file, const char* theme
 }
 
 static ret_t gen_folder(const char* in_foldername, const char* out_foldername, const char* theme,
-                        image_format_t* image_format) {
+                        image_format_t* image_format, lcd_orientation_t o) {
   ret_t ret = RET_OK;
   fs_dir_t* dir = fs_open_dir(os_fs(), in_foldername);
   fs_item_t item;
@@ -100,7 +100,7 @@ static ret_t gen_folder(const char* in_foldername, const char* out_foldername, c
       str_append(&str_name, ".data");
       path_build(in_name, MAX_PATH, in_foldername, item.name, NULL);
       path_build(out_name, MAX_PATH, out_foldername, str_name.str, NULL);
-      ret = gen_one(in_name, out_name, theme, image_format);
+      ret = gen_one(in_name, out_name, theme, image_format, o);
       str_reset(&str_name);
       if (ret != RET_OK) {
         break;
@@ -115,6 +115,7 @@ int wmain(int argc, wchar_t* argv[]) {
   const char* in_filename = NULL;
   const char* out_filename = NULL;
   const wchar_t* format = NULL;
+  lcd_orientation_t lcd_orientation = LCD_ORIENTATION_0;
 
   platform_prepare();
 
@@ -136,6 +137,17 @@ int wmain(int argc, wchar_t* argv[]) {
     str_from_wstr(&theme_name, argv[4]);
   }
 
+  if (argc > 5) {
+    wstr_t str_lcd_orientation;
+    int tmp_lcd_orientation = 0;
+    wstr_init(&str_lcd_orientation, 0);
+    wstr_append(&str_lcd_orientation, argv[5]);
+    if (wstr_to_int(&str_lcd_orientation, &tmp_lcd_orientation) == RET_OK) {
+      lcd_orientation = (lcd_orientation_t)tmp_lcd_orientation;
+    }
+    wstr_reset(&str_lcd_orientation);
+  }
+
   str_t in_file;
   str_t out_file;
 
@@ -153,9 +165,9 @@ int wmain(int argc, wchar_t* argv[]) {
   fs_stat(os_fs(), in_filename, &in_stat_info);
   fs_stat(os_fs(), out_filename, &out_stat_info);
   if (in_stat_info.is_dir == TRUE && out_stat_info.is_dir == TRUE) {
-    gen_folder(in_filename, out_filename, theme_name.str, &image_format);
+    gen_folder(in_filename, out_filename, theme_name.str, &image_format, lcd_orientation);
   } else if (in_stat_info.is_reg_file == TRUE) {
-    gen_one(in_filename, out_filename, theme_name.str, &image_format);
+    gen_one(in_filename, out_filename, theme_name.str, &image_format, lcd_orientation);
   } else {
     GEN_ERROR(in_filename);
   }

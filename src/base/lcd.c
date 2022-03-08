@@ -298,7 +298,11 @@ bool_t lcd_is_swappable(lcd_t* lcd) {
   return_value_if_fail(lcd != NULL, FALSE);
 
   if (lcd->swap != NULL) {
+#ifdef WITH_FAST_LCD_PORTRAIT
+    return TRUE;
+#else
     return system_info()->lcd_orientation == LCD_ORIENTATION_0;
+#endif
   }
 
   return FALSE;
@@ -366,6 +370,26 @@ wh_t lcd_get_height(lcd_t* lcd) {
   } else {
     return lcd->h;
   }
+}
+
+wh_t lcd_get_physical_width(lcd_t* lcd) {
+  return_value_if_fail(lcd != NULL, 0);
+
+  if (lcd->get_physical_width != NULL) {
+    return lcd->get_physical_width(lcd);
+  } else {
+    return lcd_get_width(lcd);
+  }
+}
+
+wh_t lcd_get_physical_height(lcd_t* lcd) {
+   return_value_if_fail(lcd != NULL, 0);
+
+  if (lcd->get_physical_height != NULL) {
+    return lcd->get_physical_height(lcd);
+  } else {
+    return lcd_get_height(lcd);
+  } 
 }
 
 ret_t lcd_get_text_metrics(lcd_t* lcd, float_t* ascent, float_t* descent, float_t* line_hight) {

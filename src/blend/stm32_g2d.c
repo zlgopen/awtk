@@ -63,6 +63,7 @@ ret_t g2d_fill_rect(bitmap_t* fb, const rect_t* dst, color_t c) {
   uint16_t o_offline = 0;
   uint16_t o_pixsize = 0;
   uint8_t* fb_data = NULL;
+  uint32_t fb_w = bitmap_get_physical_width(fb);
   if (c.rgba.a < 0xf0) {
     return RET_NOT_IMPL;
   }
@@ -87,8 +88,8 @@ ret_t g2d_fill_rect(bitmap_t* fb, const rect_t* dst, color_t c) {
   }
 
   fb_data = bitmap_lock_buffer_for_write(fb);
-  o_offline = fb->w - w;
-  o_addr = ((uint32_t)fb_data + o_pixsize * (fb->w * y + x));
+  o_offline = fb_w - w;
+  o_addr = ((uint32_t)fb_data + o_pixsize * (fb_w * y + x));
 
   __HAL_RCC_DMA2D_CLK_ENABLE();
 
@@ -125,6 +126,8 @@ ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, const rect_t* src, xy_t x, xy_
   uint16_t iw = 0;
   uint8_t* fb_data = NULL;
   uint8_t* img_data = NULL;
+  uint32_t fb_w = bitmap_get_physical_width(fb);
+  uint32_t img_w = bitmap_get_physical_width(img);
 
   return_value_if_fail(fb != NULL && fb->buffer != NULL, RET_BAD_PARAMS);
   return_value_if_fail(img != NULL && img->buffer != NULL && src != NULL, RET_BAD_PARAMS);
@@ -137,7 +140,7 @@ ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, const rect_t* src, xy_t x, xy_
   sy = src->y;
   w = src->w;
   h = src->h;
-  iw = img->w;
+  iw = img_w;
 
   if (fb->format == BITMAP_FMT_BGR565) {
     o_pixsize = 2;
@@ -158,10 +161,10 @@ ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, const rect_t* src, xy_t x, xy_
   fb_data = bitmap_lock_buffer_for_write(fb);
   img_data = bitmap_lock_buffer_for_write(img);
 
-  o_offline = fb->w - w;
-  o_addr = ((uint32_t)fb_data + o_pixsize * (fb->w * y + x));
+  o_offline = fb_w - w;
+  o_addr = ((uint32_t)fb_data + o_pixsize * (fb_w * y + x));
   fg_offline = iw - w;
-  fg_addr = ((uint32_t)img_data + fg_pixsize * (img->w * sy + sx));
+  fg_addr = ((uint32_t)img_data + fg_pixsize * (img_w * sy + sx));
 
   __HAL_RCC_DMA2D_CLK_ENABLE();
 
@@ -199,6 +202,29 @@ ret_t g2d_rotate_image(bitmap_t* fb, bitmap_t* img, const rect_t* src, lcd_orien
   return RET_NOT_IMPL;
 }
 
+ret_t g2d_rotate_image_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy, lcd_orientation_t o) {
+  (void)dst;
+  (void)src;
+  (void)src_r;
+  (void)dx;
+  (void)dy;
+  (void)o;
+
+  return RET_NOT_IMPL;
+}
+
+ret_t g2d_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r,
+                       uint8_t alpha, lcd_orientation_t o) {
+  (void)dst;
+  (void)src;
+  (void)dst_r;
+  (void)src_r;
+  (void)alpha;
+  (void)o;
+
+  return RET_NOT_IMPL;
+}
+
 ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, const rect_t* dst, const rect_t* src,
                       uint8_t global_alpha) {
   uint32_t o_addr = 0;
@@ -218,7 +244,8 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, const rect_t* dst, const rect
   uint16_t y = 0;
   uint8_t* fb_data = NULL;
   uint8_t* img_data = NULL;
-  //	return RET_NOT_IMPL;
+  uint32_t fb_w = bitmap_get_physical_width(fb);
+  uint32_t img_w = bitmap_get_physical_width(img);
 
   return_value_if_fail(global_alpha > 0xf0, RET_NOT_IMPL); /*not support global_alpha*/
   return_value_if_fail(fb != NULL && fb->buffer != NULL, RET_BAD_PARAMS);
@@ -236,7 +263,7 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, const rect_t* dst, const rect
   sy = src->y;
   w = src->w;
   h = src->h;
-  iw = img->w;
+  iw = img_w;
 
   if (fb->format == BITMAP_FMT_BGR565) {
     o_pixsize = 2;
@@ -256,10 +283,10 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, const rect_t* dst, const rect
 
   fb_data = bitmap_lock_buffer_for_write(fb);
   img_data = bitmap_lock_buffer_for_write(img);
-  o_offline = fb->w - w;
-  o_addr = ((uint32_t)fb_data + o_pixsize * (fb->w * y + x));
+  o_offline = fb_w - w;
+  o_addr = ((uint32_t)fb_data + o_pixsize * (fb_w * y + x));
   fg_offline = iw - w;
-  fg_addr = ((uint32_t)img_data + fg_pixsize * (img->w * sy + sx));
+  fg_addr = ((uint32_t)img_data + fg_pixsize * (img_w * sy + sx));
 
   __HAL_RCC_DMA2D_CLK_ENABLE();
 

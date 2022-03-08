@@ -340,7 +340,7 @@ NVGcontext* nvgCreateInternal(NVGparams* params)
 	if (ctx->fs == NULL) goto error;
 
 	// Create font texture
-	ctx->fontImages[0] = ctx->params.renderCreateTexture(ctx->params.userPtr, NVG_TEXTURE_ALPHA, fontParams.width, fontParams.height, 0, 0, NULL);
+	ctx->fontImages[0] = ctx->params.renderCreateTexture(ctx->params.userPtr, NVG_TEXTURE_ALPHA, fontParams.width, fontParams.height, 0, 0, NVG_ORIENTATION_0, NULL);
 	if (ctx->fontImages[0] == 0) goto error;
 	ctx->fontImageIdx = 0;
 #endif/*WITH_NANOVG_GPU*/
@@ -384,8 +384,11 @@ void nvgDeleteInternal(NVGcontext* ctx)
 	free(ctx);
 }
 
-void nvgBeginFrameEx(NVGcontext* ctx, float windowWidth, float windowHeight, float devicePixelRatio, int reset)
+void nvgBeginFrameEx(NVGcontext* ctx, float windowWidth, float windowHeight, float devicePixelRatio, int reset, enum NVGorientation orientation)
 {
+	float angle = 0.0f;
+	float anchor_x = 0.0f;
+	float anchor_y = 0.0f;
 /*	printf("Tris: draws:%d  fill:%d  stroke:%d  text:%d  TOT:%d\n",
 		ctx->drawCallCount, ctx->fillTriCount, ctx->strokeTriCount, ctx->textTriCount,
 		ctx->fillTriCount+ctx->strokeTriCount+ctx->textTriCount);*/
@@ -403,11 +406,44 @@ void nvgBeginFrameEx(NVGcontext* ctx, float windowWidth, float windowHeight, flo
 	ctx->fillTriCount = 0;
 	ctx->strokeTriCount = 0;
 	ctx->textTriCount = 0;
+
+	if (ctx->params.globalSreenOrientation != NULL) {
+		ctx->params.globalSreenOrientation(ctx->params.userPtr, orientation);
+	}
+	/* global sreen orientation is anti-clockwise */
+	switch (orientation) {
+	case NVG_ORIENTATION_0:
+		angle = 0.0f;
+		break;
+	case NVG_ORIENTATION_90:
+		angle = nvgDegToRad(270);
+		break;
+	case NVG_ORIENTATION_180:
+		angle = nvgDegToRad(180);
+		break;
+	case NVG_ORIENTATION_270:
+		angle = nvgDegToRad(90);
+		break;
+	default :
+		break;
+	}
+	anchor_x = windowWidth / 2.0f;
+	anchor_y = windowHeight / 2.0f;
+
+	if (orientation == 90 || orientation == 270) {
+		nvgTranslate(ctx, anchor_x, anchor_y);
+		nvgRotate(ctx, angle);
+		nvgTranslate(ctx, -anchor_y, -anchor_x);
+	} else if (orientation == 180) {
+		nvgTranslate(ctx, anchor_x, anchor_y);
+		nvgRotate(ctx, angle);
+		nvgTranslate(ctx, -anchor_x, -anchor_y);
+	}
 }
 
-void nvgBeginFrame(NVGcontext* ctx, float windowWidth, float windowHeight, float devicePixelRatio)
+void nvgBeginFrame(NVGcontext* ctx, float windowWidth, float windowHeight, float devicePixelRatio, enum NVGorientation orientation)
 {
-	nvgBeginFrameEx(ctx, windowWidth, windowHeight, devicePixelRatio, 1);
+	nvgBeginFrameEx(ctx, windowWidth, windowHeight, devicePixelRatio, 1, orientation);
 }
 
 void nvgCancelFrame(NVGcontext* ctx)
@@ -866,7 +902,7 @@ int nvgCreateImageMem(NVGcontext* ctx, int imageFlags, unsigned char* data, int 
 
 int nvgCreateImageRGBA(NVGcontext* ctx, int w, int h, int imageFlags, const unsigned char* data)
 {
-	return ctx->params.renderCreateTexture(ctx->params.userPtr, NVG_TEXTURE_RGBA, w, h, w * 4, imageFlags, data);
+	return ctx->params.renderCreateTexture(ctx->params.userPtr, NVG_TEXTURE_RGBA, w, h, w * 4, imageFlags, NVG_ORIENTATION_0, data);
 }
 
 void nvgUpdateImage(NVGcontext* ctx, int image, const unsigned char* data)
@@ -1049,7 +1085,6 @@ int nvgGetCurrScissor(NVGcontext* ctx, float* x, float* y, float* w, float* h)
 {
 	NVGstate* state = nvg__getState(ctx);
 	float pxform[6], invxorm[6];
-	float rect[4];
 	float ex, ey, tex, tey;
 
 	// If no previous scissor has been set, set the scissor as current scissor.
@@ -2768,7 +2803,7 @@ static int nvg__allocTextAtlas(NVGcontext* ctx)
 			iw *= 2;
 		if (iw > NVG_MAX_FONTIMAGE_SIZE || ih > NVG_MAX_FONTIMAGE_SIZE)
 			iw = ih = NVG_MAX_FONTIMAGE_SIZE;
-		ctx->fontImages[ctx->fontImageIdx+1] = ctx->params.renderCreateTexture(ctx->params.userPtr, NVG_TEXTURE_ALPHA, iw, ih, 0, 0, NULL);
+		ctx->fontImages[ctx->fontImageIdx+1] = ctx->params.renderCreateTexture(ctx->params.userPtr, NVG_TEXTURE_ALPHA, iw, ih, 0, 0, NVG_ORIENTATION_0, NULL);
 	}
 	++ctx->fontImageIdx;
 	fonsResetAtlas(ctx->fs, iw, ih);
@@ -3323,9 +3358,9 @@ NVGparams* nvgGetParams(NVGcontext* ctx) {
   return &(ctx->params);
 }
 
-int nvgCreateImageRaw(NVGcontext* ctx, int w, int h, int format, int stride, int imageFlags, const unsigned char* data)
+int nvgCreateImageRaw(NVGcontext* ctx, int w, int h, int format, int stride, int imageFlags, enum NVGorientation orientation, const unsigned char* data)
 {
-	return ctx->params.renderCreateTexture(ctx->params.userPtr, format, w, h, stride, imageFlags, data);
+	return ctx->params.renderCreateTexture(ctx->params.userPtr, format, w, h, stride, imageFlags, orientation, data);
 }
 
 int nvgFindTextureRaw(NVGcontext* ctx, const void* data)

@@ -57,6 +57,17 @@ ret_t lcd_fb_dirty_rects_update_all_fb_dirty_rects(lcd_fb_dirty_rects_t* lcd_fb_
                                                    const dirty_rects_t* dirty_rects);
 
 /**
+ * @method lcd_fb_dirty_rects_update_all_fb_dirty_rect
+ * 把当前脏矩形合并到所有 fb 的脏矩形中。
+ * @export none
+ * @param {lcd_fb_dirty_rects_t*} lcd_fb_dirty_rects lcd_fb_dirty_rects_t对象。
+ * @param {const rect_t*} dirty_rect 当前脏矩形。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t lcd_fb_dirty_rects_update_all_fb_dirty_rect(lcd_fb_dirty_rects_t* lcd_fb_dirty_rects, const rect_t* dirty_rect);
+
+/**
  * @method lcd_fb_dirty_rects_add_fb_info
  * 添加新的 fb 信息
  * 如果已经存在的话，就不会重新添加

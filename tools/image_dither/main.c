@@ -90,7 +90,7 @@ ret_t res_image_gen(str_t* out_file, bitmap_t* bitmap, const char* theme) {
 }
 
 ret_t gen_one(str_t* in_file, str_t* out_file, const char* theme, output_format_t output_format,
-              bitmap_format_t image_format) {
+              bitmap_format_t image_format, lcd_orientation_t o) {
   ret_t ret = RET_OK;
   if (!exit_if_need_not_update(in_file->str, out_file->str)) {
     bitmap_t bitmap;
@@ -99,7 +99,7 @@ ret_t gen_one(str_t* in_file, str_t* out_file, const char* theme, output_format_
     buff = (uint8_t*)read_file(in_file->str, &size);
     if (buff != NULL) {
       if (output_format == OUTPUT_FORMAT_DATA) {
-        ret = image_dither_load_image(buff, size, &bitmap, image_format);
+        ret = image_dither_load_image(buff, size, &bitmap, image_format, o);
         if (ret == RET_OK) {
           ret = image_gen(&bitmap, out_file->str, theme, FALSE);
         }
@@ -109,7 +109,7 @@ ret_t gen_one(str_t* in_file, str_t* out_file, const char* theme, output_format_
           temp_image_format = BITMAP_FMT_BGRA8888;
         }
 
-        ret = image_dither_load_image(buff, size, &bitmap, temp_image_format);
+        ret = image_dither_load_image(buff, size, &bitmap, temp_image_format, o);
         if (ret == RET_OK) {
           if (output_format == OUTPUT_FORMAT_RES) {
             res_image_gen(out_file, &bitmap, theme);
@@ -141,6 +141,7 @@ int wmain(int argc, wchar_t* argv[]) {
   const wchar_t* str_output = NULL;
   bitmap_format_t image_format = BITMAP_FMT_NONE;
   output_format_t output_format = OUTPUT_FORMAT_NONE;
+  lcd_orientation_t lcd_orientation = LCD_ORIENTATION_0;
 
   platform_prepare();
 
@@ -176,13 +177,24 @@ int wmain(int argc, wchar_t* argv[]) {
     str_from_wstr(&theme_name, argv[5]);
   }
 
+  if (argc > 6) {
+    wstr_t str_lcd_orientation;
+    int tmp_lcd_orientation = 0;
+    wstr_init(&str_lcd_orientation, 0);
+    wstr_append(&str_lcd_orientation, argv[6]);
+    if (wstr_to_int(&str_lcd_orientation, &tmp_lcd_orientation) == RET_OK) {
+      lcd_orientation = (lcd_orientation_t)tmp_lcd_orientation;
+    }
+    wstr_reset(&str_lcd_orientation);
+  }
+
   str_init(&in_file, 0);
   str_init(&out_file, 0);
 
   str_from_wstr(&in_file, argv[1]);
   str_from_wstr(&out_file, argv[2]);
 
-  gen_one(&in_file, &out_file, theme_name.str, output_format, image_format);
+  gen_one(&in_file, &out_file, theme_name.str, output_format, image_format, lcd_orientation);
 
   str_reset(&in_file);
   str_reset(&out_file);

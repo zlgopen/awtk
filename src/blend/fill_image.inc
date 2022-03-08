@@ -7,13 +7,15 @@ static ret_t clear_image(bitmap_t* dst, const rect_t* dst_r, color_t c) {
   pixel_dst_t* p = NULL;
   uint8_t* dst_data = NULL;
   uint32_t bpp = bitmap_get_bpp(dst);
-  uint32_t line_length = bitmap_get_line_length(dst);
+  uint32_t dst_w = bitmap_get_physical_width(dst);
+  uint32_t dst_h = bitmap_get_physical_height(dst);
+  uint32_t line_length = bitmap_get_physical_line_length(dst);
   pixel_dst_t data = pixel_dst_from_rgba(c.rgba.r, c.rgba.g, c.rgba.b, c.rgba.a);
 
   dst_data = bitmap_lock_buffer_for_write(dst);
   return_value_if_fail(dst_data != NULL && dst_r->w > 0 && dst_r->h > 0, RET_BAD_PARAMS);
 
-  if (dst->w == dst_r->w && (dst->w * bpp) == line_length && dst->h == dst_r->h) {
+  if (dst_w == dst_r->w && (dst_w * bpp) == line_length && dst_h == dst_r->h) {
     uint32_t size = w * h;
     p = (pixel_dst_t*)(dst_data);
 
@@ -61,7 +63,7 @@ static ret_t fill_image(bitmap_t* dst, const rect_t* dst_r, color_t c) {
     uint8_t* dst_data = NULL;
     uint8_t minus_a = 0xff - a;
     uint32_t bpp = bitmap_get_bpp(dst);
-    uint32_t line_length = bitmap_get_line_length(dst);
+    uint32_t line_length = bitmap_get_physical_line_length(dst);
     bool_t dark = rgba.r == 0 && rgba.g == 0 && rgba.b == 0;
 
     rgba.r = (rgba.r * a) >> 8;

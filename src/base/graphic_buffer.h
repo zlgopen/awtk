@@ -31,6 +31,9 @@ typedef struct _graphic_buffer_t graphic_buffer_t;
 
 typedef uint8_t* (*graphic_buffer_lock_for_read_t)(graphic_buffer_t* buffer);
 typedef uint8_t* (*graphic_buffer_lock_for_write_t)(graphic_buffer_t* buffer);
+typedef uint32_t (*graphic_buffer_get_physical_width_t)(graphic_buffer_t* buffer);
+typedef uint32_t (*graphic_buffer_get_physical_height_t)(graphic_buffer_t* buffer);
+typedef uint32_t (*graphic_buffer_get_physical_line_length_t)(graphic_buffer_t* buffer);
 typedef ret_t (*graphic_buffer_unlock_t)(graphic_buffer_t* buffer);
 typedef ret_t (*graphic_buffer_attach_t)(graphic_buffer_t* buffer, void* data, uint32_t w,
                                          uint32_t h);
@@ -63,6 +66,9 @@ typedef struct _graphic_buffer_vtable_t {
   graphic_buffer_attach_t attach;
   graphic_buffer_is_valid_for_t is_valid_for;
   graphic_buffer_destroy_t destroy;
+  graphic_buffer_get_physical_width_t get_width;
+  graphic_buffer_get_physical_height_t get_height;
+  graphic_buffer_get_physical_line_length_t get_line_length;
 } graphic_buffer_vtable_t;
 
 /**
@@ -146,6 +152,36 @@ ret_t graphic_buffer_attach(graphic_buffer_t* buffer, void* data, uint32_t w, ui
  * @return {bool_t} 返回TRUE表示有效，否则表示无效。
  */
 bool_t graphic_buffer_is_valid_for(graphic_buffer_t* buffer, bitmap_t* bitmap);
+
+/**
+ * @method graphic_buffer_get_physical_width
+ * 获取 graphic_buffer 真实物理的的宽度
+ * 
+ * @param {graphic_buffer_t*} buffer 图像缓冲区对象。
+ *
+ * @return {uint32_t} 返回宽度。
+ */
+uint32_t graphic_buffer_get_physical_width(graphic_buffer_t* buffer);
+
+/**
+ * @method graphic_buffer_get_physical_height
+ * 获取 graphic_buffer 真实物理的的高度
+ * 
+ * @param {graphic_buffer_t*} buffer 图像缓冲区对象。
+ *
+ * @return {uint32_t} 返回高度。
+ */
+uint32_t graphic_buffer_get_physical_height(graphic_buffer_t* buffer);
+
+/**
+ * @method graphic_buffer_get_physical_line_length
+ * 获取 graphic_buffer 真实物理的的行长度
+ * 
+ * @param {graphic_buffer_t*} buffer 图像缓冲区对象。
+ *
+ * @return {uint32_t} 返回行长度。
+ */
+uint32_t graphic_buffer_get_physical_line_length(graphic_buffer_t* buffer);
 
 /**
  * @method graphic_buffer_destroy

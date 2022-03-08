@@ -1,6 +1,7 @@
-﻿static ret_t rotate_image(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, lcd_orientation_t o) {
-  xy_t dx = 0;
-  xy_t dy = 0;
+﻿#include "tkc/rect.h"
+#include "base/lcd_orientation_helper.h"
+
+static ret_t rotate_image_impl(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy, lcd_orientation_t o) {
   uint32_t i = 0;
   uint32_t k = 0;
   uint32_t w = 0;
@@ -11,28 +12,10 @@
   pixel_dst_t* dst_p = NULL;
   uint32_t fb_bpp = bitmap_get_bpp(dst);
   uint32_t img_bpp = bitmap_get_bpp(src);
-  uint32_t dst_line_length = bitmap_get_line_length(dst);
-  uint32_t src_line_length = bitmap_get_line_length(src);
+  uint32_t dst_line_length = bitmap_get_physical_line_length(dst);
+  uint32_t src_line_length = bitmap_get_physical_line_length(src);
 
-  switch (o) {
-    case LCD_ORIENTATION_90: {
-      dx = src_r->y;
-      dy = src->w - src_r->x - src_r->w;
-      break;
-    }
-    case LCD_ORIENTATION_180: {
-      dy = src->h - src_r->y - 1;
-      dx = src->w - src_r->x - 1;
-      break;
-    }
-    case LCD_ORIENTATION_270: {
-      dx = src->h - src_r->y - 1;
-      dy = src_r->x;
-      break;
-    }
-    default:
-      break;
-  }
+  assert(o != LCD_ORIENTATION_0);
 
   dst_data = bitmap_lock_buffer_for_write(dst);
   src_data = bitmap_lock_buffer_for_read(src);
@@ -98,3 +81,44 @@
 
   return RET_OK;
 }
+
+static ret_t rotate_image_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy, lcd_orientation_t o) {
+  uint32_t dst_w = bitmap_get_physical_width(src);
+  uint32_t dst_h = bitmap_get_physical_height(src);
+  rect_t dr = rect_init(dx, dy, src_r->w, src_r->h);
+
+  if (o == LCD_ORIENTATION_90 || o == LCD_ORIENTATION_270) {
+    dr = lcd_orientation_rect_rotate_by_anticlockwise(&dr, o, dst_h, dst_w);
+  } else {
+    dr = lcd_orientation_rect_rotate_by_anticlockwise(&dr, o, dst_w, dst_h);
+  }
+  return rotate_image_impl(dst, src, src_r, dr.x, dr.y, o);
+}
+
+static ret_t rotate_image(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, lcd_orientation_t o) {
+  xy_t dx = 0;
+  xy_t dy = 0;
+  uint32_t src_w = bitmap_get_physical_width(src);
+  uint32_t src_h = bitmap_get_physical_height(src);
+  switch (o) {
+    case LCD_ORIENTATION_90: {
+      dx = src_r->y;
+      dy = src_w - src_r->x - src_r->w;
+      break;
+    }
+    case LCD_ORIENTATION_180: {
+      dy = src_h - src_r->y - 1;
+      dx = src_w - src_r->x - 1;
+      break;
+    }
+    case LCD_ORIENTATION_270: {
+      dx = src_h - src_r->y - 1;
+      dy = src_r->x;
+      break;
+    }
+    default:
+      break;
+  }
+  return rotate_image_impl(dst, src, src_r, dx, dy, o);
+}
+

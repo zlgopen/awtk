@@ -62,13 +62,13 @@ static ret_t vgcanvas_nanovg_plus_begin_frame(vgcanvas_t* vgcanvas,
       angle = 0.0f;
       break;
     case LCD_ORIENTATION_90:
-      angle = TK_D2R(90);
+      angle = TK_D2R(270);
       break;
     case LCD_ORIENTATION_180:
       angle = TK_D2R(180);
       break;
     case LCD_ORIENTATION_270:
-      angle = TK_D2R(270);
+      angle = TK_D2R(90);
       break;
   }
 

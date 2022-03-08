@@ -90,6 +90,8 @@ typedef bitmap_format_t (*lcd_get_desired_bitmap_format_t)(lcd_t* lcd);
 
 typedef wh_t (*lcd_get_width_t)(lcd_t* lcd);
 typedef wh_t (*lcd_get_height_t)(lcd_t* lcd);
+typedef wh_t (*lcd_get_physical_width_t)(lcd_t* lcd);
+typedef wh_t (*lcd_get_physical_height_t)(lcd_t* lcd);
 typedef ret_t (*lcd_swap_t)(lcd_t* lcd);
 typedef ret_t (*lcd_flush_t)(lcd_t* lcd);
 typedef ret_t (*lcd_sync_t)(lcd_t* lcd);
@@ -206,6 +208,8 @@ struct _lcd_t {
   lcd_swap_t swap; /*适用于double fb，可选*/
   lcd_get_width_t get_width;
   lcd_get_height_t get_height;
+  lcd_get_physical_width_t get_physical_width;
+  lcd_get_physical_height_t get_physical_height;
   lcd_flush_t flush;
   lcd_sync_t sync;
   lcd_end_frame_t end_frame;
@@ -603,6 +607,24 @@ wh_t lcd_get_width(lcd_t* lcd);
  * @return {wh_t} 返回高度。
  */
 wh_t lcd_get_height(lcd_t* lcd);
+
+/**
+ * @method lcd_get_physical_width
+ * 获取真实物理宽度。
+ * @param {lcd_t*} lcd lcd对象。
+ *
+ * @return {wh_t} 返回真实物理宽度。
+ */
+wh_t lcd_get_physical_width(lcd_t* lcd);
+
+/**
+ * @method lcd_get_physical_height
+ * 获取真实物理高度。
+ * @param {lcd_t*} lcd lcd对象。
+ *
+ * @return {wh_t} 返回真实物理高度。
+ */
+wh_t lcd_get_physical_height(lcd_t* lcd);
 
 /**
  * @method lcd_flush

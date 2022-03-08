@@ -22,6 +22,7 @@ APP_THEME = 'default'
 THEME = 'default'
 THEME_PACKAGED = True
 IMAGEGEN_OPTIONS = 'bgra+bgr565'
+LCD_ORIENTATION = '0'
 ON_GENERATE_RES_BEFORE = None
 ON_GENERATE_RES_AFTER = None
 EXEC_CMD_HANDLER = None
@@ -79,6 +80,7 @@ def emit_generate_res_before(type):
             'type': type,
             'theme': THEME,
             'imagegen_options': IMAGEGEN_OPTIONS,
+            'lcd_orientation' : LCD_ORIENTATION,
             'input': INPUT_DIR,
             'output': OUTPUT_DIR,
             'awtk_root': AWTK_ROOT
@@ -92,6 +94,7 @@ def emit_generate_res_after(type):
             'type': type,
             'theme': THEME,
             'imagegen_options': IMAGEGEN_OPTIONS,
+            'lcd_orientation' : LCD_ORIENTATION,
             'input': INPUT_DIR,
             'output': OUTPUT_DIR,
             'awtk_root': AWTK_ROOT
@@ -143,6 +146,7 @@ def set_current_theme(index):
     global THEME
     global THEME_PACKAGED
     global IMAGEGEN_OPTIONS
+    global LCD_ORIENTATION
     global INPUT_DIR
     global OUTPUT_DIR
 
@@ -159,6 +163,8 @@ def set_current_theme(index):
         IMAGEGEN_OPTIONS = 'bgra+bgr565'
         if 'imagegen_options' in theme:
             IMAGEGEN_OPTIONS = theme['imagegen_options']
+        if 'lcd_orientation' in theme:
+            LCD_ORIENTATION = theme['lcd_orientation']
         if 'packaged' in theme:
             THEME_PACKAGED = theme['packaged']
 
@@ -369,8 +375,8 @@ def fontgen(raw, text, inc, size, options, theme):
             str(size) + ' ' + options + ' ' + theme)
 
 
-def imagegen(raw, inc, options, theme):
-    exec_cmd(to_exe('imagegen') + ' \"' + raw + '\" \"' + inc + '\" ' + options + ' ' + theme)
+def imagegen(raw, inc, options, theme, lcd_orientation):
+    exec_cmd(to_exe('imagegen') + ' \"' + raw + '\" \"' + inc + '\" ' + options + ' ' + theme + ' ' + lcd_orientation)
 
 
 def svggen(raw, inc, theme):
@@ -450,7 +456,7 @@ def gen_res_png_jpg():
                 if IS_GENERATE_INC_RES:
                     resgen(raw, inc, THEME, '.res')
                 if IS_GENERATE_INC_BITMAP:
-                    imagegen(raw, inc, IMAGEGEN_OPTIONS, THEME)
+                    imagegen(raw, inc, IMAGEGEN_OPTIONS, THEME, LCD_ORIENTATION)
 
         # 如果当前主题的gen选项与default主题不一致，则按新的gen选项重新生成图片的位图数据
         if IS_GENERATE_INC_BITMAP and THEME != 'default':
@@ -463,7 +469,7 @@ def gen_res_png_jpg():
 
                     if os.path.exists(raw):
                         make_dirs(inc)
-                        imagegen(raw, inc, IMAGEGEN_OPTIONS, THEME)
+                        imagegen(raw, inc, IMAGEGEN_OPTIONS, THEME, LCD_ORIENTATION)
 
 
 def gen_res_all_image():
@@ -1183,6 +1189,7 @@ def dump_args():
     print('DPI = '+DPI)
     print('THEMES = '+str(THEMES))
     print('IMAGEGEN_OPTIONS = '+IMAGEGEN_OPTIONS)
+    print('LCD_ORIENTATION = LCD_ORIENTATION_'+LCD_ORIENTATION)
     print('AWTK_ROOT = '+AWTK_ROOT)
     print('BIN_DIR = '+BIN_DIR)
     print('ASSETS_ROOT = '+ASSETS_ROOT)

@@ -55,17 +55,22 @@ uint32_t image_gen_buff(bitmap_t* image, wbuffer_t* wbuffer, bool_t mono) {
   header->w = image->w;
   header->h = image->h;
   header->flags = image->flags;
+  header->orientation = image->orientation;
+  if (header->orientation != LCD_ORIENTATION_0) {
+    header->flags |= BITMAP_FLAG_LCD_ORIENTATION;
+  }
   image_data = bitmap_lock_buffer_for_read(image);
   if (!mono) {
-    size = bitmap_get_line_length(image) * image->h;
+    size = bitmap_get_physical_line_length(image) * bitmap_get_physical_height(image);
     header->format = image->format;
     wbuffer_write_binary(wbuffer, image_data, size);
   } else {
     bitmap_t b;
     uint8_t* bdata = NULL;
-    bitmap_init_from_rgba(&b, image->w, image->h, BITMAP_FMT_MONO, image_data, 4);
+    assert(header->orientation == LCD_ORIENTATION_0);
+    bitmap_init_from_rgba(&b, image->w, image->h, BITMAP_FMT_MONO, image_data, 4, LCD_ORIENTATION_0);
     header->format = b.format;
-    size = bitmap_get_line_length(&b) * b.h;
+    size = bitmap_get_physical_line_length(&b) * b.h;
 
     bdata = bitmap_lock_buffer_for_read(&b);
     wbuffer_write_binary(wbuffer, bdata, size);
