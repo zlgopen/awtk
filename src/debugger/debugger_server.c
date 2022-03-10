@@ -155,6 +155,7 @@ static ret_t debugger_server_send_object(debugger_server_t* server, debugger_res
   if (obj != NULL) {
     ubjson_writer_init(&writer, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
     ret = ubjson_writer_write_object(&writer, obj);
+    assert(ret == RET_OK);
     goto_error_if_fail(ret == RET_OK);
   } else {
     wbuffer_write_string(&wb, "{}");
@@ -228,7 +229,9 @@ static debugger_t* debugger_server_find(debugger_server_t* server, const char* c
 
   if (tk_mutex_nest_lock(server->mutex) == RET_OK) {
     if (server->single_mode) {
-      debugger = server->debugger;
+      if (code_id != NULL && debugger_match(server->debugger, code_id)) {
+        debugger = server->debugger;
+      }
     } else {
       for (i = 0; i < server->debuggers.size; i++) {
         debugger_t* iter = (debugger_t*)darray_get(&(server->debuggers), i);
@@ -295,7 +298,7 @@ static ret_t debugger_server_on_events(void* ctx, event_t* e) {
   }
 
   TK_OBJECT_UNREF(obj);
-  
+
   return ret == RET_OK ? RET_OK : RET_REMOVE;
 }
 

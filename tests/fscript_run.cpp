@@ -37,27 +37,32 @@ static ret_t run_fscript(const char* code, uint32_t times, bool_t debug) {
       value_reset(&v);
     }
     fscript_destroy(fscript);
-  } else {
+  } else if (debug) {
+    str_t str;
     fscript_t* fscript = NULL;
 
-    if (debug) {
-      debugger_global_init();
-      debugger_server_tcp_init(DEBUGGER_TCP_PORT);
-      debugger_server_tcp_start();
-      debugger_server_set_single_mode(TRUE);
-      sleep_ms(1000);
-    }
+    debugger_global_init();
+    debugger_server_tcp_init(DEBUGGER_TCP_PORT);
+    debugger_server_tcp_start();
+    debugger_server_set_single_mode(TRUE);
+    sleep_ms(1000);
+    str_init(&str, 1000);
+    str_set(&str, code);
+    str_append_format(&str, 100, "//code_id(\"%s\")\n", DEBUGGER_DEFAULT_CODE_ID);
+    code = str.str;
 
     fscript = fscript_create(obj, code);
     fscript_exec(fscript, &v);
     fscript_destroy(fscript);
 
-    if (debug) {
-      debugger_server_tcp_deinit();
-      debugger_global_deinit();
-    }
+    str_reset(&str);
+    debugger_server_tcp_deinit();
+    debugger_global_deinit();
 
     log_debug("result:%s\n", value_str_ex(&v, buff, sizeof(buff) - 1));
+    value_reset(&v);
+  } else {
+    fscript_eval(obj, code, &v);
     value_reset(&v);
   }
   TK_OBJECT_UNREF(obj);
