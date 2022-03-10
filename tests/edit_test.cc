@@ -631,3 +631,15 @@ TEST(Edit, set_double) {
 
   widget_destroy(e);
 }
+
+TEST(Edit, set_text_for_float) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  edit_set_float_limit(e, 0.7, 1.3, 0.1);
+
+  widget_set_text_utf8(e, "1.23");
+  double v = edit_get_double(e) - 1.23;
+  ASSERT_EQ(abs(v) < 0.001, TRUE);
+
+  widget_destroy(e);
+}

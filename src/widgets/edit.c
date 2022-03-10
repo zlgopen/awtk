@@ -1319,7 +1319,14 @@ static ret_t edit_set_text(widget_t* widget, const value_t* v) {
   return_value_if_fail(wstr_from_value(&str, v) == RET_OK, RET_BAD_PARAMS);
 
   if (!wstr_equal(&(widget->text), &str)) {
-    uint32_t len = edit->max > 0 ? tk_min(str.size, edit->max) : str.size;
+    uint32_t len = str.size;
+    input_type_t input_type = edit->input_type;
+    if (input_type == INPUT_INT || input_type == INPUT_UINT || input_type == INPUT_FLOAT ||
+        input_type == INPUT_UFLOAT) {
+      len = tk_min(str.size, 64);
+    } else {
+      len = edit->max > 0 ? tk_min(str.size, edit->max) : str.size;
+    }
     wstr_set_with_len(&(widget->text), str.str, len);
 
     text_edit_set_cursor(edit->model, widget->text.size);

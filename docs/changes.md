@@ -1,7 +1,9 @@
 # 最新动态
+
 2022/03/10
   * 完善fscript debugger
   * 完善line\_number
+  * 修复edit控件，输入类型为int/uint/float/ufloat时，edit\_set\_text错误把max当作最大长度使用。
 
 2022/03/08
   * 支持[LCD快速旋转](how_to_use_fast_lcd_portrait.md) （感谢智明提供补丁）。
