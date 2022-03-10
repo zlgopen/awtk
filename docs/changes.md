@@ -3,6 +3,7 @@
 2022/03/10
   * 完善fscript debugger
   * 完善line\_number
+  * 修复style\_get\_color函数处理渐变色时候崩溃的问题（感谢智明提供补丁）
   * 修复edit控件，输入类型为int/uint/float/ufloat时，edit\_set\_text错误把max当作最大长度使用。
 
 2022/03/08

@@ -73,9 +73,16 @@ bool_t style_is_valid(style_t* s) {
 }
 
 color_t style_get_color(style_t* s, const char* name, color_t defval) {
+  gradient_t agradient;
+  gradient_t* gradient = NULL;
   return_value_if_fail(s != NULL && s->vt != NULL && s->vt->get_color != NULL, defval);
 
-  return s->vt->get_color(s, name, defval);
+  gradient = style_get_gradient(s, name, &agradient);
+  if (gradient != NULL) {
+    return gradient_get_first_color(gradient);
+  } else {
+    return s->vt->get_color(s, name, defval);
+  }
 }
 
 gradient_t* style_get_gradient(style_t* s, const char* name, gradient_t* gradient) {
