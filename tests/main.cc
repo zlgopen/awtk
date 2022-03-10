@@ -54,7 +54,7 @@ GTEST_API_ int main(int argc, char** argv) {
   assets_init();
   tk_init_assets();
   tk_ext_widgets_init();
-
+  widget_resize(window_manager(), 1024, 800);
   int ret = RUN_ALL_TESTS();
 
   tk_deinit_internal();
