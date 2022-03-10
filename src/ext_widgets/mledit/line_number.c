@@ -240,6 +240,7 @@ ret_t line_number_add_highlight_line(widget_t* widget, int32_t line) {
   value_t v;
   line_number_t* line_number = LINE_NUMBER(widget);
   return_value_if_fail(line_number_ensure_highlight_lines(line_number) == RET_OK, RET_OOM);
+  widget_invalidate(widget, NULL);
 
   return typed_array_push(line_number->highlight_lines, value_set_int(&v, line));
 }
@@ -249,6 +250,7 @@ ret_t line_number_set_active_line(widget_t* widget, int32_t line) {
   return_value_if_fail(line_number != NULL, RET_BAD_PARAMS);
 
   line_number->active_line = line;
+  widget_invalidate(widget, NULL);
 
   return RET_OK;
 }

@@ -1,6 +1,7 @@
 # 最新动态
 2022/03/10
   * 完善fscript debugger
+  * 完善line\_number
 
 2022/03/08
   * 支持[LCD快速旋转](how_to_use_fast_lcd_portrait.md) （感谢智明提供补丁）。
