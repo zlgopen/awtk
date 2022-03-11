@@ -32,7 +32,7 @@
 #define COMBO_BOX_DEFAULT_MARGIN 1
 
 static ret_t combo_box_on_button_click(void* ctx, event_t* e);
-static ret_t combo_box_sync_index_to_value(widget_t* widget, uint32_t index);
+static ret_t combo_box_sync_index_to_value(widget_t* widget, uint32_t index, bool_t only_set);
 
 const char* const s_combo_box_properties[] = {WIDGET_PROP_MIN,
                                               WIDGET_PROP_MAX,
@@ -96,8 +96,64 @@ static ret_t combo_box_on_destroy(widget_t* widget) {
 
   return RET_OK;
 }
+static ret_t combo_box_update_status(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  if (widget->text.size == 0) {
+    if (widget->focused) {
+      widget_set_state(widget, WIDGET_STATE_EMPTY_FOCUS);
+    } else {
+      widget_set_state(widget, WIDGET_STATE_EMPTY);
+    }
+  } else {
+    if (edit != NULL && edit->cancelable) {
+      if (!widget->loading) {
+        if (!wstr_equal(&(edit->saved_text), &(widget->text))) {
+          widget_set_state(widget, WIDGET_STATE_CHANGED);
+          return RET_OK;
+        }
+      }
+    }
+
+    if (widget->focused) {
+      widget_set_state(widget, WIDGET_STATE_FOCUSED);
+    } else {
+      widget_set_state(widget, WIDGET_STATE_NORMAL);
+    }
+  }
+
+  return RET_OK;
+}
 
 #define WIDGET_NAME_VALUE "value"
+
+static ret_t combo_box_set_text_only(widget_t* widget, const char* text, const wchar_t* wtext,
+                                bool_t tr) {
+  widget_t* value_widget = widget_lookup(widget, WIDGET_NAME_VALUE, TRUE);
+
+  if (value_widget == NULL) {
+    value_widget = widget;
+  } else {
+    TKMEM_FREE(widget->tr_text);
+    wstr_clear(&(widget->text));
+    combo_box_update_status(value_widget);
+  }
+
+  if (tr) {
+    widget_t* win = widget_get_window(value_widget);
+    if (win != NULL) {
+      text = locale_info_tr(widget_get_locale_info(widget), text);
+    }
+    wstr_set_utf8(&(value_widget->text), text);
+  } else {
+    if (wtext != NULL) {
+      wstr_set(&(value_widget->text), wtext);
+    } else {
+      wstr_set_utf8(&(value_widget->text), text);
+    }
+  }
+  combo_box_update_status(value_widget);
+  return RET_OK;
+}
 
 static ret_t combo_box_set_text(widget_t* widget, const char* text, const wchar_t* wtext,
                                 bool_t tr) {
@@ -333,11 +389,11 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
     case EVT_WIDGET_LOAD: {
       /*If there is a value widget, sync the text to value widget*/
       if (widget_lookup(widget, WIDGET_NAME_VALUE, TRUE) != NULL) {
-        combo_box_sync_index_to_value(widget, combo_box->selected_index);
+        combo_box_sync_index_to_value(widget, combo_box->selected_index, FALSE);
       }
 
       if (widget->text.size == 0 && widget->tr_text == NULL) {
-        combo_box_set_selected_index(widget, 0);
+        combo_box_sync_index_to_value(widget, 0, TRUE);
       }
       break;
     }
@@ -756,7 +812,7 @@ int32_t combo_box_find_option(widget_t* widget, int32_t value) {
   return 0;
 }
 
-static ret_t combo_box_sync_index_to_value(widget_t* widget, uint32_t index) {
+static ret_t combo_box_sync_index_to_value(widget_t* widget, uint32_t index, bool_t only_set) {
   combo_box_t* combo_box = COMBO_BOX(widget);
   return_value_if_fail(widget != NULL && combo_box != NULL, RET_BAD_PARAMS);
 
@@ -765,7 +821,11 @@ static ret_t combo_box_sync_index_to_value(widget_t* widget, uint32_t index) {
 
     if (option != NULL) {
       combo_box->value = option->value;
-      combo_box_set_text(widget, option->text, NULL, combo_box->localize_options);
+      if (only_set) {
+        combo_box_set_text_only(widget, option->text, NULL, combo_box->localize_options);
+      } else {
+        combo_box_set_text(widget, option->text, NULL, combo_box->localize_options);
+      }
     }
   }
 
@@ -795,7 +855,7 @@ static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, w
           combo_box_set_text(widget, NULL, item->text.str, FALSE);
         }
       } else {
-        combo_box_sync_index_to_value(widget, index);
+        combo_box_sync_index_to_value(widget, index, FALSE);
       }
       if (widget->emitter != NULL) {
         emitter_enable(widget->emitter);
@@ -806,7 +866,7 @@ static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, w
       widget_invalidate(widget, NULL);
     }
   } else {
-    combo_box_sync_index_to_value(widget, index);
+    combo_box_sync_index_to_value(widget, index, FALSE);
   }
 
   return widget_invalidate_force(widget, NULL);
