@@ -82,7 +82,7 @@ bool Style::Reset() {
 
 bool Style::Merge(Style& other) {
   str_values.Merge(other.str_values);
-  for (typename NameValues<std::string>::const_iter_type i = (other.str_values).values.begin();
+  for (NameValues<std::string>::const_iter_type i = (other.str_values).values.begin();
        i != (other.str_values).values.end(); i++) {
     bin_values.RemoveValue(i->name);
     int_values.RemoveValue(i->name);
@@ -90,7 +90,7 @@ bool Style::Merge(Style& other) {
   }
 
   bin_values.Merge(other.bin_values);
-  for (typename NameValues<BinaryData>::const_iter_type i = (other.bin_values).values.begin();
+  for (NameValues<BinaryData>::const_iter_type i = (other.bin_values).values.begin();
        i != (other.bin_values).values.end(); i++) {
     str_values.RemoveValue(i->name);
     int_values.RemoveValue(i->name);
@@ -98,7 +98,7 @@ bool Style::Merge(Style& other) {
   }
 
   int_values.Merge(other.int_values);
-  for (typename NameValues<std::int32_t>::const_iter_type i = (other.int_values).values.begin();
+  for (NameValues<int32_t>::const_iter_type i = (other.int_values).values.begin();
        i != (other.int_values).values.end(); i++) {
     bin_values.RemoveValue(i->name);
     str_values.RemoveValue(i->name);
@@ -106,7 +106,7 @@ bool Style::Merge(Style& other) {
   }
 
   uint_values.Merge(other.uint_values);
-  for (typename NameValues<std::uint32_t>::const_iter_type i = (other.uint_values).values.begin();
+  for (NameValues<uint32_t>::const_iter_type i = (other.uint_values).values.begin();
        i != (other.uint_values).values.end(); i++) {
     bin_values.RemoveValue(i->name);
     int_values.RemoveValue(i->name);

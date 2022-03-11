@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/03/11
+  * 修复theme_gen的模板部分编译出错问题（感谢智明提供补丁） 
+
 2022/03/10
   * 完善fscript debugger
   * 完善line\_number
