@@ -427,7 +427,12 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
       }
       combo_box->pressed = FALSE;
     }
-
+    case EVT_POINTER_LEAVE:
+      return widget_set_state(widget, WIDGET_STATE_NORMAL);
+      break;
+    case EVT_POINTER_ENTER:
+      return widget_set_state(widget, WIDGET_STATE_OVER);
+      break;
     default:
       break;
   }

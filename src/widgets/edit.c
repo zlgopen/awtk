@@ -909,6 +909,12 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       log_debug("action button:%s\n", edit->action_text);
       break;
     }
+    case EVT_POINTER_LEAVE:
+      widget_set_state(widget, WIDGET_STATE_NORMAL);
+      break;
+    case EVT_POINTER_ENTER:
+      widget_set_state(widget, WIDGET_STATE_OVER);
+      break;
     default:
       break;
   }
