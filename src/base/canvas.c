@@ -255,14 +255,24 @@ ret_t canvas_set_font(canvas_t* c, const char* name, font_size_t size) {
   return_value_if_fail(c != NULL && c->lcd != NULL, RET_BAD_PARAMS);
 
   name = system_info_fix_font_name(name);
-  c->font_name = tk_str_copy(c->font_name, name);
-  c->font_size = system_info()->font_scale * size;
+  size = system_info()->font_scale * size;
 
-  if (c->lcd->set_font_name != NULL) {
-    lcd_set_font_name(c->lcd, c->font_name);
-    lcd_set_font_size(c->lcd, size);
-  } else {
-    c->font = font_manager_get_font(c->font_manager, c->font_name, c->font_size);
+  if (c->font_size != size) {
+    c->font_size = size;
+    c->last_text_length = 0;
+  }
+  if (!tk_str_eq(name, c->font_name)) {
+    c->last_text_length = 0;
+    c->font_name = tk_str_copy(c->font_name, name);
+  }
+
+  if (c->last_text_length == 0) {
+    if (c->lcd->set_font_name != NULL) {
+      lcd_set_font_name(c->lcd, c->font_name);
+      lcd_set_font_size(c->lcd, size);
+    } else {
+      c->font = font_manager_get_font(c->font_manager, c->font_name, c->font_size);
+    }
   }
 
   return RET_OK;
@@ -298,11 +308,19 @@ static float_t canvas_measure_text_default(canvas_t* c, const wchar_t* str, uint
 float_t canvas_measure_text(canvas_t* c, const wchar_t* str, uint32_t nr) {
   return_value_if_fail(c != NULL && c->lcd != NULL && str != NULL, 0);
 
-  if (c->lcd->measure_text) {
-    return lcd_measure_text(c->lcd, str, nr);
+  if (c->last_text_length != 0 && c->last_text_nr == nr && tk_wstr_eq(c->last_text_str, str)) {
+    return c->last_text_length;
   } else {
-    return canvas_measure_text_default(c, str, nr);
+    c->last_text_nr = nr;
+    c->last_text_str = str;
   }
+
+  if (c->lcd->measure_text) {
+    c->last_text_length = lcd_measure_text(c->lcd, str, nr);
+  } else {
+    c->last_text_length = canvas_measure_text_default(c, str, nr);
+  }
+  return c->last_text_length;
 }
 
 float_t canvas_measure_utf8(canvas_t* c, const char* str) {
