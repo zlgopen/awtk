@@ -1424,3 +1424,36 @@ void* tk_memcpy(void* dst, const void* src, uint32_t len) {
     return memcpy(dst, src, len);
   }
 }
+
+bool_t tk_wild_card_match(const char* pattern, const char* str) {
+  const char* p_str = str;
+  const char* p_pattern = pattern;
+  return_value_if_fail(pattern != NULL && str != NULL, FALSE);
+
+  while (*p_pattern && *p_str) {
+    char c = *p_pattern;
+    if (c == '*') {
+      c = p_pattern[1];
+      if (c == '\0') {
+        break;
+      }
+      while (*p_str) {
+        if (c == *p_str) {
+          break;
+        } else {
+          p_str++;
+        }
+      }
+    } else if (c == '?') {
+      p_str++;
+    } else {
+      if (c != *p_str) {
+        return FALSE;
+      }
+      p_str++;
+    }
+    p_pattern++;
+  }
+
+  return *p_pattern == '*' || *p_str == *p_pattern;
+}

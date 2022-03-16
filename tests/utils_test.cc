@@ -654,3 +654,26 @@ TEST(Utils, tk_memcpy) {
     ASSERT_EQ(path[i], path1[i + 1]);
   }
 }
+
+TEST(Utils, tk_wild_card_match) {
+  ASSERT_EQ(tk_wild_card_match("", ""), TRUE);
+  ASSERT_EQ(tk_wild_card_match("*", ""), TRUE);
+  ASSERT_EQ(tk_wild_card_match("*", "a"), TRUE);
+  ASSERT_EQ(tk_wild_card_match("*", "ab"), TRUE);
+  ASSERT_EQ(tk_wild_card_match("*c", "abc"), TRUE);
+  ASSERT_EQ(tk_wild_card_match("?bc", "abc"), TRUE);
+  ASSERT_EQ(tk_wild_card_match("abc", "abc"), TRUE);
+  ASSERT_EQ(tk_wild_card_match("a?c", "a?c"), TRUE);
+  ASSERT_EQ(tk_wild_card_match("a?c", "abc"), TRUE);
+  ASSERT_EQ(tk_wild_card_match("a*c", "a123c"), TRUE);
+  ASSERT_EQ(tk_wild_card_match("a*c*", "a123c"), TRUE);
+  ASSERT_EQ(tk_wild_card_match("*a*c*", "a123c"), TRUE);
+  ASSERT_EQ(tk_wild_card_match("a*", "a123c"), TRUE);
+  ASSERT_EQ(tk_wild_card_match("a*", "a"), TRUE);
+  ASSERT_EQ(tk_wild_card_match("a*", "ab"), TRUE);
+  ASSERT_EQ(tk_wild_card_match("a*", "abc"), TRUE);
+  ASSERT_EQ(tk_wild_card_match("a?", "ab"), TRUE);
+  ASSERT_EQ(tk_wild_card_match("a?", "abc"), FALSE);
+  ASSERT_EQ(tk_wild_card_match("awflow_*", "awflow_123"), TRUE);
+  ASSERT_EQ(tk_wild_card_match("awflow_*", "awflow_abc"), TRUE);
+}

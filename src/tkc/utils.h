@@ -793,6 +793,24 @@ static inline float tk_min_float(float a, float b) {
   return tk_min(a, b);
 }
 
+/**
+ * @method tk_wild_card_match
+ * 
+ * 简单的通配符匹配。*匹配0到多个字符，?匹配1个字符。
+ * 示例：
+ *
+ * ```c
+ * tk_wild_card_match("*c", "abc");
+ * tk_wild_card_match("a?c", "abc");
+ * ```
+ *
+ * @param {const char*} pattern 字符串。
+ * @param {const char*} str 字符串。
+ *
+ * @return {bool_t} 返回TRUE表示匹配，否则表示不匹配。
+ */
+bool_t tk_wild_card_match(const char* pattern, const char* str);
+
 /*public for test*/
 ret_t xml_file_expand(const char* filename, str_t* s, const char* data);
 
