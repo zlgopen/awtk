@@ -2,6 +2,7 @@
 
 2022/03/16
   * 增加通配符匹配函数tk\_wild\_card\_match。
+  * 完善canvas\_measure\_text函数的缓存逻辑优化其速度（感谢智明提供补丁）
 
 2022/03/15
   * 增加canvas\_measure\_text函数的缓存逻辑优化其速度（感谢智明提供补丁）

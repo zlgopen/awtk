@@ -165,7 +165,7 @@ struct _canvas_t {
 
   uint32_t last_text_length;
   uint32_t last_text_nr;
-  const wchar_t* last_text_str;
+  wchar_t* last_text_str;
 
   canvas_end_frame_t end_frame;
   canvas_begin_frame_t begin_frame;
