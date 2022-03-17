@@ -320,7 +320,7 @@ float_t canvas_measure_text(canvas_t* c, const wchar_t* str, uint32_t nr) {
       c->last_text_nr = 0;
       c->last_text_str[0] = 0;
     } else {
-      wcsncpy(c->last_text_str, str, nr);
+      tk_memcpy(c->last_text_str, str, nr * sizeof(wchar_t));
       c->last_text_nr = nr;
       c->last_text_str[nr] = 0;
     }
