@@ -508,6 +508,11 @@ typedef enum _bitmap_flag_t {
    * 位图数据已经处理了 lcd 旋转，同时说明 bitmap 的宽高和真实数据的宽高可能不一致
    */
   BITMAP_FLAG_LCD_ORIENTATION = 1 << 5,
+  /**
+   * @const BITMAP_FLAG_GPU_FBO_TEXTURE
+   * 该位图为 GPU 的 fbo 数据。
+   */
+  BITMAP_FLAG_GPU_FBO_TEXTURE = 1 << 6,
 } bitmap_flag_t;
 
 #ifndef BITMAP_ALIGN_SIZE

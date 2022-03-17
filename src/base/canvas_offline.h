@@ -114,7 +114,6 @@ bitmap_t* canvas_offline_get_bitmap(canvas_t* canvas);
  * @method canvas_offline_bitmap_move_to_new_bitmap
  * 把离线 canvas 的离线 bitmap 移动赋值给新的 bitmap。
  * 移动赋值后原来的离线 canvas 的离线 bitmap 就会被置空。
- * 备注：在移动赋值之前会先调用 canvas_offline_flush_bitmap 把数据回流到内存中。
  *
  * @param {canvas_t*} canvas 离线 canvas 对象。
  * @param {bitmap_t*} bitmap 新的 bitmap 对象。

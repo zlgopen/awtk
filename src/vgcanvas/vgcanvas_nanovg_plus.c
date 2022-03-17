@@ -20,6 +20,11 @@ typedef struct _vgcanvas_nanovg_plus_t {
   native_window_t* window;
 } vgcanvas_nanovg_plus_t;
 
+typedef struct _vgcanvas_nanovg_plus_gl_texture_t {
+  int32_t image_id;
+  framebuffer_object_t* fbo;
+} vgcanvas_nanovg_plus_gl_texture_t;
+
 #include "vgcanvas_nanovg_plus.inc"
 
 static ret_t vgcanvas_nanovg_plus_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride,
@@ -282,10 +287,18 @@ static ret_t vgcanvas_asset_manager_nanovg_plus_font_destroy(void* vg, const cha
 }
 
 static ret_t vgcanvas_asset_manager_nanovg_plus_bitmap_destroy(void* vg, void* specific) {
-  int32_t id = tk_pointer_to_int(specific);
   vgcanvas_nanovg_plus_t* canvas = (vgcanvas_nanovg_plus_t*)vg;
-  if (canvas != NULL && canvas->vg != NULL && id >= 0) {
-    nvgp_delete_image(canvas->vg, id);
+  vgcanvas_nanovg_plus_gl_texture_t* texture = (vgcanvas_nanovg_plus_gl_texture_t*)specific;
+  if (canvas != NULL && canvas->vg != NULL && texture != NULL) {
+    if (texture->fbo != NULL) {
+      vgcanvas_destroy_fbo((vgcanvas_t*)canvas, texture->fbo);
+      TKMEM_FREE(texture->fbo);
+    } else {
+      nvgp_delete_image(canvas->vg, texture->image_id);
+    }
+  }
+  if (texture) {
+    TKMEM_FREE(texture);
   }
   return RET_OK;
 }

@@ -516,14 +516,11 @@ vgcanvas_t* vgcanvas_cast(vgcanvas_t* vg) {
 ret_t fbo_to_img(framebuffer_object_t* fbo, bitmap_t* img) {
   return_value_if_fail(fbo != NULL && img != NULL, RET_BAD_PARAMS);
 
-  memset(img, 0x00, sizeof(bitmap_t));
   img->specific = tk_pointer_from_int(fbo->id);
-  img->specific_ctx = NULL;
+  img->specific_ctx = fbo;
   img->specific_destroy = NULL;
-  img->w = fbo->w * fbo->ratio;
-  img->h = fbo->h * fbo->ratio;
 
-  img->flags = BITMAP_FLAG_TEXTURE;
+  img->flags |= (BITMAP_FLAG_TEXTURE | BITMAP_FLAG_GPU_FBO_TEXTURE);
 
   return RET_OK;
 }

@@ -104,11 +104,18 @@ static ret_t on_snapshot(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t window_on_destroy(void* ctx, event_t* e) {
+  /* 释放离线 canvas */
+  canvas_offline_destroy(canvas_offline);
+  return RET_OK;
+}
+
 ret_t application_init() {
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
   widget_t* canvas_widget = canvas_widget_create(win, 0, 0, win->w, win->h);
   widget_t* button = button_create(win, 0, 0, 0, 0);
   widget_set_self_layout_params(button, "c", "b", "100", "40");
+  widget_on(win, EVT_DESTROY, window_on_destroy, NULL);
 
   /* 创建离线的 canvas */
   canvas_offline = canvas_offline_create(320, 480, BITMAP_FMT_RGBA8888);
@@ -123,8 +130,6 @@ ret_t application_init() {
 }
 
 ret_t application_exit() {
-  /* 释放离线 canvas */
-  canvas_offline_destroy(canvas_offline);
 
   log_debug("application_exit\n");
   return RET_OK;

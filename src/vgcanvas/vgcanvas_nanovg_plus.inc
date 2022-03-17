@@ -244,10 +244,6 @@ static ret_t vgcanvas_nanovg_plus_close_path(vgcanvas_t* vgcanvas) {
 }
 
 static ret_t vgcanvas_nanovg_plus_path_winding(vgcanvas_t* vgcanvas, bool_t dir) {
-  nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
-
-  // nvgp_path_winding(vg, dir);
-
   return RET_OK;
 }
 
@@ -262,7 +258,6 @@ static ret_t vgcanvas_nanovg_plus_intersect_clip_rect(vgcanvas_t* vgcanvas, floa
 }
 
 static bool_t vgcanvas_nanovg_plus_is_rectf_in_clip_rect(vgcanvas_t* vgcanvas, float_t left, float_t top, float_t right, float_t bottom) {
-  vgcanvas_nanovg_plus_t* canvas = (vgcanvas_nanovg_plus_t*)vgcanvas;
   float_t clip_left = vgcanvas->clip_rect.x;
   float_t clip_right = vgcanvas->clip_rect.x + vgcanvas->clip_rect.w;
   float_t clip_top = vgcanvas->clip_rect.y;
@@ -312,15 +307,25 @@ static int vgcanvas_nanovg_plus_ensure_image(vgcanvas_nanovg_plus_t* canvas, bit
   int flag = 0;
   int32_t i = 0;
   uint8_t* data = NULL;
+  framebuffer_object_t* fbo = NULL;
   uint32_t bpp = bitmap_get_bpp(img);
+  vgcanvas_nanovg_plus_gl_texture_t* texture = NULL;
   uint8_t* img_data = bitmap_lock_buffer_for_read(img);
   return_value_if_fail(img != NULL && graphic_buffer_is_valid_for(img->buffer, img), -1);
 
   if (img->flags & BITMAP_FLAG_TEXTURE) {
     ret_t reuslt = RET_FAIL;
-    const void* specific = vgcanvas_asset_manager_get_image_specific(vgcanvas_asset_manager(), (vgcanvas_t*)canvas, img, &reuslt);
+    const void* specific = NULL;
+    if (img->flags & BITMAP_FLAG_GPU_FBO_TEXTURE) {
+      img->flags &= ~BITMAP_FLAG_GPU_FBO_TEXTURE;
+      i = tk_pointer_to_int(img->specific);
+      fbo = (framebuffer_object_t*)img->specific_ctx;
+      goto create_texture_info;
+    } else {
+      specific = vgcanvas_asset_manager_get_image_specific(vgcanvas_asset_manager(), (vgcanvas_t*)canvas, img, &reuslt);
+    }
     if (reuslt == RET_OK) {
-      i = tk_pointer_to_int(specific);
+      i = ((vgcanvas_nanovg_plus_gl_texture_t*)specific)->image_id;
 
       if (img->flags & BITMAP_FLAG_CHANGED) {
         img->flags &= (~(BITMAP_FLAG_CHANGED));
@@ -354,9 +359,14 @@ static int vgcanvas_nanovg_plus_ensure_image(vgcanvas_nanovg_plus_t* canvas, bit
     TKMEM_FREE(data);
   }
 
+create_texture_info:
   if (i >= 0) {
+    texture = TKMEM_ZALLOC(vgcanvas_nanovg_plus_gl_texture_t);
+    assert(texture != NULL);
+    texture->fbo = fbo;
+    texture->image_id = i;
     img->flags |= BITMAP_FLAG_TEXTURE;
-    vgcanvas_asset_manager_add_image(vgcanvas_asset_manager(), (vgcanvas_t*)canvas, img, tk_pointer_from_int(i));
+    vgcanvas_asset_manager_add_image(vgcanvas_asset_manager(), (vgcanvas_t*)canvas, img, texture);
   }
   bitmap_unlock_buffer(img);
 
