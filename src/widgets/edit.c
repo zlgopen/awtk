@@ -910,7 +910,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_POINTER_LEAVE:
-      widget_set_state(widget, WIDGET_STATE_NORMAL);
+      edit_update_status(widget);
       break;
     case EVT_POINTER_ENTER:
       widget_set_state(widget, WIDGET_STATE_OVER);
