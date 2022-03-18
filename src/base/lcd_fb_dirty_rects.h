@@ -65,7 +65,8 @@ ret_t lcd_fb_dirty_rects_update_all_fb_dirty_rects(lcd_fb_dirty_rects_t* lcd_fb_
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t lcd_fb_dirty_rects_update_all_fb_dirty_rect(lcd_fb_dirty_rects_t* lcd_fb_dirty_rects, const rect_t* dirty_rect);
+ret_t lcd_fb_dirty_rects_update_all_fb_dirty_rect(lcd_fb_dirty_rects_t* lcd_fb_dirty_rects,
+                                                  const rect_t* dirty_rect);
 
 /**
  * @method lcd_fb_dirty_rects_add_fb_info

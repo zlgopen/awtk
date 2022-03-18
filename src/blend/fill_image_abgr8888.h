@@ -27,4 +27,4 @@ ret_t fill_abgr8888_rect(bitmap_t* fb, const rect_t* dst, color_t c);
 
 ret_t clear_abgr8888_rect(bitmap_t* fb, const rect_t* dst, color_t c);
 
-#endif/*TK_FILL_IMAGE_ABGR8888_H*/
+#endif /*TK_FILL_IMAGE_ABGR8888_H*/

@@ -68,7 +68,8 @@ uint32_t image_gen_buff(bitmap_t* image, wbuffer_t* wbuffer, bool_t mono) {
     bitmap_t b;
     uint8_t* bdata = NULL;
     assert(header->orientation == LCD_ORIENTATION_0);
-    bitmap_init_from_rgba(&b, image->w, image->h, BITMAP_FMT_MONO, image_data, 4, LCD_ORIENTATION_0);
+    bitmap_init_from_rgba(&b, image->w, image->h, BITMAP_FMT_MONO, image_data, 4,
+                          LCD_ORIENTATION_0);
     header->format = b.format;
     size = bitmap_get_physical_line_length(&b) * b.h;
 

@@ -60,10 +60,12 @@ static inline void blend_a_bgr565_bgra8888(uint8_t* dst, uint8_t* src, uint8_t a
 #include "pixel_ops.inc"
 #include "blend_image.inc"
 
-ret_t blend_image_bgr565_bgr565(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r, uint8_t a) {
+ret_t blend_image_bgr565_bgr565(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r,
+                                const rectf_t* src_r, uint8_t a) {
   return_value_if_fail(dst != NULL && src != NULL && src_r != NULL && dst_r != NULL,
                        RET_BAD_PARAMS);
-  return_value_if_fail(dst->format == BITMAP_FMT_BGR565 && src->format == BITMAP_FMT_BGR565, RET_BAD_PARAMS);
+  return_value_if_fail(dst->format == BITMAP_FMT_BGR565 && src->format == BITMAP_FMT_BGR565,
+                       RET_BAD_PARAMS);
 
   if (a > 0xf8) {
     return blend_image_without_alpha(dst, src, dst_r, src_r);
@@ -74,10 +76,12 @@ ret_t blend_image_bgr565_bgr565(bitmap_t* dst, bitmap_t* src, const rectf_t* dst
   }
 }
 
-ret_t blend_image_rotate_bgr565_bgr565(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r, uint8_t a, lcd_orientation_t o) {
+ret_t blend_image_rotate_bgr565_bgr565(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r,
+                                       const rectf_t* src_r, uint8_t a, lcd_orientation_t o) {
   return_value_if_fail(dst != NULL && src != NULL && src_r != NULL && dst_r != NULL,
                        RET_BAD_PARAMS);
-  return_value_if_fail(dst->format == BITMAP_FMT_BGR565 && src->format == BITMAP_FMT_BGR565, RET_BAD_PARAMS);
+  return_value_if_fail(dst->format == BITMAP_FMT_BGR565 && src->format == BITMAP_FMT_BGR565,
+                       RET_BAD_PARAMS);
 
   if (a > 8) {
     return blend_image_with_alpha_by_rotate(dst, src, dst_r, src_r, a, o);
@@ -85,4 +89,3 @@ ret_t blend_image_rotate_bgr565_bgr565(bitmap_t* dst, bitmap_t* src, const rectf
     return RET_OK;
   }
 }
-

@@ -229,7 +229,8 @@ static ret_t image_manager_get_bitmap_impl(image_manager_t* imm, const char* nam
     image->format = header->format;
     image->name = res->name;
     image->image_manager = imm;
-    image->orientation = (header->flags & BITMAP_FLAG_LCD_ORIENTATION) ? header->orientation : LCD_ORIENTATION_0;
+    image->orientation =
+        (header->flags & BITMAP_FLAG_LCD_ORIENTATION) ? header->orientation : LCD_ORIENTATION_0;
     if (image->orientation != LCD_ORIENTATION_0) {
       assert(image->orientation == system_info()->lcd_orientation);
       if (image->orientation == LCD_ORIENTATION_90 || image->orientation == LCD_ORIENTATION_270) {

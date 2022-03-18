@@ -383,13 +383,13 @@ wh_t lcd_get_physical_width(lcd_t* lcd) {
 }
 
 wh_t lcd_get_physical_height(lcd_t* lcd) {
-   return_value_if_fail(lcd != NULL, 0);
+  return_value_if_fail(lcd != NULL, 0);
 
   if (lcd->get_physical_height != NULL) {
     return lcd->get_physical_height(lcd);
   } else {
     return lcd_get_height(lcd);
-  } 
+  }
 }
 
 ret_t lcd_get_text_metrics(lcd_t* lcd, float_t* ascent, float_t* descent, float_t* line_hight) {

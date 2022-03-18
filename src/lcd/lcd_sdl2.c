@@ -113,7 +113,7 @@ static ret_t lcd_sdl2_flush(lcd_t* lcd) {
         rr = lcd_orientation_rect_rotate_by_anticlockwise(dr, o, src.w, src.h);
       }
       image_copy(&dst, &src, &rr, rr.x, rr.y);
-#else      
+#else
       if (o == LCD_ORIENTATION_0) {
         image_copy(&dst, &src, dr, dr->x, dr->y);
       } else {

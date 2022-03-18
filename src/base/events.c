@@ -95,7 +95,8 @@ window_event_t* window_event_cast(event_t* event) {
 
 ret_t pointer_event_rotate(pointer_event_t* evt, system_info_t* info) {
   return_value_if_fail(evt != NULL && info != NULL, RET_BAD_PARAMS);
-  return lcd_orientation_point_rotate_by_clockwise(&evt->x, &evt->y, info->lcd_orientation, info->lcd_w, info->lcd_h);
+  return lcd_orientation_point_rotate_by_clockwise(&evt->x, &evt->y, info->lcd_orientation,
+                                                   info->lcd_w, info->lcd_h);
 }
 
 event_t* wheel_event_init(wheel_event_t* event, uint32_t type, void* target, int32_t dy) {

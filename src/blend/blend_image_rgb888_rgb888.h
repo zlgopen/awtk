@@ -23,8 +23,10 @@
 
 #include "base/bitmap.h"
 
-ret_t blend_image_rgb888_rgb888(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r, uint8_t a);
+ret_t blend_image_rgb888_rgb888(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r,
+                                const rectf_t* src_r, uint8_t a);
 
-ret_t blend_image_rotate_rgb888_rgb888(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r, uint8_t a, lcd_orientation_t o);
+ret_t blend_image_rotate_rgb888_rgb888(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r,
+                                       const rectf_t* src_r, uint8_t a, lcd_orientation_t o);
 
 #endif /*TK_BLEND_IMAGE_RGB888_RGB888_H*/

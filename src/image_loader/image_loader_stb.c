@@ -56,7 +56,8 @@ static uint8_t* convert_2_to_4(uint8_t* src, uint32_t w, uint32_t h) {
 }
 
 ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, bitmap_t* image,
-                     bool_t require_bgra, bool_t enable_bgr565, bool_t enable_rgb565, lcd_orientation_t o) {
+                     bool_t require_bgra, bool_t enable_bgr565, bool_t enable_rgb565,
+                     lcd_orientation_t o) {
   int w = 0;
   int h = 0;
   int n = 0;

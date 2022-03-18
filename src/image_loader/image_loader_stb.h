@@ -66,7 +66,8 @@ image_loader_t* image_loader_stb(void);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, bitmap_t* image,
-                     bool_t require_bgra, bool_t enable_bgr565, bool_t enable_rgb565, lcd_orientation_t o);
+                     bool_t require_bgra, bool_t enable_bgr565, bool_t enable_rgb565,
+                     lcd_orientation_t o);
 
 END_C_DECLS
 

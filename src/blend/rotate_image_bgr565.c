@@ -34,7 +34,7 @@ ret_t rotate_bgr565_image(bitmap_t* fb, bitmap_t* img, const rect_t* src, lcd_or
   return rotate_image(fb, img, src, o);
 }
 
-ret_t rotate_bgr565_image_ex(bitmap_t* fb, bitmap_t* img, const rect_t* src, xy_t dx, xy_t dy, lcd_orientation_t o) {
+ret_t rotate_bgr565_image_ex(bitmap_t* fb, bitmap_t* img, const rect_t* src, xy_t dx, xy_t dy,
+                             lcd_orientation_t o) {
   return rotate_image_ex(fb, img, src, dx, dy, o);
 }
-

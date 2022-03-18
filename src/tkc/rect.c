@@ -21,49 +21,50 @@
 #include "tkc/mem.h"
 #include "tkc/rect.h"
 
-#define rectX_fix {                                       \
-    if (r->x < 0) {                                       \
-    r->x = 0;                                             \
-  }                                                       \
-                                                          \
-  if (r->x > max_w) {                                     \
-    r->x = max_w;                                         \
-    r->w = 0;                                             \
-  }                                                       \
-                                                          \
-  if (r->y < 0) {                                         \
-    r->y = 0;                                             \
-  }                                                       \
-                                                          \
-  if (r->y > max_h) {                                     \
-    r->y = max_h;                                         \
-    r->h = 0;                                             \
-  }                                                       \
-                                                          \
-  if (r->w < 0) {                                         \
-    r->w = 0;                                             \
-  }                                                       \
-                                                          \
-  if (r->h < 0) {                                         \
-    r->h = 0;                                             \
-  }                                                       \
-                                                          \
-  if ((r->x + r->w) > max_w) {                            \
-    r->w = max_w - r->x;                                  \
-  }                                                       \
-                                                          \
-  if ((r->y + r->h) > max_h) {                            \
-    r->h = max_h - r->y;                                  \
-  }                                                       \
-                                                          \
-  if (r->w < 0) {                                         \
-    r->w = 0;                                             \
-  }                                                       \
-                                                          \
-  if (r->h < 0) {                                         \
-    r->h = 0;                                             \
-  }                                                       \
-}
+#define rectX_fix                \
+  {                              \
+    if (r->x < 0) {              \
+      r->x = 0;                  \
+    }                            \
+                                 \
+    if (r->x > max_w) {          \
+      r->x = max_w;              \
+      r->w = 0;                  \
+    }                            \
+                                 \
+    if (r->y < 0) {              \
+      r->y = 0;                  \
+    }                            \
+                                 \
+    if (r->y > max_h) {          \
+      r->y = max_h;              \
+      r->h = 0;                  \
+    }                            \
+                                 \
+    if (r->w < 0) {              \
+      r->w = 0;                  \
+    }                            \
+                                 \
+    if (r->h < 0) {              \
+      r->h = 0;                  \
+    }                            \
+                                 \
+    if ((r->x + r->w) > max_w) { \
+      r->w = max_w - r->x;       \
+    }                            \
+                                 \
+    if ((r->y + r->h) > max_h) { \
+      r->h = max_h - r->y;       \
+    }                            \
+                                 \
+    if (r->w < 0) {              \
+      r->w = 0;                  \
+    }                            \
+                                 \
+    if (r->h < 0) {              \
+      r->h = 0;                  \
+    }                            \
+  }
 
 ret_t rect_merge(rect_t* dr, const rect_t* r) {
   return_value_if_fail(r != NULL && dr != NULL, RET_BAD_PARAMS);

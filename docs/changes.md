@@ -1,6 +1,7 @@
 # 最新动态
 
 2022/03/18
+  * 完善 tk_\cond\_var\_wait（感谢兆坤提供补丁）。
   * 修复AWTK\_LITE编译问题（感谢智明提供补丁）
   * 完善edit 和 combox 的 over 和 enter 的状态风格切换（感谢智明提供补丁）
 

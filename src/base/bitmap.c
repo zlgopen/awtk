@@ -240,7 +240,8 @@ ret_t bitmap_get_pixel(bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* rgba) {
   return ret;
 }
 
-static ret_t bitmap_init_data_by_rotate(bitmap_t* bitmap, uint32_t w, uint32_t h, lcd_orientation_t o) {
+static ret_t bitmap_init_data_by_rotate(bitmap_t* bitmap, uint32_t w, uint32_t h,
+                                        lcd_orientation_t o) {
   if (o == LCD_ORIENTATION_0 || o == LCD_ORIENTATION_180) {
     bitmap->w = w;
     bitmap->h = h;
@@ -260,10 +261,10 @@ static ret_t bitmap_init_data_by_rotate(bitmap_t* bitmap, uint32_t w, uint32_t h
   return RET_OK;
 }
 
-
 typedef ret_t (*bitmap_init_fill_color_t)(const uint8_t* s, uint8_t* d, uint32_t comp);
-static ret_t bitmap_init_impl_by_rotate(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data,
-                         uint32_t comp, lcd_orientation_t o, bitmap_init_fill_color_t fill_color) {
+static ret_t bitmap_init_impl_by_rotate(bitmap_t* bitmap, uint32_t w, uint32_t h,
+                                        const uint8_t* data, uint32_t comp, lcd_orientation_t o,
+                                        bitmap_init_fill_color_t fill_color) {
   uint32_t i = 0;
   uint32_t j = 0;
   uint32_t bpp = 0;
@@ -280,56 +281,56 @@ static ret_t bitmap_init_impl_by_rotate(bitmap_t* bitmap, uint32_t w, uint32_t h
   bdata = bitmap_lock_buffer_for_write(bitmap);
 
   switch (o) {
-  case LCD_ORIENTATION_0: {
-    for (j = 0; j < h; j++) {
-      d = bdata + j * line_length;
-      for (i = 0; i < w; i++) {
-        fill_color(s, d, comp);
-        d += bpp;
-        s += comp;
+    case LCD_ORIENTATION_0: {
+      for (j = 0; j < h; j++) {
+        d = bdata + j * line_length;
+        for (i = 0; i < w; i++) {
+          fill_color(s, d, comp);
+          d += bpp;
+          s += comp;
+        }
       }
+      break;
     }
-    break;
-  }
-  case LCD_ORIENTATION_90: {
-    bdata = bdata + (w - 1) * line_length;
-    for (i = 0; i < h; i++) {
-      uint8_t* d = bdata;
-      for (j = 0; j < w; j++) {
-        fill_color(s, d, comp);
-        d -= line_length;
-        s += comp;
+    case LCD_ORIENTATION_90: {
+      bdata = bdata + (w - 1) * line_length;
+      for (i = 0; i < h; i++) {
+        uint8_t* d = bdata;
+        for (j = 0; j < w; j++) {
+          fill_color(s, d, comp);
+          d -= line_length;
+          s += comp;
+        }
+        bdata += bpp;
       }
-      bdata += bpp;
+      break;
     }
-    break;
-  }
-  case LCD_ORIENTATION_180: {
-    uint8_t* d = bdata + h * line_length - bpp;
-    for (i = 0; i < h; i++) {
-      for (j = 0; j < w; j++) {
-        fill_color(s, d, comp);
-        d -= bpp;
-        s += comp;
+    case LCD_ORIENTATION_180: {
+      uint8_t* d = bdata + h * line_length - bpp;
+      for (i = 0; i < h; i++) {
+        for (j = 0; j < w; j++) {
+          fill_color(s, d, comp);
+          d -= bpp;
+          s += comp;
+        }
       }
+      break;
     }
-    break;
-  }
-  case LCD_ORIENTATION_270: {
-    bdata = bdata + line_length - bpp;
-    for (i = 0; i < h; i++) {
-      uint8_t* d = bdata;
-      for (j = 0; j < w; j++) {
-        fill_color(s, d, comp);
-        d += line_length;
-        s += comp;
+    case LCD_ORIENTATION_270: {
+      bdata = bdata + line_length - bpp;
+      for (i = 0; i < h; i++) {
+        uint8_t* d = bdata;
+        for (j = 0; j < w; j++) {
+          fill_color(s, d, comp);
+          d += line_length;
+          s += comp;
+        }
+        bdata -= bpp;
       }
-      bdata -= bpp;
+      break;
     }
-    break;
-  }
-  default:
-    break;
+    default:
+      break;
   }
 
   bitmap_unlock_buffer(bitmap);
@@ -346,7 +347,6 @@ static ret_t bitmap_init_rgba8888_fill_color(const uint8_t* s, uint8_t* d, uint3
 
 ret_t bitmap_init_rgba8888(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data,
                            uint32_t comp, lcd_orientation_t o) {
-
   return_value_if_fail(data != NULL, RET_BAD_PARAMS);
 
   if (comp == 4 && o == LCD_ORIENTATION_0) {
@@ -459,7 +459,8 @@ static ret_t bitmap_init_gray_fill_color(const uint8_t* s, uint8_t* d, uint32_t 
   return RET_OK;
 }
 
-ret_t bitmap_init_gray(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data, uint32_t comp, lcd_orientation_t o) {
+ret_t bitmap_init_gray(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data, uint32_t comp,
+                       lcd_orientation_t o) {
   return bitmap_init_impl_by_rotate(bitmap, w, h, data, comp, o, bitmap_init_gray_fill_color);
 }
 

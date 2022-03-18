@@ -105,7 +105,8 @@ ret_t image_blend(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rect
 }
 
 #ifdef WITH_FAST_LCD_PORTRAIT
-ret_t image_rotate_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy, lcd_orientation_t o) {
+ret_t image_rotate_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy,
+                      lcd_orientation_t o) {
   return_value_if_fail(dst != NULL && src != NULL && src_r != NULL, RET_OK);
 
   if (o == LCD_ORIENTATION_0 || o == LCD_ORIENTATION_180) {
@@ -126,8 +127,8 @@ ret_t image_rotate_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx
 }
 
 ret_t image_rotate_blend(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r,
-                  uint8_t global_alpha, lcd_orientation_t o) {
- return_value_if_fail(dst != NULL && src != NULL && dst_r != NULL && src_r != NULL,
+                         uint8_t global_alpha, lcd_orientation_t o) {
+  return_value_if_fail(dst != NULL && src != NULL && dst_r != NULL && src_r != NULL,
                        RET_BAD_PARAMS);
   if (o == LCD_ORIENTATION_90 || o == LCD_ORIENTATION_270) {
     assert(dst_r->x >= 0 && (dst_r->x + dst_r->w) <= bitmap_get_physical_height(dst));
@@ -136,7 +137,6 @@ ret_t image_rotate_blend(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, con
     assert(dst_r->x >= 0 && (dst_r->x + dst_r->w) <= bitmap_get_physical_width(dst));
     assert(dst_r->y >= 0 && (dst_r->y + dst_r->h) <= bitmap_get_physical_height(dst));
   }
-
 
 #ifdef WITH_G2D
   if (src_r->w == dst_r->w && src_r->h == dst_r->h) {
@@ -152,7 +152,8 @@ ret_t image_rotate_blend(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, con
 }
 #else
 
-ret_t image_rotate_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy, lcd_orientation_t o) {
+ret_t image_rotate_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy,
+                      lcd_orientation_t o) {
   (void)dst;
   (void)src;
   (void)src_r;

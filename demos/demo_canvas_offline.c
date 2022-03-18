@@ -130,7 +130,6 @@ ret_t application_init() {
 }
 
 ret_t application_exit() {
-
   log_debug("application_exit\n");
   return RET_OK;
 }

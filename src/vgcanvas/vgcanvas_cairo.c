@@ -66,33 +66,33 @@ ret_t vgcanvas_cairo_set_sreen_orientation(cairo_t* canvas) {
   system_info_t* info = system_info();
   lcd_orientation_t orientation = info->lcd_orientation;
   switch (orientation) {
-	case LCD_ORIENTATION_0:
-		angle = 0.0f;
-		break;
-	case LCD_ORIENTATION_90:
-		angle = TK_D2R(270);
-		break;
-	case LCD_ORIENTATION_180:
-		angle = TK_D2R(180);
-		break;
-	case LCD_ORIENTATION_270:
-		angle = TK_D2R(90);
-		break;
-	default :
-		break;
-	}
-	anchor_x = info->lcd_w / 2.0f;
-	anchor_y = info->lcd_h / 2.0f;
+    case LCD_ORIENTATION_0:
+      angle = 0.0f;
+      break;
+    case LCD_ORIENTATION_90:
+      angle = TK_D2R(270);
+      break;
+    case LCD_ORIENTATION_180:
+      angle = TK_D2R(180);
+      break;
+    case LCD_ORIENTATION_270:
+      angle = TK_D2R(90);
+      break;
+    default:
+      break;
+  }
+  anchor_x = info->lcd_w / 2.0f;
+  anchor_y = info->lcd_h / 2.0f;
 
-	if (orientation == LCD_ORIENTATION_90 || orientation == LCD_ORIENTATION_270) {
-		cairo_translate(canvas, anchor_x, anchor_y);
-		cairo_rotate(canvas, angle);
-		cairo_translate(canvas, -anchor_y, -anchor_x);
-	} else if (orientation == 180) {
-		cairo_translate(canvas, anchor_x, anchor_y);
-		cairo_rotate(canvas, angle);
-		cairo_translate(canvas, -anchor_x, -anchor_y);
-	}
+  if (orientation == LCD_ORIENTATION_90 || orientation == LCD_ORIENTATION_270) {
+    cairo_translate(canvas, anchor_x, anchor_y);
+    cairo_rotate(canvas, angle);
+    cairo_translate(canvas, -anchor_y, -anchor_x);
+  } else if (orientation == 180) {
+    cairo_translate(canvas, anchor_x, anchor_y);
+    cairo_rotate(canvas, angle);
+    cairo_translate(canvas, -anchor_x, -anchor_y);
+  }
   return RET_OK;
 }
 

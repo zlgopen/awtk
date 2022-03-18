@@ -103,7 +103,8 @@ ret_t image_blend(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rect
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败，返回失败则上层用软件实现。
  */
-ret_t image_rotate_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy, lcd_orientation_t o);
+ret_t image_rotate_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy,
+                      lcd_orientation_t o);
 
 /**
  * @method image_rotate_blend
@@ -119,7 +120,7 @@ ret_t image_rotate_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败，返回失败则上层用软件实现。
  */
 ret_t image_rotate_blend(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r,
-                  uint8_t global_alpha, lcd_orientation_t o);
+                         uint8_t global_alpha, lcd_orientation_t o);
 
 #endif
 

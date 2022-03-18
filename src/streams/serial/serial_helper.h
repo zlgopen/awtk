@@ -75,8 +75,8 @@ typedef enum {
 } parity_t;
 
 typedef struct {
-  uint32_t rd_timeout; /* 读超时时间(ms) */
-  uint32_t rd_interval_timeout;    /* 码间超时(ms) */
+  uint32_t rd_timeout;          /* 读超时时间(ms) */
+  uint32_t rd_interval_timeout; /* 码间超时(ms) */
 } serial_timeout_t;
 
 typedef enum { stopbits_one = 1, stopbits_two = 2, stopbits_one_point_five } stopbits_t;
@@ -97,8 +97,8 @@ int serial_close(serial_handle_t handle);
 ret_t serial_config(serial_handle_t handle, uint32_t baudrate, bytesize_t bytesize,
                     stopbits_t stopbits, flowcontrol_t flowcontrol, parity_t parity);
 
-ret_t serial_timeout_set(serial_handle_t handle, serial_timeout_t *timeout);
-ret_t serial_timeout_get(serial_handle_t handle, serial_timeout_t *timeout);
+ret_t serial_timeout_set(serial_handle_t handle, serial_timeout_t* timeout);
+ret_t serial_timeout_get(serial_handle_t handle, serial_timeout_t* timeout);
 
 END_C_DECLS
 

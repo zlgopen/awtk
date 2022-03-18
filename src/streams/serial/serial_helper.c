@@ -902,11 +902,11 @@ ret_t serial_wait_for_data(serial_handle_t handle, uint32_t timeout_ms) {
   return tk_socket_wait_for_data(fd, timeout_ms);
 }
 
-ret_t serial_timeout_set(serial_handle_t handle, serial_timeout_t *timeout) {
+ret_t serial_timeout_set(serial_handle_t handle, serial_timeout_t* timeout) {
   return RET_NOT_IMPL;
 }
 
-ret_t serial_timeout_get(serial_handle_t handle, serial_timeout_t *timeout) {
+ret_t serial_timeout_get(serial_handle_t handle, serial_timeout_t* timeout) {
   return RET_NOT_IMPL;
 }
 

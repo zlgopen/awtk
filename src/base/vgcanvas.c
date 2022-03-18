@@ -441,7 +441,8 @@ ret_t vgcanvas_restore(vgcanvas_t* vg) {
 }
 
 ret_t vgcanvas_end_frame(vgcanvas_t* vg) {
-  return_value_if_fail(vg != NULL && vg->vt->end_frame != NULL && vg->began_frame > 0, RET_BAD_PARAMS);
+  return_value_if_fail(vg != NULL && vg->vt->end_frame != NULL && vg->began_frame > 0,
+                       RET_BAD_PARAMS);
   if (vg->began_frame == 1) {
     ret_t ret = vg->vt->end_frame(vg);
     if (ret == RET_OK) {

@@ -127,7 +127,7 @@ static ret_t combo_box_update_status(widget_t* widget) {
 #define WIDGET_NAME_VALUE "value"
 
 static ret_t combo_box_set_text_only(widget_t* widget, const char* text, const wchar_t* wtext,
-                                bool_t tr) {
+                                     bool_t tr) {
   widget_t* value_widget = widget_lookup(widget, WIDGET_NAME_VALUE, TRUE);
 
   if (value_widget == NULL) {

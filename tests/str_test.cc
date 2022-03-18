@@ -516,7 +516,7 @@ TEST(Str, format) {
   str_format(&str, 10, "%s", "abcd");
   ASSERT_STREQ(str.str, "abcd");
   ASSERT_EQ(str.size, 4);
-  
+
   str_format(&str, 10, "", "abcd");
   ASSERT_STREQ(str.str, "");
   ASSERT_EQ(str.size, 0);
@@ -534,7 +534,7 @@ TEST(Str, append_format) {
   str_append_format(&str, 10, "%s", "abcd");
   ASSERT_STREQ(str.str, "123abcd");
   ASSERT_EQ(str.size, 7);
-  
+
   str_append_format(&str, 10, "", "abcd");
   ASSERT_STREQ(str.str, "123abcd");
   ASSERT_EQ(str.size, 7);
