@@ -69,6 +69,14 @@ tk_object_t* object_date_time_create(void);
 object_date_time_t* object_date_time_cast(tk_object_t* obj);
 #define OBJECT_DATE_TIME(obj) object_date_time_cast(obj)
 
+#define OBJECT_DATE_TIME_PROP_YEAR "year"
+#define OBJECT_DATE_TIME_PROP_MONTH "month"
+#define OBJECT_DATE_TIME_PROP_MINUTE "minute"
+#define OBJECT_DATE_TIME_PROP_DAY "day"
+#define OBJECT_DATE_TIME_PROP_HOUR "hour"
+#define OBJECT_DATE_TIME_PROP_SECOND "second"
+#define OBJECT_DATE_TIME_PROP_WDAY "wday"
+
 END_C_DECLS
 
 #endif /*TK_OBJECT_DATE_TIME_H*/
