@@ -439,6 +439,22 @@ TEST(FScript, bit_not) {
   fscript_eval(obj, "~(1)", &v);
   ASSERT_EQ(value_int(&v), ~1);
   value_reset(&v);
+  
+  fscript_eval(obj, "~(u8(1))", &v);
+  ASSERT_EQ(value_uint8(&v), 0xfe);
+  value_reset(&v);
+  
+  fscript_eval(obj, "~(u16(1))", &v);
+  ASSERT_EQ(value_uint16(&v), 0xfffe);
+  value_reset(&v);
+  
+  fscript_eval(obj, "~(u32(1))", &v);
+  ASSERT_EQ(value_uint32(&v), 0xfffffffe);
+  value_reset(&v);
+  
+  fscript_eval(obj, "~(u64(1))", &v);
+  ASSERT_EQ(value_uint64(&v), 0xfffffffffffffffe);
+  value_reset(&v);
 
   TK_OBJECT_UNREF(obj);
 }

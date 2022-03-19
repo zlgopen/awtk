@@ -421,7 +421,32 @@ static ret_t func_bit_nor(fscript_t* fscript, fscript_args_t* args, value_t* res
 
 static ret_t func_bit_not(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_set_uint32(result, ~value_uint32(args->args));
+  switch(args->args->type) {
+    case VALUE_TYPE_INT8:
+    case VALUE_TYPE_UINT8: {
+      value_set_uint8(result, ~value_uint8(args->args));
+      break;
+    }
+    case VALUE_TYPE_INT16:
+    case VALUE_TYPE_UINT16: {
+      value_set_uint16(result, ~value_uint16(args->args));
+      break;
+    }
+    case VALUE_TYPE_INT32:
+    case VALUE_TYPE_UINT32: {
+      value_set_uint32(result, ~value_uint32(args->args));
+      break;
+    }
+    case VALUE_TYPE_INT64:
+    case VALUE_TYPE_UINT64: {
+      value_set_uint64(result, ~value_uint64(args->args));
+      break;
+    }
+    default: {
+      value_set_uint32(result, ~value_uint32(args->args));
+      break;
+    }
+  }
 
   return RET_OK;
 }
