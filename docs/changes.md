@@ -1,7 +1,8 @@
 # 最新动态
 
 2022/03/19
-  * 完善fscript函数bit_not
+  * 完善fscript函数bit\_not
+  * 完善fargs\_get\_data\_and\_size
 
 2022/03/18
   * 完善 tk_\cond\_var\_wait（感谢兆坤提供补丁）。

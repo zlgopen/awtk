@@ -2447,3 +2447,56 @@ TEST(FExr, reload) {
   fscript_destroy(fscript);
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(FScript, crc32) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+  tk_object_set_prop_str(obj, "a", "hello");
+
+  fscript_eval(obj, "crc32(a)", &v);
+  ASSERT_EQ(907060870, value_uint32(&v));
+  value_reset(&v);
+  
+  fscript_eval(obj, "crc32(a, 5)", &v);
+  ASSERT_EQ(907060870, value_uint32(&v));
+  value_reset(&v);
+  
+  fscript_eval(obj, "crc32(a, -1)", &v);
+  ASSERT_EQ(907060870, value_uint32(&v));
+  value_reset(&v);
+  
+  fscript_eval(obj, "crc32(a, 1)", &v);
+  ASSERT_EQ(2439710439, value_uint32(&v));
+  value_reset(&v);
+ 
+  
+  tk_object_set_prop_pointer(obj, "a", (void*)"hello");
+  fscript_eval(obj, "crc32(a, 5)", &v);
+  ASSERT_EQ(907060870, value_uint32(&v));
+  value_reset(&v);
+  
+  fscript_eval(obj, "crc32(a, 1)", &v);
+  ASSERT_EQ(2439710439, value_uint32(&v));
+  value_reset(&v);
+ 
+  value_set_binary_data(&v, (void*)"hello", 5);
+  tk_object_set_prop(obj, "a", &v);
+
+  fscript_eval(obj, "crc32(a)", &v);
+  ASSERT_EQ(907060870, value_uint32(&v));
+  value_reset(&v);
+  
+  fscript_eval(obj, "crc32(a, 5)", &v);
+  ASSERT_EQ(907060870, value_uint32(&v));
+  value_reset(&v);
+  
+  fscript_eval(obj, "crc32(a, -1)", &v);
+  ASSERT_EQ(907060870, value_uint32(&v));
+  value_reset(&v);
+  
+  fscript_eval(obj, "crc32(a, 1)", &v);
+  ASSERT_EQ(2439710439, value_uint32(&v));
+  value_reset(&v);
+  
+  TK_OBJECT_UNREF(obj);
+}
