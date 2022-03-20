@@ -260,7 +260,7 @@ static ret_t on_prop_write_ubjson(void* ctx, const void* data) {
 
 ret_t ubjson_writer_write_object(ubjson_writer_t* writer, tk_object_t* obj) {
   return_value_if_fail(ubjson_writer_write_object_begin(writer) == RET_OK, RET_OOM);
-  return_value_if_fail(tk_object_foreach_prop(obj, on_prop_write_ubjson, writer) == RET_OK,
+  return_value_if_fail(tk_object_foreach_prop(obj, on_prop_write_ubjson, writer) != RET_OOM,
                        RET_OOM);
 
   return ubjson_writer_write_object_end(writer);

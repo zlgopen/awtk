@@ -1,5 +1,9 @@
 # 最新动态
 
+2022/03/20
+  * 完善 ubjson\_writer\_write\_object。
+  * 完善 fscript 函数len
+
 2022/03/19
   * 完善fscript函数bit\_not
   * 完善fargs\_get\_data\_and\_size

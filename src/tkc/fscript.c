@@ -2434,6 +2434,11 @@ static ret_t func_len(fscript_t* fscript, fscript_args_t* args, value_t* result)
   if (args->args->type == VALUE_TYPE_OBJECT) {
     tk_object_t* obj = value_object(args->args);
     value_set_uint32(result, tk_object_get_prop_int32(obj, "size", 0));
+  } else if (args->args->type == VALUE_TYPE_BINARY) {
+    binary_data_t* data = value_binary_data(args->args);
+    value_set_uint32(result, data != NULL ? data->size : 0);
+  } else if (args->args->type == VALUE_TYPE_STRING) {
+    value_set_uint32(result, tk_strlen(value_str(args->args)));
   } else {
     str = value_str_ex(args->args, buff, sizeof(buff) - 1);
     value_set_uint32(result, tk_strlen(str));

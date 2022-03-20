@@ -2500,3 +2500,16 @@ TEST(FScript, crc32) {
   
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(FScript, binary_len) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+  value_set_binary_data(&v, (void*)"hello", 5);
+  tk_object_set_prop(obj, "a", &v);
+  fscript_eval(obj, "len(a)", &v);
+  ASSERT_EQ(5, value_uint32(&v));
+  value_reset(&v);
+  
+  TK_OBJECT_UNREF(obj);
+}
+
