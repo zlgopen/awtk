@@ -24,31 +24,7 @@
 
 ## 用法
 
-AWTK 对此做了内置的支持，使用步骤如下：
-
-步骤一：设置软件盘的 grab_keys 属性为 true，代码如下：
-
-```xml
-<keyboard theme="keyboard" x="0" y="bottom" w="100%" h="40%" grab_keys="true" name="kb_default">
-  ...
-</keyboard>
-```
-
-步骤二：将软键盘上按钮的 focusable 属性设置为 true，支持焦点停留，代码如下：
-
-```xml
-<keyboard theme="keyboard" x="0" y="bottom" w="100%" h="40%" grab_keys="true" name="kb_default">
-  ...
-      <view x="0" w="100%" h="25%" children_layout="default(r=1,c=10)">
-        <button repeat="300" name="q" focusable="true" text="q"/>
-        <button repeat="300" name="w" focusable="true" text="w"/>
-        ...
-      </view>
-      ...
-</keyboard>
-```
-
-步骤三：在初始化时指定键盘的类型，代码如下：
+AWTK 对此做了内置的支持，在初始化时指定键盘的类型，代码如下：
 
 ```c
 ret_t application_init() {
@@ -89,7 +65,38 @@ typedef enum _keyboard_type_t {
    */
   KEYBOARD_5KEYS
 } keyboard_type_t;
+```
 
+此外，对想要使用按键切换焦点的控件，需要将控件的 focusable 属性设置为 true，支持焦点停留：
+
+```xml
+<button name="button" text="button" focusable="true"/>
+```
+
+> 备注：edit及其组合控件（比如：combo_box、combo_box_ex等）默认支持焦点停留，无需设置 focusable 属性。
+
+如果希望软件也支持按键切换焦点，步骤如下：
+
+步骤一：设置软件盘的 grab_keys 属性为 true，代码如下：
+
+```xml
+<keyboard theme="keyboard" x="0" y="bottom" w="100%" h="40%" grab_keys="true" name="kb_default">
+  ...
+</keyboard>
+```
+
+步骤二：将软键盘上按钮的 focusable 属性设置为 true，支持焦点停留，代码如下：
+
+```xml
+<keyboard theme="keyboard" x="0" y="bottom" w="100%" h="40%" grab_keys="true" name="kb_default">
+  ...
+      <view x="0" w="100%" h="25%" children_layout="default(r=1,c=10)">
+        <button repeat="300" name="q" focusable="true" text="q"/>
+        <button repeat="300" name="w" focusable="true" text="w"/>
+        ...
+      </view>
+      ...
+</keyboard>
 ```
 
 ## 示例
