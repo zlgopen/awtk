@@ -64,7 +64,7 @@ TKC_STATIC_LIBS = ['debugger', 'fscript_ext', 'streams', 'conf_io', 'hal', 'xml'
 TOOLS_NAME = ''
 NANOVG_BACKEND = ''
 NATIVE_WINDOW = ''
-TOOLS_NAME = 'mingw'
+#TOOLS_NAME = 'mingw'
 
 if OS_NAME == 'Windows':
     TK_ROOT = TK_ROOT.replace('\\', '\\\\')
