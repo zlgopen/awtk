@@ -251,15 +251,18 @@ typedef enum _ret_t {
 #define MAX_PATH 255
 #endif /*MAX_PATH*/
 
-#if defined(WIN32) && !defined(MINGW)
+#if defined(WIN32)
 #define TK_PATH_SEP '\\'
+#else
+#define TK_PATH_SEP '/'
+#endif /*TK_PATH_SEP*/
+
+#if defined(WIN32) && !defined(MINGW)
 #ifndef snprintf
 #define snprintf _snprintf
 #endif /*snprintf*/
 
 #define strcasecmp stricmp
-#else
-#define TK_PATH_SEP '/'
 #endif /*TK_PATH_SEP*/
 
 #if defined(NDEBUG) || defined(SYLIXOS)

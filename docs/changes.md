@@ -2,6 +2,7 @@
 
 2022/03/21
   * 完善3or5keys文档（感谢雨欣提供补丁）
+  * 完善 mingw 编译（感谢智明提供补丁）。
 
 2022/03/20
   * 完善 ubjson\_writer\_write\_object。
