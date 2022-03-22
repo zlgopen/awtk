@@ -244,6 +244,7 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
     if (margin == 0) {
       margin = mledit->top_margin != 0 ? mledit->top_margin : mledit->margin;
     }
+    value_set_int(v, margin);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_BOTTOM_MARGIN)) {
     uint32_t margin = 0;
@@ -253,6 +254,7 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
     if (margin == 0) {
       margin = mledit->bottom_margin != 0 ? mledit->bottom_margin : mledit->margin;
     }
+    value_set_int(v, margin);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     value_set_str(v, mledit->tips);

@@ -53,7 +53,7 @@ static ret_t line_number_do_paint_self(widget_t* widget, canvas_t* c) {
   if (style_is_valid(widget->astyle)) {
     uint32_t line_index = 0;
     color_t trans = color_init(0, 0, 0, 0);
-    widget_prepare_text_style(widget, c);
+    widget_prepare_text_style_ex(widget, c, trans, NULL, TK_DEFAULT_FONT_SIZE, ALIGN_H_RIGHT, ALIGN_V_TOP);
     color_t active_bg =
         style_get_color(widget->astyle, LINE_NUMBER_STYLE_ACTIVE_LINE_BG_COLOR, trans);
     color_t highlight_bg =
