@@ -141,17 +141,17 @@ static const char* widget_get_keyboard(widget_t* widget) {
 static ret_t on_push_window(void* ctx, event_t* e) {
   input_method_t* im = (input_method_t*)ctx;
 
-  im->win_old_y = im->win->y;
-  im->win->y -= im->win_delta_y;
-  widget_invalidate_force(im->win, NULL);
+  if (im->win_delta_y > 0) {
+    im->win_old_y = im->win->y;
+  }
+  widget_move(im->win, im->win->x, im->win->y - im->win_delta_y);
 
   return RET_REMOVE;
 }
 
 static ret_t input_method_default_restore_win_position(input_method_t* im) {
   if (im->win != NULL) {
-    im->win->y = im->win_old_y;
-    widget_invalidate_force(im->win, NULL);
+    widget_move(im->win, im->win->x, im->win_old_y);
     im->win = NULL;
   }
 
@@ -260,6 +260,9 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
     }
   } else if ((p.y + widget->h) > im->keyboard->y) {
     im->win = win;
+    if (im->win->y < 0) {
+      widget_move(im->win, im->win->x, im->win_old_y);
+    }
     if (is_key_board_overlap_edit(widget, im->keyboard)) {
       im->win_delta_y = win->y + win->h - im->keyboard->y;
       close_anim_hint = "vtranslate";
@@ -273,13 +276,11 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
     /*when new keyboard height is not eq old keyboard height*/
     close_anim_hint = "vtranslate";
     im->win_delta_y += win->y + win->h - im->keyboard->y;
-    win->y = im->keyboard->y - win->h;
-    widget_invalidate_force(im->win, NULL);
+    widget_move(win, im->win->x, im->keyboard->y - win->h);
   } else if (p.y < 0) {
     im->win = win;
-    im->win->y += im->win_delta_y;
+    widget_move(win, im->win->x, im->win->y + im->win_delta_y);
     im->win_delta_y = 0;
-    widget_invalidate_force(im->win, NULL);
   }
 
   value_set_str(&v, open_anim_hint);
