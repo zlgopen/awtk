@@ -98,6 +98,20 @@ TEST(UBJsonWriter, int8) {
   ASSERT_EQ(wb.cursor, 2u);
 }
 
+TEST(UBJsonWriter, char) {
+  uint8_t buff[256];
+  wbuffer_t wb;
+  ubjson_writer_t ub;
+  wbuffer_init(&wb, buff, sizeof(buff));
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+
+  ASSERT_EQ(ubjson_writer_write_char(&ub, 'a'), RET_OK);
+
+  ASSERT_EQ(buff[0], UBJSON_MARKER_CHAR);
+  ASSERT_EQ(buff[1], 'a');
+  ASSERT_EQ(wb.cursor, 2u);
+}
+
 TEST(UBJsonWriter, int16) {
   uint8_t buff[256];
   wbuffer_t wb;
