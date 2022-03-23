@@ -35,6 +35,12 @@
 #include <limits.h>
 #include <inttypes.h>
 
+#if defined(__MINGW32__) || defined(__MINGW64__)
+#ifndef MINGW
+#define MINGW 1
+#endif
+#endif
+
 #if defined(HAS_AWTK_CONFIG)
 #include "awtk_config.h"
 #ifdef FRAGMENT_FRAME_BUFFER_SIZE
