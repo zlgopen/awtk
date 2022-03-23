@@ -443,13 +443,18 @@ ret_t canvas_offline_flush_bitmap(canvas_t* canvas) {
 #ifdef WITH_GPU
   vg = lcd_get_vgcanvas(canvas->lcd);
   if (vg != NULL && c->fbo != NULL) {
+    uint8_t* data = NULL;
     bitmap_t* bitmap = c->base.bitmap;
     framebuffer_object_t* fbo = c->fbo;
-    uint8_t* data = TKMEM_ALLOC(bitmap->line_length * bitmap->h);
-    return_value_if_fail(data != NULL, RET_OOM);
+    if (c->bitmap_data == NULL) {
+      data = TKMEM_ALLOC(bitmap->line_length * bitmap->h);
+      return_value_if_fail(data != NULL, RET_OOM);
+      c->bitmap_data = data;
+    } else {
+      data = c->bitmap_data;
+    }
     r = rect_init(0, 0, bitmap->w, bitmap->h);
     
-    c->bitmap_data = data;
     graphic_buffer_attach(bitmap->buffer, data, bitmap->w, bitmap->h);
     vgcanvas_fbo_to_bitmap(vg, fbo, bitmap, &r);
   }
