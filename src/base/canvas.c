@@ -283,6 +283,17 @@ ret_t canvas_set_font(canvas_t* c, const char* name, font_size_t size) {
   return RET_OK;
 }
 
+ret_t canvas_reset_font(canvas_t* c) {
+  return_value_if_fail(c != NULL, RET_BAD_PARAMS);
+
+  c->font_size = 0;
+  c->last_text_length = 0;
+  c->font = NULL;
+  TKMEM_FREE(c->font_name);
+
+  return RET_OK;
+}
+
 ret_t canvas_set_text_align(canvas_t* c, align_h_t align_h, align_v_t align_v) {
   return_value_if_fail(c != NULL && c->lcd != NULL, RET_BAD_PARAMS);
 

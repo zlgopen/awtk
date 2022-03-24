@@ -37,15 +37,18 @@
 #include "widgets/group_box.h"
 
 static ret_t change_locale(void* ctx, event_t* e) {
-  char country[3];
-  char language[3];
-  const char* str = (const char*)ctx;
+  widget_t* radio_button = WIDGET(e->target);
+  if (widget_get_value_int(radio_button)) {
+    char country[3];
+    char language[3];
+    const char* str = (const char*)ctx;
 
-  widget_t* widget = WIDGET(e->target);
-  if (widget_get_value(widget)) {
-    strncpy(language, str, 2);
-    strncpy(country, str + 3, 2);
-    locale_info_change(locale_info(), language, country);
+    widget_t* widget = WIDGET(e->target);
+    if (widget_get_value(widget)) {
+      strncpy(language, str, 2);
+      strncpy(country, str + 3, 2);
+      locale_info_change(locale_info(), language, country);
+    }
   }
 
   return RET_OK;

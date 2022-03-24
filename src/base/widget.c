@@ -4512,8 +4512,8 @@ ret_t widget_reset_canvas(widget_t* widget) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
   rect = rect_init(0, 0, canvas_get_width(c), canvas_get_height(c));
   canvas_set_clip_rect(c, &rect);
+  canvas_reset_font(c);
 
-  c->font = NULL;
   return vgcanvas_reset(canvas_get_vgcanvas(c));
 #else
   (void)widget;

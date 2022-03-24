@@ -489,6 +489,17 @@ ret_t canvas_stroke_rect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h);
 ret_t canvas_set_font(canvas_t* c, const char* name, font_size_t size);
 
 /**
+ * @method canvas_reset_font
+ * 释放canvas中字体相关的资源。
+ *
+ * @annotation ["scriptable"]
+ * @param {canvas_t*} c canvas对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_reset_font(canvas_t* c);
+
+/**
  * @method canvas_set_text_align
  * 设置文本对齐方式。
  *
