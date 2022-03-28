@@ -142,6 +142,16 @@ typedef enum _value_type_t {
    * 渐变颜色。
    */
   VALUE_TYPE_GRADIENT,
+  /**
+   * @const VALUE_TYPE_ID
+   * id。
+   */
+  VALUE_TYPE_ID,
+  /**
+   * @const VALUE_TYPE_FUNC
+   * func。
+   */
+  VALUE_TYPE_FUNC,
 } value_type_t;
 
 typedef struct _binary_data_t {
@@ -153,6 +163,16 @@ typedef struct _sized_str_t {
   uint32_t size;
   char* str;
 } sized_str_t;
+
+typedef struct _id_info_t {
+  uint32_t offset;
+  char* id;
+} id_info_t;
+
+typedef struct _func_info_t {
+  uint32_t memo;
+  void* func;
+} func_info_t;
 
 /**
  * @class value_t
@@ -193,6 +213,8 @@ struct _value_t {
     tk_object_t* object;
     binary_data_t binary_data;
     sized_str_t sized_str;
+    id_info_t id;
+    func_info_t func;
   } value;
 };
 
@@ -785,6 +807,47 @@ value_t* value_cast(value_t* value);
  * @return {uint32_t} 返回对应数据类型的长度。
  */
 uint32_t value_type_size(value_type_t type);
+
+/**
+ * @method value_id
+ * 获取类型为ID的值。
+ * @annotation ["scriptable"]
+ * @param {value_t*} v value对象。
+ *
+ * @return {const char*} 值。
+ */
+const char* value_id(const value_t* v);
+
+/**
+ * @method value_func
+ * 获取类型为func的值。
+ * @annotation ["scriptable"]
+ * @param {value_t*} v value对象。
+ *
+ * @return {void*} 值。
+ */
+void* value_func(const value_t* v);
+
+/**
+ * @method value_set_id
+ * 设置类型为ID的值。
+ * @param {value_t*} v     value对象。
+ * @param {const char*}   value 待设置的值。
+ * @param {uint32_t}   len 长度。
+ *
+ * @return {value_t*} value对象本身。
+ */
+value_t* value_set_id(value_t* v, const char* value, uint32_t len);
+
+/**
+ * @method value_set_func
+ * 设置类型为func的值。
+ * @param {value_t*} v     value对象。
+ * @param {void*}   value 待设置的值。
+ *
+ * @return {value_t*} value对象本身。
+ */
+value_t* value_set_func(value_t* v, void* value);
 
 END_C_DECLS
 

@@ -114,12 +114,6 @@ ret_t fscript_set_print_func(fscript_t* fscript, fscript_func_t print) {
   return RET_OK;
 }
 
-static value_t* value_set_func(value_t* v, fscript_func_call_t* func) {
-  value_set_pointer(v, func);
-  v->type = VALUE_TYPE_FSCRIPT_FUNC;
-  return v;
-}
-
 static bool_t value_is_digit(value_t* v) {
   uint32_t type = 0;
   bool_t ret = TRUE;
@@ -182,8 +176,6 @@ static ret_t func_args_reset(fscript_args_t* args) {
     value_t* v = args->args + i;
     if (v->type == VALUE_TYPE_FSCRIPT_FUNC) {
       fscript_func_call_destroy(value_func(v));
-    } else {
-      v->type = v->type == VALUE_TYPE_FSCRIPT_ID ? VALUE_TYPE_STRING : v->type;
     }
     value_reset(args->args + i);
   }
@@ -373,8 +365,7 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
           char msg[128];
           tk_snprintf(msg, sizeof(msg) - 1, "not found var %s", name);
           fscript_set_error(fscript, RET_NOT_FOUND, "get_var", msg);
-          value_copy(d, s);
-          d->type = VALUE_TYPE_STRING;
+          value_set_str(d, value_id(s));
         } else if (*name == '$') {
           value_reset(d);
         }
@@ -1175,8 +1166,7 @@ static ret_t token_to_value(token_t* t, value_t* v) {
     } else if (t->token[0] == 'f' && strncmp(t->token, "false", 5) == 0) {
       value_set_bool(v, FALSE);
     } else {
-      value_dup_str_with_len(v, t->token, t->size);
-      v->type = VALUE_TYPE_FSCRIPT_ID;
+      value_set_id(v, t->token, t->size);
     }
   } else {
     return RET_FAIL;

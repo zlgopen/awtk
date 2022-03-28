@@ -246,6 +246,18 @@ TEST(value, int) {
   ASSERT_EQ(value_int(value_set_uint64(&v, 10)), 10);
 }
 
+TEST(value, id) {
+  value_t v;
+  ASSERT_STREQ(value_id(value_set_id(&v, "abc", 3)), "abc");
+  value_reset(&v);
+}
+
+TEST(value, func) {
+  value_t v;
+  ASSERT_STREQ((char*)value_func(value_set_func(&v, (void*)"abc")), "abc");
+  value_reset(&v);
+}
+
 TEST(ValueTest, copy) {
   value_t v;
   value_t other;

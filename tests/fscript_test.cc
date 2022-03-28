@@ -1840,7 +1840,7 @@ TEST(FScript, create_ex1) {
   fscript_t* fscript = fscript_create_ex(obj, "print(123)", TRUE);
   char* p = FUNC_CALL_NAME(fscript->first);
   ASSERT_STREQ(p, "expr");
-  p = FUNC_CALL_NAME((fscript_func_call_t*)(fscript->first->args.args->value.ptr));
+  p = FUNC_CALL_NAME((fscript_func_call_t*)(value_func(fscript->first->args.args)));
   ASSERT_STREQ(p, "print");
 
   fscript_destroy(fscript);
@@ -1852,7 +1852,7 @@ TEST(FScript, create_ex2) {
   fscript_t* fscript = fscript_create_ex(obj, "1+2", TRUE);
   char* p = FUNC_CALL_NAME(fscript->first);
   ASSERT_STREQ(p, "expr");
-  p = FUNC_CALL_NAME((fscript_func_call_t*)(fscript->first->args.args->value.ptr));
+  p = FUNC_CALL_NAME((fscript_func_call_t*)(value_func(fscript->first->args.args)));
   ASSERT_STREQ(p, "+");
 
   fscript_destroy(fscript);

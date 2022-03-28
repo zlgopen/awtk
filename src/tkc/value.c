@@ -646,6 +646,14 @@ ret_t value_reset(value_t* v) {
         TK_OBJECT_UNREF(obj);
         break;
       }
+      case VALUE_TYPE_ID: {
+        TKMEM_FREE(v->value.id.id);
+        break;
+      }
+      case VALUE_TYPE_FUNC: {
+        TKMEM_FREE(v->value.func.func);
+        break;
+      }
       default:
         break;
     }
@@ -800,6 +808,9 @@ const char* value_str_ex(const value_t* v, char* buff, uint32_t size) {
     tk_snprintf(buff, size, "%" PRIu64, value_uint64(v));
   } else if (v->type == VALUE_TYPE_INT64) {
     tk_snprintf(buff, size, "%" PRId64, value_int64(v));
+  } else if (v->type == VALUE_TYPE_ID) {
+    assert(v->value.id.id != NULL);
+    return v->value.id.id;
   } else if (v->type == VALUE_TYPE_BINARY) {
     binary_data_t* bin = value_binary_data(v);
     if (bin != NULL) {
@@ -807,6 +818,8 @@ const char* value_str_ex(const value_t* v, char* buff, uint32_t size) {
     } else {
       tk_snprintf(buff, size, "(null)");
     }
+  } else if (v->type == VALUE_TYPE_FUNC) {
+    return "func";
   } else if (v->type == VALUE_TYPE_POINTER) {
     tk_snprintf(buff, size, "%p", value_pointer(v));
   } else if (v->type == VALUE_TYPE_OBJECT) {
@@ -875,3 +888,34 @@ uint32_t value_type_size(value_type_t type) {
     }
   }
 }
+
+const char* value_id(const value_t* v) {
+  return_value_if_fail(v != NULL && v->type == VALUE_TYPE_ID, NULL);
+
+  return v->value.id.id;
+}
+
+void* value_func(const value_t* v) {
+  return_value_if_fail(v != NULL && v->type == VALUE_TYPE_FUNC, NULL);
+
+  return v->value.func.func;
+}
+
+value_t* value_set_id(value_t* v, const char* value, uint32_t len) {
+  return_value_if_fail(v != NULL && value != NULL, NULL);
+  v->value.id.id = tk_strndup(value, len);
+  v->value.id.offset = -1;
+  v->free_handle = TRUE;
+
+  return value_init(v, VALUE_TYPE_ID);
+}
+
+value_t* value_set_func(value_t* v, void* value) {
+  return_value_if_fail(v != NULL && value != NULL, NULL);
+
+  v->value.func.func = value;
+  v->value.func.memo = 0;
+
+  return value_init(v, VALUE_TYPE_FUNC);
+}
+

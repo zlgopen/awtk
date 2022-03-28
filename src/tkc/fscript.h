@@ -435,18 +435,8 @@ struct _fscript_func_call_t {
 #define FSCRIPT_STR_GLOBAL_PREFIX "global."
 #define FSCRIPT_GLOBAL_PREFIX_LEN 7
 
-#define VALUE_TYPE_FSCRIPT_ID 128
-#define VALUE_TYPE_FSCRIPT_FUNC VALUE_TYPE_FSCRIPT_ID + 1
-
-static inline fscript_func_call_t* value_func(const value_t* v) {
-  return_value_if_fail(v->type == VALUE_TYPE_FSCRIPT_FUNC, NULL);
-  return (fscript_func_call_t*)(v->value.ptr);
-}
-
-static inline const char* value_id(const value_t* v) {
-  return_value_if_fail(v->type == VALUE_TYPE_FSCRIPT_ID, NULL);
-  return (const char*)(v->value.str);
-}
+#define VALUE_TYPE_FSCRIPT_ID VALUE_TYPE_ID
+#define VALUE_TYPE_FSCRIPT_FUNC VALUE_TYPE_FUNC
 
 typedef ret_t (*fscript_on_init_t)(fscript_t* fscript, const char* code);
 typedef ret_t (*fscript_on_deinit_t)(fscript_t* fscript);
