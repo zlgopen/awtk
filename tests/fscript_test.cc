@@ -761,6 +761,7 @@ TEST(FScript, global_var) {
 
   TK_OBJECT_UNREF(obj);
 }
+
 TEST(FScript, sqrt) {
   value_t v;
   tk_object_t* obj = object_default_create();
@@ -2513,3 +2514,13 @@ TEST(FScript, binary_len) {
   TK_OBJECT_UNREF(obj);
 }
 
+TEST(FScript, local_vars) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "var a = 1; var b =2; var c = a + b;c", &v);
+  ASSERT_EQ(value_int(&v), 3);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}

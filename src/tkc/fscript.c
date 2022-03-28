@@ -342,30 +342,25 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
                               value_t* d) {
   value_t v;
   value_t* s = iter->args.args + i;
-  int32_t save_type = s->type;
   value_set_str(&v, NULL);
   value_set_str(d, NULL);
   if (s->type == VALUE_TYPE_FSCRIPT_ID) {
-    s->type = VALUE_TYPE_STRING;
     if ((iter->func == func_set_local || iter->func == func_set || iter->func == func_unset ||
          iter->func == func_get) &&
         i == 0) {
       value_copy(d, s); /*func_set accept id/str as first param*/
     } else {
-      const char* name = value_str(s);
+      const char* name = value_id(s);
       if (fscript->loop_count > 0) {
         if (tk_str_eq(name, "break")) {
           fscript->breaked = TRUE;
-          s->type = save_type;
           return RET_OK;
         } else if (tk_str_eq(name, "continue")) {
           fscript->continued = TRUE;
-          s->type = save_type;
           return RET_OK;
         }
       } else if (tk_str_eq(name, "return")) {
         fscript->returned = TRUE;
-        s->type = save_type;
         value_set_int(d, 0);
         return RET_OK;
       } else if (*name == '.') {
@@ -379,6 +374,7 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
           tk_snprintf(msg, sizeof(msg) - 1, "not found var %s", name);
           fscript_set_error(fscript, RET_NOT_FOUND, "get_var", msg);
           value_copy(d, s);
+          d->type = VALUE_TYPE_STRING;
         } else if (*name == '$') {
           value_reset(d);
         }
@@ -389,7 +385,6 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
   } else {
     value_copy(d, s);
   }
-  s->type = save_type;
 
   return RET_OK;
 }
@@ -2096,7 +2091,7 @@ static ret_t func_join(fscript_t* fscript, fscript_args_t* args, value_t* result
 static ret_t func_set_local(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   const char* name = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
-  name = value_str(args->args);
+  name = value_id(args->args);
   FSCRIPT_FUNC_CHECK(name != NULL, RET_BAD_PARAMS);
   if (fscript->locals == NULL) {
     fscript->locals = object_default_create();
@@ -2109,7 +2104,7 @@ static ret_t func_set_local(fscript_t* fscript, fscript_args_t* args, value_t* r
 static ret_t func_get(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   const char* name = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  name = value_str(args->args);
+  name = value_id(args->args);
   FSCRIPT_FUNC_CHECK(name != NULL, RET_BAD_PARAMS);
 
   if (fscript_get_var(fscript, name, result) != RET_OK) {
@@ -2122,7 +2117,7 @@ static ret_t func_get(fscript_t* fscript, fscript_args_t* args, value_t* result)
 static ret_t func_set(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   const char* name = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
-  name = value_str(args->args);
+  name = value_id(args->args);
   FSCRIPT_FUNC_CHECK(name != NULL, RET_BAD_PARAMS);
 
   value_set_bool(result, fscript_set_var(fscript, name, args->args + 1) == RET_OK);
@@ -2556,7 +2551,7 @@ static ret_t func_unset(fscript_t* fscript, fscript_args_t* args, value_t* resul
   value_t v;
   const char* name = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  name = value_str(args->args);
+  name = value_id(args->args);
   return_value_if_fail(name != NULL, RET_BAD_PARAMS);
 
   if (fscript->locals != NULL && tk_object_get_prop(fscript->locals, name, &v) == RET_OK) {
