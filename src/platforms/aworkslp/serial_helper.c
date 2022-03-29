@@ -233,8 +233,7 @@ ret_t serial_config(serial_handle_t handle, uint32_t baudrate, bytesize_t bytesi
   return RET_OK;
 }
 
-
-ret_t serial_timeout_set(serial_handle_t handle, serial_timeout_t *timeout) {
+ret_t serial_timeout_set(serial_handle_t handle, serial_timeout_t* timeout) {
   int fd = serial_handle_get_fd(handle);
   struct aw_serial_timeout cfg;
   return_value_if_fail(fd >= 0 && timeout, RET_BAD_PARAMS);
@@ -244,7 +243,7 @@ ret_t serial_timeout_set(serial_handle_t handle, serial_timeout_t *timeout) {
   return_value_if_fail(aw_serial_timeout_set(fd, &cfg) == AW_OK, RET_FAIL);
 }
 
-ret_t serial_timeout_get(serial_handle_t handle, serial_timeout_t *timeout) {
+ret_t serial_timeout_get(serial_handle_t handle, serial_timeout_t* timeout) {
   int fd = serial_handle_get_fd(handle);
   struct aw_serial_timeout cfg;
   return_value_if_fail(fd >= 0 && timeout, RET_BAD_PARAMS);
@@ -423,7 +422,7 @@ ret_t serial_config(serial_handle_t handle, uint32_t baudrate, bytesize_t bytesi
   return RET_OK;
 }
 
-ret_t serial_timeout_set(serial_handle_t handle, serial_timeout_t *timeout) {
+ret_t serial_timeout_set(serial_handle_t handle, serial_timeout_t* timeout) {
   int fd = serial_handle_get_fd(handle);
   struct aw_serial_timeout cfg;
   return_value_if_fail(fd >= 0 && timeout, RET_BAD_PARAMS);
@@ -433,7 +432,7 @@ ret_t serial_timeout_set(serial_handle_t handle, serial_timeout_t *timeout) {
   return_value_if_fail(aw_serial_timeout_set(fd, &cfg) == AW_OK, RET_FAIL);
 }
 
-ret_t serial_timeout_get(serial_handle_t handle, serial_timeout_t *timeout) {
+ret_t serial_timeout_get(serial_handle_t handle, serial_timeout_t* timeout) {
   int fd = serial_handle_get_fd(handle);
   struct aw_serial_timeout cfg;
   return_value_if_fail(fd >= 0 && timeout, RET_BAD_PARAMS);
@@ -537,11 +536,11 @@ ret_t serial_config(serial_handle_t handle, uint32_t baudrate, bytesize_t bytesi
   return aw_ioctl(fd, AW_TIOSETOPTIONS, &dcb);
 }
 
-ret_t serial_timeout_set(serial_handle_t handle, serial_timeout_t *timeout) {
+ret_t serial_timeout_set(serial_handle_t handle, serial_timeout_t* timeout) {
   return RET_NOT_IMPL;
 }
 
-ret_t serial_timeout_get(serial_handle_t handle, serial_timeout_t *timeout) {
+ret_t serial_timeout_get(serial_handle_t handle, serial_timeout_t* timeout) {
   return RET_NOT_IMPL;
 }
 

@@ -1159,7 +1159,7 @@ static ret_t text_edit_update_caret_pos(text_edit_t* text_edit) {
 
   for (i = 0; i < rows->size; i++) {
     row_info_t* row = rows->row + i;
-    for (j = 0; j < row->line_num; j++, y+=line_height, line_index++) {
+    for (j = 0; j < row->line_num; j++, y += line_height, line_index++) {
       line_info_t* line = (line_info_t*)darray_get(&row->info, j);
       uint32_t line_offset_begin = line->offset;
       uint32_t line_offset_end = line->offset + line->length;
@@ -1402,7 +1402,7 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
           state->cursor = text->size;
           stb_textedit_key(text_edit, state, STB_TEXTEDIT_K_LINEEND);
         }
-        goto layout; 
+        goto layout;
 
         return RET_OK;
       }

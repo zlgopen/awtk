@@ -133,7 +133,9 @@ void* tk_thread_get_args(tk_thread_t* thread) {
 }
 
 ret_t tk_thread_destroy(tk_thread_t* thread) {
-  return_value_if_fail(thread != NULL && thread->id != AW_TASK_ID_INVALID && thread->running == FALSE, RET_BAD_PARAMS);
+  return_value_if_fail(
+      thread != NULL && thread->id != AW_TASK_ID_INVALID && thread->running == FALSE,
+      RET_BAD_PARAMS);
 
   thread->id = AW_TASK_ID_INVALID;
   memset(thread, 0x00, sizeof(tk_thread_t));

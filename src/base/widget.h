@@ -2494,7 +2494,9 @@ ret_t widget_prepare_text_style(widget_t* widget, canvas_t* c);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_prepare_text_style_ex(widget_t* widget, canvas_t* c, color_t default_trans, const char* default_font, uint16_t default_font_size, align_h_t default_align_h, align_v_t default_align_v);
+ret_t widget_prepare_text_style_ex(widget_t* widget, canvas_t* c, color_t default_trans,
+                                   const char* default_font, uint16_t default_font_size,
+                                   align_h_t default_align_h, align_v_t default_align_v);
 
 /**
  * @method widget_measure_text

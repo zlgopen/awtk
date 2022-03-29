@@ -421,7 +421,7 @@ static ret_t func_bit_nor(fscript_t* fscript, fscript_args_t* args, value_t* res
 
 static ret_t func_bit_not(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  switch(args->args->type) {
+  switch (args->args->type) {
     case VALUE_TYPE_INT8:
     case VALUE_TYPE_UINT8: {
       value_set_uint8(result, ~value_uint8(args->args));

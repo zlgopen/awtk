@@ -918,4 +918,3 @@ value_t* value_set_func(value_t* v, void* value) {
 
   return value_init(v, VALUE_TYPE_FUNC);
 }
-

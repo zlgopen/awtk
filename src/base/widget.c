@@ -3581,7 +3581,9 @@ int32_t widget_index_of(widget_t* widget) {
   return -1;
 }
 
-ret_t widget_prepare_text_style_ex(widget_t* widget, canvas_t* c, color_t default_trans, const char* default_font, uint16_t default_font_size, align_h_t default_align_h, align_v_t default_align_v) {
+ret_t widget_prepare_text_style_ex(widget_t* widget, canvas_t* c, color_t default_trans,
+                                   const char* default_font, uint16_t default_font_size,
+                                   align_h_t default_align_h, align_v_t default_align_v) {
   style_t* style = widget->astyle;
   color_t tc = style_get_color(style, STYLE_ID_TEXT_COLOR, default_trans);
   const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, default_font);
@@ -3598,7 +3600,8 @@ ret_t widget_prepare_text_style_ex(widget_t* widget, canvas_t* c, color_t defaul
 
 ret_t widget_prepare_text_style(widget_t* widget, canvas_t* c) {
   color_t trans = color_init(0, 0, 0, 0);
-  return widget_prepare_text_style_ex(widget, c, trans, NULL, TK_DEFAULT_FONT_SIZE, ALIGN_H_CENTER, ALIGN_V_MIDDLE);
+  return widget_prepare_text_style_ex(widget, c, trans, NULL, TK_DEFAULT_FONT_SIZE, ALIGN_H_CENTER,
+                                      ALIGN_V_MIDDLE);
 }
 
 static ret_t widget_copy_style(widget_t* clone, widget_t* widget) {

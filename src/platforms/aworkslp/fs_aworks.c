@@ -42,7 +42,6 @@
 #define tk_log_info_htlf(header, fmt, args...) tk_log_info_lf(fmt, ##args)
 #endif
 
-
 #if CONFIG_HC32F4A0_CATNET_BOARD || CONFIG_M105X_EV_BOARD_LP
 #define TKC_FS_EXE_PATH "/lfs/bin/app/"
 #define TKC_FS_TEMP_PATH "/lfs/tmp/"

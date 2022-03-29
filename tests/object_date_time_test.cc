@@ -12,7 +12,7 @@ static ret_t visit_dump(void* ctx, const void* data) {
   string& str = *(string*)ctx;
   const named_value_t* nv = (named_value_t*)data;
 
-  str += nv->name + string(":") + value_str_ex(&(nv->value), buff, sizeof(buff)-1);
+  str += nv->name + string(":") + value_str_ex(&(nv->value), buff, sizeof(buff) - 1);
 
   return RET_OK;
 }
@@ -26,19 +26,19 @@ TEST(ObjectDateTime, basic) {
 
   ASSERT_EQ(tk_object_set_prop_uint32(obj, OBJECT_DATE_TIME_PROP_MONTH, 3), RET_OK);
   ASSERT_EQ(tk_object_get_prop_uint32(obj, OBJECT_DATE_TIME_PROP_MONTH, 0), 3);
-  
+
   ASSERT_EQ(tk_object_set_prop_uint32(obj, OBJECT_DATE_TIME_PROP_DAY, 4), RET_OK);
   ASSERT_EQ(tk_object_get_prop_uint32(obj, OBJECT_DATE_TIME_PROP_DAY, 0), 4);
-  
+
   ASSERT_EQ(tk_object_set_prop_uint32(obj, OBJECT_DATE_TIME_PROP_HOUR, 5), RET_OK);
   ASSERT_EQ(tk_object_get_prop_uint32(obj, OBJECT_DATE_TIME_PROP_HOUR, 0), 5);
-  
+
   ASSERT_EQ(tk_object_set_prop_uint32(obj, OBJECT_DATE_TIME_PROP_MINUTE, 6), RET_OK);
   ASSERT_EQ(tk_object_get_prop_uint32(obj, OBJECT_DATE_TIME_PROP_MINUTE, 0), 6);
-  
+
   ASSERT_EQ(tk_object_set_prop_uint32(obj, OBJECT_DATE_TIME_PROP_SECOND, 7), RET_OK);
   ASSERT_EQ(tk_object_get_prop_uint32(obj, OBJECT_DATE_TIME_PROP_SECOND, 0), 7);
-  
+
   ASSERT_EQ(tk_object_set_prop_uint32(obj, OBJECT_DATE_TIME_PROP_WDAY, 1), RET_OK);
   ASSERT_EQ(tk_object_get_prop_uint32(obj, OBJECT_DATE_TIME_PROP_WDAY, 0), 1);
 

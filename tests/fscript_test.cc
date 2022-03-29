@@ -1335,8 +1335,8 @@ TEST(FExr, repeat_statement14) {
   value_t v;
   tk_object_t* obj = object_default_create();
 
-  fscript_eval(obj, 
-"var s = 0;\
+  fscript_eval(obj,
+               "var s = 0;\
 var i = 0;\
 repeat(i, 0, 100, 1) {;\
   s = s + i;\
@@ -1345,7 +1345,8 @@ repeat(a, 0, 100, 1) {\
   s = s + a;\
 }\
 print(s)\
-s", &v);
+s",
+               &v);
   ASSERT_EQ(value_int(&v), 9900);
   value_reset(&v);
 
