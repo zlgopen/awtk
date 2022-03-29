@@ -27,6 +27,7 @@
 #include "base/system_info.h"
 #include "base/lcd_orientation_helper.h"
 
+#ifdef WITH_FAST_LCD_PORTRAIT
 static wh_t lcd_mem_get_physical_width(lcd_t* lcd) {
   system_info_t* info = system_info();
   if (info != NULL) {
@@ -46,6 +47,7 @@ static wh_t lcd_mem_get_physical_height(lcd_t* lcd) {
   }
   return lcd->h;
 }
+#endif
 
 static uint32_t lcd_get_physical_line_length(lcd_mem_t* mem) {
   uint32_t bpp = bitmap_get_bpp_of_format(LCD_FORMAT);
@@ -79,8 +81,13 @@ static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientatio
   w = lcd_get_physical_width(lcd);
   h = lcd_get_physical_height(lcd);
 #else
-  w = lcd_get_width(lcd);
-  h = lcd_get_height(lcd);
+  if (o == LCD_ORIENTATION_0 || o == LCD_ORIENTATION_180) {
+    w = lcd_get_width(lcd);
+    h = lcd_get_height(lcd);
+  } else {
+    h = lcd_get_width(lcd);
+    w = lcd_get_height(lcd);
+  } 
 #endif
 
   memset(fb, 0x00, sizeof(bitmap_t));
@@ -180,12 +187,12 @@ static ret_t lcd_mem_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
   pixel_t* p = NULL;
   int32_t offset = 0;
   color_t c = lcd->stroke_color;
-  system_info_t* info = system_info();
   uint8_t a = (c.rgba.a * lcd->global_alpha) / 0xff;
   uint32_t line_length = lcd_get_physical_line_length((lcd_mem_t*)lcd);
   uint8_t* fbuff = (uint8_t*)lcd_mem_init_drawing_fb(lcd, NULL);
 
 #ifdef WITH_FAST_LCD_PORTRAIT
+  system_info_t* info = system_info();
   lcd_orientation_point_rotate_by_anticlockwise(&x, &y, info->lcd_orientation, lcd_get_width(lcd), lcd_get_height(lcd));
 
   switch (info->lcd_orientation)
@@ -276,36 +283,37 @@ static ret_t lcd_mem_draw_glyph4(lcd_t* lcd, glyph_t* glyph, const rect_t* src, 
   wh_t sy = src->y;
   wh_t sw = src->w;
   wh_t sh = src->h;
-  wh_t d_offset = 1;
   uint8_t glyph_a = 0;
+  wh_t d_offset = sizeof(pixel_t);
   pixel_t* dst_p = NULL;
   uint32_t pitch = glyph->pitch;
   color_t color = lcd->text_color;
-  system_info_t* info = system_info();
   uint8_t global_alpha = lcd->global_alpha;
-  wh_t dst_offset = lcd_get_physical_width(lcd);
   uint8_t color_alpha = (color.rgba.a * global_alpha) >> 8;
   uint32_t line_length = lcd_get_physical_line_length((lcd_mem_t*)lcd);
   uint8_t* fbuff = (uint8_t*)lcd_mem_init_drawing_fb(lcd, NULL);
   const uint8_t* src_p = glyph->data + pitch * sy + sx / 2;
+  wh_t dst_offset = line_length;
   pixel_t pixel = color_to_pixel(color);
 
+
 #ifdef WITH_FAST_LCD_PORTRAIT
+  system_info_t* info = system_info();
   lcd_orientation_point_rotate_by_anticlockwise(&x, &y, info->lcd_orientation, lcd_get_width(lcd), lcd_get_height(lcd));
 
   switch (info->lcd_orientation)
   {
   case LCD_ORIENTATION_90:
-    dst_offset = 1;
-    d_offset = -lcd_get_physical_width(lcd);
+    d_offset = -line_length;
+    dst_offset = sizeof(pixel_t);
     break;
   case LCD_ORIENTATION_180:
-    dst_offset = -lcd_get_physical_width(lcd);
-    d_offset = -1;
+    dst_offset = -line_length;
+    d_offset = -sizeof(pixel_t);
     break;
   case LCD_ORIENTATION_270:
-    dst_offset = -1;
-    d_offset = lcd_get_physical_width(lcd);
+    d_offset = line_length;
+    dst_offset = -sizeof(pixel_t);
     break;
   default:
     break;
@@ -335,10 +343,10 @@ static ret_t lcd_mem_draw_glyph4(lcd_t* lcd, glyph_t* glyph, const rect_t* src, 
         color.rgba.a = a;
         *d = blend_pixel(*d, color);
       }
-      d += d_offset; 
+      d = (pixel_t*)(((uint8_t*)d) + d_offset);
     }
     src_p += pitch;
-    dst_p += dst_offset;
+    dst_p = (pixel_t*)(((uint8_t*)dst_p) + dst_offset);
   }
 
   return RET_OK;
@@ -347,35 +355,35 @@ static ret_t lcd_mem_draw_glyph4(lcd_t* lcd, glyph_t* glyph, const rect_t* src, 
 static ret_t lcd_mem_draw_glyph8(lcd_t* lcd, glyph_t* glyph, const rect_t* src, xy_t x, xy_t y) {
   wh_t i = 0;
   wh_t j = 0;
-  wh_t d_offset = 1;
+  wh_t d_offset = sizeof(pixel_t);
   pixel_t* dst_p = NULL;
   uint32_t glyph_w = glyph->w;
   color_t color = lcd->text_color;
-  system_info_t* info = system_info();
   uint8_t global_alpha = lcd->global_alpha;
-  wh_t dst_offset = lcd_get_physical_width(lcd);
   uint8_t color_alpha = (color.rgba.a * global_alpha) >> 8;
   uint32_t line_length = lcd_get_physical_line_length((lcd_mem_t*)lcd);
   uint8_t* fbuff = (uint8_t*)lcd_mem_init_drawing_fb(lcd, NULL);
   const uint8_t* src_p = glyph->data + glyph->w * src->y + src->x;
+  wh_t dst_offset = line_length;
   pixel_t pixel = color_to_pixel(color);
 
 #ifdef WITH_FAST_LCD_PORTRAIT
+  system_info_t* info = system_info();
   lcd_orientation_point_rotate_by_anticlockwise(&x, &y, info->lcd_orientation, lcd_get_width(lcd), lcd_get_height(lcd));
 
   switch (info->lcd_orientation)
   {
   case LCD_ORIENTATION_90:
-    dst_offset = 1;
-    d_offset = -lcd_get_physical_width(lcd);
+    d_offset = -line_length;
+    dst_offset = sizeof(pixel_t);
     break;
   case LCD_ORIENTATION_180:
-    dst_offset = -lcd_get_physical_width(lcd);
-    d_offset = -1;
+    dst_offset = -line_length;
+    d_offset = -sizeof(pixel_t);
     break;
   case LCD_ORIENTATION_270:
-    dst_offset = -1;
-    d_offset = lcd_get_physical_width(lcd);
+    d_offset = line_length;
+    dst_offset = -sizeof(pixel_t);
     break;
   default:
     break;
@@ -396,10 +404,10 @@ static ret_t lcd_mem_draw_glyph8(lcd_t* lcd, glyph_t* glyph, const rect_t* src, 
         color.rgba.a = a;
         *d = blend_pixel(*d, color);
       }
-      d += d_offset;
+      d = (pixel_t*)(((uint8_t*)d) + d_offset);
     }
     src_p += glyph_w;
-    dst_p += dst_offset;
+    dst_p = (pixel_t*)(((uint8_t*)dst_p) + dst_offset);
   }
 
   return RET_OK;
@@ -493,13 +501,13 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* src, c
 
 static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
+#ifndef WITH_GPU
   bitmap_format_t format = mem->format;
   uint32_t w = lcd_get_physical_width(lcd);
   uint32_t h = lcd_get_physical_height(lcd);
   uint32_t line_length = lcd_get_physical_line_length(mem);
   uint32_t* fbdata = (uint32_t*)lcd_mem_init_drawing_fb(lcd, NULL);
 
-#ifndef WITH_GPU
   if (mem->vgcanvas == NULL) {
     mem->vgcanvas = vgcanvas_create(w, h, line_length, format, fbdata);
     vgcanvas_clip_rect(mem->vgcanvas, 0, 0, w, h);
@@ -556,14 +564,30 @@ static ret_t lcd_mem_flush(lcd_t* lcd) {
   if (dirty_rects != NULL && dirty_rects->nr > 0) {
     if (dirty_rects->disable_multiple) {
       const rect_t* dr = (const rect_t*)&(dirty_rects->max);
+#ifdef WITH_FAST_LCD_PORTRAIT
       rect_t rr = lcd_orientation_rect_rotate_by_anticlockwise(dr, o, lcd_get_width(lcd), lcd_get_height(lcd));
       image_copy(&online_fb, &offline_fb, &rr, rr.x, rr.y);
+#else
+      if (o == LCD_ORIENTATION_0) {
+        image_copy(&online_fb, &offline_fb, dr, dr->x, dr->y);
+      } else {
+        image_rotate(&online_fb, &offline_fb, dr, o);
+      }
+#endif
     } else {
       uint32_t i = 0;
       for (i = 0; i < dirty_rects->nr; i++) {
         const rect_t* dr = (const rect_t*)dirty_rects->rects + i;
+#ifdef WITH_FAST_LCD_PORTRAIT
         rect_t rr = lcd_orientation_rect_rotate_by_anticlockwise(dr, o, lcd_get_width(lcd), lcd_get_height(lcd));
         image_copy(&online_fb, &offline_fb, &rr, rr.x, rr.y);
+#else
+        if (o == LCD_ORIENTATION_0) {
+          image_copy(&online_fb, &offline_fb, dr, dr->x, dr->y);
+        } else {
+          image_rotate(&online_fb, &offline_fb, dr, o);
+        }
+#endif
       }
     }
   }
