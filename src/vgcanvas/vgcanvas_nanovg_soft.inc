@@ -169,7 +169,11 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
       }
     }
   }
+
+#ifdef WITH_FAST_LCD_PORTRAIT
   assert(img->orientation == system_info()->lcd_orientation);
+#endif
+
   flag = (int)vgcanvas_nanovg_bitmap_flag_to_NVGimageFlags((bitmap_flag_t)(img->flags));
   image_orientation = vgcanvas_nanovg_bitmap_orientation_to_NVGorientation(img->orientation);
 
