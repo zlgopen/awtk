@@ -904,7 +904,7 @@ void* value_func(const value_t* v) {
 value_t* value_set_id(value_t* v, const char* value, uint32_t len) {
   return_value_if_fail(v != NULL && value != NULL, NULL);
   v->value.id.id = tk_strndup(value, len);
-  v->value.id.offset = -1;
+  v->value.id.index = -1;
   v->free_handle = TRUE;
 
   return value_init(v, VALUE_TYPE_ID);

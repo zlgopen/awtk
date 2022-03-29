@@ -27,7 +27,7 @@
 
 typedef struct _call_stack_frame_t {
   const char* name;
-  tk_object_t* locals;
+  darray_t* locals;
 } call_stack_frame_t;
 
 int32_t debugger_fscript_get_start_line(fscript_t* fscript) {
@@ -49,7 +49,7 @@ int32_t debugger_fscript_get_start_line(fscript_t* fscript) {
   return 0;
 }
 
-static call_stack_frame_t* call_stack_frame_create(const char* name, tk_object_t* locals) {
+static call_stack_frame_t* call_stack_frame_create(const char* name, darray_t* locals) {
   call_stack_frame_t* frame = TKMEM_ZALLOC(call_stack_frame_t);
   return_value_if_fail(frame != NULL, NULL);
 
@@ -67,8 +67,7 @@ static ret_t call_stack_frame_destroy(call_stack_frame_t* frame) {
   return RET_OK;
 }
 
-static ret_t debugger_fscript_enter_func(debugger_t* debugger, const char* name,
-                                         tk_object_t* locals) {
+static ret_t debugger_fscript_enter_func(debugger_t* debugger, const char* name, darray_t* locals) {
   call_stack_frame_t* frame = NULL;
   debugger_fscript_t* d = DEBUGGER_FSCRIPT(debugger);
   return_value_if_fail(d != NULL, RET_BAD_PARAMS);
@@ -305,6 +304,7 @@ static ret_t debugger_fscript_get_code(debugger_t* debugger, binary_data_t* code
 tk_object_t* debugger_fscript_get_local(debugger_t* debugger, uint32_t frame_index) {
   uint32_t index = 0;
   call_stack_frame_t* frame = NULL;
+  tk_object_t* locals = object_default_create();
   debugger_fscript_t* d = DEBUGGER_FSCRIPT(debugger);
   return_value_if_fail(d != NULL && d->fscript != NULL, NULL);
   return_value_if_fail(d->call_stack_frames.size > frame_index, NULL);
@@ -313,7 +313,17 @@ tk_object_t* debugger_fscript_get_local(debugger_t* debugger, uint32_t frame_ind
   frame = (call_stack_frame_t*)darray_get(&(d->call_stack_frames), index);
   return_value_if_fail(frame != NULL, NULL);
 
-  return TK_OBJECT_REF(frame->locals);
+  if (frame->locals != NULL) {
+    uint32_t i = 0;
+    for (i = 0; i < frame->locals->size; i++) {
+      named_value_t* iter = (named_value_t*)darray_get(frame->locals, i);
+      if (iter->value.type != VALUE_TYPE_INVALID) {
+        tk_object_set_prop(locals, iter->name, &(iter->value));
+      }
+    }
+  }
+
+  return locals;
 }
 
 tk_object_t* debugger_fscript_get_self(debugger_t* debugger) {
@@ -656,11 +666,7 @@ ret_t debugger_fscript_set_fscript(debugger_t* debugger, fscript_t* fscript) {
     fscript_set_print_func(fscript, debugger_fscript_print_func);
     fscript_set_on_error(fscript, debugger_fscript_on_error, d);
 
-    if (fscript->locals == NULL) {
-      /*fscript本身是延迟创建locals的，这会导致debugger拿不到locals对象，所以提前创建它。*/
-      fscript->locals = object_default_create();
-    }
-
+    fscript_ensure_locals(fscript);
     darray_clear(&(d->call_stack_frames));
     debugger_fscript_enter_func(debugger, "<root>", fscript->locals);
 

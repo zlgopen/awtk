@@ -165,7 +165,7 @@ typedef struct _sized_str_t {
 } sized_str_t;
 
 typedef struct _id_info_t {
-  uint32_t offset;
+  int32_t index;
   char* id;
 } id_info_t;
 

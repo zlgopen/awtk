@@ -177,7 +177,7 @@ struct _fscript_t {
   uint8_t loop_count;
 
   /*函数局部变量和参数*/
-  tk_object_t* locals;
+  darray_t* locals;
   /*脚本定义的函数*/
   tk_object_t* funcs_def;
 
@@ -485,6 +485,15 @@ typedef struct _fscript_hooks_t {
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t fscript_set_hooks(const fscript_hooks_t* hooks);
+
+/**
+ * @method fscript_ensure_locals
+ * export for debugger
+ * @param {fscript_t*} fscript 脚本引擎对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_ensure_locals(fscript_t* fscript);
 
 END_C_DECLS
 

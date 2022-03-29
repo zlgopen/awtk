@@ -439,19 +439,19 @@ TEST(FScript, bit_not) {
   fscript_eval(obj, "~(1)", &v);
   ASSERT_EQ(value_int(&v), ~1);
   value_reset(&v);
-  
+
   fscript_eval(obj, "~(u8(1))", &v);
   ASSERT_EQ(value_uint8(&v), 0xfe);
   value_reset(&v);
-  
+
   fscript_eval(obj, "~(u16(1))", &v);
   ASSERT_EQ(value_uint16(&v), 0xfffe);
   value_reset(&v);
-  
+
   fscript_eval(obj, "~(u32(1))", &v);
   ASSERT_EQ(value_uint32(&v), 0xfffffffe);
   value_reset(&v);
-  
+
   fscript_eval(obj, "~(u64(1))", &v);
   ASSERT_EQ(value_uint64(&v), 0xfffffffffffffffe);
   value_reset(&v);
@@ -1331,6 +1331,27 @@ TEST(FExr, repeat_statement13) {
   TK_OBJECT_UNREF(obj);
 }
 
+TEST(FExr, repeat_statement14) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, 
+"var s = 0;\
+var i = 0;\
+repeat(i, 0, 100, 1) {;\
+  s = s + i;\
+}\
+repeat(a, 0, 100, 1) {\
+  s = s + a;\
+}\
+print(s)\
+s", &v);
+  ASSERT_EQ(value_int(&v), 9900);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
 TEST(FExr, while_statement2) {
   value_t v;
   tk_object_t* obj = object_default_create();
@@ -2062,6 +2083,25 @@ TEST(FExr, for_in1) {
   TK_OBJECT_UNREF(obj);
 }
 
+TEST(FExr, for_in11) {
+  const char* str =
+      "\
+  var i = 0;\
+  var b = 0;\
+  var a = array_create(1, 2, 3, 4, 5,6)\
+  for_in(i, a) {\
+    b = b + i;\
+  }\
+  b";
+
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, str, &v1);
+  ASSERT_EQ(value_int(&v1), 21);
+
+  TK_OBJECT_UNREF(obj);
+}
+
 TEST(FExr, for_in2) {
   const char* str =
       "\
@@ -2457,48 +2497,47 @@ TEST(FScript, crc32) {
   fscript_eval(obj, "crc32(a)", &v);
   ASSERT_EQ(907060870, value_uint32(&v));
   value_reset(&v);
-  
+
   fscript_eval(obj, "crc32(a, 5)", &v);
   ASSERT_EQ(907060870, value_uint32(&v));
   value_reset(&v);
-  
+
   fscript_eval(obj, "crc32(a, -1)", &v);
   ASSERT_EQ(907060870, value_uint32(&v));
   value_reset(&v);
-  
+
   fscript_eval(obj, "crc32(a, 1)", &v);
   ASSERT_EQ(2439710439, value_uint32(&v));
   value_reset(&v);
- 
-  
+
   tk_object_set_prop_pointer(obj, "a", (void*)"hello");
   fscript_eval(obj, "crc32(a, 5)", &v);
   ASSERT_EQ(907060870, value_uint32(&v));
   value_reset(&v);
-  
+
   fscript_eval(obj, "crc32(a, 1)", &v);
   ASSERT_EQ(2439710439, value_uint32(&v));
   value_reset(&v);
- 
+
   value_set_binary_data(&v, (void*)"hello", 5);
   tk_object_set_prop(obj, "a", &v);
 
   fscript_eval(obj, "crc32(a)", &v);
   ASSERT_EQ(907060870, value_uint32(&v));
   value_reset(&v);
-  
+
   fscript_eval(obj, "crc32(a, 5)", &v);
   ASSERT_EQ(907060870, value_uint32(&v));
   value_reset(&v);
-  
+
   fscript_eval(obj, "crc32(a, -1)", &v);
   ASSERT_EQ(907060870, value_uint32(&v));
   value_reset(&v);
-  
+
   fscript_eval(obj, "crc32(a, 1)", &v);
   ASSERT_EQ(2439710439, value_uint32(&v));
   value_reset(&v);
-  
+
   TK_OBJECT_UNREF(obj);
 }
 
@@ -2510,7 +2549,7 @@ TEST(FScript, binary_len) {
   fscript_eval(obj, "len(a)", &v);
   ASSERT_EQ(5, value_uint32(&v));
   value_reset(&v);
-  
+
   TK_OBJECT_UNREF(obj);
 }
 
@@ -2519,6 +2558,45 @@ TEST(FScript, local_vars) {
   tk_object_t* obj = object_default_create();
 
   fscript_eval(obj, "var a = 1; var b =2; var c = a + b;c", &v);
+  ASSERT_EQ(value_int(&v), 3);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, local_unset_vars) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "var a = 1; var b =2; var c = a + b;unset(a); unset(b);c", &v);
+  ASSERT_EQ(value_int(&v), 3);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, func_call_multi) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj,
+               "function foo1(a) {return a};function bar(b) {return b;}; function hello(a, b) "
+               "{return a + b;}; var c = hello(foo1(1)+foo1(2)+foo1(3), bar(2)*2+6);c",
+               &v);
+  ASSERT_EQ(value_int(&v), 16);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, func_no_args) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj,
+               "function foo1() {return 1};function bar() {return 2;}; function hello(a, b) "
+               "{return a + b;}; var c = hello(foo1(), bar());c",
+               &v);
   ASSERT_EQ(value_int(&v), 3);
   value_reset(&v);
 
