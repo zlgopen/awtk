@@ -177,6 +177,12 @@ static ret_t fs_os_get_temp_path(fs_t* fs, char path[MAX_PATH + 1]) {
   return_value_if_fail(rfs, RET_BAD_PARAMS);
   return rfs->get_temp_path(rfs, path);
 }
+
+static ret_t fs_os_get_user_storage_path(fs_t* fs, char path[MAX_PATH + 1]) {
+  fs_t* rfs = s_items[0].value;
+  return_value_if_fail(rfs, RET_BAD_PARAMS);
+  return rfs->get_user_storage_path(rfs, path);
+}
 /*----------------------------------------------------------------------------*/
 typedef fs_t* (*fs_create_t)(const char* mnt);
 
@@ -218,6 +224,7 @@ static const fs_t s_os_fs = {
     .get_cwd = fs_os_get_cwd,
     .get_exe = fs_os_get_exe,
     .get_temp_path = fs_os_get_temp_path,
+    .get_user_storage_path = fs_os_get_user_storage_path,
 };
 
 fs_t* os_fs(void) {

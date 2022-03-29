@@ -37,7 +37,7 @@
 #include "tkc/path.h"
 
 #ifndef tk_log_info_lf
-#define tk_log_info_lf(fmt, args...)
+#define tk_log_info_lf(fmt, args...) log_info(fmt "\n", ##args)
 #define tk_log_info_htlf(header, fmt, args...)
 #define tk_log_warn_htlf(header, fmt, args...)
 #endif
@@ -128,7 +128,7 @@ ret_t platform_prepare(void) {
   mem_init();
   date_time_set_impl(date_time_get_now_impl);
   writer_reader_init();
-  fs_os_register("/lfs", fs_aworks_create); /* littlefs */
+  fs_aworks_init();
   fscript_register_func("memdump", fs_func_memdump);
 
   fs_get_exe(os_fs(), path);
@@ -136,6 +136,9 @@ ret_t platform_prepare(void) {
 
   fs_get_temp_path(os_fs(), path);
   tk_log_info_lf("fs_get_temp_path('%s').", path);
+
+  fs_get_user_storage_path(os_fs(), path);
+  tk_log_info_lf("fs_get_user_storage_path('%s').", path);
 
   path_app_root(path);
   tk_log_info_lf("path_app_root('%s').", path);
@@ -252,19 +255,6 @@ static void platform_test(void) {
     tk_thread_join(p1);
     tk_thread_destroy(p1);
     tk_log_info_htlf("[TEST]", "tk_thread: stop  %u ms ", (unsigned int)time_now_ms());
-  }
-
-  if (1) {
-    char* p;
-    uint32_t sz;
-    if (!dir_exist("/lfs/test_dir")) {
-      fs_create_dir(os_fs(), "/lfs/test_dir");
-    }
-    ENSURE(file_write("/lfs/test_dir/tkc_test", "abc123456", tk_strlen("abc123456") + 1) == RET_OK);
-    p = file_read("/lfs/test_dir/tkc_test", &sz);
-    ENSURE(p && sz >= tk_strlen("abc123456") + 1 &&
-           tk_str_eq_with_len(p, "abc123456", tk_strlen("abc123456") + 1));
-    TKMEM_FREE(p);
   }
 
   tk_log_info_htlf("[UTEST]", "pass.");

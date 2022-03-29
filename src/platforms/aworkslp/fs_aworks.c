@@ -29,6 +29,7 @@
 #include "aw_ioctl.h"
 #include "aw_stropts.h"
 #include "aw_fs_type.h"
+#include "aw_autoconf.h"
 
 #include "tkc/fs.h"
 #include "tkc/mem.h"
@@ -36,17 +37,27 @@
 #include "tkc/utils.h"
 
 #ifndef tk_log_info_lf
-#define tk_log_info_lf(fmt, args...)
-#define tk_log_info_htlf(header, fmt, args...)
+#define tk_log_info_lf(fmt, args...) \
+  log_info("[%dL %s] " fmt " \r\n", __LINE__, __FUNCTION__, ##args)
+#define tk_log_info_htlf(header, fmt, args...) tk_log_info_lf(fmt, ##args)
 #endif
 
-#ifndef TKC_FS_EXE_PATH
+
+#if CONFIG_HC32F4A0_CATNET_BOARD || CONFIG_M105X_EV_BOARD_LP
 #define TKC_FS_EXE_PATH "/lfs/bin/app/"
-#endif
-
-#ifndef TKC_FS_TEMP_PATH
 #define TKC_FS_TEMP_PATH "/lfs/tmp/"
-#endif
+#define TKC_FS_USER_STORAGE_PATH "/lfs/usr/"
+
+#elif CONFIG_PLATFORM_UIS8910DM_AWORKS_LP
+#define TKC_FS_EXE_PATH "/sd0/bin/app"
+#define TKC_FS_TEMP_PATH "/sd0/tmp"
+#define TKC_FS_USER_STORAGE_PATH "/sd0/usr"
+
+#else
+#define TKC_FS_EXE_PATH "/none"
+#define TKC_FS_TEMP_PATH "/none"
+#define TKC_FS_USER_STORAGE_PATH "/none"
+#endif /* CONFIG_HC32F4A0_CATNET_BOARD */
 
 /*----------------------------------------------------------------------------*/
 /* 文件操作	                                                                  */
@@ -433,7 +444,8 @@ static ret_t fs_os_get_exe(fs_t* fs, char path[MAX_PATH + 1]) {
     tk_log_info_lf("create dir '%s'", path);
   }
   return_value_if_fail(path_exist(path), RET_FAIL);
-
+  path[tk_strlen(path)] = '/';
+  path[tk_strlen(path) + 1] = '\0';
   return RET_OK;
 }
 
@@ -453,6 +465,20 @@ static ret_t fs_os_get_temp_path(fs_t* fs, char path[MAX_PATH + 1]) {
     tk_log_info_lf("create dir '%s'", path);
   }
   return_value_if_fail(path_exist(path), RET_FAIL);
+  path[tk_strlen(path)] = '/';
+  path[tk_strlen(path) + 1] = '\0';
+  return RET_OK;
+}
+
+static ret_t fs_os_get_user_storage_path(fs_t* fs, char path[MAX_PATH + 1]) {
+  tk_strcpy(path, TKC_FS_USER_STORAGE_PATH);
+  if (!path_exist(path)) {
+    fs_create_dir_r(os_fs(), path);
+    tk_log_info_lf("create dir '%s'", path);
+  }
+  return_value_if_fail(path_exist(path), RET_FAIL);
+  path[tk_strlen(path)] = '/';
+  path[tk_strlen(path) + 1] = '\0';
   return RET_OK;
 }
 /*----------------------------------------------------------------------------*/
@@ -474,12 +500,14 @@ static const fs_t s_os_fs = {
     .get_cwd = fs_os_get_cwd,
     .get_exe = fs_os_get_exe,
     .get_temp_path = fs_os_get_temp_path,
+    .get_user_storage_path = fs_os_get_user_storage_path,
 };
-
+/*----------------------------------------------------------------------------*/
 #define __MAKE_SYSFILE_NAME "~systemmkiffd.reserved"
-#define __LFFS_DEVNAME "/dev/is25lpx_partition_1"
 
+#if CONFIG_HC32F4A0_CATNET_BOARD
 #define __LFS_DEVNAME "/dev/is25lpx_partition_0"
+#define __LFFS_DEVNAME "/dev/is25lpx_partition_1"
 
 fs_t* fs_aworks_create(const char* mnt) {
   int ret;
@@ -504,6 +532,7 @@ fs_t* fs_aworks_create(const char* mnt) {
       ret = aw_create("/lffs/" __MAKE_SYSFILE_NAME, AW_S_IRWXU | AW_S_IRWXG | AW_S_IRWXO);
       goto_error_if_fail(ret == 0);
     }
+    tk_log_info_lf("mount %s", mnt);
   } else if (tk_str_eq("/lfs", mnt)) {
     ret = aw_mount(mnt, __LFS_DEVNAME, AW_LITTLEFS_TYPE_NAME, 0, NULL);
     if (ret != 0) {
@@ -516,7 +545,9 @@ fs_t* fs_aworks_create(const char* mnt) {
       ret = aw_mount(mnt, __LFS_DEVNAME, AW_LITTLEFS_TYPE_NAME, 0, NULL);
       goto_error_if_fail(ret == 0);
     }
+    tk_log_info_lf("mount %s", mnt);
   } else if (tk_str_eq("/dev", mnt)) {
+    tk_log_info_lf("mount %s", mnt);
     return &s_os_fs;
   } else {
     return_value_if_fail(!"Not support the mnt!", NULL);
@@ -528,7 +559,75 @@ error:
   return NULL;
 }
 
-/*----------------------------------------------------------------------------*/
+ret_t fs_aworks_init(void) {
+  return fs_os_register("/lfs", fs_aworks_create); /* littlefs */
+}
+
+#elif CONFIG_M105X_EV_BOARD_LP
+#define __LFS_DEVNAME "/dev/spiflash"
+
+fs_t* fs_aworks_create(const char* mnt) {
+  int ret;
+  struct aw_fs_format_arg fmt = {"awdisk", 0, 1};
+  struct aw_stat file_stat;
+  char stmp[64];
+  memset(stmp, 0, sizeof(stmp));
+
+  if (tk_str_eq("/lfs", mnt)) {
+    ret = aw_mount(mnt, __LFS_DEVNAME, AW_LITTLEFS_TYPE_NAME, 0, NULL);
+    if (ret != 0) {
+      aw_umount(mnt, 0);
+      ret = aw_make_fs(__LFS_DEVNAME, AW_LITTLEFS_TYPE_NAME, &fmt);
+      if (ret != AW_OK) {
+        ret = aw_make_fs(__LFS_DEVNAME, AW_LITTLEFS_TYPE_NAME, NULL);
+        goto_error_if_fail(ret == 0);
+      }
+      ret = aw_mount(mnt, __LFS_DEVNAME, AW_LITTLEFS_TYPE_NAME, 0, NULL);
+      goto_error_if_fail(ret == 0);
+    }
+    tk_log_info_lf("mount %s", mnt);
+  } else if (tk_str_eq("/dev", mnt)) {
+    tk_log_info_lf("mount %s", mnt);
+    return &s_os_fs;
+  } else {
+    return_value_if_fail(!"Not support the mnt!", NULL);
+  }
+  return &s_os_fs;
+
+error:
+  aw_umount(mnt, 0);
+  return NULL;
+}
+
+ret_t fs_aworks_init(void) {
+  return fs_os_register("/lfs", fs_aworks_create); /* littlefs */
+}
+
+#elif CONFIG_PLATFORM_UIS8910DM_AWORKS_LP
+
+fs_t* fs_aworks_create(const char* mnt) {
+  int ret;
+  struct aw_fs_format_arg fmt = {"awdisk", 0, 1};
+  struct aw_stat file_stat;
+  char stmp[64];
+  memset(stmp, 0, sizeof(stmp));
+
+  if (tk_str_eq("/sd0", mnt)) {
+    /* ZC1上插入了SD卡，板子启动后默认的会进行fatfs文件系统进行挂载，且挂载点为"/sd0" */
+    tk_log_info_lf("mount %s", mnt);
+    return &s_os_fs;
+  } else if (tk_str_eq("/dev", mnt)) {
+    tk_log_info_lf("mount %s", mnt);
+    return &s_os_fs;
+  } else {
+    return_value_if_fail(!"Not support the mnt!", NULL);
+  }
+  return &s_os_fs;
+
+error:
+  return NULL;
+}
+
 #if defined(UTEST_ENABLE)
 void fs_aworks_utest(void) {
   char* p;
@@ -546,5 +645,21 @@ void fs_aworks_utest(void) {
 }
 #else
 void fs_aworks_utest(void) {
+}
+#endif /* defined(UTEST_ENABLE) */
+
+ret_t fs_aworks_init(void) {
+  return_value_if_fail(fs_os_register("/sd0", fs_aworks_create) == RET_OK, RET_FAIL);
+  fs_aworks_utest();
+  return RET_OK;
+}
+
+#else
+fs_t* fs_aworks_create(const char* mnt) {
+  return NULL;
+}
+
+ret_t fs_aworks_init(void) {
+  return RET_FAIL;
 }
 #endif
