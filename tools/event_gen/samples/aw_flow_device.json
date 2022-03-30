@@ -1,0 +1,34 @@
+[
+{
+  "name":"data_comming_event",
+  "desc":"收到AWFlow device的数据",
+  "props": [
+    {   
+      "name":"client",
+      "type":"aw_flow_client_t*",
+      "desc":"客户端对象"
+    },  
+    {   
+      "name":"action",
+      "type":"const char*",
+      "desc":"请求/响应的名称"
+    },   
+    {   
+      "name":"data",
+      "type":"object_t*",
+      "desc":"数据"
+    }   
+  ]
+},
+{
+  "name":"found_device_event",
+  "desc":"搜索到设备",
+  "props": [
+    {   
+      "name":"url",
+      "type":"const char*",
+      "desc":"URL"
+    }   
+  ]
+}
+]
