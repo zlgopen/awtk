@@ -1171,9 +1171,9 @@ TEST(FExpr, not_eq) {
 TEST(FScript, global_func) {
   value_t v;
   tk_object_t* obj = object_default_create();
-  fscript_register_func("foo", func_foo);
+  fscript_register_func("foobar", func_foo);
 
-  fscript_eval(obj, "foo()", &v);
+  fscript_eval(obj, "foobar()", &v);
   ASSERT_EQ(value_int(&v), 123);
   value_reset(&v);
 
@@ -2576,6 +2576,39 @@ TEST(FScript, local_unset_vars) {
   TK_OBJECT_UNREF(obj);
 }
 
+TEST(FScript, local_multi_level) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "var obj=object_create();obj.name='hello';obj.age=100;obj.age", &v);
+  ASSERT_EQ(value_int(&v), 100);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, local_multi_level2) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj,
+               "\
+var a = object_create();\
+a.age=100;\
+a.name = 'hello';\
+a.wife = object_create();\
+a.wife.name = 'world';\
+a.wife.age = 99;\
+var b = a.age + a.wife.age;\
+b\
+",
+               &v);
+  ASSERT_EQ(value_int(&v), 199);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
 TEST(FScript, func_call_multi) {
   value_t v;
   tk_object_t* obj = object_default_create();
@@ -2599,6 +2632,46 @@ TEST(FScript, func_no_args) {
                "{return a + b;}; var c = hello(foo1(), bar());c",
                &v);
   ASSERT_EQ(value_int(&v), 3);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, module_str) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj,
+"\
+var a = require_str('\
+function foo(a, b) {\
+  return a + b;\
+}\
+')\
+var b = a.foo(100, 99);\
+b\
+",
+               &v);
+  ASSERT_EQ(value_int(&v), 199);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, module_file) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj,
+"\
+var a = require('./tests/fscripts/foo.fs')\
+var b = a.foo(100, 99);\
+var c = a.bar(100, 99);\
+var d = b + c;\
+d\
+",
+               &v);
+  ASSERT_EQ(value_int(&v), 200);
   value_reset(&v);
 
   TK_OBJECT_UNREF(obj);

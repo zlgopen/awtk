@@ -48,6 +48,7 @@ ret_t fscript_ext_init(void);
 #define FSCRIPT_WITH_STREAM_INET 1
 #define FSCRIPT_WITH_STREAM_SERIAL 1
 #define FSCRIPT_WITH_DATE_TIME 1
+#define FSCRIPT_WITH_MODULE 1
 
 #if !defined(TKC_ONLY) || defined(WITH_AWTK)
 #define FSCRIPT_WITH_WIDGET 1

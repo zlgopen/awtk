@@ -820,6 +820,8 @@ const char* value_str_ex(const value_t* v, char* buff, uint32_t size) {
     }
   } else if (v->type == VALUE_TYPE_FUNC) {
     return "func";
+  } else if (v->type == VALUE_TYPE_FUNC_DEF) {
+    return "func_def";
   } else if (v->type == VALUE_TYPE_POINTER) {
     tk_snprintf(buff, size, "%p", value_pointer(v));
   } else if (v->type == VALUE_TYPE_OBJECT) {
@@ -895,20 +897,21 @@ const char* value_id(const value_t* v) {
   return v->value.id.id;
 }
 
-void* value_func(const value_t* v) {
-  return_value_if_fail(v != NULL && v->type == VALUE_TYPE_FUNC, NULL);
-
-  return v->value.func.func;
-}
-
 value_t* value_set_id(value_t* v, const char* value, uint32_t len) {
   return_value_if_fail(v != NULL && value != NULL, NULL);
   v->value.id.id = tk_strndup(value, len);
   v->value.id.index = -1;
+  v->value.id.suboffset = 0;
   value_init(v, VALUE_TYPE_ID);
   v->free_handle = TRUE;
 
   return v;
+}
+
+void* value_func(const value_t* v) {
+  return_value_if_fail(v != NULL && v->type == VALUE_TYPE_FUNC, NULL);
+
+  return v->value.func.func;
 }
 
 value_t* value_set_func(value_t* v, void* value) {
@@ -918,4 +921,18 @@ value_t* value_set_func(value_t* v, void* value) {
   v->value.func.memo = 0;
 
   return value_init(v, VALUE_TYPE_FUNC);
+}
+
+void* value_func_def(const value_t* v) {
+  return_value_if_fail(v != NULL && v->type == VALUE_TYPE_FUNC_DEF, NULL);
+
+  return v->value.ptr;
+}
+
+value_t* value_set_func_def(value_t* v, void* value) {
+  return_value_if_fail(v != NULL && value != NULL, NULL);
+
+  v->value.ptr = value;
+
+  return value_init(v, VALUE_TYPE_FUNC_DEF);
 }
