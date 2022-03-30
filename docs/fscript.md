@@ -1546,6 +1546,7 @@ runFScript 的第二个参数可以指定运行次数，方便测量某个函数
 * [单一类型的动态数组扩展模块](fscript_typed_array.md)
 * [写缓冲区扩展模块](fscript_wbuffer.md)
 * [读缓冲区扩展模块](fscript_rbuffer.md)
+* [module扩展模块](fscript_module.md)
 
 ### 8. 更多示例
 
