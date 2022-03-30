@@ -2897,8 +2897,6 @@ static fscript_func_call_t* fscript_func_call_create(fscript_parser_t* parser, c
     call->ctx = tk_strdup(name);
   }
 
-  func_args_init(&(call->args), 2);
-
   return call;
 }
 
