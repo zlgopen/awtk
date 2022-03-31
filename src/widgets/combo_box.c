@@ -426,6 +426,7 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
         return RET_STOP;
       }
       combo_box->pressed = FALSE;
+      break;
     }
     case EVT_POINTER_LEAVE:
       return combo_box_update_status(widget);
