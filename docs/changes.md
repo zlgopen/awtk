@@ -5,6 +5,7 @@
   * 修复combox的鼠标弹起后无法释放拖拽状态的问题（感谢智明提供补丁）。
   * 给edit、mledit和combo\_box增加了empty\_over状态（感谢雨欣提供补丁）
   * 修复demoui中的多行编辑器右侧的字符会被遮挡的问题（感谢兆坤提供补丁）
+  * 补充demoui中edit、mledit和combo_\box中empty\_over和over状态的样式 （感谢兆坤提供补丁）
 
 2022/03/30
   * fscript 支持延迟解析函数。

@@ -340,9 +340,11 @@
 <combo_box>
   <style name="default" bg_color="#191919" border_color="#4D4D4D" font_size="22" margin_left="8" selected_bg_color="#709918" selected_text_color="#FFFFFF" text_align_h="left" text_color="#ffffff">
     <normal/>
+    <over/>
     <changed border_color="#709918"/>
     <disable bg_color="#19191966" border_color="#4D4D4D66" text_color="#ffffff66"/>
     <empty text_color="#555555"/>
+    <empty_over text_color="#555555"/>
     <empty_focus text_color="#555555" border_color="#709918"/>
     <error border_color="#FF0000"/>
     <focused border_color="#709918"/>
@@ -352,9 +354,11 @@
 <combo_box_ex>
   <style name="default" bg_color="#191919" border_color="#4D4D4D" font_size="22" margin_left="8" selected_bg_color="#709918" selected_text_color="#FFFFFF" text_align_h="left" text_color="#ffffff">
     <normal/>
+    <over/>
     <changed border_color="#709918"/>
     <disable bg_color="#19191966" border_color="#4D4D4D66" text_color="#ffffff66"/>
     <empty text_color="#555555"/>
+    <empty_over text_color="#555555"/>
     <empty_focus text_color="#555555" border_color="#709918"/>
     <error border_color="#FF0000"/>
     <focused border_color="#709918"/>
@@ -420,9 +424,11 @@
 <edit>
   <style name="default" bg_color="#191919" border_color="#4D4D4D" font_size="22" margin_left="8" selected_bg_color="#709918" selected_text_color="#FFFFFF" text_align_h="left" text_color="#ffffff">
     <normal/>
+    <over/>
     <changed/>
     <disable bg_color="#19191966" border_color="#4D4D4D66" text_color="#CCCCCC66"/>
     <empty text_color="#555555"/>
+    <empty_over text_color="#555555"/>
     <empty_focus text_color="#555555" border_color="#709918"/>
     <error border_color="#FF0000"/>
     <focused border_color="#709918"/>
@@ -547,8 +553,10 @@
 <mledit>
   <style name="default" bg_color="#1a1a1a" border="top" border_color="black" selected_bg_color="#709918" selected_text_color="#ffffff" text_align_h="left" text_color="#ffffff" margin_left="34" margin_right="18" font_size="22">
     <normal/>
+    <over/>
     <disable bg_color="#1a1a1a66" text_color="#ffffff66"/>
     <empty text_color="#555555"/>
+    <empty_over text_color="#555555"/>
     <empty_focus text_color="#555555"/>
     <error text_color="#FF0000"/>
     <focused/>
