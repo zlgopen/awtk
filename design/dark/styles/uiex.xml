@@ -545,7 +545,7 @@
   </style>
 </list_view_h>
 <mledit>
-  <style name="default" bg_color="#1a1a1a" border="top" border_color="black" selected_bg_color="#709918" selected_text_color="#ffffff" text_align_h="left" text_color="#ffffff" margin_left="34" font_size="22">
+  <style name="default" bg_color="#1a1a1a" border="top" border_color="black" selected_bg_color="#709918" selected_text_color="#ffffff" text_align_h="left" text_color="#ffffff" margin_left="34" margin_right="18" font_size="22">
     <normal/>
     <disable bg_color="#1a1a1a66" text_color="#ffffff66"/>
     <empty text_color="#555555"/>

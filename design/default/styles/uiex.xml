@@ -530,7 +530,7 @@
   </style>
 </list_view_h>
 <mledit>
-  <style name="default" bg_color="#FFFFFF" border="top" border_color="#CCCCCC" font_size="22" margin_left="34" selected_bg_color="#709918" selected_text_color="#FFFFFF" text_align_h="left" text_color="#000000">
+  <style name="default" bg_color="#FFFFFF" border="top" border_color="#CCCCCC" font_size="22" margin_left="34" margin_right="18" selected_bg_color="#709918" selected_text_color="#FFFFFF" text_align_h="left" text_color="#000000">
     <normal/>
     <disable bg_color="#FFFFFF66" text_color="#00000066"/>
     <empty text_color="#ABABAB"/>
