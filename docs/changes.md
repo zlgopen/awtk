@@ -3,6 +3,7 @@
   * 增加带统计功能的stream （感谢林福提供)
   * 增加移除和替换 qaction 的 action\_darray\_thread（感谢林福提供)
   * 修复combox的鼠标弹起后无法释放拖拽状态的问题（感谢智明提供补丁）。
+  * 给edit、mledit和combo_box增加了empty_over状态（感谢雨欣提供补丁）
 
 2022/03/30
   * fscript 支持延迟解析函数。

@@ -1469,6 +1469,12 @@ typedef enum _window_closable_t {
 #define WIDGET_STATE_EMPTY_FOCUS "empty_focus"
 
 /**
+ * @const WIDGET_STATE_EMPTY_OVER
+ * 编辑器无内容同时指针悬浮的状态。
+ */
+#define WIDGET_STATE_EMPTY_OVER "empty_over"
+
+/**
  * @const WIDGET_STATE_ERROR
  * 输入错误状态。
  */
