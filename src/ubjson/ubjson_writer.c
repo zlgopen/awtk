@@ -283,15 +283,28 @@ ret_t ubjson_writer_write_kv_value(ubjson_writer_t* writer, const char* key, val
     } else {
       return ubjson_writer_write_false(writer);
     }
-  } else if (value->type == VALUE_TYPE_STRING) {
+  } else if (value->type == VALUE_TYPE_STRING) { 
     return ubjson_writer_write_str(writer, value_str(value));
   } else if (value->type == VALUE_TYPE_BINARY) {
     binary_data_t* data = value_binary_data(value);
     return ubjson_writer_write_str_len(writer, data->data, data->size);
   } else if (value->type == VALUE_TYPE_OBJECT) {
     return ubjson_writer_write_object(writer, value_object(value));
+  } else if(value->type == VALUE_TYPE_FLOAT || value->type == VALUE_TYPE_DOUBLE) {
+    return ubjson_writer_write_float64(writer, value_double(value));
+  } else if(value->type == VALUE_TYPE_FLOAT32) {
+    return ubjson_writer_write_float32(writer, value_float32(value));
+  } else if(value->type == VALUE_TYPE_INT8 || value->type == VALUE_TYPE_UINT8) {
+    return ubjson_writer_write_int8(writer, value_int8(value));
+  } else if(value->type == VALUE_TYPE_INT16 || value->type == VALUE_TYPE_UINT16) {
+    return ubjson_writer_write_int16(writer, value_int16(value));
+  } else if(value->type == VALUE_TYPE_INT32 || value->type == VALUE_TYPE_UINT32) {
+    return ubjson_writer_write_int32(writer, value_int32(value));
+  } else if(value->type == VALUE_TYPE_INT64 || value->type == VALUE_TYPE_UINT64) {
+    return ubjson_writer_write_int64(writer, value_int64(value));
   } else {
-    return ubjson_writer_write_int(writer, value_int(value));
+    log_debug("not supported type\n");
+    return RET_OK;
   }
 }
 

@@ -213,3 +213,60 @@ TEST(UBJsonParser, array_embedded_obj) {
 
   tk_object_unref(obj);
 }
+
+TEST(UBJsonParser, ubjson_writer_write_kv_value) {
+  uint8_t buff[256];
+  wbuffer_t wb;
+  value_t v;
+  ubjson_writer_t ub;
+  tk_object_t* obj = object_default_create();
+  wbuffer_init(&wb, buff, sizeof(buff));
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+
+  ASSERT_EQ(ubjson_writer_write_object_begin(&ub), RET_OK);
+  value_set_float32(&v, 1.5);
+  ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "f32", &v), RET_OK);
+
+  value_set_double(&v, 2.5);
+  ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "f64", &v), RET_OK);
+  
+  value_set_int8(&v, 3);
+  ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "int8", &v), RET_OK);
+  
+  value_set_int16(&v, 4);
+  ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "int16", &v), RET_OK);
+  
+  value_set_int32(&v, 5);
+  ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "int32", &v), RET_OK);
+  
+  value_set_int64(&v, 6);
+  ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "int64", &v), RET_OK);
+  
+  value_set_uint8(&v, 7);
+  ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "uint8", &v), RET_OK);
+  
+  value_set_uint16(&v, 8);
+  ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "uint16", &v), RET_OK);
+  
+  value_set_uint32(&v, 9);
+  ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "uint32", &v), RET_OK);
+  
+  value_set_uint64(&v, 10);
+  ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "uint64", &v), RET_OK);
+
+  ASSERT_EQ(ubjson_writer_write_object_end(&ub), RET_OK);
+
+  obj = object_from_ubjson(wb.data, wb.cursor);
+  ASSERT_EQ(tk_object_get_prop_int8(obj, "int8", 0), 3);
+  ASSERT_EQ(tk_object_get_prop_int16(obj, "int16", 0), 4);
+  ASSERT_EQ(tk_object_get_prop_int32(obj, "int32", 0), 5);
+  ASSERT_EQ(tk_object_get_prop_int64(obj, "int64", 0), 6);
+  ASSERT_EQ(tk_object_get_prop_uint8(obj, "uint8", 0), 7);
+  ASSERT_EQ(tk_object_get_prop_uint16(obj, "uint16", 0), 8);
+  ASSERT_EQ(tk_object_get_prop_uint32(obj, "uint32", 0), 9);
+  ASSERT_EQ(tk_object_get_prop_uint64(obj, "uint64", 0), 10);
+  ASSERT_EQ(tk_object_get_prop_float(obj, "f32", 0), 1.5);
+  ASSERT_EQ(tk_object_get_prop_double(obj, "f64", 0), 2.5);
+
+  tk_object_unref(obj);
+}
