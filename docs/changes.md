@@ -1,4 +1,7 @@
 # 最新动态
+2022/04/01
+  * 完善给edit、mledit和combo\_box增加了empty\_over状态（感谢雨欣提供补丁）
+
 2022/03/31
   * 增加带统计功能的stream （感谢林福提供)
   * 增加移除和替换 qaction 的 action\_darray\_thread（感谢林福提供)

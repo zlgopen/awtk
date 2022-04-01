@@ -510,8 +510,6 @@ static ret_t mledit_update_status(widget_t* widget) {
   if (widget->text.size == 0) {
     if (widget->focused) {
       widget_set_state(widget, WIDGET_STATE_EMPTY_FOCUS);
-    } else if (tk_str_eq(widget->state, WIDGET_STATE_OVER)) {
-      widget_set_state(widget, WIDGET_STATE_EMPTY_OVER);
     } else {
       widget_set_state(widget, WIDGET_STATE_EMPTY);
     }
@@ -618,8 +616,11 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_POINTER_ENTER:
-      widget_set_state(widget, WIDGET_STATE_OVER);
-      mledit_update_status(widget);
+      if (widget->text.size == 0) {
+        widget_set_state(widget, WIDGET_STATE_EMPTY_OVER);
+      } else {
+        widget_set_state(widget, WIDGET_STATE_OVER);
+      }
       break;
     case EVT_POINTER_DOWN: {
       pointer_event_t evt = *(pointer_event_t*)e;
