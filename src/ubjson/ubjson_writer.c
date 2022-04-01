@@ -303,8 +303,9 @@ ret_t ubjson_writer_write_kv_value(ubjson_writer_t* writer, const char* key, val
   } else if(value->type == VALUE_TYPE_INT64 || value->type == VALUE_TYPE_UINT64) {
     return ubjson_writer_write_int64(writer, value_int64(value));
   } else {
+    char str[64];
     log_debug("not supported type\n");
-    return RET_OK;
+    return ubjson_writer_write_str(writer, value_str_ex(value, str, sizeof(str)-1));
   }
 }
 
