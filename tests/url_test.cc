@@ -89,7 +89,7 @@ TEST(URL, http2) {
   url_t* url = url_create("http://www.zlg.cn/abc");
   ASSERT_STREQ(url->schema, "http");
   ASSERT_STREQ(url->host, "www.zlg.cn");
-  ASSERT_STREQ(url->path, "abc");
+  ASSERT_STREQ(url->path, "/abc");
   ASSERT_EQ(url->params == NULL, true);
   ASSERT_EQ(url->user_name == NULL, true);
   ASSERT_EQ(url->password == NULL, true);
@@ -113,7 +113,7 @@ TEST(URL, http4) {
   url_t* url = url_create("http://www.zlg.cn/abc?name=jim");
   ASSERT_STREQ(url->schema, "http");
   ASSERT_STREQ(url->host, "www.zlg.cn");
-  ASSERT_STREQ(url->path, "abc");
+  ASSERT_STREQ(url->path, "/abc");
   ASSERT_EQ(url->params != NULL, true);
   ASSERT_EQ(url->user_name == NULL, true);
   ASSERT_EQ(url->password == NULL, true);
@@ -126,7 +126,7 @@ TEST(URL, http5) {
   url_t* url = url_create("http://www.zlg.cn/abc?name=jim&");
   ASSERT_STREQ(url->schema, "http");
   ASSERT_STREQ(url->host, "www.zlg.cn");
-  ASSERT_STREQ(url->path, "abc");
+  ASSERT_STREQ(url->path, "/abc");
   ASSERT_EQ(url->params != NULL, true);
   ASSERT_EQ(url->user_name == NULL, true);
   ASSERT_EQ(url->password == NULL, true);
@@ -139,7 +139,7 @@ TEST(URL, http6) {
   url_t* url = url_create("http://www.zlg.cn/abc?name=jim&age=100");
   ASSERT_STREQ(url->schema, "http");
   ASSERT_STREQ(url->host, "www.zlg.cn");
-  ASSERT_STREQ(url->path, "abc");
+  ASSERT_STREQ(url->path, "/abc");
   ASSERT_EQ(url->params != NULL, true);
   ASSERT_EQ(url->user_name == NULL, true);
   ASSERT_EQ(url->password == NULL, true);
@@ -153,7 +153,7 @@ TEST(URL, http7) {
   url_t* url = url_create("http://www.zlg.cn/abc?name=jim&age=100&");
   ASSERT_STREQ(url->schema, "http");
   ASSERT_STREQ(url->host, "www.zlg.cn");
-  ASSERT_STREQ(url->path, "abc");
+  ASSERT_STREQ(url->path, "/abc");
   ASSERT_EQ(url->params != NULL, true);
   ASSERT_EQ(url->user_name == NULL, true);
   ASSERT_EQ(url->password == NULL, true);
@@ -167,7 +167,7 @@ TEST(URL, http8) {
   url_t* url = url_create("http://jim:1234@www.zlg.cn/abc?name=jim&age=100&");
   ASSERT_STREQ(url->schema, "http");
   ASSERT_STREQ(url->host, "www.zlg.cn");
-  ASSERT_STREQ(url->path, "abc");
+  ASSERT_STREQ(url->path, "/abc");
   ASSERT_EQ(url->params != NULL, true);
   ASSERT_STREQ(url->user_name, "jim");
   ASSERT_STREQ(url->password, "1234");
@@ -181,7 +181,7 @@ TEST(URL, http9) {
   url_t* url = url_create("jim:1234@www.zlg.cn/abc?name=jim&age=100&");
   ASSERT_STREQ(url->schema, "http");
   ASSERT_STREQ(url->host, "www.zlg.cn");
-  ASSERT_STREQ(url->path, "abc");
+  ASSERT_STREQ(url->path, "/abc");
   ASSERT_EQ(url->params != NULL, true);
   ASSERT_STREQ(url->user_name, "jim");
   ASSERT_STREQ(url->password, "1234");
@@ -286,7 +286,17 @@ TEST(URL, asset) {
   ASSERT_STREQ(url->schema, "asset");
   ASSERT_STREQ(url->host, "ui");
   ASSERT_EQ(url->params == NULL, true);
-  ASSERT_STREQ(url->path, "main");
+  ASSERT_STREQ(url->path, "/main");
+
+  url_destroy(url);
+}
+
+TEST(URL, serial) {
+  url_t* url = url_create("serial:///dev/cu.usbserial-1410");
+  ASSERT_STREQ(url->schema, "serial");
+  ASSERT_STREQ(url->host, "");
+  ASSERT_EQ(url->params == NULL, true);
+  ASSERT_STREQ(url->path, "/dev/cu.usbserial-1410");
 
   url_destroy(url);
 }

@@ -142,6 +142,7 @@ static url_t* url_parse(url_t* url, const char* surl) {
               break;
             }
             case '/': {
+              p--;
               state = STATE_PATH;
               break;
             }

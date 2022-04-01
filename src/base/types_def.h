@@ -337,10 +337,6 @@ typedef struct _image_manager_t image_manager_t;
 struct _system_info_t;
 typedef struct _system_info_t system_info_t;
 
-#define STR_SCHEMA_FILE "file://"
-#define STR_SCHEMA_HTTP "http://"
-#define STR_SCHEMA_HTTPS "https://"
-
 #if defined(WITH_NANOVG_GL3) || defined(WITH_NANOVG_GL2) || defined(WITH_NANOVG_GLES3) || \
     defined(WITH_NANOVG_GLES2)
 #define WITH_GPU_GL 1

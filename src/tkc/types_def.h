@@ -442,4 +442,11 @@ typedef struct _event_source_manager_t event_source_manager_t;
 #define tk_isprint(c) (((int)(c) < 128) && isprint(c))
 #define tk_isalpha(c) (((int)(c) < 128) && isalpha(c))
 
+#define STR_SCHEMA_TCP "tcp://"
+#define STR_SCHEMA_UDP "udp://"
+#define STR_SCHEMA_SERIAL "serial://"
+#define STR_SCHEMA_FILE "file://"
+#define STR_SCHEMA_HTTP "http://"
+#define STR_SCHEMA_HTTPS "https://"
+
 #endif /*TYPES_DEF_H*/
