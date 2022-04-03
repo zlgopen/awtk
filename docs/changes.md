@@ -2,6 +2,7 @@
 
 2022/04/03
   * 完善style\_mutable，去掉default style 为NULL时的警告。
+  * 完善color\_picker处理alpha通道的问题。
 
 2022/04/01
   * 完善给edit、mledit和combo\_box增加了empty\_over状态（感谢雨欣提供补丁）

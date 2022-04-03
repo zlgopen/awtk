@@ -297,10 +297,14 @@ static ret_t color_picker_on_child_value_changing(void* ctx, event_t* e) {
       color_picker_set_color_v(widget, (float)v / 100.0f);
     } else if (tk_str_eq(name, COLOR_PICKER_CHILD_NEW)) {
       char color[32];
+      uint32_t len = 0;
       memset(color, 0x00, sizeof(color));
       color[0] = '#';
       wstr_get_utf8(&(child->text), color + 1, sizeof(color) - 2);
-      if (strlen(color) == 7) {
+      len = strlen(color);
+      if (len == 1) {
+        color_picker_set_color(widget, "rgba(0,0,0,0)");
+      } else if (len == 7 || len == 9) {
         color_picker_set_color(widget, color);
       }
     }
@@ -330,6 +334,7 @@ static ret_t color_picker_on_child_value_changing(void* ctx, event_t* e) {
       float h = color_component_get_h(child);
       color_picker_set_color_h(widget, h);
     }
+    color_picker->c.rgba.a = 0xff;
   }
   color_picker->trigger_child = NULL;
 
