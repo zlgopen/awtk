@@ -159,7 +159,12 @@ ret_t style_mutable_set_name(style_t* s, const char* name) {
 static ret_t style_mutable_notify_widget_state_changed(style_t* s, widget_t* widget) {
   style_mutable_t* style = STYLE_MUTABLE(s);
   return_value_if_fail(style != NULL, RET_BAD_PARAMS);
-  return style_notify_widget_state_changed(style->default_style, widget);
+
+  if (style->default_style != NULL) {
+    return style_notify_widget_state_changed(style->default_style, widget);
+  }
+
+  return RET_OK;
 }
 
 static ret_t style_mutable_update_state(style_t* s, theme_t* theme, const char* widget_type,
@@ -195,6 +200,8 @@ static int32_t style_mutable_get_int(style_t* s, const char* name, int32_t defva
 
   if (style_mutable_get_value(s, style_get_style_state(s), name, &v) == RET_OK) {
     return value_int(&v);
+  } else if (style->default_style == NULL) {
+    return defval;
   } else {
     return style_get_int(style->default_style, name, defval);
   }
@@ -207,6 +214,8 @@ static uint32_t style_mutable_get_uint(style_t* s, const char* name, uint32_t de
 
   if (style_mutable_get_value(s, style_get_style_state(s), name, &v) == RET_OK) {
     return value_uint32(&v);
+  } else if (style->default_style == NULL) {
+    return defval;
   } else {
     return style_get_uint(style->default_style, name, defval);
   }
@@ -221,6 +230,8 @@ static color_t style_mutable_get_color(style_t* s, const char* name, color_t def
     color_t c;
     c.color = value_uint32(&v);
     return c;
+  } else if (style->default_style == NULL) {
+    return defval;
   } else {
     return style_get_color(style->default_style, name, defval);
   }
@@ -241,6 +252,8 @@ static gradient_t* style_mutable_get_gradient(style_t* s, const char* name, grad
     } else {
       return NULL;
     }
+  } else if (style->default_style == NULL) {
+    return NULL;
   } else {
     return style_get_gradient(style->default_style, name, gradient);
   }
@@ -253,6 +266,8 @@ const char* style_mutable_get_str(style_t* s, const char* name, const char* defv
 
   if (style_mutable_get_value(s, style_get_style_state(s), name, &v) == RET_OK) {
     return value_str(&v);
+  } else if (style->default_style == NULL) {
+    return defval;
   } else {
     return style_get_str(style->default_style, name, defval);
   }
@@ -443,7 +458,7 @@ static ret_t style_mutable_set_style_data(style_t* s, const uint8_t* data, const
 static const char* style_mutable_get_style_state(style_t* s) {
   style_mutable_t* style = (style_mutable_t*)s;
   return_value_if_fail(style != NULL, NULL);
-  return style_get_style_state(style->default_style);
+  return style->default_style != NULL ? style_get_style_state(style->default_style) : NULL;
 }
 
 static const char* style_mutable_get_style_type(style_t* s) {
