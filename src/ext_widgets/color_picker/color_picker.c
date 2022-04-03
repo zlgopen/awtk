@@ -324,6 +324,7 @@ static ret_t color_picker_on_child_value_changing(void* ctx, event_t* e) {
       color_picker_set_color_v(widget, (float)v / 100.0f);
     }
   } else if (tk_str_eq(type, WIDGET_TYPE_COLOR_COMPONENT)) {
+    color_picker->c.rgba.a = 0xff;
     if (tk_str_eq(name, COLOR_PICKER_CHILD_SV)) {
       color_component_t* color_cmp = COLOR_COMPONENT(child);
       float s = color_component_get_s(child);
@@ -334,7 +335,6 @@ static ret_t color_picker_on_child_value_changing(void* ctx, event_t* e) {
       float h = color_component_get_h(child);
       color_picker_set_color_h(widget, h);
     }
-    color_picker->c.rgba.a = 0xff;
   }
   color_picker->trigger_child = NULL;
 
