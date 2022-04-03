@@ -3,6 +3,7 @@
 2022/04/03
   * 完善style\_mutable，去掉default style 为NULL时的警告。
   * 完善color\_picker处理alpha通道的问题。
+  * 修复当打开了新窗口后旧窗口的软键盘关闭导致窗口动画播放不正确的问题（感谢智明提供补丁）。
 
 2022/04/01
   * 完善给edit、mledit和combo\_box增加了empty\_over状态（感谢雨欣提供补丁）

@@ -29,6 +29,7 @@
 #include "base/dialog.h"
 #include "base/locale_info.h"
 #include "base/system_info.h"
+#include "base/input_method.h"
 #include "base/image_manager.h"
 #include "base/canvas_offline.h"
 #include "base/dirty_rects.inc"
@@ -544,6 +545,15 @@ static ret_t window_manager_default_close_window(widget_t* widget, widget_t* win
   window_manager_prepare_close_window(widget, window);
 
   if (wm->animator) {
+    if (widget_is_keyboard(window)) {
+      input_method_t* im = input_method();
+      widget_t* win = widget_get_window(im->widget);
+      if (win == wm->animator->prev_win && widget_is_normal_window(wm->animator->curr_win)) {
+        /* 如果已经打开下一个窗口后，就直接释放上一个窗口的软键盘，不必播放软键盘的动画 */
+        window_manager_close_window_force(window->parent, window);
+        return RET_OK;
+      }
+    }
     wm->pending_close_window = window;
     return RET_OK;
   }
