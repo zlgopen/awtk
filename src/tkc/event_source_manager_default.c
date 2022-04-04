@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   event_source_manager_default.c
  * Author: AWTK Develop Team
  * Brief:  event manager_default manager_default

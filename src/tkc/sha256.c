@@ -1,4 +1,4 @@
-/*
+﻿/*
 *   SHA-256 implementation.
 *
 *   Copyright (c) 2010 Ilya O. Levin, http://www.literatecode.com
