@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   awtk_version.h
  * Author: AWTK Develop Team
  * Brief:  awtk version

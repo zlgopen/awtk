@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   action_darray_thread.h
  * Author: AWTK Develop Team
  * Brief:  action_darray_thread

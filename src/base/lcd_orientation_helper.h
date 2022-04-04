@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   lcd_orientation_helper.h
  * Author: AWTK Develop Team
  * Brief:  lcd orientation helper function.
