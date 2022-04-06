@@ -61,13 +61,14 @@ static ret_t keyboard_on_event(widget_t* widget, event_t* e) {
     }
 
     if (e->type == EVT_KEY_DOWN) {
-      keyboard->key_down = evt->key;
+      keyboard->key_down++;
     } else {
-      if (keyboard->key_down == evt->key) {
+      if (keyboard->key_down > 0) {
         input_method_dispatch_key(input_method(), evt->key);
-        keyboard->key_down = 0;
+        keyboard->key_down--;
       }
     }
+
     return RET_STOP;
   }
 

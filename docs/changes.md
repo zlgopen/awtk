@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/04/06
+  * 完善软键盘grab_keys=true时物理键盘按键太快丢失按键的问题。
+
 2022/04/03
   * 完善style\_mutable，去掉default style 为NULL时的警告。
   * 完善color\_picker处理alpha通道的问题。
