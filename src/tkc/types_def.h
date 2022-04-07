@@ -446,6 +446,7 @@ typedef struct _event_source_manager_t event_source_manager_t;
 #define STR_SCHEMA_UDP "udp://"
 #define STR_SCHEMA_SERIAL "serial://"
 #define STR_SCHEMA_FILE "file://"
+#define STR_SCHEMA_FTP "ftp://"
 #define STR_SCHEMA_HTTP "http://"
 #define STR_SCHEMA_HTTPS "https://"
 

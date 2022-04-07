@@ -79,6 +79,9 @@ typedef struct _url_t {
    * 参数集合。
    */
   tk_object_t* params;
+  /*private*/
+  str_t url;
+  bool_t fixed_port;
 } url_t;
 
 /**
@@ -179,6 +182,18 @@ ret_t url_set_param(url_t* url, const char* name, const char* value);
  * @return {const char*} 返回指定参数名的参数值。
  */
 const char* url_get_param(url_t* url, const char* name);
+
+/**
+ * @method url_to_string
+ * 格式化成字符串。
+ *
+ *>返回的字符串在URL对象销毁或下一次调用本函数时失效。
+ *
+ * @param {url_t*} url url对象。
+ *
+ * @return {const char*} 返回字符串格式的URL。
+ */
+const char* url_to_string(url_t* url);
 
 /**
  * @method url_destroy

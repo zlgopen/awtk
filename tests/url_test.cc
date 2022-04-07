@@ -25,6 +25,14 @@ TEST(URL, noschema) {
   url_destroy(url);
 }
 
+TEST(URL, noschema1) {
+  url_t* url = url_create("element?id=1");
+  ASSERT_STREQ(url->schema, "http");
+  ASSERT_STREQ(url->host, "element");
+  ASSERT_STREQ(url_get_param(url, "id"), "1");
+  url_destroy(url);
+}
+
 TEST(URL, noschema2) {
   url_t* url = url_create("www.zlg.cn:8080");
   ASSERT_STREQ(url->schema, "http");
@@ -298,5 +306,54 @@ TEST(URL, serial) {
   ASSERT_EQ(url->params == NULL, true);
   ASSERT_STREQ(url->path, "/dev/cu.usbserial-1410");
 
+  url_destroy(url);
+}
+
+TEST(URL, to_string) {
+  url_t* url = NULL;
+  const char* str = NULL;
+  str = "serial:///dev/cu.usbserial-1410";
+  url = url_create(str);
+  ASSERT_STREQ(url_to_string(url), str);
+  url_destroy(url);
+
+  str = "http://www.baidu.com";
+  url = url_create(str);
+  ASSERT_STREQ(url_to_string(url), str);
+  url_destroy(url);
+
+  str = "http://user@www.baidu.com";
+  url = url_create(str);
+  ASSERT_STREQ(url_to_string(url), str);
+  url_destroy(url);
+
+  str = "http://user:123@www.baidu.com";
+  url = url_create(str);
+  ASSERT_STREQ(url_to_string(url), str);
+  url_destroy(url);
+
+  str = "http://user:123@www.baidu.com?name=awtk";
+  url = url_create(str);
+  ASSERT_STREQ(url_to_string(url), str);
+  url_destroy(url);
+
+  str = "http://user:123@www.baidu.com?name=awtk";
+  url = url_create(str);
+  ASSERT_STREQ(url_to_string(url), str);
+  url_destroy(url);
+
+  str = "http://user:123@www.baidu.com?age=100&name=awtk";
+  url = url_create(str);
+  ASSERT_STREQ(url_to_string(url), str);
+  url_destroy(url);
+
+  str = "http://user:123@www.baidu.com:8080?age=100&name=awtk";
+  url = url_create(str);
+  ASSERT_STREQ(url_to_string(url), str);
+  url_destroy(url);
+
+  str = "http://user:123@www.baidu.com:80?age=100&name=awtk";
+  url = url_create(str);
+  ASSERT_STREQ(url_to_string(url), str);
   url_destroy(url);
 }
