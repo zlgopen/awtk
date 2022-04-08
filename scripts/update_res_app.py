@@ -61,9 +61,12 @@ def use_theme_config_from_project_json():
         DPI = assets['screenDPR']
 
     for theme_name, theme_setting in assets['themes'].items():
+        orientation = '0' 
         theme_name = common.to_file_system_coding(theme_name)
         color_format = theme_setting['lcd']['colorFormat']
         color_depth = theme_setting['lcd']['colorDepth']
+        if 'orientation' in theme_setting['lcd'] : 
+            orientation = theme_setting['lcd']['orientation']
 
         if color_format == 'MONO':
           imagegen_options = 'mono'
@@ -91,7 +94,7 @@ def use_theme_config_from_project_json():
                         filename = common.join_path(config_dir, font_name+'_'+font_size+'.txt')
                         common.write_file(filename, text)
 
-        theme = {'name': theme_name, 'imagegen_options': imagegen_options, 'packaged': theme_setting['packaged']}
+        theme = {'name': theme_name, 'imagegen_options': imagegen_options, 'lcd_orientation': orientation, 'packaged': theme_setting['packaged']}
         if theme_name == 'default':
             THEMES.insert(0, theme)
         else:

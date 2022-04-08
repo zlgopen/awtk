@@ -190,6 +190,12 @@ int main(int argc, char* argv[]) {
   }
 #endif /*WITH_LCD_PORTRAIT*/
 
+#ifdef APP_LCD_ORIENTATION
+  if (system_info()->app_type != APP_SIMULATOR) {
+    tk_set_lcd_orientation(APP_LCD_ORIENTATION);
+  }
+#endif
+
   system_info_set_default_font(system_info(), APP_DEFAULT_FONT);
   assets_init();
 #ifndef WITH_FS_RES

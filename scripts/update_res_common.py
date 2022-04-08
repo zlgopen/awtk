@@ -160,6 +160,7 @@ def set_current_theme(index):
     elif isinstance(theme, dict):
         THEME = theme['name']
         THEME_PACKAGED = True
+        LCD_ORIENTATION = '0'
         IMAGEGEN_OPTIONS = 'bgra+bgr565'
         if 'imagegen_options' in theme:
             IMAGEGEN_OPTIONS = theme['imagegen_options']
