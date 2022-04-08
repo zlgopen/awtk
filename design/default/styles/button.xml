@@ -19,11 +19,11 @@
   <style name="round_bottom" border_color="#a0a0a0"  text_color="black" 
     round_radius_bottom_left="8" focusable="true"
     round_radius_bottom_right ="8">
-    <normal     bg_color="#f0f0f0" />
-    <pressed    bg_color="#c0c0c0" x_offset="1" y_offset="1"/>
-    <over       bg_color="#e0e0e0" />
+    <normal     bg_color="linear-gradient(180deg, #FF0000 20%, #0000FF);" />
+    <pressed    bg_color="linear-gradient(180deg, #FF0000, #0000FF 80%);" x_offset="1" y_offset="1"/>
+    <over       bg_color="linear-gradient(180deg, #FF0000 20%, #0000FF 80%);" />
     <disable    bg_color="gray" text_color="#d0d0d0" />
-    <focused    bg_color="#f0f0f0" border_color="green"/>
+    <focused    bg_color="linear-gradient(180deg, #FF0000 20%, #0000FF);" border_color="green"/>
   </style>
   
   <style name="icon" icon="earth" border_color="#a0a0a0"  text_color="black">

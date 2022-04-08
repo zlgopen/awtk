@@ -85,3 +85,42 @@ TEST(VGGradient, init_with_gradient) {
   ASSERT_EQ(g->info.linear.ex, 0.0f);
   ASSERT_EQ(g->info.linear.ey, 100.0f);
 }
+
+TEST(VGGradient, init_with_gradient1) {
+  vg_gradient_t gg;
+  gradient_t agradient;
+  rect_t rect = {0, 0, 100, 100};
+  gradient_init_from_str(&agradient, "linear-gradient(180deg, #6AB2FF 20%, #0D81FF);");
+  vg_gradient_t* g = vg_gradient_init_with_gradient(&gg, &rect, &agradient);
+  ASSERT_EQ(g->gradient.type, GRADIENT_LINEAR);
+  ASSERT_EQ(g->info.linear.sx, 0.0f);
+  ASSERT_EQ(g->info.linear.sy, 20.0f);
+  ASSERT_EQ(g->info.linear.ex, 0.0f);
+  ASSERT_EQ(g->info.linear.ey, 100.0f);
+}
+
+TEST(VGGradient, init_with_gradient2) {
+  vg_gradient_t gg;
+  gradient_t agradient;
+  rect_t rect = {0, 0, 100, 100};
+  gradient_init_from_str(&agradient, "linear-gradient(180deg, #6AB2FF, #0D81FF 80%);");
+  vg_gradient_t* g = vg_gradient_init_with_gradient(&gg, &rect, &agradient);
+  ASSERT_EQ(g->gradient.type, GRADIENT_LINEAR);
+  ASSERT_EQ(g->info.linear.sx, 0.0f);
+  ASSERT_EQ(g->info.linear.sy, 0.0f);
+  ASSERT_EQ(g->info.linear.ex, 0.0f);
+  ASSERT_EQ(g->info.linear.ey, 80.0f);
+}
+
+TEST(VGGradient, init_with_gradient3) {
+  vg_gradient_t gg;
+  gradient_t agradient;
+  rect_t rect = {0, 0, 100, 100};
+  gradient_init_from_str(&agradient, "linear-gradient(180deg, #6AB2FF 20%, #0D81FF 80%);");
+  vg_gradient_t* g = vg_gradient_init_with_gradient(&gg, &rect, &agradient);
+  ASSERT_EQ(g->gradient.type, GRADIENT_LINEAR);
+  ASSERT_EQ(g->info.linear.sx, 0.0f);
+  ASSERT_EQ(g->info.linear.sy, 20.0f);
+  ASSERT_EQ(g->info.linear.ex, 0.0f);
+  ASSERT_EQ(g->info.linear.ey, 80.0f);
+}

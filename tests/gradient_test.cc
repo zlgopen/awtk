@@ -29,7 +29,7 @@ TEST(Gradient, binary) {
   wbuffer_deinit(&wb);
 }
 
-TEST(Gradient, str1) {
+TEST(Gradient, str0) {
   gradient_t a;
   color_t c;
   gradient_init_from_str(&a, "linear-gradient(#FF0000, #0000FF)");
@@ -64,6 +64,44 @@ TEST(Gradient, str1) {
   str_init(&str, 0);
   ASSERT_EQ(gradient_to_str(&a, &str), RET_OK);
   ASSERT_STREQ(str.str, "linear-gradient(0deg, #FF0000 0%, #0000FF 100%)");
+  str_reset(&str);
+}
+
+TEST(Gradient, str1) {
+  gradient_t a;
+  color_t c;
+  gradient_init_from_str(&a, "linear-gradient(#FF0000 20%, #0000FF 80%)");
+  ASSERT_EQ(a.type, GRADIENT_LINEAR);
+  ASSERT_EQ(a.degree, 0u);
+  ASSERT_EQ(a.nr, 2u);
+
+  ASSERT_EQ(a.stops[0].offset, 0.2f);
+  ASSERT_EQ(a.stops[0].color.rgba.r, 0xff);
+  ASSERT_EQ(a.stops[1].offset, 0.8f);
+  ASSERT_EQ(a.stops[1].color.rgba.b, 0xff);
+
+  c = gradient_get_color(&a, 0);
+  ASSERT_EQ(c.rgba.r, 0xff);
+  ASSERT_EQ(c.rgba.g, 0);
+  ASSERT_EQ(c.rgba.b, 0);
+  ASSERT_EQ(c.rgba.a, 0xff);
+
+  c = gradient_get_color(&a, 0.5);
+  ASSERT_EQ(c.rgba.r, 0x7f);
+  ASSERT_EQ(c.rgba.g, 0);
+  ASSERT_EQ(c.rgba.b, 0x7f);
+  ASSERT_EQ(c.rgba.a, 0xff);
+
+  c = gradient_get_color(&a, 1);
+  ASSERT_EQ(c.rgba.r, 0);
+  ASSERT_EQ(c.rgba.g, 0);
+  ASSERT_EQ(c.rgba.b, 0xff);
+  ASSERT_EQ(c.rgba.a, 0xff);
+
+  str_t str;
+  str_init(&str, 0);
+  ASSERT_EQ(gradient_to_str(&a, &str), RET_OK);
+  ASSERT_STREQ(str.str, "linear-gradient(0deg, #FF0000 20%, #0000FF 80%)");
   str_reset(&str);
 }
 
