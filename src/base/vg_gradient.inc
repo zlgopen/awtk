@@ -57,9 +57,9 @@ vg_gradient_t* vg_gradient_init_with_gradient(vg_gradient_t* gradient, const rec
   if (g->type == GRADIENT_LINEAR) {
     if (g->degree == 180) {
       info->sx = rect->x;
-      info->sy = rect->y;
+      info->sy = rect->y + rect->h * g->stops[0].offset;
       info->ex = rect->x;
-      info->ey = rect->y + rect->h; 
+      info->ey = rect->y + rect->h * g->stops[1].offset; 
     }
   }
   gradient->gradient = *g;

@@ -366,7 +366,8 @@ color_t gradient_get_color(gradient_t* gradient, float offset) {
     uint32_t i = 0;
     for (i = 0; i < gradient->nr; i++) {
       gradient_stop_t* iter = gradient->stops + i;
-      if (iter->offset == offset || (i + 1) == gradient->nr) {
+      if (iter->offset == offset || (i + 1) == gradient->nr ||
+          (offset < iter->offset && i == 0)) {
         return iter->color;
       } else if (offset > iter->offset) {
         gradient_stop_t* next = gradient->stops + i + 1;
