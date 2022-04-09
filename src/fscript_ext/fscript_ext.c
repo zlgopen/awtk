@@ -356,6 +356,11 @@ static ret_t func_flow_set(fscript_t* fscript, fscript_args_t* args, value_t* re
   return RET_OK;
 }
 
+static ret_t func_define_param(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  return RET_OK;
+}
+
 FACTORY_TABLE_BEGIN(s_ext_basic)
 FACTORY_TABLE_ENTRY("index_of", func_index_of)
 FACTORY_TABLE_ENTRY("last_index_of", func_last_index_of)
@@ -387,6 +392,7 @@ FACTORY_TABLE_ENTRY("char_at_last", func_char_at_last)
 FACTORY_TABLE_ENTRY("char_at_random", func_char_at_random)
 FACTORY_TABLE_ENTRY("flow_get", func_flow_get)
 FACTORY_TABLE_ENTRY("flow_set", func_flow_set)
+FACTORY_TABLE_ENTRY("define_param", func_define_param)
 
 FACTORY_TABLE_END()
 

@@ -762,6 +762,16 @@ TEST(FScript, global_var) {
   TK_OBJECT_UNREF(obj);
 }
 
+TEST(FScript, define_param) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "define_param(aaa)", &v);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
 TEST(FScript, sqrt) {
   value_t v;
   tk_object_t* obj = object_default_create();

@@ -46,11 +46,6 @@ def get_project_w(info, theme):
 def get_project_h(info, theme):
     return info['assets']['themes'][theme]['lcd']['height']
 
-def get_project_lcd_orientation(info, theme):
-    if 'orientation' in info['assets']['themes'][theme]['lcd'] :
-        return info['assets']['themes'][theme]['lcd']['orientation']
-    else :
-        return '0'
 
 def get_project_theme(info):
     return info['assets']['activedTheme']
@@ -358,7 +353,6 @@ class AppHelperBase:
         APP_THEME = 'default'
         LCD_WIDTH = '320'
         LCD_HEIGHT = '480'
-        LCD_ORIENTATION = '0'
         APP_DEFAULT_FONT = 'default'
         APP_DEFAULT_LANGUAGE = 'zh'
         APP_DEFAULT_COUNTRY = 'CN'
@@ -371,7 +365,6 @@ class AppHelperBase:
             APP_DEFAULT_LANGUAGE = get_project_language(config)
             APP_DEFAULT_COUNTRY = get_project_country(config)
             APP_RES_ROOT = get_project_res_root(config)
-            LCD_ORIENTATION = get_project_lcd_orientation(config, APP_THEME)
 
         if ARGUMENTS.get('HELP', ''):
             self.showHelp()
@@ -414,11 +407,6 @@ class AppHelperBase:
         if len(IDL_DEF) > 0:
             self.GEN_IDL_DEF = not IDL_DEF.lower().startswith('f')
 
-        if LCD_ORIENTATION == '90' or LCD_ORIENTATION == '270' :
-            tmp = LCD_WIDTH;
-            LCD_WIDTH = LCD_HEIGHT;
-            LCD_HEIGHT = tmp;
-
         APP_CCFLAGS = ' -DLCD_WIDTH=' + LCD_WIDTH + ' -DLCD_HEIGHT=' + LCD_HEIGHT + ' '
         APP_CCFLAGS = APP_CCFLAGS + ' -DAPP_DEFAULT_FONT=\\\"' + APP_DEFAULT_FONT + '\\\" '
         APP_CCFLAGS = APP_CCFLAGS + ' -DAPP_THEME=\\\"' + APP_THEME + '\\\" '
@@ -447,10 +435,7 @@ class AppHelperBase:
             self.APP_TOOLS = [awtk.TOOLS_NAME]
 
         os.environ['BUILD_SHARED'] = str(self.isBuildShared())
-        if LCD_ORIENTATION == '90' or LCD_ORIENTATION == '270' :
-            print(LCD_WIDTH, LCD_HEIGHT, "orentation_" + LCD_ORIENTATION)
-        else :
-            print(LCD_HEIGHT, LCD_WIDTH, "orentation_" + LCD_ORIENTATION)
+        print(LCD_WIDTH, LCD_HEIGHT)
 
     def prepare(self):
         if self.GEN_IDL_DEF and not self.LINUX_FB:
