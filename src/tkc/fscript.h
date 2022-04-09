@@ -495,6 +495,34 @@ ret_t fscript_set_hooks(const fscript_hooks_t* hooks);
  */
 ret_t fscript_ensure_locals(fscript_t* fscript);
 
+/**
+ * @class fscript_function_def_t
+ * 脚本函数定义。
+ *
+ */
+typedef struct _fscript_function_def_t {
+  /**
+   * @property {char*} name
+   * @annotation ["readable"]
+   * 函数名。
+   */
+  char* name;
+
+  /**
+   * @property {darray_t} params
+   * @annotation ["readable"]
+   * 参数列表。
+   */
+  darray_t params;
+
+  /**
+   * @property {fscript_func_call_t*} body
+   * @annotation ["readable"]
+   * 函数体。
+   */
+  fscript_func_call_t* body;
+} fscript_function_def_t;
+
 END_C_DECLS
 
 #endif /*TK_FSCRIPTS_H*/

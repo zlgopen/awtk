@@ -302,12 +302,6 @@ static ret_t fscript_func_call_destroy(fscript_func_call_t* call) {
   return RET_OK;
 }
 
-typedef struct _fscript_function_def_t {
-  char* name;
-  darray_t params;
-  fscript_func_call_t* body;
-} fscript_function_def_t;
-
 static fscript_function_def_t* fscript_function_def_create(const char* name,
                                                            fscript_func_call_t* body) {
   fscript_function_def_t* func = TKMEM_ZALLOC(fscript_function_def_t);
