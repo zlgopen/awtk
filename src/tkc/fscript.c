@@ -1939,7 +1939,7 @@ ret_t fscript_syntax_check(tk_object_t* obj, const char* script, fscript_parser_
   fscript_parser_init(&parser, obj, script, error);
 
   parser.first = fscript_func_call_create(&parser, "expr", 4);
-  ret = fscript_parse_statements(&parser, parser.first);
+  ret = fscript_parse_all(&parser, parser.first);
   fscript_parser_deinit(&parser);
 
   return ret;

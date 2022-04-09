@@ -2,6 +2,7 @@
 
 2022/04/09
   * fscript增加define\_param用于辅助反向生成AWBlock。
+  * 完善fscript语法检查
 
 2022/04/08
   * 增加LCD旋转对project文件的适配（感谢智明提供补丁）
