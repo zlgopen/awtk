@@ -832,6 +832,11 @@ static ret_t fscript_parser_deinit(fscript_parser_t* parser) {
   TKMEM_FREE(parser->code_id);
   darray_destroy(parser->symbols);
   fscript_func_call_destroy(parser->first);
+  if (parser->funcs_def != NULL) {
+    tk_object_foreach_prop(parser->funcs_def, on_free_func_def, NULL);
+  }
+  TK_OBJECT_UNREF(parser->funcs_def);
+
   return RET_OK;
 }
 

@@ -1531,9 +1531,21 @@ TEST(FExr, syntax_check) {
   ASSERT_STREQ(error.message, "var can't begin with '.'");
 
   fscript_parser_error_deinit(&error);
-
+  
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(FExr, syntax_check_function) {
+  tk_object_t* obj = object_default_create();
+  fscript_parser_error_t error;
+
+  fscript_syntax_check(obj, "function a() {} function a() {}", &error);
+
+  ASSERT_STREQ(error.message, "duplicate function\n");
+  fscript_parser_error_deinit(&error);
+  TK_OBJECT_UNREF(obj);
+}
+
 
 #ifdef FSCRIPT_WITH_WIDGET
 #include "widgets/button.h"
