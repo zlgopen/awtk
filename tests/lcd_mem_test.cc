@@ -77,6 +77,7 @@ TEST(LCDMem, rgba8888) {
 
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
+  canvas_reset(c);
 }
 
 TEST(LCDMem, bgra8888) {
@@ -90,6 +91,7 @@ TEST(LCDMem, bgra8888) {
 
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
+  canvas_reset(c);
 }
 
 TEST(LCDMem, bgr888) {
@@ -103,6 +105,7 @@ TEST(LCDMem, bgr888) {
 
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
+  canvas_reset(c);
 }
 
 TEST(LCDMem, resize) {

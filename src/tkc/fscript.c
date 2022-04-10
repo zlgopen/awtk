@@ -293,6 +293,9 @@ static ret_t fscript_func_call_destroy(fscript_func_call_t* call) {
   fscript_func_call_t* next = NULL;
 
   while (iter != NULL) {
+    if (iter->func == func_pending) {
+      TKMEM_FREE(iter->ctx);
+    }
     next = iter->next;
     func_args_deinit(&(iter->args));
     TKMEM_FREE(iter);

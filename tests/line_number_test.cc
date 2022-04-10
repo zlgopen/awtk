@@ -2,7 +2,7 @@
 
 #include "gtest/gtest.h"
 
-TEST(View, basic) {
+TEST(LineNumber, basic) {
   widget_t* w = line_number_create(NULL, 10, 20, 30, 40);
   ASSERT_EQ(line_number_add_highlight_line(w, 1), RET_OK);
   ASSERT_EQ(line_number_is_highlight_line(w, 1), TRUE);

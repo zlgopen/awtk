@@ -166,6 +166,11 @@ static ret_t line_number_on_destroy(widget_t* widget) {
   line_number_t* line_number = LINE_NUMBER(widget);
   return_value_if_fail(line_number != NULL, RET_BAD_PARAMS);
 
+  if (line_number->highlight_lines != NULL) {
+    typed_array_destroy(line_number->highlight_lines);
+    line_number->highlight_lines = NULL;
+  }
+
   if (line_number->lines_of_each_row != NULL) {
     TKMEM_FREE(line_number->lines_of_each_row);
     line_number->lines_of_each_row_len = 0;

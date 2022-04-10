@@ -255,6 +255,7 @@ TEST(UBJsonParser, ubjson_writer_write_kv_value) {
   ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "uint64", &v), RET_OK);
 
   ASSERT_EQ(ubjson_writer_write_object_end(&ub), RET_OK);
+  tk_object_unref(obj);
 
   obj = object_from_ubjson(wb.data, wb.cursor);
   ASSERT_EQ(tk_object_get_prop_int8(obj, "int8", 0), 3);

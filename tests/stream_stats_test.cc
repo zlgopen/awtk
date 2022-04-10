@@ -73,4 +73,7 @@ TEST(StreamStats, basic) {
   memset(buff, 0, sizeof(buff));
   test_write(stats_iostream, buff);
   test_read(stats_iostream, str);
+
+  TK_OBJECT_UNREF(mem_iostream);
+  TK_OBJECT_UNREF(stats_iostream);
 }

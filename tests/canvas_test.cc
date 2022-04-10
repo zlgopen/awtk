@@ -46,6 +46,7 @@ TEST(Canvas, draw_hline) {
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
+  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_vline) {
@@ -81,6 +82,7 @@ TEST(Canvas, draw_vline) {
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
+  canvas_reset(&c);
 }
 
 TEST(Canvas, fill_rect) {
@@ -136,6 +138,7 @@ TEST(Canvas, fill_rect) {
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
+  canvas_reset(&c);
 }
 
 TEST(Canvas, clear_rect) {
@@ -191,6 +194,7 @@ TEST(Canvas, clear_rect) {
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
+  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_points) {
@@ -238,6 +242,7 @@ TEST(Canvas, draw_points) {
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
+  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_glyph) {
