@@ -310,10 +310,9 @@ alias python=python3
 COMMON_CCFLAGS=COMMON_CCFLAGS+' -DNATIVE_WINDOW_NOT_RESIZABLE=1 '
 ```
 
-#### 24. 为什么定义了AWTK\_LITE，还是会占用很大内存？
+#### 24. 为什么定义了 AWTK\_LITE，还是会占用很大内存？
   
 AWTK\_LITE 主要是用来在低端平台裁剪代码的，内存占用主要于图片缓存有关。可以通过图片管理器的接口设置缓存大小：
-
 
 ```c
 /**
@@ -322,7 +321,7 @@ AWTK\_LITE 主要是用来在低端平台裁剪代码的，内存占用主要于
  * @param {image_manager_t*} imm 图片管理器对象。
  * @param {uint32_t} max_mem_size 最大缓存内存。 
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {ret_t} 返回 RET_OK 表示成功，否则表示失败。
  */
 ret_t image_manager_set_max_mem_size_of_cached_images(image_manager_t* imm, uint32_t max_mem_size);
 ```
@@ -335,3 +334,16 @@ ret_t image_manager_set_max_mem_size_of_cached_images(image_manager_t* imm, uint
 python scripts/update_res.py all
 ```
 
+#### 26. idle_queue/timer_queue 失败是什么原因？
+
+通常是消息队列满了。解决方法如下：
+
+* 优化：比如同一类的消息，可以用一个 idle，而不是每个消息都弄一个 idle，在 idle 函数里再去读取消息。
+
+* 如果内存允许，可以直接增加队列大小。
+
+```
+#define MAIN_LOOP_QUEUE_SIZE 200
+```
+
+> 可以放到 awtk_config.h 中。

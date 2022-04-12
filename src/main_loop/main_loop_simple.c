@@ -263,7 +263,7 @@ main_loop_simple_t* main_loop_simple_init(int w, int h, main_loop_queue_event_t 
   loop->base.wm = window_manager();
   return_value_if_fail(loop->base.wm != NULL, NULL);
 
-  loop->queue = event_queue_create(20);
+  loop->queue = event_queue_create(MAIN_LOOP_QUEUE_SIZE);
   return_value_if_fail(loop->queue != NULL, NULL);
 
   loop->base.run = main_loop_simple_run;

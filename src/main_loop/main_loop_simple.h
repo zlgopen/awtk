@@ -65,6 +65,10 @@ ret_t main_loop_post_key_event(main_loop_t* l, bool_t pressed, uint8_t key);
 ret_t main_loop_post_pointer_event(main_loop_t* l, bool_t pressed, xy_t x, xy_t y);
 ret_t main_loop_post_multi_gesture_event(main_loop_t* l, multi_gesture_event_t* event);
 
+#ifndef MAIN_LOOP_QUEUE_SIZE
+#define MAIN_LOOP_QUEUE_SIZE 20
+#endif /*MAIN_LOOP_QUEUE_SIZE*/
+
 END_C_DECLS
 
 #endif /*TK_MAIN_LOOP_SIMPLE_H*/
