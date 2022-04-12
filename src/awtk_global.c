@@ -399,9 +399,7 @@ ret_t tk_exit(void) {
 }
 
 ret_t tk_run() {
-  main_loop_run(main_loop());
-
-  return tk_exit();
+  return main_loop_run(main_loop());
 }
 
 static ret_t tk_quit_idle(const timer_info_t* timer) {

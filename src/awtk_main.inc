@@ -225,6 +225,7 @@ int main(int argc, char* argv[]) {
   tk_run();
   application_exit();
   GLOBAL_EXIT();
+  tk_exit();
 
 #ifdef HAS_STDIO
   fflush(stdout);
