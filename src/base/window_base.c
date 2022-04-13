@@ -103,6 +103,7 @@ static ret_t window_base_unload_theme_obj(widget_t* widget) {
 
 static ret_t window_base_reload_theme_obj(widget_t* widget) {
   window_base_unload_theme_obj(widget);
+  widget_set_need_update_style_recursive(widget);
   window_base_load_theme_obj(widget);
 
   return RET_OK;

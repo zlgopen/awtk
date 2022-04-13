@@ -3056,6 +3056,15 @@ ret_t widget_auto_scale_children(widget_t* widget, int32_t design_w, int32_t des
 ret_t widget_set_need_update_style(widget_t* widget);
 
 /**
+ * @method widget_set_need_update_style_recursive
+ * 让控件及子控件设置需要更新Style。
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_need_update_style_recursive(widget_t* widget);
+
+/**
  * @method widget_on_pointer_down_children
  * 处理子控件的pointer down事件。
  * @param {widget_t*} widget 控件对象。

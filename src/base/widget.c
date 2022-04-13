@@ -141,7 +141,7 @@ ret_t widget_update_style_recursive(widget_t* widget) {
   return RET_OK;
 }
 
-static ret_t widget_set_need_update_style_recursive(widget_t* widget) {
+ret_t widget_set_need_update_style_recursive(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   widget_set_need_update_style(widget);
