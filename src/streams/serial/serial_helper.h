@@ -31,16 +31,22 @@ BEGIN_C_DECLS
 
 #ifdef WIN32
 #include "windows.h"
+#include "tkc/mutex.h"
+#include "tkc/cond_var.h"
 
 typedef HANDLE serial_dev_t;
 
 typedef struct _serial_info_t {
   serial_dev_t dev;
-  int buff_size;
-  int buff_index;
-  char buff[1];
   OVERLAPPED read_overlapped;
   OVERLAPPED write_overlapped;
+  bool_t closed;
+  bool_t has_signal;
+  int client_fd;
+  int server_fd;
+  tk_cond_t* cond;
+  tk_mutex_t* mutex;
+  tk_thread_t* thread;
 } serial_info_t;
 
 #else

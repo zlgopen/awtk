@@ -41,16 +41,17 @@ tk_cond_var_t* tk_cond_var_create(void) {
 }
 
 ret_t tk_cond_var_wait(tk_cond_var_t* cond_var, uint32_t timeout_ms) {
+  ret_t ret = RET_OK;
   return_value_if_fail(cond_var != NULL && cond_var->inited, RET_BAD_PARAMS);
 
   tk_mutex_lock(cond_var->mutex);
   if (!cond_var->has_signal) {
-    tk_cond_wait_timeout(cond_var->cond, cond_var->mutex, timeout_ms);
+    ret = tk_cond_wait_timeout(cond_var->cond, cond_var->mutex, timeout_ms);
   }
   cond_var->has_signal = FALSE;
   tk_mutex_unlock(cond_var->mutex);
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t tk_cond_var_awake(tk_cond_var_t* cond_var) {

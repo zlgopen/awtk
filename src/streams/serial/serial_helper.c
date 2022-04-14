@@ -41,19 +41,63 @@
 
 #ifdef WIN32
 #define prefix L"\\\\.\\"
-#pragma comment(lib, "ws2_32")
+
+static ret_t serial_wait_for_data_impl(serial_handle_t handle, uint32_t timeout_ms);
 
 int serial_handle_get_fd(serial_handle_t handle) {
-  return 0;
+  return handle->client_fd;
 }
 
 serial_dev_t serial_handle_get_dev(serial_handle_t handle) {
   return handle->dev;
 }
 
+static ret_t serial_cond_var_wait(serial_handle_t handle, uint32_t timeout_ms) {
+  ret_t ret = RET_OK;
+
+  tk_mutex_lock(handle->mutex);
+  if (!handle->has_signal) {
+    ret = tk_cond_wait_timeout(handle->cond, handle->mutex, timeout_ms);
+  }
+  handle->has_signal = FALSE;
+  tk_mutex_unlock(handle->mutex);
+
+  return ret;
+}
+
+static ret_t serial_cond_var_awake(serial_handle_t handle) {
+  return_value_if_fail(handle->cond != NULL && handle->mutex, RET_BAD_PARAMS);
+
+  tk_mutex_lock(handle->mutex);
+  handle->has_signal = TRUE;
+  tk_mutex_unlock(handle->mutex);
+  tk_cond_signal(handle->cond);
+
+  return RET_OK;
+}
+
+static void* serial_thread_entry(void* args) {
+  char buff[1] = {0};
+  serial_handle_t handle = (serial_handle_t)args;
+
+  int fd = handle->server_fd;
+
+  while (!handle->closed) {
+    if (serial_wait_for_data_impl(handle, 100) == RET_OK) {
+      while (send(fd, buff, sizeof(buff), 0) <= 0) {
+        log_warn("send fb buff fail \r\n");
+      }
+      serial_cond_var_wait(handle, 0xFFFFFFFF);
+    }
+  }
+
+  return NULL;
+}
+
 serial_handle_t serial_open(const char* port) {
   wstr_t str;
   serial_dev_t dev = 0;
+  int socks[2] = {0, 0};
   serial_handle_t handle = NULL;
   return_value_if_fail(port != NULL && *port != '\0', NULL);
 
@@ -77,6 +121,19 @@ serial_handle_t serial_open(const char* port) {
 
   handle->read_overlapped.hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
   handle->write_overlapped.hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+
+  handle->cond = tk_cond_create();
+  handle->mutex = tk_mutex_create();
+  handle->thread = tk_thread_create(serial_thread_entry, handle);
+
+  if (handle->cond == NULL || handle->mutex == NULL || handle->thread == NULL || tk_socketpair(socks) < 0 ) {
+    serial_close(handle);
+    return NULL;
+  }
+
+  handle->client_fd = socks[0];
+  handle->server_fd = socks[1];
+  tk_thread_start(handle->thread);
 
   return handle;
 }
@@ -316,6 +373,11 @@ ret_t serial_config(serial_handle_t handle, uint32_t baudrate, bytesize_t bytesi
     log_debug("Error setting timeouts.");
     return RET_FAIL;
   }
+
+  if (!SetCommMask(dev, EV_RXCHAR)) {
+    log_debug("Error setting RX event.");
+    return RET_FAIL;
+  }
   return RET_OK;
 }
 
@@ -336,49 +398,70 @@ ret_t serial_oflush(serial_handle_t handle) {
 }
 
 int serial_close(serial_handle_t handle) {
-  serial_dev_t dev = serial_handle_get_dev(handle);
+  if (handle != NULL) {
+    serial_dev_t dev = serial_handle_get_dev(handle);
 
-  serial_iflush(handle);
-  serial_oflush(handle);
+    serial_iflush(handle);
+    serial_oflush(handle);
 
-  CancelIo(dev);
-  CloseHandle(dev);
-  CloseHandle(handle->read_overlapped.hEvent);
-  CloseHandle(handle->write_overlapped.hEvent);
+    if (dev != INVALID_HANDLE_VALUE) {
+      CancelIo(dev);
+      CloseHandle(dev);
+    }
+    if (handle->read_overlapped.hEvent != INVALID_HANDLE_VALUE) {
+      CloseHandle(handle->read_overlapped.hEvent);
+    }
+    if (handle->write_overlapped.hEvent != INVALID_HANDLE_VALUE) {
+      CloseHandle(handle->write_overlapped.hEvent);
+    }
 
-  TKMEM_FREE(handle);
+    handle->closed = TRUE;
+    serial_cond_var_awake(handle);
+    if (handle->thread != NULL) {
+      tk_thread_join(handle->thread);
+      tk_thread_destroy(handle->thread);
+    }
 
+    tk_socket_close(handle->client_fd);
+    tk_socket_close(handle->server_fd);
+
+    if (handle->mutex != NULL) {
+      tk_mutex_destroy(handle->mutex);
+    }
+
+    if (handle->cond != NULL) {
+      tk_cond_destroy(handle->cond);
+    }
+
+    TKMEM_FREE(handle);
+  }
   return 0;
 }
 
 int32_t serial_read(serial_handle_t handle, uint8_t* buff, uint32_t max_size) {
   DWORD err = 0;
   DWORD bytes = 0;
+  char tmp_buff[1] = {0};
+  bool_t has_signal = FALSE;
   serial_dev_t dev = serial_handle_get_dev(handle);
-  if (handle->buff_size == 0) {
-    if (!ReadFile(dev, buff, max_size, &bytes, &handle->read_overlapped)) {
-      err = GetLastError();
-      if (err == ERROR_IO_PENDING) {
-        GetOverlappedResult(dev, &handle->read_overlapped, &bytes, TRUE);
-      } else {
-        bytes = 0;
-      }
-    }
-  } else {
-    assert(handle->buff_index < sizeof(handle->buff));
-    bytes = tk_min(handle->buff_size, max_size);
-    memcpy(buff, &handle->buff[handle->buff_index], bytes);
-    handle->buff_size -= bytes;
-    handle->buff_index += bytes;
-    assert(handle->buff_size >= 0);
 
-    // buff size > handle->buff, try to read the rest data from driver fifo
-    int rest_size = max_size - bytes;
-    if (rest_size > 0) {
-      assert(handle->buff_size == 0);
-      int rest_bytes = serial_read(handle, buff + bytes, rest_size);
-      bytes += rest_bytes;
+  if (!ReadFile(dev, buff, max_size, &bytes, &handle->read_overlapped)) {
+    err = GetLastError();
+    if (err == ERROR_IO_PENDING) {
+      GetOverlappedResult(dev, &handle->read_overlapped, &bytes, TRUE);
+    } else {
+      bytes = 0;
     }
+  }
+  tk_mutex_lock(handle->mutex);
+  if (bytes > 0 && !handle->has_signal) {
+    if (recv(handle->client_fd, tmp_buff, sizeof(tmp_buff), 0) > 0) {
+      handle->has_signal = has_signal = TRUE;
+    }
+  }
+  tk_mutex_unlock(handle->mutex);
+  if (has_signal) {
+    tk_cond_signal(handle->cond);
   }
   return bytes;
 }
@@ -399,39 +482,34 @@ int32_t serial_write(serial_handle_t handle, const uint8_t* buff, uint32_t max_s
   return real_send;
 }
 
-ret_t serial_wait_for_data(serial_handle_t handle, uint32_t timeout_ms) {
+static ret_t serial_wait_for_data_impl(serial_handle_t handle, uint32_t timeout_ms) {
   DWORD err = 0;
+  ret_t ret = RET_FAIL;
+  DWORD mask = EV_RXCHAR;
   serial_dev_t dev = serial_handle_get_dev(handle);
-
-  // handle->buff has data, direct return
-  if (handle->buff_size > 0) {
-    return RET_OK;
-  }
-
-  // GetOverlappedResult will exit if ReadTotalTimeoutConstant timeout
-  int t1 = time_now_ms();
-  while ((time_now_ms() - t1) < timeout_ms) {
-    handle->buff_size = 0;
-    handle->buff_index = 0;
-    if (!ReadFile(dev, handle->buff, sizeof(handle->buff), &handle->buff_size,
-                  &handle->read_overlapped)) {
-      err = GetLastError();
-      if (err == ERROR_IO_PENDING) {
-        //GetOverlappedResultEx(dev, &handle->read_overlapped, &handle->buff_size, timeout_ms, TRUE);
-        GetOverlappedResult(dev, &handle->read_overlapped, &handle->buff_size, TRUE);
-        if (handle->buff_size > 0) {
-          break;
-        }
+  if (!WaitCommEvent(dev, &mask, &handle->read_overlapped)) {
+    err = GetLastError();
+    if (err == ERROR_IO_PENDING) {
+      err = WaitForSingleObject(handle->read_overlapped.hEvent, timeout_ms);
+      if (err == WAIT_OBJECT_0) {
+        ret = RET_OK;
+      } else if (err == WAIT_TIMEOUT) {
+        ret = RET_TIMEOUT;
       } else {
-        ClearCommError(dev, &err, NULL);
-        return RET_FAIL;
+        ret = RET_FAIL;
       }
-    } else {
-      break;
     }
+  } else {
+    ret = RET_OK;
   }
+
   ClearCommError(dev, &err, NULL);
-  return handle->buff_size > 0 ? RET_OK : RET_TIMEOUT;
+  return ret;
+}
+
+ret_t serial_wait_for_data(serial_handle_t handle, uint32_t timeout_ms) {
+  int fd = serial_handle_get_fd(handle);
+  return tk_socket_wait_for_data(fd, timeout_ms);
 }
 
 #else
