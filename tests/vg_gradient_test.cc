@@ -124,3 +124,16 @@ TEST(VGGradient, init_with_gradient3) {
   ASSERT_EQ(g->info.linear.ex, 0.0f);
   ASSERT_EQ(g->info.linear.ey, 80.0f);
 }
+
+TEST(VGGradient, init_with_gradient4) {
+  vg_gradient_t gg;
+  gradient_t agradient;
+  rect_t rect = {0, 0, 100, 100};
+  gradient_init_from_str(&agradient, "linear-gradient(180deg, #6AB2FF 80%, #0D81FF 20%);");
+  vg_gradient_t* g = vg_gradient_init_with_gradient(&gg, &rect, &agradient);
+  ASSERT_EQ(g->gradient.type, GRADIENT_LINEAR);
+  ASSERT_EQ(g->info.linear.sx, 0.0f);
+  ASSERT_EQ(g->info.linear.sy, 80.0f);
+  ASSERT_EQ(g->info.linear.ex, 0.0f);
+  ASSERT_EQ(g->info.linear.ey, 80.0f);
+}

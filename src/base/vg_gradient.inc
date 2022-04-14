@@ -60,6 +60,9 @@ vg_gradient_t* vg_gradient_init_with_gradient(vg_gradient_t* gradient, const rec
       info->sy = rect->y + rect->h * g->stops[0].offset;
       info->ex = rect->x;
       info->ey = rect->y + rect->h * g->stops[1].offset; 
+      if (info->sy > info->ey) {
+        info->ey = info->sy;
+      }
     }
   }
   gradient->gradient = *g;

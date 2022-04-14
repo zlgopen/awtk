@@ -21,9 +21,9 @@
     round_radius_bottom_right ="8">
     <normal     bg_color="linear-gradient(180deg, #FF0000 20%, #0000FF);" />
     <pressed    bg_color="linear-gradient(180deg, #FF0000, #0000FF 80%);" x_offset="1" y_offset="1"/>
-    <over       bg_color="linear-gradient(180deg, #FF0000 20%, #0000FF 80%);" />
+    <over       bg_color="linear-gradient(180deg, #FF0000 70%, #0000FF 30%);" />
     <disable    bg_color="gray" text_color="#d0d0d0" />
-    <focused    bg_color="linear-gradient(180deg, #FF0000 20%, #0000FF);" border_color="green"/>
+    <focused    bg_color="linear-gradient(180deg, #FF0000 20%, #0000FF 80%);" border_color="green"/>
   </style>
   
   <style name="icon" icon="earth" border_color="#a0a0a0"  text_color="black">
