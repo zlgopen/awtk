@@ -276,7 +276,7 @@ ret_t hscroll_label_step(widget_t* widget) {
     ret = RET_REMOVE;
   }
 
-  duration = (hscroll_label->speed > 0) ? (range / hscroll_label->speed) : hscroll_label->duration;
+  duration = (hscroll_label->speed > 0 && range > 0) ? (range / hscroll_label->speed) : hscroll_label->duration;
 
   if (hscroll_label->elapsed >= duration) {
     hscroll_label->elapsed = duration;
