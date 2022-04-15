@@ -107,6 +107,13 @@ ret_t main_loop_post_pointer_event(main_loop_t* l, bool_t pressed, xy_t x, xy_t 
       loop->pressed = FALSE;
 
       return main_loop_queue_event(l, &r);
+    } else {
+      loop->last_x = x;
+      loop->last_y = y;
+      event.e.type = EVT_POINTER_MOVE;
+      r.pointer_event = event;
+
+      return main_loop_queue_event(l, &r);
     }
   }
 
