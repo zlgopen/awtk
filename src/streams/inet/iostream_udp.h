@@ -51,12 +51,28 @@ struct _tk_iostream_udp_t {
  * 创建iostream对象(客户端)。
  *
  * @param {const char*} host 服务器地址。
- * @param {int} port 端口。
+ * @param {int} port 服务器端口。
  *
  * @return {tk_iostream_t*} 返回iostream对象。
  *
  */
 tk_iostream_t* tk_iostream_udp_create_client(const char* host, int port);
+
+/**
+ * @method tk_iostream_udp_create_client_ex
+ *
+ * 创建iostream对象(客户端)。
+ *
+ * @param {const char*} host 服务器地址。
+ * @param {int} port 服务器端口。
+ * @param {const char*} local_ip 本地IP地址(为NULL时自动绑定)。
+ * @param {int} local_port 本地端口。
+ *
+ * @return {tk_iostream_t*} 返回iostream对象。
+ *
+ */
+tk_iostream_t* tk_iostream_udp_create_client_ex(const char* host, int port, const char* local_ip,
+                                                int local_port);
 
 /**
  * @method tk_iostream_udp_create

@@ -28,11 +28,14 @@ void do_send(tk_iostream_t* iostream, const char* msg) {
 
 int main(int argc, char* argv[]) {
   int port = 0;
+  int local_port = -1;
   const char* msg = NULL;
   const char* host = NULL;
+  const char* local_ip = NULL;
 
-  if (argc != 4) {
+  if (argc != 4 && argc != 6) {
     printf("Usage: %s host port msg\n", argv[0]);
+    printf("       %s host port local_ip local_port msg\n", argv[0]);
     return 0;
   }
 
@@ -42,9 +45,15 @@ int main(int argc, char* argv[]) {
 
   host = argv[1];
   port = tk_atoi(argv[2]);
-  msg = argv[3];
+  if (argc == 4) {
+    msg = argv[3];
+  } else {
+    local_ip = argv[3];
+    local_port = tk_atoi(argv[4]);
+    msg = argv[5];
+  }
 
-  do_send(tk_iostream_udp_create_client(host, port), msg);
+  do_send(tk_iostream_udp_create_client_ex(host, port, local_ip, local_port), msg);
 
   tk_socket_deinit();
 

@@ -1,4 +1,7 @@
 # 最新动态
+2022/04/16
+  * 增加函数tk\_socket\_bind\_ex
+  * 增加函数tk\_iostream\_udp\_create\_client\_ex
 
 2022/04/15
   * 解决在linux-fb，鼠标移动且无按压时，界面上的鼠标指针没有跟着移动的问题（感谢兆坤提供补丁)。

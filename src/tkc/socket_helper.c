@@ -67,14 +67,19 @@ ret_t tk_socket_close(int sock) {
 }
 #endif /*WIN32*/
 
-ret_t tk_socket_bind(int sock, int port) {
+ret_t tk_socket_bind_ex(int sock, const char* ip, int port) {
   struct sockaddr_in s;
   return_value_if_fail(sock >= 0 && port > 0, RET_BAD_PARAMS);
 
   memset(&s, 0, sizeof(s));
-  s.sin_family = AF_INET;
-  s.sin_port = htons(port);
-  s.sin_addr.s_addr = htonl(INADDR_ANY);
+
+  if (ip != NULL) {
+    socket_resolve(ip, port, &s);
+  } else {
+    s.sin_family = AF_INET;
+    s.sin_port = htons(port);
+    s.sin_addr.s_addr = htonl(INADDR_ANY);
+  }
 
   if (bind(sock, (struct sockaddr*)&s, sizeof(s)) < 0) {
     log_debug("bind error\n");
@@ -82,6 +87,10 @@ ret_t tk_socket_bind(int sock, int port) {
   }
 
   return RET_OK;
+}
+
+ret_t tk_socket_bind(int sock, int port) {
+  return tk_socket_bind_ex(sock, NULL, port);
 }
 
 int tk_tcp_listen(int port) {

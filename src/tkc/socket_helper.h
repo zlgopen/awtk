@@ -63,6 +63,19 @@ ret_t tk_socket_deinit(void);
 ret_t tk_socket_close(int sock);
 
 /**
+ * @method tk_socket_bind_ex
+ * @annotation ["static"]
+ * 绑定到指定IP和端口。
+ *
+ * @param {int} sock socket句柄。
+ * @param {const char*} ip IP地址(可以为NULL)。
+ * @param {int} port 端口号。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_socket_bind_ex(int sock, const char* ip, int port);
+
+/**
  * @method tk_socket_bind
  * @annotation ["static"]
  * 绑定到指定端口。

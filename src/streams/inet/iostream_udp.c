@@ -96,7 +96,8 @@ tk_iostream_t* tk_iostream_udp_create(int sock) {
   return TK_IOSTREAM(obj);
 }
 
-tk_iostream_t* tk_iostream_udp_create_client(const char* host, int port) {
+tk_iostream_t* tk_iostream_udp_create_client_ex(const char* host, int port, const char* local_ip,
+                                                int local_port) {
   int sock = 0;
   struct sockaddr_in addr_in;
   tk_iostream_udp_t* iostream_udp = NULL;
@@ -106,6 +107,10 @@ tk_iostream_t* tk_iostream_udp_create_client(const char* host, int port) {
   sock = (int)socket(AF_INET, SOCK_DGRAM, 0);
   return_value_if_fail(sock >= 0, NULL);
 
+  if (local_ip != NULL || local_port > 0) {
+    tk_socket_bind_ex(sock, local_ip, local_port);
+  }
+
   iostream_udp = TK_IOSTREAM_UDP(tk_iostream_udp_create(sock));
   return_value_if_fail(iostream_udp != NULL, NULL);
 
@@ -113,4 +118,8 @@ tk_iostream_t* tk_iostream_udp_create_client(const char* host, int port) {
   tk_ostream_udp_set_target_with_addr(iostream_udp->ostream, addr_in);
 
   return TK_IOSTREAM(iostream_udp);
+}
+
+tk_iostream_t* tk_iostream_udp_create_client(const char* host, int port) {
+  return tk_iostream_udp_create_client_ex(host, port, NULL, -1);
 }
