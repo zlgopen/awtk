@@ -39,6 +39,7 @@ TEST(Events, pointer_event_rotate) {
 
 TEST(Events, from_name) {
   ASSERT_EQ(event_from_name("click"), EVT_CLICK);
+  ASSERT_EQ(event_from_name("long_press"), EVT_LONG_PRESS);
   ASSERT_EQ(event_from_name("window_close"), EVT_WINDOW_CLOSE);
   ASSERT_EQ(event_from_name("window_open"), EVT_WINDOW_OPEN);
   ASSERT_EQ(event_from_name("window_will_open"), EVT_WINDOW_WILL_OPEN);

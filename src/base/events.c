@@ -302,6 +302,12 @@ int32_t event_from_name(const char* name) {
       }
       break;
     }
+    case 'l': {
+      if (tk_str_eq(name, "long_press")) {
+        return EVT_LONG_PRESS;
+      }
+      break;
+    }
     case 't': {
       if (tk_str_eq(name, "timer")) {
         return EVT_TIMER;
