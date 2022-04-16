@@ -1126,6 +1126,11 @@ ret_t edit_set_tr_tips(widget_t* widget, const char* tr_tips) {
   widget_t* win = widget_get_window(widget);
   return_value_if_fail(edit != NULL && tr_tips != NULL, RET_BAD_PARAMS);
 
+  if (*tr_tips == '\0') {
+    TKMEM_FREE(edit->tr_tips);
+    return RET_OK;
+  }
+
   edit->tr_tips = tk_str_copy(edit->tr_tips, tr_tips);
   if (win != NULL) {
     tr_tips = locale_info_tr(widget_get_locale_info(widget), tr_tips);

@@ -192,3 +192,15 @@ TEST(Button, to_xml) {
 
   str_reset(&str);
 }
+
+TEST(Button, tr_text) {
+  widget_t* w1 = button_create(NULL, 10, 20, 30, 40);
+
+  widget_set_tr_text(w1, "abc");
+  ASSERT_STREQ(w1->tr_text, "abc");
+  
+  widget_set_tr_text(w1, "");
+  ASSERT_EQ(w1->tr_text == NULL, true);
+
+  widget_destroy(w1);
+}

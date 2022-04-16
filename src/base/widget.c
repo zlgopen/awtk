@@ -572,6 +572,11 @@ ret_t widget_set_tr_text(widget_t* widget, const char* text) {
   widget_t* win = widget_get_window(widget);
   return_value_if_fail(widget != NULL && text != NULL, RET_OK);
 
+  if (*text == '\0') {
+    TKMEM_FREE(widget->tr_text);
+    return RET_OK;
+  }
+
   widget->tr_text = tk_str_copy(widget->tr_text, text);
   if (win != NULL) {
     tr_text = locale_info_tr(widget_get_locale_info(widget), text);

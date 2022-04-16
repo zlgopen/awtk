@@ -102,6 +102,11 @@ ret_t mledit_set_tr_tips(widget_t* widget, const char* tr_tips) {
   widget_t* win = widget_get_window(widget);
   return_value_if_fail(mledit != NULL && tr_tips != NULL, RET_BAD_PARAMS);
 
+  if (*tr_tips == '\0') {
+    TKMEM_FREE(mledit->tr_tips);
+    return RET_OK;
+  }
+
   mledit->tr_tips = tk_str_copy(mledit->tr_tips, tr_tips);
   if (win != NULL) {
     tr_tips = locale_info_tr(widget_get_locale_info(widget), tr_tips);
