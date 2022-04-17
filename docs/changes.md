@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/04/17
+  * fscript增加函数widget\_add\_value
+
 2022/04/16
   * 增加函数tk\_socket\_bind\_ex
   * 增加函数tk\_iostream\_udp\_create\_client\_ex

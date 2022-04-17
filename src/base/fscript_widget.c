@@ -62,12 +62,18 @@ static widget_t* find_target_widget(widget_t* widget, const char* path, uint32_t
 }
 
 static widget_t* to_widget(fscript_t* fscript, const value_t* v) {
+  widget_t* widget = NULL;
   if (v->type == VALUE_TYPE_STRING) {
     widget_t* self = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
     const char* path = value_str(v);
     return_value_if_fail(path != NULL, NULL);
 
-    return find_target_widget(self, path, strlen(path));
+    widget = find_target_widget(self, path, strlen(path));
+    if (widget == NULL) {
+      widget = find_target_widget(widget_get_window(self), path, strlen(path));
+    }
+
+    return widget;
   } else if (v->type == VALUE_TYPE_POINTER) {
     return WIDGET(value_pointer(v));
   } else if (v->type == VALUE_TYPE_OBJECT) {
@@ -294,6 +300,23 @@ static ret_t func_widget_set(fscript_t* fscript, fscript_args_t* args, value_t* 
   FSCRIPT_FUNC_CHECK(widget != NULL && path != NULL, RET_BAD_PARAMS);
 
   ret = widget_set(widget, path, v);
+  value_set_bool(result, ret == RET_OK);
+
+  return ret;
+}
+
+static ret_t func_widget_add_value(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  value_t* v = NULL;
+  ret_t ret = RET_OK;
+  widget_t* widget = NULL;
+  const char* path = NULL;
+
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  widget = to_widget(fscript, args->args);
+  v = args->args + 1;
+
+  ret = widget_add_value(widget, value_double(v));
+
   value_set_bool(result, ret == RET_OK);
 
   return ret;
@@ -593,6 +616,7 @@ FACTORY_TABLE_ENTRY("widget_lookup", func_widget_lookup)
 FACTORY_TABLE_ENTRY("widget_get", func_widget_get)
 FACTORY_TABLE_ENTRY("widget_eval", func_widget_eval)
 FACTORY_TABLE_ENTRY("widget_set", func_widget_set)
+FACTORY_TABLE_ENTRY("widget_add_value", func_widget_add_value)
 FACTORY_TABLE_ENTRY("widget_create", func_widget_create)
 FACTORY_TABLE_ENTRY("widget_destroy", func_widget_destroy)
 FACTORY_TABLE_ENTRY("start_timer", func_widget_add_timer)
