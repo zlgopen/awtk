@@ -148,6 +148,7 @@ dialog_quit_code_t dialog_modal(widget_t* widget) {
   log_debug("awtk web not support dialog_modal\n");
   return DIALOG_QUIT_NONE;
 #else
+  main_loop_t* l = main_loop();
   dialog_t* dialog = DIALOG(widget);
   return_value_if_fail(dialog != NULL, DIALOG_QUIT_NONE);
 
@@ -156,7 +157,9 @@ dialog_quit_code_t dialog_modal(widget_t* widget) {
   dialog->quited = FALSE;
   dialog->is_model = TRUE;
   widget_invalidate(widget, NULL);
-  main_loop_run(main_loop());
+  dialog->quit_num = l->quit_num;
+  l->quit_num = 0;
+  main_loop_run(l);
 
   log_debug("%s quit\n", __FUNCTION__);
   idle_add(dialog_idle_close, widget);
@@ -185,13 +188,15 @@ ret_t dialog_quit(widget_t* widget, uint32_t code) {
   log_debug("awtk web not support dialog_modal\n");
   dialog_close(widget);
 #else
+  main_loop_t* l = main_loop();
   dialog_t* dialog = DIALOG(widget);
   return_value_if_fail(dialog != NULL && !(dialog->quited), RET_BAD_PARAMS);
   return_value_if_fail(is_dialog_opened(widget), RET_BAD_PARAMS);
 
   dialog->quited = TRUE;
   dialog->quit_code = (dialog_quit_code_t)code;
-  main_loop_quit(main_loop());
+  l->quit_num = dialog->quit_num;
+  main_loop_quit(l);
 #endif /*AWTK_WEB*/
 
   return RET_OK;

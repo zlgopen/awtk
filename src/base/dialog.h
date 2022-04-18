@@ -195,6 +195,7 @@ typedef struct _dialog_t {
   dialog_quit_code_t quit_code;
   bool_t quited;
   bool_t is_model;
+  uint8_t quit_num;
 } dialog_t;
 
 /**
