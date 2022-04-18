@@ -45,10 +45,10 @@ widget_t* ui_loader_load_widget_with_parent(const char* name, widget_t* parent) 
   const asset_info_t* ui = assets_manager_ref(assets_manager(), ASSET_TYPE_UI, name);
   return_value_if_fail(ui != NULL, NULL);
 
-  if (strncmp(name, STR_SCHEMA_FILE, strlen(STR_SCHEMA_FILE)) == 0) {
+  if (strncmp(name, STR_SCHEMA_FILE, strlen(STR_SCHEMA_FILE)) == 0 || ui->data[0] == '<') {
     path_basename(name, rname, sizeof(rname) - 1);
     name = rname;
-    if (strstr(name, ".xml") != NULL) {
+    if (strstr(name, ".xml") != NULL || ui->data[0] == '<') {
       loader = xml_ui_loader();
     }
   }

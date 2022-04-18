@@ -1,6 +1,8 @@
 # 最新动态
 2022/04/18
   * 增加函数path\_app\_root\_ex
+  * 完善ui\_loader\_load对xml的支持。
+  * 增加函数assets\_manager\_set\_fallback\_load\_asset
 
 2022/04/17
   * fscript增加函数widget\_add\_value
