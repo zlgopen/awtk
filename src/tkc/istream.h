@@ -168,6 +168,7 @@ int32_t tk_istream_read_line(tk_istream_t* stream, void* buff, uint32_t max_size
  * @method tk_istream_read_line_str
  *
  * 读取一行数据。
+ * >istream必须支持随机读写(seek/tell)。
  *
  * @param {tk_istream_t*} stream istream对象。
  * @param {str_t*} str 返回数据的str对象。

@@ -79,7 +79,7 @@ TEST(IStreamMem, seek) {
   tk_object_unref(TK_OBJECT(is));
 }
 
-TEST(IStreamMem, read_line) {
+TEST(IStreamMem, read_line_str) {
   str_t str;
   const char* content = "1111\n2222\r\n\r\n3333\n";
   tk_istream_t* is = tk_istream_mem_create((uint8_t*)content, strlen(content), 4, FALSE);
@@ -100,5 +100,27 @@ TEST(IStreamMem, read_line) {
   ASSERT_NE(tk_istream_read_line_str(is, &str), RET_OK);
 
   str_reset(&str);
+  tk_object_unref(TK_OBJECT(is));
+}
+
+TEST(IStreamMem, read_line) {
+  char str[128];
+  const char* content = "1111\n2222\r\n\r\n3333\n";
+  tk_istream_t* is = tk_istream_mem_create((uint8_t*)content, strlen(content), 4, FALSE);
+  uint32_t timeout = 100000000;
+  ASSERT_EQ(tk_istream_read_line(is, str, sizeof(str) - 1, timeout), 5);
+  ASSERT_STREQ(str, "1111\n");
+
+  ASSERT_EQ(tk_istream_read_line(is, str, sizeof(str) - 1, timeout), 6);
+  ASSERT_STREQ(str, "2222\r\n");
+
+  ASSERT_EQ(tk_istream_read_line(is, str, sizeof(str) - 1, timeout), 2);
+  ASSERT_STREQ(str, "\r\n");
+
+  ASSERT_EQ(tk_istream_read_line(is, str, sizeof(str) - 1, timeout), 5);
+  ASSERT_STREQ(str, "3333\n");
+
+  ASSERT_EQ(tk_istream_read_line(is, str, sizeof(str) - 1, timeout), 0);
+
   tk_object_unref(TK_OBJECT(is));
 }

@@ -144,10 +144,10 @@ int32_t tk_istream_read_line(tk_istream_t* stream, void* buff, uint32_t max_size
   uint32_t end = 0;
   int32_t offset = 0;
   int32_t read_bytes = 0;
-  int32_t remain_bytes = max_size;
   uint8_t* p = (uint8_t*)buff;
+  int32_t remain_bytes = max_size - 1;
   return_value_if_fail(stream != NULL && stream->read != NULL, -1);
-  return_value_if_fail(buff != NULL, 0);
+  return_value_if_fail(buff != NULL && max_size > 1, 0);
 
   start = time_now_ms();
   end = start + timeout_ms;
@@ -157,6 +157,8 @@ int32_t tk_istream_read_line(tk_istream_t* stream, void* buff, uint32_t max_size
 
     if (read_bytes < 0) {
       break;
+    } else if (read_bytes == 0 && tk_istream_eos(stream)) {
+      break;
     }
 
     offset += read_bytes;
@@ -165,10 +167,13 @@ int32_t tk_istream_read_line(tk_istream_t* stream, void* buff, uint32_t max_size
       break;
     }
 
-    if (p[offset] == '\n') {
+    if (offset > 0 && p[offset - 1] == '\n') {
       break;
     }
+
   } while (remain_bytes > 0);
+
+  p[offset] = '\0';
 
   return offset;
 }

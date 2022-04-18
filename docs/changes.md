@@ -1,4 +1,7 @@
 # 最新动态
+2022/04/19
+  * 完善tk\_istream\_read\_line
+
 2022/04/18
   * 增加函数path\_app\_root\_ex
   * 完善ui\_loader\_load对xml的支持。
