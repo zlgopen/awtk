@@ -214,6 +214,18 @@ ret_t path_exe(char path[MAX_PATH + 1]);
 ret_t path_app_root(char path[MAX_PATH + 1]);
 
 /**
+ * @method path_app_root_ex
+ *
+ * 获取app所在目录，并追加subpath到后面。
+ *
+ * @param {char*} path 保存app所在目录。
+ * @param {const char*} subpath 子目录。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t path_app_root_ex(char path[MAX_PATH + 1], const char* subpath);
+
+/**
  * @method path_exist
  *
  * 判断目录是否存在。

@@ -321,3 +321,12 @@ bool_t path_extname_is(const char* path, const char* extname) {
   p = strrchr(path, '.');
   return (p != NULL && tk_str_ieq(p, extname));
 }
+
+ret_t path_app_root_ex(char path[MAX_PATH + 1], const char* subpath) {
+  char app_root[MAX_PATH + 1] = {0};
+  return_value_if_fail(path_app_root(app_root) == RET_OK, RET_BAD_PARAMS);
+
+  path_build(path, MAX_PATH, app_root, subpath, NULL);
+
+  return RET_OK;
+}

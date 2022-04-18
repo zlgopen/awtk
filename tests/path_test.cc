@@ -165,6 +165,14 @@ TEST(Path, approot) {
   ASSERT_EQ(path_exist(result), TRUE);
 }
 
+TEST(Path, approot_ex) {
+  char bin_root[MAX_PATH + 1];
+  memset(bin_root, 0x00, sizeof(bin_root));
+  ASSERT_EQ(path_app_root_ex(bin_root, "bin"), RET_OK);
+  log_debug("%s\n", bin_root);
+  ASSERT_EQ(path_exist(bin_root), TRUE);
+}
+
 static const char* normalize_path_str(char* str) {
   char* p = str;
   while (*p) {
