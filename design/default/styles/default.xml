@@ -670,3 +670,8 @@
   </style>
 </hscroll_label>
 
+<color_tile>
+  <style name="default">
+    <normal text_color="black" />
+  </style>
+</color_tile>

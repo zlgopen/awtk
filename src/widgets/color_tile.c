@@ -123,7 +123,9 @@ static ret_t color_tile_on_paint_fill(widget_t* widget, canvas_t* c) {
 static ret_t color_tile_on_paint_self(widget_t* widget, canvas_t* c) {
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
   color_tile_on_paint_fill(widget, c);
+  widget_paint_helper(widget, c, NULL, NULL);
   color_tile_on_paint_stroke(widget, c);
+
   return RET_OK;
 }
 
