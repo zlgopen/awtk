@@ -118,7 +118,7 @@ elif OS_NAME == 'Windows':
         os.makedirs(os.path.abspath(TK_LIB_DIR))
     if TOOLS_NAME == '':
         OS_LIBS = ['gdi32', 'user32', 'winmm.lib', 'imm32.lib', 'version.lib', 'shell32.lib',
-                   'ole32.lib', 'Oleaut32.lib', 'Advapi32.lib', 'DelayImp.lib', 'psapi.lib']
+                   'ole32.lib', 'Oleaut32.lib', 'Advapi32.lib', 'DelayImp.lib', 'psapi.lib', "ws2_32"]
         OS_FLAGS = '-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /Od  /FS /Z7 /utf-8 /MD '
         if TARGET_ARCH == 'x86':
             OS_LINKFLAGS = '/MACHINE:X86 /DEBUG '

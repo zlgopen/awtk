@@ -3,6 +3,7 @@
   * 增加函数path\_app\_root\_ex
   * 完善ui\_loader\_load对xml的支持。
   * 增加函数assets\_manager\_set\_fallback\_load\_asset
+  * awtk修复缺少连接ws2_32类库的问题 （感谢智明提供补丁）。
 
 2022/04/17
   * fscript增加函数widget\_add\_value
