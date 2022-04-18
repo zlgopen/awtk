@@ -544,6 +544,11 @@ asset_info_t* assets_manager_load_ex(assets_manager_t* am, asset_type_t type, ui
     return am->custom_load_asset(am->custom_load_asset_ctx, type, subtype, name);
   }
   info = assets_manager_load_impl(am, type, subtype, name);
+  
+  if (info == NULL && am->fallback_load_asset != NULL) {
+    info = am->fallback_load_asset(am->fallback_load_asset_ctx, type, subtype, name);
+  }
+
   if (info != NULL) {
     assets_manager_dispatch_event(am, EVT_ASSET_MANAGER_LOAD_ASSET, info);
   }
@@ -828,6 +833,16 @@ ret_t assets_manager_set_custom_load_asset(assets_manager_t* am,
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
   am->custom_load_asset_ctx = ctx;
   am->custom_load_asset = custom_load_asset;
+
+  return RET_OK;
+}
+
+ret_t assets_manager_set_fallback_load_asset(assets_manager_t* am,
+                                           assets_manager_load_asset_t fallback_load_asset,
+                                           void* ctx) {
+  return_value_if_fail(am != NULL, RET_BAD_PARAMS);
+  am->fallback_load_asset_ctx = ctx;
+  am->fallback_load_asset = fallback_load_asset;
 
   return RET_OK;
 }

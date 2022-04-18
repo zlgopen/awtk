@@ -84,6 +84,9 @@ struct _assets_manager_t {
 
   void* custom_load_asset_ctx;
   assets_manager_load_asset_t custom_load_asset;
+  
+  void* fallback_load_asset_ctx;
+  assets_manager_load_asset_t fallback_load_asset;
 
   void* custom_build_asset_dir_ctx;
   assets_manager_build_asset_dir_t custom_build_asset_dir;
@@ -331,6 +334,19 @@ ret_t assets_manager_set_custom_load_asset(assets_manager_t* am,
                                            assets_manager_load_asset_t custom_load_asset,
                                            void* ctx);
 
+/**
+ * @method assets_manager_set_fallback_load_asset
+ * 设置一个函数，该函数在找不到资源时加载后补资源。
+ *
+ * @param {assets_manager_t*} am asset manager对象。
+ * @param {assets_manager_load_asset_t} fallback_load_asset 回调函数。
+ * @param {void*} ctx 回调函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t assets_manager_set_fallback_load_asset(assets_manager_t* am,
+                                           assets_manager_load_asset_t fallback_load_asset,
+                                           void* ctx);
 /**
  * @method assets_manager_clear_cache
  * 清除指定类型的缓存。
