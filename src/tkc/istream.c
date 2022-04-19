@@ -46,9 +46,11 @@ int32_t tk_istream_tell(tk_istream_t* stream) {
 
 bool_t tk_istream_eos(tk_istream_t* stream) {
   return_value_if_fail(stream != NULL, TRUE);
-  return_value_if_fail(stream->eos != NULL, TRUE);
-
-  return stream->eos(stream);
+  if (stream->eos != NULL) {
+    return stream->eos(stream);
+  } else {
+    return FALSE;
+  }
 }
 
 ret_t tk_istream_wait_for_data(tk_istream_t* stream, uint32_t timeout_ms) {
@@ -140,8 +142,8 @@ int32_t tk_istream_read_len(tk_istream_t* stream, void* buff, uint32_t max_size,
 
 int32_t tk_istream_read_line(tk_istream_t* stream, void* buff, uint32_t max_size,
                              uint32_t timeout_ms) {
-  uint32_t start = 0;
-  uint32_t end = 0;
+  uint64_t start = 0;
+  uint64_t end = 0;
   int32_t offset = 0;
   int32_t read_bytes = 0;
   uint8_t* p = (uint8_t*)buff;
