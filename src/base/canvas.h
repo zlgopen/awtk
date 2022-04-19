@@ -163,7 +163,7 @@ struct _canvas_t {
   /*确保begin_frame/end_frame配对使用*/
   bool_t began_frame;
 
-  uint32_t last_text_length;
+  float last_text_length;
   uint32_t last_text_nr;
   wchar_t* last_text_str;
 
