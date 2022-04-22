@@ -12,10 +12,32 @@ rlog提供一个循环记录日志的功能，让日志文件始终不会超出�
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#rlog_t_rlog_clear">rlog\_clear</a> | 清空日志。 |
 | <a href="#rlog_t_rlog_create">rlog\_create</a> | 创建rlog对象。 |
 | <a href="#rlog_t_rlog_destroy">rlog\_destroy</a> | 销毁日志对象。 |
 | <a href="#rlog_t_rlog_print">rlog\_print</a> | 写入一条日志记录。 |
+| <a href="#rlog_t_rlog_read">rlog\_read</a> | 读取日志。 |
+| <a href="#rlog_t_rlog_size">rlog\_size</a> | 获取日志大小。 |
 | <a href="#rlog_t_rlog_write">rlog\_write</a> | 写入一条日志记录。 |
+#### rlog\_clear 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rlog_t_rlog_clear">清空日志。
+
+* 函数原型：
+
+```
+ret_t rlog_clear (rlog_t* log);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| log | rlog\_t* | 日志对象。 |
 #### rlog\_create 函数
 -----------------------
 
@@ -82,6 +104,49 @@ ret_t rlog_print (rlog_t* log, const char* format);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | log | rlog\_t* | 日志对象。 |
 | format | const char* | 格式字符串。 |
+#### rlog\_read 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rlog_t_rlog_read">读取日志。
+
+* 函数原型：
+
+```
+ret_t rlog_read (rlog_t* log, uint32_t offs, char* buff, uint32_t buffsz, uint32_t* readsz);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| log | rlog\_t* | 日志对象。 |
+| offs | uint32\_t | 日志偏移量。 |
+| buff | char* | 存放日志的缓存。 |
+| buffsz | uint32\_t | 缓存大小。 |
+| readsz | uint32\_t* | 读取出的日志大小。 |
+#### rlog\_size 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rlog_t_rlog_size">获取日志大小。
+
+* 函数原型：
+
+```
+ret_t rlog_size (rlog_t* log, uint32_t* size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| log | rlog\_t* | 日志对象。 |
+| size | uint32\_t* | 获取的日志大小。 |
 #### rlog\_write 函数
 -----------------------
 

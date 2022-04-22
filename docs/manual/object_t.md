@@ -312,7 +312,7 @@ ret_t object_foreach_prop (object_t* obj, tk_visit_t on_prop, void* ctx);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | obj | object\_t* | object对象。 |
-| on\_prop | tk\_visit\_t | 回调函数。 |
+| on\_prop | tk\_visit\_t | 回调函数(data参数为named\_value\_t类型)。 |
 | ctx | void* | 回调函数上下文。 |
 #### object\_get\_child\_object 函数
 -----------------------

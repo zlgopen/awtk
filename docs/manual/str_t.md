@@ -26,14 +26,18 @@ str_reset(&s);
 | <a href="#str_t_str_append_char">str\_append\_char</a> | 追加一个字符。 |
 | <a href="#str_t_str_append_double">str\_append\_double</a> | 追加一个浮点数。 |
 | <a href="#str_t_str_append_int">str\_append\_int</a> | 追加一个整数。 |
+| <a href="#str_t_str_append_int64">str\_append\_int64</a> | 追加一个int64整数。 |
 | <a href="#str_t_str_append_json_bool_pair">str\_append\_json\_bool\_pair</a> | 追加bool格式的json键值对。 |
 | <a href="#str_t_str_append_json_double_pair">str\_append\_json\_double\_pair</a> | 追加doube格式的json键值对。 |
 | <a href="#str_t_str_append_json_int_pair">str\_append\_json\_int\_pair</a> | 追加int格式的json键值对。 |
 | <a href="#str_t_str_append_json_str">str\_append\_json\_str</a> | 追加一个字符串，字符串前后加英文双引号，字符串本身的双引号被转义为\"。 |
 | <a href="#str_t_str_append_json_str_pair">str\_append\_json\_str\_pair</a> | 追加字符串格式的json键值对。 |
 | <a href="#str_t_str_append_more">str\_append\_more</a> | 追加多个字符串。以NULL结束。 |
+| <a href="#str_t_str_append_n_chars">str\_append\_n\_chars</a> | 同一个字符追加n次。 |
+| <a href="#str_t_str_append_uint64">str\_append\_uint64</a> | 追加一个uint64整数。 |
 | <a href="#str_t_str_append_with_len">str\_append\_with\_len</a> | 追加字符串。 |
 | <a href="#str_t_str_clear">str\_clear</a> | 清除字符串内容。 |
+| <a href="#str_t_str_common_prefix">str\_common\_prefix</a> | 计算str和other的共同前缀，并设置到str中。 |
 | <a href="#str_t_str_decode_xml_entity">str\_decode\_xml\_entity</a> | 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。 |
 | <a href="#str_t_str_decode_xml_entity_with_len">str\_decode\_xml\_entity\_with\_len</a> | 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。 |
 | <a href="#str_t_str_encode_hex">str\_encode\_hex</a> | 把二进制的数据编码成16进制格式的字符串。 |
@@ -154,6 +158,26 @@ ret_t str_append_int (str_t* str, int32_t value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
 | value | int32\_t | 要追加的整数。 |
+#### str\_append\_int64 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_int64">追加一个int64整数。
+
+* 函数原型：
+
+```
+ret_t str_append_int64 (str_t* str, int64_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| value | int64\_t | 要追加的整数。 |
 #### str\_append\_json\_bool\_pair 函数
 -----------------------
 
@@ -290,6 +314,47 @@ ret_t str_append_more (str_t* str, char* text);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
 | text | char* | 要追加的字符串。 |
+#### str\_append\_n\_chars 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_n_chars">同一个字符追加n次。
+
+* 函数原型：
+
+```
+ret_t str_append_n_chars (str_t* str, char c, uint32_t n);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| c | char | 要追加的字符。 |
+| n | uint32\_t | 字符的个数。 |
+#### str\_append\_uint64 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_uint64">追加一个uint64整数。
+
+* 函数原型：
+
+```
+ret_t str_append_uint64 (str_t* str, uint64_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| value | uint64\_t | 要追加的整数。 |
 #### str\_append\_with\_len 函数
 -----------------------
 
@@ -330,6 +395,26 @@ ret_t str_clear (str_t* str);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
+#### str\_common\_prefix 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_common_prefix">计算str和other的共同前缀，并设置到str中。
+
+* 函数原型：
+
+```
+ret_t str_common_prefix (str_t* str, const char* other);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| other | const char* | 另外一个字符串。 |
 #### str\_decode\_xml\_entity 函数
 -----------------------
 

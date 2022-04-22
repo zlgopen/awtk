@@ -43,6 +43,7 @@ darray_destroy(darray);
 | <a href="#darray_t_darray_insert">darray\_insert</a> | 插入一个元素。 |
 | <a href="#darray_t_darray_pop">darray\_pop</a> | 弹出最后一个元素。 |
 | <a href="#darray_t_darray_push">darray\_push</a> | 在尾巴追加一个元素。 |
+| <a href="#darray_t_darray_push_unique">darray\_push\_unique</a> | 如果不存在，在尾巴追加一个元素。 |
 | <a href="#darray_t_darray_remove">darray\_remove</a> | 删除第一个满足条件的元素。 |
 | <a href="#darray_t_darray_remove_all">darray\_remove\_all</a> | 删除全部满足条件的元素。 |
 | <a href="#darray_t_darray_remove_ex">darray\_remove\_ex</a> | 删除第一个满足条件的元素。 |
@@ -448,6 +449,26 @@ void* darray_pop (darray_t* darray);
 
 ```
 ret_t darray_push (darray_t* darray, void* data);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| darray | darray\_t* | 数组对象。 |
+| data | void* | 待追加的元素。 |
+#### darray\_push\_unique 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="darray_t_darray_push_unique">如果不存在，在尾巴追加一个元素。
+
+* 函数原型：
+
+```
+ret_t darray_push_unique (darray_t* darray, void* data);
 ```
 
 * 参数说明：

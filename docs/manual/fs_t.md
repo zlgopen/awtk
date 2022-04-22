@@ -24,6 +24,7 @@
 | <a href="#fs_t_fs_dir_rename">fs\_dir\_rename</a> | 目录重命名。 |
 | <a href="#fs_t_fs_file_exist">fs\_file\_exist</a> | 判断文件是否存在。 |
 | <a href="#fs_t_fs_file_rename">fs\_file\_rename</a> | 文件重命名。 |
+| <a href="#fs_t_fs_foreach_file">fs\_foreach\_file</a> | 遍历指定目录下全部常规文件。 |
 | <a href="#fs_t_fs_get_cwd">fs\_get\_cwd</a> | 获取当前所在目录。 |
 | <a href="#fs_t_fs_get_disk_info">fs\_get\_disk\_info</a> | 获取文件系统信息。 |
 | <a href="#fs_t_fs_get_exe">fs\_get\_exe</a> | 获取可执行文件所在目录。 |
@@ -381,6 +382,41 @@ ret_t fs_file_rename (fs_t* fs, const char* name, const char* new_name);
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | name | const char* | 旧文件名。 |
 | new\_name | const char* | 新文件名。 |
+#### fs\_foreach\_file 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="fs_t_fs_foreach_file">遍历指定目录下全部常规文件。
+示例:
+```c
+static ret_t on_file(void* ctx, const void* data) {
+const char* filename = (const char*)data;
+const char* extname = (const char*)ctx;
+
+if (tk_str_end_with(filename, extname)) {
+log_debug("%s\n", filename);
+}
+return RET_OK;
+}
+...
+fs_foreach_file("tests/testdata", on_file, (void*)".json");
+```
+
+* 函数原型：
+
+```
+bool_t fs_foreach_file (const char* path, tk_visit_t on_file, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示成功，否则表示失败。 |
+| path | const char* | 目录。 |
+| on\_file | tk\_visit\_t | 回调函数(完整文件名通过data参数传入)。 |
+| ctx | void* | 回调函数上下文。 |
 #### fs\_get\_cwd 函数
 -----------------------
 

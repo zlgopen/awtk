@@ -39,6 +39,7 @@
 | <a href="#utils_t_tk_str_append">tk\_str\_append</a> | 字符串追加函数。 |
 | <a href="#utils_t_tk_str_cmp">tk\_str\_cmp</a> | 字符串比较函数。 |
 | <a href="#utils_t_tk_str_copy">tk\_str\_copy</a> | 字符串拷贝函数。 |
+| <a href="#utils_t_tk_str_end_with">tk\_str\_end\_with</a> | 检查字符串是否以指定的字符串appendix结尾。 |
 | <a href="#utils_t_tk_str_icmp">tk\_str\_icmp</a> | 字符串比较函数（不区分大小写）。 |
 | <a href="#utils_t_tk_str_start_with">tk\_str\_start\_with</a> | 检查字符串是否以指定的字符串prefix开头。 |
 | <a href="#utils_t_tk_str_tolower">tk\_str\_tolower</a> | 将大写字母转换为小写字母。 |
@@ -715,6 +716,26 @@ char* tk_str_copy (const char* dst, const char* src);
 | 返回值 | char* | 返回指向的复制字符串指针，如果失败则返回NULL。 |
 | dst | const char* | 目标字符串。 |
 | src | const char* | 源字符串。 |
+#### tk\_str\_end\_with 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_str_end_with">检查字符串是否以指定的字符串appendix结尾。
+
+* 函数原型：
+
+```
+bool_t tk_str_end_with (const char* str, const char* appendix);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示是；否则表示不是。 |
+| str | const char* | 要检查字符串。 |
+| appendix | const char* | 被检查的字符串。 |
 #### tk\_str\_icmp 函数
 -----------------------
 

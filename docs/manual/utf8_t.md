@@ -22,6 +22,7 @@ tk_utf8_from_utf16(wstr, res_str, ARRAY_SIZE(res_str));
 | <a href="#utf8_t_tk_utf8_dup_utf16">tk\_utf8\_dup\_utf16</a> | 把ucs字符串转成UTF8字符串。 |
 | <a href="#utf8_t_tk_utf8_from_utf16">tk\_utf8\_from\_utf16</a> | 把ucs字符串转成UTF8字符串。 |
 | <a href="#utf8_t_tk_utf8_from_utf16_ex">tk\_utf8\_from\_utf16\_ex</a> | 把ucs字符串转成UTF8字符串。 |
+| <a href="#utf8_t_tk_utf8_get_bytes_of_leading">tk\_utf8\_get\_bytes\_of\_leading</a> | 获取第一个字节为c的字符的字节数。 |
 | <a href="#utf8_t_tk_utf8_to_utf16">tk\_utf8\_to\_utf16</a> | 将char类型转换为wchar_t类型。 |
 | <a href="#utf8_t_tk_utf8_to_utf16_ex">tk\_utf8\_to\_utf16\_ex</a> | 将char类型转换为wchar_t类型。 |
 #### tk\_utf8\_dup\_utf16 函数
@@ -88,6 +89,25 @@ char* tk_utf8_from_utf16_ex (const wchar_t* in, uint32_t in_size, const char* ou
 | in\_size | uint32\_t | 输入字符串的长度。 |
 | out | const char* | 输出字符串。 |
 | out\_size | uint32\_t | 输出字符串的最大长度。 |
+#### tk\_utf8\_get\_bytes\_of\_leading 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utf8_t_tk_utf8_get_bytes_of_leading">获取第一个字节为c的字符的字节数。
+
+* 函数原型：
+
+```
+uint32_t tk_utf8_get_bytes_of_leading (uint8_t c);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回字符的字节数。 |
+| c | uint8\_t | 字符的第一个字节。 |
 #### tk\_utf8\_to\_utf16 函数
 -----------------------
 
