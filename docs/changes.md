@@ -4,6 +4,7 @@
   * 增加 TK\_STR\_IS\_EMPTY
   * 增加 TK\_STR\_IS\_NOT\_EMPTY
   * 统一slider\_indictor中的anchor\_x/anchor\_y。
+  * 完善idl_gen（感谢王程提供补丁）。
 
 2022/04/19
   * 完善tk\_istream\_read\_line

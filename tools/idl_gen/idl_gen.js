@@ -442,14 +442,13 @@ class IDLGen {
 
   run(sourcesPath) {
     let st = fs.statSync(sourcesPath);
-   
+    let filename = path.resolve(sourcesPath).replace(/\\/g, '/');
+
     console.log(sourcesPath);
     if(st.isFile()) {
-      let filename = path.resolve(sourcesPath);
-      filename = filename.replace(/\\/g, '/');
       this.parseFile(filename);
     } else {
-      this.parseFolder(path.resolve(sourcesPath) + '/**/*.h');
+      this.parseFolder(filename + '/**/*.h');
     }
   }
 
