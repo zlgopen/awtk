@@ -450,4 +450,7 @@ typedef struct _event_source_manager_t event_source_manager_t;
 #define STR_SCHEMA_HTTP "http://"
 #define STR_SCHEMA_HTTPS "https://"
 
+#define TK_STR_IS_EMPTY(s) (s == NULL || *s == '\0')
+#define TK_STR_IS_NOT_EMPTY(s) ((s != NULL) && *s)
+
 #endif /*TYPES_DEF_H*/

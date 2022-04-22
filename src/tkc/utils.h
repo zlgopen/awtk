@@ -811,6 +811,21 @@ static inline float tk_min_float(float a, float b) {
  */
 bool_t tk_wild_card_match(const char* pattern, const char* str);
 
+/**
+ * @method tk_eval_ratio_or_px
+ *
+ * 如果expr以px/PX结束，直接返回前面的数值。否则将数值当作比例，返回该数值 * value。
+ *
+ * ```c
+ * tk_eval_ratio_or_px("0.5", 100) => 50
+ * tk_eval_ratio_or_px("20px", 100) => 20
+ * ```
+ * @param {const char*} expr 表达式(如100px, 0.5等)
+ * @param {uint32_t} value 值。 
+ *
+ * @return {int32_t} 返回计算结果。
+ */
+int32_t tk_eval_ratio_or_px(const char* expr, uint32_t value);
 /*public for test*/
 ret_t xml_file_expand(const char* filename, str_t* s, const char* data);
 

@@ -1457,3 +1457,18 @@ bool_t tk_wild_card_match(const char* pattern, const char* str) {
 
   return *p_pattern == '*' || *p_str == *p_pattern;
 }
+
+int32_t tk_eval_ratio_or_px(const char* expr, uint32_t value) {
+  const char* p = NULL;
+  return_value_if_fail(expr != NULL, 0);
+  p = strrchr(expr, 'p');
+  if (p == NULL) {
+    p = strrchr(expr, 'P');
+  }
+
+  if (p == NULL) {
+    return value * tk_atof(expr);
+  } else {
+    return tk_atoi(expr);
+  }
+}
