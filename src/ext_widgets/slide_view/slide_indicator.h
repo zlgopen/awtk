@@ -152,18 +152,18 @@ typedef struct _slide_indicator_t {
   uint32_t size;
 
   /**
-   * @property {float_t} anchor_x
+   * @property {char*} anchor_x
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 锚点x坐标。
+   * 锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
    */
-  float_t anchor_x;
+  char* anchor_x;
 
   /**
-   * @property {float_t} anchor_y
+   * @property {char*} anchor_y
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 锚点y坐标。
+   * 锚点y坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
    */
-  float_t anchor_y;
+  char* anchor_y;
 
   /**
    * @property {char*} indicated_target
@@ -181,8 +181,6 @@ typedef struct _slide_indicator_t {
 
   /*private*/
   uint8_t pressed : 1;
-  uint8_t anchor_x_fixed : 1;
-  uint8_t anchor_y_fixed : 1;
   uint8_t chilren_indicated : 1;
   bool_t reset_icon_rect_list;
   bool_t loop;

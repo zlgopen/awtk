@@ -677,3 +677,22 @@ TEST(Utils, tk_wild_card_match) {
   ASSERT_EQ(tk_wild_card_match("awflow_*", "awflow_123"), TRUE);
   ASSERT_EQ(tk_wild_card_match("awflow_*", "awflow_abc"), TRUE);
 }
+
+TEST(Utils, tk_eval_ratio_or_px) {
+  ASSERT_EQ(tk_eval_ratio_or_px("0", 100), 0);
+  ASSERT_EQ(tk_eval_ratio_or_px("1px", 100), 1);
+  ASSERT_EQ(tk_eval_ratio_or_px("10px", 100), 10);
+  ASSERT_EQ(tk_eval_ratio_or_px("0.5", 100), 50);
+  ASSERT_EQ(tk_eval_ratio_or_px("1", 100), 100);
+}
+
+TEST(Utils, TK_STR_IS_EMPTY) {
+  const char* str = NULL;
+  ASSERT_EQ(TK_STR_IS_EMPTY(str), true);
+  ASSERT_EQ(TK_STR_IS_EMPTY(""), true);
+  ASSERT_EQ(TK_STR_IS_EMPTY("a"), false);
+
+  ASSERT_EQ(TK_STR_IS_NOT_EMPTY(str), false);
+  ASSERT_EQ(TK_STR_IS_NOT_EMPTY(""), false);
+  ASSERT_EQ(TK_STR_IS_NOT_EMPTY("a"), true);
+}

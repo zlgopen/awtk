@@ -2,6 +2,7 @@
 #include "gtest/gtest.h"
 #include "widgets/button.h"
 #include "slide_view/slide_view.h"
+#include "slide_view/slide_indicator.h"
 #include <string>
 
 using std::string;
@@ -121,6 +122,23 @@ TEST(SlideView, cast) {
   widget_t* w = slide_view_create(NULL, 0, 0, 400, 300);
 
   ASSERT_EQ(w, slide_view_cast(w));
+
+  widget_destroy(w);
+}
+
+TEST(SlideIndicator, props) {
+  widget_t* w = slide_indicator_create(NULL, 0, 0, 400, 300);
+  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_ANCHOR_X, "0.5"), RET_OK);
+  ASSERT_STREQ(widget_get_prop_str(w, WIDGET_PROP_ANCHOR_X, NULL), "0.5");
+  
+  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_ANCHOR_X, "100px"), RET_OK);
+  ASSERT_STREQ(widget_get_prop_str(w, WIDGET_PROP_ANCHOR_X, NULL), "100px");
+  
+  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_ANCHOR_Y, "0.5"), RET_OK);
+  ASSERT_STREQ(widget_get_prop_str(w, WIDGET_PROP_ANCHOR_Y, NULL), "0.5");
+  
+  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_ANCHOR_Y, "100px"), RET_OK);
+  ASSERT_STREQ(widget_get_prop_str(w, WIDGET_PROP_ANCHOR_Y, NULL), "100px");
 
   widget_destroy(w);
 }

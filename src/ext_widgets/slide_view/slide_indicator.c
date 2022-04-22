@@ -54,33 +54,57 @@ const key_type_value_t* indicator_default_paint_find(const char* name) {
   return find_item(indicator_default_paint_value, ARRAY_SIZE(indicator_default_paint_value), name);
 }
 
+static pointf_t slide_indicator_eval_anchor(widget_t* widget) {
+  point_t p = {0, 0};
+  pointf_t anchor = {0, 0};
+  const char* anchor_x = NULL;
+  const char* anchor_y = NULL;
+  slide_indicator_t* slide_indicator = SLIDE_INDICATOR(widget);
+  return_value_if_fail(slide_indicator != NULL, anchor);
+
+  anchor_x = slide_indicator->anchor_x;
+  anchor_y = slide_indicator->anchor_y;
+
+  if (TK_STR_IS_EMPTY(anchor_x) || TK_STR_IS_EMPTY(anchor_y)) {
+    widget_t* target = slide_indicator->indicated_widget;
+    return_value_if_fail(target != NULL, anchor);
+
+    widget_to_screen(target, &p);
+    p.x += target->w / 2;
+    p.y += target->h / 2;
+    widget_to_local(widget, &p);
+  }
+
+  if (TK_STR_IS_EMPTY(anchor_x)) {
+    anchor.x = p.x;
+  } else {
+    anchor.x = tk_eval_ratio_or_px(anchor_x, widget->w);
+  }
+
+  if (TK_STR_IS_EMPTY(anchor_y)) {
+    anchor.y = p.y;
+  } else {
+    anchor.y = tk_eval_ratio_or_px(anchor_y, widget->h);
+  }
+
+  return anchor;
+}
+
 ret_t slide_indicator_set_anchor_x(widget_t* widget, const char* anchor) {
-  float_t val = 0.0f;
   slide_indicator_t* slide_indicator = SLIDE_INDICATOR(widget);
   return_value_if_fail(slide_indicator != NULL && anchor != NULL, RET_BAD_PARAMS);
 
-  val = tk_atof(anchor);
-  if (strrchr(anchor, '%')) {
-    val = val * widget->w;
-  }
-  slide_indicator->anchor_x = val;
-  slide_indicator->anchor_x_fixed = TRUE;
-  slide_indicator->reset_icon_rect_list = TRUE;
+  slide_indicator->anchor_x = tk_str_copy(slide_indicator->anchor_x, anchor);
+
   return RET_OK;
 }
 
 ret_t slide_indicator_set_anchor_y(widget_t* widget, const char* anchor) {
-  float_t val = 0.0f;
   slide_indicator_t* slide_indicator = SLIDE_INDICATOR(widget);
   return_value_if_fail(slide_indicator != NULL && anchor != NULL, RET_BAD_PARAMS);
 
-  val = tk_atof(anchor);
-  if (strrchr(anchor, '%')) {
-    val = val * widget->h;
-  }
-  slide_indicator->anchor_y = val;
-  slide_indicator->anchor_y_fixed = TRUE;
-  slide_indicator->reset_icon_rect_list = TRUE;
+  slide_indicator->anchor_y = tk_str_copy(slide_indicator->anchor_y, anchor);
+
   return RET_OK;
 }
 
@@ -110,10 +134,10 @@ static ret_t slide_indicator_get_prop(widget_t* widget, const char* name, value_
     value_set_uint32(v, slide_indicator->size);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_ANCHOR_X)) {
-    value_set_int(v, slide_indicator->anchor_x);
+    value_set_str(v, slide_indicator->anchor_x);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_ANCHOR_Y)) {
-    value_set_int(v, slide_indicator->anchor_y);
+    value_set_str(v, slide_indicator->anchor_y);
     return RET_OK;
   } else if (tk_str_eq(name, SLIDE_INDICATOR_PROP_INDICATED_TARGET)) {
     value_set_str(v, slide_indicator->indicated_target);
@@ -165,27 +189,6 @@ static ret_t slide_indicator_set_prop(widget_t* widget, const char* name, const 
   return RET_NOT_FOUND;
 }
 
-static ret_t slide_indicator_fix_anchor(widget_t* widget) {
-  slide_indicator_t* slide_indicator = SLIDE_INDICATOR(widget);
-  return_value_if_fail(slide_indicator != NULL, RET_BAD_PARAMS);
-
-  if (!slide_indicator->anchor_x_fixed || !slide_indicator->anchor_y_fixed) {
-    point_t p = {0, 0};
-    widget_t* target = slide_indicator->indicated_widget;
-    return_value_if_fail(target != NULL, RET_BAD_PARAMS);
-
-    widget_to_screen(target, &p);
-    p.x += target->w / 2;
-    p.y += target->h / 2;
-    widget_to_local(widget, &p);
-
-    slide_indicator->anchor_x = slide_indicator->anchor_x_fixed ? slide_indicator->anchor_x : p.x;
-    slide_indicator->anchor_y = slide_indicator->anchor_y_fixed ? slide_indicator->anchor_y : p.y;
-  }
-
-  return RET_OK;
-}
-
 static widget_t* slide_indicator_find_target(widget_t* widget) {
   value_t v;
   widget_t* parent = NULL;
@@ -209,7 +212,6 @@ static ret_t slide_indicator_on_layout_children(widget_t* widget) {
 
   if (slide_indicator->indicated_widget != NULL &&
       slide_indicator->indicated_widget->parent == widget->parent) {
-    slide_indicator_fix_anchor(widget);
   } else {
     if (slide_indicator_reset_indicated_widget(widget) == RET_OK) {
       widget_t* target = NULL;
@@ -478,8 +480,9 @@ static ret_t slide_indicator_paint_arc(widget_t* widget, canvas_t* c) {
     bool_t ccw = FALSE;
     uint32_t nr = slide_indicator->max;
     uint32_t size = slide_indicator->size;
-    float_t cx = slide_indicator->anchor_x;
-    float_t cy = slide_indicator->anchor_y;
+    pointf_t anchor = slide_indicator_eval_anchor(widget);
+    float_t cx = anchor.x;
+    float_t cy = anchor.y;
     float_t margin = slide_indicator->margin;
     float_t spacing = (slide_indicator->spacing / 180.0f * M_PI);
     float_t center = _RADIAN(cx, cy, widget->w / 2, widget->h / 2);
@@ -535,8 +538,9 @@ static ret_t slide_indicator_paint_linear(widget_t* widget, canvas_t* c) {
     uint32_t offset = 0;
     uint32_t nr = slide_indicator->max;
     uint32_t size = slide_indicator->size;
-    float_t cx = slide_indicator->anchor_x;
-    float_t cy = slide_indicator->anchor_y;
+    pointf_t anchor = slide_indicator_eval_anchor(widget);
+    float_t cx = anchor.x;
+    float_t cy = anchor.y;
     bool_t vertical = widget->w < widget->h;
     uint32_t margin = slide_indicator->margin;
     uint32_t spacing = slide_indicator->spacing;
@@ -706,7 +710,6 @@ static ret_t slide_indicator_target_on_move_resize(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(e->target);
   widget_t* indicator = WIDGET(ctx);
   return_value_if_fail(widget != NULL && indicator != NULL, RET_BAD_PARAMS);
-  slide_indicator_fix_anchor(indicator);
   return widget_invalidate_force(indicator, NULL);
 }
 
@@ -784,7 +787,6 @@ static ret_t slide_indicator_set_indicated_widget(widget_t* widget, widget_t* ta
   if (slide_indicator->auto_hide) {
     widget_on(target, EVT_POINTER_MOVE, slide_indicator_target_on_pointer_move, widget);
   }
-  slide_indicator_fix_anchor(widget);
 
   return RET_OK;
 }
@@ -957,11 +959,7 @@ widget_t* slide_indicator_create_internal(widget_t* parent, xy_t x, xy_t y, wh_t
   slide_indicator->margin = 0;
   slide_indicator->spacing = 16;
   slide_indicator->size = 8;
-  slide_indicator->anchor_x = 0;
-  slide_indicator->anchor_y = 0;
   slide_indicator->wa_opactiy = NULL;
-  slide_indicator->anchor_x_fixed = FALSE;
-  slide_indicator->anchor_y_fixed = FALSE;
   slide_indicator->chilren_indicated = FALSE;
   slide_indicator->indicated_widget = NULL;
   slide_indicator->indicated_target = NULL;

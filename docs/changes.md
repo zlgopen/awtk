@@ -1,4 +1,9 @@
 # 最新动态
+2022/04/20
+  * 增加 tk\_eval\_ratio\_or\_px
+  * 增加 TK\_STR\_IS\_EMPTY
+  * 增加 TK\_STR\_IS\_NOT\_EMPTY
+  * 统一slider\_indictor中的anchor\_x/anchor\_y。
 
 2022/04/19
   * 完善tk\_istream\_read\_line
