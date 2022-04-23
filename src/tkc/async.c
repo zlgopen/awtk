@@ -78,8 +78,12 @@ ret_t async_call(async_exec_t exec, async_on_result_t on_result, void* ctx) {
 }
 
 ret_t async_call_init_ex(uint32_t max_threads, uint32_t min_threads) {
+  return async_call_init_ex2(max_threads, min_threads, 0);
+}
+
+ret_t async_call_init_ex2(uint32_t max_threads, uint32_t min_threads, uint32_t stack_size) {
   return_value_if_fail(s_async_thread_pool == NULL, RET_BAD_PARAMS);
-  s_async_thread_pool = action_thread_pool_create(max_threads, min_threads);
+  s_async_thread_pool = action_thread_pool_create_ex(max_threads, min_threads, stack_size, TK_THREAD_PRIORITY_NORMAL);
   return_value_if_fail(s_async_thread_pool != NULL, RET_BAD_PARAMS);
 
   return RET_OK;

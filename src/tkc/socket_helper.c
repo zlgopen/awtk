@@ -62,7 +62,11 @@ ret_t tk_socket_deinit() {
 }
 
 ret_t tk_socket_close(int sock) {
+#ifdef AWORKS
+  closesocket(sock);
+#else
   close(sock);
+#endif
   return RET_OK;
 }
 #endif /*WIN32*/
@@ -157,6 +161,8 @@ struct sockaddr* socket_resolve(const char* host, int port, struct sockaddr_in* 
   memset(addr, 0x00, sizeof(*addr));
   addr->sin_family = AF_INET;
   addr->sin_port = htons(port);
+  return_value_if_fail(h->h_addrtype == AF_INET, NULL);
+
   memcpy(&(addr->sin_addr.s_addr), h->h_addr, h->h_length);
 
   return (struct sockaddr*)addr;
