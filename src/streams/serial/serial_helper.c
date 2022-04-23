@@ -126,7 +126,8 @@ serial_handle_t serial_open(const char* port) {
   handle->mutex = tk_mutex_create();
   handle->thread = tk_thread_create(serial_thread_entry, handle);
 
-  if (handle->cond == NULL || handle->mutex == NULL || handle->thread == NULL || tk_socketpair(socks) < 0 ) {
+  if (handle->cond == NULL || handle->mutex == NULL || handle->thread == NULL ||
+      tk_socketpair(socks) < 0) {
     serial_close(handle);
     return NULL;
   }

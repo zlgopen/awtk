@@ -106,4 +106,3 @@ TEST(TimeClock, cast) {
 
   widget_destroy(w);
 }
-

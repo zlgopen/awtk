@@ -56,7 +56,7 @@ TEST(MLEdit, tips) {
 
   ASSERT_EQ(widget_set_prop_str(b, WIDGET_PROP_TR_TIPS, "tr_tips"), RET_OK);
   ASSERT_STREQ(MLEDIT(b)->tr_tips, "tr_tips");
-  
+
   ASSERT_EQ(widget_set_prop_str(b, WIDGET_PROP_TR_TIPS, ""), RET_OK);
   ASSERT_EQ(MLEDIT(b)->tr_tips == NULL, true);
 

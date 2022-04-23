@@ -198,7 +198,7 @@ TEST(Button, tr_text) {
 
   widget_set_tr_text(w1, "abc");
   ASSERT_STREQ(w1->tr_text, "abc");
-  
+
   widget_set_tr_text(w1, "");
   ASSERT_EQ(w1->tr_text == NULL, true);
 

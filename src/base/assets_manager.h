@@ -84,7 +84,7 @@ struct _assets_manager_t {
 
   void* custom_load_asset_ctx;
   assets_manager_load_asset_t custom_load_asset;
-  
+
   void* fallback_load_asset_ctx;
   assets_manager_load_asset_t fallback_load_asset;
 
@@ -345,8 +345,8 @@ ret_t assets_manager_set_custom_load_asset(assets_manager_t* am,
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t assets_manager_set_fallback_load_asset(assets_manager_t* am,
-                                           assets_manager_load_asset_t fallback_load_asset,
-                                           void* ctx);
+                                             assets_manager_load_asset_t fallback_load_asset,
+                                             void* ctx);
 /**
  * @method assets_manager_clear_cache
  * 清除指定类型的缓存。

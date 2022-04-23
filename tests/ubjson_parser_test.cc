@@ -229,28 +229,28 @@ TEST(UBJsonParser, ubjson_writer_write_kv_value) {
 
   value_set_double(&v, 2.5);
   ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "f64", &v), RET_OK);
-  
+
   value_set_int8(&v, 3);
   ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "int8", &v), RET_OK);
-  
+
   value_set_int16(&v, 4);
   ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "int16", &v), RET_OK);
-  
+
   value_set_int32(&v, 5);
   ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "int32", &v), RET_OK);
-  
+
   value_set_int64(&v, 6);
   ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "int64", &v), RET_OK);
-  
+
   value_set_uint8(&v, 7);
   ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "uint8", &v), RET_OK);
-  
+
   value_set_uint16(&v, 8);
   ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "uint16", &v), RET_OK);
-  
+
   value_set_uint32(&v, 9);
   ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "uint32", &v), RET_OK);
-  
+
   value_set_uint64(&v, 10);
   ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "uint64", &v), RET_OK);
 

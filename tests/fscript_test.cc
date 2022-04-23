@@ -1531,7 +1531,7 @@ TEST(FExr, syntax_check) {
   ASSERT_STREQ(error.message, "var can't begin with '.'");
 
   fscript_parser_error_deinit(&error);
-  
+
   TK_OBJECT_UNREF(obj);
 }
 
@@ -1545,7 +1545,6 @@ TEST(FExr, syntax_check_function) {
   fscript_parser_error_deinit(&error);
   TK_OBJECT_UNREF(obj);
 }
-
 
 #ifdef FSCRIPT_WITH_WIDGET
 #include "widgets/button.h"
@@ -2664,7 +2663,7 @@ TEST(FScript, module_str) {
   tk_object_t* obj = object_default_create();
 
   fscript_eval(obj,
-"\
+               "\
 var a = require_str('\
 function foo(a, b) {\
   return a + b;\
@@ -2685,7 +2684,7 @@ TEST(FScript, module_file) {
   tk_object_t* obj = object_default_create();
 
   fscript_eval(obj,
-"\
+               "\
 var a = require('./tests/fscripts/foo.fs')\
 var b = a.foo(100, 99);\
 var c = a.bar(100, 99);\

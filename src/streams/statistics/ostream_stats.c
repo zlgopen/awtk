@@ -23,7 +23,8 @@
 #include "ostream_stats.h"
 #include "iostream_stats.h"
 
-static int32_t tk_ostream_stats_write(tk_ostream_t* stream, const uint8_t* buff, uint32_t max_size) {
+static int32_t tk_ostream_stats_write(tk_ostream_t* stream, const uint8_t* buff,
+                                      uint32_t max_size) {
   int32_t size = 0;
   tk_ostream_stats_t* p_this = TK_OSTREAM_STATS(stream);
 
