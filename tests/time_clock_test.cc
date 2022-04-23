@@ -107,34 +107,3 @@ TEST(TimeClock, cast) {
   widget_destroy(w);
 }
 
-TEST(TimeClock, set_anchor_for_str) {
-  float_t image_anchor = 0.0f;
-
-  ASSERT_EQ(time_clock_set_anchor_for_str(100.0f, "0.3f", &image_anchor), RET_OK);
-  ASSERT_EQ(image_anchor, 100.0f * 0.3f);
-
-  ASSERT_EQ(time_clock_set_anchor_for_str(100.0f, "50px", &image_anchor), RET_OK);
-  ASSERT_EQ(image_anchor, 50.0f);
-
-  ASSERT_EQ(time_clock_set_anchor_for_str(100.0f, "50PX", &image_anchor), RET_OK);
-  ASSERT_EQ(image_anchor, 50.0f);
-
-  image_anchor = 0.0f;
-  ASSERT_EQ(time_clock_set_anchor_for_str(100.0f, "150PX", &image_anchor), RET_BAD_PARAMS);
-  ASSERT_EQ(image_anchor, 0.0f);
-
-  ASSERT_EQ(time_clock_set_anchor_for_str(100.0f, "150px", &image_anchor), RET_BAD_PARAMS);
-  ASSERT_EQ(image_anchor, 0.0f);
-
-  ASSERT_EQ(time_clock_set_anchor_for_str(100.0f, "-150PX", &image_anchor), RET_BAD_PARAMS);
-  ASSERT_EQ(image_anchor, 0.0f);
-
-  ASSERT_EQ(time_clock_set_anchor_for_str(100.0f, "-150px", &image_anchor), RET_BAD_PARAMS);
-  ASSERT_EQ(image_anchor, 0.0f);
-
-  ASSERT_EQ(time_clock_set_anchor_for_str(100.0f, "-10", &image_anchor), RET_BAD_PARAMS);
-  ASSERT_EQ(image_anchor, 0.0f);
-
-  ASSERT_EQ(time_clock_set_anchor_for_str(100.0f, "20", &image_anchor), RET_BAD_PARAMS);
-  ASSERT_EQ(image_anchor, 0.0f);
-}

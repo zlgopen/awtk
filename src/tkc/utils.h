@@ -814,18 +814,26 @@ bool_t tk_wild_card_match(const char* pattern, const char* str);
 /**
  * @method tk_eval_ratio_or_px
  *
- * 如果expr以px/PX结束，直接返回前面的数值。否则将数值当作比例，返回该数值 * value。
+ * 如果expr以px/PX结束，直接返回expr前面的数值。
+ * 如果expr以%结束，而且数值大于1，返回(数值 * value)/100。
+ * 否则将数值当作比例，返回(数值 * value)。
+ *
+ * > 为了兼容以前的处理，如果expr以%结束，但是数值在0到1之间，此时忽略%。
  *
  * ```c
  * tk_eval_ratio_or_px("0.5", 100) => 50
  * tk_eval_ratio_or_px("20px", 100) => 20
+ * tk_eval_ratio_or_px("20%", 100) => 20
+ * tk_eval_ratio_or_px("0.5%", 100) => 50
  * ```
- * @param {const char*} expr 表达式(如100px, 0.5等)
- * @param {uint32_t} value 值。 
  *
- * @return {int32_t} 返回计算结果。
+ * @param {const char*} expr 表达式(如100px, 0.5等)
+ * @param {int32_t} value 值。 
+ *
+ * @return {float_t} 返回计算结果。
  */
-int32_t tk_eval_ratio_or_px(const char* expr, uint32_t value);
+float_t tk_eval_ratio_or_px(const char* expr, int32_t value);
+
 /*public for test*/
 ret_t xml_file_expand(const char* filename, str_t* s, const char* data);
 

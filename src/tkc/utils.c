@@ -1458,17 +1458,27 @@ bool_t tk_wild_card_match(const char* pattern, const char* str) {
   return *p_pattern == '*' || *p_str == *p_pattern;
 }
 
-int32_t tk_eval_ratio_or_px(const char* expr, uint32_t value) {
+float_t tk_eval_ratio_or_px(const char* expr, int32_t value) {
   const char* p = NULL;
   return_value_if_fail(expr != NULL, 0);
+
   p = strrchr(expr, 'p');
   if (p == NULL) {
     p = strrchr(expr, 'P');
   }
 
   if (p == NULL) {
-    return value * tk_atof(expr);
+    float_t ratio = tk_atof(expr);
+    if (ratio > 1 && strchr(expr, '%') != NULL) {
+      /*ex: 50% */
+      return (value * ratio) / 100.0f;
+    } else {
+      /*ex: 0.5 */
+      /*ex: 0.5% (兼容以前的处理)*/
+      return value * ratio;
+    }
   } else {
+    /*ex: 100px */
     return tk_atoi(expr);
   }
 }

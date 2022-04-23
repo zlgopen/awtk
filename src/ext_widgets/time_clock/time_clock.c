@@ -29,38 +29,6 @@
 
 static ret_t time_clock_update_time(time_clock_t* time_clock);
 
-static bool_t time_clock_value_is_anchor_px(const char* value) {
-  const char* tmp = NULL;
-  size_t len = strlen(value);
-  return_value_if_fail(len > 2, FALSE);
-
-  tmp = value + len - 2;
-  if (tk_str_eq(tmp, "px") != 0 || tk_str_eq(tmp, "PX") != 0) {
-    return TRUE;
-  }
-  return FALSE;
-}
-
-ret_t time_clock_set_anchor_for_str(float_t max_size, const char* anchor, float_t* image_anchor) {
-  float_t anchor_tmp = 0.0f;
-  bool_t is_anchor_px = TRUE;
-
-  return_value_if_fail(anchor != NULL, RET_BAD_PARAMS);
-
-  anchor_tmp = tk_atof(anchor);
-  is_anchor_px = time_clock_value_is_anchor_px(anchor);
-
-  if (is_anchor_px) {
-    return_value_if_fail(0 <= anchor_tmp && anchor_tmp <= max_size, RET_BAD_PARAMS);
-  } else {
-    return_value_if_fail(0 <= anchor_tmp && anchor_tmp <= 1.0f, RET_BAD_PARAMS);
-  }
-
-  *image_anchor = is_anchor_px ? anchor_tmp : anchor_tmp * max_size;
-
-  return RET_OK;
-}
-
 ret_t time_clock_set_hour_anchor(widget_t* widget, const char* anchor_x, const char* anchor_y) {
   time_clock_t* time_clock = TIME_CLOCK(widget);
 
@@ -341,8 +309,6 @@ static ret_t time_clock_draw_image(widget_t* widget, canvas_t* c, bitmap_t* img,
 static ret_t time_clock_on_paint_self(widget_t* widget, canvas_t* c) {
   bitmap_t bitmap;
   float_t rotation = 0;
-  float_t anchor_x = 0;
-  float_t anchor_y = 0;
   time_clock_t* time_clock = TIME_CLOCK(widget);
   rect_t dst = rect_init(0, 0, widget->w, widget->h);
 
@@ -350,9 +316,9 @@ static ret_t time_clock_on_paint_self(widget_t* widget, canvas_t* c) {
     canvas_draw_image_ex(c, &bitmap, IMAGE_DRAW_CENTER, &dst);
   }
 
-  if (time_clock_load_image(widget, time_clock->hour_image, &bitmap) == RET_OK &&
-      time_clock_set_anchor_for_str(bitmap.w, time_clock->hour_anchor_x, &anchor_x) == RET_OK &&
-      time_clock_set_anchor_for_str(bitmap.h, time_clock->hour_anchor_y, &anchor_y) == RET_OK) {
+  if (time_clock_load_image(widget, time_clock->hour_image, &bitmap) == RET_OK) {
+    float_t anchor_x = tk_eval_ratio_or_px(time_clock->hour_anchor_x, bitmap.w);
+    float_t anchor_y = tk_eval_ratio_or_px(time_clock->hour_anchor_y, bitmap.h);
     float_t dx = dst.w / 2 - anchor_x;
     float_t dy = dst.h / 2 - anchor_y;
     float_t hour = time_clock->hour + time_clock->minute / 60.0f;
@@ -362,9 +328,9 @@ static ret_t time_clock_on_paint_self(widget_t* widget, canvas_t* c) {
     time_clock_draw_image(widget, c, &bitmap, dx, dy, anchor_x, anchor_y, rotation);
   }
 
-  if (time_clock_load_image(widget, time_clock->minute_image, &bitmap) == RET_OK &&
-      time_clock_set_anchor_for_str(bitmap.w, time_clock->minute_anchor_x, &anchor_x) == RET_OK &&
-      time_clock_set_anchor_for_str(bitmap.h, time_clock->minute_anchor_y, &anchor_y) == RET_OK) {
+  if (time_clock_load_image(widget, time_clock->minute_image, &bitmap) == RET_OK) {
+    float_t anchor_x = tk_eval_ratio_or_px(time_clock->minute_anchor_x, bitmap.w);
+    float_t anchor_y = tk_eval_ratio_or_px(time_clock->minute_anchor_y, bitmap.h);
     float_t dx = dst.w / 2 - anchor_x;
     float_t dy = dst.h / 2 - anchor_y;
     float_t minute = time_clock->minute + time_clock->second / 60.0f;
@@ -374,9 +340,9 @@ static ret_t time_clock_on_paint_self(widget_t* widget, canvas_t* c) {
     time_clock_draw_image(widget, c, &bitmap, dx, dy, anchor_x, anchor_y, rotation);
   }
 
-  if (time_clock_load_image(widget, time_clock->second_image, &bitmap) == RET_OK &&
-      time_clock_set_anchor_for_str(bitmap.w, time_clock->second_anchor_x, &anchor_x) == RET_OK &&
-      time_clock_set_anchor_for_str(bitmap.h, time_clock->second_anchor_y, &anchor_y) == RET_OK) {
+  if (time_clock_load_image(widget, time_clock->second_image, &bitmap) == RET_OK) {
+    float_t anchor_x = tk_eval_ratio_or_px(time_clock->second_anchor_x, bitmap.w);
+    float_t anchor_y = tk_eval_ratio_or_px(time_clock->second_anchor_y, bitmap.h);
     float_t dx = dst.w / 2 - anchor_x;
     float_t dy = dst.h / 2 - anchor_y;
 

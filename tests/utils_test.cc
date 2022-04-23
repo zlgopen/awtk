@@ -684,6 +684,9 @@ TEST(Utils, tk_eval_ratio_or_px) {
   ASSERT_EQ(tk_eval_ratio_or_px("10px", 100), 10);
   ASSERT_EQ(tk_eval_ratio_or_px("0.5", 100), 50);
   ASSERT_EQ(tk_eval_ratio_or_px("1", 100), 100);
+  ASSERT_EQ(tk_eval_ratio_or_px("100%", 100), 100);
+  ASSERT_EQ(tk_eval_ratio_or_px("10%", 100), 10);
+  ASSERT_EQ(tk_eval_ratio_or_px("0.1%", 100), 10);
 }
 
 TEST(Utils, TK_STR_IS_EMPTY) {

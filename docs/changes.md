@@ -1,5 +1,8 @@
 # 最新动态
-2022/04/20
+2022/04/23
+  * 重构time clock中anchor处理。
+
+2022/04/22
   * 增加 tk\_eval\_ratio\_or\_px
   * 增加 TK\_STR\_IS\_EMPTY
   * 增加 TK\_STR\_IS\_NOT\_EMPTY
