@@ -844,6 +844,7 @@ static ret_t combo_box_sync_index_to_value(widget_t* widget, uint32_t index, boo
 }
 
 static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, widget_t* item) {
+  edit_t* edit = EDIT(widget);
   combo_box_t* combo_box = COMBO_BOX(widget);
   return_value_if_fail(combo_box != NULL, RET_OK);
 
@@ -880,6 +881,11 @@ static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, w
     combo_box_sync_index_to_value(widget, index, FALSE);
   }
 
+  if (edit->select_none_when_focused || edit->readonly) {
+    text_edit_unselect(edit->model);
+  } else {
+    text_edit_select_all(edit->model);
+  }
   return widget_invalidate_force(widget, NULL);
 }
 
