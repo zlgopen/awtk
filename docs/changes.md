@@ -1,6 +1,7 @@
 # 最新动态
 2022/04/23
   * 重构time clock中anchor处理。
+  * 重构gauge pointer中anchor处理。
 
 2022/04/22
   * 增加 tk\_eval\_ratio\_or\_px

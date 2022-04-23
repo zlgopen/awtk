@@ -36,3 +36,4 @@ dllexports/tkc.def
 tools/idl_gen/idl.json
 tools/idl_gen/tkc.json
 t.*
+test.png

@@ -31,7 +31,6 @@
 #define ANCHOR_PX_STR_LEN 2
 #define DEFAULT_POINTER_SIZE 0.6f
 
-float_t gauge_pointer_get_anchor_for_str(float_t max_size, const char* anchor);
 
 static rect_t gauge_pointer_calc_dirty_rect(widget_t* widget, int32_t img_w, int32_t img_h) {
   xy_t x = 0;
@@ -47,8 +46,8 @@ static rect_t gauge_pointer_calc_dirty_rect(widget_t* widget, int32_t img_w, int
   int32_t oy = widget->y;
   gauge_pointer_t* gauge_pointer = GAUGE_POINTER(widget);
   float_t rotation = TK_D2R(gauge_pointer->angle);
-  float_t anchor_x = gauge_pointer_get_anchor_for_str(widget->w, gauge_pointer->anchor_x);
-  float_t anchor_y = gauge_pointer_get_anchor_for_str(widget->h, gauge_pointer->anchor_y);
+  float_t anchor_x = tk_eval_ratio_or_px(gauge_pointer->anchor_x, widget->w);
+  float_t anchor_y = tk_eval_ratio_or_px(gauge_pointer->anchor_y, widget->h);
 
   matrix_init(&m);
   matrix_translate(&m, ox, oy);
@@ -137,35 +136,6 @@ ret_t gauge_pointer_set_angle(widget_t* widget, float_t angle) {
   }
 
   return RET_OK;
-}
-
-bool_t gauge_pointer_value_is_anchor_px(const char* value) {
-  const char* tmp = NULL;
-  size_t len = strlen(value);
-
-  if (len > ANCHOR_PX_STR_LEN) {
-    tmp = value + len - ANCHOR_PX_STR_LEN;
-    if (tk_str_eq(tmp, "px") != 0 || tk_str_eq(tmp, "PX") != 0) {
-      return TRUE;
-    }
-  }
-
-  return FALSE;
-}
-
-float_t gauge_pointer_get_anchor_for_str(float_t max_size, const char* anchor) {
-  float_t anchor_tmp = 0.0f;
-  bool_t is_anchor_px = TRUE;
-
-  if (anchor == NULL) {
-    return anchor_tmp;
-  }
-
-  anchor_tmp = tk_atof(anchor);
-  is_anchor_px = gauge_pointer_value_is_anchor_px(anchor);
-  anchor_tmp = is_anchor_px ? anchor_tmp : anchor_tmp * max_size;
-
-  return anchor_tmp;
 }
 
 ret_t gauge_pointer_set_anchor_for_str(widget_t* widget, const char* anchor, bool_t is_x) {
@@ -324,8 +294,8 @@ static ret_t gauge_pointer_on_paint_self(widget_t* widget, canvas_t* c) {
   gauge_pointer_t* gauge_pointer = GAUGE_POINTER(widget);
   return_value_if_fail(gauge_pointer != NULL && widget != NULL, RET_BAD_PARAMS);
 
-  anchor_x = gauge_pointer_get_anchor_for_str(widget->w, gauge_pointer->anchor_x);
-  anchor_y = gauge_pointer_get_anchor_for_str(widget->h, gauge_pointer->anchor_y);
+  anchor_x = tk_eval_ratio_or_px(gauge_pointer->anchor_x, widget->w);
+  anchor_y = tk_eval_ratio_or_px(gauge_pointer->anchor_y, widget->h);
 
   rotation = TK_D2R(gauge_pointer->angle);
 
