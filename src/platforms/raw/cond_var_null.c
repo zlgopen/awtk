@@ -26,26 +26,26 @@ struct _tk_cond_t {
   uint32_t value;
 };
 
-tk_cond_t* tk_cond_create(void) {
+tk_cond_t* TK_WEAK tk_cond_create(void) {
   return NULL;
 }
 
-ret_t tk_cond_destroy(tk_cond_t* cond) {
+ret_t TK_WEAK tk_cond_destroy(tk_cond_t* cond) {
   return RET_NOT_IMPL;
 }
 
-ret_t tk_cond_signal(tk_cond_t* cond) {
+ret_t TK_WEAK tk_cond_signal(tk_cond_t* cond) {
   return RET_NOT_IMPL;
 }
 
-ret_t tk_cond_broadcast(tk_cond_t* cond) {
+ret_t TK_WEAK tk_cond_broadcast(tk_cond_t* cond) {
   return RET_NOT_IMPL;
 }
 
-ret_t tk_cond_wait_timeout(tk_cond_t* cond, tk_mutex_t* mutex, uint32_t ms) {
+ret_t TK_WEAK tk_cond_wait_timeout(tk_cond_t* cond, tk_mutex_t* mutex, uint32_t ms) {
   return RET_NOT_IMPL;
 }
 
-ret_t tk_cond_wait(tk_cond_t* cond, tk_mutex_t* mutex) {
+ret_t TK_WEAK tk_cond_wait(tk_cond_t* cond, tk_mutex_t* mutex) {
   return RET_NOT_IMPL;
 }

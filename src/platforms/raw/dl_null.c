@@ -27,14 +27,14 @@ struct _tk_dl_t {
   void* h;
 };
 
-tk_dl_t* tk_dl_open(const char* filename) {
+tk_dl_t* TK_WEAK tk_dl_open(const char* filename) {
   return NULL;
 }
 
-void* tk_dl_sym(tk_dl_t* dl, const char* name) {
+void* TK_WEAK tk_dl_sym(tk_dl_t* dl, const char* name) {
   return NULL;
 }
 
-ret_t tk_dl_close(tk_dl_t* dl) {
+ret_t TK_WEAK tk_dl_close(tk_dl_t* dl) {
   return RET_NOT_IMPL;
 }

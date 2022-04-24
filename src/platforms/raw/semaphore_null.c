@@ -27,18 +27,18 @@ struct _tk_semaphore_t {
 
 static const tk_semaphore_t s_semaphore_null;
 
-tk_semaphore_t* tk_semaphore_create(uint32_t value, const char* name) {
+tk_semaphore_t* TK_WEAK tk_semaphore_create(uint32_t value, const char* name) {
   return (tk_semaphore_t*)&s_semaphore_null;
 }
 
-ret_t tk_semaphore_wait(tk_semaphore_t* semaphore, uint32_t timeout_ms) {
+ret_t TK_WEAK tk_semaphore_wait(tk_semaphore_t* semaphore, uint32_t timeout_ms) {
   return RET_OK;
 }
 
-ret_t tk_semaphore_post(tk_semaphore_t* semaphore) {
+ret_t TK_WEAK tk_semaphore_post(tk_semaphore_t* semaphore) {
   return RET_OK;
 }
 
-ret_t tk_semaphore_destroy(tk_semaphore_t* semaphore) {
+ret_t TK_WEAK tk_semaphore_destroy(tk_semaphore_t* semaphore) {
   return RET_OK;
 }

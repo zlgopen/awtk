@@ -29,38 +29,38 @@ struct _tk_thread_t {
   tk_thread_entry_t entry;
 };
 
-ret_t tk_thread_set_name(tk_thread_t* thread, const char* name) {
+ret_t TK_WEAK tk_thread_set_name(tk_thread_t* thread, const char* name) {
   return RET_NOT_IMPL;
 }
 
-ret_t tk_thread_set_stack_size(tk_thread_t* thread, uint32_t stack_size) {
+ret_t TK_WEAK tk_thread_set_stack_size(tk_thread_t* thread, uint32_t stack_size) {
   return RET_NOT_IMPL;
 }
 
-int32_t tk_thread_get_priority_from_platform(tk_thread_priority_t priority) {
+int32_t TK_WEAK tk_thread_get_priority_from_platform(tk_thread_priority_t priority) {
   return 0;
 }
 
-ret_t tk_thread_set_priority(tk_thread_t* thread, tk_thread_priority_t priority) {
+ret_t TK_WEAK tk_thread_set_priority(tk_thread_t* thread, tk_thread_priority_t priority) {
   return RET_NOT_IMPL;
 }
 
-void* tk_thread_get_args(tk_thread_t* thread) {
+void* TK_WEAK tk_thread_get_args(tk_thread_t* thread) {
   return thread->args;
 }
 
-tk_thread_t* tk_thread_create(tk_thread_entry_t entry, void* args) {
+tk_thread_t* TK_WEAK tk_thread_create(tk_thread_entry_t entry, void* args) {
   return NULL;
 }
 
-ret_t tk_thread_start(tk_thread_t* thread) {
+ret_t TK_WEAK tk_thread_start(tk_thread_t* thread) {
   return RET_NOT_IMPL;
 }
 
-ret_t tk_thread_join(tk_thread_t* thread) {
+ret_t TK_WEAK tk_thread_join(tk_thread_t* thread) {
   return RET_NOT_IMPL;
 }
 
-ret_t tk_thread_destroy(tk_thread_t* thread) {
+ret_t TK_WEAK tk_thread_destroy(tk_thread_t* thread) {
   return RET_NOT_IMPL;
 }

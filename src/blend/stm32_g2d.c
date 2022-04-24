@@ -193,39 +193,6 @@ ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, const rect_t* src, xy_t x, xy_
   return RET_OK;
 }
 
-ret_t g2d_rotate_image(bitmap_t* fb, bitmap_t* img, const rect_t* src, lcd_orientation_t o) {
-  (void)fb;
-  (void)img;
-  (void)src;
-  (void)o;
-
-  return RET_NOT_IMPL;
-}
-
-ret_t g2d_rotate_image_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy,
-                          lcd_orientation_t o) {
-  (void)dst;
-  (void)src;
-  (void)src_r;
-  (void)dx;
-  (void)dy;
-  (void)o;
-
-  return RET_NOT_IMPL;
-}
-
-ret_t g2d_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r,
-                             const rectf_t* src_r, uint8_t alpha, lcd_orientation_t o) {
-  (void)dst;
-  (void)src;
-  (void)dst_r;
-  (void)src_r;
-  (void)alpha;
-  (void)o;
-
-  return RET_NOT_IMPL;
-}
-
 ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, const rect_t* dst, const rect_t* src,
                       uint8_t global_alpha) {
   uint32_t o_addr = 0;

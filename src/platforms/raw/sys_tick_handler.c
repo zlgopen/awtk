@@ -23,14 +23,14 @@
 #include "../common/sys_tick_common.inc"
 
 /* SysTick_Handler 1 milliseconds */
-void SysTick_Handler(void) {
+void TK_WEAK SysTick_Handler(void) {
   tk_sys_tick_inc(1);
 }
 
-uint64_t get_time_ms64() {
+uint64_t TK_WEAK get_time_ms64() {
   return tk_sys_tick_get_tick64();
 }
 
-void sleep_ms(uint32_t ms) {
+void TK_WEAK sleep_ms(uint32_t ms) {
   tk_sys_tick_sleep_tick(ms);
 }

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   image_g2d.c
  * Author: AWTK Develop Team
  * Brief:  image 2d operations.
@@ -22,6 +22,67 @@
 #include "base/g2d.h"
 #include "blend/soft_g2d.h"
 #include "blend/image_g2d.h"
+
+#ifdef WITH_G2D
+
+ret_t TK_WEAK g2d_fill_rect(bitmap_t* fb, const rect_t* dst, color_t c) {
+  (void)fb;
+  (void)dst;
+  (void)c;
+  return RET_NOT_IMPL;
+}
+
+ret_t TK_WEAK g2d_copy_image(bitmap_t* fb, bitmap_t* img, const rect_t* src, xy_t x, xy_t y) {
+  (void)fb;
+  (void)img;
+  (void)x;
+  (void)y;
+  return RET_NOT_IMPL;
+}
+
+ret_t TK_WEAK g2d_rotate_image(bitmap_t* fb, bitmap_t* img, const rect_t* src, lcd_orientation_t o) {
+  (void)fb;
+  (void)img;
+  (void)src;
+  (void)o;
+  return RET_NOT_IMPL;
+}
+
+ret_t TK_WEAK g2d_blend_image(bitmap_t* fb, bitmap_t* img, const rect_t* dst, const rect_t* src,
+                      uint8_t global_alpha) {
+  (void)fb;
+  (void)img;
+  (void)dst;
+  (void)src;
+  (void)global_alpha;
+  return RET_NOT_IMPL;
+}
+
+#ifdef WITH_FAST_LCD_PORTRAIT
+ret_t TK_WEAK g2d_rotate_image_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy,
+                          lcd_orientation_t o) {
+  (void)dst;
+  (void)src;
+  (void)src_r;
+  (void)dx;
+  (void)dy;
+  (void)o;
+  return RET_NOT_IMPL;
+}
+
+ret_t TK_WEAK g2d_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r,
+                             const rectf_t* src_r, uint8_t alpha, lcd_orientation_t o) {
+  (void)dst;
+  (void)src;
+  (void)dst_r;
+  (void)src_r;
+  (void)alpha;
+  (void)o;
+  return RET_NOT_IMPL;
+}
+#endif
+
+#endif
 
 ret_t image_fill(bitmap_t* dst, const rect_t* dst_r, color_t c) {
   return_value_if_fail(dst != NULL && dst_r != NULL, RET_OK);
@@ -140,8 +201,6 @@ ret_t image_rotate_blend(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, con
 
 #ifdef WITH_G2D
   if (src_r->w == dst_r->w && src_r->h == dst_r->h) {
-    rect_t tmp_src_r = rect_from_rectf(src_r);
-    rect_t tmp_dst_r = rect_from_rectf(dst_r);
     if (g2d_blend_image_rotate(dst, src, dst_r, src_r, global_alpha, o) == RET_OK) {
       return RET_OK;
     }

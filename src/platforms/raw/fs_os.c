@@ -1,5 +1,5 @@
 ﻿#include "tkc/fs.h"
 
-fs_t* os_fs(void) {
+fs_t* TK_WEAK os_fs(void) {
   return NULL;
 }
