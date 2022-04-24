@@ -91,7 +91,7 @@ int wmain(int argc, wchar_t* argv[]) {
   return_value_if_fail(ttf_buff != NULL, 0);
 #ifdef WITH_STB_FONT
   if (mono) {
-    assert(!"not support mono font");
+    font = font_stb_mono_create("default", ttf_buff, size);
   } else {
     font = font_stb_create("default", ttf_buff, size);
   }

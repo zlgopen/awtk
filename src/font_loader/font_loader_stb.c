@@ -253,6 +253,10 @@ font_loader_t* font_loader_stb(void) {
   return NULL;
 }
 
+font_loader_t* font_loader_stb_mono(void){
+  return NULL;
+}
+
 font_t* font_stb_mono_create(const char* name, const uint8_t* buff, uint32_t size) {
   return NULL;
 }

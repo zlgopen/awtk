@@ -127,10 +127,6 @@ def is_dependencies_ok():
         for t in THEMES:
             if isinstance(t, dict):
                 print(t['imagegen_options'])
-                if 'imagegen_options' in t and t['imagegen_options'] == 'mono':
-                    if not os.path.exists(common.join_path(TOOLS_ROOT, common.to_exe('fontgen_ft'))):
-                        print('If you need to generate fonts those display on MONO LCD, please generate fontgen_ft.')
-                        return False
 
     return True
 

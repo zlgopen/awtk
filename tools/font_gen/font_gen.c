@@ -109,7 +109,7 @@ static ret_t font_gen_glyph(font_t* font, glyph_format_t format, wchar_t c, font
         g->pitch = (gg.pitch + 1) / 2;
 
         return fong_convert_alpha8_to_alpha4(&gg, g);
-      } else {
+      } else if (c != ' ') {
         assert(!"not supported format yet");
         return RET_FAIL;
       }
