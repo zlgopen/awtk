@@ -571,7 +571,7 @@ ret_t vgcanvas_quad_to(vgcanvas_t* vg, float_t cpx, float_t cpy, float_t x, floa
  * @param {float_t} cp1x 控制点1x坐标。
  * @param {float_t} cp1y 控制点1y坐标。
  * @param {float_t} cp2x 控制点2x坐标。
- * @param {float_t} cp2y 控制点3y坐标。
+ * @param {float_t} cp2y 控制点2y坐标。
  * @param {float_t} x x坐标。
  * @param {float_t} y y坐标。
  *
