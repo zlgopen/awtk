@@ -1,50 +1,50 @@
 # 最新动态
 
 2022/04/25
-  * 完善fscript\_ext.c，使用宏定义控制包含的头文件（感谢雨欣提供补丁）。
-  * 修正vgcanvas\_bezier\_to接口的注释 （感谢雨欣提供补丁）。
-  * 修正awtk\_main命令较长时可能超出局部数组长度导致异常的问题（感谢朝泽提供补丁）。
+  * 完善 fscript\_ext.c，使用宏定义控制包含的头文件（感谢雨欣提供补丁）。
+  * 修正 vgcanvas\_bezier\_to 接口的注释 （感谢雨欣提供补丁）。
+  * 修正 awtk\_main 命令较长时可能超出局部数组长度导致异常的问题（感谢朝泽提供补丁）。
 
 2022/04/24
-  * 修复font\_gen工具无法打包stb\_mono点阵字的问题（感谢雨欣提供补丁）。 
-  * 增加weak机制以及在g2d和raw中增加weak （感谢智明提供补丁）。
+  * 修复 font\_gen 工具无法打包 stb\_mono 点阵字的问题（感谢雨欣提供补丁）。 
+  * 增加 weak 机制以及在 g2d 和 raw 中增加 weak （感谢智明提供补丁）。
 
 2022/04/23
   * 完善 socket\_resolve 防止溢出（感谢叶冬提供补丁）
-  * 完善 tk\_socket\_close 支持AWorks（感谢叶冬提供补丁）
+  * 完善 tk\_socket\_close 支持 AWorks（感谢叶冬提供补丁）
   * 增加 async\_call\_init\_ex2（感谢叶冬提供补丁）
-  * 重构time clock中anchor处理。
-  * 重构gauge pointer中anchor处理。
+  * 重构 time clock 中 anchor 处理。
+  * 重构 gauge pointer 中 anchor 处理。
 
 2022/04/22
   * 增加 tk\_eval\_ratio\_or\_px
   * 增加 TK\_STR\_IS\_EMPTY
   * 增加 TK\_STR\_IS\_NOT\_EMPTY
-  * 统一slider\_indictor中的anchor\_x/anchor\_y。
-  * 完善idl_gen（感谢王程提供补丁）。
+  * 统一 slider\_indictor 中的 anchor\_x/anchor\_y。
+  * 完善 idl_gen（感谢王程提供补丁）。
 
 2022/04/19
-  * 完善tk\_istream\_read\_line
+  * 完善 tk\_istream\_read\_line
   * 修复测量文本宽度精度丢失的问题（感谢福明提供补丁）。
 
 2022/04/18
-  * 增加函数path\_app\_root\_ex
-  * 完善ui\_loader\_load对xml的支持。
-  * 增加函数assets\_manager\_set\_fallback\_load\_asset
-  * awtk修复缺少连接ws2_32类库的问题 （感谢智明提供补丁）。
+  * 增加函数 path\_app\_root\_ex
+  * 完善 ui\_loader\_load 对 xml 的支持。
+  * 增加函数 assets\_manager\_set\_fallback\_load\_asset
+  * awtk 修复缺少连接 ws2_32 类库的问题 （感谢智明提供补丁）。
   * 修复关闭对话框后马上打开对话框不正常的问题（感谢智明提供补丁）。
 
 2022/04/17
-  * fscript增加函数widget\_add\_value
+  * fscript 增加函数 widget\_add\_value
 
 2022/04/16
-  * 增加函数tk\_socket\_bind\_ex
-  * 增加函数tk\_iostream\_udp\_create\_client\_ex
+  * 增加函数 tk\_socket\_bind\_ex
+  * 增加函数 tk\_iostream\_udp\_create\_client\_ex
   * tr\_text/tr\_tips 为空字符串时当作空指针处理。
-  * 完善event\_from\_name支持long\_press。
+  * 完善 event\_from\_name 支持 long\_press。
 
 2022/04/15
-  * 解决在linux-fb，鼠标移动且无按压时，界面上的鼠标指针没有跟着移动的问题（感谢兆坤提供补丁)。
+  * 解决在 linux-fb，鼠标移动且无按压时，界面上的鼠标指针没有跟着移动的问题（感谢兆坤提供补丁）。
   * 修复 hscroll\_label 控件当有设置 speed 属性同时字符串长度少于控件宽度导致无法正常显示的问题（感谢智明提供补丁）。
 
 2022/04/14
@@ -53,287 +53,287 @@
   * 修复 awtk 在 OpenGL 下的渐变色，上面的颜色坐标比例比下面的颜色要大的时候，颜色不正确的问题（感谢智明提供补丁）。
 
 2022/04/13
-  * 复切换主题时，销毁style后，由于控件need\_update\_style为false，没有通知该控件style更新数据，导致获取该控件样式属性时发生崩溃问题（感谢兆坤提供补丁）。
+  * 复切换主题时，销毁 style 后，由于控件 need\_update\_style 为 false，没有通知该控件 style 更新数据，导致获取该控件样式属性时发生崩溃问题（感谢兆坤提供补丁）。
 
 2022/04/12
-  * 完善awtk\_main
+  * 完善 awtk\_main
 
 2022/04/09
-  * fscript增加define\_param用于辅助反向生成AWBlock。
-  * 完善fscript语法检查
+  * fscript 增加 define\_param 用于辅助反向生成 AWBlock。
+  * 完善 fscript 语法检查
 
 2022/04/08
-  * 增加LCD旋转对project文件的适配（感谢智明提供补丁）
+  * 增加 LCD 旋转对 project 文件的适配（感谢智明提供补丁）
   * 修复不支持渐变色的百分比的设置问题（感谢智明提供补丁）
 
 2022/04/07
-  * 增加函数url\_to\_string。
+  * 增加函数 url\_to\_string。
 
 2022/04/06
-  * 完善软键盘grab_keys=true时物理键盘按键太快丢失按键的问题。
+  * 完善软键盘 grab_keys=true 时物理键盘按键太快丢失按键的问题。
 
 2022/04/03
-  * 完善style\_mutable，去掉default style 为NULL时的警告。
-  * 完善color\_picker处理alpha通道的问题。
+  * 完善 style\_mutable，去掉 default style 为 NULL 时的警告。
+  * 完善 color\_picker 处理 alpha 通道的问题。
   * 修复当打开了新窗口后旧窗口的软键盘关闭导致窗口动画播放不正确的问题（感谢智明提供补丁）。
 
 2022/04/01
-  * 完善给edit、mledit和combo\_box增加了empty\_over状态（感谢雨欣提供补丁）
-  * 完善URL解析并增加一些新的schema。
-  * 完善ubjson writer
+  * 完善给 edit、mledit 和 combo\_box 增加了 empty\_over 状态（感谢雨欣提供补丁）
+  * 完善 URL 解析并增加一些新的 schema。
+  * 完善 ubjson writer
 
 2022/03/31
-  * 增加带统计功能的stream （感谢林福提供)
-  * 增加移除和替换 qaction 的 action\_darray\_thread（感谢林福提供)
-  * 修复combox的鼠标弹起后无法释放拖拽状态的问题（感谢智明提供补丁）。
-  * 给edit、mledit和combo\_box增加了empty\_over状态（感谢雨欣提供补丁）
-  * 修复demoui中的多行编辑器右侧的字符会被遮挡的问题（感谢兆坤提供补丁）
-  * 补充demoui中edit、mledit和combo\_box中empty\_over和over状态的样式 （感谢兆坤提供补丁）
+  * 增加带统计功能的 stream （感谢林福提供）
+  * 增加移除和替换 qaction 的 action\_darray\_thread（感谢林福提供）
+  * 修复 combox 的鼠标弹起后无法释放拖拽状态的问题（感谢智明提供补丁）。
+  * 给 edit、mledit 和 combo\_box 增加了 empty\_over 状态（感谢雨欣提供补丁）
+  * 修复 demoui 中的多行编辑器右侧的字符会被遮挡的问题（感谢兆坤提供补丁）
+  * 补充 demoui 中 edit、mledit 和 combo\_box 中 empty\_over 和 over 状态的样式 （感谢兆坤提供补丁）
 
 2022/03/30
   * fscript 支持延迟解析函数。
-  * 完善fscript局部变量的访问。
-  * fscript支持通过require函数加载模块。
+  * 完善 fscript 局部变量的访问。
+  * fscript 支持通过 require 函数加载模块。
 
 2022/03/29
-  * 优化fscript局部变量的访问。
-  * 更新aworkslp移植代码（感谢文静提供)
-  * 修复兼容以前的lcd旋转贴图的断言判断（感谢智明提供补丁）
-  * 修复在虚拟机上面lcd_mem字体错位的问题以及兼容以前lcd旋转运行的问题（感谢智明提供补丁）
-  * 删除mingw的UNICODE宏和msvc统一宏的版本（感谢智明提供补丁）。
+  * 优化 fscript 局部变量的访问。
+  * 更新 aworkslp 移植代码（感谢文静提供）
+  * 修复兼容以前的 lcd 旋转贴图的断言判断（感谢智明提供补丁）
+  * 修复在虚拟机上面 lcd_mem 字体错位的问题以及兼容以前 lcd 旋转运行的问题（感谢智明提供补丁）
+  * 删除 mingw 的 UNICODE 宏和 msvc 统一宏的版本（感谢智明提供补丁）。
 
 2022/03/28
-  * 完善fscript。
+  * 完善 fscript。
 
 2022/03/24
-  * 修复切换语言时canvas的font对象被清空导致控件无法正常绘制的问题（感谢雨欣提供补丁） 
+  * 修复切换语言时 canvas 的 font 对象被清空导致控件无法正常绘制的问题（感谢雨欣提供补丁） 
 
 2022/03/23
-  * 改用mingw默认的宏来定义MINGW宏（感谢智明提供补丁）。
+  * 改用 mingw 默认的宏来定义 MINGW 宏（感谢智明提供补丁）。
   * 修复在离线画布多次数据回流导致内存泄露的问题（感谢智明提供补丁）。
-  * 完善ubjson对字符的处理(感谢攀峰提供补丁)
+  * 完善 ubjson 对字符的处理（感谢攀峰提供补丁）
 
 2022/03/22
   * 修复软键盘让窗口上移后再次弹出软键盘导致窗口动画不正常的问题（感谢智明提供补丁）
   * 修复在 text_edit 在点击和拖拽的时候执行 layout 导致的卡顿问题以及修复翻页不正常的问题（感谢智明提供补丁）
 
 2022/03/21
-  * 完善3or5keys文档（感谢雨欣提供补丁）
+  * 完善 3or5keys 文档（感谢雨欣提供补丁）
   * 完善 mingw 编译（感谢智明提供补丁）。
 
 2022/03/20
   * 完善 ubjson\_writer\_write\_object。
-  * 完善 fscript 函数len
+  * 完善 fscript 函数 len
 
 2022/03/19
-  * 完善fscript函数bit\_not
-  * 完善fargs\_get\_data\_and\_size
-  * 完善object\_date\_time支持foreach。
+  * 完善 fscript 函数 bit\_not
+  * 完善 fargs\_get\_data\_and\_size
+  * 完善 object\_date\_time 支持 foreach。
 
 2022/03/18
   * 完善 tk_\cond\_var\_wait（感谢兆坤提供补丁）。
-  * 修复AWTK\_LITE编译问题（感谢智明提供补丁）
-  * 完善edit 和 combox 的 over 和 enter 的状态风格切换（感谢智明提供补丁）
+  * 修复 AWTK\_LITE 编译问题（感谢智明提供补丁）
+  * 完善 edit 和 combox 的 over 和 enter 的状态风格切换（感谢智明提供补丁）
 
 2022/03/17
   * 修复离线画布数据回流才可以使用的问题（感谢智明提供补丁）
-  * 完善canvas\_measure\_text函数的缓存逻辑优化其速度（感谢智明提供补丁）
+  * 完善 canvas\_measure\_text 函数的缓存逻辑优化其速度（感谢智明提供补丁）
 
 2022/03/16
-  * 增加通配符匹配函数tk\_wild\_card\_match。
-  * 完善canvas\_measure\_text函数的缓存逻辑优化其速度（感谢智明提供补丁）
+  * 增加通配符匹配函数 tk\_wild\_card\_match。
+  * 完善 canvas\_measure\_text 函数的缓存逻辑优化其速度（感谢智明提供补丁）
 
 2022/03/15
-  * 增加canvas\_measure\_text函数的缓存逻辑优化其速度（感谢智明提供补丁）
+  * 增加 canvas\_measure\_text 函数的缓存逻辑优化其速度（感谢智明提供补丁）
 
 2022/03/14
   * edit 和 combox 的 over 和 enter 的状态风格切换（感谢智明提供补丁）
 
 2022/03/11
-  * 修复theme_gen的模板部分编译出错问题（感谢智明提供补丁） 
-  * 修复combox在没有默认值的时候创建控件会和mvvm的列表渲染赋值的覆盖问题 （感谢智明提供补丁）
-  * 完善3_5key的说明文档（感谢雨欣提供补丁）
+  * 修复 theme_gen 的模板部分编译出错问题（感谢智明提供补丁） 
+  * 修复 combox 在没有默认值的时候创建控件会和 mvvm 的列表渲染赋值的覆盖问题 （感谢智明提供补丁）
+  * 完善 3_5key 的说明文档（感谢雨欣提供补丁）
 
 2022/03/10
-  * 完善fscript debugger
-  * 完善line\_number
-  * 修复style\_get\_color函数处理渐变色时候崩溃的问题（感谢智明提供补丁）
-  * 修复edit控件，输入类型为int/uint/float/ufloat时，edit\_set\_text错误把max当作最大长度使用。
+  * 完善 fscript debugger
+  * 完善 line\_number
+  * 修复 style\_get\_color 函数处理渐变色时候崩溃的问题（感谢智明提供补丁）
+  * 修复 edit 控件，输入类型为 int/uint/float/ufloat 时，edit\_set\_text 错误把 max 当作最大长度使用。
 
 2022/03/08
-  * 支持[LCD快速旋转](how_to_use_fast_lcd_portrait.md) （感谢智明提供补丁）。
+  * 支持 [LCD 快速旋转](how_to_use_fast_lcd_portrait.md) （感谢智明提供补丁）。
   * 修复 awtk 在安卓下划线不正常的问题（感谢智明提供补丁）。
   * 修复窗口管理宽高没有对话框的大时候播放对话框的窗口动画会导致断言的问题（感谢智明提供补丁）。
   * 修复控件动画停止时候导致裁剪区不正常的问题（感谢智明提供补丁）。
 
 2022/03/04
   * 修复 icon\_at 靠边不正常的问题（感谢智明提供补丁）。
-  * 修改csv中的内存泄漏（感谢林福提供补丁）。
+  * 修改 csv 中的内存泄漏（感谢林福提供补丁）。
   * 修复控件动画修改坐标和宽高导致残影的问题（感谢智明提供补丁）。
 
 2022/03/03
   * 修复 icon\_at 靠边不正常的问题（感谢智明提供补丁）。
 
 2022/03/02
-  * AWorks的 serial\_helper 增加设置超时的接口（感谢林福提供补丁）。
+  * AWorks 的 serial\_helper 增加设置超时的接口（感谢林福提供补丁）。
   * image\_value 控件添加了 -+ 号的映射（感谢雨欣提供补丁）。
-  * 完善widget\_set\_pointer\_cursor，实时生效。
+  * 完善 widget\_set\_pointer\_cursor，实时生效。
 
 2022/02/26
   * draggable 支持拖动原生窗口。
 
 2022/02/25
-  * 增加函数combo\_box\_has\_option\_text
-  * 完善themegen （感谢兆坤提供补丁）。
+  * 增加函数 combo\_box\_has\_option\_text
+  * 完善 themegen （感谢兆坤提供补丁）。
 
 2022/02/24
-  * 增加函数str\_format/str\_append\_format。
+  * 增加函数 str\_format/str\_append\_format。
 
 2022/02/23
-  * 修复导出IDL文件的时候因为查找不到依赖的类导致出现警告（感谢智明提供补丁）。
-  * 集成了IoT.js，所以同步更新app\_helper\_base.py(感谢朝泽提供补丁)
+  * 修复导出 IDL 文件的时候因为查找不到依赖的类导致出现警告（感谢智明提供补丁）。
+  * 集成了 IoT.js，所以同步更新 app\_helper\_base.py（感谢朝泽提供补丁）
   * 修复编译警告（感谢智明提供补丁）。
 
 2022/02/22
-  * 完善API注释。
-  * 完善fscript调试器。
-  * 统一lcd旋转的方向为逆时针和增加相关接口的说明（感谢智明提供补丁）。
+  * 完善 API 注释。
+  * 完善 fscript 调试器。
+  * 统一 lcd 旋转的方向为逆时针和增加相关接口的说明（感谢智明提供补丁）。
 
 2022/02/21
-  * 修复fscript global对象初始化的问题。
-  * 修复value\_int64/value\_uint64对大数的处理。
+  * 修复 fscript global 对象初始化的问题。
+  * 修复 value\_int64/value\_uint64 对大数的处理。
 
 2022/02/18
-  * 增加函数fscript\_set\_global\_object。
+  * 增加函数 fscript\_set\_global\_object。
 
 2022/02/16
-  * 增加函数ui\_loader\_load\_widget\_from\_xml。
+  * 增加函数 ui\_loader\_load\_widget\_from\_xml。
   * 增加 vg 加载字体的错误判断和提示 （感谢智明提供补丁）。
 
 2022/02/15
-  * conf对象支持foreach\_prop。
-  * conf支持创建子对象。
+  * conf 对象支持 foreach\_prop。
+  * conf 支持创建子对象。
 
 2022/02/14
-  * 完善combo\_box\_ex（感谢培煌提供补丁）
+  * 完善 combo\_box\_ex（感谢培煌提供补丁）
 
 2022/02/11
-  * 修复csv中的内存泄漏(感谢兆坤提供补丁)
+  * 修复 csv 中的内存泄漏（感谢兆坤提供补丁）
 
 2022/02/10
-  * 完善str\_append\_json\_str。
-  * 完善API注释(感谢朝泽提供补丁)
+  * 完善 str\_append\_json\_str。
+  * 完善 API 注释（感谢朝泽提供补丁）
   * color\_tile 支持渐变色（感谢智明提供补丁）
-  * 完善canvas\_draw\_image\_at（感谢智明提供补丁）
+  * 完善 canvas\_draw\_image\_at（感谢智明提供补丁）
   * 增加输入框中支持按键和鼠标输入保持光标常亮的功能（感谢智明提供补丁）
 
 2022/02/08
-  * 增加widget\_find\_parent\_by\_type/widget\_find\_parent\_by\_name。
+  * 增加 widget\_find\_parent\_by\_type/widget\_find\_parent\_by\_name。
 
 2022/02/07
   * 合并对环形进度条的优化。
 
 2022/02/04
-  * 增加函数path\_basename\_ex。
+  * 增加函数 path\_basename\_ex。
 
 2022/02/02
-  * 完善fscript语法错误检查。
+  * 完善 fscript 语法错误检查。
 
 2022/01/29
-  * 完善fscript debugger
+  * 完善 fscript debugger
 
 2022/01/25
   * 完善离线画布（感谢智明提供补丁）
 
 2022/01/24
-  * 完善fscript debugger
-  * 优化tk\_strncpy（感谢智明提供补丁）
-  * 增加slider增加修改前景色的线帽形状属性（感谢智明提供补丁）
-  * 修复demoui界面上有edit控件且控件中存在文本时切换主题会打印警告的问题（感谢兆坤提供补丁）
-  * 完善demoui（感谢兆坤提供补丁）
+  * 完善 fscript debugger
+  * 优化 tk\_strncpy（感谢智明提供补丁）
+  * 增加 slider 增加修改前景色的线帽形状属性（感谢智明提供补丁）
+  * 修复 demoui 界面上有 edit 控件且控件中存在文本时切换主题会打印警告的问题（感谢兆坤提供补丁）
+  * 完善 demoui（感谢兆坤提供补丁）
 
 2022/01/23
-  * 完善fscript debugger,支持attach/launch两种启动方式。
+  * 完善 fscript debugger, 支持 attach/launch 两种启动方式。
 
 2022/01/22
-  * line_number支持设置高亮行。
-  * 完善fscript debugger
+  * line_number 支持设置高亮行。
+  * 完善 fscript debugger
 
 2022/01/21
-  * 完善fscript debugger并增加fdb命令行调试工具。
-  * 完善aworks平台的serial\_helper.c（感谢文静提供）
+  * 完善 fscript debugger 并增加 fdb 命令行调试工具。
+  * 完善 aworks 平台的 serial\_helper.c（感谢文静提供）
 
 2022/01/20
-  * 增加fscript的构造函数和析构函数（感谢智明提供补丁）
+  * 增加 fscript 的构造函数和析构函数（感谢智明提供补丁）
 
 2022/01/19
   * 完善编译脚本（感谢雨欣提供补丁）
-  * 完善fscript调试器(支持step in/step out/step over/reload code)。
+  * 完善 fscript 调试器（支持 step in/step out/step over/reload code)。
 
 2022/01/16
-  * 完善fscript支持调试器。
+  * 完善 fscript 支持调试器。
 
 2022/01/13
-  * 优化tk\_object\_get\_child\_object（感谢雨欣提供补丁）
+  * 优化 tk\_object\_get\_child\_object（感谢雨欣提供补丁）
 
 2022/01/12
   * 完善 awtk 退出流程（感谢雨欣提供补丁）
 
 2022/01/11
-  * 修复awtk_main中reboot残余代码导致嵌入式系统编译失败的问题。
-  * 修复WITHOUT_FSCRIPT没有生效的问题。
-  * 完善fscript表达式。
+  * 修复 awtk_main 中 reboot 残余代码导致嵌入式系统编译失败的问题。
+  * 修复 WITHOUT_FSCRIPT 没有生效的问题。
+  * 完善 fscript 表达式。
 
 2022/01/10
-  * 完善fscript if/elseif/else语句
+  * 完善 fscript if/elseif/else 语句
 
 2022/01/08
-  * fscript的log函数改名为logf，避免与flow中的log重名。
-  * fscript增加date\_time\_get\_prop/date\_time\_set\_prop等函数。 
+  * fscript 的 log 函数改名为 logf，避免与 flow 中的 log 重名。
+  * fscript 增加 date\_time\_get\_prop/date\_time\_set\_prop 等函数。 
 
 2022/01/07
-  * fscript增加str\_is\_empty/str\_len/array\_is\_empty/array\_size等函数。
-  * object\_typed\_array支持通过TK\_OBJECT\_PROP\_SIZE获取元素个数。
-  * object\_typed\_array支持通过set\_prop/get\_prop访问元素。
-  * fscript支持for/for\_in语句。
+  * fscript 增加 str\_is\_empty/str\_len/array\_is\_empty/array\_size 等函数。
+  * object\_typed\_array 支持通过 TK\_OBJECT\_PROP\_SIZE 获取元素个数。
+  * object\_typed\_array 支持通过 set\_prop/get\_prop 访问元素。
+  * fscript 支持 for/for\_in 语句。
 
 2022/01/06
-  * fscript增加random0to1。
-  * fscript支持until/repeat_times/repeat语句。
-  * fscript中增加is\_int/is\_odd/is\_even等函数
-  * 还原awtk\_main.inc文件的循环代码（感谢智明提供补丁）
-  * log后调用fflush（感谢福明提供补丁）
+  * fscript 增加 random0to1。
+  * fscript 支持 until/repeat_times/repeat 语句。
+  * fscript 中增加 is\_int/is\_odd/is\_even 等函数
+  * 还原 awtk\_main.inc 文件的循环代码（感谢智明提供补丁）
+  * log 后调用 fflush（感谢福明提供补丁）
 
 2022/01/05
-  * fscript公开函数value\_id/value\_func。
-  * fscript增加log10/pow10等函数。
+  * fscript 公开函数 value\_id/value\_func。
+  * fscript 增加 log10/pow10 等函数。
   * 修复在多次半透叠加后数据不正常的问题（感谢智明提供补丁）
-  * 修复注释错误(感谢朝泽提供补丁)
-  * fscript中三角函数增加以度数为单位的相应函数。
+  * 修复注释错误（感谢朝泽提供补丁）
+  * fscript 中三角函数增加以度数为单位的相应函数。
 
 2022/01/04
-  * fscript支持保存函数名，方便调试。
+  * fscript 支持保存函数名，方便调试。
 
 2022/01/02
-  * 修复fscript中while语句对return的处理。
-  * 修复emitter被覆盖的问题（感谢智明提供补丁）
+  * 修复 fscript 中 while 语句对 return 的处理。
+  * 修复 emitter 被覆盖的问题（感谢智明提供补丁）
 
 2022/01/01
-  * 优化fscript函数调用。
-  * 公开结构fscript\_func\_call\_t。
+  * 优化 fscript 函数调用。
+  * 公开结构 fscript\_func\_call\_t。
   * fscript 支持设置错误处理函数。
-  * fscript 增加函数sleep\_ms。
+  * fscript 增加函数 sleep\_ms。
 
 2021/12/31
-  * fscript允许重载print函数。
-  * 修复emitter的事件中删除事件同时递归触发事件导致emitter不正常的问题（感谢zxc3489和智明提供补丁）
-  * 修复使用thread\_with\_pthread时，线程运行完毕后调 用join函数出现内存泄漏的问题 (感谢雨欣提供补丁)
+  * fscript 允许重载 print 函数。
+  * 修复 emitter 的事件中删除事件同时递归触发事件导致 emitter 不正常的问题（感谢 zxc3489 和智明提供补丁）
+  * 修复使用 thread\_with\_pthread 时，线程运行完毕后调 用 join 函数出现内存泄漏的问题 （感谢雨欣提供补丁）
 
 2021/12/29
   * 修复 fscript 中 unset 的问题。
   * fscript 增加 f64/double 数据类型转换函数。
   * 允许通过 widget\_get\_prop 获取 loading 属性（感谢兆坤提供补丁）
-  * 修复t9ext输入法中输入完成后Enter键失效的问题（感谢雨欣提供补丁）
+  * 修复 t9ext 输入法中输入完成后 Enter 键失效的问题（感谢雨欣提供补丁）
   * 解决 combo\_box 设置 text 后，select\_index 没有跟着变化的问题（感谢兆坤提供补丁）
 
 2021/12/28
