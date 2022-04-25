@@ -20,27 +20,71 @@
 #include "tkc/fscript.h"
 
 #include "fscript_ext/fscript_ext.h"
-#include "fscript_ext/fscript_fs.h"
-#include "fscript_ext/fscript_crc.h"
-#include "fscript_ext/fscript_bits.h"
-#include "fscript_ext/fscript_math.h"
-#include "fscript_ext/fscript_json.h"
-#include "fscript_ext/fscript_array.h"
-#include "fscript_ext/fscript_endian.h"
 #include "fscript_ext/fscript_object.h"
+
+#ifdef FSCRIPT_WITH_FS
+#include "fscript_ext/fscript_fs.h"
+#endif /*FSCRIPT_WITH_FS*/
+
+#ifdef FSCRIPT_WITH_CRC
+#include "fscript_ext/fscript_crc.h"
+#endif /*FSCRIPT_WITH_CRC*/
+
+#ifdef FSCRIPT_WITH_BITS
+#include "fscript_ext/fscript_bits.h"
+#endif /*FSCRIPT_WITH_BITS*/
+
+#ifdef FSCRIPT_WITH_MATH
+#include "fscript_ext/fscript_math.h"
+#endif /*FSCRIPT_WITH_MATH*/
+
+#ifdef FSCRIPT_WITH_JSON
+#include "fscript_ext/fscript_json.h"
+#endif /*FSCRIPT_WITH_JSON*/
+
+#ifdef FSCRIPT_WITH_ARRAY
+#include "fscript_ext/fscript_array.h"
+#endif /*FSCRIPT_WITH_ARRAY*/
+
+#ifdef FSCRIPT_WITH_ENDIAN
+#include "fscript_ext/fscript_endian.h"
+#endif /*FSCRIPT_WITH_ENDIAN*/
+
+#ifdef FSCRIPT_WITH_MODULE
 #include "fscript_ext/fscript_module.h"
+#endif /*FSCRIPT_WITH_MODULE*/
+
+#ifdef FSCRIPT_WITH_BUFFER
 #include "fscript_ext/fscript_rbuffer.h"
 #include "fscript_ext/fscript_wbuffer.h"
-#include "fscript_ext/fscript_app_conf.h"
-#include "fscript_ext/fscript_date_time.h"
-#include "fscript_ext/fscript_typed_array.h"
+#endif /*FSCRIPT_WITH_BUFFER*/
 
+#ifdef FSCRIPT_WITH_APP_CONF
+#include "fscript_ext/fscript_app_conf.h"
+#endif /*FSCRIPT_WITH_APP_CONF*/
+
+#ifdef FSCRIPT_WITH_DATE_TIME
+#include "fscript_ext/fscript_date_time.h"
+#endif /*FSCRIPT_WITH_DATE_TIME*/
+
+#ifdef FSCRIPT_WITH_TYPED_ARRAY
+#include "fscript_ext/fscript_typed_array.h"
+#endif /*FSCRIPT_WITH_TYPED_ARRAY*/
+
+#ifdef FSCRIPT_WITH_STREAM
 #include "fscript_ext/fscript_istream.h"
 #include "fscript_ext/fscript_ostream.h"
 #include "fscript_ext/fscript_iostream.h"
+#ifdef FSCRIPT_WITH_STREAM_FILE
 #include "fscript_ext/fscript_iostream_file.h"
+#endif /*FSCRIPT_WITH_STREAM_FILE*/
+#ifdef FSCRIPT_WITH_STREAM_INET
 #include "fscript_ext/fscript_iostream_inet.h"
+#endif /*FSCRIPT_WITH_STREAM_INET*/
+#ifdef FSCRIPT_WITH_STREAM_SERIAL
 #include "fscript_ext/fscript_iostream_serial.h"
+#endif /*FSCRIPT_WITH_STREAM_SERIAL*/
+#endif /*FSCRIPT_WITH_STREAM*/
 
 static ret_t func_value_is_valid(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
