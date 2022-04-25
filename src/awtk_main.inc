@@ -123,15 +123,10 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdli
   bool_t enable_console = TRUE;
   int32_t lcd_w = LCD_WIDTH;
   int32_t lcd_h = LCD_HEIGHT;
-  char buff[1024];
 
   str_init(&str, 0);
-  str.str = buff;
-  str.size = 0;
-  str.capacity = sizeof(buff);
   str_from_wstr(&str, lpcmdline);
   command_line_to_argv(str.str, argv, &argc);
-  str.str = NULL;
 
   CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
