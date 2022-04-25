@@ -438,7 +438,7 @@ static ret_t children_layouter_list_view_for_list_view_layout(children_layouter_
                                                                  virtual_h);
   if (list_view->scroll_bar != NULL) {
     children_layouter_list_view_for_list_view_set_scroll_bar_info(list_view->scroll_bar, list_view,
-                                                                  widget, virtual_h, item_height);
+                                                                  widget, virtual_h, item_height > 0 ? item_height : default_item_height);
   }
   return RET_OK;
 }
