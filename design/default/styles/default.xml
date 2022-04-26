@@ -271,7 +271,13 @@
     <over icon="slider_drag_o"/>
   </style>
 
-  <style name="img_slider"  bg_image="img_slider_bg" fg_image="img_slider_fg" bg_image_draw_type="default" fg_image_draw_type="default">
+  <style name="img_v_margin"  bg_image="slider_v_bg" fg_image="slider_v_fg" bg_image_draw_type="repeat3_y" margin="10" fg_image_draw_type="repeat3_y">
+    <normal icon="slider_drag"/>
+    <pressed icon="slider_drag_p"/>
+    <over icon="slider_drag_o"/>
+  </style>
+
+  <style name="img_slider"  bg_image="img_slider_bg" fg_image="img_slider_fg" bg_image_draw_type="default" margin="10" fg_image_draw_type="default">
     <normal icon="img_slider_icon"/>
     <pressed icon="img_slider_icon"/>
     <over icon="img_slider_icon"/>

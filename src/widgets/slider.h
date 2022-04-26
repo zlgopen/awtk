@@ -102,13 +102,6 @@ typedef struct _slider_t {
   double step;
 
   /**
-   * @property {bool_t} vertical
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 滑块的是否为垂直方向。
-   */
-  bool_t vertical;
-
-  /**
    * @property {uint32_t} bar_size
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 轴的宽度或高度（单位：像素），为0表示为控件的宽度或高度的一半，缺省为0。
@@ -118,9 +111,23 @@ typedef struct _slider_t {
   /**
    * @property {uint32_t} dragger_size
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 滑块的宽度或高度（单位：像素），缺省为10。
+   * 滑块的宽度或高度（单位：像素），缺省为 bar_size * 1.5。
    */
   uint32_t dragger_size;
+
+  /**
+   * @property {char*} line_cap
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 前景色的线帽形状。（取值：butt|round，默认为跟随风格的圆角设置, 但是在没有设置圆角的时候无法使用 "round" 来设置圆角）
+   */
+  char* line_cap;
+
+  /**
+   * @property {bool_t} vertical
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 滑块的是否为垂直方向。
+   */
+  bool_t vertical;
 
   /**
    * @property {bool_t} dragger_adapt_to_icon
@@ -136,16 +143,10 @@ typedef struct _slider_t {
    */
   bool_t slide_with_bar;
 
-  /**
-   * @property {char*} line_cap
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 前景色的线帽形状。（取值：butt|round，默认为跟随风格的圆角设置, 但是在没有设置圆角的时候无法使用 "round" 来设置圆角）
-   */
-  char* line_cap;
-
   /*private*/
   bool_t pressed;
   bool_t dragging;
+  bool_t no_dragger_icon;
   double saved_value;
   point_t down;
   rect_t dragger_rect;

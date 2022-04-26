@@ -50,14 +50,17 @@ static uint32_t slider_get_bar_size(widget_t* widget) {
 
 static ret_t slider_update_dragger_rect(widget_t* widget, canvas_t* c) {
   bitmap_t img;
-  double fvalue = 0;
-  slider_t* slider = SLIDER(widget);
   rect_t* r = NULL;
+  double fvalue = 0;
+  int32_t margin = 0;
+  slider_t* slider = SLIDER(widget);
   return_value_if_fail(slider != NULL, RET_BAD_PARAMS);
 
   r = &(slider->dragger_rect);
+  margin = style_get_int(widget->astyle, STYLE_ID_MARGIN, 0);
   fvalue = (double)(slider->value - slider->min) / (double)(slider->max - slider->min);
 
+  slider->dragger_size = slider_get_bar_size(widget) * 1.5f;
   if (slider->dragger_adapt_to_icon && c != NULL) {
     float_t ratio = c->lcd->ratio;
     if (slider_load_icon(widget, &img) == RET_OK) {
@@ -66,15 +69,24 @@ static ret_t slider_update_dragger_rect(widget_t* widget, canvas_t* c) {
   }
 
   if (slider->vertical) {
+    fvalue = 1.0f - fvalue;
+    r->x = 0;
     r->w = widget->w;
     r->h = slider->dragger_size;
-    r->x = 0;
-    r->y = tk_roundi((widget->h - r->h) * (1 - fvalue));
+    if (slider->no_dragger_icon) {
+      r->y = widget->h * fvalue - (slider->dragger_size >> 1);
+    } else {
+      r->y = margin + (widget->h - slider->dragger_size - (margin << 1)) * fvalue;
+    }
   } else {
     r->w = slider->dragger_size;
     r->h = widget->h;
-    r->x = tk_roundi((widget->w - r->w) * fvalue);
     r->y = 0;
+    if (slider->no_dragger_icon) {
+      r->x = widget->w * fvalue - (slider->dragger_size >> 1);
+    } else {
+      r->x = margin + (widget->w - slider->dragger_size - (margin << 1)) * fvalue;
+    }
   }
 
   return RET_OK;
@@ -156,6 +168,10 @@ static ret_t slider_paint_dragger(widget_t* widget, canvas_t* c) {
   rect_t* r = &(slider->dragger_rect);
   color_t trans = color_init(0, 0, 0, 0);
 
+  if (slider->no_dragger_icon) {
+    return RET_OK;
+  }
+
   color = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
   radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
 
@@ -192,28 +208,48 @@ static ret_t slider_get_bar_rect(widget_t* widget, rect_t* br, rect_t* fr) {
 
   if (slider->vertical) {
     bar_size = tk_min(bar_size, widget->w);
+    br->y = 0;
     br->w = bar_size;
+    br->h = widget->h;
     br->x = (widget->w - br->w) / 2;
-    br->h = (radius || bg_image != NULL) ? (widget->h - dr->h) : dr->y;
-    br->y = dr->h / 2;
 
-    fr->w = br->w;
     fr->x = br->x;
-    fr->h = widget->h - dr->h - dr->y;
-    fr->y = dr->y + dr->h / 2;
+    fr->y = dr->y + (dr->h >> 1);
+    fr->w = br->w;
+    fr->h = br->y + br->h - fr->y;
   } else {
     bar_size = tk_min(bar_size, widget->h);
-    br->w = (radius || bg_image != NULL) ? (widget->w - dr->w) : (widget->w - dr->w - dr->x);
-    br->x = (radius || bg_image != NULL) ? (dr->w / 2) : (dr->x + dr->w / 2);
+    br->x = 0;
     br->h = bar_size;
+    br->w = widget->w;
     br->y = (widget->h - br->h) / 2;
 
-    fr->w = dr->x;
-    fr->x = dr->w / 2;
-    fr->h = br->h;
+    fr->x = br->x;
     fr->y = br->y;
+    fr->h = br->h;
+    fr->w = dr->x - br->x + (dr->w >> 1);
   }
 
+  return RET_OK;
+}
+
+static ret_t slider_check_no_dragger_icon(widget_t* widget) {
+  bitmap_t img;
+  color_t color;
+  style_t* style = widget->astyle;
+  slider_t* slider = SLIDER(widget);
+  color_t trans = color_init(0, 0, 0, 0);
+
+  ret_t ret = slider_load_icon(widget, &img);
+  color = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
+
+  if (color.rgba.a == 0 && ret != RET_OK) {
+    uint32_t margin = style_get_int(widget->astyle, STYLE_ID_MARGIN, 0);
+    if (margin != 0) {
+      assert(!" if dragger has not icon, style's margin must equl 0!");
+    }
+    slider->no_dragger_icon = TRUE;
+  }
   return RET_OK;
 }
 
@@ -223,6 +259,8 @@ static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
   slider_t* slider = SLIDER(widget);
 
   return_value_if_fail(widget != NULL && slider != NULL, RET_BAD_PARAMS);
+
+  slider_check_no_dragger_icon(widget);
 
   slider_update_dragger_rect(widget, c);
 
@@ -298,15 +336,30 @@ ret_t slider_dec(widget_t* widget) {
 
 static ret_t slider_change_value_by_pointer_event(widget_t* widget, pointer_event_t* evt) {
   double value = 0;
+  point_t p = {evt->x, evt->y};
   slider_t* slider = SLIDER(widget);
   double range = slider->max - slider->min;
-  point_t p = {evt->x, evt->y};
+  int32_t margin = style_get_int(widget->astyle, STYLE_ID_MARGIN, 0);
 
   widget_to_local(widget, &p);
   if (slider->vertical) {
-    value = range - range * p.y / widget->h;
+    if (slider->no_dragger_icon) {
+      value = range - range * p.y / widget->h;
+    } else {
+      int32_t half_dragger_size = slider->dragger_size >> 1;
+      value = range - tk_clamp(range * (p.y - half_dragger_size - margin) /
+                                   (int32_t)(widget->h - slider->dragger_size - (margin << 1)),
+                               0.0, range);
+    }
   } else {
-    value = range * p.x / widget->w;
+    if (slider->no_dragger_icon) {
+      value = range * p.x / widget->w;
+    } else {
+      int32_t half_dragger_size = slider->dragger_size >> 1;
+      value = tk_clamp(range * (p.x - half_dragger_size - margin) /
+                           (int32_t)(widget->w - slider->dragger_size - (margin << 1)),
+                       0.0, range);
+    }
   }
   value += slider->min;
   value = tk_clamp(value, slider->min, slider->max);
@@ -666,7 +719,6 @@ widget_t* slider_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   slider->max = 100;
   slider->step = 1;
   slider->value = 0;
-  slider->dragger_size = 10;
   slider->dragger_adapt_to_icon = TRUE;
   slider->slide_with_bar = FALSE;
 
