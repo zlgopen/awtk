@@ -36,6 +36,7 @@ typedef struct _tk_iostream_serial_t tk_iostream_serial_t;
  * @parent tk_iostream_t
  *
  * 基于串口实现的输入输出流。
+ * 备注：如果需要在 Windows 平台运行，请在应用程序初始化时，调用 tk_socket_init 函数初始化 socket。
  *
  */
 struct _tk_iostream_serial_t {
@@ -68,6 +69,7 @@ tk_iostream_t* tk_iostream_serial_create(const char* port);
  * @method tk_iostream_serial_config
  *
  * 配置串口。
+ * 备注：如果需要在 Windows 平台运行，请在应用程序初始化时，调用 tk_socket_init 函数初始化 socket。
  *
  * @param {tk_iostream_t*} iostream 串口对象。
  * @param {int32_t} baudrate 波特率。
