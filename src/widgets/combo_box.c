@@ -881,7 +881,7 @@ static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, w
     combo_box_sync_index_to_value(widget, index, FALSE);
   }
 
-  if (edit->select_none_when_focused || edit->readonly) {
+  if (edit->select_none_when_focused || edit->readonly || combo_box->combobox_popup == NULL) {
     text_edit_unselect(edit->model);
   } else {
     text_edit_select_all(edit->model);
