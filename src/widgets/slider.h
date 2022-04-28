@@ -147,6 +147,7 @@ typedef struct _slider_t {
   bool_t pressed;
   bool_t dragging;
   bool_t no_dragger_icon;
+  bool_t auto_get_dragger_size;
   double saved_value;
   point_t down;
   rect_t dragger_rect;

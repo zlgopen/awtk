@@ -1,17 +1,18 @@
 <window >
-<button name="close" x="10" y="10" w="150" h="150" text="close" />
-<slider name="s1" style="photo" x="c" y="b:30" w="280" h="60" value="100" line_cap="butt" />
-<label x="c" y="b" w="280" h="30" text=" slider here !" />
+  <button name="close" x="10" y="10" w="150" h="150" text="close" />
+  <slider name="s1" style="photo" x="c" y="b:20" w="280" h="60" value="100" line_cap="butt" />
+  <label x="c" y="b" w="280" h="20" text=" slider here !" />
 
-<slider name="bind_value:s1" style="img" x="10" y="165" w="150" h="30" value="100" />
-<slider name="bind_value:s1" style="photo" x="10" y="200" w="150" h="60" value="100" />
-<slider name="bind_value:s1" x="10" y="260" w="168" h="80" style="img_slider" value="100"/>
+  <slider name="bind_value:s1" style="img" x="10" y="165" w="150" h="30" value="100" />
+  <slider name="bind_value:s1" style="photo" x="10" y="200" w="150" h="60" value="100" />
+  <slider name="bind_value:s1" x="10" y="260" w="168" h="80" style="img_slider" dragger_size="50" value="100"/>
+  <slider name="bind_value:s1" x="10" y="355" w="150" h="15" dragger_size="2" bar_size="5" style:normal:icon="slider_drag" style:normal:round_radius="5" value="100"/>
 
-<slider name="bind_value:s1" style="img_v" x="165" y="10" w="30" h="150" value="100" vertical="true" />
-<slider name="bind_value:s1" style="photo" x="200" y="10" w="60" h="150" value="100" vertical="true" />
-<slider name="bind_value:s1" style="photo" x="260" y="10" w="60" h="150" value="100" line_cap="butt" vertical="true" />
-<slider name="bind_value:s1" style="img_v_margin" x="260" y="165" w="60" h="150" value="100" vertical="true" />
+  <slider name="bind_value:s1" style="img_v" x="165" y="10" w="30" h="150" value="100" vertical="true" />
+  <slider name="bind_value:s1" style="photo" x="200" y="10" w="60" h="150" value="100" vertical="true" />
+  <slider name="bind_value:s1" style="photo" x="260" y="10" w="60" h="150" value="100" line_cap="butt" vertical="true" />
+  <slider name="bind_value:s1" style="img_v_margin" x="260" y="165" w="60" h="150" value="100" vertical="true" />
 
-<progress_circle name="bind_value:s1" x="170" y="200" w="100" h="100" style="default" value="100"/>
+  <progress_circle name="bind_value:s1" x="170" y="200" w="100" h="100" style="default" value="100"/>
 
 </window>
