@@ -75,12 +75,18 @@ static bool_t overlay_is_point_in(widget_t* widget, xy_t x, xy_t y) {
 static const char* const s_overlay_properties[] = {WIDGET_PROP_CLICK_THROUGH,
                                                    WIDGET_PROP_ALWAYS_ON_TOP, NULL};
 
+static ret_t overlay_on_copy(widget_t* widget, widget_t* other) {
+  window_base_on_copy(widget, other);
+  return widget_copy_props(widget, other, s_overlay_properties);
+}
+
 TK_DECL_VTABLE(overlay) = {.type = WIDGET_TYPE_OVERLAY,
                            .size = sizeof(overlay_t),
                            .is_window = TRUE,
                            .parent = TK_PARENT_VTABLE(window_base),
                            .create = overlay_create,
                            .clone_properties = s_overlay_properties,
+                           .on_copy = overlay_on_copy,
                            .persistent_properties = s_overlay_properties,
                            .on_event = window_base_on_event,
                            .on_paint_self = window_base_on_paint_self,

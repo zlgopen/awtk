@@ -29,6 +29,7 @@
 #include "base/image_manager.h"
 #include "base/assets_manager.h"
 #include "base/window_manager.h"
+#include "base/widget_vtable.h"
 
 ret_t window_close(widget_t* widget);
 
@@ -643,4 +644,8 @@ widget_t* window_base_cast(widget_t* widget) {
   }
 
   return NULL;
+}
+
+ret_t window_base_on_copy(widget_t* widget, widget_t* other) {
+  return widget_copy_props(widget, other, s_window_base_properties);
 }

@@ -139,12 +139,24 @@ ret_t widget_on_pointer_move_default(widget_t* widget, pointer_event_t* e);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_on_pointer_up_default(widget_t* widget, pointer_event_t* e);
+
 /**
  * @method widget_on_copy_default
  * @annotation ["global"]
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_on_copy_default(widget_t* widget, widget_t* other);
+
+/**
+ * @method widget_copy_props
+ * @annotation ["global"]
+ * @param {widget_t*} dst 目的控件对象。
+ * @param {widget_t*} src 源控件对象。
+ * @param {char**} properties 属性列表。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_copy_props(widget_t* dst, widget_t* src, const char* const* properties);
+
 /**
  * @method widget_get_prop_default
  * @annotation ["global"]

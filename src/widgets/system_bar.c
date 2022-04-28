@@ -130,6 +130,11 @@ static ret_t system_bar_on_destroy(widget_t* widget) {
   return window_base_on_destroy(widget);
 }
 
+static ret_t system_bar_on_copy(widget_t* widget, widget_t* other) {
+  window_base_on_copy(widget, other);
+  return widget_copy_props(widget, other, s_system_bar_properties);
+}
+
 TK_DECL_VTABLE(system_bar) = {.size = sizeof(system_bar_t),
                               .type = WIDGET_TYPE_SYSTEM_BAR,
                               .is_window = TRUE,
@@ -137,6 +142,7 @@ TK_DECL_VTABLE(system_bar) = {.size = sizeof(system_bar_t),
                               .persistent_properties = s_system_bar_properties,
                               .parent = TK_PARENT_VTABLE(window_base),
                               .create = system_bar_create,
+                              .on_copy = system_bar_on_copy,
                               .on_event = system_bar_on_event,
                               .set_prop = window_base_set_prop,
                               .get_prop = window_base_get_prop,

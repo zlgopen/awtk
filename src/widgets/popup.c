@@ -159,6 +159,11 @@ static const char* const s_popup_properties[] = {WIDGET_PROP_CLOSE_WHEN_CLICK,
                                                  WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE,
                                                  WIDGET_PROP_CLOSE_WHEN_TIMEOUT, NULL};
 
+static ret_t popup_on_copy(widget_t* widget, widget_t* other) {
+  window_base_on_copy(widget, other);
+  return widget_copy_props(widget, other, s_popup_properties);
+}
+
 TK_DECL_VTABLE(popup) = {.size = sizeof(popup_t),
                          .type = WIDGET_TYPE_POPUP,
                          .is_window = TRUE,
@@ -166,6 +171,7 @@ TK_DECL_VTABLE(popup) = {.size = sizeof(popup_t),
                          .persistent_properties = s_popup_properties,
                          .parent = TK_PARENT_VTABLE(window_base),
                          .create = popup_create,
+                         .on_copy = popup_on_copy,
                          .get_prop = popup_get_prop,
                          .set_prop = popup_set_prop,
                          .on_event = popup_on_event,

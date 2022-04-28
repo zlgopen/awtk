@@ -73,12 +73,18 @@ ret_t window_set_fullscreen(widget_t* widget, bool_t fullscreen) {
   return RET_OK;
 }
 
+static ret_t window_on_copy(widget_t* widget, widget_t* other) {
+  window_base_on_copy(widget, other);
+  return widget_copy_props(widget, other, s_window_properties);
+}
+
 TK_DECL_VTABLE(window) = {.type = WIDGET_TYPE_NORMAL_WINDOW,
                           .size = sizeof(window_t),
                           .is_window = TRUE,
                           .parent = TK_PARENT_VTABLE(window_base),
                           .create = window_create,
                           .clone_properties = s_window_properties,
+                          .on_copy = window_on_copy,
                           .persistent_properties = s_window_properties,
                           .on_event = window_base_on_event,
                           .on_paint_self = window_base_on_paint_self,

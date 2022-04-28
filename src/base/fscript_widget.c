@@ -309,7 +309,6 @@ static ret_t func_widget_add_value(fscript_t* fscript, fscript_args_t* args, val
   value_t* v = NULL;
   ret_t ret = RET_OK;
   widget_t* widget = NULL;
-  const char* path = NULL;
 
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   widget = to_widget(fscript, args->args);

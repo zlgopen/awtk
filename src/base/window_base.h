@@ -23,6 +23,7 @@
 #define TK_WINDOW_BASE_H
 
 #include "base/widget.h"
+#include "base/widget_vtable.h"
 #include "base/native_window.h"
 
 BEGIN_C_DECLS
@@ -414,6 +415,16 @@ widget_t* window_base_cast(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
  */
 ret_t window_base_set_need_relayout(widget_t* widget, bool_t need_relayout);
+
+/**
+ * @method window_base_on_copy
+ * 默认拷贝函数。
+ * @param {widget_t*} widget window_base对象。
+ * @param {widget_t*} other other window_base对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
+ */
+ret_t window_base_on_copy(widget_t* widget, widget_t* other);
 
 #define WINDOW_BASE(widget) ((window_base_t*)(window_base_cast(WIDGET(widget))))
 

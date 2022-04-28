@@ -92,10 +92,16 @@ static ret_t dialog_on_destroy(widget_t* widget) {
   return window_base_on_destroy(widget);
 }
 
+static ret_t dialog_on_copy(widget_t* widget, widget_t* other) {
+  window_base_on_copy(widget, other);
+  return widget_copy_props(widget, other, s_dialog_properties);
+}
+
 TK_DECL_VTABLE(dialog) = {.size = sizeof(dialog_t),
                           .type = WIDGET_TYPE_DIALOG,
                           .is_window = TRUE,
                           .clone_properties = s_dialog_properties,
+                          .on_copy = dialog_on_copy,
                           .persistent_properties = s_dialog_properties,
                           .parent = TK_PARENT_VTABLE(window_base),
                           .create = dialog_create,
