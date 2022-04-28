@@ -240,7 +240,12 @@ ret_t combo_box_parse_options(widget_t* widget, const char* str) {
 }
 
 ret_t combo_box_set_options(widget_t* widget, const char* options) {
-  return combo_box_parse_options(widget, options);
+  combo_box_t* combo_box = COMBO_BOX(widget);
+  ret_t ret = combo_box_parse_options(widget, options);
+  if (!widget->loading) {
+    ret = combo_box_sync_index_to_value(widget, 0, FALSE);
+  }
+  return ret;
 }
 
 static ret_t combo_box_text_to_index(widget_t* widget, const char* text) {
@@ -276,7 +281,7 @@ static ret_t combo_box_set_prop(widget_t* widget, const char* name, const value_
     combo_box_set_localize_options(widget, value_bool(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_OPTIONS)) {
-    combo_box_parse_options(widget, value_str(v));
+    combo_box_set_options(widget, value_str(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_ITEM_HEIGHT)) {
     combo_box_set_item_height(widget, value_uint32(v));
