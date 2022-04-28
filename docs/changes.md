@@ -1,12 +1,13 @@
 # 最新动态
 
 2022/04/28
+  * 增加函数widget\_get\_child\_text\_utf8。
   * 完善 combo\_box 在非加载时设置options后，更新显示文本。
   * 修复OpenGL渐变色左边和上边画多一个像素点的问题 （感谢智明提供补丁）。
   * 修复关闭正在打开的窗口的问题（感谢智明提供补丁）。
   * 修复scroll\_bar\_d设置隐藏滚动条断言和scroll\_bar\_m隐藏后背后的区域无法触发以及list\_view的auto\_hide\_scroll\_bar属性在虚拟高比控件高要小时候隐藏后背后的区域无法触发 （感谢智明提供补丁）。
-  * 修复slider设置dragger_size属性失败和圆角矩形绘图失败后不显示的问题 （感谢智明提供补丁）。
-  * 增加函数widget\_get\_child\_text\_utf8。
+  * 修复slider设置dragger\_size属性失败和圆角矩形绘图失败后不显示的问题 （感谢智明提供补丁）。
+  * 完善fscript json的示例和文档（感谢雨欣提供补丁）。
 
 2022/04/27
   * 修复combo\_box\_ex初始化时出现文本全选的问题（感谢雨欣提供补丁）。
