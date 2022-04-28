@@ -601,10 +601,13 @@ static ret_t canvas_fill_rect_gradient_impl(canvas_t* c, xy_t x, xy_t y, wh_t w,
   if (vg != NULL) {
     vg_gradient_t vg_gradient;
     rect_t rect = {x, y, w, h};
+    vgcanvas_save(vg);
+    vgcanvas_set_antialias(vg, FALSE);
     vg_gradient_init_with_gradient(&vg_gradient, &rect, gradient);
     vgcanvas_set_fill_gradient(vg, &vg_gradient);
     vgcanvas_rect(vg, x, y, w, h);
     vgcanvas_fill(vg);
+    vgcanvas_restore(vg);
   }
 
   return RET_NOT_IMPL;
