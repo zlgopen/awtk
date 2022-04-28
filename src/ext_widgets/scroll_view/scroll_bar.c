@@ -578,8 +578,10 @@ static ret_t scroll_bar_on_opactiy_animate_end(void* ctx, event_t* e) {
   scroll_bar->wa_opactiy = NULL;
 
   if (widget->opacity == 0xff) {
+    widget_set_sensitive(widget, TRUE);
     widget_set_visible_only(widget, TRUE);
   } else {
+    widget_set_sensitive(widget, FALSE);
     widget_set_visible_only(widget, FALSE);
   }
 
@@ -596,6 +598,7 @@ ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration) {
   }
 
   widget_set_opacity(widget, 0xff);
+  widget_set_sensitive(widget, TRUE);
   widget_set_visible_only(widget, TRUE);
   widget_invalidate_force(widget, NULL);
 
@@ -700,7 +703,7 @@ static ret_t scroll_bar_set_is_mobile(widget_t* widget, bool_t value) {
     widget->vt = TK_REF_VTABLE(scroll_bar_desktop);
     scroll_bar_create_children(widget);
   }
-  scroll_bar->auto_hide = scroll_bar_is_mobile(widget);
+  scroll_bar_set_auto_hide(widget, scroll_bar_is_mobile(widget));
 
   return RET_OK;
 }
@@ -712,9 +715,9 @@ static widget_t* scroll_bar_create_internal(widget_t* parent, xy_t x, xy_t y, wh
   return_value_if_fail(scroll_bar != NULL, NULL);
 
   scroll_bar->animatable = TRUE;
-  scroll_bar->auto_hide = scroll_bar_is_mobile(widget);
   scroll_bar->animator_time = TK_ANIMATING_TIME;
 
+  scroll_bar_set_auto_hide(widget, scroll_bar_is_mobile(widget));
   widget_set_state(widget, WIDGET_STATE_NORMAL);
 
   return widget;
@@ -800,11 +803,15 @@ ret_t scroll_bar_show_by_opacity_animation(widget_t* widget, int32_t duration, i
 ret_t scroll_bar_set_auto_hide(widget_t* widget, bool_t auto_hide) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
-  assert(scroll_bar_is_mobile(widget));
+
+  if (auto_hide) {
+    return_value_if_fail(scroll_bar_is_mobile(widget), RET_BAD_PARAMS);
+  }
 
   scroll_bar->auto_hide = auto_hide;
   if (!auto_hide) {
     widget_set_visible(widget, TRUE);
+    widget_set_sensitive(widget, TRUE);
   }
 
   return RET_OK;

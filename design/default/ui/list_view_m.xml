@@ -4,20 +4,20 @@
       <list_item style="odd" children_layout="default(rows=1,cols=0)">
         <image draw_type="icon" w="30" image="earth"/>
         <label w="-30" text="1.Hello AWTK !">
-          <button x="r:10" y="m" w="100" h="30" 
+          <button x="r" y="m" w="100" h="30" 
             name="open:dialog1" style="round" enable_long_press="true" text="Long Press"/>
         </label>
       </list_item>
       <list_item style="even" children_layout="default(rows=1,cols=0)">
         <image draw_type="icon" w="30" image="earth"/>
         <label w="-30" text="2.Hello AWTK !">
-          <switch x="r:10" y="m" w="60" h="20"/>
+          <switch x="r" y="m" w="60" h="20"/>
         </label>
       </list_item>
       <list_item style="odd" children_layout="default(rows=1,cols=0)">
         <image draw_type="icon" w="30" image="earth"/>
         <label w="-30" text="3.Hello AWTK !">
-          <switch x="r:10" y="m" w="60" h="20"/>
+          <switch x="r" y="m" w="60" h="20"/>
         </label>
       </list_item>
       <list_item style="even" children_layout="default(rows=1,cols=0)">
@@ -100,7 +100,7 @@
         <edit w="70%" tips="desc" action_text="next" text=""/>
       </list_item>
     </scroll_view>
-    <scroll_bar_m name="bar" x="right" y="0" w="6" h="100%" value="0"/>
+    <scroll_bar_m name="bar" x="right" y="0" w="30" h="100%" value="0"/>
   </list_view>
   <button name="close" x="center" y="bottom:10" w="50%" h="30" text="close"/>
 </window>

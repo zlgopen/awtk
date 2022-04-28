@@ -367,22 +367,25 @@ static ret_t children_layouter_list_view_for_list_view_set_scroll_bar_info(widge
     }
 
     if (SCROLL_BAR(widget)->auto_hide && !ascroll_view->dragged && ascroll_view->wa == NULL) {
+      widget_set_sensitive(widget, FALSE);
       widget_set_visible_only(widget, FALSE);
     }
   } else {
     if (scroll_view->h >= virtual_h) {
       scroll_bar_set_value(widget, 0);
       if (list_view->auto_hide_scroll_bar || list_view->floating_scroll_bar) {
+        widget_set_sensitive(widget, FALSE);
         widget_set_visible_only(widget, FALSE);
       } else {
-        widget_set_enable(widget, FALSE);
+        widget_set_sensitive(widget, FALSE);
         widget_set_visible_only(widget, TRUE);
       }
     } else {
       if (list_view->auto_hide_scroll_bar && list_view->floating_scroll_bar) {
+        widget_set_sensitive(widget, list_view->is_over);
         widget_set_visible_only(widget, list_view->is_over);
       } else {
-        widget_set_enable(widget, TRUE);
+        widget_set_sensitive(widget, TRUE);
         widget_set_visible_only(widget, TRUE);
       }
     }
