@@ -1017,6 +1017,19 @@ ret_t widget_get_text_utf8(widget_t* widget, char* text, uint32_t size);
 ret_t widget_set_child_text_utf8(widget_t* widget, const char* name, const char* text);
 
 /**
+ * @method widget_get_child_text_utf8
+ * 获取子控件的文本。
+ * 只是对widget\_get\_prop的包装，文本的意义由子类控件决定。
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*}  name 子控件的名称。
+ * @param {char*}  text 用于返回文本。
+ * @param {uint32_t} size text内存长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_get_child_text_utf8(widget_t* widget, const char* name, char* text, uint32_t size);
+
+/**
  * @method widget_set_child_text_with_double
  * 用一个浮点数去设置子控件的文本。
  * 只是对widget\_set\_prop的包装，文本的意义由子类控件决定。

@@ -4728,6 +4728,15 @@ ret_t widget_set_child_text_utf8(widget_t* widget, const char* name, const char*
   return widget_set_text_utf8(child, text);
 }
 
+ret_t widget_get_child_text_utf8(widget_t* widget, const char* name, char* text, uint32_t size) {
+  widget_t* child = widget_lookup(widget, name, TRUE);
+  return_value_if_fail(text != NULL, RET_BAD_PARAMS);
+  *text = '\0'; 
+  return_value_if_fail(child != NULL, RET_BAD_PARAMS);
+
+  return widget_get_text_utf8(child, text, size);
+}
+
 ret_t widget_set_child_text_with_double(widget_t* widget, const char* name, const char* format,
                                         double value) {
   char text[128];
