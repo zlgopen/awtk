@@ -534,12 +534,26 @@ static ret_t window_manager_prepare_close_window(widget_t* widget, widget_t* win
   return RET_OK;
 }
 
+static ret_t window_manager_default_on_idle_check_and_close_window(const idle_info_t* idle) {
+  widget_t* win = WIDGET(idle->ctx);
+  window_manager_close_window(window_manager(), win);
+  return RET_REPEAT;
+}
+
 static ret_t window_manager_default_close_window(widget_t* widget, widget_t* window) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
 
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget_is_window(window), RET_BAD_PARAMS);
-  return_value_if_fail(window_is_opened(window), RET_BAD_PARAMS);
+  
+  if (!window_is_opened(window)) {
+    uint32_t idle_id = widget_get_prop_int(window, "check_and_close_window_idle_id", 0);
+    if (idle_id == 0) {
+      idle_id = widget_add_idle(window, window_manager_default_on_idle_check_and_close_window);
+      widget_set_prop_int(window, "check_and_close_window_idle_id", idle_id);
+    }
+    return RET_OK;
+  }
   return_value_if_fail(wm->pending_close_window != window, RET_BAD_PARAMS);
 
   window_manager_prepare_close_window(widget, window);

@@ -60,6 +60,7 @@
 #include "default/inc/ui/soft_keyboard.data"
 #include "default/inc/ui/animate_widget.data"
 #include "default/inc/ui/edit.data"
+#include "default/inc/ui/close_window.data"
 #include "default/inc/ui/menu_up_left.data"
 #include "default/inc/ui/locale.data"
 #include "default/inc/ui/kb_ascii_t9.data"
@@ -558,6 +559,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_soft_keyboard);
   assets_manager_add(am, ui_animate_widget);
   assets_manager_add(am, ui_edit);
+  assets_manager_add(am, ui_close_window);
   assets_manager_add(am, ui_menu_up_left);
   assets_manager_add(am, ui_locale);
   assets_manager_add(am, ui_kb_ascii_t9);

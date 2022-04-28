@@ -776,13 +776,47 @@ static ret_t on_bind_value_changed(void* ctx, event_t* e) {
   return widget_set_prop_float(widget, "animate:value", widget_get_value(target));
 }
 
+static ret_t on_action_list(void* ctx, event_t* e) {
+  widget_t* target = NULL;
+  const char* name = NULL;
+  widget_t* widget = WIDGET(ctx);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  name = widget->name;
+  if (name != NULL) {
+    name = name + sizeof("action_list:");
+    do {
+      if (strstr(name, "open:") == name) {
+        char win_name[128] = {0};
+        uint32_t win_name_len = 0;
+        name = name + sizeof("open:") - 1;
+        win_name_len = strchr(name, ',') - name;
+        win_name_len = tk_min(win_name_len, strchr(name, ')') - name);
+
+        tk_strncpy(win_name, name, win_name_len);
+        target = window_open(win_name);
+        install_click_hander(target);
+        name = name + win_name_len + 1;
+      } else if (strstr(name, "close") == name) {
+        name = name + sizeof("close");
+        if (target != NULL) {
+          window_close(target);
+        }
+      } else {
+        break;
+      }
+    } while (1);
+    
+  }
+  return RET_OK;
+}
+
 static ret_t install_one(void* ctx, const void* iter) {
   widget_t* widget = WIDGET(iter);
   widget_t* win = widget_get_window(widget);
 
   if (widget->name != NULL) {
     const char* name = widget->name;
-    if (strstr(name, "open:") != NULL) {
+    if (strstr(name, "open:") == name) {
       widget_on(widget, EVT_CLICK, on_open_window, (void*)(name + 5));
       widget_on(widget, EVT_LONG_PRESS, on_open_window, (void*)(name + 5));
       if (tk_str_eq(name, "open:menu_point")) {
@@ -876,6 +910,8 @@ static ret_t install_one(void* ctx, const void* iter) {
     } else if (strstr(name, "bind_value:") != NULL) {
       widget_t* target = find_bind_value_target(widget, name);
       widget_on(target, EVT_VALUE_CHANGED, on_bind_value_changed, (void*)widget);
+    } else if (strstr(name, "action_list:") != NULL) {
+      widget_on(widget, EVT_CLICK, on_action_list, (void*)widget);
     } else if (strstr(name, "cursor") != NULL) {
       widget_on(widget, EVT_CLICK, on_change_cursor, win);
     }

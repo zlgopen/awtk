@@ -1,0 +1,10 @@
+<window >
+  <label x="0" y="0" w="100%" h="30" text="test open window, next time close window" />
+  <view  x="0" y="30" w="100%" h="-30" children_layout="default(r=5,c=2,s=5,m=5)">
+    <button name="action_list:(open:animation,close)" text="close:animation"/>
+    <button name="action_list:(open:animation,close,open:animation)" text="open:animation"/>
+    <button name="action_list:(open:basic,close)" text="close:basic"/>
+    <button name="action_list:(open:basic,close,open:basic)" text="open:basic"/>
+    <button name="close" text="Close"/>
+  </view>
+</window>
