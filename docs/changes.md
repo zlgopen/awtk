@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/04/30
+  * 完善 FAQ 增加 找不到 glibconfig.h 的处理方法。
+
 2022/04/28
   * 增加函数widget\_get\_child\_text\_utf8。
   * 完善 combo\_box 在非加载时设置options后，更新显示文本。

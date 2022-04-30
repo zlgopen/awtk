@@ -347,3 +347,25 @@ python scripts/update_res.py all
 ```
 
 > 可以放到 awtk_config.h 中。
+
+#### 27. 树莓派上编译 AWTK 出现找不到 glibconfig.h 应该如果处理？ 
+
+出现错误：
+
+```
+In file included from /usr/include/glib-2.0/glib/galloca.h:32,
+                 from /usr/include/glib-2.0/glib.h:30,
+                 from /usr/include/gtk-3.0/gdk/gdkconfig.h:13,
+                 from /usr/include/gtk-3.0/gdk/gdk.h:30,
+                 from /usr/include/gtk-3.0/gtk/gtk.h:30,
+                 from 3rd/SDL/src/video/x11/SDL_x11window.c:36:
+/usr/include/glib-2.0/glib/gtypes.h:32:10: fatal error: glibconfig.h: No such file or directory
+   32 | #include <glibconfig.h>
+```
+
+解决方法如下：
+
+```
+sudo ln -s /usr/lib/arm-linux-gnueabihf/glib-2.0/include/glibconfig.h /usr/include/glib-2.0/glibconfig.h
+```
+
