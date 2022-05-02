@@ -545,7 +545,7 @@ static ret_t window_manager_default_close_window(widget_t* widget, widget_t* win
 
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget_is_window(window), RET_BAD_PARAMS);
-  
+
   if (!window_is_opened(window)) {
     uint32_t idle_id = widget_get_prop_int(window, "check_and_close_window_idle_id", 0);
     if (idle_id == 0) {

@@ -601,3 +601,29 @@ TEST(ObjectDefault, disable_path) {
 
   tk_object_unref(obj);
 }
+
+TEST(ObjectDefault, copy) {
+  tk_object_t* obj1 = object_default_create_ex(FALSE);
+  tk_object_t* obj2 = object_default_create_ex(FALSE);
+
+  ASSERT_EQ(tk_object_set_prop_int(obj1, "age", 123), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_str(obj1, "name", "awtk"), RET_OK);
+  ASSERT_EQ(tk_object_copy_props(obj2, obj1, TRUE), RET_OK);
+
+  ASSERT_EQ(tk_object_get_prop_int(obj2, "age", 0), 123);
+  ASSERT_STREQ(tk_object_get_prop_str(obj2, "name"), "awtk");
+
+  ASSERT_EQ(tk_object_set_prop_int(obj1, "age", 100), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_str(obj1, "name", "abc"), RET_OK);
+
+  ASSERT_EQ(tk_object_copy_props(obj2, obj1, FALSE), RET_OK);
+  ASSERT_EQ(tk_object_get_prop_int(obj2, "age", 0), 123);
+  ASSERT_STREQ(tk_object_get_prop_str(obj2, "name"), "awtk");
+
+  ASSERT_EQ(tk_object_copy_props(obj2, obj1, TRUE), RET_OK);
+  ASSERT_EQ(tk_object_get_prop_int(obj2, "age", 0), 100);
+  ASSERT_STREQ(tk_object_get_prop_str(obj2, "name"), "abc");
+
+  tk_object_unref(obj1);
+  tk_object_unref(obj2);
+}

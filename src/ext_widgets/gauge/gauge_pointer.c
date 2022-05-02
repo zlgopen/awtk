@@ -31,7 +31,6 @@
 #define ANCHOR_PX_STR_LEN 2
 #define DEFAULT_POINTER_SIZE 0.6f
 
-
 static rect_t gauge_pointer_calc_dirty_rect(widget_t* widget, int32_t img_w, int32_t img_h) {
   xy_t x = 0;
   xy_t y = 0;

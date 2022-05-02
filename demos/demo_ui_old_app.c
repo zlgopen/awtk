@@ -805,7 +805,6 @@ static ret_t on_action_list(void* ctx, event_t* e) {
         break;
       }
     } while (1);
-    
   }
   return RET_OK;
 }

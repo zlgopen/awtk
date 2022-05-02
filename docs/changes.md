@@ -1,5 +1,9 @@
 # 最新动态
 
+2022/05/02
+  * 增加 tk\_object\_copy\_props。
+  * 增加 theme\_xml 支持加载xml格式的style。
+
 2022/04/30
   * 完善 FAQ 增加 找不到 glibconfig.h 的处理方法。
 

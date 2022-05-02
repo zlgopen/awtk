@@ -24,6 +24,7 @@
 #include "tkc/event.h"
 #include "tkc/object.h"
 #include "tkc/fscript.h"
+#include "tkc/named_value.h"
 
 ret_t tk_object_set_name(tk_object_t* obj, const char* name) {
   ret_t ret = RET_OK;
@@ -429,6 +430,33 @@ ret_t tk_object_copy_prop(tk_object_t* obj, tk_object_t* src, const char* name) 
   }
 
   return ret;
+}
+
+typedef struct _copy_ctx_t {
+  bool_t overwrite;
+  tk_object_t* dst;
+} copy_ctx_t;
+
+static ret_t on_copy_on_prop(void* ctx, const void* data) {
+  named_value_t* nv = (named_value_t*)data;
+  copy_ctx_t* info = (copy_ctx_t*)ctx;
+
+  if (info->overwrite) {
+    tk_object_set_prop(info->dst, nv->name, &(nv->value));
+  } else {
+    value_t v;
+    if (tk_object_get_prop(info->dst, nv->name, &v) != RET_OK) {
+      tk_object_set_prop(info->dst, nv->name, &(nv->value));
+    }
+  }
+  return RET_OK;
+}
+
+ret_t tk_object_copy_props(tk_object_t* obj, tk_object_t* src, bool_t overwrite) {
+  copy_ctx_t ctx = {overwrite, obj};
+  return_value_if_fail(obj != NULL && src != NULL, RET_BAD_PARAMS);
+
+  return tk_object_foreach_prop(src, on_copy_on_prop, &ctx);
 }
 
 #ifndef WITHOUT_FSCRIPT

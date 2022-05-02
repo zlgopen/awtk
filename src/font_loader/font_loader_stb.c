@@ -253,7 +253,7 @@ font_loader_t* font_loader_stb(void) {
   return NULL;
 }
 
-font_loader_t* font_loader_stb_mono(void){
+font_loader_t* font_loader_stb_mono(void) {
   return NULL;
 }
 

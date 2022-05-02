@@ -5,7 +5,7 @@ env=DefaultEnvironment().Clone()
 BIN_DIR=os.environ['BIN_DIR'];
 LIB_DIR=os.environ['LIB_DIR'];
 
-env.Library(os.path.join(LIB_DIR, 'theme_gen'), ['theme_gen.cc', 'xml_theme_gen.cc'])
+env.Library(os.path.join(LIB_DIR, 'theme_gen'), ['xml_theme_gen.cc'])
 env['LIBS'] = ['theme_gen', 'common'] + env['LIBS'];
 env['LINKFLAGS'] = env['OS_SUBSYSTEM_CONSOLE'] + env['LINKFLAGS'];
 

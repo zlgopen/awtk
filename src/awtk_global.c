@@ -132,11 +132,13 @@ ret_t tk_init_assets(void) {
       case ASSET_TYPE_FONT:
         tk_add_font(iter);
         break;
-      case ASSET_TYPE_STYLE:
-        if (theme()->data == NULL && strcmp(iter->name, "default") == 0) {
-          theme_set_theme_data(theme(), iter->data);
+      case ASSET_TYPE_STYLE: {
+        theme_t* t = theme();
+        if ((t == NULL || t->data == NULL) && tk_str_eq(iter->name, TK_DEFAULT_STYLE)) {
+          theme_set(theme_load_from_data(iter->name, iter->data, iter->size));
         }
         break;
+      }
     }
   }
 
@@ -235,7 +237,6 @@ ret_t tk_init_internal(void) {
   return_value_if_fail(timer_prepare(time_now_ms) == RET_OK, RET_FAIL);
   return_value_if_fail(idle_manager_set(idle_manager_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(widget_factory_set(widget_factory_create()) == RET_OK, RET_FAIL);
-  return_value_if_fail(theme_set(theme_default_create(NULL)) == RET_OK, RET_FAIL);
   return_value_if_fail(assets_manager_set(assets_manager_create(30)) == RET_OK, RET_FAIL);
 #ifndef WITHOUT_INPUT_METHOD
   return_value_if_fail(input_method_set(input_method_create()) == RET_OK, RET_FAIL);

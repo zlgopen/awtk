@@ -410,6 +410,9 @@ static asset_info_t* assets_manager_load_asset(assets_manager_t* am, asset_type_
       if ((info = try_load_assets(am, theme, name, ".bin", type, ASSET_TYPE_STYLE)) != NULL) {
         break;
       }
+      if ((info = try_load_assets(am, theme, name, ".xml", type, ASSET_TYPE_STYLE)) != NULL) {
+        break;
+      }
       break;
     }
     case ASSET_TYPE_STRINGS: {

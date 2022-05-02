@@ -445,6 +445,19 @@ ret_t tk_object_set_prop_double(tk_object_t* obj, const char* name, double value
 ret_t tk_object_copy_prop(tk_object_t* obj, tk_object_t* src, const char* name);
 
 /**
+ * @method tk_object_copy_props
+ * 拷贝全部的属性。
+ *
+ * @annotation ["scriptable"]
+ * @param {tk_object_t*} obj 目标对象。
+ * @param {tk_object_t*} src 源对象。
+ * @param {bool_t} overwrite 如果属性存在是否覆盖。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_object_copy_props(tk_object_t* obj, tk_object_t* src, bool_t overwrite);
+
+/**
  * @method tk_object_foreach_prop
  * 遍历所有属性。
  *

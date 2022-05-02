@@ -85,21 +85,22 @@ typedef int socklen_t;
 #endif /*HAS_STDIO*/
 
 #ifndef TK_WEAK
-  #if defined(__CC_ARM) || (defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050))            /* ARM Compiler */
-    #define TK_WEAK                     __attribute__((weak))
-  #elif defined (__IAR_SYSTEMS_ICC__)                                                             /* for IAR Compiler */
-    #define TK_WEAK                     __weak
-  #elif defined (__GNUC__) && !defined(__MINGW32__) && !defined(__MINGW64__)                      /* GNU GCC Compiler */
-    #define TK_WEAK                     __attribute__((weak))
-  #elif defined (__ADSPBLACKFIN__)                                                                /* for VisualDSP++ Compiler */
-    #define TK_WEAK                     __attribute__((weak))
-  #elif defined (_MSC_VER) || defined(__MINGW32__) || defined(__MINGW64__)                        /* Windows */
-    #define TK_WEAK
-  #elif defined (__TI_COMPILER_VERSION__)
-    #define TK_WEAK
-  #else
-    #define TK_WEAK
-  #endif
+#if defined(__CC_ARM) || \
+    (defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)) /* ARM Compiler */
+#define TK_WEAK __attribute__((weak))
+#elif defined(__IAR_SYSTEMS_ICC__) /* for IAR Compiler */
+#define TK_WEAK __weak
+#elif defined(__GNUC__) && !defined(__MINGW32__) && !defined(__MINGW64__) /* GNU GCC Compiler */
+#define TK_WEAK __attribute__((weak))
+#elif defined(__ADSPBLACKFIN__) /* for VisualDSP++ Compiler */
+#define TK_WEAK __attribute__((weak))
+#elif defined(_MSC_VER) || defined(__MINGW32__) || defined(__MINGW64__) /* Windows */
+#define TK_WEAK
+#elif defined(__TI_COMPILER_VERSION__)
+#define TK_WEAK
+#else
+#define TK_WEAK
+#endif
 #endif
 
 #ifndef TRUE

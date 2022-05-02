@@ -25,6 +25,5 @@
 #define XML_THEME_GEN_H
 
 bool xml_gen(const char* input_file, const char* output_file, const char* theme, bool_t output_bin);
-uint32_t xml_gen_buff(const char* xml, uint8_t* output, uint32_t max_size);
 
 #endif /*XML_THEME_GEN_H*/

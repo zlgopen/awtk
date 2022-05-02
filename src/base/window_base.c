@@ -23,6 +23,7 @@
 #include "tkc/utils.h"
 #include "base/keys.h"
 #include "base/enums.h"
+#include "base/theme.h"
 #include "base/window_base.h"
 #include "base/native_window.h"
 #include "base/font_manager.h"
@@ -74,7 +75,8 @@ static ret_t window_base_load_theme_obj(widget_t* widget) {
   }
 
   if (window_base->res_theme != NULL) {
-    window_base->theme_obj = theme_default_create(window_base->res_theme->data);
+    const asset_info_t* res = window_base->res_theme;
+    window_base->theme_obj = theme_load_from_data(res->name, res->data, res->size);
   }
 
   if (window_base->theme_obj != NULL) {

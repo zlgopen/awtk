@@ -369,3 +369,7 @@ In file included from /usr/include/glib-2.0/glib/galloca.h:32,
 sudo ln -s /usr/lib/arm-linux-gnueabihf/glib-2.0/include/glibconfig.h /usr/include/glib-2.0/glibconfig.h
 ```
 
+#### 28. 支持加载 xml 格式的主题样式文件吗？
+
+> 支持。如：原来的 style 文件为 button.bin，删除button.bin，放一个button.xml文件即可。
+

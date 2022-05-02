@@ -329,11 +329,11 @@ TEST(ComboBox, set_options) {
   widget_t* w = combo_box_create(NULL, 10, 20, 30, 40);
 
   combo_box_set_options(w, "1:red;2:green;3:blue");
-  widget_get_text_utf8(w, text, sizeof(text)-1);
+  widget_get_text_utf8(w, text, sizeof(text) - 1);
   ASSERT_STREQ(text, "red");
 
   combo_box_set_options(w, "aaa;bbb;ccc");
-  widget_get_text_utf8(w, text, sizeof(text)-1);
+  widget_get_text_utf8(w, text, sizeof(text) - 1);
   ASSERT_STREQ(text, "aaa");
 
   widget_destroy(w);

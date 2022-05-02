@@ -645,8 +645,8 @@ ret_t widget_set_theme(widget_t* widget, const char* name) {
 
   info = assets_manager_ref(am, ASSET_TYPE_STYLE, "default");
   if (info != NULL) {
+    theme_set(theme_load_from_data(info->name, info->data, info->size));
     assets_manager_unref(assets_manager(), info);
-    theme_set_theme_data(theme(), info->data);
   }
 
   widget_dispatch(wm, evt);
@@ -4731,7 +4731,7 @@ ret_t widget_set_child_text_utf8(widget_t* widget, const char* name, const char*
 ret_t widget_get_child_text_utf8(widget_t* widget, const char* name, char* text, uint32_t size) {
   widget_t* child = widget_lookup(widget, name, TRUE);
   return_value_if_fail(text != NULL, RET_BAD_PARAMS);
-  *text = '\0'; 
+  *text = '\0';
   return_value_if_fail(child != NULL, RET_BAD_PARAMS);
 
   return widget_get_text_utf8(child, text, size);
