@@ -7,6 +7,7 @@
 #define object_compare tk_object_compare
 #define object_compare_t tk_object_compare_t
 #define object_copy_prop tk_object_copy_prop
+#define object_copy_props tk_object_copy_props
 #define object_create tk_object_create
 #define object_create_ex tk_object_create_ex
 #define object_eval tk_object_eval
