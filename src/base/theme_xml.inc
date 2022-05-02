@@ -237,7 +237,7 @@ static void xml_gen_destroy(XmlBuilder* thiz) {
   return;
 }
 
-static XmlBuilder* builder_init(xml_builder_t* b) {
+static XmlBuilder* builder_init(xml_builder_t* b, uint32_t prealloc_size) {
   theme_header_t header;
   memset(b, 0x00, sizeof(xml_builder_t));
 
@@ -259,7 +259,7 @@ static XmlBuilder* builder_init(xml_builder_t* b) {
   b->state_style = object_default_create_ex(FALSE);
 
   wbuffer_init_extendable(&(b->wbuffer));
-  return_value_if_fail(wbuffer_extend_capacity(&(b->wbuffer), 5 * 1024) == RET_OK, NULL);
+  return_value_if_fail(wbuffer_extend_capacity(&(b->wbuffer), prealloc_size + 512) == RET_OK, NULL);
 
   memset(&header, 0x00, sizeof(header));
   wbuffer_write_binary(&(b->wbuffer), &header, sizeof(header));
@@ -425,7 +425,8 @@ uint8_t* theme_xml_gen(const char* xml, uint32_t* size) {
   xml_builder_t b;
   uint8_t* data = NULL;
   XmlParser* parser = NULL;
-  XmlBuilder* xb = builder_init(&b);
+  uint32_t xml_len = tk_strlen(xml);
+  XmlBuilder* xb = builder_init(&b, xml_len);
   return_value_if_fail(xb != NULL, NULL);
   return_value_if_fail(xml != NULL && size != NULL, NULL);
 
@@ -433,7 +434,7 @@ uint8_t* theme_xml_gen(const char* xml, uint32_t* size) {
   return_value_if_fail(parser != NULL, NULL);
 
   xml_parser_set_builder(parser, xb);
-  xml_parser_parse(parser, xml, strlen(xml));
+  xml_parser_parse(parser, xml, xml_len);
   builder_gen(&b);
 
   data = b.wbuffer.data;
