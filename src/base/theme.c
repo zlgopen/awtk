@@ -24,6 +24,8 @@
 #include "base/theme.h"
 #include "tkc/buffer.h"
 
+static theme_t* s_theme = NULL;
+
 const uint8_t* theme_find_style(theme_t* theme, const char* widget_type, const char* name,
                                 const char* widget_state) {
   return_value_if_fail(theme != NULL, NULL);
@@ -62,6 +64,10 @@ ret_t theme_set_theme_data(theme_t* theme, const uint8_t* data) {
 
 ret_t theme_destroy(theme_t* theme) {
   return_value_if_fail(theme != NULL, RET_BAD_PARAMS);
+  
+  if (theme == s_theme) {
+    s_theme = NULL;
+  }
 
   if (theme->need_free_data) {
     TKMEM_FREE(theme->data);
@@ -69,6 +75,8 @@ ret_t theme_destroy(theme_t* theme) {
 
   if (theme->theme_destroy != NULL) {
     theme->theme_destroy(theme);
+  } else {
+    TKMEM_FREE(theme);
   }
 
   return RET_OK;
@@ -76,13 +84,15 @@ ret_t theme_destroy(theme_t* theme) {
 
 /*global*/
 
-static theme_t* s_theme = NULL;
-
 theme_t* theme(void) {
   return s_theme;
 }
 
 ret_t theme_set(theme_t* theme) {
+  if (theme == s_theme) {
+    return RET_OK;
+  }
+
   if (s_theme != NULL) {
     theme_destroy(s_theme);
   }

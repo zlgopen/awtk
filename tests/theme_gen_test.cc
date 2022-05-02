@@ -252,30 +252,34 @@ TEST(ThemeGen, border) {
   const uint8_t* style_data = NULL;
   const char* str = "<button><style><normal border=\"left\" /></style></button>";
 
-  style_t* s = style_factory_create_style(NULL, theme_get_style_type(theme));
   theme = theme_xml_create(str);
 
+  style_t* s = style_factory_create_style(NULL, theme_get_style_type(theme));
   style_data = theme_find_style(theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
   ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
   ASSERT_EQ(style_get_int(s, STYLE_ID_BORDER, 0), BORDER_LEFT);
+  theme_destroy(theme);
 
   str = "<button><style><normal border=\"right\" /></style></button>";
   theme = theme_xml_create(str);
   style_data = theme_find_style(theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
   ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
   ASSERT_EQ(style_get_int(s, STYLE_ID_BORDER, 0), BORDER_RIGHT);
+  theme_destroy(theme);
 
   str = "<button><style><normal border=\"top\" /></style></button>";
   theme = theme_xml_create(str);
   style_data = theme_find_style(theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
   ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
   ASSERT_EQ(style_get_int(s, STYLE_ID_BORDER, 0), BORDER_TOP);
+  theme_destroy(theme);
 
   str = "<button><style><normal border=\"bottom\" /></style></button>";
   theme = theme_xml_create(str);
   style_data = theme_find_style(theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
   ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
   ASSERT_EQ(style_get_int(s, STYLE_ID_BORDER, 0), BORDER_BOTTOM);
+  theme_destroy(theme);
 
   str = "<button><style><normal border=\"all\" /></style></button>";
   theme = theme_xml_create(str);
