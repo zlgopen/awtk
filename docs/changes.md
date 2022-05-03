@@ -1,28 +1,31 @@
 # 最新动态
 
+2022/05/03
+  * 增加 list\_item\_seperator 控件，用于模拟实现风琴 (accordion) 控件。
+
 2022/05/02
   * 增加 tk\_object\_copy\_props。
-  * 增加 theme\_xml 支持加载xml格式的style。
+  * 增加 theme\_xml 支持加载 xml 格式的 style。
 
 2022/04/30
   * 完善 FAQ 增加 找不到 glibconfig.h 的处理方法。
 
 2022/04/28
-  * 增加函数widget\_get\_child\_text\_utf8。
-  * 完善 combo\_box 在非加载时设置options后，更新显示文本。
-  * 修复OpenGL渐变色左边和上边画多一个像素点的问题 （感谢智明提供补丁）。
+  * 增加函数 widget\_get\_child\_text\_utf8。
+  * 完善 combo\_box 在非加载时设置 options 后，更新显示文本。
+  * 修复 OpenGL 渐变色左边和上边画多一个像素点的问题 （感谢智明提供补丁）。
   * 修复关闭正在打开的窗口的问题（感谢智明提供补丁）。
-  * 修复scroll\_bar\_d设置隐藏滚动条断言和scroll\_bar\_m隐藏后背后的区域无法触发以及list\_view的auto\_hide\_scroll\_bar属性在虚拟高比控件高要小时候隐藏后背后的区域无法触发 （感谢智明提供补丁）。
-  * 修复slider设置dragger\_size属性失败和圆角矩形绘图失败后不显示的问题 （感谢智明提供补丁）。
-  * 完善fscript json的示例和文档（感谢雨欣提供补丁）。
-  * 修复窗口clone的问题。
+  * 修复 scroll\_bar\_d 设置隐藏滚动条断言和 scroll\_bar\_m 隐藏后背后的区域无法触发以及 list\_view 的 auto\_hide\_scroll\_bar 属性在虚拟高比控件高要小时候隐藏后背后的区域无法触发 （感谢智明提供补丁）。
+  * 修复 slider 设置 dragger\_size 属性失败和圆角矩形绘图失败后不显示的问题 （感谢智明提供补丁）。
+  * 完善 fscript json 的示例和文档（感谢雨欣提供补丁）。
+  * 修复窗口 clone 的问题。
 
 2022/04/27
-  * 修复combo\_box\_ex初始化时出现文本全选的问题（感谢雨欣提供补丁）。
+  * 修复 combo\_box\_ex 初始化时出现文本全选的问题（感谢雨欣提供补丁）。
 
 2022/04/26
   * 完善 stream serial 的文档（感谢智明提供补丁）。
-  * 重构了slider的滑动条和滑块计算逻辑（感谢智明提供补丁）。
+  * 重构了 slider 的滑动条和滑块计算逻辑（感谢智明提供补丁）。
 
 2022/04/25
   * 完善 fscript\_ext.c，使用宏定义控制包含的头文件（感谢雨欣提供补丁）。

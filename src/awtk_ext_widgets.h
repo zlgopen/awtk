@@ -38,6 +38,7 @@
 #include "image_value/image_value.h"
 #include "time_clock/time_clock.h"
 #include "scroll_view/list_item.h"
+#include "scroll_view/list_item_seperator.h"
 #include "scroll_view/list_view.h"
 #include "slide_view/slide_view.h"
 #include "slide_view/slide_indicator.h"

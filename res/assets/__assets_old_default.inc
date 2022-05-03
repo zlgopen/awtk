@@ -44,6 +44,7 @@
 #include "default/inc/ui/color_picker_simple.data"
 #include "default/inc/ui/bidi.data"
 #include "default/inc/ui/progress_circle.data"
+#include "default/inc/ui/accordion2.data"
 #include "default/inc/ui/combo_box.data"
 #include "default/inc/ui/color_tile.data"
 #include "default/inc/ui/kb_phone.data"
@@ -169,6 +170,7 @@
 #include "default/inc/ui/button_fscript.data"
 #include "default/inc/ui/file_chooser_for_save.data"
 #include "default/inc/ui/system_bar.data"
+#include "default/inc/ui/accordion1.data"
 #include "default/inc/ui/menu_right_bottom.data"
 #include "default/inc/ui/list_view_d.data"
 #include "default/inc/ui/vtranslate.data"
@@ -256,6 +258,7 @@
 #include "default/inc/images/play_n.res"
 #include "default/inc/images/msg_active.res"
 #include "default/inc/images/img_slider_bg.res"
+#include "default/inc/images/expand.res"
 #include "default/inc/images/radio_checked.res"
 #include "default/inc/images/active_dot.res"
 #include "default/inc/images/zh.res"
@@ -273,6 +276,7 @@
 #include "default/inc/images/img_slider_icon.res"
 #include "default/inc/images/arrow_down_n.res"
 #include "default/inc/images/num_plus.res"
+#include "default/inc/images/collapse.res"
 #include "default/inc/images/return_up.res"
 #include "default/inc/images/green_btn_o.res"
 #include "default/inc/images/green_btn_n.res"
@@ -356,6 +360,7 @@
 #include "default/inc/images/en.data"
 #include "default/inc/images/right_on.data"
 #include "default/inc/images/discovery.data"
+#include "default/inc/images/collapse.data"
 #include "default/inc/images/rgb.data"
 #include "default/inc/images/num_9.data"
 #include "default/inc/images/dot.data"
@@ -410,6 +415,7 @@
 #include "default/inc/images/img_slider_icon.data"
 #include "default/inc/images/img_slider_bg.data"
 #include "default/inc/images/cross.data"
+#include "default/inc/images/expand.data"
 #include "default/inc/images/backspace.data"
 #include "default/inc/images/arrow_left_p.data"
 #include "default/inc/images/edit_clear_n.data"
@@ -543,6 +549,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_color_picker_simple);
   assets_manager_add(am, ui_bidi);
   assets_manager_add(am, ui_progress_circle);
+  assets_manager_add(am, ui_accordion2);
   assets_manager_add(am, ui_combo_box);
   assets_manager_add(am, ui_color_tile);
   assets_manager_add(am, ui_kb_phone);
@@ -668,6 +675,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_button_fscript);
   assets_manager_add(am, ui_file_chooser_for_save);
   assets_manager_add(am, ui_system_bar);
+  assets_manager_add(am, ui_accordion1);
   assets_manager_add(am, ui_menu_right_bottom);
   assets_manager_add(am, ui_list_view_d);
   assets_manager_add(am, ui_vtranslate);
@@ -754,6 +762,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_play_n);
   assets_manager_add(am, image_msg_active);
   assets_manager_add(am, image_img_slider_bg);
+  assets_manager_add(am, image_expand);
   assets_manager_add(am, image_radio_checked);
   assets_manager_add(am, image_active_dot);
   assets_manager_add(am, image_zh);
@@ -771,6 +780,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_img_slider_icon);
   assets_manager_add(am, image_arrow_down_n);
   assets_manager_add(am, image_num_plus);
+  assets_manager_add(am, image_collapse);
   assets_manager_add(am, image_return_up);
   assets_manager_add(am, image_green_btn_o);
   assets_manager_add(am, image_green_btn_n);

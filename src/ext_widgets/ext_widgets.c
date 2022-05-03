@@ -47,6 +47,7 @@
 #include "image_value/image_value.h"
 #include "time_clock/time_clock.h"
 #include "scroll_view/list_item.h"
+#include "scroll_view/list_item_seperator.h"
 #include "scroll_view/list_view.h"
 #include "slide_view/slide_view.h"
 #include "scroll_view/scroll_bar.h"
@@ -90,6 +91,7 @@ ret_t tk_ext_widgets_init(void) {
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_LIST_VIEW, list_view_create)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_LIST_VIEW_H, list_view_h_create)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_LIST_ITEM, list_item_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_LIST_ITEM_SEPERATOR, list_item_seperator_create)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_SCROLL_BAR, scroll_bar_create)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_SCROLL_BAR_DESKTOP, scroll_bar_create_desktop)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_SCROLL_BAR_MOBILE, scroll_bar_create_mobile)

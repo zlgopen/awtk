@@ -135,6 +135,13 @@ static ret_t check_button_get_prop(widget_t* widget, const char* name, value_t* 
   } else if (tk_str_eq(name, WIDGET_PROP_RADIO)) {
     value_set_bool(v, check_button->radio);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_TYPE)) {
+    if (check_button->type != NULL) {
+      value_set_str(v, check_button->type);
+    } else {
+      value_set_str(v, widget->vt->type);
+    }
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -248,4 +255,15 @@ widget_t* check_button_get_checked_button(widget_t* widget) {
   }
 
   return NULL;
+}
+
+widget_t* check_button_create_ex(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h, const char* type, bool_t radio) {
+  const widget_vtable_t* vt = radio ? TK_REF_VTABLE(radio_button) : TK_REF_VTABLE(check_button); 
+  widget_t* widget = widget_create(parent, vt, x, y, w, h);
+  check_button_t* check_button = CHECK_BUTTON(widget);
+  return_value_if_fail(check_button != NULL, NULL);
+
+  check_button->type = type;
+
+  return widget;
 }

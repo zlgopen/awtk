@@ -682,3 +682,16 @@
     <normal text_color="black" />
   </style>
 </color_tile>
+
+<list_item_seperator text_color="black" bg_color="#e0e0e0">
+  <style name="default" icon_at="left">
+    <normal  icon="collapse" />
+    <pressed icon="collapse" />
+    <over    icon="collapse" text_color="green"/>
+    <focused icon="collapse" text_color="green"/>
+    <normal_of_checked icon="expand" text_color="blue"/>
+    <pressed_of_checked icon="expand" text_color="blue"/>
+    <over_of_checked icon="expand" text_color="green"/>
+    <focused_of_checked icon="expand" text_color="green"/>
+  </style>
+</list_item_seperator>

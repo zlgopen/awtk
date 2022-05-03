@@ -105,6 +105,7 @@ typedef struct _check_button_t {
   /*private*/
   bool_t pressed;
   bool_t point_down_aborted;
+  const char* type;
 } check_button_t;
 
 /**
@@ -185,6 +186,22 @@ widget_t* check_button_cast(widget_t* widget);
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(check_button);
+
+/**
+ * @method check_button_create_ex
+ * 创建check button对象
+ * @annotation ["constructor", "scriptable"]
+ * @param {widget_t*} parent 父控件
+ * @param {xy_t} x x坐标
+ * @param {xy_t} y y坐标
+ * @param {wh_t} w 宽度
+ * @param {wh_t} h 高度
+ * @param {const char*} type 类型。
+ * @param {bool_t} radio 是否单选。
+ *
+ * @return {widget_t*} widget对象。
+ */
+widget_t* check_button_create_ex(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h, const char* type, bool_t radio);
 
 END_C_DECLS
 

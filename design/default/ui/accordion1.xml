@@ -1,0 +1,54 @@
+<window anim_hint="htranslate">
+  <list_view x="0" y="0" w="100%" h="-50" default_item_height="36">
+    <scroll_view name="view" x="0" y="0" w="-12" h="100%" children_layout="list_view(x_margin=5,spacing=10)">
+      <list_item_seperator text="Group1" value="true" h="32"/>
+      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+        <label w="30%" text="Name"/>
+        <edit w="70%" text="" tips="name" action_text="next"/>
+      </list_item>
+      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+        <label w="30%" text="Desc"/>
+        <edit w="70%" text="" tips="desc" action_text="next"/>
+      </list_item>
+      <list_item_seperator text="Group2" h="32"/>
+      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+        <label w="30%" text="ASCII"/>
+        <edit w="70%" text="" tips="ascii" input_type="ascii" action_text="next"/>
+      </list_item>
+      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+        <label w="30%" text="Int"/>
+        <edit w="70%" text="" tips="int" input_type="int"/>
+      </list_item>
+
+      <list_item_seperator text="Group3" h="32"/>
+      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+        <label w="30%" text="Float"/>
+        <edit w="70%" text="" tips="float" input_type="float"/>
+      </list_item>
+      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+        <label w="30%" text="UFloat"/>
+        <edit w="70%" text="" tips="unsigned float" input_type="ufloat"/>
+      </list_item>
+
+      <list_item_seperator text="Group4" h="32"/>
+      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+        <label w="30%" text="Hex"/>
+        <edit w="70%" text="" tips="hex number" input_type="hex"/>
+      </list_item>
+      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+        <label w="30%" text="Mobile"/>
+        <edit w="70%" text="" tips="phone number" input_type="phone"/>
+      </list_item>
+      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+        <label w="30%" text="Email"/>
+        <edit w="70%" text="" tips="email" input_type="email"/>
+      </list_item>
+      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+        <label w="30%" text="Password"/>
+        <edit w="70%" text="" tips="password" input_type="password"/>
+      </list_item>
+    </scroll_view>
+    <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" animator_time="0" value="0"/>
+  </list_view>
+  <button name="close" x="center" y="bottom:10" w="50%" h="30" text="close"/>
+</window>

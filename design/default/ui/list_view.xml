@@ -9,5 +9,7 @@
     <button name="open:image_list" text="Image List"/>
     <button name="open:select1" text="Single Choose"/>
     <button name="open:selectm" text="Multiple Choose"/>
+    <button name="open:accordion1" text="Accordion"/>
+    <button name="open:accordion2" text="Accordion Exclusive"/>
     <button name="close" text="Close"/>
 </window>
