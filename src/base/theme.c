@@ -130,5 +130,6 @@ theme_t* theme_load_from_data(const char* name, const uint8_t* data, uint32_t si
 #include "theme_xml.inc"
 #endif/*AWTK_LITE*/   
 
+#include "theme_data.inc"
 #include "theme_default.inc"
 
