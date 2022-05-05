@@ -96,9 +96,23 @@ static ret_t combo_box_on_destroy(widget_t* widget) {
 
   return RET_OK;
 }
+
+#define WIDGET_NAME_VALUE "value"
+
+static uint32_t combo_box_get_curr_text_size(widget_t* widget) {
+  return_value_if_fail(widget != NULL, 0);
+  widget_t* value_widget = widget_lookup(widget, WIDGET_NAME_VALUE, TRUE);
+
+  if (value_widget == NULL) {
+    value_widget = widget;
+  }
+
+  return value_widget->text.size;
+}
+
 static ret_t combo_box_update_status(widget_t* widget) {
   edit_t* edit = EDIT(widget);
-  if (widget->text.size == 0) {
+  if (combo_box_get_curr_text_size(widget) == 0) {
     if (widget->focused) {
       widget_set_state(widget, WIDGET_STATE_EMPTY_FOCUS);
     } else {
@@ -123,8 +137,6 @@ static ret_t combo_box_update_status(widget_t* widget) {
 
   return RET_OK;
 }
-
-#define WIDGET_NAME_VALUE "value"
 
 static ret_t combo_box_set_text_only(widget_t* widget, const char* text, const wchar_t* wtext,
                                      bool_t tr) {
@@ -397,7 +409,7 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
         combo_box_sync_index_to_value(widget, combo_box->selected_index, FALSE);
       }
 
-      if (widget->text.size == 0 && widget->tr_text == NULL) {
+      if (combo_box_get_curr_text_size(widget) == 0 && widget->tr_text == NULL) {
         combo_box_sync_index_to_value(widget, 0, TRUE);
       }
       break;
@@ -437,12 +449,18 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
       return combo_box_update_status(widget);
       break;
     case EVT_POINTER_ENTER:
-      if (widget->text.size == 0) {
+      if (combo_box_get_curr_text_size(widget) == 0) {
         widget_set_state(widget, WIDGET_STATE_EMPTY_OVER);
       } else {
         widget_set_state(widget, WIDGET_STATE_OVER);
       }
       return RET_OK;
+      break;
+    case EVT_FOCUS:
+      combo_box_update_status(widget);
+      break;
+    case EVT_BLUR:
+      combo_box_update_status(widget);
       break;
     default:
       break;
