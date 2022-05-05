@@ -11,7 +11,7 @@
 
 ## 一、基本用法
 
-  由于该机制需要 lcd 层，vgcanvas 层和 g2d 的适配层配合，所以如果用户是使用 AWTK 提供了的 lcd 适配层（lcd_mem_XXX_create 的函数创建的 lcd ）和 vgcanvas 适配层（定义 WITH_NANOVG_AGGE 宏）同时没有定义 WITH_XXXXG2D 的宏的话，则只需要定义 **WITH_FAST_LCD_PORTRAIT 宏**，然后在代码中调用 tk_set_lcd_orientation 函数就可以使用了。
+  由于该机制需要 lcd 层和 vgcanvas 层配合，所以如果用户是使用 AWTK 提供了的 lcd 适配层（lcd_mem_XXX_create 的函数创建的 lcd ）和 vgcanvas 适配层（定义 WITH_NANOVG_AGGE 宏），则只需要定义 **WITH_FAST_LCD_PORTRAIT 宏**，然后在代码中调用 tk_set_lcd_orientation 函数就可以使用了。
 
 ~~~c
 /**
@@ -24,8 +24,6 @@
 ret_t tk_set_lcd_orientation(lcd_orientation_t orientation);
 ~~~
 
-  例如：[awtk-linux-fb](https://github.com/zlgopen/awtk-linux-fb.git) 是符合上面说的要求，使用 AWTK 提供的 lcd 适配层和 vgcanvas 适配层，同时默认没有开启 g2d 的相关加速。
-
 #### 注意实现：
 
   1. 为了可以高效贴图，所以贴图在加载到内存前就会被旋转到指定的角度了，所以使用  data 格式的位图时候需要提前调用脚本命令来生成资源。（最后一个参数为旋转角度，单位为角度，支持 0 度，90 度，180 度和 270 度）
@@ -34,9 +32,13 @@ ret_t tk_set_lcd_orientation(lcd_orientation_t orientation);
      python .\scripts\update_res.py all x1 bgra+bgr565 0
      ~~~
 
-  2. 如果 data 格式的位图的旋转角度为 0 度的话，可以支持动态 lcd 旋转，但是效率会下降，而使用文件系统或者 res 格式的位图数据则不会降低效率。
+  2. 如果 data 格式的位图的旋转角度为 0 度的话（在 Desiger 工具中可以取消勾选快速旋转模式来达到设置旋转角度为 0 的效果），可以支持动态 lcd 旋转，但是效率会下降，而使用文件系统或者 res 格式的位图数据则不会降低效率。
 
-  3. 在使用的时候，需要特别注意 bitmap_t，lcd_t 和 graphic_buffer_t 类型是分为有**逻辑数据**和**真实的物理数据**的，所有的真实的物理数据只能通过接口获取，一般名称都会带有 **“physical”** 的字眼。
+  3. 在没有定义 WITH_STB_IMAGE 宏（使用 data 格式的位图数据）的情况下，并且是位图旋转角度不为 0 度的话，是**不支持程序动态旋转**，需要在程序开始前就需要设置好旋转的角度，同时旋转角度应该和资源保持一致。
+
+  4. 在使用的时候，需要特别注意 bitmap_t，lcd_t 和 graphic_buffer_t 类型是分为有**逻辑数据**和**真实的物理数据**的，所有的真实的物理数据只能通过接口获取，一般名称都会带有 **“physical”** 的字眼。
+
+> 如果是使用 Desiger 工具打包的话，第 1 点和第 3 点都会处理好的，用户只要注意动态 lcd 旋转的问题。
 
 
 ## 二、功能移植
@@ -178,32 +180,7 @@ ret_t g2d_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r,
                        uint8_t alpha, lcd_orientation_t o);
 ~~~
 
-  如果不实现这两个函数的话，编译时会报错说找不到这两个函数的实现，如果硬件没有相关的实现可以直接返回 RET_NOT_IMPL ，如下：
+备注：
 
-~~~c
-
-ret_t g2d_rotate_image_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy, lcd_orientation_t o) {
-  (void)dst;
-  (void)src;
-  (void)src_r;
-  (void)dx;
-  (void)dy;
-  (void)o;
-
-  return RET_NOT_IMPL;
-}
-
-ret_t g2d_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r,
-                       uint8_t alpha, lcd_orientation_t o) {
-  (void)dst;
-  (void)src;
-  (void)dst_r;
-  (void)src_r;
-  (void)alpha;
-  (void)o;
-
-  return RET_NOT_IMPL;
-}
-~~~
-
-  如果这两个函数返回非 RET_OK 的话，则会调用 soft_rotate_image_ex 和 soft_blend_image_rotate 进行软件旋转绘制图片。
+1. 如果不实现这两个函数的话，则会调用 soft_rotate_image_ex 和 soft_blend_image_rotate 进行软件旋转绘制图片。
+2. g2d 层的这两个函数主要是用来处理图片旋转角度为 0 的 lcd 旋转的情况，如果可以保证图片旋转角度和 lcd 旋转角度一样的话，这两个函数可以不实现。

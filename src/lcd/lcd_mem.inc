@@ -458,11 +458,14 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* src, c
   system_info_t* info = system_info();
   lcd_orientation_t o = info->lcd_orientation;
   bool_t is_opaque = (img->flags & BITMAP_FLAG_OPAQUE || img->format == BITMAP_FMT_RGB565);
-  bool_t is_lcd_orientation = (img->flags & BITMAP_FLAG_LCD_ORIENTATION) && (img->orientation != LCD_ORIENTATION_0);
+  bool_t is_img_orientation = (img->flags & BITMAP_FLAG_LCD_ORIENTATION) && (img->orientation != LCD_ORIENTATION_0);
 
   lcd_mem_init_drawing_fb(lcd, &fb);
 
-  if (is_lcd_orientation) {
+  if (is_img_orientation) {
+#ifndef WITH_FAST_LCD_PORTRAIT
+    assert(!" lcd portait not support image's orientation ");
+#endif
     assert(img->orientation == o);
     r_src = lcd_orientation_rectf_rotate_by_anticlockwise(src, o, img->w, img->h);
     r_dst = lcd_orientation_rectf_rotate_by_anticlockwise(dst, o, lcd_get_width(lcd), lcd_get_height(lcd));
@@ -479,17 +482,18 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* src, c
 #ifndef WITH_FAST_LCD_PORTRAIT
     ret = image_copy(&fb, img, &r, dx, dy);
 #else
-    if (o == LCD_ORIENTATION_0 || is_lcd_orientation) {
+    if (o == LCD_ORIENTATION_0 || is_img_orientation) {
       ret = image_copy(&fb, img, &r, dx, dy);
     } else {
-      ret = image_rotate_ex(&fb, img, &r, dx, dy, o);
+      r_dst = lcd_orientation_rectf_rotate_by_anticlockwise(dst, o, lcd_get_width(lcd), lcd_get_height(lcd));
+      ret = image_rotate_ex(&fb, img, &r, (xy_t)(r_dst.x), (xy_t)(r_dst.y), o);
     }
 #endif
   } else {
 #ifndef WITH_FAST_LCD_PORTRAIT
     ret = image_blend(&fb, img, &r_dst, &r_src, lcd->global_alpha);
 #else
-    if (o == LCD_ORIENTATION_0 || is_lcd_orientation) {
+    if (o == LCD_ORIENTATION_0 || is_img_orientation) {
       ret = image_blend(&fb, img, &r_dst, &r_src, lcd->global_alpha);
     } else {
       ret = image_rotate_blend(&fb, img, &r_dst, &r_src, lcd->global_alpha, o);

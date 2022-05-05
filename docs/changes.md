@@ -4,6 +4,7 @@
   * 修复combo\_box设置readonly和value控件后焦点状态切换异常的问题（感谢雨欣提供补丁）。
   * 修复 103 编译 flash 过大导致编译失败 （感谢智明提供补丁）。
   * 修复SysTick\_Handler函数使用weak导致编译出错的问题（感谢智明提供补丁）。
+  * 修改了快速旋转的说明文档和修改 image\_rotate\_ex 函数结果不正确的问题以及增加异常情况的断言（感谢智明提供补丁）。
 
 2022/05/03
   * 增加 list\_item\_seperator 控件，用于模拟实现风琴 (accordion) 控件。

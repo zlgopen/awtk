@@ -83,16 +83,18 @@ static ret_t rotate_image_impl(bitmap_t* dst, bitmap_t* src, const rect_t* src_r
 }
 
 static ret_t rotate_image_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy, lcd_orientation_t o) {
-  uint32_t dst_w = bitmap_get_physical_width(src);
-  uint32_t dst_h = bitmap_get_physical_height(src);
-  rect_t dr = rect_init(dx, dy, src_r->w, src_r->h);
-
-  if (o == LCD_ORIENTATION_90 || o == LCD_ORIENTATION_270) {
-    dr = lcd_orientation_rect_rotate_by_anticlockwise(&dr, o, dst_h, dst_w);
-  } else {
-    dr = lcd_orientation_rect_rotate_by_anticlockwise(&dr, o, dst_w, dst_h);
+  /* 
+  * 因为 rotate_image_impl 函数在处理不同的旋转的度数的时候，计算逻辑不太一样。（因为 dx 和 dy 我们是认为绘图的起始坐标）
+   * 180 度：是按照 dx 和 dy 参数作为 dst 的左下角的点往右上角绘图的，所以在 180 度的时候需要再偏移一个 src_r 的宽高来解决。
+   * 270 度：是按照 dx 和 dy 参数作为 dst 的左上角的点往右下角绘图的，所以在 270 度的时候需要偏移一个 src_r 的高度来解决。
+   */
+  if (o == LCD_ORIENTATION_180) {
+    dx += src_r->w;
+    dy += src_r->h;
+  } else if (o == LCD_ORIENTATION_270) {
+    dx += src_r->h;
   }
-  return rotate_image_impl(dst, src, src_r, dr.x, dr.y, o);
+  return rotate_image_impl(dst, src, src_r, dx, dy, o);
 }
 
 static ret_t rotate_image(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, lcd_orientation_t o) {

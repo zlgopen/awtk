@@ -23,6 +23,7 @@
 #include "base/pixel.h"
 #include "blend/soft_g2d.h"
 #include "base/pixel_pack_unpack.h"
+#include "base/lcd_orientation_helper.h"
 
 #include "blend_image_bgr565_bgr565.h"
 #include "blend_image_bgr565_rgb565.h"
@@ -425,6 +426,18 @@ ret_t soft_rotate_image_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy
   return RET_NOT_IMPL;
 }
 
+static rect_t soft_blend_image_rotate_get_dst_point(bitmap_t* dst, const rectf_t* dst_r, lcd_orientation_t o) {
+  rectf_t r;
+  uint32_t w = dst->w;
+  uint32_t h = dst->h;
+  if (o == LCD_ORIENTATION_90 || o == LCD_ORIENTATION_270) {
+    w = dst->h;
+    h = dst->w;
+  }
+  r = lcd_orientation_rectf_rotate_by_anticlockwise(dst_r, o, w, h);
+  return rect_from_rectf(&r);
+}
+
 ret_t soft_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r,
                               const rectf_t* src_r, uint8_t alpha, lcd_orientation_t o) {
   return_value_if_fail(dst != NULL && src != NULL && src_r != NULL && dst_r != NULL,
@@ -442,8 +455,9 @@ ret_t soft_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r
 
           } else if (alpha > 0xf8) {
             rect_t tmp_src = rect_from_rectf(src_r);
-            return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x),
-                                        (xy_t)(dst_r->y), o);
+            rect_t tmp_dst = soft_blend_image_rotate_get_dst_point(dst, dst_r, o);
+            return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), tmp_dst.x,
+                                        tmp_dst.y, o);
           } else {
             return blend_image_rotate_bgr565_bgr565(dst, src, dst_r, src_r, alpha, o);
           }
@@ -475,8 +489,9 @@ ret_t soft_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r
                                    (xy_t)(dst_r->y));
           } else if (alpha > 0xf8) {
             rect_t tmp_src = rect_from_rectf(src_r);
-            return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x),
-                                        (xy_t)(dst_r->y), o);
+            rect_t tmp_dst = soft_blend_image_rotate_get_dst_point(dst, dst_r, o);
+            return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), tmp_dst.x,
+                                        tmp_dst.y, o);
           } else {
             return blend_image_rotate_rgb565_rgb565(dst, src, dst_r, src_r, alpha, o);
           }
@@ -511,8 +526,9 @@ ret_t soft_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r
                                    (xy_t)(dst_r->y));
           } else if (alpha > 0xf8) {
             rect_t tmp_src = rect_from_rectf(src_r);
-            return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x),
-                                        (xy_t)(dst_r->y), o);
+            rect_t tmp_dst = soft_blend_image_rotate_get_dst_point(dst, dst_r, o);
+            return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), tmp_dst.x,
+                                        tmp_dst.y, o);
           } else {
             return blend_image_rotate_bgr888_bgr888(dst, src, dst_r, src_r, alpha, o);
           }
@@ -544,8 +560,9 @@ ret_t soft_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r
                                    (xy_t)(dst_r->y));
           } else if (alpha > 0xf8) {
             rect_t tmp_src = rect_from_rectf(src_r);
-            return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x),
-                                        (xy_t)(dst_r->y), o);
+            rect_t tmp_dst = soft_blend_image_rotate_get_dst_point(dst, dst_r, o);
+            return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), tmp_dst.x,
+                                        tmp_dst.y, o);
           } else {
             return blend_image_rotate_rgb888_rgb888(dst, src, dst_r, src_r, alpha, o);
           }
