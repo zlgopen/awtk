@@ -2,6 +2,7 @@
 
 2022/05/05
   * 修复combo\_box设置readonly和value控件后焦点状态切换异常的问题（感谢雨欣提供补丁）。
+  * 修复 103 编译 flash 过大导致编译失败 （感谢智明提供补丁）。
 
 2022/05/03
   * 增加 list\_item\_seperator 控件，用于模拟实现风琴 (accordion) 控件。

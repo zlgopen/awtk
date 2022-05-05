@@ -102,9 +102,9 @@ ret_t theme_set(theme_t* theme) {
   return RET_OK;
 }
 
-#if !defined(AWTK_LITE)    
+#ifndef WITHOUT_XML_STYLE
 #include "theme_xml.h"
-#endif/*AWTK_LITE*/   
+#endif/*WITHOUT_XML_STYLE*/
 
 #include "theme_default.h"
 
@@ -115,10 +115,10 @@ theme_t* theme_load_from_data(const char* name, const uint8_t* data, uint32_t si
 
   if (header->magic == THEME_MAGIC) {
     return theme_default_create(data);
-#if !defined(AWTK_LITE)    
+#ifndef WITHOUT_XML_STYLE  
   } else if (*data == '<' || strstr(name, ".xml") != NULL) {
     return theme_xml_create((char*)data);
-#endif/*AWTK_LITE*/   
+#endif/*WITHOUT_XML_STYLE*/
   } else {
     return NULL;
   }
@@ -126,9 +126,9 @@ theme_t* theme_load_from_data(const char* name, const uint8_t* data, uint32_t si
   return t;
 }
 
-#if !defined(AWTK_LITE)    
+#ifndef WITHOUT_XML_STYLE
 #include "theme_xml.inc"
-#endif/*AWTK_LITE*/   
+#endif/*WITHOUT_XML_STYLE*/
 
 #include "theme_data.inc"
 #include "theme_default.inc"
