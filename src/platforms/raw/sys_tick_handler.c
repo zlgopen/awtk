@@ -23,7 +23,7 @@
 #include "../common/sys_tick_common.inc"
 
 /* SysTick_Handler 1 milliseconds */
-void TK_WEAK SysTick_Handler(void) {
+void SysTick_Handler(void) {
   tk_sys_tick_inc(1);
 }
 
