@@ -959,7 +959,9 @@ const char* widget_get_style_type(widget_t* widget) {
 
   if (widget_get_window_theme(widget, &win_theme, &default_theme) == RET_OK) {
     theme_t* t = win_theme != NULL ? win_theme : (default_theme != NULL ? default_theme : theme());
-    style_type = theme_get_style_type(t);
+    if (t != NULL) {
+      style_type = theme_get_style_type(t);
+    }
   }
 
   return style_type;
