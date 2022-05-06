@@ -71,7 +71,7 @@
 * [如何更新拼音输入法数据](how_to_update_gpinyin_data.md)
 * [如何用 valgrind 查找内存相关问题](how_to_use_valgrind_detect_memory_bugs.md)
 * [如何定制 combo_box 控件中按钮的风格和大小](how_to_customize_combo_boxox_button.md)
-[如何访问控件的属性](how_to_access_widget_props.md)
+* [如何访问控件的属性](how_to_access_widget_props.md)
 * [如何集成第三方库](how_to_use_3rd_libs.md)
 * [如何使用对话框](how_toto_use_dialog.md)
 * [如何使用软键盘上的 action 按钮](how_to_use_action_text.md)
@@ -93,6 +93,7 @@
 * [如何支持极简键盘 (3 键键盘、5 键键盘和旋转按钮）](how_to_support_5keys_3keys.md)
 * [如何在改变控件属性时附带动画](how_to_change_prop_with_animation.md)
 * [LCD快速旋转](how_to_use_fast_lcd_portrait.md)
+* [如何显示上下文菜单（俗称右键菜单）](how_to_show_context_menu.md)
 
 ### 3. 内部原理
 * [AWTK 脚本绑定原理](script_binding.md)
