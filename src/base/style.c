@@ -209,6 +209,9 @@ ret_t style_normalize_value(const char* name, const char* value, value_t* out) {
   } else if (strstr(name, "color") != NULL) {
     color_t c = color_parse(value);
     value_set_uint32(v, c.color);
+  } else if (tk_str_eq(name, STYLE_ID_FEEDBACK) || tk_str_eq(name, STYLE_ID_FOCUSABLE) ||
+             tk_str_eq(name, STYLE_ID_CLEAR_BG)) {
+    value_set_uint32(v, tk_atob(value));
   } else if (strstr(name, "image") != NULL || strstr(name, "name") != NULL ||
              strstr(name, "icon") != NULL) {
     value_dup_str(v, value);

@@ -1594,6 +1594,7 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, const rect_t* r, bool_t bg
   uint32_t radius_tr = style_get_int(style, STYLE_ID_ROUND_RADIUS_TOP_RIGHT, radius);
   uint32_t radius_bl = style_get_int(style, STYLE_ID_ROUND_RADIUS_BOTTOM_LEFT, radius);
   uint32_t radius_br = style_get_int(style, STYLE_ID_ROUND_RADIUS_BOTTOM_RIGHT, radius);
+  uint32_t clear_bg = style_get_uint(style, STYLE_ID_CLEAR_BG, 0);
   const char* draw_type_key = bg ? STYLE_ID_BG_IMAGE_DRAW_TYPE : STYLE_ID_FG_IMAGE_DRAW_TYPE;
   gradient_t* gradient = style_get_gradient(style, color_key, &agradient);
   const char* image_name = style_get_str(style, image_key, NULL);
@@ -1617,8 +1618,14 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, const rect_t* r, bool_t bg
       } else if (gradient->nr > 1) {
         canvas_fill_rect_gradient(c, r->x, r->y, r->w, r->h, gradient);
       } else {
-        canvas_fill_rect(c, r->x, r->y, r->w, r->h);
+        if (clear_bg) {
+          canvas_clear_rect(c, r->x, r->y, r->w, r->h);
+        } else {
+          canvas_fill_rect(c, r->x, r->y, r->w, r->h);
+        }
       }
+    } else if (clear_bg) {
+      canvas_clear_rect(c, r->x, r->y, r->w, r->h);
     }
   }
 

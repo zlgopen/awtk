@@ -68,10 +68,10 @@ AWTK 的窗体样式按控件进行分类，每种控件可以有多种不同的
 * x\_offset 在 X 坐标方向上的偏移（可用来实现按下的效果）。 
 * y\_offset 在 Y 坐标方向上的偏移（可用来实现按下的效果）。
 * margin 边距（边距目前只影响 icon/text，不影响子控件，子控件的边距由布局算法参数决定）。
-* margin_top 上边距。
-* margin_bottom 下边距。
-* margin_left 左边距。
-* margin_right 右边距。
+* margin\_top 上边距。
+* margin\_bottom 下边距。
+* margin\_left 左边距。
+* margin\_right 右边距。
 * spacer 间距（目前仅用于文本和图标之间）。
 * round\_radius 背景和边框的圆角半径。
 * round\_radius\_top\_left 背景和边框的左上角圆角半径。
@@ -83,6 +83,7 @@ AWTK 的窗体样式按控件进行分类，每种控件可以有多种不同的
 * children\_layout 子控件布局参数。请参考 [控件布局参数文档](layout.md)
 * focusable 是否支持焦点停留。
 * feedback 是否支持 feedback。
+* clear\_bg 为 true 时，绘制背景时用 clear\_rect 代替 fill\_rect。其作用是可以直接修改 lcd 颜色的 alpha 通道，方便于其它硬件层（如摄像头/视频）进行合成。
 
 > 颜色可使用标准名称，#开头的 16 进制值和 rgba 合成的值。
 
@@ -249,7 +250,7 @@ ret_t widget_set_style_color(widget_t* widget, const char* state_and_name, uint3
 ```
 
 > inline style 会消耗更多内存，而且不方便切换窗体样式，一般应该尽量避免使用。
-> 注意，以前的版本使用:分隔，由于不合XML规范，改为用.分隔，仍然保持对:的兼容。
+> 注意，以前的版本使用:分隔，由于不合 XML 规范，改为用.分隔，仍然保持对:的兼容。
 
 #### 注意：
 

@@ -429,3 +429,22 @@ TEST(ThemeGen, gradient) {
   style_destroy(s);
   theme_destroy(theme);
 }
+
+TEST(ThemeGen, bool) {
+  theme_t* theme = NULL;
+  const uint8_t* style_data = NULL;
+  const char* str = "<widget><style><normal feedback=\"true\" focusable=\"2\" clear_bg=\"1\"/></style></widget>";
+
+  style_t* s = style_factory_create_style(NULL, theme_get_style_type(theme));
+
+  theme = theme_xml_create(str);
+
+  style_data = theme_find_style(theme, WIDGET_TYPE_NONE, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
+  ASSERT_EQ(style_data != NULL, true);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
+  ASSERT_EQ(style_get_int(s, STYLE_ID_FEEDBACK, 0), 1);
+  ASSERT_EQ(style_get_int(s, STYLE_ID_FOCUSABLE, 0), 1);
+  ASSERT_EQ(style_get_int(s, STYLE_ID_CLEAR_BG, 0), 1);
+  style_destroy(s);
+  theme_destroy(theme);
+}

@@ -292,6 +292,12 @@ BEGIN_C_DECLS
  */
 #define STYLE_ID_FEEDBACK "feedback"
 
+/**
+ * @const STYLE_ID_CLEAR_BG
+ * 是否用clear_rect代替fill_rect绘制背景。
+ */
+#define STYLE_ID_CLEAR_BG "clear_bg"
+
 struct _style_t;
 typedef struct _style_t style_t;
 
