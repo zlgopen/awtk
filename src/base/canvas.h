@@ -716,6 +716,18 @@ canvas_t* canvas_cast(canvas_t* c);
 ret_t canvas_reset(canvas_t* c);
 
 /**
+ * @method canvas_reset_cache
+ * 清除canvas中缓存。
+ * > 备注：主要用于窗口动画的离线画布绘制完成后重置在线画布，使下一帧中lcd对象的数据保持一致。
+ *
+ * @annotation ["scriptable"]
+ * @param {canvas_t*} c canvas对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_reset_cache(canvas_t* c);
+
+/**
  * @method canvas_draw_image_at
  * 在指定位置画图。
  *

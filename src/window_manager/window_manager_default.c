@@ -152,6 +152,8 @@ ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_w
   ENSURE(canvas_offline_destroy(canvas) == RET_OK);
   img->flags |= BITMAP_FLAG_OPAQUE;
   canvas_restore(c);
+  /* 清除在线画布的缓存，确保绘制完窗口动画后，lcd对象的数据能和在线画布同步 */
+  canvas_reset_cache(c);
 #endif
   return RET_OK;
 }

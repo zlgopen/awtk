@@ -2063,9 +2063,32 @@ canvas_t* canvas_cast(canvas_t* c) {
 ret_t canvas_reset(canvas_t* c) {
   return_value_if_fail(c != NULL && c->lcd != NULL, RET_BAD_PARAMS);
 
-  TKMEM_FREE(c->font_name);
+  canvas_reset_cache(c);
   TKMEM_FREE(c->last_text_str);
   memset(c, 0x00, sizeof(canvas_t));
+
+  return RET_OK;
+}
+
+ret_t canvas_reset_cache(canvas_t* c) {
+  return_value_if_fail(c != NULL && c->lcd != NULL, RET_BAD_PARAMS);
+
+  c->ox = 0;
+  c->oy = 0;
+  c->global_alpha = 0;
+
+  c->clip_left = 0;
+  c->clip_top = 0;
+  c->clip_right = canvas_get_width(c) - 1;
+  c->clip_bottom = canvas_get_height(c) - 1;
+
+  c->text_align_v = ALIGN_V_NONE;
+  c->text_align_h = ALIGN_H_NONE;
+
+  c->font_manager = NULL;
+  c->assets_manager = NULL;
+
+  canvas_reset_font(c);
 
   return RET_OK;
 }

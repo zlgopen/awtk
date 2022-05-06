@@ -3,6 +3,7 @@
 2022/05/06
   * 增加[如何显示上下文菜单（俗称右键菜单）](how_to_show_context_menu.md)
   * 增加 STYLE\_ID\_CLEAR\_BG。为 true 时，绘制背景时用 clear\_rect 代替 fill\_rect。其作用是可以直接修改 lcd 颜色的 alpha 通道，方便于其它硬件层（如摄像头/视频）进行合成。
+  * 修复窗口动画播放完后由于在线canvas数据与lcd不一致导致的有一帧闪屏的现象（感谢雨欣提供补丁）。
 
 2022/05/05
   * 修复combo\_box设置readonly和value控件后焦点状态切换异常的问题（感谢雨欣提供补丁）。
