@@ -149,13 +149,13 @@ static ret_t file_browser_view_get_prop(widget_t* widget, const char* name, valu
     value_set_str(v, file_browser_view->top_dir);
     return RET_OK;
   } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_IGNORE_HIDDEN_FILES, name)) {
-    file_browser_view_set_ignore_hidden_files(widget, value_bool(v));
+    value_set_bool(v, file_browser_view->ignore_hidden_files);
     return RET_OK;
   } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_SORT_ASCENDING, name)) {
-    file_browser_view_set_sort_ascending(widget, value_bool(v));
+    value_set_bool(v, file_browser_view->sort_ascending);
     return RET_OK;
   } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_SHOW_CHECK_BUTTON, name)) {
-    file_browser_view_set_show_check_button(widget, value_bool(v));
+    value_set_bool(v, file_browser_view->show_check_button);
     return RET_OK;
   } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_SORT_BY, name)) {
     value_set_str(v, file_browser_view->sort_by);

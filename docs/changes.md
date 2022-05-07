@@ -4,6 +4,7 @@
   * 增加代码开启高效旋转的接口以及代码动态判断是否使用高效旋转（感谢智明提供补丁）。
   * edit/mledit支持右键菜单。
   * 增加[如何启用编辑器的上下文菜单](how_to_enable_edit_context_menu.md)
+  * 修复file\_browser\_view获取属性失败的问题(感谢福明提供补丁)
 
 2022/05/06
   * 增加[如何显示上下文菜单（俗称右键菜单）](how_to_show_context_menu.md)
