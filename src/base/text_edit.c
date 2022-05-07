@@ -1231,6 +1231,22 @@ ret_t text_edit_drag(text_edit_t* text_edit, xy_t x, xy_t y) {
   return RET_OK;
 }
 
+static ret_t text_edit_paste_from_clip_board(text_edit_t* text_edit) {
+  value_t v;
+  wstr_t str;
+  const char* data = clip_board_get_text();
+  if (data != NULL) {
+    value_set_str(&v, data);
+    wstr_init(&str, 0);
+    wstr_from_value(&str, &v);
+    wstr_normalize_newline(&str, STB_TEXTEDIT_NEWLINE);
+    text_edit_paste(text_edit, str.str, str.size);
+    wstr_reset(&str);
+  }
+
+  return RET_OK;
+}
+
 static ret_t text_edit_handle_shortcut(text_edit_t* text_edit, key_event_t* evt,
                                        STB_TexteditState* state, wstr_t* text) {
 #ifdef MACOS
@@ -1252,17 +1268,7 @@ static ret_t text_edit_handle_shortcut(text_edit_t* text_edit, key_event_t* evt,
       state->select_start = 0;
       state->select_end = text->size;
     } else if (c == 'v' || c == 'V') {
-      value_t v;
-      wstr_t str;
-      const char* data = clip_board_get_text();
-      if (data != NULL) {
-        value_set_str(&v, data);
-        wstr_init(&str, 0);
-        wstr_from_value(&str, &v);
-        wstr_normalize_newline(&str, STB_TEXTEDIT_NEWLINE);
-        text_edit_paste(text_edit, str.str, str.size);
-        wstr_reset(&str);
-      }
+      text_edit_paste_from_clip_board(text_edit);
     } else if (key > 128 || !tk_isprint(key)) {
       return RET_FAIL;
     }
@@ -1967,6 +1973,95 @@ ret_t text_edit_set_lock_scrollbar_value(text_edit_t* text_edit, bool_t lock) {
   return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
 
   impl->lock_scrollbar_value = lock;
+
+  return RET_OK;
+}
+
+#include "window.h"
+#include "window_manager.h"
+
+static ret_t text_edit_on_copy(void* ctx, event_t* e) {
+  text_edit_t* text_edit = (text_edit_t*)ctx;
+  text_edit_copy(text_edit);
+
+  return RET_OK;
+}
+
+static ret_t text_edit_on_cut(void* ctx, event_t* e) {
+  text_edit_t* text_edit = (text_edit_t*)ctx;
+  text_edit_cut(text_edit);
+  text_edit_layout(text_edit);
+
+  return RET_OK;
+}
+
+static ret_t text_edit_on_paste(void* ctx, event_t* e) {
+  text_edit_t* text_edit = (text_edit_t*)ctx;
+  text_edit_paste_from_clip_board(text_edit);
+
+  return RET_OK;
+}
+
+static ret_t text_edit_on_select_all(void* ctx, event_t* e) {
+  text_edit_t* text_edit = (text_edit_t*)ctx;
+  text_edit_select_all(text_edit);
+
+  return RET_OK;
+}
+
+ret_t text_edit_show_context_menu(text_edit_t* text_edit, int32_t x, int32_t y) {
+  widget_t* win = window_open("edit_menu");
+  widget_t* wm = window_manager();
+
+  if (win != NULL) {
+    DECL_IMPL(text_edit);
+    widget_t* copy = widget_lookup(win, "copy", TRUE);
+    widget_t* cut = widget_lookup(win, "cut", TRUE);
+    widget_t* paste = widget_lookup(win, "paste", TRUE);
+    widget_t* select_all = widget_lookup(win, "select_all", TRUE);
+
+    if ((x + win->w) > wm->w) {
+      x = wm->w - win->w;
+    }
+
+    if ((y + win->h) > wm->h) {
+      y = wm->h - win->h;
+    }
+
+    if (copy != NULL) {
+      if (impl->state.select_start != impl->state.select_end) {
+        widget_on(copy, EVT_CLICK, text_edit_on_copy, text_edit);
+      } else {
+        widget_set_enable(copy, FALSE);
+      }
+    }
+    if (cut != NULL) {
+      if (impl->state.select_start != impl->state.select_end) {
+        widget_on(cut, EVT_CLICK, text_edit_on_cut, text_edit);
+      } else {
+        widget_set_enable(cut, FALSE);
+      }
+    }
+
+    if (paste != NULL) {
+      if (clip_board_get_text() != NULL) {
+        widget_on(paste, EVT_CLICK, text_edit_on_paste, text_edit);
+      } else {
+        widget_set_enable(paste, FALSE);
+      }
+    }
+
+    if (select_all != NULL) {
+      if (text_edit->widget->text.size > 0) {
+        widget_on(select_all, EVT_CLICK, text_edit_on_select_all, text_edit);
+      } else {
+        widget_set_enable(select_all, FALSE);
+      }
+    }
+
+    widget_move(win, x, y);
+    widget_set_prop_bool(win, WIDGET_PROP_IS_KEYBOARD, TRUE);
+  }
 
   return RET_OK;
 }

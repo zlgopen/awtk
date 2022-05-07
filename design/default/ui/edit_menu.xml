@@ -1,0 +1,6 @@
+<popup w="128" h="120" close_when_click="true" children_layout="default(c=1,r=4,m=3,s=2)">
+   <button tr_text="Copy" focusable="true" name="copy"/>
+   <button tr_text="Cut" focusable="true" name="cut"/>
+   <button tr_text="Paste" focusable="true" name="paste"/>
+   <button tr_text="Select All" focusable="true" name="select_all"/>
+</popup>

@@ -909,16 +909,26 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       log_debug("action button:%s\n", edit->action_text);
       break;
     }
-    case EVT_POINTER_LEAVE:
+    case EVT_POINTER_LEAVE: {
       edit_update_status(widget);
       break;
-    case EVT_POINTER_ENTER:
+    }
+    case EVT_POINTER_ENTER: {
       if (widget->text.size == 0) {
         widget_set_state(widget, WIDGET_STATE_EMPTY_OVER);
       } else {
         widget_set_state(widget, WIDGET_STATE_OVER);
       }
       break;
+    }
+     case EVT_CONTEXT_MENU: {
+      pointer_event_t* evt = (pointer_event_t*)e;
+      point_t p = {evt->x, evt->y};
+      widget_to_local(widget, &p);
+      widget_to_screen(widget, &p);
+      text_edit_show_context_menu(edit->model, p.x, p.y);
+       break;
+     }
     default:
       break;
   }

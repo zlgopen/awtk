@@ -94,6 +94,7 @@
 * [如何在改变控件属性时附带动画](how_to_change_prop_with_animation.md)
 * [LCD快速旋转](how_to_use_fast_lcd_portrait.md)
 * [如何显示上下文菜单（俗称右键菜单）](how_to_show_context_menu.md)
+* [如何启用编辑器的上下文菜单](how_to_enable_edit_context_menu.md)
 
 ### 3. 内部原理
 * [AWTK 脚本绑定原理](script_binding.md)

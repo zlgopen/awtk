@@ -447,6 +447,17 @@ ret_t text_edit_preedit_abort(text_edit_t* text_edit);
  */
 ret_t text_edit_insert_text(text_edit_t* text_edit, uint32_t offset, const char* text);
 
+/**
+ * @method text_edit_show_context_menu
+ * 显示上下文菜单。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ * @param {uint32_t} x x位置。
+ * @param {uint32_t} y y位置。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_edit_show_context_menu(text_edit_t* text_edit, int32_t x, int32_t y);
+
 /* private */
 ret_t text_edit_overwrite_text(text_edit_t* text_edit, uint32_t* p_offset, const char* text,
                                uint32_t len);

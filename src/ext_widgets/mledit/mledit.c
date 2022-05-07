@@ -849,6 +849,14 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
         TKMEM_FREE(text);
       }
     }
+     case EVT_CONTEXT_MENU: {
+      pointer_event_t* evt = (pointer_event_t*)e;
+      point_t p = {evt->x, evt->y};
+      widget_to_local(widget, &p);
+      widget_to_screen(widget, &p);
+      text_edit_show_context_menu(mledit->model, p.x, p.y);
+       break;
+     }
     default:
       break;
   }
