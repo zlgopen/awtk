@@ -299,10 +299,11 @@ bool_t lcd_is_swappable(lcd_t* lcd) {
 
   if (lcd->swap != NULL) {
 #ifdef WITH_FAST_LCD_PORTRAIT
-    return TRUE;
-#else
-    return system_info()->lcd_orientation == LCD_ORIENTATION_0;
+    if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
+      return TRUE;
+    }
 #endif
+    return system_info()->lcd_orientation == LCD_ORIENTATION_0;
   }
 
   return FALSE;

@@ -107,6 +107,16 @@ bool_t tk_is_pointer_pressed(void);
 ret_t tk_set_lcd_orientation(lcd_orientation_t orientation);
 
 /**
+ * @method tk_enable_fast_lcd_portrait
+ * 设置是否开启快速旋转功能。（开启这个功能需要定义 WITH_FAST_LCD_PORTRAIT 宏）
+ * 备注：需要在 tk_set_lcd_orientation 函数之前调用
+ * @param {bool_t} enable 是否开启。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_enable_fast_lcd_portrait(bool_t enable);
+
+/**
  * @method tk_init_assets
  * 初始化资源。
  *

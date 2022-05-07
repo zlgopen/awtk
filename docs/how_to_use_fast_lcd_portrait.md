@@ -11,9 +11,11 @@
 
 ## 一、基本用法
 
-  由于该机制需要 lcd 层和 vgcanvas 层配合，所以如果用户是使用 AWTK 提供了的 lcd 适配层（lcd_mem_XXX_create 的函数创建的 lcd ）和 vgcanvas 适配层（定义 WITH_NANOVG_AGGE 宏），则只需要定义 **WITH_FAST_LCD_PORTRAIT 宏**，然后在代码中调用 tk_set_lcd_orientation 函数就可以使用了。
+  由于该机制需要 lcd 层和 vgcanvas 层配合，所以如果用户是使用 AWTK 提供了的 lcd 适配层（lcd_mem_XXX_create 的函数创建的 lcd ）和 vgcanvas 适配层（定义 WITH_NANOVG_AGGE 宏），则只需要定义 **WITH_FAST_LCD_PORTRAIT 宏**，以及在程序运行前调用 tk_enable_fast_lcd_portrait 函数设置开启高效屏幕旋转模式，然后在代码中调用 tk_set_lcd_orientation 函数就可以使用了。
 
 ~~~c
+/* awtk_global.h */
+
 /**
  * @method tk_set_lcd_orientation
  * 设置屏幕的旋转方向(XXX:目前仅支持0度,90度,180度和270度，旋转方向为逆时针方向)。
@@ -22,6 +24,16 @@
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t tk_set_lcd_orientation(lcd_orientation_t orientation);
+
+/**
+ * @method tk_enable_fast_lcd_portrait
+ * 设置是否开启快速旋转功能。（开启这个功能需要定义 WITH_FAST_LCD_PORTRAIT 宏）
+ * 备注：需要在 tk_set_lcd_orientation 函数之前调用
+ * @param {bool_t} enable 是否开启。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_enable_fast_lcd_portrait(bool_t enable);
 ~~~
 
 #### 注意实现：
@@ -37,6 +49,8 @@ ret_t tk_set_lcd_orientation(lcd_orientation_t orientation);
   3. 在没有定义 WITH_STB_IMAGE 宏（使用 data 格式的位图数据）的情况下，并且是位图旋转角度不为 0 度的话，是**不支持程序动态旋转**，需要在程序开始前就需要设置好旋转的角度，同时旋转角度应该和资源保持一致。
 
   4. 在使用的时候，需要特别注意 bitmap_t，lcd_t 和 graphic_buffer_t 类型是分为有**逻辑数据**和**真实的物理数据**的，所有的真实的物理数据只能通过接口获取，一般名称都会带有 **“physical”** 的字眼。
+
+  5.  WITH_FAST_LCD_PORTRAIT 宏只是把功能增加到工程中，还需要用户自行调用 tk_enable_fast_lcd_portrait 来开启，如果没有调用 tk_enable_fast_lcd_portrait 函数的话，默认不启用，退化为以前就的 lcd 旋转方案。
 
 > 如果是使用 Desiger 工具打包的话，第 1 点和第 3 点都会处理好的，用户只要注意动态 lcd 旋转的问题。
 

@@ -108,10 +108,14 @@ static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, const dirty_rects
   system_info_t* info = system_info();
 
 #ifdef WITH_FAST_LCD_PORTRAIT
-  nvgBeginFrame(vg, vgcanvas->w, vgcanvas->h, vgcanvas->ratio, vgcanvas_nanovg_bitmap_orientation_to_NVGorientation(info->lcd_orientation));
-#else
-  nvgBeginFrame(vg, vgcanvas->w, vgcanvas->h, vgcanvas->ratio, NVG_ORIENTATION_0);
+  if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
+    nvgBeginFrame(vg, vgcanvas->w, vgcanvas->h, vgcanvas->ratio, vgcanvas_nanovg_bitmap_orientation_to_NVGorientation(info->lcd_orientation));
+  } else 
 #endif
+  {
+    nvgBeginFrame(vg, vgcanvas->w, vgcanvas->h, vgcanvas->ratio, NVG_ORIENTATION_0);
+  }
+
 
   return RET_OK;
 }
@@ -171,7 +175,9 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
   }
 
 #ifdef WITH_FAST_LCD_PORTRAIT
-  assert(img->orientation == system_info()->lcd_orientation);
+  if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT && img->orientation != LCD_ORIENTATION_0) {
+    assert(img->orientation == system_info()->lcd_orientation);
+  }
 #endif
 
   flag = (int)vgcanvas_nanovg_bitmap_flag_to_NVGimageFlags((bitmap_flag_t)(img->flags));

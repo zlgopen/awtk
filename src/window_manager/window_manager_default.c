@@ -1195,7 +1195,9 @@ ret_t window_manager_default_on_event(widget_t* widget, event_t* e) {
     ret = lcd_set_orientation(lcd, old_orientation, new_orientation);
     return_value_if_fail(ret == RET_OK, ret);
 #if !defined(WITH_GPU) && defined(WITH_FAST_LCD_PORTRAIT)
-    ENSURE(image_manager_unload_all(widget_get_image_manager(widget)) == RET_OK);
+    if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
+      ENSURE(image_manager_unload_all(widget_get_image_manager(widget)) == RET_OK);
+    }
 #endif
     window_manager_default_orientation(widget, w, h, old_orientation, new_orientation);
     e->type = EVT_ORIENTATION_CHANGED;

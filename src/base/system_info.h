@@ -28,6 +28,25 @@
 BEGIN_C_DECLS
 
 /**
+ * @enum system_info_flag_t
+ * @annotation ["scriptable"]
+ * @prefix SYSTEM_INFO_FLAG_
+ * 位图标志常量定义。
+ */
+typedef enum _system_info_flag_t {
+  /**
+   * @const SYSTEM_INFO_FLAG_NONE
+   * 无特殊标志。
+   */
+  SYSTEM_INFO_FLAG_NONE = 0,
+  /**
+   * @const SYSTEM_INFO_FLAG_OPAQUE
+   * 使用快速旋转功能。
+   */
+  SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT = 1,
+} system_info_flag_t;
+
+/**
  * @class system_info_t
  * @parent tk_object_t
  * 当前系统的信息。
@@ -135,6 +154,12 @@ struct _system_info_t {
    * 应用程序的根目录，用于定位资源文件。
    */
   char* app_root;
+  /**
+   * @property {uint32_t} flags
+   * @annotation ["readable"]
+   * 标志。请参考{system_info_flag_t}。
+   */
+  uint32_t flags;
 };
 
 /**

@@ -434,6 +434,22 @@ ret_t tk_set_lcd_orientation(lcd_orientation_t orientation) {
   return RET_OK;
 }
 
+ret_t tk_enable_fast_lcd_portrait(bool_t enable) {
+  system_info_t* info = system_info();
+  return_value_if_fail(info != NULL, RET_BAD_PARAMS);
+
+#if defined(WITH_FAST_LCD_PORTRAIT)
+  if (enable) {
+    info->flags |= SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT;
+  } else {
+    info->flags &= ~SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT;
+  }
+  return RET_OK;
+#else
+  return RET_FAIL;
+#endif
+}
+
 int32_t tk_get_pointer_x(void) {
   return window_manager_get_pointer_x(window_manager());
 }

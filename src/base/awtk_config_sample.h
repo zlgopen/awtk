@@ -280,6 +280,7 @@
  * 2，lcd 适配层需要支持。
  * 3，vg 的适配层需要支持。
  * 4，g2d 的适配层获取位图真实的数据需要通过 bitmap_get_physical_XXXX 函数来获取。
+ * 5，需要用户在程序开始之前调用 tk_enable_fast_lcd_portrait 函数开启该功能。
  *
  * #define WITH_FAST_LCD_PORTRAIT 1
  */

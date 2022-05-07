@@ -201,10 +201,12 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
   if (lcd != NULL) {
     canvas_t* c_tmp = NULL;
 #ifdef WITH_FAST_LCD_PORTRAIT
-    if (info->lcd_orientation != LCD_ORIENTATION_0) {
-      bitmap->orientation = info->lcd_orientation;
-      bitmap->flags |= BITMAP_FLAG_LCD_ORIENTATION;
-      lcd_set_orientation(lcd, LCD_ORIENTATION_0, info->lcd_orientation);
+    if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
+      if (info->lcd_orientation != LCD_ORIENTATION_0) {
+        bitmap->orientation = info->lcd_orientation;
+        bitmap->flags |= BITMAP_FLAG_LCD_ORIENTATION;
+        lcd_set_orientation(lcd, LCD_ORIENTATION_0, info->lcd_orientation);
+      }
     }
 #endif
     c_tmp = canvas_init(&(canvas->base), lcd, widget_get_font_manager(window_manager()));
@@ -216,9 +218,11 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
     return NULL;
   }
 #ifdef WITH_FAST_LCD_PORTRAIT
-  if (info->lcd_orientation == LCD_ORIENTATION_90 || info->lcd_orientation == LCD_ORIENTATION_270) {
-    bitmap->w = h;
-    bitmap->h = w;
+  if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
+    if (info->lcd_orientation == LCD_ORIENTATION_90 || info->lcd_orientation == LCD_ORIENTATION_270) {
+      bitmap->w = h;
+      bitmap->h = w;
+    }
   }
 #endif
 #endif

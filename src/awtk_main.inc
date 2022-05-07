@@ -185,8 +185,13 @@ int main(int argc, char* argv[]) {
   }
 #endif /*WITH_LCD_PORTRAIT*/
 
+
+
 #ifdef APP_LCD_ORIENTATION
   if (system_info()->app_type != APP_SIMULATOR) {
+#if defined(APP_ENABLE_FAST_LCD_PORTRAIT)
+    tk_enable_fast_lcd_portrait(TRUE);
+#endif
     tk_set_lcd_orientation(APP_LCD_ORIENTATION);
   }
 #endif

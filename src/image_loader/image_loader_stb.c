@@ -156,7 +156,9 @@ static ret_t image_loader_stb_load(image_loader_t* l, const asset_info_t* asset,
   }
 
 #if !defined(WITH_GPU) && !defined(WITH_VGCANVAS_CAIRO) && defined(WITH_FAST_LCD_PORTRAIT)
-  o = info->lcd_orientation;
+  if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
+    o = info->lcd_orientation;
+  }
 #endif
 
 #ifdef WITHOUT_FAST_LCD_PORTRAIT_FOR_IMAGE
