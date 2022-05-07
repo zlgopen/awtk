@@ -79,8 +79,6 @@ static const void* widget_get_const_style_data(widget_t* widget, style_t* s) {
 static ret_t style_const_apply_props(style_t* s, widget_t* widget) {
   const char* self_layout = style_get_str(s, STYLE_ID_SELF_LAYOUT, NULL);
   const char* children_layout = style_get_str(s, STYLE_ID_CHILDREN_LAYOUT, NULL);
-  const char* focusable = style_get_str(s, STYLE_ID_FOCUSABLE, NULL);
-  const char* feedback = style_get_str(s, STYLE_ID_FEEDBACK, NULL);
 
   if (self_layout != NULL || children_layout != NULL) {
     if (self_layout != NULL) {
@@ -94,13 +92,8 @@ static ret_t style_const_apply_props(style_t* s, widget_t* widget) {
     }
   }
 
-  if (focusable != NULL) {
-    widget->focusable = *focusable == 'T' || *focusable == 't';
-  }
-
-  if (feedback != NULL) {
-    widget->feedback = *feedback == 'T' || *feedback == 't';
-  }
+  widget->focusable = style_get_int(s, STYLE_ID_FOCUSABLE, widget->focusable);
+  widget->feedback = style_get_int(s, STYLE_ID_FEEDBACK, widget->feedback);
 
   return RET_OK;
 }
