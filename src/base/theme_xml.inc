@@ -149,6 +149,7 @@ static void xml_gen_on_state_end(XmlBuilder* thiz) {
   tk_object_t* style = NULL;
   xml_builder_t* b = (xml_builder_t*)thiz;
 
+  memset(&item, 0x00, sizeof(item));
   style = tk_object_clone(b->widget_style);
   return_if_fail(style != NULL);
   tk_object_copy_props(style, b->share_style, TRUE);
