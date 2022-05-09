@@ -44,7 +44,7 @@ ret_t tk_enable_fast_lcd_portrait(bool_t enable);
      python .\scripts\update_res.py all x1 bgra+bgr565 0
      ~~~
 
-  2. 如果 data 格式的位图的旋转角度为 0 度的话（在 Desiger 工具中可以取消勾选快速旋转模式来达到设置旋转角度为 0 的效果），可以支持动态 lcd 旋转，但是效率会下降，而使用文件系统或者 res 格式的位图数据则不会降低效率。
+  2. 如果 data 格式的位图的旋转角度为 0 度的话，可以支持动态 lcd 旋转，但是效率会下降，而使用文件系统或者 res 格式的位图数据则不会降低效率。
 
   3. 在没有定义 WITH_STB_IMAGE 宏（使用 data 格式的位图数据）的情况下，并且是位图旋转角度不为 0 度的话，是**不支持程序动态旋转**，需要在程序开始前就需要设置好旋转的角度，同时旋转角度应该和资源保持一致。
 
@@ -52,7 +52,7 @@ ret_t tk_enable_fast_lcd_portrait(bool_t enable);
 
   5.  WITH_FAST_LCD_PORTRAIT 宏只是把功能增加到工程中，还需要用户自行调用 tk_enable_fast_lcd_portrait 来开启，如果没有调用 tk_enable_fast_lcd_portrait 函数的话，默认不启用，退化为以前就的 lcd 旋转方案。
 
-> 如果是使用 Desiger 工具打包的话，第 1 点和第 3 点都会处理好的，用户只要注意动态 lcd 旋转的问题。
+> 如果是使用 Desiger 工具的话，第 1 点和第 3 点都以及相关函数的调用都会处理好的，用户只要注意代码中动态 lcd 旋转的问题。
 
 
 ## 二、功能移植

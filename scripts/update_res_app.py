@@ -19,6 +19,8 @@ def use_theme_config_from_project_json():
     global IS_GENERATE_INC_BITMAP
     global APP_THEME
     global APP_ROOT
+    global LCD_ORIENTATION
+    global LCD_FAST_ROTATION_MODE
 
     project_json = common.join_path(APP_ROOT, 'project.json')
     if not os.path.exists(project_json):
@@ -42,6 +44,18 @@ def use_theme_config_from_project_json():
     if 'activedTheme' in assets:
         APP_THEME = assets['activedTheme']
 
+    if LCD_FAST_ROTATION_MODE == None :
+        if 'lcdFastRotationMode' in assets:
+            LCD_FAST_ROTATION_MODE = assets['lcdFastRotationMode']
+        else :
+            LCD_FAST_ROTATION_MODE = False
+
+    if LCD_ORIENTATION == None :
+        if 'lcdOrientation' in assets:
+            LCD_ORIENTATION = assets['lcdOrientation']
+        else :
+            LCD_ORIENTATION = '0'
+
     if 'themes' not in assets:
         return
     
@@ -61,12 +75,9 @@ def use_theme_config_from_project_json():
         DPI = assets['screenDPR']
 
     for theme_name, theme_setting in assets['themes'].items():
-        orientation = '0' 
         theme_name = common.to_file_system_coding(theme_name)
         color_format = theme_setting['lcd']['colorFormat']
         color_depth = theme_setting['lcd']['colorDepth']
-        if 'orientation' in theme_setting['lcd'] : 
-            orientation = theme_setting['lcd']['orientation']
 
         if color_format == 'MONO':
           imagegen_options = 'mono'
@@ -94,7 +105,7 @@ def use_theme_config_from_project_json():
                         filename = common.join_path(config_dir, font_name+'_'+font_size+'.txt')
                         common.write_file(filename, text)
 
-        theme = {'name': theme_name, 'imagegen_options': imagegen_options, 'lcd_orientation': orientation, 'packaged': theme_setting['packaged']}
+        theme = {'name': theme_name, 'imagegen_options': imagegen_options, 'packaged': theme_setting['packaged']}
         if theme_name == 'default':
             THEMES.insert(0, theme)
         else:
@@ -153,10 +164,13 @@ def run(awtk_root, is_excluded_file_handler = None):
     global OUTPUT_ROOT
     global IS_GENERATE_INC_RES
     global IS_GENERATE_INC_BITMAP
+    global LCD_ORIENTATION
+    global LCD_FAST_ROTATION_MODE
 
     GDPI=''
-    LCD_ORIENTATION=''
     IMAGEGEN_OPTIONS=''
+    LCD_ORIENTATION=None
+    LCD_FAST_ROTATION_MODE=None
     sys_args = common.get_args(sys.argv[1:])
     if len(sys_args) > 0 :
         common.set_action(sys_args[0])
@@ -166,6 +180,7 @@ def run(awtk_root, is_excluded_file_handler = None):
             IMAGEGEN_OPTIONS = sys_args[2]
         if len(sys_args) > 3:
             LCD_ORIENTATION = sys_args[3]
+            LCD_FAST_ROTATION_MODE = False
 
     AWTK_ROOT = awtk_root
     APP_ROOT = common.getcwd()
@@ -208,6 +223,7 @@ def run(awtk_root, is_excluded_file_handler = None):
 
         common.init(AWTK_ROOT, ASSETS_ROOT, THEMES, ASSET_C, OUTPUT_ROOT)
         common.set_tools_dir(TOOLS_ROOT)
+        common.set_lcd_rortrail_info(LCD_ORIENTATION, LCD_FAST_ROTATION_MODE)
         common.set_dpi(DPI)
         common.set_app_theme(APP_THEME)
         common.set_enable_generate_inc_res(IS_GENERATE_INC_RES)

@@ -23,6 +23,7 @@ THEME = 'default'
 THEME_PACKAGED = True
 IMAGEGEN_OPTIONS = 'bgra+bgr565'
 LCD_ORIENTATION = '0'
+LCD_FAST_ROTATION_MODE = False
 ON_GENERATE_RES_BEFORE = None
 ON_GENERATE_RES_AFTER = None
 EXEC_CMD_HANDLER = None
@@ -81,6 +82,7 @@ def emit_generate_res_before(type):
             'theme': THEME,
             'imagegen_options': IMAGEGEN_OPTIONS,
             'lcd_orientation' : LCD_ORIENTATION,
+            'lcd_fast_rotation_mode' : LCD_FAST_ROTATION_MODE,
             'input': INPUT_DIR,
             'output': OUTPUT_DIR,
             'awtk_root': AWTK_ROOT
@@ -95,6 +97,7 @@ def emit_generate_res_after(type):
             'theme': THEME,
             'imagegen_options': IMAGEGEN_OPTIONS,
             'lcd_orientation' : LCD_ORIENTATION,
+            'lcd_fast_rotation_mode' : LCD_FAST_ROTATION_MODE,
             'input': INPUT_DIR,
             'output': OUTPUT_DIR,
             'awtk_root': AWTK_ROOT
@@ -116,6 +119,11 @@ def set_tools_dir(dir):
     global BIN_DIR
     BIN_DIR = dir
 
+def set_lcd_rortrail_info(lcd_orientation, lcd_fast_rotation_mode):
+    global LCD_ORIENTATION
+    global LCD_FAST_ROTATION_MODE
+    LCD_ORIENTATION = lcd_orientation
+    LCD_FAST_ROTATION_MODE = lcd_fast_rotation_mode
 
 def set_dpi(dpi):
     global DPI
@@ -146,7 +154,6 @@ def set_current_theme(index):
     global THEME
     global THEME_PACKAGED
     global IMAGEGEN_OPTIONS
-    global LCD_ORIENTATION
     global INPUT_DIR
     global OUTPUT_DIR
 
@@ -160,12 +167,9 @@ def set_current_theme(index):
     elif isinstance(theme, dict):
         THEME = theme['name']
         THEME_PACKAGED = True
-        LCD_ORIENTATION = '0'
         IMAGEGEN_OPTIONS = 'bgra+bgr565'
         if 'imagegen_options' in theme:
             IMAGEGEN_OPTIONS = theme['imagegen_options']
-        if 'lcd_orientation' in theme:
-            LCD_ORIENTATION = theme['lcd_orientation']
         if 'packaged' in theme:
             THEME_PACKAGED = theme['packaged']
 
@@ -376,7 +380,9 @@ def fontgen(raw, text, inc, size, options, theme):
             str(size) + ' ' + options + ' ' + theme)
 
 
-def imagegen(raw, inc, options, theme, lcd_orientation):
+def imagegen(raw, inc, options, theme, lcd_orientation, lcd_fast_rotation_mode):
+    if not lcd_fast_rotation_mode :
+        lcd_orientation = '0'
     exec_cmd(to_exe('imagegen') + ' \"' + raw + '\" \"' + inc + '\" ' + options + ' ' + theme + ' ' + lcd_orientation)
 
 
@@ -457,7 +463,7 @@ def gen_res_png_jpg():
                 if IS_GENERATE_INC_RES:
                     resgen(raw, inc, THEME, '.res')
                 if IS_GENERATE_INC_BITMAP:
-                    imagegen(raw, inc, IMAGEGEN_OPTIONS, THEME, LCD_ORIENTATION)
+                    imagegen(raw, inc, IMAGEGEN_OPTIONS, THEME, LCD_ORIENTATION, LCD_FAST_ROTATION_MODE)
 
         # 如果当前主题的gen选项与default主题不一致，则按新的gen选项重新生成图片的位图数据
         if IS_GENERATE_INC_BITMAP and THEME != 'default':
@@ -470,7 +476,7 @@ def gen_res_png_jpg():
 
                     if os.path.exists(raw):
                         make_dirs(inc)
-                        imagegen(raw, inc, IMAGEGEN_OPTIONS, THEME, LCD_ORIENTATION)
+                        imagegen(raw, inc, IMAGEGEN_OPTIONS, THEME, LCD_ORIENTATION, LCD_FAST_ROTATION_MODE)
 
 
 def gen_res_all_image():
@@ -1190,6 +1196,7 @@ def dump_args():
     print('DPI = '+DPI)
     print('THEMES = '+str(THEMES))
     print('IMAGEGEN_OPTIONS = '+IMAGEGEN_OPTIONS)
+    print('LCD_FAST_ROTATION_MODE = '+str(LCD_FAST_ROTATION_MODE))
     print('LCD_ORIENTATION = LCD_ORIENTATION_'+LCD_ORIENTATION)
     print('AWTK_ROOT = '+AWTK_ROOT)
     print('BIN_DIR = '+BIN_DIR)
