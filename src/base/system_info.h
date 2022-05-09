@@ -31,7 +31,7 @@ BEGIN_C_DECLS
  * @enum system_info_flag_t
  * @annotation ["scriptable"]
  * @prefix SYSTEM_INFO_FLAG_
- * 位图标志常量定义。
+ * SystemInfo常量定义。
  */
 typedef enum _system_info_flag_t {
   /**
@@ -40,7 +40,7 @@ typedef enum _system_info_flag_t {
    */
   SYSTEM_INFO_FLAG_NONE = 0,
   /**
-   * @const SYSTEM_INFO_FLAG_OPAQUE
+   * @const SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT
    * 使用快速旋转功能。
    */
   SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT = 1,
