@@ -108,7 +108,7 @@ ret_t widget_on_paint_children_default(widget_t* widget, canvas_t* c) {
   }
 
   if (!(iter->vt->allow_draw_outside)) {
-    int32_t tolerance = widget->dirty_rect_tolerance;
+    int32_t tolerance = iter->dirty_rect_tolerance;
     int32_t left = c->ox + iter->x - tolerance;
     int32_t top = c->oy + iter->y - tolerance;
     int32_t bottom = top + iter->h + 2 * tolerance;
