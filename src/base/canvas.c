@@ -2085,9 +2085,6 @@ ret_t canvas_reset_cache(canvas_t* c) {
   c->text_align_v = ALIGN_V_NONE;
   c->text_align_h = ALIGN_H_NONE;
 
-  c->font_manager = NULL;
-  c->assets_manager = NULL;
-
   canvas_reset_font(c);
 
   return RET_OK;
