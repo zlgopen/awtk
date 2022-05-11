@@ -718,12 +718,18 @@ static void ffr_draw_rounded_rect_draw_info_init(ffr_draw_info_t draw_infos[FFR_
 }
 
 static void ffr_draw_rounded_rect_draw_fill_gradient(canvas_t* c, const rect_t* rect, xy_t x, xy_t y, wh_t w, wh_t h, const gradient_t* gradient) {
-  uint32_t i = 0;
-  for (i = 0; i < h; i++) {
-    float_t offset = (float_t)(y + i - rect->y) / (float_t)rect->h;
-    color_t color = gradient_get_color((gradient_t*)gradient, offset);
-    canvas_set_stroke_color(c, color);
-    canvas_draw_hline(c, x, y + i, w);
+  if (gradient->nr == 1) {
+    color_t color = gradient_get_first_color((gradient_t*)gradient);
+    canvas_set_fill_color(c, color);
+    canvas_fill_rect(c, x, y, w, h);
+  } else {
+    uint32_t i = 0;
+    for (i = 0; i < h; i++) {
+      float_t offset = (float_t)(y + i - rect->y) / (float_t)rect->h;
+      color_t color = gradient_get_color((gradient_t*)gradient, offset);
+      canvas_set_stroke_color(c, color);
+      canvas_draw_hline(c, x, y + i, w);
+    }
   }
 }
 
