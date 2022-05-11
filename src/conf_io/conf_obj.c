@@ -154,6 +154,7 @@ ret_t conf_obj_save(tk_object_t* obj) {
   return_value_if_fail(writer != NULL, RET_FAIL);
 
   ret = o->save(o->doc, writer);
+  data_writer_flush(writer);
   data_writer_destroy(writer);
 
   if (ret == RET_OK) {
