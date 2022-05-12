@@ -91,7 +91,10 @@ static asset_info_t* load_asset(uint16_t type, uint16_t subtype, const char* pat
       info = asset_info_create(type, subtype, name, size);
       return_value_if_fail(info != NULL, NULL);
 
-      ENSURE(file_read_part(path, info->data, size, 0) == size);
+      if (file_read_part(path, info->data, size, 0) != size) {
+        asset_info_destroy(info);
+        info = NULL;
+      }
     }
   }
 
