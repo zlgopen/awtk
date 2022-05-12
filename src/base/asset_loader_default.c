@@ -51,12 +51,12 @@ static asset_info_t* load_asset(uint16_t type, uint16_t subtype, const char* pat
                                 const char* name) {
   asset_info_t* info = load_asset_with_mmap(type, subtype, path, name);
   if (info == NULL) {
-    SDL_RWops* rwops = SDL_RWFromFile(path, "r");
+    SDL_RWops* rwops = SDL_RWFromFile(path, "rb");
     if (rwops != NULL) {
       int32_t size = rwops->size(rwops);
       info = asset_info_create(type, subtype, name, size);
       if (info != NULL) {
-        rwops->read(rwops, info->data, size, 1);
+        ENSURE(rwops->read(rwops, info->data, 1, size) == size);
       }
       rwops->close(rwops);
     }
