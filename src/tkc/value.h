@@ -554,7 +554,7 @@ const char* value_str(const value_t* v);
  * 获取类型为字符串的值。
  * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
- * @param {char*} buff 用于格式转换的缓冲区。
+ * @param {char*} buff 用于格式转换的缓冲区（如果 v 对象为 string 类型的话，不会把字符串数据拷贝到 buff 中）。
  * @param {uint32_t} size 缓冲区大小。
  *
  * @return {const char*} 值。
