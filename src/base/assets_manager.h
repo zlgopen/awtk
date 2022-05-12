@@ -187,6 +187,7 @@ ret_t assets_manager_set_locale_info(assets_manager_t* am, locale_info_t* locale
 /**
  * @method assets_manager_add
  * 向资源管理器中增加一个资源。
+ * 备注：同一份资源多次调用会出现缓存叠加的问题，导致内存泄露
  * @param {assets_manager_t*} am asset manager对象。
  * @param {asset_info_t} info 待增加的资源。
  *
@@ -197,6 +198,7 @@ ret_t assets_manager_add(assets_manager_t* am, const void* info);
 /**
  * @method assets_manager_add_data
  * 向资源管理器中增加一个资源data。
+ * 备注：同一份资源多次调用会出现缓存叠加的问题，导致内存泄露
  * @param {assets_manager_t*} am asset manager对象。
  * @param {const char*} name 待增加的资源的名字。
  * @param {uint16_t} type 待增加的资源的主类型枚举。
@@ -261,6 +263,7 @@ const asset_info_t* assets_manager_find_in_cache(assets_manager_t* am, asset_typ
 /**
  * @method assets_manager_load
  * 从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\_FS\_RES时才生效。
+ * 备注：内部使用的，如果是加载资源的话，建议使用 assets_manager_ref 函数。
  * @param {assets_manager_t*} am asset manager对象。
  * @param {asset_type_t} type 资源的类型。
  * @param {const char*} name 资源的名称。
@@ -272,6 +275,7 @@ asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const
 /**
  * @method assets_manager_load_ex
  * 从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\_FS\_RES时才生效。
+ * 备注：内部使用的，如果是加载资源的话，建议使用 assets_manager_ref_ex 函数。
  * @param {assets_manager_t*} am asset manager对象。
  * @param {asset_type_t} type 资源的类型。
  * @param {uint16_t} subtype 资源的子类型。
@@ -285,6 +289,7 @@ asset_info_t* assets_manager_load_ex(assets_manager_t* am, asset_type_t type, ui
 /**
  * @method assets_manager_preload
  * 从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\_FS\_RES时才生效。
+ * 备注：内部使用的，不建议用户自行调用。
  * @param {assets_manager_t*} am asset manager对象。
  * @param {asset_type_t} type 资源的类型。
  * @param {char*} name 资源的名称。
