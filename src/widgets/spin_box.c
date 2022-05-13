@@ -48,6 +48,7 @@ widget_t* spin_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
   edit_t* edit = EDIT(spin_box);
   return_value_if_fail(spin_box != NULL, NULL);
 
+  edit->step = 1;
   edit->right_margin = 21;
   edit->input_type = INPUT_INT;
 
