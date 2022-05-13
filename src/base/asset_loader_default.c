@@ -56,7 +56,11 @@ static asset_info_t* load_asset(uint16_t type, uint16_t subtype, const char* pat
       int32_t size = rwops->size(rwops);
       info = asset_info_create(type, subtype, name, size);
       if (info != NULL) {
-        ENSURE(rwops->read(rwops, info->data, 1, size) == size);
+        if (rwops->read(rwops, info->data, 1, size) != size) {
+          asset_info_destroy(info);
+          info = NULL;
+          log_warn("!!! rwops->read [path=%s size=%d] failed!!!\n", path, size);
+        }
       }
       rwops->close(rwops);
     }
@@ -94,6 +98,7 @@ static asset_info_t* load_asset(uint16_t type, uint16_t subtype, const char* pat
       if (file_read_part(path, info->data, size, 0) != size) {
         asset_info_destroy(info);
         info = NULL;
+        log_warn("!!! file_read_part [path=%s size=%d] failed!!!\n", path, size);
       }
     }
   }

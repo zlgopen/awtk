@@ -40,14 +40,18 @@ typedef struct _asset_loader_zip_t {
 #ifdef WITH_SDL
 #include <SDL.h>
 static void* load_asset(const char* filename, uint32_t* data_size) {
-  SDL_RWops* rwops = SDL_RWFromFile(filename, "r");
+  SDL_RWops* rwops = SDL_RWFromFile(filename, "rb");
   if (rwops != NULL) {
     uint32_t size = rwops->size(rwops);
     void* data = TKMEM_ALLOC(size + 1);
 
     if (data != NULL) {
       memset(data, 0x00, size + 1);
-      rwops->read(rwops, data, size, 1);
+      if (rwops->read(rwops, data, 1, size) != size) {
+        TKMEM_FREE(data);
+        data = NULL;
+        log_warn("!!! rwops->read [name=%s size=%u] failed!!!\n", filename, size);
+      }
     }
     rwops->close(rwops);
     *data_size = size;
