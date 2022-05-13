@@ -6,6 +6,7 @@
   * 修复缺少 ascent 和 descent 信息，stb 没能正确的算出字体的缩放比例 scale 的问题（感谢雨欣提供补丁）。
   * 使用stb不支持的symbol类型矢量字库时打印警告提示（感谢雨欣提供补丁）。
   * 设置 spin\_box 的默认 input\_type 为 int。
+  * 修复 fscript中json\_load参数个数大于1时的问题（感谢国文提供补丁）。
 
 2022/05/12
   * 完善load\_asset(感谢俊圣提供补丁)

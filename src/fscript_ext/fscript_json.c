@@ -35,8 +35,8 @@ static ret_t func_json_load_ex(fscript_t* fscript, fscript_args_t* args, value_t
   char url[MAX_PATH + 1];
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
 
+  v = args->args;
   if (args->size == 1) {
-    v = args->args;
     if (v->type == VALUE_TYPE_STRING) {
       data = value_str(v);
       FSCRIPT_FUNC_CHECK(data != NULL, RET_BAD_PARAMS);
