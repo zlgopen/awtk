@@ -107,7 +107,13 @@ static ret_t font_stb_get_glyph(font_t* f, wchar_t c, font_size_t font_size, gly
   uint8_t* bitmap = NULL;
   font_stb_t* font = (font_stb_t*)f;
   stbtt_fontinfo* sf = &(font->stb_font);
+  /* 计算公式：scale = font_size / (ascent - descent) */
   float scale = stbtt_ScaleForPixelHeight(sf, font_size);
+
+  /* 某些字库存在ascent - descent等于0的情况，算出来的scale为无穷大inf，此时采用EM size */
+  if (scale == INFINITY) {
+    scale = stbtt_ScaleForMappingEmToPixels(sf, font_size);
+  }
 
   if (glyph_cache_lookup(&(font->cache), c, font_size, g) == RET_OK) {
     return RET_OK;
