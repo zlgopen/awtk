@@ -45,20 +45,23 @@ static ret_t input_engine_pinyin_reset_input(input_engine_t* engine) {
 }
 
 static ret_t input_engine_pinyin_add_candidate(input_engine_t* engine, uint32_t index) {
-  uint32_t i = 0;
   char str[MAX_WORD_LEN * 4 + 1] = {0};
   char16 str16[MAX_WORD_LEN + 1];
-  wchar_t wstr[MAX_WORD_LEN + 1];
+
   im_get_candidate(index, str16, MAX_WORD_LEN);
 
-  str16[MAX_WORD_LEN] = 0;
-  while (str16[i] && i < MAX_WORD_LEN) {
-    wstr[i] = str16[i];
-    i++;
+  if (sizeof(char16) == sizeof(wchar_t)) {
+    tk_utf8_from_utf16((wchar_t*)str16, str, sizeof(str) - 1);
+  } else {
+    uint32_t i = 0;
+    wchar_t wstr[MAX_WORD_LEN + 1];
+    while (str16[i] && i < MAX_WORD_LEN) {
+      wstr[i] = str16[i];
+      i++;
+    }
+    wstr[i] = 0;
+    tk_utf8_from_utf16(wstr, str, sizeof(str) - 1);
   }
-  wstr[i] = 0;
-
-  tk_utf8_from_utf16(wstr, str, sizeof(str) - 1);
 
   return input_engine_add_candidate(engine, str);
 }
