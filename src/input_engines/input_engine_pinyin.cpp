@@ -46,7 +46,7 @@ static ret_t input_engine_pinyin_reset_input(input_engine_t* engine) {
 
 static ret_t input_engine_pinyin_add_candidate(input_engine_t* engine, uint32_t index) {
   uint32_t i = 0;
-  char str[MAX_WORD_LEN * 2 + 1];
+  char str[MAX_WORD_LEN * 4 + 1] = {0};
   char16 str16[MAX_WORD_LEN + 1];
   wchar_t wstr[MAX_WORD_LEN + 1];
   im_get_candidate(index, str16, MAX_WORD_LEN);
