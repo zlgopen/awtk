@@ -204,3 +204,15 @@ TEST(Button, tr_text) {
 
   widget_destroy(w1);
 }
+
+TEST(Button, name) {
+  widget_t* w1 = button_create(NULL, 10, 20, 30, 40);
+
+  widget_set_name(w1, "abc");
+  ASSERT_STREQ(w1->name, "abc");
+
+  widget_set_name(w1, NULL);
+  ASSERT_EQ(w1->name == NULL, true);
+
+  widget_destroy(w1);
+}
