@@ -293,11 +293,21 @@ int fons__tt_loadFont(FONScontext *context, FONSttFontImpl *font, unsigned char 
 void fons__tt_getFontVMetrics(FONSttFontImpl *font, int *ascent, int *descent, int *lineGap)
 {
 	stbtt_GetFontVMetrics(&font->font, ascent, descent, lineGap);
+	if(*ascent == 0 && *descent == 0) {
+		float scale = stbtt_ScaleForMappingEmToPixels(&font->font, 18);
+		*ascent = (int)(18 / scale);
+		*descent = 0;
+		*lineGap = 0;
+	}
 }
 
 float fons__tt_getPixelHeightScale(FONSttFontImpl *font, float size)
 {
-	return stbtt_ScaleForPixelHeight(&font->font, size);
+	float scale = stbtt_ScaleForPixelHeight(&font->font, size);
+	if (scale == INFINITY) {
+		scale = stbtt_ScaleForMappingEmToPixels(&font->font, size);
+	}
+	return scale;
 }
 
 int fons__tt_getGlyphIndex(FONSttFontImpl *font, int codepoint)

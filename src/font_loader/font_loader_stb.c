@@ -89,6 +89,9 @@ static font_vmetrics_t font_stb_get_vmetrics(font_t* f, font_size_t font_size) {
   font_stb_t* font = (font_stb_t*)f;
   stbtt_fontinfo* sf = &(font->stb_font);
   float scale = stbtt_ScaleForPixelHeight(sf, font_size);
+  if (scale == INFINITY) {
+    scale = stbtt_ScaleForMappingEmToPixels(sf, font_size);
+  }
 
   vmetrics.ascent = scale * font->ascent;
   vmetrics.descent = scale * font->descent;
@@ -209,6 +212,13 @@ static font_t* font_stb_create_ex(const char* name, const uint8_t* buff, uint32_
   glyph_cache_init(&(f->cache), TK_GLYPH_CACHE_NR, destroy_glyph);
   stbtt_InitFont(&(f->stb_font), buff, stbtt_GetFontOffsetForIndex(buff, 0));
   stbtt_GetFontVMetrics(&(f->stb_font), &(f->ascent), &(f->descent), &(f->line_gap));
+
+  if (f->ascent == 0 && f->descent == 0) {
+    float scale = stbtt_ScaleForMappingEmToPixels(&(f->stb_font), 18);
+    f->ascent = (int)(18 / scale);
+    f->descent = 0;
+    f->line_gap = 0;
+  }
 
   return &(f->base);
 }
