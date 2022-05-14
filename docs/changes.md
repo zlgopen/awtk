@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/05/15
+  * 完善 input\_engine\_pinyin\_add\_candidate (感谢俊圣提供补丁)
+
 2022/05/14
   * 修复opengl模式下无法渲染缺少ascent、descent信息字体的问题，并统一agge模式下的效果（感谢雨欣提供补丁）。 
   * 完善 input\_engine\_pinyin\_add\_candidate (感谢俊圣提供补丁)

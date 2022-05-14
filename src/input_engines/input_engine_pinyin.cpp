@@ -48,7 +48,9 @@ static ret_t input_engine_pinyin_add_candidate(input_engine_t* engine, uint32_t 
   char str[MAX_WORD_LEN * 4 + 1] = {0};
   char16 str16[MAX_WORD_LEN + 1];
 
-  im_get_candidate(index, str16, MAX_WORD_LEN);
+  if (im_get_candidate(index, str16, MAX_WORD_LEN) == NULL) {
+    return RET_OK;
+  }
 
   if (sizeof(char16) == sizeof(wchar_t)) {
     tk_utf8_from_utf16((wchar_t*)str16, str, sizeof(str) - 1);
