@@ -199,7 +199,10 @@ static char* utf16_to_utf8(const wchar_t* str, int32_t len, char* utf8, int out_
   /********** DIFFERENT for UTF8/UCS4 **********/
   // result = g_malloc (n_bytes + 1);
   result = utf8;
-  assert(out_len > n_bytes);
+  if (out_len <= n_bytes) {
+    log_error("utf16_to_utf8: out_len is not big enough\n");
+    goto err_out;
+  }
 
   high_surrogate = 0;
   out = result;
@@ -282,7 +285,7 @@ char* tk_utf8_dup_utf16(const wchar_t* in, int32_t size) {
     size = wcslen(in);
   }
 
-  out_size = size * 4 + 1;
+  out_size = size * 4 + 2;
   out = TKMEM_ALLOC(out_size);
   return_value_if_fail(out != NULL, NULL);
   memset(out, 0x00, out_size);

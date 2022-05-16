@@ -49,6 +49,12 @@ TEST(Utf8, chinese) {
   dump_unicode(res_wstr);
 }
 
+TEST(Utf8, out_len_invalid) {
+  char str[7] = {0};
+  char* result = tk_utf8_from_utf16(L"中文", str, 6);
+  ASSERT_STREQ(result, NULL);
+}
+
 TEST(Utf8, dup) {
   /* 兼容非utf8编码的编译器，采用utf8编码初始化str，编码内容："中文" */
   char str[7] = {(char)0xe4, (char)0xb8, (char)0xad, (char)0xe6, (char)0x96, (char)0x87, 0};
@@ -57,6 +63,15 @@ TEST(Utf8, dup) {
   char* text = tk_utf8_dup_utf16(wstr, -1);
   ASSERT_STREQ(str, text);
   TKMEM_FREE(text);
+
+  if (sizeof(wchar_t) == 4) {
+    const wchar_t wstr2[3] = {0x10912, 0x101ef, 0};
+    char str2[9] = {(char)0xf0, (char)0x90, (char)0xa4, (char)0x92, (char)0xf0, (char)0x90, (char)0x87, (char)0xaf, 0};
+
+    text = tk_utf8_dup_utf16(wstr2, -1);
+    ASSERT_STREQ(str2, text);
+    TKMEM_FREE(text);
+  }
 }
 
 TEST(Utf8, trim_invalid) {
