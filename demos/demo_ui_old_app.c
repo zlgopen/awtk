@@ -801,6 +801,19 @@ static ret_t on_action_list(void* ctx, event_t* e) {
         if (target != NULL) {
           window_close(target);
         }
+      } else if (strstr(name, "quit") == name) {
+        name = name + sizeof("quit");
+        if (strstr(name, "this")) {
+          widget_t* this_win = widget_get_window(widget);
+          name = name + sizeof("this");
+          if (this_win != NULL) {
+            dialog_quit(this_win, 0);
+          }
+        } else {
+          if (target != NULL) {
+            dialog_quit(target, 0);
+          }
+        }
       } else {
         break;
       }
