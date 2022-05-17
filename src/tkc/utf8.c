@@ -84,14 +84,14 @@ uint32_t tk_utf8_get_bytes_of_leading(uint8_t c) {
 const char* const g_utf8_skip = utf8_skip_data;
 #define g_utf8_next_char(p) (char*)((p) + g_utf8_skip[*(const unsigned char*)(p)])
 
-static wchar_t utf8_get_char(const char* p, const char** next) {
+static uint32_t utf8_get_char(const char* p, const char** next) {
   uint32_t mask = 0;
-  wchar_t result = 0;
+  uint32_t result = 0;
   int32_t i = 0, len = 0;
   unsigned char c = (unsigned char)*p;
 
   UTF8_COMPUTE(c, mask, len);
-  if (len == -1) return (wchar_t)-1;
+  if (len == -1) return (uint32_t)-1;
   UTF8_GET(result, p, i, mask, len);
 
   if (next != NULL) {
@@ -101,7 +101,7 @@ static wchar_t utf8_get_char(const char* p, const char** next) {
   return result;
 }
 
-static int unichar_to_utf8(wchar_t c, char* outbuf) {
+static int unichar_to_utf8(uint32_t c, char* outbuf) {
   /* If this gets modified, also update the copy in g_string_insert_unichar() */
   size_t len = 0;
   int first;
@@ -157,7 +157,7 @@ static char* utf16_to_utf8(const wchar_t* str, int32_t len, char* utf8, int out_
   high_surrogate = 0;
   while ((len < 0 || in - str < len) && *in) {
     wchar_t c = *in;
-    wchar_t wc;
+    uint32_t wc;
 
     if (c >= 0xdc00 && c < 0xe000) /* low surrogate */
     {
@@ -209,7 +209,7 @@ static char* utf16_to_utf8(const wchar_t* str, int32_t len, char* utf8, int out_
   in = str;
   while (out < result + n_bytes) {
     wchar_t c = *in;
-    wchar_t wc;
+    uint32_t wc;
 
     if (c >= 0xdc00 && c < 0xe000) /* low surrogate */
     {
@@ -261,6 +261,7 @@ wchar_t* tk_utf8_to_utf16(const char* str, wchar_t* out, uint32_t size) {
 
 wchar_t* tk_utf8_to_utf16_ex(const char* str, uint32_t size, wchar_t* out, uint32_t out_size) {
   uint32_t i = 0;
+  uint32_t val = 0;
   const char* p = str;
   const char* end = NULL;
   const char* next = NULL;
@@ -268,7 +269,24 @@ wchar_t* tk_utf8_to_utf16_ex(const char* str, uint32_t size, wchar_t* out, uint3
 
   end = str + size;
   while (p != NULL && p < end && (i + 1) < out_size) {
-    out[i++] = utf8_get_char(p, &next);
+    val = utf8_get_char(p, &next);
+    return_value_if_fail(val != -1, NULL);
+    
+    if (sizeof(wchar_t) == 4) {
+      out[i++] = val;
+    } else if (sizeof(wchar_t) == 2){
+      if (val < 0x10000) {
+        out[i++] = val;
+      } else {
+        val -= 0x10000;
+        out[i++] = 0xd800 + (val / 0x400);
+        return_value_if_fail((i + 1) < out_size, NULL);
+        out[i++] = 0xdc00 + (val & 0x3FF);
+      }
+    } else {
+      return NULL;
+    }
+    
     p = next;
   }
   out[i] = '\0';
