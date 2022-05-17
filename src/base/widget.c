@@ -23,6 +23,7 @@
 #include "tkc/utf8.h"
 #include "tkc/utils.h"
 #include "tkc/fscript.h"
+#include "tkc/tokenizer.h"
 #include "tkc/color_parser.h"
 #include "tkc/object_default.h"
 
@@ -4968,3 +4969,26 @@ widget_t* widget_find_parent_by_type(widget_t* widget, const char* type) {
 }
 
 #include "object_widget.inc"
+
+ret_t widget_set_props(widget_t* widget, const char* params) {
+  tokenizer_t t;
+  const char* k = NULL;
+  const char* v = NULL;
+  char key[TK_NAME_LEN + 1];
+  return_value_if_fail(widget != NULL && params != NULL, RET_BAD_PARAMS);
+
+  tokenizer_init(&t, params, strlen(params), "&=");
+  while (tokenizer_has_more(&t)) {
+    k = tokenizer_next(&t);
+    tk_strncpy_s(key, sizeof(key) - 1, k, tk_strlen(k));
+
+    k = key;
+    v = tokenizer_next(&t);
+    if (v != NULL) {
+      widget_set_prop_str(widget, k, v);
+    }
+  }
+  tokenizer_deinit(&t);
+
+  return RET_OK;
+}

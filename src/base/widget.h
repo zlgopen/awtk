@@ -1826,6 +1826,18 @@ ret_t widget_get_prop_default_value(widget_t* widget, const char* name, value_t*
 ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v);
 
 /**
+ * @method widget_set_props
+ * 设置多个参数。
+ * >参数之间用&分隔，名称和值之间用=分隔。如: name=awtk&min=10&max=100
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} params 参数列表。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_props(widget_t* widget, const char* params);
+
+/**
  * @method widget_set_prop_str
  * 设置字符串格式的属性。
  * @annotation ["scriptable"]
