@@ -1,6 +1,7 @@
 # 最新动态
 
 2022/05/19
+  * 完善func\_str
   * 增加函数tk_memdup
   * 增加fscript函数binary
   * 完善测试程序 (感谢俊圣提供补丁)
