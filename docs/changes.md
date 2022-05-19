@@ -5,6 +5,7 @@
   * 增加fscript函数binary
   * 完善测试程序 (感谢俊圣提供补丁)
   * 重构widget\_set\_xywh (感谢俊圣提供补丁)
+  * 重构text\_edit\_get\_selected\_text(感谢俊圣提供补丁)
   * 完善func\_json\_save\_ex（感谢国文提供补丁）。
 
 2022/05/18

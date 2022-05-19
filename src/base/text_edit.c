@@ -1532,10 +1532,7 @@ char* text_edit_get_selected_text(text_edit_t* text_edit) {
   size = state.select_end - state.select_start;
 
   if (size > 0) {
-    ret = TKMEM_ZALLOCN(char, size + 1);
-    return_value_if_fail(ret != NULL, NULL);
-
-    tk_utf8_from_utf16_ex(text_edit->widget->text.str + state.select_start, size, ret, size + 1);
+    ret = tk_utf8_dup_utf16(text_edit->widget->text.str + state.select_start, size);
   }
 
   return ret;
