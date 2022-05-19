@@ -455,13 +455,12 @@ ret_t value_deep_copy(value_t* dst, const value_t* src) {
     case VALUE_TYPE_UBJSON: {
       if (src->value.binary_data.data != NULL) {
         uint32_t size = src->value.binary_data.size;
-        void* data = TKMEM_ALLOC(size);
+        void* data = tk_memdup(src->value.binary_data.data, size);
         return_value_if_fail(data != NULL, RET_OOM);
 
         dst->free_handle = TRUE;
         dst->value.binary_data.data = data;
         dst->value.binary_data.size = size;
-        memcpy(data, src->value.binary_data.data, size);
       } else {
         dst->free_handle = FALSE;
       }
