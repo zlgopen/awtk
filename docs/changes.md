@@ -1,8 +1,11 @@
 # 最新动态
 
 2022/05/19
-  * 完善func\_json\_save\_ex（感谢国文提供补丁）。
+  * 增加函数tk_memdup
+  * 增加fscript函数binary
   * 完善测试程序 (感谢俊圣提供补丁)
+  * 重构widget\_set\_xywh (感谢俊圣提供补丁)
+  * 完善func\_json\_save\_ex（感谢国文提供补丁）。
 
 2022/05/18
   * 完善Windows下utf8转换。按照utf16的规则，对大于0x10000的字符值进行正确的编码 (感谢俊圣提供补丁)

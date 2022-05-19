@@ -62,51 +62,33 @@ static ret_t widget_on_paint_end(widget_t* widget, canvas_t* c);
 typedef widget_t* (*widget_find_wanted_focus_widget_t)(widget_t* widget, darray_t* all_focusable);
 static ret_t widget_move_focus(widget_t* widget, widget_find_wanted_focus_widget_t find);
 
+#define widget_set_xywh(widget, val, update_layout, invalidate) do{ \
+  if (widget->val != val) { \
+    if (invalidate) widget_invalidate_force(widget, NULL);\
+    widget->val = val;\
+    if (invalidate) widget_invalidate_force(widget, NULL);\
+  }\
+  if (update_layout && widget->self_layout != NULL) {\
+    self_layouter_set_param_str(widget->self_layout, #val, "n");\
+  }}while(0)
+
 static ret_t widget_set_x(widget_t* widget, xy_t x, bool_t update_layout) {
-  if (widget->x != x) {
-    widget_invalidate_force(widget, NULL);
-    widget->x = x;
-    widget_invalidate_force(widget, NULL);
-  }
-  if (update_layout && widget->self_layout != NULL) {
-    self_layouter_set_param_str(widget->self_layout, "x", "n");
-  }
+  widget_set_xywh(widget, x, update_layout, TRUE);
   return RET_OK;
 }
 
 static ret_t widget_set_y(widget_t* widget, xy_t y, bool_t update_layout) {
-  if (widget->y != y) {
-    widget_invalidate_force(widget, NULL);
-    widget->y = y;
-    widget_invalidate_force(widget, NULL);
-  }
-  if (update_layout && widget->self_layout != NULL) {
-    self_layouter_set_param_str(widget->self_layout, "y", "n");
-  }
+  widget_set_xywh(widget, y, update_layout, TRUE);
   return RET_OK;
 }
 
 static ret_t widget_set_w(widget_t* widget, wh_t w, bool_t update_layout) {
-  if (widget->w != w) {
-    widget_invalidate_force(widget, NULL);
-    widget->w = w;
-    widget_invalidate_force(widget, NULL);
-  }
-  if (update_layout && widget->self_layout != NULL) {
-    self_layouter_set_param_str(widget->self_layout, "w", "n");
-  }
+  widget_set_xywh(widget, w, update_layout, TRUE);
   return RET_OK;
 }
 
 static ret_t widget_set_h(widget_t* widget, xy_t h, bool_t update_layout) {
-  if (widget->h != h) {
-    widget_invalidate_force(widget, NULL);
-    widget->h = h;
-    widget_invalidate_force(widget, NULL);
-  }
-  if (update_layout && widget->self_layout != NULL) {
-    self_layouter_set_param_str(widget->self_layout, "h", "n");
-  }
+  widget_set_xywh(widget, h, update_layout, TRUE);
   return RET_OK;
 }
 
@@ -228,8 +210,8 @@ ret_t widget_move(widget_t* widget, xy_t x, xy_t y) {
     widget_dispatch(widget, &e);
 
     widget_invalidate_force(widget, NULL);
-    widget_set_x(widget, x, TRUE);
-    widget_set_y(widget, y, TRUE);
+    widget_set_xywh(widget, x, TRUE, FALSE);
+    widget_set_xywh(widget, y, TRUE, FALSE);
     widget_invalidate_force(widget, NULL);
 
     e.type = EVT_MOVE;
@@ -258,8 +240,8 @@ ret_t widget_resize(widget_t* widget, wh_t w, wh_t h) {
     widget_dispatch(widget, &e);
 
     widget_invalidate_force(widget, NULL);
-    widget_set_w(widget, w, TRUE);
-    widget_set_h(widget, h, TRUE);
+    widget_set_xywh(widget, w, TRUE, FALSE);
+    widget_set_xywh(widget, h, TRUE, FALSE);
     widget_invalidate_force(widget, NULL);
     widget_set_need_relayout_children(widget);
 
@@ -279,10 +261,10 @@ ret_t widget_move_resize_ex(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h,
     widget_dispatch(widget, &e);
 
     widget_invalidate_force(widget, NULL);
-    widget_set_x(widget, x, update_layout);
-    widget_set_y(widget, y, update_layout);
-    widget_set_w(widget, w, update_layout);
-    widget_set_h(widget, h, update_layout);
+    widget_set_xywh(widget, x, update_layout, FALSE);
+    widget_set_xywh(widget, y, update_layout, FALSE);
+    widget_set_xywh(widget, w, update_layout, FALSE);
+    widget_set_xywh(widget, h, update_layout, FALSE);
     widget_invalidate_force(widget, NULL);
     widget_set_need_relayout_children(widget);
 
