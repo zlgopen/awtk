@@ -6,6 +6,17 @@
 
 using std::string;
 
+TEST(Buffer, binary0) {
+  wbuffer_t wbuffer;
+  wbuffer_init_extendable(&wbuffer);
+
+  wbuffer_write_binary(&wbuffer, "hello", 5);
+  ASSERT_STREQ((char*)(wbuffer.data), "hello");
+  ASSERT_EQ(wbuffer.data[5], 0);
+
+  wbuffer_deinit(&wbuffer);
+}
+
 TEST(Buffer, demo1) {
   wbuffer_t wbuffer;
   wbuffer_init_extendable(&wbuffer);

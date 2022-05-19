@@ -55,6 +55,7 @@ ret_t wbuffer_extend_capacity(wbuffer_t* wbuffer, uint32_t capacity) {
   if (data != NULL) {
     wbuffer->data = data;
     wbuffer->capacity = capacity;
+    memset(data + wbuffer->cursor, 0x00, capacity - wbuffer->cursor);
 
     return RET_OK;
   }

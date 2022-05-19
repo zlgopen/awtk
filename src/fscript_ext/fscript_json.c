@@ -79,6 +79,7 @@ static ret_t func_json_save_ex(fscript_t* fscript, fscript_args_t* args, value_t
     if (result_type == VALUE_TYPE_BINARY) {
       value_set_binary_data(result, wb.data, wb.cursor);
     } else if (result_type == VALUE_TYPE_STRING) {
+      wbuffer_write_uint8(&wb, 0);
       value_set_str(result, (const char*)wb.data);
     }
     result->free_handle = TRUE;
