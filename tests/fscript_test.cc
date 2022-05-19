@@ -2697,3 +2697,74 @@ d\
 
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(FScript, binary) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "a=binary(i8(1));len(a)", &v);
+  ASSERT_EQ(value_int(&v), 1);
+  value_reset(&v);
+  
+  fscript_eval(obj, "a=binary(u8(1));len(a)", &v);
+  ASSERT_EQ(value_int(&v), 1);
+  value_reset(&v);
+  
+  fscript_eval(obj, "a=binary(i16(1));len(a)", &v);
+  ASSERT_EQ(value_int(&v), 2);
+  value_reset(&v);
+  
+  fscript_eval(obj, "a=binary(u16(1));len(a)", &v);
+  ASSERT_EQ(value_int(&v), 2);
+  value_reset(&v);
+  
+  fscript_eval(obj, "a=binary(i32(1));len(a)", &v);
+  ASSERT_EQ(value_int(&v), 4);
+  value_reset(&v);
+  
+  fscript_eval(obj, "a=binary(u32(1));len(a)", &v);
+  ASSERT_EQ(value_int(&v), 4);
+  value_reset(&v);
+  
+  fscript_eval(obj, "a=binary(i64(1));len(a)", &v);
+  ASSERT_EQ(value_int(&v), 8);
+  value_reset(&v);
+  
+  fscript_eval(obj, "a=binary(u64(1));len(a)", &v);
+  ASSERT_EQ(value_int(&v), 8);
+  value_reset(&v);
+  
+  fscript_eval(obj, "a=binary(f32(1));len(a)", &v);
+  ASSERT_EQ(value_int(&v), 4);
+  value_reset(&v);
+  
+  fscript_eval(obj, "a=binary(f64(1));len(a)", &v);
+  ASSERT_EQ(value_int(&v), 8);
+  value_reset(&v);
+  
+  fscript_eval(obj, "a=binary('abc');len(a)", &v);
+  ASSERT_EQ(value_int(&v), 3);
+  value_reset(&v);
+  
+  fscript_eval(obj, "a=binary('abc');str(value_get_binary_data(a), true)", &v);
+  ASSERT_STREQ(value_str(&v), "abc");
+  value_reset(&v);
+  
+  fscript_eval(obj, "a=binary('abc', 2);str(value_get_binary_data(a), true)", &v);
+  ASSERT_STREQ(value_str(&v), "ab");
+  value_reset(&v);
+
+  fscript_eval(obj, "a=binary('abc', 2, true);str(value_get_binary_data(a), true)", &v);
+  ASSERT_STREQ(value_str(&v), "ab");
+  value_reset(&v);
+  
+  fscript_eval(obj, "a=binary('abcdef');b=binary(a, 4, true);str(value_get_binary_data(b), true)", &v);
+  ASSERT_STREQ(value_str(&v), "abcd");
+  value_reset(&v);
+  
+  fscript_eval(obj, "a=binary('abcdef');b=binary(value_get_binary_data(a), 2, true);str(value_get_binary_data(b), true)", &v);
+  ASSERT_STREQ(value_str(&v), "ab");
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}

@@ -830,6 +830,37 @@ str(int(123))
 str(msg.payload, true)
 ```
 
+#### binary
+
+> 转换为 binary_data_t 类型。
+
+----------------------------
+
+##### 原型
+
+```
+binary(var) => binary_data_t
+binary(var, size) => binary_data_t
+binary(var, size, clone) => binary_data_t
+```
+
+* var 是常见类型的变量。如：i8/i16/i32/i64/u8/u16/u32/u64/float/double/string/wstring/pointer 等。
+* size 如果类型为 pointer 时，size 必须指定，其它类型可以不指定，此时用默认长度。
+* clone 是否拷贝数据。基本数据类型 i8/i16/i32/i64/u8/u16/u32/u64/float/double 始终拷贝。string/wstring/pointer 由本参数决定是否拷贝。
+
+> 如果不拷贝，请确保引用的变量的生命周期大于新的变量。
+
+##### 示例
+
+```
+binary(100)
+binary("123")
+binary("123", 2)
+binary("123", 2, true)
+binary(data, 4)
+binary(data, 8, true)
+```
+
 #### iformat
 
 > 对整数进行格式化（生成的字符串长度不超过 63)

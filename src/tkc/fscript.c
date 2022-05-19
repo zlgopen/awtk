@@ -2134,6 +2134,142 @@ static ret_t func_double(fscript_t* fscript, fscript_args_t* args, value_t* resu
   return RET_OK;
 }
 
+static ret_t func_binary(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  void* p = NULL;
+  uint32_t size = 0;
+  /*基本类型默认拷贝*/
+  bool_t clone = TRUE;
+  value_t* v = args->args;
+  FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
+
+  switch (v->type) {
+    case VALUE_TYPE_BOOL: {
+      size = sizeof(int8_t);
+      p = &(v->value.b);
+      break;
+    }
+    case VALUE_TYPE_INT8: {
+      size = sizeof(int8_t);
+      p = &(v->value.i8);
+      break;
+    }
+    case VALUE_TYPE_UINT8: {
+      size = sizeof(uint8_t);
+      p = &(v->value.u8);
+      break;
+    }
+    case VALUE_TYPE_INT16: {
+      size = sizeof(int16_t);
+      p = &(v->value.i16);
+      break;
+    }
+    case VALUE_TYPE_UINT16: {
+      size = sizeof(uint16_t);
+      p = &(v->value.u16);
+      break;
+    }
+    case VALUE_TYPE_INT32: {
+      size = sizeof(int32_t);
+      p = &(v->value.i32);
+      break;
+    }
+    case VALUE_TYPE_UINT32: {
+      size = sizeof(uint32_t);
+      p = &(v->value.u32);
+      break;
+    }
+    case VALUE_TYPE_INT64: {
+      size = sizeof(int64_t);
+      p = &(v->value.i64);
+      break;
+    }
+    case VALUE_TYPE_UINT64: {
+      size = sizeof(uint64_t);
+      p = &(v->value.u64);
+      break;
+    }
+    case VALUE_TYPE_FLOAT: {
+      size = sizeof(float_t);
+      p = &(v->value.f32);
+      break;
+    }
+    case VALUE_TYPE_FLOAT32: {
+      size = sizeof(float);
+      p = &(v->value.f32);
+      break;
+    }
+    case VALUE_TYPE_DOUBLE: {
+      size = sizeof(double);
+      p = &(v->value.f64);
+      break;
+    }
+    case VALUE_TYPE_STRING: {
+      p = (void*)value_str(v);
+      size = tk_strlen(value_str(v));
+      clone = FALSE;
+      break;
+    }
+    case VALUE_TYPE_WSTRING: {
+      p = (void*)value_wstr(v);
+      size = wcslen(value_wstr(v)) * sizeof(wchar_t);
+      clone = FALSE;
+      break;
+    }
+    case VALUE_TYPE_POINTER: {
+      p = value_pointer(v);
+      size = args->size > 1 ? value_uint32(args->args + 1) : 0;
+      clone = FALSE;
+      break;
+    }
+    case VALUE_TYPE_BINARY: {
+      p = v->value.binary_data.data;
+      size = v->value.binary_data.size;
+      clone = FALSE;
+      break;
+    }
+    case VALUE_TYPE_SIZED_STRING: {
+      p = v->value.sized_str.str;
+      size = v->value.sized_str.size;
+      clone = FALSE;
+      break;
+    }
+    default: {
+      log_debug("not supported type\n");
+      break;
+    }
+  }
+
+  if (p == NULL || size == 0) {
+    value_set_binary_data(result, p, size);
+    return RET_OK;
+  }
+
+  /*参数1指定长度*/
+  if (args->size > 1) {
+    uint32_t esize = value_uint32(args->args + 1);
+    if (esize <= size) {
+      size = esize;
+    } else {
+      log_debug("size is too large, use default\n");
+    }
+  }
+
+  /*参数2要求复制*/
+  if (args->size > 2 && value_bool(args->args + 2)) {
+    clone = TRUE;
+  }
+
+  if (clone) {
+    p = tk_memdup(p, size);
+    value_set_binary_data(result, p, size);
+    result->free_handle = TRUE;
+  } else {
+    value_set_binary_data(result, p, size);
+  }
+
+  return RET_OK;
+}
+
 static ret_t func_str(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   str_t* str = &(fscript->str);
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
@@ -2767,6 +2903,7 @@ static const func_entry_t s_builtin_funcs[] = {{"func", func_function_def, 4},
                                                {"u64", func_u64, 1},
                                                {"f32", func_f32, 1},
                                                {"f64", func_double, 1},
+                                               {"binary", func_binary, 1},
                                                {"float", func_f32, 1},
                                                {"number", func_double, 1},
                                                {"double", func_double, 1},
