@@ -749,6 +749,7 @@ TEST(Widget, load_widget) {
   ASSERT_STREQ(w->name, "test_view");
 
   widget_add_child(win, w);
+  locale_info_change(locale_info(), "zh", "CN");
   widget_dispatch(button, paint_event_init(&e, EVT_BEFORE_PAINT, w, NULL));
   ASSERT_STREQ(button->text.str, L"确定");
 
