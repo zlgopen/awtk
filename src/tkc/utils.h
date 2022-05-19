@@ -278,6 +278,18 @@ char* tk_strncpy(char* dst, const char* src, size_t len);
 char* tk_strncpy_s(char* dst, size_t dst_len, const char* src, size_t src_len);
 
 /**
+ * @method tk_memdup
+ *
+ * 内存拷贝。
+ *
+ * @param {const void*} data 原内存。
+ * @param {uint32_t} len 长度。
+ *
+ * @return {void*} 返回指向的向新的内存指针，如果失败则返回NULL。
+ */
+void* tk_memdup(const void* data, uint32_t len);
+
+/**
  * @method tk_strdup
  *
  * 字符串拷贝函数。

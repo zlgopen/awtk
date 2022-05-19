@@ -339,6 +339,20 @@ char* tk_strndup(const char* str, uint32_t len) {
   return s;
 }
 
+void* tk_memdup(const void* data, uint32_t len) {
+  void* s = NULL;
+  return_value_if_fail(data != NULL, NULL);
+
+  s = TKMEM_ALLOC(len + 1);
+  if (s != NULL) {
+    memcpy(s, data, len);
+    ((char*)s)[len] = '\0';
+  }
+
+  return s;
+}
+
+
 char* tk_strdup(const char* str) {
   return_value_if_fail(str != NULL, NULL);
 

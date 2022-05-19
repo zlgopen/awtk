@@ -699,3 +699,27 @@ TEST(Utils, TK_STR_IS_EMPTY) {
   ASSERT_EQ(TK_STR_IS_NOT_EMPTY(""), false);
   ASSERT_EQ(TK_STR_IS_NOT_EMPTY("a"), true);
 }
+
+TEST(Utils, tk_strndup) {
+  char* s = tk_strndup("hello", 1);
+  ASSERT_STREQ(s, "h");
+  TKMEM_FREE(s);
+
+  s = tk_strndup("hello", 10);
+  ASSERT_STREQ(s, "hello");
+  TKMEM_FREE(s);
+}
+
+TEST(Utils, tk_memdup) {
+  char* s = (char*)tk_memdup("hello", 1);
+  ASSERT_STREQ(s, "h");
+  TKMEM_FREE(s);
+
+  s = (char*)tk_memdup("hello", 5);
+  ASSERT_STREQ(s, "hello");
+  TKMEM_FREE(s);
+  
+  s = (char*)tk_memdup("hello", 10);
+  ASSERT_STREQ(s, "hello");
+  TKMEM_FREE(s);
+}
