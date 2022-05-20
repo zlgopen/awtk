@@ -172,9 +172,9 @@ static ret_t label_get_prop(widget_t* widget, const char* name, value_t* v) {
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     double d = 0;
-    wstr_to_float(&(widget->text), &d);
+    ret_t ret = wstr_to_float(&(widget->text), &d);
     value_set_double(v, d);
-    return RET_OK;
+    return ret;
   } else if (tk_str_eq(name, WIDGET_PROP_LENGTH)) {
     value_set_int(v, label->length);
     return RET_OK;

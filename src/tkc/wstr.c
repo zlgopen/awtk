@@ -368,8 +368,12 @@ ret_t wstr_to_float(wstr_t* str, double* v) {
     uint32_t size = tk_min(str->size, TK_NUM_MAX_LEN) * sizeof(wchar_t);
 
     memcpy(wbuff, str->str, size);
-    tk_utf8_from_utf16_ex(wbuff, ARRAY_SIZE(wbuff), buff, ARRAY_SIZE(buff));
-    *v = tk_atof(buff);
+    if (tk_utf8_from_utf16_ex(wbuff, ARRAY_SIZE(wbuff), buff, ARRAY_SIZE(buff)) != NULL) {
+      *v = tk_atof(buff);
+    } else {
+      *v = 0.0f;
+      return RET_FAIL;
+    }
   } else {
     *v = 0.0f;
   }
