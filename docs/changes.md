@@ -3,6 +3,7 @@
 2022/05/20
   * 增加EMITTER\_ENABLE/EMITTER\_DISABLE
   * 完善text edit。
+  * 完善widget\_set\_tr\_text(感谢俊圣提供补丁)
 
 2022/05/19
   * 完善func\_str
