@@ -62,15 +62,17 @@ static ret_t widget_on_paint_end(widget_t* widget, canvas_t* c);
 typedef widget_t* (*widget_find_wanted_focus_widget_t)(widget_t* widget, darray_t* all_focusable);
 static ret_t widget_move_focus(widget_t* widget, widget_find_wanted_focus_widget_t find);
 
-#define widget_set_xywh(widget, val, update_layout, invalidate) do{ \
-  if (widget->val != val) { \
-    if (invalidate) widget_invalidate_force(widget, NULL);\
-    widget->val = val;\
-    if (invalidate) widget_invalidate_force(widget, NULL);\
-  }\
-  if (update_layout && widget->self_layout != NULL) {\
-    self_layouter_set_param_str(widget->self_layout, #val, "n");\
-  }}while(0)
+#define widget_set_xywh(widget, val, update_layout, invalidate)    \
+  do {                                                             \
+    if (widget->val != val) {                                      \
+      if (invalidate) widget_invalidate_force(widget, NULL);       \
+      widget->val = val;                                           \
+      if (invalidate) widget_invalidate_force(widget, NULL);       \
+    }                                                              \
+    if (update_layout && widget->self_layout != NULL) {            \
+      self_layouter_set_param_str(widget->self_layout, #val, "n"); \
+    }                                                              \
+  } while (0)
 
 static ret_t widget_set_x(widget_t* widget, xy_t x, bool_t update_layout) {
   widget_set_xywh(widget, x, update_layout, TRUE);
@@ -669,37 +671,22 @@ ret_t widget_set_animation(widget_t* widget, const char* animation) {
 }
 
 ret_t widget_create_animator(widget_t* widget, const char* animation) {
-  const char* end = NULL;
-  const char* start = animation;
+  tokenizer_t t;
+  ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && animation != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(tokenizer_init(&t, animation, strlen(animation), ";") != NULL, RET_OOM);
 
-  while (start != NULL) {
-    char params[256];
-    end = strchr(start, ';');
-
-    memset(params, 0x00, sizeof(params));
-    if (end != NULL) {
-      tk_strncpy(params, start, tk_min(end - start, sizeof(params) - 1));
-    } else {
-      tk_strncpy(params, start, sizeof(params) - 1);
-    }
-
-    if (!*params) {
+  while (tokenizer_has_more(&t)) {
+    const char* params = tokenizer_next(&t);
+    if (widget_animator_create(widget, params) == NULL) {
+      ret = RET_BAD_PARAMS;
       break;
-    }
-
-    return_value_if_fail(widget_animator_create(widget, params) != NULL, RET_BAD_PARAMS);
-
-    if (end == NULL) {
-      break;
-    } else {
-      start = end + 1;
     }
   }
-
+  tokenizer_deinit(&t);
   widget_invalidate(widget, NULL);
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t widget_start_animator(widget_t* widget, const char* name) {
