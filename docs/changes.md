@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/05/20
+  * 增加EMITTER\_ENABLE/EMITTER\_DISABLE
+
 2022/05/19
   * 完善func\_str
   * 增加函数tk_memdup

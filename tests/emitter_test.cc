@@ -290,9 +290,9 @@ TEST(Emitter, disable) {
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
   ASSERT_EQ(n, 1u);
 
-  ASSERT_EQ(emitter_disable(&emitter), RET_OK);
+  EMITTER_DISABLE(&emitter);
   ASSERT_EQ(emitter_dispatch(&emitter, &e), RET_OK);
-  ASSERT_EQ(emitter_enable(&emitter), RET_OK);
+  EMITTER_ENABLE(&emitter);
   ASSERT_EQ(n, 1u);
 
   ASSERT_EQ(emitter_disable(&emitter), RET_OK);
