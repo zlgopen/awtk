@@ -552,11 +552,14 @@ static ret_t widget_apply_tr_text_before_paint(void* ctx, event_t* e) {
 ret_t widget_set_tr_text(widget_t* widget, const char* text) {
   const char* tr_text = NULL;
   widget_t* win = widget_get_window(widget);
-  return_value_if_fail(widget != NULL && text != NULL, RET_OK);
+  return_value_if_fail(widget != NULL, RET_OK);
 
-  if (*text == '\0') {
-    TKMEM_FREE(widget->tr_text);
-    widget_set_prop_str(widget, WIDGET_PROP_TEXT, text);
+  if (text == NULL || *text == '\0') {
+    if (widget->tr_text != NULL) {
+      TKMEM_FREE(widget->tr_text);
+      widget_set_prop_str(widget, WIDGET_PROP_TEXT, text);
+    }
+
     return RET_OK;
   }
 

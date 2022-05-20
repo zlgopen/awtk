@@ -206,6 +206,24 @@ TEST(Button, tr_text) {
   widget_destroy(w1);
 }
 
+TEST(Button, tr_text1) {
+  char text[128] = {0};
+  widget_t* w1 = button_create(NULL, 10, 20, 30, 40);
+
+  widget_set_text_utf8(w1, "hello");
+  widget_set_tr_text(w1, "");
+  ASSERT_EQ(w1->tr_text == NULL, true);
+  widget_get_text_utf8(w1, text, sizeof(text)-1);
+  ASSERT_STREQ(text, "hello");
+  
+  widget_set_tr_text(w1, NULL);
+  ASSERT_EQ(w1->tr_text == NULL, true);
+  widget_get_text_utf8(w1, text, sizeof(text)-1);
+  ASSERT_STREQ(text, "hello");
+
+  widget_destroy(w1);
+}
+
 TEST(Button, name) {
   widget_t* w1 = button_create(NULL, 10, 20, 30, 40);
 
