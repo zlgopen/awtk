@@ -762,8 +762,8 @@ static ret_t text_edit_paint_real_text(text_edit_t* text_edit, canvas_t* c) {
   rows_t* rows = impl->rows;
   uint32_t line_height = impl->line_height;
   text_layout_info_t* layout_info = &(impl->layout_info);
-  uint32_t view_top = layout_info->oy + layout_info->margin_t;
-  uint32_t view_bottom = layout_info->oy + layout_info->margin_t + layout_info->h;
+  int32_t view_top = layout_info->oy + layout_info->margin_t;
+  int32_t view_bottom = layout_info->oy + layout_info->margin_t + layout_info->h;
 
   uint32_t i = 0;
   uint32_t k = 0;
@@ -773,7 +773,7 @@ static ret_t text_edit_paint_real_text(text_edit_t* text_edit, canvas_t* c) {
 
     for (j = 0; j < row->line_num; j++, k++) {
       line_info_t* line = (line_info_t*)darray_get(&row->info, j);
-      uint32_t y = 0;
+      int32_t y = 0;
 
       if (impl->single_line) {
         y = (layout_info->h - c->font_size) / 2 + layout_info->margin_t;

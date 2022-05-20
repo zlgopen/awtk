@@ -2,6 +2,7 @@
 
 2022/05/20
   * 增加EMITTER\_ENABLE/EMITTER\_DISABLE
+  * 完善text edit。
 
 2022/05/19
   * 完善func\_str
