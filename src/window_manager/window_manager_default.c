@@ -165,17 +165,19 @@ static ret_t window_manager_default_snap_prev_window_draw_dialog_highlighter_and
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
   if (widget_get_prop(widget, WIDGET_PROP_HIGHLIGHT, &v) == RET_OK) {
     const char* args = value_str(&v);
-    dialog_highlighter_factory_t* f = dialog_highlighter_factory();
-    dialog_highlighter_t* dialog_highlighter =
-        dialog_highlighter_factory_create_highlighter(f, args, widget);
+    if (args != NULL) {
+      dialog_highlighter_factory_t* f = dialog_highlighter_factory();
+      dialog_highlighter_t* dialog_highlighter =
+          dialog_highlighter_factory_create_highlighter(f, args, widget);
 
-    if (dialog_highlighter != NULL) {
-      dialog_highlighter_draw_mask(dialog_highlighter, c, 1.0f);
-      *alpha = dialog_highlighter_get_alpha(dialog_highlighter, 1.0f);
-      widget_off_by_func(widget, EVT_DESTROY, dialog_highlighter_on_dialog_destroy,
-                         dialog_highlighter);
-      dialog_highlighter_destroy(dialog_highlighter);
-      return RET_OK;
+      if (dialog_highlighter != NULL) {
+        dialog_highlighter_draw_mask(dialog_highlighter, c, 1.0f);
+        *alpha = dialog_highlighter_get_alpha(dialog_highlighter, 1.0f);
+        widget_off_by_func(widget, EVT_DESTROY, dialog_highlighter_on_dialog_destroy,
+                          dialog_highlighter);
+        dialog_highlighter_destroy(dialog_highlighter);
+        return RET_OK;
+      }
     }
   }
   return RET_FAIL;
