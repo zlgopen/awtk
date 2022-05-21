@@ -376,14 +376,21 @@ enum { TK_NAME_LEN = 31, TK_FUNC_NAME_LEN = 63 };
 #define tk_str_ieq strcasecmp
 #define tk_str_eq_with_len strncmp
 #else
-#define tk_str_eq(s1, s2) \
-  (((s1) != NULL) && ((s2) != NULL) && *(s1) == *(s2) && strcmp((s1), (s2)) == 0)
-#define tk_str_eq_with_len(s1, s2, len) \
-  (((s1) != NULL) && ((s2) != NULL) && *(s1) == *(s2) && strncmp((s1), (s2), len) == 0)
-#define tk_str_ieq(s1, s2) (((s1) != NULL) && ((s2) != NULL) && strcasecmp((s1), (s2)) == 0)
+#define tk_str_eq(s1, s2)                                                           \
+  (((s1) == NULL && (s2) == NULL) ||                                                \
+   (((s1) != NULL) && ((s2) != NULL) && *((const char*)s1) == *((const char*)s2) && \
+    strcmp((s1), (s2)) == 0))
+#define tk_str_eq_with_len(s1, s2, len)                                            \
+  (((s1) != NULL) && ((s2) != NULL) && *((const char*)s1) == *((const char*)s2) && \
+   strncmp((s1), (s2), len) == 0)
 
-#define tk_wstr_eq(s1, s2) \
-  (((s1) != NULL) && ((s2) != NULL) && *(s1) == *(s2) && wcscmp((s1), (s2)) == 0)
+#define tk_str_ieq(s1, s2)           \
+  (((s1) == NULL && (s2) == NULL) || \
+   (((s1) != NULL) && ((s2) != NULL) && strcasecmp((s1), (s2)) == 0))
+#define tk_wstr_eq(s1, s2)                                                          \
+  (((s1) == NULL && (s2) == NULL) ||                                                \
+   (((s1) != NULL) && ((s2) != NULL) && *((const wchar_t*)s1) == *((const wchar_t*)s2) && \
+    wcscmp((s1), (s2)) == 0))
 #endif /*WITH_CPPCHECK*/
 
 #define tk_lfequal(f1, f2) (fabs((f1) - (f2)) < 0.0001)

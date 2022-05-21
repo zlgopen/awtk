@@ -373,8 +373,8 @@ TEST(Utils, tk_str_end_with) {
 
 TEST(Utils, ieq) {
   ASSERT_EQ(strcasecmp("Trigger", "trigger"), 0);
-  ASSERT_EQ(tk_str_ieq("Trigger", "trigger"), true);
-  ASSERT_EQ(tk_str_ieq("Trigger", "Trigger"), true);
+  ASSERT_EQ(tk_str_ieq("Trigger", "trigger"), TRUE);
+  ASSERT_EQ(tk_str_ieq("Trigger", "Trigger"), TRUE);
 }
 
 TEST(Utils, tk_under_score_to_camel) {
@@ -722,4 +722,20 @@ TEST(Utils, tk_memdup) {
   s = (char*)tk_memdup("hello", 10);
   ASSERT_STREQ(s, "hello");
   TKMEM_FREE(s);
+}
+
+TEST(Utils, str_eq) {
+  ASSERT_EQ(tk_str_eq(NULL, NULL), TRUE);
+  ASSERT_EQ(tk_str_eq("a", NULL), FALSE);
+  ASSERT_EQ(tk_str_eq("a", "a"), TRUE);
+  
+  ASSERT_EQ(tk_str_ieq(NULL, NULL), TRUE);
+  ASSERT_EQ(tk_str_ieq("a", NULL), FALSE);
+  ASSERT_EQ(tk_str_ieq("a", "a"), TRUE);
+  ASSERT_EQ(tk_str_ieq("a", "A"), TRUE);
+  
+  ASSERT_EQ(tk_wstr_eq(NULL, NULL), TRUE);
+  ASSERT_EQ(tk_wstr_eq(L"a", NULL), FALSE);
+  ASSERT_EQ(tk_wstr_eq(L"a", L"a"), TRUE);
+  ASSERT_EQ(tk_wstr_eq(L"a", L"A"), FALSE);
 }
