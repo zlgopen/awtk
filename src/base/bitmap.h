@@ -307,6 +307,20 @@ ret_t bitmap_init_from_bgra(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_for
  */
 ret_t bitmap_init(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format, uint8_t* data);
 
+/**
+ * @method bitmap_init_ex
+ * 初始化图片。
+ * @param {bitmap_t*} bitmap bitmap对象。
+ * @param {uint32_t} w 宽度。
+ * @param {uint32_t} h 高度。
+ * @param {uint32_t} line_length 行长。
+ * @param {bitmap_format_t} format 格式。
+ * @param {const uint8_t*} data 数据，直接引用，但不负责释放。如果为空，由内部自动分配和释放。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t bitmap_init_ex(bitmap_t* bitmap, uint32_t w, uint32_t h, uint32_t line_length, bitmap_format_t format, uint8_t* data);
+
 #if defined(WITH_STB_IMAGE) || defined(WITH_FS_RES)
 /*for helping debug drawing bugs*/
 

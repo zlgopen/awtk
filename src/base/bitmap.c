@@ -546,6 +546,17 @@ ret_t bitmap_init_from_rgba(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_for
 }
 
 ret_t bitmap_init(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format, uint8_t* data) {
+  uint32_t line_length = 0;
+  if (bitmap->format == BITMAP_FMT_MONO) {
+    line_length = TK_BITMAP_MONO_LINE_LENGTH(w);
+  } else {
+    uint32_t bpp = bitmap_get_bpp_of_format(format);
+    line_length = tk_max(w * bpp, line_length);
+  }
+  return bitmap_init_ex(bitmap, w, h, line_length, format, data);
+}
+
+ret_t bitmap_init_ex(bitmap_t* bitmap, uint32_t w, uint32_t h, uint32_t line_length, bitmap_format_t format, uint8_t* data) {
   uint32_t bpp = bitmap_get_bpp_of_format(format);
   return_value_if_fail(bitmap != NULL, RET_BAD_PARAMS);
 
@@ -554,7 +565,7 @@ ret_t bitmap_init(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t form
   bitmap->w = w;
   bitmap->h = h;
   bitmap->format = format;
-  bitmap_set_line_length(bitmap, 0);
+  bitmap->line_length = line_length;
   if (bpp < 4) {
     bitmap->flags = BITMAP_FLAG_OPAQUE;
   }
