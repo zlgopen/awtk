@@ -1,5 +1,9 @@
 # 最新动态
 
+2022/05/23
+  * 完善demoui，删除无用代码(感谢兆坤提供补丁)
+  
+
 2022/05/20
   * 完善text edit。
   * 增加EMITTER\_ENABLE/EMITTER\_DISABLE

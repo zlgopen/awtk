@@ -417,43 +417,6 @@ static ret_t page_button_init(widget_t* page) {
   return RET_OK;
 }
 
-/*** page_label **********************************************************************/
-static ret_t change_rich_text(widget_t* rich_text) {
-  const char* tr_text = NULL;
-  return_value_if_fail(rich_text != NULL, RET_BAD_PARAMS);
-
-  tr_text = locale_info_tr(widget_get_locale_info(rich_text), rich_text->tr_text);
-  widget_set_text_utf8(rich_text, tr_text);
-
-  return RET_OK;
-}
-
-static ret_t on_change_rich_text(void* ctx, event_t* e) {
-  widget_t* rich_text = WIDGET(ctx);
-  return change_rich_text(rich_text);
-}
-
-static ret_t on_rich_text_destroy(void* ctx, event_t* e) {
-  widget_t* rich_text = WIDGET(e->target);
-  widget_t* win = WIDGET(ctx);
-  return widget_off_by_func(win, EVT_LOCALE_CHANGED, on_change_rich_text, (void*)rich_text);
-}
-
-static ret_t page_label_init(widget_t* page) {
-  widget_t* rich_text = NULL;
-  return_value_if_fail(page != NULL, RET_BAD_PARAMS);
-
-  rich_text = widget_lookup(page, "rich_text", TRUE);
-  if (rich_text != NULL && tk_str_eq(widget_get_type(rich_text), WIDGET_TYPE_RICH_TEXT)) {
-    widget_t* win = widget_get_window(rich_text);
-    change_rich_text(rich_text);
-    widget_on(win, EVT_LOCALE_CHANGED, on_change_rich_text, (void*)rich_text);
-    widget_on(rich_text, EVT_DESTROY, on_rich_text_destroy, (void*)win);
-  }
-
-  return RET_OK;
-}
-
 /*** page_slider **********************************************************************/
 static ret_t page_slider_init(widget_t* page) {
   return_value_if_fail(page != NULL, RET_BAD_PARAMS);
@@ -1379,7 +1342,6 @@ ret_t application_init(void) {
 #endif /* APP_DEFAULT_LANGUAGE */
 
   s_page_enter_func_array[0] = page_button_init;
-  s_page_enter_func_array[3] = page_label_init;
   s_page_enter_func_array[6] = page_slider_init;
   s_page_enter_func_array[8] = page_image_init;
   s_page_enter_func_array[9] = page_mledit_init;
