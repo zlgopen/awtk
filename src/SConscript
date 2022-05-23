@@ -25,7 +25,8 @@ BASE_SOURCES = Glob('layouters/*.c') + \
     Glob('dialog_highlighters/*.c') + \
     Glob('window_manager/window_manager_default.c')
 
-BASE_SOURCES += Glob('graphic_buffer/graphic_buffer_default.c')
+if GRAPHIC_BUFFER == "default" :
+    BASE_SOURCES += Glob('graphic_buffer/graphic_buffer_default.c')
 
 if NATIVE_WINDOW == 'sdl':
     BASE_SOURCES += Glob('native_window/native_window_sdl.c')
