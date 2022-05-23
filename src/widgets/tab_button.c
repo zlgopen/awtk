@@ -127,10 +127,7 @@ static widget_t* tab_button_get_pages(widget_t* widget) {
 }
 
 static void tab_button_load_ui(tab_button_t* tab_button, widget_t* pages) {
-  tab_button->ui = ui_loader_load_widget(tab_button->load_ui);
-  if (tab_button->ui != NULL) {
-    widget_add_child(pages, tab_button->ui);
-  }
+  tab_button->ui = ui_loader_load_widget_with_parent(tab_button->load_ui, pages);
 }
 
 int32_t tab_button_index_of(widget_t* widget) {
