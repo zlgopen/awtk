@@ -525,6 +525,10 @@ static ret_t edit_do_request_input_method(widget_t* widget) {
   edit_t* edit = EDIT(widget);
   input_method_t* im = input_method();
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+  if (edit->readonly) {
+    return RET_OK;
+  }
+
   input_method_request(im, widget);
   if (edit->action_text != NULL) {
     const char* action_text = locale_info_tr(widget_get_locale_info(widget), edit->action_text);
