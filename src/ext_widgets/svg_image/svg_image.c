@@ -55,11 +55,6 @@ static ret_t svg_image_on_paint_self(widget_t* widget, canvas_t* c) {
   image_base_t* image_base = IMAGE_BASE(widget);
   return_value_if_fail(svg_image != NULL && image_base != NULL && widget != NULL, RET_BAD_PARAMS);
 
-  if (image_base->image == NULL || image_base->image[0] == '\0') {
-    widget_paint_helper(widget, c, NULL, NULL);
-    return RET_OK;
-  }
-
   if (svg_image->bsvg_asset != NULL) {
     bsvg_t bsvg;
     int32_t x = 0;
