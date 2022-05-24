@@ -60,7 +60,7 @@ static ret_t svg_image_on_paint_self(widget_t* widget, canvas_t* c) {
     return RET_OK;
   }
 
-  if (svg_image_load_bsvg(widget) == RET_OK) {
+  if (svg_image->bsvg_asset != NULL) {
     bsvg_t bsvg;
     int32_t x = 0;
     int32_t y = 0;
@@ -125,11 +125,8 @@ ret_t svg_image_set_image(widget_t* widget, const char* name) {
   svg_image_t* svg_image = SVG_IMAGE(widget);
   return_value_if_fail(svg_image != NULL && name != NULL, RET_BAD_PARAMS);
 
-  svg_image->image_base.image = tk_str_copy(svg_image->image_base.image, name);
-  if (svg_image->bsvg_asset != NULL) {
-    widget_unload_asset(widget, svg_image->bsvg_asset);
-    svg_image->bsvg_asset = NULL;
-  }
+  image_base_set_image(widget, name);
+  svg_image_load_bsvg(widget);
 
   return widget_invalidate(widget, NULL);
 }
