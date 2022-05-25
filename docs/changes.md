@@ -1,5 +1,10 @@
 # 最新动态
 
+2022/05/25
+  * 完善编辑脚本（感谢朝泽提供补丁）
+    * scons -c时不执行app_helper的prepare()
+    * 修复项目编译时由于awtk的idl.json不存在导致idl_gen失败的问题
+
 2022/05/24
   * 完善 svg image
   * 完善 edit 对 readonly 的处理(感谢雨欣提供补丁)

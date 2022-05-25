@@ -456,7 +456,7 @@ class IDLGen {
     if (typeof(defDirlist) !== 'undefined') {
       let arr = defDirlist.split(';');
       arr.forEach(filename => {
-        if (filename.length > 0) {
+        if (filename.length > 0 && fs.existsSync(filename)) {
           let json = JSON.parse(fs.readFileSync(filename).toString());
           let defInfo = {};
           defInfo.json = json;

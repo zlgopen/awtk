@@ -616,5 +616,7 @@ class AppHelperBase:
             self.SConscript(SConscriptFiles)
         env.AddMethod(variant_SConscript, "SConscript")
     
-        self.prepare()
+        if not Script.GetOption('clean'):
+            self.prepare()
+
         return env
