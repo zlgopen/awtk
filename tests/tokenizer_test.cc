@@ -187,3 +187,23 @@ TEST(Tokenizer, expr9) {
 
   tokenizer_deinit(t);
 }
+
+TEST(Tokenizer, str) {
+  tokenizer_t tokenizer;
+  const char* input = "a='a=b && c=d',b=123,c=\"e=123\",d='123,234'";
+  tokenizer_t* t = tokenizer_init(&tokenizer, input, strlen(input), ",=");
+
+  ASSERT_STREQ(tokenizer_next(t), "a");
+  ASSERT_STREQ(tokenizer_next_str(t), "a=b && c=d");
+  
+  ASSERT_STREQ(tokenizer_next(t), "b");
+  ASSERT_STREQ(tokenizer_next_str(t), "123");
+  
+  ASSERT_STREQ(tokenizer_next(t), "c");
+  ASSERT_STREQ(tokenizer_next_str(t), "e=123");
+  
+  ASSERT_STREQ(tokenizer_next(t), "d");
+  ASSERT_STREQ(tokenizer_next(t), "'123");
+
+  tokenizer_deinit(t);
+}

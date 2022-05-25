@@ -127,6 +127,15 @@ bool_t tokenizer_has_more(tokenizer_t* tokenizer);
 const char* tokenizer_next(tokenizer_t* tokenizer);
 
 /**
+ * @method tokenizer_next_str
+ * 获取下一个字符串(允许使用英文单引号和双引号界定字符串)。
+ * @param {tokenizer_t*} tokenizer tokenizer对象。
+ *
+ * @return {char*} 成功返回字符串，失败返回NULL。
+ */
+const char* tokenizer_next_str(tokenizer_t* tokenizer);
+
+/**
  * @method tokenizer_next_until
  * 获取下一个token，该token直到遇到指定的char。
  * @param {tokenizer_t*} tokenizer tokenizer对象。
