@@ -410,10 +410,13 @@ ret_t window_manager_back_to(widget_t* widget, const char* target);
 /**
  * @method window_manager_switch_to
  * 切换到指定窗口。
- * 
+ *
+ * ```c
+ * window_manager_switch_to(window_manager(), win, widget_child(wm, "home"), FALSE);
+ * ```
  * @param {widget_t*} widget 窗口管理器对象。
  * @param {widget_t*} curr_win 当前窗口。
- * @param {widget_t*} target_win 目标窗口。
+ * @param {widget_t*} target_win 目标窗口(必须存在，可以用widget_child函数到窗口管理器中查找)。
  * @param {bool_t} close 是否关闭当前窗口。 
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
