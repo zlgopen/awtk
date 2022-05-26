@@ -412,7 +412,7 @@ ret_t window_manager_back_to(widget_t* widget, const char* target);
  * 切换到指定窗口。
  *
  * ```c
- * window_manager_switch_to(window_manager(), win, widget_child(wm, "home"), FALSE);
+ * window_manager_switch_to(wm, win, widget_child(wm, "home"), FALSE);
  * ```
  * @param {widget_t*} widget 窗口管理器对象。
  * @param {widget_t*} curr_win 当前窗口。
