@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/05/26
+  * 公开函数bsvg\_draw\_path/svg\_path\_parse
+
 2022/05/25
   * 完善编辑脚本（感谢朝泽提供补丁）
     * scons -c时不执行app_helper的prepare()

@@ -26,6 +26,22 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class svg_path_t
+ * @annotation ["fake"]
+ */
+
+/**
+ * @method svg_path_parse
+ *
+ * 解析路径。
+ *
+ * @param {const char*} path 路径数据。
+ * @param {void*} ctx 回调函数上下文。
+ * @param {tk_visit_t} on_path 路径处理回调函数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t svg_path_parse(const char* path, void* ctx, tk_visit_t on_path);
 
 END_C_DECLS

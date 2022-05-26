@@ -22,27 +22,9 @@
 #include "svg/bsvg_draw.h"
 
 /*https://www.w3.org/TR/SVG11/implnote.html#ArcImplementationNotes*/
+static ret_t bsvg_draw_arc_path(bsvg_draw_ctx_t* ctx, const svg_path_arc_t* arc);
 
-typedef struct _draw_ctx_t {
-  float x;
-  float y;
-  bsvg_t* bsvg;
-  vgcanvas_t* canvas;
-  const svg_shape_t* shape;
-
-  /*for S/S_REL*/
-  float last_x2;
-  float last_y2;
-  uint8_t last_type;
-
-  /*for T/T_REL*/
-  float last_x1;
-  float last_y1;
-} draw_ctx_t;
-
-static ret_t bsvg_draw_arc_path(draw_ctx_t* ctx, const svg_path_arc_t* arc);
-
-ret_t bsvg_draw_path(draw_ctx_t* ctx, const svg_path_t* path) {
+ret_t bsvg_draw_path(bsvg_draw_ctx_t* ctx, const svg_path_t* path) {
   vgcanvas_t* canvas = ctx->canvas;
 
   switch (path->type) {
@@ -273,7 +255,7 @@ static ret_t bsvg_draw_set_line_join(vgcanvas_t* canvas, char line_join) {
   return RET_OK;
 }
 
-ret_t bsvg_draw_shape_end(draw_ctx_t* ctx, const svg_shape_t* shape) {
+ret_t bsvg_draw_shape_end(bsvg_draw_ctx_t* ctx, const svg_shape_t* shape) {
   vgcanvas_t* canvas = ctx->canvas;
   bsvg_header_t* header = ctx->bsvg->header;
 
@@ -320,7 +302,7 @@ ret_t bsvg_draw_shape_end(draw_ctx_t* ctx, const svg_shape_t* shape) {
   return RET_OK;
 }
 
-ret_t bsvg_draw_shape(draw_ctx_t* ctx, const svg_shape_t* shape) {
+ret_t bsvg_draw_shape(bsvg_draw_ctx_t* ctx, const svg_shape_t* shape) {
   vgcanvas_t* canvas = ctx->canvas;
 
   vgcanvas_begin_path(canvas);
@@ -398,7 +380,7 @@ ret_t bsvg_draw_shape(draw_ctx_t* ctx, const svg_shape_t* shape) {
 }
 
 static ret_t bsvg_draw_on_path(void* ctx, const void* data) {
-  draw_ctx_t* info = (draw_ctx_t*)ctx;
+  bsvg_draw_ctx_t* info = (bsvg_draw_ctx_t*)ctx;
   const svg_path_t* path = (const svg_path_t*)data;
 
   if (path->type == SVG_PATH_NULL) {
@@ -411,7 +393,7 @@ static ret_t bsvg_draw_on_path(void* ctx, const void* data) {
 }
 
 static ret_t bsvg_draw_on_shape(void* ctx, const void* data) {
-  draw_ctx_t* info = (draw_ctx_t*)ctx;
+  bsvg_draw_ctx_t* info = (bsvg_draw_ctx_t*)ctx;
   const svg_shape_t* shape = (const svg_shape_t*)data;
 
   info->shape = shape;
@@ -423,7 +405,7 @@ static ret_t bsvg_draw_on_shape(void* ctx, const void* data) {
 ret_t bsvg_draw(bsvg_t* svg, vgcanvas_t* canvas) {
   float sx = 1;
   float sy = 1;
-  draw_ctx_t ctx;
+  bsvg_draw_ctx_t ctx;
   bsvg_header_t* header = svg->header;
   return_value_if_fail(header != NULL && svg != NULL && canvas != NULL, RET_BAD_PARAMS);
 
@@ -578,7 +560,7 @@ bool_t arc_info_next(arc_info_t* info, pointf_t* cp1, pointf_t* cp2, pointf_t* t
 }
 /*Adapt from https://github.com/mozilla/newtab-dev/blob/master/dom/svg/nsSVGPathDataParser.cpp end*/
 
-static ret_t bsvg_draw_arc_path(draw_ctx_t* ctx, const svg_path_arc_t* arc) {
+static ret_t bsvg_draw_arc_path(bsvg_draw_ctx_t* ctx, const svg_path_arc_t* arc) {
   arc_info_t info;
   pointf_t cp1 = {0, 0};
   pointf_t cp2 = {0, 0};
