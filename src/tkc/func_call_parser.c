@@ -48,6 +48,9 @@ ret_t func_call_parser_parse(func_call_parser_t* parser) {
 
   while (tokenizer_has_more(tokenizer)) {
     token = tokenizer_next(tokenizer);
+    if (token == NULL) {
+      break;
+    }
     tk_strncpy(name, token, TK_NAME_LEN);
 
     return_value_if_fail(tokenizer_has_more(tokenizer), RET_BAD_PARAMS);
