@@ -146,6 +146,22 @@ typedef ret_t (*combo_box_custom_on_layout_combobox_popup_t)(widget_t* combobox)
  * </style>
  * </popup>
  * ```
+ *  * 3.combobox的下拉框中的列表项的样式，可以设置combo_box_item的style来改变。
+ * 
+ * ```xml
+ * <combo_box_item>
+ * <style name="default" icon_at="left" text_color="black" bg_color="#f0f0f0">
+ *   <normal  icon="empty"/>
+ *   <focused icon="empty" bg_color="#1296db" text_color="gold" />
+ *   <pressed icon="empty" bg_color="#1296db" text_color="white" />
+ *   <over    icon="empty" bg_color="#1296db" text_color="white" />
+ *   <normal_of_checked  icon="check"/>
+ *   <focused_of_checked  icon="check" bg_color="#1296db" text_color="gold"/>
+ *   <pressed_of_checked icon="check" bg_color="#1296db" text_color="white" />
+ *   <over_of_checked    icon="check" bg_color="#1296db" text_color="white" />
+ * </style>
+ * </combo_box_item>
+ * ```
  * 
  * > 更多用法请参考：[theme
  *default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L422)
