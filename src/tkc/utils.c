@@ -352,7 +352,6 @@ void* tk_memdup(const void* data, uint32_t len) {
   return s;
 }
 
-
 char* tk_strdup(const char* str) {
   return_value_if_fail(str != NULL, NULL);
 
@@ -1495,4 +1494,18 @@ float_t tk_eval_ratio_or_px(const char* expr, int32_t value) {
     /*ex: 100px */
     return tk_atoi(expr);
   }
+}
+
+char* tk_replace_char(char* str, char from, char to) {
+  char* p = str;
+  return_value_if_fail(str != NULL, NULL);
+
+  while (*p) {
+    if (*p == from) {
+      *p = to;
+    }
+    p++;
+  }
+
+  return str;
 }

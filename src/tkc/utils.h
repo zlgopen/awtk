@@ -584,8 +584,6 @@ int compare_always_equal(const void* a, const void* b);
  */
 bool_t tk_is_valid_name(const char* name);
 
-ret_t tk_replace_locale(const char* name, char out[TK_NAME_LEN + 1], const char* locale);
-
 /**
  * @method tk_str_start_with
  *
@@ -845,6 +843,21 @@ bool_t tk_wild_card_match(const char* pattern, const char* str);
  * @return {float_t} 返回计算结果。
  */
 float_t tk_eval_ratio_or_px(const char* expr, int32_t value);
+
+/**
+ * @method tk_replace_char
+ *
+ * 替换字符。
+ *
+ * @param {char*} str 原字符串。
+ * @param {char} from 被替换的字符。
+ * @param {char} to 替换成的字符。
+ *
+ * @return {char*} 返回str。
+ */
+char* tk_replace_char(char* str, char from, char to);
+
+ret_t tk_replace_locale(const char* name, char out[TK_NAME_LEN + 1], const char* locale);
 
 /*public for test*/
 ret_t xml_file_expand(const char* filename, str_t* s, const char* data);

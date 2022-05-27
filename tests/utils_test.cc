@@ -739,3 +739,14 @@ TEST(Utils, str_eq) {
   ASSERT_EQ(tk_wstr_eq(L"a", L"a"), TRUE);
   ASSERT_EQ(tk_wstr_eq(L"a", L"A"), FALSE);
 }
+
+TEST(Utils, replace_char) {
+  char str[32];
+
+  tk_strcpy(str, "a\\b\\c");
+  ASSERT_STREQ(tk_replace_char(str, '\\', '/'), "a/b/c");
+
+  tk_strcpy(str, "a/b/c");
+  ASSERT_STREQ(tk_replace_char(str, '\\', '/'), "a/b/c");
+}
+
