@@ -45,6 +45,18 @@ BEGIN_C_DECLS
  */
 ret_t svg_to_bsvg(const char* xml, uint32_t size, uint32_t** out, uint32_t* out_size);
 
+/**
+ * @method svg_file_to_bsvg
+ *
+ * svg to bsvg
+ *
+ * @param {const char*} ifilename svg文件名。
+ * @param {const char*} ofilename bsvg文件名。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t svg_file_to_bsvg(const char* ifilename, const char* ofilename);
+
 /*public for test*/
 uint32_t svg_parse_numbers(const char* str, float* out, uint32_t max_nr);
 

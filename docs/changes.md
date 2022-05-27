@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/05/27
+  * 增加函数 svg\_file\_to\_bsvg。
+
 2022/05/26
   * 公开函数bsvg\_draw\_path/svg\_path\_parse
 

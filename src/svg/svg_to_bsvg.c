@@ -450,3 +450,24 @@ ret_t svg_to_bsvg(const char* xml, uint32_t size, uint32_t** out, uint32_t* out_
 
   return RET_OK;
 }
+
+#include "tkc/fs.h"
+
+ret_t svg_file_to_bsvg(const char* ifilename, const char* ofilename) {
+  ret_t ret = RET_FAIL;
+  uint32_t size = 0;
+  uint8_t* data = NULL;
+  uint32_t osize = 0;
+  uint32_t* odata = NULL;
+  return_value_if_fail(ifilename != NULL && ofilename != NULL, RET_BAD_PARAMS);
+  data = file_read(ifilename, &size);
+  return_value_if_fail(data != NULL, RET_BAD_PARAMS);
+
+  if (svg_to_bsvg((const char*)data, size, &odata, &osize) == RET_OK) {
+    ret = file_write(ofilename, odata, osize);
+    TKMEM_FREE(odata);
+  }
+  TKMEM_FREE(data);
+
+  return RET_OK;
+}
