@@ -839,6 +839,9 @@ const char* value_str_ex(const value_t* v, char* buff, uint32_t size) {
 
 uint32_t value_type_size(value_type_t type) {
   switch (type) {
+    case VALUE_TYPE_BOOL: {
+      return sizeof(bool_t);
+    }
     case VALUE_TYPE_INT8: {
       return sizeof(int8_t);
     }
