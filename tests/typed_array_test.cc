@@ -207,3 +207,22 @@ TEST(TypedArray, object2) {
 
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(TypedArray, insert_bool) {
+  value_t v;
+  uint8_t i = 0;
+  typed_array_t* a = typed_array_create(VALUE_TYPE_BOOL, 0);
+  ASSERT_EQ(a != NULL, true);
+  ASSERT_EQ(a->element_size, sizeof(uint8_t));
+  for (i = 0; i < 255; i++) {
+    ASSERT_EQ(a->size, (uint32_t)i);
+    ASSERT_EQ(typed_array_insert(a, 0, value_set_bool(&v, i%2==1)), RET_OK);
+    ASSERT_EQ(typed_array_get(a, 0, &v), RET_OK);
+    ASSERT_EQ(value_bool(&v), i%2==1);
+  }
+
+  ASSERT_EQ(typed_array_clear(a), RET_OK);
+  ASSERT_EQ(a->size, 0u);
+
+  typed_array_destroy(a);
+}

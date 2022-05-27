@@ -2,6 +2,7 @@
 
 2022/05/27
   * 增加函数 svg\_file\_to\_bsvg。
+  * typed_array支持bool类型(感谢兆坤提供补丁)。
 
 2022/05/26
   * 公开函数bsvg\_draw\_path/svg\_path\_parse

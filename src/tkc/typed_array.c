@@ -25,6 +25,7 @@
 
 static bool_t typed_array_is_type_supported(value_type_t type) {
   switch (type) {
+    case VALUE_TYPE_BOOL:
     case VALUE_TYPE_INT8:
     case VALUE_TYPE_UINT8:
     case VALUE_TYPE_INT16:
@@ -70,6 +71,10 @@ ret_t typed_array_get(typed_array_t* typed_array, uint32_t index, value_t* v) {
   p = typed_array->data + index * typed_array->element_size;
 
   switch (typed_array->type) {
+    case VALUE_TYPE_BOOL: {
+      value_set_bool(v, *(bool_t*)p);
+      return RET_OK;
+    }
     case VALUE_TYPE_INT8: {
       value_set_int8(v, *(int8_t*)p);
       return RET_OK;
@@ -128,6 +133,10 @@ ret_t typed_array_set(typed_array_t* typed_array, uint32_t index, const value_t*
   p = typed_array->data + index * typed_array->element_size;
 
   switch (typed_array->type) {
+    case VALUE_TYPE_BOOL: {
+      *(bool_t*)p = value_bool(v);
+      return RET_OK;
+    }
     case VALUE_TYPE_INT8: {
       *(int8_t*)p = value_int8(v);
       return RET_OK;
