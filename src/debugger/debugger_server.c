@@ -229,7 +229,8 @@ static debugger_t* debugger_server_find(debugger_server_t* server, const char* c
 
   if (tk_mutex_nest_lock(server->mutex) == RET_OK) {
     if (server->single_mode) {
-      if (code_id != NULL && debugger_match(server->debugger, code_id)) {
+      if (code_id != NULL && server->debugger != NULL &&
+          debugger_match(server->debugger, code_id)) {
         debugger = server->debugger;
       }
     } else {
@@ -621,10 +622,11 @@ ret_t debugger_server_wait(void) {
 
 ret_t debugger_server_stop(void) {
   debugger_server_t* server = s_debugger_server;
-  return_value_if_fail(server != NULL, RET_BAD_PARAMS);
 
-  s_debugger_server = NULL;
-  debugger_server_destroy(server);
+  if (server != NULL) {
+    s_debugger_server = NULL;
+    debugger_server_destroy(server);
+  }
 
   return RET_OK;
 }

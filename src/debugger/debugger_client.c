@@ -100,6 +100,7 @@ static ret_t debugger_client_dispatch_message(debugger_t* debugger, debugger_res
       break;
     }
     default: {
+      emitter_dispatch_simple_event(EMITTER(debugger), resp->code);
       break;
     }
   }
