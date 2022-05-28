@@ -1087,6 +1087,12 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_IMAGE "image"
 
 /**
+ * @const WIDGET_TYPE_ICON
+ * 图标控件。
+ */
+#define WIDGET_TYPE_ICON "icon"
+
+/**
  * @const WIDGET_TYPE_EDIT
  * 文本编辑控件。
  */

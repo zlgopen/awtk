@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/05/28
+  * 注册icon控件为image控件的别名。
+
 2022/05/27
   * 增加函数 svg\_file\_to\_bsvg。
   * typed\_array支持bool类型(感谢兆坤提供补丁)。
