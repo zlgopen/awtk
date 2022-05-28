@@ -337,6 +337,8 @@ npm install -g glob
 
 * [Examples for Custom Widgets: Tree View](https://github.com/zlgopen/awtk-widget-tree-view)
 
+* [Examples for Custom Widgets: Shape](https://github.com/zlgopen/awtk-widget-shape)
+
 * [Examples for Custom Widgets: HTML View](https://github.com/zlgopen/awtk-widget-html-view)
 
 * [Examples for Custom Widgets: ios/android like list item](https://github.com/zlgopen/awtk-widget-slidable-row)

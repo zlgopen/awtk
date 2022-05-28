@@ -331,7 +331,7 @@ npm install -g glob
 
 * [扩展控件实例：TinyGL](https://github.com/zlgopen/awtk-widget-glview)
 
-* [扩展控件实例：number-label](https://github.com/zlgopen/awtk-widget-number-label)
+* [扩展控件实例：数值标签](https://github.com/zlgopen/awtk-widget-number-label)
 
 * [扩展控件实例：代码编辑器](https://github.com/zlgopen/awtk-widget-code-edit)
 
@@ -340,6 +340,8 @@ npm install -g glob
 * [扩展控件实例：表格视图](https://github.com/zlgopen/awtk-widget-table-view)
 
 * [扩展控件实例：树形视图](https://github.com/zlgopen/awtk-widget-tree-view)
+
+* [扩展控件实例: Shape](https://github.com/zlgopen/awtk-widget-shape)
 
 * [扩展控件实例：HTML 视图](https://github.com/zlgopen/awtk-widget-html-view)
 
