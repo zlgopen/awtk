@@ -253,3 +253,18 @@ demotr 提供了实时切换语言的示例，代码可以参考 demos/demo\_tr\
 <language name="zh_CN">&lt;&quot; 英文&amp; 中文&quot;&gt;</language>
 </string>
 ```
+
+* 3. tr_text 中的内容只是一个用来查找的 key，如果翻译的内容比较长，建议用一个精简且唯一的句子代替即可。这样，写起来简单，运行时又节省内存。
+
+比如：用来介绍 AWTK 的文字，在 UI 文件中，可以这样写：
+
+```
+  <label ... tr_text="awtk_intro"/>
+```
+
+```xml
+<string name="awtk_intro">
+<language name="en_US">AWTK , the abbreviation of Toolkit AnyWhere, is an open source GUI engine developed by ZLG. It is a cross-platform GUI engine for embedded systems, WEB, mini programs, mobile phones and PC. It is a powerful, efficient, reliable and easy-to-use GUI engine for users to design beautiful GUI applications.</language>
+<language name="zh_CN">AWTK 全称 Toolkit AnyWhere，是 ZLG 开发的开源 GUI 引擎，旨在为嵌入式系统、WEB、各种小程序、手机和 PC 打造的通用 GUI 引擎，为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的 GUI 引擎。</language>
+</string>
+```
