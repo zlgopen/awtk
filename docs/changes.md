@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/05/31
+  * 增加函数 theme\_foreach
+
 2022/05/30 
   * 完善 children\_layouter\_default (感谢俊圣提供补丁)
 

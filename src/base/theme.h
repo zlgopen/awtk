@@ -29,6 +29,10 @@ BEGIN_C_DECLS
 struct _theme_t;
 typedef struct _theme_t theme_t;
 
+typedef ret_t (*theme_on_data_t)(void* ctx, const char* widget_type, const char* name,
+                                 const char* widget_state, const uint8_t* data);
+
+typedef ret_t (*theme_foreach_t)(theme_t* theme, theme_on_data_t on_data, void* ctx);
 typedef const uint8_t* (*theme_find_style_t)(theme_t* theme, const char* widget_type,
                                              const char* name, const char* widget_state);
 typedef ret_t (*theme_set_stype_data_t)(theme_t* theme, const uint8_t* data);
@@ -45,6 +49,7 @@ struct _theme_t {
   const uint8_t* data;
   bool_t need_free_data;
 
+  theme_foreach_t foreach;
   theme_find_style_t find_style;
   theme_set_stype_data_t set_style_data;
   theme_get_style_type_t get_style_type;
@@ -68,6 +73,17 @@ theme_t* theme(void);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t theme_set(theme_t* theme);
+
+/**
+ * @method theme_foreach
+ * 遍历全部数据。
+ * @param {theme_t*} theme 窗体样式对象。
+ * @param {theme_on_data_t} on_data 回调函数。
+ * @param {void*} ctx 回调函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t theme_foreach(theme_t* theme, theme_on_data_t on_data, void* ctx);
 
 /**
  * @method theme_find_style

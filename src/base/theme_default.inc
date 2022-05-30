@@ -50,13 +50,34 @@ static const uint8_t* theme_default_find_style(theme_t* theme, const char* widge
   return NULL;
 }
 
+static ret_t theme_default_foreach(theme_t* theme, theme_on_data_t on_data, void* ctx) {
+  uint32_t i = 0;
+  const theme_item_t* iter = NULL;
+  const theme_header_t* header = NULL;
+  return_value_if_fail(theme != NULL, RET_OK);
+  return_value_if_fail(theme->data != NULL, RET_OK);
+
+  header = (const theme_header_t*)(theme->data);
+  iter = (const theme_item_t*)(theme->data + sizeof(theme_header_t));
+
+  for (i = 0; i < header->nr; i++) {
+    const uint8_t* data = theme->data + iter->offset;
+    if (on_data(ctx, iter->widget_type, iter->name, iter->state, data) == RET_STOP) {
+      break;
+    }
+    iter++;
+  }
+
+  return RET_OK;
+}
+
 theme_t* theme_default_create_ex(const uint8_t* data, bool_t need_free_data) {
   theme_t* theme = TKMEM_ZALLOC(theme_t);
   return_value_if_fail(theme != NULL, NULL);
 
   theme->data = data;
+  theme->foreach = theme_default_foreach;
   theme->need_free_data = need_free_data;
-
   theme->find_style = theme_default_find_style;
 
   return theme;

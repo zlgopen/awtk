@@ -36,6 +36,12 @@ const uint8_t* theme_find_style(theme_t* theme, const char* widget_type, const c
   }
 }
 
+ret_t theme_foreach(theme_t* theme, theme_on_data_t on_data, void* ctx) {
+  return_value_if_fail(theme != NULL && theme->foreach != NULL && on_data != NULL, RET_BAD_PARAMS);
+
+  return theme->foreach (theme, on_data, ctx);
+}
+
 const char* theme_get_style_type(theme_t* theme) {
   return_value_if_fail(theme != NULL, NULL);
   if (theme->get_style_type != NULL) {
@@ -64,7 +70,7 @@ ret_t theme_set_theme_data(theme_t* theme, const uint8_t* data) {
 
 ret_t theme_destroy(theme_t* theme) {
   return_value_if_fail(theme != NULL, RET_BAD_PARAMS);
-  
+
   if (theme == s_theme) {
     s_theme = NULL;
   }
@@ -104,7 +110,7 @@ ret_t theme_set(theme_t* theme) {
 
 #ifndef WITHOUT_XML_STYLE
 #include "theme_xml.h"
-#endif/*WITHOUT_XML_STYLE*/
+#endif /*WITHOUT_XML_STYLE*/
 
 #include "theme_default.h"
 
@@ -115,10 +121,10 @@ theme_t* theme_load_from_data(const char* name, const uint8_t* data, uint32_t si
 
   if (header->magic == THEME_MAGIC) {
     return theme_default_create(data);
-#ifndef WITHOUT_XML_STYLE  
+#ifndef WITHOUT_XML_STYLE
   } else if (*data == '<' || strstr(name, ".xml") != NULL) {
     return theme_xml_create((char*)data);
-#endif/*WITHOUT_XML_STYLE*/
+#endif /*WITHOUT_XML_STYLE*/
   } else {
     return NULL;
   }
@@ -128,8 +134,7 @@ theme_t* theme_load_from_data(const char* name, const uint8_t* data, uint32_t si
 
 #ifndef WITHOUT_XML_STYLE
 #include "theme_xml.inc"
-#endif/*WITHOUT_XML_STYLE*/
+#endif /*WITHOUT_XML_STYLE*/
 
 #include "theme_data.inc"
 #include "theme_default.inc"
-
