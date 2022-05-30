@@ -735,6 +735,8 @@ static ret_t slide_indicator_target_on_destroy(void* ctx, event_t* e) {
   return_value_if_fail(slide_indicator != NULL, RET_BAD_PARAMS);
 
   slide_indicator->indicated_widget = NULL;
+  TKMEM_FREE(slide_indicator->anchor_x);
+  TKMEM_FREE(slide_indicator->anchor_y);
 
   return RET_OK;
 }
