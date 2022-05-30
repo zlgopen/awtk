@@ -298,8 +298,8 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
     area = rect_init(0, 0, w, h);
     for (i = 0; i < n; i++) {
       iter = children[i];
-      if (self_layouter_default_is_valid(iter->self_layout)) {
-        widget_layout_self_with_rect(iter->self_layout, iter, &area);
+      if (iter->self_layout) {
+        self_layouter_layout(iter->self_layout, iter, &area);
       }
     }
 
@@ -344,8 +344,8 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
     area = rect_init(0, 0, w, h);
     for (i = 0; i < n; i++) {
       iter = children[i];
-      if (self_layouter_default_is_valid(iter->self_layout)) {
-        widget_layout_self_with_rect(iter->self_layout, iter, &area);
+      if (iter->self_layout) {
+        self_layouter_layout(iter->self_layout, iter, &area);
       }
     }
 
@@ -389,7 +389,7 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
 
       area = rect_init(x, y, item_w, item_h);
       widget_move_resize_ex(iter, x, y, item_w, item_h, FALSE);
-      if (self_layouter_default_is_valid(iter->self_layout)) {
+      if (iter->self_layout) {
         if (self_layouter_get_param_int(iter->self_layout, "x_attr", 0) == X_ATTR_UNDEF) {
           self_layouter_set_param_str(iter->self_layout, "x", "0");
         }
@@ -398,7 +398,7 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
           self_layouter_set_param_str(iter->self_layout, "y", "0");
         }
 
-        widget_layout_self_with_rect(iter->self_layout, iter, &area);
+        self_layouter_layout(iter->self_layout, iter, &area);
       }
 
       c++;
