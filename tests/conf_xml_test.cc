@@ -114,3 +114,14 @@ TEST(Xml, basic4) {
   str_reset(&str);
   conf_doc_destroy(doc);
 }
+
+TEST(Xml, basic5) {
+  str_t str;
+  conf_doc_t* doc = conf_doc_load_xml("<group_box><style/></group_box>");
+
+  str_init(&str, 100);
+  conf_doc_save_xml(doc, &str);
+  ASSERT_STREQ(str.str, "");
+  str_reset(&str);
+  conf_doc_destroy(doc);
+}

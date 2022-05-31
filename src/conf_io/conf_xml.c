@@ -41,6 +41,7 @@ static void my_xml_builder_on_start(XmlBuilder* thiz, const char* tag, const cha
   return_if_fail(node != NULL);
 
   conf_doc_append_child(b->doc, b->node, node);
+  node->value_type = CONF_NODE_VALUE_NODE;
   b->node = node;
   b->level++;
 
