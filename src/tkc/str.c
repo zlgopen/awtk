@@ -207,6 +207,44 @@ ret_t str_decode_xml_entity(str_t* str, const char* text) {
   return str_decode_xml_entity_with_len(str, text, strlen(text));
 }
 
+ret_t str_encode_xml_entity(str_t* str, const char* text) {
+  return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
+  return str_encode_xml_entity_with_len(str, text, strlen(text));
+}
+
+ret_t str_encode_xml_entity_with_len(str_t* str, const char* text, uint32_t len) {
+  uint32_t i = 0;
+  return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
+
+  for(i = 0; i < len; i++) {
+    char c = text[i];
+    switch(c) {
+      case '<': {
+        return_value_if_fail(str_append(str, "&lt;") == RET_OK, RET_OOM);
+        break;
+      }
+      case '>': {
+        return_value_if_fail(str_append(str, "&gt;") == RET_OK, RET_OOM);
+        break;
+      }
+      case '&': {
+        return_value_if_fail(str_append(str, "&amp;") == RET_OK, RET_OOM);
+        break;
+      }
+      case '"': {
+        return_value_if_fail(str_append(str, "&quot;") == RET_OK, RET_OOM);
+        break;
+      }
+      default: {
+        return_value_if_fail(str_append_char(str, c) == RET_OK, RET_OOM);
+        break;
+      }
+    }
+  }
+
+  return RET_OK;
+}
+
 ret_t str_unescape(str_t* str) {
   char* s = NULL;
   char* d = NULL;

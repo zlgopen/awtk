@@ -362,6 +362,27 @@ ret_t str_decode_xml_entity(str_t* str, const char* text);
 ret_t str_decode_xml_entity_with_len(str_t* str, const char* text, uint32_t len);
 
 /**
+ * @method str_encode_xml_entity
+ * 对XML基本的entity进行编码，目前仅支持&lt;&gt;&quota;&amp;。
+ * @param {str_t*} str str对象。
+ * @param {char*} text 要编码的XML文本。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_encode_xml_entity(str_t* str, const char* text);
+
+/**
+ * @method str_encode_xml_entity_with_len
+ * 对XML基本的entity进行编码，目前仅支持&lt;&gt;&quota;&amp;。
+ * @param {str_t*} str str对象。
+ * @param {char*} text 要编码的XML文本。
+ * @param {uint32_t} len 字符串长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_encode_xml_entity_with_len(str_t* str, const char* text, uint32_t len);
+
+/**
  * @method str_from_int
  * 用整数初始化字符串。
  * @param {str_t*} str str对象。

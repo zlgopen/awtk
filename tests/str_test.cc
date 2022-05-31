@@ -541,3 +541,14 @@ TEST(Str, append_format) {
 
   str_reset(&str);
 }
+
+TEST(Str, encode_xml_entity) {
+  str_t str;
+  str_t* s = NULL;
+  s = str_init(&str, 0);
+
+  ASSERT_EQ(str_encode_xml_entity(s, "\"a<b>c\"&&\"a<b>c\"&&"), RET_OK);
+  ASSERT_EQ(str_eq(s, "&quot;a&lt;b&gt;c&quot;&amp;&amp;&quot;a&lt;b&gt;c&quot;&amp;&amp;"), TRUE);
+
+  str_reset(s);
+}

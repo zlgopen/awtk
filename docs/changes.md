@@ -2,6 +2,8 @@
 
 2022/05/31
   * 增加函数 theme\_foreach
+  * 增加函数str\_encode\_xml\_entity/str\_encode\_xml\_entity\_with\_len。
+  * 增加conf\_xml用于读写xml文件。  
 
 2022/05/30 
   * 完善 children\_layouter\_default (感谢俊圣提供补丁)
