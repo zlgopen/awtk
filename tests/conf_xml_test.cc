@@ -121,7 +121,7 @@ TEST(Xml, basic5) {
 
   str_init(&str, 100);
   conf_doc_save_xml(doc, &str);
-  ASSERT_STREQ(str.str, "");
+  ASSERT_STREQ(str.str, "<group_box>\n  <style/>\n</group_box>\n");
   str_reset(&str);
   conf_doc_destroy(doc);
 }
