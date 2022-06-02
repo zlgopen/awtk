@@ -597,10 +597,13 @@ ret_t mledit_scroll_to_offset(widget_t* widget, uint32_t offset) {
   return text_edit_set_offset(mledit->model, 0, scroll_y);
 }
 
-static ret_t mledit_focus_set_cursor(const idle_info_t* info) {
+static ret_t mledit_focus_request_input_method(const idle_info_t* info) {
   mledit_t* mledit = MLEDIT(info->ctx);
   return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
-  mledit_set_cursor(WIDGET(mledit), text_edit_get_cursor(mledit->model));
+
+  if (mledit->open_im_when_focused) {
+    mledit_request_input_method(WIDGET(mledit));
+  }
 
   return RET_REMOVE;
 }
@@ -773,10 +776,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       mledit_start_update_caret(mledit);
 
       if (widget->target == NULL) {
-        if (mledit->open_im_when_focused) {
-          mledit_request_input_method(widget);
-        }
-        widget_add_idle(widget, mledit_focus_set_cursor);
+        widget_add_idle(widget, mledit_focus_request_input_method);
       }
       mledit_save_text(widget);
       break;

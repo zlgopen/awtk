@@ -573,13 +573,24 @@ static ret_t edit_on_blur(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t edit_focus_request_input_method(const idle_info_t* info) {
+  edit_t* edit = EDIT(info->ctx);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+
+  if (edit->open_im_when_focused) {
+    edit_request_input_method(WIDGET(edit));
+  }
+
+  return RET_REMOVE;
+}
+
 static ret_t edit_on_focused(widget_t* widget) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
   edit_start_update_caret(edit);
 
   if (widget->target == NULL) {
-    edit_request_input_method(widget);
+    widget_add_idle(widget, edit_focus_request_input_method);
 
     if (!edit->select_none_when_focused) {
       widget_add_idle(widget, edit_select_all_async);
@@ -925,14 +936,14 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       }
       break;
     }
-     case EVT_CONTEXT_MENU: {
+    case EVT_CONTEXT_MENU: {
       pointer_event_t* evt = (pointer_event_t*)e;
       point_t p = {evt->x, evt->y};
       widget_to_local(widget, &p);
       widget_to_screen(widget, &p);
       text_edit_show_context_menu(edit->model, p.x, p.y);
-       break;
-     }
+      break;
+    }
     default:
       break;
   }

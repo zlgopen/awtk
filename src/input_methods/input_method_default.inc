@@ -24,6 +24,7 @@
 #include "base/idle.h"
 #include "base/enums.h"
 #include "base/window.h"
+#include "base/text_edit.h"
 #include "keyboard/keyboard.h"
 
 #include "base/input_method.h"
@@ -38,7 +39,7 @@
 #else
 #define STR_DEFAULT_KEYBOARD "kb_default"
 #endif
-#endif/*STR_DEFAULT_KEYBOARD*/
+#endif /*STR_DEFAULT_KEYBOARD*/
 
 #if !defined(STR_ASCII_KEYBOARD)
 #if defined(WITH_IME_T9)
@@ -48,7 +49,7 @@
 #else
 #define STR_ASCII_KEYBOARD "kb_ascii"
 #endif
-#endif/*STR_ASCII_KEYBOARD*/
+#endif /*STR_ASCII_KEYBOARD*/
 
 static ret_t input_method_default_on_edit_destroy(void* ctx, event_t* e);
 static ret_t input_method_default_on_keyboard_close(void* ctx, event_t* e);
@@ -225,6 +226,33 @@ static ret_t input_type_keyboard_follow_edit(input_method_t* im) {
   return RET_OK;
 }
 
+static int32_t input_method_default_get_edit_caret_h(widget_t* widget) {
+  value_t v;
+  xy_t caret_y = 0;
+  int32_t real_h = 0;
+  int32_t top_margin = 0;
+  int32_t buttom_margin = 0;
+  canvas_t* c = widget_get_canvas(widget);
+  return_value_if_fail(c != NULL, 0);
+
+  top_margin = widget_get_prop_int(widget, WIDGET_PROP_TOP_MARGIN, 0);
+  buttom_margin = widget_get_prop_int(widget, WIDGET_PROP_BOTTOM_MARGIN, 0);
+
+  if (widget->astyle != NULL) {
+    TEXT_EDIT_GET_STYLE_MARGIN(widget->astyle, top_margin, TOP);
+    TEXT_EDIT_GET_STYLE_MARGIN(widget->astyle, buttom_margin, BOTTOM)
+  }
+
+  real_h = widget->h - top_margin - buttom_margin;
+  caret_y = widget_get_prop_int(widget, WIDGET_PROP_CARET_Y, 0);
+
+  if (tk_str_eq(widget->vt->type, WIDGET_TYPE_EDIT)) {
+    caret_y += (real_h - c->font_size) / 2;
+  }
+
+  return top_margin + caret_y + c->font_size;
+}
+
 static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_name,
                                       bool_t open_anim) {
   value_t v;
@@ -258,7 +286,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
     } else {
       open_anim_hint = close_anim_hint = WINDOW_ANIMATOR_POPDOWN;
     }
-  } else if ((p.y + widget->h) > im->keyboard->y) {
+  } else if ((p.y + input_method_default_get_edit_caret_h(widget)) > im->keyboard->y) {
     im->win = win;
     if (im->win->y < 0) {
       widget_move(im->win, im->win->x, im->win_old_y);
