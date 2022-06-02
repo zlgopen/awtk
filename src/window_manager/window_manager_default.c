@@ -192,6 +192,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   dialog_highlighter_t* dialog_highlighter = NULL;
   int32_t end = -1, start = -1;
+  const char* curr_highlight = widget_get_prop_str(wm->curr_win, WIDGET_PROP_HIGHLIGHT, NULL);
 
   return_value_if_fail(img != NULL && wm != NULL && prev_win != NULL, RET_BAD_PARAMS);
 
@@ -230,7 +231,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
           uint8_t a = 0x0;
           window_manager_default_snap_prev_window_draw_dialog_highlighter_and_get_alpha(iter,
                                                                                         canvas, &a);
-          if (dialog_highlighter != NULL) {
+          if (dialog_highlighter != NULL && curr_highlight != NULL) {
             dialog_highlighter_set_system_bar_alpha(dialog_highlighter, a);
           }
         }
@@ -240,7 +241,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
     }
   }
 
-  if (dialog_highlighter != NULL) {
+  if (dialog_highlighter != NULL && curr_highlight != NULL) {
     dialog_highlighter_prepare_ex(dialog_highlighter, c, canvas);
   }
   canvas_offline_end_draw(canvas);
@@ -276,13 +277,14 @@ static dialog_highlighter_t* window_manager_default_get_dialog_highlighter(widge
 
 static ret_t window_manager_default_create_dialog_highlighter(widget_t* widget,
                                                               widget_t* curr_win) {
-  value_t v;
   ret_t ret = RET_FAIL;
   dialog_highlighter_t* dialog_highlighter = NULL;
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  const char* curr_highlight = widget_get_prop_str(curr_win, WIDGET_PROP_HIGHLIGHT, NULL);
 
   dialog_highlighter = wm->dialog_highlighter;
-  if (dialog_highlighter != NULL && dialog_highlighter->dialog != curr_win) {
+  if (dialog_highlighter != NULL && dialog_highlighter->dialog != curr_win &&
+      curr_highlight != NULL) {
     widget_t* dialog = dialog_highlighter->dialog;
     if (dialog != NULL) {
       widget_off_by_func(dialog, EVT_DESTROY, dialog_highlighter_on_dialog_destroy,
@@ -293,19 +295,16 @@ static ret_t window_manager_default_create_dialog_highlighter(widget_t* widget,
   }
 
   if (dialog_highlighter == NULL && (widget_is_dialog(curr_win) || widget_is_popup(curr_win)) &&
-      widget_get_prop(curr_win, WIDGET_PROP_HIGHLIGHT, &v) == RET_OK) {
-    const char* args = value_str(&v);
-    if (args != NULL) {
-      dialog_highlighter_factory_t* f = dialog_highlighter_factory();
-      dialog_highlighter = dialog_highlighter_factory_create_highlighter(f, args, curr_win);
+      curr_highlight != NULL) {
+    dialog_highlighter_factory_t* f = dialog_highlighter_factory();
+    dialog_highlighter = dialog_highlighter_factory_create_highlighter(f, curr_highlight, curr_win);
 
-      if (dialog_highlighter != NULL) {
-        wm->dialog_highlighter = dialog_highlighter;
+    if (dialog_highlighter != NULL) {
+      wm->dialog_highlighter = dialog_highlighter;
 
-        emitter_on(EMITTER(dialog_highlighter), EVT_DESTROY, window_manager_on_highlighter_destroy,
-                   widget);
-        ret = RET_OK;
-      }
+      emitter_on(EMITTER(dialog_highlighter), EVT_DESTROY, window_manager_on_highlighter_destroy,
+                 widget);
+      ret = RET_OK;
     }
   }
 
@@ -389,6 +388,7 @@ static ret_t window_manager_create_animator(window_manager_default_t* wm, widget
   } else {
     widget_invalidate_force(prev_win, NULL);
     if (widget_get_prop(curr_win, WIDGET_PROP_HIGHLIGHT, &v) == RET_OK) {
+      wm->curr_win = curr_win;
       window_manager_invalidate_system_bar(WIDGET(wm));
       window_manager_prepare_dialog_highlighter(WIDGET(wm), prev_win, curr_win);
     }
@@ -901,7 +901,8 @@ static ret_t window_manager_animate_done(widget_t* widget) {
       window_manager_default_do_open_window(widget, window);
     }
 
-    window_manager_invalidate_system_bar(widget);
+    /* 动画播放完毕后刷新wm，避免出现高亮残留 */
+    widget_invalidate_force(widget, NULL);
   }
 
   return RET_OK;

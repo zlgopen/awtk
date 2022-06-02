@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/06/02
+  * 修复高亮对话框中弹出软键盘导致高亮被删除的问题(感谢雨欣提供补丁)
+
 2022/05/31
   * 增加函数 theme\_foreach
   * 增加函数str\_encode\_xml\_entity/str\_encode\_xml\_entity\_with\_len。
