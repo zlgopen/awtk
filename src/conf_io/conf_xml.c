@@ -49,7 +49,7 @@ static void my_xml_builder_on_start(XmlBuilder* thiz, const char* tag, const cha
     value_t v;
     const char* name = attrs[i];
     const char* value = attrs[i + 1];
-  
+
     str_clear(str);
     str_decode_xml_entity(str, value);
     node = conf_doc_create_node(b->doc, name);
@@ -136,8 +136,8 @@ static ret_t conf_doc_save_prop(conf_node_t* node, str_t* str) {
   conf_node_get_value(node, &v);
 
   return_value_if_fail(str_append_more(str, " ", key, "=\"", NULL) == RET_OK, RET_OOM);
-  return_value_if_fail(str_encode_xml_entity(str, value_str_ex(&v, buff, sizeof(buff) - 1)) == RET_OK,
-                       RET_OOM);
+  return_value_if_fail(
+      str_encode_xml_entity(str, value_str_ex(&v, buff, sizeof(buff) - 1)) == RET_OK, RET_OOM);
   return_value_if_fail(str_append(str, "\"") == RET_OK, RET_OOM);
 
   return RET_OK;
@@ -187,7 +187,7 @@ ret_t conf_doc_save_xml(conf_doc_t* doc, str_t* str) {
 
   str_clear(str);
   while (iter != NULL) {
-    if(conf_doc_save_xml_node(doc, str, iter, 0) != RET_OK) {
+    if (conf_doc_save_xml_node(doc, str, iter, 0) != RET_OK) {
       return RET_OOM;
     }
     iter = iter->next;

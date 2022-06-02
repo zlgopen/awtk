@@ -556,7 +556,8 @@ ret_t bitmap_init(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t form
   return bitmap_init_ex(bitmap, w, h, line_length, format, data);
 }
 
-ret_t bitmap_init_ex(bitmap_t* bitmap, uint32_t w, uint32_t h, uint32_t line_length, bitmap_format_t format, uint8_t* data) {
+ret_t bitmap_init_ex(bitmap_t* bitmap, uint32_t w, uint32_t h, uint32_t line_length,
+                     bitmap_format_t format, uint8_t* data) {
   uint32_t bpp = bitmap_get_bpp_of_format(format);
   return_value_if_fail(bitmap != NULL, RET_BAD_PARAMS);
 

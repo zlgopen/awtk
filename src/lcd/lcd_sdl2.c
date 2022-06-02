@@ -91,7 +91,7 @@ static ret_t lcd_sdl2_flush(lcd_t* lcd) {
     if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
       sr.w = lcd_w = lcd_get_physical_width(lcd);
       sr.h = lcd_h = lcd_get_physical_height(lcd);
-    } else 
+    } else
 #endif
     {
       sr.w = lcd_w = lcd->w;
@@ -117,7 +117,7 @@ static ret_t lcd_sdl2_flush(lcd_t* lcd) {
           rr = lcd_orientation_rect_rotate_by_anticlockwise(dr, o, src.w, src.h);
         }
         image_copy(&dst, &src, &rr, rr.x, rr.y);
-      } else 
+      } else
 #endif
       {
         if (o == LCD_ORIENTATION_0) {
@@ -139,7 +139,7 @@ static ret_t lcd_sdl2_flush(lcd_t* lcd) {
             rr = lcd_orientation_rect_rotate_by_anticlockwise(dr, o, src.w, src.h);
           }
           image_copy(&dst, &src, &rr, rr.x, rr.y);
-        } else 
+        } else
 #endif
         {
           const rect_t* dr = (const rect_t*)dirty_rects->rects + i;

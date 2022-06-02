@@ -216,9 +216,9 @@ ret_t str_encode_xml_entity_with_len(str_t* str, const char* text, uint32_t len)
   uint32_t i = 0;
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
 
-  for(i = 0; i < len; i++) {
+  for (i = 0; i < len; i++) {
     char c = text[i];
-    switch(c) {
+    switch (c) {
       case '<': {
         return_value_if_fail(str_append(str, "&lt;") == RET_OK, RET_OOM);
         break;

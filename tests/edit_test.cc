@@ -649,16 +649,16 @@ TEST(Edit, set_text_for_float) {
 
 TEST(Edit, set_props) {
   widget_t* e = edit_create(NULL, 10, 20, 30, 40);
-  
+
   widget_set_props(e, "input_type=int");
   ASSERT_EQ(EDIT(e)->input_type, INPUT_INT);
 
   widget_set_props(e, "min=10");
   ASSERT_EQ(EDIT(e)->min, 10);
-  
+
   widget_set_props(e, "max=100");
   ASSERT_EQ(EDIT(e)->max, 100);
-  
+
   widget_set_props(e, "max=11&min=1");
   ASSERT_EQ(EDIT(e)->min, 1);
   ASSERT_EQ(EDIT(e)->max, 11);

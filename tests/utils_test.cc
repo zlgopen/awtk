@@ -718,7 +718,7 @@ TEST(Utils, tk_memdup) {
   s = (char*)tk_memdup("hello", 5);
   ASSERT_STREQ(s, "hello");
   TKMEM_FREE(s);
-  
+
   s = (char*)tk_memdup("hello", 10);
   ASSERT_STREQ(s, "hello");
   TKMEM_FREE(s);
@@ -728,12 +728,12 @@ TEST(Utils, str_eq) {
   ASSERT_EQ(tk_str_eq(NULL, NULL), TRUE);
   ASSERT_EQ(tk_str_eq("a", NULL), FALSE);
   ASSERT_EQ(tk_str_eq("a", "a"), TRUE);
-  
+
   ASSERT_EQ(tk_str_ieq(NULL, NULL), TRUE);
   ASSERT_EQ(tk_str_ieq("a", NULL), FALSE);
   ASSERT_EQ(tk_str_ieq("a", "a"), TRUE);
   ASSERT_EQ(tk_str_ieq("a", "A"), TRUE);
-  
+
   ASSERT_EQ(tk_wstr_eq(NULL, NULL), TRUE);
   ASSERT_EQ(tk_wstr_eq(L"a", NULL), FALSE);
   ASSERT_EQ(tk_wstr_eq(L"a", L"a"), TRUE);
@@ -749,4 +749,3 @@ TEST(Utils, replace_char) {
   tk_strcpy(str, "a/b/c");
   ASSERT_STREQ(tk_replace_char(str, '\\', '/'), "a/b/c");
 }
-

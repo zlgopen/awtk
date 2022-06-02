@@ -104,7 +104,8 @@ widget_t* list_item_seperator_create(widget_t* parent, xy_t x, xy_t y, wh_t w, w
  */
 widget_t* list_item_seperator_cast(widget_t* widget);
 
-#define LIST_ITEM_SEPERATOR(widget) ((list_item_seperator_t*)(list_item_seperator_cast(WIDGET(widget))))
+#define LIST_ITEM_SEPERATOR(widget) \
+  ((list_item_seperator_t*)(list_item_seperator_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(list_item_seperator);

@@ -174,7 +174,7 @@ static ret_t window_manager_default_snap_prev_window_draw_dialog_highlighter_and
         dialog_highlighter_draw_mask(dialog_highlighter, c, 1.0f);
         *alpha = dialog_highlighter_get_alpha(dialog_highlighter, 1.0f);
         widget_off_by_func(widget, EVT_DESTROY, dialog_highlighter_on_dialog_destroy,
-                          dialog_highlighter);
+                           dialog_highlighter);
         dialog_highlighter_destroy(dialog_highlighter);
         return RET_OK;
       }
@@ -332,13 +332,13 @@ static ret_t window_manager_create_highlighter(widget_t* widget, widget_t* curr_
 static bool_t window_manager_curr_win_is_top_animator_window(widget_t* wm, widget_t* curr_win) {
   bool_t is_find = FALSE;
   WIDGET_FOR_EACH_CHILD_BEGIN_R(wm, iter, i)
-    if (widget_is_normal_window(iter) && !is_find && curr_win != iter) {
-      return FALSE;
-    }
-    if (iter == curr_win) {
-      is_find = TRUE;
-      break;
-    }
+  if (widget_is_normal_window(iter) && !is_find && curr_win != iter) {
+    return FALSE;
+  }
+  if (iter == curr_win) {
+    is_find = TRUE;
+    break;
+  }
   WIDGET_FOR_EACH_CHILD_END()
   return TRUE;
 }
@@ -356,7 +356,8 @@ static ret_t window_manager_create_animator(window_manager_default_t* wm, widget
 
   return_value_if_fail(wm != NULL && prev_win != NULL && curr_win != NULL, RET_BAD_PARAMS);
 
-  if (wm->animator != NULL || !window_manager_curr_win_is_top_animator_window(WIDGET(wm), curr_win)) {
+  if (wm->animator != NULL ||
+      !window_manager_curr_win_is_top_animator_window(WIDGET(wm), curr_win)) {
     return RET_FAIL;
   }
 

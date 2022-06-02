@@ -319,7 +319,8 @@ ret_t bitmap_init(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t form
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t bitmap_init_ex(bitmap_t* bitmap, uint32_t w, uint32_t h, uint32_t line_length, bitmap_format_t format, uint8_t* data);
+ret_t bitmap_init_ex(bitmap_t* bitmap, uint32_t w, uint32_t h, uint32_t line_length,
+                     bitmap_format_t format, uint8_t* data);
 
 #if defined(WITH_STB_IMAGE) || defined(WITH_FS_RES)
 /*for helping debug drawing bugs*/

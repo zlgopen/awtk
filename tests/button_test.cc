@@ -213,12 +213,12 @@ TEST(Button, tr_text1) {
   widget_set_text_utf8(w1, "hello");
   widget_set_tr_text(w1, "");
   ASSERT_EQ(w1->tr_text == NULL, true);
-  widget_get_text_utf8(w1, text, sizeof(text)-1);
+  widget_get_text_utf8(w1, text, sizeof(text) - 1);
   ASSERT_STREQ(text, "hello");
-  
+
   widget_set_tr_text(w1, NULL);
   ASSERT_EQ(w1->tr_text == NULL, true);
-  widget_get_text_utf8(w1, text, sizeof(text)-1);
+  widget_get_text_utf8(w1, text, sizeof(text) - 1);
   ASSERT_STREQ(text, "hello");
 
   widget_destroy(w1);

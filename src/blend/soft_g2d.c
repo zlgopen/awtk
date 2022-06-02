@@ -426,7 +426,8 @@ ret_t soft_rotate_image_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy
   return RET_NOT_IMPL;
 }
 
-static rect_t soft_blend_image_rotate_get_dst_point(bitmap_t* dst, const rectf_t* dst_r, lcd_orientation_t o) {
+static rect_t soft_blend_image_rotate_get_dst_point(bitmap_t* dst, const rectf_t* dst_r,
+                                                    lcd_orientation_t o) {
   rectf_t r;
   uint32_t w = dst->w;
   uint32_t h = dst->h;
@@ -456,8 +457,8 @@ ret_t soft_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r
           } else if (alpha > 0xf8) {
             rect_t tmp_src = rect_from_rectf(src_r);
             rect_t tmp_dst = soft_blend_image_rotate_get_dst_point(dst, dst_r, o);
-            return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), tmp_dst.x,
-                                        tmp_dst.y, o);
+            return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), tmp_dst.x, tmp_dst.y,
+                                        o);
           } else {
             return blend_image_rotate_bgr565_bgr565(dst, src, dst_r, src_r, alpha, o);
           }
@@ -490,8 +491,8 @@ ret_t soft_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r
           } else if (alpha > 0xf8) {
             rect_t tmp_src = rect_from_rectf(src_r);
             rect_t tmp_dst = soft_blend_image_rotate_get_dst_point(dst, dst_r, o);
-            return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), tmp_dst.x,
-                                        tmp_dst.y, o);
+            return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), tmp_dst.x, tmp_dst.y,
+                                        o);
           } else {
             return blend_image_rotate_rgb565_rgb565(dst, src, dst_r, src_r, alpha, o);
           }
@@ -527,8 +528,8 @@ ret_t soft_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r
           } else if (alpha > 0xf8) {
             rect_t tmp_src = rect_from_rectf(src_r);
             rect_t tmp_dst = soft_blend_image_rotate_get_dst_point(dst, dst_r, o);
-            return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), tmp_dst.x,
-                                        tmp_dst.y, o);
+            return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), tmp_dst.x, tmp_dst.y,
+                                        o);
           } else {
             return blend_image_rotate_bgr888_bgr888(dst, src, dst_r, src_r, alpha, o);
           }
@@ -561,8 +562,8 @@ ret_t soft_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r
           } else if (alpha > 0xf8) {
             rect_t tmp_src = rect_from_rectf(src_r);
             rect_t tmp_dst = soft_blend_image_rotate_get_dst_point(dst, dst_r, o);
-            return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), tmp_dst.x,
-                                        tmp_dst.y, o);
+            return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), tmp_dst.x, tmp_dst.y,
+                                        o);
           } else {
             return blend_image_rotate_rgb888_rgb888(dst, src, dst_r, src_r, alpha, o);
           }

@@ -433,7 +433,8 @@ TEST(ThemeGen, gradient) {
 TEST(ThemeGen, bool) {
   theme_t* theme = NULL;
   const uint8_t* style_data = NULL;
-  const char* str = "<widget><style><normal feedback=\"true\" focusable=\"2\" clear_bg=\"1\"/></style></widget>";
+  const char* str =
+      "<widget><style><normal feedback=\"true\" focusable=\"2\" clear_bg=\"1\"/></style></widget>";
 
   style_t* s = style_factory_create_style(NULL, theme_get_style_type(theme));
 

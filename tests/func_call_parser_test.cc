@@ -78,13 +78,15 @@ TEST(FuncCallParser, object) {
 }
 
 TEST(FuncCallParser, str) {
-  const char* str = "path(w=1024,h=1028,data='m420.5,522l-247.5,-113l177,3l157,19l-86,-60l-0.5,151z')";
+  const char* str =
+      "path(w=1024,h=1028,data='m420.5,522l-247.5,-113l177,3l157,19l-86,-60l-0.5,151z')";
   tk_object_t* obj = func_call_parse(str, strlen(str));
 
   ASSERT_STREQ(obj->name, "path");
   ASSERT_EQ(tk_object_get_prop_int(obj, "w", 0), 1024);
   ASSERT_EQ(tk_object_get_prop_int(obj, "h", 0), 1028);
-  ASSERT_STREQ(tk_object_get_prop_str(obj, "data"), "m420.5,522l-247.5,-113l177,3l157,19l-86,-60l-0.5,151z");
+  ASSERT_STREQ(tk_object_get_prop_str(obj, "data"),
+               "m420.5,522l-247.5,-113l177,3l157,19l-86,-60l-0.5,151z");
 
   tk_object_unref(obj);
 }

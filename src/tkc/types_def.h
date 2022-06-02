@@ -387,8 +387,8 @@ enum { TK_NAME_LEN = 31, TK_FUNC_NAME_LEN = 63 };
 #define tk_str_ieq(s1, s2)           \
   (((s1) == NULL && (s2) == NULL) || \
    (((s1) != NULL) && ((s2) != NULL) && strcasecmp((s1), (s2)) == 0))
-#define tk_wstr_eq(s1, s2)                                                          \
-  (((s1) == NULL && (s2) == NULL) ||                                                \
+#define tk_wstr_eq(s1, s2)                                                                \
+  (((s1) == NULL && (s2) == NULL) ||                                                      \
    (((s1) != NULL) && ((s2) != NULL) && *((const wchar_t*)s1) == *((const wchar_t*)s2) && \
     wcscmp((s1), (s2)) == 0))
 #endif /*WITH_CPPCHECK*/

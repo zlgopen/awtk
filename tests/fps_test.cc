@@ -16,5 +16,5 @@ TEST(FPS, basic) {
   cost = time_now_ms() - start;
   log_debug("cost=%u\n", cost);
 
-  ASSERT_EQ(fps_get(&fps), tk_roundi(180 * 1000.0/cost));
+  ASSERT_EQ(fps_get(&fps), tk_roundi(180 * 1000.0 / cost));
 }

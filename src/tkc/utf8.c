@@ -271,10 +271,10 @@ wchar_t* tk_utf8_to_utf16_ex(const char* str, uint32_t size, wchar_t* out, uint3
   while (p != NULL && p < end && (i + 1) < out_size) {
     val = utf8_get_char(p, &next);
     return_value_if_fail(val != -1, NULL);
-    
+
     if (sizeof(wchar_t) == 4) {
       out[i++] = val;
-    } else if (sizeof(wchar_t) == 2){
+    } else if (sizeof(wchar_t) == 2) {
       if (val < 0x10000) {
         out[i++] = val;
       } else {
@@ -286,7 +286,7 @@ wchar_t* tk_utf8_to_utf16_ex(const char* str, uint32_t size, wchar_t* out, uint3
     } else {
       return NULL;
     }
-    
+
     p = next;
   }
   out[i] = '\0';

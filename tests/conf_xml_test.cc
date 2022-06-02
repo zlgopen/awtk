@@ -30,10 +30,10 @@ TEST(Xml, basic1) {
 
   ASSERT_EQ(conf_doc_get(doc, "hello.name", &v), RET_OK);
   ASSERT_STREQ(value_str(&v), "abc");
-  
+
   ASSERT_EQ(conf_doc_get(doc, "hello.world.name", &v), RET_OK);
   ASSERT_STREQ(value_str(&v), "cde");
-  
+
   ASSERT_EQ(conf_doc_get(doc, "hello.world.value", &v), RET_OK);
   ASSERT_STREQ(value_str(&v), "123");
 
@@ -52,20 +52,21 @@ TEST(Xml, basic2) {
   value_t v;
   str_t str;
   conf_node_t* node = NULL;
-  conf_doc_t* doc = conf_doc_load_xml("<hello name='abc'><world name='cde' value='123'/><foo name='oo' value='456'/></hello>");
+  conf_doc_t* doc = conf_doc_load_xml(
+      "<hello name='abc'><world name='cde' value='123'/><foo name='oo' value='456'/></hello>");
 
   ASSERT_EQ(conf_doc_get(doc, "hello.name", &v), RET_OK);
   ASSERT_STREQ(value_str(&v), "abc");
-  
+
   ASSERT_EQ(conf_doc_get(doc, "hello.world.name", &v), RET_OK);
   ASSERT_STREQ(value_str(&v), "cde");
-  
+
   ASSERT_EQ(conf_doc_get(doc, "hello.world.value", &v), RET_OK);
   ASSERT_STREQ(value_str(&v), "123");
-  
+
   ASSERT_EQ(conf_doc_get(doc, "hello.foo.name", &v), RET_OK);
   ASSERT_STREQ(value_str(&v), "oo");
-  
+
   ASSERT_EQ(conf_doc_get(doc, "hello.foo.value", &v), RET_OK);
   ASSERT_STREQ(value_str(&v), "456");
 
@@ -75,7 +76,9 @@ TEST(Xml, basic2) {
 
   str_init(&str, 100);
   conf_doc_save_xml(doc, &str);
-  ASSERT_STREQ(str.str, "<hello name=\"abc\">\n  <world name=\"cde\" value=\"123\"/>\n  <foo name=\"oo\" value=\"456\"/>\n</hello>\n");
+  ASSERT_STREQ(str.str,
+               "<hello name=\"abc\">\n  <world name=\"cde\" value=\"123\"/>\n  <foo name=\"oo\" "
+               "value=\"456\"/>\n</hello>\n");
   str_reset(&str);
   conf_doc_destroy(doc);
 }
@@ -83,14 +86,18 @@ TEST(Xml, basic2) {
 TEST(Xml, basic3) {
   value_t v;
   str_t str;
-  conf_doc_t* doc = conf_doc_load_xml("<hello name='abc'><world name='cde' value='123'/><foo name='oo' value='456'/></hello><awtk name='ttt'/>");
+  conf_doc_t* doc = conf_doc_load_xml(
+      "<hello name='abc'><world name='cde' value='123'/><foo name='oo' value='456'/></hello><awtk "
+      "name='ttt'/>");
 
   ASSERT_EQ(conf_doc_get(doc, "awtk.name", &v), RET_OK);
   ASSERT_STREQ(value_str(&v), "ttt");
 
   str_init(&str, 100);
   conf_doc_save_xml(doc, &str);
-  ASSERT_STREQ(str.str, "<hello name=\"abc\">\n  <world name=\"cde\" value=\"123\"/>\n  <foo name=\"oo\" value=\"456\"/>\n</hello>\n<awtk name=\"ttt\"/>\n");
+  ASSERT_STREQ(str.str,
+               "<hello name=\"abc\">\n  <world name=\"cde\" value=\"123\"/>\n  <foo name=\"oo\" "
+               "value=\"456\"/>\n</hello>\n<awtk name=\"ttt\"/>\n");
   str_reset(&str);
   conf_doc_destroy(doc);
 }

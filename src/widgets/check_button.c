@@ -257,8 +257,9 @@ widget_t* check_button_get_checked_button(widget_t* widget) {
   return NULL;
 }
 
-widget_t* check_button_create_ex(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h, const char* type, bool_t radio) {
-  const widget_vtable_t* vt = radio ? TK_REF_VTABLE(radio_button) : TK_REF_VTABLE(check_button); 
+widget_t* check_button_create_ex(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h, const char* type,
+                                 bool_t radio) {
+  const widget_vtable_t* vt = radio ? TK_REF_VTABLE(radio_button) : TK_REF_VTABLE(check_button);
   widget_t* widget = widget_create(parent, vt, x, y, w, h);
   check_button_t* check_button = CHECK_BUTTON(widget);
   return_value_if_fail(check_button != NULL, NULL);

@@ -34,4 +34,3 @@ TEST(FExr, json_save) {
 
   TK_OBJECT_UNREF(obj);
 }
-

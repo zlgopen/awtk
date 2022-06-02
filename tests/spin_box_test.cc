@@ -33,7 +33,14 @@ TEST(SpinBox, to_xml) {
 
   str_init(&str, 1024);
   ASSERT_EQ(widget_to_xml(w1, &str), RET_OK);
-  ASSERT_EQ(string(str.str), string("<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>\r\n<spin_box x=\"10\" y=\"20\" w=\"30\" h=\"40\" focusable=\"true\" min=\"0\" max=\"1024\" step=\"1.000000\" input_type=\"1\" readonly=\"false\" cancelable=\"false\" auto_fix=\"false\" left_margin=\"2\" right_margin=\"21\" top_margin=\"2\" bottom_margin=\"2\" action_text=\"done\" password_visible=\"false\">\n</spin_box>\n"));
+  ASSERT_EQ(
+      string(str.str),
+      string(
+          "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>\r\n<spin_box x=\"10\" y=\"20\" "
+          "w=\"30\" h=\"40\" focusable=\"true\" min=\"0\" max=\"1024\" step=\"1.000000\" "
+          "input_type=\"1\" readonly=\"false\" cancelable=\"false\" auto_fix=\"false\" "
+          "left_margin=\"2\" right_margin=\"21\" top_margin=\"2\" bottom_margin=\"2\" "
+          "action_text=\"done\" password_visible=\"false\">\n</spin_box>\n"));
 
   str_reset(&str);
   widget_destroy(w1);

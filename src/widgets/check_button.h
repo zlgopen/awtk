@@ -201,7 +201,8 @@ TK_EXTERN_VTABLE(check_button);
  *
  * @return {widget_t*} widget对象。
  */
-widget_t* check_button_create_ex(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h, const char* type, bool_t radio);
+widget_t* check_button_create_ex(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h, const char* type,
+                                 bool_t radio);
 
 END_C_DECLS
 
