@@ -383,7 +383,24 @@ ret_t dialog_warn(const char* title, const char* text);
  */
 ret_t dialog_confirm(const char* title, const char* text);
 
+/**
+ * @method dialog_create_with_ok_cancel
+ * 创建一个带有OK/Cancel按钮的对话框。
+ *
+ * @param {const char*} stitle 标题。
+ * @param {uint32_t} w 宽度。
+ * @param {uint32_t} h 高度。
+ *
+ * @return {widget_t*} 成功返回dialog对象，失败返回NULL。
+ */
+widget_t* dialog_create_with_ok_cancel(const char* stitle, uint32_t w, uint32_t h);
+
 #define DIALOG(widget) ((dialog_t*)(dialog_cast(WIDGET(widget))))
+
+#define DIALOG_CHILD_OK "ok"
+#define DIALOG_CHILD_CANCEL "cancel"
+#define DIALOG_CHILD_TITLE "title"
+#define DIALOG_CHILD_CLIENT "client"
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(dialog);

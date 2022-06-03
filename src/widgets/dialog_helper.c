@@ -85,9 +85,9 @@ static widget_t* dialog_create_content_label(widget_t* parent, const char* text)
 
 static ret_t dialog_create_ok(widget_t* client, bool_t has_cancel) {
   widget_t* ok = button_create(client, 0, 0, 0, 0);
-  widget_t* dialog = widget_get_window(client);
+  return_value_if_fail(ok != NULL, RET_OOM);
 
-  widget_set_name(ok, "ok");
+  widget_set_name(ok, DIALOG_CHILD_OK);
   widget_set_tr_text(ok, "OK");
   widget_set_focused(ok, TRUE);
   widget_set_focusable(ok, TRUE);
@@ -97,21 +97,22 @@ static ret_t dialog_create_ok(widget_t* client, bool_t has_cancel) {
   } else {
     widget_set_self_layout(ok, "default(x=c, y=bottom:10, w=50%, h=30)");
   }
-  widget_on(ok, EVT_CLICK, on_ok_to_quit, dialog);
+  widget_on(ok, EVT_CLICK, on_ok_to_quit, widget_get_window(client));
 
   return RET_OK;
 }
 
 static ret_t dialog_create_cancel(widget_t* client) {
   widget_t* cancel = button_create(client, 0, 0, 0, 0);
-  widget_t* dialog = widget_get_window(client);
+  return_value_if_fail(cancel != NULL, RET_OOM);
 
-  widget_set_name(cancel, "cancel");
+  widget_set_name(cancel, DIALOG_CHILD_CANCEL);
   widget_set_focusable(cancel, TRUE);
   widget_set_tr_text(cancel, "Cancel");
   widget_use_style(cancel, DIALOG_CANCEL_STYLE);
   widget_set_self_layout(cancel, "default(x=r:10%, y=bottom:10, w=35%, h=30)");
-  widget_on(cancel, EVT_CLICK, on_cancel_to_quit, dialog);
+    
+  widget_on(cancel, EVT_CLICK, on_cancel_to_quit, widget_get_window(client));
 
   return RET_OK;
 }
@@ -134,13 +135,13 @@ static widget_t* dialog_create_simple_ex(widget_t* parent, xy_t x, xy_t y, wh_t 
   title = dialog_title_create(widget, 0, 0, 0, 0);
   goto_error_if_fail(title != NULL);
 
-  widget_set_name(title, "title");
+  widget_set_name(title, DIALOG_CHILD_TITLE);
   widget_set_tr_text(title, stitle);
   widget_set_self_layout_params(title, "0", "0", "100%", "30");
 
   client = dialog_client_create(widget, 0, 0, 0, 0);
   goto_error_if_fail(client != NULL);
-  widget_set_name(client, "client");
+  widget_set_name(client, DIALOG_CHILD_CLIENT);
 
   widget_set_self_layout_params(client, "0", "bottom", "100%", "-30");
 
@@ -222,4 +223,16 @@ ret_t dialog_confirm(const char* title, const char* text) {
 
   title = title != NULL ? title : "Confirm";
   return dialog_simple_show(title, text, DIALOG_CONFIRM_THEME, TRUE, TRUE);
+}
+
+widget_t* dialog_create_with_ok_cancel(const char* stitle, uint32_t w, uint32_t h) {
+  widget_t* widget = dialog_create_simple_ex(NULL, 0, 0, w, h, stitle, NULL);
+  widget_t* client = widget_lookup_by_type(widget, WIDGET_TYPE_DIALOG_CLIENT, TRUE);
+  return_value_if_fail(widget != NULL, NULL);
+
+  dialog_create_ok(client, TRUE);
+  dialog_create_cancel(client);
+  widget_move_to_center(widget);
+
+  return widget;
 }
