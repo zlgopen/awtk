@@ -100,6 +100,19 @@ ret_t conf_doc_destroy_node(conf_doc_t* doc, conf_node_t* node);
 ret_t conf_doc_append_sibling(conf_doc_t* doc, conf_node_t* node, conf_node_t* sibling);
 
 /**
+ * @method conf_doc_node_dup
+ *
+ * 拷贝一个节点，并放到其后。
+ *
+ * @param {conf_doc_t*} doc 文档对象。
+ * @param {conf_node_t*} node 节点对象。
+ * @param {const char*} new_name 新节点的名称，为NULL使用原节点的名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t conf_doc_node_dup(conf_doc_t* doc, conf_node_t* node, const char* new_name);
+
+/**
  * @method conf_doc_find_node
  *
  * 根据path查找节点。

@@ -121,6 +121,50 @@ conf_node_t* conf_doc_create_node(conf_doc_t* doc, const char* name) {
   return node;
 }
 
+static conf_node_t* conf_doc_node_dup_impl(conf_doc_t* doc, conf_node_t* node,
+                                           const char* new_name) {
+  conf_node_t* new_node = NULL;
+  return_value_if_fail(doc != NULL && node != NULL, NULL);
+
+  if (new_name == NULL) {
+    new_name = conf_node_get_name(node);
+  }
+  new_node = conf_doc_create_node(doc, new_name);
+  return_value_if_fail(new_node != NULL, NULL);
+
+  new_node->value_type = node->value_type;
+  if (node->value_type == CONF_NODE_VALUE_NODE) {
+    conf_node_t* iter = conf_node_get_first_child(node);
+    while (iter != NULL) {
+      conf_node_t* new_iter = conf_doc_node_dup_impl(doc, iter, NULL);
+      break_if_fail(new_iter != NULL);
+      conf_doc_append_child(doc, new_node, new_iter);
+
+      iter = iter->next;
+    }
+  } else if (node->value_type != CONF_NODE_VALUE_NONE) {
+    value_t v;
+    if (conf_node_get_value(node, &v) == RET_OK) {
+      conf_node_set_value(new_node, &v);
+    }
+  }
+
+  return new_node;
+}
+
+ret_t conf_doc_node_dup(conf_doc_t* doc, conf_node_t* node, const char* new_name) {
+  conf_node_t* new_node = NULL;
+  return_value_if_fail(doc != NULL && node != NULL, RET_BAD_PARAMS);
+  new_node = conf_doc_node_dup_impl(doc, node, new_name);
+  return_value_if_fail(new_node != NULL, RET_BAD_PARAMS);
+
+  new_node->next = node->next;
+  node->next = new_node;
+  new_node->parent = node->parent;
+
+  return RET_OK;
+}
+
 ret_t conf_doc_destroy_node(conf_doc_t* doc, conf_node_t* node) {
   return_value_if_fail(doc != NULL && node != NULL, RET_BAD_PARAMS);
 

@@ -495,3 +495,57 @@ TEST(Json, subobject1) {
   TK_OBJECT_UNREF(detail);
   TK_OBJECT_UNREF(conf);
 }
+
+TEST(ConfJson, dup0) {
+  str_t str;
+  const char* data = "[0,1,2]";
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+  conf_node_t* node = conf_node_find_child(doc->root, "0");
+  ASSERT_EQ(node != NULL, true);
+  conf_doc_node_dup(doc, node, NULL);
+
+  str_init(&str, 100);
+  conf_doc_save_json(doc, &str);
+  ASSERT_STREQ(str.str, "[\n    0,\n    0,\n    1,\n    2\n]");
+  str_reset(&str);
+
+  conf_doc_destroy(doc);
+}
+
+TEST(ConfJson, dup1) {
+  str_t str;
+  const char* data = "{\"age\":123}";
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+  conf_node_t* node = conf_node_find_child(doc->root, "age");
+  ASSERT_EQ(node != NULL, true);
+  conf_doc_node_dup(doc, node, "weight");
+
+  str_init(&str, 100);
+  conf_doc_save_json(doc, &str);
+  ASSERT_STREQ(str.str, "{\n    \"age\" : 123,\n    \"weight\" : 123\n}");
+  str_reset(&str);
+
+  conf_doc_destroy(doc);
+}
+
+TEST(ConfJson, dup2) {
+  value_t v;
+  str_t str;
+  const char* data = " {\"tom\" : { \"name\" : null, \"age\" : 100  }  } ";
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+  conf_node_t* tom = conf_node_find_child(doc->root, "tom");
+  ASSERT_EQ(tom != NULL, true);
+  conf_doc_node_dup(doc, tom, "jim");
+
+  ASSERT_EQ(conf_doc_get(doc, "jim.age", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 100);
+
+  str_init(&str, 100);
+  conf_doc_save_json(doc, &str);
+  ASSERT_STREQ(str.str,
+               "{\n    \"tom\" : {\n        \"name\" : \"\",\n        \"age\" : 100\n    },\n    "
+               "\"jim\" : {\n        \"name\" : \"\",\n        \"age\" : 100\n    }\n}");
+  str_reset(&str);
+
+  conf_doc_destroy(doc);
+}
