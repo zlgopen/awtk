@@ -502,7 +502,7 @@ TEST(ConfJson, dup0) {
   conf_doc_t* doc = conf_doc_load_json(data, -1);
   conf_node_t* node = conf_node_find_child(doc->root, "0");
   ASSERT_EQ(node != NULL, true);
-  conf_doc_node_dup(doc, node, NULL);
+  conf_doc_dup_node(doc, node, NULL);
 
   str_init(&str, 100);
   conf_doc_save_json(doc, &str);
@@ -518,7 +518,7 @@ TEST(ConfJson, dup1) {
   conf_doc_t* doc = conf_doc_load_json(data, -1);
   conf_node_t* node = conf_node_find_child(doc->root, "age");
   ASSERT_EQ(node != NULL, true);
-  conf_doc_node_dup(doc, node, "weight");
+  conf_doc_dup_node(doc, node, "weight");
 
   str_init(&str, 100);
   conf_doc_save_json(doc, &str);
@@ -535,7 +535,7 @@ TEST(ConfJson, dup2) {
   conf_doc_t* doc = conf_doc_load_json(data, -1);
   conf_node_t* tom = conf_node_find_child(doc->root, "tom");
   ASSERT_EQ(tom != NULL, true);
-  conf_doc_node_dup(doc, tom, "jim");
+  conf_doc_dup_node(doc, tom, "jim");
 
   ASSERT_EQ(conf_doc_get(doc, "jim.age", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 100);
@@ -545,6 +545,28 @@ TEST(ConfJson, dup2) {
   ASSERT_STREQ(str.str,
                "{\n    \"tom\" : {\n        \"name\" : \"\",\n        \"age\" : 100\n    },\n    "
                "\"jim\" : {\n        \"name\" : \"\",\n        \"age\" : 100\n    }\n}");
+  str_reset(&str);
+
+  conf_doc_destroy(doc);
+}
+
+TEST(ConfJson, set_prop) {
+  value_t v;
+  str_t str;
+  const char* data = " {\"tom\" : { \"name\" : null, \"age\" : 100  }  } ";
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+  conf_node_t* tom = conf_node_find_child(doc->root, "tom");
+  ASSERT_EQ(tom != NULL, true);
+  
+  value_set_str(&v, "tom");
+  ASSERT_EQ(conf_doc_set_node_prop(doc, tom, "name", &v), RET_OK);
+  
+  value_set_str(&v, "awtk");
+  ASSERT_EQ(conf_doc_set_node_prop(doc, tom, "product", &v), RET_OK);
+
+  str_init(&str, 100);
+  conf_doc_save_json(doc, &str);
+  ASSERT_STREQ(str.str, "{\n    \"tom\" : {\n        \"name\" : \"tom\",\n        \"age\" : 100,\n        \"product\" : \"awtk\"\n    }\n}");
   str_reset(&str);
 
   conf_doc_destroy(doc);

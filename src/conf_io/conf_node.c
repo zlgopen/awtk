@@ -121,7 +121,7 @@ conf_node_t* conf_doc_create_node(conf_doc_t* doc, const char* name) {
   return node;
 }
 
-static conf_node_t* conf_doc_node_dup_impl(conf_doc_t* doc, conf_node_t* node,
+static conf_node_t* conf_doc_dup_node_impl(conf_doc_t* doc, conf_node_t* node,
                                            const char* new_name) {
   conf_node_t* new_node = NULL;
   return_value_if_fail(doc != NULL && node != NULL, NULL);
@@ -136,7 +136,7 @@ static conf_node_t* conf_doc_node_dup_impl(conf_doc_t* doc, conf_node_t* node,
   if (node->value_type == CONF_NODE_VALUE_NODE) {
     conf_node_t* iter = conf_node_get_first_child(node);
     while (iter != NULL) {
-      conf_node_t* new_iter = conf_doc_node_dup_impl(doc, iter, NULL);
+      conf_node_t* new_iter = conf_doc_dup_node_impl(doc, iter, NULL);
       break_if_fail(new_iter != NULL);
       conf_doc_append_child(doc, new_node, new_iter);
 
@@ -152,17 +152,35 @@ static conf_node_t* conf_doc_node_dup_impl(conf_doc_t* doc, conf_node_t* node,
   return new_node;
 }
 
-ret_t conf_doc_node_dup(conf_doc_t* doc, conf_node_t* node, const char* new_name) {
+conf_node_t* conf_doc_dup_node(conf_doc_t* doc, conf_node_t* node, const char* new_name) {
   conf_node_t* new_node = NULL;
-  return_value_if_fail(doc != NULL && node != NULL, RET_BAD_PARAMS);
-  new_node = conf_doc_node_dup_impl(doc, node, new_name);
-  return_value_if_fail(new_node != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(doc != NULL && node != NULL, NULL);
+  new_node = conf_doc_dup_node_impl(doc, node, new_name);
+  return_value_if_fail(new_node != NULL, NULL);
 
   new_node->next = node->next;
   node->next = new_node;
   new_node->parent = node->parent;
 
-  return RET_OK;
+  return new_node;
+}
+
+ret_t conf_doc_set_node_prop(conf_doc_t* doc, conf_node_t* node, const char* name,
+                             const value_t* v) {
+  conf_node_t* child = NULL;
+  return_value_if_fail(doc != NULL && node != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(name != NULL && v != NULL, RET_BAD_PARAMS);
+
+  child = conf_node_find_child(node, name);
+  if (child == NULL) {
+    child = conf_doc_create_node(doc, name);
+    return_value_if_fail(child != NULL, RET_BAD_PARAMS);
+
+    conf_node_set_value(child, v);
+    return conf_doc_append_child(doc, node, child);
+  } else {
+    return conf_node_set_value(child, v);
+  }
 }
 
 ret_t conf_doc_destroy_node(conf_doc_t* doc, conf_node_t* node) {
