@@ -1,4 +1,6 @@
 # 最新动态
+2022/06/04
+  * 增加函数 conf\_doc\_set\_node\_prop 
 
 2022/06/03
   * 增加函数 dialog\_create\_with\_ok\_cancel
