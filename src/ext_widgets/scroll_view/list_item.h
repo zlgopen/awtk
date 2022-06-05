@@ -122,6 +122,11 @@ widget_t* list_item_cast(widget_t* widget);
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(list_item);
 
+#define TK_LIST_ITEM_STYLE_ODD "odd"
+#define TK_LIST_ITEM_STYLE_EVEN "even"
+#define TK_LIST_ITEM_STYLE_ODD_CLICKABLE "odd_clickable"
+#define TK_LIST_ITEM_STYLE_EVEN_CLICKABLE "even_clickable"
+
 END_C_DECLS
 
 #endif /*TK_LIST_ITEM_H*/
