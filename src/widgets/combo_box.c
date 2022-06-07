@@ -87,6 +87,7 @@ static ret_t combo_box_on_destroy(widget_t* widget) {
   str_reset(&(combo_box->text));
   combo_box_reset_options(widget);
   TKMEM_FREE(combo_box->open_window);
+  TKMEM_FREE(combo_box->theme_of_popup);
 
   edit_on_destroy(widget);
 
@@ -198,6 +199,9 @@ static ret_t combo_box_get_prop(widget_t* widget, const char* name, value_t* v) 
   if (tk_str_eq(name, WIDGET_PROP_OPEN_WINDOW)) {
     value_set_str(v, combo_box->open_window);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_THEME_OF_POPUP)) {
+    value_set_str(v, combo_box->theme_of_popup);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_SELECTED_INDEX)) {
     value_set_int(v, combo_box->selected_index);
     return RET_OK;
@@ -282,6 +286,9 @@ static ret_t combo_box_text_to_index(widget_t* widget, const char* text) {
 static ret_t combo_box_set_prop(widget_t* widget, const char* name, const value_t* v) {
   if (tk_str_eq(name, WIDGET_PROP_OPEN_WINDOW)) {
     combo_box_set_open_window(widget, value_str(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_THEME_OF_POPUP)) {
+    combo_box_set_theme_of_popup(widget, value_str(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_SELECTED_INDEX)) {
     combo_box_set_selected_index(widget, value_int(v));
@@ -664,6 +671,10 @@ static ret_t combo_box_active(widget_t* widget) {
       return_value_if_fail(win != NULL, RET_FAIL);
     }
   }
+
+  if (combo_box->theme_of_popup != NULL) {
+    widget_set_prop_str(win, WIDGET_PROP_THEME, combo_box->theme_of_popup);
+  }
   widget_set_prop_str(win, WIDGET_PROP_MOVE_FOCUS_PREV_KEY, "up");
   widget_set_prop_str(win, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, "down");
   combo_box_hook_items(combo_box, win);
@@ -744,6 +755,16 @@ ret_t combo_box_set_open_window(widget_t* widget, const char* open_window) {
 
   TKMEM_FREE(combo_box->open_window);
   combo_box->open_window = tk_strdup(open_window);
+
+  return RET_OK;
+}
+
+ret_t combo_box_set_theme_of_popup(widget_t* widget, const char* theme_of_popup) {
+  combo_box_t* combo_box = COMBO_BOX(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  TKMEM_FREE(combo_box->theme_of_popup);
+  combo_box->theme_of_popup = tk_strdup(theme_of_popup);
 
   return RET_OK;
 }

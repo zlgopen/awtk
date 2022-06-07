@@ -1,0 +1,18 @@
+<combo_box_item>
+  <style name="default" icon_at="left" text_color="black" bg_color="#f0f0f0">
+    <normal  icon="empty" text_color="green"/>
+    <focused icon="empty" bg_color="#1296db" text_color="gold" />
+    <pressed icon="empty" bg_color="#1296db" text_color="white" />
+    <over    icon="empty" bg_color="#1296db" text_color="white" />
+    <normal_of_checked  icon="check"/>
+    <focused_of_checked  icon="check" bg_color="#1296db" text_color="gold"/>
+    <pressed_of_checked icon="check" bg_color="#1296db" text_color="white" />
+    <over_of_checked    icon="check" bg_color="#1296db" text_color="white" />
+  </style>
+</combo_box_item>
+
+<popup>
+  <style name="combobox_popup">
+    <normal bg_color="#808080"/>
+  </style>
+</popup>

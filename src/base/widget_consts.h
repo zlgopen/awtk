@@ -876,6 +876,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_OPEN_WINDOW "open_window"
 
 /**
+ * @const WIDGET_PROP_THEME_OF_POPUP
+ * ComboBox打开弹出窗口的主题。
+ */
+#define WIDGET_PROP_THEME_OF_POPUP "theme_of_popup"
+
+/**
  * @const WIDGET_PROP_SELECTED_INDEX
  * 被选中项的索引。
  */

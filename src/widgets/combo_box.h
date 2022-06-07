@@ -176,6 +176,13 @@ typedef struct _combo_box_t {
    * 为点击按钮时，要打开窗口的名称。
    */
   char* open_window;
+  
+  /**
+   * @property {char*} theme_of_popup
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 弹出窗口的主题(对应的style文件必须存在)，方便为不同combo box的弹出窗口指定不同的样式。
+   */
+  char* theme_of_popup;
 
   /**
    * @property {int32_t} selected_index
@@ -265,6 +272,17 @@ widget_t* combo_box_cast(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t combo_box_set_open_window(widget_t* widget, const char* open_window);
+
+/**
+ * @method combo_box_set_theme_of_popup
+ * 设置弹出窗口的主题。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget combo_box对象。
+ * @param {const char*} theme_of_popup 弹出的窗口主题。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t combo_box_set_theme_of_popup(widget_t* widget, const char* theme_of_popup);
 
 /**
  * @method combo_box_reset_options

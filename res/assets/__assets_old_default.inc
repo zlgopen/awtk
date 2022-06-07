@@ -8,6 +8,7 @@
 #include "default/inc/styles/digit_clock.data"
 #include "default/inc/styles/dialog_toast.data"
 #include "default/inc/styles/edit.data"
+#include "default/inc/styles/number.data"
 #include "default/inc/styles/keyboard.data"
 #include "default/inc/styles/color.data"
 #include "default/inc/styles/tab_bottom.data"
@@ -514,6 +515,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, style_digit_clock);
   assets_manager_add(am, style_dialog_toast);
   assets_manager_add(am, style_edit);
+  assets_manager_add(am, style_number);
   assets_manager_add(am, style_keyboard);
   assets_manager_add(am, style_color);
   assets_manager_add(am, style_tab_bottom);

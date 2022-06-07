@@ -9,6 +9,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char style_color_tile[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char style_digit_clock[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char style_dialog_toast[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char style_edit[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char style_number[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char style_keyboard[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char style_color[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char style_tab_bottom[]);
@@ -515,6 +516,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, style_digit_clock);
   assets_manager_add(am, style_dialog_toast);
   assets_manager_add(am, style_edit);
+  assets_manager_add(am, style_number);
   assets_manager_add(am, style_keyboard);
   assets_manager_add(am, style_color);
   assets_manager_add(am, style_tab_bottom);
