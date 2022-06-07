@@ -140,7 +140,6 @@ TK_DECL_VTABLE(svg_image) = {.size = sizeof(svg_image_t),
                              .on_destroy = svg_image_on_destroy,
                              .on_event = image_base_on_event,
                              .on_paint_self = svg_image_on_paint_self,
-                             .on_paint_background = widget_on_paint_null,
                              .on_copy = image_base_on_copy,
                              .set_prop = svg_image_set_prop,
                              .get_prop = image_base_get_prop};

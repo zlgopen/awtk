@@ -1,7 +1,11 @@
 # 最新动态
+
 2022/06/07
   * 完善fscript调试器(感谢兆坤提供补丁)。
   * 完善demoui，使用theme\_of\_popup属性(感谢兆坤提供补丁)。
+  * 允许在gif上绘制文字。
+  * gif支持绘制背景。
+  * svg支持绘制背景。
 
 2022/06/07
   * combo box 增加theme\_of\_popup属性。

@@ -145,6 +145,8 @@ static ret_t gif_image_on_paint_self(widget_t* widget, canvas_t* c) {
   src = rect_init(0, y, bitmap.w, h);
   dst = rect_init(0, 0, widget->w, widget->h);
   canvas_draw_image_scale_down(c, &bitmap, &src, &dst);
+  
+  widget_paint_helper(widget, c, NULL, NULL);
 
   return RET_OK;
 }
@@ -237,7 +239,6 @@ TK_DECL_VTABLE(gif_image) = {.size = sizeof(gif_image_t),
                              .on_destroy = gif_image_on_destroy,
                              .on_event = image_base_on_event,
                              .on_paint_self = gif_image_on_paint_self,
-                             .on_paint_background = widget_on_paint_null,
                              .on_copy = image_base_on_copy,
                              .set_prop = gif_image_set_prop,
                              .get_prop = gif_image_get_prop};
