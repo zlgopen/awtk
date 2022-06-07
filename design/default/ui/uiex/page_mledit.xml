@@ -2,8 +2,8 @@
 <view x="0" y="0" w="100%" h="100%" children_layout="default(r=0,c=1,x=0,y=0,s=0)" name="mledit_view">
   <scroll_view h="38" xslidable="true">
     <view name="view_font" w="230" h="100%">
-      <combo_box_ex name="cb_font" w="124" item_height="30" auto_fix="true" h="30" x="10" y="m" readonly="true" open_window="uiex/cbp_font" options="Song;Arial" selected_index="0"/>
-      <combo_box_ex name="cb_font_size" w="88" item_height="30" auto_fix="true" h="30" y="m" x="138" readonly="true" open_window="uiex/cbp_font_size" options="5;5.5;6.5;7.5;8;9;10;10.5;11;12;14;16;18;20" selected_index="0"/>
+      <combo_box_ex name="cb_font" w="124" item_height="30" auto_fix="true" h="30" x="10" y="m" readonly="true" theme_of_popup="uiex" options="Song;Arial" selected_index="0"/>
+      <combo_box_ex name="cb_font_size" w="88" item_height="30" auto_fix="true" h="30" y="m" x="138" readonly="true" theme_of_popup="uiex" options="5;5.5;6.5;7.5;8;9;10;10.5;11;12;14;16;18;20" selected_index="0"/>
     </view>
     <view name="view_btn" children_layout="default(r=1,c=0,x=0,y=0,s=4)" x="240" h="24" w="146" y="m" style="toolbar">
       <button name="btn_text_color" style="text_color" w="24">

@@ -15,13 +15,11 @@
 #include "assets/default/inc/ui/uiex/page_slide_view.data"
 #include "assets/default/inc/ui/uiex/preload.data"
 #include "assets/default/inc/ui/uiex/page_window.data"
-#include "assets/default/inc/ui/uiex/cbp_fast_food.data"
 #include "assets/default/inc/ui/uiex/page_color.data"
 #include "assets/default/inc/ui/uiex/page_edit.data"
 #include "assets/default/inc/ui/uiex/kb_int.data"
 #include "assets/default/inc/ui/uiex/kb_hex.data"
 #include "assets/default/inc/ui/uiex/page_date_time.data"
-#include "assets/default/inc/ui/uiex/cbp_week.data"
 #include "assets/default/inc/ui/uiex/sysbar_portrait.data"
 #include "assets/default/inc/ui/uiex/page_animate.data"
 #include "assets/default/inc/ui/uiex/page_layout.data"
@@ -31,7 +29,6 @@
 #include "assets/default/inc/ui/uiex/page_button.data"
 #include "assets/default/inc/ui/uiex/page_progress.data"
 #include "assets/default/inc/ui/uiex/dlg_center_scale.data"
-#include "assets/default/inc/ui/uiex/cbp_font.data"
 #include "assets/default/inc/ui/uiex/htranslate.data"
 #include "assets/default/inc/ui/uiex/overlay.data"
 #include "assets/default/inc/ui/uiex/slide_down.data"
@@ -40,7 +37,6 @@
 #include "assets/default/inc/ui/uiex/dlg_popup.data"
 #include "assets/default/inc/ui/uiex/dlg_fade.data"
 #include "assets/default/inc/ui/uiex/dlg_popdown.data"
-#include "assets/default/inc/ui/uiex/cbp_font_size.data"
 #include "assets/default/inc/ui/uiex/page_slider.data"
 #include "assets/default/inc/ui/uiex/menu_portrait.data"
 #include "assets/default/inc/ui/uiex/page_mledit.data"
@@ -413,13 +409,11 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_uiex_page_slide_view);
   assets_manager_add(am, ui_uiex_preload);
   assets_manager_add(am, ui_uiex_page_window);
-  assets_manager_add(am, ui_uiex_cbp_fast_food);
   assets_manager_add(am, ui_uiex_page_color);
   assets_manager_add(am, ui_uiex_page_edit);
   assets_manager_add(am, ui_uiex_kb_int);
   assets_manager_add(am, ui_uiex_kb_hex);
   assets_manager_add(am, ui_uiex_page_date_time);
-  assets_manager_add(am, ui_uiex_cbp_week);
   assets_manager_add(am, ui_uiex_sysbar_portrait);
   assets_manager_add(am, ui_uiex_page_animate);
   assets_manager_add(am, ui_uiex_page_layout);
@@ -429,7 +423,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_uiex_page_button);
   assets_manager_add(am, ui_uiex_page_progress);
   assets_manager_add(am, ui_uiex_dlg_center_scale);
-  assets_manager_add(am, ui_uiex_cbp_font);
   assets_manager_add(am, ui_uiex_htranslate);
   assets_manager_add(am, ui_uiex_overlay);
   assets_manager_add(am, ui_uiex_slide_down);
@@ -438,7 +431,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_uiex_dlg_popup);
   assets_manager_add(am, ui_uiex_dlg_fade);
   assets_manager_add(am, ui_uiex_dlg_popdown);
-  assets_manager_add(am, ui_uiex_cbp_font_size);
   assets_manager_add(am, ui_uiex_page_slider);
   assets_manager_add(am, ui_uiex_menu_portrait);
   assets_manager_add(am, ui_uiex_page_mledit);

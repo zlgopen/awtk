@@ -25,7 +25,7 @@
     <view name="view_combo_box_edit" children_layout="default(r=0,c=1,x=0,y=0,s=10)" h="68">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Combo Box Edit"/>
       <view h="-22" children_layout="default(r=1,c=0,x=20,y=0,s=0)">
-        <combo_box_ex w="62%" open_window="uiex/cbp_week" keyboard="uiex/kb_default" options="Mon;Tues;Wed;Thur;Fri;Sat;Sun" selected_index="0"/>
+        <combo_box_ex w="62%" theme_of_popup="uiex" keyboard="uiex/kb_default" options="Mon;Tues;Wed;Thur;Fri;Sat;Sun" selected_index="0"/>
       </view>
     </view>
     <view name="view_password_edit" children_layout="default(r=0,c=1,x=0,y=0,s=10)" h="68">
