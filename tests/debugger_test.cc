@@ -395,6 +395,61 @@ TEST(Debugger, callstack2) {
   str_reset(&str);
 }
 
+TEST(Debugger, break_point) {
+  const char* code =
+      "function foo(a, b){\n"
+      "define_param(\"a\")\n"
+      "define_param(\"b\")\n"
+      "return ((a + b))\n"
+      "}\n"
+      "foo(123, 456)\n"
+      "foo(123, 456)\n"
+      "foo(123, 456)\n"
+      "//code_id(\"944676fc958f236e51adb1f1ae1b799350201b00b7e81219e7a41b5fae5f8aa8\")";
+  str_t str;
+  str_init(&str, 100);
+  debugger_global_init();
+
+  tk_object_t* obj = object_default_create();
+  fscript_t* fscript = fscript_create(obj, code);
+  tk_thread_t* thread = tk_thread_create(fscript_thread_entry, fscript);
+
+  debugger_server_tcp_init(DEBUGGER_TCP_PORT);
+  debugger_t* client = debugger_client_tcp_create("localhost", DEBUGGER_TCP_PORT);
+  ASSERT_EQ(client != NULL, TRUE);
+  emitter_on(EMITTER(client), DEBUGGER_RESP_MSG_BREAKED, on_debugger_client_event, &str);
+  emitter_on(EMITTER(client), DEBUGGER_RESP_MSG_LOG, on_debugger_client_event, &str);
+  emitter_on(EMITTER(client), DEBUGGER_RESP_MSG_ERROR, on_debugger_client_event, &str);
+  emitter_on(EMITTER(client), DEBUGGER_RESP_MSG_COMPLETED, on_debugger_client_event, &str);
+
+  debugger_server_tcp_start();
+  ASSERT_EQ(debugger_attach(client, DEBUGGER_LANG_FSCRIPT, fscript->code_id), RET_OK);
+  ASSERT_EQ(debugger_set_break_point(client, 3), RET_OK);
+
+  tk_thread_start(thread);
+  sleep_ms(500);
+
+  ASSERT_EQ(debugger_continue(client), RET_OK);
+  sleep_ms(200);
+  ASSERT_EQ(debugger_continue(client), RET_OK);
+  sleep_ms(200);
+  ASSERT_EQ(debugger_continue(client), RET_OK);
+  sleep_ms(200);
+
+  ASSERT_NE(debugger_continue(client), RET_OK);
+
+  debugger_client_wait_for_completed(client);
+  tk_thread_join(thread);
+  tk_thread_destroy(thread);
+
+  TK_OBJECT_UNREF(obj);
+  TK_OBJECT_UNREF(client);
+  debugger_server_tcp_deinit();
+  debugger_global_deinit();
+  ASSERT_STREQ(str.str, "breaked(3)breaked(3)breaked(3)completed()");
+  str_reset(&str);
+}
+
 TEST(Debugger, step_in) {
   const char* code =
       "var c = 123\n"
@@ -524,8 +579,10 @@ TEST(Debugger, step_over) {
   ASSERT_EQ(debugger_step_over(client), RET_OK);
   sleep_ms(200);
 
-  ASSERT_EQ(debugger_step_over(client), RET_OK);
-  sleep_ms(200);
+  for (uint32_t i = 0; i < 10; i++) {
+    ASSERT_EQ(debugger_step_over(client), RET_OK);
+    sleep_ms(200);
+  }
 
   ASSERT_EQ(debugger_step_over(client), RET_OK);
   sleep_ms(200);
@@ -539,8 +596,10 @@ TEST(Debugger, step_over) {
   debugger_server_tcp_deinit();
   debugger_global_deinit();
   ASSERT_STREQ(str.str,
-               "breaked(0)breaked(1)breaked(2)log(2,\"0\")log(2,\"1\")log(2,\"2\")log(2,\"3\")log("
-               "2,\"4\")log(2,\"5\")log(2,\"6\")log(2,\"7\")log(2,\"8\")log(2,\"9\")breaked(4)log("
+               "breaked(0)breaked(1)breaked(2)log(2,\"0\")breaked(2)log(2,\"1\")breaked(2)log(2,"
+               "\"2\")breaked(2)log(2,\"3\")breaked(2)log("
+               "2,\"4\")breaked(2)log(2,\"5\")breaked(2)log(2,\"6\")breaked(2)log(2,\"7\")breaked("
+               "2)log(2,\"8\")breaked(2)log(2,\"9\")breaked(4)log("
                "4,\"10\")completed()");
   str_reset(&str);
 }

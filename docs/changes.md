@@ -1,5 +1,8 @@
 # 最新动态
 2022/06/07
+  * 完善fscript调试器(感谢兆坤提供补丁)。
+
+2022/06/07
   * combo box 增加theme\_of\_popup属性。
   * 增加文档 [如何设置下拉选择框 (combo box) 弹出窗口/列表项的样式](how_to_set_style_of_combo_box_item.md)
 

@@ -749,6 +749,8 @@ static ret_t debugger_fscript_before_exec_func(debugger_t* debugger, int32_t lin
     bool_t paused = debugger_fscript_should_pause(d, line);
     if (paused) {
       paused = debugger_fscript_emit_breaked(debugger, line);
+    } else {
+      d->prev_breaked_line = -1;
     }
     debugger_fscript_unlock(debugger);
 
