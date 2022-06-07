@@ -140,5 +140,5 @@ TEST(SlideIndicator, props) {
   ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_ANCHOR_Y, "100px"), RET_OK);
   ASSERT_STREQ(widget_get_prop_str(w, WIDGET_PROP_ANCHOR_Y, NULL), "100px");
 
-  widget_destroy(w);
+  widget_destroy_sync(w);
 }
