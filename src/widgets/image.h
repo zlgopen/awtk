@@ -116,6 +116,20 @@ typedef struct _image_t {
 widget_t* image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method icon_create
+ * 创建icon对象
+ * @annotation ["constructor", "scriptable"]
+ * @param {widget_t*} parent 父控件
+ * @param {xy_t} x x坐标
+ * @param {xy_t} y y坐标
+ * @param {wh_t} w 宽度
+ * @param {wh_t} h 高度
+ *
+ * @return {widget_t*} 对象。
+ */
+widget_t* icon_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+
+/**
  * @method image_set_draw_type
  * 设置图片的绘制方式。
  * @annotation ["scriptable"]
