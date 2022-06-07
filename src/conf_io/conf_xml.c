@@ -105,6 +105,12 @@ static XmlBuilder* builder_init(xml_builter_t* b, conf_doc_t* doc) {
   return (XmlBuilder*)b;
 }
 
+static ret_t builder_deinit(xml_builter_t* b) {
+  return_value_if_fail(b != NULL, RET_BAD_PARAMS);
+  str_reset(&(b->str));
+  return RET_OK;
+}
+
 conf_doc_t* conf_doc_load_xml(const char* data) {
   conf_doc_t* doc = NULL;
   return_value_if_fail(data != NULL, NULL);
@@ -123,6 +129,7 @@ conf_doc_t* conf_doc_load_xml(const char* data) {
     xml_parser_set_builder(p, builder_init(&b, doc));
     xml_parser_parse(p, data, strlen(data));
     xml_parser_destroy(p);
+    builder_deinit(&b);
   }
 
   return doc;
