@@ -43,7 +43,7 @@
 
 2. styles/default
 
-扩展下拉选择框
+### 2.2 扩展下拉选择框
 
 1. styles/combobox_ex_popup
 
