@@ -286,6 +286,11 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
     text_edit_get_state(mledit->model, &state);
     value_set_int(v, state.caret.y - state.oy);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_LINE_HEIGHT)) {
+    text_edit_state_t state;
+    text_edit_get_state(mledit->model, &state);
+    value_set_int(v, state.line_height);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_OPEN_IM_WHEN_FOCUSED)) {
     value_set_bool(v, mledit->open_im_when_focused);
     return RET_OK;

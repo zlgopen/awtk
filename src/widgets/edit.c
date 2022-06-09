@@ -1337,6 +1337,11 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
     text_edit_get_state(edit->model, &state);
     value_set_int(v, state.caret.y);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_LINE_HEIGHT)) {
+    text_edit_state_t state;
+    text_edit_get_state(edit->model, &state);
+    value_set_int(v, state.line_height);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_INPUTING)) {
     input_method_t* im = input_method();
     bool_t inputing = (im != NULL && im->widget == widget) || edit->is_key_inputing;

@@ -132,6 +132,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_CARET_Y "caret_y"
 
 /**
+ * @const WIDGET_PROP_LINE_HEIGHT
+ * 行高。
+ */
+#define WIDGET_PROP_LINE_HEIGHT "line_height"
+
+/**
  * @const WIDGET_PROP_DIRTY_RECT_TOLERANCE
  * 脏矩形超出控件本身大小的最大范围。
  */
