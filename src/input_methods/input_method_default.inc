@@ -226,42 +226,37 @@ static ret_t input_type_keyboard_follow_edit(input_method_t* im) {
   return RET_OK;
 }
 
-static int32_t input_method_default_get_edit_caret_h(widget_t* widget) {
-  value_t v;
-  xy_t caret_y = 0;
-  int32_t real_h = 0;
-  int32_t top_margin = 0;
-  int32_t buttom_margin = 0;
-  canvas_t* c = widget_get_canvas(widget);
-  return_value_if_fail(c != NULL, 0);
+static int32_t input_method_default_get_edit_caret_bottom(widget_t* widget) {
+  point_t p = {0, 0};
+  int32_t caret_y = widget_get_prop_int(widget, WIDGET_PROP_CARET_Y, 0);
 
-  top_margin = widget_get_prop_int(widget, WIDGET_PROP_TOP_MARGIN, 0);
-  buttom_margin = widget_get_prop_int(widget, WIDGET_PROP_BOTTOM_MARGIN, 0);
-
-  if (widget->astyle != NULL) {
-    TEXT_EDIT_GET_STYLE_MARGIN(widget->astyle, top_margin, TOP);
-    TEXT_EDIT_GET_STYLE_MARGIN(widget->astyle, buttom_margin, BOTTOM)
-  }
-
-  real_h = widget->h - top_margin - buttom_margin;
-  caret_y = widget_get_prop_int(widget, WIDGET_PROP_CARET_Y, 0);
-
+  widget_to_screen(widget, &p);
   if (tk_str_eq(widget->vt->type, WIDGET_TYPE_EDIT)) {
-    caret_y += (real_h - c->font_size) / 2;
+    caret_y += widget->h;
+  } else {
+    int32_t line_height = widget_get_prop_int(widget, WIDGET_PROP_LINE_HEIGHT, 0);
+    int32_t top_margin = widget_get_prop_int(widget, WIDGET_PROP_TOP_MARGIN, 0);
+    if (widget->astyle != NULL) {
+      TEXT_EDIT_GET_STYLE_MARGIN(widget->astyle, top_margin, TOP);
+    }
+ 
+    caret_y += top_margin + line_height;
   }
 
-  return top_margin + caret_y + c->font_size;
+  return p.y + caret_y;
 }
 
 static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_name,
                                       bool_t open_anim) {
   value_t v;
   point_t p = {0, 0};
+  char anim_hint[64] = {0};
   widget_t* widget = im->widget;
   widget_t* win = widget_get_window(widget);
   bool_t win_is_keyboard = widget_is_keyboard(win);
   const char* close_anim_hint = WINDOW_ANIMATOR_POPUP;
   const char* open_anim_hint = open_anim ? close_anim_hint : "";
+  int32_t caret_bottom = input_method_default_get_edit_caret_bottom(widget);
 
   if (keyboard_name == NULL || *keyboard_name == '\0') {
     return RET_OK;
@@ -286,14 +281,15 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
     } else {
       open_anim_hint = close_anim_hint = WINDOW_ANIMATOR_POPDOWN;
     }
-  } else if ((p.y + input_method_default_get_edit_caret_h(widget)) > im->keyboard->y) {
+  } else if (caret_bottom > im->keyboard->y) {
     im->win = win;
     if (im->win->y < 0) {
       widget_move(im->win, im->win->x, im->win_old_y);
     }
     if (is_key_board_overlap_edit(widget, im->keyboard)) {
-      im->win_delta_y = win->y + win->h - im->keyboard->y;
-      close_anim_hint = "vtranslate";
+      im->win_delta_y = caret_bottom - im->keyboard->y;
+      tk_snprintf(anim_hint, sizeof(anim_hint), "vtranslate(prev_win_y_range=%d)", im->win_delta_y);
+      close_anim_hint = anim_hint;
     } else {
       im->win_delta_y = 0;
       close_anim_hint = "popup";
@@ -303,8 +299,8 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
   } else if (win_is_keyboard && (win->y + win->h) < im->keyboard->y) {
     /*when new keyboard height is not eq old keyboard height*/
     close_anim_hint = "vtranslate";
-    im->win_delta_y += win->y + win->h - im->keyboard->y;
-    widget_move(win, im->win->x, im->keyboard->y - win->h);
+    im->win_delta_y = caret_bottom - im->keyboard->y;
+    widget_move(win, im->win->x, im->win_old_y - im->win_delta_y);
   } else if (p.y < 0) {
     im->win = win;
     widget_move(win, im->win->x, im->win->y + im->win_delta_y);
