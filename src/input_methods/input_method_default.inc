@@ -31,6 +31,8 @@
 #include "base/window_manager.h"
 #include "ui_loader/ui_builder_default.h"
 
+#define WIDGET_TYPE_MLEDIT "mledit"
+
 #if !defined(STR_DEFAULT_KEYBOARD)
 #if defined(WITH_IME_T9)
 #define STR_DEFAULT_KEYBOARD "kb_default_t9"
@@ -141,7 +143,6 @@ static const char* widget_get_keyboard(widget_t* widget) {
 
 static ret_t on_push_window(void* ctx, event_t* e) {
   input_method_t* im = (input_method_t*)ctx;
-
   if (im->win_delta_y > 0) {
     im->win_old_y = im->win->y;
   }
@@ -151,6 +152,10 @@ static ret_t on_push_window(void* ctx, event_t* e) {
 }
 
 static ret_t input_method_default_restore_win_position(input_method_t* im) {
+  if (im->widget != NULL && im->edit_old_h > 0) {
+    widget_resize(im->widget, im->widget->w, im->edit_old_h);
+  }
+
   if (im->win != NULL) {
     widget_move(im->win, im->win->x, im->win_old_y);
     im->win = NULL;
@@ -226,7 +231,7 @@ static ret_t input_type_keyboard_follow_edit(input_method_t* im) {
   return RET_OK;
 }
 
-static int32_t input_method_default_get_edit_caret_bottom(widget_t* widget) {
+static int32_t input_method_default_get_edit_caret_bottom(widget_t* widget, widget_t* keyboard) {
   point_t p = {0, 0};
   int32_t caret_y = widget_get_prop_int(widget, WIDGET_PROP_CARET_Y, 0);
 
@@ -234,13 +239,18 @@ static int32_t input_method_default_get_edit_caret_bottom(widget_t* widget) {
   if (tk_str_eq(widget->vt->type, WIDGET_TYPE_EDIT)) {
     caret_y += widget->h;
   } else {
-    int32_t line_height = widget_get_prop_int(widget, WIDGET_PROP_LINE_HEIGHT, 0);
-    int32_t top_margin = widget_get_prop_int(widget, WIDGET_PROP_TOP_MARGIN, 0);
-    if (widget->astyle != NULL) {
-      TEXT_EDIT_GET_STYLE_MARGIN(widget->astyle, top_margin, TOP);
+    int32_t delta = (p.y + widget->h) - keyboard->y;
+    if (delta > 0 && delta < p.y) {
+      /*如果上面的区域可以放下整个mledit，就显示这个mledit*/
+      caret_y = widget->h;
+    } else {
+      int32_t line_height = widget_get_prop_int(widget, WIDGET_PROP_LINE_HEIGHT, 0);
+      int32_t top_margin = widget_get_prop_int(widget, WIDGET_PROP_TOP_MARGIN, 0);
+      if (widget->astyle != NULL) {
+        TEXT_EDIT_GET_STYLE_MARGIN(widget->astyle, top_margin, TOP);
+      }
+      caret_y += top_margin + line_height;
     }
- 
-    caret_y += top_margin + line_height;
   }
 
   return p.y + caret_y;
@@ -251,18 +261,19 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
   value_t v;
   point_t p = {0, 0};
   char anim_hint[64] = {0};
+  int32_t caret_bottom = 0;
   widget_t* widget = im->widget;
   widget_t* win = widget_get_window(widget);
   bool_t win_is_keyboard = widget_is_keyboard(win);
   const char* close_anim_hint = WINDOW_ANIMATOR_POPUP;
   const char* open_anim_hint = open_anim ? close_anim_hint : "";
-  int32_t caret_bottom = input_method_default_get_edit_caret_bottom(widget);
 
   if (keyboard_name == NULL || *keyboard_name == '\0') {
     return RET_OK;
   }
 
   widget_to_screen(widget, &p);
+  im->win_delta_y = 0;
   im->keyboard = window_open(keyboard_name);
   if (im->keyboard == NULL) {
     log_debug("Not found keyboard [%s], try default.\n", keyboard_name);
@@ -274,6 +285,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
   widget_on(im->keyboard, EVT_WINDOW_OPEN, input_method_default_on_keyboard_open, im);
   widget_on(im->keyboard, EVT_DESTROY, input_method_default_on_keyboard_close, im);
 
+  caret_bottom = input_method_default_get_edit_caret_bottom(widget, im->keyboard);
   if (widget_get_prop_bool(im->keyboard, WIDGET_PROP_FLOATING, FALSE)) {
     input_type_keyboard_follow_edit(im);
     if (im->keyboard->y < p.y) {
@@ -314,6 +326,16 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
 
   widget_off_by_func(win, EVT_WINDOW_CLOSE, input_method_on_win_close, im);
   widget_on(win, EVT_WINDOW_CLOSE, input_method_on_win_close, im);
+
+  im->edit_old_h = 0;
+  if (tk_str_eq(widget->vt->type, WIDGET_TYPE_MLEDIT)) {
+    int32_t delta = (p.y + widget->h - im->win_delta_y) - im->keyboard->y;
+    im->edit_old_h = widget->h;
+    if (delta > 0) {
+      int32_t h = widget->h - delta;
+      widget_resize(widget, widget->w, h);
+    }
+  }
 
   return RET_OK;
 }

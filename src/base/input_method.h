@@ -271,6 +271,13 @@ struct _input_method_t {
    * 窗口原来的位置。
    */
   int32_t win_old_y;
+  
+  /**
+   * @property {uint32_t} edit_old_h 
+   * @annotation ["private"]
+   * 保存编辑器原来的高度。
+   */
+  uint32_t edit_old_h;
 
   /**
    * @property {bool_t} action_button_enable
