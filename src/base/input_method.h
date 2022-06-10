@@ -271,7 +271,7 @@ struct _input_method_t {
    * 窗口原来的位置。
    */
   int32_t win_old_y;
-  
+
   /**
    * @property {uint32_t} edit_old_h 
    * @annotation ["private"]
@@ -287,11 +287,11 @@ struct _input_method_t {
   bool_t action_button_enable;
 
   /**
-   * @property {bool_t} action_button_enable
+   * @property {char*} action_button_text
    * @annotation ["readable"]
    * 软键盘的上的action按钮文本。
    */
-  char action_buton_text[TK_NAME_LEN + 1];
+  char action_button_text[TK_NAME_LEN + 1];
 
   /**
    * @property {emitter_t} emitter

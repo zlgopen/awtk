@@ -300,7 +300,7 @@ static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
 }
 
 static ret_t keyboard_update_action_buton_info(widget_t* button, const char* text, bool_t enable) {
-  text = locale_info_tr(locale_info(), ((text && *text) ? text : STR_RETURN));
+  text = locale_info_tr(locale_info(), (text ? text : STR_RETURN));
 
   widget_set_text_utf8(button, text);
   widget_set_enable(button, enable);
@@ -320,7 +320,7 @@ static ret_t keyboard_on_action_info(void* ctx, event_t* e) {
   buttons = (widget_t**)keyboard->action_buttons.elms;
 
   for (i = 0; i < nr; i++) {
-    keyboard_update_action_buton_info(buttons[i], im->action_buton_text, im->action_button_enable);
+    keyboard_update_action_buton_info(buttons[i], im->action_button_text, im->action_button_enable);
   }
 
   return RET_OK;
@@ -342,7 +342,7 @@ static ret_t keyboard_hook_buttons(void* ctx, const void* iter) {
 
     if (tk_str_eq(name, STR_ACTION)) {
       darray_push(&(keyboard->action_buttons), widget);
-      keyboard_update_action_buton_info(widget, im->action_buton_text, im->action_button_enable);
+      keyboard_update_action_buton_info(widget, im->action_button_text, im->action_button_enable);
     }
   }
 

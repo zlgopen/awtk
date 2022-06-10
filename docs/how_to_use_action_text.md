@@ -42,6 +42,8 @@ action\_text 可以通过 strings.xml 中文本进行翻译，所以用小写英
 </string>
 ```
 
+软键盘中 action 按钮优先显示 edit 中设置的 action\_text，如果 edit 没有该属性，则显示 action 按钮的 text。
+
 ## 3. 事件处理
 
 如果你想自己处理 action 按键按下的事件，可以注册编辑器的 EVT\_IM\_ACTION 事件。
