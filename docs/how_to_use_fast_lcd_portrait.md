@@ -36,6 +36,41 @@ ret_t tk_set_lcd_orientation(lcd_orientation_t orientation);
 ret_t tk_enable_fast_lcd_portrait(bool_t enable);
 ~~~
 
+​	但是如果用户重载 lcd 的 flush 的函数的话（主要是高效 lcd 旋转的话，在做 flush 的时候，不需要 image_rotate 调用旋转 fb 了，只需要调用 image_copy 函数直接拷贝就可以了），同时由于脏矩形的计算有所不同， 需要调用需要特殊处理一下，所以需要看一下的下面的代码说明。
+
+​	这里用 awtk-linux-fb 的代码来说明，如果修改用户重载的 flush 代码。
+
+~~~c
+/* awtk-linux-fb/lcd_linux/lcd_linux_fb.c */
+
+static ret_t lcd_linux_flush(lcd_t* base, int fbid) {
+  /*...省略无关代码...*/
+  // get the merged dirty rects of current online buff, and then copy each small rects from offline fb
+  dirty_rects = lcd_fb_dirty_rects_get_dirty_rects_by_fb(&(lcd->fb_dirty_rects_list), buff);
+  if (dirty_rects != NULL && dirty_rects->nr > 0) {
+    for (int i = 0; i < dirty_rects->nr; i++) {
+      const rect_t* dr = (const rect_t*)dirty_rects->rects + i;
+#ifdef WITH_FAST_LCD_PORTRAIT
+      /* 由于效率旋转已经在绘图的时候已经处理了，所以在 flush 的时候，只需要根据脏矩形区域，直接把 offline_fb 的数据拷贝到 online_fb 上面。 */
+      if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
+        /* 由于脏矩形的数据是根据未旋转的时候得到的，所以这里脏矩形需要旋转一下为旋转后的脏矩形数据，这里的 o 为 lcd 旋转角度 */
+        rect_t rr = lcd_orientation_rect_rotate_by_anticlockwise(dr, o, lcd_get_width(base), lcd_get_height(base));
+        /* 根据旋转后的脏矩形数据，把 offline_fb 的数据拷贝到 online_fb 上面，就不在需要调用 image_rotate 函数来把图片旋转了，从而提高效率 */
+        image_copy(&online_fb, &offline_fb, &rr, rr.x, rr.y);
+      } else 
+#endif
+      {
+        if (o == LCD_ORIENTATION_0) {
+          image_copy(&online_fb, &offline_fb, dr, dr->x, dr->y);
+        } else {
+          image_rotate(&online_fb, &offline_fb, dr, o);
+        }
+      }
+    }
+   /*...省略无关代码...*/
+}
+~~~
+
 #### 注意实现：
 
   1. 为了可以高效贴图，所以贴图在加载到内存前就会被旋转到指定的角度了，所以使用  data 格式的位图时候需要提前调用脚本命令来生成资源。（最后一个参数为旋转角度，单位为角度，支持 0 度，90 度，180 度和 270 度）
