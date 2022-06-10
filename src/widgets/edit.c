@@ -1823,8 +1823,6 @@ ret_t edit_on_copy(widget_t* widget, widget_t* other) {
   edit_t* edit = EDIT(widget);
   edit_t* edit_other = EDIT(other);
   return_value_if_fail(edit != NULL && edit_other != NULL, RET_BAD_PARAMS);
-  edit->tips = tk_str_copy(edit->tips, edit_other->tips);
-  edit->tr_tips = tk_str_copy(edit->tr_tips, edit_other->tr_tips);
 
   edit->min = edit_other->min;
   edit->max = edit_other->max;
@@ -1838,6 +1836,13 @@ ret_t edit_on_copy(widget_t* widget, widget_t* other) {
   edit->password_visible = edit_other->password_visible;
 
   edit_set_input_type(widget, edit_other->input_type);
+
+  if (edit_other->tips != NULL) {
+    edit_set_tips(widget, edit_other->tips);
+  }
+  if (edit_other->tr_tips != NULL) {
+    edit_set_tr_tips(widget, edit_other->tr_tips);
+  }
 
   return RET_OK;
 }
