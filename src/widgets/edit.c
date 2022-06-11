@@ -1749,13 +1749,13 @@ static ret_t edit_hook_button(void* ctx, const void* iter) {
 
   if (widget->name && widget != edit) {
     const char* name = widget->name;
-    if (tk_str_eq(name, "inc")) {
+    if (tk_str_eq(name, STR_EDIT_INC_NAME)) {
       widget_on(widget, EVT_CLICK, edit_on_inc, edit);
-    } else if (tk_str_eq(name, "dec")) {
+    } else if (tk_str_eq(name, STR_EDIT_DEC_NAME)) {
       widget_on(widget, EVT_CLICK, edit_on_dec, edit);
-    } else if (tk_str_eq(name, "clear")) {
+    } else if (tk_str_eq(name, STR_EDIT_CLEAR_NAME)) {
       widget_on(widget, EVT_CLICK, edit_on_clear, edit);
-    } else if (tk_str_eq(name, "visible")) {
+    } else if (tk_str_eq(name, STR_EDIT_VISIBLE_NAME)) {
       widget_on(widget, EVT_VALUE_CHANGED, edit_on_password_visible, edit);
     }
   }
@@ -1800,23 +1800,7 @@ static ret_t edit_hook_children_button_and_check_valid_value(const idle_info_t* 
   return RET_REMOVE;
 }
 
-const char* const s_edit_properties[] = {WIDGET_PROP_MIN,
-                                         WIDGET_PROP_MAX,
-                                         WIDGET_PROP_STEP,
-                                         WIDGET_PROP_INPUT_TYPE,
-                                         WIDGET_PROP_READONLY,
-                                         WIDGET_PROP_CANCELABLE,
-                                         WIDGET_PROP_AUTO_FIX,
-                                         WIDGET_PROP_MARGIN,
-                                         WIDGET_PROP_LEFT_MARGIN,
-                                         WIDGET_PROP_RIGHT_MARGIN,
-                                         WIDGET_PROP_TOP_MARGIN,
-                                         WIDGET_PROP_BOTTOM_MARGIN,
-                                         WIDGET_PROP_ACTION_TEXT,
-                                         WIDGET_PROP_TIPS,
-                                         WIDGET_PROP_TR_TIPS,
-                                         WIDGET_PROP_KEYBOARD,
-                                         WIDGET_PROP_PASSWORD_VISIBLE,
+const char* const s_edit_properties[] = {TK_EDIT_PROPS,
                                          NULL};
 
 ret_t edit_on_copy(widget_t* widget, widget_t* other) {

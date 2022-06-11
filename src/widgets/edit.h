@@ -660,6 +660,17 @@ ret_t edit_pre_input_with_sep(widget_t* widget, uint32_t key, char sep);
 /*for compatability*/
 #define edit_set_input_tips(w, t) edit_set_tips(w, t)
 
+#define STR_EDIT_INC_NAME "inc"
+#define STR_EDIT_DEC_NAME "dec"
+#define STR_EDIT_CLEAR_NAME "clear"
+#define STR_EDIT_VISIBLE_NAME "visible"
+
+#define TK_EDIT_PROPS                                                                               \
+  WIDGET_PROP_MIN, WIDGET_PROP_MAX, WIDGET_PROP_STEP, WIDGET_PROP_INPUT_TYPE,                    \
+      WIDGET_PROP_READONLY, WIDGET_PROP_CANCELABLE, WIDGET_PROP_AUTO_FIX, WIDGET_PROP_MARGIN,    \
+      WIDGET_PROP_LEFT_MARGIN, WIDGET_PROP_RIGHT_MARGIN, WIDGET_PROP_TOP_MARGIN,                 \
+      WIDGET_PROP_BOTTOM_MARGIN, WIDGET_PROP_ACTION_TEXT, WIDGET_PROP_TIPS, WIDGET_PROP_TR_TIPS, \
+      WIDGET_PROP_KEYBOARD, WIDGET_PROP_PASSWORD_VISIBLE
 END_C_DECLS
 
 #endif /*TK_EDIT_H*/
