@@ -294,6 +294,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_VALUE "value"
 
 /**
+ * @const WIDGET_PROP_EASY_TOUCH_MODE
+ * 容易点击模式(目前用于spinbox)。
+ */
+#define WIDGET_PROP_EASY_TOUCH_MODE "easy_touch_mode"
+
+/**
  * @const WIDGET_PROP_RADIO
  * CheckButton是否单选。
  */

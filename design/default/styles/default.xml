@@ -52,6 +52,18 @@
     <over       bg_color="#e0e0e0" icon="arrow_down_o"/>
   </style>
   
+  <style name="spinbox_bottom" border_color="#a0a0a0">
+    <normal     bg_color="#f0f0f0" icon="arrow_down_n"/>
+    <pressed    bg_color="#c0c0c0" icon="arrow_down_p"/>
+    <over       bg_color="#e0e0e0" icon="arrow_down_o"/>
+  </style>
+
+  <style name="spinbox_top" border_color="#a0a0a0">
+    <normal     bg_color="#f0f0f0" icon="arrow_up_n"/>
+    <pressed    bg_color="#c0c0c0" icon="arrow_up_p"/>
+    <over       bg_color="#e0e0e0" icon="arrow_up_o"/>
+  </style>
+  
   <style name="spinbox_down" border_color="#a0a0a0">
     <normal     bg_color="#f0f0f0" icon="arrow_down_n"/>
     <pressed    bg_color="#c0c0c0" icon="arrow_down_p"/>
@@ -156,6 +168,14 @@
 
 <spin_box>
   <style name="default" border_color="#a0a0a0"  text_color="black" text_align_h="left">
+    <normal     bg_color="#f0f0f0" />
+    <focused    bg_color="#f0f0f0" border_color="black"/>
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+    <error      bg_color="#f0f0f0" text_color="red" />
+    <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
+    <empty_focus bg_color="#f0f0f0" text_color="#a0a0a0" border_color="black"/>
+  </style>
+  <style name="center" border_color="#a0a0a0"  text_color="black" text_align_h="center">
     <normal     bg_color="#f0f0f0" />
     <focused    bg_color="#f0f0f0" border_color="black"/>
     <disable    bg_color="gray" text_color="#d0d0d0" />

@@ -80,7 +80,22 @@ BEGIN_C_DECLS
  * default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L128)
  *
  */
-typedef edit_t spin_box_t;
+typedef struct _spin_box_t {
+  edit_t edit;
+
+  /**
+   * @property {bool_t} easy_touch_mode
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否启用易点击模式(在电容屏设备上建议启用)。
+   * > 在该模式下：
+   * > * 1.当高度大于font size的3倍时，inc按钮在顶部(style名为spinbox_top)，dec按钮在底部(style名为spinbox_bottom)。
+   * > * 2.当高度正常时，dec按钮在左边(style名为spinbox_left)，inc按钮在右边(style名为spinbox_right)。
+   * > 不在该模式下：
+   * > inc按钮在右上角(style名为spinbox_up)，dec按钮在右下角(style名为spinbox_down)。
+   */
+  bool_t easy_touch_mode;
+
+} spin_box_t;
 
 /**
  * @method spin_box_create
@@ -105,6 +120,17 @@ widget_t* spin_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  * @return {widget_t*} spin_box对象。
  */
 widget_t* spin_box_cast(widget_t* widget);
+
+/**
+ * @method spin_box_set_easy_touch_mode
+ * 设置是否启用易点击模式。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {bool_t} easy_touch_mode 易点击模式。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t spin_box_set_easy_touch_mode(widget_t* widget, bool_t easy_touch_mode);
 
 #define SPIN_BOX(widget) ((spin_box_t*)(spin_box_cast(WIDGET(widget))))
 
