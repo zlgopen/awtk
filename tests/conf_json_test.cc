@@ -571,3 +571,21 @@ TEST(ConfJson, set_prop) {
 
   conf_doc_destroy(doc);
 }
+
+TEST(Json, append_array) {
+  value_t v;
+  str_t str;
+  const char* data = " {\"hello\" : [1,2,3,4]  } ";
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+
+  ASSERT_EQ(conf_doc_get(doc, "hello.#size", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 4);
+  ASSERT_EQ(conf_doc_set_int(doc, "hello.[-1]", 5), RET_OK);
+  
+  str_init(&str, 100);
+  conf_doc_save_json(doc, &str);
+  ASSERT_STREQ(str.str, "{\n    \"hello\" : [\n        1,\n        2,\n        3,\n        4,\n        5\n    ]\n}");
+  str_reset(&str);
+
+  conf_doc_destroy(doc);
+}
