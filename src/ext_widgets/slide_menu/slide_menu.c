@@ -142,7 +142,6 @@ static ret_t slide_menu_paint_children(widget_t* widget, canvas_t* c) {
 
   if (left >= (clip_right - 1) || right <= (clip_left + 1)) {
     iter->dirty = FALSE;
-    log_debug("skip %s\n", iter->name);
     continue;
   }
 
