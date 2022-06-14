@@ -689,11 +689,13 @@ static ret_t lcd_mem_set_orientation(lcd_t* lcd, lcd_orientation_t old_orientati
                                      lcd_orientation_t new_orientation) {
 #ifdef WITH_FAST_LCD_PORTRAIT
   if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
+    lcd_mem_t* mem = (lcd_mem_t*)lcd;
     if (tk_is_swap_size_by_orientation(old_orientation, new_orientation)) {
       wh_t w = lcd->w;
       lcd->w = lcd->h;
       lcd->h = w;
     }
+    lcd_fb_dirty_rects_reinit(&(mem->fb_dirty_rects_list), lcd_get_width(lcd), lcd_get_height(lcd));
   } else 
 #endif
   {
