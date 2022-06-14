@@ -71,7 +71,6 @@ static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t
 }
 
 static ret_t hscroll_label_on_paint_self(widget_t* widget, canvas_t* c) {
-  point_t p = {c->ox, c->oy};
   rect_t save_r = {0, 0, 0, 0};
   rect_t clip_r = {0, 0, 0, 0};
   rect_t widget_r = {0, 0, 0, 0};
@@ -87,9 +86,7 @@ static ret_t hscroll_label_on_paint_self(widget_t* widget, canvas_t* c) {
     int32_t w = widget->w - left_margin - right_margin;
 
     canvas_get_clip_rect(c, &save_r);
-
-    widget_r = rect_init(p.x + left_margin, p.y, w, widget->h);
-
+    widget_r = rect_init(c->ox + left_margin, c->oy, w, widget->h);
     clip_r = rect_intersect(&save_r, &widget_r);
 
     canvas_set_clip_rect(c, &clip_r);

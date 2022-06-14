@@ -124,22 +124,32 @@ static rect_t slide_menu_get_clip_r(widget_t* widget) {
 }
 
 static ret_t slide_menu_paint_children(widget_t* widget, canvas_t* c) {
-  rect_t r;
+  rect_t save_r = {0, 0, 0, 0};
+  rect_t clip_r = {0, 0, 0, 0};
+  rect_t widget_r = {0, 0, 0, 0};
   xy_t clip_right, clip_left;
-  canvas_get_clip_rect(c, &r);
-  clip_left = r.x;
-  clip_right = r.x + r.w - 1;
+  canvas_get_clip_rect(c, &save_r);
+
+  widget_r = rect_init(c->ox, c->oy, widget->w, widget->h);
+  clip_r = rect_intersect(&save_r, &widget_r);
+  canvas_set_clip_rect(c, &clip_r);
+
+  clip_left = clip_r.x;
+  clip_right = clip_r.x + clip_r.w - 1;
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   int32_t left = c->ox + iter->x;
   int32_t right = left + iter->w;
 
   if (left >= (clip_right - 1) || right <= (clip_left + 1)) {
     iter->dirty = FALSE;
+    log_debug("skip %s\n", iter->name);
     continue;
   }
 
   widget_paint(iter, c);
   WIDGET_FOR_EACH_CHILD_END();
+  
+  canvas_set_clip_rect(c, &save_r);
 
   return RET_OK;
 }

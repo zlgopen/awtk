@@ -1,4 +1,4 @@
-<window theme="slide_menu" children_layout="default(c=1,h=60,s=10)">
+<window theme="slide_menu" children_layout="default(c=1,h=60,s=10,m=10)">
   <slide_menu style="mask" align_v="top">
     <button style="slide_button" text="0"/>
     <button style="slide_button" text="1"/>
