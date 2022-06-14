@@ -44,6 +44,11 @@ bool_t exit_if_need_not_update(const char* in, const char* out) {
     return TRUE;
   }
 
+  if (file_get_size(in) == 0) {
+    log_debug("%s is empty\n", in);
+    return TRUE;
+  }
+
   if (!fs_file_exist(os_fs(), out)) {
     return FALSE;
   }
