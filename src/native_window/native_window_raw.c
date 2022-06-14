@@ -39,9 +39,6 @@ static ret_t native_window_raw_move(native_window_t* win, xy_t x, xy_t y) {
 
 static ret_t native_window_raw_on_resized_timer(const timer_info_t* info) {
   widget_t* wm = window_manager();
-  native_window_t* win = NATIVE_WINDOW(info->ctx);
-  event_t e = event_init(EVT_NATIVE_WINDOW_RESIZED, NULL);
-  window_manager_dispatch_native_window_event(window_manager(), &e, win);
   widget_set_need_relayout_children(wm);
   widget_invalidate_force(wm, NULL);
 
@@ -56,16 +53,25 @@ static ret_t native_window_raw_resize(native_window_t* win, wh_t w, wh_t h) {
 
   if (w != info.w || h != info.h) {
     native_window_raw_t* raw = NATIVE_WINDOW_RAW(win);
-
+    event_t e = event_init(EVT_NATIVE_WINDOW_RESIZED, NULL);
+    lcd_orientation_t lcd_orientation = system_info()->lcd_orientation;
     ret = lcd_resize(raw->canvas.lcd, w, h, 0);
     return_value_if_fail(ret == RET_OK, ret);
     system_info_set_lcd_w(system_info(), w);
     system_info_set_lcd_h(system_info(), h);
-    timer_add(native_window_raw_on_resized_timer, win, 100);
-  }
 
-  win->rect.w = w;
-  win->rect.h = h;
+    win->rect.w = w;
+    win->rect.h = h;
+
+    if (lcd_orientation != LCD_ORIENTATION_0) {
+      lcd_set_orientation(raw->canvas.lcd, LCD_ORIENTATION_0, lcd_orientation);
+      native_window_set_orientation(win, LCD_ORIENTATION_0, lcd_orientation);
+    }
+
+    window_manager_dispatch_native_window_event(window_manager(), &e, win);
+    timer_add(native_window_raw_on_resized_timer, win, 100);
+
+  }
 
   return RET_OK;
 }

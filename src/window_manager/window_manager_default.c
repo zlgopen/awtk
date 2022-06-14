@@ -1322,10 +1322,22 @@ static ret_t window_manager_default_resize(widget_t* widget, wh_t w, wh_t h) {
   ret_t ret = RET_OK;
   rect_t r = rect_init(0, 0, w, h);
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  lcd_orientation_t lcd_orientation = system_info()->lcd_orientation;
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
 
   ret = native_window_resize(wm->native_window, w, h, TRUE);
   return_value_if_fail(ret == RET_OK, ret);
+
+  if (lcd_orientation == LCD_ORIENTATION_90 || lcd_orientation == LCD_ORIENTATION_270) {
+    wh_t tmp_w = w;
+    w = h;
+    h = tmp_w;
+    r = rect_init(0, 0, w, h);
+  }
+
+  if (widget->w == w && widget->h == h) {
+    return RET_OK;
+  }
 
   widget_move_resize(widget, 0, 0, w, h);
   native_window_invalidate(wm->native_window, &r);
@@ -1473,29 +1485,13 @@ static ret_t window_manager_default_reset_dialog_highlighter(widget_t* widget) {
 }
 
 static ret_t window_manager_default_native_window_resized(widget_t* widget, void* handle) {
-  uint32_t w = 0;
-  uint32_t h = 0;
   native_window_info_t ainfo;
-  int32_t lcd_orientation = system_info()->lcd_orientation;
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
 
   return_value_if_fail(native_window_get_info(wm->native_window, &ainfo) == RET_OK, RET_FAIL);
 
-  w = ainfo.w;
-  h = ainfo.h;
-  system_info_set_lcd_w(system_info(), w);
-  system_info_set_lcd_h(system_info(), h);
-
-  if (lcd_orientation == LCD_ORIENTATION_90 || lcd_orientation == LCD_ORIENTATION_270) {
-    w = h;
-    h = w;
-  }
-
-  if (widget->w == w && widget->h == h) {
-    return RET_OK;
-  }
   native_window_clear_dirty_rect(wm->native_window);
-  window_manager_default_resize(widget, w, h);
+  window_manager_default_resize(widget, ainfo.w, ainfo.h);
 
   window_manager_default_reset_window_animator(widget);
   window_manager_default_reset_dialog_highlighter(widget);

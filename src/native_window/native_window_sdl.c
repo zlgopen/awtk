@@ -82,6 +82,7 @@ static ret_t native_window_sdl_resize(native_window_t* win, wh_t w, wh_t h) {
   ret_t ret = RET_OK;
   native_window_info_t info;
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
+  lcd_orientation_t lcd_orientation = system_info()->lcd_orientation;
   return_value_if_fail(sdl != NULL, RET_BAD_PARAMS);
   lcd = sdl->canvas.lcd;
   native_window_get_info(win, &info);
@@ -101,6 +102,10 @@ static ret_t native_window_sdl_resize(native_window_t* win, wh_t w, wh_t h) {
 #endif /*ANDROID*/
   if (lcd != NULL && (lcd->w != w || lcd->h != h)) {
     ret = lcd_resize(lcd, w, h, 0);
+  }
+  if (lcd_orientation != LCD_ORIENTATION_0) {
+    lcd_set_orientation(lcd, LCD_ORIENTATION_0, lcd_orientation);
+    native_window_set_orientation(win, LCD_ORIENTATION_0, lcd_orientation);
   }
 
   return ret;

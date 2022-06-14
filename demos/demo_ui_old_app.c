@@ -1050,7 +1050,20 @@ static ret_t on_key_record_play_events(void* ctx, event_t* e) {
   }
 #endif /*WITH_EVENT_RECORDER_PLAYER*/
   if (evt->key == TK_KEY_WHEEL) {
-    log_debug("TK_KEY_WHEEL_UP\r\n");
+    uint32_t o = system_info()->lcd_orientation + 90;
+    if (o > 270) {
+      o = 0;
+    }
+#if defined(WITH_FAST_LCD_PORTRAIT)
+    tk_enable_fast_lcd_portrait(TRUE);
+#endif
+    tk_set_lcd_orientation((lcd_orientation_t)o);
+  } else if (evt->key == TK_KEY_s) {
+    system_info_t* info = system_info();
+    window_manager_resize(window_manager(), info->lcd_w / 2, info->lcd_h / 2);
+  } else if (evt->key == TK_KEY_d) {
+    system_info_t* info = system_info();
+    window_manager_resize(window_manager(), info->lcd_w * 2, info->lcd_h * 2);
   } else if (evt->key == TK_KEY_a) {
     native_window_t* nw = widget_get_native_window(widget_get_child(window_manager(), 0));
     native_window_set_title(nw, "AWTK Simulator");
