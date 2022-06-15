@@ -537,4 +537,7 @@ typedef struct _canvas_t canvas_t;
 struct _lcd_t;
 typedef struct _lcd_t lcd_t;
 
+#ifndef TK_DOUBLE_CLICK_TIME
+#define TK_DOUBLE_CLICK_TIME 200
+#endif /*TK_DOUBLE_CLICK_TIME*/
 #endif /*TK_TYPES_DEF_H*/

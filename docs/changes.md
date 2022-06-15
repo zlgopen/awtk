@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/06/15
+  * 支持double clieck事件。用法参考:[double_click.c](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/double_click.c)
+
 2022/06/14
   * 完善slide menu 支持clip。
   * 完善hscroll\_label的裁剪区域。

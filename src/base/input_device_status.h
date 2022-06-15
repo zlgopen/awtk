@@ -60,6 +60,10 @@ typedef struct _input_device_status_t {
   xy_t last_x;
   xy_t last_y;
   bool_t pressed;
+
+  uint64_t last_pointer_down_time;
+  uint64_t last_pointer_up_time;
+
   widget_t* widget;
   uint32_t long_press_check_timer;
   key_pressed_info_t pressed_info[MAX_PRESSED_KEYS_NR + 1];

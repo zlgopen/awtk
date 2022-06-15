@@ -107,6 +107,11 @@ typedef enum _event_type_t {
    */
   EVT_CLICK,
   /**
+   * @const EVT_DOUBLE_CLICK
+   * 双击事件名(pointer_event_t)。
+   */
+  EVT_DOUBLE_CLICK,
+  /**
    * @const EVT_FOCUS
    * 得到焦点事件名(event_t)。
    */
