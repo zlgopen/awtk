@@ -258,8 +258,13 @@ static ret_t draggable_move_target(widget_t* widget, xy_t x, xy_t y) {
       (draggable->bottom != DRAGGABLE_UNSPECIFIED_NUM ? draggable->bottom : target->parent->h) -
       target->h;
 
-  x = tk_clampi(x, min_x, max_x);
-  y = tk_clampi(y, min_y, max_y);
+  if (min_x < max_x) {
+    x = tk_clampi(x, min_x, max_x);
+  }
+
+  if (min_y < max_y) {
+    y = tk_clampi(y, min_y, max_y);
+  }
 
   widget_move(target, x, y);
 

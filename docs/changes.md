@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/06/16
+  * 完善draggable
+
 2022/06/15
   * 支持double clieck事件。用法参考:[double_click.c](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/double_click.c)
 
