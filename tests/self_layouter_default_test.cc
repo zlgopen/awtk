@@ -633,3 +633,42 @@ TEST(SelfLayoutDefault, center_middle_and_widget_set_prop) {
 
   widget_destroy(w);
 }
+
+TEST(SelfLayoutDefault, reinit) {
+  rect_t r;
+  widget_t* w = window_create(NULL, 0, 0, 0, 0);
+  widget_t* b = button_create(w, 0, 0, 0, 0);
+  ASSERT_EQ(widget_set_self_layout(b, "default(x=10,y=20,w=30,h=40)"), RET_OK);
+
+  ASSERT_EQ(self_layouter_get_param_int(b->self_layout, "x_attr", 0), X_ATTR_DEFAULT);
+  ASSERT_EQ(self_layouter_get_param_int(b->self_layout, "y_attr", 0), Y_ATTR_DEFAULT);
+  ASSERT_EQ(self_layouter_get_param_int(b->self_layout, "w_attr", 0), W_ATTR_PIXEL);
+  ASSERT_EQ(self_layouter_get_param_int(b->self_layout, "h_attr", 0), H_ATTR_PIXEL);
+
+  r = rect_init(0, 0, 400, 300);
+  ASSERT_EQ(self_layouter_layout(b->self_layout, b, &r), RET_OK);
+  ASSERT_EQ(b->x, 10);
+  ASSERT_EQ(b->y, 20);
+  ASSERT_EQ(b->w, 30);
+  ASSERT_EQ(b->h, 40);
+
+  ASSERT_EQ(widget_move_resize(b, 0, 0, 0, 0), RET_OK);
+  ASSERT_EQ(b->x, 0);
+  ASSERT_EQ(b->y, 0);
+  ASSERT_EQ(b->w, 0);
+  ASSERT_EQ(b->h, 0);
+
+  ASSERT_EQ(self_layouter_get_param_int(b->self_layout, "x_attr", 0), X_ATTR_UNDEF);
+  ASSERT_EQ(self_layouter_get_param_int(b->self_layout, "y_attr", 0), Y_ATTR_UNDEF);
+  ASSERT_EQ(self_layouter_get_param_int(b->self_layout, "w_attr", 0), W_ATTR_UNDEF);
+  ASSERT_EQ(self_layouter_get_param_int(b->self_layout, "h_attr", 0), H_ATTR_UNDEF);
+
+  ASSERT_EQ(self_layouter_reinit(b->self_layout), RET_OK);
+  ASSERT_EQ(self_layouter_layout(b->self_layout, b, &r), RET_OK);
+  ASSERT_EQ(b->x, 10);
+  ASSERT_EQ(b->y, 20);
+  ASSERT_EQ(b->w, 30);
+  ASSERT_EQ(b->h, 40);
+
+  widget_destroy(w);
+}

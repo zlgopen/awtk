@@ -94,6 +94,13 @@ ret_t widget_layout_self(widget_t* widget) {
   return self_layouter_layout(widget->self_layout, widget, &r);
 }
 
+ret_t widget_layout_self_reinit(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->self_layout != NULL, RET_BAD_PARAMS);
+  self_layouter_reinit(widget->self_layout);
+
+  return widget_set_need_relayout(widget);
+}
+
 ret_t widget_layout_children_default(widget_t* widget) {
   if (widget->children_layout != NULL) {
     return children_layouter_layout(widget->children_layout, widget);

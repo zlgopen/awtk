@@ -113,6 +113,9 @@ self_layouter_t* self_layouter_clone(self_layouter_t* layouter) {
 }
 
 #ifdef WITHOUT_LAYOUTER
+ret_t self_layouter_reinit(self_layouter_t* layouter) {
+  return RET_FAIL;
+}
 self_layouter_t* self_layouter_create(const char* params) {
   return NULL;
 }

@@ -149,6 +149,15 @@ int32_t self_layouter_get_param_int(self_layouter_t* layouter, const char* name,
 ret_t self_layouter_destroy(self_layouter_t* layouter);
 
 /**
+ * @method self_layouter_reinit
+ * 重新计算layouter对象中的数据。
+ * @param {self_layouter_t*} layouter layouter对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t self_layouter_reinit(self_layouter_t* layouter);
+
+/**
  * @method self_layouter_create
  * 创建layouter对象。
  * @param {const char*} params 参数。

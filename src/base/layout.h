@@ -38,6 +38,16 @@ BEGIN_C_DECLS
 ret_t widget_layout_self(widget_t* widget);
 
 /**
+ * @method widget_layout_self_reinit
+ * 重新计算控件self layout（用于处理move或resize后重新layout的情况）。
+ * @annotation ["global"]
+ * @param {widget_t*} widget 控件。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_layout_self_reinit(widget_t* widget);
+
+/**
  * @method widget_layout_children_default
  * 调用widget默认的childrenlayout。
  * @annotation ["global"]

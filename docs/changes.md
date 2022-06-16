@@ -2,6 +2,7 @@
 
 2022/06/16
   * 完善draggable
+  * 新增 widget\_layout\_self\_reinit 接口，用于在不销毁 控件的 self\_layout 对象的情况下重置对象中的数据(感谢雨欣提供补丁) 
 
 2022/06/15
   * 支持double clieck事件。用法参考:[double_click.c](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/double_click.c)
