@@ -294,11 +294,13 @@ static ret_t text_selector_on_destroy(widget_t* widget) {
 }
 
 ret_t text_selector_parse_options(widget_t* widget, const char* str) {
+  str_t s;
   int32_t i = 0;
   tokenizer_t tokenizer;
   tokenizer_t* t = &tokenizer;
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
   return_value_if_fail(widget != NULL && text_selector != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(str_init(&s, 100) != NULL, RET_OOM);
 
   text_selector->options = tk_strdup(str);
   tokenizer_init(t, str, strlen(str), ";");
@@ -316,10 +318,13 @@ ret_t text_selector_parse_options(widget_t* widget, const char* str) {
         value = i;
       }
 
-      text_selector_append_option(widget, value, text);
+      str_set(&s, text);
+      str_unescape(&s);
+      text_selector_append_option(widget, value, s.str);
       i++;
     }
   }
+  str_reset(&s);
   tokenizer_deinit(t);
 
   return RET_OK;
@@ -349,11 +354,13 @@ ret_t text_selector_set_options(widget_t* widget, const char* options) {
 
   text_selector_reset_options(widget);
   if (strchr(options, ':') == NULL && strchr(options, '-') != NULL) {
+    str_t s;
     int nr = 0;
     int end = 0;
     int step = 1;
     int start = 0;
     char format[41];
+    ret_t ret = RET_FAIL;
     memset(format, 0x00, sizeof(format));
 
     nr = tk_sscanf(options, "%d-%d-%40s", &start, &end, format);
@@ -369,7 +376,13 @@ ret_t text_selector_set_options(widget_t* widget, const char* options) {
       }
     }
 
-    return text_selector_set_range_options_ex(widget, start, end - start + 1, step, format);
+    if (str_init(&s, sizeof(format)) != NULL) {
+      str_set(&s, format);
+      str_unescape(&s);
+      ret = text_selector_set_range_options_ex(widget, start, end - start + 1, step, s.str);
+      str_reset(&s);
+    }
+    return ret;
   } else {
     return text_selector_parse_options(widget, options);
   }

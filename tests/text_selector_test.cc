@@ -281,3 +281,47 @@ TEST(TextSelector, localize_options) {
 
   widget_destroy(win);
 }
+
+TEST(TextSelector, parse_options_special_chars) {
+  widget_t* w = text_selector_create(NULL, 10, 20, 30, 40);
+
+  text_selector_parse_options(w, "1:r\\x3a\\x3b;2:gree\\x6e;3:\\x3ablue");
+  ASSERT_EQ(text_selector_count_options(w), 3);
+
+  text_selector_set_selected_index(w, 0);
+  ASSERT_EQ(text_selector_get_value(w), 1);
+  ASSERT_EQ(string(text_selector_get_text(w)), string("r:;"));
+
+  text_selector_set_selected_index(w, 1);
+  ASSERT_EQ(text_selector_get_value(w), 2);
+  ASSERT_EQ(string(text_selector_get_text(w)), string("green"));
+  
+  text_selector_set_selected_index(w, 2);
+  ASSERT_EQ(text_selector_get_value(w), 3);
+  ASSERT_EQ(string(text_selector_get_text(w)), string(":blue"));
+
+  text_selector_reset_options(w);
+  ASSERT_EQ(text_selector_count_options(w), 0);
+
+  widget_destroy(w);
+}
+
+TEST(TextSelector, parse_options_special_chars1) {
+  widget_t* w = text_selector_create(NULL, 10, 20, 30, 40);
+
+  text_selector_set_options(w, "-12-14-GTM%+02d\\x3a00");
+  ASSERT_EQ(text_selector_count_options(w), 27);
+
+  text_selector_set_selected_index(w, 0);
+  ASSERT_EQ(text_selector_get_value(w), -12);
+  ASSERT_STREQ(text_selector_get_text(w), "GTM-12:00");
+  
+  text_selector_set_selected_index(w, 13);
+  ASSERT_EQ(text_selector_get_value(w), 1);
+  ASSERT_STREQ(text_selector_get_text(w), "GTM+1:00");
+
+  text_selector_reset_options(w);
+  ASSERT_EQ(text_selector_count_options(w), 0);
+
+  widget_destroy(w);
+}

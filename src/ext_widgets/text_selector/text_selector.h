@@ -98,9 +98,13 @@ typedef struct _text_selector_t {
   /**
    * @property {char*} options
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。
-   * 对于数值选项，也可以指定一个范围，用『-』分隔起始值、结束值和格式。
+   * 设置可选项(英文冒号(:)分隔值和文本，英文分号(;)分隔选项，如:1:red;2:green;3:blue)。
+   * 对于数值选项，也可以指定一个范围，用英文负号(-)分隔起始值、结束值和格式。
    * 如："1-7-%02d"表示1到7，格式为『02d』，格式为可选，缺省为『%d』。
+   * > 如果数据本身中有英文冒号(:)、英文分号(;)和英文负号(-)。请用16进制转义。
+   * > * 英文冒号(:)在XML中写为\x3a，在C代码中写为\\x3a
+   * > * 英文冒号(;)在XML中写为\x3b，在C代码中写为\\x3b
+   * > * 英文冒号(-)在XML中写为\x2d，在C代码中写为\\x2d
    */
   char* options;
 
