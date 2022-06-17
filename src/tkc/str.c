@@ -245,6 +245,7 @@ ret_t str_encode_xml_entity_with_len(str_t* str, const char* text, uint32_t len)
   return RET_OK;
 }
 
+/*https://en.wikipedia.org/wiki/Escape_sequences_in_C*/
 ret_t str_unescape(str_t* str) {
   char* s = NULL;
   char* d = NULL;
@@ -257,6 +258,22 @@ ret_t str_unescape(str_t* str) {
 
     if (c == '\\') {
       switch (*s++) {
+        case 'a': {
+          c = '\a';
+          break;
+        }
+        case 'b': {
+          c = '\b';
+          break;
+        }
+        case 'e': {
+          c = '\e';
+          break;
+        }
+        case 'f': {
+          c = '\f';
+          break;
+        }
         case 'n': {
           c = '\n';
           break;
@@ -267,6 +284,10 @@ ret_t str_unescape(str_t* str) {
         }
         case 't': {
           c = '\t';
+          break;
+        }
+        case 'v': {
+          c = '\v';
           break;
         }
         case '\'': {
@@ -281,7 +302,19 @@ ret_t str_unescape(str_t* str) {
           c = '\\';
           break;
         }
-        case '\0': {
+        case '0': {
+          c = '\0';
+          break;
+        }
+        case '?': {
+          c = '\?';
+          break;
+        }
+        case 'x': {
+          int32_t v = 0;
+          tk_sscanf(s, "%02x", &v);
+          c = v;
+          s += 2;
           break;
         }
         default: {

@@ -197,6 +197,54 @@ TEST(Str, unescap) {
   ASSERT_EQ(str_unescape(s), RET_OK);
   ASSERT_EQ(string(s->str), "\\a\\bc\\");
 
+  ASSERT_EQ(str_set(s, "\\a"), RET_OK);
+  ASSERT_EQ(str_unescape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "\a");
+
+  ASSERT_EQ(str_set(s, "\\b"), RET_OK);
+  ASSERT_EQ(str_unescape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "\b");
+
+  ASSERT_EQ(str_set(s, "\\e"), RET_OK);
+  ASSERT_EQ(str_unescape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "\e");
+
+  ASSERT_EQ(str_set(s, "\\f"), RET_OK);
+  ASSERT_EQ(str_unescape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "\f");
+
+  ASSERT_EQ(str_set(s, "\\v"), RET_OK);
+  ASSERT_EQ(str_unescape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "\v");
+
+  ASSERT_EQ(str_set(s, "\\?"), RET_OK);
+  ASSERT_EQ(str_unescape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "\?");
+  
+  ASSERT_EQ(str_set(s, "\\0"), RET_OK);
+  ASSERT_EQ(str_unescape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "");
+
+  ASSERT_EQ(str_set(s, "\x3a"), RET_OK);
+  ASSERT_EQ(str_unescape(s), RET_OK);
+  ASSERT_EQ(string(s->str), ":");
+
+  ASSERT_EQ(str_set(s, "\x3b"), RET_OK);
+  ASSERT_EQ(str_unescape(s), RET_OK);
+  ASSERT_EQ(string(s->str), ";");
+
+  ASSERT_EQ(str_set(s, "\x2d"), RET_OK);
+  ASSERT_EQ(str_unescape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "-");
+
+  ASSERT_EQ(str_set(s, "\x2"), RET_OK);
+  ASSERT_EQ(str_unescape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "\x2");
+
+  ASSERT_EQ(str_set(s, "\x0"), RET_OK);
+  ASSERT_EQ(str_unescape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "\0");
+
   str_reset(s);
 }
 
