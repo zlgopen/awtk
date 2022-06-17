@@ -315,7 +315,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
     widget_move(win, im->win->x, im->win_old_y - im->win_delta_y);
   } else if (p.y < 0) {
     im->win = win;
-    widget_move(win, im->win->x, im->win->y + im->win_delta_y);
+    widget_move(win, im->win->x, im->win_old_y);
     im->win_delta_y = 0;
   }
 
