@@ -225,6 +225,11 @@ static int32_t tab_button_get_min_w(widget_t* widget) {
   tab_button_t* tab_button = TAB_BUTTON(widget);
   int32_t text_w = widget_measure_text(widget, widget->text.str) + widget->h / 2;
 
+  if (widget->astyle != NULL) {
+    text_w += style_get_int(widget->astyle, STYLE_ID_MARGIN_LEFT, 0);
+    text_w += style_get_int(widget->astyle, STYLE_ID_MARGIN_RIGHT, 0);
+  }
+
   if (tab_button->icon != NULL || tab_button->active_icon != NULL) {
     text_w += widget->h;
   }

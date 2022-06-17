@@ -14,6 +14,14 @@
     <pressed_of_active text_color="#1296db" />
     <over_of_active    text_color="#1296db" />
   </style>
+  <style name="remove_tab" margin="4" bg_color="#eeeeee" border_color="#808080" border="right" margin_right="20">
+    <normal     text_color="black" />
+    <pressed    text_color="black" />
+    <over       text_color="black" />
+    <normal_of_active text_color="#1296db" /> 
+    <pressed_of_active text_color="#1296db" />
+    <over_of_active    text_color="#1296db" />
+  </style>
 </tab_button>
 
 

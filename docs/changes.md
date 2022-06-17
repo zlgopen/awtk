@@ -1,8 +1,9 @@
 # 最新动态
 2022/06/17
-  * 完善str_unescape
+  * 完善str\_unescape
   * text selector的options支持字符转义，方便使用特殊字符。
   * combo box的options支持字符转义，方便使用特殊字符。
+  * 修改通过margin\_left或margin\_right可以调整compact模式下tab\_button的宽度(感谢朝泽提供补丁)
 
 2022/06/16
   * 完善draggable
