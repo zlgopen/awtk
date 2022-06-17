@@ -318,7 +318,7 @@ struct _input_method_t {
   /*private*/
   bool_t busy;
   void* data;
-  uint32_t idle_close_id;
+  uint32_t timer_close_id;
 };
 
 /**

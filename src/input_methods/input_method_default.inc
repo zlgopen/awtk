@@ -21,7 +21,7 @@
 
 #include "tkc/mem.h"
 #include "tkc/utils.h"
-#include "base/idle.h"
+#include "base/timer.h"
 #include "base/enums.h"
 #include "base/window.h"
 #include "base/text_edit.h"
@@ -171,7 +171,7 @@ static ret_t input_method_on_win_close(void* ctx, event_t* e) {
 
   if (im->keyboard != NULL) {
     widget_get_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
-    if (im->idle_close_id == TK_INVALID_ID) {
+    if (im->timer_close_id == TK_INVALID_ID) {
       window_close_force(im->keyboard);
 
       im->keyboard = NULL;
@@ -376,14 +376,14 @@ static ret_t input_method_default_show_keyboard(input_method_t* im) {
   return input_type_open_keyboard(im, keyboard_name, open_anim);
 }
 
-typedef struct _idle_close_info_t {
+typedef struct _timer_close_info_t {
   widget_t* widget;
   widget_t* keyboard;
   input_method_t* im;
-} idle_close_info_t;
+} timer_close_info_t;
 
-static ret_t on_idle_close_keyboard(const idle_info_t* idle) {
-  idle_close_info_t* info = (idle_close_info_t*)(idle->ctx);
+static ret_t on_timer_close_keyboard(const timer_info_t* timer) {
+  timer_close_info_t* info = (timer_close_info_t*)(timer->ctx);
   input_method_t* im = info->im;
 
   if (im->keyboard == info->keyboard && im->widget == info->widget) {
@@ -396,7 +396,7 @@ static ret_t on_idle_close_keyboard(const idle_info_t* idle) {
     im->keyboard = NULL;
     im->widget = NULL;
   }
-  im->idle_close_id = TK_INVALID_ID;
+  im->timer_close_id = TK_INVALID_ID;
 
   TKMEM_FREE(info);
 
@@ -455,15 +455,15 @@ static ret_t input_method_default_request(input_method_t* im, widget_t* widget) 
   input_engine_reset_input(im->engine);
   input_method_dispatch_candidates(im, "", 0, 0);
   input_method_default_ensure_suggest_words(im);
-  if (im->idle_close_id != TK_INVALID_ID) {
-    idle_info_t* info = (idle_info_t*)idle_find(im->idle_close_id);
+  if (im->timer_close_id != TK_INVALID_ID) {
+    timer_info_t* info = (timer_info_t*)timer_find(im->timer_close_id);
 
     if (info != NULL) {
       TKMEM_FREE(info->ctx);
       info->ctx = NULL;
     }
-    idle_remove(im->idle_close_id);
-    im->idle_close_id = TK_INVALID_ID;
+    timer_remove(im->timer_close_id);
+    im->timer_close_id = TK_INVALID_ID;
   }
 
   if (widget != NULL) {
@@ -473,14 +473,14 @@ static ret_t input_method_default_request(input_method_t* im, widget_t* widget) 
     widget_on(widget, EVT_DESTROY, input_method_default_on_edit_destroy, im);
   } else {
     if (im->keyboard != NULL) {
-      idle_close_info_t* info = TKMEM_ZALLOC(idle_close_info_t);
+      timer_close_info_t* info = TKMEM_ZALLOC(timer_close_info_t);
       /*do not close immediately, so we have chance to reuse it.*/
       if (info != NULL) {
         info->im = im;
         info->widget = im->widget;
         info->keyboard = im->keyboard;
 
-        im->idle_close_id = idle_add(on_idle_close_keyboard, info);
+        im->timer_close_id = timer_add(on_timer_close_keyboard, info, 100);
       } else {
         window_close(im->keyboard);
         im->keyboard = NULL;
