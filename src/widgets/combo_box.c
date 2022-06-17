@@ -212,11 +212,13 @@ static ret_t combo_box_get_prop(widget_t* widget, const char* name, value_t* v) 
 }
 
 ret_t combo_box_parse_options(widget_t* widget, const char* str) {
+  str_t s;
   int32_t i = 0;
   tokenizer_t tokenizer;
   tokenizer_t* t = &tokenizer;
   combo_box_t* combo_box = COMBO_BOX(widget);
   return_value_if_fail(combo_box != NULL && str != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(str_init(&s, 100) != NULL, RET_OOM);
 
   combo_box_reset_options(widget);
   combo_box->options = tk_strdup(str);
@@ -235,10 +237,13 @@ ret_t combo_box_parse_options(widget_t* widget, const char* str) {
         value = i;
       }
 
-      combo_box_append_option(widget, value, text);
+      str_set(&s, text);
+      str_unescape(&s);
+      combo_box_append_option(widget, value, s.str);
       i++;
     }
   }
+  str_reset(&s);
   tokenizer_deinit(t);
 
   return RET_OK;

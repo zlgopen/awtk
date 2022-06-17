@@ -338,3 +338,27 @@ TEST(ComboBox, set_options) {
 
   widget_destroy(w);
 }
+
+TEST(ComboBox, parse_options_special_chars) {
+  widget_t* w = combo_box_create(NULL, 10, 20, 30, 40);
+
+  combo_box_parse_options(w, "1:r\\x3a\\x3b;2:gree\\x6e;3:\\x3ablue");
+  ASSERT_EQ(combo_box_count_options(w), 3);
+
+  combo_box_set_selected_index(w, 0);
+  ASSERT_EQ(combo_box_get_value(w), 1);
+  ASSERT_EQ(string(combo_box_get_text(w)), string("r:;"));
+
+  combo_box_set_selected_index(w, 1);
+  ASSERT_EQ(combo_box_get_value(w), 2);
+  ASSERT_EQ(string(combo_box_get_text(w)), string("green"));
+  
+  combo_box_set_selected_index(w, 2);
+  ASSERT_EQ(combo_box_get_value(w), 3);
+  ASSERT_EQ(string(combo_box_get_text(w)), string(":blue"));
+
+  combo_box_reset_options(w);
+  ASSERT_EQ(combo_box_count_options(w), 0);
+
+  widget_destroy(w);
+}

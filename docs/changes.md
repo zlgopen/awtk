@@ -2,6 +2,7 @@
 2022/06/17
   * 完善str_unescape
   * text selector的options支持字符转义，方便使用特殊字符。
+  * combo box的options支持字符转义，方便使用特殊字符。
 
 2022/06/16
   * 完善draggable

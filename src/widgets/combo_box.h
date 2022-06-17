@@ -209,6 +209,9 @@ typedef struct _combo_box_t {
    * @property {char*} options
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。
+   * > 如果数据本身中有英文冒号(:)和英文分号(;)，请用16进制转义。
+   * > * 英文冒号(:)写为\\x3a
+   * > * 英文冒号(;)写为\\x3b
    */
   char* options;
 
