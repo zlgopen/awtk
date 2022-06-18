@@ -236,6 +236,7 @@ static int32_t input_method_default_get_edit_caret_bottom(widget_t* widget, widg
   int32_t caret_y = widget_get_prop_int(widget, WIDGET_PROP_CARET_Y, 0);
 
   widget_to_screen(widget, &p);
+
   if (tk_str_eq(widget->vt->type, WIDGET_TYPE_EDIT)) {
     caret_y += widget->h;
   } else {
@@ -267,6 +268,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
   bool_t win_is_keyboard = widget_is_keyboard(win);
   const char* close_anim_hint = WINDOW_ANIMATOR_POPUP;
   const char* open_anim_hint = open_anim ? close_anim_hint : "";
+  int32_t win_delta_y = im->win_delta_y;
 
   if (keyboard_name == NULL || *keyboard_name == '\0') {
     return RET_OK;
@@ -286,6 +288,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
   widget_on(im->keyboard, EVT_DESTROY, input_method_default_on_keyboard_close, im);
 
   caret_bottom = input_method_default_get_edit_caret_bottom(widget, im->keyboard);
+  caret_bottom += win_delta_y;
   if (widget_get_prop_bool(im->keyboard, WIDGET_PROP_FLOATING, FALSE)) {
     input_type_keyboard_follow_edit(im);
     if (im->keyboard->y < p.y) {
@@ -313,7 +316,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
     close_anim_hint = "vtranslate";
     im->win_delta_y = caret_bottom - im->keyboard->y;
     widget_move(win, im->win->x, im->win_old_y - im->win_delta_y);
-  } else if (p.y < 0) {
+  } else if (p.y < im->win_old_y) {
     im->win = win;
     widget_move(win, im->win->x, im->win_old_y);
     im->win_delta_y = 0;
