@@ -1008,6 +1008,24 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_MOVE_FOCUS_RIGHT_KEY "move_focus_right_key"
 
 /**
+ * @const WIDGET_PROP_ROWS
+ * 行数。
+ */
+#define WIDGET_PROP_ROWS "rows"
+
+/**
+ * @const WIDGET_PROP_SHOW_GRID
+ * 是否显示网格线。
+ */
+#define WIDGET_PROP_SHOW_GRID "show_grid"
+
+/**
+ * @const WIDGET_PROP_COLUMNS_DEFINITION
+ * 各列的定义。
+ */
+#define WIDGET_PROP_COLUMNS_DEFINITION "columns_definition"
+
+/**
  * @enum widget_type_t
  * @annotation ["scriptable", "string"]
  * @prefix WIDGET_TYPE_

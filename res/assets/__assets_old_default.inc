@@ -162,6 +162,7 @@
 #include "default/inc/ui/image_value.data"
 #include "default/inc/ui/slide_view.data"
 #include "default/inc/ui/time_clock.data"
+#include "default/inc/ui/grid.data"
 #include "default/inc/ui/tab_top.data"
 #include "default/inc/ui/slide_view_v.data"
 #include "default/inc/ui/top.data"
@@ -669,6 +670,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_image_value);
   assets_manager_add(am, ui_slide_view);
   assets_manager_add(am, ui_time_clock);
+  assets_manager_add(am, ui_grid);
   assets_manager_add(am, ui_tab_top);
   assets_manager_add(am, ui_slide_view_v);
   assets_manager_add(am, ui_top);

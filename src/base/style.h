@@ -298,6 +298,24 @@ BEGIN_C_DECLS
  */
 #define STYLE_ID_CLEAR_BG "clear_bg"
 
+/**
+ * @const STYLE_ID_GRID_COLOR
+ * 网格线颜色(grid控件)
+ */
+#define STYLE_ID_GRID_COLOR "grid_color"
+
+/**
+ * @const STYLE_ID_EVEN_BG_COLOR
+ * 偶数行背景颜色(grid控件)
+ */
+#define STYLE_ID_EVEN_BG_COLOR "even_bg_color"
+
+/**
+ * @const STYLE_ID_ODD_BG_COLOR
+ * 奇数行背景颜色(grid控件)
+ */
+#define STYLE_ID_ODD_BG_COLOR "odd_bg_color"
+
 struct _style_t;
 typedef struct _style_t style_t;
 

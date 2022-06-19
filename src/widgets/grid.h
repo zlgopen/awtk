@@ -1,9 +1,9 @@
 ﻿/**
  * File:   grid.h
  * Author: AWTK Develop Team
- * Brief:  grid
+ * Brief:  网格。
  *
- * Copyright (c) 2018 - 2022  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2022 - 2022 Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,9 +15,10 @@
 /**
  * History:
  * ================================================================
- * 2018-08-29 Li XianJing <xianjimli@hotmail.com> created
+ * 2022-06-18 Li XianJing <xianjimli@hotmail.com> created
  *
  */
+
 
 #ifndef TK_GRID_H
 #define TK_GRID_H
@@ -25,54 +26,80 @@
 #include "base/widget.h"
 
 BEGIN_C_DECLS
-
 /**
  * @class grid_t
  * @parent widget_t
  * @annotation ["scriptable","design","widget"]
- * grid控件。一个简单的容器控件，用于网格排列一组控件。
- *
- * 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。
- * 子控件的布局可用layout\_children属性指定。
- * 请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。
- *
- * grid\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于grid\_t控件。
- *
- * 在xml中使用"grid"标签创建grid。如：
+ * 网格。
+ * 在xml中使用"grid"标签创建控件。如：
  *
  * ```xml
- *  <grid x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=2,m=5,s=5)">
- *     <button name="open:basic" text="Basic"/>
- *     <button name="open:button" text="Buttons"/>
- *     <button name="open:edit" text="Edits"/>
- *     <button name="open:keyboard" text="KeyBoard"/>
- *   </grid>
+ * <!-- ui -->
+ * <grid x="c" y="50" w="100" h="100"/>
  * ```
  *
- * 可用通过style来设置控件的显示风格，如背景颜色等。如：
- *
+ * 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
+ * 
  * ```xml
- * <style name="default" border_color="#a0a0a0">
- *   <normal     bg_color="#f0f0f0" />
- * </style>
+ * <!-- style -->
+ * <grid>
+ *   <style name="default" grid_color="gray" border_color="black" odd_bg_color="#f5f5f5" even_bg_color="#eeeeee">
+ *     <normal />
+ *   </style>
+ * </grid>
  * ```
- *
  */
 typedef struct _grid_t {
   widget_t widget;
+
+
+  /**
+   * @property {uint32_t} rows
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 行数。
+   */
+  uint32_t rows;
+
+  /**
+   * @property {char*} columns_definition
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 各列的参数。
+   * 各列的参数之间用英文的分号(;)分隔，每列参数的格式为：
+   *
+   * col(w=?,left_margin=?,right_margin=?,top_maorgin=?,bottom_margin=?)
+   *
+   * * w 为列的宽度(必须存在)。取值在(0-1]区间时，视为grid控件宽度的比例，否则为像素宽度。
+   * * left_margin(可选，可缩写为l) 该列左边的边距。
+   * * right_margin(可选，可缩写为r) 该列右边的边距。
+   * * top_margin(可选，可缩写为t) 该列顶部的边距。
+   * * bottom_margin(可选，可缩写为b) 该列底部的边距。
+   * * margin(可选，可缩写为m) 同时指定上面4个边距。
+   * 
+   */
+  char* columns_definition;
+
+  /**
+   * @property {bool_t} show_grid
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否显示网格。
+   */
+  bool_t show_grid;
+
+  /*private*/
+  darray_t cols_definition;
 } grid_t;
 
 /**
  * @method grid_create
- * 创建grid对象
  * @annotation ["constructor", "scriptable"]
+ * 创建grid对象
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
  * @param {wh_t} w 宽度
  * @param {wh_t} h 高度
  *
- * @return {widget_t*} 对象。
+ * @return {widget_t*} grid对象。
  */
 widget_t* grid_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
@@ -85,6 +112,41 @@ widget_t* grid_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  * @return {widget_t*} grid对象。
  */
 widget_t* grid_cast(widget_t* widget);
+
+
+/**
+ * @method grid_set_rows
+ * 设置 行数。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {uint32_t} rows 行数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t grid_set_rows(widget_t* widget, uint32_t rows);
+
+/**
+ * @method grid_set_columns_definition
+ * 设置 各列的参数。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {const char*} columns_definition 各列的参数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t grid_set_columns_definition(widget_t* widget, const char* columns_definition);
+
+/**
+ * @method grid_set_show_grid
+ * 设置 是否显示网格。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {bool_t} show_grid 是否显示网格。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t grid_set_show_grid(widget_t* widget, bool_t show_grid);
+
 
 #define GRID(widget) ((grid_t*)(grid_cast(WIDGET(widget))))
 

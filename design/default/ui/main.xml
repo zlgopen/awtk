@@ -48,6 +48,7 @@
       <button focusable="true" name="open:draggable" text="Draggable"/>
       <button focusable="true" name="open:rich_text_view" text="RichTextView"/>
       <button focusable="true" name="open:bidi" text="Bidirectional"/>
+      <button focusable="true" name="open:grid" text="grid"/>
       <button focusable="true" name="open:color_tile" text="Color Tile"/>
       <button focusable="true" name="open:floating_keyboard" text="Floating Keyboard"/>
       <button focusable="true" name="open:slider" text="Slider"/>

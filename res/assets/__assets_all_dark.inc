@@ -167,6 +167,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_image_animation[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_image_value[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_slide_view[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_time_clock[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_grid[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_tab_top[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_slide_view_v[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_top[]);
@@ -1044,6 +1045,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_image_value);
   assets_manager_add(am, ui_slide_view);
   assets_manager_add(am, ui_time_clock);
+  assets_manager_add(am, ui_grid);
   assets_manager_add(am, ui_tab_top);
   assets_manager_add(am, ui_slide_view_v);
   assets_manager_add(am, ui_top);
