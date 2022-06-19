@@ -69,6 +69,7 @@ typedef struct _grid_t {
    * col(w=?,left_margin=?,right_margin=?,top_maorgin=?,bottom_margin=?)
    *
    * * w 为列的宽度(必须存在)。取值在(0-1]区间时，视为grid控件宽度的比例，否则为像素宽度。
+   *   (如果为负数，将计算结果加上控件的宽度)
    * * left_margin(可选，可缩写为l) 该列左边的边距。
    * * right_margin(可选，可缩写为r) 该列右边的边距。
    * * top_margin(可选，可缩写为t) 该列顶部的边距。

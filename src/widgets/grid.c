@@ -96,7 +96,7 @@ static column_definition_t* column_definition_create(const char* str) {
   func_call_parser_parse(&(p.parser));
   func_call_parser_deinit(&(p.parser));
 
-  assert(definition->w > 0);
+  assert(definition->w != 0);
 
   return definition;
 }
@@ -236,16 +236,23 @@ static ret_t grid_on_layout_children_impl(widget_t* widget) {
 
   for (i = 0; i < cols; i++) {
     column_definition_t* def = (column_definition_t*)darray_get(&(grid->cols_definition), i);
+    bool_t negative = def->w < 0;
+    double w = tk_abs(def->w);
 
-    if (def->w <= 1) {
-      def->real_w = def->w * widget->w;
+    if (w <= 1) {
+      def->real_w = w * widget->w;
     } else {
-      def->real_w = def->w;
+      def->real_w = w;
     }
+
+    if (negative) {
+      def->real_w = widget->w - def->real_w;
+    }
+
     tw += def->real_w;
   }
 
-  assert(tw <= widget->w);
+  log_if_fail(tw <= widget->w);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   uint32_t row = i / cols;
@@ -257,9 +264,9 @@ static ret_t grid_on_layout_children_impl(widget_t* widget) {
   int32_t w = def->real_w - def->left_margin - def->right_margin;
   int32_t h = row_height - def->top_margin - def->bottom_margin;
 
-  assert(w > 0 && h > 0);
-  assert(w <= widget->w);
-  assert(h <= row_height);
+  log_if_fail(w > 0 && h > 0);
+  log_if_fail(w <= widget->w);
+  log_if_fail(h <= row_height);
 
   widget_move_resize_ex(iter, x, y, w, h, FALSE);
   if (iter->self_layout) {
