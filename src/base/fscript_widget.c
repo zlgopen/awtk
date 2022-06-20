@@ -131,6 +131,15 @@ static ret_t func_window_open(fscript_t* fscript, fscript_args_t* args, value_t*
   return RET_OK;
 }
 
+static ret_t func_window_close_and_open(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  if(args->size < 2) {
+    args->size = 2;
+    value_set_bool(args->args + 1, TRUE);
+  }
+
+  return func_window_open(fscript, args, result); 
+}
+
 static ret_t func_window_close(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   ret_t ret = RET_OK;
 
@@ -607,6 +616,9 @@ static ret_t func_theme_set(fscript_t* fscript, fscript_args_t* args, value_t* r
 FACTORY_TABLE_BEGIN(s_ext_widget)
 FACTORY_TABLE_ENTRY("open", func_window_open)
 FACTORY_TABLE_ENTRY("close", func_window_close)
+FACTORY_TABLE_ENTRY("window_open", func_window_open)
+FACTORY_TABLE_ENTRY("window_close_and_open", func_window_close_and_open)
+FACTORY_TABLE_ENTRY("window_close", func_window_close)
 FACTORY_TABLE_ENTRY("back", func_back)
 FACTORY_TABLE_ENTRY("back_to_home", func_back_to_home)
 FACTORY_TABLE_ENTRY("quit", func_quit)
