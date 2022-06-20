@@ -7,8 +7,10 @@
 
   <edit x="10" y="m:50" w="-20" h="30" tr_tips="name" />
   <mledit x="10" y="m:120" w="-20" h="80" tr_tips="desc" />
-
-  <button name="chinese" x="10" y="m" w="25%" h="30" text="Chinese"/>
-  <button name="english" x="center" y="m" w="25%" h="30" text="English"/>
-  <button name="close" x="right:10" y="m" w="25%" h="30" text="Close"/>
+  <row y="m" h="30" w="100%" children_layout="default(r=1,c=4,ym=2,s=10)" >
+    <button name="chinese" text="Chinese"/>
+    <button name="english" text="English"/>
+    <button name="open:fade" text="highlighter"/>
+    <button name="close" text="Close"/>
+  </row>
 </window>

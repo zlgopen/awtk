@@ -254,6 +254,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
     dialog_highlighter_set_bg(dialog_highlighter, img);
     dialog_highlighter_set_bg_clip_rect(dialog_highlighter, &r);
   }
+  wm->last_curr_win = wm->curr_win;
   wm->curr_win = NULL;
 #endif
   return RET_OK;
@@ -1478,7 +1479,9 @@ static ret_t window_manager_default_reset_dialog_highlighter(widget_t* widget) {
     memset(&img, 0x00, sizeof(img));
     if (prev != NULL) {
       dialog_highlighter_clear_image(wm->dialog_highlighter);
+      wm->curr_win = wm->last_curr_win;
       window_manager_default_snap_prev_window(widget, prev, &img);
+      wm->curr_win =  NULL;
     }
   }
   return RET_OK;
@@ -1492,6 +1495,16 @@ static ret_t window_manager_default_native_window_resized(widget_t* widget, void
 
   native_window_clear_dirty_rect(wm->native_window);
   window_manager_default_resize(widget, ainfo.w, ainfo.h);
+
+  window_manager_default_reset_window_animator(widget);
+  window_manager_default_reset_dialog_highlighter(widget);
+
+  return RET_OK;
+}
+
+static ret_t window_manager_default_on_locale_changed(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  return_value_if_fail(widget != NULL, RET_FAIL);
 
   window_manager_default_reset_window_animator(widget);
   window_manager_default_reset_dialog_highlighter(widget);
@@ -1549,6 +1562,7 @@ widget_t* window_manager_create(void) {
   wm->ready_animator = FALSE;
   WINDOW_MANAGER(wm)->max_fps = TK_MAX_FPS;
 
+  locale_info_on(locale_info(), EVT_LOCALE_CHANGED, window_manager_default_on_locale_changed, wm);
   return window_manager_init(WINDOW_MANAGER(wm), &s_window_manager_vtable,
                              &s_window_manager_self_vtable);
 }

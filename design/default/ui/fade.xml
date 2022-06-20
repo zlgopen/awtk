@@ -1,6 +1,7 @@
 <dialog style="notitle" anim_hint="fade(duration=300)" highlight="default(alpha=100)"
   x="c" y="m" w="80%" h="160">
-  <label name="" x="center" y="middle:-20" w="200" h="30" text="Are you ready?"/>
-  <button name="quit" x="10" y="bottom:10" w="40%" h="30" text="Yes"/>
-  <button name="quit" x="right:10" y="bottom:10" w="40%" h="30" text="No"/>
+  <label name="" x="center" y="middle:-20" w="200" h="30" text="Are you ready set locale ?"/>
+  <button name="chinese" x="10"y="bottom:10" w="25%" h="30" text="Chinese"/>
+  <button name="english" x="center" y="bottom:10" w="25%" h="30" text="English"/>
+  <button name="quit" x="right:10" y="bottom:10" w="25%" h="30" text="No"/>
 </dialog>
