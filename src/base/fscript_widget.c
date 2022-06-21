@@ -613,6 +613,16 @@ static ret_t func_theme_set(fscript_t* fscript, fscript_args_t* args, value_t* r
   return RET_OK;
 }
 
+static ret_t func_to_name(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  const char* name = NULL;
+  widget_t* widget = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+
+  value_set_str(result, value_str(args->args));
+
+  return RET_OK;
+}
+
 FACTORY_TABLE_BEGIN(s_ext_widget)
 FACTORY_TABLE_ENTRY("open", func_window_open)
 FACTORY_TABLE_ENTRY("close", func_window_close)
@@ -641,6 +651,9 @@ FACTORY_TABLE_ENTRY("locale_get", func_locale_get)
 FACTORY_TABLE_ENTRY("locale_set", func_locale_set)
 FACTORY_TABLE_ENTRY("theme_get", func_theme_get)
 FACTORY_TABLE_ENTRY("theme_set", func_theme_set)
+FACTORY_TABLE_ENTRY("window_name", func_to_name)
+FACTORY_TABLE_ENTRY("widget_name", func_to_name)
+FACTORY_TABLE_ENTRY("prop_name", func_to_name)
 FACTORY_TABLE_END()
 
 ret_t fscript_widget_register(void) {
