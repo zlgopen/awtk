@@ -54,13 +54,6 @@ static const char* s_sysbar_name = "sysbar_${device_orientation}";
 /*** common **********************************************************************/
 extern ret_t assets_set_global_theme(const char* name);
 
-/* 在 dialog 切换语言或主题时，使用此函数刷新 dialog 高亮背景 */
-static ret_t refresh_prev_window(void) {
-  bitmap_t img = {0};
-  widget_t* prev_win = window_manager_get_top_main_window(window_manager());
-  return window_manager_snap_prev_window(window_manager(), prev_win, &img);
-}
-
 static ret_t change_language(bool_t is_chinese) {
   ret_t ret = RET_FAIL;
   const char* country = is_chinese ? "CN" : "US";
@@ -81,13 +74,6 @@ static ret_t on_language_changed(void* ctx, event_t* e) {
   return change_language(value_bool(&(evt->new_value)));
 }
 
-static ret_t on_dialog_language_changed(void* ctx, event_t* e) {
-  ret_t ret = on_language_changed(ctx, e);
-  refresh_prev_window();
-
-  return ret;
-}
-
 static ret_t change_theme(bool_t is_dark) {
   return assets_set_global_theme(is_dark ? "dark" : "default");
 }
@@ -95,13 +81,6 @@ static ret_t change_theme(bool_t is_dark) {
 static ret_t on_change_theme(void* ctx, event_t* e) {
   value_change_event_t* evt = value_change_event_cast(e);
   return change_theme(value_bool(&(evt->new_value)));
-}
-
-static ret_t on_dialog_change_theme(void* ctx, event_t* e) {
-  ret_t ret = on_change_theme(ctx, e);
-  refresh_prev_window();
-
-  return ret;
 }
 
 #define DIALOG_INFO_THEME THEME_NAME_PREFIX "dialog_info"
@@ -357,11 +336,11 @@ static ret_t menu_bar_init_widget(void* ctx, const void* iter) {
       WIDGET_FOR_EACH_CHILD_END()
     } else if (tk_str_eq(name, "rb_dark")) {
       widget_set_value(widget, tk_str_eq(assets_manager()->theme, "dark"));
-      widget_on(widget, EVT_VALUE_CHANGED, on_dialog_change_theme, NULL);
+      widget_on(widget, EVT_VALUE_CHANGED, on_change_theme, NULL);
     } else if (tk_str_eq(name, "rb_zh")) {
       if (s_is_full_font) {
         widget_set_value(widget, tk_str_eq(locale_info()->language, "zh"));
-        widget_on(widget, EVT_VALUE_CHANGED, on_dialog_language_changed, NULL);
+        widget_on(widget, EVT_VALUE_CHANGED, on_language_changed, NULL);
       } else {
         widget_set_value(widget, FALSE);
         widget_set_enable(widget->parent, FALSE);

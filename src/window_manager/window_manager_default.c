@@ -1227,6 +1227,8 @@ ret_t window_manager_default_on_event(widget_t* widget, event_t* e) {
     window_manager_default_reset_dialog_highlighter(widget);
   } else if (e->type == EVT_THEME_CHANGED) {
     window_manager_on_theme_changed(widget);
+    window_manager_default_reset_window_animator(widget);
+    window_manager_default_reset_dialog_highlighter(widget);
   } else if (e->type == EVT_TOP_WINDOW_CHANGED) {
     input_device_status_abort_all_pressed_keys(&(wm->input_device_status));
   }
@@ -1481,7 +1483,7 @@ static ret_t window_manager_default_reset_dialog_highlighter(widget_t* widget) {
       dialog_highlighter_clear_image(wm->dialog_highlighter);
       wm->curr_win = wm->last_curr_win;
       window_manager_default_snap_prev_window(widget, prev, &img);
-      wm->curr_win =  NULL;
+      wm->curr_win = NULL;
     }
   }
   return RET_OK;
