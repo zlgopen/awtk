@@ -289,6 +289,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
 
   caret_bottom = input_method_default_get_edit_caret_bottom(widget, im->keyboard);
   caret_bottom += win_delta_y;
+  caret_bottom = tk_min(caret_bottom, win->y + win->h);
   if (widget_get_prop_bool(im->keyboard, WIDGET_PROP_FLOATING, FALSE)) {
     input_type_keyboard_follow_edit(im);
     if (im->keyboard->y < p.y) {
