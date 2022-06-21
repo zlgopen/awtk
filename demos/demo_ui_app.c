@@ -279,7 +279,7 @@ static ret_t common_init_widget(void* ctx, const void* iter) {
 
 /*** menu_bar **********************************************************************/
 #define MENU_BAR_NAME "menu_bar"
-static char s_page_name[32] = {0};
+static char s_page_name[TK_NAME_LEN + 1] = {0};
 
 static ret_t on_page_change(void* ctx, event_t* e) {
   ret_t ret = RET_FAIL;
@@ -472,124 +472,6 @@ static ret_t page_image_init(widget_t* page) {
   }
 
   return RET_OK;
-}
-
-/*** page_mledit **********************************************************************/
-static ret_t widget_dispatch_callback(void* ctx, const void* data) {
-  widget_t* widget = WIDGET(data);
-
-  return widget_dispatch(widget, (event_t*)ctx);
-}
-
-static ret_t on_push_window_cancel(void* ctx, event_t* e) {
-  input_method_t* im = (input_method_t*)ctx;
-  /**
-   *  返回 RET_STOP 在 该函数注册之前的该事件（EVT_WINDOW_OPEN）的事件处理函数都会失效，
-   *  由于 input_method_default.inc 中的 on_push_window() 
-   *  和 input_method_default_on_keyboard_open() 失效，所以需要做以下处理：
-   */
-  im->busy = FALSE;
-  im->win_old_y = im->win->y;
-
-  WIDGET_FOR_EACH_CHILD_BEGIN(im->keyboard, iter, i)
-  ret_t ret = widget_foreach(iter, widget_dispatch_callback, (void*)e);
-  if (ret == RET_STOP || ret == RET_DONE) {
-    return ret;
-  }
-  WIDGET_FOR_EACH_CHILD_END()
-
-  return RET_STOP;
-}
-
-static ret_t on_keyboard_reset_ani(void* ctx, event_t* e) {
-  widget_t* kb = WIDGET(e->target);
-  return_value_if_fail(kb != NULL, RET_BAD_PARAMS);
-
-  widget_set_prop_str(kb, WIDGET_PROP_OPEN_ANIM_HINT, "popup");
-  widget_set_prop_str(kb, WIDGET_PROP_CLOSE_ANIM_HINT, "popup");
-
-  return RET_OK;
-}
-
-static ret_t on_mledit_view_adjust_layout(void* ctx, event_t* e) {
-  widget_t* mledit_view = WIDGET(ctx);
-  widget_t* kb = WIDGET(e->target);
-  return_value_if_fail(mledit_view != NULL && kb != NULL, RET_BAD_PARAMS);
-
-  switch (e->type) {
-    case EVT_WINDOW_OPEN: {
-      char param[64] = {0};
-      tk_snprintf(param, sizeof(param), "default(x=0, y=0, w=100%%, h=-%d)", kb->h);
-      widget_set_self_layout(mledit_view, param);
-      break;
-    }
-    case EVT_WINDOW_CLOSE: {
-      widget_set_self_layout(mledit_view, "default(x=0, y=0, w=100%, h=100%)");
-      break;
-    }
-    default:
-      break;
-  }
-  widget_layout(mledit_view);
-
-  return RET_OK;
-}
-
-static ret_t on_input_method_start_idle(const idle_info_t* idle) {
-  widget_t* mledit_view = WIDGET(idle->ctx);
-  input_method_t* im = input_method();
-  return_value_if_fail(mledit_view != NULL && im != NULL, RET_REMOVE);
-
-  if (im->keyboard != NULL) {
-    /* 取消将窗口往上拉 */
-    widget_on(im->keyboard, EVT_WINDOW_OPEN, on_push_window_cancel, (void*)im);
-
-    /* 重新设置键盘的窗口动画 */
-    widget_on(im->keyboard, EVT_WINDOW_WILL_OPEN, on_keyboard_reset_ani, NULL);
-
-    /* 键盘在打开和关闭时都调整 mledit_view 自身布局 */
-    widget_on(im->keyboard, EVT_WINDOW_OPEN, on_mledit_view_adjust_layout, (void*)mledit_view);
-    widget_on(im->keyboard, EVT_WINDOW_CLOSE, on_mledit_view_adjust_layout, (void*)mledit_view);
-  }
-
-  return RET_REMOVE;
-}
-
-static ret_t on_input_method_start(void* ctx, event_t* e) {
-  widget_t* mledit_view = WIDGET(ctx);
-  return_value_if_fail(mledit_view != NULL, RET_BAD_PARAMS);
-
-  /* 此时 im->keyboard 还无法获取，需要使用 idle 来绑定事件 */
-  widget_add_idle(mledit_view, on_input_method_start_idle);
-
-  return RET_OK;
-}
-
-static ret_t on_page_mledit_close(void* ctx, event_t* e) {
-  widget_off_by_func(window_manager(), EVT_IM_START, on_input_method_start, ctx);
-  return RET_OK;
-}
-
-static ret_t page_mledit_init_widget(void* ctx, const void* iter) {
-  widget_t* widget = WIDGET(iter);
-  widget_t* page = WIDGET(ctx);
-
-  if (widget->name != NULL) {
-    const char* name = widget->name;
-
-    if (tk_str_eq(name, "mledit_view")) {
-      widget_on(window_manager(), EVT_IM_START, on_input_method_start, widget);
-      widget_on(page, EVT_VPAGE_CLOSE, on_page_mledit_close, widget);
-    }
-  }
-
-  return RET_OK;
-}
-
-static ret_t page_mledit_init(widget_t* page) {
-  return_value_if_fail(page != NULL, RET_BAD_PARAMS);
-
-  return widget_foreach(page, page_mledit_init_widget, page);
 }
 
 /*** page_tab_ctrl **********************************************************************/
@@ -1004,7 +886,7 @@ static ret_t on_page_switch(void* ctx, event_t* e) {
     if (view_menu != NULL) {
       widget_t* new_page = widget_get_child(pages, new_index);
       if (new_page != NULL) {
-        char tb_name[32] = {0};
+        char tb_name[TK_NAME_LEN + 1] = {0};
         widget_t* tb = NULL;
         tk_snprintf(tb_name, ARRAY_SIZE(tb_name), "tb_%s",
                     new_page->name + 5); /* page_xxx -> tb_xxx */
@@ -1323,7 +1205,6 @@ ret_t application_init(void) {
   s_page_enter_func_array[0] = page_button_init;
   s_page_enter_func_array[6] = page_slider_init;
   s_page_enter_func_array[8] = page_image_init;
-  s_page_enter_func_array[9] = page_mledit_init;
   s_page_enter_func_array[12] = page_tab_ctrl_init;
   s_page_enter_func_array[13] = page_color_init;
   s_page_enter_func_array[14] = page_animate_init;
