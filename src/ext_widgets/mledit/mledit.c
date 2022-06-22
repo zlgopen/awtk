@@ -971,6 +971,17 @@ static ret_t mledit_on_scroll_bar_value_changed(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t mledit_on_scroll_bar_move_resize(void* ctx, event_t* e) {
+  mledit_t* mledit = MLEDIT(ctx);
+  text_edit_state_t state;
+  return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
+
+  text_edit_get_state(mledit->model, &state);
+  mledit_sync_scrollbar(&mledit->widget, &state);
+
+  return RET_OK;
+}
+
 ret_t mledit_set_open_im_when_focused(widget_t* widget, bool_t open_im_when_focused) {
   mledit_t* mledit = MLEDIT(widget);
   return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
@@ -1077,6 +1088,7 @@ static ret_t mledit_on_add_child(widget_t* widget, widget_t* child) {
 
   if (tk_str_eq(type, WIDGET_TYPE_SCROLL_BAR_DESKTOP)) {
     widget_on(child, EVT_VALUE_CHANGED, mledit_on_scroll_bar_value_changed, widget);
+    widget_on(child, EVT_MOVE_RESIZE, mledit_on_scroll_bar_move_resize, widget);
   }
 
   text_edit_set_on_state_changed(mledit->model, mledit_on_text_edit_state_changed, widget);
