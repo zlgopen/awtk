@@ -653,7 +653,7 @@ FACTORY_TABLE_ENTRY("theme_get", func_theme_get)
 FACTORY_TABLE_ENTRY("theme_set", func_theme_set)
 FACTORY_TABLE_ENTRY("window_name", func_to_name)
 FACTORY_TABLE_ENTRY("widget_name", func_to_name)
-FACTORY_TABLE_ENTRY("prop_name", func_to_name)
+FACTORY_TABLE_ENTRY("widget_prop_name", func_to_name)
 FACTORY_TABLE_END()
 
 ret_t fscript_widget_register(void) {
