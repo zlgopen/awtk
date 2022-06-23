@@ -1,6 +1,6 @@
 #include "awtk.h"
 #include "base/assets_manager.h"
-#ifndef WITH_FS_RES
+#if !defined(WITH_FS_RES) || defined(AWTK_WEB)
 #include "assets/default/inc/strings/zh_CN.data"
 #include "assets/default/inc/strings/en_US.data"
 #include "assets/dark/inc/styles/system_bar.data"
@@ -200,6 +200,7 @@
 #include "assets/default/inc/data/suggest_words_zh_cn_dat.data"
 #include "assets/default/inc/data/test_json.data"
 #include "assets/default/inc/data/a_b_c_any.data"
+#ifndef AWTK_WEB
 #ifdef WITH_STB_IMAGE
 #include "assets/default/inc/images/ani6.res"
 #include "assets/default/inc/images/checked.res"
@@ -340,7 +341,7 @@
 #include "assets/default/inc/images/backspace.res"
 #include "assets/default/inc/images/arrow_left_p.res"
 #include "assets/default/inc/images/clock_hour.res"
-#else
+#else /*WITH_STB_IMAGE*/
 #include "assets/default/inc/images/arrow_right_o.data"
 #include "assets/default/inc/images/image_packed_bg.data"
 #include "assets/default/inc/images/num_4.data"
@@ -481,6 +482,16 @@
 #include "assets/default/inc/images/edit_clear_p.data"
 #include "assets/default/inc/images/battery_2.data"
 #endif /*WITH_STB_IMAGE*/
+#ifdef WITH_TRUETYPE_FONT
+#include "assets/default/inc/fonts/default.res"
+#else /*WITH_TRUETYPE_FONT*/
+#include "assets/default/inc/fonts/default_20.data"
+#include "assets/default/inc/fonts/default_16.data"
+#include "assets/default/inc/fonts/default_18.data"
+#include "assets/default/inc/fonts/default_24.data"
+#endif /*WITH_TRUETYPE_FONT*/
+#include "assets/default/inc/scripts/dummy.res"
+#endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
 #include "assets/default/inc/images/pointer_4.bsvg"
 #include "assets/default/inc/images/htest.bsvg"
@@ -491,24 +502,15 @@
 #include "assets/default/inc/images/pointer.bsvg"
 #include "assets/default/inc/images/girl.bsvg"
 #endif /*WITH_VGCANVAS*/
-#ifdef WITH_TRUETYPE_FONT
-#include "assets/default/inc/fonts/default.res"
-#else /*WITH_TRUETYPE_FONT*/
-#include "assets/default/inc/fonts/default_20.data"
-#include "assets/default/inc/fonts/default_16.data"
-#include "assets/default/inc/fonts/default_18.data"
-#include "assets/default/inc/fonts/default_24.data"
-#endif /*WITH_TRUETYPE_FONT*/
-#include "assets/default/inc/scripts/dummy.res"
-#endif /*WITH_FS_RES*/
+#endif /*!defined(WITH_FS_RES) || defined(AWTK_WEB)*/
 
 ret_t assets_init(void) {
   assets_manager_t* am = assets_manager();
   assets_manager_set_theme(am, "dark");
 
-#ifdef WITH_FS_RES
+#if defined(WITH_FS_RES) && !defined(AWTK_WEB)
   assets_manager_preload(am, ASSET_TYPE_STYLE, "default");
-#else
+#else /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
   assets_manager_add(am, strings_zh_CN);
   assets_manager_add(am, strings_en_US);
   assets_manager_add(am, style_system_bar_dark);
@@ -708,6 +710,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, data_suggest_words_zh_cn_dat);
   assets_manager_add(am, data_test_json);
   assets_manager_add(am, data_a_b_c_any);
+#ifndef AWTK_WEB
   assets_manager_add(am, image_ani6);
   assets_manager_add(am, image_checked);
   assets_manager_add(am, image_num_7);
@@ -847,6 +850,16 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_backspace);
   assets_manager_add(am, image_arrow_left_p);
   assets_manager_add(am, image_clock_hour);
+#ifdef WITH_TRUETYPE_FONT
+  assets_manager_add(am, font_default);
+#else /*WITH_TRUETYPE_FONT*/
+  assets_manager_add(am, font_default_20);
+  assets_manager_add(am, font_default_16);
+  assets_manager_add(am, font_default_18);
+  assets_manager_add(am, font_default_24);
+#endif /*WITH_TRUETYPE_FONT*/
+  assets_manager_add(am, script_dummy);
+#endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
   assets_manager_add(am, image_pointer_4);
   assets_manager_add(am, image_htest);
@@ -857,16 +870,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_pointer);
   assets_manager_add(am, image_girl);
 #endif /*WITH_VGCANVAS*/
-#ifdef WITH_TRUETYPE_FONT
-  assets_manager_add(am, font_default);
-#else /*WITH_TRUETYPE_FONT*/
-  assets_manager_add(am, font_default_20);
-  assets_manager_add(am, font_default_16);
-  assets_manager_add(am, font_default_18);
-  assets_manager_add(am, font_default_24);
-#endif /*WITH_TRUETYPE_FONT*/
-  assets_manager_add(am, script_dummy);
-#endif
+#endif /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
 
   tk_init_assets();
   return RET_OK;

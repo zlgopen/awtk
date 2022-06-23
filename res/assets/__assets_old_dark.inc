@@ -1,6 +1,6 @@
 #include "awtk.h"
 #include "base/assets_manager.h"
-#ifndef WITH_FS_RES
+#if !defined(WITH_FS_RES) || defined(AWTK_WEB)
 extern TK_CONST_DATA_ALIGN(const unsigned char strings_zh_CN[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char strings_en_US[]);
 #include "dark/inc/styles/system_bar.data"
@@ -200,6 +200,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char data_conf_test_json[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_suggest_words_zh_cn_dat[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_test_json[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_a_b_c_any[]);
+#ifndef AWTK_WEB
 #ifdef WITH_STB_IMAGE
 extern TK_CONST_DATA_ALIGN(const unsigned char image_ani6[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_checked[]);
@@ -340,7 +341,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char image_slider_drag_p[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_backspace[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_arrow_left_p[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_clock_hour[]);
-#else
+#else /*WITH_STB_IMAGE*/
 extern TK_CONST_DATA_ALIGN(const unsigned char image_arrow_right_o[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_image_packed_bg[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_num_4[]);
@@ -481,6 +482,16 @@ extern TK_CONST_DATA_ALIGN(const unsigned char image_arrow_left_n[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_edit_clear_p[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_battery_2[]);
 #endif /*WITH_STB_IMAGE*/
+#ifdef WITH_TRUETYPE_FONT
+extern TK_CONST_DATA_ALIGN(const unsigned char font_default[]);
+#else /*WITH_TRUETYPE_FONT*/
+extern TK_CONST_DATA_ALIGN(const unsigned char font_default_20[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char font_default_16[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char font_default_18[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char font_default_24[]);
+#endif /*WITH_TRUETYPE_FONT*/
+extern TK_CONST_DATA_ALIGN(const unsigned char script_dummy[]);
+#endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
 extern TK_CONST_DATA_ALIGN(const unsigned char image_pointer_4[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_htest[]);
@@ -491,24 +502,15 @@ extern TK_CONST_DATA_ALIGN(const unsigned char image_pointer_1[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_pointer[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_girl[]);
 #endif /*WITH_VGCANVAS*/
-#ifdef WITH_TRUETYPE_FONT
-extern TK_CONST_DATA_ALIGN(const unsigned char font_default[]);
-#else /*WITH_TRUETYPE_FONT*/
-extern TK_CONST_DATA_ALIGN(const unsigned char font_default_20[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char font_default_16[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char font_default_18[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char font_default_24[]);
-#endif /*WITH_TRUETYPE_FONT*/
-extern TK_CONST_DATA_ALIGN(const unsigned char script_dummy[]);
-#endif /*WITH_FS_RES*/
+#endif /*!defined(WITH_FS_RES) || defined(AWTK_WEB)*/
 
 ret_t assets_init_dark(void) {
   assets_manager_t* am = assets_manager();
   assets_manager_set_theme(am, "dark");
 
-#ifdef WITH_FS_RES
+#if defined(WITH_FS_RES) && !defined(AWTK_WEB)
   assets_manager_preload(am, ASSET_TYPE_STYLE, "default");
-#else
+#else /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
   assets_manager_add(am, strings_zh_CN);
   assets_manager_add(am, strings_en_US);
   assets_manager_add(am, style_system_bar_dark);
@@ -708,6 +710,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, data_suggest_words_zh_cn_dat);
   assets_manager_add(am, data_test_json);
   assets_manager_add(am, data_a_b_c_any);
+#ifndef AWTK_WEB
   assets_manager_add(am, image_ani6);
   assets_manager_add(am, image_checked);
   assets_manager_add(am, image_num_7);
@@ -847,6 +850,16 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, image_backspace);
   assets_manager_add(am, image_arrow_left_p);
   assets_manager_add(am, image_clock_hour);
+#ifdef WITH_TRUETYPE_FONT
+  assets_manager_add(am, font_default);
+#else /*WITH_TRUETYPE_FONT*/
+  assets_manager_add(am, font_default_20);
+  assets_manager_add(am, font_default_16);
+  assets_manager_add(am, font_default_18);
+  assets_manager_add(am, font_default_24);
+#endif /*WITH_TRUETYPE_FONT*/
+  assets_manager_add(am, script_dummy);
+#endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
   assets_manager_add(am, image_pointer_4);
   assets_manager_add(am, image_htest);
@@ -857,16 +870,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, image_pointer);
   assets_manager_add(am, image_girl);
 #endif /*WITH_VGCANVAS*/
-#ifdef WITH_TRUETYPE_FONT
-  assets_manager_add(am, font_default);
-#else /*WITH_TRUETYPE_FONT*/
-  assets_manager_add(am, font_default_20);
-  assets_manager_add(am, font_default_16);
-  assets_manager_add(am, font_default_18);
-  assets_manager_add(am, font_default_24);
-#endif /*WITH_TRUETYPE_FONT*/
-  assets_manager_add(am, script_dummy);
-#endif
+#endif /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
 
   tk_init_assets();
   return RET_OK;

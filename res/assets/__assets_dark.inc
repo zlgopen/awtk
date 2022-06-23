@@ -1,6 +1,6 @@
 #include "awtk.h"
 #include "base/assets_manager.h"
-#ifndef WITH_FS_RES
+#if !defined(WITH_FS_RES) || defined(AWTK_WEB)
 extern TK_CONST_DATA_ALIGN(const unsigned char strings_en_US[]);
 #include "dark/inc/styles/uiex_dialog_warn.data"
 #include "dark/inc/styles/uiex_keyboard.data"
@@ -51,6 +51,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_menu_bar[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_popup[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_label[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_kb_uint[]);
+#ifndef AWTK_WEB
 #ifdef WITH_STB_IMAGE
 #include "dark/inc/images/uiex_big_logo.res"
 #include "dark/inc/images/uiex_num6.res"
@@ -214,7 +215,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_List_Bluetooth[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_List_desktop[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_bg5[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_bg5_s[]);
-#else
+#else /*WITH_STB_IMAGE*/
 #include "dark/inc/images/uiex_keyboard_CN.data"
 #include "dark/inc/images/uiex_radio_p.data"
 #include "dark/inc/images/uiex_load1_bg.data"
@@ -378,23 +379,24 @@ extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_List_Moresettings[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_Sliding_dot[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_check[]);
 #endif /*WITH_STB_IMAGE*/
-#ifdef WITH_VGCANVAS
-#include "dark/inc/images/computer.bsvg"
-extern TK_CONST_DATA_ALIGN(const unsigned char image_windmill[]);
-#endif /*WITH_VGCANVAS*/
 #ifdef WITH_TRUETYPE_FONT
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default[]);
 #else /*WITH_TRUETYPE_FONT*/
 #endif /*WITH_TRUETYPE_FONT*/
-#endif /*WITH_FS_RES*/
+#endif /*AWTK_WEB*/
+#ifdef WITH_VGCANVAS
+#include "dark/inc/images/computer.bsvg"
+extern TK_CONST_DATA_ALIGN(const unsigned char image_windmill[]);
+#endif /*WITH_VGCANVAS*/
+#endif /*!defined(WITH_FS_RES) || defined(AWTK_WEB)*/
 
 ret_t assets_init_dark(void) {
   assets_manager_t* am = assets_manager();
   assets_manager_set_theme(am, "dark");
 
-#ifdef WITH_FS_RES
+#if defined(WITH_FS_RES) && !defined(AWTK_WEB)
   assets_manager_preload(am, ASSET_TYPE_STYLE, "default");
-#else
+#else /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
   assets_manager_add(am, strings_en_US);
   assets_manager_add(am, style_uiex_dialog_warn_dark);
   assets_manager_add(am, style_uiex_keyboard_dark);
@@ -445,6 +447,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_uiex_popup);
   assets_manager_add(am, ui_uiex_page_label);
   assets_manager_add(am, ui_uiex_kb_uint);
+#ifndef AWTK_WEB
   assets_manager_add(am, image_uiex_big_logo_dark);
   assets_manager_add(am, image_uiex_num6_dark);
   assets_manager_add(am, image_uiex_shifton_dark);
@@ -607,15 +610,16 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, image_uiex_List_desktop);
   assets_manager_add(am, image_bg5);
   assets_manager_add(am, image_bg5_s);
-#ifdef WITH_VGCANVAS
-  assets_manager_add(am, image_computer_dark);
-  assets_manager_add(am, image_windmill);
-#endif /*WITH_VGCANVAS*/
 #ifdef WITH_TRUETYPE_FONT
   assets_manager_add(am, font_default);
 #else /*WITH_TRUETYPE_FONT*/
 #endif /*WITH_TRUETYPE_FONT*/
-#endif
+#endif /*AWTK_WEB*/
+#ifdef WITH_VGCANVAS
+  assets_manager_add(am, image_computer_dark);
+  assets_manager_add(am, image_windmill);
+#endif /*WITH_VGCANVAS*/
+#endif /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
 
   tk_init_assets();
   return RET_OK;

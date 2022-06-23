@@ -35,7 +35,7 @@ static ret_t assets_init_internal(const char* theme) {
   }
 }
 
-#ifndef WITH_FS_RES
+#if !defined(WITH_FS_RES) || defined(AWTK_WEB)
 static ret_t widget_set_theme_without_file_system(widget_t* widget, const char* name) {
   const asset_info_t* info = NULL;
   event_t e = event_init(EVT_THEME_CHANGED, NULL);
@@ -73,12 +73,12 @@ static ret_t on_set_theme_without_file_system(void* ctx, event_t* e) {
   widget_set_theme_without_file_system(window_manager(), evt->name);
   return RET_OK;
 }
-#endif /*WITH_FS_RES*/
+#endif /*!defined(WITH_FS_RES) || defined(AWTK_WEB)*/
 
 ret_t assets_init(void) {
-#ifndef WITH_FS_RES
+#if !defined(WITH_FS_RES) || defined(AWTK_WEB)
   widget_on(window_manager(), EVT_THEME_WILL_CHANGE, on_set_theme_without_file_system, NULL);
-#endif /*WITH_FS_RES*/
+#endif /*!defined(WITH_FS_RES) || defined(AWTK_WEB)*/
   return assets_init_internal(APP_THEME);
 }
 

@@ -1,6 +1,6 @@
 #include "awtk.h"
 #include "base/assets_manager.h"
-#ifndef WITH_FS_RES
+#if !defined(WITH_FS_RES) || defined(AWTK_WEB)
 #include "assets/default/inc/strings/zh_CN.data"
 #include "assets/default/inc/strings/en_US.data"
 #include "assets/dark/inc/styles/uiex_dialog_warn.data"
@@ -247,6 +247,7 @@
 #include "assets/default/inc/data/suggest_words_zh_cn_dat.data"
 #include "assets/default/inc/data/test_json.data"
 #include "assets/default/inc/data/a_b_c_any.data"
+#ifndef AWTK_WEB
 #ifdef WITH_STB_IMAGE
 #include "assets/dark/inc/images/uiex_big_logo.res"
 #include "assets/dark/inc/images/uiex_num6.res"
@@ -545,7 +546,7 @@
 #include "assets/default/inc/images/arrow_left_p.res"
 #include "assets/default/inc/images/clock_hour.res"
 #include "assets/default/inc/images/bg5_s.res"
-#else
+#else /*WITH_STB_IMAGE*/
 #include "assets/dark/inc/images/uiex_keyboard_CN.data"
 #include "assets/dark/inc/images/uiex_radio_p.data"
 #include "assets/dark/inc/images/uiex_load1_bg.data"
@@ -844,18 +845,6 @@
 #include "assets/default/inc/images/battery_2.data"
 #include "assets/default/inc/images/uiex_check.data"
 #endif /*WITH_STB_IMAGE*/
-#ifdef WITH_VGCANVAS
-#include "assets/dark/inc/images/computer.bsvg"
-#include "assets/default/inc/images/pointer_4.bsvg"
-#include "assets/default/inc/images/htest.bsvg"
-#include "assets/default/inc/images/ball.bsvg"
-#include "assets/default/inc/images/china.bsvg"
-#include "assets/default/inc/images/meter_pointer.bsvg"
-#include "assets/default/inc/images/pointer_1.bsvg"
-#include "assets/default/inc/images/pointer.bsvg"
-#include "assets/default/inc/images/girl.bsvg"
-#include "assets/default/inc/images/windmill.bsvg"
-#endif /*WITH_VGCANVAS*/
 #ifdef WITH_TRUETYPE_FONT
 #include "assets/default/inc/fonts/trado.res"
 #include "assets/default/inc/fonts/ap.res"
@@ -870,15 +859,28 @@
 #include "assets/default/inc/fonts/default_24.data"
 #endif /*WITH_TRUETYPE_FONT*/
 #include "assets/default/inc/scripts/dummy.res"
-#endif /*WITH_FS_RES*/
+#endif /*AWTK_WEB*/
+#ifdef WITH_VGCANVAS
+#include "assets/dark/inc/images/computer.bsvg"
+#include "assets/default/inc/images/pointer_4.bsvg"
+#include "assets/default/inc/images/htest.bsvg"
+#include "assets/default/inc/images/ball.bsvg"
+#include "assets/default/inc/images/china.bsvg"
+#include "assets/default/inc/images/meter_pointer.bsvg"
+#include "assets/default/inc/images/pointer_1.bsvg"
+#include "assets/default/inc/images/pointer.bsvg"
+#include "assets/default/inc/images/girl.bsvg"
+#include "assets/default/inc/images/windmill.bsvg"
+#endif /*WITH_VGCANVAS*/
+#endif /*!defined(WITH_FS_RES) || defined(AWTK_WEB)*/
 
 ret_t assets_init(void) {
   assets_manager_t* am = assets_manager();
   assets_manager_set_theme(am, "dark");
 
-#ifdef WITH_FS_RES
+#if defined(WITH_FS_RES) && !defined(AWTK_WEB)
   assets_manager_preload(am, ASSET_TYPE_STYLE, "default");
-#else
+#else /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
   assets_manager_add(am, strings_zh_CN);
   assets_manager_add(am, strings_en_US);
   assets_manager_add(am, style_uiex_dialog_warn_dark);
@@ -1125,6 +1127,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, data_suggest_words_zh_cn_dat);
   assets_manager_add(am, data_test_json);
   assets_manager_add(am, data_a_b_c_any);
+#ifndef AWTK_WEB
   assets_manager_add(am, image_uiex_big_logo_dark);
   assets_manager_add(am, image_uiex_num6_dark);
   assets_manager_add(am, image_uiex_shifton_dark);
@@ -1422,18 +1425,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_arrow_left_p);
   assets_manager_add(am, image_clock_hour);
   assets_manager_add(am, image_bg5_s);
-#ifdef WITH_VGCANVAS
-  assets_manager_add(am, image_computer_dark);
-  assets_manager_add(am, image_pointer_4);
-  assets_manager_add(am, image_htest);
-  assets_manager_add(am, image_ball);
-  assets_manager_add(am, image_china);
-  assets_manager_add(am, image_meter_pointer);
-  assets_manager_add(am, image_pointer_1);
-  assets_manager_add(am, image_pointer);
-  assets_manager_add(am, image_girl);
-  assets_manager_add(am, image_windmill);
-#endif /*WITH_VGCANVAS*/
 #ifdef WITH_TRUETYPE_FONT
   assets_manager_add(am, font_trado);
   assets_manager_add(am, font_ap);
@@ -1448,7 +1439,20 @@ ret_t assets_init(void) {
   assets_manager_add(am, font_default_24);
 #endif /*WITH_TRUETYPE_FONT*/
   assets_manager_add(am, script_dummy);
-#endif
+#endif /*AWTK_WEB*/
+#ifdef WITH_VGCANVAS
+  assets_manager_add(am, image_computer_dark);
+  assets_manager_add(am, image_pointer_4);
+  assets_manager_add(am, image_htest);
+  assets_manager_add(am, image_ball);
+  assets_manager_add(am, image_china);
+  assets_manager_add(am, image_meter_pointer);
+  assets_manager_add(am, image_pointer_1);
+  assets_manager_add(am, image_pointer);
+  assets_manager_add(am, image_girl);
+  assets_manager_add(am, image_windmill);
+#endif /*WITH_VGCANVAS*/
+#endif /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
 
   tk_init_assets();
   return RET_OK;

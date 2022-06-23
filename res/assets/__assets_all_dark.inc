@@ -1,6 +1,6 @@
 #include "awtk.h"
 #include "base/assets_manager.h"
-#ifndef WITH_FS_RES
+#if !defined(WITH_FS_RES) || defined(AWTK_WEB)
 extern TK_CONST_DATA_ALIGN(const unsigned char strings_zh_CN[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char strings_en_US[]);
 #include "dark/inc/styles/uiex_dialog_warn.data"
@@ -247,6 +247,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char data_conf_test_json[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_suggest_words_zh_cn_dat[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_test_json[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_a_b_c_any[]);
+#ifndef AWTK_WEB
 #ifdef WITH_STB_IMAGE
 #include "dark/inc/images/uiex_big_logo.res"
 #include "dark/inc/images/uiex_num6.res"
@@ -545,7 +546,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char image_bg5[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_arrow_left_p[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_clock_hour[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_bg5_s[]);
-#else
+#else /*WITH_STB_IMAGE*/
 #include "dark/inc/images/uiex_keyboard_CN.data"
 #include "dark/inc/images/uiex_radio_p.data"
 #include "dark/inc/images/uiex_load1_bg.data"
@@ -844,18 +845,6 @@ extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_Sliding_dot[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_battery_2[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_check[]);
 #endif /*WITH_STB_IMAGE*/
-#ifdef WITH_VGCANVAS
-#include "dark/inc/images/computer.bsvg"
-extern TK_CONST_DATA_ALIGN(const unsigned char image_pointer_4[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_htest[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_ball[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_china[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_meter_pointer[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_pointer_1[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_pointer[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_girl[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_windmill[]);
-#endif /*WITH_VGCANVAS*/
 #ifdef WITH_TRUETYPE_FONT
 extern TK_CONST_DATA_ALIGN(const unsigned char font_trado[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_ap[]);
@@ -870,15 +859,28 @@ extern TK_CONST_DATA_ALIGN(const unsigned char font_default_32[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_24[]);
 #endif /*WITH_TRUETYPE_FONT*/
 extern TK_CONST_DATA_ALIGN(const unsigned char script_dummy[]);
-#endif /*WITH_FS_RES*/
+#endif /*AWTK_WEB*/
+#ifdef WITH_VGCANVAS
+#include "dark/inc/images/computer.bsvg"
+extern TK_CONST_DATA_ALIGN(const unsigned char image_pointer_4[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char image_htest[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char image_ball[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char image_china[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char image_meter_pointer[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char image_pointer_1[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char image_pointer[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char image_girl[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char image_windmill[]);
+#endif /*WITH_VGCANVAS*/
+#endif /*!defined(WITH_FS_RES) || defined(AWTK_WEB)*/
 
 ret_t assets_init_dark(void) {
   assets_manager_t* am = assets_manager();
   assets_manager_set_theme(am, "dark");
 
-#ifdef WITH_FS_RES
+#if defined(WITH_FS_RES) && !defined(AWTK_WEB)
   assets_manager_preload(am, ASSET_TYPE_STYLE, "default");
-#else
+#else /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
   assets_manager_add(am, strings_zh_CN);
   assets_manager_add(am, strings_en_US);
   assets_manager_add(am, style_uiex_dialog_warn_dark);
@@ -1125,6 +1127,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, data_suggest_words_zh_cn_dat);
   assets_manager_add(am, data_test_json);
   assets_manager_add(am, data_a_b_c_any);
+#ifndef AWTK_WEB
   assets_manager_add(am, image_uiex_big_logo_dark);
   assets_manager_add(am, image_uiex_num6_dark);
   assets_manager_add(am, image_uiex_shifton_dark);
@@ -1422,18 +1425,6 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, image_arrow_left_p);
   assets_manager_add(am, image_clock_hour);
   assets_manager_add(am, image_bg5_s);
-#ifdef WITH_VGCANVAS
-  assets_manager_add(am, image_computer_dark);
-  assets_manager_add(am, image_pointer_4);
-  assets_manager_add(am, image_htest);
-  assets_manager_add(am, image_ball);
-  assets_manager_add(am, image_china);
-  assets_manager_add(am, image_meter_pointer);
-  assets_manager_add(am, image_pointer_1);
-  assets_manager_add(am, image_pointer);
-  assets_manager_add(am, image_girl);
-  assets_manager_add(am, image_windmill);
-#endif /*WITH_VGCANVAS*/
 #ifdef WITH_TRUETYPE_FONT
   assets_manager_add(am, font_trado);
   assets_manager_add(am, font_ap);
@@ -1448,7 +1439,20 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, font_default_24);
 #endif /*WITH_TRUETYPE_FONT*/
   assets_manager_add(am, script_dummy);
-#endif
+#endif /*AWTK_WEB*/
+#ifdef WITH_VGCANVAS
+  assets_manager_add(am, image_computer_dark);
+  assets_manager_add(am, image_pointer_4);
+  assets_manager_add(am, image_htest);
+  assets_manager_add(am, image_ball);
+  assets_manager_add(am, image_china);
+  assets_manager_add(am, image_meter_pointer);
+  assets_manager_add(am, image_pointer_1);
+  assets_manager_add(am, image_pointer);
+  assets_manager_add(am, image_girl);
+  assets_manager_add(am, image_windmill);
+#endif /*WITH_VGCANVAS*/
+#endif /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
 
   tk_init_assets();
   return RET_OK;
