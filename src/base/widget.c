@@ -618,7 +618,7 @@ ret_t widget_set_theme(widget_t* widget, const char* name) {
   theme_change_event_t will_event;
   event_t* will_evt = theme_change_event_init(&will_event, EVT_THEME_WILL_CHANGE, name);
   widget_dispatch(window_manager(), will_evt);
-#ifdef WITH_FS_RES
+#if defined(WITH_FS_RES) && !defined(AWTK_WEB)
   const asset_info_t* info = NULL;
   theme_change_event_t event;
   event_t* evt = theme_change_event_init(&event, EVT_THEME_CHANGED, name);
@@ -645,7 +645,7 @@ ret_t widget_set_theme(widget_t* widget, const char* name) {
   widget_invalidate_force(wm, NULL);
 
   log_debug("theme changed: %s\n", name);
-#endif
+#endif /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
 
   return RET_OK;
 }
