@@ -371,5 +371,24 @@ sudo ln -s /usr/lib/arm-linux-gnueabihf/glib-2.0/include/glibconfig.h /usr/inclu
 
 #### 28. 支持加载 xml 格式的主题样式文件吗？
 
-> 支持。如：原来的 style 文件为 button.bin，删除button.bin，放一个button.xml文件即可。
+> 支持。如：原来的 style 文件为 button.bin，删除 button.bin，放一个 button.xml 文件即可。
 
+#### 29. 设置控件的 value 时，能不触发 value change 事件吗
+
+可以。使用 emitter\_disable/emitter\_enable 可以关闭和开启控件的事件。
+
+示例：
+
+```c
+static ret_t widget_set_value_without_notify(widget_t* widget, uint32_t value) {
+  if (widget->emitter != NULL) {
+    emitter_disable(widget->emitter);
+    widget_set_value(widget, value);
+    emitter_enable(widget->emitter);
+  } else {
+    widget_set_value(widget, value);
+  }
+
+  return RET_OK;
+}
+```
