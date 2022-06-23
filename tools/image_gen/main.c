@@ -28,29 +28,30 @@
 #include "image_loader/image_loader_stb.h"
 
 typedef struct _image_format_t {
-  bool_t mono;
-  bool_t require_bgra;
-  bool_t enable_bgr565;
-  bool_t enable_rgb565;
+  bitmap_format_t opaque_bitmap_format;
+  bitmap_format_t transparent_bitmap_format;
 } image_format_t;
 
 ret_t image_format_set(image_format_t* image_format, const wchar_t* format) {
   if (format != NULL) {
-    if (wcsstr(format, L"mono")) {
-      image_format->mono = TRUE;
-    }
-
-    if (wcsstr(format, L"bgr")) {
-      image_format->require_bgra = TRUE;
+    if (wcsstr(format, L"bgra")) {
+      image_format->opaque_bitmap_format = BITMAP_FMT_BGRA8888;
+      image_format->transparent_bitmap_format = BITMAP_FMT_BGRA8888;
     }
 
     if (wcsstr(format, L"bgr565")) {
-      image_format->enable_bgr565 = TRUE;
-    };
+      image_format->opaque_bitmap_format = BITMAP_FMT_BGR565;
+    } else if (wcsstr(format, L"rgb565")) {
+      image_format->opaque_bitmap_format = BITMAP_FMT_RGB565;
+    } else if (wcsstr(format, L"bgr888")) {
+      image_format->opaque_bitmap_format = BITMAP_FMT_BGR888;
+    } else if (wcsstr(format, L"rgb888")) {
+      image_format->opaque_bitmap_format = BITMAP_FMT_RGB888;
+    }
 
-    if (wcsstr(format, L"rgb565")) {
-      image_format->enable_rgb565 = TRUE;
-    };
+    if (wcsstr(format, L"mono")) {
+      image_format->opaque_bitmap_format = BITMAP_FMT_MONO;
+    }
   }
   return RET_OK;
 }
@@ -64,10 +65,9 @@ ret_t gen_one(const char* input_file, const char* output_file, const char* theme
     uint8_t* buff = NULL;
     buff = (uint8_t*)read_file(input_file, &size);
     if (buff != NULL) {
-      ret = stb_load_image(0, buff, size, &image, image_format->require_bgra,
-                           image_format->enable_bgr565, image_format->enable_rgb565, o);
+      ret = stb_load_image(0, buff, size, &image, image_format->transparent_bitmap_format, image_format->opaque_bitmap_format, o);
       if (ret == RET_OK) {
-        ret = image_gen(&image, output_file, theme, image_format->mono);
+        ret = image_gen(&image, output_file, theme, image_format->opaque_bitmap_format == BITMAP_FMT_MONO);
       }
       TKMEM_FREE(buff);
     } else {
@@ -120,7 +120,7 @@ int wmain(int argc, wchar_t* argv[]) {
   platform_prepare();
 
   if (argc < 3) {
-    printf("Usage: %S in_filename out_filename (bgra|bgr565|rgb565|mono)\n", argv[0]);
+    printf("Usage: %S in_filename out_filename (bgra|bgr565|rgb565|bgr888|rgb888|mono)\n", argv[0]);
 
     return 0;
   }
@@ -128,7 +128,7 @@ int wmain(int argc, wchar_t* argv[]) {
   if (argc > 3) {
     format = argv[3];
   }
-  image_format_t image_format = {FALSE, FALSE, FALSE, FALSE};
+  image_format_t image_format = {BITMAP_FMT_RGBA8888, BITMAP_FMT_RGBA8888};
   image_format_set(&image_format, format);
 
   str_t theme_name;

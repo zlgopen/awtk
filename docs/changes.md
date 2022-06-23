@@ -2,8 +2,9 @@
 
 2022/06/23
   * 修复demoui(感谢兆坤提供补丁)
-  * 完善fscrit_widget
-  * 兼容designer通过创建的项目，当使用web时，包含的文件名从assets_web.inc改为assets.inc(感谢兆坤提供补丁)
+  * 完善fscrit\_widget
+  * 兼容designer通过创建的项目，当使用web时，包含的文件名从assets\_web.inc改为assets.inc(感谢兆坤提供补丁)
+  * 增加stb支持解码24位位图的功能以及完善stb\_load\_image的 函数接口(感谢智明提供补丁)
 
 2022/06/22
   * 修复mledit改变大小后，scroll_bar的滑块没有改变的问题(感谢兆坤提供补丁)

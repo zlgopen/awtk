@@ -55,13 +55,12 @@ TEST(ImageLoaderStb, basic) {
   bitmap_destroy(&image);
 }
 
-static ret_t load_image_ex(const char* filename, bitmap_t* image, bool_t require_bgra,
-                           bool_t enable_bgr565) {
+static ret_t load_image_ex(const char* filename, bitmap_t* image, bitmap_format_t transparent_bitmap_format, bitmap_format_t opaque_bitmap_format) {
   uint32_t size = 0;
   ret_t ret = RET_OK;
   printf("%s\n", filename);
   uint8_t* buff = (uint8_t*)read_file(filename, &size);
-  ret = stb_load_image(0, buff, size, image, require_bgra, enable_bgr565, FALSE, LCD_ORIENTATION_0);
+  ret = stb_load_image(0, buff, size, image, transparent_bitmap_format, opaque_bitmap_format, LCD_ORIENTATION_0);
   TKMEM_FREE(buff);
 
   return ret;
@@ -69,12 +68,12 @@ static ret_t load_image_ex(const char* filename, bitmap_t* image, bool_t require
 
 TEST(ImageLoaderStb, bgr565_apaque) {
   bitmap_t image;
-  ASSERT_EQ(load_image_ex(PNG_OPAQUE_NAME, &image, TRUE, TRUE), RET_OK);
+  ASSERT_EQ(load_image_ex(PNG_OPAQUE_NAME, &image, BITMAP_FMT_BGRA8888, BITMAP_FMT_BGR565), RET_OK);
   ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), TRUE);
   ASSERT_EQ(image.format, BITMAP_FMT_BGR565);
   bitmap_destroy(&image);
 
-  ASSERT_EQ(load_image_ex(PNG_OPAQUE_NAME, &image, TRUE, FALSE), RET_OK);
+  ASSERT_EQ(load_image_ex(PNG_OPAQUE_NAME, &image, BITMAP_FMT_BGRA8888, BITMAP_FMT_BGRA8888), RET_OK);
   ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), TRUE);
   ASSERT_EQ(image.format, BITMAP_FMT_BGRA8888);
   bitmap_destroy(&image);
@@ -82,12 +81,12 @@ TEST(ImageLoaderStb, bgr565_apaque) {
 
 TEST(ImageLoaderStb, bgr565_trans) {
   bitmap_t image;
-  ASSERT_EQ(load_image_ex(PNG_NAME, &image, TRUE, TRUE), RET_OK);
+  ASSERT_EQ(load_image_ex(PNG_NAME, &image, BITMAP_FMT_BGRA8888, BITMAP_FMT_BGR565), RET_OK);
   ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), FALSE);
   ASSERT_EQ(image.format, BITMAP_FMT_BGRA8888);
   bitmap_destroy(&image);
 
-  ASSERT_EQ(load_image_ex(PNG_NAME, &image, TRUE, FALSE), RET_OK);
+  ASSERT_EQ(load_image_ex(PNG_NAME, &image, BITMAP_FMT_BGRA8888, BITMAP_FMT_BGRA8888), RET_OK);
   ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), FALSE);
   ASSERT_EQ(image.format, BITMAP_FMT_BGRA8888);
   bitmap_destroy(&image);
@@ -95,13 +94,65 @@ TEST(ImageLoaderStb, bgr565_trans) {
 
 TEST(ImageLoaderStb, rgba) {
   bitmap_t image;
-  ASSERT_EQ(load_image_ex(PNG_NAME, &image, FALSE, FALSE), RET_OK);
+  ASSERT_EQ(load_image_ex(PNG_NAME, &image, BITMAP_FMT_RGBA8888, BITMAP_FMT_RGB565), RET_OK);
   ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), FALSE);
   ASSERT_EQ(image.format, BITMAP_FMT_RGBA8888);
   bitmap_destroy(&image);
 
-  ASSERT_EQ(load_image_ex(PNG_NAME, &image, TRUE, FALSE), RET_OK);
+  ASSERT_EQ(load_image_ex(PNG_NAME, &image, BITMAP_FMT_BGRA8888, BITMAP_FMT_RGB565), RET_OK);
   ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), FALSE);
   ASSERT_EQ(image.format, BITMAP_FMT_BGRA8888);
   bitmap_destroy(&image);
+}
+
+TEST(ImageLoaderStb, rgb) {
+  bitmap_t image;
+
+  ASSERT_EQ(load_image_ex(PNG_OPAQUE_NAME, &image, BITMAP_FMT_BGRA8888, BITMAP_FMT_RGB888), RET_OK);
+  ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), TRUE);
+  ASSERT_EQ(image.format, BITMAP_FMT_RGB888);
+  bitmap_destroy(&image);
+
+  ASSERT_EQ(load_image_ex(PNG_NAME, &image, BITMAP_FMT_RGBA8888, BITMAP_FMT_RGB888), RET_OK);
+  ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), FALSE);
+  ASSERT_EQ(image.format, BITMAP_FMT_RGBA8888);
+  bitmap_destroy(&image);
+
+  ASSERT_EQ(load_image_ex(PNG_NAME, &image, BITMAP_FMT_BGRA8888, BITMAP_FMT_RGB888), RET_OK);
+  ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), FALSE);
+  ASSERT_EQ(image.format, BITMAP_FMT_BGRA8888);
+  bitmap_destroy(&image);
+
+}
+
+TEST(ImageLoaderStb, bgr) {
+  bitmap_t image;
+
+  ASSERT_EQ(load_image_ex(PNG_OPAQUE_NAME, &image, BITMAP_FMT_BGRA8888, BITMAP_FMT_BGR888), RET_OK);
+  ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), TRUE);
+  ASSERT_EQ(image.format, BITMAP_FMT_BGR888);
+  bitmap_destroy(&image);
+
+  ASSERT_EQ(load_image_ex(PNG_NAME, &image, BITMAP_FMT_RGBA8888, BITMAP_FMT_BGR888), RET_OK);
+  ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), FALSE);
+  ASSERT_EQ(image.format, BITMAP_FMT_RGBA8888);
+  bitmap_destroy(&image);
+
+  ASSERT_EQ(load_image_ex(PNG_NAME, &image, BITMAP_FMT_BGRA8888, BITMAP_FMT_BGR888), RET_OK);
+  ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), FALSE);
+  ASSERT_EQ(image.format, BITMAP_FMT_BGRA8888);
+  bitmap_destroy(&image);
+}
+
+TEST(ImageLoaderStb, mono) {
+  bitmap_t image;
+
+  ASSERT_EQ(load_image_ex(PNG_OPAQUE_NAME, &image, BITMAP_FMT_BGRA8888, BITMAP_FMT_MONO), RET_OK);
+  ASSERT_EQ(image.format, BITMAP_FMT_MONO);
+  bitmap_destroy(&image);
+
+  ASSERT_EQ(load_image_ex(PNG_NAME, &image, BITMAP_FMT_RGBA8888, BITMAP_FMT_MONO), RET_OK);
+  ASSERT_EQ(image.format, BITMAP_FMT_MONO);
+  bitmap_destroy(&image);
+
 }

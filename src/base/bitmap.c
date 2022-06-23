@@ -382,6 +382,30 @@ ret_t bitmap_init_bgra8888(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8
   return bitmap_init_impl_by_rotate(bitmap, w, h, data, comp, o, bitmap_init_bgra8888_fill_color);
 }
 
+static ret_t bitmap_init_bgr888_fill_color(const uint8_t* s, uint8_t* d, uint32_t comp) {
+  d[0] = s[2];
+  d[1] = s[1];
+  d[2] = s[0];
+  return RET_OK;
+}
+
+ret_t bitmap_init_bgr888(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data,
+                           uint32_t comp, lcd_orientation_t o) {
+  return bitmap_init_impl_by_rotate(bitmap, w, h, data, comp, o, bitmap_init_bgr888_fill_color);
+}
+
+static ret_t bitmap_init_rgb888_fill_color(const uint8_t* s, uint8_t* d, uint32_t comp) {
+  d[0] = s[0];
+  d[1] = s[1];
+  d[2] = s[2];
+  return RET_OK;
+}
+
+ret_t bitmap_init_rgb888(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data,
+                           uint32_t comp, lcd_orientation_t o) {
+  return bitmap_init_impl_by_rotate(bitmap, w, h, data, comp, o, bitmap_init_rgb888_fill_color);
+}
+
 static ret_t bitmap_init_rgb565_fill_color(const uint8_t* s, uint8_t* d, uint32_t comp) {
   uint8_t r = s[0];
   uint8_t g = s[1];
@@ -499,6 +523,10 @@ ret_t bitmap_init_from_bgra(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_for
     ret = bitmap_init_rgba8888(bitmap, w, h, data, comp, o);
   } else if (format == BITMAP_FMT_RGBA8888) {
     ret = bitmap_init_bgra8888(bitmap, w, h, data, comp, o);
+  } else if (format == BITMAP_FMT_RGB888) {
+    ret = bitmap_init_bgr888(bitmap, w, h, data, comp, o);
+  } else if (format == BITMAP_FMT_BGR888) {
+    ret = bitmap_init_rgb888(bitmap, w, h, data, comp, o);
   } else if (format == BITMAP_FMT_BGR565) {
     ret = bitmap_init_rgb565(bitmap, w, h, data, comp, o);
   } else if (format == BITMAP_FMT_RGB565) {
@@ -531,6 +559,10 @@ ret_t bitmap_init_from_rgba(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_for
     ret = bitmap_init_bgra8888(bitmap, w, h, data, comp, o);
   } else if (format == BITMAP_FMT_RGBA8888) {
     ret = bitmap_init_rgba8888(bitmap, w, h, data, comp, o);
+  } else if (format == BITMAP_FMT_BGR888) {
+    ret = bitmap_init_bgr888(bitmap, w, h, data, comp, o);
+  } else if (format == BITMAP_FMT_RGB888) {
+    ret = bitmap_init_rgb888(bitmap, w, h, data, comp, o);
   } else if (format == BITMAP_FMT_BGR565) {
     ret = bitmap_init_bgr565(bitmap, w, h, data, comp, o);
   } else if (format == BITMAP_FMT_RGB565) {
