@@ -310,7 +310,9 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
       im->win_delta_y = 0;
       close_anim_hint = "popup";
     }
-    open_anim_hint = close_anim_hint;
+    if (open_anim) {
+      open_anim_hint = close_anim_hint;
+    }
     widget_on(im->keyboard, EVT_WINDOW_OPEN, on_push_window, im);
   } else if (win_is_keyboard && (win->y + win->h) < im->keyboard->y) {
     /*when new keyboard height is not eq old keyboard height*/
