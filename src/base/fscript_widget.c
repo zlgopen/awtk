@@ -34,6 +34,20 @@ static widget_t* find_target_widget(widget_t* widget, const char* path, uint32_t
   widget_t* iter = widget;
   tokenizer_t* t = NULL;
   return_value_if_fail(widget != NULL && path != NULL, NULL);
+  if (strchr(path, '.') == NULL) {
+    const char* name = path;
+    if (tk_str_eq(name, STR_PROP_PARENT)) {
+      return widget->parent;
+    } else if (tk_str_eq(name, STR_PROP_SELF)) {
+      return widget;
+    } else if (tk_str_eq(name, STR_PROP_WINDOW)) {
+      return widget_get_window(widget);
+    } else if (tk_str_eq(name, STR_PROP_WINDOW_MANAGER)) {
+      return widget_get_window_manager(widget);
+    } else {
+      return widget_lookup(widget, name, TRUE);
+    }
+  }
   t = tokenizer_init(&tokenizer, path, len, ".");
   return_value_if_fail(t != NULL, NULL);
 
@@ -132,12 +146,12 @@ static ret_t func_window_open(fscript_t* fscript, fscript_args_t* args, value_t*
 }
 
 static ret_t func_window_close_and_open(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  if(args->size < 2) {
+  if (args->size < 2) {
     args->size = 2;
     value_set_bool(args->args + 1, TRUE);
   }
 
-  return func_window_open(fscript, args, result); 
+  return func_window_open(fscript, args, result);
 }
 
 static ret_t func_window_close(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -662,6 +676,7 @@ FACTORY_TABLE_ENTRY("widget_theme_get", func_theme_get)
 FACTORY_TABLE_ENTRY("widget_theme_set", func_theme_set)
 FACTORY_TABLE_ENTRY("window_name", func_to_name)
 FACTORY_TABLE_ENTRY("widget_name", func_to_name)
+FACTORY_TABLE_ENTRY("widget_type", func_to_name)
 FACTORY_TABLE_ENTRY("widget_prop_name", func_to_name)
 FACTORY_TABLE_END()
 
