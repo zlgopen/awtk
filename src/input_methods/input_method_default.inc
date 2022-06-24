@@ -158,6 +158,7 @@ static ret_t input_method_default_restore_win_position(input_method_t* im) {
 
   if (im->win != NULL) {
     widget_move(im->win, im->win->x, im->win_old_y);
+    im->win_delta_y = 0;
     im->win = NULL;
   }
 
@@ -289,7 +290,6 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
 
   caret_bottom = input_method_default_get_edit_caret_bottom(widget, im->keyboard);
   caret_bottom += win_delta_y;
-  caret_bottom = tk_min(caret_bottom, win->y + win->h);
   if (widget_get_prop_bool(im->keyboard, WIDGET_PROP_FLOATING, FALSE)) {
     input_type_keyboard_follow_edit(im);
     if (im->keyboard->y < p.y) {
@@ -364,6 +364,8 @@ static ret_t input_method_default_show_keyboard(input_method_t* im) {
       return RET_OK;
     } else {
       /*keyboard is open, close old one, disable open animation of new one*/
+      input_method_default_restore_win_position(im);
+
       value_set_str(&v, "");
       widget_set_prop(im->keyboard, WIDGET_PROP_OPEN_ANIM_HINT, &v);
       widget_set_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
