@@ -151,6 +151,27 @@ static ret_t on_push_window(void* ctx, event_t* e) {
   return RET_REMOVE;
 }
 
+static ret_t input_method_default_set_win_position(input_method_t* im) {
+  im->edit_old_h = 0;
+  if (im->widget != NULL) {
+    if (tk_str_eq(im->widget->vt->type, WIDGET_TYPE_MLEDIT)) {
+      point_t p = {0, 0};
+      int32_t delta = 0;
+
+      widget_to_screen(im->widget, &p);
+      delta = (p.y + im->widget->h - im->win_delta_y) - im->keyboard->y;
+      im->edit_old_h = im->widget->h;
+
+      if (delta > 0) {
+        int32_t h = im->widget->h - delta;
+        widget_resize(im->widget, im->widget->w, h);
+      }
+    }
+  }
+
+  return RET_OK;
+}
+
 static ret_t input_method_default_restore_win_position(input_method_t* im) {
   if (im->widget != NULL && im->edit_old_h > 0) {
     widget_resize(im->widget, im->widget->w, im->edit_old_h);
@@ -185,7 +206,12 @@ static ret_t input_method_on_win_close(void* ctx, event_t* e) {
 }
 
 static ret_t input_method_default_on_keyboard_open(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(e->target);
   input_method_t* im = (input_method_t*)ctx;
+
+  if (im->keyboard == widget) {
+    input_method_default_set_win_position(im);
+  }
   im->busy = FALSE;
 
   return RET_REMOVE;
@@ -332,16 +358,6 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
 
   widget_off_by_func(win, EVT_WINDOW_CLOSE, input_method_on_win_close, im);
   widget_on(win, EVT_WINDOW_CLOSE, input_method_on_win_close, im);
-
-  im->edit_old_h = 0;
-  if (tk_str_eq(widget->vt->type, WIDGET_TYPE_MLEDIT)) {
-    int32_t delta = (p.y + widget->h - im->win_delta_y) - im->keyboard->y;
-    im->edit_old_h = widget->h;
-    if (delta > 0) {
-      int32_t h = widget->h - delta;
-      widget_resize(widget, widget->w, h);
-    }
-  }
 
   return RET_OK;
 }
