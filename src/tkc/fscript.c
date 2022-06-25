@@ -58,11 +58,9 @@ static ret_t func_for(fscript_t* fscript, fscript_args_t* args, value_t* result)
 static ret_t func_for_in(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   return RET_OK;
 }
-
-ret_t func_noop(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+static ret_t func_noop(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   return RET_OK;
 }
-
 static ret_t func_pending(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   return RET_OK;
 }
