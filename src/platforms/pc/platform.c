@@ -193,6 +193,12 @@ void sleep_ms(uint32_t ms) {
 }
 
 ret_t platform_prepare(void) {
+  static bool_t inited = FALSE;
+  if (inited) {
+    return RET_OK;
+  }
+  inited = TRUE;
+
   stm_time_init();
 
 #ifndef HAS_STD_MALLOC
