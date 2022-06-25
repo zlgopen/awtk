@@ -133,6 +133,8 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdli
   platform_prepare();
 #ifdef ON_CMD_LINE
   ON_CMD_LINE(argc, argv);
+  lcd_w = LCD_WIDTH;
+  lcd_h = LCD_HEIGHT;
 #else
   if (argc >= 2) {
     lcd_w = tk_atoi(argv[1]);
@@ -158,6 +160,8 @@ int main(int argc, char* argv[]) {
   platform_prepare();
 #ifdef ON_CMD_LINE
   ON_CMD_LINE(argc, argv);
+  lcd_w = LCD_WIDTH;
+  lcd_h = LCD_HEIGHT;
 #else
   if (argc >= 2) {
     lcd_w = tk_atoi(argv[1]);
