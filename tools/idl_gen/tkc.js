@@ -1,7 +1,6 @@
 ﻿const fs = require('fs');
 const path = require('path');
-const glob = require('glob')
-const IDLGen = require('./idl_gen.js')
+const IDLGen = require('./idl_gen.js');
 
 let outputIDL = 'tkc.json';
 if(process.argv.length == 3) {
@@ -20,5 +19,4 @@ let sourcesPath = [
     path.normalize(path.join(__dirname, '../../src/debugger')), 
     path.normalize(path.join(__dirname, '../../src/conf_io'))].join(';');
 
-IDLGen.gen(sourcesPath, outputIDL)
-
+IDLGen.gen(sourcesPath, outputIDL);

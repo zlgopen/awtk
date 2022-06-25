@@ -1,7 +1,6 @@
 ﻿const fs = require('fs');
 const path = require('path');
-const glob = require('glob')
-const IDLGen = require('./idl_gen.js')
+const IDLGen = require('./idl_gen.js');
 
 let defDirlist = undefined;
 let outputIDL = 'idl.json';
@@ -22,5 +21,4 @@ if(sourcesPath === '-h' || sourcesPath === '--help') {
   process.exit(0);
 }
 
-IDLGen.gen(sourcesPath, outputIDL, defDirlist)
-
+IDLGen.gen(sourcesPath, outputIDL, defDirlist);
