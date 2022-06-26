@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/06/26
+  * 增加文档[读写 XML/JSON/INI 和 UBJSON 等格式的数据文件](conf_doc.md)
+
 2022/06/25
   * 完善 platform_prepare
   * 完善 awtk_main
