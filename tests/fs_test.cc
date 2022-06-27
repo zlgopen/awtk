@@ -171,7 +171,6 @@ TEST(Fs, copy_file) {
   ASSERT_EQ(fs_copy_file(os_fs(), src, dst), RET_OK);
   ASSERT_EQ(file_remove(src), RET_OK);
   ASSERT_EQ(file_remove(dst), RET_OK);
-  ;
 
   ASSERT_EQ(file_exist(src), FALSE);
   ASSERT_EQ(file_exist(dst), FALSE);
@@ -187,6 +186,13 @@ TEST(Fs, copy_dir) {
   ASSERT_EQ(file_write("./a/a3/a4/test.txt", "hello", 5), RET_OK);
 
   ASSERT_EQ(fs_copy_dir(os_fs(), src, dst), RET_OK);
+  ASSERT_EQ(dir_exist("./b"), TRUE);
+  ASSERT_EQ(dir_exist("./b/a1"), TRUE);
+  ASSERT_EQ(dir_exist("./b/a2"), TRUE);
+  ASSERT_EQ(dir_exist("./b/a3"), TRUE);
+  ASSERT_EQ(file_exist("./b/a3/a4/test.txt"), TRUE);
+  
+  ASSERT_EQ(fs_copy_dir_ex(os_fs(), src, dst, FALSE), RET_OK);
   ASSERT_EQ(dir_exist("./b"), TRUE);
   ASSERT_EQ(dir_exist("./b/a1"), TRUE);
   ASSERT_EQ(dir_exist("./b/a2"), TRUE);

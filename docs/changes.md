@@ -1,4 +1,6 @@
 # 最新动态
+2022/06/27
+  * 增加 fs\_copy\_dir\_ex
 
 2022/06/26
   * 增加文档[读写 XML/JSON/INI 和 UBJSON 等格式的数据文件](conf_doc.md)

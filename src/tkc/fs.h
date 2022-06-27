@@ -494,6 +494,20 @@ ret_t fs_copy_file(fs_t* fs, const char* src, const char* dst);
 ret_t fs_copy_dir(fs_t* fs, const char* src, const char* dst);
 
 /**
+ * @method fs_copy_dir_ex
+ *
+ * 拷贝目录。
+ *
+ * @param {fs_t*} fs 文件系统对象，一般赋值为os_fs()。
+ * @param {const char*} src 源目录。
+ * @param {const char*} dst 目标目录。
+ * @param {bool_t} overwrite 是否覆盖。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fs_copy_dir_ex(fs_t* fs, const char* src, const char* dst, bool_t overwrite);
+
+/**
  * @method fs_open_dir
  *
  * 打开目录。
