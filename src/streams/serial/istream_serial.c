@@ -78,6 +78,12 @@ ret_t tk_istream_serial_wait_for_data(tk_istream_t* stream, uint32_t timeout_ms)
   return serial_wait_for_data(s->fd, timeout_ms);
 }
 
+static bool_t tk_istream_serial_eos(tk_istream_t* stream) {
+  tk_istream_serial_t* s = TK_ISTREAM_SERIAL(stream);
+
+  return serial_handle_get_dev(s->fd) == 0;
+}
+
 tk_istream_t* tk_istream_serial_create(serial_handle_t fd) {
   tk_object_t* obj = NULL;
   tk_istream_serial_t* istream_serial = NULL;
@@ -88,6 +94,7 @@ tk_istream_t* tk_istream_serial_create(serial_handle_t fd) {
   return_value_if_fail(istream_serial != NULL, NULL);
 
   istream_serial->fd = fd;
+  TK_ISTREAM(obj)->eos = tk_istream_serial_eos;
   TK_ISTREAM(obj)->read = tk_istream_serial_read;
   TK_ISTREAM(obj)->flush = tk_istream_serial_flush;
   TK_ISTREAM(obj)->wait_for_data = tk_istream_serial_wait_for_data;

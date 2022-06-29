@@ -126,7 +126,7 @@ serial_handle_t serial_open(const char* port) {
   handle->mutex = tk_mutex_create();
   handle->thread = tk_thread_create(serial_thread_entry, handle);
 
-  if (handle->cond == NULL || handle->mutex == NULL || handle->thread == NULL ||
+  if (!SetCommMask(dev, EV_RXCHAR) || handle->cond == NULL || handle->mutex == NULL || handle->thread == NULL ||
       tk_socketpair(socks) < 0) {
     serial_close(handle);
     return NULL;
@@ -375,10 +375,6 @@ ret_t serial_config(serial_handle_t handle, uint32_t baudrate, bytesize_t bytesi
     return RET_FAIL;
   }
 
-  if (!SetCommMask(dev, EV_RXCHAR)) {
-    log_debug("Error setting RX event.");
-    return RET_FAIL;
-  }
   return RET_OK;
 }
 
@@ -433,7 +429,7 @@ int serial_close(serial_handle_t handle) {
     if (handle->cond != NULL) {
       tk_cond_destroy(handle->cond);
     }
-
+    memset(handle, 0x0, sizeof(*handle));
     TKMEM_FREE(handle);
   }
   return 0;
@@ -446,6 +442,10 @@ int32_t serial_read(serial_handle_t handle, uint8_t* buff, uint32_t max_size) {
   bool_t has_signal = FALSE;
   serial_dev_t dev = serial_handle_get_dev(handle);
 
+  if (serial_wait_for_data(handle, 0) != RET_OK) {
+    return 0;
+  }
+
   if (!ReadFile(dev, buff, max_size, &bytes, &handle->read_overlapped)) {
     err = GetLastError();
     if (err == ERROR_IO_PENDING) {
@@ -455,7 +455,7 @@ int32_t serial_read(serial_handle_t handle, uint8_t* buff, uint32_t max_size) {
     }
   }
   tk_mutex_lock(handle->mutex);
-  if (bytes > 0 && !handle->has_signal) {
+  if (!handle->has_signal) {
     if (recv(handle->client_fd, tmp_buff, sizeof(tmp_buff), 0) > 0) {
       handle->has_signal = has_signal = TRUE;
     }
@@ -485,8 +485,9 @@ int32_t serial_write(serial_handle_t handle, const uint8_t* buff, uint32_t max_s
 
 static ret_t serial_wait_for_data_impl(serial_handle_t handle, uint32_t timeout_ms) {
   DWORD err = 0;
+  DWORD mask = 0;
+  COMSTAT cstate = {0};
   ret_t ret = RET_FAIL;
-  DWORD mask = EV_RXCHAR;
   serial_dev_t dev = serial_handle_get_dev(handle);
   if (!WaitCommEvent(dev, &mask, &handle->read_overlapped)) {
     err = GetLastError();
@@ -500,11 +501,17 @@ static ret_t serial_wait_for_data_impl(serial_handle_t handle, uint32_t timeout_
         ret = RET_FAIL;
       }
     }
-  } else {
-    ret = RET_OK;
   }
+  /* 清除可能的异常以及其事件，同时获取缓冲区的数据个数 */
+  ClearCommError(dev, &err, &cstate);
 
-  ClearCommError(dev, &err, NULL);
+  if (cstate.cbInQue > 0) {
+    /* 如果缓冲区有数据的话，应该触发 serial_wait_for_data 让其他取缓冲区的数据。*/
+    ret = RET_OK;
+  } else if (ret == RET_OK) {
+    /* 如果缓冲区没有数据的话，但是却触发了 WaitForSingleObject 触发成功了，说明串口通信有异常，则应该返回 RET_FAIL。*/
+    ret = RET_FAIL;
+  }
   return ret;
 }
 
@@ -950,6 +957,7 @@ int serial_close(serial_handle_t handle) {
   serial_oflush(handle);
 
   close(dev);
+  memset(handle, 0x0, sizeof(*handle));
   TKMEM_FREE(handle);
 
   return 0;
