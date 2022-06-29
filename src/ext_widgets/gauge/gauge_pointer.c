@@ -112,7 +112,7 @@ static ret_t gauge_pointer_invalidate(widget_t* widget, const rect_t* rect) {
   }
 
   r = gauge_pointer_calc_dirty_rect(widget, w, h);
-  return widget_invalidate(parent, &r);
+  return widget_invalidate_force(parent, &r);
 }
 
 ret_t gauge_pointer_set_angle(widget_t* widget, float_t angle) {
@@ -125,12 +125,12 @@ ret_t gauge_pointer_set_angle(widget_t* widget, float_t angle) {
     value_set_float(&(evt.old_value), gauge_pointer->angle);
     value_set_float(&(evt.new_value), angle);
 
-    widget_invalidate(widget, NULL);
+    widget_invalidate_force(widget, NULL);
     if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
       gauge_pointer->angle = angle;
       evt.e.type = EVT_VALUE_CHANGED;
       widget_dispatch(widget, (event_t*)&evt);
-      widget_invalidate(widget, NULL);
+      widget_invalidate_force(widget, NULL);
     }
   }
 

@@ -1,8 +1,9 @@
 # 最新动态
 
 2022/06/29
-  * 完善 edit 中 hook_children_button 的逻辑((感谢雨欣提供补丁))
-  * 完善 Windows 的串口。
+  * 完善 edit 中 hook\_children\_button 的逻辑(感谢雨欣提供补丁)
+  * 完善 Windows 的串口(感谢智明提供补丁)
+  * 完善 guage pointer的脏矩形(感谢智明提供补丁)
 
 2022/06/27
   * 增加 fs\_copy\_dir\_ex
