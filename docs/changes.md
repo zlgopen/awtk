@@ -1,4 +1,8 @@
 # 最新动态
+
+2022/06/29
+  * 完善 edit 中 hook_children_button 的逻辑((感谢雨欣提供补丁))
+
 2022/06/27
   * 增加 fs\_copy\_dir\_ex
 

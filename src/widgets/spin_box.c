@@ -109,7 +109,8 @@ TK_DECL_VTABLE(spin_box) = {.size = sizeof(spin_box_t),
                             .on_layout_children = spin_box_on_layout_children,
                             .on_destroy = edit_on_destroy,
                             .on_copy = spin_box_on_copy,
-                            .on_event = edit_on_event};
+                            .on_event = edit_on_event,
+                            .on_add_child = edit_on_add_child};
 
 widget_t* spin_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* spin_box = edit_create_ex(parent, TK_REF_VTABLE(spin_box), x, y, w, h);

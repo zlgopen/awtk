@@ -642,6 +642,7 @@ ret_t edit_on_paint_self(widget_t* widget, canvas_t* c);
 ret_t edit_on_event(widget_t* widget, event_t* e);
 ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v);
 ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v);
+ret_t edit_on_add_child(widget_t* widget, widget_t* child);
 widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
                          wh_t h);
 
@@ -665,7 +666,7 @@ ret_t edit_pre_input_with_sep(widget_t* widget, uint32_t key, char sep);
 #define STR_EDIT_CLEAR_NAME "clear"
 #define STR_EDIT_VISIBLE_NAME "visible"
 
-#define TK_EDIT_PROPS                                                                               \
+#define TK_EDIT_PROPS                                                                            \
   WIDGET_PROP_MIN, WIDGET_PROP_MAX, WIDGET_PROP_STEP, WIDGET_PROP_INPUT_TYPE,                    \
       WIDGET_PROP_READONLY, WIDGET_PROP_CANCELABLE, WIDGET_PROP_AUTO_FIX, WIDGET_PROP_MARGIN,    \
       WIDGET_PROP_LEFT_MARGIN, WIDGET_PROP_RIGHT_MARGIN, WIDGET_PROP_TOP_MARGIN,                 \

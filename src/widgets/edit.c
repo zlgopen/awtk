@@ -1748,15 +1748,29 @@ static ret_t edit_hook_button(void* ctx, const void* iter) {
   return_value_if_fail(widget != NULL && edit != NULL, RET_REMOVE);
 
   if (widget->name && widget != edit) {
+    uint32_t etype = EVT_CLICK;
+    event_func_t handler = NULL;
     const char* name = widget->name;
-    if (tk_str_eq(name, STR_EDIT_INC_NAME)) {
-      widget_on(widget, EVT_CLICK, edit_on_inc, edit);
-    } else if (tk_str_eq(name, STR_EDIT_DEC_NAME)) {
-      widget_on(widget, EVT_CLICK, edit_on_dec, edit);
-    } else if (tk_str_eq(name, STR_EDIT_CLEAR_NAME)) {
-      widget_on(widget, EVT_CLICK, edit_on_clear, edit);
-    } else if (tk_str_eq(name, STR_EDIT_VISIBLE_NAME)) {
-      widget_on(widget, EVT_VALUE_CHANGED, edit_on_password_visible, edit);
+    emitter_t* emitter = widget->emitter;
+    const char* type = widget_get_type(widget);
+
+    if (tk_str_eq(type, WIDGET_TYPE_BUTTON)) {
+      if (tk_str_eq(name, STR_EDIT_INC_NAME)) {
+        handler = edit_on_inc;
+      } else if (tk_str_eq(name, STR_EDIT_DEC_NAME)) {
+        handler = edit_on_dec;
+      } else if (tk_str_eq(name, STR_EDIT_CLEAR_NAME)) {
+        handler = edit_on_clear;
+      }
+    } else if (tk_str_eq(type, WIDGET_TYPE_CHECK_BUTTON)) {
+      if (tk_str_eq(name, STR_EDIT_VISIBLE_NAME)) {
+        etype = EVT_VALUE_CHANGED;
+        handler = edit_on_password_visible;
+      }
+    }
+
+    if (handler != NULL && !emitter_exist(emitter, etype, handler, edit)) {
+      widget_on(widget, etype, handler, edit);
     }
   }
 
@@ -1800,8 +1814,18 @@ static ret_t edit_hook_children_button_and_check_valid_value(const idle_info_t* 
   return RET_REMOVE;
 }
 
-const char* const s_edit_properties[] = {TK_EDIT_PROPS,
-                                         NULL};
+ret_t edit_on_add_child(widget_t* widget, widget_t* child) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_FAIL);
+
+  if (edit->idle_id == TK_INVALID_ID) {
+    edit->idle_id = widget_add_idle(widget, edit_hook_children_button_and_check_valid_value);
+  }
+
+  return RET_CONTINUE;
+}
+
+const char* const s_edit_properties[] = {TK_EDIT_PROPS, NULL};
 
 ret_t edit_on_copy(widget_t* widget, widget_t* other) {
   edit_t* edit = EDIT(widget);
@@ -1846,7 +1870,8 @@ TK_DECL_VTABLE(edit) = {.size = sizeof(edit_t),
                         .get_prop = edit_get_prop,
                         .on_destroy = edit_on_destroy,
                         .on_copy = edit_on_copy,
-                        .on_event = edit_on_event};
+                        .on_event = edit_on_event,
+                        .on_add_child = edit_on_add_child};
 
 widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
                          wh_t h) {
@@ -1865,7 +1890,6 @@ widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy
 
   edit_update_status(widget);
   edit->timer_id = TK_INVALID_ID;
-  edit->idle_id = widget_add_idle(widget, edit_hook_children_button_and_check_valid_value);
 
   edit->model = text_edit_create(widget, TRUE);
   ENSURE(edit->model != NULL);
