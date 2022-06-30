@@ -484,4 +484,9 @@ typedef struct _event_source_manager_t event_source_manager_t;
 #define TK_STR_IS_EMPTY(s) (s == NULL || *s == '\0')
 #define TK_STR_IS_NOT_EMPTY(s) ((s != NULL) && *s)
 
+#ifdef WIN32
+#define popen _popen
+#define pclose _pclose
+#endif/*WIN32*/
+
 #endif /*TYPES_DEF_H*/

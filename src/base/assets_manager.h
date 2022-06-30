@@ -412,6 +412,14 @@ ret_t assets_manager_destroy(assets_manager_t* am);
 asset_info_t* assets_manager_load_file(assets_manager_t* am, asset_type_t type, const char* path);
 
 /*public for test*/
+
+/**
+ * @method assets_manager_is_save_assets_list 
+ * 检查指定类型是否需要保存。    
+ * @param {asset_type_t} type 资源类型。
+ *
+ * @return {bool_t} 返回TRUE表示需要保持，否则不需要保存。
+ */
 bool_t assets_manager_is_save_assets_list(asset_type_t type);
 
 END_C_DECLS
