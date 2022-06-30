@@ -124,7 +124,8 @@ conf_node_t* conf_doc_dup_node(conf_doc_t* doc, conf_node_t* node, const char* n
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t conf_doc_set_node_prop(conf_doc_t* doc, conf_node_t* node, const char* name, const value_t* v);
+ret_t conf_doc_set_node_prop(conf_doc_t* doc, conf_node_t* node, const char* name,
+                             const value_t* v);
 
 /**
  * @method conf_doc_find_node

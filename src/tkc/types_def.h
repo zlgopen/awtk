@@ -290,7 +290,7 @@ typedef enum _ret_t {
 #define strcasecmp stricmp
 #endif /*TK_PATH_SEP*/
 
-#define log_if_fail(p)                                                   \
+#define log_if_fail(p)                                                     \
   if (!(p)) {                                                              \
     log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
   }

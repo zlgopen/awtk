@@ -2772,3 +2772,9 @@ TEST(FScript, binary) {
 
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(FScript, code_id) {
+  char* code_id = fscript_get_code_id("//code_id(\"123\");");
+  ASSERT_STREQ(code_id, "123");
+  TKMEM_FREE(code_id);
+}

@@ -496,6 +496,15 @@ ret_t fscript_set_hooks(const fscript_hooks_t* hooks);
 ret_t fscript_ensure_locals(fscript_t* fscript);
 
 /**
+ * @method fscript_get_code_id
+ * 获取code_id。
+ * @param {const char*} str 代码。
+ *
+ * @return {char*} 返回code_id，有调用者释放返回的字符串。
+ */
+char* fscript_get_code_id(const char* str);
+
+/**
  * @class fscript_function_def_t
  * 脚本函数定义。
  *

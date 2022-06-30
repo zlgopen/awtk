@@ -901,6 +901,23 @@ static ret_t fscript_parser_skip_seperators(fscript_parser_t* parser) {
 #define STR_CODE_ID_START "code_id(\""
 #define STR_CODE_ID_END "\")"
 
+char* fscript_get_code_id(const char* str) {
+  const char* end = NULL;
+  const char* start = NULL;
+  return_value_if_fail(str != NULL, NULL);
+
+  start = strstr(str, STR_CODE_ID_START);
+  if (start != NULL) {
+    start += strlen(STR_CODE_ID_START);
+    end = strstr(start, STR_CODE_ID_END);
+    if (end != NULL) {
+      return tk_strndup(start, end - start);
+    }
+  }
+
+  return NULL;
+}
+
 static ret_t fscript_parser_skip_line_comment(fscript_parser_t* parser) {
   char c = '\0';
   str_t* str = &(parser->temp);
@@ -911,16 +928,11 @@ static ret_t fscript_parser_skip_line_comment(fscript_parser_t* parser) {
   } while (c != '\0' && c != '\r' && c != '\n');
 
   if (str->size > sizeof(STR_CODE_ID_START)) {
-    const char* end = NULL;
-    const char* start = strstr(str->str, STR_CODE_ID_START);
-    if (start != NULL) {
-      start += strlen(STR_CODE_ID_START);
-      end = strstr(start, STR_CODE_ID_END);
-      if (end != NULL) {
-        TKMEM_FREE(parser->code_id);
-        parser->code_id = tk_strndup(start, end - start);
-        log_debug("code_id:%s\n", parser->code_id);
-      }
+    char* code_id = fscript_get_code_id(str->str);
+    if (code_id != NULL) {
+      TKMEM_FREE(parser->code_id);
+      parser->code_id = code_id;
+      log_debug("code_id:%s\n", parser->code_id);
     }
   }
 

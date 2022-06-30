@@ -220,7 +220,7 @@ TEST(Str, unescap) {
   ASSERT_EQ(str_set(s, "\\?"), RET_OK);
   ASSERT_EQ(str_unescape(s), RET_OK);
   ASSERT_EQ(string(s->str), "\?");
-  
+
   ASSERT_EQ(str_set(s, "\\0"), RET_OK);
   ASSERT_EQ(str_unescape(s), RET_OK);
   ASSERT_EQ(string(s->str), "");

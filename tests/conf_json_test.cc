@@ -557,16 +557,18 @@ TEST(ConfJson, set_prop) {
   conf_doc_t* doc = conf_doc_load_json(data, -1);
   conf_node_t* tom = conf_node_find_child(doc->root, "tom");
   ASSERT_EQ(tom != NULL, true);
-  
+
   value_set_str(&v, "tom");
   ASSERT_EQ(conf_doc_set_node_prop(doc, tom, "name", &v), RET_OK);
-  
+
   value_set_str(&v, "awtk");
   ASSERT_EQ(conf_doc_set_node_prop(doc, tom, "product", &v), RET_OK);
 
   str_init(&str, 100);
   conf_doc_save_json(doc, &str);
-  ASSERT_STREQ(str.str, "{\n    \"tom\" : {\n        \"name\" : \"tom\",\n        \"age\" : 100,\n        \"product\" : \"awtk\"\n    }\n}");
+  ASSERT_STREQ(str.str,
+               "{\n    \"tom\" : {\n        \"name\" : \"tom\",\n        \"age\" : 100,\n        "
+               "\"product\" : \"awtk\"\n    }\n}");
   str_reset(&str);
 
   conf_doc_destroy(doc);
@@ -581,10 +583,12 @@ TEST(Json, append_array) {
   ASSERT_EQ(conf_doc_get(doc, "hello.#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 4);
   ASSERT_EQ(conf_doc_set_int(doc, "hello.[-1]", 5), RET_OK);
-  
+
   str_init(&str, 100);
   conf_doc_save_json(doc, &str);
-  ASSERT_STREQ(str.str, "{\n    \"hello\" : [\n        1,\n        2,\n        3,\n        4,\n        5\n    ]\n}");
+  ASSERT_STREQ(
+      str.str,
+      "{\n    \"hello\" : [\n        1,\n        2,\n        3,\n        4,\n        5\n    ]\n}");
   str_reset(&str);
 
   conf_doc_destroy(doc);

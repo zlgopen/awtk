@@ -592,7 +592,8 @@ ret_t fs_copy_file(fs_t* fs, const char* src, const char* dst) {
   return ret;
 }
 
-static ret_t fs_copy_item(fs_t* fs, fs_item_t* item, const char* src, const char* dst, bool_t overwrite) {
+static ret_t fs_copy_item(fs_t* fs, fs_item_t* item, const char* src, const char* dst,
+                          bool_t overwrite) {
   char subsrc[MAX_PATH + 1];
   char subdst[MAX_PATH + 1];
   path_build(subsrc, MAX_PATH, src, item->name, NULL);

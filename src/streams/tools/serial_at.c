@@ -21,7 +21,7 @@ void do_send(tk_iostream_t* iostream, const char* msg) {
 #else
   log_debug("---------test tk_istream_read_line ---------------- \r\n");
 #endif
-  for (uint32_t i = 0; i < 100000; i++) {   
+  for (uint32_t i = 0; i < 100000; i++) {
     memset(buff, 0x0, sizeof(buff));
 #ifdef TEST_READ_LEN
     ret = tk_istream_read_len(istream, (uint8_t*)buff, sizeof(buff), 5000);
@@ -34,7 +34,7 @@ void do_send(tk_iostream_t* iostream, const char* msg) {
       log_debug("read failed : %d \r\n", ret);
     }
   }
-  
+
   tk_istream_flush(istream);
 
   if (ret >= 0) {

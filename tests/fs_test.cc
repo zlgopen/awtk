@@ -191,7 +191,7 @@ TEST(Fs, copy_dir) {
   ASSERT_EQ(dir_exist("./b/a2"), TRUE);
   ASSERT_EQ(dir_exist("./b/a3"), TRUE);
   ASSERT_EQ(file_exist("./b/a3/a4/test.txt"), TRUE);
-  
+
   ASSERT_EQ(fs_copy_dir_ex(os_fs(), src, dst, FALSE), RET_OK);
   ASSERT_EQ(dir_exist("./b"), TRUE);
   ASSERT_EQ(dir_exist("./b/a1"), TRUE);
