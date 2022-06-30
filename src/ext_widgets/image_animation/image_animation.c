@@ -314,7 +314,12 @@ ret_t image_animation_set_interval(widget_t* widget, uint32_t interval) {
   return_value_if_fail(image_animation != NULL, RET_BAD_PARAMS);
 
   image_animation->interval = interval;
-
+  if (image_animation->timer_id != TK_INVALID_ID) {
+    const timer_info_t* info = timer_find(image_animation->timer_id);
+    if (info->duration != image_animation->interval) {
+      timer_modify(info->id, image_animation->interval);
+    }
+  }
   return RET_OK;
 }
 
@@ -440,9 +445,6 @@ static ret_t image_animation_on_update(const timer_info_t* info) {
 
   image_animation->playing = TRUE;
   ret = image_animation_update(widget);
-  if (info->duration != image_animation->interval) {
-    timer_modify(info->id, image_animation->interval);
-  }
 
   return ret;
 }

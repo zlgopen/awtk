@@ -1,6 +1,6 @@
 <window anim_hint="htranslate" fullscreen="true" text="Fullscreen">
   <view x="0" y="0" w="100%" h="80%" children_layout="default(r=4,c=4)">
-    <image_animation image="ani" start_index="1" end_index="9" auto_play="true" interval="50" delay="100"/>
+    <image_animation name="ani_interval" image="ani" start_index="1" end_index="9" auto_play="true" interval="5000" loop="true" delay="100"/>
     <image_animation image="ani" start_index="1" end_index="9" auto_play="true" interval="50" delay="200"/>
     <image_animation image="ani" start_index="1" end_index="9" auto_play="true" interval="50" delay="300"/>
     <image_animation image="ani" start_index="1" end_index="9" auto_play="true" interval="50" delay="400"/>

@@ -439,6 +439,14 @@ static ret_t on_combo_box_will_change(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_image_animation_set_interval(void* ctx, event_t* e) {
+  widget_t* s_image_animation = WIDGET(ctx);
+  int32_t interval = widget_get_prop_int(s_image_animation, "interval", 0);
+
+  widget_set_prop_int(s_image_animation, "interval", interval / 100);
+  return RET_OK;
+}
+
 static ret_t on_pages_add_child(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   widget_t* win = widget_get_window(widget);
@@ -926,6 +934,8 @@ static ret_t install_one(void* ctx, const void* iter) {
       widget_on(widget, EVT_CLICK, on_action_list, (void*)widget);
     } else if (strstr(name, "cursor") != NULL) {
       widget_on(widget, EVT_CLICK, on_change_cursor, win);
+    } else if (tk_str_eq(name, "ani_interval") && tk_str_eq(widget->vt->type, "image_animation")) {
+      widget_on(widget, EVT_POINTER_DOWN, on_image_animation_set_interval, widget);
     }
   } else if (tk_str_eq(widget->vt->type, "combo_box")) {
     widget_on(widget, EVT_VALUE_CHANGED, on_combo_box_changed, widget);

@@ -1,6 +1,7 @@
 # 最新动态
 2022/06/30
   * 增加函数 fscript\_get\_code\_id
+  * 支持 image\_animation 修改 interval 属性马上生效(感谢智明提供补丁)
 
 2022/06/29
   * 完善 edit 中 hook\_children\_button 的逻辑(感谢雨欣提供补丁)
