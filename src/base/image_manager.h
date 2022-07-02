@@ -40,6 +40,10 @@ typedef struct _bitmap_header_t {
   uint8_t data[4];
 } bitmap_header_t;
 
+typedef ret_t (*image_manager_get_bitmap_t)(image_manager_t* imm, const char* name,
+                                           bitmap_t* image);
+
+
 /**
  * @class image_manager_t
  * @annotation ["scriptable"]
@@ -63,6 +67,9 @@ struct _image_manager_t {
   /*private*/
   uint32_t mem_size_of_cached_images;
   uint32_t max_mem_size_of_cached_images;
+
+  image_manager_get_bitmap_t fallback_get_bitmap;
+  void* fallback_get_bitmap_ctx;
 };
 
 /**
@@ -125,6 +132,20 @@ ret_t image_manager_set_max_mem_size_of_cached_images(image_manager_t* imm, uint
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t image_manager_get_bitmap(image_manager_t* imm, const char* name, bitmap_t* image);
+
+/**
+ * @method image_manager_set_fallback_get_bitmap
+ * 设置一个函数，该函数在找不到图片时加载后补图片。
+ *
+ * @parimm {image_manager_t*} imm image manager对象。
+ * @parimm {image_manager_get_bitmap_t} fallback_get_bitmap 回调函数。
+ * @parimm {void*} ctx 回调函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_manager_set_fallback_get_bitmap(image_manager_t* imm,
+                                             image_manager_get_bitmap_t fallback_get_bitmap,
+                                             void* ctx);
 
 /**
  * @method image_manager_preload

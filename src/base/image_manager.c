@@ -216,6 +216,9 @@ static ret_t image_manager_get_bitmap_impl(image_manager_t* imm, const char* nam
 
   res = assets_manager_ref(imm->assets_manager, ASSET_TYPE_IMAGE, name);
   if (res == NULL) {
+    if (imm->fallback_get_bitmap != NULL) {
+      return imm->fallback_get_bitmap(imm, name, image);
+    }
     return RET_NOT_FOUND;
   }
 
@@ -390,6 +393,17 @@ ret_t image_manager_set_max_mem_size_of_cached_images(image_manager_t* imm, uint
   return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
 
   imm->max_mem_size_of_cached_images = max_mem_size;
+
+  return RET_OK;
+}
+
+ret_t image_manager_set_fallback_get_bitmap(image_manager_t* imm,
+                                             image_manager_get_bitmap_t fallback_get_bitmap,
+                                             void* ctx) {
+  return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
+  
+  imm->fallback_get_bitmap = fallback_get_bitmap;
+  imm->fallback_get_bitmap_ctx = ctx;
 
   return RET_OK;
 }
