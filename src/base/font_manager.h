@@ -29,13 +29,18 @@
 
 BEGIN_C_DECLS
 
+struct _font_manager_t;
+typedef struct _font_manager_t font_manager_t;
+
+typedef font_t* (*font_manager_get_font_t)(font_manager_t* fm, const char* name, font_size_t size);
+
 /**
  * @class font_manager_t
  * @annotation ["scriptable"]
  * 字体管理器，负责字体的加载和缓存管理。
  * (如果使用nanovg，字体由nanovg内部管理)
  */
-typedef struct _font_manager_t {
+struct _font_manager_t {
   darray_t fonts;
 
   /**
@@ -51,7 +56,11 @@ typedef struct _font_manager_t {
    * 资源管理器。
    */
   assets_manager_t* assets_manager;
-} font_manager_t;
+  
+  /*private*/
+  font_manager_get_font_t fallback_get_font;
+  void* fallback_get_font_ctx;
+};
 
 /**
  * @method font_manager
@@ -130,6 +139,20 @@ ret_t font_manager_add_font(font_manager_t* fm, font_t* font);
  * @return {font_t*} 返回字体对象。
  */
 font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t size);
+
+/**
+ * @method font_manager_set_fallback_get_font
+ * 设置一个函数，该函数在找不到字体时加载后补字体。
+ *
+ * @param {font_manager_t*} fm font manager对象。
+ * @param {font_manager_get_font_t} fallback_get_font 回调函数。
+ * @param {void*} ctx 回调函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t font_manager_set_fallback_get_font(font_manager_t* imm,
+                                             font_manager_get_font_t fallback_get_font,
+                                             void* ctx);
 
 /**
  * @method font_manager_unload_font

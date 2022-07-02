@@ -137,9 +137,9 @@ ret_t image_manager_get_bitmap(image_manager_t* imm, const char* name, bitmap_t*
  * @method image_manager_set_fallback_get_bitmap
  * 设置一个函数，该函数在找不到图片时加载后补图片。
  *
- * @parimm {image_manager_t*} imm image manager对象。
- * @parimm {image_manager_get_bitmap_t} fallback_get_bitmap 回调函数。
- * @parimm {void*} ctx 回调函数的上下文。
+ * @param {image_manager_t*} imm image manager对象。
+ * @param {image_manager_get_bitmap_t} fallback_get_bitmap 回调函数。
+ * @param {void*} ctx 回调函数的上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

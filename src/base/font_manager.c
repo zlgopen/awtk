@@ -159,6 +159,10 @@ font_t* font_manager_load(font_manager_t* fm, const char* name, uint32_t size) {
         font = font_loader_load(fm->loader, name, info->data, info->size);
       }
       assets_manager_unref(fm->assets_manager, info);
+    } else {
+      if (fm->fallback_get_font != NULL) {
+        return fm->fallback_get_font(fm, name,size);
+      }
     }
   }
 
@@ -241,6 +245,17 @@ ret_t font_manager_shrink_cache(font_manager_t* fm, uint32_t cache_size) {
     font = (font_t*)darray_get(&(fm->fonts), i);
     font_shrink_cache(font, cache_size);
   }
+
+  return RET_OK;
+}
+
+ret_t font_manager_set_fallback_get_font(font_manager_t* fm,
+                                             font_manager_get_font_t fallback_get_font,
+                                             void* ctx) {
+  return_value_if_fail(fm != NULL, RET_BAD_PARAMS);
+  
+  fm->fallback_get_font = fallback_get_font;
+  fm->fallback_get_font_ctx = ctx;
 
   return RET_OK;
 }
