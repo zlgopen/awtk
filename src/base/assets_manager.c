@@ -581,6 +581,7 @@ assets_manager_t* assets_manager_init(assets_manager_t* am, uint32_t init_nr) {
 #ifdef WITH_ASSET_LOADER
   am->loader = asset_loader_create();
 #endif /*WITH_ASSET_LOADER*/
+  am->refcount = 1;
 
   return am;
 }
@@ -817,6 +818,7 @@ ret_t assets_manager_deinit(assets_manager_t* am) {
 
   asset_loader_destroy(am->loader);
   darray_deinit(&(am->assets));
+  TKMEM_FREE(am->name);
 
   return RET_OK;
 }
@@ -872,6 +874,75 @@ ret_t assets_manager_set_loader(assets_manager_t* am, asset_loader_t* loader) {
     asset_loader_destroy(am->loader);
   }
   am->loader = loader;
+
+  return RET_OK;
+}
+
+static darray_t* s_assets_managers = NULL;
+static const char* s_module_res_root = NULL;
+
+ret_t assets_managers_set_module_res_root(const char* res_root) {
+  s_module_res_root = res_root;
+
+  return RET_OK;
+}
+
+static int assets_manager_cmp_by_name(assets_manager_t* am, const char* name) {
+  if (tk_str_eq(am->name, name)) {
+    return 0;
+  }
+
+  return -1;
+}
+
+static asset_info_t* assets_manager_load_asset_fallback_default(assets_manager_t* am,
+                                                                asset_type_t type, uint16_t subtype,
+                                                                const char* name) {
+  return assets_manager_load_ex(assets_manager(), type, subtype, name);
+}
+
+assets_manager_t* assets_managers_ref(const char* name) {
+  assets_manager_t* am = NULL;
+  return_value_if_fail(name != NULL, NULL);
+
+  if (s_assets_managers == NULL) {
+    s_assets_managers = darray_create(3, (tk_destroy_t)assets_manager_destroy,
+                                      (tk_compare_t)assets_manager_cmp_by_name);
+  }
+  return_value_if_fail(s_assets_managers != NULL, NULL);
+
+  am = (assets_manager_t*)darray_find(s_assets_managers, (void*)name);
+  if (am == NULL) {
+    char res_root[MAX_PATH + 1] = {0};
+    am = assets_manager_create(5);
+    return_value_if_fail(am != NULL, NULL);
+    am->name = tk_strdup(name);
+    path_build(res_root, MAX_PATH, s_module_res_root, name, NULL);
+
+    darray_push(s_assets_managers, am);
+    assets_manager_set_res_root(am, res_root);
+    assets_manager_set_fallback_load_asset(am, assets_manager_load_asset_fallback_default, NULL);
+  } else {
+    am->refcount++;
+  }
+
+  return am;
+}
+
+ret_t assets_managers_unref(assets_manager_t* am) {
+  return_value_if_fail(am != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(s_assets_managers != NULL, RET_BAD_PARAMS);
+
+  assert(am->refcount > 0);
+  if (am->refcount == 1) {
+    darray_remove(s_assets_managers, am);
+    if (s_assets_managers->size == 0) {
+      darray_destroy(s_assets_managers);
+      s_assets_managers = NULL;
+    }
+  } else {
+    am->refcount--;
+  }
 
   return RET_OK;
 }

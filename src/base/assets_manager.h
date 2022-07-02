@@ -75,10 +75,12 @@ typedef asset_info_t* (*assets_manager_load_asset_t)(assets_manager_t* am, asset
 struct _assets_manager_t {
   emitter_t emitter;
 
-  darray_t assets;
   /*private*/
+  int refcount;
+  char* name;
   char* theme;
   char* res_root;
+  darray_t assets;
   locale_info_t* locale_info;
   system_info_t* system_info;
 
@@ -421,6 +423,42 @@ asset_info_t* assets_manager_load_file(assets_manager_t* am, asset_type_t type, 
  * @return {bool_t} 返回TRUE表示需要保持，否则不需要保存。
  */
 bool_t assets_manager_is_save_assets_list(asset_type_t type);
+
+/**
+ * @class assets_managers_t
+ * @annotation ["fake"]
+ * 在某些情况下，需要多个资源管理器。比如在手表系统里，每个应用或表盘，可能放在独立的资源包中，
+ * 此时优先加载应用自己的资源，如果没有就加载系统的资源。
+ */
+
+/**
+ * @method assets_managers_set_module_res_root
+ * @param {const char*} res_root 资源根目录。
+ * 设置模块的资源根目录。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t assets_managers_set_module_res_root(const char* res_root);
+
+/**
+ * @method assets_managers_ref
+ * 获取指定模块的资源管理器。
+ * @annotation ["constructor"]
+ * @param {const char*} name 模块的名称。
+ *
+ * @return {assets_manager_t*} 返回asset manager对象。
+ */
+assets_manager_t* assets_managers_ref(const char* name);
+
+/**
+ * @method assets_managers_unref
+ * 释放指定模块的资源管理器。
+ * @annotation ["deconstructor"]
+ * @param {assets_manager_t*} am 资源管理器对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t assets_managers_unref(assets_manager_t* am);
 
 END_C_DECLS
 

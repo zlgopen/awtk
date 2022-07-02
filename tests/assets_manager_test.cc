@@ -375,3 +375,26 @@ TEST(AssetsManager, custom_load_asset) {
 
   assets_manager_unref(rm, r);
 }
+
+TEST(AssetsManager, assets_managers) {
+  assets_managers_set_module_res_root("./tests/apps");
+  assets_manager_t* foo = assets_managers_ref("foo");
+  assets_manager_t* bar = assets_managers_ref("bar");
+  assets_manager_t* bar1 = assets_managers_ref("bar");
+  const asset_info_t* a1 = assets_manager_ref(foo, ASSET_TYPE_DATA, "test.json");
+  ASSERT_EQ(a1 != NULL, TRUE);
+  ASSERT_EQ(a1->size, 8);
+  assets_manager_unref(foo, a1);
+
+  /*load from default*/
+  a1 = assets_manager_ref(foo, ASSET_TYPE_IMAGE, "earth");
+  ASSERT_EQ(a1 != NULL, TRUE);
+  assets_manager_unref(foo, a1);
+
+  ASSERT_EQ(bar, bar1);
+  ASSERT_EQ(foo->refcount, 1);
+  ASSERT_EQ(bar->refcount, 2);
+  assets_managers_unref(bar);
+  assets_managers_unref(foo);
+}
+
