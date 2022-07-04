@@ -1,4 +1,9 @@
 # 最新动态
+
+2022/07/05
+  * 支持独立可以安装的applet，让它们具有独立的资源目录。
+  * 增加文档[支持可独立安装的小应用程序 (applet)](applet.md)
+
 2022/06/30
   * 增加函数 fscript\_get\_code\_id
   * 支持 image\_animation 修改 interval 属性马上生效(感谢智明提供补丁)

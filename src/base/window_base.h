@@ -233,6 +233,15 @@ typedef struct _window_base_t {
    * 请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)
    */
   char* move_focus_right_key;
+  
+  /**
+   * @property {char*} applet_name
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 小应用程序(applet)的名称。
+   *
+   * > 如果该窗口属于某个独立的小程序应用(applet)，需要指定它的名称，以便到对应的资源目录查找资源。
+   */
+  char* applet_name;
 
   /**
    * @property {bool_t} single_instance
@@ -250,13 +259,15 @@ typedef struct _window_base_t {
 
   /*private*/
   const asset_info_t* res_theme;
-  font_manager_t* font_manager;
   native_window_t* native_window;
   widget_t* save_focus_widget;
   uint32_t grab_count_when_to_foreground;
   bool_t need_relayout;
   bool_t moving_focus_mode;
   bool_t pressed;
+  font_manager_t* font_manager;
+  assets_manager_t* assets_manager;
+  image_manager_t* image_manager;
 } window_base_t;
 
 /**

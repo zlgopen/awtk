@@ -65,6 +65,8 @@ struct _image_manager_t {
   assets_manager_t* assets_manager;
 
   /*private*/
+  char* name;
+  int32_t refcount;
   uint32_t mem_size_of_cached_images;
   uint32_t max_mem_size_of_cached_images;
 
@@ -248,6 +250,33 @@ ret_t image_manager_destroy(image_manager_t* im);
 /*public for test*/
 ret_t image_manager_add(image_manager_t* imm, const char* name, const bitmap_t* image);
 ret_t image_manager_lookup(image_manager_t* imm, const char* name, bitmap_t* image);
+
+/**
+ * @class image_managers_t
+ * @annotation ["fake"]
+ * 在某些情况下，需要多个资源管理器。比如在手表系统里，每个应用或表盘，可能放在独立的资源包中，
+ * 此时优先加载应用自己的资源，如果没有就加载系统的资源。
+ */
+
+/**
+ * @method image_managers_ref
+ * 获取指定小应用程序(applet)的图片管理器。
+ * @annotation ["constructor"]
+ * @param {const char*} name 小应用程序(applet)的名称。
+ *
+ * @return {image_manager_t*} 返回asset manager对象。
+ */
+image_manager_t* image_managers_ref(const char* name);
+
+/**
+ * @method image_managers_unref
+ * 释放指定小应用程序(applet)的图片管理器。
+ * @annotation ["deconstructor"]
+ * @param {image_manager_t*} imm 图片管理器对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_managers_unref(image_manager_t* imm);
 
 END_C_DECLS
 

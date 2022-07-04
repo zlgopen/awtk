@@ -1,0 +1,4 @@
+<window text="foo" anim_hint="htranslate" applet_name="foo">
+  <image image="foo" self_layout="default(x=c,y=m,w=128,h=128)" draw_type="center"/>
+  <button style="foo" text="close foo window" self_layout="default(x=c,y=b:20,w=80%,h=36)" on:click="back()"/>
+</window>

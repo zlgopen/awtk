@@ -427,24 +427,33 @@ bool_t assets_manager_is_save_assets_list(asset_type_t type);
 /**
  * @class assets_managers_t
  * @annotation ["fake"]
- * 在某些情况下，需要多个资源管理器。比如在手表系统里，每个应用或表盘，可能放在独立的资源包中，
+ * 在某些情况下，需要多个资源管理器。比如在手表系统里，每个小应用或表盘，可能放在独立的资源包中，
  * 此时优先加载应用自己的资源，如果没有就加载系统的资源。
+ * > 通常AWTK是单进程应用程序，为了避免概念混淆，我们把这些独立可安装的小应用成为"applet"。
  */
 
 /**
- * @method assets_managers_set_module_res_root
+ * @method assets_managers_set_applet_res_root
+ * 设置小应用程序(applet)的资源根目录。
  * @param {const char*} res_root 资源根目录。
- * 设置模块的资源根目录。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t assets_managers_set_module_res_root(const char* res_root);
+ret_t assets_managers_set_applet_res_root(const char* res_root);
+
+/**
+ * @method assets_managers_is_applet_assets_supported
+ * 是否支持小应用程序(applet)拥有独立资源目录。
+ *
+ * @return {bool_t} 返回TRUE表示支持，否则表示不支持。
+ */
+bool_t assets_managers_is_applet_assets_supported(void);
 
 /**
  * @method assets_managers_ref
- * 获取指定模块的资源管理器。
+ * 获取指定小应用程序(applet)的资源管理器。
  * @annotation ["constructor"]
- * @param {const char*} name 模块的名称。
+ * @param {const char*} name 小应用程序(applet)的名称。
  *
  * @return {assets_manager_t*} 返回asset manager对象。
  */
@@ -452,7 +461,7 @@ assets_manager_t* assets_managers_ref(const char* name);
 
 /**
  * @method assets_managers_unref
- * 释放指定模块的资源管理器。
+ * 释放指定小应用程序(applet)的资源管理器。
  * @annotation ["deconstructor"]
  * @param {assets_manager_t*} am 资源管理器对象。
  *

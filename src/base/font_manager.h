@@ -58,6 +58,8 @@ struct _font_manager_t {
   assets_manager_t* assets_manager;
   
   /*private*/
+  char* name;
+  int32_t refcount;
   font_manager_get_font_t fallback_get_font;
   void* fallback_get_font_ctx;
 };
@@ -216,6 +218,33 @@ ret_t font_manager_destroy(font_manager_t* fm);
  * @return {font_t*} 返回字体对象。
  */
 font_t* font_manager_lookup(font_manager_t* fm, const char* name, font_size_t size);
+
+/**
+ * @class font_managers_t
+ * @annotation ["fake"]
+ * 在某些情况下，需要多个资源管理器。比如在手表系统里，每个应用或表盘，可能放在独立的资源包中，
+ * 此时优先加载应用自己的资源，如果没有就加载系统的资源。
+ */
+
+/**
+ * @method font_managers_ref
+ * 获取指定小应用程序(applet)的字体管理器。
+ * @annotation ["constructor"]
+ * @param {const char*} name 小应用程序(applet)的名称。
+ *
+ * @return {font_manager_t*} 返回asset manager对象。
+ */
+font_manager_t* font_managers_ref(const char* name);
+
+/**
+ * @method font_managers_unref
+ * 释放指定小应用程序(applet)的字体管理器。
+ * @annotation ["deconstructor"]
+ * @param {font_manager_t*} imm 字体管理器对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t font_managers_unref(font_manager_t* imm);
 
 END_C_DECLS
 

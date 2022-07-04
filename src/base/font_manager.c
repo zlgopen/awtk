@@ -62,6 +62,7 @@ font_manager_t* font_manager_init(font_manager_t* fm, font_loader_t* loader) {
 
   fm->loader = loader;
   fm->assets_manager = NULL;
+  fm->refcount = 1;
 
   return fm;
 }
@@ -223,7 +224,7 @@ ret_t font_manager_unload_all(font_manager_t* fm) {
 
 ret_t font_manager_deinit(font_manager_t* fm) {
   return_value_if_fail(fm != NULL, RET_BAD_PARAMS);
-
+  TKMEM_FREE(fm->name);
   return darray_deinit(&(fm->fonts));
 }
 
@@ -256,6 +257,64 @@ ret_t font_manager_set_fallback_get_font(font_manager_t* fm,
   
   fm->fallback_get_font = fallback_get_font;
   fm->fallback_get_font_ctx = ctx;
+
+  return RET_OK;
+}
+
+static darray_t* s_font_managers = NULL;
+
+static int font_manager_cmp_by_name(font_manager_t* fm, const char* name) {
+  if (tk_str_eq(fm->name, name)) {
+    return 0;
+  }
+
+  return -1;
+}
+
+static font_t* font_manager_fallback_get_font_default(font_manager_t* fm, const char* name, font_size_t size) {
+  return font_manager_get_font(font_manager(), name, size);
+}
+
+font_manager_t* font_managers_ref(const char* name) {
+  font_manager_t* fm = NULL;
+  return_value_if_fail(name != NULL, NULL);
+
+  if (s_font_managers == NULL) {
+    s_font_managers = darray_create(3, (tk_destroy_t)font_manager_destroy,
+                                      (tk_compare_t)font_manager_cmp_by_name);
+  }
+  return_value_if_fail(s_font_managers != NULL, NULL);
+
+  fm = (font_manager_t*)darray_find(s_font_managers, (void*)name);
+  if (fm == NULL) {
+    fm = font_manager_create(s_font_manager->loader);
+    return_value_if_fail(fm != NULL, NULL);
+    fm->name = tk_strdup(name);
+    darray_push(s_font_managers, fm);
+    font_manager_set_assets_manager(fm, assets_managers_ref(name));
+    font_manager_set_fallback_get_font(fm, font_manager_fallback_get_font_default, NULL);
+  } else {
+    fm->refcount++;
+  }
+
+  return fm;
+}
+
+ret_t font_managers_unref(font_manager_t* fm) {
+  return_value_if_fail(fm != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(s_font_managers != NULL, RET_BAD_PARAMS);
+
+  assert(fm->refcount > 0);
+  if (fm->refcount == 1) {
+    assets_managers_unref(fm->assets_manager);
+    darray_remove(s_font_managers, fm);
+    if (s_font_managers->size == 0) {
+      darray_destroy(s_font_managers);
+      s_font_managers = NULL;
+    }
+  } else {
+    fm->refcount--;
+  }
 
   return RET_OK;
 }

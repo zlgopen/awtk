@@ -99,6 +99,7 @@ image_manager_t* image_manager_init(image_manager_t* imm) {
 
   darray_init(&(imm->images), 0, (tk_destroy_t)bitmap_cache_destroy, NULL);
   imm->assets_manager = assets_manager();
+  imm->refcount = 1;
 
   return imm;
 }
@@ -375,6 +376,7 @@ ret_t image_manager_unload_bitmap(image_manager_t* imm, bitmap_t* image) {
 ret_t image_manager_deinit(image_manager_t* imm) {
   return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
 
+  TKMEM_FREE(imm->name);
   darray_deinit(&(imm->images));
 
   return RET_OK;
@@ -404,6 +406,65 @@ ret_t image_manager_set_fallback_get_bitmap(image_manager_t* imm,
   
   imm->fallback_get_bitmap = fallback_get_bitmap;
   imm->fallback_get_bitmap_ctx = ctx;
+
+  return RET_OK;
+}
+
+static darray_t* s_image_managers = NULL;
+
+static int image_manager_cmp_by_name(image_manager_t* imm, const char* name) {
+  if (tk_str_eq(imm->name, name)) {
+    return 0;
+  }
+
+  return -1;
+}
+
+static ret_t image_manager_fallback_get_bitmap_default(image_manager_t* imm, const char* name,
+                                           bitmap_t* image) {
+  return image_manager_get_bitmap(image_manager(), name, image);
+}
+
+image_manager_t* image_managers_ref(const char* name) {
+  image_manager_t* imm = NULL;
+  return_value_if_fail(name != NULL, NULL);
+
+  if (s_image_managers == NULL) {
+    s_image_managers = darray_create(3, (tk_destroy_t)image_manager_destroy,
+                                      (tk_compare_t)image_manager_cmp_by_name);
+  }
+  return_value_if_fail(s_image_managers != NULL, NULL);
+
+  imm = (image_manager_t*)darray_find(s_image_managers, (void*)name);
+  if (imm == NULL) {
+    imm = image_manager_create();
+    return_value_if_fail(imm != NULL, NULL);
+    imm->name = tk_strdup(name);
+    darray_push(s_image_managers, imm);
+    image_manager_set_assets_manager(imm, assets_managers_ref(name));
+    image_manager_set_fallback_get_bitmap(imm, image_manager_fallback_get_bitmap_default, NULL);
+  } else {
+    imm->refcount++;
+  }
+
+  return imm;
+}
+
+ret_t image_managers_unref(image_manager_t* imm) {
+  return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(s_image_managers != NULL, RET_BAD_PARAMS);
+
+  assert(imm->refcount > 0);
+  if (imm->refcount == 1) {
+    assets_managers_unref(imm->assets_manager);
+    darray_remove(s_image_managers, imm);
+    if (s_image_managers->size == 0) {
+      darray_destroy(s_image_managers);
+      s_image_managers = NULL;
+    }
+  } else {
+    imm->refcount--;
+  }
 
   return RET_OK;
 }

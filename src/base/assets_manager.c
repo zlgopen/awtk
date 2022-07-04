@@ -480,6 +480,9 @@ static asset_info_t* assets_manager_load_asset(assets_manager_t* am, asset_type_
       if ((info = try_load_assets(am, theme, name, ".bin", type, ASSET_TYPE_UI)) != NULL) {
         break;
       }
+      if ((info = try_load_assets(am, theme, name, ".xml", type, ASSET_TYPE_UI)) != NULL) {
+        break;
+      }
       break;
     }
     case ASSET_TYPE_XML: {
@@ -878,14 +881,19 @@ ret_t assets_manager_set_loader(assets_manager_t* am, asset_loader_t* loader) {
   return RET_OK;
 }
 
-static darray_t* s_assets_managers = NULL;
-static const char* s_module_res_root = NULL;
+static const char* s_applet_res_root = NULL;
 
-ret_t assets_managers_set_module_res_root(const char* res_root) {
-  s_module_res_root = res_root;
+ret_t assets_managers_set_applet_res_root(const char* res_root) {
+  s_applet_res_root = res_root;
 
   return RET_OK;
 }
+
+bool_t assets_managers_is_applet_assets_supported(void) {
+  return s_applet_res_root != NULL;
+}
+
+static darray_t* s_assets_managers = NULL;
 
 static int assets_manager_cmp_by_name(assets_manager_t* am, const char* name) {
   if (tk_str_eq(am->name, name)) {
@@ -917,7 +925,7 @@ assets_manager_t* assets_managers_ref(const char* name) {
     am = assets_manager_create(5);
     return_value_if_fail(am != NULL, NULL);
     am->name = tk_strdup(name);
-    path_build(res_root, MAX_PATH, s_module_res_root, name, NULL);
+    path_build(res_root, MAX_PATH, s_applet_res_root, name, NULL);
 
     darray_push(s_assets_managers, am);
     assets_manager_set_res_root(am, res_root);

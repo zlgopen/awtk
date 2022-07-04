@@ -132,3 +132,22 @@ TEST(ImageManager, limit) {
   ASSERT_EQ(image_manager_add(imm, "b3", &b3), RET_OK);
   ASSERT_EQ(imm->images.size, 1u);
 }
+
+TEST(ImageManager, images_managers1) {
+  bitmap_t bmp;
+  assets_managers_set_applet_res_root("./tests/applets");
+  image_manager_t* imm = image_managers_ref("foo");
+  ASSERT_EQ(image_manager_get_bitmap(imm, "foo", &bmp), RET_OK);
+
+  image_managers_unref(imm);
+}
+
+TEST(ImageManager, images_managers2) {
+  bitmap_t bmp;
+  assets_managers_set_applet_res_root("./tests/applets");
+  image_manager_t* imm = image_managers_ref("bar");
+  ASSERT_EQ(image_manager_get_bitmap(imm, "bar", &bmp), RET_OK);
+
+  image_managers_unref(imm);
+}
+

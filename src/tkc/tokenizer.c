@@ -205,7 +205,6 @@ const char* tokenizer_next_str(tokenizer_t* tokenizer) {
   const char* ret = NULL;
   return_value_if_fail(tokenizer_skip_separator(tokenizer) == RET_OK, NULL);
   if (tokenizer_has_more(tokenizer)) {
-    str_t* s = &(tokenizer->token);
     char start = tokenizer->str[tokenizer->cursor];
 
     if (start == '"') {

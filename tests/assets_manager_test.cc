@@ -377,7 +377,7 @@ TEST(AssetsManager, custom_load_asset) {
 }
 
 TEST(AssetsManager, assets_managers) {
-  assets_managers_set_module_res_root("./tests/apps");
+  assets_managers_set_applet_res_root("./tests/applets");
   assets_manager_t* foo = assets_managers_ref("foo");
   assets_manager_t* bar = assets_managers_ref("bar");
   assets_manager_t* bar1 = assets_managers_ref("bar");

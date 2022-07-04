@@ -153,16 +153,28 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_pointer(v, (void*)(theme()));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_IMAGE_MANAGER)) {
-    value_set_pointer(v, (void*)(image_manager()));
+    if(window_base->image_manager != NULL) {
+      value_set_pointer(v, (void*)(window_base->image_manager));
+    } else {
+      value_set_pointer(v, (void*)(image_manager()));
+    }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LOCALE_INFO)) {
     value_set_pointer(v, (void*)(locale_info()));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_FONT_MANAGER)) {
-    value_set_pointer(v, (void*)(font_manager()));
+    if(window_base->font_manager != NULL) {
+      value_set_pointer(v, (void*)(window_base->font_manager));
+    } else {
+      value_set_pointer(v, (void*)(font_manager()));
+    }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_ASSETS_MANAGER)) {
-    value_set_pointer(v, (void*)(assets_manager()));
+    if(window_base->assets_manager != NULL) {
+      value_set_pointer(v, (void*)(window_base->assets_manager));
+    } else {
+      value_set_pointer(v, (void*)(assets_manager()));
+    }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_STAGE)) {
     value_set_int(v, window_base->stage);
@@ -212,9 +224,36 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_AUTO_SCALE_CHILDREN_H)) {
     value_set_bool(v, window_base->auto_scale_children_h);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_APPLET_NAME)) {
+    value_set_str(v, window_base->applet_name);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
+}
+
+static ret_t window_base_set_applet_name(widget_t* widget, const char* applet_name) {
+  window_base_t* window_base = WINDOW_BASE(widget);
+  if(tk_str_eq(window_base->applet_name, applet_name)) {
+    return RET_OK;
+  }
+
+  if(window_base->applet_name != NULL) {
+    assets_managers_unref(window_base->assets_manager);
+    image_managers_unref(window_base->image_manager);
+    font_managers_unref(window_base->font_manager);
+  }
+
+  if(TK_STR_IS_EMPTY(applet_name)) {
+    TKMEM_FREE(window_base->applet_name);
+  } else {
+    window_base->applet_name = tk_str_copy(window_base->applet_name, applet_name);
+    window_base->assets_manager = assets_managers_ref(applet_name); 
+    window_base->image_manager = image_managers_ref(applet_name); 
+    window_base->font_manager = font_managers_ref(applet_name); 
+  }
+
+  return RET_OK;
 }
 
 ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v) {
@@ -293,6 +332,9 @@ ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v)
     } else {
       window_base->closable = (window_closable_t)value_int(v);
     }
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_APPLET_NAME)) {
+    window_base_set_applet_name(widget, value_str(v));
     return RET_OK;
   }
 

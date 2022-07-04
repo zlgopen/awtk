@@ -420,6 +420,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_SENSITIVE "sensitive"
 
 /**
+ * @const WIDGET_PROP_APPLET_NAME
+ * 窗口所属的小应用程序(applet)名称。
+ */
+#define WIDGET_PROP_APPLET_NAME "applet_name"
+
+/**
  * @const WIDGET_PROP_ANIMATION
  * 控件动画。
  */

@@ -628,8 +628,6 @@ static ret_t func_theme_set(fscript_t* fscript, fscript_args_t* args, value_t* r
 }
 
 static ret_t func_to_name(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  const char* name = NULL;
-  widget_t* widget = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
 
   value_set_str(result, value_str(args->args));
