@@ -349,6 +349,10 @@ static ret_t debugger_server_attach_debugger(debugger_server_t* server, const ch
   tk_strncpy_s(lang, TK_NAME_LEN, arg, code_id - arg);
   code_id++;
 
+  if (server->single_mode) {
+    code_id = DEBUGGER_DEFAULT_CODE_ID;
+  }
+
   return debugger_server_create_debugger(server, lang, code_id);
 }
 

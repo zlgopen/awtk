@@ -487,6 +487,6 @@ typedef struct _event_source_manager_t event_source_manager_t;
 #ifdef WIN32
 #define popen _popen
 #define pclose _pclose
-#endif/*WIN32*/
+#endif /*WIN32*/
 
 #endif /*TYPES_DEF_H*/
