@@ -237,6 +237,15 @@ font_t* font_manager_lookup(font_manager_t* fm, const char* name, font_size_t si
 font_manager_t* font_managers_ref(const char* name);
 
 /**
+ * @method font_managers_unload_all
+ * 卸载全部字体。
+ * @annotation ["scriptable"]
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t font_managers_unload_all(void);
+
+/**
  * @method font_managers_unref
  * 释放指定小应用程序(applet)的字体管理器。
  * @annotation ["deconstructor"]

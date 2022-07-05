@@ -182,7 +182,7 @@ ret_t image_manager_unload_unused(image_manager_t* imm, uint32_t time_delta_s);
 
 /**
  * @method image_manager_unload_all
- * 从图片管理器中卸载全部图片。
+ * 卸载全部图片。
  *
  * @param {image_manager_t*} imm 图片管理器对象。
  *
@@ -267,6 +267,14 @@ ret_t image_manager_lookup(image_manager_t* imm, const char* name, bitmap_t* ima
  * @return {image_manager_t*} 返回asset manager对象。
  */
 image_manager_t* image_managers_ref(const char* name);
+
+/**
+ * @method image_managers_unload_all
+ * 卸载全部图片。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_managers_unload_all(void);
 
 /**
  * @method image_managers_unref

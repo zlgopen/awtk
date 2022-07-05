@@ -955,3 +955,19 @@ ret_t assets_managers_unref(assets_manager_t* am) {
 
   return RET_OK;
 }
+
+ret_t assets_managers_set_theme(const char* theme) {
+  return_value_if_fail(theme != NULL, RET_BAD_PARAMS);
+
+  assets_manager_set_theme(assets_manager(), theme);
+
+  if (s_assets_managers != NULL) {
+    uint32_t i = 0;
+    for (i = 0; i < s_assets_managers->size; i++) {
+      assets_manager_t* am = (assets_manager_t*)darray_get(s_assets_managers, i);
+      assets_manager_set_theme(am, theme);
+    }
+  }
+
+  return RET_OK;
+}

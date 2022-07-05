@@ -460,6 +460,16 @@ bool_t assets_managers_is_applet_assets_supported(void);
 assets_manager_t* assets_managers_ref(const char* name);
 
 /**
+ * @method assets_managers_set_theme
+ * 设置当前的主题。
+ * @annotation ["scriptable"]
+ * @param {const char*} theme 主题名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t assets_managers_set_theme(const char* theme);
+
+/**
  * @method assets_managers_unref
  * 释放指定小应用程序(applet)的资源管理器。
  * @annotation ["deconstructor"]

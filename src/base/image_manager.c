@@ -401,10 +401,10 @@ ret_t image_manager_set_max_mem_size_of_cached_images(image_manager_t* imm, uint
 }
 
 ret_t image_manager_set_fallback_get_bitmap(image_manager_t* imm,
-                                             image_manager_get_bitmap_t fallback_get_bitmap,
-                                             void* ctx) {
+                                            image_manager_get_bitmap_t fallback_get_bitmap,
+                                            void* ctx) {
   return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
-  
+
   imm->fallback_get_bitmap = fallback_get_bitmap;
   imm->fallback_get_bitmap_ctx = ctx;
 
@@ -422,7 +422,7 @@ static int image_manager_cmp_by_name(image_manager_t* imm, const char* name) {
 }
 
 static ret_t image_manager_fallback_get_bitmap_default(image_manager_t* imm, const char* name,
-                                           bitmap_t* image) {
+                                                       bitmap_t* image) {
   return image_manager_get_bitmap(image_manager(), name, image);
 }
 
@@ -432,7 +432,7 @@ image_manager_t* image_managers_ref(const char* name) {
 
   if (s_image_managers == NULL) {
     s_image_managers = darray_create(3, (tk_destroy_t)image_manager_destroy,
-                                      (tk_compare_t)image_manager_cmp_by_name);
+                                     (tk_compare_t)image_manager_cmp_by_name);
   }
   return_value_if_fail(s_image_managers != NULL, NULL);
 
@@ -465,6 +465,20 @@ ret_t image_managers_unref(image_manager_t* imm) {
     }
   } else {
     imm->refcount--;
+  }
+
+  return RET_OK;
+}
+
+ret_t image_managers_unload_all(void) {
+  image_manager_unload_all(image_manager());
+
+  if (s_image_managers != NULL) {
+    uint32_t i = 0;
+    for (i = 0; i < s_image_managers->size; i++) {
+      image_manager_t* imm = (image_manager_t*)darray_get(s_image_managers, i);
+      image_manager_unload_all(imm);
+    }
   }
 
   return RET_OK;

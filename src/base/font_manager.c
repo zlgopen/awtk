@@ -163,7 +163,7 @@ font_t* font_manager_load(font_manager_t* fm, const char* name, uint32_t size) {
       assets_manager_unref(fm->assets_manager, info);
     } else {
       if (fm->fallback_get_font != NULL) {
-        return fm->fallback_get_font(fm, name,size);
+        return fm->fallback_get_font(fm, name, size);
       }
     }
   }
@@ -252,10 +252,9 @@ ret_t font_manager_shrink_cache(font_manager_t* fm, uint32_t cache_size) {
 }
 
 ret_t font_manager_set_fallback_get_font(font_manager_t* fm,
-                                             font_manager_get_font_t fallback_get_font,
-                                             void* ctx) {
+                                         font_manager_get_font_t fallback_get_font, void* ctx) {
   return_value_if_fail(fm != NULL, RET_BAD_PARAMS);
-  
+
   fm->fallback_get_font = fallback_get_font;
   fm->fallback_get_font_ctx = ctx;
 
@@ -272,7 +271,8 @@ static int font_manager_cmp_by_name(font_manager_t* fm, const char* name) {
   return -1;
 }
 
-static font_t* font_manager_fallback_get_font_default(font_manager_t* fm, const char* name, font_size_t size) {
+static font_t* font_manager_fallback_get_font_default(font_manager_t* fm, const char* name,
+                                                      font_size_t size) {
   return font_manager_get_font(font_manager(), name, size);
 }
 
@@ -282,7 +282,7 @@ font_manager_t* font_managers_ref(const char* name) {
 
   if (s_font_managers == NULL) {
     s_font_managers = darray_create(3, (tk_destroy_t)font_manager_destroy,
-                                      (tk_compare_t)font_manager_cmp_by_name);
+                                    (tk_compare_t)font_manager_cmp_by_name);
   }
   return_value_if_fail(s_font_managers != NULL, NULL);
 
@@ -319,3 +319,18 @@ ret_t font_managers_unref(font_manager_t* fm) {
 
   return RET_OK;
 }
+
+ret_t font_managers_unload_all(void) {
+  font_manager_unload_all(font_manager());
+
+  if (s_font_managers != NULL) {
+    uint32_t i = 0;
+    for (i = 0; i < s_font_managers->size; i++) {
+      font_manager_t* fm = (font_manager_t*)darray_get(s_font_managers, i);
+      font_manager_unload_all(fm);
+    }
+  }
+
+  return RET_OK;
+}
+
