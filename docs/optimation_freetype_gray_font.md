@@ -14,7 +14,7 @@ freetype 解析矢量字体的过程是将字形关键点按照规则连线变�
 
 ## 二、针对 freetype 缺陷所做优化
 
-### 3.1 提高 freetype 解析字体的精度
+### 2.1 提高 freetype 解析字体的精度
 
 虽然 freetype  解析字体时精度丢失无法避免，但提高运算精度依然可以优化显示效果。
 
@@ -27,7 +27,7 @@ uint32_t flags = FT_LOAD_DEFAULT | FT_LOAD_RENDER | FT_LOAD_NO_AUTOHINT | FT_OUT
 ...
 ```
 
-### 3.2 关闭 auto\_hint
+### 2.2 关闭 auto\_hint
 
 要了解 auto\_hint 首先需要知道什么是 hinting 。
 
@@ -45,4 +45,3 @@ hinting 用来优化字体显示的方法。由于屏幕像素有限，矢量字
 uint32_t flags = FT_LOAD_DEFAULT | FT_LOAD_RENDER | FT_LOAD_NO_AUTOHINT | FT_OUTLINE_HIGH_PRECISION;
 ...
 ```
-

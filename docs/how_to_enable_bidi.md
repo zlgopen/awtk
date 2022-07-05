@@ -15,7 +15,7 @@
 
 >PC　版本默认已经定义。
 
- ### 2. 加入相关文件
+ ## 2. 加入相关文件
 
 ```
 3rd/fribidi/fribidi-arabic.c
@@ -34,13 +34,13 @@ src/base/bidi.c
 
 >PC　版本默认已经加。
 
- ### 3. 控件的 bidi 属性
+## 3. 控件的 bidi 属性
 
- 默认情况下，文字的方向自动确定，如果在某些情况下，需要自己指定，可以通过 bidi 属性来实现。
+默认情况下，文字的方向自动确定，如果在某些情况下，需要自己指定，可以通过 bidi 属性来实现。
 
- 示例：
+示例：
 
- ```xml
+```xml
   <label text="1. جامعة كولومبيا عام." style:font_size="30" style:font_name="trado" bidi="lro"/>
 ```
 

@@ -59,7 +59,7 @@ cksum(binary) => uint16_t
 cksum("hello")
 ```
 
-### 4. 更多示例
+### 更多示例
 
 ```js
 //test string

@@ -110,7 +110,7 @@ static ret_t lcd_mem_fragment_flush(lcd_t* lcd) {
 }
 ```
 
-### 3 基于 framebuffer 实现的 LCD
+### 3. 基于 framebuffer 实现的 LCD
 
 #### 3.1 介绍
 
@@ -179,12 +179,12 @@ lcd_t* stm32f767_create_lcd(wh_t w, wh_t h) {
 
 此时可以使用 lcd\_mem\_special。在 flush 函数中把数据转成目标格式，或者提交到 SPI 屏。具体实现可以参考：https://github.com/zlgopen/awtk-linux-fb/blob/master/awtk-port/lcd_mem_others.c
 
-### 四、基于 vgcanvas 实现的 LCD
+### 4. 基于 vgcanvas 实现的 LCD
 
 在支持 OpenGL 3D 硬件加速的平台上（如 PC 和手机），我们使用 nanovg 把 OpenGL 封装成 vgcanvas 的接口，在 vgcanvas 基础之上实现 LCD。lcd\_vgcanvas.inc 将 vgcanvas 封装成 LCD 的接口，这里出于可移植性考虑，并没有直接基于 nanovg 的函数，而是基于 vgcanvas 的接口，所以在没有 GPU 时，如果 CPU 够强大，也是可以基于 agg/picasso 去实现的 LCD。
 
 > 这种方式实现，一般不会在嵌入平台上使用，读者不需要关注它。
 
-### 总结
+### 5. 总结
 
 以上几种实现方式，基本上涵盖了最常用的场景，所以在移植 AWTK 到新的平台时，并不需要在实现 LCD 接口上费多少功夫。

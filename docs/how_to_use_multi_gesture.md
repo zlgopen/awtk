@@ -20,7 +20,7 @@
 
 #### 	1.可识别手指类型
 
-```h
+```c
 /**
  * @method multi_gesture_gesture_touch_fingers_destroy
  * 释放可识别手指类型的对象
@@ -54,7 +54,7 @@ ret_t multi_gesture_post_event_from_fingers(main_loop_t* loop, multi_gesture_tou
 
 #### 	2.不可识别手指类型
 
-```h
+```c
 /**
  * @method multi_gesture_gesture_touch_points_destroy
  * 释放不可识别手指类型的对象

@@ -245,7 +245,7 @@ tk_object_t* conf_xml_load(const char* url, bool_t create_if_not_exist);
 ret_t conf_xml_save_as(tk_object_t* obj, const char* url);
 ```
 
-## 3.3 INI 格式
+### 3.3 INI 格式
 
 * 打开
 

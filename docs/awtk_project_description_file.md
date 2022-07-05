@@ -235,8 +235,6 @@ usesSdk 是可选的，表示项目依赖的SDK的信息。
 
 > 使用 scons 进行编译时，可以通过 AWTK_ROOT 参数手动设置 AWTK 的路径，比如：
 
-```cmd
+```bash
 scons AWTK_ROOT=c:/AWTK/SDK/awtk
 ```
-
-

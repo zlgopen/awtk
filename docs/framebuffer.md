@@ -1,6 +1,6 @@
 ## FrameBuffer 的几种使用方式
 
-### 一、单 framebuffer。
+### 一、单 framebuffer
 
 系统中只有一个 framebuffer，LCD 使用该 framebuffer 进行显示，GUI 使用该 framebuffer 进行绘制。
 
@@ -16,7 +16,9 @@
 
 > 如果硬件能够解决动画颜色不正常的问题或者不需要动画，这种方式是最好的选择。
 
-### 二、双 framebuffer，一个 online 一个 offline，轮流切换显示。
+### 二、双 framebuffer（Swap）
+
+系统有两个 framebuffer，一个 online 一个 offline，轮流切换显示
 
 * 1.GUI 在 offline 的 framebuffer 上绘制。
 * 2.LCD 显示 online 的 framebuffer。
@@ -32,7 +34,9 @@
 
 * GUI 每次都需要进行完整的绘制，不能只绘制变化的部分。
 
-### 三、双 framebuffer，一个固定 online 供 LCD 显示，一个固定 offline 供 GUI 绘制。
+### 三、双 framebuffer（Flush）
+
+系统有两个 framebuffer，一个固定 online 供 LCD 显示，一个固定 offline 供 GUI 绘制。
 
 ![3](images/fb3.png)
 
@@ -44,7 +48,9 @@
 
 * 窗口动画时，可能整个屏幕都在变化，所以拷贝的量比较大。优化方法：对于平移的动画，可以让 GUI 直接往 online 的 framebuffer 上绘制，减少一次内存拷贝，而且不会出现闪烁。
 
-### 四、三个 framebuffer，一个 online 供 LCD 显示，一个 offline 供 GUI 绘制，一个为下一个要显示的 framebuffer。
+### 四、三个 framebuffer
+
+系统有三个 framebuffer，一个 online 供 LCD 显示，一个 offline 供 GUI 绘制，一个为下一个要显示的 framebuffer。
 
 ![4](images/fb4.png)
 

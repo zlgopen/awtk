@@ -1451,9 +1451,9 @@ clamp(2, 1, 3)
 ### 4.5 时间函数
 > 已经移动到扩展模块。  
 
-### 5. 自定义函数
+## 5. 自定义函数
 
-#### 5.1 定义函数
+### 5.1 定义函数
 
 ```c
 static ret_t func_foo(object_t* obj, fscript_args_t* args, value_t* v) {
@@ -1463,7 +1463,7 @@ static ret_t func_foo(object_t* obj, fscript_args_t* args, value_t* v) {
 }
 ```
 
-#### 5.2 注册和使用私有函数
+### 5.2 注册和使用私有函数
 
 ```c
   value_t v;
@@ -1476,7 +1476,7 @@ static ret_t func_foo(object_t* obj, fscript_args_t* args, value_t* v) {
   OBJECT_UNREF(obj);
 ```
 
-#### 5.3 注册全局函数
+### 5.3 注册全局函数
 
 * 初始化时调用
 
@@ -1485,7 +1485,7 @@ fscript_register_func("foo", func_foo);
 
 ```
 
-#### 5.4 定义脚本函数
+### 5.4 定义脚本函数
 
 * 函数定义
 
@@ -1535,7 +1535,7 @@ assert(foo4(10, 20) == 'awtk')
 assert(foo4(100, 200) == 'react-awtk')
 ```
 
-### 6. 性能测量与优化
+## 6. 性能测量与优化
 
 runFScript 的第二个参数可以指定运行次数，方便测量某个函数的运行时间。
 
@@ -1553,7 +1553,7 @@ runFScript 的第二个参数可以指定运行次数，方便测量某个函数
  ./bin/runFScript 'set(a, 2); set(b, 3); print(a+b)'
 ```
 
-### 7. 扩展模块
+## 7. 扩展模块
 
 * [字符串扩展模块](fscript_str.md)
 * [位操作扩展模块](fscript_bits.md)
@@ -1579,6 +1579,6 @@ runFScript 的第二个参数可以指定运行次数，方便测量某个函数
 * [读缓冲区扩展模块](fscript_rbuffer.md)
 * [module扩展模块](fscript_module.md)
 
-### 8. 更多示例
+## 8. 更多示例
 
 请参考 tests/fscripts 目录。

@@ -7,7 +7,7 @@
 
 ​	开启该功能，需要定义 HAS_STB_YUV_TO_RGB_G2D 宏，然后需要实现 stbi__YCbCr_to_RGB_g2d 函数，该函数是给用户在外部写硬件转换的代码，可选定义的宏是 STB_YUV_DATA_PIXEL_BTYE，该宏是用于定义 yuv 的数据流的字节数，默认为 4 字节（32 位对齐）。
 
-~~~c
+```c
 /**
  * @method stbi__YCbCr_to_RGB_g2d
  * stb 外部的硬件 YUV 转换 RGB
@@ -24,5 +24,4 @@
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 int stbi__YCbCr_to_RGB_g2d(unsigned char* out_data, int out_data_size, unsigned char* yuv_data, int yuv_data_size, int w, int h, int* out_channel_order);
-~~~
-
+```

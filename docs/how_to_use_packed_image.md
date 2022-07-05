@@ -63,7 +63,7 @@
 
 ### 3.1 UI 文件
 
-```xml<window>
+```xml
 <window>
   <view style="image_packed" x="c" y="m" w="320" h="216" children_layout="default(r=4,c=3)">
     <button style="num_1"/>

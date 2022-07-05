@@ -429,7 +429,7 @@ struct _widget_t {
   char* state;
   /**
    * @property {uint8_t} opacity
-   * @annotation ["readable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 不透明度(0-255)，0完全透明，255完全不透明。
    */
   uint8_t opacity;
