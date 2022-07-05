@@ -585,6 +585,7 @@ assets_manager_t* assets_manager_init(assets_manager_t* am, uint32_t init_nr) {
   am->loader = asset_loader_create();
 #endif /*WITH_ASSET_LOADER*/
   am->refcount = 1;
+  am->name = NULL;
 
   return am;
 }

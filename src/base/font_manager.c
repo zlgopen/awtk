@@ -63,6 +63,7 @@ font_manager_t* font_manager_init(font_manager_t* fm, font_loader_t* loader) {
   fm->loader = loader;
   fm->assets_manager = NULL;
   fm->refcount = 1;
+  fm->name = NULL;
 
   return fm;
 }

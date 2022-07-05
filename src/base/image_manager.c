@@ -100,6 +100,7 @@ image_manager_t* image_manager_init(image_manager_t* imm) {
   darray_init(&(imm->images), 0, (tk_destroy_t)bitmap_cache_destroy, NULL);
   imm->assets_manager = assets_manager();
   imm->refcount = 1;
+  imm->name = NULL;
 
   return imm;
 }
