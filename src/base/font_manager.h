@@ -56,7 +56,7 @@ struct _font_manager_t {
    * 资源管理器。
    */
   assets_manager_t* assets_manager;
-  
+
   /*private*/
   char* name;
   int32_t refcount;
@@ -153,8 +153,7 @@ font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t font_manager_set_fallback_get_font(font_manager_t* imm,
-                                             font_manager_get_font_t fallback_get_font,
-                                             void* ctx);
+                                         font_manager_get_font_t fallback_get_font, void* ctx);
 
 /**
  * @method font_manager_unload_font

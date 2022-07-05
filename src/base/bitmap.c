@@ -390,7 +390,7 @@ static ret_t bitmap_init_bgr888_fill_color(const uint8_t* s, uint8_t* d, uint32_
 }
 
 ret_t bitmap_init_bgr888(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data,
-                           uint32_t comp, lcd_orientation_t o) {
+                         uint32_t comp, lcd_orientation_t o) {
   return bitmap_init_impl_by_rotate(bitmap, w, h, data, comp, o, bitmap_init_bgr888_fill_color);
 }
 
@@ -402,7 +402,7 @@ static ret_t bitmap_init_rgb888_fill_color(const uint8_t* s, uint8_t* d, uint32_
 }
 
 ret_t bitmap_init_rgb888(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data,
-                           uint32_t comp, lcd_orientation_t o) {
+                         uint32_t comp, lcd_orientation_t o) {
   return bitmap_init_impl_by_rotate(bitmap, w, h, data, comp, o, bitmap_init_rgb888_fill_color);
 }
 

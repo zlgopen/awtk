@@ -49,7 +49,7 @@ TEST(FontManager, loader) {
   ASSERT_EQ(font_manager_get_font(&font_manager, "ap", 20) != NULL, true);
   font_manager_deinit(&font_manager);
 }
-  
+
 TEST(FontManager, font_managers) {
   assets_managers_set_applet_res_root("./tests/applets");
   font_manager_t* fm = font_managers_ref("foo");

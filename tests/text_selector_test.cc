@@ -295,7 +295,7 @@ TEST(TextSelector, parse_options_special_chars) {
   text_selector_set_selected_index(w, 1);
   ASSERT_EQ(text_selector_get_value(w), 2);
   ASSERT_EQ(string(text_selector_get_text(w)), string("green"));
-  
+
   text_selector_set_selected_index(w, 2);
   ASSERT_EQ(text_selector_get_value(w), 3);
   ASSERT_EQ(string(text_selector_get_text(w)), string(":blue"));
@@ -315,7 +315,7 @@ TEST(TextSelector, parse_options_special_chars1) {
   text_selector_set_selected_index(w, 0);
   ASSERT_EQ(text_selector_get_value(w), -12);
   ASSERT_STREQ(text_selector_get_text(w), "GTM-12:00");
-  
+
   text_selector_set_selected_index(w, 13);
   ASSERT_EQ(text_selector_get_value(w), 1);
   ASSERT_STREQ(text_selector_get_text(w), "GTM+1:00");

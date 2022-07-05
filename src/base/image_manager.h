@@ -41,8 +41,7 @@ typedef struct _bitmap_header_t {
 } bitmap_header_t;
 
 typedef ret_t (*image_manager_get_bitmap_t)(image_manager_t* imm, const char* name,
-                                           bitmap_t* image);
-
+                                            bitmap_t* image);
 
 /**
  * @class image_manager_t
@@ -146,8 +145,8 @@ ret_t image_manager_get_bitmap(image_manager_t* imm, const char* name, bitmap_t*
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t image_manager_set_fallback_get_bitmap(image_manager_t* imm,
-                                             image_manager_get_bitmap_t fallback_get_bitmap,
-                                             void* ctx);
+                                            image_manager_get_bitmap_t fallback_get_bitmap,
+                                            void* ctx);
 
 /**
  * @method image_manager_preload

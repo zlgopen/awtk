@@ -389,7 +389,6 @@ static ret_t grid_on_paint_background(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-
 TK_DECL_VTABLE(grid) = {.size = sizeof(grid_t),
                         .type = WIDGET_TYPE_GRID,
                         .clone_properties = s_grid_properties,

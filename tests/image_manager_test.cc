@@ -150,4 +150,3 @@ TEST(ImageManager, images_managers2) {
 
   image_managers_unref(imm);
 }
-

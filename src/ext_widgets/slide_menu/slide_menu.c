@@ -147,7 +147,7 @@ static ret_t slide_menu_paint_children(widget_t* widget, canvas_t* c) {
 
   widget_paint(iter, c);
   WIDGET_FOR_EACH_CHILD_END();
-  
+
   canvas_set_clip_rect(c, &save_r);
 
   return RET_OK;

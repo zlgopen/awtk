@@ -19,7 +19,6 @@
  *
  */
 
-
 #ifndef TK_GRID_H
 #define TK_GRID_H
 
@@ -51,7 +50,6 @@ BEGIN_C_DECLS
  */
 typedef struct _grid_t {
   widget_t widget;
-
 
   /**
    * @property {uint32_t} rows
@@ -114,7 +112,6 @@ widget_t* grid_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  */
 widget_t* grid_cast(widget_t* widget);
 
-
 /**
  * @method grid_set_rows
  * 设置 行数。
@@ -147,7 +144,6 @@ ret_t grid_set_columns_definition(widget_t* widget, const char* columns_definiti
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t grid_set_show_grid(widget_t* widget, bool_t show_grid);
-
 
 #define GRID(widget) ((grid_t*)(grid_cast(WIDGET(widget))))
 

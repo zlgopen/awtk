@@ -176,7 +176,7 @@ typedef struct _combo_box_t {
    * 为点击按钮时，要打开窗口的名称。
    */
   char* open_window;
-  
+
   /**
    * @property {char*} theme_of_popup
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]

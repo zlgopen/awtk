@@ -65,9 +65,11 @@ ret_t gen_one(const char* input_file, const char* output_file, const char* theme
     uint8_t* buff = NULL;
     buff = (uint8_t*)read_file(input_file, &size);
     if (buff != NULL) {
-      ret = stb_load_image(0, buff, size, &image, image_format->transparent_bitmap_format, image_format->opaque_bitmap_format, o);
+      ret = stb_load_image(0, buff, size, &image, image_format->transparent_bitmap_format,
+                           image_format->opaque_bitmap_format, o);
       if (ret == RET_OK) {
-        ret = image_gen(&image, output_file, theme, image_format->opaque_bitmap_format == BITMAP_FMT_MONO);
+        ret = image_gen(&image, output_file, theme,
+                        image_format->opaque_bitmap_format == BITMAP_FMT_MONO);
       }
       TKMEM_FREE(buff);
     } else {

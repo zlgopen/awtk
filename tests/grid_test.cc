@@ -8,17 +8,17 @@ TEST(Grid, basic1) {
 
   ASSERT_EQ(grid_set_show_grid(w, TRUE), RET_OK);
   ASSERT_EQ(g->show_grid, TRUE);
-  
+
   ASSERT_EQ(grid_set_show_grid(w, FALSE), RET_OK);
   ASSERT_EQ(g->show_grid, FALSE);
-  
+
   ASSERT_EQ(grid_set_rows(w, 2), RET_OK);
   ASSERT_EQ(g->rows, 2);
 
   ASSERT_EQ(grid_set_columns_definition(w, "col(w=100,margin=2)"), RET_OK);
   ASSERT_STREQ(g->columns_definition, "col(w=100,margin=2)");
   ASSERT_EQ(g->cols_definition.size, 1);
-  
+
   widget_destroy(w);
   idle_dispatch();
 }
@@ -41,17 +41,17 @@ TEST(Grid, layout) {
   ASSERT_EQ(b1->y, 2);
   ASSERT_EQ(b1->w, 76);
   ASSERT_EQ(b1->h, 36);
-  
+
   ASSERT_EQ(b2->x, 82);
   ASSERT_EQ(b2->y, 2);
   ASSERT_EQ(b2->w, 116);
   ASSERT_EQ(b2->h, 36);
-  
+
   ASSERT_EQ(b3->x, 2);
   ASSERT_EQ(b3->y, 42);
   ASSERT_EQ(b3->w, 76);
   ASSERT_EQ(b3->h, 36);
-  
+
   ASSERT_EQ(b4->x, 82);
   ASSERT_EQ(b4->y, 42);
   ASSERT_EQ(b4->w, 116);
@@ -79,17 +79,17 @@ TEST(Grid, layout2) {
   ASSERT_EQ(b1->y, 2);
   ASSERT_EQ(b1->w, 76);
   ASSERT_EQ(b1->h, 36);
-  
+
   ASSERT_EQ(b2->x, 82);
   ASSERT_EQ(b2->y, 2);
   ASSERT_EQ(b2->w, 116);
   ASSERT_EQ(b2->h, 36);
-  
+
   ASSERT_EQ(b3->x, 2);
   ASSERT_EQ(b3->y, 42);
   ASSERT_EQ(b3->w, 76);
   ASSERT_EQ(b3->h, 36);
-  
+
   ASSERT_EQ(b4->x, 82);
   ASSERT_EQ(b4->y, 42);
   ASSERT_EQ(b4->w, 116);
@@ -117,17 +117,17 @@ TEST(Grid, layout3) {
   ASSERT_EQ(b1->y, 2);
   ASSERT_EQ(b1->w, 76);
   ASSERT_EQ(b1->h, 36);
-  
+
   ASSERT_EQ(b2->x, 82);
   ASSERT_EQ(b2->y, 2);
   ASSERT_EQ(b2->w, 116);
   ASSERT_EQ(b2->h, 36);
-  
+
   ASSERT_EQ(b3->x, 2);
   ASSERT_EQ(b3->y, 42);
   ASSERT_EQ(b3->w, 76);
   ASSERT_EQ(b3->h, 36);
-  
+
   ASSERT_EQ(b4->x, 82);
   ASSERT_EQ(b4->y, 42);
   ASSERT_EQ(b4->w, 116);
@@ -155,17 +155,17 @@ TEST(Grid, layout4) {
   ASSERT_EQ(b1->y, 2);
   ASSERT_EQ(b1->w, 76);
   ASSERT_EQ(b1->h, 36);
-  
+
   ASSERT_EQ(b2->x, 82);
   ASSERT_EQ(b2->y, 2);
   ASSERT_EQ(b2->w, 116);
   ASSERT_EQ(b2->h, 36);
-  
+
   ASSERT_EQ(b3->x, 2);
   ASSERT_EQ(b3->y, 42);
   ASSERT_EQ(b3->w, 76);
   ASSERT_EQ(b3->h, 36);
-  
+
   ASSERT_EQ(b4->x, 82);
   ASSERT_EQ(b4->y, 42);
   ASSERT_EQ(b4->w, 116);
@@ -174,4 +174,3 @@ TEST(Grid, layout4) {
   widget_destroy(w);
   idle_dispatch();
 }
-

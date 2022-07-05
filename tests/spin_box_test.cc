@@ -40,7 +40,8 @@ TEST(SpinBox, to_xml) {
           "w=\"30\" h=\"40\" focusable=\"true\" min=\"0\" max=\"1024\" step=\"1.000000\" "
           "input_type=\"1\" readonly=\"false\" cancelable=\"false\" auto_fix=\"false\" "
           "left_margin=\"2\" right_margin=\"2\" top_margin=\"2\" bottom_margin=\"2\" "
-          "action_text=\"done\" password_visible=\"false\" easy_touch_mode=\"false\">\n</spin_box>\n"));
+          "action_text=\"done\" password_visible=\"false\" "
+          "easy_touch_mode=\"false\">\n</spin_box>\n"));
 
   str_reset(&str);
   widget_destroy(w1);
@@ -84,7 +85,7 @@ TEST(SpinBox, easy_touch_mode) {
 
   spin_box_set_easy_touch_mode(w, TRUE);
   widget_layout(w);
-  
+
   ASSERT_EQ(inc->w, w->h);
   ASSERT_EQ(inc->h, w->h);
   ASSERT_EQ(inc->y, 0);
@@ -96,16 +97,16 @@ TEST(SpinBox, easy_touch_mode) {
 
   widget_resize(w, 80, 90);
   widget_layout(w);
-  
+
   ASSERT_EQ(inc->w, w->w);
-  ASSERT_EQ(inc->h, w->h/3);
+  ASSERT_EQ(inc->h, w->h / 3);
   ASSERT_EQ(inc->x, 0);
   ASSERT_EQ(inc->y, 0);
-  
+
   ASSERT_EQ(dec->w, w->w);
-  ASSERT_EQ(dec->h, w->h/3);
+  ASSERT_EQ(dec->h, w->h / 3);
   ASSERT_EQ(dec->x, 0);
-  ASSERT_EQ(dec->y, 2 * w->h/3);
+  ASSERT_EQ(dec->y, 2 * w->h / 3);
 
   widget_t* w1 = widget_clone(w, NULL);
   ASSERT_EQ(SPIN_BOX(w1)->easy_touch_mode, TRUE);

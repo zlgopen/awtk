@@ -153,7 +153,7 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_pointer(v, (void*)(theme()));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_IMAGE_MANAGER)) {
-    if(window_base->image_manager != NULL) {
+    if (window_base->image_manager != NULL) {
       value_set_pointer(v, (void*)(window_base->image_manager));
     } else {
       value_set_pointer(v, (void*)(image_manager()));
@@ -163,14 +163,14 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_pointer(v, (void*)(locale_info()));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_FONT_MANAGER)) {
-    if(window_base->font_manager != NULL) {
+    if (window_base->font_manager != NULL) {
       value_set_pointer(v, (void*)(window_base->font_manager));
     } else {
       value_set_pointer(v, (void*)(font_manager()));
     }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_ASSETS_MANAGER)) {
-    if(window_base->assets_manager != NULL) {
+    if (window_base->assets_manager != NULL) {
       value_set_pointer(v, (void*)(window_base->assets_manager));
     } else {
       value_set_pointer(v, (void*)(assets_manager()));
@@ -234,23 +234,23 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
 
 static ret_t window_base_set_applet_name(widget_t* widget, const char* applet_name) {
   window_base_t* window_base = WINDOW_BASE(widget);
-  if(tk_str_eq(window_base->applet_name, applet_name)) {
+  if (tk_str_eq(window_base->applet_name, applet_name)) {
     return RET_OK;
   }
 
-  if(window_base->applet_name != NULL) {
+  if (window_base->applet_name != NULL) {
     assets_managers_unref(window_base->assets_manager);
     image_managers_unref(window_base->image_manager);
     font_managers_unref(window_base->font_manager);
   }
 
-  if(TK_STR_IS_EMPTY(applet_name)) {
+  if (TK_STR_IS_EMPTY(applet_name)) {
     TKMEM_FREE(window_base->applet_name);
   } else {
     window_base->applet_name = tk_str_copy(window_base->applet_name, applet_name);
-    window_base->assets_manager = assets_managers_ref(applet_name); 
-    window_base->image_manager = image_managers_ref(applet_name); 
-    window_base->font_manager = font_managers_ref(applet_name); 
+    window_base->assets_manager = assets_managers_ref(applet_name);
+    window_base->image_manager = image_managers_ref(applet_name);
+    window_base->font_manager = font_managers_ref(applet_name);
   }
 
   return RET_OK;

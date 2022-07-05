@@ -352,7 +352,7 @@ TEST(ComboBox, parse_options_special_chars) {
   combo_box_set_selected_index(w, 1);
   ASSERT_EQ(combo_box_get_value(w), 2);
   ASSERT_EQ(string(combo_box_get_text(w)), string("green"));
-  
+
   combo_box_set_selected_index(w, 2);
   ASSERT_EQ(combo_box_get_value(w), 3);
   ASSERT_EQ(string(combo_box_get_text(w)), string(":blue"));

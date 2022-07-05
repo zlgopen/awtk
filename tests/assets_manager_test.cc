@@ -397,4 +397,3 @@ TEST(AssetsManager, assets_managers) {
   assets_managers_unref(bar);
   assets_managers_unref(foo);
 }
-

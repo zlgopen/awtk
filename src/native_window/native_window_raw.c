@@ -70,7 +70,6 @@ static ret_t native_window_raw_resize(native_window_t* win, wh_t w, wh_t h) {
 
     window_manager_dispatch_native_window_event(window_manager(), &e, win);
     timer_add(native_window_raw_on_resized_timer, win, 100);
-
   }
 
   return RET_OK;

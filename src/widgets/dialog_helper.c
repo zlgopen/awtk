@@ -111,7 +111,7 @@ static ret_t dialog_create_cancel(widget_t* client) {
   widget_set_tr_text(cancel, "Cancel");
   widget_use_style(cancel, DIALOG_CANCEL_STYLE);
   widget_set_self_layout(cancel, "default(x=r:10%, y=bottom:10, w=35%, h=30)");
-    
+
   widget_on(cancel, EVT_CLICK, on_cancel_to_quit, widget_get_window(client));
 
   return RET_OK;

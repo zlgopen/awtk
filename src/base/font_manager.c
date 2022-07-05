@@ -333,4 +333,3 @@ ret_t font_managers_unload_all(void) {
 
   return RET_OK;
 }
-
