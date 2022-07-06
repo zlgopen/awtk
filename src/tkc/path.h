@@ -247,6 +247,16 @@ bool_t path_exist(const char* path);
  */
 ret_t path_remove_last_slash(char* path);
 
+/**
+ * @method path_prepend_app_root
+ * 将前面路径加上app root。
+ * @param {char*} full_path 用于返回完整路径。
+ * @param {const char*} path 路径。
+ *
+ * @return {const char*} 返回完整路径。
+ */
+const char* path_prepend_app_root(char full_path[MAX_PATH + 1], const char* path);
+
 END_C_DECLS
 
 #endif /*TK_PATH_H*/

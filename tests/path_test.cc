@@ -227,3 +227,9 @@ TEST(Path, path_remove_last_slash) {
 
   ASSERT_NE(path_remove_last_slash(NULL), RET_OK);
 }
+
+TEST(Path, path_prepend_app_root) {
+  char result[MAX_PATH + 1] = {0};
+  ASSERT_EQ(path_prepend_app_root(result, "bin"), result);
+  ASSERT_EQ(path_exist(result), TRUE);
+}

@@ -330,3 +330,13 @@ ret_t path_app_root_ex(char path[MAX_PATH + 1], const char* subpath) {
 
   return RET_OK;
 }
+
+const char* path_prepend_app_root(char full_path[MAX_PATH + 1], const char* path) {
+  char app_root[MAX_PATH + 1] = {0};
+  return_value_if_fail(path != NULL, NULL);
+  return_value_if_fail(path_app_root(app_root) == RET_OK, NULL);
+
+  path_build(full_path, MAX_PATH, app_root, path, NULL);
+
+  return full_path;
+}
