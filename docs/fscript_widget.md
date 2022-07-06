@@ -196,18 +196,16 @@ fscript 并不是要取代 C 或 JS 来开发 AWTK 应用程序，而是一个�
 
 ## 4. 事件的返回值
 
-* 事件缺省返回 RET\_OK。
+通过 return 返回 RET\_XXX 常量。
 
-* 如果需要在执行完成后移除事件处理函数，可以设置 RET\_REMOVE 为 true。
-
-```
-RET_REMOVE=true
-```
-
-* 如果需要在执行完成后停止后续事件处理，可以设置 RET\_STOP 为 true。
+示例:
 
 ```
-RET_STOP=true
+return RET_STOP
+```
+
+```
+return RET_REMOVE
 ```
 
 ## 5. widget 相关的扩展函数

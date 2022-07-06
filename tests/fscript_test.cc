@@ -2778,3 +2778,28 @@ TEST(FScript, code_id) {
   ASSERT_STREQ(code_id, "123");
   TKMEM_FREE(code_id);
 }
+
+TEST(FScript, rets) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, "RET_OK", &v);
+  ASSERT_EQ((int)RET_OK, value_int(&v));
+  
+  fscript_eval(obj, "RET_FAIL", &v);
+  ASSERT_EQ((int)RET_FAIL, value_int(&v));
+  
+  fscript_eval(obj, "RET_REMOVE", &v);
+  ASSERT_EQ((int)RET_REMOVE, value_int(&v));
+  
+  fscript_eval(obj, "RET_REPEAT", &v);
+  ASSERT_EQ((int)RET_REPEAT, value_int(&v));
+  
+  fscript_eval(obj, "return RET_REPEAT", &v);
+  ASSERT_EQ((int)RET_REPEAT, value_int(&v));
+  
+  fscript_eval(obj, "return RET_NOT_FOUND", &v);
+  ASSERT_EQ((int)RET_NOT_FOUND, value_int(&v));
+
+  TK_OBJECT_UNREF(obj);
+}
+

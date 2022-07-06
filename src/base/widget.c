@@ -623,7 +623,6 @@ ret_t widget_set_theme(widget_t* widget, const char* name) {
   theme_change_event_t event;
   event_t* evt = theme_change_event_init(&event, EVT_THEME_CHANGED, name);
   widget_t* wm = widget_get_window_manager(widget);
-  image_manager_t* imm = widget_get_image_manager(widget);
   assets_manager_t* am = widget_get_assets_manager(widget);
   locale_info_t* locale_info = widget_get_locale_info(widget);
   return_value_if_fail(am != NULL && name != NULL, RET_BAD_PARAMS);
@@ -1909,15 +1908,20 @@ static ret_t widget_exec_code(void* ctx, event_t* evt) {
       break;
   }
 
-  value_set_int(&result, 0);
-  fscript_eval(obj, code, &result);
-  if (tk_object_get_prop_bool(obj, "RET_STOP", FALSE)) {
-    ret = RET_STOP;
+  value_set_int(&result, RET_OK);
+  if (fscript_eval(obj, code, &result) == RET_OK) {
+    value_t v;
+
+    ret = value_int(&result);
+    if (tk_object_get_prop(obj, "RET_STOP", &v) == RET_OK && value_bool(&v)) {
+      ret = RET_STOP;
+    }
+
+    if (tk_object_get_prop(obj, "RET_REMOVE", &v) == RET_OK && value_bool(&v)) {
+      ret = RET_REMOVE;
+    }
+    value_reset(&result);
   }
-  if (tk_object_get_prop_bool(obj, "RET_REMOVE", FALSE)) {
-    ret = RET_REMOVE;
-  }
-  value_reset(&result);
   TK_OBJECT_UNREF(obj);
 
   return ret;

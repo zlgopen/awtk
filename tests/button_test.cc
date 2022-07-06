@@ -235,3 +235,14 @@ TEST(Button, name) {
 
   widget_destroy(w1);
 }
+
+TEST(Button, event_fscript) {
+  pointer_event_t evt;
+  widget_t* w = window_create(NULL, 0, 0, 320, 240);
+  event_t* e = pointer_event_init(&evt, EVT_CLICK, w, 0, 0);
+
+  widget_set_prop_str(w, "on:click", "print('hello\n');return RET_STOP");
+  ASSERT_EQ(widget_dispatch(w, e), RET_STOP);
+  
+  widget_destroy(w);
+}

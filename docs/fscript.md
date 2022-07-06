@@ -1545,15 +1545,34 @@ runFScript 的第二个参数可以指定运行次数，方便测量某个函数
 ./bin/runFScript '123+234' 100000
 ```
 
-通常设置变量和获取变量相对来说比较费时，为此 fscript 提供了 4 个寄存器变量：a,b,c,d。如果需要临时保存计算结果，优先使用寄存器变量。
+## 7. 内置常量
 
-比如：
-
-```
- ./bin/runFScript 'set(a, 2); set(b, 3); print(a+b)'
-```
-
-## 7. 扩展模块
+| 名称 | 说明 | 
+| -------- | ------- | 
+| RET\_OK | 成功。 |
+| RET\_OOM | Out of memory。 |
+| RET\_FAIL | 失败。 |
+| RET\_NOT\_IMPL | 没有实现/不支持。 |
+| RET\_QUIT | 退出。通常用于主循环。 |
+| RET\_FOUND | 找到。 |
+| RET\_BUSY | 对象忙。 |
+| RET\_REMOVE | 移出。通常用于定时器。 |
+| RET\_REPEAT | 重复。通常用于定时器。 |
+| RET\_NOT\_FOUND | 没找到。 |
+| RET\_DONE | 操作完成。 |
+| RET\_STOP | 停止后续操作。 |
+| RET\_SKIP | 跳过当前项。 |
+| RET\_CONTINUE | 继续后续操作。 |
+| RET\_OBJECT\_CHANGED | 对象属性变化。 |
+| RET\_ITEMS\_CHANGED | 集合数目变化。 |
+| RET\_BAD\_PARAMS | 无效参数。 |
+| RET\_TIMEOUT | 超时。 |
+| RET\_CRC | CRC错误。 |
+| RET\_IO | IO错误。 |
+| RET\_EOS | End of Stream |
+| RET\_NOT\_MODIFIED | 没有改变。 |
+  
+## 8. 扩展模块
 
 * [字符串扩展模块](fscript_str.md)
 * [位操作扩展模块](fscript_bits.md)
@@ -1579,6 +1598,6 @@ runFScript 的第二个参数可以指定运行次数，方便测量某个函数
 * [读缓冲区扩展模块](fscript_rbuffer.md)
 * [module扩展模块](fscript_module.md)
 
-## 8. 更多示例
+## 9. 更多示例
 
 请参考 tests/fscripts 目录。
