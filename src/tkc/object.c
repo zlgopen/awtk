@@ -283,10 +283,18 @@ ret_t tk_object_set_prop_str(tk_object_t* obj, const char* name, const char* val
 }
 
 ret_t tk_object_set_prop_pointer(tk_object_t* obj, const char* name, void* value) {
-  value_t v;
-  value_set_pointer(&v, value);
+  return tk_object_set_prop_pointer_ex(obj, name, value, NULL);
+}
 
-  return tk_object_set_prop(obj, name, &v);
+ret_t tk_object_set_prop_pointer_ex(tk_object_t* obj, const char* name, void* value, tk_destroy_t destroy) {
+  value_t v;
+  ret_t ret = RET_OK;
+  value_set_pointer_ex(&v, value, destroy);
+
+  ret = tk_object_set_prop(obj, name, &v);
+  value_reset(&v);
+
+  return RET_OK;
 }
 
 ret_t tk_object_set_prop_object(tk_object_t* obj, const char* name, tk_object_t* value) {

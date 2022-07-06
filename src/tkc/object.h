@@ -367,6 +367,19 @@ ret_t tk_object_set_prop_str(tk_object_t* obj, const char* name, const char* val
 ret_t tk_object_set_prop_pointer(tk_object_t* obj, const char* name, void* value);
 
 /**
+ * @method tk_object_set_prop_pointer_ex
+ * 设置指定属性的指针类型的值。
+ *
+ * @param {tk_object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {void*} value 属性的值。
+ * @param {tk_destroy_t} destroy  销毁函数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_object_set_prop_pointer_ex(tk_object_t* obj, const char* name, void* value, tk_destroy_t destroy);
+
+/**
  * @method tk_object_set_prop_object
  * 设置指定属性的object类型的值。
  *

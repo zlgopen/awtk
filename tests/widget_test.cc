@@ -1448,3 +1448,13 @@ TEST(Widget, find_parent_by_type) {
 
   widget_destroy(w);
 }
+
+TEST(Widget, pointer_ex) {
+  char* str = tk_strdup("abc");
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+
+  ASSERT_EQ(widget_set_prop_pointer_ex(w, "mystr", str, default_destroy), RET_OK);
+  ASSERT_STREQ((char*)widget_get_prop_pointer(w, "mystr"), "abc");
+
+  widget_destroy(w);
+}

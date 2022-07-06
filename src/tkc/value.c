@@ -207,10 +207,28 @@ uint64_t value_uint64(const value_t* v) {
 }
 
 value_t* value_set_pointer(value_t* v, void* value) {
+  return value_set_pointer_ex(v, value, NULL);
+}
+
+value_t* value_set_pointer_ex(value_t* v, void* value, tk_destroy_t destroy) {
   return_value_if_fail(v != NULL, NULL);
 
-  v->value.ptr = value;
-  return value_init(v, VALUE_TYPE_POINTER);
+  if (destroy != NULL) {
+    pointer_ref_t* ref = TKMEM_ZALLOC(pointer_ref_t);
+    return_value_if_fail(ref != NULL, NULL);
+    ref->refcount = 1;
+    ref->destroy = destroy;
+    ref->data = value;
+    v->value.ptr_ref = ref;
+    value_init(v, VALUE_TYPE_POINTER_REF);
+
+    v->free_handle = TRUE;
+  } else {
+    v->value.ptr = value;
+    value_init(v, VALUE_TYPE_POINTER);
+  }
+
+  return v;
 }
 
 void* value_pointer(const value_t* v) {
@@ -227,6 +245,9 @@ void* value_pointer(const value_t* v) {
     }
     case VALUE_TYPE_POINTER: {
       return (v->value.ptr);
+    }
+    case VALUE_TYPE_POINTER_REF: {
+      return (v->value.ptr_ref->data);
     }
     default:
       break;
@@ -476,6 +497,11 @@ ret_t value_deep_copy(value_t* dst, const value_t* src) {
       dst->free_handle = dst->value.object != NULL;
       break;
     }
+    case VALUE_TYPE_POINTER_REF: {
+      dst->value.ptr_ref->refcount++;
+      dst->free_handle = TRUE;
+      break;
+    }
     default:
       break;
   }
@@ -575,6 +601,9 @@ bool_t value_equal(const value_t* v, const value_t* other) {
     case VALUE_TYPE_POINTER: {
       return v->value.ptr == other->value.ptr;
     }
+    case VALUE_TYPE_POINTER_REF: {
+      return v->value.ptr_ref == other->value.ptr_ref;
+    }
     case VALUE_TYPE_UINT64: {
       return v->value.u64 == other->value.u64;
     }
@@ -651,6 +680,17 @@ ret_t value_reset(value_t* v) {
       }
       case VALUE_TYPE_FUNC: {
         TKMEM_FREE(v->value.func.func);
+        break;
+      }
+      case VALUE_TYPE_POINTER_REF: {
+        assert(v->value.ptr_ref->refcount >= 1);
+
+        v->value.ptr_ref->refcount--;
+        if (v->value.ptr_ref->refcount == 0) {
+          v->value.ptr_ref->destroy(v->value.ptr_ref->data);
+          TKMEM_FREE(v->value.ptr_ref);
+          v->value.ptr_ref = NULL;
+        }
         break;
       }
       default:
@@ -821,7 +861,7 @@ const char* value_str_ex(const value_t* v, char* buff, uint32_t size) {
     return "func";
   } else if (v->type == VALUE_TYPE_FUNC_DEF) {
     return "func_def";
-  } else if (v->type == VALUE_TYPE_POINTER) {
+  } else if (v->type == VALUE_TYPE_POINTER || v->type == VALUE_TYPE_POINTER_REF) {
     tk_snprintf(buff, size, "%p", value_pointer(v));
   } else if (v->type == VALUE_TYPE_OBJECT) {
     tk_object_t* obj = value_object(v);
@@ -878,7 +918,8 @@ uint32_t value_type_size(value_type_t type) {
     case VALUE_TYPE_OBJECT:
     case VALUE_TYPE_STRING:
     case VALUE_TYPE_WSTRING:
-    case VALUE_TYPE_POINTER: {
+    case VALUE_TYPE_POINTER:
+    case VALUE_TYPE_POINTER_REF: {
       return sizeof(void*);
     }
     case VALUE_TYPE_BINARY: {

@@ -627,3 +627,14 @@ TEST(ObjectDefault, copy) {
   tk_object_unref(obj1);
   tk_object_unref(obj2);
 }
+
+#include "tkc/utils.h"
+
+TEST(ObjectDefault, pointer_ex) {
+  tk_object_t* obj = object_default_create();
+  char* str = tk_strdup("abc");
+  tk_object_set_prop_pointer_ex(obj, "value", str, default_destroy);
+  ASSERT_STREQ((char*)tk_object_get_prop_pointer(obj, "value"), "abc");
+
+  TK_OBJECT_UNREF(obj);
+}

@@ -2195,10 +2195,19 @@ const char* widget_get_prop_str(widget_t* widget, const char* name, const char* 
 }
 
 ret_t widget_set_prop_pointer(widget_t* widget, const char* name, void* pointer) {
-  value_t v;
-  value_set_pointer(&v, pointer);
+  return widget_set_prop_pointer_ex(widget, name, pointer, NULL);
+}
 
-  return widget_set_prop(widget, name, &v);
+ret_t widget_set_prop_pointer_ex(widget_t* widget, const char* name, void* pointer, tk_destroy_t destroy) {
+  value_t v;
+  ret_t ret = RET_OK;
+  return_value_if_fail(widget != NULL && name != NULL, RET_BAD_PARAMS);
+
+  value_set_pointer_ex(&v, pointer, destroy);
+  ret = widget_set_prop(widget, name, &v);
+  value_reset(&v);
+
+  return ret;
 }
 
 void* widget_get_prop_pointer(widget_t* widget, const char* name) {

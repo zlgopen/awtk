@@ -157,6 +157,11 @@ typedef enum _value_type_t {
    * func definition。
    */
   VALUE_TYPE_FUNC_DEF,
+  /**
+   * @const VALUE_TYPE_POINTER_REF
+   * void*类型。
+   */
+  VALUE_TYPE_POINTER_REF,
 } value_type_t;
 
 typedef struct _binary_data_t {
@@ -179,6 +184,12 @@ typedef struct _func_info_t {
   uint32_t memo;
   void* func;
 } func_info_t;
+
+typedef struct _pointer_ref_t {
+  void* data;
+  int32_t refcount;
+  tk_destroy_t destroy;
+} pointer_ref_t;
 
 /**
  * @class value_t
@@ -220,6 +231,7 @@ struct _value_t {
     binary_data_t binary_data;
     sized_str_t sized_str;
     id_info_t id;
+    pointer_ref_t* ptr_ref;
     func_info_t func;
   } value;
 };
@@ -421,6 +433,17 @@ uint64_t value_uint64(const value_t* v);
  * @return {value_t*} value对象本身。
  */
 value_t* value_set_pointer(value_t* v, void* value);
+
+/**
+ * @method value_set_pointer
+ * 设置类型为pointer的值。
+ * @param {value_t*}  v       value对象。
+ * @param {void*}     value   待设置的值。
+ * @param {tk_destroy_t}     destroy  销毁函数。
+ *
+ * @return {value_t*} value对象本身。
+ */
+value_t* value_set_pointer_ex(value_t* v, void* value, tk_destroy_t destroy);
 
 /**
  * @method value_pointer

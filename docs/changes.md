@@ -4,6 +4,9 @@
   * 修复支持applets时主题切换的问题。
   * fscript支持ret\_t中的常量，并更新文档。
   * 增加函数path\_prepend\_app\_root
+  * 增加函数widget\_set\_prop\_pointer\_ex
+  * 增加函数tk\_object\_set\_prop\_pointer\_ex
+  * 增加函数value\_set\_pointer\_ex
 
 2022/07/05
   * 完善文档(感谢雨欣提供补丁)

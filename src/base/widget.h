@@ -1874,6 +1874,18 @@ const char* widget_get_prop_str(widget_t* widget, const char* name, const char* 
 ret_t widget_set_prop_pointer(widget_t* widget, const char* name, void* v);
 
 /**
+ * @method widget_set_prop_pointer_ex
+ * 设置指针格式的属性。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性的名称。
+ * @param {void*} v 属性的值。
+ * @param {tk_destroy_t} destroy  销毁函数。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_prop_pointer_ex(widget_t* widget, const char* name, void* v, tk_destroy_t destroy);
+
+/**
  * @method widget_get_prop_pointer
  * 获取指针格式的属性。
  * @annotation ["scriptable"]

@@ -358,3 +358,14 @@ TEST(value, ui64_from_str) {
   ASSERT_EQ(&v, value_set_str(&v, "12345678912345"));
   ASSERT_EQ(value_uint64(&v), 12345678912345);
 }
+
+#include "tkc/utils.h"
+
+TEST(value, pointer) {
+  value_t v;
+  char* str = tk_strdup("abc");
+  ASSERT_EQ(&v, value_set_pointer_ex(&v, str, default_destroy));
+  ASSERT_STREQ((char*)value_pointer(&v), "abc");
+  value_reset(&v);
+}
+
