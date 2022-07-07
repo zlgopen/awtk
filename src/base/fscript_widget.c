@@ -256,11 +256,15 @@ static ret_t func_widget_lookup(fscript_t* fscript, fscript_args_t* args, value_
     widget = widget_lookup(widget, path, recursive);
   }
 
-  obj_widget = object_widget_create(widget);
-  value_set_object(result, obj_widget);
-  result->free_handle = TRUE;
-
-  return RET_OK;
+  if (widget == NULL) {
+    result->type = VALUE_TYPE_INVALID;
+    return RET_NOT_FOUND;
+  } else {
+    obj_widget = object_widget_create(widget);
+    value_set_object(result, obj_widget);
+    result->free_handle = TRUE;
+    return RET_OK;
+  }
 }
 
 static ret_t func_widget_get(fscript_t* fscript, fscript_args_t* args, value_t* result) {

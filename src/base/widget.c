@@ -1854,25 +1854,82 @@ static ret_t widget_on_ungrab_keys(void* ctx, event_t* e) {
   return RET_REMOVE;
 }
 
-static ret_t widget_exec_code(void* ctx, event_t* evt) {
-#ifndef WITHOUT_FSCRIPT
-  value_t v;
-  value_t result;
-  ret_t ret = RET_OK;
-  tk_object_t* obj = NULL;
-  widget_t* widget = WIDGET(evt->target);
-  const char* code = (const char*)ctx;
-  if (widget_get_prop(widget, STR_PROP_MODEL, &v) == RET_OK) {
-    obj = value_object(&v);
-  }
-  if (obj != NULL) {
-    TK_OBJECT_REF(obj);
-  } else {
-    obj = object_default_create();
-  }
-  return_value_if_fail(obj != NULL && code != NULL, RET_REMOVE);
+typedef struct _fscript_info_t {
+  char* code;
+  fscript_t* fscript;
+  widget_t* widget;
+  tk_object_t* obj;
+  emitter_t* emitter;
+  bool_t is_global_object;
+  bool_t busy;
+} fscript_info_t;
 
-  tk_object_set_prop_pointer(obj, STR_PROP_SELF, widget);
+static fscript_info_t* fscript_info_create(const char* code, widget_t* widget) {
+  fscript_info_t* info = NULL;
+  return_value_if_fail(code != NULL && widget != NULL, NULL);
+  info = TKMEM_ZALLOC(fscript_info_t);
+  return_value_if_fail(info != NULL, NULL);
+
+  info->widget = widget;
+  info->code = tk_strdup(code);
+
+  if (info->code == NULL) {
+    TKMEM_FREE(info);
+  }
+
+  return info;
+}
+
+static ret_t fscript_info_destroy(fscript_info_t* info) {
+  return_value_if_fail(info != NULL, RET_BAD_PARAMS);
+
+  TKMEM_FREE(info->code);
+  if (info->fscript != NULL) {
+    fscript_destroy(info->fscript);
+    info->fscript = NULL;
+  }
+
+  if (info->emitter != NULL) {
+    emitter_off_by_ctx(info->emitter, info);
+  } else {
+    widget_off_by_ctx(info->widget, info);
+  }
+
+  TK_OBJECT_UNREF(info->obj);
+  TKMEM_FREE(info);
+
+  return RET_OK;
+}
+
+static ret_t fscript_info_prepare(fscript_info_t* info, event_t* evt) {
+  tk_object_t* obj = NULL;
+
+  if (info->fscript == NULL) {
+    value_t v;
+    tk_object_t* model = NULL;
+
+    if (widget_get_prop(info->widget, STR_PROP_MODEL, &v) == RET_OK) {
+      model = value_object(&v);
+    }
+    obj = object_default_create();
+    return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
+
+    if (model != NULL) {
+      tk_object_set_prop_object(obj, STR_PROP_MODEL, model);
+    }
+    tk_object_set_prop_pointer(obj, STR_PROP_SELF, info->widget);
+
+    info->obj = obj;
+    info->fscript = fscript_create(obj, info->code);
+    return_value_if_fail(info->fscript != NULL, RET_BAD_PARAMS);
+    TKMEM_FREE(info->code);
+  } else {
+    obj = info->obj;
+  }
+
+  if (evt == NULL) {
+    return RET_OK;
+  }
 
   switch (evt->type) {
     case EVT_CLICK:
@@ -1908,11 +1965,17 @@ static ret_t widget_exec_code(void* ctx, event_t* evt) {
       break;
   }
 
-  value_set_int(&result, RET_OK);
-  if (fscript_eval(obj, code, &result) == RET_OK) {
-    value_t v;
+  return RET_OK;
+}
 
-    ret = value_int(&result);
+static ret_t fscript_info_exec(fscript_info_t* info) {
+  value_t result;
+  ret_t ret = RET_OK;
+  value_set_int(&result, RET_OK);
+  if (fscript_exec(info->fscript, &result) == RET_OK) {
+    value_t v;
+    tk_object_t* obj = info->obj;
+
     if (tk_object_get_prop(obj, "RET_STOP", &v) == RET_OK && value_bool(&v)) {
       ret = RET_STOP;
     }
@@ -1920,9 +1983,40 @@ static ret_t widget_exec_code(void* ctx, event_t* evt) {
     if (tk_object_get_prop(obj, "RET_REMOVE", &v) == RET_OK && value_bool(&v)) {
       ret = RET_REMOVE;
     }
+
+    if (ret == RET_OK) {
+      if (result.type == VALUE_TYPE_UINT32 || result.type == VALUE_TYPE_INT32) {
+        ret = value_int(&result);
+      }
+    }
+
     value_reset(&result);
   }
-  TK_OBJECT_UNREF(obj);
+
+  return ret;
+}
+
+extern bool_t tk_is_ui_thread(void);
+
+static ret_t widget_exec_code(void* ctx, event_t* evt) {
+#ifndef WITHOUT_FSCRIPT
+  ret_t ret = RET_OK;
+  fscript_info_t* info = (fscript_info_t*)ctx;
+
+  if (info->busy) {
+    /*多次触发，只执行一次*/
+    return RET_OK;
+  }
+
+  if (!tk_is_ui_thread()) {
+    log_debug("not supported trigger in none ui thread\n");
+    return RET_OK;
+  }
+
+  info->busy = TRUE;
+  return_value_if_fail(fscript_info_prepare(info, evt) == RET_OK, RET_BAD_PARAMS);
+  ret = fscript_info_exec(info);
+  info->busy = FALSE;
 
   return ret;
 #else
@@ -2043,19 +2137,33 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
       }
 
       if (strncmp(name, STR_ON_EVENT_PREFIX, sizeof(STR_ON_EVENT_PREFIX) - 1) == 0) {
-        int32_t etype = event_from_name(name + sizeof(STR_ON_EVENT_PREFIX) - 1);
+        bool_t is_global_vars_changed =
+            tk_str_eq(name, STR_ON_EVENT_PREFIX "" STR_GLOBAL_VARS_CHANGED);
+        int32_t etype = is_global_vars_changed
+                            ? EVT_PROP_CHANGED
+                            : event_from_name(name + sizeof(STR_ON_EVENT_PREFIX) - 1);
         if (etype != EVT_NONE) {
-          char* code = tk_strdup(value_str(v));
-          if (code != NULL) {
+          fscript_info_t* info = fscript_info_create(value_str(v), widget);
+          if (info != NULL) {
+            char new_prop_name[TK_NAME_LEN + 1] = {0};
             name += sizeof(STR_ON_EVENT_PREFIX) - 1;
-            if (strncmp(name, STR_GLOBAL_EVENT_PREFIX, sizeof(STR_GLOBAL_EVENT_PREFIX) - 1) == 0) {
+
+            if (is_global_vars_changed) {
+              tk_object_t* global = fscript_get_global_object();
+              emitter_on(EMITTER(global), EVT_PROPS_CHANGED, widget_exec_code, info);
+              emitter_on(EMITTER(global), EVT_PROP_CHANGED, widget_exec_code, info);
+              info->emitter = EMITTER(global);
+            } else if (tk_str_start_with(name, STR_GLOBAL_EVENT_PREFIX)) {
               widget_t* wm = window_manager();
-              widget_on(wm, etype, widget_exec_code, code);
-              widget_on(wm, EVT_DESTROY, widget_free_code, code);
+              widget_on(wm, etype, widget_exec_code, info);
+              info->emitter = EMITTER(wm->emitter);
             } else {
-              widget_on(widget, etype, widget_exec_code, code);
-              widget_on(widget, EVT_DESTROY, widget_free_code, code);
+              widget_on(widget, etype, widget_exec_code, info);
+              info->emitter = NULL;
             }
+            tk_snprintf(new_prop_name, sizeof(new_prop_name) - 1, "%s-fscript-info", name);
+            widget_set_prop_pointer_ex(widget, new_prop_name, info,
+                                       (tk_destroy_t)fscript_info_destroy);
             ret = RET_OK;
           }
         } else {
@@ -2198,7 +2306,8 @@ ret_t widget_set_prop_pointer(widget_t* widget, const char* name, void* pointer)
   return widget_set_prop_pointer_ex(widget, name, pointer, NULL);
 }
 
-ret_t widget_set_prop_pointer_ex(widget_t* widget, const char* name, void* pointer, tk_destroy_t destroy) {
+ret_t widget_set_prop_pointer_ex(widget_t* widget, const char* name, void* pointer,
+                                 tk_destroy_t destroy) {
   value_t v;
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && name != NULL, RET_BAD_PARAMS);

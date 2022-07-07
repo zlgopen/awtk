@@ -1132,6 +1132,7 @@ int32_t event_from_name(const char* name);
 
 #define STR_ON_EVENT_PREFIX "on:"
 #define STR_GLOBAL_EVENT_PREFIX "global"
+#define STR_GLOBAL_VARS_CHANGED "global_vars_changed"
 #define STR_VALUE_CHANGED_BY_UI "value_changed_by_ui"
 
 END_C_DECLS

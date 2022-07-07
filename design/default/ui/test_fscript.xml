@@ -29,7 +29,7 @@
     print("click:", x, y, "alt=", alt, "ctrl=", ctrl, "cmd=", cmd, "menu=", menu);
   </property>
 
-  <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=1,r=12,m=5,s=5)">
+  <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=1,r=13,m=5,s=5)">
     <label name="label" text="label" />
     <edit name="edit" tips="text edit" on:focus="print(focus)" on:blur="print('blur', widget_get('self','value'))"/>
     <progress_bar name="bar" text="" value="10" on:value_changed="print(widget_get('self','value'))"/>

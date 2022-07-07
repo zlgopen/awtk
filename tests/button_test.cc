@@ -236,13 +236,36 @@ TEST(Button, name) {
   widget_destroy(w1);
 }
 
+#include "tkc/fscript.h"
+
 TEST(Button, event_fscript) {
   pointer_event_t evt;
   widget_t* w = window_create(NULL, 0, 0, 320, 240);
-  event_t* e = pointer_event_init(&evt, EVT_CLICK, w, 0, 0);
+  event_t* e = pointer_event_init(&evt, EVT_CLICK, w, 123, 234);
+  tk_object_t* global = fscript_get_global_object();
+  widget_set_prop_str(w, "on:click", "print('hello\n');global.x = x;return RET_STOP");
 
-  widget_set_prop_str(w, "on:click", "print('hello\n');return RET_STOP");
   ASSERT_EQ(widget_dispatch(w, e), RET_STOP);
+  ASSERT_EQ(widget_dispatch(w, e), RET_STOP);
+  ASSERT_EQ(widget_dispatch(w, e), RET_STOP);
+  ASSERT_EQ(widget_dispatch(w, e), RET_STOP);
+  ASSERT_EQ(tk_object_get_prop_int(global, "x", 0), 123);
   
+  widget_set_prop_str(w, "on:click", "print('hello\n');global.y=y;return RET_STOP");
+  ASSERT_EQ(widget_dispatch(w, e), RET_STOP);
+  ASSERT_EQ(tk_object_get_prop_int(global, "y", 0), 234);
+
+  widget_destroy(w);
+}
+
+TEST(Button, event_fscript_global_var) {
+  pointer_event_t evt;
+  widget_t* w = window_create(NULL, 0, 0, 320, 240);
+  event_t* e = pointer_event_init(&evt, EVT_CLICK, w, 123, 234);
+  tk_object_t* global = fscript_get_global_object();
+  widget_set_prop_str(w, "on:global_vars_changed", "print(global.value);return RET_STOP");
+
+  ASSERT_EQ(tk_object_set_prop_int(global, "value", 1234), RET_OK);
+
   widget_destroy(w);
 }
