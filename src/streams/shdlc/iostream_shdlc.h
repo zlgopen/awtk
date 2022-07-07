@@ -42,6 +42,7 @@ typedef struct _tk_iostream_shdlc_t tk_iostream_shdlc_t;
 struct _tk_iostream_shdlc_t {
   tk_iostream_t iostream;
 
+  /*private*/
   tk_istream_t* istream;
   tk_ostream_t* ostream;
 

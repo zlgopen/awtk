@@ -39,6 +39,7 @@ typedef struct _tk_istream_mbedtls_t tk_istream_mbedtls_t;
 struct _tk_istream_mbedtls_t {
   tk_istream_t istream;
 
+  /*private*/
   int sock;
   bool_t is_broken;
   mbedtls_ssl_context* ssl;

@@ -40,6 +40,7 @@ typedef struct _tk_iostream_udp_t tk_iostream_udp_t;
 struct _tk_iostream_udp_t {
   tk_iostream_t iostream;
 
+  /*private*/
   int sock;
   tk_istream_t* istream;
   tk_ostream_t* ostream;

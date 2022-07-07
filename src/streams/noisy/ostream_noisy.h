@@ -57,6 +57,7 @@ struct _tk_ostream_noisy_t {
    */
   uint32_t write_count;
 
+  /*private*/
   wbuffer_t wb;
   tk_ostream_t* real_ostream;
 };

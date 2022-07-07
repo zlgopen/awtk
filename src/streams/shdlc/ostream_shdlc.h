@@ -57,6 +57,7 @@ struct _tk_ostream_shdlc_t {
    */
   uint32_t compress_threshold;
 
+  /*private*/
   wbuffer_t wb;
   uint8_t seqno;
   wbuffer_t wb_compress;

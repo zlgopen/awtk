@@ -53,6 +53,7 @@ struct _tk_istream_shdlc_t {
    */
   uint8_t retry_times;
 
+  /*private*/
   wbuffer_t wb;
   ring_buffer_t* rb;
   uint8_t last_seqno;

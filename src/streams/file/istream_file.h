@@ -40,6 +40,7 @@ typedef struct _tk_istream_file_t tk_istream_file_t;
 struct _tk_istream_file_t {
   tk_istream_t istream;
 
+  /*private*/
   fs_file_t* file;
 };
 

@@ -40,6 +40,7 @@ typedef struct _tk_iostream_mbedtls_t tk_iostream_mbedtls_t;
 struct _tk_iostream_mbedtls_t {
   tk_iostream_t iostream;
 
+  /*private*/
   mbedtls_conn_t* conn;
   tk_istream_t* istream;
   tk_ostream_t* ostream;

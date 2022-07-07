@@ -45,9 +45,10 @@ typedef struct _tk_iostream_stats_t tk_iostream_stats_t;
  */
 struct _tk_iostream_stats_t {
   tk_iostream_t iostream;
+
+  /*private*/
   tk_istream_t* istream;
   tk_ostream_t* ostream;
-
   tk_iostream_t* impl;
 };
 

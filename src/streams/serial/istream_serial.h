@@ -41,6 +41,7 @@ typedef struct _tk_istream_serial_t tk_istream_serial_t;
 struct _tk_istream_serial_t {
   tk_istream_t istream;
 
+  /*private*/
   serial_handle_t fd;
   bool_t is_broken;
 };

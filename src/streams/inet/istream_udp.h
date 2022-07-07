@@ -40,6 +40,7 @@ typedef struct _tk_istream_udp_t tk_istream_udp_t;
 struct _tk_istream_udp_t {
   tk_istream_t istream;
 
+  /*private*/
   int sock;
   bool_t is_broken;
   struct sockaddr_in addr;

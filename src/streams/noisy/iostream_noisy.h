@@ -41,9 +41,9 @@ typedef struct _tk_iostream_noisy_t tk_iostream_noisy_t;
 struct _tk_iostream_noisy_t {
   tk_iostream_t iostream;
 
+  /*private*/
   tk_ostream_t* ostream;
   tk_istream_t* istream;
-
   tk_iostream_t* real_iostream;
 };
 

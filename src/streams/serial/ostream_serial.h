@@ -41,6 +41,7 @@ typedef struct _tk_ostream_serial_t tk_ostream_serial_t;
 struct _tk_ostream_serial_t {
   tk_ostream_t ostream;
 
+  /*private*/
   serial_handle_t fd;
   bool_t is_broken;
 };

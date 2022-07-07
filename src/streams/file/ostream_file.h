@@ -40,6 +40,7 @@ typedef struct _tk_ostream_file_t tk_ostream_file_t;
 struct _tk_ostream_file_t {
   tk_ostream_t ostream;
 
+  /*private*/
   fs_file_t* file;
 };
 

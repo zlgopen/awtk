@@ -40,6 +40,7 @@ typedef struct _tk_ostream_mbedtls_t tk_ostream_mbedtls_t;
 struct _tk_ostream_mbedtls_t {
   tk_ostream_t ostream;
 
+  /*private*/
   int sock;
   bool_t is_broken;
   mbedtls_ssl_context* ssl;

@@ -39,6 +39,7 @@ typedef struct _tk_istream_mem_t tk_istream_mem_t;
 struct _tk_istream_mem_t {
   tk_istream_t istream;
 
+  /*private*/
   bool_t own_the_buff;
   uint8_t* buff;
   uint32_t size;

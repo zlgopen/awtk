@@ -38,6 +38,8 @@ typedef struct _tk_istream_stats_t tk_istream_stats_t;
  */
 struct _tk_istream_stats_t {
   tk_istream_t istream;
+  
+  /*private*/
   tk_istream_t* impl_istream;
   int count;
 };

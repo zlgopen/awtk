@@ -40,6 +40,7 @@ typedef struct _tk_ostream_tcp_t tk_ostream_tcp_t;
 struct _tk_ostream_tcp_t {
   tk_ostream_t ostream;
 
+  /*private*/
   int sock;
   bool_t is_broken;
 };

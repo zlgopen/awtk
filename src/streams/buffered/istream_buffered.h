@@ -42,6 +42,7 @@ typedef struct _tk_istream_buffered_t tk_istream_buffered_t;
 struct _tk_istream_buffered_t {
   tk_istream_t istream;
 
+  /*private*/
   ring_buffer_t* rb;
   tk_istream_t* real_istream;
 };

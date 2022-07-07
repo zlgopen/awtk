@@ -40,6 +40,7 @@ typedef struct _tk_iostream_mem_t tk_iostream_mem_t;
 struct _tk_iostream_mem_t {
   tk_iostream_t iostream;
 
+  /*private*/
   tk_istream_t* istream;
   tk_ostream_t* ostream;
 };

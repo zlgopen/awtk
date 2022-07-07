@@ -38,8 +38,9 @@ typedef struct _tk_ostream_stats_t tk_ostream_stats_t;
  */
 struct _tk_ostream_stats_t {
   tk_ostream_t ostream;
-  tk_ostream_t* impl_ostream;
 
+  /*private*/
+  tk_ostream_t* impl_ostream;
   uint32_t count;
 };
 

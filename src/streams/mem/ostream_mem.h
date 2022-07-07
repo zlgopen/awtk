@@ -39,6 +39,7 @@ typedef struct _tk_ostream_mem_t tk_ostream_mem_t;
 struct _tk_ostream_mem_t {
   tk_ostream_t ostream;
 
+  /*private*/
   bool_t own_the_buff;
   uint8_t* buff;
   uint32_t size;

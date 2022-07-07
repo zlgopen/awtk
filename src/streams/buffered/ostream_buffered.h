@@ -41,6 +41,7 @@ typedef struct _tk_ostream_buffered_t tk_ostream_buffered_t;
 struct _tk_ostream_buffered_t {
   tk_ostream_t ostream;
 
+  /*private*/
   wbuffer_t wb;
   tk_ostream_t* real_ostream;
 };
