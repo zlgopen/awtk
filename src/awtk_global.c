@@ -104,7 +104,6 @@
 #include "image_loader_web.h"
 #endif /*AWTK_WEB*/
 
-static uint64_t s_ui_thread_id = 0;
 
 static ret_t tk_add_font(const asset_info_t* res) {
   if (res->subtype == ASSET_TYPE_FONT_BMP) {
@@ -198,7 +197,8 @@ static ret_t awtk_mem_on_out_of_memory(void* ctx, uint32_t tried_times, uint32_t
 ret_t tk_init_internal(void) {
   font_loader_t* font_loader = NULL;
 
-  s_ui_thread_id = tk_thread_self();
+  tk_set_ui_thread(tk_thread_self());
+
 #ifndef WITHOUT_FSCRIPT
   fscript_global_init();
 #endif
@@ -460,10 +460,6 @@ int32_t tk_get_pointer_y(void) {
 
 bool_t tk_is_pointer_pressed(void) {
   return window_manager_get_pointer_pressed(window_manager());
-}
-
-bool_t tk_is_ui_thread(void) {
-  return s_ui_thread_id == tk_thread_self();
 }
 
 typedef struct _idle_callback_info_t {

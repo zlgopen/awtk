@@ -151,14 +151,6 @@ ret_t tk_deinit_internal(void);
 ret_t tk_exit(void);
 
 /**
- * @method tk_is_ui_thread
- * 
- * 判断当前线程是否是UI线程。
- * @return {bool_t} 返回TRUE表示是，否则表示否。
- */
-bool_t tk_is_ui_thread(void);
-
-/**
  * @method tk_run_in_ui_thread
  * 后台线程在UI线程执行指定的函数。
  *

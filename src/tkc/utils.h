@@ -857,6 +857,25 @@ float_t tk_eval_ratio_or_px(const char* expr, int32_t value);
  */
 char* tk_replace_char(char* str, char from, char to);
 
+/**
+ * @method tk_is_ui_thread
+ * 
+ * 判断当前线程是否是UI线程。
+ * @return {bool_t} 返回TRUE表示是，否则表示否。
+ */
+bool_t tk_is_ui_thread(void);
+
+/**
+ * @method tk_set_ui_thread
+ *
+ * 设置UI线程的ID。
+ *
+ * @param {uint64_t} ui_thread_id UI线程的ID。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_set_ui_thread(uint64_t ui_thread_id);
+
 ret_t tk_replace_locale(const char* name, char out[TK_NAME_LEN + 1], const char* locale);
 
 /*public for test*/

@@ -749,3 +749,10 @@ TEST(Utils, replace_char) {
   tk_strcpy(str, "a/b/c");
   ASSERT_STREQ(tk_replace_char(str, '\\', '/'), "a/b/c");
 }
+
+#include "tkc/thread.h"
+
+TEST(Utils, ui_thread) {
+  tk_set_ui_thread(tk_thread_self());
+  ASSERT_EQ(tk_is_ui_thread(), TRUE);
+}

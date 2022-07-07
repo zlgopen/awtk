@@ -2,6 +2,7 @@
 
 2022/07/07
   * 完善widget fscript事件处理。
+  * 将tk\_is\_ui\_thread移动到utils.c中。
 
 2022/07/06
   * 修复支持applets时主题切换的问题。

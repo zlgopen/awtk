@@ -25,6 +25,7 @@
 #include "tkc/path.h"
 #include "tkc/utils.h"
 #include "tkc/object.h"
+#include "tkc/thread.h"
 #include "tkc/named_value.h"
 #include "tkc/data_reader_factory.h"
 #include "tkc/data_writer_factory.h"
@@ -1508,4 +1509,16 @@ char* tk_replace_char(char* str, char from, char to) {
   }
 
   return str;
+}
+
+static uint64_t s_ui_thread_id = 0;
+
+ret_t tk_set_ui_thread(uint64_t ui_thread_id) {
+  s_ui_thread_id = ui_thread_id;
+
+  return RET_OK;
+}
+
+bool_t tk_is_ui_thread(void) {
+  return s_ui_thread_id == tk_thread_self();
 }
