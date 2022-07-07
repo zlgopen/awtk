@@ -23,12 +23,17 @@
 
 #if defined(WITH_SDL) || defined(LINUX)
 #ifndef WITH_WIDGET_VPAGE
-#define WITH_WIDGET_VPAGE
+#define WITH_WIDGET_VPAGE 1
 #endif /*WITH_WIDGET_VPAGE*/
+
+#ifndef WITH_WIDGET_TIMER
+#define WITH_WIDGET_TIMER 1
+#endif /*WITH_WIDGET_TIMER*/
 #endif /*WITH_SDL*/
 
 #include "ext_widgets.h"
 #include "vpage/vpage.h"
+#include "timer_widget/timer_widget.h"
 #include "switch/switch.h"
 #include "gauge/gauge.h"
 #include "mledit/mledit.h"
@@ -122,6 +127,10 @@ ret_t tk_ext_widgets_init(void) {
 
   FACTORY_TABLE_ENTRY("guage", gauge_create)
   FACTORY_TABLE_ENTRY("guage_pointer", gauge_pointer_create)
+
+#ifdef WITH_WIDGET_TIMER
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_TIMER_WIDGET, timer_widget_create)
+#endif /*WITH_WIDGET_TIMER*/
 
 #ifdef WITH_WIDGET_VPAGE
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_VPAGE, vpage_create)

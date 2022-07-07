@@ -3,6 +3,9 @@
 2022/07/07
   * 完善widget fscript事件处理。
   * 将tk\_is\_ui\_thread移动到utils.c中。
+  * 完善str\_set\_with\_len。
+  * 修复打印ubjson的时候出现二进制断言的问题(感谢智明提供补丁)
+  * 增加控件timer\_widget。  
 
 2022/07/06
   * 修复支持applets时主题切换的问题。
