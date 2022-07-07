@@ -54,7 +54,9 @@ str_t* str_init(str_t* str, uint32_t capacity) {
 }
 
 ret_t str_set(str_t* str, const char* text) {
-  return str_set_with_len(str, text, 0xffffffff);
+  return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
+
+  return str_set_with_len(str, text, tk_strlen(text));
 }
 
 ret_t str_clear(str_t* str) {
@@ -68,16 +70,14 @@ ret_t str_clear(str_t* str) {
 }
 
 ret_t str_set_with_len(str_t* str, const char* text, uint32_t len) {
-  uint32_t size = 0;
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
 
-  size = strlen(text);
-  size = tk_min(size, len);
-  return_value_if_fail(str_extend(str, size + 1) == RET_OK, RET_BAD_PARAMS);
+  return_value_if_fail(str_extend(str, len + 1) == RET_OK, RET_BAD_PARAMS);
 
-  tk_strncpy(str->str, text, size);
-  str->size = size;
+  tk_strncpy(str->str, text, len);
+  str->size = len;
   str->str[str->size] = '\0';
+  str->size = tk_strlen(str->str);
 
   return RET_OK;
 }

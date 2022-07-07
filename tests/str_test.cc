@@ -62,6 +62,7 @@ TEST(Str, basic) {
 TEST(Str, set_with_len) {
   str_t str;
   str_t* s = NULL;
+  char c = 'a';
   s = str_init(&str, 0);
 
   ASSERT_EQ(str_set_with_len(s, "hello world", 0), RET_OK);
@@ -72,6 +73,15 @@ TEST(Str, set_with_len) {
 
   ASSERT_EQ(str_set_with_len(s, "hello world", 5), RET_OK);
   ASSERT_EQ(str_eq(s, "hello"), TRUE);
+  
+  ASSERT_EQ(str_set_with_len(s, &c, 1), RET_OK);
+  ASSERT_EQ(s->size, 1);
+  ASSERT_EQ(str_eq(s, "a"), TRUE);
+ 
+  c = '\0';
+  ASSERT_EQ(str_set_with_len(s, &c, 1), RET_OK);
+  ASSERT_EQ(s->size, 0);
+  ASSERT_EQ(str_eq(s, ""), TRUE);
 
   str_reset(s);
 }
