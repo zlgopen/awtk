@@ -140,7 +140,7 @@ date >/dev/ttys033
     </property>
   </button>
 
-  <serial name="serial" device="/dev/ttys028">
+  <serial name="serial">
     <property name="on:data">
       var is = widget_get('self','istream')
       var msg = istream_read_string(is, 100, 0)
