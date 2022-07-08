@@ -155,3 +155,10 @@ date >/dev/ttys033
 ```
 ./bin/preview_ui design/default/ui/serial.xml
 ```
+
+## 7. 移植
+
+目前串口只实现了Windows, Linux, MacOS, Android 和 AWorks 等平台，其它平台需要自己移植。
+
+请参考AWorks平台的移植：src/platforms/aworkslp/serial_helper.c
+
