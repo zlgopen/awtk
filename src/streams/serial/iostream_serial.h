@@ -85,6 +85,17 @@ tk_iostream_t* tk_iostream_serial_create(const char* port);
 ret_t tk_iostream_serial_config(tk_iostream_t* iostream, int32_t baudrate, bytesize_t bytesize,
                                 parity_t parity, stopbits_t stopbits, flowcontrol_t flowcontrol);
 
+/**
+ * @method tk_iostream_serial_wait_for_data
+ * 等待串口数据。
+ * @param {tk_iostream_t*} iostream 串口对象。
+ * @param {uint32_t} timeout 等待时间(ms)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_iostream_serial_wait_for_data(tk_iostream_t* iostream, uint32_t timeout);
+
 #define TK_IOSTREAM_SERIAL_PROP_PARITY "parity"
 #define TK_IOSTREAM_SERIAL_PROP_STOPBITS "stopbits"
 #define TK_IOSTREAM_SERIAL_PROP_BAUDRATE "baudrate"

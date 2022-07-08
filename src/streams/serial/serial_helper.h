@@ -106,6 +106,46 @@ ret_t serial_config(serial_handle_t handle, uint32_t baudrate, bytesize_t bytesi
 ret_t serial_timeout_set(serial_handle_t handle, serial_timeout_t* timeout);
 ret_t serial_timeout_get(serial_handle_t handle, serial_timeout_t* timeout);
 
+/**
+ * @method serial_stopbits_from_str
+ * 字符串转stopbits
+ * @annotation ["global"]
+ * @param {const char*} str 字符串。
+ *
+ * @return {stopbits_t} 返回stopbits。
+ */
+stopbits_t serial_stopbits_from_str(const char* str);
+
+/**
+ * @method serial_flowcontrol_from_str
+ * 字符串转flowcontrol
+ * @annotation ["global"]
+ * @param {const char*} str 字符串。
+ *
+ * @return {flowcontrol_t} 返回flowcontrol。
+ */
+flowcontrol_t serial_flowcontrol_from_str(const char* str);
+
+/**
+ * @method serial_parity_from_str
+ * 字符串转parity
+ * @annotation ["global"]
+ * @param {const char*} str 字符串。
+ *
+ * @return {parity_t} 返回parity。
+ */
+parity_t serial_parity_from_str(const char* str);
+
+/**
+ * @method serial_bytesize_from_str
+ * 字符串转bytesize
+ * @annotation ["global"]
+ * @param {const char*} str 字符串。
+ *
+ * @return {bytesize_t} 返回bytesize。
+ */
+bytesize_t serial_bytesize_from_str(const char* str);
+
 END_C_DECLS
 
 #endif /*TK_SERIAL_HELPER_H*/

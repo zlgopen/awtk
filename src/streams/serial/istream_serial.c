@@ -19,6 +19,7 @@
  *
  */
 
+
 #include "tkc/mem.h"
 #include "streams/serial/serial_helper.h"
 #include "streams/serial/istream_serial.h"

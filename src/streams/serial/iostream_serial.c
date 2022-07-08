@@ -183,3 +183,10 @@ ret_t tk_iostream_serial_config(tk_iostream_t* iostream, int32_t baudrate, bytes
 
   return RET_OK;
 }
+
+ret_t tk_iostream_serial_wait_for_data(tk_iostream_t* iostream, uint32_t timeout) {
+  tk_iostream_serial_t* iostream_serial = TK_IOSTREAM_SERIAL(iostream);
+  return_value_if_fail(iostream_serial != NULL, RET_BAD_PARAMS);
+
+  return serial_wait_for_data(iostream_serial->fd, timeout);
+}

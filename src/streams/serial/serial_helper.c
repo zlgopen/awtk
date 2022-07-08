@@ -998,3 +998,67 @@ ret_t serial_timeout_get(serial_handle_t handle, serial_timeout_t* timeout) {
 }
 
 #endif /*WIN32*/
+
+stopbits_t serial_stopbits_from_str(const char* str) {
+  if (str == NULL) {
+    return stopbits_one;
+  }
+
+  if (strstr(str, "two") != NULL || strchr(str, '2') != NULL) {
+    return stopbits_two;
+  } else if (strstr(str, "five") != NULL || strchr(str, '5') != NULL) {
+    return stopbits_one_point_five;
+  } else {
+    return stopbits_one;
+  }
+}
+
+flowcontrol_t serial_flowcontrol_from_str(const char* str) {
+  if (str == NULL) {
+    return flowcontrol_none;
+  }
+
+  if (strstr(str, "soft") != NULL) {
+    return flowcontrol_software;
+  } else if (strstr(str, "hard") != NULL) {
+    return flowcontrol_hardware;
+  } else {
+    return flowcontrol_none;
+  }
+}
+
+parity_t serial_parity_from_str(const char* str) {
+  if (str == NULL) {
+    return parity_none;
+  }
+
+  if (strstr(str, "odd") != NULL) {
+    return parity_odd;
+  } else if (strstr(str, "even") != NULL) {
+    return parity_even;
+  } else if (strstr(str, "mark") != NULL) {
+    return parity_mark;
+  } else if (strstr(str, "space") != NULL) {
+    return parity_space;
+  } else {
+    return parity_none;
+  }
+}
+
+bytesize_t serial_bytesize_from_str(const char* str) {
+  if (str == NULL) {
+    return eightbits;
+  }
+
+  if (strstr(str, "eight") != NULL || strchr(str, '8') != NULL) {
+    return eightbits;
+  } else if (strstr(str, "seven") != NULL || strchr(str, '7') != NULL) {
+    return sevenbits;
+  } else if (strstr(str, "six") != NULL || strchr(str, '6') != NULL) {
+    return sixbits;
+  } else if (strstr(str, "five") != NULL || strchr(str, '5') != NULL) {
+    return fivebits;
+  }
+
+  return eightbits;
+}
