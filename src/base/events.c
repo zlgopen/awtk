@@ -262,6 +262,11 @@ int32_t event_from_name(const char* name) {
         return EVT_BLUR;
       }
     }
+    case 'd': {
+      if (tk_str_eq(name, "data")) {
+        return EVT_DATA;
+      }
+    }
     case 'g': {
       if (tk_str_eq(name, "global_key_up")) {
         return EVT_KEY_UP;
@@ -299,6 +304,8 @@ int32_t event_from_name(const char* name) {
     case 'c': {
       if (tk_str_eq(name, "click")) {
         return EVT_CLICK;
+      } else if (tk_str_eq(name, "connect")) {
+        return EVT_CONNECT;
       }
       break;
     }

@@ -491,6 +491,16 @@ typedef enum _event_type_t {
    */
   EVT_TIMER,
   /**
+   * @const EVT_DATA
+   * 数据到来(event_t)。
+   */
+  EVT_DATA,
+  /**
+   * @const EVT_CONNECT
+   * 客户连接到来(event_t)。
+   */
+  EVT_CONNECT,
+  /**
    * @const EVT_REQ_START
    * event queue其它请求编号起始值。
    */
