@@ -6,12 +6,9 @@
     </property>
   </button>
 
-  <edit name="device" x="119" y="13" w="178" h="38" text="/dev/ttys028">
-  </edit>
-  <label name="recv" text="label" line_wrap="true" style="" tr_text="recv message" word_wrap="true" x="5" y="123" w="303" h="101" >
-  </label>
-  <edit name="send" text="hello serial" x="5" y="273" w="200" h="34" >
-  </edit>
+  <edit name="device" x="119" y="13" w="178" h="38" text="/dev/ttys028" />
+  <label name="recv" x="5" y="123" w="303" h="101" />
+  <edit name="send" text="hello serial" x="5" y="273" w="200" h="34" />
 
   <button text="button" tr_text="send" x="220" y="274" w="81" h="34" >
     <property name="on:click">

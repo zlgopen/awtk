@@ -4,6 +4,7 @@
   * 增加函数 tk\_iostream\_serial\_wait\_for\_data
   * 增加事件EVT\_DATA/EVT\_CONNECT
   * 增加控件serial\_widget
+  * 增加文档[使用 serial_widget 简化串口编程](serial_widget.md)
 
 2022/07/07
   * 完善widget fscript事件处理。
