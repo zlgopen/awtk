@@ -812,6 +812,8 @@ ret_t fscript_exec(fscript_t* fscript, value_t* result) {
     s_hooks->after_exec(fscript);
   }
 
+  fscript_locals_destroy(fscript);
+
   return RET_OK;
 }
 

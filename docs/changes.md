@@ -1,4 +1,9 @@
 # 最新动态
+2022/07/08
+  * 完善serial helper
+  * 增加函数 tk\_iostream\_serial\_wait\_for\_data
+  * 增加事件EVT\_DATA/EVT\_CONNECT
+  * 增加控件serial\_widget
 
 2022/07/07
   * 完善widget fscript事件处理。
