@@ -29,11 +29,14 @@
 #include "streams/serial/serial_helper.h"
 #include "streams/serial/iostream_serial.h"
 
+static ret_t serial_widget_apply_props(widget_t* widget);
+
 ret_t serial_widget_set_baudrate(widget_t* widget, uint32_t baudrate) {
   serial_widget_t* serial_widget = SERIAL_WIDGET(widget);
   return_value_if_fail(serial_widget != NULL, RET_BAD_PARAMS);
 
   serial_widget->baudrate = baudrate;
+  serial_widget_apply_props(widget);
 
   return RET_OK;
 }
@@ -43,6 +46,7 @@ ret_t serial_widget_set_device(widget_t* widget, const char* device) {
   return_value_if_fail(serial_widget != NULL, RET_BAD_PARAMS);
 
   serial_widget->device = tk_str_copy(serial_widget->device, device);
+  serial_widget_apply_props(widget);
 
   return RET_OK;
 }
@@ -52,6 +56,7 @@ ret_t serial_widget_set_bytesize(widget_t* widget, uint32_t bytesize) {
   return_value_if_fail(serial_widget != NULL, RET_BAD_PARAMS);
 
   serial_widget->bytesize = bytesize;
+  serial_widget_apply_props(widget);
 
   return RET_OK;
 }
@@ -61,6 +66,7 @@ ret_t serial_widget_set_parity(widget_t* widget, uint32_t parity) {
   return_value_if_fail(serial_widget != NULL, RET_BAD_PARAMS);
 
   serial_widget->parity = parity;
+  serial_widget_apply_props(widget);
 
   return RET_OK;
 }
@@ -70,6 +76,7 @@ ret_t serial_widget_set_stopbits(widget_t* widget, uint32_t stopbits) {
   return_value_if_fail(serial_widget != NULL, RET_BAD_PARAMS);
 
   serial_widget->stopbits = stopbits;
+  serial_widget_apply_props(widget);
 
   return RET_OK;
 }
@@ -79,6 +86,7 @@ ret_t serial_widget_set_flowcontrol(widget_t* widget, uint32_t flowcontrol) {
   return_value_if_fail(serial_widget != NULL, RET_BAD_PARAMS);
 
   serial_widget->flowcontrol = flowcontrol;
+  serial_widget_apply_props(widget);
 
   return RET_OK;
 }
@@ -192,7 +200,7 @@ static ret_t serial_widget_check_if_data_available(const timer_info_t* info) {
 
 #define SERIAL_CHECK_INTERVAL 100
 
-static ret_t serial_widget_apply_props(const idle_info_t* info) {
+static ret_t serial_widget_apply_props_async(const idle_info_t* info) {
   int fd = -1;
   widget_t* widget = WIDGET(info->ctx);
   serial_widget_t* serial_widget = SERIAL_WIDGET(info->ctx);
@@ -223,13 +231,19 @@ static ret_t serial_widget_apply_props(const idle_info_t* info) {
   return RET_REMOVE;
 }
 
-static ret_t serial_widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
+static ret_t serial_widget_apply_props(widget_t* widget) {
   serial_widget_t* serial_widget = SERIAL_WIDGET(widget);
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(serial_widget != NULL, RET_BAD_PARAMS);
 
-  if (serial_widget->idle_id == TK_INVALID_ID) {
-    serial_widget->idle_id = idle_add(serial_widget_apply_props, widget);
+  if (serial_widget->idle_id == TK_INVALID_ID && serial_widget->device != NULL) {
+    serial_widget->idle_id = idle_add(serial_widget_apply_props_async, widget);
   }
+
+  return RET_OK;
+}
+
+static ret_t serial_widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
+  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(SERIAL_WIDGET_PROP_BAUDRATE, name)) {
     serial_widget_set_baudrate(widget, value_uint32(v));
