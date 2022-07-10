@@ -33,6 +33,7 @@ typedef struct _column_definition_t {
   uint8_t right_margin;
   uint8_t top_margin;
   uint8_t bottom_margin;
+  bool_t fill_available;
 
   /*用于临时存储*/
   uint32_t real_w;
@@ -67,6 +68,10 @@ static ret_t column_definition_on_param(func_call_parser_t* parser, const char* 
       p->definition->bottom_margin = tk_atoi(value);
       break;
     }
+    case 'f': {
+      p->definition->fill_available = tk_atob(value);
+      break;
+    }
     case 'm': {
       int32_t margin = tk_atoi(value);
       p->definition->top_margin = margin;
@@ -96,7 +101,7 @@ static column_definition_t* column_definition_create(const char* str) {
   func_call_parser_parse(&(p.parser));
   func_call_parser_deinit(&(p.parser));
 
-  assert(definition->w != 0);
+  assert(definition->w != 0 || definition->fill_available);
 
   return definition;
 }
@@ -253,6 +258,18 @@ static ret_t grid_on_layout_children_impl(widget_t* widget) {
   }
 
   log_if_fail(tw <= widget->w);
+
+  if (tw < widget->w) {
+    /*把剩余宽度加到fill_available=true的列上，只允许一列指定fill_available=true*/
+    int32_t remain_w = widget->w - tw; 
+    for (i = 0; i < cols; i++) {
+      column_definition_t* def = (column_definition_t*)darray_get(&(grid->cols_definition), i);
+      if (def->fill_available) {
+        def->real_w += remain_w;
+        break;
+      }
+    }
+  }
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   uint32_t row = i / cols;

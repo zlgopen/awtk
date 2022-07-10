@@ -73,6 +73,7 @@ typedef struct _grid_t {
    * * top_margin(可选，可缩写为t) 该列顶部的边距。
    * * bottom_margin(可选，可缩写为b) 该列底部的边距。
    * * margin(可选，可缩写为m) 同时指定上面4个边距。
+   * * fill_available(可选，可缩写为f) 填充剩余宽度(只有一列可以指定)。
    * 
    */
   char* columns_definition;

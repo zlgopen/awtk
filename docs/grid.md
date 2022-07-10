@@ -37,6 +37,7 @@
    * * top_margin（可选，可缩写为 t) 该列顶部的边距。
    * * bottom_margin（可选，可缩写为 b) 该列底部的边距。
    * * margin（可选，可缩写为 m) 同时指定上面 4 个边距。
+   * * fill_available(可选，可缩写为f) 填充剩余宽度(只有一列可以指定)。
    * 
    */
   char* columns_definition;

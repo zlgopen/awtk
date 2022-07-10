@@ -1,4 +1,8 @@
 # 最新动态
+
+2022/07/11
+  * grid控件的列定义增加参考fill\_available，用于填充剩余宽度(只有一列可以指定)。
+
 2022/07/08
   * 完善serial helper
   * 增加函数 tk\_iostream\_serial\_wait\_for\_data
