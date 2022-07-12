@@ -1,5 +1,9 @@
 # 最新动态
 
+2022/07/13
+  * 重构 widget\_add\_child
+  * 完善 pages  动态增加子控件。
+
 2022/07/12
   * 对话框高亮增加参数update\_background(感谢雨欣提供补丁)
   * 完善 auto\_adjust\_size 为true时layout的处理(感谢智明提供补丁)

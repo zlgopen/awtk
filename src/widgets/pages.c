@@ -227,6 +227,12 @@ static ret_t pages_on_destroy(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t pages_on_add_child(widget_t* widget, widget_t* child) {
+  widget_add_child_default(widget, child);
+  pages_show_active(widget);
+  return RET_OK;
+}
+
 static ret_t pages_on_remove_child(widget_t* widget, widget_t* child) {
   pages_t* pages = PAGES(widget);
   return_value_if_fail(widget != NULL && pages != NULL && child != NULL, RET_BAD_PARAMS);
@@ -260,6 +266,7 @@ TK_DECL_VTABLE(pages) = {.size = sizeof(pages_t),
                          .on_event = pages_on_event,
                          .get_prop = pages_get_prop,
                          .set_prop = pages_set_prop,
+                         .on_add_child = pages_on_add_child,
                          .on_remove_child = pages_on_remove_child,
                          .on_destroy = pages_on_destroy};
 
