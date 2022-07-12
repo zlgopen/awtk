@@ -1085,16 +1085,23 @@ static ret_t window_manager_default_get_prop(widget_t* widget, const char* name,
     canvas_t* c = native_window_get_canvas(wm->native_window);
     value_set_pointer(v, c);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CURR_WIN)) {
+    value_set_pointer(v, wm->curr_win);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
 }
 
 static ret_t window_manager_default_set_prop(widget_t* widget, const char* name, const value_t* v) {
+  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_POINTER_CURSOR)) {
     return window_manager_set_cursor(widget, value_str(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_CURR_WIN)) {
+    wm->curr_win = value_pointer(v);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;

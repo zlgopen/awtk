@@ -57,6 +57,12 @@ struct _dialog_highlighter_default_t {
    * 由于在没有过度动画的情况下，截图中已经包括黑色色块，为了让 system_bar 也同步高亮部分的色块透明。
    */
   uint8_t system_bar_alpha;
+
+  /**
+   * @property {bool_t} update_background
+   * 是否刷新底层窗口的截图。
+   */
+  bool_t update_background;
 };
 
 /**
@@ -72,6 +78,7 @@ dialog_highlighter_t* dialog_highlighter_default_create(tk_object_t* args);
 #define DIALOG_HIGHLIGHTER_DEFAULT_ARG_START_ALPHA "start_alpha"
 #define DIALOG_HIGHLIGHTER_DEFAULT_ARG_END_ALPHA "end_alpha"
 #define DIALOG_HIGHLIGHTER_DEFAULT_ARG_ALPHA "alpha"
+#define DIALOG_HIGHLIGHTER_DEFAULT_ARG_UPDATE_BACKGROUND "update_background"
 
 END_C_DECLS
 

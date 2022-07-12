@@ -507,6 +507,9 @@ uint32_t window_manager_get_curr_expected_sleep_time(widget_t* widget);
 ret_t window_manager_set_curr_expected_sleep_time(widget_t* widget,
                                                   uint32_t curr_expected_sleep_time);
 
+/* public for dialog highlighter */
+#define WIDGET_PROP_CURR_WIN "curr_win"
+
 #define WINDOW_MANAGER(widget) ((window_manager_t*)(widget))
 
 END_C_DECLS

@@ -104,15 +104,30 @@ static ret_t dialog_highlighter_default_prepare(dialog_highlighter_t* h, canvas_
 
 static ret_t dialog_highlighter_default_draw(dialog_highlighter_t* h, float_t percent) {
   rect_t r;
+  rect_t src;
+  rect_t dst;
   rect_t save_r;
-  canvas_t* c = h->canvas;
-  bitmap_t* img = &(h->img);
-  rect_t src = rect_init(0, 0, img->w, img->h);
-  rect_t dst = rect_init(0, 0, canvas_get_width(c), canvas_get_height(c));
+  canvas_t* c;
+  bitmap_t* img;
   dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
 
+  if (percent == 1 && dh->update_background) {
+    /* if window is open, update prev win image */
+    bitmap_t prev_img = {0};
+    widget_t* wm = window_manager();
+    widget_t* prev_win = window_manager_get_prev_window(wm);
+    if (widget_set_prop_pointer(wm, WIDGET_PROP_CURR_WIN, h->dialog) == RET_OK) {
+      window_manager_snap_prev_window(wm, prev_win, &prev_img);
+    }
+  }
+
+  c = h->canvas;
+  img = &(h->img);
+  src = rect_init(0, 0, img->w, img->h);
+  dst = rect_init(0, 0, canvas_get_width(c), canvas_get_height(c));
+
   if (percent == 1) {
-    /*if window is open, enable clip and draw system bar*/
+    /* if window is open, enable clip and draw system bar */
     canvas_draw_image(c, img, &src, &dst);
     window_manager_paint_system_bar(window_manager(), c);
   } else {
@@ -164,6 +179,7 @@ dialog_highlighter_t* dialog_highlighter_default_create(tk_object_t* args) {
   dh->end_alpha = 0;
   dh->start_alpha = 0;
   dh->system_bar_alpha = 0xff;
+  dh->update_background = FALSE;
 
   if (tk_object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_ARG_ALPHA, &v) == RET_OK) {
     dh->start_alpha = value_int(&v);
@@ -176,6 +192,10 @@ dialog_highlighter_t* dialog_highlighter_default_create(tk_object_t* args) {
 
   if (tk_object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_ARG_END_ALPHA, &v) == RET_OK) {
     dh->end_alpha = value_int(&v);
+  }
+
+  if (tk_object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_ARG_UPDATE_BACKGROUND, &v) == RET_OK) {
+    dh->update_background = value_bool(&v);
   }
 
   return h;
