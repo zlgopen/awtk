@@ -307,6 +307,52 @@ ret_t self_layouter_default_set_param(self_layouter_t* layouter, const char* nam
   return RET_OK;
 }
 
+static double widget_layout_calc_by_x(uint8_t x_attr, double x, double w, wh_t parent_w) {
+  switch (x_attr) {
+    case X_ATTR_CENTER:
+      x = (parent_w - w) / 2 + x;
+      break;
+    case X_ATTR_CENTER_PERCENT:
+      x = (parent_w - w) / 2 + (x * parent_w) / 100;
+      break;
+    case X_ATTR_RIGHT:
+      x = (parent_w - w) - x;
+      break;
+    case X_ATTR_RIGHT_PERCENT:
+      x = (parent_w - w) - (x * parent_w) / 100;
+      break;
+    case X_ATTR_PERCENT:
+      x = parent_w * x / 100;
+      break;
+    default:
+      break;
+  }
+  return x;
+}
+
+static double widget_layout_calc_by_y(uint8_t y_attr, double y, double h, wh_t parent_h) {
+  switch (y_attr) {
+    case Y_ATTR_MIDDLE:
+      y = (parent_h - h) / 2 + y;
+      break;
+    case Y_ATTR_MIDDLE_PERCENT:
+      y = (parent_h - h) / 2 + (y * parent_h) / 100;
+      break;
+    case Y_ATTR_BOTTOM:
+      y = (parent_h - h) - y;
+      break;
+    case Y_ATTR_BOTTOM_PERCENT:
+      y = (parent_h - h) - (y * parent_h) / 100;
+      break;
+    case Y_ATTR_PERCENT:
+      y = parent_h * y / 100;
+      break;
+    default:
+      break;
+  }
+  return y;
+}
+
 static ret_t widget_layout_calc(self_layouter_default_t* layout, rect_t* r, wh_t parent_w,
                                 wh_t parent_h) {
   uint8_t x_attr = layout->x_attr;
@@ -335,45 +381,8 @@ static ret_t widget_layout_calc(self_layouter_default_t* layout, rect_t* r, wh_t
       h = parent_h + h;
     }
 
-    switch (x_attr) {
-      case X_ATTR_CENTER:
-        x = (parent_w - w) / 2 + x;
-        break;
-      case X_ATTR_CENTER_PERCENT:
-        x = (parent_w - w) / 2 + (x * parent_w) / 100;
-        break;
-      case X_ATTR_RIGHT:
-        x = (parent_w - w) - x;
-        break;
-      case X_ATTR_RIGHT_PERCENT:
-        x = (parent_w - w) - (x * parent_w) / 100;
-        break;
-      case X_ATTR_PERCENT:
-        x = parent_w * x / 100;
-        break;
-      default:
-        break;
-    }
-
-    switch (y_attr) {
-      case Y_ATTR_MIDDLE:
-        y = (parent_h - h) / 2 + y;
-        break;
-      case Y_ATTR_MIDDLE_PERCENT:
-        y = (parent_h - h) / 2 + (y * parent_h) / 100;
-        break;
-      case Y_ATTR_BOTTOM:
-        y = (parent_h - h) - y;
-        break;
-      case Y_ATTR_BOTTOM_PERCENT:
-        y = (parent_h - h) - (y * parent_h) / 100;
-        break;
-      case Y_ATTR_PERCENT:
-        y = parent_h * y / 100;
-        break;
-      default:
-        break;
-    }
+    x = widget_layout_calc_by_x(x_attr, x, w, parent_w);
+    y = widget_layout_calc_by_y(y_attr, y, h, parent_h);
   }
 
   r->x = tk_roundi(x);
@@ -412,6 +421,14 @@ ret_t widget_layout_self_with_rect(self_layouter_t* layouter, widget_t* widget, 
       widget->vt->auto_adjust_size(widget);
       r.w = widget->w;
       r.h = widget->h;
+      if (widget->auto_adjust_size) {
+        if (l->x_attr != X_ATTR_UNDEF && area->w > 0) {
+          r.x = tk_roundi(widget_layout_calc_by_x(l->x_attr, l->x, (double)r.w, area->w));
+        }
+        if (l->y_attr != Y_ATTR_UNDEF && area->h > 0) {
+          r.y = tk_roundi(widget_layout_calc_by_y(l->y_attr, l->y, (double)r.h, area->h));
+        }
+      }
     }
 
     widget_move_resize_ex(widget, r.x + area->x, r.y + area->y, r.w, r.h, FALSE);

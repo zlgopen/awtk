@@ -2,7 +2,8 @@
 
 2022/07/12
   * 对话框高亮增加参数update\_background(感谢雨欣提供补丁)
-
+  * 完善 auto\_adjust\_size 为true时layout的处理(感谢智明提供补丁)
+   
 2022/07/11
   * grid控件的列定义增加参考fill\_available，用于填充剩余宽度(只有一列可以指定)。
 
