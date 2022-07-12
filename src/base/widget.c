@@ -981,21 +981,11 @@ static ret_t widget_update_style_object_recursive(widget_t* widget) {
   return RET_OK;
 }
 
-ret_t widget_add_child(widget_t* widget, widget_t* child) {
+ret_t widget_add_child_default(widget_t* widget, widget_t* child) {
   event_t e = event_init(EVT_WIDGET_ADD_CHILD, widget);
   return_value_if_fail(widget != NULL && child != NULL && child->parent == NULL, RET_BAD_PARAMS);
 
   child->parent = widget;
-
-  if (widget->children == NULL) {
-    widget->children = darray_create(4, NULL, NULL);
-  }
-
-  if (widget->vt->on_add_child) {
-    if (widget->vt->on_add_child(widget, child) == RET_OK) {
-      return RET_OK;
-    }
-  }
 
   if (child->vt->on_attach_parent) {
     child->vt->on_attach_parent(child, widget);
@@ -1015,6 +1005,22 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
   widget_dispatch(widget, &e);
 
   return RET_OK;
+}
+
+ret_t widget_add_child(widget_t* widget, widget_t* child) {
+  return_value_if_fail(widget != NULL && child != NULL && child->parent == NULL, RET_BAD_PARAMS);
+
+  if (widget->children == NULL) {
+    widget->children = darray_create(4, NULL, NULL);
+  }
+
+  if (widget->vt->on_add_child) {
+    if (widget->vt->on_add_child(widget, child) == RET_OK) {
+      return RET_OK;
+    }
+  }
+
+  return widget_add_child_default(widget, child);
 }
 
 ret_t widget_remove_child_prepare(widget_t* widget, widget_t* child) {

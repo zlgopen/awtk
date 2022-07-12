@@ -3142,6 +3142,19 @@ ret_t widget_on_pointer_up_children(widget_t* widget, pointer_event_t* e);
 bool_t widget_is_change_focus_key(widget_t* widget, key_event_t* e);
 
 /*public for subclass*/
+
+/**
+ * @method widget_add_child_default
+ * 加入一个子控件默认实现(供子类调用)。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {widget_t*} child 子控件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_add_child_default(widget_t* widget, widget_t* child);
+
 TK_EXTERN_VTABLE(widget);
 const char* const* widget_get_persistent_props(void);
 
