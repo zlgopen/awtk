@@ -1189,6 +1189,12 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_VIEW "view"
 
 /**
+ * @const WIDGET_TYPE_PAGE
+ * page控件。
+ */
+#define WIDGET_TYPE_PAGE "page"
+
+/**
  * @const WIDGET_TYPE_COMBO_BOX
  * 下拉选择框控件。
  */
