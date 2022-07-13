@@ -641,6 +641,11 @@ struct _widget_t {
  */
 
 /**
+ * @event {key_event_t} EVT_KEY_LONG_PRESS
+ * 键长按事件。
+ */
+
+/**
  * @event {key_event_t} EVT_KEY_UP_BEFORE_CHILDREN
  * 键释放事件，在子控件处理之前触发。
  */

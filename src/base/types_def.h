@@ -175,7 +175,7 @@ typedef enum _border_type_t {
 
 /**
  * @enum icon_at_type_t
- * @prefix ICON_AT
+ * @prefix ICON_AT_
  * 图标所在的位置。
  */
 typedef enum _icon_at_type_t {
