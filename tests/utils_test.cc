@@ -16,8 +16,25 @@ TEST(Utils, basic) {
   ASSERT_EQ(tk_atoi("0x1"), 0x1);
   ASSERT_EQ(tk_atoi("0xf"), 0xf);
   ASSERT_EQ(tk_atoi("0Xf"), 0xf);
-  ASSERT_EQ(tk_atoi("0b11"), 3);
-  ASSERT_EQ(tk_atoi("0B101"), 5);
+
+  ASSERT_EQ(tk_atoi("#f"), 0xf);
+  ASSERT_EQ(tk_atoi("#f3"), 0xf3);
+  ASSERT_EQ(tk_atoi("#f321"), 0xf321);
+  ASSERT_EQ(tk_atoi("#f321"), 0xf321);
+  ASSERT_EQ(tk_atoi("#13211234"), 0x13211234);
+  ASSERT_EQ(tk_atol("#f"), 0xf);
+  ASSERT_EQ(tk_atol("#f3"), 0xf3);
+  ASSERT_EQ(tk_atol("#f321"), 0xf321);
+  ASSERT_EQ(tk_atol("#f321"), 0xf321);
+  ASSERT_EQ(tk_atol("#13211234"), 0x13211234);
+  ASSERT_EQ(tk_atoul("#f"), 0xf);
+  ASSERT_EQ(tk_atoul("#f3"), 0xf3);
+  ASSERT_EQ(tk_atoul("#f321"), 0xf321);
+  ASSERT_EQ(tk_atoul("#f321"), 0xf321);
+  ASSERT_EQ(tk_atoul("#f3211234"), 0xf3211234);
+
+  ASSERT_EQ(tk_atol("0b11"), 3);
+  ASSERT_EQ(tk_atol("0B101"), 5);
   ASSERT_EQ(tk_watoi(L"100"), 100);
   ASSERT_EQ(tk_atof("100"), 100);
   ASSERT_EQ(tk_atof("1e2"), 100);

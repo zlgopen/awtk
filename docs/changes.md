@@ -4,6 +4,7 @@
   * 重构 widget\_add\_child
   * 完善 pages  动态增加子控件。
   * 完善API注释(感谢福明提供补丁)
+  * tk\_atoi/tk\_atol/tk\_atoul等函数视'#'开头的字符串为十六进制。
 
 2022/07/12
   * 对话框高亮增加参数update\_background(感谢雨欣提供补丁)

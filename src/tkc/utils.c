@@ -263,6 +263,8 @@ int32_t tk_atoi(const char* str) {
   return_value_if_fail(str != NULL, 0);
   if (IS_HEX_NUM(str)) {
     return tk_strtoi(str + 2, NULL, 16);
+  }else if (str[0] == '#') {
+    return tk_strtoi(str + 1, NULL, 16);
   } else if (IS_BIN_NUM(str)) {
     return tk_strtoi(str + 2, NULL, 2);
   } else {
@@ -274,6 +276,8 @@ int64_t tk_atol(const char* str) {
   return_value_if_fail(str != NULL, 0);
   if (IS_HEX_NUM(str)) {
     return tk_strtoll(str + 2, NULL, 16);
+  } else if (str[0] == '#') {
+    return tk_strtoll(str + 1, NULL, 16);
   } else if (IS_BIN_NUM(str)) {
     return tk_strtoll(str + 2, NULL, 2);
   } else {
@@ -285,6 +289,8 @@ uint64_t tk_atoul(const char* str) {
   return_value_if_fail(str != NULL, 0);
   if (IS_HEX_NUM(str)) {
     return tk_strtoull(str + 2, NULL, 16);
+  } else if (str[0] == '#') {
+    return tk_strtoull(str + 1, NULL, 16);
   } else if (IS_BIN_NUM(str)) {
     return tk_strtoull(str + 2, NULL, 2);
   } else {
