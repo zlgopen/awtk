@@ -8,8 +8,14 @@ from awtk_config_common import joinPath, toWholeArchive, genIdlAndDefEx, setEnvS
 from awtk_config_common import OS_FLAGS, OS_LIBS, OS_LIBPATH, OS_CPPPATH, OS_LINKFLAGS, OS_SUBSYSTEM_CONSOLE, OS_SUBSYSTEM_WINDOWS, OS_PROJECTS, COMMON_CFLAGS
 
 WIN32_AWTK_RES = 'win32_res/awtk.res'
+if TARGET_ARCH == 'x86':
+    WIN32_AWTK_RES = 'win32_res/awtk_x86.res'
+
 if not os.path.exists(WIN32_AWTK_RES):
-    WIN32_AWTK_RES = os.path.join(TK_ROOT, 'win32_res/awtk.res')
+    if TARGET_ARCH == 'x86':
+        WIN32_AWTK_RES = os.path.join(TK_ROOT, 'win32_res/awtk_x86.res')
+    else:
+        WIN32_AWTK_RES = os.path.join(TK_ROOT, 'win32_res/awtk.res')
 
 AWTK_STATIC_LIBS = ['awtk_global', 'extwidgets',
                     'widgets', 'base', 'gpinyin', 'fribidi', 'linebreak']
