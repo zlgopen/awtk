@@ -189,6 +189,7 @@
 #include "assets/default/inc/ui/color_picker_rgb.data"
 #include "assets/default/inc/ui/tab_bottom_compact.data"
 #include "assets/default/inc/ui/popup.data"
+#include "assets/default/inc/ui/serial.data"
 #include "assets/default/inc/ui/image_packed.data"
 #include "assets/default/inc/ui/kb_uint.data"
 #include "assets/default/inc/ui/scroll_view_v.data"
@@ -699,6 +700,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_color_picker_rgb);
   assets_manager_add(am, ui_tab_bottom_compact);
   assets_manager_add(am, ui_popup);
+  assets_manager_add(am, ui_serial);
   assets_manager_add(am, ui_image_packed);
   assets_manager_add(am, ui_kb_uint);
   assets_manager_add(am, ui_scroll_view_v);

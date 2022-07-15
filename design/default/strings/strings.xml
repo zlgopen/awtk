@@ -14,6 +14,10 @@
   <language name="en_US">Done</language>
   <language name="zh_CN">完成</language>
 </string>
+<string name="ratio">
+  <language name="en_US">ratio</language>
+  <language name="zh_CN">分辨率</language>
+</string>
 <string name="cancel">
   <language name="en_US">Cancel</language>
   <language name="zh_CN">取消</language>

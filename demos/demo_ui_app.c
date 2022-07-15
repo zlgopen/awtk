@@ -48,11 +48,18 @@ static bool_t s_is_full_font = TRUE;
 static bool_t s_is_full_font = FALSE;
 #endif /* AWTK_WEB */
 
+static bool_t s_is_portrait = TRUE;
+static uint32_t s_win_default_width = 320;
+static uint32_t s_win_default_height = 480;
+static bool_t s_win_default_portrait = TRUE;
 static const char* s_win_name = "menu_${device_orientation}";
 static const char* s_sysbar_name = "sysbar_${device_orientation}";
 
 /*** common **********************************************************************/
+static ret_t set_win_name(void);
+static bool_t get_portrait(uint32_t w, int32_t h);
 extern ret_t assets_set_global_theme(const char* name);
+static void init_children_widget(widget_t* widget, void* ctx);
 
 static ret_t change_language(bool_t is_chinese) {
   ret_t ret = RET_FAIL;
@@ -383,14 +390,50 @@ static ret_t on_fps_visable(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_switch_ratio(void* ctx, event_t* e) {
+#ifdef WITH_SDL
+  widget_t* win = NULL;
+  if (s_is_portrait != s_win_default_portrait) {
+    window_manager_resize(window_manager(), s_win_default_width, s_win_default_height);
+  } else {
+    if (get_portrait(s_win_default_height, s_win_default_width) != s_win_default_portrait) {
+      window_manager_resize(window_manager(), s_win_default_width, s_win_default_height);
+    } else {
+      if (s_is_portrait) {
+        window_manager_resize(window_manager(), 800, 480);
+      } else {
+        window_manager_resize(window_manager(), 320, 480);
+      }
+    }
+  }
+  window_manager_close_all(window_manager());
+  set_win_name();
+
+  window_open_with_prefix(s_sysbar_name);
+  win = window_open_with_prefix(s_win_name);
+
+  WIDGET_FOR_EACH_CHILD_BEGIN(window_manager(), root, i)
+  init_children_widget(root, (void*)win);
+  WIDGET_FOR_EACH_CHILD_END()
+#else
+  dialog_toast("embedded system not supporrt switch ratio !", 2000);
+#endif
+  return RET_OK;
+}
+
 static ret_t page_button_init(widget_t* page) {
   widget_t* cb_fps = NULL;
+  widget_t* cb_ratio = NULL;
   return_value_if_fail(page != NULL, RET_BAD_PARAMS);
 
   cb_fps = widget_lookup(page, "cb_fps", TRUE);
+  cb_ratio = widget_lookup(page, "cb_ratio", TRUE);
   if (cb_fps != NULL && tk_str_eq(widget_get_type(cb_fps), WIDGET_TYPE_CHECK_BUTTON)) {
     widget_set_value(cb_fps, WINDOW_MANAGER(window_manager())->show_fps);
     widget_on(cb_fps, EVT_VALUE_CHANGED, on_fps_visable, NULL);
+  }
+  if (cb_ratio != NULL) {
+    widget_on(cb_ratio, EVT_CLICK, on_switch_ratio, NULL);
   }
 
   return RET_OK;
@@ -1142,19 +1185,24 @@ static widget_t* show_preload_window(void) {
 }
 #endif /* PRELOAD_DURATION > 0 */
 
+static bool_t get_portrait(uint32_t w, int32_t h) {
+  bool_t is_portrait = FALSE;
+#ifdef WITH_LCD_PORTRAIT
+  is_portrait = TRUE;
+#elif WITH_LCD_LANDSCAPE
+  is_portrait = (h <= LANDSCAPE_WIDTH_THRESHOLD) ? TRUE : FALSE;
+#else
+  is_portrait = (w <= LANDSCAPE_WIDTH_THRESHOLD || w < h) ? TRUE : FALSE;
+#endif /* WITH_LCD_PORTRAIT && WITH_LCD_LANDSCAPE */
+  return is_portrait;
+}
+
 static ret_t set_win_name(void) {
   bool_t is_portrait = FALSE;
   widget_t* wm = window_manager();
   return_value_if_fail(wm != NULL, RET_FAIL);
 
-#ifdef WITH_LCD_PORTRAIT
-  is_portrait = TRUE;
-#elif WITH_LCD_LANDSCAPE
-  is_portrait = (wm->h <= LANDSCAPE_WIDTH_THRESHOLD) ? TRUE : FALSE;
-#else
-  is_portrait = (wm->w <= LANDSCAPE_WIDTH_THRESHOLD || wm->w < wm->h) ? TRUE : FALSE;
-#endif /* WITH_LCD_PORTRAIT && WITH_LCD_LANDSCAPE */
-
+  is_portrait = get_portrait(wm->w, wm->h);
   if (is_portrait) {
     s_win_name = "menu_portrait";
     s_sysbar_name = "sysbar_portrait";
@@ -1162,7 +1210,7 @@ static ret_t set_win_name(void) {
     s_win_name = "menu_landscape";
     s_sysbar_name = "sysbar_landscape";
   }
-
+  s_is_portrait = is_portrait;
   return RET_OK;
 }
 
@@ -1171,7 +1219,12 @@ static ret_t set_win_name(void) {
  */
 ret_t application_init(void) {
   widget_t* win = NULL;
+  widget_t* wm = window_manager();
   set_win_name();
+
+  s_win_default_width = wm->w;
+  s_win_default_height = wm->h;
+  s_win_default_portrait = get_portrait(wm->w, wm->h);
 
   if (check_is_use_1m_assets()) {
     widget_on(window_manager(), EVT_WINDOW_WILL_OPEN, on_adject_win_in_1m_assets, NULL);

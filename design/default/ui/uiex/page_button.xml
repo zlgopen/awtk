@@ -15,6 +15,7 @@
         <button name="btn1" style="rounded" tr_text="Button"/>
         <button name="btn2" style="rounded_top" tr_text="Button"/>
         <button name="btn3" style="rounded_bottom" tr_text="Button"/>
+        <button name="cb_ratio" style="Button" tr_text="ratio"/>
       </grid>
     </grid>
     <grid name="view_gradient_btn" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="70">
