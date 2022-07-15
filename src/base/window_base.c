@@ -238,6 +238,7 @@ static ret_t window_base_set_applet_name(widget_t* widget, const char* applet_na
     return RET_OK;
   }
 
+  widget->assets_manager = NULL;
   if (window_base->applet_name != NULL) {
     assets_managers_unref(window_base->assets_manager);
     image_managers_unref(window_base->image_manager);
