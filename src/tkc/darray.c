@@ -123,6 +123,33 @@ ret_t darray_remove_index(darray_t* darray, uint32_t index) {
   return RET_OK;
 }
 
+ ret_t darray_remove_range(darray_t* darray, uint32_t start, uint32_t end) {
+  int32_t i = 0;
+  int32_t size = 0;
+  void** elms = NULL;
+  return_value_if_fail(darray != NULL && start < end && end <= darray->size, RET_BAD_PARAMS);
+
+  if (darray->elms != NULL) {
+    uint32_t i = 0, j = 0;
+    void** elms = darray->elms;
+
+    for (i = start, j = end; i < darray->size; i++, j++) {
+      if (i < end) {
+        void* iter = elms[i];
+        darray->destroy(iter);
+      }
+      if (j < darray->size) {
+        elms[i] = elms[j];
+      } else {
+        elms[i] = NULL;
+      }
+    }
+    darray->size -= (end - start);
+  }
+
+  return RET_OK;
+}
+
 ret_t darray_remove_ex(darray_t* darray, tk_compare_t cmp, void* ctx) {
   int32_t index = 0;
   return_value_if_fail(darray != NULL, RET_BAD_PARAMS);

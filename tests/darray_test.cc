@@ -554,3 +554,50 @@ TEST(DArrayTest, push_unique) {
 
   darray_deinit(&darray);
 }
+
+TEST(DArrayTest, remove_range) {
+  char* p = NULL;
+  darray_t darray;
+  void* data = NULL;
+  uint32_t i = 0, size = 0;
+  int cases[] = {1, 2, 3, 3, 3, 3, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+  darray_init(&darray, ARRAY_SIZE(cases), NULL, NULL);
+
+  for (i = 0; i < ARRAY_SIZE(cases); i++) {
+    ASSERT_EQ(RET_OK, darray_push(&darray, p + cases[i]));
+    ASSERT_EQ(i + 1u, darray.size);
+  }
+
+  ASSERT_EQ(darray_remove_range(&darray, 9, 6), RET_BAD_PARAMS);
+  ASSERT_EQ(darray.size, ARRAY_SIZE(cases));
+
+  ASSERT_EQ(darray_remove_range(&darray, 2, ARRAY_SIZE(cases) + 1), RET_BAD_PARAMS);
+  ASSERT_EQ(darray.size, ARRAY_SIZE(cases));
+
+  ASSERT_EQ(darray.size, ARRAY_SIZE(cases));
+  ASSERT_EQ(darray_remove_range(&darray, 2, 6), RET_OK);
+  ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4u);
+
+  size = darray.size;
+  for (i = 0; i < size; i++) {
+    data = darray_get(&darray, i);
+    ASSERT_EQ(data, p + i + 1);
+  }
+
+  ASSERT_EQ(darray_remove_range(&darray, 5, 9), RET_OK);
+  ASSERT_EQ(darray.size, size - 4u);
+  data = darray_tail(&darray);
+  ASSERT_EQ(data, p + 11);
+
+  size = darray.size;
+  ASSERT_EQ(darray_remove_range(&darray, size - 2, size), RET_OK);
+  ASSERT_EQ(darray.size, size - 2u);
+  data = darray_tail(&darray);
+  ASSERT_EQ(data, p + 5);
+
+  size = darray.size;
+  ASSERT_EQ(darray_remove_range(&darray, 0, size), RET_OK);
+  ASSERT_EQ(darray.size, 0);
+
+  darray_deinit(&darray);
+}

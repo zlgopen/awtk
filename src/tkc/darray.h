@@ -239,6 +239,18 @@ ret_t darray_remove_ex(darray_t* darray, tk_compare_t cmp, void* ctx);
 ret_t darray_remove_index(darray_t* darray, uint32_t index);
 
 /**
+ * @method darray_remove_range
+ * 删除指定范围的元素。
+ * 删除范围为[start, end)
+ * @param {darray_t*} darray 数组对象。
+ * @param {uint32_t} start 起始位置。
+ * @param {uint32_t} end 结束位置。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ ret_t darray_remove_range(darray_t* darray, uint32_t start, uint32_t end);
+
+/**
  * @method darray_remove_all
  * 删除全部满足条件的元素。
  * @param {darray_t*} darray 数组对象。
