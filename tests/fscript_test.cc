@@ -2803,3 +2803,163 @@ TEST(FScript, rets) {
   TK_OBJECT_UNREF(obj);
 }
 
+typedef struct _fscript_hooks_test_t {
+  bool_t on_init;
+  bool_t on_deinit;
+  bool_t set_var;
+  bool_t exec_func;
+  bool_t before_exec;
+  bool_t after_exec;
+} fscript_hooks_test_t;
+
+static fscript_hooks_test_t s_self_hooks_test;
+static fscript_hooks_test_t s_global_hooks_test;
+
+static ret_t fscript_self_hooks_on_fscript_before_exec(fscript_t* fscript) {
+  s_self_hooks_test.before_exec = TRUE;
+  return RET_OK;
+}
+
+static ret_t fscript_self_hooks_on_fscript_after_exec(fscript_t* fscript) {
+  s_self_hooks_test.after_exec = TRUE;
+  return RET_OK;
+}
+
+static ret_t fscript_self_hooks_on_fscript_deinit(fscript_t* fscript) {
+  s_self_hooks_test.on_deinit = TRUE;
+  return RET_OK;
+}
+
+static ret_t fscript_self_hooks_set_var(fscript_t* fscript, const char* name, const value_t* v) {
+  s_self_hooks_test.set_var = TRUE;
+  return fscript_set_var_default(fscript, name, v);
+}
+
+static ret_t fscript_self_hooks_exec_func(fscript_t* fscript, const char* name, fscript_func_call_t* iter,
+                                 value_t* result) {
+  s_self_hooks_test.exec_func = TRUE;
+  return fscript_exec_func_default(fscript, iter, result);
+}
+
+static ret_t fscript_global_hooks_on_fscript_init(fscript_t* fscript, const char* code) {
+  s_global_hooks_test.on_init = TRUE;
+  return RET_OK;
+}
+
+static ret_t fscript_global_hooks_on_fscript_before_exec(fscript_t* fscript) {
+  s_global_hooks_test.before_exec = TRUE;
+  return RET_OK;
+}
+
+static ret_t fscript_global_hooks_on_fscript_after_exec(fscript_t* fscript) {
+  s_global_hooks_test.after_exec = TRUE;
+  return RET_OK;
+}
+
+static ret_t fscript_global_hooks_on_fscript_deinit(fscript_t* fscript) {
+  s_global_hooks_test.on_deinit = TRUE;
+  return RET_OK;
+}
+
+static ret_t fscript_global_hooks_set_var(fscript_t* fscript, const char* name, const value_t* v) {
+  s_global_hooks_test.set_var = TRUE;
+  return fscript_set_var_default(fscript, name, v);
+}
+
+static ret_t fscript_global_hooks_exec_func(fscript_t* fscript, const char* name, fscript_func_call_t* iter,
+                                 value_t* result) {
+  s_global_hooks_test.exec_func = TRUE;
+  return fscript_exec_func_default(fscript, iter, result);
+}
+
+#if defined(WIN32) && !defined(MINGW)
+static const fscript_hooks_t s_fscript_self_hooks = {
+  NULL,
+  fscript_self_hooks_on_fscript_deinit,
+  fscript_self_hooks_set_var,
+  fscript_self_hooks_exec_func,
+  fscript_self_hooks_on_fscript_before_exec,
+  fscript_self_hooks_on_fscript_after_exec,
+};
+
+static const fscript_hooks_t s_fscript_global_hooks = {
+  fscript_global_hooks_on_fscript_init,
+  fscript_global_hooks_on_fscript_deinit,
+  fscript_global_hooks_set_var,
+  fscript_global_hooks_exec_func,
+  fscript_global_hooks_on_fscript_before_exec,
+  fscript_global_hooks_on_fscript_after_exec,
+};
+#else
+static const fscript_hooks_t s_fscript_self_hooks = {
+  .on_deinit = fscript_self_hooks_on_fscript_deinit,
+  .set_var = fscript_self_hooks_set_var,
+  .exec_func = fscript_self_hooks_exec_func,
+  .before_exec = fscript_self_hooks_on_fscript_before_exec,
+  .after_exec = fscript_self_hooks_on_fscript_after_exec,
+};
+
+static const fscript_hooks_t s_fscript_global_hooks = {
+  .on_init = fscript_global_hooks_on_fscript_init,
+  .on_deinit = fscript_global_hooks_on_fscript_deinit,
+  .set_var = fscript_global_hooks_set_var,
+  .exec_func = fscript_global_hooks_exec_func,
+  .before_exec = fscript_global_hooks_on_fscript_before_exec,
+  .after_exec = fscript_global_hooks_on_fscript_after_exec,
+};
+#endif
+
+
+TEST(FScript, hooks) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  memset(&s_self_hooks_test, 0x0, sizeof(fscript_hooks_test_t));
+  memset(&s_global_hooks_test, 0x0, sizeof(fscript_hooks_test_t));
+
+  fscript_set_hooks(&s_fscript_global_hooks);
+  fscript_t* fscript = fscript_create(obj, "mi=sum(1,2)");
+  fscript_set_self_hooks(fscript, &s_fscript_self_hooks);
+  fscript_exec(fscript, &v);
+  fscript_destroy(fscript);
+
+  ASSERT_EQ(s_self_hooks_test.on_init, FALSE);
+  ASSERT_EQ(s_self_hooks_test.on_deinit, TRUE);
+  ASSERT_EQ(s_self_hooks_test.after_exec, TRUE);
+  ASSERT_EQ(s_self_hooks_test.before_exec, TRUE);
+  ASSERT_EQ(s_self_hooks_test.exec_func, TRUE);
+  ASSERT_EQ(s_self_hooks_test.set_var, TRUE);
+
+  ASSERT_EQ(s_global_hooks_test.on_init, TRUE);
+  ASSERT_EQ(s_global_hooks_test.on_deinit, FALSE);
+  ASSERT_EQ(s_global_hooks_test.after_exec, FALSE);
+  ASSERT_EQ(s_global_hooks_test.before_exec, FALSE);
+  ASSERT_EQ(s_global_hooks_test.exec_func, FALSE);
+  ASSERT_EQ(s_global_hooks_test.set_var, FALSE);
+
+  memset(&s_self_hooks_test, 0x0, sizeof(fscript_hooks_test_t));
+  memset(&s_global_hooks_test, 0x0, sizeof(fscript_hooks_test_t));
+  fscript = fscript_create(obj, "mi=sum(1,2)");
+  fscript_set_use_global_hooks(fscript, TRUE);
+  fscript_exec(fscript, &v);
+  fscript_destroy(fscript);
+
+  ASSERT_EQ(s_self_hooks_test.on_init, FALSE);
+  ASSERT_EQ(s_self_hooks_test.on_deinit, FALSE);
+  ASSERT_EQ(s_self_hooks_test.after_exec, FALSE);
+  ASSERT_EQ(s_self_hooks_test.before_exec, FALSE);
+  ASSERT_EQ(s_self_hooks_test.exec_func, FALSE);
+  ASSERT_EQ(s_self_hooks_test.set_var, FALSE);
+
+  ASSERT_EQ(s_global_hooks_test.on_init, TRUE);
+  ASSERT_EQ(s_global_hooks_test.on_deinit, TRUE);
+  ASSERT_EQ(s_global_hooks_test.after_exec, TRUE);
+  ASSERT_EQ(s_global_hooks_test.before_exec, TRUE);
+  ASSERT_EQ(s_global_hooks_test.exec_func, TRUE);
+  ASSERT_EQ(s_global_hooks_test.set_var, TRUE);
+
+
+  value_reset(&v);
+  TK_OBJECT_UNREF(obj);
+}
+

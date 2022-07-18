@@ -35,6 +35,28 @@ ret_t fscript_set_hooks(const fscript_hooks_t* hooks) {
   return RET_OK;
 }
 
+ret_t fscript_set_use_global_hooks(fscript_t* fscript, bool_t use_global_hooks) {
+  return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
+  fscript->use_global_hooks = use_global_hooks;
+  return RET_OK;
+}
+
+ret_t fscript_set_self_hooks(fscript_t* fscript, const fscript_hooks_t* hooks) {
+  return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
+  fscript->hooks = hooks;
+  return RET_OK;
+}
+
+static const fscript_hooks_t* fscript_get_hooks(fscript_t* fscript) {
+  if (fscript != NULL && fscript->hooks != NULL && !fscript->use_global_hooks) {
+    return fscript->hooks;
+  }
+  if (s_hooks != NULL) {
+    return s_hooks;
+  }
+  return NULL;
+}
+
 static ret_t func_function_def(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   return RET_OK;
 }
@@ -171,8 +193,9 @@ static ret_t fscript_locals_destroy(fscript_t* fscript) {
 
 static ret_t fscript_exec_func(fscript_t* fscript, const char* name, fscript_func_call_t* iter,
                                value_t* result) {
-  if (s_hooks != NULL && s_hooks->exec_func != NULL) {
-    return s_hooks->exec_func(fscript, name, iter, result);
+  fscript_hooks_t* hooks = fscript_get_hooks(fscript);
+  if (hooks != NULL && hooks->exec_func != NULL) {
+    return hooks->exec_func(fscript, name, iter, result);
   } else {
     return fscript_exec_func_default(fscript, iter, result);
   }
@@ -448,8 +471,9 @@ ret_t fscript_set_var_default(fscript_t* fscript, const char* name, const value_
 }
 
 ret_t fscript_set_var(fscript_t* fscript, const char* name, const value_t* value) {
-  if (s_hooks != NULL && s_hooks->set_var != NULL) {
-    return s_hooks->set_var(fscript, name, value);
+  fscript_hooks_t* hooks = fscript_get_hooks(fscript);
+  if (hooks != NULL && hooks->set_var != NULL) {
+    return hooks->set_var(fscript, name, value);
   } else {
     return fscript_set_var_default(fscript, name, value);
   }
@@ -789,10 +813,11 @@ ret_t fscript_exec_func_default(fscript_t* fscript, fscript_func_call_t* iter, v
 
 ret_t fscript_exec(fscript_t* fscript, value_t* result) {
   fscript_func_call_t* iter = NULL;
+  fscript_hooks_t* hooks = fscript_get_hooks(fscript);
   return_value_if_fail(fscript != NULL, RET_FAIL);
 
-  if (s_hooks != NULL && s_hooks->before_exec != NULL) {
-    s_hooks->before_exec(fscript);
+  if (hooks != NULL && hooks->before_exec != NULL) {
+    hooks->before_exec(fscript);
   }
 
   value_set_str(result, NULL);
@@ -807,9 +832,9 @@ ret_t fscript_exec(fscript_t* fscript, value_t* result) {
     }
     iter = iter->next;
   }
-
-  if (s_hooks != NULL && s_hooks->after_exec != NULL) {
-    s_hooks->after_exec(fscript);
+  hooks = fscript_get_hooks(fscript);
+  if (hooks != NULL && hooks->after_exec != NULL) {
+    hooks->after_exec(fscript);
   }
 
   fscript_locals_destroy(fscript);
@@ -825,10 +850,11 @@ static ret_t on_free_func_def(void* ctx, const void* data) {
 }
 
 static ret_t fscript_reset(fscript_t* fscript) {
+  fscript_hooks_t* hooks = fscript_get_hooks(fscript);
   return_value_if_fail(fscript != NULL, RET_FAIL);
 
-  if (s_hooks != NULL && s_hooks->on_deinit != NULL) {
-    s_hooks->on_deinit(fscript);
+  if (hooks != NULL && hooks->on_deinit != NULL) {
+    hooks->on_deinit(fscript);
   }
 
   str_reset(&(fscript->str));
@@ -1814,6 +1840,7 @@ static ret_t fexpr_parse(fscript_parser_t* parser, value_t* result) {
 }
 
 static fscript_t* fscript_init_with_parser(fscript_t* fscript, fscript_parser_t* parser) {
+  fscript_hooks_t* hooks = fscript_get_hooks(fscript);
   fscript = fscript != NULL ? fscript : TKMEM_ZALLOC(fscript_t);
   return_value_if_fail(fscript != NULL, NULL);
   fscript->str = parser->temp;
@@ -1823,8 +1850,8 @@ static fscript_t* fscript_init_with_parser(fscript_t* fscript, fscript_parser_t*
   fscript->code_id = parser->code_id;
   fscript->lines = parser->row + 1;
 
-  if (s_hooks != NULL && s_hooks->on_init != NULL) {
-    s_hooks->on_init(fscript, parser->str);
+  if (hooks != NULL && hooks->on_init != NULL) {
+    hooks->on_init(fscript, parser->str);
   }
 
   parser->obj = NULL;
