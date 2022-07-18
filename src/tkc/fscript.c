@@ -30,14 +30,57 @@
 
 static const fscript_hooks_t* s_hooks;
 
-ret_t fscript_set_hooks(const fscript_hooks_t* hooks) {
-  s_hooks = hooks;
+static ret_t fscript_hook_on_init(fscript_t* fscript, const char* code) {
+  const fscript_hooks_t* hooks = fscript->hooks != NULL ? fscript->hooks : s_hooks;
+  if (hooks != NULL && hooks->on_init != NULL) {
+    return hooks->on_init(fscript, code);
+  }
   return RET_OK;
 }
 
-ret_t fscript_set_use_global_hooks(fscript_t* fscript, bool_t use_global_hooks) {
-  return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
-  fscript->use_global_hooks = use_global_hooks;
+static ret_t fscript_hook_on_deinit(fscript_t* fscript) {
+  const fscript_hooks_t* hooks = fscript->hooks != NULL ? fscript->hooks : s_hooks;
+  if (hooks != NULL && hooks->on_deinit != NULL) {
+    return hooks->on_deinit(fscript);
+  }
+  return RET_OK;
+}
+
+static ret_t fscript_hook_before_exec(fscript_t* fscript) {
+  const fscript_hooks_t* hooks = fscript->hooks != NULL ? fscript->hooks : s_hooks;
+  if (hooks != NULL && hooks->before_exec != NULL) {
+    return hooks->before_exec(fscript);
+  }
+  return RET_OK;
+}
+
+static ret_t fscript_hook_after_exec(fscript_t* fscript) {
+  const fscript_hooks_t* hooks = fscript->hooks != NULL ? fscript->hooks : s_hooks;
+  if (hooks != NULL && hooks->after_exec != NULL) {
+    return hooks->after_exec(fscript);
+  }
+  return RET_OK;
+}
+
+static ret_t fscript_hook_set_var(fscript_t* fscript, const char* name, const value_t* v) {
+  const fscript_hooks_t* hooks = fscript->hooks != NULL ? fscript->hooks : s_hooks;
+  if (hooks != NULL && hooks->set_var != NULL) {
+    return hooks->set_var(fscript, name, v);
+  }
+  return RET_NOT_IMPL;
+}
+
+static ret_t fscript_hook_exec_func(fscript_t* fscript, const char* name, fscript_func_call_t* iter,
+                                    value_t* result) {
+  const fscript_hooks_t* hooks = fscript->hooks != NULL ? fscript->hooks : s_hooks;
+  if (hooks != NULL && hooks->exec_func != NULL) {
+    return hooks->exec_func(fscript, name, iter, result);
+  }
+  return RET_NOT_IMPL;
+}
+
+ret_t fscript_set_hooks(const fscript_hooks_t* hooks) {
+  s_hooks = hooks;
   return RET_OK;
 }
 
@@ -45,16 +88,6 @@ ret_t fscript_set_self_hooks(fscript_t* fscript, const fscript_hooks_t* hooks) {
   return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
   fscript->hooks = hooks;
   return RET_OK;
-}
-
-static const fscript_hooks_t* fscript_get_hooks(fscript_t* fscript) {
-  if (fscript != NULL && fscript->hooks != NULL && !fscript->use_global_hooks) {
-    return fscript->hooks;
-  }
-  if (s_hooks != NULL) {
-    return s_hooks;
-  }
-  return NULL;
 }
 
 static ret_t func_function_def(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -193,12 +226,12 @@ static ret_t fscript_locals_destroy(fscript_t* fscript) {
 
 static ret_t fscript_exec_func(fscript_t* fscript, const char* name, fscript_func_call_t* iter,
                                value_t* result) {
-  fscript_hooks_t* hooks = fscript_get_hooks(fscript);
-  if (hooks != NULL && hooks->exec_func != NULL) {
-    return hooks->exec_func(fscript, name, iter, result);
-  } else {
-    return fscript_exec_func_default(fscript, iter, result);
+  ret_t ret = fscript_hook_exec_func(fscript, name, iter, result);
+  if (ret == RET_NOT_IMPL) {
+    ret = fscript_exec_func_default(fscript, iter, result);
   }
+
+  return ret;
 }
 
 ret_t fscript_set_error(fscript_t* fscript, ret_t code, const char* func, const char* message) {
@@ -407,27 +440,27 @@ static fscript_func_call_t* fscript_func_call_create(fscript_parser_t* parser, c
                                                      uint32_t size);
 
 static const int_str_t s_ret_enums[] = {{RET_OK, "OK"},
-                                 {RET_OOM, "OOM"},
-                                 {RET_FAIL, "FAIL"},
-                                 {RET_NOT_IMPL, "NOT_IMPL"},
-                                 {RET_QUIT, "QUIT"},
-                                 {RET_FOUND, "FOUND"},
-                                 {RET_BUSY, "BUSY"},
-                                 {RET_REMOVE, "REMOVE"},
-                                 {RET_REPEAT, "REPEAT"},
-                                 {RET_NOT_FOUND, "NOT_FOUND"},
-                                 {RET_DONE, "DONE"},
-                                 {RET_STOP, "STOP"},
-                                 {RET_SKIP, "SKIP"},
-                                 {RET_CONTINUE, "CONTINUE"},
-                                 {RET_OBJECT_CHANGED, "OBJECT_CHANGED"},
-                                 {RET_ITEMS_CHANGED, "ITEMS_CHANGED"},
-                                 {RET_BAD_PARAMS, "BAD_PARAMS"},
-                                 {RET_TIMEOUT, "TIMEOUT"},
-                                 {RET_CRC, "CRC"},
-                                 {RET_IO, "IO"},
-                                 {RET_EOS, "EOS"},
-                                 {RET_NOT_MODIFIED, "NOT_MODIFIED"}};
+                                        {RET_OOM, "OOM"},
+                                        {RET_FAIL, "FAIL"},
+                                        {RET_NOT_IMPL, "NOT_IMPL"},
+                                        {RET_QUIT, "QUIT"},
+                                        {RET_FOUND, "FOUND"},
+                                        {RET_BUSY, "BUSY"},
+                                        {RET_REMOVE, "REMOVE"},
+                                        {RET_REPEAT, "REPEAT"},
+                                        {RET_NOT_FOUND, "NOT_FOUND"},
+                                        {RET_DONE, "DONE"},
+                                        {RET_STOP, "STOP"},
+                                        {RET_SKIP, "SKIP"},
+                                        {RET_CONTINUE, "CONTINUE"},
+                                        {RET_OBJECT_CHANGED, "OBJECT_CHANGED"},
+                                        {RET_ITEMS_CHANGED, "ITEMS_CHANGED"},
+                                        {RET_BAD_PARAMS, "BAD_PARAMS"},
+                                        {RET_TIMEOUT, "TIMEOUT"},
+                                        {RET_CRC, "CRC"},
+                                        {RET_IO, "IO"},
+                                        {RET_EOS, "EOS"},
+                                        {RET_NOT_MODIFIED, "NOT_MODIFIED"}};
 
 static ret_t ret_name_to_value(const char* name, value_t* v) {
   uint32_t i = 0;
@@ -471,12 +504,12 @@ ret_t fscript_set_var_default(fscript_t* fscript, const char* name, const value_
 }
 
 ret_t fscript_set_var(fscript_t* fscript, const char* name, const value_t* value) {
-  fscript_hooks_t* hooks = fscript_get_hooks(fscript);
-  if (hooks != NULL && hooks->set_var != NULL) {
-    return hooks->set_var(fscript, name, value);
-  } else {
-    return fscript_set_var_default(fscript, name, value);
+  ret_t ret = fscript_hook_set_var(fscript, name, value);
+  if (ret == RET_NOT_IMPL) {
+    ret = fscript_set_var_default(fscript, name, value);
   }
+
+  return ret;
 }
 
 static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uint32_t i,
@@ -813,12 +846,9 @@ ret_t fscript_exec_func_default(fscript_t* fscript, fscript_func_call_t* iter, v
 
 ret_t fscript_exec(fscript_t* fscript, value_t* result) {
   fscript_func_call_t* iter = NULL;
-  fscript_hooks_t* hooks = fscript_get_hooks(fscript);
   return_value_if_fail(fscript != NULL, RET_FAIL);
 
-  if (hooks != NULL && hooks->before_exec != NULL) {
-    hooks->before_exec(fscript);
-  }
+  fscript_hook_before_exec(fscript);
 
   value_set_str(result, NULL);
   iter = fscript->first;
@@ -832,10 +862,7 @@ ret_t fscript_exec(fscript_t* fscript, value_t* result) {
     }
     iter = iter->next;
   }
-  hooks = fscript_get_hooks(fscript);
-  if (hooks != NULL && hooks->after_exec != NULL) {
-    hooks->after_exec(fscript);
-  }
+  fscript_hook_after_exec(fscript);
 
   fscript_locals_destroy(fscript);
 
@@ -850,12 +877,9 @@ static ret_t on_free_func_def(void* ctx, const void* data) {
 }
 
 static ret_t fscript_reset(fscript_t* fscript) {
-  fscript_hooks_t* hooks = fscript_get_hooks(fscript);
   return_value_if_fail(fscript != NULL, RET_FAIL);
 
-  if (hooks != NULL && hooks->on_deinit != NULL) {
-    hooks->on_deinit(fscript);
-  }
+  fscript_hook_on_deinit(fscript);
 
   str_reset(&(fscript->str));
   fscript_locals_destroy(fscript);
@@ -1840,7 +1864,6 @@ static ret_t fexpr_parse(fscript_parser_t* parser, value_t* result) {
 }
 
 static fscript_t* fscript_init_with_parser(fscript_t* fscript, fscript_parser_t* parser) {
-  fscript_hooks_t* hooks = fscript_get_hooks(fscript);
   fscript = fscript != NULL ? fscript : TKMEM_ZALLOC(fscript_t);
   return_value_if_fail(fscript != NULL, NULL);
   fscript->str = parser->temp;
@@ -1850,9 +1873,7 @@ static fscript_t* fscript_init_with_parser(fscript_t* fscript, fscript_parser_t*
   fscript->code_id = parser->code_id;
   fscript->lines = parser->row + 1;
 
-  if (hooks != NULL && hooks->on_init != NULL) {
-    hooks->on_init(fscript, parser->str);
-  }
+  fscript_hook_on_init(fscript, parser->str);
 
   parser->obj = NULL;
   parser->first = NULL;

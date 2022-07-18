@@ -2940,7 +2940,6 @@ TEST(FScript, hooks) {
   memset(&s_self_hooks_test, 0x0, sizeof(fscript_hooks_test_t));
   memset(&s_global_hooks_test, 0x0, sizeof(fscript_hooks_test_t));
   fscript = fscript_create(obj, "mi=sum(1,2)");
-  fscript_set_use_global_hooks(fscript, TRUE);
   fscript_exec(fscript, &v);
   fscript_destroy(fscript);
 

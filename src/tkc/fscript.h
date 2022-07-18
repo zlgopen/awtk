@@ -176,7 +176,6 @@ struct _fscript_t {
   bool_t breaked;
   bool_t continued;
   bool_t returned;
-  bool_t use_global_hooks;
   uint8_t loop_count;
 
   /*函数局部变量和参数*/
@@ -184,7 +183,7 @@ struct _fscript_t {
   /*脚本定义的函数*/
   tk_object_t* funcs_def;
 
-  fscript_hooks_t* hooks;
+  const fscript_hooks_t* hooks;
 
   void* on_error_ctx;
   fscript_on_error_t on_error;
@@ -500,16 +499,6 @@ ret_t fscript_set_hooks(const fscript_hooks_t* hooks);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t fscript_set_self_hooks(fscript_t* fscript, const fscript_hooks_t* hooks);
-
-/**
- * @method fscript_set_use_global_hooks
- * 设置 fscript 对象的是否使用全局回调函数。
- * @param {fscript_t*} fscript fscript 对象。
- * @param {bool_t} use_global_hooks 是否使用全局回调函数。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t fscript_set_use_global_hooks(fscript_t* fscript, bool_t use_global_hooks);
 
 /**
  * @method fscript_ensure_locals
