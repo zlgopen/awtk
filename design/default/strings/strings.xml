@@ -952,6 +952,10 @@ Translate text
   <language name="en_US">sliding here:</language>
   <language name="zh_CN">滑动此处：</language>
 </string>
+<string name="Embedded system not support switch ratio!">
+  <language name="en_US">Embedded system not support switch ratio!</language>
+  <language name="zh_CN">嵌入式系统不支持切换分辨率！</language>
+</string>
 <string name="hello world">
   <language name="en_US">hello 
 AWTK!</language>

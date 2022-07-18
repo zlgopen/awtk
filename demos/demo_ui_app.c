@@ -416,7 +416,7 @@ static ret_t on_switch_ratio(void* ctx, event_t* e) {
   init_children_widget(root, (void*)win);
   WIDGET_FOR_EACH_CHILD_END()
 #else
-  dialog_toast("embedded system not supporrt switch ratio !", 2000);
+  dialog_toast("Embedded system not support switch ratio!", 2000);
 #endif
   return RET_OK;
 }
