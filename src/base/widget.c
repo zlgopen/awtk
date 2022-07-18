@@ -2263,6 +2263,9 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     } else if (tk_str_eq(name, WIDGET_PROP_LAYOUT_H)) {
       value_set_int32(v, widget->h);
       ret = RET_OK;
+    } else if (tk_str_eq(name, WIDGET_PROP_TR_TEXT)) {
+      value_set_str(v, widget->tr_text);
+      ret = RET_OK;
     } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
       wchar_t* text = widget->text.str;
       if (text != NULL) {

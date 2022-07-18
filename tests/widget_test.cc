@@ -1458,3 +1458,10 @@ TEST(Widget, pointer_ex) {
 
   widget_destroy(w);
 }
+
+TEST(Widget, tr_text_prop) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_set_tr_text(w, "test");
+  ASSERT_STREQ(widget_get_prop_str(w, WIDGET_PROP_TR_TEXT, NULL), "test");
+  widget_destroy(w);
+}
