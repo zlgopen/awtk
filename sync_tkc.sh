@@ -7,9 +7,11 @@ cp -fv ../tkc/tools/idl_gen/* tools/idl_gen/.
 rm -f tools/dll_def_gen/package-lock.json
 cp -rvf ../tkc/awtk_config_common.py .
 
-for f in tkc.h compressors fscript_ext platforms conf_io hal streams ubjson charset csv	misc tkc xml debugger
+for f in tkc.h compressors platforms conf_io hal streams ubjson charset csv	misc tkc xml debugger
 do
   cp -rvf ../tkc/src/$f src
 done
+
+cp -rvf ../tkc/src/fscript_ext/*.* src/fscript_ext
 
 
