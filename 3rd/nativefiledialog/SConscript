@@ -1,0 +1,41 @@
+import os   
+import platform
+CPPPATH=[]
+sources=[]
+env=DefaultEnvironment().Clone()
+OS_NAME=platform.system()
+LIB_DIR=os.environ['LIB_DIR'];
+if OS_NAME == 'Windows':
+  CPPPATH=['src', 'src/include']
+  sources=['src/nfd_common.c', 'src/nfd_win.cpp']
+elif OS_NAME == 'Linux':
+  CPPPATH=[
+    '/usr/include/gtk-3.0',
+    '/usr/include/dbus-1.0',
+    '/usr/lib/x86_64-linux-gnu/dbus-1.0/include',
+    '/usr/include/gio-unix-2.0/',
+    '/usr/include/pango-1.0',
+    '/usr/include/atk-1.0',
+    '/usr/include/cairo',
+    '/usr/include/pixman-1',
+    '/usr/include/gdk-pixbuf-2.0',
+    '/usr/include/glib-2.0',
+    '/usr/lib/glib-2.0/include',
+    '/usr/lib/i386-linux-gnu/glib-2.0/include',
+    '/usr/lib/x86_64-linux-gnu/glib-2.0/include',
+    '/usr/include/ibus-1.0',
+    'include',
+    '/usr/include/harfbuzz',
+    'src',
+    'src/include'
+    ]
+  sources=['src/nfd_common.c', 'src/nfd_gtk.c']
+elif OS_NAME == 'Darwin':
+  CPPPATH=['src', 'src/include']
+  sources=['src/nfd_common.c', 'src/nfd_cocoa.m']
+
+CCFLAGS=os.environ['CCFLAGS'];
+CCFLAGS = CCFLAGS + ' -DSDL_STATIC_LIB -D__FLTUSED__ '
+
+env.Library(os.path.join(LIB_DIR, 'nfd'), sources, CPPPATH = CPPPATH, CCFLAGS = CCFLAGS)
+
