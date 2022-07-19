@@ -124,9 +124,6 @@ ret_t darray_remove_index(darray_t* darray, uint32_t index) {
 }
 
  ret_t darray_remove_range(darray_t* darray, uint32_t start, uint32_t end) {
-  int32_t i = 0;
-  int32_t size = 0;
-  void** elms = NULL;
   return_value_if_fail(darray != NULL && start < end && end <= darray->size, RET_BAD_PARAMS);
 
   if (darray->elms != NULL) {
