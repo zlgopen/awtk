@@ -93,7 +93,7 @@ if OS_NAME == 'Darwin':
 elif OS_NAME == 'Linux':
     TOOLS_NAME = ''
     OS_FLAGS = '-g -Wall -Wno-unused-function -fPIC '
-    OS_LIBS = ['GL', 'gtk-3', 'gdk-3', 'Xext', 'X11',
+    OS_LIBS = ['GL', 'gtk-3', 'gdk-3', 'glib-2.0', 'gobject-2.0', 'Xext', 'X11',
                'sndio', 'stdc++', 'asound', 'pthread', 'm', 'dl']
     COMMON_CFLAGS = COMMON_CFLAGS+' -std=gnu99 '
     OS_FLAGS = OS_FLAGS + ' -DLINUX -DHAS_PTHREAD'

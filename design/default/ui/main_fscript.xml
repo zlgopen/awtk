@@ -8,7 +8,7 @@
   <property name="on:global_key_long_press">
     print("global key_long_press:", key, "alt=", alt, "ctrl=", ctrl, "cmd=", cmd, "menu=", menu);
   </property>
-  <view x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=8,m=5,s=5)">
+  <view x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=10,m=5,s=5)">
     <button focusable="true" focused="true" on:click="open('test_fscript')" text="Test Fscript"/>
     <button focusable="true" on:click="open('button_fscript')" text="Buttons"/>
     <button focusable="true" on:click="open('basic_fscript')" text="Basic"/>
@@ -38,6 +38,14 @@
         ]]>
       </property>
     </button>
+    <button focusable="true" on:click="var files=choose_files('.c', './');print(files.size)" 
+      text="Choose Files"/>
+    <button focusable="true" on:click="var file=choose_file('.c', './');print(file)" 
+      text="Choose File"/>
+    <button focusable="true" on:click="var file=choose_file_for_save('.c', './');print(file)" 
+      text="Choose File Save"/>
+    <button focusable="true" on:click="var file=choose_folder('./');print(file)" 
+      text="Choose Folder"/>
     <button focusable="true" on:click="quit()" text="Quit"/>
   </view>
 </window>

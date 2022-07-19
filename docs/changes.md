@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/07/20
+  * add fscript wrapper for file dialog 
+
 2022/07/19 
   * 完善demoui的字符串(感谢兆坤提供补丁)
   * fscript支持实例的hooks(感谢智明提供补丁)

@@ -19,6 +19,7 @@
 #include "tkc/fscript.h"
 #include "tkc/tokenizer.h"
 #include "tkc/object_default.h"
+#include "tkc/object_array.h"
 #include "base/enums.h"
 #include "base/main_loop.h"
 #include "base/window.h"
@@ -26,6 +27,7 @@
 #include "base/object_widget.h"
 #include "base/widget_factory.h"
 #include "base/window_manager.h"
+#include "file_browser/file_dialog.h"
 #include "ui_loader/ui_builder_default.h"
 
 static widget_t* find_target_widget(widget_t* widget, const char* path, uint32_t len) {
@@ -639,6 +641,60 @@ static ret_t func_to_name(fscript_t* fscript, fscript_args_t* args, value_t* res
   return RET_OK;
 }
 
+static ret_t func_choose_files(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  darray_t* files = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+
+  result->type = VALUE_TYPE_INVALID;
+  files = tk_choose_files(value_str(args->args), value_str(args->args + 1));
+
+  if (files != NULL) {
+    tk_object_t* arr = object_array_create();
+    if (arr != NULL) {
+      value_t v;
+      uint32_t i = 0;
+      for (i = 0; i < files->size; i++) {
+        const char* iter = (const char*)darray_get(files, i);
+        value_set_str(&v, iter);
+        object_array_push(arr, &v);
+      }
+
+      value_set_object(result, arr);
+      result->free_handle = TRUE;
+    }
+    darray_destroy(files);
+  }
+
+  return RET_OK;
+}
+
+static ret_t func_choose_folder(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+
+  value_set_str(result, tk_choose_folder(value_str(args->args)));
+  result->free_handle = TRUE;
+
+  return RET_OK;
+}
+
+static ret_t func_choose_file(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+
+  value_set_str(result, tk_choose_file(value_str(args->args), value_str(args->args + 1)));
+  result->free_handle = TRUE;
+
+  return RET_OK;
+}
+
+static ret_t func_choose_file_for_save(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+
+  value_set_str(result, tk_choose_file_for_save(value_str(args->args), value_str(args->args + 1)));
+  result->free_handle = TRUE;
+
+  return RET_OK;
+}
+
 FACTORY_TABLE_BEGIN(s_ext_widget)
 FACTORY_TABLE_ENTRY("open", func_window_open)
 FACTORY_TABLE_ENTRY("close", func_window_close)
@@ -680,6 +736,11 @@ FACTORY_TABLE_ENTRY("window_name", func_to_name)
 FACTORY_TABLE_ENTRY("widget_name", func_to_name)
 FACTORY_TABLE_ENTRY("widget_type", func_to_name)
 FACTORY_TABLE_ENTRY("widget_prop_name", func_to_name)
+FACTORY_TABLE_ENTRY("choose_files", func_choose_files)
+FACTORY_TABLE_ENTRY("choose_file", func_choose_file)
+FACTORY_TABLE_ENTRY("choose_folder", func_choose_folder)
+FACTORY_TABLE_ENTRY("choose_file_for_save", func_choose_file_for_save)
+
 FACTORY_TABLE_END()
 
 ret_t fscript_widget_register(void) {

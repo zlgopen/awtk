@@ -21,7 +21,7 @@
 #ifndef TK_FILE_DIALOG_H
 #define TK_FILE_DIALOG_H
 
-#include "drawing/element_desc.h"
+#include "tkc.h"
 
 BEGIN_C_DECLS
 
