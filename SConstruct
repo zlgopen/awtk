@@ -26,6 +26,7 @@ SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
   '3rd/lz4/SConscript',
   '3rd/miniz/SConscript',
   '3rd/fribidi/SConscript',
+  '3rd/nativefiledialog/SConscript',
   'src/SConscript',
   'src/csv/SConscript',
   'src/conf_io/SConscript',
