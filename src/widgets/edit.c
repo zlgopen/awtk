@@ -1769,7 +1769,7 @@ static ret_t edit_hook_button(void* ctx, const void* iter) {
       }
     }
 
-    if (handler != NULL && !emitter_exist(emitter, etype, handler, edit)) {
+    if (handler != NULL && (emitter == NULL || !emitter_exist(emitter, etype, handler, edit))) {
       widget_on(widget, etype, handler, edit);
     }
   }

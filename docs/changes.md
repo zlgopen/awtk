@@ -7,6 +7,7 @@
   * 完善文档 fscript\_widget.md
   * 完善 widget\_take\_snapshot\_rect 支持控件内的偏移裁剪区(感谢雨欣提供补丁)
   * 修复 AWTK 在 APP_SIMULATOR 模式下光标基准点坐标不正确的问题(感谢雨欣提供补丁)
+  * 修复edit在创建hook_button时打印的警告(感谢雨欣提供补丁)
 
 2022/07/19 
   * 完善demoui的字符串(感谢兆坤提供补丁)
