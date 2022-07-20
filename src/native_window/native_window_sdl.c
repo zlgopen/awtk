@@ -317,7 +317,30 @@ static ret_t native_window_sdl_get_info(native_window_t* win, native_window_info
   return RET_OK;
 }
 
-static ret_t native_window_sdl_cursor_from_bitmap(native_window_t* win, bitmap_t* img) {
+static ret_t calc_cursor_hot_spot(const char* name, bitmap_t* img, point_t* p) {
+  bool_t midpoint = FALSE;
+  return_value_if_fail(name != NULL && img != NULL && p != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(WIDGET_CURSOR_EDIT, name) || tk_str_eq(WIDGET_CURSOR_WAIT, name) ||
+      tk_str_eq(WIDGET_CURSOR_CROSS, name) || tk_str_eq(WIDGET_CURSOR_NO, name) ||
+      tk_str_eq(WIDGET_CURSOR_SIZENWSE, name) || tk_str_eq(WIDGET_CURSOR_SIZENESW, name) ||
+      tk_str_eq(WIDGET_CURSOR_SIZEWE, name) || tk_str_eq(WIDGET_CURSOR_SIZENS, name) ||
+      tk_str_eq(WIDGET_CURSOR_SIZEALL, name)) {
+    midpoint = TRUE;
+  }
+
+  if (midpoint) {
+    p->x = img->w / 2;
+    p->y = img->h / 2;
+  } else {
+    p->x = 0;
+    p->y = 0;
+  }
+
+  return RET_OK;
+}
+
+static ret_t native_window_sdl_cursor_from_bitmap(native_window_t* win, bitmap_t* img, point_t* p) {
   Uint32 depth = 32;
   uint8_t* data = NULL;
   uint32_t w = img->w;
@@ -358,7 +381,7 @@ static ret_t native_window_sdl_cursor_from_bitmap(native_window_t* win, bitmap_t
   bitmap_unlock_buffer(img);
   return_value_if_fail(sdl->cursor_surface != NULL, RET_OOM);
 
-  sdl->cursor = SDL_CreateColorCursor(sdl->cursor_surface, 0, 0);
+  sdl->cursor = SDL_CreateColorCursor(sdl->cursor_surface, p->x, p->y);
   SDL_SetCursor(sdl->cursor);
 
   return RET_OK;
@@ -409,7 +432,9 @@ static ret_t native_window_sdl_set_cursor(native_window_t* win, const char* name
       return RET_OK;
     }
   } else if (img != NULL) {
-    return native_window_sdl_cursor_from_bitmap(win, img);
+    point_t hot_spot;
+    calc_cursor_hot_spot(name, img, &hot_spot);
+    return native_window_sdl_cursor_from_bitmap(win, img, &hot_spot);
   }
 
   return RET_FAIL;
