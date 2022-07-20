@@ -897,6 +897,170 @@ theme_set('window_manager', 'dark')
 
 设置当前控件的父控件或当前窗口的主题用法类似，此处不多赘述。
 
+### 5.23 dialog_info
+
+> 显示info提示对话框。
+----------------------------
+
+#### 原型
+
+```js
+dialog_info(title, content)
+```
+
+* title 标题
+* content 内容
+
+#### 示例
+
+```
+dialog_info('info', 'Done');
+```
+
+### 5.24 dialog_warn
+
+> 显示warn提示对话框。
+----------------------------
+
+#### 原型
+
+```js
+dialog_warn(title, content)
+```
+
+* title 标题
+* content 内容
+
+#### 示例
+
+```
+dialog_warn('info', 'Done');
+```
+
+### 5.25 dialog_confirm
+
+> 显示confirm提示对话框。
+----------------------------
+
+#### 原型
+
+```js
+dialog_confirm(title, content) => bool
+```
+
+* title 标题
+* content 内容
+
+#### 示例
+
+```
+dialog_confirm('info', 'Are you sure?');
+```
+
+### 5.26 dialog_toast
+
+> 显示toast提示对话框。
+----------------------------
+
+#### 原型
+
+```js
+dialog_toast(content, time)
+```
+
+* title 标题
+* content 内容
+
+#### 示例
+
+```
+dialog_toast('done', 3000);
+```
+
+### 5.27 choose_files
+
+> 显示选择文件对话框。
+----------------------------
+
+#### 原型
+
+```js
+choose_files(filters, init_dir)
+```
+
+* filters 过滤条件(文件扩展名，如：.png.jpg.gif)
+* init_dir 初始目录。
+
+#### 示例
+
+```
+var files = choose_files('.png.jpg.gif', './')
+print(files.size)
+```
+
+### 5.28 choose_file
+
+> 显示选择文件对话框。
+----------------------------
+
+#### 原型
+
+```js
+choose_file(filters, init_dir)
+```
+
+* filters 过滤条件(文件扩展名，如：.png.jpg.gif)
+* init_dir 初始目录。
+
+#### 示例
+
+```
+var filename = choose_files('.png.jpg.gif', './')
+print(filename)
+```
+
+### 5.29 choose_folder
+
+> 显示选择目录对话框。
+----------------------------
+
+#### 原型
+
+```js
+choose_folder(init_dir)
+```
+
+* init_dir 初始目录。
+
+#### 示例
+
+```
+var foldername = choose_folder('./')
+print(foldername)
+```
+
+### 5.30 choose_file_for_save
+
+> 选择保存文件对话框。
+----------------------------
+
+#### 原型
+
+```js
+choose_file_for_save(filters, init_dir)
+```
+
+* filters 过滤条件(文件扩展名，如：.png.jpg.gif)
+* init_dir 初始目录。
+
+#### 示例
+
+```
+var filename = choose_file_for_save('.png.jpg.gif', './')
+print(filename)
+```
+
+
 #### 示例参考
 
 * https://github.com/zlgopen/awtk/blob/master/design/default/ui/main_fscript.xml
