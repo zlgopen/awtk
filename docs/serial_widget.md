@@ -162,3 +162,7 @@ date >/dev/ttys033
 
 请参考AWorks平台的移植：src/platforms/aworkslp/serial_helper.c
 
+## 8. 注意
+
+* windows 平台需要调用 tk\_socket\_init 初始化 socket。
+
