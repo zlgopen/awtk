@@ -4743,20 +4743,21 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r) {
   vgcanvas_create_fbo(vg, vg->w, vg->h, FALSE, &fbo);
   vgcanvas_bind_fbo(vg, &fbo);
   canvas_set_clip_rect(c, r);
+  canvas_translate(c, -widget->x, -widget->y);
   widget_paint(widget, c);
+  canvas_translate(c, widget->x, widget->y);
   vgcanvas_unbind_fbo(vg, &fbo);
 
   if (r != NULL) {
     w = r->w;
     h = r->h;
   } else {
-    w = fbo.w;
-    h = fbo.h;
+    w = widget->w;
+    h = widget->h;
   }
 
   img = bitmap_create_ex(w * fbo.ratio, h * fbo.ratio, 0, BITMAP_FMT_RGBA8888);
   vgcanvas_fbo_to_bitmap(vg, &fbo, img, r);
-
   vgcanvas_destroy_fbo(vg, &fbo);
 
   return img;
@@ -4769,19 +4770,10 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r) {
   wh_t h = 0;
   canvas_t canvas;
   lcd_t* lcd = NULL;
-  canvas_t* c = NULL;
   uint8_t* buff = NULL;
   bitmap_t* bitmap = NULL;
   bitmap_t* bitmap_clip = NULL;
-  native_window_t* native_window = NULL;
   return_value_if_fail(widget != NULL && widget->vt != NULL, NULL);
-
-  native_window =
-      (native_window_t*)widget_get_prop_pointer(window_manager(), WIDGET_PROP_NATIVE_WINDOW);
-  return_value_if_fail(native_window != NULL, NULL);
-
-  c = native_window_get_canvas(native_window);
-  return_value_if_fail(c != NULL, NULL);
 
   w = widget->w;
   h = widget->h;
@@ -4794,7 +4786,9 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r) {
   if (lcd != NULL) {
     canvas_init(&canvas, lcd, font_manager());
     canvas_begin_frame(&canvas, NULL, LCD_DRAW_OFFLINE);
-    widget_paint_with_clip(widget, (rect_t*)r, &canvas, widget_paint);
+    canvas_translate(&canvas, -widget->x, -widget->y);
+    widget_paint(widget, &canvas);
+    canvas_translate(&canvas, widget->x, widget->y);
     canvas_end_frame(&canvas);
     canvas_reset(&canvas);
     lcd_destroy(lcd);

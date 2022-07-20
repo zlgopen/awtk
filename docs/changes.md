@@ -4,7 +4,8 @@
   * 增加文件选择对话框的函数。
   * 增加文件选择对话框的函数的fscript包装。
   * 增加了dialog\_info/warn/confirm/toast等函数的fscript包装。
-  * 完善文档fscript\_widget.md
+  * 完善文档 fscript\_widget.md
+  * 完善 widget\_take\_snapshot\_rect 支持控件内的偏移裁剪区(感谢雨欣提供补丁)
 
 2022/07/19 
   * 完善demoui的字符串(感谢兆坤提供补丁)
