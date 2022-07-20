@@ -24,6 +24,7 @@
 #include "base/main_loop.h"
 #include "base/window.h"
 #include "base/locale_info.h"
+#include "base/dialog.h"
 #include "base/object_widget.h"
 #include "base/widget_factory.h"
 #include "base/window_manager.h"
@@ -695,6 +696,30 @@ static ret_t func_choose_file_for_save(fscript_t* fscript, fscript_args_t* args,
   return RET_OK;
 }
 
+static ret_t func_dialog_info(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  value_set_bool(result, dialog_info(value_str(args->args), value_str(args->args + 1)) == RET_OK);
+  return RET_OK;
+}
+
+static ret_t func_dialog_warn(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  value_set_bool(result, dialog_warn(value_str(args->args), value_str(args->args + 1)) == RET_OK);
+  return RET_OK;
+}
+
+static ret_t func_dialog_confirm(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  value_set_bool(result, dialog_confirm(value_str(args->args), value_str(args->args + 1)) == RET_OK);
+  return RET_OK;
+}
+
+static ret_t func_dialog_toast(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  value_set_bool(result, dialog_toast(value_str(args->args), value_uint32(args->args + 1)) == RET_OK);
+  return RET_OK;
+}
+
 FACTORY_TABLE_BEGIN(s_ext_widget)
 FACTORY_TABLE_ENTRY("open", func_window_open)
 FACTORY_TABLE_ENTRY("close", func_window_close)
@@ -740,6 +765,10 @@ FACTORY_TABLE_ENTRY("choose_files", func_choose_files)
 FACTORY_TABLE_ENTRY("choose_file", func_choose_file)
 FACTORY_TABLE_ENTRY("choose_folder", func_choose_folder)
 FACTORY_TABLE_ENTRY("choose_file_for_save", func_choose_file_for_save)
+FACTORY_TABLE_ENTRY("dialog_info", func_dialog_info)
+FACTORY_TABLE_ENTRY("dialog_warn", func_dialog_warn)
+FACTORY_TABLE_ENTRY("dialog_confirm", func_dialog_confirm)
+FACTORY_TABLE_ENTRY("dialog_toast", func_dialog_toast)
 
 FACTORY_TABLE_END()
 

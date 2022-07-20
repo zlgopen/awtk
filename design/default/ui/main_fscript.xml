@@ -46,6 +46,10 @@
       text="Choose File Save"/>
     <button focusable="true" on:click="var file=choose_folder('./');print(file)" 
       text="Choose Folder"/>
+    <button focusable="true" on:click="var ret = dialog_info('awtk','hello');print(ret)" text="Info"/>
+    <button focusable="true" on:click="var ret = dialog_warn('awtk','hello');print(ret)" text="Warn"/>
+    <button focusable="true" on:click="var ret = dialog_confirm('awtk','hello');print(ret)" text="Confirm"/>
+    <button focusable="true" on:click="var ret = dialog_toast('awtk',2000);print(ret)" text="Toast"/>
     <button focusable="true" on:click="quit()" text="Quit"/>
   </view>
 </window>
