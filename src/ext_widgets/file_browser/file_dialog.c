@@ -153,7 +153,7 @@ static char* tk_choose_file_awtk(const char* filters, const char* init_dir) {
   str_init(&str, MAX_PATH + 1);
   emitter_on(EMITTER(chooser), EVT_DONE, on_choose_file_result, &str);
   file_chooser_set_init_dir(chooser, init_dir);
-
+  file_chooser_set_filter(chooser, filters);
   if (file_chooser_choose_file_for_open(chooser) == RET_OK) {
     return str.str;
   } else {
@@ -201,6 +201,7 @@ static char* tk_choose_file_for_save_awtk(const char* filters, const char* init_
   str_init(&str, MAX_PATH + 1);
   emitter_on(EMITTER(chooser), EVT_DONE, on_choose_file_result, &str);
   file_chooser_set_init_dir(chooser, init_dir);
+  file_chooser_set_filter(chooser, filters);
 
   if (file_chooser_choose_file_for_save(chooser) == RET_OK) {
     return str.str;
