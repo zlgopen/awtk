@@ -2872,7 +2872,6 @@ static ret_t fscript_global_hooks_exec_func(fscript_t* fscript, const char* name
   return fscript_exec_func_default(fscript, iter, result);
 }
 
-#if defined(WIN32) && !defined(MINGW)
 static const fscript_hooks_t s_fscript_self_hooks = {
   NULL,
   fscript_self_hooks_on_fscript_deinit,
@@ -2890,25 +2889,6 @@ static const fscript_hooks_t s_fscript_global_hooks = {
   fscript_global_hooks_on_fscript_before_exec,
   fscript_global_hooks_on_fscript_after_exec,
 };
-#else
-static const fscript_hooks_t s_fscript_self_hooks = {
-  .on_deinit = fscript_self_hooks_on_fscript_deinit,
-  .set_var = fscript_self_hooks_set_var,
-  .exec_func = fscript_self_hooks_exec_func,
-  .before_exec = fscript_self_hooks_on_fscript_before_exec,
-  .after_exec = fscript_self_hooks_on_fscript_after_exec,
-};
-
-static const fscript_hooks_t s_fscript_global_hooks = {
-  .on_init = fscript_global_hooks_on_fscript_init,
-  .on_deinit = fscript_global_hooks_on_fscript_deinit,
-  .set_var = fscript_global_hooks_set_var,
-  .exec_func = fscript_global_hooks_exec_func,
-  .before_exec = fscript_global_hooks_on_fscript_before_exec,
-  .after_exec = fscript_global_hooks_on_fscript_after_exec,
-};
-#endif
-
 
 TEST(FScript, hooks) {
   value_t v;
