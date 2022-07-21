@@ -91,6 +91,16 @@ ret_t serial_widget_set_flowcontrol(widget_t* widget, uint32_t flowcontrol) {
   return RET_OK;
 }
 
+ret_t serial_widget_set_check_interval(widget_t* widget, uint32_t check_interval) {
+  serial_widget_t* serial_widget = SERIAL_WIDGET(widget);
+  return_value_if_fail(serial_widget != NULL, RET_BAD_PARAMS);
+
+  serial_widget->check_interval = check_interval;
+  serial_widget_apply_props(widget);
+
+  return RET_OK;
+}
+
 static ret_t serial_widget_get_prop(widget_t* widget, const char* name, value_t* v) {
   serial_widget_t* serial_widget = SERIAL_WIDGET(widget);
   return_value_if_fail(serial_widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -121,6 +131,9 @@ static ret_t serial_widget_get_prop(widget_t* widget, const char* name, value_t*
     return RET_OK;
   } else if (tk_str_eq(SERIAL_WIDGET_PROP_IOSTREAM, name)) {
     value_set_object(v, TK_OBJECT(serial_widget->iostream));
+    return RET_OK;
+  } else if (tk_str_eq(SERIAL_WIDGET_PROP_CHECK_INTERVAL, name)) {
+    value_set_uint32(v, serial_widget->check_interval);
     return RET_OK;
   }
 
@@ -198,8 +211,6 @@ static ret_t serial_widget_check_if_data_available(const timer_info_t* info) {
   return RET_REMOVE;
 }
 
-#define SERIAL_CHECK_INTERVAL 100
-
 static ret_t serial_widget_apply_props_async(const idle_info_t* info) {
   int fd = -1;
   widget_t* widget = WIDGET(info->ctx);
@@ -222,8 +233,8 @@ static ret_t serial_widget_apply_props_async(const idle_info_t* info) {
         event_source_fd_create(fd, serial_widget_on_event_source_event, serial_widget);
     main_loop_add_event_source(main_loop(), serial_widget->event_source);
   } else {
-    serial_widget->timer_id =
-        timer_add(serial_widget_check_if_data_available, serial_widget, SERIAL_CHECK_INTERVAL);
+    serial_widget->timer_id = timer_add(serial_widget_check_if_data_available, serial_widget,
+                                        serial_widget->check_interval);
   }
 
   log_debug("open serial %s ok\n", serial_widget->device);
@@ -279,6 +290,9 @@ static ret_t serial_widget_set_prop(widget_t* widget, const char* name, const va
       serial_widget_set_flowcontrol(widget, value_uint32(v));
     }
     return RET_OK;
+  } else if (tk_str_eq(SERIAL_WIDGET_PROP_CHECK_INTERVAL, name)) {
+    serial_widget_set_check_interval(widget, value_uint32(v));
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -331,6 +345,7 @@ widget_t* serial_widget_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
   serial_widget->bytesize = eightbits;
   serial_widget->stopbits = stopbits_one;
   serial_widget->flowcontrol = flowcontrol_none;
+  serial_widget->check_interval = 100;
 
   return widget;
 }

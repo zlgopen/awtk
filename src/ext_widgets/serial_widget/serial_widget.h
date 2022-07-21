@@ -19,7 +19,6 @@
  *
  */
 
-
 #ifndef TK_SERIAL_WIDGET_H
 #define TK_SERIAL_WIDGET_H
 
@@ -117,6 +116,14 @@ typedef struct _serial_widget_t {
    */
   tk_iostream_t* iostream;
 
+  /**
+   * @property {uint32_t} check_interval
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 轮询时间（单位：ms）。
+   * > 仅在不支持用select等待串口数据的嵌入式设备上有效。
+   */
+  uint32_t check_interval;
+
   /*private*/
   uint32_t idle_id;
   uint32_t timer_id;
@@ -151,7 +158,6 @@ widget_t* serial_widget_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
  * @return {widget_t*} serial_widget对象。
  */
 widget_t* serial_widget_cast(widget_t* widget);
-
 
 /**
  * @method serial_widget_set_baudrate
@@ -219,6 +225,16 @@ ret_t serial_widget_set_stopbits(widget_t* widget, uint32_t stopbits);
  */
 ret_t serial_widget_set_flowcontrol(widget_t* widget, uint32_t flowcontrol);
 
+/**
+ * @method serial_widget_set_check_interval
+ * 设置 轮询时间。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {uint32_t} check_interval 轮询时间（单位：ms）。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t serial_widget_set_check_interval(widget_t* widget, uint32_t check_interval);
 
 #define SERIAL_WIDGET_PROP_BAUDRATE "baudrate"
 #define SERIAL_WIDGET_PROP_DEVICE "device"
@@ -229,6 +245,7 @@ ret_t serial_widget_set_flowcontrol(widget_t* widget, uint32_t flowcontrol);
 #define SERIAL_WIDGET_PROP_ISTREAM "istream"
 #define SERIAL_WIDGET_PROP_OSTREAM "ostream"
 #define SERIAL_WIDGET_PROP_IOSTREAM "iostream"
+#define SERIAL_WIDGET_PROP_CHECK_INTERVAL "check_interval"
 
 #define WIDGET_TYPE_SERIAL_WIDGET "serial"
 
