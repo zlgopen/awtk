@@ -57,7 +57,7 @@ typedef struct _serial_widget_t {
   /**
    * @property {char*} device
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 波特率。
+   * 设备(文件)名。
    */
   char* device;
 
