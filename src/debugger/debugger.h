@@ -35,6 +35,7 @@ typedef struct _debugger_t debugger_t;
 typedef ret_t (*debugger_lock_t)(debugger_t* debugger);
 typedef ret_t (*debugger_unlock_t)(debugger_t* debugger);
 typedef ret_t (*debugger_stop_t)(debugger_t* debugger);
+typedef ret_t (*debugger_restart_t)(debugger_t* debugger);
 typedef ret_t (*debugger_pause_t)(debugger_t* debugger);
 typedef bool_t (*debugger_match_t)(debugger_t* debugger, const char* code_id);
 typedef bool_t (*debugger_is_paused_t)(debugger_t* debugger);
@@ -75,6 +76,7 @@ typedef struct _debugger_vtable_t {
 
   debugger_next_t next;
   debugger_step_in_t step_in;
+  debugger_restart_t restart;
   debugger_step_out_t step_out;
   debugger_step_over_t step_over;
   debugger_continue_t continve;
@@ -140,6 +142,16 @@ ret_t debugger_stop(debugger_t* debugger);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t debugger_pause(debugger_t* debugger);
+
+/**
+ * @method debugger_restart
+ * 重新运行。
+ *
+ * @param {debugger_t*} debugger debugger对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t debugger_restart(debugger_t* debugger);
 
 /**
  * @method debugger_is_paused

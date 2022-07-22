@@ -200,6 +200,12 @@ static ret_t func_next(app_info_t* app, tokenizer_t* tokenizer) {
   return debugger_show_code(app, FALSE);
 }
 
+static ret_t func_restart(app_info_t* app, tokenizer_t* tokenizer) {
+  debugger_restart(app->debugger);
+  sleep_ms(300);
+  return debugger_show_code(app, FALSE);
+}
+
 static ret_t func_continue(app_info_t* app, tokenizer_t* tokenizer) {
   debugger_continue(app->debugger);
   sleep_ms(300);
@@ -295,6 +301,7 @@ static const cmd_entry_t s_cmds[] = {
     {"global", "global", "global", "show global variables", func_global},
     {"backtrace", "bt", "backtrace", "show backtrace", func_backtrace},
     {"quit", "q", "Quit loop", "quit", func_quit},
+    {"restart", "rs", "restart script", "restart", func_restart},
     {NULL, NULL, NULL}};
 
 static char* command_generator(const char* text, int state) {

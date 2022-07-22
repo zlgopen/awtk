@@ -255,6 +255,10 @@ static ret_t debugger_client_pause(debugger_t* debugger) {
   return debugger_client_request_simple(debugger, DEBUGGER_REQ_PAUSE, 0);
 }
 
+static ret_t debugger_client_restart(debugger_t* debugger) {
+  return debugger_client_request_simple(debugger, DEBUGGER_REQ_RESTART, 0);
+}
+
 static bool_t debugger_client_is_paused(debugger_t* debugger) {
   return debugger_client_request_simple(debugger, DEBUGGER_REQ_IS_PAUSED, 0) == RET_OK;
 }
@@ -387,6 +391,7 @@ static const debugger_vtable_t s_debugger_client_vtable = {
     .unlock = debugger_client_unlock,
     .stop = debugger_client_stop,
     .pause = debugger_client_pause,
+    .restart = debugger_client_restart,
     .is_paused = debugger_client_is_paused,
     .next = debugger_client_next,
     .step_in = debugger_client_step_in,

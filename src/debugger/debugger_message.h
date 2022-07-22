@@ -143,6 +143,11 @@ typedef enum _debugger_req_type_t {
    * 断开调试器请求码。
    */
   DEBUGGER_REQ_DEINIT,
+  /**
+   * @const DEBUGGER_REQ_RESTART
+   * 重新运行运行请求码。
+   */
+  DEBUGGER_REQ_RESTART,
 } debugger_req_type_t;
 
 /**

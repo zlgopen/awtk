@@ -42,6 +42,13 @@ ret_t debugger_stop(debugger_t* debugger) {
   return debugger->vt->stop(debugger);
 }
 
+ret_t debugger_restart(debugger_t* debugger) {
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger->vt->restart != NULL, RET_BAD_PARAMS);
+
+  return debugger->vt->restart(debugger);
+}
+
 ret_t debugger_pause(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->pause != NULL, RET_BAD_PARAMS);

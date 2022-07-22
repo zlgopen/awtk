@@ -176,6 +176,7 @@ struct _fscript_t {
   bool_t breaked;
   bool_t continued;
   bool_t returned;
+  bool_t rerun;
   uint8_t loop_count;
 
   /*函数局部变量和参数*/

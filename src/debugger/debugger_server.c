@@ -446,6 +446,10 @@ static ret_t debugger_server_dispatch(debugger_server_t* server) {
         resp.error = debugger_stop(debugger);
         break;
       }
+      case DEBUGGER_REQ_RESTART: {
+        resp.error = debugger_restart(debugger);
+        break;
+      }
       case DEBUGGER_REQ_PAUSE: {
         resp.error = debugger_pause(debugger);
         break;

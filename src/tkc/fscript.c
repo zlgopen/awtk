@@ -848,23 +848,25 @@ ret_t fscript_exec(fscript_t* fscript, value_t* result) {
   fscript_func_call_t* iter = NULL;
   return_value_if_fail(fscript != NULL, RET_FAIL);
 
-  fscript_hook_before_exec(fscript);
+  do {
+    fscript->rerun = FALSE;
+    fscript_hook_before_exec(fscript);
 
-  value_set_str(result, NULL);
-  iter = fscript->first;
-  while (iter != NULL) {
-    break_if_fail(iter->func != NULL);
-    value_reset(result);
-    break_if_fail(fscript_exec_func(fscript, NULL, iter, result) == RET_OK);
-    if (fscript->returned) {
-      fscript->returned = FALSE;
-      break;
+    value_set_str(result, NULL);
+    iter = fscript->first;
+    while (iter != NULL) {
+      break_if_fail(iter->func != NULL);
+      value_reset(result);
+      break_if_fail(fscript_exec_func(fscript, NULL, iter, result) == RET_OK);
+      if (fscript->returned) {
+        fscript->returned = FALSE;
+        break;
+      }
+      iter = iter->next;
     }
-    iter = iter->next;
-  }
-  fscript_hook_after_exec(fscript);
-
-  fscript_locals_destroy(fscript);
+    fscript_hook_after_exec(fscript);
+    fscript_locals_destroy(fscript);
+  } while (fscript->rerun);
 
   return RET_OK;
 }

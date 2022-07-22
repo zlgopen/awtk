@@ -128,6 +128,24 @@ static ret_t debugger_fscript_stop(debugger_t* debugger) {
   return ret;
 }
 
+static ret_t debugger_fscript_restart(debugger_t* debugger) {
+  ret_t ret = RET_FAIL;
+  debugger_fscript_t* d = DEBUGGER_FSCRIPT(debugger);
+  return_value_if_fail(d != NULL, RET_BAD_PARAMS);
+
+  if (debugger_fscript_lock(debugger) == RET_OK) {
+    if (d->fscript != NULL) {
+      d->fscript->rerun = TRUE;
+      d->fscript->returned = TRUE;
+      debugger_clear_break_points(debugger);
+      d->stop_at_start_line = TRUE;
+    }
+    debugger_fscript_unlock(debugger);
+  }
+
+  return ret;
+}
+
 static ret_t debugger_fscript_pause(debugger_t* debugger) {
   ret_t ret = RET_FAIL;
   debugger_fscript_t* d = DEBUGGER_FSCRIPT(debugger);
@@ -518,6 +536,7 @@ static const debugger_vtable_t s_debugger_fscript_vtable = {
     .lock = debugger_fscript_lock,
     .unlock = debugger_fscript_unlock,
     .stop = debugger_fscript_stop,
+    .restart = debugger_fscript_restart,
     .pause = debugger_fscript_pause,
     .match = debugger_fscript_match,
     .is_paused = debugger_fscript_is_paused,
@@ -678,7 +697,9 @@ ret_t debugger_fscript_set_fscript(debugger_t* debugger, fscript_t* fscript) {
     debugger_fscript_leave_func(debugger);
     fscript_set_print_func(d->fscript, NULL);
     fscript_set_on_error(d->fscript, NULL, NULL);
-    emitter_dispatch_simple_event(EMITTER(debugger), DEBUGGER_RESP_MSG_COMPLETED);
+    if (!d->fscript->rerun) {
+      emitter_dispatch_simple_event(EMITTER(debugger), DEBUGGER_RESP_MSG_COMPLETED);
+    }
     d->fscript = NULL;
   }
 
