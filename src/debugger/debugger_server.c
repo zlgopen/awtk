@@ -248,6 +248,17 @@ static debugger_t* debugger_server_find(debugger_server_t* server, const char* c
   return debugger;
 }
 
+static ret_t debugger_server_remove_debugger(debugger_server_t* server, debugger_t* debugger) {
+  return_value_if_fail(server != NULL && debugger != NULL, RET_BAD_PARAMS);
+  darray_remove(&(server->debuggers), debugger);
+
+  if (server->debugger == debugger) {
+    server->debugger = NULL;
+  }
+
+  return RET_OK;
+}
+
 static ret_t debugger_server_on_events(void* ctx, event_t* e) {
   ret_t ret = RET_OK;
   debugger_resp_t msg;
@@ -290,6 +301,7 @@ static ret_t debugger_server_on_events(void* ctx, event_t* e) {
     }
     case DEBUGGER_RESP_MSG_COMPLETED: {
       debugger_server_send_data(server, &msg, NULL);
+      debugger_server_remove_debugger(server, debugger);
       break;
     }
     default: {

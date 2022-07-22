@@ -46,8 +46,17 @@ static ret_t debugger_fscript_on_disconnect(fscript_t* fscript) {
   debugger = debugger_server_find_debugger(fscript->code_id);
   if (debugger != NULL) {
     if (debugger_lock(debugger) == RET_OK) {
+      int32_t ref_count = 0;
+      tk_object_ref(TK_OBJECT(debugger));
       debugger_fscript_set_fscript(debugger, NULL);
-      debugger_unlock(debugger);
+      ref_count = TK_OBJECT(debugger)->ref_count;
+      tk_object_unref(TK_OBJECT(debugger));
+
+      if (ref_count <= 1) {
+        log_debug("debugger is removed\n");
+      } else {
+        debugger_unlock(debugger);
+      }
     }
   }
 
