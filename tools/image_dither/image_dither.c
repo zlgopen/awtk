@@ -2119,8 +2119,32 @@ static uint8_t* image_dither_convert_2_to_4(uint8_t* src, uint32_t w, uint32_t h
   return data;
 }
 
+
+static void image_dither_image_blend_bg_color(uint8_t* data, uint32_t w, uint32_t h, uint32_t bpp, color_t bg_color) {
+  if (bpp == 4) {
+    uint32_t y = 0, x = 0;
+    uint8_t* src = data;
+    for (y = 0; y < h; y++) {
+      for (x = 0; x < w; x++) {
+        uint8_t b = src[0];
+        uint8_t g = src[1];
+        uint8_t r = src[2];
+        uint8_t a = src[3];
+        if (a != 0xFF) {
+          uint8_t minus_a = 0xFF - a;
+          src[2] = (bg_color.rgba.r * minus_a + r * a) >> 8;
+          src[1] = (bg_color.rgba.g * minus_a + g * a) >> 8;
+          src[0] = (bg_color.rgba.b * minus_a + b * a) >> 8;
+          src[3] = 0xFF;
+        }
+        src += bpp;
+      }
+    }
+  }
+}
+
 ret_t image_dither_load_image(const uint8_t* buff, uint32_t buff_size, bitmap_t* image,
-                              bitmap_format_t bitmap_format, lcd_orientation_t o) {
+                              bitmap_format_t bitmap_format, lcd_orientation_t o, color_t bg_color) {
   int w = 0;
   int h = 0;
   int n = 0;
@@ -2134,6 +2158,9 @@ ret_t image_dither_load_image(const uint8_t* buff, uint32_t buff_size, bitmap_t*
     data = image_dither_convert_2_to_4(stb_data, w, h);
   } else {
     data = TKMEM_ZALLOCN(uint8_t, w * h * n);
+    if (bg_color.color > 0) {
+      image_dither_image_blend_bg_color(stb_data, w, h, n, bg_color);
+    }
     image_dither_data_8888_to_565(stb_data, data, w * n, w * n, n, n, w, h,
                                   image_dither_set_rgba_color);
   }

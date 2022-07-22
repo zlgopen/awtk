@@ -24,6 +24,7 @@
 #include "tkc/path.h"
 #include "image_dither.h"
 #include "common/utils.h"
+#include "tkc/color_parser.h"
 #include "base/image_manager.h"
 #include "../image_gen/image_gen.h"
 #include "image_loader/image_loader_stb.h"
@@ -41,11 +42,15 @@ bitmap_format_t get_image_format(const wchar_t* format) {
       return BITMAP_FMT_BGRA8888;
     } else if (wcsstr(format, L"rgba")) {
       return BITMAP_FMT_RGBA8888;
+    } else if (wcsstr(format, L"bgr")) {
+      return BITMAP_FMT_BGR888;
+    } else if (wcsstr(format, L"rgb")) {
+      return BITMAP_FMT_RGB888;
     } else if (wcsstr(format, L"bgr565")) {
       return BITMAP_FMT_BGR565;
     } else if (wcsstr(format, L"rgb565")) {
       return BITMAP_FMT_RGB565;
-    };
+    }
   }
   return BITMAP_FMT_NONE;
 }
@@ -90,7 +95,7 @@ ret_t res_image_gen(str_t* out_file, bitmap_t* bitmap, const char* theme) {
 }
 
 ret_t gen_one(str_t* in_file, str_t* out_file, const char* theme, output_format_t output_format,
-              bitmap_format_t image_format, lcd_orientation_t o) {
+              bitmap_format_t image_format, lcd_orientation_t o, color_t bg_color) {
   ret_t ret = RET_OK;
   if (!exit_if_need_not_update(in_file->str, out_file->str)) {
     bitmap_t bitmap;
@@ -99,7 +104,7 @@ ret_t gen_one(str_t* in_file, str_t* out_file, const char* theme, output_format_
     buff = (uint8_t*)read_file(in_file->str, &size);
     if (buff != NULL) {
       if (output_format == OUTPUT_FORMAT_DATA) {
-        ret = image_dither_load_image(buff, size, &bitmap, image_format, o);
+        ret = image_dither_load_image(buff, size, &bitmap, image_format, o, bg_color);
         if (ret == RET_OK) {
           ret = image_gen(&bitmap, out_file->str, theme, FALSE);
         }
@@ -109,7 +114,7 @@ ret_t gen_one(str_t* in_file, str_t* out_file, const char* theme, output_format_
           temp_image_format = BITMAP_FMT_BGRA8888;
         }
 
-        ret = image_dither_load_image(buff, size, &bitmap, temp_image_format, o);
+        ret = image_dither_load_image(buff, size, &bitmap, temp_image_format, o, bg_color);
         if (ret == RET_OK) {
           if (output_format == OUTPUT_FORMAT_RES) {
             res_image_gen(out_file, &bitmap, theme);
@@ -136,7 +141,8 @@ int wmain(int argc, wchar_t* argv[]) {
   str_t out_file;
 
   str_t theme_name;
-
+  color_t bg_color;
+  const wchar_t* color = NULL;
   const wchar_t* format = NULL;
   const wchar_t* str_output = NULL;
   bitmap_format_t image_format = BITMAP_FMT_NONE;
@@ -146,7 +152,7 @@ int wmain(int argc, wchar_t* argv[]) {
   platform_prepare();
 
   if (argc < 4) {
-    printf("Usage: %S in_filename out_filename (png|res|data) (bgra|rgba|bgr565|rgb565) \n",
+    printf("Usage: %S in_filename out_filename (png|res|data) (bgra|rgba|bgr|rgb|bgr565|rgb565) (bg_color) (theme) (orientation) \n",
            argv[0]);
 
     return 0;
@@ -166,18 +172,35 @@ int wmain(int argc, wchar_t* argv[]) {
     format = argv[4];
   }
 
+  if (argc > 5) {
+    str_t str_color;
+    str_init(&str_color, 0);
+    str_from_wstr(&str_color, argv[5]);
+    bg_color = color_parse(str_color.str);
+    str_reset(&str_color);
+    printf("bg_color(rbga):(%d, %d, %d, %d)", bg_color.rgba.r, bg_color.rgba.g, bg_color.rgba.b, bg_color.rgba.a);
+    if (bg_color.rgba.a != 0xFF) {
+      printf(", bg_color must opaque!, so fail \r\n");
+      return 0;
+    } else {
+      printf("\r\n");
+    }
+  } else {
+    bg_color = color_init(0x0, 0x0, 0x0, 0x0);
+  }
+
   image_format = get_image_format(format);
   if (image_format == BITMAP_FMT_NONE && output_format == OUTPUT_FORMAT_DATA) {
-    printf("set (bgra|rgba|bgr565|rgb565) \n");
+    printf("set (bgra|rgba|bgr|rgb|bgr565|rgb565) \n");
     return 0;
   }
 
   str_init(&theme_name, 0);
-  if (argc > 5) {
+  if (argc > 6) {
     str_from_wstr(&theme_name, argv[5]);
   }
 
-  if (argc > 6) {
+  if (argc > 7) {
     wstr_t str_lcd_orientation;
     int tmp_lcd_orientation = 0;
     wstr_init(&str_lcd_orientation, 0);
@@ -194,10 +217,11 @@ int wmain(int argc, wchar_t* argv[]) {
   str_from_wstr(&in_file, argv[1]);
   str_from_wstr(&out_file, argv[2]);
 
-  gen_one(&in_file, &out_file, theme_name.str, output_format, image_format, lcd_orientation);
+  gen_one(&in_file, &out_file, theme_name.str, output_format, image_format, lcd_orientation, bg_color);
 
   str_reset(&in_file);
   str_reset(&out_file);
+  str_reset(&theme_name);
 
   return 0;
 }
