@@ -20,6 +20,7 @@
  */
 
 #include "awtk.h"
+#include "ext_widgets/file_browser/file_chooser.h"
 
 #if defined(WITH_SDL) && !defined(LINUX_FB)
 #define WITH_NATIVE_FILE_DIALOG 1

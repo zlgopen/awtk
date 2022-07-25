@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/path.h"
 #include "tkc/utils.h"
+#include "ext_widgets/file_browser/file_chooser.h"
 #include "ext_widgets/file_browser/file_browser.h"
 
 static ret_t file_browser_sort(file_browser_t* fb);
