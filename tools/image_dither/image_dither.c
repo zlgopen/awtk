@@ -2028,12 +2028,19 @@ static void image_dither_set_rgba_color(uint8_t* dst, int32_t b, int32_t g, int3
   dst[3] = a;
 }
 
+typedef struct _rgba_32_t {
+  int32_t r;
+  int32_t g;
+  int32_t b;
+  int32_t a;
+} rgba_32_t;
+
 static void image_dither_data_8888_to_565(uint8_t* src_data, uint8_t* dst_data,
                                           uint32_t src_line_width, uint32_t dst_line_width,
                                           uint32_t src_bpp, uint32_t dst_bpp, uint32_t w,
                                           uint32_t h, set_dst_data_func_t set_dst_data) {
-  rgba_t err;
-  rgba_t err_1;
+  rgba_32_t err;
+  rgba_32_t err_1;
   int32_t x = 0;
   int32_t y = 0;
   uint8_t* dst = dst_data;
@@ -2042,21 +2049,25 @@ static void image_dither_data_8888_to_565(uint8_t* src_data, uint8_t* dst_data,
   int32_t rB = 0, rG = 0, rR = 0;
   int32_t cB = 0, cG = 0, cR = 0, cA = 0;
 
-  rgba_t* _line_err = TKMEM_ZALLOCN(rgba_t, w + 2);
-  rgba_t* line_err = &_line_err[1];
+  rgba_32_t* _line_err = TKMEM_ZALLOCN(rgba_32_t, w + 2);
+  rgba_32_t* line_err = &_line_err[1];
 
   for (y = 0; y < h; y++) {
-    memset(&err, 0x0, sizeof(rgba_t));
-    memset(&err_1, 0x0, sizeof(rgba_t));
+    memset(&err, 0x0, sizeof(rgba_32_t));
+    memset(&err_1, 0x0, sizeof(rgba_32_t));
     line_err[-1].b = 0;
     line_err[-1].g = 0;
     line_err[-1].r = 0;
     for (x = 0; x < w; x++) {
       if (src_bpp == 3 || (src_bpp == 4 && src[3] > 0)) {
-        cB = src[0] + (((err.b << 1) + line_err[x].b + err_1.b) >> 2);
-        cG = src[1] + (((err.g << 1) + line_err[x].g + err_1.g) >> 2);
-        cR = src[2] + (((err.r << 1) + line_err[x].r + err_1.r) >> 2);
+        cB = src[0] + (((err.b * 2) + line_err[x].b + err_1.b) / 4);
+        cG = src[1] + (((err.g * 2) + line_err[x].g + err_1.g) / 4);
+        cR = src[2] + (((err.r * 2) + line_err[x].r + err_1.r) / 4);
         cA = src[3];
+
+        cB = tk_min(cB, ARRAY_SIZE(best_red_table) - 1);
+        cG = tk_min(cG, ARRAY_SIZE(best_greed_table) - 1);
+        cR = tk_min(cR, ARRAY_SIZE(best_red_table) - 1);
 
         rB = best_blue_table[cB];
         rG = best_greed_table[cG];
@@ -2159,6 +2170,9 @@ ret_t image_dither_load_image(const uint8_t* buff, uint32_t buff_size, bitmap_t*
   } else {
     data = TKMEM_ZALLOCN(uint8_t, w * h * n);
     if (bg_color.color > 0) {
+      bg_color.rgba.r = (bg_color.rgba.r >> 3) << 3;
+      bg_color.rgba.g = (bg_color.rgba.g >> 2) << 2;
+      bg_color.rgba.b = (bg_color.rgba.b >> 3) << 3;
       image_dither_image_blend_bg_color(stb_data, w, h, n, bg_color);
     }
     image_dither_data_8888_to_565(stb_data, data, w * n, w * n, n, n, w, h,
