@@ -1301,10 +1301,17 @@ static ret_t window_manager_default_layout_not_system_bar(widget_t* widget, widg
       h = client_r.h;
     }
   } else if (widget_is_dialog(window)) {
-    w = tk_min(widget->w, window->w);
-    h = tk_min(widget->h, window->h);
-    x = (widget->w - w) >> 1;
-    y = (widget->h - h) >> 1;
+    rect_t widget_r = {widget->x, widget->y, widget->w, widget->h};
+    rect_t window_r = {window->x, window->y, window->w, window->h};
+    rect_merge(&widget_r, &window_r);
+    /* Force centering if the dialog box is out of window_manager! */
+    if (widget_r.x < widget->x || widget_r.y < widget->y || widget_r.w > widget->w ||
+        widget_r.h > widget->h) {
+      w = tk_min(widget->w, window->w);
+      h = tk_min(widget->h, window->h);
+      x = (widget->w - w) >> 1;
+      y = (widget->h - h) >> 1;
+    }
   } else {
     x = window->x;
     y = window->y;
