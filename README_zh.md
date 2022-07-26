@@ -261,13 +261,13 @@ npm install -g glob
 
 ## 五、在线演示
 
-* [基本控件在线演示](http://zlgawtk.bceapp.com/awtk/demos/demoui/index.html)
+* [基本控件在线演示](https://awtk.zlg.cn/demos/awtk/demoui/index.html)
 
-* [图表演示](http://zlgawtk.bceapp.com/awtk/demos/Chart-Demo/index.html)
+* [图表演示](https://awtk.zlg.cn/demos/awtk_projects/Chart.v2-Demo/index.html)
 
-* [音乐播放器演示](http://zlgawtk.bceapp.com/awtk/demos/MusicPlayer-Demo/index.html)
+* [音乐播放器演示](https://awtk.zlg.cn/demos/awtk_projects/MusicPlayer.v2-Demo/index.html)
 
-* [智能手表演示](http://zlgawtk.bceapp.com/awtk/demos/SmartWatch-Demo/index.html)
+* [智能手表演示](https://awtk.zlg.cn/demos/awtk_projects/SmartWatch.v2-Demo/index.html)
 
 ## 六、各个平台的移植
 

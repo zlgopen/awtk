@@ -257,13 +257,13 @@ npm install -g glob
 
 ## V. Online Demonstration
 
-* [Online Demonstration of Basic Widgets](http://zlgawtk.bceapp.com/awtk/demos/demoui/index.html)
+* [Online Demonstration of Basic Widgets](https://awtk.zlg.cn/demos/awtk/demoui/index.html)
 
-* [Graphical Demonstration](http://zlgawtk.bceapp.com/awtk/demos/Chart-Demo/index.html)
+* [Graphical Demonstration](https://awtk.zlg.cn/demos/awtk_projects/Chart.v2-Demo/index.html)
 
-* [Music Player Demonstration](http://zlgawtk.bceapp.com/awtk/demos/MusicPlayer-Demo/index.html)
+* [Music Player Demonstration](https://awtk.zlg.cn/demos/awtk_projects/MusicPlayer.v2-Demo/index.html)
 
-* [Smart Watch Demonstration](http://zlgawtk.bceapp.com/awtk/demos/SmartWatch-Demo/index.html)
+* [Smart Watch Demonstration](https://awtk.zlg.cn/demos/awtk_projects/SmartWatch.v2-Demo/index.html)
 
 ## VI. Platform Porting
 
