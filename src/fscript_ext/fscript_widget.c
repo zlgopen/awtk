@@ -401,7 +401,8 @@ static ret_t func_widget_clone(fscript_t* fscript, fscript_args_t* args, value_t
   return RET_OK;
 }
 
-static ret_t func_widget_destroy_children(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+static ret_t func_widget_destroy_children(fscript_t* fscript, fscript_args_t* args,
+                                          value_t* result) {
   widget_t* widget = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   widget = to_widget(fscript, args->args);
@@ -658,6 +659,32 @@ static ret_t func_theme_set(fscript_t* fscript, fscript_args_t* args, value_t* r
   return RET_OK;
 }
 
+static ret_t func_notify_model_changed(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  ret_t ret = RET_OK;
+  const char* name = NULL;
+  const char* change_type = NULL;
+  tk_object_t* model = NULL;
+  FSCRIPT_FUNC_CHECK(args->size >= 2, RET_BAD_PARAMS);
+  name = value_str(args->args);
+  change_type = value_str(args->args + 1);
+
+  if (args->size > 2) {
+    value_t* v = args->args + 2;
+    if (v->type == VALUE_TYPE_OBJECT) {
+      model = value_object(args->args + 2);
+    } else if (v->type == VALUE_TYPE_STRING) {
+      if (tk_str_eq("global", value_str(v))) {
+        model = fscript_get_global_object();
+      }
+    }
+  }
+
+  ret = widget_dispatch_model_event(window_manager(), name, change_type, model);
+  value_set_bool(result, ret == RET_OK);
+
+  return RET_OK;
+}
+
 static ret_t func_to_name(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
 
@@ -734,13 +761,15 @@ static ret_t func_dialog_warn(fscript_t* fscript, fscript_args_t* args, value_t*
 
 static ret_t func_dialog_confirm(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
-  value_set_bool(result, dialog_confirm(value_str(args->args), value_str(args->args + 1)) == RET_OK);
+  value_set_bool(result,
+                 dialog_confirm(value_str(args->args), value_str(args->args + 1)) == RET_OK);
   return RET_OK;
 }
 
 static ret_t func_dialog_toast(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
-  value_set_bool(result, dialog_toast(value_str(args->args), value_uint32(args->args + 1)) == RET_OK);
+  value_set_bool(result,
+                 dialog_toast(value_str(args->args), value_uint32(args->args + 1)) == RET_OK);
   return RET_OK;
 }
 
@@ -779,6 +808,7 @@ FACTORY_TABLE_ENTRY("locale_get", func_locale_get)
 FACTORY_TABLE_ENTRY("locale_set", func_locale_set)
 FACTORY_TABLE_ENTRY("theme_get", func_theme_get)
 FACTORY_TABLE_ENTRY("theme_set", func_theme_set)
+FACTORY_TABLE_ENTRY("notify_model_changed", func_notify_model_changed)
 FACTORY_TABLE_ENTRY("widget_locale_get", func_locale_get)
 FACTORY_TABLE_ENTRY("widget_locale_set", func_locale_set)
 FACTORY_TABLE_ENTRY("widget_theme_get", func_theme_get)

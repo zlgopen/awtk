@@ -501,6 +501,11 @@ typedef enum _event_type_t {
    */
   EVT_CONNECT,
   /**
+   * @const EVT_MODEL_CHANGE,
+   * 模型变化。用于fscript实现窗口间通讯(model_event_t)。
+   */
+  EVT_MODEL_CHANGE,
+  /**
    * @const EVT_REQ_START
    * event queue其它请求编号起始值。
    */
@@ -512,6 +517,58 @@ typedef enum _event_type_t {
   EVT_USER_START = 0x2000
 } event_type_t;
 
+/**
+ * @class model_event_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * model变化事件。
+ */
+typedef struct _model_event_t {
+  event_t e;
+
+  /**
+   * @property {const char*} name
+   * @annotation ["readable", "scriptable"]
+   * 模型名称。
+   */
+   const char* name;
+
+  /**
+   * @property {const char*} change_type 
+   * @annotation ["readable", "scriptable"]
+   * 变化类型(update/add/remove)。
+   */
+   const char* change_type;
+
+  /**
+   * @property {tk_object_t*} model
+   * @annotation ["readable", "scriptable"]
+   * 模型。
+   */
+   tk_object_t* model;
+} model_event_t;
+
+/**
+ * @method model_event_cast
+ * @annotation ["cast", "scriptable"]
+ * 把event对象转model_event_t对象，主要给脚本语言使用。
+ * @param {event_t*} event event对象。
+ *
+ * @return {model_event_t*} event对象。
+ */
+model_event_t* model_event_cast(event_t* event);
+
+/**
+ * @method model_event_init
+ * 初始化事件。
+ * @param {model_event_t*} event event对象。
+ * @param {const char*} name 名称。
+ * @param {const char*} change_type 变化类型。
+ * @param {tk_object_t*} model 模型。
+ *
+ * @return {event_t*} event对象。
+ */
+event_t* model_event_init(model_event_t* event, const char* name, const char* change_type, tk_object_t* model);
 /**
  * @class wheel_event_t
  * @annotation ["scriptable"]

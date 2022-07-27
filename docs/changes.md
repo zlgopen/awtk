@@ -2,6 +2,8 @@
 
 2022/07/27
   * 增加fscript函数 widget\_clone/widget\_destroy\_children
+  * 增加EVT\_MODEL\_CHANGE事件，方便fscript实现窗口间通讯。
+  * 增加widget\_dispatch\_model\_event 
 
 2022/07/26
   * 更新REAMDE中的demos链接(感谢雨欣提供补丁）。

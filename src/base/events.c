@@ -345,8 +345,35 @@ int32_t event_from_name(const char* name) {
       }
       break;
     }
+    case 'm': {
+      if (tk_str_eq(name, "model_change")) {
+        return EVT_MODEL_CHANGE;
+      }
+      break;
+    }
     default:
       break;
   }
   return EVT_NONE;
 }
+
+model_event_t* model_event_cast(event_t* event) {
+  return_value_if_fail(event != NULL, NULL);
+  return_value_if_fail(event->type == EVT_MODEL_CHANGE, NULL);
+  return_value_if_fail(event->size == sizeof(model_event_t), NULL);
+
+  return (model_event_t*)event;
+}
+
+event_t* model_event_init(model_event_t* event, const char* name, const char* change_type, tk_object_t* model) {
+  return_value_if_fail(event != NULL && name != NULL && change_type != NULL, NULL);
+  event->e = event_init(EVT_MODEL_CHANGE, model);
+  event->e.size = sizeof(model_event_t);
+
+  event->name = name;
+  event->model = model;
+  event->change_type = change_type;
+
+  return (event_t*)event;
+}
+

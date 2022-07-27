@@ -195,3 +195,32 @@ TEST(Window, copy) {
   widget_destroy(w);
   widget_destroy(w1);
 }
+
+static ret_t on_model_changed(void* ctx, event_t* e) {
+  model_event_t* evt = model_event_cast(e);
+  str_t* str = (str_t*)ctx;
+  str_append_more(str, evt->name, ",", evt->change_type, ";", NULL); 
+
+  return RET_OK;
+}
+
+TEST(Window, model_change) {
+  str_t str;
+  widget_t* w1 = window_create(NULL, 10, 20, 30, 40);
+  widget_t* w2 = window_create(NULL, 10, 20, 30, 40);
+ 
+  str_init(&str, 100);
+  widget_on(w1, EVT_MODEL_CHANGE, on_model_changed, &str);
+  widget_on(w2, EVT_MODEL_CHANGE, on_model_changed, &str);
+  widget_set_prop_str(w2, "on:model_change", "widget_set(self, 'name', name);print(name)");
+
+  widget_dispatch_model_event(w1, "person", "add", NULL);
+  widget_dispatch_model_event(w1, "person", "remove", NULL);
+
+  ASSERT_STREQ(str.str, "person,add;person,add;person,remove;person,remove;");
+  ASSERT_STREQ(w2->name, "person");
+
+  str_reset(&str);
+  widget_destroy(w1);
+  widget_destroy(w2);
+}

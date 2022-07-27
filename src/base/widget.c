@@ -1967,6 +1967,13 @@ static ret_t fscript_info_prepare(fscript_info_t* info, event_t* evt) {
       tk_object_set_prop_bool(obj, "ctrl", e->ctrl);
       break;
     }
+    case EVT_MODEL_CHANGE: {
+      model_event_t* e = model_event_cast(evt);
+      tk_object_set_prop_str(obj, "name", e->name);
+      tk_object_set_prop_str(obj, "change_type", e->change_type);
+      tk_object_set_prop_object(obj, "model", e->model);
+      break;
+    }
     default:
       break;
   }
@@ -5085,6 +5092,20 @@ ret_t widget_set_props(widget_t* widget, const char* params) {
     }
   }
   tokenizer_deinit(&t);
+
+  return RET_OK;
+}
+
+ret_t widget_dispatch_model_event(widget_t* widget, const char* name, const char* change_type,
+                                  tk_object_t* model) {
+  model_event_t event;
+  event_t* e = model_event_init(&event, name, change_type, model);
+  widget_t* wm = widget != NULL ? widget_get_window_manager(widget) : window_manager();
+  return_value_if_fail(wm != NULL && e != NULL, RET_BAD_PARAMS);
+
+  WIDGET_FOR_EACH_CHILD_BEGIN(wm, iter, i)
+  widget_dispatch(iter, e);
+  WIDGET_FOR_EACH_CHILD_END();
 
   return RET_OK;
 }
