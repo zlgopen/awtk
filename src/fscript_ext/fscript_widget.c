@@ -388,6 +388,30 @@ static ret_t func_widget_destroy(fscript_t* fscript, fscript_args_t* args, value
   return RET_OK;
 }
 
+static ret_t func_widget_clone(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  widget_t* widget = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  widget = to_widget(fscript, args->args);
+  FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
+
+  widget = widget_clone(widget, widget->parent);
+  value_set_object(result, object_widget_create(widget));
+  result->free_handle = TRUE;
+
+  return RET_OK;
+}
+
+static ret_t func_widget_destroy_children(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  widget_t* widget = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  widget = to_widget(fscript, args->args);
+  FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
+
+  value_set_bool(result, widget_destroy_children(widget) == RET_OK);
+
+  return RET_OK;
+}
+
 #define STR_PROP_TIMER_ID "_timer_id_"
 
 static ret_t widget_on_timer(const timer_info_t* info) {
@@ -740,7 +764,9 @@ FACTORY_TABLE_ENTRY("widget_eval", func_widget_eval)
 FACTORY_TABLE_ENTRY("widget_set", func_widget_set)
 FACTORY_TABLE_ENTRY("widget_add_value", func_widget_add_value)
 FACTORY_TABLE_ENTRY("widget_create", func_widget_create)
+FACTORY_TABLE_ENTRY("widget_clone", func_widget_clone)
 FACTORY_TABLE_ENTRY("widget_destroy", func_widget_destroy)
+FACTORY_TABLE_ENTRY("widget_destroy_children", func_widget_destroy_children)
 FACTORY_TABLE_ENTRY("start_timer", func_widget_add_timer)
 FACTORY_TABLE_ENTRY("stop_timer", func_widget_remove_timer)
 FACTORY_TABLE_ENTRY("reset_timer", func_widget_reset_timer)

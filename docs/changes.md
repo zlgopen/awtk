@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/07/27
+  * 增加fscript函数 widget\_clone/widget\_destroy\_children
+
 2022/07/26
   * 更新REAMDE中的demos链接(感谢雨欣提供补丁）。
   * 修复image_dither的背景色为非16位色的时候导致图片颜色不正常的问题(感谢智明提供补丁)

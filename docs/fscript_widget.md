@@ -1060,6 +1060,63 @@ var filename = choose_file_for_save('.png.jpg.gif', './')
 print(filename)
 ```
 
+### 5.31 widget_clone
+
+> 克隆控件
+----------------------------
+
+#### 原型
+
+```js
+widget_clone(widget) => widget
+```
+
+* widget 可以是 widget 对象，也可以是 widget 的路径。
+
+#### 示例
+
+```js
+  a = widget_lookup('window', 'foobar', true)
+  if(!value_is_null(a)) {
+    widget_clone(a)
+  } else {
+    print('not found foobar');
+  }
+```
+
+```
+widget_clone('self.bar')
+widget_clone('window.view.bar')
+```
+
+### 5.32 widget_destroy_children
+
+> 销毁控件的全部子控件。
+----------------------------
+
+#### 原型
+
+```js
+widget_destroy_children(widget) => bool
+```
+
+* widget 可以是 widget 对象，也可以是 widget 的路径。
+
+#### 示例
+
+```js
+  a = widget_lookup('window', 'foobar', true)
+  if(!value_is_null(a)) {
+    widget_destroy_children(a)
+  } else {
+    print('not found foobar');
+  }
+```
+
+```
+widget_destroy_children('self.bar')
+widget_destroy_children('window.view.bar')
+```
 
 #### 示例参考
 
