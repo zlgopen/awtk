@@ -195,7 +195,9 @@ static ret_t label_get_prop(widget_t* widget, const char* name, value_t* v) {
 static ret_t label_set_prop(widget_t* widget, const char* name, const value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  widget_set_need_relayout(widget);
+  if (widget->auto_adjust_size) {
+    widget_set_need_relayout(widget);
+  }
   if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_TEXT)) {
     wstr_from_value(&(widget->text), v);
     return RET_OK;

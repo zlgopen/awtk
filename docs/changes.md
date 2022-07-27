@@ -4,6 +4,7 @@
   * 增加fscript函数 widget\_clone/widget\_destroy\_children
   * 增加EVT\_MODEL\_CHANGE事件，方便fscript实现窗口间通讯。
   * 增加widget\_dispatch\_model\_event 
+  * 修复label\_set\_prop导致全屏刷的问题 (感谢智明提供补丁)
 
 2022/07/26
   * 更新REAMDE中的demos链接(感谢雨欣提供补丁）。
