@@ -454,7 +454,7 @@ static ret_t slide_view_set_prop(widget_t* widget, const char* name, const value
     widget_invalidate(widget, NULL);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_DRAG_THRESHOLD)) {
-    slide_view_set_darg_threshold(slide_view, value_uint32(v));
+    slide_view_set_darg_threshold(widget, value_uint32(v));
     return RET_OK;
   }
 
