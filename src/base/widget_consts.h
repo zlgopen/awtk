@@ -1032,6 +1032,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_COLUMNS_DEFINITION "columns_definition"
 
 /**
+ * @const WIDGET_PROP_DRAG_THRESHOLD
+ * 拖拽临界值。
+ */
+#define WIDGET_PROP_DRAG_THRESHOLD "darg_threshold"
+
+/**
  * @enum widget_type_t
  * @annotation ["scriptable", "string"]
  * @prefix WIDGET_TYPE_

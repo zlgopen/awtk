@@ -228,7 +228,7 @@ static ret_t slide_view_on_pointer_up(slide_view_t* slide_view, pointer_event_t*
     } else if (yoffset < 0 && slide_view_get_next(slide_view) == NULL) {
       rollback = TRUE;
     }
-    if (tk_abs(yoffset) < TK_DRAG_THRESHOLD) {
+    if (tk_abs(yoffset) < slide_view->darg_threshold) {
       rollback = TRUE;
     }
 
@@ -245,7 +245,7 @@ static ret_t slide_view_on_pointer_up(slide_view_t* slide_view, pointer_event_t*
     } else if (xoffset < 0 && slide_view_get_next(slide_view) == NULL) {
       rollback = TRUE;
     }
-    if (tk_abs(xoffset) < TK_DRAG_THRESHOLD) {
+    if (tk_abs(xoffset) < slide_view->darg_threshold) {
       rollback = TRUE;
     }
 
@@ -331,7 +331,7 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
           delta = evt->x - slide_view->down.x;
         }
 
-        if (tk_abs(delta) > TK_DRAG_THRESHOLD) {
+        if (tk_abs(delta) > slide_view->darg_threshold) {
           pointer_event_t abort;
           pointer_event_init(&abort, EVT_POINTER_DOWN_ABORT, widget, evt->x, evt->y);
           widget_dispatch_event_to_target_recursive(widget, (event_t*)(&abort));
@@ -422,6 +422,9 @@ static ret_t slide_view_get_prop(widget_t* widget, const char* name, value_t* v)
   } else if (tk_str_eq(name, WIDGET_PROP_PAGE_MAX_NUMBER)) {
     value_set_uint32(v, slide_view_get_page_max_number(widget));
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_DRAG_THRESHOLD)) {
+    value_set_uint32(v, slide_view->darg_threshold);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -449,6 +452,9 @@ static ret_t slide_view_set_prop(widget_t* widget, const char* name, const value
   } else if (tk_str_eq(name, WIDGET_PROP_YOFFSET)) {
     slide_view_set_yoffset(slide_view, value_int(v));
     widget_invalidate(widget, NULL);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_DRAG_THRESHOLD)) {
+    slide_view_set_darg_threshold(slide_view, value_uint32(v));
     return RET_OK;
   }
 
@@ -957,6 +963,15 @@ ret_t slide_view_set_loop(widget_t* widget, bool_t loop) {
   return RET_OK;
 }
 
+ret_t slide_view_set_darg_threshold(widget_t* widget, uint32_t darg_threshold) {
+  slide_view_t* slide_view = SLIDE_VIEW(widget);
+  return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
+
+  slide_view->darg_threshold = darg_threshold;
+
+  return RET_OK;
+}
+
 widget_t* slide_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(slide_view), x, y, w, h);
   slide_view_t* slide_view = SLIDE_VIEW(widget);
@@ -965,6 +980,7 @@ widget_t* slide_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   slide_view->loop = FALSE;
   slide_view->auto_play = 0;
   slide_view->vertical = FALSE;
+  slide_view->darg_threshold = TK_DRAG_THRESHOLD;
 
   str_init(&(slide_view->str_target), DEFAULT_FOCUSED_CHILD_SAVE_TARGET_TAG_LENGT);
   slide_view->init_idle_id = idle_add(slide_view_on_idle_init_save_target, widget);
