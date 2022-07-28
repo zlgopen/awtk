@@ -87,6 +87,10 @@ static ret_t gauge_pointer_invalidate(widget_t* widget, const rect_t* rect) {
   int32_t h = 0;
   widget_t* parent = widget->parent;
   gauge_pointer_t* gauge_pointer = GAUGE_POINTER(widget);
+  if (widget->initializing) {
+    r = rect_init(0, 0, widget->w, widget->h);
+    return widget_invalidate_force(parent, &r);
+  }
 
   if (gauge_pointer->bsvg_asset != NULL || gauge_pointer->image == NULL) {
     if (gauge_pointer->bsvg_asset != NULL) {
