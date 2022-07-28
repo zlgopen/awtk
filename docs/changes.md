@@ -3,6 +3,7 @@
 2022/07/28
   * 修复gauge\_pointer控件初始化的时候警告的问题(感谢智明提供补丁)
   * slide view增加darg\_threshold属性(感谢智明提供补丁)。
+  * 完善注释(感谢智明提供补丁)。
 
 2022/07/27
   * 增加fscript函数 widget\_clone/widget\_destroy\_children

@@ -37,6 +37,8 @@ BEGIN_C_DECLS
 /**
  * @method time_now_s
  * 获取当前时间(秒)。
+ * 
+ * 备注: 时间本身并不代表任何时间系，一般用来计算时间间隔。
  * @annotation ["scriptable", "static"]
  *
  * @return {uint64_t} 返回当前时间(秒)。
@@ -46,6 +48,8 @@ uint64_t time_now_s(void);
 /**
  * @method time_now_ms
  * 获取当前时间(毫秒)。
+ * 
+ * 备注: 时间本身并不代表任何时间系，一般用来计算时间间隔。
  * @annotation ["scriptable", "static"]
  *
  * @return {uint64_t} 返回当前时间(毫秒)。
@@ -55,6 +59,8 @@ uint64_t time_now_ms(void);
 /**
  * @method time_now_us
  * 获取当前时间(微秒)。
+ * 
+ * 备注: 时间本身并不代表任何时间系，一般用来计算时间间隔。
  * @annotation ["scriptable", "static"]
  *
  * @return {uint64_t} 返回当前时间(微秒)。

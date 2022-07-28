@@ -122,7 +122,7 @@ typedef struct _event_t {
   /**
    * @property {uint64_t} time
    * @annotation ["readable", "scriptable"]
-   * 事件发生的时间。
+   * 事件发生的时间点（该时间点并非真实时间）。
    */
   uint64_t time;
   /**
