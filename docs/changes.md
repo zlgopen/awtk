@@ -4,6 +4,7 @@
   * 增加函数object\_array\_remove\_value
   * 更新fs\_aworks.c(感谢文浩提供补丁)
   * 完善demoui(感谢雨欣提供补丁）
+  * 增加widget_invalidate函数的注释说明(感谢智明提供补丁)
 
 2022/07/28
   * 修复gauge\_pointer控件初始化的时候警告的问题(感谢智明提供补丁)

@@ -1713,7 +1713,13 @@ ret_t widget_off_by_tag(widget_t* widget, uint32_t tag);
 
 /**
  * @method widget_invalidate
- * 请求重绘指定的区域，如果widget->dirty已经为TRUE，直接返回。
+ * 请求重绘指定的区域
+ * 
+ * 备注：
+ * 1，函数执行成功后，会把 widget->dirty 修改为 TRUE，如果 widget->dirty 已经为 TRUE，则直接返回 RET_OK，不再增加重绘区。
+ * 2，当控件执行 widget_paint 后会把 widget->dirty 修改为 FALSE。
+ * 3，如果同一个控件在同一帧内多次请求重绘不同区域的话，请使用 widget_invalidate_force。
+ * 
  * @param {widget_t*} widget 控件对象。
  * @param {const rect_t*} r 矩形对象(widget本地坐标)。
  *
@@ -1786,19 +1792,6 @@ ret_t widget_dispatch_async(widget_t* widget, event_t* e);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_dispatch_simple_event(widget_t* widget, uint32_t type);
-
-/**
- * @method widget_dispatch_model_event
- * 分发model事件(分发到各个窗口)。
- * @param {widget_t*} widget 控件对象。
- * @param {const char*} name 名称。
- * @param {const char*} change_type 变化类型。
- * @param {tk_object_t*} model 模型。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t widget_dispatch_model_event(widget_t* widget, const char* name, const char* change_type,
-                                  tk_object_t* model);
 
 /**
  * @method widget_dispatch_recursive
