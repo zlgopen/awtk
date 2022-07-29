@@ -23,12 +23,11 @@
 #include "aw_mount.h"
 #include "aw_unistd.h"
 #include "aw_fcntl.h"
-#include "aw_fs_type.h"
 #include "aw_dirent.h"
 #include "aw_stat.h"
 #include "aw_ioctl.h"
 #include "aw_stropts.h"
-#include "aw_fs_type.h"
+#include "awb_fs_type.h"
 #include "aw_autoconf.h"
 
 #include "tkc/fs.h"
@@ -36,11 +35,15 @@
 #include "tkc/path.h"
 #include "tkc/utils.h"
 
-#ifndef tk_log_info_lf
-#define tk_log_info_lf(fmt, args...) \
-  log_info("[%dL %s] " fmt " \r\n", __LINE__, __FUNCTION__, ##args)
-#define tk_log_info_htlf(header, fmt, args...) tk_log_info_lf(fmt, ##args)
-#endif
+#ifndef HAS_TK_LOG_EX
+#define TK_LOG_FMT_LF(fmt, args...) "[%dL %s] " fmt " \r\n", __LINE__, __func__, ##args
+#define tk_log_debug_lf(fmt, args...) log_debug(TK_LOG_FMT_LF(fmt, ##args))
+
+#define TK_LOG_FMT_HTLF(header, fmt, args...)                                                   \
+  "%s [%uMs %dL %s] " fmt " \r\n", header, (unsigned int)time_now_ms(), __LINE__, __FUNCTION__, \
+      ##args
+#define tk_log_debug_htlf(header, fmt, args...) log_debug(TK_LOG_FMT_HTLF(header, fmt, ##args))
+#endif /* HAS_TK_LOG_EX */
 
 #if CONFIG_HC32F4A0_CATNET_BOARD || CONFIG_M105X_EV_BOARD_LP
 #define TKC_FS_EXE_PATH "/lfs/bin/app/"
@@ -48,9 +51,19 @@
 #define TKC_FS_USER_STORAGE_PATH "/lfs/usr/"
 
 #elif CONFIG_PLATFORM_UIS8910DM_AWORKS_LP
-#define TKC_FS_EXE_PATH "/sd0/bin/app"
-#define TKC_FS_TEMP_PATH "/sd0/tmp"
-#define TKC_FS_USER_STORAGE_PATH "/sd0/usr"
+#define TKC_FS_EXE_PATH "/ext/fota"
+#define TKC_FS_TEMP_PATH "/flow/tmp"
+#define TKC_FS_USER_STORAGE_PATH "/flow/usr"
+
+#elif CONFIG_EPC6750_AWI
+#define TKC_FS_EXE_PATH "/lffs/fota"
+#define TKC_FS_TEMP_PATH "/flow/tmp"
+#define TKC_FS_USER_STORAGE_PATH "/flow/usr"
+
+#elif CONFIG_PXM6450
+#define TKC_FS_EXE_PATH "/lffs/fota"
+#define TKC_FS_TEMP_PATH "/flow/tmp"
+#define TKC_FS_USER_STORAGE_PATH "/flow/usr"
 
 #else
 #define TKC_FS_EXE_PATH "/none"
@@ -59,7 +72,7 @@
 #endif /* CONFIG_HC32F4A0_CATNET_BOARD */
 
 /*----------------------------------------------------------------------------*/
-/* 文件操作	                                                                  */
+/* 文件操作                                                                   */
 /*----------------------------------------------------------------------------*/
 
 static int32_t fs_os_file_read(fs_file_t* file, void* buffer, uint32_t size) {
@@ -285,11 +298,11 @@ static bool_t fs_os_file_exist(fs_t* fs, const char* name) {
   return (aw_stat(name, &st) == 0 && AW_S_ISREG(st.st_mode));
 }
 
-static bool_t fs_os_file_rename(fs_t* fs, const char* name, const char* new_name) {
+static ret_t fs_os_file_rename(fs_t* fs, const char* name, const char* new_name) {
   (void)fs;
   return_value_if_fail(name && new_name, FALSE);
 
-  return (aw_rename(name, new_name) == AW_OK);
+  return aw_rename(name, new_name);
 }
 
 static ret_t fs_os_stat(fs_t* fs, const char* name, fs_stat_info_t* fst) {
@@ -437,14 +450,16 @@ static ret_t fs_os_get_disk_info(fs_t* fs, const char* volume, int32_t* free_kb,
 static ret_t fs_os_get_exe(fs_t* fs, char path[MAX_PATH + 1]) {
   (void)fs;
 
+  memset(path, 0, MAX_PATH + 1);
+
   tk_strcpy(path, TKC_FS_EXE_PATH);
   if (!path_exist(path)) {
     fs_create_dir_r(os_fs(), path);
-    tk_log_info_lf("create dir '%s'", path);
+    tk_log_debug_lf("create dir '%s'", path);
   }
   return_value_if_fail(path_exist(path), RET_FAIL);
   path[tk_strlen(path)] = '/';
-  path[tk_strlen(path) + 1] = '\0';
+
   return RET_OK;
 }
 
@@ -458,26 +473,27 @@ static ret_t fs_os_get_cwd(fs_t* fs, char path[MAX_PATH + 1]) {
 }
 
 static ret_t fs_os_get_temp_path(fs_t* fs, char path[MAX_PATH + 1]) {
+  memset(path, 0, MAX_PATH + 1);
   tk_strcpy(path, TKC_FS_TEMP_PATH);
   if (!path_exist(path)) {
     fs_create_dir_r(os_fs(), path);
-    tk_log_info_lf("create dir '%s'", path);
+    tk_log_debug_lf("create dir '%s'", path);
   }
   return_value_if_fail(path_exist(path), RET_FAIL);
   path[tk_strlen(path)] = '/';
-  path[tk_strlen(path) + 1] = '\0';
+
   return RET_OK;
 }
 
 static ret_t fs_os_get_user_storage_path(fs_t* fs, char path[MAX_PATH + 1]) {
+  memset(path, 0, MAX_PATH + 1);
   tk_strcpy(path, TKC_FS_USER_STORAGE_PATH);
   if (!path_exist(path)) {
     fs_create_dir_r(os_fs(), path);
-    tk_log_info_lf("create dir '%s'", path);
+    tk_log_debug_lf("create dir '%s'", path);
   }
   return_value_if_fail(path_exist(path), RET_FAIL);
   path[tk_strlen(path)] = '/';
-  path[tk_strlen(path) + 1] = '\0';
   return RET_OK;
 }
 /*----------------------------------------------------------------------------*/
@@ -504,49 +520,76 @@ static const fs_t s_os_fs = {
 /*----------------------------------------------------------------------------*/
 #define __MAKE_SYSFILE_NAME "~systemmkiffd.reserved"
 
-#if CONFIG_HC32F4A0_CATNET_BOARD
-#define __LFS_DEVNAME "/dev/is25lpx_partition_0"
-#define __LFFS_DEVNAME "/dev/is25lpx_partition_1"
-
-fs_t* fs_aworks_create(const char* mnt) {
+static int fs_aworks_lffs_mount(const char* mnt, const char* devpath) {
   int ret;
   struct aw_fs_format_arg fmt = {"awdisk", 0, 1};
   struct aw_stat file_stat;
   char stmp[64];
   memset(stmp, 0, sizeof(stmp));
 
+  /* 需先在根目录创建挂载节点目录 */
+  ret = aw_mkdir(mnt, AW_S_IRWXU | AW_S_IRWXG | AW_S_IRWXO);
+  if (ret != AW_OK) {
+    tk_log_debug_lf("%s create error: %d!", mnt, ret);
+    return RET_FAIL;
+  }
+
+  ret = aw_mount(mnt, devpath, AW_LFFS_TYPE_NAME, 0, NULL);
+  if (ret == 0) {
+    tk_str_append(stmp, sizeof(stmp), mnt);
+    tk_str_append(stmp, sizeof(stmp), "/" __MAKE_SYSFILE_NAME);
+    ret = aw_stat(stmp, &file_stat);
+  }
+  if (ret != 0) {
+    aw_umount(mnt, 0);
+    aw_make_fs(devpath, AW_LFFS_TYPE_NAME, &fmt);
+    ret = aw_mount(mnt, devpath, AW_LFFS_TYPE_NAME, 0, NULL);
+    return_value_if_fail(ret == 0, RET_FAIL);
+    ret = aw_create("/flow/" __MAKE_SYSFILE_NAME, AW_S_IRWXU | AW_S_IRWXG | AW_S_IRWXO);
+    return_value_if_fail(ret >= 0, RET_FAIL);
+  }
+  tk_log_debug_lf("mount %s", mnt);
+  return RET_OK;
+}
+
+static int fs_aworks_littlefs_mount(const char* mnt, const char* devpath) {
+  /* 需先在根目录创建挂载节点目录 */
+  int ret;
+  struct aw_fs_format_arg fmt = {"awdisk", 0, 1};
+  char stmp[64];
+  memset(stmp, 0, sizeof(stmp));
+
+  ret = aw_mount(mnt, devpath, AW_LITTLEFS_TYPE_NAME, 0, NULL);
+  if (ret != 0) {
+    aw_umount(mnt, 0);
+    ret = aw_make_fs(devpath, AW_LITTLEFS_TYPE_NAME, &fmt);
+    if (ret != AW_OK) {
+      ret = aw_make_fs(devpath, AW_LITTLEFS_TYPE_NAME, NULL);
+      return_value_if_fail(ret == 0, RET_FAIL);
+    }
+    ret = aw_mount(mnt, devpath, AW_LITTLEFS_TYPE_NAME, 0, NULL);
+    return_value_if_fail(ret == 0, RET_FAIL);
+  }
+  tk_log_debug_lf("mount %s", mnt);
+}
+
+#if CONFIG_HC32F4A0_CATNET_BOARD
+#define __LFS_DEVNAME "/dev/is25lpx_partition_0"
+#define __LFFS_DEVNAME "/dev/is25lpx_partition_1"
+
+fs_t* fs_aworks_create(const char* mnt) {
+  int ret;
+
   if (tk_str_eq("/lffs", mnt)) {
-    aw_umount("/lffs", 0);
-    ret = aw_mount("/lffs", __LFFS_DEVNAME, AW_LFFS_TYPE_NAME, 0, NULL);
-    if (ret == 0) {
-      tk_str_append(stmp, sizeof(stmp), mnt);
-      tk_str_append(stmp, sizeof(stmp), "/" __MAKE_SYSFILE_NAME);
-      ret = aw_stat(stmp, &file_stat);
-    }
-    if (ret != 0) {
-      aw_umount("/lffs", 0);
-      aw_make_fs(__LFFS_DEVNAME, AW_LFFS_TYPE_NAME, &fmt);
-      ret = aw_mount("/lffs", __LFFS_DEVNAME, AW_LFFS_TYPE_NAME, 0, NULL);
-      goto_error_if_fail(ret == 0);
-      ret = aw_create("/lffs/" __MAKE_SYSFILE_NAME, AW_S_IRWXU | AW_S_IRWXG | AW_S_IRWXO);
-      goto_error_if_fail(ret == 0);
-    }
-    tk_log_info_lf("mount %s", mnt);
+    ret = fs_aworks_lffs_mount(mnt, __LFFS_DEVNAME);
+    goto_error_if_fail(ret == RET_OK);
+
   } else if (tk_str_eq("/lfs", mnt)) {
-    ret = aw_mount(mnt, __LFS_DEVNAME, AW_LITTLEFS_TYPE_NAME, 0, NULL);
-    if (ret != 0) {
-      aw_umount(mnt, 0);
-      ret = aw_make_fs(__LFS_DEVNAME, AW_LITTLEFS_TYPE_NAME, &fmt);
-      if (ret != AW_OK) {
-        ret = aw_make_fs(__LFS_DEVNAME, AW_LITTLEFS_TYPE_NAME, NULL);
-        goto_error_if_fail(ret == 0);
-      }
-      ret = aw_mount(mnt, __LFS_DEVNAME, AW_LITTLEFS_TYPE_NAME, 0, NULL);
-      goto_error_if_fail(ret == 0);
-    }
-    tk_log_info_lf("mount %s", mnt);
+    ret = fs_aworks_littlefs_mount(mnt, __LFS_DEVNAME);
+    goto_error_if_fail(ret == RET_OK);
+
   } else if (tk_str_eq("/dev", mnt)) {
-    tk_log_info_lf("mount %s", mnt);
+    tk_log_debug_lf("mount %s", mnt);
     return &s_os_fs;
   } else {
     return_value_if_fail(!"Not support the mnt!", NULL);
@@ -567,26 +610,12 @@ ret_t fs_aworks_init(void) {
 
 fs_t* fs_aworks_create(const char* mnt) {
   int ret;
-  struct aw_fs_format_arg fmt = {"awdisk", 0, 1};
-  struct aw_stat file_stat;
-  char stmp[64];
-  memset(stmp, 0, sizeof(stmp));
 
   if (tk_str_eq("/lfs", mnt)) {
-    ret = aw_mount(mnt, __LFS_DEVNAME, AW_LITTLEFS_TYPE_NAME, 0, NULL);
-    if (ret != 0) {
-      aw_umount(mnt, 0);
-      ret = aw_make_fs(__LFS_DEVNAME, AW_LITTLEFS_TYPE_NAME, &fmt);
-      if (ret != AW_OK) {
-        ret = aw_make_fs(__LFS_DEVNAME, AW_LITTLEFS_TYPE_NAME, NULL);
-        goto_error_if_fail(ret == 0);
-      }
-      ret = aw_mount(mnt, __LFS_DEVNAME, AW_LITTLEFS_TYPE_NAME, 0, NULL);
-      goto_error_if_fail(ret == 0);
-    }
-    tk_log_info_lf("mount %s", mnt);
+    ret = fs_aworks_littlefs_mount(mnt, __LFS_DEVNAME);
+    goto_error_if_fail(ret == RET_OK);
   } else if (tk_str_eq("/dev", mnt)) {
-    tk_log_info_lf("mount %s", mnt);
+    tk_log_debug_lf("mount %s", mnt);
     return &s_os_fs;
   } else {
     return_value_if_fail(!"Not support the mnt!", NULL);
@@ -604,26 +633,23 @@ ret_t fs_aworks_init(void) {
 
 #elif CONFIG_PLATFORM_UIS8910DM_AWORKS_LP
 
+#define __LFS_DEVNAME "/dev/ext_norflash_partition_0"
 fs_t* fs_aworks_create(const char* mnt) {
   int ret;
-  struct aw_fs_format_arg fmt = {"awdisk", 0, 1};
-  struct aw_stat file_stat;
-  char stmp[64];
-  memset(stmp, 0, sizeof(stmp));
 
-  if (tk_str_eq("/sd0", mnt)) {
-    /* ZC1上插入了SD卡，板子启动后默认的会进行fatfs文件系统进行挂载，且挂载点为"/sd0" */
-    tk_log_info_lf("mount %s", mnt);
-    return &s_os_fs;
+  if (tk_str_eq("/flow", mnt)) {
+    ret = fs_aworks_littlefs_mount(mnt, __LFS_DEVNAME);
+    goto_error_if_fail(ret == RET_OK);
   } else if (tk_str_eq("/dev", mnt)) {
-    tk_log_info_lf("mount %s", mnt);
-    return &s_os_fs;
+    tk_log_debug_lf("mount %s", mnt);
+    return (fs_t*)&s_os_fs;
   } else {
     return_value_if_fail(!"Not support the mnt!", NULL);
   }
-  return &s_os_fs;
+  return (fs_t*)&s_os_fs;
 
 error:
+  aw_umount(mnt, 0);
   return NULL;
 }
 
@@ -640,25 +666,91 @@ void fs_aworks_utest(void) {
          tk_str_eq_with_len(p, "abc123456", tk_strlen("abc123456") + 1));
   TKMEM_FREE(p);
 
-  tk_log_info_htlf("[UTEST]", "test R/W \"/lfs\" pass.");
+  tk_log_debug_htlf("[UTEST]", "test R/W \"/lfs\" pass.");
 }
 #else
 void fs_aworks_utest(void) {
 }
 #endif /* defined(UTEST_ENABLE) */
 
+extern ret_t fs_os_register(const char* mnt_name, fs_t* (*create)(const char*));
 ret_t fs_aworks_init(void) {
-  return_value_if_fail(fs_os_register("/sd0", fs_aworks_create) == RET_OK, RET_FAIL);
+  return_value_if_fail(fs_os_register("/flow", fs_aworks_create) == RET_OK, RET_FAIL);
   fs_aworks_utest();
   return RET_OK;
 }
 
-#else
+#endif
+
+#if CONFIG_PXM6450
+#define __FLOW_DEVNAME "/dev/xpiflash_data"
+
 fs_t* fs_aworks_create(const char* mnt) {
+  int ret;
+
+  if (tk_str_eq("/flow", mnt)) {
+    ret = fs_aworks_lffs_mount(mnt, __FLOW_DEVNAME);
+    goto_error_if_fail(ret == RET_OK);
+
+  } else if (tk_str_eq("/lffs", mnt)) {
+    tk_log_debug_lf("mount %s", mnt);
+    goto_error_if_fail(ret == RET_OK);
+
+  } else if (tk_str_eq("/dev", mnt)) {
+    tk_log_debug_lf("mount %s", mnt);
+    return &s_os_fs;
+  } else {
+    return_value_if_fail(!"Not support the mnt!", NULL);
+  }
+  return &s_os_fs;
+
+error:
+  aw_umount(mnt, 0);
   return NULL;
 }
 
 ret_t fs_aworks_init(void) {
-  return RET_FAIL;
+  if (fs_os_register("/flow", fs_aworks_create) != RET_OK) {
+    return RET_FAIL;
+  }
+  return RET_OK;
 }
-#endif
+#endif /* CONFIG_PXM6450 */
+
+#if CONFIG_EPC6750_AWI
+#define __FLOW_DEVNAME "/dev/is37sml01g1_partition_0"
+#define __LFFS_DEVNAME "/dev/is37sml01g1_partition_1"
+
+fs_t* fs_aworks_create(const char* mnt) {
+  int ret;
+
+  if (tk_str_eq("/flow", mnt)) {
+    ret = fs_aworks_lffs_mount(mnt, __FLOW_DEVNAME);
+    goto_error_if_fail(ret == RET_OK);
+
+  } else if (tk_str_eq("/lffs", mnt)) {
+    ret = fs_aworks_lffs_mount(mnt, __LFFS_DEVNAME);
+    goto_error_if_fail(ret == RET_OK);
+
+  } else if (tk_str_eq("/dev", mnt)) {
+    tk_log_debug_lf("mount %s", mnt);
+    return &s_os_fs;
+  } else {
+    return_value_if_fail(!"Not support the mnt!", NULL);
+  }
+  return &s_os_fs;
+
+error:
+  aw_umount(mnt, 0);
+  return NULL;
+}
+
+ret_t fs_aworks_init(void) {
+  if (fs_os_register("/flow", fs_aworks_create) != RET_OK) {
+    return RET_FAIL;
+  }
+  fs_os_register("/lffs", fs_aworks_create);
+  fs_os_register("/lfs", fs_aworks_create);
+  return RET_OK;
+}
+#endif /* CONFIG_EPC6750_AWI */
