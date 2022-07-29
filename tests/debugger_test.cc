@@ -681,7 +681,6 @@ TEST(Debugger, event2) {
   ASSERT_EQ(debugger_is_paused(debugger), TRUE);
 
   ASSERT_EQ(debugger_continue(client), RET_OK);
-  ASSERT_EQ(debugger_clear_break_points(client), RET_OK);
 
   debugger_client_wait_for_completed(client);
   tk_thread_join(thread);
