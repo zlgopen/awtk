@@ -1794,6 +1794,19 @@ ret_t widget_dispatch_async(widget_t* widget, event_t* e);
 ret_t widget_dispatch_simple_event(widget_t* widget, uint32_t type);
 
 /**
+ * @method widget_dispatch_model_event
+ * 分发model事件(分发到各个窗口)。
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 名称。
+ * @param {const char*} change_type 变化类型。
+ * @param {tk_object_t*} model 模型。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_dispatch_model_event(widget_t* widget, const char* name, const char* change_type,
+                                  tk_object_t* model);
+
+/**
  * @method widget_dispatch_recursive
  * 分发一个事件控件本身及所有子控件。
  * @param {widget_t*} widget 控件对象。
