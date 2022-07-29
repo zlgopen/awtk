@@ -44,6 +44,7 @@
 #include "assets/default/inc/ui/auto_play_landscape.data"
 #include "assets/default/inc/ui/color_picker_simple.data"
 #include "assets/default/inc/ui/bidi.data"
+#include "assets/default/inc/ui/dialog_highlight_update_bg.data"
 #include "assets/default/inc/ui/progress_circle.data"
 #include "assets/default/inc/ui/accordion2.data"
 #include "assets/default/inc/ui/combo_box.data"
@@ -134,6 +135,7 @@
 #include "assets/default/inc/ui/rich_text_view.data"
 #include "assets/default/inc/ui/big_font.data"
 #include "assets/default/inc/ui/tab_top_compact.data"
+#include "assets/default/inc/ui/dialog_highlight_dynamic.data"
 #include "assets/default/inc/ui/slide_view_h.data"
 #include "assets/default/inc/ui/dialogs.data"
 #include "assets/default/inc/ui/selectm.data"
@@ -147,6 +149,7 @@
 #include "assets/default/inc/ui/file_browser.data"
 #include "assets/default/inc/ui/color_picker_full.data"
 #include "assets/default/inc/ui/dialog1.data"
+#include "assets/default/inc/ui/dialog_highlight.data"
 #include "assets/default/inc/ui/fade.data"
 #include "assets/default/inc/ui/menu_right_top.data"
 #include "assets/default/inc/ui/list_view_d_f.data"
@@ -177,6 +180,7 @@
 #include "assets/default/inc/ui/menu_right_bottom.data"
 #include "assets/default/inc/ui/list_view_d.data"
 #include "assets/default/inc/ui/vtranslate.data"
+#include "assets/default/inc/ui/dialog_highlight_static.data"
 #include "assets/default/inc/ui/menu_left_top.data"
 #include "assets/default/inc/ui/kb_ufloat.data"
 #include "assets/default/inc/ui/kb_default.data"
@@ -555,6 +559,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_auto_play_landscape);
   assets_manager_add(am, ui_color_picker_simple);
   assets_manager_add(am, ui_bidi);
+  assets_manager_add(am, ui_dialog_highlight_update_bg);
   assets_manager_add(am, ui_progress_circle);
   assets_manager_add(am, ui_accordion2);
   assets_manager_add(am, ui_combo_box);
@@ -645,6 +650,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_rich_text_view);
   assets_manager_add(am, ui_big_font);
   assets_manager_add(am, ui_tab_top_compact);
+  assets_manager_add(am, ui_dialog_highlight_dynamic);
   assets_manager_add(am, ui_slide_view_h);
   assets_manager_add(am, ui_dialogs);
   assets_manager_add(am, ui_selectm);
@@ -658,6 +664,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_file_browser);
   assets_manager_add(am, ui_color_picker_full);
   assets_manager_add(am, ui_dialog1);
+  assets_manager_add(am, ui_dialog_highlight);
   assets_manager_add(am, ui_fade);
   assets_manager_add(am, ui_menu_right_top);
   assets_manager_add(am, ui_list_view_d_f);
@@ -688,6 +695,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_menu_right_bottom);
   assets_manager_add(am, ui_list_view_d);
   assets_manager_add(am, ui_vtranslate);
+  assets_manager_add(am, ui_dialog_highlight_static);
   assets_manager_add(am, ui_menu_left_top);
   assets_manager_add(am, ui_kb_ufloat);
   assets_manager_add(am, ui_kb_default);

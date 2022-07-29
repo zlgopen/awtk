@@ -1,0 +1,11 @@
+<window text="DialogEx" anim_hint="htranslate" >>
+  <view x="0" y="0" w="100%" h="75%" children_layout="default(c=2,r=6,m=5,s=5)">
+    <button name="open:dialog_highlight_static" text="Static Alpha"/>
+    <button name="open:dialog_highlight_dynamic" text="Dynamic Alpha"/>
+    <button name="open:dialog_highlight_update_bg" text="Update Background"/>
+    <button name="close" text="Close"/>
+  </view>
+  <view x="0" y="75%" w="100%" h="25%">
+    <image name="fade" image="logo" x="c" y="m" w="100%" h="80" opacity="0" animation="opacity(from=255, to=50, yoyo_times=1000, duration=1000)"/>
+  </view>
+</window>
