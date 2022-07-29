@@ -192,6 +192,20 @@ int32_t object_array_last_index_of(tk_object_t* obj, const value_t* v);
 ret_t object_array_remove(tk_object_t* obj, uint32_t index);
 
 /**
+ * @method object_array_remove_value
+ *
+ * 删除指定的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {tk_object_t*} obj 对象。
+ * @param {value_t*} v 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t object_array_remove_value(tk_object_t* obj, value_t* v);
+
+/**
  * @method object_array_get_and_remove
  *
  * 在指定位置删除一个元素，并返回它。

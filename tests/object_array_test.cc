@@ -739,3 +739,31 @@ TEST(ObjectArray, reverse) {
   str_reset(&s);
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(ObjectArray, push_and_remove) {
+  value_t v;
+  tk_object_t* obj = object_array_create();
+
+  value_set_int(&v, 10);
+  object_array_push(obj, &v);
+  value_set_int(&v, 20);
+  object_array_push(obj, &v);
+  value_set_int(&v, 30);
+  object_array_push(obj, &v);
+  value_set_int(&v, 40);
+  object_array_push(obj, &v);
+
+  value_set_int(&v, 10);
+  ASSERT_EQ(object_array_remove_value(obj, &v), RET_OK);
+  ASSERT_EQ(OBJECT_ARRAY(obj)->size, 3);
+  ASSERT_EQ(object_array_get(obj, 0, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 20);
+  
+  value_set_int(&v, 30);
+  ASSERT_EQ(object_array_remove_value(obj, &v), RET_OK);
+  ASSERT_EQ(OBJECT_ARRAY(obj)->size, 2);
+  ASSERT_EQ(object_array_get(obj, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 40);
+
+  TK_OBJECT_UNREF(obj);
+}

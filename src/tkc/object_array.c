@@ -554,6 +554,21 @@ tk_object_t* object_array_dup(tk_object_t* obj, uint32_t start, uint32_t end) {
   return dup;
 }
 
+ret_t object_array_remove_value(tk_object_t* obj, value_t* v) {
+  uint32_t i = 0;
+  object_array_t* o = OBJECT_ARRAY(obj);
+  return_value_if_fail(obj != NULL && v != NULL, RET_BAD_PARAMS);
+
+  for (i = 0; i < o->size; i++) {
+    value_t* iter = o->props + i;
+    if (value_equal(iter, v)) {
+      return object_array_remove(obj, i);
+    }
+  }
+
+  return RET_NOT_FOUND;
+}
+
 static int value_cmp_as_int(const void* a, const void* b) {
   return value_int((const value_t*)a) - value_int((const value_t*)b);
 }
