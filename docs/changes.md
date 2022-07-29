@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/07/29
+  * 增加函数object\_array\_remove\_value
+
 2022/07/28
   * 修复gauge\_pointer控件初始化的时候警告的问题(感谢智明提供补丁)
   * slide view增加darg\_threshold属性(感谢智明提供补丁)。
