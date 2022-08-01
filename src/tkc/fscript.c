@@ -3062,6 +3062,36 @@ static const func_entry_t s_builtin_funcs[] = {{"func", func_function_def, 4},
 
 static general_factory_t* s_global_funcs;
 
+fscript_func_t fscript_find_func(fscript_t* fscript, const char* name, uint32_t size) {
+  uint32_t i = 0;
+  fscript_func_t func = NULL;
+  char func_name[TK_NAME_LEN + 1];
+  char full_func_name[2 * TK_NAME_LEN + 1];
+  tk_object_t* obj = fscript->obj;
+
+  tk_strncpy(func_name, name, tk_min(size, TK_NAME_LEN));
+  for (i = 0; i < ARRAY_SIZE(s_builtin_funcs); i++) {
+    const func_entry_t* iter = s_builtin_funcs + i;
+    if (tk_str_eq(iter->name, func_name)) {
+      func = iter->func;
+      break;
+    }
+  }
+
+  if (func == NULL) {
+    tk_snprintf(full_func_name, sizeof(full_func_name) - 1, "%s%s", STR_FSCRIPT_FUNCTION_PREFIX,
+                func_name);
+    func = (fscript_func_t)tk_object_get_prop_pointer(obj, full_func_name);
+  }
+
+
+  if (func == NULL && s_global_funcs != NULL) {
+    func = (fscript_func_t)general_factory_find(s_global_funcs, func_name);
+  }
+
+  return func;
+}
+
 static ret_t fscript_func_call_init_func(fscript_func_call_t* call, tk_object_t* obj,
                                          tk_object_t* funcs_def, const char* name, uint32_t size) {
   uint32_t i = 0;

@@ -511,6 +511,17 @@ ret_t fscript_set_self_hooks(fscript_t* fscript, const fscript_hooks_t* hooks);
 ret_t fscript_ensure_locals(fscript_t* fscript);
 
 /**
+ * @method fscript_find_func
+ * 查找函数。
+ * @param {fscript_t*} fscript 脚本引擎对象。
+ * @param {const char*} name 函数名。
+ * @param {uint32_t} size 函数名长度。
+ *
+ * @return {fscript_func_t} 返回函数指针，NULL表示失败。
+ */
+fscript_func_t fscript_find_func(fscript_t* fscript, const char* name, uint32_t size);
+
+/**
  * @method fscript_get_code_id
  * 获取code_id。
  * @param {const char*} str 代码。
