@@ -878,20 +878,35 @@ static ret_t on_free_func_def(void* ctx, const void* data) {
   return RET_OK;
 }
 
+ret_t fscript_clean(fscript_t* fscript) {
+  return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
+
+  str_reset(&(fscript->str));
+  fscript_locals_destroy(fscript);
+
+  if (fscript->funcs_def != NULL) {
+    tk_object_foreach_prop(fscript->funcs_def, on_free_func_def, NULL);
+    fscript->funcs_def = NULL;
+  }
+
+  TK_OBJECT_UNREF(fscript->funcs_def);
+  TKMEM_FREE(fscript->error_message);
+  TKMEM_FREE(fscript->code_id);
+
+  if (fscript->first != NULL) {
+    fscript_func_call_destroy(fscript->first);
+    fscript->first = NULL;
+  }
+
+  return RET_OK;
+}
+
 static ret_t fscript_reset(fscript_t* fscript) {
   return_value_if_fail(fscript != NULL, RET_FAIL);
 
   fscript_hook_on_deinit(fscript);
+  fscript_clean(fscript);
 
-  str_reset(&(fscript->str));
-  fscript_locals_destroy(fscript);
-  if (fscript->funcs_def != NULL) {
-    tk_object_foreach_prop(fscript->funcs_def, on_free_func_def, NULL);
-  }
-  TK_OBJECT_UNREF(fscript->funcs_def);
-  TKMEM_FREE(fscript->error_message);
-  fscript_func_call_destroy(fscript->first);
-  TKMEM_FREE(fscript->code_id);
   memset(fscript, 0x00, sizeof(fscript_t));
 
   return RET_OK;
@@ -3083,7 +3098,6 @@ fscript_func_t fscript_find_func(fscript_t* fscript, const char* name, uint32_t 
                 func_name);
     func = (fscript_func_t)tk_object_get_prop_pointer(obj, full_func_name);
   }
-
 
   if (func == NULL && s_global_funcs != NULL) {
     func = (fscript_func_t)general_factory_find(s_global_funcs, func_name);

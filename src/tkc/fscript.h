@@ -317,6 +317,15 @@ ret_t fscript_deinit(fscript_t* fscript);
 ret_t fscript_destroy(fscript_t* fscript);
 
 /**
+ * @method fscript_clean
+ * 使用lua或其它脚本来运行fscript时，本函数用于清理不必要的数据结构。
+ * @param {fscript_t*} fscript 脚本引擎对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_clean(fscript_t* fscript);
+
+/**
  * @method fscript_eval
  * 执行一段脚本。
  * @param {tk_object_t*} obj 脚本执行上下文。
