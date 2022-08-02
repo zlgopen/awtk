@@ -2,6 +2,7 @@
 
 2022/08/02
   * 增加fscript_clean。
+  * 增加滚动的grid例子(感谢智明提供补丁)
 
 2022/08/01
   * 增加fscript\_find\_func。

@@ -28,6 +28,10 @@
 #include "base/font_manager.h"
 #include "base/event_recorder_player.h"
 
+#define SCROLL_BAR_H_WIDGT_NAME "bar_h"
+#define SCROLL_BAR_V_WIDGT_NAME "bar_v"
+#define SCROLL_GRID_SCROLL_WIDGT_NAME "grid_scroll_view"
+
 static ret_t on_clone_tab(void* ctx, event_t* e);
 static ret_t widget_clone_tab(widget_t* widget);
 static void install_click_hander(widget_t* widget);
@@ -830,6 +834,49 @@ static ret_t on_action_list(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static int32_t scroll_bar_value_to_scroll_view_offset_y(scroll_bar_t* scroll_bar,
+                                                        scroll_view_t* sv) {
+  int32_t range = 0;
+  float_t percent = 0;
+  range = scroll_bar->virtual_size;
+  percent = range > 0 ? (float_t)scroll_bar->value / (float_t)(range) : 0;
+  return percent * (sv->virtual_h - sv->widget.h);
+}
+
+static int32_t scroll_bar_value_to_scroll_view_offset_x(scroll_bar_t* scroll_bar,
+                                                        scroll_view_t* sv) {
+  int32_t range = 0;
+  float_t percent = 0;
+  range = scroll_bar->virtual_size;
+  percent = range > 0 ? (float_t)scroll_bar->value / (float_t)(range) : 0;
+  return percent * (sv->virtual_w - sv->widget.w);
+}
+
+static ret_t scroll_bar_on_value_changed(void* ctx, event_t* e) {
+  widget_t* tmp = WIDGET(ctx);
+  widget_t* parent = tmp->parent;
+  scroll_view_t* sv = SCROLL_VIEW(widget_lookup(parent, SCROLL_GRID_SCROLL_WIDGT_NAME, FALSE));
+  scroll_bar_t* scroll_bar_h = SCROLL_BAR(widget_lookup(parent, SCROLL_BAR_H_WIDGT_NAME, FALSE));
+  scroll_bar_t* scroll_bar_v = SCROLL_BAR(widget_lookup(parent, SCROLL_BAR_V_WIDGT_NAME, FALSE));
+
+  int32_t offset_x = scroll_bar_value_to_scroll_view_offset_x(scroll_bar_h, sv);
+  int32_t offset_y = scroll_bar_value_to_scroll_view_offset_y(scroll_bar_v, sv);
+
+  scroll_view_set_offset(WIDGET(sv), offset_x, offset_y);
+
+  return RET_OK;
+}
+
+static ret_t on_idle_scroll_view_set_virtual_wh(const idle_info_t* idle) {
+  scroll_view_t* sv = SCROLL_VIEW(idle->ctx);
+  widget_t* parent = sv->widget.parent;
+  widget_t* bar_h = widget_lookup(parent, SCROLL_BAR_H_WIDGT_NAME, FALSE);
+  widget_t* bar_v = widget_lookup(parent, SCROLL_BAR_V_WIDGT_NAME, FALSE);
+  scroll_bar_set_params(bar_h, sv->virtual_w, 10);
+  scroll_bar_set_params(bar_v, sv->virtual_h, 10);
+  return RET_OK;
+}
+
 static ret_t install_one(void* ctx, const void* iter) {
   widget_t* widget = WIDGET(iter);
   widget_t* win = widget_get_window(widget);
@@ -936,6 +983,12 @@ static ret_t install_one(void* ctx, const void* iter) {
       widget_on(widget, EVT_CLICK, on_change_cursor, win);
     } else if (tk_str_eq(name, "ani_interval") && tk_str_eq(widget->vt->type, "image_animation")) {
       widget_on(widget, EVT_POINTER_DOWN, on_image_animation_set_interval, widget);
+    } else if (tk_str_eq(name, SCROLL_GRID_SCROLL_WIDGT_NAME)) {
+      widget_add_idle(widget, on_idle_scroll_view_set_virtual_wh);
+    } else if (tk_str_eq(name, SCROLL_BAR_H_WIDGT_NAME)) {
+      widget_on(widget, EVT_VALUE_CHANGED, scroll_bar_on_value_changed, widget);
+    } else if (tk_str_eq(name, SCROLL_BAR_V_WIDGT_NAME)) {
+      widget_on(widget, EVT_VALUE_CHANGED, scroll_bar_on_value_changed, widget);
     }
   } else if (tk_str_eq(widget->vt->type, "combo_box")) {
     widget_on(widget, EVT_VALUE_CHANGED, on_combo_box_changed, widget);
