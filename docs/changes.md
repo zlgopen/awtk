@@ -1,4 +1,8 @@
 # 最新动态
+
+2022/08/02
+  * 增加fscript_clean。
+
 2022/08/01
   * 增加fscript\_find\_func。
 

@@ -236,13 +236,17 @@ static ret_t fscript_exec_func(fscript_t* fscript, const char* name, fscript_fun
 
 ret_t fscript_set_error(fscript_t* fscript, ret_t code, const char* func, const char* message) {
   fscript->error_code = code;
-  fscript->error_func = fscript->curr;
-  fscript->error_row = fscript->curr->row;
-  fscript->error_col = fscript->curr->col;
   fscript->error_message = tk_str_copy(fscript->error_message, message);
-  if (code != RET_OK) {
-    log_debug("(%d:%d): %s code=%d %s\n", fscript->curr->row, fscript->curr->col, func, code,
-              message);
+
+  if (fscript->curr != NULL) {
+    fscript->error_func = fscript->curr;
+    fscript->error_row = fscript->curr->row;
+    fscript->error_col = fscript->curr->col;
+
+    if (code != RET_OK) {
+      log_debug("(%d:%d): %s code=%d %s\n", fscript->curr->row, fscript->curr->col, func, code,
+                message);
+    }
   }
 
   if (fscript->on_error != NULL) {
