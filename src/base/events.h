@@ -501,7 +501,7 @@ typedef enum _event_type_t {
    */
   EVT_CONNECT,
   /**
-   * @const EVT_MODEL_CHANGE,
+   * @const EVT_MODEL_CHANGE
    * 模型变化。用于fscript实现窗口间通讯(model_event_t)。
    */
   EVT_MODEL_CHANGE,
