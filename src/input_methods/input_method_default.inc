@@ -156,14 +156,11 @@ static ret_t input_method_default_set_win_position(input_method_t* im) {
   if (im->widget != NULL) {
     if (tk_str_eq(im->widget->vt->type, WIDGET_TYPE_MLEDIT)) {
       point_t p = {0, 0};
-      int32_t delta = 0;
-
       widget_to_screen(im->widget, &p);
-      delta = (p.y + im->widget->h - im->win_delta_y) - im->keyboard->y;
       im->edit_old_h = im->widget->h;
 
-      if (delta > 0) {
-        int32_t h = im->widget->h - delta;
+      if (p.y >= 0) {
+        int32_t h = im->widget->h - tk_max(0, p.y + im->widget->h - im->keyboard->y);
         widget_resize(im->widget, im->widget->w, h);
       }
     }
@@ -329,7 +326,9 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
       widget_move(im->win, im->win->x, im->win_old_y);
     }
     if (is_key_board_overlap_edit(widget, im->keyboard)) {
-      im->win_delta_y = caret_bottom - im->keyboard->y;
+      point_t p1 = {0, 0};
+      widget_to_screen_ex(widget, widget_get_window(widget), &p1);
+      im->win_delta_y = tk_min(p1.y, caret_bottom - im->keyboard->y);
       tk_snprintf(anim_hint, sizeof(anim_hint), "vtranslate(prev_win_y_range=%d)", im->win_delta_y);
       close_anim_hint = anim_hint;
     } else {
@@ -342,8 +341,10 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
     widget_on(im->keyboard, EVT_WINDOW_OPEN, on_push_window, im);
   } else if (win_is_keyboard && (win->y + win->h) < im->keyboard->y) {
     /*when new keyboard height is not eq old keyboard height*/
+    point_t p1 = {0, 0};
+    widget_to_screen_ex(widget, widget_get_window(widget), &p1);
     close_anim_hint = "vtranslate";
-    im->win_delta_y = caret_bottom - im->keyboard->y;
+    im->win_delta_y = tk_min(p1.y, caret_bottom - im->keyboard->y);
     widget_move(win, im->win->x, im->win_old_y - im->win_delta_y);
   } else if (p.y < im->win_old_y) {
     im->win = win;
