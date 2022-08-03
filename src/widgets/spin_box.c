@@ -23,7 +23,9 @@
 #include "base/layout.h"
 #include "widgets/spin_box.h"
 
-const char* const s_spin_box_properties[] = {TK_EDIT_PROPS, WIDGET_PROP_EASY_TOUCH_MODE, NULL};
+#define SPIN_DEFAULT_REPEAT     300
+
+const char* const s_spin_box_properties[] = {TK_EDIT_PROPS, WIDGET_PROP_REPEAT, WIDGET_PROP_EASY_TOUCH_MODE, NULL};
 
 widget_t* spin_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
@@ -36,10 +38,26 @@ static ret_t spin_box_on_copy(widget_t* widget, widget_t* other) {
   return edit_on_copy(widget, other);
 }
 
+ret_t spin_set_repeat(widget_t* widget, int32_t repeat) {
+  widget_t* inc = NULL;
+  widget_t* dec = NULL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  inc = widget_lookup(widget, STR_EDIT_INC_NAME, FALSE);
+  dec = widget_lookup(widget, STR_EDIT_DEC_NAME, FALSE);
+
+  button_set_repeat(inc, repeat);
+  button_set_repeat(dec, repeat);
+
+  return RET_OK;
+}
+
 static ret_t spin_box_set_prop(widget_t* widget, const char* name, const value_t* v) {
   if (tk_str_eq(name, WIDGET_PROP_EASY_TOUCH_MODE)) {
     spin_box_set_easy_touch_mode(widget, value_bool(v));
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_REPEAT)) {
+    return spin_set_repeat(widget, value_int32(v));
   }
 
   return edit_set_prop(widget, name, v);
@@ -49,6 +67,14 @@ static ret_t spin_box_get_prop(widget_t* widget, const char* name, value_t* v) {
   if (tk_str_eq(name, WIDGET_PROP_EASY_TOUCH_MODE)) {
     value_set_bool(v, SPIN_BOX(widget)->easy_touch_mode);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_REPEAT)) {
+    widget_t* inc = widget_lookup(widget, STR_EDIT_INC_NAME, FALSE);
+    if (inc != NULL) {
+      return widget_get_prop(inc, WIDGET_PROP_REPEAT, v);
+    } else {
+      value_set_int32(v, SPIN_DEFAULT_REPEAT);
+      return RET_OK;
+    }
   }
 
   return edit_get_prop(widget, name, v);
@@ -131,12 +157,12 @@ widget_t* spin_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
   inc = button_create(spin_box, 0, 0, 0, 0);
   inc->auto_created = TRUE;
-  button_set_repeat(inc, 300);
+  button_set_repeat(inc, SPIN_DEFAULT_REPEAT);
   widget_set_name(inc, STR_EDIT_INC_NAME);
 
   dec = button_create(spin_box, 0, 0, 0, 0);
   dec->auto_created = TRUE;
-  button_set_repeat(dec, 300);
+  button_set_repeat(dec, SPIN_DEFAULT_REPEAT);
   widget_set_name(dec, STR_EDIT_DEC_NAME);
 
   return spin_box;

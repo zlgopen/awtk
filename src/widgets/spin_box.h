@@ -95,6 +95,14 @@ typedef struct _spin_box_t {
    */
   bool_t easy_touch_mode;
 
+  /**
+   * @property {int32_t} repeat
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable","fake"]
+   * 重复触发EVT\_CLICK事件的时间间隔。
+   *
+   * 为0则不重复触发EVT\_CLICK事件。
+   */
+
 } spin_box_t;
 
 /**
@@ -131,6 +139,18 @@ widget_t* spin_box_cast(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t spin_box_set_easy_touch_mode(widget_t* widget, bool_t easy_touch_mode);
+
+/**
+ * @method spin_set_repeat
+ * 设置连击的时间间隔。
+ * 备注：时间间隔越低，速度越快。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {int32_t} repeat 连击的时间间隔。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t spin_set_repeat(widget_t* widget, int32_t repeat);
 
 #define SPIN_BOX(widget) ((spin_box_t*)(spin_box_cast(WIDGET(widget))))
 

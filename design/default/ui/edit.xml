@@ -109,7 +109,7 @@
      </list_item>     
      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
       <label w="30%" text="Age"/>
-      <spin_box w="70%" right_margin="16" tips="uint(0-150) auto_fix" input_type="uint" min="0" max="150" step="1" auto_fix="true" style="number" />
+      <spin_box w="70%" right_margin="16" tips="uint(0-150) auto_fix" input_type="uint" min="0" max="150" step="1" auto_fix="true" repeat="50" style="number" />
      </list_item>
 
      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
