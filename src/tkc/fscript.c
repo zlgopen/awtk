@@ -890,7 +890,7 @@ ret_t fscript_clean(fscript_t* fscript) {
 
   if (fscript->funcs_def != NULL) {
     tk_object_foreach_prop(fscript->funcs_def, on_free_func_def, NULL);
-    fscript->funcs_def = NULL;
+    TK_OBJECT_UNREF(fscript->funcs_def);
   }
 
   TK_OBJECT_UNREF(fscript->funcs_def);
@@ -910,6 +910,7 @@ static ret_t fscript_reset(fscript_t* fscript) {
 
   fscript_hook_on_deinit(fscript);
   fscript_clean(fscript);
+  TK_OBJECT_UNREF(fscript->obj);
 
   memset(fscript, 0x00, sizeof(fscript_t));
 
@@ -2100,6 +2101,10 @@ static fscript_t* fscript_load(fscript_t* fscript, tk_object_t* obj, const char*
     fscript_parser_deinit(&parser);
   }
   fscript_parser_error_deinit(&error);
+
+  if (fscript != NULL) {
+    TK_OBJECT_REF(obj);
+  }
 
   return fscript;
 }

@@ -73,6 +73,7 @@ tk_object_t* fscript_module_create_with_data(const char* data) {
   value_set_int(&v, 0);
   fscript_exec(fscript, &v);
   value_reset(&v);
+  tk_object_unref(o);
 
   return o;
 error:
