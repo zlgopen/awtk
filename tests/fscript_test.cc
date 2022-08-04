@@ -2942,3 +2942,20 @@ TEST(FScript, hooks) {
   TK_OBJECT_UNREF(obj);
 }
 
+TEST(FScript, set_get_unset) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, "set('a',3);get('a')", &v);
+  ASSERT_EQ(3, value_int(&v));
+  value_reset(&v);
+  
+  fscript_eval(obj, "set(a,3);get(a)", &v);
+  ASSERT_EQ(3, value_int(&v));
+  value_reset(&v);
+  
+  fscript_eval(obj, "set(a,3);get(a);unset('a');get('a')", &v);
+  ASSERT_EQ(0, value_int(&v));
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}

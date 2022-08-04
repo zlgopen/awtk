@@ -4,6 +4,8 @@
   * 增加spin控件增加repeat参数支持修改按钮连续触发的速度(感谢智明提供补丁)
   * 优化了光标在多行编辑框的底部时候弹出软键盘显示逻辑(感谢智明提供补丁)
   * 修复events API注释(感谢朝泽提供补丁)
+  * fix memory leak
+  * improve fscript get/unset
 
 2022/08/02
   * 增加fscript_clean。

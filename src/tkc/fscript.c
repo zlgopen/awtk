@@ -908,9 +908,9 @@ ret_t fscript_clean(fscript_t* fscript) {
 static ret_t fscript_reset(fscript_t* fscript) {
   return_value_if_fail(fscript != NULL, RET_FAIL);
 
+  TK_OBJECT_UNREF(fscript->obj);
   fscript_hook_on_deinit(fscript);
   fscript_clean(fscript);
-  TK_OBJECT_UNREF(fscript->obj);
 
   memset(fscript, 0x00, sizeof(fscript_t));
 
@@ -923,6 +923,10 @@ ret_t fscript_deinit(fscript_t* fscript) {
 
 ret_t fscript_destroy(fscript_t* fscript) {
   return_value_if_fail(fscript != NULL, RET_FAIL);
+  if (fscript->obj == NULL) {
+    return RET_FAIL;
+  }
+
   fscript_deinit(fscript);
 
   TKMEM_FREE(fscript);
@@ -2503,13 +2507,18 @@ static ret_t func_get(fscript_t* fscript, fscript_args_t* args, value_t* result)
   ret_t ret = RET_OK;
   value_t* v = args->args;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  return_value_if_fail(v->type == VALUE_TYPE_ID, RET_BAD_PARAMS);
+  return_value_if_fail(v->type == VALUE_TYPE_ID || v->type == VALUE_TYPE_STRING, RET_BAD_PARAMS);
 
-  if (value_id_index(v) >= 0) {
-    ret = fscript_locals_get(fscript, v, result);
+  if (v->type == VALUE_TYPE_STRING) {
+      const char* name = value_str(v);
+      ret = fscript_get_var(fscript, name, result);
   } else {
-    const char* name = value_id(v);
-    ret = fscript_get_var(fscript, name, result);
+    if (value_id_index(v) >= 0) {
+      ret = fscript_locals_get(fscript, v, result);
+    } else {
+      const char* name = value_id(v);
+      ret = fscript_get_var(fscript, name, result);
+    }
   }
 
   if (ret != RET_OK) {
@@ -2523,14 +2532,19 @@ static ret_t func_set(fscript_t* fscript, fscript_args_t* args, value_t* result)
   int32_t index = 0;
   value_t* v = args->args;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
-  return_value_if_fail(v->type == VALUE_TYPE_ID, RET_BAD_PARAMS);
+  return_value_if_fail(v->type == VALUE_TYPE_ID || v->type == VALUE_TYPE_STRING, RET_BAD_PARAMS);
 
-  index = value_id_index(v);
-  if (index >= 0) {
-    value_set_bool(result, fscript_locals_set(fscript, v, args->args + 1) == RET_OK);
+  if (v->type == VALUE_TYPE_STRING) {
+      const char* name = value_str(v);
+      value_set_bool(result, fscript_set_var(fscript, name, args->args + 1) == RET_OK);
   } else {
-    const char* name = value_id(v);
-    value_set_bool(result, fscript_set_var(fscript, name, args->args + 1) == RET_OK);
+    index = value_id_index(v);
+    if (index >= 0) {
+      value_set_bool(result, fscript_locals_set(fscript, v, args->args + 1) == RET_OK);
+    } else {
+      const char* name = value_id(v);
+      value_set_bool(result, fscript_set_var(fscript, name, args->args + 1) == RET_OK);
+    }
   }
 
   return RET_OK;
@@ -2540,14 +2554,19 @@ static ret_t func_unset(fscript_t* fscript, fscript_args_t* args, value_t* resul
   int32_t index = 0;
   value_t* v = args->args;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  return_value_if_fail(v->type == VALUE_TYPE_ID, RET_BAD_PARAMS);
-
-  index = value_id_index(v);
-  if (index >= 0) {
-    fscript_locals_remove(fscript, index);
+  return_value_if_fail(v->type == VALUE_TYPE_ID || v->type == VALUE_TYPE_STRING, RET_BAD_PARAMS);
+  
+  if (v->type == VALUE_TYPE_STRING) {
+      const char* name = value_str(v);
+      tk_object_remove_prop(fscript->obj, name);
   } else {
-    const char* name = value_id(v);
-    tk_object_remove_prop(fscript->obj, name);
+    index = value_id_index(v);
+    if (index >= 0) {
+      fscript_locals_remove(fscript, index);
+    } else {
+      const char* name = value_id(v);
+      tk_object_remove_prop(fscript->obj, name);
+    }
   }
   value_set_bool(result, TRUE);
 

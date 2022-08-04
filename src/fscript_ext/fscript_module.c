@@ -28,10 +28,11 @@
 
 static ret_t fscript_module_on_destroy(tk_object_t* obj) {
   fscript_module_t* o = FSCRIPT_MODULE(obj);
+  fscript_t* fscript = o->fscript;
   return_value_if_fail(o != NULL && o->fscript != NULL, RET_BAD_PARAMS);
 
-  fscript_destroy(o->fscript);
   o->fscript = NULL;
+  fscript_destroy(fscript);
 
   return RET_OK;
 }
@@ -73,7 +74,6 @@ tk_object_t* fscript_module_create_with_data(const char* data) {
   value_set_int(&v, 0);
   fscript_exec(fscript, &v);
   value_reset(&v);
-  tk_object_unref(o);
 
   return o;
 error:
