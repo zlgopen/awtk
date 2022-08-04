@@ -308,6 +308,10 @@ static ret_t window_manager_default_create_dialog_highlighter(widget_t* widget,
       ret = RET_OK;
     }
   }
+  /* 因为当 dialog 的窗口销毁的时候会释放 dialog_highlighter 局部, 防止非 dialog 的窗口使用 dialog_highlighter 高亮贴图。 */
+  if (dialog_highlighter != NULL && !widget_is_dialog(curr_win)) {
+    wm->dialog_highlighter = NULL;
+  }
 
   return ret;
 }
