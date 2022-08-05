@@ -112,12 +112,12 @@ typedef struct _slide_view_t {
   char* anim_hint;
 
   /**
-   * @property {uint32_t} darg_threshold
+   * @property {uint32_t} drag_threshold
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 拖动临界值。
    *
    */
-  uint32_t darg_threshold;
+  uint32_t drag_threshold;
 
   /* private */
   velocity_t velocity;
@@ -266,15 +266,15 @@ ret_t slide_view_set_anim_hint(widget_t* widget, const char* anim_hint);
 ret_t slide_view_set_loop(widget_t* widget, bool_t loop);
 
 /**
- * @method slide_view_set_darg_threshold
- * 设置循环切换模式。
+ * @method slide_view_set_drag_threshold
+ * 设置拖拽临界值。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget slide_view对象。
- * @param {uint32_t} darg_threshold 拖动临界值。
+ * @param {uint32_t} drag_threshold 拖动临界值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t slide_view_set_darg_threshold(widget_t* widget, uint32_t darg_threshold);
+ret_t slide_view_set_drag_threshold(widget_t* widget, uint32_t drag_threshold);
 
 /**
  * @method slide_view_remove_index

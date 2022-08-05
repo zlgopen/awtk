@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/08/06
+  * 修复slide\_view控件drag\_threshold属性的拼写错误以及函数注释(感谢雨欣提供补丁)
+
 2022/08/04
   * fix memory leak
   * improve fscript get/unset

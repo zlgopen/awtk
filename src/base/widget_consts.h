@@ -1035,7 +1035,7 @@ BEGIN_C_DECLS
  * @const WIDGET_PROP_DRAG_THRESHOLD
  * 拖拽临界值。
  */
-#define WIDGET_PROP_DRAG_THRESHOLD "darg_threshold"
+#define WIDGET_PROP_DRAG_THRESHOLD "drag_threshold"
 
 /**
  * @enum widget_type_t
