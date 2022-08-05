@@ -97,7 +97,7 @@ typedef struct _spin_box_t {
 
   /**
    * @property {int32_t} repeat
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable","fake"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","fake"]
    * 重复触发EVT\_CLICK事件的时间间隔。
    *
    * 为0则不重复触发EVT\_CLICK事件。
