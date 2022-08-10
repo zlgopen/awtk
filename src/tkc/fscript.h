@@ -482,14 +482,14 @@ ret_t fscript_set_var_default(fscript_t* fscript, const char* name, const value_
  */
 ret_t fscript_exec_func_default(fscript_t* fscript, fscript_func_call_t* iter, value_t* result);
 
-typedef struct _fscript_hooks_t {
+struct _fscript_hooks_t {
   fscript_on_init_t on_init;
   fscript_on_deinit_t on_deinit;
   fscript_set_var_t set_var;
   fscript_exec_func_t exec_func;
   fscript_before_exec_t before_exec;
   fscript_after_exec_t after_exec;
-} fscript_hooks_t;
+};
 
 /**
  * @method fscript_set_hooks
