@@ -2,7 +2,14 @@ import os
 import os.path
 import platform
 import shutil
+
 from shutil import copyfile
+
+import subprocess
+
+def is_raspberrypi():
+  result = str(subprocess.check_output(["uname", "-a"]))
+  return result.find('Linux raspberrypi') >= 0
 
 #######################################################
 # XXX: This file can be edited only in tkc project
@@ -110,6 +117,10 @@ elif OS_NAME == 'Linux':
         OS_FLAGS = OS_FLAGS + ' -DWITH_64BIT_CPU '
 
     OS_LINKFLAGS = ' -Wl,-rpath=./bin -Wl,-rpath=./ '
+    if is_raspberrypi():
+      OS_FLAGS = OS_FLAGS + ' -DRASPBERRYPI '
+      os.environ['RASPBERRYPI'] = 'true'
+
 
 elif OS_NAME == 'Windows':
     if not os.path.exists(os.path.abspath(TK_BIN_DIR)):
