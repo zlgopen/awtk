@@ -38,8 +38,8 @@ inline blender_linear_gradient<PixelT>::blender_linear_gradient(float sx, float 
     _ey = _sy + 1;
   }
 
-  _dx = ex - sx;
-  _dy = ey - sy;
+  _dx = fabs(ex - sx);
+  _dy = fabs(ey - sy);
   _dot_product_1 = 1/(_dx * _dx + _dy * _dy);
 }
 
@@ -65,21 +65,21 @@ inline bool blender_linear_gradient<PixelT>::get_color(int x, int y, pixel32_rgb
     c = _sc;
     return true;
   } else if(_sx == _ex) {
-    return this->gradient((y - _sy)/_dy, c);
+    return this->gradient(fabs(y - _sy)/_dy, c);
   } else if(_sy == _ey) {
-    return this->gradient((x - _sx)/_dx, c);
+    return this->gradient(fabs(x - _sx)/_dx, c);
   } else {
     //https://github.com/SFML/SFML/wiki/Source:-Color-Gradient
-    if(x < _sx || y < _sy) {
-      c = _sc;
-    } else if(x > _ex || y > _ey) {
-      c = _ec;
-    } else {
-      float dot_product = (x - _sx) * _dx + (y - _sy) * _dy;
+    // if(x < _sx || y < _sy) {
+    //   c = _sc;
+    // } else if(x > _ex || y > _ey) {
+    //   c = _ec;
+    // } else {
+      float dot_product = fabs(x - _sx) * _dx + fabs(y - _sy) * _dy;
       float factor = dot_product * _dot_product_1;
 
       return this->gradient(factor, c);
-    }
+    // }
   }
 
   return true;
