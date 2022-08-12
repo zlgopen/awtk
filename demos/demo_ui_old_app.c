@@ -28,6 +28,7 @@
 #include "base/font_manager.h"
 #include "base/event_recorder_player.h"
 
+#define DEMOUI_MAIN_WINDOW_NAME "main"
 #define SCROLL_BAR_H_WIDGT_NAME "bar_h"
 #define SCROLL_BAR_V_WIDGT_NAME "bar_v"
 #define SCROLL_GRID_SCROLL_WIDGT_NAME "grid_scroll_view"
@@ -81,6 +82,23 @@ uint32_t tk_mem_speed_test(void* buffer, uint32_t length, uint32_t* pmemcpy_spee
   return total_cost;
 }
 
+static ret_t main_window_on_key_up(void* ctx, event_t* e) {
+  key_event_t* evt = (key_event_t*)e;
+
+  if (evt->key == TK_KEY_s) {
+    system_info_t* info = system_info();
+    window_manager_resize(window_manager(), tk_max(160, info->lcd_w / 2), tk_max(160, info->lcd_h / 2));
+  } else if (evt->key == TK_KEY_d) {
+    system_info_t* info = system_info();
+    window_manager_resize(window_manager(), tk_min(1920, info->lcd_w * 2), tk_min(1920, info->lcd_h * 2));
+  } else if (evt->key == TK_KEY_a) {
+    native_window_t* nw = widget_get_native_window(widget_get_child(window_manager(), 0));
+    native_window_set_title(nw, "AWTK Simulator");
+  }
+
+  return RET_OK;
+}
+
 static ret_t window_to_background(void* ctx, event_t* e) {
   widget_t* win = WIDGET(e->target);
   log_debug("%s to_background\n", win->name);
@@ -111,7 +129,12 @@ static ret_t update_title_on_timer(const timer_info_t* info) {
 }
 
 static void open_window(const char* name, widget_t* to_close) {
+  bool_t is_single_main_win = widget_lookup(window_manager(), DEMOUI_MAIN_WINDOW_NAME, FALSE) == NULL;
   widget_t* win = to_close ? window_open_and_close(name, to_close) : window_open(name);
+
+  if (tk_str_eq(name, DEMOUI_MAIN_WINDOW_NAME) && is_single_main_win) {
+    widget_on(win, EVT_KEY_UP, main_window_on_key_up, win);
+  }
 
   widget_on(win, EVT_WINDOW_TO_BACKGROUND, window_to_background, win);
   widget_on(win, EVT_WINDOW_TO_FOREGROUND, window_to_foreground, win);
@@ -1026,7 +1049,7 @@ static ret_t timer_preload(const timer_info_t* timer) {
 #endif /*MOBILE_APP*/
 
     open_window("top", NULL);
-    open_window("main", win);
+    open_window(DEMOUI_MAIN_WINDOW_NAME, win);
 
     return RET_REMOVE;
   } else {
@@ -1121,15 +1144,6 @@ static ret_t on_key_record_play_events(void* ctx, event_t* e) {
     tk_enable_fast_lcd_portrait(TRUE);
 #endif
     tk_set_lcd_orientation((lcd_orientation_t)o);
-  } else if (evt->key == TK_KEY_s) {
-    system_info_t* info = system_info();
-    window_manager_resize(window_manager(), info->lcd_w / 2, info->lcd_h / 2);
-  } else if (evt->key == TK_KEY_d) {
-    system_info_t* info = system_info();
-    window_manager_resize(window_manager(), info->lcd_w * 2, info->lcd_h * 2);
-  } else if (evt->key == TK_KEY_a) {
-    native_window_t* nw = widget_get_native_window(widget_get_child(window_manager(), 0));
-    native_window_set_title(nw, "AWTK Simulator");
   }
   return RET_OK;
 }
@@ -1145,7 +1159,7 @@ static ret_t on_key_back_or_back_to_home(void* ctx, event_t* e) {
 
     return RET_STOP;
   } else if (evt->key == TK_KEY_F4) {
-    window_manager_back_to(WIDGET(ctx), "main");
+    window_manager_back_to(WIDGET(ctx), DEMOUI_MAIN_WINDOW_NAME);
 
     return RET_STOP;
   } else if (evt->key == TK_KEY_WHEEL) {
