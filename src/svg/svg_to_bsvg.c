@@ -469,5 +469,5 @@ ret_t svg_file_to_bsvg(const char* ifilename, const char* ofilename) {
   }
   TKMEM_FREE(data);
 
-  return RET_OK;
+  return ret;
 }

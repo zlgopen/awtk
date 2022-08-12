@@ -142,7 +142,6 @@ int wmain(int argc, wchar_t* argv[]) {
 
   str_t theme_name;
   color_t bg_color;
-  const wchar_t* color = NULL;
   const wchar_t* format = NULL;
   const wchar_t* str_output = NULL;
   bitmap_format_t image_format = BITMAP_FMT_NONE;

@@ -250,7 +250,6 @@ ret_t combo_box_parse_options(widget_t* widget, const char* str) {
 }
 
 ret_t combo_box_set_options(widget_t* widget, const char* options) {
-  combo_box_t* combo_box = COMBO_BOX(widget);
   ret_t ret = combo_box_parse_options(widget, options);
   if (!widget->loading) {
     ret = combo_box_sync_index_to_value(widget, 0, FALSE);

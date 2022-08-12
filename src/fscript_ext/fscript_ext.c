@@ -279,15 +279,18 @@ static ret_t func_trim_left(fscript_t* fscript, fscript_args_t* args, value_t* r
 #ifdef HAS_STDIO
 static ret_t func_prompt(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   char text[128];
+  char* ret_str = NULL;
   str_t* str = &(fscript->str);
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
 
   memset(text, 0x00, sizeof(text));
   fprintf(stdout, "%s", value_str(args->args));
-  fgets(text, sizeof(text) - 1, stdin);
+  ret_str = fgets(text, sizeof(text) - 1, stdin);
 
-  str_set(str, text);
-  value_set_str(result, str->str);
+  if (ret_str != NULL) {
+    str_set(str, text);
+    value_set_str(result, str->str);
+  }
 
   return RET_OK;
 }

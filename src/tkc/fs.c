@@ -342,6 +342,7 @@ ret_t fs_test_file(fs_t* fs) {
   assert(fs_file_exist(fs, "./test.bin"));
   assert(fs_remove_file(fs, "./test.bin") == RET_OK);
   assert(!fs_file_exist(fs, "./test.bin"));
+  (void)fp;
 
   return RET_OK;
 }
@@ -397,6 +398,7 @@ ret_t fs_test_dir(fs_t* fs) {
   assert(fs_remove_dir(fs, "./a/b/c2") == RET_OK);
   assert(fs_remove_dir(fs, "./a/b") == RET_OK);
   assert(fs_remove_dir(fs, "./a") == RET_OK);
+  (void)dir;
 
   return RET_OK;
 }

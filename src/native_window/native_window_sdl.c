@@ -42,6 +42,7 @@
 
 #endif /*WITH_GPU_GL*/
 
+#include "tkc/rect.h"
 #include "lcd/lcd_sdl2.h"
 #include "lcd/lcd_nanovg.h"
 #include "lcd/lcd_sdl2_mono.h"
@@ -432,7 +433,7 @@ static ret_t native_window_sdl_set_cursor(native_window_t* win, const char* name
       return RET_OK;
     }
   } else if (img != NULL) {
-    point_t hot_spot;
+    point_t hot_spot = {0, 0};
     calc_cursor_hot_spot(name, img, &hot_spot);
     return native_window_sdl_cursor_from_bitmap(win, img, &hot_spot);
   }

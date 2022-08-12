@@ -210,16 +210,12 @@ static ret_t slider_paint_dragger(widget_t* widget, canvas_t* c) {
 static ret_t slider_get_bar_rect(widget_t* widget, rect_t* br, rect_t* fr) {
   slider_t* slider = SLIDER(widget);
   uint32_t bar_size = 0;
-  uint32_t radius = 0;
-  const char* bg_image = 0;
   rect_t* dr = NULL;
 
   return_value_if_fail(widget != NULL && slider != NULL && br != NULL && fr != NULL,
                        RET_BAD_PARAMS);
 
   bar_size = slider_get_bar_size(widget);
-  radius = style_get_int(widget->astyle, STYLE_ID_ROUND_RADIUS, 0);
-  bg_image = style_get_str(widget->astyle, STYLE_ID_BG_IMAGE, NULL);
   dr = &(slider->dragger_rect);
 
   if (slider->vertical) {
