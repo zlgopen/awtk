@@ -293,7 +293,7 @@ static ret_t bitmap_init_impl_by_rotate(bitmap_t* bitmap, uint32_t w, uint32_t h
       break;
     }
     case LCD_ORIENTATION_90: {
-      bdata = bdata + (w - 1) * line_length;
+      bdata = bdata + (bitmap_get_physical_height(bitmap) - 1) * line_length;
       for (i = 0; i < h; i++) {
         uint8_t* d = bdata;
         for (j = 0; j < w; j++) {
@@ -306,18 +306,20 @@ static ret_t bitmap_init_impl_by_rotate(bitmap_t* bitmap, uint32_t w, uint32_t h
       break;
     }
     case LCD_ORIENTATION_180: {
-      uint8_t* d = bdata + h * line_length - bpp;
+      bdata = bdata + (h - 1) * line_length + w * bpp;
       for (i = 0; i < h; i++) {
+        uint8_t* d = bdata;
         for (j = 0; j < w; j++) {
           fill_color(s, d, comp);
           d -= bpp;
           s += comp;
         }
+        bdata -= line_length;
       }
       break;
     }
     case LCD_ORIENTATION_270: {
-      bdata = bdata + line_length - bpp;
+      bdata = bdata + (bitmap_get_physical_width(bitmap) - 1) * bpp;
       for (i = 0; i < h; i++) {
         uint8_t* d = bdata;
         for (j = 0; j < w; j++) {
