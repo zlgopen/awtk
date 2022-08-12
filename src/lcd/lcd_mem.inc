@@ -27,6 +27,8 @@
 #include "base/system_info.h"
 #include "base/lcd_orientation_helper.h"
 
+static ret_t lcd_mem_clear_rect_impl(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h, color_t c);
+
 #ifdef WITH_FAST_LCD_PORTRAIT
 static wh_t lcd_mem_get_physical_width(lcd_t* lcd) {
   system_info_t* info = system_info();
@@ -105,7 +107,6 @@ static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientatio
 }
 
 static ret_t lcd_mem_begin_frame(lcd_t* lcd, const dirty_rects_t* dirty_rects) {
-  bitmap_t fb;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   vgcanvas_t* vg = lcd_get_vgcanvas(lcd);
 
@@ -121,25 +122,25 @@ static ret_t lcd_mem_begin_frame(lcd_t* lcd, const dirty_rects_t* dirty_rects) {
   }
 
 #if WITH_LCD_CLEAR_ALPHA
-  lcd_mem_init_drawing_fb(lcd, &fb);
-
+  dirty_rects = lcd_get_dirty_rects(lcd);
   if (lcd->draw_mode == LCD_DRAW_OFFLINE || dirty_rects == NULL) {
+    bitmap_t fb;
+    lcd_mem_init_drawing_fb(lcd, &fb);
     rect_t r = rect_init(0, 0, lcd_get_physical_width(lcd), lcd_get_physical_height(lcd));
     return image_clear(&fb, &r, color_init(0x0, 0x0, 0x0, 0x0));
   } else {
     if (dirty_rects->disable_multiple) {
-      return image_clear(&fb, (const rect_t*)&(dirty_rects->max), color_init(0x0, 0x0, 0x0, 0x0));
+      return lcd_mem_clear_rect_impl(lcd, dirty_rects->max.x, dirty_rects->max.y, dirty_rects->max.w, dirty_rects->max.h, color_init(0x0, 0x0, 0x0, 0x0));
     } else {
       int32_t i = 0;
       for (i = 0; i < dirty_rects->nr; i++) {
         const rect_t* iter = dirty_rects->rects + i;
-        image_clear(&fb, iter, color_init(0x0, 0x0, 0x0, 0x0));
+        lcd_mem_clear_rect_impl(lcd, iter->x, iter->y, iter->w, iter->h, color_init(0x0, 0x0, 0x0, 0x0));
       }
       return RET_OK;
     }
   }
 #else
-  (void)fb;
   return RET_OK;
 #endif
 }
@@ -151,7 +152,7 @@ static ret_t lcd_mem_fill_rect_with_color(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh
 #ifdef WITH_FAST_LCD_PORTRAIT
   rect_t r = rect_init(x, y, w, h);
   system_info_t* info = system_info();
-  if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
+  if (info->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
     rr = lcd_orientation_rect_rotate_by_anticlockwise(&r, info->lcd_orientation, lcd_get_width(lcd), lcd_get_height(lcd));
   } else
 #endif
@@ -169,14 +170,13 @@ static ret_t lcd_mem_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
   return lcd_mem_fill_rect_with_color(lcd, x, y, w, h, lcd->fill_color);
 }
 
-static ret_t lcd_mem_clear_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
+static ret_t lcd_mem_clear_rect_impl(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h, color_t c) {
   rect_t rr;
   bitmap_t fb;
-  color_t c = lcd->fill_color;
 #ifdef WITH_FAST_LCD_PORTRAIT
   rect_t r = rect_init(x, y, w, h);
   system_info_t* info = system_info();
-  if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
+  if (info->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
     rr = lcd_orientation_rect_rotate_by_anticlockwise(&r, info->lcd_orientation, lcd_get_width(lcd), lcd_get_height(lcd));
   } else 
 #endif
@@ -184,10 +184,14 @@ static ret_t lcd_mem_clear_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
     rr = rect_init(x, y, w, h);
   }
 
-  c.rgba.a = (c.rgba.a * lcd->global_alpha) / 0xff;
-
   lcd_mem_init_drawing_fb(lcd, &fb);
   return image_clear(&fb, &rr, c);
+}
+
+static ret_t lcd_mem_clear_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
+  color_t c = lcd->fill_color;
+  c.rgba.a = (c.rgba.a * lcd->global_alpha) / 0xff;
+  return lcd_mem_clear_rect_impl(lcd, x, y, w, h, c);
 }
 
 static ret_t lcd_mem_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
@@ -506,7 +510,7 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* src, c
     xy_t dy = (xy_t)(r_dst.y);
     rect_t r = rect_from_rectf(&r_src);
 #ifdef WITH_FAST_LCD_PORTRAIT
-    if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
+    if (info->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
       if (o == LCD_ORIENTATION_0 || is_img_orientation) {
         ret = image_copy(&fb, img, &r, dx, dy);
       } else {
@@ -520,7 +524,7 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, const rectf_t* src, c
     }
   } else {
 #ifdef WITH_FAST_LCD_PORTRAIT    
-    if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
+    if (info->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
       if (o == LCD_ORIENTATION_0 || is_img_orientation) {
         ret = image_blend(&fb, img, &r_dst, &r_src, lcd->global_alpha);
       } else {
@@ -601,7 +605,7 @@ static ret_t lcd_mem_flush(lcd_t* lcd) {
     if (dirty_rects->disable_multiple) {
       const rect_t* dr = (const rect_t*)&(dirty_rects->max);
 #ifdef WITH_FAST_LCD_PORTRAIT
-      if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
+      if (info->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
         rect_t rr = lcd_orientation_rect_rotate_by_anticlockwise(dr, o, lcd_get_width(lcd), lcd_get_height(lcd));
         image_copy(&online_fb, &offline_fb, &rr, rr.x, rr.y);
       } else 
@@ -618,7 +622,7 @@ static ret_t lcd_mem_flush(lcd_t* lcd) {
       for (i = 0; i < dirty_rects->nr; i++) {
         const rect_t* dr = (const rect_t*)dirty_rects->rects + i;
 #ifdef WITH_FAST_LCD_PORTRAIT
-        if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
+        if (info->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
           rect_t rr = lcd_orientation_rect_rotate_by_anticlockwise(dr, o, lcd_get_width(lcd), lcd_get_height(lcd));
           image_copy(&online_fb, &offline_fb, &rr, rr.x, rr.y);
         } else
