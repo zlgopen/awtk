@@ -91,6 +91,8 @@ static void my_xml_builder_destroy(XmlBuilder* thiz) {
 }
 
 static XmlBuilder* builder_init(xml_builter_t* b, conf_doc_t* doc) {
+  memset(b, 0x00, sizeof(xml_builter_t));
+
   b->builder.on_start = my_xml_builder_on_start;
   b->builder.on_end = my_xml_builder_on_end;
   b->builder.on_text = my_xml_builder_on_text;
