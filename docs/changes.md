@@ -1,6 +1,7 @@
 # 最新动态
 2022/08/15
-  * 完善conf_xml。
+  * 完善conf\_xml。
+  * 完善conf\_obj\_create\_sub\_object
 
 2022/08/13
   * 修复bitmap高效lcd旋转的时候显示不正常的问题(感谢智明提供补丁)

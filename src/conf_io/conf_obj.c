@@ -472,12 +472,20 @@ tk_object_t* conf_sub_obj_create(tk_object_t* conf, const char* path) {
   tk_object_t* obj = NULL;
   conf_sub_obj_t* o = NULL;
   conf_node_t* root = NULL;
-  conf_obj_t* conf_obj = CONF_OBJ(conf);
-  return_value_if_fail(conf_obj != NULL && path != NULL, NULL);
-  return_value_if_fail(conf_obj->doc != NULL && conf_obj->doc->root != NULL, NULL);
+  conf_obj_t* conf_obj = NULL;
+  return_value_if_fail(conf != NULL && path != NULL, NULL);
 
-  root = conf_doc_find_node(conf_obj->doc, conf_obj->doc->root, path, FALSE);
-  return_value_if_fail(root != NULL, NULL);
+  if (conf->vt == &s_conf_sub_obj_vtable) {
+    conf_sub_obj_t* sub = CONF_SUB_OBJ(conf);
+    conf_obj = sub->conf;
+    return_value_if_fail(conf_obj->doc != NULL && conf_obj->doc->root != NULL, NULL);
+    root = conf_doc_find_node(conf_obj->doc, sub->root, path, FALSE);
+    return_value_if_fail(root != NULL, NULL);
+  } else {
+    conf_obj = CONF_OBJ(conf);
+    root = conf_doc_find_node(conf_obj->doc, conf_obj->doc->root, path, FALSE);
+    return_value_if_fail(root != NULL, NULL);
+  }
 
   obj = tk_object_create(&s_conf_sub_obj_vtable);
   o = CONF_SUB_OBJ(obj);
@@ -486,7 +494,7 @@ tk_object_t* conf_sub_obj_create(tk_object_t* conf, const char* path) {
   o->conf = conf_obj;
   o->root = root;
   o->real_root = conf_obj->doc->root;
-  TK_OBJECT_REF(conf);
+  TK_OBJECT_REF(o->conf);
 
   return obj;
 }

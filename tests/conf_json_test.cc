@@ -593,3 +593,23 @@ TEST(Json, append_array) {
 
   conf_doc_destroy(doc);
 }
+
+TEST(Json, subobject2) {
+  tk_object_t* conf = conf_json_create();
+  ASSERT_NE(conf, (tk_object_t*)NULL);
+  ASSERT_EQ(tk_object_set_prop_str(conf, "awtk.name", "awtk"), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_int(conf, "awtk.value", 123), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_int(conf, "awtk.detail.age", 123), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_int(conf, "awtk.detail.salary", 1000), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_str(conf, "awtk.detail.desc", "hello"), RET_OK);
+  tk_object_t* awtk = conf_obj_create_sub_object(conf, "awtk");
+  ASSERT_NE(awtk, (tk_object_t*)NULL);
+
+  tk_object_t* detail = conf_obj_create_sub_object(awtk, "detail");
+  ASSERT_NE(detail, (tk_object_t*)NULL);
+  ASSERT_EQ(tk_object_get_prop_int(detail, "age", 0), 123);
+
+  TK_OBJECT_UNREF(detail);
+  TK_OBJECT_UNREF(awtk);
+  TK_OBJECT_UNREF(conf);
+}
