@@ -101,7 +101,9 @@ static column_definition_t* column_definition_create(const char* str) {
   func_call_parser_parse(&(p.parser));
   func_call_parser_deinit(&(p.parser));
 
-  assert(definition->w != 0 || definition->fill_available);
+  if (!(definition->w != 0 || definition->fill_available)) {
+    TKMEM_FREE(definition);
+  }
 
   return definition;
 }
@@ -261,7 +263,7 @@ static ret_t grid_on_layout_children_impl(widget_t* widget) {
 
   if (tw < widget->w) {
     /*把剩余宽度加到fill_available=true的列上，只允许一列指定fill_available=true*/
-    int32_t remain_w = widget->w - tw; 
+    int32_t remain_w = widget->w - tw;
     for (i = 0; i < cols; i++) {
       column_definition_t* def = (column_definition_t*)darray_get(&(grid->cols_definition), i);
       if (def->fill_available) {
@@ -328,26 +330,27 @@ static ret_t grid_draw_grid(widget_t* widget, canvas_t* c) {
   grid_t* grid = GRID(widget);
   color_t grid_color = color_init(0, 0, 0, 0xff);
   return_value_if_fail(grid != NULL && grid->rows > 0, RET_BAD_PARAMS);
-  return_value_if_fail(grid->cols_definition.size > 0, RET_BAD_PARAMS);
 
-  grid_color = style_get_color(widget->astyle, STYLE_ID_GRID_COLOR, grid_color);
-  cols = grid->cols_definition.size;
-  row_height = widget->h / grid->rows;
+  if (grid->cols_definition.size > 0) {
+    grid_color = style_get_color(widget->astyle, STYLE_ID_GRID_COLOR, grid_color);
+    cols = grid->cols_definition.size;
+    row_height = widget->h / grid->rows;
 
-  canvas_set_stroke_color(c, grid_color);
-  for (row = 0; row < grid->rows; row++) {
-    if (row) {
-      canvas_draw_hline(c, 0, y, widget->w);
+    canvas_set_stroke_color(c, grid_color);
+    for (row = 0; row < grid->rows; row++) {
+      if (row) {
+        canvas_draw_hline(c, 0, y, widget->w);
+      }
+      y += row_height;
     }
-    y += row_height;
-  }
 
-  for (col = 0; col < cols; col++) {
-    column_definition_t* def = (column_definition_t*)darray_get(&(grid->cols_definition), col);
-    if (col) {
-      canvas_draw_vline(c, x, 0, widget->h);
+    for (col = 0; col < cols; col++) {
+      column_definition_t* def = (column_definition_t*)darray_get(&(grid->cols_definition), col);
+      if (col) {
+        canvas_draw_vline(c, x, 0, widget->h);
+      }
+      x += def->real_w;
     }
-    x += def->real_w;
   }
 
   return RET_OK;

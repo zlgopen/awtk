@@ -1,4 +1,7 @@
 # 最新动态
+2022/08/16
+  * 完善grid(感谢雨欣提供补丁)
+
 2022/08/15
   * 完善conf\_xml。
   * 完善conf\_obj\_create\_sub\_object
