@@ -184,19 +184,19 @@ TEST(MLEdit, insert_text_overwrite) {
   widget_set_text_utf8(e, str);
   mledit_insert_text(e, e->text.size - 1, "6\n7");
   widget_get_text_utf8(e, get_text, sizeof(get_text));
-  ASSERT_STREQ(get_text, "2\n3\n4\n6\n7");
+  ASSERT_STREQ(get_text, "2\n3\n4\n6\n75");
 
   memset(get_text, 0, sizeof(get_text));
   widget_set_text_utf8(e, str2);
   mledit_insert_text(e, e->text.size - 1, "6\r\n7");
   widget_get_text_utf8(e, get_text, sizeof(get_text));
-  ASSERT_STREQ(get_text, "2\r\n3\r\n4\r\n6\r\n7");
+  ASSERT_STREQ(get_text, "2\r\n3\r\n4\r\n6\r\n75");
 
   memset(get_text, 0, sizeof(get_text));
   widget_set_text_utf8(e, str);
   mledit_insert_text(e, e->text.size - 3, "6\n");
   widget_get_text_utf8(e, get_text, sizeof(get_text));
-  ASSERT_STREQ(get_text, "1\n2\n3\n6\n4");
+  ASSERT_STREQ(get_text, "2\n3\n6\n4\n5");
 
   memset(get_text, 0, sizeof(get_text));
   widget_set_text_utf8(e, str);
@@ -208,8 +208,8 @@ TEST(MLEdit, insert_text_overwrite) {
   widget_set_text_utf8(e, str);
   mledit_insert_text(e, 0, "0\n");
   widget_get_text_utf8(e, get_text, sizeof(get_text));
-  ASSERT_STREQ(get_text, "0\n1\n2\n3\n4");
-
+  ASSERT_STREQ(get_text, "1\n2\n3\n4\n5");
+  
   memset(get_text, 0, sizeof(get_text));
   mledit_set_max_lines(e, 7);
   widget_set_text_utf8(e, str);
@@ -255,9 +255,8 @@ TEST(MLEdit, insert_text_overwrite) {
   mledit_set_cursor(e, 1);
   mledit_insert_text(e, e->text.size - 1, "6\n7");
   widget_get_text_utf8(e, get_text, sizeof(get_text));
-  ASSERT_STREQ(get_text, "2\n3\n4\n6\n7");
+  ASSERT_STREQ(get_text, "2\n3\n4\n6\n75");
   ASSERT_EQ(mledit_get_cursor(e), e->text.size);
-
   widget_set_text_utf8(e, str);
   mledit_set_select(e, 2, 4);
   mledit_insert_text(e, -1, "\n6");

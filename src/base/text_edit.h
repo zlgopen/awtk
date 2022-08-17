@@ -64,7 +64,6 @@ typedef struct _text_edit_state_t {
   bool_t mask;
   bool_t preedit;
   bool_t wrap_word;
-  bool_t overwrite;
   wchar_t mask_char;
   bool_t caret_visible;
   bool_t single_line;
@@ -78,6 +77,7 @@ typedef ret_t (*text_edit_on_state_changed_t)(void* ctx, text_edit_state_t* stat
 typedef struct _text_edit_t {
   widget_t* widget;
 
+  bool_t ignore_layout;
 } text_edit_t;
 
 /**
@@ -248,16 +248,6 @@ ret_t text_edit_get_state(text_edit_t* text_edit, text_edit_state_t* state);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t text_edit_set_wrap_word(text_edit_t* text_edit, bool_t wrap_word);
-
-/**
- * @method text_edit_set_overwrite
- * 设置是否覆盖行。
- * @param {text_edit_t*} text_edit text_edit对象。
- * @param {bool_t} overwrite 是否覆盖行。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t text_edit_set_overwrite(text_edit_t* text_edit, bool_t overwrite);
 
 /**
  * @method text_edit_invert_caret_visible
@@ -457,10 +447,6 @@ ret_t text_edit_insert_text(text_edit_t* text_edit, uint32_t offset, const char*
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t text_edit_show_context_menu(text_edit_t* text_edit, int32_t x, int32_t y);
-
-/* private */
-ret_t text_edit_overwrite_text(text_edit_t* text_edit, uint32_t* p_offset, const char* text,
-                               uint32_t len);
 
 ret_t text_edit_set_lock_scrollbar_value(text_edit_t* text_edit, bool_t lock);
 

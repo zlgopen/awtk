@@ -170,8 +170,7 @@ ret_t mledit_set_overwrite(widget_t* widget, bool_t overwrite) {
   return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
 
   mledit->overwrite = overwrite;
-  text_edit_set_overwrite(mledit->model, overwrite);
-
+  
   return RET_OK;
 }
 
@@ -1014,24 +1013,74 @@ char* mledit_get_selected_text(widget_t* widget) {
   return text_edit_get_selected_text(mledit->model);
 }
 
-static slist_t* mledit_get_rows_by_text(widget_t* widget, slist_t* slist, const char* text) {
-  uint32_t text_size = 0;
-  uint32_t i = 0;
-  return_value_if_fail(widget != NULL && slist != NULL && text != NULL, NULL);
-
-  text_size = tk_strlen(text);
-  slist_remove_all(slist);
-
-  for (i = 0; i < text_size; i++) {
-    if (i + 1 < text_size && TWINS_CHAR_IS_LINE_BREAK(text[i], text[i + 1])) {
-      i++;
-      slist_append(slist, tk_pointer_from_int((int32_t)(i + 1)));
-    } else if (CHAR_IS_LINE_BREAK(text[i])) {
-      slist_append(slist, tk_pointer_from_int((int32_t)(i + 1)));
+static void mledit_fix_state(mledit_t* mledit, uint32_t offset, uint32_t rm_num, uint32_t cursor) {
+  text_edit_state_t state = {0};
+  text_edit_get_state(mledit->model, &state);
+  
+  if (state.select_start <= offset && state.select_end >= offset) {
+    state.select_start = state.select_end = 0;
+  } else {
+    if (state.select_start >= rm_num && state.select_end >= rm_num) {
+      state.select_start -= rm_num;
+      state.select_end -= rm_num;
+    } else {
+      state.select_start = state.select_end = 0;
     }
   }
+  
+  mledit->model->ignore_layout = TRUE;
+  text_edit_set_select(mledit->model, state.select_start, state.select_end);
+  mledit->model->ignore_layout = FALSE;
 
-  return slist;
+  text_edit_set_cursor(mledit->model, cursor);
+}
+
+static ret_t mledit_insert_text_overwrite(widget_t* widget, uint32_t offset, const char* newtext) {
+  mledit_t* mledit = MLEDIT(widget);
+  wstr_t s = {0};
+  wstr_t* text = NULL;
+  uint32_t line_num = 1;
+  int32_t i = 0;
+  uint32_t rm_cnt = 0;
+  return_value_if_fail(mledit != NULL && mledit->model != NULL, RET_BAD_PARAMS);
+
+  /* generate new text */
+  wstr_set_utf8(&s, newtext);
+  text = &(mledit->model->widget->text);
+  offset = tk_min(offset, text->size);
+  wstr_insert(text, offset, s.str, s.size);
+
+  /* handle max_chars */
+  if (mledit->max_chars != 0 && mledit->max_chars < text->size) {
+    rm_cnt = text->size - mledit->max_chars;
+    wstr_remove(text, 0, rm_cnt);
+  }
+
+  /* handle max_lines */
+  for (i = (int32_t)(text->size)-1; i >= 0; --i) {
+    if (i > 0 && TWINS_WCHAR_IS_LINE_BREAK(text->str[i-1], text->str[i])) {
+      ++line_num;
+      if (line_num > mledit->max_lines) {
+        break;
+      }
+      
+      --i;
+    } else if (WCHAR_IS_LINE_BREAK(text->str[i])) {
+      ++line_num;
+      if (line_num > mledit->max_lines) {
+        break;
+      }
+    }
+  }
+  if (i >= 0) {
+    rm_cnt += i+1;
+    wstr_remove(text, 0, i+1);
+  }
+
+  /* fix select & cursor */
+  mledit_fix_state(mledit, offset, rm_cnt, text->size);
+  wstr_reset(&s);
+  return RET_OK;
 }
 
 ret_t mledit_insert_text(widget_t* widget, uint32_t offset, const char* text) {
@@ -1042,35 +1091,7 @@ ret_t mledit_insert_text(widget_t* widget, uint32_t offset, const char* text) {
   if (!mledit->overwrite || mledit->max_chars > 0 || mledit->max_lines == 0) {
     ret = text_edit_insert_text(mledit->model, offset, text);
   } else {
-    uint32_t rows_start_offset = 0;
-    slist_t offset_list;
-    slist_init(&offset_list, NULL, NULL);
-    if (mledit_get_rows_by_text(widget, &offset_list, text) != NULL) {
-      uint32_t text_size = tk_strlen(text);
-      if (mledit->max_lines == 1) {
-        rows_start_offset = (uint32_t)tk_pointer_to_int(slist_tail_pop(&offset_list));
-
-        if (rows_start_offset < text_size) {
-          wstr_reset(&widget->text);
-          ret = text_edit_insert_text(mledit->model, offset, text + rows_start_offset);
-        }
-      } else {
-        slist_node_t* iter = offset_list.first;
-        while (ret == RET_OK && iter != NULL) {
-          uint32_t rows_end_offset = (uint32_t)tk_pointer_to_int(iter->data);
-
-          ret = text_edit_overwrite_text(mledit->model, &offset, text + rows_start_offset,
-                                         rows_end_offset - rows_start_offset);
-          rows_start_offset = rows_end_offset;
-          iter = iter->next;
-        }
-
-        if (ret == RET_OK && rows_start_offset < text_size) {
-          ret = text_edit_insert_text(mledit->model, offset, text + rows_start_offset);
-        }
-      }
-    }
-    slist_deinit(&offset_list);
+    ret = mledit_insert_text_overwrite(widget, offset, text);
   }
 
   if (ret == RET_OK) {
