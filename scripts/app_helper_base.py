@@ -584,6 +584,7 @@ class AppHelperBase:
 
         if hasattr(awtk, 'CC'):
             env = DefaultEnvironment(
+                ENV = os.environ,
                 CC=awtk.CC,
                 CXX=awtk.CXX,
                 LD=awtk.LD,
