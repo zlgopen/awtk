@@ -251,7 +251,9 @@ class AppHelperBase:
                 AWFLOW_ROOT = self.getAwflowRoot()
             self.AWFLOW_ROOT = AWFLOW_ROOT
             print("AWFLOW_ROOT: " + self.AWFLOW_ROOT)
-
+        
+        if self.TKC_ONLY :
+            self.set_tkc_only()
         self.parseArgs(self.awtk, ARGUMENTS)
 
         print("AWTK_ROOT: " + self.AWTK_ROOT)
@@ -440,7 +442,8 @@ class AppHelperBase:
             self.AWTK_CCFLAGS = awtk.AWTK_CCFLAGS
 
         if self.isBuildShared():
-            self.AWTK_LIBS = awtk.SHARED_LIBS
+            if not self.TKC_ONLY :
+                self.AWTK_LIBS = awtk.SHARED_LIBS
             self.APP_LIBPATH = [self.APP_BIN_DIR, self.APP_LIB_DIR]
 
         if hasattr(awtk, 'TOOLS_NAME') and awtk.TOOLS_NAME != '':
@@ -448,9 +451,9 @@ class AppHelperBase:
 
         os.environ['BUILD_SHARED'] = str(self.isBuildShared())
         if LCD_ORIENTATION == '90' or LCD_ORIENTATION == '270' :
-            print(LCD_WIDTH, LCD_HEIGHT, "orentation_" + LCD_ORIENTATION)
-        else :
             print(LCD_HEIGHT, LCD_WIDTH, "orentation_" + LCD_ORIENTATION)
+        else :
+            print(LCD_WIDTH, LCD_HEIGHT, "orentation_" + LCD_ORIENTATION)
 
     def prepare(self):
         if self.GEN_IDL_DEF and not self.LINUX_FB:
