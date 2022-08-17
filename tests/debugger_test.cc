@@ -381,7 +381,6 @@ TEST(Debugger, callstack2) {
   TK_OBJECT_UNREF(local);
 
   ASSERT_EQ(debugger_continue(client), RET_OK);
-  ASSERT_EQ(debugger_clear_break_points(client), RET_OK);
 
   debugger_client_wait_for_completed(client);
   tk_thread_join(thread);
@@ -522,7 +521,6 @@ TEST(Debugger, step_in) {
   ASSERT_STREQ((char*)(data.data), "<root>\n");
 
   ASSERT_EQ(debugger_continue(client), RET_OK);
-  ASSERT_EQ(debugger_clear_break_points(client), RET_OK);
 
   debugger_client_wait_for_completed(client);
   tk_thread_join(thread);
@@ -721,7 +719,6 @@ TEST(Debugger, basic) {
   ASSERT_EQ(debugger_is_paused(debugger), TRUE);
 
   ASSERT_EQ(debugger_continue(client), RET_OK);
-  ASSERT_EQ(debugger_clear_break_points(client), RET_OK);
   tk_thread_join(thread);
   tk_thread_destroy(thread);
 
