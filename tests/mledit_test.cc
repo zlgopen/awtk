@@ -200,20 +200,20 @@ TEST(MLEdit, insert_text_overwrite) {
 
   memset(get_text, 0, sizeof(get_text));
   widget_set_text_utf8(e, str);
-  mledit_insert_text(e, -1, "\n6\n7");
+  ASSERT_EQ(mledit_insert_text(e, -1, "\n6\n7"), RET_OK);
   widget_get_text_utf8(e, get_text, sizeof(get_text));
   ASSERT_STREQ(get_text, "3\n4\n5\n6\n7");
 
   memset(get_text, 0, sizeof(get_text));
   widget_set_text_utf8(e, str);
-  mledit_insert_text(e, 0, "0\n");
+  ASSERT_EQ(mledit_insert_text(e, 0, "0\n"), RET_SKIP);
   widget_get_text_utf8(e, get_text, sizeof(get_text));
   ASSERT_STREQ(get_text, "1\n2\n3\n4\n5");
   
   memset(get_text, 0, sizeof(get_text));
   mledit_set_max_lines(e, 7);
   widget_set_text_utf8(e, str);
-  mledit_insert_text(e, 0, "0\n");
+  ASSERT_EQ(mledit_insert_text(e, 0, "0\n"), RET_OK);
   widget_get_text_utf8(e, get_text, sizeof(get_text));
   ASSERT_STREQ(get_text, "0\n1\n2\n3\n4\n5");
   mledit_set_max_lines(e, 5);
