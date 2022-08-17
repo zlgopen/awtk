@@ -81,6 +81,22 @@ static void my_xml_builder_on_error(XmlBuilder* thiz, int line, int row, const c
 }
 
 static void my_xml_builder_on_text(XmlBuilder* thiz, const char* text, size_t length) {
+  xml_builter_t* b = (xml_builter_t*)thiz;
+  str_t* str = &(b->str);
+  if (text != NULL && length > 0) {
+    str_decode_xml_entity(str, text);
+    str_trim(str, "\r\n\t ");
+    if (str->size > 0) {
+      value_t v;
+      conf_node_t* node = conf_doc_create_node(b->doc, CONF_XML_TEXT);
+      return_if_fail(node != NULL);
+
+      conf_doc_append_child(b->doc, b->node, node);
+      value_set_str(&v, str->str);
+      conf_node_set_value(node, &v);
+    }
+  }
+
   return;
 }
 
@@ -156,6 +172,7 @@ static ret_t conf_doc_save_xml_node(conf_doc_t* doc, str_t* str, conf_node_t* no
                                     uint32_t level) {
   uint32_t size = 0;
   const char* name = conf_node_get_name(node);
+  conf_node_t* text = NULL;
   conf_node_t* iter = conf_node_get_first_child(node);
 
   str_append_n_chars(str, ' ', level * 2);
@@ -163,13 +180,22 @@ static ret_t conf_doc_save_xml_node(conf_doc_t* doc, str_t* str, conf_node_t* no
 
   while (iter != NULL) {
     if (iter->value_type != CONF_NODE_VALUE_NODE && iter->value_type != CONF_NODE_VALUE_NONE) {
-      conf_doc_save_prop(iter, str);
+      const char* key = conf_node_get_name(iter);
+      if (!tk_str_eq(key, CONF_XML_TEXT)) {
+        conf_doc_save_prop(iter, str);
+      } else {
+        text = iter;
+      }
     }
     iter = iter->next;
   }
 
   size = str->size;
-  str_append(str, ">\n");
+  if (text == NULL) {
+    str_append(str, ">\n");
+  } else {
+    str_append(str, ">");
+  }
 
   iter = conf_node_get_first_child(node);
   while (iter != NULL) {
@@ -177,6 +203,13 @@ static ret_t conf_doc_save_xml_node(conf_doc_t* doc, str_t* str, conf_node_t* no
       conf_doc_save_xml_node(doc, str, iter, level + 1);
     }
     iter = iter->next;
+  }
+
+  if (text != NULL) {
+    value_t v;
+    if (conf_node_get_value(text, &v) == RET_OK) {
+      return_value_if_fail(str_encode_xml_entity(str, value_str(&v)) == RET_OK, RET_OOM);
+    }
   }
 
   if ((size + 2) == str->size) {

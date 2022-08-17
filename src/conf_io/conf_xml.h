@@ -97,6 +97,9 @@ conf_doc_t* conf_doc_load_xml(const char* data);
  */
 ret_t conf_doc_save_xml(conf_doc_t* doc, str_t* str);
 
+/*用于获取文本内容*/
+#define CONF_XML_TEXT "@text"
+
 END_C_DECLS
 
 #endif /*TK_CONF_XML_H*/
