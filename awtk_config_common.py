@@ -148,7 +148,7 @@ elif OS_NAME == 'Windows':
         OS_LIBS = ['kernel32', 'gdi32', 'user32', 'winmm', 'imm32', 'version', 'shell32',
                    'ole32', 'Oleaut32', 'Advapi32', 'oleaut32', 'uuid', 'stdc++', "ws2_32"]
         OS_FLAGS = '-DMINGW -DWINDOWS -D_CONSOLE -g -Wall'
-        OS_LINKFLAGS = ' -Wl,-rpath=./bin -Wl,-rpath=./ '
+        OS_LINKFLAGS = ' -Wl,-rpath=./bin -Wl,-rpath=./ -Wl,-subsystem,windows '
         COMMON_CFLAGS = COMMON_CFLAGS+' -std=gnu99 '
         OS_FLAGS = OS_FLAGS+' -U__FLT_EVAL_METHOD__ -D__FLT_EVAL_METHOD__=0 -DDECLSPEC=  '
 

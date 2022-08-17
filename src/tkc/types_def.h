@@ -424,7 +424,7 @@ typedef uint64_t (*tk_get_time_t)(void);
 typedef uint64_t (*tk_get_time_ms_t)(void);
 typedef void (*tk_sleep_ms_t)(uint32_t ms);
 
-#if defined(WIN32) && !defined(NDEBUG)
+#if defined(WIN32) && !defined(NDEBUG) && defined(_CONSOLE)
 #define TK_ENABLE_CONSOLE()                   \
   {                                           \
     AllocConsole();                           \
