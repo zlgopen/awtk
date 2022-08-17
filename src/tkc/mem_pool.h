@@ -55,9 +55,11 @@ static inline mem_pool_t* mem_pool_init(uint8_t* addr, uint32_t size, uint32_t b
                                         uint32_t block_nr) {
   mem_pool_t* pool = (mem_pool_t*)addr;
   uint32_t bits_size = mem_pool_get_bits_size(block_nr);
+
+#ifndef NDEBUG
   uint32_t min_size = mem_pool_get_min_size(block_size, block_nr);
   assert(size >= min_size);
-  (void)min_size;
+#endif /*NDEBUG*/
 
   memset(addr, 0x00, size);
   pool->block_nr = block_nr;
