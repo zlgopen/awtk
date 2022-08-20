@@ -276,7 +276,7 @@ static ret_t gauge_pointer_paint_default(widget_t* widget, vgcanvas_t* vg) {
   vgcanvas_begin_path(vg);
   vgcanvas_move_to(vg, cx, 0);
   vgcanvas_line_to(vg, cx, cx + h * DEFAULT_POINTER_SIZE);
-  vgcanvas_set_line_width(vg, 2);
+  vgcanvas_set_line_width(vg, tk_max_int(1, tk_roundi(cx / 3.0f)));
   vgcanvas_set_stroke_color(vg, bg);
   vgcanvas_stroke(vg);
 
