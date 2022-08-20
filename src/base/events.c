@@ -133,6 +133,7 @@ event_t* pointer_event_init(pointer_event_t* event, uint32_t type, void* target,
   event->e.size = sizeof(*event);
   event->x = x;
   event->y = y;
+  event->button = 1;
 
   return (event_t*)event;
 }

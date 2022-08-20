@@ -77,7 +77,7 @@ ret_t main_loop_post_pointer_event(main_loop_t* l, bool_t pressed, xy_t x, xy_t 
 
   event.x = x;
   event.y = y;
-  event.button = 0;
+  event.button = 1;
   event.e.time = time_now_ms();
   event.e.size = sizeof(pointer_event_t);
 
@@ -165,6 +165,9 @@ static ret_t main_loop_dispatch_events(main_loop_simple_t* loop) {
       case EVT_POINTER_DOWN:
       case EVT_POINTER_MOVE:
       case EVT_POINTER_UP:
+        if (r.pointer_event.button == 0) {
+          r.pointer_event.button = 1;
+        }
         window_manager_dispatch_input_event(widget, (event_t*)&(r.pointer_event));
         break;
       case EVT_WHEEL:

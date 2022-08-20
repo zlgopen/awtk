@@ -787,6 +787,9 @@ typedef struct _pointer_event_t {
    * @property {uint8_t} button
    * @annotation ["readable", "scriptable"]
    * button。
+   * 在不同的平台，该属性会发生变化，
+   * PC ：左键为 1，中键为 2，右键为 3
+   * 嵌入式：默认为 1
    */
   xy_t button;
   /**
