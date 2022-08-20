@@ -1860,6 +1860,7 @@ static ret_t widget_on_ungrab_keys(void* ctx, event_t* e) {
   return RET_REMOVE;
 }
 
+#ifndef WITHOUT_FSCRIPT
 typedef struct _fscript_info_t {
   char* code;
   fscript_t* fscript;
@@ -2012,7 +2013,6 @@ static ret_t fscript_info_exec(fscript_info_t* info) {
 extern bool_t tk_is_ui_thread(void);
 
 static ret_t widget_exec_code(void* ctx, event_t* evt) {
-#ifndef WITHOUT_FSCRIPT
   ret_t ret = RET_OK;
   fscript_info_t* info = (fscript_info_t*)ctx;
 
@@ -2032,9 +2032,6 @@ static ret_t widget_exec_code(void* ctx, event_t* evt) {
   info->busy = FALSE;
 
   return ret;
-#else
-  return RET_OK;
-#endif
 }
 
 static ret_t widget_free_code(void* ctx, event_t* evt) {
@@ -2044,6 +2041,7 @@ static ret_t widget_free_code(void* ctx, event_t* evt) {
 
   return RET_REMOVE;
 }
+#endif/*WITHOUT_FSCRIPT*/
 
 #define STR_ANIMATE_PREFIX "animate:"
 #define TK_ANIMATING_TIME 500 /* 单位：毫秒（ms） */
@@ -2149,6 +2147,7 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
         }
       }
 
+#ifndef WITHOUT_FSCRIPT
       if (strncmp(name, STR_ON_EVENT_PREFIX, sizeof(STR_ON_EVENT_PREFIX) - 1) == 0) {
         bool_t is_global_vars_changed =
             tk_str_eq(name, STR_ON_EVENT_PREFIX "" STR_GLOBAL_VARS_CHANGED);
@@ -2185,6 +2184,7 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
       } else {
         ret = tk_object_set_prop(widget->custom_props, name, v);
       }
+#endif/*WITHOUT_FSCRIPT*/
     }
   }
 
