@@ -90,6 +90,10 @@ data_reader_t* data_reader_factory_create_reader(data_reader_factory_t* factory,
   if (p != NULL) {
     return_value_if_fail((p - url) < TK_NAME_LEN, NULL);
     tk_strncpy(protocol, url, p - url);
+    if (tk_strlen(protocol) <= 1) {
+      /*是Windows下的盘符(如 D:/a/b/c.txt)*/
+      tk_strncpy(protocol, "file", 4);
+    }
   } else {
     tk_strncpy(protocol, "file", 4);
   }

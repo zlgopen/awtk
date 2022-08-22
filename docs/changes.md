@@ -1,4 +1,6 @@
 # 最新动态
+2022/08/22
+  * 完善 data\_reader\_factory\_create\_reader处理Windows的盘符(感谢ufbycd提供补丁)。
 
 2022/08/20
   * 支持gauge_pointer的默认指针的宽度跟随控件宽度改变而改变(感谢智明提供补丁)
