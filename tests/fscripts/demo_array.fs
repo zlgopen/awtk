@@ -1,4 +1,4 @@
-a = array_create()
+var a = array_create()
 assert(array_push(a,1,2,3) == 3)
 assert(array_push(a,"a","b","c") == 3)
 assert(array_pop(a), "c")

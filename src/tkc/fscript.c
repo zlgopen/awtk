@@ -160,6 +160,8 @@ static ret_t fscript_locals_get(fscript_t* fscript, const value_t* name, value_t
   int32_t index = value_id_index(name);
   int32_t suboffset = value_id_suboffset(name);
   named_value_t* nv = (named_value_t*)(fscript->locals->elms[index]);
+  return_value_if_fail(nv != NULL, RET_FAIL);
+
   if (!suboffset) {
     return value_copy(v, &(nv->value));
   } else {

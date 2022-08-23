@@ -1,4 +1,4 @@
-dt = date_time_create()
+var dt = date_time_create()
 print(dt.year, "-", dt.month, "-", dt.day, " ", dt.hour, ":", dt.minute, ":", dt.second, "(", dt.wday, ")")
 
 dt.year = 2022

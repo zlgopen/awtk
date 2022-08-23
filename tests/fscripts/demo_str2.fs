@@ -1,3 +1,3 @@
-a = prompt('input a number:');
+var a = prompt('input a number:');
 print(int(a)+100);
 

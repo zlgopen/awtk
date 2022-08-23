@@ -1,4 +1,4 @@
-a = array_create();
+var a = array_create();
 print(a.size);
 print(!a.size);
 assert(array_last_index_of(a,1), -1);

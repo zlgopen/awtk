@@ -4,7 +4,7 @@ assert(crc32("123") == u32(2286445522))
 assert(cksum("123") == u16(65385))
 
 //test binary
-a=typed_array_create("i8", 10)
+var a=typed_array_create("i8", 10)
 assert(typed_array_push(a, 1,2,3) == 3)
 print(crc16(a.data, a.size))
 print(crc32(a.data, a.size))

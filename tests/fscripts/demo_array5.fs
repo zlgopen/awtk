@@ -1,6 +1,6 @@
-a = array_create_with_str("2,1,3", ",", "int");
+var a = array_create_with_str("2,1,3", ",", "int");
 assert(array_sort(a));
-d = array_join(a, ":");
+var d = array_join(a, ":");
 assert(d == "1:2:3")
 
 assert(array_sort(a, false));

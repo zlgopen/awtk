@@ -3,9 +3,9 @@
 // ./bin/udp_recv 4000
 //
 
-a = iostream_udp_create("localhost", 4000)
-b = iostream_get_ostream(a)
-c = iostream_get_istream(a)
+var a = iostream_udp_create("localhost", 4000)
+var b = iostream_get_ostream(a)
+var c = iostream_get_istream(a)
 
 assert(ostream_write_uint8(b, 1) == 1)
 assert(ostream_write_uint16(b, 2)== 2)
@@ -23,6 +23,3 @@ assert(istream_read_float(c) == 5)
 assert(istream_read_double(c) == 6)
 assert(istream_read_string(c, 6) == "hello\n")
 
-unset(c)
-unset(b)
-unset(a)

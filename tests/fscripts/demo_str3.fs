@@ -1,4 +1,4 @@
-a="致远电子"
+var a="致远电子"
 assert(ulen(a) == 4);
 assert(ulen(a+"abc") == 7);
 assert(usubstr(a) == '致远电子');

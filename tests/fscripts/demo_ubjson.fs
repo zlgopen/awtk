@@ -1,5 +1,5 @@
 //create a json
-a=json_load('
+var a=json_load('
   {
     "name":"fscript", 
     "age":100
@@ -10,7 +10,7 @@ assert(object_get(a, "name")=="fscript")
 assert(object_get(a, "age")==100)
 
 //save as ubjson
-b=ubjson_save(a)
+var b=ubjson_save(a)
 print(b)
 
 //load from buffer
@@ -26,5 +26,3 @@ assert(object_get(a, "name")=="fscript")
 assert(object_get(a, "age")==100)
 
 assert(file_remove("test.ubjson"))
-unset(a)
-unset(b)

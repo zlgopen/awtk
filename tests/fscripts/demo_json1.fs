@@ -1,5 +1,5 @@
 //load from string
-a=json_load('
+var a=json_load('
   {
     "tom": {
       "name":"tom", 

@@ -1,5 +1,5 @@
 
-a=wbuffer_create()
+var a=wbuffer_create()
 wbuffer_write_int8(a, -10) 
 assert(wbuffer_get_cursor(a)==1)
 wbuffer_write_int16(a, -1122) 
@@ -15,7 +15,7 @@ assert(wbuffer_get_cursor(a)==21)
 wbuffer_write_binary(a, "wolrd", 6)
 assert(wbuffer_get_cursor(a)==27)
 
-b=rbuffer_create(wbuffer_get_data(a), wbuffer_get_cursor(a))
+var b=rbuffer_create(wbuffer_get_data(a), wbuffer_get_cursor(a))
 assert(rbuffer_get_capacity(b) == wbuffer_get_cursor(a))
 
 assert(rbuffer_get_cursor(b)==0)
@@ -45,8 +45,5 @@ wbuffer_rewind(a)
 assert(wbuffer_get_cursor(a)==0)
 wbuffer_write_binary(a, c)
 assert(wbuffer_get_cursor(a)==6)
-
-unset(a)
-unset(b)
 
 

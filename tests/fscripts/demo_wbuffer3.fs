@@ -1,5 +1,5 @@
 
-a=wbuffer_create()
+var a = wbuffer_create()
 
 assert(wbuffer_write_int8(a, -10, -20) == 2);
 assert(wbuffer_write_uint8(a, 10, 20) == 2);
@@ -25,7 +25,7 @@ assert(wbuffer_write_string(a, "ab", "cd") == 6);
 assert(wbuffer_write_binary(a, "1234", 4) == 4);
 assert(wbuffer_get_cursor(a)==94)
 
-b=rbuffer_create(wbuffer_get_data(a), wbuffer_get_cursor(a))
+var b = rbuffer_create(wbuffer_get_data(a), wbuffer_get_cursor(a))
 
 assert(rbuffer_get_cursor(b)==0)
 assert(rbuffer_read_int8(b) == -10)
@@ -56,7 +56,5 @@ assert(rbuffer_read_double(b) == 20)
 assert(rbuffer_read_string(b) == "ab")
 assert(rbuffer_read_string(b) == "cd")
 
-unset(a)
-unset(b)
 
 

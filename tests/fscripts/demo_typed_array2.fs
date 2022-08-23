@@ -1,5 +1,5 @@
-b=0
-a=typed_array_create("i8", 100000)
+var b=0
+var a=typed_array_create("i8", 100000)
 
 while (b < 100000) {
   assert(typed_array_push(a, b) == 1)
@@ -25,4 +25,3 @@ while (true) {
 
 assert(typed_array_clear(a))
 assert(a.size == 0)
-unset(a)

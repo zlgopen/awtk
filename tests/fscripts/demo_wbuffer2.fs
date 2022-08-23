@@ -1,5 +1,5 @@
 
-a=wbuffer_create()
+var a=wbuffer_create()
 wbuffer_write_uint8(a, 0x10) 
 assert(wbuffer_get_cursor(a)==1)
 wbuffer_write_uint16(a, 0x1122) 
@@ -15,7 +15,7 @@ assert(wbuffer_get_cursor(a)==21)
 wbuffer_write_binary(a, "wolrd", 6);
 assert(wbuffer_get_cursor(a)==27)
 
-b=rbuffer_create(wbuffer_get_data(a), wbuffer_get_cursor(a));
+var b=rbuffer_create(wbuffer_get_data(a), wbuffer_get_cursor(a));
 
 assert(rbuffer_get_cursor(b)==0)
 assert(rbuffer_read_uint8(b)==0x10)
@@ -32,7 +32,7 @@ assert(rbuffer_read_uint64(b)==0x1122334455667788)
 assert(rbuffer_get_cursor(b)==15)
 assert(rbuffer_read_string(b)=="hello")
 assert(rbuffer_get_cursor(b)==21)
-c = rbuffer_read_binary(b, 6)
+var c = rbuffer_read_binary(b, 6)
 assert(rbuffer_get_cursor(b)==27)
 
 wbuffer_rewind(a);
@@ -40,5 +40,3 @@ assert(wbuffer_get_cursor(a)==0)
 wbuffer_write_binary(a, c);
 assert(wbuffer_get_cursor(a)==6)
 
-unset(a)
-unset(b)

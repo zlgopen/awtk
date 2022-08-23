@@ -1,5 +1,5 @@
-b = 0
-a = ostream_file_create("test.bin", "wb+")
+var b = 0
+var a = ostream_file_create("test.bin", "wb+")
 
 assert(ostream_write_uint8(a, 1, 2, 3, 4) == 4)
 assert(ostream_write_int8(a, -1, -2, -3, -4) == 4)
