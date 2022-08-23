@@ -24,8 +24,8 @@ iostream_serial_create(device, baudrate, bytesize, parity, stopbits, flowcontrol
 #### 示例
 
 ```js
-a = iostream_serial_create("COM4");
-b = iostream_serial_create("COM5", 115200, 8, "none", 1, "none");
+var a = iostream_serial_create("COM4");
+var b = iostream_serial_create("COM5", 115200, 8, "none", 1, "none");
 ```
 
 ### 完整示例
@@ -36,17 +36,13 @@ b = iostream_serial_create("COM5", 115200, 8, "none", 1, "none");
 // ./bin/serial_recv 4000
 //
 
-a = iostream_serial_create("/dev/ttys001", 0)
-b = iostream_get_ostream(a)
-c = iostream_get_istream(a)
+var a = iostream_serial_create("/dev/ttys001", 0)
+var b = iostream_get_ostream(a)
+var c = iostream_get_istream(a)
 
 assert(ostream_write_uint32(b, 6) == 4)
 assert(ostream_write_string(b, "hello\n") == 6)
 
 assert(istream_read_uint32(c, 3000) == 6)
 assert(istream_read_string(c, 6, 3000) == "hello\n")
-
-unset(c)
-unset(b)
-unset(a)
 ```

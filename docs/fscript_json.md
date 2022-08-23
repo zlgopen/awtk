@@ -16,7 +16,7 @@ json_load(data, size) => object
 #### 示例
 
 ```js
-a = json_load('{"name": "fscript", "age": 100}');
+var a = json_load('{"name": "fscript", "age": 100}');
 ```
 
 ### 2.json\_save
@@ -33,7 +33,7 @@ json_save(obj) => binary
 #### 示例
 
 ```js
-a = json_load('{"name": "fscript", "age": 100}');
+var a = json_load('{"name": "fscript", "age": 100}');
 json_save(a);
 ```
 
@@ -51,7 +51,7 @@ json_save_to_string(obj) => string
 #### 示例
 
 ```js
-a = json_load('{"name": "fscript", "age": 100}');
+var a = json_load('{"name": "fscript", "age": 100}');
 print(json_save_to_string(a));
 ```
 
@@ -70,7 +70,7 @@ ubjson_load(data, size) => object
 #### 示例
 
 ```js
-a = ubjson_load(file_read_binary("test.ubjson"));
+var a = ubjson_load(file_read_binary("test.ubjson"));
 ```
 
 ### 5.ubjson\_save
@@ -87,8 +87,8 @@ ubjson_save(obj) => binary
 #### 示例
 
 ```js
-a = json_load('{"name": "fscript", "age": 100}');
-b = ubjson_save(a);
+var a = json_load('{"name": "fscript", "age": 100}');
+var b = ubjson_save(a);
 ```
 
 ### 完整示例
@@ -131,13 +131,13 @@ c=json_save_to_string(a)
 print(c)
 
 //load from file as text
-a = json_load(file_read_text("test.json"))
+var a = json_load(file_read_text("test.json"))
 
 assert(object_get(a, "name")=="fscript");
 assert(object_get(a, "age")==100);
 
 //load from file as binary
-a = json_load(file_read_binary("test.json"))
+var a = json_load(file_read_binary("test.json"))
 assert(file_remove("test.json"))
 
 assert(object_get(a, "name")=="fscript");

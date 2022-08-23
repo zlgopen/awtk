@@ -14,7 +14,7 @@ istream_file_create(filename, mode) => object
 #### 示例
 
 ```js
-a = istream_file_create("test.bin", "rb");
+var a = istream_file_create("test.bin", "rb");
 ```
 
 ### 2.ostream\_file\_create
@@ -31,13 +31,13 @@ ostream_file_create(filename, mode) => object
 #### 示例
 
 ```js
-a = ostream_file_create("test.bin", "wb+");
+var a = ostream_file_create("test.bin", "wb+");
 ```
 
 ### 完整示例
 
 ```js
-a = ostream_file_create("test.bin", "wb+")
+var a = ostream_file_create("test.bin", "wb+")
 assert(ostream_write_uint8(a, 1) == 1)
 assert(ostream_write_int8(a, -1) == 1)
 assert(ostream_tell(a), 2)

@@ -16,7 +16,7 @@ istream_seek(istream, offset) => bool
 #### 示例
 
 ```js
-a = istream_file_create("test.bin", "rb");
+var a = istream_file_create("test.bin", "rb");
 istream_seek(a, 10);
 ```
 
@@ -36,7 +36,7 @@ istream_tell(istream) => uint32_t
 #### 示例
 
 ```js
-a = istream_file_create("test.bin", "rb");
+var a = istream_file_create("test.bin", "rb");
 istream_seek(a, 10);
 print(istream_tell(a));
 ```
@@ -57,7 +57,7 @@ istream_read_uint8(istream, timeout) => uint8_t
 #### 示例
 
 ```js
-a = istream_file_create("test.bin", "rb");
+var a = istream_file_create("test.bin", "rb");
 print(istream_read_uint8(a));
 ```
 
@@ -77,7 +77,7 @@ istream_read_uint16(istream, timeout) => uint16_t
 #### 示例
 
 ```js
-a = istream_file_create("test.bin", "rb");
+var a = istream_file_create("test.bin", "rb");
 print(istream_read_uint16(a));
 ```
 
@@ -97,7 +97,7 @@ istream_read_uint32(istream, timeout) => uint32_t
 #### 示例
 
 ```js
-a = istream_file_create("test.bin", "rb");
+var a = istream_file_create("test.bin", "rb");
 print(istream_read_uint32(a));
 ```
 
@@ -117,7 +117,7 @@ istream_read_uint64(istream, timeout) => uint64_t
 #### 示例
 
 ```js
-a = istream_file_create("test.bin", "rb");
+var a = istream_file_create("test.bin", "rb");
 print(istream_read_uint64(a));
 ```
 
@@ -137,7 +137,7 @@ istream_read_int8(istream, timeout) => int8_t
 #### 示例
 
 ```js
-a = istream_file_create("test.bin", "rb");
+var a = istream_file_create("test.bin", "rb");
 print(istream_read_int8(a));
 ```
 
@@ -157,7 +157,7 @@ istream_read_int16(istream, timeout) => int16_t
 #### 示例
 
 ```js
-a = istream_file_create("test.bin", "rb");
+var a = istream_file_create("test.bin", "rb");
 print(istream_read_int16(a));
 ```
 
@@ -177,7 +177,7 @@ istream_read_int32(istream, timeout) => int32_t
 #### 示例
 
 ```js
-a = istream_file_create("test.bin", "rb");
+var a = istream_file_create("test.bin", "rb");
 print(istream_read_int32(a));
 ```
 
@@ -197,7 +197,7 @@ istream_read_int64(istream, timeout) => int64_t
 #### 示例
 
 ```js
-a = istream_file_create("test.bin", "rb");
+var a = istream_file_create("test.bin", "rb");
 print(istream_read_int64(a));
 ```
 
@@ -217,7 +217,7 @@ istream_read_float(istream, timeout) => float
 #### 示例
 
 ```js
-a = istream_file_create("test.bin", "rb");
+var a = istream_file_create("test.bin", "rb");
 print(istream_read_float(a));
 ```
 
@@ -237,7 +237,7 @@ istream_read_double(istream, timeout) => double
 #### 示例
 
 ```js
-a = istream_file_create("test.bin", "rb");
+var a = istream_file_create("test.bin", "rb");
 print(istream_read_double(a));
 ```
 
@@ -257,7 +257,7 @@ istream_read_string(istream, size, timeout) => str
 #### 示例
 
 ```js
-a = istream_file_create("test.bin", "rb");
+var a = istream_file_create("test.bin", "rb");
 print(istream_read_string(a, 10));
 ```
 
@@ -277,7 +277,7 @@ istream_read_binary(istream, size, timeout) => binary
 #### 示例
 
 ```js
-a = istream_file_create("test.bin", "rb");
+var a = istream_file_create("test.bin", "rb");
 print(istream_read_binary(a, 10));
 ```
 
@@ -297,7 +297,7 @@ istream_read_line(istream, size, timeout) => str
 #### 示例
 
 ```js
-a = istream_file_create("test.bin", "rb");
+var a = istream_file_create("test.bin", "rb");
 print(istream_read_line(a, 10));
 ```
 
@@ -315,14 +315,14 @@ istream_is_eos(istream) => bool
 #### 示例
 
 ```js
-a = istream_file_create("test.bin", "rb");
+var a = istream_file_create("test.bin", "rb");
 print(istream_is_eos(a));
 ```
 
 ### 更多示例
 
 ```js
-a = istream_file_create("test.bin", "rb")
+var a = istream_file_create("test.bin", "rb")
 assert(istream_read_uint8(a)==1)
 assert(istream_read_int8(a)==-1)
 assert(istream_tell(a), 2)

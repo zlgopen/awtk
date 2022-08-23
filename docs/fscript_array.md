@@ -22,8 +22,8 @@ array_create(elem1, elem2, elem3, ...) => object
 #### 示例
 
 ```js
-a = array_create();
-b = array_create(123, 456, 789);
+var a = array_create();
+var b = array_create(123, 456, 789);
 ```
 
 ### 2.array\_create\_with\_str
@@ -46,7 +46,7 @@ type 为可选参数，可选取值为：
 #### 示例
 
 ```js
-a = array_create_with_str("a2,a1,a3", ",");
+var a = array_create_with_str("a2,a1,a3", ",");
 a = array_create_with_str("2,1,3", ",", "int");
 a = array_create_with_str("2,1,3", ",", "double");
 ```
@@ -68,7 +68,7 @@ array_create_repeated(value, nr) => object
 #### 示例
 
 ```js
-a = array_create_repeated(123, 3);
+var a = array_create_repeated(123, 3);
 ```
 
 ### 4.array\_dup
@@ -88,10 +88,10 @@ array_dup(arr, start, end) => object
 #### 示例
 
 ```
-a = array_create_with_str("2,1,3", ",", "int");
-b = array_dup(a);
-c = array_dup(a, 1);
-d = array_dup(a, 1, 2);
+var a = array_create_with_str("2,1,3", ",", "int");
+var b = array_dup(a);
+var c = array_dup(a, 1);
+var d = array_dup(a, 1, 2);
 ```
 
 ### 5.array\_push
@@ -108,7 +108,7 @@ array_push(array, v, ...) => uint32_t
 #### 示例
 
 ```js
-a = array_create();
+var a = array_create();
 array_push(a, "123");
 array_push(a, "456", "789");
 ```
@@ -127,8 +127,8 @@ array_pop(array) => value
 #### 示例
 
 ```js
-a = array_create_with_str("2,1,3", ",", "int");
-b = array_pop(a);
+var a = array_create_with_str("2,1,3", ",", "int");
+var b = array_pop(a);
 ```
 
 ### 7.array\_shift
@@ -145,8 +145,8 @@ array_shift(array) => value
 #### 示例
 
 ```
-a = array_create_with_str("2,1,3", ",", "int");
-b = array_shift(a);
+var a = array_create_with_str("2,1,3", ",", "int");
+var b = array_shift(a);
 ```
 
 ### 8.array\_get
@@ -166,10 +166,10 @@ array_get(array, index) => value
 #### 示例
 
 ```js
-a = array_create_with_str("2,1,3", ",", "int");
-b = array_get(a, 0);
-c = array_get(a, -1);
-d = a.[1]
+var a = array_create_with_str("2,1,3", ",", "int");
+var b = array_get(a, 0);
+var c = array_get(a, -1);
+var d = a.[1]
 ```
 
 ### 9.array\_set
@@ -188,7 +188,7 @@ array_set(array, index, value) => bool
 #### 示例
 
 ```js
-a = array_create_with_str("2,1,3", ",", "int");
+var a = array_create_with_str("2,1,3", ",", "int");
 array_set(a, 0, 4);
 array_set(a, -1, 5);
 ```
@@ -209,7 +209,7 @@ array_insert(array, index, value) => bool
 #### 示例
 
 ```js
-a = array_create_with_str("2,1,3", ",", "int");
+var a = array_create_with_str("2,1,3", ",", "int");
 array_insert(a, 0, 4);
 array_insert(a, -1, 5);
 ```
@@ -228,8 +228,8 @@ array_index_of(array, value) => index
 #### 示例
 
 ```js
-a = array_create_with_str("2,1,3", ",", "int");
-b = array_index_of(a, 1);
+var a = array_create_with_str("2,1,3", ",", "int");
+var b = array_index_of(a, 1);
 ```
 
 ### 12.array\_last_index\_of
@@ -246,8 +246,8 @@ array_last_index_of(array, value) => index
 #### 示例
 
 ```js
-a = array_create_with_str("2,1,3", ",", "int");
-b = array_last_index_of(a, 1);
+var a = array_create_with_str("2,1,3", ",", "int");
+var b = array_last_index_of(a, 1);
 ```
 
 ### 13.array\_remove
@@ -266,7 +266,7 @@ array_remove(array, index) => bool
 #### 示例
 
 ```js
-a = array_create_with_str("2,1,3", ",", "int");
+var a = array_create_with_str("2,1,3", ",", "int");
 array_remove(a, 0);
 array_remove(a, -1);
 ```
@@ -287,7 +287,7 @@ array_get_and_remove(array, index) => value
 #### 示例
 
 ```js
-a = array_create_with_str("2,1,3", ",", "int");
+var a = array_create_with_str("2,1,3", ",", "int");
 array_get_and_remove(a, 0);
 array_get_and_remove(a, -1);
 ```
@@ -306,7 +306,7 @@ array_clear(array) => bool
 #### 示例
 
 ```js
-a = array_create_with_str("2,1,3", ",", "int");
+var a = array_create_with_str("2,1,3", ",", "int");
 array_clear(a);
 ```
 
@@ -324,8 +324,8 @@ array_join(array, sep) => str
 #### 示例
 
 ```js
-a = array_create_with_str("2,1,3", ",", "int");
-b = array_join(a, ",");
+var a = array_create_with_str("2,1,3", ",", "int");
+var b = array_join(a, ",");
 ```
 
 ### 17.array\_sort
@@ -345,9 +345,9 @@ array_sort(array, ascending, ignore_case) => bool
 #### 示例
 
 ```js
-a = array_create_with_str("2,1,3", ",", "int");
+var a = array_create_with_str("2,1,3", ",", "int");
 assert(array_sort(a));
-d = array_join(a, ":");
+var d = array_join(a, ":");
 assert(d == "1:2:3")
 
 assert(array_sort(a, false));
@@ -369,8 +369,8 @@ array_min(array) => double
 #### 示例
 
 ```js
-a = array_create_with_str("2,1,3", ",", "int");
-b = array_min(a);
+var a = array_create_with_str("2,1,3", ",", "int");
+var b = array_min(a);
 ```
 
 ### 19.array\_max
@@ -387,8 +387,8 @@ array_max(array) => double
 #### 示例
 
 ```js
-a = array_create_with_str("2,1,3", ",", "int");
-b = array_max(a);
+var a = array_create_with_str("2,1,3", ",", "int");
+var b = array_max(a);
 ```
 
 ### 20.array\_avg
@@ -405,8 +405,8 @@ array_avg(array) => double
 #### 示例
 
 ```js
-a = array_create_with_str("2,1,3", ",", "int");
-b = array_avg(a);
+var a = array_create_with_str("2,1,3", ",", "int");
+var b = array_avg(a);
 ```
 
 ### 21.array\_sum
@@ -423,8 +423,8 @@ array_sum(array) => double
 #### 示例
 
 ```js
-a = array_create_with_str("2,1,3", ",", "int");
-b = array_sum(a);
+var a = array_create_with_str("2,1,3", ",", "int");
+var b = array_sum(a);
 ```
 
 ### 22.array\_clone\_and\_sort
@@ -444,9 +444,9 @@ array_clone_and_sort(array, ascending, ignore_case) => array
 #### 示例
 
 ```js
-a = array_create_with_str("2,1,3", ",", "int");
-b = array_clone_and_sort(a);
-d = array_join(b, ":");
+var a = array_create_with_str("2,1,3", ",", "int");
+var b = array_clone_and_sort(a);
+var d = array_join(b, ":");
 assert(d == "1:2:3")
 ```
 
@@ -463,8 +463,8 @@ array_reverse(array) => bool
 
 #### 示例
 
-```jss
-a = array_create_with_str("2,1,3", ",", "int");
+```js
+var a = array_create_with_str("2,1,3", ",", "int");
 array_reverse(a);
 ```
 
@@ -482,7 +482,7 @@ array_is_empty(array) => bool
 #### 示例
 
 ```js
-a = array_create();
+var a = array_create();
 assert(array_is_empty(a));
 ```
 
@@ -500,14 +500,14 @@ array_size(array) => size
 #### 示例
 
 ```js
-a = array_create_with_str("2,1,3", ",", "int");
-b = array_size(a);
+var a = array_create_with_str("2,1,3", ",", "int");
+var b = array_size(a);
 ```
 
 ### 更多示例
 
 ```js
-a = array_create()
+var a = array_create()
 assert(array_push(a,1,2,3) == 3)
 assert(array_push(a,"a","b","c") == 3)
 assert(array_pop(a), "c")

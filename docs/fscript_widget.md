@@ -39,7 +39,7 @@ FScript 并不是要取代 C 或 JS 来开发 AWTK 应用程序，而是一个�
   <text_selector name="year" options="2000-2050" selected_index="9">
     <property name="on:value_changed">
       <![CDATA[
-      a = get_days_of_month(widget_get('parent.year', 'value'), widget_get('parent.month', 'value'))
+      var a = get_days_of_month(widget_get('parent.year', 'value'), widget_get('parent.month', 'value'))
       widget_set('parent.day', 'options', iformat( '1-%d', a) + '%02d')  
        ]]>
     </property>
@@ -47,7 +47,7 @@ FScript 并不是要取代 C 或 JS 来开发 AWTK 应用程序，而是一个�
   <text_selector name="month" options="1-12-%02d" selected_index="8" loop_options="true">
     <property name="on:value_changed">
       <![CDATA[
-      a = get_days_of_month(widget_get('parent.year', 'value'), widget_get('parent.month', 'value'))
+      var a = get_days_of_month(widget_get('parent.year', 'value'), widget_get('parent.month', 'value'))
       widget_set('parent.day', 'options', iformat( '1-%d', a) + '%02d')      
       ]]>
     </property>
@@ -71,8 +71,8 @@ FScript 并不是要取代 C 或 JS 来开发 AWTK 应用程序，而是一个�
 ```xml
 <button name="timer" focusable="true" on:click="start_timer(100)" text="Start Timer">
 <property name="on:timer"><![CDATA[
-        a = widget_lookup('window', 'bar', true)
-        b = widget_get(a, 'value')
+        var a = widget_lookup('window', 'bar', true)
+        var b = widget_get(a, 'value')
         if(b < 100) {
           widget_set(a, 'value', b + 1)
         } else {
@@ -145,8 +145,8 @@ FScript 并不是要取代 C 或 JS 来开发 AWTK 应用程序，而是一个�
 ```xml
 <button name="timer" focusable="true" on:click="start_timer(100)" text="Start Timer">
 <property name="on:timer"><![CDATA[
-  a = widget_lookup('window', 'bar', true)
-  b = widget_get(a, 'value')
+  var a = widget_lookup('window', 'bar', true)
+  var b = widget_get(a, 'value')
     if(b < 100) {
     widget_set(a, 'value', b + 1)
   } else {
@@ -353,25 +353,25 @@ widget_lookup(widget, name, recursive) => obj_widget
 > 查找窗口下名为 view 控件下的名为 bar 的控件。
 
 ```js
-a = widget_lookup('window', 'view.bar')
+var a = widget_lookup('window', 'view.bar')
 ```
 
 > 递归查找窗口下名为 bar 的控件。
 
 ```js
-a = widget_lookup('window', 'bar', true)
+var a = widget_lookup('window', 'bar', true)
 ```
 
 > 递归查找当前控件下名为 bar 的控件。
 
 ```js
-a = widget_lookup('self', 'bar', true)
+var a = widget_lookup('self', 'bar', true)
 ```
 
 > 递归查找当前控件的父控件下名为 bar 的控件。
 
 ```js
-a = widget_lookup('self', 'bar', true)
+var a = widget_lookup('self', 'bar', true)
 ```
 
 ### 5.8 widget_get
@@ -396,43 +396,43 @@ widget_get(widget, path.prop) => v
 > 获取当前控件的 value
 
 ```js
-a = widget_get('self', 'value')
+var a = widget_get('self', 'value')
 ```
 
 > 获取当前控件下名为 bar 控件的 value
 
 ```js
-a = widget_get('self', 'bar.value')
+var a = widget_get('self', 'bar.value')
 ```
 
 > 获取当前控件的父控件下名为 bar 控件的 value
 
 ```js
-a = widget_get('self', 'bar.value')
+var a = widget_get('self', 'bar.value')
 ```
 
 > 获取当前控件的父控件下名为 bar 控件的 value
 
 ```js
-a = widget_get('parent', 'bar.value')
+var a = widget_get('parent', 'bar.value')
 ```
 
 > 获取当前窗口下名为 bar 控件的 value
 
 ```js
-a = widget_get('window', 'bar.value')
+var a = widget_get('window', 'bar.value')
 ```
 
 > 获取当前窗口下名为 view 控件下名为 bar 控件的 value
 
 ```js
-a = widget_get('window', 'view.bar.value')
+var a = widget_get('window', 'view.bar.value')
 ```
 
 >对于控件对象，可以直接访问其属性
 
 ```js
-a = widget_lookup('window', 'bar', true)
+var a = widget_lookup('window', 'bar', true)
 if(a.value <= 90) {
   a.value = a.value + 10
 }
@@ -489,7 +489,7 @@ widget_set('window', 'view.bar.value', 12)
 >对于控件对象，可以直接访问其属性
 
 ```js
-a = widget_lookup('window', 'bar', true)
+var a = widget_lookup('window', 'bar', true)
 if(a.value <= 90) {
   a.value = a.value + 10
 }
@@ -513,7 +513,7 @@ widget_create(type, parent, x, y, w, h) => obj_widget
 #### 示例
 
 ```js
-a = widget_lookup('window', 'foobar', true)
+var a = widget_lookup('window', 'foobar', true)
 if(value_is_null(a)) {
   a = widget_create('label', 'window.view', 0, 0, 0, 0)
   assert(!value_is_null(a))
@@ -543,7 +543,7 @@ widget_destroy(widget) => bool
 #### 示例
 
 ```js
-a = widget_lookup('window', 'foobar', true)
+var a = widget_lookup('window', 'foobar', true)
 if(!value_is_null(a)) {
   widget_destroy(a)
 } else {
@@ -581,8 +581,8 @@ start_timer(widget, duration) => uint32_t
 <button name="timer" focusable="true" on:click="start_timer(100)" text="Start Timer">
   <property name="on:timer">
 <![CDATA[
-  a = widget_lookup('window', 'bar', true)
-  b = widget_get(a, 'value')
+  var a = widget_lookup('window', 'bar', true)
+  var b = widget_get(a, 'value')
   if(b < 100) {
     widget_set(a, 'value', b + 1)
   } else {
@@ -746,7 +746,7 @@ widget_eval(widget, path.prop)
   <text_selector name="year" options="2000-2050" selected_index="9">
     <property name="on:value_changed">
       <![CDATA[
-      a = get_days_of_month(widget_get('parent.year', 'value'), widget_get('parent.month', 'value'))
+      var a = get_days_of_month(widget_get('parent.year', 'value'), widget_get('parent.month', 'value'))
       widget_set('parent.day', 'options', iformat( '1-%d', a) + '%02d')
        ]]>
     </property>
@@ -754,7 +754,7 @@ widget_eval(widget, path.prop)
   <text_selector name="month" options="1-12-%02d" selected_index="8" loop_options="true">
     <property name="on:value_changed">
       <![CDATA[
-      a = get_days_of_month(widget_get('parent.year', 'value'), widget_get('parent.month', 'value'))
+      var a = get_days_of_month(widget_get('parent.year', 'value'), widget_get('parent.month', 'value'))
       widget_set('parent.day', 'options', iformat( '1-%d', a) + '%02d')
       ]]>
     </property>
@@ -769,7 +769,7 @@ widget_eval(widget, path.prop)
 <row x="10" y="bottom" w="100%" h="150" children_layout="default(row=1,col=3)">
   <property name="handle_value_changed">
     <![CDATA[
-    a = get_days_of_month(widget_get('parent.year', 'value'), widget_get('parent.month', 'value'))
+    var a = get_days_of_month(widget_get('parent.year', 'value'), widget_get('parent.month', 'value'))
     widget_set('parent.day', 'options', iformat( '1-%d', a) + '%02d')
      ]]>
   </property>
@@ -1112,7 +1112,7 @@ widget_clone(widget) => obj_widget
 #### 示例
 
 ```js
-a = widget_lookup('window', 'foobar', true)
+var a = widget_lookup('window', 'foobar', true)
 if(!value_is_null(a)) {
   widget_clone(a)
 } else {
@@ -1121,8 +1121,8 @@ if(!value_is_null(a)) {
 ```
 
 ```js
-a = widget_clone('self.bar')
-b = widget_clone('window.view.bar')
+var a = widget_clone('self.bar')
+var b = widget_clone('window.view.bar')
 ```
 
 ### 5.32 widget_destroy_children
@@ -1141,7 +1141,7 @@ widget_destroy_children(widget) => bool
 #### 示例
 
 ```js
-a = widget_lookup('window', 'foobar', true)
+var a = widget_lookup('window', 'foobar', true)
 if(!value_is_null(a)) {
   widget_destroy_children(a)
 } else {

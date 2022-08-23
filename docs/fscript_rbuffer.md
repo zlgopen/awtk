@@ -22,7 +22,7 @@ rbuffer_create(data, size) => object
 #### 示例
 
 ```js
-a = rbuffer_create("hello");
+var a = rbuffer_create("hello");
 ```
 
 ### 2.rbuffer\_skip
@@ -39,7 +39,7 @@ rbuffer_skip(rbuffer, size) => bool
 #### 示例
 
 ```js
-a = rbuffer_create("hello");
+var a = rbuffer_create("hello");
 print(rbuffer_skip(a, 2));
 ```
 
@@ -57,7 +57,7 @@ rbuffer_rewind(rbuffer) => bool
 #### 示例
 
 ```js
-a = rbuffer_create("hello");
+var a = rbuffer_create("hello");
 print(rbuffer_skip(a, 2));
 print(rbuffer_rewind(a));
 ```
@@ -76,7 +76,7 @@ rbuffer_read_uint8(rbuffer) => uint8_t
 #### 示例
 
 ```js
-a = rbuffer_create("hello");
+var a = rbuffer_create("hello");
 print(rbuffer_read_uint8(a));
 ```
 
@@ -94,7 +94,7 @@ rbuffer_read_uint16(rbuffer) => uint16_t
 #### 示例
 
 ```js
-a = rbuffer_create("hello");
+var a = rbuffer_create("hello");
 print(rbuffer_read_uint16(a));
 ```
 
@@ -112,7 +112,7 @@ rbuffer_read_uint32(rbuffer) => uint32_t
 #### 示例
 
 ```js
-a = rbuffer_create("hello");
+var a = rbuffer_create("hello");
 print(rbuffer_read_uint32(a));
 ```
 
@@ -130,7 +130,7 @@ rbuffer_read_uint64(rbuffer) => uint64_t
 #### 示例
 
 ```js
-a = rbuffer_create("hello");
+var a = rbuffer_create("hello");
 print(rbuffer_read_uint64(a));
 ```
 
@@ -148,7 +148,7 @@ rbuffer_read_int8(rbuffer) => int8_t
 #### 示例
 
 ```js
-a = rbuffer_create("hello");
+var a = rbuffer_create("hello");
 print(rbuffer_read_int8(a));
 ```
 
@@ -166,7 +166,7 @@ rbuffer_read_int16(rbuffer) => int16_t
 #### 示例
 
 ```js
-a = rbuffer_create("hello");
+var a = rbuffer_create("hello");
 print(rbuffer_read_int16(a));
 ```
 
@@ -184,7 +184,7 @@ rbuffer_read_int32(rbuffer) => int32_t
 #### 示例
 
 ```js
-a = rbuffer_create("hello");
+var a = rbuffer_create("hello");
 print(rbuffer_read_int32(a));
 ```
 
@@ -202,7 +202,7 @@ rbuffer_read_int64(rbuffer) => int64_t
 #### 示例
 
 ```js
-a = rbuffer_create("hello");
+var a = rbuffer_create("hello");
 print(rbuffer_read_int64(a));
 ```
 
@@ -220,7 +220,7 @@ rbuffer_read_float(rbuffer) => float
 #### 示例
 
 ```js
-a = rbuffer_create("hello");
+var a = rbuffer_create("hello");
 print(rbuffer_read_float(a));
 ```
 
@@ -238,7 +238,7 @@ rbuffer_read_double(rbuffer) => double
 #### 示例
 
 ```js
-a = rbuffer_create("hello");
+var a = rbuffer_create("hello");
 print(rbuffer_read_double(a));
 ```
 
@@ -256,7 +256,7 @@ rbuffer_read_string(rbuffer) => str
 #### 示例
 
 ```js
-a = rbuffer_create("hello");
+var a = rbuffer_create("hello");
 print(rbuffer_read_string(a));
 ```
 
@@ -274,7 +274,7 @@ rbuffer_read_binary(rbuffer, size) => binary
 #### 示例
 
 ```js
-a = rbuffer_create("hello");
+var a = rbuffer_create("hello");
 print(rbuffer_read_binary(a, 5));
 ```
 
@@ -292,8 +292,8 @@ rbuffer_get_data(rbuffer) => pointer
 #### 示例
 
 ```js
-a = rbuffer_create("hello");
-b = rbuffer_get_data(a);
+var a = rbuffer_create("hello");
+var b = rbuffer_get_data(a);
 ```
 
 ### 17.rbuffer\_get\_cursor
@@ -310,7 +310,7 @@ rbuffer_get_cursor(rbuffer) => uint32_t
 #### 示例
 
 ```js
-a = rbuffer_create("hello");
+var a = rbuffer_create("hello");
 print(rbuffer_get_cursor(a));
 ```
 
@@ -328,7 +328,7 @@ rbuffer_get_capacity(rbuffer) => uint32_t
 #### 示例
 
 ```js
-a = rbuffer_create("hello");
+var a = rbuffer_create("hello");
 print(rbuffer_get_capacity(a));
 ```
 

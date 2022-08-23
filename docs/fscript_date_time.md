@@ -106,8 +106,8 @@ time_now_s()  => uint64_t
 #### 示例
 
 ```js
-a = time_now();
-b = time_now_s();
+var a = time_now();
+var b = time_now_s();
 ```
 
 ### 6.time\_now\_ms 
@@ -124,7 +124,7 @@ time_now_ms()  => uint64_t
 #### 示例
 
 ```js
-a = time_now_ms();
+var a = time_now_ms();
 ```
 
 ### 7.time_now_us 
@@ -141,7 +141,7 @@ time_now_us() => uint64_t
 #### 示例
 
 ```js
-a = time_now_us();
+var a = time_now_us();
 ```
 
 ### 8.is\_leap\_year

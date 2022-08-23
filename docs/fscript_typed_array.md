@@ -38,7 +38,7 @@ type 参数为字符串，可选取值如下：
 #### 示例
 
 ```js
-a = typed_array_create("i8", s10);
+var a = typed_array_create("i8", s10);
 ```
 
 ### 2.typed\_array\_push
@@ -57,7 +57,7 @@ typed_array_push(array, v, ...) => uint32_t
 #### 示例
 
 ```js
-a = typed_array_create("i32", 3);
+var a = typed_array_create("i32", 3);
 typed_array_push(a, 1, 2, 3);
 ```
 
@@ -75,7 +75,7 @@ typed_array_pop(array) => value
 #### 示例
 
 ```js
-a = typed_array_create("i32", 3);
+var a = typed_array_create("i32", 3);
 typed_array_push(a, 1, 2, 3);
 print(typed_array_pop(a));
 ```
@@ -94,7 +94,7 @@ typed_array_get(array, index) => value
 #### 示例
 
 ```js
-a = typed_array_create("i32", 3);
+var a = typed_array_create("i32", 3);
 typed_array_push(a, 1, 2, 3);
 print(typed_array_get(a, 1));
 ```
@@ -113,7 +113,7 @@ typed_array_set(array, index, value) => bool
 #### 示例
 
 ```js
-a = typed_array_create("i32", 3);
+var a = typed_array_create("i32", 3);
 typed_array_push(a, 1, 2, 3);
 typed_array_set(a, 1, 4);
 ```
@@ -132,7 +132,7 @@ typed_array_insert(array, index, value) => bool
 #### 示例
 
 ```js
-a = typed_array_create("i32", 3);
+var a = typed_array_create("i32", 3);
 typed_array_push(a, 1, 2, 3);
 typed_array_insert(a, 1, 4);
 ```
@@ -151,7 +151,7 @@ typed_array_remove(array, index) => bool
 #### 示例
 
 ```js
-a = typed_array_create("i32", 3);
+var a = typed_array_create("i32", 3);
 typed_array_push(a, 1, 2, 3);
 typed_array_remove(a, 1);
 ```
@@ -170,7 +170,7 @@ typed_array_clear(array) => bool
 #### 示例
 
 ```js
-a = typed_array_create("i32", 3);
+var a = typed_array_create("i32", 3);
 typed_array_push(a, 1, 2, 3);
 typed_array_clear(a);
 ```
@@ -189,7 +189,7 @@ typed_array_join(array, sep) => str
 #### 示例
 
 ```js
-a = typed_array_create("i32", 3);
+var a = typed_array_create("i32", 3);
 typed_array_push(a, 1, 2, 3);
 print(typed_array_join(a, ","));
 ```

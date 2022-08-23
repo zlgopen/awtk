@@ -14,7 +14,7 @@ ostream_seek(ostream, offset) => bool
 #### 示例
 
 ```js
-a = ostream_file_create("test.bin", "wb+")
+var a = ostream_file_create("test.bin", "wb+")
 ostream_seek(a, 10);
 ```
 
@@ -34,7 +34,7 @@ ostream_tell(ostream) => bool
 #### 示例
 
 ```js
-a = ostream_file_create("test.bin", "wb+")
+var a = ostream_file_create("test.bin", "wb+")
 ostream_seek(a, 10);
 print(ostream_tell(a));
 ```
@@ -53,7 +53,7 @@ ostream_flush(ostream) => bool
 #### 示例
 
 ```js
-a = ostream_file_create("test.bin", "wb+")
+var a = ostream_file_create("test.bin", "wb+")
 ostream_flush(a);
 ```
 
@@ -73,7 +73,7 @@ ostream_write_uint8(ostream, v, ...) => int32_t
 #### 示例
 
 ```js
-a = ostream_file_create("test.bin", "wb+")
+var a = ostream_file_create("test.bin", "wb+")
 print(ostream_write_uint8(a, 1));
 ```
 
@@ -94,7 +94,7 @@ ostream_write_uint16(ostream, v, ...) => int32_t
 #### 示例
 
 ```js
-a = ostream_file_create("test.bin", "wb+")
+var a = ostream_file_create("test.bin", "wb+")
 print(ostream_write_uint16(a, 2));
 ```
 
@@ -114,7 +114,7 @@ ostream_write_uint32(ostream, v, ...) => int32_t
 #### 示例
 
 ```js
-a = ostream_file_create("test.bin", "wb+")
+var a = ostream_file_create("test.bin", "wb+")
 print(ostream_write_uint32(a, 3));
 ```
 
@@ -134,7 +134,7 @@ ostream_write_uint64(ostream, v, ...) => int32_t
 #### 示例
 
 ```js
-a = ostream_file_create("test.bin", "wb+")
+var a = ostream_file_create("test.bin", "wb+")
 print(ostream_write_uint32(a, 4));
 ```
 
@@ -154,7 +154,7 @@ ostream_write_int8(ostream, v, ...) => int32_t
 #### 示例
 
 ```js
-a = ostream_file_create("test.bin", "wb+")
+var a = ostream_file_create("test.bin", "wb+")
 print(ostream_write_int8(a, 1));
 ```
 
@@ -174,7 +174,7 @@ ostream_write_int16(ostream, v, ...) => int32_t
 #### 示例
 
 ```js
-a = ostream_file_create("test.bin", "wb+")
+var a = ostream_file_create("test.bin", "wb+")
 print(ostream_write_int16(a, 2));
 ```
 
@@ -194,7 +194,7 @@ ostream_write_int32(ostream, v, ...) => int32_t
 #### 示例
 
 ```js
-a = ostream_file_create("test.bin", "wb+")
+var a = ostream_file_create("test.bin", "wb+")
 print(ostream_write_int32(a, 3));
 ```
 
@@ -214,7 +214,7 @@ ostream_write_int64(ostream, v, ...) => int32_t
 #### 示例
 
 ```js
-a = ostream_file_create("test.bin", "wb+")
+var a = ostream_file_create("test.bin", "wb+")
 print(ostream_write_int64(a, 4));
 ```
 
@@ -234,7 +234,7 @@ ostream_write_float(ostream, v, ...) => int32_t
 #### 示例
 
 ```js
-a = ostream_file_create("test.bin", "wb+")
+var a = ostream_file_create("test.bin", "wb+")
 print(ostream_write_float(a, 5));
 ```
 
@@ -254,7 +254,7 @@ ostream_write_double(ostream, v, ...) => int32_t
 #### 示例
 
 ```js
-a = ostream_file_create("test.bin", "wb+")
+var a = ostream_file_create("test.bin", "wb+")
 print(ostream_write_double(a, 6));
 ```
 
@@ -275,7 +275,7 @@ ostream_write_string(ostream, v, [size]) => int32_t
 #### 示例
 
 ```js
-a = ostream_file_create("test.bin", "wb+")
+var a = ostream_file_create("test.bin", "wb+")
 print(ostream_write_string(a, 'str'));
 print(ostream_write_string(a, 'hello', 5));
 ```
@@ -297,7 +297,7 @@ ostream_write_binary(ostream, v, [size]) => int32_t
 #### 示例
 
 ```js
-a = ostream_file_create("test.bin", "wb+")
+var a = ostream_file_create("test.bin", "wb+")
 print(ostream_write_binary(a, 'str'));
 print(ostream_write_binary(a, 'hello', 5));
 ```
@@ -305,7 +305,7 @@ print(ostream_write_binary(a, 'hello', 5));
 ### 更多示例
 
 ```js
-a = ostream_file_create("test.bin", "wb+")
+var a = ostream_file_create("test.bin", "wb+")
 
 assert(ostream_write_uint8(a, 1) == 1)
 assert(ostream_write_int8(a, -1) == 1)

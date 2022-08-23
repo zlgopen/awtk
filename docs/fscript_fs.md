@@ -31,7 +31,7 @@ file_read_binary(filename) => binary
 #### 示例
 
 ```js
-a = file_read_binary("test.bin");
+var a = file_read_binary("test.bin");
 ```
 
 ### 3.file\_write
@@ -190,7 +190,7 @@ file_stat(filename) => object
 #### 示例
 
 ```js
-a = file_stat("rename.txt");
+var a = file_stat("rename.txt");
 print(join(": ","dev",a.dev));
 print(join(": ","ino",a.ino));
 print(join(": ","mode",a.mode));
@@ -297,8 +297,8 @@ path_list(path) => array
 #### 示例
 
 ```js
-a = path_list("a/b");
-b = array_get(a,0);
+var a = path_list("a/b");
+var b = array_get(a,0);
 print(object_get(b.is_dir));
 print(object_get(b.is_link));
 print(object_get(b.is_reg_file));
@@ -411,7 +411,7 @@ fs_get_disk_info(path) => object
 > 备注：该功能需适配 AWTK 通用文件系统（fs.h）中的 fs_get_disk_info 接口，目前 PC 上暂不支持。
 
 ```js
-a = fs_get_disk_info("/sd");
+var a = fs_get_disk_info("/sd");
 print(join(": ","free_kb",a.free_kb));
 print(join(": ","total_kb",a.total_kb));
 ```
@@ -433,7 +433,7 @@ assert(file_read_text("copy.txt") == "helloworld")
 assert(file_remove("copy.txt"))
 assert(!file_exist("copy.txt"))
 
-a = file_stat("rename.txt")
+var a = file_stat("rename.txt")
 print(join(": ","dev",a.dev))
 print(join(": ","ino",a.ino))
 print(join(": ","mode",a.mode))
@@ -473,8 +473,8 @@ assert(path_exist("a/bbb"))
 assert(file_write("a/test.txt", "hello"))
 a = path_list("a")
 assert(a.size==2)
-b = array_get(a,0)
-c = array_get(a,1)
+var b = array_get(a,0)
+var c = array_get(a,1)
 assert(b.name=="bbb")
 assert(c.name=="test.txt")
 assert(path_remove("a"))

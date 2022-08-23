@@ -20,7 +20,7 @@ wbuffer_create() => object
 #### 示例
 
 ```js
-a = wbuffer_create();
+var a = wbuffer_create();
 ```
 
 ### 2.wbuffer\_attach
@@ -39,7 +39,7 @@ wbuffer_attach(data, size) => object
 #### 示例
 
 ```js
-a = wbuffer_attach("hello");
+var a = wbuffer_attach("hello");
 ```
 
 ### 3.wbuffer\_skip
@@ -56,7 +56,7 @@ wbuffer_skip(wbuffer, size) => bool
 #### 示例
 
 ```js
-a = wbuffer_attach("hello");
+var a = wbuffer_attach("hello");
 print(wbuffer_skip(a, 2));
 ```
 
@@ -74,7 +74,7 @@ wbuffer_rewind(wbuffer) => bool
 #### 示例
 
 ```js
-a = wbuffer_attach("hello");
+var a = wbuffer_attach("hello");
 print(wbuffer_skip(a, 2));
 print(wbuffer_rewind(a));
 ```
@@ -95,7 +95,7 @@ wbuffer_write_uint8(wbuffer, v, ...) => int32_t
 #### 示例
 
 ```js
-a = wbuffer_create()
+var a = wbuffer_create()
 wbuffer_write_uint8(a, 0x10) 
 ```
 
@@ -115,7 +115,7 @@ wbuffer_write_uint16(wbuffer, v, ...) => int32_t
 #### 示例
 
 ```js
-a = wbuffer_create()
+var a = wbuffer_create()
 wbuffer_write_uint16(a, 0x1122) 
 ```
 
@@ -135,7 +135,7 @@ wbuffer_write_uint32(wbuffer, v, ...) => int32_t
 #### 示例
 
 ```js
-a = wbuffer_create()
+var a = wbuffer_create()
 wbuffer_write_uint32(a, 0x11223344) 
 ```
 
@@ -155,7 +155,7 @@ wbuffer_write_uint64(wbuffer, v, ...) => int32_t
 #### 示例
 
 ```js
-a = wbuffer_create()
+var a = wbuffer_create()
 wbuffer_write_uint64(a, 0x1122334455667788)
 ```
 
@@ -175,7 +175,7 @@ wbuffer_write_int8(wbuffer, v, ...) => int32_t
 #### 示例
 
 ```js
-a = wbuffer_create()
+var a = wbuffer_create()
 wbuffer_write_int8(a, -10)
 ```
 
@@ -195,7 +195,7 @@ wbuffer_write_int16(wbuffer, v, ...) => int32_t
 #### 示例
 
 ```js
-a = wbuffer_create()
+var a = wbuffer_create()
 wbuffer_write_int16(a, -1122)
 ```
 
@@ -215,7 +215,7 @@ wbuffer_write_int32(wbuffer, v, ...) => int32_t
 #### 示例
 
 ```js
-a = wbuffer_create()
+var a = wbuffer_create()
 wbuffer_write_int32(a, -11223344)
 ```
 
@@ -235,7 +235,7 @@ wbuffer_write_int64(wbuffer, v, ...) => int32_t
 #### 示例
 
 ```js
-a = wbuffer_create()
+var a = wbuffer_create()
 wbuffer_write_int64(a, -1122334455667788)
 ```
 
@@ -255,7 +255,7 @@ wbuffer_write_float(wbuffer, v, ...) => int32_t
 #### 示例
 
 ```js
-a = wbuffer_create()
+var a = wbuffer_create()
 wbuffer_write_float(a, -10, -20);
 ```
 
@@ -275,7 +275,7 @@ wbuffer_write_double(wbuffer, v, ...) => int32_t
 #### 示例
 
 ```js
-a = wbuffer_create()
+var a = wbuffer_create()
 wbuffer_write_double(a, 10, 20)
 ```
 
@@ -295,7 +295,7 @@ wbuffer_write_string(wbuffer, v, ...) => int32_t
 #### 示例
 
 ```js
-a = wbuffer_create()
+var a = wbuffer_create()
 wbuffer_write_string(a, "ab", "cd")
 ```
 
@@ -315,7 +315,7 @@ wbuffer_write_binary(wbuffer, v, ...) => int32_t
 #### 示例
 
 ```js
-a = wbuffer_create()
+var a = wbuffer_create()
 wbuffer_write_binary(a, "1234", 4)
 ```
 
@@ -333,8 +333,8 @@ wbuffer_get_data(wbuffer) => pointer
 #### 示例
 
 ```js
-a = wbuffer_create()
-b = wbuffer_get_data(a)
+var a = wbuffer_create()
+var b = wbuffer_get_data(a)
 ```
 
 ### 18.wbuffer\_get\_cursor
@@ -351,7 +351,7 @@ wbuffer_get_cursor(wbuffer) => uint32_t
 #### 示例
 
 ```js
-a = wbuffer_create()
+var a = wbuffer_create()
 print(wbuffer_get_cursor(a))
 ```
 
@@ -369,7 +369,7 @@ wbuffer_get_capacity(wbuffer) => uint32_t
 #### 示例
 
 ```js
-a = wbuffer_create()
+var a = wbuffer_create()
 print(wbuffer_get_capacity(a))
 ```
 

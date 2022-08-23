@@ -16,7 +16,7 @@ value_is_valid(v) => bool
 #### 示例
 
 ```js
-a = object_create()
+var a = object_create()
 print(value_is_valid(a))
 ```
 
@@ -34,7 +34,7 @@ value_is_null(v) => bool
 #### 示例
 
 ```js
-a = object_create()
+var a = object_create()
 print(value_is_null(a))
 ```
 
@@ -69,6 +69,6 @@ value_get_binary_size(v) => uint32_t
 #### 示例
 
 ```js
-a = file_read_binary("test.bin")
+var a = file_read_binary("test.bin")
 assert(value_get_binary_size(a) == 5)
 ```

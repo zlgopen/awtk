@@ -137,7 +137,7 @@ prompt(tips) => str
 #### 示例
 
 ```js
-a = prompt('input a number:');
+var a = prompt('input a number:');
 print(int(a)+100);
 ```
 

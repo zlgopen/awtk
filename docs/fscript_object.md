@@ -16,7 +16,7 @@ object_create() => object
 #### 示例
 
 ```js
-a = object_create()
+var a = object_create()
 ```
 
 ### 2. object\_get
@@ -142,7 +142,7 @@ object_forward_events(global.arr, global)
 ### 完整示例
 
 ```js
-a = object_create()
+var a = object_create()
 assert(!value_is_null(a))
 assert(object_set(a, "age", 123))
 assert(a.age ==  123)
@@ -156,7 +156,7 @@ assert(object_remove(a, "age"))
 assert(!value_is_valid(object_get(a, "age")))
 unset(a)
 
-person = object_create()
+var person = object_create()
 assert(!value_is_null(person))
 
 assert(object_set(person, "age", 123))
@@ -165,10 +165,7 @@ assert(person.age ==  123)
 assert(object_set(person, "name", "awtk"))
 assert(person.name == "awtk")
 
-global = object_create()
-global.arr = array_create()
-object_forward_events(global.arr, global)
-
-unset(person)
-unset(global)
+var g = object_create()
+g.arr = array_create()
+object_forward_events(g.arr, g)
 ```
