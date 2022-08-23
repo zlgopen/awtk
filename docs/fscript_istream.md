@@ -13,6 +13,13 @@ istream_seek(istream, offset) => bool
 
 > 仅当输入流支持 seek 才能调用本函数。
 
+#### 示例
+
+```js
+a = istream_file_create("test.bin", "rb");
+istream_seek(a, 10);
+```
+
 ### 2.istream\_tell
 
 > 获取当前的偏移量。
@@ -26,6 +33,14 @@ istream_tell(istream) => uint32_t
 
 > 仅当输入流支持 tell 才能调用本函数。
 
+#### 示例
+
+```js
+a = istream_file_create("test.bin", "rb");
+istream_seek(a, 10);
+print(istream_tell(a));
+```
+
 ### 3.istream\_read\_uint8
 
 > 读取 uint8_t 类型的数据。
@@ -34,7 +49,16 @@ istream_tell(istream) => uint32_t
 #### 原型
 
 ```js
-istream_read_uint8(istream) => uint8_t
+istream_read_uint8(istream, timeout) => uint8_t
+```
+
+> timeout 为选填参数。
+
+#### 示例
+
+```js
+a = istream_file_create("test.bin", "rb");
+print(istream_read_uint8(a));
 ```
 
 ### 4.istream\_read\_uint16
@@ -45,7 +69,16 @@ istream_read_uint8(istream) => uint8_t
 #### 原型
 
 ```js
-istream_read_uint16(istream) => uint16_t
+istream_read_uint16(istream, timeout) => uint16_t
+```
+
+> timeout 为选填参数。
+
+#### 示例
+
+```js
+a = istream_file_create("test.bin", "rb");
+print(istream_read_uint16(a));
 ```
 
 ### 5.istream\_read\_uint32
@@ -56,7 +89,16 @@ istream_read_uint16(istream) => uint16_t
 #### 原型
 
 ```js
-istream_read_uint32(istream) => uint32_t
+istream_read_uint32(istream, timeout) => uint32_t
+```
+
+> timeout 为选填参数。
+
+#### 示例
+
+```js
+a = istream_file_create("test.bin", "rb");
+print(istream_read_uint32(a));
 ```
 
 ### 6.istream\_read\_uint64
@@ -67,7 +109,16 @@ istream_read_uint32(istream) => uint32_t
 #### 原型
 
 ```js
-istream_read_uint64(istream) => uint64_t
+istream_read_uint64(istream, timeout) => uint64_t
+```
+
+> timeout 为选填参数。
+
+#### 示例
+
+```js
+a = istream_file_create("test.bin", "rb");
+print(istream_read_uint64(a));
 ```
 
 ### 7.istream\_read\_int8
@@ -78,7 +129,16 @@ istream_read_uint64(istream) => uint64_t
 #### 原型
 
 ```js
-istream_read_int8(istream) => int8_t
+istream_read_int8(istream, timeout) => int8_t
+```
+
+> timeout 为选填参数。
+
+#### 示例
+
+```js
+a = istream_file_create("test.bin", "rb");
+print(istream_read_int8(a));
 ```
 
 ### 8.istream\_read\_int16
@@ -89,7 +149,16 @@ istream_read_int8(istream) => int8_t
 #### 原型
 
 ```js
-istream_read_int16(istream) => int16_t
+istream_read_int16(istream, timeout) => int16_t
+```
+
+> timeout 为选填参数。
+
+#### 示例
+
+```js
+a = istream_file_create("test.bin", "rb");
+print(istream_read_int16(a));
 ```
 
 ### 9.istream\_read\_int32
@@ -100,7 +169,16 @@ istream_read_int16(istream) => int16_t
 #### 原型
 
 ```js
-istream_read_int32(istream) => int32_t
+istream_read_int32(istream, timeout) => int32_t
+```
+
+> timeout 为选填参数。
+
+#### 示例
+
+```js
+a = istream_file_create("test.bin", "rb");
+print(istream_read_int32(a));
 ```
 
 ### 10.istream\_read\_int64
@@ -111,7 +189,16 @@ istream_read_int32(istream) => int32_t
 #### 原型
 
 ```js
-istream_read_int64(istream) => int64_t
+istream_read_int64(istream, timeout) => int64_t
+```
+
+> timeout 为选填参数。
+
+#### 示例
+
+```js
+a = istream_file_create("test.bin", "rb");
+print(istream_read_int64(a));
 ```
 
 ### 11.istream\_read\_float
@@ -122,7 +209,16 @@ istream_read_int64(istream) => int64_t
 #### 原型
 
 ```js
-istream_read_float(istream) => float
+istream_read_float(istream, timeout) => float
+```
+
+> timeout 为选填参数。
+
+#### 示例
+
+```js
+a = istream_file_create("test.bin", "rb");
+print(istream_read_float(a));
 ```
 
 ### 12.istream\_read\_double
@@ -133,7 +229,16 @@ istream_read_float(istream) => float
 #### 原型
 
 ```js
-istream_read_double(istream) => double
+istream_read_double(istream, timeout) => double
+```
+
+> timeout 为选填参数。
+
+#### 示例
+
+```js
+a = istream_file_create("test.bin", "rb");
+print(istream_read_double(a));
 ```
 
 ### 13.istream\_read\_string
@@ -144,7 +249,16 @@ istream_read_double(istream) => double
 #### 原型
 
 ```js
-istream_read_string(istream, size) => str
+istream_read_string(istream, size, timeout) => str
+```
+
+> timeout 为选填参数。
+
+#### 示例
+
+```js
+a = istream_file_create("test.bin", "rb");
+print(istream_read_string(a, 10));
 ```
 
 ### 14.istream\_read\_binary
@@ -155,7 +269,16 @@ istream_read_string(istream, size) => str
 #### 原型
 
 ```js
-istream_read_binary(istream, size) => binary
+istream_read_binary(istream, size, timeout) => binary
+```
+
+> timeout 为选填参数。
+
+#### 示例
+
+```js
+a = istream_file_create("test.bin", "rb");
+print(istream_read_binary(a, 10));
 ```
 
 ### 15.istream\_read\_line
@@ -166,7 +289,16 @@ istream_read_binary(istream, size) => binary
 #### 原型
 
 ```js
-istream_read_line(istream, size) => str
+istream_read_line(istream, size, timeout) => str
+```
+
+> timeout 为选填参数。
+
+#### 示例
+
+```js
+a = istream_file_create("test.bin", "rb");
+print(istream_read_line(a, 10));
 ```
 
 ### 16.istream\_is\_eos
@@ -178,6 +310,13 @@ istream_read_line(istream, size) => str
 
 ```js
 istream_is_eos(istream) => bool
+```
+
+#### 示例
+
+```js
+a = istream_file_create("test.bin", "rb");
+print(istream_is_eos(a));
 ```
 
 ### 更多示例

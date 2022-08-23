@@ -9,13 +9,13 @@ object 适用于 app\_conf、typed\_array 和 array 等各种对象。
 
 #### 原型
 
-```
+```js
 object_create() => object
 ```
 
 #### 示例
 
-```
+```js
 a = object_create()
 ```
 
@@ -28,20 +28,20 @@ a = object_create()
 
 #### 原型
 
-```
+```js
 object_get(o, key) => value
 object_get(o, key, defval) => value
 ```
 
 也可以直接访问对象的属性：
 
-```
+```js
 print(o.key)
 ```
 
 #### 示例
 
-```
+```js
 print(object_get(a, "age"))
 print(a.age)
 ```
@@ -53,13 +53,13 @@ print(a.age)
 
 #### 原型
 
-```
+```js
 object_set(obj, key, value) => bool
 ```
 
 #### 示例
 
-```
+```js
 object_set(a, "age", 123);
 ```
 
@@ -70,13 +70,13 @@ object_set(a, "age", 123);
 
 #### 原型
 
-```
+```js
 object_remove(obj, key) => bool
 ```
 
 #### 示例
 
-```
+```js
 object_remove(a, "age")
 ```
 
@@ -87,13 +87,13 @@ object_remove(a, "age")
 
 #### 原型
 
-```
+```js
 object_ref(obj) => object
 ```
 
 #### 示例
 
-```
+```js
 object_ref(a)
 ```
 
@@ -104,13 +104,13 @@ object_ref(a)
 
 #### 原型
 
-```
+```js
 object_unref(obj)
 ```
 
 #### 示例
 
-```
+```js
 object_ref(a)
 ```
 
@@ -127,13 +127,13 @@ object_ref(a)
 
 #### 原型
 
-```
+```js
 object_forward_events(src_obj, dst_obj)
 ```
 
 #### 示例
 
-```
+```js
 global = object_create()
 global.arr = array_create()
 object_forward_events(global.arr, global)

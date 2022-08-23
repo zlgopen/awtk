@@ -11,6 +11,12 @@
 iostream_tcp_create(host, port) => object
 ```
 
+#### 示例
+
+```js
+a = iostream_tcp_create("localhost", 1234);
+```
+
 ### 2.iostream\_udp\_create
 
 > 创建 UDP 客户端输入输出流对象。
@@ -20,6 +26,12 @@ iostream_tcp_create(host, port) => object
 
 ```js
 iostream_udp_create(host, port) => object
+```
+
+#### 示例
+
+```js
+a = iostream_udp_create("localhost", 4000);
 ```
 
 ### 完整示例

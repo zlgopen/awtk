@@ -9,7 +9,7 @@ Cyclic redundancy check
 
 #### 原型
 
-```
+```js
 crc16(str) => uint16_t
 crc16(data, size) => uint16_t
 crc16(binary) => uint16_t
@@ -17,7 +17,7 @@ crc16(binary) => uint16_t
 
 #### 示例
 
-```
+```js
 crc16("hello")
 ```
 
@@ -28,7 +28,7 @@ crc16("hello")
 
 #### 原型
 
-```
+```js
 crc32(str) => uint32_t
 crc32(data, size) => uint32_t
 crc32(binary) => uint32_t
@@ -36,7 +36,7 @@ crc32(binary) => uint32_t
 
 #### 示例
 
-```
+```js
 crc32("hello")
 ```
 
@@ -47,7 +47,7 @@ crc32("hello")
 
 #### 原型
 
-```
+```js
 cksum(str) => uint16_t
 cksum(data, size) => uint16_t
 cksum(binary) => uint16_t
@@ -55,7 +55,7 @@ cksum(binary) => uint16_t
 
 #### 示例
 
-```
+```js
 cksum("hello")
 ```
 

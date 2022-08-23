@@ -9,13 +9,13 @@
 
 #### 原型
 
-```
+```js
 app_conf() => object
 ```
 
 #### 示例
 
-```
+```js
 assert(object_set(app_conf(), "timeout", 100))
 ```
 
@@ -26,13 +26,13 @@ assert(object_set(app_conf(), "timeout", 100))
 
 #### 原型
 
-```
+```js
 app_conf_save() => bool
 ```
 
 #### 示例
 
-```
+```js
 assert(app_conf_save())
 ```
 

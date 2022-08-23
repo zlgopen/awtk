@@ -11,6 +11,12 @@
 istream_file_create(filename, mode) => object
 ```
 
+#### 示例
+
+```js
+a = istream_file_create("test.bin", "rb");
+```
+
 ### 2.ostream\_file\_create
 
 > 创建文件输出流对象。
@@ -20,6 +26,12 @@ istream_file_create(filename, mode) => object
 
 ```js
 ostream_file_create(filename, mode) => object
+```
+
+#### 示例
+
+```js
+a = ostream_file_create("test.bin", "wb+");
 ```
 
 ### 完整示例

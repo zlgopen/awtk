@@ -11,6 +11,12 @@
 is_little() => bool
 ```
 
+#### 示例
+
+```js
+print(is_little());
+```
+
 ### 2.htonl
 
 > 将类型为 uint32_t 的整数，从主机字节顺序转成网络字节顺序。
@@ -22,7 +28,14 @@ is_little() => bool
 htonl(uint32_t) => uint32_t
 ```
 
+#### 示例
+
+```js
+print(htonl(1));
+```
+
 ### 3.ntohl
+
 > 将类型为 uint32_t 的整数，从网络字节顺序转成主机字节顺序。
 ----------------------------
 
@@ -32,7 +45,14 @@ htonl(uint32_t) => uint32_t
 ntohl(uint32_t) => uint32_t
 ```
 
+#### 示例
+
+```js
+print(ntohl(2));
+```
+
 ### 4.htons
+
 > 将类型为 uint16_t 的整数，从主机字节顺序转成网络字节顺序。
 ----------------------------
 
@@ -40,6 +60,12 @@ ntohl(uint32_t) => uint32_t
 
 ```js
 htons(uint16_t) => uint16_t
+```
+
+#### 示例
+
+```js
+print(htons(3));
 ```
 
 ### 5.ntohs
@@ -53,6 +79,12 @@ htons(uint16_t) => uint16_t
 ntohs(uint16_t) => uint16_t
 ```
 
+#### 示例
+
+```js
+print(ntohs(4));
+```
+
 ### 6.htonf
 
 > 将类型为单精度的浮点数，从主机字节顺序转成网络字节顺序。
@@ -62,6 +94,12 @@ ntohs(uint16_t) => uint16_t
 
 ```js
 htonf(float) => float
+```
+
+#### 示例
+
+```js
+print(htonf(5));
 ```
 
 ### 7.ntohf
@@ -75,14 +113,27 @@ htonf(float) => float
 ntohf(float) => float
 ```
 
+#### 示例
+
+```js
+print(ntohf(7));
+```
+
 ### 8.htonll
+
 > 将类型为 uint64_t 的整数，从主机字节顺序转成网络字节顺序。
 ----------------------------
 
 #### 原型
 
 ```js
-htonl(uint64_t) => uint64_t
+htonll(uint64_t) => uint64_t
+```
+
+#### 示例
+
+```js
+print(htonll(5));
 ```
 
 ### 9.ntohll
@@ -94,6 +145,12 @@ htonl(uint64_t) => uint64_t
 
 ```js
 ntohll(uint64_t) => uint64_t
+```
+
+#### 示例
+
+```js
+print(ntohll(1));
 ```
 
 ### 更多示例

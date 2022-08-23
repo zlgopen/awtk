@@ -1,4 +1,3 @@
-
 ## value 扩展函数
 
 value 相关的辅助函数。
@@ -10,13 +9,13 @@ value 相关的辅助函数。
 
 #### 原型
 
-```
+```js
 value_is_valid(v) => bool
 ```
 
 #### 示例
 
-```
+```js
 a = object_create()
 print(value_is_valid(a))
 ```
@@ -28,13 +27,13 @@ print(value_is_valid(a))
 
 #### 原型
 
-```
+```js
 value_is_null(v) => bool
 ```
 
 #### 示例
 
-```
+```js
 a = object_create()
 print(value_is_null(a))
 ```
@@ -46,13 +45,13 @@ print(value_is_null(a))
 
 #### 原型
 
-```
+```js
 value_get_binary_data(v) => pointer_t
 ```
 
 #### 示例
 
-```
+```js
 print(value_get_binary_data(a))
 ```
 
@@ -63,13 +62,13 @@ print(value_get_binary_data(a))
 
 #### 原型
 
-```
+```js
 value_get_binary_size(v) => uint32_t
 ```
 
 #### 示例
 
-```
+```js
 a = file_read_binary("test.bin")
 assert(value_get_binary_size(a) == 5)
 ```

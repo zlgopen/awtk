@@ -18,7 +18,27 @@ typed\_array 有以下属性：
 #### 原型
 
 ```js
-typed_array_create() => object
+typed_array_create(type, capacity) => object
+```
+
+type 参数为字符串，可选取值如下：
+
+* i8 表示 int8。
+* i16 表示 int16。
+* i32 表示 int32。
+* i64 表示 int64。
+* u8 表示 uint8。
+* u16 表示 uint16。
+* u32 表示 uint32。
+* u64 表示 uint64。
+* f32 表示 float32。
+* float 表示 double。
+* 其它或默认为int32。
+
+#### 示例
+
+```js
+a = typed_array_create("i8", s10);
 ```
 
 ### 2.typed\_array\_push
@@ -34,6 +54,13 @@ typed_array_push(array, v, ...) => uint32_t
 
 > 返回写入数据的个数
 
+#### 示例
+
+```js
+a = typed_array_create("i32", 3);
+typed_array_push(a, 1, 2, 3);
+```
+
 ### 3.typed\_array\_pop
 
 > 弹出最后一个元素
@@ -43,6 +70,14 @@ typed_array_push(array, v, ...) => uint32_t
 
 ```js
 typed_array_pop(array) => value
+```
+
+#### 示例
+
+```js
+a = typed_array_create("i32", 3);
+typed_array_push(a, 1, 2, 3);
+print(typed_array_pop(a));
 ```
 
 ### 4.typed\_array\_get
@@ -56,6 +91,14 @@ typed_array_pop(array) => value
 typed_array_get(array, index) => value
 ```
 
+#### 示例
+
+```js
+a = typed_array_create("i32", 3);
+typed_array_push(a, 1, 2, 3);
+print(typed_array_get(a, 1));
+```
+
 ### 5.typed\_array\_set
 
 > 修改指定位置的元素
@@ -65,6 +108,14 @@ typed_array_get(array, index) => value
 
 ```js
 typed_array_set(array, index, value) => bool
+```
+
+#### 示例
+
+```js
+a = typed_array_create("i32", 3);
+typed_array_push(a, 1, 2, 3);
+typed_array_set(a, 1, 4);
 ```
 
 ### 6.typed\_array\_insert
@@ -78,6 +129,14 @@ typed_array_set(array, index, value) => bool
 typed_array_insert(array, index, value) => bool
 ```
 
+#### 示例
+
+```js
+a = typed_array_create("i32", 3);
+typed_array_push(a, 1, 2, 3);
+typed_array_insert(a, 1, 4);
+```
+
 ### 7.typed\_array\_remove
 
 > 删除指定位置的元素
@@ -87,6 +146,14 @@ typed_array_insert(array, index, value) => bool
 
 ```js
 typed_array_remove(array, index) => bool
+```
+
+#### 示例
+
+```js
+a = typed_array_create("i32", 3);
+typed_array_push(a, 1, 2, 3);
+typed_array_remove(a, 1);
 ```
 
 ### 8.typed\_array\_clear
@@ -100,6 +167,14 @@ typed_array_remove(array, index) => bool
 typed_array_clear(array) => bool
 ```
 
+#### 示例
+
+```js
+a = typed_array_create("i32", 3);
+typed_array_push(a, 1, 2, 3);
+typed_array_clear(a);
+```
+
 ### 9.typed\_array\_join
 
 > 连接全部元素成一个字符串。
@@ -109,6 +184,14 @@ typed_array_clear(array) => bool
 
 ```js
 typed_array_join(array, sep) => str
+```
+
+#### 示例
+
+```js
+a = typed_array_create("i32", 3);
+typed_array_push(a, 1, 2, 3);
+print(typed_array_join(a, ","));
 ```
 
 ### 更多示例

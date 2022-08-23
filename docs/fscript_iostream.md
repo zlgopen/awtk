@@ -7,8 +7,15 @@
 
 #### 原型
 
-```
+```js
 iostream_get_istream(iostream) => object
+```
+
+#### 示例
+
+```js
+a = iostream_serial_create("COM4");
+b = iostream_get_istream(a);
 ```
 
 ### 2.iostream\_get\_ostream
@@ -18,8 +25,15 @@ iostream_get_istream(iostream) => object
 
 #### 原型
 
+```js
+iostream_get_ostream(iostream) => object
 ```
-iostream _get_ostream(iostream) => object
+
+#### 示例
+
+```js
+a = iostream_serial_create("COM4");
+b = iostream_get_ostream(a);
 ```
 
 ### 更多示例

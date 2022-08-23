@@ -8,7 +8,24 @@
 #### 原型
 
 ```js
-istream_file_create(device, baudrate) => object
+iostream_serial_create(device) => object
+iostream_serial_create(device, baudrate, bytesize, parity, stopbits, flowcontrol) => object
+```
+
+* device 为串口名称。
+* baudrate 为波特率，缺省为115200。
+* bytesize 为字节位数，缺省为8。
+* parity 为奇偶校验，缺省为none。
+* stopbits 为停止位，缺省为1。
+* flowcontrol 为流控，缺省为none。
+
+> 备注：其中 device 为必填参数，其他均为可选参数。
+
+#### 示例
+
+```js
+a = iostream_serial_create("COM4");
+b = iostream_serial_create("COM5", 115200, 8, "none", 1, "none");
 ```
 
 ### 完整示例

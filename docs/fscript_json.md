@@ -13,6 +13,12 @@ json_load(binary) => object
 json_load(data, size) => object
 ```
 
+#### 示例
+
+```js
+a = json_load('{"name": "fscript", "age": 100}');
+```
+
 ### 2.json\_save
 
 > 将对象保存为 json 数据。
@@ -24,6 +30,13 @@ json_load(data, size) => object
 json_save(obj) => binary 
 ```
 
+#### 示例
+
+```js
+a = json_load('{"name": "fscript", "age": 100}');
+json_save(a);
+```
+
 ### 3.json\_save\_to\_string
 
 > 将对象保存为字符串数据。
@@ -33,6 +46,13 @@ json_save(obj) => binary
 
 ```js
 json_save_to_string(obj) => string 
+```
+
+#### 示例
+
+```js
+a = json_load('{"name": "fscript", "age": 100}');
+print(json_save_to_string(a));
 ```
 
 ### 4.ubjson\_load
@@ -47,6 +67,12 @@ ubjson_load(binary) => object
 ubjson_load(data, size) => object
 ```
 
+#### 示例
+
+```js
+a = ubjson_load(file_read_binary("test.ubjson"));
+```
+
 ### 5.ubjson\_save
 
 > 将对象保存为 ubjson 数据。
@@ -56,6 +82,13 @@ ubjson_load(data, size) => object
 
 ```js
 ubjson_save(obj) => binary
+```
+
+#### 示例
+
+```js
+a = json_load('{"name": "fscript", "age": 100}');
+b = ubjson_save(a);
 ```
 
 ### 完整示例

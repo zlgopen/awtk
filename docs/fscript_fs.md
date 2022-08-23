@@ -1,4 +1,4 @@
-##  文件系统扩展函数
+## 文件系统扩展函数
 
 ### 1.file\_read\_text
 
@@ -7,8 +7,14 @@
 
 #### 原型
 
-```
+```js
 file_read_text(filename) => str
+```
+
+#### 示例
+
+```js
+file_read_text("test.txt");
 ```
 
 ### 2.file\_read\_binary
@@ -18,8 +24,14 @@ file_read_text(filename) => str
 
 #### 原型
 
-```
+```js
 file_read_binary(filename) => binary
+```
+
+#### 示例
+
+```js
+a = file_read_binary("test.bin");
 ```
 
 ### 3.file\_write
@@ -29,10 +41,16 @@ file_read_binary(filename) => binary
 
 #### 原型
 
-```
+```js
 file_write(filename, str) => bool
 file_write(filename, binary) => bool
 file_write(filename, data, size) => bool
+```
+
+#### 示例
+
+```js
+file_write("test.txt", "write str");
 ```
 
 ### 4.file\_write\_append
@@ -42,10 +60,16 @@ file_write(filename, data, size) => bool
 
 #### 原型
 
-```
+```js
 file_write_append(filename, str) => bool
 file_write_append(filename, binary) => bool
 file_write_append(filename, data, size) => bool
+```
+
+#### 示例
+
+```js
+file_write_append("test.txt", "append str");
 ```
 
 ### 5.file\_exist
@@ -55,8 +79,14 @@ file_write_append(filename, data, size) => bool
 
 #### 原型
 
-```
+```js
 file_exist(filename) => bool
+```
+
+#### 示例
+
+```js
+print(file_exist("test.txt"));
 ```
 
 ### 6.file\_get\_size
@@ -66,8 +96,14 @@ file_exist(filename) => bool
 
 #### 原型
 
-```
+```js
 file_get_size(filename) => int32_t
+```
+
+#### 示例
+
+```js
+print(file_get_size("test.txt"));
 ```
 
 ### 7.file\_remove
@@ -77,8 +113,14 @@ file_get_size(filename) => int32_t
 
 #### 原型
 
-```
+```js
 file_remove(filename) => bool
+```
+
+#### 示例
+
+```js
+file_remove("test.txt");
 ```
 
 ### 8.file\_rename
@@ -88,8 +130,14 @@ file_remove(filename) => bool
 
 #### 原型
 
-```
+```js
 file_rename(filename, new_name) => bool
+```
+
+#### 示例
+
+```js
+file_rename("test.txt","rename.txt");
 ```
 
 ### 9.file\_copy
@@ -99,8 +147,14 @@ file_rename(filename, new_name) => bool
 
 #### 原型
 
-```
+```js
 file_copy(filename, dst_name) => bool
+```
+
+#### 示例
+
+```js
+file_copy("rename.txt","copy.txt");
 ```
 
 ### 10.file\_stat
@@ -110,7 +164,7 @@ file_copy(filename, dst_name) => bool
 
 #### 原型
 
-```
+```js
 file_stat(filename) => object
 ```
 
@@ -133,6 +187,25 @@ file_stat(filename) => object
 | is_link     | bool_t   | 是否为链接             |
 | is_reg_file | bool_t   | 是否为普通文件         |
 
+#### 示例
+
+```js
+a = file_stat("rename.txt");
+print(join(": ","dev",a.dev));
+print(join(": ","ino",a.ino));
+print(join(": ","mode",a.mode));
+print(join(": ","nlink",a.nlink));
+print(join(": ","uid",a.uid));
+print(join(": ","rdev",a.rdev));
+print(join(": ","size",a.size));
+print(join(": ","atime",a.atime));
+print(join(": ","mtime",a.mtime));
+print(join(": ","ctime",a.ctime));
+print(join(": ","is_dir",a.is_dir));
+print(join(": ","is_link",a.is_link));
+print(join(": ","is_reg_file",a.is_reg_file));
+```
+
 ### 11.path\_create
 
 > 创建目录(递归创建不存在的父目录)。
@@ -140,8 +213,14 @@ file_stat(filename) => object
 
 #### 原型
 
-```
+```js
 path_create(path) => bool
+```
+
+#### 示例
+
+```js
+path_create("a/b/c");
 ```
 
 ### 12.path\_remove
@@ -151,8 +230,14 @@ path_create(path) => bool
 
 #### 原型
 
-```
+```js
 path_remove(path) => bool
+```
+
+#### 示例
+
+```js
+path_remove("a/b/c");
 ```
 
 ### 13.path\_exist
@@ -162,8 +247,14 @@ path_remove(path) => bool
 
 #### 原型
 
-```
+```js
 path_exist(path) => bool
+```
+
+#### 示例
+
+```js
+print(path_exist("a/b/c"));
 ```
 
 ### 14.path\_rename
@@ -173,8 +264,14 @@ path_exist(path) => bool
 
 #### 原型
 
-```
+```js
 path_rename(path, new_path) => bool
+```
+
+#### 示例
+
+```js
+path_rename("a/b","a/bbb");
 ```
 
 ### 15.path\_list
@@ -184,7 +281,7 @@ path_rename(path, new_path) => bool
 
 #### 原型
 
-```
+```js
 path_list(path) => array
 ```
 
@@ -197,6 +294,17 @@ path_list(path) => array
 | is_reg_file | bool_t   | 是否是普通文件 |
 | name        | str      | 文件名称       |
 
+#### 示例
+
+```js
+a = path_list("a/b");
+b = array_get(a,0);
+print(object_get(b.is_dir));
+print(object_get(b.is_link));
+print(object_get(b.is_reg_file));
+print(object_get(b.name));
+```
+
 ### 16.path\_get\_exe
 
 > 获取可执行文件所在目录。
@@ -204,8 +312,14 @@ path_list(path) => array
 
 #### 原型
 
-```
+```js
 path_get_exe() => str
+```
+
+#### 示例
+
+```js
+print(path_get_exe());
 ```
 
 ### 17.path\_get\_cwd
@@ -215,8 +329,14 @@ path_get_exe() => str
 
 #### 原型
 
-```
+```js
 path_get_cwd() => str
+```
+
+#### 示例
+
+```js
+print(path_get_cwd());
 ```
 
 ### 18.path\_get\_temp
@@ -226,8 +346,14 @@ path_get_cwd() => str
 
 #### 原型
 
-```
+```js
 path_get_temp() => str
+```
+
+#### 示例
+
+```js
+print(path_get_temp());
 ```
 
 ### 19.path\_get\_app\_root
@@ -237,8 +363,14 @@ path_get_temp() => str
 
 #### 原型
 
-```
+```js
 path_get_app_root() => str
+```
+
+#### 示例
+
+```js
+print(path_get_app_root());
 ```
 
 ### 20.path\_get\_user\_storage\_root
@@ -248,8 +380,14 @@ path_get_app_root() => str
 
 #### 原型
 
-```
+```js
 path_get_user_storage_root() => str
+```
+
+#### 示例
+
+```js
+print(path_get_user_storage_root());
 ```
 
 ### 21.fs\_get\_disk\_info
@@ -259,18 +397,24 @@ path_get_user_storage_root() => str
 
 #### 原型
 
-```
+```js
 fs_get_disk_info(path) => object
 ```
 
 返回的文件系统信息对象包含以下属性：
 
-| 属性名称    | 属性类型 | 说明             |
-| ----------- | -------- | ---------------- |
-| free_kb     | int32_t  | 空闲空间大小(KB) |
-| total_kb    | int32_t  | 总共空间大小(KB) |
+| 属性名称 | 属性类型 | 说明             |
+| -------- | -------- | ---------------- |
+| free_kb  | int32_t  | 空闲空间大小(KB) |
+| total_kb | int32_t  | 总共空间大小(KB) |
 
 > 备注：该功能需适配 AWTK 通用文件系统（fs.h）中的 fs_get_disk_info 接口，目前 PC 上暂不支持。
+
+```js
+a = fs_get_disk_info("/sd");
+print(join(": ","free_kb",a.free_kb));
+print(join(": ","total_kb",a.total_kb));
+```
 
 ### 更多示例
 

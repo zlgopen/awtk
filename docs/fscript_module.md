@@ -8,7 +8,7 @@
 
 ### 1.require\_str
 
-> 加载从字符串加载模块
+> 从字符串加载模块。
 ----------------------------
 
 #### 原型
@@ -33,20 +33,20 @@ print(m.foo(100, 99))
 print(m.bar(100, 99))
 ```
 
-### 1.require
+### 2.require
 
-> 加载从指定 URL/文件加载模块
+> 从指定URL/文件加载模块。
 ----------------------------
 
 #### 原型
 
 ```js
-require(str) => object
+require(url) => object
 ```
 
 #### 示例
 
-* foobar.fs
+* 模块文件：foobar.fs
 
 ```js
 function foo(a, b) {
@@ -56,10 +56,9 @@ function foo(a, b) {
 function bar(a, b) {
   return a - b
 }
-
 ```
 
-* main.fs
+* 主程序：main.fs
 
 ```js
 var m = require('foobar.fs')
