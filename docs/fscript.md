@@ -89,6 +89,10 @@ print("hello", 123)
 如：
 
 ```js
+/* 系统变量：一个AWTK应用程序只有一个 global 对象，在程序初始化时创建，程序退出时销毁 */
+set(global.a, 123)
+
+/* 全局变量：保存在脚本执行的上下文对象中，通常由外部控制生命周期 */
 set(a, 123)
 ```
 
@@ -97,12 +101,26 @@ set(a, 123)
 如：
 
 ```js
+/* 系统变量：一个AWTK应用程序只有一个 global 对象，在程序初始化时创建，程序退出时销毁 */
+global.a = 123
+global.b = "abc"
+global.c = true
+
+/* 全局变量：保存在脚本执行的上下文对象中，通常由外部控制生命周期 */
 a = 123
 b = "abc"
 c = true
+
+/* 局部变量：又称临时变量，在脚本执行完毕或函数调用完成就销毁 */
+var a = 123
+var b = "abc"
+var c = true
 ```
 
-> 备注：在 FScript 脚本中定义的全局变量在执行完一段脚本后不会被清空，因此使用这些变量前通常需要初始化。
+> 备注：
+> 
+> 1. global. 开头的变量为系统变量，可以在同一进程的多个脚本中共享数据（这并非是好的做法，尽量避免使用）
+> 2. 在 FScript 脚本中定义的系统变量和全局变量在执行完一段脚本后通常不会被清空，因此使用这些变量前需要初始化。
 
 #### 3.4.1 变量名命名规则：
 
@@ -126,29 +144,6 @@ msg.payload = "hello"
 
 > 在这里，如果对象 msg 存在，msg.payload 为 msg 对象的 payload 成员，否则 msg.payload 则是一个普通变量。
 
-* a、b、c 和 d 为快速访问变量，具有更快的访问速度，建议在循环中优先使用。
-
-如：
-
-```js
-a=0
-b=0
-while(a < 100) {
-  a=a+1
-  b=b+a
-  print(a, b)
-}
-```
-
-* global. 开头的变量为全局变量，可以在同一进程的多个脚本中共享数据（全局变量并非是好的做法，尽量避免使用）
-
-如：
-
-```js
-global.count=400
-global.name="fscript"
-```
-
 ### 3.5 获取变量
 
 ```js
@@ -158,9 +153,9 @@ get(abc)
 
 > * 获取变量时，如果变量不存在，自动当成字符串处理，并打印获取变量失败的警告。
 > * 如果不希望变量被当成字符串，可以加上$前缀，或者使用 get 函数。
-> * fscript 不支持将函数返回值当做变量名使用并通过英文点"."访问子变量，比如 array_create().size，此时会将 .size 当做字符串处理。
+> * FScript 不支持将函数返回值当做变量名使用并通过英文点"."访问子变量，比如 array_create().size，此时会将 .size 当做字符串处理。
 >
-> 注意：fscript 不提倡直接使用变量名当做字符串，如需要如果使用字符串常量，请用双引号包起来。
+> 注意：FScript 不提倡直接使用变量名当做字符串，**如需要如果使用字符串常量，请用双引号包起来**。
 
 如：
 
@@ -184,9 +179,11 @@ cost: 112 us
 
 判断一个变量是否有效，需要使用 get 函数：
 
+> 注意：如果不使用 get 函数获取变量，那么当变量不存在时，FScript 会自动将其当成字符串处理，此时 value_is_valid 函数一定返回 true。
+
 ```js
 print("abc is valid? ", value_is_valid(get(abc)))
-abc=123
+var abc=123
 print("abc is valid? ", value_is_valid(get(abc)))
 print(get(abc) + 321)
 ```
@@ -216,8 +213,8 @@ if(a == 1) {
 
 ```js
 /* if else */
-a=random(1, 100)
-b=random(1, 100)
+var a=random(1, 100)
+var b=random(1, 100)
 
 print("a is ", a);
 print("b is ", b);
@@ -231,6 +228,7 @@ if(a < b) {
 
 ```js
 /* else if */
+var a=random(1, 6);
 var b = "";
 
 if(a == 1) {
@@ -266,8 +264,8 @@ while (条件) {
 * 示例
 
 ```js
-a=0
-b=0
+var a=0
+var b=0
 
 while(a < 100) {
   a=a+1
@@ -290,8 +288,8 @@ until(条件) {
 * 示例
 
 ```js
-a=0
-b=0
+var a=0
+var b=0
 
 until(a >= 100) {
   a=a+1
@@ -401,8 +399,8 @@ repeat_times(100) {
 #### 3.15.2 示例
 
 ```js
-a = 10
-b = 20
+var a = 10
+var b = 20
 ```
 
 ```js
@@ -551,8 +549,8 @@ print("hello", "fscript")
 print(1)
 print(true)
 
-a=100
-b=200
+var a=100
+var b=200
 print(a+b)
 print(join(",", a, b))
 ```
@@ -589,8 +587,8 @@ set(var, value) => bool
 ##### 示例
 
 ```js
+var a=1
 set(a, 1)
-a=1
 ```
 
 #### 4.1.9 unset
@@ -612,6 +610,7 @@ unset(var) => void
 ##### 示例
 
 ```js
+var a = 10;
 unset(a)
 ```
 
@@ -953,10 +952,10 @@ one_of(str_array, index, sep) => str
 ##### 示例
 
 ```js
-one_of("aa;bb;cc", 0) # => aa
-one_of("aa;bb;cc", 1) # => bb
-one_of("aa;bb;cc", 2) # => cc
-one_of("aa.bb.cc", 0, ".") # ==> aa
+one_of("aa;bb;cc", 0) // => aa
+one_of("aa;bb;cc", 1) // => bb
+one_of("aa;bb;cc", 2) // => cc
+one_of("aa.bb.cc", 0, ".") // ==> aa
 ```
 
 #### 4.2.3 len
@@ -1548,7 +1547,7 @@ runFScript 的第二个参数可以指定运行次数，方便测量某个函数
 
 比如：
 
-```
+```bash
 ./bin/runFScript '123+234' 100000
 ```
 

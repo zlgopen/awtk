@@ -87,7 +87,7 @@ array_dup(arr, start, end) => object
 
 #### 示例
 
-```
+```js
 var a = array_create_with_str("2,1,3", ",", "int");
 var b = array_dup(a);
 var c = array_dup(a, 1);
@@ -144,7 +144,7 @@ array_shift(array) => value
 
 #### 示例
 
-```
+```js
 var a = array_create_with_str("2,1,3", ",", "int");
 var b = array_shift(a);
 ```
@@ -446,8 +446,8 @@ array_clone_and_sort(array, ascending, ignore_case) => array
 ```js
 var a = array_create_with_str("2,1,3", ",", "int");
 var b = array_clone_and_sort(a);
-var d = array_join(b, ":");
-assert(d == "1:2:3")
+var c = array_join(b, ":");
+assert(c == "1:2:3")
 ```
 
 ### 23.array\_reverse

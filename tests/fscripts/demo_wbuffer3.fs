@@ -1,4 +1,3 @@
-
 var a = wbuffer_create()
 
 assert(wbuffer_write_int8(a, -10, -20) == 2);

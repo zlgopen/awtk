@@ -52,5 +52,4 @@ assert(ostream_write_string(b, "hello\n") == 6)
 
 assert(istream_read_uint32(c, 3000) == 6)
 assert(istream_read_string(c, 6, 3000) == "hello\n")
-
 ```

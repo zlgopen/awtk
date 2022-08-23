@@ -337,7 +337,7 @@ print(rbuffer_get_capacity(a));
 ```js
 ...
 
-b=rbuffer_create(wbuffer_get_data(a), wbuffer_get_cursor(a))
+var b=rbuffer_create(wbuffer_get_data(a), wbuffer_get_cursor(a))
 
 assert(rbuffer_get_cursor(b)==0)
 assert(rbuffer_read_int8(b)== -10)
@@ -354,7 +354,7 @@ assert(rbuffer_read_int64(b)==-1122334455667788)
 assert(rbuffer_get_cursor(b)==15)
 assert(rbuffer_read_string(b)=="hello")
 assert(rbuffer_get_cursor(b)==21)
-c = rbuffer_read_binary(b, 6)
+var c = rbuffer_read_binary(b, 6)
 assert(rbuffer_get_cursor(b)==27)
 
 wbuffer_rewind(a)
@@ -364,4 +364,5 @@ assert(wbuffer_get_cursor(a)==6)
 
 unset(a)
 unset(b)
+unset(c)
 ```

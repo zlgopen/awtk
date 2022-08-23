@@ -160,7 +160,7 @@ usubstr(str, start, end) => str
 #### 示例
 
 ```js
-a="致远电子"
+var a="致远电子"
 assert(usubstr(a) == '致远电子');
 assert(usubstr(a,0) == '致远电子');
 assert(usubstr(a,0,1) == '致');

@@ -197,7 +197,7 @@ print(typed_array_join(a, ","));
 ### 更多示例
 
 ```js
-a=typed_array_create("i32", 10)
+var a=typed_array_create("i32", 10)
 
 assert(typed_array_push(a, 1) == 1)
 assert(a.size, 1);

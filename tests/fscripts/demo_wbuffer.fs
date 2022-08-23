@@ -1,4 +1,3 @@
-
 var a=wbuffer_create()
 wbuffer_write_int8(a, -10) 
 assert(wbuffer_get_cursor(a)==1)
@@ -33,7 +32,7 @@ assert(rbuffer_read_int64(b)==-1122334455667788)
 assert(rbuffer_get_cursor(b)==15)
 assert(rbuffer_read_string(b)=="hello")
 assert(rbuffer_get_cursor(b)==21)
-c = rbuffer_read_binary(b, 6)
+var c = rbuffer_read_binary(b, 6)
 assert(rbuffer_get_cursor(b)==27)
 
 assert(rbuffer_rewind(b))

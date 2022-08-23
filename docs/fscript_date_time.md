@@ -24,7 +24,7 @@ date_time_create() => object
 #### 示例
 
 ```js
-dt = date_time_create();
+var dt = date_time_create();
 print(dt.year, "-", dt.month, "-", dt.day, " ", dt.hour, ":", dt.minute, ":", dt.second, "(", dt.wday, ")");
 ```
 
@@ -42,8 +42,8 @@ date_time_to_time(dt) => uint64_t
 #### 示例
 
 ```js
-dt = date_time_create();
-time = date_time_to_time(dt);
+var dt = date_time_create();
+var time = date_time_to_time(dt);
 ```
 
 ### 3.date\_time\_from\_time
@@ -60,8 +60,8 @@ date_time_from_time(dt, time) => bool
 #### 示例
 
 ```js
-dt = date_time_create();
-time = date_time_to_time(dt);
+var dt = date_time_create();
+var time = date_time_to_time(dt);
 assert(date_time_from_time(dt, time));
 ```
 
@@ -81,7 +81,7 @@ date_time_set(dt) => bool
 #### 示例
 
 ```js
-dt = date_time_create();
+var dt = date_time_create();
 dt.year = 2022;
 dt.month = 10;
 dt.day = 1;
@@ -158,7 +158,7 @@ is_leap_year(year) => bool
 #### 示例
 
 ```js
-dt = date_time_create();
+var dt = date_time_create();
 print(is_leap_year(dt.year));
 ```
 
@@ -176,7 +176,7 @@ get_days_of_month(year, month) => uint32_t
 #### 示例
 
 ```js
-dt = date_time_create();
+var dt = date_time_create();
 print(get_days_of_month(dt.year, dt.month));
 ```
 
@@ -194,7 +194,7 @@ date_time_set_prop(dt, name, value) => bool
 #### 示例
 
 ```js
-dt = date_time_create();
+var dt = date_time_create();
 date_time_set_prop(dt, "year", 2012);
 ```
 
@@ -212,14 +212,14 @@ date_time_get_prop(dt, name) => value
 #### 示例
 
 ```js
-dt = date_time_create();
-year = date_time_get_prop(dt, "year");
+var dt = date_time_create();
+var year = date_time_get_prop(dt, "year");
 ```
 
 ### 更多示例
 
 ```js
-dt = date_time_create()
+var dt = date_time_create()
 print(dt.year, "-", dt.month, "-", dt.day, " ", dt.hour, ":", dt.minute, ":", dt.second, "(", dt.wday, ")")
 
 dt.year = 2022

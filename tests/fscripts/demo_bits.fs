@@ -1,4 +1,3 @@
-
 assert(bit_clear(0b0111, 1) == 0b0101)
 assert(bit_clear(0b0111, 0) == 0b0110)
 

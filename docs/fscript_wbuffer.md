@@ -376,7 +376,7 @@ print(wbuffer_get_capacity(a))
 ### 更多示例
 
 ```js
-a=wbuffer_create()
+var a = wbuffer_create()
 wbuffer_write_int8(a, -10) 
 assert(wbuffer_get_cursor(a)==1)
 wbuffer_write_int16(a, -1122) 

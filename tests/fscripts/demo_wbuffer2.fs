@@ -1,4 +1,3 @@
-
 var a=wbuffer_create()
 wbuffer_write_uint8(a, 0x10) 
 assert(wbuffer_get_cursor(a)==1)
