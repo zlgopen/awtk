@@ -26,17 +26,17 @@ ret_t widget_invalidate_default(widget_t* widget, const rect_t* rect) {
   rect_t t = *rect;
   rect_t* r = &t;
   if (widget->vt->scrollable) {
-    int32_t ox = widget_get_prop_int(widget, WIDGET_PROP_XOFFSET, 0);
-    int32_t oy = widget_get_prop_int(widget, WIDGET_PROP_YOFFSET, 0);
     rect_t r_self = rect_init(0, 0, widget->w, widget->h);
 
-    if (ox > 0) {
-      r->x -= ox;
-      r->w += ox + 1;
-    }
-    if (oy > 0) {
-      r->y -= oy;
-      r->h += oy + 1;
+    if (!widget->dirty) {
+      int32_t ox = widget_get_prop_int(widget, WIDGET_PROP_XOFFSET, 0);
+      int32_t oy = widget_get_prop_int(widget, WIDGET_PROP_YOFFSET, 0);
+      if (ox > 0) {
+        r->x -= ox;
+      }
+      if (oy > 0) {
+        r->y -= oy;
+      }
     }
 
     *r = rect_intersect(r, &r_self);
