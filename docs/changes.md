@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/08/24
+  * 统一get\_offset的逻辑(感谢智明提供补丁)
+
 2022/08/23
   * 完善 fscript\_locals\_get
   * 完善 fscripts 示例。

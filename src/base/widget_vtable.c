@@ -29,8 +29,8 @@ ret_t widget_invalidate_default(widget_t* widget, const rect_t* rect) {
     rect_t r_self = rect_init(0, 0, widget->w, widget->h);
 
     if (!widget->dirty) {
-      int32_t ox = widget_get_prop_int(widget, WIDGET_PROP_XOFFSET, 0);
-      int32_t oy = widget_get_prop_int(widget, WIDGET_PROP_YOFFSET, 0);
+      int32_t ox = 0, oy = 0;
+      widget_get_offset(widget, &ox, &oy);
       if (ox > 0) {
         r->x -= ox;
       }

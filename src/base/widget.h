@@ -169,6 +169,10 @@ struct _widget_vtable_t {
   widget_invalidate_t invalidate;
   widget_find_target_t find_target;
   widget_is_point_in_t is_point_in;
+  /**
+   * 该函数指针返回的偏移值，最好和 WIDGET_PROP_X/YOFFSET 的属性一致，如果两者不同的话，容易出现问题。
+   * 注意：偏移值一般使用在动画，脏矩形以及点击等事件上面，所以一定要保持一致。
+   */
   widget_get_offset_t get_offset;
   widget_auto_adjust_size_t auto_adjust_size;
   widget_get_prop_default_value_t get_prop_default_value;
@@ -3217,6 +3221,7 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e);
  */
 ret_t widget_on_keyup(widget_t* widget, key_event_t* e);
 
+ret_t widget_get_offset(widget_t* widget, xy_t* out_x, xy_t* out_y);
 ret_t widget_on_wheel(widget_t* widget, wheel_event_t* e);
 ret_t widget_on_multi_gesture(widget_t* widget, multi_gesture_event_t* e);
 ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e);
