@@ -104,7 +104,6 @@
 #include "image_loader_web.h"
 #endif /*AWTK_WEB*/
 
-
 static ret_t tk_add_font(const asset_info_t* res) {
   if (res->subtype == ASSET_TYPE_FONT_BMP) {
 #ifdef WITH_BITMAP_FONT
@@ -293,10 +292,29 @@ ret_t tk_init_internal(void) {
   return RET_OK;
 }
 
+ret_t tk_pre_init(void) {
+  static bool_t inited = FALSE;
+  if (!inited) {
+    return_value_if_fail(platform_prepare() == RET_OK, RET_FAIL);
+    return_value_if_fail(tk_mem_init_stage2() == RET_OK, RET_FAIL);
+#ifdef WITH_DATA_READER_WRITER
+    data_writer_factory_set(data_writer_factory_create());
+    data_reader_factory_set(data_reader_factory_create());
+    data_writer_factory_register(data_writer_factory(), "file", data_writer_file_create);
+    data_reader_factory_register(data_reader_factory(), "file", data_reader_file_create);
+    data_reader_factory_register(data_reader_factory(), "asset", data_reader_asset_create);
+    data_reader_factory_register(data_reader_factory(), "mem", data_reader_mem_create);
+    data_writer_factory_register(data_writer_factory(), "wbuffer", data_writer_wbuffer_create);
+#endif /*WITH_DATA_READER_WRITER*/
+    inited = TRUE;
+  }
+
+  return RET_OK;
+}
+
 ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const char* app_root) {
   main_loop_t* loop = NULL;
-  return_value_if_fail(platform_prepare() == RET_OK, RET_FAIL);
-  return_value_if_fail(tk_mem_init_stage2() == RET_OK, RET_FAIL);
+  return_value_if_fail(tk_pre_init() == RET_OK, RET_FAIL);
   ENSURE(system_info_init(app_type, app_name, app_root) == RET_OK);
   return_value_if_fail(tk_init_internal() == RET_OK, RET_FAIL);
 

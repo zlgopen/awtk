@@ -130,7 +130,7 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdli
 
   CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
-  platform_prepare();
+  tk_pre_init();
 #ifdef ON_CMD_LINE
   ON_CMD_LINE(argc, argv);
 #else
@@ -156,7 +156,7 @@ int main(int argc, char* argv[]) {
   int32_t lcd_w = LCD_WIDTH;
   int32_t lcd_h = LCD_HEIGHT;
 
-  platform_prepare();
+  tk_pre_init();
 #ifdef ON_CMD_LINE
   ON_CMD_LINE(argc, argv);
 #else

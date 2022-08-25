@@ -33,6 +33,19 @@ BEGIN_C_DECLS
  */
 
 /**
+ * @method tk_pre_init
+ * 初始化基本功能。
+ *> 在tk_init之前，应用程序可能需要加载配置文件，
+ *> 为了保证这些功能正常工作，可以先调用tk_pre_init来初始化平台、内存和data reader等等。
+ *
+ * @alias pre_init
+ * @annotation ["static", "scriptable"]
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_pre_init(void);
+
+/**
  * @method tk_init
  * 初始化TK。
  * @alias init
