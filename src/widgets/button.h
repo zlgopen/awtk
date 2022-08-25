@@ -105,11 +105,18 @@ typedef struct _button_t {
    *
    */
   uint32_t long_press_time;
+  
+  /**
+   * @property {bool_t} pressed
+   * @annotation ["set_prop","get_prop","readable","scriptable"]
+   * 当前是否按下。
+   *
+   */
+  bool_t pressed;
 
   /*private*/
   int32_t timer_id;
   int32_t repeat_nr;
-  bool_t pressed;
 } button_t;
 
 /**

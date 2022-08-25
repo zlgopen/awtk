@@ -58,11 +58,25 @@ static ret_t button_on_repeat(const timer_info_t* info) {
   return RET_REPEAT;
 }
 
+static ret_t button_notify_pressed_changed(widget_t* widget) {
+  value_t v;
+  prop_change_event_t e;
+  button_t* button = BUTTON(widget);
+  
+  e.e = event_init(EVT_PROP_CHANGED, widget);
+  e.name = "pressed";
+  value_set_bool(&v, button->pressed);
+  e.value = &v;
+
+  return widget_dispatch(widget, (event_t*)&e);
+}
+
 static ret_t button_pointer_up_cleanup_impl(widget_t* widget, bool_t ungrab) {
   button_t* button = BUTTON(widget);
   return_value_if_fail(button != NULL && widget != NULL, RET_BAD_PARAMS);
 
   button->pressed = FALSE;
+  button_notify_pressed_changed(widget);
   button_remove_timer(widget);
   if (ungrab) {
     widget_ungrab(widget->parent, widget);
@@ -96,6 +110,7 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_DOWN: {
       button->repeat_nr = 0;
       button->pressed = TRUE;
+      button_notify_pressed_changed(widget);
       widget_set_state(widget, WIDGET_STATE_PRESSED);
       button_remove_timer(widget);
       if (button->repeat > 0) {
