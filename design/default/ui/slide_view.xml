@@ -11,6 +11,7 @@
     <button name="open:auto_play_${device_orientation},auto_play" h="30" text="auto_play"/>
     <button name="open:slide_view_remove" h="30" text="remove"/>
     <button name="open:slide_view_remove_loop" h="30" text="remove loop"/>
+    <button name="open:slide_view_animating_time" h="30" text="animating time"/>
     <button name="close" h="30" text="Close"/>
   </scroll_view>
 </window>

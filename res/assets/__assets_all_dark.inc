@@ -202,6 +202,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_serial[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_image_packed[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_kb_uint[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_scroll_view_v[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_slide_view_animating_time[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_kb_ascii[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_list_view[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_kb_foo[]);
@@ -1087,6 +1088,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_image_packed);
   assets_manager_add(am, ui_kb_uint);
   assets_manager_add(am, ui_scroll_view_v);
+  assets_manager_add(am, ui_slide_view_animating_time);
   assets_manager_add(am, ui_uiex_kb_ascii);
   assets_manager_add(am, ui_uiex_page_list_view);
   assets_manager_add(am, ui_uiex_kb_foo);

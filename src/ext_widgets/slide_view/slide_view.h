@@ -119,6 +119,14 @@ typedef struct _slide_view_t {
    */
   uint32_t drag_threshold;
 
+    /**
+   * @property {uint32_t} animating_time
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 动画时间（单位：毫秒）。
+   *
+   */
+  uint32_t animating_time;
+
   /* private */
   velocity_t velocity;
   point_t down;
@@ -275,6 +283,17 @@ ret_t slide_view_set_loop(widget_t* widget, bool_t loop);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t slide_view_set_drag_threshold(widget_t* widget, uint32_t drag_threshold);
+
+/**
+ * @method slide_view_set_animating_time
+ * 设置动画时间。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget slide_view对象。
+ * @param {uint32_t} animating_time 拖动临界值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t slide_view_set_animating_time(widget_t* widget, uint32_t animating_time);
 
 /**
  * @method slide_view_remove_index

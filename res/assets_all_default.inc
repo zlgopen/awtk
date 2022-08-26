@@ -202,6 +202,7 @@
 #include "assets/default/inc/ui/image_packed.data"
 #include "assets/default/inc/ui/kb_uint.data"
 #include "assets/default/inc/ui/scroll_view_v.data"
+#include "assets/default/inc/ui/slide_view_animating_time.data"
 #include "assets/default/inc/ui/uiex/kb_ascii.data"
 #include "assets/default/inc/ui/uiex/page_list_view.data"
 #include "assets/default/inc/ui/uiex/kb_foo.data"
@@ -1087,6 +1088,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_image_packed);
   assets_manager_add(am, ui_kb_uint);
   assets_manager_add(am, ui_scroll_view_v);
+  assets_manager_add(am, ui_slide_view_animating_time);
   assets_manager_add(am, ui_uiex_kb_ascii);
   assets_manager_add(am, ui_uiex_page_list_view);
   assets_manager_add(am, ui_uiex_kb_foo);

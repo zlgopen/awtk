@@ -191,7 +191,7 @@ static ret_t slide_view_animate_to(slide_view_t* slide_view, int32_t xoffset, in
 
 #ifndef WITHOUT_WIDGET_ANIMATORS
   widget_animator_t* a = NULL;
-  a = widget_animator_scroll_create(widget, TK_ANIMATING_TIME, 0, EASING_SIN_INOUT);
+  a = widget_animator_scroll_create(widget, slide_view->animating_time, 0, EASING_SIN_INOUT);
   return_value_if_fail(a != NULL, RET_OOM);
 
   widget_animator_scroll_set_params(a, xoffset, yoffset, xoffset_end, yoffset_end);
@@ -425,6 +425,9 @@ static ret_t slide_view_get_prop(widget_t* widget, const char* name, value_t* v)
   } else if (tk_str_eq(name, WIDGET_PROP_DRAG_THRESHOLD)) {
     value_set_uint32(v, slide_view->drag_threshold);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ANIMATING_TIME)) {
+    value_set_uint32(v, slide_view->animating_time);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -455,6 +458,9 @@ static ret_t slide_view_set_prop(widget_t* widget, const char* name, const value
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_DRAG_THRESHOLD)) {
     slide_view_set_drag_threshold(widget, value_uint32(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ANIMATING_TIME)) {
+    slide_view_set_animating_time(widget, value_uint32(v));
     return RET_OK;
   }
 
@@ -972,6 +978,15 @@ ret_t slide_view_set_drag_threshold(widget_t* widget, uint32_t drag_threshold) {
   return RET_OK;
 }
 
+ret_t slide_view_set_animating_time(widget_t* widget, uint32_t animating_time) {
+  slide_view_t* slide_view = SLIDE_VIEW(widget);
+  return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
+
+  slide_view->animating_time = animating_time;
+
+  return RET_OK;
+}
+
 widget_t* slide_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(slide_view), x, y, w, h);
   slide_view_t* slide_view = SLIDE_VIEW(widget);
@@ -981,6 +996,7 @@ widget_t* slide_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   slide_view->auto_play = 0;
   slide_view->vertical = FALSE;
   slide_view->drag_threshold = TK_DRAG_THRESHOLD;
+  slide_view->animating_time = TK_ANIMATING_TIME;
 
   str_init(&(slide_view->str_target), DEFAULT_FOCUSED_CHILD_SAVE_TARGET_TAG_LENGT);
   slide_view->init_idle_id = idle_add(slide_view_on_idle_init_save_target, widget);
@@ -1020,7 +1036,7 @@ ret_t slide_view_set_auto_play(widget_t* widget, uint16_t auto_play) {
 
   if (auto_play) {
     slide_view->timer_id =
-        timer_add(slide_view_on_timer_next, slide_view, auto_play + TK_ANIMATING_TIME);
+        timer_add(slide_view_on_timer_next, slide_view, auto_play + slide_view->animating_time);
 
     return slide_view->timer_id ? RET_OK : RET_OOM;
   }

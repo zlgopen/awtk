@@ -1,0 +1,6 @@
+<window anim_hint="htranslate" >
+  <slide_view x="0" y="0" w="100%" h="100%" style="dot" animating_time="200">
+    <?include filename="slide_view.inc" ?>
+  </slide_view>
+  <slide_indicator_arc x="0" y="b" w="100%" h="20" default_paint="stroke_dot"/>
+</window>

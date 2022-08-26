@@ -1038,6 +1038,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_DRAG_THRESHOLD "drag_threshold"
 
 /**
+ * @const WIDGET_PROP_ANIMATING_TIME
+ * 动画时间。
+ */
+#define WIDGET_PROP_ANIMATING_TIME "animating_time"
+
+/**
  * @enum widget_type_t
  * @annotation ["scriptable", "string"]
  * @prefix WIDGET_TYPE_

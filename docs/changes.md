@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/08/26
+  * 增加函数 slide\_view\_set\_animating\_time(感谢雨欣提供补丁)
+
 2022/08/25
   * 增加函数tk\_pre\_init，用于在命令参数处理前，做些基本功能的初始化。
   * button公开pressed属性，方便MVVM实现点动按钮。
