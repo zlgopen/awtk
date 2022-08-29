@@ -59,9 +59,12 @@ static ret_t func_typed_array_create(fscript_t* fscript, fscript_args_t* args, v
 
 static typed_array_t* get_typed_array(fscript_t* fscript, fscript_args_t* args) {
   tk_object_t* obj = value_object(args->args);
+  object_typed_array_t* typed_array = NULL;
   return_value_if_fail(obj != NULL, NULL);
 
-  return OBJECT_TYPED_ARRAY(obj)->arr;
+  typed_array = OBJECT_TYPED_ARRAY(obj);
+
+  return typed_array != NULL ? typed_array->arr : NULL;
 }
 
 static ret_t func_typed_array_push(fscript_t* fscript, fscript_args_t* args, value_t* result) {
