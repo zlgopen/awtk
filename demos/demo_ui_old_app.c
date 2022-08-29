@@ -804,11 +804,14 @@ static widget_t* find_bind_value_target(widget_t* widget, const char* name) {
 }
 
 static ret_t on_bind_value_changed(void* ctx, event_t* e) {
+  char prop_name[16] = {0};
   widget_t* widget = WIDGET(ctx);
   widget_t* target = WIDGET(e->target);
   return_value_if_fail(widget != NULL && target != NULL, RET_BAD_PARAMS);
 
-  return widget_set_prop_float(widget, "animate:value", widget_get_value(target));
+  tk_snprintf(prop_name, sizeof(prop_name), "%s%s", WIDGET_PROP_ANIMATE_PREFIX, WIDGET_PROP_VALUE);
+
+  return widget_set_prop_float(widget, prop_name, widget_get_value(target));
 }
 
 static ret_t on_action_list(void* ctx, event_t* e) {

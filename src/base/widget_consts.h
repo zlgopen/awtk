@@ -1044,6 +1044,18 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_ANIMATING_TIME "animating_time"
 
 /**
+ * @const WIDGET_PROP_ANIMATE_PREFIX
+ * 改变控件属性时附带动画的前缀。
+ */
+#define WIDGET_PROP_ANIMATE_PREFIX "animate:"
+
+/**
+ * @const WIDGET_PROP_ANIMATE_ANIMATING_TIME
+ * 改变控件属性时附带动画的播放时间。
+ */
+#define WIDGET_PROP_ANIMATE_ANIMATING_TIME "animate:animating_time"
+
+/**
  * @enum widget_type_t
  * @annotation ["scriptable", "string"]
  * @prefix WIDGET_TYPE_

@@ -2041,10 +2041,8 @@ static ret_t widget_free_code(void* ctx, event_t* evt) {
 
   return RET_REMOVE;
 }
-#endif/*WITHOUT_FSCRIPT*/
+#endif /*WITHOUT_FSCRIPT*/
 
-#define STR_ANIMATE_PREFIX "animate:"
-#define TK_ANIMATING_TIME 500 /* 单位：毫秒（ms） */
 ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   ret_t ret = RET_OK;
   prop_change_event_t e;
@@ -2110,15 +2108,19 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     ret = RET_NOT_FOUND;
   }
 
+  if (tk_str_start_with(name, WIDGET_PROP_ANIMATE_PREFIX)) {
+    uint32_t duration = TK_ANIMATING_TIME;
+    char* prop_name = name + strlen(WIDGET_PROP_ANIMATE_PREFIX);
+    if (!tk_str_eq(prop_name, WIDGET_PROP_ANIMATING_TIME)) {
+      duration = widget_get_prop_int(widget, WIDGET_PROP_ANIMATE_ANIMATING_TIME, TK_ANIMATING_TIME);
+      return widget_animate_prop_float_to(widget, prop_name, value_float32(v), duration);
+    }
+  }
+
   if (widget->vt->set_prop) {
-    if (tk_str_start_with(name, STR_ANIMATE_PREFIX)) {
-      return widget_animate_prop_float_to(widget, name + strlen(STR_ANIMATE_PREFIX),
-                                          value_float32(v), TK_ANIMATING_TIME);
-    } else {
-      ret_t ret1 = widget->vt->set_prop(widget, name, v);
-      if (ret == RET_NOT_FOUND) {
-        ret = ret1;
-      }
+    ret_t ret1 = widget->vt->set_prop(widget, name, v);
+    if (ret == RET_NOT_FOUND) {
+      ret = ret1;
     }
   }
 
@@ -2184,7 +2186,7 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
       } else {
         ret = tk_object_set_prop(widget->custom_props, name, v);
       }
-#endif/*WITHOUT_FSCRIPT*/
+#endif /*WITHOUT_FSCRIPT*/
     }
   }
 
