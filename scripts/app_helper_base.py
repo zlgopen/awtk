@@ -305,6 +305,7 @@ class AppHelperBase:
         if self.TKC_ONLY:
             self.awtk.copySharedLib(self.AWTK_ROOT, self.APP_BIN_DIR, 'tkc')
         else:
+            self.awtk.copySharedLib(self.AWTK_ROOT, self.APP_BIN_DIR, 'tkc')
             self.awtk.copySharedLib(self.AWTK_ROOT, self.APP_BIN_DIR, 'awtk')
 
         for iter in self.DEPENDS_LIBS:

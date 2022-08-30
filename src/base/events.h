@@ -1190,6 +1190,7 @@ event_t* theme_change_event_init(theme_change_event_t* event, uint32_t type, con
  * @annotation ["scriptable"]
  * 事件基类。
  */
+
 /**
  * @method event_from_name
  * 将事件名转换成事件的值。
