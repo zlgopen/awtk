@@ -44,6 +44,11 @@ static wchar_t* translate_wday(wchar_t* str, uint32_t size, uint32_t wday) {
   return tk_utf8_to_utf16(utf8, str, size);
 }
 
+static wchar_t* translate_meridiem(wchar_t* str, uint32_t size, uint32_t hour) {
+  const char* utf8 = locale_info_tr(locale_info(), hour < 12 ? "AM" : "PM");
+  return tk_utf8_to_utf16(utf8, str, size);
+}
+
 static wchar_t* translate_month(wchar_t* str, uint32_t size, uint32_t month) {
   return_value_if_fail(month < 13 && month > 0, NULL);
 
@@ -101,6 +106,19 @@ ret_t wstr_format_date_time(wstr_t* str, const char* format, const date_time_t* 
           wstr_push_int(str, "%02d", dt->hour);
         } else {
           wstr_push_int(str, "%d", dt->hour);
+        }
+        break;
+      }
+      case 'T': {
+        translate_meridiem(temp, ARRAY_SIZE(temp), dt->hour);
+        wstr_append(str, temp);
+        break;
+      }
+      case 'H': {
+        if (repeat == 2) {
+          wstr_push_int(str, "%02d", dt->hour % 12);
+        } else {
+          wstr_push_int(str, "%d", dt->hour % 12);
         }
         break;
       }

@@ -16,7 +16,7 @@
               <digit_clock format="h:m" h="22"/>
               <digit_clock format="hh:mm" h="22"/>
               <digit_clock format="h:m:s" h="22"/>
-              <digit_clock format="hh:mm:ss" h="22"/>
+              <digit_clock format="T HH:mm:ss" h="22"/>
               <digit_clock format="Y/M/D" h="22"/>
               <digit_clock format="YY-MM-DD" h="22"/>
               <digit_clock format="Y/M/D h:mm:ss" h="22"/>

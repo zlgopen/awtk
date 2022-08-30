@@ -744,6 +744,14 @@ Translate text
   <language name="zh_CN">十二月</language>
   <language name="en_US">Dec</language>
 </string>
+<string name="AM">
+  <language name="zh_CN">上午</language>
+  <language name="en_US">AM</language>
+</string>
+<string name="PM">
+  <language name="zh_CN">下午</language>
+  <language name="en_US">PM</language>
+</string>
 <string name="Ice cream">
   <language name="zh_CN">雪糕</language>
   <language name="en_US">Ice cream</language>
