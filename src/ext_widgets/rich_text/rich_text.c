@@ -606,13 +606,17 @@ widget_t* rich_text_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 ret_t rich_text_set_text(widget_t* widget, const char* text) {
+  wstr_t str;
+  wstr_init(&str, 0);
   rich_text_t* rich_text = RICH_TEXT(widget);
   return_value_if_fail(rich_text != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(wstr_set_utf8(&str, text) == RET_OK, RET_BAD_PARAMS);
 
   wstr_set_utf8(&(widget->text), text);
   rich_text->need_reset = TRUE;
   rich_text->line_gap = 5;
   rich_text->margin = 2;
+  wstr_reset(&str);
 
   return RET_OK;
 }
