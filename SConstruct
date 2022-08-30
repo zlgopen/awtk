@@ -28,17 +28,6 @@ SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
   '3rd/fribidi/SConscript',
   '3rd/nativefiledialog/SConscript',
   'src/SConscript',
-  'src/csv/SConscript',
-  'src/conf_io/SConscript',
-  'src/hal/SConscript',
-  'src/streams/SConscript',
-  'src/streams/tools/SConscript',
-  'src/compressors/SConscript',
-  'src/ubjson/SConscript',
-  'src/debugger/SConscript',
-  'src/fscript_ext/SConscript',
-  'src/xml/SConscript',
-  'src/charset/SConscript',
   'tools/common/SConscript', 
   'tools/theme_gen/SConscript', 
   'tools/font_gen/SConscript', 
@@ -49,14 +38,16 @@ SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
   'tools/str_gen/SConscript', 
   'tools/ui_gen/xml_to_ui/SConscript',
   'tools/svg_gen/SConscript',
+  'src/fscript_ext/SConscript',
   'demos/SConscript', 
   'tests/SConscript',
-  'src/hal/tools/network_shell/SConscript',
   ] + awtk.OS_PROJECTS
   
 os.environ['TK_ROOT'] = awtk.TK_ROOT;
 os.environ['BIN_DIR'] = awtk.TK_BIN_DIR;
 os.environ['LIB_DIR'] = awtk.TK_LIB_DIR;
+
+awtk.copySharedLib(awtk.TKC_ROOT, awtk.TK_BIN_DIR, 'tkc')
 
 SConscript(SConscriptFiles)
 

@@ -5,34 +5,6 @@ import awtk_config as awtk
 BIN_DIR=os.environ['BIN_DIR'];
 LIB_DIR=os.environ['LIB_DIR'];
 
-sources = [
-"fscript_app_conf.c",
-"fscript_array.c",
-"fscript_bits.c",
-"fscript_crc.c",
-"fscript_date_time.c",
-"fscript_endian.c",
-"fscript_ext.c",
-"fscript_fs.c",
-"fscript_iostream.c",
-"fscript_iostream_file.c",
-"fscript_iostream_inet.c",
-"fscript_iostream_serial.c",
-"fscript_istream.c",
-"fscript_json.c",
-"fscript_math.c",
-"fscript_module.c",
-"fscript_object.c",
-"fscript_ostream.c",
-"fscript_rbuffer.c",
-"fscript_typed_array.c",
-"fscript_utils.c",
-"fscript_wbuffer.c"
-]
-
-env=DefaultEnvironment().Clone()
-env.Library(os.path.join(LIB_DIR, 'fscript_ext'), sources, LIBS=['tkc'])
-
 sources = ["fscript_widget.c"]
 env=DefaultEnvironment().Clone()
 env.Library(os.path.join(LIB_DIR, 'fscript_ext_widgets'), sources, LIBS=['extwidgets', 'widgets', 'base', 'tkc'])

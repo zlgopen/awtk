@@ -3,15 +3,17 @@ import sys
 import platform
 import awtk_config as awtk
 
-BIN_DIR=os.environ['BIN_DIR'];
-TK_ROOT=os.environ['TK_ROOT'];
-TK_3RD_ROOT=os.environ['TK_3RD_ROOT'];
-GTEST_ROOT=os.environ['GTEST_ROOT'];
+BIN_DIR=awtk.TK_BIN_DIR
+TK_ROOT=awtk.TK_ROOT
+TKC_SRC=awtk.TKC_SRC
+TK_3RD_ROOT=awtk.TK_3RD_ROOT
+GTEST_ROOT=awtk.GTEST_ROOT
 
 env=DefaultEnvironment().Clone();
 
 INCLUDE_PATH = [TK_ROOT, 
   GTEST_ROOT,
+  TKC_SRC,
   os.path.join(TK_ROOT, 'src'),  
   os.path.join(TK_3RD_ROOT, 'SDL/src'), 
   os.path.join(TK_3RD_ROOT, 'SDL/include'), 
@@ -22,14 +24,13 @@ INCLUDE_PATH = [TK_ROOT,
   os.path.join(GTEST_ROOT, 'make')]
 
 env['CPPPATH'] = INCLUDE_PATH
-env['LIBS'] = ['assets', 'image_gen', 'theme_gen', 'font_gen', 'str_gen', 'common'] + awtk.STATIC_LIBS
+env['LIBS'] = ['assets', 'image_gen', 'theme_gen', 'font_gen', 'str_gen', 'common', 'awtk', 'tkc']
 env['LINKFLAGS'] = env['OS_SUBSYSTEM_CONSOLE'] + env['LINKFLAGS'];
 
 SOURCES = [
  os.path.join(GTEST_ROOT, 'src/gtest-all.cc'),
 ] + Glob('*.cc') + Glob('*.c')
 
-env['LIBS']=['debugger'] + env['LIBS']
 env.Program(os.path.join(BIN_DIR, 'runTest'), SOURCES);
 env.Program(os.path.join(BIN_DIR, 'recycle_test'), ["recycle_test.cpp"])
 env.Program(os.path.join(BIN_DIR, 'waitable_action_queue_test'), ["waitable_action_queue_test.cpp"])

@@ -12,18 +12,19 @@ else:
     AWTK_ROOT_DIR=os.path.abspath('../../');
 
 AWTK_SRC_DIR=joinPath(AWTK_ROOT_DIR, 'src');
+TKC_SRC_DIR=joinPath(AWTK_ROOT_DIR, '../tkc/src');
 
-AWKT_TKC_FILES=glob.glob(AWTK_SRC_DIR+'/tkc/*.c')
+AWKT_TKC_FILES=glob.glob(TKC_SRC_DIR+'/tkc/*.c')
 AWKT_BASE_FILES=glob.glob(AWTK_SRC_DIR+'/base/*.c')
 AWKT_WIDGETS_FILES=glob.glob(AWTK_SRC_DIR+'/widgets/*.c')
 AWKT_WIDGETS_FILES=glob.glob(AWTK_SRC_DIR+'/widgets/*.c')
 AWKT_EXT_WIDGETS_FILES=glob.glob(AWTK_SRC_DIR+'/ext_widgets/*.c') + glob.glob(AWTK_SRC_DIR+'/ext_widgets/*/*.c')
 AWKT_UILOADER_FILES=glob.glob(AWTK_SRC_DIR+'/ui_loader/*.c')
 AWKT_LAYOUTERS_FILES=glob.glob(AWTK_SRC_DIR+'/layouters/*.c')
-AWKT_XML_FILES=glob.glob(AWTK_SRC_DIR+'/xml/*.c')
+AWKT_XML_FILES=glob.glob(TKC_SRC_DIR+'/xml/*.c')
 AWKT_SVG_FILES=glob.glob(AWTK_SRC_DIR+'/svg/*.c')
-AWKT_APP_CONF_FILES=glob.glob(AWTK_SRC_DIR+'/conf_io/*.c')
-AWKT_UBJSON_FILES=glob.glob(AWTK_SRC_DIR+'/ubjson/*.c')
+AWKT_APP_CONF_FILES=glob.glob(TKC_SRC_DIR+'/conf_io/*.c')
+AWKT_UBJSON_FILES=glob.glob(TKC_SRC_DIR+'/ubjson/*.c')
 AWKT_CLIPBOARD_FILES=glob.glob(AWTK_SRC_DIR+'/clip_board/clip_board_default.c')
 AWKT_WIDGET_ANIMATORS_FILES=glob.glob(AWTK_SRC_DIR+'/widget_animators/*.c')
 AWKT_WINDOW_ANIMATORS_FILES=glob.glob(AWTK_SRC_DIR+'/window_animators/*.c')
@@ -53,7 +54,7 @@ def getWebFiles():
     return WEB_FILES;
 
 def getIncludes():
-    return '-I' + AWTK_ROOT_DIR + '/3rd ' + '-I' + AWTK_ROOT_DIR + ' -I' + AWTK_SRC_DIR +' -I' + AWTK_SRC_DIR +'/ext_widgets';
+    return ' -I' + AWTK_ROOT_DIR + '/3rd' + ' -I' + AWTK_ROOT_DIR + ' -I' + AWTK_SRC_DIR +' -I' + AWTK_SRC_DIR +'/ext_widgets' ' -I' + TKC_SRC_DIR;
 
 def toExe(name):
     if OS_NAME == 'Windows':

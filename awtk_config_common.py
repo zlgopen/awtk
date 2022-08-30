@@ -55,6 +55,10 @@ def joinPath(root, subdir):
 
 
 TK_ROOT = os.path.dirname(os.path.normpath(os.path.abspath(__file__)))
+TKC_ROOT = joinPath(TK_ROOT, "../tkc");
+TKC_SRC = joinPath(TKC_ROOT, 'src')
+TKC_BIN_DIR = joinPath(TKC_ROOT, 'bin')
+TKC_LIB_DIR = joinPath(TKC_ROOT, 'lib')
 
 print('TK_ROOT: ' + TK_ROOT)
 
@@ -196,14 +200,16 @@ def isBuildShared():
 
 
 def genIdlAndDefEx(withAWTK):
-    cmds = [
-        'node tools/idl_gen/tkc.js tools/idl_gen/tkc.json',
-        'node tools/dll_def_gen/index.js tools/idl_gen/tkc.json  dllexports/tkc.def false'
-    ]
+    cmds = []
     if withAWTK:
-        cmds += [
+        cmds = [
             'node tools/idl_gen/index.js tools/idl_gen/idl.json',
             'node tools/dll_def_gen/index.js tools/idl_gen/idl.json  dllexports/awtk.def false',
+        ]
+    else:
+        cmds = [
+            'node tools/idl_gen/tkc.js tools/idl_gen/tkc.json',
+            'node tools/dll_def_gen/index.js tools/idl_gen/tkc.json  dllexports/tkc.def false'
         ]
 
     for cmd in cmds:

@@ -3,7 +3,7 @@ import os.path
 import platform
 import shutil
 from shutil import copyfile
-from awtk_config_common import OS_NAME, TARGET_ARCH, TOOLS_PREFIX, TK_SRC, TK_BIN_DIR, TK_LIB_DIR, TK_3RD_ROOT, TK_TOOLS_ROOT, TK_DEMO_ROOT, GTEST_ROOT, TKC_STATIC_LIBS, TOOLS_NAME, NANOVG_BACKEND, NATIVE_WINDOW, TK_ROOT
+from awtk_config_common import OS_NAME, TARGET_ARCH, TOOLS_PREFIX, TKC_ROOT, TKC_SRC, TK_SRC, TK_BIN_DIR, TK_LIB_DIR, TK_3RD_ROOT, TK_TOOLS_ROOT, TK_DEMO_ROOT, GTEST_ROOT, TKC_STATIC_LIBS, TOOLS_NAME, NANOVG_BACKEND, NATIVE_WINDOW, TK_ROOT
 from awtk_config_common import joinPath, toWholeArchive, genIdlAndDefEx, setEnvSpawn, genDllLinkFlags, copySharedLib
 from awtk_config_common import OS_FLAGS, OS_LIBS, OS_LIBPATH, OS_CPPPATH, OS_LINKFLAGS, OS_SUBSYSTEM_CONSOLE, OS_SUBSYSTEM_WINDOWS, OS_PROJECTS, COMMON_CFLAGS
 
@@ -17,9 +17,9 @@ if not os.path.exists(WIN32_AWTK_RES):
     else:
         WIN32_AWTK_RES = os.path.join(TK_ROOT, 'win32_res/awtk.res')
 
-AWTK_STATIC_LIBS = ['awtk_global', 'fscript_ext_widgets', 'extwidgets', 'nfd',
+AWTK_SELF_STATIC_LIBS = ['awtk_global', 'fscript_ext_widgets', 'extwidgets', 'nfd',
                     'widgets', 'base', 'gpinyin', 'fribidi', 'linebreak']
-AWTK_STATIC_LIBS = AWTK_STATIC_LIBS+TKC_STATIC_LIBS
+AWTK_STATIC_LIBS = AWTK_SELF_STATIC_LIBS + TKC_STATIC_LIBS
 
 # INPUT_ENGINE='null'
 # INPUT_ENGINE='spinyin'
@@ -172,8 +172,7 @@ else:
 
 OS_PROJECTS = []
 OS_WHOLE_ARCHIVE = toWholeArchive(AWTK_STATIC_LIBS)
-AWTK_DLL_DEPS_LIBS = AWTK_STATIC_LIBS + \
-    NANOVG_BACKEND_LIBS + ['SDL2', 'glad'] + OS_LIBS
+AWTK_DLL_DEPS_LIBS = AWTK_SELF_STATIC_LIBS + NANOVG_BACKEND_LIBS + ['tkc', 'SDL2', 'glad'] + OS_LIBS
 
 if OS_NAME == 'Darwin':
     OS_WHOLE_ARCHIVE = ' -all_load '
@@ -197,12 +196,13 @@ AWTK_CCFLAGS = OS_FLAGS + COMMON_CCFLAGS + ' -DWITH_WIDGET_TYPE_CHECK=1 '
 
 AWTK_STATIC_LIBS = AWTK_STATIC_LIBS + NANOVG_BACKEND_LIBS 
 STATIC_LIBS = AWTK_STATIC_LIBS + ['SDL2', 'glad'] + OS_LIBS
-SHARED_LIBS = ['awtk'] + OS_LIBS
+SHARED_LIBS = ['awtk', 'tkc'] + OS_LIBS
 
-LIBS = STATIC_LIBS
+LIBS = SHARED_LIBS
 
 CPPPATH = [TK_ROOT,
            TK_SRC,
+           TKC_SRC,
            TK_3RD_ROOT,
            joinPath(TK_SRC, 'ext_widgets'),
            joinPath(TK_SRC, 'custom_widgets'),
@@ -239,7 +239,6 @@ os.environ['NATIVE_WINDOW'] = NATIVE_WINDOW
 os.environ['GRAPHIC_BUFFER'] = GRAPHIC_BUFFER
 os.environ['FRAME_BUFFER_FORMAT'] = FRAME_BUFFER_FORMAT
 os.environ['OS_WHOLE_ARCHIVE'] = OS_WHOLE_ARCHIVE
-os.environ['AWTK_DLL_DEPS_LIBS'] = ';'.join(AWTK_DLL_DEPS_LIBS)
 os.environ['STATIC_LIBS'] = ';'.join(STATIC_LIBS)
 
 os.environ['WITH_AWTK_SO'] = 'true'
