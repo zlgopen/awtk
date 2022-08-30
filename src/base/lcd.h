@@ -205,7 +205,7 @@ struct _lcd_t {
   lcd_draw_points_t draw_points;
   lcd_draw_image_repeat_t draw_image_repeat;
   lcd_get_point_color_t get_point_color;
-  lcd_swap_t swap; /*适用于double fb，可选*/
+  lcd_swap_t swap; /*适用于有两个或更多fb的情况，可选*/
   lcd_get_width_t get_width;
   lcd_get_height_t get_height;
   lcd_get_physical_width_t get_physical_width;

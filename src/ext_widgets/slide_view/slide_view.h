@@ -289,7 +289,7 @@ ret_t slide_view_set_drag_threshold(widget_t* widget, uint32_t drag_threshold);
  * 设置动画时间。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget slide_view对象。
- * @param {uint32_t} animating_time 拖动临界值。
+ * @param {uint32_t} animating_time 动画时间。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
