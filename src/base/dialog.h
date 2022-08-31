@@ -227,6 +227,12 @@ widget_t* dialog_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 widget_t* dialog_create_simple(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method dialog_simple_show
+ */
+ret_t dialog_simple_show(const char* stitle, const char* scontent, const char* theme, bool_t has_ok,
+                         bool_t has_cancel);
+
+/**
  * @method dialog_cast
  * 转换dialog对象(供脚本语言使用)。
  * @annotation ["cast", "scriptable"]

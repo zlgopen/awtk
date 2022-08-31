@@ -34,7 +34,6 @@ ret_t window_design_get_prop(widget_t* widget, const char* name, value_t* v) {
 TK_DECL_VTABLE(window_design) = {.type = WIDGET_TYPE_NORMAL_WINDOW,
                                  .size = sizeof(window_t),
                                  .is_window = TRUE,
-                                 .parent = TK_PARENT_VTABLE(window_base),
                                  .create = window_design_create,
                                  .on_event = window_base_on_event,
                                  .on_paint_self = window_base_on_paint_self,
