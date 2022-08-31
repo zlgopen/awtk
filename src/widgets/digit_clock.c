@@ -54,6 +54,7 @@ ret_t digit_clock_set_format(widget_t* widget, const char* format) {
 
   digit_clock->format = tk_str_copy(digit_clock->format, format);
   digit_clock_update_time(widget);
+  widget_invalidate_force(widget, NULL);
 
   return RET_OK;
 }
