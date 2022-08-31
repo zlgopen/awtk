@@ -162,6 +162,11 @@ typedef enum _value_type_t {
    * void*类型。
    */
   VALUE_TYPE_POINTER_REF,
+  /**
+   * @const VALUE_TYPE_BITMAP
+   * 位图类型。
+   */
+  VALUE_TYPE_BITMAP,
 } value_type_t;
 
 typedef struct _binary_data_t {
@@ -235,6 +240,7 @@ struct _value_t {
     id_info_t id;
     pointer_ref_t* ptr_ref;
     func_info_t func;
+    void* bitmap;
   } value;
 };
 
@@ -899,6 +905,26 @@ void* value_func_def(const value_t* v);
  * @return {value_t*} value对象本身。
  */
 value_t* value_set_func_def(value_t* v, void* value);
+
+/**
+ * @method value_bitmap
+ * 获取类型为位图对象。
+ * @annotation ["scriptable"]
+ * @param {value_t*} v value对象。
+ *
+ * @return {bitmap_t*} 位图对象。
+ */
+void* value_bitmap(const value_t* v);
+
+/**
+ * @method value_set_bitmap
+ * 设置类型为位图对象。
+ * @param {value_t*} v value对象。
+ * @param {bitmap_t*} bitmap 待设置的值。
+ *
+ * @return {value_t*} value对象本身。
+ */
+value_t* value_set_bitmap(value_t* v, void* bitmap);
 
 END_C_DECLS
 

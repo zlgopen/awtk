@@ -979,3 +979,17 @@ value_t* value_set_func_def(value_t* v, void* value) {
 
   return value_init(v, VALUE_TYPE_FUNC_DEF);
 }
+
+void* value_bitmap(const value_t* v) {
+  return_value_if_fail(v != NULL && v->type == VALUE_TYPE_BITMAP, NULL);
+
+  return v->value.bitmap;
+}
+
+value_t* value_set_bitmap(value_t* v, void* bitmap) {
+  return_value_if_fail(v != NULL && bitmap != NULL, NULL);
+
+  v->value.bitmap = bitmap;
+
+  return value_init(v, VALUE_TYPE_BITMAP);
+}

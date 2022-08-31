@@ -69,7 +69,7 @@ static bitmap_t* mutable_image_prepare_image(widget_t* widget, canvas_t* c) {
 
 ret_t mutable_image_on_paint_self(widget_t* widget, canvas_t* canvas) {
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
-  bitmap_t* bitmap = mutable_image_prepare_image(widget, canvas);
+  bitmap_t* bitmap = mutable_image->user_image != NULL ? mutable_image->user_image : mutable_image_prepare_image(widget, canvas);
 
   if (bitmap == NULL) {
     return RET_FAIL;
@@ -131,6 +131,19 @@ ret_t mutable_image_on_attach_parent(widget_t* widget, widget_t* parent) {
   return RET_OK;
 }
 
+static ret_t mutable_image_set_prop(widget_t* widget, const char* name, const value_t* v) {
+  mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
+  if (tk_str_eq(name, WIDGET_PROP_IMAGE) || tk_str_eq(name, WIDGET_PROP_VALUE)) {
+    mutable_image->user_image = (bitmap_t*)value_bitmap(v);
+    if (mutable_image->user_image != NULL && mutable_image->image != NULL) {
+      bitmap_destroy(mutable_image->image);
+      mutable_image->image = NULL;
+    }
+    return mutable_image->user_image != NULL ? RET_OK : RET_BAD_PARAMS;
+  }
+  return image_base_set_prop(widget, name, v);
+}
+
 TK_DECL_VTABLE(mutable_image) = {.size = sizeof(mutable_image_t),
                                  .type = WIDGET_TYPE_MUTABLE_IMAGE,
                                  .clone_properties = s_mutable_image_clone_properties,
@@ -141,7 +154,7 @@ TK_DECL_VTABLE(mutable_image) = {.size = sizeof(mutable_image_t),
                                  .on_paint_self = mutable_image_on_paint_self,
                                  .on_paint_background = widget_on_paint_null,
                                  .on_attach_parent = mutable_image_on_attach_parent,
-                                 .set_prop = image_base_set_prop,
+                                 .set_prop = mutable_image_set_prop,
                                  .get_prop = image_base_get_prop};
 
 static ret_t mutable_image_invalidate(const timer_info_t* info) {

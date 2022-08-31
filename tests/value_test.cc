@@ -369,3 +369,8 @@ TEST(value, pointer) {
   value_reset(&v);
 }
 
+TEST(value, bitmap) {
+  value_t v;
+  void* bitmap = &v;
+  ASSERT_EQ(value_bitmap(value_set_bitmap(&v, bitmap)), bitmap);
+}

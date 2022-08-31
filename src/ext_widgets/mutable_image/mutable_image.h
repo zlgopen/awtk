@@ -89,6 +89,7 @@ typedef struct _mutable_image_t {
 
   bitmap_t* fb;
   bitmap_t* image;
+  bitmap_t* user_image;
   canvas_t* canvas;
 } mutable_image_t;
 
