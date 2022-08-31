@@ -395,6 +395,18 @@ ret_t dialog_confirm(const char* title, const char* text);
  */
 widget_t* dialog_create_with_ok_cancel(const char* stitle, uint32_t w, uint32_t h);
 
+/**
+ * @method dialog_simple_show
+ * @param {const char*} stitle 标题。
+ * @param {const char*} scontent 内容。
+ * @param {const char*} theme 主题。
+ * @param {bool_t} has_ok 是否有OK按钮。
+ * @param {bool_t} has_cancel 是否有Cancel按钮。
+ */
+ret_t dialog_simple_show(const char* stitle, const char* scontent, const char* theme, bool_t has_ok,
+                         bool_t has_cancel);
+
+
 #define DIALOG(widget) ((dialog_t*)(dialog_cast(WIDGET(widget))))
 
 #define DIALOG_CHILD_OK "ok"

@@ -189,6 +189,10 @@ def copySharedLib(src, dst, name):
             os.makedirs(dst)
         shutil.copy(src, dst)
         print(src + '==>' + dst)
+    if OS_NAME == 'Windows':
+        src=src.replace('dll', 'lib')
+        shutil.copy(src, dst)
+        print(src + '==>' + dst)
 
 
 def isBuildShared():
