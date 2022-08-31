@@ -27,6 +27,14 @@ TEST(Image, basic) {
   ASSERT_EQ(widget_get_prop(img, WIDGET_PROP_IMAGE, &v1), RET_OK);
   ASSERT_EQ(strcmp(value_str(&v), value_str(&v1)), 0);
 
+  img->dirty = FALSE;
+  ASSERT_EQ(image_base_set_image(img, "earth"), RET_OK);
+  ASSERT_EQ(img->dirty, FALSE);
+
+  img->dirty = FALSE;
+  ASSERT_EQ(image_base_set_image(img, "1"), RET_OK);
+  ASSERT_EQ(img->dirty, TRUE);
+
   widget_destroy(img);
 }
 

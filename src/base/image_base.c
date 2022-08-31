@@ -174,9 +174,12 @@ ret_t image_base_set_image(widget_t* widget, const char* name) {
   image_base_t* image = IMAGE_BASE(widget);
   return_value_if_fail(widget != NULL && name != NULL, RET_BAD_PARAMS);
 
-  image->image = tk_str_copy(image->image, name);
+  if (!tk_str_eq(image->image, name)) {
+    image->image = tk_str_copy(image->image, name);
+    return widget_invalidate(widget, NULL);
+  }
 
-  return widget_invalidate(widget, NULL);
+  return RET_OK;
 }
 
 ret_t image_base_set_rotation(widget_t* widget, float_t rotation) {
