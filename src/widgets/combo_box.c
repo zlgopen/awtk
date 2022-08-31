@@ -264,8 +264,13 @@ static ret_t combo_box_text_to_index(widget_t* widget, const char* text) {
   int32_t i = 0;
   return_value_if_fail(widget != NULL && combo_box != NULL, RET_BAD_PARAMS);
 
+  option = combo_box_get_option(widget, combo_box->selected_index);
+  if (option != NULL && tk_str_eq(text, option->text)) {
+    return RET_OK;
+  }
+
   option = combo_box->option_items;
-  for (; option != NULL; option = option->next, i++) {
+  for (i = 0; option != NULL; option = option->next, i++) {
     if (tk_str_eq(text, option->text)) {
       combo_box->selected_index = i;
       ret = RET_OK;
