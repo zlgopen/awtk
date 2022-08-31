@@ -75,7 +75,7 @@ static ret_t text_selector_paint_mask(widget_t* widget, canvas_t* c) {
   }
 
   if (mask_color.rgba.a) {
-    for (i = 0; i < n; i++) {
+    for (i = 0; i <= n; i++) {
       y = n - i - 1;
 
       mask_color.rgba.a = 0xff * easing((float_t)i / (float_t)n);
@@ -608,6 +608,7 @@ static ret_t text_selector_on_scroll_done(void* ctx, event_t* e) {
   }
 
   text_selector_sync_selected_index_with_yoffset(text_selector);
+  text_selector->yoffset_save = text_selector->yoffset;
 
   return RET_REMOVE;
 }
