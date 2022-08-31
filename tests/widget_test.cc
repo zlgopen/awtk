@@ -1270,6 +1270,90 @@ TEST(Widget, exec) {
   widget_destroy(w);
   idle_dispatch();
 }
+#include "../res/assets/default/inc/strings/en_US.data"
+TEST(Widget, set_text) {
+  widget_t* win = window_create_default();
+  widget_t* w = button_create(win, 0, 0, 0, 0);
+  locale_info_t* save_locale_info = locale_info();
+  locale_info_t* locale_info = locale_info_create("en", "us");
+
+  locale_info->strs = (asset_info_t*)strings_en_US;
+  locale_info_set(locale_info);
+
+  ASSERT_EQ(widget_set_text_impl(w, L"test1", TRUE), RET_OK);
+  ASSERT_EQ(widget_set_text_impl(w, L"test", TRUE), RET_OK);
+  ASSERT_EQ(widget_set_text_impl(w, L"test", TRUE), RET_NOT_MODIFIED);
+  ASSERT_EQ(widget_set_text_impl(w, L"test", FALSE), RET_OK);
+
+  ASSERT_EQ(widget_set_text_utf8_impl(w, "test", TRUE), RET_NOT_MODIFIED);
+  ASSERT_EQ(widget_set_text_utf8_impl(w, "1111", TRUE), RET_OK);
+  ASSERT_EQ(widget_set_text_utf8_impl(w, "ok", TRUE), RET_OK);
+  ASSERT_EQ(widget_set_text_utf8_impl(w, "ok", TRUE), RET_NOT_MODIFIED);
+  ASSERT_EQ(widget_set_text_utf8_impl(w, "ok", FALSE), RET_OK);
+
+  w->dirty = FALSE;
+  ASSERT_EQ(widget_set_text(w, L"ok"), RET_OK);
+  ASSERT_EQ(w->dirty, FALSE);
+
+  w->dirty = FALSE;
+  ASSERT_EQ(widget_set_text(w, L"hello"), RET_OK);
+  ASSERT_EQ(w->dirty, TRUE);
+
+  w->dirty = FALSE;
+  ASSERT_EQ(widget_set_text_utf8(w, "hello"), RET_OK);
+  ASSERT_EQ(w->dirty, FALSE);
+
+  w->dirty = FALSE;
+  ASSERT_EQ(widget_set_text_utf8(w, "ok"), RET_OK);
+  ASSERT_EQ(w->dirty, TRUE);
+
+  w->dirty = FALSE;
+  ASSERT_EQ(widget_set_text_ex(w, L"ok", TRUE), RET_OK);
+  ASSERT_EQ(w->dirty, FALSE);
+
+  w->dirty = FALSE;
+  ASSERT_EQ(widget_set_text_ex(w, L"test", TRUE), RET_OK);
+  ASSERT_EQ(w->dirty, TRUE);
+
+  w->dirty = FALSE;
+  ASSERT_EQ(widget_set_text_ex(w, L"test", FALSE), RET_OK);
+  ASSERT_EQ(w->dirty, TRUE);
+
+  w->dirty = FALSE;
+  ASSERT_EQ(widget_set_text_ex(w, L"ok", FALSE), RET_OK);
+  ASSERT_EQ(w->dirty, TRUE);
+
+  w->dirty = FALSE;
+  ASSERT_EQ(widget_set_text_utf8_ex(w, "ok", TRUE), RET_OK);
+  ASSERT_EQ(w->dirty, FALSE);
+
+  w->dirty = FALSE;
+  ASSERT_EQ(widget_set_text_utf8_ex(w, "test", TRUE), RET_OK);
+  ASSERT_EQ(w->dirty, TRUE);
+
+  w->dirty = FALSE;
+  ASSERT_EQ(widget_set_text_utf8_ex(w, "test", FALSE), RET_OK);
+  ASSERT_EQ(w->dirty, TRUE);
+
+  w->dirty = FALSE;
+  ASSERT_EQ(widget_set_text_utf8_ex(w, "ok", FALSE), RET_OK);
+  ASSERT_EQ(w->dirty, TRUE);
+  
+  w->dirty = FALSE;
+  ASSERT_EQ(widget_set_tr_text(w, "ok"), RET_OK);
+  ASSERT_EQ(w->dirty, TRUE);
+
+  w->dirty = FALSE;
+  ASSERT_EQ(widget_set_tr_text(w, "ok"), RET_OK);
+  ASSERT_EQ(w->dirty, FALSE);
+
+  w->dirty = FALSE;
+  ASSERT_EQ(widget_set_tr_text(w, ""), RET_OK);
+  ASSERT_EQ(w->dirty, TRUE);
+
+  widget_destroy(w);
+  locale_info_set(save_locale_info);
+}
 
 TEST(Widget, tr_text) {
   widget_t* w = button_create(NULL, 0, 0, 0, 0);

@@ -45,6 +45,7 @@
 #include "base/widget_animator_manager.h"
 #include "base/widget_animator_factory.h"
 #include "base/window_base.h"
+#include "base/assets_manager.h"
 #include "blend/image_g2d.h"
 
 ret_t widget_focus_up(widget_t* widget);
@@ -434,18 +435,64 @@ ret_t widget_use_style(widget_t* widget, const char* value) {
   return RET_OK;
 }
 
-ret_t widget_set_text(widget_t* widget, const wchar_t* text) {
+ret_t widget_set_text_impl(widget_t* widget, const wchar_t* text, bool_t check_diff) {
   value_t v;
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-
+  if (check_diff && tk_wstr_eq(widget->text.str, text)) {
+    return RET_NOT_MODIFIED;
+  }
   return widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_wstr(&v, text));
 }
 
-ret_t widget_set_text_utf8(widget_t* widget, const char* text) {
+ret_t widget_set_text_utf8_impl(widget_t* widget, const char* text, bool_t check_diff) {
   value_t v;
+  if (check_diff) {
+    wstr_t str;
+    ret_t ret = RET_NOT_MODIFIED;
+    uint32_t len = strlen(text);
+    if (len != widget->text.size) {
+      return widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, text));
+    }
+    return_value_if_fail(wstr_init(&str, len + 2) != NULL, RET_OOM);
+    tk_utf8_to_utf16(text, str.str, str.capacity - 1);
+
+    if (!tk_wstr_eq(widget->text.str, str.str)) {
+      widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_wstr(&v, str.str));
+      ret = RET_OK;
+    }
+    wstr_reset(&str);
+    return ret;
+  } else {
+    return widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, text));
+  }
+}
+
+ret_t widget_set_text_ex(widget_t* widget, const wchar_t* text, bool_t check_diff) {
+  ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  return widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, text));
+  ret = widget_set_text_impl(widget, text, check_diff);
+  if (ret == RET_NOT_MODIFIED) {
+    ret = RET_OK;
+  }
+  return ret;
+}
+
+ret_t widget_set_text_utf8_ex(widget_t* widget, const char* text, bool_t check_diff) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  ret = widget_set_text_utf8_impl(widget, text, check_diff);
+  if (ret == RET_NOT_MODIFIED) {
+    ret = RET_OK;
+  }
+  return ret;
+}
+
+ret_t widget_set_text(widget_t* widget, const wchar_t* text) {
+  return widget_set_text_ex(widget, text, TRUE);
+}
+
+ret_t widget_set_text_utf8(widget_t* widget, const char* text) {
+  return widget_set_text_utf8_ex(widget, text, TRUE);
 }
 
 ret_t widget_get_text_utf8(widget_t* widget, char* text, uint32_t size) {
@@ -545,7 +592,7 @@ static ret_t widget_apply_tr_text_before_paint(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   if (widget->tr_text != NULL) {
     const char* text = locale_info_tr(widget_get_locale_info(widget), widget->tr_text);
-    widget_set_prop_str(widget, WIDGET_PROP_TEXT, text);
+    widget_set_text_utf8_impl(widget, text, FALSE);
   }
 
   return RET_REMOVE;
@@ -559,7 +606,8 @@ ret_t widget_set_tr_text(widget_t* widget, const char* text) {
   if (text == NULL || *text == '\0') {
     if (widget->tr_text != NULL) {
       TKMEM_FREE(widget->tr_text);
-      widget_set_prop_str(widget, WIDGET_PROP_TEXT, text);
+      widget_set_text_utf8_impl(widget, text, FALSE);
+      widget_invalidate(widget, NULL);
     }
 
     return RET_OK;
@@ -568,9 +616,9 @@ ret_t widget_set_tr_text(widget_t* widget, const char* text) {
   widget->tr_text = tk_str_copy(widget->tr_text, text);
   if (win != NULL) {
     tr_text = locale_info_tr(widget_get_locale_info(widget), text);
-    widget_set_prop_str(widget, WIDGET_PROP_TEXT, tr_text);
+    widget_set_text_utf8_impl(widget, tr_text, TRUE);
   } else {
-    widget_set_prop_str(widget, WIDGET_PROP_TEXT, text);
+    widget_set_text_utf8_impl(widget, text, FALSE);
     widget_on(widget, EVT_BEFORE_PAINT, widget_apply_tr_text_before_paint, widget);
   }
 
@@ -582,9 +630,8 @@ ret_t widget_re_translate_text(widget_t* widget) {
     widget->vt->on_re_translate(widget);
   }
   if (widget->tr_text != NULL) {
-    value_t v;
     const char* tr_text = locale_info_tr(widget_get_locale_info(widget), widget->tr_text);
-    widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, tr_text));
+    widget_set_text_utf8_impl(widget, tr_text, FALSE);
     widget_invalidate(widget, NULL);
   }
 
@@ -614,35 +661,45 @@ ret_t widget_set_name(widget_t* widget, const char* name) {
   return RET_OK;
 }
 
+const char* widget_get_theme_name(widget_t* widget) {
+  return_value_if_fail(widget != NULL, NULL);
+  assets_manager_t* am = widget_get_assets_manager(widget);
+  return_value_if_fail(am != NULL, NULL);
+
+  return am->name;
+}
+
 ret_t widget_set_theme(widget_t* widget, const char* name) {
   theme_change_event_t will_event;
   event_t* will_evt = theme_change_event_init(&will_event, EVT_THEME_WILL_CHANGE, name);
   widget_dispatch(window_manager(), will_evt);
 #if defined(WITH_FS_RES) && !defined(AWTK_WEB)
-  const asset_info_t* info = NULL;
-  theme_change_event_t event;
-  event_t* evt = theme_change_event_init(&event, EVT_THEME_CHANGED, name);
-  widget_t* wm = widget_get_window_manager(widget);
-  assets_manager_t* am = widget_get_assets_manager(widget);
-  locale_info_t* locale_info = widget_get_locale_info(widget);
-  return_value_if_fail(am != NULL && name != NULL, RET_BAD_PARAMS);
+  {
+    const asset_info_t* info = NULL;
+    theme_change_event_t event;
+    event_t* evt = theme_change_event_init(&event, EVT_THEME_CHANGED, name);
+    widget_t* wm = widget_get_window_manager(widget);
+    assets_manager_t* am = widget_get_assets_manager(widget);
+    locale_info_t* locale_info = widget_get_locale_info(widget);
+    return_value_if_fail(am != NULL && name != NULL, RET_BAD_PARAMS);
 
-  font_managers_unload_all();
-  image_managers_unload_all();
-  locale_info_reload(locale_info);
-  assets_managers_set_theme(name);
-  widget_reset_canvas(widget);
+    font_managers_unload_all();
+    image_managers_unload_all();
+    locale_info_reload(locale_info);
+    assets_managers_set_theme(name);
+    widget_reset_canvas(widget);
 
-  info = assets_manager_ref(am, ASSET_TYPE_STYLE, "default");
-  if (info != NULL) {
-    theme_set(theme_load_from_data(info->name, info->data, info->size));
-    assets_manager_unref(assets_manager(), info);
+    info = assets_manager_ref(am, ASSET_TYPE_STYLE, "default");
+    if (info != NULL) {
+      theme_set(theme_load_from_data(info->name, info->data, info->size));
+      assets_manager_unref(assets_manager(), info);
+    }
+
+    widget_dispatch(wm, evt);
+    widget_invalidate_force(wm, NULL);
+
+    log_debug("theme changed: %s\n", name);
   }
-
-  widget_dispatch(wm, evt);
-  widget_invalidate_force(wm, NULL);
-
-  log_debug("theme changed: %s\n", name);
 #endif /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
 
   return RET_OK;
@@ -2110,7 +2167,7 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
 
   if (tk_str_start_with(name, WIDGET_PROP_ANIMATE_PREFIX)) {
     uint32_t duration = TK_ANIMATING_TIME;
-    char* prop_name = name + strlen(WIDGET_PROP_ANIMATE_PREFIX);
+    const char* prop_name = name + strlen(WIDGET_PROP_ANIMATE_PREFIX);
     if (!tk_str_eq(prop_name, WIDGET_PROP_ANIMATING_TIME)) {
       duration = widget_get_prop_int(widget, WIDGET_PROP_ANIMATE_ANIMATING_TIME, TK_ANIMATING_TIME);
       return widget_animate_prop_float_to(widget, prop_name, value_float32(v), duration);

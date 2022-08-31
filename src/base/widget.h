@@ -943,14 +943,24 @@ ret_t widget_animate_value_to(widget_t* widget, float_t value, uint32_t duration
 
 /**
  * @method widget_set_text
- * 设置控件的文本。
- * 只是对widget\_set\_prop的包装，文本的意义由子类控件决定。
+ * 设置控件的文本。（如果字符串相同，则不会重复设置以及触发事件）
  * @param {widget_t*} widget 控件对象。
  * @param {const wchar_t*}  text 文本。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_text(widget_t* widget, const wchar_t* text);
+
+/**
+ * @method widget_set_text_ex
+ * 设置控件的文本。
+ * @param {widget_t*} widget 控件对象。
+ * @param {const wchar_t*}  text 文本。
+ * @param {bool_t}  check_diff 是否检查设置的文本是否和控件中的文本一样。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_text_ex(widget_t* widget, const wchar_t* text, bool_t check_diff);
 
 /**
  * @method widget_get_window_theme
@@ -988,8 +998,7 @@ ret_t widget_use_style(widget_t* widget, const char* style);
 
 /**
  * @method widget_set_text_utf8
- * 设置控件的文本。
- * 只是对widget\_set\_prop的包装，文本的意义由子类控件决定。
+ * 设置控件的文本。（如果字符串相同，则不会重复设置以及触发事件）
  * @annotation ["scriptable"]
  * @alias set_text
  * @param {widget_t*} widget 控件对象。
@@ -998,6 +1007,19 @@ ret_t widget_use_style(widget_t* widget, const char* style);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_text_utf8(widget_t* widget, const char* text);
+
+/**
+ * @method widget_set_text_utf8_ex
+ * 设置控件的文本。
+ * @annotation ["scriptable"]
+ * @alias set_text_ex
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*}  text 文本。
+ * @param {bool_t}  check_diff 是否检查设置的文本是否和控件中的文本一样。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_text_utf8_ex(widget_t* widget, const char* text, bool_t check_diff);
 
 /**
  * @method widget_get_text_utf8
@@ -1243,6 +1265,16 @@ ret_t widget_set_name(widget_t* widget, const char* name);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_theme(widget_t* widget, const char* name);
+
+/**
+ * @method widget_get_theme_name
+ * 获取 theme 的名称
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {const char*} 成功返回主题名称，失败否则 NULL。
+ */
+const char* widget_get_theme_name(widget_t* widget);
 
 /**
  * @method widget_set_pointer_cursor
@@ -3199,6 +3231,9 @@ bool_t widget_is_activate_key(widget_t* widget, key_event_t* e);
 ret_t widget_set_focused_internal(widget_t* widget, bool_t focused);
 ret_t widget_remove_child_prepare(widget_t* widget, widget_t* child);
 ret_t widget_move_resize_ex(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h, bool_t update_layout);
+
+ret_t widget_set_text_impl(widget_t* widget, const wchar_t* text, bool_t check_diff);
+ret_t widget_set_text_utf8_impl(widget_t* widget, const char* text, bool_t check_diff);
 
 /*public for input_device_status*/
 /**
