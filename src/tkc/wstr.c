@@ -181,7 +181,12 @@ ret_t wstr_set_utf8_with_len(wstr_t* str, const char* text, uint32_t len) {
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
   return_value_if_fail(wstr_extend(str, len + 2) == RET_OK, RET_OOM);
 
-  tk_utf8_to_utf16_ex(text, len, str->str, str->capacity - 1);
+  if (tk_utf8_to_utf16_ex(text, len, str->str, str->capacity - 1) == NULL) {
+    log_warn("wstr_set_utf8_with_len fail, please ensure the parameters are UTF-8 encoded!\n");
+    wstr_reset(str);
+    return RET_BAD_PARAMS;
+  }
+
   str->size = wcslen(str->str);
 
   return RET_OK;
