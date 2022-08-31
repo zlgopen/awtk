@@ -97,21 +97,21 @@ typedef struct _serial_widget_t {
 
   /**
    * @property {tk_istream_t*} istream
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design"]
    * 输入流。
    */
   tk_istream_t* istream;
 
   /**
    * @property {tk_ostream_t*} ostream
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design"]
    * 输出流。
    */
   tk_ostream_t* ostream;
 
   /**
    * @property {tk_iostream_t*} iostream
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design"]
    * 输入/出流。
    */
   tk_iostream_t* iostream;

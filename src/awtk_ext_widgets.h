@@ -57,6 +57,8 @@
 #include "mledit/line_number.h"
 #include "mledit/mledit.h"
 #include "features/draggable.h"
+#include "timer_widget/timer_widget.h"
+#include "serial_widget/serial_widget.h"
 
 #if defined(WITH_FS_RES) || defined(WITH_FS)
 #include "file_browser/file_chooser.h"
