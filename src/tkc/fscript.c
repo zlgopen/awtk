@@ -696,7 +696,7 @@ static ret_t fscript_exec_for_in(fscript_t* fscript, fscript_func_call_t* iter, 
   uint32_t i = 0;
   uint32_t n = 0;
   bool_t done = FALSE;
-  object_t* obj = NULL;
+  tk_object_t* obj = NULL;
   value_t* var = iter->args.args;
   int32_t index = value_id_index(var);
   const char* name = value_id(var);

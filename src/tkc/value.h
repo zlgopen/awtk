@@ -437,7 +437,7 @@ uint64_t value_uint64(const value_t* v);
 value_t* value_set_pointer(value_t* v, void* value);
 
 /**
- * @method value_set_pointer
+ * @method value_set_pointer_ex
  * 设置类型为pointer的值。
  * @param {value_t*}  v       value对象。
  * @param {void*}     value   待设置的值。

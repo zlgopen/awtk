@@ -104,7 +104,6 @@ uint32_t idle_manager_count(idle_manager_t* idle_manager);
 /**
  * @method idle_manager_dispatch
  * 检查全部idle的函数，如果时间到期，调用相应的idle函数。
- * @annotation ["private"]
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -172,10 +171,20 @@ uint32_t idle_manager_add(idle_manager_t* idle_manager, idle_func_t on_idle, voi
 
 /*internal use*/
 uint32_t idle_manager_get_next_idle_id(idle_manager_t* idle_manager);
+
+/**
+ * @method idle_manager_remove_all_by_ctx_and_type 
+ */
 ret_t idle_manager_remove_all_by_ctx_and_type(idle_manager_t* idle_manager, uint16_t type,
                                               void* ctx);
+/**
+ * @method idle_manager_add_with_type 
+ */
 uint32_t idle_manager_add_with_type(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx,
                                     uint16_t type);
+/**
+ * @method idle_manager_exist
+ */
 bool_t idle_manager_exist(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx);
 
 END_C_DECLS

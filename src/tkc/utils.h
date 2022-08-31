@@ -785,7 +785,6 @@ bool_t tk_str_is_in_array(const char* str, const char** str_array, uint32_t arra
 void* tk_memcpy(void* dst, const void* src, uint32_t len);
 
 void* tk_memcpy_by_align_4(void* dst_align_4, const void* src_align_4, uint32_t len);
-const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN + 1]);
 
 static inline int32_t tk_max_int(int32_t a, int32_t b) {
   return tk_max(a, b);
@@ -876,7 +875,18 @@ bool_t tk_is_ui_thread(void);
  */
 ret_t tk_set_ui_thread(uint64_t ui_thread_id);
 
+/**
+ * @method tk_replace_locale
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t tk_replace_locale(const char* name, char out[TK_NAME_LEN + 1], const char* locale);
+
+/**
+ * @method tk_normalize_key_name
+ *
+ */
+const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN + 1]);
 
 /*public for test*/
 ret_t xml_file_expand(const char* filename, str_t* s, const char* data);

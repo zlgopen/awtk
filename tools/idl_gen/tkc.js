@@ -8,6 +8,7 @@ if(process.argv.length == 3) {
 }
 
 let sourcesPath = [
+    path.normalize(path.join(__dirname, '../../dllexports')), 
     path.normalize(path.join(__dirname, '../../src/tkc')), 
     path.normalize(path.join(__dirname, '../../src/xml')), 
     path.normalize(path.join(__dirname, '../../src/charset')), 

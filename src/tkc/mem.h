@@ -28,7 +28,6 @@
 BEGIN_C_DECLS
 
 typedef ret_t (*tk_mem_on_out_of_memory_t)(void* ctx, uint32_t tried_times, uint32_t need_size);
-ret_t tk_mem_set_on_out_of_memory(tk_mem_on_out_of_memory_t on_out_of_memory, void* ctx);
 
 void* tk_calloc(uint32_t nmemb, uint32_t size, const char* func, uint32_t line);
 void* tk_realloc(void* ptr, uint32_t size, const char* func, uint32_t line);
@@ -128,6 +127,17 @@ void tk_free(void* ptr);
  */
 void tk_mem_dump(void);
 
+
+/**
+ * @method tk_mem_set_on_out_of_memory
+ * 设置内存耗尽时的处理函数。
+ * @param {tk_mem_on_out_of_memory_t} on_out_of_memory 回调函数。
+ * @param {void*} ctx 回调函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_mem_set_on_out_of_memory(tk_mem_on_out_of_memory_t on_out_of_memory, void* ctx);
+
 /**
  * @method tk_mem_init
  * @export none
@@ -160,7 +170,6 @@ ret_t tk_mem_init_ex(void* buffer, uint32_t size, ...);
 
 /**
  * @method tk_mem_init_stage2
- * @export none
  * 初始化互斥和oom。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

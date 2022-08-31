@@ -187,9 +187,18 @@ uint64_t timer_manager_next_time(timer_manager_t* timer_manager);
 ret_t timer_manager_append(timer_manager_t* timer_manager, timer_info_t* timer);
 
 /*internal use*/
+/**
+ * @method timer_manager_get_next_timer_id 
+ */
 uint32_t timer_manager_get_next_timer_id(timer_manager_t* timer_manager);
+/**
+ * @method timer_manager_all_remove_by_ctx_and_type
+ */
 ret_t timer_manager_all_remove_by_ctx_and_type(timer_manager_t* timer_manager, uint16_t type,
                                                void* ctx);
+/**
+ * @method timer_manager_add_with_type
+ */
 uint32_t timer_manager_add_with_type(timer_manager_t* timer_manager, timer_func_t on_timer,
                                      void* ctx, uint32_t duration, uint16_t timer_info_type);
 
