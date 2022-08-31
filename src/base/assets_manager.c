@@ -608,6 +608,11 @@ ret_t assets_manager_clear_all(assets_manager_t* am) {
   return darray_clear(&(am->assets));
 }
 
+const char* assets_manager_get_theme_name(assets_manager_t* am) {
+  return_value_if_fail(am != NULL, NULL);
+  return am->theme;
+}
+
 ret_t assets_manager_set_theme(assets_manager_t* am, const char* theme) {
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
 

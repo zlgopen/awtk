@@ -666,7 +666,7 @@ const char* widget_get_theme_name(widget_t* widget) {
   assets_manager_t* am = widget_get_assets_manager(widget);
   return_value_if_fail(am != NULL, NULL);
 
-  return am->name;
+  return assets_manager_get_theme_name(am);
 }
 
 ret_t widget_set_theme(widget_t* widget, const char* name) {

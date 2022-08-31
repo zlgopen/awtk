@@ -48,6 +48,12 @@ TEST(AssetsManager, basic) {
   ASSERT_EQ(assets_manager_ref_ex(rm, ASSET_TYPE_FONT, ASSET_TYPE_FONT_TTF, "font1"), &font1);
   ASSERT_EQ(assets_manager_ref_ex(rm, ASSET_TYPE_FONT, ASSET_TYPE_FONT_BMP, "font1"), &font2);
 
+  ASSERT_EQ(assets_manager_set_theme(rm, "dark"), RET_OK);
+  ASSERT_STREQ(assets_manager_get_theme_name(rm), "dark");
+
+  ASSERT_EQ(assets_manager_set_theme(rm, "default"), RET_OK);
+  ASSERT_STREQ(assets_manager_get_theme_name(rm), "default");
+
   assets_manager_destroy(rm);
 }
 

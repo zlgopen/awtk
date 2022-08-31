@@ -479,6 +479,16 @@ ret_t assets_managers_set_theme(const char* theme);
  */
 ret_t assets_managers_unref(assets_manager_t* am);
 
+/**
+ * @method assets_manager_get_theme_name
+ * 获取当前的主题名称。
+ * @annotation ["deconstructor"]
+ * @param {assets_manager_t*} am 资源管理器对象。
+ *
+ * @return {const char*} 返回主题名称。
+ */
+const char* assets_manager_get_theme_name(assets_manager_t* am);
+
 END_C_DECLS
 
 #endif /*TK_ASSETS_MANAGER_H*/
