@@ -730,8 +730,11 @@ static ret_t edit_on_key_up(widget_t* widget, key_event_t* e) {
     if (edit->timer_id == TK_INVALID_ID) {
       edit_on_focused(widget);
     } else {
-      widget_focus_next(widget);
-      widget_set_focused(widget, FALSE);
+      keyboard_type_t keyboard_type = system_info()->keyboard_type;
+      if (keyboard_type != KEYBOARD_3KEYS && keyboard_type != KEYBOARD_5KEYS) {
+        widget_focus_next(widget);
+        widget_set_focused(widget, FALSE);
+      }
     }
     ret = RET_STOP;
   } else {
