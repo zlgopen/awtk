@@ -672,7 +672,7 @@ static ret_t text_selector_on_pointer_up(text_selector_t* text_selector, pointer
   if (e->y == text_selector->ydown) {
     /*click*/
     int32_t index = 0;
-    int32_t mid_index = text_selector->visible_nr / 2;
+    int32_t mid_index = text_selector->selected_index;
     point_t p = {e->x, e->y};
     widget_to_local(widget, &p);
     index = p.y / item_height;
