@@ -297,6 +297,11 @@ static ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
         main_loop_sdl2_dispatch_window_event(loop, &event);
         break;
       }
+      case SDL_SYSWMEVENT: {
+        system_event_t e;
+        widget_dispatch(window_manager(), system_event_init(&e, NULL, &event));
+        break;
+      }
       case SDL_QUIT: {
         event_t e = event_init(EVT_REQUEST_QUIT_APP, NULL);
         if (widget_dispatch(window_manager(), &e) == RET_OK) {

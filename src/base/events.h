@@ -506,6 +506,11 @@ typedef enum _event_type_t {
    */
   EVT_MODEL_CHANGE,
   /**
+   * @const EVT_SYSTEM
+   * SDL系统事件(system_event_t)。
+   */
+  EVT_SYSTEM,
+  /**
    * @const EVT_REQ_START
    * event queue其它请求编号起始值。
    */
@@ -1184,6 +1189,43 @@ theme_change_event_t* theme_change_event_cast(event_t* event);
  * @return {event_t*} 返回event对象。
  */
 event_t* theme_change_event_init(theme_change_event_t* event, uint32_t type, const char* name);
+
+/**
+ * @class system_event_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * 系统事件。
+ */
+typedef struct _system_event_t {
+  event_t e;
+  /**
+   * @property {void*} sdl_event
+   * @annotation ["readable", "scriptable"]
+   * SDL_Event。
+   */
+  void* sdl_event;
+} system_event_t;
+
+/**
+ * @method system_event_cast
+ * @annotation ["cast", "scriptable"]
+ * 把event对象转system_event_t对象。主要给脚本语言使用。
+ * @param {event_t*} event event对象。
+ *
+ * @return {system_event_t*} event 对象。
+ */
+system_event_t* system_event_cast(event_t* event);
+
+/**
+ * @method system_event_init
+ * 初始化事件。
+ * @param {system_event_t*} event event对象。
+ * @param {void*} target 事件目标。
+ * @param {void*} sdl_event SDL_Event对象。
+ *
+ * @return {event_t*} event对象。
+ */
+event_t* system_event_init(system_event_t* event, void* target, void* sdl_event);
 
 /**
  * @class event_t

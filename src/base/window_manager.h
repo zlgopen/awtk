@@ -128,6 +128,11 @@ typedef struct _window_manager_t {
  */
 
 /**
+ * @event {system_event_t} EVT_SYSTEM
+ * SDL系统事件。
+ */
+
+/**
  * @method window_manager
  * 获取全局window_manager对象
  * @alias window_manager_instance

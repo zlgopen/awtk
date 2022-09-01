@@ -675,6 +675,7 @@ ret_t native_window_sdl_init(bool_t shared, uint32_t w, uint32_t h) {
     s_shared_win = native_window_create_internal(title, 0, x, y, w, h);
     s_shared_win->shared = TRUE;
   }
+  SDL_EventState(SDL_SYSWMEVENT, SDL_ENABLE);
 
   return RET_OK;
 }
