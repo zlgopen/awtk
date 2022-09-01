@@ -136,8 +136,8 @@ ret_t path_app_root(char path[MAX_PATH + 1]) {
   return RET_FAIL;
 }
 
-static char* path_up(char* path) {
-  uint32_t len = strlen(path);
+static char* path_up(char* path, uint32_t size) {
+  uint32_t len = tk_min(strlen(path), size);
   if (len > 0) {
     char* p = path + strlen(path) - 1;
     if (IS_PATH_SEP(*p)) {
@@ -159,8 +159,7 @@ static char* path_up(char* path) {
     } else {
       p[0] = TK_PATH_SEP;
     }
-    p[1] = '\0';
-
+    memset(p + 1, 0x0, size - (p - path) - 1);
     return p + 1;
   } else {
     return path;
@@ -191,7 +190,7 @@ ret_t path_normalize(const char* path, char* result, int32_t size) {
         } else if (s[1] == '.') {
           return_value_if_fail(IS_PATH_SEP(s[2]) || s[2] == '\0', RET_FAIL);
 
-          d = path_up(result);
+          d = path_up(result, size);
           s += 2;
           if (IS_PATH_SEP(s[0])) {
             s++;
