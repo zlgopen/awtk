@@ -46,7 +46,7 @@ GTEST_API_ int main(int argc, char** argv) {
   printf("Running main() from gtest_main.cc\n");
   testing::InitGoogleTest(&argc, argv);
 
-  return_value_if_fail(platform_prepare() == RET_OK, RET_FAIL);
+  return_value_if_fail(tk_pre_init() == RET_OK, RET_FAIL);
   tk_socket_init();
   system_info_init(APP_SIMULATOR, NULL, NULL);
   tk_init_internal();

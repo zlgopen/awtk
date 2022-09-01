@@ -73,7 +73,8 @@ typedef struct _canvas_offline_gpu_t {
 
 #endif
 
-static ret_t canvas_offline_begin_frame(canvas_t* c, const dirty_rects_t* dirty_rects, lcd_draw_mode_t draw_mode) {
+static ret_t canvas_offline_begin_frame(canvas_t* c, const dirty_rects_t* dirty_rects,
+                                        lcd_draw_mode_t draw_mode) {
   ret_t ret = RET_OK;
   const rect_t* dirty_rect = dirty_rects != NULL ? &(dirty_rects->max) : NULL;
   ret = canvas_offline_begin_draw(c);
@@ -142,7 +143,8 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
   canvas->base.bitmap->format = BITMAP_FMT_RGBA8888;
   bitmap_set_line_length(canvas->base.bitmap, 0);
 
-  canvas->base.bitmap->buffer = GRAPHIC_BUFFER_CREATE_WITH_DATA(NULL, canvas->base.bitmap->w, canvas->base.bitmap->h, BITMAP_FMT_RGBA8888);
+  canvas->base.bitmap->buffer = GRAPHIC_BUFFER_CREATE_WITH_DATA(
+      NULL, canvas->base.bitmap->w, canvas->base.bitmap->h, BITMAP_FMT_RGBA8888);
   canvas->base.bitmap->should_free_data = TRUE;
 
   canvas->base.begin_draw = 0;
@@ -184,7 +186,7 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
     lcd = lcd_mem_bgr565_create_single_fb(bitmap->w, bitmap->h, buff);
   } else if (bitmap->format == BITMAP_FMT_RGB565) {
     lcd = lcd_mem_rgb565_create_single_fb(bitmap->w, bitmap->h, buff);
-  } 
+  }
 #ifdef LINUX
   else if (bitmap->format == BITMAP_FMT_RGB888) {
     lcd = lcd_mem_rgb888_create_single_fb(bitmap->w, bitmap->h, buff);
@@ -219,7 +221,8 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
   }
 #ifdef WITH_FAST_LCD_PORTRAIT
   if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
-    if (info->lcd_orientation == LCD_ORIENTATION_90 || info->lcd_orientation == LCD_ORIENTATION_270) {
+    if (info->lcd_orientation == LCD_ORIENTATION_90 ||
+        info->lcd_orientation == LCD_ORIENTATION_270) {
       bitmap->w = h;
       bitmap->h = w;
     }
@@ -228,7 +231,7 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
 #endif
   ((canvas_t*)canvas)->end_frame = canvas_offline_end_draw;
   ((canvas_t*)canvas)->begin_frame = canvas_offline_begin_frame;
-  return (canvas_t*)canvas; 
+  return (canvas_t*)canvas;
 }
 
 #ifdef AWTK_WEB
@@ -338,7 +341,6 @@ ret_t canvas_offline_end_draw(canvas_t* canvas) {
 #ifdef WITH_GPU
   c = (canvas_offline_gpu_t*)canvas;
   if (vg != NULL && canvas_offline->begin_draw == 0) {
-
     canvas->lcd->w = vg->w = c->base.lcd_w;
     canvas->lcd->h = vg->h = c->base.lcd_h;
 
@@ -402,19 +404,20 @@ ret_t canvas_offline_bitmap_move_to_new_bitmap(canvas_t* canvas, bitmap_t* bitma
     return RET_OK;
   }
 #endif
-  
+
   should_free_handle = bitmap->should_free_handle;
   canvas_bitmap = ((canvas_offline_t*)canvas)->bitmap;
 
   memcpy(bitmap, canvas_bitmap, sizeof(bitmap_t));
 
   bitmap->should_free_handle = should_free_handle;
-  
-#ifdef AWTK_WEB 
+
+#ifdef AWTK_WEB
   ctx->vg = canvas_get_vgcanvas(canvas);
   ctx->fbo = ((canvas_offline_gpu_t*)canvas)->fbo;
   ((canvas_offline_gpu_t*)canvas)->fbo = NULL;
-  vgcanvas_asset_manager_remove_image(vgcanvas_asset_manager(), lcd_get_vgcanvas(canvas->lcd), canvas_bitmap);
+  vgcanvas_asset_manager_remove_image(vgcanvas_asset_manager(), lcd_get_vgcanvas(canvas->lcd),
+                                      canvas_bitmap);
 
   bitmap->specific_ctx = ctx;
   bitmap->image_manager = image_manager();
@@ -458,7 +461,7 @@ ret_t canvas_offline_flush_bitmap(canvas_t* canvas) {
       data = c->bitmap_data;
     }
     r = rect_init(0, 0, bitmap->w, bitmap->h);
-    
+
     graphic_buffer_attach(bitmap->buffer, data, bitmap->w, bitmap->h);
     vgcanvas_fbo_to_bitmap(vg, fbo, bitmap, &r);
   }
@@ -482,7 +485,7 @@ ret_t canvas_offline_destroy(canvas_t* canvas) {
   }
 #endif
 
-  bitmap = ((canvas_offline_t*)canvas)->bitmap;  
+  bitmap = ((canvas_offline_t*)canvas)->bitmap;
   if (bitmap != NULL) {
     bitmap_destroy(bitmap);
   }
@@ -491,12 +494,20 @@ ret_t canvas_offline_destroy(canvas_t* canvas) {
   if (canvas_offline_gpu->bitmap_data != NULL) {
     TKMEM_FREE(canvas_offline_gpu->bitmap_data);
   }
+  canvas_reset(canvas);
 #else
   system_info_set_lcd_w(info, ((canvas_offline_t*)canvas)->lcd_w);
   system_info_set_lcd_h(info, ((canvas_offline_t*)canvas)->lcd_h);
-  lcd_destroy(canvas->lcd);
+
+  if (canvas->lcd != NULL) {
+    lcd_t* lcd = canvas->lcd;
+    canvas_reset(canvas);
+    lcd_destroy(lcd);
+  } else {
+    canvas_reset(canvas);
+  }
 #endif
-  canvas_reset(canvas);
+
   TKMEM_FREE(canvas);
 
   return RET_OK;

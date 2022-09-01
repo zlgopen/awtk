@@ -130,6 +130,7 @@ static bool_t edit_pattern_is_valid_char(widget_t* widget, wchar_t c, wchar_t se
       uint32_t index = 0;
       const wchar_t* pe = text->str + cursor;
       const wchar_t* ps = pe - 1;
+      return_value_if_fail(cursor > 0, FALSE);
 
       for (i = 0; i < cursor; i++) {
         if (text->str[i] == sep) {

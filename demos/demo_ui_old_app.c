@@ -799,6 +799,7 @@ static widget_t* find_bind_value_target(widget_t* widget, const char* name) {
         target = widget_lookup(parent, subname, FALSE);
       }
     }
+    tokenizer_deinit(&t);
   }
   return target;
 }

@@ -955,7 +955,7 @@ void MatrixSearch::prepare_candidates() {
   // lemma. Remove the lemma candidate in this case.
   char16 fullsent[kMaxLemmaSize + 1];
   char16* pfullsent = NULL;
-  uint16 sent_len;
+  uint16 sent_len = 0;
   pfullsent = get_candidate0(fullsent, kMaxLemmaSize + 1, &sent_len, true);
 
   // If the unfixed part contains more than one ids, it is not necessary to

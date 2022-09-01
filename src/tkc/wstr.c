@@ -131,7 +131,7 @@ static ret_t wstr_extend(wstr_t* str, uint32_t capacity) {
     wchar_t* s = TKMEM_REALLOCT(wchar_t, str->str, capacity + 1);
     return_value_if_fail(s != NULL, RET_FAIL);
 
-    s[capacity] = 0;
+    s[str->size] = 0;
     str->str = s;
     str->capacity = capacity;
   }
