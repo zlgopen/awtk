@@ -956,6 +956,10 @@ Translate text
   <language name="en_US">Test</language>
   <language name="zh_CN">测试</language>
 </string>
+<string name="Exit">
+  <language name="en_US">Exit</language>
+  <language name="zh_CN">退出</language>
+</string>
 <string name="sliding here:">
   <language name="en_US">sliding here:</language>
   <language name="zh_CN">滑动此处：</language>
@@ -963,6 +967,10 @@ Translate text
 <string name="Embedded system not support switch ratio!">
   <language name="en_US">Embedded system not support switch ratio!</language>
   <language name="zh_CN">嵌入式系统不支持切换分辨率！</language>
+</string>
+<string name="Do you really want to exit?">
+  <language name="en_US">Do you really want to exit?</language>
+  <language name="zh_CN">确定要退出吗？</language>
 </string>
 <string name="hello world">
   <language name="en_US">hello 

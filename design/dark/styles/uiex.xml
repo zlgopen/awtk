@@ -201,6 +201,13 @@
     <over/>
     <pressed bg_color="#709918" border_color="#00000000" x_offset="1" y_offset="1"/>
   </style>
+  <style name="exit" bg_color="#383838" border_color="#4d4d4d" font_size="22" icon_at="left" text_align_h="right" margin="6" icon="uiex_close_n" round_radius="4" text_color="#FFFFFF">
+    <normal/>
+    <disable bg_color="#38383866" border_color="#4d4d4d66" text_color="#FFFFFF66"/>
+    <focused/>
+    <over/>
+    <pressed bg_color="#709918" border_color="#00000000" x_offset="1" y_offset="1"/>
+  </style>
   <style name="gradient" bg_color="linear-gradient(180deg, #8ABC1D, #709918);" border_color="#00000000" font_size="22" round_radius="4" text_color="#FFFFFF">
     <normal/>
     <disable bg_color="linear-gradient(180deg, #8ABC1D66, #70991866);" text_color="#FFFFFF66"/>

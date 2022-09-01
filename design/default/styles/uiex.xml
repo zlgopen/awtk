@@ -205,6 +205,13 @@
     <over/>
     <pressed bg_color="#709918" border_color="#00000000" text_color="#FFFFFF" x_offset="1" y_offset="1"/>
   </style>
+  <style name="exit" bg_color="#EBEBEB" border_color="#C2C2C2" font_size="22" icon="uiex_close_n" icon_at="left" margin="6" round_radius="4" text_align_h="right" text_color="#000000">
+    <normal/>
+    <disable bg_color="#EBEBEB66" border_color="#C2C2C266" text_color="#00000066"/>
+    <focused/>
+    <over/>
+    <pressed bg_color="#709918" border_color="#00000000" text_color="#FFFFFF" x_offset="1" y_offset="1"/>
+  </style>
 </button>
 <check_button>
   <style name="default" font_size="22" icon="uiex_check_n" icon_at="left" text_color="#000000">

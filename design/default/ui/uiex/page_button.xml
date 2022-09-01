@@ -54,6 +54,7 @@
       <grid h="36" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
         <button name="button" style="with_icon_text" tr_text="Test"/>
         <check_button name="cb_fps" style="fps" text="FPS"/>
+        <button name="quit()" style="exit" tr_text="Exit"/>
       </grid>
     </view>
     <view name="view_sw" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="65">

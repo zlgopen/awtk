@@ -126,7 +126,12 @@ static widget_t* window_open_with_prefix(const char* name) {
 }
 
 static ret_t on_quit(void* ctx, event_t* e) {
-  return tk_quit();
+  ret_t ret = dialog_simple_show("Confirm", "Do you really want to exit?", DIALOG_CONFIRM_THEME,
+                                 TRUE, TRUE);
+  if (RET_OK == ret) {
+    return tk_quit();
+  }
+  return RET_OK;
 }
 
 static ret_t on_close_window(void* ctx, event_t* e) {
@@ -439,7 +444,7 @@ static ret_t page_button_init(widget_t* page) {
     widget_on(cb_ratio, EVT_CLICK, on_switch_ratio, NULL);
   }
 
-  return RET_OK;
+  return widget_foreach(page, common_init_widget, NULL);
 }
 
 /*** page_slider **********************************************************************/
