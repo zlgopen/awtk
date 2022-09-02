@@ -466,7 +466,12 @@ static ret_t input_method_default_on_edit_destroy(void* ctx, event_t* e) {
   input_method_t* im = (input_method_t*)ctx;
 
   if (im->widget == widget) {
-    input_method_request(im, NULL);
+    if (im->keyboard != NULL) {
+      window_close_force(im->keyboard);
+      im->keyboard = NULL;
+    }
+    im->win = NULL;
+    im->widget = NULL;
   }
 
   return RET_REMOVE;
