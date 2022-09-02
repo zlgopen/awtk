@@ -2,6 +2,7 @@
 
 2022/09/02
   * 完善软键盘关闭。
+  * children\_layouter\_list\_view新增animating\_time属性，支持添加和删除item时播放缓动动画(感谢雨欣提供补丁)
 
 2022/09/01
   * 修复valgrind发现的问题。

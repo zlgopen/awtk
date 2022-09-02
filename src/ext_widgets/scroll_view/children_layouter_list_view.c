@@ -82,6 +82,11 @@ static const char* children_layouter_list_view_to_string(children_layouter_t* la
     str_append(str, "hlayouter=true,");
   }
 
+  if (layout->animating_time) {
+    tk_snprintf(temp, sizeof(temp) - 1, "animating_time=%d,", layout->animating_time);
+    str_append(str, temp);
+  }
+
   str_trim_right(str, ",");
   str_append(str, ")");
 
@@ -137,6 +142,10 @@ static ret_t children_layouter_list_view_set_param(children_layouter_t* layouter
       }
       break;
     }
+    case 'a': {
+      l->animating_time = (uint32_t)val;
+      break;
+    }
     default:
       break;
   }
@@ -190,8 +199,13 @@ static ret_t children_layouter_list_view_get_param(children_layouter_t* layouter
     case 'h': {
       if (strstr(name, "layouter") != NULL || name[1] == 'l') {
         value_set_bool(v, l->hlayouter);
+        return RET_OK;
       }
       break;
+    }
+    case 'a': {
+      value_set_uint32(v, l->animating_time);
+      return RET_OK;
     }
     default: {
       assert(!"not support param");
@@ -237,23 +251,70 @@ static ret_t children_layouter_list_view_for_list_view_children_layout_h(
   return RET_OK;
 }
 
-static ret_t children_layouter_list_view_for_list_view_children_layout_w(
-    darray_t* children_for_layout, uint32_t cols, int32_t x_margin, int32_t y_margin,
-    int32_t spacing, int32_t scroll_view_w) {
+static ret_t children_layouter_list_view_for_list_view_children_layout_w_with_animation(
+    children_layouter_t* layouter, darray_t* children_for_layout, int32_t w) {
+  ret_t ret = RET_OK;
   int32_t i = 0;
-  int32_t w = 0;
-  int32_t x = x_margin;
-  int32_t y = y_margin;
+  int32_t y = 0;
+  uint32_t cols = 0;
+  char animate_y[16] = {0};
   widget_t** children = NULL;
-  return_value_if_fail(children_for_layout != NULL, RET_BAD_PARAMS);
-  w = scroll_view_w - 2 * x_margin;
+  children_layouter_list_view_t* l = (children_layouter_list_view_t*)layouter;
+  return_value_if_fail(l != NULL && children_for_layout != NULL, RET_BAD_PARAMS);
+
+  y = l->y_margin;
+  cols = l->cols <= 1 ? 1 : l->cols;
   children = (widget_t**)children_for_layout->elms;
+  tk_snprintf(animate_y, sizeof(animate_y), "%s%s", WIDGET_PROP_ANIMATE_PREFIX, WIDGET_PROP_Y);
+
   if (cols <= 1) {
     for (i = 0; i < children_for_layout->size; i++) {
       widget_t* iter = children[i];
-      widget_move_resize(iter, x, y, w, iter->h);
+      widget_move_resize(iter, l->x_margin, iter->y, w, iter->h);
+      widget_set_prop_int(iter, WIDGET_PROP_ANIMATE_ANIMATING_TIME, l->animating_time);
+      widget_set_prop_int(iter, animate_y, y);
       widget_layout_children(iter);
-      y += (iter->h + spacing);
+      y += (iter->h + l->spacing);
+    }
+  } else {
+    ret = RET_FAIL;
+    log_warn("Remove animation of multiple columns is not supported!\n");
+  }
+
+  return ret;
+}
+
+static ret_t children_layouter_list_view_for_list_view_children_layout_w(
+    children_layouter_t* layouter, darray_t* children_for_layout, int32_t scroll_view_w) {
+  int32_t i = 0;
+  int32_t w = 0;
+  int32_t x = 0;
+  int32_t y = 0;
+  uint32_t cols = 0;
+  widget_t* win = NULL;
+  widget_t** children = NULL;
+  children_layouter_list_view_t* l = (children_layouter_list_view_t*)layouter;
+  return_value_if_fail(l != NULL && children_for_layout != NULL, RET_BAD_PARAMS);
+
+  x = l->x_margin;
+  y = l->y_margin;
+  cols = l->cols <= 1 ? 1 : l->cols;
+
+  children = (widget_t**)children_for_layout->elms;
+  win = widget_get_window(children[0]);
+  w = scroll_view_w - 2 * l->x_margin;
+
+  if (cols <= 1) {
+    if (l->animating_time && win && !win->loading) {
+      children_layouter_list_view_for_list_view_children_layout_w_with_animation(
+          layouter, children_for_layout, w);
+    } else {
+      for (i = 0; i < children_for_layout->size; i++) {
+        widget_t* iter = children[i];
+        widget_move_resize(iter, x, y, w, iter->h);
+        widget_layout_children(iter);
+        y += (iter->h + l->spacing);
+      }
     }
   } else {
     int32_t j = 0;
@@ -262,17 +323,17 @@ static ret_t children_layouter_list_view_for_list_view_children_layout_w(
     int32_t size = children_for_layout->size;
     uint32_t rows = (size % cols) ? (size / cols) + 1 : (size / cols);
 
-    w = (w - (cols - 1) * spacing) / cols;
+    w = (w - (cols - 1) * l->spacing) / cols;
     for (i = 0; i < rows && n < size; i++) {
       h = 0;
       for (j = 0; j < cols && n < size; j++, n++) {
         widget_t* iter = children[n];
-        int32_t tmp_x = x + j * (w + spacing);
+        int32_t tmp_x = x + j * (w + l->spacing);
         widget_move_resize(iter, tmp_x, y, w, iter->h);
         widget_layout_children(iter);
         h = tk_max(h, iter->h);
       }
-      y += (h + spacing);
+      y += (h + l->spacing);
     }
   }
   return RET_OK;
@@ -323,11 +384,12 @@ static int32_t children_layouter_list_view_for_list_view_get_scroll_view_w(list_
   return scroll_view_w;
 }
 
-static ret_t children_layouter_list_view_for_list_view_set_scroll_view_info(widget_t* widget,
-                                                                            widget_t* scroll_bar,
-                                                                            int32_t virtual_h) {
+static ret_t children_layouter_list_view_for_list_view_set_scroll_view_info(
+    children_layouter_t* layouter, widget_t* widget, widget_t* scroll_bar, int32_t virtual_h) {
+  int32_t yoffset = 0;
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
-  return_value_if_fail(scroll_view != NULL, RET_BAD_PARAMS);
+  children_layouter_list_view_t* l = (children_layouter_list_view_t*)layouter;
+  return_value_if_fail(scroll_view != NULL && l != NULL, RET_BAD_PARAMS);
 
   if (scroll_bar_is_mobile(scroll_bar)) {
     scroll_view_set_yslidable(widget, TRUE);
@@ -337,14 +399,27 @@ static ret_t children_layouter_list_view_for_list_view_set_scroll_view_info(widg
   scroll_view_set_virtual_h(widget, virtual_h);
 
   if (!scroll_view->dragged && scroll_view->wa == NULL) {
-    if (widget->h >= virtual_h) {
-      scroll_view_set_offset(widget, 0, 0);
-    }
     scroll_view->xoffset = 0;
-    if (scroll_view->yoffset + widget->h > scroll_view->virtual_h) {
-      scroll_view->yoffset = scroll_view->virtual_h - widget->h;
-      scroll_view->yoffset = scroll_view->yoffset > 0 ? scroll_view->yoffset : 0;
+    yoffset = scroll_view->yoffset;
+
+    if (widget->h >= virtual_h) {
+      yoffset = 0;
     }
+
+    if (yoffset + widget->h > scroll_view->virtual_h) {
+      yoffset = tk_max(scroll_view->virtual_h - widget->h, 0);
+    }
+
+    if (l->animating_time) {
+      char animate_yoffset[16] = {0};
+      tk_snprintf(animate_yoffset, sizeof(animate_yoffset), "%s%s", WIDGET_PROP_ANIMATE_PREFIX,
+                  WIDGET_PROP_YOFFSET);
+      widget_set_prop_int(widget, WIDGET_PROP_ANIMATE_ANIMATING_TIME, l->animating_time);
+      widget_set_prop_int(widget, animate_yoffset, yoffset);
+    } else {
+      scroll_view->yoffset = yoffset;
+    }
+
     if (scroll_view->on_scroll) {
       scroll_view->on_scroll(widget, scroll_view->xoffset, scroll_view->yoffset);
     }
@@ -431,14 +506,14 @@ static ret_t children_layouter_list_view_for_list_view_layout(children_layouter_
         children_layouter_list_view_for_list_view_get_scroll_view_w(list_view, widget, virtual_h);
 
     widget_move_resize_ex(widget, widget->x, widget->y, scroll_view_w, widget->h, FALSE);
-    children_layouter_list_view_for_list_view_children_layout_w(
-        &children_for_layout, cols, l->x_margin, l->y_margin, l->spacing, scroll_view_w);
+    children_layouter_list_view_for_list_view_children_layout_w(layouter, &children_for_layout,
+                                                                scroll_view_w);
 
     darray_deinit(&(children_for_layout));
   }
 
-  children_layouter_list_view_for_list_view_set_scroll_view_info(widget, list_view->scroll_bar,
-                                                                 virtual_h);
+  children_layouter_list_view_for_list_view_set_scroll_view_info(layouter, widget,
+                                                                 list_view->scroll_bar, virtual_h);
   if (list_view->scroll_bar != NULL) {
     children_layouter_list_view_for_list_view_set_scroll_bar_info(
         list_view->scroll_bar, list_view, widget, virtual_h,

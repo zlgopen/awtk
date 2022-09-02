@@ -77,3 +77,13 @@ TEST(ChildrenLayoutListView, keep_disable1) {
 
   children_layouter_destroy(layouter);
 }
+
+TEST(ChildrenLayoutListView, animating_time) {
+  const char* layout_params = "list_view(x=3,y=4,s=14,i=30,d=40,a=500)";
+  children_layouter_t* layouter = children_layouter_create(layout_params);
+
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "a", 0), 500);
+  ASSERT_EQ(children_layouter_get_param_int(layouter, "animating_time", 0), 500);
+
+  children_layouter_destroy(layouter);
+}

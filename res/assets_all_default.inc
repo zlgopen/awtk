@@ -163,6 +163,7 @@
 #include "assets/default/inc/ui/test_fscript.data"
 #include "assets/default/inc/ui/mono_test.data"
 #include "assets/default/inc/ui/select1.data"
+#include "assets/default/inc/ui/list_view_animate.data"
 #include "assets/default/inc/ui/hscroll_label.data"
 #include "assets/default/inc/ui/slide_left.data"
 #include "assets/default/inc/ui/list_view_h1.data"
@@ -1049,6 +1050,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_test_fscript);
   assets_manager_add(am, ui_mono_test);
   assets_manager_add(am, ui_select1);
+  assets_manager_add(am, ui_list_view_animate);
   assets_manager_add(am, ui_hscroll_label);
   assets_manager_add(am, ui_slide_left);
   assets_manager_add(am, ui_list_view_h1);

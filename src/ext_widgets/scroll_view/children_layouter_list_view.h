@@ -47,6 +47,7 @@ typedef struct _children_layouter_list_view_t {
   uint8_t hlayouter : 1;
   uint8_t keep_invisible : 1;
   uint8_t keep_disable : 1;
+  uint32_t animating_time; /* 单位为毫秒，仅适用于单列的情况 */
 } children_layouter_list_view_t;
 
 /**

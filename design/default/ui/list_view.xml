@@ -1,15 +1,21 @@
-<window anim_hint="htranslate" children_layout="default(c=1,h=30,m=5,s=5)">
-    <button name="open:list_view_d" text="Desktop Style"/>
-    <button name="open:list_view_d_f" text="Desktop Floating Style"/>
-    <button name="open:list_view_m" text="Mobile Style"/>
-    <button name="open:list_view_vh" text="Variable Height"/>
-    <button name="open:list_view_h" text="Horizontal"/>
-    <button name="open:list_view_h1" text="Horizontal For Layout"/>
-    <button name="open:list_view_auto_resize" text="Auto Adjust Size"/>
-    <button name="open:image_list" text="Image List"/>
-    <button name="open:select1" text="Single Choose"/>
-    <button name="open:selectm" text="Multiple Choose"/>
-    <button name="open:accordion1" text="Accordion"/>
-    <button name="open:accordion2" text="Accordion Exclusive"/>
-    <button name="close" text="Close"/>
+<window anim_hint="htranslate">
+    <list_view x="0" y="0" w="100%" h="100%" item_height="30">
+        <scroll_view name="view" x="0"  y="0" w="-12" h="100%" children_layout="list_view(x_margin=5,spacing=5)">
+            <button name="open:list_view_d" text="Desktop Style" focused="true"/>
+            <button name="open:list_view_d_f" text="Desktop Floating Style"/>
+            <button name="open:list_view_m" text="Mobile Style"/>
+            <button name="open:list_view_vh" text="Variable Height"/>
+            <button name="open:list_view_h" text="Horizontal"/>
+            <button name="open:list_view_h1" text="Horizontal For Layout"/>
+            <button name="open:list_view_auto_resize" text="Auto Adjust Size"/>
+            <button name="open:image_list" text="Image List"/>
+            <button name="open:select1" text="Single Choose"/>
+            <button name="open:selectm" text="Multiple Choose"/>
+            <button name="open:accordion1" text="Accordion"/>
+            <button name="open:accordion2" text="Accordion Exclusive"/>
+            <button name="open:list_view_animate" text="Animate"/>
+            <button name="close" text="Close"/>
+        </scroll_view>
+        <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" animator_time="0" value="0"/>
+    </list_view>
 </window>

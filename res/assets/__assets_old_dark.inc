@@ -158,6 +158,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_slide_view_v1[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_test_fscript[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_mono_test[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_select1[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_list_view_animate[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_hscroll_label[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_slide_left[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_list_view_h1[]);
@@ -674,6 +675,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_test_fscript);
   assets_manager_add(am, ui_mono_test);
   assets_manager_add(am, ui_select1);
+  assets_manager_add(am, ui_list_view_animate);
   assets_manager_add(am, ui_hscroll_label);
   assets_manager_add(am, ui_slide_left);
   assets_manager_add(am, ui_list_view_h1);

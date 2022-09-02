@@ -542,7 +542,8 @@ static ret_t on_remove_view(void* ctx, event_t* e) {
 
 static ret_t on_clone_self(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
-  widget_t* clone = widget_clone(widget, widget->parent);
+  widget_t* clone = widget_clone(widget, NULL);
+  widget_insert_child(widget->parent, widget_index_of(widget) + 1, clone);
   widget_on(clone, EVT_CLICK, on_clone_self, clone);
 
   return RET_OK;
