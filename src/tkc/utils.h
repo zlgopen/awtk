@@ -891,6 +891,9 @@ const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN 
 /*public for test*/
 ret_t xml_file_expand(const char* filename, str_t* s, const char* data);
 
+#define TK_STRDUP(str) ((str) != NULL) ? strdup(str) : NULL
+#define TK_STRNDUP(str) ((str) != NULL) ? strndup(str) : NULL
+
 END_C_DECLS
 
 #endif /*TK_UTILS_H*/
