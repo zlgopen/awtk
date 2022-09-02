@@ -200,7 +200,7 @@ ret_t dialog_toast(const char* text, uint32_t duration) {
   dialog_toast_t* dialog_toast = dialog_toast_manager();
   return_value_if_fail(dialog_toast != NULL, RET_OOM);
 
-  ENSURE(dialog_toast_push_message(dialog_toast, text, duration) != NULL);
+  return_value_if_fail(dialog_toast_push_message(dialog_toast, text, duration) != NULL, RET_FAIL);
   return dialog_toast_model(dialog_toast);
 }
 
