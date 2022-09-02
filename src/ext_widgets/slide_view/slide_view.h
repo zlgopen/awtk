@@ -119,7 +119,7 @@ typedef struct _slide_view_t {
    */
   uint32_t drag_threshold;
 
-    /**
+  /**
    * @property {uint32_t} animating_time
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 动画时间（单位：毫秒）。

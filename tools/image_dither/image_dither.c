@@ -2130,8 +2130,8 @@ static uint8_t* image_dither_convert_2_to_4(uint8_t* src, uint32_t w, uint32_t h
   return data;
 }
 
-
-static void image_dither_image_blend_bg_color(uint8_t* data, uint32_t w, uint32_t h, uint32_t bpp, color_t bg_color) {
+static void image_dither_image_blend_bg_color(uint8_t* data, uint32_t w, uint32_t h, uint32_t bpp,
+                                              color_t bg_color) {
   if (bpp == 4) {
     uint32_t y = 0, x = 0;
     uint8_t* src = data;
@@ -2155,7 +2155,8 @@ static void image_dither_image_blend_bg_color(uint8_t* data, uint32_t w, uint32_
 }
 
 ret_t image_dither_load_image(const uint8_t* buff, uint32_t buff_size, bitmap_t* image,
-                              bitmap_format_t bitmap_format, lcd_orientation_t o, color_t bg_color) {
+                              bitmap_format_t bitmap_format, lcd_orientation_t o,
+                              color_t bg_color) {
   int w = 0;
   int h = 0;
   int n = 0;

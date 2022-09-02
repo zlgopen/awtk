@@ -73,11 +73,11 @@ TEST(Str, set_with_len) {
 
   ASSERT_EQ(str_set_with_len(s, "hello world", 5), RET_OK);
   ASSERT_EQ(str_eq(s, "hello"), TRUE);
-  
+
   ASSERT_EQ(str_set_with_len(s, &c, 1), RET_OK);
   ASSERT_EQ(s->size, 1);
   ASSERT_EQ(str_eq(s, "a"), TRUE);
- 
+
   c = '\0';
   ASSERT_EQ(str_set_with_len(s, &c, 1), RET_OK);
   ASSERT_EQ(s->size, 0);

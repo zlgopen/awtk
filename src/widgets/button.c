@@ -62,7 +62,7 @@ static ret_t button_notify_pressed_changed(widget_t* widget) {
   value_t v;
   prop_change_event_t e;
   button_t* button = BUTTON(widget);
-  
+
   e.e = event_init(EVT_PROP_CHANGED, widget);
   e.name = "pressed";
   value_set_bool(&v, button->pressed);

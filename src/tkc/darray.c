@@ -123,7 +123,7 @@ ret_t darray_remove_index(darray_t* darray, uint32_t index) {
   return RET_OK;
 }
 
- ret_t darray_remove_range(darray_t* darray, uint32_t start, uint32_t end) {
+ret_t darray_remove_range(darray_t* darray, uint32_t start, uint32_t end) {
   return_value_if_fail(darray != NULL && start < end && end <= darray->size, RET_BAD_PARAMS);
 
   if (darray->elms != NULL) {

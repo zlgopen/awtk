@@ -199,7 +199,7 @@ TEST(Window, copy) {
 static ret_t on_model_changed(void* ctx, event_t* e) {
   model_event_t* evt = model_event_cast(e);
   str_t* str = (str_t*)ctx;
-  str_append_more(str, evt->name, ",", evt->change_type, ";", NULL); 
+  str_append_more(str, evt->name, ",", evt->change_type, ";", NULL);
 
   return RET_OK;
 }
@@ -208,7 +208,7 @@ TEST(Window, model_change) {
   str_t str;
   widget_t* w1 = window_create(NULL, 10, 20, 30, 40);
   widget_t* w2 = window_create(NULL, 10, 20, 30, 40);
- 
+
   str_init(&str, 100);
   widget_on(w1, EVT_MODEL_CHANGE, on_model_changed, &str);
   widget_on(w2, EVT_MODEL_CHANGE, on_model_changed, &str);

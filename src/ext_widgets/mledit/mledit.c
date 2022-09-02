@@ -170,7 +170,7 @@ ret_t mledit_set_overwrite(widget_t* widget, bool_t overwrite) {
   return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
 
   mledit->overwrite = overwrite;
-  
+
   return RET_OK;
 }
 
@@ -1016,7 +1016,7 @@ char* mledit_get_selected_text(widget_t* widget) {
 static void mledit_fix_state(mledit_t* mledit, uint32_t offset, uint32_t rm_num, uint32_t cursor) {
   text_edit_state_t state = {0};
   text_edit_get_state(mledit->model, &state);
-  
+
   if (state.select_start <= offset && state.select_end >= offset) {
     state.select_start = state.select_end = 0;
   } else {
@@ -1027,7 +1027,7 @@ static void mledit_fix_state(mledit_t* mledit, uint32_t offset, uint32_t rm_num,
       state.select_start = state.select_end = 0;
     }
   }
-  
+
   mledit->model->ignore_layout = TRUE;
   text_edit_set_select(mledit->model, state.select_start, state.select_end);
   mledit->model->ignore_layout = FALSE;
@@ -1060,13 +1060,13 @@ static ret_t mledit_insert_text_overwrite(widget_t* widget, uint32_t offset, con
   }
 
   /* handle max_lines */
-  for (i = (int32_t)(text->size)-1; i >= 0; --i) {
-    if (i > 0 && TWINS_WCHAR_IS_LINE_BREAK(text->str[i-1], text->str[i])) {
+  for (i = (int32_t)(text->size) - 1; i >= 0; --i) {
+    if (i > 0 && TWINS_WCHAR_IS_LINE_BREAK(text->str[i - 1], text->str[i])) {
       ++line_num;
       if (line_num > mledit->max_lines) {
         break;
       }
-      
+
       --i;
     } else if (WCHAR_IS_LINE_BREAK(text->str[i])) {
       ++line_num;
@@ -1076,13 +1076,13 @@ static ret_t mledit_insert_text_overwrite(widget_t* widget, uint32_t offset, con
     }
   }
   if (i >= 0) {
-    rm_cnt += i+1;
-    wstr_remove(text, 0, i+1);
+    rm_cnt += i + 1;
+    wstr_remove(text, 0, i + 1);
   }
 
   /* fix select & cursor */
   mledit_fix_state(mledit, offset, rm_cnt, text->size);
-  
+
   /* 新加入的文本 由于 max_chars 或 max_lines的限制， 实际上完全没加到文本中 */
   if (offset + newtext_len <= rm_cnt) {
     return RET_SKIP;

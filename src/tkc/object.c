@@ -286,7 +286,8 @@ ret_t tk_object_set_prop_pointer(tk_object_t* obj, const char* name, void* value
   return tk_object_set_prop_pointer_ex(obj, name, value, NULL);
 }
 
-ret_t tk_object_set_prop_pointer_ex(tk_object_t* obj, const char* name, void* value, tk_destroy_t destroy) {
+ret_t tk_object_set_prop_pointer_ex(tk_object_t* obj, const char* name, void* value,
+                                    tk_destroy_t destroy) {
   value_t v;
   ret_t ret = RET_OK;
   value_set_pointer_ex(&v, value, destroy);

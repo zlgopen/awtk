@@ -377,7 +377,8 @@ ret_t tk_object_set_prop_pointer(tk_object_t* obj, const char* name, void* value
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tk_object_set_prop_pointer_ex(tk_object_t* obj, const char* name, void* value, tk_destroy_t destroy);
+ret_t tk_object_set_prop_pointer_ex(tk_object_t* obj, const char* name, void* value,
+                                    tk_destroy_t destroy);
 
 /**
  * @method tk_object_set_prop_object

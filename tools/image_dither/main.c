@@ -151,8 +151,10 @@ int wmain(int argc, wchar_t* argv[]) {
   platform_prepare();
 
   if (argc < 4) {
-    printf("Usage: %S in_filename out_filename (png|res|data) (bgra|rgba|bgr|rgb|bgr565|rgb565) (bg_color) (theme) (orientation) \n",
-           argv[0]);
+    printf(
+        "Usage: %S in_filename out_filename (png|res|data) (bgra|rgba|bgr|rgb|bgr565|rgb565) "
+        "(bg_color) (theme) (orientation) \n",
+        argv[0]);
 
     return 0;
   }
@@ -177,7 +179,8 @@ int wmain(int argc, wchar_t* argv[]) {
     str_from_wstr(&str_color, argv[5]);
     bg_color = color_parse(str_color.str);
     str_reset(&str_color);
-    printf("bg_color(rbga):(%d, %d, %d, %d)", bg_color.rgba.r, bg_color.rgba.g, bg_color.rgba.b, bg_color.rgba.a);
+    printf("bg_color(rbga):(%d, %d, %d, %d)", bg_color.rgba.r, bg_color.rgba.g, bg_color.rgba.b,
+           bg_color.rgba.a);
     if (bg_color.rgba.a != 0xFF) {
       printf(", bg_color must opaque!, so fail \r\n");
       return 0;
@@ -216,7 +219,8 @@ int wmain(int argc, wchar_t* argv[]) {
   str_from_wstr(&in_file, argv[1]);
   str_from_wstr(&out_file, argv[2]);
 
-  gen_one(&in_file, &out_file, theme_name.str, output_format, image_format, lcd_orientation, bg_color);
+  gen_one(&in_file, &out_file, theme_name.str, output_format, image_format, lcd_orientation,
+          bg_color);
 
   str_reset(&in_file);
   str_reset(&out_file);

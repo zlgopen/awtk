@@ -69,7 +69,9 @@ static bitmap_t* mutable_image_prepare_image(widget_t* widget, canvas_t* c) {
 
 ret_t mutable_image_on_paint_self(widget_t* widget, canvas_t* canvas) {
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
-  bitmap_t* bitmap = mutable_image->user_image != NULL ? mutable_image->user_image : mutable_image_prepare_image(widget, canvas);
+  bitmap_t* bitmap = mutable_image->user_image != NULL
+                         ? mutable_image->user_image
+                         : mutable_image_prepare_image(widget, canvas);
 
   if (bitmap == NULL) {
     return RET_FAIL;

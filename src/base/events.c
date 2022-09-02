@@ -366,7 +366,8 @@ model_event_t* model_event_cast(event_t* event) {
   return (model_event_t*)event;
 }
 
-event_t* model_event_init(model_event_t* event, const char* name, const char* change_type, tk_object_t* model) {
+event_t* model_event_init(model_event_t* event, const char* name, const char* change_type,
+                          tk_object_t* model) {
   return_value_if_fail(event != NULL && name != NULL && change_type != NULL, NULL);
   event->e = event_init(EVT_MODEL_CHANGE, model);
   event->e.size = sizeof(model_event_t);
@@ -380,9 +381,7 @@ event_t* model_event_init(model_event_t* event, const char* name, const char* ch
 
 system_event_t* system_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);
-  return_value_if_fail(
-      event->type == EVT_SYSTEM,
-      NULL);
+  return_value_if_fail(event->type == EVT_SYSTEM, NULL);
   return_value_if_fail(event->size == sizeof(system_event_t), NULL);
 
   return (system_event_t*)event;

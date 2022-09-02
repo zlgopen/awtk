@@ -2512,8 +2512,8 @@ static ret_t func_get(fscript_t* fscript, fscript_args_t* args, value_t* result)
   return_value_if_fail(v->type == VALUE_TYPE_ID || v->type == VALUE_TYPE_STRING, RET_BAD_PARAMS);
 
   if (v->type == VALUE_TYPE_STRING) {
-      const char* name = value_str(v);
-      ret = fscript_get_var(fscript, name, result);
+    const char* name = value_str(v);
+    ret = fscript_get_var(fscript, name, result);
   } else {
     if (value_id_index(v) >= 0) {
       ret = fscript_locals_get(fscript, v, result);
@@ -2537,8 +2537,8 @@ static ret_t func_set(fscript_t* fscript, fscript_args_t* args, value_t* result)
   return_value_if_fail(v->type == VALUE_TYPE_ID || v->type == VALUE_TYPE_STRING, RET_BAD_PARAMS);
 
   if (v->type == VALUE_TYPE_STRING) {
-      const char* name = value_str(v);
-      value_set_bool(result, fscript_set_var(fscript, name, args->args + 1) == RET_OK);
+    const char* name = value_str(v);
+    value_set_bool(result, fscript_set_var(fscript, name, args->args + 1) == RET_OK);
   } else {
     index = value_id_index(v);
     if (index >= 0) {
@@ -2557,10 +2557,10 @@ static ret_t func_unset(fscript_t* fscript, fscript_args_t* args, value_t* resul
   value_t* v = args->args;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   return_value_if_fail(v->type == VALUE_TYPE_ID || v->type == VALUE_TYPE_STRING, RET_BAD_PARAMS);
-  
+
   if (v->type == VALUE_TYPE_STRING) {
-      const char* name = value_str(v);
-      tk_object_remove_prop(fscript->obj, name);
+    const char* name = value_str(v);
+    tk_object_remove_prop(fscript->obj, name);
   } else {
     index = value_id_index(v);
     if (index >= 0) {

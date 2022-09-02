@@ -137,7 +137,7 @@ TEST(Xml, text0) {
   str_t str;
   conf_doc_t* doc = conf_doc_load_xml("<group_box>123</group_box>");
 
-  ASSERT_STREQ(conf_doc_get_str(doc, "group_box."CONF_XML_TEXT, NULL), "123");
+  ASSERT_STREQ(conf_doc_get_str(doc, "group_box." CONF_XML_TEXT, NULL), "123");
   str_init(&str, 100);
   conf_doc_save_xml(doc, &str);
   ASSERT_STREQ(str.str, "<group_box>123</group_box>\n");
@@ -149,7 +149,7 @@ TEST(Xml, text1) {
   str_t str;
   conf_doc_t* doc = conf_doc_load_xml("<group_box>123&lt;abc</group_box>");
 
-  ASSERT_STREQ(conf_doc_get_str(doc, "group_box."CONF_XML_TEXT, NULL), "123<abc");
+  ASSERT_STREQ(conf_doc_get_str(doc, "group_box." CONF_XML_TEXT, NULL), "123<abc");
   str_init(&str, 100);
   conf_doc_save_xml(doc, &str);
   ASSERT_STREQ(str.str, "<group_box>123&lt;abc</group_box>\n");

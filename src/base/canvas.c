@@ -324,7 +324,8 @@ static float_t canvas_measure_text_default(canvas_t* c, const wchar_t* str, uint
 float_t canvas_measure_text(canvas_t* c, const wchar_t* str, uint32_t nr) {
   return_value_if_fail(c != NULL && c->lcd != NULL && str != NULL, 0);
 
-  if (c->last_text_length != 0 && c->last_text_nr == nr && tk_str_eq_with_len(c->last_text_str, str, nr)) {
+  if (c->last_text_length != 0 && c->last_text_nr == nr &&
+      tk_str_eq_with_len(c->last_text_str, str, nr)) {
     return c->last_text_length;
   } else {
     if (nr > CANVAS_MEASURE_TEXT_CACHE_MAX_LENGTH) {

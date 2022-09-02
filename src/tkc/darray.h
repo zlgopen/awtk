@@ -248,7 +248,7 @@ ret_t darray_remove_index(darray_t* darray, uint32_t index);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
- ret_t darray_remove_range(darray_t* darray, uint32_t start, uint32_t end);
+ret_t darray_remove_range(darray_t* darray, uint32_t start, uint32_t end);
 
 /**
  * @method darray_remove_all

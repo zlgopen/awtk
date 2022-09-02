@@ -2784,19 +2784,19 @@ TEST(FScript, rets) {
   tk_object_t* obj = object_default_create();
   fscript_eval(obj, "RET_OK", &v);
   ASSERT_EQ((int)RET_OK, value_int(&v));
-  
+
   fscript_eval(obj, "RET_FAIL", &v);
   ASSERT_EQ((int)RET_FAIL, value_int(&v));
-  
+
   fscript_eval(obj, "RET_REMOVE", &v);
   ASSERT_EQ((int)RET_REMOVE, value_int(&v));
-  
+
   fscript_eval(obj, "RET_REPEAT", &v);
   ASSERT_EQ((int)RET_REPEAT, value_int(&v));
-  
+
   fscript_eval(obj, "return RET_REPEAT", &v);
   ASSERT_EQ((int)RET_REPEAT, value_int(&v));
-  
+
   fscript_eval(obj, "return RET_NOT_FOUND", &v);
   ASSERT_EQ((int)RET_NOT_FOUND, value_int(&v));
 
@@ -2835,8 +2835,8 @@ static ret_t fscript_self_hooks_set_var(fscript_t* fscript, const char* name, co
   return fscript_set_var_default(fscript, name, v);
 }
 
-static ret_t fscript_self_hooks_exec_func(fscript_t* fscript, const char* name, fscript_func_call_t* iter,
-                                 value_t* result) {
+static ret_t fscript_self_hooks_exec_func(fscript_t* fscript, const char* name,
+                                          fscript_func_call_t* iter, value_t* result) {
   s_self_hooks_test.exec_func = TRUE;
   return fscript_exec_func_default(fscript, iter, result);
 }
@@ -2866,28 +2866,28 @@ static ret_t fscript_global_hooks_set_var(fscript_t* fscript, const char* name, 
   return fscript_set_var_default(fscript, name, v);
 }
 
-static ret_t fscript_global_hooks_exec_func(fscript_t* fscript, const char* name, fscript_func_call_t* iter,
-                                 value_t* result) {
+static ret_t fscript_global_hooks_exec_func(fscript_t* fscript, const char* name,
+                                            fscript_func_call_t* iter, value_t* result) {
   s_global_hooks_test.exec_func = TRUE;
   return fscript_exec_func_default(fscript, iter, result);
 }
 
 static const fscript_hooks_t s_fscript_self_hooks = {
-  NULL,
-  fscript_self_hooks_on_fscript_deinit,
-  fscript_self_hooks_set_var,
-  fscript_self_hooks_exec_func,
-  fscript_self_hooks_on_fscript_before_exec,
-  fscript_self_hooks_on_fscript_after_exec,
+    NULL,
+    fscript_self_hooks_on_fscript_deinit,
+    fscript_self_hooks_set_var,
+    fscript_self_hooks_exec_func,
+    fscript_self_hooks_on_fscript_before_exec,
+    fscript_self_hooks_on_fscript_after_exec,
 };
 
 static const fscript_hooks_t s_fscript_global_hooks = {
-  fscript_global_hooks_on_fscript_init,
-  fscript_global_hooks_on_fscript_deinit,
-  fscript_global_hooks_set_var,
-  fscript_global_hooks_exec_func,
-  fscript_global_hooks_on_fscript_before_exec,
-  fscript_global_hooks_on_fscript_after_exec,
+    fscript_global_hooks_on_fscript_init,
+    fscript_global_hooks_on_fscript_deinit,
+    fscript_global_hooks_set_var,
+    fscript_global_hooks_exec_func,
+    fscript_global_hooks_on_fscript_before_exec,
+    fscript_global_hooks_on_fscript_after_exec,
 };
 
 TEST(FScript, hooks) {
@@ -2937,7 +2937,6 @@ TEST(FScript, hooks) {
   ASSERT_EQ(s_global_hooks_test.exec_func, TRUE);
   ASSERT_EQ(s_global_hooks_test.set_var, TRUE);
 
-
   value_reset(&v);
   TK_OBJECT_UNREF(obj);
 }
@@ -2948,11 +2947,11 @@ TEST(FScript, set_get_unset) {
   fscript_eval(obj, "set('a',3);get('a')", &v);
   ASSERT_EQ(3, value_int(&v));
   value_reset(&v);
-  
+
   fscript_eval(obj, "set(a,3);get(a)", &v);
   ASSERT_EQ(3, value_int(&v));
   value_reset(&v);
-  
+
   fscript_eval(obj, "set(a,3);get(a);unset('a');get('a')", &v);
   ASSERT_EQ(0, value_int(&v));
   value_reset(&v);

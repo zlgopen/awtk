@@ -406,7 +406,6 @@ widget_t* dialog_create_with_ok_cancel(const char* stitle, uint32_t w, uint32_t 
 ret_t dialog_simple_show(const char* stitle, const char* scontent, const char* theme, bool_t has_ok,
                          bool_t has_cancel);
 
-
 #define DIALOG(widget) ((dialog_t*)(dialog_cast(WIDGET(widget))))
 
 #define DIALOG_CHILD_OK "ok"

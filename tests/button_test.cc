@@ -250,7 +250,7 @@ TEST(Button, event_fscript) {
   ASSERT_EQ(widget_dispatch(w, e), RET_STOP);
   ASSERT_EQ(widget_dispatch(w, e), RET_STOP);
   ASSERT_EQ(tk_object_get_prop_int(global, "x", 0), 123);
-  
+
   widget_set_prop_str(w, "on:click", "print('hello\n');global.y=y;return RET_STOP");
   ASSERT_EQ(widget_dispatch(w, e), RET_STOP);
   ASSERT_EQ(tk_object_get_prop_int(global, "y", 0), 234);

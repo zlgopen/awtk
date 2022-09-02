@@ -209,7 +209,7 @@ TEST(MLEdit, insert_text_overwrite) {
   ASSERT_EQ(mledit_insert_text(e, 0, "0\n"), RET_SKIP);
   widget_get_text_utf8(e, get_text, sizeof(get_text));
   ASSERT_STREQ(get_text, "1\n2\n3\n4\n5");
-  
+
   memset(get_text, 0, sizeof(get_text));
   mledit_set_max_lines(e, 7);
   widget_set_text_utf8(e, str);

@@ -536,21 +536,21 @@ typedef struct _model_event_t {
    * @annotation ["readable", "scriptable"]
    * 模型名称。
    */
-   const char* name;
+  const char* name;
 
   /**
    * @property {const char*} change_type 
    * @annotation ["readable", "scriptable"]
    * 变化类型(update/add/remove)。
    */
-   const char* change_type;
+  const char* change_type;
 
   /**
    * @property {tk_object_t*} model
    * @annotation ["readable", "scriptable"]
    * 模型。
    */
-   tk_object_t* model;
+  tk_object_t* model;
 } model_event_t;
 
 /**
@@ -573,7 +573,8 @@ model_event_t* model_event_cast(event_t* event);
  *
  * @return {event_t*} event对象。
  */
-event_t* model_event_init(model_event_t* event, const char* name, const char* change_type, tk_object_t* model);
+event_t* model_event_init(model_event_t* event, const char* name, const char* change_type,
+                          tk_object_t* model);
 /**
  * @class wheel_event_t
  * @annotation ["scriptable"]

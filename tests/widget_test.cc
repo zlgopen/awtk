@@ -1338,7 +1338,7 @@ TEST(Widget, set_text) {
   w->dirty = FALSE;
   ASSERT_EQ(widget_set_text_utf8_ex(w, "ok", FALSE), RET_OK);
   ASSERT_EQ(w->dirty, TRUE);
-  
+
   w->dirty = FALSE;
   ASSERT_EQ(widget_set_tr_text(w, "ok"), RET_OK);
   ASSERT_EQ(w->dirty, TRUE);

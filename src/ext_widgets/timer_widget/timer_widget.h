@@ -19,7 +19,6 @@
  *
  */
 
-
 #ifndef TK_TIMER_WIDGET_H
 #define TK_TIMER_WIDGET_H
 
@@ -94,7 +93,6 @@ widget_t* timer_widget_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  */
 widget_t* timer_widget_cast(widget_t* widget);
 
-
 /**
  * @method timer_widget_set_duration
  * 设置 时长(ms)。
@@ -105,7 +103,6 @@ widget_t* timer_widget_cast(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t timer_widget_set_duration(widget_t* widget, uint32_t duration);
-
 
 #define TIMER_WIDGET_PROP_DURATION "duration"
 

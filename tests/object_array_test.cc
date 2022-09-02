@@ -758,7 +758,7 @@ TEST(ObjectArray, push_and_remove) {
   ASSERT_EQ(OBJECT_ARRAY(obj)->size, 3);
   ASSERT_EQ(object_array_get(obj, 0, &v), RET_OK);
   ASSERT_EQ(value_int(&v), 20);
-  
+
   value_set_int(&v, 30);
   ASSERT_EQ(object_array_remove_value(obj, &v), RET_OK);
   ASSERT_EQ(OBJECT_ARRAY(obj)->size, 2);

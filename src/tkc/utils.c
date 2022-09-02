@@ -263,7 +263,7 @@ int32_t tk_atoi(const char* str) {
   return_value_if_fail(str != NULL, 0);
   if (IS_HEX_NUM(str)) {
     return tk_strtoi(str + 2, NULL, 16);
-  }else if (str[0] == '#') {
+  } else if (str[0] == '#') {
     return tk_strtoi(str + 1, NULL, 16);
   } else if (IS_BIN_NUM(str)) {
     return tk_strtoi(str + 2, NULL, 2);

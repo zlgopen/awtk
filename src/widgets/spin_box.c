@@ -23,9 +23,10 @@
 #include "base/layout.h"
 #include "widgets/spin_box.h"
 
-#define SPIN_DEFAULT_REPEAT     300
+#define SPIN_DEFAULT_REPEAT 300
 
-const char* const s_spin_box_properties[] = {TK_EDIT_PROPS, WIDGET_PROP_REPEAT, WIDGET_PROP_EASY_TOUCH_MODE, NULL};
+const char* const s_spin_box_properties[] = {TK_EDIT_PROPS, WIDGET_PROP_REPEAT,
+                                             WIDGET_PROP_EASY_TOUCH_MODE, NULL};
 
 widget_t* spin_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 

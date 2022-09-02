@@ -87,10 +87,12 @@ static ret_t main_window_on_key_up(void* ctx, event_t* e) {
 
   if (evt->key == TK_KEY_s) {
     system_info_t* info = system_info();
-    window_manager_resize(window_manager(), tk_max(160, info->lcd_w / 2), tk_max(160, info->lcd_h / 2));
+    window_manager_resize(window_manager(), tk_max(160, info->lcd_w / 2),
+                          tk_max(160, info->lcd_h / 2));
   } else if (evt->key == TK_KEY_d) {
     system_info_t* info = system_info();
-    window_manager_resize(window_manager(), tk_min(1920, info->lcd_w * 2), tk_min(1920, info->lcd_h * 2));
+    window_manager_resize(window_manager(), tk_min(1920, info->lcd_w * 2),
+                          tk_min(1920, info->lcd_h * 2));
   } else if (evt->key == TK_KEY_a) {
     native_window_t* nw = widget_get_native_window(widget_get_child(window_manager(), 0));
     native_window_set_title(nw, "AWTK Simulator");
@@ -129,7 +131,8 @@ static ret_t update_title_on_timer(const timer_info_t* info) {
 }
 
 static void open_window(const char* name, widget_t* to_close) {
-  bool_t is_single_main_win = widget_lookup(window_manager(), DEMOUI_MAIN_WINDOW_NAME, FALSE) == NULL;
+  bool_t is_single_main_win =
+      widget_lookup(window_manager(), DEMOUI_MAIN_WINDOW_NAME, FALSE) == NULL;
   widget_t* win = to_close ? window_open_and_close(name, to_close) : window_open(name);
 
   if (tk_str_eq(name, DEMOUI_MAIN_WINDOW_NAME) && is_single_main_win) {
