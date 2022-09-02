@@ -143,6 +143,20 @@ typedef struct _text_selector_t {
    */
   bool_t enable_value_animator;
 
+  /**
+   * @property {easing_type_t} easing_type_t
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 绘制蒙版的变化趋势。
+   */
+  easing_type_t mask_easing;
+
+  /**
+   * @property {float_t} mask_area_scale
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 绘制蒙版的区域占比（范围0~1）。
+   */
+  float_t mask_area_scale;
+
   /*private*/
   bool_t pressed;
   bool_t is_init;
@@ -395,12 +409,36 @@ ret_t text_selector_set_animating_time(widget_t* widget, uint32_t animating_time
  */
 ret_t text_selector_set_enable_value_animator(widget_t* widget, bool_t enable_value_animator);
 
+/**
+ * @method text_selector_set_mask_easing
+ * 设置绘制蒙版的变化趋势。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {easing_type_t} mask_easing 绘制蒙版的变化趋势。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_selector_set_mask_easing(widget_t* widget, easing_type_t mask_easing);
+
+/**
+ * @method text_selector_set_mask_area_scale
+ * 设置绘制蒙版的区域占比（范围0~1）。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {float_t} mask_area_scale 绘制蒙版的区域占比（范围0~1）。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_selector_set_mask_area_scale(widget_t* widget, float_t mask_area_scale);
+
 #define TEXT_SELECTOR_PROP_VISIBLE_NR "visible_nr"
 #define WIDGET_TYPE_TEXT_SELECTOR "text_selector"
 #define TEXT_SELECTOR_PROP_LOOP_OPTIONS "loop_options"
 #define TEXT_SELECTOR_PROP_Y_SPEED_SCALE "yspeed_scale"
 #define TEXT_SELECTOR_PROP_ANIMATION_TIME "animating_time"
 #define TEXT_SELECTOR_PROP_ENABLE_VALUE_ANIMATOR "enable_value_animator"
+#define TEXT_SELECTOR_PROP_MASH_EASING "mask_easing"
+#define TEXT_SELECTOR_PROP_MASH_AREA_SCALE "mask_area_scale"
 #define TEXT_SELECTOR(widget) ((text_selector_t*)(text_selector_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/

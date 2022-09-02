@@ -54,10 +54,9 @@ const char* s_text_selector_properties[] = {WIDGET_PROP_TEXT,
 static ret_t text_selector_paint_mask(widget_t* widget, canvas_t* c) {
   int32_t i = 0;
   int32_t y = 0;
-  int32_t n = widget->h / 2;
+  int32_t n = 0;
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
-  easing_func_t easing = easing_get(EASING_CUBIC_IN);
   color_t fc = style_get_color(style, STYLE_ID_FG_COLOR, trans);
   const char* fg_image = style_get_str(style, STYLE_ID_FG_IMAGE, NULL);
   color_t mask_color = style_get_color(style, STYLE_ID_MASK_COLOR, trans);
@@ -65,6 +64,8 @@ static ret_t text_selector_paint_mask(widget_t* widget, canvas_t* c) {
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
   int32_t visible_nr = text_selector->visible_nr;
   int32_t item_height = text_selector->draw_widget_h / visible_nr;
+  easing_func_t easing = easing_get(text_selector->mask_easing);
+  n = widget->h / 2 * text_selector->mask_area_scale;
 
   if (fc.rgba.a) {
     canvas_set_stroke_color(c, fc);
@@ -428,6 +429,12 @@ static ret_t text_selector_get_prop(widget_t* widget, const char* name, value_t*
   } else if (tk_str_eq(name, TEXT_SELECTOR_PROP_ENABLE_VALUE_ANIMATOR)) {
     value_set_bool(v, text_selector->enable_value_animator);
     return RET_OK;
+  } else if (tk_str_eq(name, TEXT_SELECTOR_PROP_MASH_EASING)) {
+    value_set_int(v, text_selector->mask_easing);
+    return RET_OK;
+  } else if (tk_str_eq(name, TEXT_SELECTOR_PROP_MASH_AREA_SCALE)) {
+    value_set_float(v, text_selector->mask_area_scale);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -467,6 +474,10 @@ static ret_t text_selector_set_prop(widget_t* widget, const char* name, const va
     return text_selector_set_animating_time(widget, value_uint32(v));
   } else if (tk_str_eq(name, TEXT_SELECTOR_PROP_ENABLE_VALUE_ANIMATOR)) {
     return text_selector_set_enable_value_animator(widget, value_bool(v));
+  } else if (tk_str_eq(name, TEXT_SELECTOR_PROP_MASH_EASING)) {
+    return text_selector_set_mask_easing(widget, (easing_type_t)value_int(v));
+  } else if (tk_str_eq(name, TEXT_SELECTOR_PROP_MASH_AREA_SCALE)) {
+    return text_selector_set_mask_area_scale(widget, value_float(v));
   }
 
   return RET_NOT_FOUND;
@@ -809,6 +820,8 @@ widget_t* text_selector_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
   text_selector->enable_value_animator = TRUE;
   text_selector->locale_info_id = TK_INVALID_ID;
   text_selector->animating_time = TK_ANIMATING_TIME;
+  text_selector->mask_easing = EASING_CUBIC_IN;
+  text_selector->mask_area_scale = 1;
 
   return widget;
 }
@@ -1104,6 +1117,24 @@ ret_t text_selector_set_enable_value_animator(widget_t* widget, bool_t enable_va
   return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
 
   text_selector->enable_value_animator = enable_value_animator;
+
+  return RET_OK;
+}
+
+ret_t text_selector_set_mask_easing(widget_t* widget, easing_type_t mask_easing) {
+  text_selector_t* text_selector = TEXT_SELECTOR(widget);
+  return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
+
+  text_selector->mask_easing = mask_easing;
+
+  return RET_OK;
+}
+
+ret_t text_selector_set_mask_area_scale(widget_t* widget, float_t mask_area_scale) {
+  text_selector_t* text_selector = TEXT_SELECTOR(widget);
+  return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
+
+  text_selector->mask_area_scale = mask_area_scale;
 
   return RET_OK;
 }
