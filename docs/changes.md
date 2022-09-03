@@ -1,5 +1,9 @@
 # 最新动态
 
+2022/09/03
+  * 修复切换语言后，digit clock没有及时更新的问题(感谢兆坤提供补丁) 
+  
+
 2022/09/02
   * 完善软键盘关闭。
   * children\_layouter\_list\_view新增animating\_time属性，支持添加和删除item时播放缓动动画(感谢雨欣提供补丁)

@@ -1,5 +1,5 @@
-﻿/**
- * File:   digit_clock.h
+/**
+ * File:   digit_clock.c
  * Author: AWTK Develop Team
  * Brief:  digit_clock
  *
@@ -48,13 +48,33 @@ static ret_t digit_clock_update_time(widget_t* widget) {
   return digit_clock_format_time(widget, format, &dt);
 }
 
+static ret_t digit_clock_display_time(widget_t* widget) {
+  ret_t ret = RET_OK;
+  digit_clock_t* digit_clock = DIGIT_CLOCK(widget);
+  return_value_if_fail(digit_clock != NULL, RET_BAD_PARAMS);
+
+  ret = digit_clock_update_time(widget);
+
+  if (ret == RET_OK && !wstr_equal(&(digit_clock->last_time), &(widget->text))) {
+    widget_invalidate_force(widget, NULL);
+    wstr_set(&(digit_clock->last_time), widget->text.str);
+  }
+
+  return ret;
+}
+
+static ret_t digit_clock_on_display_time(void* ctx, event_t* e) {
+  (void)e;
+  digit_clock_display_time(WIDGET(ctx));
+  return RET_OK;
+}
+
 ret_t digit_clock_set_format(widget_t* widget, const char* format) {
   digit_clock_t* digit_clock = DIGIT_CLOCK(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   digit_clock->format = tk_str_copy(digit_clock->format, format);
-  digit_clock_update_time(widget);
-  widget_invalidate_force(widget, NULL);
+  digit_clock_display_time(widget);
 
   return RET_OK;
 }
@@ -83,19 +103,12 @@ static ret_t digit_clock_set_prop(widget_t* widget, const char* name, const valu
 
 static ret_t digit_clock_on_timer(const timer_info_t* info) {
   widget_t* widget = NULL;
-  digit_clock_t* digit_clock = NULL;
   return_value_if_fail(info != NULL, RET_REMOVE);
 
   widget = WIDGET(info->ctx);
-  digit_clock = DIGIT_CLOCK(widget);
   return_value_if_fail(widget != NULL, RET_REMOVE);
 
-  digit_clock_update_time(widget);
-
-  if (!wstr_equal(&(digit_clock->last_time), &(widget->text))) {
-    widget_invalidate_force(widget, NULL);
-    wstr_set(&(digit_clock->last_time), widget->text.str);
-  }
+  digit_clock_display_time(widget);
 
   return RET_REPEAT;
 }
@@ -103,6 +116,8 @@ static ret_t digit_clock_on_timer(const timer_info_t* info) {
 static ret_t digit_clock_on_destroy(widget_t* widget) {
   digit_clock_t* digit_clock = DIGIT_CLOCK(widget);
   return_value_if_fail(widget != NULL && digit_clock != NULL, RET_BAD_PARAMS);
+
+  widget_off_by_func(widget_get_window(widget), EVT_LOCALE_CHANGED, digit_clock_on_display_time, widget);
 
   TKMEM_FREE(digit_clock->format);
   wstr_reset(&(digit_clock->last_time));
@@ -132,6 +147,7 @@ widget_t* digit_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   digit_clock_update_time(widget);
   widget_add_timer(widget, digit_clock_on_timer, 1000);
   wstr_init(&(digit_clock->last_time), 32);
+  widget_on(widget_get_window(widget), EVT_LOCALE_CHANGED, digit_clock_on_display_time, widget);
 
   return widget;
 }
