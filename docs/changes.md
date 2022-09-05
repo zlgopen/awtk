@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/09/06
+  * 修复text selector中注释错误(感谢朝泽提供补丁)。
+
 2022/09/05
   * tkc修复tk\_memcpy拷贝异常的问题 (感谢智明提供补丁)
   * 修复 children\_layouter\_list\_view 在子控件为NULL时崩溃的问题(感谢雨欣提供补丁)

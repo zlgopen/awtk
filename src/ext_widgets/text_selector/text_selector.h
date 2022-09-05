@@ -144,7 +144,7 @@ typedef struct _text_selector_t {
   bool_t enable_value_animator;
 
   /**
-   * @property {easing_type_t} easing_type_t
+   * @property {easing_type_t} mask_easing
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 绘制蒙版的变化趋势。
    */
