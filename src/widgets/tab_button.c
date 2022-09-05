@@ -118,8 +118,12 @@ static widget_t* tab_button_get_pages(widget_t* widget) {
   widget_t* pages = NULL;
   return_value_if_fail(widget && widget->parent && widget->parent->parent, NULL);
 
-  pages = widget_lookup_by_type(widget->parent->parent, WIDGET_TYPE_PAGES, TRUE);
-  if (pages == NULL) {
+  if (!widget_is_window_manager(widget->parent->parent)) {
+    pages = widget_lookup_by_type(widget->parent->parent, WIDGET_TYPE_PAGES, TRUE);
+  }
+
+  if (pages == NULL && widget->parent->parent->parent != NULL &&
+      !widget_is_window_manager(widget->parent->parent->parent)) {
     pages = widget_lookup_by_type(widget->parent->parent->parent, WIDGET_TYPE_PAGES, TRUE);
   }
 
