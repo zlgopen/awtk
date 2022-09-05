@@ -299,43 +299,44 @@ static ret_t children_layouter_list_view_for_list_view_children_layout_w(
   x = l->x_margin;
   y = l->y_margin;
   cols = l->cols <= 1 ? 1 : l->cols;
-
-  children = (widget_t**)children_for_layout->elms;
-  win = widget_get_window(children[0]);
   w = scroll_view_w - 2 * l->x_margin;
 
-  if (cols <= 1) {
-    if (l->animating_time && win && !win->loading) {
-      children_layouter_list_view_for_list_view_children_layout_w_with_animation(
-          layouter, children_for_layout, w);
+  children = (widget_t**)children_for_layout->elms;
+  if (children != NULL) {
+    win = widget_get_window(children[0]);
+    if (cols <= 1) {
+      if (l->animating_time && win && !win->loading) {
+        children_layouter_list_view_for_list_view_children_layout_w_with_animation(
+            layouter, children_for_layout, w);
+      } else {
+        for (i = 0; i < children_for_layout->size; i++) {
+          widget_t* iter = children[i];
+          widget_move_resize(iter, x, y, w, iter->h);
+          widget_layout_children(iter);
+          y += (iter->h + l->spacing);
+        }
+      }
     } else {
-      for (i = 0; i < children_for_layout->size; i++) {
-        widget_t* iter = children[i];
-        widget_move_resize(iter, x, y, w, iter->h);
-        widget_layout_children(iter);
-        y += (iter->h + l->spacing);
+      int32_t j = 0;
+      int32_t n = 0;
+      int32_t h = 0;
+      int32_t size = children_for_layout->size;
+      uint32_t rows = (size % cols) ? (size / cols) + 1 : (size / cols);
+      w = (w - (cols - 1) * l->spacing) / cols;
+      for (i = 0; i < rows && n < size; i++) {
+        h = 0;
+        for (j = 0; j < cols && n < size; j++, n++) {
+          widget_t* iter = children[n];
+          int32_t tmp_x = x + j * (w + l->spacing);
+          widget_move_resize(iter, tmp_x, y, w, iter->h);
+          widget_layout_children(iter);
+          h = tk_max(h, iter->h);
+        }
+        y += (h + l->spacing);
       }
-    }
-  } else {
-    int32_t j = 0;
-    int32_t n = 0;
-    int32_t h = 0;
-    int32_t size = children_for_layout->size;
-    uint32_t rows = (size % cols) ? (size / cols) + 1 : (size / cols);
-
-    w = (w - (cols - 1) * l->spacing) / cols;
-    for (i = 0; i < rows && n < size; i++) {
-      h = 0;
-      for (j = 0; j < cols && n < size; j++, n++) {
-        widget_t* iter = children[n];
-        int32_t tmp_x = x + j * (w + l->spacing);
-        widget_move_resize(iter, tmp_x, y, w, iter->h);
-        widget_layout_children(iter);
-        h = tk_max(h, iter->h);
-      }
-      y += (h + l->spacing);
     }
   }
+
   return RET_OK;
 }
 
