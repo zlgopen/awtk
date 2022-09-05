@@ -1335,8 +1335,6 @@ void* tk_memcpy_by_align_4(void* dst_align_4, const void* src_align_4, uint32_t 
           *((int*)(dd - 11)) = *((int*)(ss - 11));
         case 7:
           *((int*)(dd - 7)) = *((int*)(ss - 7));
-          *((int*)(dd - 4)) = *((int*)(ss - 4));
-          break;
         case 3:
           *((short*)(dd - 3)) = *((short*)(ss - 3));
           dd[-1] = ss[-1];
