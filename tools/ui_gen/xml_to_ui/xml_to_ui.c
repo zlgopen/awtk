@@ -81,7 +81,9 @@ static ret_t gen_folder(const char* in_foldername, const char* out_foldername, b
       path_extname(item.name, ext_array, MAX_PATH);
 
       str_init(&sub_res_name, 0);
-      str_set(&sub_res_name, res_name);
+      if (res_name != NULL) {
+        str_set(&sub_res_name, res_name);
+      }
 
       str_init(&str_name, 0);
       str_set(&str_name, item.name);
