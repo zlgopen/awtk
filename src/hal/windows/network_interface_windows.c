@@ -883,6 +883,7 @@ static const network_interface_vtable_t s_windows_unknown_vtable = {
 
 network_interface_t* network_interface_create(const char* interface_name,
                                               network_interface_type_t type) {
+  ret_t ret = RET_OK;
   PIP_ADAPTER_ADDRESSES address = NULL;
   network_interface_windows_t* windows_network_interface =
       TKMEM_ZALLOC(network_interface_windows_t);
@@ -914,8 +915,12 @@ network_interface_t* network_interface_create(const char* interface_name,
     windows_network_interface->network_interface.vt = &s_windows_unknown_vtable;
 
   // 获取接口描述名
-  get_ip_adapter_address_by_friendly_name(windows_network_interface, LOCAL_IF_DESC);
-
+  ret = get_ip_adapter_address_by_friendly_name(windows_network_interface, LOCAL_IF_DESC);
+  if (ret != RET_OK) {
+    TKMEM_FREE(windows_network_interface);
+    return NULL;
+  }
+  
   return (network_interface_t*)windows_network_interface;
 }
 #endif /*WIN*/
