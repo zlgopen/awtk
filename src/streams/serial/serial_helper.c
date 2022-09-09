@@ -570,6 +570,11 @@ serial_handle_t serial_open(const char* port) {
   return_value_if_fail(handle != NULL && port != NULL && *port != '\0', NULL);
   handle->dev = open(port, O_RDWR | O_NOCTTY | O_NONBLOCK);
 
+  if (handle->dev <= 0) {
+    TKMEM_FREE(handle);
+    return NULL;
+  }
+
   return handle;
 }
 
