@@ -448,7 +448,7 @@ ret_t widget_set_text_utf8_impl(widget_t* widget, const char* text, bool_t check
   if (check_diff) {
     wstr_t str;
     ret_t ret = RET_NOT_MODIFIED;
-    uint32_t len = strlen(text);
+    uint32_t len = tk_strlen(text);
     if (len != widget->text.size) {
       return widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, text));
     }
