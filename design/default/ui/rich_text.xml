@@ -5,11 +5,7 @@
     </property>
   </rich_text>
 
-  <rich_text x="0" y="70" w="100%" h="60">
-    <property name="text">
-      <![CDATA[<image name="bricks"/><font align_v="top">hello awtk!</font><font color="green" size="32">ZLG</font>]]>
-    </property>
-  </rich_text>
+  <rich_text x="0" y="70" w="100%" h="60" tr_text="hello world" />
 
   <rich_text line_gap="5" x="0" y="140" w="100%" h="300">
     <property name="text">
