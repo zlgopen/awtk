@@ -29,6 +29,8 @@
 
 BEGIN_C_DECLS
 
+typedef const char* (*locale_info_tr_t)(const char* text);
+
 /**
  * @class locale_info_t
  * @annotation ["scriptable"]
@@ -58,6 +60,8 @@ struct _locale_info_t {
   const asset_info_t* strs;
 
   emitter_t* emitter;
+
+  locale_info_tr_t fallback_tr;
 };
 
 /**
@@ -159,9 +163,19 @@ ret_t locale_info_set_assets_manager(locale_info_t* locale_info, assets_manager_
 ret_t locale_info_reload(locale_info_t* locale_info);
 
 /**
- * @method locale_info_destroy
+ * @method locale_info_set_fallback_tr
+ * 设置候补翻译函数。
  * @param {locale_info_t*} locale_info locale_info对象。
+ * @param {locale_info_tr_t} tr fallback翻译函数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t locale_info_set_fallback_tr(locale_info_t* locale_info, locale_info_tr_t tr);
+
+/**
+ * @method locale_info_destroy
  * 释放全部资源并销毁locale_info对象。
+ * @param {locale_info_t*} locale_info locale_info对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

@@ -17,6 +17,14 @@ static ret_t test_on_locale_changed(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static const char* my_tr(const char* str) {
+  if(tk_str_eq(str, "AAAA")) {
+    return "4stars";
+  } else {
+    return NULL;
+  }
+}
+
 TEST(Locale, basic) {
   const char* str = "ok";
   uint32_t id = 0;
@@ -34,6 +42,9 @@ TEST(Locale, basic) {
   ASSERT_EQ(locale_info_change(locale_info, "en", "US"), RET_OK);
   ASSERT_EQ(s_locale, "zh_CN");
   ASSERT_EQ(string("OK"), string(locale_info_tr(locale_info, str)));
+
+  locale_info_set_fallback_tr(locale_info, my_tr);
+  ASSERT_EQ(string("4stars"), string(locale_info_tr(locale_info, "AAAA")));
 
   locale_info_destroy(locale_info);
 }

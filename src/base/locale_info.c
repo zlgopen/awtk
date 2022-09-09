@@ -64,6 +64,10 @@ const char* locale_info_tr(locale_info_t* locale_info, const char* text) {
   table = (str_table_t*)(locale_info->strs->data);
 
   tr_text = str_table_lookup(table, text);
+  if (tr_text == NULL && locale_info->fallback_tr != NULL) {
+    tr_text = locale_info->fallback_tr(text);
+  }
+
 
   return tr_text != NULL ? tr_text : text;
 }
@@ -155,6 +159,14 @@ ret_t locale_info_set_assets_manager(locale_info_t* locale_info, assets_manager_
   return_value_if_fail(locale_info != NULL && assets_manager != NULL, RET_BAD_PARAMS);
 
   locale_info->assets_manager = assets_manager;
+
+  return RET_OK;
+}
+
+ret_t locale_info_set_fallback_tr(locale_info_t* locale_info, locale_info_tr_t tr) {
+  return_value_if_fail(locale_info != NULL, RET_BAD_PARAMS);
+
+  locale_info->fallback_tr = tr;
 
   return RET_OK;
 }
