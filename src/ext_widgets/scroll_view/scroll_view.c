@@ -377,9 +377,49 @@ static ret_t scroll_view_notify_scrolled(scroll_view_t* scroll_view) {
   return RET_OK;
 }
 
+static int32_t scroll_view_calc_bight_offset(scroll_view_t* scroll_view, int32_t offset,
+                                             bool_t vertical) {
+  float_t r = 0;
+  float_t temp = 0;
+  float_t max_d = 0;
+  float_t translate = 0;
+  int32_t size = 0;
+  int32_t ret = offset;
+  int32_t virtual_size = 0;
+  widget_t* widget = WIDGET(scroll_view);
+  return_value_if_fail(scroll_view != NULL && widget != NULL, RET_BAD_PARAMS);
+
+  if (vertical) {
+    size = widget->h;
+    max_d = (float_t)widget->h * scroll_view->slide_limit_ratio;
+    virtual_size = scroll_view->virtual_h;
+  } else {
+    size = widget->w;
+    max_d = (float_t)widget->w * scroll_view->slide_limit_ratio;
+    virtual_size = scroll_view->virtual_w;
+  }
+
+  r = max_d * M_SQRT2 / (M_SQRT2 - 1.0);
+  translate = r - max_d;
+
+  /* Calculation formula: (offset - translate)^2 + (ret + translate)^2 = r^2 */
+  if (offset < 0) {
+    offset = tk_min(tk_abs(offset), (int32_t)translate);
+    temp = powf(r, 2.0) - powf((float_t)offset - translate, 2.0);
+    ret = -tk_roundi(sqrtf(temp) - translate);
+  } else if (offset > virtual_size - size) {
+    offset = tk_min(offset - virtual_size + size, translate);
+    temp = powf(r, 2.0) - powf((float_t)offset - translate, 2.0);
+    ret = tk_roundi(sqrtf(temp) - translate) + virtual_size - size;
+  }
+
+  return ret;
+}
+
 static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_event_t* e) {
   int32_t dx = 0;
   int32_t dy = 0;
+  int32_t offset = 0;
   velocity_t* v = NULL;
   return_value_if_fail(scroll_view != NULL && e != NULL, RET_BAD_PARAMS);
   v = &(scroll_view->velocity);
@@ -389,11 +429,13 @@ static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_eve
 
   if (scroll_view->wa == NULL) {
     if (scroll_view->xslidable && dx) {
-      scroll_view_set_xoffset(scroll_view, scroll_view->xoffset_save - dx);
+      offset = scroll_view_calc_bight_offset(scroll_view, scroll_view->xoffset_save - dx, FALSE);
+      scroll_view_set_xoffset(scroll_view, offset);
     }
 
     if (scroll_view->yslidable && dy) {
-      scroll_view_set_yoffset(scroll_view, scroll_view->yoffset_save - dy);
+      offset = scroll_view_calc_bight_offset(scroll_view, scroll_view->yoffset_save - dy, TRUE);
+      scroll_view_set_yoffset(scroll_view, offset);
     }
 
     scroll_view_notify_scrolled(scroll_view);
@@ -619,6 +661,9 @@ static ret_t scroll_view_get_prop(widget_t* widget, const char* name, value_t* v
   } else if (tk_str_eq(name, SCROLL_VIEW_SNAP_TO_PAGE)) {
     value_set_bool(v, scroll_view->snap_to_page);
     return RET_OK;
+  } else if (tk_str_eq(name, SCROLL_VIEW_SLIDE_LIMIT_RATIO)) {
+    value_set_float(v, scroll_view->slide_limit_ratio);
+    return RET_OK;
   }
   if (scroll_view->snap_to_page) {
     if (tk_str_eq(name, WIDGET_PROP_PAGE_MAX_NUMBER)) {
@@ -673,6 +718,8 @@ static ret_t scroll_view_set_prop(widget_t* widget, const char* name, const valu
     return scroll_view_set_snap_to_page(widget, value_bool(v));
   } else if (scroll_view->snap_to_page && tk_str_eq(name, WIDGET_PROP_CURR_PAGE)) {
     return scroll_view_set_curr_page(widget, value_int(v));
+  } else if (tk_str_eq(name, SCROLL_VIEW_SLIDE_LIMIT_RATIO)) {
+    return scroll_view_set_slide_limit_ratio(widget, value_float(v));
   }
 
   return RET_NOT_FOUND;
@@ -715,6 +762,7 @@ widget_t* scroll_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   scroll_view->xspeed_scale = SCROLL_VIEW_DEFAULT_XSPEED_SCALE;
   scroll_view->yspeed_scale = SCROLL_VIEW_DEFAULT_YSPEED_SCALE;
   scroll_view->fix_end_offset = scroll_view_fix_end_offset_default;
+  scroll_view->slide_limit_ratio = 1.0;
 
   return widget;
 }
@@ -820,6 +868,14 @@ ret_t scroll_view_set_recursive(widget_t* widget, bool_t recursive) {
   ret = scroll_view_set_recursive_only(widget, recursive);
   return_value_if_fail(ret == RET_OK, ret);
   return widget_layout(widget);
+}
+
+ret_t scroll_view_set_slide_limit_ratio(widget_t* widget, float_t slide_limit_ratio) {
+  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  return_value_if_fail(scroll_view != NULL, RET_FAIL);
+
+  scroll_view->slide_limit_ratio = slide_limit_ratio;
+  return RET_OK;
 }
 
 widget_t* scroll_view_cast(widget_t* widget) {

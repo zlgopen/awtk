@@ -140,6 +140,12 @@ typedef struct _scroll_view_t {
    * 是否递归查找全部子控件。
    */
   bool_t recursive;
+  /**
+   * @property {float_t} slide_limit_ratio
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 滑动到极限时可继续滑动区域的占比。
+   */
+  float_t slide_limit_ratio;
 
   /*private*/
   point_t down;
@@ -328,6 +334,17 @@ ret_t scroll_view_set_offset(widget_t* widget, int32_t xoffset, int32_t yoffset)
 ret_t scroll_view_set_speed_scale(widget_t* widget, float_t xspeed_scale, float_t yspeed_scale);
 
 /**
+ * @method scroll_view_set_slide_limit_ratio
+ * 设置滑动到极限时可继续滑动区域的占比。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {float_t} slide_limit_ratio 滑动到极限时可继续滑动区域的占比。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t scroll_view_set_slide_limit_ratio(widget_t* widget, float_t slide_limit_ratio);
+
+/**
  * @method scroll_view_scroll_to
  * 滚动到指定的偏移量。
  * @annotation ["scriptable"]
@@ -362,6 +379,7 @@ ret_t scroll_view_scroll_delta_to(widget_t* widget, int32_t xoffset_delta, int32
 #define SCROLL_VIEW_MOVE_TO_PAGE "move_to_page"
 #define SCROLL_VIEW_X_SPEED_SCALE "xspeed_scale"
 #define SCROLL_VIEW_Y_SPEED_SCALE "yspeed_scale"
+#define SCROLL_VIEW_SLIDE_LIMIT_RATIO "slide_limit_ratio"
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(scroll_view);
