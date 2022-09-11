@@ -251,12 +251,21 @@ static ret_t pages_on_remove_child(widget_t* widget, widget_t* child) {
   return RET_CONTINUE;
 }
 
+static ret_t pages_get_only_active_children(widget_t* widget, darray_t* all_focusable) {
+  widget_t* child = widget_find_target(widget, 1, 1);
+  return_value_if_fail(widget != NULL && all_focusable != NULL, RET_BAD_PARAMS);
+  widget_foreach(child, widget_on_visit_focusable, all_focusable);
+
+  return RET_SKIP;
+}
+
+
 static const char* const s_pages_clone_properties[] = {WIDGET_PROP_VALUE, NULL};
 
 TK_DECL_VTABLE(pages) = {.size = sizeof(pages_t),
                          .inputable = TRUE,
                          .type = WIDGET_TYPE_PAGES,
-                         .only_active_child_visible = TRUE,
+                         .get_only_active_children = pages_get_only_active_children,
                          .clone_properties = s_pages_clone_properties,
                          .parent = TK_PARENT_VTABLE(widget),
                          .create = pages_create,

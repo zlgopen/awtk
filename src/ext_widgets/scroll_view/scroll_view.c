@@ -733,6 +733,32 @@ static ret_t scroll_view_get_offset(widget_t* widget, xy_t* out_x, xy_t* out_y) 
   return RET_OK;
 }
 
+static ret_t scroll_view_get_only_active_children(widget_t* widget, darray_t* all_focusable) {
+  ret_t ret = RET_OK;
+  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  return_value_if_fail(widget != NULL && scroll_view != NULL && all_focusable != NULL, RET_BAD_PARAMS);
+
+  if (scroll_view->snap_to_page && scroll_view->move_to_page) {
+    WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+    if ((scroll_view->xslidable && scroll_view->xoffset <= iter->x && iter->x < scroll_view->xoffset + widget->w) ||
+        (scroll_view->yslidable && scroll_view->yoffset <= iter->y && iter->y < scroll_view->yoffset + widget->h)) {
+      ret = widget_foreach(iter, widget_on_visit_focusable, all_focusable);
+      if (ret == RET_STOP || ret == RET_DONE) {
+        return ret;
+      }
+    }
+    WIDGET_FOR_EACH_CHILD_END()
+  } else {
+    WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+    ret = widget_foreach(iter, widget_on_visit_focusable, all_focusable);
+    if (ret == RET_STOP || ret == RET_DONE) {
+      return ret;
+    }
+    WIDGET_FOR_EACH_CHILD_END()
+  }
+  return RET_SKIP;
+}
+
 static const char* s_scroll_view_clone_properties[] = {
     WIDGET_PROP_VIRTUAL_W,     WIDGET_PROP_VIRTUAL_H,     WIDGET_PROP_XSLIDABLE,
     WIDGET_PROP_YSLIDABLE,     WIDGET_PROP_XOFFSET,       WIDGET_PROP_YOFFSET,
@@ -750,6 +776,7 @@ TK_DECL_VTABLE(scroll_view) = {.size = sizeof(scroll_view_t),
                                .on_add_child = scroll_view_on_add_child,
                                .find_target = scroll_view_find_target,
                                .get_offset = scroll_view_get_offset,
+                               .get_only_active_children = scroll_view_get_only_active_children,
                                .get_prop = scroll_view_get_prop,
                                .set_prop = scroll_view_set_prop};
 

@@ -84,6 +84,7 @@ typedef widget_t* (*widget_find_target_t)(widget_t* widget, xy_t x, xy_t y);
 typedef widget_t* (*widget_create_t)(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 typedef ret_t (*widget_on_destroy_t)(widget_t* widget);
 typedef ret_t (*widget_get_offset_t)(widget_t* widget, xy_t* out_x, xy_t* out_y);
+typedef ret_t (*widget_get_only_active_children_t)(widget_t* widget, darray_t* all_focusable);
 
 typedef ret_t (*widget_exec_t)(widget_t* widget, const char* args);
 
@@ -128,11 +129,6 @@ struct _widget_vtable_t {
    */
   uint32_t return_key_to_activate : 1;
   /**
-   * 只有active的子控件时可见的。如slide view和pages。
-   *
-   */
-  uint32_t only_active_child_visible : 1;
-  /**
    * 是否是窗口。
    */
   uint32_t is_window : 1;
@@ -176,6 +172,11 @@ struct _widget_vtable_t {
   widget_get_offset_t get_offset;
   widget_auto_adjust_size_t auto_adjust_size;
   widget_get_prop_default_value_t get_prop_default_value;
+  /**
+   * 只有active的子控件时可见的。如slide view和pages。
+   *
+   */
+  widget_get_only_active_children_t get_only_active_children;
 
   widget_on_copy_t on_copy;
   widget_on_keyup_t on_keyup;
@@ -3233,6 +3234,8 @@ ret_t widget_move_resize_ex(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h, bo
 
 ret_t widget_set_text_impl(widget_t* widget, const wchar_t* text, bool_t check_diff);
 ret_t widget_set_text_utf8_impl(widget_t* widget, const char* text, bool_t check_diff);
+
+ret_t widget_on_visit_focusable(void* ctx, const void* data);
 
 /*public for input_device_status*/
 /**

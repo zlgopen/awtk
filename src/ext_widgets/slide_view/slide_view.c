@@ -767,13 +767,21 @@ static ret_t slide_view_on_destroy(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t slide_view_get_only_active_children(widget_t* widget, darray_t* all_focusable) {
+  widget_t* child = widget_find_target(widget, 1, 1);
+  return_value_if_fail(widget != NULL && all_focusable != NULL, RET_BAD_PARAMS);
+  widget_foreach(child, widget_on_visit_focusable, all_focusable);
+
+  return RET_SKIP;
+}
+
 static const char* s_slide_view_properties[] = {WIDGET_PROP_VALUE,     WIDGET_PROP_LOOP,
                                                 WIDGET_PROP_VERTICAL,  WIDGET_PROP_ANIM_HINT,
                                                 WIDGET_PROP_AUTO_PLAY, NULL};
 TK_DECL_VTABLE(slide_view) = {.size = sizeof(slide_view_t),
                               .inputable = TRUE,
                               .type = WIDGET_TYPE_SLIDE_VIEW,
-                              .only_active_child_visible = TRUE,
+                              .get_only_active_children = slide_view_get_only_active_children,
                               .clone_properties = s_slide_view_properties,
                               .persistent_properties = s_slide_view_properties,
                               .parent = TK_PARENT_VTABLE(widget),

@@ -423,6 +423,7 @@
 <image>
   <style name="border">
     <normal border_color="#000000" bg_color="#e0e0e0" text_color="black"/>
+    <focused border_color="#ff0000" bg_color="#00ff00" text_color="red"/>
   </style>
   <style name="selectable">
     <normal text_color="black"/>

@@ -4212,7 +4212,7 @@ bool_t widget_is_keyboard(widget_t* widget) {
   return FALSE;
 }
 
-static ret_t widget_on_visit_focusable(void* ctx, const void* data) {
+ret_t widget_on_visit_focusable(void* ctx, const void* data) {
   widget_t* widget = WIDGET(data);
   darray_t* all_focusable = (darray_t*)ctx;
 
@@ -4220,11 +4220,8 @@ static ret_t widget_on_visit_focusable(void* ctx, const void* data) {
     return RET_SKIP;
   }
 
-  if (widget->vt->only_active_child_visible) {
-    widget_t* child = widget_find_target(widget, 1, 1);
-    widget_foreach(child, widget_on_visit_focusable, all_focusable);
-
-    return RET_SKIP;
+  if (widget->vt->get_only_active_children != NULL) {
+    return widget->vt->get_only_active_children(widget, all_focusable);
   }
 
   if (widget_is_focusable(widget)) {
