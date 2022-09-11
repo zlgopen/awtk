@@ -319,6 +319,17 @@ int32_t combo_box_count_options(widget_t* widget);
 ret_t combo_box_set_selected_index(widget_t* widget, uint32_t index);
 
 /**
+ * @method combo_box_set_selected_index_by_text
+ * 根据文本设置当前选中的选项。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget combo_box对象。
+ * @param {const char*} text 原生(非翻译的文本)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t combo_box_set_selected_index_by_text(widget_t* widget, const char* text);
+
+/**
  * @method combo_box_set_localize_options
  * 设置是否本地化(翻译)选项。
  * @annotation ["scriptable"]
@@ -432,7 +443,7 @@ bool_t combo_box_has_option_text(widget_t* widget, const char* text);
 
 /**
  * @method combo_box_get_text
- * 获取combo_box的文本。
+ * 获取combo_box的文本(可能是翻译后的文本)。
  * @annotation ["scriptable"]
  * @alias combo_box_get_text_value
  * @param {widget_t*} widget combo_box对象。
@@ -440,6 +451,16 @@ bool_t combo_box_has_option_text(widget_t* widget, const char* text);
  * @return {const char*} 返回文本。
  */
 const char* combo_box_get_text(widget_t* widget);
+
+/**
+ * @method combo_box_get_text_of_selected
+ * 获取combo_box当前选中项目的文本(原生非翻译的文本)。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget combo_box对象。
+ *
+ * @return {const char*} 返回文本。
+ */
+const char* combo_box_get_text_of_selected(widget_t* widget);
 
 #define COMBO_BOX(widget) ((combo_box_t*)(combo_box_cast(WIDGET(widget))))
 

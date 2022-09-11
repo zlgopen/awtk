@@ -362,3 +362,26 @@ TEST(ComboBox, parse_options_special_chars) {
 
   widget_destroy(w);
 }
+
+TEST(ComboBox, selected_index) {
+  widget_t* w = combo_box_create(NULL, 10, 20, 30, 40);
+
+  combo_box_parse_options(w, "1:red;2:green;3:blue");
+  ASSERT_EQ(combo_box_count_options(w), 3);
+
+  combo_box_set_selected_index_by_text(w, "red");
+  ASSERT_EQ(combo_box_get_value(w), 1);
+  ASSERT_EQ(string(combo_box_get_text(w)), string("red"));
+  ASSERT_EQ(string(combo_box_get_text_of_selected(w)), string("red"));
+
+  combo_box_set_selected_index_by_text(w, "green");
+  ASSERT_EQ(combo_box_get_value(w), 2);
+  ASSERT_EQ(string(combo_box_get_text(w)), string("green"));
+  ASSERT_EQ(string(combo_box_get_text_of_selected(w)), string("green"));
+
+  combo_box_reset_options(w);
+  ASSERT_EQ(combo_box_count_options(w), 0);
+
+  widget_destroy(w);
+}
+

@@ -4,6 +4,7 @@
   * scroll\_view增加slide\_limit\_ratio属性(感谢雨欣提供补丁)
   * 完善linux串口打开失败时的处理(感谢忠吉提供补丁)
   * 支持设置候补翻译函数。
+  * 增加combo\_box\_get\_text\_of\_selected/combo\_box\_set\_selected\_index\_by\_text。
 
 2022/09/08
   * 修复toast的内容为空的时候显示不正常的问题(感谢智明提供补丁)

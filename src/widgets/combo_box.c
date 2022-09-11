@@ -865,6 +865,25 @@ int32_t combo_box_find_option(widget_t* widget, int32_t value) {
   return 0;
 }
 
+static int32_t combo_box_find_option_of_text(widget_t* widget, const char* text) {
+  uint32_t i = 0;
+  combo_box_option_t* iter = NULL;
+  combo_box_t* combo_box = COMBO_BOX(widget);
+  return_value_if_fail(combo_box != NULL, 0);
+
+  iter = combo_box->option_items;
+  while (iter != NULL) {
+    if (tk_str_eq(iter->text, text)) {
+      return i;
+    }
+
+    i++;
+    iter = iter->next;
+  }
+
+  return 0;
+}
+
 static ret_t combo_box_sync_index_to_value(widget_t* widget, uint32_t index, bool_t only_set) {
   combo_box_t* combo_box = COMBO_BOX(widget);
   return_value_if_fail(widget != NULL && combo_box != NULL, RET_BAD_PARAMS);
@@ -988,6 +1007,21 @@ const char* combo_box_get_text(widget_t* widget) {
     str_from_wstr(&(combo_box->text), widget->text.str);
     return combo_box->text.str;
   }
+}
+
+const char* combo_box_get_text_of_selected(widget_t* widget) {
+  combo_box_t* combo_box = COMBO_BOX(widget);
+  combo_box_option_t* option = NULL;
+  return_value_if_fail(combo_box != NULL, NULL);
+
+  option = combo_box_get_option(widget, combo_box->selected_index);
+  return_value_if_fail(option != NULL, NULL);
+
+  return option->text;
+}
+
+ret_t combo_box_set_selected_index_by_text(widget_t* widget, const char* text) {
+  return combo_box_set_selected_index(widget, combo_box_find_option_of_text(widget, text));
 }
 
 widget_t* combo_box_cast(widget_t* widget) {
