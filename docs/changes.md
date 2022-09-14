@@ -1,4 +1,6 @@
 # 最新动态
+2022/09/14
+  * 支持在添加idle和添加timer是指定ID(感谢智明提供补丁)
 
 2022/09/11
   * widget 的虚表 only\_active\_children 属性改为 widget\_get\_only\_active\_children\_t 函数指针(感谢智明提供补丁)

@@ -169,9 +169,28 @@ const idle_info_t* idle_manager_find(idle_manager_t* idle_manager, uint32_t idle
  */
 uint32_t idle_manager_add(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx);
 
-/*internal use*/
+/**
+ * @method idle_manager_add_with_id
+ * 添加 idle（可以指定 idle_id ，如果发现 idle_id 冲突则添加失败）。
+ * @param {idle_manager_t*} idle_manager idle_manager_t管理器对象。
+ * @param {uint32_t} id idle_id。
+ * @param {idle_func_t*} on_idle idle回调函数。
+ * @param {void*} ctx idle回调函数的上下文。
+ *
+ * @return {uint32_t} 返回idle的ID，TK_INVALID_ID表示失败。
+ */
+uint32_t idle_manager_add_with_id(idle_manager_t* idle_manager, uint32_t id, idle_func_t on_idle, void* ctx);
+
+/**
+ * @method idle_manager_get_next_idle_id
+ * 获取下一个可用的 idle_id。
+ * @param {idle_manager_t*} idle_manager idle_manager_t管理器对象。
+ *
+ * @return {uint32_t} 返回idle的ID，TK_INVALID_ID表示失败。
+ */
 uint32_t idle_manager_get_next_idle_id(idle_manager_t* idle_manager);
 
+/*internal use*/
 /**
  * @method idle_manager_remove_all_by_ctx_and_type 
  */
@@ -182,6 +201,11 @@ ret_t idle_manager_remove_all_by_ctx_and_type(idle_manager_t* idle_manager, uint
  */
 uint32_t idle_manager_add_with_type(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx,
                                     uint16_t type);
+/**
+ * @method idle_manager_add_with_type_and_id 
+ */                              
+uint32_t idle_manager_add_with_type_and_id(idle_manager_t* idle_manager, uint32_t id, idle_func_t on_idle, void* ctx,
+                                    uint16_t type, bool_t check_id);
 /**
  * @method idle_manager_exist
  */

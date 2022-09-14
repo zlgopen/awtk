@@ -20,6 +20,12 @@ static ret_t timer_once(const timer_info_t* timer) {
 TEST(EventSourceTimer, basic) {
   timer_manager_t* tm = timer_manager_create(timer_get_time);
   timer_manager_add(tm, timer_once, NULL, 100);
+
+  uint32_t id = timer_manager_get_next_timer_id(tm);
+  ASSERT_EQ(id != TK_INVALID_ID, TRUE);
+  ASSERT_EQ(timer_manager_add_with_id(tm, id, timer_once, NULL, 100), id);
+  ASSERT_EQ(timer_manager_add_with_id(tm, id, timer_once, NULL, 100), TK_INVALID_ID);
+
   event_source_t* event_source = event_source_timer_create(tm);
   ASSERT_EQ(event_source_get_fd(event_source), -1);
   ASSERT_EQ(event_source_check(event_source), RET_OK);
@@ -29,7 +35,7 @@ TEST(EventSourceTimer, basic) {
 
   timer_set_time(100);
   ASSERT_EQ(event_source_dispatch(event_source), RET_OK);
-  ASSERT_EQ(s_timer_times, 1u);
+  ASSERT_EQ(s_timer_times, 2u);
 
   tk_object_unref(TK_OBJECT(event_source));
   timer_manager_destroy(tm);

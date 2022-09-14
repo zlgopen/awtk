@@ -45,7 +45,7 @@ static const object_vtable_t s_timer_info_vtable = {
     .is_collection = FALSE,
     .on_destroy = (tk_object_on_destroy_t)timer_info_on_destroy};
 
-timer_info_t* timer_info_create(timer_manager_t* tm, timer_func_t on_timer, void* ctx,
+timer_info_t* timer_info_create(timer_manager_t* tm, uint32_t id, timer_func_t on_timer, void* ctx,
                                 uint32_t duration, uint16_t timer_info_type) {
   tk_object_t* obj = tk_object_create(&s_timer_info_vtable);
   timer_info_t* timer = TIMER_INFO(obj);
@@ -58,7 +58,6 @@ timer_info_t* timer_info_create(timer_manager_t* tm, timer_func_t on_timer, void
   timer->timer_info_type = timer_info_type;
 
   if (tm != NULL) {
-    uint32_t id = timer_manager_get_next_timer_id(tm);
     timer->id = id;
     timer->timer_manager = tm;
     timer->start = tm->get_time();

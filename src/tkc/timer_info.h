@@ -151,7 +151,7 @@ int timer_info_compare_by_ctx_and_type(const void* a, const void* b);
 timer_info_t* timer_info_init_dummy(timer_info_t* timer, uint32_t id);
 timer_info_t* timer_info_init_dummy_with_ctx_and_type(timer_info_t* timer, uint16_t type,
                                                       void* ctx);
-timer_info_t* timer_info_create(timer_manager_t* tm, timer_func_t on_timer, void* ctx,
+timer_info_t* timer_info_create(timer_manager_t* tm, uint32_t id, timer_func_t on_timer, void* ctx,
                                 uint32_t duration, uint16_t timer_info_type);
 
 ret_t timer_info_on_timer(timer_info_t* timer, uint64_t now);

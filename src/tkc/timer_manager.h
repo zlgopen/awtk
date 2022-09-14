@@ -111,6 +111,20 @@ uint32_t timer_manager_add(timer_manager_t* timer_manager, timer_func_t on_timer
                            uint32_t duration);
 
 /**
+ * @method timer_manager_add_with_id
+ * 添加定时器。（可以指定 timer_id ，如果发现 timer_id 冲突则添加失败）。
+ * @param {timer_manager_t*} timer_manager 定时器管理器对象。
+ * @param {uint32_t} id timer_id。
+ * @param {timer_func_t*} on_timer timer回调函数。
+ * @param {void*} ctx timer回调函数的上下文。
+ * @param {uint32_t} duration 时间。
+ *
+ * @return {uint32_t} 返回timer的ID，TK_INVALID_ID表示失败。
+ */
+uint32_t timer_manager_add_with_id(timer_manager_t* timer_manager, uint32_t id, timer_func_t on_timer, void* ctx,
+                           uint32_t duration);
+
+/**
  * @method timer_manager_remove
  * 根据id删除定时器。
  * @param {timer_manager_t*} timer_manager 定时器管理器对象。
@@ -186,11 +200,16 @@ uint64_t timer_manager_next_time(timer_manager_t* timer_manager);
  */
 ret_t timer_manager_append(timer_manager_t* timer_manager, timer_info_t* timer);
 
-/*internal use*/
 /**
- * @method timer_manager_get_next_timer_id 
+ * @method timer_manager_get_next_timer_id
+ * 获取下一个可用的 timer_id。
+ * @param {timer_manager_t*} timer_manager timer_manager_t管理器对象。
+ *
+ * @return {uint32_t} 返回idle的ID，TK_INVALID_ID表示失败。
  */
 uint32_t timer_manager_get_next_timer_id(timer_manager_t* timer_manager);
+
+/*internal use*/
 /**
  * @method timer_manager_all_remove_by_ctx_and_type
  */
@@ -201,6 +220,11 @@ ret_t timer_manager_all_remove_by_ctx_and_type(timer_manager_t* timer_manager, u
  */
 uint32_t timer_manager_add_with_type(timer_manager_t* timer_manager, timer_func_t on_timer,
                                      void* ctx, uint32_t duration, uint16_t timer_info_type);
+/**
+ * @method timer_manager_add_with_type_and_id
+ */
+uint32_t timer_manager_add_with_type_and_id(timer_manager_t* timer_manager, uint32_t id, timer_func_t on_timer,
+                                     void* ctx, uint32_t duration, uint16_t timer_info_type, bool_t is_check_id);
 
 END_C_DECLS
 

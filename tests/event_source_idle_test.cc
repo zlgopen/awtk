@@ -18,11 +18,16 @@ TEST(EventSourceIdle, basic) {
   ASSERT_EQ(event_source_dispatch(event_source), RET_OK);
   ASSERT_EQ(s_idle_times, 0u);
 
+  uint32_t id = idle_manager_get_next_idle_id(tm);
+  ASSERT_EQ(id != TK_INVALID_ID, TRUE);
+  ASSERT_EQ(idle_manager_add_with_id(tm, id, idle_once, NULL), id);
+  ASSERT_EQ(idle_manager_add_with_id(tm, id, idle_once, NULL), TK_INVALID_ID);
+
   idle_manager_add(tm, idle_once, NULL);
   ASSERT_EQ(event_source_get_wakeup_time(event_source), 0u);
 
   ASSERT_EQ(event_source_dispatch(event_source), RET_OK);
-  ASSERT_EQ(s_idle_times, 1u);
+  ASSERT_EQ(s_idle_times, 2u);
 
   tk_object_unref(TK_OBJECT(event_source));
   idle_manager_destroy(tm);

@@ -45,7 +45,7 @@ static const object_vtable_t s_idle_info_vtable = {
     .is_collection = FALSE,
     .on_destroy = (tk_object_on_destroy_t)idle_info_on_destroy};
 
-idle_info_t* idle_info_create(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx,
+idle_info_t* idle_info_create(idle_manager_t* idle_manager, uint32_t id, idle_func_t on_idle, void* ctx,
                               uint16_t idle_info_type) {
   tk_object_t* obj = tk_object_create(&s_idle_info_vtable);
   idle_info_t* idle = IDLE_INFO(obj);
@@ -56,7 +56,6 @@ idle_info_t* idle_info_create(idle_manager_t* idle_manager, idle_func_t on_idle,
   idle->idle_info_type = idle_info_type;
 
   if (idle_manager != NULL) {
-    uint32_t id = idle_manager_get_next_idle_id(idle_manager);
     idle->id = id;
 
     if (id != TK_INVALID_ID) {
