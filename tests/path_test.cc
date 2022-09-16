@@ -57,15 +57,33 @@ TEST(Path, extname) {
 }
 
 TEST(Path, dirname) {
-  char result[MAX_PATH + 1];
+  char result[MAX_PATH + 1] = {0};
   ASSERT_EQ(path_dirname("/a/test.bin", result, sizeof(result)), RET_OK);
   ASSERT_EQ(string(result), string("/a/"));
 
+  memset(result, 0x0, sizeof(result));
   ASSERT_EQ(path_dirname("/a/b/test.bin", result, sizeof(result)), RET_OK);
   ASSERT_EQ(string(result), string("/a/b/"));
 
+  memset(result, 0x0, sizeof(result));
   ASSERT_EQ(path_dirname("test.bin", result, sizeof(result)), RET_FAIL);
   ASSERT_EQ(string(result), string(""));
+
+  memset(result, 0x0, sizeof(result));
+  ASSERT_EQ(path_dirname("e:\\a\\b/c/d", result, sizeof(result)), RET_OK);
+  ASSERT_EQ(string(result), string("e:\\a\\b/c/"));
+
+  memset(result, 0x0, sizeof(result));
+  ASSERT_EQ(path_dirname("e:\\a\\b/c\\d", result, sizeof(result)), RET_OK);
+  ASSERT_EQ(string(result), string("e:\\a\\b/c\\"));
+
+  memset(result, 0x0, sizeof(result));
+  ASSERT_EQ(path_dirname("e:/a/b\\c\\d", result, sizeof(result)), RET_OK);
+  ASSERT_EQ(string(result), string("e:/a/b\\c\\"));
+
+  memset(result, 0x0, sizeof(result));
+  ASSERT_EQ(path_dirname("e:/a/b\\c/d", result, sizeof(result)), RET_OK);
+  ASSERT_EQ(string(result), string("e:/a/b\\c/"));
 }
 
 TEST(Path, exe) {

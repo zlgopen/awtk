@@ -80,13 +80,19 @@ ret_t path_extname(const char* path, char* result, int32_t size) {
 
 ret_t path_dirname(const char* path, char* result, int32_t size) {
   const char* p = NULL;
+  const char* p1 = NULL;
   int32_t real_size = 0;
   return_value_if_fail(path != NULL && result != NULL, RET_BAD_PARAMS);
 
   memset(result, 0x00, size);
-  p = strrchr(path, TK_PATH_SEP);
-  if (p == NULL) {
-    p = strrchr(path, TK_PATH_SEP == '/' ? '\\' : '/');
+  p = strrchr(path, '\\');
+  p1 = strrchr(path, '/');
+  if (p == NULL && p1 != NULL) {
+    p = p1;
+  } else if (p != NULL && p1 != NULL) {
+    if (p - p1 < 0) {
+      p = p1;
+    }
   }
 
   if (p != NULL) {
