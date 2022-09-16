@@ -183,7 +183,7 @@ def copySharedLib(src, dst, name):
         return
 
     if not os.path.exists(src):
-        print('Can\'t find ' + src + '. Please build '+name+'before!')
+        print('Can\'t find ' + src + '. Please build '+name+' before!')
     else:
         if not os.path.exists(dst):
             os.makedirs(dst)
@@ -191,8 +191,9 @@ def copySharedLib(src, dst, name):
         print(src + '==>' + dst)
     if OS_NAME == 'Windows':
         src=src.replace('dll', 'lib')
-        shutil.copy(src, dst)
-        print(src + '==>' + dst)
+        if os.path.exists(src):
+            shutil.copy(src, dst)
+            print(src + '==>' + dst)
 
 
 def isBuildShared():
