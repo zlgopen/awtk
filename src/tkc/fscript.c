@@ -2622,7 +2622,7 @@ static ret_t func_fformat(fscript_t* fscript, fscript_args_t* args, value_t* res
   format = value_str(args->args);
   FSCRIPT_FUNC_CHECK(format != NULL, RET_BAD_PARAMS);
 
-  tk_snprintf(str->str, str->capacity - 1, format, value_double(args->args + 1));
+  tk_snprintf(str->str, str->capacity - 1, format, value_float(args->args + 1));
   value_set_str(result, str->str);
 
   return RET_OK;

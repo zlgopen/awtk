@@ -4,6 +4,7 @@
   * 使用scons清理时把bin文件夹中的sharedlib删除(感谢兆坤提供补丁)
   * fscript_array新增虚函数表(感谢雨欣提供补丁)。
   * 修复str_replace修改容量导致fscript中replace接口返回值有误的问题(感谢雨欣提供补丁)。
+  * 完善fscript 中 fformat(感谢雨欣提供补丁)。
 
 2022/09/16
   * path_dirname 处理斜杠和反斜杠的混用的路径时候不正常的问题(感谢智明提供补丁)
