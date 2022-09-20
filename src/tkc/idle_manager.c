@@ -109,7 +109,8 @@ uint32_t idle_manager_add(idle_manager_t* idle_manager, idle_func_t on_idle, voi
   return idle_manager_add_with_type(idle_manager, on_idle, ctx, IDLE_INFO_NORMAL);
 }
 
-uint32_t idle_manager_add_with_id(idle_manager_t* idle_manager, uint32_t id, idle_func_t on_idle, void* ctx) {
+uint32_t idle_manager_add_with_id(idle_manager_t* idle_manager, uint32_t id, idle_func_t on_idle,
+                                  void* ctx) {
   return idle_manager_add_with_type_and_id(idle_manager, id, on_idle, ctx, IDLE_INFO_NORMAL, TRUE);
 }
 
@@ -122,8 +123,9 @@ uint32_t idle_manager_add_with_type(idle_manager_t* idle_manager, idle_func_t on
   return idle_manager_add_with_type_and_id(idle_manager, id, on_idle, ctx, type, FALSE);
 }
 
-uint32_t idle_manager_add_with_type_and_id(idle_manager_t* idle_manager, uint32_t id, idle_func_t on_idle, void* ctx,
-                                    uint16_t type, bool_t check_id) {
+uint32_t idle_manager_add_with_type_and_id(idle_manager_t* idle_manager, uint32_t id,
+                                           idle_func_t on_idle, void* ctx, uint16_t type,
+                                           bool_t check_id) {
   idle_info_t* idle = NULL;
   return_value_if_fail(on_idle != NULL, TK_INVALID_ID);
   return_value_if_fail(idle_manager != NULL, TK_INVALID_ID);

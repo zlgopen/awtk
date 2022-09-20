@@ -179,7 +179,8 @@ uint32_t idle_manager_add(idle_manager_t* idle_manager, idle_func_t on_idle, voi
  *
  * @return {uint32_t} 返回idle的ID，TK_INVALID_ID表示失败。
  */
-uint32_t idle_manager_add_with_id(idle_manager_t* idle_manager, uint32_t id, idle_func_t on_idle, void* ctx);
+uint32_t idle_manager_add_with_id(idle_manager_t* idle_manager, uint32_t id, idle_func_t on_idle,
+                                  void* ctx);
 
 /**
  * @method idle_manager_get_next_idle_id
@@ -203,9 +204,10 @@ uint32_t idle_manager_add_with_type(idle_manager_t* idle_manager, idle_func_t on
                                     uint16_t type);
 /**
  * @method idle_manager_add_with_type_and_id 
- */                              
-uint32_t idle_manager_add_with_type_and_id(idle_manager_t* idle_manager, uint32_t id, idle_func_t on_idle, void* ctx,
-                                    uint16_t type, bool_t check_id);
+ */
+uint32_t idle_manager_add_with_type_and_id(idle_manager_t* idle_manager, uint32_t id,
+                                           idle_func_t on_idle, void* ctx, uint16_t type,
+                                           bool_t check_id);
 /**
  * @method idle_manager_exist
  */

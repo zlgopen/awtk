@@ -95,19 +95,22 @@ uint32_t timer_manager_add(timer_manager_t* timer_manager, timer_func_t on_timer
   return timer_manager_add_with_type(timer_manager, on_timer, ctx, duration, TIMER_INFO_NORMAL);
 }
 
-uint32_t timer_manager_add_with_id(timer_manager_t* timer_manager, uint32_t id, timer_func_t on_timer, void* ctx,
-                           uint32_t duration) {
-  return timer_manager_add_with_type_and_id(timer_manager, id, on_timer, ctx, duration, TIMER_INFO_NORMAL, TRUE);
+uint32_t timer_manager_add_with_id(timer_manager_t* timer_manager, uint32_t id,
+                                   timer_func_t on_timer, void* ctx, uint32_t duration) {
+  return timer_manager_add_with_type_and_id(timer_manager, id, on_timer, ctx, duration,
+                                            TIMER_INFO_NORMAL, TRUE);
 }
 
 uint32_t timer_manager_add_with_type(timer_manager_t* timer_manager, timer_func_t on_timer,
                                      void* ctx, uint32_t duration, uint16_t timer_info_type) {
   uint32_t id = timer_manager_get_next_timer_id(timer_manager);
-  return timer_manager_add_with_type_and_id(timer_manager, id, on_timer, ctx, duration, timer_info_type, FALSE);
+  return timer_manager_add_with_type_and_id(timer_manager, id, on_timer, ctx, duration,
+                                            timer_info_type, FALSE);
 }
 
-uint32_t timer_manager_add_with_type_and_id(timer_manager_t* timer_manager, uint32_t id, timer_func_t on_timer,
-                                     void* ctx, uint32_t duration, uint16_t timer_info_type, bool_t is_check_id) {
+uint32_t timer_manager_add_with_type_and_id(timer_manager_t* timer_manager, uint32_t id,
+                                            timer_func_t on_timer, void* ctx, uint32_t duration,
+                                            uint16_t timer_info_type, bool_t is_check_id) {
   timer_info_t* timer = NULL;
   return_value_if_fail(on_timer != NULL, TK_INVALID_ID);
   return_value_if_fail(id != TK_INVALID_ID, TK_INVALID_ID);

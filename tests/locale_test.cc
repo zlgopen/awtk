@@ -18,7 +18,7 @@ static ret_t test_on_locale_changed(void* ctx, event_t* e) {
 }
 
 static const char* my_tr(const char* str) {
-  if(tk_str_eq(str, "AAAA")) {
+  if (tk_str_eq(str, "AAAA")) {
     return "4stars";
   } else {
     return NULL;

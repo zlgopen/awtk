@@ -259,7 +259,6 @@ static ret_t pages_get_only_active_children(widget_t* widget, darray_t* all_focu
   return RET_SKIP;
 }
 
-
 static const char* const s_pages_clone_properties[] = {WIDGET_PROP_VALUE, NULL};
 
 TK_DECL_VTABLE(pages) = {.size = sizeof(pages_t),

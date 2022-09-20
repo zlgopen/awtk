@@ -914,7 +914,7 @@ static ret_t on_click_next_page(void* ctx, event_t* e) {
   int32_t curr_page = widget_get_prop_int(scroll_view, WIDGET_PROP_CURR_PAGE, 0);
   int32_t max_page = widget_get_prop_int(scroll_view, WIDGET_PROP_PAGE_MAX_NUMBER, 0);
   int32_t next_page = (curr_page + 1) % max_page;
-   
+
   return widget_set_prop_int(scroll_view, WIDGET_PROP_CURR_PAGE, next_page);
 }
 
@@ -924,10 +924,9 @@ static ret_t on_click_prev_page(void* ctx, event_t* e) {
   int32_t curr_page = widget_get_prop_int(scroll_view, WIDGET_PROP_CURR_PAGE, 0);
   int32_t max_page = widget_get_prop_int(scroll_view, WIDGET_PROP_PAGE_MAX_NUMBER, 0);
   int32_t next_page = curr_page == 0 ? max_page : (curr_page - 1) % max_page;
-   
+
   return widget_set_prop_int(scroll_view, WIDGET_PROP_CURR_PAGE, next_page);
 }
-
 
 static ret_t install_one(void* ctx, const void* iter) {
   widget_t* widget = WIDGET(iter);

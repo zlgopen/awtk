@@ -384,4 +384,3 @@ TEST(ComboBox, selected_index) {
 
   widget_destroy(w);
 }
-

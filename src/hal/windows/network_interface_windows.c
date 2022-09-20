@@ -920,7 +920,7 @@ network_interface_t* network_interface_create(const char* interface_name,
     TKMEM_FREE(windows_network_interface);
     return NULL;
   }
-  
+
   return (network_interface_t*)windows_network_interface;
 }
 #endif /*WIN*/

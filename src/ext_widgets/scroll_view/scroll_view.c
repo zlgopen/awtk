@@ -736,12 +736,15 @@ static ret_t scroll_view_get_offset(widget_t* widget, xy_t* out_x, xy_t* out_y) 
 static ret_t scroll_view_get_only_active_children(widget_t* widget, darray_t* all_focusable) {
   ret_t ret = RET_OK;
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
-  return_value_if_fail(widget != NULL && scroll_view != NULL && all_focusable != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && scroll_view != NULL && all_focusable != NULL,
+                       RET_BAD_PARAMS);
 
   if (scroll_view->snap_to_page && scroll_view->move_to_page) {
     WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-    if ((scroll_view->xslidable && scroll_view->xoffset <= iter->x && iter->x < scroll_view->xoffset + widget->w) ||
-        (scroll_view->yslidable && scroll_view->yoffset <= iter->y && iter->y < scroll_view->yoffset + widget->h)) {
+    if ((scroll_view->xslidable && scroll_view->xoffset <= iter->x &&
+         iter->x < scroll_view->xoffset + widget->w) ||
+        (scroll_view->yslidable && scroll_view->yoffset <= iter->y &&
+         iter->y < scroll_view->yoffset + widget->h)) {
       ret = widget_foreach(iter, widget_on_visit_focusable, all_focusable);
       if (ret == RET_STOP || ret == RET_DONE) {
         return ret;

@@ -68,7 +68,6 @@ const char* locale_info_tr(locale_info_t* locale_info, const char* text) {
     tr_text = locale_info->fallback_tr(text);
   }
 
-
   return tr_text != NULL ? tr_text : text;
 }
 

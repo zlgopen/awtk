@@ -121,8 +121,8 @@ uint32_t timer_manager_add(timer_manager_t* timer_manager, timer_func_t on_timer
  *
  * @return {uint32_t} 返回timer的ID，TK_INVALID_ID表示失败。
  */
-uint32_t timer_manager_add_with_id(timer_manager_t* timer_manager, uint32_t id, timer_func_t on_timer, void* ctx,
-                           uint32_t duration);
+uint32_t timer_manager_add_with_id(timer_manager_t* timer_manager, uint32_t id,
+                                   timer_func_t on_timer, void* ctx, uint32_t duration);
 
 /**
  * @method timer_manager_remove
@@ -223,8 +223,9 @@ uint32_t timer_manager_add_with_type(timer_manager_t* timer_manager, timer_func_
 /**
  * @method timer_manager_add_with_type_and_id
  */
-uint32_t timer_manager_add_with_type_and_id(timer_manager_t* timer_manager, uint32_t id, timer_func_t on_timer,
-                                     void* ctx, uint32_t duration, uint16_t timer_info_type, bool_t is_check_id);
+uint32_t timer_manager_add_with_type_and_id(timer_manager_t* timer_manager, uint32_t id,
+                                            timer_func_t on_timer, void* ctx, uint32_t duration,
+                                            uint16_t timer_info_type, bool_t is_check_id);
 
 END_C_DECLS
 

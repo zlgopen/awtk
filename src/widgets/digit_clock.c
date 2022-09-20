@@ -117,7 +117,8 @@ static ret_t digit_clock_on_destroy(widget_t* widget) {
   digit_clock_t* digit_clock = DIGIT_CLOCK(widget);
   return_value_if_fail(widget != NULL && digit_clock != NULL, RET_BAD_PARAMS);
 
-  widget_off_by_func(widget_get_window(widget), EVT_LOCALE_CHANGED, digit_clock_on_display_time, widget);
+  widget_off_by_func(widget_get_window(widget), EVT_LOCALE_CHANGED, digit_clock_on_display_time,
+                     widget);
 
   TKMEM_FREE(digit_clock->format);
   wstr_reset(&(digit_clock->last_time));
