@@ -312,6 +312,16 @@ class AppHelperBase:
                 src = os.path.join(iter['root'], self.BUILD_DIR)
                 self.awtk.copySharedLib(src, self.APP_BIN_DIR, so)
 
+    def cleanAwtkSharedLib(self):
+        if self.TKC_ONLY:
+            self.awtk.cleanSharedLib(self.APP_BIN_DIR, 'tkc')
+        else:
+            self.awtk.cleanSharedLib(self.APP_BIN_DIR, 'awtk')
+
+        for iter in self.DEPENDS_LIBS:
+            for so in iter['shared_libs']:
+                self.awtk.cleanSharedLib(self.APP_BIN_DIR, so)
+
     def genIdlAndDef(self):
         if self.DEF_FILE:
             print(self.DEF_FILE)
@@ -622,5 +632,7 @@ class AppHelperBase:
     
         if not Script.GetOption('clean'):
             self.prepare()
+        else:
+            self.cleanAwtkSharedLib()
 
         return env

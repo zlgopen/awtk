@@ -176,6 +176,30 @@ def has_custom_cc():
     return False
 
 
+def cleanSharedLib(dst, name):
+    if OS_NAME == 'Darwin':
+        dst = os.path.join(dst, 'lib'+name+'.dylib')
+    elif OS_NAME == 'Linux':
+        dst = os.path.join(dst, 'lib'+name+'.so')
+    elif OS_NAME == 'Windows':
+        dst = os.path.join(dst, name+'.dll')
+    else:
+        print('not support ' + OS_NAME)
+        return
+
+    dst = os.path.normpath(dst)
+
+    if os.path.exists(dst):
+        os.remove(dst)
+        print('Removed ' + dst)
+
+    if OS_NAME == 'Windows':
+        dst=dst.replace('.dll', '.lib')
+        if os.path.exists(dst):
+            os.remove(dst)
+            print('Removed ' + dst)
+
+
 def copySharedLib(src, dst, name):
     if OS_NAME == 'Darwin':
         src = os.path.join(src, 'bin/lib'+name+'.dylib')
@@ -201,7 +225,7 @@ def copySharedLib(src, dst, name):
         shutil.copy(src, dst)
         print(src + '==>' + dst)
     if OS_NAME == 'Windows':
-        src=src.replace('dll', 'lib')
+        src=src.replace('.dll', '.lib')
         if os.path.exists(src):
             shutil.copy(src, dst)
             print(src + '==>' + dst)
