@@ -288,7 +288,8 @@ static ret_t object_array_get_prop(tk_object_t* obj, const char* name, value_t* 
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_eq(name, "length") || tk_str_eq(name, "size") || tk_str_eq(name, "#size")) {
+  if (tk_str_eq(name, TK_OBJECT_ARRAY_PROP_LENGTH) || tk_str_eq(name, TK_OBJECT_ARRAY_PROP_SIZE) ||
+      tk_str_eq(name, TK_OBJECT_PROP_SIZE)) {
     value_set_int(v, o->size);
     ret = RET_OK;
   } else if (tk_str_eq(name, "capacity")) {

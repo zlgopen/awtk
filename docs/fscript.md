@@ -991,7 +991,7 @@ toupper(str) => str
 ##### 示例
 
 ```js
-touppper("abc")
+toupper("abc")
 ```
 
 #### 4.2.5 tolower
