@@ -123,6 +123,16 @@ elif OS_NAME == 'Linux':
 
 
 elif OS_NAME == 'Windows':
+    WIN32_AWTK_RES = 'win32_res/awtk.res'
+    if TARGET_ARCH == 'x86':
+        WIN32_AWTK_RES = 'win32_res/awtk_x86.res'
+
+    if not os.path.exists(WIN32_AWTK_RES):
+        if TARGET_ARCH == 'x86':
+            WIN32_AWTK_RES = os.path.join(TK_ROOT, 'win32_res/awtk_x86.res')
+        else:
+            WIN32_AWTK_RES = os.path.join(TK_ROOT, 'win32_res/awtk.res')
+
     if not os.path.exists(os.path.abspath(TK_BIN_DIR)):
         os.makedirs(os.path.abspath(TK_BIN_DIR))
     if not os.path.exists(os.path.abspath(TK_LIB_DIR)):
@@ -159,6 +169,7 @@ elif OS_NAME == 'Windows':
     OS_FLAGS = OS_FLAGS + \
         '-D_SECURE_SCL=0 -D_SCL_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_DEPRECATE '
     OS_PROJECTS = ['3rd/SDL/SConscript']
+    OS_LINKFLAGS += '\"' + WIN32_AWTK_RES + '\" '
 
 
 def has_custom_cc():
