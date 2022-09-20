@@ -537,7 +537,6 @@ static uint32_t str_count_sub_str(str_t* s, const char* str) {
 
 ret_t str_replace(str_t* str, const char* text, const char* new_text) {
   uint32_t count = 0;
-
   return_value_if_fail(str != NULL && str->str != NULL && text != NULL && new_text != NULL,
                        RET_BAD_PARAMS);
 
@@ -548,7 +547,8 @@ ret_t str_replace(str_t* str, const char* text, const char* new_text) {
     char* src = str->str;
     uint32_t str_len = strlen(text);
     uint32_t new_text_len = strlen(new_text);
-    uint32_t capacity = str->size + count * (strlen(new_text) - strlen(text)) + 1;
+    uint32_t new_capacity = str->size + count * (strlen(new_text) - strlen(text)) + 1;
+    uint32_t capacity = tk_max(str->capacity, new_capacity);
 
     char* temp_str = (char*)TKMEM_ALLOC(capacity);
     char* dst = temp_str;
