@@ -642,8 +642,9 @@ const fscript_array_vtable_t* fscript_array_get_fscript_array_vt(tk_object_t* ob
   return_value_if_fail(obj != NULL, NULL);
 
   vt = tk_object_get_prop_pointer(obj, FSCRIPT_ARRAY_PROP_VTABEL_NAME);
-  return_value_if_fail(vt != NULL && tk_str_eq(vt->type, FSCRIPT_ARRAY_PROP_VTABEL_TYPE_STRING),
-                       NULL);
+  if (vt != NULL && !tk_str_eq(vt->type, FSCRIPT_ARRAY_PROP_VTABEL_TYPE_STRING)) {
+    vt = NULL;
+  }
 
   return vt;
 }

@@ -145,7 +145,7 @@ static ret_t func_totitle(fscript_t* fscript, fscript_args_t* args, value_t* res
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   str_set(str, value_str(args->args));
   tk_str_totitle(str->str);
-  value_set_str(result, str->str);
+  value_dup_str(result, str->str);
 
   return RET_OK;
 }
@@ -156,7 +156,7 @@ static ret_t func_text_reverse(fscript_t* fscript, fscript_args_t* args, value_t
 
   str_set(str, value_str(args->args));
   str_reverse(str);
-  value_set_str(result, str->str);
+  value_dup_str(result, str->str);
 
   return RET_OK;
 }
@@ -204,7 +204,7 @@ static ret_t func_usubstr(fscript_t* fscript, fscript_args_t* args, value_t* res
   if (start >= 0 && start < wstr.size && start < end && end <= wstr.size) {
     str_t* str = &(fscript->str);
     str_from_wstr_with_len(str, wstr.str + start, end - start);
-    value_set_str(result, str->str);
+    value_dup_str(result, str->str);
   } else {
     value_set_str(result, "");
     ret = RET_FAIL;
@@ -241,7 +241,7 @@ static ret_t func_char_at_impl(fscript_t* fscript, fscript_args_t* args, value_t
   if (index >= 0 && index < wstr.size) {
     str_t* str = &(fscript->str);
     str_from_wstr_with_len(str, wstr.str + index, 1);
-    value_set_str(result, str->str);
+    value_dup_str(result, str->str);
   } else {
     ret = RET_FAIL;
   }
@@ -271,7 +271,7 @@ static ret_t func_trim_left(fscript_t* fscript, fscript_args_t* args, value_t* r
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   str_set(str, value_str(args->args));
   str_trim_left(str, " \t\r\n");
-  value_set_str(result, str->str);
+  value_dup_str(result, str->str);
 
   return RET_OK;
 }
@@ -289,7 +289,7 @@ static ret_t func_prompt(fscript_t* fscript, fscript_args_t* args, value_t* resu
 
   if (ret_str != NULL) {
     str_set(str, text);
-    value_set_str(result, str->str);
+    value_dup_str(result, str->str);
   }
 
   return RET_OK;
@@ -300,7 +300,7 @@ static ret_t func_trim_right(fscript_t* fscript, fscript_args_t* args, value_t* 
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   str_set(str, value_str(args->args));
   str_trim_right(str, " \t\r\n");
-  value_set_str(result, str->str);
+  value_dup_str(result, str->str);
 
   return RET_OK;
 }
@@ -362,7 +362,7 @@ static ret_t func_str_append(fscript_t* fscript, fscript_args_t* args, value_t* 
 
   str_set(str, value_str(args->args));
   str_append(str, value_str(args->args + 1));
-  value_set_str(result, str->str);
+  value_dup_str(result, str->str);
 
   return RET_OK;
 }

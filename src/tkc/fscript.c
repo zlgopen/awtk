@@ -946,7 +946,7 @@ static ret_t fscript_parser_init(fscript_parser_t* parser, tk_object_t* obj, con
   parser->error = error;
   parser->symbols = darray_create(5, NULL, (tk_compare_t)tk_str_cmp);
 
-  str_init(&(parser->temp), 64);
+  str_init(&(parser->temp), FSCRIPT_STR_CAPACITY);
 
   return RET_OK;
 }
@@ -2186,7 +2186,7 @@ static ret_t func_sum(fscript_t* fscript, fscript_args_t* args, value_t* result)
   if (has_str) {
     str_t str;
     char buff[64];
-    str_init(&str, 100);
+    str_init(&str, FSCRIPT_STR_CAPACITY);
     for (i = 0; i < args->size; i++) {
       str_append(&str, value_str_ex(args->args + i, buff, sizeof(buff) - 1));
     }
@@ -2424,7 +2424,7 @@ static ret_t func_str(fscript_t* fscript, fscript_args_t* args, value_t* result)
     }
   }
   str_from_value(str, args->args);
-  value_set_str(result, str->str);
+  value_dup_str(result, str->str);
 
   return RET_OK;
 }
@@ -2490,7 +2490,7 @@ static ret_t func_join(fscript_t* fscript, fscript_args_t* args, value_t* result
     str_append(str, value_str_ex(args->args + i, buff, sizeof(buff)));
   }
 
-  value_set_str(result, str->str);
+  value_dup_str(result, str->str);
 
   return RET_OK;
 }
@@ -2610,7 +2610,7 @@ static ret_t func_iformat(fscript_t* fscript, fscript_args_t* args, value_t* res
   FSCRIPT_FUNC_CHECK(format != NULL, RET_BAD_PARAMS);
 
   tk_snprintf(str->str, str->capacity - 1, format, value_int(args->args + 1));
-  value_set_str(result, str->str);
+  value_dup_str(result, str->str);
 
   return RET_OK;
 }
@@ -2623,7 +2623,7 @@ static ret_t func_fformat(fscript_t* fscript, fscript_args_t* args, value_t* res
   FSCRIPT_FUNC_CHECK(format != NULL, RET_BAD_PARAMS);
 
   tk_snprintf(str->str, str->capacity - 1, format, value_float(args->args + 1));
-  value_set_str(result, str->str);
+  value_dup_str(result, str->str);
 
   return RET_OK;
 }
@@ -2900,7 +2900,7 @@ static ret_t func_toupper(fscript_t* fscript, fscript_args_t* args, value_t* res
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   str_set(str, value_str(args->args));
   str_to_upper(str);
-  value_set_str(result, str->str);
+  value_dup_str(result, str->str);
 
   return RET_OK;
 }
@@ -2915,7 +2915,7 @@ static ret_t func_tolower(fscript_t* fscript, fscript_args_t* args, value_t* res
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   str_set(str, value_str(args->args));
   str_to_lower(str);
-  value_set_str(result, str->str);
+  value_dup_str(result, str->str);
 
   return RET_OK;
 }
@@ -2925,7 +2925,7 @@ static ret_t func_trim(fscript_t* fscript, fscript_args_t* args, value_t* result
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   str_set(str, value_str(args->args));
   str_trim(str, " \t\r\n");
-  value_set_str(result, str->str);
+  value_dup_str(result, str->str);
 
   return RET_OK;
 }
@@ -2950,7 +2950,7 @@ static ret_t func_substr(fscript_t* fscript, fscript_args_t* args, value_t* resu
     str_set(str, "");
   }
 
-  value_set_str(result, str->str);
+  value_dup_str(result, str->str);
 
   return RET_OK;
 }
@@ -2970,7 +2970,7 @@ static ret_t func_replace(fscript_t* fscript, fscript_args_t* args, value_t* res
   str_set(str, org);
   str_replace(str, replace, replace_with);
 
-  value_set_str(result, str->str);
+  value_dup_str(result, str->str);
 
   return RET_OK;
 }
