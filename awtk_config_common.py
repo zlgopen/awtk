@@ -201,6 +201,7 @@ def cleanSharedLib(dst, name):
 
 
 def copySharedLib(src, dst, name):
+    mingw_src = src
     if OS_NAME == 'Darwin':
         src = os.path.join(src, 'bin/lib'+name+'.dylib')
     elif OS_NAME == 'Linux':
@@ -225,7 +226,10 @@ def copySharedLib(src, dst, name):
         shutil.copy(src, dst)
         print(src + '==>' + dst)
     if OS_NAME == 'Windows':
-        src=src.replace('.dll', '.lib')
+        if TOOLS_NAME == 'mingw':
+            src = os.path.join(mingw_src, 'bin/lib'+name+'.a')
+        else:
+            src = src.replace('dll', 'lib')
         if os.path.exists(src):
             shutil.copy(src, dst)
             print(src + '==>' + dst)
