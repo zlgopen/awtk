@@ -476,6 +476,8 @@ static ret_t slide_menu_set_value_only(slide_menu_t* slide_menu, int32_t index) 
 
     if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
       slide_menu->value = index;
+      widget_set_focused(widget_get_child(widget, index), TRUE);
+
       evt.e.type = EVT_VALUE_CHANGED;
       widget_dispatch(widget, (event_t*)&evt);
       widget_invalidate(widget, NULL);

@@ -123,6 +123,7 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
       widget_grab(widget->parent, widget);
       break;
     }
+    case EVT_BLUR:
     case EVT_POINTER_DOWN_ABORT: {
       button_pointer_up_cleanup(widget);
       break;
