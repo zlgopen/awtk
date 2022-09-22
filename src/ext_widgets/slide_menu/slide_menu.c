@@ -518,6 +518,8 @@ static ret_t slide_menu_scroll_to(widget_t* widget, int32_t xoffset_end) {
   slide_menu->wa = widget_animator_scroll_create(widget, TK_ANIMATING_TIME, 0, EASING_SIN_INOUT);
   return_value_if_fail(slide_menu->wa != NULL, RET_OOM);
 
+  widget_set_focused(widget_get_child(widget, slide_menu->value), FALSE);
+
   widget_animator_scroll_set_params(slide_menu->wa, xoffset, 0, xoffset_end, 0);
   widget_animator_on(slide_menu->wa, EVT_ANIM_END, slide_menu_on_scroll_done, slide_menu);
   widget_animator_start(slide_menu->wa);
