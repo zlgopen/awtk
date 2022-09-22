@@ -1,6 +1,6 @@
-#AWTK 中的资源管理
+# AWTK 中的资源管理
 
-## 基本架构
+## 一、基本架构
 
 这里的资源管理器并非 Windows 下的文件浏览器，而是负责对各种资源，比如字体、窗体样式、图片、界面数据、字符串和其它数据的进行集中管理的组件。引入资源管理器的目的有以下几个：
 
@@ -18,7 +18,7 @@
 
 > 网络加载暂未实现。
 
-## 资源的生成
+## 二、资源的生成
 
 AWTK 中的资源需要进行格式转换才能使用：
 
@@ -37,13 +37,13 @@ AWTK 中的资源需要进行格式转换才能使用：
 * bin/xml\_to\_ui XML 的界面描述格式转换二进制的界面描述格式
 * ./scripts/update\_res.py 批量转换整个项目的资源
 
-## 一、初始化
+## 三、资源初始化
 
 将资源生成常量数组直接编译到代码中时，其初始化过程为：
 
 * 1. 包含相应的数据文件。
 
-```
+```c
 #include "assets/inc/fonts/ap.data"
 #include "assets/inc/fonts/default.data"
 #include "assets/inc/fonts/default_ttf.data"
@@ -54,47 +54,47 @@ AWTK 中的资源需要进行格式转换才能使用：
 
 * 2. 将资源增加到资源管理器中。
 
-```
-  assets_manager_add(rm, font_ap);
-  assets_manager_add(rm, font_default);
-  assets_manager_add(rm, font_default_ttf);
-  assets_manager_add(rm, image_bricks);
-  assets_manager_add(rm, image_checked);
-  ...
+```c
+assets_manager_add(rm, font_ap);
+assets_manager_add(rm, font_default);
+assets_manager_add(rm, font_default_ttf);
+assets_manager_add(rm, image_bricks);
+assets_manager_add(rm, image_checked);
+...
 ```
 
 将资源放在文件系统中时，一般不需要特殊处理，不过可以用 assets\_manager\_load 预加载资源。如：
 
-```
-  assets_manager_load(rm, ASSET_TYPE_THEME, "default");
-  assets_manager_load(rm, ASSET_TYPE_FONT, "default_ttf");
+```c
+assets_manager_load(rm, ASSET_TYPE_THEME, "default");
+assets_manager_load(rm, ASSET_TYPE_FONT, "default_ttf");
 ```
 
 > 参考：demos/assets.c
 
-## 二、使用方法
+## 四、资源使用方法
 
 * 加载图片图片
 
 使用 image\_manager\_load，指定图片的名称即可。
 
-```
-  bitmap_t img;
-  image_manager_load(image_manager(), "earth", &img);
+```c
+bitmap_t img;
+image_manager_load(image_manager(), "earth", &img);
 ```
 
 > 或者通过更上层 widget 的函数去加载图片：
 
-```
- bitmap_t bitmap;
- widget_load_image(widget, "myimage", &bitmap);
+```c
+bitmap_t bitmap;
+widget_load_image(widget, "myimage", &bitmap);
 ```
 
 * 使用 UI 数据
 
 使用 window\_open，指定资源的名称即可。如：
 
-```
+```c
 widget_t* win = window_open(name);
 ```
 
@@ -106,7 +106,7 @@ widget_t* win = window_open(name);
 
 一般在界面描述文件中指定 style 即可。
 
-## 三、资源的名称
+## 五、资源的名称
 
 资源名称一般就是资源的文件名，不带文件扩展名。比如图片名为 test.png，那资源名称就是 test，如果因为某种原因，把 test.png 换成了 test.jpg，对代码并无影响。
 
@@ -127,37 +127,37 @@ widget_t* win = window_open(name);
 
 示例 1：
 
-```
-  <style name="sky">
-    <normal bg_image="bg_${device_orientation}_1"/>
-  </style>
+```xml
+<style name="sky">
+  <normal bg_image="bg_${device_orientation}_1"/>
+</style>
 ```
 
 在竖屏下，相当于：
 
-```
-  <style name="sky">
-    <normal bg_image="bg_portrait_1"/>
-  </style>
+```xml
+<style name="sky">
+  <normal bg_image="bg_portrait_1"/>
+</style>
 ```
 
 在横屏下，相当于：
 
-```
-  <style name="sky">
-    <normal bg_image="bg_landscape_1"/>
-  </style>
+```xml
+<style name="sky">
+  <normal bg_image="bg_landscape_1"/>
+</style>
 ```
 
 示例 2:
 
-```
+```xml
 <image image="flag_${country},flag_none" x="c" y="m:-80" w="80" h="80"/>
 ```
 
 在 locale 为 zh\_CN 时，相当于：
 
-```
+```xml
 <image image="flag_CN,flag_none" x="c" y="m:-80" w="80" h="80"/>
 ```
 
@@ -165,7 +165,7 @@ widget_t* win = window_open(name);
 
 在 locale 为 en\_US 时，相当于：
 
-```
+```xml
 <image image="flag_US,flag_none" x="c" y="m:-80" w="80" h="80"/>
 ```
 
@@ -173,15 +173,15 @@ widget_t* win = window_open(name);
 
 > 变量名可以使用 [system\_info 中的成员变量](https://github.com/zlgopen/awtk/blob/master/docs/manual/system_info_t.md)
 
-## 四、扩展用法
+## 六、扩展用法
 
 有时候在嵌入式平台开发项目中会出现一种情况，项目的资源分为两部分，一部分是基本上不会修改的资源（例如字库资源等），一部分会根据开发过程中会进行修改或者更换资源（例如图片资源等）。
 
 这个时候需要把不会修改的资源烧写指定的地方（flash 或者 其他的存储设备中），然后再通过特定的方法加载到 awtk 中。
 
-#### 示例：
+### 6.1 示例：
 
-```
+```c
 #include "base/assets_manager.h"
 
 /* 字体文件资源烧写到 0x60520000 的地址中 */
@@ -190,17 +190,19 @@ widget_t* win = window_open(name);
 #define FONT_FULL_LEN 0x00220000
 
 ret_t assets_init(void) {
-
-    assets_manager_t* am = assets_manager();
-    
-     /* 
-     * 把字体文件资源 data 数据直接加载到 awtk 中
-     * 并且该字体文件资源的名字为 "default_full"
-     * 程序内部可以通过 "default_full" 名字来使用该字体资源
-     */
-	assets_manager_add_data(am, "default_full", ASSET_TYPE_FONT, ASSET_TYPE_FONT_TTF, (const uint8_t*)FONT_FULL_ADD, FONT_FULL_LEN);
-	
-｝
+  assets_manager_t* am = assets_manager();
+   /* 
+   * 把字体文件资源 data 数据直接加载到 awtk 中
+   * 并且该字体文件资源的名字为 "default_full"
+   * 程序内部可以通过 "default_full" 名字来使用该字体资源
+   */
+  assets_manager_add_data(am, "default_full", ASSET_TYPE_FONT, ASSET_TYPE_FONT_TTF,
+                          (const uint8_t*)FONT_FULL_ADD, FONT_FULL_LEN);
+}
 ```
 
 > 备注：assets_manager_add_data 函数传入的资源 data 数组，会拷贝一份在 awtk 内部，所以如果资源 data 数组是通过 malloc 等方法创建出来的话，就需要自行释放资源 data 数组。
+
+## 七、相关文档
+
+* [AWTK 应用程序中的资源](./app_assets.md)
