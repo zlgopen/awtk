@@ -308,6 +308,10 @@ TEST(FScript, join) {
   ASSERT_STREQ(value_str(&v), "a,b,c");
   value_reset(&v);
 
+  fscript_eval(obj, "join(\",\", str(123), str(456), str(789), \"abc\")", &v);
+  ASSERT_STREQ(value_str(&v), "123,456,789,abc");
+  value_reset(&v);
+
   TK_OBJECT_UNREF(obj);
 }
 
@@ -328,6 +332,11 @@ TEST(FScript, iformat) {
   ASSERT_STREQ(value_str(&v), "hello:123");
   value_reset(&v);
 
+  fscript_eval(obj, "iformat(\"hello:%d\", 123) + str(456)", &v);
+  ASSERT_STREQ(value_str(&v), "hello:123456");
+  value_reset(&v);
+
+
   TK_OBJECT_UNREF(obj);
 }
 
@@ -336,6 +345,10 @@ TEST(FScript, fformat) {
   tk_object_t* obj = object_default_create();
   fscript_eval(obj, "fformat(\"hello:%lf\", 123)", &v);
   ASSERT_STREQ(value_str(&v), "hello:123.000000");
+  value_reset(&v);
+
+  fscript_eval(obj, "fformat(\"hello:%f\", 123) + str(456)", &v);
+  ASSERT_STREQ(value_str(&v), "hello:123.000000456");
   value_reset(&v);
 
   TK_OBJECT_UNREF(obj);
@@ -549,6 +562,10 @@ TEST(FScript, trim) {
   ASSERT_STREQ(value_str(&v), "aaa");
   value_reset(&v);
 
+  fscript_eval(obj, "trim(\"aaa \") + str(123)", &v);
+  ASSERT_STREQ(value_str(&v), "aaa123");
+  value_reset(&v);
+
   TK_OBJECT_UNREF(obj);
 }
 
@@ -579,6 +596,10 @@ TEST(FScript, toupper) {
   ASSERT_STREQ(value_str(&v), "AAA");
   value_reset(&v);
 
+  fscript_eval(obj, "toupper(\"aaa\") + str(123)", &v);
+  ASSERT_STREQ(value_str(&v), "AAA123");
+  value_reset(&v);
+
   TK_OBJECT_UNREF(obj);
 }
 
@@ -594,6 +615,10 @@ TEST(FScript, tolower) {
   ASSERT_STREQ(value_str(&v), "aaa");
   value_reset(&v);
 
+  fscript_eval(obj, "tolower(\"AAA\") + str(123)", &v);
+  ASSERT_STREQ(value_str(&v), "aaa123");
+  value_reset(&v);
+
   TK_OBJECT_UNREF(obj);
 }
 
@@ -607,6 +632,10 @@ TEST(FScript, replace) {
 
   fscript_eval(obj, "replace(\"aaa123\", \"a\", \"\")", &v);
   ASSERT_STREQ(value_str(&v), "123");
+  value_reset(&v);
+
+  fscript_eval(obj, "replace(\"aaa123\", \"a\", \"\") + str(456)", &v);
+  ASSERT_STREQ(value_str(&v), "123456");
   value_reset(&v);
 
   TK_OBJECT_UNREF(obj);
@@ -641,6 +670,10 @@ TEST(FScript, substr) {
 
   fscript_eval(obj, "substr(\"1234567\", 0, 300)", &v);
   ASSERT_STREQ(value_str(&v), "1234567");
+  value_reset(&v);
+
+  fscript_eval(obj, "substr(\"1234567\", 1, 3) + str(123)", &v);
+  ASSERT_STREQ(value_str(&v), "234123");
   value_reset(&v);
 
   TK_OBJECT_UNREF(obj);
@@ -915,6 +948,10 @@ TEST(FExr, sum) {
 
   fscript_eval(obj, "sum(1+1)-sum(1+1)", &v);
   ASSERT_EQ(value_int(&v), 0);
+  value_reset(&v);
+
+  fscript_eval(obj, "str(123) + str(456)", &v);
+  ASSERT_STREQ(value_str(&v), "123456");
   value_reset(&v);
 
   TK_OBJECT_UNREF(obj);
@@ -1701,6 +1738,21 @@ TEST(FExr, global) {
   TK_OBJECT_UNREF(obj);
 }
 
+TEST(FExr, totitle) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "totitle(\"it is ok!\")", &v);
+  ASSERT_STREQ(value_str(&v), "It Is Ok!");
+  value_reset(&v);
+
+  fscript_eval(obj, "totitle(\"it is ok!\") + str(123)", &v);
+  ASSERT_STREQ(value_str(&v), "It Is Ok!123");
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
 TEST(FExr, text_count) {
   value_t v;
   tk_object_t* obj = object_default_create();
@@ -1720,6 +1772,37 @@ TEST(FExr, text_reverse) {
 
   fscript_eval(obj, "text_reverse(\"abc\")", &v);
   ASSERT_STREQ(value_str(&v), "cba");
+  value_reset(&v);
+
+  fscript_eval(obj, "text_reverse(\"abc\") + str(123)", &v);
+  ASSERT_STREQ(value_str(&v), "cba123");
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, usubstr) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "usubstr('致远电子', 0, 1)", &v);
+  ASSERT_STREQ(value_str(&v), "致");
+  value_reset(&v);
+  
+  fscript_eval(obj, "usubstr('致远电子', 0, -1)", &v);
+  ASSERT_STREQ(value_str(&v), "致远电");
+  value_reset(&v);
+
+  fscript_eval(obj, "usubstr('致远电子', -2, -1)", &v);
+  ASSERT_STREQ(value_str(&v), "电");
+  value_reset(&v);
+
+  fscript_eval(obj, "usubstr('致远电子', -3)", &v);
+  ASSERT_STREQ(value_str(&v), "远电子");
+  value_reset(&v);
+
+  fscript_eval(obj, "usubstr('致远电子', -3) + str(123)", &v);
+  ASSERT_STREQ(value_str(&v), "远电子123");
   value_reset(&v);
 
   TK_OBJECT_UNREF(obj);
@@ -2082,6 +2165,10 @@ TEST(FExr, char_at) {
 
   fscript_eval(obj, "char_at_random(\"hhh\")", &v1);
   ASSERT_STREQ(value_str(&v1), "h");
+  value_reset(&v1);
+
+  fscript_eval(obj, "char_at(\"hello\", 2) + str(123)", &v1);
+  ASSERT_STREQ(value_str(&v1), "l123");
   value_reset(&v1);
 
   TK_OBJECT_UNREF(obj);

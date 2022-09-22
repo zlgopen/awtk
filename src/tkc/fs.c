@@ -545,6 +545,31 @@ ret_t fs_remove_dir_r(fs_t* fs, const char* name) {
   return ret;
 }
 
+bool_t fs_dir_is_empty(fs_t* fs, const char* name) {
+  bool_t ret = TRUE;
+  fs_dir_t* dir = NULL;
+  fs_item_t item;
+  return_value_if_fail(fs != NULL && name != NULL, ret);
+
+  dir = fs_open_dir(fs, name);
+  return_value_if_fail(dir != NULL, ret);
+
+  do {
+    if (fs_dir_read(dir, &item) != RET_OK) {
+      break;
+    }
+    if (tk_str_eq(item.name, ".") || tk_str_eq(item.name, "..")) {
+      continue;
+    } else {
+      ret = FALSE;
+    }
+  } while (ret);
+
+  fs_dir_close(dir);
+
+  return ret;
+}
+
 #ifndef TK_COPY_BUFF_SIZE
 #define TK_COPY_BUFF_SIZE 4096
 #endif /*TK_COPY_BUFF_SIZE*/

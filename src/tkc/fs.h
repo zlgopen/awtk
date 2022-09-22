@@ -580,6 +580,18 @@ ret_t fs_create_dir_r(fs_t* fs, const char* name);
 ret_t fs_remove_dir_r(fs_t* fs, const char* name);
 
 /**
+ * @method fs_dir_is_empty
+ *
+ * 判断目录是否为空。
+ *
+ * @param {fs_t*} fs 文件系统对象，一般赋值为os_fs()。
+ * @param {const char*} name 目录名称。
+ *
+ * @return {bool_t} 返回TRUE表示目录为空，否则表示目录不为空。
+ */
+bool_t fs_dir_is_empty(fs_t* fs, const char* name);
+
+/**
  * @method fs_dir_exist
  *
  * 判断目录是否存在。

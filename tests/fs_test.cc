@@ -156,6 +156,18 @@ TEST(Fs, create_dir_r) {
   ASSERT_EQ(fs_dir_exist(os_fs(), "a"), FALSE);
 }
 
+TEST(Fs, dir_empty) {
+  ASSERT_EQ(fs_create_dir_r(os_fs(), "a/b/c/d"), RET_OK);
+  ASSERT_EQ(fs_dir_exist(os_fs(), "a/b/c/d"), TRUE);
+
+  ASSERT_EQ(fs_dir_is_empty(os_fs(), "a/b/c/d"), TRUE);
+  ASSERT_EQ(file_write("a/b/c/d/test.txt", "hello", 5), RET_OK);
+  ASSERT_EQ(fs_dir_is_empty(os_fs(), "a/b/c/d"), FALSE);
+
+  ASSERT_EQ(fs_remove_dir_r(os_fs(), "a"), RET_OK);
+  ASSERT_EQ(fs_dir_exist(os_fs(), "a"), FALSE);
+}
+
 TEST(Fs, copy_file) {
   const char* src = "./test.txt";
   const char* dst = "./a/b/test.txt";
