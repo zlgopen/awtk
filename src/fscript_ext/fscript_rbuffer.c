@@ -26,6 +26,10 @@ static ret_t func_rbuffer_create(fscript_t* fscript, fscript_args_t* args, value
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
   FSCRIPT_FUNC_CHECK(fargs_get_data_and_size(args, &data, &size) == RET_OK, RET_BAD_PARAMS);
 
+  if (args->args->type == VALUE_TYPE_STRING) {
+    size += 1;
+  }
+
   value_set_object(result, object_rbuffer_create(data, size));
   result->free_handle = TRUE;
 

@@ -304,10 +304,21 @@ ret_t rbuffer_read_binary(rbuffer_t* rbuffer, void* data, uint32_t size) {
 }
 
 ret_t rbuffer_read_string(rbuffer_t* rbuffer, const char** str) {
+  uint32_t len = 0;
+  uint32_t max_count = 0;
+  const char* start = NULL;
   return_value_if_fail(rbuffer != NULL && rbuffer->data != NULL && str != NULL, RET_BAD_PARAMS);
 
-  *str = (const char*)rbuffer->data + rbuffer->cursor;
-  rbuffer->cursor += strlen(*str) + 1;
+  start = (const char*)rbuffer->data + rbuffer->cursor;
+  max_count = rbuffer->capacity - rbuffer->cursor;
+  len = strnlen(start, max_count);
+  if (rbuffer->cursor + len == rbuffer->capacity) {
+    *str = NULL;
+    return RET_FAIL;
+  }
+
+  *str = (const char*)start;
+  rbuffer->cursor += len + 1;
 
   return RET_OK;
 }

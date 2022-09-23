@@ -238,3 +238,23 @@ TEST(Buffer, obj) {
   TK_OBJECT_UNREF(wobj);
   TK_OBJECT_UNREF(robj);
 }
+
+TEST(Buffer, binary) {
+  char end = '0';
+  wbuffer_t wbuffer;
+  rbuffer_t rbuffer;
+  const char* str = NULL;
+  uint8_t data[5] = {'h', 'e', 'l', 'l', 'o'};
+
+  ASSERT_EQ(rbuffer_init(&rbuffer, data, sizeof(data)), &rbuffer);
+  ASSERT_EQ(rbuffer_read_string(&rbuffer, &str), RET_FAIL);
+
+  wbuffer_init_extendable(&wbuffer);
+  wbuffer_write_binary(&wbuffer, data, 5);
+
+  ASSERT_EQ(rbuffer_init(&rbuffer, wbuffer.data, wbuffer.capacity), &rbuffer);
+  ASSERT_EQ(rbuffer_read_string(&rbuffer, &str), RET_OK);
+  ASSERT_STREQ(str, "hello");
+
+  wbuffer_deinit(&wbuffer);
+}
