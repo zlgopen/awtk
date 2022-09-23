@@ -169,7 +169,7 @@ def run(awtk_root, is_excluded_file_handler = None):
 
     GDPI=''
     IMAGEGEN_OPTIONS=''
-    LCD_ORIENTATION=None
+    LCD_ORIENTATION=''
     LCD_FAST_ROTATION_MODE=None
     sys_args = common.get_args(sys.argv[1:])
     if len(sys_args) > 0 :
