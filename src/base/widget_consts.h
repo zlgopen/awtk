@@ -588,6 +588,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_LOOP "loop"
 
 /**
+ * @const WIDGET_PROP_RUNNING
+ * 是否正在运行(播放)。
+ */
+#define WIDGET_PROP_RUNNING "running"
+
+/**
  * @const WIDGET_PROP_AUTO_FIX
  * 是否启用自动更正功能。
  */

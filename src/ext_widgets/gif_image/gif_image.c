@@ -210,7 +210,9 @@ static ret_t gif_image_get_prop(widget_t* widget, const char* name, value_t* v) 
   gif_image_t* image = GIF_IMAGE(widget);
   return_value_if_fail(image != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_eq(name, WIDGET_PROP_LOOP)) {
+  if (tk_str_eq(name, WIDGET_PROP_RUNNING)) {
+    value_set_bool(v, image->running);
+  } else if (tk_str_eq(name, WIDGET_PROP_LOOP)) {
     value_set_uint32(v, image->loop);
     return RET_OK;
   } else {
@@ -219,9 +221,12 @@ static ret_t gif_image_get_prop(widget_t* widget, const char* name, value_t* v) 
 }
 
 static ret_t gif_image_set_prop(widget_t* widget, const char* name, const value_t* v) {
+  gif_image_t* gif_image = GIF_IMAGE(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_eq(name, WIDGET_PROP_LOOP)) {
+  if (tk_str_eq(name, WIDGET_PROP_RUNNING)) {
+    gif_image->running = value_bool(v);
+  } else if (tk_str_eq(name, WIDGET_PROP_LOOP)) {
     return gif_image_set_loop(widget, value_uint32(v));
   } else {
     return image_base_set_prop(widget, name, v);

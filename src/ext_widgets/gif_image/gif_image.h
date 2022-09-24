@@ -81,7 +81,7 @@ typedef struct _gif_image_t {
 
   /**
    * @property {bool_t} running
-   * @annotation ["readable"]
+   * @annotation ["set_prop","get_prop","readable"]
    * 是否正在运行。
    *
    */
