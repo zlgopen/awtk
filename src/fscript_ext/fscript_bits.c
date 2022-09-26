@@ -31,45 +31,7 @@ static ret_t func_lshift(fscript_t* fscript, fscript_args_t* args, value_t* resu
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   value = args->args;
   n = value_uint32(args->args + 1);
-
-  switch (value->type) {
-    case VALUE_TYPE_INT8: {
-      value_set_int8(result, value_int8(value) << n);
-      break;
-    }
-    case VALUE_TYPE_UINT8: {
-      value_set_uint8(result, value_uint8(value) << n);
-      break;
-    }
-    case VALUE_TYPE_INT16: {
-      value_set_int16(result, value_int16(value) << n);
-      break;
-    }
-    case VALUE_TYPE_UINT16: {
-      value_set_uint16(result, value_uint16(value) << n);
-      break;
-    }
-    case VALUE_TYPE_INT32: {
-      value_set_int32(result, value_int32(value) << n);
-      break;
-    }
-    case VALUE_TYPE_UINT32: {
-      value_set_uint32(result, value_uint32(value) << n);
-      break;
-    }
-    case VALUE_TYPE_INT64: {
-      value_set_int64(result, value_int64(value) << n);
-      break;
-    }
-    case VALUE_TYPE_UINT64: {
-      value_set_uint64(result, value_uint64(value) << n);
-      break;
-    }
-    default: {
-      ret = RET_BAD_PARAMS;
-      break;
-    }
-  }
+  ret = value_lshift(value, result, n);
 
   return ret;
 }
@@ -83,45 +45,7 @@ static ret_t func_rshift(fscript_t* fscript, fscript_args_t* args, value_t* resu
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   value = args->args;
   n = value_uint32(args->args + 1);
-
-  switch (value->type) {
-    case VALUE_TYPE_INT8: {
-      value_set_int8(result, value_int8(value) >> n);
-      break;
-    }
-    case VALUE_TYPE_UINT8: {
-      value_set_uint8(result, value_uint8(value) >> n);
-      break;
-    }
-    case VALUE_TYPE_INT16: {
-      value_set_int16(result, value_int16(value) >> n);
-      break;
-    }
-    case VALUE_TYPE_UINT16: {
-      value_set_uint16(result, value_uint16(value) >> n);
-      break;
-    }
-    case VALUE_TYPE_INT32: {
-      value_set_int32(result, value_int32(value) >> n);
-      break;
-    }
-    case VALUE_TYPE_UINT32: {
-      value_set_uint32(result, value_uint32(value) >> n);
-      break;
-    }
-    case VALUE_TYPE_INT64: {
-      value_set_int64(result, value_int64(value) >> n);
-      break;
-    }
-    case VALUE_TYPE_UINT64: {
-      value_set_uint64(result, value_uint64(value) >> n);
-      break;
-    }
-    default: {
-      ret = RET_BAD_PARAMS;
-      break;
-    }
-  }
+  ret = value_rshift(value, result, n);
 
   return ret;
 }

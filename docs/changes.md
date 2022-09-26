@@ -1,4 +1,6 @@
 # 最新动态
+2022/09/26
+  * 增加value\_lshift/value\_rshift/value\_lshift\_r/value\_rshift\_r等函数。
 
 2022/09/24
   * GIF 支持设置running属性，方便MVVM绑定。

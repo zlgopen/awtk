@@ -926,6 +926,50 @@ void* value_bitmap(const value_t* v);
  */
 value_t* value_set_bitmap(value_t* v, void* bitmap);
 
+/**
+ * @method value_lshift
+ * 将v左移指定的位数，并将结果放入result对象。 
+ * @param {value_t*} v value对象。
+ * @param {value_t*} result 返回结果的value对象。
+ * @param {uint32_t} n 位数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_lshift(value_t* v, value_t* result, uint32_t n);
+
+/**
+ * @method value_rshift
+ * 将v右移指定的位数，并将结果放入result对象。 
+ * @param {value_t*} v value对象。
+ * @param {value_t*} result 返回结果的value对象。
+ * @param {uint32_t} n 位数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_rshift(value_t* v, value_t* result, uint32_t n);
+
+/**
+ * @method value_lshift_r
+ * 将v循环左移指定的位数，并将结果放入result对象。 
+ * @param {value_t*} v value对象。
+ * @param {value_t*} result 返回结果的value对象。
+ * @param {uint32_t} n 位数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_lshift_r(value_t* v, value_t* result, uint32_t n);
+
+/**
+ * @method value_rshift_r
+ * 将v循环右移指定的位数，并将结果放入result对象。 
+ * @param {value_t*} v value对象。
+ * @param {value_t*} result 返回结果的value对象。
+ * @param {uint32_t} n 位数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_rshift_r(value_t* v, value_t* result, uint32_t n);
+
 END_C_DECLS
 
 #endif /*TK_VALUE_H*/

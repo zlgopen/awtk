@@ -374,3 +374,329 @@ TEST(value, bitmap) {
   void* bitmap = &v;
   ASSERT_EQ(value_bitmap(value_set_bitmap(&v, bitmap)), bitmap);
 }
+
+TEST(value, lshift) {
+  value_t v;
+  value_t r;
+  uint32_t i = 0;
+
+  for(i = 0; i < 100; i++) {
+    int8_t i8 = 1;
+    value_set_int8(&v, i8);
+    ASSERT_EQ(value_lshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(value_int8(&r), (int8_t)(i8 << i));
+    
+    i8 = 0b10101010;
+    value_set_int8(&v, i8);
+    ASSERT_EQ(value_lshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(r.type, VALUE_TYPE_INT8);
+    ASSERT_EQ(value_int8(&r), (int8_t)(i8 << i));
+  } 
+
+  for(i = 0; i < 100; i++) {
+    int16_t i16 = 1;
+    value_set_int16(&v, i16);
+    ASSERT_EQ(value_lshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(value_int16(&r), (int16_t)(i16 << i));
+    
+    i16 = 0b10101010;
+    value_set_int16(&v, i16);
+    ASSERT_EQ(value_lshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(r.type, VALUE_TYPE_INT16);
+    ASSERT_EQ(value_int16(&r), (int16_t)(i16 << i));
+  } 
+  
+  for(i = 0; i < 100; i++) {
+    int32_t i32 = 1;
+    value_set_int32(&v, i32);
+    ASSERT_EQ(value_lshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(value_int32(&r), (int32_t)(i32 << i));
+    
+    i32 = 0b10101010;
+    value_set_int32(&v, i32);
+    ASSERT_EQ(value_lshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(r.type, VALUE_TYPE_INT32);
+    ASSERT_EQ(value_int32(&r), (int32_t)(i32 << i));
+  } 
+  
+  for(i = 0; i < 100; i++) {
+    int64_t i64 = 1;
+    value_set_int64(&v, i64);
+    ASSERT_EQ(value_lshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(value_int64(&r), (int64_t)(i64 << i));
+    
+    i64 = 0b10101010;
+    value_set_int64(&v, i64);
+    ASSERT_EQ(value_lshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(r.type, VALUE_TYPE_INT64);
+    ASSERT_EQ(value_int64(&r), (int64_t)(i64 << i));
+  } 
+  
+  for(i = 0; i < 100; i++) {
+    uint8_t i8 = 1;
+    value_set_uint8(&v, i8);
+    ASSERT_EQ(value_lshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(value_uint8(&r), (uint8_t)(i8 << i));
+    
+    i8 = 0b10101010;
+    value_set_uint8(&v, i8);
+    ASSERT_EQ(value_lshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(r.type, VALUE_TYPE_UINT8);
+    ASSERT_EQ(value_uint8(&r), (uint8_t)(i8 << i));
+  } 
+
+  for(i = 0; i < 100; i++) {
+    uint16_t i16 = 1;
+    value_set_uint16(&v, i16);
+    ASSERT_EQ(value_lshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(value_uint16(&r), (uint16_t)(i16 << i));
+    
+    i16 = 0b10101010;
+    value_set_uint16(&v, i16);
+    ASSERT_EQ(value_lshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(r.type, VALUE_TYPE_UINT16);
+    ASSERT_EQ(value_uint16(&r), (uint16_t)(i16 << i));
+  } 
+  
+  for(i = 0; i < 100; i++) {
+    uint32_t i32 = 1;
+    value_set_uint32(&v, i32);
+    ASSERT_EQ(value_lshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(value_uint32(&r), (uint32_t)(i32 << i));
+    
+    i32 = 0b10101010;
+    value_set_uint32(&v, i32);
+    ASSERT_EQ(value_lshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(r.type, VALUE_TYPE_UINT32);
+    ASSERT_EQ(value_uint32(&r), (uint32_t)(i32 << i));
+  } 
+  
+  for(i = 0; i < 100; i++) {
+    uint64_t i64 = 1;
+    value_set_uint64(&v, i64);
+    ASSERT_EQ(value_lshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(value_uint64(&r), (uint64_t)(i64 << i));
+    
+    i64 = 0b10101010;
+    value_set_uint64(&v, i64);
+    ASSERT_EQ(value_lshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(r.type, VALUE_TYPE_UINT64);
+    ASSERT_EQ(value_uint64(&r), (uint64_t)(i64 << i));
+  } 
+}
+
+TEST(value, rshift) {
+  value_t v;
+  value_t r;
+  uint32_t i = 0;
+
+  for(i = 0; i < 100; i++) {
+    int8_t i8 = 0xf0;
+    value_set_int8(&v, i8);
+    ASSERT_EQ(value_rshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(value_int8(&r), (int8_t)(i8 >> i));
+    
+    i8 = 0b10101010;
+    value_set_int8(&v, i8);
+    ASSERT_EQ(value_rshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(r.type, VALUE_TYPE_INT8);
+    ASSERT_EQ(value_int8(&r), (int8_t)(i8 >> i));
+  } 
+
+  for(i = 0; i < 100; i++) {
+    int16_t i16 = 0xfe00;
+    value_set_int16(&v, i16);
+    ASSERT_EQ(value_rshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(value_int16(&r), (int16_t)(i16 >> i));
+    
+    i16 = 0b10101010;
+    value_set_int16(&v, i16);
+    ASSERT_EQ(value_rshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(r.type, VALUE_TYPE_INT16);
+    ASSERT_EQ(value_int16(&r), (int16_t)(i16 >> i));
+  } 
+  
+  for(i = 0; i < 100; i++) {
+    int32_t i32 = 0xf0f01000;
+    value_set_int32(&v, i32);
+    ASSERT_EQ(value_rshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(value_int32(&r), (int32_t)(i32 >> i));
+    
+    i32 = 0b10101010;
+    value_set_int32(&v, i32);
+    ASSERT_EQ(value_rshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(r.type, VALUE_TYPE_INT32);
+    ASSERT_EQ(value_int32(&r), (int32_t)(i32 >> i));
+  } 
+  
+  for(i = 0; i < 100; i++) {
+    int64_t i64 = 0xf000f000f0001111;
+    value_set_int64(&v, i64);
+    ASSERT_EQ(value_rshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(value_int64(&r), (int64_t)(i64 >> i));
+    
+    i64 = 0b10101010;
+    value_set_int64(&v, i64);
+    ASSERT_EQ(value_rshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(r.type, VALUE_TYPE_INT64);
+    ASSERT_EQ(value_int64(&r), (int64_t)(i64 >> i));
+  } 
+  
+  for(i = 0; i < 100; i++) {
+    uint8_t i8 = 1;
+    value_set_uint8(&v, i8);
+    ASSERT_EQ(value_rshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(value_uint8(&r), (uint8_t)(i8 >> i));
+    
+    i8 = 0b10101010;
+    value_set_uint8(&v, i8);
+    ASSERT_EQ(value_rshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(r.type, VALUE_TYPE_UINT8);
+    ASSERT_EQ(value_uint8(&r), (uint8_t)(i8 >> i));
+  } 
+
+  for(i = 0; i < 100; i++) {
+    uint16_t i16 = 0xf123;
+    value_set_uint16(&v, i16);
+    ASSERT_EQ(value_rshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(value_uint16(&r), (uint16_t)(i16 >> i));
+    
+    i16 = 0b10101010;
+    value_set_uint16(&v, i16);
+    ASSERT_EQ(value_rshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(r.type, VALUE_TYPE_UINT16);
+    ASSERT_EQ(value_uint16(&r), (uint16_t)(i16 >> i));
+  } 
+  
+  for(i = 0; i < 100; i++) {
+    uint32_t i32 = 0xfa0fa;
+    value_set_uint32(&v, i32);
+    ASSERT_EQ(value_rshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(value_uint32(&r), (uint32_t)(i32 >> i));
+    
+    i32 = 0b10101010;
+    value_set_uint32(&v, i32);
+    ASSERT_EQ(value_rshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(r.type, VALUE_TYPE_UINT32);
+    ASSERT_EQ(value_uint32(&r), (uint32_t)(i32 >> i));
+  } 
+  
+  for(i = 0; i < 100; i++) {
+    uint64_t i64 = 0x1000200030004000;
+    value_set_uint64(&v, i64);
+    ASSERT_EQ(value_rshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(value_uint64(&r), (uint64_t)(i64 >> i));
+    
+    i64 = 0b10101010;
+    value_set_uint64(&v, i64);
+    ASSERT_EQ(value_rshift(&v, &r, i), RET_OK);
+    ASSERT_EQ(r.type, VALUE_TYPE_UINT64);
+    ASSERT_EQ(value_uint64(&r), (uint64_t)(i64 >> i));
+  } 
+}
+
+TEST(value, lshift_r) {
+  value_t v;
+  value_t r;
+
+  uint8_t u8 = 0b11000011;
+  value_set_uint8(&v, u8);
+  ASSERT_EQ(value_lshift_r(&v, &r, 3), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_UINT8);
+  ASSERT_EQ(value_uint8(&r), (uint8_t)(0b00011110));
+  
+  u8 = 0b11000011;
+  value_set_uint8(&v, u8);
+  ASSERT_EQ(value_lshift_r(&v, &r, 11), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_UINT8);
+  ASSERT_EQ(value_uint8(&r), (uint8_t)(0b00011110));
+  
+  uint16_t u16 = 0xf1f2;
+  value_set_uint16(&v, u16);
+  ASSERT_EQ(value_lshift_r(&v, &r, 4), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_UINT16);
+  ASSERT_EQ(value_uint16(&r), 0x1f2f);
+  
+  u16 = 0xf1f2;
+  value_set_uint16(&v, u16);
+  ASSERT_EQ(value_lshift_r(&v, &r, 20), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_UINT16);
+  ASSERT_EQ(value_uint16(&r), 0x1f2f);
+  
+  uint32_t u32 = 0xf1f2abcd;
+  value_set_uint32(&v, u32);
+  ASSERT_EQ(value_lshift_r(&v, &r, 4), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_UINT32);
+  ASSERT_EQ(value_uint32(&r), 0x1f2abcdf);
+
+  u32 = 0xf1f2abcd;
+  value_set_uint32(&v, u32);
+  ASSERT_EQ(value_lshift_r(&v, &r, 36), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_UINT32);
+  ASSERT_EQ(value_uint32(&r), 0x1f2abcdf);
+  
+  uint64_t u64 = 0xf1f2abcdf1f2abcd;
+  value_set_uint64(&v, u64);
+  ASSERT_EQ(value_lshift_r(&v, &r, 4), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_UINT64);
+  ASSERT_EQ(value_uint64(&r), 0x1f2abcdf1f2abcdf);
+  
+  u64 = 0xf1f2abcdf1f2abcd;
+  value_set_uint64(&v, u64);
+  ASSERT_EQ(value_lshift_r(&v, &r, 68), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_UINT64);
+  ASSERT_EQ(value_uint64(&r), 0x1f2abcdf1f2abcdf);
+}
+
+TEST(value, rshift_r) {
+  value_t v;
+  value_t r;
+
+  uint8_t u8 = 0b11000011;
+  value_set_uint8(&v, u8);
+  ASSERT_EQ(value_rshift_r(&v, &r, 3), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_UINT8);
+  ASSERT_EQ(value_uint8(&r), (uint8_t)(0b01111000));
+  
+  u8 = 0b11000011;
+  value_set_uint8(&v, u8);
+  ASSERT_EQ(value_rshift_r(&v, &r, 11), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_UINT8);
+  ASSERT_EQ(value_uint8(&r), (uint8_t)(0b01111000));
+  
+  uint16_t u16 = 0xf1f2;
+  value_set_uint16(&v, u16);
+  ASSERT_EQ(value_rshift_r(&v, &r, 4), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_UINT16);
+  ASSERT_EQ(value_uint16(&r), 0x2f1f);
+  
+  u16 = 0xf1f2;
+  value_set_uint16(&v, u16);
+  ASSERT_EQ(value_rshift_r(&v, &r, 20), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_UINT16);
+  ASSERT_EQ(value_uint16(&r), 0x2f1f);
+  
+  uint32_t u32 = 0xf1f2abcd;
+  value_set_uint32(&v, u32);
+  ASSERT_EQ(value_rshift_r(&v, &r, 4), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_UINT32);
+  ASSERT_EQ(value_uint32(&r), 0xdf1f2abc);
+
+  u32 = 0xf1f2abcd;
+  value_set_uint32(&v, u32);
+  ASSERT_EQ(value_rshift_r(&v, &r, 36), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_UINT32);
+  ASSERT_EQ(value_uint32(&r), 0xdf1f2abc);
+  
+  uint64_t u64 = 0xf1f2abcdf1f2abcd;
+  value_set_uint64(&v, u64);
+  ASSERT_EQ(value_rshift_r(&v, &r, 4), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_UINT64);
+  ASSERT_EQ(value_uint64(&r), 0xdf1f2abcdf1f2abc);
+  
+  u64 = 0xf1f2abcdf1f2abcd;
+  value_set_uint64(&v, u64);
+  ASSERT_EQ(value_rshift_r(&v, &r, 68), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_UINT64);
+  ASSERT_EQ(value_uint64(&r), 0xdf1f2abcdf1f2abc);
+}

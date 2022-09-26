@@ -69,7 +69,7 @@ static ret_t func_array_dup(fscript_t* fscript, fscript_args_t* args, value_t* r
   tk_object_t* obj = NULL;
   tk_object_t* dup = NULL;
   object_array_t* arr = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
 
   obj = value_object(args->args);
@@ -130,7 +130,7 @@ static ret_t func_array_push(fscript_t* fscript, fscript_args_t* args, value_t* 
   uint32_t i = 0;
   tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size > 1, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -157,7 +157,7 @@ static ret_t func_array_push(fscript_t* fscript, fscript_args_t* args, value_t* 
 static ret_t func_array_pop(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -179,7 +179,7 @@ static ret_t func_array_pop(fscript_t* fscript, fscript_args_t* args, value_t* r
 static ret_t func_array_shift(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -203,7 +203,7 @@ static ret_t func_array_set(fscript_t* fscript, fscript_args_t* args, value_t* r
   int32_t index = 0;
   tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 3, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -230,7 +230,7 @@ static ret_t func_array_get(fscript_t* fscript, fscript_args_t* args, value_t* r
   int32_t index = 0;
   tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -255,7 +255,7 @@ static ret_t func_array_insert(fscript_t* fscript, fscript_args_t* args, value_t
   int32_t index = 0;
   tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 3, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -282,7 +282,7 @@ static ret_t func_array_remove(fscript_t* fscript, fscript_args_t* args, value_t
   int32_t index = 0;
   tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -309,7 +309,7 @@ static ret_t func_array_get_and_remove(fscript_t* fscript, fscript_args_t* args,
   int32_t index = 0;
   tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -333,7 +333,7 @@ static ret_t func_array_get_and_remove(fscript_t* fscript, fscript_args_t* args,
 static ret_t func_array_index_of(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -353,7 +353,7 @@ static ret_t func_array_index_of(fscript_t* fscript, fscript_args_t* args, value
 static ret_t func_array_last_index_of(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -373,7 +373,7 @@ static ret_t func_array_last_index_of(fscript_t* fscript, fscript_args_t* args, 
 static ret_t func_array_clear(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -393,7 +393,7 @@ static ret_t func_array_clear(fscript_t* fscript, fscript_args_t* args, value_t*
 static ret_t func_array_reverse(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -455,7 +455,7 @@ static ret_t func_array_sort_ex(fscript_t* fscript, tk_object_t* obj, fscript_ar
 
 static ret_t func_array_sort(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   tk_object_t* obj = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -469,7 +469,7 @@ static ret_t func_array_sort(fscript_t* fscript, fscript_args_t* args, value_t* 
 
 static ret_t func_array_clone_and_sort(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   tk_object_t* obj = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -486,7 +486,7 @@ static ret_t func_array_join(fscript_t* fscript, fscript_args_t* args, value_t* 
   tk_object_t* obj = NULL;
   const char* sep = NULL;
   object_array_t* arr = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -512,7 +512,7 @@ static ret_t func_array_join(fscript_t* fscript, fscript_args_t* args, value_t* 
 
 static ret_t func_array_min(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   tk_object_t* obj = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -526,7 +526,7 @@ static ret_t func_array_min(fscript_t* fscript, fscript_args_t* args, value_t* r
 
 static ret_t func_array_max(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   tk_object_t* obj = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -540,7 +540,7 @@ static ret_t func_array_max(fscript_t* fscript, fscript_args_t* args, value_t* r
 
 static ret_t func_array_avg(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   tk_object_t* obj = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -554,7 +554,7 @@ static ret_t func_array_avg(fscript_t* fscript, fscript_args_t* args, value_t* r
 
 static ret_t func_array_sum(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   tk_object_t* obj = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -569,7 +569,7 @@ static ret_t func_array_sum(fscript_t* fscript, fscript_args_t* args, value_t* r
 static ret_t func_array_size(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -588,7 +588,7 @@ static ret_t func_array_size(fscript_t* fscript, fscript_args_t* args, value_t* 
 static ret_t func_array_is_empty(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   tk_object_t* obj = NULL;
   object_array_t* arr = NULL;
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   obj = value_object(args->args);
 
@@ -638,7 +638,7 @@ ret_t fscript_array_register(void) {
 }
 
 const fscript_array_vtable_t* fscript_array_get_fscript_array_vt(tk_object_t* obj) {
-  fscript_array_vtable_t* vt = NULL;
+  const fscript_array_vtable_t* vt = NULL;
   return_value_if_fail(obj != NULL, NULL);
 
   vt = tk_object_get_prop_pointer(obj, FSCRIPT_ARRAY_PROP_VTABEL_NAME);
