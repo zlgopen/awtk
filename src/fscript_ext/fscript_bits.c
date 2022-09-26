@@ -59,63 +59,8 @@ static ret_t func_bit_set(fscript_t* fscript, fscript_args_t* args, value_t* res
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   value = args->args;
   n = value_uint32(args->args + 1);
-
-  switch (value->type) {
-    case VALUE_TYPE_INT8: {
-      int8_t vv = value_int8(value);
-      TK_SET_BIT(vv, n);
-      value_set_int8(result, vv);
-      break;
-    }
-    case VALUE_TYPE_UINT8: {
-      uint8_t vv = value_uint8(value);
-      TK_SET_BIT(vv, n);
-      value_set_uint8(result, vv);
-      break;
-    }
-    case VALUE_TYPE_INT16: {
-      int16_t vv = value_int16(value);
-      TK_SET_BIT(vv, n);
-      value_set_int16(result, vv);
-      break;
-    }
-    case VALUE_TYPE_UINT16: {
-      uint16_t vv = value_uint16(value);
-      TK_SET_BIT(vv, n);
-      value_set_uint16(result, vv);
-      break;
-    }
-    case VALUE_TYPE_INT32: {
-      int32_t vv = value_int32(value);
-      TK_SET_BIT(vv, n);
-      value_set_int32(result, vv);
-      break;
-    }
-    case VALUE_TYPE_UINT32: {
-      uint32_t vv = value_uint32(value);
-      TK_SET_BIT(vv, n);
-      value_set_uint32(result, vv);
-      break;
-    }
-    case VALUE_TYPE_INT64: {
-      int64_t vv = value_int64(value);
-      TK_SET_BIT(vv, n);
-      value_set_int64(result, vv);
-      break;
-    }
-    case VALUE_TYPE_UINT64: {
-      uint64_t vv = value_uint64(value);
-      TK_SET_BIT(vv, n);
-      value_set_uint64(result, vv);
-      break;
-    }
-    default: {
-      ret = RET_BAD_PARAMS;
-      break;
-    }
-  }
-
-  return ret;
+  
+  return value_set_bit(value, result, n, TRUE);
 }
 
 static ret_t func_bit_clear(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -128,62 +73,7 @@ static ret_t func_bit_clear(fscript_t* fscript, fscript_args_t* args, value_t* r
   value = args->args;
   n = value_uint32(args->args + 1);
 
-  switch (value->type) {
-    case VALUE_TYPE_INT8: {
-      int8_t vv = value_int8(value);
-      TK_CLEAR_BIT(vv, n);
-      value_set_int8(result, vv);
-      break;
-    }
-    case VALUE_TYPE_UINT8: {
-      uint8_t vv = value_uint8(value);
-      TK_CLEAR_BIT(vv, n);
-      value_set_uint8(result, vv);
-      break;
-    }
-    case VALUE_TYPE_INT16: {
-      int16_t vv = value_int16(value);
-      TK_CLEAR_BIT(vv, n);
-      value_set_int16(result, vv);
-      break;
-    }
-    case VALUE_TYPE_UINT16: {
-      uint16_t vv = value_uint16(value);
-      TK_CLEAR_BIT(vv, n);
-      value_set_uint16(result, vv);
-      break;
-    }
-    case VALUE_TYPE_INT32: {
-      int32_t vv = value_int32(value);
-      TK_CLEAR_BIT(vv, n);
-      value_set_int32(result, vv);
-      break;
-    }
-    case VALUE_TYPE_UINT32: {
-      uint32_t vv = value_uint32(value);
-      TK_CLEAR_BIT(vv, n);
-      value_set_uint32(result, vv);
-      break;
-    }
-    case VALUE_TYPE_INT64: {
-      int64_t vv = value_int64(value);
-      TK_CLEAR_BIT(vv, n);
-      value_set_int64(result, vv);
-      break;
-    }
-    case VALUE_TYPE_UINT64: {
-      uint64_t vv = value_uint64(value);
-      TK_CLEAR_BIT(vv, n);
-      value_set_uint64(result, vv);
-      break;
-    }
-    default: {
-      ret = RET_BAD_PARAMS;
-      break;
-    }
-  }
-
-  return ret;
+  return value_set_bit(value, result, n, FALSE);
 }
 
 static ret_t func_bit_toggle(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -196,62 +86,7 @@ static ret_t func_bit_toggle(fscript_t* fscript, fscript_args_t* args, value_t* 
   value = args->args;
   n = value_uint32(args->args + 1);
 
-  switch (value->type) {
-    case VALUE_TYPE_INT8: {
-      int8_t vv = value_int8(value);
-      TK_TOGGLE_BIT(vv, n);
-      value_set_int8(result, vv);
-      break;
-    }
-    case VALUE_TYPE_UINT8: {
-      uint8_t vv = value_uint8(value);
-      TK_TOGGLE_BIT(vv, n);
-      value_set_uint8(result, vv);
-      break;
-    }
-    case VALUE_TYPE_INT16: {
-      int16_t vv = value_int16(value);
-      TK_TOGGLE_BIT(vv, n);
-      value_set_int16(result, vv);
-      break;
-    }
-    case VALUE_TYPE_UINT16: {
-      uint16_t vv = value_uint16(value);
-      TK_TOGGLE_BIT(vv, n);
-      value_set_uint16(result, vv);
-      break;
-    }
-    case VALUE_TYPE_INT32: {
-      int32_t vv = value_int32(value);
-      TK_TOGGLE_BIT(vv, n);
-      value_set_int32(result, vv);
-      break;
-    }
-    case VALUE_TYPE_UINT32: {
-      uint32_t vv = value_uint32(value);
-      TK_TOGGLE_BIT(vv, n);
-      value_set_uint32(result, vv);
-      break;
-    }
-    case VALUE_TYPE_INT64: {
-      int64_t vv = value_int64(value);
-      TK_TOGGLE_BIT(vv, n);
-      value_set_int64(result, vv);
-      break;
-    }
-    case VALUE_TYPE_UINT64: {
-      uint64_t vv = value_uint64(value);
-      TK_TOGGLE_BIT(vv, n);
-      value_set_uint64(result, vv);
-      break;
-    }
-    default: {
-      ret = RET_BAD_PARAMS;
-      break;
-    }
-  }
-
-  return ret;
+  return value_toggle_bit(value, result, n);
 }
 
 static ret_t func_bit_get(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -264,115 +99,30 @@ static ret_t func_bit_get(fscript_t* fscript, fscript_args_t* args, value_t* res
   value = args->args;
   n = value_uint32(args->args + 1);
 
-  switch (value->type) {
-    case VALUE_TYPE_INT8: {
-      int8_t vv = value_int8(value);
-      bool_t bit = TK_TEST_BIT(vv, n);
-      value_set_bool(result, bit);
-      break;
-    }
-    case VALUE_TYPE_UINT8: {
-      uint8_t vv = value_uint8(value);
-      bool_t bit = TK_TEST_BIT(vv, n);
-      value_set_bool(result, bit);
-      break;
-    }
-    case VALUE_TYPE_INT16: {
-      int16_t vv = value_int16(value);
-      bool_t bit = TK_TEST_BIT(vv, n);
-      value_set_bool(result, bit);
-      break;
-    }
-    case VALUE_TYPE_UINT16: {
-      uint16_t vv = value_uint16(value);
-      bool_t bit = TK_TEST_BIT(vv, n);
-      value_set_bool(result, bit);
-      break;
-    }
-    case VALUE_TYPE_INT32: {
-      int32_t vv = value_int32(value);
-      bool_t bit = TK_TEST_BIT(vv, n);
-      value_set_bool(result, bit);
-      break;
-    }
-    case VALUE_TYPE_UINT32: {
-      uint32_t vv = value_uint32(value);
-      bool_t bit = TK_TEST_BIT(vv, n);
-      value_set_bool(result, bit);
-      break;
-    }
-    case VALUE_TYPE_INT64: {
-      int64_t vv = value_int64(value);
-      bool_t bit = TK_TEST_BIT(vv, n);
-      value_set_bool(result, bit);
-      break;
-    }
-    case VALUE_TYPE_UINT64: {
-      uint64_t vv = value_uint64(value);
-      bool_t bit = TK_TEST_BIT(vv, n);
-      value_set_bool(result, bit);
-      break;
-    }
-    default: {
-      ret = RET_BAD_PARAMS;
-      break;
-    }
-  }
-
-  return ret;
+  return value_get_bit(value, result, n); 
 }
 
 static ret_t func_bit_and(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
-  value_set_uint32(result, value_uint32(args->args) & value_uint32(args->args + 1));
-
-  return RET_OK;
+  return value_bit_and(args->args, args->args + 1, result);
 }
 
 static ret_t func_bit_or(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
-  value_set_uint32(result, value_uint32(args->args) | value_uint32(args->args + 1));
 
-  return RET_OK;
+  return value_bit_or(args->args, args->args + 1, result);
 }
 
 static ret_t func_bit_nor(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
-  value_set_uint32(result, value_uint32(args->args) ^ value_uint32(args->args + 1));
 
-  return RET_OK;
+  return value_bit_nor(args->args, args->args + 1, result);
 }
 
 static ret_t func_bit_not(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  switch (args->args->type) {
-    case VALUE_TYPE_INT8:
-    case VALUE_TYPE_UINT8: {
-      value_set_uint8(result, ~value_uint8(args->args));
-      break;
-    }
-    case VALUE_TYPE_INT16:
-    case VALUE_TYPE_UINT16: {
-      value_set_uint16(result, ~value_uint16(args->args));
-      break;
-    }
-    case VALUE_TYPE_INT32:
-    case VALUE_TYPE_UINT32: {
-      value_set_uint32(result, ~value_uint32(args->args));
-      break;
-    }
-    case VALUE_TYPE_INT64:
-    case VALUE_TYPE_UINT64: {
-      value_set_uint64(result, ~value_uint64(args->args));
-      break;
-    }
-    default: {
-      value_set_uint32(result, ~value_uint32(args->args));
-      break;
-    }
-  }
 
-  return RET_OK;
+  return value_bit_not(args->args, result);
 }
 
 FACTORY_TABLE_BEGIN(s_ext_bits)

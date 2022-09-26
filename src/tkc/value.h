@@ -929,7 +929,7 @@ value_t* value_set_bitmap(value_t* v, void* bitmap);
 /**
  * @method value_lshift
  * 将v左移指定的位数，并将结果放入result对象。 
- * @param {value_t*} v value对象。
+ * @param {value_t*} v value对象(必须是整数类型)。
  * @param {value_t*} result 返回结果的value对象。
  * @param {uint32_t} n 位数。
  *
@@ -940,7 +940,7 @@ ret_t value_lshift(value_t* v, value_t* result, uint32_t n);
 /**
  * @method value_rshift
  * 将v右移指定的位数，并将结果放入result对象。 
- * @param {value_t*} v value对象。
+ * @param {value_t*} v value对象(必须是整数类型)。
  * @param {value_t*} result 返回结果的value对象。
  * @param {uint32_t} n 位数。
  *
@@ -951,7 +951,7 @@ ret_t value_rshift(value_t* v, value_t* result, uint32_t n);
 /**
  * @method value_lshift_r
  * 将v循环左移指定的位数，并将结果放入result对象。 
- * @param {value_t*} v value对象。
+ * @param {value_t*} v value对象(必须是整数类型)。
  * @param {value_t*} result 返回结果的value对象。
  * @param {uint32_t} n 位数。
  *
@@ -962,13 +962,90 @@ ret_t value_lshift_r(value_t* v, value_t* result, uint32_t n);
 /**
  * @method value_rshift_r
  * 将v循环右移指定的位数，并将结果放入result对象。 
- * @param {value_t*} v value对象。
+ * @param {value_t*} v value对象(必须是整数类型)。
  * @param {value_t*} result 返回结果的value对象。
  * @param {uint32_t} n 位数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t value_rshift_r(value_t* v, value_t* result, uint32_t n);
+
+/**
+ * @method value_toggle_bit
+ * 将v指定的位数取反，并将结果放入result对象。 
+ * @param {value_t*} v value对象(必须是整数类型)。
+ * @param {value_t*} result 返回结果的value对象。
+ * @param {uint32_t} n 位数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_toggle_bit(value_t* v, value_t* result, uint32_t n);
+
+/**
+ * @method value_get_bit
+ * 将v指定的位数取出，并放入result对象。 
+ * @param {value_t*} v value对象(必须是整数类型)。
+ * @param {value_t*} result 返回结果的value对象。
+ * @param {uint32_t} n 位数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_get_bit(value_t* v, value_t* result, uint32_t n);
+
+/**
+ * @method value_set_bit
+ * 将v指定的位数设置为bit，并放入result对象。 
+ * @param {value_t*} v value对象(必须是整数类型)。
+ * @param {value_t*} result 返回结果的value对象。
+ * @param {uint32_t} n 位数。
+ * @param {bool_t} bit 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_set_bit(value_t* v, value_t* result, uint32_t n, bool_t bit);
+
+/**
+ * @method value_bit_not
+ * 将v按位取反，并放入result对象。 
+ * @param {value_t*} v value对象(必须是整数类型)。
+ * @param {value_t*} result 返回结果的value对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_bit_not(value_t* v, value_t* result);
+
+/**
+ * @method value_bit_or
+ * 将v和other按位取或，并放入result对象。 
+ * @param {value_t*} v value对象(必须是整数类型)。
+ * @param {value_t*} other value对象(必须是整数类型)。
+ * @param {value_t*} result 返回结果的value对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_bit_or(value_t* v, value_t* other, value_t* result);
+
+/**
+ * @method value_bit_and
+ * 将v和other按位取与，并放入result对象。 
+ * @param {value_t*} v value对象(必须是整数类型)。
+ * @param {value_t*} other value对象(必须是整数类型)。
+ * @param {value_t*} result 返回结果的value对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_bit_and(value_t* v, value_t* other, value_t* result);
+
+/**
+ * @method value_bit_nor
+ * 将v和other按位取异或，并放入result对象。 
+ * @param {value_t*} v value对象(必须是整数类型)。
+ * @param {value_t*} other value对象(必须是整数类型)。
+ * @param {value_t*} result 返回结果的value对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_bit_nor(value_t* v, value_t* other, value_t* result);
 
 END_C_DECLS
 

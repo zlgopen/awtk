@@ -336,7 +336,6 @@ TEST(FScript, iformat) {
   ASSERT_STREQ(value_str(&v), "hello:123456");
   value_reset(&v);
 
-
   TK_OBJECT_UNREF(obj);
 }
 
@@ -425,6 +424,29 @@ TEST(FScript, bit_and) {
 
   fscript_eval(obj, "&(1, 2)", &v);
   ASSERT_EQ(value_int(&v), 0);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, bit_nor) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "^(1, 1)", &v);
+  ASSERT_EQ(value_int(&v), 0);
+  value_reset(&v);
+  
+  fscript_eval(obj, "^(1, 0)", &v);
+  ASSERT_EQ(value_int(&v), 1);
+  value_reset(&v);
+
+  fscript_eval(obj, "^(0, 1)", &v);
+  ASSERT_EQ(value_int(&v), 1);
+  value_reset(&v);
+
+  fscript_eval(obj, "^(1, 2)", &v);
+  ASSERT_EQ(value_int(&v), 3);
   value_reset(&v);
 
   TK_OBJECT_UNREF(obj);
@@ -1788,7 +1810,7 @@ TEST(FExr, usubstr) {
   fscript_eval(obj, "usubstr('致远电子', 0, 1)", &v);
   ASSERT_STREQ(value_str(&v), "致");
   value_reset(&v);
-  
+
   fscript_eval(obj, "usubstr('致远电子', 0, -1)", &v);
   ASSERT_STREQ(value_str(&v), "致远电");
   value_reset(&v);
@@ -3041,6 +3063,74 @@ TEST(FScript, set_get_unset) {
 
   fscript_eval(obj, "set(a,3);get(a);unset('a');get('a')", &v);
   ASSERT_EQ(0, value_int(&v));
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, bit_get) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "bit_get(1, 0)", &v);
+  ASSERT_EQ(value_int(&v), 1);
+  value_reset(&v);
+
+  fscript_eval(obj, "bit_get(7, 2)", &v);
+  ASSERT_EQ(value_int(&v), 1);
+  value_reset(&v);
+
+  fscript_eval(obj, "bit_get(7, 6)", &v);
+  ASSERT_EQ(value_int(&v), 0);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, bit_set) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "bit_set(0, 0)", &v);
+  ASSERT_EQ(value_int(&v), 1);
+  value_reset(&v);
+
+  fscript_eval(obj, "bit_set(0, 3)", &v);
+  ASSERT_EQ(value_int(&v), 8);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, bit_clear) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "bit_clear(7, 0)", &v);
+  ASSERT_EQ(value_int(&v), 6);
+  value_reset(&v);
+
+  fscript_eval(obj, "bit_clear(7, 2)", &v);
+  ASSERT_EQ(value_int(&v), 3);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, bit_toggle) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "bit_toggle(7, 0)", &v);
+  ASSERT_EQ(value_int(&v), 6);
+  value_reset(&v);
+
+  fscript_eval(obj, "bit_toggle(7, 2)", &v);
+  ASSERT_EQ(value_int(&v), 3);
+  value_reset(&v);
+
+  fscript_eval(obj, "bit_toggle(7, 3)", &v);
+  ASSERT_EQ(value_int(&v), 15);
   value_reset(&v);
 
   TK_OBJECT_UNREF(obj);
