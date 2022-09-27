@@ -1,4 +1,7 @@
 # 最新动态
+2022/09/27
+  * 把windows下加载res资 源的逻辑移动在awtk_config.py文件中(感谢智明提供补丁) 
+
 2022/09/26
   * 增加value\_lshift/value\_rshift/value\_lshift\_r/value\_rshift\_r等函数。
   * 增加value\_set\_bit/value\_get\_bit/value\_toggle\_bit等函数。
