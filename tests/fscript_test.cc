@@ -429,7 +429,7 @@ TEST(FScript, bit_and) {
   TK_OBJECT_UNREF(obj);
 }
 
-TEST(FScript, bit_nor) {
+TEST(FScript, bit_xor) {
   value_t v;
   tk_object_t* obj = object_default_create();
 

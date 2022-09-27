@@ -53,7 +53,6 @@ static ret_t func_rshift(fscript_t* fscript, fscript_args_t* args, value_t* resu
 static ret_t func_bit_set(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   uint32_t n = 0;
   value_t* value = NULL;
-  ret_t ret = RET_OK;
 
   result->type = VALUE_TYPE_INVALID;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
@@ -66,7 +65,6 @@ static ret_t func_bit_set(fscript_t* fscript, fscript_args_t* args, value_t* res
 static ret_t func_bit_clear(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   uint32_t n = 0;
   value_t* value = NULL;
-  ret_t ret = RET_OK;
 
   result->type = VALUE_TYPE_INVALID;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
@@ -79,7 +77,6 @@ static ret_t func_bit_clear(fscript_t* fscript, fscript_args_t* args, value_t* r
 static ret_t func_bit_toggle(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   uint32_t n = 0;
   value_t* value = NULL;
-  ret_t ret = RET_OK;
 
   result->type = VALUE_TYPE_INVALID;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
@@ -92,7 +89,6 @@ static ret_t func_bit_toggle(fscript_t* fscript, fscript_args_t* args, value_t* 
 static ret_t func_bit_get(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   uint32_t n = 0;
   value_t* value = NULL;
-  ret_t ret = RET_OK;
 
   result->type = VALUE_TYPE_INVALID;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
@@ -113,10 +109,10 @@ static ret_t func_bit_or(fscript_t* fscript, fscript_args_t* args, value_t* resu
   return value_bit_or(args->args, args->args + 1, result);
 }
 
-static ret_t func_bit_nor(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+static ret_t func_bit_xor(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
 
-  return value_bit_nor(args->args, args->args + 1, result);
+  return value_bit_xor(args->args, args->args + 1, result);
 }
 
 static ret_t func_bit_not(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -127,7 +123,7 @@ static ret_t func_bit_not(fscript_t* fscript, fscript_args_t* args, value_t* res
 
 FACTORY_TABLE_BEGIN(s_ext_bits)
 FACTORY_TABLE_ENTRY("&", func_bit_and)
-FACTORY_TABLE_ENTRY("^", func_bit_nor)
+FACTORY_TABLE_ENTRY("^", func_bit_xor)
 FACTORY_TABLE_ENTRY("~", func_bit_not)
 FACTORY_TABLE_ENTRY("|", func_bit_or)
 FACTORY_TABLE_ENTRY("<<", func_lshift)

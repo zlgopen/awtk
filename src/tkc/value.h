@@ -1037,7 +1037,7 @@ ret_t value_bit_or(value_t* v, value_t* other, value_t* result);
 ret_t value_bit_and(value_t* v, value_t* other, value_t* result);
 
 /**
- * @method value_bit_nor
+ * @method value_bit_xor
  * 将v和other按位取异或，并放入result对象。 
  * @param {value_t*} v value对象(必须是整数类型)。
  * @param {value_t*} other value对象(必须是整数类型)。
@@ -1045,7 +1045,7 @@ ret_t value_bit_and(value_t* v, value_t* other, value_t* result);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t value_bit_nor(value_t* v, value_t* other, value_t* result);
+ret_t value_bit_xor(value_t* v, value_t* other, value_t* result);
 
 END_C_DECLS
 

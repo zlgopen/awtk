@@ -898,9 +898,16 @@ TEST(value, bits) {
   ASSERT_EQ(value_bit_not(&v, &r), RET_OK);
   ASSERT_EQ(value_int8(&r), ~value_int8(&v));
 
+  value_set_bool(&v, TRUE);
+  ASSERT_EQ(value_bit_not(&v, &r), RET_OK);
+  ASSERT_EQ(value_bool(&r), FALSE);
+  
+  value_set_bool(&v, FALSE);
+  ASSERT_EQ(value_bit_not(&v, &r), RET_OK);
+  ASSERT_EQ(value_bool(&r), TRUE);
 }
 
-TEST(value, bit_and_or_nor) {
+TEST(value, bit_and_or_xor) {
   value_t v1;
   value_t v2;
   value_t r;
@@ -915,7 +922,7 @@ TEST(value, bit_and_or_nor) {
   ASSERT_EQ(r.type, VALUE_TYPE_INT8);
   ASSERT_EQ(value_int8(&r), (int8_t)0xff);
 
-  ASSERT_EQ(value_bit_nor(&v1, &v2, &r), RET_OK);
+  ASSERT_EQ(value_bit_xor(&v1, &v2, &r), RET_OK);
   ASSERT_EQ(r.type, VALUE_TYPE_INT8);
   ASSERT_EQ(value_int8(&r), (int8_t)0xff);
   
@@ -929,7 +936,7 @@ TEST(value, bit_and_or_nor) {
   ASSERT_EQ(r.type, VALUE_TYPE_UINT8);
   ASSERT_EQ(value_uint8(&r), (uint8_t)0xff);
 
-  ASSERT_EQ(value_bit_nor(&v1, &v2, &r), RET_OK);
+  ASSERT_EQ(value_bit_xor(&v1, &v2, &r), RET_OK);
   ASSERT_EQ(r.type, VALUE_TYPE_UINT8);
   ASSERT_EQ(value_uint8(&r), (uint8_t)0xff);
 
@@ -944,7 +951,7 @@ TEST(value, bit_and_or_nor) {
   ASSERT_EQ(r.type, VALUE_TYPE_INT16);
   ASSERT_EQ(value_int16(&r), (int16_t)0xff);
 
-  ASSERT_EQ(value_bit_nor(&v1, &v2, &r), RET_OK);
+  ASSERT_EQ(value_bit_xor(&v1, &v2, &r), RET_OK);
   ASSERT_EQ(r.type, VALUE_TYPE_INT16);
   ASSERT_EQ(value_int16(&r), (int16_t)0xff);
   
@@ -958,7 +965,7 @@ TEST(value, bit_and_or_nor) {
   ASSERT_EQ(r.type, VALUE_TYPE_UINT16);
   ASSERT_EQ(value_uint16(&r), (uint16_t)0xff);
 
-  ASSERT_EQ(value_bit_nor(&v1, &v2, &r), RET_OK);
+  ASSERT_EQ(value_bit_xor(&v1, &v2, &r), RET_OK);
   ASSERT_EQ(r.type, VALUE_TYPE_UINT16);
   ASSERT_EQ(value_uint16(&r), (uint16_t)0xff);
 
@@ -972,7 +979,7 @@ TEST(value, bit_and_or_nor) {
   ASSERT_EQ(r.type, VALUE_TYPE_INT32);
   ASSERT_EQ(value_int32(&r), (int32_t)0xff);
 
-  ASSERT_EQ(value_bit_nor(&v1, &v2, &r), RET_OK);
+  ASSERT_EQ(value_bit_xor(&v1, &v2, &r), RET_OK);
   ASSERT_EQ(r.type, VALUE_TYPE_INT32);
   ASSERT_EQ(value_int32(&r), (int32_t)0xff);
   
@@ -986,7 +993,7 @@ TEST(value, bit_and_or_nor) {
   ASSERT_EQ(r.type, VALUE_TYPE_UINT32);
   ASSERT_EQ(value_uint32(&r), (uint32_t)0xff);
 
-  ASSERT_EQ(value_bit_nor(&v1, &v2, &r), RET_OK);
+  ASSERT_EQ(value_bit_xor(&v1, &v2, &r), RET_OK);
   ASSERT_EQ(r.type, VALUE_TYPE_UINT32);
   ASSERT_EQ(value_uint32(&r), (uint32_t)0xff);
 
@@ -1000,7 +1007,7 @@ TEST(value, bit_and_or_nor) {
   ASSERT_EQ(r.type, VALUE_TYPE_INT64);
   ASSERT_EQ(value_int64(&r), (int64_t)0xff);
 
-  ASSERT_EQ(value_bit_nor(&v1, &v2, &r), RET_OK);
+  ASSERT_EQ(value_bit_xor(&v1, &v2, &r), RET_OK);
   ASSERT_EQ(r.type, VALUE_TYPE_INT64);
   ASSERT_EQ(value_int64(&r), (int64_t)0xff);
   
@@ -1014,7 +1021,7 @@ TEST(value, bit_and_or_nor) {
   ASSERT_EQ(r.type, VALUE_TYPE_UINT64);
   ASSERT_EQ(value_uint64(&r), (uint64_t)0xff);
 
-  ASSERT_EQ(value_bit_nor(&v1, &v2, &r), RET_OK);
+  ASSERT_EQ(value_bit_xor(&v1, &v2, &r), RET_OK);
   ASSERT_EQ(r.type, VALUE_TYPE_UINT64);
   ASSERT_EQ(value_uint64(&r), (uint64_t)0xff);
   
@@ -1029,5 +1036,53 @@ TEST(value, bit_and_or_nor) {
   ASSERT_EQ(value_bit_and(&v1, &v2, &r), RET_OK);
   ASSERT_EQ(r.type, VALUE_TYPE_UINT32);
   ASSERT_EQ(value_uint64(&r), 0);
+  
+  value_set_bool(&v1, TRUE);
+  value_set_bool(&v2, TRUE);
+  ASSERT_EQ(value_bit_and(&v1, &v2, &r), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_BOOL);
+  ASSERT_EQ(value_bool(&r), TRUE);
+
+  value_set_bool(&v1, TRUE);
+  value_set_bool(&v2, TRUE);
+  ASSERT_EQ(value_bit_or(&v1, &v2, &r), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_BOOL);
+  ASSERT_EQ(value_bool(&r), TRUE);
+  
+  value_set_bool(&v1, TRUE);
+  value_set_bool(&v2, TRUE);
+  ASSERT_EQ(value_bit_xor(&v1, &v2, &r), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_BOOL);
+  ASSERT_EQ(value_bool(&r), FALSE);
+
+  value_set_bool(&v1, TRUE);
+  value_set_bool(&v2, FALSE);
+  ASSERT_EQ(value_bit_and(&v1, &v2, &r), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_BOOL);
+  ASSERT_EQ(value_bool(&r), FALSE);
+
+  value_set_bool(&v1, TRUE);
+  value_set_bool(&v2, FALSE);
+  ASSERT_EQ(value_bit_or(&v1, &v2, &r), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_BOOL);
+  ASSERT_EQ(value_bool(&r), TRUE);
+  
+  value_set_bool(&v1, TRUE);
+  value_set_bool(&v2, FALSE);
+  ASSERT_EQ(value_bit_xor(&v1, &v2, &r), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_BOOL);
+  ASSERT_EQ(value_bool(&r), TRUE);
+  
+  value_set_bool(&v1, FALSE);
+  value_set_bool(&v2, FALSE);
+  ASSERT_EQ(value_bit_or(&v1, &v2, &r), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_BOOL);
+  ASSERT_EQ(value_bool(&r), FALSE);
+  
+  value_set_bool(&v1, FALSE);
+  value_set_bool(&v2, FALSE);
+  ASSERT_EQ(value_bit_xor(&v1, &v2, &r), RET_OK);
+  ASSERT_EQ(r.type, VALUE_TYPE_BOOL);
+  ASSERT_EQ(value_bool(&r), FALSE);
 }
 
