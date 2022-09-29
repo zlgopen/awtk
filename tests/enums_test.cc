@@ -16,3 +16,16 @@ TEST(Enums, keys) {
   ASSERT_EQ(keys_type_find("RETURN"), keys_type_find_by_value(TK_KEY_RETURN));
   ASSERT_EQ(keys_type_find("return"), keys_type_find_by_value(TK_KEY_RETURN));
 }
+
+TEST(Enums, custom_keys) {
+  static const key_type_value_t custom_keys[] = {
+    {"CUSTOM1", 0, TK_KEY_RETURN},
+  };
+  ASSERT_EQ(keys_type_find("CUSTOM1"), nullptr);
+
+  keys_type_set_custom_keys(custom_keys, ARRAY_SIZE(custom_keys));
+  ASSERT_EQ(keys_type_find("CUSTOM1"), keys_type_find_by_value(TK_KEY_RETURN));
+
+  keys_type_set_custom_keys(NULL, 0);
+  ASSERT_EQ(keys_type_find("CUSTOM1"), nullptr);
+}

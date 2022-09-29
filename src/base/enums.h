@@ -117,6 +117,20 @@ const key_type_value_t* keys_type_find(const char* name);
  * @return {const key_type_value_t*} 返回按键值和名称的对应关系。
  */
 const key_type_value_t* keys_type_find_by_value(uint32_t value);
+
+/**
+ * @method keys_type_set_custom_keys
+ *
+ * 设置自定义键值表。
+ * > 请确保键值表的生命周期在程序运行期一直存在，不要传入局部变量。
+ *
+ * @param {const key_type_value_t*} table 键值表(NULL清除之前的设置)。
+ * @param {uint32_t} nr 键值表的长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t keys_type_set_custom_keys(const key_type_value_t* table, uint32_t nr);
+
 END_C_DECLS
 
 #endif /*TK_ENUMS_H*/

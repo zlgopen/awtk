@@ -325,6 +325,9 @@ static const key_type_value_t keys_type_name_value[] = {
     {"F11", 0, TK_KEY_F11},
     {"F12", 0, TK_KEY_F12}};
 
+static const key_type_value_t* s_custom_keys_type_name_value = NULL;
+static uint32_t s_custom_keys_type_name_value_nr = 0;
+
 const key_type_value_t* find_item(const key_type_value_t* items, uint32_t nr, const char* name) {
   uint32_t i = 0;
   return_value_if_fail(items != NULL && name != NULL, NULL);
@@ -397,13 +400,43 @@ const key_type_value_t* easing_type_find_by_value(uint32_t value) {
 
 const key_type_value_t* keys_type_find(const char* name) {
   char fixed_name[TK_NAME_LEN + 1];
+  key_type_value_t* ret = NULL;
   return_value_if_fail(name != NULL, NULL);
 
   memset(fixed_name, 0x00, sizeof(fixed_name));
-  return find_item(keys_type_name_value, ARRAY_SIZE(keys_type_name_value),
-                   tk_normalize_key_name(name, fixed_name));
+
+  if (s_custom_keys_type_name_value != NULL) {
+    ret = find_item(s_custom_keys_type_name_value, s_custom_keys_type_name_value_nr,
+                    tk_normalize_key_name(name, fixed_name));
+  }
+
+  if (ret == NULL) {
+    ret = find_item(keys_type_name_value, ARRAY_SIZE(keys_type_name_value),
+                    tk_normalize_key_name(name, fixed_name));
+  }
+
+  return ret;
 }
 
 const key_type_value_t* keys_type_find_by_value(uint32_t value) {
-  return find_item_by_value(keys_type_name_value, ARRAY_SIZE(keys_type_name_value), value);
+  key_type_value_t* ret = NULL;
+
+  if (s_custom_keys_type_name_value != NULL) {
+    ret =
+        find_item_by_value(s_custom_keys_type_name_value, s_custom_keys_type_name_value_nr, value);
+  }
+
+  if (ret == NULL) {
+    ret = find_item_by_value(keys_type_name_value, ARRAY_SIZE(keys_type_name_value), value);
+  }
+
+  return ret;
 }
+
+ret_t keys_type_set_custom_keys(const key_type_value_t* table, uint32_t nr) {
+  s_custom_keys_type_name_value = table;
+  s_custom_keys_type_name_value_nr = nr;
+
+  return RET_OK;
+}
+
