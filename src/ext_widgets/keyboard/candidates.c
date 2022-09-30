@@ -100,6 +100,7 @@ static ret_t candidates_create_button(widget_t* widget) {
   }
 
   widget_set_focusable(button, TRUE);
+  button_set_enable_preview(button, candidates->enable_preview);
 
   return RET_OK;
 }
@@ -284,6 +285,9 @@ static ret_t candidates_get_prop(widget_t* widget, const char* name, value_t* v)
     return RET_OK;
   } else if (candidates->hscrollable != NULL) {
     return hscrollable_get_prop(candidates->hscrollable, name, v);
+  } else if (tk_str_eq(name, WIDGET_PROP_ENABLE_PREVIEW)) {
+    value_set_bool(v, candidates->enable_preview);
+    return RET_OK;
   } else {
     return RET_NOT_FOUND;
   }
@@ -301,6 +305,9 @@ static ret_t candidates_set_prop(widget_t* widget, const char* name, const value
     return candidates_set_auto_hide(widget, value_bool(v));
   } else if (tk_str_eq(name, CANDIDATES_PROP_BUTTON_STYLE)) {
     return candidates_set_button_style(widget, value_str(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_ENABLE_PREVIEW)) {
+    candidates->enable_preview = value_bool(v);
+    return RET_OK;
   }
   if (candidates->hscrollable != NULL) {
     return hscrollable_set_prop(candidates->hscrollable, name, v);
@@ -382,8 +389,8 @@ static ret_t candidates_get_offset(widget_t* widget, xy_t* out_x, xy_t* out_y) {
 }
 
 static const char* const s_candidates_properties[] = {
-    CANDIDATES_PROP_PRE, CANDIDATES_PROP_SELECT_BY_NUM, CANDIDATES_PROP_BUTTON_STYLE,
-    CANDIDATES_PROP_AUTO_HIDE, NULL};
+    CANDIDATES_PROP_PRE,       CANDIDATES_PROP_SELECT_BY_NUM, CANDIDATES_PROP_BUTTON_STYLE,
+    CANDIDATES_PROP_AUTO_HIDE, WIDGET_PROP_ENABLE_PREVIEW,    NULL};
 
 TK_DECL_VTABLE(candidates) = {.size = sizeof(candidates_t),
                               .scrollable = TRUE,

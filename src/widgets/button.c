@@ -379,7 +379,8 @@ static ret_t button_auto_adjust_size(widget_t* widget) {
 }
 
 static const char* const s_button_properties[] = {WIDGET_PROP_REPEAT, WIDGET_PROP_LONG_PRESS_TIME,
-                                                  WIDGET_PROP_ENABLE_LONG_PRESS, NULL};
+                                                  WIDGET_PROP_ENABLE_LONG_PRESS,
+                                                  WIDGET_PROP_ENABLE_PREVIEW, NULL};
 
 TK_DECL_VTABLE(button) = {.size = sizeof(button_t),
                           .type = WIDGET_TYPE_BUTTON,

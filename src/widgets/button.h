@@ -103,7 +103,6 @@ typedef struct _button_t {
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否启用预览(主要用于软键盘)。
    *
-   *
    */
   bool_t enable_preview;
 

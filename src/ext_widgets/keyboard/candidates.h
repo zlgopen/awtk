@@ -91,6 +91,14 @@ typedef struct _candidates_t {
    * 按钮的style名称。
    */
   char* button_style;
+  
+  /**
+   * @property {bool_t} enable_preview
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否启用候选字预览。
+   *
+   */
+  bool_t enable_preview;
 
   /*private*/
   bool_t expanded;
