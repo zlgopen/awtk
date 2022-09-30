@@ -108,6 +108,31 @@ static ret_t button_on_long_press(const timer_info_t* info) {
 
 #define TK_BUTTON_PREVIEW_SCALE 1.6
 
+static ret_t button_get_preview_rect(widget_t* widget, rect_t* rect) {
+  button_t* button = BUTTON(widget);
+  return_value_if_fail(button != NULL, RET_BAD_PARAMS);
+  if (rect != NULL) {
+    widget_t* wm = widget_get_window_manager(widget);
+    int32_t w = widget->w * TK_BUTTON_PREVIEW_SCALE;
+    int32_t h = widget->h * TK_BUTTON_PREVIEW_SCALE;
+    int32_t x = -(w - widget->w) / 2;
+    int32_t y = -h;
+    point_t p = {x, y};
+
+    widget_to_screen(widget, &p);
+    if (p.x < 0) {
+      p.x = 0;
+    }
+    if ((p.x + w) > wm->w) {
+      p.x = wm->w - w;
+    }
+
+    *rect = rect_init(p.x, p.y, w, h);
+  }
+
+  return RET_OK;
+}
+
 static ret_t button_invalidate(widget_t* widget, const rect_t* rect) {
   button_t* button = BUTTON(widget);
   return_value_if_fail(button != NULL, RET_BAD_PARAMS);
@@ -115,14 +140,7 @@ static ret_t button_invalidate(widget_t* widget, const rect_t* rect) {
   if (button->enable_preview) {
     rect_t r;
     widget_t* wm = widget_get_window_manager(widget);
-    int32_t w = widget->w * (1 + TK_BUTTON_PREVIEW_SCALE);
-    int32_t h = widget->h * (1 + TK_BUTTON_PREVIEW_SCALE);
-    int32_t x = -(w - widget->w) / 2;
-    int32_t y = -h;
-    point_t p = {x, y};
-
-    widget_to_screen(widget, &p);
-    r = rect_init(p.x, p.y, w, h);
+    button_get_preview_rect(widget, &r);
 
     widget_invalidate_force(wm, &r);
   }
@@ -135,13 +153,9 @@ static ret_t button_draw_preview(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   point_t p = {0, 0};
   paint_event_t* evt = paint_event_cast(e);
-  int32_t w = widget->w * TK_BUTTON_PREVIEW_SCALE;
-  int32_t h = widget->h * TK_BUTTON_PREVIEW_SCALE;
   canvas_t* c = evt->c;
   int32_t ox = c->ox;
   int32_t oy = c->oy;
-  int32_t x = 0;
-  int32_t y = 0;
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0xd0);
   color_t bg_color = style_get_color(style, STYLE_ID_BG_COLOR, trans);
@@ -156,9 +170,8 @@ static ret_t button_draw_preview(void* ctx, event_t* e) {
   widget_to_screen(widget, &p);
   canvas_untranslate(c, ox, oy);
 
-  y = p.y - h + (round_r ? round_r : 2) + woy;
-  x = p.x - (w - widget->w) / 2;
-  r = rect_init(x, y, w, h);
+  button_get_preview_rect(widget, &r);
+  r.y += (round_r ? round_r : 2) + woy;
 
   canvas_set_fill_color(c, bg_color);
   if (round_r > 0) {
