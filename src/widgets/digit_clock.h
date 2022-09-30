@@ -99,7 +99,7 @@ typedef struct _digit_clock_t {
    * * "Y-M-D hh:mm:ss"显示为"2018-11-12 09:10:20"
    */
   char* format;
-
+  uint32_t local_changed_event_id;
   wstr_t last_time;
 } digit_clock_t;
 
