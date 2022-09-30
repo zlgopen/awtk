@@ -1,7 +1,8 @@
 <button>
-  <style name="default" border_color="#a0a0a0"  text_color="black" font_size="20">
+  <style name="default" border_color="#a0a0a0"  text_color="black" i
+    font_size="20" round_radius="5">
     <normal     bg_color="#f0f0f0" />
-    <pressed    bg_color="#c0c0c0" x_offset="1" y_offset="1"/>
+    <pressed    bg_color="#fefefe" x_offset="1" y_offset="1"/>
     <over       bg_color="#e0e0e0" />
     <focused    bg_color="#e0e0e0" />
     <disable    bg_color="gray" text_color="#d0d0d0" />
