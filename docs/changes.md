@@ -7,6 +7,7 @@
   * 修复sizeof 的警告问题(感谢智明提供补丁)
   * 修复非focused时候设置slide_view激活子控件的逻辑(感谢智明提供补丁)
   * 完善fscript_wdiget，统一widget_lookup的语义和行为(感谢雨欣提供补丁)
+  * 完善widget_set_self_layout接口，判断前刷新self_layout缓存(感谢雨欣提供补丁)
 
 2022/09/29
   * 支持设置自定义键值(感谢兆坤提供补丁)

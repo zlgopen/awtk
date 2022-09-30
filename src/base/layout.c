@@ -127,7 +127,7 @@ ret_t widget_set_self_layout(widget_t* widget, const char* params) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (widget->self_layout != NULL) {
-    if (tk_str_eq(widget->self_layout->params.str, params)) {
+    if (tk_str_eq(self_layouter_to_string(widget->self_layout), params)) {
       return RET_OK;
     }
     self_layouter_destroy(widget->self_layout);
