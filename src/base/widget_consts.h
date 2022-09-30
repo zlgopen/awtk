@@ -762,6 +762,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_ENABLE_LONG_PRESS "enable_long_press"
 
 /**
+ * @const WIDGET_PROP_ENABLE_PREVIEW
+ * 是否启用预览。
+ */
+#define WIDGET_PROP_ENABLE_PREVIEW "enable_preview"
+
+/**
  * @const WIDGET_PROP_CLICK_THROUGH
  * 是否启用点击穿透。
  */

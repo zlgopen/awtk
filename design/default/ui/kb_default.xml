@@ -2,216 +2,216 @@
   <pages x="0" y="bottom" w="100%" h="-28" active="4">
     <view name="upper" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=1,s=2,m=2)">
       <group_box children_layout="default(r=1,c=10,s=2,m=2)">
-        <button repeat="300" name="Q" text="Q"/>
-        <button repeat="300" name="W" text="W"/>
-        <button repeat="300" name="E" text="E"/>
-        <button repeat="300" name="R" text="R"/>
-        <button repeat="300" name="T" text="T"/>
-        <button repeat="300" name="Y" text="Y"/>
-        <button repeat="300" name="U" text="U"/>
-        <button repeat="300" name="I" text="I"/>
-        <button repeat="300" name="O" text="O"/>
-        <button repeat="300" name="P" text="P"/>
+        <button name="Q" enable_preview="true" text="Q"/>
+        <button name="W" enable_preview="true" text="W"/>
+        <button name="E" enable_preview="true" text="E"/>
+        <button name="R" enable_preview="true" text="R"/>
+        <button name="T" enable_preview="true" text="T"/>
+        <button name="Y" enable_preview="true" text="Y"/>
+        <button name="U" enable_preview="true" text="U"/>
+        <button name="I" enable_preview="true" text="I"/>
+        <button name="O" enable_preview="true" text="O"/>
+        <button name="P" enable_preview="true" text="P"/>
       </group_box>
       <group_box children_layout="default(r=1,c=9,s=2,xm=10,ym=2)">
-        <button repeat="300" name="A" text="A"/>
-        <button repeat="300" name="S" text="S"/>
-        <button repeat="300" name="D" text="D"/>
-        <button repeat="300" name="F" text="F"/>
-        <button repeat="300" name="G" text="G"/>
-        <button repeat="300" name="H" text="H"/>
-        <button repeat="300" name="J" text="J"/>
-        <button repeat="300" name="K" text="K"/>
-        <button repeat="300" name="L" text="L"/>
+        <button name="A" enable_preview="true" text="A"/>
+        <button name="S" enable_preview="true" text="S"/>
+        <button name="D" enable_preview="true" text="D"/>
+        <button name="F" enable_preview="true" text="F"/>
+        <button name="G" enable_preview="true" text="G"/>
+        <button name="H" enable_preview="true" text="H"/>
+        <button name="J" enable_preview="true" text="J"/>
+        <button name="K" enable_preview="true" text="K"/>
+        <button name="L" enable_preview="true" text="L"/>
       </group_box>
       <group_box children_layout="default(r=1,c=9,s=2,m=2)">
         <button name="page:lower"><image draw_type="icon" image="shifton" x="center" y="middle" w="100%" h="100%"/></button>
-        <button repeat="300" name="Z" text="Z"/>
-        <button repeat="300" name="X" text="X"/>
-        <button repeat="300" name="C" text="C"/>
-        <button repeat="300" name="V" text="V"/>
-        <button repeat="300" name="B" text="B"/>
-        <button repeat="300" name="N" text="N"/>
-        <button repeat="300" name="M" text="M"/>
-        <button repeat="300" name="key:backspace" style="highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="Z" enable_preview="true" text="Z"/>
+        <button name="X" enable_preview="true" text="X"/>
+        <button name="C" enable_preview="true" text="C"/>
+        <button name="V" enable_preview="true" text="V"/>
+        <button name="B" enable_preview="true" text="B"/>
+        <button name="N" enable_preview="true" text="N"/>
+        <button name="M" enable_preview="true" text="M"/>
+        <button name="key:backspace" style="highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box children_layout="default(r=1,c=0,s=2,m=2)">
-        <button name="page:symnum" style="highlight" w="15%" text="123"/>
+        <button name="page:symnum" style="highlight" w="15%" enable_preview="true" text="123"/>
         <button name="page:chinese" style="highlight" w="10%"><image draw_type="icon" image="zh" x="center" y="middle" w="100%" h="100%"/></button>
-        <button repeat="300" name="space" w="55%" text="Space"/>
-        <button name="action" style="highlight" w="20%" text="Return"/>
+        <button name="space" w="55%" enable_preview="true" text="Space"/>
+        <button name="action" style="highlight" w="20%" enable_preview="true" text="Return"/>
       </group_box>
     </view>
     <view name="lower" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=1,s=2,m=2)">
       <group_box children_layout="default(r=1,c=10,s=2,m=2)">
-        <button repeat="300" name="q" text="q"/>
-        <button repeat="300" name="w" text="w"/>
-        <button repeat="300" name="e" text="e"/>
-        <button repeat="300" name="r" text="r"/>
-        <button repeat="300" name="t" text="t"/>
-        <button repeat="300" name="y" text="y"/>
-        <button repeat="300" name="u" text="u"/>
-        <button repeat="300" name="i" text="i"/>
-        <button repeat="300" name="o" text="o"/>
-        <button repeat="300" name="p" text="p"/>
+        <button name="q" enable_preview="true" text="q"/>
+        <button name="w" enable_preview="true" text="w"/>
+        <button name="e" enable_preview="true" text="e"/>
+        <button name="r" enable_preview="true" text="r"/>
+        <button name="t" enable_preview="true" text="t"/>
+        <button name="y" enable_preview="true" text="y"/>
+        <button name="u" enable_preview="true" text="u"/>
+        <button name="i" enable_preview="true" text="i"/>
+        <button name="o" enable_preview="true" text="o"/>
+        <button name="p" enable_preview="true" text="p"/>
       </group_box>
       <group_box children_layout="default(r=1,c=9,s=2,xm=10,ym=2)">
-        <button repeat="300" name="a" text="a"/>
-        <button repeat="300" name="s" text="s"/>
-        <button repeat="300" name="d" text="d"/>
-        <button repeat="300" name="f" text="f"/>
-        <button repeat="300" name="g" text="g"/>
-        <button repeat="300" name="h" text="h"/>
-        <button repeat="300" name="j" text="j"/>
-        <button repeat="300" name="k" text="k"/>
-        <button repeat="300" name="l" text="l"/>
+        <button name="a" enable_preview="true" text="a"/>
+        <button name="s" enable_preview="true" text="s"/>
+        <button name="d" enable_preview="true" text="d"/>
+        <button name="f" enable_preview="true" text="f"/>
+        <button name="g" enable_preview="true" text="g"/>
+        <button name="h" enable_preview="true" text="h"/>
+        <button name="j" enable_preview="true" text="j"/>
+        <button name="k" enable_preview="true" text="k"/>
+        <button name="l" enable_preview="true" text="l"/>
       </group_box>
       <group_box children_layout="default(r=1,c=9,s=2,m=2)">
         <button name="page:upper" style="highlight"><image draw_type="icon" image="shift" x="center" y="middle" w="100%" h="100%"/></button>
-        <button repeat="300" name="z" text="z"/>
-        <button repeat="300" name="x" text="x"/>
-        <button repeat="300" name="c" text="c"/>
-        <button repeat="300" name="v" text="v"/>
-        <button repeat="300" name="b" text="b"/>
-        <button repeat="300" name="n" text="n"/>
-        <button repeat="300" name="m" text="m"/>
-        <button repeat="300" name="key:backspace" style="highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="z" enable_preview="true" text="z"/>
+        <button name="x" enable_preview="true" text="x"/>
+        <button name="c" enable_preview="true" text="c"/>
+        <button name="v" enable_preview="true" text="v"/>
+        <button name="b" enable_preview="true" text="b"/>
+        <button name="n" enable_preview="true" text="n"/>
+        <button name="m" enable_preview="true" text="m"/>
+        <button name="key:backspace" style="highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box children_layout="default(r=1,c=0,s=2,m=2)">
-        <button name="page:symnum" style="highlight" w="15%" text="123"/>
+        <button name="page:symnum" style="highlight" w="15%" enable_preview="true" text="123"/>
         <button name="page:chinese" style="highlight" w="10%"><image draw_type="icon" image="zh" x="center" y="middle" w="100%" h="100%"/></button>
-        <button repeat="300" name="space" w="55%" text="Space"/>
-        <button name="action" style="highlight" w="20%" text="Return"/>
+        <button name="space" w="55%" enable_preview="true" text="Space"/>
+        <button name="action" style="highlight" w="20%" enable_preview="true" text="Return"/>
       </group_box>
     </view>
     <view name="symnum" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=1,s=2,m=2)">
       <group_box children_layout="default(r=1,c=10,s=2,m=2)">
-        <button repeat="300" name="1" text="1"/>
-        <button repeat="300" name="2" text="2"/>
-        <button repeat="300" name="3" text="3"/>
-        <button repeat="300" name="4" text="4"/>
-        <button repeat="300" name="5" text="5"/>
-        <button repeat="300" name="6" text="6"/>
-        <button repeat="300" name="7" text="7"/>
-        <button repeat="300" name="8" text="8"/>
-        <button repeat="300" name="9" text="9"/>
-        <button repeat="300" name="0" text="0"/>
+        <button name="1" enable_preview="true" text="1"/>
+        <button name="2" enable_preview="true" text="2"/>
+        <button name="3" enable_preview="true" text="3"/>
+        <button name="4" enable_preview="true" text="4"/>
+        <button name="5" enable_preview="true" text="5"/>
+        <button name="6" enable_preview="true" text="6"/>
+        <button name="7" enable_preview="true" text="7"/>
+        <button name="8" enable_preview="true" text="8"/>
+        <button name="9" enable_preview="true" text="9"/>
+        <button name="0" enable_preview="true" text="0"/>
       </group_box>
       <group_box children_layout="default(r=1,c=10,s=2,xm=10,ym=2)">
-        <button repeat="300" name="-" text="-"/>
-        <button repeat="300" name="/" text="/"/>
-        <button repeat="300" name=":" text=":"/>
-        <button repeat="300" name=";" text=";"/>
-        <button repeat="300" name="(" text="("/>
-        <button repeat="300" name=")" text=")"/>
-        <button repeat="300" name="$" text="$"/>
-        <button repeat="300" name="@" text="@"/>
-        <button repeat="300" name="'" text="'"/>
-        <button repeat="300" name="&quot;" text="&quot;"/>
+        <button name="-" enable_preview="true" text="-"/>
+        <button name="/" enable_preview="true" text="/"/>
+        <button name=":" enable_preview="true" text=":"/>
+        <button name=";" enable_preview="true" text=";"/>
+        <button name="(" enable_preview="true" text="("/>
+        <button name=")" enable_preview="true" text=")"/>
+        <button name="$" enable_preview="true" text="$"/>
+        <button name="@" enable_preview="true" text="@"/>
+        <button name="'" enable_preview="true" text="'"/>
+        <button name="&quot;" enable_preview="true" text="&quot;"/>
       </group_box>
       <group_box children_layout="default(r=1,c=10,s=2,m=2)">
-        <button name="page:symbol" style="highlight" text="#+="/>
-        <button repeat="300" name="." text="."/>
-        <button repeat="300" name="," text=","/>
-        <button repeat="300" name="\" text="\"/>
-        <button repeat="300" name="?" text="?"/>
-        <button repeat="300" name="!" text="!"/>
-        <button repeat="300" name="<" text="<"/>
-        <button repeat="300" name=">" text=">"/>
-        <button repeat="300" name="#" text="#"/>
-        <button repeat="300" name="key:backspace" style="highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="page:symbol" style="highlight" enable_preview="true" text="#+="/>
+        <button name="." enable_preview="true" text="."/>
+        <button name="," enable_preview="true" text=","/>
+        <button name="\" enable_preview="true" text="\"/>
+        <button name="?" enable_preview="true" text="?"/>
+        <button name="!" enable_preview="true" text="!"/>
+        <button name="<" enable_preview="true" text="<"/>
+        <button name=">" enable_preview="true" text=">"/>
+        <button name="#" enable_preview="true" text="#"/>
+        <button name="key:backspace" style="highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box children_layout="default(r=1,c=0,s=2,m=2)">
-        <button name="page:upper" style="highlight" w="15%" text="ABC"/>
-        <button repeat="300" name="page:chinese" style="highlight" w="10%"><image draw_type="icon" image="zh" x="center" y="middle" w="100%" h="100%"/></button>
-        <button repeat="300" name="space" w="55%" text="Space"/>
-        <button name="action" style="highlight" w="20%" text="Return"/>
+        <button name="page:upper" style="highlight" w="15%" enable_preview="true" text="ABC"/>
+        <button name="page:chinese" style="highlight" w="10%"><image draw_type="icon" image="zh" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="space" w="55%" enable_preview="true" text="Space"/>
+        <button name="action" style="highlight" w="20%" enable_preview="true" text="Return"/>
       </group_box>
     </view>
     <view name="symbol" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=1,s=2,m=2)">
       <group_box children_layout="default(r=1,c=10,s=2,m=2)">
-        <button repeat="300" name="[" text="["/>
-        <button repeat="300" name="]" text="]"/>
-        <button repeat="300" name="{" text="{"/>
-        <button repeat="300" name="}" text="}"/>
-        <button repeat="300" name="#" text="#"/>
-        <button repeat="300" name="%" text="%"/>
-        <button repeat="300" name="^" text="^"/>
-        <button repeat="300" name="*" text="*"/>
-        <button repeat="300" name="+" text="+"/>
-        <button repeat="300" name="=" text="="/>
+        <button name="[" enable_preview="true" text="["/>
+        <button name="]" enable_preview="true" text="]"/>
+        <button name="{" enable_preview="true" text="{"/>
+        <button name="}" enable_preview="true" text="}"/>
+        <button name="#" enable_preview="true" text="#"/>
+        <button name="%" enable_preview="true" text="%"/>
+        <button name="^" enable_preview="true" text="^"/>
+        <button name="*" enable_preview="true" text="*"/>
+        <button name="+" enable_preview="true" text="+"/>
+        <button name="=" enable_preview="true" text="="/>
       </group_box>
       <group_box children_layout="default(r=1,c=9,s=2,xm=10,ym=2)">
-        <button repeat="300" name="_" text="_"/>
-        <button repeat="300" name="\" text="\"/>
-        <button repeat="300" name="|" text="|"/>
-        <button repeat="300" name="~" text="~"/>
-        <button repeat="300" name="<" text="<"/>
-        <button repeat="300" name=">" text=">"/>
-        <button repeat="300" name="$" text="$"/>
-        <button repeat="300" name="@" text="@"/>
-        <button repeat="300" name="`" text="`"/>
+        <button name="_" enable_preview="true" text="_"/>
+        <button name="\" enable_preview="true" text="\"/>
+        <button name="|" enable_preview="true" text="|"/>
+        <button name="~" enable_preview="true" text="~"/>
+        <button name="<" enable_preview="true" text="<"/>
+        <button name=">" enable_preview="true" text=">"/>
+        <button name="$" enable_preview="true" text="$"/>
+        <button name="@" enable_preview="true" text="@"/>
+        <button name="`" enable_preview="true" text="`"/>
       </group_box>
       <group_box children_layout="default(r=1,c=8,s=2,m=2)">
-        <button name="page:symnum" style="highlight" text="123"/>
-        <button repeat="300" name="." text="."/>
-        <button repeat="300" name="," text=","/>
-        <button repeat="300" name="?" text="?"/>
-        <button repeat="300" name="!" text="!"/>
-        <button repeat="300" name="'" text="'"/>
-        <button repeat="300" name="&quot;" text="&quot;"/>
-        <button repeat="300" name="key:backspace" style="highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="page:symnum" style="highlight" enable_preview="true" text="123"/>
+        <button name="." enable_preview="true" text="."/>
+        <button name="," enable_preview="true" text=","/>
+        <button name="?" enable_preview="true" text="?"/>
+        <button name="!" enable_preview="true" text="!"/>
+        <button name="'" enable_preview="true" text="'"/>
+        <button name="&quot;" enable_preview="true" text="&quot;"/>
+        <button name="key:backspace" style="highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box children_layout="default(r=1,c=0,s=2,m=2)">
-        <button name="page:upper" style="highlight" w="15%" text="ABC"/>
+        <button name="page:upper" style="highlight" w="15%" enable_preview="true" text="ABC"/>
         <button name="page:chinese" style="highlight" w="10%"><image draw_type="icon" image="zh" x="center" y="middle" w="100%" h="100%"/></button>
-        <button repeat="300" name="space" w="55%" text="Space"/>
-        <button name="action" style="highlight" w="20%" text="Return"/>
+        <button name="space" w="55%" enable_preview="true" text="Space"/>
+        <button name="action" style="highlight" w="20%" enable_preview="true" text="Return"/>
       </group_box>
     </view>
     <view name="chinese" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=1,s=2,m=2)">
       <group_box children_layout="default(r=1,c=10,s=2,m=2)">
-        <button repeat="300" name="key:q" text="q"/>
-        <button repeat="300" name="key:w" text="w"/>
-        <button repeat="300" name="key:e" text="e"/>
-        <button repeat="300" name="key:r" text="r"/>
-        <button repeat="300" name="key:t" text="t"/>
-        <button repeat="300" name="key:y" text="y"/>
-        <button repeat="300" name="key:u" text="u"/>
-        <button repeat="300" name="key:i" text="i"/>
-        <button repeat="300" name="key:o" text="o"/>
-        <button repeat="300" name="key:p" text="p"/>
+        <button name="key:q" enable_preview="true" text="q"/>
+        <button name="key:w" enable_preview="true" text="w"/>
+        <button name="key:e" enable_preview="true" text="e"/>
+        <button name="key:r" enable_preview="true" text="r"/>
+        <button name="key:t" enable_preview="true" text="t"/>
+        <button name="key:y" enable_preview="true" text="y"/>
+        <button name="key:u" enable_preview="true" text="u"/>
+        <button name="key:i" enable_preview="true" text="i"/>
+        <button name="key:o" enable_preview="true" text="o"/>
+        <button name="key:p" enable_preview="true" text="p"/>
       </group_box>
       <group_box children_layout="default(r=1,c=9,s=2,xm=10,ym=2)">
-        <button repeat="300" name="key:a" text="a"/>
-        <button repeat="300" name="key:s" text="s"/>
-        <button repeat="300" name="key:d" text="d"/>
-        <button repeat="300" name="key:f" text="f"/>
-        <button repeat="300" name="key:g" text="g"/>
-        <button repeat="300" name="key:h" text="h"/>
-        <button repeat="300" name="key:j" text="j"/>
-        <button repeat="300" name="key:k" text="k"/>
-        <button repeat="300" name="key:l" text="l"/>
+        <button name="key:a" enable_preview="true" text="a"/>
+        <button name="key:s" enable_preview="true" text="s"/>
+        <button name="key:d" enable_preview="true" text="d"/>
+        <button name="key:f" enable_preview="true" text="f"/>
+        <button name="key:g" enable_preview="true" text="g"/>
+        <button name="key:h" enable_preview="true" text="h"/>
+        <button name="key:j" enable_preview="true" text="j"/>
+        <button name="key:k" enable_preview="true" text="k"/>
+        <button name="key:l" enable_preview="true" text="l"/>
       </group_box>
       <group_box children_layout="default(r=1,c=9,s=2,m=2)">
         <button name="page:upper" style="highlight"><image draw_type="icon" image="shift" x="center" y="middle" w="100%" h="100%"/></button>
-        <button repeat="300" name="key:z" text="z"/>
-        <button repeat="300" name="key:x" text="x"/>
-        <button repeat="300" name="key:c" text="c"/>
-        <button repeat="300" name="key:v" text="v"/>
-        <button repeat="300" name="key:b" text="b"/>
-        <button repeat="300" name="key:n" text="n"/>
-        <button repeat="300" name="key:m" text="m"/>
-        <button repeat="300" name="key:backspace" style="highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="key:z" enable_preview="true" text="z"/>
+        <button name="key:x" enable_preview="true" text="x"/>
+        <button name="key:c" enable_preview="true" text="c"/>
+        <button name="key:v" enable_preview="true" text="v"/>
+        <button name="key:b" enable_preview="true" text="b"/>
+        <button name="key:n" enable_preview="true" text="n"/>
+        <button name="key:m" enable_preview="true" text="m"/>
+        <button name="key:backspace" style="highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box children_layout="default(r=1,c=0,s=2,m=2)">
-        <button name="page:symnum" style="highlight" w="15%" text="123"/>
+        <button name="page:symnum" style="highlight" w="15%" enable_preview="true" text="123"/>
         <button name="page:lower" style="highlight" w="10%"><image draw_type="icon" image="en" x="center" y="middle" w="100%" h="100%"/></button>
-        <button repeat="300" name="space" w="55%" text="Space"/>
-        <button name="action" style="highlight" w="20%" text="Return"/>
+        <button name="space" w="55%" enable_preview="true" text="Space"/>
+        <button name="action" style="highlight" w="20%" enable_preview="true" text="Return"/>
       </group_box>
     </view>
   </pages>
   <candidates x="0" y="0" w="100%" h="30"/>
-  <button name="close" style="close" self_layout="default(x=r:2, y=2, w=20, h=20)" text="x" />
+  <button name="close" style="close" self_layout="default(x=r:2, y=2, w=20, h=20)" enable_preview="true" text="x" />
 </keyboard>

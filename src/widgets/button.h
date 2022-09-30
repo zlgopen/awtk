@@ -97,6 +97,15 @@ typedef struct _button_t {
    *
    */
   bool_t enable_long_press;
+  
+  /**
+   * @property {bool_t} enable_preview
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否启用预览(主要用于软键盘)。
+   *
+   *
+   */
+  bool_t enable_preview;
 
   /**
    * @property {uint32_t} long_press_time
@@ -185,6 +194,17 @@ ret_t button_set_long_press_time(widget_t* widget, uint32_t long_press_time);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t button_set_enable_long_press(widget_t* widget, bool_t enable_long_press);
+
+/**
+ * @method button_set_enable_preview
+ * 设置是否启用预览。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t}  enable_preview 是否启用预览。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t button_set_enable_preview(widget_t* widget, bool_t enable_preview);
 
 #define BUTTON(widget) ((button_t*)(button_cast(WIDGET(widget))))
 
