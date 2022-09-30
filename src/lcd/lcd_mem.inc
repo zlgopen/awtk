@@ -215,13 +215,13 @@ static ret_t lcd_mem_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
     switch (info->lcd_orientation)
     {
     case LCD_ORIENTATION_90:
-      offset = sizeof(pixel_t);
+      offset = (int32_t)sizeof(pixel_t);
       break;
     case LCD_ORIENTATION_180:
       offset = -line_length;
       break;
     case LCD_ORIENTATION_270:
-      offset = -sizeof(pixel_t);
+      offset = -(int32_t)sizeof(pixel_t);
       break;
     default:
       offset = line_length;
@@ -310,7 +310,7 @@ static ret_t lcd_mem_draw_glyph4(lcd_t* lcd, glyph_t* glyph, const rect_t* src, 
   wh_t sw = src->w;
   wh_t sh = src->h;
   uint8_t glyph_a = 0;
-  wh_t d_offset = sizeof(pixel_t);
+  wh_t d_offset = (wh_t)sizeof(pixel_t);
   pixel_t* dst_p = NULL;
   uint32_t pitch = glyph->pitch;
   color_t color = lcd->text_color;
@@ -332,15 +332,15 @@ static ret_t lcd_mem_draw_glyph4(lcd_t* lcd, glyph_t* glyph, const rect_t* src, 
     {
     case LCD_ORIENTATION_90:
       d_offset = -line_length;
-      dst_offset = sizeof(pixel_t);
+      dst_offset = (wh_t)sizeof(pixel_t);
       break;
     case LCD_ORIENTATION_180:
       dst_offset = -line_length;
-      d_offset = -sizeof(pixel_t);
+      d_offset = -(wh_t)sizeof(pixel_t);
       break;
     case LCD_ORIENTATION_270:
       d_offset = line_length;
-      dst_offset = -sizeof(pixel_t);
+      dst_offset = -(wh_t)sizeof(pixel_t);
       break;
     default:
       break;
@@ -383,7 +383,7 @@ static ret_t lcd_mem_draw_glyph4(lcd_t* lcd, glyph_t* glyph, const rect_t* src, 
 static ret_t lcd_mem_draw_glyph8(lcd_t* lcd, glyph_t* glyph, const rect_t* src, xy_t x, xy_t y) {
   wh_t i = 0;
   wh_t j = 0;
-  wh_t d_offset = sizeof(pixel_t);
+  wh_t d_offset = (wh_t)sizeof(pixel_t);
   pixel_t* dst_p = NULL;
   uint32_t glyph_w = glyph->w;
   color_t color = lcd->text_color;
@@ -404,15 +404,15 @@ static ret_t lcd_mem_draw_glyph8(lcd_t* lcd, glyph_t* glyph, const rect_t* src, 
     {
     case LCD_ORIENTATION_90:
       d_offset = -line_length;
-      dst_offset = sizeof(pixel_t);
+      dst_offset = (wh_t)sizeof(pixel_t);
       break;
     case LCD_ORIENTATION_180:
       dst_offset = -line_length;
-      d_offset = -sizeof(pixel_t);
+      d_offset = -(wh_t)sizeof(pixel_t);
       break;
     case LCD_ORIENTATION_270:
       d_offset = line_length;
-      dst_offset = -sizeof(pixel_t);
+      dst_offset = -(wh_t)sizeof(pixel_t);
       break;
     default:
       break;
@@ -742,7 +742,7 @@ static lcd_t* lcd_mem_init(lcd_mem_t* lcd, wh_t w, wh_t h, bool_t alloc) {
   lcd_fb_dirty_rects_init(&(lcd->fb_dirty_rects_list), w, h);
 
   if (alloc) {
-    uint8_t* offline_fb = (uint8_t*)TKMEM_ALLOC(w * h * sizeof(pixel_t));
+    uint8_t* offline_fb = (uint8_t*)TKMEM_ALLOC(w * h * (uint32_t)sizeof(pixel_t));
     ret_t ret = lcd_mem_set_offline_fb(lcd, offline_fb);
     if (ret != RET_OK && offline_fb != NULL) {
       TKMEM_FREE(offline_fb);
