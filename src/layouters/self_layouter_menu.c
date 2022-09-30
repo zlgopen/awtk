@@ -309,11 +309,10 @@ ret_t widget_layout_self_menu_with_rect(self_layouter_t* layouter, widget_t* wid
 static ret_t widget_layout_self_get_trigger(self_layouter_t* layouter, point_t* pressed,
                                             rect_t* widget_rect) {
   point_t p = {0, 0};
-  widget_t* iter = NULL;
+  widget_t* iter = window_manager();
   pressed->x = tk_get_pointer_x();
   pressed->y = tk_get_pointer_y();
 
-  iter = window_manager_get_prev_window(window_manager());
   return_value_if_fail(iter != NULL, RET_BAD_PARAMS);
 
   while (iter->key_target != NULL) {
