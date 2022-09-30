@@ -798,9 +798,10 @@ static ret_t slide_view_on_idle_init_save_target(const idle_info_t* idle) {
   slide_view_t* slide_view = NULL;
   return_value_if_fail(idle != NULL, RET_BAD_PARAMS);
   slide_view = SLIDE_VIEW(idle->ctx);
-
-  slide_view_restore_target(WIDGET(slide_view));
-  slide_view->init_idle_id = TK_INVALID_ID;
+  if (slide_view->widget.focused) {
+    slide_view_restore_target(WIDGET(slide_view));
+    slide_view->init_idle_id = TK_INVALID_ID;
+  }
 
   return RET_OK;
 }
