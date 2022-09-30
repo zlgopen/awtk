@@ -149,30 +149,39 @@ static ret_t button_draw_preview(void* ctx, event_t* e) {
   color_t text_color = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
   int32_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
   const char* font = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
-  int32_t wox = style_get_int(widget->astyle, STYLE_ID_X_OFFSET, 0);
-  int32_t woy = style_get_int(widget->astyle, STYLE_ID_Y_OFFSET, 0);
+  int32_t wox = style_get_int(style, STYLE_ID_X_OFFSET, 0);
+  int32_t woy = style_get_int(style, STYLE_ID_Y_OFFSET, 0);
+  int32_t round_r = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
 
   widget_to_screen(widget, &p);
   canvas_untranslate(c, ox, oy);
 
-  y = p.y - h + 1;
+  y = p.y - h + (round_r ? round_r : 2) + woy;
   x = p.x - (w - widget->w) / 2;
   r = rect_init(x, y, w, h);
 
   canvas_set_fill_color(c, bg_color);
-  canvas_fill_rect(c, r.x, r.y, r.w, r.h);
+  if (round_r > 0) {
+    canvas_fill_rounded_rect(c, &r, &r, &bg_color, round_r);
+  } else {
+    canvas_fill_rect(c, r.x, r.y, r.w, r.h);
+  }
 
   canvas_set_text_color(c, text_color);
   canvas_set_font(c, font, font_size * TK_BUTTON_PREVIEW_SCALE);
   canvas_draw_text_in_rect(c, widget->text.str, widget->text.size, &r);
 
   canvas_set_stroke_color(c, border_color);
-  canvas_stroke_rect(c, r.x, r.y, r.w, r.h);
+  if (round_r > 0) {
+    canvas_stroke_rounded_rect(c, &r, &r, &border_color, round_r, 1);
+  } else {
+    canvas_stroke_rect(c, r.x, r.y, r.w, r.h);
+  }
 
   p.x = wox;
   p.y = woy;
   widget_to_screen(widget, &p);
-  r = rect_init(p.x, p.y - 4, widget->w, widget->h + 4);
+  r = rect_init(p.x + 1, p.y, widget->w - 2, widget->h - 1);
   widget_fill_bg_rect(widget, c, &r, IMAGE_DRAW_CENTER);
 
   canvas_translate(c, ox, oy);
