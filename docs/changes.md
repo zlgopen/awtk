@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/10/01
+  * 增加文档[如何支持软键盘按钮预览](how_to_enable_keyboard_preview.md)
+
 2022/09/30
   * 按钮增加enable_preview属性，用于键盘中按钮preview。
   * 修复digit_clock在destroy的时候找不到窗口导致警告的问(感谢智明提供补丁)
