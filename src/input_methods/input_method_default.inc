@@ -177,6 +177,7 @@ static ret_t input_method_default_restore_win_position(input_method_t* im) {
   if (im->win != NULL) {
     widget_move(im->win, im->win->x, im->win_old_y);
     im->win_delta_y = 0;
+    im->win_old_y = 0;
     im->win = NULL;
   }
 
