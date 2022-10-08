@@ -2,6 +2,7 @@
 
 2022/10/08
   * 修复systembar上有edit时窗口复位的问题(issue #773)。
+  * 完善单元测试，修复编译报错(感谢雨欣提供补丁)
 
 2022/10/01
   * 增加文档[如何支持软键盘按钮预览](how_to_enable_keyboard_preview.md)
