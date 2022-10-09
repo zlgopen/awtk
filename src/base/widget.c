@@ -2240,10 +2240,11 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
         } else {
           log_debug("not found event %s\n", name);
         }
-      } else {
+      } else 
+#endif /*WITHOUT_FSCRIPT*/
+      {
         ret = tk_object_set_prop(widget->custom_props, name, v);
       }
-#endif /*WITHOUT_FSCRIPT*/
     }
   }
 
