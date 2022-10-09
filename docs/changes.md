@@ -6,6 +6,7 @@
   * 删除demouiold的1m资源让stm32的板子可以编译过(感谢智明提供补丁)
   * 修复启用WITHOUT_FSCRIPT后无法给widget设置自定义属性的问题(感谢智明提供补丁)
   * 增加tk_strnlen和wcsncmp函数让stm32项目编译通过(感谢智明提供补丁)
+  * 修复edit输入密码明文恢复后，光标的位置不正确问题(感谢兆坤提供补丁)
 
 2022/10/08
   * 修复systembar上有edit时窗口复位的问题(issue #773)。

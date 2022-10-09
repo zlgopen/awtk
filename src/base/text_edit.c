@@ -1567,9 +1567,12 @@ ret_t text_edit_cut(text_edit_t* text_edit) {
 }
 
 static ret_t text_edit_briefly_show_char_on_timer(const timer_info_t* timer) {
-  DECL_IMPL(timer->ctx);
+  text_edit_t* text_edit = (text_edit_t*)(timer->ctx);
+  DECL_IMPL(text_edit);
 
   impl->briefly_show_char = FALSE;
+  text_edit_layout(text_edit);
+
   impl->briefly_show_char_timer_id = TK_INVALID_ID;
 
   return RET_REMOVE;
