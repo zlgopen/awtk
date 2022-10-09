@@ -366,11 +366,9 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_color_picker_hsv);
   assets_manager_add(am, ui_tab_bottom);
   assets_manager_add(am, ui_list_view_m);
-  assets_manager_add(am, ui_slide_view_h_loop);
   assets_manager_add(am, ui_calibration_win);
   assets_manager_add(am, ui_memtest);
   assets_manager_add(am, ui_slide_view_h2);
-  assets_manager_add(am, ui_slide_view_v_loop);
   assets_manager_add(am, ui_language);
   assets_manager_add(am, ui_kb_float);
   assets_manager_add(am, ui_htranslate);
@@ -399,7 +397,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_color_picker_full);
   assets_manager_add(am, ui_dialog1);
   assets_manager_add(am, ui_fade);
-  assets_manager_add(am, ui_image_list);
   assets_manager_add(am, ui_slide_view_v1);
   assets_manager_add(am, ui_slide_left);
   assets_manager_add(am, ui_image_value);
