@@ -400,7 +400,7 @@ const key_type_value_t* easing_type_find_by_value(uint32_t value) {
 
 const key_type_value_t* keys_type_find(const char* name) {
   char fixed_name[TK_NAME_LEN + 1];
-  key_type_value_t* ret = NULL;
+  const key_type_value_t* ret = NULL;
   return_value_if_fail(name != NULL, NULL);
 
   memset(fixed_name, 0x00, sizeof(fixed_name));
@@ -419,7 +419,7 @@ const key_type_value_t* keys_type_find(const char* name) {
 }
 
 const key_type_value_t* keys_type_find_by_value(uint32_t value) {
-  key_type_value_t* ret = NULL;
+  const key_type_value_t* ret = NULL;
 
   if (s_custom_keys_type_name_value != NULL) {
     ret =
