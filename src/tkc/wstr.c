@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   wstr.c
  * Author: AWTK Develop Team
  * Brief:  width char
@@ -59,6 +59,50 @@ wchar_t* wcs_cpy(wchar_t* s1, const wchar_t* s2) {
   return s1;
 }
 
+int wcs_ncmp(const wchar_t *s1, const wchar_t *s2, uint32_t n) {
+  wchar_t c1 = L'\0';
+  wchar_t c2 = L'\0';
+  return_value_if_fail(s1 != NULL && s2 != NULL, -1);
+
+  if (n >= 4) {
+    size_t n4 = n >> 2;
+    do {
+      c1 = *s1++;
+      c2 = *s2++;
+      if (c1 == L'\0' || c1 != c2) {
+        return c1 > c2 ? 1 : (c1 < c2 ? -1 : 0);
+      }
+      c1 = *s1++;
+      c2 = *s2++;
+      if (c1 == L'\0' || c1 != c2) {
+        return c1 > c2 ? 1 : (c1 < c2 ? -1 : 0);
+      }
+      c1 = *s1++;
+      c2 = *s2++;
+      if (c1 == L'\0' || c1 != c2) {
+        return c1 > c2 ? 1 : (c1 < c2 ? -1 : 0);
+      }
+      c1 = *s1++;
+      c2 = *s2++;
+      if (c1 == L'\0' || c1 != c2) {
+        return c1 > c2 ? 1 : (c1 < c2 ? -1 : 0);
+      }
+    } while (--n4 > 0);
+    n &= 3;
+  }
+
+  while (n > 0) {
+    c1 = *s1++;
+    c2 = *s2++;
+    if (c1 == L'\0' || c1 != c2) {
+      return c1 > c2 ? 1 : (c1 < c2 ? -1 : 0);
+    }
+    n--;
+  }
+
+  return 0;
+}
+
 int wcs_cmp(const wchar_t* s1, const wchar_t* s2) {
   uint32_t i = 0;
   return_value_if_fail(s1 != NULL && s2 != NULL, -1);
@@ -94,6 +138,10 @@ size_t wcs_len(const wchar_t* s) {
 #ifdef WITH_WCSXXX
 size_t wcslen(const wchar_t* s) {
   return wcs_len(s);
+}
+
+int wcsncmp(const wchar_t* s1, const wchar_t* s2, size_t n) {
+  return wcs_ncmp(s1, s2, n);
 }
 
 int wcscmp(const wchar_t* s1, const wchar_t* s2) {

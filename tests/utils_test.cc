@@ -773,3 +773,13 @@ TEST(Utils, ui_thread) {
   tk_set_ui_thread(tk_thread_self());
   ASSERT_EQ(tk_is_ui_thread(), TRUE);
 }
+
+TEST(Utils, wcsncmp) {
+  ASSERT_EQ(wcsncmp(L"ABC", L"A", 1), 0);
+  ASSERT_EQ(wcsncmp(L"ABC", L"AB", 1), 0);
+  ASSERT_EQ(wcsncmp(L"ABC", L"ABC", 2), 0);
+  ASSERT_EQ(wcsncmp(L"ABC", L"ABC", 3), 0);
+  ASSERT_EQ(wcsncmp(L"ABCD", L"ABCD", 4), 0);
+  ASSERT_EQ(wcsncmp(L"ABCD1234", L"ABCD1234", 7), 0);
+  ASSERT_EQ(wcsncmp(L"ABCD1234", L"ABCD1234", 8), 0);
+}

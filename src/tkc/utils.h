@@ -335,6 +335,18 @@ char* tk_strndup(const char* str, uint32_t len);
 uint32_t tk_strlen(const char* str);
 
 /**
+ * @method tk_strnlen
+ *
+ * 获取字符串的长度。str为空时返回0。
+ *
+ * @param {const char*} str 字符串。
+ * @param {uint32_t} 最大长度。
+ *
+ * @return {uint32_t} 返回字符串的长度。
+ */ 
+uint32_t tk_strnlen(const char *str, uint32_t maxlen);
+
+/**
  * @method tk_strrstr
  *
  * 从后往前查找指定的字符串。

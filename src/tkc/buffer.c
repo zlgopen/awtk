@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "tkc/buffer.h"
 
 wbuffer_t* wbuffer_init(wbuffer_t* wbuffer, uint8_t* data, uint32_t capacity) {
@@ -311,7 +312,7 @@ ret_t rbuffer_read_string(rbuffer_t* rbuffer, const char** str) {
 
   start = (const char*)rbuffer->data + rbuffer->cursor;
   max_count = rbuffer->capacity - rbuffer->cursor;
-  len = strnlen(start, max_count);
+  len = tk_strnlen(start, max_count);
   if (rbuffer->cursor + len == rbuffer->capacity) {
     *str = NULL;
     return RET_FAIL;

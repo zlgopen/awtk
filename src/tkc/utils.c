@@ -1526,3 +1526,11 @@ ret_t tk_set_ui_thread(uint64_t ui_thread_id) {
 bool_t tk_is_ui_thread(void) {
   return s_ui_thread_id == tk_thread_self();
 }
+
+uint32_t tk_strnlen(const char *str, uint32_t maxlen) {
+  const char* s;
+  return_value_if_fail(str != NULL, 0);
+
+  for (s = str; maxlen-- && *s != '\0'; ++s);
+  return s - str;
+}
