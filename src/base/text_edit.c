@@ -47,6 +47,10 @@
 
 #include "stb/stb_textedit.h"
 
+#ifndef BRIEFLY_SHOW_CHAR_TIMER_DURATION
+#define BRIEFLY_SHOW_CHAR_TIMER_DURATION 800
+#endif /*BRIEFLY_SHOW_CHARS_TIMER_DURATION*/
+
 #define GET_CANVAS(text_edit) widget_get_canvas(WIDGET(text_edit->widget))
 typedef struct _text_layout_info_t {
   int32_t w;
@@ -102,6 +106,9 @@ typedef struct _text_edit_impl_t {
 
   bool_t preedit;
   uint32_t preedit_chars_nr;
+
+  bool_t briefly_show_char;
+  uint32_t briefly_show_char_timer_id;
 
   bool_t lock_scrollbar_value;
 
@@ -258,17 +265,26 @@ static ret_t text_edit_set_caret_pos(text_edit_impl_t* impl, uint32_t x, uint32_
   return RET_OK;
 }
 
+static inline bool_t text_edit_is_preedit_char(text_edit_t* text_edit, uint32_t index) {
+  DECL_IMPL(text_edit);
+  return impl->preedit && index < impl->state.cursor &&
+         index >= (impl->state.cursor - impl->preedit_chars_nr);
+}
+
+static inline bool_t text_edit_is_briefly_show_char(text_edit_t* text_edit, uint32_t index) {
+  DECL_IMPL(text_edit);
+  return impl->briefly_show_char && index == (impl->state.cursor - 1);
+}
+
 static uint32_t text_edit_measure_text_on_canvas(text_edit_t* text_edit, wchar_t* str,
                                                  wchar_t mask_char, uint32_t size, canvas_t* c) {
   uint32_t i = 0;
   uint32_t w = 0;
-  DECL_IMPL(text_edit);
 
   for (i = 0; i < size; i++) {
-    bool_t preedit = impl->preedit && i < impl->state.cursor &&
-                     i >= (impl->state.cursor - impl->preedit_chars_nr);
-    wchar_t chr = (mask_char && !preedit) ? mask_char : str[i];
-
+    bool_t preedit = text_edit_is_preedit_char(text_edit, i);
+    bool_t briefly_show = text_edit_is_briefly_show_char(text_edit, i);
+    wchar_t chr = (mask_char && (!preedit && !briefly_show)) ? mask_char : str[i];
     w += canvas_measure_text(c, &chr, 1) + CHAR_SPACING;
   }
 
@@ -710,11 +726,10 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info
 
   for (k = 0; k < iter->length; k++) {
     uint32_t offset = iter->offset + k;
-    uint32_t cursor = state->cursor;
     bool_t selected = offset >= select_start && offset < select_end;
-    bool_t preedit =
-        impl->preedit && offset < cursor && offset >= (cursor - impl->preedit_chars_nr);
-    wchar_t chr = (impl->mask && !preedit) ? impl->mask_char : b.vis_str[k];
+    bool_t preedit = text_edit_is_preedit_char(text_edit, offset);
+    bool_t briefly_show = text_edit_is_briefly_show_char(text_edit, offset);
+    wchar_t chr = (impl->mask && (!preedit && !briefly_show)) ? impl->mask_char : b.vis_str[k];
     uint32_t char_w = canvas_measure_text(c, &chr, 1);
 
     if ((x + char_w) < view_left) {
@@ -744,7 +759,7 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info
       }
 
       /*FIXME: 密码编辑时，*字符本身偏高，看起来不像居中。但是无法拿到字模信息，只好手工修正一下。*/
-      if (impl->mask && !preedit && impl->mask_char == '*') {
+      if (impl->mask && (!preedit && !briefly_show) && impl->mask_char == '*') {
         int32_t oy = c->font_size / 6;
         canvas_draw_text(c, &chr, 1, rx, ry + oy);
       } else {
@@ -1551,6 +1566,30 @@ ret_t text_edit_cut(text_edit_t* text_edit) {
   return RET_OK;
 }
 
+static ret_t text_edit_briefly_show_char_on_timer(const timer_info_t* timer) {
+  DECL_IMPL(timer->ctx);
+
+  impl->briefly_show_char = FALSE;
+  impl->briefly_show_char_timer_id = TK_INVALID_ID;
+
+  return RET_REMOVE;
+}
+
+static ret_t text_edit_briefly_show_char(text_edit_t* text_edit) {
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
+
+  impl->briefly_show_char = TRUE;
+  if (impl->briefly_show_char_timer_id == TK_INVALID_ID) {
+    impl->briefly_show_char_timer_id = timer_add(text_edit_briefly_show_char_on_timer, text_edit,
+                                                 BRIEFLY_SHOW_CHAR_TIMER_DURATION);
+  } else {
+    timer_reset(impl->briefly_show_char_timer_id);
+  }
+
+  return RET_OK;
+}
+
 ret_t text_edit_paste(text_edit_t* text_edit, const wchar_t* str, uint32_t size) {
   DECL_IMPL(text_edit);
   return_value_if_fail(text_edit != NULL && str != NULL, RET_BAD_PARAMS);
@@ -1559,6 +1598,11 @@ ret_t text_edit_paste(text_edit_t* text_edit, const wchar_t* str, uint32_t size)
   if (impl->preedit) {
     impl->preedit_chars_nr += size;
   }
+
+  if (size == 1) {
+    text_edit_briefly_show_char(text_edit);
+  }
+
   text_edit_layout(text_edit);
 
   return RET_OK;
@@ -1707,6 +1751,9 @@ ret_t text_edit_destroy(text_edit_t* text_edit) {
 
   wstr_reset(&(impl->tips));
   rows_destroy(impl->rows);
+  if (impl->briefly_show_char_timer_id != TK_INVALID_ID) {
+    timer_remove(impl->briefly_show_char_timer_id);
+  }
   TKMEM_FREE(text_edit);
 
   return RET_OK;
