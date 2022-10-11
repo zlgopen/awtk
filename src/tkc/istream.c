@@ -148,6 +148,7 @@ int32_t tk_istream_read_line(tk_istream_t* stream, void* buff, uint32_t max_size
   int32_t read_bytes = 0;
   uint8_t* p = (uint8_t*)buff;
   int32_t remain_bytes = max_size - 1;
+  ret_t ret = RET_OK;
   return_value_if_fail(stream != NULL && stream->read != NULL, -1);
   return_value_if_fail(buff != NULL && max_size > 1, 0);
 
@@ -155,9 +156,25 @@ int32_t tk_istream_read_line(tk_istream_t* stream, void* buff, uint32_t max_size
   end = start + timeout_ms;
 
   do {
+    ret = tk_istream_wait_for_data(stream, 20);
+
+    if (ret == RET_TIMEOUT) {
+      if (time_now_ms() > end) {
+        break;
+      } else {
+        continue;
+      }
+    } else if (ret != RET_OK) {
+      break;
+    }
+
     read_bytes = tk_istream_read(stream, p + offset, 1);
 
     if (read_bytes < 0) {
+      if (!tk_object_get_prop_bool(TK_OBJECT(stream), TK_STREAM_PROP_IS_OK, TRUE)) {
+        log_debug("stream is broken\n");
+      }
+
       break;
     } else if (read_bytes == 0 && tk_istream_eos(stream)) {
       break;
