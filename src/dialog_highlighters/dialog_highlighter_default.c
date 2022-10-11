@@ -115,7 +115,7 @@ static ret_t dialog_highlighter_default_draw(dialog_highlighter_t* h, float_t pe
     /* if window is open, update prev win image */
     bitmap_t prev_img = {0};
     widget_t* wm = window_manager();
-    widget_t* prev_win = window_manager_get_prev_window(wm);
+    widget_t* prev_win = h->win != NULL ? h->win : window_manager_get_prev_window(wm);
     if (widget_set_prop_pointer(wm, WIDGET_PROP_CURR_WIN, h->dialog) == RET_OK) {
       window_manager_snap_prev_window(wm, prev_win, &prev_img);
     }

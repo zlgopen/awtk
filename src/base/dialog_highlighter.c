@@ -72,6 +72,14 @@ ret_t dialog_highlighter_set_bg(dialog_highlighter_t* h, bitmap_t* img) {
   return RET_OK;
 }
 
+ret_t dialog_highlighter_set_win(dialog_highlighter_t* h, widget_t* win) {
+  return_value_if_fail(h != NULL && h->vt != NULL, RET_BAD_PARAMS);
+
+  h->win = win;
+
+  return RET_OK;
+}
+
 ret_t dialog_highlighter_set_bg_clip_rect(dialog_highlighter_t* h, rect_t* clip_rect) {
   return_value_if_fail(h != NULL && h->vt != NULL, RET_BAD_PARAMS);
 

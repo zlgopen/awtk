@@ -99,6 +99,12 @@ struct _dialog_highlighter_t {
    */
   rect_t clip_rect;
 
+  /**
+   * @property {widget_t*} win
+   * 底层窗口。
+   */
+  widget_t* win;
+
   /*private*/
   const dialog_highlighter_vtable_t* vt;
 };
@@ -123,6 +129,16 @@ dialog_highlighter_t* dialog_highlighter_create(const dialog_highlighter_vtable_
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t dialog_highlighter_set_bg(dialog_highlighter_t* h, bitmap_t* img);
+
+/**
+ * @method dialog_highlighter_set_win
+ * 设置底层窗口。
+ * @param {dialog_highlighter_t*} h 对话框高亮策略对象。
+ * @param {widget_t*} win 底层窗口。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t dialog_highlighter_set_win(dialog_highlighter_t* h, widget_t* win);
 
 /**
  * @method dialog_highlighter_set_bg_clip_rect
