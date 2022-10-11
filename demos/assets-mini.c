@@ -1,13 +1,8 @@
 #include "awtk.h"
 #include "base/assets_manager.h"
 #include "../res/assets/default/inc/fonts/default_18.data"
-#include "../res/assets/default/inc/images/bricks.data"
 #include "../res/assets/default/inc/images/checked.data"
-#include "../res/assets/default/inc/images/dialog_title.data"
 #include "../res/assets/default/inc/images/earth.data"
-#include "../res/assets/default/inc/images/green_btn_n.data"
-#include "../res/assets/default/inc/images/green_btn_o.data"
-#include "../res/assets/default/inc/images/green_btn_p.data"
 #include "../res/assets/default/inc/images/left_off.data"
 #include "../res/assets/default/inc/images/left_on.data"
 #include "../res/assets/default/inc/images/middle_off.data"
@@ -38,13 +33,8 @@ ret_t assets_init(void) {
   assets_manager_t* am = assets_manager();
 
   assets_manager_add(am, font_default_18);
-  assets_manager_add(am, image_bricks);
   assets_manager_add(am, image_checked);
-  assets_manager_add(am, image_dialog_title);
   assets_manager_add(am, image_earth);
-  assets_manager_add(am, image_green_btn_n);
-  assets_manager_add(am, image_green_btn_o);
-  assets_manager_add(am, image_green_btn_p);
   assets_manager_add(am, image_left_off);
   assets_manager_add(am, image_left_on);
   assets_manager_add(am, image_middle_off);
