@@ -769,6 +769,13 @@ static ret_t func_dialog_toast(fscript_t* fscript, fscript_args_t* args, value_t
   return RET_OK;
 }
 
+static ret_t func_show_fps(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  value_set_bool(result,
+                 window_manager_set_show_fps(window_manager(), value_bool(args->args)) == RET_OK);
+  return RET_OK;
+}
+
 FACTORY_TABLE_BEGIN(s_ext_widget)
 FACTORY_TABLE_ENTRY("open", func_window_open)
 FACTORY_TABLE_ENTRY("close", func_window_close)
@@ -821,7 +828,7 @@ FACTORY_TABLE_ENTRY("dialog_info", func_dialog_info)
 FACTORY_TABLE_ENTRY("dialog_warn", func_dialog_warn)
 FACTORY_TABLE_ENTRY("dialog_confirm", func_dialog_confirm)
 FACTORY_TABLE_ENTRY("dialog_toast", func_dialog_toast)
-
+FACTORY_TABLE_ENTRY("show_fps", func_show_fps)
 FACTORY_TABLE_END()
 
 ret_t fscript_widget_register(void) {

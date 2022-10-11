@@ -1196,6 +1196,24 @@ notify_model_changed("model_name", "update", obj_model)
 notify_model_changed("model_name", "update", "global")
 ```
 
+### 5.35 show\_fps
+
+> 设置是否显示FPS。
+----------------------------
+
+#### 原型
+
+```js
+show_fps(is_show_fps) => bool
+```
+
+#### 示例
+
+```js
+show_fps(true)
+show_fps(false)
+```
+
 ### 示例参考
 
 * https://github.com/zlgopen/awtk/blob/master/design/default/ui/main_fscript.xml

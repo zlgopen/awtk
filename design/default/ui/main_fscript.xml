@@ -8,6 +8,9 @@
   <property name="on:global_key_long_press">
     print("global key_long_press:", key, "alt=", alt, "ctrl=", ctrl, "cmd=", cmd, "menu=", menu);
   </property>
+  <property name="on:window_open">
+    global.is_show_fps = false;
+  </property>
   <view x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=10,m=5,s=5)">
     <button focusable="true" focused="true" on:click="open('test_fscript')" text="Test Fscript"/>
     <button focusable="true" on:click="open('button_fscript')" text="Buttons"/>
@@ -50,6 +53,7 @@
     <button focusable="true" on:click="var ret = dialog_warn('awtk','hello');print(ret)" text="Warn"/>
     <button focusable="true" on:click="var ret = dialog_confirm('awtk','hello');print(ret)" text="Confirm"/>
     <button focusable="true" on:click="var ret = dialog_toast('awtk',2000);print(ret)" text="Toast"/>
+    <button focusable="true" on:click="global.is_show_fps = !global.is_show_fps;show_fps(global.is_show_fps)" text="Show FPS"/>
     <button focusable="true" on:click="quit()" text="Quit"/>
   </view>
 </window>
