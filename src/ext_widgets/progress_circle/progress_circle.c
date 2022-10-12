@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   progress_circle.c
  * Author: AWTK Develop Team
  * Brief:  progress_circle
@@ -417,7 +417,7 @@ static const char* s_progress_circle_clone_properties[] = {WIDGET_PROP_VALUE,
 TK_DECL_VTABLE(progress_circle) = {.size = sizeof(progress_circle_t),
                                    .type = WIDGET_TYPE_PROGRESS_CIRCLE,
                                    .clone_properties = s_progress_circle_clone_properties,
-                                   .parent = TK_PARENT_VTABLE(widget),
+                                   .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                    .create = progress_circle_create,
                                    .on_paint_self = progress_circle_on_paint_self,
                                    .on_paint_background = progress_circle_on_paint_background,

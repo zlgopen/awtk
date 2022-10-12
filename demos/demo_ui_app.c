@@ -1067,7 +1067,7 @@ static ret_t vpage_change_kb_type_without_zh(void* ctx, const void* iter) {
       }
       break;
     }
-    vt = (vt->parent != NULL) ? vt->parent : NULL;
+    vt = (vt->get_parent_vt != NULL) ? vt->get_parent_vt() : NULL;
   }
 
   return RET_OK;

@@ -224,7 +224,7 @@ static const char* s_progress_bar_clone_properties[] = {WIDGET_PROP_VALUE,     W
 TK_DECL_VTABLE(progress_bar) = {.size = sizeof(progress_bar_t),
                                 .type = WIDGET_TYPE_PROGRESS_BAR,
                                 .clone_properties = s_progress_bar_clone_properties,
-                                .parent = TK_PARENT_VTABLE(widget),
+                                .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                 .create = progress_bar_create,
                                 .on_paint_self = progress_bar_on_paint_self,
                                 .on_paint_background = widget_on_paint_null,

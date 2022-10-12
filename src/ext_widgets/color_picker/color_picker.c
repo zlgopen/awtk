@@ -57,7 +57,7 @@ TK_DECL_VTABLE(color_picker) = {.size = sizeof(color_picker_t),
                                 .type = WIDGET_TYPE_COLOR_PICKER,
                                 .set_prop = color_picker_set_prop,
                                 .get_prop = color_picker_get_prop,
-                                .parent = TK_PARENT_VTABLE(widget),
+                                .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                 .on_paint_begin = color_picker_on_paint_begin,
                                 .create = color_picker_create};
 

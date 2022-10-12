@@ -119,7 +119,7 @@ static ret_t rich_text_view_on_remove_child(widget_t* widget, widget_t* child) {
 
 TK_DECL_VTABLE(rich_text_view) = {.size = sizeof(rich_text_view_t),
                                   .type = WIDGET_TYPE_RICH_TEXT_VIEW,
-                                  .parent = TK_PARENT_VTABLE(widget),
+                                  .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                   .on_add_child = rich_text_view_on_add_child,
                                   .on_remove_child = rich_text_view_on_remove_child,
                                   .create = rich_text_view_create};

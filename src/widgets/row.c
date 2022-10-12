@@ -24,7 +24,7 @@
 
 TK_DECL_VTABLE(row) = {.size = sizeof(row_t),
                        .type = WIDGET_TYPE_ROW,
-                       .parent = TK_PARENT_VTABLE(widget),
+                       .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                        .create = row_create};
 
 widget_t* row_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

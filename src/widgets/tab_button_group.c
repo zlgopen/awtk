@@ -263,7 +263,7 @@ static ret_t tab_button_group_on_remove_child(widget_t* widget, widget_t* child)
 TK_DECL_VTABLE(tab_button_group) = {.size = sizeof(tab_button_group_t),
                                     .type = WIDGET_TYPE_TAB_BUTTON_GROUP,
                                     .scrollable = TRUE,
-                                    .parent = TK_PARENT_VTABLE(widget),
+                                    .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                     .create = tab_button_group_create,
                                     .set_prop = tab_button_group_set_prop,
                                     .get_prop = tab_button_group_get_prop,

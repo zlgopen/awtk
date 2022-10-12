@@ -244,7 +244,7 @@ ret_t image_base_set_clickable(widget_t* widget, bool_t clickable) {
   return widget_invalidate(widget, NULL);
 }
 
-TK_DECL_VTABLE(image_base) = {.size = sizeof(image_base_t), .parent = TK_PARENT_VTABLE(widget)};
+TK_DECL_VTABLE(image_base) = {.size = sizeof(image_base_t), .get_parent_vt = TK_GET_PARENT_VTABLE(widget)};
 
 widget_t* image_base_cast(widget_t* widget) {
   return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, image_base), NULL);

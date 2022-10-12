@@ -395,7 +395,7 @@ static const char* const s_candidates_properties[] = {
 TK_DECL_VTABLE(candidates) = {.size = sizeof(candidates_t),
                               .scrollable = TRUE,
                               .type = WIDGET_TYPE_CANDIDATES,
-                              .parent = TK_PARENT_VTABLE(widget),
+                              .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                               .clone_properties = s_candidates_properties,
                               .persistent_properties = s_candidates_properties,
                               .create = candidates_create,

@@ -55,7 +55,7 @@ static ret_t view_on_destroy(widget_t* widget) {
 
 TK_DECL_VTABLE(view) = {.size = sizeof(view_t),
                         .type = WIDGET_TYPE_VIEW,
-                        .parent = TK_PARENT_VTABLE(widget),
+                        .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                         .set_prop = view_set_prop,
                         .get_prop = view_get_prop,
                         .on_destroy = view_on_destroy,

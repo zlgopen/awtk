@@ -164,7 +164,7 @@ static ret_t calibration_win_on_paint_self(widget_t* widget, canvas_t* c) {
 TK_DECL_VTABLE(calibration_win) = {.size = sizeof(calibration_win_t),
                                    .type = WIDGET_TYPE_CALIBRATION_WIN,
                                    .is_window = TRUE,
-                                   .parent = TK_PARENT_VTABLE(window_base),
+                                   .get_parent_vt = TK_GET_PARENT_VTABLE(window_base),
                                    .create = calibration_win_create,
                                    .on_event = calibration_win_on_event,
                                    .set_prop = window_base_set_prop,

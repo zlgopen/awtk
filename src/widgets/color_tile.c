@@ -167,7 +167,7 @@ static const char* const s_color_tile_properties[] = {WIDGET_PROP_BG_COLOR,
                                                       WIDGET_PROP_BORDER_COLOR, NULL};
 TK_DECL_VTABLE(color_tile) = {.size = sizeof(color_tile_t),
                               .type = WIDGET_TYPE_COLOR_TILE,
-                              .parent = TK_PARENT_VTABLE(widget),
+                              .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                               .create = color_tile_create,
                               .clone_properties = s_color_tile_properties,
                               .persistent_properties = s_color_tile_properties,

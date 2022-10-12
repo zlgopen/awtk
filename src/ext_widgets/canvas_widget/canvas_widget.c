@@ -24,7 +24,7 @@
 
 TK_DECL_VTABLE(canvas_widget) = {.size = sizeof(canvas_widget_t),
                                  .type = WIDGET_TYPE_CANVAS_WIDGET,
-                                 .parent = TK_PARENT_VTABLE(widget),
+                                 .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                  .create = canvas_widget_create};
 
 widget_t* canvas_widget_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

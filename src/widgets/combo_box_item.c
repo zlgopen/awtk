@@ -108,7 +108,7 @@ TK_DECL_VTABLE(combo_box_item) = {.size = sizeof(combo_box_item_t),
                                   .on_event = combo_box_item_on_event,
                                   .get_prop = combo_box_item_get_prop,
                                   .set_prop = combo_box_item_set_prop,
-                                  .parent = TK_PARENT_VTABLE(widget),
+                                  .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                   .create = combo_box_item_create};
 
 widget_t* combo_box_item_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

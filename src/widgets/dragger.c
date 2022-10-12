@@ -169,7 +169,7 @@ static const char* const s_dragger_clone_properties[] = {
 TK_DECL_VTABLE(dragger) = {.size = sizeof(dragger_t),
                            .type = WIDGET_TYPE_DRAGGER,
                            .clone_properties = s_dragger_clone_properties,
-                           .parent = TK_PARENT_VTABLE(widget),
+                           .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                            .create = dragger_create,
                            .set_prop = dragger_set_prop,
                            .get_prop = dragger_get_prop,

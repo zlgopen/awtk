@@ -25,7 +25,7 @@
 
 TK_DECL_VTABLE(clip_view) = {.size = sizeof(clip_view_t),
                              .type = WIDGET_TYPE_CLIP_VIEW,
-                             .parent = TK_PARENT_VTABLE(widget),
+                             .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                              .create = clip_view_create,
                              .on_paint_children = widget_on_paint_children_clip};
 

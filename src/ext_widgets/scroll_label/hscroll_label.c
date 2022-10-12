@@ -518,7 +518,7 @@ static const char* const s_hscroll_label_properties[] = {HSCROLL_LABEL_PROP_YOYO
 TK_DECL_VTABLE(hscroll_label) = {.size = sizeof(hscroll_label_t),
                                  .type = WIDGET_TYPE_HSCROLL_LABEL,
                                  .clone_properties = s_hscroll_label_properties,
-                                 .parent = TK_PARENT_VTABLE(widget),
+                                 .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                  .create = hscroll_label_create,
                                  .on_destroy = hscroll_label_on_destroy,
                                  .on_attach_parent = hscroll_label_on_attach_parent,

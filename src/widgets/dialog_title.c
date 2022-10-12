@@ -32,7 +32,7 @@ static ret_t dialog_title_on_paint_self(widget_t* widget, canvas_t* c) {
 
 TK_DECL_VTABLE(dialog_title) = {.size = sizeof(dialog_title_t),
                                 .type = WIDGET_TYPE_DIALOG_TITLE,
-                                .parent = TK_PARENT_VTABLE(widget),
+                                .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                 .create = dialog_title_create,
                                 .on_paint_self = dialog_title_on_paint_self};
 

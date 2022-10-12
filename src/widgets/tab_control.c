@@ -28,7 +28,7 @@ static ret_t tab_control_on_paint_self(widget_t* widget, canvas_t* c) {
 
 TK_DECL_VTABLE(tab_control) = {.size = sizeof(tab_control_t),
                                .type = WIDGET_TYPE_TAB_CONTROL,
-                               .parent = TK_PARENT_VTABLE(widget),
+                               .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                .create = tab_control_create,
                                .on_paint_self = tab_control_on_paint_self};
 

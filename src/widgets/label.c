@@ -324,7 +324,7 @@ static const char* const s_label_properties[] = {WIDGET_PROP_LENGTH, WIDGET_PROP
 
 TK_DECL_VTABLE(label) = {.size = sizeof(label_t),
                          .type = WIDGET_TYPE_LABEL,
-                         .parent = TK_PARENT_VTABLE(widget),
+                         .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                          .clone_properties = s_label_properties,
                          .persistent_properties = s_label_properties,
                          .create = label_create,

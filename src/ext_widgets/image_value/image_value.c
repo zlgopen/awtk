@@ -298,7 +298,7 @@ static const char* s_image_value_properties[] = {WIDGET_PROP_VALUE,
 
 TK_DECL_VTABLE(image_value) = {.size = sizeof(image_value_t),
                                .type = WIDGET_TYPE_IMAGE_VALUE,
-                               .parent = TK_PARENT_VTABLE(widget),
+                               .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                .inputable = TRUE,
                                .clone_properties = s_image_value_properties,
                                .persistent_properties = s_image_value_properties,

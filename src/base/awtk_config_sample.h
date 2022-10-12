@@ -192,12 +192,6 @@
  */
 
 /**
- * 启用widget类型检查，请定义本宏(除非编译器不支持，否则请定义它)。
- *
- * #define WITH_WIDGET_TYPE_CHECK 1
- */
-
-/**
  * 启用输入法，但不想启用联想功能，请定义本宏。
  *
  * #define WITHOUT_SUGGEST_WORDS 1

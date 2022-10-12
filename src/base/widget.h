@@ -50,6 +50,8 @@
 
 BEGIN_C_DECLS
 
+typedef const widget_vtable_t* (*widget_get_vt_t)(void);
+
 typedef ret_t (*widget_invalidate_t)(widget_t* widget, const rect_t* r);
 typedef ret_t (*widget_on_event_t)(widget_t* widget, event_t* e);
 typedef ret_t (*widget_on_event_before_children_t)(widget_t* widget, event_t* e);
@@ -151,9 +153,22 @@ struct _widget_vtable_t {
   uint32_t allow_draw_outside : 1;
 
   /**
-   * parent class vtable
+   * dynamic parent class vtable
+   * 该属性用于动态继承使用的获取父类虚表。（parent 和 get_parent_vt 只能二选一）
+   * 备注：
+   * 1，如果需要获取父类的虚表，请使用 widget_get_parent_vtable 函数来获取。
+   * 2，动态继承需要通过 widget_vtable_init 函数来动态创建 vt 虚表
+   * 3，动态继承是运行时的时候才会使用，所以 awtk 默认的控件都是属于静态继承的，所以静态继承状态下，该 parent 属性为 NULL。
    */
   const struct _widget_vtable_t* parent;
+  /**
+   * get parent class vtable
+   * 该属性用于静态继承的时候的获取父类虚表指针。（parent 和 get_parent_vt 只能二选一）
+   * 备注：
+   * 1，如果需要获取父类的虚表，请使用 widget_get_parent_vtable 函数来获取。
+   * 2，awtk 默认控件都是静态继承的，所以该 get_parent_vt 属性一般有值，但是一旦出现动态继承后，该 get_parent_vt 属性值为 NULL。
+   */
+  widget_get_vt_t get_parent_vt;
   /**
    * cursor image name
    */

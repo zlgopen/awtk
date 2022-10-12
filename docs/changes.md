@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/10/12
+  * 删除WITH\_WIDGET\_TYPE\_CHECK宏支持非awtk类库继承控件方案(感谢智明提供补丁)
+
 2022/10/11
   * fscript_widget新增show_fps接口(感谢雨欣提供补丁)
   * 完善高亮策略中的update_background功能(感谢雨欣提供补丁)

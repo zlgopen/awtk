@@ -233,7 +233,7 @@ static const char* s_image_animation_clone_properties[] = {IMAGE_ANIMATION_PROP_
 TK_DECL_VTABLE(image_animation) = {.size = sizeof(image_animation_t),
                                    .type = WIDGET_TYPE_IMAGE_ANIMATION,
                                    .clone_properties = s_image_animation_clone_properties,
-                                   .parent = TK_PARENT_VTABLE(widget),
+                                   .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                    .create = image_animation_create,
                                    .on_destroy = image_animation_on_destroy,
                                    .get_prop = image_animation_get_prop,

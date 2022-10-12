@@ -83,7 +83,7 @@ static ret_t overlay_on_copy(widget_t* widget, widget_t* other) {
 TK_DECL_VTABLE(overlay) = {.type = WIDGET_TYPE_OVERLAY,
                            .size = sizeof(overlay_t),
                            .is_window = TRUE,
-                           .parent = TK_PARENT_VTABLE(window_base),
+                           .get_parent_vt = TK_GET_PARENT_VTABLE(window_base),
                            .create = overlay_create,
                            .clone_properties = s_overlay_properties,
                            .on_copy = overlay_on_copy,

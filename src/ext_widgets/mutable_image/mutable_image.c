@@ -149,7 +149,7 @@ static ret_t mutable_image_set_prop(widget_t* widget, const char* name, const va
 TK_DECL_VTABLE(mutable_image) = {.size = sizeof(mutable_image_t),
                                  .type = WIDGET_TYPE_MUTABLE_IMAGE,
                                  .clone_properties = s_mutable_image_clone_properties,
-                                 .parent = TK_PARENT_VTABLE(image_base),
+                                 .get_parent_vt = TK_GET_PARENT_VTABLE(image_base),
                                  .create = mutable_image_create,
                                  .on_destroy = mutable_image_on_destroy,
                                  .on_event = image_base_on_event,

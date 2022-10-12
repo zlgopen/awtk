@@ -81,7 +81,7 @@ static ret_t window_on_copy(widget_t* widget, widget_t* other) {
 TK_DECL_VTABLE(window) = {.type = WIDGET_TYPE_NORMAL_WINDOW,
                           .size = sizeof(window_t),
                           .is_window = TRUE,
-                          .parent = TK_PARENT_VTABLE(window_base),
+                          .get_parent_vt = TK_GET_PARENT_VTABLE(window_base),
                           .create = window_create,
                           .clone_properties = s_window_properties,
                           .on_copy = window_on_copy,

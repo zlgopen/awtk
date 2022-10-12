@@ -3594,7 +3594,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
 
   wstr_init(&(widget->text), 0);
   if (!widget->vt) {
-    widget->vt = widget_vtable_default();
+    widget->vt = TK_GET_VTABLE(widget);
   }
 
   if (widget->astyle == NULL &&
@@ -4090,17 +4090,13 @@ bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt) {
       return TRUE;
     }
 
-    iter = iter->parent;
+    iter = widget_get_parent_vtable(iter);
   }
-#ifdef WITH_WIDGET_TYPE_CHECK
-  if (vt == widget_vtable_default()) {
+  if (vt == TK_GET_VTABLE(widget)) {
     return TRUE;
   } else {
     return FALSE;
   }
-#else
-  return TRUE;
-#endif /*WITH_WIDGET_TYPE_CHECK*/
 }
 
 static ret_t widget_ensure_visible_in_scroll_view(widget_t* scroll_view, widget_t* widget) {

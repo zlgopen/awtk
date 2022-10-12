@@ -29,7 +29,7 @@ static ret_t dialog_client_on_paint_self(widget_t* widget, canvas_t* c) {
 
 TK_DECL_VTABLE(dialog_client) = {.size = sizeof(dialog_client_t),
                                  .type = WIDGET_TYPE_DIALOG_CLIENT,
-                                 .parent = TK_PARENT_VTABLE(widget),
+                                 .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                  .create = dialog_client_create,
                                  .on_paint_self = dialog_client_on_paint_self};
 

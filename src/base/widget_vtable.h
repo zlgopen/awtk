@@ -184,7 +184,58 @@ ret_t widget_set_prop_default(widget_t* widget, const char* name, const value_t*
  */
 widget_t* widget_find_target_default(widget_t* widget, xy_t x, xy_t y);
 
-const widget_vtable_t* widget_vtable_default(void);
+/**
+ * @method widget_vtable_init
+ * 动态初始化虚表。
+ * 
+ * 备注：
+ * 初始化的时候，虚表会自动继承父类的所有属性。
+ * @annotation ["global"]
+ *
+ * @param {widget_vtable_t*} vt 子类虚表。
+ * @param {const widget_vtable_t*} parent 被继承的父类虚表。
+ *
+ * @return {widget_vtable_t*} 成功返回虚表，失败返回 NULL。
+ */
+widget_vtable_t* widget_vtable_init(widget_vtable_t* vt, const widget_vtable_t* parent);
+
+/**
+ * @method widget_get_parent_vtable
+ * 获取父类的虚表。
+ * 
+ * @annotation ["global"]
+ *
+ * @param {const widget_vtable_t*} vt 子类的虚表。
+ *
+ * @return {const widget_vtable_t*} 成功返回虚表，失败返回 NULL。
+ */
+const widget_vtable_t* widget_get_parent_vtable(const widget_vtable_t* vt);
+
+/**
+ * @method widget_set_self_vtable
+ * 设置控件的虚表。
+ * 
+ * @annotation ["global"]
+ *
+ * @param {widget_t*} widget 控件。
+ * @param {const widget_vtable_t*} vt 新的虚表。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_self_vtable(widget_t* widget, const widget_vtable_t* vt);
+
+/**
+ * @method widget_get_self_vtable
+ * 获取控件的虚表。
+ * 
+ * @annotation ["global"]
+ *
+ * @param {widget_t*} widget 控件。
+ *
+ * @return {const widget_vtable_t*} 成功返回虚表，失败返回 NULL。
+ */
+const widget_vtable_t* widget_get_self_vtable(widget_t* widget);
+
 ret_t widget_grab_default(widget_t* widget, widget_t* child);
 ret_t widget_ungrab_default(widget_t* widget, widget_t* child);
 ret_t widget_destroy_default(widget_t* widget);

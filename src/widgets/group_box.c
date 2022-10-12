@@ -28,7 +28,7 @@ static ret_t group_box_on_paint_self(widget_t* widget, canvas_t* c) {
 
 TK_DECL_VTABLE(group_box) = {.size = sizeof(group_box_t),
                              .type = WIDGET_TYPE_GROUP_BOX,
-                             .parent = TK_PARENT_VTABLE(widget),
+                             .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                              .create = group_box_create,
                              .on_paint_self = group_box_on_paint_self};
 

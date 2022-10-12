@@ -586,7 +586,7 @@ static const char* s_rich_text_clone_properties[] = {WIDGET_PROP_MARGIN, WIDGET_
                                                      NULL};
 TK_DECL_VTABLE(rich_text) = {.size = sizeof(rich_text_t),
                              .type = "rich_text",
-                             .parent = TK_PARENT_VTABLE(widget),
+                             .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                              .create = rich_text_create,
                              .clone_properties = s_rich_text_clone_properties,
                              .on_event = rich_text_on_event,

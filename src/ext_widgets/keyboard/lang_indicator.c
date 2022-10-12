@@ -84,7 +84,7 @@ static ret_t lang_indicator_on_paint_self(widget_t* widget, canvas_t* c) {
 
 TK_DECL_VTABLE(lang_indicator) = {.size = sizeof(lang_indicator_t),
                                   .type = WIDGET_TYPE_LANG_INDICATOR,
-                                  .parent = TK_PARENT_VTABLE(widget),
+                                  .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                   .set_prop = lang_indicator_set_prop,
                                   .get_prop = lang_indicator_get_prop,
                                   .on_destroy = lang_indicator_on_destroy,

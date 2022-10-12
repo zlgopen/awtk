@@ -22,6 +22,38 @@
 #include "base/widget_vtable.h"
 #include "tkc/mem.h"
 
+widget_vtable_t* widget_vtable_init(widget_vtable_t* vt, const widget_vtable_t* parent) {
+  return_value_if_fail(vt != NULL && parent != NULL, NULL);
+  tk_memcpy(vt, parent, sizeof(widget_vtable_t));
+  vt->parent = parent;
+  vt->get_parent_vt = NULL;
+  return vt;
+}
+
+const widget_vtable_t* widget_get_parent_vtable(const widget_vtable_t* vt) {
+  return_value_if_fail(vt != NULL, NULL);
+  return_value_if_fail(!(vt->parent != NULL && vt->get_parent_vt != NULL), NULL);
+
+  if (vt->parent != NULL) {
+    return vt->parent;
+  }
+  if (vt->get_parent_vt != NULL) {
+    return vt->get_parent_vt();
+  }
+  return NULL;
+}
+
+ret_t widget_set_self_vtable(widget_t* widget, const widget_vtable_t* vt) {
+  return_value_if_fail(widget != NULL && vt != NULL, RET_BAD_PARAMS);
+  widget->vt = vt;
+  return RET_OK;
+}
+
+const widget_vtable_t* widget_get_self_vtable(widget_t* widget) {
+  return_value_if_fail(widget != NULL, NULL);
+  return widget->vt;
+}
+
 ret_t widget_invalidate_default(widget_t* widget, const rect_t* rect) {
   rect_t t = *rect;
   rect_t* r = &t;
@@ -280,6 +312,7 @@ ret_t widget_on_paint_children_clip(widget_t* widget, canvas_t* c) {
 TK_DECL_VTABLE(widget) = {.size = sizeof(widget_t),
                           .type = WIDGET_TYPE_NONE,
                           .parent = NULL,
+                          .get_parent_vt = NULL,
                           .on_copy = widget_on_copy_default,
                           .invalidate = widget_invalidate_default,
                           .on_event = widget_on_event_default,
@@ -295,6 +328,3 @@ TK_DECL_VTABLE(widget) = {.size = sizeof(widget_t),
                           .find_target = widget_find_target_default,
                           .on_destroy = widget_on_destroy_default};
 
-const widget_vtable_t* widget_vtable_default() {
-  return TK_REF_VTABLE(widget);
-}

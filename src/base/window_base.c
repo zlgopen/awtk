@@ -678,7 +678,7 @@ static const char* s_window_base_properties[] = {WIDGET_PROP_ANIM_HINT,
 
 TK_DECL_VTABLE(window_base) = {
     .size = sizeof(window_base_t),
-    .parent = TK_PARENT_VTABLE(widget),
+    .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
     .clone_properties = s_window_base_properties,
     .persistent_properties = s_window_base_properties,
 };
