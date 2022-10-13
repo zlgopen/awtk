@@ -465,6 +465,17 @@ static ret_t slide_menu_on_pointer_move(slide_menu_t* slide_menu, pointer_event_
   return RET_OK;
 }
 
+static ret_t slide_menu_focus_active_child(slide_menu_t* slide_menu) {
+  ret_t ret = RET_NOT_FOUND;
+  widget_t* focused_child = widget_get_child(WIDGET(slide_menu), slide_menu->value);
+
+  if (focused_child != NULL) {
+    ret = widget_set_focused(focused_child, TRUE);
+  }
+
+  return ret;
+}
+
 static ret_t slide_menu_set_value_only(slide_menu_t* slide_menu, int32_t index) {
   widget_t* widget = WIDGET(slide_menu);
 
@@ -476,7 +487,8 @@ static ret_t slide_menu_set_value_only(slide_menu_t* slide_menu, int32_t index) 
 
     if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
       slide_menu->value = index;
-      widget_set_focused(widget_get_child(widget, index), TRUE);
+
+      slide_menu_focus_active_child(slide_menu);
 
       evt.e.type = EVT_VALUE_CHANGED;
       widget_dispatch(widget, (event_t*)&evt);
@@ -593,6 +605,12 @@ static ret_t slide_menu_on_event(widget_t* widget, event_t* e) {
   }
 
   switch (type) {
+    case EVT_WIDGET_LOAD: {
+      if (widget->focused) {
+        slide_menu_focus_active_child(slide_menu);
+      }
+      break;
+    }
     case EVT_POINTER_DOWN:
       slide_menu->dragged = FALSE;
       slide_menu->pressed = TRUE;
