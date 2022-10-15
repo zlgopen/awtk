@@ -123,24 +123,38 @@ ret_t str_append_more(str_t* str, const char* text, ...) {
 }
 
 ret_t str_append_int(str_t* str, int32_t value) {
-  char num[32];
-  tk_snprintf(num, sizeof(num), "%d", value);
+  char num[32] = {0};
+  tk_snprintf(num, sizeof(num) - 1, "%d", value);
 
   return str_append(str, num);
 }
 
 ret_t str_append_int64(str_t* str, int64_t value) {
-  char num[32];
-  tk_snprintf(num, sizeof(num), "%" PRId64, value);
+  char num[64] = {0};
+  tk_snprintf(num, sizeof(num) - 1, "%" PRId64, value);
 
   return str_append(str, num);
 }
 
 ret_t str_append_uint64(str_t* str, uint64_t value) {
-  char num[32];
-  tk_snprintf(num, sizeof(num), "%" PRIu64, value);
+  char num[64] = {0};
+  tk_snprintf(num, sizeof(num) - 1, "%" PRIu64, value);
 
   return str_append(str, num);
+}
+
+ret_t str_from_int64(str_t* str, int64_t value) {
+  char num[64] = {0};
+  tk_snprintf(num, sizeof(num) - 1, "%" PRId64, value);
+
+  return str_set(str, num);
+}
+
+ret_t str_from_uint64(str_t* str, uint64_t value) {
+  char num[64] = {0};
+  tk_snprintf(num, sizeof(num) - 1, "%" PRIu64, value);
+
+  return str_set(str, num);
 }
 
 ret_t str_append_char(str_t* str, char c) {
@@ -347,34 +361,41 @@ bool_t str_eq(str_t* str, const char* text) {
   return strcmp(str->str, text) == 0;
 }
 
-ret_t str_from_int(str_t* str, int32_t v) {
+ret_t str_from_int(str_t* str, int32_t value) {
   char buff[TK_NUM_MAX_LEN + 1];
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
 
-  return str_set(str, tk_itoa(buff, sizeof(buff), v));
+  return str_set(str, tk_itoa(buff, sizeof(buff), value));
 }
 
-ret_t str_from_float(str_t* str, double v) {
+ret_t str_from_uint32(str_t* str, uint32_t value) {
+  char num[32] = {0};
+  tk_snprintf(num, sizeof(num) - 1, "%u", value);
+
+  return str_set(str, num);
+}
+
+ret_t str_from_float(str_t* str, double value) {
   char buff[TK_NUM_MAX_LEN + 1];
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
 
-  return str_set(str, tk_ftoa(buff, sizeof(buff), v));
+  return str_set(str, tk_ftoa(buff, sizeof(buff), value));
 }
 
-ret_t str_from_value(str_t* str, const value_t* v) {
-  return_value_if_fail(str != NULL && v != NULL, RET_BAD_PARAMS);
+ret_t str_from_value(str_t* str, const value_t* value) {
+  return_value_if_fail(str != NULL && value != NULL, RET_BAD_PARAMS);
 
-  if (v->type == VALUE_TYPE_STRING) {
-    return str_set(str, value_str(v));
-  } else if (v->type == VALUE_TYPE_WSTRING) {
-    return str_from_wstr(str, value_wstr(v));
-  } else if (v->type == VALUE_TYPE_FLOAT || v->type == VALUE_TYPE_FLOAT32 ||
-             v->type == VALUE_TYPE_DOUBLE) {
-    return str_from_float(str, value_float(v));
-  } else if (v->type == VALUE_TYPE_BOOL) {
-    return str_set(str, value_bool(v) ? "true" : "false");
+  if (value->type == VALUE_TYPE_STRING) {
+    return str_set(str, value_str(value));
+  } else if (value->type == VALUE_TYPE_WSTRING) {
+    return str_from_wstr(str, value_wstr(value));
+  } else if (value->type == VALUE_TYPE_FLOAT || value->type == VALUE_TYPE_FLOAT32 ||
+             value->type == VALUE_TYPE_DOUBLE) {
+    return str_from_float(str, value_float(value));
+  } else if (value->type == VALUE_TYPE_BOOL) {
+    return str_set(str, value_bool(value) ? "true" : "false");
   } else {
-    return str_from_int(str, value_int(v));
+    return str_from_int(str, value_int(value));
   }
 }
 

@@ -386,31 +386,61 @@ ret_t str_encode_xml_entity_with_len(str_t* str, const char* text, uint32_t len)
  * @method str_from_int
  * 用整数初始化字符串。
  * @param {str_t*} str str对象。
- * @param {int32_t} v 整数。
+ * @param {int32_t} value 整数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t str_from_int(str_t* str, int32_t v);
+ret_t str_from_int(str_t* str, int32_t value);
+
+/**
+ * @method str_from_uint32
+ * 用整数初始化字符串。
+ * @param {str_t*} str str对象。
+ * @param {uint32_t} value 整数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_from_uint32(str_t* str, uint32_t value);
+
+/**
+ * @method str_from_int64
+ * 用整数初始化字符串。
+ * @param {str_t*} str str对象。
+ * @param {int64_t} value 整数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_from_int64(str_t* str, int64_t value);
+
+/**
+ * @method str_from_uint64
+ * 用整数初始化字符串。
+ * @param {str_t*} str str对象。
+ * @param {uint64_t} value 整数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_from_uint64(str_t* str, uint64_t value);
 
 /**
  * @method str_from_float
  * 用浮点数初始化字符串。
  * @param {str_t*} str str对象。
- * @param {double} v 浮点数。
+ * @param {double} value 浮点数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t str_from_float(str_t* str, double v);
+ret_t str_from_float(str_t* str, double value);
 
 /**
  * @method str_from_value
  * 用value初始化字符串。
  * @param {str_t*} str str对象。
- * @param {value_t} v value。
+ * @param {value_t} value value。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t str_from_value(str_t* str, const value_t* v);
+ret_t str_from_value(str_t* str, const value_t* value);
 
 /**
  * @method str_from_wstr
@@ -437,21 +467,21 @@ ret_t str_from_wstr_with_len(str_t* str, const wchar_t* wstr, uint32_t len);
  * @method str_to_int
  * 将字符串转成整数。
  * @param {str_t*} str str对象。
- * @param {int32_t*} v 用于返回整数。
+ * @param {int32_t*} value 用于返回整数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t str_to_int(str_t* str, int32_t* v);
+ret_t str_to_int(str_t* str, int32_t* value);
 
 /**
  * @method str_to_float
  * 将字符串转成浮点数。
  * @param {str_t*} str str对象。
- * @param {double*} v 用于返回浮点数。
+ * @param {double*} value 用于返回浮点数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t str_to_float(str_t* str, double* v);
+ret_t str_to_float(str_t* str, double* value);
 
 /**
  * @method str_encode_hex

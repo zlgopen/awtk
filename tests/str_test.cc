@@ -1,4 +1,5 @@
 ﻿#include "tkc/str.h"
+#include "tkc/utils.h"
 #include "tkc/object_default.h"
 #include "gtest/gtest.h"
 #include <string>
@@ -607,6 +608,38 @@ TEST(Str, encode_xml_entity) {
 
   ASSERT_EQ(str_encode_xml_entity(s, "\"a<b>c\"&&\"a<b>c\"&&"), RET_OK);
   ASSERT_EQ(str_eq(s, "&quot;a&lt;b&gt;c&quot;&amp;&amp;&quot;a&lt;b&gt;c&quot;&amp;&amp;"), TRUE);
+
+  str_reset(s);
+}
+
+TEST(Str, from) {
+  str_t str;
+  str_t* s = NULL;
+  s = str_init(&str, 0);
+
+  ASSERT_EQ(str_from_int(s, 123), RET_OK);
+  ASSERT_EQ(str_eq(s, "123"), TRUE);
+  
+  ASSERT_EQ(str_from_int(s, -123), RET_OK);
+  ASSERT_EQ(str_eq(s, "-123"), TRUE);
+  
+  ASSERT_EQ(str_from_uint32(s, 123), RET_OK);
+  ASSERT_EQ(str_eq(s, "123"), TRUE);
+  
+  ASSERT_EQ(str_from_uint32(s, 0xffffffff), RET_OK);
+  ASSERT_EQ(tk_atoul(s->str), 0xffffffff); 
+
+  ASSERT_EQ(str_from_int64(s, 1234), RET_OK);
+  ASSERT_EQ(str_eq(s, "1234"), TRUE);
+  
+  ASSERT_EQ(str_from_int64(s, -1234), RET_OK);
+  ASSERT_EQ(str_eq(s, "-1234"), TRUE);
+  
+  ASSERT_EQ(str_from_uint64(s, 12345), RET_OK);
+  ASSERT_EQ(str_eq(s, "12345"), TRUE);
+  
+  ASSERT_EQ(str_from_float(s, 1.1), RET_OK);
+  ASSERT_STREQ(s->str, "1.100000");
 
   str_reset(s);
 }
