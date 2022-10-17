@@ -57,6 +57,7 @@ END_C_DECLS
 #define APP_RES_ROOT NULL
 #endif /*APP_RES_ROOT*/
 
+#include "base/custom_keys.inc"
 #include "base/asset_loader_zip.h"
 
 #ifdef USE_GUI_MAIN
@@ -200,8 +201,6 @@ int main(int argc, char* argv[]) {
   }
 #endif /*WITH_LCD_PORTRAIT*/
 
-
-
 #ifdef APP_LCD_ORIENTATION
   if (system_info()->app_type != APP_SIMULATOR) {
 #if defined(APP_ENABLE_FAST_LCD_PORTRAIT)
@@ -236,9 +235,12 @@ int main(int argc, char* argv[]) {
 #if defined(APP_DEFAULT_LANGUAGE) && defined(APP_DEFAULT_COUNTRY)
   locale_info_change(locale_info(), APP_DEFAULT_LANGUAGE, APP_DEFAULT_COUNTRY);
 #endif /*APP_DEFAULT_LANGUAGE and APP_DEFAULT_LANGUAGE*/
+  custom_keys_init();
   application_init();
   tk_run();
   application_exit();
+  custom_keys_deinit();
+  
   GLOBAL_EXIT();
   tk_exit();
 

@@ -27,7 +27,7 @@
 BEGIN_C_DECLS
 
 typedef struct _key_type_value_t {
-  const char* name;
+  char* name;
   uint32_t type;
   uint32_t value;
 } key_type_value_t;

@@ -2,6 +2,7 @@
 #include "base/enums.h"
 #include "gtest/gtest.h"
 #include "base/assets_manager.h"
+#include "base/custom_keys.inc"
 
 TEST(Enums, basic) {
   ASSERT_EQ(asset_type_find("style"), asset_type_find_by_value(ASSET_TYPE_STYLE));
@@ -19,7 +20,7 @@ TEST(Enums, keys) {
 
 TEST(Enums, custom_keys) {
   static const key_type_value_t custom_keys[] = {
-    {"CUSTOM1", 0, TK_KEY_RETURN},
+      {(char*)"CUSTOM1", 0, TK_KEY_RETURN},
   };
   ASSERT_EQ(keys_type_find("CUSTOM1") == NULL, TRUE);
 
@@ -28,4 +29,12 @@ TEST(Enums, custom_keys) {
 
   keys_type_set_custom_keys(NULL, 0);
   ASSERT_EQ(keys_type_find("CUSTOM1") == NULL, TRUE);
+}
+
+TEST(Enums, custom_keys_load) {
+  uint32_t nr = 0;
+  key_type_value_t* custom_keys = keys_type_custom_keys_load(&nr);
+  ASSERT_EQ(custom_keys != NULL || nr == 0, TRUE);
+
+  keys_type_custom_keys_unload(custom_keys, nr);
 }

@@ -26,6 +26,7 @@
 #include "base/input_method.h"
 #include "base/window_animator.h"
 #include "base/assets_manager.h"
+#include "conf_io/conf_json.h"
 
 static const key_type_value_t window_closable_name_value[] = {
     {"yes", 0, WINDOW_CLOSABLE_YES},
@@ -404,15 +405,14 @@ const key_type_value_t* keys_type_find(const char* name) {
   return_value_if_fail(name != NULL, NULL);
 
   memset(fixed_name, 0x00, sizeof(fixed_name));
+  tk_normalize_key_name(name, fixed_name);
 
   if (s_custom_keys_type_name_value != NULL) {
-    ret = find_item(s_custom_keys_type_name_value, s_custom_keys_type_name_value_nr,
-                    tk_normalize_key_name(name, fixed_name));
+    ret = find_item(s_custom_keys_type_name_value, s_custom_keys_type_name_value_nr, fixed_name);
   }
 
   if (ret == NULL) {
-    ret = find_item(keys_type_name_value, ARRAY_SIZE(keys_type_name_value),
-                    tk_normalize_key_name(name, fixed_name));
+    ret = find_item(keys_type_name_value, ARRAY_SIZE(keys_type_name_value), fixed_name);
   }
 
   return ret;
@@ -436,7 +436,7 @@ const key_type_value_t* keys_type_find_by_value(uint32_t value) {
 ret_t keys_type_set_custom_keys(const key_type_value_t* table, uint32_t nr) {
   s_custom_keys_type_name_value = table;
   s_custom_keys_type_name_value_nr = nr;
-
+  log_debug("Set custom keys : %p, nr = %d\n", table, nr);
   return RET_OK;
 }
 
