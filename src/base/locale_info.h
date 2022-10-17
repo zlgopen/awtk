@@ -57,10 +57,11 @@ struct _locale_info_t {
    */
   assets_manager_t* assets_manager;
 
+  /*private*/
+  char* name;
+  int32_t refcount;
   const asset_info_t* strs;
-
   emitter_t* emitter;
-
   locale_info_tr_t fallback_tr;
 };
 
@@ -180,6 +181,53 @@ ret_t locale_info_set_fallback_tr(locale_info_t* locale_info, locale_info_tr_t t
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t locale_info_destroy(locale_info_t* locale_info);
+
+/**
+ * @class locale_infos_t
+ * @annotation ["fake"]
+ * 在某些情况下，需要多个资源管理器。比如在手表系统里，每个应用或表盘，可能放在独立的资源包中，
+ * 此时优先加载应用自己的资源，如果没有就加载系统的资源。
+ */
+
+/**
+ * @method locale_infos_ref
+ * 获取指定小应用程序(applet)的locale_info。
+ * @annotation ["constructor"]
+ * @param {const char*} name 小应用程序(applet)的名称。
+ *
+ * @return {locale_info_t*} 返回locale_info对象。
+ */
+locale_info_t* locale_infos_ref(const char* name);
+
+/**
+ * @method locale_infos_unref
+ * 释放指定小应用程序(applet)的locale_info。
+ * @annotation ["deconstructor"]
+ * @param {locale_info_t*} locale_info locale_info对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t locale_infos_unref(locale_info_t* locale_info);
+
+/**
+ * @method locale_infos_change
+ * 设置全部locale_info的当前国家和语言。
+ * @annotation ["scriptable"]
+ * @param {char*} language 语言。
+ * @param {char*} country 国家或地区。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t locale_infos_change(const char* language, const char* country);
+
+/**
+ * @method locale_infos_reload_all
+ * 重新加载全部字符串资源。
+ * @annotation ["scriptable"]
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t locale_infos_reload_all(void);
 
 typedef struct _str_pair_t {
   uint32_t key;

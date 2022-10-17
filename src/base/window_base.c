@@ -29,6 +29,7 @@
 #include "base/font_manager.h"
 #include "base/image_manager.h"
 #include "base/assets_manager.h"
+#include "base/locale_info.h"
 #include "base/window_manager.h"
 #include "base/widget_vtable.h"
 
@@ -160,7 +161,11 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
     }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LOCALE_INFO)) {
-    value_set_pointer(v, (void*)(locale_info()));
+    if (window_base->locale_info != NULL) {
+      value_set_pointer(v, (void*)(window_base->locale_info));
+    } else {
+      value_set_pointer(v, (void*)(locale_info()));
+    }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_FONT_MANAGER)) {
     if (window_base->font_manager != NULL) {
@@ -243,6 +248,7 @@ static ret_t window_base_set_applet_name(widget_t* widget, const char* applet_na
     assets_managers_unref(window_base->assets_manager);
     image_managers_unref(window_base->image_manager);
     font_managers_unref(window_base->font_manager);
+    locale_infos_unref(window_base->locale_info);
   }
 
   if (TK_STR_IS_EMPTY(applet_name)) {
@@ -252,6 +258,7 @@ static ret_t window_base_set_applet_name(widget_t* widget, const char* applet_na
     window_base->assets_manager = assets_managers_ref(applet_name);
     window_base->image_manager = image_managers_ref(applet_name);
     window_base->font_manager = font_managers_ref(applet_name);
+    window_base->locale_info = locale_infos_ref(applet_name);
   }
 
   return RET_OK;

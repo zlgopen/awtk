@@ -685,7 +685,7 @@ ret_t widget_set_theme(widget_t* widget, const char* name) {
 
     font_managers_unload_all();
     image_managers_unload_all();
-    locale_info_reload(locale_info);
+    locale_infos_reload_all();
     assets_managers_set_theme(name);
     widget_reset_canvas(widget);
 

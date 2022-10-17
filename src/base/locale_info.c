@@ -25,10 +25,6 @@
 
 static locale_info_t* s_locale = NULL;
 
-static locale_info_t* locale_info_init(locale_info_t* locale_info, const char* language,
-                                       const char* country);
-static ret_t locale_info_deinit(locale_info_t* locale_info);
-
 locale_info_t* locale_info() {
   return s_locale;
 }
@@ -39,20 +35,23 @@ ret_t locale_info_set(locale_info_t* locale_info) {
   return RET_OK;
 }
 
-locale_info_t* locale_info_create(const char* language, const char* country) {
-  locale_info_t* locale_info = TKMEM_ZALLOC(locale_info_t);
-
-  return locale_info_init(locale_info, language, country);
-}
-
-static locale_info_t* locale_info_init(locale_info_t* locale_info, const char* language,
-                                       const char* country) {
+static locale_info_t* locale_info_init(locale_info_t* locale_info, const char* language, const char* country, assets_manager_t* am) {
   return_value_if_fail(locale_info != NULL, NULL);
 
+  locale_info->assets_manager = am;
   locale_info->emitter = emitter_create();
   locale_info_change(locale_info, language, country);
 
   return locale_info;
+}
+
+static locale_info_t* locale_info_create_internal(const char* language, const char* country, assets_manager_t* am) {
+  locale_info_t* locale_info = TKMEM_ZALLOC(locale_info_t);
+  return locale_info_init(locale_info, language, country, am);
+}
+
+locale_info_t* locale_info_create(const char* language, const char* country) {
+  return locale_info_create_internal(language, country, NULL);
 }
 
 const char* locale_info_tr(locale_info_t* locale_info, const char* text) {
@@ -141,19 +140,6 @@ ret_t locale_info_off(locale_info_t* locale_info, uint32_t id) {
   return emitter_off(locale_info->emitter, id);
 }
 
-static ret_t locale_info_deinit(locale_info_t* locale_info) {
-  assets_manager_t* am = locale_info_get_assets_manager(locale_info);
-  return_value_if_fail(locale_info != NULL, RET_OK);
-
-  emitter_destroy(locale_info->emitter);
-  if (locale_info->strs != NULL) {
-    assets_manager_unref(am, locale_info->strs);
-  }
-  memset(locale_info, 0x00, sizeof(locale_info_t));
-
-  return RET_OK;
-}
-
 ret_t locale_info_set_assets_manager(locale_info_t* locale_info, assets_manager_t* assets_manager) {
   return_value_if_fail(locale_info != NULL && assets_manager != NULL, RET_BAD_PARAMS);
 
@@ -170,11 +156,117 @@ ret_t locale_info_set_fallback_tr(locale_info_t* locale_info, locale_info_tr_t t
   return RET_OK;
 }
 
+static ret_t locale_info_deinit(locale_info_t* locale_info) {
+  assets_manager_t* am = locale_info_get_assets_manager(locale_info);
+  return_value_if_fail(locale_info != NULL, RET_OK);
+
+  emitter_destroy(locale_info->emitter);
+  if (locale_info->strs != NULL) {
+    assets_manager_unref(am, locale_info->strs);
+  }
+  memset(locale_info, 0x00, sizeof(locale_info_t));
+
+  return RET_OK;
+}
+
 ret_t locale_info_destroy(locale_info_t* locale_info) {
   return_value_if_fail(locale_info != NULL, RET_BAD_PARAMS);
 
   locale_info_deinit(locale_info);
   TKMEM_FREE(locale_info);
+
+  return RET_OK;
+}
+
+static darray_t* s_locale_infos = NULL;
+
+static int locale_info_cmp_by_name(locale_info_t* locale_info, const char* name) {
+  if (tk_str_eq(locale_info->name, name)) {
+    return 0;
+  }
+  return -1;
+}
+
+static const char* locale_info_fallback_tr_default(const char* text) {
+  return locale_info_tr(locale_info(), text);
+}
+
+locale_info_t* locale_infos_ref(const char* name) {
+  locale_info_t* info = NULL;
+  return_value_if_fail(name != NULL, NULL);
+
+  if (s_locale_infos == NULL) {
+    s_locale_infos =
+        darray_create(3, (tk_destroy_t)locale_info_destroy, (tk_compare_t)locale_info_cmp_by_name);
+  }
+  return_value_if_fail(s_locale_infos != NULL, NULL);
+
+  info = (locale_info_t*)darray_find(s_locale_infos, (void*)name);
+  if (info == NULL) {
+    assets_manager_t* am;
+    locale_info_t* ginfo = locale_info();
+    return_value_if_fail(ginfo != NULL, NULL);
+
+    am = assets_managers_ref(name);
+    info = locale_info_create_internal(ginfo->language, ginfo->country, am);
+    return_value_if_fail(info != NULL, NULL);
+
+    info->name = tk_strdup(name);
+    locale_info_set_fallback_tr(info, locale_info_fallback_tr_default);
+    assets_manager_set_locale_info(am, info);
+    darray_push(s_locale_infos, info);
+  } else {
+    info->refcount++;
+  }
+
+  return info;
+}
+
+ret_t locale_infos_unref(locale_info_t* locale_info) {
+  return_value_if_fail(locale_info != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(s_locale_infos != NULL, RET_BAD_PARAMS);
+  assert(locale_info->refcount > 0);
+
+  if (locale_info->refcount == 1) {
+    assets_manager_t* am = locale_info->assets_manager;
+    assets_manager_set_locale_info(am, NULL);
+    assets_managers_unref(am);
+    darray_remove(s_locale_infos, locale_info);
+    if (s_locale_infos->size == 0) {
+      darray_destroy(s_locale_infos);
+      s_locale_infos = NULL;
+    }
+  } else {
+    locale_info->refcount--;
+  }
+
+  return RET_OK;
+}
+
+ret_t locale_infos_change(const char* language, const char* country) {
+  locale_info_change(locale_info(), language, country);
+
+  if (s_locale_infos != NULL) {
+    uint32_t i = 0;
+    for (i = 0; i < s_locale_infos->size; i++) {
+      locale_info_t* info = (locale_info_t*)darray_get(s_locale_infos, i);
+      locale_info_change(info, language, country);
+    }
+  }
+
+  return RET_OK;
+}
+
+ret_t locale_infos_reload_all(void) {
+  locale_info_reload(locale_info());
+
+  if (s_locale_infos != NULL) {
+    uint32_t i = 0;
+    for (i = 0; i < s_locale_infos->size; i++) {
+      locale_info_t* info = (locale_info_t*)darray_get(s_locale_infos, i);
+      locale_info_reload(info);
+    }
+  }
 
   return RET_OK;
 }

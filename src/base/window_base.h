@@ -181,6 +181,15 @@ typedef struct _window_base_t {
    */
 
   /**
+   * @property {locale_info_t*} locale_info
+   * @annotation ["get_prop"]
+   * 获取多国语言字符串管理器对象。
+   *
+   * >
+   * 把多国语言字符串管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载资源资源的问题。
+   */
+
+  /**
    * @property {char*} move_focus_prev_key
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 向前移动焦点的键值。
@@ -268,6 +277,7 @@ typedef struct _window_base_t {
   font_manager_t* font_manager;
   assets_manager_t* assets_manager;
   image_manager_t* image_manager;
+  locale_info_t* locale_info;
 } window_base_t;
 
 /**
