@@ -1,6 +1,8 @@
 <window anim_hint="htranslate">
-  <slide_view x="0" y="0" w="100%" h="100%" style="dot" loop="true">
+  <slide_view name="test" x="0" y="0" w="100%" h="100%" style="dot" loop="true">
     <?include filename="slide_view.inc" ?>
   </slide_view>
-  <slide_indicator x="0" y="b" w="100%" h="20" style="icon"/>
+  <slide_indicator x="c" y="b" w="70%" h="20" style="icon"/>
+  <button name="next_page:test" x="0" y="b" w="15%" h="20" text="next"/>
+  <button name="prev_page:test" x="r" y="b" w="15%" h="20" text="perv"/>
 </window>

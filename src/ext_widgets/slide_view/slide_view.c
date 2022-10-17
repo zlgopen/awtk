@@ -919,8 +919,8 @@ static ret_t slide_view_set_active_animate(widget_t* widget, uint32_t active) {
   }
   old_active = slide_view->active;
 
-  if (old_active < active ||
-      (slide_view->loop && active == 0 && old_active == widget->children->size - 1)) {
+  if ((old_active < active && !(slide_view->loop && old_active == 0 && active == widget->children->size - 1)) ||
+     (slide_view->loop && active == 0 && old_active == widget->children->size - 1)) {
     slide_view->prev = widget_get_child(widget, old_active);
     slide_view->next = widget_get_child(widget, active);
     xoffset_end = slide_view->vertical ? 0 : -widget->w;

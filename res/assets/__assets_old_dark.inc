@@ -204,6 +204,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char data_com_zlg_app_json[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_gpinyin_dat[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_test_dat[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_conf_test_json[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char data_custom_keys_json[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_suggest_words_zh_cn_dat[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_test_json[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_a_b_c_any[]);
@@ -721,6 +722,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, data_gpinyin_dat);
   assets_manager_add(am, data_test_dat);
   assets_manager_add(am, data_conf_test_json);
+  assets_manager_add(am, data_custom_keys_json);
   assets_manager_add(am, data_suggest_words_zh_cn_dat);
   assets_manager_add(am, data_test_json);
   assets_manager_add(am, data_a_b_c_any);

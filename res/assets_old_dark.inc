@@ -204,6 +204,7 @@
 #include "assets/default/inc/data/gpinyin_dat.data"
 #include "assets/default/inc/data/test_dat.data"
 #include "assets/default/inc/data/conf_test_json.data"
+#include "assets/default/inc/data/custom_keys_json.data"
 #include "assets/default/inc/data/suggest_words_zh_cn_dat.data"
 #include "assets/default/inc/data/test_json.data"
 #include "assets/default/inc/data/a_b_c_any.data"
@@ -721,6 +722,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, data_gpinyin_dat);
   assets_manager_add(am, data_test_dat);
   assets_manager_add(am, data_conf_test_json);
+  assets_manager_add(am, data_custom_keys_json);
   assets_manager_add(am, data_suggest_words_zh_cn_dat);
   assets_manager_add(am, data_test_json);
   assets_manager_add(am, data_a_b_c_any);

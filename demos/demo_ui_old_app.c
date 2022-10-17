@@ -910,22 +910,22 @@ static ret_t on_idle_scroll_view_set_virtual_wh(const idle_info_t* idle) {
 
 static ret_t on_click_next_page(void* ctx, event_t* e) {
   const char* name = (const char*)ctx;
-  widget_t* scroll_view = widget_lookup(window_manager(), name, TRUE);
-  int32_t curr_page = widget_get_prop_int(scroll_view, WIDGET_PROP_CURR_PAGE, 0);
-  int32_t max_page = widget_get_prop_int(scroll_view, WIDGET_PROP_PAGE_MAX_NUMBER, 0);
+  widget_t* pages = widget_lookup(window_manager(), name, TRUE);
+  int32_t curr_page = widget_get_prop_int(pages, WIDGET_PROP_CURR_PAGE, 0);
+  int32_t max_page = widget_get_prop_int(pages, WIDGET_PROP_PAGE_MAX_NUMBER, 0);
   int32_t next_page = (curr_page + 1) % max_page;
 
-  return widget_set_prop_int(scroll_view, WIDGET_PROP_CURR_PAGE, next_page);
+  return widget_set_prop_int(pages, WIDGET_PROP_CURR_PAGE, next_page);
 }
 
 static ret_t on_click_prev_page(void* ctx, event_t* e) {
   const char* name = (const char*)ctx;
-  widget_t* scroll_view = widget_lookup(window_manager(), name, TRUE);
-  int32_t curr_page = widget_get_prop_int(scroll_view, WIDGET_PROP_CURR_PAGE, 0);
-  int32_t max_page = widget_get_prop_int(scroll_view, WIDGET_PROP_PAGE_MAX_NUMBER, 0);
-  int32_t next_page = curr_page == 0 ? max_page : (curr_page - 1) % max_page;
+  widget_t* pages = widget_lookup(window_manager(), name, TRUE);
+  int32_t curr_page = widget_get_prop_int(pages, WIDGET_PROP_CURR_PAGE, 0);
+  int32_t max_page = widget_get_prop_int(pages, WIDGET_PROP_PAGE_MAX_NUMBER, 0);
+  int32_t next_page = curr_page == 0 ? max_page - 1 : (curr_page - 1) % max_page;
 
-  return widget_set_prop_int(scroll_view, WIDGET_PROP_CURR_PAGE, next_page);
+  return widget_set_prop_int(pages, WIDGET_PROP_CURR_PAGE, next_page);
 }
 
 static ret_t install_one(void* ctx, const void* iter) {
