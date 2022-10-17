@@ -150,6 +150,7 @@ static ret_t list_view_on_pointer_enter(list_view_t* list_view) {
 static ret_t list_view_on_event(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
   list_view_t* list_view = LIST_VIEW(widget);
+  keyboard_type_t keyboard_type = system_info()->keyboard_type;
   return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
 
   switch (e->type) {
@@ -165,17 +166,20 @@ static ret_t list_view_on_event(widget_t* widget, event_t* e) {
       } else if (evt->key == TK_KEY_PAGEUP) {
         scroll_view_scroll_delta_to(list_view->scroll_view, 0, -widget->h, TK_ANIMATING_TIME);
         ret = RET_STOP;
-      } else if (evt->key == TK_KEY_UP) {
-        uint32_t item_height = tk_max(list_view->item_height, list_view->default_item_height);
-        scroll_view_scroll_delta_to(list_view->scroll_view, 0, -item_height, TK_ANIMATING_TIME);
-        ret = RET_STOP;
-      } else if (evt->key == TK_KEY_DOWN) {
-        uint32_t item_height = tk_max(list_view->item_height, list_view->default_item_height);
-        scroll_view_scroll_delta_to(list_view->scroll_view, 0, item_height, TK_ANIMATING_TIME);
-        ret = RET_STOP;
+      } else if (keyboard_type == KEYBOARD_NORMAL) {
+        if (evt->key == TK_KEY_UP) {
+          uint32_t item_height = tk_max(list_view->item_height, list_view->default_item_height);
+          scroll_view_scroll_delta_to(list_view->scroll_view, 0, -item_height, TK_ANIMATING_TIME);
+          ret = RET_STOP;
+        } else if (evt->key == TK_KEY_DOWN) {
+          uint32_t item_height = tk_max(list_view->item_height, list_view->default_item_height);
+          scroll_view_scroll_delta_to(list_view->scroll_view, 0, item_height, TK_ANIMATING_TIME);
+          ret = RET_STOP;
+        }
       }
       break;
     }
+    case EVT_KEY_UP :
     case EVT_POINTER_UP: {
       pointer_event_t* evt = (pointer_event_t*)e;
       list_view_on_pointer_up(list_view, evt);
@@ -272,18 +276,16 @@ static ret_t list_view_on_scroll_view_scroll(widget_t* widget, int32_t xoffset, 
 
 static ret_t list_view_on_scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end,
                                                 int32_t yoffset_end, int32_t duration) {
+  int32_t value = 0;
   list_view_t* list_view = LIST_VIEW(widget->parent);
   return_value_if_fail(widget != NULL && list_view != NULL, RET_BAD_PARAMS);
 
-  if (scroll_bar_is_mobile(list_view->scroll_bar)) {
-    int32_t value = scroll_view_to_scroll_bar(list_view, yoffset_end);
+  (void)xoffset_end;
+  value = scroll_view_to_scroll_bar(list_view, yoffset_end);
 
-    emitter_disable(list_view->scroll_bar->emitter);
-    scroll_bar_scroll_to(list_view->scroll_bar, value, duration);
-    emitter_enable(list_view->scroll_bar->emitter);
-
-    (void)xoffset_end;
-  }
+  emitter_disable(list_view->scroll_bar->emitter);
+  scroll_bar_scroll_to(list_view->scroll_bar, value, duration);
+  emitter_enable(list_view->scroll_bar->emitter);
 
   return RET_OK;
 }
