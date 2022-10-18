@@ -235,11 +235,11 @@ int main(int argc, char* argv[]) {
 #if defined(APP_DEFAULT_LANGUAGE) && defined(APP_DEFAULT_COUNTRY)
   locale_info_change(locale_info(), APP_DEFAULT_LANGUAGE, APP_DEFAULT_COUNTRY);
 #endif /*APP_DEFAULT_LANGUAGE and APP_DEFAULT_LANGUAGE*/
-  custom_keys_init();
+  custom_keys_init(TRUE);
   application_init();
   tk_run();
   application_exit();
-  custom_keys_deinit();
+  custom_keys_deinit(TRUE);
   
   GLOBAL_EXIT();
   tk_exit();

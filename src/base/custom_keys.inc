@@ -6,7 +6,7 @@
 
 #ifndef CUSTOM_KEYS_FILEPATH
 #define CUSTOM_KEYS_FILEPATH "asset://custom_keys.json"
-#endif/*CUSTOM_KEYS_FILEPATH*/
+#endif /*CUSTOM_KEYS_FILEPATH*/
 
 #endif /*WITH_SDL*/
 
@@ -15,7 +15,7 @@
 static uint32_t s_custom_keys_nr = 0;
 static key_type_value_t* s_custom_keys = NULL;
 
-static key_type_value_t* keys_type_custom_keys_load(uint32_t* nr) {
+static key_type_value_t* custom_keys_load(uint32_t* nr) {
   key_type_value_t* ret = NULL;
   tk_object_t* conf = NULL;
   return_value_if_fail(nr != NULL, NULL);
@@ -45,7 +45,7 @@ static key_type_value_t* keys_type_custom_keys_load(uint32_t* nr) {
   return ret;
 }
 
-static ret_t keys_type_custom_keys_unload(key_type_value_t* table, uint32_t nr) {
+static ret_t custom_keys_unload(key_type_value_t* table, uint32_t nr) {
   return_value_if_fail(table != NULL || nr == 0, RET_BAD_PARAMS);
 
   if (table != NULL) {
@@ -59,21 +59,32 @@ static ret_t keys_type_custom_keys_unload(key_type_value_t* table, uint32_t nr) 
   return RET_OK;
 }
 
-static ret_t custom_keys_init(void) {
-  s_custom_keys = keys_type_custom_keys_load(&s_custom_keys_nr);
-  keys_type_set_custom_keys(s_custom_keys, s_custom_keys_nr);
-
-  return RET_OK;
+static void custom_keys_init(bool_t set) {
+  s_custom_keys = custom_keys_load(&s_custom_keys_nr);
+  if (set) {
+    keys_type_set_custom_keys(s_custom_keys, s_custom_keys_nr);
+  }
 }
 
-static ret_t custom_keys_deinit(void) {
-  keys_type_set_custom_keys(NULL, 0);
-  keys_type_custom_keys_unload(s_custom_keys, s_custom_keys_nr);
+static void custom_keys_deinit(bool_t set) {
+  if (set) {
+    keys_type_set_custom_keys(NULL, 0);
+  }
+  custom_keys_unload(s_custom_keys, s_custom_keys_nr);
+  s_custom_keys = NULL;
+  s_custom_keys_nr = 0;
+}
 
-  return RET_OK;
+static inline const key_type_value_t* custom_keys(void) {
+  return s_custom_keys;
+}
+
+static inline uint32_t custom_keys_nr(void) {
+  return s_custom_keys_nr;
 }
 #else
-#define custom_keys_init()
-#define custom_keys_deinit()
+#define custom_keys_init(set)
+#define custom_keys_deinit(set)
+#define custom_keys() (NULL)
+#define custom_keys_nr() (0)
 #endif /*CUSTOM_KEYS_FILEPATH*/
-

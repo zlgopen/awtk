@@ -26,7 +26,6 @@
 #include "base/input_method.h"
 #include "base/window_animator.h"
 #include "base/assets_manager.h"
-#include "conf_io/conf_json.h"
 
 static const key_type_value_t window_closable_name_value[] = {
     {"yes", 0, WINDOW_CLOSABLE_YES},
@@ -439,4 +438,3 @@ ret_t keys_type_set_custom_keys(const key_type_value_t* table, uint32_t nr) {
   log_debug("Set custom keys : %p, nr = %d\n", table, nr);
   return RET_OK;
 }
-
