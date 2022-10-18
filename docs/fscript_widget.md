@@ -323,9 +323,15 @@ window_quit()
 #### 原型
 
 ```js
+tr(widget, before_tr_str) => after_tr_str
+widget_tr(widget, before_tr_str) => after_tr_str
 tr(before_tr_str) => after_tr_str
 widget_tr(before_tr_str) => after_tr_str
 ```
+
+* widget 用作锚点，后面的路径相对于该 widget。'self' 表示当前控件，'parent' 表示当前控件的父控件，'window' 表示当前的窗口，'window\_manager' 表示窗口管理器。
+* 若不传入 widget，则默认为 'self'。
+* 返回翻译后的字符串。
 
 #### 示例
 

@@ -104,8 +104,17 @@ static widget_t* to_widget(fscript_t* fscript, const value_t* v) {
 }
 
 static ret_t func_tr(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_dup_str(result, locale_info_tr(locale_info(), value_str(args->args)));
+  locale_info_t* info = NULL;
+  widget_t* widget = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
+  if (args->size > 1) {
+    widget = to_widget(fscript, args->args);
+  }
+  FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
+  info = widget_get_locale_info(widget);
+  FSCRIPT_FUNC_CHECK(info != NULL, RET_BAD_PARAMS);
+
+  value_dup_str(result, locale_info_tr(info, value_str(args->args)));
 
   return RET_OK;
 }
