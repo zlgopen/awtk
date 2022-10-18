@@ -94,6 +94,7 @@ static ret_t switch_scroll_to(widget_t* widget, int32_t xoffset_end) {
 }
 
 static ret_t switch_on_pointer_up(switch_t* aswitch, pointer_event_t* e) {
+  ret_t ret = RET_OK;
   velocity_t* v = NULL;
   int32_t xoffset_end = 0;
   int32_t min_xoffset = 0;
@@ -110,7 +111,7 @@ static ret_t switch_on_pointer_up(switch_t* aswitch, pointer_event_t* e) {
   if (e->x == aswitch->xdown) {
     /*click*/
     pointer_event_t click;
-    widget_dispatch(widget, pointer_event_init(&click, EVT_CLICK, widget, e->x, e->y));
+    ret = widget_dispatch(widget, pointer_event_init(&click, EVT_CLICK, widget, e->x, e->y));
   } else {
     if (xoffset_end < max_xoffset / 2) {
       xoffset_end = min_xoffset;
@@ -121,7 +122,7 @@ static ret_t switch_on_pointer_up(switch_t* aswitch, pointer_event_t* e) {
     switch_scroll_to(widget, xoffset_end);
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t switch_on_event(widget_t* widget, event_t* e) {
@@ -152,7 +153,7 @@ static ret_t switch_on_event(widget_t* widget, event_t* e) {
       if (!aswitch->point_down_aborted) {
         pointer_event_t* evt = (pointer_event_t*)e;
         switch_on_pointer_move(aswitch, evt);
-        switch_on_pointer_up(aswitch, evt);
+        ret = switch_on_pointer_up(aswitch, evt);
         widget_ungrab(widget->parent, widget);
       } else {
         aswitch->xoffset = aswitch->xoffset_save;
