@@ -31,10 +31,12 @@ TEST(Enums, custom_keys) {
   ASSERT_EQ(keys_type_find("CUSTOM1") == NULL, TRUE);
 }
 
-TEST(Enums, custom_keys_load) {
-  uint32_t nr = 0;
-  key_type_value_t* custom_keys = keys_type_custom_keys_load(&nr);
-  ASSERT_EQ(custom_keys != NULL || nr == 0, TRUE);
+TEST(Enums, custom_keys_init) {
+  ASSERT_EQ(custom_keys() == NULL && custom_keys_nr() == 0, TRUE);
 
-  keys_type_custom_keys_unload(custom_keys, nr);
+  custom_keys_init(TRUE);
+  ASSERT_EQ(custom_keys() != NULL || custom_keys_nr() == 0, TRUE);
+
+  custom_keys_deinit(TRUE);
+  ASSERT_EQ(custom_keys() == NULL && custom_keys_nr() == 0, TRUE);
 }

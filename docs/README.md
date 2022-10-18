@@ -97,6 +97,7 @@
 * [如何启用编辑器的上下文菜单](how_to_enable_edit_context_menu.md)
 * [如何设置下拉选择框 (combo box) 弹出窗口/列表项的样式](how_to_set_style_of_combo_box_item.md)
 * [如何支持软键盘按钮预览](how_to_enable_keyboard_preview.md)
+* [如何设置自定义键值](how_to_set_custom_keys.md)
 
 ### 3. 内部原理
 * [AWTK 脚本绑定原理](script_binding.md)
