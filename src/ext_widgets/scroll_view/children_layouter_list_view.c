@@ -302,7 +302,7 @@ static ret_t children_layouter_list_view_for_list_view_children_layout_w(
   w = scroll_view_w - 2 * l->x_margin;
 
   children = (widget_t**)children_for_layout->elms;
-  if (children != NULL) {
+  if (children_for_layout->size > 0 && children != NULL) {
     win = widget_get_window(children[0]);
     if (cols <= 1) {
       if (l->animating_time && win && !win->loading) {
