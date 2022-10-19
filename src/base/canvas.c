@@ -2014,6 +2014,7 @@ vgcanvas_t* canvas_get_vgcanvas(canvas_t* c) {
     vgcanvas_begin_path(vg);
     vgcanvas_set_text_align(vg, "left");
     vgcanvas_set_text_baseline(vg, "top");
+    vgcanvas_set_global_alpha(vg, c->global_alpha / 255.0f);
   }
 
   return vg;

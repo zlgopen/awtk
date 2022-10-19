@@ -46,7 +46,6 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
           if (image->draw_type == IMAGE_DRAW_ICON || image->draw_type == IMAGE_DRAW_CENTER) {
             vgcanvas_save(vg);
             image_transform(widget, c);
-            vgcanvas_set_global_alpha(vg, c->lcd->global_alpha / 255.0f);
             if (image->draw_type == IMAGE_DRAW_ICON) {
               vgcanvas_draw_icon(vg, &bitmap, 0, 0, bitmap.w, bitmap.h, 0, 0, widget->w, widget->h);
             } else {
