@@ -1,4 +1,8 @@
 # 最新动态
+
+2022/10/20
+  * 增加tk\_object\_to\_json函数。
+
 2022/10/19
   * 删除了 image 控件中的 vg 修改，并完善了 canvas\_get\_vgcanvas 接口(感谢雨欣提供补丁)
 

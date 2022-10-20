@@ -848,3 +848,78 @@ tk_object_t* tk_object_get_child_object(tk_object_t* obj, const char* path,
 
   return NULL;
 }
+
+typedef struct _json_info_t {
+  str_t* json;
+  uint32_t indent;
+  uint32_t level;
+  bool_t oneline;
+  uint32_t index;
+} json_info_t;
+
+static ret_t to_json(void* ctx, const void* data) {
+  json_info_t* info = (json_info_t*)ctx;
+  named_value_t* nv = (named_value_t*)data;
+  str_t* s = info->json;
+  value_t* v = &(nv->value);
+  bool_t oneline = info->oneline;
+
+  if (info->index > 0) {
+    str_append(s, ",");
+  }
+
+  if (!oneline) {
+    str_append(s, "\n");
+  }
+
+  info->index++;
+
+  if (!oneline) {
+    str_append_n_chars(s, ' ', info->indent * info->level);
+  }
+
+  str_append_json_str(s, nv->name);
+  str_append(s, ": ");
+
+  switch (v->type) {
+    case VALUE_TYPE_STRING: {
+      str_append_json_str(s, value_str(v));
+      break;
+    }
+    case VALUE_TYPE_OBJECT: {
+      tk_object_to_json(value_object(v), s, info->indent + 1, info->level, oneline);
+      break;
+    }
+    default: {
+      char buff[64] = {0};
+      str_append_json_str(s, value_str_ex(v, buff, sizeof(buff)));
+      break;
+    }
+  }
+
+  return RET_OK;
+}
+
+ret_t tk_object_to_json(tk_object_t* obj, str_t* json, uint32_t indent, uint32_t level,
+                        bool_t oneline) {
+  json_info_t info = {json, indent, level, oneline, 0};
+  return_value_if_fail(obj != NULL && json != NULL, RET_BAD_PARAMS);
+
+  if (!oneline) {
+    str_append_n_chars(json, ' ', indent * level);
+  }
+
+  str_append(json, "{");
+  info.level++;
+  tk_object_foreach_prop(obj, to_json, &info);
+  if (!oneline) {
+    str_append(json, "\n");
+  }
+
+  if (!oneline) {
+    str_append_n_chars(json, ' ', indent * level);
+  }
+  str_append(json, "}");
+
+  return RET_OK;
+}

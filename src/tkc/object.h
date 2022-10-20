@@ -947,6 +947,7 @@ ret_t tk_object_set_prop_int64(tk_object_t* obj, const char* name, int64_t value
  * @return {uint64_t} 返回指定属性的uint64类型的值。
  */
 uint64_t tk_object_get_prop_uint64(tk_object_t* obj, const char* name, uint64_t defval);
+
 /**
  * @method tk_object_set_prop_uint64
  * 设置指定属性的uint64类型的值。
@@ -959,6 +960,20 @@ uint64_t tk_object_get_prop_uint64(tk_object_t* obj, const char* name, uint64_t 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t tk_object_set_prop_uint64(tk_object_t* obj, const char* name, uint64_t value);
+
+/**
+ * @method tk_object_to_json
+ * 转换成JSON字符串。
+ *
+ * @param {tk_object_t*} obj object对象。
+ * @param {str_t*} json 返回JSON字符串。
+ * @param {uint32_t} indent 缩进空格数。
+ * @param {uint32_t} level 初始缩进层级。
+ * @param {bool_t} oneline 是否不换行。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_object_to_json(tk_object_t* obj, str_t* json, uint32_t indent, uint32_t level, bool_t oneline);
 
 /**
  * @method tk_object_get_child_object
