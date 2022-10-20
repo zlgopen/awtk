@@ -135,4 +135,12 @@ static ret_t on_cmd_line(int argc, char* argv[]) {
 #include "awtk_main.inc"
 ```
 
+* 关闭命令行窗口
+
+```c
+#define APP_ENABLE_CONSOLE FALSE
+
+#include "awtk_main.inc"
+```
+
 > 请参考[完整的例子](https://github.com/zlgopen/awtk-jerryscript/blob/master/src/c/main.c)
