@@ -3,6 +3,7 @@
 2022/10/20
   * 增加tk\_object\_to\_json函数。
   * custom\_keys增加ENABLE\_CUSTOM\_KEYS宏(感谢兆坤提供补丁)
+  * 增加宏APP\_ENABLE\_CONSOLE控制命令窗口(感谢雨欣提供补丁)
 
 2022/10/19
   * 删除了 image 控件中的 vg 修改，并完善了 canvas\_get\_vgcanvas 接口(感谢雨欣提供补丁)

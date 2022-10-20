@@ -57,6 +57,10 @@ END_C_DECLS
 #define APP_RES_ROOT NULL
 #endif /*APP_RES_ROOT*/
 
+#ifndef APP_ENABLE_CONSOLE
+#define APP_ENABLE_CONSOLE TRUE
+#endif /*APP_ENABLE_CONSOLE*/
+
 #include "base/custom_keys.inc"
 #include "base/asset_loader_zip.h"
 
@@ -121,7 +125,7 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdli
   str_t str;
   int argc = 1;
   char* argv[MAX_ARGV];
-  bool_t enable_console = TRUE;
+  bool_t enable_console = APP_ENABLE_CONSOLE;
   int32_t lcd_w = LCD_WIDTH;
   int32_t lcd_h = LCD_HEIGHT;
 
