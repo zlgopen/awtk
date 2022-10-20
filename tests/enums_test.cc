@@ -2,6 +2,8 @@
 #include "base/enums.h"
 #include "gtest/gtest.h"
 #include "base/assets_manager.h"
+
+#define ENABLE_CUSTOM_KEYS TRUE
 #include "base/custom_keys.inc"
 
 TEST(Enums, basic) {

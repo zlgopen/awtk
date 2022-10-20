@@ -2,15 +2,19 @@
 #include "enums.h"
 #include "conf_io/conf_json.h"
 
+#ifndef ENABLE_CUSTOM_KEYS
+#define ENABLE_CUSTOM_KEYS FALSE
+#endif /* ENABLE_CUSTOM_KEYS */
+
 #if defined(WITH_SDL) || defined(LINUX)
 
 #ifndef CUSTOM_KEYS_FILEPATH
 #define CUSTOM_KEYS_FILEPATH "asset://custom_keys.json"
 #endif /*CUSTOM_KEYS_FILEPATH*/
 
-#endif /*WITH_SDL*/
+#endif /* defined(WITH_SDL) || defined(LINUX) */
 
-#ifdef CUSTOM_KEYS_FILEPATH
+#if ENABLE_CUSTOM_KEYS && defined(CUSTOM_KEYS_FILEPATH)
 
 static uint32_t s_custom_keys_nr = 0;
 static key_type_value_t* s_custom_keys = NULL;
@@ -87,4 +91,4 @@ static inline uint32_t custom_keys_nr(void) {
 #define custom_keys_deinit(set)
 #define custom_keys() (NULL)
 #define custom_keys_nr() (0)
-#endif /*CUSTOM_KEYS_FILEPATH*/
+#endif /* ENABLE_CUSTOM_KEYS && defined(CUSTOM_KEYS_FILEPATH) */
