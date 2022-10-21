@@ -2,6 +2,7 @@
 
 2022/10/21
   * 完善line number高亮行(方便awblock用于显示断点)
+  * 完善fscript array的文档(感谢雨欣提供补丁)
 
 2022/10/20
   * 增加tk\_object\_to\_json函数。

@@ -160,8 +160,7 @@ var b = array_shift(a);
 array_get(array, index) => value
 ```
 
-> 1. index 为负数时，从后往前取。比如-1 表示最后一个元素。
-> 2. 此外，也可以通过 array.[index] 的方式访问数组元素。
+> index 为负数时，从后往前取。比如-1 表示最后一个元素。
 
 #### 示例
 
@@ -169,7 +168,6 @@ array_get(array, index) => value
 var a = array_create_with_str("2,1,3", ",", "int");
 var b = array_get(a, 0);
 var c = array_get(a, -1);
-var d = a.[1]
 ```
 
 ### 9.array\_set
