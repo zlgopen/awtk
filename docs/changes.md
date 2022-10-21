@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/10/21
+  * 完善line number高亮行(方便awblock用于显示断点)
+
 2022/10/20
   * 增加tk\_object\_to\_json函数。
   * custom\_keys增加ENABLE\_CUSTOM\_KEYS宏(感谢兆坤提供补丁)

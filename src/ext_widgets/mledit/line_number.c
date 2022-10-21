@@ -48,17 +48,21 @@ static ret_t line_number_do_paint_self(widget_t* widget, canvas_t* c) {
   line_number_t* line_number = LINE_NUMBER(widget);
   int32_t yoffset = line_number->yoffset;
   int32_t line_height = line_number->line_height;
+  style_t* style = widget->astyle;
   return_value_if_fail(line_height > 0, RET_BAD_PARAMS);
 
-  if (style_is_valid(widget->astyle)) {
+  if (style_is_valid(style)) {
     uint32_t line_index = 0;
     color_t trans = color_init(0, 0, 0, 0);
-    widget_prepare_text_style_ex(widget, c, trans, NULL, TK_DEFAULT_FONT_SIZE, ALIGN_H_RIGHT,
-                                 ALIGN_V_TOP);
+    widget_prepare_text_style_ex(widget, c, trans, NULL, TK_DEFAULT_FONT_SIZE, 
+      ALIGN_H_RIGHT, ALIGN_V_TOP);
     color_t active_bg =
-        style_get_color(widget->astyle, LINE_NUMBER_STYLE_ACTIVE_LINE_BG_COLOR, trans);
+        style_get_color(style, LINE_NUMBER_STYLE_ACTIVE_LINE_BG_COLOR, trans);
     color_t highlight_bg =
-        style_get_color(widget->astyle, LINE_NUMBER_STYLE_HIGHLIGHT_LINE_BG_COLOR, trans);
+        style_get_color(style, LINE_NUMBER_STYLE_HIGHLIGHT_LINE_BG_COLOR, trans);
+    const char* highlight_shape = 
+        style_get_str(style, LINE_NUMBER_STYLE_HIGHLIGHT_LINE_SHAPE,
+        LINE_NUMBER_STYLE_HIGHLIGHT_LINE_SHAPE_CIRCLE);
 
     while (1) {
       if (line > 0) {
@@ -83,8 +87,24 @@ static ret_t line_number_do_paint_self(widget_t* widget, canvas_t* c) {
         canvas_fill_rect(c, r.x, r.y, r.w, r.h);
       } else if (line_number_is_highlight_line(widget, line) && highlight_bg.rgba.a) {
         canvas_set_fill_color(c, highlight_bg);
-        canvas_fill_rect(c, r.x, r.y, r.w, r.h);
+        if (highlight_shape[0] == 'c') {
+          rect_t save_r = r;
+          int32_t size = tk_min(r.w, r.h)/2;
+          int32_t dx = (r.w - size)/2;
+          int32_t dy = (r.h - size)/2;
+          int32_t rr = size/2;
+
+          r.x += dx;
+          r.y += dy;
+          r.w = size;
+          r.h = size;
+          canvas_fill_rounded_rect(c, &r, &r, &highlight_bg, rr); 
+          r = save_r;
+        } else {
+          canvas_fill_rect(c, r.x, r.y, r.w, r.h);
+        }
       }
+
       wstr_set_utf8(text, str);
       canvas_draw_text_in_rect(c, text->str, text->size, &r);
 

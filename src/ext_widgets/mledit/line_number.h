@@ -208,6 +208,10 @@ bool_t line_number_is_highlight_line(widget_t* widget, int32_t line);
 
 #define LINE_NUMBER_STYLE_ACTIVE_LINE_BG_COLOR "active_line_bg_color"
 #define LINE_NUMBER_STYLE_HIGHLIGHT_LINE_BG_COLOR "highlight_line_bg_color"
+#define LINE_NUMBER_STYLE_HIGHLIGHT_LINE_SHAPE "highlight_line_shape"
+
+#define LINE_NUMBER_STYLE_HIGHLIGHT_LINE_SHAPE_CIRCLE "circle"
+#define LINE_NUMBER_STYLE_HIGHLIGHT_LINE_SHAPE_RECT "rect"
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(line_number);
