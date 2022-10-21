@@ -551,23 +551,17 @@ static int32_t text_selector_get_yoffset_for_selected_index(text_selector_t* tex
   int32_t yoffset = 0;
   if (text_selector->loop_options) {
     int32_t options_nr = text_selector_count_options(WIDGET(text_selector));
-    int32_t n = options_nr >> 1;
-    int32_t d =
-        n - tk_abs(tk_abs(text_selector->selected_index - text_selector->last_selected_index) - n);
+    float_t middle = (float_t)options_nr / 2.0f;
+    float_t d_nr = tk_abs((float_t)text_selector->selected_index -
+                          (float_t)text_selector->last_selected_index);
+    int32_t move_nr = middle - tk_abs(d_nr - middle);
     yoffset = text_selector->yoffset;
-    if (text_selector->selected_index > text_selector->last_selected_index) {
-      if (text_selector->selected_index - d == text_selector->last_selected_index) {
-        yoffset += (d * item_height);
-      } else {
-        yoffset -= (d * item_height);
-      }
+
+    if ((text_selector->last_selected_index + move_nr) % options_nr ==
+        text_selector->selected_index) {
+      yoffset += (move_nr * item_height);
     } else {
-      if ((text_selector->last_selected_index + d + 1) % options_nr ==
-          text_selector->selected_index) {
-        yoffset += ((d + 1) * item_height);
-      } else {
-        yoffset -= (d * item_height);
-      }
+      yoffset -= (move_nr * item_height);
     }
   } else {
     yoffset = (text_selector->selected_index - mid_index) * item_height;
