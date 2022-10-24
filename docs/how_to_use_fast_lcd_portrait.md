@@ -1,65 +1,59 @@
 # 如何使用高效的屏幕旋转
 
-在实际的开发中，屏幕的选择会受到成本，供应商以及效果而影响，会导致横屏的应用无法使用横屏的屏幕，所以就需要高效的屏幕旋转功能来解决该问题。
+在实际的开发中，屏幕的选择会受到成本、供应商以及效果等因素的限制，某些情况下，需要旋转应用来适应屏幕。
 
-AWTK 默认提供了一种基于图像旋转的屏幕旋转功能，这一套逻辑优点是兼容性好，但是缺点就是效率比较低和吃内存。
+AWTK 默认提供了一种基于图像旋转的屏幕旋转功能，该功能的兼容性好，但是效率比较低，而且很吃资源和内存。
 
-现在提供一种全新的高效旋转机制来解决上面说的所有问题，同时保持高效（和没有旋转的运行效率几乎一样），但是由于这套机制兼容性比较差一点，对 lcd 层，vgcanvas 层和 g2d 的适配层的都有所要求，所以使用的时候需要注意一下。
+现在 AWTK 额外提供一种全新的高效旋转机制来解决上述问题，该机制能保持较高的效率（和没有旋转时的运行效率几乎一样），但兼容性比较差，需要满足以下条件才能使用：
 
-> 新的旋转机制是一套矢量计算的旋转机制，所以在底层绘图之前需要把相关的数据通过矢量计算转换，所以对 lcd 层，vgcanvas 层和 g2d 的适配层有要求。
+1. 开启 AWTK 提供的矢量画布 vgcanvas 功能，即定义宏 WITH_NANOVG_AGGE。
+2. LCD 适配层基于 Framebuffer 实现，调用 AWTK 提供的 lcd_mem_t 类型创建 lcd_t 对象。
+3. 如果开启 G2D 硬件加速，则需要自行实现 g2d_rotate_image_ex() 接口和 g2d_blend_image_rotate() 接口。
 
+> 注：高效旋转机制是基于矢量计算实现的，其原理是在底层绘图之前把相关的数据通过矢量计算进行转换。
 
-## 一、基本用法
+## 1 基本用法
 
-由于该机制需要 lcd 层和 vgcanvas 层配合，所以如果用户是使用 AWTK 提供了的 lcd 适配层（lcd_mem_XXX_create 的函数创建的 lcd ）和 vgcanvas 适配层（定义 WITH_NANOVG_AGGE 宏），则只需要定义 **WITH_FAST_LCD_PORTRAIT 宏**，以及在程序运行前调用 tk_enable_fast_lcd_portrait 函数设置开启高效屏幕旋转模式，然后在代码中调用 tk_set_lcd_orientation 函数就可以使用了。
+在满足上述条件时，使用高效旋转的步骤如下：
+
+1. 定义宏 WITH_FAST_LCD_PORTRAIT。
+2. 在 AWTK Designer 的项目设置中选择旋转角度并勾选"使用快速旋转模式"，**或者**在程序初始化时手动调用相关接口，代码如下：
 
 ```c
-/* awtk_global.h */
+ret_t application_init(void) {
+  tk_enable_fast_lcd_portrait(TRUE);           /* 使能高效旋转 */
+  tk_set_lcd_orientation(LCD_ORIENTATION_90);  /* 旋转 90 度 */
+  ......
 
-/**
- * @method tk_set_lcd_orientation
- * 设置屏幕的旋转方向(XXX:目前仅支持0度,90度,180度和270度，旋转方向为逆时针方向)。
- * @param {int} orientation 旋转方向。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t tk_set_lcd_orientation(lcd_orientation_t orientation);
-
-/**
- * @method tk_enable_fast_lcd_portrait
- * 设置是否开启快速旋转功能。（开启这个功能需要定义 WITH_FAST_LCD_PORTRAIT 宏）
- * 备注：需要在 tk_set_lcd_orientation 函数之前调用
- * @param {bool_t} enable 是否开启。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t tk_enable_fast_lcd_portrait(bool_t enable);
+  return RET_OK;
+}
 ```
 
-​但是如果用户重载 lcd 的 flush 的函数的话（主要是高效 lcd 旋转的话，在做 flush 的时候，不需要 image_rotate 调用旋转 fb 了，只需要调用 image_copy 函数直接拷贝就可以了），同时由于脏矩形的计算有所不同， 需要调用需要特殊处理一下，所以需要看一下的下面的代码说明。
+> 注：定义宏 WITH_FAST_LCD_PORTRAIT 只是把功能相关的代码编译到程序中，开启功能仍需调用 tk_enable_fast_lcd_portrait() 接口。
 
-​这里用 awtk-linux-fb 的代码来说明，如果修改用户重载的 flush 代码。
+### 1.1 重载 lcd 的 flush 函数
+
+在某些情况下，用户可能会重载 lcd 的 flush 的函数，与默认的旋转机制不同，开启高效旋转时，flush 函数中不需要调用 image_rotate() 接口来旋转图像，只需调用 image_copy() 接口直接拷贝图像即可，示例代码如下：
 
 ```c
 /* awtk-linux-fb/lcd_linux/lcd_linux_fb.c */
 
 static ret_t lcd_linux_flush(lcd_t* base, int fbid) {
-  /*...省略无关代码...*/
-  // get the merged dirty rects of current online buff, and then copy each small rects from offline fb
+  ......
+  /* 获取脏矩形列表 */
   dirty_rects = lcd_fb_dirty_rects_get_dirty_rects_by_fb(&(lcd->fb_dirty_rects_list), buff);
   if (dirty_rects != NULL && dirty_rects->nr > 0) {
     for (int i = 0; i < dirty_rects->nr; i++) {
       const rect_t* dr = (const rect_t*)dirty_rects->rects + i;
-#ifdef WITH_FAST_LCD_PORTRAIT
-      /* 由于效率旋转已经在绘图的时候已经处理了，所以在 flush 的时候，只需要根据脏矩形区域，直接把 offline_fb 的数据拷贝到 online_fb 上面。 */
+#ifdef WITH_FAST_LCD_PORTRAIT /* 开启高效旋转 */
       if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
-        /* 由于脏矩形的数据是根据未旋转的时候得到的，所以这里脏矩形需要旋转一下为旋转后的脏矩形数据，这里的 o 为 lcd 旋转角度 */
+        /* 旋转脏矩形 */
         rect_t rr = lcd_orientation_rect_rotate_by_anticlockwise(dr, o, lcd_get_width(base), lcd_get_height(base));
-        /* 根据旋转后的脏矩形数据，把 offline_fb 的数据拷贝到 online_fb 上面，就不在需要调用 image_rotate 函数来把图片旋转了，从而提高效率 */
+        /* 根据旋转后的脏矩形，把 offline_fb 的数据拷贝到 online_fb 上面 */
         image_copy(&online_fb, &offline_fb, &rr, rr.x, rr.y);
       } else 
 #endif
-      {
+      { /* 如果没开启高效旋转，则默认调用 image_rotate() 接口旋转图像 */
         if (o == LCD_ORIENTATION_0) {
           image_copy(&online_fb, &offline_fb, dr, dr->x, dr->y);
         } else {
@@ -67,37 +61,24 @@ static ret_t lcd_linux_flush(lcd_t* base, int fbid) {
         }
       }
     }
-   /*...省略无关代码...*/
+   ......
 }
 ```
 
-### 1.1 注意实现
+### 1.2 注意事项
 
-1. 为了可以高效贴图，所以贴图在加载到内存前就会被旋转到指定的角度了，所以使用  data 格式的位图时候需要提前调用脚本命令来生成资源。（最后一个参数为旋转角度，单位为角度，支持 0 度，90 度，180 度和 270 度）
+1. 为了高效贴图，打包资源时会先将图像数据旋转到指定角度（特指 data 类型的位图资源），建议采用 AWTK Designer 打包资源。
+2. 在支持图片解码功能（定义宏 WITH_STB_IMAGE）时，使用图片原始数据，支持动态旋转，但解码数据会消耗一定性能。
+3. 在不支持图片解码功能（没有定义宏 WITH_STB_IMAGE）时，使用 data 类型的位图资源，不支持动态旋转，打包资源时必须设置好旋转角度，并且与 LCD 旋转角度一致。
 
-```bash
-python .\scripts\update_res.py all x1 bgra+bgr565 0
-```
+## 2 移植高效旋转
 
-2. 如果 data 格式的位图的旋转角度为 0 度的话，可以支持动态 lcd 旋转，但是效率会下降，而使用文件系统或者 res 格式的位图数据则不会降低效率。
+在某些特殊情况下，用户会自行适配 lcd，vgcanvas 以及 g2d，此时需要在适配层中加入相关的代码，详见下文。
 
-3. 在没有定义 WITH_STB_IMAGE 宏（使用 data 格式的位图数据）的情况下，并且是位图旋转角度不为 0 度的话，是**不支持程序动态旋转**，需要在程序开始前就需要设置好旋转的角度，同时旋转角度应该和资源保持一致。
+在移植高效旋转需要先了解以下两个概念：
 
-4. 在使用的时候，需要特别注意 bitmap_t，lcd_t 和 graphic_buffer_t 类型是分为有**逻辑数据**和**真实的物理数据**的，所有的真实的物理数据只能通过接口获取，一般名称都会带有 **“physical”** 的字眼。
-
-5.  WITH_FAST_LCD_PORTRAIT 宏只是把功能增加到工程中，还需要用户自行调用 tk_enable_fast_lcd_portrait 来开启，如果没有调用 tk_enable_fast_lcd_portrait 函数的话，默认不启用，退化为以前就的 lcd 旋转方案。
-
-> 如果是使用 Desiger 工具的话，第 1 点和第 3 点都以及相关函数的调用都会处理好的，用户只要注意代码中动态 lcd 旋转的问题。
-
-## 二、功能移植
-
-由于在某些情况下，用户会自行适配 lcd， vgcanvas 或者 g2d，所以用户需要在自行适配的层中加入相关的代码既可。
-
-在贴图的时候，需要注意的是为了高效的贴图，所以贴图在加载到内存前就会被旋转到指定的角度了（又名为已旋转的贴图），如果 vgcanvas 层不支持显示旋转后的图片的话，需要定义**WITHOUT_FAST_LCD_PORTRAIT_FOR_IMAGE宏**，来让贴图不要旋转，如果贴图为 data 格式的位图数据话，这生成位图数据时候把 LCD_ORIENTATION 设置为 0 度。
-
-> 如果使用  data 格式的位图数据的话，屏幕的旋转角度一定要和图片旋转角度一致否则会出现断言。
-
-已旋转的贴图的旋转角度一般和 lcd 旋转的角度一致，为了高效贴图而不需要旋转贴图，以及以前的 bitmap->w，bitmap->h 和 bitmap->line_length 都为逻辑数据，逻辑数据则为图片原来未旋转时的数据，下列是获取位图的真实物理数据的接口：
+1. 图像的逻辑数据：指界面上显示出来的效果，可简单理解成图片原来未旋转时的逻辑尺寸，比如以前的 bitmap->w，bitmap->h 和 bitmap->line_length 都为逻辑数据。
+2. 图像的物理数据：指图片解码后在保存在内存中的数据，可简单理解成图片解码旋转后的在内存中的物理数据，通常使用 bitmap_get_physical_xxx() 接口获取，常用的接口声明如下：
 
 ```c
 /* awtk/base/bitmap.h */
@@ -133,9 +114,11 @@ uint32_t bitmap_get_physical_height(bitmap_t* bitmap);
 
 > 除了上述的接口，其他接口获取出来都是逻辑数据。
 
+在自行适配 lcd，vgcanvas 以及 g2d 时，如果需要支持高效旋转，在绘图时统一采用图像的**物理数据**即可，此外在使用脏矩形时也需要调用相关接口旋转脏矩形坐标，具体详见下文。
+
 ### 2.1 LCD 层适配
 
-  需要在各个的 lcd 层的绘图函数中加入坐标数据转化的机制，例如：
+需要在各个的 lcd 层的绘图函数中加入坐标数据转化的机制，例如：
 
 ```c
 /* awtk/lcd/lcd_mem.inc */
@@ -185,11 +168,13 @@ lcd 适配层一共需要适配下面的函数：（适配的思路可以查看 
 
 ### 2.2 VGCANVAS 层适配
 
-而 vgcanvas 层的适配和 lcd 层的适配基本是大同小异的都是适配绘图的函数就好了，但是**需要特别注意的就是贴图的旋转的问题**，因为有一些矢量画布库是不支持使用以及旋转的贴图。
+vgcanvas 层的适配和 lcd 层的适配大同小异，都是适配绘图函数即可，但是**需要特别注意的是贴图旋转的问题**，有一些矢量画布库是不支持旋转贴图的。
+
+> 注：为了高效贴图，图像数据在加载到内存前就会被旋转到指定的角度了（又称已旋转的贴图），如果 vgcanvas 层不支持显示旋转后的图片，则需要定义宏 WITHOUT_FAST_LCD_PORTRAIT_FOR_IMAGE，此时如果使用 data 位图数据，则打包资源时需要指定旋转角度为 0。
 
 ### 2.3 G2D 层适配
 
-而 g2d 层的适配其实主要是增加了两个适配函数：
+g2d 层的适配主要是增加了这两个适配函数：
 
 ```c
 /* awtk/base/g2d.h */

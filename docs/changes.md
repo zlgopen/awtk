@@ -2,6 +2,7 @@
 
 2022/10/24
   * 修复designer中勾选旋转但编译参数无效的问题(感谢兆坤提供补丁)
+  * 完善how_to_use_fast_lcd_portrait.md文档(感谢雨欣提供补丁)
 
 2022/10/21
   * 完善line number高亮行(方便awblock用于显示断点)
