@@ -47,10 +47,13 @@ def get_project_h(info, theme):
     return info['assets']['themes'][theme]['lcd']['height']
 
 def get_project_lcd_orientation(info, theme):
+    orientation = '0'
+    if 'lcdOrientation' in info['assets'] :
+        orientation = info['assets']['lcdOrientation']
     if 'orientation' in info['assets']['themes'][theme]['lcd'] :
         return info['assets']['themes'][theme]['lcd']['orientation']
     else :
-        return '0'
+        return orientation
 
 def get_project_theme(info):
     return info['assets']['activedTheme']

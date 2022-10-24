@@ -50,7 +50,7 @@ def use_theme_config_from_project_json():
         else :
             LCD_FAST_ROTATION_MODE = False
 
-    if LCD_ORIENTATION == None :
+    if LCD_ORIENTATION == '' :
         if 'lcdOrientation' in assets:
             LCD_ORIENTATION = assets['lcdOrientation']
         else :
