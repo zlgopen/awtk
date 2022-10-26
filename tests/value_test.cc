@@ -1086,3 +1086,21 @@ TEST(value, bit_and_or_xor) {
   ASSERT_EQ(value_bool(&r), FALSE);
 }
 
+TEST(value, abs) {
+  value_t v;
+  value_t o;
+  value_set_int(&v, -10);
+  ASSERT_EQ(value_abs(&v, &o), RET_OK);
+  ASSERT_EQ(o.type == v.type, TRUE);
+  ASSERT_EQ(value_int(&o), 10);
+
+  value_set_int8(&v, -10);
+  ASSERT_EQ(value_abs(&v, &o), RET_OK);
+  ASSERT_EQ(o.type == v.type, TRUE);
+  ASSERT_EQ(value_int8(&o), 10);
+  
+  value_set_int64(&v, -10);
+  ASSERT_EQ(value_abs(&v, &o), RET_OK);
+  ASSERT_EQ(o.type == v.type, TRUE);
+  ASSERT_EQ(value_int64(&o), 10);
+}

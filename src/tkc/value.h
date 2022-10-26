@@ -1047,6 +1047,16 @@ ret_t value_bit_and(value_t* v, value_t* other, value_t* result);
  */
 ret_t value_bit_xor(value_t* v, value_t* other, value_t* result);
 
+/**
+ * @method value_abs
+ * 将v取绝对值，并放入result对象。 
+ * @param {value_t*} v value对象(必须是整数类型)。
+ * @param {value_t*} result 返回结果的value对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_abs(value_t* v, value_t* result);
+
 END_C_DECLS
 
 #endif /*TK_VALUE_H*/
