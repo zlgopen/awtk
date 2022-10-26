@@ -1666,7 +1666,7 @@ ret_t value_abs(value_t* v, value_t* result) {
     }
     case VALUE_TYPE_UINT8: {
       uint8_t vv = value_uint8(v);
-      value_set_uint8(result, abs(vv));
+      value_set_uint8(result, (vv));
       break;
     }
     case VALUE_TYPE_INT16: {
@@ -1676,7 +1676,7 @@ ret_t value_abs(value_t* v, value_t* result) {
     }
     case VALUE_TYPE_UINT16: {
       uint16_t vv = value_uint16(v);
-      value_set_uint16(result, abs(vv));
+      value_set_uint16(result, (vv));
       break;
     }
     case VALUE_TYPE_INT32: {
@@ -1686,32 +1686,396 @@ ret_t value_abs(value_t* v, value_t* result) {
     }
     case VALUE_TYPE_UINT32: {
       uint32_t vv = value_uint32(v);
-      value_set_uint32(result, abs(vv));
+      value_set_uint32(result, (vv));
       break;
     }
     case VALUE_TYPE_INT64: {
       int64_t vv = value_int64(v);
-      value_set_int64(result, abs(vv));
+      value_set_int64(result, vv > 0 ? vv : -vv);
       break;
     }
     case VALUE_TYPE_UINT64: {
       uint64_t vv = value_uint64(v);
-      value_set_uint64(result, abs(vv));
+      value_set_uint64(result, (vv));
       break;
     }
     case VALUE_TYPE_FLOAT32: {
       uint64_t vv = value_float32(v);
-      value_set_float32(result, abs(vv));
+      value_set_float32(result, vv >= 0 ? vv : -vv);
       break;
     }
     case VALUE_TYPE_FLOAT: {
       uint64_t vv = value_float(v);
-      value_set_float(result, abs(vv));
+      value_set_float(result, vv >= 0 ? vv : -vv);
       break;
     }
     case VALUE_TYPE_DOUBLE: {
       uint64_t vv = value_double(v);
-      value_set_double(result, abs(vv));
+      value_set_double(result, vv >= 0 ? vv : -vv);
+      break;
+    }
+    default: {
+      ret = RET_BAD_PARAMS;
+      break;
+    }
+  }
+
+  return ret;
+}
+
+ret_t value_add(value_t* v, value_t* other, value_t* result) {
+  ret_t ret = RET_OK;
+  uint32_t type = 0;
+  return_value_if_fail(result != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(v != NULL && other != NULL, RET_BAD_PARAMS);
+
+  type = tk_max_int((int)(v->type), (int)(other->type));
+  switch (type) {
+    case VALUE_TYPE_BOOL: {
+      int8_t vv = value_bool(v) + value_bool(other);
+      value_set_int8(result, vv);
+      break;
+    }
+    case VALUE_TYPE_INT8: {
+      int16_t vv = value_int8(v) + value_int8(other);
+      if (vv >= INT8_MIN && vv <= INT8_MAX) {
+        value_set_int8(result, vv);
+      } else {
+        value_set_int16(result, vv);
+      }
+      break;
+    }
+    case VALUE_TYPE_UINT8: {
+      int16_t vv = value_uint8(v) + value_uint8(other);
+      if (vv >= 0 && vv <= UINT8_MAX) {
+        value_set_uint8(result, vv);
+      } else {
+        value_set_int16(result, vv);
+      }
+      break;
+    }
+    case VALUE_TYPE_INT16: {
+      int32_t vv = value_int16(v) + value_int16(other);
+      if (vv >= INT16_MIN && vv <= INT16_MAX) {
+        value_set_int16(result, vv);
+      } else {
+        value_set_int32(result, vv);
+      }
+      break;
+    }
+    case VALUE_TYPE_UINT16: {
+      int32_t vv = value_uint16(v) + value_uint16(other);
+      if (vv >= 0 && vv <= UINT16_MAX) {
+        value_set_uint16(result, vv);
+      } else {
+        value_set_int32(result, vv);
+      }
+      break;
+    }
+    case VALUE_TYPE_INT32: {
+      int64_t vv = value_int32(v) + value_int32(other);
+      if (vv >= INT32_MIN && vv <= INT32_MAX) {
+        value_set_int32(result, vv);
+      } else {
+        value_set_int64(result, vv);
+      }
+      break;
+    }
+    case VALUE_TYPE_UINT32: {
+      int64_t vv = value_uint32(v) + value_uint32(other);
+      if (vv >= 0 && vv <= UINT32_MAX) {
+        value_set_uint32(result, vv);
+      } else {
+        value_set_int64(result, vv);
+      }
+      break;
+    }
+    case VALUE_TYPE_INT64: {
+      int64_t vv = value_int64(v) + value_int64(other);
+      value_set_int64(result, vv);
+      break;
+    }
+    case VALUE_TYPE_UINT64: {
+      uint64_t vv = value_uint64(v) + value_uint64(other);
+      value_set_uint64(result, vv);
+      break;
+    }
+    case VALUE_TYPE_FLOAT32: {
+      double vv = value_float32(v) + value_float32(other);
+      value_set_float32(result, vv);
+      break;
+    }
+    case VALUE_TYPE_FLOAT:
+    case VALUE_TYPE_DOUBLE: {
+      double vv = value_double(v) + value_double(other);
+      value_set_double(result, vv);
+      break;
+    }
+    default: {
+      ret = RET_BAD_PARAMS;
+      break;
+    }
+  }
+
+  return ret;
+}
+
+ret_t value_sub(value_t* v, value_t* other, value_t* result) {
+  ret_t ret = RET_OK;
+  uint32_t type = 0;
+  return_value_if_fail(result != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(v != NULL && other != NULL, RET_BAD_PARAMS);
+
+  type = tk_max_int((int)(v->type), (int)(other->type));
+  switch (type) {
+    case VALUE_TYPE_BOOL: {
+      int8_t vv = value_bool(v) - value_bool(other);
+      value_set_int8(result, vv);
+      break;
+    }
+    case VALUE_TYPE_INT8: {
+      int16_t vv = value_int8(v) - value_int8(other);
+      if (vv >= INT8_MIN && vv <= INT8_MAX) {
+        value_set_int8(result, vv);
+      } else {
+        value_set_int16(result, vv);
+      }
+      break;
+    }
+    case VALUE_TYPE_UINT8: {
+      int16_t vv = value_uint8(v) - value_uint8(other);
+      if (vv >= 0 && vv <= UINT8_MAX) {
+        value_set_uint8(result, vv);
+      } else {
+        value_set_int16(result, vv);
+      }
+      break;
+    }
+    case VALUE_TYPE_INT16: {
+      int32_t vv = value_int16(v) - value_int16(other);
+      if (vv >= INT16_MIN && vv <= INT16_MAX) {
+        value_set_int16(result, vv);
+      } else {
+        value_set_int32(result, vv);
+      }
+      break;
+    }
+    case VALUE_TYPE_UINT16: {
+      int32_t vv = value_uint16(v) - value_uint16(other);
+      if (vv >= 0 && vv <= UINT16_MAX) {
+        value_set_uint16(result, vv);
+      } else {
+        value_set_int32(result, vv);
+      }
+      break;
+    }
+    case VALUE_TYPE_INT32: {
+      int64_t vv = value_int32(v) - value_int32(other);
+      if (vv >= INT32_MIN && vv <= INT32_MAX) {
+        value_set_int32(result, vv);
+      } else {
+        value_set_int64(result, vv);
+      }
+      break;
+    }
+    case VALUE_TYPE_UINT32: {
+      int64_t vv = value_uint32(v) - value_uint32(other);
+      if (vv >= 0 && vv <= UINT32_MAX) {
+        value_set_uint32(result, vv);
+      } else {
+        value_set_int64(result, vv);
+      }
+      break;
+    }
+    case VALUE_TYPE_INT64: {
+      int64_t vv = value_int64(v) - value_int64(other);
+      value_set_int64(result, vv);
+      break;
+    }
+    case VALUE_TYPE_UINT64: {
+      uint64_t vv = value_uint64(v) - value_uint64(other);
+      value_set_uint64(result, vv);
+      break;
+    }
+    case VALUE_TYPE_FLOAT32: {
+      double vv = value_float32(v) - value_float32(other);
+      value_set_float32(result, vv);
+      break;
+    }
+    case VALUE_TYPE_FLOAT:
+    case VALUE_TYPE_DOUBLE: {
+      double vv = value_double(v) - value_double(other);
+      value_set_double(result, vv);
+      break;
+    }
+    default: {
+      ret = RET_BAD_PARAMS;
+      break;
+    }
+  }
+
+  return ret;
+}
+
+ret_t value_mul(value_t* v, value_t* other, value_t* result) {
+  ret_t ret = RET_OK;
+  uint32_t type = 0;
+  return_value_if_fail(result != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(v != NULL && other != NULL, RET_BAD_PARAMS);
+
+  type = tk_max_int((int)(v->type), (int)(other->type));
+  switch (type) {
+    case VALUE_TYPE_BOOL: {
+      int8_t vv = value_bool(v) * value_bool(other);
+      value_set_int8(result, vv);
+      break;
+    }
+    case VALUE_TYPE_INT8: {
+      int16_t vv = value_int8(v) * value_int8(other);
+      if (vv >= INT8_MIN && vv <= INT8_MAX) {
+        value_set_int8(result, vv);
+      } else {
+        value_set_int16(result, vv);
+      }
+      break;
+    }
+    case VALUE_TYPE_UINT8: {
+      int16_t vv = value_uint8(v) * value_uint8(other);
+      if (vv >= 0 && vv <= UINT8_MAX) {
+        value_set_uint8(result, vv);
+      } else {
+        value_set_int16(result, vv);
+      }
+      break;
+    }
+    case VALUE_TYPE_INT16: {
+      int32_t vv = value_int16(v) * value_int16(other);
+      if (vv >= INT16_MIN && vv <= INT16_MAX) {
+        value_set_int16(result, vv);
+      } else {
+        value_set_int32(result, vv);
+      }
+      break;
+    }
+    case VALUE_TYPE_UINT16: {
+      int32_t vv = value_uint16(v) * value_uint16(other);
+      if (vv >= 0 && vv <= UINT16_MAX) {
+        value_set_uint16(result, vv);
+      } else {
+        value_set_int32(result, vv);
+      }
+      break;
+    }
+    case VALUE_TYPE_INT32: {
+      int64_t vv = value_int32(v) * value_int32(other);
+      if (vv >= INT32_MIN && vv <= INT32_MAX) {
+        value_set_int32(result, vv);
+      } else {
+        value_set_int64(result, vv);
+      }
+      break;
+    }
+    case VALUE_TYPE_UINT32: {
+      int64_t vv = value_uint32(v) * value_uint32(other);
+      if (vv >= 0 && vv <= UINT32_MAX) {
+        value_set_uint32(result, vv);
+      } else {
+        value_set_int64(result, vv);
+      }
+      break;
+    }
+    case VALUE_TYPE_INT64: {
+      int64_t vv = value_int64(v) * value_int64(other);
+      value_set_int64(result, vv);
+      break;
+    }
+    case VALUE_TYPE_UINT64: {
+      uint64_t vv = value_uint64(v) * value_uint64(other);
+      value_set_uint64(result, vv);
+      break;
+    }
+    case VALUE_TYPE_FLOAT32: {
+      double vv = value_float32(v) * value_float32(other);
+      value_set_float32(result, vv);
+      break;
+    }
+    case VALUE_TYPE_FLOAT:
+    case VALUE_TYPE_DOUBLE: {
+      double vv = value_double(v) * value_double(other);
+      value_set_double(result, vv);
+      break;
+    }
+    default: {
+      ret = RET_BAD_PARAMS;
+      break;
+    }
+  }
+
+  return ret;
+}
+
+ret_t value_div(value_t* v, value_t* other, value_t* result) {
+  ret_t ret = RET_OK;
+  uint32_t type = 0;
+  return_value_if_fail(result != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(v != NULL && other != NULL, RET_BAD_PARAMS);
+
+  type = tk_max_int((int)(v->type), (int)(other->type));
+  switch (type) {
+    case VALUE_TYPE_BOOL: {
+      int8_t vv = value_bool(v) / value_bool(other);
+      value_set_int8(result, vv);
+      break;
+    }
+    case VALUE_TYPE_INT8: {
+      int8_t vv = value_int8(v) / value_int8(other);
+      value_set_int8(result, vv);
+      break;
+    }
+    case VALUE_TYPE_UINT8: {
+      uint8_t vv = value_uint8(v) / value_uint8(other);
+      value_set_uint8(result, vv);
+      break;
+    }
+    case VALUE_TYPE_INT16: {
+      int16_t vv = value_int16(v) / value_int16(other);
+      value_set_int16(result, vv);
+      break;
+    }
+    case VALUE_TYPE_UINT16: {
+      uint16_t vv = value_uint16(v) / value_uint16(other);
+      value_set_uint16(result, vv);
+      break;
+    }
+    case VALUE_TYPE_INT32: {
+      int32_t vv = value_int32(v) / value_int32(other);
+      value_set_int32(result, vv);
+      break;
+    }
+    case VALUE_TYPE_UINT32: {
+      uint32_t vv = value_uint32(v) / value_uint32(other);
+      value_set_uint32(result, vv);
+      break;
+    }
+    case VALUE_TYPE_INT64: {
+      int64_t vv = value_int64(v) / value_int64(other);
+      value_set_int64(result, vv);
+      break;
+    }
+    case VALUE_TYPE_UINT64: {
+      uint64_t vv = value_uint64(v) / value_uint64(other);
+      value_set_uint64(result, vv);
+      break;
+    }
+    case VALUE_TYPE_FLOAT32: {
+      double vv = value_float32(v) / value_float32(other);
+      value_set_float32(result, vv);
+      break;
+    }
+    case VALUE_TYPE_FLOAT:
+    case VALUE_TYPE_DOUBLE: {
+      double vv = value_double(v) / value_double(other);
+      value_set_double(result, vv);
       break;
     }
     default: {
