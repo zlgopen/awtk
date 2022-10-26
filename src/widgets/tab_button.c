@@ -38,6 +38,7 @@ static ret_t tab_button_pointer_up_cleanup(widget_t* widget) {
 }
 
 static ret_t tab_button_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
   uint16_t type = e->type;
   tab_button_t* tab_button = TAB_BUTTON(widget);
   return_value_if_fail(tab_button != NULL && e != NULL, RET_BAD_PARAMS);
@@ -52,7 +53,7 @@ static ret_t tab_button_on_event(widget_t* widget, event_t* e) {
       pointer_event_t evt = *(pointer_event_t*)e;
       if (tab_button->pressed && widget_is_point_in(widget, evt.x, evt.y, FALSE)) {
         evt.e.type = EVT_CLICK;
-        widget_dispatch(widget, (event_t*)&(evt));
+        ret = widget_dispatch(widget, (event_t*)&(evt));
       }
       tab_button_pointer_up_cleanup(widget);
       break;
@@ -74,7 +75,7 @@ static ret_t tab_button_on_event(widget_t* widget, event_t* e) {
       break;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t tab_button_on_paint_self(widget_t* widget, canvas_t* c) {

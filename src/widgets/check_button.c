@@ -28,6 +28,7 @@
 static ret_t check_button_set_radio(widget_t* widget, bool_t radio);
 
 static ret_t check_button_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
   uint16_t type = e->type;
   check_button_t* check_button = CHECK_BUTTON(widget);
   return_value_if_fail(check_button != NULL, RET_BAD_PARAMS);
@@ -57,7 +58,7 @@ static ret_t check_button_on_event(widget_t* widget, event_t* e) {
       pointer_event_t* evt = (pointer_event_t*)e;
       if (check_button->pressed && widget_is_point_in(widget, evt->x, evt->y, FALSE)) {
         pointer_event_t click;
-        widget_dispatch(widget, pointer_event_init(&click, EVT_CLICK, widget, evt->x, evt->y));
+        ret = widget_dispatch(widget, pointer_event_init(&click, EVT_CLICK, widget, evt->x, evt->y));
       }
 
       check_button->pressed = FALSE;
@@ -75,7 +76,7 @@ static ret_t check_button_on_event(widget_t* widget, event_t* e) {
       break;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t check_button_on_paint_self(widget_t* widget, canvas_t* c) {

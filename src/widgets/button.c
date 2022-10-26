@@ -203,6 +203,7 @@ static ret_t button_draw_preview(void* ctx, event_t* e) {
 }
 
 static ret_t button_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
   uint16_t type = e->type;
   button_t* button = BUTTON(widget);
   return_value_if_fail(button != NULL && widget != NULL, RET_BAD_PARAMS);
@@ -242,7 +243,7 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
 
       if (button->pressed && widget_is_point_in(widget, click.x, click.y, FALSE)) {
         button_pointer_up_cleanup(widget);
-        widget_dispatch(widget, (event_t*)(&click));
+        ret = widget_dispatch(widget, (event_t*)(&click));
       } else {
         button_pointer_up_cleanup(widget);
       }
@@ -263,7 +264,7 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
       break;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t button_set_repeat(widget_t* widget, int32_t repeat) {

@@ -252,6 +252,7 @@ ret_t image_value_add_delta(widget_t* widget) {
 }
 
 static ret_t image_value_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
   uint16_t type = e->type;
   image_value_t* image_value = IMAGE_VALUE(widget);
   return_value_if_fail(image_value != NULL && widget != NULL, RET_BAD_PARAMS);
@@ -275,7 +276,7 @@ static ret_t image_value_on_event(widget_t* widget, event_t* e) {
       if (image_value->pressed) {
         pointer_event_t evt = *((pointer_event_t*)e);
         evt.e.type = EVT_CLICK;
-        widget_dispatch(widget, (event_t*)&evt);
+        ret = widget_dispatch(widget, (event_t*)&evt);
         image_value->pressed = FALSE;
       }
       widget_ungrab(widget->parent, widget);
@@ -285,7 +286,7 @@ static ret_t image_value_on_event(widget_t* widget, event_t* e) {
       break;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static const char* s_image_value_properties[] = {WIDGET_PROP_VALUE,

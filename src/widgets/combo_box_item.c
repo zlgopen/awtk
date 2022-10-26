@@ -27,6 +27,7 @@ static ret_t combo_box_item_on_paint_self(widget_t* widget, canvas_t* c) {
 }
 
 static ret_t combo_box_item_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
   uint16_t type = e->type;
   combo_box_item_t* combo_box_item = COMBO_BOX_ITEM(widget);
   return_value_if_fail(combo_box_item != NULL, RET_BAD_PARAMS);
@@ -48,7 +49,7 @@ static ret_t combo_box_item_on_event(widget_t* widget, event_t* e) {
         evt.e = event_init(EVT_CLICK, widget);
         evt.e.size = sizeof(pointer_event_t);
         combo_box_item_set_checked(widget, TRUE);
-        widget_dispatch(widget, (event_t*)&evt);
+        ret = widget_dispatch(widget, (event_t*)&evt);
       }
 
       combo_box_item->pressed = FALSE;
@@ -66,7 +67,7 @@ static ret_t combo_box_item_on_event(widget_t* widget, event_t* e) {
       break;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t combo_box_item_set_prop(widget_t* widget, const char* name, const value_t* v) {

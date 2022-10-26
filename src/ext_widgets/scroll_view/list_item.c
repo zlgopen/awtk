@@ -71,6 +71,7 @@ static ret_t list_item_remove_timer(widget_t* widget) {
 }
 
 static ret_t list_item_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
   uint16_t type = e->type;
   list_item_t* list_item = LIST_ITEM(widget);
   return_value_if_fail(list_item != NULL, RET_BAD_PARAMS);
@@ -108,7 +109,7 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
         pointer_event_t evt = *(pointer_event_t*)e;
         evt.e = event_init(EVT_CLICK, widget);
         evt.e.size = sizeof(pointer_event_t);
-        widget_dispatch(widget, (event_t*)&evt);
+        ret = widget_dispatch(widget, (event_t*)&evt);
       }
       list_item->dragged = FALSE;
       list_item->pressed = FALSE;
@@ -144,7 +145,7 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
       break;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t list_item_on_destroy(widget_t* widget) {

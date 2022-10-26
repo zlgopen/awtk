@@ -2,6 +2,7 @@
 
 2022/10/26
   * 增加函数value\_abs/value\_add/value\_sub/value\_mul/value\_div
+  * 统一修改支持EVT_CLICK事件的控件，让点击事件的回调函数返回值有效(感谢雨欣提供补丁)
 
 2022/10/24
   * 修复designer中勾选旋转但编译参数无效的问题(感谢兆坤提供补丁)

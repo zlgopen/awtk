@@ -24,6 +24,7 @@
 #include "base/image_base.h"
 
 ret_t image_base_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
   uint16_t type = e->type;
   image_base_t* image = IMAGE_BASE(widget);
   return_value_if_fail(image != NULL, RET_BAD_PARAMS);
@@ -42,7 +43,7 @@ ret_t image_base_on_event(widget_t* widget, event_t* e) {
       if (image->pressed) {
         if (image->clickable || image->selectable) {
           pointer_event_t evt;
-          widget_dispatch(widget, pointer_event_init(&evt, EVT_CLICK, widget, 0, 0));
+          ret = widget_dispatch(widget, pointer_event_init(&evt, EVT_CLICK, widget, 0, 0));
         }
 
         if (!image->selectable) {
@@ -75,7 +76,7 @@ ret_t image_base_on_event(widget_t* widget, event_t* e) {
       break;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t image_base_get_prop(widget_t* widget, const char* name, value_t* v) {
@@ -244,7 +245,8 @@ ret_t image_base_set_clickable(widget_t* widget, bool_t clickable) {
   return widget_invalidate(widget, NULL);
 }
 
-TK_DECL_VTABLE(image_base) = {.size = sizeof(image_base_t), .get_parent_vt = TK_GET_PARENT_VTABLE(widget)};
+TK_DECL_VTABLE(image_base) = {.size = sizeof(image_base_t),
+                              .get_parent_vt = TK_GET_PARENT_VTABLE(widget)};
 
 widget_t* image_base_cast(widget_t* widget) {
   return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, image_base), NULL);
