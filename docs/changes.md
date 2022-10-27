@@ -1,4 +1,6 @@
 # 最新动态
+2022/10/27
+  * 增加函数value\_mod/value_\_expt
 
 2022/10/26
   * 增加函数value\_abs/value\_add/value\_sub/value\_mul/value\_div
