@@ -1190,3 +1190,145 @@ TEST(value, add_int16) {
   ASSERT_EQ(o.type == v1.type, TRUE);
   ASSERT_EQ(value_int16(&o), 1);
 }
+
+TEST(value, add_int32) {
+  value_t v1;
+  value_t v2;
+  value_t o;
+  value_set_int32(&v1, -42);
+  value_set_int32(&v2, -10);
+
+  ASSERT_EQ(value_add(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type == v1.type, TRUE);
+  ASSERT_EQ(value_int32(&o), -52);
+
+  ASSERT_EQ(value_sub(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type == v1.type, TRUE);
+  ASSERT_EQ(value_int32(&o), -32);
+  
+  ASSERT_EQ(value_mul(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type == v1.type, TRUE);
+  ASSERT_EQ(value_int32(&o), 420);
+  
+  ASSERT_EQ(value_div(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type == v1.type, TRUE);
+  ASSERT_EQ(value_int32(&o), 4);
+}
+
+TEST(value, add_int64) {
+  value_t v1;
+  value_t v2;
+  value_t o;
+  value_set_int64(&v1, -42);
+  value_set_int64(&v2, -10);
+
+  ASSERT_EQ(value_add(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type == v1.type, TRUE);
+  ASSERT_EQ(value_int64(&o), -52);
+
+  ASSERT_EQ(value_sub(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type == v1.type, TRUE);
+  ASSERT_EQ(value_int64(&o), -32);
+  
+  ASSERT_EQ(value_mul(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type == v1.type, TRUE);
+  ASSERT_EQ(value_int64(&o), 420);
+  
+  ASSERT_EQ(value_div(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type == v1.type, TRUE);
+  ASSERT_EQ(value_int64(&o), 4);
+}
+
+TEST(value, add_double) {
+  value_t v1;
+  value_t v2;
+  value_t o;
+  value_set_double(&v1, -42);
+  value_set_double(&v2, -10);
+
+  ASSERT_EQ(value_add(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type == v1.type, TRUE);
+  ASSERT_EQ(value_double(&o), -52);
+
+  ASSERT_EQ(value_sub(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type == v1.type, TRUE);
+  ASSERT_EQ(value_double(&o), -32);
+  
+  ASSERT_EQ(value_mul(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type == v1.type, TRUE);
+  ASSERT_EQ(value_double(&o), 420);
+  
+  ASSERT_EQ(value_div(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type == v1.type, TRUE);
+  ASSERT_EQ(tk_fequal(value_double(&o), 4.2), TRUE);;
+}
+
+TEST(value, mod) {
+  value_t v1;
+  value_t v2;
+  value_t o;
+  value_set_int8(&v1, 10);
+  value_set_int8(&v2, 6);
+  ASSERT_EQ(value_mod(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type == v1.type, TRUE);
+  ASSERT_EQ(value_int8(&o), 4);
+
+  value_set_uint8(&v1, 10);
+  value_set_uint8(&v2, 6);
+  ASSERT_EQ(value_mod(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type == v1.type, TRUE);
+  ASSERT_EQ(value_uint8(&o), 4);
+
+  value_set_int16(&v1, 10);
+  value_set_int16(&v2, 6);
+  ASSERT_EQ(value_mod(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type == v1.type, TRUE);
+  ASSERT_EQ(value_int16(&o), 4);
+
+  value_set_uint16(&v1, 10);
+  value_set_uint16(&v2, 6);
+  ASSERT_EQ(value_mod(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type == v1.type, TRUE);
+  ASSERT_EQ(value_uint16(&o), 4);
+  
+  value_set_int32(&v1, 10);
+  value_set_int32(&v2, 6);
+  ASSERT_EQ(value_mod(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type == v1.type, TRUE);
+  ASSERT_EQ(value_int32(&o), 4);
+
+  value_set_uint32(&v1, 10);
+  value_set_uint32(&v2, 6);
+  ASSERT_EQ(value_mod(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type == v1.type, TRUE);
+  ASSERT_EQ(value_uint32(&o), 4);
+
+  value_set_int64(&v1, 10);
+  value_set_int64(&v2, 6);
+  ASSERT_EQ(value_mod(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type == v1.type, TRUE);
+  ASSERT_EQ(value_int64(&o), 4);
+
+  value_set_uint64(&v1, 10);
+  value_set_uint64(&v2, 6);
+  ASSERT_EQ(value_mod(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(o.type == v1.type, TRUE);
+  ASSERT_EQ(value_uint64(&o), 4);
+}
+
+TEST(value, expt) {
+  value_t v1;
+  value_t v2;
+  value_t o;
+  value_set_int8(&v1, 10);
+  value_set_int8(&v2, 3);
+  ASSERT_EQ(value_expt(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(tk_fequal(value_double(&o), 1000), TRUE);
+  ASSERT_EQ(o.type == VALUE_TYPE_DOUBLE, TRUE);
+
+  value_set_int8(&v1, 10);
+  value_set_int8(&v2, -3);
+  ASSERT_EQ(value_expt(&v1, &v2, &o), RET_OK);
+  ASSERT_EQ(tk_fequal(value_double(&o), 0.001), TRUE);
+  ASSERT_EQ(o.type == VALUE_TYPE_DOUBLE, TRUE);
+}

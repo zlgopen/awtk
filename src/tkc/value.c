@@ -1034,6 +1034,7 @@ ret_t value_lshift(value_t* v, value_t* result, uint32_t n) {
     }
     default: {
       ret = RET_BAD_PARAMS;
+      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
       break;
     }
   }
@@ -1080,6 +1081,7 @@ ret_t value_rshift(value_t* v, value_t* result, uint32_t n) {
     }
     default: {
       ret = RET_BAD_PARAMS;
+      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
       break;
     }
   }
@@ -1142,6 +1144,7 @@ ret_t value_lshift_r(value_t* v, value_t* result, uint32_t n) {
     }
     default: {
       ret = RET_BAD_PARAMS;
+      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
       break;
     }
   }
@@ -1204,6 +1207,7 @@ ret_t value_rshift_r(value_t* v, value_t* result, uint32_t n) {
     }
     default: {
       ret = RET_BAD_PARAMS;
+      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
       break;
     }
   }
@@ -1266,6 +1270,7 @@ ret_t value_get_bit(value_t* v, value_t* result, uint32_t n) {
     }
     default: {
       ret = RET_BAD_PARAMS;
+      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
       break;
     }
   }
@@ -1335,6 +1340,7 @@ ret_t value_set_bit(value_t* v, value_t* result, uint32_t n, bool_t bit) {
     }
     default: {
       ret = RET_BAD_PARAMS;
+      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
       break;
     }
   }
@@ -1397,6 +1403,7 @@ ret_t value_toggle_bit(value_t* v, value_t* result, uint32_t n) {
     }
     default: {
       ret = RET_BAD_PARAMS;
+      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
       break;
     }
   }
@@ -1456,6 +1463,7 @@ ret_t value_bit_not(value_t* v, value_t* result) {
     }
     default: {
       ret = RET_BAD_PARAMS;
+      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
       break;
     }
   }
@@ -1518,6 +1526,7 @@ ret_t value_bit_or(value_t* v, value_t* other, value_t* result) {
     }
     default: {
       ret = RET_BAD_PARAMS;
+      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
       break;
     }
   }
@@ -1580,6 +1589,7 @@ ret_t value_bit_and(value_t* v, value_t* other, value_t* result) {
     }
     default: {
       ret = RET_BAD_PARAMS;
+      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
       break;
     }
   }
@@ -1642,6 +1652,7 @@ ret_t value_bit_xor(value_t* v, value_t* other, value_t* result) {
     }
     default: {
       ret = RET_BAD_PARAMS;
+      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
       break;
     }
   }
@@ -1716,6 +1727,7 @@ ret_t value_abs(value_t* v, value_t* result) {
     }
     default: {
       ret = RET_BAD_PARAMS;
+      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
       break;
     }
   }
@@ -1773,21 +1785,13 @@ ret_t value_add(value_t* v, value_t* other, value_t* result) {
       break;
     }
     case VALUE_TYPE_INT32: {
-      int64_t vv = value_int32(v) + value_int32(other);
-      if (vv >= INT32_MIN && vv <= INT32_MAX) {
-        value_set_int32(result, vv);
-      } else {
-        value_set_int64(result, vv);
-      }
+      int32_t vv = value_int32(v) + value_int32(other);
+      value_set_int32(result, vv);
       break;
     }
     case VALUE_TYPE_UINT32: {
-      int64_t vv = value_uint32(v) + value_uint32(other);
-      if (vv >= 0 && vv <= UINT32_MAX) {
-        value_set_uint32(result, vv);
-      } else {
-        value_set_int64(result, vv);
-      }
+      uint32_t vv = value_uint32(v) + value_uint32(other);
+      value_set_uint32(result, vv);
       break;
     }
     case VALUE_TYPE_INT64: {
@@ -1813,6 +1817,7 @@ ret_t value_add(value_t* v, value_t* other, value_t* result) {
     }
     default: {
       ret = RET_BAD_PARAMS;
+      log_debug("%s not supported type:%d\n", __FUNCTION__, type);
       break;
     }
   }
@@ -1870,21 +1875,13 @@ ret_t value_sub(value_t* v, value_t* other, value_t* result) {
       break;
     }
     case VALUE_TYPE_INT32: {
-      int64_t vv = value_int32(v) - value_int32(other);
-      if (vv >= INT32_MIN && vv <= INT32_MAX) {
-        value_set_int32(result, vv);
-      } else {
-        value_set_int64(result, vv);
-      }
+      int32_t vv = value_int32(v) - value_int32(other);
+      value_set_int32(result, vv);
       break;
     }
     case VALUE_TYPE_UINT32: {
-      int64_t vv = value_uint32(v) - value_uint32(other);
-      if (vv >= 0 && vv <= UINT32_MAX) {
-        value_set_uint32(result, vv);
-      } else {
-        value_set_int64(result, vv);
-      }
+      uint32_t vv = value_uint32(v) - value_uint32(other);
+      value_set_uint32(result, vv);
       break;
     }
     case VALUE_TYPE_INT64: {
@@ -1910,6 +1907,7 @@ ret_t value_sub(value_t* v, value_t* other, value_t* result) {
     }
     default: {
       ret = RET_BAD_PARAMS;
+      log_debug("%s not supported type:%d\n", __FUNCTION__, type);
       break;
     }
   }
@@ -1967,21 +1965,13 @@ ret_t value_mul(value_t* v, value_t* other, value_t* result) {
       break;
     }
     case VALUE_TYPE_INT32: {
-      int64_t vv = value_int32(v) * value_int32(other);
-      if (vv >= INT32_MIN && vv <= INT32_MAX) {
-        value_set_int32(result, vv);
-      } else {
-        value_set_int64(result, vv);
-      }
+      int32_t vv = value_int32(v) * value_int32(other);
+      value_set_int32(result, vv);
       break;
     }
     case VALUE_TYPE_UINT32: {
-      int64_t vv = value_uint32(v) * value_uint32(other);
-      if (vv >= 0 && vv <= UINT32_MAX) {
-        value_set_uint32(result, vv);
-      } else {
-        value_set_int64(result, vv);
-      }
+      uint32_t vv = value_uint32(v) * value_uint32(other);
+      value_set_uint32(result, vv);
       break;
     }
     case VALUE_TYPE_INT64: {
@@ -2007,6 +1997,7 @@ ret_t value_mul(value_t* v, value_t* other, value_t* result) {
     }
     default: {
       ret = RET_BAD_PARAMS;
+      log_debug("%s not supported type:%d\n", __FUNCTION__, type);
       break;
     }
   }
@@ -2080,9 +2071,118 @@ ret_t value_div(value_t* v, value_t* other, value_t* result) {
     }
     default: {
       ret = RET_BAD_PARAMS;
+      log_debug("%s not supported type:%d\n", __FUNCTION__, type);
       break;
     }
   }
 
   return ret;
+}
+
+ret_t value_mod(value_t* v, value_t* other, value_t* result) {
+  ret_t ret = RET_OK;
+  uint32_t type = 0;
+  return_value_if_fail(result != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(v != NULL && other != NULL, RET_BAD_PARAMS);
+
+  type = tk_max_int((int)(v->type), (int)(other->type));
+  switch (type) {
+    case VALUE_TYPE_BOOL: {
+      int8_t vv = value_bool(v) % value_bool(other);
+      value_set_int8(result, vv);
+      break;
+    }
+    case VALUE_TYPE_INT8: {
+      int8_t vv = value_int8(v) % value_int8(other);
+      value_set_int8(result, vv);
+      break;
+    }
+    case VALUE_TYPE_UINT8: {
+      uint8_t vv = value_uint8(v) % value_uint8(other);
+      value_set_uint8(result, vv);
+      break;
+    }
+    case VALUE_TYPE_INT16: {
+      int16_t vv = value_int16(v) % value_int16(other);
+      value_set_int16(result, vv);
+      break;
+    }
+    case VALUE_TYPE_UINT16: {
+      uint16_t vv = value_uint16(v) % value_uint16(other);
+      value_set_uint16(result, vv);
+      break;
+    }
+    case VALUE_TYPE_INT32: {
+      int32_t vv = value_int32(v) % value_int32(other);
+      value_set_int32(result, vv);
+      break;
+    }
+    case VALUE_TYPE_UINT32: {
+      uint32_t vv = value_uint32(v) % value_uint32(other);
+      value_set_uint32(result, vv);
+      break;
+    }
+    case VALUE_TYPE_INT64: {
+      int64_t vv = value_int64(v) % value_int64(other);
+      value_set_int64(result, vv);
+      break;
+    }
+    case VALUE_TYPE_UINT64: {
+      uint64_t vv = value_uint64(v) % value_uint64(other);
+      value_set_uint64(result, vv);
+      break;
+    }
+    default: {
+      ret = RET_BAD_PARAMS;
+      log_debug("%s not supported type:%d\n", __FUNCTION__, type);
+      break;
+    }
+  }
+
+  return ret;
+}
+
+ret_t value_expt(value_t* v, value_t* other, value_t* result) {
+  int32_t e = 0;
+  uint32_t n = 0;
+  double b = 0;
+  double r = 0;
+  return_value_if_fail(result != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(v != NULL && other != NULL, RET_BAD_PARAMS);
+
+  b = value_double(v);
+  if (tk_fequal(b, 0)) {
+    value_set_double(result, 0);
+    return RET_OK;
+  }
+
+  e = value_int(other);
+  if (e == 0) {
+    value_set_double(result, 1);
+    return RET_OK;
+  } else if (e < 0) {
+    n = -e;
+  } else {
+    n = e;
+  }
+
+  r = b;
+  n--;
+  /*TODO: optimize*/
+  while (n > 0) {
+    r = r * b;
+    n--;
+  }
+
+  if (e < 0) {
+    if (tk_fequal(r, 0)) {
+      value_set_double(result, INFINITY);
+    } else {
+      value_set_double(result, 1 / r);
+    }
+  } else {
+    value_set_double(result, r);
+  }
+
+  return RET_OK;
 }

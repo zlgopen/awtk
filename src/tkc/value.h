@@ -1050,7 +1050,7 @@ ret_t value_bit_xor(value_t* v, value_t* other, value_t* result);
 /**
  * @method value_abs
  * 将v取绝对值，并放入result对象。 
- * @param {value_t*} v value对象(必须是整数类型)。
+ * @param {value_t*} v value对象(必须是数值类型)。
  * @param {value_t*} result 返回结果的value对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -1060,8 +1060,8 @@ ret_t value_abs(value_t* v, value_t* result);
 /**
  * @method value_add
  * 将v和other求和，并放入result对象。 
- * @param {value_t*} v value对象(必须是整数类型)。
- * @param {value_t*} other value对象(必须是整数类型)。
+ * @param {value_t*} v value对象(必须是数值类型)。
+ * @param {value_t*} other value对象(必须是数值类型)。
  * @param {value_t*} result 返回结果的value对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -1071,8 +1071,8 @@ ret_t value_add(value_t* v, value_t* other, value_t* result);
 /**
  * @method value_sub
  * 将v和other求差，并放入result对象。 
- * @param {value_t*} v value对象(必须是整数类型)。
- * @param {value_t*} other value对象(必须是整数类型)。
+ * @param {value_t*} v value对象(必须是数值类型)。
+ * @param {value_t*} other value对象(必须是数值类型)。
  * @param {value_t*} result 返回结果的value对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -1082,8 +1082,8 @@ ret_t value_sub(value_t* v, value_t* other, value_t* result);
 /**
  * @method value_mul
  * 将v和other求积，并放入result对象。 
- * @param {value_t*} v value对象(必须是整数类型)。
- * @param {value_t*} other value对象(必须是整数类型)。
+ * @param {value_t*} v value对象(必须是数值类型)。
+ * @param {value_t*} other value对象(必须是数值类型)。
  * @param {value_t*} result 返回结果的value对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -1093,13 +1093,35 @@ ret_t value_mul(value_t* v, value_t* other, value_t* result);
 /**
  * @method value_div
  * 将v和other求商，并放入result对象。 
+ * @param {value_t*} v value对象(必须是数值类型)。
+ * @param {value_t*} other value对象(必须是数值类型)。
+ * @param {value_t*} result 返回结果的value对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_div(value_t* v, value_t* other, value_t* result);
+
+/**
+ * @method value_expt
+ * 计算v的other次幂，并放入result对象。 
+ * @param {value_t*} v value对象(必须是数值类型)。
+ * @param {value_t*} other value对象(必须是整数类型)。
+ * @param {value_t*} result 返回结果的value对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_expt(value_t* v, value_t* other, value_t* result);
+
+/**
+ * @method value_mod
+ * 将v和other求模，并放入result对象。 
  * @param {value_t*} v value对象(必须是整数类型)。
  * @param {value_t*} other value对象(必须是整数类型)。
  * @param {value_t*} result 返回结果的value对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t value_div(value_t* v, value_t* other, value_t* result);
+ret_t value_mod(value_t* v, value_t* other, value_t* result);
 
 END_C_DECLS
 
