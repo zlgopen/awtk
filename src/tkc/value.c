@@ -1711,17 +1711,17 @@ ret_t value_abs(value_t* v, value_t* result) {
       break;
     }
     case VALUE_TYPE_FLOAT32: {
-      uint64_t vv = value_float32(v);
+      float vv = value_float32(v);
       value_set_float32(result, vv >= 0 ? vv : -vv);
       break;
     }
     case VALUE_TYPE_FLOAT: {
-      uint64_t vv = value_float(v);
+      float_t vv = value_float(v);
       value_set_float(result, vv >= 0 ? vv : -vv);
       break;
     }
     case VALUE_TYPE_DOUBLE: {
-      uint64_t vv = value_double(v);
+      double vv = value_double(v);
       value_set_double(result, vv >= 0 ? vv : -vv);
       break;
     }

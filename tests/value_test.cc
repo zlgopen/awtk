@@ -1099,10 +1099,50 @@ TEST(value, abs) {
   ASSERT_EQ(o.type == v.type, TRUE);
   ASSERT_EQ(value_int8(&o), 10);
   
+  value_set_int16(&v, -10);
+  ASSERT_EQ(value_abs(&v, &o), RET_OK);
+  ASSERT_EQ(o.type == v.type, TRUE);
+  ASSERT_EQ(value_int16(&o), 10);
+  
+  value_set_int32(&v, -10);
+  ASSERT_EQ(value_abs(&v, &o), RET_OK);
+  ASSERT_EQ(o.type == v.type, TRUE);
+  ASSERT_EQ(value_int32(&o), 10);
+  
+  value_set_uint32(&v, 10);
+  ASSERT_EQ(value_abs(&v, &o), RET_OK);
+  ASSERT_EQ(o.type == v.type, TRUE);
+  ASSERT_EQ(value_uint32(&o), 10);
+  
   value_set_int64(&v, -10);
   ASSERT_EQ(value_abs(&v, &o), RET_OK);
   ASSERT_EQ(o.type == v.type, TRUE);
   ASSERT_EQ(value_int64(&o), 10);
+  
+  value_set_int64(&v, 10);
+  ASSERT_EQ(value_abs(&v, &o), RET_OK);
+  ASSERT_EQ(o.type == v.type, TRUE);
+  ASSERT_EQ(value_int64(&o), 10);
+  
+  value_set_double(&v, 10);
+  ASSERT_EQ(value_abs(&v, &o), RET_OK);
+  ASSERT_EQ(o.type == v.type, TRUE);
+  ASSERT_EQ(value_double(&o), 10);
+  
+  value_set_double(&v, -10);
+  ASSERT_EQ(value_abs(&v, &o), RET_OK);
+  ASSERT_EQ(o.type == v.type, TRUE);
+  ASSERT_EQ(value_double(&o), 10);
+  
+  value_set_float(&v, 10);
+  ASSERT_EQ(value_abs(&v, &o), RET_OK);
+  ASSERT_EQ(o.type == v.type, TRUE);
+  ASSERT_EQ(value_float(&o), 10);
+  
+  value_set_float(&v, -10);
+  ASSERT_EQ(value_abs(&v, &o), RET_OK);
+  ASSERT_EQ(o.type == v.type, TRUE);
+  ASSERT_EQ(value_float(&o), 10);
 }
 
 TEST(value, add_int8) {
