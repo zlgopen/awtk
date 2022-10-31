@@ -340,18 +340,25 @@ class IDLGen {
     } while (start >= 0 && end >= 0)
 
     // 特殊处理导出控件的虚表函数
-    let name_list = filename.split('/')
-    let clase_name = name_list[name_list.length - 1].replace('.h', '');
-    start = content.indexOf('TK_EXTERN_VTABLE(' + clase_name + ')');
-    if (start >= 0) {
-      let comment = '/** \n';
-      comment += ' * @method ' + clase_name + '_get_widget_vtable \n'
-      comment += ' * 获取 ' + clase_name + ' 虚表。 \n'
-      comment += ' * \n'
-      comment += ' * @return {const widget_vtable_t*} 成功返回 ' + clase_name + ' 虚表。 \n'
-      comment += ' */ \n'
-      this.parseMethod(comment);
-    }
+    str = content;
+    do {
+      start = str.indexOf('TK_EXTERN_VTABLE(');
+      console.log(start)
+      if (start >= 0) {
+        str = str.substr(start);
+        end = str.indexOf(');');
+        let offset = 'TK_EXTERN_VTABLE('.length
+        let clase_name = str.substr(offset, end - offset);
+        let comment = '/** \n';
+        comment += ' * @method ' + clase_name + '_get_widget_vtable \n'
+        comment += ' * 获取 ' + clase_name + ' 虚表。 \n'
+        comment += ' * \n'
+        comment += ' * @return {const widget_vtable_t*} 成功返回 ' + clase_name + ' 虚表。 \n'
+        comment += ' */ \n'
+        this.parseMethod(comment);
+        str = str.substr(end);
+      }
+    } while (start >= 0)
     return;
   }
 
