@@ -44,6 +44,7 @@
 #include "assets/default/inc/ui/auto_play_landscape.data"
 #include "assets/default/inc/ui/color_picker_simple.data"
 #include "assets/default/inc/ui/bidi.data"
+#include "assets/default/inc/ui/slide_view_v3.data"
 #include "assets/default/inc/ui/dialog_highlight_update_bg.data"
 #include "assets/default/inc/ui/progress_circle.data"
 #include "assets/default/inc/ui/accordion2.data"
@@ -97,6 +98,7 @@
 #include "assets/default/inc/ui/calibration_win.data"
 #include "assets/default/inc/ui/memtest.data"
 #include "assets/default/inc/ui/slide_view_h2.data"
+#include "assets/default/inc/ui/slide_view_h3.data"
 #include "assets/default/inc/ui/folder_chooser.data"
 #include "assets/default/inc/ui/slide_view_v_loop.data"
 #include "assets/default/inc/ui/language.data"
@@ -562,6 +564,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_auto_play_landscape);
   assets_manager_add(am, ui_color_picker_simple);
   assets_manager_add(am, ui_bidi);
+  assets_manager_add(am, ui_slide_view_v3);
   assets_manager_add(am, ui_dialog_highlight_update_bg);
   assets_manager_add(am, ui_progress_circle);
   assets_manager_add(am, ui_accordion2);
@@ -615,6 +618,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_calibration_win);
   assets_manager_add(am, ui_memtest);
   assets_manager_add(am, ui_slide_view_h2);
+  assets_manager_add(am, ui_slide_view_h3);
   assets_manager_add(am, ui_folder_chooser);
   assets_manager_add(am, ui_slide_view_v_loop);
   assets_manager_add(am, ui_language);

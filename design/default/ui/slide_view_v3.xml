@@ -1,0 +1,6 @@
+<window anim_hint="htranslate" >
+  <slide_view x="0" y="0" w="100%" h="100%" vertical="true">
+    <?include filename="slide_view_with_animation.inc" ?>
+  </slide_view>
+  <slide_indicator_arc x="r" y="0" w="20" h="100%" default_paint="stroke_dot"/>
+</window>

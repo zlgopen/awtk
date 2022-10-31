@@ -3,17 +3,18 @@
 2022/10/31
   * 更新version为1.7.1(感谢朝泽提供补丁)。
   * 修复 awtk 导出 def 时缺少部分的 get\_widget\_vtable 函数的问题(感谢智明提供补丁)
+  * 修复添加了动画的控件在slide\_view上移动过程中停留时不会刷新的问题(感谢志鹏提供补丁)
 
 2022/10/27
   * 增加函数value\_mod/value_\_expt
 
 2022/10/26
   * 增加函数value\_abs/value\_add/value\_sub/value\_mul/value\_div
-  * 统一修改支持EVT_CLICK事件的控件，让点击事件的回调函数返回值有效(感谢雨欣提供补丁)
+  * 统一修改支持EVT\_CLICK事件的控件，让点击事件的回调函数返回值有效(感谢雨欣提供补丁)
 
 2022/10/24
   * 修复designer中勾选旋转但编译参数无效的问题(感谢兆坤提供补丁)
-  * 完善how_to_use_fast_lcd_portrait.md文档(感谢雨欣提供补丁)
+  * 完善how\_to\_use\_fast\_lcd\_portrait.md文档(感谢雨欣提供补丁)
 
 2022/10/21
   * 完善line number高亮行(方便awblock用于显示断点)

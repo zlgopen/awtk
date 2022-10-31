@@ -148,6 +148,9 @@ typedef struct _slide_view_t {
   widget_t* prev;
   widget_t* next;
 
+  /* for move */
+  uint32_t move_idle_id;
+
 } slide_view_t;
 
 /**
