@@ -30,8 +30,12 @@
 
 #define MAX_VISIBLE_NR 10
 
-const char* s_slide_menu_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_ALIGN_V,
-                                         SLIDE_MENU_PROP_MIN_SCALE, NULL};
+#ifndef SLIDE_MENU_MIN_SCALE
+#define SLIDE_MENU_MIN_SCALE 0.5f
+#endif
+
+static uint32_t slide_menu_get_visible_children(widget_t* widget,
+                                                widget_t* children[MAX_VISIBLE_NR]);
 
 static ret_t slide_menu_set_xoffset(slide_menu_t* slide_menu, int32_t xoffset) {
   if (slide_menu->xoffset != xoffset) {
@@ -123,11 +127,28 @@ static rect_t slide_menu_get_clip_r(widget_t* widget) {
   return rect_init(x, 0, w, h);
 }
 
+static ret_t slide_menu_paint_children_impl(widget_t* iter, canvas_t* c, xy_t clip_left,
+                                            xy_t clip_right) {
+  int32_t left = c->ox + iter->x;
+  int32_t right = left + iter->w;
+
+  if (left >= (clip_right - 1) || right <= (clip_left + 1)) {
+    iter->dirty = FALSE;
+    return RET_OK;
+  }
+
+  return widget_paint(iter, c);
+}
+
 static ret_t slide_menu_paint_children(widget_t* widget, canvas_t* c) {
+  int32_t i = 0;
+  widget_t* iter = NULL;
   rect_t save_r = {0, 0, 0, 0};
   rect_t clip_r = {0, 0, 0, 0};
   rect_t widget_r = {0, 0, 0, 0};
   xy_t clip_right, clip_left;
+  widget_t* children[MAX_VISIBLE_NR];
+  uint32_t curr = slide_menu_get_visible_children(widget, children);
   canvas_get_clip_rect(c, &save_r);
 
   widget_r = rect_init(c->ox, c->oy, widget->w, widget->h);
@@ -136,18 +157,25 @@ static ret_t slide_menu_paint_children(widget_t* widget, canvas_t* c) {
 
   clip_left = clip_r.x;
   clip_right = clip_r.x + clip_r.w - 1;
-  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  int32_t left = c->ox + iter->x;
-  int32_t right = left + iter->w;
 
-  if (left >= (clip_right - 1) || right <= (clip_left + 1)) {
-    iter->dirty = FALSE;
-    continue;
+  /*left*/
+  for (i = 0; i <= curr - 1; i++) {
+    iter = children[i];
+    if (iter != NULL) {
+      slide_menu_paint_children_impl(iter, c, clip_left, clip_right);
+    }
   }
 
-  widget_paint(iter, c);
-  WIDGET_FOR_EACH_CHILD_END();
+  /*right*/
+  for (i = MAX_VISIBLE_NR - 1; i >= curr + 1; i--) {
+    iter = children[i];
+    if (iter != NULL) {
+      slide_menu_paint_children_impl(iter, c, clip_left, clip_right);
+    }
+  }
 
+  /*curr*/
+  slide_menu_paint_children_impl(children[curr], c, clip_left, clip_right);
   canvas_set_clip_rect(c, &save_r);
 
   return RET_OK;
@@ -224,10 +252,12 @@ static ret_t slide_menu_on_paint_children(widget_t* widget, canvas_t* c) {
 }
 
 static int32_t slide_menu_get_delta_index(widget_t* widget) {
+  int32_t menu_w = 0;
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
   return_value_if_fail(widget != NULL && slide_menu != NULL, 0);
+  menu_w = widget->h + slide_menu->spacer;
 
-  return tk_roundi((float_t)(slide_menu->xoffset) / (float_t)(widget->h));
+  return tk_roundi((float_t)(slide_menu->xoffset) / (float_t)(menu_w));
 }
 
 static uint32_t slide_menu_get_visible_children(widget_t* widget,
@@ -240,7 +270,7 @@ static uint32_t slide_menu_get_visible_children(widget_t* widget,
   rect_t clip_rect = slide_menu_get_clip_r(widget);
   int32_t delta_index = slide_menu_get_delta_index(widget);
   int32_t index = slide_menu_fix_index(widget, slide_menu->value - delta_index);
-  int32_t rounded_xoffset = delta_index * max_size;
+  int32_t rounded_xoffset = delta_index * (max_size + slide_menu->spacer);
   int32_t xoffset = slide_menu->xoffset - rounded_xoffset;
 
   for (i = 0; i < MAX_VISIBLE_NR; i++) {
@@ -297,11 +327,12 @@ static int32_t slide_menu_calc_child_size(slide_menu_t* slide_menu, int32_t i, i
                                           int32_t xo) {
   float_t scale = 0;
   int32_t max_size = WIDGET(slide_menu)->h;
+  int32_t menu_w = max_size + slide_menu->spacer;
   float_t min_scale = slide_menu->min_scale;
-  int32_t xoffset = xo + max_size * (i - curr);
+  int32_t xoffset = xo + menu_w * (i - curr);
 
-  if (tk_abs(xoffset) < max_size) {
-    scale = 1 + tk_abs(xoffset) * (min_scale - 1) / max_size;
+  if (tk_abs(xoffset) < menu_w) {
+    scale = 1 + tk_abs(xoffset) * (min_scale - 1) / menu_w;
   } else {
     scale = min_scale;
   }
@@ -340,16 +371,17 @@ static ret_t slide_menu_do_layout_children(widget_t* widget) {
   int32_t visible_nr = MAX_VISIBLE_NR;
   widget_t* children[MAX_VISIBLE_NR];
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
+  int32_t menu_w = widget->h + slide_menu->spacer;
   uint32_t curr = slide_menu_get_visible_children(widget, children);
-  int32_t rounded_xoffset = slide_menu_get_delta_index(widget) * max_size;
+  int32_t rounded_xoffset = slide_menu_get_delta_index(widget) * menu_w;
   int32_t xoffset = slide_menu->xoffset - rounded_xoffset;
-  int32_t curr_min_size = slide_menu_calc_child_size(slide_menu, 0, 0, max_size >> 1);
+  int32_t curr_min_size = slide_menu_calc_child_size(slide_menu, 0, 0, menu_w >> 1);
   int32_t max_crevice_size = (max_size - curr_min_size) >> 1;
 
   /*curr widget*/
   iter = children[curr];
   size = slide_menu_calc_child_size(slide_menu, curr, curr, xoffset);
-  x = (widget->w - max_size) / 2 + xoffset - (xoffset * max_crevice_size / (max_size >> 1));
+  x = (widget->w - widget->h) / 2 + xoffset - (xoffset * max_crevice_size / (menu_w >> 1));
   y = slide_menu_calc_child_y(slide_menu->align_v, max_size, size);
   widget_move_resize(iter, x, y, size, size);
   widget_layout_children(iter);
@@ -360,7 +392,7 @@ static ret_t slide_menu_do_layout_children(widget_t* widget) {
     if (iter == NULL) break;
 
     size = slide_menu_calc_child_size(slide_menu, i, curr, xoffset);
-    x = children[i + 1]->x - size;
+    x = children[i + 1]->x - size - slide_menu->spacer;
     y = slide_menu_calc_child_y(slide_menu->align_v, max_size, size);
     widget_move_resize(iter, x, y, size, size);
     widget_layout_children(iter);
@@ -373,7 +405,7 @@ static ret_t slide_menu_do_layout_children(widget_t* widget) {
 
     if (i > 0) {
       size = slide_menu_calc_child_size(slide_menu, i, curr, xoffset);
-      x = children[i - 1]->x + children[i - 1]->w;
+      x = children[i - 1]->x + children[i - 1]->w + slide_menu->spacer;
       y = slide_menu_calc_child_y(slide_menu->align_v, max_size, size);
       widget_move_resize(iter, x, y, size, size);
       widget_layout_children(iter);
@@ -411,6 +443,9 @@ static ret_t slide_menu_get_prop(widget_t* widget, const char* name, value_t* v)
   } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {
     value_set_int(v, slide_menu->xoffset);
     return RET_OK;
+  } else if (tk_str_eq(name, SLIDE_MENU_PROP_SPACER)) {
+    value_set_int(v, slide_menu->spacer);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -439,6 +474,9 @@ static ret_t slide_menu_set_prop(widget_t* widget, const char* name, const value
     } else {
       slide_menu_set_align_v(widget, (align_v_t)(value_int(v)));
     }
+    return RET_OK;
+  } else if (tk_str_eq(name, SLIDE_MENU_PROP_SPACER)) {
+    slide_menu_set_spacer(slide_menu, value_int(v));
     return RET_OK;
   }
 
@@ -513,6 +551,7 @@ static ret_t slide_menu_on_scroll_done(void* ctx, event_t* e) {
   slide_menu->wa = NULL;
   slide_menu->xoffset = 0;
   slide_menu_set_value_only(slide_menu, index);
+  widget_invalidate_force(widget, NULL);
 
   return RET_REMOVE;
 }
@@ -539,14 +578,14 @@ static ret_t slide_menu_scroll_to(widget_t* widget, int32_t xoffset_end) {
   return RET_OK;
 }
 
-static ret_t slide_menu_scroll_to_prev(widget_t* widget) {
+ret_t slide_menu_scroll_to_prev(widget_t* widget) {
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
-  return slide_menu_scroll_to(widget, slide_menu->xoffset + widget->h);
+  return slide_menu_scroll_to(widget, slide_menu->xoffset + (widget->h + slide_menu->spacer));
 }
 
-static ret_t slide_menu_scroll_to_next(widget_t* widget) {
+ret_t slide_menu_scroll_to_next(widget_t* widget) {
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
-  return slide_menu_scroll_to(widget, slide_menu->xoffset - widget->h);
+  return slide_menu_scroll_to(widget, slide_menu->xoffset - (widget->h + slide_menu->spacer));
 }
 
 static ret_t slide_menu_on_pointer_up(slide_menu_t* slide_menu, pointer_event_t* e) {
@@ -555,26 +594,27 @@ static ret_t slide_menu_on_pointer_up(slide_menu_t* slide_menu, pointer_event_t*
   velocity_t* v = &(slide_menu->velocity);
   widget_t* widget = WIDGET(slide_menu);
   int32_t nr = widget_count_children(widget);
+  int32_t menu_w = widget->h + slide_menu->spacer;
 
   velocity_update(v, e->e.time, e->x, e->y);
   if (!slide_menu->dragged) {
     widget_to_local(widget, &p);
     if (nr > 1) {
-      int32_t right = (widget->w + widget->h) / 2;
-      int32_t left = (widget->w - widget->h) / 2;
+      int32_t right = (widget->w + widget->h + slide_menu->spacer) / 2;
+      int32_t left = (widget->w - widget->h - slide_menu->spacer) / 2;
       float_t min_scale = slide_menu->min_scale;
-      int32_t small_size = widget->h * min_scale;
+      int32_t small_size = widget->h * min_scale + slide_menu->spacer;
 
       if (p.x > right) {
         int32_t delta = (p.x - right) / small_size + 1;
 
         xoffset_end = -widget->h * delta;
-        xoffset_end = tk_roundi((float_t)xoffset_end / (float_t)(widget->h)) * widget->h;
+        xoffset_end = tk_roundi((float_t)xoffset_end / (float_t)(menu_w)) * menu_w;
       } else if (p.x < left) {
         int32_t delta = (left - p.x) / small_size + 1;
 
         xoffset_end = widget->h * delta;
-        xoffset_end = tk_roundi((float_t)xoffset_end / (float_t)(widget->h)) * widget->h;
+        xoffset_end = tk_roundi((float_t)xoffset_end / (float_t)(menu_w)) * menu_w;
       }
     }
 
@@ -586,7 +626,7 @@ static ret_t slide_menu_on_pointer_up(slide_menu_t* slide_menu, pointer_event_t*
     }
   } else {
     xoffset_end = slide_menu->xoffset + v->xv;
-    xoffset_end = tk_roundi((float_t)xoffset_end / (float_t)(widget->h)) * widget->h;
+    xoffset_end = tk_roundi((float_t)xoffset_end / (float_t)(menu_w)) * menu_w;
   }
 
   slide_menu_scroll_to(WIDGET(slide_menu), xoffset_end);
@@ -672,6 +712,9 @@ static ret_t slide_menu_on_event(widget_t* widget, event_t* e) {
   return ret;
 }
 
+const char* s_slide_menu_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_ALIGN_V,
+                                         SLIDE_MENU_PROP_MIN_SCALE, SLIDE_MENU_PROP_SPACER, NULL};
+
 TK_DECL_VTABLE(slide_menu) = {.size = sizeof(slide_menu_t),
                               .inputable = TRUE,
                               .type = WIDGET_TYPE_SLIDE_MENU,
@@ -694,6 +737,7 @@ widget_t* slide_menu_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   slide_menu->value = 1;
   slide_menu->min_scale = 0.8f;
   slide_menu->align_v = ALIGN_V_BOTTOM;
+  slide_menu->spacer = 0;
 
   return widget;
 }
@@ -712,7 +756,7 @@ ret_t slide_menu_set_min_scale(widget_t* widget, float_t min_scale) {
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
   return_value_if_fail(slide_menu != NULL, RET_BAD_PARAMS);
 
-  slide_menu->min_scale = tk_max(0.5f, tk_min(min_scale, 1));
+  slide_menu->min_scale = tk_max(SLIDE_MENU_MIN_SCALE, tk_min(min_scale, 1));
 
   return widget_invalidate(widget, NULL);
 }
@@ -722,6 +766,15 @@ ret_t slide_menu_set_align_v(widget_t* widget, align_v_t align_v) {
   return_value_if_fail(slide_menu != NULL, RET_BAD_PARAMS);
 
   slide_menu->align_v = align_v;
+
+  return widget_invalidate(widget, NULL);
+}
+
+ret_t slide_menu_set_spacer(widget_t* widget, int32_t spacer) {
+  slide_menu_t* slide_menu = SLIDE_MENU(widget);
+  return_value_if_fail(slide_menu != NULL, RET_BAD_PARAMS);
+
+  slide_menu->spacer = spacer;
 
   return widget_invalidate(widget, NULL);
 }

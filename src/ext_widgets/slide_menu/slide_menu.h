@@ -118,6 +118,13 @@ typedef struct _slide_menu_t {
    */
   float_t min_scale;
 
+  /**
+   * @property {int32_t} spacer
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 菜单项之间的间距。
+   */
+  int32_t spacer;
+
   /*private*/
   int32_t xdown;
   int32_t xoffset;
@@ -194,7 +201,39 @@ ret_t slide_menu_set_align_v(widget_t* widget, align_v_t align_v);
  */
 ret_t slide_menu_set_min_scale(widget_t* widget, float_t min_scale);
 
+/**
+ * @method slide_menu_set_spacer
+ * 设置菜单项之间的间距。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget slide_menu对象。
+ * @param {int32_t} spacer 菜单项之间的间距。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t slide_menu_set_spacer(widget_t* widget, int32_t spacer);
+
+/**
+ * @method slide_menu_scroll_to_prev
+ * 切换至上一项。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget slide_menu对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t slide_menu_scroll_to_prev(widget_t* widget);
+
+/**
+ * @method slide_menu_scroll_to_next
+ * 切换至下一项。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget slide_menu对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t slide_menu_scroll_to_next(widget_t* widget);
+
 #define SLIDE_MENU_PROP_MIN_SCALE "min_scale"
+#define SLIDE_MENU_PROP_SPACER "spacer"
 
 #define WIDGET_TYPE_SLIDE_MENU "slide_menu"
 #define SLIDE_MENU(widget) ((slide_menu_t*)(slide_menu_cast(WIDGET(widget))))

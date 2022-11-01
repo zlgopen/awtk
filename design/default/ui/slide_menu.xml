@@ -39,5 +39,17 @@
     <button style="slide_button" text="8"/>
     <button style="slide_button" text="9"/>
   </slide_menu>
+  <slide_menu align_v="middle" spacer="35">
+    <button style="slide_button" text="0"/>
+    <button style="slide_button" text="1"/>
+    <button style="slide_button" text="2"/>
+    <button style="slide_button" text="3"/>
+    <button style="slide_button" text="4"/>
+    <button style="slide_button" text="5"/>
+    <button style="slide_button" text="6"/>
+    <button style="slide_button" text="7"/>
+    <button style="slide_button" text="8"/>
+    <button style="slide_button" text="9"/>
+  </slide_menu>
   <button name="close" floating="true" x="center" y="bottom:50" w="50%" h="30" text="Close"/>
 </window>
