@@ -126,6 +126,14 @@ typedef struct _hscroll_label_t {
    */
   int32_t text_w;
 
+  /**
+   * @property {bool_t} stop_at_begin
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 滚动完毕后停在文本开头(缺省FALSE)。
+   * > 注：loop为FALSE时才可用。
+   */
+  bool_t stop_at_begin;
+
   /*private*/
   int32_t old_text_w;
   uint32_t timer_id;
@@ -238,6 +246,17 @@ ret_t hscroll_label_set_yoyo(widget_t* widget, bool_t yoyo);
 ret_t hscroll_label_set_ellipses(widget_t* widget, bool_t ellipses);
 
 /**
+ * @method hscroll_label_set_stop_at_begin
+ * 设置stop_at_begin。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} stop_at_begin 是否在滚动完毕后停在文本结尾。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t hscroll_label_set_stop_at_begin(widget_t* widget, bool_t stop_at_begin);
+
+/**
  * @method hscroll_label_set_xoffset
  * 设置x偏移(一般无需用户调用)。。
  * @annotation ["scriptable"]
@@ -287,6 +306,7 @@ widget_t* hscroll_label_cast(widget_t* widget);
 #define HSCROLL_LABEL_PROP_ELLIPSES "ellipses"
 #define HSCROLL_LABEL_PROP_ONLY_FOCUS "only_focus"
 #define HSCROLL_LABEL_PROP_ONLY_PARENT_FOCUS "only_parent_focus"
+#define HSCROLL_LABEL_PROP_STOP_AT_BEGIN "stop_at_begin"
 
 #define WIDGET_TYPE_HSCROLL_LABEL "hscroll_label"
 #define HSCROLL_LABEL(widget) ((hscroll_label_t*)(hscroll_label_cast(WIDGET(widget))))

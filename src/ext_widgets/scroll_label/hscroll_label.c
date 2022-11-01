@@ -25,6 +25,10 @@
 #include "base/widget_vtable.h"
 #include "scroll_label/hscroll_label.h"
 
+#ifndef HSCROLL_LABEL_STOP_TIMER_DURATION
+#define HSCROLL_LABEL_STOP_TIMER_DURATION 500
+#endif
+
 static ret_t hscroll_label_remove_timer(widget_t* widget);
 static ret_t hscroll_label_check_and_start(widget_t* widget);
 
@@ -183,6 +187,15 @@ ret_t hscroll_label_set_ellipses(widget_t* widget, bool_t ellipses) {
   return RET_OK;
 }
 
+ret_t hscroll_label_set_stop_at_begin(widget_t* widget, bool_t stop_at_begin) {
+  hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
+  return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
+
+  hscroll_label->stop_at_begin = stop_at_begin;
+
+  return RET_OK;
+}
+
 static ret_t hscroll_label_get_prop(widget_t* widget, const char* name, value_t* v) {
   hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
   return_value_if_fail(hscroll_label != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -213,6 +226,9 @@ static ret_t hscroll_label_get_prop(widget_t* widget, const char* name, value_t*
     return RET_OK;
   } else if (tk_str_eq(name, HSCROLL_LABEL_PROP_ONLY_PARENT_FOCUS)) {
     value_set_bool(v, hscroll_label->only_parent_focus);
+    return RET_OK;
+  } else if (tk_str_eq(name, HSCROLL_LABEL_PROP_STOP_AT_BEGIN)) {
+    value_set_bool(v, hscroll_label->stop_at_begin);
     return RET_OK;
   }
 
@@ -246,6 +262,8 @@ static ret_t hscroll_label_set_prop(widget_t* widget, const char* name, const va
       hscroll_label->elapsed = 0;
     }
     return RET_NOT_FOUND;
+  } else if (tk_str_eq(name, HSCROLL_LABEL_PROP_STOP_AT_BEGIN)) {
+    return hscroll_label_set_stop_at_begin(widget, value_bool(v));
   }
 
   return RET_NOT_FOUND;
@@ -326,6 +344,16 @@ static ret_t hscroll_label_on_timer_start(const timer_info_t* info) {
   return RET_REMOVE;
 }
 
+static ret_t hscroll_label_on_timer_stop(const timer_info_t* info) {
+  widget_t* widget = WIDGET(info->ctx);
+  hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
+  return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
+
+  hscroll_label_stop(widget);
+
+  return RET_REMOVE;
+}
+
 static ret_t hscroll_label_on_timer(const timer_info_t* info) {
   ret_t ret = RET_OK;
   widget_t* widget = WIDGET(info->ctx);
@@ -371,6 +399,9 @@ static ret_t hscroll_label_on_timer(const timer_info_t* info) {
     if (!hscroll_label->loop) {
       ret = RET_REMOVE;
       hscroll_label_remove_timer(widget);
+      if (hscroll_label->stop_at_begin) {
+        widget_add_timer(widget, hscroll_label_on_timer_stop, HSCROLL_LABEL_STOP_TIMER_DURATION);
+      }
     } else {
       if (hscroll_label->lull > 0) {
         ret = RET_REMOVE;
@@ -541,6 +572,7 @@ widget_t* hscroll_label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
   hscroll_label->yoyo = FALSE;
   hscroll_label->ellipses = FALSE;
   hscroll_label->only_focus = FALSE;
+  hscroll_label->stop_at_begin = FALSE;
 
   hscroll_label->paused = FALSE;
 

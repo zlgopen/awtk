@@ -1,7 +1,8 @@
 # 最新动态
 
 2022/11/01
-  * 完善slide_menu控件，新增spacer属性(感谢雨欣提供补丁)
+  * 完善slide\_menu控件，新增spacer属性(感谢雨欣提供补丁)
+  * 完善hscroll\_label控件，新增stop\_at\_begin属性(感谢雨欣提供补丁)
 
 o2022/10/31
   * 更新version为1.7.1(感谢朝泽提供补丁)。
