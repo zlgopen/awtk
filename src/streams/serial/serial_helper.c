@@ -509,6 +509,7 @@ static ret_t serial_wait_for_data_impl(serial_handle_t handle, uint32_t timeout_
     /* 如果缓冲区有数据的话，应该触发 serial_wait_for_data 让其他取缓冲区的数据。*/
     ret = RET_OK;
   } else if (ret == RET_OK) {
+    sleep_ms(timeout_ms);
     /* 如果缓冲区没有数据的话，但是却触发了 WaitForSingleObject 触发成功了，说明串口通信有异常，则应该返回 RET_FAIL。*/
     ret = RET_FAIL;
   }
