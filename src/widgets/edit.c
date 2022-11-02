@@ -921,6 +921,10 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
         edit->is_key_inputing = FALSE;
         edit_check_valid_value(widget);
         input_method_request(input_method(), NULL);
+        text_edit_preedit_confirm(edit->model);
+        text_edit_unselect(edit->model);
+        edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGED);
+        edit_commit_text(widget);
       } else if (tk_str_eq(edit->action_text, ACTION_TEXT_NEXT)) {
         widget_focus_next(widget);
       }
