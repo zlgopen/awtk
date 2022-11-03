@@ -222,11 +222,13 @@ static inline void pixel_rgba8888_blend_rgba_dark(void* pixel, uint8_t a) {
     p[2] = (p[2] * a) >> 8;
     p[3] = 0xff;
   } else {
-    uint8_t out_a = (p[3] * a) >> 8;
-
-    p[0] = (p[0] * out_a) >> 8;
-    p[1] = (p[1] * out_a) >> 8;
-    p[2] = (p[2] * out_a) >> 8;
+    uint8_t s_a = 0xff - a;
+    uint8_t out_a = tk_pixel_limit_uint8(p[3] + s_a - ((p[3] * s_a) >> 8));
+    if (out_a > 0) {
+      p[0] = (p[0] * out_a) >> 8;
+      p[1] = (p[1] * out_a) >> 8;
+      p[2] = (p[2] * out_a) >> 8;
+    }
     p[3] = out_a;
   }
 }
@@ -278,11 +280,14 @@ static inline void pixel_abgr8888_blend_rgba_dark(void* pixel, uint8_t a) {
     p[2] = (p[2] * a) >> 8;
     p[3] = (p[3] * a) >> 8;
   } else {
-    uint8_t out_a = (p[0] * a) >> 8;
+    uint8_t s_a = 0xff - a;
+    uint8_t out_a = tk_pixel_limit_uint8(p[0] + s_a - ((p[0] * s_a) >> 8));
+    if (out_a > 0) {
+      p[1] = (p[1] * out_a) >> 8;
+      p[2] = (p[2] * out_a) >> 8;
+      p[3] = (p[3] * out_a) >> 8;
+    }
     p[0] = out_a;
-    p[1] = (p[1] * out_a) >> 8;
-    p[2] = (p[2] * out_a) >> 8;
-    p[3] = (p[3] * out_a) >> 8;
   }
 }
 
@@ -333,10 +338,13 @@ static inline void pixel_bgra8888_blend_rgba_dark(void* pixel, uint8_t a) {
     p[2] = (p[2] * a) >> 8;
     p[3] = 0xff;
   } else {
-    uint8_t out_a = (p[3] * a) >> 8;
-    p[0] = (p[0] * out_a) >> 8;
-    p[1] = (p[1] * out_a) >> 8;
-    p[2] = (p[2] * out_a) >> 8;
+    uint8_t s_a = 0xff - a;
+    uint8_t out_a = tk_pixel_limit_uint8(p[3] + s_a - ((p[3] * s_a) >> 8));
+    if (out_a > 0) {
+      p[0] = (p[0] * out_a) >> 8;
+      p[1] = (p[1] * out_a) >> 8;
+      p[2] = (p[2] * out_a) >> 8;
+    }
     p[3] = out_a;
   }
 }
@@ -388,11 +396,14 @@ static inline void pixel_argb8888_blend_rgba_dark(void* pixel, uint8_t a) {
     p[2] = (p[2] * a) >> 8;
     p[3] = (p[3] * a) >> 8;
   } else {
-    uint8_t out_a = (p[0] * a) >> 8;
+    uint8_t s_a = 0xff - a;
+    uint8_t out_a = tk_pixel_limit_uint8(p[0] + s_a - ((p[0] * s_a) >> 8));
+    if (out_a > 0) {
+      p[1] = (p[1] * out_a) >> 8;
+      p[2] = (p[2] * out_a) >> 8;
+      p[3] = (p[3] * out_a) >> 8;
+    }
     p[0] = out_a;
-    p[1] = (p[1] * out_a) >> 8;
-    p[2] = (p[2] * out_a) >> 8;
-    p[3] = (p[3] * out_a) >> 8;
   }
 }
 
