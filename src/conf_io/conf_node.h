@@ -704,6 +704,17 @@ conf_node_t* conf_node_get_first_child(conf_node_t* node);
  */
 ret_t conf_node_set_first_child(conf_node_t* node, conf_node_t* child);
 
+/**
+ * @method conf_node_count_children
+ *
+ * 获取节点的子集个数。
+ *
+ * @param {conf_node_t*} node 节点对象。
+ *
+ * @return {uint32_t} 成功返回节点个数。
+ */
+uint32_t conf_node_count_children(conf_node_t* node);
+
 #define CONF_NODE_ROOT_NAME "root"
 
 #define CONF_SPECIAL_ATTR_SIZE "#size"
