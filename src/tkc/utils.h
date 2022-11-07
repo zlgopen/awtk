@@ -91,7 +91,7 @@ bool_t tk_atob(const char* str);
 double tk_atof(const char* str);
 
 /**
- * @method tk_str_cmp
+ * @method tk_strcmp
  *
  * 字符串比较函数。
  *
@@ -100,10 +100,10 @@ double tk_atof(const char* str);
  *
  * @return {int32_t} 如果返回值=-1，则表示a为NULL；如果返回值=1，则表示b为NULL；如果返回值<0，则表示a小于b；如果返回值>0，则表示a大于b；如果返回值=0，则表示a等于b。
  */
-int32_t tk_str_cmp(const char* a, const char* b);
+int32_t tk_strcmp(const char* a, const char* b);
 
 /**
- * @method tk_str_icmp
+ * @method tk_stricmp
  *
  * 字符串比较函数（不区分大小写）。
  *
@@ -112,7 +112,31 @@ int32_t tk_str_cmp(const char* a, const char* b);
  *
  * @return {int32_t} 如果返回值=-1，则表示a为NULL；如果返回值=1，则表示b为NULL；如果返回值<0，则表示a小于b；如果返回值>0，则表示a大于b；如果返回值=0，则表示a等于b。
  */
-int32_t tk_str_icmp(const char* a, const char* b);
+int32_t tk_stricmp(const char* a, const char* b);
+
+/**
+ * @method tk_wstrcmp
+ *
+ * 字符串比较函数。
+ *
+ * @param {const wchar_t*} a 要进行比较的第一个字符串。
+ * @param {const wchar_t*} b 要进行比较的第二个字符串。
+ *
+ * @return {int32_t} 如果返回值=-1，则表示a为NULL；如果返回值=1，则表示b为NULL；如果返回值<0，则表示a小于b；如果返回值>0，则表示a大于b；如果返回值=0，则表示a等于b。
+ */
+int32_t tk_wstrcmp(const wchar_t* a, const wchar_t* b);
+
+/**
+ * @method tk_wstricmp
+ *
+ * 字符串比较函数（不区分大小写）。
+ *
+ * @param {const wchar_t*} a 要进行比较的第一个字符串。
+ * @param {const wchar_t*} b 要进行比较的第二个字符串。
+ *
+ * @return {int32_t} 如果返回值=-1，则表示a为NULL；如果返回值=1，则表示b为NULL；如果返回值<0，则表示a小于b；如果返回值>0，则表示a大于b；如果返回值=0，则表示a等于b。
+ */
+int32_t tk_wstricmp(const wchar_t* a, const wchar_t* b);
 
 /**
  * @method tk_watoi
@@ -343,8 +367,8 @@ uint32_t tk_strlen(const char* str);
  * @param {uint32_t} 最大长度。
  *
  * @return {uint32_t} 返回字符串的长度。
- */ 
-uint32_t tk_strnlen(const char *str, uint32_t maxlen);
+ */
+uint32_t tk_strnlen(const char* str, uint32_t maxlen);
 
 /**
  * @method tk_strrstr
@@ -905,6 +929,9 @@ ret_t xml_file_expand(const char* filename, str_t* s, const char* data);
 
 #define TK_STRDUP(str) ((str) != NULL) ? strdup(str) : NULL
 #define TK_STRNDUP(str) ((str) != NULL) ? strndup(str) : NULL
+
+#define tk_str_cmp tk_strcmp
+#define tk_str_icmp tk_stricmp
 
 END_C_DECLS
 

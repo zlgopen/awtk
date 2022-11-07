@@ -732,7 +732,7 @@ ret_t tk_str_append(char* str, uint32_t max_len, const char* s) {
   return RET_OK;
 }
 
-int32_t tk_str_cmp(const char* a, const char* b) {
+int32_t tk_strcmp(const char* a, const char* b) {
   if (a == b) {
     return 0;
   }
@@ -748,7 +748,7 @@ int32_t tk_str_cmp(const char* a, const char* b) {
   return strcmp(a, b);
 }
 
-int32_t tk_str_icmp(const char* a, const char* b) {
+int32_t tk_stricmp(const char* a, const char* b) {
   if (a == b) {
     return 0;
   }
@@ -762,6 +762,38 @@ int32_t tk_str_icmp(const char* a, const char* b) {
   }
 
   return strcasecmp(a, b);
+}
+
+int32_t tk_wstrcmp(const wchar_t* a, const wchar_t* b) {
+  if (a == b) {
+    return 0;
+  }
+
+  if (a == NULL) {
+    return -1;
+  }
+
+  if (b == NULL) {
+    return 1;
+  }
+
+  return wcscmp(a, b);
+}
+
+int32_t tk_wstricmp(const wchar_t* a, const wchar_t* b) {
+  if (a == b) {
+    return 0;
+  }
+
+  if (a == NULL) {
+    return -1;
+  }
+
+  if (b == NULL) {
+    return 1;
+  }
+
+  return wcscasecmp(a, b);
 }
 
 char* tk_str_copy(char* dst, const char* src) {
@@ -1527,10 +1559,11 @@ bool_t tk_is_ui_thread(void) {
   return s_ui_thread_id == tk_thread_self();
 }
 
-uint32_t tk_strnlen(const char *str, uint32_t maxlen) {
+uint32_t tk_strnlen(const char* str, uint32_t maxlen) {
   const char* s;
   return_value_if_fail(str != NULL, 0);
 
-  for (s = str; maxlen-- && *s != '\0'; ++s);
+  for (s = str; maxlen-- && *s != '\0'; ++s)
+    ;
   return s - str;
 }

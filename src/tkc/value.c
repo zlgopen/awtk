@@ -2186,3 +2186,107 @@ ret_t value_expt(value_t* v, value_t* other, value_t* result) {
 
   return RET_OK;
 }
+
+ret_t value_min(value_t* arr, uint32_t size, value_t* result) {
+  uint32_t i = 0;
+  uint32_t r = 0;
+  uint32_t type = 0;
+  return_value_if_fail(arr != NULL && size > 0 && result != NULL, RET_BAD_PARAMS);
+
+  type = arr[0].type;
+
+  if (type >= VALUE_TYPE_INT8 && type < VALUE_TYPE_UINT64) {
+    for (i = 0; i < size; i++) {
+      if (value_int64(arr + i) < value_int64(arr + r)) {
+        r = i;
+      }
+    }
+
+    return value_copy(result, arr + r);
+  } else if (type == VALUE_TYPE_UINT64) {
+    for (i = 0; i < size; i++) {
+      if (value_uint64(arr + i) < value_uint64(arr + r)) {
+        r = i;
+      }
+    }
+    return value_copy(result, arr + r);
+  } else if (type == VALUE_TYPE_STRING) {
+    for (i = 0; i < size; i++) {
+      if (tk_strcmp(value_str(arr + i), value_str(arr + r)) < 0) {
+        r = i;
+      }
+    }
+    return value_copy(result, arr + r);
+  } else if (type == VALUE_TYPE_WSTRING) {
+    for (i = 0; i < size; i++) {
+      if (tk_wstrcmp(value_wstr(arr + i), value_wstr(arr + r)) < 0) {
+        r = i;
+      }
+    }
+    return value_copy(result, arr + r);
+  } else if (type >= VALUE_TYPE_FLOAT && type <= VALUE_TYPE_DOUBLE) {
+    for (i = 0; i < size; i++) {
+      if (value_double(arr + i) < value_double(arr + r)) {
+        r = i;
+      }
+    }
+    return value_copy(result, arr + r);
+  } else {
+    log_warn("not impl for this type");
+    return RET_NOT_IMPL;
+  }
+
+  return RET_OK;
+}
+
+ret_t value_max(value_t* arr, uint32_t size, value_t* result) {
+  uint32_t i = 0;
+  uint32_t r = 0;
+  uint32_t type = 0;
+  return_value_if_fail(arr != NULL && size > 0 && result != NULL, RET_BAD_PARAMS);
+
+  type = arr[0].type;
+
+  if (type >= VALUE_TYPE_INT8 && type < VALUE_TYPE_UINT64) {
+    for (i = 0; i < size; i++) {
+      if (value_int64(arr + i) > value_int64(arr + r)) {
+        r = i;
+      }
+    }
+
+    return value_copy(result, arr + r);
+  } else if (type == VALUE_TYPE_UINT64) {
+    for (i = 0; i < size; i++) {
+      if (value_uint64(arr + i) > value_uint64(arr + r)) {
+        r = i;
+      }
+    }
+    return value_copy(result, arr + r);
+  } else if (type == VALUE_TYPE_STRING) {
+    for (i = 0; i < size; i++) {
+      if (tk_strcmp(value_str(arr + i), value_str(arr + r)) > 0) {
+        r = i;
+      }
+    }
+    return value_copy(result, arr + r);
+  } else if (type == VALUE_TYPE_WSTRING) {
+    for (i = 0; i < size; i++) {
+      if (tk_wstrcmp(value_wstr(arr + i), value_wstr(arr + r)) > 0) {
+        r = i;
+      }
+    }
+    return value_copy(result, arr + r);
+  } else if (type >= VALUE_TYPE_FLOAT && type <= VALUE_TYPE_DOUBLE) {
+    for (i = 0; i < size; i++) {
+      if (value_double(arr + i) > value_double(arr + r)) {
+        r = i;
+      }
+    }
+    return value_copy(result, arr + r);
+  } else {
+    log_warn("not impl for this type");
+    return RET_NOT_IMPL;
+  }
+
+  return RET_OK;
+}

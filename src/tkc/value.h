@@ -1123,6 +1123,28 @@ ret_t value_expt(value_t* v, value_t* other, value_t* result);
  */
 ret_t value_mod(value_t* v, value_t* other, value_t* result);
 
+/**
+ * @method value_min
+ * 从数组中选择最小值，并放入result对象。 
+ * @param {value_t*} arr 数组。
+ * @param {uint32_t} size 数组元素个数
+ * @param {value_t*} result 返回结果的value对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_min(value_t* arr, uint32_t size, value_t* result);
+
+/**
+ * @method value_max
+ * 从数组中选择最大值，并放入result对象。 
+ * @param {value_t*} arr 数组。
+ * @param {uint32_t} size 数组元素个数
+ * @param {value_t*} result 返回结果的value对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_max(value_t* arr, uint32_t size, value_t* result);
+
 END_C_DECLS
 
 #endif /*TK_VALUE_H*/
