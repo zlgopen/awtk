@@ -405,6 +405,10 @@ enum { TK_NAME_LEN = 31, TK_FUNC_NAME_LEN = 63 };
 #define M_PI 3.1415926f
 #endif /*M_PI*/
 
+#ifndef M_E
+#define M_E 2.71828f 
+#endif /*M_E*/
+
 #ifndef M_SQRT2
 #define M_SQRT2 1.4142135f
 #endif /*M_SQRT2*/
