@@ -922,7 +922,7 @@ static ret_t mledit_sync_scrollbar(widget_t* widget, text_edit_state_t* state) {
     virtual_h = virtual_h >= vscroll_bar->h ? virtual_h : vscroll_bar->h;
 
     if (virtual_h > vscroll_bar->h) {
-      y = state->oy * virtual_h / (virtual_h - vscroll_bar->h);
+      y = (int64_t)state->oy * (int64_t)virtual_h / (virtual_h - vscroll_bar->h);
     } else {
       y = 0;
     }
@@ -955,7 +955,7 @@ static ret_t mledit_on_scroll_bar_value_changed(void* ctx, event_t* e) {
   return_value_if_fail(vscroll_bar != NULL && scroll_bar != NULL, RET_BAD_PARAMS);
 
   value = widget_get_value(vscroll_bar);
-  value = (scroll_bar->virtual_size - vscroll_bar->h) * value / scroll_bar->virtual_size;
+  value = (int64_t)(scroll_bar->virtual_size - vscroll_bar->h) * (int64_t)value / scroll_bar->virtual_size;
 
   if (mledit->overwrite && mledit->max_chars == 0 && mledit->max_lines != 0) {
     if (value == scroll_bar->virtual_size - vscroll_bar->h) {
