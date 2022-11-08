@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/11/08
+  * scroll\_view控件的set\_value函数添加对value合法性的判断(感谢泽武提供补丁)
+
 2022/11/07
   * 增加函数value\_min/value\_max。
 

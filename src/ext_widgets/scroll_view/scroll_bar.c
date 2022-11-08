@@ -648,7 +648,7 @@ static ret_t scroll_bar_update_dragger(widget_t* widget) {
 
 ret_t scroll_bar_set_value(widget_t* widget, int32_t value) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
-  return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(scroll_bar != NULL || value >= 0, RET_BAD_PARAMS);
 
   if (scroll_bar->value != value) {
     value_change_event_t evt;
