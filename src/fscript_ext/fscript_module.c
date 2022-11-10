@@ -31,6 +31,9 @@ static ret_t fscript_module_on_destroy(tk_object_t* obj) {
   fscript_t* fscript = o->fscript;
   return_value_if_fail(o != NULL && o->fscript != NULL, RET_BAD_PARAMS);
 
+  /*fix loop ref count*/
+  obj->ref_count = 2;
+
   o->fscript = NULL;
   fscript_destroy(fscript);
 
@@ -74,6 +77,9 @@ tk_object_t* fscript_module_create_with_data(const char* data) {
   value_set_int(&v, 0);
   fscript_exec(fscript, &v);
   value_reset(&v);
+  
+  /*fix loop ref count*/
+  o->ref_count = 1;
 
   return o;
 error:
