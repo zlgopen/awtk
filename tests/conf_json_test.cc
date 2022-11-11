@@ -95,6 +95,24 @@ TEST(ConfJson, basic1) {
   conf_doc_destroy(doc);
 }
 
+TEST(ConfJson, basic21) {
+  value_t v;
+  str_t str;
+  const char* data = " {\"name\" : \"aaa\\\\n\"";
+
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+
+  ASSERT_EQ(conf_doc_get(doc, "name", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "aaa\\n");
+
+  str_init(&str, 100);
+  conf_doc_save_json(doc, &str);
+  ASSERT_STREQ(str.str, "{\n    \"name\" : \"aaa\\\\n\"\n}");
+  str_reset(&str);
+
+  conf_doc_destroy(doc);
+}
+
 TEST(Json, clear) {
   value_t v;
   const char* data = " {\"hello\" : { \"name\" : \"tom\", \"age\" : 100  }  } ";

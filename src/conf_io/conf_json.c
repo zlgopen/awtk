@@ -328,26 +328,7 @@ static ret_t conf_json_save_node_value_simple(conf_node_t* node, str_t* str, uin
       return str_append(str, "false");
     }
   } else if (v.type == VALUE_TYPE_STRING) {
-    const char* s = value_str(&v);
-    return_value_if_fail(str_append_char(str, '\"') == RET_OK, RET_OOM);
-    if (s != NULL) {
-      while (*s) {
-        if (*s == '\"') {
-          return_value_if_fail(str_append_char(str, '\\') == RET_OK, RET_OOM);
-          return_value_if_fail(str_append_char(str, *s) == RET_OK, RET_OOM);
-        } else if (*s == '\r') {
-          return_value_if_fail(str_append(str, "\\r") == RET_OK, RET_OOM);
-        } else if (*s == '\n') {
-          return_value_if_fail(str_append(str, "\\n") == RET_OK, RET_OOM);
-        } else {
-          return_value_if_fail(str_append_char(str, *s) == RET_OK, RET_OOM);
-        }
-        s++;
-      }
-    }
-    return_value_if_fail(str_append_char(str, '\"') == RET_OK, RET_OOM);
-
-    return RET_OK;
+    return str_append_json_str(str, value_str(&v));
   } else {
     double d = value_double(&v);
     if (d == (int64_t)d) {
