@@ -3135,3 +3135,23 @@ TEST(FScript, bit_toggle) {
 
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(FScript, id1) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "var t = 1\n//aa\n//bb", &v);
+  ASSERT_EQ(value_int(&v), 1);
+  value_reset(&v);
+
+  fscript_eval(obj, "var t = 2 \n//aa\n//bb\nt", &v);
+  ASSERT_EQ(value_int(&v), 2);
+  value_reset(&v);
+  
+  fscript_eval(obj, "var t = 3 \t//aa\n//bb\nt", &v);
+  ASSERT_EQ(value_int(&v), 3);
+  value_reset(&v);
+
+
+  TK_OBJECT_UNREF(obj);
+}

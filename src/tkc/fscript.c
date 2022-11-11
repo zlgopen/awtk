@@ -1181,6 +1181,8 @@ static ret_t fscript_parser_parse_id_or_number(fscript_parser_t* parser, token_t
     if (tk_isxdigit(c) || tk_isdigit(c) || tk_isalpha(c) || c == '.' || c == '_' || c == '[' ||
         c == ']' || c == '#') {
       str_append_char(str, c);
+    } else if(tk_isspace(c)) {
+      break;
     } else {
       int32_t n = tk_utf8_get_bytes_of_leading((uint8_t)c);
       if (n > 1) {
@@ -1192,7 +1194,7 @@ static ret_t fscript_parser_parse_id_or_number(fscript_parser_t* parser, token_t
   } while (TRUE);
 
   if (tk_isspace(c)) {
-    fscript_parser_skip_seperators_and_comments(parser);
+    fscript_parser_skip_seperators(parser);
     c = fscript_parser_get_char(parser);
   }
 
