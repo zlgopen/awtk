@@ -343,7 +343,6 @@ class IDLGen {
     str = content;
     do {
       start = str.indexOf('TK_EXTERN_VTABLE(');
-      console.log(start)
       if (start >= 0) {
         str = str.substr(start);
         end = str.indexOf(');');
