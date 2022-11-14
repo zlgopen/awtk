@@ -403,9 +403,11 @@ struct _vgcanvas_t {
    * frame buffer format
    */
   bitmap_format_t format;
+  /* private */
   rectf_t clip_rect;
   rect_t dirty_rect;
   const vgcanvas_vtable_t* vt;
+  canvas_t* c;
   assets_manager_t* assets_manager;
   /*确保begin_frame/end_frame配对使用*/
   uint32_t began_frame;
@@ -1324,6 +1326,15 @@ wh_t vgcanvas_get_height(vgcanvas_t* vgcanvas);
 ret_t vgcanvas_clear_cache(vgcanvas_t* vg);
 
 /**
+ * @method vgcanvas_get_canvas
+ * 获取 canvas 对象。
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ *
+ * @return {canvas_t*} 成功返回 canvas 对象，失败返回 NULL。
+ */
+canvas_t* vgcanvas_get_canvas(vgcanvas_t* vg);
+
+/**
  * @method vgcanvas_destroy
  * 销毁vgcanvas对象。
  * @param {vgcanvas_t*} vg vgcanvas对象。
@@ -1390,6 +1401,7 @@ ret_t vgcanvas_fbo_to_bitmap(vgcanvas_t* vg, framebuffer_object_t* fbo, bitmap_t
                              const rect_t* r);
 ret_t fbo_to_img(framebuffer_object_t* fbo, bitmap_t* img);
 ret_t vgcanvas_set_assets_manager(vgcanvas_t* vg, assets_manager_t* assets_manager);
+ret_t vgcanvas_set_canvas(vgcanvas_t* vg, canvas_t* c);
 
 /**
  * @enum vgcanvas_line_cap_t

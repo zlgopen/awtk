@@ -4,6 +4,7 @@
   * uiex 增加 spin\_box 样式(感谢兆坤提供补丁)
   * uiex 增加 scroll\_left scroll\_right 按钮样式(感谢兆坤提供补丁)
   * 修改 agge 只有局部渐变左边不渐变的情况下显示不正常的问题(感谢智明提供补丁)
+  * 增加 vgcanvas\_get\_canvas 接口，给 svg 写字使用，以免修改 svg 原来的接口可以支持显示字(感谢智明提供补丁)
 
 2022/11/11
   * 完善fscript解析。

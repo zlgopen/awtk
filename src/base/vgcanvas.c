@@ -571,6 +571,18 @@ ret_t vgcanvas_clear_cache(vgcanvas_t* vg) {
   return vg->vt->clear_cache(vg);
 }
 
+ret_t vgcanvas_set_canvas(vgcanvas_t* vg, canvas_t* c) {
+  return_value_if_fail(vg != NULL && c != NULL, RET_BAD_PARAMS);
+  vg->c = c;
+  return RET_OK;
+}
+
+canvas_t* vgcanvas_get_canvas(vgcanvas_t* vg) {
+  return_value_if_fail(vg != NULL, NULL);
+
+  return vg->c;
+}
+
 ret_t vgcanvas_set_stroke_gradient(vgcanvas_t* vg, const vg_gradient_t* gradient) {
   return_value_if_fail(vg != NULL && vg->vt != NULL && gradient != NULL, RET_BAD_PARAMS);
 

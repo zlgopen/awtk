@@ -2010,6 +2010,7 @@ vgcanvas_t* canvas_get_vgcanvas(canvas_t* c) {
   if (vg != NULL) {
     rect_t r;
     canvas_get_clip_rect(c, &r);
+    vgcanvas_set_canvas(vg, c);
     vgcanvas_clip_rect(vg, r.x, r.y, r.w, r.h);
     vgcanvas_begin_path(vg);
     vgcanvas_set_text_align(vg, "left");
