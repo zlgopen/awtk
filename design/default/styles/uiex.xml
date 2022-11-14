@@ -427,6 +427,19 @@
     <focused border_color="#709918"/>
   </style>
 </edit>
+<spin_box>
+  <style name="default" bg_color="#FFFFFF" border_color="#C2C2C2" font_size="22" margin_left="8" selected_bg_color="#709918" selected_text_color="#FFFFFF" text_align_h="left" text_color="#000000">
+    <normal/>
+    <over/>
+    <changed/>
+    <disable bg_color="#FFFFFF66" border_color="#C2C2C266" text_color="#44444466"/>
+    <empty text_color="#ABABAB"/>
+    <empty_over text_color="#ABABAB"/>
+    <empty_focus border_color="#709918" text_color="#ABABAB"/>
+    <error border_color="#FF0000"/>
+    <focused border_color="#709918"/>
+  </style>
+</spin_box>
 <gif>
   <style name="default">
     <normal bg_color="#00000000"/>
