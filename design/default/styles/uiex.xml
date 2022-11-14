@@ -134,6 +134,18 @@
     <over/>
     <pressed icon="uiex_arrow_up_p"/>
   </style>
+  <style name="scroll_left" bg_color="#F2F2F2" icon="uiex_arrow_left_n">
+    <normal/>
+    <disable bg_color="#F2F2F266" icon="uiex_arrow_left_d"/>
+    <over/>
+    <pressed icon="uiex_arrow_left_p"/>
+  </style>
+  <style name="scroll_right" bg_color="#F2F2F2" icon="uiex_arrow_right_n">
+    <normal/>
+    <disable bg_color="#F2F2F266" icon="uiex_arrow_right_d"/>
+    <over/>
+    <pressed icon="uiex_arrow_right_p"/>
+  </style>
   <style name="search" bg_color="#00000000" border_color="#00000000" icon="uiex_button_search">
     <normal/>
     <disable/>

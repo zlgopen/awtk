@@ -149,6 +149,18 @@
     <over/>
     <pressed icon="uiex_arrow_up_p"/>
   </style>
+  <style name="scroll_left" bg_color="#262626" icon="uiex_arrow_left_n">
+    <normal/>
+    <disable bg_color="#26262666" icon="uiex_arrow_left_d"/>
+    <over/>
+    <pressed icon="uiex_arrow_left_p"/>
+  </style>
+  <style name="scroll_right" bg_color="#262626" icon="uiex_arrow_right_n">
+    <normal/>
+    <disable bg_color="#26262666" icon="uiex_arrow_right_d"/>
+    <over/>
+    <pressed icon="uiex_arrow_right_p"/>
+  </style>
   <style name="slide_button" bg_image="1" bg_image_draw_type="scale" font_size="32" text_color="#000000">
     <normal/>
     <over/>

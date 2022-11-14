@@ -267,6 +267,7 @@
 #include "default/inc/images/uiex_shifton.res"
 #include "default/inc/images/close_p.res"
 #include "default/inc/images/uiex_radio_d.res"
+#include "default/inc/images/uiex_arrow_left_p.res"
 #include "default/inc/images/uiex_num7.res"
 #include "default/inc/images/num_6.res"
 #include "default/inc/images/bg_landscape_1.res"
@@ -299,6 +300,7 @@
 #include "default/inc/images/uiex_battery_4.res"
 #include "default/inc/images/ani4.res"
 #include "default/inc/images/anib.res"
+#include "default/inc/images/uiex_arrow_right_n.res"
 #include "default/inc/images/me_active.res"
 #include "default/inc/images/file.res"
 #include "default/inc/images/arrow_up_n.res"
@@ -495,6 +497,7 @@
 #include "default/inc/images/close_n.res"
 #include "default/inc/images/uiex_logo.res"
 #include "default/inc/images/close_o.res"
+#include "default/inc/images/uiex_arrow_left_n.res"
 #include "default/inc/images/uiex_editor_TextItalic.res"
 #include "default/inc/images/uiex_list_Battery.res"
 #include "default/inc/images/clock_bg.res"
@@ -515,6 +518,7 @@
 #include "default/inc/images/uiex_button_Empty.res"
 #include "default/inc/images/image_packed_fg.res"
 #include "default/inc/images/bg3.res"
+#include "default/inc/images/uiex_arrow_right_p.res"
 #include "default/inc/images/repeat1.res"
 #include "default/inc/images/uiex_editor_TextBold.res"
 #include "default/inc/images/find.res"
@@ -560,6 +564,7 @@
 #include "default/inc/images/arrow_right_o.data"
 #include "default/inc/images/uiex_keyboard_CN.data"
 #include "default/inc/images/image_packed_bg.data"
+#include "default/inc/images/uiex_arrow_left_n.data"
 #include "default/inc/images/num_4.data"
 #include "default/inc/images/uiex_send_sel.data"
 #include "default/inc/images/0.data"
@@ -631,6 +636,7 @@
 #include "default/inc/images/uiex_Portraitmenu_p.data"
 #include "default/inc/images/image_packed_fg.data"
 #include "default/inc/images/uiex_radio_d.data"
+#include "default/inc/images/uiex_arrow_right_n.data"
 #include "default/inc/images/num_5.data"
 #include "default/inc/images/num_dot.data"
 #include "default/inc/images/arrow_right_n.data"
@@ -659,6 +665,7 @@
 #include "default/inc/images/arrow_right_p.data"
 #include "default/inc/images/ani9.data"
 #include "default/inc/images/bg3_s.data"
+#include "default/inc/images/uiex_arrow_right_p.data"
 #include "default/inc/images/anib.data"
 #include "default/inc/images/uiex_send_nor.data"
 #include "default/inc/images/debug_step_over_d.data"
@@ -700,6 +707,7 @@
 #include "default/inc/images/active_dot.data"
 #include "default/inc/images/uiex_editor_TextLinespacing.data"
 #include "default/inc/images/uiex_Configuration_sel.data"
+#include "default/inc/images/uiex_arrow_left_p.data"
 #include "default/inc/images/uiex_List_desktop.data"
 #include "default/inc/images/close_d.data"
 #include "default/inc/images/right_off.data"
@@ -1156,6 +1164,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_uiex_shifton);
   assets_manager_add(am, image_close_p);
   assets_manager_add(am, image_uiex_radio_d);
+  assets_manager_add(am, image_uiex_arrow_left_p);
   assets_manager_add(am, image_uiex_num7);
   assets_manager_add(am, image_num_6);
   assets_manager_add(am, image_bg_landscape_1);
@@ -1188,6 +1197,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_uiex_battery_4);
   assets_manager_add(am, image_ani4);
   assets_manager_add(am, image_anib);
+  assets_manager_add(am, image_uiex_arrow_right_n);
   assets_manager_add(am, image_me_active);
   assets_manager_add(am, image_file);
   assets_manager_add(am, image_arrow_up_n);
@@ -1384,6 +1394,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_close_n);
   assets_manager_add(am, image_uiex_logo);
   assets_manager_add(am, image_close_o);
+  assets_manager_add(am, image_uiex_arrow_left_n);
   assets_manager_add(am, image_uiex_editor_TextItalic);
   assets_manager_add(am, image_uiex_list_Battery);
   assets_manager_add(am, image_clock_bg);
@@ -1404,6 +1415,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_uiex_button_Empty);
   assets_manager_add(am, image_image_packed_fg);
   assets_manager_add(am, image_bg3);
+  assets_manager_add(am, image_uiex_arrow_right_p);
   assets_manager_add(am, image_repeat1);
   assets_manager_add(am, image_uiex_editor_TextBold);
   assets_manager_add(am, image_find);

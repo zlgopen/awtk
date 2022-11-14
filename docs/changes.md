@@ -1,7 +1,8 @@
 # 最新动态
 
 2022/11/14
-  * uiex 增加 spin_box 样式(感谢兆坤提供补丁)
+  * uiex 增加 spin\_box 样式(感谢兆坤提供补丁)
+  * uiex 增加 scroll\_left scroll\_right 按钮样式(感谢兆坤提供补丁)
 
 2022/11/11
   * 完善fscript解析。

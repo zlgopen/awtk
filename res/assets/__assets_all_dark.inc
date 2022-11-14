@@ -263,12 +263,14 @@ extern TK_CONST_DATA_ALIGN(const unsigned char data_a_b_c_any[]);
 #include "dark/inc/images/uiex_num6.res"
 #include "dark/inc/images/uiex_shifton.res"
 #include "dark/inc/images/uiex_radio_d.res"
+#include "dark/inc/images/uiex_arrow_left_p.res"
 #include "dark/inc/images/uiex_num7.res"
 #include "dark/inc/images/uiex_battery_5.res"
 #include "dark/inc/images/uiex_num5.res"
 #include "dark/inc/images/uiex_radio_p.res"
 #include "dark/inc/images/uiex_num4.res"
 #include "dark/inc/images/uiex_battery_4.res"
+#include "dark/inc/images/uiex_arrow_right_n.res"
 #include "dark/inc/images/uiex_battery_0.res"
 #include "dark/inc/images/uiex_num0.res"
 #include "dark/inc/images/uiex_load2_bg.res"
@@ -321,11 +323,13 @@ extern TK_CONST_DATA_ALIGN(const unsigned char data_a_b_c_any[]);
 #include "dark/inc/images/uiex_editor_TextAlignright.res"
 #include "dark/inc/images/uiex_keyboard_EN.res"
 #include "dark/inc/images/uiex_logo.res"
+#include "dark/inc/images/uiex_arrow_left_n.res"
 #include "dark/inc/images/uiex_editor_TextItalic.res"
 #include "dark/inc/images/uiex_editor_TextCenteralignment.res"
 #include "dark/inc/images/uiex_button_time.res"
 #include "dark/inc/images/uiex_radio_n.res"
 #include "dark/inc/images/uiex_button_Empty.res"
+#include "dark/inc/images/uiex_arrow_right_p.res"
 #include "dark/inc/images/uiex_editor_TextBold.res"
 #include "dark/inc/images/uiex_num9.res"
 #include "dark/inc/images/uiex_button_Import.res"
@@ -558,6 +562,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char image_clock_hour[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_bg5_s[]);
 #else /*WITH_STB_IMAGE*/
 #include "dark/inc/images/uiex_keyboard_CN.data"
+#include "dark/inc/images/uiex_arrow_left_n.data"
 #include "dark/inc/images/uiex_radio_p.data"
 #include "dark/inc/images/uiex_load1_bg.data"
 #include "dark/inc/images/uiex_num1.data"
@@ -571,11 +576,13 @@ extern TK_CONST_DATA_ALIGN(const unsigned char image_bg5_s[]);
 #include "dark/inc/images/uiex_logo.data"
 #include "dark/inc/images/uiex_Portraitmenu_p.data"
 #include "dark/inc/images/uiex_radio_d.data"
+#include "dark/inc/images/uiex_arrow_right_n.data"
 #include "dark/inc/images/uiex_num7.data"
 #include "dark/inc/images/uiex_editor_TextAlignleft.data"
 #include "dark/inc/images/uiex_editor_Textcolor.data"
 #include "dark/inc/images/uiex_clock_bg.data"
 #include "dark/inc/images/uiex_Portraitmenu_n.data"
+#include "dark/inc/images/uiex_arrow_right_p.data"
 #include "dark/inc/images/uiex_texteditorhide.data"
 #include "dark/inc/images/uiex_load2_bg.data"
 #include "dark/inc/images/uiex_keyboard_backspace_p.data"
@@ -585,6 +592,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char image_bg5_s[]);
 #include "dark/inc/images/uiex_arrow_down_p.data"
 #include "dark/inc/images/uiex_editor_bgcolor.data"
 #include "dark/inc/images/uiex_editor_TextLinespacing.data"
+#include "dark/inc/images/uiex_arrow_left_p.data"
 #include "dark/inc/images/uiex_radio_n.data"
 #include "dark/inc/images/uiex_editor_TextItalic.data"
 #include "dark/inc/images/uiex_num6.data"
@@ -1152,12 +1160,14 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, image_uiex_num6_dark);
   assets_manager_add(am, image_uiex_shifton_dark);
   assets_manager_add(am, image_uiex_radio_d_dark);
+  assets_manager_add(am, image_uiex_arrow_left_p_dark);
   assets_manager_add(am, image_uiex_num7_dark);
   assets_manager_add(am, image_uiex_battery_5_dark);
   assets_manager_add(am, image_uiex_num5_dark);
   assets_manager_add(am, image_uiex_radio_p_dark);
   assets_manager_add(am, image_uiex_num4_dark);
   assets_manager_add(am, image_uiex_battery_4_dark);
+  assets_manager_add(am, image_uiex_arrow_right_n_dark);
   assets_manager_add(am, image_uiex_battery_0_dark);
   assets_manager_add(am, image_uiex_num0_dark);
   assets_manager_add(am, image_uiex_load2_bg_dark);
@@ -1210,11 +1220,13 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, image_uiex_editor_TextAlignright_dark);
   assets_manager_add(am, image_uiex_keyboard_EN_dark);
   assets_manager_add(am, image_uiex_logo_dark);
+  assets_manager_add(am, image_uiex_arrow_left_n_dark);
   assets_manager_add(am, image_uiex_editor_TextItalic_dark);
   assets_manager_add(am, image_uiex_editor_TextCenteralignment_dark);
   assets_manager_add(am, image_uiex_button_time_dark);
   assets_manager_add(am, image_uiex_radio_n_dark);
   assets_manager_add(am, image_uiex_button_Empty_dark);
+  assets_manager_add(am, image_uiex_arrow_right_p_dark);
   assets_manager_add(am, image_uiex_editor_TextBold_dark);
   assets_manager_add(am, image_uiex_num9_dark);
   assets_manager_add(am, image_uiex_button_Import_dark);
