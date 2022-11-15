@@ -35,7 +35,8 @@ ret_t locale_info_set(locale_info_t* locale_info) {
   return RET_OK;
 }
 
-static locale_info_t* locale_info_init(locale_info_t* locale_info, const char* language, const char* country, assets_manager_t* am) {
+static locale_info_t* locale_info_init(locale_info_t* locale_info, const char* language,
+                                       const char* country, assets_manager_t* am) {
   return_value_if_fail(locale_info != NULL, NULL);
 
   locale_info->assets_manager = am;
@@ -45,7 +46,8 @@ static locale_info_t* locale_info_init(locale_info_t* locale_info, const char* l
   return locale_info;
 }
 
-static locale_info_t* locale_info_create_internal(const char* language, const char* country, assets_manager_t* am) {
+static locale_info_t* locale_info_create_internal(const char* language, const char* country,
+                                                  assets_manager_t* am) {
   locale_info_t* locale_info = TKMEM_ZALLOC(locale_info_t);
   return locale_info_init(locale_info, language, country, am);
 }

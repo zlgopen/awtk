@@ -147,7 +147,8 @@ widget_t* digit_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   digit_clock_update_time(widget);
   widget_add_timer(widget, digit_clock_on_timer, 1000);
   wstr_init(&(digit_clock->last_time), 32);
-  digit_clock->local_changed_event_id = locale_info_on(locale_info(), EVT_LOCALE_CHANGED, digit_clock_on_display_time, widget);
+  digit_clock->local_changed_event_id =
+      locale_info_on(locale_info(), EVT_LOCALE_CHANGED, digit_clock_on_display_time, widget);
 
   return widget;
 }

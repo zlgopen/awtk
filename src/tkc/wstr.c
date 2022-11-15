@@ -59,7 +59,7 @@ wchar_t* wcs_cpy(wchar_t* s1, const wchar_t* s2) {
   return s1;
 }
 
-int wcs_ncmp(const wchar_t *s1, const wchar_t *s2, uint32_t n) {
+int wcs_ncmp(const wchar_t* s1, const wchar_t* s2, uint32_t n) {
   wchar_t c1 = L'\0';
   wchar_t c2 = L'\0';
   return_value_if_fail(s1 != NULL && s2 != NULL, -1);

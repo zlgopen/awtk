@@ -58,7 +58,7 @@ static ret_t func_bit_set(fscript_t* fscript, fscript_args_t* args, value_t* res
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   value = args->args;
   n = value_uint32(args->args + 1);
-  
+
   return value_set_bit(value, result, n, TRUE);
 }
 
@@ -95,7 +95,7 @@ static ret_t func_bit_get(fscript_t* fscript, fscript_args_t* args, value_t* res
   value = args->args;
   n = value_uint32(args->args + 1);
 
-  return value_get_bit(value, result, n); 
+  return value_get_bit(value, result, n);
 }
 
 static ret_t func_bit_and(fscript_t* fscript, fscript_args_t* args, value_t* result) {

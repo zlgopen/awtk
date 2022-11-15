@@ -130,8 +130,9 @@ static ret_t update_title_on_timer(const timer_info_t* info) {
   return RET_REPEAT;
 }
 
-static ret_t popup_move_to_foreground(void* ctx, event_t* e){
-  window_manager_switch_to(window_manager(), window_manager_get_top_main_window(window_manager()), ctx, FALSE);
+static ret_t popup_move_to_foreground(void* ctx, event_t* e) {
+  window_manager_switch_to(window_manager(), window_manager_get_top_main_window(window_manager()),
+                           ctx, FALSE);
   return RET_OK;
 }
 
@@ -203,7 +204,7 @@ static ret_t on_paint_linear_gradient(void* ctx, event_t* e) {
   vgcanvas_translate(vg, 0, r.y + r.h);
   vgcanvas_rect(vg, r.x, r.y, r.w, r.h);
   ecolor = color_init(0, 0, 0xff, 0xff);
-  vgcanvas_set_fill_linear_gradient(vg, r.x + r.w*0.6, r.y, r.x + r.w*0.4, r.y, scolor, ecolor);
+  vgcanvas_set_fill_linear_gradient(vg, r.x + r.w * 0.6, r.y, r.x + r.w * 0.4, r.y, scolor, ecolor);
   vgcanvas_fill(vg);
 
   vgcanvas_translate(vg, -(r.x + r.w), 0);

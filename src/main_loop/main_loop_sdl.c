@@ -212,7 +212,8 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
       native_window_info_t info;
       event_t e = event_init(EVT_NATIVE_WINDOW_RESIZED, NULL);
       SDL_Window* win = SDL_GetWindowFromID(event->window.windowID);
-      native_window_t* native_window = (native_window_t*)widget_get_prop_pointer(window_manager(), WIDGET_PROP_NATIVE_WINDOW);
+      native_window_t* native_window =
+          (native_window_t*)widget_get_prop_pointer(window_manager(), WIDGET_PROP_NATIVE_WINDOW);
       native_window_get_info(native_window, &info);
       system_info_set_lcd_w(system_info(), info.w);
       system_info_set_lcd_h(system_info(), info.h);

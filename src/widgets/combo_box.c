@@ -599,7 +599,8 @@ ret_t combo_box_combobox_popup_on_close_func(void* ctx, event_t* e) {
   combo_box_t* combo_box = COMBO_BOX(ctx);
   return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
 
-  widget_off_by_func(window_manager(), EVT_WIDGET_WILL_RESTACK_CHILD, combo_box_popup_restack, combo_box);
+  widget_off_by_func(window_manager(), EVT_WIDGET_WILL_RESTACK_CHILD, combo_box_popup_restack,
+                     combo_box);
   combo_box->combobox_popup = NULL;
 
   return RET_OK;

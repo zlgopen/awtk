@@ -97,7 +97,7 @@ typedef struct _button_t {
    *
    */
   bool_t enable_long_press;
-  
+
   /**
    * @property {bool_t} enable_preview
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]

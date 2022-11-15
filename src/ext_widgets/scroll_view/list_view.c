@@ -179,7 +179,7 @@ static ret_t list_view_on_event(widget_t* widget, event_t* e) {
       }
       break;
     }
-    case EVT_KEY_UP :
+    case EVT_KEY_UP:
     case EVT_POINTER_UP: {
       pointer_event_t* evt = (pointer_event_t*)e;
       list_view_on_pointer_up(list_view, evt);

@@ -58,7 +58,8 @@ static ret_t check_button_on_event(widget_t* widget, event_t* e) {
       pointer_event_t* evt = (pointer_event_t*)e;
       if (check_button->pressed && widget_is_point_in(widget, evt->x, evt->y, FALSE)) {
         pointer_event_t click;
-        ret = widget_dispatch(widget, pointer_event_init(&click, EVT_CLICK, widget, evt->x, evt->y));
+        ret =
+            widget_dispatch(widget, pointer_event_init(&click, EVT_CLICK, widget, evt->x, evt->y));
       }
 
       check_button->pressed = FALSE;

@@ -973,7 +973,8 @@ ret_t tk_object_set_prop_uint64(tk_object_t* obj, const char* name, uint64_t val
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tk_object_to_json(tk_object_t* obj, str_t* json, uint32_t indent, uint32_t level, bool_t oneline);
+ret_t tk_object_to_json(tk_object_t* obj, str_t* json, uint32_t indent, uint32_t level,
+                        bool_t oneline);
 
 /**
  * @method tk_object_get_child_object

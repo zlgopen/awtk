@@ -955,7 +955,8 @@ static ret_t mledit_on_scroll_bar_value_changed(void* ctx, event_t* e) {
   return_value_if_fail(vscroll_bar != NULL && scroll_bar != NULL, RET_BAD_PARAMS);
 
   value = widget_get_value(vscroll_bar);
-  value = (int64_t)(scroll_bar->virtual_size - vscroll_bar->h) * (int64_t)value / scroll_bar->virtual_size;
+  value = (int64_t)(scroll_bar->virtual_size - vscroll_bar->h) * (int64_t)value /
+          scroll_bar->virtual_size;
 
   if (mledit->overwrite && mledit->max_chars == 0 && mledit->max_lines != 0) {
     if (value == scroll_bar->virtual_size - vscroll_bar->h) {

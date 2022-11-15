@@ -327,4 +327,3 @@ TK_DECL_VTABLE(widget) = {.size = sizeof(widget_t),
                           .set_prop = widget_set_prop_default,
                           .find_target = widget_find_target_default,
                           .on_destroy = widget_on_destroy_default};
-

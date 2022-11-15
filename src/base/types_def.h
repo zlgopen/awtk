@@ -309,9 +309,11 @@ typedef struct _widget_animator_t widget_animator_t;
 #define TK_GET_VTABLE(vt) vt##_get_widget_vtable()
 #define TK_GET_PARENT_VTABLE(vt) vt##_get_widget_vtable
 #define TK_PARENT_VTABLE(vt) NULL, .get_parent_vt = TK_GET_PARENT_VTABLE(vt)
-#define TK_DECL_VTABLE(vt)                                                                          \
-  extern const widget_vtable_t g_##vt##_vtable;                                                     \
-  const widget_vtable_t* vt##_get_widget_vtable(void) { return &g_##vt##_vtable; }                  \
+#define TK_DECL_VTABLE(vt)                              \
+  extern const widget_vtable_t g_##vt##_vtable;         \
+  const widget_vtable_t* vt##_get_widget_vtable(void) { \
+    return &g_##vt##_vtable;                            \
+  }                                                     \
   const widget_vtable_t g_##vt##_vtable
 #define TK_EXTERN_VTABLE(vt) const widget_vtable_t* vt##_get_widget_vtable(void);
 

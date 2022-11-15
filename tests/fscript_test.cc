@@ -436,7 +436,7 @@ TEST(FScript, bit_xor) {
   fscript_eval(obj, "^(1, 1)", &v);
   ASSERT_EQ(value_int(&v), 0);
   value_reset(&v);
-  
+
   fscript_eval(obj, "^(1, 0)", &v);
   ASSERT_EQ(value_int(&v), 1);
   value_reset(&v);
@@ -3147,11 +3147,10 @@ TEST(FScript, id1) {
   fscript_eval(obj, "var t = 2 \n//aa\n//bb\nt", &v);
   ASSERT_EQ(value_int(&v), 2);
   value_reset(&v);
-  
+
   fscript_eval(obj, "var t = 3 \t//aa\n//bb\nt", &v);
   ASSERT_EQ(value_int(&v), 3);
   value_reset(&v);
-
 
   TK_OBJECT_UNREF(obj);
 }

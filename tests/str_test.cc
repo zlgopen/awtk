@@ -630,25 +630,25 @@ TEST(Str, from) {
 
   ASSERT_EQ(str_from_int(s, 123), RET_OK);
   ASSERT_EQ(str_eq(s, "123"), TRUE);
-  
+
   ASSERT_EQ(str_from_int(s, -123), RET_OK);
   ASSERT_EQ(str_eq(s, "-123"), TRUE);
-  
+
   ASSERT_EQ(str_from_uint32(s, 123), RET_OK);
   ASSERT_EQ(str_eq(s, "123"), TRUE);
-  
+
   ASSERT_EQ(str_from_uint32(s, 0xffffffff), RET_OK);
-  ASSERT_EQ(tk_atoul(s->str), 0xffffffff); 
+  ASSERT_EQ(tk_atoul(s->str), 0xffffffff);
 
   ASSERT_EQ(str_from_int64(s, 1234), RET_OK);
   ASSERT_EQ(str_eq(s, "1234"), TRUE);
-  
+
   ASSERT_EQ(str_from_int64(s, -1234), RET_OK);
   ASSERT_EQ(str_eq(s, "-1234"), TRUE);
-  
+
   ASSERT_EQ(str_from_uint64(s, 12345), RET_OK);
   ASSERT_EQ(str_eq(s, "12345"), TRUE);
-  
+
   ASSERT_EQ(str_from_float(s, 1.1), RET_OK);
   ASSERT_STREQ(s->str, "1.100000");
 
