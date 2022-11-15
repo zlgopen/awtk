@@ -4,6 +4,7 @@
   * 修复使用combo\_box控件打开下拉列表的同时调用window\_manager\_switch\_to改变窗口顺序导致popup无法正常显示的问题(感谢泽武提供补丁)
   * 新增第三方库svgtiny来解析svg，增加渐变等功能(感谢陈聪提供补丁)
   * 优化slide_view拖拽时才刷新界面而非按下时刷新(感谢智明提供补丁)
+  * 修复如果widget\_to\_screen的widget为滚动控件的话会导致获取失败(感谢智明提供补丁)
 
 2022/11/14
   * uiex 增加 spin\_box 样式(感谢兆坤提供补丁)
