@@ -441,6 +441,17 @@ typedef enum _event_type_t {
    */
   EVT_WIDGET_REMOVE_CHILD,
   /**
+   * @const EVT_WIDGET_WILL_RESTACK_CHILD
+   * 控件即将调整子控件位置序数(event_t)。
+   * 在该事件的回调函数中返回RET_STOP停止调整动作。
+   */
+  EVT_WIDGET_WILL_RESTACK_CHILD,
+  /**
+   * @const EVT_WIDGET_RESTACK_CHILD
+   * 控件调整子控件位置序数(event_t)。
+   */
+  EVT_WIDGET_RESTACK_CHILD,
+  /**
    * @const EVT_SCROLL_START
    * scroll view开始滚动(event_t)。
    */

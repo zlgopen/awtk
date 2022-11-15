@@ -23,6 +23,7 @@
 #include "tkc/utils.h"
 #include "base/layout.h"
 #include "base/window.h"
+#include "base/window_manager.h"
 #include "widgets/button.h"
 #include "widgets/popup.h"
 #include "widgets/combo_box.h"
@@ -584,10 +585,21 @@ static ret_t combo_box_create_popup_items(combo_box_t* combo_box, widget_t* pare
   return RET_OK;
 }
 
+static ret_t combo_box_popup_restack(void* ctx, event_t* e) {
+  combo_box_t* combo_box = COMBO_BOX(ctx);
+  return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
+  if (combo_box->combobox_popup != NULL) {
+    return RET_STOP;
+  }
+
+  return RET_OK;
+}
+
 ret_t combo_box_combobox_popup_on_close_func(void* ctx, event_t* e) {
   combo_box_t* combo_box = COMBO_BOX(ctx);
   return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
 
+  widget_off_by_func(window_manager(), EVT_WIDGET_WILL_RESTACK_CHILD, combo_box_popup_restack, combo_box);
   combo_box->combobox_popup = NULL;
 
   return RET_OK;
@@ -658,6 +670,7 @@ static ret_t combo_box_active(widget_t* widget) {
     widget_resize(win, widget->w, win->h);
     widget_layout_children(win);
   } else {
+    widget_on(window_manager(), EVT_WIDGET_WILL_RESTACK_CHILD, combo_box_popup_restack, combo_box);
     if (combo_box->open_popup) {
       win = combo_box->open_popup(widget);
       return_value_if_fail(win != NULL, RET_FAIL);

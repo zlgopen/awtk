@@ -93,6 +93,7 @@
 #include "assets/default/inc/ui/tab_bottom.data"
 #include "assets/default/inc/ui/list_view_m.data"
 #include "assets/default/inc/ui/slide_view_h_loop.data"
+#include "assets/default/inc/ui/popup_on_top.data"
 #include "assets/default/inc/ui/main_fscript.data"
 #include "assets/default/inc/ui/mutable_image.data"
 #include "assets/default/inc/ui/calibration_win.data"
@@ -613,6 +614,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_tab_bottom);
   assets_manager_add(am, ui_list_view_m);
   assets_manager_add(am, ui_slide_view_h_loop);
+  assets_manager_add(am, ui_popup_on_top);
   assets_manager_add(am, ui_main_fscript);
   assets_manager_add(am, ui_mutable_image);
   assets_manager_add(am, ui_calibration_win);

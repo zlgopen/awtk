@@ -93,6 +93,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_menu_down_right[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_tab_bottom[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_list_view_m[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_slide_view_h_loop[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_popup_on_top[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_main_fscript[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_mutable_image[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_calibration_win[]);
@@ -613,6 +614,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_tab_bottom);
   assets_manager_add(am, ui_list_view_m);
   assets_manager_add(am, ui_slide_view_h_loop);
+  assets_manager_add(am, ui_popup_on_top);
   assets_manager_add(am, ui_main_fscript);
   assets_manager_add(am, ui_mutable_image);
   assets_manager_add(am, ui_calibration_win);

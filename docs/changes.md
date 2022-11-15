@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/11/15
+  * 修复使用combo\_box控件打开下拉列表的同时调用window\_manager\_switch\_to改变窗口顺序导致popup无法正常显示的问题(感谢泽武提供补丁)
+
 2022/11/14
   * uiex 增加 spin\_box 样式(感谢兆坤提供补丁)
   * uiex 增加 scroll\_left scroll\_right 按钮样式(感谢兆坤提供补丁)

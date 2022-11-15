@@ -130,6 +130,11 @@ static ret_t update_title_on_timer(const timer_info_t* info) {
   return RET_REPEAT;
 }
 
+static ret_t popup_move_to_foreground(void* ctx, event_t* e){
+  window_manager_switch_to(window_manager(), window_manager_get_top_main_window(window_manager()), ctx, FALSE);
+  return RET_OK;
+}
+
 static void open_window(const char* name, widget_t* to_close) {
   bool_t is_single_main_win =
       widget_lookup(window_manager(), DEMOUI_MAIN_WINDOW_NAME, FALSE) == NULL;
@@ -153,6 +158,10 @@ static void open_window(const char* name, widget_t* to_close) {
 
   if (tk_str_eq(name, "list_view")) {
     widget_add_timer(win, update_title_on_timer, 1000);
+  }
+
+  if (tk_str_eq(name, "popup_on_top")) {
+    widget_on(win, EVT_WINDOW_TO_BACKGROUND, popup_move_to_foreground, win);
   }
 
   if (tk_str_eq(widget_get_type(win), WIDGET_TYPE_DIALOG)) {
