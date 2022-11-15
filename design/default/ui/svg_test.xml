@@ -1,0 +1,18 @@
+<window anim_hint="htranslate">
+  <slide_view x="c" y="15" w="300" h="225" loop="true">
+    <svg image="painting_stroke_05_t" x="c" y="m" w="100%" h="100%"/>
+    <svg image="paths_data_01_t" x="c" y="m" w="100%" h="100%"/>
+    <svg image="paths_data_02_t" x="c" y="m" w="100%" h="100%"/>
+    <svg image="pservers_grad_99_b" x="c" y="m" w="100%" h="100%"/>
+    <svg image="shapes_circle_01_t" x="c" y="m" w="100%" h="100%"/>
+    <svg image="shapes_ellipse_01_t" x="c" y="m" w="100%" h="100%"/>
+    <svg image="shapes_line_01_t" x="c" y="m" w="100%" h="100%"/>
+    <svg image="shapes_polygon_01_t" x="c" y="m" w="100%" h="100%"/>
+    <svg image="shapes_polyline_01_t" x="c" y="m" w="100%" h="100%"/>
+    <svg image="shapes_rect_01_t" x="c" y="m" w="100%" h="100%"/>
+    <svg image="tiger" x="c" y="m" w="100%" h="100%"/>
+  </slide_view>
+  <slide_indicator x="0" y="260" w="100%" h="20" transition="true" style="blue"/>
+  <button name="close" self_layout="default(x=center,y=bottom:50,w=50%,h=30)" 
+    floating="true" text="Close"/>
+</window>

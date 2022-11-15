@@ -65,7 +65,7 @@ TK_3RD_ROOT = joinPath(TK_ROOT, '3rd')
 TK_TOOLS_ROOT = joinPath(TK_ROOT, 'tools')
 TK_DEMO_ROOT = joinPath(TK_ROOT, 'demos')
 GTEST_ROOT = joinPath(TK_ROOT, '3rd/gtest/googletest')
-TKC_STATIC_LIBS = ['debugger', 'fscript_ext', 'streams', 'conf_io', 'hal', 'xml', 'charset',
+TKC_STATIC_LIBS = ['svgtiny', 'debugger', 'fscript_ext', 'streams', 'conf_io', 'hal', 'xml', 'charset',
                    'csv', 'ubjson', 'compressors', 'miniz', 'tkc_core', 'mbedtls']
 
 TOOLS_NAME = ''

@@ -79,6 +79,7 @@
 #include "default/inc/ui/kb_hex.data"
 #include "default/inc/ui/gauge_h.data"
 #include "default/inc/ui/popdown.data"
+#include "default/inc/ui/svg_test.data"
 #include "default/inc/ui/slide_view_remove.data"
 #include "default/inc/ui/color.data"
 #include "default/inc/ui/color_picker.data"
@@ -504,14 +505,26 @@
 #include "default/inc/scripts/dummy.res"
 #endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
+#include "default/inc/images/paths_data_02_t.bsvg"
 #include "default/inc/images/pointer_4.bsvg"
 #include "default/inc/images/htest.bsvg"
 #include "default/inc/images/ball.bsvg"
+#include "default/inc/images/shapes_polyline_01_t.bsvg"
 #include "default/inc/images/china.bsvg"
 #include "default/inc/images/meter_pointer.bsvg"
+#include "default/inc/images/pservers_grad_99_b.bsvg"
+#include "default/inc/images/tiger.bsvg"
+#include "default/inc/images/shapes_line_01_t.bsvg"
+#include "default/inc/images/painting_stroke_05_t.bsvg"
+#include "default/inc/images/paths_data_01_t.bsvg"
 #include "default/inc/images/pointer_1.bsvg"
 #include "default/inc/images/pointer.bsvg"
+#include "default/inc/images/shapes_circle_01_t.bsvg"
+#include "default/inc/images/shapes_rect_01_t.bsvg"
 #include "default/inc/images/girl.bsvg"
+#include "default/inc/images/gradient.bsvg"
+#include "default/inc/images/shapes_ellipse_01_t.bsvg"
+#include "default/inc/images/shapes_polygon_01_t.bsvg"
 #endif /*WITH_VGCANVAS*/
 #endif /*!defined(WITH_FS_RES) || defined(AWTK_WEB)*/
 
@@ -600,6 +613,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_kb_hex);
   assets_manager_add(am, ui_gauge_h);
   assets_manager_add(am, ui_popdown);
+  assets_manager_add(am, ui_svg_test);
   assets_manager_add(am, ui_slide_view_remove);
   assets_manager_add(am, ui_color);
   assets_manager_add(am, ui_color_picker);
@@ -883,14 +897,26 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, script_dummy);
 #endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
+  assets_manager_add(am, image_paths_data_02_t);
   assets_manager_add(am, image_pointer_4);
   assets_manager_add(am, image_htest);
   assets_manager_add(am, image_ball);
+  assets_manager_add(am, image_shapes_polyline_01_t);
   assets_manager_add(am, image_china);
   assets_manager_add(am, image_meter_pointer);
+  assets_manager_add(am, image_pservers_grad_99_b);
+  assets_manager_add(am, image_tiger);
+  assets_manager_add(am, image_shapes_line_01_t);
+  assets_manager_add(am, image_painting_stroke_05_t);
+  assets_manager_add(am, image_paths_data_01_t);
   assets_manager_add(am, image_pointer_1);
   assets_manager_add(am, image_pointer);
+  assets_manager_add(am, image_shapes_circle_01_t);
+  assets_manager_add(am, image_shapes_rect_01_t);
   assets_manager_add(am, image_girl);
+  assets_manager_add(am, image_gradient);
+  assets_manager_add(am, image_shapes_ellipse_01_t);
+  assets_manager_add(am, image_shapes_polygon_01_t);
 #endif /*WITH_VGCANVAS*/
 #endif /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
 

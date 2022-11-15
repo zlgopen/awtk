@@ -63,9 +63,10 @@
     </view>
     <view name="view_svg" children_layout="default(r=0,c=1,x=0,y=0,s=4)" h="80">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" text="Svg"/>
-      <view h="-22" children_layout="default(r=1,c=0,x=20,y=0,s=146)">
+      <view h="-22" children_layout="default(r=1,c=0,x=20,y=0,s=14)">
         <svg image="computer" scale_x="0.25" scale_y="0.25" w="54"/>
         <svg image="windmill" animation="rotation(from=0, to=6.28, yoyo_times=1000, duration=5000)" scale_x="0.35" scale_y="0.35" w="54"/>
+        <svg image="gradient" scale_x="0.25" scale_y="0.25" w="54"/>
       </view>
     </view>
   </scroll_view>

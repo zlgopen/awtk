@@ -22,7 +22,6 @@
 #ifndef TK_BSVG_H
 #define TK_BSVG_H
 
-#include "svg/svg_shape.h"
 #include "svg/bsvg_common.h"
 
 BEGIN_C_DECLS

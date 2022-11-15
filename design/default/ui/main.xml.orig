@@ -1,0 +1,69 @@
+<window closable="no" text="Desktop" anim_hint="htranslate" single_instance="true">
+  <slide_view x="0" y="0" w="100%" h="100%" loop="true">
+    <view x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=8,m=5,s=5)">
+      <button focusable="true" focused="true" name="open:basic" text="Basic"/>
+      <button focusable="true" name="open:button" text="Buttons"/>
+      <button focusable="true" name="open:edit" text="Edits"/>
+      <button focusable="true" name="open:keyboard" text="KeyBoard"/>
+      <button focusable="true" name="open:list_view" text="ListView"/>
+      <button focusable="true" name="open:slide_view" text="SlideView"/>
+      <button focusable="true" name="open:animation" text="Animate Window"/>
+      <button focusable="true" name="open:animate_widget" text="Animate Widget"/>
+      <button focusable="true" name="open:tab_control" text="Tab Control"/>
+      <button focusable="true" name="open:combo_box" text="ComboBox"/>
+      <button focusable="true" name="open:rich_text" text="RichText"/>
+      <button focusable="true" name="open:color_picker" text="Color Picker"/>
+    </view>
+    
+    <view x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=8,m=5,s=5)">
+      <button focusable="true" name="open:time_clock" text="Analog Clock"/>
+      <button focusable="true" name="open:digit_clock" text="Digit Clock"/>
+      <button focusable="true" name="open:locale" text="Locale"/>
+      <button focusable="true" name="open:images" text="Image"/>
+      <button focusable="true" name="open:gauge" text="Gauge"/>
+      <button focusable="true" name="open:switch" text="Switch"/>
+      <button focusable="true" name="open:text_selector" text="Selector"/>
+      <button focusable="true" name="open:image_animation" text="Image Animation"/>
+      <button focusable="true" name="open:progress_circle" text="ProgressCircle"/>
+      <button focusable="true" name="open:image_value" text="Value Image"/>
+      <button focusable="true" name="open:svg_image" text="SVG Image"/>
+      <button focusable="true" name="open:gif_image" text="GIF Image"/>
+    </view>
+
+    <view x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=8,m=5,s=5)">
+      <button focusable="true" name="open:label" text="Label"/>
+      <button focusable="true" name="open:dialogs" text="Dialogs"/>
+      <button focusable="true" name="open:slide_menu" text="Slide Menu"/>
+      <button focusable="true" name="open:soft_keyboard" text="Custom Keyboard"/>
+      <button focusable="true" name="open:vgcanvas" text="VG Canvas"/>
+      <button focusable="true" name="open:linear_gradient" text="Linear Gradient"/>
+      <button focusable="true" name="open:radial_gradient" text="Radial Gradient"/>
+      <button focusable="true" name="open:stroke_gradient" text="Stroke Gradient"/>
+      <button focusable="true" name="open:overlay" text="Overlay"/>
+      <button focusable="true" name="open:mledit" text="MultiLine Edit"/>
+      <button focusable="true" name="open:hscroll_label" text="HScroll Label"/>
+      <button focusable="true" name="open:menu" text="ContextMenu"/>
+    </view>
+    <view x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=8,m=5,s=5)">
+      <button focusable="true" name="open:draggable" text="Draggable"/>
+      <button focusable="true" name="open:rich_text_view" text="RichTextView"/>
+      <button focusable="true" name="open:bidi" text="Bidirectional"/>
+      <button focusable="true" name="open:grid" text="Grid"/>
+      <button focusable="true" name="open:color_tile" text="Color Tile"/>
+      <button focusable="true" name="open:floating_keyboard" text="Floating Keyboard"/>
+      <button focusable="true" name="open:slider" text="Slider"/>
+      <button focusable="true" name="open:close_window" text="close_window"/>
+      <button focusable="true" name="open:dialog_highlight" text="Dialog Highlight"/>
+      <button focusable="true" name="open:popup_on_top" text="Popup On Top"/>
+    </view>
+    <view x="0" y="0" w="100%" h="100%" children_layout="default(c=1,r=8,m=5,s=5)">
+      <button focusable="true" name="open:memtest" text="MemTest"/>
+      <button focusable="true" name="open:calibration_win" text="Calibration"/>
+      <button focusable="true" name="show_fps" text="Show FPS"/>
+      <button focusable="true" name="snapshot" text="Take Snapshot"/>
+      <button focusable="true" name="reload_theme" text="Test Change Theme"/>
+      <button focusable="true" name="exit" text="Exit"/>
+    </view>
+  </slide_view>
+  <slide_indicator x="0" y="b" w="100%" h="20" transition="true" style="blue"/>
+</window>

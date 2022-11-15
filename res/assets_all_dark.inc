@@ -84,6 +84,7 @@
 #include "assets/default/inc/ui/kb_hex.data"
 #include "assets/default/inc/ui/gauge_h.data"
 #include "assets/default/inc/ui/popdown.data"
+#include "assets/default/inc/ui/svg_test.data"
 #include "assets/default/inc/ui/slide_view_remove.data"
 #include "assets/default/inc/ui/color.data"
 #include "assets/default/inc/ui/color_picker.data"
@@ -881,15 +882,27 @@
 #endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
 #include "assets/dark/inc/images/computer.bsvg"
+#include "assets/default/inc/images/paths_data_02_t.bsvg"
 #include "assets/default/inc/images/pointer_4.bsvg"
 #include "assets/default/inc/images/htest.bsvg"
 #include "assets/default/inc/images/ball.bsvg"
+#include "assets/default/inc/images/shapes_polyline_01_t.bsvg"
 #include "assets/default/inc/images/china.bsvg"
 #include "assets/default/inc/images/meter_pointer.bsvg"
+#include "assets/default/inc/images/pservers_grad_99_b.bsvg"
+#include "assets/default/inc/images/tiger.bsvg"
+#include "assets/default/inc/images/shapes_line_01_t.bsvg"
+#include "assets/default/inc/images/painting_stroke_05_t.bsvg"
+#include "assets/default/inc/images/paths_data_01_t.bsvg"
 #include "assets/default/inc/images/pointer_1.bsvg"
 #include "assets/default/inc/images/pointer.bsvg"
+#include "assets/default/inc/images/shapes_circle_01_t.bsvg"
+#include "assets/default/inc/images/shapes_rect_01_t.bsvg"
 #include "assets/default/inc/images/girl.bsvg"
+#include "assets/default/inc/images/gradient.bsvg"
 #include "assets/default/inc/images/windmill.bsvg"
+#include "assets/default/inc/images/shapes_ellipse_01_t.bsvg"
+#include "assets/default/inc/images/shapes_polygon_01_t.bsvg"
 #endif /*WITH_VGCANVAS*/
 #endif /*!defined(WITH_FS_RES) || defined(AWTK_WEB)*/
 
@@ -983,6 +996,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_kb_hex);
   assets_manager_add(am, ui_gauge_h);
   assets_manager_add(am, ui_popdown);
+  assets_manager_add(am, ui_svg_test);
   assets_manager_add(am, ui_slide_view_remove);
   assets_manager_add(am, ui_color);
   assets_manager_add(am, ui_color_picker);
@@ -1476,15 +1490,27 @@ ret_t assets_init(void) {
 #endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
   assets_manager_add(am, image_computer_dark);
+  assets_manager_add(am, image_paths_data_02_t);
   assets_manager_add(am, image_pointer_4);
   assets_manager_add(am, image_htest);
   assets_manager_add(am, image_ball);
+  assets_manager_add(am, image_shapes_polyline_01_t);
   assets_manager_add(am, image_china);
   assets_manager_add(am, image_meter_pointer);
+  assets_manager_add(am, image_pservers_grad_99_b);
+  assets_manager_add(am, image_tiger);
+  assets_manager_add(am, image_shapes_line_01_t);
+  assets_manager_add(am, image_painting_stroke_05_t);
+  assets_manager_add(am, image_paths_data_01_t);
   assets_manager_add(am, image_pointer_1);
   assets_manager_add(am, image_pointer);
+  assets_manager_add(am, image_shapes_circle_01_t);
+  assets_manager_add(am, image_shapes_rect_01_t);
   assets_manager_add(am, image_girl);
+  assets_manager_add(am, image_gradient);
   assets_manager_add(am, image_windmill);
+  assets_manager_add(am, image_shapes_ellipse_01_t);
+  assets_manager_add(am, image_shapes_polygon_01_t);
 #endif /*WITH_VGCANVAS*/
 #endif /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
 

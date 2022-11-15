@@ -79,6 +79,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_keyboard[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_kb_hex[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_gauge_h[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_popdown[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_svg_test[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_slide_view_remove[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_color[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_color_picker[]);
@@ -504,14 +505,26 @@ extern TK_CONST_DATA_ALIGN(const unsigned char font_default_24[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char script_dummy[]);
 #endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
+extern TK_CONST_DATA_ALIGN(const unsigned char image_paths_data_02_t[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_pointer_4[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_htest[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_ball[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char image_shapes_polyline_01_t[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_china[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_meter_pointer[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char image_pservers_grad_99_b[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char image_tiger[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char image_shapes_line_01_t[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char image_painting_stroke_05_t[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char image_paths_data_01_t[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_pointer_1[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_pointer[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char image_shapes_circle_01_t[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char image_shapes_rect_01_t[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_girl[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char image_gradient[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char image_shapes_ellipse_01_t[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char image_shapes_polygon_01_t[]);
 #endif /*WITH_VGCANVAS*/
 #endif /*!defined(WITH_FS_RES) || defined(AWTK_WEB)*/
 
@@ -600,6 +613,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_kb_hex);
   assets_manager_add(am, ui_gauge_h);
   assets_manager_add(am, ui_popdown);
+  assets_manager_add(am, ui_svg_test);
   assets_manager_add(am, ui_slide_view_remove);
   assets_manager_add(am, ui_color);
   assets_manager_add(am, ui_color_picker);
@@ -883,14 +897,26 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, script_dummy);
 #endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
+  assets_manager_add(am, image_paths_data_02_t);
   assets_manager_add(am, image_pointer_4);
   assets_manager_add(am, image_htest);
   assets_manager_add(am, image_ball);
+  assets_manager_add(am, image_shapes_polyline_01_t);
   assets_manager_add(am, image_china);
   assets_manager_add(am, image_meter_pointer);
+  assets_manager_add(am, image_pservers_grad_99_b);
+  assets_manager_add(am, image_tiger);
+  assets_manager_add(am, image_shapes_line_01_t);
+  assets_manager_add(am, image_painting_stroke_05_t);
+  assets_manager_add(am, image_paths_data_01_t);
   assets_manager_add(am, image_pointer_1);
   assets_manager_add(am, image_pointer);
+  assets_manager_add(am, image_shapes_circle_01_t);
+  assets_manager_add(am, image_shapes_rect_01_t);
   assets_manager_add(am, image_girl);
+  assets_manager_add(am, image_gradient);
+  assets_manager_add(am, image_shapes_ellipse_01_t);
+  assets_manager_add(am, image_shapes_polygon_01_t);
 #endif /*WITH_VGCANVAS*/
 #endif /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
 

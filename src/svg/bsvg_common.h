@@ -22,8 +22,8 @@
 #ifndef TK_BSVG_COMMON_H
 #define TK_BSVG_COMMON_H
 
-#include "tkc/rect.h"
 #include "svg/svg_shape.h"
+#include "svg/svg_path.h"
 
 BEGIN_C_DECLS
 
@@ -31,18 +31,14 @@ BEGIN_C_DECLS
 typedef struct _bsvg_header_t {
   uint32_t magic;
   uint8_t version;
-  uint8_t line_cap;
-  uint8_t line_join;
-  uint8_t stroke_width;
-  color_t fill;
-  color_t stroke;
-  rect_t viewport;
+  uint8_t reserved[3];
   uint32_t w;
   uint32_t h;
 } bsvg_header_t;
 #pragma pack(pop)
 
 #define BSVG_MAGIC 0x20181115u
+#define BSVG_VERSION ((uint8_t)2)
 #define BSVG_MIN_SIZE (sizeof(bsvg_header_t) + sizeof(svg_shape_t))
 
 END_C_DECLS

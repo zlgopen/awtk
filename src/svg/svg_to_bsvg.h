@@ -57,9 +57,6 @@ ret_t svg_to_bsvg(const char* xml, uint32_t size, uint32_t** out, uint32_t* out_
  */
 ret_t svg_file_to_bsvg(const char* ifilename, const char* ofilename);
 
-/*public for test*/
-uint32_t svg_parse_numbers(const char* str, float* out, uint32_t max_nr);
-
 END_C_DECLS
 
 #endif /*TK_SVG_TO_BSVG_H*/

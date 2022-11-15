@@ -19,436 +19,209 @@
  *
  */
 
+#include "svgtiny/include/svgtiny.h"
 #include "tkc/mem.h"
-#include "tkc/utils.h"
-#include "tkc/color_parser.h"
-#include "xml/xml_parser.h"
-#include "svg/svg_to_bsvg.h"
-#include "svg/svg_path_parser.h"
 #include "svg/bsvg_builder.h"
 
-typedef struct _xml_builder_t {
-  XmlBuilder builder;
-
-  bsvg_builder_t bsvg;
-} xml_builder_t;
-
-static void svg_on_svg_tag(bsvg_builder_t* svg, const char** attrs) {
-  uint32_t i = 0;
-  int32_t x = 0;
-  int32_t y = 0;
-  int32_t w = 0;
-  int32_t h = 0;
-
-  while (attrs[i] != NULL) {
-    const char* k = attrs[i];
-    const char* v = attrs[i + 1];
-    if (tk_str_eq(k, "viewBox")) {
-      tk_sscanf(v, "%d %d %d %d", &x, &y, &w, &h);
-
-      svg->header->viewport.x = x;
-      svg->header->viewport.y = y;
-      svg->header->viewport.w = w;
-      svg->header->viewport.h = h;
-    } else if (tk_str_eq(k, "width")) {
-      svg->header->w = tk_atoi(v);
-    } else if (tk_str_eq(k, "height")) {
-      svg->header->h = tk_atoi(v);
-    }
-    i += 2;
-  }
-
-  return;
+static inline color_t convert_color(svgtiny_colour color) {
+  return color_init(svgtiny_RED(color), svgtiny_GREEN(color), svgtiny_BLUE(color), 0xff);
 }
 
-static ret_t svg_on_sub_path(void* ctx, const void* data) {
-  bsvg_builder_t* svg = (bsvg_builder_t*)ctx;
+static inline void svg_init_solid(svg_color_t* color, svgtiny_colour c) {
+  svg_color_solid_init(color, convert_color(c));
+}
+
+static inline void svg_init_linear_gradient(svg_color_t* color, struct svgtiny_linear_gradient* l) {
+  svg_color_linear_gradient_init(color, l->sx, l->sy, l->ex, l->ey, convert_color(l->icolor),
+                                 convert_color(l->ocolor));
+}
+
+static svg_shape_t* svg_init_shape(svg_shape_t* shape, struct svgtiny_shape* s) {
+  return_value_if_fail(shape != NULL && s != NULL, NULL);
+
+  if (s->fill == svgtiny_TRANSPARENT) {
+    shape->fill_type = SVG_COLOR_NULL;
+  } else if (s->fill == svgtiny_LINEAR_GRADIENT) {
+    shape->fill_type = SVG_COLOR_LINEAR_GRADIENT;
+    svg_init_linear_gradient(svg_shape_get_fill(shape), &s->fill_linear_gradient);
+  } else {
+    shape->fill_type = SVG_COLOR_SOLID;
+    svg_init_solid(svg_shape_get_fill(shape), s->fill);
+  }
+
+  if (s->stroke == svgtiny_TRANSPARENT) {
+    shape->stroke_type = SVG_COLOR_NULL;
+  } else if (s->stroke == svgtiny_LINEAR_GRADIENT) {
+    shape->stroke_type = SVG_COLOR_LINEAR_GRADIENT;
+    svg_init_linear_gradient(svg_shape_get_stroke(shape), &s->stroke_linear_gradient);
+  } else {
+    shape->stroke_type = SVG_COLOR_SOLID;
+    svg_init_solid(svg_shape_get_stroke(shape), s->stroke);
+  }
+
+  shape->stroke_width = s->stroke_width;
+
+  return shape;
+}
+
+static ret_t svg_visit(struct svgtiny_diagram* diagram, void* ctx, tk_visit_t on_shape,
+                       tk_visit_t on_path, tk_visit_t on_text) {
+  return_value_if_fail(diagram != NULL && on_shape != NULL && on_path != NULL && on_text != NULL,
+                       RET_BAD_PARAMS);
+
+  uint8_t shape_buff[128];
+
+  for (unsigned int i = 0; i < diagram->shape_count; i++) {
+    float* p = diagram->shape[i].path;
+    char* t = diagram->shape[i].text;
+    if (p) {
+      svg_shape_t* shape = svg_shape_path_init((svg_shape_t*)&shape_buff);
+      svg_init_shape(shape, &(diagram->shape[i]));
+      on_shape(ctx, shape);
+
+      while ((p - diagram->shape[i].path) < diagram->shape[i].path_length) {
+        if (p[0] == svgtiny_PATH_MOVE) {
+          svg_path_move_t path;
+          float x = p[1];
+          float y = p[2];
+          svg_path_move_init(&path, x, y);
+          on_path(ctx, (svg_path_t*)&path);
+          p += 3;
+        } else if (p[0] == svgtiny_PATH_CLOSE) {
+          svg_path_t path = {SVG_PATH_Z};
+          on_path(ctx, (svg_path_t*)&path);
+          p += 1;
+        } else if (p[0] == svgtiny_PATH_LINE) {
+          svg_path_line_t path;
+          float x = p[1];
+          float y = p[2];
+          svg_path_line_init(&path, x, y);
+          on_path(ctx, (svg_path_t*)&path);
+          p += 3;
+        } else if (p[0] == svgtiny_PATH_BEZIER) {
+          svg_path_curve_to_t path;
+          float x1 = p[1];
+          float y1 = p[2];
+          float x2 = p[3];
+          float y2 = p[4];
+          float x = p[5];
+          float y = p[6];
+          svg_path_curve_to_init(&path, x1, y1, x2, y2, x, y);
+          on_path(ctx, (svg_path_t*)&path);
+          p += 7;
+        } else {
+          assert(!"not supported");
+        }
+      }
+    } else if (t) {
+      svg_shape_t* shape = svg_shape_text_init((svg_shape_text_t*)&shape_buff,
+                                               diagram->shape[i].text_x, diagram->shape[i].text_y);
+      svg_init_shape(shape, &(diagram->shape[i]));
+      on_shape(ctx, shape);
+      on_text(ctx, diagram->shape[i].text);
+    }
+  }
+
+  return RET_OK;
+}
+
+static ret_t svg_count_on_shape(void* ctx, const void* data) {
+  uint32_t* total_size = (uint32_t*)ctx;
+  const svg_shape_t* shape = (const svg_shape_t*)data;
+  *total_size += svg_shape_size(shape);
+  if (shape->type == SVG_SHAPE_PATH) {
+    // 附加一个SVG_PATH_NULL
+    *total_size += sizeof(svg_path_t);
+  }
+  return RET_OK;
+}
+static ret_t svg_count_on_path(void* ctx, const void* data) {
+  uint32_t* total_size = (uint32_t*)ctx;
   const svg_path_t* path = (const svg_path_t*)data;
-
-  bsvg_builder_add_sub_path(svg, path);
-
+  *total_size += svg_path_size(path);
   return RET_OK;
 }
-
-static void svg_init_shape(bsvg_builder_t* svg, svg_shape_t* shape, const char** attrs) {
-  uint32_t i = 0;
-  bsvg_header_t* header = svg->header;
-  shape->no_stroke = TRUE;
-  shape->fill = header->fill;
-  shape->stroke = header->stroke;
-
-  while (attrs[i] != NULL) {
-    const char* k = attrs[i];
-    const char* v = attrs[i + 1];
-
-    if (v == NULL) {
-      break;
-    }
-
-    if (tk_str_eq(k, "stroke-linecap")) {
-      shape->line_cap = v[0];
-    } else if (tk_str_eq(k, "stroke-linejoin")) {
-      shape->line_join = v[0];
-    } else if (tk_str_eq(k, "stroke-width")) {
-      shape->stroke_width = tk_atoi(v);
-    } else if (tk_str_eq(k, "stroke")) {
-      if (tk_str_eq(v, "transparent") || tk_str_eq(v, "none")) {
-        shape->no_stroke = TRUE;
-      } else {
-        shape->no_stroke = FALSE;
-        if (tk_str_eq(v, "") || v == NULL) {
-          shape->stroke = color_init(0x00, 0x00, 0x00, 0xff);
-        } else {
-          shape->stroke = color_parse(v);
-        }
-      }
-    } else if (tk_str_eq(k, "fill")) {
-      if (tk_str_eq(v, "transparent") || tk_str_eq(v, "none")) {
-        shape->no_fill = TRUE;
-      } else {
-        if (tk_str_eq(v, "") || v == NULL) {
-          shape->fill = color_init(0x00, 0x00, 0x00, 0xff);
-        } else {
-          shape->fill = color_parse(v);
-        }
-      }
-    }
-
-    i += 2;
-  }
-
-  return;
-}
-
-static void svg_on_shape_path(bsvg_builder_t* svg, const char** attrs) {
-  uint32_t i = 0;
-  svg_shape_path_t s;
-  svg_shape_path_init(&s);
-  svg_init_shape(svg, (svg_shape_t*)&s, attrs);
-  bsvg_builder_add_shape(svg, (svg_shape_t*)&s);
-
-  while (attrs[i] != NULL) {
-    const char* k = attrs[i];
-    const char* v = attrs[i + 1];
-    if (tk_str_eq(k, "d")) {
-      svg_path_parse(v, svg, svg_on_sub_path);
-    }
-    i += 2;
-  }
-
-  return;
-}
-
-static void svg_on_shape_line(bsvg_builder_t* svg, const char** attrs) {
-  float x1 = 0;
-  float y1 = 0;
-  float x2 = 0;
-  float y2 = 0;
-  uint32_t i = 0;
-  svg_shape_line_t s;
-
-  while (attrs[i] != NULL) {
-    const char* k = attrs[i];
-    const char* v = attrs[i + 1];
-    if (tk_str_eq(k, "x1")) {
-      x1 = tk_atof(v);
-    } else if (tk_str_eq(k, "y1")) {
-      y1 = tk_atof(v);
-    } else if (tk_str_eq(k, "x2")) {
-      x2 = tk_atof(v);
-    } else if (tk_str_eq(k, "y2")) {
-      y2 = tk_atof(v);
-    }
-    i += 2;
-  }
-
-  svg_shape_line_init(&s, x1, y1, x2, y2);
-  svg_init_shape(svg, (svg_shape_t*)&s, attrs);
-  bsvg_builder_add_shape(svg, (svg_shape_t*)&s);
-
-  return;
-}
-
-static void svg_on_shape_rect(bsvg_builder_t* svg, const char** attrs) {
-  float x = 0;
-  float y = 0;
-  float w = 0;
-  float h = 0;
-  float r = 0;
-  uint32_t i = 0;
-  svg_shape_rect_t s;
-
-  while (attrs[i] != NULL) {
-    const char* k = attrs[i];
-    const char* v = attrs[i + 1];
-    if (tk_str_eq(k, "x")) {
-      x = tk_atof(v);
-    } else if (tk_str_eq(k, "y")) {
-      y = tk_atof(v);
-    } else if (tk_str_eq(k, "width")) {
-      w = tk_atof(v);
-    } else if (tk_str_eq(k, "height")) {
-      h = tk_atof(v);
-    } else if (tk_str_eq(k, "rx")) {
-      r = tk_atof(v);
-    }
-    i += 2;
-  }
-
-  svg_shape_rect_init(&s, x, y, w, h, r);
-  svg_init_shape(svg, (svg_shape_t*)&s, attrs);
-  bsvg_builder_add_shape(svg, (svg_shape_t*)&s);
-
-  return;
-}
-
-static void svg_on_shape_circle(bsvg_builder_t* svg, const char** attrs) {
-  float x = 0;
-  float y = 0;
-  float r = 0;
-  uint32_t i = 0;
-  svg_shape_circle_t s;
-
-  while (attrs[i] != NULL) {
-    const char* k = attrs[i];
-    const char* v = attrs[i + 1];
-    if (tk_str_eq(k, "cx")) {
-      x = tk_atof(v);
-    } else if (tk_str_eq(k, "cy")) {
-      y = tk_atof(v);
-    } else if (tk_str_eq(k, "r")) {
-      r = tk_atof(v);
-    }
-    i += 2;
-  }
-
-  svg_shape_circle_init(&s, x, y, r);
-  svg_init_shape(svg, (svg_shape_t*)&s, attrs);
-  bsvg_builder_add_shape(svg, (svg_shape_t*)&s);
-
-  return;
-}
-
-static void svg_on_shape_ellipse(bsvg_builder_t* svg, const char** attrs) {
-  float x = 0;
-  float y = 0;
-  float rx = 0;
-  float ry = 0;
-  uint32_t i = 0;
-  svg_shape_ellipse_t s;
-
-  while (attrs[i] != NULL) {
-    const char* k = attrs[i];
-    const char* v = attrs[i + 1];
-    if (tk_str_eq(k, "cx")) {
-      x = tk_atof(v);
-    } else if (tk_str_eq(k, "cy")) {
-      y = tk_atof(v);
-    } else if (tk_str_eq(k, "rx")) {
-      rx = tk_atof(v);
-    } else if (tk_str_eq(k, "ry")) {
-      ry = tk_atof(v);
-    }
-    i += 2;
-  }
-
-  svg_shape_ellipse_init(&s, x, y, rx, ry);
-  svg_init_shape(svg, (svg_shape_t*)&s, attrs);
-  bsvg_builder_add_shape(svg, (svg_shape_t*)&s);
-
-  return;
-}
-
-typedef struct _svg_number_parser_t {
-  const char* p;
-  const char* str;
-  uint32_t max_nr;
-  uint32_t nr;
-  float* numbers;
-} svg_number_parser_t;
-
-static bool_t svg_number_parser_has_more(svg_number_parser_t* parser) {
-  while (parser->p[0] == ' ') {
-    parser->p++;
-  }
-
-  return parser->p[0];
-}
-
-static float svg_number_parser_get_number(svg_number_parser_t* parser) {
-  uint32_t i = 0;
-  const char* p = NULL;
-  char token[TK_NUM_MAX_LEN + 1];
-
-  p = parser->p;
-  if (*p == '+' || *p == '-') {
-    token[i++] = *p++;
-  }
-  while (*p == '.' || (*p >= '0' && *p <= '9')) {
-    token[i++] = *p++;
-  }
-  token[i] = '\0';
-  parser->p = p;
-
-  return tk_atof(token);
-}
-
-static uint32_t svg_number_count(const char* str) {
-  const char* p = str;
-  uint32_t max_nr = 0;
-
-  while (*p) {
-    if (*p == ' ') {
-      max_nr++;
-    }
-    p++;
-  }
-
-  return max_nr + 1;
-}
-
-static ret_t svg_number_parser_init(svg_number_parser_t* parser, const char* str, float* out,
-                                    uint32_t max_nr) {
-  parser->nr = 0;
-  parser->p = str;
-  parser->str = str;
-  parser->max_nr = max_nr;
-  parser->numbers = out;
-
+static ret_t svg_count_on_text(void* ctx, const void* data) {
+  uint32_t* total_size = (uint32_t*)ctx;
+  const char* text = (const char*)data;
+  *total_size += strlen(text) + 1;
   return RET_OK;
 }
-
-uint32_t svg_parse_numbers(const char* str, float* out, uint32_t max_nr) {
-  svg_number_parser_t parser;
-
-  return_value_if_fail(str != NULL && out != NULL, 0);
-  return_value_if_fail(svg_number_parser_init(&parser, str, out, max_nr) == RET_OK, 0);
-
-  while (svg_number_parser_has_more(&parser) && parser.nr < parser.max_nr) {
-    parser.numbers[parser.nr++] = svg_number_parser_get_number(&parser);
-  }
-
-  return parser.nr;
+static ret_t svg_write_on_shape(void* ctx, const void* data) {
+  bsvg_builder_t* builder = (bsvg_builder_t*)ctx;
+  const svg_shape_t* shape = (const svg_shape_t*)data;
+  bsvg_builder_add_shape(builder, shape);
+  return RET_OK;
 }
-
-static void svg_on_shape_polygon(bsvg_builder_t* svg, const char** attrs) {
-  uint32_t i = 0;
-  svg_shape_polygon_t* s = NULL;
-
-  while (attrs[i] != NULL) {
-    const char* k = attrs[i];
-    const char* v = attrs[i + 1];
-    if (tk_str_eq(k, "points")) {
-      uint32_t max_nr = svg_number_count(v);
-      s = TKMEM_ALLOC(sizeof(svg_shape_polygon_t) + sizeof(float) * max_nr);
-      return_if_fail(s != NULL);
-
-      svg_shape_polygon_init(s);
-      s->nr = svg_parse_numbers(v, s->data, max_nr);
-
-      break;
-    }
-    i += 2;
-  }
-
-  if (s != NULL) {
-    svg_init_shape(svg, (svg_shape_t*)s, attrs);
-    bsvg_builder_add_shape(svg, (svg_shape_t*)s);
-    TKMEM_FREE(s);
-  }
-
-  return;
+static ret_t svg_write_on_path(void* ctx, const void* data) {
+  bsvg_builder_t* builder = (bsvg_builder_t*)ctx;
+  const svg_path_t* path = (const svg_path_t*)data;
+  bsvg_builder_add_sub_path(builder, path);
+  return RET_OK;
 }
-
-static void svg_on_shape_polyline(bsvg_builder_t* svg, const char** attrs) {
-  uint32_t i = 0;
-  svg_shape_polyline_t* s = NULL;
-
-  while (attrs[i] != NULL) {
-    const char* k = attrs[i];
-    const char* v = attrs[i + 1];
-    if (tk_str_eq(k, "points")) {
-      uint32_t max_nr = svg_number_count(v);
-      s = TKMEM_ALLOC(sizeof(svg_shape_polyline_t) + sizeof(float) * max_nr);
-      return_if_fail(s != NULL);
-
-      svg_shape_polyline_init(s);
-      s->nr = svg_parse_numbers(v, s->data, max_nr);
-
-      break;
-    }
-    i += 2;
-  }
-
-  if (s != NULL) {
-    svg_init_shape(svg, (svg_shape_t*)s, attrs);
-    bsvg_builder_add_shape(svg, (svg_shape_t*)s);
-    TKMEM_FREE(s);
-  }
-
-  return;
-}
-
-static void svg_on_start(XmlBuilder* thiz, const char* tag, const char** attrs) {
-  xml_builder_t* b = (xml_builder_t*)thiz;
-  bsvg_builder_t* svg = &(b->bsvg);
-
-  if (tk_str_eq(tag, "svg")) {
-    svg_on_svg_tag(svg, attrs);
-  } else if (tk_str_eq(tag, "path")) {
-    svg_on_shape_path(svg, attrs);
-  } else if (tk_str_eq(tag, "rect")) {
-    svg_on_shape_rect(svg, attrs);
-  } else if (tk_str_eq(tag, "circle")) {
-    svg_on_shape_circle(svg, attrs);
-  } else if (tk_str_eq(tag, "ellipse")) {
-    svg_on_shape_ellipse(svg, attrs);
-  } else if (tk_str_eq(tag, "line")) {
-    svg_on_shape_line(svg, attrs);
-  } else if (tk_str_eq(tag, "polygon")) {
-    svg_on_shape_polygon(svg, attrs);
-  } else if (tk_str_eq(tag, "polyline")) {
-    svg_on_shape_polyline(svg, attrs);
-  }
-
-  return;
-}
-
-static void svg_on_error(XmlBuilder* thiz, int line, int row, const char* message) {
-  (void)thiz;
-  log_debug("parse error: %d:%d %s\n", line, row, message);
-  return;
-}
-
-static XmlBuilder* builder_init(xml_builder_t* b, uint32_t* buff, uint32_t buff_size) {
-  memset(b, 0x00, sizeof(*b));
-
-  b->builder.on_start = svg_on_start;
-  b->builder.on_error = svg_on_error;
-  bsvg_builder_init(&(b->bsvg), buff, buff_size);
-
-  return &(b->builder);
+static ret_t svg_write_on_text(void* ctx, const void* data) {
+  bsvg_builder_t* builder = (bsvg_builder_t*)ctx;
+  const char* text = (const char*)data;
+  bsvg_builder_add_sub_text(builder, text);
+  return RET_OK;
 }
 
 ret_t svg_to_bsvg(const char* xml, uint32_t size, uint32_t** out, uint32_t* out_size) {
-  xml_builder_t b;
+  ret_t ret = RET_FAIL;
+  struct svgtiny_diagram* diagram = NULL;
+  svgtiny_code code = svgtiny_OK;
+  bsvg_builder_t builder;
   uint32_t* buff = NULL;
-  uint32_t buff_size = 2 * size + 100;
+  uint32_t buff_size = 0;
   return_value_if_fail(xml != NULL && out != NULL && out_size != NULL, RET_BAD_PARAMS);
 
+  // xml -> svgtiny
+  diagram = svgtiny_create();
+  ret = RET_OOM;
+  goto_error_if_fail(diagram != NULL);
+  code = svgtiny_parse(diagram, xml, size, "", 100, 100);
+  ret = RET_FAIL;
+  goto_error_if_fail(code == svgtiny_OK);
+
+  // svgtiny -> bsvg
+  buff_size += sizeof(bsvg_header_t);
+  ret = svg_visit(diagram, &buff_size, svg_count_on_shape, svg_count_on_path, svg_count_on_text);
+  // 附加一个SVG_SHAPE_NULL
+  buff_size += sizeof(svg_shape_t);
+  // wbuffer_extend_delta()需要多一个
+  buff_size += 1;
+  goto_error_if_fail(ret == RET_OK);
   buff = (uint32_t*)TKMEM_ALLOC(buff_size);
-  return_value_if_fail(buff != NULL, RET_OOM);
+  ret = RET_OOM;
+  goto_error_if_fail(buff != NULL);
 
-  XmlParser* parser = xml_parser_create();
-  xml_parser_set_builder(parser, builder_init(&b, buff, buff_size));
-  xml_parser_parse(parser, xml, size);
-  bsvg_builder_done(&(b.bsvg));
+  memset(&builder, 0, sizeof(builder));
+  bsvg_builder_init(&builder, buff, buff_size);
+  builder.header->w = diagram->width;
+  builder.header->h = diagram->height;
+  svg_visit(diagram, &builder, svg_write_on_shape, svg_write_on_path, svg_write_on_text);
+  bsvg_builder_done(&builder);
 
+  // succ
+  if (diagram) {
+    svgtiny_free(diagram);
+  }
   *out = buff;
-  *out_size = b.bsvg.buff.cursor;
-  xml_parser_destroy(parser);
+  *out_size = builder.buff.cursor;
+  ret = RET_OK;
+  return ret;
 
-  return RET_OK;
+error:
+  // fail
+  if (diagram) {
+    svgtiny_free(diagram);
+  }
+  if (buff) {
+    TKMEM_FREE(buff);
+  }
+  *out = NULL;
+  *out_size = 0;
+  return ret;
 }
 
 #include "tkc/fs.h"

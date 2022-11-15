@@ -64,6 +64,9 @@ static ret_t svg_image_on_paint_self(widget_t* widget, canvas_t* c) {
     const asset_info_t* asset = svg_image->bsvg_asset;
     color_t bg = style_get_color(style, STYLE_ID_BG_COLOR, black);
     color_t fg = style_get_color(style, STYLE_ID_FG_COLOR, black);
+    rect_t r = {0};
+    rect_t r_save = {0};
+    rect_t r_vg_save = {0};
     return_value_if_fail(asset != NULL && asset->data != NULL, RET_FAIL);
 
     return_value_if_fail(bsvg_init(&bsvg, (const uint32_t*)asset->data, asset->size) != NULL,
@@ -71,12 +74,17 @@ static ret_t svg_image_on_paint_self(widget_t* widget, canvas_t* c) {
     if (bsvg.header->w && bsvg.header->h) {
       x = (widget->w - (int32_t)bsvg.header->w) / 2;
       y = (widget->h - (int32_t)bsvg.header->h) / 2;
-    } else if (bsvg.header->viewport.w && bsvg.header->viewport.h) {
-      x = (widget->w - (int32_t)bsvg.header->viewport.w) / 2;
-      y = (widget->h - (int32_t)bsvg.header->viewport.h) / 2;
     }
 
+    canvas_save(c);
+    canvas_get_clip_rect(c, &r_save);
     vgcanvas_save(vg);
+    r_vg_save = rect_from_rectf(vgcanvas_get_clip_rect(vg));
+
+    r = rect_init(c->ox, c->oy, widget->w, widget->h);
+    r = rect_intersect(&r, &r_save);
+    canvas_set_clip_rect(c, &r);
+    vgcanvas_clip_rect(vg, r.x, r.y, r.w, r.h);
 
     image_transform(widget, c);
     vgcanvas_translate(vg, x, y);
@@ -85,7 +93,10 @@ static ret_t svg_image_on_paint_self(widget_t* widget, canvas_t* c) {
 
     bsvg_draw(&bsvg, vg);
 
+    vgcanvas_clip_rect(vg, r_vg_save.x, r_vg_save.y, r_vg_save.w, r_vg_save.h);
     vgcanvas_restore(vg);
+    canvas_set_clip_rect(c, &r_save);
+    canvas_restore(c);
   }
 
   widget_paint_helper(widget, c, NULL, NULL);

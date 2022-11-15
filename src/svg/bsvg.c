@@ -25,6 +25,7 @@ bsvg_t* bsvg_init(bsvg_t* svg, const uint32_t* data, uint32_t size) {
   return_value_if_fail(svg != NULL && data != NULL && size > BSVG_MIN_SIZE, NULL);
   svg->header = (bsvg_header_t*)data;
   return_value_if_fail(svg->header->magic == BSVG_MAGIC, NULL);
+  return_value_if_fail(svg->header->version == BSVG_VERSION, NULL);
 
   svg->data = data;
   svg->size = size;
@@ -44,7 +45,6 @@ const uint8_t* bsvg_visit_path(const uint8_t* p, void* ctx, tk_visit_t on_path) 
 }
 
 ret_t bsvg_visit(bsvg_t* svg, void* ctx, tk_visit_t on_shape, tk_visit_t on_path) {
-  uint32_t size = 0;
   const uint8_t* p = NULL;
   return_value_if_fail(svg != NULL && on_shape != NULL && on_path != NULL, RET_BAD_PARAMS);
 
@@ -53,12 +53,12 @@ ret_t bsvg_visit(bsvg_t* svg, void* ctx, tk_visit_t on_shape, tk_visit_t on_path
     const svg_shape_t* shape = (const svg_shape_t*)p;
 
     on_shape(ctx, shape);
-    size = svg_shape_size(shape);
+    p += svg_shape_size(shape);
 
     if (shape->type == SVG_SHAPE_PATH) {
-      p = bsvg_visit_path(p + size, ctx, on_path);
-    } else {
-      p += size;
+      p = bsvg_visit_path(p, ctx, on_path);
+    } else if (shape->type == SVG_SHAPE_TEXT) {
+      p += strlen((const char*)p) + 1;
     }
   }
 

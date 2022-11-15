@@ -22,7 +22,7 @@
 #ifndef TK_BSVG_BUILDER_H
 #define TK_BSVG_BUILDER_H
 
-#include "svg/svg_shape.h"
+#include "tkc/buffer.h"
 #include "svg/bsvg_common.h"
 
 BEGIN_C_DECLS
@@ -37,6 +37,7 @@ bsvg_builder_t* bsvg_builder_init(bsvg_builder_t* svg, uint32_t* buff, uint32_t 
 
 ret_t bsvg_builder_add_shape(bsvg_builder_t* svg, const svg_shape_t* shape);
 ret_t bsvg_builder_add_sub_path(bsvg_builder_t* svg, const svg_path_t* path);
+ret_t bsvg_builder_add_sub_text(bsvg_builder_t* svg, const char* text);
 ret_t bsvg_builder_done(bsvg_builder_t* svg);
 
 END_C_DECLS

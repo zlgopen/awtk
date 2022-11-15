@@ -279,31 +279,7 @@
  * @annotation ["global"]
  */
 /**
- * @method svg_path_move_rel_init
- * @annotation ["global"]
- */
-/**
  * @method svg_path_line_init
- * @annotation ["global"]
- */
-/**
- * @method svg_path_line_rel_init
- * @annotation ["global"]
- */
-/**
- * @method svg_path_hline_init
- * @annotation ["global"]
- */
-/**
- * @method svg_path_hline_rel_init
- * @annotation ["global"]
- */
-/**
- * @method svg_path_vline_init
- * @annotation ["global"]
- */
-/**
- * @method svg_path_vline_rel_init
  * @annotation ["global"]
  */
 /**
@@ -311,67 +287,11 @@
  * @annotation ["global"]
  */
 /**
- * @method svg_path_curve_to_rel_init
- * @annotation ["global"]
- */
-/**
- * @method svg_path_scurve_to_init
- * @annotation ["global"]
- */
-/**
- * @method svg_path_scurve_to_rel_init
- * @annotation ["global"]
- */
-/**
- * @method svg_path_qcurve_to_init
- * @annotation ["global"]
- */
-/**
- * @method svg_path_qcurve_to_rel_init
- * @annotation ["global"]
- */
-/**
- * @method svg_path_tcurve_to_init
- * @annotation ["global"]
- */
-/**
- * @method svg_path_tcurve_to_rel_init
- * @annotation ["global"]
- */
-/**
- * @method svg_path_arc_init
- * @annotation ["global"]
- */
-/**
- * @method svg_path_arc_rel_init
- * @annotation ["global"]
- */
-/**
  * @method svg_shape_size
  * @annotation ["global"]
  */
 /**
- * @method svg_shape_rect_init
- * @annotation ["global"]
- */
-/**
- * @method svg_shape_circle_init
- * @annotation ["global"]
- */
-/**
- * @method svg_shape_ellipse_init
- * @annotation ["global"]
- */
-/**
- * @method svg_shape_line_init
- * @annotation ["global"]
- */
-/**
- * @method svg_shape_polygon_init
- * @annotation ["global"]
- */
-/**
- * @method svg_shape_polyline_init
+ * @method svg_shape_text_init
  * @annotation ["global"]
  */
 /**
@@ -408,10 +328,6 @@
  */
 /**
  * @method bsvg_get_first_shape
- * @annotation ["global"]
- */
-/**
- * @method svg_parse_numbers
  * @annotation ["global"]
  */
 /**

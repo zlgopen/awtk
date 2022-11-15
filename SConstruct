@@ -22,6 +22,7 @@ SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
   '3rd/mbedtls/SConscript',
   '3rd/glad/SConscript',
   '3rd/gpinyin/SConscript', 
+  '3rd/svgtiny/SConscript',
   '3rd/libunibreak/SConscript',
   '3rd/lz4/SConscript',
   '3rd/miniz/SConscript',

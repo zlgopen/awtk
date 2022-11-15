@@ -28,20 +28,9 @@
 BEGIN_C_DECLS
 
 typedef struct _bsvg_draw_ctx_t {
-  float x;
-  float y;
   bsvg_t* bsvg;
   vgcanvas_t* canvas;
   const svg_shape_t* shape;
-
-  /*for S/S_REL*/
-  float last_x2;
-  float last_y2;
-  uint8_t last_type;
-
-  /*for T/T_REL*/
-  float last_x1;
-  float last_y1;
 } bsvg_draw_ctx_t;
 
 /**

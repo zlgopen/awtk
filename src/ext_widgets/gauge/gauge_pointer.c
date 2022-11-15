@@ -97,9 +97,13 @@ static ret_t gauge_pointer_invalidate(widget_t* widget, const rect_t* rect) {
       bsvg_t bsvg;
       const asset_info_t* asset = gauge_pointer->bsvg_asset;
 
-      bsvg_init(&bsvg, (const uint32_t*)asset->data, asset->size);
-      w = bsvg.header->w;
-      h = bsvg.header->h;
+      if (bsvg_init(&bsvg, (const uint32_t*)asset->data, asset->size) != NULL) {
+        w = bsvg.header->w;
+        h = bsvg.header->h;
+      } else {
+        w = widget->w;
+        h = widget->h * DEFAULT_POINTER_SIZE * 1.2f;
+      }
     } else {
       w = widget->w;
       h = widget->h * DEFAULT_POINTER_SIZE * 1.2f;
