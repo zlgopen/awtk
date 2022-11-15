@@ -813,7 +813,7 @@ static ret_t slide_view_on_idle_move(const idle_info_t* idle) {
   slide_view_t* slide_view = NULL;
   return_value_if_fail(idle != NULL, RET_BAD_PARAMS);
   slide_view = SLIDE_VIEW(idle->ctx);
-  if (slide_view->pressed) {
+  if (slide_view->dragged) {
     widget_invalidate(WIDGET(slide_view), NULL);
   }
 
