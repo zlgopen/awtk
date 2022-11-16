@@ -381,3 +381,7 @@ npm install -g glob
 * 深度合作伙伴
 
 [![](docs/images/logo_nxp.svg)](https://www.nxp.com)　[![](docs/images/logo_anyka.jpg)](http://www.anyka.com)　[![](docs/images/logo_ingenic.jpg)](http://www.ingenic.com.cn)　[![](docs/images/logo_mindmotion.png)](http://www.mindmotion.com.cn)
+
+## 十一、开发者交流群
+
+欢迎感兴趣的工程师评估和尝试 AWTK，如果您对 AWTK 有相关建议或疑问，可以添加小Z微信（zlgmcu-888）进入 AWTK 开发者交流群，ZLG 研发技术团队亲自为您解答。

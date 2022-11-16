@@ -378,3 +378,7 @@ The third party provides:
 * In-depth Partners
 
 [![](docs/images/logo_nxp.svg)](https://www.nxp.com)　[![](docs/images/logo_anyka.jpg)](http://www.anyka.com)　[![](docs/images/logo_ingenic.jpg)](http://www.ingenic.com.cn)　[![](docs/images/logo_mindmotion.png)](http://www.mindmotion.com.cn)
+
+## XI. Developer Community
+
+Welcome any interested developer to evaluate and try to use AWTK. If you have any suggestions or questions about AWTK, please add the WeChat account zlgmcu-888 to enter the AWTK communication group, and ZLG R&D team will answer them for you.
