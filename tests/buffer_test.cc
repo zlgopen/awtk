@@ -240,7 +240,6 @@ TEST(Buffer, obj) {
 }
 
 TEST(Buffer, binary) {
-  char end = '0';
   wbuffer_t wbuffer;
   rbuffer_t rbuffer;
   const char* str = NULL;

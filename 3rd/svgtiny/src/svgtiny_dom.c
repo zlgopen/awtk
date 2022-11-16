@@ -278,7 +278,7 @@ dom_exception dom_element_get_attribute(dom_element* element, dom_string* name,
 
   str = tk_object_get_prop_str(attr, name->name);
   if (TK_STR_IS_EMPTY(str)) {
-    value_t* v = object_default_find_prop(attr, named_value_compare_by_attr_name, name->name);
+    value_t* v = object_default_find_prop(attr, (tk_compare_t)named_value_compare_by_attr_name, name->name);
     str = v ? value_str(v) : NULL;
     if (TK_STR_IS_EMPTY(str)) {
       *value = NULL;

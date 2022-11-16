@@ -4,8 +4,6 @@
 #include "tkc/data_reader_file.h"
 
 TEST(DataReaderFactory, basic) {
-  char cwd[MAX_PATH + 1] = {0};
-  char path[MAX_PATH + 1] = {0};
   data_reader_t* reader = NULL;
   data_reader_factory_t* f = data_reader_factory_create();
   reader = data_reader_factory_create_reader(f, "file://./tests/testdata/main.xml");
@@ -22,6 +20,9 @@ TEST(DataReaderFactory, basic) {
   data_reader_destroy(reader);
 
 #ifdef WIN32
+  char cwd[MAX_PATH + 1] = {0};
+  char path[MAX_PATH + 1] = {0};
+  
   path_cwd(cwd);
   path_build(path, sizeof(path) - 1, cwd, "tests\\testdata\\main.xml", NULL);
   log_debug("%s\n", path);

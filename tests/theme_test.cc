@@ -115,7 +115,6 @@ TEST(Theme, saveLoad) {
 }
 
 TEST(Theme, basic) {
-  uint8_t buff[40 * 10240];
   uint32_t state_nr = 5;
   uint32_t name_nr = 5;
   const uint8_t* style_data;

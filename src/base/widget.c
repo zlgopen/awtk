@@ -680,7 +680,6 @@ ret_t widget_set_theme(widget_t* widget, const char* name) {
     event_t* evt = theme_change_event_init(&event, EVT_THEME_CHANGED, name);
     widget_t* wm = widget_get_window_manager(widget);
     assets_manager_t* am = widget_get_assets_manager(widget);
-    locale_info_t* locale_info = widget_get_locale_info(widget);
     return_value_if_fail(am != NULL && name != NULL, RET_BAD_PARAMS);
 
     font_managers_unload_all();

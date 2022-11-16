@@ -476,7 +476,7 @@ static ret_t slide_menu_set_prop(widget_t* widget, const char* name, const value
     }
     return RET_OK;
   } else if (tk_str_eq(name, SLIDE_MENU_PROP_SPACER)) {
-    slide_menu_set_spacer(slide_menu, value_int(v));
+    slide_menu_set_spacer(widget, value_int(v));
     return RET_OK;
   }
 
