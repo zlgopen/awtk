@@ -410,3 +410,25 @@ TEST(WStr, set_with_len) {
 
   wstr_reset(&s);
 }
+
+TEST(WStr, case_cmp) {
+  wstr_t str1;
+  wstr_t str2;
+  ASSERT_EQ(wstr_init(&str1, 0), &str1);
+  ASSERT_EQ(wstr_init(&str2, 0), &str2);
+
+  ASSERT_EQ(wstr_set(&str1, L"Hello"), RET_OK);
+  ASSERT_EQ(wcs_case_cmp(str1.str, str2.str) == -1, TRUE);
+
+  ASSERT_EQ(wstr_set(&str2, L"abc"), RET_OK);
+  ASSERT_EQ(wcs_case_cmp(str1.str, str2.str) > 0, TRUE);
+
+  ASSERT_EQ(wstr_set(&str2, L"zlg"), RET_OK);
+  ASSERT_EQ(wcs_case_cmp(str1.str, str2.str) < 0, TRUE);
+
+  ASSERT_EQ(wstr_set(&str2, L"hello"), RET_OK);
+  ASSERT_EQ(wcs_case_cmp(str1.str, str2.str) == 0, TRUE);
+
+  ASSERT_EQ(wstr_reset(&str1), RET_OK);
+  ASSERT_EQ(wstr_reset(&str2), RET_OK);
+}

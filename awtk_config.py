@@ -18,7 +18,7 @@ if not os.path.exists(WIN32_AWTK_RES):
         WIN32_AWTK_RES = os.path.join(TK_ROOT, 'win32_res/awtk.res')
 
 AWTK_STATIC_LIBS = ['awtk_global', 'fscript_ext_widgets', 'extwidgets', 'nfd',
-                    'widgets', 'base', 'gpinyin', 'fribidi', 'linebreak']
+                    'widgets', 'base', 'gpinyin', 'fribidi', 'linebreak', 'svgtiny']
 AWTK_STATIC_LIBS = AWTK_STATIC_LIBS+TKC_STATIC_LIBS
 
 # INPUT_ENGINE='null'

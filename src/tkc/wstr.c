@@ -117,6 +117,20 @@ int wcs_cmp(const wchar_t* s1, const wchar_t* s2) {
   return s1[i] - s2[i];
 }
 
+int wcs_case_cmp(const wchar_t* s1, const wchar_t* s2) {
+  uint32_t i = 0;
+  return_value_if_fail(s1 != NULL && s2 != NULL, -1);
+
+  for (i = 0; s1[i] && s2[i]; i++) {
+    int ret = tolower(s1[i]) - tolower(s2[i]);
+    if (ret) {
+      return ret;
+    }
+  }
+
+  return tolower(s1[i]) - tolower(s2[i]);
+}
+
 wchar_t* wcs_dup(const wchar_t* s) {
   wchar_t* s1 = TKMEM_ZALLOCN(wchar_t, wcslen(s) + 1);
 
@@ -146,6 +160,10 @@ int wcsncmp(const wchar_t* s1, const wchar_t* s2, size_t n) {
 
 int wcscmp(const wchar_t* s1, const wchar_t* s2) {
   return wcs_cmp(s1, s2);
+}
+
+int wcscasecmp(const wchar_t* s1, const wchar_t* s2) {
+  return wcs_case_cmp(s1, s2);
 }
 
 wchar_t* wcscpy(wchar_t* s1, const wchar_t* s2) {

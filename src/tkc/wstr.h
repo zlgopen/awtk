@@ -367,6 +367,17 @@ wchar_t* wcs_ncpy(wchar_t* s1, const wchar_t* s2, uint32_t n);
 int wcs_cmp(const wchar_t* s1, const wchar_t* s2);
 
 /**
+ * @method wcs_case_cmp
+ * 字符串比较函数（不区分大小写）
+ * @annotation ["global"]
+ * @param {const wchar_t*} s1 目标串。
+ * @param {const wchar_t*} s2 源串。
+ *
+ * @return {int} 小于0表示s1<s2,等于0表示s1==s2,大于0表示s1>s2。
+ */
+int wcs_case_cmp(const wchar_t* s1, const wchar_t* s2);
+
+/**
  * @method wcs_len
  * 获取字符串长度。
  * @annotation ["global"]
