@@ -2,6 +2,7 @@
 
 2022/11/16
   * 完善README，添加进入微信群的方法(感谢雨欣提供补丁)
+  * 公开函数scroll\_bar\_hide\_by\_opacity\_animation(感谢兆坤提供补丁)
 
 2022/11/15
   * 修复使用combo\_box控件打开下拉列表的同时调用window\_manager\_switch\_to改变窗口顺序导致popup无法正常显示的问题(感谢泽武提供补丁)

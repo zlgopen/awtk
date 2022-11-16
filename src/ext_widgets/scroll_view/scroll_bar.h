@@ -283,8 +283,20 @@ bool_t scroll_bar_is_mobile(widget_t* widget);
  */
 ret_t scroll_bar_set_animator_time(widget_t* widget, uint32_t animator_time);
 
-/* private */
+/**
+ * @method scroll_bar_hide_by_opacity_animation
+ * 通过动画隐藏滚动条。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget scroll_bar控件。
+ * @param {int32_t} duration 动画持续时间。
+ * @param {int32_t} delay 动画执行时间。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t scroll_bar_hide_by_opacity_animation(widget_t* widget, int32_t duration, int32_t delay);
+
+/* private */
 ret_t scroll_bar_show_by_opacity_animation(widget_t* widget, int32_t duration, int32_t delay);
 
 #define SCROLL_BAR_PROP_IS_MOBILE "is_mobile"
