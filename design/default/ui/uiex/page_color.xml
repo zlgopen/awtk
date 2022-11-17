@@ -25,7 +25,7 @@
           <color_tile x="0" y="36" w="36" h="36" name="old" bg_color="#709918" style="default" style:normal:border="left|right|bottom">
             <label x="r:-46" y="0" w="100%" h="100%" style:normal:text_align_h="left" tr_text="Current"/>
           </color_tile>
-          <edit x="r" y="36" w="120" h="36" name="new" input_type="hex" style:normal:font_size="18" keyboard="uiex/kb_hex">
+          <edit x="r" y="36" w="120" h="36" name="new" input_type="hex" keyboard="uiex/kb_hex">
             <label x="-16" y="0" w="8" h="100%" style:normal:text_align_h="left" text="#"/>
           </edit>
         </view>
