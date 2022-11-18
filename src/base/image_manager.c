@@ -258,8 +258,8 @@ static ret_t image_manager_get_bitmap_impl(image_manager_t* imm, const char* nam
     ret_t ret = image_loader_load_image(res, image);
     if (ret == RET_OK) {
       image_manager_add(imm, name, image);
-      assets_manager_unref(imm->assets_manager, res);
     }
+    assets_manager_unref(imm->assets_manager, res);
 
     return image_manager_lookup(imm, name, image);
   } else {
