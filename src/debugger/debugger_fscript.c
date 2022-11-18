@@ -80,7 +80,6 @@ static ret_t debugger_fscript_enter_func(debugger_t* debugger, const char* name,
     call_stack_frame_destroy(frame);
     return RET_OOM;
   } else {
-    log_debug("enter %s\n", name);
     return RET_OK;
   }
 }
@@ -92,8 +91,6 @@ static ret_t debugger_fscript_leave_func(debugger_t* debugger) {
 
   frame = (call_stack_frame_t*)darray_pop(&(d->call_stack_frames));
   return_value_if_fail(frame != NULL, RET_BAD_PARAMS);
-
-  log_debug("leave %s\n", frame->name);
 
   return call_stack_frame_destroy(frame);
 }
@@ -205,7 +202,6 @@ static ret_t debugger_fscript_step_in(debugger_t* debugger) {
       debugger_fscript_clear_step_stops(d);
       d->next_stop_executed_line = d->executed_lines + 1;
       d->break_type = DEBUGGER_FSCRIPT_BREAK_STEP_IN;
-      log_debug("step_in: %d %d\n", d->executed_lines, d->next_stop_executed_line);
     }
     debugger_fscript_unlock(debugger);
 
@@ -229,8 +225,6 @@ static ret_t debugger_fscript_next(debugger_t* debugger) {
       d->next_stop_executed_line = d->executed_lines + 1;
       d->next_stop_call_frame_index = d->call_stack_frames.size;
       d->break_type = DEBUGGER_FSCRIPT_BREAK_NEXT;
-      log_debug("next:executed_lines=%d prev_executed_line=%d\n", d->executed_lines,
-                d->prev_executed_line);
     }
     debugger_fscript_unlock(debugger);
 
@@ -253,7 +247,6 @@ static ret_t debugger_fscript_step_out(debugger_t* debugger) {
       ret = RET_OK;
       debugger_fscript_clear_step_stops(d);
       d->next_stop_call_frame_index = d->call_stack_frames.size - 1;
-      log_debug("step out:%d\n", d->next_stop_call_frame_index);
       d->break_type = DEBUGGER_FSCRIPT_BREAK_STEP_OUT;
     }
     debugger_fscript_unlock(debugger);
@@ -277,7 +270,6 @@ static ret_t debugger_fscript_step_over(debugger_t* debugger) {
       debugger_fscript_clear_step_stops(d);
       d->next_stop_line = d->prev_executed_line + 1;
       d->break_type = DEBUGGER_FSCRIPT_BREAK_STEP_OVER;
-      log_debug("step over: %d %d\n", d->next_stop_line, d->prev_executed_line);
     }
     debugger_fscript_unlock(debugger);
 
@@ -631,27 +623,40 @@ debugger_t* debugger_fscript_create(void) {
   return (debugger_t*)debugger;
 }
 
-ret_t debugger_fscript_print_func(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  str_t str;
-  char buff[32];
-  uint32_t i = 0;
-  debugger_log_event_t event;
+static ret_t debugger_fscript_log_ex(void* ctx, const char* msg, bool_t native) {
   debugger_t* debugger = NULL;
+  fscript_t* fscript = (fscript_t*)ctx;
   return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
 
   debugger = debugger_server_find_debugger(fscript->code_id);
   if (debugger != NULL) {
-    uint32_t line = fscript->curr->row;
-    value_set_bool(result, TRUE);
-    str_init(&str, 100);
-    for (i = 0; i < args->size; i++) {
-      str_append(&str, value_str_ex(args->args + i, buff, sizeof(buff) - 1));
-    }
+    debugger_log_event_t event;
+    uint32_t line = native ? -1 : fscript->curr->row;
 
-    debugger_log_event_init(&event, line, str.str);
+    debugger_log_event_init(&event, line, msg);
     emitter_dispatch(EMITTER(debugger), (event_t*)&event);
-    str_reset(&str);
   }
+
+  return RET_OK;
+}
+
+static ret_t debugger_fscript_log(void* ctx, const char* msg) {
+  return debugger_fscript_log_ex(ctx, msg, TRUE);
+}
+
+ret_t debugger_fscript_print_func(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  str_t str;
+  char buff[64];
+  uint32_t i = 0;
+  return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
+
+  str_init(&str, 100);
+  value_set_bool(result, TRUE);
+  for (i = 0; i < args->size; i++) {
+    str_append(&str, value_str_ex(args->args + i, buff, sizeof(buff) - 1));
+  }
+  debugger_fscript_log_ex(fscript, str.str, FALSE);
+  str_reset(&str);
 
   return RET_OK;
 }
@@ -683,6 +688,7 @@ ret_t debugger_fscript_set_fscript(debugger_t* debugger, fscript_t* fscript) {
     debugger_fscript_clear_step_stops(d);
 
     fscript_set_print_func(fscript, debugger_fscript_print_func);
+    log_set_debugger_hook(debugger_fscript_log, fscript);
     fscript_set_on_error(fscript, debugger_fscript_on_error, d);
 
     fscript_ensure_locals(fscript);
@@ -696,6 +702,7 @@ ret_t debugger_fscript_set_fscript(debugger_t* debugger, fscript_t* fscript) {
   } else {
     debugger_fscript_leave_func(debugger);
     fscript_set_print_func(d->fscript, NULL);
+    log_set_debugger_hook(NULL, NULL);
     fscript_set_on_error(d->fscript, NULL, NULL);
     if (!d->fscript->rerun) {
       emitter_dispatch_simple_event(EMITTER(debugger), DEBUGGER_RESP_MSG_COMPLETED);
@@ -710,7 +717,6 @@ static bool_t debugger_fscript_should_pause(debugger_fscript_t* d, int32_t line)
   bool_t paused = darray_find_index(&(d->break_points), tk_pointer_from_int(line)) >= 0;
 
   if (paused) {
-    log_debug("break at line:%d\n", line);
     return paused;
   }
 
@@ -757,7 +763,6 @@ static bool_t debugger_fscript_emit_breaked(debugger_t* debugger, int32_t line) 
   if (d->paused) {
     debugger_breaked_event_init(&event, line);
     emitter_dispatch(EMITTER(debugger), (event_t*)&event);
-    log_debug("stop at %d\n", line);
   }
 
   return d->paused;
@@ -788,8 +793,6 @@ static ret_t debugger_fscript_after_exec_func(debugger_t* debugger, int32_t line
 
   if (debugger_fscript_lock(debugger) == RET_OK) {
     bool_t paused = FALSE;
-    log_debug("after exec: prev_executed_line=%d line=%d executed_lines=%d \n",
-              d->prev_executed_line, line, d->executed_lines);
     if (d->prev_executed_line != line) {
       d->executed_lines++;
     }
@@ -807,7 +810,6 @@ static ret_t debugger_fscript_after_exec_func(debugger_t* debugger, int32_t line
     debugger_fscript_unlock(debugger);
 
     if (paused && d->cond_var != NULL) {
-      log_debug("step for next\n");
       tk_cond_var_wait(d->cond_var, 0xffffff);
     }
   }
@@ -841,16 +843,10 @@ ret_t debugger_fscript_exec_func(fscript_t* fscript, const char* name, fscript_f
         debugger_fscript_unlock(debugger);
       }
     } else {
-      if (fscript->first == iter) {
-        log_debug("program exec begin\n");
-      }
-
       debugger_fscript_before_exec_func(debugger, line);
       ret = fscript_exec_func_default(fscript, iter, result);
 
-      if (fscript->first == iter) {
-        log_debug("program exec end\n");
-      } else {
+      if (fscript->first != iter) {
         debugger_fscript_after_exec_func(debugger, line);
       }
     }

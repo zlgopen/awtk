@@ -33,12 +33,14 @@ static ret_t on_debugger_client_event(void* ctx, event_t* e) {
     }
     case DEBUGGER_RESP_MSG_LOG: {
       debugger_log_event_t* event = debugger_log_event_cast(e);
-      str_append(str, "log");
-      str_append(str, "(");
-      str_append_int(str, event->line);
-      str_append(str, ",\"");
-      str_append(str, event->message);
-      str_append(str, "\")");
+      if (event->line >= 0) {
+        str_append(str, "log");
+        str_append(str, "(");
+        str_append_int(str, event->line);
+        str_append(str, ",\"");
+        str_append(str, event->message);
+        str_append(str, "\")");
+      }
       break;
     }
     case DEBUGGER_RESP_MSG_ERROR: {

@@ -359,11 +359,11 @@ typedef struct _debugger_resp_t {
 typedef struct _debugger_log_event_t {
   event_t e;
   /**
-   * @property {uint32_t} line
+   * @property {int32_t} line
    * @annotation ["readable"]
-   * 打印日志的行号。
+   * 打印日志的行号(<0表示原生代码打印的日志)。
    */
-  uint32_t line;
+  int32_t line;
   /**
    * @property {const char*} message
    * @annotation ["readable"]
