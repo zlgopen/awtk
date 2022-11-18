@@ -354,7 +354,10 @@ tk_object_t* conf_obj_create(conf_doc_save_t save, conf_doc_load_t load, const c
 
   o->save = save;
   o->load = load;
-  o->url = tk_strdup(url);
+  if (url != NULL) {
+    o->url = tk_strdup(url);
+  }
+
   if (o->url == NULL && url != NULL) {
     TK_OBJECT_UNREF(o);
   }
