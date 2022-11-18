@@ -20,6 +20,7 @@
  */
 
 #include "svg/svg_shape.h"
+#include "svg/svg_color.inc"
 
 static uint32_t _svg_shape_size(const svg_shape_t* shape) {
   uint32_t size = 0;

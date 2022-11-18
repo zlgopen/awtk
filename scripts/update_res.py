@@ -26,6 +26,7 @@ def is_demouiold_excluded_file(filename):
         '/images/debug_*_*',
         '/images/uiex_*',
         '/images/computer.bsvg',
+        '/images/gradient.bsvg',
         '/images/windmill.bsvg',
         '/styles/uiex*',
         '/ui/uiex/*'
@@ -46,6 +47,7 @@ def is_not_uiex_file(filename):
         '/images/gauge_pointer',
         '/images/uiex_*',
         '/images/computer.bsvg',
+        '/images/gradient.bsvg',
         '/images/windmill.bsvg',
         '/styles/default',
         '/styles/dialog_toast',

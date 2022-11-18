@@ -23,6 +23,8 @@
 #include "tkc/mem.h"
 #include "svg/bsvg_builder.h"
 
+#ifdef WITH_RES_TOOLS
+
 static inline color_t convert_color(svgtiny_colour color) {
   return color_init(svgtiny_RED(color), svgtiny_GREEN(color), svgtiny_BLUE(color), 0xff);
 }
@@ -244,3 +246,5 @@ ret_t svg_file_to_bsvg(const char* ifilename, const char* ofilename) {
 
   return ret;
 }
+
+#endif
