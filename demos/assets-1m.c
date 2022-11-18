@@ -14,10 +14,6 @@
 #include "../res/assets/default/inc/styles/uiex_dialog_info.data"
 #include "../res/assets/default/inc/styles/uiex_dialog_warn.data"
 #include "../res/assets/default/inc/styles/uiex_keyboard.data"
-#include "../res/assets/default/inc/ui/uiex/cbp_fast_food.data"
-#include "../res/assets/default/inc/ui/uiex/cbp_font.data"
-#include "../res/assets/default/inc/ui/uiex/cbp_font_size.data"
-#include "../res/assets/default/inc/ui/uiex/cbp_week.data"
 #include "../res/assets/default/inc/ui/uiex/dlg_center_scale.data"
 #include "../res/assets/default/inc/ui/uiex/dlg_fade.data"
 #include "../res/assets/default/inc/ui/uiex/dlg_popdown.data"
@@ -152,10 +148,6 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, style_uiex_dialog_info);
   assets_manager_add(am, style_uiex_dialog_warn);
   assets_manager_add(am, style_uiex_keyboard);
-  assets_manager_add(am, ui_uiex_cbp_fast_food);
-  assets_manager_add(am, ui_uiex_cbp_font);
-  assets_manager_add(am, ui_uiex_cbp_font_size);
-  assets_manager_add(am, ui_uiex_cbp_week);
   assets_manager_add(am, ui_uiex_dlg_center_scale);
   assets_manager_add(am, ui_uiex_dlg_fade);
   assets_manager_add(am, ui_uiex_dlg_popdown);
@@ -286,10 +278,6 @@ extern TK_CONST_DATA_ALIGN(const unsigned char strings_en_US[]);
 #include "../res/assets/dark/inc/styles/uiex_dialog_warn.data"
 #include "../res/assets/dark/inc/styles/uiex_keyboard.data"
 extern TK_CONST_DATA_ALIGN(const unsigned char style_dialog_toast[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_cbp_fast_food[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_cbp_font[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_cbp_font_size[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_cbp_week[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_dlg_center_scale[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_dlg_fade[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_dlg_popdown[]);
@@ -424,10 +412,6 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, style_uiex_dialog_warn_dark);
   assets_manager_add(am, style_uiex_keyboard_dark);
   assets_manager_add(am, style_dialog_toast);
-  assets_manager_add(am, ui_uiex_cbp_fast_food);
-  assets_manager_add(am, ui_uiex_cbp_font);
-  assets_manager_add(am, ui_uiex_cbp_font_size);
-  assets_manager_add(am, ui_uiex_cbp_week);
   assets_manager_add(am, ui_uiex_dlg_center_scale);
   assets_manager_add(am, ui_uiex_dlg_fade);
   assets_manager_add(am, ui_uiex_dlg_popdown);
