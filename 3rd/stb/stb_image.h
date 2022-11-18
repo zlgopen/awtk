@@ -3793,6 +3793,7 @@ static stbi_uc *load_jpeg_image(stbi__jpeg *z, int *out_x, int *out_y, int *comp
       if (STB_JPEG_IS_YUV_DATA(z, is_rgb)) {
          int size = (z->s->img_x + 3) * STB_YUV_DATA_PIXEL_BTYE * z->s->img_y;
          stbi_uc* yuv_data = (stbi_uc *) stbi__malloc(size);
+         if (!yuv_data) { stbi__cleanup_jpeg(z); return stbi__errpuc("outofmem", "Out of memory"); }
          memset(yuv_data, 0x0, size);
          for (j=0; j < z->s->img_y; ++j) {
             stbi_uc *yuv_data_row = yuv_data + STB_YUV_DATA_PIXEL_BTYE * z->s->img_x * j;
@@ -3926,6 +3927,7 @@ static void *stbi__jpeg_load(stbi__context *s, int *x, int *y, int *comp, int re
 {
    unsigned char* result;
    stbi__jpeg* j = (stbi__jpeg*) stbi__malloc(sizeof(stbi__jpeg));
+   if (j == NULL) { return NULL; }
    j->s = s;
    stbi__setup_jpeg(j);
    result = load_jpeg_image(j, x,y,comp,req_comp, ri);
@@ -3937,6 +3939,7 @@ static int stbi__jpeg_test(stbi__context *s)
 {
    int r;
    stbi__jpeg* j = (stbi__jpeg*)stbi__malloc(sizeof(stbi__jpeg));
+   if (j == NULL) { return 0; }
    j->s = s;
    stbi__setup_jpeg(j);
    r = stbi__decode_jpeg_header(j, STBI__SCAN_type);
@@ -3961,6 +3964,7 @@ static int stbi__jpeg_info(stbi__context *s, int *x, int *y, int *comp)
 {
    int result;
    stbi__jpeg* j = (stbi__jpeg*) (stbi__malloc(sizeof(stbi__jpeg)));
+   if (j == NULL) { return 0; }
    j->s = s;
    result = stbi__jpeg_info_raw(j, x, y, comp);
    STBI_FREE(j);
@@ -4742,6 +4746,7 @@ static int stbi__create_png_image(stbi__png *a, stbi_uc *image_data, stbi__uint3
 
    // de-interlacing
    final = (stbi_uc *) stbi__malloc_mad3(a->s->img_x, a->s->img_y, out_bytes, 0);
+   if (final == NULL) { return 0; }
    for (p=0; p < 7; ++p) {
       int xorig[] = { 0,4,0,2,0,1,0 };
       int yorig[] = { 0,0,4,0,2,0,1 };
@@ -6281,6 +6286,7 @@ static void *stbi__pic_load(stbi__context *s,int *px,int *py,int *comp,int req_c
 
    // intermediate buffer is RGBA
    result = (stbi_uc *) stbi__malloc_mad3(x, y, 4, 0);
+   if (result == NULL) { return NULL; }
    memset(result, 0xff, x*y*4);
 
    if (!stbi__pic_load_core(s,x,y,comp, result)) {
@@ -6393,6 +6399,7 @@ static int stbi__gif_header(stbi__context *s, stbi__gif *g, int *comp, int is_in
 static int stbi__gif_info_raw(stbi__context *s, int *x, int *y, int *comp)
 {
    stbi__gif* g = (stbi__gif*) stbi__malloc(sizeof(stbi__gif));
+   if (g == NULL) { return 0; }
    if (!stbi__gif_header(s, g, comp, 1)) {
       STBI_FREE(g);
       stbi__rewind( s );
@@ -6540,9 +6547,11 @@ static stbi_uc *stbi__gif_load_next(stbi__context *s, stbi__gif *g, int *comp, i
    if (g->out == 0) {
       if (!stbi__gif_header(s, g, comp,0))     return 0; // stbi__g_failure_reason set by stbi__gif_header
       g->out = (stbi_uc *) stbi__malloc(4 * g->w * g->h);
-      g->background = (stbi_uc *) stbi__malloc(4 * g->w * g->h); 
-      g->history = (stbi_uc *) stbi__malloc(g->w * g->h); 
       if (g->out == 0)                      return stbi__errpuc("outofmem", "Out of memory");
+      g->background = (stbi_uc *) stbi__malloc(4 * g->w * g->h); 
+      if (g->background == 0)                      return stbi__errpuc("outofmem", "Out of memory");
+      g->history = (stbi_uc *) stbi__malloc(g->w * g->h); 
+      if (g->history == 0)                      return stbi__errpuc("outofmem", "Out of memory");
 
       // image is treated as "tranparent" at the start - ie, nothing overwrites the current background; 
       // background colour is only used for pixels that are not rendered first frame, after that "background"
@@ -6696,6 +6705,8 @@ static void *stbi__load_gif_main(stbi__context *s, int **delays, int *x, int *y,
       int layers = 0; 
       stbi_uc *u = 0;
       stbi_uc *out = 0;
+      stbi_uc *out2 = 0;
+      int *delays2 = 0;
       stbi_uc *two_back = 0; 
       stbi__gif g;
       int stride; 
@@ -6706,6 +6717,7 @@ static void *stbi__load_gif_main(stbi__context *s, int **delays, int *x, int *y,
 
       do {
          u = stbi__gif_load_next(s, &g, comp, req_comp, two_back);
+         if (u == 0) goto oom;
          if (u == (stbi_uc *) s) u = 0;  // end of animated gif marker
 
          if (u) {
@@ -6715,14 +6727,20 @@ static void *stbi__load_gif_main(stbi__context *s, int **delays, int *x, int *y,
             stride = g.w * g.h * 4; 
          
             if (out) {
-               out = (stbi_uc*) STBI_REALLOC( out, layers * stride ); 
+               out2 = (stbi_uc*) STBI_REALLOC( out, layers * stride ); 
+               if (out2 == NULL) goto oom;
+               out = out2;
                if (delays) {
-                  *delays = (int*) STBI_REALLOC( *delays, sizeof(int) * layers ); 
+                  delays2 = (int*) STBI_REALLOC( *delays, sizeof(int) * layers ); 
+                  if (delays2 == NULL) goto oom;
+                  *delays = delays2;
                }
             } else {
                out = (stbi_uc*)stbi__malloc( layers * stride ); 
+               if (out == NULL) goto oom;
                if (delays) {
                   *delays = (int*) stbi__malloc( layers * sizeof(int) ); 
+                  if ((*delays) == NULL) goto oom;
                }
             }
             memcpy( out + ((layers - 1) * stride), u, stride ); 
@@ -6747,6 +6765,14 @@ static void *stbi__load_gif_main(stbi__context *s, int **delays, int *x, int *y,
 
       *z = layers; 
       return out;
+
+oom:
+      if (out) STBI_FREE(out);
+      if (delays && (*delays)) STBI_FREE(*delays);
+      if (g.out) STBI_FREE(g.out);
+      if (g.history) STBI_FREE(g.history);
+      if (g.background) STBI_FREE(g.background);
+      return stbi__errpuc("outofmem", "Out of memory");
    } else {
       return stbi__errpuc("not GIF", "Image was not as a gif type."); 
    }
