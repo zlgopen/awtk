@@ -29,7 +29,7 @@
 #include "tkc/time_now.h"
 #include "tkc/color_parser.h"
 #include "base/system_info.h"
-
+#include "base/events.h"
 #include "base/lcd_profile.h"
 
 #ifndef CANVAS_MEASURE_TEXT_CACHE_MAX_LENGTH
@@ -90,7 +90,7 @@ canvas_t* canvas_init(canvas_t* c, lcd_t* lcd, font_manager_t* font_manager) {
   memset(c, 0x00, sizeof(canvas_t));
 
   c->lcd = lcd_profile_create(lcd);
-  c->font_manager = font_manager;
+  canvas_set_font_manager(c, font_manager);
 
   c->clip_left = 0;
   c->clip_top = 0;
@@ -113,10 +113,32 @@ wh_t canvas_get_height(canvas_t* c) {
   return lcd_get_height(c->lcd);
 }
 
+static ret_t canvas_on_font_manager_events(void* ctx, event_t* e) {
+  canvas_t* c = (canvas_t*)ctx;
+
+  if (e->type == EVT_ASSET_MANAGER_UNLOAD_ASSET) {
+    if (c->font) {
+      const char* name = (const char*)e->target;
+      if (tk_str_eq(c->font->name, name)) {
+        c->font = NULL;
+      }
+    }
+  }
+  return RET_OK;
+}
+
 ret_t canvas_set_font_manager(canvas_t* c, font_manager_t* font_manager) {
   return_value_if_fail(c != NULL && font_manager != NULL, RET_BAD_PARAMS);
 
+  if (c->font_manager) {
+    emitter_off_by_func(EMITTER(c->font_manager), EVT_ASSET_MANAGER_UNLOAD_ASSET,
+                        canvas_on_font_manager_events, c);
+  }
   c->font_manager = font_manager;
+  if (c->font_manager) {
+    emitter_on(EMITTER(c->font_manager), EVT_ASSET_MANAGER_UNLOAD_ASSET,
+               canvas_on_font_manager_events, c);
+  }
 
   return RET_OK;
 }
@@ -2067,6 +2089,10 @@ ret_t canvas_reset(canvas_t* c) {
   return_value_if_fail(c != NULL && c->lcd != NULL, RET_BAD_PARAMS);
 
   canvas_reset_cache(c);
+  if (c->font_manager) {
+    emitter_off_by_func(EMITTER(c->font_manager), EVT_ASSET_MANAGER_UNLOAD_ASSET,
+                        canvas_on_font_manager_events, c);
+  }
   TKMEM_FREE(c->last_text_str);
   memset(c, 0x00, sizeof(canvas_t));
 

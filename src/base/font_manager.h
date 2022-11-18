@@ -36,11 +36,13 @@ typedef font_t* (*font_manager_get_font_t)(font_manager_t* fm, const char* name,
 
 /**
  * @class font_manager_t
+ * @parent emitter_t
  * @annotation ["scriptable"]
  * 字体管理器，负责字体的加载和缓存管理。
  * (如果使用nanovg，字体由nanovg内部管理)
  */
 struct _font_manager_t {
+  emitter_t emitter;
   darray_t fonts;
 
   /**

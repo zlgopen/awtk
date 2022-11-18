@@ -58,6 +58,8 @@ font_manager_t* font_manager_create(font_loader_t* loader) {
 
 font_manager_t* font_manager_init(font_manager_t* fm, font_loader_t* loader) {
   return_value_if_fail(fm != NULL, NULL);
+  memset(fm, 0x00, sizeof(font_manager_t));
+
   darray_init(&(fm->fonts), 2, (tk_destroy_t)font_destroy, (tk_compare_t)font_cmp);
 
   fm->loader = loader;
@@ -194,6 +196,7 @@ font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t 
 ret_t font_manager_unload_font(font_manager_t* fm, const char* name, font_size_t size) {
   ret_t ret = RET_OK;
   font_cmp_info_t info = {name, size};
+  event_t e;
 
 #if WITH_BITMAP_FONT
   char font_name[MAX_PATH];
@@ -209,6 +212,9 @@ ret_t font_manager_unload_font(font_manager_t* fm, const char* name, font_size_t
   ret = darray_remove(&(fm->fonts), &info_bitmap);
 #endif
 
+  e = event_init(EVT_ASSET_MANAGER_UNLOAD_ASSET, name);
+  emitter_dispatch(EMITTER(fm), &e);
+
   ret = darray_remove(&(fm->fonts), &info);
   if (ret == RET_OK) {
     assets_manager_clear_cache_ex(assets_manager(), ASSET_TYPE_FONT, name);
@@ -219,6 +225,17 @@ ret_t font_manager_unload_font(font_manager_t* fm, const char* name, font_size_t
 
 ret_t font_manager_unload_all(font_manager_t* fm) {
   return_value_if_fail(fm != NULL, RET_FAIL);
+
+  if (fm->fonts.elms != NULL) {
+    uint32_t i = 0;
+    void** elms = fm->fonts.elms;
+
+    for (i = 0; i < fm->fonts.size; i++) {
+      font_t* iter = (font_t*)(elms[i]);
+      event_t e = event_init(EVT_ASSET_MANAGER_UNLOAD_ASSET, iter->name);
+      emitter_dispatch(EMITTER(fm), &e);
+    }
+  }
 
   return darray_clear(&(fm->fonts));
 }
