@@ -1184,7 +1184,7 @@ static widget_t* widget_lookup_child(widget_t* widget, const char* name) {
   return_value_if_fail(widget != NULL && name != NULL, NULL);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  if (iter->name != NULL && tk_str_eq(iter->name, name)) {
+  if (iter != NULL && iter->name != NULL && tk_str_eq(iter->name, name)) {
     return iter;
   }
   WIDGET_FOR_EACH_CHILD_END()
@@ -1219,7 +1219,7 @@ static widget_t* widget_lookup_all(widget_t* widget, const char* name) {
   return_value_if_fail(widget != NULL && name != NULL, NULL);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  if (iter->name != NULL && tk_str_eq(iter->name, name)) {
+  if (iter != NULL && iter->name != NULL && tk_str_eq(iter->name, name)) {
     return iter;
   } else {
     iter = widget_lookup_all(iter, name);
