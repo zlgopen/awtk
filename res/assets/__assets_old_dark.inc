@@ -141,6 +141,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_big_font[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_tab_top_compact[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_dialog_highlight_dynamic[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_slide_view_h[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_spin_box[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_dialogs[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_selectm[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_list_view[]);
@@ -522,7 +523,6 @@ extern TK_CONST_DATA_ALIGN(const unsigned char image_pointer[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_shapes_circle_01_t[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_shapes_rect_01_t[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_girl[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_gradient[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_shapes_ellipse_01_t[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_shapes_polygon_01_t[]);
 #endif /*WITH_VGCANVAS*/
@@ -675,6 +675,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_tab_top_compact);
   assets_manager_add(am, ui_dialog_highlight_dynamic);
   assets_manager_add(am, ui_slide_view_h);
+  assets_manager_add(am, ui_spin_box);
   assets_manager_add(am, ui_dialogs);
   assets_manager_add(am, ui_selectm);
   assets_manager_add(am, ui_list_view);
@@ -914,7 +915,6 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, image_shapes_circle_01_t);
   assets_manager_add(am, image_shapes_rect_01_t);
   assets_manager_add(am, image_girl);
-  assets_manager_add(am, image_gradient);
   assets_manager_add(am, image_shapes_ellipse_01_t);
   assets_manager_add(am, image_shapes_polygon_01_t);
 #endif /*WITH_VGCANVAS*/

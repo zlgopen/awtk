@@ -394,6 +394,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char font_default[]);
 #endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
 #include "dark/inc/images/computer.bsvg"
+extern TK_CONST_DATA_ALIGN(const unsigned char image_gradient[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_windmill[]);
 #endif /*WITH_VGCANVAS*/
 #endif /*!defined(WITH_FS_RES) || defined(AWTK_WEB)*/
@@ -629,6 +630,7 @@ ret_t assets_init_dark(void) {
 #endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
   assets_manager_add(am, image_computer_dark);
+  assets_manager_add(am, image_gradient);
   assets_manager_add(am, image_windmill);
 #endif /*WITH_VGCANVAS*/
 #endif /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/

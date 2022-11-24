@@ -1,0 +1,9 @@
+<window >
+  <button name="close" self_layout="default(x=center,y=b:10,w=50%,h=30)" text="Close"/>
+  <spin_box min="0" max="1024" step="1" x="18" y="17" w="160" h="28" tips="Please enter your value" input_type="int" auto_fix="true"/>
+  <spin_box min="0" max="1024" step="1" x="18" y="55" w="160" h="28" tips="Please enter your value" input_type="int" auto_fix="true" easy_touch_mode="true"/>
+  <spin_box min="0" max="1024" step="1" x="205" y="17" w="32" h="66" tips="Please enter your value" input_type="int" auto_fix="true" easy_touch_mode="true"/>
+  <spin_box min="0" max="1024" step="1" x="18" y="102" w="160" h="36" tips="Please enter your value" input_type="int" auto_fix="true" easy_touch_mode="true" button_position="default"/>
+  <spin_box min="0" max="1024" step="1" x="18" y="148" w="160" h="36" tips="Please enter your value" input_type="int" auto_fix="true" button_position="left_right"/>
+  <spin_box min="0" max="1024" step="1" x="18" y="194" w="160" h="90" tips="Please enter your value" input_type="int" auto_fix="true" button_position="top_bottom"/>
+</window>

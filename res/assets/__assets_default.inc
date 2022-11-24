@@ -394,6 +394,7 @@
 #endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
 #include "default/inc/images/computer.bsvg"
+#include "default/inc/images/gradient.bsvg"
 #include "default/inc/images/windmill.bsvg"
 #endif /*WITH_VGCANVAS*/
 #endif /*!defined(WITH_FS_RES) || defined(AWTK_WEB)*/
@@ -629,6 +630,7 @@ ret_t assets_init_default(void) {
 #endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
   assets_manager_add(am, image_computer);
+  assets_manager_add(am, image_gradient);
   assets_manager_add(am, image_windmill);
 #endif /*WITH_VGCANVAS*/
 #endif /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/

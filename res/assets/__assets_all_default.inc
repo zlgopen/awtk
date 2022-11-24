@@ -146,6 +146,7 @@
 #include "default/inc/ui/tab_top_compact.data"
 #include "default/inc/ui/dialog_highlight_dynamic.data"
 #include "default/inc/ui/slide_view_h.data"
+#include "default/inc/ui/spin_box.data"
 #include "default/inc/ui/dialogs.data"
 #include "default/inc/ui/selectm.data"
 #include "default/inc/ui/list_view.data"
@@ -1058,6 +1059,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_tab_top_compact);
   assets_manager_add(am, ui_dialog_highlight_dynamic);
   assets_manager_add(am, ui_slide_view_h);
+  assets_manager_add(am, ui_spin_box);
   assets_manager_add(am, ui_dialogs);
   assets_manager_add(am, ui_selectm);
   assets_manager_add(am, ui_list_view);

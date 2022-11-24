@@ -96,6 +96,17 @@ typedef struct _spin_box_t {
   bool_t easy_touch_mode;
 
   /**
+   * @property {char*} button_position
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 按钮位置样式选择，优先级高于easy_touch_mode，各模式对应样式如下,默认为none。
+   * none：按照easy_touch_mode选择样式
+   * default：inc按钮在右上角，dec按钮在右下角。
+   * left_right：dec按钮在左边，inc按钮在右边。
+   * top_bottom：inc按钮在顶部，dec按钮在底部。
+   */
+  char* button_position;
+
+  /**
    * @property {int32_t} repeat
    * @annotation ["set_prop","get_prop","readable","persitent","design","fake"]
    * 重复触发EVT\_CLICK事件的时间间隔。
@@ -141,6 +152,17 @@ widget_t* spin_box_cast(widget_t* widget);
 ret_t spin_box_set_easy_touch_mode(widget_t* widget, bool_t easy_touch_mode);
 
 /**
+ * @method spin_box_set_button_position
+ * 设置按钮位置样式。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {const char*} button_position 按钮位置样式。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t spin_box_set_button_position(widget_t* widget,const char* button_position);
+
+/**
  * @method spin_set_repeat
  * 设置连击的时间间隔。
  * 备注：时间间隔越低，速度越快。
@@ -153,6 +175,12 @@ ret_t spin_box_set_easy_touch_mode(widget_t* widget, bool_t easy_touch_mode);
 ret_t spin_set_repeat(widget_t* widget, int32_t repeat);
 
 #define SPIN_BOX(widget) ((spin_box_t*)(spin_box_cast(WIDGET(widget))))
+#define WIDGET_PROP_BUTTON_POSITION "button_position"
+
+#define SPIN_BOX_BUTTON_POSITION_NONE "none"
+#define SPIN_BOX_BUTTON_POSITION_DEFAULT "default"
+#define SPIN_BOX_BUTTON_POSITION_LEFT_RIGHT "left_right"
+#define SPIN_BOX_BUTTON_POSITION_TOP_BOTTOM "top_bottom"
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(spin_box);
