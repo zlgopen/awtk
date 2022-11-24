@@ -171,7 +171,7 @@ widget_t* spin_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* spin_box = spin_box_create_self(parent, x, y, w, h);
   return_value_if_fail(spin_box != NULL, NULL);
 
-  spin_box_set_button_position(spin_box, "spin_box_none_position");
+  spin_box_set_button_position(spin_box, SPIN_BOX_BUTTON_POSITION_NONE);
 
   inc = button_create(spin_box, 0, 0, 0, 0);
   inc->auto_created = TRUE;
