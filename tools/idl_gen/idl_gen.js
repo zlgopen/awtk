@@ -354,6 +354,8 @@ class IDLGen {
         comment += ' * \n'
         comment += ' * @return {const widget_vtable_t*} 成功返回 ' + clase_name + ' 虚表。 \n'
         comment += ' */ \n'
+        let cls = this.getClass(clase_name + "_t");
+        this.cls = cls;
         this.parseMethod(comment);
         str = str.substr(end);
       }
