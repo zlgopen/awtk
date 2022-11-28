@@ -84,7 +84,7 @@
         </tab_control>
       </view>
     </view>
-    <view name="view_tab_bottom" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="300">
+    <view name="view_tab_bottom" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="300" invisible_in_1m="true">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Tab At Bottom"/>
       <view h="-22">
         <tab_control name="tab_ctrl_bottom" children_layout="default(r=0,c=1,x=0,y=0,s=0)" x="20" y="0" w="280" h="100%">

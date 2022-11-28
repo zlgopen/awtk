@@ -30,6 +30,6 @@
       <tab_button name="tb_chart" style="tb_elm" tr_text="Chart"/>
       <tab_button name="tb_window" style="tb_elm" tr_text="Window"/>
     </scroll_view>
-    <scroll_bar_m name="bar" x="r" y="0" w="7" h="100%" style="default" max="1000"/>
+    <scroll_bar_m name="bar" x="r" y="0" w="7" h="100%" max="1000"/>
   </list_view>
 </dialog>

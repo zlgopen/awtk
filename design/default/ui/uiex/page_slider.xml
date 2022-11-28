@@ -1,24 +1,26 @@
 <?xml parent="{&quot;x&quot;:&quot;0&quot;,&quot;y&quot;:&quot;0&quot;,&quot;w&quot;:&quot;100%&quot;,&quot;h&quot;:&quot;100%&quot;,&quot;name&quot;:&quot;page_slider&quot;,&quot;theme&quot;:&quot;uiex&quot;}"?>
 <list_view name="list_view" x="0" y="0" w="100%" h="100%">
   <scroll_view name="scroll_view" x="0" y="0" w="100%" h="100%" children_layout="list_view(i=0,d=634,x=0,y=10,s=20)">
-    <view name="view_sl" h="634">
+    <view name="view_sl" h="355">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" x="0" y="0" w="100%" tr_text="Slider"/>
-      <label x="20" y="36" w="100" h="22" style="default" style:normal:text_align_h="left" tr_text="sliding here:"/>
-      <slider name="sl" h="16" x="120" y="39" w="-140" max="100" value="75"/>
+      <label x="20" y="36" w="100" h="22" style:normal:text_align_h="left" tr_text="sliding here:"/>
+      <slider max="100" name="sl" h="16" x="120" y="39" w="-140" value="75"/>
       <view x="20" y="75" w="100" h="280" children_layout="default(r=1,c=0,x=0,y=0,s=56)">
-        <slider name="bind_value:../sl" w="16" vertical="true" animate:value="75" max="100"/>
-        <slider name="bind_value:../sl" w="16" vertical="true" style="square" animate:value="75" max="100"/>
+        <slider max="100" name="bind_value:../sl" w="16" vertical="true" animate:value="75"/>
+        <slider max="100" name="bind_value:../sl" w="16" vertical="true" style="square" animate:value="75"/>
       </view>
       <view x="130" y="75" w="-160" h="280" children_layout="default(r=0,c=1,x=0,y=10,s=46)">
-        <progress_bar name="bind_value:../sl" h="10" animate:value="75" max="100"/>
-        <progress_circle name="bind_value:../sl" h="214" show_text="true" start_angle="90" format="%d%%" line_width="10" line_cap="butt" animate:value="75" max="100"/>
+        <progress_bar max="100" name="bind_value:../sl" h="10" animate:value="75"/>
+        <progress_circle max="100" name="bind_value:../sl" h="214" show_text="true" start_angle="90" format="%d%%" line_width="10" line_cap="butt" animate:value="75"/>
       </view>
-      <gauge x="0" y="380" w="100%" h="215" image="uiex_RecordForm_bg" draw_type="center" invisible_in_1m="true">
+    </view>
+    <view name="view_gauge" h="264" invisible_in_1m="true">
+      <gauge x="0" y="10" w="100%" h="215" image="uiex_RecordForm_bg" draw_type="center">
         <gauge_pointer name="bind_value:../gauge_sl" x="c:-5" y="47" w="24" h="78%" animate:value="30" image="gauge_pointer"/>
       </gauge>
-      <label x="20" y="612" w="100" h="22" style:normal:text_align_h="left" invisible_in_1m="true" tr_text="sliding here:"/>
-      <slider name="gauge_sl" x="120" y="615" w="-140" h="16" style="square" invisible_in_1m="true" min="-133" max="133" value="30"/>
+      <label x="20" y="242" w="100" h="22" style:normal:text_align_h="left" tr_text="sliding here:"/>
+      <slider min="-133" max="133" name="gauge_sl" x="120" y="245" w="-140" h="16" style="square" value="30"/>
     </view>
   </scroll_view>
-  <scroll_bar_m name="bar" x="r" y="0" w="7" h="100%" max="1000"/>
+  <scroll_bar_m max="1000" name="bar" x="r" y="0" w="7" h="100%"/>
 </list_view>

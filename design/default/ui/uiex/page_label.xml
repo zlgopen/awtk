@@ -20,8 +20,8 @@
     <view name="view_hscroll_lb" h="90">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" w="100%" tr_text="Hscroll Label"/>
       <view h="-32" x="0" y="32" w="400">
-        <hscroll_label name="hlb1" lull="1000" loop="true" yoyo="true" ellipses="true" focusable="true" h="22" style="default" x="20" y="0" w="380" tr_text="To provide users with a powerful, efficient and reliable, easy to use, can easily make cool GUI engine."/>
-        <hscroll_label name="hlb2" focusable="true" only_focus="true" h="22" style="default" x="20" y="32" w="380" tr_text="To provide users with a powerful, efficient and reliable, easy to use, can easily make cool GUI engine."/>
+        <hscroll_label name="hlb1" lull="1000" loop="true" yoyo="true" ellipses="true" focusable="true" h="22" x="20" y="0" w="380" tr_text="To provide users with a powerful, efficient and reliable, easy to use, can easily make cool GUI engine."/>
+        <hscroll_label name="hlb2" focusable="true" only_focus="true" h="22" x="20" y="32" w="380" tr_text="To provide users with a powerful, efficient and reliable, easy to use, can easily make cool GUI engine."/>
       </view>
     </view>
   </scroll_view>

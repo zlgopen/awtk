@@ -26,7 +26,7 @@
       <button name="btn_picture" style="picture" w="24"/>
     </view>
   </scroll_view>
-  <mledit name="mledit" max_lines="100" wrap_word="true" scroll_line="10" h="-38" keyboard="uiex/kb_default" style="default">
+  <mledit name="mledit" max_lines="100" wrap_word="true" scroll_line="10" h="-38" keyboard="uiex/kb_default">
     <line_number name="line_number" x="0" y="0" w="32" h="100%"/>
     <scroll_bar_d name="bar" x="r" y="0" w="16" h="100%" value="0"/>
   </mledit>

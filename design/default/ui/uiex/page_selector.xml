@@ -14,8 +14,8 @@
     </view>
     <view name="view_slide_menu" children_layout="default(r=0,c=1,x=0,y=0,s=0)" h="92" invisible_in_1m="true">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Slide Menu"/>
-      <view h="-22" style="default">
-        <slide_menu style="default" align_v="middle" h="100%" x="0" y="0" w="320">
+      <view h="-22">
+        <slide_menu align_v="middle" h="100%" x="0" y="0" w="320">
           <view children_layout="default(c=1,r=1,x=5,y=5,s=0)">
             <image draw_type="scale_auto" image="app1"/>
           </view>

@@ -61,7 +61,6 @@
 #include "../res/assets/default/inc/images/uiex_arrow_down_p.res"
 #include "../res/assets/default/inc/images/uiex_arrow_up_n.res"
 #include "../res/assets/default/inc/images/uiex_arrow_up_p.res"
-#include "../res/assets/default/inc/images/uiex_big_logo.res"
 #include "../res/assets/default/inc/images/uiex_Boot_loading.res"
 #include "../res/assets/default/inc/images/uiex_button_Empty.res"
 #include "../res/assets/default/inc/images/uiex_button_Export.res"
@@ -80,8 +79,6 @@
 #include "../res/assets/default/inc/images/uiex_combobox_btn_d.res"
 #include "../res/assets/default/inc/images/uiex_combobox_btn_n.res"
 #include "../res/assets/default/inc/images/uiex_combobox_btn_p.res"
-#include "../res/assets/default/inc/images/uiex_Configuration_nor.res"
-#include "../res/assets/default/inc/images/uiex_Configuration_sel.res"
 #include "../res/assets/default/inc/images/uiex_Coverwindow.res"
 #include "../res/assets/default/inc/images/uiex_editor_bgcolor.res"
 #include "../res/assets/default/inc/images/uiex_editor_Importpictures.res"
@@ -108,19 +105,13 @@
 #include "../res/assets/default/inc/images/uiex_radio_d.res"
 #include "../res/assets/default/inc/images/uiex_radio_n.res"
 #include "../res/assets/default/inc/images/uiex_radio_p.res"
-#include "../res/assets/default/inc/images/uiex_send_nor.res"
-#include "../res/assets/default/inc/images/uiex_send_sel.res"
 #include "../res/assets/default/inc/images/uiex_shift.res"
 #include "../res/assets/default/inc/images/uiex_shifton.res"
 #include "../res/assets/default/inc/images/uiex_Sliding_dot.res"
 #include "../res/assets/default/inc/images/uiex_Sliding_Square.res"
 #include "../res/assets/default/inc/images/uiex_switch.res"
-#include "../res/assets/default/inc/images/uiex_takeover_nor.res"
-#include "../res/assets/default/inc/images/uiex_takeover_sel.res"
 #include "../res/assets/default/inc/images/uiex_texteditorhide.res"
 #include "../res/assets/default/inc/images/uiex_texteditor_show.res"
-#include "../res/assets/default/inc/images/uiex_Universal_nor.res"
-#include "../res/assets/default/inc/images/uiex_Universal_sel.res"
 #include "../res/assets/default/inc/images/uiex_Windowclosed_n.res"
 #include "../res/assets/default/inc/images/uiex_Windowclosed_p.res"
 #else
@@ -194,7 +185,6 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_uiex_arrow_down_p);
   assets_manager_add(am, image_uiex_arrow_up_n);
   assets_manager_add(am, image_uiex_arrow_up_p);
-  assets_manager_add(am, image_uiex_big_logo);
   assets_manager_add(am, image_uiex_Boot_loading);
   assets_manager_add(am, image_uiex_button_Empty);
   assets_manager_add(am, image_uiex_button_Export);
@@ -213,8 +203,6 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_uiex_combobox_btn_d);
   assets_manager_add(am, image_uiex_combobox_btn_n);
   assets_manager_add(am, image_uiex_combobox_btn_p);
-  assets_manager_add(am, image_uiex_Configuration_nor);
-  assets_manager_add(am, image_uiex_Configuration_sel);
   assets_manager_add(am, image_uiex_Coverwindow);
   assets_manager_add(am, image_uiex_editor_bgcolor);
   assets_manager_add(am, image_uiex_editor_Importpictures);
@@ -241,19 +229,13 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_uiex_radio_d);
   assets_manager_add(am, image_uiex_radio_n);
   assets_manager_add(am, image_uiex_radio_p);
-  assets_manager_add(am, image_uiex_send_nor);
-  assets_manager_add(am, image_uiex_send_sel);
   assets_manager_add(am, image_uiex_shift);
   assets_manager_add(am, image_uiex_shifton);
   assets_manager_add(am, image_uiex_Sliding_dot);
   assets_manager_add(am, image_uiex_Sliding_Square);
   assets_manager_add(am, image_uiex_switch);
-  assets_manager_add(am, image_uiex_takeover_nor);
-  assets_manager_add(am, image_uiex_takeover_sel);
   assets_manager_add(am, image_uiex_texteditorhide);
   assets_manager_add(am, image_uiex_texteditor_show);
-  assets_manager_add(am, image_uiex_Universal_nor);
-  assets_manager_add(am, image_uiex_Universal_sel);
   assets_manager_add(am, image_uiex_Windowclosed_n);
   assets_manager_add(am, image_uiex_Windowclosed_p);
 #ifdef WITH_VGCANVAS
@@ -325,7 +307,6 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_vtranslate[]);
 #include "../res/assets/dark/inc/images/uiex_arrow_down_p.res"
 #include "../res/assets/dark/inc/images/uiex_arrow_up_n.res"
 #include "../res/assets/dark/inc/images/uiex_arrow_up_p.res"
-#include "../res/assets/dark/inc/images/uiex_big_logo.res"
 #include "../res/assets/dark/inc/images/uiex_button_Empty.res"
 #include "../res/assets/dark/inc/images/uiex_button_Export.res"
 #include "../res/assets/dark/inc/images/uiex_button_Import.res"
@@ -372,19 +353,11 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_vtranslate[]);
 #include "../res/assets/dark/inc/images/uiex_texteditor_show.res"
 extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_Boot_loading[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_check[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_Configuration_nor[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_Configuration_sel[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_Coverwindow[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_loading_repeat_bg[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_send_nor[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_send_sel[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_Sliding_dot[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_Sliding_Square[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_switch[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_takeover_nor[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_takeover_sel[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_Universal_nor[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_Universal_sel[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_Windowclosed_n[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_Windowclosed_p[]);
 #else
@@ -458,7 +431,6 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, image_uiex_arrow_down_p_dark);
   assets_manager_add(am, image_uiex_arrow_up_n_dark);
   assets_manager_add(am, image_uiex_arrow_up_p_dark);
-  assets_manager_add(am, image_uiex_big_logo_dark);
   assets_manager_add(am, image_uiex_button_Empty_dark);
   assets_manager_add(am, image_uiex_button_Export_dark);
   assets_manager_add(am, image_uiex_button_Import_dark);
@@ -505,19 +477,11 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, image_uiex_texteditor_show_dark);
   assets_manager_add(am, image_uiex_Boot_loading);
   assets_manager_add(am, image_uiex_check);
-  assets_manager_add(am, image_uiex_Configuration_nor);
-  assets_manager_add(am, image_uiex_Configuration_sel);
   assets_manager_add(am, image_uiex_Coverwindow);
   assets_manager_add(am, image_uiex_loading_repeat_bg);
-  assets_manager_add(am, image_uiex_send_nor);
-  assets_manager_add(am, image_uiex_send_sel);
   assets_manager_add(am, image_uiex_Sliding_dot);
   assets_manager_add(am, image_uiex_Sliding_Square);
   assets_manager_add(am, image_uiex_switch);
-  assets_manager_add(am, image_uiex_takeover_nor);
-  assets_manager_add(am, image_uiex_takeover_sel);
-  assets_manager_add(am, image_uiex_Universal_nor);
-  assets_manager_add(am, image_uiex_Universal_sel);
   assets_manager_add(am, image_uiex_Windowclosed_n);
   assets_manager_add(am, image_uiex_Windowclosed_p);
 #ifdef WITH_VGCANVAS

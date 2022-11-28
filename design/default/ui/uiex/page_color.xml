@@ -16,13 +16,13 @@
     <view name="view_color_picker" h="570">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" x="0" y="0" w="100%" tr_text="Color Picker"/>
       <color_picker h="-42" value="orange" x="20" y="42" w="-40">
-        <color_component x="0" y="0" w="200" h="200" name="sv" style="default"/>
+        <color_component x="0" y="0" w="200" h="200" name="sv"/>
         <color_component x="210" y="0" w="20" h="200" name="h"/>
         <view name="" x="0" y="210" w="100%" h="72">
           <color_tile x="0" y="0" w="36" h="36" name="new" bg_color="#709918" style:normal:border="left|right|top">
             <label x="r:-46" y="0" w="100%" h="100%" style:normal:text_align_h="left" tr_text="New"/>
           </color_tile>
-          <color_tile x="0" y="36" w="36" h="36" name="old" bg_color="#709918" style="default" style:normal:border="left|right|bottom">
+          <color_tile x="0" y="36" w="36" h="36" name="old" bg_color="#709918" style:normal:border="left|right|bottom">
             <label x="r:-46" y="0" w="100%" h="100%" style:normal:text_align_h="left" tr_text="Current"/>
           </color_tile>
           <edit x="r" y="36" w="120" h="36" name="new" input_type="hex" keyboard="uiex/kb_hex">
