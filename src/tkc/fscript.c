@@ -3246,9 +3246,11 @@ ret_t fscript_set_global_object(tk_object_t* obj) {
   tk_object_t* old_global_obj = s_global_obj;
   return_value_if_fail(obj != s_global_obj, RET_BAD_PARAMS);
 
-  TK_OBJECT_REF(obj);
+  if (obj != NULL) {
+    TK_OBJECT_REF(obj);
+  }
+
   s_global_obj = obj;
-  
   TK_OBJECT_UNREF(old_global_obj);
 
   return RET_OK;
