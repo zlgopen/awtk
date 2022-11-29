@@ -35,6 +35,7 @@ static ret_t spin_box_on_copy(widget_t* widget, widget_t* other) {
   spin_box_t* spin_box_other = SPIN_BOX(other);
   return_value_if_fail(spin_box != NULL && spin_box_other != NULL, RET_BAD_PARAMS);
   spin_box->easy_touch_mode = spin_box_other->easy_touch_mode;
+  spin_box->button_position = tk_str_copy(spin_box->button_position, spin_box_other->button_position);
 
   return edit_on_copy(widget, other);
 }
