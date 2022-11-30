@@ -832,8 +832,13 @@ ret_t widget_set_floating(widget_t* widget, bool_t floating) {
 }
 
 ret_t widget_set_focused_internal(widget_t* widget, bool_t focused) {
+  int32_t stage;
   widget_t* win = widget_get_window(widget);
-  int32_t stage = widget_get_prop_int(win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
+  if (win == NULL) {
+    log_debug("You can not set focus of a widget when window do not find");
+    return RET_FAIL;
+  }
+  stage = widget_get_prop_int(win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (WINDOW_STAGE_SUSPEND == stage) {
@@ -3728,7 +3733,7 @@ ret_t widget_to_local(widget_t* widget, point_t* p) {
   while (iter != NULL) {
     xy_t offset_x = 0;
     xy_t offset_y = 0;
-    if (widget_get_offset(iter, &offset_x, &offset_y) == RET_OK) {
+    if (iter != widget && widget_get_offset(iter, &offset_x, &offset_y) == RET_OK) {
       p->x += offset_x;
       p->y += offset_y;
     }
