@@ -108,6 +108,8 @@ static ret_t label_on_paint_self(widget_t* widget, canvas_t* c) {
     widget_prepare_text_style(widget, c);
 
     label_paint_text(widget, c, widget->text.str, size);
+  } else {
+    widget_paint_helper(widget, c, NULL, NULL);
   }
 
   return RET_OK;
