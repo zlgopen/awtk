@@ -91,7 +91,8 @@ TEST(MLEdit, events) {
 
 TEST(MLEdit, intputing1) {
   pointer_event_t evt;
-  widget_t* w1 = mledit_create(NULL, 10, 20, 30, 40);
+  widget_t* win = window_create(NULL, 0, 0, 0, 0);
+  widget_t* w1 = mledit_create(win, 10, 20, 30, 40);
   pointer_event_init(&evt, EVT_POINTER_DOWN, w1, 0, 0);
   ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_INPUTING, TRUE), FALSE);
 
@@ -117,7 +118,8 @@ TEST(MLEdit, intputing2) {
 
 TEST(MLEdit, intputing3) {
   wheel_event_t evt;
-  widget_t* w1 = mledit_create(NULL, 10, 20, 30, 40);
+  widget_t* win = window_create(NULL, 0, 0, 0, 0);
+  widget_t* w1 = mledit_create(win, 10, 20, 30, 40);
   wheel_event_init(&evt, EVT_WHEEL, w1, 0);
   ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_INPUTING, TRUE), FALSE);
 
