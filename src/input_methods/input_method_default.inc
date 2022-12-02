@@ -462,13 +462,32 @@ static ret_t input_method_default_on_keyboard_close(void* ctx, event_t* e) {
   return RET_REMOVE;
 }
 
+static ret_t input_method_default_remove_timer_close(input_method_t* im) {
+  return_value_if_fail(im != NULL, RET_BAD_PARAMS);
+
+  if (im->timer_close_id != TK_INVALID_ID) {
+    timer_info_t* info = (timer_info_t*)timer_find(im->timer_close_id);
+
+    if (info != NULL) {
+      TKMEM_FREE(info->ctx);
+      info->ctx = NULL;
+    }
+    timer_remove(im->timer_close_id);
+    im->timer_close_id = TK_INVALID_ID;
+  }
+
+  return RET_OK;
+}
+
 static ret_t input_method_default_on_edit_destroy(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(e->target);
   input_method_t* im = (input_method_t*)ctx;
 
   if (im->widget == widget) {
     if (im->keyboard != NULL) {
-      window_close_force(im->keyboard);
+      input_method_default_restore_win_position(im);
+      input_method_default_remove_timer_close(im);
+      window_close(im->keyboard);
       im->keyboard = NULL;
     }
     im->win = NULL;
@@ -486,16 +505,7 @@ static ret_t input_method_default_request(input_method_t* im, widget_t* widget) 
   input_engine_reset_input(im->engine);
   input_method_dispatch_candidates(im, "", 0, 0);
   input_method_default_ensure_suggest_words(im);
-  if (im->timer_close_id != TK_INVALID_ID) {
-    timer_info_t* info = (timer_info_t*)timer_find(im->timer_close_id);
-
-    if (info != NULL) {
-      TKMEM_FREE(info->ctx);
-      info->ctx = NULL;
-    }
-    timer_remove(im->timer_close_id);
-    im->timer_close_id = TK_INVALID_ID;
-  }
+  input_method_default_remove_timer_close(im);
 
   if (widget != NULL) {
     im->widget = widget;
