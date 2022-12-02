@@ -162,7 +162,6 @@ rect_t progress_circle_calc_line_dirty_rect(widget_t* widget, float_t old_value,
   if ((end_angle - start_angle) < (M_PI / 2)) {
     xy_t cx = widget->w / 2;
     xy_t cy = widget->h / 2;
-    int32_t delta = line_width / 2 + 1;
     float_t r = progress_circle_get_radius(widget);
 
     start_p.y = round(r * sin(start_angle));
@@ -171,10 +170,10 @@ rect_t progress_circle_calc_line_dirty_rect(widget_t* widget, float_t old_value,
     end_p.y = round(r * sin(end_angle));
     end_p.x = round(r * cos(end_angle));
 
-    min_x = tk_min(start_p.x, end_p.x) - delta;
-    max_x = tk_max(start_p.x, end_p.x) + delta;
-    min_y = tk_min(start_p.y, end_p.y) - delta;
-    max_y = tk_max(start_p.y, end_p.y) + delta;
+    min_x = tk_min(start_p.x, end_p.x) - line_width;
+    max_x = tk_max(start_p.x, end_p.x) + line_width;
+    min_y = tk_min(start_p.y, end_p.y) - line_width;
+    max_y = tk_max(start_p.y, end_p.y) + line_width;
     if (start_p.x > 0 && end_p.x < 0) {
       /*跨越第1和2象限*/
       max_y = tk_max_int(r, max_y);
