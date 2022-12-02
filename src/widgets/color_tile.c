@@ -181,7 +181,7 @@ widget_t* color_tile_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(color_tile != NULL, NULL);
 
   color_tile_set_bg_color(widget, "#ffffff");
-  color_tile_set_border_color(widget, "#000000");
+  color_tile_set_border_color(widget, "#00000000");
 
   return widget;
 }
