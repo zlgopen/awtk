@@ -51,7 +51,7 @@ static ret_t window_manager_default_create_dialog_highlighter(widget_t* widget, 
 static ret_t window_manager_default_layout_not_system_bar(widget_t* widget, widget_t* window,
                                                           rect_t client_r);
 
-static bool_t window_is_fullscreen(widget_t* widget) {
+bool_t window_is_fullscreen(widget_t* widget) {
   value_t v;
   value_set_bool(&v, FALSE);
   widget_get_prop(widget, WIDGET_PROP_FULLSCREEN, &v);
@@ -218,7 +218,9 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
   canvas_offline_begin_draw(canvas);
   canvas_set_clip_rect(canvas, &r);
   ENSURE(widget_on_paint_background(widget, canvas) == RET_OK);
-  window_manager_paint_system_bar(widget, canvas);
+  if (!window_is_fullscreen(prev_win)) {
+    window_manager_paint_system_bar(widget, canvas);
+  }
   {
     widget_t** children = (widget_t**)(widget->children->elms);
     for (; start <= end; ++start) {

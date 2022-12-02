@@ -82,7 +82,9 @@ widget_t* window_manager_create(void);
 
 #define WINDOW_MANAGER_DEFAULT(widget) ((window_manager_default_t*)(widget))
 
+/* private */
 ret_t window_manager_paint_system_bar(widget_t* widget, canvas_t* c);
+bool_t window_is_fullscreen(widget_t* widget);
 
 END_C_DECLS
 

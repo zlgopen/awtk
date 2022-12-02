@@ -322,8 +322,11 @@ ret_t window_animator_begin_frame(window_animator_t* wa) {
   return_value_if_fail(wa != NULL && wa->vt != NULL, RET_OK);
 
   ENSURE(canvas_begin_frame(wa->canvas, NULL, LCD_DRAW_ANIMATION) == RET_OK);
-  if (!tk_str_eq(wa->vt->type, WINDOW_ANIMATOR_VTRANSLATE)) {
-    window_animator_paint_system_bar(wa);
+
+  if (!window_is_fullscreen(wa->prev_win)) {
+    if (!tk_str_eq(wa->vt->type, WINDOW_ANIMATOR_VTRANSLATE)) {
+      window_animator_paint_system_bar(wa);
+    }
   }
 
   return RET_OK;
@@ -332,8 +335,10 @@ ret_t window_animator_begin_frame(window_animator_t* wa) {
 ret_t window_animator_end_frame(window_animator_t* wa) {
   return_value_if_fail(wa != NULL && wa->vt != NULL, RET_OK);
 
-  if (tk_str_eq(wa->vt->type, WINDOW_ANIMATOR_VTRANSLATE)) {
-    window_animator_paint_system_bar(wa);
+  if (!window_is_fullscreen(wa->prev_win)) {
+    if (tk_str_eq(wa->vt->type, WINDOW_ANIMATOR_VTRANSLATE)) {
+      window_animator_paint_system_bar(wa);
+    }
   }
 
   return canvas_end_frame(wa->canvas);
