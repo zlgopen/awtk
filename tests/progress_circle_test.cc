@@ -118,37 +118,37 @@ TEST(ProgressCircle, dirty_rect) {
   widget_t* w = progress_circle_create(NULL, 10, 20, 300, 400);
 
   r = progress_circle_calc_line_dirty_rect(w, 0, 1);
-  ASSERT_RECT(r, 145, 49, 19, 10);
+  ASSERT_RECT(r, 142, 46, 25, 16);
 
   r = progress_circle_calc_line_dirty_rect(w, 0, 10);
-  ASSERT_RECT(r, 145, 49, 96, 38);
+  ASSERT_RECT(r, 142, 46, 102, 44);
 
   r = progress_circle_calc_line_dirty_rect(w, 10, 11);
-  ASSERT_RECT(r, 231, 77, 17, 16);
+  ASSERT_RECT(r, 228, 74, 23, 22);
 
   r = progress_circle_calc_line_dirty_rect(w, 25, 26);
-  ASSERT_RECT(r, 291, 195, 10, 19);
+  ASSERT_RECT(r, 288, 192, 16, 25);
 
   r = progress_circle_calc_line_dirty_rect(w, 15, 35);
-  ASSERT_RECT(r, 263, 109, 33, 182);
+  ASSERT_RECT(r, 260, 106, 36, 188);
 
   r = progress_circle_calc_line_dirty_rect(w, 35, 36);
-  ASSERT_RECT(r, 257, 281, 16, 17);
+  ASSERT_RECT(r, 254, 278, 22, 23);
 
   r = progress_circle_calc_line_dirty_rect(w, 35, 55);
-  ASSERT_RECT(r, 100, 281, 173, 65);
+  ASSERT_RECT(r, 97, 278, 179, 69);
 
   r = progress_circle_calc_line_dirty_rect(w, 55, 56);
-  ASSERT_RECT(r, 91, 331, 19, 13);
+  ASSERT_RECT(r, 88, 328, 25, 19);
 
   r = progress_circle_calc_line_dirty_rect(w, 65, 85);
-  ASSERT_RECT(r, 4, 109, 33, 182);
+  ASSERT_RECT(r, 4, 106, 36, 188);
 
   r = progress_circle_calc_line_dirty_rect(w, 85, 86);
-  ASSERT_RECT(r, 27, 102, 16, 17);
+  ASSERT_RECT(r, 24, 99, 22, 23);
 
   r = progress_circle_calc_line_dirty_rect(w, 85, 100);
-  ASSERT_RECT(r, 27, 49, 128, 70);
+  ASSERT_RECT(r, 24, 46, 134, 76);
 
   widget_destroy(w);
 }
