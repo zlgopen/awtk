@@ -3154,3 +3154,41 @@ TEST(FScript, id1) {
 
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(FScript, consts) {
+  value_t v;
+  value_t s;
+  tk_object_t* obj = object_default_create();
+
+
+  fscript_eval(obj, "var t = fconsts.PI; t", &v);
+  ASSERT_EQ(value_int(&v), 3);
+  value_reset(&v);
+ 
+  value_set_str(&s, "hello world");
+  fscript_register_const_value("HELLO", &s);
+  fscript_register_const_double("E", 2.718);
+  fscript_register_const_int("FAIL", RET_FAIL);
+  fscript_register_const_int("BAD_PARAMS", RET_BAD_PARAMS);
+  
+  fscript_eval(obj, "var t = fconsts.E; t", &v);
+  ASSERT_EQ(tk_fequal(value_double(&v), 2.718), TRUE);
+  value_reset(&v);
+  
+  fscript_eval(obj, "var t = fconsts.FAIL; t", &v);
+  ASSERT_EQ(value_int(&v), RET_FAIL);
+  value_reset(&v);
+  
+  fscript_eval(obj, "var t = fconsts.BAD_PARAMS; t", &v);
+  ASSERT_EQ(value_int(&v), RET_BAD_PARAMS);
+  value_reset(&v);
+  
+  fscript_eval(obj, "var t = RET_BAD_PARAMS; t", &v);
+  ASSERT_EQ(value_int(&v), RET_BAD_PARAMS);
+  
+  fscript_eval(obj, "var t = fconsts.HELLO; t", &v);
+  ASSERT_STREQ(value_str(&v), "hello world");
+
+  TK_OBJECT_UNREF(obj);
+}
+

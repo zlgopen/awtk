@@ -287,5 +287,7 @@ FACTORY_TABLE_ENTRY("pow10", func_pow10)
 FACTORY_TABLE_END()
 
 ret_t fscript_math_register(void) {
+  fscript_register_const_double("PI", 3.1415926);
+
   return fscript_register_funcs(s_ext_math);
 }

@@ -366,6 +366,36 @@ ret_t fscript_set_global_object(tk_object_t* obj);
 ret_t fscript_register_func(const char* name, fscript_func_t func);
 
 /**
+ * @method fscript_register_const_value
+ * 注册常量。
+ * @param {const char*} name 常量名。
+ * @param {const value_t*} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_register_const_value(const char* name, const value_t* value);
+
+/**
+ * @method fscript_register_const_int
+ * 注册整数常量。
+ * @param {const char*} name 常量名。
+ * @param {int} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_register_const_int(const char* name, int value);
+
+/**
+ * @method fscript_register_const_double
+ * 注册浮点数常量。
+ * @param {const char*} name 常量名。
+ * @param {double} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_register_const_double(const char* name, double value);
+
+/**
  * @method fscript_register_funcs
  * 注册全局自定义函数。
  * @param {const general_factory_table_t*} table 函数表。
@@ -567,6 +597,8 @@ typedef struct _fscript_function_def_t {
    */
   fscript_func_call_t* body;
 } fscript_function_def_t;
+
+#define FSCRIPT_CONSTS_PREFIX "fconsts."
 
 END_C_DECLS
 

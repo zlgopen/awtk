@@ -28,6 +28,8 @@
 #define value_id_index(v) (v)->value.id.index
 #define value_id_suboffset(v) (v)->value.id.suboffset
 
+static tk_object_t* s_global_obj = NULL;
+static tk_object_t* s_consts_obj = NULL;
 static const fscript_hooks_t* s_hooks;
 
 static ret_t fscript_hook_on_init(fscript_t* fscript, const char* code) {
@@ -550,6 +552,15 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
       } else if (*name == '.') {
         value_copy(d, s);
         return RET_OK;
+      }
+
+      if (tk_str_start_with(name, FSCRIPT_CONSTS_PREFIX)) {
+        name += sizeof(FSCRIPT_CONSTS_PREFIX) - 1;
+        if (tk_object_get_prop(s_consts_obj, name, d) == RET_OK) {
+          value_reset(s);
+          value_copy(s, d);
+          return RET_OK;
+        }
       }
 
       if (fscript_get_var(fscript, name, d) != RET_OK) {
@@ -3222,8 +3233,6 @@ static fscript_func_call_t* fscript_func_call_create(fscript_parser_t* parser, c
   return call;
 }
 
-static tk_object_t* s_global_obj = NULL;
-
 ret_t fscript_global_ensure_global_object(void) {
   if (s_global_obj == NULL) {
     tk_object_t* obj = object_default_create_ex(FALSE);
@@ -3259,10 +3268,19 @@ ret_t fscript_set_global_object(tk_object_t* obj) {
 ret_t fscript_global_init(void) {
   fscript_global_ensure_global_object();
 
+  if (s_consts_obj == NULL) {
+    tk_object_t* obj = object_default_create_ex(FALSE);
+    return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
+
+    s_consts_obj = object_locker_create(obj);
+    TK_OBJECT_UNREF(obj);
+  }
+
   return RET_OK;
 }
 
 ret_t fscript_global_deinit(void) {
+  TK_OBJECT_UNREF(s_consts_obj);
   TK_OBJECT_UNREF(s_global_obj);
   general_factory_destroy(s_global_funcs);
   s_global_funcs = NULL;
@@ -3277,6 +3295,27 @@ ret_t fscript_register_funcs(const general_factory_table_t* table) {
   }
 
   return general_factory_register_table(s_global_funcs, table);
+}
+
+ret_t fscript_register_const_value(const char* name, const value_t* value) {
+  return_value_if_fail(name != NULL && value != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(s_consts_obj != NULL, RET_BAD_PARAMS);
+
+  return tk_object_set_prop(s_consts_obj, name, value);
+}
+
+ret_t fscript_register_const_int(const char* name, int value) {
+  return_value_if_fail(name != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(s_consts_obj != NULL, RET_BAD_PARAMS);
+
+  return tk_object_set_prop_int(s_consts_obj, name, value);
+}
+
+ret_t fscript_register_const_double(const char* name, double value) {
+  return_value_if_fail(name != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(s_consts_obj != NULL, RET_BAD_PARAMS);
+
+  return tk_object_set_prop_double(s_consts_obj, name, value);
 }
 
 ret_t fscript_register_func(const char* name, fscript_func_t func) {

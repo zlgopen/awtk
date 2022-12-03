@@ -89,7 +89,7 @@ print("hello", 123)
 如：
 
 ```js
-/* 系统变量：一个AWTK应用程序只有一个 global 对象，在程序初始化时创建，程序退出时销毁 */
+/* 系统变量：一个 AWTK 应用程序只有一个 global 对象，在程序初始化时创建，程序退出时销毁 */
 set(global.a, 123)
 
 /* 全局变量：保存在脚本执行的上下文对象中，通常由外部控制生命周期 */
@@ -101,7 +101,7 @@ set(a, 123)
 如：
 
 ```js
-/* 系统变量：一个AWTK应用程序只有一个 global 对象，在程序初始化时创建，程序退出时销毁 */
+/* 系统变量：一个 AWTK 应用程序只有一个 global 对象，在程序初始化时创建，程序退出时销毁 */
 global.a = 123
 global.b = "abc"
 global.c = true
@@ -257,7 +257,7 @@ if(true, print("a"), print("b"))
 * 语法
 
 ```js
-while (条件) {
+while （条件） {
 }
 ```
 
@@ -281,7 +281,7 @@ while(a < 100) {
 * 语法
 
 ```js
-until(条件) {
+until（条件） {
 }
 ```
 
@@ -303,7 +303,7 @@ until(a >= 100) {
 * 语法
 
 ```js
-for(初始化表达式；结束条件；迭代表达式) {
+for（初始化表达式；结束条件；迭代表达式） {
 }
 ```
 
@@ -322,7 +322,7 @@ for(var a = 0; a < 100; a = a + 1) {
 * 语法
 
 ```js
-for_in(迭代变量, 数组对象) {
+for_in（迭代变量，数组对象） {
 }
 ```
 
@@ -343,7 +343,7 @@ print(sum)
 * 语法
 
 ```js
-repeat(迭代变量, 开始值, 结束值, 增量) {
+repeat（迭代变量，开始值，结束值，增量） {
 }
 ```
 
@@ -370,7 +370,7 @@ repeat(i, 20, times, -2) {
 * 语法
 
 ```js
-repeat_times(重复次数) {
+repeat_times（重复次数） {
 }
 ```
 
@@ -1573,12 +1573,78 @@ runFScript 的第二个参数可以指定运行次数，方便测量某个函数
 | RET\_ITEMS\_CHANGED  | 集合数目变化。         |
 | RET\_BAD\_PARAMS     | 无效参数。             |
 | RET\_TIMEOUT         | 超时。                 |
-| RET\_CRC             | CRC错误。              |
-| RET\_IO              | IO错误。               |
+| RET\_CRC             | CRC 错误。              |
+| RET\_IO              | IO 错误。               |
 | RET\_EOS             | End of Stream          |
 | RET\_NOT\_MODIFIED   | 没有改变。             |
+
+示例：
+
+```js
+return RET_OK;
+```
   
-## 8. 扩展模块
+## 8. 注册常量
+
+fscript 本身只是一个胶水语言，它负责把各个原生扩展模块组合起来。扩展模块中往往有一些常量，有些常量是了方便记忆比（如 PI)，有的常量是降低变化（如 TK\_NAME\_LEN) 带来的影响，有的常量用于表示特定的意义（比如一些枚举）。为了保持这些常量在 fscript 和原生代码中的一致性，和函数一样，fscript 提供了一种注册机制，让原生模块可以注册常量，这些常量在 fscript 中就可以访问了。
+
+* 注册常量
+
+```c
+/**
+ * @method fscript_register_const_value
+ * 注册常量。
+ * @param {const char*} name 常量名。
+ * @param {const value_t*} value 数据。
+ *
+ * @return {ret_t} 返回 RET_OK 表示成功，否则表示失败。
+ */
+ret_t fscript_register_const_value(const char* name, const value_t* value);
+```
+
+* 注册整数常量(只是为了使用方便而提供的包装函数)
+
+```c
+/**
+ * @method fscript_register_const_int
+ * 注册整数常量。
+ * @param {const char*} name 常量名。
+ * @param {int} value 数据。
+ *
+ * @return {ret_t} 返回 RET_OK 表示成功，否则表示失败。
+ */
+ret_t fscript_register_const_int(const char* name, int value);
+```
+
+* 注册浮点数常量(只是为了使用方便而提供的包装函数)
+
+```c
+/**
+ * @method fscript_register_const_double
+ * 注册浮点数常量。
+ * @param {const char*} name 常量名。
+ * @param {double} value 数据。
+ *
+ * @return {ret_t} 返回 RET_OK 表示成功，否则表示失败。
+ */
+ret_t fscript_register_const_double(const char* name, double value);
+```
+
+示例：
+
+```c
+fscript_register_const_double("PI", 3.1415926);
+```
+
+* 在 fscript 中引用常量。引用常量时需要加 fconsts. 前缀。
+
+示例：
+
+```js
+print(fconsts.PI)
+```
+
+## 9. 扩展模块
 
 * [字符串扩展模块](fscript_str.md)
 * [位操作扩展模块](fscript_bits.md)
@@ -1602,7 +1668,7 @@ runFScript 的第二个参数可以指定运行次数，方便测量某个函数
 * [单一类型的动态数组扩展模块](fscript_typed_array.md)
 * [写缓冲区扩展模块](fscript_wbuffer.md)
 * [读缓冲区扩展模块](fscript_rbuffer.md)
-* [module扩展模块](fscript_module.md)
+* [module 扩展模块](fscript_module.md)
 
 ## 9. 更多示例
 
