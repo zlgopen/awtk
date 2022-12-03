@@ -4079,7 +4079,8 @@ bool_t widget_is_point_in(widget_t* widget, xy_t x, xy_t y, bool_t is_local) {
   if (widget->vt->is_point_in != NULL) {
     return widget->vt->is_point_in(widget, p.x, p.y);
   } else {
-    return (p.x >= 0 && p.y >= 0 && p.x < widget->w && p.y < widget->h);
+    rect_t r = rect_init(0, 0, widget->w, widget->h);
+    return rect_contains(&r, p.x, p.y);
   }
 }
 
