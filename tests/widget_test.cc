@@ -6,6 +6,7 @@
 #include "widgets/label.h"
 #include "widgets/group_box.h"
 #include "widgets/button_group.h"
+#include "ext_widgets/scroll_view/scroll_view.h"
 #include "base/window.h"
 #include "widgets/pages.h"
 #include "base/style_const.h"
@@ -227,6 +228,15 @@ TEST(Widget, children) {
   ASSERT_EQ(widget_lookup(w, "c5", TRUE), c5);
   ASSERT_EQ(widget_lookup(w, "c6", TRUE), c6);
 
+  widget_destroy(w);
+}
+
+TEST(Widget, widget_find_target) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* c1 = button_create(w, 0, 0, 10, 10);
+  widget_t* c2 = button_create(w, 0, 0, 10, 10);
+  widget_t* c3 = button_create(w, 0, 0, 10, 10);
+
   widget_move_resize(c1, 10, 10, 20, 20);
   ASSERT_EQ(widget_find_target(w, 11, 11), c1);
 
@@ -235,6 +245,28 @@ TEST(Widget, children) {
 
   widget_move_resize(c3, 150, 100, 20, 20);
   ASSERT_EQ(widget_find_target(w, 151, 100), c3);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, widget_find_target_offset) {
+  widget_t* w = window_create(NULL, 0, 0, 100, 36);
+  widget_t* sv = scroll_view_create(w, 0, 0, 100, 36);
+  widget_t* btn1 = button_create(sv, 0, 0, 100, 36);
+  widget_t* btn2 = button_create(sv, 100, 0, 100, 36);
+  widget_t* btn3 = button_create(sv, 0, 36, 100, 36);
+  widget_t* btn4 = button_create(sv, 100, 36, 100, 36);
+
+  ASSERT_EQ(widget_find_target(sv, 50, 18), btn1);
+
+  scroll_view_set_offset(sv, 100, 0);
+  ASSERT_EQ(widget_find_target(sv, 50, 18), btn2);
+
+  scroll_view_set_offset(sv, 0, 36);
+  ASSERT_EQ(widget_find_target(sv, 50, 18), btn3);
+
+  scroll_view_set_offset(sv, 100, 36);
+  ASSERT_EQ(widget_find_target(sv, 50, 18), btn4);
 
   widget_destroy(w);
 }
