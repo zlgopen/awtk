@@ -617,11 +617,7 @@ ret_t combo_box_combobox_popup_calc_position(widget_t* widget, wh_t popup_w, wh_
   widget_to_screen(widget, p);
 
   parent = widget->parent;
-  if (popup_w <= parent->w) {
-    if ((p->x + popup_w) > parent->w) {
-      p->x = parent->w - popup_w;
-    }
-  } else if ((p->x + popup_w) > win->w) {
+  if ((p->x + popup_w) >= win->w) {
     p->x = win->w - popup_w;
   }
 
