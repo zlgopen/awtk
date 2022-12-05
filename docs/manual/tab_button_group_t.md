@@ -39,6 +39,7 @@ widget\_t的函数均适用于tab\_button\_group\_t控件。
 | -------- | ------------ | 
 | <a href="#tab_button_group_t_tab_button_group_cast">tab\_button\_group\_cast</a> | 转换tab_button_group对象(供脚本语言使用)。 |
 | <a href="#tab_button_group_t_tab_button_group_create">tab\_button\_group\_create</a> | 创建tab_button_group对象 |
+| <a href="#tab_button_group_t_tab_button_group_get_widget_vtable">tab\_button\_group\_get\_widget\_vtable</a> | 获取 tab_button_group 虚表。 |
 | <a href="#tab_button_group_t_tab_button_group_set_compact">tab\_button\_group\_set\_compact</a> | 设置compact。 |
 | <a href="#tab_button_group_t_tab_button_group_set_scrollable">tab\_button\_group\_set\_scrollable</a> | 设置scrollable。 |
 ### 属性
@@ -91,6 +92,24 @@ widget_t* tab_button_group_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### tab\_button\_group\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tab_button_group_t_tab_button_group_get_widget_vtable">获取 tab_button_group 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* tab_button_group_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 tab\_button\_group 虚表。 |
 #### tab\_button\_group\_set\_compact 函数
 -----------------------
 

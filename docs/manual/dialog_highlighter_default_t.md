@@ -19,6 +19,7 @@
 | <a href="#dialog_highlighter_default_t_end_alpha">end\_alpha</a> | uint8\_t | 结束alpha，打开对话框的动画结束(直到对话框被关闭)时的alpha值。 |
 | <a href="#dialog_highlighter_default_t_start_alpha">start\_alpha</a> | uint8\_t | 起始alpha，打开对话框的动画开始时的alpha值。 |
 | <a href="#dialog_highlighter_default_t_system_bar_alpha">system\_bar\_alpha</a> | uint8\_t | 由于在没有过度动画的情况下，截图中已经包括黑色色块，为了让 system_bar 也同步高亮部分的色块透明。 |
+| <a href="#dialog_highlighter_default_t_update_background">update\_background</a> | bool\_t | 是否刷新底层窗口的截图。 |
 #### dialog\_highlighter\_default\_create 函数
 -----------------------
 
@@ -29,7 +30,7 @@
 * 函数原型：
 
 ```
-dialog_highlighter_t* dialog_highlighter_default_create (object_t* args);
+dialog_highlighter_t* dialog_highlighter_default_create (tk_object_t* args);
 ```
 
 * 参数说明：
@@ -37,7 +38,7 @@ dialog_highlighter_t* dialog_highlighter_default_create (object_t* args);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | dialog\_highlighter\_t* | 返回对话框高亮策略对象。 |
-| args | object\_t* | 参数。 |
+| args | tk\_object\_t* | 参数。 |
 #### end\_alpha 属性
 -----------------------
 > <p id="dialog_highlighter_default_t_end_alpha">结束alpha，打开对话框的动画结束(直到对话框被关闭)时的alpha值。
@@ -55,4 +56,10 @@ dialog_highlighter_t* dialog_highlighter_default_create (object_t* args);
 > <p id="dialog_highlighter_default_t_system_bar_alpha">由于在没有过度动画的情况下，截图中已经包括黑色色块，为了让 system_bar 也同步高亮部分的色块透明。
 
 * 类型：uint8\_t
+
+#### update\_background 属性
+-----------------------
+> <p id="dialog_highlighter_default_t_update_background">是否刷新底层窗口的截图。
+
+* 类型：bool\_t
 

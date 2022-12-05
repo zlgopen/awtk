@@ -20,6 +20,7 @@
 | <a href="#rect_t_rect_scale">rect\_scale</a> | 缩放rect对象。 |
 | <a href="#rect_t_rect_set">rect\_set</a> | 设置rect对象的xywh。 |
 | <a href="#rect_t_rect_to_rectf">rect\_to\_rectf</a> | rect 类型转换到 rectf 类型。 |
+| <a href="#rect_t_rectf_fix">rectf\_fix</a> | 确保rectf在指定的大小范围内。 |
 | <a href="#rect_t_rectf_scale">rectf\_scale</a> | 缩放rectf对象。 |
 ### 属性
 <p id="rect_t_properties">
@@ -301,6 +302,25 @@ rectf_t rect_to_rectf (const rect_t* r1);
 | -------- | ----- | --------- |
 | 返回值 | rectf\_t | 返回 rectf\_t 对象。 |
 | r1 | const rect\_t* | rect 对象。 |
+#### rectf\_fix 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rect_t_rectf_fix">确保rectf在指定的大小范围内。
+
+* 函数原型：
+
+```
+rectf_t rectf_fix (rectf_t* r);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | rectf\_t | 返回修复之后的rect对象。 |
+| r | rectf\_t* | rectf对象。 |
 #### rectf\_scale 函数
 -----------------------
 

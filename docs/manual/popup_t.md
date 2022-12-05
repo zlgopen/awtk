@@ -56,6 +56,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | -------- | ------------ | 
 | <a href="#popup_t_popup_cast">popup\_cast</a> | 转换为popup对象(供脚本语言使用)。 |
 | <a href="#popup_t_popup_create">popup\_create</a> | 创建popup对象。 |
+| <a href="#popup_t_popup_get_widget_vtable">popup\_get\_widget\_vtable</a> | 获取 popup 虚表。 |
 | <a href="#popup_t_popup_set_close_when_click">popup\_set\_close\_when\_click</a> | 设置点击时是否关闭窗口。 |
 | <a href="#popup_t_popup_set_close_when_click_outside">popup\_set\_close\_when\_click\_outside</a> | 设置点击窗口外部时是否关闭窗口。 |
 | <a href="#popup_t_popup_set_close_when_timeout">popup\_set\_close\_when\_timeout</a> | 设置超时关闭时间(ms)。 |
@@ -109,6 +110,24 @@ widget_t* popup_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### popup\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="popup_t_popup_get_widget_vtable">获取 popup 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* popup_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 popup 虚表。 |
 #### popup\_set\_close\_when\_click 函数
 -----------------------
 

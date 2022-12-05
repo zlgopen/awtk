@@ -81,6 +81,9 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 #### button 属性
 -----------------------
 > <p id="pointer_event_t_button">button。
+在不同的平台，该属性会发生变化，
+PC ：左键为 1，中键为 2，右键为 3
+嵌入式：默认为 1
 
 * 类型：uint8\_t
 

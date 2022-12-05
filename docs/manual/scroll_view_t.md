@@ -42,12 +42,14 @@ widget_t* scroll_view = scroll_view_create(win, 0, 0, 0, 0);
 | -------- | ------------ | 
 | <a href="#scroll_view_t_scroll_view_cast">scroll\_view\_cast</a> | 转换为scroll_view对象(供脚本语言使用)。 |
 | <a href="#scroll_view_t_scroll_view_create">scroll\_view\_create</a> | 创建scroll_view对象 |
+| <a href="#scroll_view_t_scroll_view_get_widget_vtable">scroll\_view\_get\_widget\_vtable</a> | 获取 scroll_view 虚表。 |
 | <a href="#scroll_view_t_scroll_view_scroll_delta_to">scroll\_view\_scroll\_delta\_to</a> | 滚动到指定的偏移量。 |
 | <a href="#scroll_view_t_scroll_view_scroll_to">scroll\_view\_scroll\_to</a> | 滚动到指定的偏移量。 |
 | <a href="#scroll_view_t_scroll_view_set_move_to_page">scroll\_view\_set\_move\_to\_page</a> | 设置滚动时是否每次翻一页 |
 | <a href="#scroll_view_t_scroll_view_set_offset">scroll\_view\_set\_offset</a> | 设置偏移量。 |
 | <a href="#scroll_view_t_scroll_view_set_recursive">scroll\_view\_set\_recursive</a> | 设置是否递归查找全部子控件。 |
 | <a href="#scroll_view_t_scroll_view_set_recursive_only">scroll\_view\_set\_recursive\_only</a> | 设置是否递归查找全部子控件。(不触发repaint和relayout)。 |
+| <a href="#scroll_view_t_scroll_view_set_slide_limit_ratio">scroll\_view\_set\_slide\_limit\_ratio</a> | 设置滑动到极限时可继续滑动区域的占比。 |
 | <a href="#scroll_view_t_scroll_view_set_snap_to_page">scroll\_view\_set\_snap\_to\_page</a> | 设置滚动时offset是否按页面对齐。 |
 | <a href="#scroll_view_t_scroll_view_set_speed_scale">scroll\_view\_set\_speed\_scale</a> | 设置偏移速度比例。 |
 | <a href="#scroll_view_t_scroll_view_set_virtual_h">scroll\_view\_set\_virtual\_h</a> | 设置虚拟高度。 |
@@ -61,6 +63,7 @@ widget_t* scroll_view = scroll_view_create(win, 0, 0, 0, 0);
 | -------- | ----- | ------------ | 
 | <a href="#scroll_view_t_move_to_page">move\_to\_page</a> | bool\_t | 是否每次翻一页（当 move_to_page 为ture 的时候才有效果，主要用于区分一次翻一页还是一次翻多页）。 |
 | <a href="#scroll_view_t_recursive">recursive</a> | bool\_t | 是否递归查找全部子控件。 |
+| <a href="#scroll_view_t_slide_limit_ratio">slide\_limit\_ratio</a> | float\_t | 滑动到极限时可继续滑动区域的占比。 |
 | <a href="#scroll_view_t_snap_to_page">snap\_to\_page</a> | bool\_t | 滚动时offset是否按页面对齐。 |
 | <a href="#scroll_view_t_virtual_h">virtual\_h</a> | wh\_t | 虚拟高度。 |
 | <a href="#scroll_view_t_virtual_w">virtual\_w</a> | wh\_t | 虚拟宽度。 |
@@ -79,6 +82,7 @@ widget_t* scroll_view = scroll_view_create(win, 0, 0, 0, 0);
 | EVT\_SCROLL\_END | event\_t | 结束滚动事件。 |
 | EVT\_SCROLL | event\_t | 滚动事件。 |
 | EVT\_PAGE\_CHANGED | event\_t | 页面改变事件。 |
+| EVT\_PAGE\_CHANGING | event\_t | 页面正在改变。 |
 #### scroll\_view\_cast 函数
 -----------------------
 
@@ -121,6 +125,24 @@ widget_t* scroll_view_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### scroll\_view\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="scroll_view_t_scroll_view_get_widget_vtable">获取 scroll_view 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* scroll_view_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 scroll\_view 虚表。 |
 #### scroll\_view\_scroll\_delta\_to 函数
 -----------------------
 
@@ -247,6 +269,26 @@ ret_t scroll_view_set_recursive_only (widget_t* widget, bool_t recursive);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | recursive | bool\_t | 是否递归查找全部子控件。 |
+#### scroll\_view\_set\_slide\_limit\_ratio 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="scroll_view_t_scroll_view_set_slide_limit_ratio">设置滑动到极限时可继续滑动区域的占比。
+
+* 函数原型：
+
+```
+ret_t scroll_view_set_slide_limit_ratio (widget_t* widget, float_t slide_limit_ratio);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| slide\_limit\_ratio | float\_t | 滑动到极限时可继续滑动区域的占比。 |
 #### scroll\_view\_set\_snap\_to\_page 函数
 -----------------------
 
@@ -389,6 +431,22 @@ ret_t scroll_view_set_yslidable (widget_t* widget, bool_t yslidable);
 > <p id="scroll_view_t_recursive">是否递归查找全部子控件。
 
 * 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### slide\_limit\_ratio 属性
+-----------------------
+> <p id="scroll_view_t_slide_limit_ratio">滑动到极限时可继续滑动区域的占比。
+
+* 类型：float\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

@@ -109,6 +109,22 @@ demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/combo_box.c)
 </style>
 </popup>
 ```
+* 3.combobox的下拉框中的列表项的样式，可以设置combo_box_item的style来改变。
+
+```xml
+<combo_box_item>
+<style name="default" icon_at="left" text_color="black" bg_color="#f0f0f0">
+<normal  icon="empty"/>
+<focused icon="empty" bg_color="#1296db" text_color="gold" />
+<pressed icon="empty" bg_color="#1296db" text_color="white" />
+<over    icon="empty" bg_color="#1296db" text_color="white" />
+<normal_of_checked  icon="check"/>
+<focused_of_checked  icon="check" bg_color="#1296db" text_color="gold"/>
+<pressed_of_checked icon="check" bg_color="#1296db" text_color="white" />
+<over_of_checked    icon="check" bg_color="#1296db" text_color="white" />
+</style>
+</combo_box_item>
+```
 
 > 更多用法请参考：[theme
 default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L422)
@@ -123,8 +139,11 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#combo_box_t_combo_box_count_options">combo\_box\_count\_options</a> | 获取选项个数。 |
 | <a href="#combo_box_t_combo_box_create">combo\_box\_create</a> | 创建combo_box对象 |
 | <a href="#combo_box_t_combo_box_get_option">combo\_box\_get\_option</a> | 获取第index个选项。 |
-| <a href="#combo_box_t_combo_box_get_text">combo\_box\_get\_text</a> | 获取combo_box的文本。 |
+| <a href="#combo_box_t_combo_box_get_text">combo\_box\_get\_text</a> | 获取combo_box的文本(可能是翻译后的文本)。 |
+| <a href="#combo_box_t_combo_box_get_text_of_selected">combo\_box\_get\_text\_of\_selected</a> | 获取combo_box当前选中项目的文本(原生非翻译的文本)。 |
 | <a href="#combo_box_t_combo_box_get_value">combo\_box\_get\_value</a> | 获取combo_box的值。 |
+| <a href="#combo_box_t_combo_box_get_widget_vtable">combo\_box\_get\_widget\_vtable</a> | 获取 combo_box 虚表。 |
+| <a href="#combo_box_t_combo_box_has_option_text">combo\_box\_has\_option\_text</a> | 检查选项中是否存在指定的文本。 |
 | <a href="#combo_box_t_combo_box_remove_option">combo\_box\_remove\_option</a> | 删除选项。 |
 | <a href="#combo_box_t_combo_box_reset_options">combo\_box\_reset\_options</a> | 重置所有选项。 |
 | <a href="#combo_box_t_combo_box_set_custom_open_popup">combo\_box\_set\_custom\_open\_popup</a> | 设置自定义的打开弹出窗口的函数。 |
@@ -133,6 +152,8 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#combo_box_t_combo_box_set_open_window">combo\_box\_set\_open\_window</a> | 点击按钮时可以打开popup窗口，本函数可设置窗口的名称。 |
 | <a href="#combo_box_t_combo_box_set_options">combo\_box\_set\_options</a> | 设置选项。 |
 | <a href="#combo_box_t_combo_box_set_selected_index">combo\_box\_set\_selected\_index</a> | 设置第index个选项为当前选中的选项。 |
+| <a href="#combo_box_t_combo_box_set_selected_index_by_text">combo\_box\_set\_selected\_index\_by\_text</a> | 根据文本设置当前选中的选项。 |
+| <a href="#combo_box_t_combo_box_set_theme_of_popup">combo\_box\_set\_theme\_of\_popup</a> | 设置弹出窗口的主题。 |
 | <a href="#combo_box_t_combo_box_set_value">combo\_box\_set\_value</a> | 设置值。 |
 ### 属性
 <p id="combo_box_t_properties">
@@ -144,6 +165,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#combo_box_t_open_window">open\_window</a> | char* | 为点击按钮时，要打开窗口的名称。 |
 | <a href="#combo_box_t_options">options</a> | char* | 设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。 |
 | <a href="#combo_box_t_selected_index">selected\_index</a> | int32\_t | 当前选中的选项。 |
+| <a href="#combo_box_t_theme_of_popup">theme\_of\_popup</a> | char* | 弹出窗口的主题(对应的style文件必须存在)，方便为不同combo box的弹出窗口指定不同的样式。 |
 | <a href="#combo_box_t_value">value</a> | int32\_t | 值。 |
 ### 事件
 <p id="combo_box_t_events">
@@ -259,12 +281,31 @@ combo_box_option_t* combo_box_get_option (widget_t* widget, uint32_t index);
 
 * 函数功能：
 
-> <p id="combo_box_t_combo_box_get_text">获取combo_box的文本。
+> <p id="combo_box_t_combo_box_get_text">获取combo_box的文本(可能是翻译后的文本)。
 
 * 函数原型：
 
 ```
 const char* combo_box_get_text (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回文本。 |
+| widget | widget\_t* | combo\_box对象。 |
+#### combo\_box\_get\_text\_of\_selected 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="combo_box_t_combo_box_get_text_of_selected">获取combo_box当前选中项目的文本(原生非翻译的文本)。
+
+* 函数原型：
+
+```
+const char* combo_box_get_text_of_selected (widget_t* widget);
 ```
 
 * 参数说明：
@@ -292,6 +333,44 @@ int32_t combo_box_get_value (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回值。 |
 | widget | widget\_t* | combo\_box对象。 |
+#### combo\_box\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="combo_box_t_combo_box_get_widget_vtable">获取 combo_box 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* combo_box_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 combo\_box 虚表。 |
+#### combo\_box\_has\_option\_text 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="combo_box_t_combo_box_has_option_text">检查选项中是否存在指定的文本。
+
+* 函数原型：
+
+```
+bool_t combo_box_has_option_text (widget_t* widget, const char* text);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示存在，否则表示不存在。 |
+| widget | widget\_t* | combo\_box对象。 |
+| text | const char* | option text |
 #### combo\_box\_remove\_option 函数
 -----------------------
 
@@ -452,6 +531,46 @@ ret_t combo_box_set_selected_index (widget_t* widget, uint32_t index);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | combo\_box对象。 |
 | index | uint32\_t | 选项的索引。 |
+#### combo\_box\_set\_selected\_index\_by\_text 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="combo_box_t_combo_box_set_selected_index_by_text">根据文本设置当前选中的选项。
+
+* 函数原型：
+
+```
+ret_t combo_box_set_selected_index_by_text (widget_t* widget, const char* text);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | combo\_box对象。 |
+| text | const char* | 原生(非翻译的文本)。 |
+#### combo\_box\_set\_theme\_of\_popup 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="combo_box_t_combo_box_set_theme_of_popup">设置弹出窗口的主题。
+
+* 函数原型：
+
+```
+ret_t combo_box_set_theme_of_popup (widget_t* widget, const char* theme_of_popup);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | combo\_box对象。 |
+| theme\_of\_popup | const char* | 弹出的窗口主题。 |
 #### combo\_box\_set\_value 函数
 -----------------------
 
@@ -523,6 +642,9 @@ ret_t combo_box_set_value (widget_t* widget, int32_t value);
 #### options 属性
 -----------------------
 > <p id="combo_box_t_options">设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。
+> 如果数据本身中有英文冒号(:)和英文分号(;)，请用16进制转义。
+> * 英文冒号(:)写为\\x3a
+> * 英文冒号(;)写为\\x3b
 
 * 类型：char*
 
@@ -541,6 +663,22 @@ ret_t combo_box_set_value (widget_t* widget, int32_t value);
 > <p id="combo_box_t_selected_index">当前选中的选项。
 
 * 类型：int32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### theme\_of\_popup 属性
+-----------------------
+> <p id="combo_box_t_theme_of_popup">弹出窗口的主题(对应的style文件必须存在)，方便为不同combo box的弹出窗口指定不同的样式。
+
+* 类型：char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

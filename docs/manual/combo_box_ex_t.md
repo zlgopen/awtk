@@ -2,7 +2,10 @@
 ### 概述
 ![image](images/combo_box_ex_t_0.png)
 
-可滚动的combo_box控件。
+扩展combo_box控件。支持以下功能：
+* 支持滚动。项目比较多时显示滚动条。
+* 自动调整弹出窗口的宽度。根据最长文本自动调整弹出窗口的宽度。
+* 支持分组显示。如果item的文本以"seperator."开头，视为一个分组开始，其后的文本为分组的标题。比如: "seperator.basic"，会创建一个basic为标题的分组。
 ----------------------------------
 ### 函数
 <p id="combo_box_ex_t_methods">

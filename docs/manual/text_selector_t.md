@@ -52,11 +52,14 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L4
 | <a href="#text_selector_t_text_selector_get_option">text\_selector\_get\_option</a> | 获取第index个选项。 |
 | <a href="#text_selector_t_text_selector_get_text">text\_selector\_get\_text</a> | 获取text_selector的文本。 |
 | <a href="#text_selector_t_text_selector_get_value">text\_selector\_get\_value</a> | 获取text_selector的值。 |
+| <a href="#text_selector_t_text_selector_get_widget_vtable">text\_selector\_get\_widget\_vtable</a> | 获取 text_selector 虚表。 |
 | <a href="#text_selector_t_text_selector_reset_options">text\_selector\_reset\_options</a> | 重置所有选项。 |
 | <a href="#text_selector_t_text_selector_set_animating_time">text\_selector\_set\_animating\_time</a> | 设置滚动动画播放时间。 |
 | <a href="#text_selector_t_text_selector_set_enable_value_animator">text\_selector\_set\_enable\_value\_animator</a> | 设置是否修改值时启用动画。 |
 | <a href="#text_selector_t_text_selector_set_localize_options">text\_selector\_set\_localize\_options</a> | 设置是否本地化(翻译)选项。 |
 | <a href="#text_selector_t_text_selector_set_loop_options">text\_selector\_set\_loop\_options</a> | 设置是否循环选项。 |
+| <a href="#text_selector_t_text_selector_set_mask_area_scale">text\_selector\_set\_mask\_area\_scale</a> | 设置绘制蒙版的区域占比（范围0~1）。 |
+| <a href="#text_selector_t_text_selector_set_mask_easing">text\_selector\_set\_mask\_easing</a> | 设置绘制蒙版的变化趋势。 |
 | <a href="#text_selector_t_text_selector_set_options">text\_selector\_set\_options</a> | 设置选项。 |
 | <a href="#text_selector_t_text_selector_set_range_options">text\_selector\_set\_range\_options</a> | 设置一系列的整数选项。 |
 | <a href="#text_selector_t_text_selector_set_range_options_ex">text\_selector\_set\_range\_options\_ex</a> | 设置一系列的整数选项。 |
@@ -74,7 +77,9 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L4
 | <a href="#text_selector_t_enable_value_animator">enable\_value\_animator</a> | bool\_t | 是否修改值时启用动画。 |
 | <a href="#text_selector_t_localize_options">localize\_options</a> | bool\_t | 是否本地化(翻译)选项(缺省为FALSE)。 |
 | <a href="#text_selector_t_loop_options">loop\_options</a> | bool\_t | 是否循环选项(缺省为FALSE)。 |
-| <a href="#text_selector_t_options">options</a> | char* | 设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。 |
+| <a href="#text_selector_t_mask_area_scale">mask\_area\_scale</a> | float\_t | 绘制蒙版的区域占比（范围0~1）。 |
+| <a href="#text_selector_t_mask_easing">mask\_easing</a> | easing\_type\_t | 绘制蒙版的变化趋势。 |
+| <a href="#text_selector_t_options">options</a> | char* | 设置可选项(英文冒号(:)分隔值和文本，英文分号(;)分隔选项，如:1:red;2:green;3:blue)。 |
 | <a href="#text_selector_t_selected_index">selected\_index</a> | int32\_t | 当前选中的选项。 |
 | <a href="#text_selector_t_visible_nr">visible\_nr</a> | uint32\_t | 可见的选项数量(只能是1或者3或者5，缺省为5)。 |
 | <a href="#text_selector_t_yspeed_scale">yspeed\_scale</a> | float\_t | y偏移速度比例。 |
@@ -225,6 +230,24 @@ int32_t text_selector_get_value (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回值。 |
 | widget | widget\_t* | text\_selector对象。 |
+#### text\_selector\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_get_widget_vtable">获取 text_selector 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* text_selector_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 text\_selector 虚表。 |
 #### text\_selector\_reset\_options 函数
 -----------------------
 
@@ -324,6 +347,46 @@ ret_t text_selector_set_loop_options (widget_t* widget, bool_t loop_options);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | text\_selector对象。 |
 | loop\_options | bool\_t | 是否循环选项。 |
+#### text\_selector\_set\_mask\_area\_scale 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_set_mask_area_scale">设置绘制蒙版的区域占比（范围0~1）。
+
+* 函数原型：
+
+```
+ret_t text_selector_set_mask_area_scale (widget_t* widget, float_t mask_area_scale);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| mask\_area\_scale | float\_t | 绘制蒙版的区域占比（范围0~1）。 |
+#### text\_selector\_set\_mask\_easing 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_set_mask_easing">设置绘制蒙版的变化趋势。
+
+* 函数原型：
+
+```
+ret_t text_selector_set_mask_easing (widget_t* widget, easing_type_t mask_easing);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| mask\_easing | easing\_type\_t | 绘制蒙版的变化趋势。 |
 #### text\_selector\_set\_options 函数
 -----------------------
 
@@ -553,11 +616,47 @@ ret_t text_selector_set_yspeed_scale (widget_t* widget, float_t yspeed_scale);
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 | 可通过widget\_set\_prop修改 | 是 |
+#### mask\_area\_scale 属性
+-----------------------
+> <p id="text_selector_t_mask_area_scale">绘制蒙版的区域占比（范围0~1）。
+
+* 类型：float\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### mask\_easing 属性
+-----------------------
+> <p id="text_selector_t_mask_easing">绘制蒙版的变化趋势。
+
+* 类型：easing\_type\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### options 属性
 -----------------------
-> <p id="text_selector_t_options">设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。
-对于数值选项，也可以指定一个范围，用『-』分隔起始值、结束值和格式。
+> <p id="text_selector_t_options">设置可选项(英文冒号(:)分隔值和文本，英文分号(;)分隔选项，如:1:red;2:green;3:blue)。
+对于数值选项，也可以指定一个范围，用英文负号(-)分隔起始值、结束值和格式。
 如："1-7-%02d"表示1到7，格式为『02d』，格式为可选，缺省为『%d』。
+> 如果数据本身中有英文冒号(:)、英文分号(;)和英文负号(-)。请用16进制转义。
+> * 英文冒号(:)写为\\x3a
+> * 英文冒号(;)写为\\x3b
+> * 英文冒号(-)写为\\x2d
 
 * 类型：char*
 

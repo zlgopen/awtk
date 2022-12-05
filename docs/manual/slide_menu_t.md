@@ -70,8 +70,12 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L4
 | -------- | ------------ | 
 | <a href="#slide_menu_t_slide_menu_cast">slide\_menu\_cast</a> | 转换slide_menu对象(供脚本语言使用)。 |
 | <a href="#slide_menu_t_slide_menu_create">slide\_menu\_create</a> | 创建slide_menu对象 |
+| <a href="#slide_menu_t_slide_menu_get_widget_vtable">slide\_menu\_get\_widget\_vtable</a> | 获取 slide_menu 虚表。 |
+| <a href="#slide_menu_t_slide_menu_scroll_to_next">slide\_menu\_scroll\_to\_next</a> | 切换至下一项。 |
+| <a href="#slide_menu_t_slide_menu_scroll_to_prev">slide\_menu\_scroll\_to\_prev</a> | 切换至上一项。 |
 | <a href="#slide_menu_t_slide_menu_set_align_v">slide\_menu\_set\_align\_v</a> | 设置垂直对齐方式。 |
 | <a href="#slide_menu_t_slide_menu_set_min_scale">slide\_menu\_set\_min\_scale</a> | 设置最小缩放比例。 |
+| <a href="#slide_menu_t_slide_menu_set_spacer">slide\_menu\_set\_spacer</a> | 设置菜单项之间的间距。 |
 | <a href="#slide_menu_t_slide_menu_set_value">slide\_menu\_set\_value</a> | 设置当前项。 |
 ### 属性
 <p id="slide_menu_t_properties">
@@ -80,6 +84,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L4
 | -------- | ----- | ------------ | 
 | <a href="#slide_menu_t_align_v">align\_v</a> | align\_v\_t | 垂直对齐方式。 |
 | <a href="#slide_menu_t_min_scale">min\_scale</a> | float\_t | 最小缩放比例。 |
+| <a href="#slide_menu_t_spacer">spacer</a> | int32\_t | 菜单项之间的间距。 |
 | <a href="#slide_menu_t_value">value</a> | int32\_t | 值。代表当前选中项的索引。 |
 ### 事件
 <p id="slide_menu_t_events">
@@ -130,6 +135,62 @@ widget_t* slide_menu_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### slide\_menu\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slide_menu_t_slide_menu_get_widget_vtable">获取 slide_menu 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* slide_menu_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 slide\_menu 虚表。 |
+#### slide\_menu\_scroll\_to\_next 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slide_menu_t_slide_menu_scroll_to_next">切换至下一项。
+
+* 函数原型：
+
+```
+ret_t slide_menu_scroll_to_next (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | slide\_menu对象。 |
+#### slide\_menu\_scroll\_to\_prev 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slide_menu_t_slide_menu_scroll_to_prev">切换至上一项。
+
+* 函数原型：
+
+```
+ret_t slide_menu_scroll_to_prev (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | slide\_menu对象。 |
 #### slide\_menu\_set\_align\_v 函数
 -----------------------
 
@@ -170,6 +231,26 @@ ret_t slide_menu_set_min_scale (widget_t* widget, float_t min_scale);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | slide\_menu对象。 |
 | min\_scale | float\_t | 最小缩放比例，范围[0.5-1]。 |
+#### slide\_menu\_set\_spacer 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slide_menu_t_slide_menu_set_spacer">设置菜单项之间的间距。
+
+* 函数原型：
+
+```
+ret_t slide_menu_set_spacer (widget_t* widget, int32_t spacer);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | slide\_menu对象。 |
+| spacer | int32\_t | 菜单项之间的间距。 |
 #### slide\_menu\_set\_value 函数
 -----------------------
 
@@ -211,6 +292,22 @@ ret_t slide_menu_set_value (widget_t* widget, uint32_t value);
 > <p id="slide_menu_t_min_scale">最小缩放比例。
 
 * 类型：float\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### spacer 属性
+-----------------------
+> <p id="slide_menu_t_spacer">菜单项之间的间距。
+
+* 类型：int32\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

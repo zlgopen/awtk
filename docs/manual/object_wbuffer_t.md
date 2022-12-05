@@ -9,6 +9,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#object_wbuffer_t_object_wbuffer_cast">object\_wbuffer\_cast</a> | 转换为object_wbuffer对象。 |
 | <a href="#object_wbuffer_t_object_wbuffer_create">object\_wbuffer\_create</a> | 创建wbuffer对象。 |
 | <a href="#object_wbuffer_t_object_wbuffer_create_extendable">object\_wbuffer\_create\_extendable</a> | 创建可扩展的wbuffer对象。 |
 ### 属性
@@ -17,6 +18,25 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#object_wbuffer_t_wbuffer">wbuffer</a> | wbuffer\_t* | wbuffer对象。 |
+#### object\_wbuffer\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_wbuffer_t_object_wbuffer_cast">转换为object_wbuffer对象。
+
+* 函数原型：
+
+```
+object_wbuffer_t* object_wbuffer_cast (tk_object_t* obj);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | object\_wbuffer\_t* | object\_wbuffer对象。 |
+| obj | tk\_object\_t* | object\_wbuffer对象。 |
 #### object\_wbuffer\_create 函数
 -----------------------
 
@@ -27,14 +47,14 @@
 * 函数原型：
 
 ```
-object_t* object_wbuffer_create (uint8_t* data, uint16_t capacity);
+tk_object_t* object_wbuffer_create (uint8_t* data, uint16_t capacity);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | object\_t* | 返回object对象。 |
+| 返回值 | tk\_object\_t* | 返回object对象。 |
 | data | uint8\_t* | 缓冲区。 |
 | capacity | uint16\_t | 缓冲区的容量。 |
 #### object\_wbuffer\_create\_extendable 函数
@@ -47,14 +67,14 @@ object_t* object_wbuffer_create (uint8_t* data, uint16_t capacity);
 * 函数原型：
 
 ```
-object_t* object_wbuffer_create_extendable ();
+tk_object_t* object_wbuffer_create_extendable ();
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | object\_t* | 返回object对象。 |
+| 返回值 | tk\_object\_t* | 返回object对象。 |
 #### wbuffer 属性
 -----------------------
 > <p id="object_wbuffer_t_wbuffer">wbuffer对象。

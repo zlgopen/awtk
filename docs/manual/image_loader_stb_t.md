@@ -41,7 +41,7 @@ image_loader_t* image_loader_stb ();
 * 函数原型：
 
 ```
-ret_t stb_load_image (int32_t subtype, const uint8_t* buff, uint32_t buff_size, bitmap_t* image, bool_t require_bgra, bool_t enable_bgr565, bool_t enable_rgb565);
+ret_t stb_load_image (int32_t subtype, const uint8_t* buff, uint32_t buff_size, bitmap_t* image, bitmap_format_t transparent_bitmap_format, bitmap_format_t opaque_bitmap_format, lcd_orientation_t o);
 ```
 
 * 参数说明：
@@ -53,6 +53,6 @@ ret_t stb_load_image (int32_t subtype, const uint8_t* buff, uint32_t buff_size, 
 | buff | const uint8\_t* | 资源数据。 |
 | buff\_size | uint32\_t | 资源数据长度。 |
 | image | bitmap\_t* | image 对象。 |
-| require\_bgra | bool\_t | require\_bgra |
-| enable\_bgr565 | bool\_t | enable\_bgr565 |
-| enable\_rgb565 | bool\_t | enable\_rgb565 |
+| transparent\_bitmap\_format | bitmap\_format\_t | 带透明通道的位图格式（只能 BITMAP\_FMT\_RGBA8888 和 BITMAP\_FMT\_RGBA8888 二选一，其他类型默认都为 BITMAP\_FMT\_RGBA8888） |
+| opaque\_bitmap\_format | bitmap\_format\_t | 不透明位图格式（暂时支持 BITMAP\_FMT\_RGBA8888，BITMAP\_FMT\_RGBA8888，16 位色和 24 位色以及 mono 格式） |
+| o | lcd\_orientation\_t | 旋转方向 |

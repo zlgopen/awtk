@@ -55,7 +55,6 @@ ret_t canvas_offline_begin_draw (canvas_t* canvas);
 
 > <p id="canvas_offline_t_canvas_offline_bitmap_move_to_new_bitmap">把离线 canvas 的离线 bitmap 移动赋值给新的 bitmap。
 移动赋值后原来的离线 canvas 的离线 bitmap 就会被置空。
-备注：在移动赋值之前会先调用 canvas_offline_flush_bitmap 把数据回流到内存中。
 
 * 函数原型：
 
@@ -99,6 +98,7 @@ ret_t canvas_offline_clear_canvas (canvas_t* canvas);
 > <p id="canvas_offline_t_canvas_offline_create">创建一个离线的 canvas
 在 opengl 模式下 format 参数只能为 BITMAP_FMT_RGBA8888
 在其他模式下，离线 canvas 格式可以为 rgba，bgar，bgr565和rgb565
+旋转方向和 lcd 旋转方向保存一致，旋转方向不同可能会导致 bitmap 的逻辑宽高不同。
 
 * 函数原型：
 
@@ -111,8 +111,8 @@ canvas_t* canvas_offline_create (uint32_t w, uint32_t h, bitmap_format_t format)
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | canvas\_t* | 成功返回 canvas ，失败返回 NULL。 |
-| w | uint32\_t | 离线 canvas 的宽。 |
-| h | uint32\_t | 离线 canvas 的高。 |
+| w | uint32\_t | 离线 canvas 的物理宽。 |
+| h | uint32\_t | 离线 canvas 的物理高。 |
 | format | bitmap\_format\_t | 离线 canvas 的格式。 |
 #### canvas\_offline\_custom\_begin\_draw 函数
 -----------------------

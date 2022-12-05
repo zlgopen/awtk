@@ -47,6 +47,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#progress_bar_t_progress_bar_cast">progress\_bar\_cast</a> | 转换为progress_bar对象(供脚本语言使用)。 |
 | <a href="#progress_bar_t_progress_bar_create">progress\_bar\_create</a> | 创建progress_bar对象 |
 | <a href="#progress_bar_t_progress_bar_get_percent">progress\_bar\_get\_percent</a> | 获取进度百分比。 |
+| <a href="#progress_bar_t_progress_bar_get_widget_vtable">progress\_bar\_get\_widget\_vtable</a> | 获取 progress_bar 虚表。 |
 | <a href="#progress_bar_t_progress_bar_set_format">progress\_bar\_set\_format</a> | 设置格式。 |
 | <a href="#progress_bar_t_progress_bar_set_max">progress\_bar\_set\_max</a> | 设置最大值。 |
 | <a href="#progress_bar_t_progress_bar_set_reverse">progress\_bar\_set\_reverse</a> | 设置进度条是否反向。 |
@@ -134,6 +135,24 @@ uint32_t progress_bar_get_percent (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 返回百分比。 |
 | widget | widget\_t* | 控件对象。 |
+#### progress\_bar\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="progress_bar_t_progress_bar_get_widget_vtable">获取 progress_bar 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* progress_bar_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 progress\_bar 虚表。 |
 #### progress\_bar\_set\_format 函数
 -----------------------
 

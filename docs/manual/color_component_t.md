@@ -17,6 +17,7 @@ COLOR_PICKER_CHILD_H: 水平为同色，垂直为Hue(递减)。
 | <a href="#color_component_t_color_component_get_h">color\_component\_get\_h</a> | 获取h分量。 |
 | <a href="#color_component_t_color_component_get_s">color\_component\_get\_s</a> | 获取s分量。 |
 | <a href="#color_component_t_color_component_get_v">color\_component\_get\_v</a> | 获取v分量。 |
+| <a href="#color_component_t_color_component_get_widget_vtable">color\_component\_get\_widget\_vtable</a> | 获取 color_component 虚表。 |
 | <a href="#color_component_t_color_component_set_color">color\_component\_set\_color</a> | 设置颜色。 |
 | <a href="#color_component_t_color_component_set_hsv">color\_component\_set\_hsv</a> | 设置颜色。 |
 ### 事件
@@ -124,6 +125,24 @@ float color_component_get_v (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | float | 返回v分量。 |
 | widget | widget\_t* | color\_component对象。 |
+#### color\_component\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="color_component_t_color_component_get_widget_vtable">获取 color_component 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* color_component_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 color\_component 虚表。 |
 #### color\_component\_set\_color 函数
 -----------------------
 

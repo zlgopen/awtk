@@ -28,6 +28,7 @@ TKMEM_FREE(str);
 | <a href="#tk_mem_t_tk_mem_init_ex">tk\_mem\_init\_ex</a> | 初始化内存，支持多块不连续的内存。 |
 | <a href="#tk_mem_t_tk_mem_init_stage2">tk\_mem\_init\_stage2</a> | 初始化互斥和oom。 |
 | <a href="#tk_mem_t_tk_mem_is_valid_addr">tk\_mem\_is\_valid\_addr</a> | 检查给定的地址是否是一个有效的heap地址。 |
+| <a href="#tk_mem_t_tk_mem_set_on_out_of_memory">tk\_mem\_set\_on\_out\_of\_memory</a> | 设置内存耗尽时的处理函数。 |
 | <a href="#tk_mem_t_TKMEM_ALLOC">TKMEM\_ALLOC</a> | 分配一块内存。 |
 | <a href="#tk_mem_t_TKMEM_CALLOC">TKMEM\_CALLOC</a> | 分配一块内存，并将内容清零。 |
 | <a href="#tk_mem_t_TKMEM_FREE">TKMEM\_FREE</a> | 释放内存。 |
@@ -134,6 +135,26 @@ bool_t tk_mem_is_valid_addr ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回FALSE一定是无效地址，返回TRUE在PC则不太确定。 |
+#### tk\_mem\_set\_on\_out\_of\_memory 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_mem_t_tk_mem_set_on_out_of_memory">设置内存耗尽时的处理函数。
+
+* 函数原型：
+
+```
+ret_t tk_mem_set_on_out_of_memory (tk_mem_on_out_of_memory_t on_out_of_memory, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| on\_out\_of\_memory | tk\_mem\_on\_out\_of\_memory\_t | 回调函数。 |
+| ctx | void* | 回调函数的上下文。 |
 #### TKMEM\_ALLOC 宏
 -----------------------
 

@@ -64,8 +64,10 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | -------- | ------------ | 
 | <a href="#check_button_t_check_button_cast">check\_button\_cast</a> | 转换check_button对象(供脚本语言使用)。 |
 | <a href="#check_button_t_check_button_create">check\_button\_create</a> | 创建多选按钮对象 |
+| <a href="#check_button_t_check_button_create_ex">check\_button\_create\_ex</a> | 创建check button对象 |
 | <a href="#check_button_t_check_button_create_radio">check\_button\_create\_radio</a> | 创建单选按钮对象 |
 | <a href="#check_button_t_check_button_get_checked_button">check\_button\_get\_checked\_button</a> | 用于radio button获取同组中勾选的radio button。 |
+| <a href="#check_button_t_check_button_get_widget_vtable">check\_button\_get\_widget\_vtable</a> | 获取 check_button 虚表。 |
 | <a href="#check_button_t_check_button_set_value">check\_button\_set\_value</a> | 设置控件的值。 |
 ### 属性
 <p id="check_button_t_properties">
@@ -124,6 +126,31 @@ widget_t* check_button_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### check\_button\_create\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="check_button_t_check_button_create_ex">创建check button对象
+
+* 函数原型：
+
+```
+widget_t* check_button_create_ex (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h, const char* type, bool_t radio);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | widget对象。 |
+| parent | widget\_t* | 父控件 |
+| x | xy\_t | x坐标 |
+| y | xy\_t | y坐标 |
+| w | wh\_t | 宽度 |
+| h | wh\_t | 高度 |
+| type | const char* | 类型。 |
+| radio | bool\_t | 是否单选。 |
 #### check\_button\_create\_radio 函数
 -----------------------
 
@@ -166,6 +193,24 @@ widget_t* check_button_get_checked_button (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 同组中勾选的radio button对象。 |
 | widget | widget\_t* | radio\_button对象。 |
+#### check\_button\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="check_button_t_check_button_get_widget_vtable">获取 check_button 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* check_button_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 check\_button 虚表。 |
 #### check\_button\_set\_value 函数
 -----------------------
 

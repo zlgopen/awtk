@@ -30,12 +30,15 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml)
 | -------- | ------------ | 
 | <a href="#hscroll_label_t_hscroll_label_cast">hscroll\_label\_cast</a> | 转换为hscroll_label对象(供脚本语言使用)。 |
 | <a href="#hscroll_label_t_hscroll_label_create">hscroll\_label\_create</a> | 创建hscroll_label对象 |
+| <a href="#hscroll_label_t_hscroll_label_get_widget_vtable">hscroll\_label\_get\_widget\_vtable</a> | 获取 hscroll_label 虚表。 |
 | <a href="#hscroll_label_t_hscroll_label_set_duration">hscroll\_label\_set\_duration</a> | 设置duration。 |
 | <a href="#hscroll_label_t_hscroll_label_set_ellipses">hscroll\_label\_set\_ellipses</a> | 设置ellipses。 |
 | <a href="#hscroll_label_t_hscroll_label_set_loop">hscroll\_label\_set\_loop</a> | 设置loop。 |
 | <a href="#hscroll_label_t_hscroll_label_set_lull">hscroll\_label\_set\_lull</a> | 设置lull。 |
 | <a href="#hscroll_label_t_hscroll_label_set_only_focus">hscroll\_label\_set\_only\_focus</a> | 设置only_focus。 |
 | <a href="#hscroll_label_t_hscroll_label_set_only_parent_focus">hscroll\_label\_set\_only\_parent\_focus</a> | 设置only_parent_focus。 |
+| <a href="#hscroll_label_t_hscroll_label_set_speed">hscroll\_label\_set\_speed</a> | 设置speed（设置后 duration 不生效）。 |
+| <a href="#hscroll_label_t_hscroll_label_set_stop_at_begin">hscroll\_label\_set\_stop\_at\_begin</a> | 设置stop_at_begin。 |
 | <a href="#hscroll_label_t_hscroll_label_set_xoffset">hscroll\_label\_set\_xoffset</a> | 设置x偏移(一般无需用户调用)。。 |
 | <a href="#hscroll_label_t_hscroll_label_set_yoyo">hscroll\_label\_set\_yoyo</a> | 设置yoyo。 |
 | <a href="#hscroll_label_t_hscroll_label_start">hscroll\_label\_start</a> | 启动(一般无需用户调用)。 |
@@ -51,6 +54,8 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml)
 | <a href="#hscroll_label_t_lull">lull</a> | int32\_t | 滚动之间的间歇时间(ms)，缺省3000ms。 |
 | <a href="#hscroll_label_t_only_focus">only\_focus</a> | bool\_t | 只有处于focus时才滚动(缺省否)。 |
 | <a href="#hscroll_label_t_only_parent_focus">only\_parent\_focus</a> | bool\_t | 只有父控件处于focus时才滚动(缺省否)。 |
+| <a href="#hscroll_label_t_speed">speed</a> | float\_t | 滚动速度(px/ms)（设置后 duration 不生效）。 |
+| <a href="#hscroll_label_t_stop_at_begin">stop\_at\_begin</a> | bool\_t | 滚动完毕后停在文本开头(缺省FALSE)。 |
 | <a href="#hscroll_label_t_text_w">text\_w</a> | int32\_t | 文本的宽度。 |
 | <a href="#hscroll_label_t_xoffset">xoffset</a> | int32\_t | 偏移量。 |
 | <a href="#hscroll_label_t_yoyo">yoyo</a> | bool\_t | 是否往返滚动(缺省FALSE)。 |
@@ -96,6 +101,24 @@ widget_t* hscroll_label_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### hscroll\_label\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="hscroll_label_t_hscroll_label_get_widget_vtable">获取 hscroll_label 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* hscroll_label_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 hscroll\_label 虚表。 |
 #### hscroll\_label\_set\_duration 函数
 -----------------------
 
@@ -216,6 +239,46 @@ ret_t hscroll_label_set_only_parent_focus (widget_t* widget, bool_t only_parent_
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | only\_parent\_focus | bool\_t | 是否只有处于focus时才滚动。 |
+#### hscroll\_label\_set\_speed 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="hscroll_label_t_hscroll_label_set_speed">设置speed（设置后 duration 不生效）。
+
+* 函数原型：
+
+```
+ret_t hscroll_label_set_speed (widget_t* widget, float_t speed);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| speed | float\_t | 滚动速度(px/ms)。 |
+#### hscroll\_label\_set\_stop\_at\_begin 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="hscroll_label_t_hscroll_label_set_stop_at_begin">设置stop_at_begin。
+
+* 函数原型：
+
+```
+ret_t hscroll_label_set_stop_at_begin (widget_t* widget, bool_t stop_at_begin);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| stop\_at\_begin | bool\_t | 是否在滚动完毕后停在文本结尾。 |
 #### hscroll\_label\_set\_xoffset 函数
 -----------------------
 
@@ -375,6 +438,37 @@ ret_t hscroll_label_stop (widget_t* widget);
 #### only\_parent\_focus 属性
 -----------------------
 > <p id="hscroll_label_t_only_parent_focus">只有父控件处于focus时才滚动(缺省否)。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### speed 属性
+-----------------------
+> <p id="hscroll_label_t_speed">滚动速度(px/ms)（设置后 duration 不生效）。
+
+* 类型：float\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可脚本化   | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### stop\_at\_begin 属性
+-----------------------
+> <p id="hscroll_label_t_stop_at_begin">滚动完毕后停在文本开头(缺省FALSE)。
+> 注：loop为FALSE时才可用。
 
 * 类型：bool\_t
 

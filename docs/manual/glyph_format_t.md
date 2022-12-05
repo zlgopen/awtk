@@ -9,3 +9,5 @@
 | GLYPH\_FMT\_ALPHA | 每个像素占用1个字节(缺省)。 |
 | GLYPH\_FMT\_MONO | 每个像素占用1个比特。 |
 | GLYPH\_FMT\_RGBA | 每个像素占用4个字节。 |
+| GLYPH\_FMT\_ALPHA2 | 每个像素占用2bit。 |
+| GLYPH\_FMT\_ALPHA4 | 每个像素占用4bit。 |

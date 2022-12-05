@@ -17,10 +17,12 @@
 | <a href="#fs_t_fs_build_user_storage_file_name">fs\_build\_user\_storage\_file\_name</a> | 生成一个保存数据文件的完整路径的文件名。 |
 | <a href="#fs_t_fs_change_dir">fs\_change\_dir</a> | 修改当前目录。 |
 | <a href="#fs_t_fs_copy_dir">fs\_copy\_dir</a> | 拷贝目录。 |
+| <a href="#fs_t_fs_copy_dir_ex">fs\_copy\_dir\_ex</a> | 拷贝目录。 |
 | <a href="#fs_t_fs_copy_file">fs\_copy\_file</a> | 拷贝文件。 |
 | <a href="#fs_t_fs_create_dir">fs\_create\_dir</a> | 创建目录。 |
 | <a href="#fs_t_fs_create_dir_r">fs\_create\_dir\_r</a> | 递归创建目录。 |
 | <a href="#fs_t_fs_dir_exist">fs\_dir\_exist</a> | 判断目录是否存在。 |
+| <a href="#fs_t_fs_dir_is_empty">fs\_dir\_is\_empty</a> | 判断目录是否为空。 |
 | <a href="#fs_t_fs_dir_rename">fs\_dir\_rename</a> | 目录重命名。 |
 | <a href="#fs_t_fs_file_exist">fs\_file\_exist</a> | 判断文件是否存在。 |
 | <a href="#fs_t_fs_file_rename">fs\_file\_rename</a> | 文件重命名。 |
@@ -239,6 +241,28 @@ ret_t fs_copy_dir (fs_t* fs, const char* src, const char* dst);
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | src | const char* | 源目录。 |
 | dst | const char* | 目标目录。 |
+#### fs\_copy\_dir\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="fs_t_fs_copy_dir_ex">拷贝目录。
+
+* 函数原型：
+
+```
+ret_t fs_copy_dir_ex (fs_t* fs, const char* src, const char* dst, bool_t overwrite);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
+| src | const char* | 源目录。 |
+| dst | const char* | 目标目录。 |
+| overwrite | bool\_t | 是否覆盖。 |
 #### fs\_copy\_file 函数
 -----------------------
 
@@ -318,6 +342,26 @@ bool_t fs_dir_exist (fs_t* fs, const char* name);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回TRUE表示存在，否则表示不存在。 |
+| fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
+| name | const char* | 目录名称。 |
+#### fs\_dir\_is\_empty 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="fs_t_fs_dir_is_empty">判断目录是否为空。
+
+* 函数原型：
+
+```
+bool_t fs_dir_is_empty (fs_t* fs, const char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示目录为空，否则表示目录不为空。 |
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | name | const char* | 目录名称。 |
 #### fs\_dir\_rename 函数

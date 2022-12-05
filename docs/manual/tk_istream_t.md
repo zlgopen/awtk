@@ -127,6 +127,7 @@ int32_t tk_istream_read_line (tk_istream_t* stream, void* buff, uint32_t max_siz
 * 函数功能：
 
 > <p id="tk_istream_t_tk_istream_read_line_str">读取一行数据。
+>istream必须支持随机读写(seek/tell)。
 
 * 函数原型：
 

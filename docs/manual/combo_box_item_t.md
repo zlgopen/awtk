@@ -13,6 +13,7 @@ ComboBox Item控件。
 | -------- | ------------ | 
 | <a href="#combo_box_item_t_combo_box_item_cast">combo\_box\_item\_cast</a> | 转换combo_box_item对象(供脚本语言使用)。 |
 | <a href="#combo_box_item_t_combo_box_item_create">combo\_box\_item\_create</a> | 创建combo_box_item对象 |
+| <a href="#combo_box_item_t_combo_box_item_get_widget_vtable">combo\_box\_item\_get\_widget\_vtable</a> | 获取 combo_box_item 虚表。 |
 | <a href="#combo_box_item_t_combo_box_item_set_checked">combo\_box\_item\_set\_checked</a> | 设置控件是否被选中。 |
 | <a href="#combo_box_item_t_combo_box_item_set_value">combo\_box\_item\_set\_value</a> | 设置控件的值。 |
 ### 属性
@@ -72,6 +73,24 @@ widget_t* combo_box_item_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### combo\_box\_item\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="combo_box_item_t_combo_box_item_get_widget_vtable">获取 combo_box_item 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* combo_box_item_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 combo\_box\_item 虚表。 |
 #### combo\_box\_item\_set\_checked 函数
 -----------------------
 

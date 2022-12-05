@@ -46,6 +46,7 @@ image_value_set_value(image_value, 100);
 | -------- | ------------ | 
 | <a href="#image_value_t_image_value_cast">image\_value\_cast</a> | 转换为image_value对象(供脚本语言使用)。 |
 | <a href="#image_value_t_image_value_create">image\_value\_create</a> | 创建image_value对象 |
+| <a href="#image_value_t_image_value_get_widget_vtable">image\_value\_get\_widget\_vtable</a> | 获取 image_value 虚表。 |
 | <a href="#image_value_t_image_value_set_click_add_delta">image\_value\_set\_click\_add\_delta</a> | 设置点击时加上的增量。 |
 | <a href="#image_value_t_image_value_set_format">image\_value\_set\_format</a> | 设置格式。 |
 | <a href="#image_value_t_image_value_set_image">image\_value\_set\_image</a> | 设置图片前缀。 |
@@ -112,6 +113,24 @@ widget_t* image_value_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### image\_value\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="image_value_t_image_value_get_widget_vtable">获取 image_value 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* image_value_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 image\_value 虚表。 |
 #### image\_value\_set\_click\_add\_delta 函数
 -----------------------
 

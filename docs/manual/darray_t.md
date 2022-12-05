@@ -48,6 +48,7 @@ darray_destroy(darray);
 | <a href="#darray_t_darray_remove_all">darray\_remove\_all</a> | 删除全部满足条件的元素。 |
 | <a href="#darray_t_darray_remove_ex">darray\_remove\_ex</a> | 删除第一个满足条件的元素。 |
 | <a href="#darray_t_darray_remove_index">darray\_remove\_index</a> | 删除指定位置的元素。 |
+| <a href="#darray_t_darray_remove_range">darray\_remove\_range</a> | 删除指定范围的元素。 |
 | <a href="#darray_t_darray_replace">darray\_replace</a> | 设置指定序数的元素(销毁旧的数据)。 |
 | <a href="#darray_t_darray_set">darray\_set</a> | 设置指定序数的元素(不销毁旧的数据)。 |
 | <a href="#darray_t_darray_sort">darray\_sort</a> | 排序。 |
@@ -560,6 +561,28 @@ ret_t darray_remove_index (darray_t* darray, uint32_t index);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | darray | darray\_t* | 数组对象。 |
 | index | uint32\_t | 位置序数。 |
+#### darray\_remove\_range 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="darray_t_darray_remove_range">删除指定范围的元素。
+删除范围为[start, end)
+
+* 函数原型：
+
+```
+ret_t darray_remove_range (darray_t* darray, uint32_t start, uint32_t end);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| darray | darray\_t* | 数组对象。 |
+| start | uint32\_t | 起始位置。 |
+| end | uint32\_t | 结束位置。 |
 #### darray\_replace 函数
 -----------------------
 

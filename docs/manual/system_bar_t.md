@@ -59,6 +59,7 @@ widget_t* win = system_bar_create(NULL, 0, 0, 320, 30);
 | -------- | ------------ | 
 | <a href="#system_bar_t_system_bar_cast">system\_bar\_cast</a> | 转换为system_bar对象(供脚本语言使用)。 |
 | <a href="#system_bar_t_system_bar_create">system\_bar\_create</a> | 创建system_bar对象。 |
+| <a href="#system_bar_t_system_bar_get_widget_vtable">system\_bar\_get\_widget\_vtable</a> | 获取 system_bar 虚表。 |
 #### system\_bar\_cast 函数
 -----------------------
 
@@ -101,3 +102,21 @@ widget_t* system_bar_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### system\_bar\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="system_bar_t_system_bar_get_widget_vtable">获取 system_bar 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* system_bar_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 system\_bar 虚表。 |

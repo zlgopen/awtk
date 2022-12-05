@@ -41,6 +41,7 @@ demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image_animation.
 | -------- | ------------ | 
 | <a href="#image_animation_t_image_animation_cast">image\_animation\_cast</a> | 转换为image_animation对象(供脚本语言使用)。 |
 | <a href="#image_animation_t_image_animation_create">image\_animation\_create</a> | 创建image_animation对象 |
+| <a href="#image_animation_t_image_animation_get_widget_vtable">image\_animation\_get\_widget\_vtable</a> | 获取 image_animation 虚表。 |
 | <a href="#image_animation_t_image_animation_is_playing">image\_animation\_is\_playing</a> | 判断是否在播放。 |
 | <a href="#image_animation_t_image_animation_next">image\_animation\_next</a> | 手动切换到下一张图片。 |
 | <a href="#image_animation_t_image_animation_pause">image\_animation\_pause</a> | 暂停。 |
@@ -123,6 +124,24 @@ widget_t* image_animation_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### image\_animation\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="image_animation_t_image_animation_get_widget_vtable">获取 image_animation 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* image_animation_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 image\_animation 虚表。 |
 #### image\_animation\_is\_playing 函数
 -----------------------
 

@@ -32,6 +32,7 @@ widget_t* win = calibration_win_create(NULL, 0, 0, 320, 480);
 | -------- | ------------ | 
 | <a href="#calibration_win_t_calibration_win_cast">calibration\_win\_cast</a> | 转换为calibration_win对象(供脚本语言使用)。 |
 | <a href="#calibration_win_t_calibration_win_create">calibration\_win\_create</a> | 创建calibration_win对象 |
+| <a href="#calibration_win_t_calibration_win_get_widget_vtable">calibration\_win\_get\_widget\_vtable</a> | 获取 calibration_win 虚表。 |
 | <a href="#calibration_win_t_calibration_win_set_on_click">calibration\_win\_set\_on\_click</a> | 设置校准点击事件的处理函数。 |
 | <a href="#calibration_win_t_calibration_win_set_on_done">calibration\_win\_set\_on\_done</a> | 设置校准完成的处理函数。 |
 #### calibration\_win\_cast 函数
@@ -76,6 +77,24 @@ widget_t* calibration_win_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### calibration\_win\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="calibration_win_t_calibration_win_get_widget_vtable">获取 calibration_win 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* calibration_win_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 calibration\_win 虚表。 |
 #### calibration\_win\_set\_on\_click 函数
 -----------------------
 

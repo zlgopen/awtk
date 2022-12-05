@@ -43,6 +43,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L1
 | -------- | ------------ | 
 | <a href="#digit_clock_t_digit_clock_cast">digit\_clock\_cast</a> | 转换为digit_clock对象(供脚本语言使用)。 |
 | <a href="#digit_clock_t_digit_clock_create">digit\_clock\_create</a> | 创建digit_clock对象 |
+| <a href="#digit_clock_t_digit_clock_get_widget_vtable">digit\_clock\_get\_widget\_vtable</a> | 获取 digit_clock 虚表。 |
 | <a href="#digit_clock_t_digit_clock_set_format">digit\_clock\_set\_format</a> | 设置显示格式。 |
 ### 属性
 <p id="digit_clock_t_properties">
@@ -92,6 +93,24 @@ widget_t* digit_clock_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### digit\_clock\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="digit_clock_t_digit_clock_get_widget_vtable">获取 digit_clock 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* digit_clock_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 digit\_clock 虚表。 |
 #### digit\_clock\_set\_format 函数
 -----------------------
 
@@ -120,14 +139,17 @@ ret_t digit_clock_set_format (widget_t* widget, const char* format);
 * M 代表月(1-12)
 * D 代表日(1-31)
 * h 代表时(0-23)
+* H 代表时(0-11)
 * m 代表分(0-59)
 * s 代表秒(0-59)
 * w 代表星期(0-6)
 * W 代表星期的英文缩写(支持翻译)
+* T 代表时段AM/PM(支持翻译)
 * YY 代表年(只显示末两位)
 * MM 代表月(01-12)
 * DD 代表日(01-31)
 * hh 代表时(00-23)
+* HH 代表时(00-11)
 * mm 代表分(00-59)
 * ss 代表秒(00-59)
 * MMM 代表月的英文缩写(支持翻译)

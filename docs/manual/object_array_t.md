@@ -15,6 +15,7 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#object_array_t_object_array_avg">object\_array\_avg</a> | 求平均值。 |
+| <a href="#object_array_t_object_array_cast">object\_array\_cast</a> | 转换为object_array对象。 |
 | <a href="#object_array_t_object_array_clear_props">object\_array\_clear\_props</a> | 清除全部属性。 |
 | <a href="#object_array_t_object_array_clone">object\_array\_clone</a> | 克隆对象。 |
 | <a href="#object_array_t_object_array_create">object\_array\_create</a> | 创建对象。 |
@@ -31,6 +32,8 @@
 | <a href="#object_array_t_object_array_pop">object\_array\_pop</a> | 弹出最后一个元素。 |
 | <a href="#object_array_t_object_array_push">object\_array\_push</a> | 追加一个元素。 |
 | <a href="#object_array_t_object_array_remove">object\_array\_remove</a> | 在指定位置删除一个元素。 |
+| <a href="#object_array_t_object_array_remove_value">object\_array\_remove\_value</a> | 删除指定的值。 |
+| <a href="#object_array_t_object_array_reverse">object\_array\_reverse</a> | 反向。 |
 | <a href="#object_array_t_object_array_set">object\_array\_set</a> | 设置指定序数的元素。 |
 | <a href="#object_array_t_object_array_shift">object\_array\_shift</a> | 弹出第一个元素。 |
 | <a href="#object_array_t_object_array_sort">object\_array\_sort</a> | 排序。 |
@@ -57,7 +60,7 @@
 * 函数原型：
 
 ```
-ret_t object_array_avg (object_t* obj, value_t* result);
+ret_t object_array_avg (tk_object_t* obj, value_t* result);
 ```
 
 * 参数说明：
@@ -65,8 +68,27 @@ ret_t object_array_avg (object_t* obj, value_t* result);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| obj | object\_t* | 数组对象。 |
+| obj | tk\_object\_t* | 数组对象。 |
 | result | value\_t* | 结果。 |
+#### object\_array\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_array_t_object_array_cast">转换为object_array对象。
+
+* 函数原型：
+
+```
+object_array_t* object_array_cast (tk_object_t* obj);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | object\_array\_t* | object\_array对象。 |
+| obj | tk\_object\_t* | object\_array对象。 |
 #### object\_array\_clear\_props 函数
 -----------------------
 
@@ -77,7 +99,7 @@ ret_t object_array_avg (object_t* obj, value_t* result);
 * 函数原型：
 
 ```
-ret_t object_array_clear_props (object_t* obj);
+ret_t object_array_clear_props (tk_object_t* obj);
 ```
 
 * 参数说明：
@@ -85,7 +107,7 @@ ret_t object_array_clear_props (object_t* obj);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| obj | object\_t* | 对象。 |
+| obj | tk\_object\_t* | 对象。 |
 #### object\_array\_clone 函数
 -----------------------
 
@@ -96,15 +118,15 @@ ret_t object_array_clear_props (object_t* obj);
 * 函数原型：
 
 ```
-object_t* object_array_clone (object_t* o);
+tk_object_t* object_array_clone (tk_object_t* o);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | object\_t* | 返回object对象。 |
-| o | object\_t* | 被克隆的对象。 |
+| 返回值 | tk\_object\_t* | 返回object对象。 |
+| o | tk\_object\_t* | 被克隆的对象。 |
 #### object\_array\_create 函数
 -----------------------
 
@@ -115,14 +137,14 @@ object_t* object_array_clone (object_t* o);
 * 函数原型：
 
 ```
-object_t* object_array_create ();
+tk_object_t* object_array_create ();
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | object\_t* | 返回object对象。 |
+| 返回值 | tk\_object\_t* | 返回object对象。 |
 #### object\_array\_create\_with\_str 函数
 -----------------------
 
@@ -133,14 +155,14 @@ object_t* object_array_create ();
 * 函数原型：
 
 ```
-object_t* object_array_create_with_str (const char* str, const char* sep, value_type_t type);
+tk_object_t* object_array_create_with_str (const char* str, const char* sep, value_type_t type);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | object\_t* | 返回object对象。 |
+| 返回值 | tk\_object\_t* | 返回object对象。 |
 | str | const char* | 字符串 |
 | sep | const char* | 分隔符。 |
 | type | value\_type\_t | 类型。 |
@@ -154,15 +176,15 @@ object_t* object_array_create_with_str (const char* str, const char* sep, value_
 * 函数原型：
 
 ```
-object_t* object_array_dup (object_t* obj, uint32_t start, uint32_t end);
+tk_object_t* object_array_dup (tk_object_t* obj, uint32_t start, uint32_t end);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | object\_t* | 返回object对象。 |
-| obj | object\_t* | 数组对象。 |
+| 返回值 | tk\_object\_t* | 返回object对象。 |
+| obj | tk\_object\_t* | 数组对象。 |
 | start | uint32\_t | 开始的位置。 |
 | end | uint32\_t | 结束的位置(不包含)。 |
 #### object\_array\_get 函数
@@ -175,7 +197,7 @@ object_t* object_array_dup (object_t* obj, uint32_t start, uint32_t end);
 * 函数原型：
 
 ```
-ret_t object_array_get (object_t* obj, uint32_t i, value_t* v);
+ret_t object_array_get (tk_object_t* obj, uint32_t i, value_t* v);
 ```
 
 * 参数说明：
@@ -183,7 +205,7 @@ ret_t object_array_get (object_t* obj, uint32_t i, value_t* v);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| obj | object\_t* | 数组对象。 |
+| obj | tk\_object\_t* | 数组对象。 |
 | i | uint32\_t | 序数。 |
 | v | value\_t* | 返回的元素。 |
 #### object\_array\_get\_and\_remove 函数
@@ -196,7 +218,7 @@ ret_t object_array_get (object_t* obj, uint32_t i, value_t* v);
 * 函数原型：
 
 ```
-ret_t object_array_get_and_remove (object_t* obj, uint32_t index, value_t* v);
+ret_t object_array_get_and_remove (tk_object_t* obj, uint32_t index, value_t* v);
 ```
 
 * 参数说明：
@@ -204,7 +226,7 @@ ret_t object_array_get_and_remove (object_t* obj, uint32_t index, value_t* v);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| obj | object\_t* | 对象。 |
+| obj | tk\_object\_t* | 对象。 |
 | index | uint32\_t | 位置。 |
 | v | value\_t* | 用于返回值。 |
 #### object\_array\_index\_of 函数
@@ -217,7 +239,7 @@ ret_t object_array_get_and_remove (object_t* obj, uint32_t index, value_t* v);
 * 函数原型：
 
 ```
-int32_t object_array_index_of (object_t* obj, const value_t* v);
+int32_t object_array_index_of (tk_object_t* obj, const value_t* v);
 ```
 
 * 参数说明：
@@ -225,7 +247,7 @@ int32_t object_array_index_of (object_t* obj, const value_t* v);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 如果找到返回其位置，否则返回-1。 |
-| obj | object\_t* | 对象。 |
+| obj | tk\_object\_t* | 对象。 |
 | v | const value\_t* | 值。 |
 #### object\_array\_insert 函数
 -----------------------
@@ -237,7 +259,7 @@ int32_t object_array_index_of (object_t* obj, const value_t* v);
 * 函数原型：
 
 ```
-ret_t object_array_insert (object_t* obj, uint32_t index, const value_t* v);
+ret_t object_array_insert (tk_object_t* obj, uint32_t index, const value_t* v);
 ```
 
 * 参数说明：
@@ -245,7 +267,7 @@ ret_t object_array_insert (object_t* obj, uint32_t index, const value_t* v);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| obj | object\_t* | 对象。 |
+| obj | tk\_object\_t* | 对象。 |
 | index | uint32\_t | 位置。 |
 | v | const value\_t* | 值。 |
 #### object\_array\_join 函数
@@ -258,7 +280,7 @@ ret_t object_array_insert (object_t* obj, uint32_t index, const value_t* v);
 * 函数原型：
 
 ```
-ret_t object_array_join (object_t* obj, const char* sep, str_t* result);
+ret_t object_array_join (tk_object_t* obj, const char* sep, str_t* result);
 ```
 
 * 参数说明：
@@ -266,7 +288,7 @@ ret_t object_array_join (object_t* obj, const char* sep, str_t* result);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| obj | object\_t* | 数组对象。 |
+| obj | tk\_object\_t* | 数组对象。 |
 | sep | const char* | 分隔符。 |
 | result | str\_t* | 生成的字符串。 |
 #### object\_array\_last\_index\_of 函数
@@ -279,7 +301,7 @@ ret_t object_array_join (object_t* obj, const char* sep, str_t* result);
 * 函数原型：
 
 ```
-int32_t object_array_last_index_of (object_t* obj, const value_t* v);
+int32_t object_array_last_index_of (tk_object_t* obj, const value_t* v);
 ```
 
 * 参数说明：
@@ -287,7 +309,7 @@ int32_t object_array_last_index_of (object_t* obj, const value_t* v);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 如果找到返回其位置，否则返回-1。 |
-| obj | object\_t* | 对象。 |
+| obj | tk\_object\_t* | 对象。 |
 | v | const value\_t* | 值。 |
 #### object\_array\_max 函数
 -----------------------
@@ -299,7 +321,7 @@ int32_t object_array_last_index_of (object_t* obj, const value_t* v);
 * 函数原型：
 
 ```
-ret_t object_array_max (object_t* obj, value_t* result);
+ret_t object_array_max (tk_object_t* obj, value_t* result);
 ```
 
 * 参数说明：
@@ -307,7 +329,7 @@ ret_t object_array_max (object_t* obj, value_t* result);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| obj | object\_t* | 数组对象。 |
+| obj | tk\_object\_t* | 数组对象。 |
 | result | value\_t* | 结果。 |
 #### object\_array\_min 函数
 -----------------------
@@ -319,7 +341,7 @@ ret_t object_array_max (object_t* obj, value_t* result);
 * 函数原型：
 
 ```
-ret_t object_array_min (object_t* obj, value_t* result);
+ret_t object_array_min (tk_object_t* obj, value_t* result);
 ```
 
 * 参数说明：
@@ -327,7 +349,7 @@ ret_t object_array_min (object_t* obj, value_t* result);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| obj | object\_t* | 数组对象。 |
+| obj | tk\_object\_t* | 数组对象。 |
 | result | value\_t* | 结果。 |
 #### object\_array\_pop 函数
 -----------------------
@@ -339,7 +361,7 @@ ret_t object_array_min (object_t* obj, value_t* result);
 * 函数原型：
 
 ```
-ret_t object_array_pop (object_t* obj, value_t* v);
+ret_t object_array_pop (tk_object_t* obj, value_t* v);
 ```
 
 * 参数说明：
@@ -347,7 +369,7 @@ ret_t object_array_pop (object_t* obj, value_t* v);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| obj | object\_t* | 对象。 |
+| obj | tk\_object\_t* | 对象。 |
 | v | value\_t* | 返回值。 |
 #### object\_array\_push 函数
 -----------------------
@@ -359,7 +381,7 @@ ret_t object_array_pop (object_t* obj, value_t* v);
 * 函数原型：
 
 ```
-ret_t object_array_push (object_t* obj, const value_t* v);
+ret_t object_array_push (tk_object_t* obj, const value_t* v);
 ```
 
 * 参数说明：
@@ -367,7 +389,7 @@ ret_t object_array_push (object_t* obj, const value_t* v);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| obj | object\_t* | 对象。 |
+| obj | tk\_object\_t* | 对象。 |
 | v | const value\_t* | 值。 |
 #### object\_array\_remove 函数
 -----------------------
@@ -379,7 +401,7 @@ ret_t object_array_push (object_t* obj, const value_t* v);
 * 函数原型：
 
 ```
-ret_t object_array_remove (object_t* obj, uint32_t index);
+ret_t object_array_remove (tk_object_t* obj, uint32_t index);
 ```
 
 * 参数说明：
@@ -387,8 +409,47 @@ ret_t object_array_remove (object_t* obj, uint32_t index);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| obj | object\_t* | 对象。 |
+| obj | tk\_object\_t* | 对象。 |
 | index | uint32\_t | 位置。 |
+#### object\_array\_remove\_value 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_array_t_object_array_remove_value">删除指定的值。
+
+* 函数原型：
+
+```
+ret_t object_array_remove_value (tk_object_t* obj, value_t* v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | tk\_object\_t* | 对象。 |
+| v | value\_t* | 值。 |
+#### object\_array\_reverse 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_array_t_object_array_reverse">反向。
+
+* 函数原型：
+
+```
+ret_t object_array_reverse (tk_object_t* obj);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | tk\_object\_t* | 数组对象。 |
 #### object\_array\_set 函数
 -----------------------
 
@@ -399,7 +460,7 @@ ret_t object_array_remove (object_t* obj, uint32_t index);
 * 函数原型：
 
 ```
-ret_t object_array_set (object_t* obj, uint32_t i, const value_t* v);
+ret_t object_array_set (tk_object_t* obj, uint32_t i, const value_t* v);
 ```
 
 * 参数说明：
@@ -407,7 +468,7 @@ ret_t object_array_set (object_t* obj, uint32_t i, const value_t* v);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| obj | object\_t* | 数组对象。 |
+| obj | tk\_object\_t* | 数组对象。 |
 | i | uint32\_t | 序数。 |
 | v | const value\_t* | 元素。 |
 #### object\_array\_shift 函数
@@ -420,7 +481,7 @@ ret_t object_array_set (object_t* obj, uint32_t i, const value_t* v);
 * 函数原型：
 
 ```
-ret_t object_array_shift (object_t* obj, value_t* v);
+ret_t object_array_shift (tk_object_t* obj, value_t* v);
 ```
 
 * 参数说明：
@@ -428,7 +489,7 @@ ret_t object_array_shift (object_t* obj, value_t* v);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| obj | object\_t* | 对象。 |
+| obj | tk\_object\_t* | 对象。 |
 | v | value\_t* | 返回值。 |
 #### object\_array\_sort 函数
 -----------------------
@@ -440,7 +501,7 @@ ret_t object_array_shift (object_t* obj, value_t* v);
 * 函数原型：
 
 ```
-ret_t object_array_sort (object_t* obj, tk_compare_t cmp);
+ret_t object_array_sort (tk_object_t* obj, tk_compare_t cmp);
 ```
 
 * 参数说明：
@@ -448,7 +509,7 @@ ret_t object_array_sort (object_t* obj, tk_compare_t cmp);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| obj | object\_t* | 数组对象。 |
+| obj | tk\_object\_t* | 数组对象。 |
 | cmp | tk\_compare\_t | 比较函数。 |
 #### object\_array\_sort\_as\_double 函数
 -----------------------
@@ -460,7 +521,7 @@ ret_t object_array_sort (object_t* obj, tk_compare_t cmp);
 * 函数原型：
 
 ```
-ret_t object_array_sort_as_double (object_t* obj, bool_t ascending);
+ret_t object_array_sort_as_double (tk_object_t* obj, bool_t ascending);
 ```
 
 * 参数说明：
@@ -468,7 +529,7 @@ ret_t object_array_sort_as_double (object_t* obj, bool_t ascending);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| obj | object\_t* | 数组对象。 |
+| obj | tk\_object\_t* | 数组对象。 |
 | ascending | bool\_t | 升序或降序。 |
 #### object\_array\_sort\_as\_int 函数
 -----------------------
@@ -480,7 +541,7 @@ ret_t object_array_sort_as_double (object_t* obj, bool_t ascending);
 * 函数原型：
 
 ```
-ret_t object_array_sort_as_int (object_t* obj, bool_t ascending);
+ret_t object_array_sort_as_int (tk_object_t* obj, bool_t ascending);
 ```
 
 * 参数说明：
@@ -488,7 +549,7 @@ ret_t object_array_sort_as_int (object_t* obj, bool_t ascending);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| obj | object\_t* | 数组对象。 |
+| obj | tk\_object\_t* | 数组对象。 |
 | ascending | bool\_t | 升序或降序。 |
 #### object\_array\_sort\_as\_str 函数
 -----------------------
@@ -500,7 +561,7 @@ ret_t object_array_sort_as_int (object_t* obj, bool_t ascending);
 * 函数原型：
 
 ```
-ret_t object_array_sort_as_str (object_t* obj, bool_t ascending, bool_t ignore_case);
+ret_t object_array_sort_as_str (tk_object_t* obj, bool_t ascending, bool_t ignore_case);
 ```
 
 * 参数说明：
@@ -508,7 +569,7 @@ ret_t object_array_sort_as_str (object_t* obj, bool_t ascending, bool_t ignore_c
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| obj | object\_t* | 数组对象。 |
+| obj | tk\_object\_t* | 数组对象。 |
 | ascending | bool\_t | 升序或降序。 |
 | ignore\_case | bool\_t | 是否忽略大小写。 |
 #### object\_array\_sum 函数
@@ -521,7 +582,7 @@ ret_t object_array_sort_as_str (object_t* obj, bool_t ascending, bool_t ignore_c
 * 函数原型：
 
 ```
-ret_t object_array_sum (object_t* obj, value_t* result);
+ret_t object_array_sum (tk_object_t* obj, value_t* result);
 ```
 
 * 参数说明：
@@ -529,7 +590,7 @@ ret_t object_array_sum (object_t* obj, value_t* result);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| obj | object\_t* | 数组对象。 |
+| obj | tk\_object\_t* | 数组对象。 |
 | result | value\_t* | 结果。 |
 #### object\_array\_unref 函数
 -----------------------
@@ -541,7 +602,7 @@ ret_t object_array_sum (object_t* obj, value_t* result);
 * 函数原型：
 
 ```
-ret_t object_array_unref (object_t* obj);
+ret_t object_array_unref (tk_object_t* obj);
 ```
 
 * 参数说明：
@@ -549,7 +610,7 @@ ret_t object_array_unref (object_t* obj);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| obj | object\_t* | 对象。 |
+| obj | tk\_object\_t* | 对象。 |
 #### capacity 属性
 -----------------------
 > <p id="object_array_t_capacity">属性数组的容量。

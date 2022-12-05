@@ -110,6 +110,7 @@ x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=4,s=2,m=2)">
 | <a href="#keyboard_t_keyboard_cast">keyboard\_cast</a> | 转换为keyboard对象(供脚本语言使用)。 |
 | <a href="#keyboard_t_keyboard_close">keyboard\_close</a> | 关闭keyboard窗口。 |
 | <a href="#keyboard_t_keyboard_create">keyboard\_create</a> | 创建keyboard对象 |
+| <a href="#keyboard_t_keyboard_get_widget_vtable">keyboard\_get\_widget\_vtable</a> | 获取 keyboard 虚表。 |
 #### keyboard\_cast 函数
 -----------------------
 
@@ -171,3 +172,21 @@ widget_t* keyboard_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### keyboard\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="keyboard_t_keyboard_get_widget_vtable">获取 keyboard 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* keyboard_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 keyboard 虚表。 |

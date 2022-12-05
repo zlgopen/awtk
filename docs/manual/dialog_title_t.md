@@ -32,6 +32,7 @@ dialog\_title\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数�
 | -------- | ------------ | 
 | <a href="#dialog_title_t_dialog_title_cast">dialog\_title\_cast</a> | 转换为dialog_title对象(供脚本语言使用)。 |
 | <a href="#dialog_title_t_dialog_title_create">dialog\_title\_create</a> | 创建dialog对象。 |
+| <a href="#dialog_title_t_dialog_title_get_widget_vtable">dialog\_title\_get\_widget\_vtable</a> | 获取 dialog_title 虚表。 |
 #### dialog\_title\_cast 函数
 -----------------------
 
@@ -74,3 +75,21 @@ widget_t* dialog_title_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### dialog\_title\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="dialog_title_t_dialog_title_get_widget_vtable">获取 dialog_title 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* dialog_title_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 dialog\_title 虚表。 |

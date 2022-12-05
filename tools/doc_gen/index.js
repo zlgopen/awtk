@@ -284,7 +284,7 @@ class ApiGenerator {
 
     if (cls.methods) {
       cls.methods.forEach(iter => {
-        if (!isPrivate(iter)) {
+        if (!isPrivate(iter) && iter.return) {
           result += this.genOneFunc(cls, iter);
         }
       });

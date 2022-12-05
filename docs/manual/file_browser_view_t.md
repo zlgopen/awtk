@@ -49,6 +49,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/ui/file_chooser_for_o
 | <a href="#file_browser_view_t_file_browser_view_create_file">file\_browser\_view\_create\_file</a> | 在当前文件夹创建文件。 |
 | <a href="#file_browser_view_t_file_browser_view_get_cwd">file\_browser\_view\_get\_cwd</a> | 获取当前路径。 |
 | <a href="#file_browser_view_t_file_browser_view_get_selected_items">file\_browser\_view\_get\_selected\_items</a> | 返回当前选中的项目。 |
+| <a href="#file_browser_view_t_file_browser_view_get_widget_vtable">file\_browser\_view\_get\_widget\_vtable</a> | 获取 file_browser_view 虚表。 |
 | <a href="#file_browser_view_t_file_browser_view_reload">file\_browser\_view\_reload</a> | 重新加载。 |
 | <a href="#file_browser_view_t_file_browser_view_set_filter">file\_browser\_view\_set\_filter</a> | 设置 过滤规则。 |
 | <a href="#file_browser_view_t_file_browser_view_set_ignore_hidden_files">file\_browser\_view\_set\_ignore\_hidden\_files</a> | 设置 忽略隐藏文件。 |
@@ -200,6 +201,24 @@ darray_t* file_browser_view_get_selected_items (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | darray\_t* | 返回当前选中的项目。 |
 | widget | widget\_t* | widget对象。 |
+#### file\_browser\_view\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="file_browser_view_t_file_browser_view_get_widget_vtable">获取 file_browser_view 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* file_browser_view_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 file\_browser\_view 虚表。 |
 #### file\_browser\_view\_reload 函数
 -----------------------
 

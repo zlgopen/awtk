@@ -49,7 +49,7 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#input_method_t_action_button_enable">action\_button\_enable</a> | bool\_t | 软键盘的上的action按钮是否可用。 |
-| <a href="#input_method_t_action_button_enable">action\_button\_enable</a> | bool\_t | 软键盘的上的action按钮文本。 |
+| <a href="#input_method_t_action_button_text">action\_button\_text</a> | char* | 软键盘的上的action按钮文本。 |
 | <a href="#input_method_t_is_native">is\_native</a> | bool\_t | 是否是原生输入法。 |
 | <a href="#input_method_t_keyboard_name">keyboard\_name</a> | char* | 软键盘资源名称。 |
 #### input\_method 函数
@@ -526,11 +526,11 @@ ret_t input_method_update_action_button_info (input_method_t* im, char* text, bo
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-#### action\_button\_enable 属性
+#### action\_button\_text 属性
 -----------------------
-> <p id="input_method_t_action_button_enable">软键盘的上的action按钮文本。
+> <p id="input_method_t_action_button_text">软键盘的上的action按钮文本。
 
-* 类型：bool\_t
+* 类型：char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

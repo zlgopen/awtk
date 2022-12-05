@@ -448,7 +448,7 @@ ret_t ubjson_writer_write_kv_int64 (ubjson_writer_t* writer, const char* key, in
 * 函数原型：
 
 ```
-ret_t ubjson_writer_write_kv_object (ubjson_writer_t* writer, const char* key, object_t* value);
+ret_t ubjson_writer_write_kv_object (ubjson_writer_t* writer, const char* key, tk_object_t* value);
 ```
 
 * 参数说明：
@@ -458,7 +458,7 @@ ret_t ubjson_writer_write_kv_object (ubjson_writer_t* writer, const char* key, o
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | writer | ubjson\_writer\_t* | writer对象。 |
 | key | const char* | 键名。 |
-| value | object\_t* | 对象。 |
+| value | tk\_object\_t* | 对象。 |
 #### ubjson\_writer\_write\_kv\_object\_begin 函数
 -----------------------
 
@@ -599,7 +599,7 @@ ret_t ubjson_writer_write_null (ubjson_writer_t* writer);
 * 函数原型：
 
 ```
-ret_t ubjson_writer_write_object (ubjson_writer_t* writer, object_t* obj);
+ret_t ubjson_writer_write_object (ubjson_writer_t* writer, tk_object_t* obj);
 ```
 
 * 参数说明：
@@ -608,7 +608,7 @@ ret_t ubjson_writer_write_object (ubjson_writer_t* writer, object_t* obj);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | writer | ubjson\_writer\_t* | writer对象。 |
-| obj | object\_t* | 要写入的对象。 |
+| obj | tk\_object\_t* | 要写入的对象。 |
 #### ubjson\_writer\_write\_object\_begin 函数
 -----------------------
 

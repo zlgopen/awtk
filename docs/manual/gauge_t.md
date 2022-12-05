@@ -45,6 +45,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | -------- | ------------ | 
 | <a href="#gauge_t_gauge_cast">gauge\_cast</a> | 转换为gauge对象(供脚本语言使用)。 |
 | <a href="#gauge_t_gauge_create">gauge\_create</a> | 创建gauge对象 |
+| <a href="#gauge_t_gauge_get_widget_vtable">gauge\_get\_widget\_vtable</a> | 获取 gauge 虚表。 |
 | <a href="#gauge_t_gauge_set_draw_type">gauge\_set\_draw\_type</a> | 设置图片的显示方式。 |
 | <a href="#gauge_t_gauge_set_image">gauge\_set\_image</a> | 设置背景图片的名称。 |
 ### 属性
@@ -96,6 +97,24 @@ widget_t* gauge_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### gauge\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="gauge_t_gauge_get_widget_vtable">获取 gauge 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* gauge_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 gauge 虚表。 |
 #### gauge\_set\_draw\_type 函数
 -----------------------
 

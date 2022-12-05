@@ -106,8 +106,10 @@ return RET_OK;
 | <a href="#dialog_t_dialog_confirm">dialog\_confirm</a> | 显示『确认』对话框。 |
 | <a href="#dialog_t_dialog_create">dialog\_create</a> | 创建dialog对象。 |
 | <a href="#dialog_t_dialog_create_simple">dialog\_create\_simple</a> | 创建dialog对象，同时创建title/client。 |
+| <a href="#dialog_t_dialog_create_with_ok_cancel">dialog\_create\_with\_ok\_cancel</a> | 创建一个带有OK/Cancel按钮的对话框。 |
 | <a href="#dialog_t_dialog_get_client">dialog\_get\_client</a> | 获取client控件。 |
 | <a href="#dialog_t_dialog_get_title">dialog\_get\_title</a> | 获取title控件。 |
+| <a href="#dialog_t_dialog_get_widget_vtable">dialog\_get\_widget\_vtable</a> | 获取 dialog 虚表。 |
 | <a href="#dialog_t_dialog_info">dialog\_info</a> | 显示『提示信息』对话框。 |
 | <a href="#dialog_t_dialog_is_modal">dialog\_is\_modal</a> | 检查对话框是否为模态对话框。 |
 | <a href="#dialog_t_dialog_is_quited">dialog\_is\_quited</a> | 检查对话框是否已经退出模态。 |
@@ -115,6 +117,7 @@ return RET_OK;
 | <a href="#dialog_t_dialog_open">dialog\_open</a> | 从资源文件中加载并创建Dialog对象。 |
 | <a href="#dialog_t_dialog_quit">dialog\_quit</a> | 退出模态显示，关闭对话框。 |
 | <a href="#dialog_t_dialog_set_title">dialog\_set\_title</a> | 设置对话框的标题文本。 |
+| <a href="#dialog_t_dialog_simple_show">dialog\_simple\_show</a> |  |
 | <a href="#dialog_t_dialog_toast">dialog\_toast</a> | 显示『短暂提示信息』对话框。 |
 | <a href="#dialog_t_dialog_warn">dialog\_warn</a> | 显示『警告』对话框。 |
 ### 属性
@@ -210,6 +213,27 @@ widget_t* dialog_create_simple (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### dialog\_create\_with\_ok\_cancel 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="dialog_t_dialog_create_with_ok_cancel">创建一个带有OK/Cancel按钮的对话框。
+
+* 函数原型：
+
+```
+widget_t* dialog_create_with_ok_cancel (const char* stitle, uint32_t w, uint32_t h);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | 成功返回dialog对象，失败返回NULL。 |
+| stitle | const char* | 标题。 |
+| w | uint32\_t | 宽度。 |
+| h | uint32\_t | 高度。 |
 #### dialog\_get\_client 函数
 -----------------------
 
@@ -248,6 +272,24 @@ widget_t* dialog_get_title (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | title对象。 |
 | widget | widget\_t* | dialog对象。 |
+#### dialog\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="dialog_t_dialog_get_widget_vtable">获取 dialog 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* dialog_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 dialog 虚表。 |
 #### dialog\_info 函数
 -----------------------
 

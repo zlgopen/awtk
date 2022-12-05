@@ -6,5 +6,5 @@
 
 | 名称 | 说明 | 
 | -------- | ------- | 
-| OBJECT\_PROP\_SIZE | 属性的个数。 |
-| OBJECT\_PROP\_CHECKED | 属性是否勾选。 |
+| TK\_OBJECT\_PROP\_SIZE | 属性的个数。 |
+| TK\_OBJECT\_PROP\_CHECKED | 属性是否勾选。 |

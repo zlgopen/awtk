@@ -9,6 +9,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#object_typed_array_t_object_typed_array_cast">object\_typed\_array\_cast</a> | 转换为object_typed_array对象。 |
 | <a href="#object_typed_array_t_object_typed_array_create">object\_typed\_array\_create</a> | 创建对象。 |
 ### 属性
 <p id="object_typed_array_t_properties">
@@ -16,6 +17,25 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#object_typed_array_t_arr">arr</a> | typed\_array\_t* | typed array对象。 |
+#### object\_typed\_array\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_typed_array_t_object_typed_array_cast">转换为object_typed_array对象。
+
+* 函数原型：
+
+```
+object_typed_array_t* object_typed_array_cast (tk_object_t* obj);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | object\_typed\_array\_t* | object\_typed\_array对象。 |
+| obj | tk\_object\_t* | object\_typed\_array对象。 |
 #### object\_typed\_array\_create 函数
 -----------------------
 
@@ -26,14 +46,14 @@
 * 函数原型：
 
 ```
-object_t* object_typed_array_create (value_type_t type, uint32_t capacity);
+tk_object_t* object_typed_array_create (value_type_t type, uint32_t capacity);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | object\_t* | 返回object对象。 |
+| 返回值 | tk\_object\_t* | 返回object对象。 |
 | type | value\_type\_t | 元素的类型。 |
 | capacity | uint32\_t | 数组的初始容量(元素个数)。 |
 #### arr 属性

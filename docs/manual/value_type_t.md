@@ -22,9 +22,14 @@
 | VALUE\_TYPE\_DOUBLE | double类型。 |
 | VALUE\_TYPE\_STRING | char*类型。 |
 | VALUE\_TYPE\_WSTRING | wchar\_t*类型。 |
-| VALUE\_TYPE\_OBJECT | object\_t*类型。 |
+| VALUE\_TYPE\_OBJECT | tk\_object\_t*类型。 |
 | VALUE\_TYPE\_SIZED\_STRING | 带长度的字符串。 |
 | VALUE\_TYPE\_BINARY | 二进制数据。 |
 | VALUE\_TYPE\_UBJSON | 二进制数据(UBJSON)。 |
 | VALUE\_TYPE\_TOKEN | 特殊用途。 |
 | VALUE\_TYPE\_GRADIENT | 渐变颜色。 |
+| VALUE\_TYPE\_ID | id。 |
+| VALUE\_TYPE\_FUNC | func。 |
+| VALUE\_TYPE\_FUNC\_DEF | func definition。 |
+| VALUE\_TYPE\_POINTER\_REF | void*类型。 |
+| VALUE\_TYPE\_BITMAP | 位图类型。 |

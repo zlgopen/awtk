@@ -16,6 +16,7 @@
 | <a href="#locale_info_t_locale_info_reload">locale\_info\_reload</a> | 重新加载字符串资源。 |
 | <a href="#locale_info_t_locale_info_set">locale\_info\_set</a> | 设置缺省locale_info。 |
 | <a href="#locale_info_t_locale_info_set_assets_manager">locale\_info\_set\_assets\_manager</a> | 设置资源管理器对象。 |
+| <a href="#locale_info_t_locale_info_set_fallback_tr">locale\_info\_set\_fallback\_tr</a> | 设置候补翻译函数。 |
 | <a href="#locale_info_t_locale_info_tr">locale\_info\_tr</a> | 翻译字符串。 |
 ### 属性
 <p id="locale_info_t_properties">
@@ -202,6 +203,26 @@ ret_t locale_info_set_assets_manager (locale_info_t* locale_info, assets_manager
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | locale\_info | locale\_info\_t* | locale\_info对象。 |
 | assets\_manager | assets\_manager\_t* | 资源管理器。 |
+#### locale\_info\_set\_fallback\_tr 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="locale_info_t_locale_info_set_fallback_tr">设置候补翻译函数。
+
+* 函数原型：
+
+```
+ret_t locale_info_set_fallback_tr (locale_info_t* locale_info, locale_info_tr_t tr);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| locale\_info | locale\_info\_t* | locale\_info对象。 |
+| tr | locale\_info\_tr\_t | fallback翻译函数。 |
 #### locale\_info\_tr 函数
 -----------------------
 

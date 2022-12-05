@@ -20,7 +20,9 @@
 | <a href="#window_base_t_window_base_cast">window\_base\_cast</a> | 转换为window_base对象(供脚本语言使用)。 |
 | <a href="#window_base_t_window_base_create">window\_base\_create</a> | 创建window base对象。 |
 | <a href="#window_base_t_window_base_get_prop">window\_base\_get\_prop</a> | 窗口get_prop函数的缺省实现。 |
+| <a href="#window_base_t_window_base_get_widget_vtable">window\_base\_get\_widget\_vtable</a> | 获取 window_base 虚表。 |
 | <a href="#window_base_t_window_base_invalidate">window\_base\_invalidate</a> | 窗口on_invalidate函数的缺省实现。 |
+| <a href="#window_base_t_window_base_on_copy">window\_base\_on\_copy</a> | 默认拷贝函数。 |
 | <a href="#window_base_t_window_base_on_destroy">window\_base\_on\_destroy</a> | 窗口on_destroy函数的缺省实现。 |
 | <a href="#window_base_t_window_base_on_event">window\_base\_on\_event</a> | 窗口on_event函数的缺省实现。 |
 | <a href="#window_base_t_window_base_on_paint_begin">window\_base\_on\_paint\_begin</a> | 窗口on_paint_begin函数的缺省实现。 |
@@ -33,6 +35,7 @@
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
+| <a href="#window_base_t_applet_name">applet\_name</a> | char* | 小应用程序(applet)的名称。 |
 | <a href="#window_base_t_assets_manager">assets\_manager</a> | assets\_manager\_t* | 获取资源管理器对象。 |
 | <a href="#window_base_t_auto_scale_children_h">auto\_scale\_children\_h</a> | bool\_t | 窗口大小与设计时大小不同时，是否自动调整子控件的高度。 |
 | <a href="#window_base_t_auto_scale_children_w">auto\_scale\_children\_w</a> | bool\_t | 窗口大小与设计时大小不同时，是否自动调整子控件的宽度。 |
@@ -45,6 +48,7 @@
 | <a href="#window_base_t_disable_anim">disable\_anim</a> | bool\_t | 禁用窗口动画。 |
 | <a href="#window_base_t_font_manager">font\_manager</a> | font\_manager\_t* | 获取字体管理器对象。 |
 | <a href="#window_base_t_image_manager">image\_manager</a> | image\_manager\_t* | 获取图片管理器对象。 |
+| <a href="#window_base_t_locale_info">locale\_info</a> | locale\_info\_t* | 获取多国语言字符串管理器对象。 |
 | <a href="#window_base_t_move_focus_down_key">move\_focus\_down\_key</a> | char* | 向下移动焦点的键值。 |
 | <a href="#window_base_t_move_focus_left_key">move\_focus\_left\_key</a> | char* | 向左移动焦点的键值。 |
 | <a href="#window_base_t_move_focus_next_key">move\_focus\_next\_key</a> | char* | 向后移动焦点的键值。 |
@@ -153,6 +157,24 @@ ret_t window_base_get_prop (widget_t* widget, const char* name, value_t* v);
 | widget | widget\_t* | window\_base对象。g |
 | name | const char* | 属性名。 |
 | v | value\_t* | value对象 |
+#### window\_base\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_base_t_window_base_get_widget_vtable">获取 window_base 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* window_base_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 window\_base 虚表。 |
 #### window\_base\_invalidate 函数
 -----------------------
 
@@ -173,6 +195,26 @@ ret_t window_base_invalidate (widget_t* widget, const rect_t* rect);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | window\_base对象。 |
 | rect | const rect\_t* | rect对象。 |
+#### window\_base\_on\_copy 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_base_t_window_base_on_copy">默认拷贝函数。
+
+* 函数原型：
+
+```
+ret_t window_base_on_copy (widget_t* widget, widget_t* other);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。。 |
+| widget | widget\_t* | window\_base对象。 |
+| other | widget\_t* | other window\_base对象。 |
 #### window\_base\_on\_destroy 函数
 -----------------------
 
@@ -313,6 +355,24 @@ ret_t window_base_set_prop (widget_t* widget, const char* name, const value_t* v
 | widget | widget\_t* | window\_base对象。 |
 | name | const char* | 属性名。 |
 | v | const value\_t* | value对象 |
+#### applet\_name 属性
+-----------------------
+> <p id="window_base_t_applet_name">小应用程序(applet)的名称。
+
+> 如果该窗口属于某个独立的小程序应用(applet)，需要指定它的名称，以便到对应的资源目录查找资源。
+
+* 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### assets\_manager 属性
 -----------------------
 > <p id="window_base_t_assets_manager">获取资源管理器对象。
@@ -502,6 +562,20 @@ ret_t window_base_set_prop (widget_t* widget, const char* name, const value_t* v
 把图片管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载图片资源的问题。
 
 * 类型：image\_manager\_t*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 否 |
+| 可直接修改 | 否 |
+| 可通过widget\_get\_prop读取 | 是 |
+#### locale\_info 属性
+-----------------------
+> <p id="window_base_t_locale_info">获取多国语言字符串管理器对象。
+
+>
+把多国语言字符串管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载资源资源的问题。
+
+* 类型：locale\_info\_t*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

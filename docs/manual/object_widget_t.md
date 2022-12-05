@@ -27,14 +27,14 @@
 * 函数原型：
 
 ```
-object_t* object_widget_create (widget_t* widget);
+tk_object_t* object_widget_create (widget_t* widget);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | object\_t* | 返回object对象。 |
+| 返回值 | tk\_object\_t* | 返回object对象。 |
 | widget | widget\_t* | 控件。 |
 #### widget 属性
 -----------------------

@@ -41,6 +41,7 @@ widget_t* list_view = list_view_h_create(win, 0, 0, 0, 0);
 | -------- | ------------ | 
 | <a href="#list_view_h_t_list_view_h_cast">list\_view\_h\_cast</a> | 转换为list_view_h对象(供脚本语言使用)。 |
 | <a href="#list_view_h_t_list_view_h_create">list\_view\_h\_create</a> | 创建list_view_h对象 |
+| <a href="#list_view_h_t_list_view_h_get_widget_vtable">list\_view\_h\_get\_widget\_vtable</a> | 获取 list_view_h 虚表。 |
 | <a href="#list_view_h_t_list_view_h_set_item_width">list\_view\_h\_set\_item\_width</a> | 设置列表项的宽度。 |
 | <a href="#list_view_h_t_list_view_h_set_spacing">list\_view\_h\_set\_spacing</a> | 设置列表项的间距。 |
 ### 属性
@@ -92,6 +93,24 @@ widget_t* list_view_h_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### list\_view\_h\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="list_view_h_t_list_view_h_get_widget_vtable">获取 list_view_h 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* list_view_h_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 list\_view\_h 虚表。 |
 #### list\_view\_h\_set\_item\_width 函数
 -----------------------
 

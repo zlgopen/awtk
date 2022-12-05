@@ -81,7 +81,7 @@ ret_t clip_board_destroy (clip_board_t* cl);
 * 函数原型：
 
 ```
-ret_t clip_board_get_data (clip_board_t* cl, clip_board_data_type_t* type, void** data data, uint32_t* size);
+ret_t clip_board_get_data (clip_board_t* cl, clip_board_data_type_t* type, void** data, uint32_t* size);
 ```
 
 * 参数说明：
@@ -91,7 +91,7 @@ ret_t clip_board_get_data (clip_board_t* cl, clip_board_data_type_t* type, void*
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | cl | clip\_board\_t* | 剪切板对象。 |
 | type | clip\_board\_data\_type\_t* | 返回数据类型(可为NULL)。 |
-| data | void** data | 返回数据(可为NULL)。 |
+| data | void** | 返回数据(可为NULL)。 |
 | size | uint32\_t* | 返回数据长度(可为NULL)。 |
 #### clip\_board\_get\_text 函数
 -----------------------
@@ -140,7 +140,7 @@ ret_t clip_board_set (clip_board_t* cl);
 * 函数原型：
 
 ```
-ret_t clip_board_set_data (clip_board_t* cl, clip_board_data_type_t type, const void* data data, uint32_t size);
+ret_t clip_board_set_data (clip_board_t* cl, clip_board_data_type_t type, const void* data, uint32_t size);
 ```
 
 * 参数说明：
@@ -150,7 +150,7 @@ ret_t clip_board_set_data (clip_board_t* cl, clip_board_data_type_t type, const 
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | cl | clip\_board\_t* | 剪切板对象。 |
 | type | clip\_board\_data\_type\_t | 数据类型。 |
-| data | const void* data | 数据。 |
+| data | const void* | 数据。 |
 | size | uint32\_t | 数据长度 |
 #### clip\_board\_set\_text 函数
 -----------------------

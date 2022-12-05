@@ -64,6 +64,7 @@ widget_t* list_view = list_view_create(win, 0, 0, 0, 0);
 | -------- | ------------ | 
 | <a href="#list_view_t_list_view_cast">list\_view\_cast</a> | 转换为list_view对象(供脚本语言使用)。 |
 | <a href="#list_view_t_list_view_create">list\_view\_create</a> | 创建list_view对象 |
+| <a href="#list_view_t_list_view_get_widget_vtable">list\_view\_get\_widget\_vtable</a> | 获取 list_view 虚表。 |
 | <a href="#list_view_t_list_view_reinit">list\_view\_reinit</a> | list_view重新初始化。 |
 | <a href="#list_view_t_list_view_set_auto_hide_scroll_bar">list\_view\_set\_auto\_hide\_scroll\_bar</a> | 设置是否自动隐藏滚动条。 |
 | <a href="#list_view_t_list_view_set_default_item_height">list\_view\_set\_default\_item\_height</a> | 设置列表项的缺省高度。 |
@@ -120,6 +121,24 @@ widget_t* list_view_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### list\_view\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="list_view_t_list_view_get_widget_vtable">获取 list_view 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* list_view_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 list\_view 虚表。 |
 #### list\_view\_reinit 函数
 -----------------------
 

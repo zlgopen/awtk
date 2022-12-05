@@ -21,36 +21,46 @@
 | <a href="#utils_t_tk_atoi">tk\_atoi</a> | 将字符串转换为整型数。 |
 | <a href="#utils_t_tk_atol">tk\_atol</a> | 将字符串转换为整型。 |
 | <a href="#utils_t_tk_atoul">tk\_atoul</a> | 将字符串转换为整型。 |
+| <a href="#utils_t_tk_eval_ratio_or_px">tk\_eval\_ratio\_or\_px</a> | 如果expr以px/PX结束，直接返回expr前面的数值。 |
 | <a href="#utils_t_tk_ftoa">tk\_ftoa</a> | 将浮点型转换为字符串。 |
+| <a href="#utils_t_tk_is_ui_thread">tk\_is\_ui\_thread</a> | 判断当前线程是否是UI线程。 |
 | <a href="#utils_t_tk_is_valid_name">tk\_is\_valid\_name</a> | 判断是否是有效的属性名。 |
 | <a href="#utils_t_tk_itoa">tk\_itoa</a> | 将整型转换为字符串。 |
+| <a href="#utils_t_tk_memcpy">tk\_memcpy</a> | 内存拷贝。 |
 | <a href="#utils_t_tk_memcpy16">tk\_memcpy16</a> | 拷贝数据2字节。 |
 | <a href="#utils_t_tk_memcpy32">tk\_memcpy32</a> | 拷贝数据4字节。 |
+| <a href="#utils_t_tk_memdup">tk\_memdup</a> | 内存拷贝。 |
 | <a href="#utils_t_tk_memset16">tk\_memset16</a> | 设置数据2字节。 |
 | <a href="#utils_t_tk_memset24">tk\_memset24</a> | 设置数据3字节。 |
 | <a href="#utils_t_tk_memset32">tk\_memset32</a> | 设置数据4字节。 |
+| <a href="#utils_t_tk_normalize_key_name">tk\_normalize\_key\_name</a> |  |
 | <a href="#utils_t_tk_pixel_copy">tk\_pixel\_copy</a> | 已bpp字节为标准拷贝数据。 |
 | <a href="#utils_t_tk_pointer_from_int">tk\_pointer\_from\_int</a> | 将int转换成指针。 |
 | <a href="#utils_t_tk_pointer_to_int">tk\_pointer\_to\_int</a> | 将指针转换成int。 |
 | <a href="#utils_t_tk_qsort">tk\_qsort</a> | 快速排序。 |
+| <a href="#utils_t_tk_replace_char">tk\_replace\_char</a> | 替换字符。 |
+| <a href="#utils_t_tk_replace_locale">tk\_replace\_locale</a> |  |
+| <a href="#utils_t_tk_set_ui_thread">tk\_set\_ui\_thread</a> | 设置UI线程的ID。 |
 | <a href="#utils_t_tk_skip_to_num">tk\_skip\_to\_num</a> | 跳过字符串函数，如：字符串"hello123world"，返回的结果是"123world"。 |
 | <a href="#utils_t_tk_snprintf">tk\_snprintf</a> | 将可变参数(...)按照format格式化字符串，并将字符串复制到str中。 |
 | <a href="#utils_t_tk_sscanf">tk\_sscanf</a> | 从字符串读取格式化输入。 |
 | <a href="#utils_t_tk_str_append">tk\_str\_append</a> | 字符串追加函数。 |
-| <a href="#utils_t_tk_str_cmp">tk\_str\_cmp</a> | 字符串比较函数。 |
 | <a href="#utils_t_tk_str_copy">tk\_str\_copy</a> | 字符串拷贝函数。 |
 | <a href="#utils_t_tk_str_end_with">tk\_str\_end\_with</a> | 检查字符串是否以指定的字符串appendix结尾。 |
-| <a href="#utils_t_tk_str_icmp">tk\_str\_icmp</a> | 字符串比较函数（不区分大小写）。 |
+| <a href="#utils_t_tk_str_is_in_array">tk\_str\_is\_in\_array</a> | 检查字符串是否在字符串数组中。 |
 | <a href="#utils_t_tk_str_start_with">tk\_str\_start\_with</a> | 检查字符串是否以指定的字符串prefix开头。 |
 | <a href="#utils_t_tk_str_tolower">tk\_str\_tolower</a> | 将大写字母转换为小写字母。 |
 | <a href="#utils_t_tk_str_totitle">tk\_str\_totitle</a> | 将单词首字母转换为大写字母。 |
 | <a href="#utils_t_tk_str_toupper">tk\_str\_toupper</a> | 将小写字母转换为大写字母。 |
+| <a href="#utils_t_tk_strcmp">tk\_strcmp</a> | 字符串比较函数。 |
 | <a href="#utils_t_tk_strcpy">tk\_strcpy</a> | 将src所指向的字符串复制到dst。 |
 | <a href="#utils_t_tk_strdup">tk\_strdup</a> | 字符串拷贝函数。 |
+| <a href="#utils_t_tk_stricmp">tk\_stricmp</a> | 字符串比较函数（不区分大小写）。 |
 | <a href="#utils_t_tk_strlen">tk\_strlen</a> | 获取字符串的长度。str为空时返回0。 |
 | <a href="#utils_t_tk_strncpy">tk\_strncpy</a> | 将src所指向的字符串复制到dst，最多复制len个字符串，并在[len]位置添加'\0'。 |
 | <a href="#utils_t_tk_strncpy_s">tk\_strncpy\_s</a> | 将src所指向的字符串复制到dst，最多复制min(dst_len-1, src_len)个字符串，并在[len]位置添加'\0'。 |
 | <a href="#utils_t_tk_strndup">tk\_strndup</a> | 字符串拷贝函数，最多复制len个字符串。 |
+| <a href="#utils_t_tk_strnlen">tk\_strnlen</a> | 获取字符串的长度。str为空时返回0。 |
 | <a href="#utils_t_tk_strrstr">tk\_strrstr</a> | 从后往前查找指定的字符串。 |
 | <a href="#utils_t_tk_strtoi">tk\_strtoi</a> | 将字符串转换为整型。 |
 | <a href="#utils_t_tk_strtol">tk\_strtol</a> | 将字符串转换为长整型。 |
@@ -61,9 +71,12 @@
 | <a href="#utils_t_tk_watof">tk\_watof</a> | 将宽字符串转换为浮点类型。 |
 | <a href="#utils_t_tk_watoi">tk\_watoi</a> | 将宽字符串转换为整型。 |
 | <a href="#utils_t_tk_watoi_n">tk\_watoi\_n</a> | 将宽字符串转换为整型。 |
+| <a href="#utils_t_tk_wild_card_match">tk\_wild\_card\_match</a> | 简单的通配符匹配。*匹配0到多个字符，?匹配1个字符。 |
 | <a href="#utils_t_tk_wstr_count_c">tk\_wstr\_count\_c</a> | 统计UCS字符串中某个字符出现的次数。 |
 | <a href="#utils_t_tk_wstr_dup_utf8">tk\_wstr\_dup\_utf8</a> | 将utf8字符串拷贝为UCS字符串。 |
+| <a href="#utils_t_tk_wstrcmp">tk\_wstrcmp</a> | 字符串比较函数。 |
 | <a href="#utils_t_tk_wstrdup">tk\_wstrdup</a> | 宽字符串拷贝函数。 |
+| <a href="#utils_t_tk_wstricmp">tk\_wstricmp</a> | 字符串比较函数（不区分大小写）。 |
 | <a href="#utils_t_xml_file_expand_read">xml\_file\_expand\_read</a> | expand include process instruction to file content: <?include filename="view_me.inc" ?> |
 #### compare\_always\_equal 函数
 -----------------------
@@ -218,7 +231,7 @@ ret_t image_region_parse (uint32_t img_w, uint32_t img_h, const char* region, re
 * 函数原型：
 
 ```
-ret_t object_to_json (object_t* obj, str_t* str);
+ret_t object_to_json (tk_object_t* obj, str_t* str);
 ```
 
 * 参数说明：
@@ -226,7 +239,7 @@ ret_t object_to_json (object_t* obj, str_t* str);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| obj | object\_t* | object对象。 |
+| obj | tk\_object\_t* | object对象。 |
 | str | str\_t* | 用于返回结果。 |
 #### pointer\_compare 函数
 -----------------------
@@ -343,6 +356,37 @@ uint64_t tk_atoul (const char* str);
 | -------- | ----- | --------- |
 | 返回值 | uint64\_t | 返回转换后的整型。 |
 | str | const char* | 要转换为整型的字符串。 |
+#### tk\_eval\_ratio\_or\_px 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_eval_ratio_or_px">如果expr以px/PX结束，直接返回expr前面的数值。
+如果expr以%结束，而且数值大于1，返回(数值 * value)/100。
+否则将数值当作比例，返回(数值 * value)。
+
+> 为了兼容以前的处理，如果expr以%结束，但是数值在0到1之间，此时忽略%。
+
+```c
+tk_eval_ratio_or_px("0.5", 100) => 50
+tk_eval_ratio_or_px("20px", 100) => 20
+tk_eval_ratio_or_px("20%", 100) => 20
+tk_eval_ratio_or_px("0.5%", 100) => 50
+```
+
+* 函数原型：
+
+```
+float_t tk_eval_ratio_or_px (const char* expr, int32_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | float\_t | 返回计算结果。 |
+| expr | const char* | 表达式(如100px, 0.5等) |
+| value | int32\_t | 值。 |
 #### tk\_ftoa 函数
 -----------------------
 
@@ -364,6 +408,24 @@ const char* tk_ftoa (char* str, int len, double f);
 | str | char* | 保存字符串缓冲区。 |
 | len | int | 缓冲区大小。 |
 | f | double | 要转换的浮点型。 |
+#### tk\_is\_ui\_thread 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_is_ui_thread">判断当前线程是否是UI线程。
+
+* 函数原型：
+
+```
+bool_t tk_is_ui_thread ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示是，否则表示否。 |
 #### tk\_is\_valid\_name 函数
 -----------------------
 
@@ -404,6 +466,28 @@ const char* tk_itoa (char* str, int len, int n);
 | str | char* | 保存字符串缓冲区。 |
 | len | int | 缓冲区大小。 |
 | n | int | 要转换的整型。 |
+#### tk\_memcpy 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_memcpy">内存拷贝。
+在地址对齐的情况下并且少于 64 个字节，效率会比 memcpy 要快，否则会退化为 memcpy。
+
+* 函数原型：
+
+```
+void* tk_memcpy (void* dst, const void* src, uint32_t len);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | void* | 返回成功返回 dst 地址，失败返回 NULL。 |
+| dst | void* | 目标字符串。 |
+| src | const void* | 源字符串。 |
+| len | uint32\_t | 拷贝长度。 |
 #### tk\_memcpy16 函数
 -----------------------
 
@@ -446,6 +530,26 @@ uint32_t* tk_memcpy32 (uint32_t* dst, uint32_t* src, uint32_t size);
 | dst | uint32\_t* | 目标 |
 | src | uint32\_t* | 源。 |
 | size | uint32\_t | 个数。 |
+#### tk\_memdup 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_memdup">内存拷贝。
+
+* 函数原型：
+
+```
+void* tk_memdup (const void* data, uint32_t len);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | void* | 返回指向的向新的内存指针，如果失败则返回NULL。 |
+| data | const void* | 原内存。 |
+| len | uint32\_t | 长度。 |
 #### tk\_memset16 函数
 -----------------------
 
@@ -594,6 +698,64 @@ ret_t tk_qsort (void** array, size_t nr, tk_compare_t cmp);
 | array | void** | 数据。 |
 | nr | size\_t | 元素个数。 |
 | cmp | tk\_compare\_t | 比较函数。 |
+#### tk\_replace\_char 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_replace_char">替换字符。
+
+* 函数原型：
+
+```
+char* tk_replace_char (char* str, char from, char to);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | char* | 返回str。 |
+| str | char* | 原字符串。 |
+| from | char | 被替换的字符。 |
+| to | char | 替换成的字符。 |
+#### tk\_replace\_locale 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_replace_locale">
+
+* 函数原型：
+
+```
+ret_t tk_replace_locale ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+#### tk\_set\_ui\_thread 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_set_ui_thread">设置UI线程的ID。
+
+* 函数原型：
+
+```
+ret_t tk_set_ui_thread (uint64_t ui_thread_id);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| ui\_thread\_id | uint64\_t | UI线程的ID。 |
 #### tk\_skip\_to\_num 函数
 -----------------------
 
@@ -675,26 +837,6 @@ ret_t tk_str_append (char* str, uint32_t max_len, const char* s);
 | str | char* | 被追加字符串。 |
 | max\_len | uint32\_t | 字符串的最大长度。 |
 | s | const char* | 要追加的字符串。 |
-#### tk\_str\_cmp 函数
------------------------
-
-* 函数功能：
-
-> <p id="utils_t_tk_str_cmp">字符串比较函数。
-
-* 函数原型：
-
-```
-int32_t tk_str_cmp (const char* a, const char* b);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | int32\_t | 如果返回值=-1，则表示a为NULL；如果返回值=1，则表示b为NULL；如果返回值<0，则表示a小于b；如果返回值>0，则表示a大于b；如果返回值=0，则表示a等于b。 |
-| a | const char* | 要进行比较的第一个字符串。 |
-| b | const char* | 要进行比较的第二个字符串。 |
 #### tk\_str\_copy 函数
 -----------------------
 
@@ -736,26 +878,27 @@ bool_t tk_str_end_with (const char* str, const char* appendix);
 | 返回值 | bool\_t | 返回TRUE表示是；否则表示不是。 |
 | str | const char* | 要检查字符串。 |
 | appendix | const char* | 被检查的字符串。 |
-#### tk\_str\_icmp 函数
+#### tk\_str\_is\_in\_array 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="utils_t_tk_str_icmp">字符串比较函数（不区分大小写）。
+> <p id="utils_t_tk_str_is_in_array">检查字符串是否在字符串数组中。
 
 * 函数原型：
 
 ```
-int32_t tk_str_icmp (const char* a, const char* b);
+bool_t tk_str_is_in_array (const char* str, const char** str_array, uint32_t array_size);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | int32\_t | 如果返回值=-1，则表示a为NULL；如果返回值=1，则表示b为NULL；如果返回值<0，则表示a小于b；如果返回值>0，则表示a大于b；如果返回值=0，则表示a等于b。 |
-| a | const char* | 要进行比较的第一个字符串。 |
-| b | const char* | 要进行比较的第二个字符串。 |
+| 返回值 | bool\_t | 返回TRUE表示在，否则表示不在。 |
+| str | const char* | 字符串。 |
+| str\_array | const char** | 字符串数组。 |
+| array\_size | uint32\_t | 字符串数组中字符串的个数。 |
 #### tk\_str\_start\_with 函数
 -----------------------
 
@@ -836,6 +979,26 @@ char* tk_str_toupper (char* str);
 | -------- | ----- | --------- |
 | 返回值 | char* | 返回转换后的大写字母字符串。 |
 | str | char* | 要被转换成大写字母的字符串。 |
+#### tk\_strcmp 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_strcmp">字符串比较函数。
+
+* 函数原型：
+
+```
+int32_t tk_strcmp (const char* a, const char* b);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int32\_t | 如果返回值=-1，则表示a为NULL；如果返回值=1，则表示b为NULL；如果返回值<0，则表示a小于b；如果返回值>0，则表示a大于b；如果返回值=0，则表示a等于b。 |
+| a | const char* | 要进行比较的第一个字符串。 |
+| b | const char* | 要进行比较的第二个字符串。 |
 #### tk\_strcpy 函数
 -----------------------
 
@@ -875,6 +1038,26 @@ char* tk_strdup (const char* str);
 | -------- | ----- | --------- |
 | 返回值 | char* | 返回指向的复制字符串指针，如果失败则返回NULL。 |
 | str | const char* | 原字符串。 |
+#### tk\_stricmp 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_stricmp">字符串比较函数（不区分大小写）。
+
+* 函数原型：
+
+```
+int32_t tk_stricmp (const char* a, const char* b);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int32\_t | 如果返回值=-1，则表示a为NULL；如果返回值=1，则表示b为NULL；如果返回值<0，则表示a小于b；如果返回值>0，则表示a大于b；如果返回值=0，则表示a等于b。 |
+| a | const char* | 要进行比较的第一个字符串。 |
+| b | const char* | 要进行比较的第二个字符串。 |
 #### tk\_strlen 函数
 -----------------------
 
@@ -923,6 +1106,7 @@ char* tk_strncpy (char* dst, const char* src, size_t len);
 * 函数功能：
 
 > <p id="utils_t_tk_strncpy_s">将src所指向的字符串复制到dst，最多复制min(dst_len-1, src_len)个字符串，并在[len]位置添加'\0'。
+如果 dst 和 src 的地址对齐的话，效率会比 strncpy 高，如果小于 64 个字节的话，效率是最高的。
 
 * 函数原型：
 
@@ -959,6 +1143,26 @@ char* tk_strndup (const char* str, uint32_t len);
 | 返回值 | char* | 返回指向的复制字符串指针，如果失败则返回NULL。 |
 | str | const char* | 原字符串。 |
 | len | uint32\_t | 要复制的字符串个数。 |
+#### tk\_strnlen 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_strnlen">获取字符串的长度。str为空时返回0。
+
+* 函数原型：
+
+```
+uint32_t tk_strnlen (const char* str, uint32_t );
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回字符串的长度。 |
+| str | const char* | 字符串。 |
+|  | uint32\_t | 。 |
 #### tk\_strrstr 函数
 -----------------------
 
@@ -1162,6 +1366,32 @@ int tk_watoi_n (const wchar_t* str, uint32_t len);
 | 返回值 | int | 返回转换后的整型。 |
 | str | const wchar\_t* | 要转换为整型的宽字符串。 |
 | len | uint32\_t | 字符串长度。 |
+#### tk\_wild\_card\_match 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_wild_card_match">简单的通配符匹配。*匹配0到多个字符，?匹配1个字符。
+示例：
+
+```c
+tk_wild_card_match("*c", "abc");
+tk_wild_card_match("a?c", "abc");
+```
+
+* 函数原型：
+
+```
+bool_t tk_wild_card_match (const char* pattern, const char* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示匹配，否则表示不匹配。 |
+| pattern | const char* | 字符串。 |
+| str | const char* | 字符串。 |
 #### tk\_wstr\_count\_c 函数
 -----------------------
 
@@ -1201,6 +1431,26 @@ wchar_t* tk_wstr_dup_utf8 (char* str);
 | -------- | ----- | --------- |
 | 返回值 | wchar\_t* | 返回UCS字符串(需要调用TKMEM\_FREE释放)。 |
 | str | char* | utf8编码的字符串。 |
+#### tk\_wstrcmp 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_wstrcmp">字符串比较函数。
+
+* 函数原型：
+
+```
+int32_t tk_wstrcmp (const wchar_t* a, const wchar_t* b);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int32\_t | 如果返回值=-1，则表示a为NULL；如果返回值=1，则表示b为NULL；如果返回值<0，则表示a小于b；如果返回值>0，则表示a大于b；如果返回值=0，则表示a等于b。 |
+| a | const wchar\_t* | 要进行比较的第一个字符串。 |
+| b | const wchar\_t* | 要进行比较的第二个字符串。 |
 #### tk\_wstrdup 函数
 -----------------------
 
@@ -1220,6 +1470,26 @@ wchar_t* tk_wstrdup (const wchar_t* str);
 | -------- | ----- | --------- |
 | 返回值 | wchar\_t* | 返回指向的复制宽字符串指针，如果失败则返回NULL。 |
 | str | const wchar\_t* | 原宽字符串。 |
+#### tk\_wstricmp 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_wstricmp">字符串比较函数（不区分大小写）。
+
+* 函数原型：
+
+```
+int32_t tk_wstricmp (const wchar_t* a, const wchar_t* b);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int32\_t | 如果返回值=-1，则表示a为NULL；如果返回值=1，则表示b为NULL；如果返回值<0，则表示a小于b；如果返回值>0，则表示a大于b；如果返回值=0，则表示a等于b。 |
+| a | const wchar\_t* | 要进行比较的第一个字符串。 |
+| b | const wchar\_t* | 要进行比较的第二个字符串。 |
 #### xml\_file\_expand\_read 函数
 -----------------------
 

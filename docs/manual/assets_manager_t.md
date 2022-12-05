@@ -49,6 +49,7 @@ ui      UI描述数据。
 | <a href="#assets_manager_t_assets_manager_find_in_cache">assets\_manager\_find\_in\_cache</a> | 在资源管理器的缓存中查找指定的资源(不引用)。 |
 | <a href="#assets_manager_t_assets_manager_get_res_root">assets\_manager\_get\_res\_root</a> | 获取资源所在的目录(其下目录结构请参考demos)。 |
 | <a href="#assets_manager_t_assets_manager_init">assets\_manager\_init</a> | 初始化资源管理器。 |
+| <a href="#assets_manager_t_assets_manager_is_save_assets_list">assets\_manager\_is\_save\_assets\_list</a> | 检查指定类型是否需要保存。 |
 | <a href="#assets_manager_t_assets_manager_load">assets\_manager\_load</a> | 从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\_FS\_RES时才生效。 |
 | <a href="#assets_manager_t_assets_manager_load_ex">assets\_manager\_load\_ex</a> | 从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\_FS\_RES时才生效。 |
 | <a href="#assets_manager_t_assets_manager_load_file">assets\_manager\_load\_file</a> | 获取path里的资源。 |
@@ -58,6 +59,7 @@ ui      UI描述数据。
 | <a href="#assets_manager_t_assets_manager_set">assets\_manager\_set</a> | 设置缺省资源管理器。 |
 | <a href="#assets_manager_t_assets_manager_set_custom_build_asset_dir">assets\_manager\_set\_custom\_build\_asset\_dir</a> | 设置一个函数，该函数用于生成资源路径。 |
 | <a href="#assets_manager_t_assets_manager_set_custom_load_asset">assets\_manager\_set\_custom\_load\_asset</a> | 设置一个函数，该函数用于实现自定义加载资源。 |
+| <a href="#assets_manager_t_assets_manager_set_fallback_load_asset">assets\_manager\_set\_fallback\_load\_asset</a> | 设置一个函数，该函数在找不到资源时加载后补资源。 |
 | <a href="#assets_manager_t_assets_manager_set_loader">assets\_manager\_set\_loader</a> | 设置loader。 |
 | <a href="#assets_manager_t_assets_manager_set_locale_info">assets\_manager\_set\_locale\_info</a> | 设置locale_info对象。 |
 | <a href="#assets_manager_t_assets_manager_set_res_root">assets\_manager\_set\_res\_root</a> | 设置资源所在的目录(其下目录结构请参考demos)。 |
@@ -88,6 +90,7 @@ assets_manager_t* assets_manager ();
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_add">向资源管理器中增加一个资源。
+备注：同一份资源多次调用会出现缓存叠加的问题，导致内存泄露
 
 * 函数原型：
 
@@ -108,6 +111,7 @@ ret_t assets_manager_add (assets_manager_t* am, asset_info_t info);
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_add_data">向资源管理器中增加一个资源data。
+备注：同一份资源多次调用会出现缓存叠加的问题，导致内存泄露
 
 * 函数原型：
 
@@ -304,12 +308,32 @@ assets_manager_t* assets_manager_init (assets_manager_t* am, uint32_t init_nr);
 | 返回值 | assets\_manager\_t* | 返回asset manager对象。 |
 | am | assets\_manager\_t* | asset manager对象。 |
 | init\_nr | uint32\_t | 预先分配资源的个数。 |
+#### assets\_manager\_is\_save\_assets\_list 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="assets_manager_t_assets_manager_is_save_assets_list">检查指定类型是否需要保存。
+
+* 函数原型：
+
+```
+bool_t assets_manager_is_save_assets_list (asset_type_t type);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示需要保持，否则不需要保存。 |
+| type | asset\_type\_t | 资源类型。 |
 #### assets\_manager\_load 函数
 -----------------------
 
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_load">从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\_FS\_RES时才生效。
+备注：内部使用的，如果是加载资源的话，建议使用 assets_manager_ref 函数。
 
 * 函数原型：
 
@@ -331,11 +355,12 @@ asset_info_t* assets_manager_load (assets_manager_t* am, asset_type_t type, cons
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_load_ex">从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\_FS\_RES时才生效。
+备注：内部使用的，如果是加载资源的话，建议使用 assets_manager_ref_ex 函数。
 
 * 函数原型：
 
 ```
-asset_info_t* assets_manager_load_ex (assets_manager_t* am, asset_type_t type, asset_type_t type, char* name);
+asset_info_t* assets_manager_load_ex (assets_manager_t* am, asset_type_t type, uint16_t subtype, char* name);
 ```
 
 * 参数说明：
@@ -345,7 +370,7 @@ asset_info_t* assets_manager_load_ex (assets_manager_t* am, asset_type_t type, a
 | 返回值 | asset\_info\_t* | 返回资源。 |
 | am | assets\_manager\_t* | asset manager对象。 |
 | type | asset\_type\_t | 资源的类型。 |
-| type | asset\_type\_t | 资源的子类型。 |
+| subtype | uint16\_t | 资源的子类型。 |
 | name | char* | 资源的名称。 |
 #### assets\_manager\_load\_file 函数
 -----------------------
@@ -374,6 +399,7 @@ asset_info_t* assets_manager_load_file (assets_manager_t* am, asset_type_t type,
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_preload">从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\_FS\_RES时才生效。
+备注：内部使用的，不建议用户自行调用。
 
 * 函数原型：
 
@@ -496,6 +522,27 @@ ret_t assets_manager_set_custom_load_asset (assets_manager_t* am, assets_manager
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | am | assets\_manager\_t* | asset manager对象。 |
 | custom\_load\_asset | assets\_manager\_load\_asset\_t | 回调函数。 |
+| ctx | void* | 回调函数的上下文。 |
+#### assets\_manager\_set\_fallback\_load\_asset 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="assets_manager_t_assets_manager_set_fallback_load_asset">设置一个函数，该函数在找不到资源时加载后补资源。
+
+* 函数原型：
+
+```
+ret_t assets_manager_set_fallback_load_asset (assets_manager_t* am, assets_manager_load_asset_t fallback_load_asset, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| am | assets\_manager\_t* | asset manager对象。 |
+| fallback\_load\_asset | assets\_manager\_load\_asset\_t | 回调函数。 |
 | ctx | void* | 回调函数的上下文。 |
 #### assets\_manager\_set\_loader 函数
 -----------------------

@@ -52,14 +52,15 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L3
 | <a href="#slide_indicator_t_slide_indicator_set_max">slide\_indicator\_set\_max</a> | 设置指示器的数量。 |
 | <a href="#slide_indicator_t_slide_indicator_set_size">slide\_indicator\_set\_size</a> | 设置指示器的大小(默认为8)。 |
 | <a href="#slide_indicator_t_slide_indicator_set_spacing">slide\_indicator\_set\_spacing</a> | 设置指示器的间距(指示器有弧度时为角度值，否则为直线间距)。 |
+| <a href="#slide_indicator_t_slide_indicator_set_transition">slide\_indicator\_set\_transition</a> | 设置是否启用过渡效果。 |
 | <a href="#slide_indicator_t_slide_indicator_set_value">slide\_indicator\_set\_value</a> | 设置当前页的序号。 |
 ### 属性
 <p id="slide_indicator_t_properties">
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#slide_indicator_t_anchor_x">anchor\_x</a> | float\_t | 锚点x坐标。 |
-| <a href="#slide_indicator_t_anchor_y">anchor\_y</a> | float\_t | 锚点y坐标。 |
+| <a href="#slide_indicator_t_anchor_x">anchor\_x</a> | char* | 锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f) |
+| <a href="#slide_indicator_t_anchor_y">anchor\_y</a> | char* | 锚点y坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f) |
 | <a href="#slide_indicator_t_auto_hide">auto\_hide</a> | uint16\_t | 自动隐藏。0表示禁止，非0表示无操作后延迟多久隐藏。 |
 | <a href="#slide_indicator_t_default_paint">default\_paint</a> | indicator\_default\_paint\_t | 指示器的类型。 |
 | <a href="#slide_indicator_t_indicated_target">indicated\_target</a> | char* | 指示器指示的目标控件的名称。 |
@@ -67,6 +68,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L3
 | <a href="#slide_indicator_t_max">max</a> | uint32\_t | 最大值(缺省为100)。 |
 | <a href="#slide_indicator_t_size">size</a> | uint32\_t | 指示器的大小。 |
 | <a href="#slide_indicator_t_spacing">spacing</a> | float\_t | 指示器的中心之间的间距（圆弧显示时，间距的单位为弧度，否则为像素）。 |
+| <a href="#slide_indicator_t_transition">transition</a> | bool\_t | 是否启用过渡效果。 |
 | <a href="#slide_indicator_t_value">value</a> | uint32\_t | 值(缺省为0)。 |
 ### 事件
 <p id="slide_indicator_t_events">
@@ -76,6 +78,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L3
 | EVT\_VALUE\_WILL\_CHANGE | value\_change\_event\_t | 值(当前页的序号)即将改变事件。 |
 | EVT\_VALUE\_CHANGED | value\_change\_event\_t | 值(当前页的序号)改变事件。 |
 | EVT\_PAGE\_CHANGED | event\_t | 页面改变事件。 |
+| EVT\_PAGE\_CHANGING | event\_t | 页面正在改变。 |
 #### slide\_indicator\_cast 函数
 -----------------------
 
@@ -325,6 +328,26 @@ ret_t slide_indicator_set_spacing (widget_t* widget, float_t spacing);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | slide\_indicator对象。 |
 | spacing | float\_t | 指示器的间距。 |
+#### slide\_indicator\_set\_transition 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slide_indicator_t_slide_indicator_set_transition">设置是否启用过渡效果。
+
+* 函数原型：
+
+```
+ret_t slide_indicator_set_transition (widget_t* widget, bool_t transition);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | slide\_indicator对象。 |
+| transition | bool\_t | 是否启用过渡效果 |
 #### slide\_indicator\_set\_value 函数
 -----------------------
 
@@ -347,9 +370,9 @@ ret_t slide_indicator_set_value (widget_t* widget, uint32_t value);
 | value | uint32\_t | 当前项的序号。 |
 #### anchor\_x 属性
 -----------------------
-> <p id="slide_indicator_t_anchor_x">锚点x坐标。
+> <p id="slide_indicator_t_anchor_x">锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
 
-* 类型：float\_t
+* 类型：char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -363,9 +386,9 @@ ret_t slide_indicator_set_value (widget_t* widget, uint32_t value);
 | 可通过widget\_set\_prop修改 | 是 |
 #### anchor\_y 属性
 -----------------------
-> <p id="slide_indicator_t_anchor_y">锚点y坐标。
+> <p id="slide_indicator_t_anchor_y">锚点y坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
 
-* 类型：float\_t
+* 类型：char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -478,6 +501,22 @@ ret_t slide_indicator_set_value (widget_t* widget, uint32_t value);
 > <p id="slide_indicator_t_spacing">指示器的中心之间的间距（圆弧显示时，间距的单位为弧度，否则为像素）。
 
 * 类型：float\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### transition 属性
+-----------------------
+> <p id="slide_indicator_t_transition">是否启用过渡效果。
+
+* 类型：bool\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

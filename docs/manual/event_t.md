@@ -11,6 +11,7 @@
 | <a href="#event_t_event_clone">event\_clone</a> | clone事件对象。 |
 | <a href="#event_t_event_create">event\_create</a> | 创建event对象。 |
 | <a href="#event_t_event_destroy">event\_destroy</a> | 销毁事件对象。 |
+| <a href="#event_t_event_from_name">event\_from\_name</a> | 将事件名转换成事件的值。 |
 | <a href="#event_t_event_get_type">event\_get\_type</a> | 获取event类型。 |
 | <a href="#event_t_event_init">event\_init</a> | 初始化事件。 |
 ### 属性
@@ -21,7 +22,7 @@
 | <a href="#event_t_native_window_handle">native\_window\_handle</a> | void* | 原生窗口句柄。 |
 | <a href="#event_t_size">size</a> | int32\_t | 结构体的大小。 |
 | <a href="#event_t_target">target</a> | void* | 事件发生的目标对象。 |
-| <a href="#event_t_time">time</a> | uint64\_t | 事件发生的时间。 |
+| <a href="#event_t_time">time</a> | uint64\_t | 事件发生的时间点（该时间点并非真实时间）。 |
 | <a href="#event_t_type">type</a> | int32\_t | 类型。 |
 #### event\_cast 函数
 -----------------------
@@ -105,6 +106,25 @@ ret_t event_destroy (event_t* event);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | event | event\_t* | event对象。 |
+#### event\_from\_name 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="event_t_event_from_name">将事件名转换成事件的值。
+
+* 函数原型：
+
+```
+int32_t event_from_name (const char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int32\_t | 返回事件的值。 |
+| name | const char* | 事件名。 |
 #### event\_get\_type 函数
 -----------------------
 
@@ -178,7 +198,7 @@ event_t event_init (uint32_t type, void* target);
 | 可脚本化   | 是 |
 #### time 属性
 -----------------------
-> <p id="event_t_time">事件发生的时间。
+> <p id="event_t_time">事件发生的时间点（该时间点并非真实时间）。
 
 * 类型：uint64\_t
 

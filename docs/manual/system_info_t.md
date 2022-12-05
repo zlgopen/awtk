@@ -35,6 +35,7 @@
 | <a href="#system_info_t_default_font">default\_font</a> | const char* | 缺省字体。 |
 | <a href="#system_info_t_device_orientation">device\_orientation</a> | const char* | 显示屏的方向名称，可选值："portrait"表示竖屏，"landscape"表示横屏。 |
 | <a href="#system_info_t_device_pixel_ratio">device\_pixel\_ratio</a> | float\_t | 显示屏的密度。 |
+| <a href="#system_info_t_flags">flags</a> | uint32\_t | 标志。请参考{system_info_flag_t}。 |
 | <a href="#system_info_t_font_scale">font\_scale</a> | float\_t | 字体缩放比例，用于实现字体整体放大。 |
 | <a href="#system_info_t_keyboard_type">keyboard\_type</a> | keyboard\_type\_t | 键盘类型。 |
 | <a href="#system_info_t_language">language</a> | const char* | locale中的语言。 |
@@ -149,7 +150,7 @@ ret_t system_info_init (app_type_t app_type, const char* app_name, const char* a
 * 函数原型：
 
 ```
-ret_t system_info_set_app_root (system_info_t* info info, const char* app_root);
+ret_t system_info_set_app_root (system_info_t* info, const char* app_root);
 ```
 
 * 参数说明：
@@ -157,7 +158,7 @@ ret_t system_info_set_app_root (system_info_t* info info, const char* app_root);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| info | system\_info\_t* info | system\_info对象。 |
+| info | system\_info\_t* | system\_info对象。 |
 | app\_root | const char* | app root。 |
 #### system\_info\_set\_default\_font 函数
 -----------------------
@@ -169,7 +170,7 @@ ret_t system_info_set_app_root (system_info_t* info info, const char* app_root);
 * 函数原型：
 
 ```
-ret_t system_info_set_default_font (system_info_t* info info, const char* default_font);
+ret_t system_info_set_default_font (system_info_t* info, const char* default_font);
 ```
 
 * 参数说明：
@@ -177,7 +178,7 @@ ret_t system_info_set_default_font (system_info_t* info info, const char* defaul
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| info | system\_info\_t* info | system\_info对象。 |
+| info | system\_info\_t* | system\_info对象。 |
 | default\_font | const char* | 缺省字体。 |
 #### system\_info\_set\_device\_pixel\_ratio 函数
 -----------------------
@@ -189,7 +190,7 @@ ret_t system_info_set_default_font (system_info_t* info info, const char* defaul
 * 函数原型：
 
 ```
-ret_t system_info_set_device_pixel_ratio (system_info_t* info info, float_t device_pixel_ratio);
+ret_t system_info_set_device_pixel_ratio (system_info_t* info, float_t device_pixel_ratio);
 ```
 
 * 参数说明：
@@ -197,7 +198,7 @@ ret_t system_info_set_device_pixel_ratio (system_info_t* info info, float_t devi
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| info | system\_info\_t* info | system\_info对象。 |
+| info | system\_info\_t* | system\_info对象。 |
 | device\_pixel\_ratio | float\_t | 设置LCD密度。 |
 #### system\_info\_set\_font\_scale 函数
 -----------------------
@@ -209,7 +210,7 @@ ret_t system_info_set_device_pixel_ratio (system_info_t* info info, float_t devi
 * 函数原型：
 
 ```
-ret_t system_info_set_font_scale (system_info_t* info info, float_t font_scale);
+ret_t system_info_set_font_scale (system_info_t* info, float_t font_scale);
 ```
 
 * 参数说明：
@@ -217,7 +218,7 @@ ret_t system_info_set_font_scale (system_info_t* info info, float_t font_scale);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| info | system\_info\_t* info | system\_info对象。 |
+| info | system\_info\_t* | system\_info对象。 |
 | font\_scale | float\_t | 字体缩放比例。 |
 #### system\_info\_set\_keyboard\_type 函数
 -----------------------
@@ -229,7 +230,7 @@ ret_t system_info_set_font_scale (system_info_t* info info, float_t font_scale);
 * 函数原型：
 
 ```
-ret_t system_info_set_keyboard_type (system_info_t* info info, keyboard_type_t keyboard_type);
+ret_t system_info_set_keyboard_type (system_info_t* info, keyboard_type_t keyboard_type);
 ```
 
 * 参数说明：
@@ -237,7 +238,7 @@ ret_t system_info_set_keyboard_type (system_info_t* info info, keyboard_type_t k
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| info | system\_info\_t* info | system\_info对象。 |
+| info | system\_info\_t* | system\_info对象。 |
 | keyboard\_type | keyboard\_type\_t | 键盘类型。 |
 #### system\_info\_set\_lcd\_h 函数
 -----------------------
@@ -249,7 +250,7 @@ ret_t system_info_set_keyboard_type (system_info_t* info info, keyboard_type_t k
 * 函数原型：
 
 ```
-ret_t system_info_set_lcd_h (system_info_t* info info, uint32_t lcd_h);
+ret_t system_info_set_lcd_h (system_info_t* info, uint32_t lcd_h);
 ```
 
 * 参数说明：
@@ -257,7 +258,7 @@ ret_t system_info_set_lcd_h (system_info_t* info info, uint32_t lcd_h);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| info | system\_info\_t* info | system\_info对象。 |
+| info | system\_info\_t* | system\_info对象。 |
 | lcd\_h | uint32\_t | 设置LCD高度。 |
 #### system\_info\_set\_lcd\_orientation 函数
 -----------------------
@@ -269,7 +270,7 @@ ret_t system_info_set_lcd_h (system_info_t* info info, uint32_t lcd_h);
 * 函数原型：
 
 ```
-ret_t system_info_set_lcd_orientation (system_info_t* info info, lcd_orientation_t lcd_orientation);
+ret_t system_info_set_lcd_orientation (system_info_t* info, lcd_orientation_t lcd_orientation);
 ```
 
 * 参数说明：
@@ -277,7 +278,7 @@ ret_t system_info_set_lcd_orientation (system_info_t* info info, lcd_orientation
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| info | system\_info\_t* info | system\_info对象。 |
+| info | system\_info\_t* | system\_info对象。 |
 | lcd\_orientation | lcd\_orientation\_t | 设置LCD的旋转角度。 |
 #### system\_info\_set\_lcd\_type 函数
 -----------------------
@@ -289,7 +290,7 @@ ret_t system_info_set_lcd_orientation (system_info_t* info info, lcd_orientation
 * 函数原型：
 
 ```
-ret_t system_info_set_lcd_type (system_info_t* info info, lcd_type_t lcd_type);
+ret_t system_info_set_lcd_type (system_info_t* info, lcd_type_t lcd_type);
 ```
 
 * 参数说明：
@@ -297,7 +298,7 @@ ret_t system_info_set_lcd_type (system_info_t* info info, lcd_type_t lcd_type);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| info | system\_info\_t* info | system\_info对象。 |
+| info | system\_info\_t* | system\_info对象。 |
 | lcd\_type | lcd\_type\_t | 设置LCD类型。 |
 #### system\_info\_set\_lcd\_w 函数
 -----------------------
@@ -309,7 +310,7 @@ ret_t system_info_set_lcd_type (system_info_t* info info, lcd_type_t lcd_type);
 * 函数原型：
 
 ```
-ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
+ret_t system_info_set_lcd_w (system_info_t* info, uint32_t lcd_w);
 ```
 
 * 参数说明：
@@ -317,7 +318,7 @@ ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| info | system\_info\_t* info | system\_info对象。 |
+| info | system\_info\_t* | system\_info对象。 |
 | lcd\_w | uint32\_t | 设置LCD宽度。 |
 #### app\_name 属性
 -----------------------
@@ -388,6 +389,16 @@ ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
 > <p id="system_info_t_device_pixel_ratio">显示屏的密度。
 
 * 类型：float\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+#### flags 属性
+-----------------------
+> <p id="system_info_t_flags">标志。请参考{system_info_flag_t}。
+
+* 类型：uint32\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

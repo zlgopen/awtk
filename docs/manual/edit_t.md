@@ -68,6 +68,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#edit_t_edit_get_double">edit\_get\_double</a> | 获取double类型的值。 |
 | <a href="#edit_t_edit_get_int">edit\_get\_int</a> | 获取int类型的值。 |
 | <a href="#edit_t_edit_get_selected_text">edit\_get\_selected\_text</a> | 获取选中的文本。 |
+| <a href="#edit_t_edit_get_widget_vtable">edit\_get\_widget\_vtable</a> | 获取 edit 虚表。 |
 | <a href="#edit_t_edit_set_action_text">edit\_set\_action\_text</a> | 设置软键盘上action按钮的文本。 |
 | <a href="#edit_t_edit_set_auto_fix">edit\_set\_auto\_fix</a> | 设置编辑器是否为自动改正。 |
 | <a href="#edit_t_edit_set_cancelable">edit\_set\_cancelable</a> | 设置编辑器是否为可撤销修改。 |
@@ -75,6 +76,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#edit_t_edit_set_cursor">edit\_set\_cursor</a> | 设置输入框的光标位置。 |
 | <a href="#edit_t_edit_set_dec_value">edit\_set\_dec\_value</a> | 设置减少值的回调函数。 |
 | <a href="#edit_t_edit_set_double">edit\_set\_double</a> | 设置double类型的值。 |
+| <a href="#edit_t_edit_set_double_ex">edit\_set\_double\_ex</a> | 设置double类型的值。 |
 | <a href="#edit_t_edit_set_fix_value">edit\_set\_fix\_value</a> | 设置修正输入内容的回调函数。 |
 | <a href="#edit_t_edit_set_float_limit">edit\_set\_float\_limit</a> | 设置为浮点数输入及取值范围。 |
 | <a href="#edit_t_edit_set_focus">edit\_set\_focus</a> | 设置为焦点。 |
@@ -121,6 +123,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | -------- | ----- | ------- | 
 | EVT\_VALUE\_CHANGING | value\_change\_event\_t | 文本正在改变事件(编辑中)。 |
 | EVT\_VALUE\_CHANGED | value\_change\_event\_t | 文本改变事件。 |
+| EVT\_IM\_ACTION | event\_t | 软键盘Action点击事件。 |
 #### edit\_cast 函数
 -----------------------
 
@@ -240,6 +243,24 @@ char* edit_get_selected_text (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | char* | 返回选中文本。 |
 | widget | widget\_t* | widget对象。 |
+#### edit\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_get_widget_vtable">获取 edit 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* edit_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 edit 虚表。 |
 #### edit\_set\_action\_text 函数
 -----------------------
 
@@ -380,6 +401,27 @@ ret_t edit_set_double (widget_t* widget, double value);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
+| value | double | 值。 |
+#### edit\_set\_double\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_set_double_ex">设置double类型的值。
+
+* 函数原型：
+
+```
+ret_t edit_set_double_ex (widget_t* widget, const char* format, double value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| format | const char* | 格式(缺省为"%2.2lf")。 |
 | value | double | 值。 |
 #### edit\_set\_fix\_value 函数
 -----------------------

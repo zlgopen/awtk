@@ -17,13 +17,14 @@ URL
 | <a href="#url_t_url_set_port">url\_set\_port</a> | 设置端口。 |
 | <a href="#url_t_url_set_schema">url\_set\_schema</a> | 设置schema。 |
 | <a href="#url_t_url_set_user_name">url\_set\_user\_name</a> | 设置用户名。 |
+| <a href="#url_t_url_to_string">url\_to\_string</a> | 格式化成字符串。 |
 ### 属性
 <p id="url_t_properties">
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#url_t_host">host</a> | char* | 主机名。 |
-| <a href="#url_t_params">params</a> | object\_t* | 参数集合。 |
+| <a href="#url_t_params">params</a> | tk\_object\_t* | 参数集合。 |
 | <a href="#url_t_password">password</a> | char* | 密码。 |
 | <a href="#url_t_path">path</a> | char* | 路径。 |
 | <a href="#url_t_port">port</a> | int32\_t | 端口。 |
@@ -228,6 +229,27 @@ ret_t url_set_user_name (url_t* url, const char* user_name);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | url | url\_t* | url对象。 |
 | user\_name | const char* | 用户名。 |
+#### url\_to\_string 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="url_t_url_to_string">格式化成字符串。
+
+>返回的字符串在URL对象销毁或下一次调用本函数时失效。
+
+* 函数原型：
+
+```
+const char* url_to_string (url_t* url);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回字符串格式的URL。 |
+| url | url\_t* | url对象。 |
 #### host 属性
 -----------------------
 > <p id="url_t_host">主机名。
@@ -242,7 +264,7 @@ ret_t url_set_user_name (url_t* url, const char* user_name);
 -----------------------
 > <p id="url_t_params">参数集合。
 
-* 类型：object\_t*
+* 类型：tk\_object\_t*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

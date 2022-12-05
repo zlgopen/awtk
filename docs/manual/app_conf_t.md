@@ -148,14 +148,14 @@ double app_conf_get_double (const char* key, double defval);
 * 函数原型：
 
 ```
-object_t* app_conf_get_instance ();
+tk_object_t* app_conf_get_instance ();
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | object\_t* | 返回app\_conf实例。 |
+| 返回值 | tk\_object\_t* | 返回app\_conf实例。 |
 #### app\_conf\_get\_int 函数
 -----------------------
 
@@ -420,7 +420,7 @@ ret_t app_conf_set_double (const char* key, double v);
 * 函数原型：
 
 ```
-ret_t app_conf_set_instance (object_t* );
+ret_t app_conf_set_instance (tk_object_t* );
 ```
 
 * 参数说明：
@@ -428,7 +428,7 @@ ret_t app_conf_set_instance (object_t* );
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-|  | object\_t* | 。 |
+|  | tk\_object\_t* | 。 |
 #### app\_conf\_set\_int 函数
 -----------------------
 

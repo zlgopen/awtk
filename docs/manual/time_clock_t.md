@@ -39,6 +39,7 @@ time\_clock一般不需要设置style。
 | -------- | ------------ | 
 | <a href="#time_clock_t_time_clock_cast">time\_clock\_cast</a> | 转换为time_clock对象(供脚本语言使用)。 |
 | <a href="#time_clock_t_time_clock_create">time\_clock\_create</a> | 创建time_clock对象 |
+| <a href="#time_clock_t_time_clock_get_widget_vtable">time\_clock\_get\_widget\_vtable</a> | 获取 time_clock 虚表。 |
 | <a href="#time_clock_t_time_clock_set_bg_image">time\_clock\_set\_bg\_image</a> | 设置背景图片。 |
 | <a href="#time_clock_t_time_clock_set_hour">time\_clock\_set\_hour</a> | 设置小时的值。 |
 | <a href="#time_clock_t_time_clock_set_hour_anchor">time\_clock\_set\_hour\_anchor</a> | 设置小时指针的旋转锚点。 |
@@ -111,6 +112,24 @@ widget_t* time_clock_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### time\_clock\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="time_clock_t_time_clock_get_widget_vtable">获取 time_clock 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* time_clock_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 time\_clock 虚表。 |
 #### time\_clock\_set\_bg\_image 函数
 -----------------------
 

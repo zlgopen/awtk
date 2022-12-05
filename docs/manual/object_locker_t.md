@@ -9,7 +9,27 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#object_locker_t_object_locker_cast">object\_locker\_cast</a> | 转换为object_locker对象。 |
 | <a href="#object_locker_t_object_locker_create">object\_locker\_create</a> | 创建对象。 |
+#### object\_locker\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_locker_t_object_locker_cast">转换为object_locker对象。
+
+* 函数原型：
+
+```
+object_locker_t* object_locker_cast (tk_object_t* obj);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | object\_locker\_t* | object\_locker对象。 |
+| obj | tk\_object\_t* | object\_locker对象。 |
 #### object\_locker\_create 函数
 -----------------------
 
@@ -20,12 +40,12 @@
 * 函数原型：
 
 ```
-object_t* object_locker_create (object_t* obj);
+tk_object_t* object_locker_create (tk_object_t* obj);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | object\_t* | 返回object对象。 |
-| obj | object\_t* | 待装饰的对象。 |
+| 返回值 | tk\_object\_t* | 返回object对象。 |
+| obj | tk\_object\_t* | 待装饰的对象。 |

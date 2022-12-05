@@ -41,6 +41,7 @@ widget_t* app_bar = app_bar_create(win, 0, 0, 320, 30);
 | -------- | ------------ | 
 | <a href="#app_bar_t_app_bar_cast">app\_bar\_cast</a> | 转换为app_bar对象(供脚本语言使用)。 |
 | <a href="#app_bar_t_app_bar_create">app\_bar\_create</a> | 创建app_bar对象 |
+| <a href="#app_bar_t_app_bar_get_widget_vtable">app\_bar\_get\_widget\_vtable</a> | 获取 app_bar 虚表。 |
 #### app\_bar\_cast 函数
 -----------------------
 
@@ -83,3 +84,21 @@ widget_t* app_bar_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### app\_bar\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="app_bar_t_app_bar_get_widget_vtable">获取 app_bar 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* app_bar_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 app\_bar 虚表。 |

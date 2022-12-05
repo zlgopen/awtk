@@ -9,16 +9,23 @@ idle_manager_t管理器。
 | -------- | ------------ | 
 | <a href="#idle_manager_t_idle_manager">idle\_manager</a> | 获取缺省的idle_manager_t管理器。 |
 | <a href="#idle_manager_t_idle_manager_add">idle\_manager\_add</a> | 添加idle。 |
+| <a href="#idle_manager_t_idle_manager_add_with_id">idle\_manager\_add\_with\_id</a> | 添加 idle（可以指定 idle_id ，如果发现 idle_id 冲突则添加失败）。 |
+| <a href="#idle_manager_t_idle_manager_add_with_type">idle\_manager\_add\_with\_type</a> |  |
+| <a href="#idle_manager_t_idle_manager_add_with_type_and_id">idle\_manager\_add\_with\_type\_and\_id</a> |  |
 | <a href="#idle_manager_t_idle_manager_append">idle\_manager\_append</a> | 追加idle。 |
 | <a href="#idle_manager_t_idle_manager_count">idle\_manager\_count</a> | 返回idle的个数。 |
 | <a href="#idle_manager_t_idle_manager_create">idle\_manager\_create</a> | 创建idle_manager_t管理器。 |
 | <a href="#idle_manager_t_idle_manager_deinit">idle\_manager\_deinit</a> | 析构idle_manager_t管理器。 |
 | <a href="#idle_manager_t_idle_manager_destroy">idle\_manager\_destroy</a> | 析构并释放idle_manager_t管理器。 |
+| <a href="#idle_manager_t_idle_manager_dispatch">idle\_manager\_dispatch</a> | 检查全部idle的函数，如果时间到期，调用相应的idle函数。 |
+| <a href="#idle_manager_t_idle_manager_exist">idle\_manager\_exist</a> |  |
 | <a href="#idle_manager_t_idle_manager_find">idle\_manager\_find</a> | 查找指定ID的idle。 |
+| <a href="#idle_manager_t_idle_manager_get_next_idle_id">idle\_manager\_get\_next\_idle\_id</a> | 获取下一个可用的 idle_id。 |
 | <a href="#idle_manager_t_idle_manager_init">idle\_manager\_init</a> | 初始化idle_manager_t管理器。 |
 | <a href="#idle_manager_t_idle_manager_remove">idle\_manager\_remove</a> | 根据idle_id删除idle。 |
 | <a href="#idle_manager_t_idle_manager_remove_all">idle\_manager\_remove\_all</a> | 删除全部idle。 |
-| <a href="#idle_manager_t_idle_manager_remove_all">idle\_manager\_remove\_all</a> | 根据上下文删除所有符合条件的idle。 |
+| <a href="#idle_manager_t_idle_manager_remove_all_by_ctx">idle\_manager\_remove\_all\_by\_ctx</a> | 根据上下文删除所有符合条件的idle。 |
+| <a href="#idle_manager_t_idle_manager_remove_all_by_ctx_and_type">idle\_manager\_remove\_all\_by\_ctx\_and\_type</a> |  |
 | <a href="#idle_manager_t_idle_manager_set">idle\_manager\_set</a> | 设置缺省的idle_manager_t管理器。 |
 #### idle\_manager 函数
 -----------------------
@@ -57,6 +64,28 @@ uint32_t idle_manager_add (idle_manager_t* idle_manager, idle_func_t* on_idle, v
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 返回idle的ID，TK\_INVALID\_ID表示失败。 |
 | idle\_manager | idle\_manager\_t* | idle\_manager\_t管理器对象。 |
+| on\_idle | idle\_func\_t* | idle回调函数。 |
+| ctx | void* | idle回调函数的上下文。 |
+#### idle\_manager\_add\_with\_id 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="idle_manager_t_idle_manager_add_with_id">添加 idle（可以指定 idle_id ，如果发现 idle_id 冲突则添加失败）。
+
+* 函数原型：
+
+```
+uint32_t idle_manager_add_with_id (idle_manager_t* idle_manager, uint32_t id, idle_func_t* on_idle, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回idle的ID，TK\_INVALID\_ID表示失败。 |
+| idle\_manager | idle\_manager\_t* | idle\_manager\_t管理器对象。 |
+| id | uint32\_t | idle\_id。 |
 | on\_idle | idle\_func\_t* | idle回调函数。 |
 | ctx | void* | idle回调函数的上下文。 |
 #### idle\_manager\_append 函数
@@ -154,6 +183,24 @@ ret_t idle_manager_destroy (idle_manager_t* idle_manager);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | idle\_manager | idle\_manager\_t* | idle\_manager\_t管理器对象。 |
+#### idle\_manager\_dispatch 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="idle_manager_t_idle_manager_dispatch">检查全部idle的函数，如果时间到期，调用相应的idle函数。
+
+* 函数原型：
+
+```
+ret_t idle_manager_dispatch ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 #### idle\_manager\_find 函数
 -----------------------
 
@@ -174,6 +221,25 @@ idle_info_t* idle_manager_find (idle_manager_t* idle_manager, uint32_t idle_id);
 | 返回值 | idle\_info\_t* | 返回idle的信息。 |
 | idle\_manager | idle\_manager\_t* | idle\_manager\_t管理器对象。 |
 | idle\_id | uint32\_t | idle\_id。 |
+#### idle\_manager\_get\_next\_idle\_id 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="idle_manager_t_idle_manager_get_next_idle_id">获取下一个可用的 idle_id。
+
+* 函数原型：
+
+```
+uint32_t idle_manager_get_next_idle_id (idle_manager_t* idle_manager);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回idle的ID，TK\_INVALID\_ID表示失败。 |
+| idle\_manager | idle\_manager\_t* | idle\_manager\_t管理器对象。 |
 #### idle\_manager\_init 函数
 -----------------------
 
@@ -232,17 +298,17 @@ ret_t idle_manager_remove_all (idle_manager_t* idle_manager);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | idle\_manager | idle\_manager\_t* | idle\_manager\_t管理器对象。 |
-#### idle\_manager\_remove\_all 函数
+#### idle\_manager\_remove\_all\_by\_ctx 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="idle_manager_t_idle_manager_remove_all">根据上下文删除所有符合条件的idle。
+> <p id="idle_manager_t_idle_manager_remove_all_by_ctx">根据上下文删除所有符合条件的idle。
 
 * 函数原型：
 
 ```
-ret_t idle_manager_remove_all (idle_manager_t* idle_manager, void* ctx);
+ret_t idle_manager_remove_all_by_ctx (idle_manager_t* idle_manager, void* ctx);
 ```
 
 * 参数说明：

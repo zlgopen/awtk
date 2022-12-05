@@ -12,12 +12,14 @@
 | <a href="#image_manager_t_image_manager_deinit">image\_manager\_deinit</a> | 析构图片管理器。 |
 | <a href="#image_manager_t_image_manager_destroy">image\_manager\_destroy</a> | 析构并释放图片管理器。 |
 | <a href="#image_manager_t_image_manager_get_bitmap">image\_manager\_get\_bitmap</a> | 获取指定的图片。 |
+| <a href="#image_manager_t_image_manager_has_bitmap">image\_manager\_has\_bitmap</a> | 图片是否在图片管理中。 |
 | <a href="#image_manager_t_image_manager_init">image\_manager\_init</a> | 初始化图片管理器。 |
 | <a href="#image_manager_t_image_manager_preload">image\_manager\_preload</a> | 预加载指定的图片。 |
 | <a href="#image_manager_t_image_manager_set">image\_manager\_set</a> | 设置缺省的图片管理器。 |
 | <a href="#image_manager_t_image_manager_set_assets_manager">image\_manager\_set\_assets\_manager</a> | 设置资源管理器对象。 |
+| <a href="#image_manager_t_image_manager_set_fallback_get_bitmap">image\_manager\_set\_fallback\_get\_bitmap</a> | 设置一个函数，该函数在找不到图片时加载后补图片。 |
 | <a href="#image_manager_t_image_manager_set_max_mem_size_of_cached_images">image\_manager\_set\_max\_mem\_size\_of\_cached\_images</a> | 设置图片缓存占用的最大内存。 |
-| <a href="#image_manager_t_image_manager_unload_all">image\_manager\_unload\_all</a> | 从图片管理器中卸载全部图片。 |
+| <a href="#image_manager_t_image_manager_unload_all">image\_manager\_unload\_all</a> | 卸载全部图片。 |
 | <a href="#image_manager_t_image_manager_unload_bitmap">image\_manager\_unload\_bitmap</a> | 从图片管理器中卸载指定的图片。 |
 | <a href="#image_manager_t_image_manager_unload_unused">image\_manager\_unload\_unused</a> | 从图片管理器中卸载指定时间内没有使用的图片。 |
 | <a href="#image_manager_t_image_manager_update_specific">image\_manager\_update\_specific</a> | 更新缓存中图片的specific信息。 |
@@ -122,6 +124,26 @@ ret_t image_manager_get_bitmap (image_manager_t* imm, char* name, bitmap_t* imag
 | imm | image\_manager\_t* | 图片管理器对象。 |
 | name | char* | 图片名称。 |
 | image | bitmap\_t* | 用于返回图片。 |
+#### image\_manager\_has\_bitmap 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="image_manager_t_image_manager_has_bitmap">图片是否在图片管理中。
+
+* 函数原型：
+
+```
+bool_t image_manager_has_bitmap (image_manager_t* imm, bitmap_t* image);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示存在，否则表示不存在。 |
+| imm | image\_manager\_t* | 图片管理器对象。 |
+| image | bitmap\_t* | 图片。 |
 #### image\_manager\_init 函数
 -----------------------
 
@@ -208,6 +230,27 @@ ret_t image_manager_set_assets_manager (image_manager_t* imm, assets_manager_t* 
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | imm | image\_manager\_t* | 图片管理器对象。 |
 | assets\_manager | assets\_manager\_t* | 资源管理器。 |
+#### image\_manager\_set\_fallback\_get\_bitmap 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="image_manager_t_image_manager_set_fallback_get_bitmap">设置一个函数，该函数在找不到图片时加载后补图片。
+
+* 函数原型：
+
+```
+ret_t image_manager_set_fallback_get_bitmap (image_manager_t* imm, image_manager_get_bitmap_t fallback_get_bitmap, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| imm | image\_manager\_t* | image manager对象。 |
+| fallback\_get\_bitmap | image\_manager\_get\_bitmap\_t | 回调函数。 |
+| ctx | void* | 回调函数的上下文。 |
 #### image\_manager\_set\_max\_mem\_size\_of\_cached\_images 函数
 -----------------------
 
@@ -227,13 +270,13 @@ ret_t image_manager_set_max_mem_size_of_cached_images (image_manager_t* imm, uin
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | imm | image\_manager\_t* | 图片管理器对象。 |
-| max\_mem\_size | uint32\_t | 最大缓存内存。 |
+| max\_mem\_size | uint32\_t | 最大缓存内存(字节数)。 |
 #### image\_manager\_unload\_all 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="image_manager_t_image_manager_unload_all">从图片管理器中卸载全部图片。
+> <p id="image_manager_t_image_manager_unload_all">卸载全部图片。
 
 * 函数原型：
 

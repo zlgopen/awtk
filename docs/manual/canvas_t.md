@@ -12,6 +12,7 @@
 | <a href="#canvas_t_canvas_clear_rect">canvas\_clear\_rect</a> | 用填充颜色填充指定矩形。 |
 | <a href="#canvas_t_canvas_draw_hline">canvas\_draw\_hline</a> | 画水平线。 |
 | <a href="#canvas_t_canvas_draw_icon">canvas\_draw\_icon</a> | 绘制图标。 |
+| <a href="#canvas_t_canvas_draw_icon_in_rect">canvas\_draw\_icon\_in\_rect</a> | 在指定rect内绘制icon。 |
 | <a href="#canvas_t_canvas_draw_image">canvas\_draw\_image</a> | 绘制图片。 |
 | <a href="#canvas_t_canvas_draw_image_at">canvas\_draw\_image\_at</a> | 在指定位置画图。 |
 | <a href="#canvas_t_canvas_draw_image_ex">canvas\_draw\_image\_ex</a> | 绘制图片。 |
@@ -38,9 +39,12 @@
 | <a href="#canvas_t_canvas_get_vgcanvas">canvas\_get\_vgcanvas</a> | 获取vgcanvas对象。 |
 | <a href="#canvas_t_canvas_get_width">canvas\_get\_width</a> | 获取画布的宽度。 |
 | <a href="#canvas_t_canvas_init">canvas\_init</a> | 初始化，系统内部调用。 |
+| <a href="#canvas_t_canvas_is_rect_in_clip_rect">canvas\_is\_rect\_in\_clip\_rect</a> | 判断改矩形区域是否在裁剪区中 |
 | <a href="#canvas_t_canvas_measure_text">canvas\_measure\_text</a> | 计算文本所占的宽度。 |
 | <a href="#canvas_t_canvas_measure_utf8">canvas\_measure\_utf8</a> | 计算文本所占的宽度。 |
 | <a href="#canvas_t_canvas_reset">canvas\_reset</a> | 释放相关资源。 |
+| <a href="#canvas_t_canvas_reset_cache">canvas\_reset\_cache</a> | 清除canvas中缓存。 |
+| <a href="#canvas_t_canvas_reset_font">canvas\_reset\_font</a> | 释放canvas中字体相关的资源。 |
 | <a href="#canvas_t_canvas_set_assets_manager">canvas\_set\_assets\_manager</a> | 设置canvas的assets_manager对象。 |
 | <a href="#canvas_t_canvas_set_clip_rect">canvas\_set\_clip\_rect</a> | 设置裁剪区。 |
 | <a href="#canvas_t_canvas_set_clip_rect_ex">canvas\_set\_clip\_rect\_ex</a> | 设置裁剪区。 |
@@ -191,6 +195,27 @@ ret_t canvas_draw_icon (canvas_t* c, bitmap_t* img, xy_t cx, xy_t cy);
 | img | bitmap\_t* | 图片对象。 |
 | cx | xy\_t | 中心点x坐标。 |
 | cy | xy\_t | 中心点y坐标。 |
+#### canvas\_draw\_icon\_in\_rect 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_t_canvas_draw_icon_in_rect">在指定rect内绘制icon。
+
+* 函数原型：
+
+```
+ret_t canvas_draw_icon_in_rect (canvas_t* c, bitmap_t* img, const rect_t* r);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| c | canvas\_t* | canvas对象。 |
+| img | bitmap\_t* | 图片对象。 |
+| r | const rect\_t* | 矩形区域。 |
 #### canvas\_draw\_image 函数
 -----------------------
 
@@ -538,7 +563,7 @@ ret_t canvas_fill_rect_gradient (canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h, gr
 * 函数原型：
 
 ```
-ret_t canvas_fill_rounded_rect (canvas_t* c, const rect_t* r, const color_t* color, uint32_t radius);
+ret_t canvas_fill_rounded_rect (canvas_t* c, const rect_t* r, const rect_t* bg_r, const color_t* color, uint32_t radius);
 ```
 
 * 参数说明：
@@ -548,6 +573,7 @@ ret_t canvas_fill_rounded_rect (canvas_t* c, const rect_t* r, const color_t* col
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | c | canvas\_t* | canvas对象。 |
 | r | const rect\_t* | 矩形。 |
+| bg\_r | const rect\_t* | 矩形（默认为 NULL，当圆角直径大于 r 矩形的宽高后，会根据 bg\_r 矩形来决定是否需要缩小圆角半径）。 |
 | color | const color\_t* | 颜色。 |
 | radius | uint32\_t | 圆角半径。 |
 #### canvas\_fill\_rounded\_rect\_ex 函数
@@ -588,7 +614,7 @@ ret_t canvas_fill_rounded_rect_ex (canvas_t* c, const rect_t* r, const rect_t* b
 * 函数原型：
 
 ```
-ret_t canvas_fill_rounded_rect_gradient (canvas_t* c, const rect_t* r, const gradient_t* gradient, uint32_t radius);
+ret_t canvas_fill_rounded_rect_gradient (canvas_t* c, const rect_t* r, const rect_t* bg_r, const gradient_t* gradient, uint32_t radius);
 ```
 
 * 参数说明：
@@ -598,6 +624,7 @@ ret_t canvas_fill_rounded_rect_gradient (canvas_t* c, const rect_t* r, const gra
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | c | canvas\_t* | canvas对象。 |
 | r | const rect\_t* | 矩形。 |
+| bg\_r | const rect\_t* | 矩形（默认为 NULL，当圆角直径大于 r 矩形的宽高后，会根据 bg\_r 矩形来决定是否需要缩小圆角半径）。 |
 | gradient | const gradient\_t* | 渐变颜色。 |
 | radius | uint32\_t | 圆角半径。 |
 #### canvas\_fill\_rounded\_rect\_gradient\_ex 函数
@@ -767,6 +794,29 @@ canvas_t* canvas_init (canvas_t* c, lcd_t* lcd, font_manager_t* font_manager);
 | c | canvas\_t* | canvas对象。 |
 | lcd | lcd\_t* | lcd对象。 |
 | font\_manager | font\_manager\_t* | 字体管理器对象。 |
+#### canvas\_is\_rect\_in\_clip\_rect 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_t_canvas_is_rect_in_clip_rect">判断改矩形区域是否在裁剪区中
+
+* 函数原型：
+
+```
+bool_t canvas_is_rect_in_clip_rect (canvas_t* c, xy_t left, xy_t top, xy_t right, xy_t bottom);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示是，否则表示不是。 |
+| c | canvas\_t* | canvas对象。 |
+| left | xy\_t | 矩形区域左边。 |
+| top | xy\_t | 矩形区域上边。 |
+| right | xy\_t | 矩形区域右边。 |
+| bottom | xy\_t | 矩形区域下边。 |
 #### canvas\_measure\_text 函数
 -----------------------
 
@@ -821,6 +871,45 @@ float_t canvas_measure_utf8 (canvas_t* c, const char* str);
 
 ```
 ret_t canvas_reset (canvas_t* c);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| c | canvas\_t* | canvas对象。 |
+#### canvas\_reset\_cache 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_t_canvas_reset_cache">清除canvas中缓存。
+> 备注：主要用于窗口动画的离线画布绘制完成后重置在线画布，使下一帧中lcd对象的数据保持一致。
+
+* 函数原型：
+
+```
+ret_t canvas_reset_cache (canvas_t* c);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| c | canvas\_t* | canvas对象。 |
+#### canvas\_reset\_font 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_t_canvas_reset_font">释放canvas中字体相关的资源。
+
+* 函数原型：
+
+```
+ret_t canvas_reset_font (canvas_t* c);
 ```
 
 * 参数说明：
@@ -1152,7 +1241,7 @@ ret_t canvas_stroke_rect (canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h);
 * 函数原型：
 
 ```
-ret_t canvas_stroke_rounded_rect (canvas_t* c, const rect_t* r, const color_t* color, uint32_t radius, uint32_t border_width);
+ret_t canvas_stroke_rounded_rect (canvas_t* c, const rect_t* r, const rect_t* bg_r, const color_t* color, uint32_t radius, uint32_t border_width);
 ```
 
 * 参数说明：
@@ -1162,6 +1251,7 @@ ret_t canvas_stroke_rounded_rect (canvas_t* c, const rect_t* r, const color_t* c
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | c | canvas\_t* | canvas对象。 |
 | r | const rect\_t* | 矩形。 |
+| bg\_r | const rect\_t* | 矩形（默认为 NULL，当圆角直径大于 r 矩形的宽高后，会根据 bg\_r 矩形来决定是否需要缩小圆角半径）。 |
 | color | const color\_t* | 颜色。 |
 | radius | uint32\_t | 圆角半径。 |
 | border\_width | uint32\_t | 边宽。 |
@@ -1177,7 +1267,7 @@ ret_t canvas_stroke_rounded_rect (canvas_t* c, const rect_t* r, const color_t* c
 * 函数原型：
 
 ```
-ret_t canvas_stroke_rounded_rect_ex (canvas_t* c, const rect_t* r, const color_t* color, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br, uint32_t border_width, uint32_t border_model);
+ret_t canvas_stroke_rounded_rect_ex (canvas_t* c, const rect_t* r, const rect_t* bg_r, const color_t* color, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br, uint32_t border_width, uint32_t border_model);
 ```
 
 * 参数说明：
@@ -1187,6 +1277,7 @@ ret_t canvas_stroke_rounded_rect_ex (canvas_t* c, const rect_t* r, const color_t
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | c | canvas\_t* | canvas对象。 |
 | r | const rect\_t* | 矩形。 |
+| bg\_r | const rect\_t* | 矩形（默认为 NULL，当圆角直径大于 r 矩形的宽高后，会根据 bg\_r 矩形来决定是否需要缩小圆角半径）。 |
 | color | const color\_t* | 颜色。 |
 | radius\_tl | uint32\_t | 左上角圆角半径。 |
 | radius\_tr | uint32\_t | 右上角圆角半径。 |

@@ -45,6 +45,7 @@ grid\_item\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均�
 | -------- | ------------ | 
 | <a href="#grid_item_t_grid_item_cast">grid\_item\_cast</a> | 转换为grid_item对象(供脚本语言使用)。 |
 | <a href="#grid_item_t_grid_item_create">grid\_item\_create</a> | 创建grid_item对象 |
+| <a href="#grid_item_t_grid_item_get_widget_vtable">grid\_item\_get\_widget\_vtable</a> | 获取 grid_item 虚表。 |
 #### grid\_item\_cast 函数
 -----------------------
 
@@ -87,3 +88,21 @@ widget_t* grid_item_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### grid\_item\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="grid_item_t_grid_item_get_widget_vtable">获取 grid_item 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* grid_item_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 grid\_item 虚表。 |

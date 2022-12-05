@@ -50,6 +50,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L1
 | -------- | ------------ | 
 | <a href="#label_t_label_cast">label\_cast</a> | 转换为label对象(供脚本语言使用)。 |
 | <a href="#label_t_label_create">label\_create</a> | 创建label对象 |
+| <a href="#label_t_label_get_widget_vtable">label\_get\_widget\_vtable</a> | 获取 label 虚表。 |
 | <a href="#label_t_label_resize_to_content">label\_resize\_to\_content</a> | 根据文本内容调节控件大小。 |
 | <a href="#label_t_label_set_length">label\_set\_length</a> | 设置显示字符的个数(小余0时全部显示)。 |
 | <a href="#label_t_label_set_line_wrap">label\_set\_line\_wrap</a> | 设置是否自动换行。 |
@@ -106,6 +107,24 @@ widget_t* label_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### label\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="label_t_label_get_widget_vtable">获取 label 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* label_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 label 虚表。 |
 #### label\_resize\_to\_content 函数
 -----------------------
 

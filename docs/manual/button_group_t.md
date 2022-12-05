@@ -36,6 +36,7 @@ button\_group\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数�
 | -------- | ------------ | 
 | <a href="#button_group_t_button_group_cast">button\_group\_cast</a> | 转换为button_group对象(供脚本语言使用)。 |
 | <a href="#button_group_t_button_group_create">button\_group\_create</a> | 创建button_group对象 |
+| <a href="#button_group_t_button_group_get_widget_vtable">button\_group\_get\_widget\_vtable</a> | 获取 button_group 虚表。 |
 #### button\_group\_cast 函数
 -----------------------
 
@@ -78,3 +79,21 @@ widget_t* button_group_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### button\_group\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="button_group_t_button_group_get_widget_vtable">获取 button_group 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* button_group_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 button\_group 虚表。 |

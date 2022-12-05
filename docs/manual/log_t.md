@@ -11,6 +11,8 @@ log。
 | <a href="#log_t_log_error">log\_error</a> | 输出错误信息。 |
 | <a href="#log_t_log_get_log_level">log\_get\_log\_level</a> | 获取log的级别。 |
 | <a href="#log_t_log_info">log\_info</a> | 输出参考信息。 |
+| <a href="#log_t_log_notify_debugger">log\_notify\_debugger</a> | 用于debugger拦截日志，发送给客户端。 |
+| <a href="#log_t_log_set_debugger_hook">log\_set\_debugger\_hook</a> | 设置调试器的钩子函数。 |
 | <a href="#log_t_log_set_log_level">log\_set\_log\_level</a> | 设置log的级别。 |
 | <a href="#log_t_log_warn">log\_warn</a> | 输出警告信息。 |
 #### log\_debug 函数
@@ -103,6 +105,46 @@ void log_info (const char* format);
 | -------- | ----- | --------- |
 | 返回值 | void | 无返回值。 |
 | format | const char* | 格式或信息。 |
+#### log\_notify\_debugger 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="log_t_log_notify_debugger">用于debugger拦截日志，发送给客户端。
+> 变参函数。
+
+* 函数原型：
+
+```
+ret_t log_notify_debugger (const char* format);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| format | const char* | 格式或信息。 |
+#### log\_set\_debugger\_hook 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="log_t_log_set_debugger_hook">设置调试器的钩子函数。
+
+* 函数原型：
+
+```
+ret_t log_set_debugger_hook (tk_debugger_log_t log, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| log | tk\_debugger\_log\_t | 回调函数。 |
+| ctx | void* | 回调函数的上下文。 |
 #### log\_set\_log\_level 函数
 -----------------------
 

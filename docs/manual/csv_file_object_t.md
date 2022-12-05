@@ -21,14 +21,14 @@
 * 函数原型：
 
 ```
-object_t* csv_file_object_create (csv_file_t* csv);
+tk_object_t* csv_file_object_create (csv_file_t* csv);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | object\_t* | 返回对象。 |
+| 返回值 | tk\_object\_t* | 返回对象。 |
 | csv | csv\_file\_t* | csv对象(由object释放)。 |
 #### csv\_file\_object\_get\_csv 函数
 -----------------------
@@ -40,7 +40,7 @@ object_t* csv_file_object_create (csv_file_t* csv);
 * 函数原型：
 
 ```
-csv_file_t* csv_file_object_get_csv (object_t* obj);
+csv_file_t* csv_file_object_get_csv (tk_object_t* obj);
 ```
 
 * 参数说明：
@@ -48,4 +48,4 @@ csv_file_t* csv_file_object_get_csv (object_t* obj);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | csv\_file\_t* | 返回csv对象。 |
-| obj | object\_t* | obj对象。 |
+| obj | tk\_object\_t* | obj对象。 |

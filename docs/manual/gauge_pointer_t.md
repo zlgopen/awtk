@@ -35,6 +35,7 @@ gauge_pointer_set_image(gauge_pointer, "gauge_pointer");
 | -------- | ------------ | 
 | <a href="#gauge_pointer_t_gauge_pointer_cast">gauge\_pointer\_cast</a> | 转换为gauge_pointer对象(供脚本语言使用)。 |
 | <a href="#gauge_pointer_t_gauge_pointer_create">gauge\_pointer\_create</a> | 创建gauge_pointer对象 |
+| <a href="#gauge_pointer_t_gauge_pointer_get_widget_vtable">gauge\_pointer\_get\_widget\_vtable</a> | 获取 gauge_pointer 虚表。 |
 | <a href="#gauge_pointer_t_gauge_pointer_set_anchor">gauge\_pointer\_set\_anchor</a> | 设置指针的旋转锚点。 |
 | <a href="#gauge_pointer_t_gauge_pointer_set_angle">gauge\_pointer\_set\_angle</a> | 设置指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。 |
 | <a href="#gauge_pointer_t_gauge_pointer_set_image">gauge\_pointer\_set\_image</a> | 设置指针的图片。 |
@@ -96,6 +97,24 @@ widget_t* gauge_pointer_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### gauge\_pointer\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="gauge_pointer_t_gauge_pointer_get_widget_vtable">获取 gauge_pointer 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* gauge_pointer_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 gauge\_pointer 虚表。 |
 #### gauge\_pointer\_set\_anchor 函数
 -----------------------
 

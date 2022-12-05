@@ -25,6 +25,7 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#image_base_t_image_base_cast">image\_base\_cast</a> | 转换为image_base对象(供脚本语言使用)。 |
+| <a href="#image_base_t_image_base_get_widget_vtable">image\_base\_get\_widget\_vtable</a> | 获取 image_base 虚表。 |
 | <a href="#image_base_t_image_base_set_anchor">image\_base\_set\_anchor</a> | 设置控件的锚点(仅在WITH_VGCANVAS定义时生效)。 |
 | <a href="#image_base_t_image_base_set_clickable">image\_base\_set\_clickable</a> | 设置控件是否可以被点击。 |
 | <a href="#image_base_t_image_base_set_image">image\_base\_set\_image</a> | 设置控件的图片名称。 |
@@ -71,6 +72,24 @@ widget_t* image_base_cast (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | image\_base对象。 |
 | widget | widget\_t* | image\_base对象。 |
+#### image\_base\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="image_base_t_image_base_get_widget_vtable">获取 image_base 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* image_base_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 image\_base 虚表。 |
 #### image\_base\_set\_anchor 函数
 -----------------------
 

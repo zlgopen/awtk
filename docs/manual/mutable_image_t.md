@@ -44,6 +44,7 @@ https://github.com/zlgopen/awtk-c-demos/blob/master/demos/mutable_image.c)
 | -------- | ------------ | 
 | <a href="#mutable_image_t_mutable_image_cast">mutable\_image\_cast</a> | 转换为mutable_image对象(供脚本语言使用)。 |
 | <a href="#mutable_image_t_mutable_image_create">mutable\_image\_create</a> | 创建mutable_image对象 |
+| <a href="#mutable_image_t_mutable_image_get_widget_vtable">mutable\_image\_get\_widget\_vtable</a> | 获取 mutable_image 虚表。 |
 | <a href="#mutable_image_t_mutable_image_init">mutable\_image\_init</a> | 初始化 mutable_image （提供给继承的子类使用的） |
 | <a href="#mutable_image_t_mutable_image_on_destroy">mutable\_image\_on\_destroy</a> | 释放 mutable_image （提供给继承的子类使用的） |
 | <a href="#mutable_image_t_mutable_image_on_paint_self">mutable\_image\_on\_paint\_self</a> | mutable_image 的绘制函数 （提供给继承的子类使用的） |
@@ -93,6 +94,24 @@ widget_t* mutable_image_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### mutable\_image\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="mutable_image_t_mutable_image_get_widget_vtable">获取 mutable_image 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* mutable_image_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 mutable\_image 虚表。 |
 #### mutable\_image\_init 函数
 -----------------------
 

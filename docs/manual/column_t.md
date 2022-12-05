@@ -36,6 +36,7 @@ column\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适�
 | -------- | ------------ | 
 | <a href="#column_t_column_cast">column\_cast</a> | 转换为column对象(供脚本语言使用)。 |
 | <a href="#column_t_column_create">column\_create</a> | 创建column对象 |
+| <a href="#column_t_column_get_widget_vtable">column\_get\_widget\_vtable</a> | 获取 column 虚表。 |
 #### column\_cast 函数
 -----------------------
 
@@ -78,3 +79,21 @@ widget_t* column_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### column\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="column_t_column_get_widget_vtable">获取 column 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* column_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 column 虚表。 |

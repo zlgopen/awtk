@@ -36,6 +36,7 @@ color_tile_set_bg_color(color_tile, "red");
 | <a href="#color_tile_t_color_tile_create">color\_tile\_create</a> | 创建color_tile对象 |
 | <a href="#color_tile_t_color_tile_get_bg_color">color\_tile\_get\_bg\_color</a> | 获取背景颜色。 |
 | <a href="#color_tile_t_color_tile_get_border_color">color\_tile\_get\_border\_color</a> | 获取边框颜色。 |
+| <a href="#color_tile_t_color_tile_get_widget_vtable">color\_tile\_get\_widget\_vtable</a> | 获取 color_tile 虚表。 |
 | <a href="#color_tile_t_color_tile_set_bg_color">color\_tile\_set\_bg\_color</a> | 设置背景颜色。 |
 | <a href="#color_tile_t_color_tile_set_border_color">color\_tile\_set\_border\_color</a> | 设置边框颜色。 |
 | <a href="#color_tile_t_color_tile_set_value">color\_tile\_set\_value</a> | 设置背景颜色。 |
@@ -133,6 +134,24 @@ const char* color_tile_get_border_color (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | const char* | 返回边框颜色。 |
 | widget | widget\_t* | 控件对象。 |
+#### color\_tile\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="color_tile_t_color_tile_get_widget_vtable">获取 color_tile 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* color_tile_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 color\_tile 虚表。 |
 #### color\_tile\_set\_bg\_color 函数
 -----------------------
 

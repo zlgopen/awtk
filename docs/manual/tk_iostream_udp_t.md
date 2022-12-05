@@ -11,6 +11,7 @@
 | -------- | ------------ | 
 | <a href="#tk_iostream_udp_t_tk_iostream_udp_create">tk\_iostream\_udp\_create</a> | 创建iostream对象(客户端)。 |
 | <a href="#tk_iostream_udp_t_tk_iostream_udp_create_client">tk\_iostream\_udp\_create\_client</a> | 创建iostream对象(客户端)。 |
+| <a href="#tk_iostream_udp_t_tk_iostream_udp_create_client_ex">tk\_iostream\_udp\_create\_client\_ex</a> | 创建iostream对象(客户端)。 |
 #### tk\_iostream\_udp\_create 函数
 -----------------------
 
@@ -49,4 +50,26 @@ tk_iostream_t* tk_iostream_udp_create_client (const char* host, int port);
 | -------- | ----- | --------- |
 | 返回值 | tk\_iostream\_t* | 返回iostream对象。 |
 | host | const char* | 服务器地址。 |
-| port | int | 端口。 |
+| port | int | 服务器端口。 |
+#### tk\_iostream\_udp\_create\_client\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_iostream_udp_t_tk_iostream_udp_create_client_ex">创建iostream对象(客户端)。
+
+* 函数原型：
+
+```
+tk_iostream_t* tk_iostream_udp_create_client_ex (const char* host, int port, const char* local_ip, int local_port);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | tk\_iostream\_t* | 返回iostream对象。 |
+| host | const char* | 服务器地址。 |
+| port | int | 服务器端口。 |
+| local\_ip | const char* | 本地IP地址(为NULL时自动绑定)。 |
+| local\_port | int | 本地端口。 |

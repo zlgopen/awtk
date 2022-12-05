@@ -35,14 +35,14 @@ value = int | float | ID
 * 函数原型：
 
 ```
-object_t* func_call_parse (const char* str, uint32_t size);
+tk_object_t* func_call_parse (const char* str, uint32_t size);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | object\_t* | 返回object对象。 |
+| 返回值 | tk\_object\_t* | 返回object对象。 |
 | str | const char* | 要解析的字符串。 |
 | size | uint32\_t | 字符串长度。 |
 #### func\_call\_parser\_deinit 函数

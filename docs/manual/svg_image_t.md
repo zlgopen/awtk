@@ -47,6 +47,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml)
 | -------- | ------------ | 
 | <a href="#svg_image_t_svg_image_cast">svg\_image\_cast</a> | 转换为svg_image对象(供脚本语言使用)。 |
 | <a href="#svg_image_t_svg_image_create">svg\_image\_create</a> | 创建svg_image对象 |
+| <a href="#svg_image_t_svg_image_get_widget_vtable">svg\_image\_get\_widget\_vtable</a> | 获取 svg_image 虚表。 |
 | <a href="#svg_image_t_svg_image_set_image">svg\_image\_set\_image</a> | 设置控件的图片名称。 |
 #### svg\_image\_cast 函数
 -----------------------
@@ -90,6 +91,24 @@ widget_t* svg_image_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### svg\_image\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="svg_image_t_svg_image_get_widget_vtable">获取 svg_image 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* svg_image_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 svg\_image 虚表。 |
 #### svg\_image\_set\_image 函数
 -----------------------
 

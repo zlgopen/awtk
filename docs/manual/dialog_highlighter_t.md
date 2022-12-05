@@ -20,6 +20,7 @@
 | <a href="#dialog_highlighter_t_dialog_highlighter_set_bg">dialog\_highlighter\_set\_bg</a> | 设置背景图片。 |
 | <a href="#dialog_highlighter_t_dialog_highlighter_set_bg_clip_rect">dialog\_highlighter\_set\_bg\_clip\_rect</a> | 设置背景图片的显示裁剪区。 |
 | <a href="#dialog_highlighter_t_dialog_highlighter_set_system_bar_alpha">dialog\_highlighter\_set\_system\_bar\_alpha</a> | 设置 sytem_bar 的高亮透明值。 |
+| <a href="#dialog_highlighter_t_dialog_highlighter_set_win">dialog\_highlighter\_set\_win</a> | 设置底层窗口。 |
 ### 属性
 <p id="dialog_highlighter_t_properties">
 
@@ -29,6 +30,7 @@
 | <a href="#dialog_highlighter_t_clip_rect">clip\_rect</a> | rect\_t* | 截图的显示裁减区 |
 | <a href="#dialog_highlighter_t_dialog">dialog</a> | widget\_t* | 对应的对话框。 |
 | <a href="#dialog_highlighter_t_img">img</a> | bitmap\_t | 底层窗口的截图。 |
+| <a href="#dialog_highlighter_t_win">win</a> | widget\_t* | 底层窗口。 |
 #### dialog\_highlighter\_create 函数
 -----------------------
 
@@ -250,6 +252,26 @@ ret_t dialog_highlighter_set_system_bar_alpha (dialog_highlighter_t* h, uint8_t 
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | h | dialog\_highlighter\_t* | 对话框高亮策略对象。 |
 | alpha | uint8\_t | 设置 sytem\_bar 的高亮透明值。 |
+#### dialog\_highlighter\_set\_win 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="dialog_highlighter_t_dialog_highlighter_set_win">设置底层窗口。
+
+* 函数原型：
+
+```
+ret_t dialog_highlighter_set_win (dialog_highlighter_t* h, widget_t* win);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| h | dialog\_highlighter\_t* | 对话框高亮策略对象。 |
+| win | widget\_t* | 底层窗口。 |
 #### canvas 属性
 -----------------------
 > <p id="dialog_highlighter_t_canvas">画布。
@@ -273,4 +295,10 @@ ret_t dialog_highlighter_set_system_bar_alpha (dialog_highlighter_t* h, uint8_t 
 > <p id="dialog_highlighter_t_img">底层窗口的截图。
 
 * 类型：bitmap\_t
+
+#### win 属性
+-----------------------
+> <p id="dialog_highlighter_t_win">底层窗口。
+
+* 类型：widget\_t*
 

@@ -39,6 +39,7 @@ color\_picker\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数�
 | -------- | ------------ | 
 | <a href="#color_picker_t_color_picker_cast">color\_picker\_cast</a> | 转换为color_picker对象(供脚本语言使用)。 |
 | <a href="#color_picker_t_color_picker_create">color\_picker\_create</a> | 创建color_picker对象 |
+| <a href="#color_picker_t_color_picker_get_widget_vtable">color\_picker\_get\_widget\_vtable</a> | 获取 color_picker 虚表。 |
 | <a href="#color_picker_t_color_picker_set_color">color\_picker\_set\_color</a> | 设置颜色。 |
 ### 属性
 <p id="color_picker_t_properties">
@@ -95,6 +96,24 @@ widget_t* color_picker_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### color\_picker\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="color_picker_t_color_picker_get_widget_vtable">获取 color_picker 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* color_picker_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 color\_picker 虚表。 |
 #### color\_picker\_set\_color 函数
 -----------------------
 

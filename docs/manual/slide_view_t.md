@@ -54,11 +54,14 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L4
 | -------- | ------------ | 
 | <a href="#slide_view_t_slide_view_cast">slide\_view\_cast</a> | 转换为slide_view对象(供脚本语言使用)。 |
 | <a href="#slide_view_t_slide_view_create">slide\_view\_create</a> | 创建slide_view对象 |
+| <a href="#slide_view_t_slide_view_get_widget_vtable">slide\_view\_get\_widget\_vtable</a> | 获取 slide_view 虚表。 |
 | <a href="#slide_view_t_slide_view_remove_index">slide\_view\_remove\_index</a> | 删除指定序号页面。 |
 | <a href="#slide_view_t_slide_view_set_active">slide\_view\_set\_active</a> | 设置当前页的序号(默认启用动画)。 |
 | <a href="#slide_view_t_slide_view_set_active_ex">slide\_view\_set\_active\_ex</a> | 设置当前页的序号。 |
 | <a href="#slide_view_t_slide_view_set_anim_hint">slide\_view\_set\_anim\_hint</a> | 设置页面切换动画。 |
+| <a href="#slide_view_t_slide_view_set_animating_time">slide\_view\_set\_animating\_time</a> | 设置动画时间。 |
 | <a href="#slide_view_t_slide_view_set_auto_play">slide\_view\_set\_auto\_play</a> | 设置为自动播放模式。 |
+| <a href="#slide_view_t_slide_view_set_drag_threshold">slide\_view\_set\_drag\_threshold</a> | 设置拖拽临界值。 |
 | <a href="#slide_view_t_slide_view_set_loop">slide\_view\_set\_loop</a> | 设置循环切换模式。 |
 | <a href="#slide_view_t_slide_view_set_vertical">slide\_view\_set\_vertical</a> | 设置为上下滑动(缺省为左右滑动)。 |
 ### 属性
@@ -67,7 +70,9 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L4
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#slide_view_t_anim_hint">anim\_hint</a> | char* | 页面切换效果。 |
+| <a href="#slide_view_t_animating_time">animating\_time</a> | uint32\_t | 动画时间（单位：毫秒）。 |
 | <a href="#slide_view_t_auto_play">auto\_play</a> | uint16\_t | 自动播放。0表示禁止自动播放，非0表示自动播放时每一页播放的时间。 |
+| <a href="#slide_view_t_drag_threshold">drag\_threshold</a> | uint32\_t | 拖动临界值。 |
 | <a href="#slide_view_t_loop">loop</a> | bool\_t | 循环切换模式。 |
 | <a href="#slide_view_t_vertical">vertical</a> | bool\_t | 是否为上下滑动模式。 |
 ### 事件
@@ -78,6 +83,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L4
 | EVT\_VALUE\_WILL\_CHANGE | value\_change\_event\_t | 值(当前页)即将改变事件。 |
 | EVT\_VALUE\_CHANGED | value\_change\_event\_t | 值(当前页)改变事件。 |
 | EVT\_PAGE\_CHANGED | event\_t | 页面改变事件。 |
+| EVT\_PAGE\_CHANGING | event\_t | 页面正在改变。 |
 #### slide\_view\_cast 函数
 -----------------------
 
@@ -120,6 +126,24 @@ widget_t* slide_view_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### slide\_view\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slide_view_t_slide_view_get_widget_vtable">获取 slide_view 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* slide_view_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 slide\_view 虚表。 |
 #### slide\_view\_remove\_index 函数
 -----------------------
 
@@ -212,6 +236,26 @@ ret_t slide_view_set_anim_hint (widget_t* widget, const char* anim_hint);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | slide\_view对象。 |
 | anim\_hint | const char* | 页面切换动画。 |
+#### slide\_view\_set\_animating\_time 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slide_view_t_slide_view_set_animating_time">设置动画时间。
+
+* 函数原型：
+
+```
+ret_t slide_view_set_animating_time (widget_t* widget, uint32_t animating_time);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | slide\_view对象。 |
+| animating\_time | uint32\_t | 动画时间。 |
 #### slide\_view\_set\_auto\_play 函数
 -----------------------
 
@@ -232,6 +276,26 @@ ret_t slide_view_set_auto_play (widget_t* widget, uint16_t auto_play);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | slide\_view对象。 |
 | auto\_play | uint16\_t | 0表示禁止自动播放，非0表示自动播放时每一页播放的时间。 |
+#### slide\_view\_set\_drag\_threshold 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slide_view_t_slide_view_set_drag_threshold">设置拖拽临界值。
+
+* 函数原型：
+
+```
+ret_t slide_view_set_drag_threshold (widget_t* widget, uint32_t drag_threshold);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | slide\_view对象。 |
+| drag\_threshold | uint32\_t | 拖动临界值。 |
 #### slide\_view\_set\_loop 函数
 -----------------------
 
@@ -288,11 +352,43 @@ ret_t slide_view_set_vertical (widget_t* widget, bool_t vertical);
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 | 可通过widget\_set\_prop修改 | 是 |
+#### animating\_time 属性
+-----------------------
+> <p id="slide_view_t_animating_time">动画时间（单位：毫秒）。
+
+* 类型：uint32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### auto\_play 属性
 -----------------------
 > <p id="slide_view_t_auto_play">自动播放。0表示禁止自动播放，非0表示自动播放时每一页播放的时间。
 
 * 类型：uint16\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### drag\_threshold 属性
+-----------------------
+> <p id="slide_view_t_drag_threshold">拖动临界值。
+
+* 类型：uint32\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

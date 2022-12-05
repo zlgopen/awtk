@@ -31,7 +31,7 @@
 * 函数原型：
 
 ```
-network_interface_t network_interface_create (char * interface, type network_interface_type_t);
+network_interface_t network_interface_create (char * interface, network_interface_type_t type);
 ```
 
 * 参数说明：
@@ -40,7 +40,7 @@ network_interface_t network_interface_create (char * interface, type network_int
 | -------- | ----- | --------- |
 | 返回值 | network\_interface\_t | 网卡接口对象。 |
 | interface | char * | 网卡名。 |
-| network\_interface\_type\_t | type | 网卡接口类型。 |
+| type | network\_interface\_type\_t | 网卡接口类型。 |
 #### network\_interface\_destroy 函数
 -----------------------
 

@@ -53,14 +53,17 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml)
 | -------- | ------------ | 
 | <a href="#gif_image_t_gif_image_cast">gif\_image\_cast</a> | 转换为gif_image对象(供脚本语言使用)。 |
 | <a href="#gif_image_t_gif_image_create">gif\_image\_create</a> | 创建gif_image对象 |
+| <a href="#gif_image_t_gif_image_get_widget_vtable">gif\_image\_get\_widget\_vtable</a> | 获取 gif_image 虚表。 |
 | <a href="#gif_image_t_gif_image_pause">gif\_image\_pause</a> | 暂停。 |
 | <a href="#gif_image_t_gif_image_play">gif\_image\_play</a> | 播放。 |
+| <a href="#gif_image_t_gif_image_set_loop">gif\_image\_set\_loop</a> | 设置循环播放次数。 |
 | <a href="#gif_image_t_gif_image_stop">gif\_image\_stop</a> | 停止(并重置index为-1)。 |
 ### 属性
 <p id="gif_image_t_properties">
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
+| <a href="#gif_image_t_loop">loop</a> | uint32\_t | 循环播放的次数。 |
 | <a href="#gif_image_t_running">running</a> | bool\_t | 是否正在运行。 |
 #### gif\_image\_cast 函数
 -----------------------
@@ -104,6 +107,24 @@ widget_t* gif_image_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### gif\_image\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="gif_image_t_gif_image_get_widget_vtable">获取 gif_image 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* gif_image_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 gif\_image 虚表。 |
 #### gif\_image\_pause 函数
 -----------------------
 
@@ -142,6 +163,26 @@ ret_t gif_image_play (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | gif\_image对象。 |
+#### gif\_image\_set\_loop 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="gif_image_t_gif_image_set_loop">设置循环播放次数。
+
+* 函数原型：
+
+```
+ret_t gif_image_set_loop (widget_t* widget, uint32_t loop);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| loop | uint32\_t | 循环播放次数。 |
 #### gif\_image\_stop 函数
 -----------------------
 
@@ -161,6 +202,22 @@ ret_t gif_image_stop (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | gif\_image对象。 |
+#### loop 属性
+-----------------------
+> <p id="gif_image_t_loop">循环播放的次数。
+
+* 类型：uint32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### running 属性
 -----------------------
 > <p id="gif_image_t_running">是否正在运行。
@@ -171,3 +228,6 @@ ret_t gif_image_stop (widget_t* widget);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |

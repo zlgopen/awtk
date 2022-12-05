@@ -22,8 +22,10 @@
 | <a href="#lcd_t_lcd_get_clip_rect">lcd\_get\_clip\_rect</a> | 获取裁剪区域。 |
 | <a href="#lcd_t_lcd_get_desired_bitmap_format">lcd\_get\_desired\_bitmap\_format</a> | 获取期望的位图格式。绘制期望的位图格式可以提高绘制性能。 |
 | <a href="#lcd_t_lcd_get_dirty_rect">lcd\_get\_dirty\_rect</a> | 获取 lcd 对象的脏矩形。 |
-| <a href="#lcd_t_lcd_get_dirty_rect">lcd\_get\_dirty\_rect</a> | 获取 lcd 对象的脏矩形列表。 |
+| <a href="#lcd_t_lcd_get_dirty_rects">lcd\_get\_dirty\_rects</a> | 获取 lcd 对象的脏矩形列表。 |
 | <a href="#lcd_t_lcd_get_height">lcd\_get\_height</a> | 获取高度。 |
+| <a href="#lcd_t_lcd_get_physical_height">lcd\_get\_physical\_height</a> | 获取真实物理高度。 |
+| <a href="#lcd_t_lcd_get_physical_width">lcd\_get\_physical\_width</a> | 获取真实物理宽度。 |
 | <a href="#lcd_t_lcd_get_point_color">lcd\_get\_point\_color</a> | 获取指定点的颜色，对于基于非FrameBuffer的LCD，返回当前的fill_color。 |
 | <a href="#lcd_t_lcd_get_text_metrics">lcd\_get\_text\_metrics</a> | 获取当前字体的度量信息。 |
 | <a href="#lcd_t_lcd_get_type">lcd\_get\_type</a> | 获取 lcd 类型。 |
@@ -378,17 +380,17 @@ ret_t lcd_get_dirty_rect (lcd_t* lcd, rect_t* r);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | lcd | lcd\_t* | lcd对象。 |
 | r | rect\_t* | 返回脏矩形。 |
-#### lcd\_get\_dirty\_rect 函数
+#### lcd\_get\_dirty\_rects 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_get_dirty_rect">获取 lcd 对象的脏矩形列表。
+> <p id="lcd_t_lcd_get_dirty_rects">获取 lcd 对象的脏矩形列表。
 
 * 函数原型：
 
 ```
-const dirty_rects_t* lcd_get_dirty_rect (lcd_t* lcd);
+const dirty_rects_t* lcd_get_dirty_rects (lcd_t* lcd);
 ```
 
 * 参数说明：
@@ -415,6 +417,44 @@ wh_t lcd_get_height (lcd_t* lcd);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | wh\_t | 返回高度。 |
+| lcd | lcd\_t* | lcd对象。 |
+#### lcd\_get\_physical\_height 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="lcd_t_lcd_get_physical_height">获取真实物理高度。
+
+* 函数原型：
+
+```
+wh_t lcd_get_physical_height (lcd_t* lcd);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | wh\_t | 返回真实物理高度。 |
+| lcd | lcd\_t* | lcd对象。 |
+#### lcd\_get\_physical\_width 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="lcd_t_lcd_get_physical_width">获取真实物理宽度。
+
+* 函数原型：
+
+```
+wh_t lcd_get_physical_width (lcd_t* lcd);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | wh\_t | 返回真实物理宽度。 |
 | lcd | lcd\_t* | lcd对象。 |
 #### lcd\_get\_point\_color 函数
 -----------------------

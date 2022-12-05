@@ -13,6 +13,7 @@ lcd fb脏矩形。
 | <a href="#lcd_fb_dirty_rects_t_lcd_fb_dirty_rects_init">lcd\_fb\_dirty\_rects\_init</a> | 初始化 lcd_fb_dirty_rects_t 对象 |
 | <a href="#lcd_fb_dirty_rects_t_lcd_fb_dirty_rects_reinit">lcd\_fb\_dirty\_rects\_reinit</a> | 修改 lcd_fb_dirty_rects_t 对象的宽高 |
 | <a href="#lcd_fb_dirty_rects_t_lcd_fb_dirty_rects_reset_dirty_rects_by_fb">lcd\_fb\_dirty\_rects\_reset\_dirty\_rects\_by\_fb</a> | 清除对应 fb 的脏矩形列表。 |
+| <a href="#lcd_fb_dirty_rects_t_lcd_fb_dirty_rects_update_all_fb_dirty_rect">lcd\_fb\_dirty\_rects\_update\_all\_fb\_dirty\_rect</a> | 把当前脏矩形合并到所有 fb 的脏矩形中。 |
 | <a href="#lcd_fb_dirty_rects_t_lcd_fb_dirty_rects_update_all_fb_dirty_rects">lcd\_fb\_dirty\_rects\_update\_all\_fb\_dirty\_rects</a> | 把当前脏矩形列表合并到所有 fb 的脏矩形中。 |
 #### lcd\_fb\_dirty\_rects\_add\_fb\_info 函数
 -----------------------
@@ -136,6 +137,26 @@ ret_t lcd_fb_dirty_rects_reset_dirty_rects_by_fb (lcd_fb_dirty_rects_t* lcd_fb_d
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | lcd\_fb\_dirty\_rects | lcd\_fb\_dirty\_rects\_t* | lcd\_fb\_dirty\_rects\_t对象。 |
 | fb | uint8\_t* | fb 地址。 |
+#### lcd\_fb\_dirty\_rects\_update\_all\_fb\_dirty\_rect 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="lcd_fb_dirty_rects_t_lcd_fb_dirty_rects_update_all_fb_dirty_rect">把当前脏矩形合并到所有 fb 的脏矩形中。
+
+* 函数原型：
+
+```
+ret_t lcd_fb_dirty_rects_update_all_fb_dirty_rect (lcd_fb_dirty_rects_t* lcd_fb_dirty_rects, const rect_t* dirty_rect);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| lcd\_fb\_dirty\_rects | lcd\_fb\_dirty\_rects\_t* | lcd\_fb\_dirty\_rects\_t对象。 |
+| dirty\_rect | const rect\_t* | 当前脏矩形。 |
 #### lcd\_fb\_dirty\_rects\_update\_all\_fb\_dirty\_rects 函数
 -----------------------
 

@@ -17,6 +17,7 @@
 | <a href="#window_manager_t_window_manager_cast">window\_manager\_cast</a> | 转换为window_manager对象(供脚本语言使用)。 |
 | <a href="#window_manager_t_window_manager_close_all">window\_manager\_close\_all</a> | 关闭全部窗口。 |
 | <a href="#window_manager_t_window_manager_close_window_force">window\_manager\_close\_window\_force</a> | 强制立即关闭窗口。 |
+| <a href="#window_manager_t_window_manager_destroy">window\_manager\_destroy</a> |  |
 | <a href="#window_manager_t_window_manager_dispatch_input_event">window\_manager\_dispatch\_input\_event</a> | 分发输入事件。 |
 | <a href="#window_manager_t_window_manager_dispatch_native_window_event">window\_manager\_dispatch\_native\_window\_event</a> | 处理native window事件。 |
 | <a href="#window_manager_t_window_manager_end_wait_pointer_cursor">window\_manager\_end\_wait\_pointer\_cursor</a> | 结束等待鼠标指针。 |
@@ -26,6 +27,7 @@
 | <a href="#window_manager_t_window_manager_get_prev_window">window\_manager\_get\_prev\_window</a> | 获取前一个的窗口。 |
 | <a href="#window_manager_t_window_manager_get_top_main_window">window\_manager\_get\_top\_main\_window</a> | 获取最上面的主窗口。 |
 | <a href="#window_manager_t_window_manager_get_top_window">window\_manager\_get\_top\_window</a> | 获取最上面的窗口。 |
+| <a href="#window_manager_t_window_manager_init">window\_manager\_init</a> |  |
 | <a href="#window_manager_t_window_manager_is_animating">window\_manager\_is\_animating</a> | 获取当前窗口动画是否正在播放。 |
 | <a href="#window_manager_t_window_manager_open_window">window\_manager\_open\_window</a> | 打开窗口。 |
 | <a href="#window_manager_t_window_manager_paint">window\_manager\_paint</a> | 绘制。 |
@@ -49,8 +51,9 @@
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 | EVT\_TOP\_WINDOW\_CHANGED | window\_event\_t | 顶层窗口改变的事件。 |
-| EVT\_SCREEN\_SAVER | window\_event\_t | 在指定的时间内(WITH\_SCREEN\_SAVER\_TIME)，没有用户输入事件，由窗口管理器触发。 |
+| EVT\_SCREEN\_SAVER | window\_event\_t | 在指定的时间内，没有用户输入事件，由窗口管理器触发。 |
 | EVT\_ORIENTATION\_CHANGED | event\_t | 屏幕旋转事件。 |
+| EVT\_SYSTEM | system\_event\_t | SDL系统事件。 |
 #### window\_manager 函数
 -----------------------
 
@@ -598,6 +601,10 @@ ret_t window_manager_set_show_fps (widget_t* widget, bool_t show_fps);
 
 > <p id="window_manager_t_window_manager_switch_to">切换到指定窗口。
 
+```c
+window_manager_switch_to(wm, win, widget_child(wm, "home"), FALSE);
+```
+
 * 函数原型：
 
 ```
@@ -611,7 +618,7 @@ ret_t window_manager_switch_to (widget_t* widget, widget_t* curr_win, widget_t* 
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 窗口管理器对象。 |
 | curr\_win | widget\_t* | 当前窗口。 |
-| target\_win | widget\_t* | 目标窗口。 |
+| target\_win | widget\_t* | 目标窗口(必须存在，可以用widget\_child函数到窗口管理器中查找)。 |
 | close | bool\_t | 是否关闭当前窗口。 |
 #### global\_emitter 属性
 -----------------------

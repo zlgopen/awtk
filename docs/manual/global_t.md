@@ -11,6 +11,7 @@ TK全局对象。
 | <a href="#global_t_asset_loader_zip_create">asset\_loader\_zip\_create</a> | 创建zip资源加载器。 |
 | <a href="#global_t_asset_loader_zip_create_with_reader">asset\_loader\_zip\_create\_with\_reader</a> | 创建zip资源加载器。 |
 | <a href="#global_t_tk_deinit_internal">tk\_deinit\_internal</a> | deinit。 |
+| <a href="#global_t_tk_enable_fast_lcd_portrait">tk\_enable\_fast\_lcd\_portrait</a> | 设置是否开启快速旋转功能。（开启这个功能需要定义 WITH_FAST_LCD_PORTRAIT 宏） |
 | <a href="#global_t_tk_exit">tk\_exit</a> | public for web |
 | <a href="#global_t_tk_get_pointer_x">tk\_get\_pointer\_x</a> | 获取全局指针的X坐标。 |
 | <a href="#global_t_tk_get_pointer_y">tk\_get\_pointer\_y</a> | 获取全局指针的Y坐标。 |
@@ -18,11 +19,11 @@ TK全局对象。
 | <a href="#global_t_tk_init_assets">tk\_init\_assets</a> | 初始化资源。 |
 | <a href="#global_t_tk_init_internal">tk\_init\_internal</a> | init。 |
 | <a href="#global_t_tk_is_pointer_pressed">tk\_is\_pointer\_pressed</a> | 获取全局指针是否按下。 |
-| <a href="#global_t_tk_is_ui_thread">tk\_is\_ui\_thread</a> | 判断当前线程是否是UI线程。 |
+| <a href="#global_t_tk_pre_init">tk\_pre\_init</a> | 初始化基本功能。 |
 | <a href="#global_t_tk_quit">tk\_quit</a> | 退出TK事件主循环。 |
 | <a href="#global_t_tk_run">tk\_run</a> | 进入TK事件主循环。 |
 | <a href="#global_t_tk_run_in_ui_thread">tk\_run\_in\_ui\_thread</a> | 后台线程在UI线程执行指定的函数。 |
-| <a href="#global_t_tk_set_lcd_orientation">tk\_set\_lcd\_orientation</a> | 设置屏幕的旋转方向(XXX:目前仅支持0度和90度)。 |
+| <a href="#global_t_tk_set_lcd_orientation">tk\_set\_lcd\_orientation</a> | 设置屏幕的旋转方向(XXX:目前仅支持0度,90度,180度和270度，旋转方向为逆时针方向)。 |
 #### asset\_loader\_default\_create 函数
 -----------------------
 
@@ -99,6 +100,26 @@ ret_t tk_deinit_internal ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+#### tk\_enable\_fast\_lcd\_portrait 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="global_t_tk_enable_fast_lcd_portrait">设置是否开启快速旋转功能。（开启这个功能需要定义 WITH_FAST_LCD_PORTRAIT 宏）
+备注：需要在 tk_set_lcd_orientation 函数之前调用
+
+* 函数原型：
+
+```
+ret_t tk_enable_fast_lcd_portrait (bool_t enable);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| enable | bool\_t | 是否开启。 |
 #### tk\_exit 函数
 -----------------------
 
@@ -231,24 +252,26 @@ bool_t tk_is_pointer_pressed ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回全局指针是否按下。 |
-#### tk\_is\_ui\_thread 函数
+#### tk\_pre\_init 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="global_t_tk_is_ui_thread">判断当前线程是否是UI线程。
+> <p id="global_t_tk_pre_init">初始化基本功能。
+> 在tk_init之前，应用程序可能需要加载配置文件，
+> 为了保证这些功能正常工作，可以先调用tk_pre_init来初始化平台、内存和data reader等等。
 
 * 函数原型：
 
 ```
-bool_t tk_is_ui_thread ();
+ret_t tk_pre_init ();
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | bool\_t | 返回TRUE表示是，否则表示否。 |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 #### tk\_quit 函数
 -----------------------
 
@@ -311,7 +334,7 @@ ret_t tk_run_in_ui_thread (tk_callback_t func, void* ctx, bool_t wait_until_done
 
 * 函数功能：
 
-> <p id="global_t_tk_set_lcd_orientation">设置屏幕的旋转方向(XXX:目前仅支持0度和90度)。
+> <p id="global_t_tk_set_lcd_orientation">设置屏幕的旋转方向(XXX:目前仅支持0度,90度,180度和270度，旋转方向为逆时针方向)。
 
 * 函数原型：
 

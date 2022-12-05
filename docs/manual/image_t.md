@@ -65,8 +65,10 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#image_t_icon_create">icon\_create</a> | 创建icon对象 |
 | <a href="#image_t_image_cast">image\_cast</a> | 转换为image对象(供脚本语言使用)。 |
 | <a href="#image_t_image_create">image\_create</a> | 创建image对象 |
+| <a href="#image_t_image_get_widget_vtable">image\_get\_widget\_vtable</a> | 获取 image 虚表。 |
 | <a href="#image_t_image_set_draw_type">image\_set\_draw\_type</a> | 设置图片的绘制方式。 |
 ### 属性
 <p id="image_t_properties">
@@ -74,6 +76,29 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#image_t_draw_type">draw\_type</a> | image\_draw\_type\_t | 图片的绘制方式(仅在没有旋转和缩放时生效)。 |
+#### icon\_create 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="image_t_icon_create">创建icon对象
+
+* 函数原型：
+
+```
+widget_t* icon_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | 对象。 |
+| parent | widget\_t* | 父控件 |
+| x | xy\_t | x坐标 |
+| y | xy\_t | y坐标 |
+| w | wh\_t | 宽度 |
+| h | wh\_t | 高度 |
 #### image\_cast 函数
 -----------------------
 
@@ -116,6 +141,24 @@ widget_t* image_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### image\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="image_t_image_get_widget_vtable">获取 image 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* image_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 image 虚表。 |
 #### image\_set\_draw\_type 函数
 -----------------------
 

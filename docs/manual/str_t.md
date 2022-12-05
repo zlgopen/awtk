@@ -25,6 +25,7 @@ str_reset(&s);
 | <a href="#str_t_str_append">str\_append</a> | 追加字符串。 |
 | <a href="#str_t_str_append_char">str\_append\_char</a> | 追加一个字符。 |
 | <a href="#str_t_str_append_double">str\_append\_double</a> | 追加一个浮点数。 |
+| <a href="#str_t_str_append_format">str\_append\_format</a> | 通过格式追加字符串。 |
 | <a href="#str_t_str_append_int">str\_append\_int</a> | 追加一个整数。 |
 | <a href="#str_t_str_append_int64">str\_append\_int64</a> | 追加一个int64整数。 |
 | <a href="#str_t_str_append_json_bool_pair">str\_append\_json\_bool\_pair</a> | 追加bool格式的json键值对。 |
@@ -38,16 +39,23 @@ str_reset(&s);
 | <a href="#str_t_str_append_with_len">str\_append\_with\_len</a> | 追加字符串。 |
 | <a href="#str_t_str_clear">str\_clear</a> | 清除字符串内容。 |
 | <a href="#str_t_str_common_prefix">str\_common\_prefix</a> | 计算str和other的共同前缀，并设置到str中。 |
+| <a href="#str_t_str_count">str\_count</a> | 统计字串出现的次数。 |
+| <a href="#str_t_str_decode_hex">str\_decode\_hex</a> | 把16进制格式的字符串解码成字符串。 |
 | <a href="#str_t_str_decode_xml_entity">str\_decode\_xml\_entity</a> | 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。 |
 | <a href="#str_t_str_decode_xml_entity_with_len">str\_decode\_xml\_entity\_with\_len</a> | 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。 |
 | <a href="#str_t_str_encode_hex">str\_encode\_hex</a> | 把二进制的数据编码成16进制格式的字符串。 |
-| <a href="#str_t_str_encode_hex">str\_encode\_hex</a> | 把16进制格式的字符串解码成字符串。 |
+| <a href="#str_t_str_encode_xml_entity">str\_encode\_xml\_entity</a> | 对XML基本的entity进行编码，目前仅支持&lt;&gt;&quota;&amp;。 |
+| <a href="#str_t_str_encode_xml_entity_with_len">str\_encode\_xml\_entity\_with\_len</a> | 对XML基本的entity进行编码，目前仅支持&lt;&gt;&quota;&amp;。 |
 | <a href="#str_t_str_end_with">str\_end\_with</a> | 判断字符串是否以指定的子串结尾。 |
 | <a href="#str_t_str_eq">str\_eq</a> | 判断两个字符串是否相等。 |
 | <a href="#str_t_str_expand_vars">str\_expand\_vars</a> | 将字符串中的变量展开为obj中对应的属性值。 |
 | <a href="#str_t_str_extend">str\_extend</a> | 扩展字符串到指定的容量。 |
+| <a href="#str_t_str_format">str\_format</a> | 通过格式设置字符串。 |
 | <a href="#str_t_str_from_float">str\_from\_float</a> | 用浮点数初始化字符串。 |
 | <a href="#str_t_str_from_int">str\_from\_int</a> | 用整数初始化字符串。 |
+| <a href="#str_t_str_from_int64">str\_from\_int64</a> | 用整数初始化字符串。 |
+| <a href="#str_t_str_from_uint32">str\_from\_uint32</a> | 用整数初始化字符串。 |
+| <a href="#str_t_str_from_uint64">str\_from\_uint64</a> | 用整数初始化字符串。 |
 | <a href="#str_t_str_from_value">str\_from\_value</a> | 用value初始化字符串。 |
 | <a href="#str_t_str_from_wstr">str\_from\_wstr</a> | 用value初始化字符串。 |
 | <a href="#str_t_str_from_wstr_with_len">str\_from\_wstr\_with\_len</a> | 用value初始化字符串。 |
@@ -58,6 +66,7 @@ str_reset(&s);
 | <a href="#str_t_str_remove">str\_remove</a> | 删除子字符串。 |
 | <a href="#str_t_str_replace">str\_replace</a> | 字符串替换。 |
 | <a href="#str_t_str_reset">str\_reset</a> | 重置字符串为空。 |
+| <a href="#str_t_str_reverse">str\_reverse</a> | 前后颠倒字符串。 |
 | <a href="#str_t_str_set">str\_set</a> | 设置字符串。 |
 | <a href="#str_t_str_set_with_len">str\_set\_with\_len</a> | 设置字符串。 |
 | <a href="#str_t_str_start_with">str\_start\_with</a> | 判断字符串是否以指定的子串开头。 |
@@ -138,6 +147,27 @@ ret_t str_append_double (str_t* str, const char* format, double value);
 | str | str\_t* | str对象。 |
 | format | const char* | 格式。 |
 | value | double | 要追加的浮点数。 |
+#### str\_append\_format 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_format">通过格式追加字符串。
+
+* 函数原型：
+
+```
+ret_t str_append_format (str_t* str, uint32_t size, const char* format);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| size | uint32\_t | format生成的字符串的最大长度(用于预先分配内存)。 |
+| format | const char* | 格式。 |
 #### str\_append\_int 函数
 -----------------------
 
@@ -415,6 +445,47 @@ ret_t str_common_prefix (str_t* str, const char* other);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
 | other | const char* | 另外一个字符串。 |
+#### str\_count 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_count">统计字串出现的次数。
+
+* 函数原型：
+
+```
+uint32_t str_count (str_t* str, const char* substr);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回字符串出现的次数。 |
+| str | str\_t* | str对象。 |
+| substr | const char* | 字串。 |
+#### str\_decode\_hex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_decode_hex">把16进制格式的字符串解码成字符串。
+
+* 函数原型：
+
+```
+ret_t str_decode_hex (str_t* str, uint8_t* data, uint32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| data | uint8\_t* | 数据缓存区(返回)。 |
+| size | uint32\_t | 数据最大长度。 |
 #### str\_decode\_xml\_entity 函数
 -----------------------
 
@@ -478,17 +549,17 @@ ret_t str_encode_hex (str_t* str, const uint8_t* data, uint32_t size, const char
 | data | const uint8\_t* | 数据。 |
 | size | uint32\_t | 数据长度。 |
 | format | const char* | 格式(如:"%02x" 表示生成小写) |
-#### str\_encode\_hex 函数
+#### str\_encode\_xml\_entity 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="str_t_str_encode_hex">把16进制格式的字符串解码成字符串。
+> <p id="str_t_str_encode_xml_entity">对XML基本的entity进行编码，目前仅支持&lt;&gt;&quota;&amp;。
 
 * 函数原型：
 
 ```
-ret_t str_encode_hex (str_t* str, uint8_t* data, uint32_t size);
+ret_t str_encode_xml_entity (str_t* str, char* text);
 ```
 
 * 参数说明：
@@ -497,8 +568,28 @@ ret_t str_encode_hex (str_t* str, uint8_t* data, uint32_t size);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| data | uint8\_t* | 数据缓存区(返回)。 |
-| size | uint32\_t | 数据最大长度。 |
+| text | char* | 要编码的XML文本。 |
+#### str\_encode\_xml\_entity\_with\_len 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_encode_xml_entity_with_len">对XML基本的entity进行编码，目前仅支持&lt;&gt;&quota;&amp;。
+
+* 函数原型：
+
+```
+ret_t str_encode_xml_entity_with_len (str_t* str, char* text, uint32_t len);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| text | char* | 要编码的XML文本。 |
+| len | uint32\_t | 字符串长度。 |
 #### str\_end\_with 函数
 -----------------------
 
@@ -584,6 +675,27 @@ ret_t str_extend (str_t* str, uint32_t capacity);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
 | capacity | uint32\_t | 初始容量。 |
+#### str\_format 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_format">通过格式设置字符串。
+
+* 函数原型：
+
+```
+ret_t str_format (str_t* str, uint32_t size, const char* format);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| size | uint32\_t | format生成的字符串的最大长度(用于预先分配内存)。 |
+| format | const char* | 格式。 |
 #### str\_from\_float 函数
 -----------------------
 
@@ -594,7 +706,7 @@ ret_t str_extend (str_t* str, uint32_t capacity);
 * 函数原型：
 
 ```
-ret_t str_from_float (str_t* str, double v);
+ret_t str_from_float (str_t* str, double value);
 ```
 
 * 参数说明：
@@ -603,7 +715,7 @@ ret_t str_from_float (str_t* str, double v);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| v | double | 浮点数。 |
+| value | double | 浮点数。 |
 #### str\_from\_int 函数
 -----------------------
 
@@ -614,7 +726,7 @@ ret_t str_from_float (str_t* str, double v);
 * 函数原型：
 
 ```
-ret_t str_from_int (str_t* str, int32_t v);
+ret_t str_from_int (str_t* str, int32_t value);
 ```
 
 * 参数说明：
@@ -623,7 +735,67 @@ ret_t str_from_int (str_t* str, int32_t v);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| v | int32\_t | 整数。 |
+| value | int32\_t | 整数。 |
+#### str\_from\_int64 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_from_int64">用整数初始化字符串。
+
+* 函数原型：
+
+```
+ret_t str_from_int64 (str_t* str, int64_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| value | int64\_t | 整数。 |
+#### str\_from\_uint32 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_from_uint32">用整数初始化字符串。
+
+* 函数原型：
+
+```
+ret_t str_from_uint32 (str_t* str, uint32_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| value | uint32\_t | 整数。 |
+#### str\_from\_uint64 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_from_uint64">用整数初始化字符串。
+
+* 函数原型：
+
+```
+ret_t str_from_uint64 (str_t* str, uint64_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| value | uint64\_t | 整数。 |
 #### str\_from\_value 函数
 -----------------------
 
@@ -634,7 +806,7 @@ ret_t str_from_int (str_t* str, int32_t v);
 * 函数原型：
 
 ```
-ret_t str_from_value (str_t* str, value_t v);
+ret_t str_from_value (str_t* str, value_t value);
 ```
 
 * 参数说明：
@@ -643,7 +815,7 @@ ret_t str_from_value (str_t* str, value_t v);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| v | value\_t | value。 |
+| value | value\_t | value。 |
 #### str\_from\_wstr 函数
 -----------------------
 
@@ -828,6 +1000,25 @@ ret_t str_reset (str_t* str);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
+#### str\_reverse 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_reverse">前后颠倒字符串。
+
+* 函数原型：
+
+```
+ret_t str_reverse (str_t* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
 #### str\_set 函数
 -----------------------
 
@@ -899,7 +1090,7 @@ bool_t str_start_with (str_t* str, char* text);
 * 函数原型：
 
 ```
-ret_t str_to_float (str_t* str, double* v);
+ret_t str_to_float (str_t* str, double* value);
 ```
 
 * 参数说明：
@@ -908,7 +1099,7 @@ ret_t str_to_float (str_t* str, double* v);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| v | double* | 用于返回浮点数。 |
+| value | double* | 用于返回浮点数。 |
 #### str\_to\_int 函数
 -----------------------
 
@@ -919,7 +1110,7 @@ ret_t str_to_float (str_t* str, double* v);
 * 函数原型：
 
 ```
-ret_t str_to_int (str_t* str, int32_t* v);
+ret_t str_to_int (str_t* str, int32_t* value);
 ```
 
 * 参数说明：
@@ -928,7 +1119,7 @@ ret_t str_to_int (str_t* str, int32_t* v);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| v | int32\_t* | 用于返回整数。 |
+| value | int32\_t* | 用于返回整数。 |
 #### str\_to\_lower 函数
 -----------------------
 

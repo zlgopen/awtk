@@ -56,17 +56,21 @@ vgcanvas_restore(vg);
 | <a href="#vgcanvas_t_vgcanvas_destroy_fbo">vgcanvas\_destroy\_fbo</a> | 销毁 fbo 对象。 |
 | <a href="#vgcanvas_t_vgcanvas_draw_icon">vgcanvas\_draw\_icon</a> | 绘制图标。 |
 | <a href="#vgcanvas_t_vgcanvas_draw_image">vgcanvas\_draw\_image</a> | 绘制图片。 |
+| <a href="#vgcanvas_t_vgcanvas_draw_image_repeat">vgcanvas\_draw\_image\_repeat</a> | 绘制图片。 |
 | <a href="#vgcanvas_t_vgcanvas_ellipse">vgcanvas\_ellipse</a> | 生成一个椭圆路径。 |
 | <a href="#vgcanvas_t_vgcanvas_end_frame">vgcanvas\_end\_frame</a> | 结束绘制。系统内部调用。 |
 | <a href="#vgcanvas_t_vgcanvas_fbo_to_bitmap">vgcanvas\_fbo\_to\_bitmap</a> | 把 fbo 对象的数据拷贝到 bitmap 中。 |
 | <a href="#vgcanvas_t_vgcanvas_fill">vgcanvas\_fill</a> | 填充多边形。 |
 | <a href="#vgcanvas_t_vgcanvas_fill_text">vgcanvas\_fill\_text</a> | 绘制文本。 |
 | <a href="#vgcanvas_t_vgcanvas_flush">vgcanvas\_flush</a> | flush |
+| <a href="#vgcanvas_t_vgcanvas_get_canvas">vgcanvas\_get\_canvas</a> | 获取 canvas 对象。 |
+| <a href="#vgcanvas_t_vgcanvas_get_clip_rect">vgcanvas\_get\_clip\_rect</a> | 获取矩形裁剪。 |
 | <a href="#vgcanvas_t_vgcanvas_get_height">vgcanvas\_get\_height</a> | 获取高度。 |
 | <a href="#vgcanvas_t_vgcanvas_get_text_metrics">vgcanvas\_get\_text\_metrics</a> | 获取当前字体的度量信息。 |
 | <a href="#vgcanvas_t_vgcanvas_get_width">vgcanvas\_get\_width</a> | 获取宽度。 |
 | <a href="#vgcanvas_t_vgcanvas_intersect_clip_rect">vgcanvas\_intersect\_clip\_rect</a> | 设置一个与前一个裁剪区做交集的矩形裁剪区。 |
 | <a href="#vgcanvas_t_vgcanvas_is_point_in_path">vgcanvas\_is\_point\_in\_path</a> | 检查点是否在当前路径中。 |
+| <a href="#vgcanvas_t_vgcanvas_is_rectf_in_clip_rect">vgcanvas\_is\_rectf\_in\_clip\_rect</a> | 矩形区域是否在矩形裁剪中。 |
 | <a href="#vgcanvas_t_vgcanvas_line_to">vgcanvas\_line\_to</a> | 生成一条线段(从当前点到目标点)。 |
 | <a href="#vgcanvas_t_vgcanvas_measure_text">vgcanvas\_measure\_text</a> | 测量文本的宽度。 |
 | <a href="#vgcanvas_t_vgcanvas_move_to">vgcanvas\_move\_to</a> | 移动当前点到指定点。 |
@@ -238,7 +242,7 @@ ret_t vgcanvas_bezier_to (vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp
 | cp1x | float\_t | 控制点1x坐标。 |
 | cp1y | float\_t | 控制点1y坐标。 |
 | cp2x | float\_t | 控制点2x坐标。 |
-| cp2y | float\_t | 控制点3y坐标。 |
+| cp2y | float\_t | 控制点2y坐标。 |
 | x | float\_t | x坐标。 |
 | y | float\_t | y坐标。 |
 #### vgcanvas\_bind\_fbo 函数
@@ -530,6 +534,40 @@ ret_t vgcanvas_draw_image (vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy
 | dy | float\_t | dy |
 | dw | float\_t | dw |
 | dh | float\_t | dh |
+#### vgcanvas\_draw\_image\_repeat 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_draw_image_repeat">绘制图片。
+
+备注：
+当绘制区域大于原图区域时，多余的绘制区域会重复绘制原图区域的东西。（绘制图区按照绘制图片的宽高来绘制的）
+当绘制图片的宽高和原图的不同，在重复绘制的同时加入缩放。
+
+* 函数原型：
+
+```
+ret_t vgcanvas_draw_image_repeat (vgcanvas_t* vg, bitmap_t* img, float_t sx, float_t sy, float_t sw, float_t sh, float_t dx, float_t dy, float_t dw, float_t dh, float_t dst_w, float_t dst_h);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| img | bitmap\_t* | 图片。 |
+| sx | float\_t | 原图区域的 x |
+| sy | float\_t | 原图区域的 y |
+| sw | float\_t | 原图区域的 w |
+| sh | float\_t | 原图区域的 h |
+| dx | float\_t | 绘制区域的 x |
+| dy | float\_t | 绘制区域的 y |
+| dw | float\_t | 绘制区域的 w |
+| dh | float\_t | 绘制区域的 h |
+| dst\_w | float\_t | 绘制图片的宽 |
+| dst\_h | float\_t | 绘制图片的高 |
 #### vgcanvas\_ellipse 函数
 -----------------------
 
@@ -655,6 +693,44 @@ ret_t vgcanvas_flush (vgcanvas_t* vg);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
+#### vgcanvas\_get\_canvas 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_get_canvas">获取 canvas 对象。
+
+* 函数原型：
+
+```
+canvas_t* vgcanvas_get_canvas (vgcanvas_t* vg);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | canvas\_t* | 成功返回 canvas 对象，失败返回 NULL。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+#### vgcanvas\_get\_clip\_rect 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_get_clip_rect">获取矩形裁剪。
+
+* 函数原型：
+
+```
+const rectf_t* vgcanvas_get_clip_rect (vgcanvas_t* vg);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const rectf\_t* | 返回裁剪区。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
 #### vgcanvas\_get\_height 函数
 -----------------------
 
@@ -772,6 +848,29 @@ bool_t vgcanvas_is_point_in_path (vgcanvas_t* vg, float_t x, float_t y);
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | x | float\_t | x坐标。 |
 | y | float\_t | y坐标。 |
+#### vgcanvas\_is\_rectf\_in\_clip\_rect 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_is_rectf_in_clip_rect">矩形区域是否在矩形裁剪中。
+
+* 函数原型：
+
+```
+bool_t vgcanvas_is_rectf_in_clip_rect (vgcanvas_t* vg, float_t left, float_t top, float_t right, float_t bottom);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回 TURE 则在区域中，返回 FALSE 则不在区域中。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| left | float\_t | 矩形区域左边。 |
+| top | float\_t | 矩形区域上边。 |
+| right | float\_t | 矩形区域右边。 |
+| bottom | float\_t | 矩形区域下边。 |
 #### vgcanvas\_line\_to 函数
 -----------------------
 

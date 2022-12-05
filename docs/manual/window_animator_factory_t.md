@@ -108,7 +108,7 @@ window_animator_factory_t* window_animator_factory_create ();
 * 函数原型：
 
 ```
-window_animator_t* window_animator_factory_create_animator (window_animator_factory_t* factory, bool_t open, object_t* args);
+window_animator_t* window_animator_factory_create_animator (window_animator_factory_t* factory, bool_t open, tk_object_t* args);
 ```
 
 * 参数说明：
@@ -118,7 +118,7 @@ window_animator_t* window_animator_factory_create_animator (window_animator_fact
 | 返回值 | window\_animator\_t* | 返回窗口动画对象。 |
 | factory | window\_animator\_factory\_t* | 窗口动画工厂对象。 |
 | open | bool\_t | TRUE表示打开窗口时的动画，FALSE表示关闭窗口时的动画。 |
-| args | object\_t* | 参数。 |
+| args | tk\_object\_t* | 参数。 |
 #### window\_animator\_factory\_destroy 函数
 -----------------------
 

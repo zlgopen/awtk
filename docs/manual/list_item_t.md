@@ -55,6 +55,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L3
 | -------- | ------------ | 
 | <a href="#list_item_t_list_item_cast">list\_item\_cast</a> | 转换为list_item对象(供脚本语言使用)。 |
 | <a href="#list_item_t_list_item_create">list\_item\_create</a> | 创建list_item对象 |
+| <a href="#list_item_t_list_item_get_widget_vtable">list\_item\_get\_widget\_vtable</a> | 获取 list_item 虚表。 |
 ### 事件
 <p id="list_item_t_events">
 
@@ -103,3 +104,21 @@ widget_t* list_item_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### list\_item\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="list_item_t_list_item_get_widget_vtable">获取 list_item 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* list_item_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 list\_item 虚表。 |

@@ -20,7 +20,7 @@
 * 函数原型：
 
 ```
-tk_iostream_t* tk_iostream_mem_create (void* buff_in, uint32_t size_in, void* buff_out, uoutt32_t size_out, bool_t own_the_buff);
+tk_iostream_t* tk_iostream_mem_create (void* buff_in, uint32_t size_in, void* buff_out, uint32_t size_out, bool_t own_the_buff);
 ```
 
 * 参数说明：
@@ -31,5 +31,5 @@ tk_iostream_t* tk_iostream_mem_create (void* buff_in, uint32_t size_in, void* bu
 | buff\_in | void* | 输入流缓冲区。 |
 | size\_in | uint32\_t | 输入流缓冲区大小。 |
 | buff\_out | void* | 输入流缓冲区。 |
-| size\_out | uoutt32\_t | 输入流缓冲区大小。 |
+| size\_out | uint32\_t | 输入流缓冲区大小。 |
 | own\_the\_buff | bool\_t | 是否让istream对象拥有buff。 |

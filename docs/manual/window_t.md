@@ -51,11 +51,14 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#window_t_image_copy">image\_copy</a> | 把图片指定的区域拷贝到framebuffer中。 |
 | <a href="#window_t_image_fill">image\_fill</a> | 用颜色绘制指定的区域。 |
 | <a href="#window_t_image_rotate">image\_rotate</a> | 把图片指定的区域进行旋转并拷贝到framebuffer相应的区域，本函数主要用于辅助实现横屏和竖屏的切换，一般支持90度旋转即可。 |
+| <a href="#window_t_image_rotate_blend">image\_rotate\_blend</a> | 把图片指定的区域渲染到framebuffer指定的区域，src的大小和dst的大小不一致则进行缩放以及旋转。 |
+| <a href="#window_t_image_rotate_ex">image\_rotate\_ex</a> | 把图片指定的区域进行旋转。 |
 | <a href="#window_t_window_cast">window\_cast</a> | 转换为window对象(供脚本语言使用)。 |
 | <a href="#window_t_window_close">window\_close</a> | 关闭窗口。 |
 | <a href="#window_t_window_close_force">window\_close\_force</a> | 立即无条件关闭窗口(无动画)。 |
 | <a href="#window_t_window_create">window\_create</a> | 创建window对象 |
 | <a href="#window_t_window_create_default">window\_create\_default</a> | 以缺省的方式创建window对象。 |
+| <a href="#window_t_window_get_widget_vtable">window\_get\_widget\_vtable</a> | 获取 window 虚表。 |
 | <a href="#window_t_window_open">window\_open</a> | 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。 |
 | <a href="#window_t_window_open_and_close">window\_open\_and\_close</a> | 从资源文件中加载并创建window对象。本函数在ui_loader/ui_builder_default里实现。 |
 | <a href="#window_t_window_set_auto_scale_children">window\_set\_auto\_scale\_children</a> | 当设计分辨率和实际分辨率不一致时，自动调整子控件的位置和大小。 |
@@ -160,6 +163,7 @@ ret_t image_fill (bitmap_t* dst, const rect_t* dst_r, color_t c);
 * 函数功能：
 
 > <p id="window_t_image_rotate">把图片指定的区域进行旋转并拷贝到framebuffer相应的区域，本函数主要用于辅助实现横屏和竖屏的切换，一般支持90度旋转即可。
+备注：旋转方向为逆时针。
 
 * 函数原型：
 
@@ -176,6 +180,54 @@ ret_t image_rotate (bitmap_t* dst, bitmap_t* src, const rect_t* src_r, lcd_orien
 | src | bitmap\_t* | 源图片对象。 |
 | src\_r | const rect\_t* | 要旋转并拷贝的区域。 |
 | o | lcd\_orientation\_t | 旋转角度(一般支持90度即可)。 |
+#### image\_rotate\_blend 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_t_image_rotate_blend">把图片指定的区域渲染到framebuffer指定的区域，src的大小和dst的大小不一致则进行缩放以及旋转。
+
+* 函数原型：
+
+```
+ret_t image_rotate_blend (bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r, uint8_t global_alpha, lcd_orientation_t o);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败，返回失败则上层用软件实现。 |
+| dst | bitmap\_t* | 目标图片对象。 |
+| src | bitmap\_t* | 源图片对象。 |
+| dst\_r | const rectf\_t* | 目的区域。（坐标原点为旋转后的坐标系原点，并非是 dst 的左上角） |
+| src\_r | const rectf\_t* | 源区域。 |
+| global\_alpha | uint8\_t | 全局alpha。 |
+| o | lcd\_orientation\_t | 旋转角度(一般支持90度即可，旋转方向为逆时针)。 |
+#### image\_rotate\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_t_image_rotate_ex">把图片指定的区域进行旋转。
+
+* 函数原型：
+
+```
+ret_t image_rotate_ex (bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy, lcd_orientation_t o);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败，返回失败则上层用软件实现。 |
+| dst | bitmap\_t* | 目标图片对象。 |
+| src | bitmap\_t* | 源图片对象。 |
+| src\_r | const rect\_t* | 要旋转并拷贝的区域。 |
+| dx | xy\_t | 目标位置的x坐标。（坐标原点为旋转后的坐标系原点，并非是 dst 的左上角） |
+| dy | xy\_t | 目标位置的y坐标。（坐标原点为旋转后的坐标系原点，并非是 dst 的左上角） |
+| o | lcd\_orientation\_t | 旋转角度(一般支持90度即可，旋转方向为逆时针)。 |
 #### window\_cast 函数
 -----------------------
 
@@ -274,6 +326,24 @@ widget_t* window_create_default ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 对象。 |
+#### window\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_t_window_get_widget_vtable">获取 window 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* window_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 window 虚表。 |
 #### window\_open 函数
 -----------------------
 

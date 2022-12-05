@@ -48,6 +48,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | -------- | ------------ | 
 | <a href="#overlay_t_overlay_cast">overlay\_cast</a> | 转换为overlay对象(供脚本语言使用)。 |
 | <a href="#overlay_t_overlay_create">overlay\_create</a> | 创建overlay对象 |
+| <a href="#overlay_t_overlay_get_widget_vtable">overlay\_get\_widget\_vtable</a> | 获取 overlay 虚表。 |
 | <a href="#overlay_t_overlay_set_always_on_top">overlay\_set\_always\_on\_top</a> | 设置是否总是在最上面。 |
 | <a href="#overlay_t_overlay_set_click_through">overlay\_set\_click\_through</a> | 设置是否启用点击穿透。 |
 ### 属性
@@ -99,6 +100,24 @@ widget_t* overlay_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### overlay\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="overlay_t_overlay_get_widget_vtable">获取 overlay 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* overlay_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 overlay 虚表。 |
 #### overlay\_set\_always\_on\_top 函数
 -----------------------
 

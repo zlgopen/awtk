@@ -33,6 +33,7 @@ widget\_t的函数均适用于pages\_t控件。
 | -------- | ------------ | 
 | <a href="#pages_t_pages_cast">pages\_cast</a> | 转换为pages对象(供脚本语言使用)。 |
 | <a href="#pages_t_pages_create">pages\_create</a> | 创建pages对象 |
+| <a href="#pages_t_pages_get_widget_vtable">pages\_get\_widget\_vtable</a> | 获取 pages 虚表。 |
 | <a href="#pages_t_pages_set_active">pages\_set\_active</a> | 设置当前的Page。 |
 | <a href="#pages_t_pages_set_active_by_name">pages\_set\_active\_by\_name</a> | 通过页面的名字设置当前的Page。 |
 ### 属性
@@ -40,7 +41,8 @@ widget\_t的函数均适用于pages\_t控件。
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#pages_t_active">active</a> | uint32\_t | 当前活跃的page。 |
+| <a href="#pages_t_active">active</a> | uint32\_t | 当前活跃的page。(需要用到 MVVM 数据绑定请设置 value 属性) |
+| <a href="#pages_t_value">value</a> | uint32\_t | 当前活跃的page。 |
 ### 事件
 <p id="pages_t_events">
 
@@ -90,6 +92,24 @@ widget_t* pages_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### pages\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="pages_t_pages_get_widget_vtable">获取 pages 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* pages_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 pages 虚表。 |
 #### pages\_set\_active 函数
 -----------------------
 
@@ -132,7 +152,7 @@ ret_t pages_set_active_by_name (widget_t* widget, char* name);
 | name | char* | 当前Page的名字。 |
 #### active 属性
 -----------------------
-> <p id="pages_t_active">当前活跃的page。
+> <p id="pages_t_active">当前活跃的page。(需要用到 MVVM 数据绑定请设置 value 属性)
 
 * 类型：uint32\_t
 
@@ -142,6 +162,21 @@ ret_t pages_set_active_by_name (widget_t* widget, char* name);
 | 可直接修改 | 否 |
 | 可持久化   | 是 |
 | 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### value 属性
+-----------------------
+> <p id="pages_t_value">当前活跃的page。
+
+* 类型：uint32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |

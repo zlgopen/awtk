@@ -25,6 +25,7 @@ tk_utf8_from_utf16(wstr, res_str, ARRAY_SIZE(res_str));
 | <a href="#utf8_t_tk_utf8_get_bytes_of_leading">tk\_utf8\_get\_bytes\_of\_leading</a> | 获取第一个字节为c的字符的字节数。 |
 | <a href="#utf8_t_tk_utf8_to_utf16">tk\_utf8\_to\_utf16</a> | 将char类型转换为wchar_t类型。 |
 | <a href="#utf8_t_tk_utf8_to_utf16_ex">tk\_utf8\_to\_utf16\_ex</a> | 将char类型转换为wchar_t类型。 |
+| <a href="#utf8_t_tk_utf8_trim_invalid_char">tk\_utf8\_trim\_invalid\_char</a> | 如果字符串最后一个字符串是无效的，删掉该无效字符。 |
 #### tk\_utf8\_dup\_utf16 函数
 -----------------------
 
@@ -151,3 +152,26 @@ wchar_t* tk_utf8_to_utf16_ex (const char* str, uint32_t size, const wchar_t* out
 | size | uint32\_t | 缓冲区大小。 |
 | out | const wchar\_t* | 返回结果缓冲区。 |
 | out\_size | uint32\_t | 缓冲区大小。 |
+#### tk\_utf8\_trim\_invalid\_char 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utf8_t_tk_utf8_trim_invalid_char">如果字符串最后一个字符串是无效的，删掉该无效字符。
+
+> 对于用strncpy/snprintf等生成字符串时，如果目标字符串内存大小不够，
+> 可能最后一个字符被从中间截断，导致该字符是无效的，这可能会触发assert，
+> 本函数可以用来删除最后一个无效字符。
+
+* 函数原型：
+
+```
+char* tk_utf8_trim_invalid_char (const char* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | char* | 返回UTF8字符串。 |
+| str | const char* | 输入字符串。 |

@@ -58,6 +58,7 @@ widget_set_self_layout_params(rich_text, "center", "middle", "100%", "100%");
 | -------- | ------------ | 
 | <a href="#rich_text_t_rich_text_cast">rich\_text\_cast</a> | 转换为rich_text对象(供脚本语言使用)。 |
 | <a href="#rich_text_t_rich_text_create">rich\_text\_create</a> | 创建rich_text对象 |
+| <a href="#rich_text_t_rich_text_get_widget_vtable">rich\_text\_get\_widget\_vtable</a> | 获取 rich_text 虚表。 |
 | <a href="#rich_text_t_rich_text_set_text">rich\_text\_set\_text</a> | 设置文本。 |
 | <a href="#rich_text_t_rich_text_set_yslidable">rich\_text\_set\_yslidable</a> | 设置是否允许y方向滑动。 |
 ### 属性
@@ -111,6 +112,24 @@ widget_t* rich_text_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### rich\_text\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rich_text_t_rich_text_get_widget_vtable">获取 rich_text 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* rich_text_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 rich\_text 虚表。 |
 #### rich\_text\_set\_text 函数
 -----------------------
 

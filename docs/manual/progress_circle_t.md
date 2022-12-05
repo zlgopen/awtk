@@ -44,8 +44,10 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#progress_circle_t_progress_circle_calc_line_dirty_rect">progress\_circle\_calc\_line\_dirty\_rect</a> |  |
 | <a href="#progress_circle_t_progress_circle_cast">progress\_circle\_cast</a> | 转换为progress_circle对象(供脚本语言使用)。 |
 | <a href="#progress_circle_t_progress_circle_create">progress\_circle\_create</a> | 创建progress_circle对象 |
+| <a href="#progress_circle_t_progress_circle_get_widget_vtable">progress\_circle\_get\_widget\_vtable</a> | 获取 progress_circle 虚表。 |
 | <a href="#progress_circle_t_progress_circle_set_counter_clock_wise">progress\_circle\_set\_counter\_clock\_wise</a> | 设置是否为逆时针方向。 |
 | <a href="#progress_circle_t_progress_circle_set_format">progress\_circle\_set\_format</a> | 设置格式。 |
 | <a href="#progress_circle_t_progress_circle_set_line_cap">progress\_circle\_set\_line\_cap</a> | 设置线帽类型。 |
@@ -116,6 +118,24 @@ widget_t* progress_circle_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### progress\_circle\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="progress_circle_t_progress_circle_get_widget_vtable">获取 progress_circle 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* progress_circle_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 progress\_circle 虚表。 |
 #### progress\_circle\_set\_counter\_clock\_wise 函数
 -----------------------
 

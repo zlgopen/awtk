@@ -21,6 +21,7 @@
 | WIDGET\_TYPE\_LABEL | 文本控件。 |
 | WIDGET\_TYPE\_BUTTON | 按钮控件。 |
 | WIDGET\_TYPE\_IMAGE | 图片控件。 |
+| WIDGET\_TYPE\_ICON | 图标控件。 |
 | WIDGET\_TYPE\_EDIT | 文本编辑控件。 |
 | WIDGET\_TYPE\_PROGRESS\_BAR | 进度条控件。 |
 | WIDGET\_TYPE\_GROUP\_BOX | 分组控件。 |
@@ -30,6 +31,7 @@
 | WIDGET\_TYPE\_DIALOG\_CLIENT | 对话框客户区域。 |
 | WIDGET\_TYPE\_SLIDER | 滑块控件。 |
 | WIDGET\_TYPE\_VIEW | 视图控件。 |
+| WIDGET\_TYPE\_PAGE | page控件。 |
 | WIDGET\_TYPE\_COMBO\_BOX | 下拉选择框控件。 |
 | WIDGET\_TYPE\_COMBO\_BOX\_ITEM | 下拉选择框的列表项控件。 |
 | WIDGET\_TYPE\_SLIDE\_VIEW | 滑动视图控件。 |

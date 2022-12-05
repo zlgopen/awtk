@@ -9,7 +9,9 @@
 | -------- | ------------ | 
 | <a href="#path_t_path_abs">path\_abs</a> | 返回绝对路径。 |
 | <a href="#path_t_path_app_root">path\_app\_root</a> | 获取app所在目录。 |
+| <a href="#path_t_path_app_root_ex">path\_app\_root\_ex</a> | 获取app所在目录，并追加subpath到后面。 |
 | <a href="#path_t_path_basename">path\_basename</a> | 返回文件名。 |
+| <a href="#path_t_path_basename_ex">path\_basename\_ex</a> | 返回文件名。 |
 | <a href="#path_t_path_build">path\_build</a> | 构造路径。 |
 | <a href="#path_t_path_cwd">path\_cwd</a> | 获取当前所在目录。 |
 | <a href="#path_t_path_dirname">path\_dirname</a> | 返回目录。 |
@@ -19,6 +21,7 @@
 | <a href="#path_t_path_extname_is">path\_extname\_is</a> | ```c |
 | <a href="#path_t_path_is_abs">path\_is\_abs</a> | 判断路径是否为绝对路径。 |
 | <a href="#path_t_path_normalize">path\_normalize</a> | 规范路径字符形式。 |
+| <a href="#path_t_path_prepend_app_root">path\_prepend\_app\_root</a> | 将前面路径加上app root。 |
 | <a href="#path_t_path_remove_last_slash">path\_remove\_last\_slash</a> | 去掉后面的/和\\字符。 |
 | <a href="#path_t_path_replace_basename">path\_replace\_basename</a> | 替换文件名。 |
 | <a href="#path_t_path_replace_extname">path\_replace\_extname</a> | 替换文件扩展名。 |
@@ -62,6 +65,26 @@ ret_t path_app_root (char* path);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | path | char* | 保存app所在目录。 |
+#### path\_app\_root\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="path_t_path_app_root_ex">获取app所在目录，并追加subpath到后面。
+
+* 函数原型：
+
+```
+ret_t path_app_root_ex (char* path, const char* subpath);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| path | char* | 保存app所在目录。 |
+| subpath | const char* | 子目录。 |
 #### path\_basename 函数
 -----------------------
 
@@ -81,6 +104,28 @@ ret_t path_basename (const char* path, char* result, uint32_t size);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | path | const char* | 路径。 |
+| result | char* | 用于返回文件名。 |
+| size | uint32\_t | 缓冲区大小。 |
+#### path\_basename\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="path_t_path_basename_ex">返回文件名。
+
+* 函数原型：
+
+```
+ret_t path_basename_ex (const char* path, bool_t remove_ext_name, char* result, uint32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| path | const char* | 路径。 |
+| remove\_ext\_name | bool\_t | 是否去掉扩展名。 |
 | result | char* | 用于返回文件名。 |
 | size | uint32\_t | 缓冲区大小。 |
 #### path\_build 函数
@@ -268,6 +313,26 @@ ret_t path_normalize (const char* path, char* result, uint32_t size);
 | path | const char* | 路径。 |
 | result | char* | 用于返回规范后的路径。 |
 | size | uint32\_t | 缓冲区大小。 |
+#### path\_prepend\_app\_root 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="path_t_path_prepend_app_root">将前面路径加上app root。
+
+* 函数原型：
+
+```
+const char* path_prepend_app_root (char* full_path, const char* path);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回完整路径。 |
+| full\_path | char* | 用于返回完整路径。 |
+| path | const char* | 路径。 |
 #### path\_remove\_last\_slash 函数
 -----------------------
 

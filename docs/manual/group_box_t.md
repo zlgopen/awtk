@@ -37,6 +37,7 @@ group\_box\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均�
 | -------- | ------------ | 
 | <a href="#group_box_t_group_box_cast">group\_box\_cast</a> | 转换为group_box对象(供脚本语言使用)。 |
 | <a href="#group_box_t_group_box_create">group\_box\_create</a> | 创建group_box对象 |
+| <a href="#group_box_t_group_box_get_widget_vtable">group\_box\_get\_widget\_vtable</a> | 获取 group_box 虚表。 |
 #### group\_box\_cast 函数
 -----------------------
 
@@ -79,3 +80,21 @@ widget_t* group_box_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### group\_box\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="group_box_t_group_box_get_widget_vtable">获取 group_box 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* group_box_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 group\_box 虚表。 |

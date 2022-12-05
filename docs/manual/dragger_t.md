@@ -13,6 +13,7 @@ dragger控件。
 | -------- | ------------ | 
 | <a href="#dragger_t_dragger_cast">dragger\_cast</a> | 转换为dragger对象(供脚本语言使用)。 |
 | <a href="#dragger_t_dragger_create">dragger\_create</a> | 创建dragger对象。 |
+| <a href="#dragger_t_dragger_get_widget_vtable">dragger\_get\_widget\_vtable</a> | 获取 dragger 虚表。 |
 | <a href="#dragger_t_dragger_set_range">dragger\_set\_range</a> | 设置拖动的范围。 |
 ### 属性
 <p id="dragger_t_properties">
@@ -73,6 +74,24 @@ widget_t* dragger_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### dragger\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="dragger_t_dragger_get_widget_vtable">获取 dragger 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* dragger_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 dragger 虚表。 |
 #### dragger\_set\_range 函数
 -----------------------
 

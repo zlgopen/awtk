@@ -40,7 +40,10 @@ widget_t* draggable = draggable_create(target, 0, 0, 0, 0);
 | -------- | ------------ | 
 | <a href="#draggable_t_draggable_cast">draggable\_cast</a> | 转换为draggable对象(供脚本语言使用)。 |
 | <a href="#draggable_t_draggable_create">draggable\_create</a> | 创建draggable对象 |
+| <a href="#draggable_t_draggable_get_widget_vtable">draggable\_get\_widget\_vtable</a> | 获取 draggable 虚表。 |
 | <a href="#draggable_t_draggable_set_bottom">draggable\_set\_bottom</a> | 设置bottom。 |
+| <a href="#draggable_t_draggable_set_drag_native_window">draggable\_set\_drag\_native\_window</a> | 设置drag_native_window。 |
+| <a href="#draggable_t_draggable_set_drag_parent">draggable\_set\_drag\_parent</a> | 设置drag_parent。 |
 | <a href="#draggable_t_draggable_set_drag_window">draggable\_set\_drag\_window</a> | 设置drag_window。 |
 | <a href="#draggable_t_draggable_set_horizontal_only">draggable\_set\_horizontal\_only</a> | 设置horizontal_only。 |
 | <a href="#draggable_t_draggable_set_left">draggable\_set\_left</a> | 设置left。 |
@@ -53,6 +56,8 @@ widget_t* draggable = draggable_create(target, 0, 0, 0, 0);
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#draggable_t_bottom">bottom</a> | int32\_t | 拖动范围的底部限制。缺省为父控件的底部。 |
+| <a href="#draggable_t_drag_native_window">drag\_native\_window</a> | bool\_t | 拖动原生窗口。 |
+| <a href="#draggable_t_drag_parent">drag\_parent</a> | uint32\_t | 拖动父控件。0表示直系父控件，1表示父控件的父控件，依次类推。 |
 | <a href="#draggable_t_drag_window">drag\_window</a> | bool\_t | 拖动窗口而不是父控件。比如放在对话框的titlebar上，拖动titlebar其实是希望拖动对话框。 |
 | <a href="#draggable_t_horizontal_only">horizontal\_only</a> | bool\_t | 只允许水平拖动。 |
 | <a href="#draggable_t_left">left</a> | int32\_t | 拖动范围的左边限制。缺省为父控件的左边。 |
@@ -101,6 +106,24 @@ widget_t* draggable_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### draggable\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="draggable_t_draggable_get_widget_vtable">获取 draggable 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* draggable_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 draggable 虚表。 |
 #### draggable\_set\_bottom 函数
 -----------------------
 
@@ -121,6 +144,47 @@ ret_t draggable_set_bottom (widget_t* widget, int32_t bottom);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | bottom | int32\_t | 拖动范围的底部限制。缺省为父控件的底部。 |
+#### draggable\_set\_drag\_native\_window 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="draggable_t_draggable_set_drag_native_window">设置drag_native_window。
+
+* 函数原型：
+
+```
+ret_t draggable_set_drag_native_window (widget_t* widget, bool_t drag_native_window);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| drag\_native\_window | bool\_t | 是否拖动原生窗口。 |
+#### draggable\_set\_drag\_parent 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="draggable_t_draggable_set_drag_parent">设置drag_parent。
+拖动窗口而不是父控件。比如放在对话框的titlebar上，拖动titlebar其实是希望拖动对话框。
+
+* 函数原型：
+
+```
+ret_t draggable_set_drag_parent (widget_t* widget, uint32_t drag_parent);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| drag\_parent | uint32\_t | 0表示直系父控件，1表示父控件的父控件，依次类推。 |
 #### draggable\_set\_drag\_window 函数
 -----------------------
 
@@ -141,7 +205,7 @@ ret_t draggable_set_drag_window (widget_t* widget, bool_t drag_window);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
-| drag\_window | bool\_t | drag\_window |
+| drag\_window | bool\_t | 是否拖动窗口。 |
 #### draggable\_set\_horizontal\_only 函数
 -----------------------
 
@@ -247,6 +311,38 @@ ret_t draggable_set_vertical_only (widget_t* widget, bool_t vertical_only);
 > <p id="draggable_t_bottom">拖动范围的底部限制。缺省为父控件的底部。
 
 * 类型：int32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### drag\_native\_window 属性
+-----------------------
+> <p id="draggable_t_drag_native_window">拖动原生窗口。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### drag\_parent 属性
+-----------------------
+> <p id="draggable_t_drag_parent">拖动父控件。0表示直系父控件，1表示父控件的父控件，依次类推。
+
+* 类型：uint32\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

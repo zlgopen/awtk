@@ -39,10 +39,10 @@
 | <a href="#text_edit_t_text_edit_set_max_rows">text\_edit\_set\_max\_rows</a> | 设置最大行数。 |
 | <a href="#text_edit_t_text_edit_set_offset">text\_edit\_set\_offset</a> | 设置滚动偏移。 |
 | <a href="#text_edit_t_text_edit_set_on_state_changed">text\_edit\_set\_on\_state\_changed</a> | 设置状态改变回调函数。 |
-| <a href="#text_edit_t_text_edit_set_overwrite">text\_edit\_set\_overwrite</a> | 设置是否覆盖行。 |
 | <a href="#text_edit_t_text_edit_set_select">text\_edit\_set\_select</a> | 选择指定范围的文本。 |
 | <a href="#text_edit_t_text_edit_set_tips">text\_edit\_set\_tips</a> | 设置提示信息。 |
 | <a href="#text_edit_t_text_edit_set_wrap_word">text\_edit\_set\_wrap\_word</a> | 设置是否自动折行。 |
+| <a href="#text_edit_t_text_edit_show_context_menu">text\_edit\_show\_context\_menu</a> | 显示上下文菜单。 |
 | <a href="#text_edit_t_text_edit_unselect">text\_edit\_unselect</a> | 取消选择。 |
 #### text\_edit\_click 函数
 -----------------------
@@ -94,7 +94,7 @@ ret_t text_edit_copy (text_edit_t* text_edit);
 * 函数原型：
 
 ```
-widget_t* text_edit_create (widget_t* widget, boo_t single_line);
+widget_t* text_edit_create (widget_t* widget, bool_t single_line);
 ```
 
 * 参数说明：
@@ -103,7 +103,7 @@ widget_t* text_edit_create (widget_t* widget, boo_t single_line);
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 对象。 |
 | widget | widget\_t* | 控件 |
-| single\_line | boo\_t | 是否是单行编辑器。 |
+| single\_line | bool\_t | 是否是单行编辑器。 |
 #### text\_edit\_cut 函数
 -----------------------
 
@@ -173,14 +173,14 @@ ret_t text_edit_drag (text_edit_t* text_edit, xy_t x, xy_t y);
 * 函数原型：
 
 ```
-uin32_t text_edit_get_cursor (text_edit_t* text_edit);
+uint32_t text_edit_get_cursor (text_edit_t* text_edit);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | uin32\_t | 返回光标的位置。 |
+| 返回值 | uint32\_t | 返回光标的位置。 |
 | text\_edit | text\_edit\_t* | text\_edit对象。 |
 #### text\_edit\_get\_height 函数
 -----------------------
@@ -678,26 +678,6 @@ ret_t text_edit_set_on_state_changed (text_edit_t* text_edit, text_edit_on_state
 | text\_edit | text\_edit\_t* | text\_edit对象。 |
 | on\_state\_changed | text\_edit\_on\_state\_changed\_t | 回调函数。 |
 | ctx | void* | 回调函数上下文。 |
-#### text\_edit\_set\_overwrite 函数
------------------------
-
-* 函数功能：
-
-> <p id="text_edit_t_text_edit_set_overwrite">设置是否覆盖行。
-
-* 函数原型：
-
-```
-ret_t text_edit_set_overwrite (text_edit_t* text_edit, bool_t overwrite);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| text\_edit | text\_edit\_t* | text\_edit对象。 |
-| overwrite | bool\_t | 是否覆盖行。 |
 #### text\_edit\_set\_select 函数
 -----------------------
 
@@ -760,6 +740,27 @@ ret_t text_edit_set_wrap_word (text_edit_t* text_edit, bool_t wrap_word);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | text\_edit | text\_edit\_t* | text\_edit对象。 |
 | wrap\_word | bool\_t | 是否自动折行。 |
+#### text\_edit\_show\_context\_menu 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_edit_t_text_edit_show_context_menu">显示上下文菜单。
+
+* 函数原型：
+
+```
+ret_t text_edit_show_context_menu (text_edit_t* text_edit, uint32_t x, uint32_t y);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| text\_edit | text\_edit\_t* | text\_edit对象。 |
+| x | uint32\_t | x位置。 |
+| y | uint32\_t | y位置。 |
 #### text\_edit\_unselect 函数
 -----------------------
 

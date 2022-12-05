@@ -38,6 +38,7 @@ vpage\_t也可以当作普通view嵌入到pages中，让tab控件在切换时具
 | -------- | ------------ | 
 | <a href="#vpage_t_vpage_cast">vpage\_cast</a> | 转换为vpage对象(供脚本语言使用)。 |
 | <a href="#vpage_t_vpage_create">vpage\_create</a> | 创建vpage对象 |
+| <a href="#vpage_t_vpage_get_widget_vtable">vpage\_get\_widget\_vtable</a> | 获取 vpage 虚表。 |
 | <a href="#vpage_t_vpage_set_anim_hint">vpage\_set\_anim\_hint</a> | 设置动画类型(vtranslate: 垂直平移，htranslate: 水平平移)。 |
 | <a href="#vpage_t_vpage_set_ui_asset">vpage\_set\_ui\_asset</a> | 设置 UI资源名称。 |
 ### 属性
@@ -97,6 +98,24 @@ widget_t* vpage_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### vpage\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vpage_t_vpage_get_widget_vtable">获取 vpage 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* vpage_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 vpage 虚表。 |
 #### vpage\_set\_anim\_hint 函数
 -----------------------
 

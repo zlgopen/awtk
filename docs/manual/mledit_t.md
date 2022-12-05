@@ -35,6 +35,7 @@ time\_clock一般不需要设置style。
 | <a href="#mledit_t_mledit_create">mledit\_create</a> | 创建mledit对象 |
 | <a href="#mledit_t_mledit_get_cursor">mledit\_get\_cursor</a> | 获取编辑器光标位置。 |
 | <a href="#mledit_t_mledit_get_selected_text">mledit\_get\_selected\_text</a> | 获取选中的文本。 |
+| <a href="#mledit_t_mledit_get_widget_vtable">mledit\_get\_widget\_vtable</a> | 获取 mledit 虚表。 |
 | <a href="#mledit_t_mledit_insert_text">mledit\_insert\_text</a> | 插入一段文本。 |
 | <a href="#mledit_t_mledit_scroll_to_offset">mledit\_scroll\_to\_offset</a> | 设置编辑器滚动到指定偏移位置。 |
 | <a href="#mledit_t_mledit_set_cancelable">mledit\_set\_cancelable</a> | 设置编辑器是否为可撤销修改。 |
@@ -157,6 +158,24 @@ char* mledit_get_selected_text (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | char* | 返回选中文本。 |
 | widget | widget\_t* | widget对象。 |
+#### mledit\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="mledit_t_mledit_get_widget_vtable">获取 mledit 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* mledit_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 mledit 虚表。 |
 #### mledit\_insert\_text 函数
 -----------------------
 

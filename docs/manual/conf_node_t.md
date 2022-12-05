@@ -7,6 +7,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#conf_node_t_conf_node_count_children">conf\_node\_count\_children</a> | 获取节点的子集个数。 |
 | <a href="#conf_node_t_conf_node_find_child">conf\_node\_find\_child</a> | 查找指定名称的子节点。 |
 | <a href="#conf_node_t_conf_node_find_sibling">conf\_node\_find\_sibling</a> | 查找指定名称的兄弟节点。 |
 | <a href="#conf_node_t_conf_node_get_first_child">conf\_node\_get\_first\_child</a> | 获取第一个子节点。 |
@@ -23,6 +24,25 @@
 | <a href="#conf_node_t_node_type">node\_type</a> | uint8\_t | 节点类型。 |
 | <a href="#conf_node_t_parent">parent</a> | conf\_node\_t* | 父节点。 |
 | <a href="#conf_node_t_value_type">value\_type</a> | uint8\_t | 值的类型。 |
+#### conf\_node\_count\_children 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_node_t_conf_node_count_children">获取节点的子集个数。
+
+* 函数原型：
+
+```
+uint32_t conf_node_count_children (conf_node_t* node);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 成功返回节点个数。 |
+| node | conf\_node\_t* | 节点对象。 |
 #### conf\_node\_find\_child 函数
 -----------------------
 

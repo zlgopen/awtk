@@ -175,14 +175,14 @@ vg_gradient_t* vg_gradient_init_with_gradient (vg_gradient_t* gradient, const re
 * 函数原型：
 
 ```
-vgcanvas_asset_manager* vgcanvas_asset_manager ();
+vgcanvas_asset_manager_t* vgcanvas_asset_manager ();
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | vgcanvas\_asset\_manager* | 返回矢量画布资源管理器对象。 |
+| 返回值 | vgcanvas\_asset\_manager\_t* | 返回矢量画布资源管理器对象。 |
 #### vgcanvas\_asset\_manager\_add\_font 函数
 -----------------------
 

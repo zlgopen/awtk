@@ -15,8 +15,12 @@
 | <a href="#bitmap_t_bitmap_get_bpp">bitmap\_get\_bpp</a> | 获取图片一个像素占用的字节数。 |
 | <a href="#bitmap_t_bitmap_get_bpp_of_format">bitmap\_get\_bpp\_of\_format</a> | 获取位图格式对应的颜色位数。 |
 | <a href="#bitmap_t_bitmap_get_line_length">bitmap\_get\_line\_length</a> | 获取每一行占用内存的字节数。 |
+| <a href="#bitmap_t_bitmap_get_physical_height">bitmap\_get\_physical\_height</a> | 获取图片真实物理的高度。 |
+| <a href="#bitmap_t_bitmap_get_physical_line_length">bitmap\_get\_physical\_line\_length</a> | 获取图片真实物理的每一行占用内存的字节数。 |
+| <a href="#bitmap_t_bitmap_get_physical_width">bitmap\_get\_physical\_width</a> | 获取图片真实物理的宽度。 |
 | <a href="#bitmap_t_bitmap_get_pixel">bitmap\_get\_pixel</a> | 获取图片指定像素的rgba颜色值(主要用于测试程序)。 |
 | <a href="#bitmap_t_bitmap_init">bitmap\_init</a> | 初始化图片。 |
+| <a href="#bitmap_t_bitmap_init_ex">bitmap\_init\_ex</a> | 初始化图片。 |
 | <a href="#bitmap_t_bitmap_init_from_bgra">bitmap\_init\_from\_bgra</a> | 初始化图片。 |
 | <a href="#bitmap_t_bitmap_init_from_rgba">bitmap\_init\_from\_rgba</a> | 初始化图片。 |
 | <a href="#bitmap_t_bitmap_lock_buffer_for_read">bitmap\_lock\_buffer\_for\_read</a> | 为读取数据而锁定bitmap的图片缓冲区。 |
@@ -37,6 +41,7 @@
 | <a href="#bitmap_t_h">h</a> | wh\_t | 高度。 |
 | <a href="#bitmap_t_line_length">line\_length</a> | uint32\_t | 每一行实际占用的内存(也称为stride或pitch)，一般情况下为w*bpp。 |
 | <a href="#bitmap_t_name">name</a> | const char* | 名称。 |
+| <a href="#bitmap_t_orientation">orientation</a> | lcd\_orientation\_t | 图片数据旋转。（修改了图片数据旋转后 flags 会带有 BITMAP_FLAG_LCD_ORIENTATION） |
 | <a href="#bitmap_t_w">w</a> | wh\_t | 宽度。 |
 #### bitmap\_clone 函数
 -----------------------
@@ -183,14 +188,71 @@ uint32_t bitmap_get_bpp_of_format (bitmap_format_t format);
 * 函数原型：
 
 ```
-ret_t bitmap_get_line_length (bitmap_t* bitmap);
+uint32_t bitmap_get_line_length (bitmap_t* bitmap);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回每一行占用内存的字节数。 |
+| 返回值 | uint32\_t | 返回每一行占用内存的字节数。 |
+| bitmap | bitmap\_t* | bitmap对象。 |
+#### bitmap\_get\_physical\_height 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="bitmap_t_bitmap_get_physical_height">获取图片真实物理的高度。
+
+* 函数原型：
+
+```
+uint32_t bitmap_get_physical_height (bitmap_t* bitmap);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回图片高度。 |
+| bitmap | bitmap\_t* | bitmap对象。 |
+#### bitmap\_get\_physical\_line\_length 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="bitmap_t_bitmap_get_physical_line_length">获取图片真实物理的每一行占用内存的字节数。
+
+* 函数原型：
+
+```
+uint32_t bitmap_get_physical_line_length (bitmap_t* bitmap);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回每一行占用内存的字节数。 |
+| bitmap | bitmap\_t* | bitmap对象。 |
+#### bitmap\_get\_physical\_width 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="bitmap_t_bitmap_get_physical_width">获取图片真实物理的宽度。
+
+* 函数原型：
+
+```
+uint32_t bitmap_get_physical_width (bitmap_t* bitmap);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回图片宽度。 |
 | bitmap | bitmap\_t* | bitmap对象。 |
 #### bitmap\_get\_pixel 函数
 -----------------------
@@ -237,6 +299,30 @@ ret_t bitmap_init (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t for
 | h | uint32\_t | 高度。 |
 | format | bitmap\_format\_t | 格式。 |
 | data | const uint8\_t* | 数据，直接引用，但不负责释放。如果为空，由内部自动分配和释放。 |
+#### bitmap\_init\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="bitmap_t_bitmap_init_ex">初始化图片。
+
+* 函数原型：
+
+```
+ret_t bitmap_init_ex (bitmap_t* bitmap, uint32_t w, uint32_t h, uint32_t line_length, bitmap_format_t format, const uint8_t* data);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| bitmap | bitmap\_t* | bitmap对象。 |
+| w | uint32\_t | 宽度。 |
+| h | uint32\_t | 高度。 |
+| line\_length | uint32\_t | 行长。 |
+| format | bitmap\_format\_t | 格式。 |
+| data | const uint8\_t* | 数据，直接引用，但不负责释放。如果为空，由内部自动分配和释放。 |
 #### bitmap\_init\_from\_bgra 函数
 -----------------------
 
@@ -248,7 +334,7 @@ ret_t bitmap_init (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t for
 * 函数原型：
 
 ```
-ret_t bitmap_init_from_bgra (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format, const uint8_t* , uint32_t comp);
+ret_t bitmap_init_from_bgra (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format, const uint8_t* , uint32_t comp, lcd_orientation_t o);
 ```
 
 * 参数说明：
@@ -262,6 +348,7 @@ ret_t bitmap_init_from_bgra (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_fo
 | format | bitmap\_format\_t | 格式。 |
 |  | const uint8\_t* | a |
 | comp | uint32\_t | 颜色通道数(目前支持3(bgr)和4(bgra))。 |
+| o | lcd\_orientation\_t | 旋转方向。 |
 #### bitmap\_init\_from\_rgba 函数
 -----------------------
 
@@ -273,7 +360,7 @@ ret_t bitmap_init_from_bgra (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_fo
 * 函数原型：
 
 ```
-ret_t bitmap_init_from_rgba (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format, const uint8_t* , uint32_t comp);
+ret_t bitmap_init_from_rgba (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format, const uint8_t* , uint32_t comp, lcd_orientation_t o);
 ```
 
 * 参数说明：
@@ -287,6 +374,7 @@ ret_t bitmap_init_from_rgba (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_fo
 | format | bitmap\_format\_t | 格式。 |
 |  | const uint8\_t* | a |
 | comp | uint32\_t | 颜色通道数(目前支持3(rgb)和4(rgba))。 |
+| o | lcd\_orientation\_t | 旋转方向。 |
 #### bitmap\_lock\_buffer\_for\_read 函数
 -----------------------
 
@@ -491,6 +579,16 @@ ret_t bitmap_unlock_buffer (bitmap_t* bitmap);
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
 | 可脚本化   | 是 |
+#### orientation 属性
+-----------------------
+> <p id="bitmap_t_orientation">图片数据旋转。（修改了图片数据旋转后 flags 会带有 BITMAP_FLAG_LCD_ORIENTATION）
+
+* 类型：lcd\_orientation\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
 #### w 属性
 -----------------------
 > <p id="bitmap_t_w">宽度。

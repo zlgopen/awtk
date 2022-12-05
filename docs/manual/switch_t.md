@@ -43,6 +43,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L4
 | -------- | ------------ | 
 | <a href="#switch_t_switch_cast">switch\_cast</a> | 转换switch对象(供脚本语言使用)。 |
 | <a href="#switch_t_switch_create">switch\_create</a> | 创建switch对象 |
+| <a href="#switch_t_switch_get_widget_vtable">switch\_get\_widget\_vtable</a> | 获取 switch 虚表。 |
 | <a href="#switch_t_switch_set_value">switch\_set\_value</a> | 设置控件的值。 |
 ### 属性
 <p id="switch_t_properties">
@@ -101,6 +102,24 @@ widget_t* switch_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### switch\_get\_widget\_vtable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="switch_t_switch_get_widget_vtable">获取 switch 虚表。
+
+* 函数原型：
+
+```
+const widget_vtable_t* switch_get_widget_vtable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const widget\_vtable\_t* | 成功返回 switch 虚表。 |
 #### switch\_set\_value 函数
 -----------------------
 
