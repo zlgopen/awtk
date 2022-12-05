@@ -203,6 +203,7 @@ ret_t fs_file_seek(fs_file_t* file, int32_t offset);
  * 清除文件内容。
  *
  * @param {fs_file_t*} file 文件对象。
+ * @param {int32_t} offset 数据长度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
