@@ -30,8 +30,10 @@ BEGIN_C_DECLS
  * @class combo_box_ex_t
  * @parent combo_box_t
  * @annotation ["scriptable","design","widget"]
- * 可滚动的combo_box控件。
- *
+ * 扩展combo_box控件。支持以下功能：
+ * * 支持滚动。项目比较多时显示滚动条。
+ * * 自动调整弹出窗口的宽度。根据最长文本自动调整弹出窗口的宽度。
+ * * 支持分组显示。如果item的文本以"seperator."开头，视为一个分组开始，其后的文本为分组的标题。比如: "seperator.basic"，会创建一个basic为标题的分组。
  */
 typedef struct _combo_box_ex_t {
   combo_box_t combo_box;
@@ -52,6 +54,8 @@ typedef struct _combo_box_ex_t {
 widget_t* combo_box_ex_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 #define WIDGET_TYPE_COMBO_BOX_EX "combo_box_ex"
+
+#define COMBO_BOX_EX_SEPERATOR_PREFIX "seperator."
 
 #define COMBO_BOX_EX(widget) ((combo_box_ex_t*)(combo_box_cast(WIDGET(widget))))
 

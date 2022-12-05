@@ -26,27 +26,47 @@
 #include "ext_widgets/scroll_view/scroll_view.h"
 #include "ext_widgets/scroll_view/scroll_bar.h"
 #include "ext_widgets/combo_box_ex/combo_box_ex.h"
+#include "ext_widgets/scroll_view/list_item_seperator.h"
 
 #define COMBO_BOX_EX_DEFAULT_MAXNR 5
 #define COMBO_BOX_EX_DEFAULT_MARGIN 1
 
-static ret_t combo_box_ex_create_popup_items(combo_box_t* combo_box, widget_t* parent) {
+static ret_t combo_box_ex_create_popup_items(combo_box_t* combo_box, widget_t* parent,
+                                             int32_t extra_w) {
+  uint32_t w = 0;
+  uint32_t max_w = 0;
   combo_box_option_t* iter = NULL;
+  widget_t* win = widget_get_window(parent);
   return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
 
   iter = combo_box->option_items;
   while (iter != NULL) {
-    widget_t* item = combo_box_item_create(parent, 0, 0, 0, 0);
+    widget_t* item = NULL;
+    const char* text = iter->text;
 
-    widget_set_value(item, iter->value);
-    if (combo_box->localize_options) {
-      widget_set_tr_text(item, iter->text);
+    if (tk_str_start_with(text, COMBO_BOX_EX_SEPERATOR_PREFIX)) {
+      item = list_item_seperator_create(parent, 0, 0, 0, 0);
+      text += strlen(COMBO_BOX_EX_SEPERATOR_PREFIX);
+      widget_set_prop_bool(item, WIDGET_PROP_RADIO, FALSE);
+      widget_set_prop_bool(item, WIDGET_PROP_VALUE, TRUE);
     } else {
-      widget_set_text_utf8(item, iter->text);
+      item = combo_box_item_create(parent, 0, 0, 0, 0);
+      widget_set_value(item, iter->value);
     }
+
+    if (combo_box->localize_options) {
+      widget_set_tr_text(item, text);
+    } else {
+      widget_set_text_utf8(item, text);
+    }
+    w = widget_measure_text(item, item->text.str);
+    max_w = tk_max_int(w, max_w);
 
     iter = iter->next;
   }
+
+  w = tk_max_int(max_w + extra_w, win->w);
+  widget_resize(win, w, win->h);
 
   return RET_OK;
 }
@@ -57,18 +77,20 @@ static ret_t combo_box_ex_on_layout_children_for_combobox_popup(widget_t* widget
 
   if (combo_box->combobox_popup != NULL && combo_box->open_window == NULL) {
     point_t p = {0, 0};
+    int32_t w = combo_box->combobox_popup->w;
     int32_t margin = COMBO_BOX_EX_DEFAULT_MARGIN;
     int32_t item_height = combo_box->item_height;
     int32_t nr = combo_box_count_options(widget);
     int32_t h = nr * item_height + 2 * margin;
+
     if (nr <= COMBO_BOX_EX_DEFAULT_MAXNR) {
       h = nr * item_height + 2 * margin;
     } else {
       h = COMBO_BOX_EX_DEFAULT_MAXNR * item_height + 2 * margin;
     }
 
-    combo_box_combobox_popup_calc_position(widget, h, &p);
-    widget_move_resize(combo_box->combobox_popup, p.x, p.y, widget->w, h);
+    combo_box_combobox_popup_calc_position(widget, w, h, &p);
+    widget_move_resize(combo_box->combobox_popup, p.x, p.y, w, h);
   }
   return RET_OK;
 }
@@ -107,11 +129,18 @@ static widget_t* combo_box_ex_create_scroll_popup(combo_box_t* combo_box) {
   widget_set_prop(list_view, WIDGET_PROP_ITEM_HEIGHT, &v);
   // create scroll view
   scroll_view = scroll_view_create(list_view, 0, 0, -12, h);
-  scroll_bar = scroll_bar_create(list_view, 0, 0, 0, 0);
-  widget_set_self_layout(scroll_bar, "default(x=right, y=0,w=12, h=100%)");
+  scroll_bar = scroll_bar_create(list_view, 0, 0, 12, h);
 
   widget_use_style(win, "combobox_popup");
-  combo_box_ex_create_popup_items(combo_box, scroll_view);
+  combo_box_ex_create_popup_items(combo_box, scroll_view, item_height + 2 * margin + scroll_bar->w);
+
+  w = win->w;
+  h = win->h;
+  w -= 2 * margin;
+  h -= 2 * margin;
+  widget_move_resize(list_view, margin, margin, w, h);
+  widget_move_resize(scroll_view, 0, 0, w - scroll_bar->w, h);
+  widget_move(scroll_bar, w - scroll_bar->w, 0);
   widget_layout(win);
 
   combo_box->combobox_popup = win;

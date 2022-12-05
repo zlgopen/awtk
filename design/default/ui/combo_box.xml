@@ -14,6 +14,9 @@
     localize_options="false"
     options="1:ok;2:cancel;"/>
 
+  <combo_box_ex x="0" y="middle:-60" w="100" h="30" options="seperator.basic;33;44;55;seperator.user;hello;world;it is long option" text="33" readonly="true"/>
+  <combo_box_ex x="r" y="middle:-60" w="100" h="30" options="seperator.basic;33;44;55;seperator.user;hello;world;it is long option" text="33" readonly="true"/>
+
   <label name="old_value" x="center" y="middle:-20" w="50%" h="30" text=""/>
   <label name="value" x="center" y="middle:20" w="50%" h="30" text=""/>
   <button name="close" self_layout="default(x=center,y=m:50,w=50%,h=30)" 

@@ -1,5 +1,9 @@
 # 最新动态
 
+2022/12/05
+  * combo\_box\_ex支持分组显示。
+  * combo\_box\_ex支持自动调整弹出窗口的宽度。
+
 2022/12/03
   * fscript 支持注册常量。
   * 完善widget\_find\_target\_default(感谢兆坤提供补丁)。
