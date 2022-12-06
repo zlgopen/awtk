@@ -525,10 +525,27 @@ widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
   return widget;
 }
 
+ret_t combo_box_set_on_item_click(widget_t* widget, event_func_t on_item_click, void* ctx) {
+  combo_box_t* combo_box = COMBO_BOX(ctx);
+  return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
+
+  combo_box->on_item_click = on_item_click;
+  combo_box->on_item_click_ctx = ctx;
+
+  return RET_OK;
+}
+
 static ret_t combo_box_on_item_click(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   widget_t* item = WIDGET(e->target);
+  combo_box_t* combo_box = COMBO_BOX(ctx);
   return_value_if_fail(widget != NULL && item != NULL, RET_BAD_PARAMS);
+
+  if (combo_box->on_item_click != NULL) {
+    if (combo_box->on_item_click(combo_box->on_item_click_ctx, e) == RET_OK) {
+      return RET_OK;
+    }
+  }
 
   combo_box_set_selected_index_ex(widget, widget_index_of(item), item);
 

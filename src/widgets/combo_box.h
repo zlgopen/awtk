@@ -229,6 +229,8 @@ typedef struct _combo_box_t {
   combo_box_option_t* option_items;
   combo_box_custom_open_popup_t open_popup;
   combo_box_custom_on_layout_combobox_popup_t on_layout_combobox_popup;
+  event_func_t on_item_click;
+  void* on_item_click_ctx;
 } combo_box_t;
 
 /**
@@ -410,6 +412,17 @@ ret_t combo_box_set_custom_open_popup(
     combo_box_custom_on_layout_combobox_popup_t on_layout_combobox_popup);
 
 /**
+ * @method combo_box_set_on_item_click
+ * 设置弹出窗口的item被点击的回调函数，回调函数返回非RET_OK，继续默认处理。
+ * @param {widget_t*} widget combo_box对象。
+ * @param {event_func_t} on_item_click 回调函数。
+ * @param {void*} ctx 回调函数上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t combo_box_set_on_item_click(widget_t* widget, event_func_t on_item_click, void* ctx);
+
+/**
  * @method combo_box_get_option
  * 获取第index个选项。
  * @param {widget_t*} widget combo_box对象。
@@ -472,7 +485,8 @@ ret_t combo_box_parse_options(widget_t* widget, const char* str);
 
 /*private*/
 ret_t combo_box_combobox_popup_on_close_func(void* ctx, event_t* e);
-ret_t combo_box_combobox_popup_calc_position(widget_t* widget, wh_t popup_w, wh_t popup_h, point_t* p);
+ret_t combo_box_combobox_popup_calc_position(widget_t* widget, wh_t popup_w, wh_t popup_h,
+                                             point_t* p);
 
 END_C_DECLS
 
