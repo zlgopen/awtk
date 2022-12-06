@@ -24,7 +24,6 @@
 #include "svg/bsvg_builder.h"
 
 #ifdef WITH_RES_TOOLS
-
 static inline color_t convert_color(svgtiny_colour color) {
   return color_init(svgtiny_RED(color), svgtiny_GREEN(color), svgtiny_BLUE(color), 0xff);
 }
@@ -246,5 +245,16 @@ ret_t svg_file_to_bsvg(const char* ifilename, const char* ofilename) {
 
   return ret;
 }
+#else
+ret_t svg_to_bsvg(const char* xml, uint32_t size, uint32_t** out, uint32_t* out_size) {
+  (void)xml, (void)size, (void)out, (void)out_size;
+  log_debug("Not support %s, please define WITH_RES_TOOLS!\r\n", __FUNCTION__);
+  return RET_NOT_IMPL;
+}
 
-#endif
+ret_t svg_file_to_bsvg(const char* ifilename, const char* ofilename) {
+  (void)ifilename, (void)ofilename;
+  log_debug("Not support %s, please define WITH_RES_TOOLS!\r\n", __FUNCTION__);
+  return RET_NOT_IMPL;
+}
+#endif /*WITH_RES_TOOLS*/
