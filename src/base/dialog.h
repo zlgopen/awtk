@@ -284,10 +284,11 @@ ret_t dialog_set_title(widget_t* widget, const char* title);
  * 模态显示对话框。
  * dialog_modal返回后，dialog对象将在下一个idle函数中回收。
  * 也就是在dialog_modal调用完成后仍然可以访问dialog中控件，直到本次事件结束。
+ * 调用该函数会使线程进入阻塞状态，需要调用dialog_quit来解除阻塞。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget dialog对象。
  *
- * @return {dialog_quit_code_t} 返回退出码。
+ * @return {dialog_quit_code_t} 返回退出码，值为dialog_quit函数中传入的参数。
  */
 dialog_quit_code_t dialog_modal(widget_t* widget);
 
