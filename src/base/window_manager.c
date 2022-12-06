@@ -23,6 +23,7 @@
 #include "base/canvas.h"
 #include "base/dialog.h"
 #include "base/window.h"
+#include "base/layout.h"
 #include "base/dialog_highlighter.h"
 #include "base/input_device_status.h"
 #include "base/window_manager.h"
@@ -476,6 +477,7 @@ static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
   widget_re_translate_text(iter);
   widget_dispatch(iter, e);
   WIDGET_FOR_EACH_CHILD_END();
+  widget_layout_children(widget);
   widget_invalidate(widget, NULL);
 
   return RET_OK;
