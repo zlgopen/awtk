@@ -4,6 +4,7 @@
   * combo\_box 支持设置回调函数，去处理弹出窗口item被点击的事件。
   * 修复没有定义WITH\_RES\_TOOLS时，项目中使用到svg\_to\_bsvg编译无法通过的问题(感谢兆坤提供补丁)。
   * 完善dialog的注释(感谢泽武提供补丁)
+  * list\_view中没有scroll\_bar时打印报告，不要使程序崩溃(感谢泽武提供补丁)
 
 2022/12/05
   * combo\_box\_ex支持分组显示。

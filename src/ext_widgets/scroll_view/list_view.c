@@ -234,6 +234,7 @@ static ret_t list_view_on_scroll_bar_value_changed(void* ctx, event_t* e) {
   return_value_if_fail(list_view != NULL, RET_REMOVE);
 
   scroll_bar = SCROLL_BAR(list_view->scroll_bar);
+  return_value_if_fail(scroll_bar != NULL, RET_REMOVE);
   offset = scroll_bar_to_scroll_view(list_view, scroll_bar->value);
   scroll_view_set_offset(list_view->scroll_view, 0, offset);
 
@@ -283,6 +284,7 @@ static ret_t list_view_on_scroll_view_scroll_to(widget_t* widget, int32_t xoffse
   (void)xoffset_end;
   value = scroll_view_to_scroll_bar(list_view, yoffset_end);
 
+  return_value_if_fail(list_view->scroll_bar != NULL, RET_BAD_PARAMS);
   emitter_disable(list_view->scroll_bar->emitter);
   scroll_bar_scroll_to(list_view->scroll_bar, value, duration);
   emitter_enable(list_view->scroll_bar->emitter);
