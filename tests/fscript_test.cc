@@ -1258,7 +1258,7 @@ TEST(FExr, var_dollar) {
   value_reset(&v);
 
   fscript_eval(obj, "$aaa+\"b\"", &v);
-  ASSERT_STREQ(value_str(&v), "b");
+  ASSERT_STREQ(value_str(&v), TK_VALUE_UNDEFINED"b");
   value_reset(&v);
 
   TK_OBJECT_UNREF(obj);

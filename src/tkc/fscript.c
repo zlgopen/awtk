@@ -1550,8 +1550,10 @@ static ret_t fexpr_parse_function(fscript_parser_t* parser, value_t* result) {
       func_args_push(args, &v);
       continue;
     } else if (t->type == TOKEN_RPAREN) {
-      v.type = VALUE_TYPE_INVALID;
-      func_args_push(args, &v);
+      if (args->size > 0) {
+        v.type = VALUE_TYPE_INVALID;
+        func_args_push(args, &v);
+      }
       break;
     } else {
       fscript_parser_unget_token(parser);
