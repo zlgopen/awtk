@@ -1946,6 +1946,44 @@ TEST(FScript, print) {
   TK_OBJECT_UNREF(obj);
 }
 
+TEST(FScript, print_undefined1) {
+  value_t v;
+  str_t str;
+  tk_object_t* obj = object_default_create();
+
+  str_init(&str, 10);
+
+  tk_object_set_prop_pointer(obj, "str", &str);
+  fscript_t* fscript = fscript_create(obj, "print(1,,2)");
+  fscript_set_print_func(fscript, my_print);
+  fscript_exec(fscript, &v);
+  ASSERT_STREQ(str.str, "1undefined2");
+  str_reset(&str);
+  fscript_destroy(fscript);
+
+  value_reset(&v);
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, print_undefined2) {
+  value_t v;
+  str_t str;
+  tk_object_t* obj = object_default_create();
+
+  str_init(&str, 10);
+
+  tk_object_set_prop_pointer(obj, "str", &str);
+  fscript_t* fscript = fscript_create(obj, "print(1,,2,)");
+  fscript_set_print_func(fscript, my_print);
+  fscript_exec(fscript, &v);
+  ASSERT_STREQ(str.str, "1undefined2undefined");
+  str_reset(&str);
+  fscript_destroy(fscript);
+
+  value_reset(&v);
+  TK_OBJECT_UNREF(obj);
+}
+
 static ret_t my_on_error(void* ctx, fscript_t* fscript) {
   str_t* str = (str_t*)ctx;
   str_set(str, fscript->error_message);

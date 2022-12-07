@@ -870,6 +870,7 @@ const char* value_str_ex(const value_t* v, char* buff, uint32_t size) {
     }
   } else if (v->type == VALUE_TYPE_INVALID) {
     *buff = '\0';
+    return TK_VALUE_UNDEFINED;
   } else {
     tk_snprintf(buff, size, "%d", value_int(v));
   }

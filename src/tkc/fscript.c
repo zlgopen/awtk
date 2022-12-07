@@ -1544,12 +1544,18 @@ static ret_t fexpr_parse_function(fscript_parser_t* parser, value_t* result) {
       return fscript_parser_set_error(parser, "expect \")\"");
     }
 
-    if (t->type == TOKEN_RPAREN) {
+    value_set_int(&v, 0);
+    if (t->type == TOKEN_COMMA) {
+      v.type = VALUE_TYPE_INVALID;
+      func_args_push(args, &v);
+      continue;
+    } else if (t->type == TOKEN_RPAREN) {
+      v.type = VALUE_TYPE_INVALID;
+      func_args_push(args, &v);
       break;
     } else {
       fscript_parser_unget_token(parser);
     }
-    value_set_int(&v, 0);
     return_value_if_fail(fexpr_parse(parser, &v) == RET_OK, RET_FAIL);
     func_args_push(args, &v);
     t = fscript_parser_get_token(parser);

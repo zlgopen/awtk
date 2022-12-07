@@ -499,4 +499,6 @@ typedef struct _event_source_manager_t event_source_manager_t;
 #define pclose _pclose
 #endif /*WIN32*/
 
+#define TK_VALUE_UNDEFINED "undefined"
+
 #endif /*TYPES_DEF_H*/
