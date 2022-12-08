@@ -319,26 +319,36 @@ ret_t window_animator_overlap_default_draw_prev(window_animator_t* wa) {
 }
 
 ret_t window_animator_begin_frame(window_animator_t* wa) {
+  bool_t paint_system_bar = TRUE;
   return_value_if_fail(wa != NULL && wa->vt != NULL, RET_OK);
 
   ENSURE(canvas_begin_frame(wa->canvas, NULL, LCD_DRAW_ANIMATION) == RET_OK);
 
-  if (!window_is_fullscreen(wa->prev_win)) {
-    if (!tk_str_eq(wa->vt->type, WINDOW_ANIMATOR_VTRANSLATE)) {
-      window_animator_paint_system_bar(wa);
-    }
+  if (!widget_is_normal_window(wa->curr_win) && wa->dialog_highlighter == NULL) {
+    paint_system_bar = FALSE;
+  } else if (tk_str_eq(wa->vt->type, WINDOW_ANIMATOR_VTRANSLATE)) {
+    paint_system_bar = FALSE;
+  }
+
+  if (paint_system_bar) {
+    window_animator_paint_system_bar(wa);
   }
 
   return RET_OK;
 }
 
 ret_t window_animator_end_frame(window_animator_t* wa) {
+  bool_t paint_system_bar = TRUE;
   return_value_if_fail(wa != NULL && wa->vt != NULL, RET_OK);
 
-  if (!window_is_fullscreen(wa->prev_win)) {
-    if (tk_str_eq(wa->vt->type, WINDOW_ANIMATOR_VTRANSLATE)) {
-      window_animator_paint_system_bar(wa);
-    }
+  if (!widget_is_normal_window(wa->curr_win) && wa->dialog_highlighter == NULL) {
+    paint_system_bar = FALSE;
+  } else if (!tk_str_eq(wa->vt->type, WINDOW_ANIMATOR_VTRANSLATE)) {
+    paint_system_bar = FALSE;
+  }
+
+  if (paint_system_bar) {
+    window_animator_paint_system_bar(wa);
   }
 
   return canvas_end_frame(wa->canvas);
