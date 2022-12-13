@@ -541,7 +541,6 @@ static ret_t window_on_keydown_before_children(void* ctx, event_t* e) {
   window_base_t* base = WINDOW_BASE(win);
   widget_t* focus = widget_get_focused_widget(win);
   keyboard_type_t keyboard_type = system_info()->keyboard_type;
-  bool_t moving_focus_mode = base->moving_focus_mode;
 
   if (focus != NULL) {
     if (focus->vt->return_key_to_activate) {
@@ -565,7 +564,7 @@ static ret_t window_on_keydown_before_children(void* ctx, event_t* e) {
       }
     }
 
-    if (moving_focus_mode) {
+    if (base->moving_focus_mode) {
       if (keyboard_type == KEYBOARD_3KEYS) {
         switch (evt->key) {
           case TK_KEY_LEFT:
