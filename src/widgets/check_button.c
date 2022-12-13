@@ -91,8 +91,8 @@ static ret_t check_button_set_value_only(widget_t* widget, bool_t value) {
   if (check_button->value != value) {
     value_change_event_t evt;
     value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
-    value_set_uint32(&(evt.old_value), check_button->value);
-    value_set_uint32(&(evt.new_value), value);
+    value_set_bool(&(evt.old_value), check_button->value);
+    value_set_bool(&(evt.new_value), value);
 
     if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
       check_button->value = value;
