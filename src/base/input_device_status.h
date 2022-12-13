@@ -91,6 +91,17 @@ input_device_status_t* input_device_status_init(input_device_status_t* ids);
 ret_t input_device_status_on_input_event(input_device_status_t* ids, widget_t* widget, event_t* e);
 
 /**
+ * @method input_device_status_on_ignore_input_event
+ * 对输入事件进行处理，已经按下的指针和键对应的抬起事件会分发给widget，其他的事件不会分发。
+ * @param {input_device_status_t*} ids 输入设备状态管理器对象。
+ * @param {widget_t*} widget 窗口管理器对象。
+ * @param {event_t*} e 事件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t input_device_status_on_ignore_input_event(input_device_status_t* ids, widget_t* widget, event_t* e);
+
+/**
  * @method input_device_status_abort_all_pressed_keys
  * 取消全部已经按下的键。
  *

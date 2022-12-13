@@ -1399,12 +1399,9 @@ static ret_t window_manager_default_dispatch_input_event(widget_t* widget, event
   native_window_preprocess_event(wm->native_window, e);
   ids = &(wm->input_device_status);
   if (wm->ignore_user_input) {
-    if (ids->pressed && e->type == EVT_POINTER_UP) {
-      log_debug("animating ignore input, but it is last pointer_up\n");
-    } else {
-      log_debug("animating ignore input\n");
-      return RET_OK;
-    }
+    log_debug("animating ignore input\n");
+    input_device_status_on_ignore_input_event(ids, widget, e);
+    return RET_OK;
   }
 
   input_device_status_on_input_event(ids, widget, e);
