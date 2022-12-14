@@ -75,9 +75,9 @@ typedef enum _keyboard_type_t {
 
 > 备注：edit及其组合控件（比如：combo_box、combo_box_ex等）默认支持焦点停留，无需设置 focusable 属性。
 
-如果希望软件也支持按键切换焦点，步骤如下：
+如果希望软键盘也支持按键切换焦点，步骤如下：
 
-步骤一：设置软件盘的 grab_keys 属性为 true，代码如下：
+步骤一：设置软键盘的 grab_keys 属性为 true，代码如下：
 
 ```xml
 <keyboard theme="keyboard" x="0" y="bottom" w="100%" h="40%" grab_keys="true" name="kb_default">

@@ -230,7 +230,7 @@ var a = array_create_with_str("2,1,3", ",", "int");
 var b = array_index_of(a, 1);
 ```
 
-### 12.array\_last_index\_of
+### 12.array\_last\_index\_of
 
 > 获取元素最后出现的位置。
 ----------------------------

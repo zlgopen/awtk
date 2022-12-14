@@ -19,7 +19,7 @@ app_conf() => object
 assert(object_set(app_conf(), "timeout", 100))
 ```
 
-### 2. app_conf_save
+### 2. app\_conf\_save
 
 > 保存修改。
 ----------------------------

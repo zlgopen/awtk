@@ -2,7 +2,7 @@
 
 value 相关的辅助函数。
 
-### 1. value_is_valid
+### 1. value\_is\_valid
 
 > 判断 value 是否有效。
 ----------------------------
@@ -20,7 +20,7 @@ var a = object_create()
 print(value_is_valid(a))
 ```
 
-### 2. value_is_null
+### 2. value\_is\_null
 
 > 判断 value 是否为 null。
 ----------------------------
@@ -38,7 +38,7 @@ var a = object_create()
 print(value_is_null(a))
 ```
 
-### 3. value_get_binary_data
+### 3. value\_get\_binary\_data
 
 > 获取 binary 的数据指针。
 ----------------------------
@@ -55,7 +55,7 @@ value_get_binary_data(v) => pointer_t
 print(value_get_binary_data(a))
 ```
 
-### 4. value_get_binary_size
+### 4. value\_get\_binary\_size
 
 > 获取 binary 的数据长度。
 ----------------------------

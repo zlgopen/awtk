@@ -91,7 +91,7 @@ dt.second = 4;
 assert(date_time_set(dt));
 ```
 
-### 5.time_now/time_now_s
+### 5.time\_now/time\_now\_s
 
 > 获取当前时间戳函数 (s)。
 ----------------------------
@@ -127,7 +127,7 @@ time_now_ms()  => uint64_t
 var a = time_now_ms();
 ```
 
-### 7.time_now_us 
+### 7.time\_now\_us 
 
 > 获取当前时间戳函数 (us)。
 ----------------------------

@@ -276,7 +276,7 @@ window_back()
 <button focusable="true" on:click="back()" text="back" />
 ```
 
-### 5.4 back_to_home
+### 5.4 back\_to\_home
 
 > 退到主窗口
 > 相关函数：window_back_to_home。
@@ -1079,7 +1079,7 @@ var foldername = choose_folder('./')
 print(foldername)
 ```
 
-### 5.30 choose_file_for_save
+### 5.30 choose\_file\_for\_save
 
 > 选择保存文件对话框。
 ----------------------------
@@ -1131,7 +1131,7 @@ var a = widget_clone('self.bar')
 var b = widget_clone('window.view.bar')
 ```
 
-### 5.32 widget_destroy_children
+### 5.32 widget\_destroy\_children
 
 > 销毁控件的全部子控件。
 ----------------------------
