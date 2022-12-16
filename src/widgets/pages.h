@@ -66,6 +66,13 @@ typedef struct _pages_t {
   uint32_t active;
 
   /**
+   * @property {bool_t} should_save_target
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 选择切换界面时是否保存焦点。（默认为TRUE）
+   */
+  bool_t should_save_target;
+
+  /**
    * @property {uint32_t} value
    * @annotation ["set_prop","get_prop","readable","persitent","design","fake"]
    * 当前活跃的page。
@@ -122,6 +129,17 @@ widget_t* pages_cast(widget_t* widget);
 ret_t pages_set_active(widget_t* widget, uint32_t index);
 
 /**
+ * @method pages_set_should_save_target
+ * 设置是否保存焦点。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} should_save_target 是否保存焦点。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t pages_set_should_save_target(widget_t* widget, bool_t should_save_target);
+
+/**
  * @method pages_set_active_by_name
  * 通过页面的名字设置当前的Page。
  * @annotation ["scriptable"]
@@ -133,6 +151,7 @@ ret_t pages_set_active(widget_t* widget, uint32_t index);
 ret_t pages_set_active_by_name(widget_t* widget, const char* name);
 
 #define PAGES(widget) ((pages_t*)(pages_cast(WIDGET(widget))))
+#define WIDGET_PROP_SHOULD_SAVE_TARGET "should_save_target"
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(pages);
