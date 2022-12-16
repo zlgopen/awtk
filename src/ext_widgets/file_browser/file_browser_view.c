@@ -138,6 +138,26 @@ ret_t file_browser_view_set_sort_by(widget_t* widget, const char* sort_by) {
   return RET_OK;
 }
 
+ret_t file_browser_view_set_odd_item_style(widget_t* widget, const char* odd_item_style) {
+  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
+  return_value_if_fail(file_browser_view != NULL, RET_BAD_PARAMS);
+
+  file_browser_view->odd_item_style =
+      tk_str_copy(file_browser_view->odd_item_style, odd_item_style);
+
+  return RET_OK;
+}
+
+ret_t file_browser_view_set_even_item_style(widget_t* widget, const char* even_item_style) {
+  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
+  return_value_if_fail(file_browser_view != NULL, RET_BAD_PARAMS);
+
+  file_browser_view->even_item_style =
+      tk_str_copy(file_browser_view->even_item_style, even_item_style);
+
+  return RET_OK;
+}
+
 static ret_t file_browser_view_get_prop(widget_t* widget, const char* name, value_t* v) {
   file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
   return_value_if_fail(file_browser_view != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -159,6 +179,12 @@ static ret_t file_browser_view_get_prop(widget_t* widget, const char* name, valu
     return RET_OK;
   } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_SORT_BY, name)) {
     value_set_str(v, file_browser_view->sort_by);
+    return RET_OK;
+  } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_ODD_ITEM_STYLE, name)) {
+    value_set_str(v, file_browser_view->odd_item_style);
+    return RET_OK;
+  } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_EVEN_ITEM_STYLE, name)) {
+    value_set_str(v, file_browser_view->even_item_style);
     return RET_OK;
   }
 
@@ -186,6 +212,12 @@ static ret_t file_browser_view_set_prop(widget_t* widget, const char* name, cons
   } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_SORT_BY, name)) {
     file_browser_view_set_sort_by(widget, value_str(v));
     return RET_OK;
+  } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_ODD_ITEM_STYLE, name)) {
+    file_browser_view_set_odd_item_style(widget, value_str(v));
+    return RET_OK;
+  } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_EVEN_ITEM_STYLE, name)) {
+    file_browser_view_set_even_item_style(widget, value_str(v));
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -199,6 +231,8 @@ static ret_t file_browser_view_on_destroy(widget_t* widget) {
   TKMEM_FREE(file_browser_view->sort_by);
   TKMEM_FREE(file_browser_view->init_dir);
   TKMEM_FREE(file_browser_view->top_dir);
+  TKMEM_FREE(file_browser_view->odd_item_style);
+  TKMEM_FREE(file_browser_view->even_item_style);
   file_browser_destroy(file_browser_view->fb);
 
   widget_destroy(file_browser_view->file_template);
@@ -326,6 +360,24 @@ static widget_t* file_browser_view_create_folder_item(widget_t* widget) {
   return item;
 }
 
+static ret_t file_browser_view_item_set_style(file_browser_view_t* file_browser_view,
+                                              widget_t* item, bool_t odd) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(file_browser_view != NULL && item != NULL, RET_BAD_PARAMS);
+
+  if (odd) {
+    if (file_browser_view->odd_item_style != NULL) {
+      ret = widget_use_style(item, file_browser_view->odd_item_style);
+    }
+  } else {
+    if (file_browser_view->even_item_style != NULL) {
+      ret = widget_use_style(item, file_browser_view->even_item_style);
+    }
+  }
+
+  return ret;
+}
+
 ret_t file_browser_view_reload(widget_t* widget) {
   uint32_t i = 0;
   uint32_t nr = 0;
@@ -394,6 +446,10 @@ ret_t file_browser_view_reload(widget_t* widget) {
       widget_set_visible(item_child, file_browser_view->show_check_button, FALSE);
     }
   }
+
+  WIDGET_FOR_EACH_CHILD_BEGIN(container, item, item_index)
+  file_browser_view_item_set_style(file_browser_view, item, item_index % 2);
+  WIDGET_FOR_EACH_CHILD_END()
 
   widget_layout(widget);
 

@@ -119,6 +119,20 @@ typedef struct _file_browser_view_t {
    */
   char* sort_by;
 
+  /**
+   * @property {char*} odd_item_style
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 奇数项样式。
+   */
+  char* odd_item_style;
+
+  /**
+   * @property {char*} even_item_style
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 偶数项样式。
+   */
+  char* even_item_style;
+
   /*private*/
   bool_t inited;
   file_browser_t* fb;
@@ -254,6 +268,28 @@ ret_t file_browser_view_set_show_check_button(widget_t* widget, bool_t show_chec
 ret_t file_browser_view_set_sort_by(widget_t* widget, const char* sort_by);
 
 /**
+ * @method file_browser_view_set_odd_item_style
+ * 设置 奇数项样式。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {const char*} odd_item_style 奇数项样式。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_browser_view_set_odd_item_style(widget_t* widget, const char* odd_item_style);
+
+/**
+ * @method file_browser_view_set_even_item_style
+ * 设置 偶数项样式。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {const char*} even_item_style 奇数项样式。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_browser_view_set_even_item_style(widget_t* widget, const char* even_item_style);
+
+/**
  * @method file_browser_view_get_selected_items
  * 返回当前选中的项目。
  *
@@ -309,6 +345,8 @@ ret_t file_browser_view_create_file(widget_t* widget, const char* name, const ch
 #define FILE_BROWSER_VIEW_PROP_SORT_ASCENDING "sort_ascending"
 #define FILE_BROWSER_VIEW_PROP_SHOW_CHECK_BUTTON "show_check_button"
 #define FILE_BROWSER_VIEW_PROP_IGNORE_HIDDEN_FILES "ignore_hidden_files"
+#define FILE_BROWSER_VIEW_PROP_ODD_ITEM_STYLE "odd_item_style"
+#define FILE_BROWSER_VIEW_PROP_EVEN_ITEM_STYLE "even_item_style"
 
 #define WIDGET_TYPE_FILE_BROWSER_VIEW "file_browser_view"
 

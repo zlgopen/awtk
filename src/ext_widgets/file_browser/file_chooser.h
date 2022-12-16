@@ -225,6 +225,7 @@ ret_t file_chooser_destroy(file_chooser_t* chooser);
 /*控件名*/
 #define FILE_CHOOSER_OK "ok"
 #define FILE_CHOOSER_CANCEL "cancel"
+#define FILE_CHOOSER_CLOSE "close"
 
 END_C_DECLS
 

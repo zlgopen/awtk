@@ -114,6 +114,7 @@ ret_t file_chooser_choose(file_chooser_t* chooser) {
 
   widget_child_on(win, FILE_CHOOSER_OK, EVT_CLICK, file_choose_on_ok, chooser);
   widget_child_on(win, FILE_CHOOSER_CANCEL, EVT_CLICK, file_choose_on_click_to_close, chooser);
+  widget_child_on(win, FILE_CHOOSER_CLOSE, EVT_CLICK, file_choose_on_click_to_close, chooser);
 
   if (chooser->init_dir != NULL || chooser->filter != NULL) {
     if (chooser->filter != NULL) {
