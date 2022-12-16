@@ -502,7 +502,7 @@ ret_t fs_create_dir_r(fs_t* fs, const char* name) {
     if (!fs_dir_exist(fs, path)) {
       if (fs_create_dir(fs, path) != RET_OK) {
         log_debug("create %s failed\n", path);
-        break;
+        return RET_FAIL;
       }
     }
   }
