@@ -1,0 +1,9 @@
+<dialog name="dialog" x="c" y="m" w="294" h="92" highlight="default(alpha=100)" move_focus_prev_key="up" move_focus_next_key="down">
+  <dialog_title x="0" y="0" w="100%" h="36" text="dialog">
+    <draggable drag_window="true"/>
+    <button name="close()" x="r:10" y="10" w="20" h="20" text="X"/>
+  </dialog_title>
+  <dialog_client x="0" y="b" w="100%" h="-36">
+    <edit name="edit" x="c" y="10" w="-20" h="36" tips="test keyboard popup" auto_fix="true"/>
+  </dialog_client>
+</dialog>

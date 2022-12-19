@@ -1,0 +1,57 @@
+<window name="window">
+  <pages name="state()" x="0" y="0" w="100%" h="100%">
+    <view name="normal" x="0" y="0" w="100%" h="100%">
+      <view x="0" y="60" w="100%" h="-60" children_layout="default(r=0,c=1,s=2)">
+        <view name="view_window" h="170" children_layout="default(r=0,c=1,x=10,s=10)">
+          <label name="lb" h="28" text="window"/>
+          <view name="view_fullscreen" h="22" children_layout="default(r=1,c=0,x=0,y=0,s=0)">
+            <label name="lb_ti" w="74" text="fullscreen"/>
+            <switch name="fullscreen(window)" w="44" value="false"/>
+          </view>
+          <view name="view_anim_hint" h="22" children_layout="default(r=1,c=0,x=0,y=0,s=0)">
+            <label name="lb_ti" w="74" text="anim hint"/>
+            <combo_box_ex name="anim_hint(window)" w="160" item_height="30" readonly="true" localize_options="false" options="none;htranslate;vtranslate;slide_up;slide_down;slide_left;slide_right" value="1"/>
+          </view>
+          <view name="view_duration" h="22" children_layout="default(r=1,c=0,x=0,y=0,s=0)">
+            <label name="lb_ti" w="74" text="duration"/>
+            <spin_box min="0" max="3000" step="10" name="anim_hint(window):duration" w="160" tips="Please enter anim hint duration" input_type="uint" auto_fix="true" text="500"/>
+          </view>
+          <view name="view_easing" h="22" children_layout="default(r=1,c=0,x=0,y=0,s=0)">
+            <label name="lb_ti" w="74" text="easing"/>
+            <combo_box_ex name="anim_hint(window):easing" w="160" item_height="30" readonly="true" localize_options="false" options="linear;quadratic_in;quadratic_out;quadratic_inout;cubic_in;cubic_out;sin_in;sin_out;sin_inout;pow_in;pow_out;pow_inout;circular_in;circular_out;circular_inout;elastic_in;elastic_out;elastic_inout;back_in;back_out;back_inout;bounce_in;bounce_out;bounce_inout" value="0"/>
+          </view>
+        </view>
+        <view name="view_dialog" h="140" children_layout="default(r=0,c=1,x=10,s=10)">
+          <label name="lb" h="28" text="dialog"/>
+          <view name="view_anim_hint" h="22" children_layout="default(r=1,c=0,x=0,y=0,s=0)">
+            <label name="lb_ti" w="74" text="anim hint"/>
+            <combo_box_ex name="anim_hint(dialog)" w="160" item_height="30" readonly="true" localize_options="false" options="none;center_scale;fade;popup;popdown" value="1"/>
+          </view>
+          <view name="view_duration" h="22" children_layout="default(r=1,c=0,x=0,y=0,s=0)">
+            <label name="lb_ti" w="74" text="duration"/>
+            <spin_box min="0" max="3000" step="10" name="anim_hint(dialog):duration" w="160" tips="Please enter anim hint duration" input_type="uint" auto_fix="true" text="300"/>
+          </view>
+          <view name="view_easing" h="22" children_layout="default(r=1,c=0,x=0,y=0,s=0)">
+            <label name="lb_ti" w="74" text="easing"/>
+            <combo_box_ex name="anim_hint(dialog):easing" w="160" item_height="30" readonly="true" localize_options="false" options="linear;quadratic_in;quadratic_out;quadratic_inout;cubic_in;cubic_out;sin_in;sin_out;sin_inout;pow_in;pow_out;pow_inout;circular_in;circular_out;circular_inout;elastic_in;elastic_out;elastic_inout;back_in;back_out;back_inout;bounce_in;bounce_out;bounce_inout" value="0"/>
+          </view>
+        </view>
+      </view>
+      <button name="open:dialog" x="r:10" y="b:56" w="100" h="36" text="open dialog"/>
+      <button name="open:window" x="r:10" y="b:10" w="100" h="36" text="open window"/>
+    </view>
+    <view name="new" x="0" y="0" w="100%" h="100%">
+      <button name="close()" x="r:10" y="b:10" w="100" h="36" text="close"/>
+    </view>
+    <view name="error" x="0" y="0" w="320" h="480">
+      <label name="label" x="c" y="m" w="100%" h="28" style:normal:text_color="#FF0000" text="Please undefine WITHOUT_WINDOW_ANIMATORS"/>
+    </view>
+  </pages>
+  <digit_clock name="digit_clock" x="r:10" y="10" w="60" h="28" format="hh:mm:ss"/>
+  <edit name="edit" x="10" y="10" w="160" h="28" tips="test keyboard popup" auto_fix="true"/>
+  <view h="22" children_layout="default(r=1,c=0,x=0,y=0,s=0)" x="r:10" y="48" w="120">
+    <label name="lb_ti" w="74" text="fullscreen"/>
+    <switch name="fullscreen()" w="44" value="false"/>
+  </view>
+  <edit name="edit" x="10" y="b:10" w="160" h="28" tips="test keyboard popup" auto_fix="true"/>
+</window>
