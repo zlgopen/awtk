@@ -1766,8 +1766,11 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, const rect_t* r) 
   if (bd.rgba.a) {
     canvas_set_stroke_color(c, bd);
     if (radius_tl > 3 || radius_tr > 3 || radius_bl > 3 || radius_br > 3) {
-      if (canvas_stroke_rounded_rect_ex(c, r, NULL, &bd, radius_tl, radius_tr, radius_bl, radius_br,
-                                        border_width, border) != RET_OK) {
+      uint32_t half_of_border_width = border_width / 2;
+      rect_t b_r = rect_init(r->x + half_of_border_width, r->y + half_of_border_width,
+                             r->w - half_of_border_width * 2, r->h - half_of_border_width * 2);
+      if (canvas_stroke_rounded_rect_ex(c, &b_r, NULL, &bd, radius_tl, radius_tr, radius_bl,
+                                        radius_br, border_width, border) != RET_OK) {
         widget_stroke_border_rect_for_border_type(c, r, bd, border, border_width);
       }
     } else {
