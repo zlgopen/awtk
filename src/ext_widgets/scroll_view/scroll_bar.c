@@ -385,9 +385,11 @@ static ret_t scroll_bar_on_layout_children(widget_t* widget) {
   if (dragger != NULL) {
     if (widget->w > widget->h) {
       int32_t max_x = button_margin + (widget_w - 2 * button_margin - r.w);
+      max_x = tk_max(max_x, button_margin);
       dragger_set_range(dragger, button_margin, r.y, max_x, r.y);
     } else {
       int32_t max_y = button_margin + (widget_h - 2 * button_margin - r.h);
+      max_y = tk_max(max_y, button_margin);
       dragger_set_range(dragger, r.x, button_margin, r.x, max_y);
     }
 
