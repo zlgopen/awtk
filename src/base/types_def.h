@@ -540,4 +540,9 @@ typedef struct _lcd_t lcd_t;
 #ifndef TK_DOUBLE_CLICK_TIME
 #define TK_DOUBLE_CLICK_TIME 300
 #endif /*TK_DOUBLE_CLICK_TIME*/
+
+#ifndef TK_DOUBLE_CLICK_XY
+#define TK_DOUBLE_CLICK_XY 10
+#endif /*TK_DOUBLE_CLICK_XY*/
+
 #endif /*TK_TYPES_DEF_H*/

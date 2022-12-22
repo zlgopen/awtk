@@ -63,6 +63,8 @@ typedef struct _input_device_status_t {
 
   uint64_t last_pointer_down_time;
   uint64_t last_pointer_up_time;
+  xy_t last_pointer_up_x;
+  xy_t last_pointer_up_y;
 
   widget_t* widget;
   uint32_t long_press_check_timer;

@@ -298,13 +298,17 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
     case EVT_POINTER_UP: {
       if (dispatch || ids->pressed) {
         int32_t delta_time = e->time - ids->last_pointer_up_time;
+        int32_t delta_x, delta_y;
         pointer_event_t* evt = (pointer_event_t*)e;
         pointer_event_rotate(evt, system_info());
+        delta_x = evt->x - ids->last_pointer_up_x;
+        delta_y = evt->y - ids->last_pointer_up_y;
 
         input_device_status_init_pointer_event(ids, evt);
         widget_on_pointer_up(widget, evt);
 
-        if (delta_time < TK_DOUBLE_CLICK_TIME) {
+        if (delta_time < TK_DOUBLE_CLICK_TIME && tk_abs(delta_x) < TK_DOUBLE_CLICK_XY &&
+            tk_abs(delta_y) < TK_DOUBLE_CLICK_XY) {
           pointer_event_t double_click;
           e = pointer_event_init(&double_click, EVT_DOUBLE_CLICK, widget, evt->x, evt->y);
           widget_dispatch_event_to_target_recursive(widget, e);
@@ -315,6 +319,8 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
         ids->last_y = evt->y;
         ids->pressed = FALSE;
         ids->last_pointer_up_time = e->time;
+        ids->last_pointer_up_x = evt->x;
+        ids->last_pointer_up_y = evt->y;
       }
       break;
     }
