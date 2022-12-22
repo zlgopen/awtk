@@ -646,6 +646,18 @@ const char* conf_node_get_name(conf_node_t* node);
 conf_node_t* conf_node_find_child(conf_node_t* node, const char* name);
 
 /**
+ * @method conf_node_find_child_by_index
+ *
+ * 查找指定索引的子节点。
+ *
+ * @param {conf_node_t*} node 节点对象。
+ * @param {int32_t} index 索引。
+ *
+ * @return {conf_node_t*} 返回节点对象。
+ */
+conf_node_t* conf_node_find_child_by_index(conf_node_t* node, int32_t index);
+
+/**
  * @method conf_node_find_sibling
  *
  * 查找指定名称的兄弟节点。
