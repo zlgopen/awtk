@@ -195,14 +195,17 @@ static widget_t* slide_indicator_find_target(widget_t* widget) {
   return_value_if_fail(widget != NULL, NULL);
   parent = widget->parent;
 
-  WIDGET_FOR_EACH_CHILD_BEGIN(parent, iter, i)
-  if (iter != NULL) {
-    if (widget_get_prop(iter, WIDGET_PROP_CURR_PAGE, &v) == RET_OK &&
-        widget_get_prop(iter, WIDGET_PROP_PAGE_MAX_NUMBER, &v) == RET_OK) {
-      return iter;
+  if (parent != NULL) {
+    WIDGET_FOR_EACH_CHILD_BEGIN(parent, iter, i)
+    if (iter != NULL) {
+      if (widget_get_prop(iter, WIDGET_PROP_CURR_PAGE, &v) == RET_OK &&
+          widget_get_prop(iter, WIDGET_PROP_PAGE_MAX_NUMBER, &v) == RET_OK) {
+        return iter;
+      }
     }
+    WIDGET_FOR_EACH_CHILD_END()
   }
-  WIDGET_FOR_EACH_CHILD_END()
+
   return NULL;
 }
 
@@ -954,6 +957,7 @@ widget_t* slide_indicator_create_internal(widget_t* parent, xy_t x, xy_t y, wh_t
                                           const widget_vtable_t* vt) {
   widget_t* widget = widget_create(parent, vt, x, y, w, h);
   slide_indicator_t* slide_indicator = SLIDE_INDICATOR(widget);
+  widget_t* target = NULL;
   return_value_if_fail(slide_indicator != NULL, NULL);
 
   slide_indicator->default_paint = INDICATOR_DEFAULT_PAINT_AUTO;
@@ -963,12 +967,18 @@ widget_t* slide_indicator_create_internal(widget_t* parent, xy_t x, xy_t y, wh_t
   slide_indicator->size = 8;
   slide_indicator->wa_opactiy = NULL;
   slide_indicator->chilren_indicated = FALSE;
-  slide_indicator->indicated_widget = NULL;
-  slide_indicator->indicated_target = NULL;
   slide_indicator->reset_icon_rect_list = FALSE;
   slide_indicator->check_hide_idle = TK_INVALID_ID;
 
   darray_init(&(slide_indicator->icon_rect_list), 10, default_destroy, NULL);
+
+  slide_indicator->indicated_target = NULL;
+  slide_indicator->indicated_widget = NULL;
+  target = slide_indicator_find_target(widget);
+  if (target != NULL) {
+    slide_indicator_set_indicated_widget(widget, target);
+  }
+
   return widget;
 }
 

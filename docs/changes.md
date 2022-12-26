@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/12/26
+  * 修复绑定slide\_indicator的value时，slide\_view没有改变当前页的问题(感谢兆坤提供补丁)。
+
 2022/12/22
   * 公开函数 conf\_node\_find\_child\_by\_index(感谢俊杰提供补丁)
   * 修复combo\_box 只有一项 options 时，scroll\_bar layout 会打印警告的问题(感谢陈聪提供补丁)
