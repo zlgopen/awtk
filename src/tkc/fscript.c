@@ -921,7 +921,6 @@ ret_t fscript_clean(fscript_t* fscript) {
 static ret_t fscript_reset(fscript_t* fscript) {
   return_value_if_fail(fscript != NULL, RET_FAIL);
 
-  TK_OBJECT_UNREF(fscript->obj);
   fscript_hook_on_deinit(fscript);
   fscript_clean(fscript);
 
@@ -2128,10 +2127,6 @@ static fscript_t* fscript_load(fscript_t* fscript, tk_object_t* obj, const char*
     fscript_parser_deinit(&parser);
   }
   fscript_parser_error_deinit(&error);
-
-  if (fscript != NULL) {
-    TK_OBJECT_REF(obj);
-  }
 
   return fscript;
 }
