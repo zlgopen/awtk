@@ -2,7 +2,7 @@
 
 2022/12/28
   * list\_view\_h控件新添加x\_margin与y\_margin属性，可以设置列表项的边距(感谢泽武提供补丁)
-
+  * 修复combo box坐标计算错误(感谢雨欣提供补丁)
 
 2022/12/26
   * 修复绑定slide\_indicator的value时，slide\_view没有改变当前页的问题(感谢兆坤提供补丁)。

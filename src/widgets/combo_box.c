@@ -625,20 +625,18 @@ ret_t combo_box_combobox_popup_on_close_func(void* ctx, event_t* e) {
 
 ret_t combo_box_combobox_popup_calc_position(widget_t* widget, wh_t popup_w, wh_t popup_h,
                                              point_t* p) {
-  widget_t* parent = NULL;
+  widget_t* wm = window_manager();
   combo_box_t* combo_box = COMBO_BOX(widget);
-  widget_t* win = widget_get_window(widget);
   return_value_if_fail(combo_box != NULL && p != NULL, RET_BAD_PARAMS);
 
   memset(p, 0x00, sizeof(point_t));
   widget_to_screen(widget, p);
 
-  parent = widget->parent;
-  if ((p->x + popup_w) >= win->w) {
-    p->x = win->w - popup_w;
+  if ((p->x + popup_w) >= wm->w) {
+    p->x = wm->w - popup_w;
   }
 
-  if ((p->y + widget->h + popup_h) < win->h) {
+  if ((p->y + widget->h + popup_h) < wm->h) {
     p->y += widget->h;
   } else if (p->y >= popup_h) {
     p->y -= combo_box->combobox_popup->h;
