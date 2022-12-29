@@ -244,6 +244,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
   }
 
   if (dialog_highlighter != NULL && curr_highlight != NULL) {
+    dialog_highlighter_set_win(dialog_highlighter, prev_win);
     dialog_highlighter_prepare_ex(dialog_highlighter, c, canvas);
   }
   canvas_offline_end_draw(canvas);
@@ -254,7 +255,6 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
 
   if (dialog_highlighter != NULL) {
     dialog_highlighter_set_bg(dialog_highlighter, img);
-    dialog_highlighter_set_win(dialog_highlighter, prev_win);
     dialog_highlighter_set_bg_clip_rect(dialog_highlighter, &r);
   }
   wm->last_curr_win = wm->curr_win;

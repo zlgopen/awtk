@@ -95,7 +95,9 @@ static ret_t dialog_highlighter_default_prepare(dialog_highlighter_t* h, canvas_
    * if dh->start_alpha == dh->end_alpha, we draw mask layer only at the first time.
    */
   if (dh->start_alpha == dh->end_alpha) {
-    window_manager_paint_system_bar(window_manager(), c);
+    if (!window_is_fullscreen(h->win)) {
+      window_manager_paint_system_bar(window_manager(), c);
+    }
     dialog_highlighter_default_draw_mask(c, dh->start_alpha);
   }
 
@@ -129,7 +131,9 @@ static ret_t dialog_highlighter_default_draw(dialog_highlighter_t* h, float_t pe
   if (percent == 1) {
     /* if window is open, enable clip and draw system bar */
     canvas_draw_image(c, img, &src, &dst);
-    window_manager_paint_system_bar(window_manager(), c);
+    if (!window_is_fullscreen(h->win)) {
+      window_manager_paint_system_bar(window_manager(), c);
+    }
   } else {
     canvas_get_clip_rect(c, &save_r);
     r = rect_intersect(&save_r, &h->clip_rect);
@@ -145,9 +149,11 @@ static ret_t dialog_highlighter_default_draw(dialog_highlighter_t* h, float_t pe
     uint8_t a = ((dh->end_alpha - dh->start_alpha) * percent) + dh->start_alpha;
     dialog_highlighter_default_draw_mask(c, a);
   } else {
-    /* 解决黑色色块绘制到贴图导致 system_bar 的颜色不同步的问题 */
-    uint8_t a = 0xff - ((dh->system_bar_alpha * (0xff - dh->end_alpha)) >> 8);
-    dialog_highlighter_default_draw_mask_system_bar(c, a);
+    if (!window_is_fullscreen(h->win)) {
+      /* 解决黑色色块绘制到贴图导致 system_bar 的颜色不同步的问题 */
+      uint8_t a = 0xff - ((dh->system_bar_alpha * (0xff - dh->end_alpha)) >> 8);
+      dialog_highlighter_default_draw_mask_system_bar(c, a);
+    }
   }
 
   return RET_OK;
