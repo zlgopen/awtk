@@ -287,8 +287,9 @@ static ret_t window_manager_default_create_dialog_highlighter(widget_t* widget,
   const char* curr_highlight = widget_get_prop_str(curr_win, WIDGET_PROP_HIGHLIGHT, NULL);
 
   dialog_highlighter = wm->dialog_highlighter;
-  if (dialog_highlighter != NULL && dialog_highlighter->dialog != curr_win &&
-      curr_highlight != NULL) {
+  if (dialog_highlighter != NULL && curr_highlight != NULL &&
+      (dialog_highlighter->dialog != curr_win ||
+       dialog_highlighter->used_by_others)) { /* dialog_highlighter被其他窗口使用过，需重新生成 */
     widget_t* dialog = dialog_highlighter->dialog;
     if (dialog != NULL) {
       widget_off_by_func(dialog, EVT_DESTROY, dialog_highlighter_on_dialog_destroy,
@@ -311,8 +312,13 @@ static ret_t window_manager_default_create_dialog_highlighter(widget_t* widget,
       ret = RET_OK;
     }
   }
+
+  if (dialog_highlighter != NULL && widget_is_keyboard(curr_win)) {
+    /* 把 dialog_highlighter 给键盘窗口使用 */
+    dialog_highlighter->used_by_others = TRUE;
+  }
   /* 因为当 dialog 的窗口销毁的时候会释放 dialog_highlighter 局部, 防止非 dialog 的窗口使用 dialog_highlighter 高亮贴图。 */
-  if (dialog_highlighter != NULL && !widget_is_dialog(curr_win)) {
+  else if (dialog_highlighter != NULL && !widget_is_dialog(curr_win)) {
     wm->dialog_highlighter = NULL;
   }
 

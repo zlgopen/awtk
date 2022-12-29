@@ -105,6 +105,12 @@ struct _dialog_highlighter_t {
    */
   widget_t* win;
 
+  /**
+   * @property {bool_t} used_by_others
+   * 是否给了别的窗口使用。
+   */
+  bool_t used_by_others;
+
   /*private*/
   const dialog_highlighter_vtable_t* vt;
 };
