@@ -108,13 +108,30 @@ static ret_t file_choose_on_ok(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t file_choose_on_selected_file_changed(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(ctx);
+  widget_t* selected_file = WIDGET(e->target);
+  widget_t* ok = widget_lookup(win, FILE_CHOOSER_OK, TRUE);
+
+  if (ok != NULL) {
+    const wchar_t* text = widget_get_text(selected_file);
+    widget_set_enable(ok, TK_STR_IS_NOT_EMPTY(text));
+  }
+
+  return RET_OK;
+}
+
 ret_t file_chooser_choose(file_chooser_t* chooser) {
   widget_t* win = window_open(chooser->ui);
   widget_t* file_browser_view = widget_lookup_by_type(win, WIDGET_TYPE_FILE_BROWSER_VIEW, TRUE);
+  widget_t* selected_file = widget_lookup(win, FILE_BROWSER_VIEW_SELECTED_FILE, TRUE);
 
   widget_child_on(win, FILE_CHOOSER_OK, EVT_CLICK, file_choose_on_ok, chooser);
   widget_child_on(win, FILE_CHOOSER_CANCEL, EVT_CLICK, file_choose_on_click_to_close, chooser);
   widget_child_on(win, FILE_CHOOSER_CLOSE, EVT_CLICK, file_choose_on_click_to_close, chooser);
+
+  widget_on(selected_file, EVT_VALUE_CHANGED, file_choose_on_selected_file_changed, win);
+  widget_dispatch_simple_event(selected_file, EVT_VALUE_CHANGED);
 
   if (chooser->init_dir != NULL || chooser->filter != NULL) {
     if (chooser->filter != NULL) {
