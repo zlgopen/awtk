@@ -109,7 +109,7 @@ typedef struct _progress_circle_t {
   /**
    * @property {char*} line_cap
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 线帽类型(round:圆头，square:方头)。
+   * 线帽类型(round:圆头，square:方头，butt:平头)。
    */
   char* line_cap;
 
