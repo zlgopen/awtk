@@ -1526,3 +1526,18 @@ TEST(value, max) {
   ASSERT_EQ(o.type, VALUE_TYPE_STRING);
   ASSERT_STREQ(value_str(&o), "c");
 }
+
+TEST(ValueTest, dup_wstr) {
+  value_t v;
+  const wchar_t* wstr = L"hello";
+
+  ASSERT_EQ(value_dup_wstr(&v, wstr), &v);
+  ASSERT_EQ(value_wstr(&v) != wstr, true);
+  ASSERT_EQ(tk_wstr_eq(value_wstr(&v), wstr) == TRUE, true);
+  ASSERT_EQ(v.free_handle == TRUE, true);
+
+  value_reset(&v);
+
+  ASSERT_EQ(v.free_handle == FALSE, true);
+  ASSERT_EQ(v.value.wstr == NULL, true);
+}

@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  wbuffer functions for fscript
  *
- * Copyright (c) 2020 - 2022  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2020 - 2023  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  */
 

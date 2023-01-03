@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  generic value type
  *
- * Copyright (c) 2018 - 2022  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2023  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -431,6 +431,16 @@ value_t* value_set_wstr(value_t* v, const wchar_t* value) {
 
   v->value.wstr = value;
   return value_init(v, VALUE_TYPE_WSTRING);
+}
+
+value_t* value_dup_wstr(value_t* v, const wchar_t* value) {
+  return_value_if_fail(v != NULL, NULL);
+
+  value_init(v, VALUE_TYPE_WSTRING);
+  v->value.wstr = tk_wstrdup(value);
+  v->free_handle = TRUE;
+
+  return v;
 }
 
 const char* value_str(const value_t* v) {
