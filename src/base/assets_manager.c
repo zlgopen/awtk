@@ -52,7 +52,7 @@ static int asset_cache_cmp_type_and_name(const void* a, const void* b) {
   }
 
   if (aa->type == bb->type) {
-    return tk_str_cmp(aa->name, bb->name);
+    return tk_str_cmp(asset_info_get_name(aa), asset_info_get_name(bb));
   } else {
     return aa->type - bb->type;
   }
@@ -516,7 +516,10 @@ static asset_info_t* assets_manager_load_impl(assets_manager_t* am, asset_type_t
   }
 
   if (strncmp(name, STR_SCHEMA_FILE, strlen(STR_SCHEMA_FILE)) == 0) {
-    info = assets_manager_load_file(am, type, name + strlen(STR_SCHEMA_FILE));
+    const char* path = name + strlen(STR_SCHEMA_FILE);
+    const char* extname = strrchr(path, '.');
+    subtype = subtype_from_extname(extname);
+    info = load_asset_from_file(type, subtype, path, name);
     /* 保持和 assets_manager_load_asset 函数内部中的调用 assets_manager_add 的逻辑一样 */
     if (info != NULL && assets_manager_is_save_assets_list(type)) {
       assets_manager_add(am, info);
@@ -671,18 +674,15 @@ ret_t assets_manager_add_data(assets_manager_t* am, const char* name, uint16_t t
 const asset_info_t* assets_manager_find_in_cache(assets_manager_t* am, asset_type_t type,
                                                  uint16_t subtype, const char* name) {
   uint32_t i = 0;
-  const char* assets_name = NULL;
   const asset_info_t* iter = NULL;
   const asset_info_t** all = NULL;
   return_value_if_fail(am != NULL && name != NULL, NULL);
-
-  assets_name = asset_info_get_formatted_name(name);
 
   all = (const asset_info_t**)(am->assets.elms);
 
   for (i = 0; i < am->assets.size; i++) {
     iter = all[i];
-    if (type == iter->type && strcmp(assets_name, iter->name) == 0 &&
+    if (type == iter->type && strcmp(name, asset_info_get_name(iter)) == 0 &&
         (subtype == 0 || (subtype != 0 && subtype == iter->subtype))) {
       return iter;
     }
@@ -775,6 +775,7 @@ ret_t assets_manager_clear_cache_ex(assets_manager_t* am, asset_type_t type, con
   int32_t size = 0;
   asset_info_t info;
   ret_t ret = RET_OK;
+  const char* asset_name = NULL;
   return_value_if_fail(am != NULL && name != NULL, RET_BAD_PARAMS);
 
   memset(&info, 0x00, sizeof(info));
@@ -782,8 +783,12 @@ ret_t assets_manager_clear_cache_ex(assets_manager_t* am, asset_type_t type, con
     return RET_NOT_FOUND;
   }
 
+  asset_name = asset_info_get_formatted_name(name);
   info.type = type;
-  tk_strncpy_s(info.name, sizeof(info.name), name, strlen(name));
+  strncpy(info.name, asset_name, TK_NAME_LEN);
+  if (asset_name != name) {
+    info.full_name = name;
+  }
 
   size = am->assets.size;
   ret = darray_remove_all(&(am->assets), asset_cache_cmp_type_and_name, &info);

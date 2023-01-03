@@ -66,10 +66,7 @@ asset_info_t* asset_info_create(uint16_t type, uint16_t subtype, const char* nam
 #endif /*LOAD_ASSET_WITH_MMAP*/
 
   if (asset_name != name) {
-    log_warn(
-        "[warn] asset name max length is %d , so old name : \"%s\" format to new name : \"%s\" ! "
-        "\r\n",
-        TK_NAME_LEN + 1, name, asset_name);
+    info->full_name = tk_strdup(name);
   }
 
   return info;
@@ -86,6 +83,10 @@ ret_t asset_info_destroy(asset_info_t* info) {
       TKMEM_FREE(info->data);
     }
 #endif /*LOAD_ASSET_WITH_MMAP*/
+
+    if (info->full_name != NULL) {
+      TKMEM_FREE(info->full_name);
+    }
 
     memset(info, 0x00, sizeof(asset_info_t));
     TKMEM_FREE(info);
@@ -128,5 +129,5 @@ uint16_t asset_info_get_type(asset_info_t* info) {
 const char* asset_info_get_name(asset_info_t* info) {
   return_value_if_fail(info != NULL, NULL);
 
-  return info->name;
+  return info->full_name != NULL ? info->full_name : info->name;
 }
