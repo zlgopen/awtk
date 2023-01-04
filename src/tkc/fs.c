@@ -481,6 +481,7 @@ ret_t fs_build_user_storage_file_name(char filename[MAX_PATH + 1], const char* a
 ret_t fs_create_dir_r(fs_t* fs, const char* name) {
   int32_t len = 0;
   char path[MAX_PATH + 1];
+  ret_t ret = RET_OK;
   tokenizer_t tokenizer;
   tokenizer_t* t = NULL;
   return_value_if_fail(fs != NULL && name != NULL, RET_BAD_PARAMS);
@@ -502,13 +503,14 @@ ret_t fs_create_dir_r(fs_t* fs, const char* name) {
     if (!fs_dir_exist(fs, path)) {
       if (fs_create_dir(fs, path) != RET_OK) {
         log_debug("create %s failed\n", path);
-        return RET_FAIL;
+        ret = RET_FAIL;
+        break;
       }
     }
   }
   tokenizer_deinit(t);
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t fs_remove_dir_r(fs_t* fs, const char* name) {

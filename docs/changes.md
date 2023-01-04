@@ -2,6 +2,7 @@
 
 20223/01/04
   * widget为designing\_window的子控件时，widget\_set\_need\_relayout失败的问题(感谢朝泽提供补丁)
+  * 修复了fs\_create\_dir\_r函数中tokenizer没有释放就return的问题(感谢泽武提供补丁)
 
 20223/01/03
   * 资源名称长度超过上限时，另外申请空间来保存(感谢陈聪提供补丁)
