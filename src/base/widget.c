@@ -4568,6 +4568,11 @@ bool_t widget_is_window_manager(widget_t* widget) {
 
 ret_t widget_set_need_relayout(widget_t* widget) {
   widget_t* win = widget_get_window(widget);
+
+  while (win != NULL && win->parent != NULL && !widget_is_window_manager(win->parent)) {
+    win = widget_get_window(win->parent);
+  }
+
   if (win != NULL) {
     return window_base_set_need_relayout(win, TRUE);
   }

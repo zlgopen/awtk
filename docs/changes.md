@@ -1,5 +1,8 @@
 # 最新动态
 
+20223/01/04
+  * widget为designing\_window的子控件时，widget\_set\_need\_relayout失败的问题(感谢朝泽提供补丁)
+
 20223/01/03
   * 资源名称长度超过上限时，另外申请空间来保存(感谢陈聪提供补丁)
   * 完善progress\_circle的line\_cap属性的注释(感谢朝泽提供补丁)
