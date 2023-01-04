@@ -4,6 +4,7 @@
   * widget为designing\_window的子控件时，widget\_set\_need\_relayout失败的问题(感谢朝泽提供补丁)
   * 修复了fs\_create\_dir\_r函数中tokenizer没有释放就return的问题(感谢泽武提供补丁)
   * 善了 awtk 的编译脚本，在 win 平台上，默认指定 scons 使用 msvc 编译器，除非用户自己指定 TOOLS_NAME='mingw'，避免按照 scons 内部的顺序来查找编译器(感谢雨欣提供补丁)
+  * 完善app\_helper\_base(感谢雨欣提供补丁)
 
 20223/01/03
   * 资源名称长度超过上限时，另外申请空间来保存(感谢陈聪提供补丁)

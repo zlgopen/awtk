@@ -460,7 +460,10 @@ class AppHelperBase:
             self.APP_LIBPATH = [self.APP_BIN_DIR, self.APP_LIB_DIR]
 
         if hasattr(awtk, 'TOOLS_NAME') and awtk.TOOLS_NAME != '':
-            self.APP_TOOLS = [awtk.TOOLS_NAME]
+            if awtk.TOOLS_NAME == 'msvc':
+                self.APP_TOOLS = ['msvc', 'masm', 'mslink', "mslib"]
+            elif awtk.TOOLS_NAME == 'mingw':
+                self.APP_TOOLS = ['mingw']
 
         os.environ['BUILD_SHARED'] = str(self.isBuildShared())
         if LCD_ORIENTATION == '90' or LCD_ORIENTATION == '270' :
