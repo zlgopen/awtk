@@ -3,7 +3,10 @@ import awtk_config as awtk
 
 APP_TOOLS = None
 if awtk.TOOLS_NAME != '' :
-  APP_TOOLS = [awtk.TOOLS_NAME]
+  if awtk.TOOLS_NAME == 'msvc':
+    APP_TOOLS = ['msvc', 'masm', 'mslink', "mslib"]
+  elif awtk.TOOLS_NAME == 'mingw':
+    APP_TOOLS = ['mingw']
 
 awtk.genIdlAndDef();
 DefaultEnvironment(TOOLS = APP_TOOLS,

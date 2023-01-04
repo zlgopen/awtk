@@ -75,6 +75,8 @@ NATIVE_WINDOW = ''
 
 if OS_NAME == 'Windows':
     TK_ROOT = TK_ROOT.replace('\\', '\\\\')
+    if TOOLS_NAME == '':
+        TOOLS_NAME = 'msvc'
 
 OS_FLAGS = ''
 OS_LIBS = []
@@ -127,7 +129,7 @@ elif OS_NAME == 'Windows':
         os.makedirs(os.path.abspath(TK_BIN_DIR))
     if not os.path.exists(os.path.abspath(TK_LIB_DIR)):
         os.makedirs(os.path.abspath(TK_LIB_DIR))
-    if TOOLS_NAME == '':
+    if TOOLS_NAME == 'msvc':
         OS_LIBS = ['gdi32', 'user32', 'winmm.lib', 'imm32.lib', 'version.lib', 'shell32.lib',
                    'ole32.lib', 'Oleaut32.lib', 'Advapi32.lib', 'DelayImp.lib', 'psapi.lib', "ws2_32"]
         OS_FLAGS = '-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /Od  /FS /Z7 /utf-8 /MD '
@@ -281,7 +283,7 @@ def genDllLinkFlags(libs, defFile):
     wholeArch = toWholeArchive(libs)
 
     if OS_NAME == 'Windows':
-        if TOOLS_NAME == '':
+        if TOOLS_NAME == 'msvc':
             linkFlags += ' /DEF:"dllexports/'+defFile+'.def" '
         elif TOOLS_NAME == 'mingw':
             linkFlags += wholeArch
