@@ -81,6 +81,7 @@ typedef struct _pages_t {
   str_t str_target;
   uint32_t init_idle_id;
   uint32_t focused_idle_id;
+  bool_t has_active;
 } pages_t;
 
 /**

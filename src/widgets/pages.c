@@ -106,6 +106,7 @@ ret_t pages_set_active(widget_t* widget, uint32_t index) {
   pages_t* pages = PAGES(widget);
   return_value_if_fail(pages != NULL, RET_BAD_PARAMS);
 
+  pages->has_active = TRUE;
   if (pages->active != index && widget->children != NULL) {
     value_change_event_t evt;
 

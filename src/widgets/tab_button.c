@@ -25,6 +25,7 @@
 #include "widgets/tab_button.h"
 #include "base/image_manager.h"
 #include "base/widget_vtable.h"
+#include "widgets/pages.h"
 
 static ret_t tab_button_pointer_up_cleanup(widget_t* widget) {
   tab_button_t* tab_button = TAB_BUTTON(widget);
@@ -161,9 +162,12 @@ static ret_t tab_button_sync_pages(void* ctx, event_t* e) {
   if (pages != NULL) {
     if (tab_button == NULL || tab_button->load_ui == NULL) {
       int32_t index = tab_button_index_of(widget);
+      pages_t* pages_widgets = PAGES(pages);
       return_value_if_fail(index >= 0, RET_BAD_PARAMS);
 
-      widget_set_value(pages, index);
+      if (!pages_widgets->has_active) {
+        widget_set_value(pages, index);
+      }
     } else if (tab_button->ui == NULL) {
       tab_button_load_ui(tab_button, pages);
     }
