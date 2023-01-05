@@ -459,11 +459,12 @@ class AppHelperBase:
                 self.AWTK_LIBS = awtk.SHARED_LIBS
             self.APP_LIBPATH = [self.APP_BIN_DIR, self.APP_LIB_DIR]
 
-        if hasattr(awtk, 'TOOLS_NAME') and awtk.TOOLS_NAME != '':
-            if awtk.TOOLS_NAME == 'msvc':
-                self.APP_TOOLS = ['msvc', 'masm', 'mslink', "mslib"]
-            elif awtk.TOOLS_NAME == 'mingw':
-                self.APP_TOOLS = ['mingw']
+        if hasattr(awtk, 'TOOLS_NAME') :
+            if awtk.TOOLS_NAME != '':
+                if awtk.TOOLS_NAME == 'mingw':
+                    self.APP_TOOLS = ['mingw']
+            elif awtk.TOOLS_NAME == '' and PLATFORM == 'Windows':
+                APP_TOOLS = ['msvc', 'masm', 'mslink', "mslib"]
 
         os.environ['BUILD_SHARED'] = str(self.isBuildShared())
         if LCD_ORIENTATION == '90' or LCD_ORIENTATION == '270' :

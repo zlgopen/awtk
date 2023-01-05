@@ -1,12 +1,15 @@
 import os
+import platform
 import awtk_config as awtk
 
 APP_TOOLS = None
+OS_NAME = platform.system()
+
 if awtk.TOOLS_NAME != '' :
-  if awtk.TOOLS_NAME == 'msvc':
-    APP_TOOLS = ['msvc', 'masm', 'mslink', "mslib"]
-  elif awtk.TOOLS_NAME == 'mingw':
+  if awtk.TOOLS_NAME == 'mingw':
     APP_TOOLS = ['mingw']
+elif awtk.TOOLS_NAME == '' and OS_NAME == 'Windows':
+    APP_TOOLS = ['msvc', 'masm', 'mslink', "mslib"]
 
 awtk.genIdlAndDef();
 DefaultEnvironment(TOOLS = APP_TOOLS,
