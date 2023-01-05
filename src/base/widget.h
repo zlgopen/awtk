@@ -888,6 +888,21 @@ ret_t widget_resize(widget_t* widget, wh_t w, wh_t h);
 ret_t widget_move_resize(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method widget_move_resize_ex
+ * 移动控件并调整控件的大小。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {xy_t}   x x坐标
+ * @param {xy_t}   y y坐标
+ * @param {wh_t}   w 宽度
+ * @param {wh_t}   h 高度
+ * @param {bool_t} update_layout 是否更新布局
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_move_resize_ex(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h, bool_t update_layout);
+
+/**
  * @method widget_get_value
  * 获取控件的值。只是对widget\_get\_prop的包装，值的意义由子类控件决定。
  * @annotation ["scriptable"]
@@ -3256,7 +3271,6 @@ bool_t widget_has_focused_widget_in_window(widget_t* widget);
 bool_t widget_is_activate_key(widget_t* widget, key_event_t* e);
 ret_t widget_set_focused_internal(widget_t* widget, bool_t focused);
 ret_t widget_remove_child_prepare(widget_t* widget, widget_t* child);
-ret_t widget_move_resize_ex(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h, bool_t update_layout);
 
 ret_t widget_set_text_impl(widget_t* widget, const wchar_t* text, bool_t check_diff);
 ret_t widget_set_text_utf8_impl(widget_t* widget, const char* text, bool_t check_diff);

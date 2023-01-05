@@ -2,6 +2,7 @@
 
 20223/01/05
   * 完善 tab button和pages(感谢俊杰提供补丁)
+  * 导出函数widget\_move\_resize\_ex(感谢俊杰提供补丁)
 
 20223/01/04
   * widget为designing\_window的子控件时，widget\_set\_need\_relayout失败的问题(感谢朝泽提供补丁)
