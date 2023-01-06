@@ -629,6 +629,8 @@ static ret_t window_manager_default_close_window(widget_t* widget, widget_t* win
 }
 
 static ret_t window_manager_default_close_window_force(widget_t* widget, widget_t* window) {
+  ret_t ret = RET_OK;
+  bool_t close_window = TRUE;
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
 
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
@@ -636,17 +638,25 @@ static ret_t window_manager_default_close_window_force(widget_t* widget, widget_
   return_value_if_fail(wm->pending_close_window != window, RET_BAD_PARAMS);
 
   if (wm->animator != NULL) {
-    if (wm->animator->prev_win == window || wm->animator->curr_win == window) {
-      return window_manager_animate_done(widget);
+    bool_t is_open = wm->animator->open;
+    bool_t curr_is_target = wm->animator->curr_win == window;
+    if (curr_is_target || curr_is_target) {
+      ret = window_manager_animate_done(widget);
+      close_window = FALSE;
+    }
+    if (curr_is_target && is_open) {
+      close_window = TRUE;
     }
   }
 
-  window_manager_prepare_close_window(widget, window);
-  window_manager_dispatch_window_event(window, EVT_WINDOW_CLOSE);
-  widget_remove_child(widget, window);
-  widget_destroy(window);
+  if (close_window) {
+    window_manager_prepare_close_window(widget, window);
+    window_manager_dispatch_window_event(window, EVT_WINDOW_CLOSE);
+    widget_remove_child(widget, window);
+    widget_destroy(window);
+  }
 
-  return RET_OK;
+  return ret;
 }
 
 static widget_t* window_manager_default_find_target(widget_t* widget, xy_t x, xy_t y) {
