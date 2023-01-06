@@ -141,7 +141,7 @@ static ret_t input_device_status_update_key_press_info(input_device_status_t* id
 }
 
 static ret_t input_device_status_update_key_status(input_device_status_t* ids, uint32_t key,
-                                                   bool_t down) {
+                                                   key_event_t* e, bool_t down) {
   if (key == TK_KEY_LSHIFT) {
     ids->shift = down;
     ids->lshift = down;
@@ -166,12 +166,8 @@ static ret_t input_device_status_update_key_status(input_device_status_t* ids, u
     ids->cmd = down;
   }
 
-  if (!down) {
-    if (key == TK_KEY_CAPSLOCK) {
-      ids->capslock = !(ids->capslock);
-    }
-  }
-  input_device_status_update_key_press_info(ids, key, down);
+  ids->capslock = e->capslock;
+  ids->numlock = e->numlock;
 
   return RET_OK;
 }
@@ -186,31 +182,70 @@ static const key_shift_t key_shift[] = {
     {'7', '&'}, {'8', '*'}, {'9', '('}, {'0', ')'},  {'-', '_'}, {'=', '+'}, {'[', '{'},
     {']', '}'}, {',', '<'}, {'.', '>'}, {'\\', '|'}, {'/', '?'}, {';', ':'}, {'\'', '\"'}};
 
-static uint32_t input_device_status_get_shift_key_code(input_device_status_t* ids,
-                                                       uint32_t old_key_code) {
-  char c = (char)old_key_code;
-
+static uint32_t input_device_status_get_shift_key_code(input_device_status_t* ids, uint32_t key) {
   if (ids->shift) {
     uint32_t i = 0;
     for (i = 0; i < ARRAY_SIZE(key_shift); i++) {
-      if (key_shift[i].key == c) {
+      if (key_shift[i].key == key) {
         return key_shift[i].shift_key;
       }
     }
   }
 
   if (ids->shift && ids->capslock) {
-    if (c >= 'A' && c <= 'Z') {
-      return tolower(c);
+    if (key >= 'a' && key <= 'z') {
+      return key;
+    } else if (key >= 'A' && key <= 'Z') {
+      return tolower(key);
     }
   }
 
   if (ids->shift || ids->capslock) {
-    if (c >= 'a' && c <= 'z') {
-      return toupper(c);
+    if (key >= 'a' && key <= 'z') {
+      return toupper(key);
+    } else if (key >= 'A' && key <= 'Z') {
+      return key;
     }
   }
-  return old_key_code;
+
+  switch (key) {
+    case TK_KEY_KP_DIVIDE:
+      return TK_KEY_SLASH;
+    case TK_KEY_KP_MULTIPLY:
+      return TK_KEY_ASTERISK;
+    case TK_KEY_KP_MINUS:
+      return TK_KEY_MINUS;
+    case TK_KEY_KP_PLUS:
+      return TK_KEY_PLUS;
+    case TK_KEY_KP_ENTER:
+      return TK_KEY_RETURN;
+    case TK_KEY_KP_1:
+      return ids->numlock ? TK_KEY_1 : TK_KEY_END;
+    case TK_KEY_KP_2:
+      return ids->numlock ? TK_KEY_2 : TK_KEY_DOWN;
+    case TK_KEY_KP_3:
+      return ids->numlock ? TK_KEY_3 : TK_KEY_PAGEDOWN;
+    case TK_KEY_KP_4:
+      return ids->numlock ? TK_KEY_4 : TK_KEY_LEFT;
+    case TK_KEY_KP_5:
+      return ids->numlock ? TK_KEY_5 : TK_KEY_UNKNOWN;
+    case TK_KEY_KP_6:
+      return ids->numlock ? TK_KEY_6 : TK_KEY_RIGHT;
+    case TK_KEY_KP_7:
+      return ids->numlock ? TK_KEY_7 : TK_KEY_HOME;
+    case TK_KEY_KP_8:
+      return ids->numlock ? TK_KEY_8 : TK_KEY_UP;
+    case TK_KEY_KP_9:
+      return ids->numlock ? TK_KEY_9 : TK_KEY_PAGEUP;
+    case TK_KEY_KP_0:
+      return ids->numlock ? TK_KEY_0 : TK_KEY_INSERT;
+    case TK_KEY_KP_PERIOD:
+      return ids->numlock ? TK_KEY_PERIOD : TK_KEY_DELETE;
+    default:
+      break;
+  }
+
+  return key;
 }
 
 static ret_t input_device_status_shift_key(input_device_status_t* ids, key_event_t* e) {
@@ -252,6 +287,7 @@ static ret_t input_device_status_init_key_event(input_device_status_t* ids, key_
   evt->rctrl = ids->rctrl;
   evt->rshift = ids->rshift;
   evt->capslock = ids->capslock;
+  evt->numlock = ids->numlock;
   evt->cmd = ids->cmd;
   evt->menu = ids->menu;
 
@@ -337,13 +373,18 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
     case EVT_KEY_DOWN: {
       if (dispatch) {
         key_event_t* evt = (key_event_t*)e;
-        uint32_t key = input_device_status_get_shift_key_code(ids, evt->key);
-        key_pressed_info_t* info = input_device_status_find_press_info(ids, key);
-
-        input_device_status_update_key_status(ids, key, TRUE);
-        input_device_status_init_key_event(ids, evt);
+        key_pressed_info_t* info = NULL;
+        input_device_status_update_key_status(ids, evt->key, evt, TRUE);
         input_device_status_shift_key(ids, evt);
+        if (evt->key == TK_KEY_UNKNOWN) {
+          break;
+        }
 
+        input_device_status_update_key_press_info(ids, evt->key, TRUE);
+
+        info = input_device_status_find_press_info(ids, evt->key);
+
+        input_device_status_init_key_event(ids, evt);
         if (info == NULL || !info->should_abort) {
           if (wm->widget_grab_key != NULL) {
             widget_on_keydown(wm->widget_grab_key, evt);
@@ -356,12 +397,17 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
     }
     case EVT_KEY_UP: {
       key_event_t* evt = (key_event_t*)e;
-      key_pressed_info_t* info = input_device_status_find_press_info(ids, evt->key);
+      key_pressed_info_t* info = NULL;
+      input_device_status_shift_key(ids, evt);
+      input_device_status_update_key_status(ids, evt->key, evt, FALSE);
+      if (evt->key == TK_KEY_UNKNOWN) {
+        break;
+      }
+
+      info = input_device_status_find_press_info(ids, evt->key);
 
       if (dispatch || info != NULL) {
         input_device_status_init_key_event(ids, evt);
-        input_device_status_shift_key(ids, evt);
-
         if (info == NULL || !info->should_abort) {
           if (wm->widget_grab_key != NULL) {
             widget_on_keyup(wm->widget_grab_key, evt);
@@ -370,7 +416,7 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
           }
         }
 
-        input_device_status_update_key_status(ids, evt->key, FALSE);
+        input_device_status_update_key_press_info(ids, evt->key, FALSE);
       }
       break;
     }

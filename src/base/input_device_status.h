@@ -56,6 +56,7 @@ typedef struct _input_device_status_t {
   uint32_t cmd : 1;
   uint32_t menu : 1;
   uint32_t capslock : 1;
+  uint32_t numlock : 1;
 
   xy_t last_x;
   xy_t last_y;
@@ -101,7 +102,8 @@ ret_t input_device_status_on_input_event(input_device_status_t* ids, widget_t* w
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t input_device_status_on_ignore_input_event(input_device_status_t* ids, widget_t* widget, event_t* e);
+ret_t input_device_status_on_ignore_input_event(input_device_status_t* ids, widget_t* widget,
+                                                event_t* e);
 
 /**
  * @method input_device_status_abort_all_pressed_keys

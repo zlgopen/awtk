@@ -216,11 +216,11 @@ static const key_type_value_t keys_type_name_value[] = {
     {"RIGHTBRACE", 0, TK_KEY_RIGHTBRACE},
     {"BACK", 0, TK_KEY_BACK},
     {"CANCEL", 0, TK_KEY_CANCEL},
+    {"NUMLOCKCLEAR", 0, TK_KEY_NUMLOCKCLEAR},
 #ifdef WITH_SDL
     {"PRINTSCREEN", 0, TK_KEY_PRINTSCREEN},
     {"SCROLLLOCK", 0, TK_KEY_SCROLLLOCK},
     {"PAUSE", 0, TK_KEY_PAUSE},
-    {"NUMLOCKCLEAR", 0, TK_KEY_NUMLOCKCLEAR},
     {"APPLICATION", 0, TK_KEY_APPLICATION},
     {"POWER", 0, TK_KEY_POWER},
     {"F13", 0, TK_KEY_F13},

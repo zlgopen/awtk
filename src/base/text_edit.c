@@ -1342,6 +1342,10 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
 
   switch (key) {
 #ifdef WITH_SDL
+#ifdef WIN32
+    case TK_KEY_CLEAR:  // win32下关闭小键盘，数字5会触发TK_KEY_CLEAR
+#endif
+#endif
     case TK_KEY_KP_DIVIDE:
     case TK_KEY_KP_MULTIPLY:
     case TK_KEY_KP_MINUS:
@@ -1360,7 +1364,6 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
     case TK_KEY_KP_9:
       return RET_OK;
     case TK_KEY_KP_ENTER:
-#endif
     case TK_KEY_RETURN: {
       key = STB_TEXTEDIT_NEWLINE;
       break;

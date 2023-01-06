@@ -15,6 +15,7 @@ TEST(InputDeviceStatus, basic) {
   ASSERT_EQ(ids->alt, TK_FALSE);
   ASSERT_EQ(ids->ctrl, TK_FALSE);
   ASSERT_EQ(ids->capslock, TK_FALSE);
+  ASSERT_EQ(ids->numlock, TK_FALSE);
   ASSERT_EQ(ids->pressed, TK_FALSE);
   ASSERT_EQ(ids->last_x, 0);
   ASSERT_EQ(ids->last_y, 0);
@@ -46,24 +47,22 @@ TEST(InputDeviceStatus, alt) {
   widget_on(w, EVT_KEY_DOWN, on_event, w);
   widget_on(w, EVT_KEY_UP, on_event, w);
 
-  e.key = TK_KEY_LALT;
-  e.e = event_init(EVT_KEY_DOWN, NULL);
+  key_event_init(&e, EVT_KEY_DOWN, NULL, TK_KEY_LALT);
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
   ASSERT_EQ(ids->alt, TK_TRUE);
   ASSERT_EQ(s_log, "keydown");
 
-  e.e = event_init(EVT_KEY_UP, NULL);
+  key_event_init(&e, EVT_KEY_UP, NULL, TK_KEY_LALT);
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
   ASSERT_EQ(ids->alt, TK_FALSE);
   ASSERT_EQ(s_log, "keyup");
 
-  e.key = TK_KEY_RALT;
-  e.e = event_init(EVT_KEY_DOWN, NULL);
+  key_event_init(&e, EVT_KEY_DOWN, NULL, TK_KEY_RALT);
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
   ASSERT_EQ(ids->alt, TK_TRUE);
   ASSERT_EQ(s_log, "keydown");
 
-  e.e = event_init(EVT_KEY_UP, NULL);
+  key_event_init(&e, EVT_KEY_UP, NULL, TK_KEY_RALT);
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
   ASSERT_EQ(ids->alt, TK_FALSE);
   ASSERT_EQ(s_log, "keyup");
@@ -80,24 +79,22 @@ TEST(InputDeviceStatus, ctrl) {
   widget_on(w, EVT_KEY_DOWN, on_event, w);
   widget_on(w, EVT_KEY_UP, on_event, w);
 
-  e.key = TK_KEY_LCTRL;
-  e.e = event_init(EVT_KEY_DOWN, NULL);
+  key_event_init(&e, EVT_KEY_DOWN, NULL, TK_KEY_LCTRL);
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
   ASSERT_EQ(ids->ctrl, TK_TRUE);
   ASSERT_EQ(s_log, "keydown");
 
-  e.e = event_init(EVT_KEY_UP, NULL);
+  key_event_init(&e, EVT_KEY_UP, NULL, TK_KEY_LCTRL);
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
   ASSERT_EQ(ids->ctrl, TK_FALSE);
   ASSERT_EQ(s_log, "keyup");
 
-  e.key = TK_KEY_RCTRL;
-  e.e = event_init(EVT_KEY_DOWN, NULL);
+  key_event_init(&e, EVT_KEY_DOWN, NULL, TK_KEY_RCTRL);
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
   ASSERT_EQ(ids->ctrl, TK_TRUE);
   ASSERT_EQ(s_log, "keydown");
 
-  e.e = event_init(EVT_KEY_UP, NULL);
+  key_event_init(&e, EVT_KEY_UP, NULL, TK_KEY_RCTRL);
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
   ASSERT_EQ(ids->ctrl, TK_FALSE);
   ASSERT_EQ(s_log, "keyup");
@@ -114,27 +111,61 @@ TEST(InputDeviceStatus, capslock) {
   widget_on(w, EVT_KEY_DOWN, on_event, w);
   widget_on(w, EVT_KEY_UP, on_event, w);
 
-  e.key = TK_KEY_CAPSLOCK;
-  e.e = event_init(EVT_KEY_DOWN, NULL);
+  key_event_init(&e, EVT_KEY_DOWN, NULL, TK_KEY_CAPSLOCK);
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
   ASSERT_EQ(s_log, "keydown");
 
-  e.e = event_init(EVT_KEY_UP, NULL);
+  key_event_init(&e, EVT_KEY_UP, NULL, TK_KEY_CAPSLOCK);
+  e.capslock = TK_TRUE;
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
   ASSERT_EQ(s_log, "keyup");
 
   ASSERT_EQ(ids->capslock, TK_TRUE);
 
-  e.key = TK_KEY_CAPSLOCK;
-  e.e = event_init(EVT_KEY_DOWN, NULL);
+  key_event_init(&e, EVT_KEY_DOWN, NULL, TK_KEY_CAPSLOCK);
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
   ASSERT_EQ(s_log, "keydown");
 
-  e.e = event_init(EVT_KEY_UP, NULL);
+  key_event_init(&e, EVT_KEY_UP, NULL, TK_KEY_CAPSLOCK);
+  e.capslock = TK_FALSE;
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
   ASSERT_EQ(s_log, "keyup");
 
   ASSERT_EQ(ids->capslock, TK_FALSE);
+
+  widget_destroy(w);
+}
+
+TEST(InputDeviceStatus, numlock) {
+  key_event_t e;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+  input_device_status_t input_device_status;
+  input_device_status_t* ids = input_device_status_init(&input_device_status);
+
+  widget_on(w, EVT_KEY_DOWN, on_event, w);
+  widget_on(w, EVT_KEY_UP, on_event, w);
+
+  key_event_init(&e, EVT_KEY_DOWN, NULL, TK_KEY_NUMLOCKCLEAR);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(s_log, "keydown");
+
+  key_event_init(&e, EVT_KEY_UP, NULL, TK_KEY_NUMLOCKCLEAR);
+  e.numlock = TK_TRUE;
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(s_log, "keyup");
+
+  ASSERT_EQ(ids->numlock, TK_TRUE);
+
+  key_event_init(&e, EVT_KEY_DOWN, NULL, TK_KEY_NUMLOCKCLEAR);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(s_log, "keydown");
+
+  key_event_init(&e, EVT_KEY_UP, NULL, TK_KEY_NUMLOCKCLEAR);
+  e.numlock = TK_FALSE;
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(s_log, "keyup");
+
+  ASSERT_EQ(ids->numlock, TK_FALSE);
 
   widget_destroy(w);
 }
@@ -188,27 +219,24 @@ TEST(InputDeviceStatus, should_abort) {
   widget_on(w, EVT_KEY_DOWN, on_event, w);
   widget_on(w, EVT_KEY_UP, on_event, w);
 
-  e.key = TK_KEY_CAPSLOCK;
-  e.e = event_init(EVT_KEY_DOWN, NULL);
+  key_event_init(&e, EVT_KEY_DOWN, NULL, TK_KEY_CAPSLOCK);
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
   ASSERT_EQ(s_log, "keydown");
 
   input_device_status_abort_all_pressed_keys(ids);
 
   s_log = "";
-  e.key = TK_KEY_CAPSLOCK;
-  e.e = event_init(EVT_KEY_DOWN, NULL);
+  key_event_init(&e, EVT_KEY_DOWN, NULL, TK_KEY_CAPSLOCK);
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
   ASSERT_EQ(s_log, "");
 
   s_log = "";
-  e.e = event_init(EVT_KEY_UP, NULL);
+  key_event_init(&e, EVT_KEY_UP, NULL, TK_KEY_CAPSLOCK);
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
   ASSERT_EQ(s_log, "");
 
   s_log = "";
-  e.key = TK_KEY_CAPSLOCK;
-  e.e = event_init(EVT_KEY_DOWN, NULL);
+  key_event_init(&e, EVT_KEY_DOWN, NULL, TK_KEY_CAPSLOCK);
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
   ASSERT_EQ(s_log, "keydown");
 

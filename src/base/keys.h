@@ -878,6 +878,91 @@ typedef enum _key_code_t {
    * TK_KEY_CANCEL
    */
   TK_KEY_CANCEL = 0x20 + 167,
+  /**
+   * @const TK_KEY_KP_DIVIDE
+   * TK_KEY_KP_DIVIDE
+   */
+  TK_KEY_KP_DIVIDE = 0x20 + 169,
+  /**
+   * @const TK_KEY_KP_MULTIPLY
+   * TK_KEY_KP_MULTIPLY
+   */
+  TK_KEY_KP_MULTIPLY = 0x20 + 170,
+  /**
+   * @const TK_KEY_KP_MINUS
+   * TK_KEY_KP_MINUS
+   */
+  TK_KEY_KP_MINUS = 0x20 + 171,
+  /**
+   * @const TK_KEY_KP_PLUS
+   * TK_KEY_KP_PLUS
+   */
+  TK_KEY_KP_PLUS = 0x20 + 172,
+  /**
+   * @const TK_KEY_KP_ENTER
+   * TK_KEY_KP_ENTER
+   */
+  TK_KEY_KP_ENTER = 0x20 + 173,
+  /**
+   * @const TK_KEY_KP_1
+   * TK_KEY_KP_1
+   */
+  TK_KEY_KP_1 = 0x20 + 174,
+  /**
+   * @const TK_KEY_KP_2
+   * TK_KEY_KP_2
+   */
+  TK_KEY_KP_2 = 0x20 + 175,
+  /**
+   * @const TK_KEY_KP_3
+   * TK_KEY_KP_3
+   */
+  TK_KEY_KP_3 = 0x20 + 176,
+  /**
+   * @const TK_KEY_KP_4
+   * TK_KEY_KP_4
+   */
+  TK_KEY_KP_4 = 0x20 + 177,
+  /**
+   * @const TK_KEY_KP_5
+   * TK_KEY_KP_5
+   */
+  TK_KEY_KP_5 = 0x20 + 178,
+  /**
+   * @const TK_KEY_KP_6
+   * TK_KEY_KP_6
+   */
+  TK_KEY_KP_6 = 0x20 + 179,
+  /**
+   * @const TK_KEY_KP_7
+   * TK_KEY_KP_7
+   */
+  TK_KEY_KP_7 = 0x20 + 180,
+  /**
+   * @const TK_KEY_KP_8
+   * TK_KEY_KP_8
+   */
+  TK_KEY_KP_8 = 0x20 + 181,
+  /**
+   * @const TK_KEY_KP_9
+   * TK_KEY_KP_9
+   */
+  TK_KEY_KP_9 = 0x20 + 182,
+  /**
+   * @const TK_KEY_KP_0
+   * TK_KEY_KP_0
+   */
+  TK_KEY_KP_0 = 0x20 + 183,
+  /**
+   * @const TK_KEY_KP_PERIOD
+   * TK_KEY_KP_PERIOD
+   */
+  TK_KEY_KP_PERIOD = 0x20 + 184,
+  /**
+   * @const TK_KEY_NUMLOCKCLEAR
+   * TK_KEY_NUMLOCKCLEAR
+   */
+  TK_KEY_NUMLOCKCLEAR = 0x20 + 185,
 #endif
   /**
    * @const TK_KEY_WHEEL
@@ -899,11 +984,7 @@ typedef enum _key_code_t {
 #endif /*TK_KEY_TOGGLE_INPUT_METHOD*/
 
 static inline bool_t key_code_is_enter(int key) {
-#ifdef WITH_SDL
   return (key == TK_KEY_RETURN || key == TK_KEY_KP_ENTER);
-#else
-  return key == TK_KEY_RETURN;
-#endif /*WITH_SDL*/
 }
 
 END_C_DECLS

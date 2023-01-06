@@ -960,6 +960,12 @@ typedef struct _key_event_t {
    * capslock键是否按下。
    */
   bool_t capslock;
+  /**
+   * @property {bool_t} numlock
+   * @annotation ["readable", "scriptable"]
+   * numlock键是否按下。
+   */
+  bool_t numlock;
 } key_event_t;
 
 /**

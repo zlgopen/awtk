@@ -51,6 +51,11 @@ static ret_t main_loop_sdl2_dispatch_text_editing(main_loop_simple_t* loop, SDL_
   return RET_OK;
 }
 
+static ret_t main_loop_sdl2_set_key_event_mod(key_event_t* event, uint16_t mod) {
+  event->capslock = (mod & KMOD_CAPS) != 0;
+  event->numlock = (mod & KMOD_NUM) != 0;
+}
+
 static ret_t main_loop_sdl2_dispatch_key_event(main_loop_simple_t* loop, SDL_Event* sdl_event) {
   key_event_t event;
   int type = sdl_event->type;
@@ -59,12 +64,14 @@ static ret_t main_loop_sdl2_dispatch_key_event(main_loop_simple_t* loop, SDL_Eve
   switch (type) {
     case SDL_KEYDOWN: {
       key_event_init(&event, EVT_KEY_DOWN, widget, sdl_event->key.keysym.sym);
+      main_loop_sdl2_set_key_event_mod(&event, sdl_event->key.keysym.mod);
       event.e.native_window_handle = SDL_GetWindowFromID(sdl_event->key.windowID);
       window_manager_dispatch_input_event(widget, (event_t*)&event);
       break;
     }
     case SDL_KEYUP: {
       key_event_init(&event, EVT_KEY_UP, widget, sdl_event->key.keysym.sym);
+      main_loop_sdl2_set_key_event_mod(&event, sdl_event->key.keysym.mod);
       event.e.native_window_handle = SDL_GetWindowFromID(sdl_event->key.windowID);
       window_manager_dispatch_input_event(widget, (event_t*)&event);
       break;
