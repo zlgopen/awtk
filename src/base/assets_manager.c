@@ -787,7 +787,9 @@ ret_t assets_manager_clear_cache_ex(assets_manager_t* am, asset_type_t type, con
   info.type = type;
   strncpy(info.name, asset_name, TK_NAME_LEN);
   if (asset_name != name) {
-    info.full_name = name;
+    info.full_name.str = name;
+  } else {
+    info.full_name.str = NULL;
   }
 
   size = am->assets.size;

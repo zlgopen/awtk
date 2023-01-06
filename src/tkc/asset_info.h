@@ -310,7 +310,11 @@ typedef struct _asset_info_t {
    * 名称。
    */
   char name[TK_NAME_LEN + 1];
-  char* full_name;
+  // 确保32位和64位的full_name都占8个字节
+  union {
+    char* str;
+    uint8_t unused[8];
+  } full_name;
 #ifdef LOAD_ASSET_WITH_MMAP
   uint8_t* data;
   mmap_t* map;
