@@ -41,12 +41,6 @@ static ret_t list_view_h_get_prop(widget_t* widget, const char* name, value_t* v
   } else if (tk_str_eq(name, WIDGET_PROP_SPACING)) {
     value_set_int(v, list_view_h->spacing);
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_X_MARGIN)) {
-    value_set_int(v, list_view_h->x_margin);
-    return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_Y_MARGIN)) {
-    value_set_int(v, list_view_h->y_margin);
-    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -62,13 +56,7 @@ static ret_t list_view_h_set_prop(widget_t* widget, const char* name, const valu
   } else if (tk_str_eq(name, WIDGET_PROP_SPACING)) {
     list_view_h->spacing = value_int(v);
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_X_MARGIN)) {
-    list_view_h->x_margin = value_int(v);
-    return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_Y_MARGIN)) {
-    list_view_h->y_margin = value_int(v);
-    return RET_OK;
-  } 
+  }
 
   return RET_NOT_FOUND;
 }
@@ -134,10 +122,6 @@ static ret_t list_view_h_on_scroll_view_layout_children(widget_t* widget) {
     x_margin = children_layouter_get_param_int(widget->children_layout, "x_margin", 0);
   } else {
     spacing = list_view_h->spacing;
-    x_margin = list_view_h->x_margin;
-    x += x_margin;
-    y += list_view_h->y_margin;
-    h -= list_view_h->y_margin << 1;
   }
 
   if (widget->children != NULL) {
@@ -197,24 +181,6 @@ ret_t list_view_h_set_spacing(widget_t* widget, int32_t spacing) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   list_view_h->spacing = spacing;
-
-  return RET_OK;
-}
-
-ret_t list_view_h_set_x_margin(widget_t* widget, int32_t x_margin) {
-  list_view_h_t* list_view_h = LIST_VIEW_H(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-
-  list_view_h->x_margin = x_margin;
-
-  return RET_OK;
-}
-
-ret_t list_view_h_set_y_margin(widget_t* widget, int32_t y_margin) {
-  list_view_h_t* list_view_h = LIST_VIEW_H(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-
-  list_view_h->y_margin = y_margin;
 
   return RET_OK;
 }

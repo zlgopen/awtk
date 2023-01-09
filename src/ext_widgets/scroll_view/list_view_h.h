@@ -77,18 +77,6 @@ typedef struct _list_view_h_t {
    * 间距。
    */
   int32_t spacing;
-  /**
-   * @property {int32_t} x_margin
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 水平边距。
-   */
-  int32_t x_margin;
-  /**
-   * @property {int32_t} y_margin
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 垂直边距。
-   */
-  int32_t y_margin;
 
   /*private*/
   widget_t* scroll_view;
@@ -140,31 +128,7 @@ ret_t list_view_h_set_spacing(widget_t* widget, int32_t spacing);
  */
 widget_t* list_view_h_cast(widget_t* widget);
 
-/**
- * @method list_view_h_set_x_margin
- * 设置列表项的水平边距。
- * @annotation ["scriptable"]
- * @param {widget_t*} widget 控件对象。
- * @param {int32_t} x_margin 列表项的水平边距。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t list_view_h_set_x_margin(widget_t* widget, int32_t x_margin);
-
-/**
- * @method list_view_h_set_y_margin
- * 设置列表项的垂直边距。
- * @annotation ["scriptable"]
- * @param {widget_t*} widget 控件对象。
- * @param {int32_t} y_margin 列表项的垂直边距。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t list_view_h_set_y_margin(widget_t* widget, int32_t y_margin);
-
 #define LIST_VIEW_H(widget) ((list_view_h_t*)(list_view_h_cast(WIDGET(widget))))
-#define WIDGET_PROP_X_MARGIN "x_margin"
-#define WIDGET_PROP_Y_MARGIN "y_margin"
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(list_view_h);
