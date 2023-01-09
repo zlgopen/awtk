@@ -1149,13 +1149,6 @@ ret_t widget_restack(widget_t* widget, uint32_t index) {
   widget_t** children = NULL;
   return_value_if_fail(widget != NULL && widget->parent != NULL, RET_BAD_PARAMS);
 
-  event_t e = event_init(EVT_WIDGET_WILL_RESTACK_CHILD, widget->parent);
-  int32_t ret = widget_dispatch(widget->parent, &e);
-  if (ret != RET_OK) {
-    return RET_OK;
-  }
-  e = event_init(EVT_WIDGET_RESTACK_CHILD, widget->parent);
-
   old_index = widget_index_of(widget);
   nr = widget_count_children(widget->parent);
   return_value_if_fail(old_index >= 0 && nr > 0, RET_BAD_PARAMS);
@@ -1179,8 +1172,6 @@ ret_t widget_restack(widget_t* widget, uint32_t index) {
     }
   }
   children[index] = widget;
-
-  widget_dispatch(widget, &e);
 
   return RET_OK;
 }

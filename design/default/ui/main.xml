@@ -54,7 +54,6 @@
       <button focusable="true" name="open:slider" text="Slider"/>
       <button focusable="true" name="open:close_window" text="close_window"/>
       <button focusable="true" name="open:dialog_highlight" text="Dialog Highlight"/>
-      <button focusable="true" name="open:popup_on_top" text="Popup On Top"/>
       <button focusable="true" name="open:svg_test" text="SVG Test"/>
       <button focusable="true" name="open:spin_box" text="Spin box"/>
     </view>

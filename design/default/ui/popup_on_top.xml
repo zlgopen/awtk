@@ -1,4 +1,0 @@
-<popup x="c" y="m" w="200" h="100">
-  <combo_box_ex readonly="true" x="c" y="20" w="160" h="28" options="1:1;2:2;3:3;4:4;5:5" selected_index="0"/>
-  <button name="close" text="Close" x="c" y="60" w="40" h="25"/>
-</popup>
