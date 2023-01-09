@@ -334,7 +334,7 @@ static float_t canvas_measure_text_default(canvas_t* c, const wchar_t* str, uint
   for (i = 0; i < nr; i++) {
     wchar_t chr = str[i];
     if (font_get_glyph(c->font, chr, c->font_size, &g) == RET_OK) {
-      w += g.advance + 1;
+      w += g.advance;
     } else {
       w += 4;
     }
@@ -771,7 +771,7 @@ static ret_t canvas_draw_text_impl(canvas_t* c, const wchar_t* str, uint32_t nr,
       xy_t yy = y + g.y + baseline;
 
       canvas_draw_glyph(c, &g, xx, yy);
-      x += g.advance + 1;
+      x += g.advance;
     } else {
       x += 4;
     }

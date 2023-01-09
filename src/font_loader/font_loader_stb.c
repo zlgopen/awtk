@@ -93,8 +93,8 @@ static font_vmetrics_t font_stb_get_vmetrics(font_t* f, font_size_t font_size) {
     scale = stbtt_ScaleForMappingEmToPixels(sf, font_size);
   }
 
-  vmetrics.ascent = scale * font->ascent;
-  vmetrics.descent = scale * font->descent;
+  vmetrics.ascent = tk_roundi(scale * font->ascent);
+  vmetrics.descent = tk_roundi(scale * font->descent);
   vmetrics.line_gap = scale * font->line_gap;
 
   return vmetrics;
@@ -130,7 +130,7 @@ static ret_t font_stb_get_glyph(font_t* f, wchar_t c, font_size_t font_size, gly
   g->w = w;
   g->h = h;
   g->format = GLYPH_FMT_ALPHA;
-  g->advance = advance * scale;
+  g->advance = tk_roundi(advance * scale);
   g->data = NULL;
 
   if (bitmap != NULL) {
