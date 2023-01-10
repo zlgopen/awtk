@@ -25,7 +25,7 @@ if is32bit:
     if MACH == 'i686' or MACH == 'i386' or MACH == 'x86':
         TARGET_ARCH = 'x86'
     else:
-        TARGET_ARCH = 'arm'
+        TARGET_ARCH = ''
 else:
     TARGET_ARCH = ''
 
