@@ -118,8 +118,8 @@ static ret_t canvas_on_font_manager_events(void* ctx, event_t* e) {
 
   if (e->type == EVT_ASSET_MANAGER_UNLOAD_ASSET) {
     if (c->font) {
-      const char* name = (const char*)e->target;
-      if (tk_str_eq(c->font->name, name)) {
+      font_t* font = (font_t*)e->target;
+      if (c->font == font) {
         canvas_reset_font(c);
       }
     }
