@@ -22,6 +22,7 @@
 #include "tkc/fs.h"
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
+#include "tkc/wstr.h"
 #include "tkc/path.h"
 #include "tkc/utils.h"
 #include "tkc/object.h"
@@ -793,7 +794,11 @@ int32_t tk_wstricmp(const wchar_t* a, const wchar_t* b) {
     return 1;
   }
 
+#ifdef MINGW
+  return wcs_case_cmp(a, b);
+#else
   return wcscasecmp(a, b);
+#endif
 }
 
 char* tk_str_copy(char* dst, const char* src) {
