@@ -120,7 +120,7 @@ static ret_t canvas_on_font_manager_events(void* ctx, event_t* e) {
     if (c->font) {
       const char* name = (const char*)e->target;
       if (tk_str_eq(c->font->name, name)) {
-        c->font = NULL;
+        canvas_reset_font(c);
       }
     }
   }
