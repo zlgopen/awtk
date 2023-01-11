@@ -232,7 +232,7 @@ static ret_t image_manager_get_bitmap_impl(image_manager_t* imm, const char* nam
     image->h = header->h;
     image->flags = header->flags;
     image->format = header->format;
-    image->name = asset_info_get_name(res);
+    image->name = asset_info_get_name((asset_info_t*)res);
     image->image_manager = imm;
     image->orientation =
         (header->flags & BITMAP_FLAG_LCD_ORIENTATION) ? header->orientation : LCD_ORIENTATION_0;

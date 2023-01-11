@@ -76,7 +76,7 @@ static ret_t window_base_load_theme_obj(widget_t* widget) {
   }
 
   if (window_base->res_theme != NULL) {
-    const asset_info_t* res = window_base->res_theme;
+    asset_info_t* res = (asset_info_t*)window_base->res_theme;
     window_base->theme_obj = theme_load_from_data(asset_info_get_name(res), res->data, res->size);
   }
 
