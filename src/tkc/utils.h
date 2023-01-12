@@ -557,6 +557,7 @@ ret_t xml_file_expand_read(const char* filename, str_t* s);
  *
  * 字符串拷贝函数。
  * > XXX: 要求dst为NULL或内存块的首地址，本函数调用之后，dst可能无效，请保留返回的地址
+ * 该函数会自动申请内存，调用后需要使用TKMEM_FREE释放。
  *
  * @param {const char*} dst 目标字符串。
  * @param {const char*} src 源字符串。
