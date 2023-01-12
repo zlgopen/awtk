@@ -54,6 +54,7 @@ static ret_t main_loop_sdl2_dispatch_text_editing(main_loop_simple_t* loop, SDL_
 static ret_t main_loop_sdl2_set_key_event_mod(key_event_t* event, uint16_t mod) {
   event->capslock = (mod & KMOD_CAPS) != 0;
   event->numlock = (mod & KMOD_NUM) != 0;
+  return RET_OK;
 }
 
 static ret_t main_loop_sdl2_dispatch_key_event(main_loop_simple_t* loop, SDL_Event* sdl_event) {
