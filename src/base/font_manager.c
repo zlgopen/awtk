@@ -79,7 +79,7 @@ static ret_t font_manager_on_asset_events(void* ctx, event_t* e) {
     if (e->type == EVT_ASSET_MANAGER_CLEAR_CACHE) {
       font_manager_unload_all(fm);
     } else if (e->type == EVT_ASSET_MANAGER_UNLOAD_ASSET) {
-      font_manager_unload_font(fm, info->name, 0);
+      font_manager_unload_font(fm, asset_info_get_name(info), 0);
     }
   }
 
@@ -177,7 +177,6 @@ font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t 
   font_t* font = NULL;
   const char* default_font = system_info()->default_font;
   name = system_info_fix_font_name(name);
-  name = asset_info_get_formatted_name(name);
   return_value_if_fail(fm != NULL, NULL);
 
   font = font_manager_lookup(fm, name, size);
@@ -194,10 +193,9 @@ font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t 
 }
 
 ret_t font_manager_unload_font(font_manager_t* fm, const char* name, font_size_t size) {
-  event_t e;
-  int32_t index = 0;;
   ret_t ret = RET_OK;
   font_cmp_info_t info = {name, size};
+  event_t e;
 
 #if WITH_BITMAP_FONT
   char font_name[MAX_PATH];
@@ -213,17 +211,12 @@ ret_t font_manager_unload_font(font_manager_t* fm, const char* name, font_size_t
   ret = darray_remove(&(fm->fonts), &info_bitmap);
 #endif
 
-  index = darray_find_index(&(fm->fonts), &info);
-  if (index < 0) {
-    ret = RET_NOT_FOUND;
-  } else {
-    font_t* font = (font_t*)darray_get(&(fm->fonts), index);
-    e = event_init(EVT_ASSET_MANAGER_UNLOAD_ASSET, font);
-    emitter_dispatch(EMITTER(fm), &e);
-    ret = darray_remove_index(&(fm->fonts), index);
-    if (ret == RET_OK) {
-      assets_manager_clear_cache_ex(assets_manager(), ASSET_TYPE_FONT, name);
-    }
+  e = event_init(EVT_ASSET_MANAGER_UNLOAD_ASSET, (void*)name);
+  emitter_dispatch(EMITTER(fm), &e);
+
+  ret = darray_remove(&(fm->fonts), &info);
+  if (ret == RET_OK) {
+    assets_manager_clear_cache_ex(assets_manager(), ASSET_TYPE_FONT, name);
   }
 
   return ret;
@@ -238,7 +231,7 @@ ret_t font_manager_unload_all(font_manager_t* fm) {
 
     for (i = 0; i < fm->fonts.size; i++) {
       font_t* iter = (font_t*)(elms[i]);
-      event_t e = event_init(EVT_ASSET_MANAGER_UNLOAD_ASSET, iter);
+      event_t e = event_init(EVT_ASSET_MANAGER_UNLOAD_ASSET, iter->name);
       emitter_dispatch(EMITTER(fm), &e);
     }
   }

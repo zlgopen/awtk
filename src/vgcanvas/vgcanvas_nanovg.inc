@@ -33,7 +33,7 @@ static ret_t vgcanvas_nanovg_on_asset_events(void* ctx, event_t* e) {
     if (e->type == EVT_ASSET_MANAGER_CLEAR_CACHE) {
       vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager(), ctx, NULL);
     } else if (e->type == EVT_ASSET_MANAGER_UNLOAD_ASSET) {
-      vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager(), ctx, info->name);
+      vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager(), ctx, asset_info_get_name(info));
     }
   }
 

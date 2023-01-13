@@ -216,10 +216,10 @@ ret_t output_res_c_source_ex(const char* filename, const char* theme, uint16_t t
   memset(res, 0x00, total_size);
   res->size = size;
   res->type = type;
-  res->is_in_rom = TRUE;
   res->refcount = 0;
   res->subtype = subtype;
   memcpy(res->data, buff, size);
+  asset_info_set_is_in_rom(res, TRUE);
   if (name != NULL) {
     array_name = name;
     asset_name = asset_info_get_formatted_name(name);
@@ -233,7 +233,7 @@ ret_t output_res_c_source_ex(const char* filename, const char* theme, uint16_t t
     array_name = (const char*)full_name;
     asset_name = asset_info_get_formatted_name(full_name);
   }
-  tk_strncpy(res->name, asset_name, sizeof(res->name) - 1);
+  tk_strncpy(res->name.small_name, asset_name, sizeof(res->name.small_name) - 1);
 
   output_c_source(filename, theme, kv->name, array_name, (uint8_t*)res, total_size);
   free(res);

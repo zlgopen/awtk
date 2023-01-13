@@ -36,7 +36,7 @@ static int asset_cache_cmp_type(const void* a, const void* b) {
   const asset_info_t* aa = (const asset_info_t*)a;
   const asset_info_t* bb = (const asset_info_t*)b;
 
-  if (aa->is_in_rom) {
+  if (asset_info_is_in_rom(aa)) {
     return -1;
   }
 
@@ -47,13 +47,12 @@ static int asset_cache_cmp_type_and_name(const void* a, const void* b) {
   const asset_info_t* aa = (const asset_info_t*)a;
   const asset_info_t* bb = (const asset_info_t*)b;
 
-  if (aa->is_in_rom) {
+  if (asset_info_is_in_rom(aa)) {
     return -1;
   }
 
   if (aa->type == bb->type) {
-    return tk_str_cmp(asset_info_get_name((asset_info_t*)aa),
-                      asset_info_get_name((asset_info_t*)bb));
+    return tk_str_cmp(asset_info_get_name(aa), asset_info_get_name(bb));
   } else {
     return aa->type - bb->type;
   }
@@ -85,8 +84,8 @@ static asset_info_t* assets_manager_load_impl(assets_manager_t* am, asset_type_t
   info->type = type;
   info->subtype = subtype;
   info->refcount = 1;
-  info->is_in_rom = FALSE;
-  strncpy(info->name, name, TK_NAME_LEN);
+  asset_info_set_is_in_rom(info, FALSE);
+  strncpy(info->name.small_name, name, TK_NAME_LEN);
 
   return info;
 }
@@ -652,7 +651,7 @@ ret_t assets_manager_add(assets_manager_t* am, const void* info) {
   const asset_info_t* r = (const asset_info_t*)info;
   return_value_if_fail(am != NULL && info != NULL, RET_BAD_PARAMS);
 #if LOAD_ASSET_WITH_MMAP
-  if (r->is_in_rom) {
+  if (asset_info_is_in_rom(r)) {
     // 不支持添加非 mmap 资源的外部资源。
     assert(!" mmap model not supported assets this is in rom ");
   }
@@ -683,7 +682,7 @@ const asset_info_t* assets_manager_find_in_cache(assets_manager_t* am, asset_typ
 
   for (i = 0; i < am->assets.size; i++) {
     iter = all[i];
-    if (type == iter->type && strcmp(name, asset_info_get_name((asset_info_t*)iter)) == 0 &&
+    if (type == iter->type && strcmp(name, asset_info_get_name(iter)) == 0 &&
         (subtype == 0 || (subtype != 0 && subtype == iter->subtype))) {
       return iter;
     }
@@ -784,14 +783,7 @@ ret_t assets_manager_clear_cache_ex(assets_manager_t* am, asset_type_t type, con
     return RET_NOT_FOUND;
   }
 
-  asset_name = asset_info_get_formatted_name(name);
-  info.type = type;
-  strncpy(info.name, asset_name, TK_NAME_LEN);
-  if (asset_name != name) {
-    info.full_name.str = name;
-  } else {
-    info.full_name.str = NULL;
-  }
+  asset_info_set_name(&info, name, FALSE);
 
   size = am->assets.size;
   ret = darray_remove_all(&(am->assets), asset_cache_cmp_type_and_name, &info);

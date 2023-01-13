@@ -107,11 +107,11 @@
 static ret_t tk_add_font(const asset_info_t* res) {
   if (res->subtype == ASSET_TYPE_FONT_BMP) {
 #ifdef WITH_BITMAP_FONT
-    font_manager_add_font(font_manager(), font_bitmap_create(res->name, res->data, res->size));
+    font_manager_add_font(font_manager(), font_bitmap_create(asset_info_get_name(res), res->data, res->size));
 #endif
   } else if (res->subtype == ASSET_TYPE_FONT_TTF) {
 #ifdef WITH_TRUETYPE_FONT
-    font_manager_add_font(font_manager(), font_truetype_create(res->name, res->data, res->size));
+    font_manager_add_font(font_manager(), font_truetype_create(asset_info_get_name(res), res->data, res->size));
 #endif /*WITH_TRUETYPE_FONT*/
   } else {
     log_debug("not support font type:%d\n", res->subtype);
@@ -132,8 +132,9 @@ ret_t tk_init_assets(void) {
         break;
       case ASSET_TYPE_STYLE: {
         theme_t* t = theme();
-        if ((t == NULL || t->data == NULL) && tk_str_eq(iter->name, TK_DEFAULT_STYLE)) {
-          theme_set(theme_load_from_data(iter->name, iter->data, iter->size));
+        const char* iter_name = asset_info_get_name(iter);
+        if ((t == NULL || t->data == NULL) && tk_str_eq(iter_name, TK_DEFAULT_STYLE)) {
+          theme_set(theme_load_from_data(iter_name, iter->data, iter->size));
         }
         break;
       }

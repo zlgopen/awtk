@@ -690,7 +690,7 @@ ret_t widget_set_theme(widget_t* widget, const char* name) {
 
     info = assets_manager_ref(am, ASSET_TYPE_STYLE, "default");
     if (info != NULL) {
-      theme_set(theme_load_from_data(info->name, info->data, info->size));
+      theme_set(theme_load_from_data(asset_info_get_name(info), info->data, info->size));
       assets_manager_unref(assets_manager(), info);
     }
 
