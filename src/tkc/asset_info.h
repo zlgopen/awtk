@@ -323,11 +323,7 @@ typedef struct _asset_info_t {
    * is\_in\_rom == FALSE时才有效。
    */
   uint32_t refcount;
-  /**
-   * @property {char*} name
-   * @annotation ["readable","scriptable"]
-   * 名称。
-   */
+  /* internal */
   union {
     char small_name[TK_NAME_LEN + 1];
     char* full_name;
