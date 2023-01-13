@@ -2,7 +2,8 @@
 
 2023/01/13
   * 修改asset\_info\_t兼容以前的资源以及修复不同平台下asset\_info\_t大小不 同的问题(感谢智明提供补丁)
-  * 修改asset_info的name属性的注释(感谢智明提供补丁)
+  * 修改asset\_info的name属性的注释(感谢智明提供补丁)
+  * 将pages控件的should\_save\_target属性名修改为auto\_focused(感谢泽武提供补丁)
 
 2023/01/12
   * 修复编译警告(感谢陈聪提供补丁)

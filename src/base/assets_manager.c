@@ -775,7 +775,6 @@ ret_t assets_manager_clear_cache_ex(assets_manager_t* am, asset_type_t type, con
   int32_t size = 0;
   asset_info_t info;
   ret_t ret = RET_OK;
-  const char* asset_name = NULL;
   return_value_if_fail(am != NULL && name != NULL, RET_BAD_PARAMS);
 
   memset(&info, 0x00, sizeof(info));

@@ -66,11 +66,11 @@ typedef struct _pages_t {
   uint32_t active;
 
   /**
-   * @property {bool_t} should_save_target
+   * @property {bool_t} auto_focused
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 选择切换界面时是否保存焦点。（默认为TRUE）
+   * 选择切换界面时是否自动聚焦上一次保存的焦点。（默认为TRUE）
    */
-  bool_t should_save_target;
+  bool_t auto_focused;
 
   /**
    * @property {uint32_t} value
@@ -130,15 +130,15 @@ widget_t* pages_cast(widget_t* widget);
 ret_t pages_set_active(widget_t* widget, uint32_t index);
 
 /**
- * @method pages_set_should_save_target
- * 设置是否保存焦点。
+ * @method pages_set_auto_focused
+ * 设置切换界面时是否自动聚焦。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {bool_t} should_save_target 是否保存焦点。
+ * @param {bool_t} auto_focused 切换界面时是否自动聚焦。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t pages_set_should_save_target(widget_t* widget, bool_t should_save_target);
+ret_t pages_set_auto_focused(widget_t* widget, bool_t auto_focused);
 
 /**
  * @method pages_set_active_by_name
@@ -152,7 +152,7 @@ ret_t pages_set_should_save_target(widget_t* widget, bool_t should_save_target);
 ret_t pages_set_active_by_name(widget_t* widget, const char* name);
 
 #define PAGES(widget) ((pages_t*)(pages_cast(WIDGET(widget))))
-#define WIDGET_PROP_SHOULD_SAVE_TARGET "should_save_target"
+#define WIDGET_PROP_AUTO_FOCUSED "auto_focused"
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(pages);

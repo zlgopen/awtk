@@ -77,7 +77,7 @@ static ret_t pages_restore_target(widget_t* widget) {
     if (target == NULL || target->parent == NULL || target == widget) {
       target = active_view;
     }
-    if (pages->should_save_target == FALSE) {
+    if (pages->auto_focused == FALSE) {
       target = active_view;
     }
     if (pages_target_is_page(target)) {
@@ -142,11 +142,11 @@ ret_t pages_set_active_by_name(widget_t* widget, const char* name) {
   return RET_NOT_FOUND;
 }
 
-ret_t pages_set_should_save_target(widget_t* widget, bool_t should_save_target) {
+ret_t pages_set_auto_focused(widget_t* widget, bool_t auto_focused) {
   pages_t* pages = PAGES(widget);
   return_value_if_fail(pages != NULL, RET_BAD_PARAMS);
 
-  pages->should_save_target = should_save_target;
+  pages->auto_focused = auto_focused;
 
   return RET_OK;
 }
@@ -169,8 +169,8 @@ static ret_t pages_get_prop(widget_t* widget, const char* name, value_t* v) {
   if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_ACTIVE)) {
     value_set_uint32(v, pages->active);
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_SHOULD_SAVE_TARGET)) {
-    value_set_bool(v, pages->should_save_target);
+  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_FOCUSED)) {
+    value_set_bool(v, pages->auto_focused);
     return RET_OK;
   }
 
@@ -182,8 +182,8 @@ static ret_t pages_set_prop(widget_t* widget, const char* name, const value_t* v
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_ACTIVE)) {
     return pages_set_active(widget, value_int(v));
-  } else if (tk_str_eq(name, WIDGET_PROP_SHOULD_SAVE_TARGET)) {
-    return pages_set_should_save_target(widget,value_bool(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_FOCUSED)) {
+    return pages_set_auto_focused(widget,value_bool(v));
   }
 
   return RET_NOT_FOUND;
@@ -303,7 +303,7 @@ widget_t* pages_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   str_init(&(pages->str_target), DEFAULT_FOCUSED_CHILD_SAVE_TARGET_TAG_LENGT);
   pages->init_idle_id = idle_add(pages_on_idle_init_save_target, widget);
   pages->active = 0xffffffff;
-  pages->should_save_target = TRUE;
+  pages->auto_focused = TRUE;
 
   return widget;
 }
