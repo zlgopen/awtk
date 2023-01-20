@@ -288,6 +288,7 @@ typedef enum _ret_t {
 #endif /*snprintf*/
 
 #define strcasecmp stricmp
+#define strncasecmp strnicmp
 #define wcscasecmp wcsicmp
 
 #endif /*TK_PATH_SEP*/
