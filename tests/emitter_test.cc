@@ -228,6 +228,41 @@ TEST(Emitter, remove_in_func2) {
   emitter_destroy(emitter);
 }
 
+static ret_t on_emitter_dispatch(void* ctx, event_t* e) {
+  event_t e1;
+  uint32_t type = *((uint32_t*)ctx);
+  emitter_t* emitter = (emitter_t*)e->target;
+
+  e1 = event_init(type, emitter);
+  emitter_dispatch(emitter, &e1);
+
+  return RET_REMOVE;
+}
+
+TEST(Emitter, remove_in_func3) {
+  event_t e;
+  uint32_t n1 = 0;
+  uint32_t n2 = 0;
+  uint32_t id1 = 0;
+  uint32_t id2 = 0;
+  uint32_t type1 = 12;
+  uint32_t type2 = 13;
+  emitter_t* emitter = emitter_create();
+
+  e = event_init(type1, emitter);
+
+  emitter_on(emitter, type1, on_event, &n2);
+  id1 = emitter_on(emitter, type1, on_emitter_dispatch, &type2);
+  id2 = emitter_on(emitter, type2, on_remove_id, &id1);
+  emitter_on(emitter, type2, on_event, &n1);
+  ASSERT_EQ(emitter_dispatch(emitter, &e), RET_OK);
+  ASSERT_EQ(emitter_size(emitter), 2u);
+  ASSERT_EQ(n1, 1u);
+  ASSERT_EQ(n2, 1u);
+
+  emitter_destroy(emitter);
+}
+
 TEST(Emitter, remove_item) {
   uint32_t i = 0;
   uint32_t n = 5000;

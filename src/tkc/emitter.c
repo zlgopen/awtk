@@ -71,7 +71,7 @@ static ret_t emitter_item_destroy(emitter_item_t* iter) {
 static ret_t emitter_remove(emitter_t* emitter, emitter_item_t* prev, emitter_item_t* iter) {
   return_value_if_fail(emitter != NULL && iter != NULL, RET_BAD_PARAMS);
 
-  if (emitter->curr_iter == iter) {
+  if (iter->working) {
     iter->pending_remove = TRUE;
     return RET_OK;
   }
@@ -121,16 +121,18 @@ ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
   if (e->target == NULL) {
     e->target = emitter;
   }
-  emitter_curr_iter = emitter->curr_iter;
   if (emitter->disable == 0 && emitter->items) {
     emitter_item_t* iter = emitter->items;
 
     while (iter != NULL) {
-      emitter->curr_iter = iter;
       if (iter->type == e->type) {
+        bool_t is_working = iter->working;
+        iter->working = TRUE;
         ret = iter->handler(iter->ctx, e);
+        if (!is_working) {
+          iter->working = FALSE;
+        }
         if (ret == RET_STOP) {
-          emitter->curr_iter = emitter_curr_iter;
           if (iter->pending_remove) {
             emitter_remove_item(emitter, iter);
           }
@@ -138,7 +140,6 @@ ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
         } else if (ret == RET_REMOVE || iter->pending_remove) {
           emitter_item_t* next = iter->next;
 
-          emitter->curr_iter = NULL;
           emitter_remove_item(emitter, iter);
           iter = next;
 
@@ -149,7 +150,6 @@ ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
       iter = iter->next;
     }
   }
-  emitter->curr_iter = emitter_curr_iter;
 
   return RET_OK;
 }

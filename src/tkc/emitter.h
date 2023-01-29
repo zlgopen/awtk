@@ -36,6 +36,7 @@ struct _emitter_item_t {
   event_func_t handler;
 
   uint32_t tag;
+  bool_t working;
   bool_t pending_remove;
   tk_destroy_t on_destroy;
   void* on_destroy_ctx;
@@ -68,13 +69,6 @@ typedef struct _emitter_t {
    * 禁用标志。禁用时dispatch无效。
    */
   int32_t disable;
-
-  /**
-   * @property {emitter_item_t*} curr_iter
-   * @annotation ["private"]
-   * 当前正在dispatch的项。
-   */
-  emitter_item_t* curr_iter;
 } emitter_t;
 
 /**
