@@ -680,7 +680,7 @@ static ret_t text_selector_on_pointer_up(text_selector_t* text_selector, pointer
     int32_t mid_index = text_selector->selected_index;
     point_t p = {e->x, e->y};
     widget_to_local(widget, &p);
-    index = p.y / item_height;
+    index = (p.y + yoffset_end) / item_height;
     if (index == mid_index) {
       return RET_OK;
     } else {
