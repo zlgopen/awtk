@@ -125,6 +125,20 @@ typedef struct _slide_menu_t {
    */
   int32_t spacer;
 
+  /**
+   * @property {char*} menu_w
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 菜单项的宽度(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)(空字符串则使用控件高度)。
+   */
+  char* menu_w;
+
+  /**
+   * @property {bool_t} clip
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否动态裁剪菜单项(默认裁剪，不裁剪时，如果显示偶数项，左边会多一项)。
+   */
+  bool_t clip;
+
   /*private*/
   int32_t xdown;
   int32_t xoffset;
@@ -213,6 +227,28 @@ ret_t slide_menu_set_min_scale(widget_t* widget, float_t min_scale);
 ret_t slide_menu_set_spacer(widget_t* widget, int32_t spacer);
 
 /**
+ * @method slide_menu_set_menu_w
+ * 设置菜单项的宽度。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget slide_menu对象。
+ * @param {const char*} menu_w 菜单项的宽度。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)(空字符串则使用控件高度)
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t slide_menu_set_menu_w(widget_t* widget, const char* menu_w);
+
+/**
+ * @method slide_menu_set_clip
+ * 设置是否动态裁剪菜单项。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget slide_menu对象。
+ * @param {bool_t} clip 是否动态裁剪菜单项。(关闭后，如果显示偶数项，左边会多一项)
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t slide_menu_set_clip(widget_t* widget, bool_t clip);
+
+/**
  * @method slide_menu_scroll_to_prev
  * 切换至上一项。
  * @annotation ["scriptable"]
@@ -234,6 +270,8 @@ ret_t slide_menu_scroll_to_next(widget_t* widget);
 
 #define SLIDE_MENU_PROP_MIN_SCALE "min_scale"
 #define SLIDE_MENU_PROP_SPACER "spacer"
+#define SLIDE_MENU_PROP_MENU_W "menu_w"
+#define SLIDE_MENU_PROP_CLIP "clip"
 
 #define WIDGET_TYPE_SLIDE_MENU "slide_menu"
 #define SLIDE_MENU(widget) ((slide_menu_t*)(slide_menu_cast(WIDGET(widget))))

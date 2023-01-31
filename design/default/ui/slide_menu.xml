@@ -1,4 +1,4 @@
-<window theme="slide_menu" children_layout="default(c=1,h=60,s=10,m=10)" name="slide_menu">
+<window theme="slide_menu" children_layout="default(c=1,h=50,s=10,m=10)" name="slide_menu">
   <slide_menu style="mask" align_v="top">
     <button style="slide_button" with_focus_state="true" text="0"/>
     <button style="slide_button" with_focus_state="true" text="1"/>
@@ -51,5 +51,17 @@
     <button style="slide_button" text="8"/>
     <button style="slide_button" text="9"/>
   </slide_menu>
-  <button name="close" floating="true" x="center" y="bottom:50" w="50%" h="30" text="Close"/>
+  <slide_menu align_v="middle" menu_w="60%" clip="false">
+    <button style="slide_button" text="a"/>
+    <button style="slide_button" text="b"/>
+    <button style="slide_button" text="c"/>
+    <button style="slide_button" text="d"/>
+    <button style="slide_button" text="e"/>
+    <button style="slide_button" text="f"/>
+    <button style="slide_button" text="g"/>
+    <button style="slide_button" text="h"/>
+    <button style="slide_button" text="i"/>
+    <button style="slide_button" text="j"/>
+  </slide_menu>
+  <button name="close" floating="true" x="center" y="bottom:30" w="50%" h="30" text="Close"/>
 </window>
