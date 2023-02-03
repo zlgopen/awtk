@@ -68,8 +68,6 @@ tk_object_t* conf_json_load(const char* url, bool_t create_if_not_exist);
  */
 ret_t conf_json_save_as(tk_object_t* obj, const char* url);
 
-/*public for test*/
-
 /**
  * @method conf_doc_load_json 
  * 

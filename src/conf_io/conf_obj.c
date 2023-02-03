@@ -170,7 +170,9 @@ static ret_t conf_obj_load(tk_object_t* obj) {
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   reader = data_reader_factory_create_reader(data_reader_factory(), o->url);
-  return_value_if_fail(reader != NULL, RET_FAIL);
+  if (reader == NULL) {
+    return RET_FAIL;
+  }
 
   o->doc = o->load(reader);
   data_reader_destroy(reader);
