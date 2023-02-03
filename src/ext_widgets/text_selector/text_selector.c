@@ -676,16 +676,16 @@ static ret_t text_selector_on_pointer_up(text_selector_t* text_selector, pointer
 
   if (e->y == text_selector->ydown) {
     /*click*/
-    int32_t index = 0;
-    int32_t mid_index = text_selector->selected_index;
+    int32_t mid_index = 0;
+    int32_t pointer_index = 0;
     point_t p = {e->x, e->y};
+    mid_index = text_selector->visible_nr / 2;
     widget_to_local(widget, &p);
-    index = (p.y + yoffset_end) / item_height;
-    if (index == mid_index) {
+    pointer_index = p.y / item_height;
+    if (pointer_index == mid_index) {
       return RET_OK;
     } else {
-      yoffset_end =
-          text_selector->yoffset + item_height * (index - mid_index) * text_selector->yspeed_scale;
+      yoffset_end = text_selector->yoffset + item_height * (pointer_index - mid_index);
     }
   }
 
