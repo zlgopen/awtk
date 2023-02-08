@@ -472,6 +472,7 @@ ret_t canvas_offline_flush_bitmap(canvas_t* canvas) {
 ret_t canvas_offline_destroy(canvas_t* canvas) {
   bitmap_t* bitmap = NULL;
 #ifdef WITH_GPU
+  vgcanvas_t* vg = NULL;
   canvas_offline_gpu_t* canvas_offline_gpu = NULL;
 #else
   system_info_t* info = system_info();
@@ -482,6 +483,14 @@ ret_t canvas_offline_destroy(canvas_t* canvas) {
 #ifdef WITH_CANVAS_OFFLINE_CUSTION
   if (canvas_offline_custom_destroy(canvas) == RET_OK) {
     return RET_OK;
+  }
+#endif
+
+#ifdef WITH_GPU
+  vg = lcd_get_vgcanvas(canvas->lcd);
+  if (vg != NULL) {
+    /* 在 OpenGL 模式下，防止用户在调用完 draw_image 后，马上释放离线画布导致离线画布的位图数据被释放掉，导致绘图异常 */
+    vgcanvas_flush(vg);
   }
 #endif
 
