@@ -421,10 +421,11 @@ static ret_t hscroll_label_on_timer(const timer_info_t* info) {
 ret_t hscroll_label_start(widget_t* widget) {
   hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
   return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(hscroll_label->timer_id == TK_INVALID_ID, RET_BAD_PARAMS);
 
-  hscroll_label->elapsed = 0;
-  hscroll_label->timer_id = widget_add_timer(widget, hscroll_label_on_timer, 16);
+  if (hscroll_label->timer_id == TK_INVALID_ID) {
+    hscroll_label->elapsed = 0;
+    hscroll_label->timer_id = widget_add_timer(widget, hscroll_label_on_timer, 16);
+  }
 
   return RET_OK;
 }
