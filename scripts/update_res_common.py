@@ -6,6 +6,7 @@ import copy
 import glob
 import shutil
 import platform
+import subprocess
 
 ###########################
 DPI = 'x1'
@@ -264,7 +265,7 @@ def remove_dir(dir):
             for f in files:
                 real_path = join_path(root, f)
                 os.chmod(real_path, stat.S_IRWXU)
-                
+
         shutil.rmtree(dir)
     elif os.path.isfile(dir):
         os.chmod(dir, stat.S_IRWXU)
@@ -346,7 +347,20 @@ def exec_cmd(cmd):
         print(cmd)
         # 转为文件系统的编码格式，避免中文乱码
         cmd = to_file_system_coding(cmd)
-        os.system(cmd)
+        # 启动子进程
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+        exe_name = cmd.split(' ', 1)[0]
+        out_str = p.communicate()[0]
+        if out_str != None:
+            out_str = out_str.decode('UTF-8')
+        # 将输出信息重新打印到控制台
+        print(out_str)
+        sys.stdout.flush()
+        # 如果程序出现异常或某个资源打包失败则直接退出
+        if p.returncode != 0:
+            sys.exit(exe_name + ' exit code:' + str(p.returncode))
+        if 'gen fail' in out_str:
+            sys.exit(1)
 
 
 def themegen(raw, inc, theme):
@@ -719,7 +733,7 @@ def gen_gpinyin():
             ' ' + join_path('3rd', 'gpinyin/src/gpinyin.inc'))
     exec_cmd(to_exe('resgen') + ' ' + join_path('tools', 'word_gen/words.bin') +
             ' ' + join_path('src', 'input_methods/suggest_words.inc'))
-    exec_cmd(to_exe('resgen') + ' ' + join_path('tools','word_gen/words.bin') + 
+    exec_cmd(to_exe('resgen') + ' ' + join_path('tools','word_gen/words.bin') +
             ' ' + join_path('tests', 'suggest_test.inc'))
     emit_generate_res_after('gpinyin')
 
