@@ -87,7 +87,13 @@ static ret_t input_engine_pinyin_search(input_engine_t* engine, const char* keys
   uint32_t keys_size = strlen(keys);
   uint32_t nr = 0;
 
-  return_value_if_fail(engine != NULL && input_engine_ensure_data(engine) == RET_OK, RET_FAIL);
+  return_value_if_fail(engine != NULL, RET_FAIL);
+
+  if (RET_OK != input_engine_ensure_data(engine)) {
+    assert(!"Please add \"gpinyin.dat\" to your program!");
+    return RET_FAIL;
+  }
+
   nr = im_search(keys, tk_min(14, keys_size));
   input_engine_reset_candidates(engine);
 
