@@ -268,8 +268,7 @@ typedef struct _preload_res_t {
 
 /**
  * @enum asset_info_flag_t
- * @annotation ["scriptable"]
- * @prefix BITMAP_FLAG_
+ * @prefix ASSET_INFO_FLAG_
  * 资源标志常量定义。
  */
 typedef enum _asset_info_flag_t {

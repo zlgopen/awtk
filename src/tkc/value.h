@@ -575,7 +575,6 @@ value_t* value_set_wstr(value_t* v, const wchar_t* value);
  * 设置类型为宽字符串的值(并拷贝宽字符串)。
  *
  * @alias value_dup_wstr
- * @annotation ["scriptable"]
  * @param {value_t*} v     value对象。
  * @param {const wchar_t*}   value 待设置的值。
  *
