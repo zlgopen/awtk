@@ -451,7 +451,7 @@ struct _fscript_func_call_t {
    */
   uint16_t row;
   /**
-   * @property {uint16_t} row
+   * @property {uint16_t} col
    * @annotation ["readable"]
    * 对应源代码列号。
    */
