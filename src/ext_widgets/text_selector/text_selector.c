@@ -681,7 +681,7 @@ static ret_t text_selector_on_pointer_up(text_selector_t* text_selector, pointer
     point_t p = {e->x, e->y};
     mid_index = text_selector->visible_nr / 2;
     widget_to_local(widget, &p);
-    pointer_index = p.y / item_height;
+    pointer_index = (p.y - text_selector->yoffset) / item_height;
     if (pointer_index == mid_index) {
       return RET_OK;
     } else {

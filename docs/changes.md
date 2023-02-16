@@ -4,7 +4,8 @@
   * 回退widget\_to\_loacl的修改(感谢智明提供补丁)
   * [关于自定义控件的offset的使用注意事项](how_to_use_offset_in_custom_widget.md)(感谢智明提供补丁)
   * 修复API注释错误(感谢俊圣提供补丁)
-  * dialog_toast修改为非模态窗口，更新demouiold中对应的示例(感谢泽武提供补丁)
+  * dialog\_toast修改为非模态窗口，更新demouiold中对应的示例(感谢泽武提供补丁)
+  * 修复text\_selector点击后无法跳转到对应选项的问题(感谢泽武提供补丁)
 
 2023/02/14
   * 修复fscript注释错误(感谢俊圣提供补丁)
