@@ -201,7 +201,6 @@ ret_t widget_set_prop_default(widget_t* widget, const char* name, const value_t*
 }
 
 widget_t* widget_find_target_default(widget_t* widget, xy_t x, xy_t y) {
-  xy_t x_offset = 0, y_offset = 0;
   xy_t xx = 0, yy = 0;
   point_t p = {x, y};
   return_value_if_fail(widget != NULL, NULL);
@@ -210,15 +209,14 @@ widget_t* widget_find_target_default(widget_t* widget, xy_t x, xy_t y) {
     return widget->grab_widget;
   }
 
-  widget_get_offset(widget, &x_offset, &y_offset);
   widget_to_local(widget, &p);
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
   if (!iter->sensitive || !iter->enable) {
     continue;
   }
 
-  xx = p.x + x_offset - iter->x;
-  yy = p.y + y_offset - iter->y;
+  xx = p.x - iter->x;
+  yy = p.y - iter->y;
   if (!widget_is_point_in(iter, xx, yy, TRUE)) {
     continue;
   }
