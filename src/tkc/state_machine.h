@@ -95,7 +95,7 @@ ret_t tk_state_machine_handle(tk_state_machine_t* fsm, tk_sm_event_t* event);
  *
  * @param {tk_state_machine_t*} fsm 状态机地址
  *
- * @return {tk_sm_state_t*} 返回 tk_sm_state_t 对象
+ * @return {const tk_sm_state_t*} 返回 tk_sm_state_t 对象
  */
 const tk_sm_state_t* tk_state_machine_previous_get(tk_state_machine_t* fsm);
 /**
@@ -104,7 +104,7 @@ const tk_sm_state_t* tk_state_machine_previous_get(tk_state_machine_t* fsm);
  *
  * @param {tk_state_machine_t*} fsm 状态机地址
  *
- * @return {tk_sm_state_t*} 返回 tk_sm_state_t 对象
+ * @return {const tk_sm_state_t*} 返回 tk_sm_state_t 对象
  */
 const tk_sm_state_t* tk_state_machine_current_get(tk_state_machine_t* fsm);
 /**

@@ -42,7 +42,7 @@ BEGIN_C_DECLS
  *
  * @param {event_source_manager_t*} manager event_source_manager对象。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {event_source_manager_t*} 返回事件源管理器对象。
  *
  */
 event_source_manager_t* event_source_manager_default_create(void);

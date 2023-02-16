@@ -213,7 +213,7 @@ bitmap_t* canvas_offline_custom_get_bitmap(canvas_t* canvas);
  *
  * @param {canvas_t*} canvas 离线 canvas 对象。
  *
- * @return {bitmap_t*} 返回 bitmap_t 对象表示成功，返回 NULL 表示失败。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t canvas_offline_custom_bitmap_move_to_new_bitmap(canvas_t* canvas, bitmap_t* bitmap);
 

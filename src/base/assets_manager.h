@@ -221,7 +221,7 @@ ret_t assets_manager_add_data(assets_manager_t* am, const char* name, uint16_t t
  * @param {asset_type_t} type 资源的类型。
  * @param {char*} name 资源的名称。
  *
- * @return {asset_info_t*} 返回资源。
+ * @return {const asset_info_t*} 返回资源。
  */
 const asset_info_t* assets_manager_ref(assets_manager_t* am, asset_type_t type, const char* name);
 
@@ -234,7 +234,7 @@ const asset_info_t* assets_manager_ref(assets_manager_t* am, asset_type_t type, 
  * @param {uint16_t} subtype 资源的子类型。
  * @param {char*} name 资源的名称。
  *
- * @return {asset_info_t*} 返回资源。
+ * @return {const asset_info_t*} 返回资源。
  */
 const asset_info_t* assets_manager_ref_ex(assets_manager_t* am, asset_type_t type, uint16_t subtype,
                                           const char* name);
@@ -258,7 +258,7 @@ ret_t assets_manager_unref(assets_manager_t* am, const asset_info_t* info);
  * @param {uint16_t} subtype 资源的子类型。
  * @param {char*} name 资源的名称。
  *
- * @return {asset_info_t*} 返回资源。
+ * @return {const asset_info_t*} 返回资源。
  */
 const asset_info_t* assets_manager_find_in_cache(assets_manager_t* am, asset_type_t type,
                                                  uint16_t subtype, const char* name);

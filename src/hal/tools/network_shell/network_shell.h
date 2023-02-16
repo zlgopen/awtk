@@ -34,7 +34,7 @@ BEGIN_C_DECLS
  */
 
 /**
- * @method hal_shell_run
+ * @method network_shell_run
  * @export none
  * 运行shell。
  *

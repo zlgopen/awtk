@@ -214,7 +214,7 @@ ret_t emitter_set_on_destroy(emitter_t* emitter, uint32_t id, tk_destroy_t on_de
  * @param {emitter_t*} emitter emitter对象。
  * @param {uint32_t} id emitter_on返回的ID。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {emitter_item_t*} 若存在,返回id对应的emitter_item_t，否则返回NULL。
  */
 emitter_item_t* emitter_find(emitter_t* emitter, uint32_t id);
 

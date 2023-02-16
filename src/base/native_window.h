@@ -242,7 +242,7 @@ ret_t native_window_set_title(native_window_t* win, const char* app_name);
  *
  * @param {native_window_t*} win win对象。
  *
- * @return {canvas_t} 返回canvas对象。
+ * @return {canvas_t*} 返回canvas对象。
  */
 canvas_t* native_window_get_canvas(native_window_t* win);
 

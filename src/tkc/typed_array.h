@@ -147,7 +147,7 @@ ret_t typed_array_remove(typed_array_t* typed_array, uint32_t index);
  * 弹出最后一个元素。
  * @param {typed_array_t*} typed_array 数组对象。
  *
- * @return {void*} 成功返回最后一个元素，失败返回NULL。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t typed_array_pop(typed_array_t* typed_array, value_t* v);
 

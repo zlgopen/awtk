@@ -55,7 +55,7 @@ typedef struct _lcd_mem_t {
 #define lcd_mem_set_line_length(lcd, value) lcd_set_line_length(lcd, value);
 
 /**
- * @method lcd_resize
+ * @method lcd_mem_set_wait_vbi
  * 设置等待VBI事件到来的回调函数。
  * > VBI: vertical blank interrupt。用于2fb等待当前显示完成，以便把下一帧的数据从offline fb拷贝到online fb，从而避免因为同时访问online fb数据造成闪烁。
  * @export none

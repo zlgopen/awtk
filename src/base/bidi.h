@@ -138,7 +138,7 @@ bidi_t* bidi_init(bidi_t* bidi, bool_t alloc_l2v, bool_t alloc_v2l, bidi_type_t 
  * @annotation ["static"]
  * @param {const char*} name 类型名称(取值：rtl,ltr,auto,wrtl,wltr,lro,rlo)。 
  *
- * @return {bidi_t*} 返回bidi对象。
+ * @return {bidi_type_t} 返回bidi对象。
  */
 bidi_type_t bidi_type_from_name(const char* name);
 

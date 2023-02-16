@@ -58,7 +58,7 @@ BEGIN_C_DECLS
  * @annotation ["static"]
  * @param {const char*} color 字符串格式的颜色。
  *
- * @return {void*} 返回color_t对象。
+ * @return {color_t} 返回color_t对象。
  */
 color_t color_parse(const char* color);
 

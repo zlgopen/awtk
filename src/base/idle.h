@@ -113,7 +113,7 @@ ret_t idle_remove_all_by_ctx(void* ctx);
  * @method idle_find
  * 查找指定ID的idle。
  *
- * @return {idle_info_t*} 返回idle的信息。
+ * @return {const idle_info_t*} 返回idle的信息。
  */
 const idle_info_t* idle_find(uint32_t idle_id);
 

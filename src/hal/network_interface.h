@@ -152,7 +152,7 @@ struct _network_interface_t {
  * @param {char *} interface 网卡名。
  * @param {network_interface_type_t} type 网卡接口类型。
  *
- * @return {network_interface_t} 网卡接口对象。
+ * @return {network_interface_t*} 网卡接口对象。
  */
 network_interface_t* network_interface_create(const char* interface, network_interface_type_t type);
 

@@ -54,7 +54,7 @@ typedef struct _window_manager_simple_t {
  * 创建窗口管理器。
  * @annotation ["constructor"]
  *
- * @return {window_manager_t*} 返回窗口管理器对象。
+ * @return {widget_t*} 返回窗口管理器对象。
  */
 widget_t* window_manager_create(void);
 

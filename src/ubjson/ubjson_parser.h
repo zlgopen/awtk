@@ -59,7 +59,7 @@ ret_t ubjson_parse(void* data, uint32_t size, ubjson_on_key_value_t on_key_value
  * @param {void*} data 数据。
  * @param {uint32_t} size 数据的长度。
  *
- * @return {void*} 返回object表示的数据。
+ * @return {tk_object_t*} 返回object表示的数据。
  */
 tk_object_t* ubjson_to_object(void* data, uint32_t size);
 

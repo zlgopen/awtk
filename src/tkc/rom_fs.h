@@ -59,7 +59,7 @@ typedef struct _rom_file_t {
  * @param {const char*} name 文件名。
  * @param {const char*} mode 打开方式。
  *
- * @return {ret_t} 返回不是NULL表示成功，否则表示失败。
+ * @return {rom_file_t*} 返回不是NULL表示成功，否则表示失败。
  */
 rom_file_t* rom_fopen(const char* name, const char* mode);
 
@@ -69,7 +69,7 @@ rom_file_t* rom_fopen(const char* name, const char* mode);
  * @param {const uint8_t*} data 数据。
  * @param {uint32_t} capacity 容量。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {rom_file_t*} 打开成功则返回rom_file_t对象，否则返回NULL。
  */
 rom_file_t* rom_fopen_buff(const uint8_t* data, uint32_t capacity);
 

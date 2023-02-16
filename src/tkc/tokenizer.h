@@ -122,7 +122,7 @@ bool_t tokenizer_has_more(tokenizer_t* tokenizer);
  * 获取下一个token。
  * @param {tokenizer_t*} tokenizer tokenizer对象。
  *
- * @return {char*} 成功返回token，失败返回NULL。
+ * @return {const char*} 成功返回token，失败返回NULL。
  */
 const char* tokenizer_next(tokenizer_t* tokenizer);
 
@@ -131,7 +131,7 @@ const char* tokenizer_next(tokenizer_t* tokenizer);
  * 获取下一个字符串(允许使用英文单引号和双引号界定字符串)。
  * @param {tokenizer_t*} tokenizer tokenizer对象。
  *
- * @return {char*} 成功返回字符串，失败返回NULL。
+ * @return {const char*} 成功返回字符串，失败返回NULL。
  */
 const char* tokenizer_next_str(tokenizer_t* tokenizer);
 
@@ -141,7 +141,7 @@ const char* tokenizer_next_str(tokenizer_t* tokenizer);
  * @param {tokenizer_t*} tokenizer tokenizer对象。
  * @param {const char*} str 字符集。
  *
- * @return {char*} 成功返回token，失败返回NULL。
+ * @return {const char*} 成功返回token，失败返回NULL。
  */
 const char* tokenizer_next_until(tokenizer_t* tokenizer, const char* str);
 
@@ -151,7 +151,7 @@ const char* tokenizer_next_until(tokenizer_t* tokenizer, const char* str);
  * @param {tokenizer_t*} tokenizer tokenizer对象。
  * @param {const char*} str 字符集。
  *
- * @return {char*} 成功返回token，失败返回NULL。
+ * @return {const char*} 成功返回token，失败返回NULL。
  */
 const char* tokenizer_next_expr_until(tokenizer_t* tokenizer, const char* str);
 
@@ -161,7 +161,7 @@ const char* tokenizer_next_expr_until(tokenizer_t* tokenizer, const char* str);
  * @param {tokenizer_t*} tokenizer tokenizer对象。
  * @param {int} defval 缺省值。
  *
- * @return {char*} 成功返回token的int值，失败返回缺省值。
+ * @return {int} 成功返回token的int值，失败返回缺省值。
  */
 int tokenizer_next_int(tokenizer_t* tokenizer, int defval);
 
@@ -171,7 +171,7 @@ int tokenizer_next_int(tokenizer_t* tokenizer, int defval);
  * @param {tokenizer_t*} tokenizer tokenizer对象。
  * @param {float} defval 缺省值。
  *
- * @return {char*} 成功返回token的float值，失败返回缺省值。
+ * @return {float} 成功返回token的float值，失败返回缺省值。
  */
 float tokenizer_next_float(tokenizer_t* tokenizer, float defval);
 

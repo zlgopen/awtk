@@ -195,7 +195,7 @@ font_vmetrics_t font_get_vmetrics(font_t* font, font_size_t font_size);
  * @param {const char*} font_name 字体名称。
  * @param {font_size_t} font_size 字体大小。
  *
- * @return {int32_t} 返回TRUE表示成功，FALSE表示失败。
+ * @return {bool_t} 返回TRUE表示成功，FALSE表示失败。
  */
 bool_t font_match(font_t* font, const char* font_name, font_size_t font_size);
 

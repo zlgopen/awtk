@@ -73,7 +73,7 @@ ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, const rect_t* src, xy_t dx, xy
 ret_t g2d_rotate_image(bitmap_t* fb, bitmap_t* img, const rect_t* src, lcd_orientation_t o);
 
 /**
- * @method image_rotate_ex
+ * @method g2d_rotate_image_ex
  * @export none
  * 把图片指定的区域进行旋转。
  * @param {bitmap_t*} dst 目标图片对象。

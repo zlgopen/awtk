@@ -103,7 +103,7 @@ static inline void* mem_allocator_realloc(mem_allocator_t* allocator, void* ptr,
  * @param {mem_allocator_t*} allocator allocator对象。
  * @param {void*} ptr 内存的地址。
  *
- * @return {void*} 成功返回内存块的地址，失败返回NULL。
+ * @return {void} 无。
  */
 static inline void mem_allocator_free(mem_allocator_t* allocator, void* ptr) {
   return_if_fail(allocator != NULL && allocator->vt != NULL && allocator->vt->free != NULL);

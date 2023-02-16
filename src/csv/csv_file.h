@@ -117,7 +117,7 @@ csv_file_t* csv_file_create(const char* filename, char sep);
  * @param {uint32_t} size 数据长度。
  * @param {char} sep 分隔符。
  * 
- * @return {csv_file_t} 返回csv对象。
+ * @return {csv_file_t*} 返回csv对象。
  */
 csv_file_t* csv_file_create_with_buff(const char* buff, uint32_t size, char sep);
 

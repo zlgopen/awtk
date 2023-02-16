@@ -154,7 +154,7 @@ ret_t idle_manager_append(idle_manager_t* idle_manager, idle_info_t* idle);
  * @param {idle_manager_t*} idle_manager idle_manager_t管理器对象。
  * @param {uint32_t} idle_id idle_id。
  *
- * @return {idle_info_t*} 返回idle的信息。
+ * @return {const idle_info_t*} 返回idle的信息。
  */
 const idle_info_t* idle_manager_find(idle_manager_t* idle_manager, uint32_t idle_id);
 

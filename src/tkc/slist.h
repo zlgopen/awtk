@@ -191,7 +191,7 @@ ret_t slist_foreach(slist_t* slist, tk_visit_t visit, void* ctx);
  * 弹出最后一个元素。
  * @param {slist_t*} slist 单向链表对象。
  *
- * @return {ret_t} 成功返回最后一个元素，失败返回NULL。
+ * @return {void*} 成功返回最后一个元素，失败返回NULL。
  */
 void* slist_tail_pop(slist_t* slist);
 
@@ -200,7 +200,7 @@ void* slist_tail_pop(slist_t* slist);
  * 弹出第一个元素。
  * @param {slist_t*} slist 单向链表对象。
  *
- * @return {ret_t} 成功返回最后一个元素，失败返回NULL。
+ * @return {void*} 成功返回最后一个元素，失败返回NULL。
  */
 void* slist_head_pop(slist_t* slist);
 

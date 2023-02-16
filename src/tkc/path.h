@@ -134,7 +134,7 @@ ret_t path_abs(const char* path, char* result, int32_t size);
  *
  * @param {const char*} path 路径。
  *
- * @return {ret_t} 返回FALSE表示不是绝对路径，否则表示是绝对路径。
+ * @return {bool_t} 返回FALSE表示不是绝对路径，否则表示是绝对路径。
  */
 bool_t path_is_abs(const char* path);
 
@@ -232,7 +232,7 @@ ret_t path_app_root_ex(char path[MAX_PATH + 1], const char* subpath);
  *
  * @param {const char*} path 目录。
  *
- * @return {ret_t} 返回TRUE表示成功，否则表示失败。
+ * @return {bool_t} 返回TRUE表示成功，否则表示失败。
  */
 bool_t path_exist(const char* path);
 

@@ -217,7 +217,7 @@ ret_t gradient_add_stop(gradient_t* gradient, color_t color, float stop);
  * @param {gradient_t*} gradient gradient对象。
  * @param {uint32_t} index 序数。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {gradient_stop_t*} 返回index指定的关键点。
  */
 gradient_stop_t* gradient_get_stop(gradient_t* gradient, uint32_t index);
 

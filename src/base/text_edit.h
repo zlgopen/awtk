@@ -86,7 +86,7 @@ typedef struct _text_edit_t {
  * @param {widget_t*} widget 控件
  * @param {bool_t} single_line 是否是单行编辑器。
  *
- * @return {widget_t*} 对象。
+ * @return {text_edit_t*} 对象。
  */
 text_edit_t* text_edit_create(widget_t* widget, bool_t single_line);
 

@@ -67,7 +67,7 @@ named_value_t* named_value_create(void);
  * @param {const char*} name 名称。
  * @param {const value_t*} value 值。
  *
- * @return {ret_t} 返回named_value对象。
+ * @return {named_value_t*} 返回named_value对象。
  */
 named_value_t* named_value_create_ex(const char* name, const value_t* value);
 
@@ -81,7 +81,7 @@ named_value_t* named_value_create_ex(const char* name, const value_t* value);
  * @param {const char*} name 名称。
  * @param {const value_t*} value 值。
  *
- * @return {ret_t} 返回named_value对象。
+ * @return {named_value_t*} 返回named_value对象。
  */
 named_value_t* named_value_init(named_value_t* nv, const char* name, const value_t* value);
 
@@ -156,7 +156,7 @@ ret_t named_value_deinit(named_value_t* nv);
  * @param {named_value_t*} nv named_value对象。
  * @param {named_value_t*} other named_value对象。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {int32_t} 返回RET_OK表示成功，否则表示失败。
  */
 int32_t named_value_compare(named_value_t* nv, const named_value_t* other);
 
@@ -168,7 +168,7 @@ int32_t named_value_compare(named_value_t* nv, const named_value_t* other);
  * @param {named_value_t*} nv named_value对象。
  * @param {const char*} name 名称。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {int32_t} 返回RET_OK表示成功，否则表示失败。
  */
 int32_t named_value_compare_by_name(named_value_t* nv, const char* name);
 

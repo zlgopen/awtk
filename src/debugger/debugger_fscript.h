@@ -91,7 +91,7 @@ debugger_t* debugger_fscript_create(void);
  * @param {debugger_t*} debugger debugger对象。
  * @param {fscript_t*} fscript 脚本对象。
  *
- * @return {debugger_t*} 返回debugger对象。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t debugger_fscript_set_fscript(debugger_t* debugger, fscript_t* fscript);
 
@@ -111,7 +111,7 @@ debugger_fscript_t* debugger_fscript_cast(debugger_t* debugger);
  * @param {const binary_data_t*} code 代码。
  * @param {bool_t} changed 是否重新加载。
  *
- * @return {debugger_t*} 返回debugger对象。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t debugger_fscript_set_code(debugger_t* debugger, const binary_data_t* code, bool_t changed);
 

@@ -108,7 +108,7 @@ ret_t conf_doc_append_sibling(conf_doc_t* doc, conf_node_t* node, conf_node_t* s
  * @param {conf_node_t*} node 节点对象。
  * @param {const char*} new_name 节点名称。
  *
- * @return {ret_t} 返回新节点。
+ * @return {conf_node_t*} 返回新节点。
  */
 conf_node_t* conf_doc_dup_node(conf_doc_t* doc, conf_node_t* node, const char* new_name);
 
@@ -137,7 +137,7 @@ ret_t conf_doc_set_node_prop(conf_doc_t* doc, conf_node_t* node, const char* nam
  * @param {const char*} path 路径。
  * @param {bool_t} create_if_not_exist 不存在是否创建。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {conf_node_t*} 返回RET_OK表示成功，否则表示失败。
  */
 conf_node_t* conf_doc_find_node(conf_doc_t* doc, conf_node_t* node, const char* path,
                                 bool_t create_if_not_exist);

@@ -203,7 +203,7 @@ ret_t input_engine_add_candidates_from_string(input_engine_t* engine, const tabl
 ret_t input_engine_dispatch_candidates(input_engine_t* engine, int32_t selected);
 
 /**
- * @engine input_engine_set_lang
+ * @method input_engine_set_lang
  * 设置语言。
  * > 有时在同一种语言环境下，也需要输入多种文字，典型的情况是同时输入中文和英文。
  * > 比如T9输入法，可以同时支持中文和英文输入，配合软键盘随时切换输入的语言。
@@ -219,7 +219,7 @@ ret_t input_engine_dispatch_candidates(input_engine_t* engine, int32_t selected)
 ret_t input_engine_set_lang(input_engine_t* engine, const char* lang);
 
 /**
- * @engine input_engine_get_lang
+ * @method input_engine_get_lang
  * 获取语言。
  * @annotation ["scriptable"]
  * @param {input_engine_t*} engine 输入法引擎对象。

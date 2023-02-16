@@ -78,7 +78,7 @@ struct _clip_board_t {
  * @alias clip_board_instance
  * @annotation ["constructor"]
  *
- * @return {ret_t} 返回缺省剪切板对象。
+ * @return {clip_board_t*} 返回缺省剪切板对象。
  */
 clip_board_t* clip_board(void);
 

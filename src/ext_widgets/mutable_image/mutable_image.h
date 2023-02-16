@@ -200,7 +200,7 @@ widget_t* mutable_image_init(widget_t* widget);
  * @annotation ["cast"]
  * @param {widget_t*} widget mutable_image对象。
  *
- * @return {widget_t*} 返回RET_OK表示成功，否则表示失败。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t mutable_image_on_destroy(widget_t* widget);
 
@@ -212,7 +212,7 @@ ret_t mutable_image_on_destroy(widget_t* widget);
  * @param {widget_t*} widget mutable_image对象。
  * @param {canvas_t*} canvas 画布对象。
  *
- * @return {widget_t*} 返回RET_OK表示成功，否则表示失败。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t mutable_image_on_paint_self(widget_t* widget, canvas_t* canvas);
 

@@ -71,7 +71,7 @@ struct _children_layouter_t {
  * 获取全部参数。
  * @param {children_layouter_t*} layouter layouter对象。
  *
- * @return {ret_t} 返回字符串格式的参数。
+ * @return {const char*} 返回字符串格式的参数。
  */
 const char* children_layouter_to_string(children_layouter_t* layouter);
 
@@ -132,7 +132,7 @@ ret_t children_layouter_set_param_str(children_layouter_t* layouter, const char*
  * @param {const char*} name 参数名。
  * @param {float_t} defval 缺省值。
  *
- * @return {ret_t} 成功返回参数的值，失败返回缺省值。
+ * @return {float_t} 成功返回参数的值，失败返回缺省值。
  */
 float_t children_layouter_get_param_float(children_layouter_t* layouter, const char* name,
                                           float_t defval);
@@ -145,7 +145,7 @@ float_t children_layouter_get_param_float(children_layouter_t* layouter, const c
  * @param {const char*} name 参数名。
  * @param {int32_t} defval 缺省值。
  *
- * @return {ret_t} 成功返回参数的值，失败返回缺省值。
+ * @return {int32_t} 成功返回参数的值，失败返回缺省值。
  */
 int32_t children_layouter_get_param_int(children_layouter_t* layouter, const char* name,
                                         int32_t defval);

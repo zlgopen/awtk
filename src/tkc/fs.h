@@ -427,7 +427,7 @@ struct _fs_t {
  * @param {const char*} name 文件名。
  * @param {const char*} mode 打开方式，取值请参考POSIX的[fopen函数](https://www.runoob.com/cprogramming/c-function-fopen.html)相应的参数。
  *
- * @return {ret_t} 返回非NULL表示成功，否则表示失败。
+ * @return {fs_file_t*} 返回非NULL表示成功，否则表示失败。
  */
 fs_file_t* fs_open_file(fs_t* fs, const char* name, const char* mode);
 
@@ -516,7 +516,7 @@ ret_t fs_copy_dir_ex(fs_t* fs, const char* src, const char* dst, bool_t overwrit
  * @param {fs_t*} fs 文件系统对象，一般赋值为os_fs()。
  * @param {const char*} name 目录名称。
  *
- * @return {fs_dir_t} 返回非NULL表示成功，否则表示失败。
+ * @return {fs_dir_t*} 返回非NULL表示成功，否则表示失败。
  */
 fs_dir_t* fs_open_dir(fs_t* fs, const char* name);
 
@@ -625,7 +625,7 @@ ret_t fs_dir_rename(fs_t* fs, const char* name, const char* new_name);
  * @param {fs_t*} fs 文件系统对象，一般赋值为os_fs()。
  * @param {const char*} name 文件名。
  *
- * @return {ret_t} 返回不是-1表示成功，否则表示失败。
+ * @return {int32_t} 返回不是-1表示成功，否则表示失败。
  */
 int32_t fs_get_file_size(fs_t* fs, const char* name);
 
@@ -751,7 +751,7 @@ fs_t* os_fs(void);
  * @param {tk_visit_t} on_file 回调函数(完整文件名通过data参数传入)。
  * @param {void*} ctx 回调函数上下文。
  *
- * @return {bool_t} 返回TRUE表示成功，否则表示失败。
+ * @return {ret_t} 返回TRUE表示成功，否则表示失败。
  */
 ret_t fs_foreach_file(const char* path, tk_visit_t on_file, void* ctx);
 

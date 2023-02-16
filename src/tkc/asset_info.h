@@ -418,7 +418,7 @@ const char* asset_info_get_name(const asset_info_t* info);
  *
  * @param {const char*} name 未格式化名字。
  *
- * @return {ret_t} 返回格式化后的名字。
+ * @return {const char*} 返回格式化后的名字。
  */
 const char* asset_info_get_formatted_name(const char* name);
 
@@ -443,7 +443,7 @@ bool_t asset_info_is_in_rom(const asset_info_t* info);
  * @param {asset_info_t*} info asset_info对象。
  *  @param {bool_t} is_in_rom 资源是否在ROM中。
  *
- * @return {bool_t} 返回 TRUE 为在 ROM 中，返回 FALSE 则不在。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t asset_info_set_is_in_rom(asset_info_t* info, bool_t is_in_rom);
 

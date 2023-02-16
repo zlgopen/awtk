@@ -160,7 +160,7 @@ ret_t timer_manager_reset(timer_manager_t* timer_manager, uint32_t timer_id);
  * @param {timer_manager_t*} timer_manager 定时器管理器对象。
  * @param {uint32_t} timer_id timer_id
  *
- * @return {timer_info_t*} 返回timer的信息。
+ * @return {const timer_info_t*} 返回timer的信息。
  */
 const timer_info_t* timer_manager_find(timer_manager_t* timer_manager, uint32_t timer_id);
 

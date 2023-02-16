@@ -303,7 +303,7 @@ value_t* value_set_uint8(value_t* v, uint8_t value);
  * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
- * @return {int8_t} 值。
+ * @return {uint8_t} 值。
  */
 uint8_t value_uint8(const value_t* v);
 
@@ -924,7 +924,7 @@ value_t* value_set_func_def(value_t* v, void* value);
  * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
- * @return {bitmap_t*} 位图对象。
+ * @return {void*} 位图对象。
  */
 void* value_bitmap(const value_t* v);
 
