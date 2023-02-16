@@ -203,7 +203,7 @@ ret_t dialog_toast(const char* text, uint32_t duration) {
   return_value_if_fail(dialog_toast != NULL, RET_OOM);
 
   ENSURE(dialog_toast_push_message(dialog_toast, text, duration) != NULL);
-  return dialog_toast_model(dialog_toast);
+  return RET_OK;
 }
 
 ret_t dialog_info(const char* title, const char* text) {

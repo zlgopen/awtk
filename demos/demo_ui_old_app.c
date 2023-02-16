@@ -315,7 +315,13 @@ static ret_t on_paint_vgcanvas(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t on_timer_show_toast(const timer_info_t* info) {
+static ret_t on_timer_show_toast_when_opening(const timer_info_t* info) {
+  dialog_toast("Hello AWTK!\nThis is a toast(2)!", 2000);
+
+  return RET_REMOVE;
+}
+
+static ret_t on_timer_show_toast_when_closing(const timer_info_t* info) {
   dialog_toast("Hello AWTK!\nThis is a toast(3)!", 2000);
 
   return RET_REMOVE;
@@ -335,9 +341,9 @@ static ret_t on_open_window(void* ctx, event_t* e) {
   const char* name = (const char*)ctx;
 
   if (tk_str_eq(name, "toast")) {
-    timer_add(on_timer_show_toast, NULL, 0);
-    dialog_toast("Hello AWTK!\nThis is a toast(1)!", 2000);
-    dialog_toast("Hello AWTK!\nThis is a toast(2)!", 2000);
+    timer_add(on_timer_show_toast_when_opening, NULL, 0);
+    timer_add(on_timer_show_toast_when_closing, NULL, 4700);
+    dialog_toast("Hello AWTK!\nThis is a toast(1)!", 4000);
   } else if (tk_str_eq(name, "info")) {
     dialog_info("info", "hello awtk");
   } else if (tk_str_eq(name, "warn")) {
