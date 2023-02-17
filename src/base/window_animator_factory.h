@@ -107,7 +107,7 @@ ret_t window_animator_factory_destroy(window_animator_factory_t* factory);
  * @method window_animator_create_for_open
  * @annotation ["constructor"]
  * 为打开窗口创建动画。
- * @param {char*} type 动画类型。
+ * @param {const char*} type 动画类型。
  * @param {canvas_t*} c canvas。
  * @param {widget_t*} prev_win 前一窗口。
  * @param {widget_t*} curr_win 当前窗口。
@@ -121,7 +121,7 @@ window_animator_t* window_animator_create_for_open(const char* type, canvas_t* c
  * @method window_animator_create_for_close
  * @annotation ["constructor"]
  * 为关闭窗口创建动画。
- * @param {char*} type 动画类型。
+ * @param {const char*} type 动画类型。
  * @param {canvas_t*} c canvas。
  * @param {widget_t*} prev_win 前一窗口。
  * @param {widget_t*} curr_win 当前窗口。

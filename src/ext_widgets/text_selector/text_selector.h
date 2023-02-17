@@ -233,7 +233,7 @@ int32_t text_selector_count_options(widget_t* widget);
  * @annotation ["scriptable"]
  * @param {widget_t*} widget text_selector对象。
  * @param {int32_t} value 值。
- * @param {char*} text 文本。
+ * @param {const char*} text 文本。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -244,7 +244,7 @@ ret_t text_selector_append_option(widget_t* widget, int32_t value, const char* t
  * 设置选项。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget text_selector对象。
- * @param {char*} options 选项。
+ * @param {const char*} options 选项。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

@@ -84,9 +84,9 @@ typedef struct _tokenizer_t {
  * 初始化tokenizer对象。
  * @annotation ["constructor"]
  * @param {tokenizer_t*} tokenizer tokenizer对象。
- * @param {char*} str 要解析的字符串。
+ * @param {const char*} str 要解析的字符串。
  * @param {uint32_t} size 字符串长度。
- * @param {char*} separtor 分隔字符。
+ * @param {const char*} separtor 分隔字符。
  *
  * @return {tokenizer_t*} tokenizer对象本身。
  */
@@ -98,10 +98,10 @@ tokenizer_t* tokenizer_init(tokenizer_t* tokenizer, const char* str, uint32_t si
  * 初始化tokenizer对象。
  * @annotation ["constructor"]
  * @param {tokenizer_t*} tokenizer tokenizer对象。
- * @param {char*} str 要解析的字符串。
+ * @param {const char*} str 要解析的字符串。
  * @param {uint32_t} size 字符串长度。
- * @param {char*} separtor 分隔字符。
- * @param {char*} single_char_token 单字符token。
+ * @param {const char*} separtor 分隔字符。
+ * @param {const char*} single_char_token 单字符token。
  *
  * @return {tokenizer_t*} tokenizer对象本身。
  */

@@ -127,7 +127,7 @@ ret_t image_manager_set_max_mem_size_of_cached_images(image_manager_t* imm, uint
  *
  * @annotation ["scriptable"]
  * @param {image_manager_t*} imm 图片管理器对象。
- * @param {char*} name 图片名称。
+ * @param {const char*} name 图片名称。
  * @param {bitmap_t*} image 用于返回图片。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -153,7 +153,7 @@ ret_t image_manager_set_fallback_get_bitmap(image_manager_t* imm,
  * 预加载指定的图片。
  * @annotation ["scriptable"]
  * @param {image_manager_t*} imm 图片管理器对象。
- * @param {char*} name 图片名称。
+ * @param {const char*} name 图片名称。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

@@ -45,7 +45,7 @@ typedef struct _waitable_action_queue_t {
  * @annotation ["constructor"]
  * 创建waitable_action_queue对象。
  *
- * @param {uint32_t} capacity action的容量。
+ * @param {uint16_t} capacity action的容量。
  *
  * @return {waitable_action_queue_t*} waitable_action_queue对象。
  */

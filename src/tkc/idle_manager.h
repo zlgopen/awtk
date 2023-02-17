@@ -162,7 +162,7 @@ const idle_info_t* idle_manager_find(idle_manager_t* idle_manager, uint32_t idle
  * @method idle_manager_add
  * 添加idle。
  * @param {idle_manager_t*} idle_manager idle_manager_t管理器对象。
- * @param {idle_func_t*} on_idle idle回调函数。
+ * @param {idle_func_t} on_idle idle回调函数。
  * @param {void*} ctx idle回调函数的上下文。
  *
  * @return {uint32_t} 返回idle的ID，TK_INVALID_ID表示失败。
@@ -174,7 +174,7 @@ uint32_t idle_manager_add(idle_manager_t* idle_manager, idle_func_t on_idle, voi
  * 添加 idle（可以指定 idle_id ，如果发现 idle_id 冲突则添加失败）。
  * @param {idle_manager_t*} idle_manager idle_manager_t管理器对象。
  * @param {uint32_t} id idle_id。
- * @param {idle_func_t*} on_idle idle回调函数。
+ * @param {idle_func_t} on_idle idle回调函数。
  * @param {void*} ctx idle回调函数的上下文。
  *
  * @return {uint32_t} 返回idle的ID，TK_INVALID_ID表示失败。

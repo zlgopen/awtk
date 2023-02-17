@@ -191,7 +191,7 @@ int32_t fs_file_printf(fs_file_t* file, const char* const format_str, ...);
  * 定位读写指针到指定的位置。
  *
  * @param {fs_file_t*} file 文件对象。
- * @param {uint32_t} offset 数据长度。
+ * @param {int32_t} offset 数据长度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

@@ -262,7 +262,7 @@ ret_t mledit_set_max_chars(widget_t* widget, uint32_t max_chars);
  * 设置编辑器的输入提示。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {char*} tips 输入提示。
+ * @param {const char*} tips 输入提示。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -285,7 +285,7 @@ ret_t mledit_set_tr_tips(widget_t* widget, const char* tr_tips);
  * 
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {char*} keyboard 键盘名称(相应UI资源必须存在)。
+ * @param {const char*} keyboard 键盘名称(相应UI资源必须存在)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

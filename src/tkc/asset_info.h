@@ -347,7 +347,7 @@ typedef struct _asset_info_t {
  * @param {uint16_t} type 资源的类型。 
  * @param {uint16_t} subtype  资源的子类型。
  * @param {const char*} name 资源的名称。
- * @param {uint32_t} size  资源的数据长度(用于分配空间)。
+ * @param {int32_t} size  资源的数据长度(用于分配空间)。
  *
  * @return {asset_info_t*} asset_info对象。
  */

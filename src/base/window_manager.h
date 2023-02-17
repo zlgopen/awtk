@@ -155,7 +155,7 @@ widget_t* window_manager_cast(widget_t* widget);
 /**
  * @method window_manager_set
  * 设置缺省的窗口管理器。
- * @param {window_manager_t*} widget 窗口管理器对象。
+ * @param {widget_t*} widget 窗口管理器对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

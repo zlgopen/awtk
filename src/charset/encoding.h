@@ -109,7 +109,7 @@ ret_t encoding_convert(encoding_name_t from, const char* from_str, uint32_t from
  *
  * @param {const char*} from_str 源字符串(utf8)。
  * @param {uint32_t} from_size 源字符串的长度。
- * @param {const char*} to_str 目标字符串(gbk)。
+ * @param {char*} to_str 目标字符串(gbk)。
  * @param {uint32_t} to_size 目标字符串的最大长度。
  *
  *

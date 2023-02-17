@@ -1148,7 +1148,7 @@ typedef struct _assets_event_t {
 /**
  * @method assets_event_init
  * 初始化事件。
- * @param {window_event_t*} event event对象。
+ * @param {assets_event_t*} event event对象。
  * @param {assets_manager_t*} am 事件目标资源管理器。
  * @param {uint32_t} type 事件类型。
  * @param {asset_type_t} asset_type 资源类型。

@@ -273,7 +273,7 @@ widget_t* dialog_open(const char* name);
  * 设置对话框的标题文本。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget dialog对象。
- * @param {char*}  title 标题。
+ * @param {const char*}  title 标题。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

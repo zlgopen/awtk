@@ -129,7 +129,7 @@ size_t rom_fread(void* ptr, size_t size, size_t nitems, rom_file_t* f);
  *
  * 写文件。
  *> 本函数什么也不做。
- * @param {void*} ptr 数据的缓冲区。
+ * @param {const void*} ptr 数据的缓冲区。
  * @param {size_t} size 缓冲区大小。
  * @param {size_t} nitems 元素的个数。
  * @param {rom_file_t*} f rom_file_t对象。

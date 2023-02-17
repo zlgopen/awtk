@@ -424,7 +424,7 @@ ret_t lcd_set_font_size(lcd_t* lcd, uint32_t font_size);
  * @param {lcd_t*} lcd lcd对象。
  * @param {xy_t} x x坐标。
  * @param {xy_t} y y坐标。
- * @param {xy_t} h 直线高度。
+ * @param {wh_t} h 直线高度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -436,7 +436,7 @@ ret_t lcd_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h);
  * @param {lcd_t*} lcd lcd对象。
  * @param {xy_t} x x坐标。
  * @param {xy_t} y y坐标。
- * @param {xy_t} w 直线宽度。
+ * @param {wh_t} w 直线宽度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

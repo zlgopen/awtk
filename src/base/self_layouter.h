@@ -170,7 +170,7 @@ self_layouter_t* self_layouter_create(const char* params);
  * @method self_layouter_clone
  * 克隆layouter对象。
  *
- * @param {const char*} layouter 被克隆的对象。
+ * @param {self_layouter_t*} layouter 被克隆的对象。
  *
  * @return {self_layouter_t*} 返回layouter对象。
  */

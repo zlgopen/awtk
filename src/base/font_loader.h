@@ -49,7 +49,7 @@ struct _font_loader_t {
  *
  * @param {font_loader_t*} loader loader对象。
  * @param {const char*} name 字体名字。
- * @param {uint8_t*} buff 字体数据。
+ * @param {const uint8_t*} buff 字体数据。
  * @param {uint32_t} size 字体数据长度。
  *
  * @return {font_t*} 成功返回font，失败返回NULL。

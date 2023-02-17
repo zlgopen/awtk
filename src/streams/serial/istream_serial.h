@@ -51,7 +51,7 @@ struct _tk_istream_serial_t {
  *
  * 创建istream对象。
  *
- * @param {int} fd fd。
+ * @param {serial_handle_t} fd fd。
  *
  * @return {tk_istream_t*} 返回istream对象。
  *

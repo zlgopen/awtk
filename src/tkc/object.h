@@ -335,7 +335,7 @@ ret_t tk_object_remove_prop(tk_object_t* obj, const char* name);
  * @annotation ["scriptable"]
  * @param {tk_object_t*} obj object对象。
  * @param {const char*} name 属性的名称。
- * @param {value_t*} value 属性的值。
+ * @param {const value_t*} value 属性的值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -651,7 +651,7 @@ float_t tk_object_get_prop_float_by_path(tk_object_t* obj, const char* path, flo
  * @annotation ["scriptable"]
  * @param {tk_object_t*} obj object对象。
  * @param {const char*} path 属性的path。
- * @param {value_t*} value 属性的值。
+ * @param {const value_t*} value 属性的值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

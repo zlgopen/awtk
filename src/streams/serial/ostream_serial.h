@@ -51,7 +51,7 @@ struct _tk_ostream_serial_t {
  *
  * 创建ostream对象。
  *
- * @param {int} fd fd.
+ * @param {serial_handle_t} fd fd.
  *
  * @return {tk_ostream_t*} 返回ostream对象。
  *

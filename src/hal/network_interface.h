@@ -149,7 +149,7 @@ struct _network_interface_t {
  * @method network_interface_create 
  * 网卡接口创建函数。
  *
- * @param {char *} interface 网卡名。
+ * @param {const char*} interface 网卡名。
  * @param {network_interface_type_t} type 网卡接口类型。
  *
  * @return {network_interface_t*} 网卡接口对象。
@@ -221,8 +221,8 @@ int network_interface_get_quality(network_interface_t* interface);
  * 网卡接口设置IP地址。
  *
  * @param {network_interface_t *} interface 网卡对象。
- * @param {char *} ipaddr 网卡IP。
- * @param {char *} netmask 网卡MASK。
+ * @param {const char*} ipaddr 网卡IP。
+ * @param {const char*} netmask 网卡MASK。
  *
  * @return {ret_t} RET_OK表示成功，否则失败。
  */
@@ -234,7 +234,7 @@ ret_t network_interface_set_ipaddr(network_interface_t* interface, const char* i
  * 网卡接口设置DNS。
  *
  * @param {network_interface_t *} interface 网卡对象。
- * @param {char *} dns 网卡dns。
+ * @param {const char*} dns 网卡dns。
  *
  * @return {ret_t} RET_OK表示成功，否则失败。
  */
@@ -255,8 +255,8 @@ ret_t network_interface_set_dhcp(network_interface_t* interface);
  * 网卡接口设置DNS。
  *
  * @param {network_interface_t *} interface 网卡对象。
- * @param {char *} gateway 网卡网关。
- * @param {char *} dev 出口网卡设备名。
+ * @param {const char*} gateway 网卡网关。
+ * @param {const char*} dev 出口网卡设备名。
  *
  * @return {ret_t} RET_OK表示成功，否则失败。
  */
@@ -268,8 +268,8 @@ ret_t network_interface_set_gateway(network_interface_t* interface, const char* 
  * 网卡接口设置WIFI STA模式。
  *
  * @param {network_interface_t *} interface 网卡对象。
- * @param {char *} essid wifi帐号 。 
- * @param {char *} passwd wifi密码。
+ * @param {const char*} essid wifi帐号 。 
+ * @param {const char*} passwd wifi密码。
  * @param {network_interface_wifi_auth_t  } auth wifi认证方式。
  *
  * @return {ret_t} RET_OK表示成功，否则失败。
@@ -282,8 +282,8 @@ ret_t network_interface_set_wifi_sta(network_interface_t* interface, const char*
  * 网卡接口设置WIFI AP模式。
  *
  * @param {network_interface_t *} interface 网卡对象。
- * @param {char *} essid wifi帐号 。 
- * @param {char *} passwd wifi密码。
+ * @param {const char*} essid wifi帐号 。 
+ * @param {const char*} passwd wifi密码。
  * @param {network_interface_wifi_auth_t  } auth wifi认证方式。
  * @param {uint8_t } channel wifi通道。
  * @param {network_interface_wifi_freq_t  } freq wifi频段。

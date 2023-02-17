@@ -50,7 +50,7 @@ BEGIN_C_DECLS
  * 把ucs字符串转成UTF8字符串。
  *
  * @param {const wchar_t*} in 输入字符串。
- * @param {const char*} out 输出字符串。
+ * @param {char*} out 输出字符串。
  * @param {uint32_t} out_size 输出字符串的最大长度。
  *
  *
@@ -65,7 +65,7 @@ char* tk_utf8_from_utf16(const wchar_t* in, char* out, uint32_t size);
  *
  * @param {const wchar_t*} in 输入字符串。
  * @param {uint32_t} in_size 输入字符串的长度。
- * @param {const char*} out 输出字符串。
+ * @param {char*} out 输出字符串。
  * @param {uint32_t} out_size 输出字符串的最大长度。
  *
  *
@@ -131,7 +131,7 @@ uint32_t tk_utf8_get_bytes_of_leading(uint8_t c);
  * > 可能最后一个字符被从中间截断，导致该字符是无效的，这可能会触发assert，
  * > 本函数可以用来删除最后一个无效字符。
  *
- * @param {const char*} str 输入字符串。
+ * @param {char*} str 输入字符串。
  *
  * @return {char*} 返回UTF8字符串。
  */

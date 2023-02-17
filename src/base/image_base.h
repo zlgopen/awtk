@@ -127,7 +127,7 @@ typedef struct _image_base_t {
  *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget image对象。
- * @param {char*}  name 图片名称，该图片必须存在于资源管理器。
+ * @param {const char*}  name 图片名称，该图片必须存在于资源管理器。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

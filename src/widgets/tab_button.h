@@ -177,7 +177,7 @@ ret_t tab_button_set_value(widget_t* widget, bool_t value);
  * 设置控件的图标。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget tab_button对象。
- * @param {char*}  name 当前项的图标。
+ * @param {const char*}  name 当前项的图标。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -188,7 +188,7 @@ ret_t tab_button_set_icon(widget_t* widget, const char* name);
  * 设置控件的active图标。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget tab_button对象。
- * @param {char*}  name 当前项的图标。
+ * @param {const char*}  name 当前项的图标。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -199,7 +199,7 @@ ret_t tab_button_set_active_icon(widget_t* widget, const char* name);
  * 设置控件动态加载显示UI。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget tab_button对象。
- * @param {char*}  name 动态加载UI的资源名称。
+ * @param {const char*}  name 动态加载UI的资源名称。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

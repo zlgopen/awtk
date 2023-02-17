@@ -377,7 +377,7 @@ ret_t input_method_request(input_method_t* im, widget_t* widget);
  * @method input_method_update_action_button_info
  * 设置软键盘上的action按钮的信息。
  * @param {input_method_t*} im 输入法对象。
- * @param {char*} text 按钮的文本。
+ * @param {const char*} text 按钮的文本。
  * @param {bool_t} enable 按钮的是否可用。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -499,7 +499,7 @@ ret_t input_method_dispatch_preedit_abort(input_method_t* im);
  * @method input_method_dispatch_candidates
  * 请求显示候选字。
  * @param {input_method_t*} im 输入法对象。
- * @param {char*} strs 候选字列表。
+ * @param {const char*} strs 候选字列表。
  * @param {uint32_t} nr 候选字个数。
  * @param {int32_t} selected 缺省选中候选字的序数。
  *
@@ -516,7 +516,7 @@ ret_t input_method_dispatch_candidates(input_method_t* im, const char* strs, uin
  * > 从预候选字列表中选择拼音，再查询拼音对应的候选字列表。
  * 
  * @param {input_method_t*} im 输入法对象。
- * @param {char*} strs 候选字列表。
+ * @param {const char*} strs 候选字列表。
  * @param {uint32_t} nr 候选字个数。
  * @param {int32_t} selected 缺省选中候选字的序数。
  *

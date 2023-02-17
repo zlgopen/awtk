@@ -99,7 +99,7 @@ ret_t qaction_exec(qaction_t* action);
  * 事件通知。
  *
  * @param {qaction_t*} action action对象。
- * @param {event_t**} event event对象。
+ * @param {event_t*} event event对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

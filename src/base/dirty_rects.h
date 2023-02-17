@@ -166,7 +166,7 @@ static inline ret_t dirty_rects_fix(dirty_rects_t* dirty_rects) {
  * @export none
  * 增加脏矩形。
  * @param {dirty_rects_t*} dirty_rects dirty_rects对象。
- * @param {rect_t*} r 脏矩形。
+ * @param {const rect_t*} r 脏矩形。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

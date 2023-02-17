@@ -90,7 +90,7 @@ typedef struct _wbuffer_t {
  * @annotation ["constructor"]
  * @param {wbuffer_t*} wbuffer wbuffer对象。
  * @param {uint8_t*} data 缓冲区。
- * @param {uint16_t} capacity 缓冲区的容量。
+ * @param {uint32_t} capacity 缓冲区的容量。
  *
  * @return {wbuffer_t*} wbuffer对象本身。
  */
@@ -219,7 +219,7 @@ ret_t wbuffer_write_double(wbuffer_t* wbuffer, double value);
  * @method wbuffer_write_binary
  * 写入指定长度的二进制数据。
  * @param {wbuffer_t*} wbuffer wbuffer对象。
- * @param {void*} data 要写入的数据。
+ * @param {const void*} data 要写入的数据。
  * @param {uint32_t} size 要写入的数据长度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -230,7 +230,7 @@ ret_t wbuffer_write_binary(wbuffer_t* wbuffer, const void* data, uint32_t size);
  * @method wbuffer_write_string
  * 写入字符串。
  * @param {wbuffer_t*} wbuffer wbuffer对象。
- * @param {char*} data 要写入的字符串。
+ * @param {const char*} data 要写入的字符串。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -291,8 +291,8 @@ typedef struct _rbuffer_t {
  * 初始rbuffer对象。
  * @annotation ["constructor"]
  * @param {rbuffer_t*} rbuffer rbuffer对象。
- * @param {uint8_t*} data 缓冲区。
- * @param {uint16_t} capacity 缓冲区的容量。
+ * @param {const uint8_t*} data 缓冲区。
+ * @param {uint32_t} capacity 缓冲区的容量。
  *
  * @return {rbuffer_t*} rbuffer对象本身。
  */
@@ -411,7 +411,7 @@ ret_t rbuffer_read_binary(rbuffer_t* rbuffer, void* data, uint32_t size);
  * @method rbuffer_read_string
  * 读取字符串。
  * @param {rbuffer_t*} rbuffer rbuffer对象。
- * @param {char**} str 返回字符串。
+ * @param {const char**} str 返回字符串。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

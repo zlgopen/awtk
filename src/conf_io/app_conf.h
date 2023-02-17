@@ -317,7 +317,7 @@ const char* app_conf_get_str(const char* key, const char* defval);
  * @annotation ["static"]
  *
  * @param {const char*} key 配置项的名称。
- * @param {const wchar_t*} str 返回值。
+ * @param {wchar_t*} str 返回值。
  * @param {uint32_t} max_size 最大长度(字符数)。
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

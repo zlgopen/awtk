@@ -101,8 +101,8 @@ matrix_t* matrix_multiply(matrix_t* m, matrix_t* b);
  * 平移。
  *
  * @param {matrix_t*} m 矩阵对象。
- * @param {float} x x
- * @param {float} y y
+ * @param {xy_t} x x
+ * @param {xy_t} y y
  *
  * @return {matrix_t*} 矩阵对象。
  */

@@ -466,7 +466,7 @@ uint32_t* tk_memcpy32(uint32_t* dst, uint32_t* src, uint32_t size);
  * 已bpp字节为标准拷贝数据。
  *
  * @param {void*} dst 目标
- * @param {void*} src 源。
+ * @param {const void*} src 源。
  * @param {uint32_t} size 个数。
  * @param {uint8_t} bpp 单个数据的字节数。
  *
@@ -506,7 +506,7 @@ int tk_vsnprintf(char* str, size_t size, const char* format, va_list ap);
  *
  * 从字符串读取格式化输入。
  *
- * @param {char*} str 要输入的字符串。
+ * @param {const char*} str 要输入的字符串。
  * @param {const char*} format 格式化字符串。
  *
  * @return {int} 返回成功匹配和赋值的个数。
@@ -559,7 +559,7 @@ ret_t xml_file_expand_read(const char* filename, str_t* s);
  * > XXX: 要求dst为NULL或内存块的首地址，本函数调用之后，dst可能无效，请保留返回的地址
  * 该函数会自动申请内存，调用后需要使用TKMEM_FREE释放。
  *
- * @param {const char*} dst 目标字符串。
+ * @param {char*} dst 目标字符串。
  * @param {const char*} src 源字符串。
  *
  * @return {char*} 返回指向的复制字符串指针，如果失败则返回NULL。

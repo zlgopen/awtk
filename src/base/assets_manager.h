@@ -191,7 +191,7 @@ ret_t assets_manager_set_locale_info(assets_manager_t* am, locale_info_t* locale
  * 向资源管理器中增加一个资源。
  * 备注：同一份资源多次调用会出现缓存叠加的问题，导致内存泄露
  * @param {assets_manager_t*} am asset manager对象。
- * @param {asset_info_t} info 待增加的资源。
+ * @param {const void*} info 待增加的资源。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -219,7 +219,7 @@ ret_t assets_manager_add_data(assets_manager_t* am, const char* name, uint16_t t
  * @annotation ["scriptable"]
  * @param {assets_manager_t*} am asset manager对象。
  * @param {asset_type_t} type 资源的类型。
- * @param {char*} name 资源的名称。
+ * @param {const char*} name 资源的名称。
  *
  * @return {const asset_info_t*} 返回资源。
  */
@@ -232,7 +232,7 @@ const asset_info_t* assets_manager_ref(assets_manager_t* am, asset_type_t type, 
  * @param {assets_manager_t*} am asset manager对象。
  * @param {asset_type_t} type 资源的类型。
  * @param {uint16_t} subtype 资源的子类型。
- * @param {char*} name 资源的名称。
+ * @param {const char*} name 资源的名称。
  *
  * @return {const asset_info_t*} 返回资源。
  */
@@ -244,7 +244,7 @@ const asset_info_t* assets_manager_ref_ex(assets_manager_t* am, asset_type_t typ
  * 释放指定的资源。
  * @annotation ["scriptable"]
  * @param {assets_manager_t*} am asset manager对象。
- * @param {asset_info_t*} info 资源。
+ * @param {const asset_info_t*} info 资源。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -256,7 +256,7 @@ ret_t assets_manager_unref(assets_manager_t* am, const asset_info_t* info);
  * @param {assets_manager_t*} am asset manager对象。
  * @param {asset_type_t} type 资源的类型。
  * @param {uint16_t} subtype 资源的子类型。
- * @param {char*} name 资源的名称。
+ * @param {const char*} name 资源的名称。
  *
  * @return {const asset_info_t*} 返回资源。
  */
@@ -281,7 +281,7 @@ asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const
  * @param {assets_manager_t*} am asset manager对象。
  * @param {asset_type_t} type 资源的类型。
  * @param {uint16_t} subtype 资源的子类型。
- * @param {char*} name 资源的名称。
+ * @param {const char*} name 资源的名称。
  *
  * @return {asset_info_t*} 返回资源。
  */
@@ -294,7 +294,7 @@ asset_info_t* assets_manager_load_ex(assets_manager_t* am, asset_type_t type, ui
  * 备注：内部使用的，不建议用户自行调用。
  * @param {assets_manager_t*} am asset manager对象。
  * @param {asset_type_t} type 资源的类型。
- * @param {char*} name 资源的名称。
+ * @param {const char*} name 资源的名称。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

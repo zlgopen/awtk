@@ -101,7 +101,7 @@ ret_t timer_manager_destroy(timer_manager_t* timer_manager);
  * @method timer_manager_add
  * 添加定时器。
  * @param {timer_manager_t*} timer_manager 定时器管理器对象。
- * @param {timer_func_t*} on_timer timer回调函数。
+ * @param {timer_func_t} on_timer timer回调函数。
  * @param {void*} ctx timer回调函数的上下文。
  * @param {uint32_t} duration 时间。
  *
@@ -115,7 +115,7 @@ uint32_t timer_manager_add(timer_manager_t* timer_manager, timer_func_t on_timer
  * 添加定时器。（可以指定 timer_id ，如果发现 timer_id 冲突则添加失败）。
  * @param {timer_manager_t*} timer_manager 定时器管理器对象。
  * @param {uint32_t} id timer_id。
- * @param {timer_func_t*} on_timer timer回调函数。
+ * @param {timer_func_t} on_timer timer回调函数。
  * @param {void*} ctx timer回调函数的上下文。
  * @param {uint32_t} duration 时间。
  *
@@ -148,7 +148,7 @@ ret_t timer_manager_all_remove_by_ctx(timer_manager_t* timer_manager, void* ctx)
  * @method timer_manager_reset
  * 重置定时器。
  * @param {timer_manager_t*} timer_manager 定时器管理器对象。
- * @param {uint32_t*} timer_id timer_id。
+ * @param {uint32_t} timer_id timer_id。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

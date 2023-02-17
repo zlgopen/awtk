@@ -88,8 +88,8 @@ ret_t locale_info_set(locale_info_t* locale_info);
  * @method locale_info_create
  * 创建locale_info。
  * @annotation ["constructor"]
- * @param {char*} language 语言。
- * @param {char*} country 国家或地区。
+ * @param {const char*} language 语言。
+ * @param {const char*} country 国家或地区。
  *
  * @return {locale_info_t*} 返回locale_info对象。
  */
@@ -111,8 +111,8 @@ const char* locale_info_tr(locale_info_t* locale_info, const char* text);
  * 设置当前的国家和语言。
  * @annotation ["scriptable"]
  * @param {locale_info_t*} locale_info locale_info对象。
- * @param {char*} language 语言。
- * @param {char*} country 国家或地区。
+ * @param {const char*} language 语言。
+ * @param {const char*} country 国家或地区。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -213,8 +213,8 @@ ret_t locale_infos_unref(locale_info_t* locale_info);
  * @method locale_infos_change
  * 设置全部locale_info的当前国家和语言。
  * @annotation ["scriptable"]
- * @param {char*} language 语言。
- * @param {char*} country 国家或地区。
+ * @param {const char*} language 语言。
+ * @param {const char*} country 国家或地区。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

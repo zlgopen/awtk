@@ -36,7 +36,7 @@ BEGIN_C_DECLS
  *
  * bsvg to svg
  *
- * @param {uint32_t*} data bsvg数据。
+ * @param {const uint32_t*} data bsvg数据。
  * @param {uint32_t} size bsvg数据长度。
  * @param {str_t*} str 用于返回svg数据。
  *

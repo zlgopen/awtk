@@ -1699,7 +1699,7 @@ ret_t widget_set_sensitive(widget_t* widget, bool_t sensitive);
  * 注册指定事件的处理函数。
  * @annotation ["scriptable:custom"]
  * @param {widget_t*} widget 控件对象。
- * @param {event_type_t} type 事件类型。
+ * @param {uint32_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  * 使用示例：
@@ -1721,7 +1721,7 @@ uint32_t widget_on(widget_t* widget, uint32_t type, event_func_t on_event, void*
  * > 注册时指定一个tag，可用widget\_off\_by\_tag注销相同tag的事件处理函数。
  *
  * @param {widget_t*} widget 控件对象。
- * @param {event_type_t} type 事件类型。
+ * @param {uint32_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  * @param {uint32_t} tag tag。
@@ -1748,7 +1748,7 @@ ret_t widget_off(widget_t* widget, uint32_t id);
  * 递归查找指定名称的子控件，然后为其注册指定事件的处理函数。
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} name 子控件的名称。
- * @param {event_type_t} type 事件类型。
+ * @param {uint32_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  *
@@ -1761,7 +1761,7 @@ uint32_t widget_child_on(widget_t* widget, const char* name, uint32_t type, even
  * @method widget_off_by_func
  * 注销指定函数的事件处理函数。
  * @param {widget_t*} widget 控件对象。
- * @param {event_type_t} type 事件类型。
+ * @param {uint32_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  *
@@ -1921,7 +1921,7 @@ ret_t widget_get_prop_default_value(widget_t* widget, const char* name, value_t*
  * 设置控件指定属性的值。
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} name 属性的名称。
- * @param {value_t*} v 属性的值。
+ * @param {const value_t*} v 属性的值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -2642,7 +2642,7 @@ ret_t widget_prepare_text_style_ex(widget_t* widget, canvas_t* c, color_t defaul
  * 字体由控件当前的状态和style决定。
  *
  * @param {widget_t*} widget 控件对象。
- * @param {wchar_t*} text 文本。
+ * @param {const wchar_t*} text 文本。
  *
  * @return {float_t} 返回文本的宽度。
  */
@@ -2722,7 +2722,7 @@ ret_t widget_re_translate_text(widget_t* widget);
  * @depreated
  * @param {widget_t*} widget widget对象。
  * @param {widget_t*} parent widget的父控件。
- * @param {widget_vtable_t*} vt 虚表。
+ * @param {const widget_vtable_t*} vt 虚表。
  * @param {xy_t}   x x坐标
  * @param {xy_t}   y y坐标
  * @param {wh_t}   w 宽度
@@ -2737,7 +2737,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
  * @method widget_create
  * 创建控件。仅在子类控件构造函数中使用。
  * @param {widget_t*} parent widget的父控件。
- * @param {widget_vtable_t*} vt 虚表。
+ * @param {const widget_vtable_t*} vt 虚表。
  * @param {xy_t}   x x坐标
  * @param {xy_t}   y y坐标
  * @param {wh_t}   w 宽度
@@ -3031,7 +3031,7 @@ ret_t widget_on_paint_border(widget_t* widget, canvas_t* c);
  * @method widget_is_instance_of
  * 检查控件是否是指定的类型。
  * @param {widget_t*} widget 控件对象。
- * @param {widget_vtable_t*} vt 虚表。
+ * @param {const widget_vtable_t*} vt 虚表。
  *
  *  @return {bool_t} 返回TRUE表示是，FALSE表示否。
  */

@@ -81,7 +81,7 @@ wstr_t* wstr_init(wstr_t* str, uint32_t capacity);
  * @method wstr_set
  * 设置字符串。
  * @param {wstr_t*} str str对象。
- * @param {wchar_t*} text 要设置的字符串。
+ * @param {const wchar_t*} text 要设置的字符串。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -91,7 +91,7 @@ ret_t wstr_set(wstr_t* str, const wchar_t* text);
  * @method wstr_set_with_len
  * 设置字符串。
  * @param {wstr_t*} str str对象。
- * @param {wchar_t*} text 要设置的字符串。
+ * @param {const wchar_t*} text 要设置的字符串。
  * @param {uint32_t} len 字符串长度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -111,7 +111,7 @@ ret_t wstr_clear(wstr_t* str);
  * @method wstr_set_utf8
  * 设置UTF8字符串。
  * @param {wstr_t*} str str对象。
- * @param {char*} text 要设置的字符串。
+ * @param {const char*} text 要设置的字符串。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -121,7 +121,7 @@ ret_t wstr_set_utf8(wstr_t* str, const char* text);
  * @method wstr_set_utf8_with_len
  * 设置UTF8字符串。
  * @param {wstr_t*} str str对象。
- * @param {char*} text 要设置的字符串。
+ * @param {const char*} text 要设置的字符串。
  * @param {uint32_t} len 长度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -155,7 +155,7 @@ ret_t wstr_remove(wstr_t* str, uint32_t offset, uint32_t nr);
  * 在指定位置插入字符串。
  * @param {wstr_t*} str str对象。
  * @param {uint32_t} offset 指定的位置。
- * @param {wchar_t*} text 待插入的文本。
+ * @param {const wchar_t*} text 待插入的文本。
  * @param {uint32_t} nr 要插入的字符数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -166,7 +166,7 @@ ret_t wstr_insert(wstr_t* str, uint32_t offset, const wchar_t* text, uint32_t nr
  * @method wstr_append
  * 追加字符串。
  * @param {wstr_t*} str str对象。
- * @param {wchar_t*} text 要追加的字符串。
+ * @param {const wchar_t*} text 要追加的字符串。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -176,7 +176,7 @@ ret_t wstr_append(wstr_t* str, const wchar_t* text);
  * @method wstr_append_with_len
  * 追加字符串。
  * @param {wstr_t*} str str对象。
- * @param {wchar_t*} text 要追加的字符串。
+ * @param {const wchar_t*} text 要追加的字符串。
  * @param {uint32_t} len 字符串长度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -187,7 +187,7 @@ ret_t wstr_append_with_len(wstr_t* str, const wchar_t* text, uint32_t len);
  * @method wstr_push
  * 追加一个字符。
  * @param {wstr_t*} str str对象。
- * @param {wchar_t} c 字符。
+ * @param {const wchar_t} c 字符。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -247,7 +247,7 @@ ret_t wstr_from_float(wstr_t* str, double v);
  * @method wstr_from_value
  * 用value初始化字符串。
  * @param {wstr_t*} str str对象。
- * @param {value_t} v value。
+ * @param {const value_t*} v value。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

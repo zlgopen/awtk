@@ -38,7 +38,7 @@ BEGIN_C_DECLS
  *
  * @param {const char*} xml svg数据。
  * @param {uint32_t} size svg数据长度。
- * @param {uint32_t*} out 用于返回bsvg数据。
+ * @param {uint32_t**} out 用于返回bsvg数据。
  * @param {uint32_t*} out_size bsvg数据长度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

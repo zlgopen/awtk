@@ -946,7 +946,7 @@ ret_t canvas_stroke_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_
  * @param {uint32_t} radius_bl 左下角圆角半径。
  * @param {uint32_t} radius_br 右下角圆角半径。
  * @param {uint32_t} border_width 边宽。
- * @param {uint32_t} border_model 边框类型。
+ * @param {int32_t} border_model 边框类型。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

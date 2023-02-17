@@ -302,7 +302,7 @@ typedef struct _date_time_vtable_t {
  *
  * > 嵌入式平台需要提供并设置获取当前日期和时间的函数，否则相关的功能(如时钟控件)将无法正常工作。
  *
- * @param {date_time_vtable_t} vt 日期和时间的相关函数的实现。
+ * @param {const date_time_vtable_t*} vt 日期和时间的相关函数的实现。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

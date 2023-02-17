@@ -77,7 +77,7 @@ ret_t wstr_format_time(wstr_t* str, const char* format, uint64_t time);
  * 格式化date_time。
  * @param {wstr_t*} str 输出字符串。
  * @param {const char*} format 格式。
- * @param {date_time_t*} dt 时间。
+ * @param {const date_time_t*} dt 时间。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

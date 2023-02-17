@@ -39,7 +39,7 @@ BEGIN_C_DECLS
  *
  * @param {const char*} path 路径。
  * @param {char*} result 用于返回文件名。
- * @param {uint32_t} size 缓冲区大小。
+ * @param {int32_t} size 缓冲区大小。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -53,7 +53,7 @@ ret_t path_basename(const char* path, char* result, int32_t size);
  * @param {const char*} path 路径。
  * @param {bool_t} remove_ext_name 是否去掉扩展名。
  * @param {char*} result 用于返回文件名。
- * @param {uint32_t} size 缓冲区大小。
+ * @param {int32_t} size 缓冲区大小。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -66,7 +66,7 @@ ret_t path_basename_ex(const char* path, bool_t remove_ext_name, char* result, i
  *
  * @param {const char*} path 路径。
  * @param {char*} result 用于返回文件扩展名。
- * @param {uint32_t} size 缓冲区大小。
+ * @param {int32_t} size 缓冲区大小。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -95,7 +95,7 @@ bool_t path_extname_is(const char* path, const char* extname);
  *
  * @param {const char*} path 路径。
  * @param {char*} result 用于返回目录。
- * @param {uint32_t} size 缓冲区大小。
+ * @param {int32_t} size 缓冲区大小。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -108,7 +108,7 @@ ret_t path_dirname(const char* path, char* result, int32_t size);
  *
  * @param {const char*} path 路径。
  * @param {char*} result 用于返回规范后的路径。
- * @param {uint32_t} size 缓冲区大小。
+ * @param {int32_t} size 缓冲区大小。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -121,7 +121,7 @@ ret_t path_normalize(const char* path, char* result, int32_t size);
  *
  * @param {const char*} path 路径。
  * @param {char*} result 用于返回绝对路径。
- * @param {uint32_t} size 缓冲区大小。
+ * @param {int32_t} size 缓冲区大小。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -146,7 +146,7 @@ bool_t path_is_abs(const char* path);
  *> 可变参数为字符串，以NULL参数结束。
  *
  * @param {char*} result 用于返回路径。
- * @param {uint32_t} size 缓冲区大小。
+ * @param {int32_t} size 缓冲区大小。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -158,9 +158,9 @@ ret_t path_build(char* result, int32_t size, ...);
  * 替换文件名。
  *
  * @param {char*} result 用于返回结果。
- * @param {uint32_t} size 缓冲区大小。
- * @param {char*} filename 原始文件路径。
- * @param {char*} basename 替换后的文件名。
+ * @param {int32_t} size 缓冲区大小。
+ * @param {const char*} filename 原始文件路径。
+ * @param {const char*} basename 替换后的文件名。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -172,9 +172,9 @@ ret_t path_replace_basename(char* result, int32_t size, const char* filename, co
  * 替换文件扩展名。
  *
  * @param {char*} result 用于返回结果。
- * @param {uint32_t} size 缓冲区大小。
- * @param {char*} filename 原始文件路径。
- * @param {char*} extname 替换后的文件扩展名。
+ * @param {int32_t} size 缓冲区大小。
+ * @param {const char*} filename 原始文件路径。
+ * @param {const char*} extname 替换后的文件扩展名。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -241,7 +241,7 @@ bool_t path_exist(const char* path);
  *
  * 去掉后面的/和\\字符。
  *
- * @param {const char*} path 目录。
+ * @param {char*} path 目录。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

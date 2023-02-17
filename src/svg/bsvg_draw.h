@@ -56,7 +56,7 @@ ret_t bsvg_draw(bsvg_t* svg, vgcanvas_t* canvas);
  * 绘制bsvg路径。
  *
  * @param {bsvg_draw_ctx_t*} ctx 绘制上下文。
- * @param {svg_path_t*} path path对象。
+ * @param {const svg_path_t*} path path对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

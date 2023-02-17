@@ -152,7 +152,7 @@ ret_t widget_on_copy_default(widget_t* widget, widget_t* other);
  * @annotation ["global"]
  * @param {widget_t*} dst 目的控件对象。
  * @param {widget_t*} src 源控件对象。
- * @param {char**} properties 属性列表。
+ * @param {const char* const*} properties 属性列表。
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_copy_props(widget_t* dst, widget_t* src, const char* const* properties);

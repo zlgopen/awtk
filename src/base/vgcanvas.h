@@ -897,7 +897,7 @@ ret_t vgcanvas_paint(vgcanvas_t* vg, bool_t stroke, bitmap_t* img);
  *
  * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
- * @param {char*} font 字体名称。
+ * @param {const char*} font 字体名称。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -921,7 +921,7 @@ ret_t vgcanvas_set_font_size(vgcanvas_t* vg, float_t size);
  *
  * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
- * @param {char*} value 取值：left|center|right，必须为常量字符串。
+ * @param {const char*} value 取值：left|center|right，必须为常量字符串。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -933,7 +933,7 @@ ret_t vgcanvas_set_text_align(vgcanvas_t* vg, const char* value);
  *
  * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
- * @param {char*} value 取值：top|middle|bottom，必须为常量字符串。
+ * @param {const char*} value 取值：top|middle|bottom，必须为常量字符串。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -959,7 +959,7 @@ ret_t vgcanvas_get_text_metrics(vgcanvas_t* vg, float_t* ascent, float_t* descen
  *
  * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
- * @param {char*} text text
+ * @param {const char*} text text
  * @param {float_t} x x坐标。
  * @param {float_t} y y坐标。
  * @param {float_t} max_width 最大宽度。
@@ -974,7 +974,7 @@ ret_t vgcanvas_fill_text(vgcanvas_t* vg, const char* text, float_t x, float_t y,
  *
  * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
- * @param {char*} text text
+ * @param {const char*} text text
  *
  * @return {float_t} 返回text的宽度。
  */
@@ -1117,7 +1117,7 @@ ret_t vgcanvas_set_fill_color_str(vgcanvas_t* vg, const char* color);
  *
  *>目前只有部分backend支持(如cairo)。
  * @param {vgcanvas_t*} vg vgcanvas对象。
- * @param {vg_gradient_t*} gradient gradient对象。
+ * @param {const vg_gradient_t*} gradient gradient对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -1129,7 +1129,7 @@ ret_t vgcanvas_set_fill_gradient(vgcanvas_t* vg, const vg_gradient_t* gradient);
  *
  *>目前只有部分backend支持(如cairo)。
  * @param {vgcanvas_t*} vg vgcanvas对象。
- * @param {vg_gradient_t*} gradient gradient对象。
+ * @param {const vg_gradient_t*} gradient gradient对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -1233,7 +1233,7 @@ ret_t vgcanvas_set_stroke_radial_gradient(vgcanvas_t* vg, float_t cx, float_t cy
  *
  * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
- * @param {char*} value 取值：butt|round|square，必须为常量字符串。
+ * @param {const char*} value 取值：butt|round|square，必须为常量字符串。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -1245,7 +1245,7 @@ ret_t vgcanvas_set_line_cap(vgcanvas_t* vg, const char* value);
  *
  * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
- * @param {char*} value 取值：bevel|round|miter，必须为常量字符串。
+ * @param {const char*} value 取值：bevel|round|miter，必须为常量字符串。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

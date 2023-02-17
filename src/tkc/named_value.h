@@ -154,7 +154,7 @@ ret_t named_value_deinit(named_value_t* nv);
  * 比较。
  *
  * @param {named_value_t*} nv named_value对象。
- * @param {named_value_t*} other named_value对象。
+ * @param {const named_value_t*} other named_value对象。
  *
  * @return {int32_t} 返回RET_OK表示成功，否则表示失败。
  */

@@ -99,7 +99,7 @@ widget_t* svg_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget image对象。
- * @param {char*}  name 图片名称，该图片必须存在于资源管理器。
+ * @param {const char*}  name 图片名称，该图片必须存在于资源管理器。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

@@ -359,7 +359,7 @@ ret_t fscript_set_global_object(tk_object_t* obj);
  * @method fscript_register_func
  * 注册全局自定义函数。
  * @param {const char*} name 函数名(无需加函数前缀)。
- * @param {fscript_func_t*} func 函数指针。
+ * @param {fscript_func_t} func 函数指针。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

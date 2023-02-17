@@ -112,7 +112,7 @@ ret_t str_extend(str_t* str, uint32_t capacity);
  * @method str_eq
  * 判断两个字符串是否相等。
  * @param {str_t*} str str对象。
- * @param {char*} text 待比较的字符串。
+ * @param {const char*} text 待比较的字符串。
  *
  * @return {bool_t} 返回是否相等。
  */
@@ -122,7 +122,7 @@ bool_t str_eq(str_t* str, const char* text);
  * @method str_set
  * 设置字符串。
  * @param {str_t*} str str对象。
- * @param {char*} text 要设置的字符串。
+ * @param {const char*} text 要设置的字符串。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -141,7 +141,7 @@ ret_t str_clear(str_t* str);
  * @method str_set_with_len
  * 设置字符串。
  * @param {str_t*} str str对象。
- * @param {char*} text 要设置的字符串。
+ * @param {const char*} text 要设置的字符串。
  * @param {uint32_t} len 字符串长度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -152,7 +152,7 @@ ret_t str_set_with_len(str_t* str, const char* text, uint32_t len);
  * @method str_append
  * 追加字符串。
  * @param {str_t*} str str对象。
- * @param {char*} text 要追加的字符串。
+ * @param {const char*} text 要追加的字符串。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -174,7 +174,7 @@ ret_t str_append(str_t* str, const char* text);
  *  str_reset(&s);
  * ```
  * @param {str_t*} str str对象。
- * @param {char*} text 要追加的字符串。
+ * @param {const char*} text 要追加的字符串。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -184,7 +184,7 @@ ret_t str_append_more(str_t* str, const char* text, ...);
  * @method str_append_with_len
  * 追加字符串。
  * @param {str_t*} str str对象。
- * @param {char*} text 要追加的字符串。
+ * @param {const char*} text 要追加的字符串。
  * @param {uint32_t} len 字符串长度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -196,7 +196,7 @@ ret_t str_append_with_len(str_t* str, const char* text, uint32_t len);
  * 插入子字符串。
  * @param {str_t*} str str对象。
  * @param {uint32_t} offset 偏移量。
- * @param {char*} text 要插入的字符串。
+ * @param {const char*} text 要插入的字符串。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -207,7 +207,7 @@ ret_t str_insert(str_t* str, uint32_t offset, const char* text);
  * 插入子字符串。
  * @param {str_t*} str str对象。
  * @param {uint32_t} offset 偏移量。
- * @param {char*} text 要插入的字符串。
+ * @param {const char*} text 要插入的字符串。
  * @param {uint32_t} len 字符串长度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -363,7 +363,7 @@ ret_t str_unescape(str_t* str);
  * @method str_decode_xml_entity
  * 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。
  * @param {str_t*} str str对象。
- * @param {char*} text 要解码的XML文本。
+ * @param {const char*} text 要解码的XML文本。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -373,7 +373,7 @@ ret_t str_decode_xml_entity(str_t* str, const char* text);
  * @method str_decode_xml_entity_with_len
  * 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。
  * @param {str_t*} str str对象。
- * @param {char*} text 要解码的XML文本。
+ * @param {const char*} text 要解码的XML文本。
  * @param {uint32_t} len 字符串长度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -384,7 +384,7 @@ ret_t str_decode_xml_entity_with_len(str_t* str, const char* text, uint32_t len)
  * @method str_encode_xml_entity
  * 对XML基本的entity进行编码，目前仅支持&lt;&gt;&quota;&amp;。
  * @param {str_t*} str str对象。
- * @param {char*} text 要编码的XML文本。
+ * @param {const char*} text 要编码的XML文本。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -394,7 +394,7 @@ ret_t str_encode_xml_entity(str_t* str, const char* text);
  * @method str_encode_xml_entity_with_len
  * 对XML基本的entity进行编码，目前仅支持&lt;&gt;&quota;&amp;。
  * @param {str_t*} str str对象。
- * @param {char*} text 要编码的XML文本。
+ * @param {const char*} text 要编码的XML文本。
  * @param {uint32_t} len 字符串长度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -455,7 +455,7 @@ ret_t str_from_float(str_t* str, double value);
  * @method str_from_value
  * 用value初始化字符串。
  * @param {str_t*} str str对象。
- * @param {value_t} value value。
+ * @param {const value_t*} value value。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -465,7 +465,7 @@ ret_t str_from_value(str_t* str, const value_t* value);
  * @method str_from_wstr
  * 用value初始化字符串。
  * @param {str_t*} str str对象。
- * @param {wchar_t*} wstr Unicode字符串。
+ * @param {const wchar_t*} wstr Unicode字符串。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -475,7 +475,7 @@ ret_t str_from_wstr(str_t* str, const wchar_t* wstr);
  * @method str_from_wstr_with_len
  * 用value初始化字符串。
  * @param {str_t*} str str对象。
- * @param {wchar_t*} wstr Unicode字符串
+ * @param {const wchar_t*} wstr Unicode字符串
  * @param {uint32_t} len Unicode字符串的长度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -529,7 +529,7 @@ ret_t str_decode_hex(str_t* str, uint8_t* data, uint32_t size);
  * @method str_end_with
  * 判断字符串是否以指定的子串结尾。
  * @param {str_t*} str str对象。
- * @param {char*} text 子字符串。
+ * @param {const char*} text 子字符串。
  *
  * @return {bool_t} 返回是否以指定的子串结尾。
  */
@@ -539,7 +539,7 @@ bool_t str_end_with(str_t* str, const char* text);
  * @method str_start_with
  * 判断字符串是否以指定的子串开头。
  * @param {str_t*} str str对象。
- * @param {char*} text 子字符串。
+ * @param {const char*} text 子字符串。
  *
  * @return {bool_t} 返回是否以指定的子串开头。
  */
@@ -549,7 +549,7 @@ bool_t str_start_with(str_t* str, const char* text);
  * @method str_trim
  * 去除首尾指定的字符。
  * @param {str_t*} str str对象。
- * @param {char*} text 要去除的字符集合。
+ * @param {const char*} text 要去除的字符集合。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -559,7 +559,7 @@ ret_t str_trim(str_t* str, const char* text);
  * @method str_trim_left
  * 去除首部指定的字符。
  * @param {str_t*} str str对象。
- * @param {char*} text 要去除的字符集合。
+ * @param {const char*} text 要去除的字符集合。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -569,7 +569,7 @@ ret_t str_trim_left(str_t* str, const char* text);
  * @method str_trim_right
  * 去除尾部指定的字符。
  * @param {str_t*} str str对象。
- * @param {char*} text 要去除的字符集合。
+ * @param {const char*} text 要去除的字符集合。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -579,8 +579,8 @@ ret_t str_trim_right(str_t* str, const char* text);
  * @method str_replace
  * 字符串替换。
  * @param {str_t*} str str对象。
- * @param {char*} text 待替换的子串。
- * @param {char*} new_text 将替换成的子串。
+ * @param {const char*} text 待替换的子串。
+ * @param {const char*} new_text 将替换成的子串。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

@@ -56,7 +56,7 @@ typedef struct _object_wbuffer_t {
  *
  * @annotation ["constructor"]
  * @param {uint8_t*} data 缓冲区。
- * @param {uint16_t} capacity 缓冲区的容量。
+ * @param {uint32_t} capacity 缓冲区的容量。
  *
  * @return {tk_object_t*} 返回object对象。
  *
