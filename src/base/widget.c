@@ -2199,6 +2199,8 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
       ret = RET_NOT_FOUND;
     } else if (tk_str_start_with(name, "style:") || tk_str_start_with(name, "style.")) {
       return widget_set_style(widget, name + 6, v);
+    } else if (tk_str_eq(name, WIDGET_PROP_DIRTY_RECT)) { 
+      return RET_FAIL;
     } else {
       if (widget->custom_props == NULL) {
         widget->custom_props = object_default_create();
@@ -2349,6 +2351,9 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
       ret = RET_OK;
     } else if (tk_str_eq(name, WIDGET_PROP_STATE_FOR_STYLE)) {
       value_set_str(v, widget_get_state_for_style(widget, FALSE, FALSE));
+      ret = RET_OK;
+    } else if (tk_str_eq(name, WIDGET_PROP_DIRTY_RECT)) {
+      value_set_rect(v, rect_init(widget->x, widget->y, widget->w, widget->h));
       ret = RET_OK;
     }
   }

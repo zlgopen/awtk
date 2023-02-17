@@ -20,6 +20,7 @@
  */
 
 #include "tkc/types_def.h"
+#include "tkc/rect.h"
 
 #ifndef TK_VALUE_H
 #define TK_VALUE_H
@@ -167,6 +168,11 @@ typedef enum _value_type_t {
    * 位图类型。
    */
   VALUE_TYPE_BITMAP,
+  /**
+   * @const VALUE_TYPE_RECT
+   * 矩形类型。
+   */
+  VALUE_TYPE_RECT,
 } value_type_t;
 
 typedef struct _binary_data_t {
@@ -241,6 +247,7 @@ struct _value_t {
     pointer_ref_t* ptr_ref;
     func_info_t func;
     void* bitmap;
+    rect_t rect;
   } value;
 };
 
@@ -937,6 +944,26 @@ void* value_bitmap(const value_t* v);
  * @return {value_t*} value对象本身。
  */
 value_t* value_set_bitmap(value_t* v, void* bitmap);
+
+/**
+ * @method value_rect
+ * 获取类型为矩形区域数据。
+ * @annotation ["scriptable"]
+ * @param {value_t*} v value对象。
+ *
+ * @return {rect_t*} 返回矩形区域数据。
+ */
+rect_t* value_rect(const value_t* v);
+
+/**
+ * @method value_set_rect
+ * 设置类型为矩形区域数据。
+ * @param {value_t*} v value对象。
+ * @param {rect_t} r 待设置的值。
+ *
+ * @return {value_t*} value对象本身。
+ */
+value_t* value_set_rect(value_t* v, rect_t r);
 
 /**
  * @method value_lshift

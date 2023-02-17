@@ -360,7 +360,7 @@ TEST(value, ui64_from_str) {
 }
 
 #include "tkc/utils.h"
-
+#include "tkc/rect.h"
 TEST(value, pointer) {
   value_t v;
   char* str = tk_strdup("abc");
@@ -373,6 +373,16 @@ TEST(value, bitmap) {
   value_t v;
   void* bitmap = &v;
   ASSERT_EQ(value_bitmap(value_set_bitmap(&v, bitmap)), bitmap);
+}
+
+TEST(value, rect) {
+  value_t v;
+  rect_t r1 = rect_init(10, 10, 20, 20);
+  rect_t* r2 = value_rect(value_set_rect(&v, r1));
+  ASSERT_EQ(r1.x, r2->x);
+  ASSERT_EQ(r1.y, r2->y);
+  ASSERT_EQ(r1.w, r2->w);
+  ASSERT_EQ(r1.h, r2->h);
 }
 
 TEST(value, lshift) {

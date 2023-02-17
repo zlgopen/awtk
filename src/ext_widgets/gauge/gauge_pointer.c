@@ -81,15 +81,14 @@ static rect_t gauge_pointer_calc_dirty_rect(widget_t* widget, int32_t img_w, int
   return rect_init(min_x, min_y, max_x - min_x, max_y - min_y);
 }
 
-static ret_t gauge_pointer_invalidate(widget_t* widget, const rect_t* rect) {
-  rect_t r;
+rect_t gauge_pointer_get_dirty_rect(widget_t* widget) {
   int32_t w = 0;
   int32_t h = 0;
-  widget_t* parent = widget->parent;
+  rect_t r = rect_init(0, 0, widget->w, widget->h);
   gauge_pointer_t* gauge_pointer = GAUGE_POINTER(widget);
+  return_value_if_fail(gauge_pointer != NULL, r);
   if (widget->initializing) {
-    r = rect_init(0, 0, widget->w, widget->h);
-    return widget_invalidate_force(parent, &r);
+    return r;
   }
 
   if (gauge_pointer->bsvg_asset != NULL || gauge_pointer->image == NULL) {
@@ -110,17 +109,28 @@ static ret_t gauge_pointer_invalidate(widget_t* widget, const rect_t* rect) {
     }
   } else {
     bitmap_t bitmap;
-    if (parent != NULL && !parent->destroying &&
-        widget_load_image(widget, gauge_pointer->image, &bitmap) == RET_OK) {
+    if (widget_load_image(widget, gauge_pointer->image, &bitmap) == RET_OK) {
       w = bitmap.w;
       h = bitmap.h;
     } else {
-      return RET_OK;
+      return r;
     }
   }
 
-  r = gauge_pointer_calc_dirty_rect(widget, w, h);
-  return widget_invalidate_force(parent, &r);
+  return gauge_pointer_calc_dirty_rect(widget, w, h);
+}
+
+static ret_t gauge_pointer_invalidate(widget_t* widget, const rect_t* rect) {
+  rect_t r;
+  widget_t* parent = NULL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  parent = widget->parent;
+  r = gauge_pointer_get_dirty_rect(widget);
+  if (parent != NULL && !parent->destroying) {
+    return widget_invalidate_force(parent, &r);
+  } else {
+    return RET_OK;
+  }
 }
 
 ret_t gauge_pointer_set_angle(widget_t* widget, float_t angle) {
@@ -228,6 +238,9 @@ static ret_t gauge_pointer_get_prop(widget_t* widget, const char* name, value_t*
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_ANCHOR_Y)) {
     value_set_str(v, gauge_pointer->anchor_y);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_DIRTY_RECT)) {
+    value_set_rect(v, gauge_pointer_get_dirty_rect(widget));
     return RET_OK;
   }
 

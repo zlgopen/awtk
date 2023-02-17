@@ -1581,3 +1581,19 @@ TEST(Widget, tr_text_prop) {
   ASSERT_STREQ(widget_get_prop_str(w, WIDGET_PROP_TR_TEXT, NULL), "test");
   widget_destroy(w);
 }
+
+TEST(Widget, dirty_rect_prop) {
+  value_t v;
+  rect_t r = rect_init(0, 0, 400, 300);
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  ASSERT_EQ(widget_set_prop(w, WIDGET_PROP_DIRTY_RECT, &v), RET_FAIL);
+  ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_DIRTY_RECT, &v), RET_OK);
+
+  rect_t* r2 = value_rect(&v);
+  ASSERT_EQ(w->x, r2->x);
+  ASSERT_EQ(w->y, r2->y);
+  ASSERT_EQ(w->w, r2->w);
+  ASSERT_EQ(w->h, r2->h);
+  
+  widget_destroy(w);
+}

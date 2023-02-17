@@ -27,6 +27,15 @@ TEST(GuagePointer, set_angle) {
   EXPECT_TRUE(gauge_pointer_set_angle(gauge_pointer, 10) == RET_OK);
   EXPECT_TRUE(gauge_pointer_tmp->angle == 10);
 
+  value_t v;
+  EXPECT_TRUE(widget_get_prop(gauge_pointer, WIDGET_PROP_DIRTY_RECT, &v) == RET_OK);
+  rect_t r1 = gauge_pointer_get_dirty_rect(gauge_pointer);
+  rect_t* r2 = value_rect(&v);
+  ASSERT_EQ(r1.x, r2->x);
+  ASSERT_EQ(r1.y, r2->y);
+  ASSERT_EQ(r1.w, r2->w);
+  ASSERT_EQ(r1.h, r2->h);
+
   EXPECT_TRUE(gauge_pointer_set_angle(gauge_pointer, -10) == RET_OK);
 
   EXPECT_TRUE(gauge_pointer_set_angle(gauge_pointer, 370) == RET_OK);

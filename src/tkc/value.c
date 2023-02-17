@@ -1004,6 +1004,21 @@ value_t* value_set_bitmap(value_t* v, void* bitmap) {
 
   return value_init(v, VALUE_TYPE_BITMAP);
 }
+
+rect_t* value_rect(const value_t* v) {
+  return_value_if_fail(v != NULL && v->type == VALUE_TYPE_RECT, NULL);
+
+  return (rect_t*)(&(v->value.rect));
+}
+
+value_t* value_set_rect(value_t* v, rect_t r) {
+  return_value_if_fail(v != NULL, NULL);
+
+  v->value.rect = r;
+
+  return value_init(v, VALUE_TYPE_RECT);
+}
+
 /*operations*/
 
 ret_t value_lshift(value_t* v, value_t* result, uint32_t n) {

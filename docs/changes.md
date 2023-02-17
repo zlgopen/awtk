@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/02/17
+  * 给gauge\_pointer控件增加了dirty\_rect的属性(感谢智明提供补丁)
+
 2023/02/16
   * 回退widget\_to\_loacl的修改(感谢智明提供补丁)
   * [关于自定义控件的offset的使用注意事项](how_to_use_offset_in_custom_widget.md)(感谢智明提供补丁)
