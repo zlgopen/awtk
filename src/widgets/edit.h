@@ -221,6 +221,7 @@ typedef struct _edit_t {
   uint8_t right_margin;
 
   bool_t is_key_inputing;
+  bool_t is_text_error;
 
   uint32_t idle_id;
   uint32_t timer_id;

@@ -513,6 +513,8 @@ static ret_t edit_update_status(widget_t* widget) {
 
     if (widget->focused) {
       widget_set_state(widget, WIDGET_STATE_FOCUSED);
+    } else if (edit->is_text_error) {
+      widget_set_state(widget, WIDGET_STATE_ERROR);
     } else {
       widget_set_state(widget, WIDGET_STATE_NORMAL);
     }
@@ -759,6 +761,7 @@ static ret_t edit_select_all_async(const idle_info_t* info) {
 static ret_t edit_check_valid_value(widget_t* widget) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
+  edit->is_text_error = FALSE;
   if (!edit_is_valid_value(widget)) {
     if (edit->auto_fix) {
       wstr_t old_text;
@@ -771,7 +774,12 @@ static ret_t edit_check_valid_value(widget_t* widget) {
         edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGED);
       }
       wstr_reset(&old_text);
+      if (widget->text.size > 0 && !edit_is_valid_value(widget)) {
+        edit->is_text_error = TRUE;
+        widget_set_state(widget, WIDGET_STATE_ERROR);
+      }
     } else if (widget->text.size > 0) {
+      edit->is_text_error = TRUE;
       widget_set_state(widget, WIDGET_STATE_ERROR);
     }
   }
