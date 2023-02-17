@@ -521,7 +521,7 @@ static ret_t input_method_default_request(input_method_t* im, widget_t* widget) 
         info->widget = im->widget;
         info->keyboard = im->keyboard;
 
-        im->timer_close_id = timer_add(on_timer_close_keyboard, info, 100);
+        im->timer_close_id = timer_add(on_timer_close_keyboard, info, 0);
       } else {
         window_close(im->keyboard);
         im->keyboard = NULL;
