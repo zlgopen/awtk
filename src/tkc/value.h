@@ -949,7 +949,7 @@ value_t* value_set_bitmap(value_t* v, void* bitmap);
  * @method value_rect
  * 获取类型为矩形区域数据。
  * @annotation ["scriptable"]
- * @param {value_t*} v value对象。
+ * @param {const value_t*} v value对象。
  *
  * @return {rect_t*} 返回矩形区域数据。
  */
