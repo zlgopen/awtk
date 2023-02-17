@@ -97,6 +97,7 @@
 #include "default/inc/ui/color_picker_hsv.data"
 #include "default/inc/ui/menu_down_right.data"
 #include "default/inc/ui/tab_bottom.data"
+#include "default/inc/ui/fruit.data"
 #include "default/inc/ui/list_view_m.data"
 #include "default/inc/ui/slide_view_h_loop.data"
 #include "default/inc/ui/main_fscript.data"
@@ -1011,6 +1012,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_color_picker_hsv);
   assets_manager_add(am, ui_menu_down_right);
   assets_manager_add(am, ui_tab_bottom);
+  assets_manager_add(am, ui_fruit);
   assets_manager_add(am, ui_list_view_m);
   assets_manager_add(am, ui_slide_view_h_loop);
   assets_manager_add(am, ui_main_fscript);

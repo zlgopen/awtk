@@ -15,7 +15,7 @@
     options="1:ok;2:cancel;"/>
 
   <combo_box_ex x="0" y="middle:-60" w="100" h="30" options="seperator.basic;33;44;55;seperator.user;hello;world;it is long option" text="33" readonly="true"/>
-  <combo_box_ex x="r" y="middle:-60" w="100" h="30" options="seperator.basic;33;44;55;seperator.user;hello;world;it is long option" text="33" readonly="true"/>
+  <combo_box open_window="fruit" x="r" y="middle:-60" w="150" h="30" readonly="true" text="apple  $5.0"/>
 
   <label name="old_value" x="center" y="middle:-20" w="50%" h="30" text=""/>
   <label name="value" x="center" y="middle:20" w="50%" h="30" text=""/>

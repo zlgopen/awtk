@@ -522,6 +522,31 @@ static ret_t on_combo_box_changed(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_combo_box_item_click(void* ctx, event_t* e) {
+  char name[10] = "";
+  char price[10] = "";
+  char fruit_price[20] = "";
+  widget_t* combo_box = WIDGET(ctx);
+  widget_t* combo_box_item = e->target;
+  widget_t* name_label = widget_lookup(combo_box_item, "name", FALSE);
+  widget_t* price_label = widget_lookup(combo_box_item, "price", FALSE);
+
+  widget_get_text_utf8(name_label, name, sizeof(name));
+  widget_get_text_utf8(price_label, price, sizeof(price));
+
+  tk_snprintf(fruit_price, sizeof(fruit_price), "%s  %s", name, price);
+  widget_set_text_utf8(combo_box, fruit_price);
+
+  combo_box_set_selected_index(combo_box, widget_index_of(combo_box_item));
+
+  combo_box->target = NULL;
+  combo_box->key_target = NULL;
+  window_close(widget_get_window(combo_box_item));
+  widget_set_focused_internal(combo_box, TRUE);
+
+  return RET_OK;
+}
+
 static ret_t on_remove_self(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   widget_destroy(widget);
@@ -1054,6 +1079,9 @@ static ret_t install_one(void* ctx, const void* iter) {
   } else if (tk_str_eq(widget->vt->type, "combo_box")) {
     widget_on(widget, EVT_VALUE_CHANGED, on_combo_box_changed, widget);
     widget_on(widget, EVT_VALUE_WILL_CHANGE, on_combo_box_will_change, widget);
+    if (tk_str_eq("fruit", (COMBO_BOX(widget))->open_window)) {
+      combo_box_set_on_item_click(widget, on_combo_box_item_click, widget);
+    }
   }
   (void)ctx;
 
