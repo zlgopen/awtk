@@ -60,6 +60,21 @@ TEST(Str, basic) {
   str_reset(s);
 }
 
+TEST(Str, create) {
+  str_t* str = str_create(0);
+
+  ASSERT_EQ(str != NULL, true);
+  ASSERT_EQ(str->size, 0u);
+
+  ASSERT_EQ(str_set(str, "hello"), RET_OK);
+  ASSERT_EQ(str_eq(str, "hello"), TRUE);
+
+  ASSERT_EQ(str_append(str, " world"), RET_OK);
+  ASSERT_EQ(str_eq(str, "hello world"), TRUE);
+
+  str_destroy(str);
+}
+
 TEST(Str, set_with_len) {
   str_t str;
   str_t* s = NULL;

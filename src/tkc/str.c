@@ -27,6 +27,22 @@
 #include "tkc/object.h"
 #include "tkc/tokenizer.h"
 
+str_t* str_create(uint32_t capacity) {
+  str_t* str = TKMEM_ZALLOC(str_t);
+  return_value_if_fail(str != NULL, NULL);
+
+  return str_init(str, capacity);
+}
+
+ret_t str_destroy(str_t* str) {
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+
+  str_reset(str);
+  TKMEM_FREE(str);
+
+  return RET_OK;
+}
+
 ret_t str_extend(str_t* str, uint32_t capacity) {
   if (capacity <= str->capacity) {
     return RET_OK;

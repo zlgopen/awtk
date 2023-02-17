@@ -69,6 +69,25 @@ typedef struct _str_t {
 } str_t;
 
 /**
+ * @method str_create
+ * 创建str对象。
+ * @annotation ["constructor"]
+ * @param {uint32_t} capacity 初始容量。
+ *
+ * @return {str_t*} str对象。
+ */
+str_t* str_create(uint32_t capacity);
+
+/**
+ * @method str_destroy
+ * 销毁str对象
+ * @param {str_t*} str str对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_destroy(str_t* str);
+
+/**
  * @method str_init
  * 初始化字符串对象。
  * @annotation ["constructor"]

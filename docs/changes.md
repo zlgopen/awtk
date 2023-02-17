@@ -3,6 +3,7 @@
 2023/02/17
   * 给gauge\_pointer控件增加了dirty\_rect的属性(感谢智明提供补丁)
   * 优化edit的error状态(感谢陈聪提供补丁)
+  * str\_t类型新增create和destroy接口(感谢雨欣提供补丁)
 
 2023/02/16
   * 回退widget\_to\_loacl的修改(感谢智明提供补丁)
