@@ -183,4 +183,39 @@ uint32_t tk_crc32(uint32_t init, const uint8_t* data, int size) {
 uint32_t tk_crc32_byte(uint32_t crc, uint8_t data) {
   return (crc >> 8) ^ crc_tab32[(crc ^ (uint32_t)data) & 0x000000FFul];
 }
+
+#include "tkc/fs.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
+
+uint32_t tk_crc32_file(const char* filename, uint32_t block_size) {
+  int32_t size = 0;
+  fs_file_t* fp = NULL;
+  uint8_t* buff = NULL;
+  uint32_t crc32 = PPPINITFCS32;
+
+  return_value_if_fail(filename != NULL, crc32);
+
+  fp = fs_open_file(os_fs(), filename, "rb");
+  return_value_if_fail(fp != NULL, crc32);
+  block_size = tk_max_int(block_size, 256);
+  block_size = tk_min_int(block_size, 1024 * 1024);
+
+  buff = TKMEM_ALLOC(block_size + 1);
+  goto_error_if_fail(buff != NULL);
+
+  while (!fs_file_eof(fp)) {
+    size = fs_file_read(fp, buff, block_size);
+    if (size <= 0) {
+      break;
+    }
+    crc32 = tk_crc32(crc32, buff, size);
+  }
+
+error:
+  fs_file_close(fp);
+  TKMEM_FREE(buff);
+
+  return crc32;
+}
 #endif

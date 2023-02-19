@@ -113,6 +113,16 @@ uint32_t tk_crc32(uint32_t crc, const uint8_t* data, int size);
  * @return {uint32_t} 返回计算结果。
  */
 uint32_t tk_crc32_byte(uint32_t crc, uint8_t data);
+
+/**
+ * @method tk_crc32_file
+ * 计算文件的crc32哈希值。
+ * @param {const char*} filename 文件名。
+ * @param {uint32_t} block_size 数据块长度。
+ *
+ * @return {uint32_t} 返回计算结果。
+ */
+uint32_t tk_crc32_file(const char* filename, uint32_t block_size);
 #endif
 
 END_C_DECLS
