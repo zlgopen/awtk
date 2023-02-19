@@ -16,3 +16,13 @@ TEST(SHA256, basic) {
 
   str_reset(&str);
 }
+
+TEST(SHA256, file) {
+  str_t str;
+  str_init(&str, 100);
+
+  tk_sha256_file("tests/testdata/test.png", 1024, &str);
+  ASSERT_STREQ(str.str, "522c4071fe4107b797a999da06b14f1fef464f3ac2f9119e24586ce82e199969");
+
+  str_reset(&str);
+}

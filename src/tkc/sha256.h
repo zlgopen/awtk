@@ -59,6 +59,17 @@ ret_t tk_sha256_done(tk_sha256_t* sha256, uint8_t hash[TK_SHA256_HASH_LEN + 1]);
  */
 ret_t tk_sha256(const void* data, uint32_t len, str_t* hash);
 
+/**
+ * @method tk_sha256_file
+ * 计算文件的sha256哈希值。
+ * @param {const char*} filename 文件名。
+ * @param {uint32_t} block_size 数据块长度。
+ * @param {str_t*} hash 用于返回计算结果。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_sha256_file(const char* filename, uint32_t block_size, str_t* hash);
+
 END_C_DECLS
 
 #endif /*TK_SHA256_H*/

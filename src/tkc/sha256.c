@@ -203,9 +203,19 @@ ret_t tk_sha256_done(tk_sha256_t* sha256, uint8_t hash[TK_SHA256_HASH_LEN + 1]) 
   return RET_OK;
 }
 
-ret_t tk_sha256(const void* data, uint32_t len, str_t* hash) {
+static ret_t tk_sha256_hash_to_str(str_t* hash, uint8_t result[TK_SHA256_HASH_LEN + 1]) {
   char text[32];
   uint32_t i = 0;
+
+  for (i = 0; i < TK_SHA256_HASH_LEN; i++) {
+    tk_snprintf(text, sizeof(text), "%02x", (int)(result[i]));
+    str_append(hash, text);
+  }
+
+  return RET_OK;
+}
+
+ret_t tk_sha256(const void* data, uint32_t len, str_t* hash) {
   tk_sha256_t sha256;
   uint8_t result[TK_SHA256_HASH_LEN + 1];
   return_value_if_fail(data != NULL && hash != NULL, RET_BAD_PARAMS);
@@ -214,10 +224,44 @@ ret_t tk_sha256(const void* data, uint32_t len, str_t* hash) {
   tk_sha256_hash(&sha256, (const uint8_t*)data, len);
   tk_sha256_done(&sha256, result);
 
-  for (i = 0; i < TK_SHA256_HASH_LEN; i++) {
-    tk_snprintf(text, sizeof(text), "%02x", (int)(result[i]));
-    str_append(hash, text);
-  }
+  return tk_sha256_hash_to_str(hash, result);
+}
 
-  return RET_OK;
+#include "tkc/fs.h"
+#include "tkc/mem.h"
+
+ret_t tk_sha256_file(const char* filename, uint32_t block_size, str_t* hash) {
+  int32_t size = 0;
+  ret_t ret = RET_FAIL;
+  fs_file_t* fp = NULL;
+  uint8_t* buff = NULL;
+
+  tk_sha256_t sha256;
+  uint8_t result[TK_SHA256_HASH_LEN + 1];
+  return_value_if_fail(filename != NULL && hash != NULL, RET_BAD_PARAMS);
+
+  fp = fs_open_file(os_fs(), filename, "rb");
+  return_value_if_fail(fp != NULL, RET_BAD_PARAMS);
+  block_size = tk_max_int(block_size, 256);
+  block_size = tk_min_int(block_size, 1024 * 1024);
+
+  buff = TKMEM_ALLOC(block_size + 1);
+  goto_error_if_fail(buff != NULL);
+
+  tk_sha256_init(&sha256);
+  while (!fs_file_eof(fp)) {
+    size = fs_file_read(fp, buff, block_size);
+    if (size <= 0) {
+      break;
+    }
+    tk_sha256_hash(&sha256, buff, size);
+  }
+  tk_sha256_done(&sha256, result);
+  ret = tk_sha256_hash_to_str(hash, result);
+
+error:
+  fs_file_close(fp);
+  TKMEM_FREE(buff);
+
+  return ret;
 }
