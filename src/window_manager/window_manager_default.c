@@ -612,7 +612,13 @@ static ret_t window_manager_default_close_window(widget_t* widget, widget_t* win
     widget_remove_child(widget, window);
     idle_add(window_manager_idle_destroy_window, window);
     /* 这里是解决没有结束动画，但是 prev_win 是高亮的对话框的情况 */
-    prev_win = window_manager_get_top_main_window(widget);
+    prev_win = window_manager_get_top_window(widget);
+    if (widget_is_keyboard(prev_win)) {
+      input_method_t* im = input_method();
+      if (im->keyboard != NULL && im->keyboard == prev_win) {
+        prev_win = widget_get_window(im->widget);
+      }
+    }
     if (prev_win != NULL) {
       if (!widget_is_keyboard(window)) {
         window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_FOREGROUND);
