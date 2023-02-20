@@ -183,7 +183,7 @@ static ret_t pages_set_prop(widget_t* widget, const char* name, const value_t* v
   if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_ACTIVE)) {
     return pages_set_active(widget, value_int(v));
   } else if (tk_str_eq(name, WIDGET_PROP_AUTO_FOCUSED)) {
-    return pages_set_auto_focused(widget,value_bool(v));
+    return pages_set_auto_focused(widget, value_bool(v));
   }
 
   return RET_NOT_FOUND;
@@ -263,8 +263,9 @@ static ret_t pages_on_remove_child(widget_t* widget, widget_t* child) {
     if (remove_index < active ||
         (remove_index == active && remove_index == widget->children->size - 1)) {
       active = tk_max(active - 1, 0);
-      pages->active = (uint32_t)active;
+      pages_set_active(widget, active);
     }
+    widget_dispatch_simple_event(widget, EVT_PAGE_CHANGED);
   }
   return RET_CONTINUE;
 }
