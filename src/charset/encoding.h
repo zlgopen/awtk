@@ -91,7 +91,7 @@ typedef enum _encoding_name_t {
  * @param {const char*} from_str 源字符串。
  * @param {uint32_t} from_size 源字符串的长度。
  * @param {encoding_name_t} to 目标字符串的编码名称。
- * @param {const char*} to_str目标字符串。
+ * @param {char*} to_str 目标字符串。
  * @param {uint32_t} to_size 目标字符串的最大长度。
  *
  *
@@ -127,7 +127,7 @@ ret_t encoding_utf8_to_gbk(const char* from_str, uint32_t from_size, char* to_st
  *
  * @param {const char*} from_str 源字符串(gbk)。
  * @param {uint32_t} from_size 源字符串的长度。
- * @param {const char*} to_str目标字符串(utf8)。
+ * @param {char*} to_str 目标字符串(utf8)。
  * @param {uint32_t} to_size 目标字符串的最大长度。
  *
  *

@@ -623,8 +623,8 @@ wheel_event_t* wheel_event_cast(event_t* event);
  * @method wheel_event_init
  * 初始化事件。
  * @param {wheel_event_t*} event event对象。
- * @param {void*} target 事件目标。
  * @param {uint32_t} type 事件类型。
+ * @param {void*} target 事件目标。
  * @param {int32_t} dy 滚轮的y值。
  *
  * @return {event_t*} event对象。
@@ -715,8 +715,8 @@ value_change_event_t* value_change_event_cast(event_t* event);
  * @method value_change_event_init
  * 初始化事件。
  * @param {value_change_event_t*} event event对象。
- * @param {void*} target 事件目标。
  * @param {uint32_t} type 事件类型。
+ * @param {void*} target 事件目标。
  *
  * @return {event_t*} event对象。
  */
@@ -759,8 +759,8 @@ offset_change_event_t* offset_change_event_cast(event_t* event);
  * @method offset_change_event_init
  * 初始化事件。
  * @param {offset_change_event_t*} event event对象。
- * @param {void*} target 事件目标。
  * @param {uint32_t} type 事件类型。
+ * @param {void*} target 事件目标。
  * @param {float_t} old_offset 旧的偏移数据。
  * @param {float_t} new_offset 新的偏移数据。
  *
@@ -851,8 +851,8 @@ pointer_event_t* pointer_event_cast(event_t* event);
  * @method pointer_event_init
  * 初始化事件。
  * @param {pointer_event_t*} event event对象。
- * @param {void*} target 事件目标。
  * @param {uint32_t} type 事件类型。
+ * @param {void*} target 事件目标。
  * @param {int32_t} x x的值。
  * @param {int32_t} y y的值。
  *
@@ -971,8 +971,8 @@ key_event_t* key_event_cast(event_t* event);
  * @method key_event_init
  * 初始化事件。
  * @param {key_event_t*} event event对象。
- * @param {void*} target 事件目标。
  * @param {uint32_t} type 事件类型。
+ * @param {void*} target 事件目标。
  * @param {int32_t} key key的值。
  *
  * @return {event_t*} event对象。
@@ -1009,8 +1009,8 @@ paint_event_t* paint_event_cast(event_t* event);
  * @method paint_event_init
  * 初始化事件。
  * @param {paint_event_t*} event event对象。
- * @param {void*} target 事件目标。
  * @param {uint32_t} type 事件类型。
+ * @param {void*} target 事件目标。
  * @param {canvas_t*} c canvas对象。
  *
  * @return {event_t*} event对象。
@@ -1047,8 +1047,8 @@ window_event_t* window_event_cast(event_t* event);
  * @method window_event_init
  * 初始化事件。
  * @param {window_event_t*} event event对象。
- * @param {void*} target 事件目标。
  * @param {uint32_t} type 事件类型。
+ * @param {void*} target 事件目标。
  * @param {widget_t*} widget window对象。
  *
  * @return {event_t*} event对象。

@@ -53,7 +53,7 @@ font_loader_t* font_loader_stb(void);
  *
  * 创建stb字体对象。
  * @param {const char*} name 字体名称。
- * @param {const uint8_t* buff} 字体数据。
+ * @param {const uint8_t*} buff 字体数据。
  * @param {uint32_t} size 字体数据长度。
  *
  * @return {font_t*} 返回字体对象。
@@ -76,7 +76,7 @@ font_loader_t* font_loader_stb_mono(void);
  *
  * 创建stb mono字体对象。
  * @param {const char*} name 字体名称。
- * @param {const uint8_t* buff} 字体数据。
+ * @param {const uint8_t*} buff 字体数据。
  * @param {uint32_t} size 字体数据长度。
  *
  * @return {font_t*} 返回字体对象。

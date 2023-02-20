@@ -28,7 +28,7 @@ BEGIN_C_DECLS
  * 从参数中获取数据和长度。
  *
  * @param {fscript_args_t*} args 参数。
- * @param {const uint8_t**} 返回数据。
+ * @param {const uint8_t**} ret_data 返回数据。
  * @param {uint32_t*} ret_size 返回数据的长度。 
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

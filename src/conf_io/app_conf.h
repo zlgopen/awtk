@@ -50,7 +50,7 @@ BEGIN_C_DECLS
  *
  * @annotation ["static"]
  * 
- * @param {tk_object_t*} 配置对象。由app_conf_deinit释放。
+ * @param {tk_object_t*} obj 配置对象。由app_conf_deinit释放。
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

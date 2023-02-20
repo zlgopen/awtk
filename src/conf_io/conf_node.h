@@ -120,7 +120,7 @@ conf_node_t* conf_doc_dup_node(conf_doc_t* doc, conf_node_t* node, const char* n
  * @param {conf_doc_t*} doc 文档对象。
  * @param {conf_node_t*} node 节点对象。
  * @param {const char*} name 名称。
- * @param {const value_t* v} 值。
+ * @param {const value_t*} v 值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

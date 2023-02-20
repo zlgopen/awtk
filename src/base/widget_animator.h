@@ -184,7 +184,7 @@ struct _widget_animator_t {
  * @param {widget_t*} widget 控件对象。
  * @param {uint32_t} duration 动画持续时间。
  * @param {uint32_t} delay 动画执行时间。
- * @param {easing_func_t} 插值函数。
+ * @param {easing_func_t} easing 插值函数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
