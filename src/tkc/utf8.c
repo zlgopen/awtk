@@ -247,16 +247,16 @@ char* tk_utf8_from_utf16_ex(const wchar_t* in, uint32_t in_size, char* out, uint
   return utf16_to_utf8(in, in_size, out, out_size);
 }
 
-char* tk_utf8_from_utf16(const wchar_t* str, char* out, uint32_t size) {
-  return_value_if_fail(str != NULL && out != NULL && size > 0, NULL);
+char* tk_utf8_from_utf16(const wchar_t* str, char* out, uint32_t out_size) {
+  return_value_if_fail(str != NULL && out != NULL && out_size > 0, NULL);
 
-  return utf16_to_utf8(str, wcslen(str), out, size);
+  return utf16_to_utf8(str, wcslen(str), out, out_size);
 }
 
-wchar_t* tk_utf8_to_utf16(const char* str, wchar_t* out, uint32_t size) {
-  return_value_if_fail(str != NULL && out != NULL, NULL);
+wchar_t* tk_utf8_to_utf16(const char* str, wchar_t* out, uint32_t out_size) {
+  return_value_if_fail(str != NULL && out != NULL && out_size > 0, NULL);
 
-  return tk_utf8_to_utf16_ex(str, strlen(str), out, size);
+  return tk_utf8_to_utf16_ex(str, strlen(str), out, out_size);
 }
 
 wchar_t* tk_utf8_to_utf16_ex(const char* str, uint32_t size, wchar_t* out, uint32_t out_size) {

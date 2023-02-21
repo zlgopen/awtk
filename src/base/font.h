@@ -143,7 +143,7 @@ glyph_t* glyph_clone(glyph_t* g);
  * @method glyph_destroy
  * 销毁glyph对象。
  * @annotation ["deconstructor"]
- * @param {glyph_t*} glyph glyph对象。
+ * @param {glyph_t*} g glyph对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

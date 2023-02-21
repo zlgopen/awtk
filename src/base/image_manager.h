@@ -231,7 +231,7 @@ ret_t image_manager_set_assets_manager(image_manager_t* imm, assets_manager_t* a
 /**
  * @method image_manager_deinit
  * 析构图片管理器。
- * @param {image_manager_t*} imm 图片管理器对象。
+ * @param {image_manager_t*} im 图片管理器对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -240,7 +240,7 @@ ret_t image_manager_deinit(image_manager_t* im);
 /**
  * @method image_manager_destroy
  * 析构并释放图片管理器。
- * @param {image_manager_t*} imm 图片管理器对象。
+ * @param {image_manager_t*} im 图片管理器对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

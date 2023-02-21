@@ -130,8 +130,8 @@ uint32_t emitter_on(emitter_t* emitter, uint32_t etype, event_func_t handler, vo
  * @method emitter_exist
  * 判断指定的事件和回调函数是否已经注册。
  * @param {emitter_t*} emitter emitter对象。
- * @param {event_type_t} type 事件类型。
- * @param {event_func_t} on_event 事件处理函数。
+ * @param {uint32_t} etype 事件类型。
+ * @param {event_func_t} handler 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  *
  * @return {bool_t} 返回TRUE表示已经注册，否则表示没有注册。
@@ -142,8 +142,8 @@ bool_t emitter_exist(emitter_t* emitter, uint32_t etype, event_func_t handler, v
  * @method emitter_on_with_tag
  * 注册指定事件的处理函数。
  * @param {emitter_t*} emitter emitter对象。
- * @param {event_type_t} type 事件类型。
- * @param {event_func_t} on_event 事件处理函数。
+ * @param {uint32_t} etype 事件类型。
+ * @param {event_func_t} handler 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  * @param {uint32_t} tag tag。
  *
@@ -167,8 +167,8 @@ ret_t emitter_off(emitter_t* emitter, uint32_t id);
  * @method emitter_off_by_func
  * 注销指定事件的处理函数。
  * @param {emitter_t*} emitter emitter对象。
- * @param {event_type_t} type 事件类型。
- * @param {event_func_t} on_event 事件处理函数。
+ * @param {uint32_t} etype 事件类型。
+ * @param {event_func_t} handler 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

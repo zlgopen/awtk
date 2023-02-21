@@ -293,7 +293,7 @@ ret_t fscript_set_on_error(fscript_t* fscript, fscript_on_error_t on_error, void
  * @method fscript_set_print_func
  * 设置打印日志的函数。
  * @param {fscript_t*} fscript 脚本引擎对象。
- * @param {fscript_func_t} print_func 打印日志的函数。
+ * @param {fscript_func_t} print 打印日志的函数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

@@ -726,7 +726,7 @@ char* tk_str_tolower(char* str);
  *
  * 将utf8字符串拷贝为UCS字符串。
  *
- * @param {char*} str utf8编码的字符串。
+ * @param {const char*} str utf8编码的字符串。
  *
  * @return {wchar_t*} 返回UCS字符串(需要调用TKMEM_FREE释放)。
  */

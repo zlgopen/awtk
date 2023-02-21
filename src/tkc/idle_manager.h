@@ -49,7 +49,7 @@ idle_manager_t* idle_manager(void);
 /**
  * @method idle_manager_set
  * 设置缺省的idle_manager_t管理器。
- * @param {idle_manager_t*} idle_manager_t idle_manager_t管理器对象。
+ * @param {idle_manager_t*} idle_manager idle_manager_t管理器对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

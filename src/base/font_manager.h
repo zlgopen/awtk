@@ -115,18 +115,17 @@ font_manager_t* font_manager_init(font_manager_t* fm, font_loader_t* loader);
  * * 一个用于被设计的窗口加载字体。
  *
  *这两个字体管理器需要从不同的路径加载资源。
- * @param {font_manager_t*} imm 字体管理器对象。
+ * @param {font_manager_t*} fm 字体管理器对象。
  * @param {assets_manager_t*} assets_manager 资源管理器。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t font_manager_set_assets_manager(font_manager_t* imm, assets_manager_t* assets_manager);
+ret_t font_manager_set_assets_manager(font_manager_t* fm, assets_manager_t* assets_manager);
 
 /**
  * @method font_manager_add_font
  * 向缓存中加入字体。
  * @param {font_manager_t*} fm 字体管理器对象。
- * @param {char*} name 字体名。
  * @param {font_t*} font 字体。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -154,7 +153,7 @@ font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t 
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t font_manager_set_fallback_get_font(font_manager_t* imm,
+ret_t font_manager_set_fallback_get_font(font_manager_t* fm,
                                          font_manager_get_font_t fallback_get_font, void* ctx);
 
 /**

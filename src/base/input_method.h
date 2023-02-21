@@ -459,7 +459,7 @@ ret_t input_method_dispatch_key(input_method_t* im, uint32_t key);
  * 提交按键。
  * @annotation ["scriptable"]
  * @param {input_method_t*} im 输入法对象。
- * @param {const char*} key 键值。
+ * @param {const char*} keys 键值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

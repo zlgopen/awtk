@@ -52,7 +52,7 @@ timer_manager_t* timer_manager(void);
 /**
  * @method timer_manager_set
  * 设置缺省的定时器管理器。
- * @param {timer_manager_t*} timer_manager_t 定时器管理器对象。
+ * @param {timer_manager_t*} timer_manager 定时器管理器对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

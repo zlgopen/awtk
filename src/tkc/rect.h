@@ -331,7 +331,7 @@ rectf_t rectf_fix(rectf_t* r, wh_t max_w, wh_t max_h);
  * @method rect_to_rectf
  * rect 类型转换到 rectf 类型。
  *
- * @param {const rect_t*} r1 rect 对象。
+ * @param {const rect_t*} r rect 对象。
  *
  * @return {rectf_t} 返回 rectf_t 对象。
  */

@@ -339,7 +339,7 @@ const wchar_t* wcs_chr(const wchar_t* s, wchar_t c);
  * @param {wchar_t*} s1 目标串。
  * @param {const wchar_t*} s2 源串。
  *
- * @return {const wchar_t*} 复制后的串地址。
+ * @return {wchar_t*} 复制后的串地址。
  */
 wchar_t* wcs_cpy(wchar_t* s1, const wchar_t* s2);
 
@@ -351,7 +351,7 @@ wchar_t* wcs_cpy(wchar_t* s1, const wchar_t* s2);
  * @param {const wchar_t*} s2 源串。
  * @param {uint32_t} n 拷贝长度。
  *
- * @return {const wchar_t*} 复制后的串地址。
+ * @return {wchar_t*} 复制后的串地址。
  */
 wchar_t* wcs_ncpy(wchar_t* s1, const wchar_t* s2, uint32_t n);
 

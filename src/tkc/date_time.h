@@ -232,7 +232,7 @@ bool_t date_time_is_leap(uint32_t year);
  *
  * @annotation ["scriptable", "static"]
  * @param {uint32_t} year 年份。
- * @param {uint32_t} montn 月份(1-12)。
+ * @param {uint32_t} month 月份(1-12)。
  *
  * @return {int32_t} 返回大于0表示天数，否则表示失败。
  */
@@ -244,7 +244,7 @@ int32_t date_time_get_days(uint32_t year, uint32_t month);
  *
  * @annotation ["scriptable", "static"]
  * @param {uint32_t} year 年份。
- * @param {uint32_t} montn 月份(1-12)。
+ * @param {uint32_t} month 月份(1-12)。
  * @param {uint32_t} day 日(1-31)。
  *
  * @return {int32_t} 返回大于等于0表示周几(0-6)，否则表示失败。
@@ -256,7 +256,7 @@ int32_t date_time_get_wday(uint32_t year, uint32_t month, uint32_t day);
  * 获取指定月份的英文名称(简写)。
  *
  * @annotation ["scriptable", "static"]
- * @param {uint32_t} montn 月份(1-12)。
+ * @param {uint32_t} month 月份(1-12)。
  *
  * @return {const char*} 返回指定月份的英文名称(简写)。
  */

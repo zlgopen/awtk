@@ -505,7 +505,7 @@ ret_t vgcanvas_begin_frame(vgcanvas_t* vg, const dirty_rects_t* dirty_rects);
  * @param {float_t} y y坐标。
  * @param {float_t} w 宽度。
  * @param {float_t} h 高度。
- * @param {color_t} c 颜色。
+ * @param {color_t} color 颜色。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -909,7 +909,7 @@ ret_t vgcanvas_set_font(vgcanvas_t* vg, const char* font);
  *
  * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
- * @param {float_t} font 字体大小。
+ * @param {float_t} size 字体大小。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -1187,7 +1187,7 @@ ret_t vgcanvas_set_stroke_color(vgcanvas_t* vg, color_t color);
  * @alias vgcanvas_set_stroke_color
  * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
- * @param {const char*} color 颜色。
+ * @param {const char*} str 颜色。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

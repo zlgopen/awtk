@@ -57,7 +57,7 @@ ret_t tk_cond_wait(tk_cond_t* cond, tk_mutex_t* mutex);
  * 等待指定时间。
  * @param {tk_cond_t*}    cond cond对象。
  * @param {tk_mutex_t*}    mutex mutex对象。
- * @param {uint32_t*}  timeout_ms 最长等待时间。
+ * @param {uint32_t}  ms 最长等待时间。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

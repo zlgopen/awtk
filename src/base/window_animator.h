@@ -152,7 +152,6 @@ struct _window_animator_t {
  * @method window_animator_update
  * 更新动画。
  * @param {window_animator_t*} wa 窗口动画对象。
- * @param {canvas_t*} canvas 画布对象。
  * @param {uint64_t} time_ms 当前时间(毫秒)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

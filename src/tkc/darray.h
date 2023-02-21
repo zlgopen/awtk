@@ -355,7 +355,7 @@ ret_t darray_insert(darray_t* darray, uint32_t index, void* data);
  * 插入一个元素到有序数组。
  * @param {darray_t*} darray 数组对象。
  * @param {void*} data 待插入的元素。
- * @param {tk_compare_t} compare 元素比较函数。
+ * @param {tk_compare_t} cmp 元素比较函数。
  * @param {bool_t} replace_if_exist 如果存在是否替换。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

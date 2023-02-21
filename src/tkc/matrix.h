@@ -152,8 +152,8 @@ matrix_t* matrix_transform_point(matrix_t* m, xy_t x, xy_t y, xy_t* out_x, xy_t*
  * @param {matrix_t*} m 矩阵对象。
  * @param {float} x x
  * @param {float} y y
- * @param {float*} out_x out_x
- * @param {float*} out_y out_y
+ * @param {float*} ox out_x
+ * @param {float*} oy out_y
  *
  * @return {matrix_t*} 矩阵对象。
  */

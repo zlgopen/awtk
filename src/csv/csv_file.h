@@ -319,7 +319,6 @@ ret_t csv_file_save(csv_file_t* csv, const char* filename);
  * 保存。
  *
  * @param {csv_file_t*} csv csv对象。
- * @param {const char*} filename 文件名。
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

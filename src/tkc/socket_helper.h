@@ -124,8 +124,8 @@ ret_t tk_socket_set_blocking(int sock, bool_t blocking);
  * @annotation ["static"]
  * 解析主机名，并初始化addr对象。
  * 
- * @param {int} sock socket句柄。
- * @param {bool_t} blocking 
+ * @param {const char*} host 主机名。
+ * @param {int} port 端口号 
  * @param {struct sockaddr_in*} addr 地址对象。 
  *
  * @return {struct sockaddr*} 返回地址对象。 

@@ -40,8 +40,6 @@ BEGIN_C_DECLS
  *
  * 创建事件源管理器。
  *
- * @param {event_source_manager_t*} manager event_source_manager对象。
- *
  * @return {event_source_manager_t*} 返回事件源管理器对象。
  *
  */

@@ -114,7 +114,7 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, const rect_t* dst, const rect
  * @param {bitmap_t*} src 源图片对象。
  * @param {const rectf_t*} dst_r 目的区域。（坐标原点为旋转后的坐标系原点，并非是 dst 的左上角）
  * @param {const rectf_t*} src_r 源区域。
- * @param {uint8_t} global_alpha 全局alpha。
+ * @param {uint8_t} alpha 全局alpha。
  * @param {lcd_orientation_t} o 旋转角度(一般支持90度即可，旋转方向为逆时针)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败，返回失败则上层用软件实现。

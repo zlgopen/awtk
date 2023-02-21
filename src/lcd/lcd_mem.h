@@ -106,7 +106,7 @@ static inline ret_t lcd_mem_deinit(lcd_mem_t* mem) {
  * @method lcd_mem_set_offline_fb
  * 设置 lcd_mem 对象中的 offline_fb
  * @export none
- * @param {lcd_mem_t*} mem lcd_mem 对象。
+ * @param {lcd_mem_t*} lcd lcd_mem 对象。
  * @param {uint8_t*} offline_fb offline_fb 地址。
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -121,7 +121,7 @@ static inline ret_t lcd_mem_set_offline_fb(lcd_mem_t* lcd, uint8_t* offline_fb) 
  * @method lcd_mem_get_offline_fb
  * 获取 lcd_mem 对象中的 offline_fb
  * @export none
- * @param {lcd_mem_t*} mem lcd_mem 对象。
+ * @param {lcd_mem_t*} lcd lcd_mem 对象。
  * 
  * @return {uint8_t*} 返回 offline_fb 地址。
  */
@@ -134,7 +134,7 @@ static inline uint8_t* lcd_mem_get_offline_fb(lcd_mem_t* lcd) {
  * @method lcd_mem_set_online_fb
  * 设置 lcd_mem 对象中的 online_fb
  * @export none
- * @param {lcd_mem_t*} mem lcd_mem 对象。
+ * @param {lcd_mem_t*} lcd lcd_mem 对象。
  * @param {uint8_t*} online_fb online_fb 地址。
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -149,7 +149,7 @@ static inline ret_t lcd_mem_set_online_fb(lcd_mem_t* lcd, uint8_t* online_fb) {
  * @method lcd_mem_get_online_fb
  * 获取 lcd_mem 对象中的 online_fb
  * @export none
- * @param {lcd_mem_t*} mem lcd_mem 对象。
+ * @param {lcd_mem_t*} lcd lcd_mem 对象。
  * 
  * @return {uint8_t*} 返回 online_fb 地址。
  */
@@ -162,7 +162,7 @@ static inline uint8_t* lcd_mem_get_online_fb(lcd_mem_t* lcd) {
  * @method lcd_mem_set_next_fb
  * 设置 lcd_mem 对象中的 next_fb
  * @export none
- * @param {lcd_mem_t*} mem lcd_mem 对象。
+ * @param {lcd_mem_t*} lcd lcd_mem 对象。
  * @param {uint8_t*} next_fb next_fb 地址。
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -177,7 +177,7 @@ static inline ret_t lcd_mem_set_next_fb(lcd_mem_t* lcd, uint8_t* next_fb) {
  * @method lcd_mem_get_next_fb
  * 获取 lcd_mem 对象中的 next_fb
  * @export none
- * @param {lcd_mem_t*} mem lcd_mem 对象。
+ * @param {lcd_mem_t*} lcd lcd_mem 对象。
  * 
  * @return {uint8_t*} 返回 next_fb 地址。
  */

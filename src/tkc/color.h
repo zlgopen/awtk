@@ -100,8 +100,8 @@ color_t color_init(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
  *
  * @annotation ["constructor", "scriptable", "gc"]
  * @param {uint8_t} r 红色通道。
- * @param {uint8_t} b 蓝色通道。
  * @param {uint8_t} g 绿色通道。
+ * @param {uint8_t} b 蓝色通道。
  * @param {uint8_t} a alpha通道。
  *
  * @return {color_t*} color对象。

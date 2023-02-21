@@ -635,7 +635,7 @@ int32_t fs_get_file_size(fs_t* fs, const char* name);
  * 获取文件系统信息。
  *
  * @param {fs_t*} fs 文件系统对象，一般赋值为os_fs()。
- * @param {const char*} value 卷名。
+ * @param {const char*} volume 卷名。
  * @param {int32_t*} free_kb 用于返回空闲空间大小(KB)
  * @param {int32_t*} total_kb 用于返回总共空间大小(KB)
  *
@@ -817,7 +817,7 @@ void* file_read(const char* name, uint32_t* size);
  * 从某个位置读取文件。
  *
  * @param {const char*} name 文件名。
- * @param {const void*} buffer 数据缓冲区。
+ * @param {void*} buff 数据缓冲区。
  * @param {uint32_t} size 数据长度。
  * @param {uint32_t} offset 偏移量。
  *
@@ -831,7 +831,7 @@ int32_t file_read_part(const char* name, void* buff, uint32_t size, uint32_t off
  * 写入文件。
  *
  * @param {const char*} name 文件名。
- * @param {const void*} buffer 数据缓冲区。
+ * @param {const void*} buff 数据缓冲区。
  * @param {uint32_t} size 数据长度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

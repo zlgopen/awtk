@@ -92,7 +92,7 @@ typed_array_t* typed_array_create(value_type_t type, uint32_t capacity);
  * @method typed_array_extend
  * 扩展typed_array到指定容量。
  *
- * @param {value_type_t} type 元素的类型。
+ * @param {typed_array_t*} typed_array 元素的类型。
  * @param {uint32_t} capacity 数组的容量(元素个数)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

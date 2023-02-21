@@ -57,8 +57,8 @@ typedef struct _lcd_mem_special_t {
  *
  * @param {wh_t} w 宽度。
  * @param {wh_t} h 高度。
- * @param {bitmap_format_t} format 离线lcd的格式。一般用 BITMAP_FMT_BGR565 或 BITMAP_FMT_RGBA8888。
- * @param {lcd_flush_t} flush 回调函数，用于刷新GUI数据到实际的LCD。
+ * @param {bitmap_format_t} fmt 离线lcd的格式。一般用 BITMAP_FMT_BGR565 或 BITMAP_FMT_RGBA8888。
+ * @param {lcd_flush_t} on_flush 回调函数，用于刷新GUI数据到实际的LCD。
  * @param {lcd_resize_t} on_resize 用于调整LCD的大小。一般用NULL即可。
  * @param {lcd_destroy_t} on_destroy lcd销毁时的回调函数。
  * @param {void*} ctx 回调函数的上下文。

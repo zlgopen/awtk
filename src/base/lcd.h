@@ -319,7 +319,7 @@ struct _lcd_t {
  * 准备绘制。
  * @param {lcd_t*} lcd lcd对象。
  * @param {const dirty_rects_t*} dirty_rects 需要绘制的区域。
- * @param {lcd_draw_mode_t} anim_mode 动画模式，如果可能，直接画到显存而不是离线的framebuffer。
+ * @param {lcd_draw_mode_t} draw_mode 动画模式，如果可能，直接画到显存而不是离线的framebuffer。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
