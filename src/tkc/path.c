@@ -182,6 +182,10 @@ ret_t path_normalize(const char* path, char* result, int32_t size) {
     switch (*s) {
       case '/':
       case '\\': {
+        if (s[1] == '.' && s[2] == '\0') {
+          s += 2;
+          break;
+        }
         if (d == result || !IS_PATH_SEP(d[-1])) {
           *d++ = TK_PATH_SEP;
         }
