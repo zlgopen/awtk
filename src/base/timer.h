@@ -76,8 +76,7 @@ uint32_t timer_add(timer_func_t on_timer, void* ctx, uint32_t duration);
  * @method timer_queue
  * 用于非GUI线程增加一个timer，本函数向主循环的事件队列中发送一个增加timer的请求。
  * @annotation ["static"]
- * @param {timer_func_t} on_timer
- * timer回调函数，回调函数返回RET_REPEAT，则下次继续执行，否则自动移出。
+ * @param {timer_func_t} on_timer timer回调函数，回调函数返回RET_REPEAT，则下次继续执行，否则自动移出。
  * @param {void*} ctx timer回调函数的上下文。
  * @param {uint32_t} duration 时间。
  *
@@ -89,8 +88,7 @@ ret_t timer_queue(timer_func_t on_timer, void* ctx, uint32_t duration);
  * @method timer_queue_ex
  * 用于非GUI线程增加一个timer，本函数向主循环的事件队列中发送一个增加timer的请求。
  * @annotation ["static"]
- * @param {timer_func_t} on_timer
- * timer回调函数，回调函数返回RET_REPEAT，则下次继续执行，否则自动移出。
+ * @param {timer_func_t} on_timer timer回调函数，回调函数返回RET_REPEAT，则下次继续执行，否则自动移出。
  * @param {void*} ctx timer回调函数的上下文。
  * @param {uint32_t} duration 时间。
  * @param {tk_destroy_t} on_destroy 回调函数。
@@ -176,6 +174,7 @@ ret_t timer_set_on_destroy(uint32_t timer_id, tk_destroy_t on_destroy, void* on_
 /**
  * @method timer_find
  * 查找指定ID的timer。
+ * @param {uint32_t} timer_id timerID。
  *
  * @return {const timer_info_t*} 返回timer的信息。
  */

@@ -275,6 +275,12 @@ TK_EXTERN_VTABLE(progress_circle);
 
 /**
  * @method progress_circle_calc_line_dirty_rect
+ * 获取progress_circle的新值和旧值之间的绘制脏矩形。
+ * @param {widget_t*} widget progress_circle控件对象。
+ * @param {float_t} old_value 旧值。
+ * @param {float_t} new_value 新值。
+ *
+ * @return {rect_t} 返回脏矩形。
  */
 rect_t progress_circle_calc_line_dirty_rect(widget_t* widget, float_t old_value, float_t new_value);
 

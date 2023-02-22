@@ -615,7 +615,9 @@ ret_t str_to_upper(str_t* str);
  * * xxx为变量名时，而不存在obj的属性时，${xxx}被移出。
  *
  * @param {str_t*} str str对象。
- *
+ * @param {const char*} src 字符串。
+ * @param {const tk_object_t*} obj obj对象。
+ * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t str_expand_vars(str_t* str, const char* src, const tk_object_t* obj);

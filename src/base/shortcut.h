@@ -115,6 +115,8 @@ typedef struct _shortcut_t {
  * @method shortcut_init
  * 初始化快捷键对象。
  * @annotation ["constructor"]
+ * @param {shortcut_t*} shortcut 快捷键对象。
+ * @param {uint32_t} key 键值。
  *
  * @return {shortcut_t*} 返回快捷键对象。
  */
@@ -123,8 +125,9 @@ shortcut_t* shortcut_init(shortcut_t* shortcut, uint32_t key);
 /**
  * @method shortcut_init_with_str
  * 初始化快捷键对象。
- * @param {shortcut_t*} shortcut 快捷键对象。
  * @annotation ["constructor"]
+ * @param {shortcut_t*} shortcut 快捷键对象。
+ * @param {const char*} str 快捷键。
  *
  * @return {shortcut_t*} 返回快捷键对象。
  */

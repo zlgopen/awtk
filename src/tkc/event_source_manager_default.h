@@ -37,7 +37,6 @@ BEGIN_C_DECLS
 
 /**
  * @method event_source_manager_default_create
- *
  * 创建事件源管理器。
  *
  * @return {event_source_manager_t*} 返回事件源管理器对象。

@@ -431,9 +431,9 @@ widget_t* window_base_cast(widget_t* widget);
  * @method window_base_set_need_relayout
  * 设置是否需要relayout
  * @param {widget_t*} widget window_base对象。
- * @param {bool_t} need_relayout
+ * @param {bool_t} need_relayout 是否需要relayout。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t window_base_set_need_relayout(widget_t* widget, bool_t need_relayout);
 

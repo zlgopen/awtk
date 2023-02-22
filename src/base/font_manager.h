@@ -147,7 +147,7 @@ font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t 
  * @method font_manager_set_fallback_get_font
  * 设置一个函数，该函数在找不到字体时加载后补字体。
  *
- * @param {font_manager_t*} fm font manager对象。
+ * @param {font_manager_t*} fm 字体管理器对象。
  * @param {font_manager_get_font_t} fallback_get_font 回调函数。
  * @param {void*} ctx 回调函数的上下文。
  *

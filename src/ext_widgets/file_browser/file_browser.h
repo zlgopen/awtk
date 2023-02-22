@@ -114,8 +114,8 @@ typedef struct _file_browser_t {
 /**
  * @method file_browser_create
  * 创建file_browser对象
- * 
  * @annotation ["constructor"]
+ * @param {fs_t*} fs 文件系统对象。
  *
  * @return {file_browser_t*} 对象。
  */

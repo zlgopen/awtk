@@ -100,6 +100,7 @@ wbuffer_t* wbuffer_init(wbuffer_t* wbuffer, uint8_t* data, uint32_t capacity);
  * @method wbuffer_rewind
  * 重置当前写入位置。
  * @annotation ["constructor"]
+ * @param {wbuffer_t*} wbuffer wbuffer对象。
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -311,6 +312,7 @@ bool_t rbuffer_has_more(rbuffer_t* rbuffer);
  * @method rbuffer_rewind
  * 重置当前读取位置。
  * @annotation ["constructor"]
+ * @param {rbuffer_t*} rbuffer rbuffer对象。
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

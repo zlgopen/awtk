@@ -37,6 +37,7 @@ BEGIN_C_DECLS
  * @method network_shell_run
  * @export none
  * 运行shell。
+ * @param {network_interface_t*} network_interface 网口对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

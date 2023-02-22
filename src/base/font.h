@@ -132,8 +132,9 @@ glyph_t* glyph_create(void);
 
 /**
  * @method glyph_clone
- * @annotation ["constructor"]
  * 克隆glyph对象。
+ * @annotation ["constructor"]
+ * @param {glyph_t*} g glyph对象。
  *
  * @return {glyph_t*} glyph对象。
  */

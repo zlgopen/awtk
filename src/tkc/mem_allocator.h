@@ -61,7 +61,7 @@ struct _mem_allocator_t {
  *
  * @param {mem_allocator_t*} allocator allocator对象。
  * @param {uint32_t} size 内存的大小。
- * @param {const char*} func  分配内存的函数(用于调试)。
+ * @param {const char*} func 分配内存的函数(用于调试)。
  * @param {uint32_t} line 分配内存的行数(用于调试)。
  *
  * @return {void*} 成功返回内存块的地址，失败返回NULL。

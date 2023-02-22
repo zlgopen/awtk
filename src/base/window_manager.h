@@ -493,12 +493,22 @@ widget_t* window_manager_create(void);
 
 /**
  * @method window_manager_destroy
+ * 销毁window_manager。
+ * @param {widget_t*} widget window_manager对象。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t window_manager_destroy(widget_t* widget);
 
 /*helper for sub class*/
 /**
  * @method window_manager_init
+ * 初始化window_manager。
+ * @param {window_manager_t*} wm window_manager对象。
+ * @param {const widget_vtable_t*} wvt 控件基类虚表。
+ * @param {const window_manager_vtable_t*} vt window_manager虚表。
+ * 
+ * @return {widget_t*} 返回window_manager对象。
  */
 widget_t* window_manager_init(window_manager_t* wm, const widget_vtable_t* wvt,
                               const window_manager_vtable_t* vt);

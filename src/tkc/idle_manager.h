@@ -104,6 +104,7 @@ uint32_t idle_manager_count(idle_manager_t* idle_manager);
 /**
  * @method idle_manager_dispatch
  * 检查全部idle的函数，如果时间到期，调用相应的idle函数。
+ * @param {idle_manager_t*} idle_manager idle_manager_t管理器对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -193,23 +194,54 @@ uint32_t idle_manager_get_next_idle_id(idle_manager_t* idle_manager);
 
 /*internal use*/
 /**
- * @method idle_manager_remove_all_by_ctx_and_type 
+ * @method idle_manager_remove_all_by_ctx_and_type
+ * 移除对应类型和上下文的所有idle。
+ * @param {idle_manager_t*} idle_manager idle_manager_t管理器对象。
+ * @param {uint16_t} type 类型。
+ * @param {void*} ctx 上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t idle_manager_remove_all_by_ctx_and_type(idle_manager_t* idle_manager, uint16_t type,
                                               void* ctx);
+
 /**
- * @method idle_manager_add_with_type 
+ * @method idle_manager_add_with_type
+ * 添加对应类型的idle。
+ * @param {idle_manager_t*} idle_manager idle_manager_t管理器对象。
+ * @param {idle_func_t} on_idle idle回调函数。
+ * @param {void*} ctx 上下文。
+ * @param {uint16_t} type 类型。
+ *
+ * @return {uint32_t} 返回idle_id。
  */
 uint32_t idle_manager_add_with_type(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx,
                                     uint16_t type);
+
 /**
- * @method idle_manager_add_with_type_and_id 
+ * @method idle_manager_add_with_type_and_id
+ * 添加对应类型和id的idle。
+ * @param {idle_manager_t*} idle_manager idle_manager_t管理器对象。
+ * @param {uint32_t} id id。
+ * @param {idle_func_t} on_idle idle回调函数。
+ * @param {void*} ctx 上下文。
+ * @param {uint16_t} type 类型。
+ * @param {bool_t} check_id 是否校验id。
+ *
+ * @return {uint32_t} 返回idle_id。
  */
 uint32_t idle_manager_add_with_type_and_id(idle_manager_t* idle_manager, uint32_t id,
                                            idle_func_t on_idle, void* ctx, uint16_t type,
                                            bool_t check_id);
+
 /**
  * @method idle_manager_exist
+ * 对应回调函数和上下文的idle是否存在。
+ * @param {idle_manager_t*} idle_manager idle_manager_t管理器对象。
+ * @param {idle_func_t} on_idle idle回调函数。
+ * @param {void*} ctx 上下文。
+ *
+ * @return {bool_t} 返回TRUE表示存在，否则表示不存在。
  */
 bool_t idle_manager_exist(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx);
 

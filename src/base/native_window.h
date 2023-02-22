@@ -249,7 +249,7 @@ canvas_t* native_window_get_canvas(native_window_t* win);
 /**
  * @method native_window_create
  * 创建win对象。
- * @param {widget_t*} widget 参数。
+ * @param {widget_t*} widget widget对象。
  *
  * @return {native_window_t*} 返回win对象。
  */

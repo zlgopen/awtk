@@ -897,15 +897,14 @@ char* tk_replace_char(char* str, char from, char to);
  * @method tk_is_ui_thread
  * 
  * 判断当前线程是否是UI线程。
+ * 
  * @return {bool_t} 返回TRUE表示是，否则表示否。
  */
 bool_t tk_is_ui_thread(void);
 
 /**
  * @method tk_set_ui_thread
- *
  * 设置UI线程的ID。
- *
  * @param {uint64_t} ui_thread_id UI线程的ID。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -914,6 +913,10 @@ ret_t tk_set_ui_thread(uint64_t ui_thread_id);
 
 /**
  * @method tk_replace_locale
+ * 将文本中的$locale$替换为对应的语言。
+ * @param {const char*} name 文本。
+ * @param {char*} out 替换后保存的字符串。
+ * @param {const char*} locale 语言。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -921,7 +924,11 @@ ret_t tk_replace_locale(const char* name, char out[TK_NAME_LEN + 1], const char*
 
 /**
  * @method tk_normalize_key_name
+ * 标准化key_name
+ * @param {const char*} name key_name。
+ * @param {char*} fixed_name 保存标准化后的字符串。
  *
+ * @return {const char*} 返回标准化后的字符串。
  */
 const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN + 1]);
 

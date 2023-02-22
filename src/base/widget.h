@@ -3160,6 +3160,15 @@ rect_t widget_get_content_area(widget_t* widget);
 /**
  * @method widget_calc_icon_text_rect
  * 计算icon text的位置。
+ * @param {const rect_t*} ir ir。
+ * @param {int32_t} font_size 字体大小。
+ * @param {float_t} text_size 文本大小。
+ * @param {int32_t} icon_at icon的位置。
+ * @param {uint32_t} img_w 图像宽度。
+ * @param {uint32_t} img_h 图像高度。
+ * @param {int32_t} spacer 间距。
+ * @param {rect_t*} r_text 返回文本的矩形区域。
+ * @param {rect_t*} r_icon 返回icon的矩形区域。
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

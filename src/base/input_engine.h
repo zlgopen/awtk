@@ -160,6 +160,7 @@ ret_t input_engine_reset_candidates(input_engine_t* engine);
  * @method input_engine_add_candidate
  * 给输入法引擎对象加入一个候选字。
  * @param {input_engine_t*} engine 输入法引擎对象。
+ * @param {const char*} str 候选字。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

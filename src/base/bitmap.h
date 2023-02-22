@@ -267,8 +267,7 @@ ret_t bitmap_transform(bitmap_t* bitmap, bitmap_transform_t transform, void* ctx
  * @param {uint32_t} w 宽度。
  * @param {uint32_t} h 高度。
  * @param {bitmap_format_t} format 格式。
- * @param {const uint8_t*} data
- * 数据。3通道时为RGB888格式，4通道时为RGBA888格式(内部拷贝该数据，不会引用，调用者自行释放)。
+ * @param {const uint8_t*} data 数据。3通道时为RGB888格式，4通道时为RGBA888格式(内部拷贝该数据，不会引用，调用者自行释放)。
  * @param {uint32_t} comp 颜色通道数(目前支持3(rgb)和4(rgba))。
  * @param {lcd_orientation_t} o 旋转方向。
  *
@@ -284,8 +283,7 @@ ret_t bitmap_init_from_rgba(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_for
  * @param {uint32_t} w 宽度。
  * @param {uint32_t} h 高度。
  * @param {bitmap_format_t} format 格式。
- * @param {const uint8_t*} data
- * 数据。3通道时为BGR888格式，4通道时为BGRA888格式(内部拷贝该数据，不会引用，调用者自行释放)。
+ * @param {const uint8_t*} data 数据。3通道时为BGR888格式，4通道时为BGRA888格式(内部拷贝该数据，不会引用，调用者自行释放)。
  * @param {uint32_t} comp 颜色通道数(目前支持3(bgr)和4(bgra))。
  * @param {lcd_orientation_t} o 旋转方向。
  *

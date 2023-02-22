@@ -64,6 +64,7 @@ ret_t fscript_array_register(void);
 /**
  * @method fscript_array_get_fscript_array_vt
  * 获取 fscript array 的虚表。
+ * @param {tk_object_t*} obj obj对象。
  *
  * @return {const fscript_array_vtable_t*} 成功返回虚表指针，失败返回 NULL。
  */

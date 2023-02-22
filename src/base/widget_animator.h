@@ -246,8 +246,7 @@ ret_t widget_animator_set_time_scale(widget_animator_t* animator, float_t time_s
  * 注册指定事件的处理函数。
  * @annotation ["scriptable:custom"]
  * @param {widget_animator_t*} animator 动画对象。
- * @param {event_type_t} type
- * 事件类型。目前支持：EVT_ANIM_START,EVT_ANIM_STOP,EVT_ANIM_PAUSE,EVT_ANIM_ONCE和EVT_ANIM_END。
+ * @param {event_type_t} type 事件类型。目前支持：EVT_ANIM_START,EVT_ANIM_STOP,EVT_ANIM_PAUSE,EVT_ANIM_ONCE和EVT_ANIM_END。
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  *

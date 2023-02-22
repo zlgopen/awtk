@@ -441,7 +441,7 @@ bool_t asset_info_is_in_rom(const asset_info_t* info);
  * @annotation ["scriptable"]
  *
  * @param {asset_info_t*} info asset_info对象。
- *  @param {bool_t} is_in_rom 资源是否在ROM中。
+ * @param {bool_t} is_in_rom 资源是否在ROM中。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

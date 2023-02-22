@@ -45,7 +45,7 @@ typedef union _shdlc_header_t {
 } shdlc_header_t;
 #pragma pack(pop)
 
-/**
+/*
  * normal:
  * | SHDLC_FLAG(1B) | SHDLC_DATA(1B) | ...data... | fcs16(2B) | SHDLC_FLAG(1B) |
  * ack:

@@ -104,68 +104,110 @@ ret_t widget_paint_with_clip(widget_t* widget, rect_t* clip, canvas_t* c,
  * @annotation ["global"]
  * @param {widget_t*} widget 控件对象。
  * @param {canvas_t*} c 画布对象。
+ * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_on_paint_children_default(widget_t* widget, canvas_t* c);
 
 /**
  * @method widget_on_keydown_default
+ * 控件按键按下事件回调的缺省实现。
  * @annotation ["global"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {key_event_t*} e 按键事件。
+ * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_on_keydown_default(widget_t* widget, key_event_t* e);
+
 /**
  * @method widget_on_keyup_default
+ * 控件按键抬起事件回调的缺省实现。
  * @annotation ["global"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {key_event_t*} e 按键事件。
+ * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_on_keyup_default(widget_t* widget, key_event_t* e);
 ret_t widget_on_click_default(widget_t* widget, pointer_event_t* e);
+
 /**
  * @method widget_on_pointer_down_default
+ * 控件指针按下事件回调的缺省实现。
  * @annotation ["global"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {pointer_event_t*} e 指针事件。
+ * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_on_pointer_down_default(widget_t* widget, pointer_event_t* e);
+
 /**
  * @method widget_on_pointer_move_default
+ * 控件指针移动事件回调的缺省实现。
  * @annotation ["global"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {pointer_event_t*} e 指针事件。
+ * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_on_pointer_move_default(widget_t* widget, pointer_event_t* e);
+
 /**
  * @method widget_on_pointer_up_default
+ * 控件指针抬起事件回调的缺省实现。
  * @annotation ["global"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {pointer_event_t*} e 指针事件。
+ * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_on_pointer_up_default(widget_t* widget, pointer_event_t* e);
 
 /**
  * @method widget_on_copy_default
+ * 拷贝控件的缺省实现。
  * @annotation ["global"]
+ * @param {widget_t*} widget 目的控件对象。
+ * @param {widget_t*} other 源控件对象。
+ * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_on_copy_default(widget_t* widget, widget_t* other);
 
 /**
  * @method widget_copy_props
+ * 拷贝控件熟悉。
  * @annotation ["global"]
  * @param {widget_t*} dst 目的控件对象。
  * @param {widget_t*} src 源控件对象。
  * @param {const char* const*} properties 属性列表。
+ * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_copy_props(widget_t* dst, widget_t* src, const char* const* properties);
 
 /**
  * @method widget_get_prop_default
+ * 获取控件属性的缺省实现。
  * @annotation ["global"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性名称。
+ * @param {value_t*} v 返回的属性值。
+ * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_get_prop_default(widget_t* widget, const char* name, value_t* v);
+
 /**
  * @method widget_set_prop_default
+ * 设置控件属性的缺省实现。
  * @annotation ["global"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性名称。
+ * @param {const value_t*} v 设置的属性值。
+ * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_prop_default(widget_t* widget, const char* name, const value_t* v);

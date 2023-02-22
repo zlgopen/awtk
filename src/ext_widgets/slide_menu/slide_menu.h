@@ -249,23 +249,23 @@ ret_t slide_menu_set_menu_w(widget_t* widget, const char* menu_w);
 ret_t slide_menu_set_clip(widget_t* widget, bool_t clip);
 
 /**
- * @method slide_menu_scroll_to_prev
- * 切换至上一项。
- * @annotation ["scriptable"]
- * @param {widget_t*} widget slide_menu对象。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
+ * @method slide_menu_scroll_to_prev
+ * 切换至上一项。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget slide_menu对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t slide_menu_scroll_to_prev(widget_t* widget);
 
 /**
- * @method slide_menu_scroll_to_next
- * 切换至下一项。
- * @annotation ["scriptable"]
- * @param {widget_t*} widget slide_menu对象。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
+ * @method slide_menu_scroll_to_next
+ * 切换至下一项。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget slide_menu对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t slide_menu_scroll_to_next(widget_t* widget);
 
 #define SLIDE_MENU_PROP_MIN_SCALE "min_scale"

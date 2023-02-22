@@ -279,6 +279,8 @@ bool_t rect_contains(const rect_t* r, xy_t x, xy_t y);
  * 确保rect在指定的大小范围内。
  *
  * @param {rect_t*} r rect对象。
+ * @param {wh_t} max_w 最大宽度。
+ * @param {wh_t} max_h 最大高度。
  *
  * @return {rect_t} 返回修复之后的rect对象。
  */
@@ -322,7 +324,9 @@ rectf_t* rectf_scale(rectf_t* r, float_t scale);
  * 确保rectf在指定的大小范围内。
  *
  * @param {rectf_t*} r rectf对象。
- *
+ * @param {wh_t} max_w 最大宽度。
+ * @param {wh_t} max_h 最大高度。
+ * 
  * @return {rectf_t} 返回修复之后的rect对象。
  */
 rectf_t rectf_fix(rectf_t* r, wh_t max_w, wh_t max_h);
@@ -331,7 +335,7 @@ rectf_t rectf_fix(rectf_t* r, wh_t max_w, wh_t max_h);
  * @method rect_to_rectf
  * rect 类型转换到 rectf 类型。
  *
- * @param {const rect_t*} r rect 对象。
+ * @param {const rect_t*} r rect对象。
  *
  * @return {rectf_t} 返回 rectf_t 对象。
  */
