@@ -133,10 +133,12 @@ typedef struct _slide_view_t {
   int32_t xoffset;
   int32_t yoffset;
   uint32_t active;
+  uint32_t last_active;
   uint32_t timer_id;
   bool_t dragged;
   bool_t pressed;
   bool_t animating;
+  bool_t check_last;
   bool_t remove_when_anim_done;
 
   /* for save focused child */

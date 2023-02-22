@@ -152,23 +152,32 @@ static ret_t slide_view_on_pointer_down(slide_view_t* slide_view, pointer_event_
 }
 
 static ret_t slide_view_on_scroll_done(void* ctx, event_t* e) {
+  uint32_t active;
   widget_t* widget = WIDGET(ctx);
   slide_view_t* slide_view = SLIDE_VIEW(ctx);
   return_value_if_fail(widget != NULL && slide_view != NULL, RET_BAD_PARAMS);
 
   if (slide_view->xoffset < 0 || slide_view->yoffset < 0) {
+    active = widget_index_of(slide_view->prev);
+    if (slide_view->check_last) {
+      active = active == slide_view->last_active ? active : slide_view->last_active;
+    }
     if (slide_view->remove_when_anim_done) {
       widget_destroy(slide_view->next);
-      slide_view_set_active_no_animate_impl(widget, widget_index_of(slide_view->prev), TRUE);
+      slide_view_set_active_no_animate_impl(widget, active, TRUE);
     } else {
-      slide_view_set_active_no_animate(widget, widget_index_of(slide_view->prev));
+      slide_view_set_active_no_animate(widget, active);
     }
   } else if (slide_view->xoffset > 0 || slide_view->yoffset > 0) {
+    active = widget_index_of(slide_view->next);
+    if (slide_view->check_last) {
+      active = active == slide_view->last_active ? active : slide_view->last_active;
+    }
     if (slide_view->remove_when_anim_done) {
       widget_destroy(slide_view->prev);
-      slide_view_set_active_no_animate_impl(widget, widget_index_of(slide_view->next), TRUE);
+      slide_view_set_active_no_animate_impl(widget, active, TRUE);
     } else {
-      slide_view_set_active_no_animate(widget, widget_index_of(slide_view->next));
+      slide_view_set_active_no_animate(widget, active);
     }
   }
 
@@ -299,6 +308,7 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_UP: {
       if (slide_view->pressed) {
         if (slide_view->dragged) {
+          slide_view->check_last = FALSE;
           slide_view_on_pointer_up(slide_view, (pointer_event_t*)e);
         }
         slide_view->dragged = FALSE;
@@ -903,6 +913,7 @@ static ret_t slide_view_set_active_no_animate_impl(widget_t* widget, uint32_t ac
 
     if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
       slide_view->active = active;
+      slide_view->last_active = slide_view->active;
       evt.e.type = EVT_VALUE_CHANGED;
       widget_dispatch(widget, (event_t*)&evt);
       widget_dispatch_simple_event(widget, EVT_PAGE_CHANGED);
@@ -912,6 +923,7 @@ static ret_t slide_view_set_active_no_animate_impl(widget_t* widget, uint32_t ac
     slide_view_restore_target(widget);
   } else {
     slide_view->active = active;
+    slide_view->last_active = slide_view->active;
   }
 
   return RET_OK;
@@ -928,8 +940,11 @@ static ret_t slide_view_set_active_animate(widget_t* widget, uint32_t active) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
   if (slide_view->animating) {
-    log_warn("slide_view is animating, so slide_view is busy!\r\n");
-    return RET_BUSY;
+    log_debug("slide_view is animating, so slide_view is busy!\r\n");
+    log_debug("When the animation is played, the last active takes effect!\r\n");
+    slide_view->check_last = TRUE;
+    slide_view->last_active = active;
+    return RET_OK;
   }
   old_active = slide_view->active;
 
@@ -1021,6 +1036,7 @@ widget_t* slide_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   slide_view->vertical = FALSE;
   slide_view->drag_threshold = TK_DRAG_THRESHOLD;
   slide_view->animating_time = TK_ANIMATING_TIME;
+  slide_view->check_last = FALSE;
 
   str_init(&(slide_view->str_target), DEFAULT_FOCUSED_CHILD_SAVE_TARGET_TAG_LENGT);
   slide_view->init_idle_id = idle_add(slide_view_on_idle_init_save_target, widget);
