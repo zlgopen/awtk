@@ -178,7 +178,7 @@ ret_t widget_on_copy_default(widget_t* widget, widget_t* other);
 
 /**
  * @method widget_copy_props
- * 拷贝控件熟悉。
+ * 拷贝控件属性。
  * @annotation ["global"]
  * @param {widget_t*} dst 目的控件对象。
  * @param {widget_t*} src 源控件对象。
