@@ -1576,6 +1576,8 @@ static ret_t text_edit_briefly_show_char_on_timer(const timer_info_t* timer) {
   impl->briefly_show_char = FALSE;
   text_edit_layout(text_edit);
 
+  widget_invalidate(text_edit->widget, NULL);
+
   impl->briefly_show_char_timer_id = TK_INVALID_ID;
 
   return RET_REMOVE;
