@@ -30,6 +30,7 @@ BEGIN_C_DECLS
 typedef struct _network_interface_t network_interface_t;
 /**
  * @enum network_interface_wifi_auth_t 
+ * @prefix NETWORK_INTERFACE_WIFI_AUTH_
  * 属性描述WIFI的认证方式。
  */
 typedef enum _network_interface_wifi_auth_t {
@@ -52,6 +53,7 @@ typedef enum _network_interface_wifi_auth_t {
 
 /**
  * @enum network_interface_wifi_freq_t 
+ * @prefix NETWORK_INTERFACE_WIFI_FREQ_
  * 属性描述WIFI的频段。
  */
 typedef enum _network_interface_wifi_freq_t {
@@ -69,6 +71,7 @@ typedef enum _network_interface_wifi_freq_t {
 
 /**
  * @enum network_interface_type_t
+ * @prefix NETWORK_INTERFACE_TYPE_
  * 属性描述网卡类型。
  */
 typedef enum _network_interface_type_t {

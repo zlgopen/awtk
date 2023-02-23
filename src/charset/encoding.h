@@ -28,6 +28,7 @@ BEGIN_C_DECLS
 
 /**
  * @enum encoding_name_t
+ * @prefix ENCODING_
  * 编码名称。
  */
 

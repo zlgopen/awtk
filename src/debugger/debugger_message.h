@@ -69,7 +69,7 @@ typedef enum _debugger_req_type_t {
    */
   DEBUGGER_REQ_STEP_OUT,
   /**
-   * @const DEBUGGER_REQ_NEXT
+   * @const DEBUGGER_REQ_STEP_OVER
    * 运行下一行请求码。
    */
   DEBUGGER_REQ_STEP_OVER,
@@ -193,7 +193,7 @@ typedef enum _debugger_resp_type_t {
    */
   DEBUGGER_RESP_STEP_OUT = DEBUGGER_REQ_STEP_OUT,
   /**
-   * @const DEBUGGER_RESP_NEXT
+   * @const DEBUGGER_RESP_STEP_OVER
    * 运行下一行响应码。
    */
   DEBUGGER_RESP_STEP_OVER = DEBUGGER_REQ_STEP_OVER,
@@ -203,7 +203,7 @@ typedef enum _debugger_resp_type_t {
    */
   DEBUGGER_RESP_CONTINUE = DEBUGGER_REQ_CONTINUE,
   /**
-   * @const DEBUGGER_REQ_SET_BREAK_POINT
+   * @const DEBUGGER_RESP_SET_BREAK_POINT
    * 设置断点响应码。
    */
   DEBUGGER_RESP_SET_BREAK_POINT = DEBUGGER_REQ_SET_BREAK_POINT,

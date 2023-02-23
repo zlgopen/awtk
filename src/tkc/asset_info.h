@@ -99,6 +99,7 @@ typedef enum _asset_type_t {
 
 /**
  * @enum asset_font_type_t
+ * @prefix ASSET_TYPE_FONT_
  * 字体资源类型定义。
  */
 typedef enum _asset_font_type_t {
@@ -121,6 +122,7 @@ typedef enum _asset_font_type_t {
 
 /**
  * @enum asset_data_type_t
+ * @prefix ASSET_TYPE_DATA_
  * 数据资源类型定义。
  */
 typedef enum _asset_data_type_t {
@@ -153,6 +155,7 @@ typedef enum _asset_data_type_t {
 
 /**
  * @enum asset_script_type_t
+ * @prefix ASSET_TYPE_SCRIPT_
  * 脚本资源类型定义。
  */
 typedef enum _asset_script_type_t {
@@ -180,6 +183,7 @@ typedef enum _asset_script_type_t {
 
 /**
  * @enum asset_image_type_t
+ * @prefix ASSET_TYPE_IMAGE_
  * 图片资源类型定义。
  */
 typedef enum _asset_image_type_t {
@@ -237,6 +241,7 @@ typedef enum _asset_image_type_t {
 
 /**
  * @enum asset_ui_type_t
+ * @prefix ASSET_TYPE_UI_
  * UI资源类型定义。
  */
 typedef enum _asset_ui_type_t {

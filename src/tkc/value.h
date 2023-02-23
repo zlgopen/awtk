@@ -29,6 +29,7 @@ BEGIN_C_DECLS
 
 /**
  * @enum value_type_t
+ * @prefix VALUE_TYPE_
  * @annotation ["scriptable"]
  * 类型常量定义。
  */

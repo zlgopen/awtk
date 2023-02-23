@@ -29,6 +29,7 @@ BEGIN_C_DECLS
 
 /**
  * @enum value_desc_type_t
+ * @prefix VALUE_DESC_TYPE_
  * 属性描述类型常量定义。
  */
 typedef enum _value_desc_type_t {
@@ -111,6 +112,7 @@ typedef enum _value_desc_type_t {
 
 /**
  * @enum value_format_type_t
+ * @prefix VALUE_FORMAT_TYPE_
  * 属性描述格式常量定义。
  */
 typedef enum _value_format_type_t {
@@ -125,7 +127,7 @@ typedef enum _value_format_type_t {
    */
   VALUE_FORMAT_TYPE_HEX,
   /**
-   * @const VALUE_FORMAT_TYPE_HEX
+   * @const VALUE_FORMAT_TYPE_UNSIGNED
    * 非负格式(用于进一步限制float/double)。
    */
   VALUE_FORMAT_TYPE_UNSIGNED,
@@ -135,7 +137,7 @@ typedef enum _value_format_type_t {
    */
   VALUE_FORMAT_TYPE_PHONE,
   /**
-   * @const VALUE_FORMAT_TYPE_PHONE
+   * @const VALUE_FORMAT_TYPE_EMAIL
    * 邮件格式。
    */
   VALUE_FORMAT_TYPE_EMAIL,
@@ -183,6 +185,7 @@ typedef enum _value_format_type_t {
 
 /**
  * @enum prop_desc_flags_t
+ * @prefix PROP_DESC_FLAG_
  * 属性描述范围常量定义。
  */
 typedef enum _prop_desc_flags_t {
@@ -202,12 +205,12 @@ typedef enum _prop_desc_flags_t {
    */
   PROP_DESC_FLAG_GLOBAL = (1 << 2),
   /**
-   * @const PROP_DESC_FLAG_READABLE,
+   * @const PROP_DESC_FLAG_READABLE
    * 可读取。
    */
   PROP_DESC_FLAG_READABLE = (1 << 3),
   /**
-   * @const PROP_DESC_FLAG_WRITBALE,
+   * @const PROP_DESC_FLAG_WRITBALE
    * 可修改。
    */
   PROP_DESC_FLAG_WRITBALE = (1 << 4),
@@ -230,6 +233,7 @@ typedef enum _prop_desc_flags_t {
 
 /**
  * @enum arg_desc_flags_t
+ * @prefix ARG_DESC_FLAGS_
  * 参数描述范围常量定义。
  */
 typedef enum _arg_desc_flags_t {

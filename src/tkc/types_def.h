@@ -149,6 +149,7 @@ typedef struct _tk_object_t tk_object_t;
 
 /**
  * @enum ret_t
+ * @prefix RET_
  * @annotation ["scriptable"]
  * 函数返回值常量定义。
  */

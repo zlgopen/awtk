@@ -35,6 +35,7 @@ BEGIN_C_DECLS
 
 /**
  * @enum gradient_type_t
+ * @prefix GRADIENT_
  * 渐变色类型。
  */
 typedef enum _gradient_type_t {

@@ -26,6 +26,7 @@
 
 /**
  * @enum keyboard_type_t
+ * @prefix KEYBOARD_
  * 键盘的类型
  */
 typedef enum _keyboard_type_t {
@@ -55,6 +56,7 @@ typedef enum _keyboard_type_t {
 
 /**
  * @enum lcd_orientation_t
+ * @prefix LCD_ORIENTATION_
  * LCD旋转角度。
  */
 typedef enum _lcd_orientation_t {
@@ -82,6 +84,7 @@ typedef enum _lcd_orientation_t {
 
 /**
  * @enum align_v_t
+ * @prefix ALIGN_V_
  * @annotation ["scriptable"]
  * 垂直对齐的常量定义。
  */
@@ -110,6 +113,7 @@ typedef enum _align_v_t {
 
 /**
  * @enum align_h_t
+ * @prefix ALIGN_H_
  * @annotation ["scriptable"]
  * 水平对齐的常量定义。
  */
@@ -138,6 +142,7 @@ typedef enum _align_h_t {
 
 /**
  * @enum border_type_t
+ * @prefix BORDER_
  * 控件边框类型。
  */
 typedef enum _border_type_t {
