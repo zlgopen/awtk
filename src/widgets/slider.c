@@ -64,20 +64,98 @@ static uint32_t slider_get_dragger_size(widget_t* widget) {
   return dragger_size;
 }
 
+static rect_t slider_get_dirty_rect(widget_t* widget) {
+  int32_t margin = 0;
+  int32_t tolerance = 0;
+  uint32_t dragger_size = 0;
+  slider_t* slider = SLIDER(widget);
+  rect_t r = rect_init(widget->x, widget->y, widget->w, widget->h);
+
+  if (widget->initializing) {
+    return r;
+  }
+
+  if (widget->astyle != NULL) {
+    tolerance = widget->dirty_rect_tolerance;
+    margin = style_get_int(widget->astyle, WIDGET_PROP_MARGIN, 0);
+    dragger_size = tk_roundi(slider_get_dragger_size(widget) / 2);
+
+    if (margin < 0 && !slider->no_dragger_icon) {
+      if (slider->vertical) {
+        r.y -= dragger_size;
+        r.h += 2 * dragger_size;
+      } else {
+        r.x -= dragger_size;
+        r.w += 2 * dragger_size;
+      }
+    }
+
+    if (tolerance > 0) {
+      r.x -= tolerance;
+      r.y -= tolerance;
+      r.w += (2 * tolerance) + 1;
+      r.h += (2 * tolerance) + 1;
+    }
+  }
+
+  if (r.x < 0) {
+    r.w = r.w + r.x;
+  }
+  if (r.y < 0) {
+    r.h = r.h + r.y;
+  }
+
+  r.x = tk_max(0, r.x);
+  r.y = tk_max(0, r.y);
+  r.w = tk_max(0, r.w);
+  r.h = tk_max(0, r.h);
+
+  return r;
+}
+
+static ret_t slider_on_invalidate(widget_t* widget, const rect_t* rect) {
+  rect_t r;
+  widget_t* parent = NULL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  parent = widget->parent;
+  r = slider_get_dirty_rect(widget);
+  if (parent != NULL && !parent->destroying) {
+    return widget_invalidate_force(parent, &r);
+  } else {
+    return RET_OK;
+  }
+  return RET_OK;
+}
+
+static bool_t slider_on_is_point_in(widget_t* widget, xy_t x, xy_t y) {
+  rect_t r;
+  const rect_t* pr = &r;
+  slider_t* slider = SLIDER(widget);
+  return_value_if_fail(slider != NULL, RET_BAD_PARAMS);
+
+  r = rect_init(0, 0, widget->w, widget->h);
+  rect_merge(&r, &slider->dragger_rect);
+
+  return rect_contains(pr, x, y);
+}
+
 static ret_t slider_update_dragger_rect(widget_t* widget, canvas_t* c) {
   rect_t* r = NULL;
   double fvalue = 0;
   int32_t margin = 0;
+  int32_t max_gap = 0;
   uint32_t dragger_size = 0;
   slider_t* slider = SLIDER(widget);
   return_value_if_fail(slider != NULL, RET_BAD_PARAMS);
 
   r = &(slider->dragger_rect);
-  margin = slider->no_dragger_icon ? 0 : style_get_int(widget->astyle, STYLE_ID_MARGIN, 0);
   fvalue = (double)(slider->value - slider->min) / (double)(slider->max - slider->min);
+  margin = slider->no_dragger_icon ? 0 : style_get_int(widget->astyle, STYLE_ID_MARGIN, 0);
 
   dragger_size = slider_get_dragger_size(widget);
-
+  max_gap = tk_roundi(dragger_size / 2);
+  
   if (slider->vertical) {
     fvalue = 1.0f - fvalue;
     r->x = 0;
@@ -86,7 +164,10 @@ static ret_t slider_update_dragger_rect(widget_t* widget, canvas_t* c) {
     if (slider->no_dragger_icon) {
       r->y = widget->h * fvalue - (dragger_size >> 1);
     } else {
-      r->y = margin + (widget->h - dragger_size - (margin << 1)) * fvalue;
+      r->y = margin + (widget->h - dragger_size - (margin * 2.0f)) * fvalue;
+
+      r->y = r->y < -max_gap ? -max_gap : r->y;
+      r->y = r->y > (widget->h - max_gap) ? (widget->h - max_gap) : r->y;
     }
   } else {
     r->w = dragger_size;
@@ -95,7 +176,10 @@ static ret_t slider_update_dragger_rect(widget_t* widget, canvas_t* c) {
     if (slider->no_dragger_icon) {
       r->x = widget->w * fvalue - (dragger_size >> 1);
     } else {
-      r->x = margin + (widget->w - dragger_size - (margin << 1)) * fvalue;
+      r->x = margin + (widget->w - dragger_size - (margin * 2.0f)) * fvalue;
+
+      r->x = r->x < -max_gap ? -max_gap : r->x;
+      r->x = r->x > (widget->w - max_gap) ? (widget->w - max_gap) : r->x;
     }
   }
 
@@ -647,6 +731,9 @@ static ret_t slider_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, SLIDER_PROP_SLIDE_LINE_CAP)) {
     value_set_str(v, slider->line_cap);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_DIRTY_RECT)) {
+    value_set_rect(v, slider_get_dirty_rect(widget));
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -710,17 +797,20 @@ static const char* s_slider_properties[] = {WIDGET_PROP_VALUE,
 TK_DECL_VTABLE(slider) = {.size = sizeof(slider_t),
                           .type = WIDGET_TYPE_SLIDER,
                           .inputable = TRUE,
+                          .allow_draw_outside = TRUE,
                           .clone_properties = s_slider_properties,
                           .persistent_properties = s_slider_properties,
                           .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                           .create = slider_create,
                           .on_event = slider_on_event,
                           .on_paint_self = slider_on_paint_self,
-                          .on_paint_border = widget_on_paint_null,
+                          .on_paint_border = widget_on_paint_null,       
                           .on_paint_background = widget_on_paint_null,
+                          .invalidate = slider_on_invalidate,
+                          .is_point_in = slider_on_is_point_in,
                           .on_destroy = slider_on_destroy,
                           .get_prop = slider_get_prop,
-                          .set_prop = slider_set_prop};
+                          .set_prop = slider_set_prop };
 
 widget_t* slider_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(slider), x, y, w, h);

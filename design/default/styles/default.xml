@@ -285,23 +285,35 @@
     <over icon="slider_drag_o"/>
   </style>
 
-  <style name="img_v"  bg_image="slider_v_bg" fg_image="slider_v_fg" bg_image_draw_type="repeat3_y" fg_image_draw_type="repeat3_y">
+  <style name="img_oversize" bg_image="slider_bg" fg_image="slider_fg" margin="-50">
     <normal icon="slider_drag"/>
     <pressed icon="slider_drag_p"/>
     <over icon="slider_drag_o"/>
   </style>
 
-  <style name="img_v_margin"  bg_image="slider_v_bg" fg_image="slider_v_fg" bg_image_draw_type="repeat3_y" margin="10" fg_image_draw_type="repeat3_y">
+  <style name="img_v" bg_image="slider_v_bg" fg_image="slider_v_fg" bg_image_draw_type="repeat3_y" fg_image_draw_type="repeat3_y">
     <normal icon="slider_drag"/>
     <pressed icon="slider_drag_p"/>
     <over icon="slider_drag_o"/>
   </style>
 
-  <style name="img_slider"  bg_image="img_slider_bg" fg_image="img_slider_fg" bg_image_draw_type="default" margin="15" fg_image_draw_type="default">
+  <style name="img_v_oversize" bg_image="slider_v_bg" fg_image="slider_v_fg" bg_image_draw_type="repeat3_y" fg_image_draw_type="repeat3_y" margin="-50">
+    <normal icon="slider_drag"/>
+    <pressed icon="slider_drag_p"/>
+    <over icon="slider_drag_o"/>
+  </style>
+
+  <style name="img_v_margin" bg_image="slider_v_bg" fg_image="slider_v_fg" bg_image_draw_type="repeat3_y" margin="10" fg_image_draw_type="repeat3_y">
+    <normal icon="slider_drag"/>
+    <pressed icon="slider_drag_p"/>
+    <over icon="slider_drag_o"/>
+  </style>
+
+  <style name="img_slider" bg_image="img_slider_bg" fg_image="img_slider_fg" bg_image_draw_type="default" margin="15" fg_image_draw_type="default">
     <normal border_color="#ffd700"/>
     <pressed  border_color="#ffa700"/>
     <over border_color="#ffe700"/>    
-    <focused border_color="#ffe700"/>   
+    <focused border_color="#ffe700"/>
   </style>
 
   <style name="photo" bg_color="#a0a0a0" fg_color="blue" round_radius="30">
