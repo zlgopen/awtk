@@ -165,7 +165,7 @@ TEST(Path, normalize) {
   ASSERT_EQ(string(result), normalPath("/a"));
 
   ASSERT_EQ(path_normalize("F:\\a\\.", result, sizeof(result)), RET_OK);
-  ASSERT_EQ(string(result), normalPath("F:\\a"));
+  ASSERT_EQ(string(result), normalPath("F:/a"));
 
 #ifdef WIN32
   ASSERT_EQ(path_normalize("D:\\aaaa\\aaaaaaaaaaaaaaaaaaaaa\\.\\bin\\demo.exe/../../data/test.c",
