@@ -286,13 +286,13 @@ typedef struct _vgcanvas_vtable_t {
  */
 struct _vgcanvas_t {
   /**
-   * @property {wh_t} w
+   * @property {uint32_t} w
    * @annotation ["readable", "scriptable"]
    * canvas的宽度
    */
   uint32_t w;
   /**
-   * @property {wh_t} h
+   * @property {uint32_t} h
    * @annotation ["readable", "scriptable"]
    * canvas的高度
    */
@@ -361,7 +361,7 @@ struct _vgcanvas_t {
    */
   float_t font_size;
   /**
-   * @property {const char*} text_align
+   * @property {char*} text_align
    * @annotation ["readable", "scriptable"]
    * 文本对齐方式。
    *
@@ -369,7 +369,7 @@ struct _vgcanvas_t {
    */
   char* text_align;
   /**
-   * @property {const char*} text_baseline
+   * @property {char*} text_baseline
    * @annotation ["readable", "scriptable"]
    * 文本基线。
    *
@@ -391,14 +391,14 @@ struct _vgcanvas_t {
   color_t stroke_color;
 
   /**
-   * @property {uint32_t*} buff;
+   * @property {uint32_t*} buff
    * @annotation ["private"]
    * frame buffer
    */
   uint32_t* buff;
 
   /**
-   * @property {bitmap_format_t} format;
+   * @property {bitmap_format_t} format
    * @annotation ["private"]
    * frame buffer format
    */

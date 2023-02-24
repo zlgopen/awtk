@@ -60,7 +60,7 @@ typedef struct _object_array_t {
   uint32_t capacity;
 
   /**
-   * @property {value_t} props
+   * @property {value_t*} props
    * @annotation ["readable"]
    * 属性数组。
    *

@@ -60,14 +60,14 @@ typedef struct _color_tile_t {
   widget_t widget;
 
   /**
-   * @property {const char*} bg_color
+   * @property {char*} bg_color
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 背景颜色。
    */
   char bg_color[TK_COLOR_HEX_LEN + 1];
 
   /**
-   * @property {const char*} border_color
+   * @property {char*} border_color
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 边框颜色。
    */

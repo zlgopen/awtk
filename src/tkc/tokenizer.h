@@ -44,7 +44,7 @@ BEGIN_C_DECLS
  */
 typedef struct _tokenizer_t {
   /**
-   * @property {char*} str
+   * @property {const char*} str
    * @annotation ["readable"]
    * 字符串。
    */
@@ -63,14 +63,14 @@ typedef struct _tokenizer_t {
   uint32_t cursor;
 
   /**
-   * @property {char*} separtor
+   * @property {const char*} separtor
    * @annotation ["readable"]
    * 分隔字符串。
    */
   const char* separtor;
 
   /**
-   * @property {char*} single_char_token
+   * @property {const char*} single_char_token
    * @annotation ["readable"]
    * 单字符的token。
    */

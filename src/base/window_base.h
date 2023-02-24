@@ -137,7 +137,7 @@ typedef struct _window_base_t {
   char* close_anim_hint;
 
   /**
-   * @property {char*} stage
+   * @property {window_stage_t} stage
    * @annotation ["readable", "get_prop"]
    * 窗口当前处于的状态。
    */

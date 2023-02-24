@@ -52,13 +52,13 @@ typedef struct _func_desc_t {
    */
   func_exec_t exec;
   /**
-   * @property {arg_desc_t**} args
+   * @property {const arg_desc_t**} args
    * @annotation ["readable"]
    * 函数参数描述。
    */
   const arg_desc_t** args;
   /**
-   * @property {value_desc_t*} return_value
+   * @property {const value_desc_t*} return_value
    * @annotation ["readable"]
    * 函数返回值描述。
    */

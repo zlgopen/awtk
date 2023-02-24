@@ -62,7 +62,7 @@ struct _canvas_t {
   char* font_name;
 
   /**
-   * @property {uint16_t} font_size
+   * @property {font_size_t} font_size
    * @annotation ["readable", "scriptable"]
    * 当前字体大小。
    */

@@ -181,7 +181,7 @@ typedef struct _dialog_t {
   window_base_t window;
 
   /**
-   * @property {const char*} highlight
+   * @property {char*} highlight
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 对话框高亮策略。
    * 

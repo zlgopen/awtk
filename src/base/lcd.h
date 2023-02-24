@@ -233,7 +233,7 @@ struct _lcd_t {
    */
   wh_t w;
   /**
-   * @property {wh_t} height
+   * @property {wh_t} h
    * @annotation ["readable"]
    * 屏幕的高度
    */

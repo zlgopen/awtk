@@ -121,14 +121,14 @@ struct _widget_animator_t {
   animator_state_t state;
 
   /**
-   * @property {uint32_t} emitter
+   * @property {emitter_t} emitter
    * @annotation ["private"]
    * emitter
    */
   emitter_t emitter;
 
   /**
-   * @property {bool_t} destroy_when_done;
+   * @property {bool_t} destroy_when_done
    * @annotation ["private"]
    * 播放完成时是否自动销毁(缺省销毁)。
    */

@@ -57,7 +57,7 @@ typedef struct _dirty_rects_t {
   rect_t max;
 
   /**
-   * @property {rect_t} rects
+   * @property {rect_t*} rects
    * @annotation ["readable"]
    * 脏矩形。
    */

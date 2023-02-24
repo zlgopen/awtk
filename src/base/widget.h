@@ -442,7 +442,7 @@ struct _widget_t {
    */
   uint8_t destroying : 1;
   /**
-   * @property {uint8_t} state
+   * @property {char*} state
    * @annotation ["readable"]
    * 控件的状态(取值参考widget_state_t)。
    */
@@ -536,7 +536,7 @@ struct _widget_t {
   tk_object_t* custom_props;
 
   /**
-   * @property {widget_vtable_t} vt
+   * @property {const widget_vtable_t*} vt
    * @annotation ["readable"]
    * 虚函数表。
    */

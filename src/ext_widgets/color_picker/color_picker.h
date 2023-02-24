@@ -66,7 +66,7 @@ typedef struct _color_picker_t {
   widget_t widget;
 
   /**
-   * @property {const char*} value
+   * @property {char*} value
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 颜色。
    */

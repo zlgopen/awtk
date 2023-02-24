@@ -157,7 +157,7 @@ struct _fscript_t {
    */
   int32_t error_row;
   /**
-   * @property {int32_t} error_row
+   * @property {int32_t} error_col
    * @annotation ["readable"]
    * 运行时错误的列号。
    */

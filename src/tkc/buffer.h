@@ -268,7 +268,7 @@ bool_t wbuffer_has_room(wbuffer_t* wbuffer, uint32_t size);
  */
 typedef struct _rbuffer_t {
   /**
-   * @property {uint8_t*} data
+   * @property {const uint8_t*} data
    * @annotation ["readable"]
    * 数据缓冲区。
    */

@@ -39,7 +39,7 @@ typedef const char* (*locale_info_tr_t)(const char* text);
  */
 struct _locale_info_t {
   /**
-   * @property {char*} country;
+   * @property {char*} country
    * @annotation ["readable"]
    * 国家或地区。如：CN
    */

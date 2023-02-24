@@ -72,7 +72,7 @@ typedef struct _file_chooser_t {
   str_t cwd;
 
   /**
-   * @property {str_t} filename; 
+   * @property {str_t} filename 
    * 当前选择的文件。
    */
   str_t filename;

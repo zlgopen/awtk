@@ -262,7 +262,7 @@ typedef struct _value_desc_t {
    */
   uint8_t format;
   /**
-   * @property {uint8_t} flags
+   * @property {uint16_t} flags
    * @annotation ["readable"]
    * flags。
    */

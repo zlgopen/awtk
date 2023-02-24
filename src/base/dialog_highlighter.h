@@ -94,7 +94,7 @@ struct _dialog_highlighter_t {
   widget_t* dialog;
 
   /**
-   * @property {rect_t*} clip_rect
+   * @property {rect_t} clip_rect
    * 截图的显示裁减区
    */
   rect_t clip_rect;

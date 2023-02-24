@@ -128,7 +128,7 @@ typedef enum _input_type_t {
 typedef struct _im_commit_event_t {
   event_t e;
   /**
-   * @property {char*} text
+   * @property {const char*} text
    * @annotation ["readable"]
    * 提交的文本。
    */
@@ -162,7 +162,7 @@ event_t* im_commit_event_init(im_commit_event_t* e, const char* text, bool_t rep
 typedef struct _im_action_button_info_event_t {
   event_t e;
   /**
-   * @property {char*} text
+   * @property {const char*} text
    * @annotation ["readable"]
    * 软键盘上的action按钮显示的文本。
    */
@@ -183,7 +183,7 @@ typedef struct _im_action_button_info_event_t {
 typedef struct _im_candidates_event_t {
   event_t e;
   /**
-   * @property {char*} candidates
+   * @property {const char*} candidates
    * @annotation ["readable"]
    * 可选的文本，多个文本以\0分隔。如：里\0李\0力\0离\0
    */

@@ -108,13 +108,13 @@ typedef enum _event_base_type_t {
  */
 typedef struct _event_t {
   /**
-   * @property {int32_t} type
+   * @property {uint32_t} type
    * @annotation ["readable", "scriptable"]
    * 类型。
    */
   uint32_t type;
   /**
-   * @property {int32_t} size
+   * @property {uint32_t} size
    * @annotation ["readable", "scriptable"]
    * 结构体的大小。
    */

@@ -640,13 +640,13 @@ event_t* wheel_event_init(wheel_event_t* event, uint32_t type, void* target, int
 typedef struct _orientation_event_t {
   event_t e;
   /**
-   * @property {int32_t} orientation
+   * @property {lcd_orientation_t} orientation
    * @annotation ["readable", "scriptable"]
    * 屏幕方向。
    */
   lcd_orientation_t orientation;
   /**
-   * @property {int32_t} old_orientation
+   * @property {lcd_orientation_t} old_orientation
    * @annotation ["readable", "scriptable"]
    * 旧的屏幕方向。
    */
@@ -790,7 +790,7 @@ typedef struct _pointer_event_t {
    */
   xy_t y;
   /**
-   * @property {uint8_t} button
+   * @property {xy_t} button
    * @annotation ["readable", "scriptable"]
    * button。
    * 在不同的平台，该属性会发生变化，
@@ -1086,13 +1086,13 @@ typedef struct _multi_gesture_event_t {
    */
   xy_t y;
   /**
-   * @property {float} rotation
+   * @property {float_t} rotation
    * @annotation ["readable", "scriptable"]
    * 旋转角度(幅度)增量。（单位弧度）
    */
   float_t rotation;
   /**
-   * @property {float} distance
+   * @property {float_t} distance
    * @annotation ["readable", "scriptable"]
    * 两点间的距离增量。(-1,0)表示缩小，(0-1)表示增加。
    */

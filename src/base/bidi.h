@@ -77,7 +77,7 @@ typedef enum _bidi_type_t {
  */
 typedef struct _bidi_t {
   /**
-   * @property {wchar_t*} vis_strx
+   * @property {wchar_t*} vis_str
    * @annotation ["readable"]
    * 用于显示的字符串(存放log2vis的结果)。
    */

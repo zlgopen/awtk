@@ -149,7 +149,7 @@ struct _system_info_t {
   const char* app_name;
 
   /**
-   * @property {const char*} app_root
+   * @property {char*} app_root
    * @annotation ["readable"]
    * 应用程序的根目录，用于定位资源文件。
    */
