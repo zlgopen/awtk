@@ -155,6 +155,7 @@ static ret_t slider_update_dragger_rect(widget_t* widget, canvas_t* c) {
 
   dragger_size = slider_get_dragger_size(widget);
   max_gap = tk_roundi(dragger_size / 2);
+  margin = margin > -max_gap ? margin : -max_gap;
   
   if (slider->vertical) {
     fvalue = 1.0f - fvalue;
@@ -165,9 +166,6 @@ static ret_t slider_update_dragger_rect(widget_t* widget, canvas_t* c) {
       r->y = widget->h * fvalue - (dragger_size >> 1);
     } else {
       r->y = margin + (widget->h - dragger_size - (margin * 2.0f)) * fvalue;
-
-      r->y = r->y < -max_gap ? -max_gap : r->y;
-      r->y = r->y > (widget->h - max_gap) ? (widget->h - max_gap) : r->y;
     }
   } else {
     r->w = dragger_size;
@@ -177,9 +175,6 @@ static ret_t slider_update_dragger_rect(widget_t* widget, canvas_t* c) {
       r->x = widget->w * fvalue - (dragger_size >> 1);
     } else {
       r->x = margin + (widget->w - dragger_size - (margin * 2.0f)) * fvalue;
-
-      r->x = r->x < -max_gap ? -max_gap : r->x;
-      r->x = r->x > (widget->w - max_gap) ? (widget->w - max_gap) : r->x;
     }
   }
 
@@ -430,12 +425,16 @@ ret_t slider_dec(widget_t* widget) {
 
 static ret_t slider_change_value_by_pointer_event(widget_t* widget, pointer_event_t* evt) {
   double value = 0;
+  uint32_t max_gap = 0;
   point_t p = {evt->x, evt->y};
   slider_t* slider = SLIDER(widget);
   double range = slider->max - slider->min;
   uint32_t dragger_size = slider_get_dragger_size(widget);
   int32_t margin = slider->no_dragger_icon ? 0 : style_get_int(widget->astyle, STYLE_ID_MARGIN, 0);
 
+  max_gap = tk_roundi(dragger_size / 2);
+  margin = margin > -max_gap ? margin : -max_gap;
+  
   widget_to_local(widget, &p);
   if (slider->vertical) {
     if (slider->no_dragger_icon) {
@@ -443,7 +442,7 @@ static ret_t slider_change_value_by_pointer_event(widget_t* widget, pointer_even
     } else {
       int32_t half_dragger_size = dragger_size >> 1;
       value = range - tk_clamp(range * (p.y - half_dragger_size - margin) /
-                                   (int32_t)(widget->h - dragger_size - (margin << 1)),
+                                   (int32_t)(widget->h - dragger_size - (margin * 2.0)),
                                0.0, range);
     }
   } else {
@@ -452,7 +451,7 @@ static ret_t slider_change_value_by_pointer_event(widget_t* widget, pointer_even
     } else {
       int32_t half_dragger_size = dragger_size >> 1;
       value = tk_clamp(range * (p.x - half_dragger_size - margin) /
-                           (int32_t)(widget->w - dragger_size - (margin << 1)),
+                           (int32_t)(widget->w - dragger_size - (margin * 2.0)),
                        0.0, range);
     }
   }
