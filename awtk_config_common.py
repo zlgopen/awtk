@@ -93,7 +93,7 @@ if OS_NAME == 'Darwin':
     OS_LIBS = ['stdc++', 'iconv', 'pthread', 'm', 'dl']
     OS_LINKFLAGS = '-framework IOKit -framework Cocoa -framework QuartzCore -framework OpenGL -weak_framework Metal -weak_framework MetalKit'
     OS_FLAGS = OS_FLAGS + ' -DHAS_SEM_OPEN '
-    OS_FLAGS = OS_FLAGS + ' -D__APPLE__ -DHAS_PTHREAD -DMACOS '
+    OS_FLAGS = OS_FLAGS + ' -D__APPLE__ -DHAS_PTHREAD -DMACOS -Dmacintosh '
     OS_FLAGS = OS_FLAGS + ' -D__STDC_LIMIT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_CONSTANT_MACROS  -DBGFX_CONFIG_RENDERER_METAL=1 '
     OS_LIBPATH = ['/usr/local/lib/']
 
