@@ -63,7 +63,7 @@ typedef window_animator_t* (*window_animator_create_t)(bool_t open, tk_object_t*
 #define WINDOW_ANIMATOR_CENTER_SCALE "center_scale"
 
 /**
- * @const WINDOW_ANIMATOR_FADE,
+ * @const WINDOW_ANIMATOR_FADE
  * 淡入淡出。适用于toast之类的提示。
  */
 #define WINDOW_ANIMATOR_FADE "fade"
