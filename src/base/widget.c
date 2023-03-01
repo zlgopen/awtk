@@ -4327,6 +4327,10 @@ static widget_t* widget_find_next_focus_widget(widget_t* widget, darray_t* all_f
 }
 
 static bool_t is_same_row(const rect_t* r1, const rect_t* r2) {
+  if (r1 == NULL || r2 == NULL) {
+    return FALSE;
+  }
+
   int32_t cy1 = r1->y + r1->h / 2;
   int32_t cy2 = r2->y + r2->h / 2;
 
@@ -4396,10 +4400,6 @@ static bool_t match_left(const rect_t* widget, const rect_t* last_matched, const
     return FALSE;
   }
 
-  if (last_matched == NULL) {
-    return TRUE;
-  }
-
   if (is_same_row(widget, iter)) {
     if (!is_same_row(widget, last_matched)) {
       return TRUE;
@@ -4408,18 +4408,19 @@ static bool_t match_left(const rect_t* widget, const rect_t* last_matched, const
     }
   } else if (is_same_row(widget, last_matched)) {
     return FALSE;
+  } 
+  
+  // 只有在候选控件在当前控件上方才判断距离远近
+  if (widget->y >= iter->y) {
+    return last_matched ? distance2(widget, iter) < distance2(widget, last_matched) : TRUE;
   } else {
-    return distance2(widget, iter) < distance2(widget, last_matched);
+    return FALSE;
   }
 }
 
 static bool_t match_right(const rect_t* widget, const rect_t* last_matched, const rect_t* iter) {
   if ((iter->x + iter->w / 2) < (widget->x + widget->w)) {
     return FALSE;
-  }
-
-  if (last_matched == NULL) {
-    return TRUE;
   }
 
   if (is_same_row(widget, iter)) {
@@ -4430,8 +4431,13 @@ static bool_t match_right(const rect_t* widget, const rect_t* last_matched, cons
     }
   } else if (is_same_row(widget, last_matched)) {
     return FALSE;
+  }
+
+  // 只有在候选控件在当前控件下方才判断距离远近
+  if (widget->y <= iter->y) {
+    return last_matched ? distance2(widget, iter) < distance2(widget, last_matched) : TRUE;
   } else {
-    return distance2(widget, iter) < distance2(widget, last_matched);
+    return FALSE;
   }
 }
 
