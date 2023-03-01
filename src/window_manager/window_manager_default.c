@@ -70,6 +70,7 @@ static ret_t wm_on_screen_saver_timer(const timer_info_t* info) {
   event_t e = event_init(EVT_SCREEN_SAVER, wm);
   wm->screen_saver_timer_id = TK_INVALID_ID;
 
+  emitter_dispatch(WINDOW_MANAGER(wm)->global_emitter, &e);
   widget_dispatch(WIDGET(wm), &e);
   log_debug("emit: EVT_SCREEN_SAVER\n");
 

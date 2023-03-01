@@ -275,6 +275,8 @@ int32_t event_from_name(const char* name) {
         return EVT_KEY_DOWN;
       } else if (tk_str_eq(name, "global_key_long_press")) {
         return EVT_KEY_LONG_PRESS;
+      } else if (tk_str_eq(name, "global_screen_saver")) {
+        return EVT_SCREEN_SAVER;
       }
       break;
     }
