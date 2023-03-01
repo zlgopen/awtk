@@ -263,8 +263,8 @@ static bool_t debugger_client_is_paused(debugger_t* debugger) {
   return debugger_client_request_simple(debugger, DEBUGGER_REQ_IS_PAUSED, 0) == RET_OK;
 }
 
-static ret_t debugger_client_next(debugger_t* debugger) {
-  return debugger_client_request_simple(debugger, DEBUGGER_REQ_NEXT, 0);
+static ret_t debugger_client_step_over(debugger_t* debugger) {
+  return debugger_client_request_simple(debugger, DEBUGGER_REQ_STEP_OVER, 0);
 }
 
 static ret_t debugger_client_step_in(debugger_t* debugger) {
@@ -275,8 +275,8 @@ static ret_t debugger_client_step_out(debugger_t* debugger) {
   return debugger_client_request_simple(debugger, DEBUGGER_REQ_STEP_OUT, 0);
 }
 
-static ret_t debugger_client_step_over(debugger_t* debugger) {
-  return debugger_client_request_simple(debugger, DEBUGGER_REQ_STEP_OVER, 0);
+static ret_t debugger_client_step_loop_over(debugger_t* debugger) {
+  return debugger_client_request_simple(debugger, DEBUGGER_REQ_STEP_LOOP_OVER, 0);
 }
 
 static ret_t debugger_client_continue(debugger_t* debugger) {
@@ -393,10 +393,10 @@ static const debugger_vtable_t s_debugger_client_vtable = {
     .pause = debugger_client_pause,
     .restart = debugger_client_restart,
     .is_paused = debugger_client_is_paused,
-    .next = debugger_client_next,
     .step_in = debugger_client_step_in,
     .step_out = debugger_client_step_out,
     .step_over = debugger_client_step_over,
+    .step_loop_over = debugger_client_step_loop_over,
     .continve = debugger_client_continue,
     .get_local = debugger_client_get_local,
     .get_self = debugger_client_get_self,

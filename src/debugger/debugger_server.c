@@ -470,10 +470,6 @@ static ret_t debugger_server_dispatch(debugger_server_t* server) {
         resp.error = debugger_is_paused(debugger) ? RET_OK : RET_FAIL;
         break;
       }
-      case DEBUGGER_REQ_NEXT: {
-        resp.error = debugger_next(debugger);
-        break;
-      }
       case DEBUGGER_REQ_STEP_IN: {
         resp.error = debugger_step_in(debugger);
         break;
@@ -484,6 +480,10 @@ static ret_t debugger_server_dispatch(debugger_server_t* server) {
       }
       case DEBUGGER_REQ_STEP_OVER: {
         resp.error = debugger_step_over(debugger);
+        break;
+      }
+      case DEBUGGER_REQ_STEP_LOOP_OVER: {
+        resp.error = debugger_step_loop_over(debugger);
         break;
       }
       case DEBUGGER_REQ_CONTINUE: {

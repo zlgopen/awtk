@@ -54,11 +54,6 @@ typedef enum _debugger_req_type_t {
    */
   DEBUGGER_REQ_IS_PAUSED,
   /**
-   * @const DEBUGGER_REQ_NEXT
-   * 运行下一步请求码。
-   */
-  DEBUGGER_REQ_NEXT,
-  /**
    * @const DEBUGGER_REQ_STEP_IN
    * 运行进入函数请求码。
    */
@@ -70,9 +65,14 @@ typedef enum _debugger_req_type_t {
   DEBUGGER_REQ_STEP_OUT,
   /**
    * @const DEBUGGER_REQ_STEP_OVER
-   * 运行下一行请求码。
+   * 运行下一步请求码。
    */
   DEBUGGER_REQ_STEP_OVER,
+  /**
+   * @const DEBUGGER_REQ_STEP_LOOP_OVER
+   * 运行下一行请求码。（跳转循环）
+   */
+  DEBUGGER_REQ_STEP_LOOP_OVER,
   /**
    * @const DEBUGGER_REQ_CONTINUE
    * 运行到下一个断点请求码。
@@ -178,11 +178,6 @@ typedef enum _debugger_resp_type_t {
    */
   DEBUGGER_RESP_PAUSE = DEBUGGER_REQ_PAUSE,
   /**
-   * @const DEBUGGER_RESP_NEXT
-   * 运行下一步响应码。
-   */
-  DEBUGGER_RESP_NEXT = DEBUGGER_REQ_NEXT,
-  /**
    * @const DEBUGGER_RESP_STEP_IN
    * 运行进入函数响应码。
    */
@@ -194,9 +189,14 @@ typedef enum _debugger_resp_type_t {
   DEBUGGER_RESP_STEP_OUT = DEBUGGER_REQ_STEP_OUT,
   /**
    * @const DEBUGGER_RESP_STEP_OVER
-   * 运行下一行响应码。
+   * 运行下一步响应码。
    */
   DEBUGGER_RESP_STEP_OVER = DEBUGGER_REQ_STEP_OVER,
+  /**
+   * @const DEBUGGER_RESP_STEP_LOOP_OVER
+   * 运行下一行响应码。（跳出循环）
+   */
+  DEBUGGER_RESP_STEP_LOOP_OVER = DEBUGGER_REQ_STEP_LOOP_OVER,
   /**
    * @const DEBUGGER_RESP_CONTINUE
    * 运行到下一个断点响应码。

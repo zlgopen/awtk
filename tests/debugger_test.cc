@@ -126,19 +126,19 @@ TEST(Debugger, launch) {
   ASSERT_EQ(debugger_get_callstack(client, &data), RET_OK);
   ASSERT_STREQ((char*)(data.data), "<root>\n");
 
-  ASSERT_EQ(debugger_next(client), RET_OK);
+  ASSERT_EQ(debugger_step_over(client), RET_OK);
   sleep_ms(200);
 
-  ASSERT_EQ(debugger_next(client), RET_OK);
+  ASSERT_EQ(debugger_step_over(client), RET_OK);
   sleep_ms(200);
 
-  ASSERT_EQ(debugger_next(client), RET_OK);
+  ASSERT_EQ(debugger_step_over(client), RET_OK);
   sleep_ms(200);
 
-  ASSERT_EQ(debugger_next(client), RET_OK);
+  ASSERT_EQ(debugger_step_over(client), RET_OK);
   sleep_ms(200);
 
-  ASSERT_EQ(debugger_next(client), RET_OK);
+  ASSERT_EQ(debugger_step_over(client), RET_OK);
   sleep_ms(200);
 
   ASSERT_EQ(debugger_continue(client), RET_OK);
@@ -158,7 +158,7 @@ TEST(Debugger, launch) {
 }
 
 #if 1
-TEST(Debugger, next) {
+TEST(Debugger, step_over) {
   const char* code =
       "var i = 0\n"
       "for(i = 0; i < 10; i=i+1) {\n"
@@ -193,19 +193,19 @@ TEST(Debugger, next) {
   ASSERT_EQ(debugger_get_callstack(client, &data), RET_OK);
   ASSERT_STREQ((char*)(data.data), "<root>\n");
 
-  ASSERT_EQ(debugger_next(client), RET_OK);
+  ASSERT_EQ(debugger_step_over(client), RET_OK);
   sleep_ms(200);
 
-  ASSERT_EQ(debugger_next(client), RET_OK);
+  ASSERT_EQ(debugger_step_over(client), RET_OK);
   sleep_ms(200);
 
-  ASSERT_EQ(debugger_next(client), RET_OK);
+  ASSERT_EQ(debugger_step_over(client), RET_OK);
   sleep_ms(200);
 
-  ASSERT_EQ(debugger_next(client), RET_OK);
+  ASSERT_EQ(debugger_step_over(client), RET_OK);
   sleep_ms(200);
 
-  ASSERT_EQ(debugger_next(client), RET_OK);
+  ASSERT_EQ(debugger_step_over(client), RET_OK);
   sleep_ms(200);
 
   ASSERT_EQ(debugger_continue(client), RET_OK);
@@ -538,7 +538,7 @@ TEST(Debugger, step_in) {
   str_reset(&str);
 }
 
-TEST(Debugger, step_over) {
+TEST(Debugger, step_loop_over) {
   const char* code =
       "var i = 0\n"
       "for(i = 0; i < 10; i=i+1) {\n"
@@ -573,18 +573,18 @@ TEST(Debugger, step_over) {
   ASSERT_EQ(debugger_get_callstack(client, &data), RET_OK);
   ASSERT_STREQ((char*)(data.data), "<root>\n");
 
-  ASSERT_EQ(debugger_step_over(client), RET_OK);
+  ASSERT_EQ(debugger_step_loop_over(client), RET_OK);
   sleep_ms(200);
 
-  ASSERT_EQ(debugger_step_over(client), RET_OK);
+  ASSERT_EQ(debugger_step_loop_over(client), RET_OK);
   sleep_ms(200);
 
   for (uint32_t i = 0; i < 10; i++) {
-    ASSERT_EQ(debugger_step_over(client), RET_OK);
+    ASSERT_EQ(debugger_step_loop_over(client), RET_OK);
     sleep_ms(200);
   }
 
-  ASSERT_EQ(debugger_step_over(client), RET_OK);
+  ASSERT_EQ(debugger_step_loop_over(client), RET_OK);
   sleep_ms(200);
 
   debugger_client_wait_for_completed(client);
@@ -753,9 +753,9 @@ TEST(Debugger, basic1) {
   tk_thread_start(thread);
   sleep_ms(500);
 
-  ASSERT_EQ(debugger_next(client), RET_OK);
+  ASSERT_EQ(debugger_step_over(client), RET_OK);
   sleep_ms(200);
-  ASSERT_EQ(debugger_next(client), RET_OK);
+  ASSERT_EQ(debugger_step_over(client), RET_OK);
   ASSERT_EQ(debugger_remove_break_point(client, 2), RET_OK);
   ASSERT_EQ(debugger_clear_break_points(client), RET_OK);
 

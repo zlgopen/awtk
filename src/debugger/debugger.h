@@ -40,10 +40,10 @@ typedef ret_t (*debugger_pause_t)(debugger_t* debugger);
 typedef bool_t (*debugger_match_t)(debugger_t* debugger, const char* code_id);
 typedef bool_t (*debugger_is_paused_t)(debugger_t* debugger);
 
-typedef ret_t (*debugger_next_t)(debugger_t* debugger);
+typedef ret_t (*debugger_step_over_t)(debugger_t* debugger);
 typedef ret_t (*debugger_step_in_t)(debugger_t* debugger);
 typedef ret_t (*debugger_step_out_t)(debugger_t* debugger);
-typedef ret_t (*debugger_step_over_t)(debugger_t* debugger);
+typedef ret_t (*debugger_step_loop_over_t)(debugger_t* debugger);
 typedef ret_t (*debugger_continue_t)(debugger_t* debugger);
 typedef tk_object_t* (*debugger_get_local_t)(debugger_t* debugger, uint32_t frame_index);
 typedef tk_object_t* (*debugger_get_self_t)(debugger_t* debugger);
@@ -74,11 +74,11 @@ typedef struct _debugger_vtable_t {
   debugger_match_t match;
   debugger_is_paused_t is_paused;
 
-  debugger_next_t next;
   debugger_step_in_t step_in;
   debugger_restart_t restart;
   debugger_step_out_t step_out;
   debugger_step_over_t step_over;
+  debugger_step_loop_over_t step_loop_over;
   debugger_continue_t continve;
   debugger_get_local_t get_local;
   debugger_get_self_t get_self;
@@ -175,14 +175,14 @@ bool_t debugger_is_paused(debugger_t* debugger);
 bool_t debugger_match(debugger_t* debugger, const char* code_id);
 
 /**
- * @method debugger_next
- * 执行到下一行代码。
+ * @method debugger_step_over
+ * 执行到下一行代码。（不进入函数）
  * > 处于暂停状态才能执行本命令。
  * @param {debugger_t*} debugger debugger对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t debugger_next(debugger_t* debugger);
+ret_t debugger_step_over(debugger_t* debugger);
 
 /**
  * @method debugger_step_in
@@ -205,14 +205,14 @@ ret_t debugger_step_in(debugger_t* debugger);
 ret_t debugger_step_out(debugger_t* debugger);
 
 /**
- * @method debugger_step_over
+ * @method debugger_step_loop_over
  * 执行下一条语句(跳过循环)
  * > 处于暂停状态才能执行本命令。
  * @param {debugger_t*} debugger debugger对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t debugger_step_over(debugger_t* debugger);
+ret_t debugger_step_loop_over(debugger_t* debugger);
 
 /**
  * @method debugger_continue

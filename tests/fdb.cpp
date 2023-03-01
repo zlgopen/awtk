@@ -195,7 +195,7 @@ static ret_t func_global(app_info_t* app, tokenizer_t* tokenizer) {
 }
 
 static ret_t func_next(app_info_t* app, tokenizer_t* tokenizer) {
-  debugger_next(app->debugger);
+  debugger_step_over(app->debugger);
   sleep_ms(300);
   return debugger_show_code(app, FALSE);
 }
@@ -268,8 +268,8 @@ static ret_t func_step_out(app_info_t* app, tokenizer_t* tokenizer) {
   return debugger_show_code(app, FALSE);
 }
 
-static ret_t func_step_over(app_info_t* app, tokenizer_t* tokenizer) {
-  debugger_step_over(app->debugger);
+static ret_t func_step_loop_over(app_info_t* app, tokenizer_t* tokenizer) {
+  debugger_step_loop_over(app->debugger);
   sleep_ms(300);
   return debugger_show_code(app, FALSE);
 }
@@ -287,7 +287,7 @@ static ret_t func_quit(app_info_t* app, tokenizer_t* tokenizer) {
 static ret_t func_help(app_info_t* app, tokenizer_t* tokenizer);
 static const cmd_entry_t s_cmds[] = {
     {"next", "n", "run next line code", "next", func_next},
-    {"step_over", "u", "step over", "step over", func_step_over},
+    {"step_loop_over", "u", "step loop over", "step loop over", func_step_loop_over},
     {"step_in", "s", "step in", "step in script function", func_step_in},
     {"step_out", "so", "step out", "step out script fuction", func_step_out},
     {"continue", "c", "continue", "continue", func_continue},

@@ -70,13 +70,6 @@ bool_t debugger_match(debugger_t* debugger, const char* code_id) {
   return debugger->vt->match(debugger, code_id);
 }
 
-ret_t debugger_next(debugger_t* debugger) {
-  return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(debugger->vt->next != NULL, RET_BAD_PARAMS);
-
-  return debugger->vt->next(debugger);
-}
-
 ret_t debugger_step_in(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->step_in != NULL, RET_BAD_PARAMS);
@@ -96,6 +89,13 @@ ret_t debugger_step_over(debugger_t* debugger) {
   return_value_if_fail(debugger->vt->step_over != NULL, RET_BAD_PARAMS);
 
   return debugger->vt->step_over(debugger);
+}
+
+ret_t debugger_step_loop_over(debugger_t* debugger) {
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger->vt->step_loop_over != NULL, RET_BAD_PARAMS);
+
+  return debugger->vt->step_loop_over(debugger);
 }
 
 ret_t debugger_continue(debugger_t* debugger) {
