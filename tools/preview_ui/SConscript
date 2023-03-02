@@ -1,0 +1,10 @@
+﻿import os
+import sys
+
+env=DefaultEnvironment().Clone()
+BIN_DIR=os.environ['BIN_DIR'];
+LIB_DIR=os.environ['LIB_DIR'];
+
+env['LIBS'] = os.environ['AWTK_SHARED_LIBS'].split(';')
+env['LINKFLAGS'] = env['OS_SUBSYSTEM_WINDOWS'] + env['LINKFLAGS'];
+env.Program(os.path.join(BIN_DIR, 'preview_ui'), ["preview_ui.c"])

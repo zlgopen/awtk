@@ -57,6 +57,7 @@ SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
   'tools/ui_gen/xml_to_ui/SConscript',
   'tools/svg_gen/SConscript',
   'tools/api_doc_lint/SConscript',
+  'tools/preview_ui/SConscript',
   'demos/SConscript', 
   'tests/SConscript',
   'src/hal/tools/network_shell/SConscript',
@@ -65,6 +66,7 @@ SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
 os.environ['TK_ROOT'] = awtk.TK_ROOT;
 os.environ['BIN_DIR'] = awtk.TK_BIN_DIR;
 os.environ['LIB_DIR'] = awtk.TK_LIB_DIR;
+os.environ['AWTK_SHARED_LIBS'] = ';'.join(awtk.SHARED_LIBS);
 
 SConscript(SConscriptFiles)
 
