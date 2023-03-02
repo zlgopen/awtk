@@ -1,0 +1,151 @@
+﻿#include "api_doc.h"
+#include "awtk.h"
+
+typedef struct _foreach_ctx_t {
+  const char* extname;
+  void* log_ctx;
+  log_hook_t log_hook;
+  bool_t auto_fix;
+  code_assist_t* ca;
+} foreach_ctx_t;
+
+static ret_t on_file(foreach_ctx_t* ctx, const char* filename) {
+  const char* extname = ctx->extname;
+
+  if (*extname != 0) {
+    if (!tk_str_end_with(filename, extname)) {
+      // 后缀名不符合要求， 过滤掉
+      return RET_OK;
+    }
+  }
+
+  check_api_doc(ctx->ca, filename, ctx->log_hook, ctx->log_ctx, ctx->auto_fix);
+  return RET_OK;
+}
+
+// 根据 本程序exe 路径 猜测 awtk 路径
+static void guess_dirs(const char* exe, str_t* awtk_dir) {
+  char buf[MAX_PATH+1] = {0};
+  char path_nor[MAX_PATH+1] = {0};
+
+  tk_snprintf(buf, sizeof(buf), "%s/../../../../awtk/src", exe);
+  path_normalize(buf, path_nor, MAX_PATH);
+  if (dir_exist(path_nor)) {
+    str_append(awtk_dir, path_nor);
+    return;
+  }
+
+  tk_snprintf(buf, sizeof(buf), "%s/../../../../../awtk/src", exe);
+  path_normalize(buf, path_nor, MAX_PATH);
+  if (dir_exist(path_nor)) {
+    str_append(awtk_dir, path_nor);
+  }
+}
+
+static int usage() {
+  printf("e.g:\n");
+  printf("apidoc src\n");
+  printf("apidoc f:/awtk/src\n");
+  printf("apidoc F:/awtk/src/base/widget.c\n");
+  printf("apidoc f:/awtk/src --fix\n\n");
+  printf("Usage: apidoc path \n");
+  printf("\n");
+  printf("  path        both abs or relative path are ok\n");
+  printf("  --fix       auto fix error(experimental)\n");
+  printf("  -h, --help  show usage\n");
+  return 0;
+}
+
+typedef struct _out_info_t {
+  int32_t nwarn;
+  int32_t nerr;
+} out_info_t;
+
+void log_to_str(void* ctx, log_level_t level, const char* s) {
+  out_info_t* info = (out_info_t*)ctx;
+  if (s) {
+    if (level == LOG_LEVEL_WARN) {
+      ++info->nwarn;
+    } else if (level == LOG_LEVEL_ERROR) {
+      ++info->nerr;
+    }
+    printf("%s", s);
+  }
+}
+
+static void set_path(const char* path, str_t* dir, str_t* file) {
+  if (!path_is_abs(path)) {
+    char cwd[MAX_PATH + 1] = {0};
+    path_cwd(cwd);
+    str_set(dir, cwd);
+    str_append_more(dir, "/", path, NULL);
+
+    if (file_exist(dir->str)) {
+      str_set(file, dir->str);
+      str_clear(dir);
+    }
+  } else {
+    if (path_exist(path)) {
+      str_set(dir, path);
+    } else if (file_exist(path)) {
+      str_set(file, path);
+    }
+  }
+}
+
+int main(int argc, char* argv[]) {
+  char exe[MAX_PATH+1] = {0};
+  out_info_t out = {0};
+  str_t dir_path;
+  str_t file_path;
+  foreach_ctx_t ctx = { .extname = ".h", .log_ctx = &out, .log_hook = log_to_str};
+  ctx.ca = code_assist_create();
+
+  path_exe(exe);
+  str_init(&dir_path, 256);
+  str_init(&file_path, 256);
+
+  for (int i = 1; i < argc; ++i) {
+    if (0 == strcmp(argv[i], "--fix")) {
+      ctx.auto_fix = TRUE;
+    } else if (0 == strcmp(argv[i], "awtk")) {
+      guess_dirs(exe, &dir_path);
+    } else if (0 == strcmp(argv[i], "--help") || 0 == strcmp(argv[i], "-h")) {
+      return usage();
+    } else if (*argv[i] == '-') {
+      printf("ignore unknown argv : %s\n", argv[i]);
+      continue;
+    } else {
+      set_path(argv[i], &dir_path, &file_path);
+    }
+  }
+
+  if (dir_path.size == 0 && file_path.size == 0) {
+    set_path("src", &dir_path, &file_path);
+  }
+
+  char path_nor[MAX_PATH+1] = {0};
+  
+  if (dir_path.size > 0) {
+    path_normalize(dir_path.str, path_nor, MAX_PATH);
+    printf("check dir : %s\n", path_nor);
+    fs_foreach_file(path_nor, (tk_visit_t)on_file, &ctx);
+  } else if (file_path.size > 0) {
+    path_normalize(file_path.str, path_nor, MAX_PATH);
+    printf("check file : %s\n", path_nor);
+    ctx.extname = "";
+    on_file(&ctx, path_nor);
+  }
+  
+  str_reset(&dir_path);
+  str_reset(&file_path);
+
+  if (0 == out.nerr + out.nwarn) {
+    printf("check ok! \n");
+  } else {
+    printf("errors(%d) warnings(%d) \n", out.nerr, out.nwarn);
+  }
+
+  code_assist_destroy(ctx.ca);
+  return out.nerr + out.nwarn;
+}

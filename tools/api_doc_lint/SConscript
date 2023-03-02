@@ -1,0 +1,17 @@
+﻿import os
+import sys
+import platform
+
+env = DefaultEnvironment().Clone()
+BIN_DIR = os.environ['BIN_DIR']
+LIB_DIR = os.environ['LIB_DIR'];
+
+sources = Glob('**/*.c') + Glob('*.c') + Glob('*.cpp')
+
+APP_CXXFLAGS = ''
+if platform.system() != 'Windows':
+  APP_CXXFLAGS += ' -std=c++11 '
+
+env['CXXFLAGS'] = env['CXXFLAGS'] + APP_CXXFLAGS
+
+env.Program(os.path.join(BIN_DIR, 'api_doc_lint'), sources, LIBS = env['LIBS'])
