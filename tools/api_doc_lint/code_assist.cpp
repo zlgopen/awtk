@@ -668,15 +668,24 @@ void tcb_ctags_callback(const tagEntryInfo* const tag, char* const line, void* p
   node.pos = tag->filePosition;
   node.line = tag->lineNumber;
 
-  string s = line ? line : "";
-  if (!s.empty() && *s.rbegin() == '\n') {
-    if (s[s.length() - 2] == '\r') {
-      s = s.substr(0, s.length() - 2);
-    } else {
-      s = s.substr(0, s.length() - 1);
+  if (tag->functionPreffix && node.param && tag->kind != 't') {
+    string snapshot = tag->functionPreffix;
+    if (tag->kind == 'm')
+      snapshot = snapshot + " (*" + tag->name + ")" + node.param;
+    else
+      snapshot = snapshot + " " + tag->name + node.param;
+    node.line_content = fn_atoms.intern(snapshot);
+  } else {
+    string s = line ? line : "";
+    if (!s.empty() && *s.rbegin() == '\n') {
+      if (s[s.length()-2] == '\r') {
+        s = s.substr(0, s.length()-2);
+      } else {
+        s = s.substr(0, s.length()-1);
+      }
     }
+    node.line_content = fn_atoms.intern(s);
   }
-  node.line_content = fn_atoms.intern(s);
 
   if (tag->kind == 'i') {
     node.name = sy_atoms.intern(tag->name + 1);
