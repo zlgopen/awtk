@@ -1,5 +1,6 @@
 ﻿#include "base/assets_manager.h"
 #include "gtest/gtest.h"
+#include "gtest/gtest_helper.h"
 #include "tkc/str.h"
 #include "tkc/path.h"
 #include "tkc/utils.h"
@@ -389,7 +390,7 @@ TEST(AssetsManager, assets_managers) {
   assets_manager_t* bar1 = assets_managers_ref("bar");
   const asset_info_t* a1 = assets_manager_ref(foo, ASSET_TYPE_DATA, "test.json");
   ASSERT_EQ(a1 != NULL, TRUE);
-  ASSERT_EQ(a1->size, 8);
+  ASSERT_STREQ_UNIX((const char*)(a1->data), "[\"foo\"]\n");
   assets_manager_unref(foo, a1);
 
   /*load from default*/
