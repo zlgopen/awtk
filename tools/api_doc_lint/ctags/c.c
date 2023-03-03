@@ -1227,15 +1227,27 @@ static void updateVariableType(statementInfo *const st, const tokenInfo *const t
 		popVariableType(st);
 }
 
+static boolean ExistNewTag = FALSE;
+void onCtagsEntry(const tagEntryInfo *const tag) {
+  ExistNewTag = TRUE;
+}
+
 static void pushFunctionPreffix(statementInfo *const st, const char* name)
 {
-    if (st->gotType) return;
+  if (ExistNewTag)
+  {
+    vStringClear(st->functionPreffix);
+    vStringClear(st->preffixCache);
+    ExistNewTag = FALSE;
+  }
+  if (st->gotType)
+    return;
 
-    if (vStringLength(st->functionPreffix) > 0)
-        vStringCatS(st->functionPreffix, " ");
-    
-    vStringCat(st->functionPreffix, st->preffixCache);
-    vStringCopyS(st->preffixCache, name);
+  if (vStringLength(st->functionPreffix) > 0)
+    vStringCatS(st->functionPreffix, " ");
+
+  vStringCat(st->functionPreffix, st->preffixCache);
+  vStringCopyS(st->preffixCache, name);
 }
 
 static void  updateFunctionPreffix(statementInfo *const st, const tokenInfo *const token)
@@ -1890,7 +1902,7 @@ static void processToken (tokenInfo *const token, statementInfo *const st)
 				reinitStatement (st, FALSE);
 				st->scope = SCOPE_STATIC;
 				st->declaration = DECL_BASE;
-                pushFunctionPreffix(st, "static");
+        pushFunctionPreffix(st, "static");
 			}
 			break;
 
@@ -2628,7 +2640,7 @@ static void nextToken (statementInfo *const st)
             case '*': 
                 st->haveQualifyingName = FALSE;           
                 if (!st->gotType) {
-                    pushFunctionPreffix(st, "*");
+                  pushFunctionPreffix(st, "*");
                 }
                 break;
             
@@ -2898,7 +2910,7 @@ static void createTags (const unsigned int nestLevel,
 		{
 			addContext (st, prevToken (st, 1));
 			advanceToken (st);
-            pushFunctionPreffix(st, "::");
+      pushFunctionPreffix(st, "::");
 			updateVariableType(st, token);
 		}
 		else

@@ -42,13 +42,15 @@ static void guess_dirs(const char* exe, str_t* awtk_dir) {
   }
 }
 
-static int usage() {
+static int usage(const char* exe) {
+  char exename[MAX_PATH+1] = {0};
+  path_basename_ex(exe, TRUE, exename, sizeof(exename));
   printf("e.g:\n");
-  printf("apidoc src\n");
-  printf("apidoc f:/awtk/src\n");
-  printf("apidoc F:/awtk/src/base/widget.c\n");
-  printf("apidoc f:/awtk/src --fix\n\n");
-  printf("Usage: apidoc path \n");
+  printf("%s src\n", exename);
+  printf("%s f:/awtk/src\n", exename);
+  printf("%s F:/awtk/src/base/widget.c\n", exename);
+  printf("%s f:/awtk/src --fix\n\n", exename);
+  printf("Usage: %s path \n", exename);
   printf("\n");
   printf("  path        both abs or relative path are ok\n");
   printf("  --fix       auto fix error(experimental)\n");
@@ -111,7 +113,7 @@ int main(int argc, char* argv[]) {
     } else if (0 == strcmp(argv[i], "awtk")) {
       guess_dirs(exe, &dir_path);
     } else if (0 == strcmp(argv[i], "--help") || 0 == strcmp(argv[i], "-h")) {
-      return usage();
+      return usage(exe);
     } else if (*argv[i] == '-') {
       printf("ignore unknown argv : %s\n", argv[i]);
       continue;

@@ -17,7 +17,10 @@
 /* Add the name of any new parser definition function here */
 #define PARSER_LIST \
 	CParser, \
-	CppParser
+	CppParser, \
+  CsharpParser, \
+  JavaParser, \
+  VeraParser
 
 #endif  /* _PARSERS_H */
 

@@ -801,6 +801,8 @@ static int writeLineNumberEntry (const tagEntryInfo *const tag)
 	return fprintf (TagFile.fp, "%lu", tag->lineNumber);
 }
 
+extern void onCtagsEntry(const tagEntryInfo *const tag);
+
 static int writeCtagsEntry (const tagEntryInfo *const tag)
 {
     /*trival trace -- hook by joyer*/
@@ -808,6 +810,7 @@ static int writeCtagsEntry (const tagEntryInfo *const tag)
       char *const line = readSourceLine (TagFile.vLine, tag->filePosition, NULL);
       vStringPut(TagFile.vLine, '\0');
       entry_callback(tag, line, entry_callback_param);
+      onCtagsEntry(tag);
       return 0;
     }
     {

@@ -612,9 +612,7 @@ static void trim_func_type(char* src) {
     if (0 == strncmp("inline", src, 6) ||
         0 == strncmp("static", src, 6)) {
       src += 6;
-    } else if (0 == strncmp("BEGIN_C_DECLS", src, 13)) {
-      src += 13;
-    }
+    } 
 
     *dest++ = *src;
   }
