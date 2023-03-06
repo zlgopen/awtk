@@ -635,10 +635,11 @@ static char* sym_type(ca_symbol_t* sym) {
   return ret;
 }
 
-static ret_t param_destroy(mparam_t* param) {
+static ret_t param_free(mparam_t* param) {
   if (param) {
     if (param->type) TKMEM_FREE(param->type);
     if (param->name) TKMEM_FREE(param->name);
+    TKMEM_FREE(param);
   }
   return RET_OK;
 }
@@ -996,7 +997,7 @@ bool_t check_func(check_ctx_t* ctx, ca_symbol_t* sym) {
 
   auto_fix_t* af = &ctx->auto_fix;
   int param_i = 0;
-  darray_t* params = darray_create(8, (tk_destroy_t)param_destroy, NULL);
+  darray_t* params = darray_create(8, (tk_destroy_t)param_free, NULL);
   sym_params(sym->param, params);
 
   count_param(ctx);
@@ -1307,7 +1308,7 @@ static bool_t check_property(check_ctx_t* ctx, ca_symbol_t* sym, const char* typ
       return FALSE;
     }
   }
-  TKMEM_FREE(param);
+  param_free(param);
 
   return TRUE;
 }
@@ -1337,6 +1338,7 @@ static bool_t check_class_member(check_ctx_t* ctx, ca_symbol_t* sym) {
             if (str_same(param->type, type)) {
               auto_fix_property_name_missing(ctx, param);
             }
+            param_free(param);
           }
         }
       

@@ -6,13 +6,11 @@
 #include <string>
 using std::string;
 
+static char exe[MAX_PATH+1];
+
 /*
 ./bin/runTest "--gtest_filter=api_doc.*"
 */
-
-static code_assist_t* ca;
-static char exe[MAX_PATH+1];
-static string file1;
 
 static void gen_path(const char* exe, const char* file, string& out) {
   char full[MAX_PATH+1] = {0};
@@ -21,17 +19,6 @@ static void gen_path(const char* exe, const char* file, string& out) {
   path_normalize(full, normalized, MAX_PATH);
   out = normalized;
 }
-
-struct caraii {
-  caraii() {
-    ca = code_assist_create();
-    path_exe(exe);
-    gen_path(exe, "/../../tests/testdata/apidoc_test.h", file1);
-  }
-  ~caraii() {
-    code_assist_destroy(ca);
-  }
-} _ca_auto_init_destroy_;
 
 typedef struct _out_info_t {
   int32_t nwarn;
@@ -77,10 +64,35 @@ static const char* warns[] = {
   "(1076): warning: @prefix missing\n",
 };
 
+void dummy_log(void* ctx, log_level_t level, const char* s) {
+}
+
+
+void auto_fix_hook(const char* path, const char* actual, uint32_t size) {
+  //file_write("f:/foo.h", actual, size);
+
+  string file;
+  gen_path(exe, "/../../tests/testdata/fixed.h", file);
+
+  uint32_t len;
+  char* expect_result = (char*)file_read(file.c_str(), &len);
+
+  ASSERT_STREQ_UNIX(actual, expect_result);
+
+  TKMEM_FREE(expect_result);
+}
+
 TEST(api_doc, basic) {
+  code_assist_t* ca;
+  string file1;
+
   out_info_t out = {0};
   str_init(&out.err, 1024);
   str_init(&out.warn, 1024);
+  ca = code_assist_create();
+  path_exe(exe);
+  gen_path(exe, "/../../tests/testdata/apidoc_test.h", file1);
+  
   check_api_doc(ca, file1.c_str(), log_to_str, &out, FALSE);
 
   uint32_t i = 0;
@@ -100,26 +112,7 @@ TEST(api_doc, basic) {
 
   str_reset(&out.err);
   str_reset(&out.warn);
-}
 
-void dummy_log(void* ctx, log_level_t level, const char* s) {
-}
-
-
-void auto_fix_hook(const char* path, const char* actual, uint32_t size) {
-  //file_write("f:/foo.h", actual, size);
-
-  string file;
-  gen_path(exe, "/../../tests/testdata/fixed.h", file);
-
-  uint32_t len;
-  char* expect_result = (char*)file_read(file.c_str(), &len);
-
-  ASSERT_STREQ_UNIX(actual, expect_result);
-
-  TKMEM_FREE(expect_result);
-}
-
-TEST(api_doc, auto_fix) {
   check_api_doc2(ca, file1.c_str(), dummy_log, NULL, TRUE, auto_fix_hook);
+  code_assist_destroy(ca);
 }
