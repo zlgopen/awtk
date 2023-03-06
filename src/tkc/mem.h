@@ -23,7 +23,18 @@
 #define TK_TKMEM_MANAGER_H
 
 #include "tkc/types_def.h"
+#ifdef WITH_WASM
+void * realloc(void *ptr, size_t size);
+#define TKMEM_ALLOC(size) malloc(size)
+#define TKMEM_CALLOC(nmemb, size) calloc(nmemb, size)
+#define TKMEM_REALLOC(p, size) realloc(p, size)
+#define TKMEM_FREE(p) free((void*)p); p = NULL
+#define TKMEM_ZALLOC(type) (type*)TKMEM_CALLOC(1, sizeof(type))
+#define TKMEM_REALLOCT(type, p, n) (type*)realloc(p, (n) * sizeof(type))
+#define TKMEM_ZALLOCN(type, n) (type*)calloc(n, sizeof(type))
+#else
 #include "tkc/platform.h"
+#include "tkc/mem_allocator.h"
 
 BEGIN_C_DECLS
 
@@ -189,5 +200,6 @@ bool_t tk_mem_is_valid_addr(void* addr);
 #define TK_IS_VALID_ADDR(addr) tk_mem_is_valid_addr(addr)
 
 END_C_DECLS
+#endif/*WITH_WASM*/
 
 #endif /*TK_TKMEM_MANAGER_H*/

@@ -22,18 +22,68 @@
 #ifndef TYPES_DEF_H
 #define TYPES_DEF_H
 
+#ifndef WITH_WASM
 #include <math.h>
 #include <time.h>
-#include <ctype.h>
 #include <wchar.h>
-#include <errno.h>
 #include <assert.h>
+#include <memory.h>
+#endif /*WITH_WASM*/
+
 #include <stdarg.h>
+#include <ctype.h>
+#include <errno.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
 #include <inttypes.h>
+
+#ifdef WITH_WASM
+#include <stdio.h>
+
+#if UINTPTR_MAX == 0xffffffff
+#define __PRI64_PREFIX "ll"
+#else
+#define __PRI64_PREFIX "l"
+#endif
+#define PRIu64 __PRI64_PREFIX "u"
+#define PRId64 __PRI64_PREFIX "d"
+
+#define INFINITY 3.40282347E+38f
+#define assert(__pp) wasm_assert(__pp, #__pp)
+
+#define WITH_WCSXXX 1
+#define WITHOUT_FSCRIPT
+
+#define log_impl printf
+#define floor(a) (int)(a)
+#define abs(a) ((a) > 0 ? (a) : -(a))
+#define fabs(a) ((a) > 0 ? (a) : -(a))
+
+typedef int wchar_t;
+
+int iswspace(wchar_t ch);
+size_t wcslen(const wchar_t* s);
+int wcscmp(const wchar_t* s1, const wchar_t* s2);
+int wcscasecmp(const wchar_t* s1, const wchar_t* s2);
+int wcsncmp(const wchar_t* s1, const wchar_t* s2, size_t n);
+
+wchar_t* wcsdup(const wchar_t* s);
+wchar_t* wcschr(const wchar_t* s, wchar_t c);
+wchar_t* wcscpy(wchar_t* s1, const wchar_t* s2);
+wchar_t* wcsncpy(wchar_t* s1, const wchar_t* s2, uint32_t n);
+
+double atof(const char* str);
+char* strrchr(const char* s, int c);
+void wasm_assert(int p, const char* text);
+int strcasecmp(const char* s1, const char* s2);
+long strtol(const char* restrict str, char** restrict endptr, int base);
+long long strtoll(const char* restrict str, char** restrict endptr, int base);
+unsigned long strtoul(const char* restrict str, char** restrict endptr, int base);
+unsigned long long strtoull(const char* restrict str, char** restrict endptr, int base);
+
+#endif /*WITH_WASM*/
 
 #if defined(__MINGW32__) || defined(__MINGW64__)
 #ifndef MINGW
@@ -86,9 +136,9 @@ typedef int socklen_t;
 
 #ifndef TK_WEAK
 #if defined(__CC_ARM) || \
-    (defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)) /* ARM Compiler */
+    (defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050))            /* ARM Compiler */
 #define TK_WEAK __attribute__((weak))
-#elif defined(__IAR_SYSTEMS_ICC__) /* for IAR Compiler */
+#elif defined(__IAR_SYSTEMS_ICC__)                                        /* for IAR Compiler */
 #define TK_WEAK __weak
 #elif defined(__GNUC__) && !defined(__MINGW32__) && !defined(__MINGW64__) /* GNU GCC Compiler */
 #define TK_WEAK __attribute__((weak))

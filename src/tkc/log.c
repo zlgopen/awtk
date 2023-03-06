@@ -15,7 +15,6 @@
 #include "tkc/log.h"
 #include "tkc/mem.h"
 #include "tkc/utils.h"
-#include "tkc/thread.h"
 
 static log_level_t s_log_level = LOG_LEVEL_DEBUG;
 
@@ -33,6 +32,9 @@ int32_t log_dummy(const char* fmt, ...) {
   return 0;
 }
 
+#ifndef WITHOUT_FSCRIPT
+
+#include "tkc/thread.h"
 #define TK_LOG_BUFF_SIZE 255
 static char* s_log_buff = NULL;
 static void* s_debugger_log_ctx = NULL;
@@ -70,3 +72,11 @@ ret_t log_set_debugger_hook(tk_debugger_log_t log, void* ctx) {
 
   return RET_OK;
 }
+#else
+ret_t log_notify_debugger(const char* format, ...) {
+  return RET_OK;
+}
+ret_t log_set_debugger_hook(tk_debugger_log_t log, void* ctx) {
+  return RET_OK;
+}
+#endif/*WITHOUT_FSCRIPT*/
