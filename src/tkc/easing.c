@@ -21,6 +21,8 @@
  */
 
 #include "tkc/easing.h"
+#include "tkc/mem.h"
+#include "tkc/utils.h"
 
 #define PI 3.1415926
 #include "tkc/easing.h"
@@ -217,10 +219,62 @@ static const easing_func_t s_easing_funcs[] = {
     easing_elastic_out, easing_elastic_inout, easing_back_in,        easing_back_out,
     easing_back_inout,  easing_bounce_in,     easing_bounce_out,     easing_bounce_inout};
 
+static darray_t* s_easing_name_func_darray = NULL;
+
+darray_t* easing_name_func_darray() {
+  return s_easing_name_func_darray;
+}
+
+ret_t easing_name_func_destroy(void* data) {
+  easing_name_func_t* easing_name_func = (easing_name_func_t*)data;
+  if (easing_name_func != NULL && easing_name_func->type_name_value != NULL) {
+    TKMEM_FREE(easing_name_func->type_name_value->name);
+    TKMEM_FREE(easing_name_func->type_name_value);
+    TKMEM_FREE(easing_name_func);
+  }
+
+  return RET_OK;
+}
+
+int easing_name_func_compare(const void* a, const void* b) {
+  easing_name_func_t* easing_name_func_a = (easing_name_func_t*)a;
+  char* type_name = (char*)b;
+
+  return strcmp(easing_name_func_a->type_name_value->name, type_name);
+}
+
+ret_t easing_init(void) {
+  s_easing_name_func_darray = 
+                     darray_create(0, easing_name_func_destroy, easing_name_func_compare);
+  
+  return RET_OK;
+}
+
+ret_t easing_deinit(void) {
+  darray_destroy(s_easing_name_func_darray);
+
+  return RET_OK;
+}
+
 easing_func_t easing_get(easing_type_t type) {
   if ((int)type >= EASING_LINEAR && type < EASING_FUNC_NR) {
     return s_easing_funcs[type];
+  } else if ((int)type > EASING_FUNC_NR && (int)type <= EASING_FUNC_NR + s_easing_name_func_darray->size) {
+    easing_name_func_t* easing_name_func = darray_get(s_easing_name_func_darray, type - EASING_FUNC_NR - 1);
+    return easing_name_func->easing_func;
   } else {
     return s_easing_funcs[EASING_LINEAR];
   }
+}
+
+uint32_t easing_register(const char* type_name, easing_func_t easing_func) {
+  easing_name_func_t* easing_name_func = TKMEM_ZALLOC(easing_name_func_t);
+  easing_name_func->type_name_value = TKMEM_ZALLOC(key_type_value_t);
+
+  easing_name_func->type_name_value->name = tk_str_copy(easing_name_func->type_name_value->name, type_name);
+  easing_name_func->type_name_value->value = EASING_FUNC_NR + s_easing_name_func_darray->size + 1;
+  easing_name_func->easing_func = easing_func;
+
+  darray_push(s_easing_name_func_darray, easing_name_func);
+  return EASING_FUNC_NR + s_easing_name_func_darray->size;
 }

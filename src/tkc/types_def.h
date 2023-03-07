@@ -553,4 +553,10 @@ typedef struct _event_source_manager_t event_source_manager_t;
 
 #define TK_VALUE_UNDEFINED "undefined"
 
+typedef struct _key_type_value_t {
+  char* name;
+  uint32_t type;
+  uint32_t value;
+} key_type_value_t;
+
 #endif /*TYPES_DEF_H*/

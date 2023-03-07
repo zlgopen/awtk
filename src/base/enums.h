@@ -26,12 +26,6 @@
 
 BEGIN_C_DECLS
 
-typedef struct _key_type_value_t {
-  char* name;
-  uint32_t type;
-  uint32_t value;
-} key_type_value_t;
-
 enum { TYPE_INT = 0, TYPE_COLOR, TYPE_STRING, TYPE_WSTRING, TYPE_BOOL };
 /**
  * @class enum_helper

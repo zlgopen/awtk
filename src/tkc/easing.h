@@ -23,6 +23,7 @@
 #define TK_EASING_H
 
 #include "tkc/types_def.h"
+#include "tkc/darray.h"
 
 BEGIN_C_DECLS
 
@@ -158,6 +159,11 @@ typedef enum _easing_type_t {
 
 typedef float_t (*easing_func_t)(float_t k);
 
+typedef struct _easing_name_func_t {
+  key_type_value_t* type_name_value;
+  easing_func_t easing_func;
+} easing_name_func_t;
+
 /**
  * @method easing_get
  * 获取对应类型的操作函数。
@@ -167,6 +173,22 @@ typedef float_t (*easing_func_t)(float_t k);
  * @return {easing_func_t} 返回对应的操作函数地址。
  */
 easing_func_t easing_get(easing_type_t type);
+
+/**
+ * @method easing_register
+ * 注册指定名称的动画趋势。
+ * @annotation ["global"]
+ * @param {const char*} type_name 类型名称。
+ * @param {easing_func_t} easing_func 动画趋势函数。
+ *
+ * @return {uint32_t} 返回对应类型。
+ */
+uint32_t easing_register(const char* type_name, easing_func_t easing_func);
+
+/*public for awtk only*/
+ret_t easing_init(void);
+ret_t easing_deinit(void);
+darray_t* easing_name_func_darray(void);
 
 END_C_DECLS
 
