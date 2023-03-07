@@ -708,7 +708,7 @@ ret_t vgcanvas_path_winding(vgcanvas_t* vg, bool_t dir);
  *
  * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
- * @param {float_t} rad 角度
+ * @param {float_t} rad 旋转角度(单位弧度)
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
