@@ -1,4 +1,25 @@
-﻿#include "code_assist.h"
+﻿/**
+ * File:   api_doc.h
+ * Author: AWTK Develop Team
+ * Brief:  检查 api doc是否合法, 支持自动修正
+ *
+ * Copyright (c) 2022 - 2023 Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * License file for more details.
+ *
+ */
+
+/**
+ * History:
+ * ================================================================
+ * 2023-02-28 Wang JunSheng <wangjunsheng@zlg.cn> created
+ *
+ */
+
+#include "code_assist.h"
 #include "tkc/log.h"
 
 BEGIN_C_DECLS

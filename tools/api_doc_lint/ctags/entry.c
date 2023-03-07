@@ -808,7 +808,6 @@ static int writeCtagsEntry (const tagEntryInfo *const tag)
     /*trival trace -- hook by joyer*/
     if (entry_callback!=NULL){
       char *const line = readSourceLine (TagFile.vLine, tag->filePosition, NULL);
-      vStringPut(TagFile.vLine, '\0');
       entry_callback(tag, line, entry_callback_param);
       onCtagsEntry(tag);
       return 0;

@@ -574,15 +574,14 @@ extern char *readSourceLine (
 	char *result;
     
   if (Buffer.active){  /*arbitary line read from buffer -- hook by joyer*/
-    const char *pold = Buffer.current;
-    Buffer.current = Buffer.start + location;
+    const char *s = Buffer.start + location;
     vStringClear(vLine);
-    while(*Buffer.current!='\n' && *Buffer.current!='\r' && *Buffer.current!='\0'){
-      vStringPut(vLine, *Buffer.current);
-      ++Buffer.current;
+    while(*s && *s!='\n' && *s!='\r'){
+      vStringPut(vLine, *s);
+      ++s;
     }
     vStringPut(vLine, '\n');
-    Buffer.current = pold;
+    vStringPut(vLine, '\0');
     return vStringValue(vLine);
   }
 

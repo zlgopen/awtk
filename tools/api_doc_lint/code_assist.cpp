@@ -31,8 +31,6 @@
 #include <algorithm>
 using namespace std;
 
-// 出现顺序影响到补全列表排序
-// 越小越靠前
 enum TCB_TYPE {
   TCB_KEYWORD,
   TCB_Variable,
@@ -54,19 +52,6 @@ enum TCB_TYPE {
 
 inline bool is_empty_s(const char* s) { return 0==s || 0==s[0]; }
 
-// 析构时，并不会销毁 s, 
-// 构造时申请 是为了使用方便
-// comment 会统一登记， 销毁
-struct comment_t {
-  const char* s;
-  int ref_cnt;
-
-  comment_t(const string& str);
-
-  void ref() { ++ref_cnt; }
-  void unref();
-};
-
 /* 要频繁的对 node对象 进行 排序，所以 里面不要放 string 等， 会大幅降低性能
    如果实在要放， 那么 建议改成 tcb_symbol_node*, 不过这个改动很大
  */
@@ -79,7 +64,7 @@ struct tcb_symbol_node {
   const char* param;
   const char* scope;
   const char* typeref;
-  comment_t* comment;
+  string* comment;
   int pos;
   int line;
 
@@ -132,7 +117,7 @@ struct compile_unit {
   // 全部注册在 comments 中， 每次重新解析文件的时候 释放
   // tcb_symbol_node.comment new 出来后， 注册到 comments 中
   // comments 进行统一的资源释放
-  vector<comment_t*> comments; 
+  vector<string*> comments; 
 
   void clear() {
     symbols.clear();
@@ -141,10 +126,6 @@ struct compile_unit {
   void delete_comments();
   ~compile_unit();
 };
-
-inline bool tcb_strsame(const char* s1, const char* s2) {
-  return s1 == s2;
-}
 
 char tcb_type_from_ctags_kind(char kind) {
   switch (kind) {
@@ -178,26 +159,6 @@ char tcb_type_from_ctags_kind(char kind) {
     default:
       return TCB_UNKNOWN;
   }
-}
-
-vector<string> split(const string& s_, const string& sep_) {
-  vector<string> result;
-  typedef string::const_iterator citer;
-  citer sbeg = sep_.begin();
-  citer send = sep_.end();
-  for (citer beg = s_.begin(), end = s_.end(); beg != end;) {
-    //citer tbeg = find_first_not_of(beg, end, sbeg, send);
-    citer tbeg = beg;
-    for (; tbeg != end; ++tbeg) {
-      if (count(sbeg, send, *tbeg) == 0) {
-        break;
-      }
-    }
-    citer tend = find_first_of(tbeg, end, sbeg, send);
-    if (tbeg != tend) result.push_back(string(tbeg, tend));
-    beg = tend;
-  }
-  return result;
 }
 
 tcb_symbol_node::tcb_symbol_node()
@@ -243,13 +204,13 @@ void to_symbol_t(ca_symbol_t& to, tcb_symbol_node& from) {
   to.scope = from.scope;
   to.typeref = from.typeref;
   if (from.comment) {
-    to.comment = tk_str_copy((char*)to.comment, from.comment->s);
+    to.comment = tk_str_copy((char*)to.comment, from.comment->c_str());
   }
 }
 
 void compile_unit::delete_comments() {
   for (auto c : comments) {
-    c->unref();
+    delete c;
   }
   comments.clear();
 }
@@ -258,64 +219,34 @@ compile_unit::~compile_unit() {
   delete_comments();
 }
 
-comment_t::comment_t(const string& str) {
-  s = tk_strndup(str.c_str(), str.length());
-  ref_cnt = 1;
-}
-
-void comment_t::unref() {
-  if (--ref_cnt == 0) {
-    TKMEM_FREE(s);
-    delete this;
-  }
-}
-
 namespace {
-class AtomsImpl;
-class Atoms{
-public:
-    const char * intern(const string &s);
-    const char * intern(const char *s);
-
-    bool exist(const string& s) const;
-
-    void dump(vector<const char*>& v) const;
-
-    Atoms();
-    ~Atoms();
-private:
-    AtomsImpl *pimpl;
-};
-
-struct AtomsImplNode {
+struct AtomsNode {
   size_t len;
   size_t hash_val;
   char* s;
-  AtomsImplNode* next;
+  AtomsNode* next;
 };
 
-class AtomsImpl {
+class Atoms {
  public:
   const char* intern(const string& s);
   const char* intern(const char* s);
-  bool exist(const string& s) const;
-  void dump(vector<const char*>& v) const;
 
-  AtomsImpl();
-  ~AtomsImpl();
+  Atoms();
+  ~Atoms();
 
  private:
-  vector<AtomsImplNode*> buckets;
+  vector<AtomsNode*> buckets;
   size_t atom_count;
 };
 
-AtomsImpl::AtomsImpl() : buckets(256), atom_count(0) {
+Atoms::Atoms() : buckets(256), atom_count(0) {
 }
 
-AtomsImpl::~AtomsImpl() {
-  vector<AtomsImplNode*>::iterator beg = buckets.begin(), end = buckets.end();
+Atoms::~Atoms() {
+  vector<AtomsNode*>::iterator beg = buckets.begin(), end = buckets.end();
   for (; beg != end; ++beg) {
-    AtomsImplNode *head = *beg, *last;
+    AtomsNode *head = *beg, *last;
     while (head) {
       last = head;
       head = head->next;
@@ -325,19 +256,19 @@ AtomsImpl::~AtomsImpl() {
   }
 }
 
-const char* AtomsImpl::intern(const string& s) {
+const char* Atoms::intern(const string& s) {
   if (atom_count > buckets.size()) {  //rehash
     size_t new_buckets_size = buckets.size() * 2;
-    vector<AtomsImplNode*> new_buckets(new_buckets_size);
-    vector<AtomsImplNode*>::iterator beg = buckets.begin(), end = buckets.end();
+    vector<AtomsNode*> new_buckets(new_buckets_size);
+    vector<AtomsNode*>::iterator beg = buckets.begin(), end = buckets.end();
     for (; beg != end; ++beg) {
-      AtomsImplNode *head = *beg, *last;
+      AtomsNode *head = *beg, *last;
       while (head) {
         last = head;
         head = head->next;
         size_t idx = last->hash_val % new_buckets_size;
         if (new_buckets[idx]) {
-          AtomsImplNode* tail = new_buckets[idx];
+          AtomsNode* tail = new_buckets[idx];
           while (tail->next) tail = tail->next;
           tail->next = last;
           last->next = NULL;
@@ -354,9 +285,9 @@ const char* AtomsImpl::intern(const string& s) {
     hash_val = hash_val * 31 + s[hidx++];
   }
   size_t idx = hash_val % buckets.size();
-  AtomsImplNode* tail = NULL;  //tricky to reduce insert code
+  AtomsNode* tail = NULL;  //tricky to reduce insert code
   if (buckets[idx]) {
-    AtomsImplNode* head = buckets[idx];
+    AtomsNode* head = buckets[idx];
     while (head) {
       if (head->len == len && head->hash_val == hash_val && !strcmp(s.c_str(), head->s))
         return head->s;
@@ -364,7 +295,7 @@ const char* AtomsImpl::intern(const string& s) {
       head = head->next;
     }
   }
-  AtomsImplNode* newNode = new AtomsImplNode;
+  AtomsNode* newNode = new AtomsNode;
   newNode->len = len;
   newNode->hash_val = hash_val;
   newNode->next = NULL;
@@ -379,58 +310,14 @@ const char* AtomsImpl::intern(const string& s) {
   return newNode->s;
 }
 
-void AtomsImpl::dump(vector<const char*>& v) const {
-  vector<AtomsImplNode*>::const_iterator beg = buckets.begin(), end = buckets.end();
-  for (; beg != end; ++beg)
-    for (AtomsImplNode* head = *beg; head; head = head->next) v.push_back(head->s);
-}
-
-bool AtomsImpl::exist(const string& s) const {
-  size_t hash_val = 7, len = s.size(), hidx = 0;
-  while (hidx < len) {
-    hash_val = hash_val * 31 + s[hidx++];
-  }
-  size_t idx = hash_val % buckets.size();
-  if (buckets[idx]) {
-    AtomsImplNode* head = buckets[idx];
-    while (head) {
-      if (head->len == len && head->hash_val == hash_val && !strcmp(s.c_str(), head->s))
-        return true;
-      head = head->next;
-    }
-  }
-  return false;
-}
-
-const char* AtomsImpl::intern(const char* s) {
-  return intern(string(s));
-}
-
-Atoms::Atoms() {
-  pimpl = new AtomsImpl;
-}
-Atoms::~Atoms() {
-  delete pimpl;
-}
-const char* Atoms::intern(const string& s) {
-  return pimpl->intern(s);
-}
 const char* Atoms::intern(const char* s) {
   if (!s) return NULL;
-  return pimpl->intern(s);
-}
-bool Atoms::exist(const string& s) const {
-  return pimpl->exist(s);
-}
-
-void Atoms::dump(vector<const char*>& v) const {
-  pimpl->dump(v);
+  return intern(string(s));
 }
 }
 
 namespace ca_context{
   ctags_export_t *ctagsp;
-  compile_unit * get_compile_unit(const string &full_path_name); //necessary initialization
 
   const char* current_buffer;
 
@@ -503,50 +390,24 @@ static void find_comment(tcb_symbol_node& node) {
   if (!current_buffer) return;
 
   string comment;
-  int line = 0;
   const char* s = current_buffer + node.pos - 1;
   for (; s >= current_buffer; --s) {
-    if (*s == '\n') {
-      ++line;
-      continue;
-    }
-
     if (*s == '/' && s > current_buffer && *(s-1) == '*') {
       reverse_get_comment(comment, s, current_buffer);
-      node.comment = new comment_t(comment);
+      node.comment = new string(comment);
       return;
     }
 
-    if (*s == '\r' || *s == ' ' || *s == '\t') {
+    if (*s == '\n' || *s == '\r' || *s == ' ' || *s == '\t') {
       continue;
     }
 
     break;
   }
-
-  // 看看是不是行注释
-  const char* line_beg = NULL;
-  for (; s >= current_buffer; --s) {
-    if (*s == '\n') {
-      line_beg = s+1;
-      break;
-    }
-  }
-  if (line_beg) {
-    for (s = line_beg; *s == ' ' || *s == '\t'; ++s);
-    if (*s == '/' && *(s+1) == '/') {
-      for (; *s && *s != '\n'; ++s) {
-        comment += *s;
-      }
-      comment += '\n';
-      node.comment = new comment_t(comment);
-    }
-  }
 }
 
 static void set_node_comment(tcb_symbol_node& node) {
   int line_diff = node.line - last_comment.line;
-  // typedef 真是难处理
   if (node.typeref) {
     /*
     typedef struct _widget_t {
@@ -570,7 +431,7 @@ static void set_node_comment(tcb_symbol_node& node) {
     find_comment(node);
   } else if (line_diff < 4 && !last_comment.name.empty() 
     && is_valid_comment(node.pos, last_comment.pos, line_diff)) {
-    node.comment = new comment_t(last_comment.name);
+    node.comment = new string(last_comment.name);
   } 
 }
 
@@ -635,10 +496,6 @@ ca_symbols_t* nodes_from_node_vector_n(const vector<tcb_symbol_node>& nodes, siz
   return ret;
 }
 
-ca_symbols_t* nodes_from_node_vector(const vector<tcb_symbol_node>& nodes) {
-  return nodes_from_node_vector_n(nodes, nodes.size());
-}
-
 template<typename M>
 void map_delete(M& m) {
   for (auto i : m) {
@@ -677,12 +534,9 @@ void tcb_ctags_callback(const tagEntryInfo* const tag, char* const line, void* p
     node.line_content = fn_atoms.intern(snapshot);
   } else {
     string s = line ? line : "";
+    /* ctags 已经把 \r 过滤掉了 */
     if (!s.empty() && *s.rbegin() == '\n') {
-      if (s[s.length()-2] == '\r') {
-        s = s.substr(0, s.length()-2);
-      } else {
-        s = s.substr(0, s.length()-1);
-      }
+      s.pop_back();
     }
     node.line_content = fn_atoms.intern(s);
   }
@@ -694,7 +548,7 @@ void tcb_ctags_callback(const tagEntryInfo* const tag, char* const line, void* p
     if (tag->extensionFields.typeRef[1])
       typeref = tag->extensionFields.typeRef[1];
 
-    node.typeref = sy_atoms.intern(typeref.c_str());
+    node.typeref = sy_atoms.intern(typeref);
   } else if (tag->kind == 'd' && !tag->extensionFields.signature) {
     if (tag->extensionFields.typeRef[1])
       node.typeref = sy_atoms.intern(tag->extensionFields.typeRef[1]);
@@ -754,5 +608,5 @@ ca_symbols_t* code_assist_symbols_from_file(code_assist_t* ca, const char* full_
 
   vector<tcb_symbol_node> nodes;
   append_file_symbols(nodes, full_path);
-  return nodes_from_node_vector(nodes);
+  return nodes_from_node_vector_n(nodes, nodes.size());
 }

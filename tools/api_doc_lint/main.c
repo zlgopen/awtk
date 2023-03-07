@@ -1,4 +1,25 @@
-﻿#include "api_doc.h"
+﻿/**
+ * File:   main.c
+ * Author: AWTK Develop Team
+ * Brief:  main
+ *
+ * Copyright (c) 2022 - 2023 Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * License file for more details.
+ *
+ */
+
+/**
+ * History:
+ * ================================================================
+ * 2023-03-07 Wang JunSheng <wangjunsheng@zlg.cn> created
+ *
+ */
+
+#include "api_doc.h"
 #include "awtk.h"
 
 typedef struct _foreach_ctx_t {
@@ -14,32 +35,12 @@ static ret_t on_file(foreach_ctx_t* ctx, const char* filename) {
 
   if (*extname != 0) {
     if (!tk_str_end_with(filename, extname)) {
-      // 后缀名不符合要求， 过滤掉
       return RET_OK;
     }
   }
 
   check_api_doc(ctx->ca, filename, ctx->log_hook, ctx->log_ctx, ctx->auto_fix);
   return RET_OK;
-}
-
-// 根据 本程序exe 路径 猜测 awtk 路径
-static void guess_dirs(const char* exe, str_t* awtk_dir) {
-  char buf[MAX_PATH+1] = {0};
-  char path_nor[MAX_PATH+1] = {0};
-
-  tk_snprintf(buf, sizeof(buf), "%s/../../../../awtk/src", exe);
-  path_normalize(buf, path_nor, MAX_PATH);
-  if (dir_exist(path_nor)) {
-    str_append(awtk_dir, path_nor);
-    return;
-  }
-
-  tk_snprintf(buf, sizeof(buf), "%s/../../../../../awtk/src", exe);
-  path_normalize(buf, path_nor, MAX_PATH);
-  if (dir_exist(path_nor)) {
-    str_append(awtk_dir, path_nor);
-  }
 }
 
 static int usage(const char* exe) {
@@ -110,8 +111,6 @@ int main(int argc, char* argv[]) {
   for (int i = 1; i < argc; ++i) {
     if (0 == strcmp(argv[i], "--fix")) {
       ctx.auto_fix = TRUE;
-    } else if (0 == strcmp(argv[i], "awtk")) {
-      guess_dirs(exe, &dir_path);
     } else if (0 == strcmp(argv[i], "--help") || 0 == strcmp(argv[i], "-h")) {
       return usage(exe);
     } else if (*argv[i] == '-') {

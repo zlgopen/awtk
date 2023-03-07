@@ -1,4 +1,25 @@
-﻿#include "api_doc.h"
+﻿/**
+ * File:   api_doc.c
+ * Author: AWTK Develop Team
+ * Brief:  检查 api doc是否合法, 支持自动修正
+ *
+ * Copyright (c) 2022 - 2023 Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * License file for more details.
+ *
+ */
+
+/**
+ * History:
+ * ================================================================
+ * 2023-02-28 Wang JunSheng <wangjunsheng@zlg.cn> created
+ *
+ */
+
+#include "api_doc.h"
 #include "awtk.h"
 
 #if defined(WIN32)
@@ -1277,6 +1298,7 @@ static bool_t check_property(check_ctx_t* ctx, ca_symbol_t* sym, const char* typ
     return FALSE;
   }
 
+  bool_t ret = TRUE;
   mparam_t* param = parse_param(sym->line_content);
   if (!str_same(param->type, type)) {
     bool_t report_error = TRUE;
@@ -1305,12 +1327,12 @@ static bool_t check_property(check_ctx_t* ctx, ca_symbol_t* sym, const char* typ
         sym->file, ctx->cur_line, type, param->type);
 
       auto_fix_property_type(ctx, param->type);
-      return FALSE;
+      ret = FALSE;
     }
   }
   param_free(param);
 
-  return TRUE;
+  return ret;
 }
 
 static bool_t check_class_member(check_ctx_t* ctx, ca_symbol_t* sym) {
