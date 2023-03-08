@@ -2139,7 +2139,7 @@ ret_t canvas_get_text_metrics(canvas_t* c, float_t* ascent, float_t* descent, fl
     return RET_FAIL;
   }
 }
-
+// #define WITHOUT_ROUNDED_RECT 1
 #ifndef WITHOUT_ROUNDED_RECT
 #include "ffr_draw_rounded_rect.inc"
 

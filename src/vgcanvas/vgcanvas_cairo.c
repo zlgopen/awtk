@@ -747,7 +747,7 @@ static cairo_pattern_t* vgcanvas_cairo_create_pattern_from_gradient(const vg_gra
   return_value_if_fail(pattern != NULL, NULL);
 
   for (i = 0; i < gradient->gradient.nr; i++) {
-    const gradient_stop_t* iter = vg_gradient_get_stop((vg_gradient_t*)gradient, i);
+    const gradient_stop_t* iter = vg_gradient_get_stop(gradient, i);
     cairo_pattern_add_color_stop_color(pattern, iter->offset, iter->color);
   }
 
