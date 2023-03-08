@@ -111,7 +111,6 @@ ret_t emitter_remove_item(emitter_t* emitter, emitter_item_t* item) {
 
 ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
   ret_t ret = RET_OK;
-  emitter_item_t* emitter_curr_iter = NULL;
   return_value_if_fail(emitter != NULL && e != NULL, RET_BAD_PARAMS);
 
   if (!(e->time)) {
