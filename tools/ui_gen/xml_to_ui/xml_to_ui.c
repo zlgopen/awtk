@@ -64,15 +64,17 @@ static ret_t gen_one(const char* in_filename, const char* out_filename, bool_t o
 
 static ret_t gen_folder(const char* in_foldername, const char* out_foldername, bool_t output_bin,
                         const char* res_name, const char* theme_name) {
-  ret_t ret = RET_OK;
-  fs_dir_t* dir = fs_open_dir(os_fs(), in_foldername);
   fs_item_t item;
+  ret_t ret = RET_OK;
+  const char* c_xml = ".xml";
   char in_name[MAX_PATH] = {0};
   char out_name[MAX_PATH] = {0};
-  const char* c_xml = ".xml";
+  fs_dir_t* dir = fs_open_dir(os_fs(), in_foldername);
+
   if (!fs_dir_exist(os_fs(), out_foldername)) {
     fs_create_dir(os_fs(), out_foldername);
   }
+
   while (fs_dir_read(dir, &item) != RET_FAIL) {
     if (item.is_reg_file && case_end_with(item.name, c_xml)) {
       str_t str_name;

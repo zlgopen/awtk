@@ -274,6 +274,32 @@ def remove_dir(dir):
         print('dir ' + dir + ' not exist')
 
 
+def get_appint_folder_ex(path, regex = '/', folder_list = [], parent = ''):
+    for f in os.listdir(path):
+        src = join_path(path, f)
+        if os.path.isdir(src) and f != '.' and f != '..':
+            file_path = os.path.join(parent, f)
+            if regex == '/':
+                folder_list.append(tuple((src, file_path)))
+            folder_list = get_appint_folder_ex(src, regex, folder_list, file_path)
+        elif (regex == os.path.splitext(f)[1]):
+            file_path = os.path.join(parent, f)
+            folder_list.append(tuple((src, file_path)))
+    return folder_list
+
+
+def get_appint_folder(path, regex = '/', include_self = True):
+    folder_list = []
+    regex_list = regex.split("|")
+
+    for reg in regex_list:
+        folder_list += get_appint_folder_ex(path, reg, [], '')
+    
+    if include_self == True:
+        folder_list.append(tuple((path, '')))
+    return folder_list
+
+
 def to_exe(name):
     if OS_NAME == 'Windows':
         return join_path(BIN_DIR, name+'.exe')
@@ -389,9 +415,8 @@ def fontgen(raw, text, inc, size, options, theme):
     if options == 'mono' and os.path.exists(to_exe('fontgen_ft')):
         fontgenName = 'fontgen_ft'
 
-    if(os.path.isfile(raw)):
-        exec_cmd(to_exe(fontgenName) + ' \"' + raw + '\" \"' + text + '\" \"' + inc + '\" ' +
-            str(size) + ' ' + options + ' ' + theme)
+    exec_cmd(to_exe(fontgenName) + ' \"' + raw + '\" \"' + text + '\" \"' + inc + '\" ' +
+        str(size) + ' ' + options + ' ' + theme)
 
 
 def imagegen(raw, inc, options, theme, lcd_orientation, lcd_fast_rotation_mode):
@@ -626,10 +651,13 @@ def gen_res_all_font():
 
     if IS_GENERATE_RAW:
         if INPUT_DIR != join_path(OUTPUT_DIR, 'raw'):
-            make_dirs(join_path(OUTPUT_DIR, 'raw/fonts'))
-            for f in glob.glob(join_path(INPUT_DIR, 'fonts/*.ttf')):
-                dst = f.replace(INPUT_DIR, join_path(OUTPUT_DIR, 'raw'))
-                copy_file(f, dst)
+            in_files = join_path(INPUT_DIR, 'fonts/')
+            for f in get_appint_folder(in_files, '.ttf', False):
+                out_files = f[0].replace(INPUT_DIR, join_path(OUTPUT_DIR, 'raw'))
+                out_foler = os.path.dirname(out_files)
+                if not os.path.exists(out_foler):
+                    make_dirs(out_foler)
+                copy_file(f[0], out_files)
 
     if IS_GENERATE_INC_RES or IS_GENERATE_INC_BITMAP:
         inc_dir = join_path(OUTPUT_DIR, 'inc/fonts')
@@ -669,9 +697,9 @@ def gen_res_all_font():
             if not os.path.exists(join_path(INPUT_DIR, 'fonts')):
                 return
 
-            for f in glob.glob(join_path(INPUT_DIR, 'fonts/*.ttf')):
-                filename, extname = os.path.splitext(f)
-                raw = f
+            for f in get_appint_folder(join_path(INPUT_DIR, 'fonts/'), ".ttf", False):
+                filename, extname = os.path.splitext(f[0])
+                raw = f[0]
                 filename = filename.replace(INPUT_DIR, join_path(OUTPUT_DIR, 'inc'))
                 inc = filename + '.res'
                 resgen(raw, inc, THEME, '.res')
@@ -1200,7 +1228,7 @@ def show_usage_imlp():
 
 def show_usage():
     if len(sys.argv) == 1:
-        show_usage_imlp();
+        show_usage_imlp()
     else:
         sys_args = get_args(sys.argv[1:])
         if len(sys_args) == 0 :

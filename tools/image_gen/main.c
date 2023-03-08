@@ -84,11 +84,12 @@ ret_t gen_one(const char* input_file, const char* output_file, const char* theme
 
 static ret_t gen_folder(const char* in_foldername, const char* out_foldername, const char* theme,
                         image_format_t* image_format, lcd_orientation_t o) {
+  fs_item_t item;                        
   ret_t ret = RET_OK;
-  fs_dir_t* dir = fs_open_dir(os_fs(), in_foldername);
-  fs_item_t item;
   char in_name[MAX_PATH] = {0};
   char out_name[MAX_PATH] = {0};
+  fs_dir_t* dir = fs_open_dir(os_fs(), in_foldername);
+
   while (fs_dir_read(dir, &item) != RET_FAIL) {
     if (item.is_reg_file) {
       str_t str_name;
@@ -104,6 +105,18 @@ static ret_t gen_folder(const char* in_foldername, const char* out_foldername, c
       path_build(out_name, MAX_PATH, out_foldername, str_name.str, NULL);
       ret = gen_one(in_name, out_name, theme, image_format, o);
       str_reset(&str_name);
+      if (ret != RET_OK) {
+        break;
+      }
+    } else if (item.is_dir && !tk_str_eq(item.name, ".") && !tk_str_eq(item.name, "..")) {
+      path_build(in_name, MAX_PATH, in_foldername, item.name, NULL);
+      path_build(out_name, MAX_PATH, out_foldername, item.name, NULL);
+
+      if (!fs_dir_exist(os_fs(), out_name)) {
+        fs_create_dir(os_fs(), out_name);
+      }
+
+      ret = gen_folder(in_name, out_name, theme, image_format, o);
       if (ret != RET_OK) {
         break;
       }

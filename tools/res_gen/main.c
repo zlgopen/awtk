@@ -102,11 +102,12 @@ static ret_t gen_one(const char* in_filename, const char* out_filename, const ch
 
 static ret_t gen_folder(const char* in_foldername, const char* out_foldername, const char* theme,
                         const char* extname, bool_t data_folder) {
+  fs_item_t item;                        
   ret_t ret = RET_OK;
-  fs_dir_t* dir = fs_open_dir(os_fs(), in_foldername);
-  fs_item_t item;
   char in_name[MAX_PATH] = {0};
   char out_name[MAX_PATH] = {0};
+  fs_dir_t* dir = fs_open_dir(os_fs(), in_foldername);
+
   while (fs_dir_read(dir, &item) != RET_FAIL) {
     if (item.is_reg_file) {
       str_t str_name;
@@ -129,6 +130,18 @@ static ret_t gen_folder(const char* in_foldername, const char* out_foldername, c
             "gen fail, filename = %s! desc = the resource file is empty, please confirm that the "
             "resource file has saved data.!\n",
             in_name);
+        break;
+      }
+    } else if (item.is_dir && !tk_str_eq(item.name, ".") && !tk_str_eq(item.name, "..")) {
+      path_build(in_name, MAX_PATH, in_foldername, item.name, NULL);
+      path_build(out_name, MAX_PATH, out_foldername, item.name, NULL);
+
+      if (!fs_dir_exist(os_fs(), out_name)) {
+        fs_create_dir(os_fs(), out_name);
+      }
+
+      ret = gen_folder(in_name, out_name, theme, extname, data_folder);
+      if (ret != RET_OK) {
         break;
       }
     }
