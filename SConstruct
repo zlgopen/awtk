@@ -4,6 +4,7 @@ import awtk_config as awtk
 
 APP_TOOLS = None
 OS_NAME = platform.system()
+awtk.scons_db_check_and_remove()
 
 if awtk.TOOLS_NAME != '' :
   if awtk.TOOLS_NAME == 'mingw':

@@ -2,8 +2,13 @@ import os
 import os.path
 import platform
 import shutil
-
 from shutil import copyfile
+
+import sys
+if sys.version_info.major == 2:
+  import cPickle as pickle
+else:
+  import pickle
 
 import subprocess
 
@@ -291,3 +296,31 @@ def genDllLinkFlags(libs, defFile):
         linkFlags += wholeArch
 
     return linkFlags
+
+
+def get_scons_db_files(root):
+  scons_db_files = []
+  scons_db_filename = ".sconsign.dblite"
+
+  for f in os.listdir(root):
+    full_path = joinPath(root, f)
+    if os.path.isfile(full_path) and f == scons_db_filename:
+      scons_db_files.append(full_path)
+    elif os.path.isdir(full_path) and f != "." and f != "..":
+      get_scons_db_files(full_path)
+
+  return scons_db_files
+
+
+def scons_db_check_and_remove():
+  scons_db_files = []
+  scons_db_files = get_scons_db_files(TK_ROOT)
+
+  for f in scons_db_files:
+    try:
+      with open(f, "rb") as fs:
+        pickle.load(fs)
+        fs.close()
+    except ValueError as e:
+        fs.close()
+        os.remove(f)
