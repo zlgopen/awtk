@@ -335,7 +335,7 @@ ret_t text_selector_set_range_options_ex(widget_t* widget, int32_t start, uint32
                                          const char* format) {
   char text[64];
   uint32_t i = 0;
-  return_value_if_fail(widget != NULL && nr < 300 && format != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && format != NULL, RET_BAD_PARAMS);
 
   for (i = 0; i < nr; i++) {
     int32_t value = start + i * step;
