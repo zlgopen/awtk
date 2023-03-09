@@ -31,338 +31,55 @@
 #include <algorithm>
 using namespace std;
 
-enum TCB_TYPE {
-  TCB_KEYWORD,
-  TCB_Variable,
-  TCB_Def,
-  TCB_Class,
-  TCB_Struct,
-  TCB_Typeref,
-  TCB_Prototype,
-  TCB_Func,
-  TCB_Xref,
-  TCB_Enum,
-  TCB_EName,
-  TCB_Mem,
-  TCB_UNKNOWN,
-  TCB_Include,
-
-  TCB_Type_num,
-};
-
-inline bool is_empty_s(const char* s) { return 0==s || 0==s[0]; }
-
-/* 要频繁的对 node对象 进行 排序，所以 里面不要放 string 等， 会大幅降低性能
-   如果实在要放， 那么 建议改成 tcb_symbol_node*, 不过这个改动很大
- */
-struct tcb_symbol_node {
-  int type;
-
-  const char* name;
-  const char* file;
-  const char* line_content;
-  const char* param;
-  const char* scope;
-  const char* typeref;
-  string* comment;
-  int pos;
-  int line;
-
-  tcb_symbol_node();
-
-  bool is_enum() const {
-    return TCB_EName == type || TCB_Enum == type;
-  }
-  bool is_define() const {
-    return TCB_Def == type;
-  }
-  bool is_macro_fun() const {
-    return is_define() && !is_empty_s(param);
-  }
-  bool is_include() const {
-    return TCB_Include == type;
-  }
-  bool is_struct_class() const {
-    return TCB_Class == type || TCB_Struct == type;
-  }
-  bool is_type() const {
-    return TCB_Class == type || TCB_Struct == type || TCB_Typeref == type;
-  }
-  bool is_function() const {
-    return is_fun_define() || is_fun_prototype();
-  }
-  bool is_variable() const {
-    return TCB_Variable == type || TCB_Xref == type;
-  }
-  bool is_variable_define() const {
-    return TCB_Variable == type;
-  }
-  bool is_fun_define() const {
-    return TCB_Func == type;
-  }
-  bool is_fun_prototype() const {
-    return TCB_Prototype == type;
-  }
-  bool is_keyword() const {
-    return TCB_KEYWORD == type;
-  }
-
-  ca_symbol_type_t to_ca_type() const;
-};
+#define SAFE_FREE(x) if (x) { TKMEM_FREE(x); }
+#define CLONE_STR(dest, src) dest = tk_str_copy((char*)dest, src);
 
 struct compile_unit {
-  vector<tcb_symbol_node> symbols;
-
-  // 词素的注释字符串比较长，又很少会重复， 放在 atom 里是不合适的
-  // 全部注册在 comments 中， 每次重新解析文件的时候 释放
-  // tcb_symbol_node.comment new 出来后， 注册到 comments 中
-  // comments 进行统一的资源释放
-  vector<string*> comments; 
-
+  vector<ca_symbol_t> symbols;
   void clear() {
+    for (auto sym : symbols) {
+      SAFE_FREE(sym.name);
+      SAFE_FREE(sym.line_content);
+      SAFE_FREE(sym.file);
+      SAFE_FREE(sym.param);
+      SAFE_FREE(sym.scope);
+      SAFE_FREE(sym.typeref);
+      SAFE_FREE(sym.comment);
+    }
     symbols.clear();
-    delete_comments();
   }
-  void delete_comments();
-  ~compile_unit();
+
+  ~compile_unit() { clear(); }
 };
 
-char tcb_type_from_ctags_kind(char kind) {
+ca_symbol_type_t sym_type_from_ctags_kind(char kind) {
   switch (kind) {
-    case 'd':
-      return TCB_Def;
-    case 'f':
-      return TCB_Func;
-    case 'p':
-      return TCB_Prototype;
-    case 'c':
-      return TCB_Class;
-    case 's':
-      return TCB_Struct;
-    case 'u':
-      return TCB_Struct;
-    case 'v':
-      return TCB_Variable;
-    case 'x':
-      return TCB_Xref;
-    case 'i':
-      return TCB_Include;
-    case 'e':
-      return TCB_EName;  // union names 和 enum names 暂时没区分
-    case 't':
-      return TCB_Typeref;
-    case 'g':
-      return TCB_Enum;
-    case 'm':
-      return TCB_Mem;
-
-    default:
-      return TCB_UNKNOWN;
+    case 'd': return CA_DEF;
+    case 'f': return CA_FUNC_DEF;
+    case 'p': return CA_FUNC_PROTOTYPE;
+    case 'c': return CA_TYPE;
+    case 's': return CA_TYPE;
+    case 'u': return CA_TYPE;
+    case 'i': return CA_INCLUDE;
+    case 'e': return CA_ENUM;
+    case 't': return CA_TYPE;
+    case 'g': return CA_ENUM;
   }
-}
-
-tcb_symbol_node::tcb_symbol_node()
-    : type(TCB_UNKNOWN),
-      name(NULL),
-      file(NULL),
-      line_content(NULL),
-      param(NULL),
-      scope(NULL),
-      typeref(NULL),
-      comment(NULL),
-      pos(0),
-      line(0) {
-}
-
-ca_symbol_type_t tcb_symbol_node::to_ca_type() const {
-  if (is_fun_prototype())
-    return CA_FUNC_PROTOTYPE;
-  else if (is_fun_define() || is_macro_fun())
-    return CA_FUNC_DEF;
-  else if (is_define()) 
-    return CA_DEF;
-  else if (is_type())
-    return CA_TYPE;
-  else if (is_include())
-    return CA_INCLUDE;
-  else if (is_keyword())
-    return CA_KEYWORD;
-  else if (is_enum()) 
-    return CA_ENUM;
-
   return CA_GENERAL;
 }
 
-void to_symbol_t(ca_symbol_t& to, tcb_symbol_node& from) {
-  to.type = from.to_ca_type();
-  to.file = from.file;
-  to.pos = from.pos;
-  to.line = from.line;
-  to.name = from.name;
-  to.param = from.param;
-  to.line_content = from.line_content;
-  to.scope = from.scope;
-  to.typeref = from.typeref;
-  if (from.comment) {
-    to.comment = tk_str_copy((char*)to.comment, from.comment->c_str());
-  }
-}
-
-void compile_unit::delete_comments() {
-  for (auto c : comments) {
-    delete c;
-  }
-  comments.clear();
-}
-
-compile_unit::~compile_unit() {
-  delete_comments();
-}
-
-namespace {
-struct AtomsNode {
-  size_t len;
-  size_t hash_val;
-  char* s;
-  AtomsNode* next;
-};
-
-class Atoms {
- public:
-  const char* intern(const string& s);
-  const char* intern(const char* s);
-
-  Atoms();
-  ~Atoms();
-
- private:
-  vector<AtomsNode*> buckets;
-  size_t atom_count;
-};
-
-Atoms::Atoms() : buckets(256), atom_count(0) {
-}
-
-Atoms::~Atoms() {
-  vector<AtomsNode*>::iterator beg = buckets.begin(), end = buckets.end();
-  for (; beg != end; ++beg) {
-    AtomsNode *head = *beg, *last;
-    while (head) {
-      last = head;
-      head = head->next;
-      delete[] last->s;
-      delete last;
-    }
-  }
-}
-
-const char* Atoms::intern(const string& s) {
-  if (atom_count > buckets.size()) {  //rehash
-    size_t new_buckets_size = buckets.size() * 2;
-    vector<AtomsNode*> new_buckets(new_buckets_size);
-    vector<AtomsNode*>::iterator beg = buckets.begin(), end = buckets.end();
-    for (; beg != end; ++beg) {
-      AtomsNode *head = *beg, *last;
-      while (head) {
-        last = head;
-        head = head->next;
-        size_t idx = last->hash_val % new_buckets_size;
-        if (new_buckets[idx]) {
-          AtomsNode* tail = new_buckets[idx];
-          while (tail->next) tail = tail->next;
-          tail->next = last;
-          last->next = NULL;
-        } else {
-          new_buckets[idx] = last;
-          last->next = NULL;
-        }
-      }
-    }
-    buckets.swap(new_buckets);
-  }
-  size_t hash_val = 7, len = s.size(), hidx = 0;
-  while (hidx < len) {
-    hash_val = hash_val * 31 + s[hidx++];
-  }
-  size_t idx = hash_val % buckets.size();
-  AtomsNode* tail = NULL;  //tricky to reduce insert code
-  if (buckets[idx]) {
-    AtomsNode* head = buckets[idx];
-    while (head) {
-      if (head->len == len && head->hash_val == hash_val && !strcmp(s.c_str(), head->s))
-        return head->s;
-      tail = head;
-      head = head->next;
-    }
-  }
-  AtomsNode* newNode = new AtomsNode;
-  newNode->len = len;
-  newNode->hash_val = hash_val;
-  newNode->next = NULL;
-  newNode->s = new char[len + 1];
-  strcpy(newNode->s, s.c_str());
-  if (tail) {
-    tail->next = newNode;
-  } else {
-    buckets[idx] = newNode;
-  }
-  ++atom_count;
-  return newNode->s;
-}
-
-const char* Atoms::intern(const char* s) {
-  if (!s) return NULL;
-  return intern(string(s));
-}
-}
-
-namespace ca_context{
-  ctags_export_t *ctagsp;
-
-  const char* current_buffer;
-
-  compile_unit* current_unit;
-  map<string, compile_unit*> units;
-
-  Atoms fn_atoms;
-  Atoms sy_atoms;
-  Atoms pl_atoms;
-  
-  struct ctags_comment_t {
-    int32_t line;
-    string name;
-    int32_t pos;
-  } last_comment;
-
-compile_unit* get_compile_unit(const string &full_path_name) {
-  if (!units.count(full_path_name)) {
-    return units[full_path_name] = new compile_unit;
-  }
-  return units[full_path_name];
-}
-
-static void last_comment_clear() {
-  last_comment.name = "";
-  last_comment.line = -2;
-  last_comment.pos = 0;
-}
-
-// node 到 comment 不能有其它字符， 那么这个comment 是 node 的
-static bool is_valid_comment(int sym_pos, int comment_pos, int diff_line) {
-  if (current_buffer) {
+// node 到 comment 不能有其它字符
+static bool is_valid_comment(const char* buffer, int sym_pos, int comment_pos, int diff_line) {
+  if (buffer) {
     int line = 0;
-    const char* s = current_buffer + sym_pos - 1;
-    const char* begin = current_buffer + comment_pos;
-    for (; s >= begin; --s) {
+    const char* s = buffer + sym_pos - 1;
+    const char* begin = buffer + comment_pos;
+    for (; s >= begin && strchr("\n\r\t ", *s); --s) {
       if (*s == '\n') {
         ++line;
         if (line >= diff_line) {
           return true;
         }
-      } else if (*s == '\r' || *s == ' ' || *s == '\t') {
-
-      } else {
-        return false;
       }
     }
 
@@ -386,95 +103,176 @@ static void reverse_get_comment(string& comment, const char* end, const char* bu
   reverse(comment.begin(), comment.end());
 }
 
-static void find_comment(tcb_symbol_node& node) {
-  if (!current_buffer) return;
+static void find_comment(const char* buffer, ca_symbol_t& node) {
+  if (!buffer) return;
 
-  string comment;
-  const char* s = current_buffer + node.pos - 1;
-  for (; s >= current_buffer; --s) {
-    if (*s == '/' && s > current_buffer && *(s-1) == '*') {
-      reverse_get_comment(comment, s, current_buffer);
-      node.comment = new string(comment);
+  const char* s = buffer + node.pos - 1;
+  for (; s >= buffer; --s) {
+    if (*s == '/' && s > buffer && *(s-1) == '*') {
+      string comment;
+      reverse_get_comment(comment, s, buffer);
+      CLONE_STR(node.comment, comment.c_str());
       return;
     }
 
-    if (*s == '\n' || *s == '\r' || *s == ' ' || *s == '\t') {
-      continue;
+    if (!strchr("\n\r\t ", *s)) {
+      break;
     }
-
-    break;
   }
 }
 
-static void set_node_comment(tcb_symbol_node& node) {
-  int line_diff = node.line - last_comment.line;
-  if (node.typeref) {
-    /*
-    typedef struct _widget_t {
+struct ca_impl {
+  ctags_export_t *ctagsp;
 
-      这里有注释, 不算 widget_t
-    } widget_t;
+  const char* current_buffer;
 
-    typedef struct _widget_t {
+  compile_unit* current_unit;
+  map<string, compile_unit*> units;
+  
+  struct ctags_comment_t {
+    int32_t line;
+    string name;
+    int32_t pos;
+  } last_comment;
 
-      
+  ca_impl() : current_buffer(NULL), current_unit(NULL) {
+    ctagsp = get_ctags(ca_impl::tcb_ctags_callback, this);
+  }
+
+  ~ca_impl() {
+    ctagsp->close_ctags();
+    for (auto i : units) {
+      delete i.second;
+    }
+  }
+
+  compile_unit* get_unit(const char* full_path) const {
+    auto i = units.find(full_path);
+    return (i != units.end()) ? i->second : NULL;
+  }
+
+  void visit_file(const char* full_path) {
+    auto i = units.find(full_path);
+    if (i == units.end()) {
+      current_unit = units[full_path] = new compile_unit;
+    } else {
+      current_unit = i->second;
+    }
+
+    last_comment_clear();
+    current_unit->clear();
+
+    uint32_t len;
+    current_buffer = (char*)file_read(full_path, &len); 
+    ctagsp->parse_buffer(full_path, current_buffer, len);
+    TKMEM_FREE(current_buffer);
+  }
+
+  void last_comment_clear() {
+    last_comment.name = "";
+    last_comment.line = -2;
+    last_comment.pos = 0;
+  }
+
+  bool append_file_symbols(vector<ca_symbol_t> &nodes, const string &file) {
+    if (!units.count(file)) 
+      return false;
+    compile_unit* punit = units[file];
+    if (!punit) 
+      return false;
+
+    nodes.insert(nodes.end(), punit->symbols.begin(), punit->symbols.end());
+    return true;
+  }
+
+  void set_node_comment(ca_symbol_t& node) {
+    int line_diff = node.line - last_comment.line;
+    if (node.typeref) {
+      /*
+      typedef struct _widget_t {
+
+        // comment here does not belong to widget_t.
+      } widget_t;
+
+      typedef struct _widget_t {
+      } 
+      // comment here belongs to widget_t
+      widget_t;
+      */
+      if (node.line_content && node.line_content[0] == '}') {
+        return;
+      }
+    }
+
+    if (line_diff < 0) {
+      find_comment(current_buffer, node);
+    } else if (line_diff < 4 && !last_comment.name.empty() 
+      && is_valid_comment(current_buffer, node.pos, last_comment.pos, line_diff)) {
+      CLONE_STR(node.comment, last_comment.name.c_str());
     } 
-    这里的注释算
-    widget_t;
-    */
-    if (node.line_content && node.line_content[0] == '}') {
+  }
+
+  static void tcb_ctags_callback(const tagEntryInfo* const tag, char* const line, void* param) {
+    ca_impl* impl = (ca_impl*)param;
+    impl->ctags_callback(tag, line);
+  }
+
+  void ctags_callback(const tagEntryInfo* const tag, char* const line) {
+    if (tag->kind == 'z') {
+      last_comment.line = tag->lineNumber;
+      last_comment.name = tag->name;
+      last_comment.pos = tag->filePosition;
       return;
     }
+
+    ca_symbol_t node = {CA_GENERAL, 0};
+    CLONE_STR(node.name, tag->name);
+    CLONE_STR(node.file, tag->sourceFileName);
+    CLONE_STR(node.param, tag->extensionFields.signature);
+    CLONE_STR(node.scope, tag->extensionFields.scope[1]);
+    node.type = sym_type_from_ctags_kind(tag->kind);
+    node.pos = tag->filePosition;
+    node.line = tag->lineNumber;
+
+    if (tag->functionPreffix && node.param && tag->kind != 't') {
+      string snapshot = tag->functionPreffix;
+      if (tag->kind == 'm')
+        snapshot = snapshot + " (*" + tag->name + ")" + node.param;
+      else
+        snapshot = snapshot + " " + tag->name + node.param;
+      CLONE_STR(node.line_content, snapshot.c_str());
+    } else {
+      string s = line ? line : "";
+      /* ctags 已经把 \r 过滤掉了 */
+      if (!s.empty() && *s.rbegin() == '\n') {
+        s.pop_back();
+      }
+      CLONE_STR(node.line_content, s.c_str());
+    }
+
+    if (tag->kind == 'i') {
+      CLONE_STR(node.name, tag->name + 1);
+    } else if (tag->kind == 't') {
+      CLONE_STR(node.typeref, tag->extensionFields.typeRef[1]);
+    } else if (tag->kind == 'd' && !tag->extensionFields.signature) {
+      if (tag->extensionFields.typeRef[1])
+        CLONE_STR(node.typeref, tag->extensionFields.typeRef[1]);
+    }
+
+    set_node_comment(node);
+    last_comment_clear();
+
+    current_unit->symbols.push_back(node);
   }
-
-  if (line_diff < 0) {
-    find_comment(node);
-  } else if (line_diff < 4 && !last_comment.name.empty() 
-    && is_valid_comment(node.pos, last_comment.pos, line_diff)) {
-    node.comment = new string(last_comment.name);
-  } 
-}
-
-void on_ctags_symbol(tcb_symbol_node& node) {
-  compile_unit* puint = current_unit;
-  set_node_comment(node);
-  if (node.comment) {
-    puint->comments.push_back(node.comment);
-  }
-  last_comment_clear();
-
-  puint->symbols.push_back(node);
-}
-
-bool append_file_symbols(vector<tcb_symbol_node> &nodes, const string &file) {
-  if (!units.count(file)) 
-    return false;
-  compile_unit* punit = units[file];
-  if (!punit) 
-    return false;
-
-  nodes.insert(nodes.end(), punit->symbols.begin(), punit->symbols.end());
-  return true;
-}
+};
 
 void code_assist_symbols_destroy(ca_symbols_t* symbols) {
-  if (symbols == NULL) {
-    return;
-  }
-
-  for (uint32_t i = 0; i < symbols->size; ++i) {
-    const char* comment = symbols->nodes[i].comment;
-    if (comment) {
-      TKMEM_FREE(comment);
-    }
-  }
-  TKMEM_FREE(symbols);
-  return;
+  SAFE_FREE(symbols);
 }
 
-ca_symbols_t* nodes_from_node_vector_n(const vector<tcb_symbol_node>& nodes, size_t n) {
+static ca_symbols_t* nodes_from_node_vector(const vector<ca_symbol_t>& nodes) {
   ca_symbols_t* ret = NULL;
-  size_t len = tk_min(nodes.size(), n);
+  size_t len = nodes.size();
   if (len == 0)
     return NULL;
   
@@ -488,7 +286,7 @@ ca_symbols_t* nodes_from_node_vector_n(const vector<tcb_symbol_node>& nodes, siz
   ret->destroy = code_assist_symbols_destroy;
   size_t i = 0;
   for (auto node : nodes) {
-    to_symbol_t(ret->nodes[i++], node);
+    memcpy(&ret->nodes[i++], &node, sizeof(node));
     if (i == len) {
       break;
     }
@@ -496,88 +294,18 @@ ca_symbols_t* nodes_from_node_vector_n(const vector<tcb_symbol_node>& nodes, siz
   return ret;
 }
 
-template<typename M>
-void map_delete(M& m) {
-  for (auto i : m) {
-    delete i.second;
-  }
-  m.clear();
-}
-};
-
-using namespace ca_context;
-
-void tcb_ctags_callback(const tagEntryInfo* const tag, char* const line, void* param) {
-  // 注释
-  if (tag->kind == 'z') {
-    last_comment.line = tag->lineNumber;
-    last_comment.name = tag->name;
-    last_comment.pos = tag->filePosition;
-    return;
-  }
-
-  tcb_symbol_node node;
-  node.name = sy_atoms.intern(tag->name);
-  node.file = fn_atoms.intern(tag->sourceFileName);
-  node.param = pl_atoms.intern(tag->extensionFields.signature);
-  node.scope = sy_atoms.intern(tag->extensionFields.scope[1]);
-  node.type = tcb_type_from_ctags_kind(tag->kind);
-  node.pos = tag->filePosition;
-  node.line = tag->lineNumber;
-
-  if (tag->functionPreffix && node.param && tag->kind != 't') {
-    string snapshot = tag->functionPreffix;
-    if (tag->kind == 'm')
-      snapshot = snapshot + " (*" + tag->name + ")" + node.param;
-    else
-      snapshot = snapshot + " " + tag->name + node.param;
-    node.line_content = fn_atoms.intern(snapshot);
-  } else {
-    string s = line ? line : "";
-    /* ctags 已经把 \r 过滤掉了 */
-    if (!s.empty() && *s.rbegin() == '\n') {
-      s.pop_back();
-    }
-    node.line_content = fn_atoms.intern(s);
-  }
-
-  if (tag->kind == 'i') {
-    node.name = sy_atoms.intern(tag->name + 1);
-  } else if (tag->kind == 't') {
-    string typeref;
-    if (tag->extensionFields.typeRef[1])
-      typeref = tag->extensionFields.typeRef[1];
-
-    node.typeref = sy_atoms.intern(typeref);
-  } else if (tag->kind == 'd' && !tag->extensionFields.signature) {
-    if (tag->extensionFields.typeRef[1])
-      node.typeref = sy_atoms.intern(tag->extensionFields.typeRef[1]);
-  }
-
-  on_ctags_symbol(node);
-}
-
 code_assist_t* code_assist_create() {
   code_assist_t* ca = TKMEM_ZALLOC(code_assist_t);
   return_value_if_fail(ca != NULL, NULL);
 
-  if (NULL == ctagsp) {
-    // ctags 用了不少全局变量， 改成非全局的， 高投入， 低产出
-    ctagsp = get_ctags(tcb_ctags_callback, NULL); //happy case no error
-  }
-
+  ca->impl = new ca_impl();
   return ca;
 }
 
 ret_t code_assist_destroy(code_assist_t* ca) {
   return_value_if_fail(ca != NULL, RET_BAD_PARAMS);
-  
-  if (ctagsp) {
-    ctagsp->close_ctags();
-    ctagsp = NULL;
-  }
 
-  map_delete(units);
+  delete (ca_impl*)ca->impl;
   TKMEM_FREE(ca);
   return RET_OK;
 }
@@ -589,24 +317,15 @@ ret_t code_assist_visit_file2(code_assist_t* ca, const char* full_path) {
     return RET_BAD_PARAMS;
   }
 
-  compile_unit* punit = get_compile_unit(full_path);
-  current_unit = punit; // 保存起来，给 ctags 的回调用
-
-  last_comment_clear();
-  punit->clear();
-
-  uint32_t len;
-  current_buffer = (char*)file_read(full_path, &len); 
-  ctagsp->parse_buffer(full_path, current_buffer, len);
-  TKMEM_FREE(current_buffer);
+  ca_impl* impl = (ca_impl*)ca->impl;
+  impl->visit_file(full_path);
   return RET_OK;
 }
 
 ca_symbols_t* code_assist_symbols_from_file(code_assist_t* ca, const char* full_path, bool_t sort_) {
-  if (is_empty_s(full_path)) 
-    return NULL;
+  return_value_if_fail(ca != NULL && full_path != NULL, NULL);
 
-  vector<tcb_symbol_node> nodes;
-  append_file_symbols(nodes, full_path);
-  return nodes_from_node_vector_n(nodes, nodes.size());
+  ca_impl* impl = (ca_impl*)ca->impl;
+  auto unit = impl->get_unit(full_path);
+  return nodes_from_node_vector(unit->symbols);
 }

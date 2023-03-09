@@ -13,7 +13,7 @@ if platform.system() != 'Windows':
   APP_CXXFLAGS += ' -std=c++11 '
 
 env.Library(os.path.join(LIB_DIR, 'api_doc'), sources)
-env['LIBS'] = ['api_doc'] + env['LIBS']
+libs = ['api_doc'] + env['LIBS']
 env['CXXFLAGS'] = env['CXXFLAGS'] + APP_CXXFLAGS
 
-env.Program(os.path.join(BIN_DIR, 'api_doc_lint'), ['main.c'], LIBS = env['LIBS'])
+env.Program(os.path.join(BIN_DIR, 'api_doc_lint'), ['main.c'], LIBS = libs)
