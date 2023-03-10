@@ -93,7 +93,7 @@ TEST(api_doc, basic) {
   path_exe(exe);
   gen_path(exe, "/../../tests/testdata/apidoc_test.h", file1);
   
-  check_api_doc(ca, file1.c_str(), log_to_str, &out, FALSE);
+  check_api_doc(ca, file1.c_str(), log_to_str, &out, FALSE, NULL);
 
   uint32_t i = 0;
   string expErr;
@@ -113,6 +113,6 @@ TEST(api_doc, basic) {
   str_reset(&out.err);
   str_reset(&out.warn);
 
-  check_api_doc2(ca, file1.c_str(), dummy_log, NULL, TRUE, auto_fix_hook);
+  check_api_doc2(ca, file1.c_str(), dummy_log, NULL, TRUE, auto_fix_hook, NULL);
   code_assist_destroy(ca);
 }

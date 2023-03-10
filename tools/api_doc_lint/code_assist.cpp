@@ -31,7 +31,6 @@
 #include <algorithm>
 using namespace std;
 
-#define SAFE_FREE(x) if (x) { TKMEM_FREE(x); }
 #define CLONE_STR(dest, src) dest = tk_str_copy((char*)dest, src);
 
 struct compile_unit {
@@ -151,7 +150,7 @@ struct ca_impl {
     return (i != units.end()) ? i->second : NULL;
   }
 
-  void visit_file(const char* full_path) {
+  void visit_buffer(const char* full_path, const char* buffer, uint32_t len) {
     auto i = units.find(full_path);
     if (i == units.end()) {
       current_unit = units[full_path] = new compile_unit;
@@ -162,10 +161,9 @@ struct ca_impl {
     last_comment_clear();
     current_unit->clear();
 
-    uint32_t len;
-    current_buffer = (char*)file_read(full_path, &len); 
+    current_buffer = buffer; 
     ctagsp->parse_buffer(full_path, current_buffer, len);
-    TKMEM_FREE(current_buffer);
+    current_buffer = NULL;
   }
 
   void last_comment_clear() {
@@ -284,12 +282,8 @@ static ca_symbols_t* nodes_from_node_vector(const vector<ca_symbol_t>& nodes) {
   memset(ret, 0x00, size);
   ret->size = len;
   ret->destroy = code_assist_symbols_destroy;
-  size_t i = 0;
-  for (auto node : nodes) {
-    memcpy(&ret->nodes[i++], &node, sizeof(node));
-    if (i == len) {
-      break;
-    }
+  for (size_t i = 0; i < len; ++i) {
+    ret->nodes[i] = nodes[i];
   }
   return ret;
 }
@@ -310,19 +304,14 @@ ret_t code_assist_destroy(code_assist_t* ca) {
   return RET_OK;
 }
 
-ret_t code_assist_visit_file2(code_assist_t* ca, const char* full_path) {
-  return_value_if_fail(ca != NULL && full_path != NULL, RET_BAD_PARAMS);
-
-  if (file_get_size(full_path) > 1024 * 1024) {
-    return RET_BAD_PARAMS;
-  }
-
+ret_t code_assist_visit_buffer(code_assist_t* ca, const char* full_path, const char* buffer, uint32_t len) {
+  return_value_if_fail(ca != NULL && full_path != NULL && buffer != NULL, RET_BAD_PARAMS);
   ca_impl* impl = (ca_impl*)ca->impl;
-  impl->visit_file(full_path);
+  impl->visit_buffer(full_path, buffer, len);
   return RET_OK;
 }
 
-ca_symbols_t* code_assist_symbols_from_file(code_assist_t* ca, const char* full_path, bool_t sort_) {
+ca_symbols_t* code_assist_symbols_from_file(code_assist_t* ca, const char* full_path) {
   return_value_if_fail(ca != NULL && full_path != NULL, NULL);
 
   ca_impl* impl = (ca_impl*)ca->impl;

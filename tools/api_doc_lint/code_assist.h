@@ -24,6 +24,8 @@
 
 #include "tkc/types_def.h"
 
+#define SAFE_FREE(x) if (x) { TKMEM_FREE(x); }
+
 BEGIN_C_DECLS
 
 typedef enum _ca_symbol_type_t {
@@ -68,8 +70,8 @@ typedef struct _code_assist_t {
 
 code_assist_t* code_assist_create();
 ret_t code_assist_destroy(code_assist_t* ca);
-ret_t code_assist_visit_file2(code_assist_t* ca, const char* full_path);
-ca_symbols_t* code_assist_symbols_from_file(code_assist_t* ca, const char* full_path, bool_t sort);
+ret_t code_assist_visit_buffer(code_assist_t* ca, const char* full_path, const char* buffer, uint32_t len);
+ca_symbols_t* code_assist_symbols_from_file(code_assist_t* ca, const char* full_path);
 
 END_C_DECLS
 

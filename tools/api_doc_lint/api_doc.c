@@ -39,7 +39,6 @@ typedef struct _auto_fix_t {
   // 插入一行时, 不会扩充 lines的size, 只是在相关的 line上追加
   // 删除一行时, 也不会缩减 lines的size, 只是把 line 内容设置为 空串
   darray_t* lines;
-  uint32_t filesize;
 
   ca_symbol_t* sym;
   // [begin, end)
@@ -53,6 +52,10 @@ typedef struct _auto_fix_t {
 typedef struct _check_ctx_t {
   code_assist_t* ca;
   const char* path;
+
+  const char* file_content;
+  uint32_t file_size;
+
   ca_symbols_t* syms;
   
   log_hook_t log_hook;
@@ -131,7 +134,7 @@ static void app_log(check_ctx_t* ctx, log_level_t level, const char* fmt, ...) {
 
 static str_t* dump_lines(check_ctx_t* ctx) {
   darray_t* lines = ctx->auto_fix.lines;
-  str_t* str = str_create(ctx->auto_fix.filesize + 1024);
+  str_t* str = str_create(ctx->file_size + 1024);
 
   str_t** arr = (str_t**)lines->elms;
   for (uint32_t i = 0; i < lines->size; ++i) {
@@ -154,11 +157,8 @@ static void append_line(darray_t* lines, const char* beg, const char* end) {
 static void auto_fix_init(check_ctx_t* ctx) {
   darray_t* lines = darray_create(1024, (tk_destroy_t)str_destroy, NULL);
   ctx->auto_fix.lines = lines;
-
-  uint32_t len;
-  char* buffer = (char*)file_read(ctx->path, &len);
-  ctx->auto_fix.filesize = len;
-
+  
+  const char* buffer = ctx->file_content;
   const char *beg = buffer, *end = buffer;
   for (; *end; ++end) {
     if (*end == '\n') {
@@ -180,8 +180,6 @@ static void auto_fix_init(check_ctx_t* ctx) {
   }
   str_destroy(file_content);
 #endif
-
-  TKMEM_FREE(buffer);
 }
 
 static void auto_fix_finit(check_ctx_t* ctx) {
@@ -658,9 +656,9 @@ static char* sym_type(ca_symbol_t* sym) {
 
 static ret_t param_free(mparam_t* param) {
   if (param) {
-    if (param->type) TKMEM_FREE(param->type);
-    if (param->name) TKMEM_FREE(param->name);
-    TKMEM_FREE(param);
+    SAFE_FREE(param->type);
+    SAFE_FREE(param->name);
+    SAFE_FREE(param);
   }
   return RET_OK;
 }
@@ -1080,12 +1078,8 @@ bool_t check_func(check_ctx_t* ctx, ca_symbol_t* sym) {
         check_param(ctx, sym, params, param_i, type, name);
       }
 
-      if (type) {
-        TKMEM_FREE(type);
-      }
-      if (name) { 
-        TKMEM_FREE(name);
-      }
+      SAFE_FREE(type);
+      SAFE_FREE(name);
 
       ++param_i;
     } else if (type == DOC_RETURN) {
@@ -1108,12 +1102,8 @@ bool_t check_func(check_ctx_t* ctx, ca_symbol_t* sym) {
         ret = FALSE;
       }
 
-      if (type) {
-        TKMEM_FREE(type);
-      }
-      if (exp_type) {
-        TKMEM_FREE(exp_type);
-      }
+      SAFE_FREE(type);
+      SAFE_FREE(exp_type);
     }
   }
          
@@ -1184,18 +1174,14 @@ static bool_t check_enum_impl(check_ctx_t* ctx, ca_symbol_t* sym) {
         ret = FALSE;
       }
 
-      if (enum_name) {
-        TKMEM_FREE(enum_name);
-      }
+      SAFE_FREE(enum_name);
     } else if (type == DOC_ANNOTATION) {
       got_anno = TRUE;
       check_annotation(ctx, DOC_ENUM, rest);
     } else if (type == DOC_PREFIX) {
       got_prefix = TRUE;
       rest += strlen(key_prefix) + 1;
-      if (ctx->prefix) {
-        TKMEM_FREE(ctx->prefix);
-      }
+      SAFE_FREE(ctx->prefix);
       ctx->prefix = load_name(&rest);
       if (NULL == ctx->prefix) {
         app_err("%s(%d): error: @prefix name missing\n", sym->file, ctx->cur_line);
@@ -1211,10 +1197,7 @@ static bool_t check_enum_impl(check_ctx_t* ctx, ca_symbol_t* sym) {
       app_warn("%s(%d): warning: @prefix missing\n", sym->file, enum_line + 1);
       ret = FALSE;
 
-      if (ctx->prefix) {
-        TKMEM_FREE(ctx->prefix);
-      }
-
+      SAFE_FREE(ctx->prefix);
       auto_fix_enum_prefix_missing(ctx, sym, enum_line, FALSE);
     }
   }
@@ -1369,12 +1352,8 @@ static bool_t check_class_member(check_ctx_t* ctx, ca_symbol_t* sym) {
         check_property(ctx, sym, type, name);
       }
 
-      if (type) {
-        TKMEM_FREE(type);
-      }
-      if (name) {
-        TKMEM_FREE(name);
-      }
+      SAFE_FREE(type);
+      SAFE_FREE(name);
     } else if (type == DOC_ANNOTATION) {
       got_anno = TRUE;
       check_annotation(ctx, DOC_PROPERTY, rest);
@@ -1485,9 +1464,7 @@ static void try_update_prefix(check_ctx_t* ctx, ca_symbol_t* sym) {
     } else if (type == DOC_PREFIX) {
       got_prefix = TRUE;
       rest += strlen(key_prefix) + 1;
-      if (ctx->prefix) {
-        TKMEM_FREE(ctx->prefix);
-      }
+      SAFE_FREE(ctx->prefix);
       ctx->prefix = load_name(&rest);
       if (NULL == ctx->prefix) {
         app_err("%s(%d): error: @prefix name missing\n", sym->file, ctx->cur_line);
@@ -1589,28 +1566,43 @@ static bool_t check_api_doc_impl(check_ctx_t* ctx) {
 }
 
 bool_t check_api_doc2(code_assist_t* ca, const char* filename, log_hook_t hook, void* log_ctx, 
-                      bool_t auto_fix, auto_fix_hook_t fix_hook) {
-  code_assist_visit_file2(ca, filename);
-  ca_symbols_t* syms = code_assist_symbols_from_file(ca, filename, FALSE);
-  if (NULL == syms) {
-    return FALSE;
-  }
-
+                      bool_t auto_fix, auto_fix_hook_t fix_hook, bool_t* checked) {
   check_ctx_t ctx = { .ca = ca, .path = filename, .log_hook = hook, .log_ctx = log_ctx, 
     .enable_auto_fix = auto_fix, .fix_hook = fix_hook };
-  auto_fix_init(&ctx);
-  ctx.syms = syms;
-  bool_t ret = check_api_doc_impl(&ctx);
-  syms->destroy(syms);
-
-  auto_fix_save(&ctx);
-  auto_fix_finit(&ctx);
-  if (ctx.prefix) {
-    TKMEM_FREE(ctx.prefix);
+  if (checked) { 
+    *checked = FALSE;
   }
+
+  if (file_get_size(filename) > 1024 * 1024) {
+    return TRUE;
+  }
+
+  ctx.file_content = (char*)file_read(ctx.path, &ctx.file_size);
+  return_value_if_fail(ctx.file_content != NULL, FALSE);
+
+  bool_t ret = TRUE;
+  if (strstr(ctx.file_content, "Guangzhou ZHIYUAN Electronics Co.,Ltd")) {
+    code_assist_visit_buffer(ca, filename, ctx.file_content, ctx.file_size);
+    ca_symbols_t* syms = code_assist_symbols_from_file(ca, filename);
+    if (syms) {
+      ctx.syms = syms;
+      auto_fix_init(&ctx);
+      ret = check_api_doc_impl(&ctx);
+      syms->destroy(syms);
+
+      auto_fix_save(&ctx);
+      auto_fix_finit(&ctx);
+    }
+    if (checked) { 
+      *checked = TRUE;
+    }
+  }
+
+  SAFE_FREE(ctx.prefix);
+  SAFE_FREE(ctx.file_content);
   return ret;
 }
 
-bool_t check_api_doc(code_assist_t* ca, const char* filename, log_hook_t hook, void* log_ctx, bool_t auto_fix) {
-  return check_api_doc2(ca, filename, hook, log_ctx, auto_fix, NULL);
+bool_t check_api_doc(code_assist_t* ca, const char* filename, log_hook_t hook, void* log_ctx, bool_t auto_fix, bool_t* checked) {
+  return check_api_doc2(ca, filename, hook, log_ctx, auto_fix, NULL, checked);
 }

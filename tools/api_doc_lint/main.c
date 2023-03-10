@@ -28,18 +28,23 @@ typedef struct _foreach_ctx_t {
   log_hook_t log_hook;
   bool_t auto_fix;
   code_assist_t* ca;
+  int32_t nchecked;
 } foreach_ctx_t;
 
 static ret_t on_file(foreach_ctx_t* ctx, const char* filename) {
   const char* extname = ctx->extname;
+  bool_t checked = FALSE;
 
   if (*extname != 0) {
     if (!tk_str_end_with(filename, extname)) {
       return RET_OK;
     }
   }
-
-  check_api_doc(ctx->ca, filename, ctx->log_hook, ctx->log_ctx, ctx->auto_fix);
+  
+  check_api_doc(ctx->ca, filename, ctx->log_hook, ctx->log_ctx, ctx->auto_fix, &checked);
+  if (checked) {
+    ++ctx->nchecked;
+  }
   return RET_OK;
 }
 
@@ -108,6 +113,7 @@ int main(int argc, char* argv[]) {
   str_init(&dir_path, 256);
   str_init(&file_path, 256);
 
+  const char* path = "src";
   for (int i = 1; i < argc; ++i) {
     if (0 == strcmp(argv[i], "--fix")) {
       ctx.auto_fix = TRUE;
@@ -117,16 +123,12 @@ int main(int argc, char* argv[]) {
       printf("ignore unknown argv : %s\n", argv[i]);
       continue;
     } else {
-      set_path(argv[i], &dir_path, &file_path);
+      path = argv[i];
     }
   }
-
-  if (dir_path.size == 0 && file_path.size == 0) {
-    set_path("src", &dir_path, &file_path);
-  }
+  set_path(path, &dir_path, &file_path);
 
   char path_nor[MAX_PATH+1] = {0};
-  
   if (dir_path.size > 0) {
     path_normalize(dir_path.str, path_nor, MAX_PATH);
     printf("check dir : %s\n", path_nor);
@@ -141,6 +143,7 @@ int main(int argc, char* argv[]) {
   str_reset(&dir_path);
   str_reset(&file_path);
 
+  printf("checked number of files(%d)\n", ctx.nchecked);
   if (0 == out.nerr + out.nwarn) {
     printf("check ok! \n");
   } else {
