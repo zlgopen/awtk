@@ -99,6 +99,7 @@ typedef struct _gif_image_t {
   uint32_t index;
   uint32_t delay;
   uint32_t timer_id;
+  uint32_t loop_done;
 } gif_image_t;
 
 /**
@@ -127,7 +128,7 @@ ret_t gif_image_play(widget_t* widget);
 
 /**
  * @method gif_image_stop
- * 停止(并重置index为-1)。
+ * 停止(并重置index为0)。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget gif_image对象。
  *
