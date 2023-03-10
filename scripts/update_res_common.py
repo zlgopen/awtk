@@ -275,6 +275,9 @@ def remove_dir(dir):
 
 
 def get_appint_folder_ex(path, regex = '/', folder_list = [], parent = ''):
+    if os.path.exists(path) or not os.path.isdir(path):
+        return folder_list
+
     for f in os.listdir(path):
         src = join_path(path, f)
         if os.path.isdir(src) and f != '.' and f != '..':
@@ -291,6 +294,9 @@ def get_appint_folder_ex(path, regex = '/', folder_list = [], parent = ''):
 def get_appint_folder(path, regex = '/', include_self = True):
     folder_list = []
     regex_list = regex.split("|")
+
+    if os.path.exists(path) or not os.path.isdir(path):
+        return folder_list
 
     for reg in regex_list:
         folder_list += get_appint_folder_ex(path, reg, [], '')
@@ -651,6 +657,8 @@ def gen_res_all_font():
 
     if IS_GENERATE_RAW:
         if INPUT_DIR != join_path(OUTPUT_DIR, 'raw'):
+            make_dirs(join_path(OUTPUT_DIR, 'raw/fonts'))
+
             in_files = join_path(INPUT_DIR, 'fonts/')
             for f in get_appint_folder(in_files, '.ttf', False):
                 out_files = f[0].replace(INPUT_DIR, join_path(OUTPUT_DIR, 'raw'))
