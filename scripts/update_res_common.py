@@ -275,7 +275,7 @@ def remove_dir(dir):
 
 
 def get_appint_folder_ex(path, regex = '/', folder_list = [], parent = ''):
-    if os.path.exists(path) or not os.path.isdir(path):
+    if not os.path.exists(path) or not os.path.isdir(path):
         return folder_list
 
     for f in os.listdir(path):
@@ -295,7 +295,7 @@ def get_appint_folder(path, regex = '/', include_self = True):
     folder_list = []
     regex_list = regex.split("|")
 
-    if os.path.exists(path) or not os.path.isdir(path):
+    if not os.path.exists(path) or not os.path.isdir(path):
         return folder_list
 
     for reg in regex_list:
