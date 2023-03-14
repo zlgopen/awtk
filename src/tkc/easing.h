@@ -22,10 +22,17 @@
 #ifndef TK_EASING_H
 #define TK_EASING_H
 
-#include "tkc/types_def.h"
 #include "tkc/darray.h"
+#include "tkc/types_def.h"
 
 BEGIN_C_DECLS
+
+typedef float_t (*easing_func_t)(float_t k);
+
+typedef struct _easing_name_func_t {
+  key_type_value_t* type_name_value;
+  easing_func_t easing_func;
+} easing_name_func_t;
 
 /**
  * @enum easing_type_t
@@ -157,17 +164,16 @@ typedef enum _easing_type_t {
   EASING_FUNC_NR
 } easing_type_t;
 
-typedef float_t (*easing_func_t)(float_t k);
-
-typedef struct _easing_name_func_t {
-  key_type_value_t* type_name_value;
-  easing_func_t easing_func;
-} easing_name_func_t;
+/**
+ * @class easing_t
+ * @annotation ["fake"]
+ * 动画趋势类。
+ *
+ */
 
 /**
  * @method easing_get
  * 获取对应类型的操作函数。
- * @annotation ["global"]
  * @param {easing_type_t} type 类型。
  *
  * @return {easing_func_t} 返回对应的操作函数地址。
@@ -177,7 +183,6 @@ easing_func_t easing_get(easing_type_t type);
 /**
  * @method easing_register
  * 注册指定名称的动画趋势。
- * @annotation ["global"]
  * @param {const char*} type_name 类型名称。
  * @param {easing_func_t} easing_func 动画趋势函数。
  *
