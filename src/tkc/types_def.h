@@ -27,7 +27,6 @@
 #include <time.h>
 #include <wchar.h>
 #include <assert.h>
-#include <memory.h>
 #endif /*WITH_WASM*/
 
 #include <stdarg.h>
