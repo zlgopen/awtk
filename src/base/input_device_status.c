@@ -345,9 +345,10 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
 
         if (delta_time < TK_DOUBLE_CLICK_TIME && tk_abs(delta_x) < TK_DOUBLE_CLICK_XY &&
             tk_abs(delta_y) < TK_DOUBLE_CLICK_XY) {
+          event_t* d_evt;
           pointer_event_t double_click;
-          e = pointer_event_init(&double_click, EVT_DOUBLE_CLICK, widget, evt->x, evt->y);
-          widget_dispatch_event_to_target_recursive(widget, e);
+          d_evt = pointer_event_init(&double_click, EVT_DOUBLE_CLICK, widget, evt->x, evt->y);
+          widget_dispatch_event_to_target_recursive(widget, d_evt);
           log_debug("double clicked\n");
         }
 
