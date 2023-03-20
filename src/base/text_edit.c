@@ -123,6 +123,10 @@ typedef struct _text_edit_impl_t {
   const char* font_name;
   void* on_state_changed_ctx;
   text_edit_on_state_changed_t on_state_changed;
+  void* on_text_will_delete_ctx;
+  text_edit_on_text_will_delete_t on_text_will_delete;
+  void* on_char_will_input_ctx;
+  text_edit_on_char_will_input_t on_char_will_input;
 } text_edit_impl_t;
 
 #define DECL_IMPL(te) text_edit_impl_t* impl = (text_edit_impl_t*)(te)
@@ -966,21 +970,21 @@ static int text_edit_insert(STB_TEXTEDIT_STRING* str, int pos, STB_TEXTEDIT_CHAR
 #define STB_TEXTEDIT_K_SHIFT 0x40000000
 #define STB_TEXTEDIT_K_CONTROL 0x20000000
 #define STB_TEXTEDIT_K_LEFT (KEYDOWN_BIT | 1)
-#define STB_TEXTEDIT_K_RIGHT (KEYDOWN_BIT | 2)  // VK_RIGHT
-#define STB_TEXTEDIT_K_UP (KEYDOWN_BIT | 3)  // VK_UP
-#define STB_TEXTEDIT_K_DOWN (KEYDOWN_BIT | 4)  // VK_DOWN
+#define STB_TEXTEDIT_K_RIGHT (KEYDOWN_BIT | 2)      // VK_RIGHT
+#define STB_TEXTEDIT_K_UP (KEYDOWN_BIT | 3)         // VK_UP
+#define STB_TEXTEDIT_K_DOWN (KEYDOWN_BIT | 4)       // VK_DOWN
 #define STB_TEXTEDIT_K_LINESTART (KEYDOWN_BIT | 5)  // VK_HOME
-#define STB_TEXTEDIT_K_LINEEND (KEYDOWN_BIT | 6)  // VK_END
+#define STB_TEXTEDIT_K_LINEEND (KEYDOWN_BIT | 6)    // VK_END
 #define STB_TEXTEDIT_K_TEXTSTART (STB_TEXTEDIT_K_LINESTART | STB_TEXTEDIT_K_CONTROL)
 #define STB_TEXTEDIT_K_TEXTEND (STB_TEXTEDIT_K_LINEEND | STB_TEXTEDIT_K_CONTROL)
-#define STB_TEXTEDIT_K_DELETE (KEYDOWN_BIT | 7)  // VK_DELETE
+#define STB_TEXTEDIT_K_DELETE (KEYDOWN_BIT | 7)     // VK_DELETE
 #define STB_TEXTEDIT_K_BACKSPACE (KEYDOWN_BIT | 8)  // VK_BACKSPACE
 #define STB_TEXTEDIT_K_UNDO (KEYDOWN_BIT | STB_TEXTEDIT_K_CONTROL | 'z')
 #define STB_TEXTEDIT_K_REDO (KEYDOWN_BIT | STB_TEXTEDIT_K_CONTROL | 'y')
 #define STB_TEXTEDIT_K_INSERT (KEYDOWN_BIT | 9)  // VK_INSERT
 #define STB_TEXTEDIT_K_WORDLEFT (STB_TEXTEDIT_K_LEFT | STB_TEXTEDIT_K_CONTROL)
 #define STB_TEXTEDIT_K_WORDRIGHT (STB_TEXTEDIT_K_RIGHT | STB_TEXTEDIT_K_CONTROL)
-#define STB_TEXTEDIT_K_PGUP (KEYDOWN_BIT | 10)  // VK_PGUP -- not implemented
+#define STB_TEXTEDIT_K_PGUP (KEYDOWN_BIT | 10)    // VK_PGUP -- not implemented
 #define STB_TEXTEDIT_K_PGDOWN (KEYDOWN_BIT | 11)  // VK_PGDOWN -- not implemented
 
 #define STB_TEXTEDIT_IMPLEMENTATION 1
@@ -1251,12 +1255,13 @@ ret_t text_edit_drag(text_edit_t* text_edit, xy_t x, xy_t y) {
 static ret_t text_edit_paste_from_clip_board(text_edit_t* text_edit) {
   value_t v;
   wstr_t str;
+  DECL_IMPL(text_edit);
   const char* data = clip_board_get_text();
   if (data != NULL) {
     value_set_str(&v, data);
     wstr_init(&str, 0);
     wstr_from_value(&str, &v);
-    wstr_normalize_newline(&str, STB_TEXTEDIT_NEWLINE);
+    wstr_normalize_newline(&str, impl->single_line ? L' ' : STB_TEXTEDIT_NEWLINE);
     text_edit_paste(text_edit, str.str, str.size);
     wstr_reset(&str);
   }
@@ -1480,8 +1485,7 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
     }
     default: {
       if (key < 128 && tk_isprint(key)) {
-        app_type_t app_type = system_info()->app_type;
-        if (app_type == APP_DESKTOP || app_type == APP_MOBILE) {
+        if (input_method_is_native(input_method())) {
           text_edit_handle_shortcut(text_edit, evt, state, text);
           return RET_OK;
         }
@@ -1492,6 +1496,31 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
 
   if (text_edit_handle_shortcut(text_edit, evt, state, text) == RET_OK) {
     return RET_OK;
+  }
+
+  if (impl->on_text_will_delete) {
+    delete_type_t delete_type;
+    if (key == STB_TEXTEDIT_K_DELETE) {
+      delete_type = DELETE_BY_KEY_DELETE;
+    } else if (key == STB_TEXTEDIT_K_BACKSPACE) {
+      delete_type = DELETE_BY_KEY_BACKSPACE;
+    } else if (key < 128 && tk_isprint(key)) {
+      delete_type = DELETE_BY_INPUT;
+    } else {
+      goto on_text_will_delete_end;
+    }
+    if (impl->on_text_will_delete(impl->on_text_will_delete_ctx, delete_type) == RET_STOP) {
+      return RET_STOP;
+    }
+  }
+on_text_will_delete_end:
+
+  if (key < 128 && tk_isprint(key)) {
+    if (impl->on_char_will_input) {
+      if (impl->on_char_will_input(impl->on_char_will_input_ctx, (wchar_t)key) == RET_STOP) {
+        return RET_STOP;
+      }
+    }
   }
 
   if (evt->shift) {
@@ -1602,7 +1631,28 @@ ret_t text_edit_paste(text_edit_t* text_edit, const wchar_t* str, uint32_t size)
   DECL_IMPL(text_edit);
   return_value_if_fail(text_edit != NULL && str != NULL, RET_BAD_PARAMS);
 
-  stb_textedit_paste(text_edit, &(impl->state), str, size);
+  if (impl->on_text_will_delete) {
+    if (impl->on_text_will_delete(impl->on_text_will_delete_ctx, DELETE_BY_INPUT) == RET_STOP) {
+      return RET_STOP;
+    }
+  }
+  if (impl->on_char_will_input) {
+    uint32_t i, count;
+    for (i = 0, count = 0; i < size; i++) {
+      if (impl->on_char_will_input(impl->on_char_will_input_ctx, str[i]) == RET_STOP) {
+        continue;
+      }
+      stb_textedit_paste(text_edit, &(impl->state), str + i, 1);
+      count++;
+    }
+    if (count == 0) {
+      return RET_SKIP;
+    }
+    size = count;
+  } else {
+    stb_textedit_paste(text_edit, &(impl->state), str, size);
+  }
+
   if (impl->preedit) {
     impl->preedit_chars_nr += size;
   }
@@ -1796,6 +1846,30 @@ ret_t text_edit_set_on_state_changed(text_edit_t* text_edit,
 
   impl->on_state_changed = on_state_changed;
   impl->on_state_changed_ctx = ctx;
+
+  return RET_OK;
+}
+
+ret_t text_edit_set_on_text_will_delete(text_edit_t* text_edit,
+                                        text_edit_on_text_will_delete_t on_text_will_delete,
+                                        void* ctx) {
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
+
+  impl->on_text_will_delete = on_text_will_delete;
+  impl->on_text_will_delete_ctx = ctx;
+
+  return RET_OK;
+}
+
+ret_t text_edit_set_on_char_will_input(text_edit_t* text_edit,
+                                       text_edit_on_char_will_input_t on_char_will_input,
+                                       void* ctx) {
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
+
+  impl->on_char_will_input = on_char_will_input;
+  impl->on_char_will_input_ctx = ctx;
 
   return RET_OK;
 }

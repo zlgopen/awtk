@@ -78,3 +78,7 @@ static bool_t edit_time_is_valid(widget_t* widget) {
 static ret_t edit_time_fix(widget_t* widget) {
   return edit_time_fix_ex(widget, TRUE);
 }
+
+static ret_t edit_time_pre_delete(widget_t* widget, delete_type_t delete_type) {
+  return edit_pre_delete_with_sep(widget, delete_type, EDIT_TIME_SEP);
+}

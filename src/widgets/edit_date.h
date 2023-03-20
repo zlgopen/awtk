@@ -94,3 +94,7 @@ static bool_t edit_date_is_valid(widget_t* widget) {
 static ret_t edit_date_fix(widget_t* widget) {
   return edit_date_fix_ex(widget, TRUE);
 }
+
+static ret_t edit_date_pre_delete(widget_t* widget, delete_type_t delete_type) {
+  return edit_pre_delete_with_sep(widget, delete_type, EDIT_DATE_SEP);
+}

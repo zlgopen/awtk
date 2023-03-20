@@ -34,6 +34,7 @@ typedef ret_t (*edit_inc_value_t)(widget_t* widget);
 typedef ret_t (*edit_dec_value_t)(widget_t* widget);
 typedef bool_t (*edit_is_valid_value_t)(widget_t* widget);
 typedef ret_t (*edit_pre_input_t)(widget_t* widget, uint32_t key);
+typedef ret_t (*edit_pre_delete_t)(widget_t* widget, delete_type_t delete_type);
 typedef bool_t (*edit_is_valid_char_t)(widget_t* widget, wchar_t c);
 
 /**
@@ -223,14 +224,19 @@ typedef struct _edit_t {
   bool_t is_key_inputing;
   bool_t is_text_error;
 
+  bool_t is_text_deleted;
+
   uint32_t idle_id;
   uint32_t timer_id;
   text_edit_t* model;
   wstr_t saved_text;
+  wstr_t last_changing_text;
+  wstr_t last_changed_text;
   edit_inc_value_t inc_value;
   edit_dec_value_t dec_value;
   edit_fix_value_t fix_value;
   edit_pre_input_t pre_input;
+  edit_pre_delete_t pre_delete;
   edit_is_valid_char_t is_valid_char;
   edit_is_valid_value_t is_valid_value;
 } edit_t;
@@ -242,7 +248,7 @@ typedef struct _edit_t {
 
 /**
  * @event {value_change_event_t} EVT_VALUE_CHANGED
- * 文本改变事件。
+ * 文本改变事件(编辑完成或设置文本时触发)。
  */
 
 /**
@@ -598,7 +604,7 @@ ret_t edit_set_dec_value(widget_t* widget, edit_dec_value_t dec_value);
 
 /**
  * @method edit_set_pre_input
- * 设置预输入处的回调函数。
+ * 设置预输入处理的回调函数。
  *> 如果内置函数不能满足需求时，可以设置自定义的检查函数。
  *
  * @param {widget_t*} widget widget对象。
@@ -607,6 +613,18 @@ ret_t edit_set_dec_value(widget_t* widget, edit_dec_value_t dec_value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t edit_set_pre_input(widget_t* widget, edit_pre_input_t pre_input);
+
+/**
+ * @method edit_set_pre_delete
+ * 设置预删除处理的回调函数。
+ *> 如果内置函数不能满足需求时，可以设置自定义的检查函数。
+ *
+ * @param {widget_t*} widget widget对象。
+ * @param {edit_pre_delete_t} pre_delete 预删除处理的回调函数(删除时保留分隔符)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_pre_delete(widget_t* widget, edit_pre_delete_t pre_delete);
 
 /**
  * @method edit_set_select
@@ -658,6 +676,7 @@ bool_t edit_is_valid_char(widget_t* widget, wchar_t c);
 /*common functions for edit_xxx*/
 ret_t edit_add_value_with_sep(widget_t* widget, int delta, char sep);
 ret_t edit_pre_input_with_sep(widget_t* widget, uint32_t key, char sep);
+ret_t edit_pre_delete_with_sep(widget_t* widget, delete_type_t delete_type, char sep);
 
 /*for compatability*/
 #define edit_set_input_tips(w, t) edit_set_tips(w, t)

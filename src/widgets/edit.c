@@ -47,8 +47,9 @@ static ret_t edit_auto_fix(widget_t* widget);
 static ret_t edit_reset_layout(widget_t* widget);
 static ret_t edit_update_status(widget_t* widget);
 static ret_t edit_check_valid_value(widget_t* widget);
-static ret_t edit_pre_input(widget_t* widget, uint32_t key);
 static ret_t edit_select_all_async(const idle_info_t* info);
+static ret_t edit_dispatch_value_change_event(widget_t* widget, event_type_t type);
+static ret_t edit_paste(widget_t* widget, const wchar_t* str, uint32_t size);
 
 static ret_t edit_save_text(widget_t* widget) {
   edit_t* edit = EDIT(widget);
@@ -66,7 +67,9 @@ static ret_t edit_rollback_text(widget_t* widget) {
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   if (edit->cancelable) {
+    wstr_set(&(edit->last_changing_text), widget->text.str);
     widget_set_text(widget, edit->saved_text.str);
+    edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
   }
 
   return RET_OK;
@@ -86,11 +89,27 @@ static ret_t edit_commit_text(widget_t* widget) {
 
 static ret_t edit_dispatch_value_change_event(widget_t* widget, event_type_t type) {
   value_change_event_t evt;
+  edit_t* edit = EDIT(widget);
+  wstr_t* text = &(widget->text);
+  wstr_t* last = &(edit->last_changing_text);
+
+  if (type == EVT_VALUE_CHANGED) {
+    last = &(edit->last_changed_text);
+  }
+
+  if ((last->size == 0 && text->size == 0) || wstr_equal(last, text)) {
+    return RET_NOT_MODIFIED;
+  }
+
   value_change_event_init(&evt, type, widget);
-  value_set_wstr(&(evt.old_value), widget->text.str);
-  value_set_wstr(&(evt.new_value), widget->text.str);
+  value_set_wstr(&(evt.old_value), last->str);
+  value_set_wstr(&(evt.new_value), text->str);
 
   widget_dispatch(widget, (event_t*)&evt);
+
+  if (type == EVT_VALUE_CHANGED) {
+    wstr_set(last, text->str);
+  }
 
   return RET_OK;
 }
@@ -143,10 +162,6 @@ ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   }
 
   return text_edit_paint(edit->model, c);
-}
-
-static ret_t edit_do_input_char(widget_t* widget, wchar_t c) {
-  return text_edit_paste(EDIT(widget)->model, &c, 1);
 }
 
 static bool_t edit_is_valid_char_default(widget_t* widget, wchar_t c) {
@@ -290,29 +305,42 @@ static bool_t edit_has_selection(widget_t* widget) {
 }
 
 ret_t edit_input_char(widget_t* widget, wchar_t c) {
+  return edit_paste(widget, &c, 1);
+}
+
+static ret_t edit_on_text_edit_text_will_delete(void* ctx, delete_type_t delete_type) {
+  widget_t* widget = WIDGET(ctx);
   edit_t* edit = EDIT(widget);
-  ret_t ret = RET_BAD_PARAMS;
-  bool_t has_selection1 = FALSE;
-  bool_t has_selection2 = FALSE;
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  ret_t ret = RET_OK;
+  uint32_t size1 = 0;
+  uint32_t size2 = 0;
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
-  has_selection1 = edit_has_selection(widget);
-  if (edit_pre_input(widget, c) == RET_STOP) {
-    return RET_OK;
+  size1 = widget->text.size;
+  if (edit->pre_delete != NULL) {
+    ret = edit->pre_delete(widget, delete_type);
   }
-  has_selection2 = edit_has_selection(widget);
-
-  if (edit_is_valid_char(widget, c)) {
-    if (has_selection1 != has_selection2) {
-      /*selection was cleared by edit_pre_input, should not overwrite the next char*/
-      text_edit_unselect(edit->model);
-    }
-
-    ret = edit_do_input_char(widget, c);
-    edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
-  }
+  size2 = widget->text.size;
+  edit->is_text_deleted = size1 != size2;
 
   return ret;
+}
+
+static ret_t edit_on_text_edit_char_will_input(void* ctx, wchar_t c) {
+  widget_t* widget = WIDGET(ctx);
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+
+  if (edit_is_valid_char(widget, c)) {
+    if (edit->is_text_deleted) {
+      /*selection was cleared by edit->pre_delete, should not overwrite the next char*/
+      text_edit_unselect(edit->model);
+      edit->is_text_deleted = FALSE;
+    }
+    return RET_OK;
+  }
+
+  return RET_STOP;
 }
 
 static ret_t edit_commit_str(widget_t* widget, const char* str) {
@@ -320,12 +348,7 @@ static ret_t edit_commit_str(widget_t* widget, const char* str) {
   wchar_t wstr[32];
   tk_utf8_to_utf16(str, wstr, ARRAY_SIZE(wstr));
 
-  while (wstr[i]) {
-    edit_input_char(widget, wstr[i]);
-    i++;
-  }
-
-  return RET_OK;
+  return edit_paste(widget, wstr, wcslen(wstr));
 }
 
 static bool_t edit_is_number(widget_t* widget) {
@@ -613,25 +636,17 @@ static ret_t edit_pointer_up_cleanup(widget_t* widget) {
   return RET_OK;
 }
 
-static ret_t edit_paste(widget_t* widget) {
-  value_t v;
-  wstr_t str;
-  const char* data = clip_board_get_text();
-  if (data != NULL) {
-    uint32_t i = 0;
-    value_set_str(&v, data);
-    wstr_init(&str, 0);
-    wstr_from_value(&str, &v);
-    wstr_normalize_newline(&str, ' ');
+static ret_t edit_paste(widget_t* widget, const wchar_t* str, uint32_t size) {
+  edit_t* edit = EDIT(widget);
+  ret_t ret = RET_BAD_PARAMS;
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
-    for (i = 0; i < str.size; i++) {
-      edit_input_char(widget, str.str[i]);
-    }
-
-    wstr_reset(&str);
+  wstr_set(&(edit->last_changing_text), widget->text.str);
+  ret = text_edit_paste(edit->model, str, size);
+  if (ret == RET_OK) {
+    edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
   }
-
-  return RET_OK;
+  return ret;
 }
 
 static ret_t edit_pre_input(widget_t* widget, uint32_t key) {
@@ -647,9 +662,15 @@ static ret_t edit_pre_input(widget_t* widget, uint32_t key) {
 static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
   uint32_t key = e->key;
   edit_t* edit = EDIT(widget);
+#ifdef MACOS
+  bool_t is_control = e->cmd;
+#else
+  bool_t is_control = e->ctrl;
+#endif
+  bool_t is_print = key < 128 && tk_isprint(key);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
-  if (!e->cmd && !e->ctrl) {
+  if (!is_control) {
     if (edit_pre_input(widget, key) == RET_STOP) {
       return RET_STOP;
     }
@@ -657,15 +678,6 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
 
   if (key == TK_KEY_TAB || key == TK_KEY_ESCAPE || (key >= TK_KEY_F1 && key <= TK_KEY_F12)) {
     return RET_OK;
-  } else if (key == TK_KEY_LEFT || key == TK_KEY_RIGHT) {
-    uint32_t cursor = text_edit_get_cursor(edit->model);
-    if (key == TK_KEY_LEFT && cursor == 0) {
-      return RET_STOP;
-    }
-
-    if (key == TK_KEY_RIGHT && cursor == widget->text.size) {
-      return RET_STOP;
-    }
   } else if (key == TK_KEY_DOWN) {
     if (widget_is_change_focus_key(widget, e)) {
       return RET_OK;
@@ -688,27 +700,12 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
       widget_focus_prev(widget);
     }
     return RET_STOP;
-  }
-
-  if (key == TK_KEY_BACKSPACE || key == TK_KEY_DELETE || key == TK_KEY_LEFT ||
-      key == TK_KEY_RIGHT || key == TK_KEY_HOME || key == TK_KEY_END ||
-      ((e->ctrl || e->cmd) &&
-       (key == TK_KEY_a || key == TK_KEY_y || key == TK_KEY_z || key == TK_KEY_v ||
-        key == TK_KEY_x || key == TK_KEY_c || key == TK_KEY_A || key == TK_KEY_Y ||
-        key == TK_KEY_Z || key == TK_KEY_V || key == TK_KEY_X || key == TK_KEY_C))) {
-    if (key == TK_KEY_v || key == TK_KEY_V) {
-      edit_paste(widget);
-    } else {
-      text_edit_key_down(edit->model, (key_event_t*)e);
-    }
-
-    if (key != TK_KEY_LEFT && key != TK_KEY_RIGHT && key != TK_KEY_HOME && key != TK_KEY_END) {
-      edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
-    }
-  } else if (key < 128 && tk_isprint(key)) {
-    if (!input_method_is_native(input_method())) {
-      edit_input_char(widget, (wchar_t)key);
-    }
+  } else if (key == TK_KEY_LEFT || key == TK_KEY_RIGHT || key == TK_KEY_HOME || key == TK_KEY_END) {
+    text_edit_key_down(edit->model, e);
+  } else if (is_print || key == TK_KEY_BACKSPACE || key == TK_KEY_DELETE) {
+    wstr_set(&(edit->last_changing_text), widget->text.str);
+    text_edit_key_down(edit->model, e);
+    edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
   } else {
     if (widget->emitter != NULL) {
       void* saved_target = e->e.target;
@@ -764,16 +761,8 @@ static ret_t edit_check_valid_value(widget_t* widget) {
   edit->is_text_error = FALSE;
   if (!edit_is_valid_value(widget)) {
     if (edit->auto_fix) {
-      wstr_t old_text;
-      wstr_init(&old_text, 0);
-      wstr_set(&old_text, widget->text.str);
-
       edit_auto_fix(widget);
-
-      if (!wstr_equal(&old_text, &widget->text)) {
-        edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGED);
-      }
-      wstr_reset(&old_text);
+      edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGED);
       if (widget->text.size > 0 && !edit_is_valid_value(widget)) {
         edit->is_text_error = TRUE;
         widget_set_state(widget, WIDGET_STATE_ERROR);
@@ -881,7 +870,9 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_IM_PREEDIT_ABORT: {
+      wstr_set(&(edit->last_changing_text), widget->text.str);
       text_edit_preedit_abort(edit->model);
+      edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
       break;
     }
     case EVT_BLUR: {
@@ -1077,6 +1068,7 @@ ret_t edit_set_input_type(widget_t* widget, input_type_t type) {
 
   edit->input_type = type;
   edit->pre_input = NULL;
+  edit->pre_delete = NULL;
   edit->is_valid_char = NULL;
   edit->fix_value = NULL;
   edit->inc_value = NULL;
@@ -1096,6 +1088,7 @@ ret_t edit_set_input_type(widget_t* widget, input_type_t type) {
     edit->pre_input = edit_ipv4_pre_input;
     edit->is_valid_value = edit_ipv4_is_valid;
     edit->is_valid_char = edit_ipv4_is_valid_char;
+    edit->pre_delete = edit_ipv4_pre_delete;
   } else if (type == INPUT_DATE) {
     edit->fix_value = edit_date_fix;
     edit->inc_value = edit_date_inc_value;
@@ -1103,6 +1096,7 @@ ret_t edit_set_input_type(widget_t* widget, input_type_t type) {
     edit->pre_input = edit_date_pre_input;
     edit->is_valid_value = edit_date_is_valid;
     edit->is_valid_char = edit_date_is_valid_char;
+    edit->pre_delete = edit_date_pre_delete;
   } else if (type == INPUT_TIME) {
     edit->fix_value = edit_time_fix;
     edit->inc_value = edit_time_inc_value;
@@ -1110,6 +1104,7 @@ ret_t edit_set_input_type(widget_t* widget, input_type_t type) {
     edit->pre_input = edit_time_pre_input;
     edit->is_valid_value = edit_time_is_valid;
     edit->is_valid_char = edit_time_is_valid_char;
+    edit->pre_delete = edit_time_pre_delete;
   } else if (type == INPUT_TIME_FULL) {
     edit->fix_value = edit_time_full_fix;
     edit->inc_value = edit_time_full_inc_value;
@@ -1117,6 +1112,7 @@ ret_t edit_set_input_type(widget_t* widget, input_type_t type) {
     edit->pre_input = edit_time_full_pre_input;
     edit->is_valid_value = edit_time_full_is_valid;
     edit->is_valid_char = edit_time_full_is_valid_char;
+    edit->pre_delete = edit_time_full_pre_delete;
   }
 
   return RET_OK;
@@ -1560,7 +1556,6 @@ static ret_t edit_add_float(edit_t* edit, double delta) {
   }
 
   wstr_trim_float_zero(text);
-  edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
 
   return RET_OK;
 }
@@ -1586,7 +1581,6 @@ static ret_t edit_add_int(edit_t* edit, int delta) {
   }
 
   wstr_from_int(text, v);
-  edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
 
   return RET_OK;
 }
@@ -1651,6 +1645,8 @@ static ret_t edit_inc_default(edit_t* edit) {
   text = &(widget->text);
   input_type = edit->input_type;
 
+  wstr_set(&(edit->last_changing_text), text->str);
+
   switch (input_type) {
     case INPUT_FLOAT:
     case INPUT_UFLOAT: {
@@ -1675,6 +1671,8 @@ static ret_t edit_inc_default(edit_t* edit) {
       break;
   }
   text_edit_select_all(edit->model);
+  text_edit_set_cursor(edit->model, text->size);
+  edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
 
   return widget_invalidate_force(widget, NULL);
 }
@@ -1687,6 +1685,8 @@ static ret_t edit_dec_default(edit_t* edit) {
 
   text = &(widget->text);
   input_type = edit->input_type;
+
+  wstr_set(&(edit->last_changing_text), text->str);
 
   switch (input_type) {
     case INPUT_FLOAT:
@@ -1711,8 +1711,10 @@ static ret_t edit_dec_default(edit_t* edit) {
     default:
       break;
   }
-
   text_edit_select_all(edit->model);
+  text_edit_set_cursor(edit->model, text->size);
+  edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
+
   return widget_invalidate_force(widget, NULL);
 }
 
@@ -1811,6 +1813,8 @@ ret_t edit_on_destroy(widget_t* widget) {
   TKMEM_FREE(edit->keyboard);
   TKMEM_FREE(edit->action_text);
   wstr_reset(&(edit->saved_text));
+  wstr_reset(&(edit->last_changing_text));
+  wstr_reset(&(edit->last_changed_text));
   text_edit_destroy(edit->model);
 
   return RET_OK;
@@ -1908,7 +1912,11 @@ widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy
 
   edit->model = text_edit_create(widget, TRUE);
   ENSURE(edit->model != NULL);
+  text_edit_set_on_text_will_delete(edit->model, edit_on_text_edit_text_will_delete, widget);
+  text_edit_set_on_char_will_input(edit->model, edit_on_text_edit_char_will_input, widget);
 
+  wstr_init(&(edit->last_changing_text), 0);
+  wstr_init(&(edit->last_changed_text), 0);
   widget_set_text(widget, L"");
   wstr_init(&(edit->saved_text), 0);
   edit_set_password_visible(widget, FALSE);
@@ -1981,6 +1989,15 @@ ret_t edit_set_pre_input(widget_t* widget, edit_pre_input_t pre_input) {
   return RET_OK;
 }
 
+ret_t edit_set_pre_delete(widget_t* widget, edit_pre_delete_t pre_delete) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+
+  edit->pre_delete = pre_delete;
+
+  return RET_OK;
+}
+
 ret_t edit_set_select(widget_t* widget, uint32_t start, uint32_t end) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL && edit->model != NULL, RET_BAD_PARAMS);
@@ -1997,13 +2014,50 @@ char* edit_get_selected_text(widget_t* widget) {
 
 ret_t edit_pre_input_with_sep(widget_t* widget, uint32_t key, char sep) {
   text_edit_state_t state;
-  wstr_t* text = NULL;
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL && widget != NULL, RET_BAD_PARAMS);
 
-  if (key == TK_KEY_UP || key == TK_KEY_DOWN) {
-    return RET_OK;
+  if (key == TK_KEY_LEFT || key == TK_KEY_RIGHT) {
+    wstr_t* text = &(widget->text);
+    text_edit_get_state(edit->model, &state);
+    if (state.select_start == state.select_end && text->size > 1) {
+      int32_t i = 0;
+      if (key == TK_KEY_LEFT) {
+        if (state.cursor > 1 && text->str[state.cursor - 1] == sep) {
+          /*select prev part*/
+          for (i = state.cursor - 2; i >= 0; i--) {
+            if (text->str[i] == sep) {
+              break;
+            }
+          }
+          text_edit_set_cursor(edit->model, state.cursor - 1);
+          text_edit_set_select(edit->model, i + 1, state.cursor - 1);
+          return RET_STOP;
+        }
+      } else if (key == TK_KEY_RIGHT) {
+        if (text->str[state.cursor] == sep) {
+          /*select next part*/
+          for (i = state.cursor + 1; i < text->size; i++) {
+            if (text->str[i] == sep) {
+              break;
+            }
+          }
+          text_edit_set_cursor(edit->model, state.cursor + 1);
+          text_edit_set_select(edit->model, state.cursor + 1, i);
+          return RET_STOP;
+        }
+      }
+    }
   }
+
+  return RET_OK;
+}
+
+ret_t edit_pre_delete_with_sep(widget_t* widget, delete_type_t delete_type, char sep) {
+  text_edit_state_t state;
+  wstr_t* text = NULL;
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL && widget != NULL, RET_BAD_PARAMS);
 
   text = &(widget->text);
   text_edit_get_state(edit->model, &state);
@@ -2011,17 +2065,6 @@ ret_t edit_pre_input_with_sep(widget_t* widget, uint32_t key, char sep) {
     uint32_t i = 0;
     wchar_t* s = text->str + state.select_start;
     wchar_t* d = text->str + state.select_start;
-
-    if (key == TK_KEY_LEFT) {
-      text_edit_unselect(edit->model);
-      text_edit_set_cursor(edit->model, state.select_start);
-      return RET_STOP;
-    } else if (key == TK_KEY_RIGHT) {
-      text_edit_unselect(edit->model);
-      text_edit_set_cursor(edit->model, state.select_end);
-      return RET_STOP;
-    }
-
     for (i = state.select_start; i < state.select_end; i++, s++) {
       if (*s == sep) {
         *d++ = sep;
@@ -2036,46 +2079,22 @@ ret_t edit_pre_input_with_sep(widget_t* widget, uint32_t key, char sep) {
 
     text_edit_unselect(edit->model);
     text_edit_set_cursor(edit->model, state.select_start);
-    if (key == TK_KEY_BACKSPACE || key == TK_KEY_DELETE) {
+    if (delete_type == DELETE_BY_KEY_BACKSPACE || delete_type == DELETE_BY_KEY_DELETE) {
       return RET_STOP;
     }
-  } else if (text->size > 1) {
-    int32_t i = 0;
-    if (state.cursor > 1 && text->str[state.cursor - 1] == sep && key == TK_KEY_LEFT) {
-      /*select prev part*/
-      for (i = state.cursor - 2; i >= 0; i--) {
-        if (text->str[i] == sep) {
-          break;
-        }
+  } else {
+    if (delete_type == DELETE_BY_KEY_BACKSPACE) {
+      if (state.cursor > 0 && text->str[state.cursor - 1] == sep) {
+        text_edit_set_cursor(edit->model, state.cursor - 1);
+        return RET_STOP;
       }
-      text_edit_set_cursor(edit->model, state.cursor - 1);
-      text_edit_set_select(edit->model, i + 1, state.cursor - 1);
-      return RET_STOP;
-    } else if (key == TK_KEY_RIGHT && text->str[state.cursor] == sep) {
-      /*select next part*/
-      for (i = state.cursor + 1; i < text->size; i++) {
-        if (text->str[i] == sep) {
-          break;
-        }
+    } else if (delete_type == DELETE_BY_KEY_DELETE) {
+      if (text->str[state.cursor] == sep) {
+        text_edit_set_cursor(edit->model, state.cursor + 1);
+        return RET_STOP;
       }
-      text_edit_set_cursor(edit->model, state.cursor + 1);
-      text_edit_set_select(edit->model, state.cursor + 1, i);
-      return RET_STOP;
     }
   }
-
-  if (key == TK_KEY_BACKSPACE && state.cursor > 0) {
-    if (text->str[state.cursor - 1] == sep) {
-      text_edit_set_cursor(edit->model, state.cursor - 1);
-      return RET_STOP;
-    }
-  } else if (key == TK_KEY_DELETE) {
-    if (text->str[state.cursor] == sep) {
-      text_edit_set_cursor(edit->model, state.cursor + 1);
-      return RET_STOP;
-    }
-  }
-
   return RET_OK;
 }
 
@@ -2094,6 +2113,8 @@ ret_t edit_add_value_with_sep(widget_t* widget, int delta, char sep) {
     edit->fix_value(widget);
     return RET_OK;
   }
+
+  wstr_set(&(edit->last_changing_text), text->str);
 
   cursor = state.cursor < text->size ? state.cursor : text->size - 1;
   if (text->str[cursor] == sep && cursor > 0) {

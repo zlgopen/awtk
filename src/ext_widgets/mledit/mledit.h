@@ -154,6 +154,8 @@ typedef struct _mledit_t {
 
   wstr_t temp;
   wstr_t saved_text;
+  wstr_t last_changing_text;
+  wstr_t last_changed_text;
 } mledit_t;
 
 /**
@@ -163,7 +165,7 @@ typedef struct _mledit_t {
 
 /**
  * @event {value_change_event_t} EVT_VALUE_CHANGED
- * 文本改变事件。
+ * 文本改变事件(编辑完成或设置文本时触发)。
  */
 
 /**

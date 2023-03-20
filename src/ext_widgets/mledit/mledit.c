@@ -30,6 +30,7 @@
 #include "scroll_view/scroll_bar.h"
 
 static ret_t mledit_update_status(widget_t* widget);
+static ret_t mledit_dispatch_event(widget_t* widget, event_type_t type);
 
 static ret_t mledit_save_text(widget_t* widget) {
   mledit_t* mledit = MLEDIT(widget);
@@ -47,7 +48,9 @@ static ret_t mledit_rollback_text(widget_t* widget) {
   return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
 
   if (mledit->cancelable) {
+    wstr_set(&(mledit->last_changing_text), widget->text.str);
     widget_set_text(widget, mledit->saved_text.str);
+    mledit_dispatch_event(widget, EVT_VALUE_CHANGING);
   }
 
   return RET_OK;
@@ -67,11 +70,28 @@ static ret_t mledit_commit_text(widget_t* widget) {
 
 static ret_t mledit_dispatch_event(widget_t* widget, event_type_t type) {
   value_change_event_t evt;
+  mledit_t* mledit = MLEDIT(widget);
+  wstr_t* text = &(widget->text);
+  wstr_t* last = &(mledit->last_changing_text);
+
+  if (type == EVT_VALUE_CHANGED) {
+    last = &(mledit->last_changed_text);
+  }
+
+  if ((last->size == 0 && text->size == 0) || wstr_equal(last, text)) {
+    return RET_NOT_MODIFIED;
+  }
+
   value_change_event_init(&evt, type, widget);
-  value_set_wstr(&(evt.old_value), widget->text.str);
-  value_set_wstr(&(evt.new_value), widget->text.str);
+  value_set_wstr(&(evt.old_value), last->str);
+  value_set_wstr(&(evt.new_value), text->str);
 
   widget_dispatch(widget, (event_t*)&evt);
+
+  if (type == EVT_VALUE_CHANGED) {
+    wstr_set(last, text->str);
+  }
+
   return RET_OK;
 }
 
@@ -401,11 +421,6 @@ static ret_t mledit_set_prop(widget_t* widget, const char* name, const value_t* 
   } else if (tk_str_eq(name, WIDGET_PROP_KEYBOARD)) {
     mledit_set_keyboard(widget, value_str(v));
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
-    return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
-    wstr_from_value(&(widget->text), v);
-    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -424,6 +439,8 @@ static ret_t mledit_on_destroy(widget_t* widget) {
   TKMEM_FREE(mledit->tr_tips);
   TKMEM_FREE(mledit->keyboard);
   wstr_reset(&(mledit->saved_text));
+  wstr_reset(&(mledit->last_changing_text));
+  wstr_reset(&(mledit->last_changed_text));
   text_edit_destroy(mledit->model);
 
   return RET_OK;
@@ -442,6 +459,7 @@ static ret_t mledit_commit_str(widget_t* widget, const char* str) {
   return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
   wstr_set_utf8(&(mledit->temp), str);
 
+  wstr_set(&(mledit->last_changing_text), widget->text.str);
   text_edit_paste(mledit->model, mledit->temp.str, mledit->temp.size);
   mledit_dispatch_event(widget, EVT_VALUE_CHANGING);
 
@@ -692,10 +710,13 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
           break;
         }
       }
-      text_edit_key_down(mledit->model, (key_event_t*)e);
       if ((key < 128 && tk_isprint(key)) || key == TK_KEY_BACKSPACE || key == TK_KEY_DELETE ||
           key == TK_KEY_TAB || key_code_is_enter(key)) {
+        wstr_set(&(mledit->last_changing_text), widget->text.str);
+        text_edit_key_down(mledit->model, (key_event_t*)e);
         mledit_dispatch_event(widget, EVT_VALUE_CHANGING);
+      } else {
+        text_edit_key_down(mledit->model, (key_event_t*)e);
       }
 
       mledit_update_status(widget);
@@ -735,7 +756,9 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_IM_PREEDIT_ABORT: {
+      wstr_set(&(mledit->last_changing_text), widget->text.str);
       text_edit_preedit_abort(mledit->model);
+      mledit_dispatch_event(widget, EVT_VALUE_CHANGING);
       break;
     }
     case EVT_IM_ACTION: {
@@ -1189,6 +1212,8 @@ widget_t* mledit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   mledit->bottom_margin = 0;
   mledit->scroll_line = 1.0f;
   wstr_init(&(mledit->temp), 0);
+  wstr_init(&(mledit->last_changing_text), 0);
+  wstr_init(&(mledit->last_changed_text), 0);
   widget_set_text(widget, L"");
   mledit->close_im_when_blured = TRUE;
   mledit->open_im_when_focused = TRUE;
