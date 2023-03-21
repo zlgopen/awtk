@@ -182,7 +182,7 @@ struct _widget_vtable_t {
   widget_is_point_in_t is_point_in;
   /**
    * 该函数指针返回的偏移值，最好和 WIDGET_PROP_X/YOFFSET 的属性一致，如果两者不同的话，容易出现问题。
-   * 注意：偏移值一般使用在动画，脏矩形以及点击等事件上面，所以一定要保持一致。
+   * 注意：偏移值一般使用在动画，脏矩形以及点击等事件上面，所以一定要保持一致。详情请看 docs/how_to_use_offset_in_custom_widget.md 
    */
   widget_get_offset_t get_offset;
   widget_auto_adjust_size_t auto_adjust_size;

@@ -554,12 +554,14 @@ BEGIN_C_DECLS
 /**
  * @const WIDGET_PROP_XOFFSET
  * X方向的偏移。（如果控件有继承 get_offset 函数指针的话，一定要和 get_offset 返回值保持一致，否则容易出现问题）
+ * 详情请看 docs/how_to_use_offset_in_custom_widget.md 
  */
 #define WIDGET_PROP_XOFFSET "xoffset"
 
 /**
  * @const WIDGET_PROP_YOFFSET
  * Y方向的偏移。（如果控件有继承 get_offset 函数指针的话，一定要和 get_offset 返回值保持一致，否则容易出现问题）
+ * 详情请看 docs/how_to_use_offset_in_custom_widget.md 
  */
 #define WIDGET_PROP_YOFFSET "yoffset"
 
