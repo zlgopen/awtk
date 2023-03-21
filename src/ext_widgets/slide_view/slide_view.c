@@ -184,6 +184,7 @@ static ret_t slide_view_on_scroll_done(void* ctx, event_t* e) {
   slide_view->xoffset = 0;
   slide_view->yoffset = 0;
   slide_view->animating = FALSE;
+  slide_view->check_last = FALSE;
   slide_view->remove_when_anim_done = FALSE;
   slide_view->prev = NULL;
   slide_view->next = NULL;
