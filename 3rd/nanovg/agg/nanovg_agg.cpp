@@ -31,6 +31,7 @@ struct AGGNVGtexture {
   int type;
   int flags;
   const uint8_t* data;
+  enum NVGorientation orientation;
 };
 typedef struct AGGNVGtexture AGGNVGtexture;
 
@@ -131,7 +132,7 @@ static int aggnvg__renderCreate(void* uptr) {
 }
 
 static int aggnvg__renderCreateTexture(void* uptr, int type, int w, int h, int stride, int imageFlags,
-                                        const unsigned char* data) {
+                                       enum NVGorientation orientation, const unsigned char* data) {
   AGGNVGcontext* agg = (AGGNVGcontext*)uptr;
   AGGNVGtexture* tex = aggnvg__allocTexture(agg);
 
@@ -143,6 +144,7 @@ static int aggnvg__renderCreateTexture(void* uptr, int type, int w, int h, int s
   tex->data = data;
   tex->stride = stride;
   tex->flags = imageFlags;
+  tex->orientation = orientation;
 
   return tex->id;
 }
