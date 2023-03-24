@@ -14,7 +14,7 @@
 /*
 *   INCLUDE FILES
 */
-#if defined (HAVE_CONFIG_H)
+#if defined (CTAGS_HAVE_CONFIG_H)
 # include <config.h>
 #elif defined (AMIGA)
 # include "e_amiga.h"

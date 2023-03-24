@@ -172,17 +172,6 @@ struct ca_impl {
     last_comment.pos = 0;
   }
 
-  bool append_file_symbols(vector<ca_symbol_t> &nodes, const string &file) {
-    if (!units.count(file)) 
-      return false;
-    compile_unit* punit = units[file];
-    if (!punit) 
-      return false;
-
-    nodes.insert(nodes.end(), punit->symbols.begin(), punit->symbols.end());
-    return true;
-  }
-
   void set_node_comment(ca_symbol_t& node) {
     int line_diff = node.line - last_comment.line;
     if (node.typeref) {
@@ -316,5 +305,5 @@ ca_symbols_t* code_assist_symbols_from_file(code_assist_t* ca, const char* full_
 
   ca_impl* impl = (ca_impl*)ca->impl;
   auto unit = impl->get_unit(full_path);
-  return nodes_from_node_vector(unit->symbols);
+  return unit ? nodes_from_node_vector(unit->symbols) : NULL;
 }
