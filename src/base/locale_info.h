@@ -184,7 +184,7 @@ ret_t locale_info_destroy(locale_info_t* locale_info);
 
 /**
  * @class locale_infos_t
- * @annotation ["fake"]
+ * @annotation ["fake", "scriptable"]
  * 在某些情况下，需要多个资源管理器。比如在手表系统里，每个应用或表盘，可能放在独立的资源包中，
  * 此时优先加载应用自己的资源，如果没有就加载系统的资源。
  */
@@ -192,7 +192,7 @@ ret_t locale_info_destroy(locale_info_t* locale_info);
 /**
  * @method locale_infos_ref
  * 获取指定小应用程序(applet)的locale_info。
- * @annotation ["constructor"]
+ * @annotation ["constructor", "scriptable", "static"]
  * @param {const char*} name 小应用程序(applet)的名称。
  *
  * @return {locale_info_t*} 返回locale_info对象。
@@ -202,7 +202,7 @@ locale_info_t* locale_infos_ref(const char* name);
 /**
  * @method locale_infos_unref
  * 释放指定小应用程序(applet)的locale_info。
- * @annotation ["deconstructor"]
+ * @annotation ["deconstructor", "scriptable", "static"]
  * @param {locale_info_t*} locale_info locale_info对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -212,7 +212,7 @@ ret_t locale_infos_unref(locale_info_t* locale_info);
 /**
  * @method locale_infos_change
  * 设置全部locale_info的当前国家和语言。
- * @annotation ["scriptable"]
+ * @annotation ["scriptable", "static"]
  * @param {const char*} language 语言。
  * @param {const char*} country 国家或地区。
  *
@@ -221,9 +221,31 @@ ret_t locale_infos_unref(locale_info_t* locale_info);
 ret_t locale_infos_change(const char* language, const char* country);
 
 /**
+ * @method locale_infos_on
+ * 注册指定事件的处理函数。
+ * @annotation ["scriptable:custom", "static"]
+ * @param {event_type_t} type 事件类型，目前有EVT_LOCALE_INFOS_LOAD_INFO、EVT_LOCALE_INFOS_UNLOAD_INFO。
+ * @param {event_func_t} on_event 事件处理函数。
+ * @param {void*} ctx 事件处理函数上下文。
+ *
+ * @return {uint32_t} 返回id，用于locale_infos_off。
+ */
+uint32_t locale_infos_on(event_type_t type, event_func_t on_event, void* ctx);
+
+/**
+ * @method locale_infos_off
+ * 注销指定事件的处理函数。
+ * @annotation ["scriptable", "static"]
+ * @param {uint32_t} id locale_infos_on返回的ID。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t locale_infos_off(uint32_t id);
+
+/**
  * @method locale_infos_reload_all
  * 重新加载全部字符串资源。
- * @annotation ["scriptable"]
+ * @annotation ["scriptable", "static"]
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

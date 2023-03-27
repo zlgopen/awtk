@@ -511,6 +511,16 @@ typedef enum _event_type_t {
    */
   EVT_SYSTEM,
   /**
+   * @const EVT_LOCALE_INFOS_LOAD_INFO
+   * locale_infos加载某个本地化信息(event_t)。
+   */
+  EVT_LOCALE_INFOS_LOAD_INFO,
+  /**
+   * @const EVT_LOCALE_INFOS_UNLOAD_INFO
+   * locale_infos卸载某个本地化信息(event_t)。
+   */
+  EVT_LOCALE_INFOS_UNLOAD_INFO,
+  /**
    * @const EVT_REQ_START
    * event queue其它请求编号起始值。
    */
