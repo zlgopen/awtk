@@ -792,9 +792,9 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
         mledit->is_key_inputing = FALSE;
         input_method_request(input_method(), NULL);
       }
-      text_edit_preedit_confirm(mledit->model);
-
       mledit_update_status(widget);
+      text_edit_preedit_confirm(mledit->model);
+      text_edit_unselect(mledit->model);
       mledit_dispatch_event(widget, EVT_VALUE_CHANGED);
       mledit_commit_text(widget);
       break;
