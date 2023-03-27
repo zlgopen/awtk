@@ -1384,7 +1384,6 @@ static bool_t check_class(check_ctx_t* ctx, ca_symbol_t* sym) {
       got_class = TRUE;
 
       if (class_name) {
-        /* 关闭这个校验 -- 李先静 觉得这个可以不校验
         const char* expect_name = sym->name+1;
         if (sym->typeref) {
           expect_name = sym->name;
@@ -1394,7 +1393,6 @@ static bool_t check_class(check_ctx_t* ctx, ca_symbol_t* sym) {
                   sym->file, ctx->cur_line, expect_name, class_name);
           ret = FALSE;
         }
-        */
         TKMEM_FREE(class_name);
       } else {
         app_err("%s(%d): error: @class name missing\n", sym->file, ctx->cur_line);

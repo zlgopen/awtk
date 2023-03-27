@@ -27,7 +27,7 @@
 BEGIN_C_DECLS
 
 /**
- * @class rom_t
+ * @class rom_file_t
  * @annotation ["fake"]
  * rom_file接口。
  * 

@@ -38,7 +38,7 @@ typedef void (*XmlBuilderOnErrorFunc)(XmlBuilder* builder, int line, int col, co
 typedef void (*XmlBuilderDestroyFunc)(XmlBuilder* builder);
 
 /**
- * @class xml_builder_t
+ * @class XmlBuilder
  * xml builder interface
  *
  */
