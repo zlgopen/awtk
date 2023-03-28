@@ -123,6 +123,12 @@ static ret_t edit_update_caret(const timer_info_t* timer) {
   widget = WIDGET(timer->ctx);
   return_value_if_fail(edit != NULL && widget != NULL, RET_REMOVE);
 
+  if (edit->readonly) {
+    edit->timer_id = TK_INVALID_ID;
+    text_edit_set_caret_visible(edit->model, FALSE);
+    return RET_REMOVE;
+  }
+
   widget_invalidate_force(widget, NULL);
   text_edit_invert_caret_visible(edit->model);
 
@@ -137,25 +143,22 @@ static ret_t edit_update_caret(const timer_info_t* timer) {
 
 static ret_t edit_start_update_caret(edit_t* edit) {
 #define UPDATE_CARET_TIME 600
-  if (edit->timer_id == TK_INVALID_ID) {
-    edit->timer_id = timer_add(edit_update_caret, WIDGET(edit), UPDATE_CARET_TIME);
+  if (edit->readonly) {
+    text_edit_set_caret_visible(edit->model, FALSE);
   } else {
-    timer_reset(edit->timer_id);
+    if (edit->timer_id == TK_INVALID_ID) {
+      edit->timer_id = timer_add(edit_update_caret, WIDGET(edit), UPDATE_CARET_TIME);
+    } else {
+      timer_reset(edit->timer_id);
+    }
+    text_edit_set_caret_visible(edit->model, TRUE);
   }
-  text_edit_set_caret_visible(edit->model, TRUE);
   return RET_OK;
 }
 
 ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
-
-  if (edit->readonly) {
-    if (tk_str_eq(widget->vt->type, WIDGET_TYPE_COMBO_BOX))
-      text_edit_set_cursor(edit->model, 0);
-    else
-      text_edit_set_cursor(edit->model, 0xffffffff);
-  }
 
   if (edit->input_type != INPUT_PASSWORD && edit->input_type != INPUT_CUSTOM_PASSWORD) {
     text_edit_set_mask(edit->model, FALSE);
@@ -344,8 +347,7 @@ static ret_t edit_on_text_edit_char_will_input(void* ctx, wchar_t c) {
 }
 
 static ret_t edit_commit_str(widget_t* widget, const char* str) {
-  uint32_t i = 0;
-  wchar_t wstr[32];
+  wchar_t wstr[32] = {0};
   tk_utf8_to_utf16(str, wstr, ARRAY_SIZE(wstr));
 
   return edit_paste(widget, wstr, wcslen(wstr));
@@ -617,7 +619,7 @@ static ret_t edit_on_focused(widget_t* widget) {
   if (widget->target == NULL) {
     widget_add_idle(widget, edit_focus_request_input_method);
 
-    if (!edit->select_none_when_focused) {
+    if (!edit->select_none_when_focused && !edit->readonly) {
       widget_add_idle(widget, edit_select_all_async);
     }
   }
@@ -785,13 +787,6 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
     return RET_OK;
   }
 
-  if (edit->readonly) {
-    if (type == EVT_RESIZE || type == EVT_MOVE_RESIZE) {
-      edit_reset_layout(widget);
-    }
-    return RET_OK;
-  }
-
   switch (type) {
     case EVT_POINTER_DOWN: {
       pointer_event_t evt = *(pointer_event_t*)e;
@@ -800,7 +795,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
         widget_grab(widget->parent, widget);
       }
 
-      if (widget->target == NULL) {
+      if (widget->target == NULL && !edit->readonly) {
         input_method_request(input_method(), widget);
       }
       edit_update_status(widget);
@@ -830,8 +825,25 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_KEY_DOWN: {
+      key_event_t* evt = (key_event_t*)e;
+      int32_t key = evt->key;
+#ifdef MACOS
+      bool_t is_control = evt->cmd;
+#else
+      bool_t is_control = evt->ctrl;
+#endif
+      if (edit->readonly) {
+        if (is_control && (key == TK_KEY_C || key == TK_KEY_c)) {
+          log_debug("copy\n");
+        } else if (key == TK_KEY_DOWN || key == TK_KEY_UP) {
+          log_debug("key down or key up\n");
+        } else {
+          break;
+        }
+      }
+
       edit->is_key_inputing = TRUE;
-      ret = edit_on_key_down(widget, (key_event_t*)e);
+      ret = edit_on_key_down(widget, evt);
       edit_update_status(widget);
       widget_invalidate(widget, NULL);
       edit_start_update_caret(edit);
@@ -1670,7 +1682,9 @@ static ret_t edit_inc_default(edit_t* edit) {
     default:
       break;
   }
-  text_edit_select_all(edit->model);
+  if (!edit->readonly) {
+    text_edit_select_all(edit->model);
+  }
   text_edit_set_cursor(edit->model, text->size);
   edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
 
@@ -1711,7 +1725,9 @@ static ret_t edit_dec_default(edit_t* edit) {
     default:
       break;
   }
-  text_edit_select_all(edit->model);
+  if (!edit->readonly) {
+    text_edit_select_all(edit->model);
+  }
   text_edit_set_cursor(edit->model, text->size);
   edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
 

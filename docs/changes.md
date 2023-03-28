@@ -2,8 +2,9 @@
   
 2023/03/28
   * 修复文档文件名(感谢俊杰提供补丁)
-  * 增加widget\_set\_self\_layout\_params支持参数为NULL的情况(感谢智明提供补丁)
   * 支持applet设置默认主题(感谢兆坤提供补丁)
+  * 增加widget\_set\_self\_layout\_params支持参数为NULL的情况(感谢智明提供补丁)
+  * 统一mledit和edit在readonly状态下的特性：不显示光标并支持选中文本(感谢雨欣提供补丁)
 
 2023/03/27
   * 修复mledit的选中文本在控件丢失焦点后不复位的问题(感谢雨欣提供补丁)
