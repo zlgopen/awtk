@@ -47,7 +47,13 @@ static const void* widget_get_const_style_data_for_state_impl(widget_t* widget,
   }
 
   if (data == NULL) {
-    data = theme_find_style(default_theme, type, style_name, state);
+    if (default_theme != NULL) {
+      data = theme_find_style(default_theme, type, style_name, state);
+    }
+  }
+
+  if (data == NULL) {
+    data = theme_find_style(theme(), type, style_name, state);
   }
 
   return data;

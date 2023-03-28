@@ -58,7 +58,72 @@ ret_t window_base_on_paint_end(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static ret_t window_base_load_theme_obj(widget_t* widget) {
+static ret_t window_base_unload_default_theme_obj_impl(widget_t* widget) {
+  window_base_t* window_base = WINDOW_BASE(widget);
+  assets_manager_t* am = widget_get_assets_manager(widget);
+
+  if (window_base->default_res_theme != NULL) {
+    assets_manager_unref(am, window_base->default_res_theme);
+    window_base->default_res_theme = NULL;
+  }
+
+  if (window_base->default_theme_obj != NULL) {
+    theme_destroy(window_base->default_theme_obj);
+    window_base->default_theme_obj = NULL;
+  }
+
+  return RET_OK;
+}
+
+static ret_t window_base_unload_theme_obj_impl(widget_t* widget) {
+  window_base_t* window_base = WINDOW_BASE(widget);
+  assets_manager_t* am = widget_get_assets_manager(widget);
+
+  if (window_base->res_theme != NULL) {
+    assets_manager_unref(am, window_base->res_theme);
+    window_base->res_theme = NULL;
+  }
+
+  if (window_base->theme_obj != NULL) {
+    theme_destroy(window_base->theme_obj);
+    window_base->theme_obj = NULL;
+  }
+
+  return RET_OK;
+}
+
+static ret_t window_base_unload_theme_obj(widget_t* widget) {
+  window_base_unload_theme_obj_impl(widget);
+  window_base_unload_default_theme_obj_impl(widget);
+  return RET_OK;
+}
+
+static ret_t window_base_load_default_theme_obj_impl(widget_t* widget, bool_t* update_style) {
+  window_base_t* window_base = WINDOW_BASE(widget);
+  assets_manager_t* am = widget_get_assets_manager(widget);
+
+  if (window_base->default_theme_obj != NULL) {
+    return RET_OK;
+  }
+
+  window_base_unload_default_theme_obj_impl(widget);
+
+  window_base->default_res_theme = assets_manager_ref(am, ASSET_TYPE_STYLE, TK_DEFAULT_STYLE);
+
+  if (window_base->default_res_theme != NULL) {
+    asset_info_t* res = (asset_info_t*)window_base->default_res_theme;
+    window_base->default_theme_obj =
+        theme_load_from_data(asset_info_get_name(res), res->data, res->size);
+  }
+
+  if (window_base->default_theme_obj != NULL) {
+    *update_style = TRUE;
+  }
+
+  return RET_OK;
+}
+
+static ret_t window_base_load_theme_obj_impl(widget_t* widget, bool_t* update_style) {
   const char* theme_name = widget->name;
   window_base_t* window_base = WINDOW_BASE(widget);
   assets_manager_t* am = widget_get_assets_manager(widget);
@@ -66,6 +131,8 @@ static ret_t window_base_load_theme_obj(widget_t* widget) {
   if (window_base->theme_obj != NULL) {
     return RET_OK;
   }
+
+  window_base_unload_theme_obj_impl(widget);
 
   if (window_base->theme != NULL && window_base->theme[0] != 0) {
     theme_name = window_base->theme;
@@ -81,25 +148,22 @@ static ret_t window_base_load_theme_obj(widget_t* widget) {
   }
 
   if (window_base->theme_obj != NULL) {
-    widget_update_style_recursive(widget);
-    widget_layout(widget);
+    *update_style = TRUE;
   }
 
   return RET_OK;
 }
 
-static ret_t window_base_unload_theme_obj(widget_t* widget) {
+static ret_t window_base_load_theme_obj(widget_t* widget) {
   window_base_t* window_base = WINDOW_BASE(widget);
-  assets_manager_t* am = widget_get_assets_manager(widget);
+  bool_t update_style = FALSE;
 
-  if (window_base->res_theme != NULL) {
-    assets_manager_unref(am, window_base->res_theme);
-    window_base->res_theme = NULL;
-  }
+  window_base_load_default_theme_obj_impl(widget, &update_style);
+  window_base_load_theme_obj_impl(widget, &update_style);
 
-  if (window_base->theme_obj != NULL) {
-    theme_destroy(window_base->theme_obj);
-    window_base->theme_obj = NULL;
+  if (update_style) {
+    widget_update_style_recursive(widget);
+    widget_layout(widget);
   }
 
   return RET_OK;
@@ -151,7 +215,7 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_pointer(v, (void*)(window_base->theme_obj));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_DEFAULT_THEME_OBJ)) {
-    value_set_pointer(v, (void*)(theme()));
+    value_set_pointer(v, (void*)(window_base->default_theme_obj));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_IMAGE_MANAGER)) {
     if (window_base->image_manager != NULL) {

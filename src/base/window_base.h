@@ -267,6 +267,8 @@ typedef struct _window_base_t {
   bool_t strongly_focus;
 
   /*private*/
+  theme_t* default_theme_obj;
+  const asset_info_t* default_res_theme;
   const asset_info_t* res_theme;
   native_window_t* native_window;
   widget_t* save_focus_widget;
