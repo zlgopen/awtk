@@ -73,7 +73,7 @@
 * [如何定制 combo_box 控件中按钮的风格和大小](how_to_customize_combo_boxox_button.md)
 * [如何访问控件的属性](how_to_access_widget_props.md)
 * [如何集成第三方库](how_to_use_3rd_libs.md)
-* [如何使用对话框](how_toto_use_dialog.md)
+* [如何使用对话框](how_to_use_dialog.md)
 * [如何使用软键盘上的 action 按钮](how_to_use_action_text.md)
 * [如何存取应用程序的配置信息](how_to_use_app_conf.md)
 * [如何实现弹出菜单](how_to_impl_popup_menu.md)
