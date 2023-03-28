@@ -3226,6 +3226,7 @@ TEST(FScript, consts) {
   
   fscript_eval(obj, "var t = fconsts.HELLO; t", &v);
   ASSERT_STREQ(value_str(&v), "hello world");
+  value_reset(&v);
 
   TK_OBJECT_UNREF(obj);
 }
