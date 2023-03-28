@@ -1,6 +1,7 @@
 ﻿#include <string>
 #include "gtest/gtest.h"
 #include "widgets/button.h"
+#include "widgets/overlay.h"
 #include "base/window.h"
 #include "base/layout.h"
 #include "layouters/self_layouter_default.h"
@@ -672,3 +673,133 @@ TEST(SelfLayoutDefault, reinit) {
 
   widget_destroy(w);
 }
+
+TEST(SelfLayoutDefault, set_self_layout_params) {
+  widget_t* win = window_create(NULL, 0, 0, 400, 300);
+  widget_t* btn = button_create(win, 10, 20, 30, 40);
+
+  widget_set_self_layout_params(btn, "c:100", NULL, NULL, NULL);
+  ASSERT_EQ(string(btn->self_layout->params.str), "default(x=c:100)");
+
+  self_layouter_destroy(btn->self_layout);
+  btn->self_layout = NULL;
+  widget_set_self_layout_params(btn, NULL, "b:10", NULL, NULL);
+  ASSERT_EQ(string(btn->self_layout->params.str), "default(y=b:10)");
+
+  self_layouter_destroy(btn->self_layout);
+  btn->self_layout = NULL;
+  widget_set_self_layout_params(btn, NULL, NULL, "100%", NULL);
+  ASSERT_EQ(string(btn->self_layout->params.str), "default(w=100%)");
+
+  self_layouter_destroy(btn->self_layout);
+  btn->self_layout = NULL;
+  widget_set_self_layout_params(btn, NULL, NULL, NULL, "10%");
+  ASSERT_EQ(string(btn->self_layout->params.str), "default(h=10%)");
+
+  self_layouter_destroy(btn->self_layout);
+  btn->self_layout = NULL;
+  widget_set_self_layout_params(btn, "c:100", "b:10", NULL, NULL);
+  ASSERT_EQ(string(btn->self_layout->params.str), "default(x=c:100, y=b:10)");
+
+  self_layouter_destroy(btn->self_layout);
+  btn->self_layout = NULL;
+  widget_set_self_layout_params(btn, "c:100", NULL, "100%", NULL);
+  ASSERT_EQ(string(btn->self_layout->params.str), "default(x=c:100, w=100%)");
+
+  self_layouter_destroy(btn->self_layout);
+  btn->self_layout = NULL;
+  widget_set_self_layout_params(btn, "c:100", NULL, NULL, "10%");
+  ASSERT_EQ(string(btn->self_layout->params.str), "default(x=c:100, h=10%)");
+
+  self_layouter_destroy(btn->self_layout);
+  btn->self_layout = NULL;
+  widget_set_self_layout_params(btn, NULL, "b:10", "100%", NULL);
+  ASSERT_EQ(string(btn->self_layout->params.str), "default(y=b:10, w=100%)");
+
+  self_layouter_destroy(btn->self_layout);
+  btn->self_layout = NULL;
+  widget_set_self_layout_params(btn, NULL, "b:10", NULL, "10%");
+  ASSERT_EQ(string(btn->self_layout->params.str), "default(y=b:10, h=10%)");
+
+  self_layouter_destroy(btn->self_layout);
+  btn->self_layout = NULL;
+  widget_set_self_layout_params(btn, NULL, NULL, "100%", "10%");
+  ASSERT_EQ(string(btn->self_layout->params.str), "default(w=100%, h=10%)");
+
+  self_layouter_destroy(btn->self_layout);
+  btn->self_layout = NULL;
+  widget_set_self_layout_params(btn, "c:100", "b:10", "100%", NULL);
+  ASSERT_EQ(string(btn->self_layout->params.str), "default(x=c:100, y=b:10, w=100%)");
+
+  self_layouter_destroy(btn->self_layout);
+  btn->self_layout = NULL;
+  widget_set_self_layout_params(btn, "c:100", "b:10", NULL, "10%");
+  ASSERT_EQ(string(btn->self_layout->params.str), "default(x=c:100, y=b:10, h=10%)");
+
+  self_layouter_destroy(btn->self_layout);
+  btn->self_layout = NULL;
+  widget_set_self_layout_params(btn, NULL, "b:10", "100%", "10%");
+  ASSERT_EQ(string(btn->self_layout->params.str), "default(y=b:10, w=100%, h=10%)");
+
+  self_layouter_destroy(btn->self_layout);
+  btn->self_layout = NULL;
+  widget_set_self_layout_params(btn, "c:100", NULL, "100%", "10%");
+  ASSERT_EQ(string(btn->self_layout->params.str), "default(x=c:100, w=100%, h=10%)");
+}
+
+TEST(SelfLayoutDefault, set_self_layout_params2) {
+  widget_t* win = overlay_create(NULL, 0, 0, 200, 100);
+  widget_t* btn = button_create(win, 0, 0, 0, 0);
+  widget_set_self_layout(btn, "default(x=r, y=b, w=50%, h=10%)");
+
+  ASSERT_EQ(widget_layout_self(btn), RET_OK);
+
+  self_layouter_t* layouter = btn->self_layout;
+
+  ASSERT_EQ(widget_get_prop_int(btn, "x", 0), 100);
+  ASSERT_EQ(widget_get_prop_int(btn, "y", 0), 90);
+  ASSERT_EQ(widget_get_prop_int(btn, "w", 0), 100);
+  ASSERT_EQ(widget_get_prop_int(btn, "h", 0), 10);
+
+  widget_set_self_layout_params(btn, "c", NULL, NULL, NULL);
+  ASSERT_EQ(widget_layout_self(btn), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(btn, "x", 0), 50);
+
+  widget_set_self_layout_params(btn, NULL, "m", NULL, NULL);
+  ASSERT_EQ(widget_layout_self(btn), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(btn, "x", 0), 50);
+  ASSERT_EQ(widget_get_prop_int(btn, "y", 0), 45);
+
+  widget_set_self_layout_params(btn, NULL, NULL, "100%", NULL);
+  ASSERT_EQ(widget_layout_self(btn), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(btn, "x", 0), 0);
+  ASSERT_EQ(widget_get_prop_int(btn, "y", 0), 45);
+  ASSERT_EQ(widget_get_prop_int(btn, "w", 0), 200);
+
+  widget_set_self_layout_params(btn, NULL, NULL, NULL, "100%");
+  ASSERT_EQ(widget_layout_self(btn), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(btn, "x", 0), 0);
+  ASSERT_EQ(widget_get_prop_int(btn, "y", 0), 0);
+  ASSERT_EQ(widget_get_prop_int(btn, "w", 0), 200);
+  ASSERT_EQ(widget_get_prop_int(btn, "h", 0), 100);
+
+  widget_set_prop_int(btn, "w", 100);
+  ASSERT_EQ(widget_layout_self(btn), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(btn, "x", 0), 50);
+  ASSERT_EQ(widget_get_prop_int(btn, "y", 0), 0);
+  ASSERT_EQ(widget_get_prop_int(btn, "w", 0), 100);
+  ASSERT_EQ(widget_get_prop_int(btn, "h", 0), 100);
+
+  widget_set_prop_int(btn, "h", 50);
+  ASSERT_EQ(widget_layout_self(btn), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(btn, "x", 0), 50);
+  ASSERT_EQ(widget_get_prop_int(btn, "y", 0), 25);
+  ASSERT_EQ(widget_get_prop_int(btn, "w", 0), 100);
+  ASSERT_EQ(widget_get_prop_int(btn, "h", 0), 50);
+
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "x_attr", 0), X_ATTR_CENTER);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "y_attr", 0), Y_ATTR_MIDDLE);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "w_attr", 0), W_ATTR_UNDEF);
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "h_attr", 0), W_ATTR_UNDEF);
+}
+

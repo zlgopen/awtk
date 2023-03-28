@@ -165,10 +165,55 @@ ret_t widget_set_children_layout(widget_t* widget, const char* params) {
 
 ret_t widget_set_self_layout_params(widget_t* widget, const char* x, const char* y, const char* w,
                                     const char* h) {
-  char params[128];
-  tk_snprintf(params, sizeof(params) - 1, "default(x=%s, y=%s, w=%s, h=%s)", x, y, w, h);
-
-  return widget_set_self_layout(widget, params);
+  bool_t one = FALSE;
+  char params[128] = {0};
+  if (widget->self_layout == NULL) {
+    tk_strcpy(params, "default(");
+    if (x != NULL) {
+      one = TRUE;
+      tk_snprintf(params, sizeof(params) - 1, "%sx=%s", params, x);
+    }
+    if (y != NULL) {
+      if (one) {
+        tk_snprintf(params, sizeof(params) - 1, "%s, ", params);
+      }
+      one = TRUE;
+      tk_snprintf(params, sizeof(params) - 1, "%sy=%s", params, y);
+    }
+    if (w != NULL) {
+      if (one) {
+        tk_snprintf(params, sizeof(params) - 1, "%s, ", params);
+      }
+      one = TRUE;
+      tk_snprintf(params, sizeof(params) - 1, "%sw=%s", params, w);
+    }
+    if (h != NULL) {
+      if (one) {
+        tk_snprintf(params, sizeof(params) - 1, "%s, ", params);
+      }
+      one = TRUE;
+      tk_snprintf(params, sizeof(params) - 1, "%sh=%s", params, h);
+    }
+    if (one) {
+      tk_snprintf(params, sizeof(params) - 1, "%s)", params);
+    }
+    return widget_set_self_layout(widget, params);
+  } else {
+    value_t v;
+    if (x != NULL) {
+      self_layouter_set_param(widget->self_layout, "x", value_set_str(&v, x));
+    }
+    if (y != NULL) {
+      self_layouter_set_param(widget->self_layout, "y", value_set_str(&v, y));
+    }
+    if (w != NULL) {
+      self_layouter_set_param(widget->self_layout, "w", value_set_str(&v, w));
+    }
+    if (h != NULL) {
+      self_layouter_set_param(widget->self_layout, "h", value_set_str(&v, h));
+    }
+    return RET_OK;
+  }
 }
 
 ret_t widget_layout_floating_children(widget_t* widget) {
