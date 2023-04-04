@@ -699,4 +699,5 @@ TEST(ObjectDefault, to_json1) {
 
   str_reset(&str);
   TK_OBJECT_UNREF(obj);
+  TK_OBJECT_UNREF(detail);
 }
