@@ -1264,6 +1264,9 @@ int32_t event_from_name(const char* name);
 #define STR_GLOBAL_VARS_CHANGED "global_vars_changed"
 #define STR_VALUE_CHANGED_BY_UI "value_changed_by_ui"
 
+#define STR_COMPONENT_OPEN "component_open"
+#define STR_COMPONENT_CLOSE "component_close"
+
 END_C_DECLS
 
 #endif /**TK_EVENTS_H*/

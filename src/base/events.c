@@ -309,6 +309,10 @@ int32_t event_from_name(const char* name) {
         return EVT_CLICK;
       } else if (tk_str_eq(name, "connect")) {
         return EVT_CONNECT;
+      } else if (tk_str_eq(name, STR_COMPONENT_OPEN)) {
+        return EVT_WIDGET_LOAD;
+      } else if (tk_str_eq(name, STR_COMPONENT_CLOSE)) {
+        return EVT_DESTROY;
       }
       break;
     }
