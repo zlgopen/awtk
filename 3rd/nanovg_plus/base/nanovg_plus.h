@@ -272,7 +272,7 @@ void nvgp_begin_frame(nvgp_context_t *ctx, float width, float height, float pixe
 void nvgp_end_frame(nvgp_context_t *ctx);
 
 /**
- * @method nvgp_restore
+ * @method nvgp_save
  * 保存当前状态
  * @annotation ["constructor", "scriptable"]
  * @param {nvgp_context_t*} ctx 矢量画布上下文
@@ -374,12 +374,12 @@ void nvgp_delete_font_by_name(nvgp_context_t* ctx, const char* name);
  * @param {nvgp_context_t*} ctx 矢量画布上下文
  * @param {int} image 贴图 id
  *
- * @return {nvgp_bool_t} 成功返回 TRUE。
+ * @return {void} 无。
  */
 void nvgp_delete_image(nvgp_context_t* ctx, int image);
 
 /**
- * @method nvgp_begin_path
+ * @method nvgp_clear_cache
  * 清除矢量画布临时缓存
  * @annotation ["constructor", "scriptable"]
  * @param {nvgp_context_t*} ctx 矢量画布上下文
@@ -396,7 +396,7 @@ nvgp_bool_t nvgp_clear_cache(nvgp_context_t* ctx);
  * @annotation ["constructor", "scriptable"]
  * @param {nvgp_context_t*} ctx 矢量画布上下文
  *
- * @return {nvgp_error_t} 成功返回 NVGP_OK。
+ * @return {void} 无。
  */
 void nvgp_begin_path(nvgp_context_t *ctx);
 
@@ -406,7 +406,7 @@ void nvgp_begin_path(nvgp_context_t *ctx);
  * @annotation ["constructor", "scriptable"]
  * @param {nvgp_context_t*} ctx 矢量画布上下文
  *
- * @return {nvgp_error_t} 成功返回 NVGP_OK。
+ * @return {void} 无。
  */
 void nvgp_close_path(nvgp_context_t *ctx);
 
@@ -415,10 +415,10 @@ void nvgp_close_path(nvgp_context_t *ctx);
  * 设置线段起始点
  * @annotation ["constructor", "scriptable"]
  * @param {nvgp_context_t*} ctx 矢量画布上下文
- * @param {float} x
- * @param {float} y 
+ * @param {float} x x坐标
+ * @param {float} y y坐标
  *
- * @return {nvgp_error_t} 成功返回 NVGP_OK。
+ * @return {void} 无。
  */
 void nvgp_move_to(nvgp_context_t *ctx, float x, float y);
 
@@ -427,10 +427,10 @@ void nvgp_move_to(nvgp_context_t *ctx, float x, float y);
  * 设置连接点
  * @annotation ["constructor", "scriptable"]
  * @param {nvgp_context_t*} ctx 矢量画布上下文
- * @param {float} x
- * @param {float} y 
+ * @param {float} x x坐标
+ * @param {float} y y坐标
  *
- * @return {nvgp_error_t} 成功返回 NVGP_OK。
+ * @return {void} 无。
  */
 void nvgp_line_to(nvgp_context_t *ctx, float x, float y);
 
@@ -439,14 +439,14 @@ void nvgp_line_to(nvgp_context_t *ctx, float x, float y);
  * 设置三阶贝塞尔曲线路径
  * @annotation ["constructor", "scriptable"]
  * @param {nvgp_context_t*} ctx 矢量画布上下文
- * @param {float} c1x
- * @param {float} c1y
- * @param {float} c2x
- * @param {float} c2y
- * @param {float} x
- * @param {float} y 
+ * @param {float} c1x 锚点1 x坐标
+ * @param {float} c1y 锚点1 y坐标
+ * @param {float} c2x 锚点2 x坐标
+ * @param {float} c2y 锚点2 y坐标
+ * @param {float} x 终点x坐标
+ * @param {float} y 终点y坐标
  *
- * @return {nvgp_error_t} 成功返回 NVGP_OK。
+ * @return {void} 无。
  */
 void nvgp_bezier_to(nvgp_context_t *ctx, float c1x, float c1y, float c2x, float c2y, float x, float y);
 
@@ -455,12 +455,12 @@ void nvgp_bezier_to(nvgp_context_t *ctx, float c1x, float c1y, float c2x, float 
  * 设置二阶贝塞尔曲线路径
  * @annotation ["constructor", "scriptable"]
  * @param {nvgp_context_t*} ctx 矢量画布上下文
- * @param {float} cx
- * @param {float} cy
- * @param {float} x
- * @param {float} y
+ * @param {float} cx 锚点 x坐标
+ * @param {float} cy 锚点 y坐标
+ * @param {float} x x 终点x坐标
+ * @param {float} y y 终点y坐标
  *
- * @return {nvgp_error_t} 成功返回 NVGP_OK。
+ * @return {void} 无。
  */
 void nvgp_quad_to(nvgp_context_t *ctx, float cx, float cy, float x, float y);
 
@@ -469,14 +469,14 @@ void nvgp_quad_to(nvgp_context_t *ctx, float cx, float cy, float x, float y);
  * 设置圆弧路径
  * @annotation ["constructor", "scriptable"]
  * @param {nvgp_context_t*} ctx 矢量画布上下文
- * @param {float} x 圆心 x 坐标
- * @param {float} y 圆心 y 坐标
+ * @param {float} cx 圆心 x 坐标
+ * @param {float} cy 圆心 y 坐标
  * @param {float} r 半径
  * @param {float} a0 始点角度（单位弧度）
  * @param {float} a1 终点角度（单位弧度）
  * @param {nvgp_bool_t} ccw 是否为顺序针
  *
- * @return {nvgp_error_t} 成功返回 NVGP_OK。
+ * @return {void} 无。
  */
 void nvgp_arc(nvgp_context_t *ctx, float cx, float cy, float r, float a0, float a1, nvgp_bool_t ccw);
 
@@ -485,13 +485,13 @@ void nvgp_arc(nvgp_context_t *ctx, float cx, float cy, float r, float a0, float 
  * 设置圆弧路径
  * @annotation ["constructor", "scriptable"]
  * @param {nvgp_context_t*} ctx 矢量画布上下文
- * @param {float} x 始点 x 坐标
- * @param {float} y 始点 y 坐标
+ * @param {float} x1 始点 x 坐标
+ * @param {float} y1 始点 y 坐标
  * @param {float} x2 终点 x 坐标
  * @param {float} y2 终点 y 坐标
  * @param {float} radius 半径
  *
- * @return {nvgp_error_t} 成功返回 NVGP_OK。
+ * @return {void} 无。
  */
 void nvgp_arc_to(nvgp_context_t *ctx, float x1, float y1, float x2, float y2, float radius);
 
@@ -505,7 +505,7 @@ void nvgp_arc_to(nvgp_context_t *ctx, float x1, float y1, float x2, float y2, fl
  * @param {float} w 宽度
  * @param {float} h 高度
  *
- * @return {nvgp_error_t} 成功返回 NVGP_OK。
+ * @return {void} 无。
  */
 void nvgp_rect(nvgp_context_t *ctx, float x, float y, float w, float h);
 
@@ -523,7 +523,7 @@ void nvgp_rect(nvgp_context_t *ctx, float x, float y, float w, float h);
  * @param {float} rad_bottom_right 右下角圆角半径
  * @param {float} rad_bottom_left 左下角圆角半径
  *
- * @return {nvgp_error_t} 成功返回 NVGP_OK。
+ * @return {void} 无。
  */
 void nvgp_rounded_rect_varying(nvgp_context_t *ctx, float x, float y, float w, float h, float rad_top_left, float rad_top_right, float rad_bottom_right, float rad_bottom_left);
 
@@ -538,7 +538,7 @@ void nvgp_rounded_rect_varying(nvgp_context_t *ctx, float x, float y, float w, f
  * @param {float} h 高度
  * @param {float} r 圆角半径
  *
- * @return {nvgp_error_t} 成功返回 NVGP_OK。
+ * @return {void} 无。
  */
 void nvgp_rounded_rect(nvgp_context_t *ctx, float x, float y, float w, float h, float r);
 
@@ -552,7 +552,7 @@ void nvgp_rounded_rect(nvgp_context_t *ctx, float x, float y, float w, float h, 
  * @param {float} rx x 轴半径
  * @param {float} ry y 轴半径
  *
- * @return {nvgp_error_t} 成功返回 NVGP_OK。
+ * @return {void} 成功返回 NVGP_OK。
  */
 void nvgp_ellipse(nvgp_context_t *ctx, float cx, float cy, float rx, float ry);
 
@@ -565,7 +565,7 @@ void nvgp_ellipse(nvgp_context_t *ctx, float cx, float cy, float rx, float ry);
  * @param {float} cy 圆心 y
  * @param {float} r 半径
  *
- * @return {nvgp_error_t} 成功返回 NVGP_OK。
+ * @return {void} 成功返回 NVGP_OK。
  */
 void nvgp_circle(nvgp_context_t *ctx, float cx, float cy, float r);
 
@@ -686,11 +686,11 @@ nvgp_error_t nvgp_get_curr_clip_rect(nvgp_context_t* ctx, float* x, float* y, fl
  * 设置字符串基线等信息
  * @annotation ["constructor", "scriptable"]
  * @param {nvgp_context_t*} ctx 矢量画布上下文
- * @param {float*} ascender 
- * @param {float*} descender 
- * @param {float*} lineh 
+ * @param {float*} ascender 上边界
+ * @param {float*} descender 下边界
+ * @param {float*} lineh 基线
  *
- * @return {nvgp_error_t} 成功返回 NVGP_OK。
+ * @return {void} 无。
  */
 void nvgp_text_metrics(nvgp_context_t* ctx, float* ascender, float* descender, float* lineh);
 
@@ -705,7 +705,7 @@ void nvgp_text_metrics(nvgp_context_t* ctx, float* ascender, float* descender, f
  * @param {const char*} end 字符串结尾
  * @param {float*} bounds 返回一个字符串矩形区域（是一个长度为四的数组）
  *
- * @return {nvgp_error_t} 成功返回 NVGP_OK。
+ * @return {float} 字符宽度。
  */
 float nvgp_text_bounds(nvgp_context_t* ctx, float x, float y, const char* string, const char* end, float* bounds);
 
@@ -719,14 +719,14 @@ float nvgp_text_bounds(nvgp_context_t* ctx, float x, float y, const char* string
  * @param {const char*} string 字符串开头 
  * @param {const char*} end 字符串结尾
  *
- * @return {nvgp_error_t} 成功返回 NVGP_OK。
+ * @return {float} 。
  */
 float nvgp_text(nvgp_context_t* ctx, float x, float y, const char* string, const char* end);
 
 
 
 /**
- * @method nvgp_set_shape_anti_alias
+ * @method nvgp_set_stroke_color
  * 设置线颜色
  * @annotation ["constructor", "scriptable"]
  * @param {nvgp_context_t*} ctx 矢量画布上下文
@@ -762,7 +762,7 @@ nvgp_error_t nvgp_set_shape_anti_alias(nvgp_context_t* ctx, nvgp_bool_t enabled)
  * 设置线斜面
  * @annotation ["constructor", "scriptable"]
  * @param {nvgp_context_t*} ctx 矢量画布上下文
- * @param {float} cap limit
+ * @param {float} limit limit
  *
  * @return {nvgp_error_t} 成功返回 NVGP_OK。
  */
