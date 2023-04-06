@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/04/06
+  * 增加函数str\_attach/wstr\_attach/wstr\_append\_int。
+
 2023/04/04
   * 完善api doc(感谢俊圣提供补丁)  
   * 增加component_open和close事件，用于给组件绑定事件(感谢兆坤提供补丁)

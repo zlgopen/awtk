@@ -66,6 +66,8 @@ typedef struct _str_t {
    * 字符串。
    */
   char* str;
+  /*private*/
+  bool_t extendable;
 } str_t;
 
 /**
@@ -97,6 +99,26 @@ ret_t str_destroy(str_t* str);
  * @return {str_t*} str对象本身。
  */
 str_t* str_init(str_t* str, uint32_t capacity);
+
+/**
+ * @method str_attach
+ * 通过附加到一个buff来初始化str。 
+ * >可以避免str动态分配内存，同时也不会自动扩展内存，使用完成后无需调用str_reset。
+ *```c
+ * str_t s;
+ * char buff[32];
+ * str_attach(&s, buff, ARRAY_SIZE(buff));
+ * str_set(&s, "abc");
+ * str_append(&s, "123");
+ *```
+ * @annotation ["constructor"]
+ * @param {str_t*} str str对象。
+ * @param {char*} buff 缓冲区。
+ * @param {uint32_t} capacity 初始容量。
+ *
+ * @return {str_t*} str对象本身。
+ */
+str_t* str_attach(str_t* str, char* buff, uint32_t capacity);
 
 /**
  * @method str_extend

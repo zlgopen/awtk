@@ -432,3 +432,49 @@ TEST(WStr, case_cmp) {
   ASSERT_EQ(wstr_reset(&str1), RET_OK);
   ASSERT_EQ(wstr_reset(&str2), RET_OK);
 }
+
+TEST(WStr, attach0) {
+ wstr_t s;
+ wchar_t buff[32];
+ wstr_attach(&s, buff, ARRAY_SIZE(buff));
+ wstr_set(&s, L"abc");
+ wstr_append(&s, L"123");
+}
+
+TEST(WStr, attach1) {
+  wstr_t str;
+  wchar_t buff[64];
+  wstr_t* s = wstr_attach(&str, buff, ARRAY_SIZE(buff));
+  ASSERT_EQ(s != NULL, true);
+
+  wstr_set(s, L"T#");
+  wstr_append_int(s, 1); 
+  wstr_append(s, L"d");
+  
+  wstr_append_int(s, 2); 
+  wstr_append(s, L"h");
+
+  wstr_append_int(s, 3); 
+  wstr_append(s, L"s");
+  ASSERT_EQ(wcscmp(buff, L"T#1d2h3s"), 0);
+}
+
+TEST(WStr, attach2) {
+  wstr_t str;
+  wchar_t buff[64];
+  wstr_t* s = wstr_attach(&str, buff, ARRAY_SIZE(buff));
+  ASSERT_EQ(s != NULL, true);
+
+  wstr_set(s, L"T#");
+  wstr_append_int(s, 1); 
+  wstr_append(s, L"d");
+  
+  wstr_append_int(s, 2); 
+  wstr_append(s, L"h");
+
+  wstr_append_int(s, 3); 
+  wstr_append(s, L"s");
+
+  wstr_reset(s);
+  ASSERT_EQ(wcscmp(buff, L"T#1d2h3s"), 0);
+}

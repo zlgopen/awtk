@@ -64,6 +64,9 @@ typedef struct _wstr_t {
    * 字符串。
    */
   wchar_t* str;
+
+  /*private*/
+  bool_t extendable;
 } wstr_t;
 
 /**
@@ -76,6 +79,28 @@ typedef struct _wstr_t {
  * @return {wstr_t*} str对象本身。
  */
 wstr_t* wstr_init(wstr_t* str, uint32_t capacity);
+
+/**
+ * @method wstr_attach
+ * 通过附加到一个buff来初始化str。 
+ * >可以避免str动态分配内存，同时也不会自动扩展内存，使用完成后无需调用str_reset。
+ *
+ *```c
+ * wstr_t s;
+ * wchar_t buff[32];
+ * wstr_attach(&s, buff, ARRAY_SIZE(buff));
+ * wstr_set(&s, L"abc");
+ * wstr_append(&s, L"123");
+ *```
+ *
+ * @annotation ["constructor"]
+ * @param {str_t*} str str对象。
+ * @param {wchar_t*} buff 缓冲区。
+ * @param {uint32_t} capacity 初始容量。
+ *
+ * @return {str_t*} str对象本身。
+ */
+wstr_t* wstr_attach(wstr_t* str, wchar_t* buff, uint32_t capacity);
 
 /**
  * @method wstr_set
@@ -232,6 +257,16 @@ bool_t wstr_equal(wstr_t* str, wstr_t* other);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t wstr_from_int(wstr_t* str, int32_t v);
+
+/**
+ * @method wstr_append_int
+ * 追加整数到字符串。
+ * @param {wstr_t*} str str对象。
+ * @param {int32_t} v 整数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wstr_append_int(wstr_t* str, int32_t v);
 
 /**
  * @method wstr_from_float

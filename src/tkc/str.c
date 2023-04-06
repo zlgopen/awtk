@@ -44,8 +44,14 @@ ret_t str_destroy(str_t* str) {
 }
 
 ret_t str_extend(str_t* str, uint32_t capacity) {
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+
   if (capacity <= str->capacity) {
     return RET_OK;
+  }
+
+  if (!str->extendable) {
+    return RET_FAIL;
   }
 
   if (capacity > 0) {
@@ -65,8 +71,23 @@ str_t* str_init(str_t* str, uint32_t capacity) {
   return_value_if_fail(str != NULL, NULL);
 
   memset(str, 0x00, sizeof(str_t));
+  str->extendable = TRUE;
 
   return str_extend(str, capacity) == RET_OK ? str : NULL;
+}
+
+str_t* str_attach(str_t* str, char* buff, uint32_t capacity) {
+  return_value_if_fail(str != NULL && buff != NULL && capacity > 0, NULL);
+
+  memset(str, 0x00, sizeof(str_t));
+  memset(buff, 0x00, capacity);
+
+  str->str = buff;
+  str->size = 0;
+  str->capacity = capacity;
+  str->extendable = FALSE;
+
+  return str;
 }
 
 ret_t str_set(str_t* str, const char* text) {
@@ -460,8 +481,12 @@ ret_t str_to_float(str_t* str, double* v) {
 
 ret_t str_reset(str_t* str) {
   return_value_if_fail(str != NULL, RET_OK);
-  TKMEM_FREE(str->str);
-  memset(str, 0x00, sizeof(str_t));
+  if (str->extendable) {
+    TKMEM_FREE(str->str);
+  }
+  str->str = NULL;
+  str->size = 0;
+  str->capacity = 0;
 
   return RET_OK;
 }
@@ -576,6 +601,8 @@ ret_t str_replace(str_t* str, const char* text, const char* new_text) {
   uint32_t count = 0;
   return_value_if_fail(str != NULL && str->str != NULL && text != NULL && new_text != NULL,
                        RET_BAD_PARAMS);
+
+  return_value_if_fail(str->extendable, RET_BAD_PARAMS);
 
   count = str_count_sub_str(str, text);
 

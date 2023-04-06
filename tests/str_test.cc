@@ -669,3 +669,49 @@ TEST(Str, from) {
 
   str_reset(s);
 }
+
+TEST(Str, attach0) {
+  str_t s;
+  char buff[32];
+  str_attach(&s, buff, ARRAY_SIZE(buff));
+  str_set(&s, "abc");
+  str_append(&s, "123");
+}
+
+TEST(Str, attach1) {
+  str_t str;
+  char buff[64];
+  str_t* s = str_attach(&str, buff, sizeof(buff));
+  ASSERT_EQ(s != NULL, true);
+
+  str_set(s, "T#");
+  str_append_int(s, 1); 
+  str_append(s, "d");
+  
+  str_append_int(s, 2); 
+  str_append(s, "h");
+
+  str_append_int(s, 3); 
+  str_append(s, "s");
+  ASSERT_STREQ(buff, "T#1d2h3s");
+}
+
+TEST(Str, attach2) {
+  str_t str;
+  char buff[64];
+  str_t* s = str_attach(&str, buff, sizeof(buff));
+  ASSERT_EQ(s != NULL, true);
+
+  str_set(s, "T#");
+  str_append_int(s, 1); 
+  str_append(s, "d");
+  
+  str_append_int(s, 2); 
+  str_append(s, "h");
+
+  str_append_int(s, 3); 
+  str_append(s, "s");
+
+  str_reset(s);
+  ASSERT_STREQ(buff, "T#1d2h3s");
+}

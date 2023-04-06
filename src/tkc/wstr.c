@@ -189,8 +189,14 @@ int iswspace(wchar_t ch) {
 #endif /*WITH_WCSXXX*/
 
 static ret_t wstr_extend(wstr_t* str, uint32_t capacity) {
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+
   if (capacity <= str->capacity) {
     return RET_OK;
+  }
+
+  if (!str->extendable) {
+    return RET_FAIL;
   }
 
   if (capacity > 0) {
@@ -209,8 +215,23 @@ wstr_t* wstr_init(wstr_t* str, uint32_t capacity) {
   return_value_if_fail(str != NULL, NULL);
 
   memset(str, 0x00, sizeof(wstr_t));
+  str->extendable = TRUE;
 
   return wstr_extend(str, capacity) == RET_OK ? str : NULL;
+}
+
+wstr_t* wstr_attach(wstr_t* str, wchar_t* buff, uint32_t capacity) {
+  return_value_if_fail(str != NULL && buff != NULL && capacity > 0, NULL);
+
+  memset(str, 0x00, sizeof(str_t));
+  memset(buff, 0x00, capacity * sizeof(wchar_t));
+
+  str->str = buff;
+  str->size = 0;
+  str->capacity = capacity;
+  str->extendable = FALSE;
+
+  return str;
 }
 
 ret_t wstr_set(wstr_t* str, const wchar_t* text) {
@@ -347,6 +368,10 @@ ret_t wstr_push(wstr_t* str, const wchar_t c) {
   str->str[str->size] = '\0';
 
   return RET_OK;
+}
+
+ret_t wstr_append_int(wstr_t* str, int32_t value) {
+  return wstr_push_int(str, "%d", value);
 }
 
 ret_t wstr_push_int(wstr_t* str, const char* format, int32_t value) {
@@ -546,8 +571,13 @@ ret_t wstr_add_float(wstr_t* str, double delta) {
 
 ret_t wstr_reset(wstr_t* str) {
   return_value_if_fail(str != NULL, RET_OK);
-  TKMEM_FREE(str->str);
-  memset(str, 0x00, sizeof(wstr_t));
+
+  if (str->extendable) {
+    TKMEM_FREE(str->str);
+  }
+  str->str = NULL;
+  str->size = 0;
+  str->capacity = 0;
 
   return RET_OK;
 }

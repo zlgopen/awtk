@@ -30,10 +30,10 @@ url_t* url_create(const char* surl) {
   url_t* url = TKMEM_ZALLOC(url_t);
   return_value_if_fail(url != NULL, NULL);
 
+  str_init(&(url->url), 0);
   if (surl != NULL) {
     return url_parse(url, surl);
   }
-  str_init(&(url->url), 0);
 
   return url;
 }
