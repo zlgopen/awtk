@@ -433,7 +433,9 @@ size_t wcs_len(const wchar_t* s);
 wchar_t* wcs_dup(const wchar_t* s);
 
 #ifdef WITH_WCSXXX
+#ifndef WITH_WASM
 wchar_t* wcsdup(const wchar_t* s);
+#endif/*WITH_WASM*/
 #endif /*WITH_WCSXXX*/
 
 END_C_DECLS

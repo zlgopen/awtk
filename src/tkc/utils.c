@@ -23,8 +23,6 @@
 #include "tkc/fs.h"
 #include "tkc/path.h"
 #include "tkc/thread.h"
-#include "tkc/data_reader_factory.h"
-#include "tkc/data_writer_factory.h"
 #endif/*WITH_WASM*/
 
 #include "tkc/mem.h"
@@ -33,6 +31,8 @@
 #include "tkc/utils.h"
 #include "tkc/object.h"
 #include "tkc/named_value.h"
+#include "tkc/data_reader_factory.h"
+#include "tkc/data_writer_factory.h"
 
 #define IS_ADDRESS_ALIGN_4(addr) !((((size_t)(addr)) & 0x3) | 0x0)
 

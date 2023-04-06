@@ -41,6 +41,7 @@
 #ifdef WITH_WASM
 #include <stdio.h>
 
+#ifndef PRIu64
 #if UINTPTR_MAX == 0xffffffff
 #define __PRI64_PREFIX "ll"
 #else
@@ -48,6 +49,7 @@
 #endif
 #define PRIu64 __PRI64_PREFIX "u"
 #define PRId64 __PRI64_PREFIX "d"
+#endif/*PRIu64*/
 
 #define INFINITY 3.40282347E+38f
 #define assert(__pp) wasm_assert(__pp, #__pp)
@@ -60,7 +62,9 @@
 #define abs(a) ((a) > 0 ? (a) : -(a))
 #define fabs(a) ((a) > 0 ? (a) : -(a))
 
+#ifndef __cplusplus
 typedef int wchar_t;
+#endif/*_cplusplus*/
 
 int iswspace(wchar_t ch);
 size_t wcslen(const wchar_t* s);
@@ -77,10 +81,10 @@ double atof(const char* str);
 char* strrchr(const char* s, int c);
 void wasm_assert(int p, const char* text);
 int strcasecmp(const char* s1, const char* s2);
-long strtol(const char* restrict str, char** restrict endptr, int base);
-long long strtoll(const char* restrict str, char** restrict endptr, int base);
-unsigned long strtoul(const char* restrict str, char** restrict endptr, int base);
-unsigned long long strtoull(const char* restrict str, char** restrict endptr, int base);
+long strtol(const char* str, char** endptr, int base);
+long long strtoll(const char* str, char** endptr, int base);
+unsigned long strtoul(const char* str, char** endptr, int base);
+unsigned long long strtoull(const char* str, char** endptr, int base);
 
 #endif /*WITH_WASM*/
 
