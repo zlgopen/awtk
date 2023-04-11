@@ -29,7 +29,7 @@ ret_t bsvg_draw_path(bsvg_draw_ctx_t* ctx, const svg_path_t* path) {
       const svg_path_move_t* p = (const svg_path_move_t*)path;
       vgcanvas_move_to(canvas, p->x, p->y);
       /* 屏蔽了 vg 的路径镂空函数，修复 gles 和 agge 的 svg 效果同步的问题，会导致 svg 没有了路径消除的逻辑 */
-      // vgcanvas_path_winding(canvas, 0);
+      /* vgcanvas_path_winding(canvas, 0); */
       break;
     }
     case SVG_PATH_L: {
@@ -66,28 +66,30 @@ ret_t bsvg_draw_shape_end(bsvg_draw_ctx_t* ctx, const svg_shape_t* shape) {
     color_t solid = svg_shape_get_fill(shape)->solid;
     vgcanvas_set_fill_color(canvas, solid);
     if (shape->type == SVG_SHAPE_TEXT) {
-      // canvas_set_text_color(c, solid);
+      /* canvas_set_text_color(c, solid); */
     }
   } else if (shape->fill_type == SVG_COLOR_LINEAR_GRADIENT) {
     const svg_color_linear_gradient_t* gradient = &(svg_shape_get_fill(shape)->linear_gradient);
     vgcanvas_set_fill_linear_gradient(canvas, gradient->sx, gradient->sy, gradient->ex,
                                       gradient->ey, gradient->icolor, gradient->ocolor);
     if (shape->type == SVG_SHAPE_TEXT) {
-      // canvas_set_text_color(c, gradient->ocolor);
+      /* canvas_set_text_color(c, gradient->ocolor); */
     }
   }
   if (shape->fill_type != SVG_COLOR_NULL) {
     vgcanvas_fill(canvas);
     if (shape->type == SVG_SHAPE_TEXT) {
-      // 暂时不启用文本，原因如下：
-      // 用canvas的话，无法匹配svg_image的旋转缩放等效果；用vgcanvas的话，agge暂不支持
-      // svgtiny库解析不支持字体大小，实际用途很小
+      /**
+       * 暂时不启用文本，原因如下：
+       * 用canvas的话，无法匹配svg_image的旋转缩放等效果；用vgcanvas的话，agge暂不支持
+       * svgtiny库解析不支持字体大小，实际用途很小
+       */
 
-      // const svg_shape_text_t* s = (const svg_shape_text_t*)shape;
-      // const char* text = svg_shape_text_get_text(shape);
-      // canvas_set_font(c, NULL, TK_DEFAULT_FONT_SIZE);
-      // canvas_set_text_align(c, ALIGN_H_CENTER, ALIGN_V_MIDDLE);
-      // canvas_draw_utf8(c, text, s->x, s->y);
+      /* const svg_shape_text_t* s = (const svg_shape_text_t*)shape;  */
+      /* const char* text = svg_shape_text_get_text(shape);           */
+      /* canvas_set_font(c, NULL, TK_DEFAULT_FONT_SIZE);              */
+      /* canvas_set_text_align(c, ALIGN_H_CENTER, ALIGN_V_MIDDLE);    */
+      /* canvas_draw_utf8(c, text, s->x, s->y);                       */
     }
   }
 
@@ -160,10 +162,10 @@ ret_t bsvg_draw(bsvg_t* svg, vgcanvas_t* canvas) {
   ctx.canvas = canvas;
 
   vgcanvas_save(canvas);
-  vgcanvas_scale(canvas, 1, 1);
+  /* vgcanvas_scale(canvas, 1, 1); */
   vgcanvas_set_line_cap(canvas, "butt");
-  // 默认应该是miter，但因为有bug，暂时先不设置
-  // vgcanvas_set_line_join(canvas, "miter");
+  /* 默认应该是miter，但因为有bug，暂时先不设置 */
+  /* vgcanvas_set_line_join(canvas, "miter"); */
   bsvg_visit(svg, &ctx, bsvg_draw_on_shape, bsvg_draw_on_path);
   vgcanvas_restore(canvas);
 

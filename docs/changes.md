@@ -1,5 +1,10 @@
 # 最新动态
 
+2023/04/11
+  * 增离线画布缓存功能(不修改图片时跳过bsvg解析步骤，使用bitmap绘制在线画布)(感谢高源提供补丁)
+  * 新增图片绘制方式，目前仅支持scale、scale_auto(感谢高源提供补丁)
+  * demouiold svg栏目新增上述两个部分的用例(感谢高源提供补丁)
+
 2023/04/06
   * 增加函数str\_attach/wstr\_attach/wstr\_append\_int。
 

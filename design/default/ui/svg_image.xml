@@ -1,20 +1,24 @@
 <window anim_hint="htranslate" children_layout="default(c=4,r=4)">
-  <svg image="china" /> 
+  <svg image="china" />
   <svg image="pointer_1" />
-  <svg image="girl" />
-  <svg image="pointer_4" /> 
-  <svg image="htest" /> 
-  <svg image="pointer" /> 
+  <svg image="girl" cache_mode = "true" />
+  <svg image="pointer_4" cache_mode = "true" />
 
-  <svg image="china" 
+  <svg image="pointer" draw_type="scale" />
+  <svg image="pointer" cache_mode="true" draw_type="scale" />
+  <svg image="htest" draw_type="scale_auto" />
+  <svg image="computer" cache_mode="true" draw_type="scale_auto" />
+
+  <svg image="china"
     animation="rotation(from=0, to=6.28, yoyo_times=1000, duration=5000);scale(x_from=0, x_to=2, y_from=0, y_to=2, yoyo_times=1000, duration=5000);"/>
-  <svg image="pointer_1" 
-    animation="rotation(from=0, to=6.28, yoyo_times=1000, duration=5000);scale(x_from=0, x_to=2, y_from=0, y_to=2, yoyo_times=1000, duration=5000);"/>
-  <svg image="girl" 
+  <svg image="pointer_1"
     animation="rotation(from=0, to=6.28, yoyo_times=1000, duration=5000);scale(x_from=0, x_to=2, y_from=0, y_to=2, yoyo_times=1000, duration=5000);"/>
 
-  <svg image="pointer_4" 
-    animation="rotation(from=0, to=6.28, yoyo_times=1000, duration=5000);scale(x_from=0, x_to=2, y_from=0, y_to=2, yoyo_times=1000, duration=5000);"/>
-  <button name="close" self_layout="default(x=center,y=bottom:50,w=50%,h=30)" 
+  <svg image="girl" cache_mode="true" draw_type="scale_auto"
+    animation="rotation(from=0, to=6.28, yoyo_times=1000, duration=5000);scale(x_from=0, x_to=1, y_from=0, y_to=1, yoyo_times=1000, duration=5000);"/>
+  <svg image="pointer_4" draw_type="scale"
+    animation="rotation(from=0, to=6.28, yoyo_times=1000, duration=5000);scale(x_from=0, x_to=1, y_from=0, y_to=1, yoyo_times=1000, duration=5000);"/>
+
+  <button name="close" self_layout="default(x=center,y=bottom:50,w=50%,h=30)"
     floating="true" text="Close"/>
 </window>

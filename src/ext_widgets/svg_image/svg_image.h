@@ -73,7 +73,26 @@ BEGIN_C_DECLS
 typedef struct _svg_image_t {
   image_base_t image_base;
 
+  /**
+   * @property {bool_t} is_cache_mode
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 离线缓存渲染模式。
+   */
+  bool_t is_cache_mode;
+
+  /**
+   * @property {image_draw_type_t} draw_type
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * svg图片的绘制方式(支持旋转缩放, 目前仅支持scale、scale_auto模式)。
+   */
+  image_draw_type_t draw_type;
+
   /*private*/
+  wh_t org_w;
+  wh_t org_h;
+  float_t scale_x;
+  float_t scale_y;
+  canvas_t* canvas_offline;
   const asset_info_t* bsvg_asset;
 } svg_image_t;
 
@@ -106,6 +125,32 @@ widget_t* svg_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 ret_t svg_image_set_image(widget_t* widget, const char* name);
 
 /**
+ * @method svg_image_set_cache_mode
+ * 控件设置是否开启离线缓存渲染模式。
+ *
+ *> 在确保svg图片不经常变化大小及状态的情况下，开启离线缓存渲染能够减少解析bsvg的开销，提高效率。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget image对象。
+ * @param {bool_t}  is_cache_mode 是否开启缓存模式。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t svg_image_set_cache_mode(widget_t* widget, bool_t is_cache_mode);
+
+/**
+ * @method image_set_draw_type
+ * 控件设置svg图片绘制模式。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget image对象。
+ * @param {image_draw_type_t}  draw_type 绘制模式。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_set_draw_type(widget_t* widget, image_draw_type_t draw_type);
+
+/**
  * @method svg_image_cast
  * 转换为svg_image对象(供脚本语言使用)。
  * @annotation ["cast", "scriptable"]
@@ -115,7 +160,8 @@ ret_t svg_image_set_image(widget_t* widget, const char* name);
  */
 widget_t* svg_image_cast(widget_t* widget);
 
-#define WIDGET_TYPE_SVG_IMAGE "svg"
+#define WIDGET_TYPE_SVG_IMAGE     "svg"
+#define SVG_IMAGE_CACHE_MODE      "cache_mode"
 
 #define SVG_IMAGE(widget) ((svg_image_t*)(svg_image_cast(WIDGET(widget))))
 
