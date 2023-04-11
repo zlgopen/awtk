@@ -32,7 +32,7 @@ BEGIN_C_DECLS
 struct _font_manager_t;
 typedef struct _font_manager_t font_manager_t;
 
-typedef font_t* (*font_manager_get_font_t)(font_manager_t* fm, const char* name, font_size_t size);
+typedef font_t* (*font_manager_get_font_t)(void* ctx, const char* name, font_size_t size);
 
 /**
  * @class font_manager_t

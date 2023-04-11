@@ -165,7 +165,7 @@ font_t* font_manager_load(font_manager_t* fm, const char* name, uint32_t size) {
       assets_manager_unref(fm->assets_manager, info);
     } else {
       if (fm->fallback_get_font != NULL) {
-        return fm->fallback_get_font(fm, name, size);
+        return fm->fallback_get_font(fm->fallback_get_font_ctx, name, size);
       }
     }
   }
@@ -287,7 +287,7 @@ static int font_manager_cmp_by_name(font_manager_t* fm, const char* name) {
   return -1;
 }
 
-static font_t* font_manager_fallback_get_font_default(font_manager_t* fm, const char* name,
+static font_t* font_manager_fallback_get_font_default(void* ctx, const char* name,
                                                       font_size_t size) {
   return font_manager_get_font(font_manager(), name, size);
 }
