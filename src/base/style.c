@@ -105,6 +105,13 @@ ret_t style_destroy(style_t* s) {
   return RET_FAIL;
 }
 
+ret_t style_get(style_t* s, const char* state, const char* name, value_t* value) {
+  return_value_if_fail(s != NULL && s->vt != NULL && s->vt->get != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(state != NULL && name != NULL && value != NULL, RET_BAD_PARAMS);
+
+  return s->vt->get(s, state, name, value);
+}
+
 ret_t style_set(style_t* s, const char* state, const char* name, const value_t* value) {
   return_value_if_fail(s != NULL && s->vt != NULL && s->vt->set != NULL, RET_BAD_PARAMS);
   return_value_if_fail(state != NULL && name != NULL && value != NULL, RET_BAD_PARAMS);

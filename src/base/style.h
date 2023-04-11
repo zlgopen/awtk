@@ -327,6 +327,7 @@ typedef gradient_t* (*style_get_gradient_t)(style_t* s, const char* name, gradie
 typedef const char* (*style_get_str_t)(style_t* s, const char* name, const char* defval);
 
 typedef ret_t (*style_set_t)(style_t* s, const char* state, const char* name, const value_t* value);
+typedef ret_t (*style_get_t)(style_t* s, const char* state, const char* name, value_t* value);
 
 typedef ret_t (*style_notify_widget_state_changed_t)(style_t* s, widget_t* widget);
 typedef ret_t (*style_update_state_t)(style_t* s, theme_t* theme, const char* widget_type,
@@ -350,6 +351,7 @@ typedef struct _style_vtable_t {
   style_notify_widget_state_changed_t notify_widget_state_changed;
 
   style_set_t set;
+  style_get_t get;
   style_destroy_t destroy;
   style_get_style_type_t get_style_type;
   style_set_style_data_t set_style_data;
@@ -455,6 +457,19 @@ gradient_t* style_get_gradient(style_t* s, const char* name, gradient_t* gradien
  * @return {const char*} 返回字符串格式的值。
  */
 const char* style_get_str(style_t* s, const char* name, const char* defval);
+
+/**
+ * @method style_get
+ * 获取指定状态的指定属性的值。
+ * @annotation ["scriptable"]
+ * @param {style_t*} s style对象。
+ * @param {const char*} state 状态。
+ * @param {const char*} name 属性名。
+ * @param {const value_t*} value 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t style_get(style_t* s, const char* state, const char* name, value_t* value);
 
 /**
  * @method style_set
