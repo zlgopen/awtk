@@ -59,6 +59,7 @@ typedef struct _style_name_value_t {
 
 #pragma pack(pop)
 
+ret_t style_data_get_value(const uint8_t* s, const char* name, value_t* v);
 int32_t style_data_get_int(const uint8_t* s, const char* name, int32_t defval);
 uint32_t style_data_get_uint(const uint8_t* s, const char* name, uint32_t defval);
 color_t style_data_get_color(const uint8_t* s, const char* name, color_t defval);

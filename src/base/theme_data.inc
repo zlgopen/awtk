@@ -109,3 +109,40 @@ const char* style_data_get_str(const uint8_t* s, const char* name, const char* d
 
   return value;
 }
+
+ret_t style_data_get_value(const uint8_t* s, const char* name, value_t* v) {
+  ret_t ret = RET_OK;
+  const style_name_value_t* nv = style_data_get(s, name);
+
+  if (nv != NULL) {
+    const uint8_t* p = (const uint8_t*)(nv->name) + nv->name_size;
+    switch (nv->type) {
+      case VALUE_TYPE_INT32: {
+        int32_t value = 0;
+        load_int32(p, value);
+        value_set_int32(v, value);
+        break;
+      }
+      case VALUE_TYPE_UINT32: {
+        uint32_t value = 0;
+        load_uint32(p, value);
+        value_set_uint32(v, value);
+        break;
+      }
+      case VALUE_TYPE_STRING: {
+        value_set_str(v, (const char*)p);
+        break;
+      }
+      case VALUE_TYPE_GRADIENT: {
+        value_set_gradient(v, (void*)p, nv->value_size);
+        break;
+      }
+      default:
+        ret = RET_FAIL;
+    }
+  } else {
+    ret = RET_FAIL;
+  }
+
+  return ret;
+}
