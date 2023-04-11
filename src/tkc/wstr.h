@@ -94,11 +94,11 @@ wstr_t* wstr_init(wstr_t* str, uint32_t capacity);
  *```
  *
  * @annotation ["constructor"]
- * @param {str_t*} str str对象。
+ * @param {wstr_t*} str str对象。
  * @param {wchar_t*} buff 缓冲区。
  * @param {uint32_t} capacity 初始容量。
  *
- * @return {str_t*} str对象本身。
+ * @return {wstr_t*} str对象本身。
  */
 wstr_t* wstr_attach(wstr_t* str, wchar_t* buff, uint32_t capacity);
 
