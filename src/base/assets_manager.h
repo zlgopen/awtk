@@ -34,8 +34,8 @@ typedef ret_t (*assets_manager_build_asset_dir_t)(void* ctx, char* path, uint32_
                                                   const char* theme, const char* ratio,
                                                   const char* subpath);
 
-typedef asset_info_t* (*assets_manager_load_asset_t)(assets_manager_t* am, asset_type_t type,
-                                                     uint16_t subtype, const char* name);
+typedef asset_info_t* (*assets_manager_load_asset_t)(void* ctx, asset_type_t type, uint16_t subtype,
+                                                     const char* name);
 
 /**
  * @class assets_manager_t
