@@ -361,7 +361,7 @@ TEST(AssetsManager, any) {
 #endif /*WITH_FS_RES*/
 }
 
-static asset_info_t* custom_load_asset(assets_manager_t* am, asset_type_t type, uint16_t subtype,
+static asset_info_t* custom_load_asset(void* ctx, asset_type_t type, uint16_t subtype,
                                        const char* name) {
   asset_info_t* info = asset_info_create(ASSET_TYPE_DATA, 0, "test.any", 5);
   memcpy(info->data, "abcd", 5);

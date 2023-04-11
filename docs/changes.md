@@ -2,9 +2,16 @@
 
 2023/04/11
   * 增离线画布缓存功能(不修改图片时跳过bsvg解析步骤，使用bitmap绘制在线画布)(感谢高源提供补丁)
-  * 新增图片绘制方式，目前仅支持scale、scale_auto(感谢高源提供补丁)
+  * 新增图片绘制方式，目前仅支持scale、scale\_auto(感谢高源提供补丁)
   * demouiold svg栏目新增上述两个部分的用例(感谢高源提供补丁)
   * 修复在OpenGL下旋转LCD同时嵌套调用离线画布导致绘图不正常的问题(感谢智明/高源提供补丁)
+  * 修正assets\_manager\_load\_asset\_t的声明错误(感谢朝泽提供补丁)
+  * 修正font\_manager\_get\_font\_t的声明错误，以及 fm->fallback\_get\_font()没有正确传递ctx的问题(感谢朝泽提供补丁)
+  * 修正image\_manager\_get\_bitmap\_t的声明错误，以及im->fallback\_get\_bitmap没有正确传递ctx的问题(感谢朝泽提供补丁)
+  * 修正locale\_infos\_init时没有初始化emitter的问题(感谢朝泽提供补丁)
+  * 添加locale\_info\_create\_ex、locale\_info\_set\_fallback\_tr2、locale\_info\_set\_custom\_tr(感谢朝泽提供补丁)
+  * 添加style\_get(感谢朝泽提供补丁)
+  * 修正由于wstr\_extend、str\_extend的修改导致单元测试失败的问题(感谢朝泽提供补丁)
 
 2023/04/06
   * 增加函数str\_attach/wstr\_attach/wstr\_append\_int。
