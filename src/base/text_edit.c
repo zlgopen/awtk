@@ -1949,6 +1949,7 @@ static ret_t text_edit_insert_text_with_len(text_edit_t* text_edit, uint32_t off
   return_value_if_fail(text_edit != NULL && text_edit->widget != NULL && text != NULL,
                        RET_BAD_PARAMS);
 
+  wstr_init(&s, 0);
   wstr_set_utf8(&s, text);
   ret = text_edit_insert_wtext_with_len(text_edit, offset, s.str, len);
   wstr_reset(&s);
