@@ -162,6 +162,9 @@ enum NVGorientation {
 void nvgBeginFrame(NVGcontext* ctx, float windowWidth, float windowHeight, float devicePixelRatio, enum NVGorientation orientation);
 void nvgBeginFrameEx(NVGcontext* ctx, float windowWidth, float windowHeight, float devicePixelRatio, int reset, enum NVGorientation orientation);
 
+float nvgGetHeight(NVGcontext* ctx);
+float nvgGetWidth(NVGcontext* ctx);
+
 // Cancels drawing the current frame.
 void nvgCancelFrame(NVGcontext* ctx);
 

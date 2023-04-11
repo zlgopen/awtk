@@ -39,6 +39,8 @@ typedef struct _framebuffer_object_t {
   bool_t init;
   int online_fbo;
   int offline_fbo;
+  float online_w;
+  float online_h;
   /* 脱离默认的 OpenGL 绘图方法，使用用户自定义的绘图方法，例如用户自定义的着色器等等 */
   bool_t custom_draw_model;
   rect_t online_dirty_rect;

@@ -127,6 +127,8 @@ struct NVGcontext {
 	float distTol;
 	float fringeWidth;
 	float devicePxRatio;
+	float windowWidth;
+	float windowHeight;
 	struct FONScontext* fs;
 	int fontImages[NVG_MAX_FONTIMAGES];
 	int fontImageIdx;
@@ -173,6 +175,20 @@ static void nvg__deletePathCache(NVGpathCache* c)
 	if (c->paths != NULL) free(c->paths);
 	if (c->verts != NULL) free(c->verts);
 	free(c);
+}
+
+float nvgGetWidth(NVGcontext* ctx) {
+	if (ctx != NULL) {
+		return ctx->windowWidth;
+	}
+	return 0.0f;
+}
+
+float nvgGetHeight(NVGcontext* ctx) {
+	if (ctx != NULL) {
+		return ctx->windowHeight;
+	}
+	return 0.0f;
 }
 
 static NVGpathCache* nvg__allocPathCache(void)
@@ -398,6 +414,8 @@ void nvgBeginFrameEx(NVGcontext* ctx, float windowWidth, float windowHeight, flo
 		nvgReset(ctx);
 	}
 
+	ctx->windowWidth = windowWidth;
+	ctx->windowHeight = windowHeight;
 	nvg__setDevicePixelRatio(ctx, devicePixelRatio);
 
 	ctx->params.renderViewport(ctx->params.userPtr, windowWidth, windowHeight, devicePixelRatio);
