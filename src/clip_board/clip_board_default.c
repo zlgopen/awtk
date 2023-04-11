@@ -86,6 +86,7 @@ clip_board_t* clip_board_default_create(void) {
   return_value_if_fail(cl != NULL, NULL);
 
   cl->clip_board.vt = &s_clip_board_default_vtable;
+  str_init(&(cl->str), 0);
 
   return (clip_board_t*)cl;
 }
