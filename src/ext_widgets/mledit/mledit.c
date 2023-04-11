@@ -1076,6 +1076,7 @@ static ret_t mledit_insert_text_overwrite(widget_t* widget, uint32_t offset, con
   return_value_if_fail(mledit != NULL && mledit->model != NULL, RET_BAD_PARAMS);
 
   /* generate new text */
+  wstr_init(&s, 0);
   wstr_set_utf8(&s, newtext);
   text = &(mledit->model->widget->text);
   offset = tk_min(offset, text->size);

@@ -817,6 +817,8 @@ widget_t* text_selector_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
   text_selector->mask_easing = EASING_CUBIC_IN;
   text_selector->mask_area_scale = 1;
 
+  str_init(&(text_selector->text), 0);
+
   return widget;
 }
 
