@@ -167,6 +167,13 @@ static const char* style_const_get_str(style_t* s, const char* name, const char*
   return style_data_get_str(style->data, name, defval);
 }
 
+static ret_t style_const_get(style_t* s, const char* state, const char* name, value_t* v) {
+  style_const_t* style = (style_const_t*)s;
+  return_value_if_fail(tk_str_eq(state, style->state), RET_BAD_PARAMS);
+
+  return style_data_get_value(style->data, name, v);
+}
+
 static ret_t style_const_set_style_data(style_t* s, const uint8_t* data, const char* state) {
   style_const_t* style = (style_const_t*)s;
   return_value_if_fail(style != NULL, RET_BAD_PARAMS);
@@ -217,6 +224,7 @@ static const style_vtable_t style_const_vt = {
     .get_style_type = style_const_get_style_type,
     .get_style_state = style_const_get_style_state,
     .set_style_data = style_const_set_style_data,
+    .get = style_const_get,
     .destroy = style_const_destroy};
 
 style_t* style_const_create(void) {

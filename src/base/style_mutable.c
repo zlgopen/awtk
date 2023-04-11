@@ -480,6 +480,7 @@ static const style_vtable_t style_mutable_vt = {
     .get_str = style_mutable_get_str,
     .get_color = style_mutable_get_color,
     .get_gradient = style_mutable_get_gradient,
+    .get = style_mutable_get_value,
     .set = style_mutable_set_value,
     .set_style_data = style_mutable_set_style_data,
     .get_style_type = style_mutable_get_style_type,
