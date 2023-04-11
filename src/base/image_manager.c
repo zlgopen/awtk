@@ -219,7 +219,7 @@ static ret_t image_manager_get_bitmap_impl(image_manager_t* imm, const char* nam
   res = assets_manager_ref(imm->assets_manager, ASSET_TYPE_IMAGE, name);
   if (res == NULL) {
     if (imm->fallback_get_bitmap != NULL) {
-      return imm->fallback_get_bitmap(imm, name, image);
+      return imm->fallback_get_bitmap(imm->fallback_get_bitmap_ctx, name, image);
     }
     return RET_NOT_FOUND;
   }
@@ -421,7 +421,7 @@ static int image_manager_cmp_by_name(image_manager_t* imm, const char* name) {
   return -1;
 }
 
-static ret_t image_manager_fallback_get_bitmap_default(image_manager_t* imm, const char* name,
+static ret_t image_manager_fallback_get_bitmap_default(void* ctx, const char* name,
                                                        bitmap_t* image) {
   return image_manager_get_bitmap(image_manager(), name, image);
 }

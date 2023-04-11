@@ -40,7 +40,7 @@ typedef struct _bitmap_header_t {
   uint8_t data[4];
 } bitmap_header_t;
 
-typedef ret_t (*image_manager_get_bitmap_t)(image_manager_t* imm, const char* name,
+typedef ret_t (*image_manager_get_bitmap_t)(void* ctx, const char* name,
                                             bitmap_t* image);
 
 /**
