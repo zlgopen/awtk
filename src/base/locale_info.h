@@ -29,6 +29,7 @@
 
 BEGIN_C_DECLS
 
+typedef const char* (*locale_info_tr_with_context_t)(void* ctx, const char* text);
 typedef const char* (*locale_info_tr_t)(const char* text);
 
 /**
@@ -63,6 +64,10 @@ struct _locale_info_t {
   const asset_info_t* strs;
   emitter_t* emitter;
   locale_info_tr_t fallback_tr;
+  void* fallback_tr_ctx;
+  locale_info_tr_with_context_t fallback_tr2;
+  void* custom_tr_ctx;
+  locale_info_tr_with_context_t custom_tr;
 };
 
 /**
@@ -94,6 +99,19 @@ ret_t locale_info_set(locale_info_t* locale_info);
  * @return {locale_info_t*} 返回locale_info对象。
  */
 locale_info_t* locale_info_create(const char* language, const char* country);
+
+/**
+ * @method locale_info_create_ex
+ * 创建locale_info。
+ * @annotation ["constructor"]
+ * @param {const char*} language 语言。
+ * @param {const char*} country 国家或地区。
+ * @param {assets_manager_t*} am 资源管理器。
+ *
+ * @return {locale_info_t*} 返回locale_info对象。
+ */
+locale_info_t* locale_info_create_ex(const char* language, const char* country,
+                                     assets_manager_t* am);
 
 /**
  * @method locale_info_tr
@@ -172,6 +190,29 @@ ret_t locale_info_reload(locale_info_t* locale_info);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t locale_info_set_fallback_tr(locale_info_t* locale_info, locale_info_tr_t tr);
+
+/**
+ * @method locale_info_set_fallback_tr2
+ * 设置候补翻译函数。
+ * @param {locale_info_t*} locale_info locale_info对象。
+ * @param {locale_info_tr_with_context_t} tr fallback翻译函数。
+ * @param {void*} ctx 翻译函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t locale_info_set_fallback_tr2(locale_info_t* locale_info, locale_info_tr_with_context_t tr, void* ctx);
+
+/**
+ * @method locale_info_set_custom_tr
+ * 设置自定义的候补翻译函数。
+ * > 有时我们需要优先加载用户自定义的翻译，加载失败才加载系统缺省的，可用设置一个函数去实现这类功能。
+ * @param {locale_info_t*} locale_info locale_info对象。
+ * @param {locale_info_tr_with_context_t} tr 自定义的翻译函数。
+ * @param {void*} ctx 翻译函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t locale_info_set_custom_tr(locale_info_t* locale_info, locale_info_tr_with_context_t tr, void* ctx);
 
 /**
  * @method locale_info_destroy

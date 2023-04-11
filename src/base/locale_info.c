@@ -56,15 +56,29 @@ locale_info_t* locale_info_create(const char* language, const char* country) {
   return locale_info_create_internal(language, country, NULL);
 }
 
+locale_info_t* locale_info_create_ex(const char* language, const char* country,
+                                     assets_manager_t* am) {
+  return locale_info_create_internal(language, country, am);
+}
+
 const char* locale_info_tr(locale_info_t* locale_info, const char* text) {
   str_table_t* table = NULL;
   const char* tr_text = NULL;
   return_value_if_fail(locale_info != NULL && text != NULL, text);
-  return_value_if_fail(locale_info->strs != NULL, text);
 
-  table = (str_table_t*)(locale_info->strs->data);
+  if (locale_info->custom_tr != NULL) {
+    tr_text = locale_info->custom_tr(locale_info->custom_tr_ctx, text);
+  }
 
-  tr_text = str_table_lookup(table, text);
+  if (tr_text == NULL && locale_info->strs != NULL) {
+    table = (str_table_t*)(locale_info->strs->data);
+    tr_text = str_table_lookup(table, text);
+  }
+
+  if (tr_text == NULL && locale_info->fallback_tr2 != NULL) {
+    tr_text = locale_info->fallback_tr2(locale_info->fallback_tr_ctx, text);
+  }
+
   if (tr_text == NULL && locale_info->fallback_tr != NULL) {
     tr_text = locale_info->fallback_tr(text);
   }
@@ -158,6 +172,26 @@ ret_t locale_info_set_fallback_tr(locale_info_t* locale_info, locale_info_tr_t t
   return RET_OK;
 }
 
+ret_t locale_info_set_fallback_tr2(locale_info_t* locale_info, locale_info_tr_with_context_t tr,
+                                   void* ctx) {
+  return_value_if_fail(locale_info != NULL, RET_BAD_PARAMS);
+
+  locale_info->fallback_tr2 = tr;
+  locale_info->fallback_tr_ctx = ctx;
+
+  return RET_OK;
+}
+
+ret_t locale_info_set_custom_tr(locale_info_t* locale_info, locale_info_tr_with_context_t tr,
+                                void* ctx) {
+  return_value_if_fail(locale_info != NULL, RET_BAD_PARAMS);
+
+  locale_info->custom_tr = tr;
+  locale_info->custom_tr_ctx = ctx;
+
+  return RET_OK;
+}
+
 static ret_t locale_info_deinit(locale_info_t* locale_info) {
   assets_manager_t* am = locale_info_get_assets_manager(locale_info);
   return_value_if_fail(locale_info != NULL, RET_OK);
@@ -202,6 +236,7 @@ static locale_infos_t* locale_infos_init(void) {
   if (s_locale_infos == NULL) {
     s_locale_infos = TKMEM_ZALLOC(locale_infos_t);
     return_value_if_fail(s_locale_infos != NULL, NULL);
+    emitter_init(&(s_locale_infos->emitter));
     darray_init(&(s_locale_infos->infos), 3, (tk_destroy_t)locale_info_destroy,
                 (tk_compare_t)locale_info_cmp_by_name);
   }
