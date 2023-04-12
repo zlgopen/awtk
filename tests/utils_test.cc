@@ -783,3 +783,18 @@ TEST(Utils, wcsncmp) {
   ASSERT_EQ(wcsncmp(L"ABCD1234", L"ABCD1234", 7), 0);
   ASSERT_EQ(wcsncmp(L"ABCD1234", L"ABCD1234", 8), 0);
 }
+
+TEST(Utils, file_read_as_unix_text) {
+  uint32_t size = 0;
+  char* data = file_read_as_unix_text("tests/testdata/test.txt", &size);
+
+#define EXPECT_STR "\
+abc\n\
+123\n\
+hello\n\
+"
+  ASSERT_STREQ(data, EXPECT_STR);
+
+  TKMEM_FREE(data);
+}
+
