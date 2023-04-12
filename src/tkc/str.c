@@ -76,18 +76,28 @@ str_t* str_init(str_t* str, uint32_t capacity) {
   return str_extend(str, capacity) == RET_OK ? str : NULL;
 }
 
+str_t* str_attach_with_size(str_t* str, char* buff, uint32_t size, uint32_t capacity) {
+  return_value_if_fail(str != NULL && buff != NULL && capacity > 0, NULL);
+  return_value_if_fail(size < capacity, NULL);
+
+  memset(str, 0x00, sizeof(str_t));
+
+  str->str = buff;
+  str->size = size;
+  str->capacity = capacity;
+  str->extendable = FALSE;
+  buff[size] = '\0';
+
+  return str;
+}
+
 str_t* str_attach(str_t* str, char* buff, uint32_t capacity) {
   return_value_if_fail(str != NULL && buff != NULL && capacity > 0, NULL);
 
   memset(str, 0x00, sizeof(str_t));
   memset(buff, 0x00, capacity);
 
-  str->str = buff;
-  str->size = 0;
-  str->capacity = capacity;
-  str->extendable = FALSE;
-
-  return str;
+  return str_attach_with_size(str, buff, 0, capacity);
 }
 
 ret_t str_set(str_t* str, const char* text) {
@@ -597,51 +607,53 @@ static uint32_t str_count_sub_str(str_t* s, const char* str) {
   return count;
 }
 
+static uint32_t str_replace_impl(char* dst, char* src, const char* text, const char* new_text) {
+  char* d = dst;
+  char* s = src;
+  uint32_t text_len = strlen(text);
+  uint32_t new_text_len = strlen(new_text);
+
+  while (*s) {
+    if (memcmp(s, text, text_len) == 0) {
+      memcpy(d, new_text, new_text_len);
+      s += text_len;
+      d += new_text_len;
+    } else {
+      *d++ = *s++;
+    }
+  }
+  *d = '\0';
+
+  return d - dst;
+}
+
 ret_t str_replace(str_t* str, const char* text, const char* new_text) {
   uint32_t count = 0;
-  return_value_if_fail(str != NULL && str->str != NULL && text != NULL && new_text != NULL,
-                       RET_BAD_PARAMS);
+  uint32_t text_len = 0;
+  uint32_t new_text_len = 0;
+  return_value_if_fail(str != NULL && str->str != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(text != NULL && new_text != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(*text, RET_BAD_PARAMS);
 
-  return_value_if_fail(str->extendable, RET_BAD_PARAMS);
-
+  text_len = strlen(text);
+  new_text_len = strlen(new_text);
   count = str_count_sub_str(str, text);
-
   if (count > 0) {
-    char* p = str->str;
-    char* src = str->str;
-    uint32_t str_len = strlen(text);
-    uint32_t new_text_len = strlen(new_text);
-    uint32_t new_capacity = str->size + count * (strlen(new_text) - strlen(text)) + 1;
-    uint32_t capacity = tk_max(str->capacity, new_capacity);
+    int32_t delta_len = new_text_len - text_len;
+    uint32_t capacity = str->size + count * delta_len + 1;
 
-    char* temp_str = (char*)TKMEM_ALLOC(capacity);
-    char* dst = temp_str;
-    return_value_if_fail(temp_str != NULL, RET_OOM);
-    do {
-      uint32_t size = 0;
-      p = strstr(src, text);
-      if (p != NULL) {
-        size = (uint32_t)(p - src);
-      } else {
-        size = (uint32_t)strlen(src);
-      }
-      memcpy(dst, src, size);
-      src += size;
-      dst += size;
-      if (p != NULL) {
-        if (new_text_len > 0) {
-          memcpy(dst, new_text, new_text_len);
-          dst += new_text_len;
-        }
-        src += str_len;
-      }
-      *dst = '\0';
-    } while (p != NULL);
-
-    TKMEM_FREE(str->str);
-    str->str = temp_str;
-    str->size = strlen(str->str);
-    str->capacity = capacity;
+    if (delta_len <= 0 || str->capacity >= capacity) {
+      uint32_t size = str_replace_impl(str->str, str->str, text, new_text);
+      str->size = size;
+    } else if(str->extendable) {
+      char* temp_str = (char*)TKMEM_ALLOC(capacity);
+      uint32_t size = str_replace_impl(temp_str, str->str, text, new_text);
+      TKMEM_FREE(str->str);
+      str->str = temp_str;
+      str->size = size;
+    } else {
+      return_value_if_fail(str->extendable, RET_FAIL);
+    }
   }
 
   return RET_OK;

@@ -1584,14 +1584,10 @@ char* file_read_as_unix_text(const char* filename, uint32_t* size) {
     char* data = (char*)file_read(filename, &s);
     return_value_if_fail(data != NULL, NULL);
 
-    str_init(&str, s);
-    str_set_with_len(&str, data, s);
+    str_attach_with_size(&str, data, s, s+1);
     str_replace(&str, "\r\n", "\n");
     str_replace(&str, "\r", "\n");
-
     *size = str.size;
-    memcpy(data, str.str, str.size);
-    data[str.size] = '\0';
     str_reset(&str);
 
     return data;

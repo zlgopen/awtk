@@ -715,3 +715,79 @@ TEST(Str, attach2) {
   str_reset(s);
   ASSERT_STREQ(buff, "T#1d2h3s");
 }
+
+TEST(Str, replace1) {
+  str_t str;
+  char buff[10];
+  str_t* s = str_attach(&str, buff, sizeof(buff));
+  ASSERT_EQ(s != NULL, true);
+
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace(s, "abc", "a"), RET_OK);
+  ASSERT_STREQ(buff, "aa123");
+  
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace(s, "abc", ""), RET_OK);
+  ASSERT_STREQ(buff, "123");
+  
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace(s, "abc123", ""), RET_OK);
+  ASSERT_STREQ(buff, "abc");
+  
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace(s, "abc123", "abc"), RET_OK);
+  ASSERT_STREQ(buff, "abcabc");
+  
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace(s, "abcabc123", "abc"), RET_OK);
+  ASSERT_STREQ(buff, "abc");
+  
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace(s, "abcabc123", ""), RET_OK);
+  ASSERT_STREQ(buff, "");
+  
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace(s, "", "abc"), RET_BAD_PARAMS);
+  
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace(s, "abc", "abcabc"), RET_FAIL);
+}
+
+TEST(Str, replace2) {
+  str_t str;
+  str_t* s = str_init(&str, 5);
+  ASSERT_EQ(s != NULL, true);
+
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace(s, "abc", "a"), RET_OK);
+  ASSERT_STREQ(s->str, "aa123");
+  
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace(s, "abc", ""), RET_OK);
+  ASSERT_STREQ(s->str, "123");
+  
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace(s, "abc123", ""), RET_OK);
+  ASSERT_STREQ(s->str, "abc");
+  
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace(s, "abc123", "abc"), RET_OK);
+  ASSERT_STREQ(s->str, "abcabc");
+  
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace(s, "abcabc123", ""), RET_OK);
+  ASSERT_STREQ(s->str, "");
+  
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace(s, "a", ""), RET_OK);
+  ASSERT_STREQ(s->str, "bcbc123");
+  
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace(s, "", ""), RET_BAD_PARAMS);
+  
+  str_set(s, "abcabc123");
+  ASSERT_EQ(str_replace(s, "abc", "abcabc"), RET_OK);
+  ASSERT_STREQ(s->str, "abcabcabcabc123");
+
+  str_reset(s);
+}
