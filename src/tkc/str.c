@@ -642,7 +642,7 @@ ret_t str_replace(str_t* str, const char* text, const char* new_text) {
     int32_t delta_len = new_text_len - text_len;
     uint32_t capacity = str->size + count * delta_len + 1;
 
-    if (delta_len <= 0 || str->capacity >= capacity) {
+    if (delta_len <= 0) {
       uint32_t size = str_replace_impl(str->str, str->str, text, new_text);
       str->size = size;
     } else if(str->extendable) {
