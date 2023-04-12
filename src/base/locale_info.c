@@ -41,6 +41,7 @@ static locale_info_t* locale_info_init(locale_info_t* locale_info, const char* l
 
   locale_info->assets_manager = am;
   locale_info->emitter = emitter_create();
+  locale_info->refcount = 1;
   locale_info_change(locale_info, language, country);
 
   return locale_info;

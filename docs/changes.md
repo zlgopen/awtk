@@ -3,6 +3,7 @@
   * 增加函数file\_read\_as\_unix\_text。
   * 增加函数str\_attach\_with\_size。
   * 优化str\_replace。
+  * 修正locale info初始化时没有初始化refcount的问题(感谢朝泽提供补丁)
 
 2023/04/11
   * 增离线画布缓存功能(不修改图片时跳过bsvg解析步骤，使用bitmap绘制在线画布)(感谢高源提供补丁)
