@@ -1,6 +1,8 @@
 # 最新动态
 2023/04/12
   * 增加函数file\_read\_as\_unix\_text。
+  * 增加函数str\_attach\_with\_size。
+  * 优化str\_replace。
 
 2023/04/11
   * 增离线画布缓存功能(不修改图片时跳过bsvg解析步骤，使用bitmap绘制在线画布)(感谢高源提供补丁)
