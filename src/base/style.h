@@ -465,7 +465,7 @@ const char* style_get_str(style_t* s, const char* name, const char* defval);
  * @param {style_t*} s style对象。
  * @param {const char*} state 状态。
  * @param {const char*} name 属性名。
- * @param {const value_t*} value 值。
+ * @param {value_t*} value 值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

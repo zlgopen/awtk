@@ -1,4 +1,7 @@
 # 最新动态
+2023/04/13
+  * 修复style_get函数的注释有误的问题(感谢福明提供补丁)
+
 2023/04/12
   * 增加函数file\_read\_as\_unix\_text。
   * 增加函数str\_attach\_with\_size。
