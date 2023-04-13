@@ -936,10 +936,10 @@ const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN 
  * @method file_read_as_unix_text
  * 读取文本文件。并将windows换行(\r\n)或macos换行(\r)转换为uinux换行(\n)。
  *
- * @param {const char*} name 文件名。
+ * @param {const char*} filename 文件名。
  * @param {uint32_t*} size 返回实际读取的长度。
  *
- * @return {void*} 返回读取的数据，需要调用TKMEM_FREE释放。
+ * @return {char*} 返回读取的数据，需要调用TKMEM_FREE释放。
  */
 char* file_read_as_unix_text(const char* filename, uint32_t* size);
 
