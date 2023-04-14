@@ -160,7 +160,7 @@ ret_t spin_box_set_easy_touch_mode(widget_t* widget, bool_t easy_touch_mode);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t spin_box_set_button_position(widget_t* widget,const char* button_position);
+ret_t spin_box_set_button_position(widget_t* widget, const char* button_position);
 
 /**
  * @method spin_set_repeat

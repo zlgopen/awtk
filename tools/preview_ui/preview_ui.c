@@ -93,9 +93,9 @@ static const char* s_fps = NULL;
         key[len] = '\0';                                                          \
                                                                                   \
         if (tk_str_icmp(key, "res_root") == 0) {                                  \
-          s_res_root =   val + 1;                                                   \
+          s_res_root = val + 1;                                                   \
         } else if (tk_str_icmp(key, "ui") == 0) {                                 \
-          s_ui =  val + 1;                                                        \
+          s_ui = val + 1;                                                         \
         } else if (tk_str_icmp(key, "system_bar") == 0) {                         \
           s_system_bar = val + 1;                                                 \
         } else if (tk_str_icmp(key, "bottom_system_bar") == 0) {                  \

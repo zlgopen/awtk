@@ -44,8 +44,7 @@ static uint64_t s_debugger_thread_id = 0;
 ret_t log_notify_debugger(const char* format, ...) {
   va_list va;
 
-  if (s_log_buff != NULL && s_debugger_log != NULL 
-      && s_debugger_thread_id == tk_thread_self()) {
+  if (s_log_buff != NULL && s_debugger_log != NULL && s_debugger_thread_id == tk_thread_self()) {
     va_start(va, format);
     *s_log_buff = '\0';
     tk_vsnprintf(s_log_buff, TK_LOG_BUFF_SIZE, format, va);
@@ -79,4 +78,4 @@ ret_t log_notify_debugger(const char* format, ...) {
 ret_t log_set_debugger_hook(tk_debugger_log_t log, void* ctx) {
   return RET_OK;
 }
-#endif/*WITHOUT_FSCRIPT*/
+#endif /*WITHOUT_FSCRIPT*/

@@ -242,7 +242,7 @@ ret_t assets_init_default(void) {
 #endif /*WITH_VGCANVAS*/
 #ifdef WITH_TRUETYPE_FONT
   assets_manager_add(am, font_default);
-#else /*WITH_TRUETYPE_FONT*/
+#else  /*WITH_TRUETYPE_FONT*/
 #endif /*WITH_TRUETYPE_FONT*/
 #endif
 
@@ -366,7 +366,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_Windowclosed_p[]);
 #endif /*WITH_VGCANVAS*/
 #ifdef WITH_TRUETYPE_FONT
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default[]);
-#else /*WITH_TRUETYPE_FONT*/
+#else  /*WITH_TRUETYPE_FONT*/
 #endif /*WITH_TRUETYPE_FONT*/
 #endif /*WITH_FS_RES*/
 
@@ -488,7 +488,7 @@ ret_t assets_init_dark(void) {
 #endif /*WITH_VGCANVAS*/
 #ifdef WITH_TRUETYPE_FONT
   assets_manager_add(am, font_default);
-#else /*WITH_TRUETYPE_FONT*/
+#else  /*WITH_TRUETYPE_FONT*/
 #endif /*WITH_TRUETYPE_FONT*/
 #endif
 
@@ -568,7 +568,7 @@ static ret_t widget_set_theme_without_file_system(widget_t* widget, const char* 
 ret_t assets_set_global_theme(const char* name) {
 #ifdef WITH_FS_RES
   return widget_set_theme(window_manager(), name);
-#else /*WITH_FS_RES*/
+#else  /*WITH_FS_RES*/
   return widget_set_theme_without_file_system(window_manager(), name);
 #endif /*WITH_FS_RES*/
 }

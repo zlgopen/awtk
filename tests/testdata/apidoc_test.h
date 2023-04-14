@@ -180,7 +180,7 @@ typedef struct _code_edit_t {
  *
  * @return {widget_t*} code_edit对象。
  */
-static  inline  widget_t *  code_edit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+static inline widget_t* code_edit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
  * @method code_edit_cast,
@@ -662,8 +662,8 @@ int64_t code_edit_word_end(widget_t* widget, int64_t pos);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t code_edit_get_text_range(widget_t* widget, int64_t start, int64_t end, 
-                               char* buf, int32_t buf_capacity);
+ret_t code_edit_get_text_range(widget_t* widget, int64_t start, int64_t end, char* buf,
+                               int32_t buf_capacity);
 
 /**
  * @method code_edit_get_text_bom
@@ -819,7 +819,7 @@ ret_t code_edit_goto_pos(widget_t* widget, int64_t pos);
  *
  * @return {int64_t} 返回获取指定位置所在的行。
  */
-int64_t code_edit_get_line_from_position(widget_t* widget,int64_t pos);
+int64_t code_edit_get_line_from_position(widget_t* widget, int64_t pos);
 
 /**
  * @method code_edit_get_line_start
@@ -1054,9 +1054,11 @@ bool_t code_edit_is_comment(widget_t* widget, int64_t pos);
 #define CODE_EDIT(widget) ((code_edit_t*)(code_edit_cast(WIDGET(widget))))
 
 /**public for ScintillaAWTK*/
-#define PROP_CODE_EDITOR_FONT_SIZE "CODE_EDITOR_FONT_SIZE"    // designer设置了代码编辑器的字体大小后，要设置值为字号的此属性到wm。
-#define EVT_GLOBAL_CODE_EDITOR_FONT_SIZE_CHANGED EVT_USER_START + 1   // designer设置了代码编辑器的字体大小后，要从wm派发这个事件。
-#define _SC_MARGE_LINENUMBER 0    // 第0条marge为行号
+#define PROP_CODE_EDITOR_FONT_SIZE \
+  "CODE_EDITOR_FONT_SIZE"  // designer设置了代码编辑器的字体大小后，要设置值为字号的此属性到wm。
+#define EVT_GLOBAL_CODE_EDITOR_FONT_SIZE_CHANGED \
+  EVT_USER_START + 1  // designer设置了代码编辑器的字体大小后，要从wm派发这个事件。
+#define _SC_MARGE_LINENUMBER 0  // 第0条marge为行号
 #define _SC_MARGE_SYBOLE 1      // 第1条marge为断点等
 #define _SC_MARGE_FOLDER 2      // 第2条marge为折叠符号
 #define _CODE_EDIT_DEFAULT_LINE_NUMBER_WITH 32

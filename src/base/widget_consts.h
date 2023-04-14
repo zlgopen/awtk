@@ -1073,7 +1073,7 @@ BEGIN_C_DECLS
  * @const WIDGET_PROP_DIRTY_RECT
  * 控件脏矩形区域。
  */
-#define WIDGET_PROP_DIRTY_RECT  "dirty_rect"
+#define WIDGET_PROP_DIRTY_RECT "dirty_rect"
 
 /**
  * @enum widget_type_t

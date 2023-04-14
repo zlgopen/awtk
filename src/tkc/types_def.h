@@ -49,7 +49,7 @@
 #endif
 #define PRIu64 __PRI64_PREFIX "u"
 #define PRId64 __PRI64_PREFIX "d"
-#endif/*PRIu64*/
+#endif /*PRIu64*/
 
 #define INFINITY 3.40282347E+38f
 #define assert(__pp) wasm_assert(__pp, #__pp)
@@ -64,7 +64,7 @@
 
 #ifndef __cplusplus
 typedef int wchar_t;
-#endif/*_cplusplus*/
+#endif /*_cplusplus*/
 
 int iswspace(wchar_t ch);
 size_t wcslen(const wchar_t* s);

@@ -2199,7 +2199,7 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
       ret = RET_NOT_FOUND;
     } else if (tk_str_start_with(name, "style:") || tk_str_start_with(name, "style.")) {
       return widget_set_style(widget, name + 6, v);
-    } else if (tk_str_eq(name, WIDGET_PROP_DIRTY_RECT)) { 
+    } else if (tk_str_eq(name, WIDGET_PROP_DIRTY_RECT)) {
       return RET_FAIL;
     } else {
       if (widget->custom_props == NULL) {
@@ -4408,8 +4408,8 @@ static bool_t match_left(const rect_t* widget, const rect_t* last_matched, const
     }
   } else if (is_same_row(widget, last_matched)) {
     return FALSE;
-  } 
-  
+  }
+
   // 只有在候选控件在当前控件上方才判断距离远近
   if (widget->y >= iter->y) {
     return last_matched ? distance2(widget, iter) < distance2(widget, last_matched) : TRUE;

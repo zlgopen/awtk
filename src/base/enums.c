@@ -393,7 +393,8 @@ const key_type_value_t* input_type_find(const char* name) {
 }
 
 const key_type_value_t* easing_type_find(const char* name) {
-  const key_type_value_t* kv = find_item(easing_type_name_value, ARRAY_SIZE(easing_type_name_value), name);
+  const key_type_value_t* kv =
+      find_item(easing_type_name_value, ARRAY_SIZE(easing_type_name_value), name);
   if (kv != NULL) {
     return kv;
   } else {
@@ -407,11 +408,13 @@ const key_type_value_t* easing_type_find(const char* name) {
 }
 
 const key_type_value_t* easing_type_find_by_value(uint32_t value) {
-  const key_type_value_t* kv = find_item_by_value(easing_type_name_value, ARRAY_SIZE(easing_type_name_value), value);
+  const key_type_value_t* kv =
+      find_item_by_value(easing_type_name_value, ARRAY_SIZE(easing_type_name_value), value);
   if (kv != NULL) {
     return kv;
   } else {
-    easing_name_func_t* easing_name_func = darray_get(easing_name_func_darray(), value - EASING_FUNC_NR - 1);
+    easing_name_func_t* easing_name_func =
+        darray_get(easing_name_func_darray(), value - EASING_FUNC_NR - 1);
     if (easing_name_func != NULL) {
       return easing_name_func->type_name_value;
     } else {

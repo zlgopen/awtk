@@ -788,7 +788,8 @@ TEST(Utils, file_read_as_unix_text) {
   uint32_t size = 0;
   char* data = file_read_as_unix_text("tests/testdata/test.txt", &size);
 
-#define EXPECT_STR "\
+#define EXPECT_STR \
+  "\
 abc\n\
 123\n\
 hello\n\
@@ -797,4 +798,3 @@ hello\n\
 
   TKMEM_FREE(data);
 }
-

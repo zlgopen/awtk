@@ -160,8 +160,8 @@ ret_t svg_image_set_draw_type(widget_t* widget, image_draw_type_t draw_type);
  */
 widget_t* svg_image_cast(widget_t* widget);
 
-#define WIDGET_TYPE_SVG_IMAGE     "svg"
-#define SVG_IMAGE_CACHE_MODE      "cache_mode"
+#define WIDGET_TYPE_SVG_IMAGE "svg"
+#define SVG_IMAGE_CACHE_MODE "cache_mode"
 
 #define SVG_IMAGE(widget) ((svg_image_t*)(svg_image_cast(WIDGET(widget))))
 

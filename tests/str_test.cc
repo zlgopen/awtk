@@ -685,13 +685,13 @@ TEST(Str, attach1) {
   ASSERT_EQ(s != NULL, true);
 
   str_set(s, "T#");
-  str_append_int(s, 1); 
+  str_append_int(s, 1);
   str_append(s, "d");
-  
-  str_append_int(s, 2); 
+
+  str_append_int(s, 2);
   str_append(s, "h");
 
-  str_append_int(s, 3); 
+  str_append_int(s, 3);
   str_append(s, "s");
   ASSERT_STREQ(buff, "T#1d2h3s");
 }
@@ -703,13 +703,13 @@ TEST(Str, attach2) {
   ASSERT_EQ(s != NULL, true);
 
   str_set(s, "T#");
-  str_append_int(s, 1); 
+  str_append_int(s, 1);
   str_append(s, "d");
-  
-  str_append_int(s, 2); 
+
+  str_append_int(s, 2);
   str_append(s, "h");
 
-  str_append_int(s, 3); 
+  str_append_int(s, 3);
   str_append(s, "s");
 
   str_reset(s);
@@ -725,30 +725,30 @@ TEST(Str, replace1) {
   str_set(s, "abcabc123");
   ASSERT_EQ(str_replace(s, "abc", "a"), RET_OK);
   ASSERT_STREQ(buff, "aa123");
-  
+
   str_set(s, "abcabc123");
   ASSERT_EQ(str_replace(s, "abc", ""), RET_OK);
   ASSERT_STREQ(buff, "123");
-  
+
   str_set(s, "abcabc123");
   ASSERT_EQ(str_replace(s, "abc123", ""), RET_OK);
   ASSERT_STREQ(buff, "abc");
-  
+
   str_set(s, "abcabc123");
   ASSERT_EQ(str_replace(s, "abc123", "abc"), RET_OK);
   ASSERT_STREQ(buff, "abcabc");
-  
+
   str_set(s, "abcabc123");
   ASSERT_EQ(str_replace(s, "abcabc123", "abc"), RET_OK);
   ASSERT_STREQ(buff, "abc");
-  
+
   str_set(s, "abcabc123");
   ASSERT_EQ(str_replace(s, "abcabc123", ""), RET_OK);
   ASSERT_STREQ(buff, "");
-  
+
   str_set(s, "abcabc123");
   ASSERT_EQ(str_replace(s, "", "abc"), RET_BAD_PARAMS);
-  
+
   str_set(s, "abcabc123");
   ASSERT_EQ(str_replace(s, "abc", "abcabc"), RET_FAIL);
 }
@@ -761,30 +761,30 @@ TEST(Str, replace2) {
   str_set(s, "abcabc123");
   ASSERT_EQ(str_replace(s, "abc", "a"), RET_OK);
   ASSERT_STREQ(s->str, "aa123");
-  
+
   str_set(s, "abcabc123");
   ASSERT_EQ(str_replace(s, "abc", ""), RET_OK);
   ASSERT_STREQ(s->str, "123");
-  
+
   str_set(s, "abcabc123");
   ASSERT_EQ(str_replace(s, "abc123", ""), RET_OK);
   ASSERT_STREQ(s->str, "abc");
-  
+
   str_set(s, "abcabc123");
   ASSERT_EQ(str_replace(s, "abc123", "abc"), RET_OK);
   ASSERT_STREQ(s->str, "abcabc");
-  
+
   str_set(s, "abcabc123");
   ASSERT_EQ(str_replace(s, "abcabc123", ""), RET_OK);
   ASSERT_STREQ(s->str, "");
-  
+
   str_set(s, "abcabc123");
   ASSERT_EQ(str_replace(s, "a", ""), RET_OK);
   ASSERT_STREQ(s->str, "bcbc123");
-  
+
   str_set(s, "abcabc123");
   ASSERT_EQ(str_replace(s, "", ""), RET_BAD_PARAMS);
-  
+
   str_set(s, "abcabc123");
   ASSERT_EQ(str_replace(s, "abc", "abcabc"), RET_OK);
   ASSERT_STREQ(s->str, "abcabcabcabc123");

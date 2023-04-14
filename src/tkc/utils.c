@@ -23,7 +23,7 @@
 #include "tkc/fs.h"
 #include "tkc/path.h"
 #include "tkc/thread.h"
-#endif/*WITH_WASM*/
+#endif /*WITH_WASM*/
 
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
@@ -1576,19 +1576,19 @@ ret_t tk_set_ui_thread(uint64_t ui_thread_id) {
 bool_t tk_is_ui_thread(void) {
   return s_ui_thread_id == tk_thread_self();
 }
-#endif/*WITH_WASM*/
+#endif /*WITH_WASM*/
 
 char* file_read_as_unix_text(const char* filename, uint32_t* size) {
-    str_t str;
-    uint32_t s = 0;
-    char* data = (char*)file_read(filename, &s);
-    return_value_if_fail(data != NULL, NULL);
+  str_t str;
+  uint32_t s = 0;
+  char* data = (char*)file_read(filename, &s);
+  return_value_if_fail(data != NULL, NULL);
 
-    str_attach_with_size(&str, data, s, s+1);
-    str_replace(&str, "\r\n", "\n");
-    str_replace(&str, "\r", "\n");
-    *size = str.size;
-    str_reset(&str);
+  str_attach_with_size(&str, data, s, s + 1);
+  str_replace(&str, "\r\n", "\n");
+  str_replace(&str, "\r", "\n");
+  *size = str.size;
+  str_reset(&str);
 
-    return data;
+  return data;
 }

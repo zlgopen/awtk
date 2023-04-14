@@ -156,7 +156,7 @@ static ret_t slider_update_dragger_rect(widget_t* widget, canvas_t* c) {
   dragger_size = slider_get_dragger_size(widget);
   max_gap = tk_roundi(dragger_size / 2);
   margin = margin > -max_gap ? margin : -max_gap;
-  
+
   if (slider->vertical) {
     fvalue = 1.0f - fvalue;
     r->x = 0;
@@ -434,7 +434,7 @@ static ret_t slider_change_value_by_pointer_event(widget_t* widget, pointer_even
 
   max_gap = tk_roundi(dragger_size / 2);
   margin = margin > -max_gap ? margin : -max_gap;
-  
+
   widget_to_local(widget, &p);
   if (slider->vertical) {
     if (slider->no_dragger_icon) {
@@ -803,13 +803,13 @@ TK_DECL_VTABLE(slider) = {.size = sizeof(slider_t),
                           .create = slider_create,
                           .on_event = slider_on_event,
                           .on_paint_self = slider_on_paint_self,
-                          .on_paint_border = widget_on_paint_null,       
+                          .on_paint_border = widget_on_paint_null,
                           .on_paint_background = widget_on_paint_null,
                           .invalidate = slider_on_invalidate,
                           .is_point_in = slider_on_is_point_in,
                           .on_destroy = slider_on_destroy,
                           .get_prop = slider_get_prop,
-                          .set_prop = slider_set_prop };
+                          .set_prop = slider_set_prop};
 
 widget_t* slider_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(slider), x, y, w, h);

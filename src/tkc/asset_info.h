@@ -452,7 +452,6 @@ bool_t asset_info_is_in_rom(const asset_info_t* info);
  */
 ret_t asset_info_set_is_in_rom(asset_info_t* info, bool_t is_in_rom);
 
-
 /* internal */
 ret_t asset_info_set_name(asset_info_t* info, const char* name, bool_t is_alloc);
 

@@ -282,7 +282,7 @@ tryagain:
     }
     return RET_FAIL;
   }
-#else  // HAVE_SEM_TIMEDWAIT
+#else   // HAVE_SEM_TIMEDWAIT
 
   uint32_t start = time_now_ms();
   return_value_if_fail(semaphore != NULL, RET_BAD_PARAMS);

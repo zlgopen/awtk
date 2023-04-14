@@ -802,4 +802,3 @@ TEST(SelfLayoutDefault, set_self_layout_params2) {
   ASSERT_EQ(self_layouter_get_param_int(layouter, "w_attr", 0), W_ATTR_UNDEF);
   ASSERT_EQ(self_layouter_get_param_int(layouter, "h_attr", 0), W_ATTR_UNDEF);
 }
-

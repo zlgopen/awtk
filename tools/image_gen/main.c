@@ -84,7 +84,7 @@ ret_t gen_one(const char* input_file, const char* output_file, const char* theme
 
 static ret_t gen_folder(const char* in_foldername, const char* out_foldername, const char* theme,
                         image_format_t* image_format, lcd_orientation_t o) {
-  fs_item_t item;                        
+  fs_item_t item;
   ret_t ret = RET_OK;
   char in_name[MAX_PATH] = {0};
   char out_name[MAX_PATH] = {0};

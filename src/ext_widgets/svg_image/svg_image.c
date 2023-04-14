@@ -68,13 +68,13 @@ static ret_t svg_image_draw_type_ex(widget_t* widget, void* ctx) {
       break;
     }
     case IMAGE_DRAW_SCALE: {
-      bsvg_t *bsvg = (bsvg_t*)ctx;
+      bsvg_t* bsvg = (bsvg_t*)ctx;
       svg_image->scale_x = (float_t)((widget->w * 1.0f) / (bsvg->header->w * 1.0f));
       svg_image->scale_y = (float_t)((widget->h * 1.0f) / (bsvg->header->h * 1.0f));
       break;
     }
     case IMAGE_DRAW_SCALE_AUTO: {
-      bsvg_t *bsvg = (bsvg_t*)ctx;
+      bsvg_t* bsvg = (bsvg_t*)ctx;
       if (widget->w < widget->h) {
         svg_image->scale_x = (float_t)((widget->w * 1.0f) / (bsvg->header->w * 1.0f));
         svg_image->scale_y = svg_image->scale_x;
@@ -101,7 +101,7 @@ static ret_t svg_image_paint_before_adjust(widget_t* widget) {
   const asset_info_t* asset = svg_image->bsvg_asset;
   return_value_if_fail(asset != NULL && asset->data != NULL, RET_BAD_PARAMS);
   return_value_if_fail(bsvg_init(&bsvg, (const uint32_t*)asset->data, asset->size) != NULL,
-                                 RET_BAD_PARAMS);
+                       RET_BAD_PARAMS);
 
   if (widget->w <= 0 || widget->h <= 0 || bsvg.header->w <= 0 || bsvg.header->h <= 0) {
     return RET_OK;
@@ -140,7 +140,7 @@ static ret_t svg_image_paint_online_canvas(widget_t* widget, canvas_t* c) {
   const asset_info_t* asset = svg_image->bsvg_asset;
   return_value_if_fail(asset != NULL && asset->data != NULL, RET_BAD_PARAMS);
   return_value_if_fail(bsvg_init(&bsvg, (const uint32_t*)asset->data, asset->size) != NULL,
-                                 RET_BAD_PARAMS);
+                       RET_BAD_PARAMS);
   if (bsvg.header->w > 0 && bsvg.header->h > 0) {
     x = (widget->w - ((int32_t)bsvg.header->w * svg_image->scale_x)) / 2;
     y = (widget->h - ((int32_t)bsvg.header->h * svg_image->scale_y)) / 2;
@@ -304,11 +304,11 @@ static ret_t svg_image_set_prop(widget_t* widget, const char* name, const value_
   }
 }
 
-static const char* s_svg_image_properties[] = {
-    WIDGET_PROP_IMAGE,     WIDGET_PROP_SCALE_X,    WIDGET_PROP_SCALE_Y,
-    WIDGET_PROP_ANCHOR_X,  WIDGET_PROP_ANCHOR_Y,   WIDGET_PROP_ROTATION,
-    WIDGET_PROP_CLICKABLE, WIDGET_PROP_SELECTABLE, WIDGET_PROP_DRAW_TYPE,
-    NULL };
+static const char* s_svg_image_properties[] = {WIDGET_PROP_IMAGE,     WIDGET_PROP_SCALE_X,
+                                               WIDGET_PROP_SCALE_Y,   WIDGET_PROP_ANCHOR_X,
+                                               WIDGET_PROP_ANCHOR_Y,  WIDGET_PROP_ROTATION,
+                                               WIDGET_PROP_CLICKABLE, WIDGET_PROP_SELECTABLE,
+                                               WIDGET_PROP_DRAW_TYPE, NULL};
 
 TK_DECL_VTABLE(svg_image) = {.size = sizeof(svg_image_t),
                              .type = WIDGET_TYPE_SVG_IMAGE,

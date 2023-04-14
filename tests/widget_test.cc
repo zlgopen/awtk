@@ -1594,6 +1594,6 @@ TEST(Widget, dirty_rect_prop) {
   ASSERT_EQ(w->y, r2->y);
   ASSERT_EQ(w->w, r2->w);
   ASSERT_EQ(w->h, r2->h);
-  
+
   widget_destroy(w);
 }

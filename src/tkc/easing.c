@@ -244,9 +244,8 @@ int easing_name_func_compare(const void* a, const void* b) {
 }
 
 ret_t easing_init(void) {
-  s_easing_name_func_darray = 
-                     darray_create(0, easing_name_func_destroy, easing_name_func_compare);
-  
+  s_easing_name_func_darray = darray_create(0, easing_name_func_destroy, easing_name_func_compare);
+
   return RET_OK;
 }
 
@@ -259,8 +258,10 @@ ret_t easing_deinit(void) {
 easing_func_t easing_get(easing_type_t type) {
   if ((int)type >= EASING_LINEAR && type < EASING_FUNC_NR) {
     return s_easing_funcs[type];
-  } else if ((int)type > EASING_FUNC_NR && (int)type <= EASING_FUNC_NR + s_easing_name_func_darray->size) {
-    easing_name_func_t* easing_name_func = darray_get(s_easing_name_func_darray, type - EASING_FUNC_NR - 1);
+  } else if ((int)type > EASING_FUNC_NR &&
+             (int)type <= EASING_FUNC_NR + s_easing_name_func_darray->size) {
+    easing_name_func_t* easing_name_func =
+        darray_get(s_easing_name_func_darray, type - EASING_FUNC_NR - 1);
     return easing_name_func->easing_func;
   } else {
     return s_easing_funcs[EASING_LINEAR];
@@ -271,7 +272,8 @@ uint32_t easing_register(const char* type_name, easing_func_t easing_func) {
   easing_name_func_t* easing_name_func = TKMEM_ZALLOC(easing_name_func_t);
   easing_name_func->type_name_value = TKMEM_ZALLOC(key_type_value_t);
 
-  easing_name_func->type_name_value->name = tk_str_copy(easing_name_func->type_name_value->name, type_name);
+  easing_name_func->type_name_value->name =
+      tk_str_copy(easing_name_func->type_name_value->name, type_name);
   easing_name_func->type_name_value->value = EASING_FUNC_NR + s_easing_name_func_darray->size + 1;
   easing_name_func->easing_func = easing_func;
 

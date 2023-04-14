@@ -645,7 +645,7 @@ ret_t str_replace(str_t* str, const char* text, const char* new_text) {
     if (delta_len <= 0) {
       uint32_t size = str_replace_impl(str->str, str->str, text, new_text);
       str->size = size;
-    } else if(str->extendable) {
+    } else if (str->extendable) {
       char* temp_str = (char*)TKMEM_ALLOC(capacity);
       uint32_t size = str_replace_impl(temp_str, str->str, text, new_text);
       TKMEM_FREE(str->str);

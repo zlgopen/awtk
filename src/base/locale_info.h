@@ -200,7 +200,8 @@ ret_t locale_info_set_fallback_tr(locale_info_t* locale_info, locale_info_tr_t t
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t locale_info_set_fallback_tr2(locale_info_t* locale_info, locale_info_tr_with_context_t tr, void* ctx);
+ret_t locale_info_set_fallback_tr2(locale_info_t* locale_info, locale_info_tr_with_context_t tr,
+                                   void* ctx);
 
 /**
  * @method locale_info_set_custom_tr
@@ -212,7 +213,8 @@ ret_t locale_info_set_fallback_tr2(locale_info_t* locale_info, locale_info_tr_wi
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t locale_info_set_custom_tr(locale_info_t* locale_info, locale_info_tr_with_context_t tr, void* ctx);
+ret_t locale_info_set_custom_tr(locale_info_t* locale_info, locale_info_tr_with_context_t tr,
+                                void* ctx);
 
 /**
  * @method locale_info_destroy

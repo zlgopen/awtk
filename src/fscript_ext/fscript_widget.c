@@ -787,8 +787,8 @@ static ret_t func_show_fps(fscript_t* fscript, fscript_args_t* args, value_t* re
 
 static ret_t func_set_screen_saver_time(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_set_bool(result,
-                 window_manager_set_screen_saver_time(window_manager(), value_uint32(args->args)) == RET_OK);
+  value_set_bool(result, window_manager_set_screen_saver_time(window_manager(),
+                                                              value_uint32(args->args)) == RET_OK);
   return RET_OK;
 }
 

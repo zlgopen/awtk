@@ -26,7 +26,8 @@
 #define SPIN_DEFAULT_REPEAT 300
 
 const char* const s_spin_box_properties[] = {TK_EDIT_PROPS, WIDGET_PROP_REPEAT,
-                                             WIDGET_PROP_EASY_TOUCH_MODE, WIDGET_PROP_BUTTON_POSITION, NULL};
+                                             WIDGET_PROP_EASY_TOUCH_MODE,
+                                             WIDGET_PROP_BUTTON_POSITION, NULL};
 
 widget_t* spin_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
@@ -35,7 +36,8 @@ static ret_t spin_box_on_copy(widget_t* widget, widget_t* other) {
   spin_box_t* spin_box_other = SPIN_BOX(other);
   return_value_if_fail(spin_box != NULL && spin_box_other != NULL, RET_BAD_PARAMS);
   spin_box->easy_touch_mode = spin_box_other->easy_touch_mode;
-  spin_box->button_position = tk_str_copy(spin_box->button_position, spin_box_other->button_position);
+  spin_box->button_position =
+      tk_str_copy(spin_box->button_position, spin_box_other->button_position);
 
   return edit_on_copy(widget, other);
 }
@@ -105,7 +107,8 @@ static ret_t spin_box_on_layout_children(widget_t* widget) {
   return_value_if_fail(inc != NULL && dec != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(spin_box->button_position, SPIN_BOX_BUTTON_POSITION_DEFAULT) ||
-      (tk_str_eq(spin_box->button_position, SPIN_BOX_BUTTON_POSITION_NONE) && !(spin_box->easy_touch_mode))) {
+      (tk_str_eq(spin_box->button_position, SPIN_BOX_BUTTON_POSITION_NONE) &&
+       !(spin_box->easy_touch_mode))) {
     int32_t size = widget->h / 2;
     int32_t x = widget->w - size;
     edit->right_margin = size + 1;
@@ -116,7 +119,8 @@ static ret_t spin_box_on_layout_children(widget_t* widget) {
   } else {
     int32_t font_size = style_get_int(widget->astyle, STYLE_ID_FONT_SIZE, 18);
     if (tk_str_eq(spin_box->button_position, SPIN_BOX_BUTTON_POSITION_TOP_BOTTOM) ||
-        (tk_str_eq(spin_box->button_position, SPIN_BOX_BUTTON_POSITION_NONE) && widget->h > font_size * 3)) {
+        (tk_str_eq(spin_box->button_position, SPIN_BOX_BUTTON_POSITION_NONE) &&
+         widget->h > font_size * 3)) {
       int32_t h = widget->h / 3;
       edit->top_margin = h;
       edit->bottom_margin = h;
@@ -196,12 +200,12 @@ ret_t spin_box_set_easy_touch_mode(widget_t* widget, bool_t easy_touch_mode) {
   return widget_invalidate_force(widget, NULL);
 }
 
-ret_t spin_box_set_button_position(widget_t* widget,const char* button_position) {
+ret_t spin_box_set_button_position(widget_t* widget, const char* button_position) {
   spin_box_t* spin_box = SPIN_BOX(widget);
   return_value_if_fail(spin_box != NULL, RET_BAD_PARAMS);
 
   spin_box->button_position = tk_str_copy(spin_box->button_position, button_position);
-  
+
   return widget_invalidate_force(widget, NULL);
 }
 

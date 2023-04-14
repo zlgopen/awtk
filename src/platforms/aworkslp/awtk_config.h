@@ -139,4 +139,4 @@ extern int aw_kprintf(const char* fmt, ...);
 #ifndef __BUILDING_AWTK_LIB__
 #endif  // __BUILDING_AWTK_LIB__
 
-#endif /*AWTK_CONFIG_H*/
+#endif  /*AWTK_CONFIG_H*/

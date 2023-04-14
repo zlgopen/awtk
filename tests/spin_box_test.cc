@@ -33,7 +33,13 @@ TEST(SpinBox, to_xml) {
 
   str_init(&str, 1024);
   ASSERT_EQ(widget_to_xml(w1, &str), RET_OK);
-  ASSERT_STREQ(str.str, "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>\r\n<spin_box x=\"10\" y=\"20\" w=\"30\" h=\"40\" focusable=\"true\" min=\"0\" max=\"1024\" step=\"1.000000\" input_type=\"1\" readonly=\"false\" cancelable=\"false\" auto_fix=\"false\" left_margin=\"2\" right_margin=\"2\" top_margin=\"2\" bottom_margin=\"2\" action_text=\"done\" password_visible=\"false\" repeat=\"300\" easy_touch_mode=\"false\" button_position=\"none\">\n</spin_box>\n");
+  ASSERT_STREQ(str.str,
+               "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>\r\n<spin_box x=\"10\" "
+               "y=\"20\" w=\"30\" h=\"40\" focusable=\"true\" min=\"0\" max=\"1024\" "
+               "step=\"1.000000\" input_type=\"1\" readonly=\"false\" cancelable=\"false\" "
+               "auto_fix=\"false\" left_margin=\"2\" right_margin=\"2\" top_margin=\"2\" "
+               "bottom_margin=\"2\" action_text=\"done\" password_visible=\"false\" repeat=\"300\" "
+               "easy_touch_mode=\"false\" button_position=\"none\">\n</spin_box>\n");
 
   str_reset(&str);
   widget_destroy(w1);
