@@ -190,12 +190,12 @@ static ret_t conf_doc_save_xml_node(conf_doc_t* doc, str_t* str, conf_node_t* no
     iter = iter->next;
   }
 
-  size = str->size;
   if (text == NULL) {
     str_append(str, ">\n");
   } else {
     str_append(str, ">");
   }
+  size = str->size;
 
   iter = conf_node_get_first_child(node);
   while (iter != NULL) {
@@ -208,15 +208,26 @@ static ret_t conf_doc_save_xml_node(conf_doc_t* doc, str_t* str, conf_node_t* no
   if (text != NULL) {
     value_t v;
     if (conf_node_get_value(text, &v) == RET_OK) {
-      return_value_if_fail(str_encode_xml_entity(str, value_str(&v)) == RET_OK, RET_OOM);
+      const char* p = value_str(&v);
+      if (tk_str_start_with(p, "<![CDATA[") && tk_str_end_with(p, "]]>")) {
+        return_value_if_fail(str_append(str, p) == RET_OK, RET_OOM);
+      } else {
+        return_value_if_fail(str_encode_xml_entity(str, p) == RET_OK, RET_OOM);
+      }
     }
   }
 
-  if ((size + 2) == str->size) {
-    str->size -= 2;
+  if (size == str->size) {
+    if (text == NULL) {
+      str->size -= 2;
+    } else {
+      str->size -= 1;
+    }
     str_append(str, "/>\n");
   } else {
-    str_append_n_chars(str, ' ', level * 2);
+    if (text == NULL) {
+      str_append_n_chars(str, ' ', level * 2);
+    }
     str_append_format(str, strlen(name) + 10, "</%s>\n", name);
   }
 

@@ -133,6 +133,42 @@ TEST(Xml, basic5) {
   conf_doc_destroy(doc);
 }
 
+TEST(Xml, basic6) {
+  str_t str;
+  conf_doc_t* doc = conf_doc_load_xml("<group_box>1</group_box>");
+
+  str_init(&str, 100);
+  conf_doc_save_xml(doc, &str);
+  ASSERT_STREQ(str.str, "<group_box>1</group_box>\n");
+  str_reset(&str);
+  conf_doc_destroy(doc);
+}
+
+TEST(Xml, basic7) {
+  str_t str;
+  conf_doc_t* doc = conf_doc_load_xml("<group_box><child>abc</child></group_box>");
+
+  str_init(&str, 100);
+  conf_doc_save_xml(doc, &str);
+  ASSERT_STREQ(str.str, "<group_box>\n  <child>abc</child>\n</group_box>\n");
+  str_reset(&str);
+  conf_doc_destroy(doc);
+}
+
+TEST(Xml, cdata) {
+  str_t str;
+  conf_doc_t* doc = conf_doc_load_xml("<group_box><![CDATA[abc]]></group_box>");
+
+  ASSERT_STREQ(conf_doc_get_str(doc, "group_box." CONF_XML_TEXT, NULL), "abc");
+  ASSERT_EQ(conf_doc_set_str(doc, "group_box." CONF_XML_TEXT, "<![CDATA[abc]]>"), RET_OK);
+
+  str_init(&str, 100);
+  conf_doc_save_xml(doc, &str);
+  ASSERT_STREQ(str.str, "<group_box><![CDATA[abc]]></group_box>\n");
+  str_reset(&str);
+  conf_doc_destroy(doc);
+}
+
 TEST(Xml, text0) {
   str_t str;
   conf_doc_t* doc = conf_doc_load_xml("<group_box>123</group_box>");
