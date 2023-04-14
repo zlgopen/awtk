@@ -139,7 +139,7 @@ ret_t svg_image_set_image(widget_t* widget, const char* name);
 ret_t svg_image_set_cache_mode(widget_t* widget, bool_t is_cache_mode);
 
 /**
- * @method image_set_draw_type
+ * @method svg_image_set_draw_type
  * 控件设置svg图片绘制模式。
  *
  * @annotation ["scriptable"]
@@ -148,7 +148,7 @@ ret_t svg_image_set_cache_mode(widget_t* widget, bool_t is_cache_mode);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t image_set_draw_type(widget_t* widget, image_draw_type_t draw_type);
+ret_t svg_image_set_draw_type(widget_t* widget, image_draw_type_t draw_type);
 
 /**
  * @method svg_image_cast
