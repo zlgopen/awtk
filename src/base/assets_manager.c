@@ -550,9 +550,12 @@ asset_info_t* assets_manager_load_ex(assets_manager_t* am, asset_type_t type, ui
   return_value_if_fail(am != NULL && name != NULL, NULL);
 
   if (am->custom_load_asset != NULL) {
-    return am->custom_load_asset(am->custom_load_asset_ctx, type, subtype, name);
+    info = am->custom_load_asset(am->custom_load_asset_ctx, type, subtype, name);
   }
-  info = assets_manager_load_impl(am, type, subtype, name);
+
+  if (info == NULL) {
+    info = assets_manager_load_impl(am, type, subtype, name);
+  }
 
   if (info == NULL && am->fallback_load_asset != NULL) {
     info = am->fallback_load_asset(am->fallback_load_asset_ctx, type, subtype, name);
