@@ -143,12 +143,16 @@ ret_t canvas_offline_flush_bitmap(canvas_t* canvas);
  */
 ret_t canvas_offline_destroy(canvas_t* canvas);
 
-/*
- * WITH_CANVAS_OFFLINE_CUSTION 宏提供给用户在外部自定义离线 canvas 的机会，
- * 主要是用于给用户在外部定义一些特殊的离线 canvas 使用的，而这些特殊的离线 canvas 很大概率和平台相关的，
- * 所以可以通过 WITH_CANVAS_OFFLINE_CUSTION 宏来外部实现自定义离线 canvas 的效果。
- */
 #ifdef WITH_CANVAS_OFFLINE_CUSTION
+#error Do not define WITH_CANVAS_OFFLINE_CUSTION, please define WITH_CANVAS_OFFLINE_CUSTOM !
+#endif
+
+/*
+ * WITH_CANVAS_OFFLINE_CUSTOM 宏提供给用户在外部自定义离线 canvas 的机会，
+ * 主要是用于给用户在外部定义一些特殊的离线 canvas 使用的，而这些特殊的离线 canvas 很大概率和平台相关的，
+ * 所以可以通过 WITH_CANVAS_OFFLINE_CUSTOM 宏来外部实现自定义离线 canvas 的效果。
+ */
+#ifdef WITH_CANVAS_OFFLINE_CUSTOM
 /**
  * @method canvas_offline_custom_create
  * @export none

@@ -220,7 +220,7 @@
 /**
  * 开启自定义的离线 canvas，如果板子使用特殊的画布的话，需要定义该宏来定义特殊离线 canvas 函数
  * 
- * #define WITH_CANVAS_OFFLINE_CUSTION 1
+ * #define WITH_CANVAS_OFFLINE_CUSTOM 1
  */
 
 /**

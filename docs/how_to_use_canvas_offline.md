@@ -135,7 +135,7 @@ ret_t canvas_offline_destroy(canvas_t* canvas);
 
 ​	由于有一些特别平台不能直接使用 awtk 提供的离线 canvas，只能通过平台的一些特殊的接口来实现离线画布 canvas，所以 awtk 的离线 canvas 提供了一个给外部重载离线 canvas 的函数的方法。
 
-​	通过定义 WITH_CANVAS_OFFLINE_CUSTION 宏，并且用户自行重写下面的函数，并且返回值必须是 RET_OK 或者非 NULL：
+​	通过定义 WITH_CANVAS_OFFLINE_CUSTOM 宏，并且用户自行重写下面的函数，并且返回值必须是 RET_OK 或者非 NULL：
 
 | 函数名字                                        | 作用                                                       |
 | ----------------------------------------------- | ---------------------------------------------------------- |

@@ -34,6 +34,10 @@
 #include "canvas_offline.h"
 #include "base/vgcanvas_asset_manager.h"
 
+#ifdef WITH_CANVAS_OFFLINE_CUSTION
+#error Do not define WITH_CANVAS_OFFLINE_CUSTION, please define WITH_CANVAS_OFFLINE_CUSTOM !
+#endif
+
 #ifdef WITH_GPU
 
 #ifdef WITHOUT_GLAD
@@ -101,7 +105,7 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
   system_info_t* info = system_info();
 #endif
 
-#ifdef WITH_CANVAS_OFFLINE_CUSTION
+#ifdef WITH_CANVAS_OFFLINE_CUSTOM
   canvas_t* custom_canvas = canvas_offline_custom_create(w, h, format);
   if (custom_canvas != NULL) {
     return custom_canvas;
@@ -236,7 +240,7 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
 
 #ifdef AWTK_WEB
 ret_t canvas_offline_clear_canvas(canvas_t* canvas) {
-#ifdef WITH_CANVAS_OFFLINE_CUSTION
+#ifdef WITH_CANVAS_OFFLINE_CUSTOM
   if (canvas_offline_custom_clear_canvas(canvas) == RET_OK) {
     return RET_OK;
   }
@@ -252,7 +256,7 @@ ret_t canvas_offline_clear_canvas(canvas_t* canvas) {
 #endif
   return_value_if_fail(canvas != NULL, RET_BAD_PARAMS);
 
-#ifdef WITH_CANVAS_OFFLINE_CUSTION
+#ifdef WITH_CANVAS_OFFLINE_CUSTOM
   if (canvas_offline_custom_clear_canvas(canvas) == RET_OK) {
     return RET_OK;
   }
@@ -279,7 +283,7 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas) {
   canvas_offline_gpu_t* c = NULL;
 #endif
 
-#ifdef WITH_CANVAS_OFFLINE_CUSTION
+#ifdef WITH_CANVAS_OFFLINE_CUSTOM
   ret_t ret = canvas_offline_custom_begin_draw(canvas);
   if (ret == RET_OK) {
     return ret;
@@ -326,7 +330,7 @@ ret_t canvas_offline_end_draw(canvas_t* canvas) {
   canvas_offline_gpu_t* c = NULL;
 #endif
 
-#ifdef WITH_CANVAS_OFFLINE_CUSTION
+#ifdef WITH_CANVAS_OFFLINE_CUSTOM
   ret_t ret = canvas_offline_custom_end_draw(canvas);
   if (ret == RET_OK) {
     return ret;
@@ -363,7 +367,7 @@ ret_t canvas_offline_end_draw(canvas_t* canvas) {
 bitmap_t* canvas_offline_get_bitmap(canvas_t* canvas) {
   canvas_offline_t* c = (canvas_offline_t*)canvas;
 
-#ifdef WITH_CANVAS_OFFLINE_CUSTION
+#ifdef WITH_CANVAS_OFFLINE_CUSTOM
   bitmap_t* bitmap = canvas_offline_custom_get_bitmap(canvas);
   if (bitmap != NULL) {
     return bitmap;
@@ -399,7 +403,7 @@ ret_t canvas_offline_bitmap_move_to_new_bitmap(canvas_t* canvas, bitmap_t* bitma
 
   return_value_if_fail(canvas != NULL && bitmap != NULL, RET_BAD_PARAMS);
 
-#ifdef WITH_CANVAS_OFFLINE_CUSTION
+#ifdef WITH_CANVAS_OFFLINE_CUSTOM
   if (canvas_offline_custom_bitmap_move_to_new_bitmap(canvas, bitmap) == RET_OK) {
     return RET_OK;
   }
@@ -441,7 +445,7 @@ ret_t canvas_offline_flush_bitmap(canvas_t* canvas) {
 #endif
   return_value_if_fail(canvas != NULL, RET_BAD_PARAMS);
 
-#ifdef WITH_CANVAS_OFFLINE_CUSTION
+#ifdef WITH_CANVAS_OFFLINE_CUSTOM
   if (canvas_offline_custom_flush_bitmap(canvas) == RET_OK) {
     return RET_OK;
   }
@@ -480,7 +484,7 @@ ret_t canvas_offline_destroy(canvas_t* canvas) {
 
   return_value_if_fail(canvas != NULL, RET_BAD_PARAMS);
 
-#ifdef WITH_CANVAS_OFFLINE_CUSTION
+#ifdef WITH_CANVAS_OFFLINE_CUSTOM
   if (canvas_offline_custom_destroy(canvas) == RET_OK) {
     return RET_OK;
   }
