@@ -494,6 +494,10 @@ static ret_t scroll_bar_get_prop(widget_t* widget, const char* name, value_t* v)
   } else if (tk_str_eq(name, SCROLL_BAR_PROP_ANIMATOR_TIME)) {
     value_set_uint32(v, scroll_bar->animator_time);
     return RET_OK;
+  } else if (tk_str_eq(name, SCROLL_BAR_PROP_IS_HORIZON)) {
+    bool_t is_horizon = (widget->w > widget->h) ? TRUE : FALSE;
+    value_set_bool(v, is_horizon);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;

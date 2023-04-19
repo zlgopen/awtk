@@ -296,10 +296,23 @@ ret_t scroll_bar_set_animator_time(widget_t* widget, uint32_t animator_time);
  */
 ret_t scroll_bar_hide_by_opacity_animation(widget_t* widget, int32_t duration, int32_t delay);
 
-/* private */
+/**
+ * @method scroll_bar_show_by_opacity_animation
+ * 通过动画显示滚动条。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget scroll_bar控件。
+ * @param {int32_t} duration 动画持续时间。
+ * @param {int32_t} delay 动画执行时间。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t scroll_bar_show_by_opacity_animation(widget_t* widget, int32_t duration, int32_t delay);
 
+/* private */
+
 #define SCROLL_BAR_PROP_IS_MOBILE "is_mobile"
+#define SCROLL_BAR_PROP_IS_HORIZON "is_horizon"
 #define SCROLL_BAR_PROP_ANIMATOR_TIME "animator_time"
 #define SCROLL_BAR(widget) ((scroll_bar_t*)(scroll_bar_cast(WIDGET(widget))))
 
