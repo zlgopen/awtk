@@ -87,7 +87,7 @@ static ret_t action_thread_pool_on_thread_idle(action_thread_pool_t* thread_pool
   uint32_t thread_nr = action_thread_pool_get_thread_nr(thread_pool);
   return_value_if_fail(thread_pool != NULL && thread != NULL, RET_BAD_PARAMS);
 
-  if (thread_nr > thread_pool->min_idle_nr) {
+  if (thread_nr > thread_pool->min_idle_nr || thread->quit) {
     for (i = 0; i < thread_pool->max_thread_nr; i++) {
       if (thread == thread_pool->threads[i]) {
         thread_pool->threads[i] = NULL;

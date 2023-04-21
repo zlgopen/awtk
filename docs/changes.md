@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/04/21
+  * 完善action thread pool(感谢俊杰提供补丁)
+
 2023/04/19
   * 新增is\_horizon属性判断(感谢高源提供补丁)
   * 修改scroll\_bar\_show\_by\_opacity\_animation函数开放层级(感谢高源提供补丁)
