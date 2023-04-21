@@ -67,6 +67,16 @@ static ret_t combo_box_on_copy(widget_t* widget, widget_t* other) {
     combo_box->open_window = tk_str_copy(combo_box->open_window, combo_box_other->open_window);
   }
 
+  if (combo_box_other->theme_of_popup != NULL) {
+    combo_box->theme_of_popup =
+        tk_str_copy(combo_box->theme_of_popup, combo_box_other->theme_of_popup);
+  }
+
+  combo_box->open_popup = combo_box_other->open_popup;
+  combo_box->on_item_click = combo_box_other->on_item_click;
+  combo_box->on_item_click_ctx = combo_box_other->on_item_click_ctx;
+  combo_box->on_layout_combobox_popup = combo_box_other->on_layout_combobox_popup;
+
   return RET_OK;
 }
 
