@@ -58,7 +58,7 @@ ret_t async_call(async_exec_t exec, async_on_result_t on_result, void* ctx);
  *
  * @annotation ["static"]
  * @param {uint32_t} max_threads 最大线程数。
- * @param {uint32_t} min_threads 最小线程数。
+ * @param {uint32_t} min_threads 最小线程数(必须大于0)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *
@@ -71,7 +71,7 @@ ret_t async_call_init_ex(uint32_t max_threads, uint32_t min_threads);
  *
  * @annotation ["static"]
  * @param {uint32_t} max_threads 最大线程数。
- * @param {uint32_t} min_threads 最小线程数。
+ * @param {uint32_t} min_threads 最小线程数(必须大于0)。
  * @param {uint32_t} stack_size 栈空间大小(字节)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

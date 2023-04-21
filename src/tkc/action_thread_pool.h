@@ -71,7 +71,7 @@ typedef struct _action_thread_pool_t {
  * 创建action_thread_pool对象。
  *
  * @param {uint16_t} max_thread_nr 最大线程数。
- * @param {uint16_t} min_idle_nr 最小空闲线程数。
+ * @param {uint16_t} min_idle_nr 最小空闲线程数(必须大于0)。
  *
  * @return {action_thread_pool_t*} action_thread_pool对象。
  */
@@ -83,7 +83,7 @@ action_thread_pool_t* action_thread_pool_create(uint16_t max_thread_nr, uint16_t
  * 创建action_thread_pool对象。
  *
  * @param {uint16_t} max_thread_nr 最大线程数。
- * @param {uint16_t} min_idle_nr 最小空闲线程数。
+ * @param {uint16_t} min_idle_nr 最小空闲线程数(必须大于0)。
  * @param {uint32_t}  stack_size 栈的大小。
  * @param {tk_thread_priority_t}  priority 优先级
  *
