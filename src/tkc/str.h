@@ -333,13 +333,23 @@ ret_t str_append_double(str_t* str, const char* format, double value);
 
 /**
  * @method str_append_json_str
- * 追加一个字符串，字符串前后加英文双引号，字符串本身的双引号被转义为\"。
+ * 追加一个字符串，字符串前后加英文双引号，并按JSON规则转义特殊字符。
  * @param {str_t*} str str对象。
  * @param {const char*} json_str 待追加的字符串。 
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t str_append_json_str(str_t* str, const char* json_str);
+
+/**
+ * @method str_append_c_str
+ * 追加一个字符串，字符串前后加英文双引号，并按C语言规则转义特殊字符。
+ * @param {str_t*} str str对象。
+ * @param {const char*} c_str 待追加的字符串。 
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_c_str(str_t* str, const char* c_str);
 
 /**
  * @method str_append_json_int_pair
@@ -402,6 +412,28 @@ ret_t str_pop(str_t* str);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t str_unescape(str_t* str);
+
+/**
+ * @method str_append_escape
+ * 对字符串s进行转义，并追加到str对象。
+ * @param {str_t*} str str对象。
+ * @param {const char*} s 字符串。
+ * @param {uint32_t} size 字符串s的长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_escape(str_t* str, const char* s, uint32_t size);
+
+/**
+ * @method str_append_unescape
+ * 对字符串s进行反转义，并追加到str对象。
+ * @param {str_t*} str str对象。
+ * @param {const char*} s 字符串。
+ * @param {uint32_t} size 字符串s的长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_unescape(str_t* str, const char* s, uint32_t size);
 
 /**
  * @method str_decode_xml_entity

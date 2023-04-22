@@ -307,6 +307,159 @@ ret_t str_encode_xml_entity_with_len(str_t* str, const char* text, uint32_t len)
 }
 
 /*https://en.wikipedia.org/wiki/Escape_sequences_in_C*/
+static char str_escape_char(char c) {
+  switch (c) {
+    case '\a': {
+      c = 'a';
+      break;
+    }
+    case '\b': {
+      c = 'b';
+      break;
+    }
+    case '\e': {
+      c = 'e';
+      break;
+    }
+    case '\f': {
+      c = 'f';
+      break;
+    }
+    case '\n': {
+      c = 'n';
+      break;
+    }
+    case '\r': {
+      c = 'r';
+      break;
+    }
+    case '\t': {
+      c = 't';
+      break;
+    }
+    case '\v': {
+      c = 'v';
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+
+  return c;
+}
+
+static char str_unescape_char(const char* s, uint32_t* nr) {
+  char c = 0;
+  const char* start = s;
+  return_value_if_fail(s != NULL && nr != NULL, 0);
+
+  switch (*s++) {
+    case 'a': {
+      c = '\a';
+      break;
+    }
+    case 'b': {
+      c = '\b';
+      break;
+    }
+    case 'e': {
+      c = '\e';
+      break;
+    }
+    case 'f': {
+      c = '\f';
+      break;
+    }
+    case 'n': {
+      c = '\n';
+      break;
+    }
+    case 'r': {
+      c = '\r';
+      break;
+    }
+    case 't': {
+      c = '\t';
+      break;
+    }
+    case 'v': {
+      c = '\v';
+      break;
+    }
+    case '\'': {
+      c = '\'';
+      break;
+    }
+    case '\"': {
+      c = '\"';
+      break;
+    }
+    case '\\': {
+      c = '\\';
+      break;
+    }
+    case '?': {
+      c = '\?';
+      break;
+    }
+    case 'x': {
+      int32_t v = 0;
+      tk_sscanf(s, "%02x", &v);
+      c = v;
+      s += 2;
+      break;
+    }
+    case '\0': {
+      c = '\\';
+      break;
+    }
+    default: {
+      log_warn("not support char: [%c]\n", *s);
+      break;
+    }
+  }
+
+  *nr = s - start;
+  return c;
+}
+
+ret_t str_append_unescape(str_t* str, const char* s, uint32_t size) {
+  uint32_t i = 0;
+  return_value_if_fail(str != NULL && s != NULL, RET_BAD_PARAMS);
+
+  size = tk_min_int(strlen(s), size);
+  for (i = 0; i < size; i++) {
+    char c = *s++;
+    if (c == '\\') {
+      uint32_t nr = 0;
+      c = str_unescape_char(s, &nr);
+      i += nr;
+      s += nr;
+    }
+
+    str_append_char(str, c);
+  }
+
+  return RET_OK;
+}
+
+ret_t str_append_escape(str_t* str, const char* s, uint32_t size) {
+  uint32_t i = 0;
+  return_value_if_fail(str != NULL && s != NULL, RET_BAD_PARAMS);
+
+  size = tk_min_int(strlen(s), size);
+  for (i = 0; i < size; i++) {
+    char c = str_escape_char(s[i]);
+    if (c != s[i] || c == '\\' || c == '\'' || c == '\"') {
+      str_append_char(str, '\\');
+    }
+    str_append_char(str, c);
+  }
+
+  return RET_OK;
+}
+
 ret_t str_unescape(str_t* str) {
   char* s = NULL;
   char* d = NULL;
@@ -316,73 +469,10 @@ ret_t str_unescape(str_t* str) {
 
   while ((s - str->str) < str->size) {
     char c = *s++;
-
     if (c == '\\') {
-      switch (*s++) {
-        case 'a': {
-          c = '\a';
-          break;
-        }
-        case 'b': {
-          c = '\b';
-          break;
-        }
-        case 'e': {
-          c = '\e';
-          break;
-        }
-        case 'f': {
-          c = '\f';
-          break;
-        }
-        case 'n': {
-          c = '\n';
-          break;
-        }
-        case 'r': {
-          c = '\r';
-          break;
-        }
-        case 't': {
-          c = '\t';
-          break;
-        }
-        case 'v': {
-          c = '\v';
-          break;
-        }
-        case '\'': {
-          c = '\'';
-          break;
-        }
-        case '\"': {
-          c = '\"';
-          break;
-        }
-        case '\\': {
-          c = '\\';
-          break;
-        }
-        case '0': {
-          c = '\0';
-          break;
-        }
-        case '?': {
-          c = '\?';
-          break;
-        }
-        case 'x': {
-          int32_t v = 0;
-          tk_sscanf(s, "%02x", &v);
-          c = v;
-          s += 2;
-          break;
-        }
-        default: {
-          log_warn("not support char: %s [%c]\n", str->str, *s);
-          break;
-        }
-      }
+      uint32_t nr = 0;
+      c = str_unescape_char(s, &nr);
+      s += nr;
     }
     *d++ = c;
   }
@@ -787,6 +877,16 @@ ret_t str_append_double(str_t* str, const char* format, double value) {
   return str_append(str, buff);
 }
 
+ret_t str_append_c_str(str_t* str, const char* c_str) {
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(str_append_char(str, '\"') == RET_OK, RET_OOM);
+  if (c_str != NULL) {
+    str_append_escape(str, c_str, strlen(c_str));
+  }
+  return_value_if_fail(str_append_char(str, '\"') == RET_OK, RET_OOM);
+  return RET_OK;
+}
+
 ret_t str_append_json_str(str_t* str, const char* json_str) {
   const char* p = json_str;
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
@@ -799,6 +899,12 @@ ret_t str_append_json_str(str_t* str, const char* json_str) {
         return_value_if_fail(str_append(str, "\\n") == RET_OK, RET_OOM);
       } else if (*p == '\r') {
         return_value_if_fail(str_append(str, "\\r") == RET_OK, RET_OOM);
+      } else if (*p == '\t') {
+        return_value_if_fail(str_append(str, "\\t") == RET_OK, RET_OOM);
+      } else if (*p == '\b') {
+        return_value_if_fail(str_append(str, "\\b") == RET_OK, RET_OOM);
+      } else if (*p == '\f') {
+        return_value_if_fail(str_append(str, "\\f") == RET_OK, RET_OOM);
       } else if (*p == '\\') {
         return_value_if_fail(str_append(str, "\\\\") == RET_OK, RET_OOM);
       } else {
