@@ -1581,7 +1581,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
   widget_prepare_text_style(widget, c);
 
   font_size = c->font_size;
-  text_size = text->str ? canvas_measure_text(c, text->str, text->size) : 0;
+  text_size = text->size > 0 ? canvas_measure_text(c, text->str, text->size) : 0;
   if (icon_at == ICON_AT_RIGHT || icon_at == ICON_AT_LEFT) {
     align_v = style_get_int(style, STYLE_ID_TEXT_ALIGN_V, ALIGN_V_MIDDLE);
     align_h = style_get_int(style, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_LEFT);
@@ -1614,7 +1614,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
       }
       canvas_draw_icon_in_rect(c, &img, &r_icon);
     }
-  } else if (text != NULL && text->size > 0) {
+  } else if (text->size > 0) {
     widget_calc_icon_text_rect(&ir, font_size, text_size, icon_at, 0, 0, spacer, &r_text, NULL);
     widget_draw_text_in_rect(widget, c, text->str, text->size, &r_text, FALSE);
   }

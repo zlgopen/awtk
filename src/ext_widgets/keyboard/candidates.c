@@ -119,6 +119,7 @@ static ret_t candidates_ensure_children(widget_t* widget, uint32_t nr) {
     candidates_create_button(widget);
   }
 
+  return_value_if_fail(widget->children == NULL, RET_OOM);
   return_value_if_fail(widget->children->size == nr, RET_OOM);
 
   return RET_OK;

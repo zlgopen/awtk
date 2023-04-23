@@ -1365,8 +1365,10 @@ void* tk_memcpy_by_align_4(void* dst_align_4, const void* src_align_4, uint32_t 
       }
       return dd;
     }
+    return memcpy(dst_align_4, src_align_4, len);
+  } else {
+    return dst_align_4;
   }
-  return memcpy(dst_align_4, src_align_4, len);
 }
 
 void* tk_memcpy(void* dst, const void* src, uint32_t len) {
