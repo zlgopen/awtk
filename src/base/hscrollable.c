@@ -47,7 +47,7 @@ static ret_t hscrollable_on_pointer_down(hscrollable_t* hscrollable, pointer_eve
 }
 
 static ret_t hscrollable_on_pointer_move(hscrollable_t* hscrollable, pointer_event_t* e) {
-  int32_t dx = NULL;
+  int32_t dx = 0;
   velocity_t* v = NULL;
   return_value_if_fail(hscrollable != NULL && hscrollable->widget != NULL, RET_BAD_PARAMS);
   v = &(hscrollable->velocity);

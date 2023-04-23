@@ -937,7 +937,7 @@ assets_manager_t* assets_managers_ref(const char* name) {
 
     darray_push(s_assets_managers, am);
     assets_manager_set_res_root(am, res_root);
-    assets_manager_set_fallback_load_asset(am, assets_manager_load_asset_fallback_default, NULL);
+    assets_manager_set_fallback_load_asset(am, (assets_manager_load_asset_t)assets_manager_load_asset_fallback_default, NULL);
   } else {
     am->refcount++;
   }

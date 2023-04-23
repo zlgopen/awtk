@@ -114,6 +114,7 @@ static ret_t date_time_set_now_impl(date_time_t* dt) {
   tms.tm_sec = dt->second;
 
   t = mktime(&tms);
+  (void)t;
 #ifdef LINUX
   {
     struct timeval tv;

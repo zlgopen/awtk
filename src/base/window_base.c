@@ -155,7 +155,6 @@ static ret_t window_base_load_theme_obj_impl(widget_t* widget, bool_t* update_st
 }
 
 static ret_t window_base_load_theme_obj(widget_t* widget) {
-  window_base_t* window_base = WINDOW_BASE(widget);
   bool_t update_style = FALSE;
 
   window_base_load_default_theme_obj_impl(widget, &update_style);
