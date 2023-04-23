@@ -294,6 +294,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
   const char* close_anim_hint = WINDOW_ANIMATOR_POPUP;
   const char* open_anim_hint = open_anim ? close_anim_hint : "";
   int32_t win_delta_y = im->win_delta_y;
+  return_value_if_fail(win != NULL, RET_BAD_PARAMS);
 
   if (keyboard_name == NULL || *keyboard_name == '\0') {
     return RET_OK;

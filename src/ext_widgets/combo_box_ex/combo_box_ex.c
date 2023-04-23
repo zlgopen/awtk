@@ -37,6 +37,7 @@ static ret_t combo_box_ex_create_popup_items(combo_box_t* combo_box, widget_t* p
   uint32_t max_w = 0;
   combo_box_option_t* iter = NULL;
   widget_t* win = widget_get_window(parent);
+  return_value_if_fail(win != NULL, RET_BAD_PARAMS);
   return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
 
   iter = combo_box->option_items;

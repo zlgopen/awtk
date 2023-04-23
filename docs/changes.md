@@ -1,5 +1,9 @@
 # 最新动态
 
+2023/04/23  
+  * 修复cppcheck发现的问题。
+  * 修复遗漏的空指针检查(感谢[szsam](https://github.com/szsam)提供补丁)
+
 2023/04/21
   * 完善action thread pool(感谢俊杰提供补丁)
   * 完善文档注释(感谢俊杰提供补丁)

@@ -316,7 +316,8 @@ ret_t image_animation_set_interval(widget_t* widget, uint32_t interval) {
   image_animation->interval = interval;
   if (image_animation->timer_id != TK_INVALID_ID) {
     const timer_info_t* info = timer_find(image_animation->timer_id);
-    if (info->duration != image_animation->interval) {
+    assert(info != NULL);
+    if (info != NULL && info->duration != image_animation->interval) {
       timer_modify(info->id, image_animation->interval);
     }
   }

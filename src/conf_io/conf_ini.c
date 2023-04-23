@@ -179,6 +179,8 @@ static ret_t conf_doc_save_value(const value_t* v, str_t* str) {
   switch (v->type) {
     case VALUE_TYPE_STRING: {
       const char* p = value_str(v);
+      return_value_if_fail(p != NULL, RET_BAD_PARAMS);
+
       while (*p) {
         if (*p == '#' || *p == '\\' || *p == '\n') {
           return_value_if_fail(str_append_char(str, '\\') == RET_OK, RET_OOM);
