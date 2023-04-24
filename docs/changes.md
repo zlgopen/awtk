@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/04/24
+  * combo\_box\_ex控件以及测试和demo(感谢煜楷提供补丁)
+
 2023/04/23  
   * 修复cppcheck发现的问题。
   * 修复遗漏的空指针检查(感谢[szsam](https://github.com/szsam)提供补丁)

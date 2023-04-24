@@ -40,6 +40,7 @@ const char* const s_combo_box_properties[] = {TK_EDIT_PROPS,
                                               WIDGET_PROP_ITEM_HEIGHT,
                                               WIDGET_PROP_OPEN_WINDOW,
                                               WIDGET_PROP_SELECTED_INDEX,
+                                              WIDGET_PROP_THEME_OF_POPUP,
                                               WIDGET_PROP_LOCALIZE_OPTIONS,
                                               NULL};
 
@@ -536,7 +537,7 @@ widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 }
 
 ret_t combo_box_set_on_item_click(widget_t* widget, event_func_t on_item_click, void* ctx) {
-  combo_box_t* combo_box = COMBO_BOX(ctx);
+  combo_box_t* combo_box = COMBO_BOX(widget);
   return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
 
   combo_box->on_item_click = on_item_click;

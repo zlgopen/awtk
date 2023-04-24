@@ -34,3 +34,14 @@ TEST(ComboBoxEx, localize) {
 
   widget_destroy(w);
 }
+
+TEST(ComboBoxEx, clone) {
+  widget_t* w1 = combo_box_ex_create(NULL, 10, 20, 30, 40);
+  widget_t* w2 = widget_clone(w1, NULL);
+
+  ASSERT_STREQ(widget_get_prop_str(w1, WIDGET_PROP_TYPE, NULL),
+               widget_get_prop_str(w2, WIDGET_PROP_TYPE, NULL));
+
+  widget_destroy(w1);
+  widget_destroy(w2);
+}

@@ -547,6 +547,17 @@ static ret_t on_combo_box_item_click(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_combo_box_ex_item_click(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(ctx);
+  widget_t* combo_box_item = e->target;
+  widget_t* value = widget_lookup(win, "value", TRUE);
+  return_value_if_fail(win != NULL && combo_box_item != NULL && value != NULL, RET_BAD_PARAMS);
+
+  widget_set_text(value, widget_get_text(combo_box_item));
+
+  return RET_CONTINUE;
+}
+
 static ret_t on_remove_self(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   widget_destroy(widget);
@@ -959,6 +970,23 @@ static ret_t on_click_prev_page(void* ctx, event_t* e) {
   return widget_set_prop_int(pages, WIDGET_PROP_CURR_PAGE, next_page);
 }
 
+static ret_t on_click_clone_combo_box_ex(void* ctx, event_t* e) {
+  int32_t x = 0;
+  int32_t y = 0;
+  widget_t* clone = NULL;
+  widget_t* win = WIDGET(ctx);
+  widget_t* combo_box = widget_lookup(win, "combo_box_ex_for_clone", TRUE);
+  return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
+
+  clone = widget_clone(combo_box, win);
+  x = win->w - clone->w;
+  x = x > 0 ? x : 0;
+  y = clone->y;
+  widget_move(clone, x, y);
+
+  return RET_OK;
+}
+
 static ret_t install_one(void* ctx, const void* iter) {
   widget_t* widget = WIDGET(iter);
   widget_t* win = widget_get_window(widget);
@@ -1075,6 +1103,10 @@ static ret_t install_one(void* ctx, const void* iter) {
       widget_on(widget, EVT_CLICK, on_click_next_page, (void*)(name + strlen("next_page:")));
     } else if (strstr(name, "prev_page:") == name) {
       widget_on(widget, EVT_CLICK, on_click_prev_page, (void*)(name + strlen("last_page:")));
+    } else if (strstr(name, "clone_combo_box_ex") == name) {
+      widget_on(widget, EVT_CLICK, on_click_clone_combo_box_ex, win);
+    } else if (strstr(name, "combo_box_ex_for_clone") == name) {
+      combo_box_set_on_item_click(widget, on_combo_box_ex_item_click, win);
     }
   } else if (tk_str_eq(widget->vt->type, "combo_box")) {
     widget_on(widget, EVT_VALUE_CHANGED, on_combo_box_changed, widget);

@@ -21,4 +21,6 @@
   <label name="value" x="center" y="middle:20" w="50%" h="30" text=""/>
   <button name="close" self_layout="default(x=center,y=m:50,w=50%,h=30)" 
     floating="true" text="Close"/>
+  <combo_box_ex name="combo_box_ex_for_clone" readonly="true" x="0" y="middle:100" w="100" h="30" options="1;2;3;4;5;6;7;8" theme_of_popup="number"/>
+  <button name="clone_combo_box_ex" self_layout="default(x=center,y=m:100,w=50,h=30)" floating="true" text="Clone"/>
 </window>

@@ -14,6 +14,25 @@ static ret_t on_event(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static widget_t* open_popup(widget_t* combobox) {
+  (void)combobox;
+
+  return NULL;
+}
+
+static ret_t on_layout_combobox_popup(widget_t* combobox) {
+  (void)combobox;
+
+  return RET_OK;
+}
+
+static ret_t on_item_click(void* ctx, event_t* e) {
+  (void)ctx;
+  (void)e;
+
+  return RET_OK;
+}
+
 TEST(ComboBox, basic) {
   value_t v1;
   value_t v2;
@@ -31,6 +50,12 @@ TEST(ComboBox, basic) {
   ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_SELECTED_INDEX, &v2), RET_OK);
   ASSERT_EQ(value_int(&v1), value_int(&v2));
   ASSERT_EQ(value_int(&v1), combo_box->selected_index);
+
+  value_set_str(&v1, "dummy");
+  ASSERT_EQ(widget_set_prop(w, WIDGET_PROP_THEME_OF_POPUP, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_THEME_OF_POPUP, &v2), RET_OK);
+  ASSERT_EQ(strcmp(v1.value.str, v2.value.str), 0);
+  ASSERT_EQ(strcmp(v1.value.str, combo_box->theme_of_popup), 0);
 
   widget_destroy(w);
 }
@@ -212,6 +237,10 @@ TEST(ComboBox, clone) {
   str_init(&str, 0);
   ASSERT_EQ(combo_box_set_options(w1, options), RET_OK);
   ASSERT_EQ(combo_box_set_selected_index(w1, 0), RET_OK);
+  ASSERT_EQ(combo_box_set_open_window(w1, "dummy"), RET_OK);
+  ASSERT_EQ(combo_box_set_theme_of_popup(w1, "dummy"), RET_OK);
+  ASSERT_EQ(combo_box_set_on_item_click(w1, on_item_click, w1), RET_OK);
+  ASSERT_EQ(combo_box_set_custom_open_popup(w1, open_popup, on_layout_combobox_popup), RET_OK);
 
   ASSERT_STREQ(COMBO_BOX(w1)->options, options);
 
@@ -225,6 +254,12 @@ TEST(ComboBox, clone) {
   log_debug("w2:%s\n", str.str);
   log_debug("==================================\n");
   ASSERT_EQ(widget_equal(w1, w2), TRUE);
+
+  ASSERT_EQ(COMBO_BOX(w1)->open_popup, COMBO_BOX(w2)->open_popup);
+  ASSERT_EQ(COMBO_BOX(w1)->on_item_click, COMBO_BOX(w2)->on_item_click);
+  ASSERT_STREQ(COMBO_BOX(w1)->theme_of_popup, COMBO_BOX(w2)->theme_of_popup);
+  ASSERT_EQ(COMBO_BOX(w1)->on_item_click_ctx, COMBO_BOX(w2)->on_item_click_ctx);
+  ASSERT_EQ(COMBO_BOX(w1)->on_layout_combobox_popup, COMBO_BOX(w2)->on_layout_combobox_popup);
 
   widget_destroy(w1);
   widget_destroy(w2);
