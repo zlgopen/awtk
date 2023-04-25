@@ -874,15 +874,15 @@ static widget_t* window_manager_default_find_top_dialog_highlighter(widget_t* wi
 
 static ret_t window_manager_animate_done(widget_t* widget) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+
   if (wm->animator != NULL) {
     bool_t is_open = wm->animator->open;
     widget_t* top_dialog_highligth = NULL;
     widget_t* prev_win = wm->animator->prev_win;
     widget_t* curr_win = wm->animator->curr_win;
-    window_animator_destroy(wm->animator);
     bool_t curr_win_is_keyboard = widget_is_keyboard(wm->animator->curr_win);
     bool_t curr_win_is_normal_window = widget_is_normal_window(wm->animator->curr_win);
-
+    window_animator_destroy(wm->animator);
 
     wm->animator = NULL;
     wm->animating = FALSE;
