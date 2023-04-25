@@ -97,6 +97,7 @@ clip_board_t* clip_board_sdl_create(void) {
   clip_board_sdl_t* cl = TKMEM_ZALLOC(clip_board_sdl_t);
   return_value_if_fail(cl != NULL, NULL);
 
+  str_init(&cl->str, 0);
   cl->clip_board.vt = &s_clip_board_sdl_vtable;
 
   return (clip_board_t*)cl;
