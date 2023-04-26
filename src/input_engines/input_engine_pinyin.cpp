@@ -57,7 +57,7 @@ static ret_t input_engine_pinyin_add_candidate(input_engine_t* engine, uint32_t 
   } else {
     uint32_t i = 0;
     wchar_t wstr[MAX_WORD_LEN + 1];
-    while (str16[i] && i < MAX_WORD_LEN) {
+    while (i < MAX_WORD_LEN && str16[i]) {
       wstr[i] = str16[i];
       i++;
     }
