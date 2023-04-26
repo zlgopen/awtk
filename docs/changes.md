@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/04/26
+  * 修复object\_date\_time\_test.cc中的错误(感谢[szsam](https://github.com/szsam)提供补丁)
+
 2023/04/25
   * 修复剪切板的问题(感谢雨欣提供补丁)。
   * 修复window\_manager\_animate\_done中先销毁动画再获取相关资源的bug(感谢泽武提供补丁)

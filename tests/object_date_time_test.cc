@@ -19,7 +19,7 @@ static ret_t visit_dump(void* ctx, const void* data) {
 
 TEST(ObjectDateTime, basic) {
   string log;
-  tk_object_t* obj = obj = object_date_time_create();
+  tk_object_t* obj = object_date_time_create();
 
   ASSERT_EQ(tk_object_set_prop_uint32(obj, OBJECT_DATE_TIME_PROP_YEAR, 3000), RET_OK);
   ASSERT_EQ(tk_object_get_prop_uint32(obj, OBJECT_DATE_TIME_PROP_YEAR, 0), 3000);
