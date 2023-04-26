@@ -213,6 +213,8 @@ ret_t output_res_c_source_ex(const char* filename, const char* theme, uint16_t t
   return_value_if_fail(filename != NULL && buff != NULL, RET_BAD_PARAMS);
 
   res = (asset_info_t*)malloc(total_size);
+  return_value_if_fail(res != NULL, RET_OOM);
+
   memset(res, 0x00, total_size);
   res->size = size;
   res->type = type;
