@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/04/27
+  * 修复scroll\_bar滑块位置没有正确更新(感谢煜楷提供补丁) 
+
 2023/04/26
   * 修复object\_date\_time\_test.cc中的错误(感谢[szsam](https://github.com/szsam)提供补丁)
   * 修复tools/common/utils.c中没有检查空指针的问题(感谢[szsam](https://github.com/szsam)提供补丁)

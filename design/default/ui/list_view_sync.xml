@@ -1,0 +1,25 @@
+<window anim_hint="htranslate" text="Sync Scrolling">
+  <list_view x="0" y="0" w="100%" h="50%" default_item_height="60">
+    <scroll_view name="scroll_view" x="0" y="0" w="-10" h="100%">
+      <list_item style="odd_clickable" w="100%" text="item"/>
+      <list_item style="even_clickable" name="item1" w="100%" text="item1"/>
+      <list_item style="odd_clickable" w="100%" text="item"/>
+      <list_item style="even_clickable" w="100%" text="item"/>
+      <list_item style="odd_clickable" w="100%" text="item"/>
+      <list_item style="even_clickable" w="100%" text="item"/>
+      <list_item style="odd_clickable" w="100%" text="item"/>
+      <list_item style="even_clickable" name="item2" w="100%" text="item2"/>
+      <list_item style="odd_clickable" w="100%" text="item"/>
+    </scroll_view>
+    <scroll_bar_d name="scroll_bar" x="r" y="0" w="10" h="100%"/>
+  </list_view>
+  <view x="0" y="b" w="100%" h="50%" children_layout="default(c=2,r=4,m=5,s=5)">
+    <button name="scroll:item1" text="ensure item1 visiable"/>
+    <button name="scroll:item2" text="ensure item2 visiable"/>
+    <button name="scroll:view_top" text="scroll view to top"/>
+    <button name="scroll:view_bot" text="scroll view to bottom"/>
+    <button name="scroll:bar_top" text="scroll bar to top"/>
+    <button name="scroll:bar_bot" text="scroll bar to bottom"/>
+  </view>
+  <button name="close" x="center" y="bottom:5" w="50%" h="30" text="close"/>
+</window>

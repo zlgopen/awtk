@@ -987,6 +987,31 @@ static ret_t on_click_clone_combo_box_ex(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_click_scroll(void* ctx, event_t* e) {
+  const char* name = (const char*)ctx;
+  widget_t* scroll_bar = widget_lookup(window_manager(), "scroll_bar", TRUE);
+  widget_t* scroll_view = widget_lookup(window_manager(), "scroll_view", TRUE);
+  return_value_if_fail(name != NULL && scroll_bar != NULL && scroll_view != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(name, "bar_top")) {
+    widget_set_prop_int(scroll_bar, WIDGET_PROP_VALUE, 0);
+  } else if (tk_str_eq(name, "view_top")) {
+    widget_set_prop_int(scroll_view, WIDGET_PROP_YOFFSET, 0);
+  } else if (tk_str_eq(name, "bar_bot")) {
+    int32_t max = widget_get_prop_int(scroll_bar, WIDGET_PROP_MAX, 0);
+    widget_set_prop_int(scroll_bar, WIDGET_PROP_VALUE, max);
+  } else if (tk_str_eq(name, "view_bot")) {
+    int32_t h = widget_get_prop_int(scroll_view, WIDGET_PROP_H, 0);
+    int32_t vh = widget_get_prop_int(scroll_view, WIDGET_PROP_VIRTUAL_H, 0);
+    widget_set_prop_int(scroll_view, WIDGET_PROP_YOFFSET, vh - h);
+  } else if (tk_str_eq(name, "item1") || tk_str_eq(name, "item2")) {
+    widget_t* item = widget_lookup(window_manager(), name, TRUE);
+    widget_ensure_visible_in_viewport(item);
+  }
+
+  return RET_OK;
+}
+
 static ret_t install_one(void* ctx, const void* iter) {
   widget_t* widget = WIDGET(iter);
   widget_t* win = widget_get_window(widget);
@@ -1107,6 +1132,8 @@ static ret_t install_one(void* ctx, const void* iter) {
       widget_on(widget, EVT_CLICK, on_click_clone_combo_box_ex, win);
     } else if (strstr(name, "combo_box_ex_for_clone") == name) {
       combo_box_set_on_item_click(widget, on_combo_box_ex_item_click, win);
+    } else if (strstr(name, "scroll:") == name) {
+      widget_on(widget, EVT_CLICK, on_click_scroll, (void*)(name + strlen("scroll:")));
     }
   } else if (tk_str_eq(widget->vt->type, "combo_box")) {
     widget_on(widget, EVT_VALUE_CHANGED, on_combo_box_changed, widget);

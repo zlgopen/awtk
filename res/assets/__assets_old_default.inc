@@ -99,6 +99,7 @@
 #include "default/inc/ui/mutable_image.data"
 #include "default/inc/ui/calibration_win.data"
 #include "default/inc/ui/memtest.data"
+#include "default/inc/ui/list_view_sync.data"
 #include "default/inc/ui/slide_view_h2.data"
 #include "default/inc/ui/slide_view_h3.data"
 #include "default/inc/ui/folder_chooser.data"
@@ -635,6 +636,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_mutable_image);
   assets_manager_add(am, ui_calibration_win);
   assets_manager_add(am, ui_memtest);
+  assets_manager_add(am, ui_list_view_sync);
   assets_manager_add(am, ui_slide_view_h2);
   assets_manager_add(am, ui_slide_view_h3);
   assets_manager_add(am, ui_folder_chooser);

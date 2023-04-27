@@ -14,6 +14,7 @@
             <button name="open:accordion1" text="Accordion"/>
             <button name="open:accordion2" text="Accordion Exclusive"/>
             <button name="open:list_view_animate" text="Animate"/>
+            <button name="open:list_view_sync" text="Sync Scrolling"/>
             <button name="close" text="Close"/>
         </scroll_view>
         <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" animator_time="0" value="0"/>
