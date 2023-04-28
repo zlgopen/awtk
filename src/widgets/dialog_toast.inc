@@ -230,7 +230,12 @@ static ret_t dialog_toast_on_idle_close(const idle_info_t* info) {
   if (!dialog_toast->is_opened) {
     return RET_REPEAT;
   }
-  return window_manager_close_window(dialog_toast->toast->parent, dialog_toast->toast);
+  
+  if (window_manager_get_top_window(window_manager()) == dialog_toast->toast) {
+    return window_manager_close_window(dialog_toast->toast->parent, dialog_toast->toast);
+  } else {
+    return window_manager_close_window_force(dialog_toast->toast->parent, dialog_toast->toast);
+  }
 }
 
 static ret_t dialog_toast_close(dialog_toast_t* dialog_toast) {
