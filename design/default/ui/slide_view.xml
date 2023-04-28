@@ -14,6 +14,7 @@
     <button name="open:slide_view_remove" h="30" text="remove"/>
     <button name="open:slide_view_remove_loop" h="30" text="remove loop"/>
     <button name="open:slide_view_animating_time" h="30" text="animating time"/>
+    <button name="open:slide_view_appoint_remove" h="30" text="remove appoint index"/>
     <button name="close" h="30" text="Close"/>
   </scroll_view>
 </window>

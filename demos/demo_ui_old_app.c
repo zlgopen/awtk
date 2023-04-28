@@ -597,6 +597,7 @@ static ret_t on_clone_self(void* ctx, event_t* e) {
 static ret_t on_clone_view(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   widget_t* iter = widget;
+  widget_t* native_window = widget_get_window(widget);
 
   while (iter != NULL) {
     if (tk_str_eq(widget_get_type(iter), WIDGET_TYPE_VIEW)) {
@@ -609,7 +610,7 @@ static ret_t on_clone_view(void* ctx, event_t* e) {
         widget_set_text_utf8(lb_view_index, text);
       }
       install_click_hander(clone);
-      return RET_OK;
+      return widget_invalidate(native_window, NULL);
     }
     iter = iter->parent;
   }
@@ -1012,6 +1013,23 @@ static ret_t on_click_scroll(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_click_slide_view_appoint_remove_evt(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_t* native_window = widget_get_window(widget);
+
+  widget_t* slide_view = widget_lookup(widget->parent, "appoint_view", TRUE);
+  return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
+
+  widget_t* spin_box = widget_lookup(widget->parent, "spin_appoint_index", TRUE);
+  return_value_if_fail(spin_box != NULL, RET_BAD_PARAMS);
+
+  int32_t val = edit_get_int(WIDGET(&SPIN_BOX(spin_box)->edit));
+  slide_view_remove_index(slide_view, val - 1);
+
+  return widget_invalidate(native_window, NULL);
+}
+
 static ret_t install_one(void* ctx, const void* iter) {
   widget_t* widget = WIDGET(iter);
   widget_t* win = widget_get_window(widget);
@@ -1132,6 +1150,8 @@ static ret_t install_one(void* ctx, const void* iter) {
       widget_on(widget, EVT_CLICK, on_click_clone_combo_box_ex, win);
     } else if (strstr(name, "combo_box_ex_for_clone") == name) {
       combo_box_set_on_item_click(widget, on_combo_box_ex_item_click, win);
+    } else if (tk_str_eq(name, "remove_appoint_index")) {
+      widget_on(widget, EVT_CLICK, on_click_slide_view_appoint_remove_evt, widget);
     } else if (strstr(name, "scroll:") == name) {
       widget_on(widget, EVT_CLICK, on_click_scroll, (void*)(name + strlen("scroll:")));
     }

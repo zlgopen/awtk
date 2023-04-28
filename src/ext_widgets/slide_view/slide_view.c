@@ -174,8 +174,8 @@ static ret_t slide_view_on_scroll_done(void* ctx, event_t* e) {
       active = active == slide_view->last_active ? active : slide_view->last_active;
     }
     if (slide_view->remove_when_anim_done) {
+      /* because of array, so do not need move item */
       widget_destroy(slide_view->prev);
-      slide_view_set_active_no_animate_impl(widget, active, TRUE);
     } else {
       slide_view_set_active_no_animate(widget, active);
     }
@@ -950,8 +950,8 @@ static ret_t slide_view_set_active_animate(widget_t* widget, uint32_t active) {
   old_active = slide_view->active;
 
   if ((old_active < active &&
-       !(slide_view->loop && old_active == 0 && active == widget->children->size - 1)) ||
-      (slide_view->loop && active == 0 && old_active == widget->children->size - 1)) {
+       !(slide_view->loop && old_active == 0 && active == widget->children->size)) ||
+      (slide_view->loop && active == 0 && old_active == widget->children->size)) {
     slide_view->prev = widget_get_child(widget, old_active);
     slide_view->next = widget_get_child(widget, active);
     xoffset_end = slide_view->vertical ? 0 : widget->w;
@@ -1088,41 +1088,40 @@ ret_t slide_view_set_auto_play(widget_t* widget, uint16_t auto_play) {
 
 ret_t slide_view_remove_index(widget_t* widget, uint32_t index) {
   ret_t ret = RET_FAIL;
-  int32_t active = -1;
+  int32_t remove_index = -1;
+  int32_t current_index = -1;
   slide_view_t* slide_view = SLIDE_VIEW(widget);
 
   return_value_if_fail(widget != NULL && slide_view != NULL && widget->children != NULL,
                        RET_BAD_PARAMS);
-  return_value_if_fail(index < widget->children->size, RET_BAD_PARAMS);
 
-  active = (int32_t)slide_view->active;
+  return_value_if_fail(widget->children->size > 0 && index < widget->children->size,
+                       RET_BAD_PARAMS);
 
-  if (widget->children->size > 1) {
-    if (index < active) {
-      ret = widget_destroy(widget_get_child(widget, index));
+  remove_index = (int32_t)index;
+  current_index = (int32_t)slide_view->active;
 
-      if (RET_OK == ret) {
-        active = tk_max(active - 1, 0);
-        slide_view_set_active_no_animate(widget, active);
-      }
-    } else if (index == active) {
-      if (index == widget->children->size - 1) {
-        active = slide_view->loop ? 0 : tk_max(active - 1, 0);
-      } else {
-        active++;
-      }
-
-      slide_view->remove_when_anim_done = TRUE;
-      ret = slide_view_set_active_animate(widget, active);
-
-      if (RET_OK != ret) {
-        slide_view->remove_when_anim_done = FALSE;
-      }
+  if (widget->children->size != 1 && remove_index == current_index) {
+    if (remove_index == widget->children->size - 1) {
+      current_index = slide_view->loop ? 0 : remove_index - 1;
     } else {
-      ret = widget_destroy(widget_get_child(widget, active));
+      current_index = remove_index + 1;
+    }
+
+    slide_view->remove_when_anim_done = TRUE;
+    ret = slide_view_set_active_animate(widget, current_index);
+
+    if (ret != RET_OK) {
+      slide_view->remove_when_anim_done = FALSE;
     }
   } else {
-    ret = widget_destroy(widget_get_child(widget, active));
+    ret = remove_index < current_index ?
+          slide_view_set_active_no_animate(widget, current_index - 1) :
+          RET_OK;
+
+    if (ret == RET_OK) {
+      ret = widget_destroy(widget_get_child(widget, remove_index));
+    }
   }
 
   return ret;

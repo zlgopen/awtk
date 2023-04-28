@@ -188,6 +188,7 @@
 #include "default/inc/ui/button_fscript.data"
 #include "default/inc/ui/file_chooser_for_save.data"
 #include "default/inc/ui/system_bar.data"
+#include "default/inc/ui/slide_view_appoint_remove.data"
 #include "default/inc/ui/accordion1.data"
 #include "default/inc/ui/menu_right_bottom.data"
 #include "default/inc/ui/list_view_d.data"
@@ -1104,6 +1105,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_button_fscript);
   assets_manager_add(am, ui_file_chooser_for_save);
   assets_manager_add(am, ui_system_bar);
+  assets_manager_add(am, ui_slide_view_appoint_remove);
   assets_manager_add(am, ui_accordion1);
   assets_manager_add(am, ui_menu_right_bottom);
   assets_manager_add(am, ui_list_view_d);
