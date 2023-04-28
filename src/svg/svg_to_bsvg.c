@@ -83,17 +83,21 @@ static ret_t svg_visit(struct svgtiny_diagram* diagram, void* ctx, tk_visit_t on
       while ((p - diagram->shape[i].path) < diagram->shape[i].path_length) {
         if (p[0] == svgtiny_PATH_MOVE) {
           svg_path_move_t path;
+          memset(&path, 0, sizeof(path));
           float x = p[1];
           float y = p[2];
           svg_path_move_init(&path, x, y);
           on_path(ctx, (svg_path_t*)&path);
           p += 3;
         } else if (p[0] == svgtiny_PATH_CLOSE) {
-          svg_path_t path = {SVG_PATH_Z};
+          svg_path_t path;
+          memset(&path, 0, sizeof(path));
+          path.type = SVG_PATH_Z;
           on_path(ctx, (svg_path_t*)&path);
           p += 1;
         } else if (p[0] == svgtiny_PATH_LINE) {
           svg_path_line_t path;
+          memset(&path, 0, sizeof(path));
           float x = p[1];
           float y = p[2];
           svg_path_line_init(&path, x, y);
@@ -101,6 +105,7 @@ static ret_t svg_visit(struct svgtiny_diagram* diagram, void* ctx, tk_visit_t on
           p += 3;
         } else if (p[0] == svgtiny_PATH_BEZIER) {
           svg_path_curve_to_t path;
+          memset(&path, 0, sizeof(path));
           float x1 = p[1];
           float y1 = p[2];
           float x2 = p[3];
