@@ -273,6 +273,20 @@ const char* style_mutable_get_str(style_t* s, const char* name, const char* defv
   }
 }
 
+static ret_t style_mutable_get(style_t* s, const char* state, const char* name, value_t* v) {
+  ret_t ret = RET_FAIL;
+  style_mutable_t* style = STYLE_MUTABLE(s);
+  return_value_if_fail(style != NULL, RET_BAD_PARAMS);
+
+  ret = style_mutable_get_value(s, state, name, v);
+
+  if (ret != RET_OK && style->default_style != NULL) {
+    ret = style_get(style->default_style, state, name, v);
+  }
+
+  return ret;
+}
+
 ret_t style_mutable_remove_value(style_t* s, const char* state, const char* name) {
   style_mutable_t* style = STYLE_MUTABLE(s);
   return_value_if_fail(style != NULL, RET_BAD_PARAMS);
@@ -480,7 +494,7 @@ static const style_vtable_t style_mutable_vt = {
     .get_str = style_mutable_get_str,
     .get_color = style_mutable_get_color,
     .get_gradient = style_mutable_get_gradient,
-    .get = style_mutable_get_value,
+    .get = style_mutable_get,
     .set = style_mutable_set_value,
     .set_style_data = style_mutable_set_style_data,
     .get_style_type = style_mutable_get_style_type,
