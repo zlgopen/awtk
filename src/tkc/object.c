@@ -855,9 +855,11 @@ typedef struct _json_info_t {
   uint32_t level;
   bool_t oneline;
   uint32_t index;
+  bool_t is_array;
 } json_info_t;
 
 static ret_t to_json(void* ctx, const void* data) {
+  char buff[64] = {0};
   json_info_t* info = (json_info_t*)ctx;
   named_value_t* nv = (named_value_t*)data;
   str_t* s = info->json;
@@ -878,8 +880,10 @@ static ret_t to_json(void* ctx, const void* data) {
     str_append_n_chars(s, ' ', info->indent * info->level);
   }
 
-  str_append_json_str(s, nv->name);
-  str_append(s, ": ");
+  if (!info->is_array) {
+    str_append_json_str(s, nv->name);
+    str_append(s, ": ");
+  }
 
   switch (v->type) {
     case VALUE_TYPE_STRING: {
@@ -890,8 +894,22 @@ static ret_t to_json(void* ctx, const void* data) {
       tk_object_to_json(value_object(v), s, info->indent + 1, info->level, oneline);
       break;
     }
+    case VALUE_TYPE_INT8:
+    case VALUE_TYPE_BOOL:
+    case VALUE_TYPE_INT16:
+    case VALUE_TYPE_INT32:
+    case VALUE_TYPE_INT64:
+    case VALUE_TYPE_UINT8:
+    case VALUE_TYPE_UINT16:
+    case VALUE_TYPE_UINT32:
+    case VALUE_TYPE_UINT64:
+    case VALUE_TYPE_FLOAT:
+    case VALUE_TYPE_FLOAT32:
+    case VALUE_TYPE_DOUBLE: {
+      str_append(s, value_str_ex(v, buff, sizeof(buff)));
+      break;
+    }
     default: {
-      char buff[64] = {0};
       str_append_json_str(s, value_str_ex(v, buff, sizeof(buff)));
       break;
     }
@@ -902,6 +920,7 @@ static ret_t to_json(void* ctx, const void* data) {
 
 ret_t tk_object_to_json(tk_object_t* obj, str_t* json, uint32_t indent, uint32_t level,
                         bool_t oneline) {
+  bool_t is_array = FALSE;
   json_info_t info = {json, indent, level, oneline, 0};
   return_value_if_fail(obj != NULL && json != NULL, RET_BAD_PARAMS);
 
@@ -909,7 +928,9 @@ ret_t tk_object_to_json(tk_object_t* obj, str_t* json, uint32_t indent, uint32_t
     str_append_n_chars(json, ' ', indent * level);
   }
 
-  str_append(json, "{");
+  is_array = tk_str_eq(obj->vt->type, "object_array");
+  info.is_array = is_array;
+  str_append(json, is_array ? "[" : "{");
   info.level++;
   tk_object_foreach_prop(obj, to_json, &info);
   if (!oneline) {
@@ -919,7 +940,7 @@ ret_t tk_object_to_json(tk_object_t* obj, str_t* json, uint32_t indent, uint32_t
   if (!oneline) {
     str_append_n_chars(json, ' ', indent * level);
   }
-  str_append(json, "}");
+  str_append(json, is_array ? "]" : "}");
 
   return RET_OK;
 }

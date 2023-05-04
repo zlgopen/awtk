@@ -673,19 +673,19 @@ TEST(ObjectDefault, to_json1) {
   tk_object_set_prop_int(obj, "age", 100);
   str_clear(&str);
   tk_object_to_json(obj, &str, 2, 0, TRUE);
-  ASSERT_STREQ(str.str, "{\"age\": \"100\",\"name\": \"jim\"}");
+  ASSERT_STREQ(str.str, "{\"age\": 100,\"name\": \"jim\"}");
 
   str_clear(&str);
   tk_object_to_json(obj, &str, 1, 0, FALSE);
-  ASSERT_STREQ(str.str, "{\n \"age\": \"100\",\n \"name\": \"jim\"\n}");
+  ASSERT_STREQ(str.str, "{\n \"age\": 100,\n \"name\": \"jim\"\n}");
 
   str_clear(&str);
   tk_object_to_json(obj, &str, 2, 0, FALSE);
-  ASSERT_STREQ(str.str, "{\n  \"age\": \"100\",\n  \"name\": \"jim\"\n}");
+  ASSERT_STREQ(str.str, "{\n  \"age\": 100,\n  \"name\": \"jim\"\n}");
 
   str_clear(&str);
   tk_object_to_json(obj, &str, 2, 1, FALSE);
-  ASSERT_STREQ(str.str, "  {\n    \"age\": \"100\",\n    \"name\": \"jim\"\n  }");
+  ASSERT_STREQ(str.str, "  {\n    \"age\": 100,\n    \"name\": \"jim\"\n  }");
 
   tk_object_t* detail = object_default_create();
   tk_object_set_prop_str(detail, "city", "sz");
@@ -694,10 +694,37 @@ TEST(ObjectDefault, to_json1) {
   str_clear(&str);
   tk_object_to_json(obj, &str, 2, 0, FALSE);
   ASSERT_STREQ(str.str,
-               "{\n  \"age\": \"100\",\n  \"detail\":    {\n      \"city\": \"sz\"\n   },\n  "
+               "{\n  \"age\": 100,\n  \"detail\":    {\n      \"city\": \"sz\"\n   },\n  "
                "\"name\": \"jim\"\n}");
 
   str_reset(&str);
   TK_OBJECT_UNREF(obj);
   TK_OBJECT_UNREF(detail);
 }
+
+#include "tkc/object_array.h"
+
+TEST(ObjectDefault, to_json2) {
+  str_t str;
+  value_t v;
+  tk_object_t* obj = object_default_create();
+  tk_object_t* detail = object_array_create();
+
+  str_init(&str, 100);
+  tk_object_set_prop_str(obj, "name", "awtk");
+  tk_object_set_prop_bool(obj, "light", FALSE);
+  tk_object_set_prop_int(obj, "age", 100);
+  tk_object_set_prop_float(obj, "weight", 60);
+  tk_object_set_prop_object(obj, "detail", detail);
+
+  object_array_push(detail, value_set_int(&v, 1));
+  object_array_push(detail, value_set_uint32(&v, 2));
+  object_array_push(detail, value_set_str(&v, "3"));
+  object_array_push(detail, value_set_str(&v, "4"));
+
+  tk_object_to_json(obj, &str, 0, 0, TRUE);
+  ASSERT_STREQ(str.str, "{\"age\": 100,\"detail\": [1,2,\"3\",\"4\"],\"light\": false,\"name\": \"awtk\",\"weight\": 60.000000}");
+
+  TK_OBJECT_UNREF(obj);
+  TK_OBJECT_UNREF(detail);
+}  
