@@ -19,6 +19,7 @@
  *
  */
 
+#include "tkc/utils.h"
 #include "debugger/debugger.h"
 
 ret_t debugger_lock(debugger_t* debugger) {
@@ -109,7 +110,7 @@ tk_object_t* debugger_get_local(debugger_t* debugger, uint32_t frame_index) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, NULL);
   return_value_if_fail(debugger->vt->get_local != NULL, NULL);
 
-  return debugger->vt->get_local(debugger, frame_index);
+  return debugger->vt->get_local(debugger, frame_index); 
 }
 
 tk_object_t* debugger_get_self(debugger_t* debugger) {
@@ -208,4 +209,80 @@ ret_t debugger_deinit(debugger_t* debugger) {
   return_value_if_fail(debugger->vt->deinit != NULL, RET_BAD_PARAMS);
 
   return debugger->vt->deinit(debugger);
+}
+
+tk_object_t* debugger_get_threads(debugger_t* debugger) {
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, NULL);
+  return_value_if_fail(debugger->vt->get_threads != NULL, NULL);
+
+  return debugger->vt->get_threads(debugger);
+}
+
+ret_t debugger_launch_app(debugger_t* debugger, const char* program, const char* work_dir,
+                                       int argc, char* argv[]) {
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger->vt->launch_app != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(program != NULL, RET_BAD_PARAMS);
+
+  return debugger->vt->launch_app(debugger, program, work_dir, argc, argv);
+}
+
+ret_t debugger_set_break_point_ex(debugger_t* debugger, const char* position) {
+  return_value_if_fail(position != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
+
+  if (debugger->vt->set_break_point_ex != NULL) {
+    return debugger->vt->set_break_point_ex(debugger, position);
+  } else if(debugger->vt->set_break_point != NULL) {
+    const char* p = strchr(position, ':');
+    if(p != NULL) {
+      return debugger->vt->set_break_point(debugger, tk_atoi(p+1));
+    }
+    return RET_NOT_IMPL;
+  } else {
+    return RET_NOT_IMPL;
+  }
+}
+
+ret_t debugger_remove_break_point_ex(debugger_t* debugger, const char* position) {
+  return_value_if_fail(position != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
+
+  if (debugger->vt->remove_break_point_ex != NULL) {
+    return debugger->vt->remove_break_point_ex(debugger, position);
+  } else if(debugger->vt->remove_break_point != NULL) {
+    const char* p = strchr(position, ':');
+    if(p != NULL) {
+      return debugger->vt->remove_break_point(debugger, tk_atoi(p+1));
+    }
+    return RET_NOT_IMPL;
+  } else {
+    return RET_NOT_IMPL;
+  }
+}
+
+tk_object_t* debugger_get_var(debugger_t* debugger, const char* path) {
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, NULL);
+  return_value_if_fail(debugger->vt->get_var != NULL, NULL);
+
+  return debugger->vt->get_var(debugger, path);
+}
+
+ret_t debugger_set_current_frame(debugger_t* debugger, uint32_t frame_index) {
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
+
+  debugger->current_frame_index = frame_index;
+
+  if(debugger->vt->set_current_frame != NULL) {
+    return debugger->vt->set_current_frame(debugger, frame_index);
+  } else {
+    return RET_OK;
+  }
+}
+
+ret_t debugger_dispatch_messages(debugger_t* debugger) {
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger->vt->dispatch_messages != NULL, RET_BAD_PARAMS);
+
+  return debugger->vt->dispatch_messages(debugger);
 }
