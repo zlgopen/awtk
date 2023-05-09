@@ -880,9 +880,10 @@ static ret_t window_manager_animate_done(widget_t* widget) {
     widget_t* top_dialog_highligth = NULL;
     widget_t* prev_win = wm->animator->prev_win;
     widget_t* curr_win = wm->animator->curr_win;
-    bool_t curr_win_is_keyboard = widget_is_keyboard(wm->animator->curr_win);
-    bool_t curr_win_is_normal_window = widget_is_normal_window(wm->animator->curr_win);
+
     window_animator_destroy(wm->animator);
+    bool_t curr_win_is_keyboard = widget_is_keyboard(curr_win);
+    bool_t curr_win_is_normal_window = widget_is_normal_window(curr_win);
 
     wm->animator = NULL;
     wm->animating = FALSE;

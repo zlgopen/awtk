@@ -1,4 +1,8 @@
 # 最新动态
+
+2023/05/09
+  * 修复启动时 widget\_is\_keyboard 和 widget\_is\_normal\_window 的判空警告, 使用了 free 且未置空的指针(感谢高源提供补丁)。
+
 2023/05/04
   * 完善tk\_object\_to\_json对不同数据类型和数组的处理。
 
