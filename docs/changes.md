@@ -3,6 +3,7 @@
 2023/05/09
   * 修复启动时 widget\_is\_keyboard 和 widget\_is\_normal\_window 的判空警告, 使用了 free 且未置空的指针(感谢高源提供补丁)。
   * 修复在 lcd_mem 模式下，创建离线画布影响全局LCD宽高问题(感谢高源提供补丁)。
+  * 补全svg_image离线画布创建时的编码格式(感谢高源提供补丁)。
 
 2023/05/04
   * 完善tk\_object\_to\_json对不同数据类型和数组的处理。

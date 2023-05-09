@@ -172,12 +172,22 @@ static ret_t svg_image_paint_online_canvas(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static ret_t svg_image_repaint_offline_cache(widget_t* widget) {
+static ret_t svg_image_repaint_offline_cache(widget_t* widget, canvas_t* c) {
   svg_image_t* svg_image = SVG_IMAGE(widget);
   return_value_if_fail(svg_image != NULL, RET_FAIL);
 
   if (svg_image->canvas_offline == NULL) {
+#ifdef WITH_GPU
     svg_image->canvas_offline = canvas_offline_create(widget->w, widget->h, BITMAP_FMT_RGBA8888);
+#else 
+    bitmap_format_t format = lcd_get_desired_bitmap_format(c->lcd);
+    format = (format == BITMAP_FMT_BGR565 || BITMAP_FMT_BGR888 || format == BITMAP_FMT_BGRA8888) ? 
+                BITMAP_FMT_BGRA8888 : 
+             (format == BITMAP_FMT_RGB565 || BITMAP_FMT_RGB888 || format == BITMAP_FMT_RGBA8888) ? 
+                BITMAP_FMT_RGBA8888 : 
+                format;
+    svg_image->canvas_offline = canvas_offline_create(widget->w, widget->h, format);
+#endif
   }
 
   canvas_offline_begin_draw(svg_image->canvas_offline);
@@ -194,7 +204,7 @@ static ret_t svg_image_paint_offline_canvas(widget_t* widget, canvas_t* c) {
 
   if (svg_image->canvas_offline == NULL || image_need_transform(widget)) {
     /* need repaint offline canvas cache */
-    svg_image_repaint_offline_cache(widget);
+    svg_image_repaint_offline_cache(widget, c);
   }
 
   if (svg_image->canvas_offline != NULL) {
