@@ -215,6 +215,9 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
       }
     }
 #endif
+    system_info_set_lcd_w(info, canvas->lcd_w);
+    system_info_set_lcd_h(info, canvas->lcd_h);
+
     c_tmp = canvas_init(&(canvas->base), lcd, widget_get_font_manager(window_manager()));
     canvas_set_assets_manager(c_tmp, widget_get_assets_manager(window_manager()));
     canvas_set_global_alpha(&(canvas->base), 0xff);
@@ -281,6 +284,8 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas) {
   canvas_offline_t* canvas_offline = NULL;
 #ifdef WITH_GPU
   canvas_offline_gpu_t* c = NULL;
+#else
+  system_info_t* info = system_info();
 #endif
 
 #ifdef WITH_CANVAS_OFFLINE_CUSTOM
@@ -311,6 +316,9 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas) {
   }
 #else
   if (canvas_offline->begin_draw == 0) {
+    system_info_set_lcd_w(info, canvas_offline->lcd_w);
+    system_info_set_lcd_h(info, canvas_offline->lcd_h);
+
     canvas_get_clip_rect(canvas, &canvas_offline->canvas_clip_rect);
     if (vg != NULL) {
       vgcanvas_begin_frame(vg, NULL);
@@ -328,6 +336,8 @@ ret_t canvas_offline_end_draw(canvas_t* canvas) {
   canvas_offline_t* canvas_offline = NULL;
 #ifdef WITH_GPU
   canvas_offline_gpu_t* c = NULL;
+#else
+  system_info_t* info = system_info();
 #endif
 
 #ifdef WITH_CANVAS_OFFLINE_CUSTOM
@@ -354,6 +364,9 @@ ret_t canvas_offline_end_draw(canvas_t* canvas) {
   }
 #else
   if (canvas_offline->begin_draw == 0) {
+    system_info_set_lcd_w(info, canvas_offline->lcd_w);
+    system_info_set_lcd_h(info, canvas_offline->lcd_h);
+
     canvas_set_clip_rect(canvas, &canvas_offline->canvas_clip_rect);
     if (vg != NULL) {
       vgcanvas_restore(vg);
