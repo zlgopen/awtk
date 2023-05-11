@@ -335,6 +335,8 @@ int32_t event_from_name(const char* name) {
         return EVT_WINDOW_OPEN;
       } else if (tk_str_eq(name, "window_will_open")) {
         return EVT_WINDOW_WILL_OPEN;
+      } else if (tk_str_eq(name, "widget_load")) {
+        return EVT_WIDGET_LOAD;
       }
       break;
     }
@@ -355,6 +357,8 @@ int32_t event_from_name(const char* name) {
     case 'm': {
       if (tk_str_eq(name, "model_change")) {
         return EVT_MODEL_CHANGE;
+      } else if (tk_str_eq(name, "move_resize")) {
+        return EVT_MOVE_RESIZE;
       }
       break;
     }
