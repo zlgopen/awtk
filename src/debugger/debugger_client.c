@@ -124,13 +124,25 @@ static ret_t debugger_client_dispatch_one(debugger_t* debugger, debugger_resp_t*
   return debugger_client_dispatch_message(debugger, resp);
 }
 
-ret_t debugger_client_dispatch(debugger_t* debugger) {
+static ret_t debugger_client_dispatch_messages(debugger_t* debugger) {
   debugger_resp_t resp;
-  return_value_if_fail(debugger != NULL, RET_BAD_PARAMS);
+  tk_istream_t* in = NULL;
+  debugger_client_t* client = DEBUGGER_CLIENT(debugger);
+  return_value_if_fail(client != NULL, RET_BAD_PARAMS);
 
   memset(&resp, 0x00, sizeof(resp));
 
-  return debugger_client_dispatch_one(debugger, &resp);
+  in = tk_iostream_get_istream(client->io);
+
+  while(tk_istream_wait_for_data(in, 10) == RET_OK) {
+    debugger_client_dispatch_one(debugger, &resp);
+  }
+
+  return RET_OK;
+}
+
+ret_t debugger_client_dispatch(debugger_t* debugger) {
+  return debugger_client_dispatch_messages(debugger);
 }
 
 ret_t debugger_client_wait_for_completed(debugger_t* debugger) {
@@ -409,6 +421,7 @@ static const debugger_vtable_t s_debugger_client_vtable = {
     .set_break_point = debugger_client_set_break_point,
     .remove_break_point = debugger_client_remove_break_point,
     .clear_break_points = debugger_client_clear_break_points,
+    .dispatch_messages = debugger_client_dispatch_messages,
     .deinit = debugger_client_deinit,
 };
 
