@@ -74,6 +74,33 @@ typedef ret_t (*debugger_set_current_frame_t)(debugger_t* debugger, uint32_t fra
 typedef ret_t (*debugger_dispatch_messages_t)(debugger_t* debugger);
 /*}扩展接口以支持lldb的DAP协议{*/
 
+/**
+ * @enum debugger_program_state_t
+ * @prefix DEBUGGER_PROGRAM_STATE_
+ * 被调试程序的状态。
+ */
+typedef enum _debugger_program_state_t {
+  /** 
+   * @const DEBUGGER_PROGRAM_STATE_NONE
+   * 初始状态。
+   */
+  DEBUGGER_PROGRAM_STATE_NONE = 0,
+  /** 
+   * @const DEBUGGER_PROGRAM_STATE_PAUSED
+   * 停止状态(断点/异常等)。
+   */
+  DEBUGGER_PROGRAM_STATE_PAUSED,
+  /** 
+   * @const DEBUGGER_PROGRAM_STATE_RUNNING
+   * 运行状态(断点/异常等)。
+   */
+  DEBUGGER_PROGRAM_STATE_RUNNING,
+  /** 
+   * @const DEBUGGER_PROGRAM_STATE_TERMINATED
+   * 终止状态(断点/异常等)。
+   */
+  DEBUGGER_PROGRAM_STATE_TERMINATED
+} debugger_program_state_t;
 
 typedef debugger_t* (*debugger_fscript_create_t)(void);
 
@@ -128,6 +155,7 @@ struct _debugger_t {
   tk_object_t object;
 
   /*private*/
+  debugger_program_state_t state;
   const debugger_vtable_t* vt;
   uint32_t current_frame_index;
 };
@@ -152,7 +180,7 @@ ret_t debugger_unlock(debugger_t* debugger);
 
 /**
  * @method debugger_stop
- * 停止运行。
+ * 终止程序运行。
  * @param {debugger_t*} debugger debugger对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

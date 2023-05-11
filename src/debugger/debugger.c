@@ -22,6 +22,24 @@
 #include "tkc/utils.h"
 #include "debugger/debugger.h"
 
+bool_t debugger_is_paused(debugger_t* debugger) {
+  return_value_if_fail(debugger != NULL, FALSE);
+
+  return debugger->state == DEBUGGER_PROGRAM_STATE_PAUSED;
+}
+
+static bool_t debugger_is_running(debugger_t* debugger) {
+  return_value_if_fail(debugger != NULL, FALSE);
+
+  return debugger->state == DEBUGGER_PROGRAM_STATE_RUNNING;
+}
+
+static bool_t debugger_is_paused_or_running(debugger_t* debugger) {
+  return_value_if_fail(debugger != NULL, FALSE);
+
+  return debugger->state == DEBUGGER_PROGRAM_STATE_RUNNING || debugger->state == DEBUGGER_PROGRAM_STATE_PAUSED;
+}
+
 ret_t debugger_lock(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->lock != NULL, RET_BAD_PARAMS);
@@ -39,6 +57,7 @@ ret_t debugger_unlock(debugger_t* debugger) {
 ret_t debugger_stop(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->stop != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger_is_paused_or_running(debugger), RET_BAD_PARAMS);
 
   return debugger->vt->stop(debugger);
 }
@@ -53,15 +72,9 @@ ret_t debugger_restart(debugger_t* debugger) {
 ret_t debugger_pause(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->pause != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger_is_running(debugger), RET_BAD_PARAMS);
 
   return debugger->vt->pause(debugger);
-}
-
-bool_t debugger_is_paused(debugger_t* debugger) {
-  return_value_if_fail(debugger != NULL && debugger->vt != NULL, FALSE);
-  return_value_if_fail(debugger->vt->is_paused != NULL, FALSE);
-
-  return debugger->vt->is_paused(debugger);
 }
 
 bool_t debugger_match(debugger_t* debugger, const char* code_id) {
@@ -74,6 +87,8 @@ bool_t debugger_match(debugger_t* debugger, const char* code_id) {
 ret_t debugger_step_in(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->step_in != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger_is_paused(debugger), RET_BAD_PARAMS);
+  debugger->state = DEBUGGER_PROGRAM_STATE_RUNNING;
 
   return debugger->vt->step_in(debugger);
 }
@@ -81,6 +96,8 @@ ret_t debugger_step_in(debugger_t* debugger) {
 ret_t debugger_step_out(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->step_out != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger_is_paused(debugger), RET_BAD_PARAMS);
+  debugger->state = DEBUGGER_PROGRAM_STATE_RUNNING;
 
   return debugger->vt->step_out(debugger);
 }
@@ -88,6 +105,8 @@ ret_t debugger_step_out(debugger_t* debugger) {
 ret_t debugger_step_over(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->step_over != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger_is_paused(debugger), RET_BAD_PARAMS);
+  debugger->state = DEBUGGER_PROGRAM_STATE_RUNNING;
 
   return debugger->vt->step_over(debugger);
 }
@@ -95,6 +114,8 @@ ret_t debugger_step_over(debugger_t* debugger) {
 ret_t debugger_step_loop_over(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->step_loop_over != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger_is_paused(debugger), RET_BAD_PARAMS);
+  debugger->state = DEBUGGER_PROGRAM_STATE_RUNNING;
 
   return debugger->vt->step_loop_over(debugger);
 }
@@ -102,6 +123,8 @@ ret_t debugger_step_loop_over(debugger_t* debugger) {
 ret_t debugger_continue(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->continve != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger_is_paused(debugger), RET_BAD_PARAMS);
+  debugger->state = DEBUGGER_PROGRAM_STATE_RUNNING;
 
   return debugger->vt->continve(debugger);
 }
@@ -109,6 +132,7 @@ ret_t debugger_continue(debugger_t* debugger) {
 tk_object_t* debugger_get_local(debugger_t* debugger, uint32_t frame_index) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, NULL);
   return_value_if_fail(debugger->vt->get_local != NULL, NULL);
+  return_value_if_fail(debugger_is_paused(debugger), NULL);
 
   return debugger->vt->get_local(debugger, frame_index); 
 }
@@ -116,6 +140,7 @@ tk_object_t* debugger_get_local(debugger_t* debugger, uint32_t frame_index) {
 tk_object_t* debugger_get_self(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, NULL);
   return_value_if_fail(debugger->vt->get_self != NULL, NULL);
+  return_value_if_fail(debugger_is_paused(debugger), NULL);
 
   return debugger->vt->get_self(debugger);
 }
@@ -123,6 +148,7 @@ tk_object_t* debugger_get_self(debugger_t* debugger) {
 tk_object_t* debugger_get_global(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, NULL);
   return_value_if_fail(debugger->vt->get_global != NULL, NULL);
+  return_value_if_fail(debugger_is_paused(debugger), NULL);
 
   return debugger->vt->get_global(debugger);
 }
@@ -131,6 +157,7 @@ ret_t debugger_get_callstack(debugger_t* debugger, binary_data_t* callstack) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->get_callstack != NULL, RET_BAD_PARAMS);
   return_value_if_fail(callstack != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger_is_paused(debugger), RET_BAD_PARAMS);
 
   return debugger->vt->get_callstack(debugger, callstack);
 }
@@ -160,6 +187,7 @@ ret_t debugger_attach(debugger_t* debugger, const char* lang, const char* code_i
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->attach != NULL, RET_BAD_PARAMS);
   return_value_if_fail(lang != NULL && code_id != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger->state == DEBUGGER_PROGRAM_STATE_NONE, RET_BAD_PARAMS);
 
   return debugger->vt->attach(debugger, lang, code_id);
 }
@@ -169,6 +197,10 @@ ret_t debugger_get_code(debugger_t* debugger, binary_data_t* code) {
   return_value_if_fail(debugger->vt->get_code != NULL, RET_BAD_PARAMS);
   return_value_if_fail(code != NULL, RET_BAD_PARAMS);
 
+  if (debugger->state != DEBUGGER_PROGRAM_STATE_PAUSED && debugger->state != DEBUGGER_PROGRAM_STATE_RUNNING) {
+    return RET_FAIL;
+  }
+
   return debugger->vt->get_code(debugger, code);
 }
 
@@ -176,6 +208,9 @@ ret_t debugger_get_debuggers(debugger_t* debugger, binary_data_t* debuggers) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->get_debuggers != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debuggers != NULL, RET_BAD_PARAMS);
+  if (debugger->state != DEBUGGER_PROGRAM_STATE_PAUSED && debugger->state != DEBUGGER_PROGRAM_STATE_RUNNING) {
+    return RET_FAIL;
+  }
 
   return debugger->vt->get_debuggers(debugger, debuggers);
 }
@@ -200,6 +235,7 @@ ret_t debugger_launch(debugger_t* debugger, const char* lang, const binary_data_
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->launch != NULL, RET_BAD_PARAMS);
   return_value_if_fail(code != NULL && code->data != NULL && lang != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger->state == DEBUGGER_PROGRAM_STATE_NONE, RET_BAD_PARAMS);
 
   return debugger->vt->launch(debugger, lang, code);
 }
@@ -207,6 +243,7 @@ ret_t debugger_launch(debugger_t* debugger, const char* lang, const binary_data_
 ret_t debugger_deinit(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->deinit != NULL, RET_BAD_PARAMS);
+  debugger->state = DEBUGGER_PROGRAM_STATE_NONE;
 
   return debugger->vt->deinit(debugger);
 }
@@ -214,6 +251,7 @@ ret_t debugger_deinit(debugger_t* debugger) {
 tk_object_t* debugger_get_threads(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, NULL);
   return_value_if_fail(debugger->vt->get_threads != NULL, NULL);
+  return_value_if_fail(debugger_is_paused(debugger), NULL);
 
   return debugger->vt->get_threads(debugger);
 }
@@ -223,6 +261,7 @@ ret_t debugger_launch_app(debugger_t* debugger, const char* program, const char*
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->launch_app != NULL, RET_BAD_PARAMS);
   return_value_if_fail(program != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger->state == DEBUGGER_PROGRAM_STATE_NONE, RET_BAD_PARAMS);
 
   return debugger->vt->launch_app(debugger, program, work_dir, argc, argv);
 }
@@ -247,6 +286,7 @@ ret_t debugger_set_break_point_ex(debugger_t* debugger, const char* position) {
 ret_t debugger_remove_break_point_ex(debugger_t* debugger, const char* position) {
   return_value_if_fail(position != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger_is_paused(debugger), RET_BAD_PARAMS);
 
   if (debugger->vt->remove_break_point_ex != NULL) {
     return debugger->vt->remove_break_point_ex(debugger, position);
@@ -254,6 +294,8 @@ ret_t debugger_remove_break_point_ex(debugger_t* debugger, const char* position)
     const char* p = strchr(position, ':');
     if(p != NULL) {
       return debugger->vt->remove_break_point(debugger, tk_atoi(p+1));
+    } else {
+      return debugger->vt->remove_break_point(debugger, tk_atoi(position));
     }
     return RET_NOT_IMPL;
   } else {
@@ -264,15 +306,16 @@ ret_t debugger_remove_break_point_ex(debugger_t* debugger, const char* position)
 tk_object_t* debugger_get_var(debugger_t* debugger, const char* path) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, NULL);
   return_value_if_fail(debugger->vt->get_var != NULL, NULL);
+  return_value_if_fail(debugger_is_paused(debugger), NULL);
 
   return debugger->vt->get_var(debugger, path);
 }
 
 ret_t debugger_set_current_frame(debugger_t* debugger, uint32_t frame_index) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger_is_paused(debugger), RET_BAD_PARAMS);
 
   debugger->current_frame_index = frame_index;
-
   if(debugger->vt->set_current_frame != NULL) {
     return debugger->vt->set_current_frame(debugger, frame_index);
   } else {

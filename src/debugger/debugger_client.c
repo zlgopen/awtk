@@ -19,7 +19,10 @@
  *
  */
 
+#include "tkc/str.h"
 #include "tkc/buffer.h"
+#include "tkc/data_reader_mem.h"
+#include "conf_io/conf_json.h"
 #include "ubjson/ubjson_parser.h"
 #include "debugger/debugger_message.h"
 #include "debugger/debugger_client.h"
@@ -66,6 +69,7 @@ static ret_t debugger_client_dispatch_message(debugger_t* debugger, debugger_res
       tk_object_t* obj = ubjson_to_object(client->buff, resp->size);
       return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
       line = tk_object_get_prop_int(obj, STR_DEBUGGER_EVENT_PROP_LINE, 0);
+      debugger->state = DEBUGGER_PROGRAM_STATE_PAUSED;
       emitter_dispatch(EMITTER(debugger), debugger_breaked_event_init(&event, line));
       TK_OBJECT_UNREF(obj);
       break;
@@ -96,6 +100,7 @@ static ret_t debugger_client_dispatch_message(debugger_t* debugger, debugger_res
     }
     case DEBUGGER_RESP_MSG_COMPLETED: {
       client->program_completed = TRUE;
+      debugger->state = DEBUGGER_PROGRAM_STATE_TERMINATED;
       emitter_dispatch_simple_event(EMITTER(debugger), DEBUGGER_RESP_MSG_COMPLETED);
       break;
     }
@@ -133,9 +138,10 @@ static ret_t debugger_client_dispatch_messages(debugger_t* debugger) {
   memset(&resp, 0x00, sizeof(resp));
 
   in = tk_iostream_get_istream(client->io);
-
-  while(tk_istream_wait_for_data(in, 10) == RET_OK) {
-    debugger_client_dispatch_one(debugger, &resp);
+  while (tk_istream_wait_for_data(in, 10) == RET_OK) {
+    if (debugger_client_dispatch_one(debugger, &resp) != RET_OK) {
+      break;
+    }
   }
 
   return RET_OK;
@@ -295,9 +301,57 @@ static ret_t debugger_client_continue(debugger_t* debugger) {
   return debugger_client_request_simple(debugger, DEBUGGER_REQ_CONTINUE, 0);
 }
 
+typedef struct _visit_var_info_t {
+  uint32_t i;
+  str_t* str;
+}visit_var_info_t;
+
+static ret_t visit_var(void* ctx, const void* data) {
+  char buff[64] = {0};
+  visit_var_info_t* info = (visit_var_info_t*)ctx;
+  str_t* str = info->str;
+  named_value_t* nv = (named_value_t*)data;
+
+  if(info->i > 0) {
+    str_append(str, ",");
+  } 
+  info->i++;
+  str_append(str, "{");
+  str_append_json_str_pair(str, "name", nv->name);
+  str_append(str, ",");
+  str_append_json_str_pair(str, "type", value_type_name(nv->value.type));
+  str_append(str, ",");
+  str_append_json_str_pair(str, "evaluateName", nv->name);
+  str_append(str, ",");
+  str_append_json_str_pair(str, "value", value_str_ex(&(nv->value), buff, sizeof(buff)));
+  str_append(str, "}");
+
+  return RET_OK;
+}
+
+static tk_object_t* debugger_client_variables_to_dap_format(tk_object_t* obj) {
+  str_t str;
+  char url[MAX_PATH+1] = {0};
+  visit_var_info_t info = {0, &str};
+  return_value_if_fail(obj != NULL, NULL);
+
+  str_init(&str, 1000);
+  str_append(&str, "{\"body\":{\"variables\":[");
+  tk_object_foreach_prop(obj, visit_var, &info);
+  TK_OBJECT_UNREF(obj);
+  str_append(&str, "]}}");
+  
+  data_reader_mem_build_url(str.str, str.size, url);
+  obj = conf_json_load(url, FALSE);
+  str_reset(&str);
+
+  return obj;
+}
+
 static tk_object_t* debugger_client_get_local(debugger_t* debugger, uint32_t frame_index) {
   if (debugger_client_write_simple(debugger, DEBUGGER_REQ_GET_LOCAL, frame_index) == RET_OK) {
-    return debugger_client_read_object(debugger, DEBUGGER_RESP_GET_LOCAL);
+    tk_object_t* obj = debugger_client_read_object(debugger, DEBUGGER_RESP_GET_LOCAL);
+    return debugger_client_variables_to_dap_format(obj);
   } else {
     return NULL;
   }
