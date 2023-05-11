@@ -14,14 +14,9 @@
  *
  */
 
-#include "tkc/fs.h"
-#include "tkc/mem.h"
-#include "tkc/thread.h"
-#include "tkc/utils.h"
-#include "tkc/object.h"
-#include "tkc/tokenizer.h"
-#include "tkc/object_default.h"
-#include "tkc/socket_helper.h"
+#include "tkc.h"
+#include "debugger/debugger.h"
+#include "debugger/debugger_lldb.h"
 #include "debugger/debugger_client_tcp.h"
 
 #ifndef WIN32
@@ -86,7 +81,8 @@ typedef struct _app_info_t {
   tk_object_t* obj;
   bool_t completed;
   debugger_t* debugger;
-  int32_t break_at_line;
+  int32_t current_line;
+  const char* current_func;
 } app_info_t;
 
 #include "tkc/data_reader_mem.h"
@@ -126,7 +122,7 @@ static ret_t code_get_line(const char* code, uint32_t size, int32_t offset, str_
   return RET_OK;
 }
 
-static ret_t debugger_show_code(app_info_t* app, bool_t all) {
+static ret_t fdb_show_code(app_info_t* app, bool_t all) {
   str_t str;
   int32_t offset = 0;
   int32_t line = 0;
@@ -137,8 +133,8 @@ static ret_t debugger_show_code(app_info_t* app, bool_t all) {
 
   str_init(&str, 100);
   while (code_get_line((const char*)(code.data), code.size, offset, &str) == RET_OK) {
-    if ((tk_abs((line - app->break_at_line)) < (SHOW_CODE_LINES / 2)) || all) {
-      if (line == app->break_at_line) {
+    if ((tk_abs((line - app->current_line)) < (SHOW_CODE_LINES / 2)) || all) {
+      if (line == app->current_line) {
         log_debug(KGRN "%d: =>%s" KNRM, line, str.str);
       } else {
         log_debug("%d:   %s", line, str.str);
@@ -153,26 +149,180 @@ static ret_t debugger_show_code(app_info_t* app, bool_t all) {
   return RET_OK;
 }
 
-static ret_t dump_object_prop(void* ctx, const void* data) {
-  char buff[64];
-  named_value_t* nv = (named_value_t*)data;
-  value_str_ex(&(nv->value), buff, sizeof(buff));
-  log_debug(" %s=%s\n", nv->name, buff);
+static ret_t dump_threads(const char* title, tk_object_t* obj) {
+  log_debug("%s:\n", title);
+  log_debug("---------------------\n");
+  if (obj != NULL) {
+    uint32_t i = 0;
+    int32_t id = 0;
+    const char* name = NULL;
+    char path[MAX_PATH + 1] = {0};
+    uint32_t n = tk_object_get_prop_uint32(obj, "body.threads.#size", 0);
+
+    for (i = 0; i < n; i++) {
+      tk_snprintf(path, sizeof(path) - 1, "body.threads.[%d].name", i);
+      name = tk_object_get_prop_str(obj, path);
+
+      tk_snprintf(path, sizeof(path) - 1, "body.threads.[%d].id", i);
+      id = tk_object_get_prop_int32(obj, path, 0);
+
+      log_debug("[%d]: %s\n", id, name);
+    }
+  }
 
   return RET_OK;
 }
 
-static ret_t dump_object(const char* title, tk_object_t* obj) {
+static ret_t fdb_show_variables(const char* title, tk_object_t* obj) {
   log_debug("%s:\n", title);
   log_debug("---------------------\n");
-  tk_object_foreach_prop(obj, dump_object_prop, NULL);
+  if (obj != NULL) {
+    uint32_t i = 0;
+    const char* name = NULL;
+    const char* type = NULL;
+    const char* value = NULL;
+    char path[MAX_PATH + 1] = {0};
+    uint32_t n = tk_object_get_prop_uint32(obj, "body.variables.#size", 0);
+
+    for (i = 0; i < n; i++) {
+      tk_snprintf(path, sizeof(path) - 1, "body.variables.[%d].evaluateName", i);
+      name = tk_object_get_prop_str(obj, path);
+      tk_snprintf(path, sizeof(path) - 1, "body.variables.[%d].value", i);
+      value = tk_object_get_prop_str(obj, path);
+
+      tk_snprintf(path, sizeof(path) - 1, "body.variables.[%d].type", i);
+      type = tk_object_get_prop_str(obj, path);
+
+      log_debug("[%2d] %s (%s): %s\n", i, name, type, value);
+    }
+  }
+
+  return RET_OK;
+}
+
+static ret_t func_launch(app_info_t* app, tokenizer_t* tokenizer) {
+  int argc = 0;
+  char* argv[32];
+  char exec[MAX_PATH + 1] = {0};
+  char work_dir[MAX_PATH + 1] = {0};
+  const char* program = tokenizer_next(tokenizer);
+  if (program == NULL) {
+    return RET_BAD_PARAMS;
+  }
+
+  if (tk_str_start_with(program, STR_SCHEMA_PID) || tk_str_start_with(program, STR_SCHEMA_WASM)) {
+    return debugger_launch_app(app->debugger, program, work_dir, argc, argv);
+  } else if(tk_str_eq(program, "wasm")) {
+    return debugger_launch_app(app->debugger, "wasm://127.0.0.1:1234", work_dir, argc, argv);
+  }
+
+  while (tokenizer_has_more(tokenizer)) {
+    argv[argc++] = strdup(tokenizer_next(tokenizer));
+  }
+
+  path_abs(program, exec, sizeof(exec) - 1);
+  path_cwd(work_dir);
+  debugger_launch_app(app->debugger, exec, work_dir, argc, argv);
+
+  while (argc > 0) {
+    TKMEM_FREE(argv[--argc]);
+  }
+
+  return RET_OK;
+}
+
+static ret_t on_debugger_client_event(void* ctx, event_t* e) {
+  str_t astr;
+  str_t* str = &astr;
+  app_info_t* app = (app_info_t*)ctx;
+
+  str_init(str, 100);
+  switch (e->type) {
+    case DEBUGGER_RESP_MSG_FRAME_CHANGED: {
+      debugger_frame_changed_event_t* event = debugger_frame_changed_event_cast(e);
+      app->current_func = event->func;
+      app->current_line = event->line;
+      break;
+    }
+    case DEBUGGER_RESP_MSG_BREAKED: {
+      debugger_breaked_event_t* event = debugger_breaked_event_cast(e);
+      app->current_line = event->line;
+      break;
+    }
+    case DEBUGGER_RESP_MSG_LOG: {
+      debugger_log_event_t* event = debugger_log_event_cast(e);
+      str_append(str, ">");
+      str_append_int(str, event->line);
+      str_append(str, ":");
+      str_append(str, event->message);
+      break;
+    }
+    case DEBUGGER_RESP_MSG_ERROR: {
+      debugger_error_event_t* event = debugger_error_event_cast(e);
+      str_append(str, ">>");
+      str_append_int(str, event->line);
+      str_append(str, ":");
+      str_append(str, event->message);
+      break;
+    }
+    case DEBUGGER_RESP_MSG_COMPLETED: {
+      str_append(str, "completed()");
+      app->completed = TRUE;
+    }
+    default:
+      break;
+  }
+
+  log_debug("%s\n", str->str);
+  str_reset(str);
+
+  return RET_OK;
+}
+
+static ret_t func_target(app_info_t* app, tokenizer_t* tokenizer) {
+  debugger_t* debugger = NULL;
+  const char* target = tokenizer_next(tokenizer);
+  const char* host = "localhost";
+
+  TK_OBJECT_UNREF(app->debugger);
+  if (tk_str_eq(target, "lldb")) {
+    debugger = debugger_lldb_create(host, DEBUGGER_TCP_PORT);
+  } else {
+    const char* code_id = DEBUGGER_DEFAULT_CODE_ID;
+
+    debugger = debugger_client_tcp_create(host, DEBUGGER_TCP_PORT);
+    if (debugger == NULL) {
+      log_debug("connect to \"%s\" %d failed!\n", host, DEBUGGER_TCP_PORT);
+      exit(0);
+    }
+    debugger_attach(debugger, DEBUGGER_LANG_FSCRIPT, code_id);
+    debugger_set_break_point(debugger, DEBUGGER_START_LINE);
+  }
+
+  emitter_on(EMITTER(debugger), DEBUGGER_RESP_MSG_BREAKED, on_debugger_client_event, app);
+  emitter_on(EMITTER(debugger), DEBUGGER_RESP_MSG_FRAME_CHANGED, on_debugger_client_event, app);
+  emitter_on(EMITTER(debugger), DEBUGGER_RESP_MSG_LOG, on_debugger_client_event, app);
+  emitter_on(EMITTER(debugger), DEBUGGER_RESP_MSG_ERROR, on_debugger_client_event, app);
+  emitter_on(EMITTER(debugger), DEBUGGER_RESP_MSG_COMPLETED, on_debugger_client_event, app);
+
+  app->debugger = debugger;
 
   return RET_OK;
 }
 
 static ret_t func_local(app_info_t* app, tokenizer_t* tokenizer) {
-  tk_object_t* obj = debugger_get_local(app->debugger, 0);
-  dump_object("local vars", obj);
+  int32_t index = tokenizer_next_int(tokenizer, 0);
+  tk_object_t* obj = debugger_get_local(app->debugger, index);
+  fdb_show_variables("local vars", obj);
+  TK_OBJECT_UNREF(obj);
+
+  return RET_OK;
+}
+
+static ret_t func_print(app_info_t* app, tokenizer_t* tokenizer) {
+  const char* name = tokenizer->str + tokenizer->cursor;
+  tk_object_t* obj = debugger_get_var(app->debugger, name);
+  fdb_show_variables("var", obj);
   TK_OBJECT_UNREF(obj);
 
   return RET_OK;
@@ -180,7 +330,15 @@ static ret_t func_local(app_info_t* app, tokenizer_t* tokenizer) {
 
 static ret_t func_self(app_info_t* app, tokenizer_t* tokenizer) {
   tk_object_t* obj = debugger_get_self(app->debugger);
-  dump_object("member vars", obj);
+  fdb_show_variables("member vars", obj);
+  TK_OBJECT_UNREF(obj);
+
+  return RET_OK;
+}
+
+static ret_t func_threads(app_info_t* app, tokenizer_t* tokenizer) {
+  tk_object_t* obj = debugger_get_threads(app->debugger);
+  dump_threads("threads:", obj);
   TK_OBJECT_UNREF(obj);
 
   return RET_OK;
@@ -188,41 +346,60 @@ static ret_t func_self(app_info_t* app, tokenizer_t* tokenizer) {
 
 static ret_t func_global(app_info_t* app, tokenizer_t* tokenizer) {
   tk_object_t* obj = debugger_get_global(app->debugger);
-  dump_object("global vars", obj);
+  fdb_show_variables("global vars", obj);
   TK_OBJECT_UNREF(obj);
 
   return RET_OK;
 }
 
-static ret_t func_next(app_info_t* app, tokenizer_t* tokenizer) {
-  debugger_step_over(app->debugger);
-  sleep_ms(300);
-  return debugger_show_code(app, FALSE);
+static ret_t func_pause(app_info_t* app, tokenizer_t* tokenizer) {
+  debugger_pause(app->debugger);
+  return RET_OK;
+}
+
+static ret_t func_stop(app_info_t* app, tokenizer_t* tokenizer) {
+  debugger_stop(app->debugger);
+  return RET_OK;
 }
 
 static ret_t func_restart(app_info_t* app, tokenizer_t* tokenizer) {
   debugger_restart(app->debugger);
   sleep_ms(300);
-  return debugger_show_code(app, FALSE);
-}
-
-static ret_t func_continue(app_info_t* app, tokenizer_t* tokenizer) {
-  debugger_continue(app->debugger);
-  sleep_ms(300);
-  return debugger_show_code(app, FALSE);
+  return fdb_show_code(app, FALSE);
 }
 
 static ret_t func_set_break(app_info_t* app, tokenizer_t* tokenizer) {
-  int32_t line = tokenizer_next_int(tokenizer, 0);
-  log_debug("set break at line: %d\n", line);
-  return debugger_set_break_point(app->debugger, line);
+  if (app->debugger->vt->set_break_point_ex != NULL) {
+    const char* position = tokenizer_next(tokenizer);
+    return debugger_set_break_point_ex(app->debugger, position);
+  } else if (app->debugger->vt->set_break_point != NULL) {
+    int32_t line = tokenizer_next_int(tokenizer, 0);
+    return debugger_set_break_point(app->debugger, line);
+  }
+
+  return RET_BAD_PARAMS;
+}
+
+static ret_t fdb_show_break_points(app_info_t* app) {
+  int32_t i = 0;
+  tokenizer_t t;
+  binary_data_t data = {0, NULL};
+  debugger_get_break_points(app->debugger, &data);
+
+  tokenizer_init(&t, (char*)data.data, data.size, "\n");
+  log_debug("breakpoints:\n---------------------------\n");
+  while (tokenizer_has_more(&t)) {
+    const char* bp = tokenizer_next(&t);
+    log_debug(" [%d] %s\n", i, bp);
+    i++;
+  }
+  tokenizer_deinit(&t);
+
+  return RET_OK;
 }
 
 static ret_t func_list_break(app_info_t* app, tokenizer_t* tokenizer) {
-  binary_data_t data = {0, NULL};
-
-  debugger_get_break_points(app->debugger, &data);
-  log_debug("break points:\n%s", (char*)data.data);
+  fdb_show_break_points(app);
 
   return RET_OK;
 }
@@ -236,20 +413,40 @@ static ret_t func_list_debuggers(app_info_t* app, tokenizer_t* tokenizer) {
   return RET_OK;
 }
 
-static ret_t func_backtrace(app_info_t* app, tokenizer_t* tokenizer) {
+static ret_t fdb_show_callstack(app_info_t* app) {
+  int32_t i = 0;
+  tokenizer_t t;
   binary_data_t data = {0, NULL};
-
   debugger_get_callstack(app->debugger, &data);
-  log_debug("callstack:\n%s", (char*)data.data);
+  return_value_if_fail(data.data != NULL, RET_BAD_PARAMS);
+
+  tokenizer_init(&t, (char*)data.data, data.size, "\n");
+  log_debug("callstack:\n---------------------------\n");
+  while (tokenizer_has_more(&t)) {
+    const char* func = tokenizer_next(&t);
+    if (tk_str_eq(func, app->current_func) || i == app->debugger->current_frame_index) {
+      log_debug(KGRN "=> [%d] %s\n" KNRM, i, func);
+    } else {
+      log_debug("   [%d] %s\n", i, func);
+    }
+    i++;
+  }
+  tokenizer_deinit(&t);
+
+  return RET_OK;
+}
+
+static ret_t func_backtrace(app_info_t* app, tokenizer_t* tokenizer) {
+  fdb_show_callstack(app);
 
   return RET_OK;
 }
 
 static ret_t func_remove_break(app_info_t* app, tokenizer_t* tokenizer) {
-  int32_t line = tokenizer_next_int(tokenizer, -1);
-  if (line >= 0) {
-    log_debug("remove break at line: %d\n", line);
-    return debugger_remove_break_point(app->debugger, line);
+  const char* bp = tokenizer_next(tokenizer);
+  if (bp != NULL) {
+    log_debug("remove break at line: %s\n", bp);
+    return debugger_remove_break_point_ex(app->debugger, bp);
   } else {
     log_debug("remove all break points\n");
     return debugger_clear_break_points(app->debugger);
@@ -259,23 +456,55 @@ static ret_t func_remove_break(app_info_t* app, tokenizer_t* tokenizer) {
 static ret_t func_step_in(app_info_t* app, tokenizer_t* tokenizer) {
   debugger_step_in(app->debugger);
   sleep_ms(300);
-  return debugger_show_code(app, FALSE);
+  debugger_dispatch_messages(app->debugger);
+  return fdb_show_code(app, FALSE);
+}
+
+static ret_t func_next(app_info_t* app, tokenizer_t* tokenizer) {
+  debugger_step_over(app->debugger);
+  sleep_ms(300);
+  debugger_dispatch_messages(app->debugger);
+  return fdb_show_code(app, FALSE);
+}
+
+static ret_t func_continue(app_info_t* app, tokenizer_t* tokenizer) {
+  debugger_continue(app->debugger);
+  sleep_ms(300);
+  debugger_dispatch_messages(app->debugger);
+  return fdb_show_code(app, FALSE);
+}
+
+static ret_t func_flush(app_info_t* app, tokenizer_t* tokenizer) {
+  debugger_dispatch_messages(app->debugger);
+  sleep_ms(300);
+  return RET_OK;
 }
 
 static ret_t func_step_out(app_info_t* app, tokenizer_t* tokenizer) {
   debugger_step_out(app->debugger);
   sleep_ms(300);
-  return debugger_show_code(app, FALSE);
+  debugger_dispatch_messages(app->debugger);
+  return fdb_show_code(app, FALSE);
 }
 
 static ret_t func_step_loop_over(app_info_t* app, tokenizer_t* tokenizer) {
   debugger_step_loop_over(app->debugger);
   sleep_ms(300);
-  return debugger_show_code(app, FALSE);
+  debugger_dispatch_messages(app->debugger);
+  return fdb_show_code(app, FALSE);
+}
+
+static ret_t func_frame(app_info_t* app, tokenizer_t* tokenizer) {
+  int32_t index = tokenizer_next_int(tokenizer, -1);
+  if (index >= 0) {
+    return debugger_set_current_frame(app->debugger, index);
+  } else {
+    return RET_BAD_PARAMS;
+  }
 }
 
 static ret_t func_get_code(app_info_t* app, tokenizer_t* tokenizer) {
-  debugger_show_code(app, TRUE);
+  fdb_show_code(app, TRUE);
   return RET_OK;
 }
 
@@ -286,22 +515,30 @@ static ret_t func_quit(app_info_t* app, tokenizer_t* tokenizer) {
 
 static ret_t func_help(app_info_t* app, tokenizer_t* tokenizer);
 static const cmd_entry_t s_cmds[] = {
-    {"next", "n", "run next line code", "next", func_next},
-    {"step_loop_over", "u", "step loop over", "step loop over", func_step_loop_over},
-    {"step_in", "s", "step in", "step in script function", func_step_in},
-    {"step_out", "so", "step out", "step out script fuction", func_step_out},
-    {"continue", "c", "continue", "continue", func_continue},
-    {"get_code", "l", "get_code", "show source code", func_get_code},
-    {"break", "b", "break", "set break point at line", func_set_break},
-    {"list_break", "lb", "list break", "list break points", func_list_break},
-    {"list_debuggers", "ld", "list debuggers", "list debuggers", func_list_debuggers},
-    {"delete_break", "d", "delete break", "remove break point at line", func_remove_break},
-    {"local", "local", "local", "show local variables", func_local},
-    {"self", "self", "self", "show member variables", func_self},
-    {"global", "global", "global", "show global variables", func_global},
-    {"backtrace", "bt", "backtrace", "show backtrace", func_backtrace},
-    {"quit", "q", "Quit loop", "quit", func_quit},
-    {"restart", "rs", "restart script", "restart", func_restart},
+    {"target", "t", "select target", "t [default|lldb]", func_target},
+    {"run", "r", "run a program", "r program arg1 arg2...", func_launch},
+    {"print", "p", "show a var, support path(eg: a.b[1].name).", "p name", func_print},
+    {"frame", "f", "select current frame", "f index", func_frame},
+    {"flush", "fl", "flush socket", "fl", func_flush},
+    {"next", "n", "run next line code", "n", func_next},
+    {"pause", "ps", "pause the running program", "pause", func_pause},
+    {"stop", "stop", "stop the running program", "stop", func_stop},
+    {"step_loop_over", "u", "step loop over", "u", func_step_loop_over},
+    {"step_in", "s", "step in function", "s", func_step_in},
+    {"step_out", "so", "step out function", "so", func_step_out},
+    {"continue", "c", "continue", "c", func_continue},
+    {"get_code", "l", "show source code", "l", func_get_code},
+    {"break", "b", "set break point", "b func\n   b filename:line", func_set_break},
+    {"list_break", "lb", "list breakpoints", "lb", func_list_break},
+    {"list_debuggers", "ld", "list debuggers", "ld", func_list_debuggers},
+    {"delete_break", "d", "delete breakpoints", "d position", func_remove_break},
+    {"local", "local", "show local variables", "local", func_local},
+    {"self", "self", "show member variables", "self", func_self},
+    {"global", "global", "show global variables", "global", func_global},
+    {"threads", "threads", "show threads", "threads", func_threads},
+    {"backtrace", "bt", "show backtrace", "bt", func_backtrace},
+    {"quit", "q", "Quit debugger", "q", func_quit},
+    {"restart", "rs", "restart app", "rs", func_restart},
     {NULL, NULL, NULL}};
 
 static char* command_generator(const char* text, int state) {
@@ -359,13 +596,13 @@ static ret_t register_functions(object_t* obj) {
   return RET_OK;
 }
 
-static ret_t aw_flow_shell_exec(app_info_t* app, const char* line) {
+static ret_t fdb_shell_exec(app_info_t* app, const char* line) {
   tokenizer_t t;
   ret_t ret = RET_OK;
   const char* name = NULL;
   cmd_line_func_t func = NULL;
 
-  return_value_if_fail(app != NULL && app->debugger != NULL && line != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(app != NULL && line != NULL, RET_BAD_PARAMS);
   tokenizer_init(&t, line, strlen(line), " \t\r\n");
 
   name = tokenizer_next(&t);
@@ -378,6 +615,14 @@ static ret_t aw_flow_shell_exec(app_info_t* app, const char* line) {
     func = func_help;
   }
 
+  if (app->debugger == NULL) {
+    if (!tk_str_eq(name, "target") && !tk_str_eq(name, "t") && !tk_str_eq(name, "quit") &&
+        !tk_str_eq(name, "q") && !tk_str_eq(name, "help") && !tk_str_eq(name, "h")) {
+      printf("Please use target command to choose debug target.\n");
+      return RET_OK;
+    }
+  }
+
   ret = func(app, &t);
   if (ret == RET_BAD_PARAMS) {
     func_help(app, &t);
@@ -386,79 +631,34 @@ static ret_t aw_flow_shell_exec(app_info_t* app, const char* line) {
   return ret;
 }
 
-static ret_t on_debugger_client_event(void* ctx, event_t* e) {
-  str_t astr;
-  str_t* str = &astr;
-  app_info_t* app = (app_info_t*)ctx;
-
-  str_init(str, 100);
-  switch (e->type) {
-    case DEBUGGER_RESP_MSG_BREAKED: {
-      debugger_breaked_event_t* event = debugger_breaked_event_cast(e);
-      str_append(str, "breaked");
-      str_append(str, "(");
-      str_append_int(str, event->line);
-      str_append(str, ")");
-      app->break_at_line = event->line;
-      break;
-    }
-    case DEBUGGER_RESP_MSG_LOG: {
-      debugger_log_event_t* event = debugger_log_event_cast(e);
-      str_append(str, ">");
-      str_append_int(str, event->line);
-      str_append(str, ":");
-      str_append(str, event->message);
-      break;
-    }
-    case DEBUGGER_RESP_MSG_ERROR: {
-      debugger_error_event_t* event = debugger_error_event_cast(e);
-      str_append(str, ">>");
-      str_append_int(str, event->line);
-      str_append(str, ":");
-      str_append(str, event->message);
-      break;
-    }
-    case DEBUGGER_RESP_MSG_COMPLETED: {
-      str_append(str, "completed()");
-      app->completed = TRUE;
-    }
-    default:
-      break;
-  }
-
-  log_debug("%s\n", str->str);
-  str_reset(str);
-
-  return RET_OK;
-}
-
-ret_t aw_flow_shell_run(debugger_t* debugger) {
+ret_t fdb_shell_run(void) {
   app_info_t app;
   tk_object_t* obj = object_default_create();
-  return_value_if_fail(debugger != NULL, RET_BAD_PARAMS);
 
+  memset(&app, 0x00, sizeof(app));
   app.obj = obj;
-  app.break_at_line = 0xffff;
-  app.debugger = debugger;
+  app.debugger = NULL;
   app.completed = FALSE;
+  app.current_line = 0xffff;
 
   aw_read_line_init();
   register_functions(obj);
 
-  emitter_on(EMITTER(debugger), DEBUGGER_RESP_MSG_BREAKED, on_debugger_client_event, &app);
-  emitter_on(EMITTER(debugger), DEBUGGER_RESP_MSG_LOG, on_debugger_client_event, &app);
-  emitter_on(EMITTER(debugger), DEBUGGER_RESP_MSG_ERROR, on_debugger_client_event, &app);
-  emitter_on(EMITTER(debugger), DEBUGGER_RESP_MSG_COMPLETED, on_debugger_client_event, &app);
-
-  while (app.debugger != NULL) {
+  while (TRUE) {
     char* line = aw_read_line(KMAG "[fdb] # " KNRM);
     if (line == NULL) {
       break;
     }
 
-    if (aw_flow_shell_exec(&app, line) == RET_STOP) {
+    if (app.debugger != NULL) {
+      debugger_dispatch_messages(app.debugger);
+    }
+    if (fdb_shell_exec(&app, line) == RET_STOP) {
       aw_read_line_free(line);
       break;
+    }
+    if (app.debugger != NULL) {
+      debugger_dispatch_messages(app.debugger);
     }
 
     aw_read_line_add_history(line);
@@ -475,29 +675,26 @@ ret_t aw_flow_shell_run(debugger_t* debugger) {
   return RET_OK;
 }
 
-int main(int argc, char* argv[]) {
-  debugger_t* client = NULL;
-  const char* host = argc == 2 ? argv[1] : "localhost";
-  const char* code_id = argc == 3 ? argv[2] : DEBUGGER_DEFAULT_CODE_ID;
+#include "tkc/data_reader_factory.h"
+#include "tkc/data_writer_factory.h"
+#include "tkc/data_writer_file.h"
+#include "tkc/data_writer_wbuffer.h"
+#include "tkc/data_reader_file.h"
+#include "tkc/data_reader_mem.h"
 
+int main(int argc, char* argv[]) {
   platform_prepare();
   tk_socket_init();
 
-  log_debug("Usage: %s [host] [code_id]\n", argv[0]);
-  log_debug("host=%s code_id=%s\n", host, code_id);
+  data_writer_factory_set(data_writer_factory_create());
+  data_reader_factory_set(data_reader_factory_create());
+  data_writer_factory_register(data_writer_factory(), "file", data_writer_file_create);
+  data_reader_factory_register(data_reader_factory(), "file", data_reader_file_create);
+  data_reader_factory_register(data_reader_factory(), "mem", data_reader_mem_create);
+  data_writer_factory_register(data_writer_factory(), "wbuffer", data_writer_wbuffer_create);
 
-  client = debugger_client_tcp_create(host, DEBUGGER_TCP_PORT);
-  if (client == NULL) {
-    log_debug("connect to \"%s\" %d failed!\n", host, DEBUGGER_TCP_PORT);
-    exit(0);
-  }
+  fdb_shell_run();
 
-  debugger_attach(client, DEBUGGER_LANG_FSCRIPT, code_id);
-  debugger_set_break_point(client, DEBUGGER_START_LINE);
-
-  aw_flow_shell_run(client);
-
-  TK_OBJECT_UNREF(client);
   tk_socket_deinit();
 
   return 0;
