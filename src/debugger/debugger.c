@@ -28,16 +28,22 @@ bool_t debugger_is_paused(debugger_t* debugger) {
   return debugger->state == DEBUGGER_PROGRAM_STATE_PAUSED;
 }
 
-static bool_t debugger_is_running(debugger_t* debugger) {
+bool_t debugger_is_running(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL, FALSE);
 
   return debugger->state == DEBUGGER_PROGRAM_STATE_RUNNING;
 }
 
-static bool_t debugger_is_paused_or_running(debugger_t* debugger) {
+bool_t debugger_is_paused_or_running(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL, FALSE);
 
   return debugger->state == DEBUGGER_PROGRAM_STATE_RUNNING || debugger->state == DEBUGGER_PROGRAM_STATE_PAUSED;
+}
+
+ret_t debugger_set_state(debugger_t* debugger, debugger_program_state_t state) {
+  return_value_if_fail(debugger != NULL, RET_BAD_PARAMS);
+  debugger->state = state;
+  return RET_OK;
 }
 
 ret_t debugger_lock(debugger_t* debugger) {
@@ -87,8 +93,6 @@ bool_t debugger_match(debugger_t* debugger, const char* code_id) {
 ret_t debugger_step_in(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->step_in != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(debugger_is_paused(debugger), RET_BAD_PARAMS);
-  debugger->state = DEBUGGER_PROGRAM_STATE_RUNNING;
 
   return debugger->vt->step_in(debugger);
 }
@@ -96,8 +100,6 @@ ret_t debugger_step_in(debugger_t* debugger) {
 ret_t debugger_step_out(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->step_out != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(debugger_is_paused(debugger), RET_BAD_PARAMS);
-  debugger->state = DEBUGGER_PROGRAM_STATE_RUNNING;
 
   return debugger->vt->step_out(debugger);
 }
@@ -105,8 +107,6 @@ ret_t debugger_step_out(debugger_t* debugger) {
 ret_t debugger_step_over(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->step_over != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(debugger_is_paused(debugger), RET_BAD_PARAMS);
-  debugger->state = DEBUGGER_PROGRAM_STATE_RUNNING;
 
   return debugger->vt->step_over(debugger);
 }
@@ -114,8 +114,6 @@ ret_t debugger_step_over(debugger_t* debugger) {
 ret_t debugger_step_loop_over(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->step_loop_over != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(debugger_is_paused(debugger), RET_BAD_PARAMS);
-  debugger->state = DEBUGGER_PROGRAM_STATE_RUNNING;
 
   return debugger->vt->step_loop_over(debugger);
 }
@@ -123,8 +121,6 @@ ret_t debugger_step_loop_over(debugger_t* debugger) {
 ret_t debugger_continue(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->continve != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(debugger_is_paused(debugger), RET_BAD_PARAMS);
-  debugger->state = DEBUGGER_PROGRAM_STATE_RUNNING;
 
   return debugger->vt->continve(debugger);
 }

@@ -38,7 +38,6 @@ typedef ret_t (*debugger_stop_t)(debugger_t* debugger);
 typedef ret_t (*debugger_restart_t)(debugger_t* debugger);
 typedef ret_t (*debugger_pause_t)(debugger_t* debugger);
 typedef bool_t (*debugger_match_t)(debugger_t* debugger, const char* code_id);
-typedef bool_t (*debugger_is_paused_t)(debugger_t* debugger);
 
 typedef ret_t (*debugger_step_over_t)(debugger_t* debugger);
 typedef ret_t (*debugger_step_in_t)(debugger_t* debugger);
@@ -113,7 +112,6 @@ typedef struct _debugger_vtable_t {
   debugger_stop_t stop;
   debugger_pause_t pause;
   debugger_match_t match;
-  debugger_is_paused_t is_paused;
 
   debugger_step_in_t step_in;
   debugger_restart_t restart;
@@ -210,13 +208,33 @@ ret_t debugger_restart(debugger_t* debugger);
 
 /**
  * @method debugger_is_paused
- * 查看当前是否处于暂停运行状态。
+ * 查看当前是否处于暂停状态。
  *
  * @param {debugger_t*} debugger debugger对象。
  *
  * @return {bool_t} 返回TRUE表示处于暂停运行状态。
  */
 bool_t debugger_is_paused(debugger_t* debugger);
+
+/**
+ * @method debugger_is_running
+ * 查看当前是否处于运行状态。
+ *
+ * @param {debugger_t*} debugger debugger对象。
+ *
+ * @return {bool_t} 返回TRUE表示处于暂停运行状态。
+ */
+bool_t debugger_is_running(debugger_t* debugger);
+
+/**
+ * @method debugger_is_paused_or_running 
+ * 查看当前是否处于暂停运行状态。
+ *
+ * @param {debugger_t*} debugger debugger对象。
+ *
+ * @return {bool_t} 返回TRUE表示处于暂停运行状态。
+ */
+bool_t debugger_is_paused_or_running(debugger_t* debugger);
 
 /**
  * @method debugger_match
@@ -504,6 +522,16 @@ ret_t debugger_set_current_frame(debugger_t* debugger, uint32_t frame_index);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t debugger_dispatch_messages(debugger_t* debugger);
+
+/**
+ * @method debugger_set_state
+ * 设置状态。
+ * @param {debugger_t*} debugger debugger对象。
+ * @param {debugger_program_state_t} state 状态。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t debugger_set_state(debugger_t* debugger, debugger_program_state_t state);
 
 /*}扩展接口以支持lldb的DAP协议{*/
 

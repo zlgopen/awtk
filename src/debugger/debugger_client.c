@@ -69,7 +69,7 @@ static ret_t debugger_client_dispatch_message(debugger_t* debugger, debugger_res
       tk_object_t* obj = ubjson_to_object(client->buff, resp->size);
       return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
       line = tk_object_get_prop_int(obj, STR_DEBUGGER_EVENT_PROP_LINE, 0);
-      debugger->state = DEBUGGER_PROGRAM_STATE_PAUSED;
+      debugger_set_state(debugger,  DEBUGGER_PROGRAM_STATE_PAUSED);
       emitter_dispatch(EMITTER(debugger), debugger_breaked_event_init(&event, line));
       TK_OBJECT_UNREF(obj);
       break;
@@ -100,7 +100,7 @@ static ret_t debugger_client_dispatch_message(debugger_t* debugger, debugger_res
     }
     case DEBUGGER_RESP_MSG_COMPLETED: {
       client->program_completed = TRUE;
-      debugger->state = DEBUGGER_PROGRAM_STATE_TERMINATED;
+      debugger_set_state(debugger,  DEBUGGER_PROGRAM_STATE_TERMINATED);
       emitter_dispatch_simple_event(EMITTER(debugger), DEBUGGER_RESP_MSG_COMPLETED);
       break;
     }
@@ -275,10 +275,6 @@ static ret_t debugger_client_pause(debugger_t* debugger) {
 
 static ret_t debugger_client_restart(debugger_t* debugger) {
   return debugger_client_request_simple(debugger, DEBUGGER_REQ_RESTART, 0);
-}
-
-static bool_t debugger_client_is_paused(debugger_t* debugger) {
-  return debugger_client_request_simple(debugger, DEBUGGER_REQ_IS_PAUSED, 0) == RET_OK;
 }
 
 static ret_t debugger_client_step_over(debugger_t* debugger) {
@@ -458,7 +454,6 @@ static const debugger_vtable_t s_debugger_client_vtable = {
     .stop = debugger_client_stop,
     .pause = debugger_client_pause,
     .restart = debugger_client_restart,
-    .is_paused = debugger_client_is_paused,
     .step_in = debugger_client_step_in,
     .step_out = debugger_client_step_out,
     .step_over = debugger_client_step_over,

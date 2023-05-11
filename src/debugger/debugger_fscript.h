@@ -64,7 +64,6 @@ typedef struct _debugger_fscript_t {
   int32_t next_stop_call_frame_index;
 
   str_t code;
-  bool_t paused;
   str_t temp_str;
   tk_mutex_nest_t* mutex;
   tk_mutex_nest_t* mutex_for_destroy;

@@ -149,13 +149,13 @@ static ret_t debugger_fscript_pause(debugger_t* debugger) {
   return_value_if_fail(d != NULL, RET_BAD_PARAMS);
 
   if (debugger_fscript_lock(debugger) == RET_OK) {
-    if (d->fscript != NULL && d->paused == FALSE) {
+    if (d->fscript != NULL && debugger_is_running(debugger)) {
       ret = RET_OK;
       /*停止到下一行要执行的代码*/
       d->next_stop_executed_line = d->executed_lines + 1;
       d->break_type = DEBUGGER_FSCRIPT_BREAK_STEP_IN;
     }
-    ret = d->paused == TRUE ? RET_OK : RET_FAIL;
+    ret = debugger_is_paused(debugger) ? RET_OK : RET_FAIL;
     debugger_fscript_unlock(debugger);
   }
 
@@ -167,19 +167,6 @@ static bool_t debugger_fscript_match(debugger_t* debugger, const char* code_id) 
   return_value_if_fail(d != NULL, FALSE);
 
   return tk_str_eq(d->code_id, code_id);
-}
-
-static bool_t debugger_fscript_is_paused(debugger_t* debugger) {
-  bool_t ret = FALSE;
-  debugger_fscript_t* d = DEBUGGER_FSCRIPT(debugger);
-  return_value_if_fail(d != NULL, FALSE);
-
-  if (debugger_fscript_lock(debugger) == RET_OK) {
-    ret = d->paused;
-    debugger_fscript_unlock(debugger);
-  }
-
-  return ret;
 }
 
 static ret_t debugger_fscript_clear_step_stops(debugger_fscript_t* d) {
@@ -197,7 +184,7 @@ static ret_t debugger_fscript_step_in(debugger_t* debugger) {
   return_value_if_fail(d != NULL, RET_BAD_PARAMS);
 
   if (debugger_fscript_lock(debugger) == RET_OK) {
-    if (d->fscript != NULL && d->paused) {
+    if (d->fscript != NULL && debugger_is_paused(debugger)) {
       ret = RET_OK;
       debugger_fscript_clear_step_stops(d);
       d->next_stop_executed_line = d->executed_lines + 1;
@@ -219,7 +206,7 @@ static ret_t debugger_fscript_step_over(debugger_t* debugger) {
   return_value_if_fail(d != NULL, RET_BAD_PARAMS);
 
   if (debugger_fscript_lock(debugger) == RET_OK) {
-    if (d->fscript != NULL && d->paused) {
+    if (d->fscript != NULL && debugger_is_paused(debugger)) {
       ret = RET_OK;
       debugger_fscript_clear_step_stops(d);
       d->next_stop_executed_line = d->executed_lines + 1;
@@ -243,7 +230,7 @@ static ret_t debugger_fscript_step_out(debugger_t* debugger) {
   return_value_if_fail(d->call_stack_frames.size > 0, RET_BAD_PARAMS);
 
   if (debugger_fscript_lock(debugger) == RET_OK) {
-    if (d->fscript != NULL && d->paused) {
+    if (d->fscript != NULL && debugger_is_paused(debugger)) {
       ret = RET_OK;
       debugger_fscript_clear_step_stops(d);
       d->next_stop_call_frame_index = d->call_stack_frames.size - 1;
@@ -265,7 +252,7 @@ static ret_t debugger_fscript_step_loop_over(debugger_t* debugger) {
   return_value_if_fail(d != NULL, RET_BAD_PARAMS);
 
   if (debugger_fscript_lock(debugger) == RET_OK) {
-    if (d->fscript != NULL && d->paused) {
+    if (d->fscript != NULL && debugger_is_paused(debugger)) {
       ret = RET_OK;
       debugger_fscript_clear_step_stops(d);
       d->next_stop_line = d->prev_executed_line + 1;
@@ -287,7 +274,7 @@ static ret_t debugger_fscript_continue(debugger_t* debugger) {
   return_value_if_fail(d != NULL, RET_BAD_PARAMS);
 
   if (debugger_fscript_lock(debugger) == RET_OK) {
-    if (d->fscript != NULL && d->paused) {
+    if (d->fscript != NULL && debugger_is_paused(debugger)) {
       ret = RET_OK;
       debugger_fscript_clear_step_stops(d);
     }
@@ -394,7 +381,7 @@ static ret_t debugger_fscript_clear_break_points(debugger_t* debugger) {
     debugger_fscript_clear_step_stops(d);
     ret = darray_clear(&(d->break_points));
 
-    paused = d->paused;
+    paused = debugger_is_paused(debugger);
     debugger_fscript_unlock(debugger);
   }
 
@@ -533,7 +520,6 @@ static const debugger_vtable_t s_debugger_fscript_vtable = {
     .restart = debugger_fscript_restart,
     .pause = debugger_fscript_pause,
     .match = debugger_fscript_match,
-    .is_paused = debugger_fscript_is_paused,
     .step_in = debugger_fscript_step_in,
     .step_out = debugger_fscript_step_out,
     .step_over = debugger_fscript_step_over,
@@ -755,19 +741,19 @@ static bool_t debugger_fscript_emit_breaked(debugger_t* debugger, int32_t line) 
   debugger_fscript_t* d = DEBUGGER_FSCRIPT(debugger);
 
   if (d->prev_breaked_line == line) {
-    d->paused = FALSE;
+    debugger->state = DEBUGGER_PROGRAM_STATE_RUNNING;
   } else {
-    d->paused = TRUE;
+    debugger->state = DEBUGGER_PROGRAM_STATE_PAUSED;
     d->prev_breaked_line = line;
   }
 
   d->prev_breaked_line = line;
-  if (d->paused) {
+  if (debugger_is_paused(debugger)) {
     debugger_breaked_event_init(&event, line);
     emitter_dispatch(EMITTER(debugger), (event_t*)&event);
   }
 
-  return d->paused;
+  return debugger_is_paused(debugger);
 }
 
 static ret_t debugger_fscript_before_exec_func(debugger_t* debugger, int32_t line) {
