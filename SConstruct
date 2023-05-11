@@ -59,6 +59,7 @@ SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
   'tools/svg_gen/SConscript',
   'tools/api_doc_lint/SConscript',
   'tools/preview_ui/SConscript',
+  'tools/fdb/SConscript',
   'demos/SConscript', 
   'tests/SConscript',
   'src/hal/tools/network_shell/SConscript',

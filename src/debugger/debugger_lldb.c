@@ -173,11 +173,10 @@ static ret_t debugger_lldb_emit(debugger_t* debugger, tk_object_t* resp) {
 
     lldb->stop_thread_id = tk_object_get_prop_int64(resp, "body.threadId", 0);
     lldb->callstack = debugger_lldb_get_callstack_impl(debugger, 0, 100);
-
-    /*LLDB 行号从1开始*/
-    line = lldb->current_frame_line - 1;
     debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_PAUSED);
     debugger_set_current_frame(debugger, 0);
+    /*LLDB 行号从1开始*/
+    line = lldb->current_frame_line - 1;
     emitter_dispatch(EMITTER(debugger), debugger_breaked_event_init(&event, line));
 
     log_debug("threadId = %d stopped\n", (int)lldb->stop_thread_id);
