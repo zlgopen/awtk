@@ -128,7 +128,6 @@ ret_t debugger_continue(debugger_t* debugger) {
 tk_object_t* debugger_get_local(debugger_t* debugger, uint32_t frame_index) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, NULL);
   return_value_if_fail(debugger->vt->get_local != NULL, NULL);
-  return_value_if_fail(debugger_is_paused(debugger), NULL);
 
   return debugger->vt->get_local(debugger, frame_index); 
 }
@@ -136,7 +135,6 @@ tk_object_t* debugger_get_local(debugger_t* debugger, uint32_t frame_index) {
 tk_object_t* debugger_get_self(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, NULL);
   return_value_if_fail(debugger->vt->get_self != NULL, NULL);
-  return_value_if_fail(debugger_is_paused(debugger), NULL);
 
   return debugger->vt->get_self(debugger);
 }
@@ -144,7 +142,6 @@ tk_object_t* debugger_get_self(debugger_t* debugger) {
 tk_object_t* debugger_get_global(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, NULL);
   return_value_if_fail(debugger->vt->get_global != NULL, NULL);
-  return_value_if_fail(debugger_is_paused(debugger), NULL);
 
   return debugger->vt->get_global(debugger);
 }
@@ -153,7 +150,6 @@ ret_t debugger_get_callstack(debugger_t* debugger, binary_data_t* callstack) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->get_callstack != NULL, RET_BAD_PARAMS);
   return_value_if_fail(callstack != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(debugger_is_paused(debugger), RET_BAD_PARAMS);
 
   return debugger->vt->get_callstack(debugger, callstack);
 }
@@ -247,7 +243,6 @@ ret_t debugger_deinit(debugger_t* debugger) {
 tk_object_t* debugger_get_threads(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, NULL);
   return_value_if_fail(debugger->vt->get_threads != NULL, NULL);
-  return_value_if_fail(debugger_is_paused(debugger), NULL);
 
   return debugger->vt->get_threads(debugger);
 }
@@ -282,7 +277,6 @@ ret_t debugger_set_break_point_ex(debugger_t* debugger, const char* position) {
 ret_t debugger_remove_break_point_ex(debugger_t* debugger, const char* position) {
   return_value_if_fail(position != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(debugger_is_paused(debugger), RET_BAD_PARAMS);
 
   if (debugger->vt->remove_break_point_ex != NULL) {
     return debugger->vt->remove_break_point_ex(debugger, position);
@@ -302,14 +296,12 @@ ret_t debugger_remove_break_point_ex(debugger_t* debugger, const char* position)
 tk_object_t* debugger_get_var(debugger_t* debugger, const char* path) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, NULL);
   return_value_if_fail(debugger->vt->get_var != NULL, NULL);
-  return_value_if_fail(debugger_is_paused(debugger), NULL);
 
   return debugger->vt->get_var(debugger, path);
 }
 
 ret_t debugger_set_current_frame(debugger_t* debugger, uint32_t frame_index) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(debugger_is_paused(debugger), RET_BAD_PARAMS);
 
   debugger->current_frame_index = frame_index;
   if(debugger->vt->set_current_frame != NULL) {
