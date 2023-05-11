@@ -348,12 +348,14 @@ tk_object_t* debugger_fscript_get_global(debugger_t* debugger) {
 }
 
 static ret_t debugger_fscript_get_callstack(debugger_t* debugger, binary_data_t* callstack) {
-  uint32_t i = 0;
+  int32_t i = 0;
+  int32_t n = 0;
   debugger_fscript_t* d = DEBUGGER_FSCRIPT(debugger);
   return_value_if_fail(d != NULL && d->fscript != NULL, RET_BAD_PARAMS);
 
   str_clear(&(d->temp_str));
-  for (i = 0; i < d->call_stack_frames.size; i++) {
+  n = d->call_stack_frames.size;
+  for (i = n - 1; i >= 0; i--) {
     call_stack_frame_t* iter = (call_stack_frame_t*)darray_get(&(d->call_stack_frames), i);
     str_append_more(&(d->temp_str), iter->name, "\n", NULL);
   }
