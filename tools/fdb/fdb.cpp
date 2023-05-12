@@ -293,6 +293,10 @@ static ret_t func_target(app_info_t* app, tokenizer_t* tokenizer) {
   const char* target = tokenizer_next(tokenizer);
   const char* host = "localhost";
 
+  if (target == NULL) {
+    return RET_BAD_PARAMS;
+  }
+
   TK_OBJECT_UNREF(app->debugger);
   if (tk_str_eq(target, "lldb")) {
     debugger = debugger_lldb_create(host, DEBUGGER_TCP_PORT);
@@ -584,20 +588,26 @@ static char* command_generator(const char* text, int state) {
   return ((char*)NULL);
 }
 
-static ret_t func_help(app_info_t* app, tokenizer_t* tokenizer) {
+static ret_t fdb_show_help(app_info_t* app, const char* cmd) {
   uint32_t i = 0;
   printf(KMAG "================================================\n" KNRM);
   while (s_cmds[i].name != NULL) {
     const cmd_entry_t* iter = s_cmds + i;
-    printf(KYEL "%u: %s(%s)\n" KNRM, i, iter->desc, iter->alias);
-    printf("------------------------------\n");
-    printf(" # %s\n", iter->help);
-    printf(KGRN "------------------------------------------------\n" KNRM);
+    if (cmd == NULL || tk_str_eq(iter->name, cmd) || tk_str_eq(iter->alias, cmd)) {
+      printf(KYEL "%u: %s(%s)\n" KNRM, i, iter->desc, iter->alias);
+      printf("------------------------------\n");
+      printf(" # %s\n", iter->help);
+      printf(KGRN "------------------------------------------------\n" KNRM);
+    }
     i++;
   }
   printf(KMAG "================================================\n" KNRM);
 
   return RET_OK;
+}
+
+static ret_t func_help(app_info_t* app, tokenizer_t* tokenizer) {
+  return fdb_show_help(app, NULL);
 }
 
 static ret_t register_functions(object_t* obj) {
@@ -640,7 +650,7 @@ static ret_t fdb_shell_exec(app_info_t* app, const char* line) {
 
   ret = func(app, &t);
   if (ret == RET_BAD_PARAMS) {
-    func_help(app, &t);
+    fdb_show_help(app, name);
   }
 
   return ret;
