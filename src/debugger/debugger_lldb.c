@@ -693,6 +693,7 @@ static tk_object_t* debugger_lldb_create_set_func_break_points_req(debugger_t* d
     bp = object_default_create();
     tk_object_set_prop_str(bp, KEY_NAME, func);
     object_array_push(break_points, value_set_object(&v, bp));
+    TK_OBJECT_UNREF(bp);
   }
 
   TK_OBJECT_UNREF(source);
@@ -855,6 +856,7 @@ static ret_t debugger_lldb_scopes_command(debugger_t* debugger, uint32_t frame_i
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
     ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, CMD_SCOPES, 3000);
   }
+  TK_OBJECT_UNREF(req);
 
   return ret;
 }
@@ -890,6 +892,7 @@ static ret_t debugger_lldb_simple_command(debugger_t* debugger, const char* cmd)
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
     ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, cmd, 3000);
   }
+  TK_OBJECT_UNREF(req);
 
   return ret;
 }

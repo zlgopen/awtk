@@ -432,7 +432,7 @@ static ret_t func_list_debuggers(app_info_t* app, tokenizer_t* tokenizer) {
 }
 
 static ret_t fdb_show_callstack(app_info_t* app) {
-  int32_t i = 0;
+  uint32_t i = 0;
   tokenizer_t t;
   binary_data_t data = {0, NULL};
   debugger_get_callstack(app->debugger, &data);
@@ -652,6 +652,8 @@ static ret_t fdb_shell_exec(app_info_t* app, const char* line) {
   if (ret == RET_BAD_PARAMS) {
     fdb_show_help(app, name);
   }
+  
+  tokenizer_deinit(&t);
 
   return ret;
 }
@@ -694,7 +696,7 @@ ret_t fdb_shell_run(void) {
     }
   }
 
-  app.debugger = NULL;
+  TK_OBJECT_UNREF(app.debugger);
   TK_OBJECT_UNREF(obj);
 
   return RET_OK;
