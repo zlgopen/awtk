@@ -215,7 +215,7 @@ static ret_t debugger_lldb_write_req(debugger_t* debugger, tk_object_t* obj) {
   ret = tk_ostream_write_len(out, header->str, header->size, N_WRITE_TIMEOUT);
 
   if (ret == header->size) {
-    log_debug("%s\n", body->str);
+    /*log_debug("send:%s\n", body->str);*/
     ret = tk_ostream_write_len(out, body->str, body->size, N_WRITE_TIMEOUT);
   }
 
@@ -303,7 +303,7 @@ static tk_object_t* debugger_lldb_read_resp(debugger_t* debugger) {
     body->str[content_length] = '\0';
     data_reader_mem_build_url(body->str, body->size, url);
 
-    log_debug("recv:%s\n\n", body->str);
+    /*log_debug("recv:%s\n\n", body->str);*/
     return conf_json_load(url, FALSE);
   }
 
