@@ -736,7 +736,7 @@ static void processEtagsInclude (
 }
 
 static void processExcludeOption (
-		const char *const option __unused__, const char *const parameter)
+		const char *const option , const char *const parameter)
 {
 	const char *const fileName = parameter + 1;
 	if (parameter [0] == '\0')
@@ -873,7 +873,7 @@ static void processFieldsOption (
 }
 
 static void processFilterTerminatorOption (
-		const char *const option __unused__, const char *const parameter)
+		const char *const option , const char *const parameter)
 {
 	freeString (&Option.filterTerminator);
 	Option.filterTerminator = stringCopy (parameter);
@@ -935,8 +935,8 @@ static void printProgramIdentification (void)
 }
 
 static void processHelpOption (
-		const char *const option __unused__,
-		const char *const parameter __unused__)
+		const char *const option ,
+		const char *const parameter )
 {
 	printProgramIdentification ();
 	putchar ('\n');
@@ -1144,8 +1144,8 @@ static void processLanguagesOption (
 }
 
 static void processLicenseOption (
-		const char *const option __unused__,
-		const char *const parameter __unused__)
+		const char *const option ,
+		const char *const parameter )
 {
 	printProgramIdentification ();
 	puts ("");
@@ -1171,8 +1171,8 @@ static void processListKindsOption (
 }
 
 static void processListMapsOption (
-		const char *const __unused__ option,
-		const char *const __unused__ parameter)
+		const char *const  option,
+		const char *const  parameter)
 {
 	if (parameter [0] == '\0' || strcasecmp (parameter, "all") == 0)
 	    printLanguageMaps (LANG_AUTO);
@@ -1188,8 +1188,8 @@ static void processListMapsOption (
 }
 
 static void processListLanguagesOption (
-		const char *const option __unused__,
-		const char *const parameter __unused__)
+		const char *const option ,
+		const char *const parameter )
 {
 	printLanguageList ();
 	exit (0);
@@ -1363,8 +1363,8 @@ static void processIgnoreOption (const char *const list)
 }
 
 static void processVersionOption (
-		const char *const option __unused__,
-		const char *const parameter __unused__)
+		const char *const option ,
+		const char *const parameter )
 {
 	printProgramIdentification ();
 	exit (0);

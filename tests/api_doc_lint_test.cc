@@ -57,10 +57,10 @@ static const char* errs[] = {
     "(829): error: nothing can be written between @param\n",
     "(934): error: unknown annotation \"string1\"\n",
     "(940): error: @const name invalid CODE_EDIT_PROP_LANG1 -- CODE_EDIT_PROP_LANG\n",
-    "(1096): error: @prefix name missing\n"};
+    "(1098): error: @prefix name missing\n"};
 
 static const char* warns[] = {
-    "(1076): warning: @prefix missing\n",
+    "(1078): warning: @prefix missing\n",
 };
 
 void dummy_log(void* ctx, log_level_t level, const char* s) {

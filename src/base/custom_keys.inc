@@ -34,6 +34,8 @@ static key_type_value_t* custom_keys_load(uint32_t* nr) {
     ret = TKMEM_ZALLOCN(key_type_value_t, *nr);
 
     for (i = 0; i < *nr; i++) {
+      value_t value;
+
       tk_snprintf(key, sizeof(key), "[%d].#name", i);
       ret[i].name = tk_strdup(tk_object_get_prop_str(conf, key));
 
@@ -41,7 +43,13 @@ static key_type_value_t* custom_keys_load(uint32_t* nr) {
       ret[i].type = tk_object_get_prop_uint32(conf, key, 0);
 
       tk_snprintf(key, sizeof(key), "[%d].value", i);
-      ret[i].value = tk_object_get_prop_uint32(conf, key, 0);
+      tk_object_get_prop(conf, key, &value);
+      if (value.type == VALUE_TYPE_STRING && tk_strlen(value_str(&value)) == 1) {
+        /* 字符转键值 */
+        ret[i].value = (uint32_t)value_str(&value)[0];
+      } else {
+        ret[i].value = value_uint32(&value);
+      }
     }
   }
   TK_OBJECT_UNREF(conf);
