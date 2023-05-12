@@ -180,6 +180,11 @@ static ret_t debugger_lldb_emit(debugger_t* debugger, tk_object_t* resp) {
     emitter_dispatch(EMITTER(debugger), debugger_breaked_event_init(&event, line));
 
     log_debug("threadId = %d stopped\n", (int)lldb->stop_thread_id);
+  } else if (tk_str_eq(event, EVENT_OUTPUT)) {
+    uint32_t line = 0;
+    debugger_log_event_t event;
+    const char* message = tk_object_get_prop_str(resp, "body.output");
+    emitter_dispatch(EMITTER(debugger), debugger_log_event_init(&event, line, message));
   } else if (tk_str_eq(event, EVENT_EXITED)) {
     debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_TERMINATED);
     emitter_dispatch_simple_event(EMITTER(debugger), DEBUGGER_RESP_MSG_COMPLETED);
@@ -1073,7 +1078,7 @@ static ret_t debugger_lldb_get_callstack(debugger_t* debugger, binary_data_t* re
 }
 
 static ret_t debugger_lldb_update_break_points(debugger_t* debugger) {
-  if (debugger->state == DEBUGGER_PROGRAM_STATE_RUNNING) {
+  if (debugger_is_paused_or_running(debugger)) {
     debugger_lldb_update_func_break_points(debugger);
     debugger_lldb_update_source_break_points(debugger);
   }
