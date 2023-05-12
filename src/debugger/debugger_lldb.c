@@ -1000,14 +1000,21 @@ static tk_object_t* debugger_lldb_get_var(debugger_t* debugger, const char* path
   tk_object_t* obj = NULL;
   int64_t variables_reference = 0;
   return_value_if_fail(debugger != NULL, NULL);
-
+   
   obj = debugger_lldb_get_variables_impl(debugger, VARREF_LOCALS, 0, 0xffff);
   return_value_if_fail(obj != NULL, NULL);
 
   if (TK_STR_IS_NOT_EMPTY(path)) {
+    str_t str;
     tokenizer_t t;
     char name[MAX_PATH + 1] = {0};
     bool_t is_array = FALSE;
+
+    str_init(&str, 100);
+    str_set(&str, path);
+    str_replace(&str, "->", ".");
+
+    path = str.str;
     tokenizer_init_ex(&t, path, strlen(path), ".", ".[]");
 
     while (tokenizer_has_more(&t)) {
@@ -1030,6 +1037,7 @@ static tk_object_t* debugger_lldb_get_var(debugger_t* debugger, const char* path
       }
     }
     tokenizer_deinit(&t);
+    str_reset(&str);
   }
 
   return obj;
