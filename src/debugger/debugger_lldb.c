@@ -19,6 +19,8 @@
  *
  */
 
+#define SHOW_PROTOCOL_MESSAGES 0
+
 #include "tkc.h"
 #include "debugger_lldb.h"
 #include "conf_io/conf_json.h"
@@ -29,6 +31,7 @@
 
 #define CMD_NEXT "next"
 #define CMD_PAUSE "pause"
+#define CMD_ATTACH "attach"
 #define CMD_LAUNCH "launch"
 #define CMD_SOURCE "source"
 #define CMD_SCOPES "scopes"
@@ -40,8 +43,6 @@
 #define CMD_INITIALIZE "initialize"
 #define CMD_DISCONNECT "disconnect"
 #define CMD_STACK_TRACE "stackTrace"
-#define CMD_ATTACH "attach"
-#define CMD_ATTACH_WASM "attachWASM"
 #define CMD_SET_BREAK_POINTS "setBreakpoints"
 #define CMD_CONFIGURATION_DONE "configurationDone"
 #define CMD_SET_FUNCTION_BREAK_POINTS "setFunctionBreakpoints"
@@ -215,7 +216,9 @@ static ret_t debugger_lldb_write_req(debugger_t* debugger, tk_object_t* obj) {
   ret = tk_ostream_write_len(out, header->str, header->size, N_WRITE_TIMEOUT);
 
   if (ret == header->size) {
-    /*log_debug("send:%s\n", body->str);*/
+#if SHOW_PROTOCOL_MESSAGES
+    log_debug("send:%s\n", body->str);
+#endif /*SHOW_PROTOCOL_MESSAGES*/
     ret = tk_ostream_write_len(out, body->str, body->size, N_WRITE_TIMEOUT);
   }
 
@@ -303,7 +306,10 @@ static tk_object_t* debugger_lldb_read_resp(debugger_t* debugger) {
     body->str[content_length] = '\0';
     data_reader_mem_build_url(body->str, body->size, url);
 
-    /*log_debug("recv:%s\n\n", body->str);*/
+#if SHOW_PROTOCOL_MESSAGES
+    log_debug("recv:%s\n", body->str);
+#endif /*SHOW_PROTOCOL_MESSAGES*/
+
     return conf_json_load(url, FALSE);
   }
 
@@ -328,14 +334,17 @@ static tk_object_t* debugger_lldb_dispatch_until_get_resp(debugger_t* debugger, 
       if (tk_str_eq(command, cmd)) {
         return resp;
       } else {
+        /*嵌套调用时，上级的结果，先保存起来。*/
         tk_object_set_prop_object(lldb->resps, command, resp);
       }
     } else {
       assert(!"impossible");
       TK_OBJECT_UNREF(resp);
     }
+
+    /*嵌套调用时，在下级调用中已经得到结果。*/
     resp = tk_object_get_prop_object(lldb->resps, cmd);
-    if(resp != NULL) {
+    if (resp != NULL) {
       return resp;
     }
   }
@@ -530,10 +539,12 @@ static tk_object_t* debugger_lldb_create_attach_req(debugger_t* debugger, const 
     value_t v;
     tk_object_t* attach_commands = object_array_create();
 
+    /*执行attach_commands，实现attach. WASM走这条路径。*/
     object_array_push(attach_commands, value_set_str(&v, cmds));
     tk_object_set_prop_object(arguments, KEY_ATTACH_COMMANDS, attach_commands);
     TK_OBJECT_UNREF(attach_commands);
   } else {
+    /*attach到指定的PID*/
     tk_object_set_prop_int(arguments, KEY_PID, pid);
   }
 
@@ -553,7 +564,7 @@ static ret_t debugger_lldb_attach_impl(debugger_t* debugger, const char* cmds, i
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
     ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, CMD_ATTACH, 60000);
     if (ret == RET_OK) {
-      debugger->state = DEBUGGER_PROGRAM_STATE_RUNNING;
+      debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_RUNNING);
       debugger_lldb_update_break_points(debugger);
       debugger_lldb_simple_command(debugger, CMD_CONFIGURATION_DONE);
     }
@@ -573,8 +584,8 @@ static ret_t debugger_lldb_launch_app(debugger_t* debugger, const char* program,
     tk_snprintf(cmd, sizeof(cmd) - 1, "process connect -p wasm connect://%s", p);
     return debugger_lldb_attach_impl(debugger, cmd, -1);
   } else if (tk_str_start_with(program, STR_SCHEMA_PID)) {
-    /*TODO*/
-    return RET_NOT_IMPL;
+    const char* p = program + strlen(STR_SCHEMA_PID);
+    return debugger_lldb_attach_impl(debugger, NULL, tk_atoi(p));
   } else {
     return debugger_lldb_launch_app_impl(debugger, program, cwd, argc, argv);
   }
@@ -895,7 +906,7 @@ ret_t debugger_lldb_dispatch_messages(debugger_t* debugger) {
 
 ret_t debugger_lldb_wait_for_completed(debugger_t* debugger) {
   while (debugger->state == DEBUGGER_PROGRAM_STATE_RUNNING) {
-    if(debugger_lldb_dispatch_one(debugger, 100) != RET_OK) {
+    if (debugger_lldb_dispatch_one(debugger, 100) != RET_OK) {
       break;
     }
   }
@@ -966,7 +977,6 @@ static ret_t debugger_lldb_set_current_frame(debugger_t* debugger, uint32_t fram
   path = debugger_lldb_get_source_path(debugger, frame_index);
   debugger_lldb_load_source(debugger, path);
 
-  lldb->current_frame = frame_index;
   lldb->current_frame_id = debugger_lldb_get_frame_id(debugger, frame_index);
   lldb->current_frame_name = debugger_lldb_get_frame_name(debugger, frame_index);
   lldb->current_frame_line = debugger_lldb_get_source_line(debugger, frame_index);
@@ -1000,7 +1010,7 @@ static tk_object_t* debugger_lldb_get_var(debugger_t* debugger, const char* path
   tk_object_t* obj = NULL;
   int64_t variables_reference = 0;
   return_value_if_fail(debugger != NULL, NULL);
-   
+
   obj = debugger_lldb_get_variables_impl(debugger, VARREF_LOCALS, 0, 0xffff);
   return_value_if_fail(obj != NULL, NULL);
 

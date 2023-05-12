@@ -51,20 +51,20 @@ typedef struct _debugger_lldb_t {
   str_t sbreakpoints;
 
   tk_iostream_t* io;
-  debugger_program_state_t program_state;
-
   int64_t stop_thread_id;
-
-  int32_t current_frame;
   int64_t current_frame_id;
   int64_t current_frame_line;
   const char* current_frame_name;
   const char* current_frame_source;
 
   tk_object_t* resps;
+  /*代码文件缓存*/
   tk_object_t* sources;
+  /*callstack缓存*/
   tk_object_t* callstack;
+  /*函数断点*/
   darray_t functions_break_points;
+  /*源代码行号断点*/
   tk_object_t* source_break_points;
 } debugger_lldb_t;
 
