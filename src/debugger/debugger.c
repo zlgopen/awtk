@@ -199,9 +199,6 @@ ret_t debugger_get_debuggers(debugger_t* debugger, binary_data_t* debuggers) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->get_debuggers != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debuggers != NULL, RET_BAD_PARAMS);
-  if (!debugger_is_paused_or_running(debugger)) {
-    return RET_FAIL;
-  }
 
   return debugger->vt->get_debuggers(debugger, debuggers);
 }

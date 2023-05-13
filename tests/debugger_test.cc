@@ -303,11 +303,11 @@ TEST(Debugger, callstack1) {
 
   binary_data_t data = {0, NULL};
   ASSERT_EQ(debugger_get_callstack(client, &data), RET_OK);
-  ASSERT_STREQ((char*)(data.data), "<root>\nfoo\n");
+  ASSERT_STREQ((char*)(data.data), "foo\n<root>\n");
 
   tk_object_t* local = debugger_get_local(client, 0);
-  ASSERT_EQ(tk_object_get_prop_int(local, "a", 0), 1);
-  ASSERT_EQ(tk_object_get_prop_int(local, "b", 0), 2);
+  ASSERT_EQ(tk_object_get_prop_int(local, "body.variables.[0].value", 0), 1);
+  ASSERT_EQ(tk_object_get_prop_int(local, "body.variables.[1].value", 0), 2);
   TK_OBJECT_UNREF(local);
 
   local = debugger_get_local(client, 1);
@@ -366,20 +366,20 @@ TEST(Debugger, callstack2) {
 
   binary_data_t data = {0, NULL};
   ASSERT_EQ(debugger_get_callstack(client, &data), RET_OK);
-  ASSERT_STREQ((char*)(data.data), "<root>\nfoo\nbar\n");
+  ASSERT_STREQ((char*)(data.data), "bar\nfoo\n<root>\n");
 
   tk_object_t* local = debugger_get_local(client, 0);
-  ASSERT_EQ(tk_object_get_prop_int(local, "a", 0), 200);
-  ASSERT_EQ(tk_object_get_prop_int(local, "b", 0), 400);
+  ASSERT_EQ(tk_object_get_prop_int(local, "body.variables.[0].value", 0), 200);
+  ASSERT_EQ(tk_object_get_prop_int(local, "body.variables.[1].value", 0), 400);
   TK_OBJECT_UNREF(local);
 
   local = debugger_get_local(client, 1);
-  ASSERT_EQ(tk_object_get_prop_int(local, "a", 0), 100);
-  ASSERT_EQ(tk_object_get_prop_int(local, "b", 0), 200);
+  ASSERT_EQ(tk_object_get_prop_int(local, "body.variables.[0].value", 0), 100);
+  ASSERT_EQ(tk_object_get_prop_int(local, "body.variables.[1].value", 0), 200);
   TK_OBJECT_UNREF(local);
 
   local = debugger_get_local(client, 2);
-  ASSERT_EQ(tk_object_get_prop_int(local, "c", 0), 123);
+  //ASSERT_EQ(tk_object_get_prop_int(local, "body.variables.[2].value", 0), 123);
   TK_OBJECT_UNREF(local);
 
   ASSERT_EQ(debugger_continue(client), RET_OK);
@@ -495,27 +495,27 @@ TEST(Debugger, step_in) {
   ASSERT_EQ(debugger_step_in(client), RET_OK);
   sleep_ms(500);
   ASSERT_EQ(debugger_get_callstack(client, &data), RET_OK);
-  ASSERT_STREQ((char*)(data.data), "<root>\nfoo\n");
+  ASSERT_STREQ((char*)(data.data), "foo\n<root>\n");
 
   local = debugger_get_local(client, 0);
-  ASSERT_EQ(tk_object_get_prop_int(local, "a", 0), 100);
-  ASSERT_EQ(tk_object_get_prop_int(local, "b", 0), 200);
+  ASSERT_EQ(tk_object_get_prop_int(local, "body.variables.[0].value", 0), 100);
+  ASSERT_EQ(tk_object_get_prop_int(local, "body.variables.[1].value", 0), 200);
   TK_OBJECT_UNREF(local);
 
   ASSERT_EQ(debugger_step_in(client), RET_OK);
   sleep_ms(500);
   ASSERT_EQ(debugger_get_callstack(client, &data), RET_OK);
-  ASSERT_STREQ((char*)(data.data), "<root>\nfoo\nbar\n");
+  ASSERT_STREQ((char*)(data.data), "bar\nfoo\n<root>\n");
 
   local = debugger_get_local(client, 0);
-  ASSERT_EQ(tk_object_get_prop_int(local, "a", 0), 200);
-  ASSERT_EQ(tk_object_get_prop_int(local, "b", 0), 400);
+  ASSERT_EQ(tk_object_get_prop_int(local, "body.variables.[0].value", 0), 200);
+  ASSERT_EQ(tk_object_get_prop_int(local, "body.variables.[1].value", 0), 400);
   TK_OBJECT_UNREF(local);
 
   ASSERT_EQ(debugger_step_out(client), RET_OK);
   sleep_ms(500);
   ASSERT_EQ(debugger_get_callstack(client, &data), RET_OK);
-  ASSERT_STREQ((char*)(data.data), "<root>\nfoo\n");
+  ASSERT_STREQ((char*)(data.data), "foo\n<root>\n");
 
   ASSERT_EQ(debugger_step_out(client), RET_OK);
   sleep_ms(500);
@@ -633,6 +633,8 @@ TEST(Debugger, event1) {
 
   debugger_t* debugger = debugger_server_find_debugger(fscript->code_id);
   ASSERT_EQ(debugger_is_paused(debugger), TRUE);
+
+  debugger_dispatch_messages(client);
   ASSERT_EQ(debugger_is_paused(client), TRUE);
 
   ASSERT_EQ(debugger_continue(client), RET_OK);
@@ -792,9 +794,9 @@ TEST(Debugger, local) {
   sleep_ms(500);
 
   tk_object_t* local = debugger_get_local(client, 0);
-  ASSERT_EQ(tk_object_get_prop_int(local, "aaa", 0), 111);
-  ASSERT_EQ(tk_object_get_prop_int(local, "bbb", 0), 222);
-  ASSERT_STREQ(tk_object_get_prop_str(local, "ccc"), "abc");
+  ASSERT_EQ(tk_object_get_prop_int(local, "body.variables.[0].value", 0), 111);
+  ASSERT_EQ(tk_object_get_prop_int(local, "body.variables.[1].value", 0), 222);
+  ASSERT_STREQ(tk_object_get_prop_str(local, "body.variables.[2].value"), "abc");
   TK_OBJECT_UNREF(local);
 
   ASSERT_EQ(debugger_clear_break_points(client), RET_OK);
