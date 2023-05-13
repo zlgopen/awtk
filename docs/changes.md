@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/05/13
+  * 扩展debugger接口支持VSCode DAP协议。
+
 2023/05/11
   * 完善event\_from\_name(感谢兆坤提供补丁)
 

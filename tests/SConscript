@@ -51,6 +51,5 @@ if not CROSS_COMPILE:
   LIBS=env['LIBS']
   if OS_NAME != 'Windows':
     LIBS = LIBS + ['readline']
-  env.Program(os.path.join(BIN_DIR, 'fdb'), ["fdb.cpp"], LIBS=LIBS);
   env.Program(os.path.join(BIN_DIR, 'runFScript'), ["fscript_run.cpp"], LIBS=LIBS)
 

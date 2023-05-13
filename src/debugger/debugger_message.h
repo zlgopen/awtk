@@ -283,6 +283,11 @@ typedef enum _debugger_resp_type_t {
    */
   DEBUGGER_RESP_MSG_BREAKED,
   /**
+   * @const DEBUGGER_RESP_MSG_FRAME_CHANGED
+   * 用户切换调用堆栈的frame.
+   */
+  DEBUGGER_RESP_MSG_FRAME_CHANGED,
+  /**
    * @const DEBUGGER_RESP_MSG_COMPLETED
    * 程序执行完成的响应码/事件码。
    */
@@ -476,6 +481,52 @@ event_t* debugger_breaked_event_init(debugger_breaked_event_t* event, uint32_t l
  * @return {debugger_breaked_event_t*}  返回event对象。
  */
 debugger_breaked_event_t* debugger_breaked_event_cast(event_t* event);
+
+/**
+ * @class debugger_frame_changed_event_t
+ * @parent event_t
+ * 用户切换到调用堆栈指定的frame的事件。
+ */
+typedef struct _debugger_frame_changed_event_t {
+  event_t e;
+  /**
+   * @property {uint32_t} line
+   * @annotation ["readable"]
+   * 行号。
+   */
+  uint32_t line;
+  
+  /**
+   * @property {const char*} func
+   * @annotation ["readable"]
+   * 函数名。
+   */
+  const char* func;
+
+} debugger_frame_changed_event_t;
+
+/**
+ * @method debugger_frame_changed_event_init
+ * 初始化
+ *
+ * @param {debugger_frame_changed_event_t*} event event对象。
+ * @param {const char*} func 函数名。
+ * @param {uint32_t} line 行号。
+ *
+ * @return {event_t*} 返回event对象。
+ */
+event_t* debugger_frame_changed_event_init(debugger_frame_changed_event_t* event, const char* func, uint32_t line);
+
+/**
+ * @method debugger_frame_changed_event_cast
+ * @annotation ["cast"]
+ *
+ * 把event对象转debugger_frame_changed_event_t对象。
+ * @param {event_t*} event event对象。
+ *
+ * @return {debugger_frame_changed_event_t*}  返回event对象。
+ */
+debugger_frame_changed_event_t* debugger_frame_changed_event_cast(event_t* event);
 
 END_C_DECLS
 

@@ -866,6 +866,16 @@ value_t* value_cast(value_t* value);
 uint32_t value_type_size(value_type_t type);
 
 /**
+ * @method value_type_name
+ * 获取指定类型数据的名称。
+ * @annotation ["static"]
+ * @param {value_type_t} type 类型。
+ *
+ * @return {const char*} 返回对应数据类型的名称。
+ */
+const char* value_type_name(value_type_t type);
+
+/**
  * @method value_id
  * 获取类型为ID的值。
  * @annotation ["scriptable"]
