@@ -254,6 +254,7 @@
 #include "assets/default/inc/ui/uiex/page_label.data"
 #include "assets/default/inc/ui/uiex/kb_uint.data"
 #include "assets/default/inc/ui/win_anim/window.data"
+#include "assets/default/inc/ui/win_anim/center.data"
 #include "assets/default/inc/ui/win_anim/dialog.data"
 #include "assets/default/inc/xml/test.data"
 #include "assets/default/inc/data/com_zlg_app_json.data"
@@ -1171,6 +1172,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_uiex_page_label);
   assets_manager_add(am, ui_uiex_kb_uint);
   assets_manager_add(am, ui_win_anim_window);
+  assets_manager_add(am, ui_win_anim_center);
   assets_manager_add(am, ui_win_anim_dialog);
   assets_manager_add(am, xml_test);
   assets_manager_add(am, data_com_zlg_app_json);

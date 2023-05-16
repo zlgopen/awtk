@@ -4693,6 +4693,12 @@ bool_t widget_is_normal_window(widget_t* widget) {
   return widget->vt->is_window && tk_str_eq(widget->vt->type, WIDGET_TYPE_NORMAL_WINDOW);
 }
 
+bool_t widget_is_fullscreen_window(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
+  
+  return widget->vt->is_window && widget_get_prop_bool(widget, WIDGET_PROP_FULLSCREEN, FALSE);
+}
+
 bool_t widget_is_dialog(widget_t* widget) {
   return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
 

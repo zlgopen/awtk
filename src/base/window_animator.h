@@ -138,6 +138,9 @@ struct _window_animator_t {
   bitmap_t curr_img;
 #endif /*WITHOUT_WINDOW_ANIMATOR_CACHE*/
   bool_t open;
+  bool_t is_paint_system_bar_top;
+  bool_t is_paint_system_bar_bottom;
+
   float_t ratio;
   float_t percent;
   canvas_t* canvas;

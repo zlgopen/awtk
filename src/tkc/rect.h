@@ -309,6 +309,23 @@ rect_t rect_intersect(const rect_t* r1, const rect_t* r2);
 bool_t rect_has_intersect(const rect_t* r1, const rect_t* r2);
 
 /**
+ * @method rect_intersect
+ * 求第一个矩形和第二个矩形的差集。
+ * 
+ * 备注：第一个矩形包含第二个矩形的话，就会返回第一个矩形的四个矩形区域。
+ *
+ * @param {const rect_t*} r1 第一个矩形。
+ * @param {const rect_t*} r2 第二个矩形。
+ * @param {rect_t*} out_r1 返回差集的第一个矩形数据。
+ * @param {rect_t*} out_r2 返回差集的第二个矩形数据。
+ * @param {rect_t*} out_r3 返回差集的第三个矩形数据。
+ * @param {rect_t*} out_r4 返回差集的第四个矩形数据。
+ *
+ * @return {bool_t} 返回TRUE表示存在差集，否则表示不存在差集。
+ */
+bool_t rect_diff(const rect_t* r1, const rect_t* r2, rect_t* out_r1, rect_t* out_r2, rect_t* out_r3, rect_t* out_r4);
+
+/**
  * @method rectf_scale
  * 缩放rectf对象。
  *

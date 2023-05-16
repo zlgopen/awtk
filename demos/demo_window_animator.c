@@ -41,7 +41,7 @@ static ret_t new_window_set_param(widget_t* new_win, widget_t* curr_win) {
   widget_t* state_pages = NULL;
   widget_t *widget_fullscreen = NULL, *widget_new_fullscreen = NULL;
   bool_t fullscreen = FALSE;
-  widget_t *widget_anim_hint = NULL, *widget_anim_duration = NULL, *widget_anim_easing = NULL;
+  widget_t *widget_anim_hint = NULL, *widget_anim_duration = NULL, *widget_anim_easing = NULL, *widget_highlight = NULL;
   char anim_hint[TK_NAME_LEN + 1] = {0}, anim_duration[TK_NAME_LEN + 1] = {0},
                                anim_easing[TK_NAME_LEN + 1] = {0};
   char anim[ARRAY_SIZE(anim_hint) + ARRAY_SIZE(anim_duration) + ARRAY_SIZE(anim_easing) +
@@ -66,11 +66,26 @@ static ret_t new_window_set_param(widget_t* new_win, widget_t* curr_win) {
     widget_get_text_utf8(widget_anim_easing, anim_easing, ARRAY_SIZE(anim_easing));
   }
 
+  tk_snprintf(widget_name, ARRAY_SIZE(widget_name), "anim_hint(%s):highlight", new_win->name);
+  widget_highlight = widget_lookup(curr_win, widget_name, TRUE);
+  if (widget_highlight != NULL) {
+    if (widget_get_prop_bool(widget_highlight, WIDGET_PROP_VALUE, FALSE)) {
+      widget_set_prop_str(new_win, WIDGET_PROP_HIGHLIGHT, "default(alpha=100)");
+    } else {
+      widget_set_prop_str(new_win, WIDGET_PROP_HIGHLIGHT, "");
+    }
+  }
+
   if (!tk_str_eq(anim_hint, "none")) {
     tk_snprintf(anim, ARRAY_SIZE(anim), "%s(duration=%s,easing=%s)", anim_hint, anim_duration,
                 anim_easing);
     widget_set_prop_bool(new_win, WIDGET_PROP_DISABLE_ANIM, FALSE);
     widget_set_prop_str(new_win, WIDGET_PROP_ANIM_HINT, anim);
+    if (tk_str_eq(anim_hint, "popup")) {
+      widget_set_self_layout_params(new_win, NULL, "b:10", NULL, NULL);
+    } else if (tk_str_eq(anim_hint, "popdown")) {
+      widget_set_self_layout_params(new_win, NULL, "10", NULL, NULL);
+    }
     log_debug("%s\r\n", anim);
   } else {
     widget_set_prop_bool(new_win, WIDGET_PROP_DISABLE_ANIM, TRUE);
@@ -106,7 +121,9 @@ static ret_t on_open_window(void* ctx, event_t* e) {
 
   new_win = window_open_with_prefix(name);
   if (new_win != NULL) {
-    new_window_set_param(new_win, curr_win);
+    if (!tk_str_eq(name, "center")) {
+      new_window_set_param(new_win, curr_win);
+    }
     init_children_widget(new_win, (void*)new_win);
   }
 
@@ -161,9 +178,14 @@ static void init_children_widget(widget_t* widget, void* ctx) {
 ret_t application_init(void) {
   widget_t* win = NULL;
   widget_t* state_pages = NULL;
-  window_open("system_bar");
-  win = window_open_with_prefix("window");
+  widget_t* system_bar_top = window_open("system_bar");
+  widget_t* system_bar_bottom = window_open("system_bar_bottom");
 
+  widget_use_style(system_bar_bottom, "system_bar");
+  widget_set_prop_str(widget_lookup_by_type(system_bar_bottom, "digit_clock", TRUE), "format", "hh:mm::ss");
+  widget_set_prop_str(widget_lookup_by_type(system_bar_top, "digit_clock", TRUE), "format", "hh:mm::ss");
+
+  win = window_open_with_prefix("window");
   init_children_widget(win, (void*)win);
 
   widget_set_prop_int(win, WIDGET_PROP_CLOSABLE, WINDOW_CLOSABLE_NO);

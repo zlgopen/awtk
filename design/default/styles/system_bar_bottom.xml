@@ -2,6 +2,9 @@
   <style name="default">
     <normal bg_color="#606060"/>
   </style>
+  <style name="system_bar">
+    <normal bg_color="#404040"/>
+  </style>
 </system_bar_bottom>
 
 <label>

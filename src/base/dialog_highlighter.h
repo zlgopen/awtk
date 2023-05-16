@@ -29,6 +29,8 @@ BEGIN_C_DECLS
 struct _dialog_highlighter_t;
 typedef struct _dialog_highlighter_t dialog_highlighter_t;
 
+typedef ret_t (*dialog_highlighter_set_clip_rect_t)(dialog_highlighter_t* h, rect_t* rect);
+typedef ret_t (*dialog_highlighter_system_bar_append_clip_rect_t)(dialog_highlighter_t* h, rect_t* rect);
 typedef ret_t (*dialog_highlighter_set_system_bar_alpha_t)(dialog_highlighter_t* h, uint8_t alpha);
 typedef uint8_t (*dialog_highlighter_get_alpha_t)(dialog_highlighter_t* h, float_t percent);
 typedef ret_t (*dialog_highlighter_draw_mask_t)(dialog_highlighter_t* h, canvas_t* c,
@@ -50,7 +52,10 @@ typedef struct _dialog_highlighter_vtable_t {
   dialog_highlighter_get_alpha_t get_alpha;
   dialog_highlighter_is_dynamic_t is_dynamic;
   dialog_highlighter_on_destroy_t on_destroy;
+  dialog_highlighter_set_clip_rect_t set_bg_clip_rect;
   dialog_highlighter_set_system_bar_alpha_t set_system_bar_alpha;
+  dialog_highlighter_system_bar_append_clip_rect_t system_bar_top_append_clip_rect;
+  dialog_highlighter_system_bar_append_clip_rect_t system_bar_bottom_append_clip_rect;
 } dialog_highlighter_vtable_t;
 
 /**
@@ -186,6 +191,28 @@ ret_t dialog_highlighter_prepare_ex(dialog_highlighter_t* h, canvas_t* c, canvas
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t dialog_highlighter_set_system_bar_alpha(dialog_highlighter_t* h, uint8_t alpha);
+
+/**
+ * @method dialog_highlighter_system_bar_top_append_clip_rect
+ * 增加顶部 system_bar 的显示裁剪区
+ * @param {dialog_highlighter_t*} h 对话框高亮策略对象。
+ * @param {bool_t} paint_system_bar_top 设置是否绘制顶部 system_bar。
+ * @param {bool_t} paint_system_bar_bottom 设置是否绘制底部 system_bar。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t dialog_highlighter_system_bar_top_append_clip_rect(dialog_highlighter_t* h, rect_t* rect);
+
+/**
+ * @method dialog_highlighter_system_bar_bottom_append_clip_rect
+ * 增加底部 system_bar 的显示裁剪区
+ * @param {dialog_highlighter_t*} h 对话框高亮策略对象。
+ * @param {bool_t} paint_system_bar_top 设置是否绘制顶部 system_bar。
+ * @param {bool_t} paint_system_bar_bottom 设置是否绘制底部 system_bar。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t dialog_highlighter_system_bar_bottom_append_clip_rect(dialog_highlighter_t* h, rect_t* rect);
 
 /**
  * @method dialog_highlighter_get_alpha

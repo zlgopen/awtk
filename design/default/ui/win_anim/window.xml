@@ -21,11 +21,11 @@
             <combo_box_ex name="anim_hint(window):easing" w="160" item_height="30" readonly="true" localize_options="false" options="linear;quadratic_in;quadratic_out;quadratic_inout;cubic_in;cubic_out;sin_in;sin_out;sin_inout;pow_in;pow_out;pow_inout;circular_in;circular_out;circular_inout;elastic_in;elastic_out;elastic_inout;back_in;back_out;back_inout;bounce_in;bounce_out;bounce_inout" value="0"/>
           </view>
         </view>
-        <view name="view_dialog" h="140" children_layout="default(r=0,c=1,x=10,s=10)">
+        <view name="view_dialog" h="160" children_layout="default(r=0,c=1,x=10,s=10)">
           <label name="lb" h="28" text="dialog"/>
           <view name="view_anim_hint" h="22" children_layout="default(r=1,c=0,x=0,y=0,s=0)">
             <label name="lb_ti" w="74" text="anim hint"/>
-            <combo_box_ex name="anim_hint(dialog)" w="160" item_height="30" readonly="true" localize_options="false" options="none;center_scale;fade;popup;popdown" value="1"/>
+            <combo_box_ex name="anim_hint(dialog)" w="160" item_height="30" readonly="true" localize_options="false" options="none;center_scale;fade;popup;popdown" value="4"/>
           </view>
           <view name="view_duration" h="22" children_layout="default(r=1,c=0,x=0,y=0,s=0)">
             <label name="lb_ti" w="74" text="duration"/>
@@ -34,6 +34,10 @@
           <view name="view_easing" h="22" children_layout="default(r=1,c=0,x=0,y=0,s=0)">
             <label name="lb_ti" w="74" text="easing"/>
             <combo_box_ex name="anim_hint(dialog):easing" w="160" item_height="30" readonly="true" localize_options="false" options="linear;quadratic_in;quadratic_out;quadratic_inout;cubic_in;cubic_out;sin_in;sin_out;sin_inout;pow_in;pow_out;pow_inout;circular_in;circular_out;circular_inout;elastic_in;elastic_out;elastic_inout;back_in;back_out;back_inout;bounce_in;bounce_out;bounce_inout" value="0"/>
+          </view>
+          <view name="view_highlight" h="22" children_layout="default(r=1,c=0,x=0,y=0,s=0)">
+            <label name="lb_ti" w="74" text="highlight"/>
+            <switch name="anim_hint(dialog):highlight" w="44" value="true"/>
           </view>
         </view>
       </view>

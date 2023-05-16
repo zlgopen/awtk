@@ -37,14 +37,6 @@ static ret_t window_manager_simple_invalidate(widget_t* widget, const rect_t* r)
 static ret_t window_manager_simple_do_open_window(widget_t* wm, widget_t* window);
 static ret_t window_manager_simple_layout_child(widget_t* widget, widget_t* window);
 
-static bool_t window_is_fullscreen(widget_t* widget) {
-  value_t v;
-  value_set_bool(&v, FALSE);
-  widget_get_prop(widget, WIDGET_PROP_FULLSCREEN, &v);
-
-  return value_bool(&v);
-}
-
 static bool_t window_is_opened(widget_t* widget) {
   int32_t stage = widget_get_prop_int(widget, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
 
@@ -268,7 +260,7 @@ static ret_t window_manager_simple_on_paint_children(widget_t* widget, canvas_t*
       widget_paint(iter, c);
 
       if (!has_fullscreen_win) {
-        has_fullscreen_win = window_is_fullscreen(iter);
+        has_fullscreen_win = widget_is_fullscreen_window(iter);
       }
       start = i + 1;
       break;
@@ -400,7 +392,7 @@ static ret_t window_manager_simple_layout_child(widget_t* widget, widget_t* wind
   }
 
   if (widget_is_normal_window(window)) {
-    if (window_is_fullscreen(window)) {
+    if (widget_is_fullscreen_window(window)) {
       x = 0;
       y = 0;
       w = widget->w;

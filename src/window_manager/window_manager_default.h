@@ -40,6 +40,8 @@ typedef struct _window_manager_default_t {
   bool_t animating;
   bool_t ready_animator;
   bool_t ignore_user_input;
+  bool_t is_animator_paint_system_bar_top;
+  bool_t is_animator_paint_system_bar_bottom;
   window_animator_t* animator;
 
   fps_t fps;
@@ -84,7 +86,8 @@ widget_t* window_manager_create(void);
 
 /* private */
 ret_t window_manager_paint_system_bar(widget_t* widget, canvas_t* c);
-bool_t window_is_fullscreen(widget_t* widget);
+ret_t window_manager_paint_system_bar_top(widget_t* widget, canvas_t* c);
+ret_t window_manager_paint_system_bar_bottom(widget_t* widget, canvas_t* c);
 
 END_C_DECLS
 

@@ -51,14 +51,6 @@ static ret_t window_manager_default_create_dialog_highlighter(widget_t* widget, 
 static ret_t window_manager_default_layout_not_system_bar(widget_t* widget, widget_t* window,
                                                           rect_t client_r);
 
-bool_t window_is_fullscreen(widget_t* widget) {
-  value_t v;
-  value_set_bool(&v, FALSE);
-  widget_get_prop(widget, WIDGET_PROP_FULLSCREEN, &v);
-
-  return value_bool(&v);
-}
-
 static bool_t window_is_opened(widget_t* widget) {
   int32_t stage = widget_get_prop_int(widget, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
 
@@ -126,6 +118,34 @@ static widget_t* window_manager_find_prev_normal_window(widget_t* widget) {
   return NULL;
 }
 
+static ret_t window_manager_default_set_paint_system_bar_by_window_animator(widget_t* widget, rect_t* rect) {
+  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+    if (tk_str_eq(iter->vt->type, WIDGET_TYPE_SYSTEM_BAR) && !wm->is_animator_paint_system_bar_top) {
+      rect_t r = rect_init(iter->x, iter->y, iter->w, iter->h);
+      rect_t dr = rect_intersect(rect, &r);
+      if (dr.w == 0 || dr.h == 0) {
+        wm->is_animator_paint_system_bar_top = TRUE;
+      } else if (dr.w == r.w && dr.h == r.h) {
+        wm->is_animator_paint_system_bar_top = FALSE;
+      } else {
+        wm->is_animator_paint_system_bar_top = TRUE;
+      }
+    } else if (tk_str_eq(iter->vt->type, WIDGET_TYPE_SYSTEM_BAR_BOTTOM) && !wm->is_animator_paint_system_bar_bottom) {
+      rect_t r = rect_init(iter->x, iter->y, iter->w, iter->h);
+      rect_t dr = rect_intersect(rect, &r);
+      if (dr.w == 0 || dr.h == 0) {
+        wm->is_animator_paint_system_bar_bottom = TRUE;
+      } else if (dr.w == r.w && dr.h == r.h) {
+        wm->is_animator_paint_system_bar_bottom = FALSE;
+      } else {
+        wm->is_animator_paint_system_bar_bottom = TRUE;
+      }
+    }
+  WIDGET_FOR_EACH_CHILD_END()
+  return RET_OK;
+}
+
 ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_win, bitmap_t* img) {
 #ifndef WITHOUT_WINDOW_ANIMATORS
   canvas_t* c = NULL;
@@ -151,6 +171,7 @@ ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_w
   canvas_offline_end_draw(canvas);
   ENSURE(canvas_offline_bitmap_move_to_new_bitmap(canvas, img) == RET_OK);
   ENSURE(canvas_offline_destroy(canvas) == RET_OK);
+  window_manager_default_set_paint_system_bar_by_window_animator(widget, &r);
   img->flags |= BITMAP_FLAG_OPAQUE;
   canvas_restore(c);
   /* 清除在线画布的缓存，确保绘制完窗口动画后，lcd对象的数据能和在线画布同步 */
@@ -183,16 +204,102 @@ static ret_t window_manager_default_snap_prev_window_draw_dialog_highlighter_and
   }
   return RET_FAIL;
 }
+
+static ret_t window_manager_default_snap_prev_window_get_system_bar_rect(widget_t* widget, slist_t* system_bar_top_list, slist_t* system_bar_bottom_list) {
+  WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+    if (iter->vt->is_window) {
+      if (tk_str_eq(iter->vt->type, WIDGET_TYPE_SYSTEM_BAR)) {
+        rect_t* r = rect_create(iter->x, iter->y, iter->w, iter->h);
+        slist_append(system_bar_top_list, r);
+      } else if (tk_str_eq(iter->vt->type, WIDGET_TYPE_SYSTEM_BAR_BOTTOM)) {
+        rect_t* r = rect_create(iter->x, iter->y, iter->w, iter->h);
+        slist_append(system_bar_bottom_list, r);
+      }
+    }
+  WIDGET_FOR_EACH_CHILD_END()
+  return RET_OK;
+}
+
+static bool_t window_manager_default_snap_prev_window_check_paint_system_bar(slist_t* diff_rect_list) {
+  bool_t su = FALSE;
+  rect_t* rect = NULL;
+  slist_node_t* iter = NULL;
+  iter = diff_rect_list->first;
+  while (iter != NULL) {
+    rect = (rect_t*)iter->data;
+    if (rect->w != 0 && rect->h != 0) {
+      su = TRUE;
+      break;
+    }
+    iter = iter->next;
+  }
+  return su;
+}
+
+static ret_t window_manager_default_snap_prev_window_get_system_bar_rect_diff_on_visit(void* ctx, const void* data) {
+  rect_t diff_rects[4];
+  void** arges = (void**)ctx;
+  rect_t* rect = (rect_t*)data;
+  rect_t* r = (rect_t*)arges[1];
+  slist_t* diff_rect_list = (slist_t*)arges[0];
+  if (rect_diff(rect, r, &diff_rects[0], &diff_rects[1], &diff_rects[2], &diff_rects[3])) {
+    for (uint32_t i = 0; i < ARRAY_SIZE(diff_rects); i++) {
+      if (diff_rects[i].w != 0 && diff_rects[i].h != 0) {
+        rect_t* data = TKMEM_ZALLOC(rect_t);
+        break_if_fail(data != NULL);
+        memcpy(data, &diff_rects[i], sizeof(rect_t));
+        slist_append(diff_rect_list, data);
+      }
+    }
+    return RET_REMOVE;
+  }
+  return RET_OK;
+}
+
+static ret_t window_manager_default_snap_prev_window_get_system_bar_rect_diff(slist_t* rect_list, rect_t* r) {
+  void* arges[2];
+  void* iter = NULL;
+  slist_t diff_rect_list;
+  slist_init(&diff_rect_list, NULL, NULL);
+  arges[0] = &diff_rect_list;
+  arges[1] = r;
+  slist_foreach(rect_list, window_manager_default_snap_prev_window_get_system_bar_rect_diff_on_visit, arges);
+  if (!slist_is_empty(&diff_rect_list)) {
+    while ((iter = slist_head_pop(&diff_rect_list)) != NULL) {
+      slist_append(rect_list, iter);
+    }
+  }
+  slist_deinit(&diff_rect_list);
+  return RET_OK;
+}
+
+static ret_t window_manager_default_snap_prev_window_system_bar_top_push_clip_rect(void* ctx, const void* data) {
+  rect_t* r = (rect_t*)data;
+  dialog_highlighter_t* dialog_highlighter = (dialog_highlighter_t*)ctx;
+  dialog_highlighter_system_bar_top_append_clip_rect(dialog_highlighter, r);
+  return RET_OK;
+}
+
+static ret_t window_manager_default_snap_prev_window_system_bar_bottom_push_clip_rect(void* ctx, const void* data) {
+  rect_t* r = (rect_t*)data;
+  dialog_highlighter_t* dialog_highlighter = (dialog_highlighter_t*)ctx;
+  dialog_highlighter_system_bar_bottom_append_clip_rect(dialog_highlighter, r);
+  return RET_OK;
+}
+
 #endif
 
 ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_win, bitmap_t* img) {
 #ifndef WITHOUT_WINDOW_ANIMATORS
   rect_t r = {0};
+  uint8_t alpha = 0xFF;
   canvas_t* c = NULL;
   canvas_t* canvas = NULL;
-  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
-  dialog_highlighter_t* dialog_highlighter = NULL;
   int32_t end = -1, start = -1;
+  bool_t is_fullscreen_window = FALSE;
+  dialog_highlighter_t* dialog_highlighter = NULL;
+  slist_t system_bar_top_rect_list, system_bar_bottom_rect_list;
+  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   const char* curr_highlight = widget_get_prop_str(wm->curr_win, WIDGET_PROP_HIGHLIGHT, NULL);
 
   return_value_if_fail(img != NULL && wm != NULL && prev_win != NULL, RET_BAD_PARAMS);
@@ -210,6 +317,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
   }
   WIDGET_FOR_EACH_CHILD_END()
 
+  is_fullscreen_window = widget_is_fullscreen_window(prev_win);
   r = rect_init(prev_win->x, prev_win->y, prev_win->w, prev_win->h);
 
   canvas_save(c);
@@ -217,36 +325,59 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
                                  lcd_get_desired_bitmap_format(c->lcd));
 
   canvas_offline_begin_draw(canvas);
-  canvas_set_clip_rect(canvas, &r);
+  canvas_set_clip_rect(canvas, NULL);
   ENSURE(widget_on_paint_background(widget, canvas) == RET_OK);
-  if (!window_is_fullscreen(prev_win)) {
+  if (!is_fullscreen_window) {
     window_manager_paint_system_bar(widget, canvas);
   }
   {
     widget_t** children = (widget_t**)(widget->children->elms);
+    slist_init(&system_bar_top_rect_list, default_destroy, NULL);
+    slist_init(&system_bar_bottom_rect_list, default_destroy, NULL);
+    if (!is_fullscreen_window) {
+      window_manager_default_snap_prev_window_get_system_bar_rect(widget, &system_bar_top_rect_list, &system_bar_bottom_rect_list);
+    }
     for (; start <= end; ++start) {
       widget_t* iter = children[start];
       if (widget_is_system_bar(iter) || !iter->visible) continue;
       /* 过滤 curr_win 的对象 */
       if (iter != wm->curr_win) {
+        rect_t iter_rect = rect_init(iter->x, iter->y, iter->w, iter->h);
         /* 给前面的高亮对话框叠加黑色色块 */
         if (widget_is_dialog(iter)) {
           uint8_t a = 0x0;
-          window_manager_default_snap_prev_window_draw_dialog_highlighter_and_get_alpha(iter,
-                                                                                        canvas, &a);
-          if (dialog_highlighter != NULL && curr_highlight != NULL) {
-            dialog_highlighter_set_system_bar_alpha(dialog_highlighter, a);
+          if (window_manager_default_snap_prev_window_draw_dialog_highlighter_and_get_alpha(iter, canvas, &a) == RET_OK) {
+            /* 计算最终叠加后的透明度值 */
+            alpha = alpha * (1 - a / 255.0f);
           }
         }
-
+        /* 如果不是全屏的话，就削减 system_bar 的显示裁剪区 */
+        if (!is_fullscreen_window && !widget_is_normal_window(iter)) {
+          window_manager_default_snap_prev_window_get_system_bar_rect_diff(&system_bar_top_rect_list, &iter_rect);
+          window_manager_default_snap_prev_window_get_system_bar_rect_diff(&system_bar_bottom_rect_list, &iter_rect);
+        }
+        rect_merge(&r, &iter_rect);
         ENSURE(widget_paint(iter, canvas) == RET_OK);
       }
     }
+    /* 检查是否还有 system_bar 的显示区域，如果有则让其绘图 */
+    wm->is_animator_paint_system_bar_top = window_manager_default_snap_prev_window_check_paint_system_bar(&system_bar_top_rect_list);
+    wm->is_animator_paint_system_bar_bottom = window_manager_default_snap_prev_window_check_paint_system_bar(&system_bar_bottom_rect_list);
   }
 
-  if (dialog_highlighter != NULL && curr_highlight != NULL) {
-    dialog_highlighter_set_win(dialog_highlighter, prev_win);
-    dialog_highlighter_prepare_ex(dialog_highlighter, c, canvas);
+  if (dialog_highlighter != NULL) {
+    dialog_highlighter_set_bg_clip_rect(dialog_highlighter, &r);
+    if (!is_fullscreen_window) {
+      /* 把 system_bar 的显示裁剪区域追加到高亮对象中 */
+      slist_foreach(&system_bar_top_rect_list, window_manager_default_snap_prev_window_system_bar_top_push_clip_rect, dialog_highlighter);
+      slist_foreach(&system_bar_bottom_rect_list, window_manager_default_snap_prev_window_system_bar_bottom_push_clip_rect, dialog_highlighter);
+    }
+    if (curr_highlight != NULL) {
+      dialog_highlighter_set_system_bar_alpha(dialog_highlighter, 0xFF - alpha);
+      dialog_highlighter_set_win(dialog_highlighter, prev_win);
+      /* 把没有遮罩的 system_bar 绘制到离线画布上 */
+      dialog_highlighter_prepare_ex(dialog_highlighter, c, canvas);
+    }
   }
   canvas_offline_end_draw(canvas);
   ENSURE(canvas_offline_bitmap_move_to_new_bitmap(canvas, img) == RET_OK);
@@ -256,8 +387,9 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
 
   if (dialog_highlighter != NULL) {
     dialog_highlighter_set_bg(dialog_highlighter, img);
-    dialog_highlighter_set_bg_clip_rect(dialog_highlighter, &r);
   }
+  slist_deinit(&system_bar_top_rect_list);
+  slist_deinit(&system_bar_bottom_rect_list);
   wm->last_curr_win = wm->curr_win;
   wm->curr_win = NULL;
 #endif
@@ -385,6 +517,8 @@ static ret_t window_manager_create_animator(window_manager_default_t* wm, widget
     }
   }
 
+  wm->is_animator_paint_system_bar_top = FALSE;
+  wm->is_animator_paint_system_bar_bottom = FALSE;
   if (anim_hint && *anim_hint) {
     canvas_t* c = native_window_get_canvas(wm->native_window);
     window_manager_default_create_dialog_highlighter(WIDGET(wm), curr_win);
@@ -398,6 +532,9 @@ static ret_t window_manager_create_animator(window_manager_default_t* wm, widget
     wm->animating = wm->animator != NULL;
 
     if (wm->animating) {
+      wm->animator->is_paint_system_bar_top = wm->is_animator_paint_system_bar_top;
+      wm->animator->is_paint_system_bar_bottom = wm->is_animator_paint_system_bar_bottom;
+
       wm->ignore_user_input = TRUE;
       log_debug("ignore_user_input\n");
     }
@@ -1064,7 +1201,7 @@ static ret_t window_manager_default_on_paint_children(widget_t* widget, canvas_t
         widget_paint(iter, c);
 
         if (!has_fullscreen_win) {
-          has_fullscreen_win = window_is_fullscreen(iter);
+          has_fullscreen_win = widget_is_fullscreen_window(iter);
         }
         start = i + 1;
         break;
@@ -1324,7 +1461,7 @@ static ret_t window_manager_default_layout_not_system_bar(widget_t* widget, widg
   wh_t h = window->h;
 
   if (widget_is_normal_window(window)) {
-    if (window_is_fullscreen(window)) {
+    if (widget_is_fullscreen_window(window)) {
       x = 0;
       y = 0;
       w = widget->w;
@@ -1497,6 +1634,34 @@ ret_t window_manager_paint_system_bar(widget_t* widget, canvas_t* c) {
   if (widget_is_system_bar(iter)) {
     widget_paint(iter, c);
   }
+  WIDGET_FOR_EACH_CHILD_END()
+
+  return RET_OK;
+}
+
+ret_t window_manager_paint_system_bar_top(widget_t* widget, canvas_t* c) {
+  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  return_value_if_fail(wm != NULL && c != NULL, RET_BAD_PARAMS);
+
+  WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+    if (iter->vt->is_window && tk_str_eq(iter->vt->type, WIDGET_TYPE_SYSTEM_BAR)) {
+      widget_paint(iter, c);
+      break;
+    }
+  WIDGET_FOR_EACH_CHILD_END()
+
+  return RET_OK;
+}
+
+ret_t window_manager_paint_system_bar_bottom(widget_t* widget, canvas_t* c) {
+  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  return_value_if_fail(wm != NULL && c != NULL, RET_BAD_PARAMS);
+
+  WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+    if (iter->vt->is_window && tk_str_eq(iter->vt->type, WIDGET_TYPE_SYSTEM_BAR_BOTTOM)) {
+      widget_paint(iter, c);
+      break;
+    }
   WIDGET_FOR_EACH_CHILD_END()
 
   return RET_OK;

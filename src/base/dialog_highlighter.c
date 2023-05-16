@@ -84,8 +84,31 @@ ret_t dialog_highlighter_set_bg_clip_rect(dialog_highlighter_t* h, rect_t* clip_
   return_value_if_fail(h != NULL && h->vt != NULL, RET_BAD_PARAMS);
 
   h->clip_rect = rect_init(clip_rect->x, clip_rect->y, clip_rect->w, clip_rect->h);
+  if (h->vt->set_bg_clip_rect != NULL) {
+    return h->vt->set_bg_clip_rect(h, clip_rect);
+  }
 
   return RET_OK;
+}
+
+ret_t dialog_highlighter_system_bar_top_append_clip_rect(dialog_highlighter_t* h, rect_t* rect) {
+  return_value_if_fail(h != NULL && h->vt != NULL, RET_BAD_PARAMS);
+
+  if (h->vt->system_bar_top_append_clip_rect != NULL) {
+    return h->vt->system_bar_top_append_clip_rect(h, rect);
+  }
+
+  return RET_NOT_IMPL;
+}
+
+ret_t dialog_highlighter_system_bar_bottom_append_clip_rect(dialog_highlighter_t* h, rect_t* rect) {
+  return_value_if_fail(h != NULL && h->vt != NULL, RET_BAD_PARAMS);
+
+  if (h->vt->system_bar_bottom_append_clip_rect != NULL) {
+    return h->vt->system_bar_bottom_append_clip_rect(h, rect);
+  }
+
+  return RET_NOT_IMPL;
 }
 
 ret_t dialog_highlighter_set_system_bar_alpha(dialog_highlighter_t* h, uint8_t alpha) {

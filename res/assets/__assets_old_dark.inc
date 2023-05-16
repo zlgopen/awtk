@@ -207,6 +207,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_kb_uint[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_scroll_view_v[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_slide_view_animating_time[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_win_anim_window[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_win_anim_center[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_win_anim_dialog[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char xml_test[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_com_zlg_app_json[]);
@@ -745,6 +746,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_scroll_view_v);
   assets_manager_add(am, ui_slide_view_animating_time);
   assets_manager_add(am, ui_win_anim_window);
+  assets_manager_add(am, ui_win_anim_center);
   assets_manager_add(am, ui_win_anim_dialog);
   assets_manager_add(am, xml_test);
   assets_manager_add(am, data_com_zlg_app_json);

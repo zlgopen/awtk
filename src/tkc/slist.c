@@ -148,15 +148,26 @@ ret_t slist_prepend(slist_t* slist, void* data) {
 ret_t slist_foreach(slist_t* slist, tk_visit_t visit, void* ctx) {
   ret_t ret = RET_OK;
   slist_node_t* iter = NULL;
+  slist_node_t* prev_iter = NULL;
   return_value_if_fail(slist != NULL && visit != NULL, RET_BAD_PARAMS);
 
   iter = slist->first;
   while (iter != NULL) {
     ret = visit(ctx, iter->data);
-    if (ret != RET_OK) {
+    if (ret == RET_REMOVE) {
+      slist_node_t* next = iter->next;
+      if (prev_iter == NULL) {
+        slist->first = next;
+      } else {
+        prev_iter->next = next;
+      }
+      slist_node_destroy(iter, slist->destroy);
+      iter = next;
+      continue;
+    } else if (ret != RET_OK) {
       break;
     }
-
+    prev_iter = iter;
     iter = iter->next;
   }
 
@@ -195,7 +206,9 @@ void* slist_head_pop(slist_t* slist) {
   return_value_if_fail(slist != NULL, NULL);
 
   iter = slist->first;
-  return_value_if_fail(iter != NULL, NULL);
+  if (iter == NULL) {
+    return NULL;
+  }
 
   slist->first = iter->next;
 
@@ -203,6 +216,11 @@ void* slist_head_pop(slist_t* slist) {
   TKMEM_FREE(iter);
 
   return data;
+}
+
+bool_t slist_is_empty(slist_t* slist) {
+  return_value_if_fail(slist != NULL, TRUE);
+  return slist->first == NULL;
 }
 
 int32_t slist_size(slist_t* slist) {

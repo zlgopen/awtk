@@ -130,7 +130,6 @@ ret_t window_animator_to_right_draw_curr(window_animator_t* wa) {
 #endif /*WITHOUT_WINDOW_ANIMATOR_CACHE*/
 }
 
-static ret_t window_animator_paint_system_bar(window_animator_t* wa);
 static ret_t window_animator_update_percent(window_animator_t* wa);
 static ret_t window_animator_draw_prev_window(window_animator_t* wa);
 static ret_t window_animator_draw_curr_window(window_animator_t* wa);
@@ -186,26 +185,6 @@ ret_t window_animator_destroy(window_animator_t* wa) {
 }
 
 /******************helper******************/
-
-static ret_t window_animator_paint_system_bar(window_animator_t* wa) {
-  widget_t* wm = wa->curr_win->parent;
-  widget_t* system_bar = widget_lookup_by_type(wm, WIDGET_TYPE_SYSTEM_BAR, TRUE);
-  if (system_bar == NULL) {
-    system_bar = widget_lookup_by_type(wm, WIDGET_TYPE_SYSTEM_BAR_BOTTOM, TRUE);
-  }
-
-  if (system_bar != NULL) {
-#ifdef AWTK_WEB
-    rect_t src = rect_init(system_bar->x, system_bar->y, system_bar->w, system_bar->h);
-    rect_t dst = rect_init(system_bar->x, system_bar->y, system_bar->w, system_bar->h);
-    canvas_draw_image(wa->canvas, &(wa->prev_img), rect_scale(&src, wa->ratio), &dst);
-#else
-    window_manager_paint_system_bar(wm, wa->canvas);
-#endif /*AWTK_WEB*/
-  }
-
-  return RET_OK;
-}
 
 #ifndef WITHOUT_WINDOW_ANIMATORS
 static ret_t window_animator_init(window_animator_t* wa) {
@@ -323,33 +302,18 @@ ret_t window_animator_begin_frame(window_animator_t* wa) {
   return_value_if_fail(wa != NULL && wa->vt != NULL, RET_OK);
 
   ENSURE(canvas_begin_frame(wa->canvas, NULL, LCD_DRAW_ANIMATION) == RET_OK);
-
-  if (!widget_is_normal_window(wa->curr_win) && wa->dialog_highlighter == NULL) {
-    paint_system_bar = FALSE;
-  } else if (tk_str_eq(wa->vt->type, WINDOW_ANIMATOR_VTRANSLATE)) {
-    paint_system_bar = FALSE;
+  /* 把 system_bar 绘制到底部，然后再被截图覆盖在上面，应该截图中的对话框等窗口有可能叠在 system_bar 上面 */
+  if (wa->is_paint_system_bar_top) {
+    window_manager_paint_system_bar_top(wa->curr_win->parent, wa->canvas);
   }
-
-  if (paint_system_bar) {
-    window_animator_paint_system_bar(wa);
+  if (wa->is_paint_system_bar_bottom) {
+    window_manager_paint_system_bar_bottom(wa->curr_win->parent, wa->canvas);
   }
 
   return RET_OK;
 }
 
 ret_t window_animator_end_frame(window_animator_t* wa) {
-  bool_t paint_system_bar = TRUE;
   return_value_if_fail(wa != NULL && wa->vt != NULL, RET_OK);
-
-  if (!widget_is_normal_window(wa->curr_win) && wa->dialog_highlighter == NULL) {
-    paint_system_bar = FALSE;
-  } else if (!tk_str_eq(wa->vt->type, WINDOW_ANIMATOR_VTRANSLATE)) {
-    paint_system_bar = FALSE;
-  }
-
-  if (paint_system_bar) {
-    window_animator_paint_system_bar(wa);
-  }
-
   return canvas_end_frame(wa->canvas);
 }

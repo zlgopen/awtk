@@ -102,8 +102,8 @@ TEST(SList, tail_pop) {
   ASSERT_EQ(TO_INT(slist_head_pop(s)), 0);
 
   ASSERT_EQ(TO_INT(slist_tail_pop(s)), 3);
-  ASSERT_EQ(slist_head_pop(s) == NULL, TRUE);
-  ASSERT_EQ(slist_tail_pop(s) == NULL, TRUE);
+  ASSERT_EQ(slist_head_pop(s) == NULL, true);
+  ASSERT_EQ(slist_tail_pop(s) == NULL, true);
 
   slist_deinit(s);
 }
@@ -114,20 +114,25 @@ TEST(SList, remove) {
 
   slist_init(s, NULL, NULL);
 
+  ASSERT_EQ(slist_is_empty(s), TRUE);
   ASSERT_EQ(slist_size(s), 0);
 
   ASSERT_EQ(slist_append(s, TO_POINTER(1)), RET_OK);
+  ASSERT_EQ(slist_is_empty(s), FALSE);
 
   ASSERT_EQ(TO_INT(slist_find(s, TO_POINTER(1))), 1);
 
   ASSERT_EQ(slist_remove(s, TO_POINTER(1)), RET_OK);
   ASSERT_EQ(slist_count(s, TO_POINTER(1)), 0);
+  ASSERT_EQ(slist_is_empty(s), TRUE);
 
   ASSERT_EQ(slist_append(s, TO_POINTER(2)), RET_OK);
   ASSERT_EQ(TO_INT(slist_find(s, TO_POINTER(2))), 2);
+  ASSERT_EQ(slist_is_empty(s), FALSE);
 
   ASSERT_EQ(slist_remove(s, TO_POINTER(2)), RET_OK);
   ASSERT_EQ(slist_count(s, TO_POINTER(2)), 0);
+  ASSERT_EQ(slist_is_empty(s), TRUE);
 
   slist_deinit(s);
 }
@@ -159,6 +164,41 @@ TEST(SList, foreach) {
   ASSERT_EQ(log, "1:2:1:2:3:4:");
 
   slist_deinit(s);
+}
+
+static ret_t remove_data(void* ctx, const void* data) {
+  char text[32];
+  string& str = *(string*)ctx;
+  int32_t n = (const char*)data - (const char*)NULL;
+  tk_snprintf(text, sizeof(text), "%d:", n);
+
+  str += text;
+  if (n % 2 == 0) {
+    return RET_OK;
+  } else {
+    return RET_REMOVE;
+  }
+}
+
+TEST(SList, foreach_ex) {
+  string log;
+  slist_t slist;
+  slist_t* s = &slist;
+  slist_init(s, NULL, NULL);
+
+  ASSERT_EQ(slist_size(s), 0);
+  ASSERT_EQ(slist_append(s, TO_POINTER(1)), RET_OK);
+  ASSERT_EQ(slist_append(s, TO_POINTER(2)), RET_OK);
+  ASSERT_EQ(slist_append(s, TO_POINTER(3)), RET_OK);
+  ASSERT_EQ(slist_append(s, TO_POINTER(4)), RET_OK);
+
+  log = "";
+  slist_foreach(s, remove_data, &log);
+  ASSERT_EQ(log, "1:2:3:4:");
+
+  log = "";
+  slist_foreach(s, visit_dump, &log);
+  ASSERT_EQ(log, "2:4:");
 }
 
 TEST(SList, insert) {
