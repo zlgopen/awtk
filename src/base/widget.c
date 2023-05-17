@@ -3006,6 +3006,7 @@ ret_t widget_on_multi_gesture(widget_t* widget, multi_gesture_event_t* e) {
 }
 
 static ret_t widget_dispatch_leave_event(widget_t* widget, pointer_event_t* e) {
+  ret_t ret = RET_OK;
   widget_t* target = widget;
 
   while (target != NULL) {
@@ -3013,12 +3014,12 @@ static ret_t widget_dispatch_leave_event(widget_t* widget, pointer_event_t* e) {
     pointer_event_t leave = *e;
     leave.e.type = EVT_POINTER_LEAVE;
 
-    widget_dispatch(target, (event_t*)(&leave));
+    ret = widget_dispatch(target, (event_t*)(&leave));
     target = curr->target;
     curr->target = NULL;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t widget_dispatch_blur_event(widget_t* widget) {
@@ -3160,20 +3161,24 @@ ret_t widget_on_pointer_move_children(widget_t* widget, pointer_event_t* e) {
 
   if (target != widget->target) {
     if (widget->target != NULL) {
-      widget_dispatch_leave_event(widget->target, e);
+      ret = widget_dispatch_leave_event(widget->target, e);
     }
 
-    if (target != NULL) {
-      pointer_event_t enter = *e;
-      enter.e.type = EVT_POINTER_ENTER;
-      ret = widget_dispatch(target, (event_t*)(&enter));
-      widget_update_pointer_cursor(target);
+    if (ret == RET_STOP) {
+      widget->target = NULL;
     } else {
-      widget_update_pointer_cursor(widget);
+      if (target != NULL) {
+        pointer_event_t enter = *e;
+        enter.e.type = EVT_POINTER_ENTER;
+        ret = widget_dispatch(target, (event_t*)(&enter));
+        widget_update_pointer_cursor(target);
+      } else {
+        widget_update_pointer_cursor(widget);
+      }
+      widget->target = target;
     }
-
-    widget->target = target;
   }
+
   return_value_if_equal(ret, RET_STOP);
 
   if (widget->target != NULL) {
