@@ -177,16 +177,10 @@ static ret_t svg_image_repaint_offline_cache(widget_t* widget, canvas_t* c) {
   return_value_if_fail(svg_image != NULL, RET_FAIL);
 
   if (svg_image->canvas_offline == NULL) {
-#ifdef WITH_GPU
-    svg_image->canvas_offline = canvas_offline_create(widget->w, widget->h, BITMAP_FMT_RGBA8888);
-#else 
-    bitmap_format_t format = lcd_get_desired_bitmap_format(c->lcd);
-    format = (format == BITMAP_FMT_BGR565 || BITMAP_FMT_BGR888 || format == BITMAP_FMT_BGRA8888) ? 
-                BITMAP_FMT_BGRA8888 : 
-             (format == BITMAP_FMT_RGB565 || BITMAP_FMT_RGB888 || format == BITMAP_FMT_RGBA8888) ? 
-                BITMAP_FMT_RGBA8888 : 
-                format;
-    svg_image->canvas_offline = canvas_offline_create(widget->w, widget->h, format);
+#if defined(WITH_BITMAP_RGBA) || defined(WITH_GPU)
+    svg_image->canvas_offline = canvas_offline_create_by_widget(widget, BITMAP_FMT_RGBA8888);
+#else
+    svg_image->canvas_offline = canvas_offline_create_by_widget(widget, BITMAP_FMT_BGRA8888);
 #endif
   }
 

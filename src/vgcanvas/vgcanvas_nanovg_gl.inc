@@ -1,6 +1,10 @@
 ﻿#include "tkc/utils.h"
 #include "vgcanvas_nanovg.inc" 
 
+#ifdef WITH_FAST_LCD_PORTRAIT
+  #error "OpenGL do not supported fast lcd portrait"
+#endif
+
 static enum NVGorientation vgcanvas_nanovg_lcd_orientation_to_NVGorientation(lcd_orientation_t orientation) {
   switch (orientation) {
   case LCD_ORIENTATION_0:

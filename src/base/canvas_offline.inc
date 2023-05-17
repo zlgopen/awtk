@@ -88,8 +88,29 @@ static ret_t canvas_offline_begin_frame(canvas_t* c, const dirty_rects_t* dirty_
   return RET_OK;
 }
 
+canvas_t* canvas_offline_create_by_widget(widget_t* widget, bitmap_format_t format) {
+  wh_t w, h;
+  canvas_t* canvas = NULL;
+  system_info_t* info = system_info();
+  return_value_if_fail(widget != NULL, NULL);
+  w = widget->w;
+  h = widget->h;
+#if defined(WITH_FAST_LCD_PORTRAIT)
+  if (info->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
+    if (info->lcd_orientation == LCD_ORIENTATION_90 || info->lcd_orientation == LCD_ORIENTATION_270) {
+      w = widget->h;
+      h = widget->w;
+    }
+  }
+#endif
+  canvas = canvas_offline_create(w, h, format);
+  return_value_if_fail(canvas != NULL, NULL);
+  return canvas;
+}
+
 canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) {
   canvas_t* c = NULL;
+  system_info_t* info = system_info();
   native_window_t* native_window = NULL;
 
 #ifdef WITH_GPU
@@ -102,7 +123,6 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
   uint8_t* buff = NULL;
   bitmap_t* bitmap = NULL;
   canvas_offline_t* canvas = NULL;
-  system_info_t* info = system_info();
 #endif
 
 #ifdef WITH_CANVAS_OFFLINE_CUSTOM
@@ -154,6 +174,8 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
   canvas->base.begin_draw = 0;
   canvas->base.lcd_w = c->lcd->w;
   canvas->base.lcd_h = c->lcd->h;
+  canvas->base.physical_width = w;
+  canvas->base.physical_height = h;
 
   vg = lcd_get_vgcanvas(c->lcd);
   return_value_if_fail(c != NULL && vg != NULL, NULL);
@@ -175,6 +197,8 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
   canvas->begin_draw = 0;
   canvas->bitmap = bitmap_create_ex(w, h, 0, format);
 
+  canvas->physical_width = w;
+  canvas->physical_height = h;
   canvas->lcd_w = info->lcd_w;
   canvas->lcd_h = info->lcd_h;
 
@@ -206,39 +230,56 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
 
   if (lcd != NULL) {
     canvas_t* c_tmp = NULL;
-#ifdef WITH_FAST_LCD_PORTRAIT
-    if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
-      if (info->lcd_orientation != LCD_ORIENTATION_0) {
-        bitmap->orientation = info->lcd_orientation;
-        bitmap->flags |= BITMAP_FLAG_LCD_ORIENTATION;
-        lcd_set_orientation(lcd, LCD_ORIENTATION_0, info->lcd_orientation);
-      }
-    }
-#endif
+
     system_info_set_lcd_w(info, canvas->lcd_w);
     system_info_set_lcd_h(info, canvas->lcd_h);
 
     c_tmp = canvas_init(&(canvas->base), lcd, widget_get_font_manager(window_manager()));
     canvas_set_assets_manager(c_tmp, widget_get_assets_manager(window_manager()));
     canvas_set_global_alpha(&(canvas->base), 0xff);
-    canvas_begin_frame(c_tmp, NULL, LCD_DRAW_OFFLINE);
   } else {
     TKMEM_FREE(canvas);
     return NULL;
   }
-#ifdef WITH_FAST_LCD_PORTRAIT
-  if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
-    if (info->lcd_orientation == LCD_ORIENTATION_90 ||
-        info->lcd_orientation == LCD_ORIENTATION_270) {
-      bitmap->w = h;
-      bitmap->h = w;
-    }
-  }
 #endif
-#endif
+  canvas_offline_set_canvas_orientation((canvas_t*)canvas, info->lcd_orientation);
   ((canvas_t*)canvas)->end_frame = canvas_offline_end_draw;
   ((canvas_t*)canvas)->begin_frame = canvas_offline_begin_frame;
   return (canvas_t*)canvas;
+}
+
+ret_t canvas_offline_set_canvas_orientation(canvas_t* canvas, lcd_orientation_t canvas_orientation) {
+  system_info_t* info = system_info();
+  canvas_offline_t* canvas_offline = (canvas_offline_t*)canvas;
+  return_value_if_fail(canvas_offline != NULL, RET_BAD_PARAMS);
+  if (canvas_offline->canvas_orientation != canvas_orientation) {
+#if defined(WITH_FAST_LCD_PORTRAIT)
+    if (canvas_orientation != LCD_ORIENTATION_0) {
+      if (info->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
+        canvas_offline->bitmap->orientation = canvas_orientation;
+        canvas_offline->bitmap->flags |= BITMAP_FLAG_LCD_ORIENTATION;
+#ifndef WITH_GPU
+        lcd_set_orientation(canvas->lcd, canvas_offline->canvas_orientation, canvas_orientation);
+#endif
+        if (canvas_orientation == LCD_ORIENTATION_90 ||
+            canvas_orientation == LCD_ORIENTATION_270) {
+          canvas_offline->bitmap->w = canvas_offline->physical_height;
+          canvas_offline->bitmap->h = canvas_offline->physical_width;
+        }
+      }
+    } else {
+      if (info->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
+        canvas_offline->bitmap->orientation = canvas_orientation;
+        canvas_offline->bitmap->flags &= ~BITMAP_FLAG_LCD_ORIENTATION;
+        lcd_set_orientation(canvas->lcd, canvas_offline->canvas_orientation, LCD_ORIENTATION_0);
+        canvas_offline->bitmap->h = canvas_offline->physical_height;
+        canvas_offline->bitmap->w = canvas_offline->physical_width;
+      }
+    }
+#endif
+    canvas_offline->canvas_orientation = canvas_orientation;
+  }
+  return RET_OK;
 }
 
 #ifdef AWTK_WEB
@@ -272,7 +313,8 @@ ret_t canvas_offline_clear_canvas(canvas_t* canvas) {
   glDisable(GL_SCISSOR_TEST);
 #else
   canvas_offline = (canvas_offline_t*)canvas;
-  rect = rect_init(0, 0, canvas_offline->bitmap->w, canvas_offline->bitmap->h);
+  rect = rect_init(0, 0, bitmap_get_physical_width(canvas_offline->bitmap), 
+                         bitmap_get_physical_height(canvas_offline->bitmap));
   image_clear(canvas_offline->bitmap, &rect, color_init(0x0, 0x0, 0x0, 0x0));
 #endif
   return RET_OK;
@@ -281,11 +323,11 @@ ret_t canvas_offline_clear_canvas(canvas_t* canvas) {
 
 ret_t canvas_offline_begin_draw(canvas_t* canvas) {
   vgcanvas_t* vg = NULL;
+  system_info_t* info = system_info();
+  canvas_begin_frame_t begin_frame = NULL;
   canvas_offline_t* canvas_offline = NULL;
 #ifdef WITH_GPU
   canvas_offline_gpu_t* c = NULL;
-#else
-  system_info_t* info = system_info();
 #endif
 
 #ifdef WITH_CANVAS_OFFLINE_CUSTOM
@@ -296,6 +338,9 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas) {
 #endif
 
   return_value_if_fail(canvas != NULL, RET_BAD_PARAMS);
+  begin_frame = canvas->begin_frame;
+  canvas->begin_frame = NULL;
+
   vg = lcd_get_vgcanvas(canvas->lcd);
   canvas_offline = (canvas_offline_t*)canvas;
 #ifdef WITH_GPU
@@ -307,6 +352,9 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas) {
 
     vgcanvas_flush(vg);
 
+    canvas_offline->system_lcd_orientation = info->lcd_orientation;
+    lcd_set_orientation(canvas->lcd, canvas_offline->system_lcd_orientation, info->lcd_orientation);
+    system_info_set_lcd_orientation(info, canvas_offline->canvas_orientation);
     vgcanvas_bind_fbo(vg, c->fbo);
     vgcanvas_save(vg);
 
@@ -316,9 +364,14 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas) {
   }
 #else
   if (canvas_offline->begin_draw == 0) {
-    system_info_set_lcd_w(info, canvas_offline->lcd_w);
-    system_info_set_lcd_h(info, canvas_offline->lcd_h);
+    canvas_offline->lcd_w = info->lcd_w;
+    canvas_offline->lcd_h = info->lcd_h;
+    canvas_offline->system_lcd_orientation = info->lcd_orientation;
+    system_info_set_lcd_orientation(info, canvas_offline->canvas_orientation);
+    system_info_set_lcd_w(info, lcd_get_physical_width(canvas_offline->base.lcd));
+    system_info_set_lcd_h(info, lcd_get_physical_height(canvas_offline->base.lcd));
 
+    canvas_begin_frame(canvas, NULL, LCD_DRAW_OFFLINE);
     canvas_get_clip_rect(canvas, &canvas_offline->canvas_clip_rect);
     if (vg != NULL) {
       vgcanvas_begin_frame(vg, NULL);
@@ -328,16 +381,17 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas) {
   }
 #endif
   canvas_offline->begin_draw++;
+  canvas->begin_frame = begin_frame;
   return RET_OK;
 }
 
 ret_t canvas_offline_end_draw(canvas_t* canvas) {
   vgcanvas_t* vg = NULL;
+  system_info_t* info = system_info();
+  canvas_end_frame_t end_frame = NULL;
   canvas_offline_t* canvas_offline = NULL;
 #ifdef WITH_GPU
   canvas_offline_gpu_t* c = NULL;
-#else
-  system_info_t* info = system_info();
 #endif
 
 #ifdef WITH_CANVAS_OFFLINE_CUSTOM
@@ -348,6 +402,9 @@ ret_t canvas_offline_end_draw(canvas_t* canvas) {
 #endif
 
   return_value_if_fail(canvas != NULL, RET_BAD_PARAMS);
+  end_frame = canvas->end_frame;
+  canvas->end_frame = NULL;
+
   vg = lcd_get_vgcanvas(canvas->lcd);
   canvas_offline = (canvas_offline_t*)canvas;
 
@@ -359,6 +416,8 @@ ret_t canvas_offline_end_draw(canvas_t* canvas) {
     canvas->lcd->h = vg->h = c->base.lcd_h;
 
     vgcanvas_restore(vg);
+    lcd_set_orientation(canvas->lcd, info->lcd_orientation, canvas_offline->system_lcd_orientation);
+    system_info_set_lcd_orientation(info, canvas_offline->system_lcd_orientation);
     vgcanvas_unbind_fbo(vg, c->fbo);
     canvas_set_clip_rect(canvas, &canvas_offline->canvas_clip_rect);
   }
@@ -366,6 +425,7 @@ ret_t canvas_offline_end_draw(canvas_t* canvas) {
   if (canvas_offline->begin_draw == 0) {
     system_info_set_lcd_w(info, canvas_offline->lcd_w);
     system_info_set_lcd_h(info, canvas_offline->lcd_h);
+    system_info_set_lcd_orientation(info, canvas_offline->system_lcd_orientation);
 
     canvas_set_clip_rect(canvas, &canvas_offline->canvas_clip_rect);
     if (vg != NULL) {
@@ -374,6 +434,7 @@ ret_t canvas_offline_end_draw(canvas_t* canvas) {
     }
   }
 #endif
+  canvas->end_frame = end_frame;
   return RET_OK;
 }
 
@@ -522,8 +583,6 @@ ret_t canvas_offline_destroy(canvas_t* canvas) {
   }
   canvas_reset(canvas);
 #else
-  system_info_set_lcd_w(info, ((canvas_offline_t*)canvas)->lcd_w);
-  system_info_set_lcd_h(info, ((canvas_offline_t*)canvas)->lcd_h);
 
   if (canvas->lcd != NULL) {
     lcd_t* lcd = canvas->lcd;

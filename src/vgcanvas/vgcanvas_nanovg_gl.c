@@ -19,6 +19,10 @@
  *
  */
 
+#if defined(WITH_FAST_LCD_PORTRAIT)
+#error "OpenGL do not supported fast lcd portrait"
+#endif
+
 #include "base/system_info.h"
 
 #if defined(WITH_NANOVG_GL3)
