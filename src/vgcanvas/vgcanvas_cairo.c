@@ -19,17 +19,14 @@
  *
  */
 
-#include "base/image_manager.h"
-#include "tkc/utf8.h"
-
-#include "base/vgcanvas.h"
-#include "cairo/cairo.h"
 #include "tkc/mem.h"
+#include "tkc/utf8.h"
 #include "tkc/darray.h"
+#include "cairo/cairo.h"
+#include "base/vgcanvas.h"
 #include "base/system_info.h"
+#include "base/image_manager.h"
 #include "cairo/cairo-private.h"
-
-#define VG_CAIRO_CACHE_MAX_NUMBER 5
 
 typedef enum _cairo_source_type_t {
   CAIRO_SOURCE_NONE = 0,
@@ -51,15 +48,8 @@ typedef struct _vgcanvas_cairo_t {
   darray_t images;
 } vgcanvas_cairo_t;
 
-typedef struct _vg_cairo_cache_t {
-  void* fb_data;
-  cairo_t* vg;
-  cairo_surface_t* surface;
-} vg_cairo_cache_t;
-
-static darray_t vg_cairo_cache;
-
 ret_t vgcanvas_cairo_set_sreen_orientation(cairo_t* canvas) {
+#ifdef WITH_FAST_LCD_PORTRAIT
   float angle = 0.0f;
   float anchor_x = 0.0f;
   float anchor_y = 0.0f;
@@ -88,11 +78,14 @@ ret_t vgcanvas_cairo_set_sreen_orientation(cairo_t* canvas) {
     cairo_translate(canvas, anchor_x, anchor_y);
     cairo_rotate(canvas, angle);
     cairo_translate(canvas, -anchor_y, -anchor_x);
-  } else if (orientation == 180) {
+  } else if (orientation == LCD_ORIENTATION_180) {
     cairo_translate(canvas, anchor_x, anchor_y);
     cairo_rotate(canvas, angle);
     cairo_translate(canvas, -anchor_x, -anchor_y);
   }
+#else
+  /* only fast lcd portrait need rotate, because of this mode g2d flush mode will bear */
+#endif
   return RET_OK;
 }
 
@@ -106,17 +99,21 @@ ret_t vgcanvas_cairo_begin_frame(vgcanvas_t* vgcanvas, const dirty_rects_t* dirt
   cairo_identity_matrix(vg);
   vg->status = CAIRO_STATUS_SUCCESS;
 
-  cairo_new_path(vg);
   if (r != NULL) {
     cairo_rectangle(vg, r->x, r->y, r->w, r->h);
-  } else {
+  } else if (info->lcd_orientation == LCD_ORIENTATION_90 ||
+             info->lcd_orientation == LCD_ORIENTATION_270) {
     cairo_rectangle(vg, 0, 0, info->lcd_h, info->lcd_w);
+  } else {
+    cairo_rectangle(vg, 0, 0, info->lcd_w, info->lcd_h);
   }
+
+  cairo_save(vg);
   cairo_clip(vg);
   cairo_new_path(vg);
-  cairo_save(vg);
   vgcanvas->global_alpha = 1;
   vgcanvas_cairo_set_sreen_orientation(vg);
+
   return RET_OK;
 }
 
@@ -395,6 +392,7 @@ const rectf_t* vgcanvas_cairo_get_clip_rect(vgcanvas_t* vgcanvas) {
     vgcanvas->clip_rect = rectf_init(list->rectangles[0].x, list->rectangles[0].y,
                                      list->rectangles[0].width, list->rectangles[0].height);
   }
+  cairo_rectangle_list_destroy(list);
   return &(vgcanvas->clip_rect);
 }
 
@@ -718,9 +716,14 @@ static ret_t vgcanvas_cairo_destroy(vgcanvas_t* vgcanvas) {
     cairo_pattern_destroy(canvas->fill_gradient);
   }
 
+  if (canvas->vg != NULL) {
+    cairo_destroy(canvas->vg);
+    cairo_debug_reset_static_data();
+  }
+
   darray_deinit(&(canvas->images));
-  darray_deinit(&vg_cairo_cache);
   TKMEM_FREE(canvas);
+
   return RET_OK;
 }
 
@@ -877,8 +880,7 @@ static ret_t vgcanvas_cairo_set_fill_linear_gradient(vgcanvas_t* vgcanvas, float
 
 static ret_t vgcanvas_cairo_reinit(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h, uint32_t stride,
                                    bitmap_format_t format, void* data) {
-  vg_cairo_cache_t tmp;
-  vg_cairo_cache_t* vg_cache = NULL;
+  cairo_surface_t* surface = NULL;
   vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
 
   vgcanvas->w = w;
@@ -888,33 +890,13 @@ static ret_t vgcanvas_cairo_reinit(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h,
   vgcanvas->format = format;
   vgcanvas->buff = (uint32_t*)data;
 
-  tmp.fb_data = data;
-  vg_cache = darray_find(&vg_cairo_cache, &tmp);
-  if (vg_cache == NULL) {
-    vg_cache = (vg_cairo_cache_t*)TKMEM_ZALLOC(vg_cairo_cache_t);
-    vg_cache->surface = create_surface(w, h, format, data);
-    if (vg_cache->surface != NULL) {
-      vg_cache->vg = cairo_create(vg_cache->surface);
-    }
-
-    if (vg_cache->vg == NULL) {
-      if (vg_cache->surface != NULL) {
-        cairo_surface_destroy(vg_cache->surface);
-      }
-      TKMEM_FREE(vg_cache);
-      return RET_OOM;
-    }
-
-    if (vg_cairo_cache.size >= VG_CAIRO_CACHE_MAX_NUMBER) {
-      darray_remove_index(&vg_cairo_cache, random() % vg_cairo_cache.size);
-    }
-    vg_cache->fb_data = data;
-    darray_push(&vg_cairo_cache, vg_cache);
+  cairo_destroy(canvas->vg);
+  surface = create_surface(w, h, format, vgcanvas->buff);
+  if (surface != NULL) {
+    canvas->vg = cairo_create(surface);
   }
-
-  canvas->vg = vg_cache->vg;
+  cairo_surface_destroy(surface);
   return_value_if_fail(canvas->vg, RET_OOM);
-
   log_debug("resize to w=%u h=%u format=%d\n", w, h, format);
 
   return RET_OK;
@@ -1006,30 +988,9 @@ static int cairo_bitmap_cmp(const bitmap_t* a, bitmap_t* b) {
   }
 }
 
-static int vg_cairo_cache_cmp(const vg_cairo_cache_t* a, const vg_cairo_cache_t* b) {
-  if (a->fb_data == b->fb_data) {
-    return 0;
-  }
-  return 1;
-}
-
-static ret_t vg_cairo_cache_destroy(vg_cairo_cache_t* cache) {
-  if (cache->vg != NULL) {
-    cairo_destroy(cache->vg);
-    cache->vg = NULL;
-  }
-  if (cache->surface != NULL) {
-    cairo_surface_destroy(cache->surface);
-    cache->surface = NULL;
-  }
-  TKMEM_FREE(cache);
-  return RET_OK;
-}
-
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
                             void* data) {
   cairo_surface_t* surface = NULL;
-  vg_cairo_cache_t* vg_cache = NULL;
   vgcanvas_cairo_t* cairo = (vgcanvas_cairo_t*)TKMEM_ZALLOC(vgcanvas_cairo_t);
   return_value_if_fail(cairo != NULL, NULL);
 
@@ -1048,15 +1009,7 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   return_value_if_fail(cairo->vg, NULL);
   darray_init(&(cairo->images), 10, (tk_destroy_t)bitmap_destroy, (tk_compare_t)cairo_bitmap_cmp);
   vgcanvas_set_global_alpha((vgcanvas_t*)cairo, 1);
-
-  darray_init(&vg_cairo_cache, VG_CAIRO_CACHE_MAX_NUMBER, (tk_destroy_t)vg_cairo_cache_destroy,
-              (tk_compare_t)vg_cairo_cache_cmp);
-
-  vg_cache = (vg_cairo_cache_t*)TKMEM_ZALLOC(vg_cairo_cache_t);
-  vg_cache->fb_data = data;
-  vg_cache->vg = cairo->vg;
-  vg_cache->surface = surface;
-  darray_push(&vg_cairo_cache, vg_cache);
+  cairo_surface_destroy(surface);
 
   log_debug("vgcanvas_cairo created\n");
   return &(cairo->base);
