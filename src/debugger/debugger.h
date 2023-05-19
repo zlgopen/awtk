@@ -31,6 +31,33 @@ BEGIN_C_DECLS
 
 struct _debugger_t;
 typedef struct _debugger_t debugger_t;
+/**
+ * @enum debugger_program_state_t
+ * @prefix DEBUGGER_PROGRAM_STATE_
+ * 被调试程序的状态。
+ */
+typedef enum _debugger_program_state_t {
+  /** 
+   * @const DEBUGGER_PROGRAM_STATE_NONE
+   * 初始状态。
+   */
+  DEBUGGER_PROGRAM_STATE_NONE = 0,
+  /** 
+   * @const DEBUGGER_PROGRAM_STATE_PAUSED
+   * 停止状态(断点/异常等)。
+   */
+  DEBUGGER_PROGRAM_STATE_PAUSED,
+  /** 
+   * @const DEBUGGER_PROGRAM_STATE_RUNNING
+   * 运行状态(断点/异常等)。
+   */
+  DEBUGGER_PROGRAM_STATE_RUNNING,
+  /** 
+   * @const DEBUGGER_PROGRAM_STATE_TERMINATED
+   * 终止状态(断点/异常等)。
+   */
+  DEBUGGER_PROGRAM_STATE_TERMINATED
+} debugger_program_state_t;
 
 typedef ret_t (*debugger_lock_t)(debugger_t* debugger);
 typedef ret_t (*debugger_unlock_t)(debugger_t* debugger);
@@ -60,11 +87,13 @@ typedef ret_t (*debugger_launch_t)(debugger_t* debugger, const char* lang,
 typedef ret_t (*debugger_attach_t)(debugger_t* debugger, const char* lang, const char* code_id);
 typedef ret_t (*debugger_deinit_t)(debugger_t* debugger);
 
+typedef debugger_program_state_t (*debugger_get_state_t)(debugger_t* debugger);
+typedef ret_t (*debugger_set_state_t)(debugger_t* debugger, debugger_program_state_t state);
 
 /*扩展接口以支持lldb的DAP协议{*/
 typedef tk_object_t* (*debugger_get_threads_t)(debugger_t* debugger);
-typedef ret_t (*debugger_launch_app_t)(debugger_t* debugger, const char* program, const char* work_dir,
-                                       int argc, char* argv[]);
+typedef ret_t (*debugger_launch_app_t)(debugger_t* debugger, const char* program,
+                                       const char* work_dir, int argc, char* argv[]);
 
 typedef tk_object_t* (*debugger_get_var_t)(debugger_t* debugger, const char* path);
 typedef ret_t (*debugger_set_break_point_ex_t)(debugger_t* debugger, const char* position);
@@ -72,34 +101,6 @@ typedef ret_t (*debugger_remove_break_point_ex_t)(debugger_t* debugger, const ch
 typedef ret_t (*debugger_set_current_frame_t)(debugger_t* debugger, uint32_t frame_index);
 typedef ret_t (*debugger_dispatch_messages_t)(debugger_t* debugger);
 /*}扩展接口以支持lldb的DAP协议{*/
-
-/**
- * @enum debugger_program_state_t
- * @prefix DEBUGGER_PROGRAM_STATE_
- * 被调试程序的状态。
- */
-typedef enum _debugger_program_state_t {
-  /** 
-   * @const DEBUGGER_PROGRAM_STATE_NONE
-   * 初始状态。
-   */
-  DEBUGGER_PROGRAM_STATE_NONE = 0,
-  /** 
-   * @const DEBUGGER_PROGRAM_STATE_PAUSED
-   * 停止状态(断点/异常等)。
-   */
-  DEBUGGER_PROGRAM_STATE_PAUSED,
-  /** 
-   * @const DEBUGGER_PROGRAM_STATE_RUNNING
-   * 运行状态(断点/异常等)。
-   */
-  DEBUGGER_PROGRAM_STATE_RUNNING,
-  /** 
-   * @const DEBUGGER_PROGRAM_STATE_TERMINATED
-   * 终止状态(断点/异常等)。
-   */
-  DEBUGGER_PROGRAM_STATE_TERMINATED
-} debugger_program_state_t;
 
 typedef debugger_t* (*debugger_fscript_create_t)(void);
 
@@ -133,7 +134,10 @@ typedef struct _debugger_vtable_t {
   debugger_clear_break_points_t clear_break_points;
   debugger_deinit_t deinit;
 
-/*扩展接口以支持lldb的DAP协议{*/
+  debugger_get_state_t get_state;
+  debugger_set_state_t set_state;
+
+  /*扩展接口以支持lldb的DAP协议{*/
   debugger_get_threads_t get_threads;
   debugger_launch_app_t launch_app;
   debugger_get_var_t get_var;
@@ -141,7 +145,7 @@ typedef struct _debugger_vtable_t {
   debugger_remove_break_point_ex_t remove_break_point_ex;
   debugger_set_current_frame_t set_current_frame;
   debugger_dispatch_messages_t dispatch_messages;
-/*}扩展接口以支持lldb的DAP协议{*/
+  /*}扩展接口以支持lldb的DAP协议{*/
 } debugger_vtable_t;
 
 /**
@@ -464,8 +468,8 @@ tk_object_t* debugger_get_threads(debugger_t* debugger);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t debugger_launch_app(debugger_t* debugger, const char* program, const char* work_dir,
-                                       int argc, char* argv[]);
+ret_t debugger_launch_app(debugger_t* debugger, const char* program, const char* work_dir, int argc,
+                          char* argv[]);
 
 /**
  * @method debugger_set_break_point_ex
@@ -532,6 +536,15 @@ ret_t debugger_dispatch_messages(debugger_t* debugger);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t debugger_set_state(debugger_t* debugger, debugger_program_state_t state);
+
+/**
+ * @method debugger_get_state
+ * 获取调试状态。
+ * @param {debugger_t*} debugger debugger对象。
+ *
+ * @return {debugger_program_state_t} 返回调试状态。
+ */
+debugger_program_state_t debugger_get_state(debugger_t* debugger);
 
 /*}扩展接口以支持lldb的DAP协议{*/
 

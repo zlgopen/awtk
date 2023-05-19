@@ -409,7 +409,7 @@ static ret_t debugger_lldb_init(debugger_t* debugger) {
   req = debugger_lldb_create_init_req(debugger);
   return_value_if_fail(req != NULL, RET_BAD_PARAMS);
 
-  debugger->state = DEBUGGER_PROGRAM_STATE_NONE;
+  debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_NONE);
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
     ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, CMD_INITIALIZE, 3000);
   }
@@ -508,7 +508,7 @@ static ret_t debugger_lldb_launch_app_impl(debugger_t* debugger, const char* pro
     ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, CMD_LAUNCH, 60000);
     if (ret == RET_OK) {
       debugger_lldb_simple_command(debugger, CMD_CONFIGURATION_DONE);
-      debugger->state = DEBUGGER_PROGRAM_STATE_RUNNING;
+      debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_RUNNING);
       debugger_lldb_update_break_points(debugger);
     }
   }
@@ -896,7 +896,7 @@ static ret_t debugger_lldb_simple_command(debugger_t* debugger, const char* cmd)
 
 ret_t debugger_lldb_dispatch_messages(debugger_t* debugger) {
   while (debugger_lldb_dispatch_one(debugger, 10) == RET_OK) {
-    if (debugger->state == DEBUGGER_PROGRAM_STATE_RUNNING) {
+    if (debugger_get_state(debugger) == DEBUGGER_PROGRAM_STATE_RUNNING) {
       break;
     }
   }
@@ -905,7 +905,7 @@ ret_t debugger_lldb_dispatch_messages(debugger_t* debugger) {
 }
 
 ret_t debugger_lldb_wait_for_completed(debugger_t* debugger) {
-  while (debugger->state == DEBUGGER_PROGRAM_STATE_RUNNING) {
+  while (debugger_get_state(debugger) == DEBUGGER_PROGRAM_STATE_RUNNING) {
     if (debugger_lldb_dispatch_one(debugger, 100) != RET_OK) {
       break;
     }
@@ -1292,7 +1292,7 @@ static ret_t debugger_lldb_on_destroy(tk_object_t* obj) {
   debugger_lldb_t* lldb = DEBUGGER_LLDB(obj);
   return_value_if_fail(lldb != NULL, RET_BAD_PARAMS);
 
-  if (debugger->state == DEBUGGER_PROGRAM_STATE_RUNNING) {
+  if (debugger_get_state(debugger) == DEBUGGER_PROGRAM_STATE_RUNNING) {
     debugger_lldb_disconnect(DEBUGGER(obj), TRUE);
   }
 

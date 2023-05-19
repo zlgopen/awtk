@@ -24,25 +24,39 @@
 
 bool_t debugger_is_paused(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL, FALSE);
-
-  return debugger->state == DEBUGGER_PROGRAM_STATE_PAUSED;
+  return debugger_get_state(debugger) == DEBUGGER_PROGRAM_STATE_PAUSED;
 }
 
 bool_t debugger_is_running(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL, FALSE);
-
-  return debugger->state == DEBUGGER_PROGRAM_STATE_RUNNING;
+  return debugger_get_state(debugger) == DEBUGGER_PROGRAM_STATE_RUNNING;
 }
 
 bool_t debugger_is_paused_or_running(debugger_t* debugger) {
+  debugger_program_state_t state;
   return_value_if_fail(debugger != NULL, FALSE);
+  state = debugger_get_state(debugger);
+  return state == DEBUGGER_PROGRAM_STATE_RUNNING || state == DEBUGGER_PROGRAM_STATE_PAUSED;
+}
 
-  return debugger->state == DEBUGGER_PROGRAM_STATE_RUNNING || debugger->state == DEBUGGER_PROGRAM_STATE_PAUSED;
+debugger_program_state_t debugger_get_state(debugger_t* debugger) {
+  debugger_program_state_t state;
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, DEBUGGER_PROGRAM_STATE_NONE);
+  if (debugger->vt->get_state != NULL) {
+    state = debugger->vt->get_state(debugger);
+  } else {
+    state = debugger->state;
+  }
+  return state;
 }
 
 ret_t debugger_set_state(debugger_t* debugger, debugger_program_state_t state) {
-  return_value_if_fail(debugger != NULL, RET_BAD_PARAMS);
-  debugger->state = state;
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
+  if (debugger->vt->set_state != NULL) {
+    return debugger->vt->set_state(debugger, state);
+  } else {
+    debugger->state = state;
+  }
   return RET_OK;
 }
 
@@ -231,7 +245,7 @@ ret_t debugger_launch(debugger_t* debugger, const char* lang, const binary_data_
 ret_t debugger_deinit(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->deinit != NULL, RET_BAD_PARAMS);
-  debugger->state = DEBUGGER_PROGRAM_STATE_NONE;
+  debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_NONE);
 
   return debugger->vt->deinit(debugger);
 }

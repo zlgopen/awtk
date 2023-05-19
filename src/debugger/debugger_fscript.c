@@ -741,9 +741,9 @@ static bool_t debugger_fscript_emit_breaked(debugger_t* debugger, int32_t line) 
   debugger_fscript_t* d = DEBUGGER_FSCRIPT(debugger);
 
   if (d->prev_breaked_line == line) {
-    debugger->state = DEBUGGER_PROGRAM_STATE_RUNNING;
+    debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_RUNNING);
   } else {
-    debugger->state = DEBUGGER_PROGRAM_STATE_PAUSED;
+    debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_PAUSED);
     d->prev_breaked_line = line;
   }
 
