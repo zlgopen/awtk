@@ -771,6 +771,7 @@ ret_t canvas_draw_image_repeat3_y(canvas_t* c, bitmap_t* img, const rect_t* dst_
 ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, const rect_t* dst);
 ret_t canvas_draw_image_scale_w(canvas_t* c, bitmap_t* img, const rect_t* dst);
 ret_t canvas_draw_image_scale_h(canvas_t* c, bitmap_t* img, const rect_t* dst);
+ret_t canvas_draw_image_fill(canvas_t* c, bitmap_t* img, const rect_t* dst_in);
 ret_t canvas_draw_image_scale_down(canvas_t* c, bitmap_t* img, const rect_t* src,
                                    const rect_t* dst);
 

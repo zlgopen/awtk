@@ -1602,6 +1602,38 @@ ret_t canvas_draw_image_scale_h(canvas_t* c, bitmap_t* img, const rect_t* dst_in
   return canvas_draw_image(c, img, &s, &d);
 }
 
+ret_t canvas_draw_image_fill(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
+  rect_t s;
+  rect_t d;
+  wh_t src_w = 0;
+  wh_t src_h = 0;
+  float scale_w = 0;
+  float scale_h = 0;
+  rect_t r_fix = rect_init(0, 0, 0, 0);
+  rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
+  return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
+
+  scale_w = (float)(dst->w) / img->w;
+  scale_h = (float)(dst->h) / img->h;
+
+  if(scale_w > scale_h) {
+    src_w = img->w;
+    src_h = (float)(img->h * dst->h) / (img->h * scale_w);
+  } else {
+    src_h = img->h;
+    src_w = (float)(img->w * dst->w) / (img->w * scale_h);
+  }
+
+  s.x = 0;
+  s.y = 0;
+  s.h = src_h;
+  s.w = src_w;
+
+  d = *dst;
+
+  return canvas_draw_image(c, img, &s, &d);
+}
+
 ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   rect_t s;
   rect_t d;
@@ -1703,6 +1735,8 @@ ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_ty
       return canvas_draw_image_scale_w(c, img, dst);
     case IMAGE_DRAW_SCALE_H:
       return canvas_draw_image_scale_h(c, img, dst);
+    case IMAGE_DRAW_FILL:
+      return canvas_draw_image_fill(c, img, dst);
     case IMAGE_DRAW_REPEAT:
       return canvas_draw_image_repeat(c, img, dst);
     case IMAGE_DRAW_REPEAT_X:
