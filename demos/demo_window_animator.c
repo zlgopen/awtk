@@ -23,6 +23,8 @@
 
 #define WINDOW_NAME_PREFIX "win_anim/"
 
+static widget_t* main_win = NULL;
+
 typedef enum _demo_window_animator_state_t {
   DEMO_WINDOW_ANIMATOR_STATE_NORMAL = 0,
   DEMO_WINDOW_ANIMATOR_STATE_NEW,
@@ -82,9 +84,9 @@ static ret_t new_window_set_param(widget_t* new_win, widget_t* curr_win) {
     widget_set_prop_bool(new_win, WIDGET_PROP_DISABLE_ANIM, FALSE);
     widget_set_prop_str(new_win, WIDGET_PROP_ANIM_HINT, anim);
     if (tk_str_eq(anim_hint, "popup")) {
-      widget_set_self_layout_params(new_win, NULL, "b:10", NULL, NULL);
+      widget_set_self_layout_params(new_win, NULL, "b:20", NULL, NULL);
     } else if (tk_str_eq(anim_hint, "popdown")) {
-      widget_set_self_layout_params(new_win, NULL, "10", NULL, NULL);
+      widget_set_self_layout_params(new_win, NULL, "20", NULL, NULL);
     }
     log_debug("%s\r\n", anim);
   } else {
@@ -116,13 +118,12 @@ static ret_t new_window_set_param(widget_t* new_win, widget_t* curr_win) {
 
 static ret_t on_open_window(void* ctx, event_t* e) {
   widget_t* new_win = NULL;
-  widget_t* curr_win = widget_get_window(WIDGET(e->target));
   const char* name = (const char*)ctx;
 
   new_win = window_open_with_prefix(name);
   if (new_win != NULL) {
     if (!tk_str_eq(name, "center")) {
-      new_window_set_param(new_win, curr_win);
+      new_window_set_param(new_win, main_win);
     }
     init_children_widget(new_win, (void*)new_win);
   }
@@ -182,10 +183,10 @@ ret_t application_init(void) {
   widget_t* system_bar_bottom = window_open("system_bar_bottom");
 
   widget_use_style(system_bar_bottom, "system_bar");
-  widget_set_prop_str(widget_lookup_by_type(system_bar_bottom, "digit_clock", TRUE), "format", "hh:mm::ss");
-  widget_set_prop_str(widget_lookup_by_type(system_bar_top, "digit_clock", TRUE), "format", "hh:mm::ss");
+  widget_set_prop_str(widget_lookup_by_type(system_bar_bottom, "digit_clock", TRUE), "format", "hh:mm:ss");
+  widget_set_prop_str(widget_lookup_by_type(system_bar_top, "digit_clock", TRUE), "format", "hh:mm:ss");
 
-  win = window_open_with_prefix("window");
+  main_win = win = window_open_with_prefix("window");
   init_children_widget(win, (void*)win);
 
   widget_set_prop_int(win, WIDGET_PROP_CLOSABLE, WINDOW_CLOSABLE_NO);
