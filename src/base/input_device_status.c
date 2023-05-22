@@ -321,7 +321,7 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
         pointer_event_t* evt = (pointer_event_t*)e;
         pointer_event_rotate(evt, system_info());
 
-        if (evt->x != ids->last_x || evt->y != ids->last_y) {
+        if (evt->x != ids->last_x || evt->y != ids->last_y || ids->pointer_has_left_window) {
           ids->last_x = evt->x;
           ids->last_y = evt->y;
 
@@ -451,4 +451,26 @@ ret_t input_device_status_on_input_event(input_device_status_t* ids, widget_t* w
 ret_t input_device_status_on_ignore_input_event(input_device_status_t* ids, widget_t* widget,
                                                 event_t* e) {
   return input_device_status_dispatch_input_event(ids, widget, e, FALSE);
+}
+
+ret_t input_device_status_on_pointer_enter(input_device_status_t* ids, widget_t* widget, xy_t x, xy_t y) {
+  pointer_event_t e;
+  ret_t ret = RET_OK;
+  return_value_if_fail(ids != NULL && widget != NULL, RET_BAD_PARAMS);
+
+  pointer_event_init(&e, EVT_POINTER_MOVE, widget, x, y);
+  ret = input_device_status_on_input_event(ids, widget, (event_t*)&e);
+  ids->pointer_has_left_window = FALSE;
+
+  return ret;
+}
+
+ret_t input_device_status_on_pointer_leave(input_device_status_t* ids, widget_t* widget) {
+  pointer_event_t e;
+  return_value_if_fail(ids != NULL && widget != NULL, RET_BAD_PARAMS);
+
+  ids->pointer_has_left_window = TRUE;
+  pointer_event_init(&e, EVT_POINTER_LEAVE, widget, 0, 0);
+
+  return widget_dispatch_leave_event(widget, &e);
 }

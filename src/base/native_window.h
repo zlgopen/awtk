@@ -286,7 +286,9 @@ ret_t native_window_update_last_dirty_rect(native_window_t* win);
 
 typedef enum _native_window_event_type_t {
   EVT_NATIVE_WINDOW_RESIZED = 0xff,
-  EVT_NATIVE_WINDOW_DESTROY
+  EVT_NATIVE_WINDOW_DESTROY,
+  EVT_NATIVE_WINDOW_ENTER,
+  EVT_NATIVE_WINDOW_LEAVE,
 } native_window_event_type_t;
 
 END_C_DECLS

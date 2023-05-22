@@ -61,6 +61,7 @@ typedef struct _input_device_status_t {
   xy_t last_x;
   xy_t last_y;
   bool_t pressed;
+  bool_t pointer_has_left_window;
 
   uint64_t last_pointer_down_time;
   uint64_t last_pointer_up_time;
@@ -117,6 +118,10 @@ ret_t input_device_status_on_ignore_input_event(input_device_status_t* ids, widg
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t input_device_status_abort_all_pressed_keys(input_device_status_t* ids);
+
+ret_t input_device_status_on_pointer_enter(input_device_status_t* ids, widget_t* widget, xy_t x, xy_t y);
+
+ret_t input_device_status_on_pointer_leave(input_device_status_t* ids, widget_t* widget);
 
 END_C_DECLS
 

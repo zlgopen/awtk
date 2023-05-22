@@ -3005,7 +3005,7 @@ ret_t widget_on_multi_gesture(widget_t* widget, multi_gesture_event_t* e) {
   return ret;
 }
 
-static ret_t widget_dispatch_leave_event(widget_t* widget, pointer_event_t* e) {
+ret_t widget_dispatch_leave_event(widget_t* widget, pointer_event_t* e) {
   ret_t ret = RET_OK;
   widget_t* target = widget;
 

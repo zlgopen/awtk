@@ -1730,6 +1730,16 @@ static ret_t window_manager_default_dispatch_native_window_event(widget_t* widge
                                                                  void* handle) {
   if (e->type == EVT_NATIVE_WINDOW_RESIZED) {
     window_manager_default_native_window_resized(widget, handle);
+  } else if (e->type == EVT_NATIVE_WINDOW_ENTER) {
+    int32_t x = ((pointer_event_t*)e)->x;
+    int32_t y = ((pointer_event_t*)e)->y;
+    window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+    input_device_status_t* ids = &wm->input_device_status;
+    input_device_status_on_pointer_enter(ids, widget, x, y);
+  } else if (e->type == EVT_NATIVE_WINDOW_LEAVE) {
+    window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+    input_device_status_t* ids = &wm->input_device_status;
+    input_device_status_on_pointer_leave(ids, widget);
   }
 
   return RET_OK;

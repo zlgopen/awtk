@@ -240,12 +240,26 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
       log_debug("Window %d restored\n", event->window.windowID);
       widget_invalidate_force(l->wm, NULL);
       break;
-    case SDL_WINDOWEVENT_ENTER:
+    case SDL_WINDOWEVENT_ENTER: {
+      int x = 0;
+      int y = 0;
+      pointer_event_t e;
+      SDL_Window* win = SDL_GetWindowFromID(event->window.windowID);
+
       log_debug("Mouse entered window %d\n", event->window.windowID);
+      SDL_GetMouseState(&x, &y);
+      pointer_event_init(&e, EVT_NATIVE_WINDOW_ENTER, l->wm, x, y);
+      window_manager_dispatch_native_window_event(l->wm, (event_t*)&e, win);
       break;
-    case SDL_WINDOWEVENT_LEAVE:
+    }
+    case SDL_WINDOWEVENT_LEAVE: {
+      event_t e = event_init(EVT_NATIVE_WINDOW_LEAVE, NULL);
+      SDL_Window* win = SDL_GetWindowFromID(event->window.windowID);
+
       log_debug("Mouse left window %d\n", event->window.windowID);
+      window_manager_dispatch_native_window_event(l->wm, &e, win);
       break;
+    }
     case SDL_WINDOWEVENT_FOCUS_GAINED:
       log_debug("Window %d gained keyboard focus\n", event->window.windowID);
       break;
