@@ -28,8 +28,8 @@
 #include "base/window_manager.h"
 #include "dialog_toast.inc"
 
-#define DIALOG_OK_STYLE "default"
-#define DIALOG_CANCEL_STYLE "default"
+#define DIALOG_OK_STYLE "ok"
+#define DIALOG_CANCEL_STYLE "cancel"
 #define DIALOG_INFO_THEME "dialog_info"
 #define DIALOG_WARN_THEME "dialog_warn"
 #define DIALOG_CONFIRM_THEME "dialog_confirm"

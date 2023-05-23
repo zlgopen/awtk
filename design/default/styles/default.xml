@@ -46,6 +46,22 @@
     <disable    bg_color="gray" text_color="#d0d0d0" />
   </style>
   
+  <style name="ok" border_color="#a0a0a0"  text_color="black">
+    <normal     bg_color="#f0f0f0" />
+    <pressed    bg_color="#c0c0c0" x_offset="1" y_offset="1"/>
+    <over       bg_color="#e0e0e0" />
+    <focused    bg_color="#e0e0e0" />
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+  </style>
+  
+  <style name="cancel" border_color="#a0a0a0"  text_color="black" >
+    <normal      />
+    <pressed    x_offset="1" y_offset="1"/>
+    <over       border_color="#000000" />
+    <focused    />
+    <disable    text_color="#d0d0d0" />
+  </style>
+  
   <style name="combobox_down" border_color="#a0a0a0">
     <normal     bg_color="#f0f0f0" icon="arrow_down_n"/>
     <pressed    bg_color="#c0c0c0" icon="arrow_down_p"/>
