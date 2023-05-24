@@ -92,9 +92,6 @@ COMMON_CCFLAGS = COMMON_CCFLAGS+ ' -DWITH_RES_TOOLS'
 
 GRAPHIC_BUFFER = 'default'
 
-# only for c compiler flags
-COMMON_CFLAGS = ''
-
 if INPUT_ENGINE == 't9':
     COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_IME_T9 '
 elif INPUT_ENGINE == 't9ext':
