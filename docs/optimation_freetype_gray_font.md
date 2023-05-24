@@ -16,16 +16,9 @@ freetype 解析矢量字体的过程是将字形关键点按照规则连线变�
 
 ### 2.1 提高 freetype 解析字体的精度
 
-虽然 freetype  解析字体时精度丢失无法避免，但提高运算精度依然可以优化显示效果。
+虽然 freetype 解析字体时精度丢失无法避免，但提高运算精度依然可以优化显示效果。
 
-freetype  提供两种计算二次贝塞尔曲线的精度，低精度 0.5 个像素，高精度 0.0625 个像素。其默认采用低精度进行运算，通过设置标志位 FT\_OUTLINE\_HIGH\_PRECISION 可让 freetype  采用高精度运算。
-
-```c
-//awtk/src/font_loader/font_loader_ft.c
-...
-uint32_t flags = FT_LOAD_DEFAULT | FT_LOAD_RENDER | FT_LOAD_NO_AUTOHINT | FT_OUTLINE_HIGH_PRECISION;
-...
-```
+freetype 提供两种计算二次贝塞尔曲线的精度，低精度 0.5 个像素，高精度 0.0625 个像素。其默认采用低精度进行运算，当栅格化过程中垂直方向上的扫描点小于 24 个时，freetype 会自动开启标志位 FT\_OUTLINE\_HIGH\_PRECISION，采用高精度运算。
 
 ### 2.2 关闭 auto\_hint
 
@@ -42,6 +35,6 @@ hinting 用来优化字体显示的方法。由于屏幕像素有限，矢量字
 ```c
 //awtk/src/font_loader/font_loader_ft.c
 ...
-uint32_t flags = FT_LOAD_DEFAULT | FT_LOAD_RENDER | FT_LOAD_NO_AUTOHINT | FT_OUTLINE_HIGH_PRECISION;
+uint32_t flags = FT_LOAD_DEFAULT | FT_LOAD_RENDER | FT_LOAD_NO_AUTOHINT;
 ...
 ```
