@@ -413,6 +413,26 @@ ret_t assets_manager_destroy(assets_manager_t* am);
  */
 asset_info_t* assets_manager_load_file(assets_manager_t* am, asset_type_t type, const char* path);
 
+/**
+ * @method assets_manager_build_asset_filename
+ * 构建资源文件名。
+ *
+ * @param {assets_manager_t*} am asset manager对象。
+ * @param {char*} path 文件名。
+ * @param {uint32_t} size 文件名长度。
+ * @param {const char*} theme 主题。
+ * @param {bool_t} ratio_sensitive 是否按像素比查找。
+ * @param {const char*} subpath 自路径。
+ * @param {const char*} name 名称。
+ * @param {const char*} extname 扩展名。
+ *
+ * @return {ret_t} 返回RET_OK表示成功。
+ */
+ret_t assets_manager_build_asset_filename(assets_manager_t* am, char* path, uint32_t size,
+                                          const char* theme, bool_t ratio_sensitive,
+                                          const char* subpath, const char* name,
+                                          const char* extname);
+
 /*public for test*/
 
 /**

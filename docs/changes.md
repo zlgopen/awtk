@@ -2,6 +2,7 @@
 
 2023/05/24
   * 完善编译脚本(感谢朝泽提供补丁)
+  * 导出assest\_manager\_build\_assest\_filename函数(感谢福明提供补丁)
 
 2023/05/23
   * 对话框中的ok/cancel使用不同的风格。
