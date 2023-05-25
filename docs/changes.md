@@ -2,6 +2,7 @@
 
 2023/05/25
   * 修改widget的xoffset 或 yoffset != 0时widget\_is\_point\_in结果不正确的问题(感谢朝泽提供补丁)
+  * 回退之前的 widget\_to\_screen 的修改，增加了测试用例，确保 widget\_to\_screen 和widget\_to\_loacl 配对转化(感谢智明提供补丁)
 
 2023/05/24
   * 完善编译脚本(感谢朝泽提供补丁)

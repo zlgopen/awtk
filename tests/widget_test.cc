@@ -1597,3 +1597,20 @@ TEST(Widget, dirty_rect_prop) {
 
   widget_destroy(w);
 }
+
+TEST(Widget, widget_to_screen_and_loacl) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* sv = scroll_view_create(w, 10, 10, 100, 100);
+
+  point_t p = {10, 10};
+
+  scroll_view_set_virtual_w(sv, 1000);
+  scroll_view_set_virtual_h(sv, 1000);
+  scroll_view_set_offset(sv, 100, 100);
+  ASSERT_EQ(widget_to_local(sv, &p), RET_OK);
+  ASSERT_EQ(widget_to_screen(sv, &p), RET_OK);
+  ASSERT_EQ(p.x, 10);
+  ASSERT_EQ(p.y, 10);
+  
+  widget_destroy(w);
+}

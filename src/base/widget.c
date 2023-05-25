@@ -3712,7 +3712,7 @@ ret_t widget_to_screen_ex(widget_t* widget, widget_t* parent, point_t* p) {
 
   while (iter != NULL && iter != parent) {
     xy_t offset_x, offset_y;
-    if (iter != widget && widget_get_offset(iter, &offset_x, &offset_y) == RET_OK) {
+    if (widget_get_offset(iter, &offset_x, &offset_y) == RET_OK) {
       p->x -= offset_x;
       p->y -= offset_y;
     }
