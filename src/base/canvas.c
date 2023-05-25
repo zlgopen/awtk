@@ -284,7 +284,7 @@ ret_t canvas_set_font(canvas_t* c, const char* name, font_size_t size) {
   name = system_info_fix_font_name(name);
   size = system_info()->font_scale * size;
 
-  if (c->font_size != size) {
+  if (c->font_size != size || c->lcd->font_size != size) {
     c->font_size = size;
     c->last_text_length = 0;
   }
