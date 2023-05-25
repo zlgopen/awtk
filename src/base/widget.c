@@ -4076,8 +4076,10 @@ bool_t widget_is_point_in(widget_t* widget, xy_t x, xy_t y, bool_t is_local) {
   point_t p = {x, y};
   return_value_if_fail(widget != NULL, FALSE);
 
-  if (!is_local) {
-    widget_to_local(widget, &p);
+  if (!is_local && widget->parent != NULL) {
+    widget_to_local(widget->parent, &p);
+    p.x -= widget->x;
+    p.y -= widget->y;
   }
 
   if (widget->vt->is_point_in != NULL) {

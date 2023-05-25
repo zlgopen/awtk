@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/05/25
+  * 修改widget的xoffset 或 yoffset != 0时widget\_is\_point\_in结果不正确的问题(感谢朝泽提供补丁)
+
 2023/05/24
   * 完善编译脚本(感谢朝泽提供补丁)
   * 导出assest\_manager\_build\_assest\_filename函数(感谢福明提供补丁)
