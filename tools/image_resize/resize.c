@@ -79,6 +79,11 @@ int main(int argc, char* argv[]) {
   ow = atoi(argv[3]);
   oh = atoi(argv[4]);
 
+  if (ow == 0 || ow > 20000 || oh == 0 || oh > 20000) {
+    printf("invalid width[1-20000] or height[1-20000]\n");
+    return 0;
+  }
+
   image_resize(ifilename, ofilename, ow, oh);
 
   return 0;

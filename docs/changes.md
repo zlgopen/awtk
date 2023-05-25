@@ -10,6 +10,7 @@
   * 完善编译脚本(感谢朝泽提供补丁)
   * 导出assest\_manager\_build\_assest\_filename函数(感谢福明提供补丁)
   * 去除font\_loader\_ft中的FT\_OUTLINE\_HIGH\_PRECISION标记(感谢雨欣提供补丁)
+  * 修复image_resize工具可能溢出的问题(感谢[szsam](https://github.com/szsam)提供补丁)
 
 2023/05/23
   * 对话框中的ok/cancel使用不同的风格。
