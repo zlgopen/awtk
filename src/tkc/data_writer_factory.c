@@ -90,13 +90,17 @@ data_writer_t* data_writer_factory_create_writer(data_writer_factory_t* factory,
   if (p != NULL) {
     return_value_if_fail((p - url) < TK_NAME_LEN, NULL);
     tk_strncpy(protocol, url, p - url);
+    if (tk_strlen(protocol) <= 1) {
+      /*是Windows下的盘符(如 D:/a/b/c.txt)*/
+      tk_strncpy(protocol, "file", 4);
+    }
   } else {
     tk_strncpy(protocol, "file", 4);
   }
 
   iter = darray_find(&(factory->creators), (void*)protocol);
   if (iter != NULL) {
-    p = strstr(url, ":");
+    p = strstr(url, "://");
 
     if (p == NULL) {
       p = url;

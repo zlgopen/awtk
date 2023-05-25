@@ -188,7 +188,6 @@ bool_t emitter_exist(emitter_t* emitter, uint32_t etype, event_func_t handler, v
   }
 
   return FALSE;
-  ;
 }
 
 uint32_t emitter_on(emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx) {
