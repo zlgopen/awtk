@@ -5,12 +5,12 @@
   * 回退之前的 widget\_to\_screen 的修改，增加了测试用例，确保 widget\_to\_screen 和widget\_to\_loacl 配对转化(感谢智明提供补丁)
   * 让data\_writer\_factory与data\_reader\_factory逻辑一致(感谢兆坤提供补丁)
   * 修复opengl下受离线画布的影响，lcd的字体大小在需要更新时没有更新的问题(感谢兆坤提供补丁)
+  * 修复image_resize工具可能溢出的问题(感谢[szsam](https://github.com/szsam)提供补丁)
 
 2023/05/24
   * 完善编译脚本(感谢朝泽提供补丁)
   * 导出assest\_manager\_build\_assest\_filename函数(感谢福明提供补丁)
   * 去除font\_loader\_ft中的FT\_OUTLINE\_HIGH\_PRECISION标记(感谢雨欣提供补丁)
-  * 修复image_resize工具可能溢出的问题(感谢[szsam](https://github.com/szsam)提供补丁)
 
 2023/05/23
   * 对话框中的ok/cancel使用不同的风格。
