@@ -927,3 +927,10 @@ ret_t conf_doc_set_str(conf_doc_t* doc, const char* path, const char* v) {
   value_t vv;
   return conf_doc_set(doc, path, value_set_str(&vv, v));
 }
+
+ret_t conf_node_get_child_value(conf_node_t* node, const char* name, value_t* v) {
+  conf_node_t* child = conf_node_find_child(node, name);
+  return_value_if_fail(child != NULL && v != NULL, RET_BAD_PARAMS);
+
+  return conf_node_get_value(child, v);
+}

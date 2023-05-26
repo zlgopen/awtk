@@ -684,7 +684,7 @@ ret_t conf_node_set_value(conf_node_t* node, const value_t* v);
 /**
  * @method conf_node_get_value
  *
- * 设置节点的值。
+ * 获取节点的值。
  *
  * @param {conf_node_t*} node 节点对象。
  * @param {value_t*} v 值(返回)。
@@ -692,6 +692,19 @@ ret_t conf_node_set_value(conf_node_t* node, const value_t* v);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t conf_node_get_value(conf_node_t* node, value_t* v);
+
+/**
+ * @method conf_node_get_child_value
+ *
+ * 获取子节点的值。
+ *
+ * @param {conf_node_t*} node 节点对象。
+ * @param {const char*} name 子节点名称。
+ * @param {value_t*} v 值(返回)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t conf_node_get_child_value(conf_node_t* node, const char* name, value_t* v);
 
 /**
  * @method conf_node_get_first_child
