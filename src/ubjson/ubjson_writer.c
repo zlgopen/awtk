@@ -317,6 +317,13 @@ ret_t ubjson_writer_write_array_begin(ubjson_writer_t* writer) {
   return RET_OK;
 }
 
+ret_t ubjson_writer_write_kv_array_begin(ubjson_writer_t* writer, const char* key) {
+  return_value_if_fail(writer != NULL && key != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
+
+  return ubjson_writer_write_array_begin(writer);
+}
+
 ret_t ubjson_writer_write_array_end(ubjson_writer_t* writer) {
   return_value_if_fail(writer != NULL, RET_BAD_PARAMS);
   return_value_if_fail(ubjson_writer_write_marker(writer, UBJSON_MARKER_ARRAY_END) == RET_OK,

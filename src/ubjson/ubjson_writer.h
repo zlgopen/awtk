@@ -270,6 +270,20 @@ ret_t ubjson_writer_write_object(ubjson_writer_t* writer, tk_object_t* obj);
 ret_t ubjson_writer_write_array_begin(ubjson_writer_t* writer);
 
 /**
+ * @method ubjson_writer_write_kv_array_begin
+ *
+ * 写key和数组的开始。
+ *
+ * > 即："key": [
+ *
+ * @param {ubjson_writer_t*} writer writer对象。
+ * @param {const char*} key 键值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t ubjson_writer_write_kv_array_begin(ubjson_writer_t* writer, const char* key);
+
+/**
  * @method ubjson_writer_write_array_end
  *
  * 写入数组结束。
