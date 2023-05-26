@@ -3,6 +3,7 @@
 #include "conf_io/conf_node.h"
 
 TEST(ConfNode, basic) {
+  value_t v;
   conf_doc_t* doc = conf_doc_create(100);
   conf_node_t* node = NULL;
   doc->root = conf_doc_create_node(doc, "root");
@@ -14,12 +15,43 @@ TEST(ConfNode, basic) {
 
   node = conf_node_find_child(doc->root, "1");
   ASSERT_STREQ(conf_node_get_name(node), "1");
+  value_set_int(&v, 1);
+  ASSERT_EQ(conf_node_set_value(node, &v), RET_OK);
+  value_set_int(&v, 0);
+  ASSERT_EQ(conf_node_get_child_value(doc->root, "1", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+  ASSERT_EQ(conf_node_get_child_value_by_index(doc->root, 0, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+
   node = conf_node_find_child(doc->root, "2");
   ASSERT_STREQ(conf_node_get_name(node), "2");
+  value_set_int(&v, 2);
+  ASSERT_EQ(conf_node_set_value(node, &v), RET_OK);
+  value_set_int(&v, 0);
+  ASSERT_EQ(conf_node_get_child_value(doc->root, "2", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 2);
+  ASSERT_EQ(conf_node_get_child_value_by_index(doc->root, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 2);
+
   node = conf_node_find_child(doc->root, "3");
   ASSERT_STREQ(conf_node_get_name(node), "3");
+  value_set_int(&v, 3);
+  ASSERT_EQ(conf_node_set_value(node, &v), RET_OK);
+  value_set_int(&v, 0);
+  ASSERT_EQ(conf_node_get_child_value(doc->root, "3", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 3);
+  ASSERT_EQ(conf_node_get_child_value_by_index(doc->root, 2, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 3);
+
   node = conf_node_find_child(doc->root, "4");
   ASSERT_STREQ(conf_node_get_name(node), "4");
+  value_set_int(&v, 4);
+  ASSERT_EQ(conf_node_set_value(node, &v), RET_OK);
+  value_set_int(&v, 0);
+  ASSERT_EQ(conf_node_get_child_value(doc->root, "4", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 4);
+  ASSERT_EQ(conf_node_get_child_value_by_index(doc->root, 3, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 4);
 
   ASSERT_EQ(conf_doc_remove_child_by_name(doc, doc->root, "2"), RET_OK);
   ASSERT_NE(conf_doc_remove_child_by_name(doc, doc->root, "2"), RET_OK);

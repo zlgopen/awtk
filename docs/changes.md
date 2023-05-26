@@ -3,6 +3,7 @@
 2023/05/26
   * 增加函数ubjson\_writer\_write\_kv\_array\_begin。
   * 增加函数conf\_node\_get\_child\_value。
+  * 增加函数conf\_node\_get\_child\_value\_by\_index。
 
 2023/05/25
   * 修改widget的xoffset 或 yoffset != 0时widget\_is\_point\_in结果不正确的问题(感谢朝泽提供补丁)

@@ -934,3 +934,10 @@ ret_t conf_node_get_child_value(conf_node_t* node, const char* name, value_t* v)
 
   return conf_node_get_value(child, v);
 }
+
+ret_t conf_node_get_child_value_by_index(conf_node_t* node, uint32_t index, value_t* v) {
+  conf_node_t* child = conf_node_find_child_by_index(node, index);
+  return_value_if_fail(child != NULL && v != NULL, RET_BAD_PARAMS);
+
+  return conf_node_get_value(child, v);
+}
