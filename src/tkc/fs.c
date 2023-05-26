@@ -416,6 +416,7 @@ int32_t fs_file_read_line(fs_file_t* file, char* buffer, uint32_t size) {
   int32_t ret = 0;
   int64_t offset = 0;
   bool_t done = FALSE;
+  bool_t read_flag = FALSE;
   return_value_if_fail(file != NULL && buffer != NULL && size > 1, 0);
 
   while (((d - buffer) < size) && !done) {
@@ -424,6 +425,7 @@ int32_t fs_file_read_line(fs_file_t* file, char* buffer, uint32_t size) {
     if (ret <= 0) {
       break;
     }
+    read_flag = TRUE;
     tbuff[ret] = '\0';
     for (i = 0; (i < ret) && ((d - buffer) < size); i++) {
       offset++;
@@ -456,6 +458,8 @@ int32_t fs_file_read_line(fs_file_t* file, char* buffer, uint32_t size) {
   ret = d - buffer;
   if (ret > 0) {
     *d = '\0';
+  }
+  if (read_flag == TRUE) {
     fs_file_seek(file, offset);
   }
 

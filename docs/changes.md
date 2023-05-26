@@ -4,6 +4,7 @@
   * 增加函数ubjson\_writer\_write\_kv\_array\_begin。
   * 增加函数conf\_node\_get\_child\_value。
   * 增加函数conf\_node\_get\_child\_value\_by\_index。
+  * 修复fs\_file\_read\_line函数在读取到空行时文件指针异常的问题(感谢泽武提供补丁)
 
 2023/05/25
   * 修改widget的xoffset 或 yoffset != 0时widget\_is\_point\_in结果不正确的问题(感谢朝泽提供补丁)
