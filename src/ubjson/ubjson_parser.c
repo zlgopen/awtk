@@ -243,6 +243,10 @@ static ret_t ubjson_do_parse_array(ubjson_parser_t* parser) {
         ubjson_parser_on_key_value(parser, NULL, v);
         return_value_if_fail(ubjson_do_parse_object(parser) == RET_OK, RET_FAIL);
         continue;
+      } else if (token == UBJSON_MARKER_ARRAY_BEGIN) {
+        ubjson_parser_on_key_value(parser, NULL, v);
+        ubjson_do_parse_array(parser);
+        continue;
       } else {
         assert(!"invalid format");
         return RET_BAD_PARAMS;

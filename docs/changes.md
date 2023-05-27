@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/05/27
+  * 完善ubjson\_do\_parse\_array数组中包含数组的处理。
+
 2023/05/26
   * 增加函数ubjson\_writer\_write\_kv\_array\_begin。
   * 增加函数conf\_node\_get\_child\_value。
