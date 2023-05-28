@@ -295,6 +295,17 @@ emitter_t* emitter_cast(emitter_t* emitter);
  */
 ret_t emitter_forward(void* ctx, event_t* e);
 
+/**
+ * @method emitter_forward_retarget
+ * 分发事件。并将e->target强制设置为ctx。
+ *
+ * @param {void*} ctx emitter对象。
+ * @param {event_t*} e 分发的事件。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t emitter_forward_retarget(void* ctx, event_t* e);
+
 #define EMITTER(emitter) ((emitter_t*)(emitter))
 
 #define EMITTER_ENABLE(emitter)       \

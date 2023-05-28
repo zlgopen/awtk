@@ -412,3 +412,9 @@ ret_t emitter_dispatch_simple_event(emitter_t* emitter, uint32_t type) {
 ret_t emitter_forward(void* ctx, event_t* e) {
   return emitter_dispatch(EMITTER(ctx), e);
 }
+
+ret_t emitter_forward_retarget(void* ctx, event_t* e) {
+  return_value_if_fail(e != NULL, RET_BAD_PARAMS);
+  e->target = ctx;
+  return emitter_dispatch(EMITTER(ctx), e);
+}

@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/05/28
+  * 增加函数emitter\_forward\_retarget。
+
 2023/05/27
   * 完善ubjson\_do\_parse\_array数组中包含数组的处理。
 
