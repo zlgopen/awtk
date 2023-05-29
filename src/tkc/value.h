@@ -807,6 +807,7 @@ ret_t value_copy(value_t* dst, const value_t* src);
 /**
  * @method value_deep_copy
  * 深拷贝value的值。
+ * dst使用完成后，要调用value_reset，确保不会发生内存泄漏。  
  * @param {value_t*} dst 目的value对象。
  * @param {const value_t*} src 源value对象。
  *

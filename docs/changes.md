@@ -3,6 +3,7 @@
 2023/05/29
   * main\_loop\_dispatch\_events支持分发EVT\_KEY\_LONG\_PRESS
   * event\_from\_name增加窗口被切换到前台、后台事件，用于给窗口绑定(感谢兆坤提供补丁)
+  * 完善注释(感谢泽武提供补丁)
 
 2023/05/28
   * 增加函数emitter\_forward\_retarget。
