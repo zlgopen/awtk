@@ -367,7 +367,7 @@ static ret_t hscroll_label_on_timer(const timer_info_t* info) {
   }
 
   if (hscroll_label->only_focus) {
-    if (!widget->focused) {
+    if (!widget->focusable || !widget->focused) {
       hscroll_label_stop(widget);
 
       return RET_REMOVE;
