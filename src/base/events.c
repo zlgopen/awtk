@@ -335,6 +335,10 @@ int32_t event_from_name(const char* name) {
         return EVT_WINDOW_OPEN;
       } else if (tk_str_eq(name, "window_will_open")) {
         return EVT_WINDOW_WILL_OPEN;
+      } else if (tk_str_eq(name, "window_to_background")) {
+        return EVT_WINDOW_TO_BACKGROUND;
+      } else if (tk_str_eq(name, "window_to_foreground")) {
+        return EVT_WINDOW_TO_FOREGROUND;
       } else if (tk_str_eq(name, "widget_load")) {
         return EVT_WIDGET_LOAD;
       }
