@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/05/29
+  * main\_loop\_dispatch\_events支持分发EVT\_KEY\_LONG\_PRESS
+
 2023/05/28
   * 增加函数emitter\_forward\_retarget。
 

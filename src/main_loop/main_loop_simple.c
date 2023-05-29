@@ -173,6 +173,9 @@ static ret_t main_loop_dispatch_events(main_loop_simple_t* loop) {
       case EVT_WHEEL:
         window_manager_dispatch_input_event(widget, (event_t*)&(r.wheel_event));
         break;
+      case EVT_KEY_LONG_PRESS:
+        widget_on_keydown(widget, &(r.key_event));
+        break;
       case EVT_KEY_DOWN:
       case EVT_KEY_UP:
         window_manager_dispatch_input_event(widget, (event_t*)&(r.key_event));
