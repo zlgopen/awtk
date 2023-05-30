@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/05/30
+  * popup恢复支持高亮(感谢智明提供补丁)。
+
 2023/05/29
   * main\_loop\_dispatch\_events支持分发EVT\_KEY\_LONG\_PRESS
   * event\_from\_name增加窗口被切换到前台、后台事件，用于给窗口绑定(感谢兆坤提供补丁)

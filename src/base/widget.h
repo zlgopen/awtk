@@ -1028,6 +1028,16 @@ ret_t widget_get_window_theme(widget_t* widget, theme_t** win_theme, theme_t** d
 bool_t widget_is_style_exist(widget_t* widget, const char* style_name, const char* state_name);
 
 /**
+ * @method widget_is_support_highlighter
+ * 判断widget是否支持高亮。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {bool_t} 支持返回 TRUE，不支持返回 FALSE。
+ */
+bool_t widget_is_support_highlighter(widget_t* widget);
+
+/**
  * @method widget_use_style
  * 启用指定的style。
  * @annotation ["scriptable"]

@@ -344,7 +344,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
       if (iter != wm->curr_win) {
         rect_t iter_rect = rect_init(iter->x, iter->y, iter->w, iter->h);
         /* 给前面的高亮对话框叠加黑色色块 */
-        if (widget_is_dialog(iter)) {
+        if (widget_is_support_highlighter(iter)) {
           uint8_t a = 0x0;
           if (window_manager_default_snap_prev_window_draw_dialog_highlighter_and_get_alpha(iter, canvas, &a) == RET_OK) {
             /* 计算最终叠加后的透明度值 */
@@ -432,7 +432,7 @@ static ret_t window_manager_default_create_dialog_highlighter(widget_t* widget,
     wm->dialog_highlighter = dialog_highlighter = NULL;
   }
 
-  if (dialog_highlighter == NULL && (widget_is_dialog(curr_win) || widget_is_popup(curr_win)) &&
+  if (dialog_highlighter == NULL && widget_is_support_highlighter(curr_win) &&
       curr_highlight != NULL) {
     dialog_highlighter_factory_t* f = dialog_highlighter_factory();
     dialog_highlighter = dialog_highlighter_factory_create_highlighter(f, curr_highlight, curr_win);
@@ -450,8 +450,8 @@ static ret_t window_manager_default_create_dialog_highlighter(widget_t* widget,
     /* 把 dialog_highlighter 给键盘窗口使用 */
     dialog_highlighter->used_by_others = TRUE;
   }
-  /* 因为当 dialog 的窗口销毁的时候会释放 dialog_highlighter 局部, 防止非 dialog 的窗口使用 dialog_highlighter 高亮贴图。 */
-  else if (dialog_highlighter != NULL && !widget_is_dialog(curr_win)) {
+  /* 因为当支持高亮的窗口销毁的时候会释放 dialog_highlighter 局部, 防止非 dialog 的窗口使用 dialog_highlighter 高亮贴图。 */
+  else if (dialog_highlighter != NULL && !widget_is_support_highlighter(curr_win)) {
     wm->dialog_highlighter = NULL;
   }
 
@@ -979,7 +979,7 @@ static bool_t window_manager_default_is_dialog_highlighter(widget_t* widget) {
   value_t v;
   return_value_if_fail(widget != NULL, FALSE);
 
-  if (widget_is_dialog(widget) && widget_get_prop(widget, WIDGET_PROP_HIGHLIGHT, &v) == RET_OK) {
+  if (widget_is_support_highlighter(widget) && widget_get_prop(widget, WIDGET_PROP_HIGHLIGHT, &v) == RET_OK) {
     return TRUE;
   }
 
