@@ -3,6 +3,7 @@
 2023/05/30
   * popup恢复支持高亮(感谢智明提供补丁)。
   * 修复在linux上面设置layout\_params出错的问题(感谢智明提供补丁)。
+  * 去掉不必要的警告(感谢兆坤提供补丁)
 
 2023/05/29
   * main\_loop\_dispatch\_events支持分发EVT\_KEY\_LONG\_PRESS

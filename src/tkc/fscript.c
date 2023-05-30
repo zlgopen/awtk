@@ -3171,7 +3171,7 @@ static ret_t fscript_func_call_init_func(fscript_func_call_t* call, tk_object_t*
 
   if (func == NULL) {
     value_t v;
-    if (tk_object_get_prop(obj, func_name, &v) == RET_OK) {
+    if (tk_object_get_prop(obj, func_name, &v) == RET_OK && v.type == VALUE_TYPE_FUNC_DEF) {
       fscript_function_def_t* def = (fscript_function_def_t*)value_func_def(&v);
       if (def != NULL) {
         func = func_function;
