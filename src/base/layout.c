@@ -166,38 +166,42 @@ ret_t widget_set_children_layout(widget_t* widget, const char* params) {
 ret_t widget_set_self_layout_params(widget_t* widget, const char* x, const char* y, const char* w,
                                     const char* h) {
   bool_t one = FALSE;
-  char params[128] = {0};
   if (widget->self_layout == NULL) {
-    tk_strcpy(params, "default(");
+    ret_t ret;
+    str_t params;
+    str_init(&params, 128);
+    str_append(&params, "default(");
     if (x != NULL) {
       one = TRUE;
-      tk_snprintf(params, sizeof(params) - 1, "%sx=%s", params, x);
+      str_append_format(&params, 128, "x=%s", x);
     }
     if (y != NULL) {
       if (one) {
-        tk_snprintf(params, sizeof(params) - 1, "%s, ", params);
+        str_append(&params, ", ");
       }
       one = TRUE;
-      tk_snprintf(params, sizeof(params) - 1, "%sy=%s", params, y);
+      str_append_format(&params, 128, "y=%s", y);
     }
     if (w != NULL) {
       if (one) {
-        tk_snprintf(params, sizeof(params) - 1, "%s, ", params);
+        str_append(&params, ", ");
       }
       one = TRUE;
-      tk_snprintf(params, sizeof(params) - 1, "%sw=%s", params, w);
+      str_append_format(&params, 128, "w=%s", w);
     }
     if (h != NULL) {
       if (one) {
-        tk_snprintf(params, sizeof(params) - 1, "%s, ", params);
+        str_append(&params, ", ");
       }
       one = TRUE;
-      tk_snprintf(params, sizeof(params) - 1, "%sh=%s", params, h);
+      str_append_format(&params, 128, "h=%s", h);
     }
     if (one) {
-      tk_snprintf(params, sizeof(params) - 1, "%s)", params);
+      str_append(&params, ")");
     }
-    return widget_set_self_layout(widget, params);
+    ret = widget_set_self_layout(widget, params.str);
+    str_reset(&params);
+    return ret;
   } else {
     value_t v;
     if (x != NULL) {
