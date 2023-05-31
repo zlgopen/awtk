@@ -8,7 +8,7 @@
 using std::string;
 
 TEST(Utils, basic) {
-  char str[32];
+  char str[64 + 1];
 
   ASSERT_EQ(tk_atoi("0015"), 15);
   ASSERT_EQ(tk_atoi("100"), 100);
@@ -44,6 +44,9 @@ TEST(Utils, basic) {
   ASSERT_EQ(tk_atol("1122334455667788"), 1122334455667788);
   ASSERT_EQ(tk_atol("-1122334455667788"), -1122334455667788);
   ASSERT_EQ(strcmp(tk_itoa(str, sizeof(str), tk_atoi("100")), "100"), 0);
+
+  ASSERT_EQ(tk_atol("0xFFFFFFFF"), 0xFFFFFFFF);
+  ASSERT_EQ(strcmp(tk_lltoa(str, sizeof(str), tk_atol("0xFFFFFFFF")), "4294967295"), 0);
 }
 
 static void check_buff16(uint16_t* buff, uint16_t val, uint32_t size) {

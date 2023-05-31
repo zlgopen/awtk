@@ -4,6 +4,7 @@
   * 修改resize控件时，控件宽高如果大于children_layout中指定的宽高，使子控件的宽高始终>=children_layout中指定的宽高(感谢朝泽提供补丁)
   * 去掉fscript_module中一些无用的调试信息(感谢雨欣提供补丁)。
   * 增加widget\_get\_style(感谢智明提供补丁)。
+  * 修复edit的uint类型最大值不能超过int32的最大值的问题(感谢智明提供补丁)。
 
 2023/05/30
   * popup恢复支持高亮(感谢智明提供补丁)。

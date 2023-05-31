@@ -472,8 +472,7 @@ static ret_t edit_auto_fix_default(widget_t* widget) {
 
       break;
     }
-    case INPUT_INT:
-    case INPUT_UINT: {
+    case INPUT_INT: {
       int32_t v = 0;
       int32_t min = (int32_t)(edit->min);
       int32_t max = (int32_t)(edit->max);
@@ -487,6 +486,22 @@ static ret_t edit_auto_fix_default(widget_t* widget) {
         v = max;
       }
       wstr_from_int(text, v);
+      break;
+    }
+    case INPUT_UINT: {
+      uint64_t v = 0;
+      uint32_t min = (uint32_t)(edit->min);
+      uint32_t max = (uint32_t)(edit->max);
+
+      wstr_to_int64(text, &v);
+      if (v < min) {
+        v = min;
+      }
+
+      if (v > max) {
+        v = max;
+      }
+      wstr_from_int64(text, v);
       break;
     }
     case INPUT_FLOAT:
@@ -1425,7 +1440,7 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     if (input_type == INPUT_FLOAT || input_type == INPUT_UFLOAT) {
       edit->max = value_double(v);
     } else {
-      edit->max = value_int(v);
+      edit->max = value_int64(v);
     }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_STEP)) {

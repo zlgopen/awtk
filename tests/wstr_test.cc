@@ -148,6 +148,20 @@ TEST(WStr, int) {
   ASSERT_EQ(wstr_reset(&str), RET_OK);
 }
 
+TEST(WStr, int64) {
+  wstr_t str;
+  int64_t v2 = 0;
+  int64_t v1 = 0x0000000100000000;
+  ASSERT_EQ(wstr_init(&str, 100), &str);
+  ASSERT_EQ(str.capacity, 100u);
+
+  ASSERT_EQ(wstr_from_int64(&str, v1), RET_OK);
+  ASSERT_EQ(wstr_to_int64(&str, &v2), RET_OK);
+  ASSERT_EQ(v1, v2);
+
+  ASSERT_EQ(wstr_reset(&str), RET_OK);
+}
+
 TEST(WStr, double) {
   wstr_t str;
   double v1 = 123;

@@ -169,10 +169,10 @@ double tk_atof(const char* str) {
   return neg ? -result : result;
 }
 
-static const char* tk_itoa_simple(char* str, int len, int n, const char** end) {
+static const char* tk_itoa_simple(char* str, int len, int64_t n, const char** end) {
   int i = 0;
-  int value = n;
   int need_len = 0;
+  int64_t value = n;
 
   return_value_if_fail(str != NULL && len > 2, NULL);
 
@@ -220,6 +220,10 @@ const char* tk_itoa(char* str, int len, int n) {
   return tk_itoa_simple(str, len, n, NULL);
 }
 
+const char* tk_lltoa(char* str, int len, uint64_t n) {
+  return tk_itoa_simple(str, len, n, NULL);
+}
+
 #else
 double tk_atof(const char* str) {
   return_value_if_fail(str != NULL, 0);
@@ -255,6 +259,14 @@ const char* tk_itoa(char* str, int len, int n) {
   return_value_if_fail(str != NULL, NULL);
 
   tk_snprintf(str, len, "%d", n);
+
+  return str;
+}
+
+const char* tk_lltoa(char* str, int len, int64_t n) {
+  return_value_if_fail(str != NULL, NULL);
+
+  tk_snprintf(str, len, "%"PRId64, n);
 
   return str;
 }

@@ -259,6 +259,16 @@ bool_t wstr_equal(wstr_t* str, wstr_t* other);
 ret_t wstr_from_int(wstr_t* str, int32_t v);
 
 /**
+ * @method wstr_from_int64
+ * 用整数初始化字符串。
+ * @param {wstr_t*} str str对象。
+ * @param {int32_t} v 整数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wstr_from_int64(wstr_t* str, int64_t v);
+
+/**
  * @method wstr_append_int
  * 追加整数到字符串。
  * @param {wstr_t*} str str对象。
@@ -297,6 +307,16 @@ ret_t wstr_from_value(wstr_t* str, const value_t* v);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t wstr_to_int(wstr_t* str, int32_t* v);
+
+/**
+ * @method wstr_to_int64
+ * 将字符串转成整数。
+ * @param {wstr_t*} str str对象。
+ * @param {int64_t*} v 用于返回整数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wstr_to_int64(wstr_t* str, int64_t* v);
 
 /**
  * @method wstr_to_float

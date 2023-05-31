@@ -423,6 +423,13 @@ ret_t wstr_from_int(wstr_t* str, int32_t v) {
   return wstr_set_utf8(str, tk_itoa(buff, sizeof(buff), v));
 }
 
+ret_t wstr_from_int64(wstr_t* str, int64_t v) {
+  char buff[TK_NUM_MAX_LEN + 1];
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+
+  return wstr_set_utf8(str, tk_lltoa(buff, sizeof(buff), v));
+}
+
 ret_t wstr_from_float(wstr_t* str, double v) {
   char buff[TK_NUM_MAX_LEN + 1];
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
@@ -454,6 +461,22 @@ ret_t wstr_to_int(wstr_t* str, int32_t* v) {
     memcpy(wbuff, str->str, size);
     tk_utf8_from_utf16_ex(wbuff, ARRAY_SIZE(wbuff), buff, ARRAY_SIZE(buff));
     *v = tk_atoi(buff);
+  } else {
+    *v = 0;
+  }
+
+  return RET_OK;
+}
+
+ret_t wstr_to_int64(wstr_t* str, int64_t* v) {
+  return_value_if_fail(str != NULL && v != NULL, RET_BAD_PARAMS);
+  if (str->size > 0) {
+    char buff[TK_NUM_MAX_LEN * 2 + 1] = {0};
+    wchar_t wbuff[TK_NUM_MAX_LEN * 2] = {0};
+    uint32_t size = tk_min(str->size, TK_NUM_MAX_LEN * 2) * sizeof(wchar_t);
+    memcpy(wbuff, str->str, size);
+    tk_utf8_from_utf16_ex(wbuff, ARRAY_SIZE(wbuff), buff, ARRAY_SIZE(buff));
+    *v = tk_atol(buff);
   } else {
     *v = 0;
   }

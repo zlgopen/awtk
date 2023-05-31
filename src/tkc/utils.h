@@ -208,6 +208,19 @@ const char* tk_skip_to_num(const char* str);
 const char* tk_itoa(char* str, int len, int n);
 
 /**
+ * @method tk_lltoa
+ *
+ * 将整型转换为字符串。
+ *
+ * @param {char*} str 保存字符串缓冲区。
+ * @param {int} len 缓冲区大小。
+ * @param {int64_t} n 要转换的整型。
+ *
+ * @return {const char*} 返回字符串。
+ */
+const char* tk_lltoa(char* str, int len, int64_t n);
+
+/**
  * @method tk_ftoa
  *
  * 将浮点型转换为字符串。
