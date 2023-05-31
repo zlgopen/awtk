@@ -3169,6 +3169,17 @@ ret_t widget_end_wait_pointer_cursor(widget_t* widget);
 ret_t widget_set_style(widget_t* widget, const char* state_and_name, const value_t* value);
 
 /**
+ * @method widget_get_style
+ * 获取widget样式。
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} state_and_name 样式对应类型与名字。
+ * @param {value_t*} value 返回样式数据值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_get_style(widget_t* widget, const char* state_and_name, value_t* value);
+
+/**
  * @method widget_get_content_area
  * 获取widget去掉margin之外的区域。
  * @param {widget_t*} widget 控件对象。

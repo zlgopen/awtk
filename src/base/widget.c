@@ -4610,6 +4610,28 @@ static ret_t widget_ensure_style_mutable(widget_t* widget) {
   return RET_OK;
 }
 
+ret_t widget_get_style(widget_t* widget, const char* state_and_name, value_t* value) {
+  char state[64];
+  const char* name = NULL;
+  const char* p_state = NULL;
+  return_value_if_fail(widget != NULL && state_and_name != NULL && *state_and_name != '\0' && value != NULL, RET_BAD_PARAMS);
+  memset(state, 0x0, sizeof(state));
+
+  name = strchr(state_and_name, ':');
+  if (name == NULL) {
+    name = strchr(state_and_name, '.');
+  }
+  if (name == NULL) {
+    name = state_and_name;
+    p_state = WIDGET_STATE_NORMAL;
+  } else {
+    memcpy(state, state_and_name, tk_pointer_to_int((void*)(name - state_and_name)));
+    p_state = state;
+  }
+  
+  return style_get(widget->astyle, p_state, name, value);
+}
+
 ret_t widget_set_style(widget_t* widget, const char* state_and_name, const value_t* value) {
   char str[256];
   uint32_t len = 0;

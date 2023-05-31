@@ -1112,6 +1112,35 @@ TEST(Widget, move_focus_pages) {
   widget_destroy(w);
 }
 
+TEST(Widget, get_style) {
+  value_t v, v1;
+  color_t black = color_init(0, 0, 0, 0xff);
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b = button_create(w, 0, 0, 0, 0);
+
+  value_set_int(&v, 123);
+  ASSERT_EQ(widget_set_style(b, "font_size", &v), RET_OK);
+  ASSERT_EQ(widget_get_style(b, "font_size", &v1), RET_OK);
+  ASSERT_EQ(value_int(&v), value_int(&v1));
+
+  value_set_int(&v, 321);
+  ASSERT_EQ(widget_set_style(b, "normal:font_size", &v), RET_OK);
+  ASSERT_EQ(widget_get_style(b, "font_size", &v1), RET_OK);
+  ASSERT_EQ(value_int(&v), value_int(&v1));
+
+  value_set_str(&v, "black");
+  ASSERT_EQ(widget_set_style(b, "text_color", &v), RET_OK);
+  ASSERT_EQ(widget_get_style(b, "text_color", &v1), RET_OK);
+  ASSERT_EQ(black.color, value_uint32(&v1));
+
+  value_set_str(&v, "black");
+  ASSERT_EQ(widget_set_style(b, "normal:text_color", &v), RET_OK);
+  ASSERT_EQ(widget_get_style(b, "text_color", &v1), RET_OK);
+  ASSERT_EQ(black.color, value_uint32(&v1));
+
+  widget_destroy(w);
+}
+
 TEST(Widget, mutable_style) {
   value_t v;
   color_t c = color_init(0, 0, 0, 0);
