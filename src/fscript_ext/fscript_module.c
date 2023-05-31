@@ -42,9 +42,13 @@ static ret_t fscript_module_on_destroy(tk_object_t* obj) {
 
 static ret_t fscript_module_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   fscript_module_t* o = FSCRIPT_MODULE(obj);
-  return_value_if_fail(o != NULL && o->fscript != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
-  return tk_object_get_prop(o->fscript->funcs_def, name, v);
+  if (o->fscript != NULL && o->fscript->funcs_def != NULL) {
+    return tk_object_get_prop(o->fscript->funcs_def, name, v);
+  }
+
+  return RET_NOT_FOUND;
 }
 
 static ret_t fscript_module_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, void* ctx) {
