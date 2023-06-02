@@ -100,8 +100,10 @@ static widget_t* combo_box_ex_create_scroll_popup(combo_box_t* combo_box) {
   value_t v;
   widget_t* win = NULL;
   widget_t* list_view = NULL;
-  widget_t* scroll_view = NULL;
   widget_t* scroll_bar = NULL;
+  widget_t* scroll_view = NULL;
+  widget_t* combo_box_win = NULL;
+  const char* applet_name = NULL;
   widget_t* widget = WIDGET(combo_box);
   int32_t margin = COMBO_BOX_EX_DEFAULT_MARGIN;
   int32_t item_height = combo_box->item_height;
@@ -116,6 +118,10 @@ static widget_t* combo_box_ex_create_scroll_popup(combo_box_t* combo_box) {
 
   // create popup
   win = popup_create(NULL, 0, 0, w, h);
+  combo_box_win = widget_get_window(widget);
+  applet_name = widget_get_prop_str(combo_box_win, WIDGET_PROP_APPLET_NAME, NULL);
+  widget_set_prop_str(win, WIDGET_PROP_APPLET_NAME, applet_name);
+
   value_set_bool(&v, TRUE);
   widget_set_prop(win, WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE, &v);
   widget_set_prop_str(win, WIDGET_PROP_THEME, "combobox_ex_popup");

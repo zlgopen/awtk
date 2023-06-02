@@ -653,6 +653,8 @@ static widget_t* combo_box_create_popup(combo_box_t* combo_box) {
   char params[128];
   widget_t* win = NULL;
   int32_t item_height = 0;
+  widget_t* combo_box_win = NULL;
+  const char* applet_name = NULL;
   widget_t* widget = WIDGET(combo_box);
   int32_t margin = COMBO_BOX_DEFAULT_MARGIN;
   return_value_if_fail(combo_box != NULL && widget != NULL, NULL);
@@ -661,6 +663,9 @@ static widget_t* combo_box_create_popup(combo_box_t* combo_box) {
   w = widget->w;
   h = nr * item_height + 2 * margin;
   win = popup_create(NULL, 0, 0, w, h);
+  combo_box_win = widget_get_window(widget);
+  applet_name = widget_get_prop_str(combo_box_win, WIDGET_PROP_APPLET_NAME, NULL);
+  widget_set_prop_str(win, WIDGET_PROP_APPLET_NAME, applet_name);
 
   value_set_bool(&v, TRUE);
   widget_set_prop(win, WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE, &v);
@@ -682,10 +687,16 @@ static widget_t* combo_box_create_popup(combo_box_t* combo_box) {
 static ret_t combo_box_active(widget_t* widget) {
   point_t p = {0, 0};
   widget_t* win = NULL;
+  widget_t* combo_box_win = NULL;
+  const char* applet_name = NULL;
   combo_box_t* combo_box = COMBO_BOX(widget);
   return_value_if_fail(widget != NULL && combo_box != NULL, RET_BAD_PARAMS);
   if (combo_box->open_window) {
     win = window_open(combo_box->open_window);
+    combo_box_win = widget_get_window(widget);
+    applet_name = widget_get_prop_str(combo_box_win, WIDGET_PROP_APPLET_NAME, NULL);
+    widget_set_prop_str(win, WIDGET_PROP_APPLET_NAME, applet_name);
+
     combo_box->combobox_popup = win;
     widget_on(win, EVT_WINDOW_CLOSE, combo_box_combobox_popup_on_close_func, widget);
   }
