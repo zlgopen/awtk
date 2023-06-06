@@ -27,11 +27,12 @@
 
 static ret_t object_array_clean_invalid_props(tk_object_t* obj) {
   object_array_t* o = OBJECT_ARRAY(obj);
-  event_t e = event_init(EVT_ITEMS_CHANGED, o);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
   if (o->size > 0) {
     uint32_t i = 0;
     value_t* dst = o->props;
+    bool_t changed = FALSE;
 
     for (i = 0; i < o->size; i++) {
       value_t* iter = o->props + i;
@@ -41,13 +42,17 @@ static ret_t object_array_clean_invalid_props(tk_object_t* obj) {
           memcpy(dst, iter, sizeof(value_t));
         }
         dst++;
+      } else {
+        changed = TRUE;
       }
     }
 
     o->size = dst - o->props;
-  }
 
-  emitter_dispatch(EMITTER(o), &e);
+    if (changed) {
+      emitter_dispatch_simple_event(EMITTER(o), EVT_ITEMS_CHANGED);
+    }
+  }
 
   return RET_OK;
 }
