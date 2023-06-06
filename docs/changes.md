@@ -1,7 +1,8 @@
 # 最新动态
 
 2023/06/06
-  * object\_array\_clean\_invalid\_props在没有清理非法属性时，不分发ITEMS\_CHANGED事件。
+  * object\_array\_clean\_invalid\_props在没有清理非法属性时，不分发ITEMS\_CHANGED事件(感谢兆坤提供补丁)。
+  * 增加获取非widget状态的风格(感谢智明提供补丁)
 
 2023/06/02
   * combo\_box控件弹出popup菜单时，使用小程序applet\_name中的资源(感谢雨欣提供补丁)

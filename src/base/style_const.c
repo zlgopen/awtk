@@ -59,13 +59,17 @@ static const void* widget_get_const_style_data_for_state_impl(widget_t* widget,
   return data;
 }
 
+const void* widget_get_const_style_data_for_state(widget_t* widget, const char* style_name, const char* state) {
+  return widget_get_const_style_data_for_state_impl(widget, style_name, state);
+}
+
 static const void* widget_get_const_style_data_for_style(widget_t* widget, style_t* s,
                                                          const char* style_name) {
   const void* data = NULL;
   style_const_t* style = (style_const_t*)s;
-  data = widget_get_const_style_data_for_state_impl(widget, style_name, style->state);
+  data = widget_get_const_style_data_for_state(widget, style_name, style->state);
   if (data == NULL && !tk_str_eq(style->state, WIDGET_STATE_NORMAL)) {
-    data = widget_get_const_style_data_for_state_impl(widget, style_name, WIDGET_STATE_NORMAL);
+    data = widget_get_const_style_data_for_state(widget, style_name, WIDGET_STATE_NORMAL);
   }
 
   return data;

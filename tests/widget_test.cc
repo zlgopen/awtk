@@ -17,6 +17,10 @@
 #include <string.h>
 #include "gtest/gtest.h"
 #include "base/ui_feedback.h"
+#include "base/theme.h"
+#include "base/theme_xml.h"
+#include "base/style_factory.h"
+#include "base/window.h"
 
 using std::string;
 #include "common.h"
@@ -1114,9 +1118,19 @@ TEST(Widget, move_focus_pages) {
 
 TEST(Widget, get_style) {
   value_t v, v1;
+  color_t red = color_init(0xff, 0, 0, 0xff);
   color_t black = color_init(0, 0, 0, 0xff);
+  const char* str = "<button><style name=\"default\" border_color=\"#a0a0a0\" text_color=\"black\" round_radius=\"8\"><normal bg_color=\"#f0f0f0\" /><pressed bg_color=\"#c0c0c0\" x_offset=\"1\" y_offset=\"1\"/><over bg_color=\"#e0e0e0\" /><disable bg_color=\"gray\" text_color=\"#d0d0d0\" /></style></button>";
+  theme_t* t = theme_xml_create(str);
+  const uint8_t* style_data = theme_find_style(t, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
+  style_t* s = style_factory_create_style(NULL, theme_get_style_type(t));
+
   widget_t* w = window_create(NULL, 0, 0, 400, 300);
   widget_t* b = button_create(w, 0, 0, 0, 0);
+  window_base_t* window_base = WINDOW_BASE(w);
+  window_base->theme_obj = t;
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
+  b->astyle = s;
 
   value_set_int(&v, 123);
   ASSERT_EQ(widget_set_style(b, "font_size", &v), RET_OK);
@@ -1128,15 +1142,24 @@ TEST(Widget, get_style) {
   ASSERT_EQ(widget_get_style(b, "font_size", &v1), RET_OK);
   ASSERT_EQ(value_int(&v), value_int(&v1));
 
-  value_set_str(&v, "black");
-  ASSERT_EQ(widget_set_style(b, "text_color", &v), RET_OK);
   ASSERT_EQ(widget_get_style(b, "text_color", &v1), RET_OK);
   ASSERT_EQ(black.color, value_uint32(&v1));
 
-  value_set_str(&v, "black");
+  value_set_str(&v, "red");
+  ASSERT_EQ(widget_set_style(b, "text_color", &v), RET_OK);
+  ASSERT_EQ(widget_get_style(b, "text_color", &v1), RET_OK);
+  ASSERT_EQ(red.color, value_uint32(&v1));
+
+  value_set_str(&v, "red");
   ASSERT_EQ(widget_set_style(b, "normal:text_color", &v), RET_OK);
   ASSERT_EQ(widget_get_style(b, "text_color", &v1), RET_OK);
-  ASSERT_EQ(black.color, value_uint32(&v1));
+  ASSERT_EQ(red.color, value_uint32(&v1));
+
+  ASSERT_EQ(widget_get_style(b, "pressed:x_offset", &v1), RET_OK);
+  ASSERT_EQ(1, value_uint32(&v1));
+
+  ASSERT_EQ(widget_get_style(b, "pressed:y_offset", &v1), RET_OK);
+  ASSERT_EQ(1, value_uint32(&v1));
 
   widget_destroy(w);
 }
@@ -1613,7 +1636,6 @@ TEST(Widget, tr_text_prop) {
 
 TEST(Widget, dirty_rect_prop) {
   value_t v;
-  rect_t r = rect_init(0, 0, 400, 300);
   widget_t* w = window_create(NULL, 0, 0, 400, 300);
   ASSERT_EQ(widget_set_prop(w, WIDGET_PROP_DIRTY_RECT, &v), RET_FAIL);
   ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_DIRTY_RECT, &v), RET_OK);

@@ -47,6 +47,7 @@
 #include "base/window_base.h"
 #include "base/assets_manager.h"
 #include "blend/image_g2d.h"
+#include "base/style_const.h"
 
 ret_t widget_focus_up(widget_t* widget);
 ret_t widget_focus_down(widget_t* widget);
@@ -4627,9 +4628,19 @@ ret_t widget_get_style(widget_t* widget, const char* state_and_name, value_t* va
   } else {
     memcpy(state, state_and_name, tk_pointer_to_int((void*)(name - state_and_name)));
     p_state = state;
+    name = name + 1;
   }
-  
-  return style_get(widget->astyle, p_state, name, value);
+
+  if (tk_str_eq(p_state, widget->state)) {
+    return style_get(widget->astyle, p_state, name, value);
+  } else {
+    const char* style_name = (widget->style != NULL && *widget->style != '\0') ? widget->style : TK_DEFAULT_STYLE;
+    const void* data = widget_get_const_style_data_for_state(widget, style_name, p_state);
+    if (data == NULL && !tk_str_eq(p_state, WIDGET_STATE_NORMAL)) {
+      data = widget_get_const_style_data_for_state(widget, style_name, WIDGET_STATE_NORMAL);
+    }
+    return style_data_get_value((uint8_t*)data, name, value);
+  }
 }
 
 ret_t widget_set_style(widget_t* widget, const char* state_and_name, const value_t* value) {
