@@ -1,0 +1,20 @@
+<overlay x="c" y="m" w="240" h="240" modeless="true" style:bg_color="#f0f0f0" style:border_color="#000000">
+  <view x="0" y="0" w="100%" h="30" style="title">
+    <draggable out_of_scope="true" top="0" drag_window="true"/>
+    <column x="0" y="0" w="-40" h="100%">
+      <label x="10" y="m" w="55%" h="100%" text="title"/>
+      <digit_clock style="time" x="r" y="m" w="40%" h="100%" format="hh:mm:ss"/>
+    </column>
+    <button style="close" x="r:5" y="m" w="26" h="26" name="close"/>
+  </view>
+  <view x="0" y="b" w="100%" h="-30">
+     <view x="c" y="m:-30" w="80%" h="30" children_layout="default(r=1,c=0,ym=1)">
+        <label w="30%" text="Max Uint"/>
+        <edit w="70%" right_margin="16" min="0" max="4294967295" step="1" name="edit" auto_fix="true" input_type="uint" />
+     </view>
+      <view x="c" y="m:30" w="80%" h="30" children_layout="default(r=1,c=0,ym=1)">
+        <label w="30%" text="test"/>
+        <combo_box_ex  w="70%" item_height="30" auto_fix="true" readonly="true" options="aaa;bbb;ccc;ddd" selected_index="0" />
+     </view>
+  </view>
+</overlay>

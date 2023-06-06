@@ -77,6 +77,15 @@ ret_t draggable_set_horizontal_only(widget_t* widget, bool_t horizontal_only) {
   return RET_OK;
 }
 
+ret_t draggable_set_allow_out_of_screen(widget_t* widget, bool_t allow_out_of_screen) {
+  draggable_t* draggable = DRAGGABLE(widget);
+  return_value_if_fail(draggable != NULL, RET_BAD_PARAMS);
+
+  draggable->allow_out_of_screen = allow_out_of_screen;
+
+  return RET_OK;
+}
+
 ret_t draggable_set_drag_window(widget_t* widget, bool_t drag_window) {
   draggable_t* draggable = DRAGGABLE(widget);
   return_value_if_fail(draggable != NULL, RET_BAD_PARAMS);
@@ -135,6 +144,9 @@ static ret_t draggable_get_prop(widget_t* widget, const char* name, value_t* v) 
   } else if (tk_str_eq(DRAGGABLE_PROP_DRAG_PARENT, name)) {
     value_set_uint32(v, draggable->drag_parent);
     return RET_OK;
+  } else if (tk_str_eq(DRAGGABLE_PROP_ALLOW_OUT_OF_SCREEN, name)) {
+    value_set_bool(v, draggable->allow_out_of_screen);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -169,6 +181,9 @@ static ret_t draggable_set_prop(widget_t* widget, const char* name, const value_
     return RET_OK;
   } else if (tk_str_eq(DRAGGABLE_PROP_DRAG_PARENT, name)) {
     draggable_set_drag_parent(widget, value_uint32(v));
+    return RET_OK;
+  } else if (tk_str_eq(DRAGGABLE_PROP_ALLOW_OUT_OF_SCREEN, name)) {
+    draggable_set_allow_out_of_screen(widget, value_bool(v));
     return RET_OK;
   }
 
@@ -244,19 +259,18 @@ static ret_t draggable_on_parent_pointer_down(void* ctx, event_t* e) {
 static ret_t draggable_move_target(widget_t* widget, xy_t x, xy_t y) {
   widget_t* target = NULL;
   draggable_t* draggable = DRAGGABLE(widget);
+  native_window_t* nw = widget_get_native_window(widget);
   return_value_if_fail(draggable != NULL, RET_BAD_PARAMS);
 
   target = draggable_get_target(widget);
   return_value_if_fail(target != NULL, RET_BAD_PARAMS);
 
-  xy_t min_x = draggable->left != DRAGGABLE_UNSPECIFIED_NUM ? draggable->left : 0;
-  xy_t min_y = draggable->top != DRAGGABLE_UNSPECIFIED_NUM ? draggable->top : 0;
+  xy_t min_x = draggable->left != DRAGGABLE_UNSPECIFIED_NUM ? draggable->left : (draggable->allow_out_of_screen ? 1 - target->w : 0);
+  xy_t min_y = draggable->top != DRAGGABLE_UNSPECIFIED_NUM ? draggable->top : (draggable->allow_out_of_screen ? 1 - target->h : 0);
   xy_t max_x =
-      (draggable->right != DRAGGABLE_UNSPECIFIED_NUM ? draggable->right : target->parent->w) -
-      target->w;
+      draggable->right != DRAGGABLE_UNSPECIFIED_NUM ? draggable->right - target->w : (draggable->allow_out_of_screen ? nw->rect.w - 1 : target->parent->w - target->w);
   xy_t max_y =
-      (draggable->bottom != DRAGGABLE_UNSPECIFIED_NUM ? draggable->bottom : target->parent->h) -
-      target->h;
+      draggable->bottom != DRAGGABLE_UNSPECIFIED_NUM ? draggable->bottom - target->h : (draggable->allow_out_of_screen ? nw->rect.h - 1 : target->parent->h - target->h);
 
   if (min_x < max_x) {
     x = tk_clampi(x, min_x, max_x);
@@ -382,6 +396,7 @@ widget_t* draggable_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   draggable->horizontal_only = FALSE;
   draggable->drag_window = FALSE;
   draggable->pressed = FALSE;
+  draggable->allow_out_of_screen = FALSE;
   widget_set_sensitive(widget, FALSE);
 
   return widget;

@@ -1,0 +1,27 @@
+<overlay>
+  <style name="default" border_color="#000000">
+    <normal bg_color="#f0f0f0" />
+    <focused bg_color="#e0e0e0"/>
+  </style>
+</overlay>
+
+<view>
+  <style name="title">
+    <normal bg_color="#404040" />
+  </style>
+</view>
+
+<digit_clock>
+  <style name="time">
+    <normal text_color="white" />
+  </style>
+</digit_clock>
+
+<button>
+  <style name="close">
+    <normal     icon="close_n"/>
+    <pressed    icon="close_p"/>
+    <over       icon="close_n"/>
+    <disable    icon="close_d"/>
+  </style>
+</button>

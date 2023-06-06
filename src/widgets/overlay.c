@@ -23,6 +23,7 @@
 #include "tkc/utils.h"
 #include "base/enums.h"
 #include "widgets/overlay.h"
+#include "base/window_manager.h"
 
 static ret_t overlay_set_prop(widget_t* widget, const char* name, const value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -31,6 +32,8 @@ static ret_t overlay_set_prop(widget_t* widget, const char* name, const value_t*
     return overlay_set_click_through(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_ALWAYS_ON_TOP)) {
     return overlay_set_always_on_top(widget, value_bool(v));
+  } else if (tk_str_eq(name, OVERLAY_PROP_MODELESS)) {
+    return overlay_set_modeless(widget, value_bool(v));
   }
 
   return window_base_set_prop(widget, name, v);
@@ -46,9 +49,33 @@ static ret_t overlay_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_ALWAYS_ON_TOP)) {
     value_set_bool(v, overlay->always_on_top);
     return RET_OK;
+  } else if (tk_str_eq(name, OVERLAY_PROP_MODELESS)) {
+    value_set_bool(v, overlay->modeless);
+    return RET_OK;
   }
 
   return window_base_get_prop(widget, name, v);
+}
+
+static ret_t overlay_on_event(widget_t* widget, event_t* e) {
+  overlay_t* overlay = OVERLAY(widget);
+  return_value_if_fail(overlay != NULL && e != NULL, RET_BAD_PARAMS);
+  if (overlay->modeless) {
+    switch (e->type) {
+      case EVT_FOCUS: {
+        uint32_t index = window_manager()->children->size;
+        widget_set_state(widget, WIDGET_STATE_FOCUSED);
+        widget_restack(widget, index - 1);
+        break;
+      }
+      case EVT_BLUR:
+        widget_set_state(widget, WIDGET_STATE_NORMAL);
+        break; 
+      default:
+        break;
+    }
+  }
+  return window_base_on_event(widget, e);
 }
 
 static bool_t overlay_is_point_in(widget_t* widget, xy_t x, xy_t y) {
@@ -88,7 +115,7 @@ TK_DECL_VTABLE(overlay) = {.type = WIDGET_TYPE_OVERLAY,
                            .clone_properties = s_overlay_properties,
                            .on_copy = overlay_on_copy,
                            .persistent_properties = s_overlay_properties,
-                           .on_event = window_base_on_event,
+                           .on_event = overlay_on_event,
                            .on_paint_self = window_base_on_paint_self,
                            .on_paint_begin = window_base_on_paint_begin,
                            .on_paint_end = window_base_on_paint_end,
@@ -121,6 +148,15 @@ ret_t overlay_set_always_on_top(widget_t* widget, bool_t always_on_top) {
   return_value_if_fail(overlay != NULL, RET_BAD_PARAMS);
 
   overlay->always_on_top = always_on_top;
+
+  return RET_OK;
+}
+
+ret_t overlay_set_modeless(widget_t* widget, bool_t modeless) {
+  overlay_t* overlay = OVERLAY(widget);
+  return_value_if_fail(overlay != NULL, RET_BAD_PARAMS);
+
+  overlay->modeless = modeless;
 
   return RET_OK;
 }

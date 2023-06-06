@@ -352,7 +352,7 @@ static ret_t on_open_window(void* ctx, event_t* e) {
     dialog_confirm(NULL, "Hello AWTK!\nAre you sure to close?");
   } else {
     widget_t* target = widget_lookup(window_manager(), name, TRUE);
-    if (target != NULL) {
+    if (target != NULL && !(widget_is_overlay(target) && !widget_is_always_on_top(target))) {
       widget_t* win = widget_get_window(WIDGET(e->target));
       window_manager_switch_to(window_manager(), win, target, FALSE);
     } else {

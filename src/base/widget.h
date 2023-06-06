@@ -2192,6 +2192,16 @@ bool_t widget_is_popup(widget_t* widget);
 bool_t widget_is_overlay(widget_t* widget);
 
 /**
+ * @method widget_is_always_on_top
+ * 检查控件是否总在最上层。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @return {bool_t} 返回FALSE表示不是，否则表示是。
+ */
+bool_t widget_is_always_on_top(widget_t* widget);
+
+/**
  * @method widget_is_opened_dialog
  * 检查控件弹出对话框控件是否已经打开了（而非挂起状态）。
  *

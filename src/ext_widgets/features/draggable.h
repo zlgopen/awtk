@@ -94,6 +94,13 @@ typedef struct _draggable_t {
   int32_t right;
 
   /**
+   * @property {bool_t} allow_out_of_screen
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 支持超出原生窗口边界拖动。（无法完全移出原生窗口，同时优先受到拖动范围限制的影响）
+   */
+  bool_t allow_out_of_screen;
+
+  /**
    * @property {bool_t} vertical_only
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 只允许垂直拖动。
@@ -225,6 +232,18 @@ ret_t draggable_set_vertical_only(widget_t* widget, bool_t vertical_only);
 ret_t draggable_set_horizontal_only(widget_t* widget, bool_t horizontal_only);
 
 /**
+ * @method draggable_set_allow_out_of_screen
+ * 设置是否无范围限制拖动。
+ * 备注：可以让窗口拖动到外面去。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {bool_t} allow_out_of_screen 是否无范围限制拖动。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t draggable_set_allow_out_of_screen(widget_t* widget, bool_t allow_out_of_screen);
+
+/**
  * @method draggable_set_drag_window
  * 设置drag_window。
  * @annotation ["scriptable"]
@@ -265,6 +284,7 @@ ret_t draggable_set_drag_parent(widget_t* widget, uint32_t drag_parent);
 #define DRAGGABLE_PROP_RIGHT "right"
 #define DRAGGABLE_PROP_DRAG_WINDOW "drag_window"
 #define DRAGGABLE_PROP_DRAG_PARENT "drag_parent"
+#define DRAGGABLE_PROP_ALLOW_OUT_OF_SCREEN "allow_out_of_screen"
 #define DRAGGABLE_PROP_VERTICAL_ONLY "vertical_only"
 #define DRAGGABLE_PROP_HORIZONTAL_ONLY "horizontal_only"
 #define DRAGGABLE_PROP_DRAG_NATIVE_WINDOW "drag_native_window"

@@ -56,6 +56,7 @@
       <button focusable="true" name="open:dialog_highlight" text="Dialog Highlight"/>
       <button focusable="true" name="open:svg_test" text="SVG Test"/>
       <button focusable="true" name="open:spin_box" text="Spin box"/>
+      <button focusable="true" name="open:modeless" text="Modeless"/>
     </view>
     <view x="0" y="0" w="100%" h="100%" children_layout="default(c=1,r=8,m=5,s=5)">
       <button focusable="true" name="open:memtest" text="MemTest"/>

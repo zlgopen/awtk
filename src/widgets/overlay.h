@@ -91,6 +91,16 @@ typedef struct _overlay_t {
    *
    */
   bool_t always_on_top;
+
+  /**
+   * @property {bool_t} modeless
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 非模态窗口。
+   *
+   * 缺省不启用。
+   *
+   */
+  bool_t modeless;
 } overlay_t;
 
 /**
@@ -130,6 +140,17 @@ ret_t overlay_set_click_through(widget_t* widget, bool_t click_through);
 ret_t overlay_set_always_on_top(widget_t* widget, bool_t always_on_top);
 
 /**
+ * @method overlay_set_modeless
+ * 设置是否非模态窗口模式。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t}  modeless 是否非模态窗口模式。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t overlay_set_modeless(widget_t* widget, bool_t modeless);
+
+/**
  * @method overlay_cast
  * 转换为overlay对象(供脚本语言使用)。
  * @annotation ["cast", "scriptable"]
@@ -138,6 +159,8 @@ ret_t overlay_set_always_on_top(widget_t* widget, bool_t always_on_top);
  * @return {widget_t*} overlay对象。
  */
 widget_t* overlay_cast(widget_t* widget);
+
+#define OVERLAY_PROP_MODELESS "modeless"
 
 #define OVERLAY(widget) ((overlay_t*)(overlay_cast(WIDGET(widget))))
 
