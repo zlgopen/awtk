@@ -3,5 +3,7 @@
   <button name="open:confirm" text="Confirm"/>
   <button name="open:info" text="Information"/>
   <button name="open:warn" text="Warning"/>
+  <button name="open:dialog1" text="Dialog1"/>
+  <button name="open:dialog2" text="Dialog2"/>
   <button name="close" text="Close"/>
 </window>
