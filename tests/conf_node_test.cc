@@ -1,5 +1,9 @@
 ﻿#include "gtest/gtest.h"
+#include "tkc/buffer.h"
+#include "ubjson/ubjson_writer.h"
+#include "conf_io/conf_ini.h"
 #include "conf_io/conf_json.h"
+#include "conf_io/conf_ubjson.h"
 #include "conf_io/conf_node.h"
 
 TEST(ConfNode, basic) {
@@ -123,5 +127,38 @@ TEST(ConfNode, set_get_wstr) {
   ASSERT_EQ(conf_doc_get(doc, "names.[2]", &v), RET_OK);
   ASSERT_EQ(wcscmp(value_wstr(&v), L"anny"), 0);
   
+  str_t str;
+  str_init(&str, 0);
+  ASSERT_EQ(conf_doc_save_json(doc, &str), RET_OK);
+  ASSERT_STREQ(
+      str.str,
+      "{\n    \"names\" : [\n        \"jim\",\n        \"tom\",\n        \"anny\"\n    ]\n}");
+
+  str_reset(&str);
+  
+  str_init(&str, 0);
+  ASSERT_EQ(conf_doc_save_ini(doc, &str), RET_OK);
+  ASSERT_STREQ(
+      str.str,
+      "[names]\n  [0] = jim\n  [1] = tom\n  [2] = anny\n");
+  str_reset(&str);
+ 
+  wbuffer_t wb; 
+  ubjson_writer_t ub; 
+  wbuffer_init_extendable(&wb);
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+  conf_doc_save_ubjson(doc, &ub);
+
   conf_doc_destroy(doc);
+  doc = conf_doc_load_ubjson(wb.data, wb.cursor);
+  
+  ASSERT_EQ(conf_doc_get(doc, "names.[0]", &v), RET_OK);
+  ASSERT_EQ(wcscmp(value_wstr(&v), L"jim"), 0);
+  ASSERT_EQ(conf_doc_get(doc, "names.[1]", &v), RET_OK);
+  ASSERT_EQ(wcscmp(value_wstr(&v), L"tom"), 0);
+  ASSERT_EQ(conf_doc_get(doc, "names.[2]", &v), RET_OK);
+  ASSERT_EQ(wcscmp(value_wstr(&v), L"anny"), 0);
+
+  conf_doc_destroy(doc);
+  wbuffer_deinit(&wb);
 }

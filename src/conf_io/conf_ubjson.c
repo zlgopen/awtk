@@ -51,6 +51,8 @@ static ret_t conf_ubjson_save_node_value_simple(conf_node_t* node, ubjson_writer
     }
   } else if (v.type == VALUE_TYPE_STRING) {
     return ubjson_writer_write_str(writer, value_str(&v));
+  } else if (v.type == VALUE_TYPE_WSTRING) {
+    return ubjson_writer_write_wstr(writer, value_wstr(&v));
   } else if (v.type == VALUE_TYPE_FLOAT || v.type == VALUE_TYPE_FLOAT32) {
     return ubjson_writer_write_float32(writer, value_float32(&v));
   } else if (v.type == VALUE_TYPE_DOUBLE) {

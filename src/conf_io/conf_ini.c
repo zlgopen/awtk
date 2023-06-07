@@ -173,24 +173,39 @@ conf_doc_t* conf_doc_load_ini(const char* data) {
   return doc;
 }
 
+static ret_t conf_doc_save_str(const char* p, str_t* str) {
+  return_value_if_fail(p != NULL, RET_BAD_PARAMS);
+
+  while (*p) {
+    if (*p == '#' || *p == '\\' || *p == '\n') {
+      return_value_if_fail(str_append_char(str, '\\') == RET_OK, RET_OOM);
+    }
+    return_value_if_fail(str_append_char(str, *p) == RET_OK, RET_OOM);
+    p++;
+  }
+  return RET_OK;
+}
+
 static ret_t conf_doc_save_value(const value_t* v, str_t* str) {
-  char buff[32];
+  char buff[64] = {0};
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
 
   switch (v->type) {
     case VALUE_TYPE_STRING: {
       const char* p = value_str(v);
       return_value_if_fail(p != NULL, RET_BAD_PARAMS);
+      return conf_doc_save_str(p, str);
+    }    
+    case VALUE_TYPE_WSTRING: {
+      str_t s;
+      ret_t ret = RET_OK;
 
-      while (*p) {
-        if (*p == '#' || *p == '\\' || *p == '\n') {
-          return_value_if_fail(str_append_char(str, '\\') == RET_OK, RET_OOM);
-        }
-        return_value_if_fail(str_append_char(str, *p) == RET_OK, RET_OOM);
-        p++;
-      }
-      return RET_OK;
+      str_init(&s, 0);
+      str_from_wstr(&s, value_wstr(v));
+      ret = conf_doc_save_str(s.str, str);
+      str_reset(&s);
+      return ret;
     }
-
     case VALUE_TYPE_FLOAT32: {
       tk_snprintf(buff, sizeof(buff) - 1, "%f", value_float32(v));
       break;

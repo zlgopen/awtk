@@ -329,6 +329,15 @@ static ret_t conf_json_save_node_value_simple(conf_node_t* node, str_t* str, uin
     }
   } else if (v.type == VALUE_TYPE_STRING) {
     return str_append_json_str(str, value_str(&v));
+  } else if (v.type == VALUE_TYPE_WSTRING) {
+    str_t s;
+    ret_t ret = RET_OK;
+
+    str_init(&s, 0);
+    str_from_wstr(&s, value_wstr(&v));
+    ret = str_append_json_str(str, s.str);
+    str_reset(&s);
+    return ret;
   } else {
     double d = value_double(&v);
     if (v.type == VALUE_TYPE_INT64) {
