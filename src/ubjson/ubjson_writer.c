@@ -81,6 +81,28 @@ ret_t ubjson_writer_write_str(ubjson_writer_t* writer, const char* value) {
   return ubjson_writer_write_str_len(writer, value, strlen(value));
 }
 
+ret_t ubjson_writer_write_wstr_len(ubjson_writer_t* writer, const wchar_t* value, uint32_t len) {
+  str_t str;
+  ret_t ret = RET_OK;
+  value = value != NULL ? value : L"";
+  return_value_if_fail(writer != NULL && value != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ubjson_writer_write_marker(writer, UBJSON_MARKER_WSTRING) == RET_OK,
+                       RET_OOM);
+
+  str_init(&str, 0);
+  str_from_wstr_with_len(&str, value, len);
+  ret = ubjson_writer_write_key_len(writer, str.str, str.size);
+  str_reset(&str);
+
+  return ret;
+}
+
+ret_t ubjson_writer_write_wstr(ubjson_writer_t* writer, const wchar_t* value) {
+  value = value != NULL ? value : L"";
+
+  return ubjson_writer_write_wstr_len(writer, value, wcslen(value));
+}
+
 ret_t ubjson_writer_write_null(ubjson_writer_t* writer) {
   return_value_if_fail(writer != NULL, RET_BAD_PARAMS);
   return_value_if_fail(ubjson_writer_write_marker(writer, UBJSON_MARKER_NULL) == RET_OK, RET_OOM);
@@ -249,6 +271,21 @@ ret_t ubjson_writer_write_kv_str_len(ubjson_writer_t* writer, const char* key, c
   return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
 
   return ubjson_writer_write_str_len(writer, value, len);
+}
+
+ret_t ubjson_writer_write_kv_wstr(ubjson_writer_t* writer, const char* key, const wchar_t* value) {
+  return_value_if_fail(writer != NULL && key != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
+
+  return ubjson_writer_write_wstr(writer, value);
+}
+
+ret_t ubjson_writer_write_kv_wstr_len(ubjson_writer_t* writer, const char* key,
+                                      const wchar_t* value, uint32_t len) {
+  return_value_if_fail(writer != NULL && key != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
+
+  return ubjson_writer_write_wstr_len(writer, value, len);
 }
 
 static ret_t on_prop_write_ubjson(void* ctx, const void* data) {

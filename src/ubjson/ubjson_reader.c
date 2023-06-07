@@ -29,6 +29,7 @@ ubjson_reader_t* ubjson_reader_init(ubjson_reader_t* reader, ubjson_read_callbac
   reader->read = read;
   reader->ctx = ctx;
   str_init(&(reader->str), 64);
+  wstr_init(&(reader->wstr), 64);
 
   return reader;
 }
@@ -41,6 +42,7 @@ ret_t ubjson_reader_reset(ubjson_reader_t* reader) {
   return_value_if_fail(reader != NULL && reader->read != NULL, RET_BAD_PARAMS);
 
   str_reset(&(reader->str));
+  wstr_reset(&(reader->wstr));
 
   return RET_OK;
 }
@@ -144,7 +146,8 @@ ret_t ubjson_reader_read(ubjson_reader_t* reader, value_t* v) {
 
       break;
     }
-    case UBJSON_MARKER_STRING: {
+    case UBJSON_MARKER_STRING:
+    case UBJSON_MARKER_WSTRING: {
       int len = 0;
       value_t vlen;
       str_t* str = &(reader->str);
@@ -156,6 +159,7 @@ ret_t ubjson_reader_read(ubjson_reader_t* reader, value_t* v) {
       return_value_if_fail(str_extend(str, len + 1) == RET_OK, RET_OOM);
       return_value_if_fail(ubjson_reader_read_data(reader, str->str, len) == RET_OK, RET_FAIL);
 
+      str->size = len;
       if (is_binary(str->str, len)) {
         str->str[len] = '\0';
         value_set_binary_data(v, str->str, len);
@@ -164,6 +168,11 @@ ret_t ubjson_reader_read(ubjson_reader_t* reader, value_t* v) {
         value_set_str(v, str->str);
       }
 
+      if (marker == UBJSON_MARKER_WSTRING) {
+        wstr_t* wstr = &(reader->wstr);
+        wstr_set_utf8_with_len(wstr, str->str, str->size);
+        value_set_wstr(v, wstr->str);
+      }
       break;
     }
     case UBJSON_MARKER_ARRAY_BEGIN: {

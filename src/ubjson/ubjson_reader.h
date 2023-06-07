@@ -23,6 +23,7 @@
 #define TK_UBJSON_READER_H
 
 #include "tkc/str.h"
+#include "tkc/wstr.h"
 #include "ubjson/ubjson_const.h"
 
 BEGIN_C_DECLS
@@ -35,6 +36,7 @@ typedef ret_t (*ubjson_read_callback_t)(void* ctx, void* data, uint32_t size);
 struct _ubjson_reader_t {
   void* ctx;
   str_t str;
+  wstr_t wstr;
   ubjson_read_callback_t read;
 };
 

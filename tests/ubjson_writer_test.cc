@@ -243,6 +243,26 @@ TEST(UBJsonWriter, kv_string) {
   ASSERT_EQ(wb.cursor, 7u);
 }
 
+TEST(UBJsonWriter, kv_wstring) {
+  uint8_t buff[256];
+  wbuffer_t wb;
+  ubjson_writer_t ub;
+  wbuffer_init(&wb, buff, sizeof(buff));
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+
+  ASSERT_EQ(ubjson_writer_write_kv_wstr(&ub, "a", L"b"), RET_OK);
+
+  ASSERT_EQ(buff[0], UBJSON_MARKER_INT8);
+  ASSERT_EQ(buff[1], 0x1);
+  ASSERT_EQ(buff[2], 'a');
+
+  ASSERT_EQ(buff[3], UBJSON_MARKER_WSTRING);
+  ASSERT_EQ(buff[4], UBJSON_MARKER_INT8);
+  ASSERT_EQ(buff[5], 0x1);
+  ASSERT_EQ(buff[6], 'b');
+  ASSERT_EQ(wb.cursor, 7u);
+}
+
 TEST(UBJsonWriter, kv_string_len) {
   uint8_t buff[256];
   wbuffer_t wb;
@@ -257,6 +277,26 @@ TEST(UBJsonWriter, kv_string_len) {
   ASSERT_EQ(buff[2], 'a');
 
   ASSERT_EQ(buff[3], UBJSON_MARKER_STRING);
+  ASSERT_EQ(buff[4], UBJSON_MARKER_INT8);
+  ASSERT_EQ(buff[5], 0x1);
+  ASSERT_EQ(buff[6], 'b');
+  ASSERT_EQ(wb.cursor, 7u);
+}
+
+TEST(UBJsonWriter, kv_wstring_len) {
+  uint8_t buff[256];
+  wbuffer_t wb;
+  ubjson_writer_t ub;
+  wbuffer_init(&wb, buff, sizeof(buff));
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+
+  ASSERT_EQ(ubjson_writer_write_kv_wstr_len(&ub, "a", L"b1231", 1), RET_OK);
+
+  ASSERT_EQ(buff[0], UBJSON_MARKER_INT8);
+  ASSERT_EQ(buff[1], 0x1);
+  ASSERT_EQ(buff[2], 'a');
+
+  ASSERT_EQ(buff[3], UBJSON_MARKER_WSTRING);
   ASSERT_EQ(buff[4], UBJSON_MARKER_INT8);
   ASSERT_EQ(buff[5], 0x1);
   ASSERT_EQ(buff[6], 'b');
