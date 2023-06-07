@@ -107,3 +107,21 @@ TEST(ConfNode, set_get_str) {
   conf_doc_destroy(doc);
   str_reset(&str);
 }
+
+TEST(ConfNode, set_get_wstr) {
+  value_t v;
+  conf_doc_t* doc = conf_doc_create(100);
+
+  ASSERT_EQ(conf_doc_set(doc, "names.[0]", value_set_wstr(&v, L"jim")), RET_OK);
+  ASSERT_EQ(conf_doc_set(doc, "names.[1]", value_set_wstr(&v, L"tom")), RET_OK);
+  ASSERT_EQ(conf_doc_set(doc, "names.[2]", value_set_wstr(&v, L"anny")), RET_OK);
+  
+  ASSERT_EQ(conf_doc_get(doc, "names.[0]", &v), RET_OK);
+  ASSERT_EQ(wcscmp(value_wstr(&v), L"jim"), 0);
+  ASSERT_EQ(conf_doc_get(doc, "names.[1]", &v), RET_OK);
+  ASSERT_EQ(wcscmp(value_wstr(&v), L"tom"), 0);
+  ASSERT_EQ(conf_doc_get(doc, "names.[2]", &v), RET_OK);
+  ASSERT_EQ(wcscmp(value_wstr(&v), L"anny"), 0);
+  
+  conf_doc_destroy(doc);
+}

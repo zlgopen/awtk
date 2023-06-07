@@ -557,6 +557,11 @@ typedef enum _conf_node_value_t {
    */
   CONF_NODE_VALUE_STRING,
   /**
+   * @const CONF_NODE_VALUE_WSTRING
+   * 宽字符串类型。
+   */
+  CONF_NODE_VALUE_WSTRING,
+  /**
    * @const CONF_NODE_VALUE_SMALL_STR
    * 短字符(len<=7)串类型。
    */
@@ -617,6 +622,7 @@ struct _conf_node_t {
     float f32;
     double f64;
     char* str;
+    wchar_t* wstr;
     char small_str[8];
     conf_node_t* first_child;
   } value;
