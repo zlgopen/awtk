@@ -22,6 +22,14 @@
 #ifndef TYPES_DEF_H
 #define TYPES_DEF_H
 
+#ifdef __cplusplus
+#define BEGIN_C_DECLS extern "C" {
+#define END_C_DECLS }
+#else
+#define BEGIN_C_DECLS
+#define END_C_DECLS
+#endif
+
 #ifndef WITH_WASM
 #include <math.h>
 #include <time.h>
@@ -66,6 +74,8 @@
 typedef int wchar_t;
 #endif /*_cplusplus*/
 
+BEGIN_C_DECLS
+
 int iswspace(wchar_t ch);
 size_t wcslen(const wchar_t* s);
 int wcscmp(const wchar_t* s1, const wchar_t* s2);
@@ -85,6 +95,8 @@ long strtol(const char* str, char** endptr, int base);
 long long strtoll(const char* str, char** endptr, int base);
 unsigned long strtoul(const char* str, char** endptr, int base);
 unsigned long long strtoull(const char* str, char** endptr, int base);
+
+END_C_DECLS
 
 #endif /*WITH_WASM*/
 
@@ -123,13 +135,6 @@ typedef int socklen_t;
 #include <sys/types.h>
 #endif /*WIN32*/
 #endif /*WITH_SOCKET*/
-#ifdef __cplusplus
-#define BEGIN_C_DECLS extern "C" {
-#define END_C_DECLS }
-#else
-#define BEGIN_C_DECLS
-#define END_C_DECLS
-#endif
 
 #if defined(HAS_STDIO) || defined(AWTK_WEB)
 #include <stdio.h>
