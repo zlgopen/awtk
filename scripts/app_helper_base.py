@@ -176,6 +176,36 @@ class AppHelperBase:
             self.APP_LINKFLAGS += APP_LINKFLAGS
         return self
         
+    def root_get_scons_db_files(self, root):
+        scons_db_files = []
+        scons_db_filename = ".sconsign.dblite"
+
+        for f in os.listdir(root):
+            full_path = join_path(root, f)
+            if os.path.isfile(full_path) and f == scons_db_filename:
+                scons_db_files.append(full_path)
+            elif os.path.isdir(full_path) and f != "." and f != "..":
+                self.root_get_scons_db_files(full_path)
+        return scons_db_files
+
+    def check_and_remove_scons_db(self, root):
+        scons_db_files = []
+        scons_db_files = self.root_get_scons_db_files(root)
+
+        if sys.version_info.major == 2:
+            import cPickle as pickle
+        else:
+            import pickle
+
+        for f in scons_db_files:
+            try:
+                with open(f, "rb") as fs:
+                    pickle.load(fs)
+                    fs.close()
+            except ValueError as e:
+                fs.close()
+                os.remove(f)
+
     def SConscript(self, SConscriptFiles):
         if not self.BUILD_DIR:
             Script.SConscript(SConscriptFiles)
@@ -566,6 +596,9 @@ class AppHelperBase:
                 shutil.copytree(src, dst)
 
         self.DEPENDS_LIBS = DEPENDS_LIBS + self.DEPENDS_LIBS
+        for depend in self.DEPENDS_LIBS:
+            self.check_and_remove_scons_db(depend['root'])
+        self.check_and_remove_scons_db(self.APP_ROOT)
 
         if self.TKC_ONLY:
             CCFLAGS += ' -DTKC_ONLY=1 '
