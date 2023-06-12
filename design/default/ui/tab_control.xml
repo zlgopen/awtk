@@ -7,5 +7,7 @@
     <button name="open:tab_scrollable" text="Scrollable"/>
     <button name="open:tab_dynamic_list" text="tab_dynamic_list"/>
     <button name="open:tab_remove" text="tab_remove"/>
+    <button name="open:tab_invisible" text="Invisible"/>
+    <button name="open:tab_invisible_compact" text="Invisible Compact"/>
     <button name="close" text="Close"/>
 </window>

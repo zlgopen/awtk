@@ -26,14 +26,28 @@ static ret_t tab_button_group_on_layout_children_non_compact(widget_t* widget) {
   int32_t x = 0;
   int32_t y = 0;
   int32_t w = 0;
+  bool_t first = TRUE;
   int32_t h = widget->h;
-  int32_t nr = widget->children->size;
-  int32_t item_w = widget->w / nr;
-  int32_t first_w = widget->w - (nr - 1) * item_w;
+  int32_t visible_nr = 0;
+  int32_t item_w = 0;
+  int32_t first_w = 0;
   tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  if (widget_get_visible(iter)) {
+    visible_nr++;
+  }
+  WIDGET_FOR_EACH_CHILD_END();
+  if (visible_nr > 0) {
+    item_w = widget->w / visible_nr;
+    first_w = widget->w - (visible_nr - 1) * item_w;
+  }
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  w = i == 0 ? first_w : item_w;
+  if (!widget_get_visible(iter)) {
+    continue;
+  }
+  w = first ? first_w : item_w;
+  first = FALSE;
   widget_move_resize(iter, x, y, w, h);
   x += w;
   widget_layout_children(iter);
@@ -56,6 +70,9 @@ static ret_t tab_button_group_on_layout_children_compact(widget_t* widget) {
   tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  if (!widget_get_visible(iter)) {
+    continue;
+  }
   iter->h = h;
   if (widget_get_prop(iter, WIDGET_PROP_MIN_W, &v) == RET_OK) {
     w = value_int(&v);

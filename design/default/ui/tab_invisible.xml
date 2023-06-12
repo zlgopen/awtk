@@ -1,0 +1,15 @@
+<window anim_hint="htranslate" theme="tab_top">
+  <check_button name="tab_visible:1" x="c" y="10" w="90%" h="30" text="Message.visible" />
+  <check_button name="tab_visible:2" x="c" y="40" w="90%" h="30" text="Contact.visible" />
+  <check_button name="tab_visible:3" x="c" y="70" w="90%" h="30" text="Discovery.visible" />
+  <check_button name="tab_visible:4" x="c" y="100" w="90%" h="30" text="Me.visible" />
+  <tab_button_group style="highlight" x="0" y="130" w="100%" h="50" >
+    <tab_button name="1" text="Message"/>
+    <tab_button name="2" text="Contact" value="true" />
+    <tab_button name="3" text="Discovery" />
+    <tab_button name="4" text="Me" />
+  </tab_button_group>
+  <pages x="0" y="bottom" w="100%" h="-180">
+    <?include filename="tab_views.inc" ?>
+  </pages>
+</window>

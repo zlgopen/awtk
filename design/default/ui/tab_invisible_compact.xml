@@ -1,0 +1,24 @@
+<window anim_hint="htranslate" theme="tab_top_compact">
+  <check_button name="tab_visible:1" x="c" y="10" w="90%" h="30" text="General.visible" />
+  <check_button name="tab_visible:2" x="c" y="40" w="90%" h="30" text="Network.visible" />
+  <check_button name="tab_visible:3" x="c" y="70" w="90%" h="30" text="Security.visible" />
+  <tab_button_group x="c" y="110" w="90%" h="30" compact="true" >
+    <tab_button name="1" text="General"/>
+    <tab_button name="2" text="Network" value="true" />
+    <tab_button name="3" text="Security"/>
+  </tab_button_group>
+  <pages x="c" y="140" w="90%" h="-150" value="1">
+    <view w="100%" h="100%">
+      <label x="c" y="m" w="100%" h="60" text="General" /> 
+      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
+    </view>
+    <view w="100%" h="100%">
+      <label x="c" y="m" w="100%" h="60" text="Network" /> 
+      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
+    </view>
+    <view w="100%" h="100%">
+      <label x="c" y="m" w="100%" h="60" text="Security" /> 
+      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
+    </view>
+  </pages>
+</window>

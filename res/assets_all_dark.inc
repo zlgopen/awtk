@@ -132,6 +132,7 @@
 #include "assets/default/inc/ui/file_chooser_for_open.data"
 #include "assets/default/inc/ui/scroll_view_h.data"
 #include "assets/default/inc/ui/list_view_dynamic.data"
+#include "assets/default/inc/ui/tab_invisible_compact.data"
 #include "assets/default/inc/ui/menu_up_center.data"
 #include "assets/default/inc/ui/slide_right.data"
 #include "assets/default/inc/ui/scroll_bar_h.data"
@@ -196,6 +197,7 @@
 #include "assets/default/inc/ui/list_view_d.data"
 #include "assets/default/inc/ui/vtranslate.data"
 #include "assets/default/inc/ui/dialog_highlight_static.data"
+#include "assets/default/inc/ui/tab_invisible.data"
 #include "assets/default/inc/ui/menu_left_top.data"
 #include "assets/default/inc/ui/kb_ufloat.data"
 #include "assets/default/inc/ui/kb_default.data"
@@ -1052,6 +1054,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_file_chooser_for_open);
   assets_manager_add(am, ui_scroll_view_h);
   assets_manager_add(am, ui_list_view_dynamic);
+  assets_manager_add(am, ui_tab_invisible_compact);
   assets_manager_add(am, ui_menu_up_center);
   assets_manager_add(am, ui_slide_right);
   assets_manager_add(am, ui_scroll_bar_h);
@@ -1116,6 +1119,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_list_view_d);
   assets_manager_add(am, ui_vtranslate);
   assets_manager_add(am, ui_dialog_highlight_static);
+  assets_manager_add(am, ui_tab_invisible);
   assets_manager_add(am, ui_menu_left_top);
   assets_manager_add(am, ui_kb_ufloat);
   assets_manager_add(am, ui_kb_default);

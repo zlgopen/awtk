@@ -699,6 +699,26 @@ static ret_t on_clone_tab(void* ctx, event_t* e) {
   return widget_clone_tab(WIDGET(ctx));
 }
 
+static widget_t* find_tab_visible_target(widget_t* widget, const char* name) {
+  widget_t* tab_btn_group =
+      widget_lookup_by_type(widget->parent, WIDGET_TYPE_TAB_BUTTON_GROUP, FALSE);
+
+  if (tab_btn_group != NULL) {
+    return widget_lookup(tab_btn_group, name, FALSE);
+  }
+  return NULL;
+}
+
+static ret_t on_tab_visible_changed(void* ctx, event_t* e) {
+  widget_t* target = WIDGET(ctx);
+  widget_t* widget = WIDGET(e->target);
+  bool_t tab_visible = widget_get_value_int(widget) != 0;
+
+  widget_set_visible(target, tab_visible);
+  widget_set_enable(target, tab_visible);
+  return RET_OK;
+}
+
 static ret_t on_show_fps(void* ctx, event_t* e) {
   widget_t* button = WIDGET(ctx);
   widget_t* widget = window_manager();
@@ -1069,6 +1089,10 @@ static ret_t install_one(void* ctx, const void* iter) {
     } else if (tk_str_eq(name, "clone_tab")) {
       widget_t* win = widget_get_window(widget);
       widget_on(widget, EVT_CLICK, on_clone_tab, win);
+    } else if (strstr(name, "tab_visible:") != NULL) {
+      widget_t* target = find_tab_visible_target(widget, name + strlen("tab_visible:"));
+      widget_set_value_int(widget, widget_get_visible(target) ? 1 : 0);
+      widget_on(widget, EVT_VALUE_CHANGED, on_tab_visible_changed, (void*)target);
     } else if (tk_str_eq(name, "remove_tab")) {
       if (widget->parent != NULL &&
           tk_str_eq(WIDGET_TYPE_TAB_BUTTON, widget_get_type(widget->parent))) {
