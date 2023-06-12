@@ -8,13 +8,18 @@
     <button style="close" x="r:5" y="m" w="26" h="26" name="close"/>
   </view>
   <view x="0" y="b" w="100%" h="-30">
-     <view x="c" y="m:-30" w="80%" h="30" children_layout="default(r=1,c=0,ym=1)">
+     <view x="c" y="10" w="80%" h="30" children_layout="default(r=1,c=0,ym=1)">
         <label w="30%" text="Max Uint"/>
         <edit w="70%" right_margin="16" min="0" max="4294967295" step="1" name="edit" auto_fix="true" input_type="uint" />
      </view>
-      <view x="c" y="m:30" w="80%" h="30" children_layout="default(r=1,c=0,ym=1)">
+      <view x="c" y="45" w="80%" h="30" children_layout="default(r=1,c=0,ym=1)">
         <label w="30%" text="test"/>
         <combo_box_ex  w="70%" item_height="30" auto_fix="true" readonly="true" options="aaa;bbb;ccc;ddd" selected_index="0" />
      </view>
+      <mledit x="c" y="80" h="110" w="90%" text="it is a multi-line editor\n1\n2\n3\n4"
+        left_margin="33" top_margin="2" bottom_margin="2" right_margin="16" wrap_word="true" max_lines="100"> 
+        <line_number x="0" y="0" w="32" h="100%" value="0"/>
+        <scroll_bar_d x="right" y="0" w="14" h="100%" value="0"/>
+      </mledit>
   </view>
 </overlay>

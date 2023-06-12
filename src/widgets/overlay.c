@@ -63,9 +63,15 @@ static ret_t overlay_on_event(widget_t* widget, event_t* e) {
   if (overlay->modeless) {
     switch (e->type) {
       case EVT_FOCUS: {
-        uint32_t index = window_manager()->children->size;
+        widget_t* wm = window_manager();
+        int32_t index = wm->children->size - 1;
+        widget_t* top_win = widget_get_child(wm, index);
         widget_set_state(widget, WIDGET_STATE_FOCUSED);
-        widget_restack(widget, index - 1);
+        if (widget_is_keyboard(top_win)) {
+          widget_restack(widget, index - 1);
+        } else {
+          widget_restack(widget, index);
+        }
         break;
       }
       case EVT_BLUR:

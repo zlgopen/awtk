@@ -35,6 +35,7 @@ typedef ret_t (*window_animator_init_t)(window_animator_t* wa);
 typedef ret_t (*window_animator_update_percent_t)(window_animator_t* wa);
 typedef ret_t (*window_animator_draw_prev_window_t)(window_animator_t* wa);
 typedef ret_t (*window_animator_draw_curr_window_t)(window_animator_t* wa);
+typedef ret_t (*window_animator_draw_prev_window_on_highlighter_t)(window_animator_t* wa);
 
 typedef struct _window_animator_vtable_t {
   const char* type;
@@ -45,6 +46,7 @@ typedef struct _window_animator_vtable_t {
   window_animator_update_percent_t update_percent;
   window_animator_draw_prev_window_t draw_prev_window;
   window_animator_draw_curr_window_t draw_curr_window;
+  window_animator_draw_prev_window_on_highlighter_t draw_prev_window_on_highlighter;
 } window_animator_vtable_t;
 
 typedef window_animator_t* (*window_animator_create_t)(bool_t open, tk_object_t* args);

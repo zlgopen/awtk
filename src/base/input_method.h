@@ -245,6 +245,13 @@ struct _input_method_t {
   widget_t* widget;
 
   /**
+   * @property {widget_t*} last_widget
+   * @annotation ["private"]
+   * 上一个的焦点控件。
+   */
+  widget_t* last_widget;
+
+  /**
    * @property {widget_t*} keyboard
    * @annotation ["private"]
    * 当前的软件键盘。
@@ -264,6 +271,13 @@ struct _input_method_t {
    * 由于软键盘的弹出，可能会将窗口向上推移，win_delta_y为推移的距离。
    */
   int32_t win_delta_y;
+
+  /**
+   * @property {int32_t} last_win_delta_y
+   * @annotation ["private"]
+   * 上一个控件的 win_delta_y 为推移的距离。
+   */
+  int32_t last_win_delta_y;
 
   /**
    * @property {int32_t} win_old_y

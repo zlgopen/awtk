@@ -187,7 +187,7 @@ static ret_t window_manager_default_snap_prev_window_draw_dialog_highlighter_and
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
   if (widget_get_prop(widget, WIDGET_PROP_HIGHLIGHT, &v) == RET_OK) {
     const char* args = value_str(&v);
-    if (args != NULL) {
+    if (args != NULL && *args != '\0') {
       dialog_highlighter_factory_t* f = dialog_highlighter_factory();
       dialog_highlighter_t* dialog_highlighter =
           dialog_highlighter_factory_create_highlighter(f, args, widget);
@@ -433,7 +433,7 @@ static ret_t window_manager_default_create_dialog_highlighter(widget_t* widget,
   }
 
   if (dialog_highlighter == NULL && widget_is_support_highlighter(curr_win) &&
-      curr_highlight != NULL) {
+      curr_highlight != NULL && *curr_highlight != '\0') {
     dialog_highlighter_factory_t* f = dialog_highlighter_factory();
     dialog_highlighter = dialog_highlighter_factory_create_highlighter(f, curr_highlight, curr_win);
 

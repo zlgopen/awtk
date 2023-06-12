@@ -271,7 +271,11 @@ static ret_t window_animator_draw_prev_window(window_animator_t* wa) {
   return_value_if_fail(wa != NULL && wa->vt != NULL && wa->vt->draw_prev_window, RET_BAD_PARAMS);
 
   if (wa->dialog_highlighter != NULL) {
-    return dialog_highlighter_draw(wa->dialog_highlighter, wa->percent);
+    ret_t ret = dialog_highlighter_draw(wa->dialog_highlighter, wa->percent);
+    if (ret == RET_OK && wa->vt->draw_prev_window_on_highlighter != NULL) {
+      ret = wa->vt->draw_prev_window_on_highlighter(wa);
+    }
+    return ret;
   } else {
     return wa->vt->draw_prev_window(wa);
   }
@@ -284,17 +288,42 @@ static ret_t window_animator_draw_curr_window(window_animator_t* wa) {
 }
 
 ret_t window_animator_overlap_default_draw_prev(window_animator_t* wa) {
+  bool_t start = FALSE;
   canvas_t* c = wa->canvas;
-  widget_t* win = wa->prev_win;
-
+  widget_t* wm = window_manager();
 #ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
+  widget_t* win = wa->prev_win;  
   rectf_t src = rectf_init(win->x, win->y, win->w, win->h);
   rectf_t dst = rectf_init(win->x, win->y, win->w, win->h);
-  return lcd_draw_image(c->lcd, &(wa->prev_img), rectf_scale(&src, wa->ratio), &dst);
+  lcd_draw_image(c->lcd, &(wa->prev_img), rectf_scale(&src, wa->ratio), &dst);
+  WIDGET_FOR_EACH_CHILD_BEGIN(wm, iter, i)
+    if (iter == wa->curr_win) {
+      break;
+    }
+    if (iter == wa->prev_win) {
+      start = TRUE;
+    }
+    if (start) {
+      /* 非普通窗口应该需要重绘，因为可能会叠在 system_bar 上面 */
+      src = rectf_init(iter->x, iter->y, iter->w, iter->h);
+      dst = rectf_init(iter->x, iter->y, iter->w, iter->h);
+      lcd_draw_image(c->lcd, &(wa->prev_img), rectf_scale(&src, wa->ratio), &dst);
+    }
+  WIDGET_FOR_EACH_CHILD_END()
 #else
-  widget_paint(win, c);
-  return RET_OK;
+  WIDGET_FOR_EACH_CHILD_BEGIN(wm, iter, i)
+    if (iter == wa->curr_win) {
+      break;
+    }
+    if (iter == wa->prev_win) {
+      start = TRUE;
+    }
+    if (start) {
+      widget_paint(iter, c);
+    }
+  WIDGET_FOR_EACH_CHILD_END()
 #endif /*WITHOUT_WINDOW_ANIMATOR_CACHE*/
+  return RET_OK;
 }
 
 ret_t window_animator_begin_frame(window_animator_t* wa) {

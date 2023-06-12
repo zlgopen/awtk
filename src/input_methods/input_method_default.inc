@@ -30,6 +30,7 @@
 #include "base/input_method.h"
 #include "base/window_manager.h"
 #include "ui_loader/ui_builder_default.h"
+#include "window_animators/window_animator_vtranslate.h"
 
 #define WIDGET_TYPE_MLEDIT "mledit"
 
@@ -170,8 +171,15 @@ static ret_t input_method_default_set_win_position(input_method_t* im) {
 }
 
 static ret_t input_method_default_restore_win_position(input_method_t* im) {
-  if (im->widget != NULL && im->edit_old_h > 0) {
-    widget_resize(im->widget, im->widget->w, im->edit_old_h);
+  widget_t* widget = im->last_widget != NULL ? im->last_widget : im->widget;
+  if (widget != NULL && im->edit_old_h > 0) {
+    widget_resize(widget, widget->w, im->edit_old_h);
+  }
+
+  if (im->last_widget != NULL) {
+    im->last_win_delta_y = im->win_delta_y;
+  } else {
+    im->last_win_delta_y = 0;
   }
 
   if (im->win != NULL) {
@@ -181,6 +189,17 @@ static ret_t input_method_default_restore_win_position(input_method_t* im) {
     im->win = NULL;
   }
 
+  return RET_OK;
+}
+
+static ret_t input_method_set_target_widget(input_method_t* im, widget_t* widget) {
+  if (widget != NULL) {
+    im->last_widget = im->widget;
+    im->widget = widget;
+  } else {
+    im->widget = NULL;
+    im->last_widget = NULL;
+  }
   return RET_OK;
 }
 
@@ -194,9 +213,9 @@ static ret_t input_method_on_win_close(void* ctx, event_t* e) {
     if (im->timer_close_id == TK_INVALID_ID) {
       window_close_force(im->keyboard);
 
-      im->keyboard = NULL;
-      im->widget = NULL;
       im->win = NULL;
+      im->keyboard = NULL;
+      input_method_set_target_widget(im, NULL);
     }
   }
 
@@ -328,10 +347,24 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
       widget_move(im->win, im->win->x, im->win_old_y);
     }
     if (is_key_board_overlap_edit(widget, im->keyboard)) {
-      point_t p1 = {0, 0};
-      widget_to_screen_ex(widget, widget_get_window(widget), &p1);
-      im->win_delta_y = tk_min(p1.y, caret_bottom - im->keyboard->y);
-      tk_snprintf(anim_hint, sizeof(anim_hint), "vtranslate(prev_win_y_range=%d)", im->win_delta_y);
+      if (tk_str_eq(widget->vt->type, WIDGET_TYPE_MLEDIT) && widget_is_normal_window(win)) {
+        /* 
+         * 为了效果好一点，普通窗口的多行编辑框不能被 system_bar 挡住，所以把多行编辑框的 y 平移到 system_bar 下就好了。
+         * 然后在 input_method_default_set_win_position 函数修改多汗编辑框的高度来适配显示出来。
+         */
+        point_t p1 = {0, 0};
+        widget_to_screen_ex(widget, win, &p1);
+        im->win_delta_y = tk_min(p1.y, caret_bottom - im->keyboard->y);
+      } else {
+        im->win_delta_y = caret_bottom - im->keyboard->y;
+      }
+      /* 从底部的 edit 框切换到上面的 edit 框，界面不会跳变 */
+      im->win_delta_y = tk_max(im->last_win_delta_y, im->win_delta_y);
+      if (widget_is_normal_window(win)) {
+        tk_snprintf(anim_hint, sizeof(anim_hint), "vtranslate(" WINDOW_ANIMATOR_VTRANSLATE_PROP_PREV_WIN_Y_RANGE "=%d)", im->win_delta_y);
+      } else {
+        tk_snprintf(anim_hint, sizeof(anim_hint), "vtranslate(" WINDOW_ANIMATOR_VTRANSLATE_PROP_PREV_WIN_Y_RANGE "=%d," WINDOW_ANIMATOR_VTRANSLATE_PROP_PREV_WIN_INDEX "=%d)", im->win_delta_y, widget_index_of(win));
+      }
       close_anim_hint = anim_hint;
     } else {
       im->win_delta_y = 0;
@@ -343,10 +376,21 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
     widget_on(im->keyboard, EVT_WINDOW_OPEN, on_push_window, im);
   } else if (win_is_keyboard && (win->y + win->h) < im->keyboard->y) {
     /*when new keyboard height is not eq old keyboard height*/
-    point_t p1 = {0, 0};
-    widget_to_screen_ex(widget, widget_get_window(widget), &p1);
+    
+    if (tk_str_eq(widget->vt->type, WIDGET_TYPE_MLEDIT) && widget_is_normal_window(win)) {
+      /* 
+       * 为了效果好一点，普通窗口的多行编辑框不能被 system_bar 挡住，所以把多行编辑框的 y 平移到 system_bar 下就好了。
+       * 然后在 input_method_default_set_win_position 函数修改多汗编辑框的高度来适配显示出来。
+       */
+      point_t p1 = {0, 0};
+      widget_to_screen_ex(widget, win, &p1);
+      im->win_delta_y = tk_min(p1.y, caret_bottom - im->keyboard->y);
+    } else {
+      im->win_delta_y = caret_bottom - im->keyboard->y;
+    }
     close_anim_hint = "vtranslate";
-    im->win_delta_y = tk_min(p1.y, caret_bottom - im->keyboard->y);
+    /* 从底部的 edit 框切换到上面的 edit 框，界面不会跳变 */
+    im->win_delta_y = tk_max(im->last_win_delta_y, im->win_delta_y);
     widget_move(win, im->win->x, im->win_old_y - im->win_delta_y);
   } else if (p.y < im->win_old_y) {
     im->win = win;
@@ -417,11 +461,11 @@ static ret_t on_timer_close_keyboard(const timer_info_t* timer) {
     input_method_default_restore_win_position(im);
     window_close(im->keyboard);
     im->keyboard = NULL;
-    im->widget = NULL;
+    input_method_set_target_widget(im, NULL);
   } else if (im->widget == NULL) {
     window_close_force(info->keyboard);
     im->keyboard = NULL;
-    im->widget = NULL;
+    input_method_set_target_widget(im, NULL);
   }
   im->timer_close_id = TK_INVALID_ID;
 
@@ -456,8 +500,8 @@ static ret_t input_method_default_on_keyboard_close(void* ctx, event_t* e) {
   if (im->keyboard == widget) {
     input_method_default_restore_win_position(im);
     im->win = NULL;
-    im->widget = NULL;
     im->keyboard = NULL;
+    input_method_set_target_widget(im, NULL);
   }
 
   return RET_REMOVE;
@@ -492,7 +536,7 @@ static ret_t input_method_default_on_edit_destroy(void* ctx, event_t* e) {
       im->keyboard = NULL;
     }
     im->win = NULL;
-    im->widget = NULL;
+    input_method_set_target_widget(im, NULL);
   }
 
   return RET_REMOVE;
@@ -509,7 +553,7 @@ static ret_t input_method_default_request(input_method_t* im, widget_t* widget) 
   input_method_default_remove_timer_close(im);
 
   if (widget != NULL) {
-    im->widget = widget;
+    input_method_set_target_widget(im, widget);
     input_method_default_show_keyboard(im);
     widget_off_by_func(widget, EVT_DESTROY, input_method_default_on_edit_destroy, im);
     widget_on(widget, EVT_DESTROY, input_method_default_on_edit_destroy, im);
@@ -526,7 +570,7 @@ static ret_t input_method_default_request(input_method_t* im, widget_t* widget) 
       } else {
         window_close(im->keyboard);
         im->keyboard = NULL;
-        im->widget = NULL;
+        input_method_set_target_widget(im, NULL);
       }
     }
   }
