@@ -631,10 +631,6 @@ ret_t combo_box_combobox_popup_calc_position(widget_t* widget, wh_t popup_w, wh_
   memset(p, 0x00, sizeof(point_t));
   widget_to_screen(widget, p);
 
-  if ((p->x + popup_w) >= wm->w) {
-    p->x = wm->w - popup_w;
-  }
-
   if ((p->y + widget->h + popup_h) < wm->h) {
     p->y += widget->h;
   } else if (p->y >= popup_h) {
