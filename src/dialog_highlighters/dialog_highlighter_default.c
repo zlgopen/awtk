@@ -38,6 +38,7 @@ static ret_t dialog_highlighter_default_draw_mask(canvas_t* c, uint8_t alpha) {
 }
 
 static ret_t dialog_highlighter_default_get_window_rect_diff_on_visit(void* ctx, const void* data) {
+  uint32_t i = 0;
   rect_t diff_rects[4];
   void** arges = (void**)ctx;
   rect_t* rect = (rect_t*)data;
@@ -45,7 +46,7 @@ static ret_t dialog_highlighter_default_get_window_rect_diff_on_visit(void* ctx,
   slist_t* diff_rect_list = (slist_t*)arges[0];
   /* 显示裁剪区和 system_bar 差集，如果存在差集的话，就意味着相交了，把相交部分排除，留下差集部分 */
   if (rect_diff(rect, r, &diff_rects[0], &diff_rects[1], &diff_rects[2], &diff_rects[3])) {
-    for (uint32_t i = 0; i < ARRAY_SIZE(diff_rects); i++) {
+    for (i = 0; i < ARRAY_SIZE(diff_rects); i++) {
       if (diff_rects[i].w != 0 && diff_rects[i].h != 0) {
         rect_t* data = TKMEM_ZALLOC(rect_t);
         break_if_fail(data != NULL);
