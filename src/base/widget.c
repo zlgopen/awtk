@@ -4631,7 +4631,7 @@ ret_t widget_get_style(widget_t* widget, const char* state_and_name, value_t* va
     name = name + 1;
   }
 
-  if (tk_str_eq(p_state, widget->state)) {
+  if (tk_str_eq(p_state, widget_get_prop_str(widget, WIDGET_PROP_STATE_FOR_STYLE, NULL))) {
     return style_get(widget->astyle, p_state, name, value);
   } else {
     const char* style_name = (widget->style != NULL && *widget->style != '\0') ? widget->style : TK_DEFAULT_STYLE;
