@@ -2,6 +2,7 @@
 
 2023/06/15
   * 修复widget\_get\_style在特殊状态下获取普通风格数据出错的问题(感谢智明提供补丁)
+  * 修改label\_auto\_adjust\_size调用widget\_resize来修改宽高(感谢智明提供补丁)
 
 2023/06/13
   * 修复 awtk 在 keil 上面编译出错的问题(感谢智明提供补丁)

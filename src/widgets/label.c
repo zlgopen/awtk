@@ -218,6 +218,8 @@ static ret_t label_auto_adjust_size_impl(widget_t* widget, canvas_t* c, uint32_t
                                          uint32_t max_w, uint32_t min_h, uint32_t max_h) {
   wh_t w = 0;
   line_parser_t p;
+  wh_t widget_w = 0;
+  wh_t widget_h = 0;
   wh_t max_line_w = 0;
   int32_t line_height = 0;
   label_t* label = LABEL(widget);
@@ -232,8 +234,7 @@ static ret_t label_auto_adjust_size_impl(widget_t* widget, canvas_t* c, uint32_t
   widget_prepare_text_style(widget, c);
   line_height = c->font_size + spacer;
   if (widget->text.size == 0) {
-    widget->h = line_height;
-    return RET_OK;
+    return widget_resize(widget, widget->w, line_height);
   }
 
   max_line_w = label_get_text_line_max_w(widget, c);
@@ -257,20 +258,20 @@ static ret_t label_auto_adjust_size_impl(widget_t* widget, canvas_t* c, uint32_t
                                         label->line_wrap, label->word_wrap) == RET_OK,
                        RET_BAD_PARAMS);
 
-  widget->w = w + margin_left + margin_right;
-  widget->h = line_height * p.total_lines + margin_top + margin_bottom;
+  widget_w = w + margin_left + margin_right;
+  widget_h = line_height * p.total_lines + margin_top + margin_bottom;
 
-  widget->w = tk_max(widget->w, min_w);
-  widget->h = tk_max(widget->h, min_h);
+  widget_w = tk_max(widget_w, min_w);
+  widget_h = tk_max(widget_h, min_h);
   if (max_w > 0) {
-    widget->w = tk_min(widget->w, max_w);
+    widget_w = tk_min(widget_w, max_w);
   }
 
   if (max_h > 0) {
-    widget->h = tk_min(widget->h, max_h);
+    widget_h = tk_min(widget_h, max_h);
   }
   line_parser_deinit(&p);
-  return RET_OK;
+  return widget_resize(widget, widget_w, widget_h);
 }
 
 static ret_t label_auto_adjust_size(widget_t* widget) {
