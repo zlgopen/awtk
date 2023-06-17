@@ -42,6 +42,8 @@ struct _event_source_manager_t {
 
   event_source_manager_dispatch_t dispatch;
   event_source_manager_destroy_t destroy;
+
+  uint32_t min_sleep_time;
 };
 
 /**
@@ -130,6 +132,19 @@ ret_t event_source_manager_remove(event_source_manager_t* manager, event_source_
  *
  */
 ret_t event_source_manager_remove_by_tag(event_source_manager_t* manager, void* tag);
+
+/**
+ * @method event_source_manager_set_min_sleep_time
+ *
+ * 设置默认最小睡眠时间。
+ *
+ * @param {event_source_manager_t*} manager event_source_manager对象。
+ * @param {uint32_t} sleep_time 默认最小睡眠时间(毫秒)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t event_source_manager_set_min_sleep_time(event_source_manager_t* manager, uint32_t sleep_time);
 
 /**
  * @method event_source_manager_destroy

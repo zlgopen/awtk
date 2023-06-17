@@ -161,6 +161,7 @@ event_source_manager_t* event_source_manager_default_create(void) {
   event_source_manager_init(manager);
   manager->dispatch = event_source_manager_default_dispatch;
   manager->destroy = event_source_manager_default_destroy;
+  event_source_manager_set_min_sleep_time(manager, TK_DEFAULT_WAIT_TIME);
 
   return manager;
 }
