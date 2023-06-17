@@ -24,6 +24,7 @@
 #include "widgets/button.h"
 #include "base/layout.h"
 #include "widgets/dragger.h"
+#include "base/widget_vtable.h"
 #include "scroll_view/scroll_bar.h"
 #include "widget_animators/widget_animator_value.h"
 #include "widget_animators/widget_animator_opacity.h"
@@ -45,6 +46,7 @@
   ((up) != NULL && (up)->style != NULL && (down) != NULL && (down)->style != NULL)
 
 static ret_t scroll_bar_update_dragger(widget_t* widget);
+static ret_t scroll_bar_create_children(widget_t* widget);
 static ret_t scroll_bar_set_is_mobile(widget_t* widget, bool_t value);
 widget_t* scroll_bar_create_desktop_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
@@ -346,6 +348,19 @@ static ret_t scroll_bar_on_drag(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t scroll_bar_on_copy(widget_t* widget, widget_t* other) {
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  scroll_bar_t* scroll_bar_other = SCROLL_BAR(other);
+  return_value_if_fail(scroll_bar != NULL && scroll_bar_other != NULL, RET_BAD_PARAMS);
+
+  widget_on_copy_default(widget, other);
+  if (!scroll_bar_is_mobile(widget)) {
+    scroll_bar_create_children(other);
+  }
+
+  return RET_OK;
+}
+
 static ret_t scroll_bar_on_layout_children(widget_t* widget) {
   uint32_t button_margin = 0;
   int32_t widget_w = widget->w;
@@ -548,6 +563,7 @@ TK_DECL_VTABLE(scroll_bar_mobile) = {.size = sizeof(scroll_bar_t),
                                      .create = scroll_bar_create_mobile,
                                      .set_prop = scroll_bar_set_prop,
                                      .get_prop = scroll_bar_get_prop,
+                                     .on_copy = scroll_bar_on_copy,
                                      .on_layout_children = scroll_bar_on_layout_children,
                                      .on_paint_self = scroll_bar_mobile_on_paint_self};
 
@@ -560,6 +576,7 @@ TK_DECL_VTABLE(scroll_bar_desktop) = {.size = sizeof(scroll_bar_t),
                                       .create = scroll_bar_create_desktop_self,
                                       .on_event = scroll_bar_desktop_on_event,
                                       .on_layout_children = scroll_bar_on_layout_children,
+                                      .on_copy = scroll_bar_on_copy,
                                       .set_prop = scroll_bar_set_prop,
                                       .get_prop = scroll_bar_get_prop};
 

@@ -2,6 +2,7 @@
 
 2023/06/17
   * 增加函数event\_source\_manager\_set\_min\_sleep\_time。
+  * 修复 scroll_bar 的克隆的时候没有创建子控件的问题(感谢智明提供补丁)
 
 2023/06/15
   * 修复widget\_get\_style在特殊状态下获取普通风格数据出错的问题(感谢智明提供补丁)

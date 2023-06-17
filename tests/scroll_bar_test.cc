@@ -104,3 +104,30 @@ TEST(ScrollBar, is_mobile_prop) {
 
   widget_destroy(w);
 }
+
+#define CHILD_UP "up"
+#define CHILD_DOWN "down"
+#define CHILD_DRAGGER "dragger"
+
+TEST(ScrollBar, clone) {
+  widget_t* w = scroll_bar_create_mobile(NULL, 10, 20, 30, 40);
+
+  widget_t* w1 = widget_clone(w, NULL);
+  ASSERT_EQ(widget_equal(w, w1), TRUE);
+  ASSERT_EQ(widget_lookup(w, CHILD_UP, FALSE) == widget_lookup(w1, CHILD_UP, FALSE), TRUE);
+  ASSERT_EQ(widget_lookup(w, CHILD_DOWN, FALSE) == widget_lookup(w1, CHILD_DOWN, FALSE), TRUE);
+  ASSERT_EQ(widget_lookup(w, CHILD_DRAGGER, FALSE) == widget_lookup(w1, CHILD_DRAGGER, FALSE), TRUE);
+  widget_destroy(w1);
+
+  ASSERT_EQ(widget_set_prop_bool(w, SCROLL_BAR_PROP_IS_MOBILE, FALSE), RET_OK);
+  ASSERT_EQ(widget_get_prop_bool(w, SCROLL_BAR_PROP_IS_MOBILE, TRUE), FALSE);
+
+  w1 = widget_clone(w, NULL);
+  ASSERT_EQ(widget_equal(w, w1), TRUE);
+  ASSERT_EQ(widget_equal(widget_lookup(w, CHILD_UP, FALSE), widget_lookup(w1, CHILD_UP, FALSE)), TRUE);
+  ASSERT_EQ(widget_equal(widget_lookup(w, CHILD_DOWN, FALSE), widget_lookup(w1, CHILD_DOWN, FALSE)), TRUE);
+  ASSERT_EQ(widget_equal(widget_lookup(w, CHILD_DRAGGER, FALSE), widget_lookup(w1, CHILD_DRAGGER, FALSE)), TRUE);
+  widget_destroy(w1);
+
+  widget_destroy(w);
+}
