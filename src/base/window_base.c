@@ -161,7 +161,7 @@ static ret_t window_base_load_theme_obj(widget_t* widget) {
   window_base_load_theme_obj_impl(widget, &update_style);
 
   if (update_style) {
-    widget_update_style_recursive(widget);
+    widget_reload_style_recursive(widget);
     widget_layout(widget);
   }
 
@@ -170,7 +170,6 @@ static ret_t window_base_load_theme_obj(widget_t* widget) {
 
 static ret_t window_base_reload_theme_obj(widget_t* widget) {
   window_base_unload_theme_obj(widget);
-  widget_set_need_update_style_recursive(widget);
   window_base_load_theme_obj(widget);
 
   return RET_OK;

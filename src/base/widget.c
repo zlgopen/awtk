@@ -105,6 +105,26 @@ static bool_t widget_is_strongly_focus(widget_t* widget) {
   }
 }
 
+static ret_t widget_reload_style(widget_t* widget) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  widget->need_update_style = TRUE;
+  widget_update_style(widget);
+  widget_invalidate_force(widget, NULL);
+  return RET_OK;
+}
+
+ret_t widget_reload_style_recursive(widget_t* widget) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  widget_reload_style(widget);
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  widget_reload_style_recursive(iter);
+  WIDGET_FOR_EACH_CHILD_END();
+
+  return RET_OK;
+}
+
 ret_t widget_set_need_update_style(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
