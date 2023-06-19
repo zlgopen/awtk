@@ -68,9 +68,9 @@ static const char* s_fps = NULL;
 #define ON_CMD_LINE(argc, argv)                                                   \
   {                                                                               \
     const char* usage =                                                           \
-        "Usage: %s ui=xxx [lcd_w=320] [lcd_h=480] [res_root=xxx] "                \
+        "Usage: %s ui=xxx [lcd_w=800] [lcd_h=480] [res_root=xxx] "                \
         "[language=xxx] [theme=xxx] [system_bar=xxx] [bottom_system_bar=xxx] "    \
-        "[plugins_path=xxx] [render_mode=xxx]\n";                                 \
+        "[plugins_path=xxx] [render_mode=xxx] [enable_console=xxx]\n";            \
     if (argc >= 2) {                                                              \
       char key[TK_NAME_LEN + 1];                                                  \
       int i = 1;                                                                  \
@@ -116,6 +116,8 @@ static const char* s_fps = NULL;
           s_log_level = val + 1;                                                  \
         } else if (tk_str_icmp(key, "fps") == 0) {                                \
           s_fps = val + 1;                                                        \
+        } else {                                                                  \
+          SET_ENABLE_CONSOLE()                                                    \
         }                                                                         \
       }                                                                           \
                                                                                   \
@@ -125,10 +127,17 @@ static const char* s_fps = NULL;
     }                                                                             \
   }
 
-static bool_t __str_end_with(const char* str, const char* text) {
-  size_t len1 = strlen(str);
-  size_t len2 = strlen(text);
-  return (len1 >= len2 && strncmp(str + len1 - len2, text, len2) == 0);
+static ret_t get_default_res_root(char path[MAX_PATH + 1]) {
+#ifdef APP_RES_DEFAULT_ROOT
+  tk_strncpy(path, APP_RES_DEFAULT_ROOT, strlen(APP_RES_DEFAULT_ROOT));
+  return RET_OK;
+#else
+  char app_root[MAX_PATH + 1];
+  if (path_app_root(app_root) == RET_OK) {
+    return path_build(path, MAX_PATH, app_root, "res", NULL);
+  }
+  return RET_FAIL;
+#endif
 }
 
 typedef ret_t (*plugin_register_t)(void);
@@ -155,14 +164,14 @@ static ret_t plugins_dll_register(const char* dirname, const char* render_mode) 
       plugin_supported_render_mode_t render_mode_func;
 
 #ifdef WIN32
-      if (item.is_reg_file && __str_end_with(item.name, ".dll")) {
+      if (item.is_reg_file && tk_str_end_with(item.name, ".dll")) {
         str_set(&funcname, item.name);
         str_replace(&funcname, ".dll", "");
       } else {
         continue;
       }
 #elif defined LINUX
-      if (item.is_reg_file && __str_end_with(item.name, ".so") &&
+      if (item.is_reg_file && tk_str_end_with(item.name, ".so") &&
           tk_str_start_with(item.name, "lib")) {
         str_set(&funcname, item.name);
         str_replace(&funcname, "lib", "");
@@ -171,7 +180,7 @@ static ret_t plugins_dll_register(const char* dirname, const char* render_mode) 
         continue;
       }
 #elif defined MACOS
-      if (item.is_reg_file && __str_end_with(item.name, ".dylib") &&
+      if (item.is_reg_file && tk_str_end_with(item.name, ".dylib") &&
           tk_str_start_with(item.name, "lib")) {
         str_set(&funcname, item.name);
         str_replace(&funcname, "lib", "");
@@ -337,9 +346,22 @@ static ret_t application_exit() {
   return RET_OK;
 }
 
+static ret_t build_asset_dir_custom(void* ctx, char* path, uint32_t size, const char* theme,
+                                    const char* ratio, const char* subpath) {
+  return_value_if_fail(path_build(path, size, s_res_root, theme, subpath, ratio, NULL) == RET_OK,
+                       RET_FAIL);
+  if (path != NULL && *path != '\0') {
+    return RET_OK;
+  } else {
+    return RET_FAIL;
+  }
+}
+
 ret_t assets_init(void) {
 #ifdef WITH_FS_RES
   assets_manager_t* am = assets_manager();
+  const char* res_root = NULL;
+  bool_t run_default = FALSE;
 
   if (s_theme != NULL) {
     assets_manager_set_theme(am, s_theme);
@@ -348,8 +370,25 @@ ret_t assets_init(void) {
   TKMEM_FREE(am->res_root);
   am->res_root = NULL;
 
+  assets_manager_set_custom_build_asset_dir(am, build_asset_dir_custom, NULL);
+
+  char path[MAX_PATH + 1];
+
   if (s_res_root != NULL && *s_res_root != '\0') {
     assets_manager_set_res_root(am, s_res_root);
+  }
+
+  res_root = assets_manager_get_res_root(am);
+  tk_snprintf(path, sizeof(path), "%s/assets/default/raw/ui", res_root);
+  if (!dir_exist(path)) {
+    run_default = TRUE;
+  }
+
+  if (run_default) {
+    char path[MAX_PATH + 1];
+    if (get_default_res_root(path) == RET_OK) {
+      assets_manager_set_res_root(am, path);
+    }
   }
 
   assets_manager_preload(am, ASSET_TYPE_FONT, "default");
