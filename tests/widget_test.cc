@@ -1157,6 +1157,11 @@ TEST(Widget, get_style) {
   ASSERT_EQ(widget_get_style(b, "text_color", &v1), RET_OK);
   ASSERT_EQ(red.color, value_uint32(&v1));
 
+  value_set_int(&v, 321);
+  ASSERT_EQ(widget_set_style(b, "pressed:margin", &v), RET_OK);
+  ASSERT_EQ(widget_get_style(b, "pressed:margin", &v1), RET_OK);
+  ASSERT_EQ(value_int(&v), value_int(&v1));
+
   ASSERT_EQ(widget_get_style(b, "pressed:x_offset", &v1), RET_OK);
   ASSERT_EQ(1, value_uint32(&v1));
 
