@@ -322,6 +322,17 @@ typedef enum _ret_t {
    * 没有改变。
    */
   RET_NOT_MODIFIED,
+  /**
+   * @const RET_NO_PERMISSION
+   * 没有权限。
+   */
+  RET_NO_PERMISSION,
+
+  /**
+   * @const RET_MAX_NR
+   * 最大值。
+   */
+  RET_MAX_NR
 } ret_t;
 
 #include "tkc/log.h"

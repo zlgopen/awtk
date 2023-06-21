@@ -266,7 +266,7 @@ const char* tk_itoa(char* str, int len, int n) {
 const char* tk_lltoa(char* str, int len, int64_t n) {
   return_value_if_fail(str != NULL, NULL);
 
-  tk_snprintf(str, len, "%"PRId64, n);
+  tk_snprintf(str, len, "%" PRId64, n);
 
   return str;
 }
@@ -1605,4 +1605,49 @@ char* file_read_as_unix_text(const char* filename, uint32_t* size) {
   str_reset(&str);
 
   return data;
+}
+
+static const char* s_ret_names[] = {[RET_OK] = "RET_OK",
+                                    [RET_OOM] = "RET_OOM",
+                                    [RET_FAIL] = "RET_FAIL",
+                                    [RET_NOT_IMPL] = "RET_NOT_IMPL",
+                                    [RET_QUIT] = "RET_QUIT",
+                                    [RET_FOUND] = "RET_FOUND",
+                                    [RET_BUSY] = "RET_BUSY",
+                                    [RET_REMOVE] = "RET_REMOVE",
+                                    [RET_REPEAT] = "RET_REPEAT",
+                                    [RET_NOT_FOUND] = "RET_NOT_FOUND",
+                                    [RET_DONE] = "RET_DONE",
+                                    [RET_STOP] = "RET_STOP",
+                                    [RET_SKIP] = "RET_SKIP",
+                                    [RET_CONTINUE] = "RET_CONTINUE",
+                                    [RET_OBJECT_CHANGED] = "RET_OBJECT_CHANGED",
+                                    [RET_ITEMS_CHANGED] = "RET_ITEMS_CHANGED",
+                                    [RET_BAD_PARAMS] = "RET_BAD_PARAMS",
+                                    [RET_TIMEOUT] = "RET_TIMEOUT",
+                                    [RET_CRC] = "RET_CRC",
+                                    [RET_IO] = "RET_IO",
+                                    [RET_EOS] = "RET_EOS",
+                                    [RET_NOT_MODIFIED] = "RET_NOT_MODIFIED",
+                                    [RET_NO_PERMISSION] = "RET_NO_PERMISSION"};
+
+ret_t ret_code_from_name(const char* name) {
+  uint32_t i = 0;
+  uint32_t n = ARRAY_SIZE(s_ret_names);
+
+  for (i = 0; i < n; i++) {
+    if (tk_str_ieq(name, s_ret_names[i])) {
+      return (ret_t)i;
+    }
+  }
+
+  return RET_MAX_NR;
+}
+
+const char* ret_code_to_name(ret_t ret) {
+  if (ret >= RET_OK && ret <= RET_MAX_NR) {
+    return s_ret_names[ret];
+  } else {
+    return "";
+  }
 }

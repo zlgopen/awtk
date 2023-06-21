@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/06/22
+  * 增加函数ret\_code\_from\_name/ret\_code\_to\_name。
+
 2023/06/21
   * 修复action\_thread quit时间过长问题(感谢兆坤提供补丁)。
   * 完善dialog的注释(感谢泽武提供补丁)

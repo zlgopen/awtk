@@ -801,3 +801,15 @@ hello\n\
 
   TKMEM_FREE(data);
 }
+
+TEST(Utils, ret_code) {
+  ASSERT_STREQ(ret_code_to_name(RET_OK), "RET_OK");
+  ASSERT_STREQ(ret_code_to_name(RET_IO), "RET_IO");
+  ASSERT_STREQ(ret_code_to_name(RET_FOUND), "RET_FOUND");
+  ASSERT_STREQ(ret_code_to_name(RET_NOT_MODIFIED), "RET_NOT_MODIFIED");
+
+  ASSERT_EQ(ret_code_from_name("RET_OK"), RET_OK);
+  ASSERT_EQ(ret_code_from_name("RET_NOT_IMPL"), RET_NOT_IMPL);
+  ASSERT_EQ(ret_code_from_name("RET_EOS"), RET_EOS);
+  ASSERT_EQ(ret_code_from_name("RET_NO_PERMISSION"), RET_NO_PERMISSION);
+}

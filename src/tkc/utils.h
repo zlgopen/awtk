@@ -956,6 +956,25 @@ const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN 
  */
 char* file_read_as_unix_text(const char* filename, uint32_t* size);
 
+/**
+ * @method tk_ret_code_to_name
+ * 将ret_t转换成对应的文本名称。
+ *
+ * @param {ret_t} ret 代码。
+ *
+ * @return {const char*} 返回对应的名称。
+ */
+const char* ret_code_to_name(ret_t ret);
+
+/**
+ * @method ret_code_from_name
+ * 将ret_t的文本名称转换成对应的值。
+ * @param {const char*} name 字符串。
+ *
+ * @return {ret_t} 返回对应的值。
+ */
+ret_t ret_code_from_name(const char* name);
+
 /*public for test*/
 ret_t xml_file_expand(const char* filename, str_t* s, const char* data);
 
