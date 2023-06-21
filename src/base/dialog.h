@@ -398,6 +398,8 @@ widget_t* dialog_create_with_ok_cancel(const char* stitle, uint32_t w, uint32_t 
 
 /**
  * @method dialog_simple_show
+ * 根据所选标题，内容与主题等创建一个对话框。
+ * 
  * @param {const char*} stitle 标题。
  * @param {const char*} scontent 内容。
  * @param {const char*} theme 主题。
