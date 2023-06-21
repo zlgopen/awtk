@@ -3,6 +3,7 @@
 2023/06/21
   * 修复action\_thread quit时间过长问题(感谢兆坤提供补丁)。
   * 完善dialog的注释(感谢泽武提供补丁)
+  * 增加函数slist\_tail/slist\_head。
 
 2023/06/20
    * 修复 widget\_get\_style 获取非当前状态的 mutable 风格失败的问题(感谢智明提供补丁)

@@ -205,6 +205,24 @@ void* slist_tail_pop(slist_t* slist);
 void* slist_head_pop(slist_t* slist);
 
 /**
+ * @method slist_tail
+ * 返回最后一个元素。
+ * @param {slist_t*} slist 单向链表对象。
+ *
+ * @return {void*} 成功返回最后一个元素，失败返回NULL。
+ */
+void* slist_tail(slist_t* slist);
+
+/**
+ * @method slist_head
+ * 返回第一个元素。
+ * @param {slist_t*} slist 单向链表对象。
+ *
+ * @return {void*} 成功返回最后一个元素，失败返回NULL。
+ */
+void* slist_head(slist_t* slist);
+
+/**
  * @method slist_is_empty
  * 列表是否为空。
  * @param {slist_t*} slist 单向链表对象。

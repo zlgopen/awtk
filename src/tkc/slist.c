@@ -218,6 +218,33 @@ void* slist_head_pop(slist_t* slist) {
   return data;
 }
 
+void* slist_tail(slist_t* slist) {
+  slist_node_t* iter = NULL;
+  return_value_if_fail(slist != NULL, NULL);
+
+  iter = slist->first;
+  return_value_if_fail(iter != NULL, NULL);
+
+  while (iter->next != NULL) {
+    iter = iter->next;
+  }
+
+  return iter->data;
+}
+
+void* slist_head(slist_t* slist) {
+  slist_node_t* iter = NULL;
+  return_value_if_fail(slist != NULL, NULL);
+
+  iter = slist->first;
+  if (iter == NULL) {
+    return NULL;
+  }
+
+  return iter->data;
+}
+
+
 bool_t slist_is_empty(slist_t* slist) {
   return_value_if_fail(slist != NULL, TRUE);
   return slist->first == NULL;
