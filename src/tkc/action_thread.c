@@ -34,7 +34,7 @@ static void* action_thread_entry(void* args) {
 
   while (!(thread->quit)) {
     qaction_t* action = NULL;
-    while (waitable_action_queue_recv(thread->queue, &action, 1000) == RET_OK) {
+    while (!(thread->quit) && waitable_action_queue_recv(thread->queue, &action, 1000) == RET_OK) {
       ret_t ret = qaction_exec(action);
 
       if (ret == RET_QUIT) {
