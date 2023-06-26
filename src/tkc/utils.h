@@ -957,7 +957,7 @@ const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN 
 char* file_read_as_unix_text(const char* filename, uint32_t* size);
 
 /**
- * @method tk_ret_code_to_name
+ * @method ret_code_to_name
  * 将ret_t转换成对应的文本名称。
  *
  * @param {ret_t} ret 代码。
