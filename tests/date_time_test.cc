@@ -9,6 +9,19 @@ TEST(DateTime, convert) {
   ASSERT_EQ(date_time_from_time(dt, now), RET_OK);
   ASSERT_EQ(date_time_to_time(dt), now);
 
+ 
+  memset(dt, 0x00, sizeof(*dt));
+  dt->year = 1970;
+  dt->month = 1;
+  dt->day = 1;
+
+  ASSERT_EQ(date_time_to_time(dt), 0);
+  
+  ASSERT_EQ(date_time_from_time(dt, 0), RET_OK);
+  ASSERT_EQ(dt->year, 1970);
+  ASSERT_EQ(dt->month, 1);
+  ASSERT_EQ(dt->day, 1);
+
   date_time_destroy(dt);
 }
 
@@ -95,15 +108,16 @@ TEST(DateTime, wday) {
 }
 
 TEST(DateTime, from_time) {
-  date_time_t dt;
-  date_time_t now;
-  time_t t = time(0);
-  date_time_init(&now);
-  ASSERT_EQ(date_time_from_time(&dt, t), RET_OK);
-  ASSERT_EQ(dt.year, now.year);
-  ASSERT_EQ(dt.month, now.month);
-  ASSERT_EQ(dt.day, now.day);
-  ASSERT_EQ(dt.hour, now.hour);
+  date_time_t* dt = date_time_create();
+  
+  ASSERT_EQ(date_time_from_time(dt, 86400), RET_OK);
+  ASSERT_EQ(dt->year, 1970);
+  ASSERT_EQ(dt->month, 1);
+  ASSERT_EQ(dt->day, 2);
+  
+  ASSERT_EQ(date_time_to_time(dt), 86400);
+
+  date_time_destroy(dt);
 }
 
 TEST(DateTime, set_time) {

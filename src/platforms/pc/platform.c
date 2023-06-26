@@ -132,9 +132,9 @@ static ret_t date_time_set_now_impl(date_time_t* dt) {
 
 #endif
 
-static ret_t date_time_from_time_impl(date_time_t* dt, uint64_t timeval) {
+static ret_t date_time_from_time_impl(date_time_t* dt, int64_t timeval) {
   time_t tm = timeval;
-  struct tm* t = localtime(&tm);
+  struct tm* t = gmtime(&tm);
   return_value_if_fail(dt != NULL, RET_BAD_PARAMS);
 
   memset(dt, 0x00, sizeof(date_time_t));
@@ -150,20 +150,23 @@ static ret_t date_time_from_time_impl(date_time_t* dt, uint64_t timeval) {
   return RET_OK;
 }
 
-static uint64_t date_time_to_time_impl(date_time_t* dt) {
-  time_t tm = 0;
-  struct tm* t = localtime(&tm);
+static int64_t date_time_to_time_impl(date_time_t* dt) {
+  struct tm t;
+  time_t tvalue = 0;
   return_value_if_fail(dt != NULL, RET_BAD_PARAMS);
 
-  t->tm_sec = dt->second;
-  t->tm_min = dt->minute;
-  t->tm_hour = dt->hour;
-  t->tm_mday = dt->day;
-  t->tm_mon = dt->month - 1;
-  t->tm_year = dt->year - 1900;
-  t->tm_wday = dt->wday;
+  memset(&t, 0x00, sizeof(t));
+  t.tm_sec = dt->second;
+  t.tm_min = dt->minute;
+  t.tm_hour = dt->hour;
+  t.tm_mday = dt->day;
+  t.tm_mon = dt->month - 1;
+  t.tm_year = dt->year - 1900;
+  t.tm_wday = dt->wday;
 
-  return (uint64_t)mktime(t);
+  tvalue = timegm(&t);
+
+  return tvalue;
 }
 
 uint64_t stm_now_ms();

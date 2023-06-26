@@ -1,5 +1,10 @@
 # 最新动态
 
+2023/06/26
+  * 完善date\_time\_to\_time/date\_time\_from\_time：
+    * 类型由uint64改为int64。
+    * 本地时间改为GMT时间。
+
 2023/06/22
   * 增加函数ret\_code\_from\_name/ret\_code\_to\_name。
 

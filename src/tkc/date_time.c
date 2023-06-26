@@ -57,7 +57,7 @@ date_time_t* date_time_create(void) {
   return date_time_init(dt);
 }
 
-ret_t date_time_from_time(date_time_t* dt, uint64_t time) {
+ret_t date_time_from_time(date_time_t* dt, int64_t time) {
   return_value_if_fail(dt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(s_date_time_from_time != NULL, RET_BAD_PARAMS);
 
@@ -154,14 +154,14 @@ const char* date_time_get_wday_name(uint32_t wday) {
 }
 
 ret_t date_time_add_delta(date_time_t* dt, int64_t delta) {
-  uint64_t t = 0;
+  int64_t t = 0;
   return_value_if_fail(dt != NULL && s_date_time_to_time != NULL, RET_BAD_PARAMS);
   t = s_date_time_to_time(dt) + delta;
 
   return s_date_time_from_time(dt, t);
 }
 
-uint64_t date_time_to_time(date_time_t* dt) {
+int64_t date_time_to_time(date_time_t* dt) {
   return_value_if_fail(dt != NULL && s_date_time_to_time != NULL, RET_BAD_PARAMS);
 
   return s_date_time_to_time(dt);

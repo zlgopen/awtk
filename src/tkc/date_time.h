@@ -182,26 +182,26 @@ ret_t date_time_set(date_time_t* dt);
 
 /**
  * @method date_time_from_time
- * 从time转换而来。
+ * 从time转换而来(按GMT转换)。
  *
  * @annotation ["scriptable"]
  * @param {date_time_t*} dt date_time对象。
- * @param {uint64_t} time 时间。
+ * @param {int64_t} time 时间。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t date_time_from_time(date_time_t* dt, uint64_t time);
+ret_t date_time_from_time(date_time_t* dt, int64_t time);
 
 /**
  * @method date_time_to_time
- * 转换成time。
+ * 转换成time(按GMT转换)。
  *
  * @annotation ["scriptable"]
  * @param {date_time_t*} dt date_time对象。
  *
- * @return {uint64_t} 返回time。
+ * @return {int64_t} 返回time。
  */
-uint64_t date_time_to_time(date_time_t* dt);
+int64_t date_time_to_time(date_time_t* dt);
 
 /**
  * @method date_time_add_delta
