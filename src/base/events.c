@@ -411,3 +411,22 @@ event_t* system_event_init(system_event_t* event, void* target, void* sdl_event)
 
   return (event_t*)event;
 }
+
+drop_file_event_t* drop_file_event_cast(event_t* event) {
+  return_value_if_fail(event != NULL, NULL);
+  return_value_if_fail(event->type == EVT_DROP_FILE, NULL);
+  return_value_if_fail(event->size == sizeof(drop_file_event_t), NULL);
+
+  return (drop_file_event_t*)event;
+}
+
+event_t* drop_file_event_init(drop_file_event_t* event, void* target, const char* filename) {
+  return_value_if_fail(event != NULL, NULL);
+  memset(event, 0x00, sizeof(drop_file_event_t));
+
+  event->e = event_init(EVT_DROP_FILE, target);
+  event->e.size = sizeof(*event);
+  event->filename = filename;
+
+  return (event_t*)event;
+}

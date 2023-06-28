@@ -511,6 +511,11 @@ typedef enum _event_type_t {
    */
   EVT_SYSTEM,
   /**
+   * @const EVT_DROP_FILE
+   * SDL文件拖入事件(drop_file_event_t)。
+   */
+  EVT_DROP_FILE,
+  /**
    * @const EVT_LOCALE_INFOS_LOAD_INFO
    * locale_infos加载某个本地化信息(event_t)。
    */
@@ -1206,6 +1211,44 @@ theme_change_event_t* theme_change_event_cast(event_t* event);
  * @return {event_t*} 返回event对象。
  */
 event_t* theme_change_event_init(theme_change_event_t* event, uint32_t type, const char* name);
+
+/**
+ * @class drop_file_event_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * 文件拖入事件。
+ */
+typedef struct _drop_file_event_t {
+  event_t e;
+  /**
+   * @property {const char*} filename
+   * @annotation ["readable", "scriptable"]
+   * 文件名。
+   */
+  const char* filename;
+} drop_file_event_t;
+
+/**
+ * @method drop_file_event_cast
+ * @annotation ["cast", "scriptable"]
+ * 把event对象转drop_file_event_t对象。主要给脚本语言使用。
+ * @param {event_t*} event event对象。
+ *
+ * @return {drop_file_event_t*} event 对象。
+ */
+drop_file_event_t* drop_file_event_cast(event_t* event);
+
+/**
+ * @method drop_file_event_init
+ * 初始化事件。
+ * @param {drop_file_event_t*} event event对象。
+ * @param {void*} target 事件目标。
+ * @param {const char*} filename 文件名。
+ *
+ * @return {event_t*} event对象。
+ */
+event_t* drop_file_event_init(drop_file_event_t* event, void* target, const char* filename);
+
 
 /**
  * @class system_event_t

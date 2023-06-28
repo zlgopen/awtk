@@ -99,6 +99,7 @@
 * [如何支持软键盘按钮预览](how_to_enable_keyboard_preview.md)
 * [如何设置自定义键值](how_to_set_custom_keys.md)
 * [如何自定义资源加载方式](how_to_set_custom_load_asset.md)
+* [如何处理将文件拖入到窗口的事件](how_to_handle_drop_file_event.md)
 
 ### 3. 内部原理
 * [AWTK 脚本绑定原理](script_binding.md)

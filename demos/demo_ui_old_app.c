@@ -38,6 +38,16 @@ static ret_t widget_clone_tab(widget_t* widget);
 static void install_click_hander(widget_t* widget);
 static void open_window(const char* name, widget_t* to_close);
 
+static ret_t window_on_drop_file(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(ctx);
+  widget_t* label = widget_lookup(win, "filename", TRUE);
+  drop_file_event_t* drop = drop_file_event_cast(e);
+
+  widget_set_text_utf8(label, drop->filename);
+
+  return RET_OK;
+}
+
 uint32_t tk_mem_speed_test(void* buffer, uint32_t length, uint32_t* pmemcpy_speed,
                            uint32_t* pmemset_speed) {
   uint32_t i = 0;
@@ -153,6 +163,8 @@ static void open_window(const char* name, widget_t* to_close) {
 
   if (tk_str_eq(name, "list_view")) {
     widget_add_timer(win, update_title_on_timer, 1000);
+  } else if (tk_str_eq(name, "drop_file")) {
+    widget_on(win, EVT_DROP_FILE, window_on_drop_file, win);
   }
 
   if (tk_str_eq(widget_get_type(win), WIDGET_TYPE_DIALOG)) {

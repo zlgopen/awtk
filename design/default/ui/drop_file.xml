@@ -1,0 +1,6 @@
+<window name="drop_file" text="drop file(sdl only)">
+  <label name="filename" text="drop file to this window" 
+    line_wrap="true"
+    word_wrap="true"
+    x="0" y="m" w="100%" h="50%" />
+</window>

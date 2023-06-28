@@ -104,6 +104,7 @@
 #include "default/inc/ui/slide_view_h_loop.data"
 #include "default/inc/ui/main_fscript.data"
 #include "default/inc/ui/mutable_image.data"
+#include "default/inc/ui/drop_file.data"
 #include "default/inc/ui/calibration_win.data"
 #include "default/inc/ui/memtest.data"
 #include "default/inc/ui/list_view_sync.data"
@@ -1026,6 +1027,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_slide_view_h_loop);
   assets_manager_add(am, ui_main_fscript);
   assets_manager_add(am, ui_mutable_image);
+  assets_manager_add(am, ui_drop_file);
   assets_manager_add(am, ui_calibration_win);
   assets_manager_add(am, ui_memtest);
   assets_manager_add(am, ui_list_view_sync);

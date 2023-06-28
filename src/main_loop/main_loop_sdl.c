@@ -286,9 +286,21 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
 static ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
   SDL_Event event;
   ret_t ret = RET_OK;
-
+  window_manager_t* wm = loop->base.wm;
   while (SDL_PollEvent(&event) && loop->base.running) {
     switch (event.type) {
+      case SDL_DROPFILE: {
+        drop_file_event_t drop;
+        widget_t* top = window_manager_get_top_window(wm);
+        event_t* e = drop_file_event_init(&drop, NULL, event.drop.file);
+
+        widget_dispatch(wm, e);
+        if (top != NULL) {
+          widget_dispatch(top, e);
+        }
+
+        break;
+      }
       case SDL_KEYDOWN:
       case SDL_KEYUP: {
         ret = main_loop_sdl2_dispatch_key_event(loop, &event);
@@ -322,12 +334,12 @@ static ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
       }
       case SDL_SYSWMEVENT: {
         system_event_t e;
-        widget_dispatch(window_manager(), system_event_init(&e, NULL, &event));
+        widget_dispatch(wm, system_event_init(&e, NULL, &event));
         break;
       }
       case SDL_QUIT: {
         event_t e = event_init(EVT_REQUEST_QUIT_APP, NULL);
-        if (widget_dispatch(window_manager(), &e) == RET_OK) {
+        if (widget_dispatch(wm, &e) == RET_OK) {
           main_loop_quit((main_loop_t*)loop);
         }
         break;
