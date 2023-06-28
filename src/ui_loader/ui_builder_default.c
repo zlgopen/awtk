@@ -80,6 +80,7 @@ static ret_t ui_builder_default_on_widget_end(ui_builder_t* b) {
 
 static ret_t ui_builder_default_on_end(ui_builder_t* b) {
   if (b->root != NULL) {
+    event_t e;
     widget_t* widget = b->root;
 
     widget_invalidate_force(widget, NULL);
@@ -87,8 +88,11 @@ static ret_t ui_builder_default_on_end(ui_builder_t* b) {
       widget_set_name(widget, b->name);
     }
 
+    e = event_init(EVT_WIDGET_LOAD, NULL);
+    widget_dispatch(widget, &e);
+
     if (widget->vt->is_window) {
-      event_t e = event_init(EVT_WINDOW_LOAD, widget);
+      e = event_init(EVT_WINDOW_LOAD, widget);
       widget_dispatch_recursive(widget, &e);
     }
     widget->loading = FALSE;
