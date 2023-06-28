@@ -369,6 +369,7 @@ main_loop_t* main_loop_init(int w, int h) {
   loop = main_loop_simple_init(w, h, NULL, NULL);
   loop->base.destroy = main_loop_sdl2_destroy;
   loop->dispatch_input = main_loop_sdl2_dispatch;
+  SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
 
   return (main_loop_t*)loop;
 }
