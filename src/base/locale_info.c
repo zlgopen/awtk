@@ -308,7 +308,6 @@ ret_t locale_infos_unref(locale_info_t* locale_info) {
 
 ret_t locale_infos_change(const char* language, const char* country) {
   locale_infos_t* locale_infos = s_locale_infos;
-  locale_info_change(locale_info(), language, country);
 
   if (locale_infos != NULL) {
     uint32_t i = 0;
@@ -317,6 +316,8 @@ ret_t locale_infos_change(const char* language, const char* country) {
       locale_info_change(info, language, country);
     }
   }
+
+  locale_info_change(locale_info(), language, country);
 
   return RET_OK;
 }
