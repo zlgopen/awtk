@@ -289,9 +289,9 @@ struct _input_method_t {
   /**
    * @property {uint32_t} edit_old_h 
    * @annotation ["private"]
-   * 保存编辑器原来的高度。
+   * 保存多行编辑器原来的高度。
    */
-  uint32_t edit_old_h;
+  uint32_t mledit_old_h;
 
   /**
    * @property {bool_t} action_button_enable

@@ -153,12 +153,12 @@ static ret_t on_push_window(void* ctx, event_t* e) {
 }
 
 static ret_t input_method_default_set_win_position(input_method_t* im) {
-  im->edit_old_h = 0;
+  im->mledit_old_h = 0;
   if (im->widget != NULL) {
     if (tk_str_eq(im->widget->vt->type, WIDGET_TYPE_MLEDIT)) {
       point_t p = {0, 0};
       widget_to_screen(im->widget, &p);
-      im->edit_old_h = im->widget->h;
+      im->mledit_old_h = im->widget->h;
 
       if (p.y >= 0) {
         int32_t h = im->widget->h - tk_max(0, p.y + im->widget->h - im->keyboard->y);
@@ -170,11 +170,18 @@ static ret_t input_method_default_set_win_position(input_method_t* im) {
   return RET_OK;
 }
 
-static ret_t input_method_default_restore_win_position(input_method_t* im) {
-  widget_t* widget = im->last_widget != NULL ? im->last_widget : im->widget;
-  if (widget != NULL && im->edit_old_h > 0) {
-    widget_resize(widget, widget->w, im->edit_old_h);
+static ret_t input_method_default_restore_win_size(input_method_t* im) {
+  widget_t* widget = im->last_widget != NULL && im->keyboard != NULL ? im->last_widget : im->widget;
+
+  if (widget != NULL && im->mledit_old_h > 0 && tk_str_eq(widget->vt->type, WIDGET_TYPE_MLEDIT)) {
+    widget_resize(widget, widget->w, im->mledit_old_h);
   }
+
+  return RET_OK;
+}
+
+static ret_t input_method_default_restore_win_position(input_method_t* im) {
+  widget_t* widget = im->last_widget != NULL && im->keyboard != NULL ? im->last_widget : im->widget;
 
   if (im->last_widget != NULL) {
     im->last_win_delta_y = im->win_delta_y;
@@ -196,6 +203,7 @@ static ret_t input_method_set_target_widget(input_method_t* im, widget_t* widget
   if (widget != NULL) {
     im->last_widget = im->widget;
     im->widget = widget;
+    input_method_default_restore_win_size(im);
   } else {
     im->widget = NULL;
     im->last_widget = NULL;
@@ -207,6 +215,7 @@ static ret_t input_method_on_win_close(void* ctx, event_t* e) {
   value_t v;
   input_method_t* im = (input_method_t*)ctx;
   input_method_default_restore_win_position(im);
+  input_method_default_restore_win_size(im);
 
   if (im->keyboard != NULL) {
     widget_get_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
@@ -430,6 +439,7 @@ static ret_t input_method_default_show_keyboard(input_method_t* im) {
     } else {
       /*keyboard is open, close old one, disable open animation of new one*/
       input_method_default_restore_win_position(im);
+      input_method_default_restore_win_size(im);
 
       value_set_str(&v, "");
       widget_set_prop(im->keyboard, WIDGET_PROP_OPEN_ANIM_HINT, &v);
@@ -458,9 +468,11 @@ static ret_t on_timer_close_keyboard(const timer_info_t* timer) {
   input_method_t* im = info->im;
 
   if (im->keyboard == info->keyboard && im->widget == info->widget) {
-    input_method_default_restore_win_position(im);
-    window_close(im->keyboard);
+    widget_t* keyboard = im->keyboard;
     im->keyboard = NULL;
+    input_method_default_restore_win_position(im);
+    input_method_default_restore_win_size(im);
+    window_close(keyboard);
     input_method_set_target_widget(im, NULL);
   } else if (im->widget == NULL) {
     window_close_force(info->keyboard);
@@ -499,6 +511,7 @@ static ret_t input_method_default_on_keyboard_close(void* ctx, event_t* e) {
 
   if (im->keyboard == widget) {
     input_method_default_restore_win_position(im);
+    input_method_default_restore_win_size(im);
     im->win = NULL;
     im->keyboard = NULL;
     input_method_set_target_widget(im, NULL);
@@ -531,6 +544,7 @@ static ret_t input_method_default_on_edit_destroy(void* ctx, event_t* e) {
   if (im->widget == widget) {
     if (im->keyboard != NULL) {
       input_method_default_restore_win_position(im);
+      input_method_default_restore_win_size(im);
       input_method_default_remove_timer_close(im);
       window_close(im->keyboard);
       im->keyboard = NULL;

@@ -7,7 +7,8 @@
     * 修正 '\e' 在 windows 下为不可识别的字符转义序列的问题；
     * 修正 ui load 时根控件没有触发 EVT\_WIDGET\_LOAD 的问题；
     * 修改 combobox 的 popup button 被删除时自动添加一个默认的 button；
-
+  * 修复API注释错误(感谢俊圣提供补丁)
+  * 修复焦点在mledit和edit中来回切换可能导致两种控件高度混乱的问题(感谢泽武提供补丁)
 
 2023/06/26
   * 完善date\_time\_to\_time/date\_time\_from\_time：
