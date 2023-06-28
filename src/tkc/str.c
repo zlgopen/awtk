@@ -317,7 +317,7 @@ static char str_escape_char(char c) {
       c = 'b';
       break;
     }
-    case '\e': {
+    case '\033': {
       c = 'e';
       break;
     }
@@ -364,7 +364,7 @@ static char str_unescape_char(const char* s, uint32_t* nr) {
       break;
     }
     case 'e': {
-      c = '\e';
+      c = '\033';
       break;
     }
     case 'f': {
