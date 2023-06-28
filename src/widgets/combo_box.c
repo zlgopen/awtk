@@ -85,6 +85,10 @@ static ret_t combo_box_on_destroy(widget_t* widget) {
   combo_box_t* combo_box = COMBO_BOX(widget);
   return_value_if_fail(widget != NULL && combo_box != NULL, RET_BAD_PARAMS);
 
+  if (combo_box->init_popup_button_idle_id != TK_INVALID_ID) {
+    idle_remove(combo_box->init_popup_button_idle_id);
+  }
+
   str_reset(&(combo_box->text));
   combo_box_reset_options(widget);
   TKMEM_FREE(combo_box->open_window);
@@ -413,6 +417,14 @@ static ret_t combo_box_on_key_event(widget_t* widget, key_event_t* evt) {
   return ret;
 }
 
+static ret_t combo_box_init_popup_button(widget_t* widget) {
+  widget_t* popup = button_create(widget, 0, 0, 0, 0);
+  popup->auto_created = TRUE;
+  widget_use_style(popup, "combobox_down");
+  widget_invalidate_force(widget, NULL);
+  return RET_OK;
+}
+
 static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
   combo_box_t* combo_box = COMBO_BOX(widget);
@@ -502,6 +514,48 @@ static ret_t combo_box_on_add_child(widget_t* widget, widget_t* child) {
   return RET_FAIL;
 }
 
+static ret_t combo_box_on_idle_init_popup_button(const idle_info_t* idle) {
+  widget_t* widget = NULL;
+  combo_box_t* combo_box = NULL;
+  return_value_if_fail(idle != NULL, RET_BAD_PARAMS);
+
+  widget = WIDGET(idle->ctx);
+  combo_box = COMBO_BOX(widget);
+
+  if (!widget->destroying) {
+    widget_t* button = widget_lookup_by_type(widget, WIDGET_TYPE_BUTTON, TRUE);
+    if (button == NULL) {
+      combo_box_init_popup_button(widget);
+    }
+  }
+
+  combo_box->init_popup_button_idle_id = TK_INVALID_ID;
+
+  return RET_OK;
+}
+
+static ret_t combo_box_idle_init_popup_button(widget_t* widget) {
+  combo_box_t* combo_box = COMBO_BOX(widget);
+  if (combo_box->init_popup_button_idle_id == TK_INVALID_ID) {
+    combo_box->init_popup_button_idle_id = idle_add(combo_box_on_idle_init_popup_button, widget);
+  }
+  return RET_OK;
+}
+
+static ret_t combo_box_on_remove_child(widget_t* widget, widget_t* child) {
+  if (!widget->destroying) {
+    if (tk_str_eq(widget_get_type(child), WIDGET_TYPE_BUTTON)) {
+      widget_t* button = widget_lookup_by_type(widget, WIDGET_TYPE_BUTTON, TRUE);
+      if (button == child) {
+        widget_off_by_ctx(child, widget);
+        combo_box_idle_init_popup_button(widget);
+      }
+    }
+  }
+
+  return RET_FAIL;
+}
+
 TK_DECL_VTABLE(combo_box) = {.size = sizeof(combo_box_t),
                              .inputable = TRUE,
                              .type = WIDGET_TYPE_COMBO_BOX,
@@ -517,6 +571,7 @@ TK_DECL_VTABLE(combo_box) = {.size = sizeof(combo_box_t),
                              .set_prop = combo_box_set_prop,
                              .get_prop = combo_box_get_prop,
                              .on_add_child = combo_box_on_add_child,
+                             .on_remove_child = combo_box_on_remove_child,
                              .on_layout_children = combo_box_on_layout_children,
                              .on_destroy = combo_box_on_destroy,
                              .on_copy = combo_box_on_copy,
@@ -731,14 +786,11 @@ static ret_t combo_box_on_button_click(void* ctx, event_t* e) {
 }
 
 widget_t* combo_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* popup = NULL;
   widget_t* widget = combo_box_create_self(parent, x, y, w, h);
   return_value_if_fail(widget != NULL, NULL);
 
-  popup = button_create(widget, 0, 0, 0, 0);
-  popup->auto_created = TRUE;
+  combo_box_init_popup_button(widget);
   combo_box_set_item_height(widget, 30);
-  widget_use_style(popup, "combobox_down");
 
   return widget;
 }

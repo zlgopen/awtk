@@ -233,7 +233,7 @@ TEST(Str, unescap) {
 
   ASSERT_EQ(str_set(s, "\\e"), RET_OK);
   ASSERT_EQ(str_unescape(s), RET_OK);
-  ASSERT_EQ(string(s->str), "\e");
+  ASSERT_EQ(string(s->str), "\033");
 
   ASSERT_EQ(str_set(s, "\\f"), RET_OK);
   ASSERT_EQ(str_unescape(s), RET_OK);
@@ -842,7 +842,7 @@ TEST(Str, escape_unescape) {
 
   str_clear(s);str_clear(s1);
   ASSERT_EQ(str_append_unescape(s, "\\e", 0xffff), RET_OK);
-  ASSERT_EQ(string(s->str), "\e");
+  ASSERT_EQ(string(s->str), "\033");
   ASSERT_EQ(str_append_escape(s1, s->str, s->size), RET_OK);
   ASSERT_STREQ(s1->str, "\\e");
 

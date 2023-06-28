@@ -25,6 +25,10 @@
 #include "tkc/date_time.h"
 #include "tkc/mem.h"
 
+#ifdef WIN32
+#include <windows.h>
+#pragma comment(lib, "Ws2_32.lib")
+
 static int32_t get_local_timezone() {
   int32_t timezone = 0;
   struct tm tlocal;
@@ -47,9 +51,6 @@ static int32_t get_local_timezone() {
   return timezone;
 }
 
-#ifdef WIN32
-#include <windows.h>
-#pragma comment(lib, "Ws2_32.lib")
 
 int gettimeofday(struct timeval* tp, void* tzp) {
   time_t clock;

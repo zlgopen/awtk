@@ -1,5 +1,14 @@
 # 最新动态
 
+2023/06/28
+  * 感谢朝泽提供以下补丁：
+    * 修改 locale\_infos\_change 时最后 change 缺省的 locale\_info()，避免 EVT\_LOCALE\_CHANGED 触发时小程序的资源未更新；
+    * 修正 timegm 在 windows 下不识别的问题；
+    * 修正 '\e' 在 windows 下为不可识别的字符转义序列的问题；
+    * 修正 ui load 时根控件没有触发 EVT\_WIDGET\_LOAD 的问题；
+    * 修改 combobox 的 popup button 被删除时自动添加一个默认的 button；
+
+
 2023/06/26
   * 完善date\_time\_to\_time/date\_time\_from\_time：
     * 类型由uint64改为int64。
