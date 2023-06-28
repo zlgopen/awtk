@@ -196,8 +196,7 @@ ret_t dialog_highlighter_set_system_bar_alpha(dialog_highlighter_t* h, uint8_t a
  * @method dialog_highlighter_system_bar_top_append_clip_rect
  * 增加顶部 system_bar 的显示裁剪区
  * @param {dialog_highlighter_t*} h 对话框高亮策略对象。
- * @param {bool_t} paint_system_bar_top 设置是否绘制顶部 system_bar。
- * @param {bool_t} paint_system_bar_bottom 设置是否绘制底部 system_bar。
+ * @param {rect_t*} rect 裁剪区域
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -207,8 +206,7 @@ ret_t dialog_highlighter_system_bar_top_append_clip_rect(dialog_highlighter_t* h
  * @method dialog_highlighter_system_bar_bottom_append_clip_rect
  * 增加底部 system_bar 的显示裁剪区
  * @param {dialog_highlighter_t*} h 对话框高亮策略对象。
- * @param {bool_t} paint_system_bar_top 设置是否绘制顶部 system_bar。
- * @param {bool_t} paint_system_bar_bottom 设置是否绘制底部 system_bar。
+ * @param {rect_t*} rect 裁剪区域
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

@@ -309,7 +309,7 @@ rect_t rect_intersect(const rect_t* r1, const rect_t* r2);
 bool_t rect_has_intersect(const rect_t* r1, const rect_t* r2);
 
 /**
- * @method rect_intersect
+ * @method rect_diff
  * 求第一个矩形和第二个矩形的差集。
  * 
  * 备注：第一个矩形包含第二个矩形的话，就会返回第一个矩形的四个矩形区域。

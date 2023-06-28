@@ -95,7 +95,7 @@ canvas_t* canvas_offline_create_by_widget(widget_t* widget, bitmap_format_t form
  * 备注：对应 WITH_FAST_LCD_PORTRAIT 宏的使用
  *
  * @param {canvas_t*} canvas 离线 canvas 对象。
- * @param {lcd_orientation_t} auto_lcd_orientation 旋转角度。
+ * @param {lcd_orientation_t} canvas_orientation 旋转角度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

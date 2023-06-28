@@ -262,7 +262,7 @@ ret_t wstr_from_int(wstr_t* str, int32_t v);
  * @method wstr_from_int64
  * 用整数初始化字符串。
  * @param {wstr_t*} str str对象。
- * @param {int32_t} v 整数。
+ * @param {int64_t} v 整数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
