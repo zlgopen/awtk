@@ -9,7 +9,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#done_event_t_done_event_cast">done\_event\_cast</a> | 把event对象转done_event_t对象，主要给脚本语言使用。 |
+| <a href="#done_event_t_done_event_cast">done\_event\_cast</a> | 把event对象转done_event_t对象。 |
 | <a href="#done_event_t_done_event_init">done\_event\_init</a> | 初始done event。 |
 ### 属性
 <p id="done_event_t_properties">
@@ -22,7 +22,7 @@
 
 * 函数功能：
 
-> <p id="done_event_t_done_event_cast">把event对象转done_event_t对象，主要给脚本语言使用。
+> <p id="done_event_t_done_event_cast">把event对象转done_event_t对象。
 
 * 函数原型：
 

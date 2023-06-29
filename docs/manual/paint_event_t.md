@@ -9,7 +9,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#paint_event_t_paint_event_cast">paint\_event\_cast</a> | 把event对象转paint_event_t对象。主要给脚本语言使用。 |
+| <a href="#paint_event_t_paint_event_cast">paint\_event\_cast</a> | 把event对象转paint_event_t对象。 |
 | <a href="#paint_event_t_paint_event_init">paint\_event\_init</a> | 初始化事件。 |
 ### 属性
 <p id="paint_event_t_properties">
@@ -22,7 +22,7 @@
 
 * 函数功能：
 
-> <p id="paint_event_t_paint_event_cast">把event对象转paint_event_t对象。主要给脚本语言使用。
+> <p id="paint_event_t_paint_event_cast">把event对象转paint_event_t对象。
 
 * 函数原型：
 

@@ -9,7 +9,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#orientation_event_t_orientation_event_cast">orientation\_event\_cast</a> | 把event对象转orientation_event_t对象，主要给脚本语言使用。 |
+| <a href="#orientation_event_t_orientation_event_cast">orientation\_event\_cast</a> | 把event对象转orientation_event_t对象。 |
 | <a href="#orientation_event_t_orientation_event_init">orientation\_event\_init</a> | 初始化事件。 |
 ### 属性
 <p id="orientation_event_t_properties">
@@ -23,7 +23,7 @@
 
 * 函数功能：
 
-> <p id="orientation_event_t_orientation_event_cast">把event对象转orientation_event_t对象，主要给脚本语言使用。
+> <p id="orientation_event_t_orientation_event_cast">把event对象转orientation_event_t对象。
 
 * 函数原型：
 

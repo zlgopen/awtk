@@ -9,7 +9,7 @@ model变化事件。
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#model_event_t_model_event_cast">model\_event\_cast</a> | 把event对象转model_event_t对象，主要给脚本语言使用。 |
+| <a href="#model_event_t_model_event_cast">model\_event\_cast</a> | 把event对象转model_event_t对象。 |
 | <a href="#model_event_t_model_event_init">model\_event\_init</a> | 初始化事件。 |
 ### 属性
 <p id="model_event_t_properties">
@@ -24,7 +24,7 @@ model变化事件。
 
 * 函数功能：
 
-> <p id="model_event_t_model_event_cast">把event对象转model_event_t对象，主要给脚本语言使用。
+> <p id="model_event_t_model_event_cast">把event对象转model_event_t对象。
 
 * 函数原型：
 

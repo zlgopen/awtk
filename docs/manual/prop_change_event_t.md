@@ -9,7 +9,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#prop_change_event_t_prop_change_event_cast">prop\_change\_event\_cast</a> | 把event对象转prop_change_event_t对象，主要给脚本语言使用。 |
+| <a href="#prop_change_event_t_prop_change_event_cast">prop\_change\_event\_cast</a> | 把event对象转prop_change_event_t对象。 |
 | <a href="#prop_change_event_t_prop_change_event_init">prop\_change\_event\_init</a> | 初始prop change event。 |
 ### 属性
 <p id="prop_change_event_t_properties">
@@ -23,7 +23,7 @@
 
 * 函数功能：
 
-> <p id="prop_change_event_t_prop_change_event_cast">把event对象转prop_change_event_t对象，主要给脚本语言使用。
+> <p id="prop_change_event_t_prop_change_event_cast">把event对象转prop_change_event_t对象。
 
 * 函数原型：
 

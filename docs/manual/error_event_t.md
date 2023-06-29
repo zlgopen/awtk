@@ -9,7 +9,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#error_event_t_error_event_cast">error\_event\_cast</a> | 把event对象转error_event_t对象，主要给脚本语言使用。 |
+| <a href="#error_event_t_error_event_cast">error\_event\_cast</a> | 把event对象转error_event_t对象。 |
 | <a href="#error_event_t_error_event_init">error\_event\_init</a> | 初始error event。 |
 ### 属性
 <p id="error_event_t_properties">
@@ -23,7 +23,7 @@
 
 * 函数功能：
 
-> <p id="error_event_t_error_event_cast">把event对象转error_event_t对象，主要给脚本语言使用。
+> <p id="error_event_t_error_event_cast">把event对象转error_event_t对象。
 
 * 函数原型：
 

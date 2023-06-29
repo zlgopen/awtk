@@ -236,7 +236,7 @@ typedef struct _prop_change_event_t {
 /**
  * @method prop_change_event_cast
  * @annotation ["cast", "scriptable"]
- * 把event对象转prop_change_event_t对象，主要给脚本语言使用。
+ * 把event对象转prop_change_event_t对象。
  * @param {event_t*} event event对象。
  *
  * @return {prop_change_event_t*}  返回event对象。
@@ -276,7 +276,7 @@ typedef struct _progress_event_t {
 /**
  * @method progress_event_cast
  * @annotation ["cast", "scriptable"]
- * 把event对象转progress_event_t对象，主要给脚本语言使用。
+ * 把event对象转progress_event_t对象。
  * @param {event_t*} event event对象。
  *
  * @return {progress_event_t*}  返回event对象。
@@ -313,7 +313,7 @@ typedef struct _done_event_t {
 /**
  * @method done_event_cast
  * @annotation ["cast", "scriptable"]
- * 把event对象转done_event_t对象，主要给脚本语言使用。
+ * 把event对象转done_event_t对象。
  * @param {event_t*} event event对象。
  *
  * @return {done_event_t*}  返回event对象。
@@ -357,7 +357,7 @@ typedef struct _error_event_t {
 /**
  * @method error_event_cast
  * @annotation ["cast", "scriptable"]
- * 把event对象转error_event_t对象，主要给脚本语言使用。
+ * 把event对象转error_event_t对象。
  * @param {event_t*} event event对象。
  *
  * @return {error_event_t*}  返回event对象。
@@ -415,7 +415,7 @@ typedef struct _cmd_exec_event_t {
 /**
  * @method cmd_exec_event_cast
  * @annotation ["cast", "scriptable"]
- * 把event对象转cmd_exec_event_t对象，主要给脚本语言使用。
+ * 把event对象转cmd_exec_event_t对象。
  * @param {event_t*} event event对象。
  *
  * @return {cmd_exec_event_t*}  返回event对象。

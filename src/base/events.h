@@ -571,7 +571,7 @@ typedef struct _model_event_t {
 /**
  * @method model_event_cast
  * @annotation ["cast", "scriptable"]
- * 把event对象转model_event_t对象，主要给脚本语言使用。
+ * 把event对象转model_event_t对象。
  * @param {event_t*} event event对象。
  *
  * @return {model_event_t*} event对象。
@@ -627,7 +627,7 @@ typedef struct _wheel_event_t {
 /**
  * @method wheel_event_cast
  * @annotation ["cast", "scriptable"]
- * 把event对象转wheel_event_t对象，主要给脚本语言使用。
+ * 把event对象转wheel_event_t对象。
  * @param {event_t*} event event对象。
  *
  * @return {wheel_event_t*} event对象。
@@ -671,7 +671,7 @@ typedef struct _orientation_event_t {
 /**
  * @method orientation_event_cast
  * @annotation ["cast", "scriptable"]
- * 把event对象转orientation_event_t对象，主要给脚本语言使用。
+ * 把event对象转orientation_event_t对象。
  * @param {event_t*} event event对象。
  *
  * @return {orientation_event_t*} event对象。
@@ -719,7 +719,7 @@ typedef struct _value_change_event_t {
 /**
  * @method value_change_event_cast
  * @annotation ["cast", "scriptable"]
- * 把event对象转value_change_event_t对象，主要给脚本语言使用。
+ * 把event对象转value_change_event_t对象。
  * @param {event_t*} event event对象。
  *
  * @return {value_change_event_t*} event对象。
@@ -763,7 +763,7 @@ typedef struct _offset_change_event_t {
 /**
  * @method offset_change_event_cast
  * @annotation ["cast", "scriptable"]
- * 把event对象转offset_change_event_t对象，主要给脚本语言使用。
+ * 把event对象转offset_change_event_t对象。
  * @param {event_t*} event event对象。
  *
  * @return {offset_change_event_t*} event对象。
@@ -855,7 +855,7 @@ typedef struct _pointer_event_t {
 /**
  * @method pointer_event_cast
  * @annotation ["cast", "scriptable"]
- * 把event对象转pointer_event_t对象，主要给脚本语言使用。
+ * 把event对象转pointer_event_t对象。
  * @param {event_t*} event event对象。
  *
  * @return {pointer_event_t*} event对象。
@@ -975,7 +975,7 @@ typedef struct _key_event_t {
 /**
  * @method key_event_cast
  * @annotation ["cast", "scriptable"]
- * 把event对象转key_event_t对象，主要给脚本语言使用。
+ * 把event对象转key_event_t对象。
  * @param {event_t*} event event对象。
  *
  * @return {key_event_t*} event对象。
@@ -1013,7 +1013,7 @@ typedef struct _paint_event_t {
 /**
  * @method paint_event_cast
  * @annotation ["cast", "scriptable"]
- * 把event对象转paint_event_t对象。主要给脚本语言使用。
+ * 把event对象转paint_event_t对象。
  * @param {event_t*} event event对象。
  *
  * @return {paint_event_t*} event 对象。
@@ -1051,7 +1051,7 @@ typedef struct _window_event_t {
 /**
  * @method window_event_cast
  * @annotation ["cast", "scriptable"]
- * 把event对象转window_event_t对象。主要给脚本语言使用。
+ * 把event对象转window_event_t对象。
  * @param {event_t*} event event对象。
  *
  * @return {window_event_t*} 对象。
@@ -1117,7 +1117,7 @@ typedef struct _multi_gesture_event_t {
 /**
  * @method multi_gesture_event_cast
  * @annotation ["cast", "scriptable"]
- * 把event对象转multi_gesture_event_t对象，主要给脚本语言使用。
+ * 把event对象转multi_gesture_event_t对象。
  * @param {event_t*} event event对象。
  *
  * @return {multi_gesture_event_t*} event对象。
@@ -1193,7 +1193,7 @@ typedef struct _theme_change_event_t {
 /**
  * @method theme_change_event_cast
  * @annotation ["cast", "scriptable"]
- * 把event对象转theme_change_event_t对象，主要给脚本语言使用。
+ * 把event对象转theme_change_event_t对象。
  * @param {event_t*} event event对象。
  *
  * @return {theme_change_event_t*}  返回event对象。
@@ -1231,7 +1231,7 @@ typedef struct _drop_file_event_t {
 /**
  * @method drop_file_event_cast
  * @annotation ["cast", "scriptable"]
- * 把event对象转drop_file_event_t对象。主要给脚本语言使用。
+ * 把event对象转drop_file_event_t对象。
  * @param {event_t*} event event对象。
  *
  * @return {drop_file_event_t*} event 对象。
@@ -1269,7 +1269,7 @@ typedef struct _system_event_t {
 /**
  * @method system_event_cast
  * @annotation ["cast", "scriptable"]
- * 把event对象转system_event_t对象。主要给脚本语言使用。
+ * 把event对象转system_event_t对象。
  * @param {event_t*} event event对象。
  *
  * @return {system_event_t*} event 对象。

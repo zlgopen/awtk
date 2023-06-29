@@ -10,7 +10,7 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#window_event_t_pointer_event_rotate">pointer\_event\_rotate</a> | 根据屏幕旋转方向修正pointer_event中的坐标。(旋转方向为逆时针) |
-| <a href="#window_event_t_window_event_cast">window\_event\_cast</a> | 把event对象转window_event_t对象。主要给脚本语言使用。 |
+| <a href="#window_event_t_window_event_cast">window\_event\_cast</a> | 把event对象转window_event_t对象。 |
 | <a href="#window_event_t_window_event_init">window\_event\_init</a> | 初始化事件。 |
 ### 属性
 <p id="window_event_t_properties">
@@ -43,7 +43,7 @@ ret_t pointer_event_rotate (pointer_event_t* evt, system_info_t* info);
 
 * 函数功能：
 
-> <p id="window_event_t_window_event_cast">把event对象转window_event_t对象。主要给脚本语言使用。
+> <p id="window_event_t_window_event_cast">把event对象转window_event_t对象。
 
 * 函数原型：
 

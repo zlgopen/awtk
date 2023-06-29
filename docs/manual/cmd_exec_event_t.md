@@ -9,7 +9,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#cmd_exec_event_t_cmd_exec_event_cast">cmd\_exec\_event\_cast</a> | 把event对象转cmd_exec_event_t对象，主要给脚本语言使用。 |
+| <a href="#cmd_exec_event_t_cmd_exec_event_cast">cmd\_exec\_event\_cast</a> | 把event对象转cmd_exec_event_t对象。 |
 | <a href="#cmd_exec_event_t_cmd_exec_event_init">cmd\_exec\_event\_init</a> | 初始命令执行事件。 |
 ### 属性
 <p id="cmd_exec_event_t_properties">
@@ -25,7 +25,7 @@
 
 * 函数功能：
 
-> <p id="cmd_exec_event_t_cmd_exec_event_cast">把event对象转cmd_exec_event_t对象，主要给脚本语言使用。
+> <p id="cmd_exec_event_t_cmd_exec_event_cast">把event对象转cmd_exec_event_t对象。
 
 * 函数原型：
 
