@@ -379,14 +379,25 @@ ret_t combo_box_append_option(widget_t* widget, int32_t value, const char* text)
 
 /**
  * @method combo_box_remove_option
- * 删除选项。
+ * 删除第一个值为value的选项。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget combo_box对象。
- * @param {int32_t} value 值。
+ * @param {int32_t} value 选项的值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t combo_box_remove_option(widget_t* widget, int32_t value);
+
+/**
+ * @method combo_box_remove_option_by_index
+ * 删除指定序数的选项。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget combo_box对象。
+ * @param {uint32_t} index 选项的序数(0表示第一个)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t combo_box_remove_option_by_index(widget_t* widget, uint32_t index);
 
 /**
  * @method combo_box_set_options
