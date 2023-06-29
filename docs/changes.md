@@ -3,6 +3,7 @@
 2023/06/29
   * 更新API文档。
   * 增加函数combo\_box\_remove\_option\_by\_index。
+  * 完善conf\_doc文档((感谢泽武提供补丁)
 
 2023/06/28
   * 感谢朝泽提供以下补丁：

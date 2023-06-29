@@ -281,7 +281,7 @@ ret_t conf_ini_save_as(tk_object_t* obj, const char* url);
 
 ```
 
-* ### 3.4 UBJSON 格式
+### 3.4 UBJSON 格式
 
 * 打开
 
