@@ -28,7 +28,7 @@
 * 函数原型：
 
 ```
-window_animator_t* window_animator_create_for_close (char* type, canvas_t* c, widget_t* prev_win, widget_t* curr_win);
+window_animator_t* window_animator_create_for_close (const char* type, canvas_t* c, widget_t* prev_win, widget_t* curr_win);
 ```
 
 * 参数说明：
@@ -36,7 +36,7 @@ window_animator_t* window_animator_create_for_close (char* type, canvas_t* c, wi
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | window\_animator\_t* | 窗口动画对象。 |
-| type | char* | 动画类型。 |
+| type | const char* | 动画类型。 |
 | c | canvas\_t* | canvas。 |
 | prev\_win | widget\_t* | 前一窗口。 |
 | curr\_win | widget\_t* | 当前窗口。 |
@@ -50,7 +50,7 @@ window_animator_t* window_animator_create_for_close (char* type, canvas_t* c, wi
 * 函数原型：
 
 ```
-window_animator_t* window_animator_create_for_open (char* type, canvas_t* c, widget_t* prev_win, widget_t* curr_win);
+window_animator_t* window_animator_create_for_open (const char* type, canvas_t* c, widget_t* prev_win, widget_t* curr_win);
 ```
 
 * 参数说明：
@@ -58,7 +58,7 @@ window_animator_t* window_animator_create_for_open (char* type, canvas_t* c, wid
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | window\_animator\_t* | 窗口动画对象。 |
-| type | char* | 动画类型。 |
+| type | const char* | 动画类型。 |
 | c | canvas\_t* | canvas。 |
 | prev\_win | widget\_t* | 前一窗口。 |
 | curr\_win | widget\_t* | 当前窗口。 |

@@ -51,6 +51,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#overlay_t_overlay_get_widget_vtable">overlay\_get\_widget\_vtable</a> | 获取 overlay 虚表。 |
 | <a href="#overlay_t_overlay_set_always_on_top">overlay\_set\_always\_on\_top</a> | 设置是否总是在最上面。 |
 | <a href="#overlay_t_overlay_set_click_through">overlay\_set\_click\_through</a> | 设置是否启用点击穿透。 |
+| <a href="#overlay_t_overlay_set_modeless">overlay\_set\_modeless</a> | 设置是否非模态窗口模式。 |
 ### 属性
 <p id="overlay_t_properties">
 
@@ -58,6 +59,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | -------- | ----- | ------------ | 
 | <a href="#overlay_t_always_on_top">always\_on\_top</a> | bool\_t | 是否总在最上面。 |
 | <a href="#overlay_t_click_through">click\_through</a> | bool\_t | 点击穿透。点击没有子控件的位置，是否穿透到底层窗口。 |
+| <a href="#overlay_t_modeless">modeless</a> | bool\_t | 非模态窗口。 |
 #### overlay\_cast 函数
 -----------------------
 
@@ -158,6 +160,26 @@ ret_t overlay_set_click_through (widget_t* widget, bool_t click_through);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | click\_through | bool\_t | 是否启用点击穿透。 |
+#### overlay\_set\_modeless 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="overlay_t_overlay_set_modeless">设置是否非模态窗口模式。
+
+* 函数原型：
+
+```
+ret_t overlay_set_modeless (widget_t* widget, bool_t modeless);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| modeless | bool\_t | 是否非模态窗口模式。 |
 #### always\_on\_top 属性
 -----------------------
 > <p id="overlay_t_always_on_top">是否总在最上面。
@@ -179,6 +201,24 @@ ret_t overlay_set_click_through (widget_t* widget, bool_t click_through);
 #### click\_through 属性
 -----------------------
 > <p id="overlay_t_click_through">点击穿透。点击没有子控件的位置，是否穿透到底层窗口。
+
+缺省不启用。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### modeless 属性
+-----------------------
+> <p id="overlay_t_modeless">非模态窗口。
 
 缺省不启用。
 

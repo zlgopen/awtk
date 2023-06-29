@@ -44,7 +44,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#progress_circle_t_progress_circle_calc_line_dirty_rect">progress\_circle\_calc\_line\_dirty\_rect</a> |  |
+| <a href="#progress_circle_t_progress_circle_calc_line_dirty_rect">progress\_circle\_calc\_line\_dirty\_rect</a> | 获取progress_circle的新值和旧值之间的绘制脏矩形。 |
 | <a href="#progress_circle_t_progress_circle_cast">progress\_circle\_cast</a> | 转换为progress_circle对象(供脚本语言使用)。 |
 | <a href="#progress_circle_t_progress_circle_create">progress\_circle\_create</a> | 创建progress_circle对象 |
 | <a href="#progress_circle_t_progress_circle_get_widget_vtable">progress\_circle\_get\_widget\_vtable</a> | 获取 progress_circle 虚表。 |
@@ -63,7 +63,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | -------- | ----- | ------------ | 
 | <a href="#progress_circle_t_counter_clock_wise">counter\_clock\_wise</a> | bool\_t | 是否为逆时针方向(缺省为FALSE)。 |
 | <a href="#progress_circle_t_format">format</a> | char* | 数值到字符串转换时的格式，缺省为"%d"。 |
-| <a href="#progress_circle_t_line_cap">line\_cap</a> | char* | 线帽类型(round:圆头，square:方头)。 |
+| <a href="#progress_circle_t_line_cap">line\_cap</a> | char* | 线帽类型(round:圆头，square:方头，butt:平头)。 |
 | <a href="#progress_circle_t_line_width">line\_width</a> | uint32\_t | 环线的厚度(缺省为8)。 |
 | <a href="#progress_circle_t_max">max</a> | float\_t | 最大值(缺省为100)。 |
 | <a href="#progress_circle_t_show_text">show\_text</a> | bool\_t | 是否显示文本(缺省为TRUE)。 |
@@ -76,6 +76,27 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | -------- | ----- | ------- | 
 | EVT\_VALUE\_WILL\_CHANGE | value\_change\_event\_t | 值即将改变事件。 |
 | EVT\_VALUE\_CHANGED | value\_change\_event\_t | 值改变事件。 |
+#### progress\_circle\_calc\_line\_dirty\_rect 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="progress_circle_t_progress_circle_calc_line_dirty_rect">获取progress_circle的新值和旧值之间的绘制脏矩形。
+
+* 函数原型：
+
+```
+rect_t progress_circle_calc_line_dirty_rect (widget_t* widget, float_t old_value, float_t new_value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | rect\_t | 返回脏矩形。 |
+| widget | widget\_t* | progress\_circle控件对象。 |
+| old\_value | float\_t | 旧值。 |
+| new\_value | float\_t | 新值。 |
 #### progress\_circle\_cast 函数
 -----------------------
 
@@ -330,7 +351,7 @@ ret_t progress_circle_set_value (widget_t* widget, float_t value);
 | 可通过widget\_set\_prop修改 | 是 |
 #### line\_cap 属性
 -----------------------
-> <p id="progress_circle_t_line_cap">线帽类型(round:圆头，square:方头)。
+> <p id="progress_circle_t_line_cap">线帽类型(round:圆头，square:方头，butt:平头)。
 
 * 类型：char*
 

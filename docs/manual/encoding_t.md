@@ -25,7 +25,7 @@ encoding conversion
 * 函数原型：
 
 ```
-ret_t encoding_convert (encoding_name_t from, const char* from_str, uint32_t from_size, encoding_name_t to, const char* , uint32_t to_size);
+ret_t encoding_convert (encoding_name_t from, const char* from_str, uint32_t from_size, encoding_name_t to, char* to_str, uint32_t to_size);
 ```
 
 * 参数说明：
@@ -37,7 +37,7 @@ ret_t encoding_convert (encoding_name_t from, const char* from_str, uint32_t fro
 | from\_str | const char* | 源字符串。 |
 | from\_size | uint32\_t | 源字符串的长度。 |
 | to | encoding\_name\_t | 目标字符串的编码名称。 |
-|  | const char* | 。 |
+| to\_str | char* | 目标字符串。 |
 | to\_size | uint32\_t | 目标字符串的最大长度。 |
 #### encoding\_gbk\_to\_utf8 函数
 -----------------------
@@ -49,7 +49,7 @@ ret_t encoding_convert (encoding_name_t from, const char* from_str, uint32_t fro
 * 函数原型：
 
 ```
-ret_t encoding_gbk_to_utf8 (const char* from_str, uint32_t from_size, const char* , uint32_t to_size);
+ret_t encoding_gbk_to_utf8 (const char* from_str, uint32_t from_size, char* to_str, uint32_t to_size);
 ```
 
 * 参数说明：
@@ -59,7 +59,7 @@ ret_t encoding_gbk_to_utf8 (const char* from_str, uint32_t from_size, const char
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | from\_str | const char* | 源字符串(gbk)。 |
 | from\_size | uint32\_t | 源字符串的长度。 |
-|  | const char* | 。 |
+| to\_str | char* | 目标字符串(utf8)。 |
 | to\_size | uint32\_t | 目标字符串的最大长度。 |
 #### encoding\_utf8\_to\_gbk 函数
 -----------------------
@@ -71,7 +71,7 @@ ret_t encoding_gbk_to_utf8 (const char* from_str, uint32_t from_size, const char
 * 函数原型：
 
 ```
-ret_t encoding_utf8_to_gbk (const char* from_str, uint32_t from_size, const char* to_str, uint32_t to_size);
+ret_t encoding_utf8_to_gbk (const char* from_str, uint32_t from_size, char* to_str, uint32_t to_size);
 ```
 
 * 参数说明：
@@ -81,5 +81,5 @@ ret_t encoding_utf8_to_gbk (const char* from_str, uint32_t from_size, const char
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | from\_str | const char* | 源字符串(utf8)。 |
 | from\_size | uint32\_t | 源字符串的长度。 |
-| to\_str | const char* | 目标字符串(gbk)。 |
+| to\_str | char* | 目标字符串(gbk)。 |
 | to\_size | uint32\_t | 目标字符串的最大长度。 |

@@ -121,13 +121,12 @@ ret_t tk_mem_init_stage2 ();
 * 函数功能：
 
 > <p id="tk_mem_t_tk_mem_is_valid_addr">检查给定的地址是否是一个有效的heap地址。
-
 > 用于辅助发现内存问题。
 
 * 函数原型：
 
 ```
-bool_t tk_mem_is_valid_addr ();
+bool_t tk_mem_is_valid_addr (void* addr);
 ```
 
 * 参数说明：
@@ -135,6 +134,7 @@ bool_t tk_mem_is_valid_addr ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回FALSE一定是无效地址，返回TRUE在PC则不太确定。 |
+| addr | void* | 内存地址。 |
 #### tk\_mem\_set\_on\_out\_of\_memory 函数
 -----------------------
 

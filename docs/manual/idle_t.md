@@ -102,14 +102,15 @@ ret_t idle_dispatch ();
 * 函数原型：
 
 ```
-idle_info_t* idle_find ();
+const idle_info_t* idle_find (uint32_t idle_id);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | idle\_info\_t* | 返回idle的信息。 |
+| 返回值 | const idle\_info\_t* | 返回idle的信息。 |
+| idle\_id | uint32\_t | idleID。 |
 #### idle\_queue 函数
 -----------------------
 

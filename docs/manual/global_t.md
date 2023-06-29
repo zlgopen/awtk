@@ -339,7 +339,7 @@ ret_t tk_run_in_ui_thread (tk_callback_t func, void* ctx, bool_t wait_until_done
 * 函数原型：
 
 ```
-ret_t tk_set_lcd_orientation (int orientation);
+ret_t tk_set_lcd_orientation (lcd_orientation_t orientation);
 ```
 
 * 参数说明：
@@ -347,4 +347,4 @@ ret_t tk_set_lcd_orientation (int orientation);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| orientation | int | 旋转方向。 |
+| orientation | lcd\_orientation\_t | 旋转方向。 |

@@ -58,6 +58,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L3
 | <a href="#scroll_bar_t_scroll_bar_set_params">scroll\_bar\_set\_params</a> | 设置参数。 |
 | <a href="#scroll_bar_t_scroll_bar_set_value">scroll\_bar\_set\_value</a> | 设置值，并触发EVT_VALUE_CHANGED事件。 |
 | <a href="#scroll_bar_t_scroll_bar_set_value_only">scroll\_bar\_set\_value\_only</a> | 设置值，但不触发EVT_VALUE_CHANGED事件。 |
+| <a href="#scroll_bar_t_scroll_bar_show_by_opacity_animation">scroll\_bar\_show\_by\_opacity\_animation</a> | 通过动画显示滚动条。 |
 ### 属性
 <p id="scroll_bar_t_properties">
 
@@ -370,6 +371,27 @@ ret_t scroll_bar_set_value_only (widget_t* widget, int32_t value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | scroll\_bar控件。 |
 | value | int32\_t | 值。 |
+#### scroll\_bar\_show\_by\_opacity\_animation 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="scroll_bar_t_scroll_bar_show_by_opacity_animation">通过动画显示滚动条。
+
+* 函数原型：
+
+```
+ret_t scroll_bar_show_by_opacity_animation (widget_t* widget, int32_t duration, int32_t delay);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | scroll\_bar控件。 |
+| duration | int32\_t | 动画持续时间。 |
+| delay | int32\_t | 动画执行时间。 |
 #### animatable 属性
 -----------------------
 > <p id="scroll_bar_t_animatable">滚动时是否启用动画。

@@ -197,7 +197,7 @@ ret_t input_method_dispatch_action (input_method_t* im);
 * 函数原型：
 
 ```
-ret_t input_method_dispatch_candidates (input_method_t* im, char* strs, uint32_t nr, int32_t selected);
+ret_t input_method_dispatch_candidates (input_method_t* im, const char* strs, uint32_t nr, int32_t selected);
 ```
 
 * 参数说明：
@@ -206,7 +206,7 @@ ret_t input_method_dispatch_candidates (input_method_t* im, char* strs, uint32_t
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | im | input\_method\_t* | 输入法对象。 |
-| strs | char* | 候选字列表。 |
+| strs | const char* | 候选字列表。 |
 | nr | uint32\_t | 候选字个数。 |
 | selected | int32\_t | 缺省选中候选字的序数。 |
 #### input\_method\_dispatch\_key 函数
@@ -239,7 +239,7 @@ ret_t input_method_dispatch_key (input_method_t* im, uint32_t key);
 * 函数原型：
 
 ```
-ret_t input_method_dispatch_keys (input_method_t* im, const char* key);
+ret_t input_method_dispatch_keys (input_method_t* im, const char* keys);
 ```
 
 * 参数说明：
@@ -248,7 +248,7 @@ ret_t input_method_dispatch_keys (input_method_t* im, const char* key);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | im | input\_method\_t* | 输入法对象。 |
-| key | const char* | 键值。 |
+| keys | const char* | 键值。 |
 #### input\_method\_dispatch\_pre\_candidates 函数
 -----------------------
 
@@ -262,7 +262,7 @@ ret_t input_method_dispatch_keys (input_method_t* im, const char* key);
 * 函数原型：
 
 ```
-ret_t input_method_dispatch_pre_candidates (input_method_t* im, char* strs, uint32_t nr, int32_t selected);
+ret_t input_method_dispatch_pre_candidates (input_method_t* im, const char* strs, uint32_t nr, int32_t selected);
 ```
 
 * 参数说明：
@@ -271,7 +271,7 @@ ret_t input_method_dispatch_pre_candidates (input_method_t* im, char* strs, uint
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | im | input\_method\_t* | 输入法对象。 |
-| strs | char* | 候选字列表。 |
+| strs | const char* | 候选字列表。 |
 | nr | uint32\_t | 候选字个数。 |
 | selected | int32\_t | 缺省选中候选字的序数。 |
 #### input\_method\_dispatch\_preedit 函数
@@ -505,7 +505,7 @@ ret_t input_method_set_lang (input_method_t* im, const char* lang);
 * 函数原型：
 
 ```
-ret_t input_method_update_action_button_info (input_method_t* im, char* text, bool_t enable);
+ret_t input_method_update_action_button_info (input_method_t* im, const char* text, bool_t enable);
 ```
 
 * 参数说明：
@@ -514,7 +514,7 @@ ret_t input_method_update_action_button_info (input_method_t* im, char* text, bo
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | im | input\_method\_t* | 输入法对象。 |
-| text | char* | 按钮的文本。 |
+| text | const char* | 按钮的文本。 |
 | enable | bool\_t | 按钮的是否可用。 |
 #### action\_button\_enable 属性
 -----------------------

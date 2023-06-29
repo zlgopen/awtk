@@ -55,7 +55,7 @@
 | <a href="#lcd_t_font_name">font\_name</a> | char* | 字体名称。 |
 | <a href="#lcd_t_font_size">font\_size</a> | uint32\_t | 字体大小。 |
 | <a href="#lcd_t_global_alpha">global\_alpha</a> | uint8\_t | 全局alpha |
-| <a href="#lcd_t_height">height</a> | wh\_t | 屏幕的高度 |
+| <a href="#lcd_t_h">h</a> | wh\_t | 屏幕的高度 |
 | <a href="#lcd_t_last_update_time">last\_update\_time</a> | uint64\_t | last update time |
 | <a href="#lcd_t_ratio">ratio</a> | float\_t | 屏幕密度。 |
 | <a href="#lcd_t_stroke_color">stroke\_color</a> | color\_t | 线条颜色 |
@@ -73,7 +73,7 @@
 * 函数原型：
 
 ```
-ret_t lcd_begin_frame (lcd_t* lcd, const dirty_rects_t* dirty_rects, lcd_draw_mode_t anim_mode);
+ret_t lcd_begin_frame (lcd_t* lcd, const dirty_rects_t* dirty_rects, lcd_draw_mode_t draw_mode);
 ```
 
 * 参数说明：
@@ -83,7 +83,7 @@ ret_t lcd_begin_frame (lcd_t* lcd, const dirty_rects_t* dirty_rects, lcd_draw_mo
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | lcd | lcd\_t* | lcd对象。 |
 | dirty\_rects | const dirty\_rects\_t* | 需要绘制的区域。 |
-| anim\_mode | lcd\_draw\_mode\_t | 动画模式，如果可能，直接画到显存而不是离线的framebuffer。 |
+| draw\_mode | lcd\_draw\_mode\_t | 绘制模式，如果可能，直接画到显存而不是离线的framebuffer。 |
 #### lcd\_clear\_rect 函数
 -----------------------
 
@@ -159,7 +159,7 @@ ret_t lcd_draw_glyph (lcd_t* lcd, glyph_t* glyph, const rect_t* src, xy_t x, xy_
 * 函数原型：
 
 ```
-ret_t lcd_draw_hline (lcd_t* lcd, xy_t x, xy_t y, xy_t w);
+ret_t lcd_draw_hline (lcd_t* lcd, xy_t x, xy_t y, wh_t w);
 ```
 
 * 参数说明：
@@ -170,7 +170,7 @@ ret_t lcd_draw_hline (lcd_t* lcd, xy_t x, xy_t y, xy_t w);
 | lcd | lcd\_t* | lcd对象。 |
 | x | xy\_t | x坐标。 |
 | y | xy\_t | y坐标。 |
-| w | xy\_t | 直线宽度。 |
+| w | wh\_t | 直线宽度。 |
 #### lcd\_draw\_image 函数
 -----------------------
 
@@ -267,7 +267,7 @@ ret_t lcd_draw_text (lcd_t* lcd, const wchar_t* str, uint32_t nr, xy_t x, xy_t y
 * 函数原型：
 
 ```
-ret_t lcd_draw_vline (lcd_t* lcd, xy_t x, xy_t y, xy_t h);
+ret_t lcd_draw_vline (lcd_t* lcd, xy_t x, xy_t y, wh_t h);
 ```
 
 * 参数说明：
@@ -278,7 +278,7 @@ ret_t lcd_draw_vline (lcd_t* lcd, xy_t x, xy_t y, xy_t h);
 | lcd | lcd\_t* | lcd对象。 |
 | x | xy\_t | x坐标。 |
 | y | xy\_t | y坐标。 |
-| h | xy\_t | 直线高度。 |
+| h | wh\_t | 直线高度。 |
 #### lcd\_end\_frame 函数
 -----------------------
 
@@ -891,9 +891,9 @@ ret_t lcd_stroke_rect (lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-#### height 属性
+#### h 属性
 -----------------------
-> <p id="lcd_t_height">屏幕的高度
+> <p id="lcd_t_h">屏幕的高度
 
 * 类型：wh\_t
 

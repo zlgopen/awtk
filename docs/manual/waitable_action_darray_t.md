@@ -27,7 +27,7 @@ waitable actionqueue
 * 函数原型：
 
 ```
-waitable_action_darray_t* waitable_action_darray_create (uint32_t capacity);
+waitable_action_darray_t* waitable_action_darray_create (uint16_t capacity);
 ```
 
 * 参数说明：
@@ -35,7 +35,7 @@ waitable_action_darray_t* waitable_action_darray_create (uint32_t capacity);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | waitable\_action\_darray\_t* | waitable\_action\_darray对象。 |
-| capacity | uint32\_t | action的容量。 |
+| capacity | uint16\_t | action的容量。 |
 #### waitable\_action\_darray\_destroy 函数
 -----------------------
 

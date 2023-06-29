@@ -287,7 +287,7 @@ struct _input_method_t {
   int32_t win_old_y;
 
   /**
-   * @property {uint32_t} edit_old_h 
+   * @property {uint32_t} mledit_old_h
    * @annotation ["private"]
    * 保存多行编辑器原来的高度。
    */

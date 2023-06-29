@@ -57,7 +57,7 @@
 | <a href="#window_base_t_move_focus_up_key">move\_focus\_up\_key</a> | char* | 向上移动焦点的键值。 |
 | <a href="#window_base_t_open_anim_hint">open\_anim\_hint</a> | char* | 打开窗口动画的名称。 |
 | <a href="#window_base_t_single_instance">single\_instance</a> | bool\_t | 单例。如果窗口存在，先关闭再打开。 |
-| <a href="#window_base_t_stage">stage</a> | char* | 窗口当前处于的状态。 |
+| <a href="#window_base_t_stage">stage</a> | window\_stage\_t | 窗口当前处于的状态。 |
 | <a href="#window_base_t_strongly_focus">strongly\_focus</a> | bool\_t | 点击非focusable控件时，是否让当前焦点控件失去焦点。比如点击窗口空白区域，是否让编辑器失去焦点。 |
 | <a href="#window_base_t_theme">theme</a> | char* | 窗体样式资源的名称。 |
 | <a href="#window_base_t_theme_obj">theme\_obj</a> | theme\_t* | 窗口的常量窗体样式数据。 |
@@ -324,16 +324,16 @@ ret_t window_base_on_paint_self (widget_t* widget, canvas_t* c);
 * 函数原型：
 
 ```
-ret_t window_base_set_need_relayout (widget_t* widget, bool_t );
+ret_t window_base_set_need_relayout (widget_t* widget, bool_t need_relayout);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。。 |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | window\_base对象。 |
-|  | bool\_t | t |
+| need\_relayout | bool\_t | 是否需要relayout。 |
 #### window\_base\_set\_prop 函数
 -----------------------
 
@@ -727,7 +727,7 @@ ret_t window_base_set_prop (widget_t* widget, const char* name, const value_t* v
 -----------------------
 > <p id="window_base_t_stage">窗口当前处于的状态。
 
-* 类型：char*
+* 类型：window\_stage\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

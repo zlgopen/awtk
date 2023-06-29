@@ -46,7 +46,7 @@ color\_picker\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数�
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#color_picker_t_value">value</a> | const char* | 颜色。 |
+| <a href="#color_picker_t_value">value</a> | char* | 颜色。 |
 ### 事件
 <p id="color_picker_t_events">
 
@@ -138,7 +138,7 @@ ret_t color_picker_set_color (widget_t* widget, const char* color);
 -----------------------
 > <p id="color_picker_t_value">颜色。
 
-* 类型：const char*
+* 类型：char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

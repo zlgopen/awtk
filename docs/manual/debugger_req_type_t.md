@@ -10,10 +10,10 @@
 | DEBUGGER\_REQ\_STOP | 停止运行请求码。 |
 | DEBUGGER\_REQ\_PAUSE | 暂停运行请求码。 |
 | DEBUGGER\_REQ\_IS\_PAUSED | 查询是否处于暂停状态请求码。 |
-| DEBUGGER\_REQ\_NEXT | 运行下一步请求码。 |
 | DEBUGGER\_REQ\_STEP\_IN | 运行进入函数请求码。 |
 | DEBUGGER\_REQ\_STEP\_OUT | 运行退出函数请求码。 |
-| DEBUGGER\_REQ\_NEXT | 运行下一行请求码。 |
+| DEBUGGER\_REQ\_STEP\_OVER | 运行下一步请求码。 |
+| DEBUGGER\_REQ\_STEP\_LOOP\_OVER | 运行下一行请求码。（跳转循环） |
 | DEBUGGER\_REQ\_CONTINUE | 运行到下一个断点请求码。 |
 | DEBUGGER\_REQ\_SET\_BREAK\_POINT | 设置断点请求码。 |
 | DEBUGGER\_REQ\_REMOVE\_BREAK\_POINT | 移除断点请求码。 |

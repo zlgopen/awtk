@@ -31,15 +31,15 @@
 * 函数原型：
 
 ```
-network_interface_t network_interface_create (char * interface, network_interface_type_t type);
+network_interface_t* network_interface_create (const char* interface, network_interface_type_t type);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | network\_interface\_t | 网卡接口对象。 |
-| interface | char * | 网卡名。 |
+| 返回值 | network\_interface\_t* | 网卡接口对象。 |
+| interface | const char* | 网卡名。 |
 | type | network\_interface\_type\_t | 网卡接口类型。 |
 #### network\_interface\_destroy 函数
 -----------------------
@@ -203,7 +203,7 @@ ret_t network_interface_set_dhcp (network_interface_t * interface);
 * 函数原型：
 
 ```
-ret_t network_interface_set_dns (network_interface_t * interface, char * dns);
+ret_t network_interface_set_dns (network_interface_t * interface, const char* dns);
 ```
 
 * 参数说明：
@@ -212,7 +212,7 @@ ret_t network_interface_set_dns (network_interface_t * interface, char * dns);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | RET\_OK表示成功，否则失败。 |
 | interface | network\_interface\_t * | 网卡对象。 |
-| dns | char * | 网卡dns。 |
+| dns | const char* | 网卡dns。 |
 #### network\_interface\_set\_gateway 函数
 -----------------------
 
@@ -223,7 +223,7 @@ ret_t network_interface_set_dns (network_interface_t * interface, char * dns);
 * 函数原型：
 
 ```
-ret_t network_interface_set_gateway (network_interface_t * interface, char * gateway, char * dev);
+ret_t network_interface_set_gateway (network_interface_t * interface, const char* gateway, const char* dev);
 ```
 
 * 参数说明：
@@ -232,8 +232,8 @@ ret_t network_interface_set_gateway (network_interface_t * interface, char * gat
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | RET\_OK表示成功，否则失败。 |
 | interface | network\_interface\_t * | 网卡对象。 |
-| gateway | char * | 网卡网关。 |
-| dev | char * | 出口网卡设备名。 |
+| gateway | const char* | 网卡网关。 |
+| dev | const char* | 出口网卡设备名。 |
 #### network\_interface\_set\_ipaddr 函数
 -----------------------
 
@@ -244,7 +244,7 @@ ret_t network_interface_set_gateway (network_interface_t * interface, char * gat
 * 函数原型：
 
 ```
-ret_t network_interface_set_ipaddr (network_interface_t * interface, char * ipaddr, char * netmask);
+ret_t network_interface_set_ipaddr (network_interface_t * interface, const char* ipaddr, const char* netmask);
 ```
 
 * 参数说明：
@@ -253,8 +253,8 @@ ret_t network_interface_set_ipaddr (network_interface_t * interface, char * ipad
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | RET\_OK表示成功，否则失败。 |
 | interface | network\_interface\_t * | 网卡对象。 |
-| ipaddr | char * | 网卡IP。 |
-| netmask | char * | 网卡MASK。 |
+| ipaddr | const char* | 网卡IP。 |
+| netmask | const char* | 网卡MASK。 |
 #### network\_interface\_set\_wifi\_ap 函数
 -----------------------
 
@@ -265,7 +265,7 @@ ret_t network_interface_set_ipaddr (network_interface_t * interface, char * ipad
 * 函数原型：
 
 ```
-ret_t network_interface_set_wifi_ap (network_interface_t * interface, char * essid, char * passwd, network_interface_wifi_auth_t   auth, uint8_t  channel, network_interface_wifi_freq_t   freq, uint8_t  hidden);
+ret_t network_interface_set_wifi_ap (network_interface_t * interface, const char* essid, const char* passwd, network_interface_wifi_auth_t   auth, uint8_t  channel, network_interface_wifi_freq_t   freq, uint8_t  hidden);
 ```
 
 * 参数说明：
@@ -274,8 +274,8 @@ ret_t network_interface_set_wifi_ap (network_interface_t * interface, char * ess
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | RET\_OK表示成功，否则失败。 |
 | interface | network\_interface\_t * | 网卡对象。 |
-| essid | char * | wifi帐号 。 |
-| passwd | char * | wifi密码。 |
+| essid | const char* | wifi帐号 。 |
+| passwd | const char* | wifi密码。 |
 | auth | network\_interface\_wifi\_auth\_t   | wifi认证方式。 |
 | channel | uint8\_t  | wifi通道。 |
 | freq | network\_interface\_wifi\_freq\_t   | wifi频段。 |
@@ -290,7 +290,7 @@ ret_t network_interface_set_wifi_ap (network_interface_t * interface, char * ess
 * 函数原型：
 
 ```
-ret_t network_interface_set_wifi_sta (network_interface_t * interface, char * essid, char * passwd, network_interface_wifi_auth_t   auth);
+ret_t network_interface_set_wifi_sta (network_interface_t * interface, const char* essid, const char* passwd, network_interface_wifi_auth_t   auth);
 ```
 
 * 参数说明：
@@ -299,6 +299,6 @@ ret_t network_interface_set_wifi_sta (network_interface_t * interface, char * es
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | RET\_OK表示成功，否则失败。 |
 | interface | network\_interface\_t * | 网卡对象。 |
-| essid | char * | wifi帐号 。 |
-| passwd | char * | wifi密码。 |
+| essid | const char* | wifi帐号 。 |
+| passwd | const char* | wifi密码。 |
 | auth | network\_interface\_wifi\_auth\_t   | wifi认证方式。 |

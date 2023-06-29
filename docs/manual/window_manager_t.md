@@ -17,7 +17,7 @@
 | <a href="#window_manager_t_window_manager_cast">window\_manager\_cast</a> | 转换为window_manager对象(供脚本语言使用)。 |
 | <a href="#window_manager_t_window_manager_close_all">window\_manager\_close\_all</a> | 关闭全部窗口。 |
 | <a href="#window_manager_t_window_manager_close_window_force">window\_manager\_close\_window\_force</a> | 强制立即关闭窗口。 |
-| <a href="#window_manager_t_window_manager_destroy">window\_manager\_destroy</a> |  |
+| <a href="#window_manager_t_window_manager_destroy">window\_manager\_destroy</a> | 销毁window_manager。 |
 | <a href="#window_manager_t_window_manager_dispatch_input_event">window\_manager\_dispatch\_input\_event</a> | 分发输入事件。 |
 | <a href="#window_manager_t_window_manager_dispatch_native_window_event">window\_manager\_dispatch\_native\_window\_event</a> | 处理native window事件。 |
 | <a href="#window_manager_t_window_manager_end_wait_pointer_cursor">window\_manager\_end\_wait\_pointer\_cursor</a> | 结束等待鼠标指针。 |
@@ -27,7 +27,7 @@
 | <a href="#window_manager_t_window_manager_get_prev_window">window\_manager\_get\_prev\_window</a> | 获取前一个的窗口。 |
 | <a href="#window_manager_t_window_manager_get_top_main_window">window\_manager\_get\_top\_main\_window</a> | 获取最上面的主窗口。 |
 | <a href="#window_manager_t_window_manager_get_top_window">window\_manager\_get\_top\_window</a> | 获取最上面的窗口。 |
-| <a href="#window_manager_t_window_manager_init">window\_manager\_init</a> |  |
+| <a href="#window_manager_t_window_manager_init">window\_manager\_init</a> | 初始化window_manager。 |
 | <a href="#window_manager_t_window_manager_is_animating">window\_manager\_is\_animating</a> | 获取当前窗口动画是否正在播放。 |
 | <a href="#window_manager_t_window_manager_open_window">window\_manager\_open\_window</a> | 打开窗口。 |
 | <a href="#window_manager_t_window_manager_paint">window\_manager\_paint</a> | 绘制。 |
@@ -216,6 +216,25 @@ ret_t window_manager_close_window_force (widget_t* widget, widget_t* window);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 窗口管理器对象。 |
 | window | widget\_t* | 窗口对象。 |
+#### window\_manager\_destroy 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_destroy">销毁window_manager。
+
+* 函数原型：
+
+```
+ret_t window_manager_destroy (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | window\_manager对象。 |
 #### window\_manager\_dispatch\_input\_event 函数
 -----------------------
 
@@ -392,6 +411,27 @@ widget_t* window_manager_get_top_window (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 返回窗口对象。 |
 | widget | widget\_t* | 窗口管理器对象。 |
+#### window\_manager\_init 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_init">初始化window_manager。
+
+* 函数原型：
+
+```
+widget_t* window_manager_init (window_manager_t* wm, const widget_vtable_t* wvt, const window_manager_vtable_t* vt);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | 返回window\_manager对象。 |
+| wm | window\_manager\_t* | window\_manager对象。 |
+| wvt | const widget\_vtable\_t* | 控件基类虚表。 |
+| vt | const window\_manager\_vtable\_t* | window\_manager虚表。 |
 #### window\_manager\_is\_animating 函数
 -----------------------
 
@@ -483,7 +523,7 @@ ret_t window_manager_resize (widget_t* widget, wh_t w, wh_t h);
 * 函数原型：
 
 ```
-ret_t window_manager_set (window_manager_t* widget);
+ret_t window_manager_set (widget_t* widget);
 ```
 
 * 参数说明：
@@ -491,7 +531,7 @@ ret_t window_manager_set (window_manager_t* widget);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| widget | window\_manager\_t* | 窗口管理器对象。 |
+| widget | widget\_t* | 窗口管理器对象。 |
 #### window\_manager\_set\_cursor 函数
 -----------------------
 

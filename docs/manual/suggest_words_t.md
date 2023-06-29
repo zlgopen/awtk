@@ -25,7 +25,7 @@
 * 函数原型：
 
 ```
-suggest_words_t* suggest_words_create (asset_info_t* res);
+suggest_words_t* suggest_words_create (const asset_info_t* res);
 ```
 
 * 参数说明：
@@ -33,7 +33,7 @@ suggest_words_t* suggest_words_create (asset_info_t* res);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | suggest\_words\_t* | 返回联想字对象。 |
-| res | asset\_info\_t* | 数据资源。 |
+| res | const asset\_info\_t* | 数据资源。 |
 #### suggest\_words\_destroy 函数
 -----------------------
 

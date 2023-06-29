@@ -11,6 +11,7 @@
 | <a href="#rect_t_rect_contains">rect\_contains</a> | 判断指定的点在rect范围内。 |
 | <a href="#rect_t_rect_create">rect\_create</a> | 创建rect对象。 |
 | <a href="#rect_t_rect_destroy">rect\_destroy</a> | 销毁rect对象。 |
+| <a href="#rect_t_rect_diff">rect\_diff</a> | 求第一个矩形和第二个矩形的差集。 |
 | <a href="#rect_t_rect_fix">rect\_fix</a> | 确保rect在指定的大小范围内。 |
 | <a href="#rect_t_rect_from_rectf">rect\_from\_rectf</a> | rectf 类型转换到 rect 类型。 |
 | <a href="#rect_t_rect_has_intersect">rect\_has\_intersect</a> | 判断两个rect的是否存在交集。 |
@@ -118,6 +119,32 @@ ret_t rect_destroy (rect_t* r);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | r | rect\_t* | rect对象。 |
+#### rect\_diff 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rect_t_rect_diff">求第一个矩形和第二个矩形的差集。
+
+备注：第一个矩形包含第二个矩形的话，就会返回第一个矩形的四个矩形区域。
+
+* 函数原型：
+
+```
+bool_t rect_diff (const rect_t* r1, const rect_t* r2, rect_t* out_r1, rect_t* out_r2, rect_t* out_r3, rect_t* out_r4);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示存在差集，否则表示不存在差集。 |
+| r1 | const rect\_t* | 第一个矩形。 |
+| r2 | const rect\_t* | 第二个矩形。 |
+| out\_r1 | rect\_t* | 返回差集的第一个矩形数据。 |
+| out\_r2 | rect\_t* | 返回差集的第二个矩形数据。 |
+| out\_r3 | rect\_t* | 返回差集的第三个矩形数据。 |
+| out\_r4 | rect\_t* | 返回差集的第四个矩形数据。 |
 #### rect\_fix 函数
 -----------------------
 
@@ -128,7 +155,7 @@ ret_t rect_destroy (rect_t* r);
 * 函数原型：
 
 ```
-rect_t rect_fix (rect_t* r);
+rect_t rect_fix (rect_t* r, wh_t max_w, wh_t max_h);
 ```
 
 * 参数说明：
@@ -137,6 +164,8 @@ rect_t rect_fix (rect_t* r);
 | -------- | ----- | --------- |
 | 返回值 | rect\_t | 返回修复之后的rect对象。 |
 | r | rect\_t* | rect对象。 |
+| max\_w | wh\_t | 最大宽度。 |
+| max\_h | wh\_t | 最大高度。 |
 #### rect\_from\_rectf 函数
 -----------------------
 
@@ -293,7 +322,7 @@ rect_t* rect_set (rect_t* rect, xy_t x, xy_t y, wh_t w, wh_t h);
 * 函数原型：
 
 ```
-rectf_t rect_to_rectf (const rect_t* r1);
+rectf_t rect_to_rectf (const rect_t* r);
 ```
 
 * 参数说明：
@@ -301,7 +330,7 @@ rectf_t rect_to_rectf (const rect_t* r1);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | rectf\_t | 返回 rectf\_t 对象。 |
-| r1 | const rect\_t* | rect 对象。 |
+| r | const rect\_t* | rect对象。 |
 #### rectf\_fix 函数
 -----------------------
 
@@ -312,7 +341,7 @@ rectf_t rect_to_rectf (const rect_t* r1);
 * 函数原型：
 
 ```
-rectf_t rectf_fix (rectf_t* r);
+rectf_t rectf_fix (rectf_t* r, wh_t max_w, wh_t max_h);
 ```
 
 * 参数说明：
@@ -321,6 +350,8 @@ rectf_t rectf_fix (rectf_t* r);
 | -------- | ----- | --------- |
 | 返回值 | rectf\_t | 返回修复之后的rect对象。 |
 | r | rectf\_t* | rectf对象。 |
+| max\_w | wh\_t | 最大宽度。 |
+| max\_h | wh\_t | 最大高度。 |
 #### rectf\_scale 函数
 -----------------------
 

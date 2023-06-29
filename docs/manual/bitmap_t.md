@@ -286,7 +286,7 @@ ret_t bitmap_get_pixel (bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* rgba);
 * 函数原型：
 
 ```
-ret_t bitmap_init (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format, const uint8_t* data);
+ret_t bitmap_init (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format, uint8_t* data);
 ```
 
 * 参数说明：
@@ -298,7 +298,7 @@ ret_t bitmap_init (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t for
 | w | uint32\_t | 宽度。 |
 | h | uint32\_t | 高度。 |
 | format | bitmap\_format\_t | 格式。 |
-| data | const uint8\_t* | 数据，直接引用，但不负责释放。如果为空，由内部自动分配和释放。 |
+| data | uint8\_t* | 数据，直接引用，但不负责释放。如果为空，由内部自动分配和释放。 |
 #### bitmap\_init\_ex 函数
 -----------------------
 
@@ -309,7 +309,7 @@ ret_t bitmap_init (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t for
 * 函数原型：
 
 ```
-ret_t bitmap_init_ex (bitmap_t* bitmap, uint32_t w, uint32_t h, uint32_t line_length, bitmap_format_t format, const uint8_t* data);
+ret_t bitmap_init_ex (bitmap_t* bitmap, uint32_t w, uint32_t h, uint32_t line_length, bitmap_format_t format, uint8_t* data);
 ```
 
 * 参数说明：
@@ -322,19 +322,18 @@ ret_t bitmap_init_ex (bitmap_t* bitmap, uint32_t w, uint32_t h, uint32_t line_le
 | h | uint32\_t | 高度。 |
 | line\_length | uint32\_t | 行长。 |
 | format | bitmap\_format\_t | 格式。 |
-| data | const uint8\_t* | 数据，直接引用，但不负责释放。如果为空，由内部自动分配和释放。 |
+| data | uint8\_t* | 数据，直接引用，但不负责释放。如果为空，由内部自动分配和释放。 |
 #### bitmap\_init\_from\_bgra 函数
 -----------------------
 
 * 函数功能：
 
 > <p id="bitmap_t_bitmap_init_from_bgra">初始化图片。
-数据。3通道时为BGR888格式，4通道时为BGRA888格式(内部拷贝该数据，不会引用，调用者自行释放)。
 
 * 函数原型：
 
 ```
-ret_t bitmap_init_from_bgra (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format, const uint8_t* , uint32_t comp, lcd_orientation_t o);
+ret_t bitmap_init_from_bgra (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format, const uint8_t* data, uint32_t comp, lcd_orientation_t o);
 ```
 
 * 参数说明：
@@ -346,7 +345,7 @@ ret_t bitmap_init_from_bgra (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_fo
 | w | uint32\_t | 宽度。 |
 | h | uint32\_t | 高度。 |
 | format | bitmap\_format\_t | 格式。 |
-|  | const uint8\_t* | a |
+| data | const uint8\_t* | 数据。3通道时为BGR888格式，4通道时为BGRA888格式(内部拷贝该数据，不会引用，调用者自行释放)。 |
 | comp | uint32\_t | 颜色通道数(目前支持3(bgr)和4(bgra))。 |
 | o | lcd\_orientation\_t | 旋转方向。 |
 #### bitmap\_init\_from\_rgba 函数
@@ -355,12 +354,11 @@ ret_t bitmap_init_from_bgra (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_fo
 * 函数功能：
 
 > <p id="bitmap_t_bitmap_init_from_rgba">初始化图片。
-数据。3通道时为RGB888格式，4通道时为RGBA888格式(内部拷贝该数据，不会引用，调用者自行释放)。
 
 * 函数原型：
 
 ```
-ret_t bitmap_init_from_rgba (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format, const uint8_t* , uint32_t comp, lcd_orientation_t o);
+ret_t bitmap_init_from_rgba (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format, const uint8_t* data, uint32_t comp, lcd_orientation_t o);
 ```
 
 * 参数说明：
@@ -372,7 +370,7 @@ ret_t bitmap_init_from_rgba (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_fo
 | w | uint32\_t | 宽度。 |
 | h | uint32\_t | 高度。 |
 | format | bitmap\_format\_t | 格式。 |
-|  | const uint8\_t* | a |
+| data | const uint8\_t* | 数据。3通道时为RGB888格式，4通道时为RGBA888格式(内部拷贝该数据，不会引用，调用者自行释放)。 |
 | comp | uint32\_t | 颜色通道数(目前支持3(rgb)和4(rgba))。 |
 | o | lcd\_orientation\_t | 旋转方向。 |
 #### bitmap\_lock\_buffer\_for\_read 函数

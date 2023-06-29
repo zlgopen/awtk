@@ -149,6 +149,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#combo_box_t_combo_box_set_custom_open_popup">combo\_box\_set\_custom\_open\_popup</a> | 设置自定义的打开弹出窗口的函数。 |
 | <a href="#combo_box_t_combo_box_set_item_height">combo\_box\_set\_item\_height</a> | 设置item高度。 |
 | <a href="#combo_box_t_combo_box_set_localize_options">combo\_box\_set\_localize\_options</a> | 设置是否本地化(翻译)选项。 |
+| <a href="#combo_box_t_combo_box_set_on_item_click">combo\_box\_set\_on\_item\_click</a> | 设置弹出窗口的item被点击的回调函数，回调函数返回非RET_OK，继续默认处理。 |
 | <a href="#combo_box_t_combo_box_set_open_window">combo\_box\_set\_open\_window</a> | 点击按钮时可以打开popup窗口，本函数可设置窗口的名称。 |
 | <a href="#combo_box_t_combo_box_set_options">combo\_box\_set\_options</a> | 设置选项。 |
 | <a href="#combo_box_t_combo_box_set_selected_index">combo\_box\_set\_selected\_index</a> | 设置第index个选项为当前选中的选项。 |
@@ -471,6 +472,27 @@ ret_t combo_box_set_localize_options (widget_t* widget, bool_t localize_options)
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | combo\_box对象。 |
 | localize\_options | bool\_t | 是否本地化(翻译)选项。 |
+#### combo\_box\_set\_on\_item\_click 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="combo_box_t_combo_box_set_on_item_click">设置弹出窗口的item被点击的回调函数，回调函数返回非RET_OK，继续默认处理。
+
+* 函数原型：
+
+```
+ret_t combo_box_set_on_item_click (widget_t* widget, event_func_t on_item_click, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | combo\_box对象。 |
+| on\_item\_click | event\_func\_t | 回调函数。 |
+| ctx | void* | 回调函数上下文。 |
 #### combo\_box\_set\_open\_window 函数
 -----------------------
 

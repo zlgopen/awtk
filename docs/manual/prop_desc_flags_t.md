@@ -9,7 +9,7 @@
 | PROP\_DESC\_FLAG\_OBJECT | 单个对象的属性。 |
 | PROP\_DESC\_FLAG\_CLASS | 同一个类所有实例共享属性。 |
 | PROP\_DESC\_FLAG\_GLOBAL | 全局属性。 |
-| PROP\_DESC\_FLAG\_READABLE, | 可读取。 |
-| PROP\_DESC\_FLAG\_WRITBALE, | 可修改。 |
+| PROP\_DESC\_FLAG\_READABLE | 可读取。 |
+| PROP\_DESC\_FLAG\_WRITBALE | 可修改。 |
 | PROP\_DESC\_FLAG\_CONFIGURABLE | 可配置。 |
 | PROP\_DESC\_FLAG\_PERSISTENT | 需要持久化。 |

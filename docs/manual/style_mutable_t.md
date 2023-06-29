@@ -121,7 +121,7 @@ ret_t style_mutable_foreach (style_t* s, tk_on_style_item_t on_style_item, void*
 * 函数原型：
 
 ```
-ret_t style_mutable_get_value (style_t* s, const char* state, const char* name, const value_t* v);
+ret_t style_mutable_get_value (style_t* s, const char* state, const char* name, value_t* v);
 ```
 
 * 参数说明：
@@ -132,7 +132,7 @@ ret_t style_mutable_get_value (style_t* s, const char* state, const char* name, 
 | s | style\_t* | style对象。 |
 | state | const char* | 控件状态。 |
 | name | const char* | 属性名。 |
-| v | const value\_t* | 值。 |
+| v | value\_t* | 值。 |
 #### style\_mutable\_remove\_value 函数
 -----------------------
 

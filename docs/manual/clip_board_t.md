@@ -25,14 +25,14 @@
 * 函数原型：
 
 ```
-ret_t clip_board ();
+clip_board_t* clip_board ();
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回缺省剪切板对象。 |
+| 返回值 | clip\_board\_t* | 返回缺省剪切板对象。 |
 #### clip\_board\_clear 函数
 -----------------------
 
@@ -81,7 +81,7 @@ ret_t clip_board_destroy (clip_board_t* cl);
 * 函数原型：
 
 ```
-ret_t clip_board_get_data (clip_board_t* cl, clip_board_data_type_t* type, void** data, uint32_t* size);
+ret_t clip_board_get_data (clip_board_t* cl, clip_board_data_type_t* type, const void** data, uint32_t* size);
 ```
 
 * 参数说明：
@@ -91,7 +91,7 @@ ret_t clip_board_get_data (clip_board_t* cl, clip_board_data_type_t* type, void*
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | cl | clip\_board\_t* | 剪切板对象。 |
 | type | clip\_board\_data\_type\_t* | 返回数据类型(可为NULL)。 |
-| data | void** | 返回数据(可为NULL)。 |
+| data | const void** | 返回数据(可为NULL)。 |
 | size | uint32\_t* | 返回数据长度(可为NULL)。 |
 #### clip\_board\_get\_text 函数
 -----------------------

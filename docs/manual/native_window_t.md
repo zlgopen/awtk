@@ -52,7 +52,7 @@ ret_t native_window_center (native_window_t* win);
 * 函数原型：
 
 ```
-native_window_t* native_window_create (const char* params);
+native_window_t* native_window_create (widget_t* widget);
 ```
 
 * 参数说明：
@@ -60,7 +60,7 @@ native_window_t* native_window_create (const char* params);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | native\_window\_t* | 返回win对象。 |
-| params | const char* | 参数。 |
+| widget | widget\_t* | widget对象。 |
 #### native\_window\_get\_canvas 函数
 -----------------------
 
@@ -71,14 +71,14 @@ native_window_t* native_window_create (const char* params);
 * 函数原型：
 
 ```
-canvas_t native_window_get_canvas (native_window_t* win);
+canvas_t* native_window_get_canvas (native_window_t* win);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | canvas\_t | 返回canvas对象。 |
+| 返回值 | canvas\_t* | 返回canvas对象。 |
 | win | native\_window\_t* | win对象。 |
 #### native\_window\_invalidate 函数
 -----------------------

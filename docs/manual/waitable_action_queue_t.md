@@ -21,7 +21,7 @@ waitable actionqueue
 * 函数原型：
 
 ```
-waitable_action_queue_t* waitable_action_queue_create (uint32_t capacity);
+waitable_action_queue_t* waitable_action_queue_create (uint16_t capacity);
 ```
 
 * 参数说明：
@@ -29,7 +29,7 @@ waitable_action_queue_t* waitable_action_queue_create (uint32_t capacity);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | waitable\_action\_queue\_t* | waitable\_action\_queue对象。 |
-| capacity | uint32\_t | action的容量。 |
+| capacity | uint16\_t | action的容量。 |
 #### waitable\_action\_queue\_destroy 函数
 -----------------------
 

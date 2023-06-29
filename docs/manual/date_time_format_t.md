@@ -45,7 +45,7 @@
 * 函数原型：
 
 ```
-ret_t wstr_format_date_time (wstr_t* str, const char* format, date_time_t* dt);
+ret_t wstr_format_date_time (wstr_t* str, const char* format, const date_time_t* dt);
 ```
 
 * 参数说明：
@@ -55,7 +55,7 @@ ret_t wstr_format_date_time (wstr_t* str, const char* format, date_time_t* dt);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | 输出字符串。 |
 | format | const char* | 格式。 |
-| dt | date\_time\_t* | 时间。 |
+| dt | const date\_time\_t* | 时间。 |
 #### wstr\_format\_time 函数
 -----------------------
 

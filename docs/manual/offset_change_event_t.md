@@ -47,7 +47,7 @@ offset_change_event_t* offset_change_event_cast (event_t* event);
 * 函数原型：
 
 ```
-event_t* offset_change_event_init (offset_change_event_t* event, void* target, uint32_t type, float_t old_offset, float_t new_offset);
+event_t* offset_change_event_init (offset_change_event_t* event, uint32_t type, void* target, float_t old_offset, float_t new_offset);
 ```
 
 * 参数说明：
@@ -56,8 +56,8 @@ event_t* offset_change_event_init (offset_change_event_t* event, void* target, u
 | -------- | ----- | --------- |
 | 返回值 | event\_t* | event对象。 |
 | event | offset\_change\_event\_t* | event对象。 |
-| target | void* | 事件目标。 |
 | type | uint32\_t | 事件类型。 |
+| target | void* | 事件目标。 |
 | old\_offset | float\_t | 旧的偏移数据。 |
 | new\_offset | float\_t | 新的偏移数据。 |
 #### new\_offset 属性

@@ -226,7 +226,7 @@ const char* app_conf_get_str (const char* key, const char* defval);
 * 函数原型：
 
 ```
-ret_t app_conf_get_wstr (const char* key, const wchar_t* str, uint32_t max_size);
+ret_t app_conf_get_wstr (const char* key, wchar_t* str, uint32_t max_size);
 ```
 
 * 参数说明：
@@ -235,7 +235,7 @@ ret_t app_conf_get_wstr (const char* key, const wchar_t* str, uint32_t max_size)
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | key | const char* | 配置项的名称。 |
-| str | const wchar\_t* | 返回值。 |
+| str | wchar\_t* | 返回值。 |
 | max\_size | uint32\_t | 最大长度(字符数)。 |
 #### app\_conf\_off\_changed 函数
 -----------------------
@@ -420,7 +420,7 @@ ret_t app_conf_set_double (const char* key, double v);
 * 函数原型：
 
 ```
-ret_t app_conf_set_instance (tk_object_t* );
+ret_t app_conf_set_instance (tk_object_t* obj);
 ```
 
 * 参数说明：
@@ -428,7 +428,7 @@ ret_t app_conf_set_instance (tk_object_t* );
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-|  | tk\_object\_t* | 。 |
+| obj | tk\_object\_t* | 配置对象。由app\_conf\_deinit释放。 |
 #### app\_conf\_set\_int 函数
 -----------------------
 

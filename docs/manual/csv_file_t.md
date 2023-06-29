@@ -66,7 +66,7 @@ ret_t csv_file_append_row (csv_file_t* csv, const char* data);
 * 函数原型：
 
 ```
-ret_t csv_file_clear (csv_file_t* csv, const char* filename);
+ret_t csv_file_clear (csv_file_t* csv);
 ```
 
 * 参数说明：
@@ -75,7 +75,6 @@ ret_t csv_file_clear (csv_file_t* csv, const char* filename);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | csv | csv\_file\_t* | csv对象。 |
-| filename | const char* | 文件名。 |
 #### csv\_file\_create 函数
 -----------------------
 
@@ -127,14 +126,14 @@ csv_file_t* csv_file_create_empty (char sep, csv_file_filter_t filter, void* ctx
 * 函数原型：
 
 ```
-csv_file_t csv_file_create_with_buff (const char* buff, uint32_t size, char sep);
+csv_file_t* csv_file_create_with_buff (const char* buff, uint32_t size, char sep);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | csv\_file\_t | 返回csv对象。 |
+| 返回值 | csv\_file\_t* | 返回csv对象。 |
 | buff | const char* | 数据。 |
 | size | uint32\_t | 数据长度。 |
 | sep | char | 分隔符。 |

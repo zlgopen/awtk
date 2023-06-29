@@ -16,8 +16,8 @@
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#multi_gesture_event_t_distance">distance</a> | float | 两点间的距离增量。(-1,0)表示缩小，(0-1)表示增加。 |
-| <a href="#multi_gesture_event_t_rotation">rotation</a> | float | 旋转角度(幅度)增量。（单位弧度） |
+| <a href="#multi_gesture_event_t_distance">distance</a> | float\_t | 两点间的距离增量。(-1,0)表示缩小，(0-1)表示增加。 |
+| <a href="#multi_gesture_event_t_rotation">rotation</a> | float\_t | 旋转角度(幅度)增量。（单位弧度） |
 | <a href="#multi_gesture_event_t_x">x</a> | xy\_t | 中心点x坐标。 |
 | <a href="#multi_gesture_event_t_y">y</a> | xy\_t | 中心点y坐标。 |
 #### multi\_gesture\_event\_cast 函数
@@ -67,7 +67,7 @@ event_t* multi_gesture_event_init (multi_gesture_event_t* event, void* target, i
 -----------------------
 > <p id="multi_gesture_event_t_distance">两点间的距离增量。(-1,0)表示缩小，(0-1)表示增加。
 
-* 类型：float
+* 类型：float\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -78,7 +78,7 @@ event_t* multi_gesture_event_init (multi_gesture_event_t* event, void* target, i
 -----------------------
 > <p id="multi_gesture_event_t_rotation">旋转角度(幅度)增量。（单位弧度）
 
-* 类型：float
+* 类型：float\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

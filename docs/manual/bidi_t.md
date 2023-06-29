@@ -20,8 +20,8 @@ Unicode Bidirectional Algorithm.
 | <a href="#bidi_t_positions_V_to_L">positions\_V\_to\_L</a> | int32\_t* | visual位置与logical位置的映射。 |
 | <a href="#bidi_t_request_type">request\_type</a> | bidi\_type\_t | 请求的类型。 |
 | <a href="#bidi_t_resolved_type">resolved\_type</a> | bidi\_type\_t | 实际的类型。 |
+| <a href="#bidi_t_vis_str">vis\_str</a> | wchar\_t* | 用于显示的字符串(存放log2vis的结果)。 |
 | <a href="#bidi_t_vis_str_size">vis\_str\_size</a> | uint32\_t | 用于显示的字符串长度(存放log2vis的结果)。 |
-| <a href="#bidi_t_vis_strx">vis\_strx</a> | wchar\_t* | 用于显示的字符串(存放log2vis的结果)。 |
 #### bidi\_deinit 函数
 -----------------------
 
@@ -94,14 +94,14 @@ ret_t bidi_log2vis (bidi_t* bidi, const wchar_t* str, uint32_t size);
 * 函数原型：
 
 ```
-bidi_t* bidi_type_from_name (const char* name);
+bidi_type_t bidi_type_from_name (const char* name);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | bidi\_t* | 返回bidi对象。 |
+| 返回值 | bidi\_type\_t | 返回bidi对象。 |
 | name | const char* | 类型名称(取值：rtl,ltr,auto,wrtl,wltr,lro,rlo)。 |
 #### positions\_L\_to\_V 属性
 -----------------------
@@ -143,21 +143,21 @@ bidi_t* bidi_type_from_name (const char* name);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-#### vis\_str\_size 属性
+#### vis\_str 属性
 -----------------------
-> <p id="bidi_t_vis_str_size">用于显示的字符串长度(存放log2vis的结果)。
+> <p id="bidi_t_vis_str">用于显示的字符串(存放log2vis的结果)。
 
-* 类型：uint32\_t
+* 类型：wchar\_t*
 
 | 特性 | 是否支持 |
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-#### vis\_strx 属性
+#### vis\_str\_size 属性
 -----------------------
-> <p id="bidi_t_vis_strx">用于显示的字符串(存放log2vis的结果)。
+> <p id="bidi_t_vis_str_size">用于显示的字符串长度(存放log2vis的结果)。
 
-* 类型：wchar\_t*
+* 类型：uint32\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

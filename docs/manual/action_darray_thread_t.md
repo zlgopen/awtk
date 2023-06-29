@@ -221,7 +221,7 @@ ret_t action_darray_thread_set_strategy (action_darray_thread_t* thread, action_
 * 函数原型：
 
 ```
-action_queue_t* action_queue_create (uint32_t capacity);
+action_queue_t* action_queue_create (uint16_t capacity);
 ```
 
 * 参数说明：
@@ -229,7 +229,7 @@ action_queue_t* action_queue_create (uint32_t capacity);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | action\_queue\_t* | action\_queue对象。 |
-| capacity | uint32\_t | action的容量。 |
+| capacity | uint16\_t | action的容量。 |
 #### action\_queue\_destroy 函数
 -----------------------
 

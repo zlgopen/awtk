@@ -141,14 +141,14 @@ widget_t* mutable_image_init (widget_t* widget);
 * 函数原型：
 
 ```
-widget_t* mutable_image_on_destroy (widget_t* widget);
+ret_t mutable_image_on_destroy (widget_t* widget);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | widget\_t* | 返回RET\_OK表示成功，否则表示失败。 |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | mutable\_image对象。 |
 #### mutable\_image\_on\_paint\_self 函数
 -----------------------
@@ -160,14 +160,14 @@ widget_t* mutable_image_on_destroy (widget_t* widget);
 * 函数原型：
 
 ```
-widget_t* mutable_image_on_paint_self (widget_t* widget, canvas_t* canvas);
+ret_t mutable_image_on_paint_self (widget_t* widget, canvas_t* canvas);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | widget\_t* | 返回RET\_OK表示成功，否则表示失败。 |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | mutable\_image对象。 |
 | canvas | canvas\_t* | 画布对象。 |
 #### mutable\_image\_set\_create\_image 函数

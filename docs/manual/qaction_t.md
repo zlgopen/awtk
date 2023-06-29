@@ -89,7 +89,7 @@ ret_t qaction_exec (qaction_t* action);
 * 函数原型：
 
 ```
-ret_t qaction_notify (qaction_t* action, event_t** event);
+ret_t qaction_notify (qaction_t* action, event_t* event);
 ```
 
 * 参数说明：
@@ -98,7 +98,7 @@ ret_t qaction_notify (qaction_t* action, event_t** event);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | action | qaction\_t* | action对象。 |
-| event | event\_t** | event对象。 |
+| event | event\_t* | event对象。 |
 #### qaction\_set\_on\_event 函数
 -----------------------
 

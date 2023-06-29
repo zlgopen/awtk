@@ -45,7 +45,7 @@ rbuffer_read_string(&rbuffer, &str);
 | -------- | ----- | ------------ | 
 | <a href="#rbuffer_t_capacity">capacity</a> | uint32\_t | 缓存区的容量。 |
 | <a href="#rbuffer_t_cursor">cursor</a> | uint32\_t | 当前读取位置。 |
-| <a href="#rbuffer_t_data">data</a> | uint8\_t* | 数据缓冲区。 |
+| <a href="#rbuffer_t_data">data</a> | const uint8\_t* | 数据缓冲区。 |
 #### rbuffer\_has\_more 函数
 -----------------------
 
@@ -75,7 +75,7 @@ bool_t rbuffer_has_more (rbuffer_t* rbuffer);
 * 函数原型：
 
 ```
-rbuffer_t* rbuffer_init (rbuffer_t* rbuffer, uint8_t* data, uint16_t capacity);
+rbuffer_t* rbuffer_init (rbuffer_t* rbuffer, const uint8_t* data, uint32_t capacity);
 ```
 
 * 参数说明：
@@ -84,8 +84,8 @@ rbuffer_t* rbuffer_init (rbuffer_t* rbuffer, uint8_t* data, uint16_t capacity);
 | -------- | ----- | --------- |
 | 返回值 | rbuffer\_t* | rbuffer对象本身。 |
 | rbuffer | rbuffer\_t* | rbuffer对象。 |
-| data | uint8\_t* | 缓冲区。 |
-| capacity | uint16\_t | 缓冲区的容量。 |
+| data | const uint8\_t* | 缓冲区。 |
+| capacity | uint32\_t | 缓冲区的容量。 |
 #### rbuffer\_peek\_uint16 函数
 -----------------------
 
@@ -237,7 +237,7 @@ ret_t rbuffer_read_int32 (rbuffer_t* rbuffer, int32_t* value);
 * 函数原型：
 
 ```
-ret_t rbuffer_read_string (rbuffer_t* rbuffer, char** str);
+ret_t rbuffer_read_string (rbuffer_t* rbuffer, const char** str);
 ```
 
 * 参数说明：
@@ -246,7 +246,7 @@ ret_t rbuffer_read_string (rbuffer_t* rbuffer, char** str);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | rbuffer | rbuffer\_t* | rbuffer对象。 |
-| str | char** | 返回字符串。 |
+| str | const char** | 返回字符串。 |
 #### rbuffer\_read\_uint16 函数
 -----------------------
 
@@ -337,7 +337,7 @@ ret_t rbuffer_read_uint8 (rbuffer_t* rbuffer, uint8_t* value);
 * 函数原型：
 
 ```
-ret_t rbuffer_rewind ();
+ret_t rbuffer_rewind (rbuffer_t* rbuffer);
 ```
 
 * 参数说明：
@@ -345,6 +345,7 @@ ret_t rbuffer_rewind ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| rbuffer | rbuffer\_t* | rbuffer对象。 |
 #### rbuffer\_skip 函数
 -----------------------
 
@@ -389,7 +390,7 @@ ret_t rbuffer_skip (rbuffer_t* rbuffer, int32_t offset);
 -----------------------
 > <p id="rbuffer_t_data">数据缓冲区。
 
-* 类型：uint8\_t*
+* 类型：const uint8\_t*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

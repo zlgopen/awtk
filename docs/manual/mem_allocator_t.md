@@ -22,7 +22,7 @@
 * 函数原型：
 
 ```
-void* mem_allocator_alloc (mem_allocator_t* allocator, uint32_t size, const char* , uint32_t line);
+void* mem_allocator_alloc (mem_allocator_t* allocator, uint32_t size, const char* func, uint32_t line);
 ```
 
 * 参数说明：
@@ -32,7 +32,7 @@ void* mem_allocator_alloc (mem_allocator_t* allocator, uint32_t size, const char
 | 返回值 | void* | 成功返回内存块的地址，失败返回NULL。 |
 | allocator | mem\_allocator\_t* | allocator对象。 |
 | size | uint32\_t | 内存的大小。 |
-|  | const char* | 。 |
+| func | const char* | 分配内存的函数(用于调试)。 |
 | line | uint32\_t | 分配内存的行数(用于调试)。 |
 #### mem\_allocator\_destroy 函数
 -----------------------
@@ -82,14 +82,14 @@ ret_t mem_allocator_dump (mem_allocator_t* allocator);
 * 函数原型：
 
 ```
-void* mem_allocator_free (mem_allocator_t* allocator, void* ptr);
+void mem_allocator_free (mem_allocator_t* allocator, void* ptr);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | void* | 成功返回内存块的地址，失败返回NULL。 |
+| 返回值 | void | 无。 |
 | allocator | mem\_allocator\_t* | allocator对象。 |
 | ptr | void* | 内存的地址。 |
 #### mem\_allocator\_realloc 函数
@@ -102,7 +102,7 @@ void* mem_allocator_free (mem_allocator_t* allocator, void* ptr);
 * 函数原型：
 
 ```
-void* mem_allocator_realloc (mem_allocator_t* allocator, void* ptr, uint32_t size, const char* , uint32_t line);
+void* mem_allocator_realloc (mem_allocator_t* allocator, void* ptr, uint32_t size, const char* func, uint32_t line);
 ```
 
 * 参数说明：
@@ -113,5 +113,5 @@ void* mem_allocator_realloc (mem_allocator_t* allocator, void* ptr, uint32_t siz
 | allocator | mem\_allocator\_t* | allocator对象。 |
 | ptr | void* | 原来内存的地址。 |
 | size | uint32\_t | 内存的大小。 |
-|  | const char* | 。 |
+| func | const char* | 分配内存的函数(用于调试)。 |
 | line | uint32\_t | 分配内存的行数(用于调试)。 |

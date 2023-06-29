@@ -20,7 +20,7 @@ input stream base on fd
 * 函数原型：
 
 ```
-tk_ostream_t* tk_ostream_serial_create (int fd);
+tk_ostream_t* tk_ostream_serial_create (serial_handle_t fd);
 ```
 
 * 参数说明：
@@ -28,4 +28,4 @@ tk_ostream_t* tk_ostream_serial_create (int fd);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | tk\_ostream\_t* | 返回ostream对象。 |
-| fd | int | fd. |
+| fd | serial\_handle\_t | fd. |

@@ -45,8 +45,8 @@ color_tile_set_bg_color(color_tile, "red");
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#color_tile_t_bg_color">bg\_color</a> | const char* | 背景颜色。 |
-| <a href="#color_tile_t_border_color">border\_color</a> | const char* | 边框颜色。 |
+| <a href="#color_tile_t_bg_color">bg\_color</a> | char* | 背景颜色。 |
+| <a href="#color_tile_t_border_color">border\_color</a> | char* | 边框颜色。 |
 ### 事件
 <p id="color_tile_t_events">
 
@@ -216,7 +216,7 @@ ret_t color_tile_set_value (widget_t* widget, color_t color);
 -----------------------
 > <p id="color_tile_t_bg_color">背景颜色。
 
-* 类型：const char*
+* 类型：char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -232,7 +232,7 @@ ret_t color_tile_set_value (widget_t* widget, color_t color);
 -----------------------
 > <p id="color_tile_t_border_color">边框颜色。
 
-* 类型：const char*
+* 类型：char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

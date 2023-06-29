@@ -22,14 +22,14 @@
 * 函数原型：
 
 ```
-tk_sm_state_t* tk_state_machine_current_get (tk_state_machine_t* fsm);
+const tk_sm_state_t* tk_state_machine_current_get (tk_state_machine_t* fsm);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | tk\_sm\_state\_t* | 返回 tk\_sm\_state\_t 对象 |
+| 返回值 | const tk\_sm\_state\_t* | 返回 tk\_sm\_state\_t 对象 |
 | fsm | tk\_state\_machine\_t* | 状态机地址 |
 #### tk\_state\_machine\_deinit 函数
 -----------------------
@@ -101,12 +101,12 @@ ret_t tk_state_machine_init (tk_state_machine_t* fsm, const tk_sm_state_t* initi
 * 函数原型：
 
 ```
-tk_sm_state_t* tk_state_machine_previous_get (tk_state_machine_t* fsm);
+const tk_sm_state_t* tk_state_machine_previous_get (tk_state_machine_t* fsm);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | tk\_sm\_state\_t* | 返回 tk\_sm\_state\_t 对象 |
+| 返回值 | const tk\_sm\_state\_t* | 返回 tk\_sm\_state\_t 对象 |
 | fsm | tk\_state\_machine\_t* | 状态机地址 |

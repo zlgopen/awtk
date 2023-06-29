@@ -29,7 +29,7 @@
 | -------- | ----- | ------------ | 
 | <a href="#dirty_rects_t_max">max</a> | rect\_t | 最大脏矩形。 |
 | <a href="#dirty_rects_t_nr">nr</a> | uint32\_t | 个数。 |
-| <a href="#dirty_rects_t_rects">rects</a> | rect\_t | 脏矩形。 |
+| <a href="#dirty_rects_t_rects">rects</a> | rect\_t* | 脏矩形。 |
 #### dirty\_rects\_add 函数
 -----------------------
 
@@ -40,7 +40,7 @@
 * 函数原型：
 
 ```
-ret_t dirty_rects_add (dirty_rects_t* dirty_rects, rect_t* r);
+ret_t dirty_rects_add (dirty_rects_t* dirty_rects, const rect_t* r);
 ```
 
 * 参数说明：
@@ -49,7 +49,7 @@ ret_t dirty_rects_add (dirty_rects_t* dirty_rects, rect_t* r);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | dirty\_rects | dirty\_rects\_t* | dirty\_rects对象。 |
-| r | rect\_t* | 脏矩形。 |
+| r | const rect\_t* | 脏矩形。 |
 #### dirty\_rects\_deinit 函数
 -----------------------
 
@@ -230,7 +230,7 @@ ret_t dirty_rects_set_profile (dirty_rects_t* dirty_rects, bool_t profile);
 -----------------------
 > <p id="dirty_rects_t_rects">脏矩形。
 
-* 类型：rect\_t
+* 类型：rect\_t*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

@@ -46,7 +46,7 @@ object_rbuffer_t* object_rbuffer_cast (tk_object_t* obj);
 * 函数原型：
 
 ```
-tk_object_t* object_rbuffer_create (const uint8_t* data, uint16_t capacity);
+tk_object_t* object_rbuffer_create (const uint8_t* data, uint32_t capacity);
 ```
 
 * 参数说明：
@@ -55,7 +55,7 @@ tk_object_t* object_rbuffer_create (const uint8_t* data, uint16_t capacity);
 | -------- | ----- | --------- |
 | 返回值 | tk\_object\_t* | 返回object对象。 |
 | data | const uint8\_t* | 缓冲区。 |
-| capacity | uint16\_t | 缓冲区的容量。 |
+| capacity | uint32\_t | 缓冲区的容量。 |
 #### rbuffer 属性
 -----------------------
 > <p id="object_rbuffer_t_rbuffer">rbuffer对象。

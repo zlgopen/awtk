@@ -23,26 +23,33 @@ str_reset(&s);
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#str_t_str_append">str\_append</a> | 追加字符串。 |
+| <a href="#str_t_str_append_c_str">str\_append\_c\_str</a> | 追加一个字符串，字符串前后加英文双引号，并按C语言规则转义特殊字符。 |
 | <a href="#str_t_str_append_char">str\_append\_char</a> | 追加一个字符。 |
 | <a href="#str_t_str_append_double">str\_append\_double</a> | 追加一个浮点数。 |
+| <a href="#str_t_str_append_escape">str\_append\_escape</a> | 对字符串s进行转义，并追加到str对象。 |
 | <a href="#str_t_str_append_format">str\_append\_format</a> | 通过格式追加字符串。 |
 | <a href="#str_t_str_append_int">str\_append\_int</a> | 追加一个整数。 |
 | <a href="#str_t_str_append_int64">str\_append\_int64</a> | 追加一个int64整数。 |
 | <a href="#str_t_str_append_json_bool_pair">str\_append\_json\_bool\_pair</a> | 追加bool格式的json键值对。 |
 | <a href="#str_t_str_append_json_double_pair">str\_append\_json\_double\_pair</a> | 追加doube格式的json键值对。 |
 | <a href="#str_t_str_append_json_int_pair">str\_append\_json\_int\_pair</a> | 追加int格式的json键值对。 |
-| <a href="#str_t_str_append_json_str">str\_append\_json\_str</a> | 追加一个字符串，字符串前后加英文双引号，字符串本身的双引号被转义为\"。 |
+| <a href="#str_t_str_append_json_str">str\_append\_json\_str</a> | 追加一个字符串，字符串前后加英文双引号，并按JSON规则转义特殊字符。 |
 | <a href="#str_t_str_append_json_str_pair">str\_append\_json\_str\_pair</a> | 追加字符串格式的json键值对。 |
 | <a href="#str_t_str_append_more">str\_append\_more</a> | 追加多个字符串。以NULL结束。 |
 | <a href="#str_t_str_append_n_chars">str\_append\_n\_chars</a> | 同一个字符追加n次。 |
 | <a href="#str_t_str_append_uint64">str\_append\_uint64</a> | 追加一个uint64整数。 |
+| <a href="#str_t_str_append_unescape">str\_append\_unescape</a> | 对字符串s进行反转义，并追加到str对象。 |
 | <a href="#str_t_str_append_with_len">str\_append\_with\_len</a> | 追加字符串。 |
+| <a href="#str_t_str_attach">str\_attach</a> | 通过附加到一个buff来初始化str。 |
+| <a href="#str_t_str_attach_with_size">str\_attach\_with\_size</a> | 通过附加到一个buff来初始化str。 |
 | <a href="#str_t_str_clear">str\_clear</a> | 清除字符串内容。 |
 | <a href="#str_t_str_common_prefix">str\_common\_prefix</a> | 计算str和other的共同前缀，并设置到str中。 |
 | <a href="#str_t_str_count">str\_count</a> | 统计字串出现的次数。 |
+| <a href="#str_t_str_create">str\_create</a> | 创建str对象。 |
 | <a href="#str_t_str_decode_hex">str\_decode\_hex</a> | 把16进制格式的字符串解码成字符串。 |
 | <a href="#str_t_str_decode_xml_entity">str\_decode\_xml\_entity</a> | 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。 |
 | <a href="#str_t_str_decode_xml_entity_with_len">str\_decode\_xml\_entity\_with\_len</a> | 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。 |
+| <a href="#str_t_str_destroy">str\_destroy</a> | 销毁str对象 |
 | <a href="#str_t_str_encode_hex">str\_encode\_hex</a> | 把二进制的数据编码成16进制格式的字符串。 |
 | <a href="#str_t_str_encode_xml_entity">str\_encode\_xml\_entity</a> | 对XML基本的entity进行编码，目前仅支持&lt;&gt;&quota;&amp;。 |
 | <a href="#str_t_str_encode_xml_entity_with_len">str\_encode\_xml\_entity\_with\_len</a> | 对XML基本的entity进行编码，目前仅支持&lt;&gt;&quota;&amp;。 |
@@ -96,7 +103,7 @@ str_reset(&s);
 * 函数原型：
 
 ```
-ret_t str_append (str_t* str, char* text);
+ret_t str_append (str_t* str, const char* text);
 ```
 
 * 参数说明：
@@ -105,7 +112,27 @@ ret_t str_append (str_t* str, char* text);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| text | char* | 要追加的字符串。 |
+| text | const char* | 要追加的字符串。 |
+#### str\_append\_c\_str 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_c_str">追加一个字符串，字符串前后加英文双引号，并按C语言规则转义特殊字符。
+
+* 函数原型：
+
+```
+ret_t str_append_c_str (str_t* str, const char* c_str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| c\_str | const char* | 待追加的字符串。 |
 #### str\_append\_char 函数
 -----------------------
 
@@ -147,6 +174,27 @@ ret_t str_append_double (str_t* str, const char* format, double value);
 | str | str\_t* | str对象。 |
 | format | const char* | 格式。 |
 | value | double | 要追加的浮点数。 |
+#### str\_append\_escape 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_escape">对字符串s进行转义，并追加到str对象。
+
+* 函数原型：
+
+```
+ret_t str_append_escape (str_t* str, const char* s, uint32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| s | const char* | 字符串。 |
+| size | uint32\_t | 字符串s的长度。 |
 #### str\_append\_format 函数
 -----------------------
 
@@ -276,7 +324,7 @@ ret_t str_append_json_int_pair (str_t* str, const char* key, int32_t value);
 
 * 函数功能：
 
-> <p id="str_t_str_append_json_str">追加一个字符串，字符串前后加英文双引号，字符串本身的双引号被转义为\"。
+> <p id="str_t_str_append_json_str">追加一个字符串，字符串前后加英文双引号，并按JSON规则转义特殊字符。
 
 * 函数原型：
 
@@ -334,7 +382,7 @@ str_reset(&s);
 * 函数原型：
 
 ```
-ret_t str_append_more (str_t* str, char* text);
+ret_t str_append_more (str_t* str, const char* text);
 ```
 
 * 参数说明：
@@ -343,7 +391,7 @@ ret_t str_append_more (str_t* str, char* text);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| text | char* | 要追加的字符串。 |
+| text | const char* | 要追加的字符串。 |
 #### str\_append\_n\_chars 函数
 -----------------------
 
@@ -385,6 +433,27 @@ ret_t str_append_uint64 (str_t* str, uint64_t value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
 | value | uint64\_t | 要追加的整数。 |
+#### str\_append\_unescape 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_unescape">对字符串s进行反转义，并追加到str对象。
+
+* 函数原型：
+
+```
+ret_t str_append_unescape (str_t* str, const char* s, uint32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| s | const char* | 字符串。 |
+| size | uint32\_t | 字符串s的长度。 |
 #### str\_append\_with\_len 函数
 -----------------------
 
@@ -395,7 +464,7 @@ ret_t str_append_uint64 (str_t* str, uint64_t value);
 * 函数原型：
 
 ```
-ret_t str_append_with_len (str_t* str, char* text, uint32_t len);
+ret_t str_append_with_len (str_t* str, const char* text, uint32_t len);
 ```
 
 * 参数说明：
@@ -404,8 +473,68 @@ ret_t str_append_with_len (str_t* str, char* text, uint32_t len);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| text | char* | 要追加的字符串。 |
+| text | const char* | 要追加的字符串。 |
 | len | uint32\_t | 字符串长度。 |
+#### str\_attach 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_attach">通过附加到一个buff来初始化str。
+>可以避免str动态分配内存，同时也不会自动扩展内存，使用完成后无需调用str_reset。
+```c
+str_t s;
+char buff[32];
+str_attach(&s, buff, ARRAY_SIZE(buff));
+str_set(&s, "abc");
+str_append(&s, "123");
+```
+
+* 函数原型：
+
+```
+str_t* str_attach (str_t* str, char* buff, uint32_t capacity);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | str\_t* | str对象本身。 |
+| str | str\_t* | str对象。 |
+| buff | char* | 缓冲区。 |
+| capacity | uint32\_t | 初始容量。 |
+#### str\_attach\_with\_size 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_attach_with_size">通过附加到一个buff来初始化str。
+>可以避免str动态分配内存，同时也不会自动扩展内存，使用完成后无需调用str_reset。
+```c
+str_t s;
+char buff[32];
+strcpy(buff, "a");
+str_attach_with_size(&s, buff, 1, ARRAY_SIZE(buff));
+str_set(&s, "abc");
+str_append(&s, "123");
+```
+
+* 函数原型：
+
+```
+str_t* str_attach_with_size (str_t* str, char* buff, uint32_t size, uint32_t capacity);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | str\_t* | str对象本身。 |
+| str | str\_t* | str对象。 |
+| buff | char* | 缓冲区。 |
+| size | uint32\_t | 初始长度。 |
+| capacity | uint32\_t | 初始容量。 |
 #### str\_clear 函数
 -----------------------
 
@@ -465,6 +594,25 @@ uint32_t str_count (str_t* str, const char* substr);
 | 返回值 | uint32\_t | 返回字符串出现的次数。 |
 | str | str\_t* | str对象。 |
 | substr | const char* | 字串。 |
+#### str\_create 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_create">创建str对象。
+
+* 函数原型：
+
+```
+str_t* str_create (uint32_t capacity);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | str\_t* | str对象。 |
+| capacity | uint32\_t | 初始容量。 |
 #### str\_decode\_hex 函数
 -----------------------
 
@@ -496,7 +644,7 @@ ret_t str_decode_hex (str_t* str, uint8_t* data, uint32_t size);
 * 函数原型：
 
 ```
-ret_t str_decode_xml_entity (str_t* str, char* text);
+ret_t str_decode_xml_entity (str_t* str, const char* text);
 ```
 
 * 参数说明：
@@ -505,7 +653,7 @@ ret_t str_decode_xml_entity (str_t* str, char* text);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| text | char* | 要解码的XML文本。 |
+| text | const char* | 要解码的XML文本。 |
 #### str\_decode\_xml\_entity\_with\_len 函数
 -----------------------
 
@@ -516,7 +664,7 @@ ret_t str_decode_xml_entity (str_t* str, char* text);
 * 函数原型：
 
 ```
-ret_t str_decode_xml_entity_with_len (str_t* str, char* text, uint32_t len);
+ret_t str_decode_xml_entity_with_len (str_t* str, const char* text, uint32_t len);
 ```
 
 * 参数说明：
@@ -525,8 +673,27 @@ ret_t str_decode_xml_entity_with_len (str_t* str, char* text, uint32_t len);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| text | char* | 要解码的XML文本。 |
+| text | const char* | 要解码的XML文本。 |
 | len | uint32\_t | 字符串长度。 |
+#### str\_destroy 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_destroy">销毁str对象
+
+* 函数原型：
+
+```
+ret_t str_destroy (str_t* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
 #### str\_encode\_hex 函数
 -----------------------
 
@@ -559,7 +726,7 @@ ret_t str_encode_hex (str_t* str, const uint8_t* data, uint32_t size, const char
 * 函数原型：
 
 ```
-ret_t str_encode_xml_entity (str_t* str, char* text);
+ret_t str_encode_xml_entity (str_t* str, const char* text);
 ```
 
 * 参数说明：
@@ -568,7 +735,7 @@ ret_t str_encode_xml_entity (str_t* str, char* text);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| text | char* | 要编码的XML文本。 |
+| text | const char* | 要编码的XML文本。 |
 #### str\_encode\_xml\_entity\_with\_len 函数
 -----------------------
 
@@ -579,7 +746,7 @@ ret_t str_encode_xml_entity (str_t* str, char* text);
 * 函数原型：
 
 ```
-ret_t str_encode_xml_entity_with_len (str_t* str, char* text, uint32_t len);
+ret_t str_encode_xml_entity_with_len (str_t* str, const char* text, uint32_t len);
 ```
 
 * 参数说明：
@@ -588,7 +755,7 @@ ret_t str_encode_xml_entity_with_len (str_t* str, char* text, uint32_t len);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| text | char* | 要编码的XML文本。 |
+| text | const char* | 要编码的XML文本。 |
 | len | uint32\_t | 字符串长度。 |
 #### str\_end\_with 函数
 -----------------------
@@ -600,7 +767,7 @@ ret_t str_encode_xml_entity_with_len (str_t* str, char* text, uint32_t len);
 * 函数原型：
 
 ```
-bool_t str_end_with (str_t* str, char* text);
+bool_t str_end_with (str_t* str, const char* text);
 ```
 
 * 参数说明：
@@ -609,7 +776,7 @@ bool_t str_end_with (str_t* str, char* text);
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回是否以指定的子串结尾。 |
 | str | str\_t* | str对象。 |
-| text | char* | 子字符串。 |
+| text | const char* | 子字符串。 |
 #### str\_eq 函数
 -----------------------
 
@@ -620,7 +787,7 @@ bool_t str_end_with (str_t* str, char* text);
 * 函数原型：
 
 ```
-bool_t str_eq (str_t* str, char* text);
+bool_t str_eq (str_t* str, const char* text);
 ```
 
 * 参数说明：
@@ -629,7 +796,7 @@ bool_t str_eq (str_t* str, char* text);
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回是否相等。 |
 | str | str\_t* | str对象。 |
-| text | char* | 待比较的字符串。 |
+| text | const char* | 待比较的字符串。 |
 #### str\_expand\_vars 函数
 -----------------------
 
@@ -646,7 +813,7 @@ bool_t str_eq (str_t* str, char* text);
 * 函数原型：
 
 ```
-ret_t str_expand_vars (str_t* str);
+ret_t str_expand_vars (str_t* str, const char* src, const tk_object_t* obj);
 ```
 
 * 参数说明：
@@ -655,6 +822,8 @@ ret_t str_expand_vars (str_t* str);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
+| src | const char* | 字符串。 |
+| obj | const tk\_object\_t* | obj对象。 |
 #### str\_extend 函数
 -----------------------
 
@@ -806,7 +975,7 @@ ret_t str_from_uint64 (str_t* str, uint64_t value);
 * 函数原型：
 
 ```
-ret_t str_from_value (str_t* str, value_t value);
+ret_t str_from_value (str_t* str, const value_t* value);
 ```
 
 * 参数说明：
@@ -815,7 +984,7 @@ ret_t str_from_value (str_t* str, value_t value);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| value | value\_t | value。 |
+| value | const value\_t* | value。 |
 #### str\_from\_wstr 函数
 -----------------------
 
@@ -826,7 +995,7 @@ ret_t str_from_value (str_t* str, value_t value);
 * 函数原型：
 
 ```
-ret_t str_from_wstr (str_t* str, wchar_t* wstr);
+ret_t str_from_wstr (str_t* str, const wchar_t* wstr);
 ```
 
 * 参数说明：
@@ -835,7 +1004,7 @@ ret_t str_from_wstr (str_t* str, wchar_t* wstr);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| wstr | wchar\_t* | Unicode字符串。 |
+| wstr | const wchar\_t* | Unicode字符串。 |
 #### str\_from\_wstr\_with\_len 函数
 -----------------------
 
@@ -846,7 +1015,7 @@ ret_t str_from_wstr (str_t* str, wchar_t* wstr);
 * 函数原型：
 
 ```
-ret_t str_from_wstr_with_len (str_t* str, wchar_t* wstr, uint32_t len);
+ret_t str_from_wstr_with_len (str_t* str, const wchar_t* wstr, uint32_t len);
 ```
 
 * 参数说明：
@@ -855,7 +1024,7 @@ ret_t str_from_wstr_with_len (str_t* str, wchar_t* wstr, uint32_t len);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| wstr | wchar\_t* | Unicode字符串 |
+| wstr | const wchar\_t* | Unicode字符串 |
 | len | uint32\_t | Unicode字符串的长度。 |
 #### str\_init 函数
 -----------------------
@@ -887,7 +1056,7 @@ str_t* str_init (str_t* str, uint32_t capacity);
 * 函数原型：
 
 ```
-ret_t str_insert (str_t* str, uint32_t offset, char* text);
+ret_t str_insert (str_t* str, uint32_t offset, const char* text);
 ```
 
 * 参数说明：
@@ -897,7 +1066,7 @@ ret_t str_insert (str_t* str, uint32_t offset, char* text);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
 | offset | uint32\_t | 偏移量。 |
-| text | char* | 要插入的字符串。 |
+| text | const char* | 要插入的字符串。 |
 #### str\_insert\_with\_len 函数
 -----------------------
 
@@ -908,7 +1077,7 @@ ret_t str_insert (str_t* str, uint32_t offset, char* text);
 * 函数原型：
 
 ```
-ret_t str_insert_with_len (str_t* str, uint32_t offset, char* text, uint32_t len);
+ret_t str_insert_with_len (str_t* str, uint32_t offset, const char* text, uint32_t len);
 ```
 
 * 参数说明：
@@ -918,7 +1087,7 @@ ret_t str_insert_with_len (str_t* str, uint32_t offset, char* text, uint32_t len
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
 | offset | uint32\_t | 偏移量。 |
-| text | char* | 要插入的字符串。 |
+| text | const char* | 要插入的字符串。 |
 | len | uint32\_t | 字符串长度。 |
 #### str\_pop 函数
 -----------------------
@@ -970,7 +1139,7 @@ ret_t str_remove (str_t* str, uint32_t offset, uint32_t len);
 * 函数原型：
 
 ```
-ret_t str_replace (str_t* str, char* text, char* new_text);
+ret_t str_replace (str_t* str, const char* text, const char* new_text);
 ```
 
 * 参数说明：
@@ -979,8 +1148,8 @@ ret_t str_replace (str_t* str, char* text, char* new_text);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| text | char* | 待替换的子串。 |
-| new\_text | char* | 将替换成的子串。 |
+| text | const char* | 待替换的子串。 |
+| new\_text | const char* | 将替换成的子串。 |
 #### str\_reset 函数
 -----------------------
 
@@ -1029,7 +1198,7 @@ ret_t str_reverse (str_t* str);
 * 函数原型：
 
 ```
-ret_t str_set (str_t* str, char* text);
+ret_t str_set (str_t* str, const char* text);
 ```
 
 * 参数说明：
@@ -1038,7 +1207,7 @@ ret_t str_set (str_t* str, char* text);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| text | char* | 要设置的字符串。 |
+| text | const char* | 要设置的字符串。 |
 #### str\_set\_with\_len 函数
 -----------------------
 
@@ -1049,7 +1218,7 @@ ret_t str_set (str_t* str, char* text);
 * 函数原型：
 
 ```
-ret_t str_set_with_len (str_t* str, char* text, uint32_t len);
+ret_t str_set_with_len (str_t* str, const char* text, uint32_t len);
 ```
 
 * 参数说明：
@@ -1058,7 +1227,7 @@ ret_t str_set_with_len (str_t* str, char* text, uint32_t len);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| text | char* | 要设置的字符串。 |
+| text | const char* | 要设置的字符串。 |
 | len | uint32\_t | 字符串长度。 |
 #### str\_start\_with 函数
 -----------------------
@@ -1070,7 +1239,7 @@ ret_t str_set_with_len (str_t* str, char* text, uint32_t len);
 * 函数原型：
 
 ```
-bool_t str_start_with (str_t* str, char* text);
+bool_t str_start_with (str_t* str, const char* text);
 ```
 
 * 参数说明：
@@ -1079,7 +1248,7 @@ bool_t str_start_with (str_t* str, char* text);
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回是否以指定的子串开头。 |
 | str | str\_t* | str对象。 |
-| text | char* | 子字符串。 |
+| text | const char* | 子字符串。 |
 #### str\_to\_float 函数
 -----------------------
 
@@ -1168,7 +1337,7 @@ ret_t str_to_upper (str_t* str);
 * 函数原型：
 
 ```
-ret_t str_trim (str_t* str, char* text);
+ret_t str_trim (str_t* str, const char* text);
 ```
 
 * 参数说明：
@@ -1177,7 +1346,7 @@ ret_t str_trim (str_t* str, char* text);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| text | char* | 要去除的字符集合。 |
+| text | const char* | 要去除的字符集合。 |
 #### str\_trim\_left 函数
 -----------------------
 
@@ -1188,7 +1357,7 @@ ret_t str_trim (str_t* str, char* text);
 * 函数原型：
 
 ```
-ret_t str_trim_left (str_t* str, char* text);
+ret_t str_trim_left (str_t* str, const char* text);
 ```
 
 * 参数说明：
@@ -1197,7 +1366,7 @@ ret_t str_trim_left (str_t* str, char* text);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| text | char* | 要去除的字符集合。 |
+| text | const char* | 要去除的字符集合。 |
 #### str\_trim\_right 函数
 -----------------------
 
@@ -1208,7 +1377,7 @@ ret_t str_trim_left (str_t* str, char* text);
 * 函数原型：
 
 ```
-ret_t str_trim_right (str_t* str, char* text);
+ret_t str_trim_right (str_t* str, const char* text);
 ```
 
 * 参数说明：
@@ -1217,7 +1386,7 @@ ret_t str_trim_right (str_t* str, char* text);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| text | char* | 要去除的字符集合。 |
+| text | const char* | 要去除的字符集合。 |
 #### str\_unescape 函数
 -----------------------
 

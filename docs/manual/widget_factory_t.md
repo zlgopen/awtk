@@ -65,7 +65,7 @@ widget_factory_t* widget_factory_create ();
 * 函数原型：
 
 ```
-widget_t* widget_factory_create_widget (widget_factory_t* factory, const char* type, xy_t x, xy_t y, xy_t w, xy_t h);
+widget_t* widget_factory_create_widget (widget_factory_t* factory, const char* type, widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 ```
 
 * 参数说明：
@@ -75,10 +75,11 @@ widget_t* widget_factory_create_widget (widget_factory_t* factory, const char* t
 | 返回值 | widget\_t* | 返回控件对象。 |
 | factory | widget\_factory\_t* | 控件工厂对象。 |
 | type | const char* | 控件类型。 |
+| parent | widget\_t* | 父控件。 |
 | x | xy\_t | 初始X坐标。 |
 | y | xy\_t | 初始Y坐标。 |
-| w | xy\_t | 初始宽度。 |
-| h | xy\_t | 初始高度。 |
+| w | wh\_t | 初始宽度。 |
+| h | wh\_t | 初始高度。 |
 #### widget\_factory\_destroy 函数
 -----------------------
 

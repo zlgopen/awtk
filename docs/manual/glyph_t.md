@@ -33,7 +33,7 @@
 * 函数原型：
 
 ```
-glyph_t* glyph_clone ();
+glyph_t* glyph_clone (glyph_t* g);
 ```
 
 * 参数说明：
@@ -41,6 +41,7 @@ glyph_t* glyph_clone ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | glyph\_t* | glyph对象。 |
+| g | glyph\_t* | glyph对象。 |
 #### glyph\_create 函数
 -----------------------
 
@@ -69,7 +70,7 @@ glyph_t* glyph_create ();
 * 函数原型：
 
 ```
-ret_t glyph_destroy (glyph_t* glyph);
+ret_t glyph_destroy (glyph_t* g);
 ```
 
 * 参数说明：
@@ -77,7 +78,7 @@ ret_t glyph_destroy (glyph_t* glyph);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| glyph | glyph\_t* | glyph对象。 |
+| g | glyph\_t* | glyph对象。 |
 #### advance 属性
 -----------------------
 > <p id="glyph_t_advance">占位宽度。

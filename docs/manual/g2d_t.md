@@ -12,7 +12,7 @@
 | <a href="#g2d_t_g2d_copy_image">g2d\_copy\_image</a> | 把图片指定的区域拷贝到framebuffer中。 |
 | <a href="#g2d_t_g2d_fill_rect">g2d\_fill\_rect</a> | 用颜色填充指定的区域。 |
 | <a href="#g2d_t_g2d_rotate_image">g2d\_rotate\_image</a> | 把图片指定的区域进行旋转并拷贝到framebuffer相应的区域，本函数主要用于辅助实现横屏和竖屏的切换，一般支持90度旋转即可。 |
-| <a href="#g2d_t_image_rotate_ex">image\_rotate\_ex</a> | 把图片指定的区域进行旋转。 |
+| <a href="#g2d_t_g2d_rotate_image_ex">g2d\_rotate\_image\_ex</a> | 把图片指定的区域进行旋转。 |
 #### g2d\_blend\_image 函数
 -----------------------
 
@@ -48,7 +48,7 @@ ret_t g2d_blend_image (bitmap_t* fb, bitmap_t* img, const rect_t* dst, const rec
 * 函数原型：
 
 ```
-ret_t g2d_blend_image_rotate (bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r, uint8_t global_alpha, lcd_orientation_t o);
+ret_t g2d_blend_image_rotate (bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r, uint8_t alpha, lcd_orientation_t o);
 ```
 
 * 参数说明：
@@ -60,7 +60,7 @@ ret_t g2d_blend_image_rotate (bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r
 | src | bitmap\_t* | 源图片对象。 |
 | dst\_r | const rectf\_t* | 目的区域。（坐标原点为旋转后的坐标系原点，并非是 dst 的左上角） |
 | src\_r | const rectf\_t* | 源区域。 |
-| global\_alpha | uint8\_t | 全局alpha。 |
+| alpha | uint8\_t | 全局alpha。 |
 | o | lcd\_orientation\_t | 旋转角度(一般支持90度即可，旋转方向为逆时针)。 |
 #### g2d\_copy\_image 函数
 -----------------------
@@ -128,17 +128,17 @@ ret_t g2d_rotate_image (bitmap_t* fb, bitmap_t* img, const rect_t* src, lcd_orie
 | img | bitmap\_t* | 图片对象。 |
 | src | const rect\_t* | 要旋转并拷贝的区域。 |
 | o | lcd\_orientation\_t | 旋转角度(一般支持90度即可)。 |
-#### image\_rotate\_ex 函数
+#### g2d\_rotate\_image\_ex 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="g2d_t_image_rotate_ex">把图片指定的区域进行旋转。
+> <p id="g2d_t_g2d_rotate_image_ex">把图片指定的区域进行旋转。
 
 * 函数原型：
 
 ```
-ret_t image_rotate_ex (bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy, lcd_orientation_t o);
+ret_t g2d_rotate_image_ex (bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy, lcd_orientation_t o);
 ```
 
 * 参数说明：

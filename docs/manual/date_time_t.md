@@ -12,7 +12,7 @@
 | <a href="#date_time_t_date_time_add_delta">date\_time\_add\_delta</a> | 加上一个偏移量(s)。 |
 | <a href="#date_time_t_date_time_create">date\_time\_create</a> | 创建date_time对象，并初始为当前日期和时间(一般供脚本语言中使用)。 |
 | <a href="#date_time_t_date_time_destroy">date\_time\_destroy</a> | 销毁date_time对象(一般供脚本语言中使用)。 |
-| <a href="#date_time_t_date_time_from_time">date\_time\_from\_time</a> | 从time转换而来。 |
+| <a href="#date_time_t_date_time_from_time">date\_time\_from\_time</a> | 从time转换而来(按GMT转换)。 |
 | <a href="#date_time_t_date_time_get_days">date\_time\_get\_days</a> | 获取指定年份月份的天数。 |
 | <a href="#date_time_t_date_time_get_month_name">date\_time\_get\_month\_name</a> | 获取指定月份的英文名称(简写)。 |
 | <a href="#date_time_t_date_time_get_wday">date\_time\_get\_wday</a> | 获取指定日期是周几(0-6, Sunday = 0)。。 |
@@ -27,7 +27,7 @@
 | <a href="#date_time_t_date_time_set_month">date\_time\_set\_month</a> | 设置月。 |
 | <a href="#date_time_t_date_time_set_second">date\_time\_set\_second</a> | 设置秒。 |
 | <a href="#date_time_t_date_time_set_year">date\_time\_set\_year</a> | 设置年。 |
-| <a href="#date_time_t_date_time_to_time">date\_time\_to\_time</a> | 转换成time。 |
+| <a href="#date_time_t_date_time_to_time">date\_time\_to\_time</a> | 转换成time(按GMT转换)。 |
 ### 属性
 <p id="date_time_t_properties">
 
@@ -102,12 +102,12 @@ ret_t date_time_destroy (date_time_t* dt);
 
 * 函数功能：
 
-> <p id="date_time_t_date_time_from_time">从time转换而来。
+> <p id="date_time_t_date_time_from_time">从time转换而来(按GMT转换)。
 
 * 函数原型：
 
 ```
-ret_t date_time_from_time (date_time_t* dt, uint64_t time);
+ret_t date_time_from_time (date_time_t* dt, int64_t time);
 ```
 
 * 参数说明：
@@ -116,7 +116,7 @@ ret_t date_time_from_time (date_time_t* dt, uint64_t time);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | dt | date\_time\_t* | date\_time对象。 |
-| time | uint64\_t | 时间。 |
+| time | int64\_t | 时间。 |
 #### date\_time\_get\_days 函数
 -----------------------
 
@@ -127,7 +127,7 @@ ret_t date_time_from_time (date_time_t* dt, uint64_t time);
 * 函数原型：
 
 ```
-int32_t date_time_get_days (uint32_t year, uint32_t montn);
+int32_t date_time_get_days (uint32_t year, uint32_t month);
 ```
 
 * 参数说明：
@@ -136,7 +136,7 @@ int32_t date_time_get_days (uint32_t year, uint32_t montn);
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回大于0表示天数，否则表示失败。 |
 | year | uint32\_t | 年份。 |
-| montn | uint32\_t | 月份(1-12)。 |
+| month | uint32\_t | 月份(1-12)。 |
 #### date\_time\_get\_month\_name 函数
 -----------------------
 
@@ -147,7 +147,7 @@ int32_t date_time_get_days (uint32_t year, uint32_t montn);
 * 函数原型：
 
 ```
-const char* date_time_get_month_name (uint32_t montn);
+const char* date_time_get_month_name (uint32_t month);
 ```
 
 * 参数说明：
@@ -155,7 +155,7 @@ const char* date_time_get_month_name (uint32_t montn);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | const char* | 返回指定月份的英文名称(简写)。 |
-| montn | uint32\_t | 月份(1-12)。 |
+| month | uint32\_t | 月份(1-12)。 |
 #### date\_time\_get\_wday 函数
 -----------------------
 
@@ -166,7 +166,7 @@ const char* date_time_get_month_name (uint32_t montn);
 * 函数原型：
 
 ```
-int32_t date_time_get_wday (uint32_t year, uint32_t montn, uint32_t day);
+int32_t date_time_get_wday (uint32_t year, uint32_t month, uint32_t day);
 ```
 
 * 参数说明：
@@ -175,7 +175,7 @@ int32_t date_time_get_wday (uint32_t year, uint32_t montn, uint32_t day);
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回大于等于0表示周几(0-6)，否则表示失败。 |
 | year | uint32\_t | 年份。 |
-| montn | uint32\_t | 月份(1-12)。 |
+| month | uint32\_t | 月份(1-12)。 |
 | day | uint32\_t | 日(1-31)。 |
 #### date\_time\_get\_wday\_name 函数
 -----------------------
@@ -208,7 +208,7 @@ const char* date_time_get_wday_name (uint32_t wday);
 * 函数原型：
 
 ```
-ret_t date_time_global_init_ex (date_time_vtable_t vt);
+ret_t date_time_global_init_ex (const date_time_vtable_t* vt);
 ```
 
 * 参数说明：
@@ -216,7 +216,7 @@ ret_t date_time_global_init_ex (date_time_vtable_t vt);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| vt | date\_time\_vtable\_t | 日期和时间的相关函数的实现。 |
+| vt | const date\_time\_vtable\_t* | 日期和时间的相关函数的实现。 |
 #### date\_time\_init 函数
 -----------------------
 
@@ -399,19 +399,19 @@ ret_t date_time_set_year (date_time_t* dt, uint32_t year);
 
 * 函数功能：
 
-> <p id="date_time_t_date_time_to_time">转换成time。
+> <p id="date_time_t_date_time_to_time">转换成time(按GMT转换)。
 
 * 函数原型：
 
 ```
-uint64_t date_time_to_time (date_time_t* dt);
+int64_t date_time_to_time (date_time_t* dt);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | uint64\_t | 返回time。 |
+| 返回值 | int64\_t | 返回time。 |
 | dt | date\_time\_t* | date\_time对象。 |
 #### day 属性
 -----------------------

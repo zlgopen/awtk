@@ -35,12 +35,12 @@ c = color_parse("rgba(11,22,33,0.5)");
 * 函数原型：
 
 ```
-void* color_parse (const char* color);
+color_t color_parse (const char* color);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | void* | 返回color\_t对象。 |
+| 返回值 | color\_t | 返回color\_t对象。 |
 | color | const char* | 字符串格式的颜色。 |

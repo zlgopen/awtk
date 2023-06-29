@@ -143,7 +143,7 @@ ret_t image_base_set_clickable (widget_t* widget, bool_t clickable);
 * 函数原型：
 
 ```
-ret_t image_base_set_image (widget_t* widget, char* name);
+ret_t image_base_set_image (widget_t* widget, const char* name);
 ```
 
 * 参数说明：
@@ -152,7 +152,7 @@ ret_t image_base_set_image (widget_t* widget, char* name);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | image对象。 |
-| name | char* | 图片名称，该图片必须存在于资源管理器。 |
+| name | const char* | 图片名称，该图片必须存在于资源管理器。 |
 #### image\_base\_set\_rotation 函数
 -----------------------
 

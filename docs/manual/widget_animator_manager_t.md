@@ -77,14 +77,14 @@ ret_t widget_animator_manager_add (widget_animator_manager_t* am, widget_animato
 * 函数原型：
 
 ```
-ret_t widget_animator_manager_count (widget_animator_manager_t* am);
+uint32_t widget_animator_manager_count (widget_animator_manager_t* am);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回动画个数。 |
+| 返回值 | uint32\_t | 返回动画个数。 |
 | am | widget\_animator\_manager\_t* | 控件动画管理器。 |
 #### widget\_animator\_manager\_create 函数
 -----------------------

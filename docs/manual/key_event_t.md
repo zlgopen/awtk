@@ -25,6 +25,7 @@
 | <a href="#key_event_t_lctrl">lctrl</a> | bool\_t | left ctrl键是否按下。 |
 | <a href="#key_event_t_lshift">lshift</a> | bool\_t | left shift键是否按下。 |
 | <a href="#key_event_t_menu">menu</a> | bool\_t | menu键是否按下。 |
+| <a href="#key_event_t_numlock">numlock</a> | bool\_t | numlock键是否按下。 |
 | <a href="#key_event_t_ralt">ralt</a> | bool\_t | right alt键是否按下。 |
 | <a href="#key_event_t_rctrl">rctrl</a> | bool\_t | right ctrl键是否按下。 |
 | <a href="#key_event_t_rshift">rshift</a> | bool\_t | right shift键是否按下。 |
@@ -58,7 +59,7 @@ key_event_t* key_event_cast (event_t* event);
 * 函数原型：
 
 ```
-event_t* key_event_init (key_event_t* event, void* target, uint32_t type, int32_t key);
+event_t* key_event_init (key_event_t* event, uint32_t type, void* target, int32_t key);
 ```
 
 * 参数说明：
@@ -67,8 +68,8 @@ event_t* key_event_init (key_event_t* event, void* target, uint32_t type, int32_
 | -------- | ----- | --------- |
 | 返回值 | event\_t* | event对象。 |
 | event | key\_event\_t* | event对象。 |
-| target | void* | 事件目标。 |
 | type | uint32\_t | 事件类型。 |
+| target | void* | 事件目标。 |
 | key | int32\_t | key的值。 |
 #### alt 属性
 -----------------------
@@ -163,6 +164,17 @@ ctrl键是否按下。
 #### menu 属性
 -----------------------
 > <p id="key_event_t_menu">menu键是否按下。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可脚本化   | 是 |
+#### numlock 属性
+-----------------------
+> <p id="key_event_t_numlock">numlock键是否按下。
 
 * 类型：bool\_t
 

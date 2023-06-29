@@ -10,20 +10,23 @@
 | <a href="#locale_info_t_locale_info">locale\_info</a> | 获取缺省locale_info。 |
 | <a href="#locale_info_t_locale_info_change">locale\_info\_change</a> | 设置当前的国家和语言。 |
 | <a href="#locale_info_t_locale_info_create">locale\_info\_create</a> | 创建locale_info。 |
+| <a href="#locale_info_t_locale_info_create_ex">locale\_info\_create\_ex</a> | 创建locale_info。 |
 | <a href="#locale_info_t_locale_info_destroy">locale\_info\_destroy</a> | 释放全部资源并销毁locale_info对象。 |
 | <a href="#locale_info_t_locale_info_off">locale\_info\_off</a> | 注销指定事件的处理函数。 |
 | <a href="#locale_info_t_locale_info_on">locale\_info\_on</a> | 注册指定事件的处理函数。 |
 | <a href="#locale_info_t_locale_info_reload">locale\_info\_reload</a> | 重新加载字符串资源。 |
 | <a href="#locale_info_t_locale_info_set">locale\_info\_set</a> | 设置缺省locale_info。 |
 | <a href="#locale_info_t_locale_info_set_assets_manager">locale\_info\_set\_assets\_manager</a> | 设置资源管理器对象。 |
+| <a href="#locale_info_t_locale_info_set_custom_tr">locale\_info\_set\_custom\_tr</a> | 设置自定义的候补翻译函数。 |
 | <a href="#locale_info_t_locale_info_set_fallback_tr">locale\_info\_set\_fallback\_tr</a> | 设置候补翻译函数。 |
+| <a href="#locale_info_t_locale_info_set_fallback_tr2">locale\_info\_set\_fallback\_tr2</a> | 设置候补翻译函数。 |
 | <a href="#locale_info_t_locale_info_tr">locale\_info\_tr</a> | 翻译字符串。 |
 ### 属性
 <p id="locale_info_t_properties">
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#locale_info_t_country;">country;</a> | char* | 国家或地区。如：CN |
+| <a href="#locale_info_t_country">country</a> | char* | 国家或地区。如：CN |
 | <a href="#locale_info_t_language">language</a> | char* | 语言。如：zh |
 #### locale\_info 函数
 -----------------------
@@ -53,7 +56,7 @@ locale_info_t* locale_info ();
 * 函数原型：
 
 ```
-ret_t locale_info_change (locale_info_t* locale_info, char* language, char* country);
+ret_t locale_info_change (locale_info_t* locale_info, const char* language, const char* country);
 ```
 
 * 参数说明：
@@ -62,8 +65,8 @@ ret_t locale_info_change (locale_info_t* locale_info, char* language, char* coun
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | locale\_info | locale\_info\_t* | locale\_info对象。 |
-| language | char* | 语言。 |
-| country | char* | 国家或地区。 |
+| language | const char* | 语言。 |
+| country | const char* | 国家或地区。 |
 #### locale\_info\_create 函数
 -----------------------
 
@@ -74,7 +77,7 @@ ret_t locale_info_change (locale_info_t* locale_info, char* language, char* coun
 * 函数原型：
 
 ```
-locale_info_t* locale_info_create (char* language, char* country);
+locale_info_t* locale_info_create (const char* language, const char* country);
 ```
 
 * 参数说明：
@@ -82,8 +85,29 @@ locale_info_t* locale_info_create (char* language, char* country);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | locale\_info\_t* | 返回locale\_info对象。 |
-| language | char* | 语言。 |
-| country | char* | 国家或地区。 |
+| language | const char* | 语言。 |
+| country | const char* | 国家或地区。 |
+#### locale\_info\_create\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="locale_info_t_locale_info_create_ex">创建locale_info。
+
+* 函数原型：
+
+```
+locale_info_t* locale_info_create_ex (const char* language, const char* country, assets_manager_t* am);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | locale\_info\_t* | 返回locale\_info对象。 |
+| language | const char* | 语言。 |
+| country | const char* | 国家或地区。 |
+| am | assets\_manager\_t* | 资源管理器。 |
 #### locale\_info\_destroy 函数
 -----------------------
 
@@ -203,6 +227,28 @@ ret_t locale_info_set_assets_manager (locale_info_t* locale_info, assets_manager
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | locale\_info | locale\_info\_t* | locale\_info对象。 |
 | assets\_manager | assets\_manager\_t* | 资源管理器。 |
+#### locale\_info\_set\_custom\_tr 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="locale_info_t_locale_info_set_custom_tr">设置自定义的候补翻译函数。
+> 有时我们需要优先加载用户自定义的翻译，加载失败才加载系统缺省的，可用设置一个函数去实现这类功能。
+
+* 函数原型：
+
+```
+ret_t locale_info_set_custom_tr (locale_info_t* locale_info, locale_info_tr_with_context_t tr, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| locale\_info | locale\_info\_t* | locale\_info对象。 |
+| tr | locale\_info\_tr\_with\_context\_t | 自定义的翻译函数。 |
+| ctx | void* | 翻译函数的上下文。 |
 #### locale\_info\_set\_fallback\_tr 函数
 -----------------------
 
@@ -223,6 +269,27 @@ ret_t locale_info_set_fallback_tr (locale_info_t* locale_info, locale_info_tr_t 
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | locale\_info | locale\_info\_t* | locale\_info对象。 |
 | tr | locale\_info\_tr\_t | fallback翻译函数。 |
+#### locale\_info\_set\_fallback\_tr2 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="locale_info_t_locale_info_set_fallback_tr2">设置候补翻译函数。
+
+* 函数原型：
+
+```
+ret_t locale_info_set_fallback_tr2 (locale_info_t* locale_info, locale_info_tr_with_context_t tr, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| locale\_info | locale\_info\_t* | locale\_info对象。 |
+| tr | locale\_info\_tr\_with\_context\_t | fallback翻译函数。 |
+| ctx | void* | 翻译函数的上下文。 |
 #### locale\_info\_tr 函数
 -----------------------
 
@@ -243,9 +310,9 @@ const char* locale_info_tr (locale_info_t* locale_info, const char* text);
 | 返回值 | const char* | 返回翻译之后的字符串。 |
 | locale\_info | locale\_info\_t* | locale\_info对象。 |
 | text | const char* | 待翻译的文本。 |
-#### country; 属性
+#### country 属性
 -----------------------
-> <p id="locale_info_t_country;">国家或地区。如：CN
+> <p id="locale_info_t_country">国家或地区。如：CN
 
 * 类型：char*
 

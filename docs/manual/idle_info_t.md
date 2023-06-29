@@ -19,7 +19,7 @@
 | <a href="#idle_info_t_extra_ctx">extra\_ctx</a> | void* | idle回调函数上下文。 |
 | <a href="#idle_info_t_id">id</a> | uint32\_t | idle的ID |
 | <a href="#idle_info_t_on_destroy">on\_destroy</a> | tk\_destroy\_t | idle销毁时的回调函数。 |
-| <a href="#idle_info_t_on_destroy_ctx">on\_destroy\_ctx</a> | tk\_destroy\_t | idle销毁时的回调函数的上下文。 |
+| <a href="#idle_info_t_on_destroy_ctx">on\_destroy\_ctx</a> | void* | idle销毁时的回调函数的上下文。 |
 | <a href="#idle_info_t_on_idle">on\_idle</a> | idle\_func\_t | idle回调函数。 |
 #### idle\_info\_cast 函数
 -----------------------
@@ -89,7 +89,7 @@ idle_info_t* idle_info_cast (idle_info_t* idle);
 -----------------------
 > <p id="idle_info_t_on_destroy_ctx">idle销毁时的回调函数的上下文。
 
-* 类型：tk\_destroy\_t
+* 类型：void*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

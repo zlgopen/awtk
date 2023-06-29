@@ -85,8 +85,6 @@
 | EVT\_THEME\_CHANGED | 主题变化(event\_t)。 |
 | EVT\_WIDGET\_ADD\_CHILD | 控件加载新的子控件(event\_t)。 |
 | EVT\_WIDGET\_REMOVE\_CHILD | 控件移除子控件(event\_t)。 |
-| EVT\_WIDGET\_WILL\_RESTACK\_CHILD | 控件即将调整子控件位置序数(event\_t)。在该事件的回调函数中返回RET\_STOP停止调整动作。 |
-| EVT\_WIDGET\_RESTACK\_CHILD | 控件调整子控件位置序数(event\_t)。 |
 | EVT\_SCROLL\_START | scroll view开始滚动(event\_t)。 |
 | EVT\_SCROLL | scroll view滚动(event\_t)。 |
 | EVT\_SCROLL\_END | scroll view结束滚动(event\_t)。 |
@@ -101,6 +99,9 @@
 | EVT\_CONNECT | 客户连接到来(event\_t)。 |
 | EVT\_MODEL\_CHANGE | 模型变化。用于fscript实现窗口间通讯(model\_event\_t)。 |
 | EVT\_SYSTEM | SDL系统事件(system\_event\_t)。 |
+| EVT\_DROP\_FILE | SDL文件拖入事件(drop\_file\_event\_t)。 |
+| EVT\_LOCALE\_INFOS\_LOAD\_INFO | locale\_infos加载某个本地化信息(event\_t)。 |
+| EVT\_LOCALE\_INFOS\_UNLOAD\_INFO | locale\_infos卸载某个本地化信息(event\_t)。 |
 | EVT\_REQ\_START | event queue其它请求编号起始值。 |
 | EVT\_USER\_START | 用户定义事件起始值。 |
 | EVT\_NONE | 无效事件名称。 |

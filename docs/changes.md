@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/06/29
+  * 更新API文档。
+
 2023/06/28
   * 感谢朝泽提供以下补丁：
     * 修改 locale\_infos\_change 时最后 change 缺省的 locale\_info()，避免 EVT\_LOCALE\_CHANGED 触发时小程序的资源未更新；

@@ -78,14 +78,14 @@ int32_t debugger_fscript_get_start_line (fscript_t* fscript);
 * 函数原型：
 
 ```
-debugger_t* debugger_fscript_set_code (debugger_t* debugger, const binary_data_t* code, bool_t changed);
+ret_t debugger_fscript_set_code (debugger_t* debugger, const binary_data_t* code, bool_t changed);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | debugger\_t* | 返回debugger对象。 |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | debugger | debugger\_t* | debugger对象。 |
 | code | const binary\_data\_t* | 代码。 |
 | changed | bool\_t | 是否重新加载。 |
@@ -99,13 +99,13 @@ debugger_t* debugger_fscript_set_code (debugger_t* debugger, const binary_data_t
 * 函数原型：
 
 ```
-debugger_t* debugger_fscript_set_fscript (debugger_t* debugger, fscript_t* fscript);
+ret_t debugger_fscript_set_fscript (debugger_t* debugger, fscript_t* fscript);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | debugger\_t* | 返回debugger对象。 |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | debugger | debugger\_t* | debugger对象。 |
 | fscript | fscript\_t* | 脚本对象。 |

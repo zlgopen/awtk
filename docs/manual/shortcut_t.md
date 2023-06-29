@@ -59,7 +59,7 @@ bool_t shortcut_equal (shortcut_t* shortcut1, shortcut_t* shortcut2);
 * 函数原型：
 
 ```
-shortcut_t* shortcut_init ();
+shortcut_t* shortcut_init (shortcut_t* shortcut, uint32_t key);
 ```
 
 * 参数说明：
@@ -67,6 +67,8 @@ shortcut_t* shortcut_init ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | shortcut\_t* | 返回快捷键对象。 |
+| shortcut | shortcut\_t* | 快捷键对象。 |
+| key | uint32\_t | 键值。 |
 #### shortcut\_init\_with\_str 函数
 -----------------------
 
@@ -77,7 +79,7 @@ shortcut_t* shortcut_init ();
 * 函数原型：
 
 ```
-shortcut_t* shortcut_init_with_str (shortcut_t* shortcut);
+shortcut_t* shortcut_init_with_str (shortcut_t* shortcut, const char* str);
 ```
 
 * 参数说明：
@@ -86,6 +88,7 @@ shortcut_t* shortcut_init_with_str (shortcut_t* shortcut);
 | -------- | ----- | --------- |
 | 返回值 | shortcut\_t* | 返回快捷键对象。 |
 | shortcut | shortcut\_t* | 快捷键对象。 |
+| str | const char* | 快捷键。 |
 #### shortcut\_match 函数
 -----------------------
 

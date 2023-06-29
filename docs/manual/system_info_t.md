@@ -29,7 +29,7 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#system_info_t_app_name">app\_name</a> | const char* | 应用程序的名称。 |
-| <a href="#system_info_t_app_root">app\_root</a> | const char* | 应用程序的根目录，用于定位资源文件。 |
+| <a href="#system_info_t_app_root">app\_root</a> | char* | 应用程序的根目录，用于定位资源文件。 |
 | <a href="#system_info_t_app_type">app\_type</a> | app\_type\_t | 应用程序的类型。 |
 | <a href="#system_info_t_country">country</a> | const char* | locale中的国家。 |
 | <a href="#system_info_t_default_font">default\_font</a> | const char* | 缺省字体。 |
@@ -334,7 +334,7 @@ ret_t system_info_set_lcd_w (system_info_t* info, uint32_t lcd_w);
 -----------------------
 > <p id="system_info_t_app_root">应用程序的根目录，用于定位资源文件。
 
-* 类型：const char*
+* 类型：char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

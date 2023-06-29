@@ -19,6 +19,7 @@ uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SI
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#style_t_style_destroy">style\_destroy</a> | 销毁style对象 |
+| <a href="#style_t_style_get">style\_get</a> | 获取指定状态的指定属性的值。 |
 | <a href="#style_t_style_get_color">style\_get\_color</a> | 获取指定name的颜色值。 |
 | <a href="#style_t_style_get_gradient">style\_get\_gradient</a> | 获取指定name的渐变颜色值。 |
 | <a href="#style_t_style_get_int">style\_get\_int</a> | 获取指定name的整数格式的值。 |
@@ -52,6 +53,28 @@ ret_t style_destroy (style_t* s);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | s | style\_t* | style对象。 |
+#### style\_get 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="style_t_style_get">获取指定状态的指定属性的值。
+
+* 函数原型：
+
+```
+ret_t style_get (style_t* s, const char* state, const char* name, value_t* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| s | style\_t* | style对象。 |
+| state | const char* | 状态。 |
+| name | const char* | 属性名。 |
+| value | value\_t* | 值。 |
 #### style\_get\_color 函数
 -----------------------
 

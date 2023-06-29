@@ -21,15 +21,18 @@
 | <a href="#dialog_highlighter_t_dialog_highlighter_set_bg_clip_rect">dialog\_highlighter\_set\_bg\_clip\_rect</a> | 设置背景图片的显示裁剪区。 |
 | <a href="#dialog_highlighter_t_dialog_highlighter_set_system_bar_alpha">dialog\_highlighter\_set\_system\_bar\_alpha</a> | 设置 sytem_bar 的高亮透明值。 |
 | <a href="#dialog_highlighter_t_dialog_highlighter_set_win">dialog\_highlighter\_set\_win</a> | 设置底层窗口。 |
+| <a href="#dialog_highlighter_t_dialog_highlighter_system_bar_bottom_append_clip_rect">dialog\_highlighter\_system\_bar\_bottom\_append\_clip\_rect</a> | 增加底部 system_bar 的显示裁剪区 |
+| <a href="#dialog_highlighter_t_dialog_highlighter_system_bar_top_append_clip_rect">dialog\_highlighter\_system\_bar\_top\_append\_clip\_rect</a> | 增加顶部 system_bar 的显示裁剪区 |
 ### 属性
 <p id="dialog_highlighter_t_properties">
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#dialog_highlighter_t_canvas">canvas</a> | canvas\_t* | 画布。 |
-| <a href="#dialog_highlighter_t_clip_rect">clip\_rect</a> | rect\_t* | 截图的显示裁减区 |
+| <a href="#dialog_highlighter_t_clip_rect">clip\_rect</a> | rect\_t | 截图的显示裁减区 |
 | <a href="#dialog_highlighter_t_dialog">dialog</a> | widget\_t* | 对应的对话框。 |
 | <a href="#dialog_highlighter_t_img">img</a> | bitmap\_t | 底层窗口的截图。 |
+| <a href="#dialog_highlighter_t_used_by_others">used\_by\_others</a> | bool\_t | 是否给了别的窗口使用。 |
 | <a href="#dialog_highlighter_t_win">win</a> | widget\_t* | 底层窗口。 |
 #### dialog\_highlighter\_create 函数
 -----------------------
@@ -272,6 +275,46 @@ ret_t dialog_highlighter_set_win (dialog_highlighter_t* h, widget_t* win);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | h | dialog\_highlighter\_t* | 对话框高亮策略对象。 |
 | win | widget\_t* | 底层窗口。 |
+#### dialog\_highlighter\_system\_bar\_bottom\_append\_clip\_rect 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="dialog_highlighter_t_dialog_highlighter_system_bar_bottom_append_clip_rect">增加底部 system_bar 的显示裁剪区
+
+* 函数原型：
+
+```
+ret_t dialog_highlighter_system_bar_bottom_append_clip_rect (dialog_highlighter_t* h, rect_t* rect);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| h | dialog\_highlighter\_t* | 对话框高亮策略对象。 |
+| rect | rect\_t* | 裁剪区域 |
+#### dialog\_highlighter\_system\_bar\_top\_append\_clip\_rect 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="dialog_highlighter_t_dialog_highlighter_system_bar_top_append_clip_rect">增加顶部 system_bar 的显示裁剪区
+
+* 函数原型：
+
+```
+ret_t dialog_highlighter_system_bar_top_append_clip_rect (dialog_highlighter_t* h, rect_t* rect);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| h | dialog\_highlighter\_t* | 对话框高亮策略对象。 |
+| rect | rect\_t* | 裁剪区域 |
 #### canvas 属性
 -----------------------
 > <p id="dialog_highlighter_t_canvas">画布。
@@ -282,7 +325,7 @@ ret_t dialog_highlighter_set_win (dialog_highlighter_t* h, widget_t* win);
 -----------------------
 > <p id="dialog_highlighter_t_clip_rect">截图的显示裁减区
 
-* 类型：rect\_t*
+* 类型：rect\_t
 
 #### dialog 属性
 -----------------------
@@ -295,6 +338,12 @@ ret_t dialog_highlighter_set_win (dialog_highlighter_t* h, widget_t* win);
 > <p id="dialog_highlighter_t_img">底层窗口的截图。
 
 * 类型：bitmap\_t
+
+#### used\_by\_others 属性
+-----------------------
+> <p id="dialog_highlighter_t_used_by_others">是否给了别的窗口使用。
+
+* 类型：bool\_t
 
 #### win 属性
 -----------------------

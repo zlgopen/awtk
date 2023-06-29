@@ -29,7 +29,7 @@
 * 函数原型：
 
 ```
-ret_t fargs_get_data_and_size (fscript_args_t* args, const uint8_t** , uint32_t* ret_size);
+ret_t fargs_get_data_and_size (fscript_args_t* args, const uint8_t** ret_data, uint32_t* ret_size);
 ```
 
 * 参数说明：
@@ -38,7 +38,7 @@ ret_t fargs_get_data_and_size (fscript_args_t* args, const uint8_t** , uint32_t*
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | args | fscript\_args\_t* | 参数。 |
-|  | const uint8\_t** | 。 |
+| ret\_data | const uint8\_t** | 返回数据。 |
 | ret\_size | uint32\_t* | 返回数据的长度。 |
 #### fscript\_module\_cast 函数
 -----------------------

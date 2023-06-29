@@ -62,13 +62,13 @@ ret_t ubjson_parse (void* data, uint32_t size, ubjson_on_key_value_t on_key_valu
 * 函数原型：
 
 ```
-void* ubjson_to_object (void* data, uint32_t size);
+tk_object_t* ubjson_to_object (void* data, uint32_t size);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | void* | 返回object表示的数据。 |
+| 返回值 | tk\_object\_t* | 返回object表示的数据。 |
 | data | void* | 数据。 |
 | size | uint32\_t | 数据的长度。 |

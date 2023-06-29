@@ -57,7 +57,7 @@ char* tk_utf8_dup_utf16 (const wchar_t* in, int32_t size);
 * 函数原型：
 
 ```
-char* tk_utf8_from_utf16 (const wchar_t* in, const char* out, uint32_t out_size);
+char* tk_utf8_from_utf16 (const wchar_t* in, char* out, uint32_t out_size);
 ```
 
 * 参数说明：
@@ -66,7 +66,7 @@ char* tk_utf8_from_utf16 (const wchar_t* in, const char* out, uint32_t out_size)
 | -------- | ----- | --------- |
 | 返回值 | char* | 返回UTF8字符串。 |
 | in | const wchar\_t* | 输入字符串。 |
-| out | const char* | 输出字符串。 |
+| out | char* | 输出字符串。 |
 | out\_size | uint32\_t | 输出字符串的最大长度。 |
 #### tk\_utf8\_from\_utf16\_ex 函数
 -----------------------
@@ -78,7 +78,7 @@ char* tk_utf8_from_utf16 (const wchar_t* in, const char* out, uint32_t out_size)
 * 函数原型：
 
 ```
-char* tk_utf8_from_utf16_ex (const wchar_t* in, uint32_t in_size, const char* out, uint32_t out_size);
+char* tk_utf8_from_utf16_ex (const wchar_t* in, uint32_t in_size, char* out, uint32_t out_size);
 ```
 
 * 参数说明：
@@ -88,7 +88,7 @@ char* tk_utf8_from_utf16_ex (const wchar_t* in, uint32_t in_size, const char* ou
 | 返回值 | char* | 返回UTF8字符串。 |
 | in | const wchar\_t* | 输入字符串。 |
 | in\_size | uint32\_t | 输入字符串的长度。 |
-| out | const char* | 输出字符串。 |
+| out | char* | 输出字符串。 |
 | out\_size | uint32\_t | 输出字符串的最大长度。 |
 #### tk\_utf8\_get\_bytes\_of\_leading 函数
 -----------------------
@@ -119,7 +119,7 @@ uint32_t tk_utf8_get_bytes_of_leading (uint8_t c);
 * 函数原型：
 
 ```
-wchar_t* tk_utf8_to_utf16 (const char* str, const wchar_t* out, uint32_t size);
+wchar_t* tk_utf8_to_utf16 (const char* str, wchar_t* out, uint32_t out_size);
 ```
 
 * 参数说明：
@@ -128,8 +128,8 @@ wchar_t* tk_utf8_to_utf16 (const char* str, const wchar_t* out, uint32_t size);
 | -------- | ----- | --------- |
 | 返回值 | wchar\_t* | 值。 |
 | str | const char* | str。 |
-| out | const wchar\_t* | 返回结果缓冲区。 |
-| size | uint32\_t | 缓冲区大小。 |
+| out | wchar\_t* | 返回结果缓冲区。 |
+| out\_size | uint32\_t | 缓冲区大小。 |
 #### tk\_utf8\_to\_utf16\_ex 函数
 -----------------------
 
@@ -140,7 +140,7 @@ wchar_t* tk_utf8_to_utf16 (const char* str, const wchar_t* out, uint32_t size);
 * 函数原型：
 
 ```
-wchar_t* tk_utf8_to_utf16_ex (const char* str, uint32_t size, const wchar_t* out, uint32_t out_size);
+wchar_t* tk_utf8_to_utf16_ex (const char* str, uint32_t size, wchar_t* out, uint32_t out_size);
 ```
 
 * 参数说明：
@@ -150,7 +150,7 @@ wchar_t* tk_utf8_to_utf16_ex (const char* str, uint32_t size, const wchar_t* out
 | 返回值 | wchar\_t* | 值。 |
 | str | const char* | str。 |
 | size | uint32\_t | 缓冲区大小。 |
-| out | const wchar\_t* | 返回结果缓冲区。 |
+| out | wchar\_t* | 返回结果缓冲区。 |
 | out\_size | uint32\_t | 缓冲区大小。 |
 #### tk\_utf8\_trim\_invalid\_char 函数
 -----------------------
@@ -166,7 +166,7 @@ wchar_t* tk_utf8_to_utf16_ex (const char* str, uint32_t size, const wchar_t* out
 * 函数原型：
 
 ```
-char* tk_utf8_trim_invalid_char (const char* str);
+char* tk_utf8_trim_invalid_char (char* str);
 ```
 
 * 参数说明：
@@ -174,4 +174,4 @@ char* tk_utf8_trim_invalid_char (const char* str);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | char* | 返回UTF8字符串。 |
-| str | const char* | 输入字符串。 |
+| str | char* | 输入字符串。 |

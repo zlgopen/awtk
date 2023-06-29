@@ -30,7 +30,7 @@
 * 函数原型：
 
 ```
-self_layouter_t* self_layouter_clone (const char* layouter);
+self_layouter_t* self_layouter_clone (self_layouter_t* layouter);
 ```
 
 * 参数说明：
@@ -38,7 +38,7 @@ self_layouter_t* self_layouter_clone (const char* layouter);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | self\_layouter\_t* | 返回layouter对象。 |
-| layouter | const char* | 被克隆的对象。 |
+| layouter | self\_layouter\_t* | 被克隆的对象。 |
 #### self\_layouter\_create 函数
 -----------------------
 
@@ -108,14 +108,14 @@ ret_t self_layouter_get_param (self_layouter_t* layouter, const char* name, valu
 * 函数原型：
 
 ```
-ret_t self_layouter_get_param_float (self_layouter_t* layouter, const char* name, float_t defval);
+float_t self_layouter_get_param_float (self_layouter_t* layouter, const char* name, float_t defval);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 成功返回参数的值，失败返回缺省值。 |
+| 返回值 | float\_t | 成功返回参数的值，失败返回缺省值。 |
 | layouter | self\_layouter\_t* | layouter对象。 |
 | name | const char* | 参数名。 |
 | defval | float\_t | 缺省值。 |
@@ -129,14 +129,14 @@ ret_t self_layouter_get_param_float (self_layouter_t* layouter, const char* name
 * 函数原型：
 
 ```
-ret_t self_layouter_get_param_int (self_layouter_t* layouter, const char* name, int32_t defval);
+int32_t self_layouter_get_param_int (self_layouter_t* layouter, const char* name, int32_t defval);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 成功返回参数的值，失败返回缺省值。 |
+| 返回值 | int32\_t | 成功返回参数的值，失败返回缺省值。 |
 | layouter | self\_layouter\_t* | layouter对象。 |
 | name | const char* | 参数名。 |
 | defval | int32\_t | 缺省值。 |
@@ -232,12 +232,12 @@ ret_t self_layouter_set_param_str (self_layouter_t* layouter, const char* name, 
 * 函数原型：
 
 ```
-ret_t self_layouter_to_string (self_layouter_t* layouter);
+const char* self_layouter_to_string (self_layouter_t* layouter);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回字符串格式的参数。 |
+| 返回值 | const char* | 返回字符串格式的参数。 |
 | layouter | self\_layouter\_t* | layouter对象。 |

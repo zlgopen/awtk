@@ -69,7 +69,7 @@ ret_t async_call_init_ex (uint32_t max_threads, uint32_t min_threads);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | max\_threads | uint32\_t | 最大线程数。 |
-| min\_threads | uint32\_t | 最小线程数。 |
+| min\_threads | uint32\_t | 最小线程数(必须大于0)。 |
 #### async\_call\_init\_ex2 函数
 -----------------------
 
@@ -89,5 +89,5 @@ ret_t async_call_init_ex2 (uint32_t max_threads, uint32_t min_threads, uint32_t 
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | max\_threads | uint32\_t | 最大线程数。 |
-| min\_threads | uint32\_t | 最小线程数。 |
+| min\_threads | uint32\_t | 最小线程数(必须大于0)。 |
 | stack\_size | uint32\_t | 栈空间大小(字节)。 |

@@ -160,7 +160,7 @@ const widget_vtable_t* tab_button_get_widget_vtable ();
 * 函数原型：
 
 ```
-ret_t tab_button_set_active_icon (widget_t* widget, char* name);
+ret_t tab_button_set_active_icon (widget_t* widget, const char* name);
 ```
 
 * 参数说明：
@@ -169,7 +169,7 @@ ret_t tab_button_set_active_icon (widget_t* widget, char* name);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | tab\_button对象。 |
-| name | char* | 当前项的图标。 |
+| name | const char* | 当前项的图标。 |
 #### tab\_button\_set\_icon 函数
 -----------------------
 
@@ -180,7 +180,7 @@ ret_t tab_button_set_active_icon (widget_t* widget, char* name);
 * 函数原型：
 
 ```
-ret_t tab_button_set_icon (widget_t* widget, char* name);
+ret_t tab_button_set_icon (widget_t* widget, const char* name);
 ```
 
 * 参数说明：
@@ -189,7 +189,7 @@ ret_t tab_button_set_icon (widget_t* widget, char* name);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | tab\_button对象。 |
-| name | char* | 当前项的图标。 |
+| name | const char* | 当前项的图标。 |
 #### tab\_button\_set\_load\_ui 函数
 -----------------------
 
@@ -200,7 +200,7 @@ ret_t tab_button_set_icon (widget_t* widget, char* name);
 * 函数原型：
 
 ```
-ret_t tab_button_set_load_ui (widget_t* widget, char* name);
+ret_t tab_button_set_load_ui (widget_t* widget, const char* name);
 ```
 
 * 参数说明：
@@ -209,7 +209,7 @@ ret_t tab_button_set_load_ui (widget_t* widget, char* name);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | tab\_button对象。 |
-| name | char* | 动态加载UI的资源名称。 |
+| name | const char* | 动态加载UI的资源名称。 |
 #### tab\_button\_set\_value 函数
 -----------------------
 

@@ -57,7 +57,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml)
 | <a href="#gif_image_t_gif_image_pause">gif\_image\_pause</a> | 暂停。 |
 | <a href="#gif_image_t_gif_image_play">gif\_image\_play</a> | 播放。 |
 | <a href="#gif_image_t_gif_image_set_loop">gif\_image\_set\_loop</a> | 设置循环播放次数。 |
-| <a href="#gif_image_t_gif_image_stop">gif\_image\_stop</a> | 停止(并重置index为-1)。 |
+| <a href="#gif_image_t_gif_image_stop">gif\_image\_stop</a> | 停止(并重置index为0)。 |
 ### 属性
 <p id="gif_image_t_properties">
 
@@ -188,7 +188,7 @@ ret_t gif_image_set_loop (widget_t* widget, uint32_t loop);
 
 * 函数功能：
 
-> <p id="gif_image_t_gif_image_stop">停止(并重置index为-1)。
+> <p id="gif_image_t_gif_image_stop">停止(并重置index为0)。
 
 * 函数原型：
 

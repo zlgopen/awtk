@@ -117,7 +117,7 @@ return RET_OK;
 | <a href="#dialog_t_dialog_open">dialog\_open</a> | 从资源文件中加载并创建Dialog对象。 |
 | <a href="#dialog_t_dialog_quit">dialog\_quit</a> | 退出模态显示，关闭对话框。 |
 | <a href="#dialog_t_dialog_set_title">dialog\_set\_title</a> | 设置对话框的标题文本。 |
-| <a href="#dialog_t_dialog_simple_show">dialog\_simple\_show</a> |  |
+| <a href="#dialog_t_dialog_simple_show">dialog\_simple\_show</a> | 根据所选标题，内容与主题等创建一个对话框。 |
 | <a href="#dialog_t_dialog_toast">dialog\_toast</a> | 显示『短暂提示信息』对话框。 |
 | <a href="#dialog_t_dialog_warn">dialog\_warn</a> | 显示『警告』对话框。 |
 ### 属性
@@ -125,7 +125,7 @@ return RET_OK;
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#dialog_t_highlight">highlight</a> | const char* | 对话框高亮策略。 |
+| <a href="#dialog_t_highlight">highlight</a> | char* | 对话框高亮策略。 |
 #### dialog\_cast 函数
 -----------------------
 
@@ -358,6 +358,7 @@ bool_t dialog_is_quited (widget_t* widget);
 > <p id="dialog_t_dialog_modal">模态显示对话框。
 dialog_modal返回后，dialog对象将在下一个idle函数中回收。
 也就是在dialog_modal调用完成后仍然可以访问dialog中控件，直到本次事件结束。
+调用该函数会使线程进入阻塞状态，需要调用dialog_quit来解除阻塞。
 
 * 函数原型：
 
@@ -369,7 +370,7 @@ dialog_quit_code_t dialog_modal (widget_t* widget);
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | dialog\_quit\_code\_t | 返回退出码。 |
+| 返回值 | dialog\_quit\_code\_t | 返回退出码，值为dialog\_quit函数中传入的参数。 |
 | widget | widget\_t* | dialog对象。 |
 #### dialog\_open 函数
 -----------------------
@@ -424,7 +425,7 @@ ret_t dialog_quit (widget_t* widget, uint32_t code);
 * 函数原型：
 
 ```
-ret_t dialog_set_title (widget_t* widget, char* title);
+ret_t dialog_set_title (widget_t* widget, const char* title);
 ```
 
 * 参数说明：
@@ -433,7 +434,7 @@ ret_t dialog_set_title (widget_t* widget, char* title);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | dialog对象。 |
-| title | char* | 标题。 |
+| title | const char* | 标题。 |
 #### dialog\_toast 函数
 -----------------------
 
@@ -484,7 +485,7 @@ ret_t dialog_warn (const char* title, const char* text);
 
 > 请参考 [对话框高亮策略](https://github.com/zlgopen/awtk/blob/master/docs/dialog_highlight.md)
 
-* 类型：const char*
+* 类型：char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

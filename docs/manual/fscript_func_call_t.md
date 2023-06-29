@@ -19,10 +19,10 @@
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
+| <a href="#fscript_func_call_t_col">col</a> | uint16\_t | 对应源代码列号。 |
 | <a href="#fscript_func_call_t_ctx">ctx</a> | void* | 函数需要的上下文。 |
 | <a href="#fscript_func_call_t_func">func</a> | fscript\_func\_t | 函数指针。 |
 | <a href="#fscript_func_call_t_row">row</a> | uint16\_t | 对应源代码行号。 |
-| <a href="#fscript_func_call_t_row">row</a> | uint16\_t | 对应源代码列号。 |
 #### fscript\_ensure\_locals 函数
 -----------------------
 
@@ -163,6 +163,16 @@ ret_t fscript_set_var_default (fscript_t* fscript, const char* name, const value
 | fscript | fscript\_t* | 脚本引擎对象。 |
 | name | const char* | 变量名。 |
 | value | const value\_t* | 值。 |
+#### col 属性
+-----------------------
+> <p id="fscript_func_call_t_col">对应源代码列号。
+
+* 类型：uint16\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
 #### ctx 属性
 -----------------------
 > <p id="fscript_func_call_t_ctx">函数需要的上下文。
@@ -187,16 +197,6 @@ ret_t fscript_set_var_default (fscript_t* fscript, const char* name, const value
 #### row 属性
 -----------------------
 > <p id="fscript_func_call_t_row">对应源代码行号。
-
-* 类型：uint16\_t
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
-#### row 属性
------------------------
-> <p id="fscript_func_call_t_row">对应源代码列号。
 
 * 类型：uint16\_t
 

@@ -86,14 +86,15 @@ uint32_t timer_count ();
 * 函数原型：
 
 ```
-timer_info_t* timer_find ();
+const timer_info_t* timer_find (uint32_t timer_id);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | timer\_info\_t* | 返回timer的信息。 |
+| 返回值 | const timer\_info\_t* | 返回timer的信息。 |
+| timer\_id | uint32\_t | timerID。 |
 #### timer\_modify 函数
 -----------------------
 
@@ -138,12 +139,11 @@ uint32_t timer_next_time ();
 * 函数功能：
 
 > <p id="timer_t_timer_queue">用于非GUI线程增加一个timer，本函数向主循环的事件队列中发送一个增加timer的请求。
-timer回调函数，回调函数返回RET_REPEAT，则下次继续执行，否则自动移出。
 
 * 函数原型：
 
 ```
-ret_t timer_queue (timer_func_t , void* ctx, uint32_t duration);
+ret_t timer_queue (timer_func_t on_timer, void* ctx, uint32_t duration);
 ```
 
 * 参数说明：
@@ -151,7 +151,7 @@ ret_t timer_queue (timer_func_t , void* ctx, uint32_t duration);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-|  | timer\_func\_t | r |
+| on\_timer | timer\_func\_t | timer回调函数，回调函数返回RET\_REPEAT，则下次继续执行，否则自动移出。 |
 | ctx | void* | timer回调函数的上下文。 |
 | duration | uint32\_t | 时间。 |
 #### timer\_queue\_ex 函数
@@ -160,12 +160,11 @@ ret_t timer_queue (timer_func_t , void* ctx, uint32_t duration);
 * 函数功能：
 
 > <p id="timer_t_timer_queue_ex">用于非GUI线程增加一个timer，本函数向主循环的事件队列中发送一个增加timer的请求。
-timer回调函数，回调函数返回RET_REPEAT，则下次继续执行，否则自动移出。
 
 * 函数原型：
 
 ```
-ret_t timer_queue_ex (timer_func_t , void* ctx, uint32_t duration, tk_destroy_t on_destroy, void* on_destroy_ctx);
+ret_t timer_queue_ex (timer_func_t on_timer, void* ctx, uint32_t duration, tk_destroy_t on_destroy, void* on_destroy_ctx);
 ```
 
 * 参数说明：
@@ -173,7 +172,7 @@ ret_t timer_queue_ex (timer_func_t , void* ctx, uint32_t duration, tk_destroy_t 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-|  | timer\_func\_t | r |
+| on\_timer | timer\_func\_t | timer回调函数，回调函数返回RET\_REPEAT，则下次继续执行，否则自动移出。 |
 | ctx | void* | timer回调函数的上下文。 |
 | duration | uint32\_t | 时间。 |
 | on\_destroy | tk\_destroy\_t | 回调函数。 |

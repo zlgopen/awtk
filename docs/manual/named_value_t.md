@@ -54,16 +54,16 @@ named_value_t* named_value_cast (named_value_t* nv);
 * 函数原型：
 
 ```
-ret_t named_value_compare (named_value_t* nv, named_value_t* other);
+int32_t named_value_compare (named_value_t* nv, const named_value_t* other);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| 返回值 | int32\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | nv | named\_value\_t* | named\_value对象。 |
-| other | named\_value\_t* | named\_value对象。 |
+| other | const named\_value\_t* | named\_value对象。 |
 #### named\_value\_compare\_by\_name 函数
 -----------------------
 
@@ -74,14 +74,14 @@ ret_t named_value_compare (named_value_t* nv, named_value_t* other);
 * 函数原型：
 
 ```
-ret_t named_value_compare_by_name (named_value_t* nv, const char* name);
+int32_t named_value_compare_by_name (named_value_t* nv, const char* name);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| 返回值 | int32\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | nv | named\_value\_t* | named\_value对象。 |
 | name | const char* | 名称。 |
 #### named\_value\_create 函数
@@ -112,14 +112,14 @@ named_value_t* named_value_create ();
 * 函数原型：
 
 ```
-ret_t named_value_create_ex (const char* name, const value_t* value);
+named_value_t* named_value_create_ex (const char* name, const value_t* value);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回named\_value对象。 |
+| 返回值 | named\_value\_t* | 返回named\_value对象。 |
 | name | const char* | 名称。 |
 | value | const value\_t* | 值。 |
 #### named\_value\_deinit 函数
@@ -189,14 +189,14 @@ value_t* named_value_get_value (named_value_t* nv);
 * 函数原型：
 
 ```
-ret_t named_value_init (named_value_t* nv, const char* name, const value_t* value);
+named_value_t* named_value_init (named_value_t* nv, const char* name, const value_t* value);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回named\_value对象。 |
+| 返回值 | named\_value\_t* | 返回named\_value对象。 |
 | nv | named\_value\_t* | named\_value对象。 |
 | name | const char* | 名称。 |
 | value | const value\_t* | 值。 |

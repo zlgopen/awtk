@@ -57,7 +57,7 @@ font_manager_t* font_manager ();
 * 函数原型：
 
 ```
-ret_t font_manager_add_font (font_manager_t* fm, char* name, font_t* font);
+ret_t font_manager_add_font (font_manager_t* fm, font_t* font);
 ```
 
 * 参数说明：
@@ -66,7 +66,6 @@ ret_t font_manager_add_font (font_manager_t* fm, char* name, font_t* font);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | fm | font\_manager\_t* | 字体管理器对象。 |
-| name | char* | 字体名。 |
 | font | font\_t* | 字体。 |
 #### font\_manager\_create 函数
 -----------------------
@@ -135,7 +134,7 @@ ret_t font_manager_destroy (font_manager_t* fm);
 * 函数原型：
 
 ```
-font_t* font_manager_get_font (font_manager_t* fm, char* name, font_size_t size);
+font_t* font_manager_get_font (font_manager_t* fm, const char* name, font_size_t size);
 ```
 
 * 参数说明：
@@ -144,7 +143,7 @@ font_t* font_manager_get_font (font_manager_t* fm, char* name, font_size_t size)
 | -------- | ----- | --------- |
 | 返回值 | font\_t* | 返回字体对象。 |
 | fm | font\_manager\_t* | 字体管理器对象。 |
-| name | char* | 字体名，为NULL时使用缺省字体。 |
+| name | const char* | 字体名，为NULL时使用缺省字体。 |
 | size | font\_size\_t | 字体的大小。 |
 #### font\_manager\_init 函数
 -----------------------
@@ -176,7 +175,7 @@ font_manager_t* font_manager_init (font_manager_t* fm, font_loader_t* loader);
 * 函数原型：
 
 ```
-font_t* font_manager_lookup (font_manager_t* fm, const char* name, int32_t size);
+font_t* font_manager_lookup (font_manager_t* fm, const char* name, font_size_t size);
 ```
 
 * 参数说明：
@@ -186,7 +185,7 @@ font_t* font_manager_lookup (font_manager_t* fm, const char* name, int32_t size)
 | 返回值 | font\_t* | 返回字体对象。 |
 | fm | font\_manager\_t* | 字体管理器对象。 |
 | name | const char* | 字体名称。 |
-| size | int32\_t | 字体大小。 |
+| size | font\_size\_t | 字体大小。 |
 #### font\_manager\_set 函数
 -----------------------
 
@@ -224,7 +223,7 @@ ret_t font_manager_set (font_manager_t* fm);
 * 函数原型：
 
 ```
-ret_t font_manager_set_assets_manager (font_manager_t* imm, assets_manager_t* assets_manager);
+ret_t font_manager_set_assets_manager (font_manager_t* fm, assets_manager_t* assets_manager);
 ```
 
 * 参数说明：
@@ -232,7 +231,7 @@ ret_t font_manager_set_assets_manager (font_manager_t* imm, assets_manager_t* as
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| imm | font\_manager\_t* | 字体管理器对象。 |
+| fm | font\_manager\_t* | 字体管理器对象。 |
 | assets\_manager | assets\_manager\_t* | 资源管理器。 |
 #### font\_manager\_set\_fallback\_get\_font 函数
 -----------------------
@@ -252,7 +251,7 @@ ret_t font_manager_set_fallback_get_font (font_manager_t* fm, font_manager_get_f
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| fm | font\_manager\_t* | font manager对象。 |
+| fm | font\_manager\_t* | 字体管理器对象。 |
 | fallback\_get\_font | font\_manager\_get\_font\_t | 回调函数。 |
 | ctx | void* | 回调函数的上下文。 |
 #### font\_manager\_shrink\_cache 函数
@@ -304,7 +303,7 @@ ret_t font_manager_unload_all (font_manager_t* fm);
 * 函数原型：
 
 ```
-ret_t font_manager_unload_font (font_manager_t* fm, char* name, font_size_t size);
+ret_t font_manager_unload_font (font_manager_t* fm, const char* name, font_size_t size);
 ```
 
 * 参数说明：
@@ -313,5 +312,5 @@ ret_t font_manager_unload_font (font_manager_t* fm, char* name, font_size_t size
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | fm | font\_manager\_t* | 字体管理器对象。 |
-| name | char* | 字体名，为NULL时使用缺省字体。 |
+| name | const char* | 字体名，为NULL时使用缺省字体。 |
 | size | font\_size\_t | 字体的大小(矢量字体指定为0即可)。 |

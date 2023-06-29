@@ -33,3 +33,4 @@
 | VALUE\_TYPE\_FUNC\_DEF | func definition。 |
 | VALUE\_TYPE\_POINTER\_REF | void*类型。 |
 | VALUE\_TYPE\_BITMAP | 位图类型。 |
+| VALUE\_TYPE\_RECT | 矩形类型。 |

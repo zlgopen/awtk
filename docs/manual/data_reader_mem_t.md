@@ -25,7 +25,7 @@ mem://addr:size
 * 函数原型：
 
 ```
-const char* data_reader_mem_build_url (const void* mem, uint32_t size, char* url);
+const char* data_reader_mem_build_url (const void* buffer, uint32_t size, char* url);
 ```
 
 * 参数说明：
@@ -33,7 +33,7 @@ const char* data_reader_mem_build_url (const void* mem, uint32_t size, char* url
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | const char* | 返回URL。 |
-| mem | const void* | 内存的地址。 |
+| buffer | const void* | 内存的地址。 |
 | size | uint32\_t | 内存的长度。 |
 | url | char* | 生成的URL。 |
 #### data\_reader\_mem\_create 函数

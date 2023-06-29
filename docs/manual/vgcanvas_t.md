@@ -121,7 +121,7 @@ vgcanvas_restore(vg);
 | <a href="#vgcanvas_t_font">font</a> | char* | 字体。 |
 | <a href="#vgcanvas_t_font_size">font\_size</a> | float\_t | 字体大小。 |
 | <a href="#vgcanvas_t_global_alpha">global\_alpha</a> | float\_t | 全局alpha。 |
-| <a href="#vgcanvas_t_h">h</a> | wh\_t | canvas的高度 |
+| <a href="#vgcanvas_t_h">h</a> | uint32\_t | canvas的高度 |
 | <a href="#vgcanvas_t_line_cap">line\_cap</a> | const char* | line\_cap。 |
 | <a href="#vgcanvas_t_line_join">line\_join</a> | const char* | line\_join。 |
 | <a href="#vgcanvas_t_line_width">line\_width</a> | float\_t | 线宽。 |
@@ -129,9 +129,9 @@ vgcanvas_restore(vg);
 | <a href="#vgcanvas_t_ratio">ratio</a> | float\_t | 显示比例。 |
 | <a href="#vgcanvas_t_stride">stride</a> | uint32\_t | 一行占的字节 |
 | <a href="#vgcanvas_t_stroke_color">stroke\_color</a> | color\_t | 线条颜色 |
-| <a href="#vgcanvas_t_text_align">text\_align</a> | const char* | 文本对齐方式。 |
-| <a href="#vgcanvas_t_text_baseline">text\_baseline</a> | const char* | 文本基线。 |
-| <a href="#vgcanvas_t_w">w</a> | wh\_t | canvas的宽度 |
+| <a href="#vgcanvas_t_text_align">text\_align</a> | char* | 文本对齐方式。 |
+| <a href="#vgcanvas_t_text_baseline">text\_baseline</a> | char* | 文本基线。 |
+| <a href="#vgcanvas_t_w">w</a> | uint32\_t | canvas的宽度 |
 #### vgcanvas\_arc 函数
 -----------------------
 
@@ -313,7 +313,7 @@ ret_t vgcanvas_clear_cache (vgcanvas_t* vg);
 * 函数原型：
 
 ```
-ret_t vgcanvas_clear_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h, color_t c);
+ret_t vgcanvas_clear_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h, color_t color);
 ```
 
 * 参数说明：
@@ -326,7 +326,7 @@ ret_t vgcanvas_clear_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, floa
 | y | float\_t | y坐标。 |
 | w | float\_t | 宽度。 |
 | h | float\_t | 高度。 |
-| c | color\_t | 颜色。 |
+| color | color\_t | 颜色。 |
 #### vgcanvas\_clip\_path 函数
 -----------------------
 
@@ -661,7 +661,7 @@ ret_t vgcanvas_fill (vgcanvas_t* vg);
 * 函数原型：
 
 ```
-ret_t vgcanvas_fill_text (vgcanvas_t* vg, char* text, float_t x, float_t y, float_t max_width);
+ret_t vgcanvas_fill_text (vgcanvas_t* vg, const char* text, float_t x, float_t y, float_t max_width);
 ```
 
 * 参数说明：
@@ -670,7 +670,7 @@ ret_t vgcanvas_fill_text (vgcanvas_t* vg, char* text, float_t x, float_t y, floa
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
-| text | char* | text |
+| text | const char* | text |
 | x | float\_t | x坐标。 |
 | y | float\_t | y坐标。 |
 | max\_width | float\_t | 最大宽度。 |
@@ -902,7 +902,7 @@ ret_t vgcanvas_line_to (vgcanvas_t* vg, float_t x, float_t y);
 * 函数原型：
 
 ```
-float_t vgcanvas_measure_text (vgcanvas_t* vg, char* text);
+float_t vgcanvas_measure_text (vgcanvas_t* vg, const char* text);
 ```
 
 * 参数说明：
@@ -911,7 +911,7 @@ float_t vgcanvas_measure_text (vgcanvas_t* vg, char* text);
 | -------- | ----- | --------- |
 | 返回值 | float\_t | 返回text的宽度。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
-| text | char* | text |
+| text | const char* | text |
 #### vgcanvas\_move\_to 函数
 -----------------------
 
@@ -1125,7 +1125,7 @@ ret_t vgcanvas_rotate (vgcanvas_t* vg, float_t rad);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
-| rad | float\_t | 角度 |
+| rad | float\_t | 旋转角度(单位弧度) |
 #### vgcanvas\_rounded\_rect 函数
 -----------------------
 
@@ -1264,7 +1264,7 @@ ret_t vgcanvas_set_fill_color_str (vgcanvas_t* vg, const char* color);
 * 函数原型：
 
 ```
-ret_t vgcanvas_set_fill_gradient (vgcanvas_t* vg, vg_gradient_t* gradient);
+ret_t vgcanvas_set_fill_gradient (vgcanvas_t* vg, const vg_gradient_t* gradient);
 ```
 
 * 参数说明：
@@ -1273,7 +1273,7 @@ ret_t vgcanvas_set_fill_gradient (vgcanvas_t* vg, vg_gradient_t* gradient);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
-| gradient | vg\_gradient\_t* | gradient对象。 |
+| gradient | const vg\_gradient\_t* | gradient对象。 |
 #### vgcanvas\_set\_fill\_linear\_gradient 函数
 -----------------------
 
@@ -1334,7 +1334,7 @@ ret_t vgcanvas_set_fill_radial_gradient (vgcanvas_t* vg, float_t cx, float_t cy,
 * 函数原型：
 
 ```
-ret_t vgcanvas_set_font (vgcanvas_t* vg, char* font);
+ret_t vgcanvas_set_font (vgcanvas_t* vg, const char* font);
 ```
 
 * 参数说明：
@@ -1343,7 +1343,7 @@ ret_t vgcanvas_set_font (vgcanvas_t* vg, char* font);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
-| font | char* | 字体名称。 |
+| font | const char* | 字体名称。 |
 #### vgcanvas\_set\_font\_size 函数
 -----------------------
 
@@ -1354,7 +1354,7 @@ ret_t vgcanvas_set_font (vgcanvas_t* vg, char* font);
 * 函数原型：
 
 ```
-ret_t vgcanvas_set_font_size (vgcanvas_t* vg, float_t font);
+ret_t vgcanvas_set_font_size (vgcanvas_t* vg, float_t size);
 ```
 
 * 参数说明：
@@ -1363,7 +1363,7 @@ ret_t vgcanvas_set_font_size (vgcanvas_t* vg, float_t font);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
-| font | float\_t | 字体大小。 |
+| size | float\_t | 字体大小。 |
 #### vgcanvas\_set\_global\_alpha 函数
 -----------------------
 
@@ -1394,7 +1394,7 @@ ret_t vgcanvas_set_global_alpha (vgcanvas_t* vg, float_t alpha);
 * 函数原型：
 
 ```
-ret_t vgcanvas_set_line_cap (vgcanvas_t* vg, char* value);
+ret_t vgcanvas_set_line_cap (vgcanvas_t* vg, const char* value);
 ```
 
 * 参数说明：
@@ -1403,7 +1403,7 @@ ret_t vgcanvas_set_line_cap (vgcanvas_t* vg, char* value);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
-| value | char* | 取值：butt|round|square，必须为常量字符串。 |
+| value | const char* | 取值：butt|round|square，必须为常量字符串。 |
 #### vgcanvas\_set\_line\_join 函数
 -----------------------
 
@@ -1414,7 +1414,7 @@ ret_t vgcanvas_set_line_cap (vgcanvas_t* vg, char* value);
 * 函数原型：
 
 ```
-ret_t vgcanvas_set_line_join (vgcanvas_t* vg, char* value);
+ret_t vgcanvas_set_line_join (vgcanvas_t* vg, const char* value);
 ```
 
 * 参数说明：
@@ -1423,7 +1423,7 @@ ret_t vgcanvas_set_line_join (vgcanvas_t* vg, char* value);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
-| value | char* | 取值：bevel|round|miter，必须为常量字符串。 |
+| value | const char* | 取值：bevel|round|miter，必须为常量字符串。 |
 #### vgcanvas\_set\_line\_width 函数
 -----------------------
 
@@ -1494,7 +1494,7 @@ ret_t vgcanvas_set_stroke_color (vgcanvas_t* vg, color_t color);
 * 函数原型：
 
 ```
-ret_t vgcanvas_set_stroke_color_str (vgcanvas_t* vg, const char* color);
+ret_t vgcanvas_set_stroke_color_str (vgcanvas_t* vg, const char* str);
 ```
 
 * 参数说明：
@@ -1503,7 +1503,7 @@ ret_t vgcanvas_set_stroke_color_str (vgcanvas_t* vg, const char* color);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
-| color | const char* | 颜色。 |
+| str | const char* | 颜色。 |
 #### vgcanvas\_set\_stroke\_gradient 函数
 -----------------------
 
@@ -1516,7 +1516,7 @@ ret_t vgcanvas_set_stroke_color_str (vgcanvas_t* vg, const char* color);
 * 函数原型：
 
 ```
-ret_t vgcanvas_set_stroke_gradient (vgcanvas_t* vg, vg_gradient_t* gradient);
+ret_t vgcanvas_set_stroke_gradient (vgcanvas_t* vg, const vg_gradient_t* gradient);
 ```
 
 * 参数说明：
@@ -1525,7 +1525,7 @@ ret_t vgcanvas_set_stroke_gradient (vgcanvas_t* vg, vg_gradient_t* gradient);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
-| gradient | vg\_gradient\_t* | gradient对象。 |
+| gradient | const vg\_gradient\_t* | gradient对象。 |
 #### vgcanvas\_set\_stroke\_linear\_gradient 函数
 -----------------------
 
@@ -1586,7 +1586,7 @@ ret_t vgcanvas_set_stroke_radial_gradient (vgcanvas_t* vg, float_t cx, float_t c
 * 函数原型：
 
 ```
-ret_t vgcanvas_set_text_align (vgcanvas_t* vg, char* value);
+ret_t vgcanvas_set_text_align (vgcanvas_t* vg, const char* value);
 ```
 
 * 参数说明：
@@ -1595,7 +1595,7 @@ ret_t vgcanvas_set_text_align (vgcanvas_t* vg, char* value);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
-| value | char* | 取值：left|center|right，必须为常量字符串。 |
+| value | const char* | 取值：left|center|right，必须为常量字符串。 |
 #### vgcanvas\_set\_text\_baseline 函数
 -----------------------
 
@@ -1606,7 +1606,7 @@ ret_t vgcanvas_set_text_align (vgcanvas_t* vg, char* value);
 * 函数原型：
 
 ```
-ret_t vgcanvas_set_text_baseline (vgcanvas_t* vg, char* value);
+ret_t vgcanvas_set_text_baseline (vgcanvas_t* vg, const char* value);
 ```
 
 * 参数说明：
@@ -1615,7 +1615,7 @@ ret_t vgcanvas_set_text_baseline (vgcanvas_t* vg, char* value);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
-| value | char* | 取值：top|middle|bottom，必须为常量字符串。 |
+| value | const char* | 取值：top|middle|bottom，必须为常量字符串。 |
 #### vgcanvas\_set\_transform 函数
 -----------------------
 
@@ -1784,7 +1784,7 @@ ret_t vgcanvas_unbind_fbo (vgcanvas_t* vg, framebuffer_object_t* fbo);
 -----------------------
 > <p id="vgcanvas_t_h">canvas的高度
 
-* 类型：wh\_t
+* 类型：uint32\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -1876,7 +1876,7 @@ ret_t vgcanvas_unbind_fbo (vgcanvas_t* vg, framebuffer_object_t* fbo);
 
 @see http://www.w3school.com.cn/tags/canvas_textalign.asp
 
-* 类型：const char*
+* 类型：char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -1889,7 +1889,7 @@ ret_t vgcanvas_unbind_fbo (vgcanvas_t* vg, framebuffer_object_t* fbo);
 
 @see http://www.w3school.com.cn/tags/canvas_textbaseline.asp
 
-* 类型：const char*
+* 类型：char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -1900,7 +1900,7 @@ ret_t vgcanvas_unbind_fbo (vgcanvas_t* vg, framebuffer_object_t* fbo);
 -----------------------
 > <p id="vgcanvas_t_w">canvas的宽度
 
-* 类型：wh\_t
+* 类型：uint32\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

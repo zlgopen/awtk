@@ -20,11 +20,11 @@
 * 函数原型：
 
 ```
-window_manager_t* window_manager_create ();
+widget_t* window_manager_create ();
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | window\_manager\_t* | 返回窗口管理器对象。 |
+| 返回值 | widget\_t* | 返回窗口管理器对象。 |

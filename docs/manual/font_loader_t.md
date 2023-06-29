@@ -18,7 +18,7 @@
 * 函数原型：
 
 ```
-font_t* font_loader_load (font_loader_t* loader, const char* name, uint8_t* buff, uint32_t size);
+font_t* font_loader_load (font_loader_t* loader, const char* name, const uint8_t* buff, uint32_t size);
 ```
 
 * 参数说明：
@@ -28,5 +28,5 @@ font_t* font_loader_load (font_loader_t* loader, const char* name, uint8_t* buff
 | 返回值 | font\_t* | 成功返回font，失败返回NULL。 |
 | loader | font\_loader\_t* | loader对象。 |
 | name | const char* | 字体名字。 |
-| buff | uint8\_t* | 字体数据。 |
+| buff | const uint8\_t* | 字体数据。 |
 | size | uint32\_t | 字体数据长度。 |

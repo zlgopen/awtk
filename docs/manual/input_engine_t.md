@@ -23,11 +23,13 @@
 | <a href="#input_engine_t_input_engine_deinit">input\_engine\_deinit</a> | 释放输入法引擎对象。 |
 | <a href="#input_engine_t_input_engine_destroy">input\_engine\_destroy</a> | 销毁输入法引擎对象。 |
 | <a href="#input_engine_t_input_engine_dispatch_candidates">input\_engine\_dispatch\_candidates</a> | 请求显示候选字。 |
+| <a href="#input_engine_t_input_engine_get_lang">input\_engine\_get\_lang</a> | 获取语言。 |
 | <a href="#input_engine_t_input_engine_init">input\_engine\_init</a> | 初始化输入法引擎对象。 |
 | <a href="#input_engine_t_input_engine_input">input\_engine\_input</a> | 输入新的按键，并更新候选字。 |
 | <a href="#input_engine_t_input_engine_reset_candidates">input\_engine\_reset\_candidates</a> | 重置输入法引擎对象。 |
 | <a href="#input_engine_t_input_engine_reset_input">input\_engine\_reset\_input</a> | 清除所有输入的按键组合和候选字。 |
 | <a href="#input_engine_t_input_engine_search">input\_engine\_search</a> | 根据按键组合，更新候选字，并通过输入法对象提交候选字和pre候选字。 |
+| <a href="#input_engine_t_input_engine_set_lang">input\_engine\_set\_lang</a> | 设置语言。 |
 ### 属性
 <p id="input_engine_t_properties">
 
@@ -43,7 +45,7 @@
 * 函数原型：
 
 ```
-ret_t input_engine_add_candidate (input_engine_t* engine);
+ret_t input_engine_add_candidate (input_engine_t* engine, const char* str);
 ```
 
 * 参数说明：
@@ -52,6 +54,7 @@ ret_t input_engine_add_candidate (input_engine_t* engine);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | engine | input\_engine\_t* | 输入法引擎对象。 |
+| str | const char* | 候选字。 |
 #### input\_engine\_add\_candidates\_from\_char 函数
 -----------------------
 
@@ -174,6 +177,25 @@ ret_t input_engine_dispatch_candidates (input_engine_t* engine, int32_t selected
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | engine | input\_engine\_t* | 输入法引擎对象。 |
 | selected | int32\_t | 缺省选中候选字的序数。 |
+#### input\_engine\_get\_lang 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="input_engine_t_input_engine_get_lang">获取语言。
+
+* 函数原型：
+
+```
+const char* input_engine_get_lang (input_engine_t* engine);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回语言。 |
+| engine | input\_engine\_t* | 输入法引擎对象。 |
 #### input\_engine\_init 函数
 -----------------------
 
@@ -271,3 +293,27 @@ ret_t input_engine_search (input_engine_t* engine, const char* keys);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | engine | input\_engine\_t* | 输入法引擎对象。 |
 | keys | const char* | 按键组合。 |
+#### input\_engine\_set\_lang 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="input_engine_t_input_engine_set_lang">设置语言。
+> 有时在同一种语言环境下，也需要输入多种文字，典型的情况是同时输入中文和英文。
+> 比如T9输入法，可以同时支持中文和英文输入，配合软键盘随时切换输入的语言。
+> 数字、小写字母、大写字母和符合也可以视为输入的语言。
+> 主要用于提示输入法引擎选择适当的输入方法。
+
+* 函数原型：
+
+```
+ret_t input_engine_set_lang (input_engine_t* engine, const char* lang);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| engine | input\_engine\_t* | 输入法引擎对象。 |
+| lang | const char* | 语言。格式为语言+国家/地区码。如：zh\_cn和en\_us等。 |

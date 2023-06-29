@@ -107,7 +107,7 @@ ret_t typed_array_destroy (typed_array_t* typed_array);
 * 函数原型：
 
 ```
-ret_t typed_array_extend (value_type_t type, uint32_t capacity);
+ret_t typed_array_extend (typed_array_t* typed_array, uint32_t capacity);
 ```
 
 * 参数说明：
@@ -115,7 +115,7 @@ ret_t typed_array_extend (value_type_t type, uint32_t capacity);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| type | value\_type\_t | 元素的类型。 |
+| typed\_array | typed\_array\_t* | 元素的类型。 |
 | capacity | uint32\_t | 数组的容量(元素个数)。 |
 #### typed\_array\_get 函数
 -----------------------
@@ -169,15 +169,16 @@ ret_t typed_array_insert (typed_array_t* typed_array, uint32_t index, const valu
 * 函数原型：
 
 ```
-void* typed_array_pop (typed_array_t* typed_array);
+ret_t typed_array_pop (typed_array_t* typed_array, value_t* v);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | void* | 成功返回最后一个元素，失败返回NULL。 |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | typed\_array | typed\_array\_t* | 数组对象。 |
+| v | value\_t* | 弹出的元素。 |
 #### typed\_array\_push 函数
 -----------------------
 

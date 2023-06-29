@@ -28,7 +28,7 @@
 | -------- | ----- | ------------ | 
 | <a href="#file_chooser_t_aborted">aborted</a> | bool\_t | 是否取消了选择。 |
 | <a href="#file_chooser_t_cwd">cwd</a> | str\_t | 当前路径。 |
-| <a href="#file_chooser_t_filename;">filename;</a> | str\_t | 当前选择的文件。 |
+| <a href="#file_chooser_t_filename">filename</a> | str\_t | 当前选择的文件。 |
 | <a href="#file_chooser_t_filter">filter</a> | char* | 过滤规则。 |
 | <a href="#file_chooser_t_init_dir">init\_dir</a> | char* | 初始目录。 |
 | <a href="#file_chooser_t_on_done">on\_done</a> | tk\_on\_done\_t | 接受结果的回调函数。 |
@@ -277,9 +277,9 @@ ret_t file_chooser_set_top_dir (file_chooser_t* chooser, const char* top_dir);
 
 * 类型：str\_t
 
-#### filename; 属性
+#### filename 属性
 -----------------------
-> <p id="file_chooser_t_filename;">当前选择的文件。
+> <p id="file_chooser_t_filename">当前选择的文件。
 
 * 类型：str\_t
 

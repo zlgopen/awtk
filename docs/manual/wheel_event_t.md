@@ -49,7 +49,7 @@ wheel_event_t* wheel_event_cast (event_t* event);
 * 函数原型：
 
 ```
-event_t* wheel_event_init (wheel_event_t* event, void* target, uint32_t type, int32_t dy);
+event_t* wheel_event_init (wheel_event_t* event, uint32_t type, void* target, int32_t dy);
 ```
 
 * 参数说明：
@@ -58,8 +58,8 @@ event_t* wheel_event_init (wheel_event_t* event, void* target, uint32_t type, in
 | -------- | ----- | --------- |
 | 返回值 | event\_t* | event对象。 |
 | event | wheel\_event\_t* | event对象。 |
-| target | void* | 事件目标。 |
 | type | uint32\_t | 事件类型。 |
+| target | void* | 事件目标。 |
 | dy | int32\_t | 滚轮的y值。 |
 #### alt 属性
 -----------------------

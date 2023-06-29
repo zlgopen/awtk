@@ -141,7 +141,7 @@ const widget_vtable_t* image_value_get_widget_vtable ();
 * 函数原型：
 
 ```
-ret_t image_value_set_click_add_delta (widget_t* widget, double delta);
+ret_t image_value_set_click_add_delta (widget_t* widget, double click_add_delta);
 ```
 
 * 参数说明：
@@ -150,7 +150,7 @@ ret_t image_value_set_click_add_delta (widget_t* widget, double delta);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | image\_value对象。 |
-| delta | double | 增量。 |
+| click\_add\_delta | double | 增量。 |
 #### image\_value\_set\_format 函数
 -----------------------
 

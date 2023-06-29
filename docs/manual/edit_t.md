@@ -89,7 +89,8 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#edit_t_edit_set_keyboard">edit\_set\_keyboard</a> | 设置自定义软键盘名称。 |
 | <a href="#edit_t_edit_set_open_im_when_focused">edit\_set\_open\_im\_when\_focused</a> | 设置编辑器是否在获得焦点时打开输入法。 |
 | <a href="#edit_t_edit_set_password_visible">edit\_set\_password\_visible</a> | 当编辑器输入类型为密码时，设置密码是否可见。 |
-| <a href="#edit_t_edit_set_pre_input">edit\_set\_pre\_input</a> | 设置预输入处的回调函数。 |
+| <a href="#edit_t_edit_set_pre_delete">edit\_set\_pre\_delete</a> | 设置预删除处理的回调函数。 |
+| <a href="#edit_t_edit_set_pre_input">edit\_set\_pre\_input</a> | 设置预输入处理的回调函数。 |
 | <a href="#edit_t_edit_set_readonly">edit\_set\_readonly</a> | 设置编辑器是否为只读。 |
 | <a href="#edit_t_edit_set_select">edit\_set\_select</a> | 选择指定范围的文本。 |
 | <a href="#edit_t_edit_set_select_none_when_focused">edit\_set\_select\_none\_when\_focused</a> | 设置编辑器是否在获得焦点时不选中文本。 |
@@ -122,7 +123,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 | EVT\_VALUE\_CHANGING | value\_change\_event\_t | 文本正在改变事件(编辑中)。 |
-| EVT\_VALUE\_CHANGED | value\_change\_event\_t | 文本改变事件。 |
+| EVT\_VALUE\_CHANGED | value\_change\_event\_t | 文本改变事件(编辑完成或设置文本时触发)。 |
 | EVT\_IM\_ACTION | event\_t | 软键盘Action点击事件。 |
 #### edit\_cast 函数
 -----------------------
@@ -271,7 +272,7 @@ const widget_vtable_t* edit_get_widget_vtable ();
 * 函数原型：
 
 ```
-ret_t edit_set_action_text (widget_t* widget, char* action_text);
+ret_t edit_set_action_text (widget_t* widget, const char* action_text);
 ```
 
 * 参数说明：
@@ -280,7 +281,7 @@ ret_t edit_set_action_text (widget_t* widget, char* action_text);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
-| action\_text | char* | 软键盘上action按钮的文本。 |
+| action\_text | const char* | 软键盘上action按钮的文本。 |
 #### edit\_set\_auto\_fix 函数
 -----------------------
 
@@ -621,7 +622,7 @@ ret_t edit_set_is_valid_value (widget_t* widget, edit_is_valid_value_t is_valid_
 * 函数原型：
 
 ```
-ret_t edit_set_keyboard (widget_t* widget, char* keyboard);
+ret_t edit_set_keyboard (widget_t* widget, const char* keyboard);
 ```
 
 * 参数说明：
@@ -630,7 +631,7 @@ ret_t edit_set_keyboard (widget_t* widget, char* keyboard);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
-| keyboard | char* | 键盘名称(相应UI资源必须存在)。 |
+| keyboard | const char* | 键盘名称(相应UI资源必须存在)。 |
 #### edit\_set\_open\_im\_when\_focused 函数
 -----------------------
 
@@ -674,12 +675,33 @@ ret_t edit_set_password_visible (widget_t* widget, bool_t password_visible);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | password\_visible | bool\_t | 密码是否可见。 |
+#### edit\_set\_pre\_delete 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_set_pre_delete">设置预删除处理的回调函数。
+> 如果内置函数不能满足需求时，可以设置自定义的检查函数。
+
+* 函数原型：
+
+```
+ret_t edit_set_pre_delete (widget_t* widget, edit_pre_delete_t pre_delete);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| pre\_delete | edit\_pre\_delete\_t | 预删除处理的回调函数(删除时保留分隔符)。 |
 #### edit\_set\_pre\_input 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="edit_t_edit_set_pre_input">设置预输入处的回调函数。
+> <p id="edit_t_edit_set_pre_input">设置预输入处理的回调函数。
 > 如果内置函数不能满足需求时，可以设置自定义的检查函数。
 
 * 函数原型：
@@ -787,7 +809,7 @@ ret_t edit_set_text_limit (widget_t* widget, uint32_t min, uint32_t max);
 * 函数原型：
 
 ```
-ret_t edit_set_tips (widget_t* widget, char* tips);
+ret_t edit_set_tips (widget_t* widget, const char* tips);
 ```
 
 * 参数说明：
@@ -796,7 +818,7 @@ ret_t edit_set_tips (widget_t* widget, char* tips);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
-| tips | char* | 输入提示。 |
+| tips | const char* | 输入提示。 |
 #### edit\_set\_tr\_tips 函数
 -----------------------
 

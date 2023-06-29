@@ -35,7 +35,7 @@
 * 函数原型：
 
 ```
-ret_t path_abs (const char* path, char* result, uint32_t size);
+ret_t path_abs (const char* path, char* result, int32_t size);
 ```
 
 * 参数说明：
@@ -45,7 +45,7 @@ ret_t path_abs (const char* path, char* result, uint32_t size);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | path | const char* | 路径。 |
 | result | char* | 用于返回绝对路径。 |
-| size | uint32\_t | 缓冲区大小。 |
+| size | int32\_t | 缓冲区大小。 |
 #### path\_app\_root 函数
 -----------------------
 
@@ -95,7 +95,7 @@ ret_t path_app_root_ex (char* path, const char* subpath);
 * 函数原型：
 
 ```
-ret_t path_basename (const char* path, char* result, uint32_t size);
+ret_t path_basename (const char* path, char* result, int32_t size);
 ```
 
 * 参数说明：
@@ -105,7 +105,7 @@ ret_t path_basename (const char* path, char* result, uint32_t size);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | path | const char* | 路径。 |
 | result | char* | 用于返回文件名。 |
-| size | uint32\_t | 缓冲区大小。 |
+| size | int32\_t | 缓冲区大小。 |
 #### path\_basename\_ex 函数
 -----------------------
 
@@ -116,7 +116,7 @@ ret_t path_basename (const char* path, char* result, uint32_t size);
 * 函数原型：
 
 ```
-ret_t path_basename_ex (const char* path, bool_t remove_ext_name, char* result, uint32_t size);
+ret_t path_basename_ex (const char* path, bool_t remove_ext_name, char* result, int32_t size);
 ```
 
 * 参数说明：
@@ -127,7 +127,7 @@ ret_t path_basename_ex (const char* path, bool_t remove_ext_name, char* result, 
 | path | const char* | 路径。 |
 | remove\_ext\_name | bool\_t | 是否去掉扩展名。 |
 | result | char* | 用于返回文件名。 |
-| size | uint32\_t | 缓冲区大小。 |
+| size | int32\_t | 缓冲区大小。 |
 #### path\_build 函数
 -----------------------
 
@@ -140,7 +140,7 @@ ret_t path_basename_ex (const char* path, bool_t remove_ext_name, char* result, 
 * 函数原型：
 
 ```
-ret_t path_build (char* result, uint32_t size);
+ret_t path_build (char* result, int32_t size);
 ```
 
 * 参数说明：
@@ -149,7 +149,7 @@ ret_t path_build (char* result, uint32_t size);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | result | char* | 用于返回路径。 |
-| size | uint32\_t | 缓冲区大小。 |
+| size | int32\_t | 缓冲区大小。 |
 #### path\_cwd 函数
 -----------------------
 
@@ -179,7 +179,7 @@ ret_t path_cwd (char* path);
 * 函数原型：
 
 ```
-ret_t path_dirname (const char* path, char* result, uint32_t size);
+ret_t path_dirname (const char* path, char* result, int32_t size);
 ```
 
 * 参数说明：
@@ -189,7 +189,7 @@ ret_t path_dirname (const char* path, char* result, uint32_t size);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | path | const char* | 路径。 |
 | result | char* | 用于返回目录。 |
-| size | uint32\_t | 缓冲区大小。 |
+| size | int32\_t | 缓冲区大小。 |
 #### path\_exe 函数
 -----------------------
 
@@ -219,14 +219,14 @@ ret_t path_exe (char* path);
 * 函数原型：
 
 ```
-ret_t path_exist (const char* path);
+bool_t path_exist (const char* path);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回TRUE表示成功，否则表示失败。 |
+| 返回值 | bool\_t | 返回TRUE表示成功，否则表示失败。 |
 | path | const char* | 目录。 |
 #### path\_extname 函数
 -----------------------
@@ -238,7 +238,7 @@ ret_t path_exist (const char* path);
 * 函数原型：
 
 ```
-ret_t path_extname (const char* path, char* result, uint32_t size);
+ret_t path_extname (const char* path, char* result, int32_t size);
 ```
 
 * 参数说明：
@@ -248,7 +248,7 @@ ret_t path_extname (const char* path, char* result, uint32_t size);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | path | const char* | 路径。 |
 | result | char* | 用于返回文件扩展名。 |
-| size | uint32\_t | 缓冲区大小。 |
+| size | int32\_t | 缓冲区大小。 |
 #### path\_extname\_is 函数
 -----------------------
 
@@ -283,14 +283,14 @@ bool_t path_extname_is (const char* path, const char* extname);
 * 函数原型：
 
 ```
-ret_t path_is_abs (const char* path);
+bool_t path_is_abs (const char* path);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回FALSE表示不是绝对路径，否则表示是绝对路径。 |
+| 返回值 | bool\_t | 返回FALSE表示不是绝对路径，否则表示是绝对路径。 |
 | path | const char* | 路径。 |
 #### path\_normalize 函数
 -----------------------
@@ -302,7 +302,7 @@ ret_t path_is_abs (const char* path);
 * 函数原型：
 
 ```
-ret_t path_normalize (const char* path, char* result, uint32_t size);
+ret_t path_normalize (const char* path, char* result, int32_t size);
 ```
 
 * 参数说明：
@@ -312,7 +312,7 @@ ret_t path_normalize (const char* path, char* result, uint32_t size);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | path | const char* | 路径。 |
 | result | char* | 用于返回规范后的路径。 |
-| size | uint32\_t | 缓冲区大小。 |
+| size | int32\_t | 缓冲区大小。 |
 #### path\_prepend\_app\_root 函数
 -----------------------
 
@@ -343,7 +343,7 @@ const char* path_prepend_app_root (char* full_path, const char* path);
 * 函数原型：
 
 ```
-ret_t path_remove_last_slash (const char* path);
+ret_t path_remove_last_slash (char* path);
 ```
 
 * 参数说明：
@@ -351,7 +351,7 @@ ret_t path_remove_last_slash (const char* path);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| path | const char* | 目录。 |
+| path | char* | 目录。 |
 #### path\_replace\_basename 函数
 -----------------------
 
@@ -362,7 +362,7 @@ ret_t path_remove_last_slash (const char* path);
 * 函数原型：
 
 ```
-ret_t path_replace_basename (char* result, uint32_t size, char* filename, char* basename);
+ret_t path_replace_basename (char* result, int32_t size, const char* filename, const char* basename);
 ```
 
 * 参数说明：
@@ -371,9 +371,9 @@ ret_t path_replace_basename (char* result, uint32_t size, char* filename, char* 
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | result | char* | 用于返回结果。 |
-| size | uint32\_t | 缓冲区大小。 |
-| filename | char* | 原始文件路径。 |
-| basename | char* | 替换后的文件名。 |
+| size | int32\_t | 缓冲区大小。 |
+| filename | const char* | 原始文件路径。 |
+| basename | const char* | 替换后的文件名。 |
 #### path\_replace\_extname 函数
 -----------------------
 

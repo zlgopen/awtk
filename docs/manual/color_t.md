@@ -101,7 +101,7 @@ color_t* color_cast (color_t* color);
 * 函数原型：
 
 ```
-color_t* color_create (uint8_t r, uint8_t b, uint8_t g, uint8_t a);
+color_t* color_create (uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 ```
 
 * 参数说明：
@@ -110,8 +110,8 @@ color_t* color_create (uint8_t r, uint8_t b, uint8_t g, uint8_t a);
 | -------- | ----- | --------- |
 | 返回值 | color\_t* | color对象。 |
 | r | uint8\_t | 红色通道。 |
-| b | uint8\_t | 蓝色通道。 |
 | g | uint8\_t | 绿色通道。 |
+| b | uint8\_t | 蓝色通道。 |
 | a | uint8\_t | alpha通道。 |
 #### color\_destroy 函数
 -----------------------
@@ -207,15 +207,15 @@ uint32_t color_get_color (color_t* c);
 * 函数原型：
 
 ```
-char* color_hex_str (color_t* c, char* str);
+const char* color_hex_str (color_t c, char* str);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | char* | 获取16进制字符串表示的颜色。 |
-| c | color\_t* | color对象。 |
+| 返回值 | const char* | 获取16进制字符串表示的颜色。 |
+| c | color\_t | color对象。 |
 | str | char* | 内存。 |
 #### color\_init 函数
 -----------------------
@@ -270,15 +270,15 @@ uint8_t color_r (color_t* c);
 * 函数原型：
 
 ```
-char* color_rgba_str (color_t* c, char* str);
+const char* color_rgba_str (color_t c, char* str);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | char* | 获取rgba格式表示的颜色。 |
-| c | color\_t* | color对象。 |
+| 返回值 | const char* | 获取rgba格式表示的颜色。 |
+| c | color\_t | color对象。 |
 | str | char* | 内存。 |
 #### color 属性
 -----------------------

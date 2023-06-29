@@ -44,7 +44,7 @@ bool_t socket_last_io_has_error ();
 * 函数原型：
 
 ```
-struct sockaddr* socket_resolve (int sock, bool_t , struct sockaddr_in* addr);
+struct sockaddr* socket_resolve (const char* host, int port, struct sockaddr_in* addr);
 ```
 
 * 参数说明：
@@ -52,8 +52,8 @@ struct sockaddr* socket_resolve (int sock, bool_t , struct sockaddr_in* addr);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | struct sockaddr* | 返回地址对象。 |
-| sock | int | socket句柄。 |
-|  | bool\_t | g |
+| host | const char* | 主机名。 |
+| port | int | 端口号。 |
 | addr | struct sockaddr\_in* | 地址对象。 |
 #### tk\_socket\_bind 函数
 -----------------------

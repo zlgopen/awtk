@@ -16,8 +16,8 @@
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#orientation_event_t_old_orientation">old\_orientation</a> | int32\_t | 旧的屏幕方向。 |
-| <a href="#orientation_event_t_orientation">orientation</a> | int32\_t | 屏幕方向。 |
+| <a href="#orientation_event_t_old_orientation">old\_orientation</a> | lcd\_orientation\_t | 旧的屏幕方向。 |
+| <a href="#orientation_event_t_orientation">orientation</a> | lcd\_orientation\_t | 屏幕方向。 |
 #### orientation\_event\_cast 函数
 -----------------------
 
@@ -64,7 +64,7 @@ event_t* orientation_event_init (orientation_event_t* event, uint32_t type, void
 -----------------------
 > <p id="orientation_event_t_old_orientation">旧的屏幕方向。
 
-* 类型：int32\_t
+* 类型：lcd\_orientation\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -75,7 +75,7 @@ event_t* orientation_event_init (orientation_event_t* event, uint32_t type, void
 -----------------------
 > <p id="orientation_event_t_orientation">屏幕方向。
 
-* 类型：int32\_t
+* 类型：lcd\_orientation\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

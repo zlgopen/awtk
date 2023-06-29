@@ -31,14 +31,17 @@ slist_destroy(slist);
 | <a href="#slist_t_slist_destroy">slist\_destroy</a> | 清除单向链表中的元素，并释放单向链表对象。 |
 | <a href="#slist_t_slist_find">slist\_find</a> | 查找第一个满足条件的元素。 |
 | <a href="#slist_t_slist_foreach">slist\_foreach</a> | 遍历元素。 |
+| <a href="#slist_t_slist_head">slist\_head</a> | 返回第一个元素。 |
 | <a href="#slist_t_slist_head_pop">slist\_head\_pop</a> | 弹出第一个元素。 |
 | <a href="#slist_t_slist_init">slist\_init</a> | 初始化slist对象 |
 | <a href="#slist_t_slist_insert">slist\_insert</a> | 插入一个元素。 |
+| <a href="#slist_t_slist_is_empty">slist\_is\_empty</a> | 列表是否为空。 |
 | <a href="#slist_t_slist_prepend">slist\_prepend</a> | 在头部追加一个元素。 |
 | <a href="#slist_t_slist_remove">slist\_remove</a> | 删除第一个满足条件的元素。 |
 | <a href="#slist_t_slist_remove_all">slist\_remove\_all</a> | 删除全部元素。 |
 | <a href="#slist_t_slist_remove_with_compare">slist\_remove\_with\_compare</a> | 删除满足条件的元素。 |
 | <a href="#slist_t_slist_size">slist\_size</a> | 返回元素个数。 |
+| <a href="#slist_t_slist_tail">slist\_tail</a> | 返回最后一个元素。 |
 | <a href="#slist_t_slist_tail_pop">slist\_tail\_pop</a> | 弹出最后一个元素。 |
 ### 属性
 <p id="slist_t_properties">
@@ -187,6 +190,25 @@ ret_t slist_foreach (slist_t* slist, tk_visit_t visit, void* ctx);
 | slist | slist\_t* | 单向链表对象。 |
 | visit | tk\_visit\_t | 遍历函数。 |
 | ctx | void* | 遍历函数的上下文。 |
+#### slist\_head 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slist_t_slist_head">返回第一个元素。
+
+* 函数原型：
+
+```
+void* slist_head (slist_t* slist);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | void* | 成功返回最后一个元素，失败返回NULL。 |
+| slist | slist\_t* | 单向链表对象。 |
 #### slist\_head\_pop 函数
 -----------------------
 
@@ -197,14 +219,14 @@ ret_t slist_foreach (slist_t* slist, tk_visit_t visit, void* ctx);
 * 函数原型：
 
 ```
-ret_t slist_head_pop (slist_t* slist);
+void* slist_head_pop (slist_t* slist);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 成功返回最后一个元素，失败返回NULL。 |
+| 返回值 | void* | 成功返回最后一个元素，失败返回NULL。 |
 | slist | slist\_t* | 单向链表对象。 |
 #### slist\_init 函数
 -----------------------
@@ -248,6 +270,25 @@ ret_t slist_insert (slist_t* slist, uint32_t index, void* data);
 | slist | slist\_t* | 单向链表对象。 |
 | index | uint32\_t | 位置序数。 |
 | data | void* | 待追加的元素。 |
+#### slist\_is\_empty 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slist_t_slist_is_empty">列表是否为空。
+
+* 函数原型：
+
+```
+bool_t slist_is_empty (slist_t* slist);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回 TRUE 表示空列表，返回 FALSE 表示列表有数据。 |
+| slist | slist\_t* | 单向链表对象。 |
 #### slist\_prepend 函数
 -----------------------
 
@@ -352,6 +393,25 @@ int32_t slist_size (slist_t* slist);
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回元素个数。 |
 | slist | slist\_t* | 单向链表对象。 |
+#### slist\_tail 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slist_t_slist_tail">返回最后一个元素。
+
+* 函数原型：
+
+```
+void* slist_tail (slist_t* slist);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | void* | 成功返回最后一个元素，失败返回NULL。 |
+| slist | slist\_t* | 单向链表对象。 |
 #### slist\_tail\_pop 函数
 -----------------------
 
@@ -362,14 +422,14 @@ int32_t slist_size (slist_t* slist);
 * 函数原型：
 
 ```
-ret_t slist_tail_pop (slist_t* slist);
+void* slist_tail_pop (slist_t* slist);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 成功返回最后一个元素，失败返回NULL。 |
+| 返回值 | void* | 成功返回最后一个元素，失败返回NULL。 |
 | slist | slist\_t* | 单向链表对象。 |
 #### compare 属性
 -----------------------

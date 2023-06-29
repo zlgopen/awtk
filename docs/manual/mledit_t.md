@@ -76,7 +76,7 @@ time\_clock一般不需要设置style。
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
 | EVT\_VALUE\_CHANGING | value\_change\_event\_t | 文本正在改变事件(编辑中)。 |
-| EVT\_VALUE\_CHANGED | value\_change\_event\_t | 文本改变事件。 |
+| EVT\_VALUE\_CHANGED | value\_change\_event\_t | 文本改变事件(编辑完成或设置文本时触发)。 |
 #### mledit\_cast 函数
 -----------------------
 
@@ -307,7 +307,7 @@ ret_t mledit_set_focus (widget_t* widget, bool_t focus);
 * 函数原型：
 
 ```
-ret_t mledit_set_keyboard (widget_t* widget, char* keyboard);
+ret_t mledit_set_keyboard (widget_t* widget, const char* keyboard);
 ```
 
 * 参数说明：
@@ -316,7 +316,7 @@ ret_t mledit_set_keyboard (widget_t* widget, char* keyboard);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
-| keyboard | char* | 键盘名称(相应UI资源必须存在)。 |
+| keyboard | const char* | 键盘名称(相应UI资源必须存在)。 |
 #### mledit\_set\_max\_chars 函数
 -----------------------
 
@@ -471,7 +471,7 @@ ret_t mledit_set_select (widget_t* widget, uint32_t start, uint32_t end);
 * 函数原型：
 
 ```
-ret_t mledit_set_tips (widget_t* widget, char* tips);
+ret_t mledit_set_tips (widget_t* widget, const char* tips);
 ```
 
 * 参数说明：
@@ -480,7 +480,7 @@ ret_t mledit_set_tips (widget_t* widget, char* tips);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
-| tips | char* | 输入提示。 |
+| tips | const char* | 输入提示。 |
 #### mledit\_set\_tr\_tips 函数
 -----------------------
 

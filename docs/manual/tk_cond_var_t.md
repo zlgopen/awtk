@@ -77,7 +77,7 @@ ret_t tk_cond_var_destroy (tk_cond_var_t* cond_var);
 * 函数原型：
 
 ```
-ret_t tk_cond_var_wait (tk_cond_var_t* cond_var, uint32_t* timeout_ms);
+ret_t tk_cond_var_wait (tk_cond_var_t* cond_var, uint32_t timeout_ms);
 ```
 
 * 参数说明：
@@ -86,4 +86,4 @@ ret_t tk_cond_var_wait (tk_cond_var_t* cond_var, uint32_t* timeout_ms);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | cond\_var | tk\_cond\_var\_t* | cond\_var对象。 |
-| timeout\_ms | uint32\_t* | 最长等待时间。 |
+| timeout\_ms | uint32\_t | 最长等待时间。 |

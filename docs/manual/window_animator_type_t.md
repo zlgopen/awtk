@@ -8,7 +8,7 @@
 | 名称 | 说明 | 
 | -------- | ------- | 
 | WINDOW\_ANIMATOR\_CENTER\_SCALE | 中心缩放。适用于居中的对话框。 |
-| WINDOW\_ANIMATOR\_FADE, | 淡入淡出。适用于toast之类的提示。 |
+| WINDOW\_ANIMATOR\_FADE | 淡入淡出。适用于toast之类的提示。 |
 | WINDOW\_ANIMATOR\_POPDOWN | 顶部部弹出。适用于对话框。 |
 | WINDOW\_ANIMATOR\_POPUP | 底部弹出。适用于对话框。 |
 | WINDOW\_ANIMATOR\_SLIDE\_UP | 向上弹出。适用于窗口。 |

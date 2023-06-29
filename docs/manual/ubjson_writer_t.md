@@ -21,6 +21,7 @@ ubjson writer
 | <a href="#ubjson_writer_t_ubjson_writer_write_int64">ubjson\_writer\_write\_int64</a> | 写入int64。 |
 | <a href="#ubjson_writer_t_ubjson_writer_write_int8">ubjson\_writer\_write\_int8</a> | 写入int8。 |
 | <a href="#ubjson_writer_t_ubjson_writer_write_key">ubjson\_writer\_write\_key</a> | 写入key。 |
+| <a href="#ubjson_writer_t_ubjson_writer_write_kv_array_begin">ubjson\_writer\_write\_kv\_array\_begin</a> | 写key和数组的开始。 |
 | <a href="#ubjson_writer_t_ubjson_writer_write_kv_bool">ubjson\_writer\_write\_kv\_bool</a> | 写入key和bool的值。 |
 | <a href="#ubjson_writer_t_ubjson_writer_write_kv_double">ubjson\_writer\_write\_kv\_double</a> | 写入key和double的值。 |
 | <a href="#ubjson_writer_t_ubjson_writer_write_kv_float">ubjson\_writer\_write\_kv\_float</a> | 写入key和float的值。 |
@@ -31,6 +32,8 @@ ubjson writer
 | <a href="#ubjson_writer_t_ubjson_writer_write_kv_str">ubjson\_writer\_write\_kv\_str</a> | 写入key和str的值。 |
 | <a href="#ubjson_writer_t_ubjson_writer_write_kv_str_len">ubjson\_writer\_write\_kv\_str\_len</a> | 写入key和str的值。 |
 | <a href="#ubjson_writer_t_ubjson_writer_write_kv_value">ubjson\_writer\_write\_kv\_value</a> | 写入key和value_t的值。 |
+| <a href="#ubjson_writer_t_ubjson_writer_write_kv_wstr">ubjson\_writer\_write\_kv\_wstr</a> | 写入key和wstr的值。 |
+| <a href="#ubjson_writer_t_ubjson_writer_write_kv_wstr_len">ubjson\_writer\_write\_kv\_wstr\_len</a> | 写入key和wstr的值。 |
 | <a href="#ubjson_writer_t_ubjson_writer_write_noop">ubjson\_writer\_write\_noop</a> | 写入noop。 |
 | <a href="#ubjson_writer_t_ubjson_writer_write_null">ubjson\_writer\_write\_null</a> | 写入null。 |
 | <a href="#ubjson_writer_t_ubjson_writer_write_object">ubjson\_writer\_write\_object</a> | 写入obj。 |
@@ -40,6 +43,8 @@ ubjson writer
 | <a href="#ubjson_writer_t_ubjson_writer_write_str_len">ubjson\_writer\_write\_str\_len</a> | 写入str。 |
 | <a href="#ubjson_writer_t_ubjson_writer_write_true">ubjson\_writer\_write\_true</a> | 写入true。 |
 | <a href="#ubjson_writer_t_ubjson_writer_write_uint8">ubjson\_writer\_write\_uint8</a> | 写入uint8。 |
+| <a href="#ubjson_writer_t_ubjson_writer_write_wstr">ubjson\_writer\_write\_wstr</a> | 写入wstr。 |
+| <a href="#ubjson_writer_t_ubjson_writer_write_wstr_len">ubjson\_writer\_write\_wstr\_len</a> | 写入wstr。 |
 #### ubjson\_writer\_init 函数
 -----------------------
 
@@ -321,6 +326,28 @@ ret_t ubjson_writer_write_key (ubjson_writer_t* writer, const char* value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | writer | ubjson\_writer\_t* | writer对象。 |
 | value | const char* | key的名称。 |
+#### ubjson\_writer\_write\_kv\_array\_begin 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="ubjson_writer_t_ubjson_writer_write_kv_array_begin">写key和数组的开始。
+
+> 即："key": [
+
+* 函数原型：
+
+```
+ret_t ubjson_writer_write_kv_array_begin (ubjson_writer_t* writer, const char* key);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| writer | ubjson\_writer\_t* | writer对象。 |
+| key | const char* | 键值。 |
 #### ubjson\_writer\_write\_kv\_bool 函数
 -----------------------
 
@@ -551,6 +578,53 @@ ret_t ubjson_writer_write_kv_value (ubjson_writer_t* writer, const char* key, va
 | writer | ubjson\_writer\_t* | writer对象。 |
 | key | const char* | 键名。 |
 | value | value\_t* | 值。 |
+#### ubjson\_writer\_write\_kv\_wstr 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="ubjson_writer_t_ubjson_writer_write_kv_wstr">写入key和wstr的值。
+
+> 即："key": value
+
+* 函数原型：
+
+```
+ret_t ubjson_writer_write_kv_wstr (ubjson_writer_t* writer, const char* key, const wchar_t* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| writer | ubjson\_writer\_t* | writer对象。 |
+| key | const char* | 键名。 |
+| value | const wchar\_t* | 字符串。 |
+#### ubjson\_writer\_write\_kv\_wstr\_len 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="ubjson_writer_t_ubjson_writer_write_kv_wstr_len">写入key和wstr的值。
+
+> 即："key": value
+
+* 函数原型：
+
+```
+ret_t ubjson_writer_write_kv_wstr_len (ubjson_writer_t* writer, const char* key, const wchar_t* value, uint32_t len);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| writer | ubjson\_writer\_t* | writer对象。 |
+| key | const char* | 键名。 |
+| value | const wchar\_t* | 字符串。 |
+| len | uint32\_t | 字符串的长度。 |
 #### ubjson\_writer\_write\_noop 函数
 -----------------------
 
@@ -729,3 +803,44 @@ ret_t ubjson_writer_write_uint8 (ubjson_writer_t* writer, uint8_t value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | writer | ubjson\_writer\_t* | writer对象。 |
 | value | uint8\_t | 要写入的值。 |
+#### ubjson\_writer\_write\_wstr 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="ubjson_writer_t_ubjson_writer_write_wstr">写入wstr。
+
+* 函数原型：
+
+```
+ret_t ubjson_writer_write_wstr (ubjson_writer_t* writer, const wchar_t* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| writer | ubjson\_writer\_t* | writer对象。 |
+| value | const wchar\_t* | 要写入的字符串。 |
+#### ubjson\_writer\_write\_wstr\_len 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="ubjson_writer_t_ubjson_writer_write_wstr_len">写入wstr。
+
+* 函数原型：
+
+```
+ret_t ubjson_writer_write_wstr_len (ubjson_writer_t* writer, const wchar_t* value, uint32_t len);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| writer | ubjson\_writer\_t* | writer对象。 |
+| value | const wchar\_t* | 要写入的字符串。 |
+| len | uint32\_t | 字符串的长度。 |

@@ -83,14 +83,14 @@ font_vmetrics_t font_get_vmetrics (font_t* font, font_size_t font_size);
 * 函数原型：
 
 ```
-int32_t font_match (font_t* font, const char* font_name, font_size_t font_size);
+bool_t font_match (font_t* font, const char* font_name, font_size_t font_size);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | int32\_t | 返回TRUE表示成功，FALSE表示失败。 |
+| 返回值 | bool\_t | 返回TRUE表示成功，FALSE表示失败。 |
 | font | font\_t* | font对象。 |
 | font\_name | const char* | 字体名称。 |
 | font\_size | font\_size\_t | 字体大小。 |

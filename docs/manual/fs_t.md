@@ -127,7 +127,7 @@ void* file_read (const char* name, uint32_t* size);
 * 函数原型：
 
 ```
-int32_t file_read_part (const char* name, const void* buffer, uint32_t size, uint32_t offset);
+int32_t file_read_part (const char* name, void* buff, uint32_t size, uint32_t offset);
 ```
 
 * 参数说明：
@@ -136,7 +136,7 @@ int32_t file_read_part (const char* name, const void* buffer, uint32_t size, uin
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回实际读取的字节数。 |
 | name | const char* | 文件名。 |
-| buffer | const void* | 数据缓冲区。 |
+| buff | void* | 数据缓冲区。 |
 | size | uint32\_t | 数据长度。 |
 | offset | uint32\_t | 偏移量。 |
 #### file\_remove 函数
@@ -168,7 +168,7 @@ ret_t file_remove (const char* name);
 * 函数原型：
 
 ```
-ret_t file_write (const char* name, const void* buffer, uint32_t size);
+ret_t file_write (const char* name, const void* buff, uint32_t size);
 ```
 
 * 参数说明：
@@ -177,7 +177,7 @@ ret_t file_write (const char* name, const void* buffer, uint32_t size);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | name | const char* | 文件名。 |
-| buffer | const void* | 数据缓冲区。 |
+| buff | const void* | 数据缓冲区。 |
 | size | uint32\_t | 数据长度。 |
 #### fs\_build\_user\_storage\_file\_name 函数
 -----------------------
@@ -450,14 +450,14 @@ fs_foreach_file("tests/testdata", on_file, (void*)".json");
 * 函数原型：
 
 ```
-bool_t fs_foreach_file (const char* path, tk_visit_t on_file, void* ctx);
+ret_t fs_foreach_file (const char* path, tk_visit_t on_file, void* ctx);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | bool\_t | 返回TRUE表示成功，否则表示失败。 |
+| 返回值 | ret\_t | 返回TRUE表示成功，否则表示失败。 |
 | path | const char* | 目录。 |
 | on\_file | tk\_visit\_t | 回调函数(完整文件名通过data参数传入)。 |
 | ctx | void* | 回调函数上下文。 |
@@ -491,7 +491,7 @@ ret_t fs_get_cwd (fs_t* fs, char* path);
 * 函数原型：
 
 ```
-ret_t fs_get_disk_info (fs_t* fs, const char* value, int32_t* free_kb, int32_t* total_kb);
+ret_t fs_get_disk_info (fs_t* fs, const char* volume, int32_t* free_kb, int32_t* total_kb);
 ```
 
 * 参数说明：
@@ -500,7 +500,7 @@ ret_t fs_get_disk_info (fs_t* fs, const char* value, int32_t* free_kb, int32_t* 
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回不是-1表示成功，否则表示失败。 |
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
-| value | const char* | 卷名。 |
+| volume | const char* | 卷名。 |
 | free\_kb | int32\_t* | 用于返回空闲空间大小(KB) |
 | total\_kb | int32\_t* | 用于返回总共空间大小(KB) |
 #### fs\_get\_exe 函数
@@ -533,14 +533,14 @@ ret_t fs_get_exe (fs_t* fs, char* path);
 * 函数原型：
 
 ```
-ret_t fs_get_file_size (fs_t* fs, const char* name);
+int32_t fs_get_file_size (fs_t* fs, const char* name);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回不是-1表示成功，否则表示失败。 |
+| 返回值 | int32\_t | 返回不是-1表示成功，否则表示失败。 |
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | name | const char* | 文件名。 |
 #### fs\_get\_temp\_path 函数
@@ -593,14 +593,14 @@ ret_t fs_get_user_storage_path (fs_t* fs, char* path);
 * 函数原型：
 
 ```
-fs_dir_t fs_open_dir (fs_t* fs, const char* name);
+fs_dir_t* fs_open_dir (fs_t* fs, const char* name);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | fs\_dir\_t | 返回非NULL表示成功，否则表示失败。 |
+| 返回值 | fs\_dir\_t* | 返回非NULL表示成功，否则表示失败。 |
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | name | const char* | 目录名称。 |
 #### fs\_open\_file 函数
@@ -613,14 +613,14 @@ fs_dir_t fs_open_dir (fs_t* fs, const char* name);
 * 函数原型：
 
 ```
-ret_t fs_open_file (fs_t* fs, const char* name, const char* mode);
+fs_file_t* fs_open_file (fs_t* fs, const char* name, const char* mode);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回非NULL表示成功，否则表示失败。 |
+| 返回值 | fs\_file\_t* | 返回非NULL表示成功，否则表示失败。 |
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | name | const char* | 文件名。 |
 | mode | const char* | 打开方式，取值请参考POSIX的[fopen函数](https://www.runoob.com/cprogramming/c-function-fopen.html)相应的参数。 |

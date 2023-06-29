@@ -18,6 +18,7 @@
 | <a href="#emitter_t_emitter_exist">emitter\_exist</a> | 判断指定的事件和回调函数是否已经注册。 |
 | <a href="#emitter_t_emitter_find">emitter\_find</a> | 通过ID查找emitter_item_t，主要用于辅助测试。 |
 | <a href="#emitter_t_emitter_forward">emitter\_forward</a> | 分发事件 |
+| <a href="#emitter_t_emitter_forward_retarget">emitter\_forward\_retarget</a> | 分发事件。并将e->target强制设置为ctx。 |
 | <a href="#emitter_t_emitter_init">emitter\_init</a> | 初始化emitter对象。 |
 | <a href="#emitter_t_emitter_off">emitter\_off</a> | 注销指定事件的处理函数。 |
 | <a href="#emitter_t_emitter_off_by_ctx">emitter\_off\_by\_ctx</a> | 注销指定事件的处理函数。 |
@@ -203,7 +204,7 @@ ret_t emitter_enable (emitter_t* emitter);
 * 函数原型：
 
 ```
-bool_t emitter_exist (emitter_t* emitter, event_type_t type, event_func_t on_event, void* ctx);
+bool_t emitter_exist (emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx);
 ```
 
 * 参数说明：
@@ -212,8 +213,8 @@ bool_t emitter_exist (emitter_t* emitter, event_type_t type, event_func_t on_eve
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回TRUE表示已经注册，否则表示没有注册。 |
 | emitter | emitter\_t* | emitter对象。 |
-| type | event\_type\_t | 事件类型。 |
-| on\_event | event\_func\_t | 事件处理函数。 |
+| etype | uint32\_t | 事件类型。 |
+| handler | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 #### emitter\_find 函数
 -----------------------
@@ -225,14 +226,14 @@ bool_t emitter_exist (emitter_t* emitter, event_type_t type, event_func_t on_eve
 * 函数原型：
 
 ```
-ret_t emitter_find (emitter_t* emitter, uint32_t id);
+emitter_item_t* emitter_find (emitter_t* emitter, uint32_t id);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| 返回值 | emitter\_item\_t* | 若存在,返回id对应的emitter\_item\_t，否则返回NULL。 |
 | emitter | emitter\_t* | emitter对象。 |
 | id | uint32\_t | emitter\_on返回的ID。 |
 #### emitter\_forward 函数
@@ -246,6 +247,26 @@ ret_t emitter_find (emitter_t* emitter, uint32_t id);
 
 ```
 ret_t emitter_forward (void* ctx, event_t* e);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| ctx | void* | emitter对象。 |
+| e | event\_t* | 分发的事件。 |
+#### emitter\_forward\_retarget 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="emitter_t_emitter_forward_retarget">分发事件。并将e->target强制设置为ctx。
+
+* 函数原型：
+
+```
+ret_t emitter_forward_retarget (void* ctx, event_t* e);
 ```
 
 * 参数说明：
@@ -324,7 +345,7 @@ ret_t emitter_off_by_ctx (emitter_t* emitter, void* ctx);
 * 函数原型：
 
 ```
-ret_t emitter_off_by_func (emitter_t* emitter, event_type_t type, event_func_t on_event, void* ctx);
+ret_t emitter_off_by_func (emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx);
 ```
 
 * 参数说明：
@@ -333,8 +354,8 @@ ret_t emitter_off_by_func (emitter_t* emitter, event_type_t type, event_func_t o
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | emitter | emitter\_t* | emitter对象。 |
-| type | event\_type\_t | 事件类型。 |
-| on\_event | event\_func\_t | 事件处理函数。 |
+| etype | uint32\_t | 事件类型。 |
+| handler | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 #### emitter\_off\_by\_tag 函数
 -----------------------
@@ -366,7 +387,7 @@ ret_t emitter_off_by_tag (emitter_t* emitter, uint32_t tag);
 * 函数原型：
 
 ```
-uint32_t emitter_on (emitter_t* emitter, event_type_t etype, event_func_t handler, void* ctx);
+uint32_t emitter_on (emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx);
 ```
 
 * 参数说明：
@@ -375,7 +396,7 @@ uint32_t emitter_on (emitter_t* emitter, event_type_t etype, event_func_t handle
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 返回id，用于emitter\_off。 |
 | emitter | emitter\_t* | emitter对象。 |
-| etype | event\_type\_t | 事件类型。 |
+| etype | uint32\_t | 事件类型。 |
 | handler | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 #### emitter\_on\_with\_tag 函数
@@ -388,7 +409,7 @@ uint32_t emitter_on (emitter_t* emitter, event_type_t etype, event_func_t handle
 * 函数原型：
 
 ```
-uint32_t emitter_on_with_tag (emitter_t* emitter, event_type_t type, event_func_t on_event, void* ctx, uint32_t tag);
+uint32_t emitter_on_with_tag (emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx, uint32_t tag);
 ```
 
 * 参数说明：
@@ -397,8 +418,8 @@ uint32_t emitter_on_with_tag (emitter_t* emitter, event_type_t type, event_func_
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 返回id，用于emitter\_off。 |
 | emitter | emitter\_t* | emitter对象。 |
-| type | event\_type\_t | 事件类型。 |
-| on\_event | event\_func\_t | 事件处理函数。 |
+| etype | uint32\_t | 事件类型。 |
+| handler | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 | tag | uint32\_t | tag。 |
 #### emitter\_set\_on\_destroy 函数

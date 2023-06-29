@@ -7,16 +7,16 @@
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#func_desc_t_args">args</a> | arg\_desc\_t** | 函数参数描述。 |
+| <a href="#func_desc_t_args">args</a> | const arg\_desc\_t** | 函数参数描述。 |
 | <a href="#func_desc_t_desc">desc</a> | const char* | 描述。 |
 | <a href="#func_desc_t_exec">exec</a> | func\_exec\_t | 函数指针。 |
 | <a href="#func_desc_t_name">name</a> | const char* | 名称。 |
-| <a href="#func_desc_t_return_value">return\_value</a> | value\_desc\_t* | 函数返回值描述。 |
+| <a href="#func_desc_t_return_value">return\_value</a> | const value\_desc\_t* | 函数返回值描述。 |
 #### args 属性
 -----------------------
 > <p id="func_desc_t_args">函数参数描述。
 
-* 类型：arg\_desc\_t**
+* 类型：const arg\_desc\_t**
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -56,7 +56,7 @@
 -----------------------
 > <p id="func_desc_t_return_value">函数返回值描述。
 
-* 类型：value\_desc\_t*
+* 类型：const value\_desc\_t*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

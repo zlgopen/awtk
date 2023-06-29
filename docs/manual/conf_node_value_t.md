@@ -19,5 +19,6 @@
 | CONF\_NODE\_VALUE\_FLOAT32 | float类型。 |
 | CONF\_NODE\_VALUE\_DOUBLE | double类型。 |
 | CONF\_NODE\_VALUE\_STRING | 字符串类型。 |
+| CONF\_NODE\_VALUE\_WSTRING | 宽字符串类型。 |
 | CONF\_NODE\_VALUE\_SMALL\_STR | 短字符(len<=7)串类型。 |
 | CONF\_NODE\_VALUE\_NODE | 节点类型。 |

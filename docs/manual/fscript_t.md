@@ -37,9 +37,9 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#fscript_t_error_code">error\_code</a> | ret\_t | 运行时错误码。 |
+| <a href="#fscript_t_error_col">error\_col</a> | int32\_t | 运行时错误的列号。 |
 | <a href="#fscript_t_error_message">error\_message</a> | char* | 运行时错误信息。 |
 | <a href="#fscript_t_error_row">error\_row</a> | int32\_t | 运行时错误的行号。 |
-| <a href="#fscript_t_error_row">error\_row</a> | int32\_t | 运行时错误的列号。 |
 | <a href="#fscript_t_lines">lines</a> | uint16\_t | 代码总行数。 |
 | <a href="#fscript_t_obj">obj</a> | tk\_object\_t* | 脚本执行上下文。 |
 | <a href="#fscript_t_str">str</a> | str\_t | C语言实现函数可以使用这个变量，可以有效避免内存分配。 |
@@ -329,7 +329,7 @@ ret_t fscript_register_const_value (const char* name, const value_t* value);
 * 函数原型：
 
 ```
-ret_t fscript_register_func (const char* name, fscript_func_t* func);
+ret_t fscript_register_func (const char* name, fscript_func_t func);
 ```
 
 * 参数说明：
@@ -338,7 +338,7 @@ ret_t fscript_register_func (const char* name, fscript_func_t* func);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | name | const char* | 函数名(无需加函数前缀)。 |
-| func | fscript\_func\_t* | 函数指针。 |
+| func | fscript\_func\_t | 函数指针。 |
 #### fscript\_register\_funcs 函数
 -----------------------
 
@@ -451,7 +451,7 @@ ret_t fscript_set_on_error (fscript_t* fscript, fscript_on_error_t on_error, voi
 * 函数原型：
 
 ```
-ret_t fscript_set_print_func (fscript_t* fscript, fscript_func_t print_func);
+ret_t fscript_set_print_func (fscript_t* fscript, fscript_func_t print);
 ```
 
 * 参数说明：
@@ -460,7 +460,7 @@ ret_t fscript_set_print_func (fscript_t* fscript, fscript_func_t print_func);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | fscript | fscript\_t* | 脚本引擎对象。 |
-| print\_func | fscript\_func\_t | 打印日志的函数。 |
+| print | fscript\_func\_t | 打印日志的函数。 |
 #### fscript\_syntax\_check 函数
 -----------------------
 
@@ -518,6 +518,16 @@ double tk_expr_eval (const char* expr);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+#### error\_col 属性
+-----------------------
+> <p id="fscript_t_error_col">运行时错误的列号。
+
+* 类型：int32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
 #### error\_message 属性
 -----------------------
 > <p id="fscript_t_error_message">运行时错误信息。
@@ -531,16 +541,6 @@ double tk_expr_eval (const char* expr);
 #### error\_row 属性
 -----------------------
 > <p id="fscript_t_error_row">运行时错误的行号。
-
-* 类型：int32\_t
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
-#### error\_row 属性
------------------------
-> <p id="fscript_t_error_row">运行时错误的列号。
 
 * 类型：int32\_t
 

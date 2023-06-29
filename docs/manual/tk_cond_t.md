@@ -98,7 +98,7 @@ ret_t tk_cond_wait (tk_cond_t* cond, tk_mutex_t* mutex);
 * 函数原型：
 
 ```
-ret_t tk_cond_wait_timeout (tk_cond_t* cond, tk_mutex_t* mutex, uint32_t* timeout_ms);
+ret_t tk_cond_wait_timeout (tk_cond_t* cond, tk_mutex_t* mutex, uint32_t ms);
 ```
 
 * 参数说明：
@@ -108,4 +108,4 @@ ret_t tk_cond_wait_timeout (tk_cond_t* cond, tk_mutex_t* mutex, uint32_t* timeou
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | cond | tk\_cond\_t* | cond对象。 |
 | mutex | tk\_mutex\_t* | mutex对象。 |
-| timeout\_ms | uint32\_t* | 最长等待时间。 |
+| ms | uint32\_t | 最长等待时间。 |

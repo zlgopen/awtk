@@ -15,6 +15,7 @@
 | <a href="#event_source_manager_t_event_source_manager_init">event\_source\_manager\_init</a> | 初始化。 |
 | <a href="#event_source_manager_t_event_source_manager_remove">event\_source\_manager\_remove</a> | 移除事件源对象。 |
 | <a href="#event_source_manager_t_event_source_manager_remove_by_tag">event\_source\_manager\_remove\_by\_tag</a> | 移除所有tag相同的事件源对象。 |
+| <a href="#event_source_manager_t_event_source_manager_set_min_sleep_time">event\_source\_manager\_set\_min\_sleep\_time</a> | 设置默认最小睡眠时间。 |
 #### event\_source\_manager\_add 函数
 -----------------------
 
@@ -170,3 +171,23 @@ ret_t event_source_manager_remove_by_tag (event_source_manager_t* manager, void*
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | manager | event\_source\_manager\_t* | event\_source\_manager对象。 |
 | tag | void* | tag。 |
+#### event\_source\_manager\_set\_min\_sleep\_time 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="event_source_manager_t_event_source_manager_set_min_sleep_time">设置默认最小睡眠时间。
+
+* 函数原型：
+
+```
+ret_t event_source_manager_set_min_sleep_time (event_source_manager_t* manager, uint32_t sleep_time);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| manager | event\_source\_manager\_t* | event\_source\_manager对象。 |
+| sleep\_time | uint32\_t | 默认最小睡眠时间(毫秒)。 |

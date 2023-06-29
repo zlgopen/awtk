@@ -27,7 +27,7 @@
 * 函数原型：
 
 ```
-event_t* assets_event_init (window_event_t* event, assets_manager_t* am, uint32_t type, asset_type_t asset_type, asset_info_t* asset_info);
+event_t* assets_event_init (assets_event_t* event, assets_manager_t* am, uint32_t type, asset_type_t asset_type, asset_info_t* asset_info);
 ```
 
 * 参数说明：
@@ -35,7 +35,7 @@ event_t* assets_event_init (window_event_t* event, assets_manager_t* am, uint32_
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | event\_t* | event对象。 |
-| event | window\_event\_t* | event对象。 |
+| event | assets\_event\_t* | event对象。 |
 | am | assets\_manager\_t* | 事件目标资源管理器。 |
 | type | uint32\_t | 事件类型。 |
 | asset\_type | asset\_type\_t | 资源类型。 |

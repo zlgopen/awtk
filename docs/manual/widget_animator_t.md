@@ -55,7 +55,7 @@ ret_t widget_animator_destroy (widget_animator_t* animator);
 * 函数原型：
 
 ```
-ret_t widget_animator_init (widget_animator_t* animator, widget_t* widget, uint32_t duration, uint32_t delay, easing_func_t );
+ret_t widget_animator_init (widget_animator_t* animator, widget_t* widget, uint32_t duration, uint32_t delay, easing_func_t easing);
 ```
 
 * 参数说明：
@@ -67,7 +67,7 @@ ret_t widget_animator_init (widget_animator_t* animator, widget_t* widget, uint3
 | widget | widget\_t* | 控件对象。 |
 | duration | uint32\_t | 动画持续时间。 |
 | delay | uint32\_t | 动画执行时间。 |
-|  | easing\_func\_t | 。 |
+| easing | easing\_func\_t | 插值函数。 |
 #### widget\_animator\_off 函数
 -----------------------
 
@@ -94,12 +94,11 @@ ret_t widget_animator_off (widget_animator_t* animator, uint32_t id);
 * 函数功能：
 
 > <p id="widget_animator_t_widget_animator_on">注册指定事件的处理函数。
-事件类型。目前支持：EVT_ANIM_START,EVT_ANIM_STOP,EVT_ANIM_PAUSE,EVT_ANIM_ONCE和EVT_ANIM_END。
 
 * 函数原型：
 
 ```
-uint32_t widget_animator_on (widget_animator_t* animator, event_type_t , event_func_t on_event, void* ctx);
+uint32_t widget_animator_on (widget_animator_t* animator, event_type_t type, event_func_t on_event, void* ctx);
 ```
 
 * 参数说明：
@@ -108,7 +107,7 @@ uint32_t widget_animator_on (widget_animator_t* animator, event_type_t , event_f
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 返回id，用于widget\_animator\_off。 |
 | animator | widget\_animator\_t* | 动画对象。 |
-|  | event\_type\_t | e |
+| type | event\_type\_t | 事件类型。目前支持：EVT\_ANIM\_START,EVT\_ANIM\_STOP,EVT\_ANIM\_PAUSE,EVT\_ANIM\_ONCE和EVT\_ANIM\_END。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 #### widget\_animator\_pause 函数

@@ -92,8 +92,8 @@
 | WIDGET\_PROP\_PAGE\_MAX\_NUMBER | 页面最大个数。 |
 | WIDGET\_PROP\_VERTICAL | 是否为垂直模式。 |
 | WIDGET\_PROP\_SHOW\_TEXT | 是否显示文本。 |
-| WIDGET\_PROP\_XOFFSET | X方向的偏移。（如果控件有继承 get\_offset 函数指针的话，一定要和 get\_offset 返回值保持一致，否则容易出现问题） |
-| WIDGET\_PROP\_YOFFSET | Y方向的偏移。（如果控件有继承 get\_offset 函数指针的话，一定要和 get\_offset 返回值保持一致，否则容易出现问题） |
+| WIDGET\_PROP\_XOFFSET | X方向的偏移。（如果控件有继承 get\_offset 函数指针的话，一定要和 get\_offset 返回值保持一致，否则容易出现问题）详情请看 docs/how\_to\_use\_offset\_in\_custom\_widget.md |
+| WIDGET\_PROP\_YOFFSET | Y方向的偏移。（如果控件有继承 get\_offset 函数指针的话，一定要和 get\_offset 返回值保持一致，否则容易出现问题）详情请看 docs/how\_to\_use\_offset\_in\_custom\_widget.md |
 | WIDGET\_PROP\_ALIGN\_V | 垂直对齐模式。 |
 | WIDGET\_PROP\_ALIGN\_H | 水平对齐模式。 |
 | WIDGET\_PROP\_AUTO\_PLAY | 是否自动播放或指定播放的时间。 |
@@ -178,3 +178,4 @@
 | WIDGET\_PROP\_ANIMATING\_TIME | 动画时间。 |
 | WIDGET\_PROP\_ANIMATE\_PREFIX | 改变控件属性时附带动画的前缀。 |
 | WIDGET\_PROP\_ANIMATE\_ANIMATING\_TIME | 改变控件属性时附带动画的播放时间。 |
+| WIDGET\_PROP\_DIRTY\_RECT | 控件脏矩形区域。 |

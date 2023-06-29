@@ -146,7 +146,7 @@ int32_t fs_file_read_line (fs_file_t* file, char* buffer, uint32_t size);
 * 函数原型：
 
 ```
-ret_t fs_file_seek (fs_file_t* file, uint32_t offset);
+ret_t fs_file_seek (fs_file_t* file, int32_t offset);
 ```
 
 * 参数说明：
@@ -155,7 +155,7 @@ ret_t fs_file_seek (fs_file_t* file, uint32_t offset);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | file | fs\_file\_t* | 文件对象。 |
-| offset | uint32\_t | 数据长度。 |
+| offset | int32\_t | 数据长度。 |
 #### fs\_file\_size 函数
 -----------------------
 
@@ -243,7 +243,7 @@ int64_t fs_file_tell (fs_file_t* file);
 * 函数原型：
 
 ```
-ret_t fs_file_truncate (fs_file_t* file);
+ret_t fs_file_truncate (fs_file_t* file, int32_t offset);
 ```
 
 * 参数说明：
@@ -252,6 +252,7 @@ ret_t fs_file_truncate (fs_file_t* file);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | file | fs\_file\_t* | 文件对象。 |
+| offset | int32\_t | 数据长度。 |
 #### fs\_file\_write 函数
 -----------------------
 

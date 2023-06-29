@@ -10,10 +10,10 @@
 | <a href="#timer_manager_t_timer_manager">timer\_manager</a> | 获取缺省的定时器管理器。 |
 | <a href="#timer_manager_t_timer_manager_add">timer\_manager\_add</a> | 添加定时器。 |
 | <a href="#timer_manager_t_timer_manager_add_with_id">timer\_manager\_add\_with\_id</a> | 添加定时器。（可以指定 timer_id ，如果发现 timer_id 冲突则添加失败）。 |
-| <a href="#timer_manager_t_timer_manager_add_with_type">timer\_manager\_add\_with\_type</a> |  |
-| <a href="#timer_manager_t_timer_manager_add_with_type_and_id">timer\_manager\_add\_with\_type\_and\_id</a> |  |
+| <a href="#timer_manager_t_timer_manager_add_with_type">timer\_manager\_add\_with\_type</a> | 添加对应类型的定时器。 |
+| <a href="#timer_manager_t_timer_manager_add_with_type_and_id">timer\_manager\_add\_with\_type\_and\_id</a> | 添加对应类型和id的定时器。 |
 | <a href="#timer_manager_t_timer_manager_all_remove_by_ctx">timer\_manager\_all\_remove\_by\_ctx</a> | 根据上下文删除所有对应的定时器。 |
-| <a href="#timer_manager_t_timer_manager_all_remove_by_ctx_and_type">timer\_manager\_all\_remove\_by\_ctx\_and\_type</a> |  |
+| <a href="#timer_manager_t_timer_manager_all_remove_by_ctx_and_type">timer\_manager\_all\_remove\_by\_ctx\_and\_type</a> | 移除对应类型和上下文的所有定时器。 |
 | <a href="#timer_manager_t_timer_manager_append">timer\_manager\_append</a> | 追加定时器。 |
 | <a href="#timer_manager_t_timer_manager_count">timer\_manager\_count</a> | 返回定时器的个数。 |
 | <a href="#timer_manager_t_timer_manager_create">timer\_manager\_create</a> | 创建定时器管理器。 |
@@ -55,7 +55,7 @@ timer_manager_t* timer_manager ();
 * 函数原型：
 
 ```
-uint32_t timer_manager_add (timer_manager_t* timer_manager, timer_func_t* on_timer, void* ctx, uint32_t duration);
+uint32_t timer_manager_add (timer_manager_t* timer_manager, timer_func_t on_timer, void* ctx, uint32_t duration);
 ```
 
 * 参数说明：
@@ -64,7 +64,7 @@ uint32_t timer_manager_add (timer_manager_t* timer_manager, timer_func_t* on_tim
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 返回timer的ID，TK\_INVALID\_ID表示失败。 |
 | timer\_manager | timer\_manager\_t* | 定时器管理器对象。 |
-| on\_timer | timer\_func\_t* | timer回调函数。 |
+| on\_timer | timer\_func\_t | timer回调函数。 |
 | ctx | void* | timer回调函数的上下文。 |
 | duration | uint32\_t | 时间。 |
 #### timer\_manager\_add\_with\_id 函数
@@ -77,7 +77,7 @@ uint32_t timer_manager_add (timer_manager_t* timer_manager, timer_func_t* on_tim
 * 函数原型：
 
 ```
-uint32_t timer_manager_add_with_id (timer_manager_t* timer_manager, uint32_t id, timer_func_t* on_timer, void* ctx, uint32_t duration);
+uint32_t timer_manager_add_with_id (timer_manager_t* timer_manager, uint32_t id, timer_func_t on_timer, void* ctx, uint32_t duration);
 ```
 
 * 参数说明：
@@ -87,9 +87,57 @@ uint32_t timer_manager_add_with_id (timer_manager_t* timer_manager, uint32_t id,
 | 返回值 | uint32\_t | 返回timer的ID，TK\_INVALID\_ID表示失败。 |
 | timer\_manager | timer\_manager\_t* | 定时器管理器对象。 |
 | id | uint32\_t | timer\_id。 |
-| on\_timer | timer\_func\_t* | timer回调函数。 |
+| on\_timer | timer\_func\_t | timer回调函数。 |
 | ctx | void* | timer回调函数的上下文。 |
 | duration | uint32\_t | 时间。 |
+#### timer\_manager\_add\_with\_type 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="timer_manager_t_timer_manager_add_with_type">添加对应类型的定时器。
+
+* 函数原型：
+
+```
+uint32_t timer_manager_add_with_type (timer_manager_t* timer_manager, timer_func_t on_timer, void* ctx, uint32_t duration, uint16_t timer_info_type);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回定时器id。 |
+| timer\_manager | timer\_manager\_t* | 定时器管理器对象。 |
+| on\_timer | timer\_func\_t | 定时器回调函数。 |
+| ctx | void* | 上下文。 |
+| duration | uint32\_t | 时间。 |
+| timer\_info\_type | uint16\_t | timer\_info\_type。 |
+#### timer\_manager\_add\_with\_type\_and\_id 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="timer_manager_t_timer_manager_add_with_type_and_id">添加对应类型和id的定时器。
+
+* 函数原型：
+
+```
+uint32_t timer_manager_add_with_type_and_id (timer_manager_t* timer_manager, uint32_t id, timer_func_t on_timer, void* ctx, uint32_t duration, uint16_t timer_info_type, bool_t is_check_id);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回定时器id。 |
+| timer\_manager | timer\_manager\_t* | 定时器管理器对象。 |
+| id | uint32\_t | id。 |
+| on\_timer | timer\_func\_t | 定时器回调函数。 |
+| ctx | void* | 上下文。 |
+| duration | uint32\_t | 时间。 |
+| timer\_info\_type | uint16\_t | timer\_info\_type。 |
+| is\_check\_id | bool\_t | 是否校验id。 |
 #### timer\_manager\_all\_remove\_by\_ctx 函数
 -----------------------
 
@@ -110,6 +158,27 @@ ret_t timer_manager_all_remove_by_ctx (timer_manager_t* timer_manager, void* ctx
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | timer\_manager | timer\_manager\_t* | 定时器管理器对象。 |
 | ctx | void* | timer回调函数的上下文。 |
+#### timer\_manager\_all\_remove\_by\_ctx\_and\_type 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="timer_manager_t_timer_manager_all_remove_by_ctx_and_type">移除对应类型和上下文的所有定时器。
+
+* 函数原型：
+
+```
+ret_t timer_manager_all_remove_by_ctx_and_type (timer_manager_t* timer_manager, uint16_t type, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| timer\_manager | timer\_manager\_t* | 定时器管理器对象。 |
+| type | uint16\_t | 类型。 |
+| ctx | void* | 上下文。 |
 #### timer\_manager\_append 函数
 -----------------------
 
@@ -216,7 +285,7 @@ ret_t timer_manager_destroy (timer_manager_t* timer_manager);
 * 函数原型：
 
 ```
-ret_t timer_manager_dispatch ();
+ret_t timer_manager_dispatch (timer_manager_t* timer_manager);
 ```
 
 * 参数说明：
@@ -224,6 +293,7 @@ ret_t timer_manager_dispatch ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| timer\_manager | timer\_manager\_t* | 定时器管理器对象。 |
 #### timer\_manager\_find 函数
 -----------------------
 
@@ -234,14 +304,14 @@ ret_t timer_manager_dispatch ();
 * 函数原型：
 
 ```
-timer_info_t* timer_manager_find (timer_manager_t* timer_manager, uint32_t timer_id);
+const timer_info_t* timer_manager_find (timer_manager_t* timer_manager, uint32_t timer_id);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | timer\_info\_t* | 返回timer的信息。 |
+| 返回值 | const timer\_info\_t* | 返回timer的信息。 |
 | timer\_manager | timer\_manager\_t* | 定时器管理器对象。 |
 | timer\_id | uint32\_t | timer\_id |
 #### timer\_manager\_get\_next\_timer\_id 函数
@@ -262,7 +332,7 @@ uint32_t timer_manager_get_next_timer_id (timer_manager_t* timer_manager);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 返回idle的ID，TK\_INVALID\_ID表示失败。 |
-| timer\_manager | timer\_manager\_t* | timer\_manager\_t管理器对象。 |
+| timer\_manager | timer\_manager\_t* | 定时器管理器对象。 |
 #### timer\_manager\_init 函数
 -----------------------
 
@@ -332,7 +402,7 @@ ret_t timer_manager_remove (timer_manager_t* timer_manager, uint32_t timer_id);
 * 函数原型：
 
 ```
-ret_t timer_manager_reset (timer_manager_t* timer_manager, uint32_t* timer_id);
+ret_t timer_manager_reset (timer_manager_t* timer_manager, uint32_t timer_id);
 ```
 
 * 参数说明：
@@ -341,7 +411,7 @@ ret_t timer_manager_reset (timer_manager_t* timer_manager, uint32_t* timer_id);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | timer\_manager | timer\_manager\_t* | 定时器管理器对象。 |
-| timer\_id | uint32\_t* | timer\_id。 |
+| timer\_id | uint32\_t | timer\_id。 |
 #### timer\_manager\_set 函数
 -----------------------
 
@@ -352,7 +422,7 @@ ret_t timer_manager_reset (timer_manager_t* timer_manager, uint32_t* timer_id);
 * 函数原型：
 
 ```
-ret_t timer_manager_set (timer_manager_t* timer_manager_t);
+ret_t timer_manager_set (timer_manager_t* timer_manager);
 ```
 
 * 参数说明：
@@ -360,4 +430,4 @@ ret_t timer_manager_set (timer_manager_t* timer_manager_t);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| timer\_manager\_t | timer\_manager\_t* | 定时器管理器对象。 |
+| timer\_manager | timer\_manager\_t* | 定时器管理器对象。 |

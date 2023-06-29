@@ -48,7 +48,7 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#object_array_t_capacity">capacity</a> | uint32\_t | 属性数组的容量。 |
-| <a href="#object_array_t_props">props</a> | value\_t | 属性数组。 |
+| <a href="#object_array_t_props">props</a> | value\_t* | 属性数组。 |
 | <a href="#object_array_t_size">size</a> | uint32\_t | 属性个数。 |
 #### object\_array\_avg 函数
 -----------------------
@@ -625,7 +625,7 @@ ret_t object_array_unref (tk_object_t* obj);
 -----------------------
 > <p id="object_array_t_props">属性数组。
 
-* 类型：value\_t
+* 类型：value\_t*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

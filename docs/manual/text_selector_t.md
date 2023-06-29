@@ -100,7 +100,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L4
 * 函数原型：
 
 ```
-ret_t text_selector_append_option (widget_t* widget, int32_t value, char* text);
+ret_t text_selector_append_option (widget_t* widget, int32_t value, const char* text);
 ```
 
 * 参数说明：
@@ -110,7 +110,7 @@ ret_t text_selector_append_option (widget_t* widget, int32_t value, char* text);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | text\_selector对象。 |
 | value | int32\_t | 值。 |
-| text | char* | 文本。 |
+| text | const char* | 文本。 |
 #### text\_selector\_cast 函数
 -----------------------
 
@@ -397,7 +397,7 @@ ret_t text_selector_set_mask_easing (widget_t* widget, easing_type_t mask_easing
 * 函数原型：
 
 ```
-ret_t text_selector_set_options (widget_t* widget, char* options);
+ret_t text_selector_set_options (widget_t* widget, const char* options);
 ```
 
 * 参数说明：
@@ -406,7 +406,7 @@ ret_t text_selector_set_options (widget_t* widget, char* options);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | text\_selector对象。 |
-| options | char* | 选项。 |
+| options | const char* | 选项。 |
 #### text\_selector\_set\_range\_options 函数
 -----------------------
 

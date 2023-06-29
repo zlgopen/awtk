@@ -9,7 +9,7 @@
 | -------- | ----- | ------------ | 
 | <a href="#value_desc_t_desc">desc</a> | const char* | 描述。 |
 | <a href="#value_desc_t_display_name">display\_name</a> | const char* | 显示名称。 |
-| <a href="#value_desc_t_flags">flags</a> | uint8\_t | flags。 |
+| <a href="#value_desc_t_flags">flags</a> | uint16\_t | flags。 |
 | <a href="#value_desc_t_format">format</a> | uint8\_t | 格式。 |
 | <a href="#value_desc_t_name">name</a> | const char* | 名称。 |
 | <a href="#value_desc_t_type">type</a> | uint8\_t | 类型。 |
@@ -37,7 +37,7 @@
 -----------------------
 > <p id="value_desc_t_flags">flags。
 
-* 类型：uint8\_t
+* 类型：uint16\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

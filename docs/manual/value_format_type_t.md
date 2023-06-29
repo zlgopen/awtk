@@ -8,9 +8,9 @@
 | -------- | ------- | 
 | VALUE\_FORMAT\_TYPE\_NONE | 无特殊格式。 |
 | VALUE\_FORMAT\_TYPE\_HEX | 16进制格式。 |
-| VALUE\_FORMAT\_TYPE\_HEX | 非负格式(用于进一步限制float/double)。 |
+| VALUE\_FORMAT\_TYPE\_UNSIGNED | 非负格式(用于进一步限制float/double)。 |
 | VALUE\_FORMAT\_TYPE\_PHONE | 手机号码格式。 |
-| VALUE\_FORMAT\_TYPE\_PHONE | 邮件格式。 |
+| VALUE\_FORMAT\_TYPE\_EMAIL | 邮件格式。 |
 | VALUE\_FORMAT\_TYPE\_IP4\_ADDRESS | ip4地址格式。 |
 | VALUE\_FORMAT\_TYPE\_DOMAIN\_NAME | 域名格式。 |
 | VALUE\_FORMAT\_TYPE\_URL | URL格式。 |

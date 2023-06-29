@@ -41,6 +41,7 @@ widget_t* draggable = draggable_create(target, 0, 0, 0, 0);
 | <a href="#draggable_t_draggable_cast">draggable\_cast</a> | 转换为draggable对象(供脚本语言使用)。 |
 | <a href="#draggable_t_draggable_create">draggable\_create</a> | 创建draggable对象 |
 | <a href="#draggable_t_draggable_get_widget_vtable">draggable\_get\_widget\_vtable</a> | 获取 draggable 虚表。 |
+| <a href="#draggable_t_draggable_set_allow_out_of_screen">draggable\_set\_allow\_out\_of\_screen</a> | 设置是否无范围限制拖动。 |
 | <a href="#draggable_t_draggable_set_bottom">draggable\_set\_bottom</a> | 设置bottom。 |
 | <a href="#draggable_t_draggable_set_drag_native_window">draggable\_set\_drag\_native\_window</a> | 设置drag_native_window。 |
 | <a href="#draggable_t_draggable_set_drag_parent">draggable\_set\_drag\_parent</a> | 设置drag_parent。 |
@@ -55,6 +56,7 @@ widget_t* draggable = draggable_create(target, 0, 0, 0, 0);
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
+| <a href="#draggable_t_allow_out_of_screen">allow\_out\_of\_screen</a> | bool\_t | 支持超出原生窗口边界拖动。（无法完全移出原生窗口，同时优先受到拖动范围限制的影响） |
 | <a href="#draggable_t_bottom">bottom</a> | int32\_t | 拖动范围的底部限制。缺省为父控件的底部。 |
 | <a href="#draggable_t_drag_native_window">drag\_native\_window</a> | bool\_t | 拖动原生窗口。 |
 | <a href="#draggable_t_drag_parent">drag\_parent</a> | uint32\_t | 拖动父控件。0表示直系父控件，1表示父控件的父控件，依次类推。 |
@@ -124,6 +126,27 @@ const widget_vtable_t* draggable_get_widget_vtable ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | const widget\_vtable\_t* | 成功返回 draggable 虚表。 |
+#### draggable\_set\_allow\_out\_of\_screen 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="draggable_t_draggable_set_allow_out_of_screen">设置是否无范围限制拖动。
+备注：可以让窗口拖动到外面去。
+
+* 函数原型：
+
+```
+ret_t draggable_set_allow_out_of_screen (widget_t* widget, bool_t allow_out_of_screen);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| allow\_out\_of\_screen | bool\_t | 是否无范围限制拖动。 |
 #### draggable\_set\_bottom 函数
 -----------------------
 
@@ -306,6 +329,22 @@ ret_t draggable_set_vertical_only (widget_t* widget, bool_t vertical_only);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | vertical\_only | bool\_t | 只允许垂直拖动。 |
+#### allow\_out\_of\_screen 属性
+-----------------------
+> <p id="draggable_t_allow_out_of_screen">支持超出原生窗口边界拖动。（无法完全移出原生窗口，同时优先受到拖动范围限制的影响）
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### bottom 属性
 -----------------------
 > <p id="draggable_t_bottom">拖动范围的底部限制。缺省为父控件的底部。

@@ -46,7 +46,7 @@ paint_event_t* paint_event_cast (event_t* event);
 * 函数原型：
 
 ```
-event_t* paint_event_init (paint_event_t* event, void* target, uint32_t type, canvas_t* c);
+event_t* paint_event_init (paint_event_t* event, uint32_t type, void* target, canvas_t* c);
 ```
 
 * 参数说明：
@@ -55,8 +55,8 @@ event_t* paint_event_init (paint_event_t* event, void* target, uint32_t type, ca
 | -------- | ----- | --------- |
 | 返回值 | event\_t* | event对象。 |
 | event | paint\_event\_t* | event对象。 |
-| target | void* | 事件目标。 |
 | type | uint32\_t | 事件类型。 |
+| target | void* | 事件目标。 |
 | c | canvas\_t* | canvas对象。 |
 #### c 属性
 -----------------------

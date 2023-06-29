@@ -77,7 +77,7 @@ font_loader_t* font_loader_stb_mono ();
 * 函数原型：
 
 ```
-font_t* font_stb_create (const char* name, const uint8_t* buff , uint32_t size);
+font_t* font_stb_create (const char* name, const uint8_t* buff, uint32_t size);
 ```
 
 * 参数说明：
@@ -86,7 +86,7 @@ font_t* font_stb_create (const char* name, const uint8_t* buff , uint32_t size);
 | -------- | ----- | --------- |
 | 返回值 | font\_t* | 返回字体对象。 |
 | name | const char* | 字体名称。 |
-|  | const uint8\_t* buff | 。 |
+| buff | const uint8\_t* | 字体数据。 |
 | size | uint32\_t | 字体数据长度。 |
 #### font\_stb\_mono\_create 函数
 -----------------------
@@ -98,7 +98,7 @@ font_t* font_stb_create (const char* name, const uint8_t* buff , uint32_t size);
 * 函数原型：
 
 ```
-font_t* font_stb_mono_create (const char* name, const uint8_t* buff , uint32_t size);
+font_t* font_stb_mono_create (const char* name, const uint8_t* buff, uint32_t size);
 ```
 
 * 参数说明：
@@ -107,7 +107,7 @@ font_t* font_stb_mono_create (const char* name, const uint8_t* buff , uint32_t s
 | -------- | ----- | --------- |
 | 返回值 | font\_t* | 返回字体对象。 |
 | name | const char* | 字体名称。 |
-|  | const uint8\_t* buff | 。 |
+| buff | const uint8\_t* | 字体数据。 |
 | size | uint32\_t | 字体数据长度。 |
 #### fscript\_app\_conf\_register 函数
 -----------------------
@@ -137,14 +137,15 @@ ret_t fscript_app_conf_register ();
 * 函数原型：
 
 ```
-ret_t fscript_array_get_fscript_array_vt ();
+const fscript_array_vtable_t* fscript_array_get_fscript_array_vt (tk_object_t* obj);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 成功返回虚表指针，失败返回 NULL。 |
+| 返回值 | const fscript\_array\_vtable\_t* | 成功返回虚表指针，失败返回 NULL。 |
+| obj | tk\_object\_t* | obj对象。 |
 #### fscript\_array\_register 函数
 -----------------------
 

@@ -39,7 +39,7 @@ action_thread_pool_t* action_thread_pool_create (uint16_t max_thread_nr, uint16_
 | -------- | ----- | --------- |
 | 返回值 | action\_thread\_pool\_t* | action\_thread\_pool对象。 |
 | max\_thread\_nr | uint16\_t | 最大线程数。 |
-| min\_idle\_nr | uint16\_t | 最小空闲线程数。 |
+| min\_idle\_nr | uint16\_t | 最小空闲线程数(必须大于0)。 |
 #### action\_thread\_pool\_create\_ex 函数
 -----------------------
 
@@ -59,7 +59,7 @@ action_thread_pool_t* action_thread_pool_create_ex (uint16_t max_thread_nr, uint
 | -------- | ----- | --------- |
 | 返回值 | action\_thread\_pool\_t* | action\_thread\_pool对象。 |
 | max\_thread\_nr | uint16\_t | 最大线程数。 |
-| min\_idle\_nr | uint16\_t | 最小空闲线程数。 |
+| min\_idle\_nr | uint16\_t | 最小空闲线程数(必须大于0)。 |
 | stack\_size | uint32\_t | 栈的大小。 |
 | priority | tk\_thread\_priority\_t | 优先级 |
 #### action\_thread\_pool\_destroy 函数

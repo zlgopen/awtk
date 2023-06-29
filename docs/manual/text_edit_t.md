@@ -38,7 +38,9 @@
 | <a href="#text_edit_t_text_edit_set_max_chars">text\_edit\_set\_max\_chars</a> | 设置最大字符数（0 为不限制字符）。 |
 | <a href="#text_edit_t_text_edit_set_max_rows">text\_edit\_set\_max\_rows</a> | 设置最大行数。 |
 | <a href="#text_edit_t_text_edit_set_offset">text\_edit\_set\_offset</a> | 设置滚动偏移。 |
+| <a href="#text_edit_t_text_edit_set_on_char_will_input">text\_edit\_set\_on\_char\_will\_input</a> | 设置字符输入回调函数。 |
 | <a href="#text_edit_t_text_edit_set_on_state_changed">text\_edit\_set\_on\_state\_changed</a> | 设置状态改变回调函数。 |
+| <a href="#text_edit_t_text_edit_set_on_text_will_delete">text\_edit\_set\_on\_text\_will\_delete</a> | 设置文本删除回调函数。 |
 | <a href="#text_edit_t_text_edit_set_select">text\_edit\_set\_select</a> | 选择指定范围的文本。 |
 | <a href="#text_edit_t_text_edit_set_tips">text\_edit\_set\_tips</a> | 设置提示信息。 |
 | <a href="#text_edit_t_text_edit_set_wrap_word">text\_edit\_set\_wrap\_word</a> | 设置是否自动折行。 |
@@ -94,14 +96,14 @@ ret_t text_edit_copy (text_edit_t* text_edit);
 * 函数原型：
 
 ```
-widget_t* text_edit_create (widget_t* widget, bool_t single_line);
+text_edit_t* text_edit_create (widget_t* widget, bool_t single_line);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | widget\_t* | 对象。 |
+| 返回值 | text\_edit\_t* | 对象。 |
 | widget | widget\_t* | 控件 |
 | single\_line | bool\_t | 是否是单行编辑器。 |
 #### text\_edit\_cut 函数
@@ -657,6 +659,27 @@ ret_t text_edit_set_offset (text_edit_t* text_edit, int32_t ox, int32_t oy);
 | text\_edit | text\_edit\_t* | text\_edit对象。 |
 | ox | int32\_t | x偏移量。 |
 | oy | int32\_t | y偏移量。 |
+#### text\_edit\_set\_on\_char\_will\_input 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_edit_t_text_edit_set_on_char_will_input">设置字符输入回调函数。
+
+* 函数原型：
+
+```
+ret_t text_edit_set_on_char_will_input (text_edit_t* text_edit, text_edit_on_char_will_input_t on_char_will_input, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| text\_edit | text\_edit\_t* | text\_edit对象。 |
+| on\_char\_will\_input | text\_edit\_on\_char\_will\_input\_t | 回调函数。 |
+| ctx | void* | 回调函数上下文。 |
 #### text\_edit\_set\_on\_state\_changed 函数
 -----------------------
 
@@ -677,6 +700,27 @@ ret_t text_edit_set_on_state_changed (text_edit_t* text_edit, text_edit_on_state
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | text\_edit | text\_edit\_t* | text\_edit对象。 |
 | on\_state\_changed | text\_edit\_on\_state\_changed\_t | 回调函数。 |
+| ctx | void* | 回调函数上下文。 |
+#### text\_edit\_set\_on\_text\_will\_delete 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_edit_t_text_edit_set_on_text_will_delete">设置文本删除回调函数。
+
+* 函数原型：
+
+```
+ret_t text_edit_set_on_text_will_delete (text_edit_t* text_edit, text_edit_on_text_will_delete_t on_text_will_delete, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| text\_edit | text\_edit\_t* | text\_edit对象。 |
+| on\_text\_will\_delete | text\_edit\_on\_text\_will\_delete\_t | 回调函数。 |
 | ctx | void* | 回调函数上下文。 |
 #### text\_edit\_set\_select 函数
 -----------------------
@@ -750,7 +794,7 @@ ret_t text_edit_set_wrap_word (text_edit_t* text_edit, bool_t wrap_word);
 * 函数原型：
 
 ```
-ret_t text_edit_show_context_menu (text_edit_t* text_edit, uint32_t x, uint32_t y);
+ret_t text_edit_show_context_menu (text_edit_t* text_edit, int32_t x, int32_t y);
 ```
 
 * 参数说明：
@@ -759,8 +803,8 @@ ret_t text_edit_show_context_menu (text_edit_t* text_edit, uint32_t x, uint32_t 
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | text\_edit | text\_edit\_t* | text\_edit对象。 |
-| x | uint32\_t | x位置。 |
-| y | uint32\_t | y位置。 |
+| x | int32\_t | x位置。 |
+| y | int32\_t | y位置。 |
 #### text\_edit\_unselect 函数
 -----------------------
 

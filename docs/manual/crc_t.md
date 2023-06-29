@@ -13,6 +13,7 @@ crc相关函数。
 | <a href="#crc_t_tk_crc16_byte">tk\_crc16\_byte</a> | 计算单子节的crc16。 |
 | <a href="#crc_t_tk_crc32">tk\_crc32</a> | 计算crc32。 |
 | <a href="#crc_t_tk_crc32_byte">tk\_crc32\_byte</a> | 计算单子节的crc32。 |
+| <a href="#crc_t_tk_crc32_file">tk\_crc32\_file</a> | 计算文件的crc32哈希值。 |
 #### tk\_chksum 函数
 -----------------------
 
@@ -136,3 +137,23 @@ uint32_t tk_crc32_byte (uint32_t crc, uint8_t data);
 | 返回值 | uint32\_t | 返回计算结果。 |
 | crc | uint32\_t | 初始值(一般用PPPINITFCS32，或者之前的值) |
 | data | uint8\_t | 数据。 |
+#### tk\_crc32\_file 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="crc_t_tk_crc32_file">计算文件的crc32哈希值。
+
+* 函数原型：
+
+```
+uint32_t tk_crc32_file (const char* filename, uint32_t block_size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回计算结果。 |
+| filename | const char* | 文件名。 |
+| block\_size | uint32\_t | 数据块长度。 |

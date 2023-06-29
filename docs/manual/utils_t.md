@@ -11,11 +11,14 @@
 | <a href="#utils_t_data_url_copy">data\_url\_copy</a> | 将数据从源URL拷贝到目标URL。 |
 | <a href="#utils_t_default_destroy">default\_destroy</a> | 缺省的destroy函数。释放data指向的内存。 |
 | <a href="#utils_t_dummy_destroy">dummy\_destroy</a> | 空的destroy函数。 |
+| <a href="#utils_t_file_read_as_unix_text">file\_read\_as\_unix\_text</a> | 读取文本文件。并将windows换行(\r\n)或macos换行(\r)转换为uinux换行(\n)。 |
 | <a href="#utils_t_filename_to_name">filename\_to\_name</a> | 从完整文件名中获取文件名。 |
 | <a href="#utils_t_filename_to_name_ex">filename\_to\_name\_ex</a> | 从完整文件名中获取文件名。 |
 | <a href="#utils_t_image_region_parse">image\_region\_parse</a> | 解析子图的区域信息。 |
 | <a href="#utils_t_object_to_json">object\_to\_json</a> | 将对象转换成json字符串。 |
 | <a href="#utils_t_pointer_compare">pointer\_compare</a> | 指针比较。 |
+| <a href="#utils_t_ret_code_from_name">ret\_code\_from\_name</a> | 将ret_t的文本名称转换成对应的值。 |
+| <a href="#utils_t_ret_code_to_name">ret\_code\_to\_name</a> | 将ret_t转换成对应的文本名称。 |
 | <a href="#utils_t_tk_atob">tk\_atob</a> | 将字符串转换为布尔类型。 |
 | <a href="#utils_t_tk_atof">tk\_atof</a> | 将字符串转换为浮点类型。 |
 | <a href="#utils_t_tk_atoi">tk\_atoi</a> | 将字符串转换为整型数。 |
@@ -26,6 +29,7 @@
 | <a href="#utils_t_tk_is_ui_thread">tk\_is\_ui\_thread</a> | 判断当前线程是否是UI线程。 |
 | <a href="#utils_t_tk_is_valid_name">tk\_is\_valid\_name</a> | 判断是否是有效的属性名。 |
 | <a href="#utils_t_tk_itoa">tk\_itoa</a> | 将整型转换为字符串。 |
+| <a href="#utils_t_tk_lltoa">tk\_lltoa</a> | 将整型转换为字符串。 |
 | <a href="#utils_t_tk_memcpy">tk\_memcpy</a> | 内存拷贝。 |
 | <a href="#utils_t_tk_memcpy16">tk\_memcpy16</a> | 拷贝数据2字节。 |
 | <a href="#utils_t_tk_memcpy32">tk\_memcpy32</a> | 拷贝数据4字节。 |
@@ -33,13 +37,13 @@
 | <a href="#utils_t_tk_memset16">tk\_memset16</a> | 设置数据2字节。 |
 | <a href="#utils_t_tk_memset24">tk\_memset24</a> | 设置数据3字节。 |
 | <a href="#utils_t_tk_memset32">tk\_memset32</a> | 设置数据4字节。 |
-| <a href="#utils_t_tk_normalize_key_name">tk\_normalize\_key\_name</a> |  |
+| <a href="#utils_t_tk_normalize_key_name">tk\_normalize\_key\_name</a> | 标准化key_name |
 | <a href="#utils_t_tk_pixel_copy">tk\_pixel\_copy</a> | 已bpp字节为标准拷贝数据。 |
 | <a href="#utils_t_tk_pointer_from_int">tk\_pointer\_from\_int</a> | 将int转换成指针。 |
 | <a href="#utils_t_tk_pointer_to_int">tk\_pointer\_to\_int</a> | 将指针转换成int。 |
 | <a href="#utils_t_tk_qsort">tk\_qsort</a> | 快速排序。 |
 | <a href="#utils_t_tk_replace_char">tk\_replace\_char</a> | 替换字符。 |
-| <a href="#utils_t_tk_replace_locale">tk\_replace\_locale</a> |  |
+| <a href="#utils_t_tk_replace_locale">tk\_replace\_locale</a> | 将文本中的$locale$替换为对应的语言。 |
 | <a href="#utils_t_tk_set_ui_thread">tk\_set\_ui\_thread</a> | 设置UI线程的ID。 |
 | <a href="#utils_t_tk_skip_to_num">tk\_skip\_to\_num</a> | 跳过字符串函数，如：字符串"hello123world"，返回的结果是"123world"。 |
 | <a href="#utils_t_tk_snprintf">tk\_snprintf</a> | 将可变参数(...)按照format格式化字符串，并将字符串复制到str中。 |
@@ -156,6 +160,26 @@ ret_t dummy_destroy (void* data);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | data | void* | 数据。 |
+#### file\_read\_as\_unix\_text 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_file_read_as_unix_text">读取文本文件。并将windows换行(\r\n)或macos换行(\r)转换为uinux换行(\n)。
+
+* 函数原型：
+
+```
+char* file_read_as_unix_text (const char* filename, uint32_t* size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | char* | 返回读取的数据，需要调用TKMEM\_FREE释放。 |
+| filename | const char* | 文件名。 |
+| size | uint32\_t* | 返回实际读取的长度。 |
 #### filename\_to\_name 函数
 -----------------------
 
@@ -261,6 +285,44 @@ int pointer_compare (const void* a, const void* b);
 | 返回值 | int | 返回0表示相等，返回负数表示小于，返回整数表示大于。 |
 | a | const void* | 数据a。 |
 | b | const void* | 数据b。 |
+#### ret\_code\_from\_name 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_ret_code_from_name">将ret_t的文本名称转换成对应的值。
+
+* 函数原型：
+
+```
+ret_t ret_code_from_name (const char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回对应的值。 |
+| name | const char* | 字符串。 |
+#### ret\_code\_to\_name 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_ret_code_to_name">将ret_t转换成对应的文本名称。
+
+* 函数原型：
+
+```
+const char* ret_code_to_name (ret_t ret);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回对应的名称。 |
+| ret | ret\_t | 代码。 |
 #### tk\_atob 函数
 -----------------------
 
@@ -466,6 +528,27 @@ const char* tk_itoa (char* str, int len, int n);
 | str | char* | 保存字符串缓冲区。 |
 | len | int | 缓冲区大小。 |
 | n | int | 要转换的整型。 |
+#### tk\_lltoa 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_lltoa">将整型转换为字符串。
+
+* 函数原型：
+
+```
+const char* tk_lltoa (char* str, int len, int64_t n);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回字符串。 |
+| str | char* | 保存字符串缓冲区。 |
+| len | int | 缓冲区大小。 |
+| n | int64\_t | 要转换的整型。 |
 #### tk\_memcpy 函数
 -----------------------
 
@@ -613,6 +696,26 @@ uint32_t* tk_memset32 (uint32_t* buff, uint32_t val, uint32_t size);
 | buff | uint32\_t* | buff。 |
 | val | uint32\_t | 值。 |
 | size | uint32\_t | 个数。 |
+#### tk\_normalize\_key\_name 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_normalize_key_name">标准化key_name
+
+* 函数原型：
+
+```
+const char* tk_normalize_key_name (const char* name, char* fixed_name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回标准化后的字符串。 |
+| name | const char* | key\_name。 |
+| fixed\_name | char* | 保存标准化后的字符串。 |
 #### tk\_pixel\_copy 函数
 -----------------------
 
@@ -623,7 +726,7 @@ uint32_t* tk_memset32 (uint32_t* buff, uint32_t val, uint32_t size);
 * 函数原型：
 
 ```
-void* tk_pixel_copy (void* dst, void* src, uint32_t size, uint8_t bpp);
+void* tk_pixel_copy (void* dst, const void* src, uint32_t size, uint8_t bpp);
 ```
 
 * 参数说明：
@@ -632,7 +735,7 @@ void* tk_pixel_copy (void* dst, void* src, uint32_t size, uint8_t bpp);
 | -------- | ----- | --------- |
 | 返回值 | void* | 返回设置好的buff。 |
 | dst | void* | 目标 |
-| src | void* | 源。 |
+| src | const void* | 源。 |
 | size | uint32\_t | 个数。 |
 | bpp | uint8\_t | 单个数据的字节数。 |
 #### tk\_pointer\_from\_int 函数
@@ -724,12 +827,12 @@ char* tk_replace_char (char* str, char from, char to);
 
 * 函数功能：
 
-> <p id="utils_t_tk_replace_locale">
+> <p id="utils_t_tk_replace_locale">将文本中的$locale$替换为对应的语言。
 
 * 函数原型：
 
 ```
-ret_t tk_replace_locale ();
+ret_t tk_replace_locale (const char* name, char* out, const char* locale);
 ```
 
 * 参数说明：
@@ -737,6 +840,9 @@ ret_t tk_replace_locale ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| name | const char* | 文本。 |
+| out | char* | 替换后保存的字符串。 |
+| locale | const char* | 语言。 |
 #### tk\_set\_ui\_thread 函数
 -----------------------
 
@@ -806,7 +912,7 @@ int tk_snprintf (char* str, size_t size, const char* format);
 * 函数原型：
 
 ```
-int tk_sscanf (char* str, const char* format);
+int tk_sscanf (const char* str, const char* format);
 ```
 
 * 参数说明：
@@ -814,7 +920,7 @@ int tk_sscanf (char* str, const char* format);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | int | 返回成功匹配和赋值的个数。 |
-| str | char* | 要输入的字符串。 |
+| str | const char* | 要输入的字符串。 |
 | format | const char* | 格式化字符串。 |
 #### tk\_str\_append 函数
 -----------------------
@@ -844,11 +950,12 @@ ret_t tk_str_append (char* str, uint32_t max_len, const char* s);
 
 > <p id="utils_t_tk_str_copy">字符串拷贝函数。
 > XXX: 要求dst为NULL或内存块的首地址，本函数调用之后，dst可能无效，请保留返回的地址
+该函数会自动申请内存，调用后需要使用TKMEM_FREE释放。
 
 * 函数原型：
 
 ```
-char* tk_str_copy (const char* dst, const char* src);
+char* tk_str_copy (char* dst, const char* src);
 ```
 
 * 参数说明：
@@ -856,7 +963,7 @@ char* tk_str_copy (const char* dst, const char* src);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | char* | 返回指向的复制字符串指针，如果失败则返回NULL。 |
-| dst | const char* | 目标字符串。 |
+| dst | char* | 目标字符串。 |
 | src | const char* | 源字符串。 |
 #### tk\_str\_end\_with 函数
 -----------------------
@@ -1153,7 +1260,7 @@ char* tk_strndup (const char* str, uint32_t len);
 * 函数原型：
 
 ```
-uint32_t tk_strnlen (const char* str, uint32_t );
+uint32_t tk_strnlen (const char* str, uint32_t maxlen);
 ```
 
 * 参数说明：
@@ -1162,7 +1269,7 @@ uint32_t tk_strnlen (const char* str, uint32_t );
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 返回字符串的长度。 |
 | str | const char* | 字符串。 |
-|  | uint32\_t | 。 |
+| maxlen | uint32\_t | 最大长度。 |
 #### tk\_strrstr 函数
 -----------------------
 
@@ -1422,7 +1529,7 @@ uint32_t tk_wstr_count_c (const wchar_t* str, wchar_t c);
 * 函数原型：
 
 ```
-wchar_t* tk_wstr_dup_utf8 (char* str);
+wchar_t* tk_wstr_dup_utf8 (const char* str);
 ```
 
 * 参数说明：
@@ -1430,7 +1537,7 @@ wchar_t* tk_wstr_dup_utf8 (char* str);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | wchar\_t* | 返回UCS字符串(需要调用TKMEM\_FREE释放)。 |
-| str | char* | utf8编码的字符串。 |
+| str | const char* | utf8编码的字符串。 |
 #### tk\_wstrcmp 函数
 -----------------------
 

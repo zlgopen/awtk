@@ -108,14 +108,14 @@ ret_t children_layouter_get_param (children_layouter_t* layouter, const char* na
 * 函数原型：
 
 ```
-ret_t children_layouter_get_param_float (children_layouter_t* layouter, const char* name, float_t defval);
+float_t children_layouter_get_param_float (children_layouter_t* layouter, const char* name, float_t defval);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 成功返回参数的值，失败返回缺省值。 |
+| 返回值 | float\_t | 成功返回参数的值，失败返回缺省值。 |
 | layouter | children\_layouter\_t* | layouter对象。 |
 | name | const char* | 参数名。 |
 | defval | float\_t | 缺省值。 |
@@ -129,14 +129,14 @@ ret_t children_layouter_get_param_float (children_layouter_t* layouter, const ch
 * 函数原型：
 
 ```
-ret_t children_layouter_get_param_int (children_layouter_t* layouter, const char* name, int32_t defval);
+int32_t children_layouter_get_param_int (children_layouter_t* layouter, const char* name, int32_t defval);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 成功返回参数的值，失败返回缺省值。 |
+| 返回值 | int32\_t | 成功返回参数的值，失败返回缺省值。 |
 | layouter | children\_layouter\_t* | layouter对象。 |
 | name | const char* | 参数名。 |
 | defval | int32\_t | 缺省值。 |
@@ -231,12 +231,12 @@ ret_t children_layouter_set_param_str (children_layouter_t* layouter, const char
 * 函数原型：
 
 ```
-ret_t children_layouter_to_string (children_layouter_t* layouter);
+const char* children_layouter_to_string (children_layouter_t* layouter);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回字符串格式的参数。 |
+| 返回值 | const char* | 返回字符串格式的参数。 |
 | layouter | children\_layouter\_t* | layouter对象。 |

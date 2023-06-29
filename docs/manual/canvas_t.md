@@ -77,7 +77,7 @@
 | <a href="#canvas_t_font">font</a> | font\_t* | 字体对象。 |
 | <a href="#canvas_t_font_manager">font\_manager</a> | font\_manager\_t* | 字体管理器对象。 |
 | <a href="#canvas_t_font_name">font\_name</a> | char* | 当前字体名称。 |
-| <a href="#canvas_t_font_size">font\_size</a> | uint16\_t | 当前字体大小。 |
+| <a href="#canvas_t_font_size">font\_size</a> | font\_size\_t | 当前字体大小。 |
 | <a href="#canvas_t_fps">fps</a> | uint32\_t | 当前的帧率。 |
 | <a href="#canvas_t_global_alpha">global\_alpha</a> | uint8\_t | 当前全局alpha。 |
 | <a href="#canvas_t_lcd">lcd</a> | lcd\_t* | lcd对象。 |
@@ -1267,7 +1267,7 @@ ret_t canvas_stroke_rounded_rect (canvas_t* c, const rect_t* r, const rect_t* bg
 * 函数原型：
 
 ```
-ret_t canvas_stroke_rounded_rect_ex (canvas_t* c, const rect_t* r, const rect_t* bg_r, const color_t* color, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br, uint32_t border_width, uint32_t border_model);
+ret_t canvas_stroke_rounded_rect_ex (canvas_t* c, const rect_t* r, const rect_t* bg_r, const color_t* color, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br, uint32_t border_width, int32_t border_model);
 ```
 
 * 参数说明：
@@ -1284,7 +1284,7 @@ ret_t canvas_stroke_rounded_rect_ex (canvas_t* c, const rect_t* r, const rect_t*
 | radius\_bl | uint32\_t | 左下角圆角半径。 |
 | radius\_br | uint32\_t | 右下角圆角半径。 |
 | border\_width | uint32\_t | 边宽。 |
-| border\_model | uint32\_t | 边框类型。 |
+| border\_model | int32\_t | 边框类型。 |
 #### canvas\_translate 函数
 -----------------------
 
@@ -1412,7 +1412,7 @@ ret_t canvas_untranslate (canvas_t* c, xy_t dx, xy_t dy);
 -----------------------
 > <p id="canvas_t_font_size">当前字体大小。
 
-* 类型：uint16\_t
+* 类型：font\_size\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

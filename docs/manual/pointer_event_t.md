@@ -17,7 +17,7 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#pointer_event_t_alt">alt</a> | bool\_t | alt键是否按下。 |
-| <a href="#pointer_event_t_button">button</a> | uint8\_t | button。 |
+| <a href="#pointer_event_t_button">button</a> | xy\_t | button。 |
 | <a href="#pointer_event_t_cmd">cmd</a> | bool\_t | cmd键是否按下。 |
 | <a href="#pointer_event_t_ctrl">ctrl</a> | bool\_t | ctrl键是否按下。 |
 | <a href="#pointer_event_t_menu">menu</a> | bool\_t | menu键是否按下。 |
@@ -54,7 +54,7 @@ pointer_event_t* pointer_event_cast (event_t* event);
 * 函数原型：
 
 ```
-event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type, int32_t x, int32_t y);
+event_t* pointer_event_init (pointer_event_t* event, uint32_t type, void* target, int32_t x, int32_t y);
 ```
 
 * 参数说明：
@@ -63,8 +63,8 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 | -------- | ----- | --------- |
 | 返回值 | event\_t* | event对象。 |
 | event | pointer\_event\_t* | event对象。 |
-| target | void* | 事件目标。 |
 | type | uint32\_t | 事件类型。 |
+| target | void* | 事件目标。 |
 | x | int32\_t | x的值。 |
 | y | int32\_t | y的值。 |
 #### alt 属性
@@ -85,7 +85,7 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 PC ：左键为 1，中键为 2，右键为 3
 嵌入式：默认为 1
 
-* 类型：uint8\_t
+* 类型：xy\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

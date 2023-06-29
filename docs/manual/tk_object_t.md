@@ -1043,7 +1043,7 @@ ret_t tk_object_set_name (tk_object_t* obj, const char* name);
 * 函数原型：
 
 ```
-ret_t tk_object_set_prop (tk_object_t* obj, const char* name, value_t* value);
+ret_t tk_object_set_prop (tk_object_t* obj, const char* name, const value_t* value);
 ```
 
 * 参数说明：
@@ -1053,7 +1053,7 @@ ret_t tk_object_set_prop (tk_object_t* obj, const char* name, value_t* value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | obj | tk\_object\_t* | object对象。 |
 | name | const char* | 属性的名称。 |
-| value | value\_t* | 属性的值。 |
+| value | const value\_t* | 属性的值。 |
 #### tk\_object\_set\_prop\_bool 函数
 -----------------------
 
@@ -1106,7 +1106,7 @@ ret_t tk_object_set_prop_bool_by_path (tk_object_t* obj, const char* path, bool_
 * 函数原型：
 
 ```
-ret_t tk_object_set_prop_by_path (tk_object_t* obj, const char* path, value_t* value);
+ret_t tk_object_set_prop_by_path (tk_object_t* obj, const char* path, const value_t* value);
 ```
 
 * 参数说明：
@@ -1116,7 +1116,7 @@ ret_t tk_object_set_prop_by_path (tk_object_t* obj, const char* path, value_t* v
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | obj | tk\_object\_t* | object对象。 |
 | path | const char* | 属性的path。 |
-| value | value\_t* | 属性的值。 |
+| value | const value\_t* | 属性的值。 |
 #### tk\_object\_set\_prop\_double 函数
 -----------------------
 

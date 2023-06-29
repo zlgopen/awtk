@@ -35,10 +35,10 @@ tokenizer_deinit(t);
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#tokenizer_t_cursor">cursor</a> | uint32\_t | 当前位置。 |
-| <a href="#tokenizer_t_separtor">separtor</a> | char* | 分隔字符串。 |
-| <a href="#tokenizer_t_single_char_token">single\_char\_token</a> | char* | 单字符的token。 |
+| <a href="#tokenizer_t_separtor">separtor</a> | const char* | 分隔字符串。 |
+| <a href="#tokenizer_t_single_char_token">single\_char\_token</a> | const char* | 单字符的token。 |
 | <a href="#tokenizer_t_size">size</a> | uint32\_t | 字符串的长度。 |
-| <a href="#tokenizer_t_str">str</a> | char* | 字符串。 |
+| <a href="#tokenizer_t_str">str</a> | const char* | 字符串。 |
 #### tokenizer\_deinit 函数
 -----------------------
 
@@ -87,7 +87,7 @@ bool_t tokenizer_has_more (tokenizer_t* tokenizer);
 * 函数原型：
 
 ```
-tokenizer_t* tokenizer_init (tokenizer_t* tokenizer, char* str, uint32_t size, char* separtor);
+tokenizer_t* tokenizer_init (tokenizer_t* tokenizer, const char* str, uint32_t size, const char* separtor);
 ```
 
 * 参数说明：
@@ -96,9 +96,9 @@ tokenizer_t* tokenizer_init (tokenizer_t* tokenizer, char* str, uint32_t size, c
 | -------- | ----- | --------- |
 | 返回值 | tokenizer\_t* | tokenizer对象本身。 |
 | tokenizer | tokenizer\_t* | tokenizer对象。 |
-| str | char* | 要解析的字符串。 |
+| str | const char* | 要解析的字符串。 |
 | size | uint32\_t | 字符串长度。 |
-| separtor | char* | 分隔字符。 |
+| separtor | const char* | 分隔字符。 |
 #### tokenizer\_init\_ex 函数
 -----------------------
 
@@ -109,7 +109,7 @@ tokenizer_t* tokenizer_init (tokenizer_t* tokenizer, char* str, uint32_t size, c
 * 函数原型：
 
 ```
-tokenizer_t* tokenizer_init_ex (tokenizer_t* tokenizer, char* str, uint32_t size, char* separtor, char* single_char_token);
+tokenizer_t* tokenizer_init_ex (tokenizer_t* tokenizer, const char* str, uint32_t size, const char* separtor, const char* single_char_token);
 ```
 
 * 参数说明：
@@ -118,10 +118,10 @@ tokenizer_t* tokenizer_init_ex (tokenizer_t* tokenizer, char* str, uint32_t size
 | -------- | ----- | --------- |
 | 返回值 | tokenizer\_t* | tokenizer对象本身。 |
 | tokenizer | tokenizer\_t* | tokenizer对象。 |
-| str | char* | 要解析的字符串。 |
+| str | const char* | 要解析的字符串。 |
 | size | uint32\_t | 字符串长度。 |
-| separtor | char* | 分隔字符。 |
-| single\_char\_token | char* | 单字符token。 |
+| separtor | const char* | 分隔字符。 |
+| single\_char\_token | const char* | 单字符token。 |
 #### tokenizer\_next 函数
 -----------------------
 
@@ -132,14 +132,14 @@ tokenizer_t* tokenizer_init_ex (tokenizer_t* tokenizer, char* str, uint32_t size
 * 函数原型：
 
 ```
-char* tokenizer_next (tokenizer_t* tokenizer);
+const char* tokenizer_next (tokenizer_t* tokenizer);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | char* | 成功返回token，失败返回NULL。 |
+| 返回值 | const char* | 成功返回token，失败返回NULL。 |
 | tokenizer | tokenizer\_t* | tokenizer对象。 |
 #### tokenizer\_next\_expr\_until 函数
 -----------------------
@@ -151,14 +151,14 @@ char* tokenizer_next (tokenizer_t* tokenizer);
 * 函数原型：
 
 ```
-char* tokenizer_next_expr_until (tokenizer_t* tokenizer, const char* str);
+const char* tokenizer_next_expr_until (tokenizer_t* tokenizer, const char* str);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | char* | 成功返回token，失败返回NULL。 |
+| 返回值 | const char* | 成功返回token，失败返回NULL。 |
 | tokenizer | tokenizer\_t* | tokenizer对象。 |
 | str | const char* | 字符集。 |
 #### tokenizer\_next\_float 函数
@@ -171,14 +171,14 @@ char* tokenizer_next_expr_until (tokenizer_t* tokenizer, const char* str);
 * 函数原型：
 
 ```
-char* tokenizer_next_float (tokenizer_t* tokenizer, float defval);
+float tokenizer_next_float (tokenizer_t* tokenizer, float defval);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | char* | 成功返回token的float值，失败返回缺省值。 |
+| 返回值 | float | 成功返回token的float值，失败返回缺省值。 |
 | tokenizer | tokenizer\_t* | tokenizer对象。 |
 | defval | float | 缺省值。 |
 #### tokenizer\_next\_int 函数
@@ -191,14 +191,14 @@ char* tokenizer_next_float (tokenizer_t* tokenizer, float defval);
 * 函数原型：
 
 ```
-char* tokenizer_next_int (tokenizer_t* tokenizer, int defval);
+int tokenizer_next_int (tokenizer_t* tokenizer, int defval);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | char* | 成功返回token的int值，失败返回缺省值。 |
+| 返回值 | int | 成功返回token的int值，失败返回缺省值。 |
 | tokenizer | tokenizer\_t* | tokenizer对象。 |
 | defval | int | 缺省值。 |
 #### tokenizer\_next\_str 函数
@@ -211,14 +211,14 @@ char* tokenizer_next_int (tokenizer_t* tokenizer, int defval);
 * 函数原型：
 
 ```
-char* tokenizer_next_str (tokenizer_t* tokenizer);
+const char* tokenizer_next_str (tokenizer_t* tokenizer);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | char* | 成功返回字符串，失败返回NULL。 |
+| 返回值 | const char* | 成功返回字符串，失败返回NULL。 |
 | tokenizer | tokenizer\_t* | tokenizer对象。 |
 #### tokenizer\_next\_until 函数
 -----------------------
@@ -230,14 +230,14 @@ char* tokenizer_next_str (tokenizer_t* tokenizer);
 * 函数原型：
 
 ```
-char* tokenizer_next_until (tokenizer_t* tokenizer, const char* str);
+const char* tokenizer_next_until (tokenizer_t* tokenizer, const char* str);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | char* | 成功返回token，失败返回NULL。 |
+| 返回值 | const char* | 成功返回token，失败返回NULL。 |
 | tokenizer | tokenizer\_t* | tokenizer对象。 |
 | str | const char* | 字符集。 |
 #### cursor 属性
@@ -254,7 +254,7 @@ char* tokenizer_next_until (tokenizer_t* tokenizer, const char* str);
 -----------------------
 > <p id="tokenizer_t_separtor">分隔字符串。
 
-* 类型：char*
+* 类型：const char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -264,7 +264,7 @@ char* tokenizer_next_until (tokenizer_t* tokenizer, const char* str);
 -----------------------
 > <p id="tokenizer_t_single_char_token">单字符的token。
 
-* 类型：char*
+* 类型：const char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -284,7 +284,7 @@ char* tokenizer_next_until (tokenizer_t* tokenizer, const char* str);
 -----------------------
 > <p id="tokenizer_t_str">字符串。
 
-* 类型：char*
+* 类型：const char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

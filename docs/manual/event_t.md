@@ -20,10 +20,10 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#event_t_native_window_handle">native\_window\_handle</a> | void* | 原生窗口句柄。 |
-| <a href="#event_t_size">size</a> | int32\_t | 结构体的大小。 |
+| <a href="#event_t_size">size</a> | uint32\_t | 结构体的大小。 |
 | <a href="#event_t_target">target</a> | void* | 事件发生的目标对象。 |
 | <a href="#event_t_time">time</a> | uint64\_t | 事件发生的时间点（该时间点并非真实时间）。 |
-| <a href="#event_t_type">type</a> | int32\_t | 类型。 |
+| <a href="#event_t_type">type</a> | uint32\_t | 类型。 |
 #### event\_cast 函数
 -----------------------
 
@@ -178,7 +178,7 @@ event_t event_init (uint32_t type, void* target);
 -----------------------
 > <p id="event_t_size">结构体的大小。
 
-* 类型：int32\_t
+* 类型：uint32\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -211,7 +211,7 @@ event_t event_init (uint32_t type, void* target);
 -----------------------
 > <p id="event_t_type">类型。
 
-* 类型：int32\_t
+* 类型：uint32\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

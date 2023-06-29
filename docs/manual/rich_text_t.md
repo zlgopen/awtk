@@ -140,7 +140,7 @@ const widget_vtable_t* rich_text_get_widget_vtable ();
 * 函数原型：
 
 ```
-ret_t rich_text_set_text (widget_t* widget, char* text);
+ret_t rich_text_set_text (widget_t* widget, const char* text);
 ```
 
 * 参数说明：
@@ -149,7 +149,7 @@ ret_t rich_text_set_text (widget_t* widget, char* text);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| text | char* | 文本。 |
+| text | const char* | 文本。 |
 #### rich\_text\_set\_yslidable 函数
 -----------------------
 

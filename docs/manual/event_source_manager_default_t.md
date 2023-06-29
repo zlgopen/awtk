@@ -20,12 +20,11 @@
 * 函数原型：
 
 ```
-ret_t event_source_manager_default_create (event_source_manager_t* manager);
+event_source_manager_t* event_source_manager_default_create ();
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| manager | event\_source\_manager\_t* | event\_source\_manager对象。 |
+| 返回值 | event\_source\_manager\_t* | 返回事件源管理器对象。 |

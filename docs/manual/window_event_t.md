@@ -67,7 +67,7 @@ window_event_t* window_event_cast (event_t* event);
 * 函数原型：
 
 ```
-event_t* window_event_init (window_event_t* event, void* target, uint32_t type, widget_t* widget);
+event_t* window_event_init (window_event_t* event, uint32_t type, void* target, widget_t* widget);
 ```
 
 * 参数说明：
@@ -76,8 +76,8 @@ event_t* window_event_init (window_event_t* event, void* target, uint32_t type, 
 | -------- | ----- | --------- |
 | 返回值 | event\_t* | event对象。 |
 | event | window\_event\_t* | event对象。 |
-| target | void* | 事件目标。 |
 | type | uint32\_t | 事件类型。 |
+| target | void* | 事件目标。 |
 | widget | widget\_t* | window对象。 |
 #### window 属性
 -----------------------

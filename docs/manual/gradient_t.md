@@ -99,7 +99,7 @@ color_t gradient_get_color (gradient_t* gradient, float offset);
 * 函数原型：
 
 ```
-color_t gradient_get_first_color (gradient_t* gradient);
+color_t gradient_get_first_color (const gradient_t* gradient);
 ```
 
 * 参数说明：
@@ -107,7 +107,7 @@ color_t gradient_get_first_color (gradient_t* gradient);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | color\_t | 返回颜色。 |
-| gradient | gradient\_t* | gradient对象。 |
+| gradient | const gradient\_t* | gradient对象。 |
 #### gradient\_get\_last\_color 函数
 -----------------------
 
@@ -118,7 +118,7 @@ color_t gradient_get_first_color (gradient_t* gradient);
 * 函数原型：
 
 ```
-color_t gradient_get_last_color (gradient_t* gradient);
+color_t gradient_get_last_color (const gradient_t* gradient);
 ```
 
 * 参数说明：
@@ -126,7 +126,7 @@ color_t gradient_get_last_color (gradient_t* gradient);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | color\_t | 返回颜色。 |
-| gradient | gradient\_t* | gradient对象。 |
+| gradient | const gradient\_t* | gradient对象。 |
 #### gradient\_get\_stop 函数
 -----------------------
 
@@ -137,15 +137,15 @@ color_t gradient_get_last_color (gradient_t* gradient);
 * 函数原型：
 
 ```
-ret_t gradient_get_stop (gradient_t* gradient, uint32_t index);
+const gradient_stop_t* gradient_get_stop (const gradient_t* gradient, uint32_t index);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| gradient | gradient\_t* | gradient对象。 |
+| 返回值 | const gradient\_stop\_t* | 返回index指定的关键点。 |
+| gradient | const gradient\_t* | gradient对象。 |
 | index | uint32\_t | 序数。 |
 #### gradient\_init 函数
 -----------------------

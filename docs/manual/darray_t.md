@@ -655,7 +655,7 @@ ret_t darray_sort (darray_t* darray, tk_compare_t cmp);
 * 函数原型：
 
 ```
-ret_t darray_sorted_insert (darray_t* darray, void* data, tk_compare_t compare, bool_t replace_if_exist);
+ret_t darray_sorted_insert (darray_t* darray, void* data, tk_compare_t cmp, bool_t replace_if_exist);
 ```
 
 * 参数说明：
@@ -665,7 +665,7 @@ ret_t darray_sorted_insert (darray_t* darray, void* data, tk_compare_t compare, 
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | darray | darray\_t* | 数组对象。 |
 | data | void* | 待插入的元素。 |
-| compare | tk\_compare\_t | 元素比较函数。 |
+| cmp | tk\_compare\_t | 元素比较函数。 |
 | replace\_if\_exist | bool\_t | 如果存在是否替换。 |
 #### darray\_tail 函数
 -----------------------

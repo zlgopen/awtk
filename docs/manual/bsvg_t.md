@@ -40,7 +40,7 @@ ret_t bsvg_draw (bsvg_t* svg, vgcanvas_t* canvas);
 * 函数原型：
 
 ```
-ret_t bsvg_draw_path (bsvg_draw_ctx_t* ctx, svg_path_t* path);
+ret_t bsvg_draw_path (bsvg_draw_ctx_t* ctx, const svg_path_t* path);
 ```
 
 * 参数说明：
@@ -49,7 +49,7 @@ ret_t bsvg_draw_path (bsvg_draw_ctx_t* ctx, svg_path_t* path);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | ctx | bsvg\_draw\_ctx\_t* | 绘制上下文。 |
-| path | svg\_path\_t* | path对象。 |
+| path | const svg\_path\_t* | path对象。 |
 #### bsvg\_init 函数
 -----------------------
 
@@ -60,7 +60,7 @@ ret_t bsvg_draw_path (bsvg_draw_ctx_t* ctx, svg_path_t* path);
 * 函数原型：
 
 ```
-bsvg_t* bsvg_init (bsvg_t* , const uint32_t* data, uint32_t size);
+bsvg_t* bsvg_init (bsvg_t* svg, const uint32_t* data, uint32_t size);
 ```
 
 * 参数说明：
@@ -68,6 +68,6 @@ bsvg_t* bsvg_init (bsvg_t* , const uint32_t* data, uint32_t size);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | bsvg\_t* | 返回解析后的svg。 |
-|  | bsvg\_t* | 。 |
+| svg | bsvg\_t* | svg对象。 |
 | data | const uint32\_t* | svg数据。 |
 | size | uint32\_t | data长度。 |

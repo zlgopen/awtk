@@ -43,7 +43,7 @@
 * 函数原型：
 
 ```
-file_browser_t* file_browser_create ();
+file_browser_t* file_browser_create (fs_t* fs);
 ```
 
 * 参数说明：
@@ -51,6 +51,7 @@ file_browser_t* file_browser_create ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | file\_browser\_t* | 对象。 |
+| fs | fs\_t* | 文件系统对象。 |
 #### file\_browser\_create\_dir 函数
 -----------------------
 

@@ -213,7 +213,7 @@ matrix_t* matrix_transform_point (matrix_t* m, xy_t x, xy_t y, xy_t* out_x, xy_t
 * 函数原型：
 
 ```
-matrix_t* matrix_transform_pointf (matrix_t* m, float x, float y, float* out_x, float* out_y);
+matrix_t* matrix_transform_pointf (matrix_t* m, float x, float y, float* ox, float* oy);
 ```
 
 * 参数说明：
@@ -224,8 +224,8 @@ matrix_t* matrix_transform_pointf (matrix_t* m, float x, float y, float* out_x, 
 | m | matrix\_t* | 矩阵对象。 |
 | x | float | x |
 | y | float | y |
-| out\_x | float* | out\_x |
-| out\_y | float* | out\_y |
+| ox | float* | out\_x |
+| oy | float* | out\_y |
 #### matrix\_translate 函数
 -----------------------
 
@@ -236,7 +236,7 @@ matrix_t* matrix_transform_pointf (matrix_t* m, float x, float y, float* out_x, 
 * 函数原型：
 
 ```
-matrix_t* matrix_translate (matrix_t* m, float x, float y);
+matrix_t* matrix_translate (matrix_t* m, xy_t x, xy_t y);
 ```
 
 * 参数说明：
@@ -245,5 +245,5 @@ matrix_t* matrix_translate (matrix_t* m, float x, float y);
 | -------- | ----- | --------- |
 | 返回值 | matrix\_t* | 矩阵对象。 |
 | m | matrix\_t* | 矩阵对象。 |
-| x | float | x |
-| y | float | y |
+| x | xy\_t | x |
+| y | xy\_t | y |

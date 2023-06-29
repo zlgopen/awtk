@@ -20,7 +20,7 @@
 * 函数原型：
 
 ```
-tk_istream_t* tk_istream_serial_create (int fd);
+tk_istream_t* tk_istream_serial_create (serial_handle_t fd);
 ```
 
 * 参数说明：
@@ -28,4 +28,4 @@ tk_istream_t* tk_istream_serial_create (int fd);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | tk\_istream\_t* | 返回istream对象。 |
-| fd | int | fd。 |
+| fd | serial\_handle\_t | fd。 |

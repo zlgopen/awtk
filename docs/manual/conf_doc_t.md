@@ -215,14 +215,14 @@ ret_t conf_doc_destroy_node (conf_doc_t* doc, conf_node_t* node);
 * 函数原型：
 
 ```
-ret_t conf_doc_dup_node (conf_doc_t* doc, conf_node_t* node, const char* new_name);
+conf_node_t* conf_doc_dup_node (conf_doc_t* doc, conf_node_t* node, const char* new_name);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回新节点。 |
+| 返回值 | conf\_node\_t* | 返回新节点。 |
 | doc | conf\_doc\_t* | 文档对象。 |
 | node | conf\_node\_t* | 节点对象。 |
 | new\_name | const char* | 节点名称。 |
@@ -256,14 +256,14 @@ bool_t conf_doc_exists (conf_doc_t* doc, const char* path);
 * 函数原型：
 
 ```
-ret_t conf_doc_find_node (conf_doc_t* doc, conf_node_t* node, const char* path, bool_t create_if_not_exist);
+conf_node_t* conf_doc_find_node (conf_doc_t* doc, conf_node_t* node, const char* path, bool_t create_if_not_exist);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| 返回值 | conf\_node\_t* | 返回RET\_OK表示成功，否则表示失败。 |
 | doc | conf\_doc\_t* | 文档对象。 |
 | node | conf\_node\_t* | 从该节点查找。 |
 | path | const char* | 路径。 |
@@ -672,7 +672,7 @@ ret_t conf_doc_set_int (conf_doc_t* doc, const char* path, int32_t v);
 * 函数原型：
 
 ```
-ret_t conf_doc_set_node_prop (conf_doc_t* doc, conf_node_t* node, const char* name, const value_t* v );
+ret_t conf_doc_set_node_prop (conf_doc_t* doc, conf_node_t* node, const char* name, const value_t* v);
 ```
 
 * 参数说明：
@@ -683,7 +683,7 @@ ret_t conf_doc_set_node_prop (conf_doc_t* doc, conf_node_t* node, const char* na
 | doc | conf\_doc\_t* | 文档对象。 |
 | node | conf\_node\_t* | 节点对象。 |
 | name | const char* | 名称。 |
-|  | const value\_t* v | 。 |
+| v | const value\_t* | 值。 |
 #### conf\_doc\_set\_str 函数
 -----------------------
 

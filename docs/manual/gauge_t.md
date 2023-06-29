@@ -148,7 +148,7 @@ ret_t gauge_set_draw_type (widget_t* widget, image_draw_type_t draw_type);
 * 函数原型：
 
 ```
-ret_t gauge_set_image (widget_t* widget, char* name);
+ret_t gauge_set_image (widget_t* widget, const char* name);
 ```
 
 * 参数说明：
@@ -157,7 +157,7 @@ ret_t gauge_set_image (widget_t* widget, char* name);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | image对象。 |
-| name | char* | 图片名称，该图片必须存在于资源管理器。 |
+| name | const char* | 图片名称，该图片必须存在于资源管理器。 |
 #### draw\_type 属性
 -----------------------
 > <p id="gauge_t_draw_type">图片的绘制方式。

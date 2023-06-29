@@ -74,7 +74,7 @@ image_manager_t* image_manager_create ();
 * 函数原型：
 
 ```
-ret_t image_manager_deinit (image_manager_t* imm);
+ret_t image_manager_deinit (image_manager_t* im);
 ```
 
 * 参数说明：
@@ -82,7 +82,7 @@ ret_t image_manager_deinit (image_manager_t* imm);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| imm | image\_manager\_t* | 图片管理器对象。 |
+| im | image\_manager\_t* | 图片管理器对象。 |
 #### image\_manager\_destroy 函数
 -----------------------
 
@@ -93,7 +93,7 @@ ret_t image_manager_deinit (image_manager_t* imm);
 * 函数原型：
 
 ```
-ret_t image_manager_destroy (image_manager_t* imm);
+ret_t image_manager_destroy (image_manager_t* im);
 ```
 
 * 参数说明：
@@ -101,7 +101,7 @@ ret_t image_manager_destroy (image_manager_t* imm);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| imm | image\_manager\_t* | 图片管理器对象。 |
+| im | image\_manager\_t* | 图片管理器对象。 |
 #### image\_manager\_get\_bitmap 函数
 -----------------------
 
@@ -113,7 +113,7 @@ ret_t image_manager_destroy (image_manager_t* imm);
 * 函数原型：
 
 ```
-ret_t image_manager_get_bitmap (image_manager_t* imm, char* name, bitmap_t* image);
+ret_t image_manager_get_bitmap (image_manager_t* imm, const char* name, bitmap_t* image);
 ```
 
 * 参数说明：
@@ -122,7 +122,7 @@ ret_t image_manager_get_bitmap (image_manager_t* imm, char* name, bitmap_t* imag
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | imm | image\_manager\_t* | 图片管理器对象。 |
-| name | char* | 图片名称。 |
+| name | const char* | 图片名称。 |
 | image | bitmap\_t* | 用于返回图片。 |
 #### image\_manager\_has\_bitmap 函数
 -----------------------
@@ -173,7 +173,7 @@ image_manager_t* image_manager_init (image_manager_t* imm);
 * 函数原型：
 
 ```
-ret_t image_manager_preload (image_manager_t* imm, char* name);
+ret_t image_manager_preload (image_manager_t* imm, const char* name);
 ```
 
 * 参数说明：
@@ -182,7 +182,7 @@ ret_t image_manager_preload (image_manager_t* imm, char* name);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | imm | image\_manager\_t* | 图片管理器对象。 |
-| name | char* | 图片名称。 |
+| name | const char* | 图片名称。 |
 #### image\_manager\_set 函数
 -----------------------
 

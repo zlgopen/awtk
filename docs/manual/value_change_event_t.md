@@ -47,7 +47,7 @@ value_change_event_t* value_change_event_cast (event_t* event);
 * 函数原型：
 
 ```
-event_t* value_change_event_init (value_change_event_t* event, void* target, uint32_t type);
+event_t* value_change_event_init (value_change_event_t* event, uint32_t type, void* target);
 ```
 
 * 参数说明：
@@ -56,8 +56,8 @@ event_t* value_change_event_init (value_change_event_t* event, void* target, uin
 | -------- | ----- | --------- |
 | 返回值 | event\_t* | event对象。 |
 | event | value\_change\_event\_t* | event对象。 |
-| target | void* | 事件目标。 |
 | type | uint32\_t | 事件类型。 |
+| target | void* | 事件目标。 |
 #### new\_value 属性
 -----------------------
 > <p id="value_change_event_t_new_value">新值。

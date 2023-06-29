@@ -22,7 +22,7 @@ glyph cache
 * 函数原型：
 
 ```
-ret_t glyph_cache_add (glyph_cache_t* cache, wchar_t code, font_size_t size, glyph_t g);
+ret_t glyph_cache_add (glyph_cache_t* cache, wchar_t code, font_size_t size, glyph_t* g);
 ```
 
 * 参数说明：
@@ -33,7 +33,7 @@ ret_t glyph_cache_add (glyph_cache_t* cache, wchar_t code, font_size_t size, gly
 | cache | glyph\_cache\_t* | cache对象。 |
 | code | wchar\_t | 字符。 |
 | size | font\_size\_t | 字体大小。 |
-| g | glyph\_t | glyph对象。 |
+| g | glyph\_t* | glyph对象。 |
 #### glyph\_cache\_deinit 函数
 -----------------------
 
@@ -84,7 +84,7 @@ glyph_cache_t* glyph_cache_init (glyph_cache_t* cache, uint32_t capacity, tk_des
 * 函数原型：
 
 ```
-ret_t glyph_cache_lookup (glyph_cache_t* cache, wchar_t code, font_size_t size, glyph_t g);
+ret_t glyph_cache_lookup (glyph_cache_t* cache, wchar_t code, font_size_t size, glyph_t* g);
 ```
 
 * 参数说明：
@@ -95,7 +95,7 @@ ret_t glyph_cache_lookup (glyph_cache_t* cache, wchar_t code, font_size_t size, 
 | cache | glyph\_cache\_t* | cache对象。 |
 | code | wchar\_t | 字符。 |
 | size | font\_size\_t | 字体大小。 |
-| g | glyph\_t | glyph对象(用于返回glyph)。 |
+| g | glyph\_t* | glyph对象(用于返回glyph)。 |
 #### glyph\_cache\_shrink 函数
 -----------------------
 

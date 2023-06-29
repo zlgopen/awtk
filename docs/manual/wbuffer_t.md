@@ -126,7 +126,7 @@ bool_t wbuffer_has_room (wbuffer_t* wbuffer, uint32_t size);
 * 函数原型：
 
 ```
-wbuffer_t* wbuffer_init (wbuffer_t* wbuffer, uint8_t* data, uint16_t capacity);
+wbuffer_t* wbuffer_init (wbuffer_t* wbuffer, uint8_t* data, uint32_t capacity);
 ```
 
 * 参数说明：
@@ -136,7 +136,7 @@ wbuffer_t* wbuffer_init (wbuffer_t* wbuffer, uint8_t* data, uint16_t capacity);
 | 返回值 | wbuffer\_t* | wbuffer对象本身。 |
 | wbuffer | wbuffer\_t* | wbuffer对象。 |
 | data | uint8\_t* | 缓冲区。 |
-| capacity | uint16\_t | 缓冲区的容量。 |
+| capacity | uint32\_t | 缓冲区的容量。 |
 #### wbuffer\_init\_extendable 函数
 -----------------------
 
@@ -166,7 +166,7 @@ wbuffer_t* wbuffer_init_extendable (wbuffer_t* wbuffer);
 * 函数原型：
 
 ```
-ret_t wbuffer_rewind ();
+ret_t wbuffer_rewind (wbuffer_t* wbuffer);
 ```
 
 * 参数说明：
@@ -174,6 +174,7 @@ ret_t wbuffer_rewind ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| wbuffer | wbuffer\_t* | wbuffer对象。 |
 #### wbuffer\_skip 函数
 -----------------------
 
@@ -204,7 +205,7 @@ ret_t wbuffer_skip (wbuffer_t* wbuffer, int32_t delta);
 * 函数原型：
 
 ```
-ret_t wbuffer_write_binary (wbuffer_t* wbuffer, void* data, uint32_t size);
+ret_t wbuffer_write_binary (wbuffer_t* wbuffer, const void* data, uint32_t size);
 ```
 
 * 参数说明：
@@ -213,7 +214,7 @@ ret_t wbuffer_write_binary (wbuffer_t* wbuffer, void* data, uint32_t size);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | wbuffer | wbuffer\_t* | wbuffer对象。 |
-| data | void* | 要写入的数据。 |
+| data | const void* | 要写入的数据。 |
 | size | uint32\_t | 要写入的数据长度。 |
 #### wbuffer\_write\_double 函数
 -----------------------
@@ -285,7 +286,7 @@ ret_t wbuffer_write_int32 (wbuffer_t* wbuffer, int32_t value);
 * 函数原型：
 
 ```
-ret_t wbuffer_write_string (wbuffer_t* wbuffer, char* data);
+ret_t wbuffer_write_string (wbuffer_t* wbuffer, const char* data);
 ```
 
 * 参数说明：
@@ -294,7 +295,7 @@ ret_t wbuffer_write_string (wbuffer_t* wbuffer, char* data);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | wbuffer | wbuffer\_t* | wbuffer对象。 |
-| data | char* | 要写入的字符串。 |
+| data | const char* | 要写入的字符串。 |
 #### wbuffer\_write\_uint16 函数
 -----------------------
 

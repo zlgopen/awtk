@@ -51,9 +51,11 @@ https://github.com/zlgopen/awtk/blob/master/design/default/ui/file_chooser_for_o
 | <a href="#file_browser_view_t_file_browser_view_get_selected_items">file\_browser\_view\_get\_selected\_items</a> | 返回当前选中的项目。 |
 | <a href="#file_browser_view_t_file_browser_view_get_widget_vtable">file\_browser\_view\_get\_widget\_vtable</a> | 获取 file_browser_view 虚表。 |
 | <a href="#file_browser_view_t_file_browser_view_reload">file\_browser\_view\_reload</a> | 重新加载。 |
+| <a href="#file_browser_view_t_file_browser_view_set_even_item_style">file\_browser\_view\_set\_even\_item\_style</a> | 设置 偶数项样式。 |
 | <a href="#file_browser_view_t_file_browser_view_set_filter">file\_browser\_view\_set\_filter</a> | 设置 过滤规则。 |
 | <a href="#file_browser_view_t_file_browser_view_set_ignore_hidden_files">file\_browser\_view\_set\_ignore\_hidden\_files</a> | 设置 忽略隐藏文件。 |
 | <a href="#file_browser_view_t_file_browser_view_set_init_dir">file\_browser\_view\_set\_init\_dir</a> | 设置 初始文件夹。 |
+| <a href="#file_browser_view_t_file_browser_view_set_odd_item_style">file\_browser\_view\_set\_odd\_item\_style</a> | 设置 奇数项样式。 |
 | <a href="#file_browser_view_t_file_browser_view_set_show_check_button">file\_browser\_view\_set\_show\_check\_button</a> | 设置 是否显示checkbutton。 |
 | <a href="#file_browser_view_t_file_browser_view_set_sort_ascending">file\_browser\_view\_set\_sort\_ascending</a> | 设置 是否为升序排序。 |
 | <a href="#file_browser_view_t_file_browser_view_set_sort_by">file\_browser\_view\_set\_sort\_by</a> | 设置 排序方式。可选值(name, size, mtime, type)。 |
@@ -63,9 +65,11 @@ https://github.com/zlgopen/awtk/blob/master/design/default/ui/file_chooser_for_o
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
+| <a href="#file_browser_view_t_even_item_style">even\_item\_style</a> | char* | 偶数项样式。 |
 | <a href="#file_browser_view_t_filter">filter</a> | char* | 过滤规则。 |
 | <a href="#file_browser_view_t_ignore_hidden_files">ignore\_hidden\_files</a> | bool\_t | 是否忽略隐藏文件。 |
 | <a href="#file_browser_view_t_init_dir">init\_dir</a> | char* | 初始文件夹。 |
+| <a href="#file_browser_view_t_odd_item_style">odd\_item\_style</a> | char* | 奇数项样式。 |
 | <a href="#file_browser_view_t_show_check_button">show\_check\_button</a> | bool\_t | 是否显示checkbutton。 |
 | <a href="#file_browser_view_t_sort_ascending">sort\_ascending</a> | bool\_t | 是否为升序排序。 |
 | <a href="#file_browser_view_t_sort_by">sort\_by</a> | char* | 排序方式。可选值(name, size, mtime, type)。 |
@@ -238,6 +242,26 @@ ret_t file_browser_view_reload (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
+#### file\_browser\_view\_set\_even\_item\_style 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="file_browser_view_t_file_browser_view_set_even_item_style">设置 偶数项样式。
+
+* 函数原型：
+
+```
+ret_t file_browser_view_set_even_item_style (widget_t* widget, const char* even_item_style);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| even\_item\_style | const char* | 奇数项样式。 |
 #### file\_browser\_view\_set\_filter 函数
 -----------------------
 
@@ -299,6 +323,26 @@ ret_t file_browser_view_set_init_dir (widget_t* widget, const char* init_dir);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | init\_dir | const char* | 初始文件夹。 |
+#### file\_browser\_view\_set\_odd\_item\_style 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="file_browser_view_t_file_browser_view_set_odd_item_style">设置 奇数项样式。
+
+* 函数原型：
+
+```
+ret_t file_browser_view_set_odd_item_style (widget_t* widget, const char* odd_item_style);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| odd\_item\_style | const char* | 奇数项样式。 |
 #### file\_browser\_view\_set\_show\_check\_button 函数
 -----------------------
 
@@ -379,6 +423,22 @@ ret_t file_browser_view_set_top_dir (widget_t* widget, const char* top_dir);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | top\_dir | const char* | 初始文件夹。 |
+#### even\_item\_style 属性
+-----------------------
+> <p id="file_browser_view_t_even_item_style">偶数项样式。
+
+* 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### filter 属性
 -----------------------
 > <p id="file_browser_view_t_filter">过滤规则。
@@ -414,6 +474,22 @@ ret_t file_browser_view_set_top_dir (widget_t* widget, const char* top_dir);
 #### init\_dir 属性
 -----------------------
 > <p id="file_browser_view_t_init_dir">初始文件夹。
+
+* 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### odd\_item\_style 属性
+-----------------------
+> <p id="file_browser_view_t_odd_item_style">奇数项样式。
 
 * 类型：char*
 

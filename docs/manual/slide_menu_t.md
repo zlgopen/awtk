@@ -74,6 +74,8 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L4
 | <a href="#slide_menu_t_slide_menu_scroll_to_next">slide\_menu\_scroll\_to\_next</a> | 切换至下一项。 |
 | <a href="#slide_menu_t_slide_menu_scroll_to_prev">slide\_menu\_scroll\_to\_prev</a> | 切换至上一项。 |
 | <a href="#slide_menu_t_slide_menu_set_align_v">slide\_menu\_set\_align\_v</a> | 设置垂直对齐方式。 |
+| <a href="#slide_menu_t_slide_menu_set_clip">slide\_menu\_set\_clip</a> | 设置是否动态裁剪菜单项。 |
+| <a href="#slide_menu_t_slide_menu_set_menu_w">slide\_menu\_set\_menu\_w</a> | 设置菜单项的宽度。 |
 | <a href="#slide_menu_t_slide_menu_set_min_scale">slide\_menu\_set\_min\_scale</a> | 设置最小缩放比例。 |
 | <a href="#slide_menu_t_slide_menu_set_spacer">slide\_menu\_set\_spacer</a> | 设置菜单项之间的间距。 |
 | <a href="#slide_menu_t_slide_menu_set_value">slide\_menu\_set\_value</a> | 设置当前项。 |
@@ -83,6 +85,8 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L4
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#slide_menu_t_align_v">align\_v</a> | align\_v\_t | 垂直对齐方式。 |
+| <a href="#slide_menu_t_clip">clip</a> | bool\_t | 是否动态裁剪菜单项(默认裁剪，不裁剪时，如果显示偶数项，左边会多一项)。 |
+| <a href="#slide_menu_t_menu_w">menu\_w</a> | char* | 菜单项的宽度(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)(空字符串则使用控件高度)。 |
 | <a href="#slide_menu_t_min_scale">min\_scale</a> | float\_t | 最小缩放比例。 |
 | <a href="#slide_menu_t_spacer">spacer</a> | int32\_t | 菜单项之间的间距。 |
 | <a href="#slide_menu_t_value">value</a> | int32\_t | 值。代表当前选中项的索引。 |
@@ -211,6 +215,46 @@ ret_t slide_menu_set_align_v (widget_t* widget, align_v_t align_v);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | slide\_menu对象。 |
 | align\_v | align\_v\_t | 对齐方式。 |
+#### slide\_menu\_set\_clip 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slide_menu_t_slide_menu_set_clip">设置是否动态裁剪菜单项。
+
+* 函数原型：
+
+```
+ret_t slide_menu_set_clip (widget_t* widget, bool_t clip);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | slide\_menu对象。 |
+| clip | bool\_t | 是否动态裁剪菜单项。(关闭后，如果显示偶数项，左边会多一项) |
+#### slide\_menu\_set\_menu\_w 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slide_menu_t_slide_menu_set_menu_w">设置菜单项的宽度。
+
+* 函数原型：
+
+```
+ret_t slide_menu_set_menu_w (widget_t* widget, const char* menu_w);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | slide\_menu对象。 |
+| menu\_w | const char* | 菜单项的宽度。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)(空字符串则使用控件高度) |
 #### slide\_menu\_set\_min\_scale 函数
 -----------------------
 
@@ -276,6 +320,38 @@ ret_t slide_menu_set_value (widget_t* widget, uint32_t value);
 > <p id="slide_menu_t_align_v">垂直对齐方式。
 
 * 类型：align\_v\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### clip 属性
+-----------------------
+> <p id="slide_menu_t_clip">是否动态裁剪菜单项(默认裁剪，不裁剪时，如果显示偶数项，左边会多一项)。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### menu\_w 属性
+-----------------------
+> <p id="slide_menu_t_menu_w">菜单项的宽度(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)(空字符串则使用控件高度)。
+
+* 类型：char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |
