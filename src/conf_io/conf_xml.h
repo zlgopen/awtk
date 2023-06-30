@@ -23,6 +23,7 @@
 #define TK_CONF_XML_H
 
 #include "tkc/str.h"
+#include "tkc/buffer.h"
 #include "conf_io/conf_obj.h"
 
 BEGIN_C_DECLS
@@ -56,6 +57,30 @@ tk_object_t* conf_xml_create(void);
  * @return {tk_object_t*} 返回配置对象。
  */
 tk_object_t* conf_xml_load(const char* url, bool_t create_if_not_exist);
+
+/**
+ * @method conf_xml_load_from_buff
+ * 从内存加载XML对象。 
+ * @annotation ["constructor"]
+ * 
+ * @param {const void*} buff 数据。
+ * @param {uint32_t} size  数据长度。
+ * @param {bool_t} create_if_not_exist 如果不存在是否创建。 
+ * 
+ * @return {tk_object_t*} 返回配置对象。
+ */
+tk_object_t* conf_xml_load_from_buff(const void* buff, uint32_t size, bool_t create_if_not_exist);
+
+/**
+ * @method conf_xml_save_to_buff
+ * 将obj保存为XML格式到内存。
+ * 
+ * @param {tk_object_t*} obj doc对象。
+ * @param {wbuffer_t*} wb 返回结果(不要初始化，使用完成后要调用wbuffer_deinit)。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败
+ */
+ret_t conf_xml_save_to_buff(tk_object_t* obj, wbuffer_t* wb);
 
 /**
  * @method conf_xml_save_as

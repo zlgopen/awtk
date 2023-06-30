@@ -24,6 +24,8 @@
 #include "tkc/buffer.h"
 #include "ubjson/ubjson_parser.h"
 #include "conf_io/conf_ubjson.h"
+#include "tkc/data_reader_mem.h"
+#include "tkc/data_writer_wbuffer.h"
 #include "tkc/data_reader_factory.h"
 #include "tkc/data_writer_factory.h"
 
@@ -255,4 +257,22 @@ ret_t conf_ubjson_save_as(tk_object_t* obj, const char* url) {
 
 tk_object_t* conf_ubjson_create(void) {
   return conf_ubjson_load(NULL, TRUE);
+}
+
+tk_object_t* conf_ubjson_load_from_buff(const void* buff, uint32_t size, bool_t create_if_not_exist) {
+  char url[MAX_PATH+1] = {0};
+  return_value_if_fail(buff != NULL, NULL);
+  data_reader_mem_build_url(buff, size, url);
+
+  return conf_ubjson_load(url, create_if_not_exist);
+}
+
+ret_t conf_ubjson_save_to_buff(tk_object_t* obj, wbuffer_t* wb) {
+  char url[MAX_PATH + 1] = {0};
+  return_value_if_fail(obj != NULL && wb != NULL, RET_BAD_PARAMS);
+
+  wbuffer_init_extendable(wb);
+  data_writer_wbuffer_build_url(wb, url);
+
+  return conf_ubjson_save_as(obj, url);
 }

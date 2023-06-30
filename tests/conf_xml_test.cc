@@ -192,3 +192,21 @@ TEST(Xml, text1) {
   str_reset(&str);
   conf_doc_destroy(doc);
 }
+
+TEST(Xml, buff) {
+
+  wbuffer_t wb;
+  tk_object_t* conf = conf_xml_create();
+  ASSERT_NE(conf, (tk_object_t*)NULL);
+  ASSERT_EQ(tk_object_set_prop_int(conf, "awtk.value", 123), RET_OK);
+  ASSERT_EQ(tk_object_get_prop_int(conf, "awtk.value", 0), 123);
+
+  ASSERT_EQ(conf_xml_save_to_buff(conf, &wb), RET_OK);
+  TK_OBJECT_UNREF(conf);
+
+  conf = conf_xml_load_from_buff(wb.data, wb.cursor, FALSE);
+  ASSERT_EQ(tk_object_get_prop_int(conf, "awtk.value", 0), 123);
+  TK_OBJECT_UNREF(conf);
+
+  wbuffer_deinit(&wb);
+}

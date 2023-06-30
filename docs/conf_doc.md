@@ -317,6 +317,8 @@ ret_t conf_ubjson_save_as(tk_object_t* obj, const char* url);
 
 ## 完整示例
 
+* 文件读写
+
 ```c
 #include "conf_io/conf_json.h"
 
@@ -343,3 +345,22 @@ void demo_conf_json(c) {
     "age" : 100 
 }
 ```
+
+* 内存数据读写
+
+```c
+  wbuffer_t wb;
+  tk_object_t* conf = conf_xml_create();
+  ASSERT_NE(conf, (tk_object_t*)NULL);
+  ASSERT_EQ(tk_object_set_prop_int(conf, "awtk.value", 123), RET_OK);
+  ASSERT_EQ(tk_object_get_prop_int(conf, "awtk.value", 0), 123);
+
+  ASSERT_EQ(conf_xml_save_to_buff(conf, &wb), RET_OK);
+  TK_OBJECT_UNREF(conf);
+
+  conf = conf_xml_load_from_buff(wb.data, wb.cursor, FALSE);
+  ASSERT_EQ(tk_object_get_prop_int(conf, "awtk.value", 0), 123);
+  TK_OBJECT_UNREF(conf);
+
+  wbuffer_deinit(&wb);
+```  
