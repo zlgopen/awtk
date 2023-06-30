@@ -286,7 +286,7 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
 static ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
   SDL_Event event;
   ret_t ret = RET_OK;
-  window_manager_t* wm = loop->base.wm;
+  widget_t* wm = loop->base.wm;
   while (SDL_PollEvent(&event) && loop->base.running) {
     switch (event.type) {
       case SDL_DROPFILE: {
@@ -370,6 +370,7 @@ main_loop_t* main_loop_init(int w, int h) {
   loop->base.destroy = main_loop_sdl2_destroy;
   loop->dispatch_input = main_loop_sdl2_dispatch;
   SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
+  SDL_EventState(SDL_SYSWMEVENT, SDL_ENABLE);
 
   return (main_loop_t*)loop;
 }
