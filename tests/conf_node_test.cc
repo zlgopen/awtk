@@ -56,6 +56,8 @@ TEST(ConfNode, basic) {
   ASSERT_EQ(value_int(&v), 4);
   ASSERT_EQ(conf_node_get_child_value_by_index(doc->root, 3, &v), RET_OK);
   ASSERT_EQ(value_int(&v), 4);
+  
+  ASSERT_EQ(conf_node_get_child_value(doc->root, "100", &v), RET_NOT_FOUND);
 
   ASSERT_EQ(conf_doc_remove_child_by_name(doc, doc->root, "2"), RET_OK);
   ASSERT_NE(conf_doc_remove_child_by_name(doc, doc->root, "2"), RET_OK);
