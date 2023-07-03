@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/07/03
+  * 增加控制台应用类型(感谢兆坤提供补丁)
+
 2023/06/30
   * 增加函数conf\_ini\_load\_from\_buff/conf\_ini\_save\_to\_buff
   * 增加函数conf\_json\_load\_from\_buff/conf\_json\_save\_to\_buff

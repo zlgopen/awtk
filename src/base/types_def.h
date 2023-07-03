@@ -242,7 +242,12 @@ typedef enum _app_type_t {
    * @const APP_DESKTOP
    * 桌面应用程序。
    */
-  APP_DESKTOP
+  APP_DESKTOP,
+  /**
+   * @const APP_CONSOLE
+   * 控制台（没有界面）。
+   */
+  APP_CONSOLE,
 } app_type_t;
 
 #if defined(WITH_STM32_G2D) || defined(WITH_PXP_G2D)
