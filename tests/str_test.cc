@@ -552,6 +552,18 @@ TEST(Str, uint64) {
   str_reset(&str);
 }
 
+TEST(Str, uint32) {
+  str_t str;
+  str_init(&str, 100);
+  ASSERT_EQ(str_append_uint32(&str, 123), RET_OK);
+  ASSERT_STREQ(str.str, "123");
+  str_reset(&str);
+
+  ASSERT_EQ(str_append_uint32(&str, 0xffffffff), RET_OK);
+  ASSERT_STREQ(str.str, "4294967295");
+  str_reset(&str);
+}
+
 TEST(Str, reverse) {
   str_t str;
   str_init(&str, 100);

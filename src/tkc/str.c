@@ -176,6 +176,13 @@ ret_t str_append_int(str_t* str, int32_t value) {
   return str_append(str, num);
 }
 
+ret_t str_append_uint32(str_t* str, uint32_t value) {
+  char num[32] = {0};
+  tk_snprintf(num, sizeof(num) - 1, "%u", value);
+
+  return str_append(str, num);
+}
+
 ret_t str_append_int64(str_t* str, int64_t value) {
   char num[64] = {0};
   tk_snprintf(num, sizeof(num) - 1, "%" PRId64, value);

@@ -301,6 +301,16 @@ ret_t str_append_n_chars(str_t* str, char c, uint32_t n);
 ret_t str_append_int(str_t* str, int32_t value);
 
 /**
+ * @method str_append_uint32
+ * 追加一个uint32整数。
+ * @param {str_t*} str str对象。
+ * @param {uint32_t} value 要追加的整数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_uint32(str_t* str, uint32_t value);
+
+/**
  * @method str_append_int64
  * 追加一个int64整数。
  * @param {str_t*} str str对象。
