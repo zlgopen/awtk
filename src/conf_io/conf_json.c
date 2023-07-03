@@ -346,6 +346,8 @@ static ret_t conf_json_save_node_value_simple(conf_node_t* node, str_t* str, uin
       return str_append_int64(str, d);
     } else if (v.type == VALUE_TYPE_UINT64) {
       return str_append_uint64(str, d);
+    } else if (v.type == VALUE_TYPE_UINT32) {
+      return str_append_uint32(str, d);
     } else if (d == (int64_t)d) {
       return str_append_int(str, (int)d);
     } else {

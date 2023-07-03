@@ -3,6 +3,7 @@
 2023/07/03
   * 增加控制台应用类型(感谢兆坤提供补丁)
   * 新增str\_append\_uint32(感谢陈聪提供补丁)
+  * 修复json写uint32的问(感谢陈聪提供补丁)
 
 2023/06/30
   * 增加函数conf\_ini\_load\_from\_buff/conf\_ini\_save\_to\_buff
