@@ -100,7 +100,7 @@ if OS_NAME == 'Darwin':
     OS_FLAGS = OS_FLAGS + ' -DHAS_SEM_OPEN '
     OS_FLAGS = OS_FLAGS + ' -D__APPLE__ -DHAS_PTHREAD -DMACOS -Dmacintosh '
     OS_FLAGS = OS_FLAGS + ' -D__STDC_LIMIT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_CONSTANT_MACROS  -DBGFX_CONFIG_RENDERER_METAL=1 '
-    OS_LIBPATH = ['/usr/local/lib/']
+    OS_LIBPATH = ['/usr/local/lib/', '/opt/homebrew/Cellar/sdl2/2.28.0/lib']
 
 elif OS_NAME == 'Linux':
     TOOLS_NAME = ''
