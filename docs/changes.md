@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/07/05
+  * 完善serial helper的文档(感谢俊杰提供补丁)。
+
 2023/07/04
   * 完善conf\_node\_get\_child\_value。
 

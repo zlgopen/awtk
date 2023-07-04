@@ -89,17 +89,67 @@ typedef enum { stopbits_one = 1, stopbits_two = 2, stopbits_one_point_five } sto
 
 typedef enum { flowcontrol_none = 0, flowcontrol_software, flowcontrol_hardware } flowcontrol_t;
 
+/**
+ * @method serial_open
+ * 打开串口
+ * @annotation ["global"]
+ * @param {const char*} port 串口号。
+ *
+ * @return {serial_handle_t} 失败返回NULL。
+ */
 serial_handle_t serial_open(const char* port);
 
 ret_t serial_iflush(serial_handle_t handle);
 ret_t serial_oflush(serial_handle_t handle);
 ret_t serial_wait_for_data(serial_handle_t handle, uint32_t timeout_ms);
 
+/**
+ * @method serial_read
+ * 串口读数据
+ * @annotation ["global"]
+ * @param {serial_handle_t} handle 串口句柄。
+ * @param {uint8_t*} buff 数据缓冲区。
+ * @param {uint32_t} max_size 数据长度。
+ *
+ * @return {int32_t} 返回实际读取的字节数。
+ */
 int32_t serial_read(serial_handle_t handle, uint8_t* buff, uint32_t max_size);
+
+/**
+ * @method serial_write
+ * 串口写数据
+ * @annotation ["global"]
+ * @param {serial_handle_t} handle 串口句柄。
+ * @param {const uint8_t*} buff 数据缓冲区。
+ * @param {uint32_t} max_size 数据长度。
+ *
+ * @return {int32_t} 返回实际写入的字节数。
+ */
 int32_t serial_write(serial_handle_t handle, const uint8_t* buff, uint32_t max_size);
 
+/**
+ * @method serial_close
+ * 关闭串口
+ * @annotation ["global"]
+ * @param {serial_handle_t} handle 串口句柄。
+ *
+ * @return {int} 返回值。
+ */
 int serial_close(serial_handle_t handle);
 
+/**
+ * @method serial_config
+ * 配置串口
+ * @annotation ["global"]
+ * @param {serial_handle_t} handle 串口句柄。
+ * @param {uint32_t} baudrate 波特率。
+ * @param {bytesize_t} bytesize 数据位。
+ * @param {stopbits_t} stopbits 停止位
+ * @param {flowcontrol_t} flowcontrol 流控。
+ * @param {parity_t} parity 校验位。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t serial_config(serial_handle_t handle, uint32_t baudrate, bytesize_t bytesize,
                     stopbits_t stopbits, flowcontrol_t flowcontrol, parity_t parity);
 
