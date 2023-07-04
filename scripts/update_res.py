@@ -96,7 +96,7 @@ def gen_res(name = 'assets', is_excluded_file_func = default_is_excluded_file_fu
 
 
 AWTK_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-updater.run(AWTK_ROOT, default_is_excluded_file_func)
+updater.run(AWTK_ROOT, default_is_excluded_file_func, True)
 
 gen_res('assets_old', is_demouiold_excluded_file)
 gen_res('assets_all', is_null_file)

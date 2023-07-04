@@ -7,11 +7,15 @@ import collections
 
 # AWTK_ROOT/scripts/update_res_common.py
 import update_res_common as common
+import res_config
+
+RES_CONFIG = None
+RES_OUTPUT_DIR='./res'
 
 def get_theme(i):
     return THEMES[i]
 
-def use_theme_config_from_project_json():
+def use_theme_config_from_res_config(res_config_path, config = None):
     global DPI
     global THEMES
     global OUTPUT_ROOT
@@ -21,64 +25,36 @@ def use_theme_config_from_project_json():
     global APP_ROOT
     global LCD_ORIENTATION
     global LCD_FAST_ROTATION_MODE
+    content = None
 
-    project_json = common.join_path(APP_ROOT, 'project.json')
-    if not os.path.exists(project_json):
-        print('project.json is not exists.')
+    if config == None :
+        config_json = common.join_path(APP_ROOT, res_config_path)
+        if not os.path.exists(config_json) or res_config_path == '':
+            config_json = common.join_path(APP_ROOT, 'project.json')
+            if not os.path.exists(config_json) :
+                print(config_json + ' is not exists.')
+                return
+        
+        content = res_config.res_config()
+        content.load_file(config_json)
+    else :
+        content = config;
+
+    OUTPUT_ROOT = common.join_path(APP_ROOT, common.join_path(content.get_res_res_root(), 'assets'))
+    APP_THEME = content.get_res_actived_theme()
+    LCD_FAST_ROTATION_MODE = content.get_res_lcd_fast_rotation_mode()
+    LCD_ORIENTATION = content.get_res_lcd_orientation()
+
+    DPI = content.get_res_dpi()
+    IS_GENERATE_INC_RES = content.get_inc_res()
+    IS_GENERATE_INC_BITMAP = content.get_inc_bitmap()
+
+    if not content.has_themes():
         return
 
-    content = common.read_file(project_json)
-    content = json.loads(content, object_pairs_hook=collections.OrderedDict)
-
-    if not isinstance(content, dict):
-        return
-
-    if 'assets' not in content:
-        return
-    assets = content['assets']
-
-    if 'outputDir' in assets:
-        OUTPUT_ROOT = common.to_file_system_coding(assets['outputDir'])
-        OUTPUT_ROOT = common.join_path(APP_ROOT, OUTPUT_ROOT+'/assets')
-
-    if 'activedTheme' in assets:
-        APP_THEME = assets['activedTheme']
-
-    if LCD_FAST_ROTATION_MODE == None :
-        if 'lcdFastRotationMode' in assets:
-            LCD_FAST_ROTATION_MODE = assets['lcdFastRotationMode']
-        else :
-            LCD_FAST_ROTATION_MODE = False
-
-    if LCD_ORIENTATION == '' :
-        if 'lcdOrientation' in assets:
-            LCD_ORIENTATION = assets['lcdOrientation']
-        else :
-            LCD_ORIENTATION = '0'
-
-    if 'themes' not in assets:
-        return
-    
-    if len(assets['themes']) == 0:
-        return
-
-    if 'loadFrom' in assets and assets['loadFrom'] == 'fs':
-        IS_GENERATE_INC_BITMAP = False
-        IS_GENERATE_INC_RES = False
-    elif 'const' in assets and assets['const'] != 'all_data':
-        if assets['const'] == 'resource_data':
-            IS_GENERATE_INC_BITMAP = False
-        else:
-            IS_GENERATE_INC_RES = False
-
-    if 'screenDPR' in assets:
-        DPI = assets['screenDPR']
-
-    for theme_name, theme_setting in assets['themes'].items():
-        theme_name = common.to_file_system_coding(theme_name)
-        color_format = theme_setting['lcd']['colorFormat']
-        color_depth = theme_setting['lcd']['colorDepth']
-
+    for theme_name in content.get_res_themes_key() :
+        color_format = content.get_res_color_format(theme_name)
+        color_depth = content.get_res_color_depth(theme_name)
         if color_format == 'MONO':
           imagegen_options = 'mono'
         elif color_format == 'BGR(A)':
@@ -93,29 +69,27 @@ def use_theme_config_from_project_json():
                 imagegen_options = 'rgba'
 
         if IS_GENERATE_INC_BITMAP:
-            font = theme_setting['fonts']
-            config_dir = common.join_path(ASSETS_ROOT, theme_name+'/fonts/config')
+            config_dir = common.join_path(ASSETS_ROOT, common.join_path(theme_name, '/fonts/config'))
             common.remove_dir(config_dir)
             common.make_dirs(config_dir)
-            for font_name, font_setting in theme_setting['fonts'].items():
-                for font_size, text in font_setting.items():
-                    if font_size.isdigit():
-                        font_name = common.to_file_system_coding(font_name)
-                        font_size = common.to_file_system_coding(font_size)
-                        filename = common.join_path(config_dir, font_name+'_'+font_size+'.txt')
-                        common.write_file(filename, text)
+            for font_name in content.get_res_fonts_key(theme_name):
+                for font_size in content.get_res_font_size_key(theme_name, font_name):
+                    font_name = common.to_file_system_coding(font_name)
+                    font_size = common.to_file_system_coding(font_size)
+                    filename = common.join_path(config_dir, font_name+'_'+font_size+'.txt')
+                    common.write_file(filename, content.get_res_font_value(theme_name, font_name, font_size))
 
-        theme = {'name': theme_name, 'imagegen_options': imagegen_options, 'packaged': theme_setting['packaged']}
+        theme = {'name': theme_name, 'imagegen_options': imagegen_options, 'packaged': content.get_res_packaged(theme_name)}
         if theme_name == 'default':
             THEMES.insert(0, theme)
         else:
             THEMES.append(theme)
 
 
-def use_default_theme_config():
+def use_default_theme_config(res_config_path, res_config = None):
     global THEMES
 
-    use_theme_config_from_project_json()
+    use_theme_config_from_res_config(res_config_path, res_config)
 
     if len(THEMES) == 0:
         if os.path.isdir(ASSETS_ROOT):
@@ -153,7 +127,19 @@ def on_generate_res_event():
 def getopt(args):
     return common.get_args(args);
 
-def run(awtk_root, is_excluded_file_handler = None):
+def set_res_config(config) :
+    global RES_CONFIG
+    RES_CONFIG = config
+
+def set_res_config_by_script(script_path, res_config_script_argv):
+    return set_res_config(res_config.set_res_config_by_script(script_path, res_config_script_argv))
+
+def get_dict_value(dict, key, default_value) :
+    if key in dict :
+        return dict[key]
+    return default_value
+
+def run(awtk_root, is_excluded_file_handler = None, is_new_usage = False) :
     global DPI
     global AWTK_ROOT
     global TOOLS_ROOT
@@ -166,41 +152,81 @@ def run(awtk_root, is_excluded_file_handler = None):
     global IS_GENERATE_INC_BITMAP
     global LCD_ORIENTATION
     global LCD_FAST_ROTATION_MODE
+    global RES_CONFIG
+
+    common.show_usage(is_new_usage);
 
     GDPI=''
+    TMP_APP_ROOT = ''
+    RES_OUTPUT_DIR=''
     IMAGEGEN_OPTIONS=''
-    LCD_ORIENTATION=''
-    LCD_FAST_ROTATION_MODE=None
-    sys_args = common.get_args(sys.argv[1:])
-    if len(sys_args) > 0 :
-        common.set_action(sys_args[0])
-        if len(sys_args) > 1:
-            GDPI = sys_args[1]
-        if len(sys_args) > 2:
-            IMAGEGEN_OPTIONS = sys_args[2]
-        if len(sys_args) > 3:
-            LCD_ORIENTATION = sys_args[3]
-            LCD_FAST_ROTATION_MODE = False
+    TMP_LCD_ORIENTATION=''
+    RES_CONFIG_JSON_PATH=''
+    TMP_LCD_FAST_ROTATION_MODE=None
+    args = sys.argv[1:];
+    if common.is_all_sopts_args(args) :
+        longsots_dict = common.get_longsopts_args(args)
+        common.set_action(longsots_dict['action'])
+
+        awtk_root = get_dict_value(longsots_dict, 'awtk_root', awtk_root)
+        GDPI = get_dict_value(longsots_dict, 'dpi', GDPI)
+        IMAGEGEN_OPTIONS = get_dict_value(longsots_dict, 'image_options', IMAGEGEN_OPTIONS)
+        TMP_LCD_ORIENTATION = get_dict_value(longsots_dict, 'lcd_orientation', TMP_LCD_ORIENTATION)
+        TMP_LCD_FAST_ROTATION_MODE = get_dict_value(longsots_dict, 'lcd_enable_fast_rotation', TMP_LCD_FAST_ROTATION_MODE)
+        RES_CONFIG_JSON_PATH = get_dict_value(longsots_dict, 'res_config_file', RES_CONFIG_JSON_PATH)
+        RES_OUTPUT_DIR = get_dict_value(longsots_dict, 'output_dir', RES_OUTPUT_DIR)
+        TMP_APP_ROOT = get_dict_value(longsots_dict, 'app_root', TMP_APP_ROOT)
+
+        if 'res_config_script' in longsots_dict :
+            res_config_script_argv = ''
+            res_config_script = longsots_dict['res_config_script']
+            if 'res_config_script_argv' in longsots_dict :
+                res_config_script_argv = longsots_dict['res_config_script_argv']
+            set_res_config_by_script(res_config_script, res_config_script_argv)
+
+    else :
+        sys_args = common.get_args(args)
+        if len(sys_args) > 0 :
+            common.set_action(sys_args[0])
+            if len(sys_args) > 1:
+                GDPI = sys_args[1]
+            if len(sys_args) > 2:
+                IMAGEGEN_OPTIONS = sys_args[2]
+            if len(sys_args) > 3:
+                TMP_LCD_ORIENTATION = sys_args[3]
+                TMP_LCD_FAST_ROTATION_MODE = False
 
     AWTK_ROOT = awtk_root
-    APP_ROOT = common.getcwd()
     action = common.get_action()
-    if APP_ROOT.endswith('scripts'):
-        APP_ROOT = os.path.dirname(APP_ROOT)
+    if TMP_APP_ROOT == '' :
+        APP_ROOT = common.getcwd()
+        if APP_ROOT.endswith('scripts'):
+            APP_ROOT = os.path.dirname(APP_ROOT)
+    else :
+        APP_ROOT = TMP_APP_ROOT
 
     os.chdir(APP_ROOT)
 
     DPI = 'x1'
     THEMES = []
     APP_THEME = 'default'
+    LCD_ORIENTATION = ''
+    OUTPUT_ROOT = './res'
     IS_GENERATE_INC_RES = True
     IS_GENERATE_INC_BITMAP = True
+    LCD_FAST_ROTATION_MODE = False
     TOOLS_ROOT = common.join_path(AWTK_ROOT, 'bin')
     AWTK_ROOT = common.join_path(APP_ROOT, AWTK_ROOT)
     ASSETS_ROOT = common.join_path(APP_ROOT, 'design')
-    OUTPUT_ROOT = common.join_path(APP_ROOT, 'res/assets')
 
-    use_default_theme_config()
+    use_default_theme_config(RES_CONFIG_JSON_PATH, RES_CONFIG)
+
+    if RES_OUTPUT_DIR != '' :
+        OUTPUT_ROOT = common.join_path(RES_OUTPUT_DIR, 'assets')
+    if TMP_LCD_ORIENTATION != '' :
+        LCD_ORIENTATION = TMP_LCD_ORIENTATION
+    if TMP_LCD_FAST_ROTATION_MODE != None :
+        LCD_FAST_ROTATION_MODE = TMP_LCD_FAST_ROTATION_MODE
 
     ASSET_C = common.join_path(OUTPUT_ROOT, '../assets.inc')
     if action == 'json':

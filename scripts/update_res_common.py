@@ -329,17 +329,6 @@ def glob_asset_files(path):
     return result
 
 
-def read_file(filename):
-    content = ''
-    if sys.version_info >= (3, 0):
-        with open(filename, 'r', encoding='utf8') as f:
-            content = f.read()
-    else:
-        with open(filename, 'r') as f:
-             content = f.read()
-    return content
-
-
 def write_file(filename, s):
     if sys.version_info >= (3, 0):
         with open(filename, 'w', encoding='utf8') as f:
@@ -1221,25 +1210,146 @@ def get_args(args) :
         list_args.append(arg)
     return list_args
 
-def show_usage_imlp():
-    args = ' action[clean|web|json|all|font|image|ui|style|string|script|data|xml|assets.c] dpi[x1|x2] image_options[rgba|bgra+bgr565|mono] awtk_root[--awtk_root=XXXXX]'
-    print('=========================================================')
-    print('Usage: python '+sys.argv[0] + args)
-    print('Example:')
-    print('python ' + sys.argv[0] + ' all')
-    print('python ' + sys.argv[0] + ' clean')
-    print('python ' + sys.argv[0] + ' style --awtk_root=XXXXX ')
-    print('python ' + sys.argv[0] + ' all x1 bgra+bgr565')
-    print('python ' + sys.argv[0] + ' all x1 bgra+bgr565 --awtk_root=XXXXX')
-    print('=========================================================')
-    sys.exit(0)
+def get_opts(args) :
+    import getopt
+    longsots = ['awtk_root=', 'AWTK_ROOT=', 
+                'action=', 'ACTION=',
+                'help', 'HELP',
+                'dpi=', 'DPI=', 
+                'image_options=', 'IMAGE_OPTIONS=', 
+                'lcd_orientation=', 'LCD_ORIENTATION=', 
+                'lcd_enable_fast_rotation=', 'LCD_ENABLE_FAST_ROTATION=',
+                'res_config_file=', 'RES_CONFIG_FILE=',
+                'res_config_script=', 'RES_CONFIG_SCRIPT=',
+                'res_config_script_argv=', 'RES_CONFIG_SCRIPT_ARGV=',
+                'output_dir=', 'OUTPUT_DIR=',
+                'app_root=', 'APP_ROOT',
+                ];
+    try :
+        opts, tmp_args = getopt.getopt(args, 'h', longsots);
+        return opts;
+    except getopt.GetoptError as err:
+        print(err.msg);
+    return None;
 
-def show_usage():
+def is_all_sopts_args(args) :
+    for arg in args:
+        if not arg.startswith('--') and not arg.startswith('-'):
+            return False;
+    return True;
+
+def get_longsopt_name_by_tuple(tuple) :
+    return tuple[0][2:].lower();
+
+def get_shortopt_name_by_tuple(tuple) :
+    return tuple[0][1:].lower();
+
+def get_longsopts_args(args) :
+    opts = get_opts(args);
+    if opts != None :
+        data = {};
+        for tmp_opts in opts :
+            data[get_longsopt_name_by_tuple(tmp_opts)] = tmp_opts[1]
+        return data;
+    else :
+        return None;
+
+def show_usage_imlp(is_new_usage):
+    if is_new_usage :
+        print('=========================================================')
+        print('Usage: python '+sys.argv[0])
+        print('--action :'.ljust(30) + ' update res action, this sopt must set ')
+        print(''.ljust(30) + ' use : --action=clean|web|json|all|font|image|ui|style|string|script|data|xml|assets.c')
+        print(''.ljust(30) + ' clean'.ljust(10) +': clear res')
+        print(''.ljust(30) + ' all'.ljust(10) +': update all res')
+        print(''.ljust(30) + ' web'.ljust(10) +': update web res')
+        print(''.ljust(30) + ' json'.ljust(10) +': only update json res')
+        print(''.ljust(30) + ' font'.ljust(10) +': only update font res')
+        print(''.ljust(30) + ' image'.ljust(10) +': only update image res')
+        print(''.ljust(30) + ' ui'.ljust(10) +': only update ui res')
+        print(''.ljust(30) + ' style'.ljust(10) +': only update style res')
+        print(''.ljust(30) + ' string'.ljust(10) +': only update translator string res')
+        print(''.ljust(30) + ' script'.ljust(10) +': only update script res')
+        print(''.ljust(30) + ' data'.ljust(10) +': only update data res')
+        print(''.ljust(30) + ' xml'.ljust(10) +': only update xml res')
+        print(''.ljust(30) + ' assets.c'.ljust(10) +': only update assets.c file')
+
+        print('--awtk_root :'.ljust(30) + ' set awtk root')
+        print(''.ljust(30) + ' use : --awtk_root=XXXXX')
+
+        print('--dpi :'.ljust(30) + ' set update res dpi')
+        print(''.ljust(30) + ' use : --dpi=x1|x2|x3')
+
+        print('--image_options :'.ljust(30) + ' set image foramt')
+        print(''.ljust(30) + ' use : --image_options=rgba|bgra+bgr565|mono')
+
+        print('--res_config_file :'.ljust(30) + ' set res config file path, priority : res_config_script > res_config_file')
+        print(''.ljust(30) + ' use : --res_config_file=XXXXX')
+
+        print('--res_config_script :'.ljust(30) + ' set res config script file path, this is script must has get_res_config(argv) function ')
+        print(''.ljust(30) + ' use : --res_config_script=XXXXX')
+
+        print('--res_config_script_argv :'.ljust(30) + ' set res config script argv, this is get_res_config() function parameter')
+        print(''.ljust(30) + ' use : --res_config_script_argv=XXXXX')
+
+        print('--lcd_orientation :'.ljust(30) + ' set lcd orientation ')
+        print(''.ljust(30) + ' use : --lcd_orientation=90/180/270')
+
+        print('--lcd_enable_fast_rotation :'.ljust(30) + ' set enable lcd fast rotation ')
+        print(''.ljust(30) + ' use : --lcd_enable_fast_rotation=true/false')
+
+        print('--output_dir :'.ljust(30) + ' set res output dir, default value is ./res ')
+        print(''.ljust(30) + ' use : --output_dir=XXXXX')
+
+        print('--app_root :'.ljust(30) + ' set app root dir, default value is getcwd() ')
+        print(''.ljust(30) + ' use : --app_root=XXXXX')
+
+        print('--help :'.ljust(30) + ' show all usage ')
+        print(''.ljust(30) + ' use : --help')
+
+        print('---------------------------------------------------------')
+        print('Example:')
+        print('python ' + sys.argv[0] + ' --action=all')
+        print('python ' + sys.argv[0] + ' --action=clean')
+        print('python ' + sys.argv[0] + ' --action=style --awtk_root=XXXXX ')
+        print('python ' + sys.argv[0] + ' --action=all --dpi=x1 --image_options=bgra+bgr565')
+        print('python ' + sys.argv[0] + ' --action=all --dpi=x1 --image_options=bgra+bgr565 --awtk_root=XXXXX')
+        print('=========================================================')
+    else :
+        args = ' action[clean|web|json|all|font|image|ui|style|string|script|data|xml|assets.c] dpi[x1|x2] image_options[rgba|bgra+bgr565|mono] awtk_root[--awtk_root=XXXXX]'
+        print('=========================================================')
+        print('Usage: python '+sys.argv[0] + args)
+        print('Example:')
+        print('python ' + sys.argv[0] + ' all')
+        print('python ' + sys.argv[0] + ' clean')
+        print('python ' + sys.argv[0] + ' style --awtk_root=XXXXX ')
+        print('python ' + sys.argv[0] + ' all x1 bgra+bgr565')
+        print('python ' + sys.argv[0] + ' all x1 bgra+bgr565 --awtk_root=XXXXX')
+        print('=========================================================')
+    if exit :
+        sys.exit(0)
+
+def show_usage(is_new_usage = False):
     if len(sys.argv) == 1:
-        show_usage_imlp()
+        show_usage_imlp(is_new_usage)
     else:
-        sys_args = get_args(sys.argv[1:])
-        if len(sys_args) == 0 :
-            show_usage_imlp()
+        args = sys.argv[1:];
+        if is_all_sopts_args(args) :
+            opts = get_opts(args);
+            if opts == None :
+                show_usage_imlp(is_new_usage)
+            else :
+                find_action = False;
+                for tmp_opts in opts :
+                    str_opt = get_longsopt_name_by_tuple(tmp_opts);
+                    if str_opt == 'help' or get_shortopt_name_by_tuple(tmp_opts) == 'h':
+                        show_usage_imlp(is_new_usage)
+                    elif str_opt == 'action' :
+                        find_action = True;
+                if not find_action :
+                    show_usage_imlp(is_new_usage)
+        else :
+            sys_args = get_args(args)
+            if len(sys_args) == 0 :
+                show_usage_imlp(is_new_usage)
 
-show_usage()
