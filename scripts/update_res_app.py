@@ -69,7 +69,7 @@ def use_theme_config_from_res_config(res_config_path, config = None):
                 imagegen_options = 'rgba'
 
         if IS_GENERATE_INC_BITMAP:
-            config_dir = common.join_path(ASSETS_ROOT, common.join_path(theme_name, '/fonts/config'))
+            config_dir = common.join_path(ASSETS_ROOT, common.join_path(theme_name, 'fonts/config'))
             common.remove_dir(config_dir)
             common.make_dirs(config_dir)
             for font_name in content.get_res_fonts_key(theme_name):
