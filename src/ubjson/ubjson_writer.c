@@ -310,7 +310,7 @@ ret_t ubjson_writer_write_kv_object(ubjson_writer_t* writer, const char* key, tk
   return ubjson_writer_write_object(writer, value);
 }
 
-ret_t ubjson_writer_write_kv_value(ubjson_writer_t* writer, const char* key, value_t* value) {
+ret_t ubjson_writer_write_kv_value(ubjson_writer_t* writer, const char* key, const value_t* value) {
   return_value_if_fail(writer != NULL && key != NULL && value != NULL, RET_BAD_PARAMS);
   return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
 

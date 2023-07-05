@@ -4,7 +4,6 @@ import json
 import shutil
 import platform
 from SCons import Script
-import res_config
 
 PLATFORM = platform.system()
 
@@ -26,29 +25,53 @@ def mkdir_if_not_exist(fullpath):
         os.makedirs(fullpath)
 
 
+def load_project_json(filename):
+    try:
+        if sys.version_info >= (3, 0):
+            with open(filename, 'r', encoding='utf8') as f:
+                info = json.load(f)
+                return info
+        else:
+            with open(filename, 'r') as f:
+                info = json.load(f)
+                return info
+    except:
+        return None
+
+
 def get_project_w(info, theme):
-    return info.get_res_w(theme);
+    return info['assets']['themes'][theme]['lcd']['width']
 
 
 def get_project_h(info, theme):
-    return info.get_res_h(theme);
+    return info['assets']['themes'][theme]['lcd']['height']
 
 def get_project_lcd_orientation(info, theme):
-    return info.get_res_lcd_orientation(theme);
+    orientation = '0'
+    if 'lcdOrientation' in info['assets'] :
+        orientation = info['assets']['lcdOrientation']
+    if 'orientation' in info['assets']['themes'][theme]['lcd'] :
+        return info['assets']['themes'][theme]['lcd']['orientation']
+    else :
+        return orientation
 
 def get_project_theme(info):
-    return info.get_res_actived_theme();
+    return info['assets']['activedTheme']
 
 
 def get_project_language(info):
-    return info.get_res_language()
+    return info['assets']['defaultLanguage']
 
 
 def get_project_country(info):
-    return info.get_res_country()
+    return info['assets']['defaultCountry']
 
 def get_project_res_root(info):
-    return os.path.abspath(info.get_res_res_root())
+    res_root = info['assets']['outputDir']
+    if os.path.isabs(res_root):
+        return res_root
+    else: 
+        return '../' + res_root
 
 class AppHelperBase:
     def set_deps(self, DEPENDS_LIBS):
@@ -384,20 +407,9 @@ class AppHelperBase:
         APP_DEFAULT_FONT = 'default'
         APP_DEFAULT_LANGUAGE = 'zh'
         APP_DEFAULT_COUNTRY = 'CN'
-        config = None;
-        if 'res_config_script' in ARGUMENTS :
-            config = res_config.set_res_config_by_script(ARGUMENTS['res_config_script'], ARGUMENTS.get('res_config_script_argv', ''))
-        elif 'res_config_file' in ARGUMENTS :
-            config_file = os.path.abspath(ARGUMENTS['res_config_file'])
-            config = res_config.res_config()
-            if not os.path.exists(config_file) or config_file == '':
-                config_file = os.path.abspath('./project.json')
-            config.load_file(config_file)
-        else :
-            config = res_config.res_config()
-            config.load_file(os.path.abspath('./project.json'))
-        
-        if config != None :
+
+        config = load_project_json('project.json')
+        if config and 'assets' in config:
             APP_THEME = get_project_theme(config)
             LCD_WIDTH = get_project_w(config, APP_THEME)
             LCD_HEIGHT = get_project_h(config, APP_THEME)
@@ -451,7 +463,7 @@ class AppHelperBase:
             tmp = LCD_WIDTH;
             LCD_WIDTH = LCD_HEIGHT;
             LCD_HEIGHT = tmp;
-        APP_RES_ROOT = APP_RES_ROOT.replace('\\','/')
+
         APP_CCFLAGS = ' -DLCD_WIDTH=' + LCD_WIDTH + ' -DLCD_HEIGHT=' + LCD_HEIGHT + ' '
         APP_CCFLAGS = APP_CCFLAGS + ' -DAPP_DEFAULT_FONT=\\\"' + APP_DEFAULT_FONT + '\\\" '
         APP_CCFLAGS = APP_CCFLAGS + ' -DAPP_THEME=\\\"' + APP_THEME + '\\\" '

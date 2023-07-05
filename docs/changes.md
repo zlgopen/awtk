@@ -3,6 +3,7 @@
 2023/07/05
   * 完善serial helper的文档(感谢俊杰提供补丁)。
   * 完善资源生成脚本(感谢智明提供补丁)。
+  * 完善ubjson\_writer\_write\_kv\_value。
 
 2023/07/04
   * 完善conf\_node\_get\_child\_value。

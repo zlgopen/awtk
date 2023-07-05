@@ -532,11 +532,11 @@ ret_t ubjson_writer_write_kv_wstr_len(ubjson_writer_t* writer, const char* key, 
  *
  * @param {ubjson_writer_t*} writer writer对象。
  * @param {const char*} key 键名。
- * @param {value_t*} value 值。
+ * @param {const value_t*} value 值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t ubjson_writer_write_kv_value(ubjson_writer_t* writer, const char* key, value_t* value);
+ret_t ubjson_writer_write_kv_value(ubjson_writer_t* writer, const char* key, const value_t* value);
 
 END_C_DECLS
 
