@@ -4,6 +4,7 @@
   * 完善serial helper的文档(感谢俊杰提供补丁)。
   * 完善资源生成脚本(感谢智明提供补丁)。
   * 完善ubjson\_writer\_write\_kv\_value。
+  * 修复 awtk 打包资源在 python 2 的时候出错的问题以及修复没有资源文件导出路径不正常的问题(感谢智明提供补丁)。
 
 2023/07/04
   * 完善conf\_node\_get\_child\_value。

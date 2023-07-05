@@ -158,10 +158,10 @@ def run(awtk_root, is_excluded_file_handler = None, is_new_usage = False) :
 
     GDPI=''
     TMP_APP_ROOT = ''
-    RES_OUTPUT_DIR=''
     IMAGEGEN_OPTIONS=''
     TMP_LCD_ORIENTATION=''
     RES_CONFIG_JSON_PATH=''
+    RES_OUTPUT_DIR='./res'
     TMP_LCD_FAST_ROTATION_MODE=None
     args = sys.argv[1:];
     if common.is_all_sopts_args(args) :
@@ -221,8 +221,7 @@ def run(awtk_root, is_excluded_file_handler = None, is_new_usage = False) :
 
     use_default_theme_config(RES_CONFIG_JSON_PATH, RES_CONFIG)
 
-    if RES_OUTPUT_DIR != '' :
-        OUTPUT_ROOT = common.join_path(RES_OUTPUT_DIR, 'assets')
+    OUTPUT_ROOT = common.join_path(RES_OUTPUT_DIR, 'assets')
     if TMP_LCD_ORIENTATION != '' :
         LCD_ORIENTATION = TMP_LCD_ORIENTATION
     if TMP_LCD_FAST_ROTATION_MODE != None :

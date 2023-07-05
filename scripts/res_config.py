@@ -63,7 +63,7 @@ class res_multidict(dict) :
       elif isinstance(dst[key], list) :
         if not key in src :
           src[key] = list();
-        src[key] += dst[key].copy();
+        src[key] += list(dst[key]);
       else :
         src[key] = dst[key];
 
