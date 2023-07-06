@@ -22,12 +22,9 @@
 #include "../res/assets/default/inc/ui/uiex/kb_ascii.data"
 #include "../res/assets/default/inc/ui/uiex/kb_default.data"
 #include "../res/assets/default/inc/ui/uiex/kb_foo.data"
-#include "../res/assets/default/inc/ui/uiex/kb_hex.data"
-#include "../res/assets/default/inc/ui/uiex/kb_int.data"
 #include "../res/assets/default/inc/ui/uiex/kb_uint.data"
 #include "../res/assets/default/inc/ui/uiex/menu_bar.data"
 #include "../res/assets/default/inc/ui/uiex/menu_landscape.data"
-#include "../res/assets/default/inc/ui/uiex/menu_portrait.data"
 #include "../res/assets/default/inc/ui/uiex/overlay.data"
 #include "../res/assets/default/inc/ui/uiex/page_animate.data"
 #include "../res/assets/default/inc/ui/uiex/page_button.data"
@@ -36,23 +33,16 @@
 #include "../res/assets/default/inc/ui/uiex/page_color.data"
 #include "../res/assets/default/inc/ui/uiex/page_date_time.data"
 #include "../res/assets/default/inc/ui/uiex/page_edit.data"
-#include "../res/assets/default/inc/ui/uiex/page_image.data"
 #include "../res/assets/default/inc/ui/uiex/page_label.data"
 #include "../res/assets/default/inc/ui/uiex/page_layout.data"
-#include "../res/assets/default/inc/ui/uiex/page_list_view.data"
 #include "../res/assets/default/inc/ui/uiex/page_mledit.data"
 #include "../res/assets/default/inc/ui/uiex/page_progress.data"
 #include "../res/assets/default/inc/ui/uiex/page_selector.data"
 #include "../res/assets/default/inc/ui/uiex/page_slider.data"
-#include "../res/assets/default/inc/ui/uiex/page_slide_view.data"
 #include "../res/assets/default/inc/ui/uiex/page_tab_ctrl.data"
 #include "../res/assets/default/inc/ui/uiex/page_window.data"
 #include "../res/assets/default/inc/ui/uiex/popup.data"
 #include "../res/assets/default/inc/ui/uiex/preload.data"
-#include "../res/assets/default/inc/ui/uiex/slide_down.data"
-#include "../res/assets/default/inc/ui/uiex/slide_left.data"
-#include "../res/assets/default/inc/ui/uiex/slide_right.data"
-#include "../res/assets/default/inc/ui/uiex/slide_up.data"
 #include "../res/assets/default/inc/ui/uiex/sysbar_landscape.data"
 #include "../res/assets/default/inc/ui/uiex/sysbar_portrait.data"
 #include "../res/assets/default/inc/ui/uiex/vtranslate.data"
@@ -147,12 +137,9 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_uiex_kb_ascii);
   assets_manager_add(am, ui_uiex_kb_default);
   assets_manager_add(am, ui_uiex_kb_foo);
-  assets_manager_add(am, ui_uiex_kb_hex);
-  assets_manager_add(am, ui_uiex_kb_int);
   assets_manager_add(am, ui_uiex_kb_uint);
   assets_manager_add(am, ui_uiex_menu_bar);
   assets_manager_add(am, ui_uiex_menu_landscape);
-  assets_manager_add(am, ui_uiex_menu_portrait);
   assets_manager_add(am, ui_uiex_overlay);
   assets_manager_add(am, ui_uiex_page_animate);
   assets_manager_add(am, ui_uiex_page_button);
@@ -161,23 +148,16 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_uiex_page_color);
   assets_manager_add(am, ui_uiex_page_date_time);
   assets_manager_add(am, ui_uiex_page_edit);
-  assets_manager_add(am, ui_uiex_page_image);
   assets_manager_add(am, ui_uiex_page_label);
   assets_manager_add(am, ui_uiex_page_layout);
-  assets_manager_add(am, ui_uiex_page_list_view);
   assets_manager_add(am, ui_uiex_page_mledit);
   assets_manager_add(am, ui_uiex_page_progress);
   assets_manager_add(am, ui_uiex_page_selector);
   assets_manager_add(am, ui_uiex_page_slider);
-  assets_manager_add(am, ui_uiex_page_slide_view);
   assets_manager_add(am, ui_uiex_page_tab_ctrl);
   assets_manager_add(am, ui_uiex_page_window);
   assets_manager_add(am, ui_uiex_popup);
   assets_manager_add(am, ui_uiex_preload);
-  assets_manager_add(am, ui_uiex_slide_down);
-  assets_manager_add(am, ui_uiex_slide_left);
-  assets_manager_add(am, ui_uiex_slide_right);
-  assets_manager_add(am, ui_uiex_slide_up);
   assets_manager_add(am, ui_uiex_sysbar_landscape);
   assets_manager_add(am, ui_uiex_sysbar_portrait);
   assets_manager_add(am, ui_uiex_vtranslate);
@@ -268,12 +248,9 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_htranslate[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_kb_ascii[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_kb_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_kb_foo[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_kb_hex[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_kb_int[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_kb_uint[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_menu_bar[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_menu_landscape[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_menu_portrait[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_overlay[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_animate[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_button[]);
@@ -282,23 +259,16 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_checkbox[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_color[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_date_time[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_edit[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_image[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_label[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_layout[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_list_view[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_mledit[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_progress[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_selector[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_slider[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_slide_view[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_tab_ctrl[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_window[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_popup[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_preload[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_slide_down[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_slide_left[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_slide_right[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_slide_up[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_sysbar_landscape[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_sysbar_portrait[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_vtranslate[]);
@@ -393,12 +363,9 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_uiex_kb_ascii);
   assets_manager_add(am, ui_uiex_kb_default);
   assets_manager_add(am, ui_uiex_kb_foo);
-  assets_manager_add(am, ui_uiex_kb_hex);
-  assets_manager_add(am, ui_uiex_kb_int);
   assets_manager_add(am, ui_uiex_kb_uint);
   assets_manager_add(am, ui_uiex_menu_bar);
   assets_manager_add(am, ui_uiex_menu_landscape);
-  assets_manager_add(am, ui_uiex_menu_portrait);
   assets_manager_add(am, ui_uiex_overlay);
   assets_manager_add(am, ui_uiex_page_animate);
   assets_manager_add(am, ui_uiex_page_button);
@@ -407,23 +374,16 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_uiex_page_color);
   assets_manager_add(am, ui_uiex_page_date_time);
   assets_manager_add(am, ui_uiex_page_edit);
-  assets_manager_add(am, ui_uiex_page_image);
   assets_manager_add(am, ui_uiex_page_label);
   assets_manager_add(am, ui_uiex_page_layout);
-  assets_manager_add(am, ui_uiex_page_list_view);
   assets_manager_add(am, ui_uiex_page_mledit);
   assets_manager_add(am, ui_uiex_page_progress);
   assets_manager_add(am, ui_uiex_page_selector);
   assets_manager_add(am, ui_uiex_page_slider);
-  assets_manager_add(am, ui_uiex_page_slide_view);
   assets_manager_add(am, ui_uiex_page_tab_ctrl);
   assets_manager_add(am, ui_uiex_page_window);
   assets_manager_add(am, ui_uiex_popup);
   assets_manager_add(am, ui_uiex_preload);
-  assets_manager_add(am, ui_uiex_slide_down);
-  assets_manager_add(am, ui_uiex_slide_left);
-  assets_manager_add(am, ui_uiex_slide_right);
-  assets_manager_add(am, ui_uiex_slide_up);
   assets_manager_add(am, ui_uiex_sysbar_landscape);
   assets_manager_add(am, ui_uiex_sysbar_portrait);
   assets_manager_add(am, ui_uiex_vtranslate);

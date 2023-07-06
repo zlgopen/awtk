@@ -10,7 +10,7 @@
     <view name="view_num_edit" children_layout="default(r=0,c=1,x=0,y=0,s=10)" h="68">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Number Edit"/>
       <view h="-22" children_layout="default(r=1,c=0,x=20,y=0,s=0)">
-        <edit w="62%" tips="int" input_type="int" auto_fix="true" keyboard="uiex/kb_int" min="-4294967295" text="30" max="4294967295"/>
+        <edit w="62%" tips="uint" input_type="uint" auto_fix="true" keyboard="uiex/kb_uint" min="0" text="30" max="4294967295"/>
       </view>
     </view>
     <view name="view_num_edit_btn" children_layout="default(r=0,c=1,x=0,y=0,s=10)" h="68">
