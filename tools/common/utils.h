@@ -54,9 +54,6 @@ const char* get_next_token(const char* p, char* token, char c);
 
 const char* filter_name(char* name);
 
-wchar_t** argvw_create(int argc, char* argv[]);
-ret_t argvw_destroy(wchar_t** argvw);
-
 END_C_DECLS
 
 #endif  // UTILS_H
