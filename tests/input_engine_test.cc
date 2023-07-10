@@ -17,7 +17,7 @@ static const wchar_t* s_table_num_chars[] = {
     L"", L"", L"ABC", L"DEF", L"GHI", L"JKL", L"MNO", L"PQRS", L"TUV", L"WXYZ", L"",
 };
 #elif defined(WITH_IME_PINYIN)
-static const char s_test_gpinyin[] = {
+static const int8_t s_test_gpinyin[] = {
     106,  105,  0, -27, -113, -118, 0, -27, -115, -77,  0, -25, -70,  -89,  0, -27,
     -121, -96,  0, -26, -100, -70,  0, -26, -105, -94,  0, -26, -128, -91,  0, -23,
     -101, -122, 0, -24, -82,  -80,  0, -26, -98,  -127, 0, -27, -81,  -124, 0, -23,
@@ -337,7 +337,7 @@ TEST(input_engine, input_key) {
   }
   delete[] s_test_py_ji;
 #elif defined(WITH_IME_PINYIN)
-  ASSERT_EQ(strncmp(s_test_gpinyin, candidate_info.char_candidates, candidate_info.char_number), 0);
+  ASSERT_EQ(strncmp((char*)s_test_gpinyin, candidate_info.char_candidates, candidate_info.char_number), 0);
 #elif defined(WITH_IME_NULL)
 #endif
 #endif
