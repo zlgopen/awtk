@@ -315,7 +315,11 @@ ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const c
   return_value_if_fail(tk_init_internal() == RET_OK, RET_FAIL);
 
   if (APP_CONSOLE == system_info()->app_type) {
+#ifndef AWTK_WEB  
     loop = (main_loop_t*)main_loop_console_init();
+#else
+    assert(!"not supported");
+#endif/*AWTK_WEB*/
   } else {
     loop = main_loop_init(w, h);
   }
