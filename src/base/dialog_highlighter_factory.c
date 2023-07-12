@@ -79,6 +79,11 @@ ret_t dialog_highlighter_factory_register(dialog_highlighter_factory_t* factory,
 
 ret_t dialog_highlighter_on_dialog_destroy(void* ctx, event_t* e) {
   dialog_highlighter_t* h = (dialog_highlighter_t*)ctx;
+  rect_t r;
+  return_value_if_fail(h != NULL, RET_REMOVE);
+
+  r = rect_init(0, 0, h->img.w, h->img.h);
+  widget_invalidate_force(window_manager(), &r);
 
   dialog_highlighter_destroy(h);
 
