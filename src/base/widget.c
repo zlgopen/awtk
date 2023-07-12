@@ -3119,7 +3119,7 @@ ret_t widget_on_pointer_down_children(widget_t* widget, pointer_event_t* e) {
     widget->target = target;
   }
 
-  if (widget->target != NULL) {
+  if (widget->target != NULL && widget->target->enable && widget->target->sensitive) {
     ret = widget_on_pointer_down(widget->target, e);
   }
 

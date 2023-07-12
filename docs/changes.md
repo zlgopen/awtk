@@ -2,6 +2,7 @@
 
 2023/07/12
   * 修复dialog高亮销毁时没有刷新区域的问题(感谢兆坤提供补丁)
+  * 优化点击事件处理逻辑，确保pointer_down的widget是enable且sensitive的(感谢陈聪提供补丁)
 
 2023/07/06
   * 完善tools/common。
