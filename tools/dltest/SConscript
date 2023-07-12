@@ -1,0 +1,13 @@
+import os
+import copy
+import awtk_config as awtk
+
+BIN_DIR=os.environ['BIN_DIR'];
+LIB_DIR=os.environ['LIB_DIR'];
+
+env=DefaultEnvironment().Clone()
+
+
+LIBS=awtk.STATIC_LIBS
+
+env.Program(os.path.join(BIN_DIR, 'dltest'), ['dltest.c'], LIBS=LIBS);

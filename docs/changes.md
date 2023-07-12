@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/07/12
+  * add tools/dltest
+
 2023/07/06
   * 完善tools/common。
   * 完善demo的资源(感谢泽武提供补丁)
