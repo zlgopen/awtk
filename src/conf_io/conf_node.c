@@ -55,6 +55,7 @@ conf_doc_t* conf_doc_create(uint32_t prealloc_nodes_nr) {
     doc->prealloc_nodes = TKMEM_ALLOC(size);
     if (doc->prealloc_nodes == NULL) {
       TKMEM_FREE(doc);
+      return NULL;
     } else {
       memset(doc->prealloc_nodes, 0x00, size);
       doc->prealloc_nodes_nr = prealloc_nodes_nr;
