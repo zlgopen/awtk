@@ -385,24 +385,24 @@ def exec_cmd(cmd):
 
 
 def themegen(raw, inc, theme):
-    exec_cmd(to_exe('themegen') + ' \"' + raw + '\" \"' + inc + '\" data ' + theme)
+    exec_cmd('\"' + to_exe('themegen') + '\" \"' + raw + '\" \"' + inc + '\" data ' + theme)
 
 
 def themegen_bin(raw, bin):
-    exec_cmd(to_exe('themegen') + ' \"' + raw + '\" \"' + bin + '\" bin')
+    exec_cmd('\"' + to_exe('themegen') + '\" \"' + raw + '\" \"' + bin + '\" bin')
 
 
 def strgen(raw, inc, theme):
     if(os.path.isfile(raw)):
-        exec_cmd(to_exe('strgen') + ' \"' + raw + '\" \"' + inc + '\" data ' + theme)
+        exec_cmd('\"' + to_exe('strgen') + '\" \"' + raw + '\" \"' + inc + '\" data ' + theme)
 
 
 def strgen_bin(raw, bin):
     if(os.path.isfile(raw)):
-        exec_cmd(to_exe('strgen') + ' \"' + raw + '\" \"' + bin + '\" bin')
+        exec_cmd('\"' + to_exe('strgen') + '\" \"' + raw + '\" \"' + bin + '\" bin')
 
 def resgen(raw, inc, theme, outExtname):
-    exec_cmd(to_exe('resgen') + ' \"' + raw + '\" \"' + inc + '\" ' + theme + ' ' + outExtname)
+    exec_cmd('\"' + to_exe('resgen') + '\" \"' + raw + '\" \"' + inc + '\" ' + theme + ' ' + outExtname)
 
 
 def fontgen(raw, text, inc, size, options, theme):
@@ -410,30 +410,30 @@ def fontgen(raw, text, inc, size, options, theme):
     if options == 'mono' and os.path.exists(to_exe('fontgen_ft')):
         fontgenName = 'fontgen_ft'
 
-    exec_cmd(to_exe(fontgenName) + ' \"' + raw + '\" \"' + text + '\" \"' + inc + '\" ' +
+    exec_cmd('\"' + to_exe(fontgenName) + '\" \"' + raw + '\" \"' + text + '\" \"' + inc + '\" ' +
         str(size) + ' ' + options + ' ' + theme)
 
 
 def imagegen(raw, inc, options, theme, lcd_orientation, lcd_fast_rotation_mode):
     if not lcd_fast_rotation_mode :
         lcd_orientation = '0'
-    exec_cmd(to_exe('imagegen') + ' \"' + raw + '\" \"' + inc + '\" ' + options + ' ' + theme + ' ' + lcd_orientation)
+    exec_cmd('\"' + to_exe('imagegen') + '\" \"' + raw + '\" \"' + inc + '\" ' + options + ' ' + theme + ' ' + lcd_orientation)
 
 
 def svggen(raw, inc, theme):
-    exec_cmd(to_exe('bsvggen') + ' \"' + raw + '\" \"' + inc + '\" data ' + theme)
+    exec_cmd('\"' + to_exe('bsvggen') + '\" \"' + raw + '\" \"' + inc + '\" data ' + theme)
 
 
 def svggen_bin(raw, bin):
-    exec_cmd(to_exe('bsvggen') + ' \"' + raw + '\" \"' + bin + '\" bin')
+    exec_cmd('\"' + to_exe('bsvggen') + '\" \"' + raw + '\" \"' + bin + '\" bin')
 
 
 def xml_to_ui(raw, inc, theme):
-    exec_cmd(to_exe('xml_to_ui') + ' \"' + raw + '\" \"' + inc + '\" data \"\" ' + theme)
+    exec_cmd('\"' + to_exe('xml_to_ui') + '\" \"' + raw + '\" \"' + inc + '\" data \"\" ' + theme)
 
 
 def xml_to_ui_bin(raw, bin):
-    exec_cmd(to_exe('xml_to_ui') + ' \"' + raw + '\" \"' + bin + '\" bin')
+    exec_cmd('\"' + to_exe('xml_to_ui') + '\" \"' + raw + '\" \"' + bin + '\" bin')
 
 
 def gen_res_all_style():
@@ -754,12 +754,12 @@ def gen_res_all_string():
 
 def gen_gpinyin():
     emit_generate_res_before('gpinyin')
-    exec_cmd(to_exe('resgen') + ' ' + join_path('3rd', 'gpinyin/data/gpinyin.dat') +
-            ' ' + join_path('3rd', 'gpinyin/src/gpinyin.inc'))
-    exec_cmd(to_exe('resgen') + ' ' + join_path('tools', 'word_gen/words.bin') +
-            ' ' + join_path('src', 'input_methods/suggest_words.inc'))
-    exec_cmd(to_exe('resgen') + ' ' + join_path('tools','word_gen/words.bin') +
-            ' ' + join_path('tests', 'suggest_test.inc'))
+    exec_cmd('\"' + to_exe('resgen') + '\" \"' + join_path('3rd', 'gpinyin/data/gpinyin.dat') +
+            '\" \"' + join_path('3rd', 'gpinyin/src/gpinyin.inc') + '\"')
+    exec_cmd('\"' + to_exe('resgen') + '\" ' + join_path('tools', 'word_gen/words.bin') +
+            '\" \"' + join_path('src', 'input_methods/suggest_words.inc') + '\"')
+    exec_cmd('\"' + to_exe('resgen') + '\" \"' + join_path('tools','word_gen/words.bin') +
+            '\" \"' + join_path('tests', 'suggest_test.inc') + '\"')
     emit_generate_res_after('gpinyin')
 
 
@@ -1249,7 +1249,10 @@ def get_longsopts_args(args) :
     if opts != None :
         data = {};
         for tmp_opts in opts :
-            data[get_longsopt_name_by_tuple(tmp_opts)] = tmp_opts[1]
+            value = tmp_opts[1]
+            if isinstance(value, str) and value[0] == '"' and value[-1] == '"' :
+                value = value[1:-1]
+            data[get_longsopt_name_by_tuple(tmp_opts)] = value
         return data;
     else :
         return None;
