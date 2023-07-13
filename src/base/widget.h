@@ -2877,6 +2877,7 @@ ret_t widget_layout_children(widget_t* widget);
 /**
  * @method widget_set_self_layout
  * 设置控件自己的布局参数。
+ * 备注：下一帧才会生效数据
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} params 布局参数。
@@ -2888,6 +2889,7 @@ ret_t widget_set_self_layout(widget_t* widget, const char* params);
 /**
  * @method widget_set_children_layout
  * 设置子控件的布局参数。
+ * 备注：下一帧才会生效数据
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} params 布局参数。
@@ -2899,6 +2901,7 @@ ret_t widget_set_children_layout(widget_t* widget, const char* params);
 /**
  * @method widget_set_self_layout_params
  * 设置控件自己的布局(缺省布局器)参数(过时，请用widget\_set\_self\_layout)。
+ * 备注：下一帧才会生效数据
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} x x参数。
