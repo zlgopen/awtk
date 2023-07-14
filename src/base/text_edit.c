@@ -108,7 +108,7 @@ typedef struct _text_edit_impl_t {
   uint32_t preedit_chars_nr;
 
   bool_t briefly_show_char;
-  uint32_t briefly_show_char_timer_id;
+  uint32_t briefly_show_char_done_timer_id;
 
   bool_t lock_scrollbar_value;
 
@@ -1331,6 +1331,64 @@ ret_t text_edit_key_up(text_edit_t* text_edit, key_event_t* evt) {
   return ret;
 }
 
+static ret_t text_edit_briefly_show_char_done_impl(text_edit_t* text_edit) {
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
+
+  if (impl->briefly_show_char) {
+    impl->briefly_show_char = FALSE;
+    text_edit_layout(text_edit);
+
+    widget_invalidate(text_edit->widget, NULL);
+  }
+
+  return RET_OK;
+}
+
+static ret_t text_edit_briefly_show_char_done_on_timer(const timer_info_t* timer) {
+  text_edit_t* text_edit = (text_edit_t*)(timer->ctx);
+  DECL_IMPL(text_edit);
+
+  text_edit_briefly_show_char_done_impl(text_edit);
+
+  impl->briefly_show_char_done_timer_id = TK_INVALID_ID;
+
+  return RET_REMOVE;
+}
+
+static ret_t text_edit_briefly_show_char(text_edit_t* text_edit) {
+  ret_t ret = RET_FAIL;
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
+
+  if (impl->briefly_show_char_done_timer_id == TK_INVALID_ID) {
+    impl->briefly_show_char_done_timer_id = timer_add(text_edit_briefly_show_char_done_on_timer,
+                                                      text_edit, BRIEFLY_SHOW_CHAR_TIMER_DURATION);
+  } else {
+    timer_reset(impl->briefly_show_char_done_timer_id);
+  }
+
+  ret = (impl->briefly_show_char_done_timer_id != TK_INVALID_ID) ? RET_OK : RET_FAIL;
+
+  if (ret == RET_OK) {
+    impl->briefly_show_char = TRUE;
+  }
+
+  return ret;
+}
+
+static ret_t text_edit_briefly_show_char_done(text_edit_t* text_edit) {
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
+
+  if (impl->briefly_show_char_done_timer_id != TK_INVALID_ID) {
+    timer_remove(impl->briefly_show_char_done_timer_id);
+    impl->briefly_show_char_done_timer_id = TK_INVALID_ID;
+  }
+
+  return text_edit_briefly_show_char_done_impl(text_edit);
+}
+
 ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
   uint32_t key = 0;
   wstr_t* text = NULL;
@@ -1521,6 +1579,9 @@ on_text_will_delete_end:
         return RET_STOP;
       }
     }
+    text_edit_briefly_show_char(text_edit);
+  } else {
+    text_edit_briefly_show_char_done(text_edit);
   }
 
   if (evt->shift) {
@@ -1593,35 +1654,6 @@ ret_t text_edit_cut(text_edit_t* text_edit) {
 
   if (text_edit_copy(text_edit) == RET_OK) {
     stb_textedit_cut(text_edit, &(impl->state));
-  }
-
-  return RET_OK;
-}
-
-static ret_t text_edit_briefly_show_char_on_timer(const timer_info_t* timer) {
-  text_edit_t* text_edit = (text_edit_t*)(timer->ctx);
-  DECL_IMPL(text_edit);
-
-  impl->briefly_show_char = FALSE;
-  text_edit_layout(text_edit);
-
-  widget_invalidate(text_edit->widget, NULL);
-
-  impl->briefly_show_char_timer_id = TK_INVALID_ID;
-
-  return RET_REMOVE;
-}
-
-static ret_t text_edit_briefly_show_char(text_edit_t* text_edit) {
-  DECL_IMPL(text_edit);
-  return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
-
-  impl->briefly_show_char = TRUE;
-  if (impl->briefly_show_char_timer_id == TK_INVALID_ID) {
-    impl->briefly_show_char_timer_id = timer_add(text_edit_briefly_show_char_on_timer, text_edit,
-                                                 BRIEFLY_SHOW_CHAR_TIMER_DURATION);
-  } else {
-    timer_reset(impl->briefly_show_char_timer_id);
   }
 
   return RET_OK;
@@ -1809,8 +1841,8 @@ ret_t text_edit_destroy(text_edit_t* text_edit) {
 
   wstr_reset(&(impl->tips));
   rows_destroy(impl->rows);
-  if (impl->briefly_show_char_timer_id != TK_INVALID_ID) {
-    timer_remove(impl->briefly_show_char_timer_id);
+  if (impl->briefly_show_char_done_timer_id != TK_INVALID_ID) {
+    timer_remove(impl->briefly_show_char_done_timer_id);
   }
   TKMEM_FREE(text_edit);
 
