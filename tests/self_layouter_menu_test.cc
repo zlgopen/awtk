@@ -235,3 +235,29 @@ TEST(SelfLayoutMenu, reinit) {
 
   widget_destroy(w);
 }
+
+TEST(SelfLayoutMenu, out_of_area) {
+  rect_t r;
+  widget_t* w = popup_create(NULL, 30, 530, 100, 70);
+  const char* layout_params = "menu(position=down)";
+  self_layouter_t* layouter = self_layouter_create(layout_params);
+
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "p", 0), (int)'d');
+  ASSERT_EQ(self_layouter_get_param_int(layouter, "x_attr", 0), X_ATTR_DEFAULT);
+
+  r = rect_init(0, 0, 800, 600);
+
+  point_t pressed = {0, 0};
+  rect_t trigger_r = rect_init(30, 500, 80, 80);
+
+  widget_layout_self_set_trigger(layouter, pressed, trigger_r);
+  ASSERT_EQ(widget_layout_self_menu_with_rect(layouter, w, &r), RET_OK);
+
+  ASSERT_EQ(w->x, 30);
+  ASSERT_EQ(w->y, 530);
+  ASSERT_EQ(w->w, 100);
+  ASSERT_EQ(w->h, 70);
+
+  self_layouter_destroy(layouter);
+  widget_destroy(w);
+}

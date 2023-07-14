@@ -1,5 +1,5 @@
 ﻿/**
- * File:   self_layouter_menu_menu.c
+ * File:   self_layouter_menu.c
  * Author: AWTK Develop Team
  * Brief:  self layouter menu
  *
@@ -291,13 +291,20 @@ static ret_t widget_layout_calc(self_layouter_menu_t* layout, rect_t* r, wh_t pa
 }
 
 ret_t widget_layout_self_menu_with_rect(self_layouter_t* layouter, widget_t* widget, rect_t* area) {
-  rect_t r = rect_init(widget->x, widget->y, widget->w, widget->h);
+  rect_t r;
   self_layouter_menu_t* l = (self_layouter_menu_t*)layouter;
+  return_value_if_fail(l != NULL && widget != NULL && area != NULL, RET_BAD_PARAMS);
 
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  r = rect_init(widget->x, widget->y, widget->w, widget->h);
+
+  assert(r.w <= area->w && r.h <= area->h);
 
   if (self_layouter_menu_is_valid(layouter)) {
     widget_layout_calc(l, &r, area->w, area->h);
+
+    r.x = tk_clamp(r.x, 0, area->w - r.w);
+    r.y = tk_clamp(r.y, 0, area->h - r.h);
+
     widget_move_resize_ex(widget, r.x + area->x, r.y + area->y, r.w, r.h, FALSE);
 
     return RET_OK;
