@@ -765,6 +765,7 @@ static ret_t window_manager_default_close_window(widget_t* widget, widget_t* win
     }
     if (prev_win != NULL) {
       if (!widget_is_keyboard(window)) {
+        wm->curr_win = prev_win;
         window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_FOREGROUND);
         window_manager_create_highlighter(widget, prev_win);
       }
@@ -1493,7 +1494,7 @@ static ret_t window_manager_default_layout_not_system_bar(widget_t* widget, widg
     h = window->h;
   }
 
-  widget_move_resize(window, x, y, w, h);
+  widget_move_resize_ex(window, x, y, w, h, FALSE);
   widget_layout(window);
 
   return RET_OK;
