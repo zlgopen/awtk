@@ -4780,6 +4780,12 @@ bool_t widget_is_support_highlighter(widget_t* widget) {
   return widget->vt->is_window && (tk_str_eq(widget->vt->type, WIDGET_TYPE_POPUP) || tk_str_eq(widget->vt->type, WIDGET_TYPE_DIALOG));
 }
 
+bool_t widget_has_highlighter(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
+
+  return widget_is_support_highlighter(widget) && widget_get_prop_str(widget, WIDGET_PROP_HIGHLIGHT, NULL) != NULL;
+}
+
 bool_t widget_is_overlay(widget_t* widget) {
   return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
 

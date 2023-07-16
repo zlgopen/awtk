@@ -1038,6 +1038,16 @@ bool_t widget_is_style_exist(widget_t* widget, const char* style_name, const cha
 bool_t widget_is_support_highlighter(widget_t* widget);
 
 /**
+ * @method widget_has_highlighter
+ * 判断widget拥有高亮属性。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {bool_t} 支持返回 TRUE，不支持返回 FALSE。
+ */
+bool_t widget_has_highlighter(widget_t* widget);
+
+/**
  * @method widget_use_style
  * 启用指定的style。
  * @annotation ["scriptable"]
