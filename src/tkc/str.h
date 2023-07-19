@@ -92,6 +92,7 @@ ret_t str_destroy(str_t* str);
 /**
  * @method str_init
  * 初始化字符串对象。
+ * 备注：最后调用str\_reset释放内存。
  * @annotation ["constructor"]
  * @param {str_t*} str str对象。
  * @param {uint32_t} capacity 初始容量。

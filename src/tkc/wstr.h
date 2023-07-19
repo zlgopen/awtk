@@ -72,6 +72,7 @@ typedef struct _wstr_t {
 /**
  * @method wstr_init
  * 初始化字符串对象。
+ * 备注：最后调用wstr\_reset释放内存
  * @annotation ["constructor"]
  * @param {wstr_t*} str str对象。
  * @param {uint32_t} capacity 初始容量。
