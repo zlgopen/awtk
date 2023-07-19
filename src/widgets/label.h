@@ -100,6 +100,14 @@ typedef struct _label_t {
   bool_t word_wrap;
 
   /**
+   * @property {bool_t} ellipses
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否开启缩写，开启后，当文字长度操作控件长度后，自动变为... 
+   * > 和换行是冲突的，换行后，该属性不生效
+   */
+  bool_t ellipses;
+
+  /**
    * @property {int32_t} max_w
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 当auto_adjust_size为TRUE时，用于控制控件的最大宽度，超出该宽度后才自动换行。
@@ -165,6 +173,17 @@ ret_t label_set_line_wrap(widget_t* widget, bool_t line_wrap);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t label_set_word_wrap(widget_t* widget, bool_t word_wrap);
+
+/**
+ * @method label_set_ellipses
+ * 是否开启缩写，开启后，当文字长度操作控件长度后，自动变为... 
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t}  ellipses 是否开启缩写。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t label_set_ellipses(widget_t* widget, bool_t ellipses);
 
 /**
  * @method label_resize_to_content

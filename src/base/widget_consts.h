@@ -330,6 +330,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_WORD_WRAP "word_wrap"
 
 /**
+ * @const WIDGET_PROP_ELLIPSES
+ * 是否省略。
+ */
+#define WIDGET_PROP_ELLIPSES "ellipses"
+
+/**
  * @const WIDGET_PROP_TEXT
  * 文本。
  */

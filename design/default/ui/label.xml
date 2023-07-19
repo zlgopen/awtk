@@ -1,4 +1,4 @@
-<window children_layout="default(c=3,r=4)">
+<window children_layout="default(c=3,r=5)">
   <label style="left" line_wrap="true" word_wrap="true" >
     <property name="text">
 it
@@ -24,7 +24,12 @@ a multiline sample
   <label style="center_top"  text="center_top"/>
   <label style="center" text="center"/>
   <label style="center_bottom" text="center_bottom"/>
-  <button name="close" self_layout="default(x=center,y=bottom:50,w=50%,h=30)" 
+  
+  <label style="left" ellipses="true" text="it is a long line sample, this is ellipses is ok "/>
+  <label style="left" ellipses="true" text="it\nis\na long sample\nnot ok"/>
+  <label style="left" ellipses="true" line_wrap="true" word_wrap="true" text="it\nis\na long sample\nnot ok"/>
+
+  <button name="close" self_layout="default(x=center,y=bottom:100,w=50%,h=30)" 
     floating="true" text="Close"/>
 
 </window>

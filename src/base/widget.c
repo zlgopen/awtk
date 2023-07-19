@@ -1565,6 +1565,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
   bitmap_t img;
   rect_t r_icon;
   rect_t r_text;
+  bool_t ellipses;
   int32_t margin = 0;
   int32_t spacer = 0;
   int32_t icon_at = 0;
@@ -1590,6 +1591,8 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
   w = widget->w - margin_left - margin_right;
   h = widget->h - margin_top - margin_bottom;
   ir = rect_init(margin_left, margin_top, w, h);
+
+  ellipses = widget_get_prop_bool(widget, WIDGET_PROP_ELLIPSES, FALSE);
 
   if (text == NULL) {
     text = &(widget->text);
@@ -1624,7 +1627,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
                                  &r_icon);
 
       canvas_draw_icon_in_rect(c, &img, &r_icon);
-      widget_draw_text_in_rect(widget, c, text->str, text->size, &r_text, FALSE);
+      widget_draw_text_in_rect(widget, c, text->str, text->size, &r_text, ellipses);
     } else {
       if (icon_at == ICON_AT_AUTO) {
         widget_calc_icon_text_rect(&ir, font_size, text_size, icon_at, img.w, img.h, spacer, NULL,
@@ -1637,7 +1640,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
     }
   } else if (text->size > 0) {
     widget_calc_icon_text_rect(&ir, font_size, text_size, icon_at, 0, 0, spacer, &r_text, NULL);
-    widget_draw_text_in_rect(widget, c, text->str, text->size, &r_text, FALSE);
+    widget_draw_text_in_rect(widget, c, text->str, text->size, &r_text, ellipses);
   }
 
   return RET_OK;

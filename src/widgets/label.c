@@ -168,6 +168,19 @@ ret_t label_set_word_wrap(widget_t* widget, bool_t word_wrap) {
   return widget_invalidate_force(widget, NULL);
 }
 
+ret_t label_set_ellipses(widget_t* widget, bool_t ellipses) {
+  label_t* label = LABEL(widget);
+  return_value_if_fail(label != NULL, RET_BAD_PARAMS);
+  // if (!label->ellipses && ellipses && label->tmp_text == NULL) {
+  //   label->tmp_text = TKMEM_ZALLOC(wstr_t);
+  //   return_value_if_fail(label->tmp_text != NULL, RET_OOM);
+  //   wstr_init(label->tmp_text, 16);
+  // }
+  label->ellipses = ellipses;
+
+  return widget_invalidate_force(widget, NULL);
+}
+
 static ret_t label_get_prop(widget_t* widget, const char* name, value_t* v) {
   label_t* label = LABEL(widget);
   return_value_if_fail(label != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -186,6 +199,9 @@ static ret_t label_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_WORD_WRAP)) {
     value_set_bool(v, label->word_wrap);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ELLIPSES)) {
+    value_set_bool(v, label->ellipses);
     return RET_OK;
   }
 
@@ -209,6 +225,8 @@ static ret_t label_set_prop(widget_t* widget, const char* name, const value_t* v
     return label_set_line_wrap(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_WORD_WRAP)) {
     return label_set_word_wrap(widget, value_bool(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_ELLIPSES)) {
+    return label_set_ellipses(widget, value_bool(v));
   }
 
   return RET_NOT_FOUND;
