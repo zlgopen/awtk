@@ -87,6 +87,10 @@
 # define filepos_t long
 #endif
 
+#if defined(LINUX) && !defined(MACOS)
+#define HAVE_MKSTEMP 1
+#endif
+
 /*
 *   DATA DECLARATIONS
 */
