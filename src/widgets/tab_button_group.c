@@ -53,9 +53,13 @@ static ret_t tab_button_group_on_layout_children_non_compact(widget_t* widget) {
   widget_layout_children(iter);
   WIDGET_FOR_EACH_CHILD_END();
 
-  hscrollable_set_xoffset(tab_button_group->hscrollable, 0);
-  hscrollable_set_virtual_w(tab_button_group->hscrollable, widget->w);
-  hscrollable_set_always_scrollable(tab_button_group->hscrollable, FALSE);
+  if (tab_button_group->hscrollable != NULL) {
+    if (tab_button_group->hscrollable->virtual_w != widget->w) {
+      hscrollable_set_xoffset(tab_button_group->hscrollable, 0);
+      hscrollable_set_virtual_w(tab_button_group->hscrollable, widget->w);
+    }
+    hscrollable_set_always_scrollable(tab_button_group->hscrollable, FALSE);
+  }
 
   return RET_OK;
 }
@@ -88,9 +92,13 @@ static ret_t tab_button_group_on_layout_children_compact(widget_t* widget) {
   }
   WIDGET_FOR_EACH_CHILD_END();
 
-  hscrollable_set_xoffset(tab_button_group->hscrollable, 0);
-  hscrollable_set_virtual_w(tab_button_group->hscrollable, x - 1);
-  hscrollable_set_always_scrollable(tab_button_group->hscrollable, FALSE);
+  if (tab_button_group->hscrollable != NULL) {
+    if (tab_button_group->hscrollable->virtual_w != x - 1) {
+      hscrollable_set_xoffset(tab_button_group->hscrollable, 0);
+      hscrollable_set_virtual_w(tab_button_group->hscrollable, x - 1);
+    }
+    hscrollable_set_always_scrollable(tab_button_group->hscrollable, FALSE);
+  }
 
   if (active != NULL) {
     widget_ensure_visible_in_viewport(active);
