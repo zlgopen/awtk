@@ -914,7 +914,7 @@ static int assets_manager_cmp_by_name(assets_manager_t* am, const char* name) {
 static asset_info_t* assets_manager_load_asset_fallback_default(assets_manager_t* am,
                                                                 asset_type_t type, uint16_t subtype,
                                                                 const char* name) {
-  return assets_manager_load_ex(assets_manager(), type, subtype, name);
+  return (asset_info_t*)assets_manager_ref_ex(assets_manager(), type, subtype, name);
 }
 
 assets_manager_t* assets_managers_ref(const char* name) {
