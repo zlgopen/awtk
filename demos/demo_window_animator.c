@@ -40,9 +40,10 @@ static widget_t* window_open_with_prefix(const char* name) {
 }
 
 static ret_t new_window_set_param(widget_t* new_win, widget_t* curr_win) {
+  const char* name = NULL;
+  bool_t fullscreen = FALSE;
   widget_t* state_pages = NULL;
   widget_t *widget_fullscreen = NULL, *widget_new_fullscreen = NULL;
-  bool_t fullscreen = FALSE;
   widget_t *widget_anim_hint = NULL, *widget_anim_duration = NULL, *widget_anim_easing = NULL, *widget_highlight = NULL;
   char anim_hint[TK_NAME_LEN + 1] = {0}, anim_duration[TK_NAME_LEN + 1] = {0},
                                anim_easing[TK_NAME_LEN + 1] = {0};
@@ -50,25 +51,26 @@ static ret_t new_window_set_param(widget_t* new_win, widget_t* curr_win) {
             TK_NAME_LEN + 1] = {0};
   char widget_name[TK_NAME_LEN + 1] = {0};
 
-  tk_snprintf(widget_name, ARRAY_SIZE(widget_name), "anim_hint(%s)", new_win->name);
+  name = tk_str_eq(new_win->name, "popup") ? "dialog" : new_win->name;
+  tk_snprintf(widget_name, ARRAY_SIZE(widget_name), "anim_hint(%s)", name);
   widget_anim_hint = widget_lookup(curr_win, widget_name, TRUE);
   if (widget_anim_hint != NULL) {
     widget_get_text_utf8(widget_anim_hint, anim_hint, ARRAY_SIZE(anim_hint));
   }
 
-  tk_snprintf(widget_name, ARRAY_SIZE(widget_name), "anim_hint(%s):duration", new_win->name);
+  tk_snprintf(widget_name, ARRAY_SIZE(widget_name), "anim_hint(%s):duration", name);
   widget_anim_duration = widget_lookup(curr_win, widget_name, TRUE);
   if (widget_anim_duration != NULL) {
     widget_get_text_utf8(widget_anim_duration, anim_duration, ARRAY_SIZE(anim_duration));
   }
 
-  tk_snprintf(widget_name, ARRAY_SIZE(widget_name), "anim_hint(%s):easing", new_win->name);
+  tk_snprintf(widget_name, ARRAY_SIZE(widget_name), "anim_hint(%s):easing", name);
   widget_anim_easing = widget_lookup(curr_win, widget_name, TRUE);
   if (widget_anim_easing != NULL) {
     widget_get_text_utf8(widget_anim_easing, anim_easing, ARRAY_SIZE(anim_easing));
   }
 
-  tk_snprintf(widget_name, ARRAY_SIZE(widget_name), "anim_hint(%s):highlight", new_win->name);
+  tk_snprintf(widget_name, ARRAY_SIZE(widget_name), "anim_hint(%s):highlight", name);
   widget_highlight = widget_lookup(curr_win, widget_name, TRUE);
   if (widget_highlight != NULL) {
     if (widget_get_prop_bool(widget_highlight, WIDGET_PROP_VALUE, FALSE)) {
@@ -94,7 +96,7 @@ static ret_t new_window_set_param(widget_t* new_win, widget_t* curr_win) {
     log_debug("none\r\n");
   }
 
-  tk_snprintf(widget_name, ARRAY_SIZE(widget_name), "fullscreen(%s)", new_win->name);
+  tk_snprintf(widget_name, ARRAY_SIZE(widget_name), "fullscreen(%s)", name);
   widget_fullscreen = widget_lookup(curr_win, widget_name, TRUE);
   if (widget_fullscreen != NULL) {
     fullscreen = widget_get_value_int(widget_fullscreen);

@@ -68,13 +68,15 @@ static ret_t popup_set_prop(widget_t* widget, const char* name, const value_t* v
 }
 
 static ret_t popup_idle_window_close(const idle_info_t* idle) {
+  widget_t* top_win = NULL;
   widget_t* widget = WIDGET(idle->ctx);
   widget_t* win = widget->parent;
   return_value_if_fail(win && widget != NULL, RET_REMOVE);
 
   widget_ungrab(win, widget);
+  top_win = window_manager_get_top_window(win);
 
-  if (window_manager_is_animating(win)) {
+  if (window_manager_is_animating(win) && (!widget_has_highlighter(widget) || widget_has_highlighter(top_win))) {
     window_close_force(widget);
   } else {
     window_close(widget);

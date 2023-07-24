@@ -214,6 +214,7 @@
 #include "default/inc/ui/win_anim/window.data"
 #include "default/inc/ui/win_anim/center.data"
 #include "default/inc/ui/win_anim/dialog.data"
+#include "default/inc/ui/win_anim/popup.data"
 #include "default/inc/xml/test.data"
 #include "default/inc/data/com_zlg_app_json.data"
 #include "default/inc/data/gpinyin_dat.data"
@@ -758,6 +759,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_win_anim_window);
   assets_manager_add(am, ui_win_anim_center);
   assets_manager_add(am, ui_win_anim_dialog);
+  assets_manager_add(am, ui_win_anim_popup);
   assets_manager_add(am, xml_test);
   assets_manager_add(am, data_com_zlg_app_json);
   assets_manager_add(am, data_gpinyin_dat);
