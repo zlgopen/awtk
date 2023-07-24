@@ -30,7 +30,6 @@
 #include "base/locale_info.h"
 #include "tkc/platform.h"
 #include "base/main_loop.h"
-#include "main_loop/main_loop_console.h"
 #include "base/font_manager.h"
 #include "base/input_method.h"
 #include "base/image_manager.h"
@@ -308,6 +307,10 @@ ret_t tk_pre_init(void) {
   return RET_OK;
 }
 
+#if WITH_MAIN_LOOP_CONSOLE
+#include "main_loop/main_loop_console.h"
+#endif/*WITH_MAIN_LOOP_CONSOLE*/
+
 ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const char* app_root) {
   main_loop_t* loop = NULL;
   return_value_if_fail(tk_pre_init() == RET_OK, RET_FAIL);
@@ -315,11 +318,11 @@ ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const c
   return_value_if_fail(tk_init_internal() == RET_OK, RET_FAIL);
 
   if (APP_CONSOLE == system_info()->app_type) {
-#ifndef AWTK_WEB  
+#if WITH_MAIN_LOOP_CONSOLE
     loop = (main_loop_t*)main_loop_console_init();
 #else
-    assert(!"not supported");
-#endif/*AWTK_WEB*/
+    assert(!"APP_CONSOLE not supported");
+#endif /*WITH_MAIN_LOOP_CONSOLE*/
   } else {
     loop = main_loop_init(w, h);
   }
