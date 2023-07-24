@@ -68,15 +68,21 @@ static ret_t popup_set_prop(widget_t* widget, const char* name, const value_t* v
 }
 
 static ret_t popup_idle_window_close(const idle_info_t* idle) {
-  widget_t* top_win = NULL;
+  bool_t find_kb = FALSE;
   widget_t* widget = WIDGET(idle->ctx);
   widget_t* win = widget->parent;
   return_value_if_fail(win && widget != NULL, RET_REMOVE);
 
   widget_ungrab(win, widget);
-  top_win = window_manager_get_top_window(win);
+  WIDGET_FOR_EACH_CHILD_BEGIN_R(win, iter, i)
+  if (iter->visible && widget_is_keyboard(iter)) {
+    find_kb = TRUE;
+  } else if (iter == widget) {
+    break;
+  }
+  WIDGET_FOR_EACH_CHILD_END();
 
-  if (window_manager_is_animating(win) && (!widget_has_highlighter(widget) || widget_has_highlighter(top_win))) {
+  if (window_manager_is_animating(win) && (!widget_has_highlighter(widget) || !find_kb)) {
     window_close_force(widget);
   } else {
     window_close(widget);
