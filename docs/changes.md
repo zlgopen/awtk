@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/07/26
+  * 修改Windows下路径带中文时fs\_os\_get\_exe的返回结果不是utf8的问题(感谢朝泽提供补丁)
+
 2023/07/24
   * 修复增加main loop console导致部分平台编译失败的问题(感谢兆坤提供补丁)
   * 修改tab\_button\_group控件layout时如果virutal\_w发生变化才重置xoffset，避免一触发layout就重置子控件的位置(感谢朝泽提供补丁)

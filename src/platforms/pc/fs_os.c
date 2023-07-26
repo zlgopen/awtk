@@ -416,8 +416,11 @@ static ret_t fs_os_get_exe(fs_t* fs, char path[MAX_PATH + 1]) {
     return RET_FAIL;
   }
 #elif defined(WIN32)
+  wchar_t wpath[MAX_PATH + 1];
+  memset(wpath, 0x00, sizeof(wpath));
+  GetModuleFileNameW(GetModuleHandle(NULL), wpath, MAX_PATH);
+  tk_utf8_from_utf16_ex(wpath, MAX_PATH, path, MAX_PATH);
   (void)size;
-  GetModuleFileNameA(GetModuleHandle(NULL), path, MAX_PATH);
 #elif defined(__APPLE__)
   _NSGetExecutablePath(path, &size);
   assert(size <= MAX_PATH);
