@@ -40,6 +40,7 @@ typedef struct _hscrollable_t {
   int32_t xoffset_end;
   int32_t xoffset_save;
   int32_t virtual_w;
+  uint32_t drag_threshold;
 
   widget_t* widget;
   velocity_t velocity;
@@ -51,6 +52,7 @@ typedef struct _hscrollable_t {
 hscrollable_t* hscrollable_create(widget_t* widget);
 ret_t hscrollable_set_xoffset(hscrollable_t* hscrollable, int32_t xoffset);
 ret_t hscrollable_set_virtual_w(hscrollable_t* hscrollable, int32_t virtual_w);
+ret_t hscrollable_set_drag_threshold(hscrollable_t* hscrollable, uint32_t drag_threshold);
 ret_t hscrollable_set_always_scrollable(hscrollable_t* hscrollable, bool_t always_scrollable);
 ret_t hscrollable_set_enable_hscroll_animator(hscrollable_t* hscrollable,
                                               bool_t enable_hscroll_animator);

@@ -169,8 +169,8 @@ ret_t hscrollable_on_event(hscrollable_t* hscrollable, event_t* e) {
       break;
     case EVT_POINTER_UP: {
       pointer_event_t* evt = (pointer_event_t*)e;
-      int32_t dx = evt->x - hscrollable->down.x;
-      if (dx) {
+      int32_t dx = tk_abs(evt->x - hscrollable->down.x);
+      if (dx > hscrollable->drag_threshold) {
         hscrollable_on_pointer_up(hscrollable, (pointer_event_t*)e);
       }
       hscrollable->dragged = FALSE;
@@ -305,6 +305,7 @@ hscrollable_t* hscrollable_create(widget_t* widget) {
 
   hscrollable->widget = widget;
   hscrollable->enable_hscroll_animator = TRUE;
+  hscrollable->drag_threshold = TK_DRAG_THRESHOLD;
 
   return hscrollable;
 }
@@ -319,6 +320,13 @@ ret_t hscrollable_set_always_scrollable(hscrollable_t* hscrollable, bool_t alway
 ret_t hscrollable_set_xoffset(hscrollable_t* hscrollable, int32_t xoffset) {
   return_value_if_fail(hscrollable != NULL, RET_BAD_PARAMS);
   hscrollable->xoffset = xoffset;
+
+  return RET_OK;
+}
+
+ret_t hscrollable_set_drag_threshold(hscrollable_t* hscrollable, uint32_t drag_threshold) {
+  return_value_if_fail(hscrollable != NULL, RET_BAD_PARAMS);
+  hscrollable->drag_threshold = drag_threshold;
 
   return RET_OK;
 }
