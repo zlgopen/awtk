@@ -1,0 +1,15 @@
+import os
+import copy
+import awtk_config as awtk
+
+BIN_DIR=os.environ['BIN_DIR'];
+LIB_DIR=os.environ['LIB_DIR'];
+
+sources = Glob('*.c') 
+
+env=DefaultEnvironment().Clone()
+
+env.Library(os.path.join(LIB_DIR, 'romfs'), ['romfs.c'], LIBS=['tkc'])
+env.Program(os.path.join(BIN_DIR, 'romfs_make'), ["romfs_maker.c"], LIBS=['tkc'])
+env.Program(os.path.join(BIN_DIR, 'romfs_read'), ["romfs_read.c"], LIBS=['tkc'])
+

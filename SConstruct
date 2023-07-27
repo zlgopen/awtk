@@ -47,6 +47,7 @@ SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
   'src/fscript_ext/SConscript',
   'src/xml/SConscript',
   'src/charset/SConscript',
+  'src/romfs/SConscript',
   'tools/common/SConscript', 
   'tools/theme_gen/SConscript', 
   'tools/font_gen/SConscript', 

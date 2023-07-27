@@ -9,7 +9,7 @@ cp -rvf ../tkc/awtk_config_common.py .
 cp -rf ../tkc/tests/fscripts/* tests/fscripts
 cp -f ../tkc/3rd/gtest/googletest/include/gtest/gtest_helper.h 3rd/gtest/googletest/include/gtest/gtest_helper.h
 
-for f in tkc.h compressors platforms conf_io hal streams ubjson charset csv	misc tkc xml debugger
+for f in tkc.h compressors platforms conf_io hal streams ubjson charset csv	misc tkc xml debugger romfs
 do
   cp -rvf ../tkc/src/$f src
 done
