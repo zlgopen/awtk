@@ -30,8 +30,8 @@ static ret_t romfs_read(const char* filename, const char* output_filename) {
       uint32_t i = 0;
       uint32_t size = info.size;
       fs_file_t* fp = fs_open_file(fs, filename, "rb");
-      void* buff1 = TKMEM_ALLOC(size);
-      void* buff2 = TKMEM_ALLOC(size);
+      uint8_t* buff1 = (uint8_t*)TKMEM_ALLOC(size);
+      uint8_t* buff2 = (uint8_t*)TKMEM_ALLOC(size);
 
       /*test*/
       for (i = 0; i < size; i++) {
