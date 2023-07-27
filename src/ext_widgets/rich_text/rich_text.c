@@ -513,12 +513,23 @@ static ret_t rich_text_on_event(widget_t* widget, event_t* e) {
   return ret;
 }
 
+static ret_t rich_text_set_text_form_value(widget_t* widget, const value_t* v) {
+  rich_text_t* rich_text = RICH_TEXT(widget);
+  return_value_if_fail(rich_text != NULL, RET_BAD_PARAMS);
+  wstr_from_value(&(widget->text), v);
+  rich_text->need_reset = TRUE;
+  rich_text->line_gap = 5;
+  rich_text->margin = 2;
+
+  return RET_OK;
+}
+
 static ret_t rich_text_set_prop(widget_t* widget, const char* name, const value_t* v) {
   rich_text_t* rich_text = RICH_TEXT(widget);
   return_value_if_fail(rich_text != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
-    return rich_text_set_text(widget, value_str(v));
+    return rich_text_set_text_form_value(widget, v);
   } else if (tk_str_eq(name, WIDGET_PROP_LINE_GAP)) {
     rich_text->line_gap = value_int(v);
     rich_text->need_reset = TRUE;
