@@ -19,18 +19,19 @@ PARAM_LIST => PARAM | PARAM ',' PARAM_LIST
 
 缺省子控件的布局器提供了下列参数：
 
-| 参数          | 简写   |  说明 |
-|----------------|:------:|:--------------|
-| rows           | r      | 行数 |
-| cols           | c      | 列数 |
-| width          | w      | 子控件的宽度，可以用来计算列数，与 cols 互斥   |
-| height         | h      | 子控件的高度，可以用来计算行数，与 rows 互斥   |
-|  x\_margin     | xm     | 水平方向的边距  |
-| y\_margin      | ym     | 垂直方向的边距   |
-| spacing        | s      | 子控件之间的间距   |
-| keep_invisible | ki     | 是否给不可见的控件留位置（缺省否）|
-| keep_disable   | kd     | 是否给不用的控件留位置（缺省是）|
-| aligh_h        | a      | 用于 hbox 的情况 (col=0,row=1), 子控件整体水平对齐的方式。
+| 参数           | 简写  | 说明                                                       |
+| -------------- | :---: | :--------------------------------------------------------- |
+| rows           |   r   | 行数                                                       |
+| cols           |   c   | 列数                                                       |
+| width          |   w   | 子控件的宽度，可以用来计算列数，与 cols 互斥               |
+| height         |   h   | 子控件的高度，可以用来计算行数，与 rows 互斥               |
+| x\_margin      |  xm   | 水平方向的边距                                             |
+| y\_margin      |  ym   | 垂直方向的边距                                             |
+| spacing        |   s   | 子控件之间的间距                                           |
+| flexible       |   f   | 一行或一列放不下时，是否再另起一行或一列（缺省否）         |
+| keep_invisible |  ki   | 是否给不可见的控件留位置（缺省否）                         |
+| keep_disable   |  kd   | 是否给不用的控件留位置（缺省是）                           |
+| align_h        |   a   | 用于 hbox 的情况 (col=0,row=1), 子控件整体水平对齐的方式。 |
 
 在代码中，可以通过 widget\_set\_children\_layout 函数启用子控件布局器：
 

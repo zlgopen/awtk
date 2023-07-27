@@ -1,7 +1,7 @@
 <?xml parent="{&quot;x&quot;:&quot;0&quot;,&quot;y&quot;:&quot;0&quot;,&quot;w&quot;:&quot;100%&quot;,&quot;h&quot;:&quot;100%&quot;,&quot;name&quot;:&quot;page_date_time&quot;,&quot;theme&quot;:&quot;uiex&quot;}"?>
 <list_view name="list_view" x="0" y="0" w="100%" h="100%">
   <scroll_view name="scroll_view" x="0" y="0" w="100%" h="100%" children_layout="list_view(i=0,d=66,x=0,y=10,s=24)">
-    <grid children_layout="default(w=321,h=350,x=0,y=0,s=0)" h="350">
+    <grid children_layout="default(w=321,h=350,x=0,y=0,s=0,flexible=true)" h="350">
       <view name="view_analog_clock" children_layout="default(r=0,c=1,x=0,y=0,s=20)" invisible_in_1m="true">
         <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Analog Clock"/>
         <view h="-22">

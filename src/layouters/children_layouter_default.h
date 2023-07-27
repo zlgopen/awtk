@@ -43,6 +43,7 @@ typedef struct _children_layouter_default_t {
   uint8_t x_margin;
   uint8_t y_margin;
   uint8_t spacing;
+  uint8_t flexible : 1;
   uint8_t cols_is_width : 1;
   uint8_t rows_is_height : 1;
   uint8_t keep_invisible : 1;

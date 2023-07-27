@@ -3,14 +3,14 @@
   <scroll_view name="scroll_view" x="0" y="0" w="100%" h="100%" children_layout="list_view(i=0,d=70,x=0,y=10,s=24)">
     <view name="view_square_btn" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="70">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Square Button"/>
-      <grid h="36" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
+      <grid h="36" children_layout="default(w=100,h=36,x=20,y=0,s=20,flexible=true)">
         <button name="btn_border" style="square" tr_text="Button"/>
         <button name="btn_borderless" style="square_borderless" tr_text="Button"/>
       </grid>
     </view>
-    <grid name="view_rounded_btn" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="70">
+    <grid name="view_rounded_btn" children_layout="default(r=0,c=1,x=0,y=0,s=13,flexible=true)" h="70">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Rounded Button"/>
-      <grid h="36" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
+      <grid h="36" children_layout="default(w=100,h=36,x=20,y=0,s=20,flexible=true)">
         <button name="btn" tr_text="Button"/>
         <button name="btn1" style="rounded" tr_text="Button"/>
         <button name="btn2" style="rounded_top" tr_text="Button"/>
@@ -18,15 +18,15 @@
         <button name="cb_ratio" style="Button" tr_text="ratio"/>
       </grid>
     </grid>
-    <grid name="view_gradient_btn" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="70">
+    <grid name="view_gradient_btn" children_layout="default(r=0,c=1,x=0,y=0,s=13,flexible=true)" h="70">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Gradient Button"/>
-      <grid h="36" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
+      <grid h="36" children_layout="default(w=100,h=36,x=20,y=0,s=20,flexible=true)">
         <button name="btn" style="gradient" tr_text="Button"/>
       </grid>
     </grid>
     <view name="view_icon_btn" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="84">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Button With Icon"/>
-      <grid h="50" children_layout="default(w=36,h=36,x=20,y=0,s=20)">
+      <grid h="50" children_layout="default(w=36,h=36,x=20,y=0,s=20,flexible=true)">
         <view>
           <button x="c" y="0" w="30" h="30" style="search"/>
           <label x="c" y="b" w="40" h="20" style="icon_btn" tr_text="search"/>
@@ -51,7 +51,7 @@
     </view>
     <view name="view_icon_text_btn" children_layout="default(r=0,c=1,x=0,y=0,s=13)" h="70">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Button With Icon And Text"/>
-      <grid h="36" children_layout="default(w=100,h=36,x=20,y=0,s=20)">
+      <grid h="36" children_layout="default(w=100,h=36,x=20,y=0,s=20,flexible=true)">
         <button name="button" style="with_icon_text" tr_text="Test"/>
         <check_button name="cb_fps" style="fps" text="FPS"/>
         <button name="quit()" style="exit" tr_text="Exit"/>

@@ -17,7 +17,7 @@
         <check_button name="cb2" w="100" tr_text="Food"/>
       </view>
     </view>
-    <grid children_layout="default(w=250,h=150,x=20,y=0,s=20)" h="150">
+    <grid children_layout="default(w=250,h=150,x=20,y=0,s=20,flexible=true)" h="150">
       <view name="view_icon_rb" children_layout="default(r=0,c=1,x=0,y=0,s=20)">
         <hscroll_label h="22" style="title" loop="true" yoyo="true" style:normal:margin_left="0" tr_text="Radio Button With Icon"/>
         <view h="-22">

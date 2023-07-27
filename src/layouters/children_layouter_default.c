@@ -62,6 +62,10 @@ static const char* children_layouter_default_to_string(children_layouter_t* layo
     str_append(str, temp);
   }
 
+  if (layout->flexible) {
+    str_append(str, "flexible=true,");
+  }
+
   if (!(layout->keep_disable)) {
     str_append(str, "keep_disable=false,");
   }
@@ -123,6 +127,10 @@ static ret_t children_layouter_default_set_param(children_layouter_t* layouter, 
     }
     case 's': {
       l->spacing = val;
+      break;
+    }
+    case 'f': {
+      l->flexible = value_bool(v);
       break;
     }
     case 'a': {
@@ -209,6 +217,10 @@ static ret_t children_layouter_default_get_param(children_layouter_t* layouter, 
       value_set_int(v, l->align_h);
       return RET_OK;
     }
+    case 'f': {
+      value_set_bool(v, l->flexible);
+      return RET_OK;
+    }
     case 'k': {
       if (strstr(name, "invisible") != NULL || name[1] == 'i') {
         value_set_bool(v, l->keep_invisible);
@@ -276,15 +288,23 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
   spacing = layout->spacing;
 
   if (layout->rows_is_height) {
-    rows = (layout_h - 2.0f * y_margin + spacing) / (layout->rows + spacing);
-    rows = tk_max(rows, 1);
+    if (!layout->flexible) {
+      rows = (layout_h - 2.0f * y_margin + spacing) / (layout->rows + spacing);
+      rows = tk_max(rows, 1);
+    } else {
+      rows = tk_roundi((layout_h - 2.0f * y_margin + spacing) / (layout->rows + spacing));
+    }
   } else {
     rows = layout->rows;
   }
 
   if (layout->cols_is_width) {
-    cols = (layout_w - 2.0f * x_margin + spacing) / (layout->cols + spacing);
-    cols = tk_max(cols, 1);
+    if (!layout->flexible) {
+      cols = (layout_w - 2.0f * x_margin + spacing) / (layout->cols + spacing);
+      cols = tk_max(cols, 1);
+    } else {
+      cols = tk_roundi((layout_w - 2.0f * x_margin + spacing) / (layout->cols + spacing));
+    }
   } else {
     cols = layout->cols;
   }
