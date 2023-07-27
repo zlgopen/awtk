@@ -338,8 +338,9 @@ static ret_t label_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
-static const char* const s_label_properties[] = {WIDGET_PROP_LENGTH, WIDGET_PROP_LINE_WRAP,
-                                                 WIDGET_PROP_MAX_W, WIDGET_PROP_WORD_WRAP, NULL};
+static const char* const s_label_properties[] = {WIDGET_PROP_LENGTH,   WIDGET_PROP_LINE_WRAP,
+                                                 WIDGET_PROP_MAX_W,    WIDGET_PROP_WORD_WRAP,
+                                                 WIDGET_PROP_ELLIPSES, NULL};
 
 TK_DECL_VTABLE(label) = {.size = sizeof(label_t),
                          .type = WIDGET_TYPE_LABEL,
