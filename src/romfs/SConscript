@@ -10,6 +10,6 @@ sources = Glob('*.c')
 env=DefaultEnvironment().Clone()
 
 env.Library(os.path.join(LIB_DIR, 'romfs'), ['romfs.c'], LIBS=['tkc'])
-env.Program(os.path.join(BIN_DIR, 'romfs_make'), ["romfs_maker.c"], LIBS=['tkc'])
-env.Program(os.path.join(BIN_DIR, 'romfs_read'), ["romfs_read.c"], LIBS=['tkc'])
+env.Program(os.path.join(BIN_DIR, 'romfs_make'), ["romfs_maker.c"])
+env.Program(os.path.join(BIN_DIR, 'romfs_read'), ["romfs_read.c"])
 
