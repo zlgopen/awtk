@@ -190,6 +190,7 @@ static conf_node_t* romfs_find_node(conf_node_t* node, const char* name) {
   const char* p = strchr(name, '/');
   conf_node_t* iter = conf_node_get_first_child(node);
 
+  log_debug("find %s\n", name);
   if (p == NULL) {
     p = strchr(name, '\\');
   }
@@ -450,6 +451,8 @@ fs_t* romfs_get(void) {
 
 #if defined(WITH_ROMFS_AS_OS_FS) || defined(AWTK_WEB)
 fs_t* os_fs(void) {
+  return_value_if_fail(s_romfs_fs.doc != NULL, NULL);
+
   return (fs_t*)&s_romfs_fs;
 }
 #endif /*WITH_ROMFS_AS_OS_FS*/
