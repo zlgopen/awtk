@@ -190,7 +190,6 @@ static conf_node_t* romfs_find_node(conf_node_t* node, const char* name) {
   const char* p = strchr(name, '/');
   conf_node_t* iter = conf_node_get_first_child(node);
 
-  log_debug("find %s\n", name);
   if (p == NULL) {
     p = strchr(name, '\\');
   }
@@ -283,6 +282,9 @@ static romfs_dir_t* romfs_dir_create(fs_t* fs, const char* name) {
   romfs_fs_t* rfs = (romfs_fs_t*)fs;
   conf_node_t* node = romfs_find_node(rfs->doc->root, name);
   return_value_if_fail(node != NULL, NULL);
+  node = conf_node_find_child(node, "children");
+  return_value_if_fail(node != NULL, NULL);
+  node = conf_node_get_first_child(node);
 
   dir = TKMEM_ZALLOC(romfs_dir_t);
   return_value_if_fail(dir != NULL, NULL);
