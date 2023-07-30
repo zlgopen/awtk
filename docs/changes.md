@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/07/30
+  * 完善文档docs/build_config.md
+
 2023/07/29
   * 完善ROMFS支持带目录前缀。
   * AWTK_WEB文件包含UBJSON。

@@ -12,18 +12,24 @@
 * sources 源文件列表（相对于配置文件所在的目录）。文件名支持通配符如*.c。只要添加应用程序本身和使用的第三方库的源码即可，AWTK 本身用到的代码会自动添加。
 * includes 头文件搜索路径列表（相对于配置文件所在的目录）。
 
-> sources 虽然是通用选项，但是不同平台，包含的源文件可能并不相同，此时应该放到具体平台之下。
+> sources 虽然是通用选项，但是不同平台，包含的源文件可能并不相同，此时应该放到具体平台之下，如果两者都有，则对其进行合并。
 
 ## 二、web 平台选项
 
 web 平台选项放在 web 子键下面，目前支持以下选项：
 
-* app_type 目前可选择的值有。"c"表示用 C 语言开发的应用程序，"js"表示用 Javascript 开发的应用程序。
+* app_type 目前可选择的值有。"c" 表示用 C 语言开发的应用程序，"js"表示用 Javascript 开发的应用程序。
+
+* romfs（可选） 用于指定配置文件的目录，编译脚本将该目录打包成 romfs，在 AWTK-WEB 中可以通过 os_fs 访问。
+  
 * config 用于指定一些运行参数。
   * width 如果应用开发时没有做自适应性布局，可以用 width 参数指定画布的宽度。
   * height 如果应用开发时没有做自适应性布局，可以用 height 参数指定画布的高度。
   * defaultFont 缺省字体。缺省为"sans"。
   * fontScale 字体的缩放比例。缺省为 1。
+
+* depends 依赖自定义控件的目录（该目录下需要提供 export.json，具体描述见后面）
+  
 
 > config 中的参数也可以直接在 URL 中指定。如：
 
@@ -39,15 +45,16 @@ http://192.168.1.117:8080/demoui/index.html?width=480&height=800&fontScale=0.8&d
   "web": {
     "app_type": "c",
     "assets": "design",
+    "romfs": "data",
+    "depends":["../awtk-widget-html-view"],
     "sources": [
-      "demos/assets.c",
-      "demos/demo_ui_app.c"
-    ],
+      "demos/*.c"
+    ],  
     "config": {
       "fontScale": "0.8",
       "defaultFont": "sans"
-    }
-  },
+    }   
+  }
 ```
 
 用 Javascript 写的 demoui 的配置文件：
@@ -159,7 +166,47 @@ android 平台选项放在 android 子键下面，目前支持以下选项：
 
 ```
 
-## 六、示例与参考
+## 六、export.json 的用法
+
+> 为了方便引用自定义控件，自定义控件（包括无界面的库）需要提供一个 export.json 的配置文件，用于声明对外提供的源文件和编译参数。
+
+* sources 源文件列表（相对于配置文件所在的目录）。文件名支持通配符如*.c。
+  
+* includes 头文件搜索路径列表（相对于配置文件所在的目录）。
+
+* cflags C 语言的编译参数。
+
+* cxxflags C++语言的编译参数。
+  
+* depends 依赖其它自定义控件的目录。
+
+示例：
+
+```json
+{
+  "cflags":["-DLITEHTML_UTF8=1"],
+  "cxxflags":[""],
+  "includes":[
+    "src",
+    "src/litehtml",
+    "src/litehtml/src",
+    "src/litehtml/include",
+    "src/litehtml/src/gumbo/include",
+    "src/litehtml/src/gumbo/include/gumbo",
+    "src/litehtml/include/litehtml"
+  ],  
+  "sources":[
+    "src/*.c",
+    "src/*.cpp",
+    "src/litehtml/src/*.cpp", 
+    "src/litehtml/src/gumbo/*.c",
+    "src/html_view/*.cpp",
+    "src/html_view/*.c"
+  ]
+}
+```
+
+## 七、示例与参考
 
 * [awtk-http-client 的配置文件](https://github.com/zlgopen/awtk-http-client/blob/master/build.json)
 
