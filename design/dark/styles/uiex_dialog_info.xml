@@ -30,4 +30,18 @@
     <over/>
     <pressed bg_color="#709918" border_color="#00000000" x_offset="1" y_offset="1"/>
   </style>
+  <style name="ok" bg_color="#404040" border_color="#707070" round_radius="4" text_color="#FFFFFF">
+    <normal/>
+    <disable bg_color="#40404066" border_color="#70707066" text_color="#FFFFFF66"/>
+    <focused/>
+    <over/>
+    <pressed bg_color="#709918" border_color="#00000000" x_offset="1" y_offset="1"/>
+  </style>
+  <style name="cancel" bg_color="#404040" border_color="#707070" round_radius="4" text_color="#FFFFFF">
+    <normal/>
+    <disable bg_color="#40404066" border_color="#70707066" text_color="#FFFFFF66"/>
+    <focused/>
+    <over/>
+    <pressed bg_color="#709918" border_color="#00000000" x_offset="1" y_offset="1"/>
+  </style>
 </button>
