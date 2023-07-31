@@ -1590,7 +1590,6 @@ ret_t tk_set_ui_thread(uint64_t ui_thread_id) {
 bool_t tk_is_ui_thread(void) {
   return s_ui_thread_id == tk_thread_self();
 }
-#endif /*WITH_WASM*/
 
 char* file_read_as_unix_text(const char* filename, uint32_t* size) {
   str_t str;
@@ -1606,6 +1605,7 @@ char* file_read_as_unix_text(const char* filename, uint32_t* size) {
 
   return data;
 }
+#endif /*WITH_WASM*/
 
 static const char* s_ret_names[] = {[RET_OK] = "RET_OK",
                                     [RET_OOM] = "RET_OOM",

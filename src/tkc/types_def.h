@@ -66,9 +66,9 @@
 #define WITHOUT_FSCRIPT
 
 #define log_impl printf
-#define floor(a) (int)(a)
 #define abs(a) ((a) > 0 ? (a) : -(a))
 #define fabs(a) ((a) > 0 ? (a) : -(a))
+void qsort (void *, size_t, size_t, int (*)(const void *, const void *));
 
 #ifndef __cplusplus
 typedef int wchar_t;

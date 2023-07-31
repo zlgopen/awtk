@@ -2,6 +2,7 @@
 
 2023/07/31
   * 更新demoui的style(感谢兆坤提供补丁)
+  * 完善WITH\_WASM(感谢智明提供补丁)
 
 2023/07/30
   * 完善文档docs/build_config.md
