@@ -2,17 +2,9 @@
 
 在 windows 下，如果不想使用 Visual C++编译，也可以使用 gcc 编译。
 
-* 下载并安装 [mingw](https://udomain.dl.sourceforge.net/project/mingw-w64/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/installer/mingw-w64-install.exe)
+* 根据实际情况下载不同的版本的 [mingw](https://github.com/niXman/mingw-builds-binaries/releases)
 
-> 64 位系统安装时 architecturex 选择 x86_64。
->
-> 尽量选择最新的版本来安装，版本如果太旧的话，可能编译不通过，如果编译不过的话，可以考虑升级版本来试一下。
-
-> 安装之后将 gcc 的路径加入系统环境变量 PATH 中。默认路径如下：
-
-```
-C:\Program Files\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin
-```
+解压后将 路径 ${实际目录}/mingw64/bin 添加到系统环境变量PATH中。
 
 * 修改 awtk_config_common.py，放开注释掉的 TOOLS_NAME。
 
