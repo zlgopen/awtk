@@ -176,6 +176,8 @@ struct _font_t {
   font_shrink_cache_t shrink_cache;
   font_destroy_t destroy;
   const char* desc;
+
+  font_manager_t* fm;
 };
 
 /**

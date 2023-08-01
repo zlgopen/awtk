@@ -38,6 +38,20 @@ TEST(FontManager, basic) {
   font_manager_deinit(&font_manager);
 }
 
+TEST(FontManager, not_exist) {
+  font_manager_t font_manager;
+  font_dummy_init();
+  font_manager_init(&font_manager, default_font_loader());
+  font_manager_add_font(&font_manager, font_dummy_0("demo0", 10));
+  font_manager_add_font(&font_manager, font_dummy_1("demo1", 11));
+  font_manager_set_fallback_get_font(&font_manager, (font_manager_get_font_t)font_manager_fallback_get_font_default, &font_manager);
+
+  ASSERT_NE(font_manager_get_font(&font_manager, "abc", 10), (font_t*)NULL);
+  ASSERT_NE(font_manager_get_font(&font_manager, "abc", 10), (font_t*)NULL);
+  
+  font_manager_deinit(&font_manager);
+}
+
 #if defined(WITH_FT_FONT) || defined(WITH_STB_FONT)
 #include "font_loader/font_loader_truetype.h"
 

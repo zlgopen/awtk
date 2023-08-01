@@ -544,6 +544,9 @@ typedef struct _input_engine_t input_engine_t;
 struct _canvas_t;
 typedef struct _canvas_t canvas_t;
 
+struct _font_manager_t;
+typedef struct _font_manager_t font_manager_t;
+
 struct _lcd_t;
 typedef struct _lcd_t lcd_t;
 

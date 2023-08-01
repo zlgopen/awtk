@@ -29,9 +29,6 @@
 
 BEGIN_C_DECLS
 
-struct _font_manager_t;
-typedef struct _font_manager_t font_manager_t;
-
 typedef font_t* (*font_manager_get_font_t)(void* ctx, const char* name, font_size_t size);
 
 /**
@@ -255,6 +252,12 @@ ret_t font_managers_unload_all(void);
  */
 ret_t font_managers_unref(font_manager_t* imm);
 
+/*public for test*/
+/**
+ * @method font_manager_fallback_get_font_default;
+ */
+font_t* font_manager_fallback_get_font_default(void* ctx, const char* name,
+                                                      font_size_t size);
 END_C_DECLS
 
 #endif /*TK_FONT_MANAGER_H*/

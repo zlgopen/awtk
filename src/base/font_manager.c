@@ -105,8 +105,13 @@ ret_t font_manager_set_assets_manager(font_manager_t* fm, assets_manager_t* am) 
 
 ret_t font_manager_add_font(font_manager_t* fm, font_t* font) {
   return_value_if_fail(fm != NULL && font != NULL, RET_BAD_PARAMS);
+  
+  if (font->fm == NULL) {
+    font->fm = fm;
+    darray_push(&(fm->fonts), font);
+  }
 
-  return darray_push(&(fm->fonts), font);
+  return RET_OK;
 }
 
 #if WITH_BITMAP_FONT
@@ -287,9 +292,16 @@ static int font_manager_cmp_by_name(font_manager_t* fm, const char* name) {
   return -1;
 }
 
-static font_t* font_manager_fallback_get_font_default(void* ctx, const char* name,
+font_t* font_manager_fallback_get_font_default(void* ctx, const char* name,
                                                       font_size_t size) {
-  return font_manager_get_font(font_manager(), name, size);
+  font_manager_t* fm = (font_manager_t*)ctx;
+  
+  if (fm != font_manager()) {
+    /*非默认的fm才需要fallback到默认的fm上*/
+    return font_manager_get_font(font_manager(), name, size);
+  } else {
+    return NULL;
+  }
 }
 
 font_manager_t* font_managers_ref(const char* name) {
@@ -309,7 +321,7 @@ font_manager_t* font_managers_ref(const char* name) {
     fm->name = tk_strdup(name);
     darray_push(s_font_managers, fm);
     font_manager_set_assets_manager(fm, assets_managers_ref(name));
-    font_manager_set_fallback_get_font(fm, font_manager_fallback_get_font_default, NULL);
+    font_manager_set_fallback_get_font(fm, font_manager_fallback_get_font_default, fm);
   } else {
     fm->refcount++;
   }
