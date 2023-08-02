@@ -108,6 +108,7 @@ static ret_t dialog_toast_init(dialog_toast_t* dialog_toast, bool_t init_list) {
   }
 
   if (dialog_toast->toast != NULL) {
+    widget_set_name(dialog_toast->toast, "toast");
     widget_set_prop_str(dialog_toast->toast, WIDGET_PROP_THEME, "dialog_toast");
     widget_set_prop_str(dialog_toast->toast, WIDGET_PROP_ANIM_HINT, "fade(duration=500)");
 

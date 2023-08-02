@@ -44,7 +44,8 @@ static ret_t new_window_set_param(widget_t* new_win, widget_t* curr_win) {
   bool_t fullscreen = FALSE;
   widget_t* state_pages = NULL;
   widget_t *widget_fullscreen = NULL, *widget_new_fullscreen = NULL;
-  widget_t *widget_anim_hint = NULL, *widget_anim_duration = NULL, *widget_anim_easing = NULL, *widget_highlight = NULL;
+  widget_t *widget_anim_hint = NULL, *widget_anim_duration = NULL, *widget_anim_easing = NULL,
+           *widget_highlight = NULL;
   char anim_hint[TK_NAME_LEN + 1] = {0}, anim_duration[TK_NAME_LEN + 1] = {0},
                                anim_easing[TK_NAME_LEN + 1] = {0};
   char anim[ARRAY_SIZE(anim_hint) + ARRAY_SIZE(anim_duration) + ARRAY_SIZE(anim_easing) +
@@ -122,6 +123,10 @@ static ret_t on_open_window(void* ctx, event_t* e) {
   widget_t* new_win = NULL;
   const char* name = (const char*)ctx;
 
+  if (tk_str_eq(name, "toast")) {
+    return dialog_toast(name, 3000);
+  }
+
   new_win = window_open_with_prefix(name);
   if (new_win != NULL) {
     if (!tk_str_eq(name, "center")) {
@@ -185,8 +190,10 @@ ret_t application_init(void) {
   widget_t* system_bar_bottom = window_open("system_bar_bottom");
 
   widget_use_style(system_bar_bottom, "system_bar");
-  widget_set_prop_str(widget_lookup_by_type(system_bar_bottom, "digit_clock", TRUE), "format", "hh:mm:ss");
-  widget_set_prop_str(widget_lookup_by_type(system_bar_top, "digit_clock", TRUE), "format", "hh:mm:ss");
+  widget_set_prop_str(widget_lookup_by_type(system_bar_bottom, "digit_clock", TRUE), "format",
+                      "hh:mm:ss");
+  widget_set_prop_str(widget_lookup_by_type(system_bar_top, "digit_clock", TRUE), "format",
+                      "hh:mm:ss");
 
   main_win = win = window_open_with_prefix("window");
   init_children_widget(win, (void*)win);
