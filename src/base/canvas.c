@@ -2010,7 +2010,7 @@ static ret_t canvas_draw_text_in_rect_ellipses(canvas_t* c, const wchar_t* str, 
 
   r.w = text_w;
   canvas_draw_text_in_rect(c, str, i, &r);
-  r.x = text_w;
+  r.x += text_w;
   r.w = ellipses_w;
   canvas_draw_text_in_rect(c, STR_ELLIPSES, wcslen(STR_ELLIPSES), &r);
 
