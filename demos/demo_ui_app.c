@@ -85,6 +85,12 @@ static ret_t change_theme(bool_t is_dark) {
   return assets_set_global_theme(is_dark ? "dark" : "default");
 }
 
+static color_t get_bg_color(void) {
+  bool_t is_dark = tk_str_eq(assets_manager()->theme, "dark");
+  color_t ret = is_dark ? color_init(0x26, 0x26, 0x26, 0xff) : color_init(0xf7, 0xf7, 0xf7, 0xff);
+  return ret;
+}
+
 static ret_t on_change_theme(void* ctx, event_t* e) {
   value_change_event_t* evt = value_change_event_cast(e);
   return change_theme(value_bool(&(evt->new_value)));
@@ -550,7 +556,7 @@ static ret_t on_paint_linear_gradient(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(e->target);
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
   color_t scolor = color_init(0x82, 0xb4, 0x43, 0xff);
-  color_t ecolor = color_init(0xff, 0xff, 0xff, 0xff);
+  color_t ecolor = get_bg_color();
   rect_t r = rect_init(0, 0, widget->w, widget->h);
 
   vgcanvas_save(vg);
@@ -571,7 +577,7 @@ static ret_t on_paint_radial_gradient(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(e->target);
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
   color_t scolor = color_init(0x82, 0xb4, 0x43, 0xff);
-  color_t ecolor = color_init(0xff, 0xff, 0xff, 0xff);
+  color_t ecolor = get_bg_color();
   rect_t r = rect_init(0, 0, widget->w, widget->h);
   uint32_t radial = tk_max(r.w, r.h) / 2;
 
@@ -652,11 +658,9 @@ static ret_t paint_line_chart(void* ctx, event_t* e) {
   paint_event_t* evt = paint_event_cast(e);
   canvas_t* c = evt->c;
   widget_t* widget = WIDGET(e->target);
-  bool_t is_dark = tk_str_eq(assets_manager()->theme, "dark");
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
   color_t color_point = color_init(0x70, 0x99, 0x18, 0xff);
-  color_t color_point_bg =
-      is_dark ? color_init(0x26, 0x26, 0x26, 0xff) : color_init(0xf7, 0xf7, 0xf7, 0xff);
+  color_t color_point_bg = get_bg_color();
   color_t color_line = color_init(0x70, 0x99, 0x18, 0xff);
   color_t color_axis = color_init(0x80, 0x80, 0x80, 0xff);
   const int32_t x_div_part = 10;
