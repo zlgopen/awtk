@@ -748,6 +748,7 @@ ret_t str_replace(str_t* str, const char* text, const char* new_text) {
       TKMEM_FREE(str->str);
       str->str = temp_str;
       str->size = size;
+      str->capacity = capacity;
     } else {
       return_value_if_fail(str->extendable, RET_FAIL);
     }

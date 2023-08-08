@@ -800,6 +800,7 @@ TEST(Str, replace2) {
   str_set(s, "abcabc123");
   ASSERT_EQ(str_replace(s, "abc", "abcabc"), RET_OK);
   ASSERT_STREQ(s->str, "abcabcabcabc123");
+  ASSERT_EQ(s->size < s->capacity, TRUE);
 
   str_reset(s);
 }
