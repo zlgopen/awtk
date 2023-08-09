@@ -1653,7 +1653,7 @@ const char* ret_code_to_name(ret_t ret) {
 }
 
 
-ret_t bits_stream_get(uint8_t* buff, uint32_t size, uint32_t index, bool_t* value) {
+ret_t bits_stream_get(const uint8_t* buff, uint32_t size, uint32_t index, bool_t* value) {
   uint8_t v = 0;
   uint32_t offset = index % 8;
   uint32_t max_index = size * 8;

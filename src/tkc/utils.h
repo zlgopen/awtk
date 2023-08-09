@@ -978,13 +978,13 @@ ret_t ret_code_from_name(const char* name);
 /**
  * @method bits_stream_get
  * 从buff中获取第index位的值。
- * @param {uint8_t*} buff 数据。
+ * @param {const uint8_t*} buff 数据。
  * @param {uint32_t} size 数据长度。
  * @param {uint32_t} index 位索引。
  * @param {bool_t*} value 返回值。
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t bits_stream_get(uint8_t* buff, uint32_t size, uint32_t index, bool_t* value);
+ret_t bits_stream_get(const uint8_t* buff, uint32_t size, uint32_t index, bool_t* value);
 
 /**
  * @method bits_stream_set
