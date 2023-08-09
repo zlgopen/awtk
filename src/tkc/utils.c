@@ -1651,3 +1651,37 @@ const char* ret_code_to_name(ret_t ret) {
     return "";
   }
 }
+
+
+ret_t bits_stream_get(uint8_t* buff, uint32_t size, uint32_t index, bool_t* value) {
+  uint8_t v = 0;
+  uint32_t offset = index % 8;
+  uint32_t max_index = size * 8;
+  return_value_if_fail(buff != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(value != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(index < max_index, RET_BAD_PARAMS);
+
+  v = buff[index >> 3];
+
+  *value = TK_TEST_BIT(v, offset);
+
+  return RET_OK;
+}
+
+ret_t bits_stream_set(uint8_t* buff, uint32_t size, uint32_t index, bool_t value) {
+  uint8_t v = 0;
+  uint32_t offset = index % 8;
+  uint32_t max_index = size * 8;
+  return_value_if_fail(buff != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(index < max_index, RET_BAD_PARAMS);
+
+  v = buff[index >> 3];
+  if (value) {
+    TK_SET_BIT(v, offset);
+  } else {
+    TK_CLEAR_BIT(v, offset);
+  }
+  buff[index >> 3] = v;
+
+  return RET_OK;
+}

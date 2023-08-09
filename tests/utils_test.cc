@@ -813,3 +813,25 @@ TEST(Utils, ret_code) {
   ASSERT_EQ(ret_code_from_name("RET_EOS"), RET_EOS);
   ASSERT_EQ(ret_code_from_name("RET_NO_PERMISSION"), RET_NO_PERMISSION);
 }
+
+TEST(Utils, bits_stream) {
+  uint8_t buff[32];
+  uint32_t i = 0;
+  uint32_t n = sizeof(buff) * 8;
+  bool_t v = FALSE;
+
+  for(i = 0; i < n; ++i) {
+    ASSERT_EQ(bits_stream_set(buff, sizeof(buff), i, TRUE), RET_OK);
+    ASSERT_EQ(bits_stream_get(buff, sizeof(buff), i, &v), RET_OK);
+    ASSERT_EQ(v, TRUE);
+  }
+  
+  for(i = 0; i < n; ++i) {
+    ASSERT_EQ(bits_stream_set(buff, sizeof(buff), i, FALSE), RET_OK);
+    ASSERT_EQ(bits_stream_get(buff, sizeof(buff), i, &v), RET_OK);
+    ASSERT_EQ(v, FALSE);
+  }
+
+  ASSERT_NE(bits_stream_set(buff, sizeof(buff), 10000, TRUE), RET_OK);
+  ASSERT_NE(bits_stream_get(buff, sizeof(buff), 10000, &v), RET_OK);
+}
