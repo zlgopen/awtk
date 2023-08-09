@@ -253,8 +253,13 @@ ret_t font_managers_unload_all(void);
 ret_t font_managers_unref(font_manager_t* imm);
 
 /*public for test*/
+
 /**
- * @method font_manager_fallback_get_font_default;
+ * @method font_manager_fallback_get_font_default
+ * @param {void*} ctx 上下文。
+ * @param {const char*} name 名称。
+ * @param {font_size_t} size 大小。
+ * @return {font_t*} 返回字体对象。
  */
 font_t* font_manager_fallback_get_font_default(void* ctx, const char* name,
                                                       font_size_t size);
