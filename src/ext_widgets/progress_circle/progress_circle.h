@@ -126,6 +126,10 @@ typedef struct _progress_circle_t {
    * 是否显示文本(缺省为TRUE)。
    */
   bool_t show_text;
+
+  /* private */
+  rect_t dirty_rect;
+  rect_t last_dirty_rect;
 } progress_circle_t;
 
 /**

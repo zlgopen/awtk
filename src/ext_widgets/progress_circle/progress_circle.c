@@ -196,7 +196,7 @@ rect_t progress_circle_calc_line_dirty_rect(widget_t* widget, float_t old_value,
   } else {
     rect = rect_init(0, 0, widget->w, widget->h);
   }
-
+  
   return rect;
 }
 
@@ -244,6 +244,8 @@ static ret_t progress_circle_on_paint_self(widget_t* widget, canvas_t* c) {
     }
 
     vgcanvas_restore(vg);
+    progress_circle->last_dirty_rect = rect_init(progress_circle->dirty_rect.x, progress_circle->dirty_rect.y, progress_circle->dirty_rect.w, progress_circle->dirty_rect.h);
+    progress_circle->dirty_rect = rect_init(0, 0, 0, 0);
   }
 
   color = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
@@ -268,7 +270,9 @@ ret_t progress_circle_set_value(widget_t* widget, float_t value) {
 
     if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
       rect_t r = progress_circle_calc_line_dirty_rect(widget, old_value, value);
-      widget_invalidate(widget, &r);
+      rect_merge(&progress_circle->dirty_rect, &r);
+      rect_merge(&r, &progress_circle->last_dirty_rect);
+      widget_invalidate_force(widget, &r);
 
       progress_circle->value = value;
       evt.e.type = EVT_VALUE_CHANGED;

@@ -1,4 +1,8 @@
 # 最新动态
+
+2023/08/10
+  * 完善progress bar的脏矩形(感谢智明提供补丁)
+
 2023/08/09
   * 增加函数bits\_stream\_set/bits\_stream\_get
 
