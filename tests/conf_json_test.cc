@@ -664,3 +664,35 @@ TEST(Json, uint32) {
   str_reset(&str);
   TK_OBJECT_UNREF(conf);
 }
+
+TEST(ConfJson, save_json_ex) {
+  value_t v;
+  str_t str;
+  conf_doc_t* doc = conf_doc_create(100);
+
+  str_init(&str, 0);
+  ASSERT_EQ(conf_doc_set(doc, "[0].label", value_set_str(&v, "jim")), RET_OK);
+  ASSERT_EQ(conf_doc_set(doc, "[1].label", value_set_str(&v, "jim1")), RET_OK);
+  ASSERT_EQ(conf_doc_set(doc, "[2].label", value_set_str(&v, "jim2")), RET_OK);
+
+  ASSERT_EQ(conf_doc_set(doc, "[0].nodes.[0].name", value_set_str(&v, "timer")), RET_OK);
+  ASSERT_EQ(conf_doc_set(doc, "[0].nodes.[0].last_out", value_set_int(&v, 1111)), RET_OK);
+  ASSERT_EQ(conf_doc_set(doc, "[0].nodes.[1].last_out", value_set_int(&v, 1111)), RET_OK);
+
+  ASSERT_EQ(conf_doc_save_json_ex(doc, &str, 0), RET_OK);
+  log_info("\n%s\n\n", str.str);
+  ASSERT_STREQ(str.str,
+               "[{\"label\":\"jim\",\"nodes\":[{\"name\":\"timer\",\"last_out\":1111},{\"last_"
+               "out\":1111}]},{\"label\":\"jim1\"},{\"label\":\"jim2\"}]");
+
+  ASSERT_EQ(conf_doc_save_json_ex(doc, &str, 2), RET_OK);
+  log_info("\n%s\n\n", str.str);
+  ASSERT_STREQ(str.str,
+               "[\n  {\n    \"label\" : \"jim\",\n    \"nodes\" : [\n      {\n        \"name\" : "
+               "\"timer\",\n        \"last_out\" : 1111\n      },\n      {\n        \"last_out\" : "
+               "1111\n      }\n    ]\n  },\n  {\n    \"label\" : \"jim1\"\n  },\n  {\n    "
+               "\"label\" : \"jim2\"\n  }\n]");
+
+  conf_doc_destroy(doc);
+  str_reset(&str);
+}

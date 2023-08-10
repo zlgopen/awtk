@@ -1,7 +1,7 @@
 ﻿/**
  * File:   conf_json.c
  * Author: AWTK Develop Team
- * Brief:  json 
+ * Brief:  json
  *
  * Copyright (c) 2020 - 2023  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -307,16 +307,20 @@ conf_doc_t* conf_doc_load_json(const char* data, int32_t size) {
   return parser.doc;
 }
 
-static ret_t conf_json_save_node(conf_node_t* node, str_t* str, uint32_t level);
-static ret_t conf_json_save_node_value(conf_node_t* node, str_t* str, uint32_t level);
-static ret_t conf_json_save_node_children(conf_node_t* node, str_t* str, uint32_t level);
+static ret_t conf_json_save_node(conf_node_t* node, str_t* str, uint32_t level, uint32_t indent);
+static ret_t conf_json_save_node_value(conf_node_t* node, str_t* str, uint32_t level,
+                                       uint32_t indent);
+static ret_t conf_json_save_node_children(conf_node_t* node, str_t* str, uint32_t level,
+                                          uint32_t indent);
 
-static ret_t conf_json_save_node_value_object(conf_node_t* node, str_t* str, uint32_t level) {
-  return conf_json_save_node_children(node, str, level);
+static ret_t conf_json_save_node_value_object(conf_node_t* node, str_t* str, uint32_t level,
+                                              uint32_t indent) {
+  return conf_json_save_node_children(node, str, level, indent);
 }
 
-static ret_t conf_json_save_node_value_array(conf_node_t* node, str_t* str, uint32_t level) {
-  return conf_json_save_node_children(node, str, level);
+static ret_t conf_json_save_node_value_array(conf_node_t* node, str_t* str, uint32_t level,
+                                             uint32_t indent) {
+  return conf_json_save_node_children(node, str, level, indent);
 }
 
 static ret_t conf_json_save_node_value_simple(conf_node_t* node, str_t* str, uint32_t level) {
@@ -356,87 +360,112 @@ static ret_t conf_json_save_node_value_simple(conf_node_t* node, str_t* str, uin
   }
 }
 
-static ret_t conf_json_save_node_value(conf_node_t* node, str_t* str, uint32_t level) {
+static ret_t conf_json_save_node_value(conf_node_t* node, str_t* str, uint32_t level,
+                                       uint32_t indent) {
   return_value_if_fail(node != NULL, RET_BAD_PARAMS);
   if (node->node_type == CONF_NODE_OBJECT) {
-    return conf_json_save_node_value_object(node, str, level);
+    return conf_json_save_node_value_object(node, str, level, indent);
   } else if (node->node_type == CONF_NODE_ARRAY) {
-    return conf_json_save_node_value_array(node, str, level);
+    return conf_json_save_node_value_array(node, str, level, indent);
   } else {
     return conf_json_save_node_value_simple(node, str, level);
   }
 }
 
-static ret_t conf_json_write_indent(str_t* str, int32_t level) {
-  uint32_t i = 0;
-  if (level < 0) {
+static ret_t conf_json_write_indent(str_t* str, int32_t level, uint32_t indent) {
+  if (level < 0 || indent == 0) {
     return RET_OK;
   }
 
-  for (i = 0; i < level; i++) {
-    return_value_if_fail(str_append(str, "    ") == RET_OK, RET_OOM);
+  return str_append_n_chars(str, ' ', level * indent);
+}
+
+static ret_t conf_json_save_node(conf_node_t* node, str_t* str, uint32_t level, uint32_t indent) {
+  const char* name = conf_node_get_name(node);
+
+  if (indent > 0) {
+    return_value_if_fail(conf_json_write_indent(str, level, indent) == RET_OK, RET_OOM);
+    return_value_if_fail(str_append_more(str, "\"", name, "\" : ", NULL) == RET_OK, RET_OOM);
+  } else {
+    return_value_if_fail(str_append_more(str, "\"", name, "\":", NULL) == RET_OK, RET_OOM);
   }
 
-  return RET_OK;
+  return conf_json_save_node_value(node, str, level, indent);
 }
 
-static ret_t conf_json_save_node(conf_node_t* node, str_t* str, uint32_t level) {
-  const char* name = conf_node_get_name(node);
-  return_value_if_fail(conf_json_write_indent(str, level) == RET_OK, RET_OOM);
-  return_value_if_fail(str_append_more(str, "\"", name, "\" : ", NULL) == RET_OK, RET_OOM);
-
-  return conf_json_save_node_value(node, str, level);
-}
-
-static ret_t conf_json_save_node_children_object(conf_node_t* node, str_t* str, uint32_t level) {
+static ret_t conf_json_save_node_children_object(conf_node_t* node, str_t* str, uint32_t level,
+                                                 uint32_t indent) {
   conf_node_t* iter = conf_node_get_first_child(node);
   return_value_if_fail(node != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(str_append(str, "{\n") == RET_OK, RET_OOM);
 
-  while (iter != NULL) {
-    return_value_if_fail(conf_json_save_node(iter, str, level + 1) == RET_OK, RET_OOM);
-    iter = iter->next;
-    if (iter != NULL) {
-      return_value_if_fail(str_append(str, ",\n") == RET_OK, RET_OOM);
-    }
+  if (indent > 0) {
+    return_value_if_fail(str_append(str, "{\n") == RET_OK, RET_OOM);
+  } else {
+    return_value_if_fail(str_append(str, "{") == RET_OK, RET_OOM);
   }
 
-  return_value_if_fail(str_append(str, "\n") == RET_OK, RET_OOM);
-  return_value_if_fail(conf_json_write_indent(str, level) == RET_OK, RET_OOM);
+  while (iter != NULL) {
+    return_value_if_fail(conf_json_save_node(iter, str, level + 1, indent) == RET_OK, RET_OOM);
+    iter = iter->next;
+    if (iter != NULL) {
+      if (indent > 0) {
+        return_value_if_fail(str_append(str, ",\n") == RET_OK, RET_OOM);
+      } else {
+        return_value_if_fail(str_append(str, ",") == RET_OK, RET_OOM);
+      }
+    }
+  }
+  if (indent > 0) {
+    return_value_if_fail(str_append(str, "\n") == RET_OK, RET_OOM);
+    return_value_if_fail(conf_json_write_indent(str, level, indent) == RET_OK, RET_OOM);
+  }
   return_value_if_fail(str_append(str, "}") == RET_OK, RET_OOM);
 
   return RET_OK;
 }
 
-static ret_t conf_json_save_node_children_array(conf_node_t* node, str_t* str, uint32_t level) {
+static ret_t conf_json_save_node_children_array(conf_node_t* node, str_t* str, uint32_t level,
+                                                uint32_t indent) {
   conf_node_t* iter = conf_node_get_first_child(node);
   return_value_if_fail(node != NULL, RET_BAD_PARAMS);
 
-  return_value_if_fail(str_append(str, "[\n") == RET_OK, RET_OOM);
+  if (indent > 0) {
+    return_value_if_fail(str_append(str, "[\n") == RET_OK, RET_OOM);
+  } else {
+    return_value_if_fail(str_append(str, "[") == RET_OK, RET_OOM);
+  }
 
   while (iter != NULL) {
-    return_value_if_fail(conf_json_write_indent(str, level + 1) == RET_OK, RET_OOM);
-    return_value_if_fail(conf_json_save_node_value(iter, str, level + 1) == RET_OK, RET_OOM);
+    return_value_if_fail(conf_json_write_indent(str, level + 1, indent) == RET_OK, RET_OOM);
+    return_value_if_fail(conf_json_save_node_value(iter, str, level + 1, indent) == RET_OK,
+                         RET_OOM);
     iter = iter->next;
     if (iter != NULL) {
-      return_value_if_fail(str_append(str, ",\n") == RET_OK, RET_OOM);
+      if (indent > 0) {
+        return_value_if_fail(str_append(str, ",\n") == RET_OK, RET_OOM);
+      } else {
+        return_value_if_fail(str_append(str, ",") == RET_OK, RET_OOM);
+      }
     }
   }
 
-  return_value_if_fail(str_append(str, "\n") == RET_OK, RET_OOM);
-  return_value_if_fail(conf_json_write_indent(str, level) == RET_OK, RET_OOM);
+  if (indent > 0) {
+    return_value_if_fail(str_append(str, "\n") == RET_OK, RET_OOM);
+    return_value_if_fail(conf_json_write_indent(str, level, indent) == RET_OK, RET_OOM);
+  }
   return_value_if_fail(str_append(str, "]") == RET_OK, RET_OOM);
 
   return RET_OK;
 }
 
-static ret_t conf_json_save_node_children(conf_node_t* node, str_t* str, uint32_t level) {
+static ret_t conf_json_save_node_children(conf_node_t* node, str_t* str, uint32_t level,
+                                          uint32_t indent) {
   return_value_if_fail(node != NULL, RET_BAD_PARAMS);
 
   if (node->node_type == CONF_NODE_OBJECT) {
-    return conf_json_save_node_children_object(node, str, level);
+    return conf_json_save_node_children_object(node, str, level, indent);
   } else if (node->node_type == CONF_NODE_ARRAY) {
-    return conf_json_save_node_children_array(node, str, level);
+    return conf_json_save_node_children_array(node, str, level, indent);
   } else {
     assert(!"invalid type");
     return RET_FAIL;
@@ -447,7 +476,14 @@ ret_t conf_doc_save_json(conf_doc_t* doc, str_t* str) {
   return_value_if_fail(doc != NULL && doc->root != NULL && str != NULL, RET_BAD_PARAMS);
 
   str_set(str, "");
-  return conf_json_save_node_children(doc->root, str, 0);
+  return conf_json_save_node_children(doc->root, str, 0, 4);
+}
+
+ret_t conf_doc_save_json_ex(conf_doc_t* doc, str_t* str, uint32_t indent) {
+  return_value_if_fail(doc != NULL && doc->root != NULL && str != NULL, RET_BAD_PARAMS);
+
+  str_set(str, "");
+  return conf_json_save_node_children(doc->root, str, 0, indent);
 }
 
 static conf_doc_t* conf_doc_load_json_reader(data_reader_t* reader) {
@@ -509,7 +545,7 @@ tk_object_t* conf_json_create(void) {
 }
 
 tk_object_t* conf_json_load_from_buff(const void* buff, uint32_t size, bool_t create_if_not_exist) {
-  char url[MAX_PATH+1] = {0};
+  char url[MAX_PATH + 1] = {0};
   return_value_if_fail(buff != NULL, NULL);
   data_reader_mem_build_url(buff, size, url);
 
