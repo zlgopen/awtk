@@ -139,10 +139,12 @@ static ret_t event_source_manager_default_dispatch_no_fd(event_source_manager_t*
 
 static ret_t event_source_manager_default_dispatch(event_source_manager_t* manager) {
   uint32_t sleep_time = event_source_manager_get_wakeup_time(manager);
+  
+  ret_t ret = event_source_manager_default_dispatch_fds(manager, sleep_time);
+  /*dispatch_no_fd不会失败，保留dispatch_fds的错误给调用者。*/
+  event_source_manager_default_dispatch_no_fd(manager);
 
-  event_source_manager_default_dispatch_fds(manager, sleep_time);
-
-  return event_source_manager_default_dispatch_no_fd(manager);
+  return ret;
 }
 
 static ret_t event_source_manager_default_destroy(event_source_manager_t* manager) {

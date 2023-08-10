@@ -58,12 +58,13 @@ static ret_t event_source_manager_prepare(event_source_manager_t* manager) {
 }
 
 ret_t event_source_manager_dispatch(event_source_manager_t* manager) {
+  ret_t ret = RET_FAIL;
   return_value_if_fail(event_source_manager_prepare(manager) == RET_OK, RET_BAD_PARAMS);
 
-  manager->dispatch(manager);
+  ret = manager->dispatch(manager);
   darray_clear(&(manager->dispatching_sources));
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t event_source_manager_add(event_source_manager_t* manager, event_source_t* source) {
