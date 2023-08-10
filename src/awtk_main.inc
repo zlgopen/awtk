@@ -157,12 +157,13 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdli
   tk_init(lcd_w, lcd_h, APP_TYPE, APP_NAME, APP_RES_ROOT);
 #else
 int main(int argc, char* argv[]) {
-  bool_t enable_console = TRUE;
+  bool_t enable_console = APP_ENABLE_CONSOLE;
   int32_t lcd_w = LCD_WIDTH;
   int32_t lcd_h = LCD_HEIGHT;
 
   tk_pre_init();
 #ifdef ON_CMD_LINE
+  (void)enable_console;
   ON_CMD_LINE(argc, argv);
 #else
   if (argc >= 2) {

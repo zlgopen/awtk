@@ -4,6 +4,7 @@
   * 完善progress bar的脏矩形(感谢智明提供补丁)
   * 完善demoui text selector资源(感谢智明提供补丁)
   * agge 模式增加 argb 和 abgr 的颜色支持(感谢智明提供补丁)
+  * 修复 awtk 使用 mingw 的时候，在 windows 下无法消除背后的 cmd 窗口(感谢智明提供补丁)
 
 2023/08/09
   * 增加函数bits\_stream\_set/bits\_stream\_get
