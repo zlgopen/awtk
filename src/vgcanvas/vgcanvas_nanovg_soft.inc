@@ -24,6 +24,14 @@ static enum NVGtexture bitmap_format_to_nanovg(bitmap_format_t format) {
       f = NVG_TEXTURE_BGRA;
       break;
     }
+    case BITMAP_FMT_ARGB8888: {
+      f = NVG_TEXTURE_ARGB;
+      break;
+    }
+    case BITMAP_FMT_ABGR8888: {
+      f = NVG_TEXTURE_ABGR;
+      break;
+    }
     case BITMAP_FMT_BGR888: {
       f = NVG_TEXTURE_BGR;
       break;

@@ -336,6 +336,20 @@ void renderPaint(AGGENVGcontext* agge, NVGpaint* paint) {
         ren(surface, 0, ras, color, agge::winding<>());
         break;
       }
+      case NVG_TEXTURE_ARGB: {
+        typedef agge::bitmap<agge::pixel32_argb, agge::raw_bitmap> argb_bitmap_t;
+        argb_bitmap_t src(tex->width, tex->height, tex->stride, tex->flags, tex->orientation, (uint8_t*)(tex->data));
+        agge::nanovg_image_blender<PixelT, argb_bitmap_t> color(&src, (float*)invxform, paint->innerColor.a);
+        ren(surface, 0, ras, color, agge::winding<>());
+        break;
+      }
+      case NVG_TEXTURE_ABGR: {
+        typedef agge::bitmap<agge::pixel32_abgr, agge::raw_bitmap> abgr_bitmap_t;
+        abgr_bitmap_t src(tex->width, tex->height, tex->stride, tex->flags, tex->orientation, (uint8_t*)(tex->data));
+        agge::nanovg_image_blender<PixelT, abgr_bitmap_t> color(&src, (float*)invxform, paint->innerColor.a);
+        ren(surface, 0, ras, color, agge::winding<>());
+        break;
+      }
       case NVG_TEXTURE_BGR565: {
         typedef agge::bitmap<agge::pixel16_bgr565, agge::raw_bitmap> bgr565_bitmap_t;
         bgr565_bitmap_t src(tex->width, tex->height, tex->stride, tex->flags, tex->orientation, (uint8_t*)(tex->data));
@@ -485,6 +499,16 @@ static void nvgInitAGGE(AGGENVGcontext* agge, NVGparams* params, uint32_t w, uin
     case NVG_TEXTURE_BGRA: {
       params->renderStroke = renderStroke<agge::pixel32_bgra>;
       params->renderFill = renderFill<agge::pixel32_bgra>;
+      break;
+    }
+    case NVG_TEXTURE_ARGB: {
+      params->renderStroke = renderStroke<agge::pixel32_argb>;
+      params->renderFill = renderFill<agge::pixel32_argb>;
+      break;
+    }
+    case NVG_TEXTURE_ABGR: {
+      params->renderStroke = renderStroke<agge::pixel32_abgr>;
+      params->renderFill = renderFill<agge::pixel32_abgr>;
       break;
     }
     case NVG_TEXTURE_RGB: {
