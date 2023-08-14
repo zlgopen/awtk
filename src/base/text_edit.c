@@ -606,7 +606,9 @@ static ret_t text_edit_paint_tips_mlines_text(text_edit_t* text_edit, canvas_t* 
   int32_t font_size = 0;
   int32_t line_height = 0;
   DECL_IMPL(text_edit);
+  widget_t* widget = text_edit->widget;
   text_layout_info_t* layout_info = 0;
+  const char* bidi_type = widget_get_prop_str(widget, WIDGET_PROP_BIDI, NULL);
   return_value_if_fail(text_edit != NULL && text_edit->widget != NULL && c != NULL, RET_BAD_PARAMS);
 
   font_size = c->font_size;
@@ -628,7 +630,7 @@ static ret_t text_edit_paint_tips_mlines_text(text_edit_t* text_edit, canvas_t* 
         break;
       }
     }
-    canvas_draw_text_in_rect(c, p->line, size, &r);
+    canvas_draw_text_bidi_in_rect(c, p->line, size, &r, bidi_type, FALSE);
 
     y += line_height;
   }
@@ -638,7 +640,9 @@ static ret_t text_edit_paint_tips_mlines_text(text_edit_t* text_edit, canvas_t* 
 static ret_t text_edit_paint_tips_text(text_edit_t* text_edit, canvas_t* c) {
   DECL_IMPL(text_edit);
   wstr_t* text = &(impl->tips);
+  widget_t* widget = text_edit->widget;
   text_layout_info_t* layout_info = &(impl->layout_info);
+  const char* bidi_type = widget_get_prop_str(widget, WIDGET_PROP_BIDI, NULL);
 
   if (text->size > 0) {
     if (impl->is_mlines) {
@@ -653,14 +657,14 @@ static ret_t text_edit_paint_tips_text(text_edit_t* text_edit, canvas_t* c) {
         rect_t r =
             rect_init(layout_info->margin_l, layout_info->margin_t, layout_info->w, layout_info->h);
         canvas_set_text_align(c, align_h, ALIGN_V_TOP);
-        canvas_draw_text_in_rect(c, text->str, text->size, &r);
+        canvas_draw_text_bidi_in_rect(c, text->str, text->size, &r, bidi_type, FALSE);
         canvas_set_text_align(c, align_h, align_v);
       }
       line_parser_deinit(&p);
     } else {
       rect_t r =
           rect_init(layout_info->margin_l, layout_info->margin_t, layout_info->w, layout_info->h);
-      canvas_draw_text_in_rect(c, text->str, text->size, &r);
+      canvas_draw_text_bidi_in_rect(c, text->str, text->size, &r, bidi_type, FALSE);
     }
   }
 
