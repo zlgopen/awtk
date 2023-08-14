@@ -852,9 +852,8 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
           log_debug("copy\n");
         } else if (key == TK_KEY_DOWN || key == TK_KEY_UP) {
           log_debug("key down or key up\n");
-        } else {
-          break;
         }
+        break;
       }
 
       edit->is_key_inputing = TRUE;
@@ -914,6 +913,9 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_WHEEL: {
+      if (edit->readonly) {
+        break;
+      }
       wheel_event_t* evt = (wheel_event_t*)e;
       int32_t delta = evt->dy;
       if (delta > 0) {
