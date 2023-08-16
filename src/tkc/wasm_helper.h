@@ -29,6 +29,8 @@ BEGIN_C_DECLS
 typedef int wchar_t;
 #endif /*_cplusplus*/
 
+#define ret_t_init(r) *r = RET_OK;
+
 double sin(double x);
 double cos(double x);
 double tan(double x);

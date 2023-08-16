@@ -283,8 +283,6 @@ typedef enum _ret_t {
   RET_MAX_NR
 } ret_t;
 
-#define ret_t_init(r) *r = RET_OK;
-
 #include "tkc/log.h"
 
 #if defined(WIN32) || defined(__ARMCC_VERSION)
