@@ -2,6 +2,7 @@
 2023/08/16
   * 增加函数str\_equal/wstr\_eq/wstr\_create/wstr\_destroy/wstr\_append\_more等函数
   * 增加宏STR\_DESTROY/WSTR\_DESTROY。
+  * 完善资源生成脚本(感谢智明提供补丁)
 
 2023/08/14
   * edit 的 tip 属性支持双向排版功能(感谢泽武提供补丁)
