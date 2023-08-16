@@ -72,7 +72,9 @@ TEST(Str, create) {
   ASSERT_EQ(str_append(str, " world"), RET_OK);
   ASSERT_EQ(str_eq(str, "hello world"), TRUE);
 
-  str_destroy(str);
+  STR_DESTROY(str);
+  STR_DESTROY(str);
+  STR_DESTROY(str);
 }
 
 TEST(Str, set_with_len) {
@@ -399,6 +401,9 @@ TEST(Str, append_more1) {
   str_t str;
   str_t* s = NULL;
   s = str_init(&str, 100);
+  ASSERT_NE(str_append_more(s, NULL), RET_OK);
+  ASSERT_STREQ(s->str, "");
+
   ASSERT_EQ(str_append_more(s, "123", NULL), RET_OK);
   ASSERT_STREQ(s->str, "123");
 
@@ -935,3 +940,22 @@ TEST(Str, cstr) {
   str_reset(s);
 }
 
+TEST(Str, eq) {
+  str_t* str1 = str_create(0);
+  str_t* str2 = str_create(0);
+  
+  ASSERT_EQ(str_set(str1, "hello"), RET_OK);
+  ASSERT_EQ(str_set(str2, "world"), RET_OK);
+  ASSERT_EQ(str_eq(str1,  "hello"), TRUE);
+  ASSERT_EQ(str_eq(str2,  "world"), TRUE);
+  ASSERT_EQ(str_equal(str1, str2), FALSE);
+  ASSERT_EQ(str_set(str2, "hello"), RET_OK);
+  ASSERT_EQ(str_equal(str1, str2), TRUE);
+  ASSERT_EQ(str_eq(NULL, NULL), TRUE);
+  ASSERT_EQ(str_eq(str1, NULL), FALSE);
+  ASSERT_EQ(str_equal(NULL, NULL), TRUE);
+  ASSERT_EQ(str_equal(str1, NULL), FALSE);
+
+  STR_DESTROY(str1);
+  STR_DESTROY(str2);
+}

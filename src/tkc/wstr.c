@@ -211,6 +211,22 @@ static ret_t wstr_extend(wstr_t* str, uint32_t capacity) {
   return RET_OK;
 }
 
+wstr_t* wstr_create(uint32_t capacity) {
+  wstr_t* str = TKMEM_ZALLOC(wstr_t);
+  return_value_if_fail(str != NULL, NULL);
+
+  return wstr_init(str, capacity);
+}
+
+ret_t wstr_destroy(wstr_t* str) {
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+
+  wstr_reset(str);
+  TKMEM_FREE(str);
+
+  return RET_OK;
+}
+
 wstr_t* wstr_init(wstr_t* str, uint32_t capacity) {
   return_value_if_fail(str != NULL, NULL);
 
@@ -394,6 +410,22 @@ ret_t wstr_pop(wstr_t* str) {
   str->str[str->size] = '\0';
 
   return RET_OK;
+}
+
+bool_t wstr_eq(wstr_t* str, const wchar_t* text) {
+  if ((str == NULL && text == NULL) || (str != NULL && str->str == NULL && text == NULL)) {
+    return TRUE;
+  }
+
+  if (str == NULL || text == NULL || str->str == NULL) {
+    return FALSE;
+  }
+
+  if (str->str[0] != text[0]) {
+    return FALSE;
+  }
+
+  return wcscmp(str->str, text) == 0;
 }
 
 bool_t wstr_equal(wstr_t* str, wstr_t* other) {
@@ -644,4 +676,26 @@ uint32_t wstr_count_char(wstr_t* str, wchar_t c) {
   }
 
   return n;
+}
+
+ret_t wstr_append_more(wstr_t* str, const wchar_t* text, ...) {
+  va_list va;
+  const wchar_t* p = NULL;
+  return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
+
+  return_value_if_fail(wstr_append(str, text) == RET_OK, RET_OOM);
+
+  va_start(va, text);
+  do {
+    p = va_arg(va, wchar_t*);
+    if (p != NULL) {
+      return_value_if_fail(wstr_append(str, p) == RET_OK, RET_OOM);
+    } else {
+      break;
+    }
+  } while (p != NULL);
+
+  va_end(va);
+
+  return RET_OK;
 }

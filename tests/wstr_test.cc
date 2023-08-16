@@ -433,6 +433,8 @@ TEST(WStr, case_cmp) {
 
   ASSERT_EQ(wstr_set(&str1, L"Hello"), RET_OK);
   ASSERT_EQ(wcs_case_cmp(str1.str, str2.str) == -1, TRUE);
+  ASSERT_EQ(wstr_eq(&str1, str2.str), FALSE);
+  ASSERT_EQ(wstr_equal(&str1, &str2), FALSE);
 
   ASSERT_EQ(wstr_set(&str2, L"abc"), RET_OK);
   ASSERT_EQ(wcs_case_cmp(str1.str, str2.str) > 0, TRUE);
@@ -491,4 +493,65 @@ TEST(WStr, attach2) {
 
   wstr_reset(s);
   ASSERT_EQ(wcscmp(buff, L"T#1d2h3s"), 0);
+}
+
+TEST(WStr, create) {
+  wstr_t* str = wstr_create(0);
+
+  ASSERT_EQ(str != NULL, true);
+  ASSERT_EQ(str->size, 0u);
+
+  ASSERT_EQ(wstr_set(str, L"hello"), RET_OK);
+  ASSERT_EQ(wstr_eq(str, L"hello"), TRUE);
+
+  ASSERT_EQ(wstr_append(str, L" world"), RET_OK);
+  ASSERT_EQ(wstr_eq(str, L"hello world"), TRUE);
+  ASSERT_EQ(wstr_equal(str, str), TRUE);
+
+  WSTR_DESTROY(str);
+  WSTR_DESTROY(str);
+  WSTR_DESTROY(str);
+}
+
+TEST(WStr, eq) {
+  wstr_t* str1 = wstr_create(0);
+  wstr_t* str2 = wstr_create(0);
+  
+  ASSERT_EQ(wstr_set(str1, L"hello"), RET_OK);
+  ASSERT_EQ(wstr_set(str2, L"world"), RET_OK);
+  ASSERT_EQ(wstr_eq(str1,  L"hello"), TRUE);
+  ASSERT_EQ(wstr_eq(str2,  L"world"), TRUE);
+  ASSERT_EQ(wstr_equal(str1, str2), FALSE);
+  ASSERT_EQ(wstr_set(str2, L"hello"), RET_OK);
+  ASSERT_EQ(wstr_equal(str1, str2), TRUE);
+  ASSERT_EQ(wstr_eq(NULL, NULL), TRUE);
+  ASSERT_EQ(wstr_eq(str1, NULL), FALSE);
+  ASSERT_EQ(wstr_equal(NULL, NULL), TRUE);
+  ASSERT_EQ(wstr_equal(str1, NULL), FALSE);
+
+  WSTR_DESTROY(str1);
+  WSTR_DESTROY(str2);
+}
+
+TEST(WStr, append_more1) {
+  wstr_t str;
+  wstr_t* s = NULL;
+  s = wstr_init(&str, 100);
+  ASSERT_NE(wstr_append_more(s, NULL), RET_OK);
+  ASSERT_EQ(wstr_eq(s, L""), TRUE);
+
+  ASSERT_EQ(wstr_append_more(s, L"123", NULL), RET_OK);
+  ASSERT_EQ(wstr_eq(s, L"123"), TRUE);
+
+  wstr_reset(s);
+}
+
+TEST(WStr, append_more2) {
+  wstr_t str;
+  wstr_t* s = NULL;
+  s = wstr_init(&str, 100);
+  ASSERT_EQ(wstr_append_more(s, L"123", L"abc", NULL), RET_OK);
+  ASSERT_EQ(wstr_eq(s, L"123abc"), TRUE);
+
+  wstr_reset(s);
 }

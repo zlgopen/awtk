@@ -83,6 +83,7 @@ str_t* str_create(uint32_t capacity);
 /**
  * @method str_destroy
  * 销毁str对象
+ * 备注：最后调用str\_destroy释放内存。
  * @param {str_t*} str str对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -162,6 +163,16 @@ ret_t str_extend(str_t* str, uint32_t capacity);
  * @return {bool_t} 返回是否相等。
  */
 bool_t str_eq(str_t* str, const char* text);
+
+/**
+ * @method str_equal
+ * 判断两个字符是否相同。
+ * @param {str_t*} str str对象。
+ * @param {str_t*} other str对象。
+ *
+ * @return {bool_t} 返回TRUE表示相同，否则表示不同。
+ */
+bool_t str_equal(str_t* str, str_t* other);
 
 /**
  * @method str_set
@@ -768,6 +779,12 @@ ret_t str_format(str_t* str, uint32_t size, const char* format, ...);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t str_append_format(str_t* str, uint32_t size, const char* format, ...);
+
+#define STR_DESTROY(str) \
+  if (str != NULL) {     \
+    str_destroy(str);    \
+    str = NULL;          \
+  }
 
 END_C_DECLS
 
