@@ -486,9 +486,9 @@ ret_t canvas_draw_vline(canvas_t* c, xy_t x, xy_t y, wh_t h) {
 
 static ret_t canvas_draw_line_impl(canvas_t* c, xy_t x1, xy_t y1, xy_t x2, xy_t y2) {
   if (x1 == x2) {
-    return canvas_draw_vline_impl(c, x1, y1, tk_abs(y2 - y1) + 1);
+    return canvas_draw_vline_impl(c, x1, tk_min(y1, y2), tk_abs(y2 - y1) + 1);
   } else if (y1 == y2) {
-    return canvas_draw_hline_impl(c, x1, y1, tk_abs(x2 - x1) + 1);
+    return canvas_draw_hline_impl(c, tk_min(x1, x2), y1, tk_abs(x2 - x1) + 1);
   } else {
     assert(!"Not implemented yet, please use vgcanvas to draw line");
     return RET_NOT_IMPL;
