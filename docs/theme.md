@@ -247,6 +247,14 @@ ret_t widget_set_style_color(widget_t* widget, const char* state_and_name, uint3
   widget_set_style_str(label, "normal.text_color", "red");
   widget_set_style_str(label, "normal.border_color", "#FF0000");
   widget_set_style_color(label, "normal.bg_color", 0xFF00FF00);
+  
+  /*如果记不清value的格式，也可以按下面的方式写*/
+  color_t green = color_init(0, 0xff, 0, 0xff);
+  widget_set_style_color(label, "normal.text_color", green.color); 
+       
+  color_t blue = color_parse("blue");
+  widget_set_style_color(label, "normal.text_color", blue.color);
+
 ```
 
 > inline style 会消耗更多内存，而且不方便切换窗体样式，一般应该尽量避免使用。
