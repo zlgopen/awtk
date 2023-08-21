@@ -1041,8 +1041,13 @@ ret_t tk_free_utf8_argv(int argc, char** argv);
     tk_free_utf8_argv(argc, argv); \
     return code; \
   }
+#define MAIN_RETURN(code)                 \
+    tk_free_utf8_argv(argc, argv); \
+    return code; 
 #else
 #define MAIN() int main(int argc, char* argv[]) {
+#define MAIN_RETURN(code)                 \
+    return code; 
 #define END_MAIN(code)                 \
     return code; \
   }
