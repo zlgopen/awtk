@@ -1032,7 +1032,7 @@ ret_t tk_free_utf8_argv(int argc, char** argv);
 #define tk_str_cmp tk_strcmp
 #define tk_str_icmp tk_stricmp
 
-#ifdef WIN32
+#if defined(WIN32) && !defined(MINGW)
 #define MAIN()                            \
   int wmain(int argc, wchar_t* wargv[]) { \
     char** argv = tk_to_utf8_argv(argc, wargv);
