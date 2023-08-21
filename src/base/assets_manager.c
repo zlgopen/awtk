@@ -785,6 +785,7 @@ ret_t assets_manager_clear_cache_ex(assets_manager_t* am, asset_type_t type, con
     return RET_NOT_FOUND;
   }
 
+  info.type = type;
   asset_info_set_name(&info, name, FALSE);
 
   size = am->assets.size;
