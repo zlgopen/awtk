@@ -1685,3 +1685,38 @@ ret_t bits_stream_set(uint8_t* buff, uint32_t size, uint32_t index, bool_t value
 
   return RET_OK;
 }
+
+
+char* tk_utf8_dup_wstr(const wchar_t* str) {
+  str_t s;
+  return_value_if_fail(str != NULL, NULL);
+  str_init(&s, wcslen(str) * 4 + 1);
+  str_from_wstr(&s, str);
+
+  return s.str;
+}
+
+char** tk_to_utf8_argv(int argc, wchar_t* argv[]) {
+  uint32_t i = 0;
+  char** argv_utf8 = NULL;
+  argv_utf8 = TKMEM_ALLOC(sizeof(char*) * argc);
+  return_value_if_fail(argv_utf8 != NULL, NULL);
+
+  for (i = 0; i < argc; i++) {
+    argv_utf8[i] = tk_utf8_dup_wstr(argv[i]);
+  }
+
+  return argv_utf8;
+}
+
+ret_t tk_free_utf8_argv(int argc, char** argv) {
+  uint32_t i = 0;
+  return_value_if_fail(argv != NULL, RET_BAD_PARAMS);
+
+  for (i = 0; i < argc; i++) {
+    TKMEM_FREE(argv[i]);
+  }
+  TKMEM_FREE(argv);
+
+  return RET_OK;
+}

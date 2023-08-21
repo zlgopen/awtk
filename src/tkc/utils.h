@@ -746,6 +746,17 @@ char* tk_str_tolower(char* str);
 wchar_t* tk_wstr_dup_utf8(const char* str);
 
 /**
+ * @method tk_utf8_dup_wstr
+ *
+ * 将UCS字符串拷贝为utf8字符串。
+ *
+ * @param {const wchar_t*} str 字符串。
+ *
+ * @return {char*} 返回UTF-8字符串(需要调用TKMEM_FREE释放)。
+ */
+char* tk_utf8_dup_wstr(const wchar_t* str);
+
+/**
  * @method tk_wstr_count_c
  *
  * 统计UCS字符串中某个字符出现的次数。
@@ -997,14 +1008,48 @@ ret_t bits_stream_get(const uint8_t* buff, uint32_t size, uint32_t index, bool_t
  */
 ret_t bits_stream_set(uint8_t* buff, uint32_t size, uint32_t index, bool_t value);
 
-/*public for test*/
-ret_t xml_file_expand(const char* filename, str_t* s, const char* data);
+/**
+ * @method tk_to_utf8_argv
+ * 将宽字符串数组转换成utf8字符串数组。
+ * @param {int} argc 参数个数。
+ * @param {wchar_t*} argv 参数。
+ * @return {char**} 返回utf8字符串数组。
+ */
+char** tk_to_utf8_argv(int argc, wchar_t* argv[]);
+
+/**
+ * @method tk_free_utf8_argv
+ * 释放utf8字符串数组。
+ * @param {int} argc 参数个数。
+ * @param {char**} argv 参数。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+*/
+ret_t tk_free_utf8_argv(int argc, char** argv);
 
 #define TK_STRDUP(str) ((str) != NULL) ? strdup(str) : NULL
 #define TK_STRNDUP(str) ((str) != NULL) ? strndup(str) : NULL
 
 #define tk_str_cmp tk_strcmp
 #define tk_str_icmp tk_stricmp
+
+#ifdef WIN32
+#define MAIN()                            \
+  int wmain(int argc, wchar_t* wargv[]) { \
+    char** argv = tk_to_utf8_argv(argc, wargv);
+
+#define END_MAIN(code)                 \
+    tk_free_utf8_argv(argc, argv); \
+    return code; \
+  }
+#else
+#define MAIN() int main(int argc, char* argv[]) {
+#define END_MAIN(code)                 \
+    return code; \
+  }
+#endif
+
+/*public for test*/
+ret_t xml_file_expand(const char* filename, str_t* s, const char* data);
 
 END_C_DECLS
 

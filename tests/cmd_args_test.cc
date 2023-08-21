@@ -126,3 +126,30 @@ TEST(CmdArgs, basic2) {
 
   st_args_reset(&args);
 }
+
+TEST(CmdArgs, wstr) {
+  cmd_args_t parser;
+  st_args_t args;
+  const wchar_t* argv[] = {L"st",
+                           L"--auto_type_promotion",
+                           L"--locale=zh_CN",
+                           L"--strings_file",
+                           L"strings.xml",
+                           L"--output",
+                           L"test.st",
+                           L"a.st",
+                           L"b.st"};
+  const char* usage = "parse st text";
+  st_args_init(&args);
+  cmd_args_init(&parser, usage, args_desc, ARRAY_SIZE(args_desc), st_args_on_arg, &args);
+  cmd_args_process_wstr(&parser, ARRAY_SIZE(argv), (wchar_t**)argv);
+
+  ASSERT_STREQ(args.locale, "zh_CN");
+  ASSERT_STREQ(args.strings_file, "strings.xml");
+  ASSERT_EQ(args.sources.size, 2);
+
+  ASSERT_STREQ((char*)darray_get(&(args.sources), 0), "a.st");
+  ASSERT_STREQ((char*)darray_get(&(args.sources), 1), "b.st");
+
+  st_args_reset(&args);
+}

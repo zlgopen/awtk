@@ -835,3 +835,11 @@ TEST(Utils, bits_stream) {
   ASSERT_NE(bits_stream_set(buff, sizeof(buff), 10000, TRUE), RET_OK);
   ASSERT_NE(bits_stream_get(buff, sizeof(buff), 10000, &v), RET_OK);
 }
+
+TEST(Utils, argv) {
+  const wchar_t* wargv[2] = {L"abc", L"123"};
+  char** argv = tk_to_utf8_argv(2, (wchar_t**)wargv);
+  ASSERT_STREQ(argv[0], "abc");
+  ASSERT_STREQ(argv[1], "123");
+  tk_free_utf8_argv(2, argv);
+}

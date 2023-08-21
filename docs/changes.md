@@ -1,4 +1,12 @@
 # 最新动态
+
+2023/08/21
+  * 增加函数cmd\_args\_process\_wstr
+  * 增加函数tk\_utf8\_dup\_wstr
+  * 增加函数tk\_to\_utf8\_argv
+  * 增加函数tk\_free\_utf8\_argv
+  * 增加宏MAIN/END\_MAIN
+
 2023/08/16
   * 增加函数str\_equal/wstr\_eq/wstr\_create/wstr\_destroy/wstr\_append\_more等函数
   * 增加宏STR\_DESTROY/WSTR\_DESTROY。

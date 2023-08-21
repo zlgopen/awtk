@@ -19,6 +19,7 @@
  *
  */
 
+#include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/tokenizer.h"
 #include "tkc/cmd_args.h"
@@ -193,3 +194,19 @@ ret_t cmd_args_process_str(cmd_args_t* args, const char* cmd_line) {
 
   return RET_OK;
 }
+
+
+
+ret_t cmd_args_process_wstr(cmd_args_t* args, int argc, wchar_t* _argv[]) {
+  uint32_t i = 0;
+  ret_t ret = RET_OK;
+  char** argv = NULL;
+  return_value_if_fail(args != NULL && _argv != NULL, RET_BAD_PARAMS);
+  argv = tk_to_utf8_argv(argc, _argv);
+  return_value_if_fail(argv != NULL, RET_OOM);
+  ret = cmd_args_process(args, argc, argv);
+  tk_free_utf8_argv(argc, argv);
+
+  return ret;
+}
+

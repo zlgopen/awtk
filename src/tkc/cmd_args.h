@@ -111,6 +111,18 @@ ret_t cmd_args_show_help(cmd_args_t* args);
 ret_t cmd_args_process(cmd_args_t* args, int argc, char* argv[]);
 
 /**
+ * @method cmd_args_process_wstr
+ * 处理。
+ *
+ * @param {cmd_args_t*} args args对象。
+ * @param {int}  argc 参数个数。
+ * @param {wchar_t**}  argv 参数数组。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t cmd_args_process_wstr(cmd_args_t* args, int argc, wchar_t* argv[]);
+
+/**
  * @method cmd_args_process_str
  * 处理。
  *
