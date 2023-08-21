@@ -6,6 +6,7 @@
   * 增加函数tk\_to\_utf8\_argv
   * 增加函数tk\_free\_utf8\_argv
   * 增加宏MAIN/END\_MAIN
+  * 完善Windows平台初始化，让Console输出支持UTF8。
 
 2023/08/16
   * 增加函数str\_equal/wstr\_eq/wstr\_create/wstr\_destroy/wstr\_append\_more等函数

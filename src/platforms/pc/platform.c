@@ -51,7 +51,6 @@ static int32_t get_local_timezone() {
   return timezone;
 }
 
-
 int gettimeofday(struct timeval* tp, void* tzp) {
   time_t clock;
   struct tm tm;
@@ -253,6 +252,19 @@ ret_t platform_prepare(void) {
   inited = TRUE;
 
   stm_time_init();
+
+#ifdef WIN32
+  /*let console output support utf8 text*/
+  if (!IsValidCodePage(CP_UTF8)) {
+     log_debug("Not support UTF-8 output\n");
+  }
+  if (!SetConsoleCP(CP_UTF8)) {
+     log_debug("Not support UTF-8 output\n");
+  }
+  if (!SetConsoleOutputCP(CP_UTF8)) {
+     log_debug("Not support UTF-8 output\n");
+  }
+#endif /*WIN32*/
 
 #ifndef HAS_STD_MALLOC
 #ifndef TK_HEAP_MEM_SIZE
