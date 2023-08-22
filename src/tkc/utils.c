@@ -1696,7 +1696,7 @@ char* tk_utf8_dup_wstr(const wchar_t* str) {
   return s.str;
 }
 
-char** tk_to_utf8_argv(int argc, wchar_t* argv[]) {
+char** tk_to_utf8_argv(int argc, wchar_t** argv) {
   uint32_t i = 0;
   char** argv_utf8 = NULL;
   argv_utf8 = TKMEM_ALLOC(sizeof(char*) * argc);

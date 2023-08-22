@@ -1012,10 +1012,10 @@ ret_t bits_stream_set(uint8_t* buff, uint32_t size, uint32_t index, bool_t value
  * @method tk_to_utf8_argv
  * 将宽字符串数组转换成utf8字符串数组。
  * @param {int} argc 参数个数。
- * @param {wchar_t*} argv 参数。
+ * @param {wchar_t**} argv 参数。
  * @return {char**} 返回utf8字符串数组。
  */
-char** tk_to_utf8_argv(int argc, wchar_t* argv[]);
+char** tk_to_utf8_argv(int argc, wchar_t** argv);
 
 /**
  * @method tk_free_utf8_argv
