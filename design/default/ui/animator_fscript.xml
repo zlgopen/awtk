@@ -1,13 +1,10 @@
 <window>
-  <image name="move" image="logo" x="0" y="0" w="100%" h="80">
+  <image name="move" image="logo" x="0" y="0" w="100%" h="80" animation="move(y_from=0, y_to=128, duration=1000, delay=3000, name=move1)" >
     <property name="on:widget_animator_end">
       print("widget_animator_end:", animator_name);
     </property>
     <property name="on:widget_animator_start">
       print("widget_animator_start:", animator_name);
-    </property>
-    <property name="animation">
-      move(y_from=0, y_to=128, duration=1000, delay=3000, name=move1)
     </property>
   </image>
   <progress_bar name="value" x="center" y="middle" w="90%" h="40">

@@ -248,6 +248,12 @@ static ret_t widget_animator_parser_parse(widget_animator_parser_t* parser, cons
   return func_call_parser_parse(&(parser->base));
 }
 
+static ret_t widget_animator_start_animator(void* ctx, event_t* evt) {
+  widget_animator_t* wa = (widget_animator_t*)ctx;
+  widget_animator_start(wa);
+  return RET_REMOVE;
+}
+
 widget_animator_t* widget_animator_create(widget_t* widget, const char* params) {
   uint32_t delay = 0;
   uint32_t easing = 0;
@@ -297,7 +303,13 @@ widget_animator_t* widget_animator_create(widget_t* widget, const char* params) 
     }
 
     if (parser.params.auto_start) {
-      widget_animator_start(wa);
+      if (widget->loading) {
+        /* 加载控件中启动动画的情况，为了确保不受注册的回调事件顺序影响，所以等控件加载完成后，再启动动画 */
+        widget_on(widget, EVT_WIDGET_LOAD, widget_animator_start_animator, wa);
+      } else {
+        /* 加载控件完成后，用户通过代码 set_prop 注册动画的情况 */
+        widget_animator_start(wa);
+      }
     }
 
     widget_animator_set_relayout(wa, parser.params.relayout);

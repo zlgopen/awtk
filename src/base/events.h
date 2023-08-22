@@ -541,7 +541,7 @@ typedef enum _event_type_t {
  * @class model_event_t
  * @annotation ["scriptable"]
  * @parent event_t
- * model变化事件。
+ * 控件动画事件。
  */
 typedef struct _widget_animator_event_t {
   event_t e;
