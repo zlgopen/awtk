@@ -1,0 +1,29 @@
+<window>
+  <view name="view" x="0" y="0" w="100%" h="320" children_layout="default(r=0,c=1)">
+    <clip_view name="clip_view" style:normal:border_color="#000000" h="30">
+      <button name="button" x="47" y="47" w="100" h="36" text="Button"/>
+      <label name="label" x="0" y="0" w="100%" h="30" style:normal:border_color="#000000" text="1"/>
+      <image name="image" x="47" y="90" w="100" h="100" draw_type="scale" image="bricks"/>
+    </clip_view>
+    <clip_view name="clip_view" style:normal:border_color="#000000" h="200" animation="h(duration=2000,yoyo_times=0,easing=linear,from=200,to=30,relayout=true)">
+      <button name="button" x="47" y="47" w="100" h="36" text="Button"/>
+      <label name="label" x="0" y="0" w="100%" h="30" style:normal:border_color="#000000" text="2"/>
+      <image name="image" x="47" y="90" w="100" h="100" draw_type="scale" image="bricks"/>
+    </clip_view>
+    <clip_view name="clip_view" style:normal:border_color="#000000" h="30">
+      <button name="button" x="47" y="47" w="100" h="36" text="Button"/>
+      <label name="label" x="0" y="0" w="100%" h="30" style:normal:border_color="#000000" text="3"/>
+      <image name="image" x="47" y="90" w="100" h="100" draw_type="scale" image="bricks"/>
+    </clip_view>
+    <clip_view name="clip_view" style:normal:border_color="#000000" h="30" animation="h(duration=2000,yoyo_times=0,easing=linear,from=30,to=200,relayout=true)">
+      <button name="button" x="47" y="47" w="100" h="36" text="Button"/>
+      <label name="label" x="0" y="0" w="100%" h="30" style:normal:border_color="#000000" text="4"/>
+      <image name="image" x="47" y="90" w="100" h="100" draw_type="scale" image="bricks"/>
+    </clip_view>
+    <clip_view name="clip_view" style:normal:border_color="#000000" h="30">
+      <button name="button" x="47" y="47" w="100" h="36" text="Button"/>
+      <label name="label" x="0" y="0" w="100%" h="30" style:normal:border_color="#000000" text="5"/>
+      <image name="image" x="47" y="90" w="100" h="100" draw_type="scale" image="bricks"/>
+    </clip_view>
+  </view>
+</window>

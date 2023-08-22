@@ -58,13 +58,6 @@ struct _widget_animator_t {
   widget_t* widget;
 
   /**
-   * @property {bool_t} reversed
-   * @annotation ["private"]
-   * 逆向运行，在yoyo模式下自动设置。
-   */
-  bool_t reversed;
-
-  /**
    * @property {uint32_t} yoyo_times
    * @annotation ["private"]
    * yoyo剩余次数。
@@ -128,20 +121,6 @@ struct _widget_animator_t {
   emitter_t emitter;
 
   /**
-   * @property {bool_t} destroy_when_done
-   * @annotation ["private"]
-   * 播放完成时是否自动销毁(缺省销毁)。
-   */
-  bool_t destroy_when_done;
-
-  /**
-   * @property {bool_t} forever
-   * @annotation ["private"]
-   * 是否永远播放(yoyo_times/repeat_times为0时，自动设置此标志)。
-   */
-  bool_t forever;
-
-  /**
    * @property {uint32_t} widget_destroy_id
    * @annotation ["private"]
    * widget_destroy_id。
@@ -168,6 +147,34 @@ struct _widget_animator_t {
    * destroy函数，子类需要实现。
    */
   widget_animator_destroy_t destroy;
+
+  /**
+   * @property {bool_t} reversed
+   * @annotation ["private"]
+   * 逆向运行，在yoyo模式下自动设置。
+   */
+  bool_t reversed;
+
+  /**
+   * @property {bool_t} relayout
+   * @annotation ["private"]
+   * 播放时是否自动重新布局（默认为 FALSE）。
+   */
+  bool_t relayout;
+
+  /**
+   * @property {bool_t} destroy_when_done
+   * @annotation ["private"]
+   * 播放完成时是否自动销毁(缺省销毁)。
+   */
+  bool_t destroy_when_done;
+
+  /**
+   * @property {bool_t} forever
+   * @annotation ["private"]
+   * 是否永远播放(yoyo_times/repeat_times为0时，自动设置此标志)。
+   */
+  bool_t forever;
 
   /*private*/
   bool_t to_dispatch;
@@ -240,6 +247,16 @@ ret_t widget_animator_set_reversed(widget_animator_t* animator, bool_t value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_animator_set_time_scale(widget_animator_t* animator, float_t time_scale);
+
+/**
+ * @method widget_animator_set_relayout
+ * 设置每帧是否重新布局。
+ * @param {widget_animator_t*} animator 动画对象。
+ * @param {bool_t} relayout 是否重新布局。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_animator_set_relayout(widget_animator_t* animator, bool_t relayout);
 
 /**
  * @method widget_animator_on

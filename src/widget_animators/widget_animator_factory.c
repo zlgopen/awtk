@@ -69,6 +69,7 @@ typedef struct _animator_params_t {
   float_t time_scale;
   bool_t auto_start;
   bool_t auto_destroy;
+  bool_t relayout;
 
 } animator_params_t;
 
@@ -187,7 +188,11 @@ static ret_t parser_on_param(func_call_parser_t* parser, const char* name, const
     }
     case 'r': /*repeat_times*/
     {
-      p->params.repeat_times = tk_atoi(value);
+      if (tk_str_eq(name, "repeat_times")) {
+        p->params.repeat_times = tk_atoi(value);
+      } else if (tk_str_eq(name, "relayout")) {
+        p->params.relayout = tk_atob(value);
+      }
       break;
     }
     case 'd': /*duration|delay*/
@@ -229,6 +234,7 @@ static ret_t widget_animator_parser_parse(widget_animator_parser_t* parser, cons
   parser->params.duration = 500;
   parser->params.yoyo_times = -1;
   parser->params.repeat_times = -1;
+  parser->params.relayout = FALSE;
   parser->params.auto_start = TRUE;
   parser->params.auto_destroy = TRUE;
   parser->params.time_scale = 1;
@@ -294,6 +300,7 @@ widget_animator_t* widget_animator_create(widget_t* widget, const char* params) 
       widget_animator_start(wa);
     }
 
+    widget_animator_set_relayout(wa, parser.params.relayout);
     widget_animator_set_time_scale(wa, parser.params.time_scale);
     widget_animator_set_destroy_when_done(wa, parser.params.auto_destroy);
     if (parser.params.name[0]) {

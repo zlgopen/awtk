@@ -93,7 +93,9 @@ ret_t widget_animator_time_elapse(widget_animator_t* animator, uint32_t delta_ti
   }
 
   widget_animator_update(animator, animator->easing(time_percent));
-
+  if (animator->relayout) {
+    widget_set_need_relayout(animator->widget);
+  }
   if (animator->now >= end_time) {
     if (animator->repeat_times > 0) {
       event_t e = event_init(EVT_ANIM_ONCE, animator);
@@ -200,6 +202,12 @@ static ret_t widget_animator_update(widget_animator_t* animator, float_t percent
   return_value_if_fail(animator != NULL && animator->update != NULL, RET_BAD_PARAMS);
 
   return animator->update(animator, percent);
+}
+
+ret_t widget_animator_set_relayout(widget_animator_t* animator, bool_t relayout) {
+  return_value_if_fail(animator != NULL, RET_BAD_PARAMS);
+  animator->relayout = relayout;
+  return RET_OK;
 }
 
 ret_t widget_animator_set_yoyo(widget_animator_t* animator, uint32_t yoyo_times) {
