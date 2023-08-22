@@ -2063,6 +2063,16 @@ static ret_t fscript_info_prepare(fscript_info_t* info, event_t* evt) {
       tk_object_set_prop_object(obj, "model", e->model);
       break;
     }
+    case EVT_ANIM_ONCE : 
+    case EVT_ANIM_START : 
+    case EVT_ANIM_END : {
+      widget_animator_event_t* e = widget_animator_event_cast(evt);
+      if (e != NULL) {
+        widget_animator_t* animator = (widget_animator_t*)e->animator;
+        tk_object_set_prop_str(obj, "animator_name", animator->name);
+      }
+      break;
+    }
     default:
       break;
   }

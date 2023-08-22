@@ -45,6 +45,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_menu_left_bottom[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_auto_play_landscape[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_color_picker_simple[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_bidi[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_animator_fscript[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_slide_view_v3[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_dialog_highlight_update_bg[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_progress_circle[]);
@@ -591,6 +592,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_auto_play_landscape);
   assets_manager_add(am, ui_color_picker_simple);
   assets_manager_add(am, ui_bidi);
+  assets_manager_add(am, ui_animator_fscript);
   assets_manager_add(am, ui_slide_view_v3);
   assets_manager_add(am, ui_dialog_highlight_update_bg);
   assets_manager_add(am, ui_progress_circle);

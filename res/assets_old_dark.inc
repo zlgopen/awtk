@@ -45,6 +45,7 @@
 #include "assets/default/inc/ui/auto_play_landscape.data"
 #include "assets/default/inc/ui/color_picker_simple.data"
 #include "assets/default/inc/ui/bidi.data"
+#include "assets/default/inc/ui/animator_fscript.data"
 #include "assets/default/inc/ui/slide_view_v3.data"
 #include "assets/default/inc/ui/dialog_highlight_update_bg.data"
 #include "assets/default/inc/ui/progress_circle.data"
@@ -591,6 +592,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_auto_play_landscape);
   assets_manager_add(am, ui_color_picker_simple);
   assets_manager_add(am, ui_bidi);
+  assets_manager_add(am, ui_animator_fscript);
   assets_manager_add(am, ui_slide_view_v3);
   assets_manager_add(am, ui_dialog_highlight_update_bg);
   assets_manager_add(am, ui_progress_circle);

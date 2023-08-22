@@ -543,6 +543,52 @@ typedef enum _event_type_t {
  * @parent event_t
  * model变化事件。
  */
+typedef struct _widget_animator_event_t {
+  event_t e;
+
+  /**
+   * @property {widget_t*} widget
+   * @annotation ["readable", "scriptable"]
+   * 控件对象。
+   */
+  widget_t* widget;
+
+  /**
+   * @property {void*} animator
+   * @annotation ["readable", "scriptable"]
+   * 控件动画句柄。
+   */
+  void* animator;
+} widget_animator_event_t;
+
+/**
+ * @method widget_animator_event_cast
+ * @annotation ["cast", "scriptable"]
+ * 把event对象转widget_animator_event_t对象。
+ * @param {event_t*} event event对象。
+ *
+ * @return {widget_animator_event_t*} event对象。
+ */
+widget_animator_event_t* widget_animator_event_cast(event_t* event);
+
+/**
+ * @method widget_animator_event_init
+ * 初始化事件。
+ * @param {widget_animator_event_t*} event event对象。
+ * @param {uint32_t} type 类型。
+ * @param {widget_t*} widget 控件对象。
+ * @param {void*} animator 控件动画句柄。
+ *
+ * @return {event_t*} event对象。
+ */
+event_t* widget_animator_event_init(widget_animator_event_t* event, uint32_t type, widget_t* widget, void* animator);
+
+/**
+ * @class model_event_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * model变化事件。
+ */
 typedef struct _model_event_t {
   event_t e;
 

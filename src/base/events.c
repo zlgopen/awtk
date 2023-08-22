@@ -341,6 +341,12 @@ int32_t event_from_name(const char* name) {
         return EVT_WINDOW_TO_FOREGROUND;
       } else if (tk_str_eq(name, "widget_load")) {
         return EVT_WIDGET_LOAD;
+      } else if (tk_str_eq(name, "widget_animator_end")) {
+        return EVT_ANIM_END;
+      } else if (tk_str_eq(name, "widget_animator_start")) {
+        return EVT_ANIM_START;
+      } else if (tk_str_eq(name, "widget_animator_once")) {
+        return EVT_ANIM_ONCE;
       }
       break;
     }
@@ -370,6 +376,22 @@ int32_t event_from_name(const char* name) {
       break;
   }
   return EVT_NONE;
+}
+
+widget_animator_event_t* widget_animator_event_cast(event_t* event) {
+  return_value_if_fail(event != NULL, NULL);
+  return_value_if_fail(event->size == sizeof(widget_animator_event_t), NULL);
+  return_value_if_fail(event->type == EVT_ANIM_START || event->type == EVT_ANIM_STOP || event->type == EVT_ANIM_PAUSE || event->type == EVT_ANIM_ONCE || event->type == EVT_ANIM_END, NULL);
+  return (widget_animator_event_t*)event;
+}
+
+event_t* widget_animator_event_init(widget_animator_event_t* event, uint32_t type, widget_t* widget, void* animator) {
+  return_value_if_fail(event != NULL && widget != NULL && animator != NULL, NULL);
+  event->e = event_init(type, animator);
+  event->e.size = sizeof(widget_animator_event_t);
+  event->widget = widget;
+  event->animator = animator;
+  return (event_t*)event;
 }
 
 model_event_t* model_event_cast(event_t* event) {
