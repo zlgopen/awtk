@@ -399,6 +399,7 @@ static ret_t slide_menu_do_layout_children(widget_t* widget) {
   scale = slide_menu_calc_child_scale(slide_menu, curr, curr, xoffset);
   w = tk_roundi(menu_w * scale);
   h = tk_roundi(menu_h * scale);
+  /* 由于菜单控件滑块一半的 menu_w_s 的时候 children[curr] 就会交换为下一个或者上一个控件，所以写的一套公式来配合这个逻辑来移动 */
   x = (widget->w - menu_w) * 0.5f + xoffset - (xoffset * max_crevice_scale * menu_w / menu_w_s);
   y = slide_menu_calc_child_y(slide_menu->align_v, menu_h, h);
   widget_move_resize(iter, x, y, w, h);

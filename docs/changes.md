@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/08/22
+  * slide\_meun增加一个注释来说明代码用途(感谢智明提供补丁)
+
 2023/08/21
   * 增加函数cmd\_args\_process\_wstr
   * 增加函数tk\_utf8\_dup\_wstr
