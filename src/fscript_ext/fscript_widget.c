@@ -246,6 +246,28 @@ static ret_t func_back_to_home(fscript_t* fscript, fscript_args_t* args, value_t
   return RET_OK;
 }
 
+static ret_t func_widget_layout(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  widget_t* widget = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  widget = to_widget(fscript, args->args);
+  FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
+
+  value_set_bool(result, widget_layout(widget) == RET_OK);
+
+  return RET_OK;
+}
+
+static ret_t func_widget_request_relayout(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  widget_t* widget = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  widget = to_widget(fscript, args->args);
+  FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
+
+  value_set_bool(result, widget_set_need_relayout(widget) == RET_OK);
+
+  return RET_OK;
+}
+
 static ret_t func_widget_lookup(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   widget_t* widget = NULL;
   const char* path = NULL;
@@ -806,6 +828,8 @@ FACTORY_TABLE_ENTRY("window_back", func_back)
 FACTORY_TABLE_ENTRY("window_back_to_home", func_back_to_home)
 FACTORY_TABLE_ENTRY("window_quit", func_quit)
 FACTORY_TABLE_ENTRY("widget_tr", func_tr)
+FACTORY_TABLE_ENTRY("widget_layout", func_widget_layout)
+FACTORY_TABLE_ENTRY("widget_request_relayout", func_widget_request_relayout)
 FACTORY_TABLE_ENTRY("widget_lookup", func_widget_lookup)
 FACTORY_TABLE_ENTRY("widget_get", func_widget_get)
 FACTORY_TABLE_ENTRY("widget_eval", func_widget_eval)
