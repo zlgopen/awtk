@@ -1917,6 +1917,7 @@ ret_t widget_dispatch_recursive(widget_t* widget, event_t* e);
 /**
  * @method widget_get_prop
  * 获取控件指定属性的值。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} name 属性的名称。
  * @param {value_t*} v 返回属性的值。
@@ -1939,6 +1940,7 @@ ret_t widget_get_prop_default_value(widget_t* widget, const char* name, value_t*
 /**
  * @method widget_set_prop
  * 设置控件指定属性的值。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} name 属性的名称。
  * @param {const value_t*} v 属性的值。

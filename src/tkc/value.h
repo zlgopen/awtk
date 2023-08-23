@@ -634,6 +634,7 @@ bool_t value_is_null(value_t* value);
 /**
  * @method value_equal
  * 判断两个value是否相同。
+ * @annotation ["scriptable"]
  * @param {const value_t*} value value对象。
  * @param {const value_t*} other value对象。
  *
@@ -644,6 +645,7 @@ bool_t value_equal(const value_t* value, const value_t* other);
 /**
  * @method value_int
  * 转换为int的值。
+ * @annotation ["scriptable"]
  * @param {const value_t*} v value对象。
  *
  * @return {int} 值。
