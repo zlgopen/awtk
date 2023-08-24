@@ -83,8 +83,6 @@
 #include "../res/assets/default/inc/images/uiex_editor_TextUnderscore.res"
 #include "../res/assets/default/inc/images/uiex_keyboard_backspace_n.res"
 #include "../res/assets/default/inc/images/uiex_keyboard_backspace_p.res"
-#include "../res/assets/default/inc/images/uiex_keyboard_CN.res"
-#include "../res/assets/default/inc/images/uiex_keyboard_EN.res"
 #include "../res/assets/default/inc/images/uiex_loading_repeat_bg.res"
 #include "../res/assets/default/inc/images/uiex_logo.res"
 #include "../res/assets/default/inc/images/uiex_Portraitmenu_n.res"
@@ -197,8 +195,6 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_uiex_editor_TextUnderscore);
   assets_manager_add(am, image_uiex_keyboard_backspace_n);
   assets_manager_add(am, image_uiex_keyboard_backspace_p);
-  assets_manager_add(am, image_uiex_keyboard_CN);
-  assets_manager_add(am, image_uiex_keyboard_EN);
   assets_manager_add(am, image_uiex_loading_repeat_bg);
   assets_manager_add(am, image_uiex_logo);
   assets_manager_add(am, image_uiex_Portraitmenu_n);
@@ -231,238 +227,10 @@ ret_t assets_init_default(void) {
 }
 /*** default end ***/
 
-/*** dark ***/
-#ifndef WITH_FS_RES
-extern TK_CONST_DATA_ALIGN(const unsigned char strings_en_US[]);
-#include "../res/assets/dark/inc/styles/uiex.data"
-#include "../res/assets/dark/inc/styles/uiex_dialog_confirm.data"
-#include "../res/assets/dark/inc/styles/uiex_dialog_info.data"
-#include "../res/assets/dark/inc/styles/uiex_dialog_warn.data"
-#include "../res/assets/dark/inc/styles/uiex_keyboard.data"
-extern TK_CONST_DATA_ALIGN(const unsigned char style_dialog_toast[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_dlg_center_scale[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_dlg_fade[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_dlg_popdown[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_dlg_popup[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_htranslate[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_kb_ascii[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_kb_default[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_kb_foo[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_kb_uint[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_menu_bar[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_menu_landscape[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_overlay[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_animate[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_button[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_chart[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_checkbox[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_color[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_date_time[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_edit[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_label[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_layout[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_mledit[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_progress[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_selector[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_slider[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_tab_ctrl[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_page_window[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_popup[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_preload[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_sysbar_landscape[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_sysbar_portrait[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_uiex_vtranslate[]);
-#ifdef WITH_STB_IMAGE
-#include "../res/assets/dark/inc/images/uiex_arrow_down_n.res"
-#include "../res/assets/dark/inc/images/uiex_arrow_down_p.res"
-#include "../res/assets/dark/inc/images/uiex_arrow_up_n.res"
-#include "../res/assets/dark/inc/images/uiex_arrow_up_p.res"
-#include "../res/assets/dark/inc/images/uiex_button_Empty.res"
-#include "../res/assets/dark/inc/images/uiex_button_Export.res"
-#include "../res/assets/dark/inc/images/uiex_button_Import.res"
-#include "../res/assets/dark/inc/images/uiex_button_search.res"
-#include "../res/assets/dark/inc/images/uiex_button_time.res"
-#include "../res/assets/dark/inc/images/uiex_check_checked_d.res"
-#include "../res/assets/dark/inc/images/uiex_check_checked_n.res"
-#include "../res/assets/dark/inc/images/uiex_check_checked_p.res"
-#include "../res/assets/dark/inc/images/uiex_check_d.res"
-#include "../res/assets/dark/inc/images/uiex_check_n.res"
-#include "../res/assets/dark/inc/images/uiex_check_p.res"
-#include "../res/assets/dark/inc/images/uiex_close_n.res"
-#include "../res/assets/dark/inc/images/uiex_close_p.res"
-#include "../res/assets/dark/inc/images/uiex_combobox_btn_d.res"
-#include "../res/assets/dark/inc/images/uiex_combobox_btn_n.res"
-#include "../res/assets/dark/inc/images/uiex_combobox_btn_p.res"
-#include "../res/assets/dark/inc/images/uiex_editor_bgcolor.res"
-#include "../res/assets/dark/inc/images/uiex_editor_Importpictures.res"
-#include "../res/assets/dark/inc/images/uiex_editor_TextAlignBoth.res"
-#include "../res/assets/dark/inc/images/uiex_editor_TextAlignleft.res"
-#include "../res/assets/dark/inc/images/uiex_editor_TextAlignright.res"
-#include "../res/assets/dark/inc/images/uiex_editor_TextBold.res"
-#include "../res/assets/dark/inc/images/uiex_editor_TextCenteralignment.res"
-#include "../res/assets/dark/inc/images/uiex_editor_Textcolor.res"
-#include "../res/assets/dark/inc/images/uiex_editor_TextItalic.res"
-#include "../res/assets/dark/inc/images/uiex_editor_TextLinespacing.res"
-#include "../res/assets/dark/inc/images/uiex_editor_TextUnderscore.res"
-#include "../res/assets/dark/inc/images/uiex_keyboard_backspace_n.res"
-#include "../res/assets/dark/inc/images/uiex_keyboard_backspace_p.res"
-#include "../res/assets/dark/inc/images/uiex_keyboard_CN.res"
-#include "../res/assets/dark/inc/images/uiex_keyboard_EN.res"
-#include "../res/assets/dark/inc/images/uiex_logo.res"
-#include "../res/assets/dark/inc/images/uiex_Portraitmenu_n.res"
-#include "../res/assets/dark/inc/images/uiex_Portraitmenu_p.res"
-#include "../res/assets/dark/inc/images/uiex_radio_checked_d.res"
-#include "../res/assets/dark/inc/images/uiex_radio_checked_n.res"
-#include "../res/assets/dark/inc/images/uiex_radio_checked_p.res"
-#include "../res/assets/dark/inc/images/uiex_radio_d.res"
-#include "../res/assets/dark/inc/images/uiex_radio_n.res"
-#include "../res/assets/dark/inc/images/uiex_radio_p.res"
-#include "../res/assets/dark/inc/images/uiex_shift.res"
-#include "../res/assets/dark/inc/images/uiex_shifton.res"
-#include "../res/assets/dark/inc/images/uiex_texteditorhide.res"
-#include "../res/assets/dark/inc/images/uiex_texteditor_show.res"
-extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_Boot_loading[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_check[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_Coverwindow[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_loading_repeat_bg[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_Sliding_dot[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_Sliding_Square[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_switch[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_Windowclosed_n[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char image_uiex_Windowclosed_p[]);
-#else
-#endif /*WITH_STB_IMAGE*/
-#ifdef WITH_VGCANVAS
-#endif /*WITH_VGCANVAS*/
-#ifdef WITH_TRUETYPE_FONT
-extern TK_CONST_DATA_ALIGN(const unsigned char font_default[]);
-#else  /*WITH_TRUETYPE_FONT*/
-#endif /*WITH_TRUETYPE_FONT*/
-#endif /*WITH_FS_RES*/
-
-ret_t assets_init_dark(void) {
-  assets_manager_t* am = assets_manager();
-  assets_manager_set_theme(am, "dark");
-
-#ifdef WITH_FS_RES
-  assets_manager_preload(am, ASSET_TYPE_FONT, "default");
-  assets_manager_preload(am, ASSET_TYPE_STYLE, "default");
-#else
-  assets_manager_add(am, strings_en_US);
-  assets_manager_add(am, style_uiex_dark);
-  assets_manager_add(am, style_uiex_dialog_confirm_dark);
-  assets_manager_add(am, style_uiex_dialog_info_dark);
-  assets_manager_add(am, style_uiex_dialog_warn_dark);
-  assets_manager_add(am, style_uiex_keyboard_dark);
-  assets_manager_add(am, style_dialog_toast);
-  assets_manager_add(am, ui_uiex_dlg_center_scale);
-  assets_manager_add(am, ui_uiex_dlg_fade);
-  assets_manager_add(am, ui_uiex_dlg_popdown);
-  assets_manager_add(am, ui_uiex_dlg_popup);
-  assets_manager_add(am, ui_uiex_htranslate);
-  assets_manager_add(am, ui_uiex_kb_ascii);
-  assets_manager_add(am, ui_uiex_kb_default);
-  assets_manager_add(am, ui_uiex_kb_foo);
-  assets_manager_add(am, ui_uiex_kb_uint);
-  assets_manager_add(am, ui_uiex_menu_bar);
-  assets_manager_add(am, ui_uiex_menu_landscape);
-  assets_manager_add(am, ui_uiex_overlay);
-  assets_manager_add(am, ui_uiex_page_animate);
-  assets_manager_add(am, ui_uiex_page_button);
-  assets_manager_add(am, ui_uiex_page_chart);
-  assets_manager_add(am, ui_uiex_page_checkbox);
-  assets_manager_add(am, ui_uiex_page_color);
-  assets_manager_add(am, ui_uiex_page_date_time);
-  assets_manager_add(am, ui_uiex_page_edit);
-  assets_manager_add(am, ui_uiex_page_label);
-  assets_manager_add(am, ui_uiex_page_layout);
-  assets_manager_add(am, ui_uiex_page_mledit);
-  assets_manager_add(am, ui_uiex_page_progress);
-  assets_manager_add(am, ui_uiex_page_selector);
-  assets_manager_add(am, ui_uiex_page_slider);
-  assets_manager_add(am, ui_uiex_page_tab_ctrl);
-  assets_manager_add(am, ui_uiex_page_window);
-  assets_manager_add(am, ui_uiex_popup);
-  assets_manager_add(am, ui_uiex_preload);
-  assets_manager_add(am, ui_uiex_sysbar_landscape);
-  assets_manager_add(am, ui_uiex_sysbar_portrait);
-  assets_manager_add(am, ui_uiex_vtranslate);
-  assets_manager_add(am, image_uiex_arrow_down_n_dark);
-  assets_manager_add(am, image_uiex_arrow_down_p_dark);
-  assets_manager_add(am, image_uiex_arrow_up_n_dark);
-  assets_manager_add(am, image_uiex_arrow_up_p_dark);
-  assets_manager_add(am, image_uiex_button_Empty_dark);
-  assets_manager_add(am, image_uiex_button_Export_dark);
-  assets_manager_add(am, image_uiex_button_Import_dark);
-  assets_manager_add(am, image_uiex_button_search_dark);
-  assets_manager_add(am, image_uiex_button_time_dark);
-  assets_manager_add(am, image_uiex_check_checked_d_dark);
-  assets_manager_add(am, image_uiex_check_checked_n_dark);
-  assets_manager_add(am, image_uiex_check_checked_p_dark);
-  assets_manager_add(am, image_uiex_check_d_dark);
-  assets_manager_add(am, image_uiex_check_n_dark);
-  assets_manager_add(am, image_uiex_check_p_dark);
-  assets_manager_add(am, image_uiex_close_n_dark);
-  assets_manager_add(am, image_uiex_close_p_dark);
-  assets_manager_add(am, image_uiex_combobox_btn_d_dark);
-  assets_manager_add(am, image_uiex_combobox_btn_n_dark);
-  assets_manager_add(am, image_uiex_combobox_btn_p_dark);
-  assets_manager_add(am, image_uiex_editor_bgcolor_dark);
-  assets_manager_add(am, image_uiex_editor_Importpictures_dark);
-  assets_manager_add(am, image_uiex_editor_TextAlignBoth_dark);
-  assets_manager_add(am, image_uiex_editor_TextAlignleft_dark);
-  assets_manager_add(am, image_uiex_editor_TextAlignright_dark);
-  assets_manager_add(am, image_uiex_editor_TextBold_dark);
-  assets_manager_add(am, image_uiex_editor_TextCenteralignment_dark);
-  assets_manager_add(am, image_uiex_editor_Textcolor_dark);
-  assets_manager_add(am, image_uiex_editor_TextItalic_dark);
-  assets_manager_add(am, image_uiex_editor_TextLinespacing_dark);
-  assets_manager_add(am, image_uiex_editor_TextUnderscore_dark);
-  assets_manager_add(am, image_uiex_keyboard_backspace_n_dark);
-  assets_manager_add(am, image_uiex_keyboard_backspace_p_dark);
-  assets_manager_add(am, image_uiex_keyboard_CN_dark);
-  assets_manager_add(am, image_uiex_keyboard_EN_dark);
-  assets_manager_add(am, image_uiex_logo_dark);
-  assets_manager_add(am, image_uiex_Portraitmenu_n_dark);
-  assets_manager_add(am, image_uiex_Portraitmenu_p_dark);
-  assets_manager_add(am, image_uiex_radio_checked_d_dark);
-  assets_manager_add(am, image_uiex_radio_checked_n_dark);
-  assets_manager_add(am, image_uiex_radio_checked_p_dark);
-  assets_manager_add(am, image_uiex_radio_d_dark);
-  assets_manager_add(am, image_uiex_radio_n_dark);
-  assets_manager_add(am, image_uiex_radio_p_dark);
-  assets_manager_add(am, image_uiex_shift_dark);
-  assets_manager_add(am, image_uiex_shifton_dark);
-  assets_manager_add(am, image_uiex_texteditorhide_dark);
-  assets_manager_add(am, image_uiex_texteditor_show_dark);
-  assets_manager_add(am, image_uiex_Boot_loading);
-  assets_manager_add(am, image_uiex_check);
-  assets_manager_add(am, image_uiex_Coverwindow);
-  assets_manager_add(am, image_uiex_loading_repeat_bg);
-  assets_manager_add(am, image_uiex_Sliding_dot);
-  assets_manager_add(am, image_uiex_Sliding_Square);
-  assets_manager_add(am, image_uiex_switch);
-  assets_manager_add(am, image_uiex_Windowclosed_n);
-  assets_manager_add(am, image_uiex_Windowclosed_p);
-#ifdef WITH_VGCANVAS
-#endif /*WITH_VGCANVAS*/
-#ifdef WITH_TRUETYPE_FONT
-  assets_manager_add(am, font_default);
-#else  /*WITH_TRUETYPE_FONT*/
-#endif /*WITH_TRUETYPE_FONT*/
-#endif
-
-  tk_init_assets();
-  return RET_OK;
-}
-/*** dark end ***/
-
 bool_t assets_has_theme(const char* name) {
   return_value_if_fail(name != NULL, FALSE);
 
   if (tk_str_eq(name, "default")) {
-    return TRUE;
-  } else if (tk_str_eq(name, "dark")) {
     return TRUE;
   } else {
     return FALSE;
@@ -477,8 +245,6 @@ static ret_t assets_init_internal(const char* theme) {
 
   if (tk_str_eq(theme, "default")) {
     return assets_init_default();
-  } else if (tk_str_eq(theme, "dark")) {
-    return assets_init_dark();
   } else {
     log_debug("%s not support.\n", theme);
     return RET_NOT_IMPL;
