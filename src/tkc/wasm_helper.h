@@ -76,6 +76,9 @@ unsigned long long strtoull(const char* str, char** endptr, int base);
 
 void qsort (void *, size_t, size_t, int (*)(const void *, const void *));
 
+#define towlower(c) tolower(c)
+#define towupper(c) toupper(c)
+
 END_C_DECLS
 
 #endif /*WASM_HELPER_H*/
