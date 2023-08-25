@@ -53,7 +53,16 @@ double floor(double x);
 double ceil(double x);
 #endif/*WIN32*/
 
+int iswupper(wchar_t ch);
+int iswlower(wchar_t ch);
+int iswdigit(wchar_t ch);
+int iswxdigit(wchar_t ch);
+int iswalpha(wchar_t ch);
+int iswalnum(wchar_t ch);
 int iswspace(wchar_t ch);
+
+int islower(int c);
+
 size_t wcslen(const wchar_t* s);
 int wcscmp(const wchar_t* s1, const wchar_t* s2);
 int wcscasecmp(const wchar_t* s1, const wchar_t* s2);
