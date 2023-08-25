@@ -91,7 +91,6 @@ def prepare_depends_libs(ARGUMENTS, helper, libs):
         args += ' MVVM_ROOT=\"{}\"'.format(helper.MVVM_ROOT)
 
     if 'APP_BIN_DIR' in ARGUMENTS:
-        helper.APP_BIN_DIR = os.path.abspath(ARGUMENTS['APP_BIN_DIR'])
         args += ' APP_BIN_DIR=\"{}\"'.format(helper.APP_BIN_DIR.replace('\\', '/'))
         if not os.path.exists(helper.APP_BIN_DIR):
             os.makedirs(helper.APP_BIN_DIR)

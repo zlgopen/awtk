@@ -1,11 +1,49 @@
 import os
 import sys
 import json
+import atexit
 import shutil
 import platform
+import res_config
+import compile_config
 from SCons import Script
 
 PLATFORM = platform.system()
+
+SRT_SCONS_CONFIG_FUN = 'get_scons_config'
+SRT_SCONS_CONFIG_SCRIPT = 'SCONS_CONFIG_SCRIPT'
+SRT_SCONS_CONFIG_SCRIPT_ARGV = 'SCONS_CONFIG_SCRIPT_ARGV'
+
+COMPILE_CONFIG = {
+  'AWTK_ROOT' : { 'value' : '', 'desc' : ['awtk root'], 'help_info' : 'set link awtk root, AWTK_ROOT=XXXXX'},
+  'LINUX_FB' : { 'value' : False, 'desc' : ['use linux\'s building'], 'help_info' : 'use linux\'s compile tools prefix building, value is true or false'},
+  'MVVM_ROOT' : { 'value' : '', 'desc' : ['awtk\'s mvvm root'], 'help_info' : 'set link awtk\'s mvvm root, MVVM_ROOT=XXXXX'},
+  'WITH_MVVM' : { 'value' : False, 'desc' : ['use mvvm'], 'help_info' : 'use mvvm\'s lib, value is true or false'},
+  'AWFLOW_ROOT' : { 'value' : '', 'desc' : ['awtk\'s awflow root'], 'help_info' : 'set link awtk\'s awflow root, AWFLOW_ROOT=XXXXX'},
+  'WITH_AWFLOW' : { 'value' : False, 'desc' : ['use awflow'], 'help_info' : 'use awflow\'s lib, value is true or false'},
+  SRT_SCONS_CONFIG_SCRIPT : { 'value' : '', 'save_file' : False, 'desc' : ['set script file path, this is script has {0}(COMPILE_CONFIG, ARGUMENTS, argv) function'.format(SRT_SCONS_CONFIG_FUN)], 'help_info' : 'set res config file path, this is script must has {0}(COMPILE_CONFIG, ARGUMENTS, argv) function, {0}\'s function return compile_config\'s class, CONFIG_SCRIPT=XXXXX'.format(SRT_SCONS_CONFIG_FUN)},
+  SRT_SCONS_CONFIG_SCRIPT_ARGV : { 'value' : '', 'save_file' : False, 'desc' : ['value is {0}\s argv for script file '.format(SRT_SCONS_CONFIG_FUN)], 'help_info' : 'value is {0}\s argv for script file\'s {0}, SCONS_CONFIG_SCRIPT_ARGV=XXXXX'.format(SRT_SCONS_CONFIG_FUN)},
+  'BUILD_DIR' : { 'value' : None, 'desc' : ['build dir, compile temp file dir'], 'help_info' : 'set build dir, save compile temp file dir or *.obj/.*o dir, BUILD_DIR=XXXXX'},
+#   'APP_BIN_DIR' : { 'value' : None, 'desc' : ['build bin dir'], 'help_info' : 'set build bin dir, APP_BIN_DIR=XXXXX'},
+#   'APP_LIB_DIR' : { 'value' : None, 'desc' : ['build lib dir'], 'help_info' : 'set build lib dir, APP_LIB_DIR=XXXXX'},
+  'DEBUG' : { 'value' : True, 'desc' : ['awtk\'s compile is debug'], 'help_info' : 'awtk\'s compile is debug, value is true or false' },
+  'PDB' : { 'value' : True, 'desc' : ['export pdb file'], 'help_info' : 'export pdb file, value is true or false' },
+  'FLAGS' : { 'value' : '', 'desc' : ['compile flags'], 'help_info' : 'set compile\'s flags, so care of system and compile tools'},
+  'LIBS' : { 'value' : [], 'desc' : ['compile libs'], 'help_info' : 'set compile\'s libs, so care of system and compile tools, use \',\' split muliple libraries '},
+  'LIBPATH' : { 'value' : [], 'desc' : ['compile lib paths'], 'help_info' : 'set compile\'s lib paths, so care of system and compile tools, use \',\' split muliple librarie\'s paths '},
+  'CPPPATH' : { 'value' : [], 'desc' : ['compile include paths'], 'help_info' : 'set compile\'s include paths, so care of system and compile tools, use \',\' split muliple include path '},
+  'SHARED' : { 'value' : True, 'desc' : ['compile is SharedLibrary'], 'help_info' : 'app\'s compile is Shared Library, value is true or false' },
+  'IDL_DEF' : { 'value' : True, 'desc' : ['compile build idl def file'], 'help_info' : 'app\'s compile build idl def file, value is true or false' },
+  'LCD' : { 'value' : '', 'save_file' : False, 'desc' : ['app\'s lcd\'s size'], 'help_info' : 'app\'s lcd\'s size, value is [lcd_width]_[lcd_height], example is LCD=320_480' },
+  'LANGUAGE' : { 'value' : '', 'save_file' : False, 'desc' : ['app\'s language'], 'help_info' : 'app\'s language, value is [country]_[language], example is LANGUAGE=zh_CH' },
+  'FONT' : { 'value' : '', 'save_file' : False, 'desc' : ['app\'s font\'s name'], 'help_info' : 'app\'s font\'s name, FONT=XXXXX ' },
+  'THEME' : { 'value' : '', 'save_file' : False, 'desc' : ['app\'s default\'s theme\'s name'], 'help_info' : 'app\'s default\'s theme\'s name, THEME=XXXXX ' },
+  'RES_ROOT' : { 'value' : '', 'save_file' : False, 'desc' : ['app\'s res root'], 'help_info' : 'app\'s res root, RES_ROOT=XXXXX ' },
+}
+
+def set_compile_config(config) :
+  global COMPILE_CONFIG
+  COMPILE_CONFIG = config
 
 def getTkcOnly():
     env = os.environ
@@ -25,53 +63,17 @@ def mkdir_if_not_exist(fullpath):
         os.makedirs(fullpath)
 
 
-def load_project_json(filename):
-    try:
-        if sys.version_info >= (3, 0):
-            with open(filename, 'r', encoding='utf8') as f:
-                info = json.load(f)
-                return info
-        else:
-            with open(filename, 'r') as f:
-                info = json.load(f)
-                return info
-    except:
-        return None
-
-
-def get_project_w(info, theme):
-    return info['assets']['themes'][theme]['lcd']['width']
-
-
-def get_project_h(info, theme):
-    return info['assets']['themes'][theme]['lcd']['height']
-
-def get_project_lcd_orientation(info, theme):
-    orientation = '0'
-    if 'lcdOrientation' in info['assets'] :
-        orientation = info['assets']['lcdOrientation']
-    if 'orientation' in info['assets']['themes'][theme]['lcd'] :
-        return info['assets']['themes'][theme]['lcd']['orientation']
-    else :
-        return orientation
-
-def get_project_theme(info):
-    return info['assets']['activedTheme']
-
-
-def get_project_language(info):
-    return info['assets']['defaultLanguage']
-
-
-def get_project_country(info):
-    return info['assets']['defaultCountry']
-
-def get_project_res_root(info):
-    res_root = info['assets']['outputDir']
-    if os.path.isabs(res_root):
-        return res_root
-    else: 
-        return '../' + res_root
+def load_project_json(root, filename):
+    content = None
+    config_json = join_path(root, filename)
+    if not os.path.exists(config_json) or filename == '':
+        config_json = join_path(root, 'project.json')
+        if not os.path.exists(config_json) :
+            print(config_json + ' is not exists.')
+            return
+    content = res_config.res_config()
+    content.load_file(config_json)
+    return content
 
 class AppHelperBase:
     def set_deps(self, DEPENDS_LIBS):
@@ -215,7 +217,40 @@ class AppHelperBase:
                 build_dir = os.path.join(self.BUILD_DIR, dir)
                 Script.SConscript(sc, variant_dir=build_dir, duplicate=False)
 
+    def get_curr_config(self) :
+        return compile_config.get_curr_config()
+
+    def get_complie_helper_by_script(self, ARGUMENTS, script_path, script_argv) :
+        global COMPILE_CONFIG
+        script_path = os.path.abspath(script_path)
+        if os.path.exists(script_path) :
+            import importlib
+            script_dir = os.path.dirname(script_path)
+            file_name = os.path.basename(script_path)
+            module_name, ext = os.path.splitext(file_name)
+            sys.path.insert(0, script_dir)
+            script = importlib.import_module(module_name)
+            sys.path.remove(script_dir)
+            if hasattr(script, SRT_SCONS_CONFIG_FUN) :
+                return script.get_scons_config(COMPILE_CONFIG, ARGUMENTS, script_argv)
+            else :
+                sys.exit(script_path + ' script not found get_res_config function')
+        else :
+            sys.exit('res_config_file sopt not found :' + script_path)
+
     def __init__(self, ARGUMENTS):
+        global COMPILE_CONFIG
+        global SRT_SCONS_CONFIG_SCRIPT
+        global SRT_SCONS_CONFIG_SCRIPT_ARGV
+        if SRT_SCONS_CONFIG_SCRIPT in ARGUMENTS :
+            self.complie_helper = self.get_complie_helper_by_script(ARGUMENTS, ARGUMENTS[SRT_SCONS_CONFIG_SCRIPT], ARGUMENTS.get(SRT_SCONS_CONFIG_SCRIPT_ARGV, ''))
+            exit()
+        else :
+            self.complie_helper = compile_config.complie_helper()
+            self.complie_helper.set_compile_config(COMPILE_CONFIG)
+            self.complie_helper.scons_user_sopt(ARGUMENTS)
+        compile_config.set_curr_config(self.complie_helper)
+
         APP_ROOT = os.path.normpath(os.getcwd())
 
         self.SRC_DIR = 'src'
@@ -226,30 +261,33 @@ class AppHelperBase:
         self.DEPENDS_LIBS = []
         self.GEN_IDL_DEF = True
         self.BUILD_SHARED = True
-        self.LINUX_FB = ARGUMENTS.get('LINUX_FB', '') == 'true'
+        self.LINUX_FB = self.complie_helper.get_value('LINUX_FB', False)
         self.AWTK_ROOT = self.getAwtkRoot()
         self.awtk = self.getAwtkConfig()
         self.AWTK_LIBS = self.awtk.LIBS
         self.AWTK_CFLAGS = self.awtk.CFLAGS
         self.AWTK_CCFLAGS = self.awtk.CCFLAGS
         self.APP_ROOT = APP_ROOT
-        self.BUILD_DIR = ARGUMENTS.get('BUILD_DIR', '')
+        self.BUILD_DIR = self.complie_helper.get_value('BUILD_DIR', '')
         self.BIN_DIR = os.path.join(self.BUILD_DIR, 'bin')
         self.LIB_DIR = os.path.join(self.BUILD_DIR, 'lib')
         self.APP_BIN_DIR = os.path.join(APP_ROOT, self.BIN_DIR)
         self.APP_LIB_DIR = os.path.join(APP_ROOT, self.LIB_DIR)
         self.APP_SRC = os.path.join(APP_ROOT, 'src')
         self.APP_RES = os.path.join(APP_ROOT, 'res')
-        self.APP_LIBS = []
-        self.APP_LIBPATH = [self.APP_LIB_DIR, self.APP_BIN_DIR]
+        self.APP_LIBS = self.complie_helper.get_value('LIBS', [])
         self.APP_LINKFLAGS = ''
-        self.APP_CPPPATH = [self.APP_SRC, self.APP_RES]
         self.PLATFORM_LIBS = []
         self.APP_TOOLS = None
         self.WITH_JERRYSCRIPT = False
         self.WITH_IOTJS = False
         self.MVVM_ROOT = None
         self.AWFLOW_ROOT = None
+        self.DEBUG = self.complie_helper.get_value('DEBUG', False)
+
+        self.parseArgs(self.awtk, ARGUMENTS)
+        self.APP_CPPPATH = [self.APP_SRC, self.APP_RES] + self.complie_helper.get_value('CPPPATH', [])
+        self.APP_LIBPATH = [self.APP_LIB_DIR, self.APP_BIN_DIR] + self.complie_helper.get_value('LIBPATH', [])
 
         mkdir_if_not_exist(self.APP_BIN_DIR)
         mkdir_if_not_exist(self.APP_LIB_DIR)
@@ -263,11 +301,11 @@ class AppHelperBase:
         if self.LINUX_FB:
             os.environ['LINUX_FB'] = 'true'
 
-        self.WITH_JERRYSCRIPT = ARGUMENTS.get('WITH_JERRYSCRIPT', '').lower().startswith('t')
-        self.WITH_IOTJS = ARGUMENTS.get('WITH_IOTJS', '').lower().startswith('t')
+        self.WITH_JERRYSCRIPT = self.complie_helper.get_value('WITH_JERRYSCRIPT', True)
+        self.WITH_IOTJS = self.complie_helper.get_value('WITH_IOTJS', False)
 
-        WITH_MVVM = ARGUMENTS.get('WITH_MVVM', '').lower().startswith('t')
-        MVVM_ROOT = ARGUMENTS.get('MVVM_ROOT', '')
+        WITH_MVVM = self.complie_helper.get_value('WITH_MVVM', False)
+        MVVM_ROOT = self.complie_helper.get_value('MVVM_ROOT', '')
         if WITH_MVVM or os.path.exists(MVVM_ROOT):
             os.environ['WITH_MVVM'] = 'true'
             if not os.path.exists(MVVM_ROOT):
@@ -275,8 +313,8 @@ class AppHelperBase:
             self.MVVM_ROOT = MVVM_ROOT
             print("MVVM_ROOT: " + self.MVVM_ROOT)
 
-        WITH_AWFLOW = ARGUMENTS.get('WITH_AWFLOW', '').lower().startswith('t')
-        AWFLOW_ROOT = ARGUMENTS.get('AWFLOW_ROOT', '')
+        WITH_AWFLOW = self.complie_helper.get_value('WITH_AWFLOW', False)
+        AWFLOW_ROOT = self.complie_helper.get_value('AWFLOW_ROOT', '')
         print(WITH_AWFLOW)
         if WITH_AWFLOW or os.path.exists(AWFLOW_ROOT):
             os.environ['WITH_AWFLOW'] = 'true'
@@ -287,7 +325,6 @@ class AppHelperBase:
         
         if self.TKC_ONLY :
             self.set_tkc_only()
-        self.parseArgs(self.awtk, ARGUMENTS)
 
         print("AWTK_ROOT: " + self.AWTK_ROOT)
         print("TKC_ONLY: " + str(self.TKC_ONLY))
@@ -295,7 +332,14 @@ class AppHelperBase:
 
     def getAwtkConfig(self):
         sys.path.insert(0, self.AWTK_ROOT)
+        tmp_cwd = os.getcwd()
+        os.chdir(self.AWTK_ROOT)
+        compile_config.set_curr_app_root(tmp_cwd)
+        tmp_complie_helper = compile_config.get_curr_config()
+        compile_config.set_curr_config(None)
         import awtk_config as awtk
+        os.chdir(tmp_cwd)
+        compile_config.set_curr_config(tmp_complie_helper)
         return awtk
 
     def saveUsesSdkInfo(self):
@@ -387,17 +431,6 @@ class AppHelperBase:
             if self.DEF_FILE_PROCESSOR != None:
                 self.DEF_FILE_PROCESSOR()
 
-    def showHelp(self):
-        print('Options default values:')
-        print('  LCD=320_480')
-        print('  LANGUAGE=zh_CH')
-        print('  FONT="default"')
-        print('  THEME="default"')
-        print('  SHARED=true')
-        print('  LINUX_FB=false')
-        print('  BUILD_DIR=arm')
-        sys.exit(0)
-
     def parseArgs(self, awtk, ARGUMENTS):
         APP_RES_ROOT = '../res'
         APP_THEME = 'default'
@@ -408,20 +441,17 @@ class AppHelperBase:
         APP_DEFAULT_LANGUAGE = 'zh'
         APP_DEFAULT_COUNTRY = 'CN'
 
-        config = load_project_json('project.json')
-        if config and 'assets' in config:
-            APP_THEME = get_project_theme(config)
-            LCD_WIDTH = get_project_w(config, APP_THEME)
-            LCD_HEIGHT = get_project_h(config, APP_THEME)
-            APP_DEFAULT_LANGUAGE = get_project_language(config)
-            APP_DEFAULT_COUNTRY = get_project_country(config)
-            APP_RES_ROOT = get_project_res_root(config)
-            LCD_ORIENTATION = get_project_lcd_orientation(config, APP_THEME)
+        config = load_project_json(self.APP_ROOT, 'project.json')
+        if config != None:
+            APP_THEME = config.get_res_actived_theme()
+            LCD_WIDTH = config.get_res_w(APP_THEME)
+            LCD_HEIGHT = config.get_res_h(APP_THEME)
+            APP_DEFAULT_LANGUAGE = config.get_res_language()
+            APP_DEFAULT_COUNTRY = config.get_res_country()
+            APP_RES_ROOT = config.get_res_res_root()
+            LCD_ORIENTATION = config.get_res_lcd_orientation(APP_THEME)
 
-        if ARGUMENTS.get('HELP', ''):
-            self.showHelp()
-
-        LCD = ARGUMENTS.get('LCD', '')
+        LCD = self.complie_helper.get_value('LCD', '')
         if len(LCD) > 0:
             wh = LCD.split('_')
             if len(wh) >= 1:
@@ -429,15 +459,13 @@ class AppHelperBase:
             if len(wh) >= 2:
                 LCD_HEIGHT = wh[1]
 
-        FONT = ARGUMENTS.get('FONT', '')
+        FONT = self.complie_helper.get_value('FONT', '')
         if len(FONT) > 0:
             APP_DEFAULT_FONT = FONT
 
-        THEME = ARGUMENTS.get('THEME', '')
-        if len(THEME) > 0:
-            APP_THEME = THEME
+        APP_THEME = self.complie_helper.get_value('THEME', APP_THEME)
 
-        LANGUAGE = ARGUMENTS.get('LANGUAGE', '')
+        LANGUAGE = self.complie_helper.get_value('LANGUAGE', '')
         if len(LANGUAGE) > 0:
             lan = LANGUAGE.split('_')
             if len(lan) >= 1:
@@ -445,19 +473,11 @@ class AppHelperBase:
             if len(lan) >= 2:
                 APP_DEFAULT_COUNTRY = lan[1]
 
-        RES_ROOT = ARGUMENTS.get('RES_ROOT', '')
-        if len(RES_ROOT) > 0:
-            APP_RES_ROOT = RES_ROOT
-            self.APP_RES = os.path.abspath(
-                os.path.join(self.APP_BIN_DIR, RES_ROOT))
+        APP_RES_ROOT = self.complie_helper.get_value('RES_ROOT', APP_RES_ROOT)
+        self.APP_RES = os.path.abspath(os.path.join(self.APP_BIN_DIR, APP_RES_ROOT))
 
-        SHARED = ARGUMENTS.get('SHARED', '')
-        if len(SHARED) > 0:
-            self.BUILD_SHARED = not SHARED.lower().startswith('f')
-
-        IDL_DEF = ARGUMENTS.get('IDL_DEF', '')
-        if len(IDL_DEF) > 0:
-            self.GEN_IDL_DEF = not IDL_DEF.lower().startswith('f')
+        self.BUILD_SHARED = self.complie_helper.get_value('SHARED', False)
+        self.GEN_IDL_DEF = self.complie_helper.get_value('IDL_DEF', True)
 
         if LCD_ORIENTATION == '90' or LCD_ORIENTATION == '270' :
             tmp = LCD_WIDTH;
@@ -474,9 +494,10 @@ class AppHelperBase:
             APP_DEFAULT_COUNTRY + '\\\" '
         APP_CCFLAGS = APP_CCFLAGS + ' -DAPP_ROOT=\"\\\"' + \
             self.APP_ROOT + '\\\"\" '
-        self.APP_CFLAGS = ''
-        self.APP_CCFLAGS = APP_CCFLAGS
-        self.APP_CXXFLAGS = self.APP_CCFLAGS
+
+        self.APP_CFLAGS = self.complie_helper.get_value('FLAGS', '')
+        self.APP_CCFLAGS = APP_CCFLAGS + self.complie_helper.get_value('FLAGS', '')
+        self.APP_CXXFLAGS = self.APP_CCFLAGS + self.complie_helper.get_value('FLAGS', '')
 
         if PLATFORM == 'Linux':
             self.APP_LINKFLAGS += ' -Wl,-rpath=' + self.APP_BIN_DIR + ' '
@@ -537,6 +558,9 @@ class AppHelperBase:
         APP_TOOLS = self.APP_TOOLS
         CXXFLAGS = self.APP_CXXFLAGS
         DEPENDS_LIBS = []
+        DEBUG = self.complie_helper.get_value('DEBUG', awtk.OS_DEBUG)
+        self.APP_BIN_DIR = self.complie_helper.get_value('APP_BIN_DIR', os.path.join(self.APP_ROOT, self.BIN_DIR))
+        self.APP_LIB_DIR = self.complie_helper.get_value('APP_LIB_DIR', os.path.join(self.APP_ROOT, self.LIB_DIR))
 
         if self.MVVM_ROOT:
             MVVM_3RD_ROOT = join_path(self.MVVM_ROOT, '3rd')
@@ -633,6 +657,17 @@ class AppHelperBase:
         LIBS = self.APP_LIBS + LIBS
 
         if hasattr(awtk, 'CC'):
+            if DEBUG != awtk.OS_DEBUG:
+                if DEBUG :
+                    CCFLAGS += ' -g -O0 '
+                    CFLAGS += ' -g -O0 '
+                else :
+                    CCFLAGS += ' -Os '
+                    CFLAGS += ' -Os '
+            else :
+                CCFLAGS += awtk.BUILD_DEBUG_FLAG
+                CFLAGS += awtk.BUILD_DEBUG_FLAG
+                
             env = DefaultEnvironment(
                 ENV = os.environ,
                 CC=awtk.CC,
@@ -649,10 +684,25 @@ class AppHelperBase:
                 CCFLAGS=CCFLAGS,
                 CFLAGS=CFLAGS,
                 CXXFLAGS=CXXFLAGS,
-                TARGET_ARCH=awtk.TARGET_ARCH,
+                TARGET_ARCH=TARGET_ARCH,
                 OS_SUBSYSTEM_CONSOLE=awtk.OS_SUBSYSTEM_CONSOLE,
                 OS_SUBSYSTEM_WINDOWS=awtk.OS_SUBSYSTEM_WINDOWS)
         else:
+            if DEBUG != awtk.OS_DEBUG:
+                if DEBUG :
+                    CCFLAGS += ' -D_DEBUG -DDEBUG /DEBUG /MDd /Od '
+                    CFLAGS += ' -D_DEBUG -DDEBUG /DEBUG /MDd /Od '
+                else :
+                    CCFLAGS += ' -DNDEBUG /MD /O2 /Oi '
+                    CFLAGS += ' -DNDEBUG /MD /O2 /Oi '
+
+                if self.complie_helper.get_value('PDB') :
+                    LINKFLAGS += ' /DEBUG '
+            else :
+                CCFLAGS += awtk.BUILD_DEBUG_FLAG
+                CFLAGS += awtk.BUILD_DEBUG_FLAG
+                LINKFLAGS += awtk.BUILD_DEBUG_LINKFLAGS
+
             env = DefaultEnvironment(
                 TOOLS=APP_TOOLS,
                 CPPPATH=CPPPATH,
@@ -662,7 +712,7 @@ class AppHelperBase:
                 CFLAGS=CFLAGS,
                 CCFLAGS=CCFLAGS,
                 CXXFLAGS=CXXFLAGS,
-                TARGET_ARCH=awtk.TARGET_ARCH,
+                TARGET_ARCH=TARGET_ARCH,
                 OS_SUBSYSTEM_CONSOLE=awtk.OS_SUBSYSTEM_CONSOLE,
                 OS_SUBSYSTEM_WINDOWS=awtk.OS_SUBSYSTEM_WINDOWS)
         

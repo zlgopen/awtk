@@ -2,7 +2,8 @@ import os
 import os.path
 import platform
 import shutil
-from shutil import copyfile
+import compile_config
+complie_helper = compile_config.get_curr_config_for_awtk()
 
 import sys
 if sys.version_info.major == 2:
@@ -77,6 +78,7 @@ TOOLS_NAME = ''
 NANOVG_BACKEND = ''
 NATIVE_WINDOW = ''
 #TOOLS_NAME = 'mingw'
+TOOLS_NAME = complie_helper.get_value('TOOLS_NAME', TOOLS_NAME)
 
 if OS_NAME == 'Windows':
     TK_ROOT = TK_ROOT.replace('\\', '\\\\')
@@ -91,10 +93,11 @@ OS_SUBSYSTEM_WINDOWS = ''
 OS_PROJECTS = []
 # only for c compiler flags
 COMMON_CFLAGS = ''
+OS_DEBUG = complie_helper.get_value('DEBUG')
 
 if OS_NAME == 'Darwin':
     TOOLS_NAME = ''
-    OS_FLAGS = '-g -Wall -Wno-unused-function -fPIC -DWITHOUT_GLAD=1 '
+    OS_FLAGS = '-Wall -Wno-unused-function -fPIC -DWITHOUT_GLAD=1 '
     OS_LIBS = ['stdc++', 'iconv', 'pthread', 'm', 'dl']
     OS_LINKFLAGS = '-framework IOKit -framework Cocoa -framework QuartzCore -framework OpenGL -weak_framework Metal -weak_framework MetalKit'
     OS_FLAGS = OS_FLAGS + ' -DHAS_SEM_OPEN '
@@ -104,7 +107,7 @@ if OS_NAME == 'Darwin':
 
 elif OS_NAME == 'Linux':
     TOOLS_NAME = ''
-    OS_FLAGS = '-g -Wall -Wno-unused-function -fPIC '
+    OS_FLAGS = ' -Wall -Wno-unused-function -fPIC '
     OS_LIBS = ['GL', 'gtk-3', 'gdk-3', 'glib-2.0', 'gobject-2.0', 'Xext', 'X11',
                'sndio', 'stdc++', 'asound', 'pthread', 'm', 'dl']
     COMMON_CFLAGS = COMMON_CFLAGS+' -std=gnu99 '
@@ -135,15 +138,15 @@ elif OS_NAME == 'Windows':
     if TOOLS_NAME == '':
         OS_LIBS = ['gdi32', 'user32', 'winmm.lib', 'imm32.lib', 'version.lib', 'shell32.lib',
                    'ole32.lib', 'Oleaut32.lib', 'Advapi32.lib', 'DelayImp.lib', 'psapi.lib', "ws2_32"]
-        OS_FLAGS = '-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /Od  /FS /Z7 /utf-8 /MD '
+        OS_FLAGS = '-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE   /FS /Z7 /utf-8 '
         if TARGET_ARCH == 'x86':
-            OS_LINKFLAGS = '/MACHINE:X86 /DEBUG '
+            OS_LINKFLAGS = '/MACHINE:X86 '
             OS_SUBSYSTEM_CONSOLE = '/SUBSYSTEM:CONSOLE,5.01  '
             OS_SUBSYSTEM_WINDOWS = '/SUBSYSTEM:WINDOWS,5.01  '
             OS_FLAGS = OS_FLAGS + ' -D_WIN32 '
         else:
             OS_FLAGS = OS_FLAGS + ' -DWITH_64BIT_CPU '
-            OS_LINKFLAGS = '/MACHINE:X64 /DEBUG '
+            OS_LINKFLAGS = '/MACHINE:X64 '
             OS_SUBSYSTEM_CONSOLE = '/SUBSYSTEM:CONSOLE  '
             OS_SUBSYSTEM_WINDOWS = '/SUBSYSTEM:WINDOWS  '
             OS_FLAGS = OS_FLAGS + ' -D_WIN64 '
@@ -152,7 +155,7 @@ elif OS_NAME == 'Windows':
     elif TOOLS_NAME == 'mingw':
         OS_LIBS = ['kernel32', 'gdi32', 'user32', 'winmm', 'imm32', 'version', 'shell32',
                    'ole32', 'Oleaut32', 'Advapi32', 'oleaut32', 'uuid', 'stdc++', "ws2_32"]
-        OS_FLAGS = '-DMINGW -DWINDOWS -D_CONSOLE -g -Wall'
+        OS_FLAGS = '-DMINGW -DWINDOWS -D_CONSOLE  -Wall'
         OS_LINKFLAGS = ' -Wl,-rpath=./bin -Wl,-rpath=./ -mwindows '
         COMMON_CFLAGS = COMMON_CFLAGS+' -std=gnu99 '
         OS_FLAGS = OS_FLAGS+' -U__FLT_EVAL_METHOD__ -D__FLT_EVAL_METHOD__=0 -DDECLSPEC=  '

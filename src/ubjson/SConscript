@@ -11,4 +11,5 @@ env=DefaultEnvironment().Clone()
 env.Library(os.path.join(LIB_DIR, 'ubjson'), sources, LIBS=[])
 
 LIBS=['ubjson'] + env['LIBS']
-env.Program(os.path.join(BIN_DIR, 'ubjson_dump'), ['tools/ubjson_dump.c'], LIBS=LIBS);
+if not 'BUILD_TOOLS' in os.environ or os.environ['BUILD_TOOLS'] == str(True) :
+  env.Program(os.path.join(BIN_DIR, 'ubjson_dump'), ['tools/ubjson_dump.c'], LIBS=LIBS);

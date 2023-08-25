@@ -1,9 +1,12 @@
 import os
+import sys
 import os.path
-import platform
-import shutil
-from shutil import copyfile
-from awtk_config_common import OS_NAME, TARGET_ARCH, TOOLS_PREFIX, TK_SRC, TK_BIN_DIR, TK_LIB_DIR, TK_3RD_ROOT, TK_TOOLS_ROOT, TK_DEMO_ROOT, GTEST_ROOT, TKC_STATIC_LIBS, TOOLS_NAME, NANOVG_BACKEND, NATIVE_WINDOW, TK_ROOT
+
+sys.path.insert(0, os.path.join(os.path.abspath(os.path.dirname(__file__)), 'scripts'))
+import compile_config
+complie_helper = compile_config.get_curr_config_for_awtk()
+
+from awtk_config_common import OS_NAME, TARGET_ARCH, TOOLS_PREFIX, TK_SRC, TK_BIN_DIR, TK_LIB_DIR, TK_3RD_ROOT, TK_TOOLS_ROOT, OS_DEBUG, TK_DEMO_ROOT, GTEST_ROOT, TKC_STATIC_LIBS, TOOLS_NAME, NANOVG_BACKEND, NATIVE_WINDOW, TK_ROOT
 from awtk_config_common import joinPath, toWholeArchive, genIdlAndDefEx, setEnvSpawn, genDllLinkFlags, copySharedLib, cleanSharedLib, scons_db_check_and_remove
 from awtk_config_common import OS_FLAGS, OS_LIBS, OS_LIBPATH, OS_CPPPATH, OS_LINKFLAGS, OS_SUBSYSTEM_CONSOLE, OS_SUBSYSTEM_WINDOWS, OS_PROJECTS, COMMON_CFLAGS
 
@@ -11,6 +14,7 @@ WIN32_AWTK_RES = 'win32_res/awtk.res'
 if TARGET_ARCH == 'x86':
     WIN32_AWTK_RES = 'win32_res/awtk_x86.res'
 
+WIN32_AWTK_RES = os.path.join(compile_config.get_curr_app_root(), WIN32_AWTK_RES)
 if not os.path.exists(WIN32_AWTK_RES):
     if TARGET_ARCH == 'x86':
         WIN32_AWTK_RES = os.path.join(TK_ROOT, 'win32_res/awtk_x86.res')
@@ -27,20 +31,26 @@ AWTK_STATIC_LIBS = AWTK_STATIC_LIBS+TKC_STATIC_LIBS
 # INPUT_ENGINE='t9ext'
 INPUT_ENGINE = 'pinyin'
 
+INPUT_ENGINE = complie_helper.get_value('INPUT_ENGINE', INPUT_ENGINE)
+
 VGCANVAS = 'NANOVG'
 # VGCANVAS='NANOVG_PLUS'
+# VGCANVAS='CAIRO'
+
+VGCANVAS = complie_helper.get_value('VGCANVAS', VGCANVAS)
+
 if OS_NAME == 'Windows':
     TK_ROOT = TK_ROOT.replace('\\', '\\\\')
     NANOVG_BACKEND = 'GLES2'
 else:
     NANOVG_BACKEND = 'GL3'
 
-# VGCANVAS='CAIRO'
 # NANOVG_BACKEND='GLES2'
 # NANOVG_BACKEND='GLES3'
 # NANOVG_BACKEND='AGG'
 # NANOVG_BACKEND='BGFX'
 # NANOVG_BACKEND='AGGE'
+NANOVG_BACKEND = complie_helper.get_value('NANOVG_BACKEND', NANOVG_BACKEND)
 
 FRAME_BUFFER_FORMAT = ''
 if VGCANVAS == 'CAIRO':
@@ -56,6 +66,19 @@ else:
         LCD = 'SDL_GPU'
 # LCD='SDL_FB_MONO'
 
+if NANOVG_BACKEND == 'AGGE' or NANOVG_BACKEND == 'AGGE' :
+    lcd_color_format = complie_helper.get_value('LCD_COLOR_FORMAT')
+    if lcd_color_format != '' :
+        if lcd_color_format== 'mono' :
+            LCD = 'SDL_FB_MONO'
+        else :
+            LCD = 'SDL_FB'
+            if lcd_color_format == 'bgr565' :
+                FRAME_BUFFER_FORMAT = lcd_color_format
+            else :
+                FRAME_BUFFER_FORMAT = 'bgra8888'
+
+
 NANOVG_BACKEND_LIBS = []
 NANOVG_BACKEND_PROJS = []
 NANOVG_BACKEND_CPPPATH = []
@@ -65,9 +88,14 @@ NATIVE_WINDOW = 'sdl'
 COMMON_CCFLAGS = ' -DTK_ROOT=\"\\\"'+TK_ROOT+'\\\"\" '
 #COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITHOUT_WINDOW_ANIMATOR_CACHE=1 '
 #COMMON_CCFLAGS=COMMON_CCFLAGS+' -DENABLE_PERFORMANCE_PROFILE=1 '
-#COMMON_CCFLAGS=COMMON_CCFLAGS+' -DNATIVE_WINDOW_BORDERLESS=1 '
-#COMMON_CCFLAGS=COMMON_CCFLAGS+' -DNATIVE_WINDOW_NOT_RESIZABLE=1 '
 #COMMON_CCFLAGS=COMMON_CCFLAGS+' -DENABLE_MEM_LEAK_CHECK=1 '
+
+if complie_helper.get_value('NATIVE_WINDOW_BORDERLESS', False) :
+    COMMON_CCFLAGS=COMMON_CCFLAGS+' -DNATIVE_WINDOW_BORDERLESS=1 '
+
+if complie_helper.get_value('NATIVE_WINDOW_NOT_RESIZABLE', False) :
+    COMMON_CCFLAGS=COMMON_CCFLAGS+' -DNATIVE_WINDOW_NOT_RESIZABLE=1 '
+
 
 COMMON_CCFLAGS = COMMON_CCFLAGS+' -DWITH_MBEDTLS=1 '
 COMMON_CCFLAGS = COMMON_CCFLAGS+' -DENABLE_CURSOR=1 '
@@ -171,10 +199,18 @@ else:
         COMMON_CCFLAGS = COMMON_CCFLAGS + \
             ' -DWITH_NANOVG_GL3 -DWITH_NANOVG_GL -DWITH_NANOVG_GPU  '
 
+BUILD_DEBUG_FLAG = ''
+BUILD_DEBUG_LINKFLAGS = ''
 OS_PROJECTS = []
 OS_WHOLE_ARCHIVE = toWholeArchive(AWTK_STATIC_LIBS)
 AWTK_DLL_DEPS_LIBS = AWTK_STATIC_LIBS + \
     NANOVG_BACKEND_LIBS + ['SDL2', 'glad'] + OS_LIBS
+
+
+if OS_DEBUG :
+    BUILD_DEBUG_FLAG = ' -g -O0 '
+else :
+    BUILD_DEBUG_FLAG = ' -Os '
 
 if OS_NAME == 'Darwin':
     OS_WHOLE_ARCHIVE = ' -all_load '
@@ -188,6 +224,13 @@ elif OS_NAME == 'Windows':
         print('mingw')
     else:
         OS_WHOLE_ARCHIVE = ' /DEF:"dllexports/awtk.def" '
+        if OS_DEBUG :
+            BUILD_DEBUG_FLAG = '  /MDd -D_DEBUG -DDEBUG /DEBUG /Od '
+        else :
+            BUILD_DEBUG_FLAG = ' -DNDEBUG /MD /O2 /Oi  '
+        
+        if complie_helper.get_value('PDB') :
+            BUILD_DEBUG_LINKFLAGS = ' /DEBUG '
 
 
 CFLAGS = COMMON_CFLAGS
@@ -229,7 +272,7 @@ CPPPATH = [TK_ROOT,
 
 os.environ['LCD'] = LCD
 os.environ['TK_ROOT'] = TK_ROOT
-os.environ['CCFLAGS'] = CCFLAGS
+os.environ['CCFLAGS'] = CCFLAGS + BUILD_DEBUG_FLAG
 os.environ['VGCANVAS'] = VGCANVAS
 os.environ['TOOLS_NAME'] = TOOLS_NAME
 os.environ['GTEST_ROOT'] = GTEST_ROOT
@@ -244,10 +287,10 @@ os.environ['AWTK_DLL_DEPS_LIBS'] = ';'.join(AWTK_DLL_DEPS_LIBS)
 os.environ['STATIC_LIBS'] = ';'.join(STATIC_LIBS)
 
 os.environ['WITH_AWTK_SO'] = 'true'
-os.environ['AWTK_CCFLAGS'] = AWTK_CCFLAGS
+os.environ['AWTK_CCFLAGS'] = AWTK_CCFLAGS + BUILD_DEBUG_FLAG
 os.environ['CROSS_COMPILE'] = str(not TOOLS_PREFIX == '')
 
-os.environ['SDL_UBUNTU_USE_IME'] = str(False)
+os.environ['SDL_UBUNTU_USE_IME'] = str(complie_helper.get_value('SDL_UBUNTU_USE_IME', False))
 # os.environ['SDL_UBUNTU_USE_IME'] = str(True)
 OS_LIBS = ['SDL2', 'glad'] + OS_LIBS
 
