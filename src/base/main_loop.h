@@ -97,6 +97,14 @@ ret_t main_loop_step(main_loop_t* l);
 
 ret_t main_loop_sleep(main_loop_t* l);
 /*event_source*/
+
+/**
+ * @method main_loop_get_event_source_manager
+ * 获取event source manager
+ * @param {main_loop_t*} l main_loop对象。
+ *
+ * @return {event_source_manager_t*} 返回event source manager对象。
+ */
 event_source_manager_t* main_loop_get_event_source_manager(main_loop_t* l);
 
 /**
