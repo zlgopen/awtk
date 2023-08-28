@@ -1,4 +1,4 @@
-﻿#include "tkc/platform.h"
+﻿#include "tkc.h"
 #include "streams/inet/iostream_tcp.h"
 
 int main(int argc, char* argv[]) {
@@ -6,10 +6,12 @@ int main(int argc, char* argv[]) {
   int32_t sock = 0;
   tk_iostream_t* io = NULL;
   const char* request = "GET / HTTP/1.1\r\nHost: localhost\r\n";
+  const char* host = argc > 1 ? argv[1] : "localhost"; 
+  int port = argc > 2 ? tk_atoi(argv[2]) : 8080;
 
   tk_socket_init();
   platform_prepare();
-  sock = tk_tcp_connect("localhost", 8080);
+  sock = tk_tcp_connect(host, port);
   return_value_if_fail(sock > 0, 0);
 
   io = tk_iostream_tcp_create(sock);

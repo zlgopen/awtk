@@ -1,4 +1,4 @@
-﻿#include "tkc/platform.h"
+﻿#include "tkc.h"
 #include "streams/inet/iostream_tcp.h"
 
 int main(int argc, char* argv[]) {
@@ -6,13 +6,14 @@ int main(int argc, char* argv[]) {
   int32_t lsock = 0;
   tk_iostream_t* io = NULL;
   const char* response = "200 OK\n";
+  int port = argc > 1 ? tk_atoi(argv[1]) : 8080;
 
   tk_socket_init();
   platform_prepare();
-  lsock = tk_tcp_listen(8080);
+  lsock = tk_tcp_listen(port);
   return_value_if_fail(lsock > 0, 0);
 
-  log_debug("listen at 8080...\n");
+  log_debug("listen at %d...\n", port);
   while (1) {
     int32_t sock = 0;
     sock = tk_tcp_accept(lsock);

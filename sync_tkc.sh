@@ -16,4 +16,4 @@ done
 
 cp -rvf ../tkc/src/fscript_ext/*.* src/fscript_ext
 
-
+git checkout scripts/compile_config.py
