@@ -264,3 +264,15 @@ TEST(Path, path_prepend_app_root) {
   ASSERT_EQ(path_prepend_app_root(result, "bin"), result);
   ASSERT_EQ(path_exist(result), TRUE);
 }
+
+TEST(Path, abs_normalize) {
+  char result[MAX_PATH + 1];
+  ASSERT_EQ(path_abs_normalize("abc", result, sizeof(result)), RET_OK);
+  ASSERT_EQ(strstr(result, "abc") != NULL, TRUE);
+}
+
+TEST(Path, abs_normalize_with_root) {
+  char result[MAX_PATH + 1];
+  ASSERT_EQ(path_abs_normalize_with_root("/path", "abc", result), result);
+  ASSERT_EQ(strstr(result, "abc") != NULL, TRUE);
+}

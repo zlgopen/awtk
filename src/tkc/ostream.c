@@ -19,6 +19,7 @@
  *
  */
 
+#include "tkc/utils.h"
 #include "tkc/platform.h"
 #include "tkc/time_now.h"
 #include "tkc/ostream.h"
@@ -103,3 +104,20 @@ int32_t tk_ostream_tell(tk_ostream_t* stream) {
 
   return stream->tell(stream);
 }
+
+ret_t tk_ostream_write_str(tk_ostream_t* out, const char* str) {
+  int32_t len = tk_strlen(str);
+  return tk_ostream_write(out, str, len) == len ? RET_OK : RET_IO;
+}
+
+ret_t tk_ostream_printf(tk_ostream_t* out, const char* format, ...) {
+  va_list va;
+  char buff[1024] = {0};
+
+  va_start(va, format);
+  tk_vsnprintf(buff, sizeof(buff) - 1, format, va);
+  va_end(va);
+
+  return tk_ostream_write_str(out, buff);
+}
+

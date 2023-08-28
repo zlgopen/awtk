@@ -131,6 +131,30 @@ ret_t tk_ostream_write_byte(tk_ostream_t* stream, uint8_t byte);
  */
 ret_t tk_ostream_flush(tk_ostream_t* stream);
 
+/**
+ * @method tk_ostream_write_str
+ *
+ * 写入字符串。
+ *
+ * @param {tk_ostream_t*} stream ostream对象。
+ * @param {const char*} str 字符串。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_ostream_write_str(tk_ostream_t* out, const char* str);
+
+/**
+ * @method tk_ostream_printf
+ *
+ * 写入格式化字符串。
+ * > 长度不超过1024。
+ * @param {tk_ostream_t*} stream ostream对象。
+ * @param {const char*} format 格式化字符串。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_ostream_printf(tk_ostream_t* out, const char* format, ...);
+
 #define TK_OSTREAM(obj) ((tk_ostream_t*)(obj))
 #define TK_OSTREAM_SEEKABLE(obj) (TK_OSTREAM(obj)->seek != NULL)
 #define TK_OSTREAM_TELLABLE(obj) (TK_OSTREAM(obj)->tell != NULL)

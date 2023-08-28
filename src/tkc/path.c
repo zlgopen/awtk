@@ -349,3 +349,30 @@ const char* path_prepend_app_root(char full_path[MAX_PATH + 1], const char* path
 
   return full_path;
 }
+
+ret_t path_abs_normalize(const char* filename, char* result, int32_t size) {
+  char path[MAX_PATH + 1];
+  return_value_if_fail(filename != NULL && result != NULL && size > 0, RET_BAD_PARAMS);
+
+  path_abs(filename, path, MAX_PATH);
+  return path_normalize(path, result, size);
+}
+
+const char* path_abs_normalize_with_root(const char* root, const char* rel_filename,
+                                     char filename[MAX_PATH + 1]) {
+  char path[MAX_PATH + 1];
+  char abs_root[MAX_PATH + 1];
+  return_value_if_fail(root != NULL && rel_filename != NULL, NULL);
+
+  path_abs_normalize(root, abs_root, MAX_PATH);
+
+  path_build(path, MAX_PATH, abs_root, rel_filename, NULL);
+  path_normalize(path, filename, MAX_PATH);
+
+  if (strncmp(filename, abs_root, strlen(abs_root)) == 0) {
+    return filename;
+  } else {
+    return NULL;
+  }
+}
+

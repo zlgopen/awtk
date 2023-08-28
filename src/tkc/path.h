@@ -257,6 +257,27 @@ ret_t path_remove_last_slash(char* path);
  */
 const char* path_prepend_app_root(char full_path[MAX_PATH + 1], const char* path);
 
+/**
+ * @method path_abs_normalize
+ * 将相对路径转换为绝对路径并规范路径字符形式。
+ * @param {const char*} filename 相对路径。
+ * @param {char*} result 用于返回绝对路径。
+ * @param {int32_t} size 缓冲区大小。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+*/
+ret_t path_abs_normalize(const char* filename, char* result, int32_t size);
+
+/**
+ * @method path_abs_normalize_with_root
+ * 将相对路径转换为绝对路径并规范路径字符形式。
+ * @param {const char*} root 根目录。
+ * @param {const char*} rel_filename 相对路径。
+ * @param {char*} filename 用于返回绝对路径。
+ * @return {const char*} 返回绝对路径。
+*/
+const char* path_abs_normalize_with_root(const char* root, const char* rel_filename,
+                                     char filename[MAX_PATH + 1]);
+
 END_C_DECLS
 
 #endif /*TK_PATH_H*/
