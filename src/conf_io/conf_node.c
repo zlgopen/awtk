@@ -433,8 +433,10 @@ conf_node_t* conf_node_find_child_by_index(conf_node_t* node, int32_t index) {
 ret_t conf_doc_destroy(conf_doc_t* doc) {
   return_value_if_fail(doc != NULL, RET_BAD_PARAMS);
 
-  conf_node_destroy(doc, doc->root);
-  doc->root = NULL;
+  if (doc->root != NULL) {
+    conf_node_destroy(doc, doc->root);
+    doc->root = NULL;
+  }
   tokenizer_deinit(&(doc->tokenizer));
   TKMEM_FREE(doc->prealloc_nodes);
 
