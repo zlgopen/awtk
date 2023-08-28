@@ -29,7 +29,7 @@
 BEGIN_C_DECLS
 
 /**
- * @class socket 
+ * @class tk_socket_t
  * @annotation ["fake"]
  */
 
@@ -88,13 +88,13 @@ ret_t tk_socket_bind_ex(int sock, const char* ip, int port);
 ret_t tk_socket_bind(int sock, int port);
 
 /**
- * @method socket_last_io_has_error
+ * @method tk_socket_last_io_has_error
  * @annotation ["static"]
  * 判断最后一次IO操作是否正常。
  *
  * @return {bool_t} 返回TRUE表示有错误，否则表示正常。
  */
-bool_t socket_last_io_has_error(void);
+bool_t tk_socket_last_io_has_error(void);
 
 /**
  * @method tk_socket_wait_for_data
@@ -120,7 +120,7 @@ ret_t tk_socket_wait_for_data(int sock, uint32_t timeout_ms);
 ret_t tk_socket_set_blocking(int sock, bool_t blocking);
 
 /**
- * @method socket_resolve
+ * @method tk_socket_resolve
  * @annotation ["static"]
  * 解析主机名，并初始化addr对象。
  * 
@@ -130,7 +130,55 @@ ret_t tk_socket_set_blocking(int sock, bool_t blocking);
  *
  * @return {struct sockaddr*} 返回地址对象。 
  */
-struct sockaddr* socket_resolve(const char* host, int port, struct sockaddr_in* addr);
+struct sockaddr* tk_socket_resolve(const char* host, int port, struct sockaddr_in* addr);
+
+/**
+ * @method tk_socket_get_client_ip
+ * @annotation ["static"]
+ * 获取客户端IP。
+ * 
+ * @param {int} sockfd socket句柄。
+ *
+ * @return {uint32_t} 返回客户端IP。 
+ */
+uint32_t tk_socket_get_client_ip(int sockfd);
+
+/**
+ * @method tk_socket_get_self_ip
+ * @annotation ["static"]
+ * 获取本地IP。
+ * 
+ * @param {int} sockfd socket句柄。
+ *
+ * @return {uint32_t} 返回本地IP。 
+ */
+uint32_t tk_socket_get_self_ip(int sockfd);
+
+/**
+ * @method tk_socket_get_client_ip_str
+ * @annotation ["static"]
+ * 获取客户端IP。
+ * 
+ * @param {int} sockfd socket句柄。
+ * @param {char*} ip 存放IP地址的内存。
+ * @param {int} len 存放IP地址的内存的长度。 
+ *
+ * @return {const char*} 返回IP地址。 
+ */
+const char* tk_socket_get_client_ip_str(int sockfd, char* ip, int len);
+
+/**
+ * @method tk_socket_get_self_ip_str
+ * @annotation ["static"]
+ * 获取本地IP。
+ * 
+ * @param {int} sockfd socket句柄。
+ * @param {char*} ip 存放IP地址的内存。
+ * @param {int} len 存放IP地址的内存的长度。 
+ *
+ * @return {const char*} 返回IP地址。 
+ */
+const char* tk_socket_get_self_ip_str(int sockfd, char* ip, int len);
 
 /**
  * @class tcp_t

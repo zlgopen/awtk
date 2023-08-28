@@ -1,4 +1,7 @@
 # 最新动态
+2023/08/28
+  * 增加函数tk\_socket\_get\_client\_ip/tk\_socket\_get\_self\_ip/tk\_socket\_get\_client\_ip\_str/tk\_socket\_get\_self\_ip\_str
+
 2023/08/25
   * 完善wasm helper
   * 完善编辑脚本(感谢智明提供补丁)

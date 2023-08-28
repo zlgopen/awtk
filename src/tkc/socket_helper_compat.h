@@ -10,4 +10,6 @@
 #define socket_bind tk_socket_bind
 #define socket_wait_for_data tk_socket_wait_for_data
 #define socket_set_blocking tk_socket_set_blocking
+#define socket_last_io_has_error tk_socket_last_io_has_error
+#define socket_resolve tk_socket_resolve
 #endif /*USE_TK_PREFIX*/
