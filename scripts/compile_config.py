@@ -42,7 +42,7 @@ class complie_helper :
   COMPILE_CMD_INFO = {
     'help' : { 'name': 'HELP', 'help_info' : 'show all usage'},
     'userdefine' : { 'name' : 'DEFINE_FILE', 'help_info' : 'set user config define file, DEFINE_FILE=XXXXX'},
-    'save_flie' : { 'name' : 'EXPORT_DEFINE_FILE', 'help_info' : 'current config define export to file, EXPORT_DEFINE_FILE=./awtk_config_define.py'},
+    'save_file' : { 'name' : 'EXPORT_DEFINE_FILE', 'help_info' : 'current config define export to file, EXPORT_DEFINE_FILE=./awtk_config_define.py'},
   }
 
   config = {
@@ -102,7 +102,7 @@ class complie_helper :
         self.set_value(userdefine_key, value)
       elif not find_compile_cmd_info_by_name(userdefine_key):
         print('awtk\'s default compiler list does not support {0} , so skip {0} !!!!!!'.format(key))
-      elif key.upper() == self.COMPILE_CMD_INFO['save_flie']['name'] :
+      elif key.upper() == self.COMPILE_CMD_INFO['save_file']['name'] :
         EXPORT_USERDEFINE_FILE = ARGUMENTS[key]
 
     if EXPORT_USERDEFINE_FILE != None :

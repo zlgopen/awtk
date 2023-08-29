@@ -1,4 +1,8 @@
 # 最新动态
+
+2023/08/29
+  * 完善编译脚本(感谢智明提供补丁)
+
 2023/08/28
   * 增加函数tk\_socket\_get\_client\_ip/tk\_socket\_get\_self\_ip/tk\_socket\_get\_client\_ip\_str/tk\_socket\_get\_self\_ip\_str
   * tcp\_send/tcp\_recv增加命令行参数。
