@@ -419,8 +419,8 @@ enum { TK_NAME_LEN = 31, TK_FUNC_NAME_LEN = 63 };
     wcscmp((s1), (s2)) == 0))
 #endif /*WITH_CPPCHECK*/
 
-#define tk_lfequal(f1, f2) (fabs((f1) - (f2)) < 0.0001)
-#define tk_fequal(f1, f2) (fabs((f1) - (f2)) < 0.0000001)
+#define tk_fequal(f1, f2) (fabs((f1) - (f2)) < 0.0001)
+#define tk_lfequal(f1, f2) (fabs((f1) - (f2)) < 0.0000001)
 
 #ifndef M_PI
 #define M_PI 3.1415926f

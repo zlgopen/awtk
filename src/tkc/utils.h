@@ -1026,6 +1026,19 @@ char** tk_to_utf8_argv(int argc, wchar_t** argv);
 */
 ret_t tk_free_utf8_argv(int argc, char** argv);
 
+/**
+ * @method tk_sscanf_simple
+ *
+ * 从字符串读取格式化输入。
+ * >TKC自己实现的，只支持几种简单的格式，在没有sscanf函数时使用。
+ *
+ * @param {const char*} str 要输入的字符串。
+ * @param {const char*} format 格式化字符串。
+ *
+ * @return {int} 返回成功匹配和赋值的个数。
+ */
+int tk_sscanf_simple(const char* str, const char* format, ...);
+
 #define TK_STRDUP(str) ((str) != NULL) ? strdup(str) : NULL
 #define TK_STRNDUP(str) ((str) != NULL) ? strndup(str) : NULL
 

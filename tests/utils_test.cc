@@ -843,3 +843,268 @@ TEST(Utils, argv) {
   ASSERT_STREQ(argv[1], "123");
   tk_free_utf8_argv(2, argv);
 }
+
+TEST(Utils, sscanf_simple_d) {
+  int d = 0;
+  int d1 = 0;
+  tk_sscanf_simple("123", "%d", &d);
+  ASSERT_EQ(d, 123);
+  
+  tk_sscanf_simple("-123", "%d", &d);
+  ASSERT_EQ(d, -123);
+  
+  tk_sscanf_simple("aaa123", "aaa%d", &d);
+  ASSERT_EQ(d, 123);
+  
+  tk_sscanf_simple("aaa-123bbb", "aaa%dbbb", &d);
+  ASSERT_EQ(d, -123);
+  
+  tk_sscanf_simple("aaa123b100", "aaa%db%d", &d, &d1);
+  ASSERT_EQ(d, 123);
+  ASSERT_EQ(d1, 100);
+}
+
+TEST(Utils, sscanf_simple_u) {
+  uint32_t u = 0;
+  uint32_t u1 = 0;
+  tk_sscanf_simple("123", "%u", &u);
+  ASSERT_EQ(u, 123);
+  
+  tk_sscanf_simple("-123", "%u", &u);
+  ASSERT_EQ(u, -123);
+  
+  tk_sscanf_simple("aaa123", "aaa%u", &u);
+  ASSERT_EQ(u, 123);
+  
+  tk_sscanf_simple("aaa-123bbb", "aaa%ubbb", &u);
+  ASSERT_EQ(u, -123);
+  
+  tk_sscanf_simple("aaa123b100", "aaa%ub%u", &u, &u1);
+  ASSERT_EQ(u, 123);
+  ASSERT_EQ(u1, 100);
+}
+
+TEST(Utils, sscanf_simple_f) {
+  float f = 0;
+  float f1 = 0;
+  tk_sscanf_simple("123", "%f", &f);
+  ASSERT_EQ(f, 123);
+  
+  tk_sscanf_simple("-123", "%f", &f);
+  ASSERT_EQ(f, -123);
+  
+  tk_sscanf_simple("aaa123", "aaa%f", &f);
+  ASSERT_EQ(f, 123);
+  
+  tk_sscanf_simple("aaa-123bbb", "aaa%fbbb", &f);
+  ASSERT_EQ(f, -123);
+  tk_sscanf_simple("aaa123", "aaa%f", &f);
+  ASSERT_EQ(f, 123);
+  
+  tk_sscanf_simple("aaa1.23", "aaa%f", &f);
+  ASSERT_EQ(tk_fequal(f, 1.23), TRUE);
+  
+  tk_sscanf_simple("aaa-12.3bbb", "aaa%fbbb", &f);
+  ASSERT_EQ(tk_fequal(f, -12.3), TRUE);
+
+  tk_sscanf_simple("aaa-123bbb", "aaa%fbbb", &f);
+  ASSERT_EQ(f, -123);
+  
+  tk_sscanf_simple("aaa123b100", "aaa%fb%f", &f, &f1);
+  ASSERT_EQ(f, 123);
+  ASSERT_EQ(f1, 100);
+}
+
+TEST(Utils, sscanf_simple_x) {
+  int x = 0;
+  int x1 = 0;
+  tk_sscanf_simple("123", "%x", &x);
+  ASSERT_EQ(x, 0x123);
+  
+  tk_sscanf_simple("-123", "%x", &x);
+  ASSERT_EQ(x, -0x123);
+  
+  tk_sscanf_simple("aaa123", "aaa%x", &x);
+  ASSERT_EQ(x, 0x123);
+  
+  tk_sscanf_simple("aaa-123:bbb", "aaa%x:bbb", &x);
+  ASSERT_EQ(x, -0x123);
+  
+  tk_sscanf_simple("aaa123:100", "aaa%x:%x", &x, &x1);
+  ASSERT_EQ(x, 0x123);
+  ASSERT_EQ(x1, 0x100);
+}
+
+TEST(Utils, sscanf_simple_p) {
+  int* p = NULL;
+  int* p1 = NULL;
+  tk_sscanf_simple("0x123", "%p", &p);
+  ASSERT_EQ(tk_pointer_to_int(p), 0x123);
+
+  tk_sscanf_simple("aaa0x123:0x100", "aaa%p:%p", &p, &p1);
+  ASSERT_EQ(tk_pointer_to_int(p), 0x123);
+  ASSERT_EQ(tk_pointer_to_int(p1), 0x100);
+}
+
+TEST(Utils, sscanf_simple_ld) {
+  long d = 0;
+  long d1 = 0;
+  tk_sscanf_simple("123", "%ld", &d);
+  ASSERT_EQ(d, 123);
+  
+  tk_sscanf_simple("-123", "%ld", &d);
+  ASSERT_EQ(d, -123);
+  
+  tk_sscanf_simple("aaa123", "aaa%ld", &d);
+  ASSERT_EQ(d, 123);
+  
+  tk_sscanf_simple("aaa-123bbb", "aaa%ldbbb", &d);
+  ASSERT_EQ(d, -123);
+  
+  tk_sscanf_simple("aaa123b100", "aaa%ldb%ld", &d, &d1);
+  ASSERT_EQ(d, 123);
+  ASSERT_EQ(d1, 100);
+}
+
+TEST(Utils, sscanf_simple_lu) {
+  unsigned long d = 0;
+  unsigned long d1 = 0;
+  tk_sscanf_simple("123", "%lu", &d);
+  ASSERT_EQ(d, 123);
+  
+  tk_sscanf_simple("-123", "%lu", &d);
+  ASSERT_EQ(d, -123);
+  
+  tk_sscanf_simple("aaa123", "aaa%lu", &d);
+  ASSERT_EQ(d, 123);
+  
+  tk_sscanf_simple("aaa-123bbb", "aaa%lubbb", &d);
+  ASSERT_EQ(d, -123);
+  
+  tk_sscanf_simple("aaa123b100", "aaa%lub%lu", &d, &d1);
+  ASSERT_EQ(d, 123);
+  ASSERT_EQ(d1, 100);
+}
+
+TEST(Utils, sscanf_simple_lf) {
+  double f = 0;
+  double f1 = 0;
+  tk_sscanf_simple("123", "%lf", &f);
+  ASSERT_EQ(f, 123);
+  
+  tk_sscanf_simple("12e3", "%lf", &f);
+  ASSERT_EQ(f, 12000);
+  
+  tk_sscanf_simple("12E3", "%lf", &f);
+  ASSERT_EQ(f, 12000);
+  
+  tk_sscanf_simple("12E-3", "%lf", &f);
+  ASSERT_EQ(f, 0.012);
+  
+  tk_sscanf_simple("-123", "%lf", &f);
+  ASSERT_EQ(f, -123);
+  
+  tk_sscanf_simple("aaa123", "aaa%lf", &f);
+  ASSERT_EQ(f, 123);
+  
+  tk_sscanf_simple("aaa-123bbb", "aaa%lfbbb", &f);
+  ASSERT_EQ(f, -123);
+  tk_sscanf_simple("aaa123", "aaa%lf", &f);
+  ASSERT_EQ(f, 123);
+  
+  tk_sscanf_simple("aaa1.23", "aaa%lf", &f);
+  ASSERT_EQ(tk_fequal(f, 1.23), TRUE);
+  
+  tk_sscanf_simple("aaa-12.3bbb", "aaa%lfbbb", &f);
+  ASSERT_EQ(tk_fequal(f, -12.3), TRUE);
+
+  tk_sscanf_simple("aaa-123bbb", "aaa%lfbbb", &f);
+  ASSERT_EQ(f, -123);
+  
+  tk_sscanf_simple("aaa123b100", "aaa%lfb%lf", &f, &f1);
+  ASSERT_EQ(f, 123);
+  ASSERT_EQ(f1, 100);
+}
+
+TEST(Utils, sscanf_simple_nx) {
+  int x = 0;
+  int x1 = 0;
+  tk_sscanf_simple("123", "%2x", &x);
+  ASSERT_EQ(x, 0x12);
+  
+  tk_sscanf_simple("aaa123", "aaa%3x", &x);
+  ASSERT_EQ(x, 0x123);
+  
+  tk_sscanf_simple("aaa1234", "aaa%02x%02x", &x, &x1);
+  ASSERT_EQ(x, 0x12);
+  ASSERT_EQ(x1, 0x34);
+}
+
+TEST(Utils, sscanf_simple_nd) {
+  int d = 0;
+  int d1 = 0;
+  tk_sscanf_simple("123", "%2d", &d);
+  ASSERT_EQ(d, 12);
+  
+  tk_sscanf_simple("aaa123", "aaa%3d", &d);
+  ASSERT_EQ(d, 123);
+  
+  tk_sscanf_simple("aaa1234", "aaa%02d%02d", &d, &d1);
+  ASSERT_EQ(d, 12);
+  ASSERT_EQ(d1, 34);
+}
+
+TEST(Utils, sscanf_simple_nu) {
+  int u = 0;
+  int u1 = 0;
+  tk_sscanf_simple("123", "%2u", &u);
+  ASSERT_EQ(u, 12);
+  
+  tk_sscanf_simple("aaa123", "aaa%3u", &u);
+  ASSERT_EQ(u, 123);
+  
+  tk_sscanf_simple("aaa1234", "aaa%02u%02u", &u, &u1);
+  ASSERT_EQ(u, 12);
+  ASSERT_EQ(u1, 34);
+}
+
+TEST(Utils, sscanf_simple_ns) {
+  char str[256] = {0};
+  tk_sscanf_simple("123abc", "123%3s", &str);
+  ASSERT_STREQ(str, "abc");
+  
+  tk_sscanf_simple("123abcd", "123%3s", &str);
+  ASSERT_STREQ(str, "abc");
+  
+  ASSERT_EQ(tk_sscanf_simple("123abcd", "123%30s", &str), 1);
+  ASSERT_STREQ(str, "abcd");
+}
+
+TEST(Utils, sscanf_simple1) {
+  uint32_t y = 0;
+  uint32_t m = 0;
+  uint32_t d = 0;
+  int n = tk_sscanf_simple("#2023-10-1", "#%u-%u-%u", &y, &m, &d);
+  ASSERT_EQ(n, 3);
+  ASSERT_EQ(y, 2023);
+  ASSERT_EQ(m, 10);
+  ASSERT_EQ(d, 1);
+}
+
+TEST(Utils, sscanf_simple2) {
+  uint32_t y = 0;
+  uint32_t m = 0;
+  uint32_t d = 0;
+  uint32_t h = 0;
+  uint32_t minute = 0;
+  double s = 0;
+
+  int n = tk_sscanf("#2022-10-1-12:10:1.23", "#%u-%u-%u-%u:%u:%lf", &y, &m, &d, &h, &minute, &s);
+  ASSERT_EQ(n, 6);
+  ASSERT_EQ(y, 2022);
+  ASSERT_EQ(m, 10);
+  ASSERT_EQ(d, 1);
+  ASSERT_EQ(h, 12);
+  ASSERT_EQ(minute, 10);
+  ASSERT_EQ(s, 1.23);
+}
