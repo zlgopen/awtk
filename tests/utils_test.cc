@@ -933,6 +933,10 @@ TEST(Utils, sscanf_simple_x) {
   tk_sscanf_simple("aaa123:100", "aaa%x:%x", &x, &x1);
   ASSERT_EQ(x, 0x123);
   ASSERT_EQ(x1, 0x100);
+  
+  tk_sscanf_simple("aaaabc:def", "aaa%x:%x", &x, &x1);
+  ASSERT_EQ(x, 0xabc);
+  ASSERT_EQ(x1, 0xdef);
 }
 
 TEST(Utils, sscanf_simple_p) {
@@ -944,6 +948,10 @@ TEST(Utils, sscanf_simple_p) {
   tk_sscanf_simple("aaa0x123:0x100", "aaa%p:%p", &p, &p1);
   ASSERT_EQ(tk_pointer_to_int(p), 0x123);
   ASSERT_EQ(tk_pointer_to_int(p1), 0x100);
+  
+  tk_sscanf_simple("aaa0x123abc:0x100def", "aaa%p:%p", &p, &p1);
+  ASSERT_EQ(tk_pointer_to_int(p), 0x123abc);
+  ASSERT_EQ(tk_pointer_to_int(p1), 0x100def);
 }
 
 TEST(Utils, sscanf_simple_ld) {
@@ -1038,6 +1046,10 @@ TEST(Utils, sscanf_simple_nx) {
   tk_sscanf_simple("aaa1234", "aaa%02x%02x", &x, &x1);
   ASSERT_EQ(x, 0x12);
   ASSERT_EQ(x1, 0x34);
+  
+  tk_sscanf_simple("aaaabcd", "aaa%02x%02x", &x, &x1);
+  ASSERT_EQ(x, 0xab);
+  ASSERT_EQ(x1, 0xcd);
 }
 
 TEST(Utils, sscanf_simple_nd) {
@@ -1107,4 +1119,7 @@ TEST(Utils, sscanf_simple2) {
   ASSERT_EQ(h, 12);
   ASSERT_EQ(minute, 10);
   ASSERT_EQ(s, 1.23);
+
+  ASSERT_EQ(tk_isdigit('-'), FALSE);
+  ASSERT_EQ(tk_isdigit('+'), FALSE);
 }

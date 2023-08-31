@@ -564,16 +564,6 @@ int tk_vsnprintf(char* str, size_t size, const char* format, va_list ap) {
   return vsnprintf(str, size, format, ap);
 }
 
-int tk_sscanf(const char* str, const char* format, ...) {
-  int ret = 0;
-  va_list va;
-  va_start(va, format);
-  ret = vsscanf(str, format, va);
-  va_end(va);
-
-  return ret;
-}
-
 ret_t filename_to_name_ex(const char* filename, char* str, uint32_t size, bool_t remove_extname) {
   char* p = NULL;
   const char* name = filename;
@@ -1719,6 +1709,30 @@ ret_t tk_free_utf8_argv(int argc, char** argv) {
   return RET_OK;
 }
 
+static const char* str_skip_xint(const char* str) {
+  if (*str == '+' || *str == '-') {
+    str++;
+  }
+
+  while (*str && tk_isxdigit(*str)) {
+    str++;
+  }
+
+  return str;
+}
+
+static const char* str_skip_int(const char* str) {
+  if (*str == '+' || *str == '-') {
+    str++;
+  }
+
+  while (*str && tk_isdigit(*str)) {
+    str++;
+  }
+
+  return str;
+}
+
 static const char* str_skip_float(const char* str) {
   if (*str == '+' || *str == '-') {
     str++;
@@ -1741,11 +1755,9 @@ static const char* str_skip_float(const char* str) {
   return str;
 }
 
-int tk_sscanf_simple(const char* str, const char* format, ...) {
-  va_list args;
+int tk_vsscanf_simple(const char* str, const char* format, va_list args) {
   int assignments = 0;
 
-  va_start(args, format);
   while (*format && *str) {
     if (*format != '%') {
       if (*format != *str) 
@@ -1773,21 +1785,21 @@ int tk_sscanf_simple(const char* str, const char* format, ...) {
         switch (*format) {
           case 'd': {
             int* p = va_arg(args, int*);
-            *p = (int)tk_strtol(s, &s, 10);
+            *p = (int)tk_strtol(s, NULL, 10);
             assignments++;
             format++;
             break;
           }
           case 'x': {
             unsigned int* p = va_arg(args, unsigned int*);
-            *p = (unsigned int)tk_strtol(s, &s, 16);
+            *p = (unsigned int)tk_strtol(s, NULL, 16);
             assignments++;
             format++;
             break;
           }
           case 'u': {
             unsigned int* p = va_arg(args, unsigned int*);
-            *p = (unsigned int)tk_strtol(s, &s, 10);
+            *p = (unsigned int)tk_strtol(s, NULL, 10);
             assignments++;
             format++;
             break;
@@ -1811,14 +1823,16 @@ int tk_sscanf_simple(const char* str, const char* format, ...) {
       switch (*format) {
         case 'u': {
           unsigned int* p = va_arg(args, unsigned int*);
-          *p = (uint32_t)tk_strtol(str, &str, 10);
+          *p = (uint32_t)tk_strtol(str, NULL, 10);
+          str = str_skip_int(str);
           assignments++;
           format++;
           break;
         }
         case 'd': {
           int* p = va_arg(args, int*);
-          *p = (int)tk_strtol(str, &str, 10);
+          *p = (int)tk_strtol(str, NULL, 10);
+          str = str_skip_int(str);
           assignments++;
           format++;
           break;
@@ -1833,7 +1847,8 @@ int tk_sscanf_simple(const char* str, const char* format, ...) {
         }
         case 'x': {
           unsigned int* p = va_arg(args, unsigned int*);
-          *p = (unsigned int)tk_strtol(str, &str, 16);
+          *p = (unsigned int)tk_strtol(str, NULL, 16);
+          str = str_skip_xint(str);
           assignments++;
           format++;
           break;
@@ -1843,7 +1858,8 @@ int tk_sscanf_simple(const char* str, const char* format, ...) {
           if (strncasecmp(str, "0x", 2) == 0) {
             str += 2;
           }
-          *p = (void*)tk_strtol(str, &str, 16);
+          *p = (void*)tk_strtol(str, NULL, 16);
+          str = str_skip_xint(str);
           assignments++;
           format++;
           break;
@@ -1852,11 +1868,14 @@ int tk_sscanf_simple(const char* str, const char* format, ...) {
           format++;
           if (*format == 'd') {
             long* p = va_arg(args, long*);
-            *p = (long)tk_strtol(str, &str, 10);
+            *p = (long)tk_strtol(str, NULL, 10);
+            str = str_skip_int(str);
             assignments++;
           } else if (*format == 'u') {
             unsigned long* p = va_arg(args, unsigned long*);
-            *p = (unsigned long)tk_strtol(str, &str, 10);
+            *p = (unsigned long)tk_strtol(str, NULL, 10);
+            str = str_skip_int(str);
+            assignments++;
             assignments++;
           } else if (*format == 'f') {
             double* p = va_arg(args, double*);
@@ -1873,7 +1892,38 @@ int tk_sscanf_simple(const char* str, const char* format, ...) {
     }
   }
 
-  va_end(args);
-
   return assignments;
 }
+
+int tk_sscanf_simple(const char* str, const char* format, ...) {
+  int ret = 0;
+  va_list va;
+  va_start(va, format);
+  ret = tk_vsscanf_simple(str, format, va);
+  va_end(va);
+
+  return ret;
+}
+
+#ifdef HAS_NO_VSSCANF
+int tk_sscanf(const char* str, const char* format, ...) {
+  int ret = 0;
+  va_list va;
+  va_start(va, format);
+  ret = tk_vsscanf_simple(str, format, va);
+  va_end(va);
+
+  return ret;
+}
+#else
+int tk_sscanf(const char* str, const char* format, ...) {
+  int ret = 0;
+  va_list va;
+  va_start(va, format);
+  ret = vsscanf(str, format, va);
+  va_end(va);
+
+  return ret;
+}
+#endif/*HAS_NO_VSSCANF*/
+
