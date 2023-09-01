@@ -32,7 +32,6 @@
 
 #include <stdarg.h>
 #include <ctype.h>
-#include <wctype.h>
 #include <errno.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -45,6 +44,7 @@
 #include <time.h>
 #include <wchar.h>
 #include <assert.h>
+#include <wctype.h>
 #else
 #include "tkc/wasm_helper.h"
 #endif /*WITH_WASM*/
