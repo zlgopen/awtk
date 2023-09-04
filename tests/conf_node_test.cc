@@ -6,6 +6,8 @@
 #include "conf_io/conf_ubjson.h"
 #include "conf_io/conf_node.h"
 
+#include "tkc/object_default.h"
+
 TEST(ConfNode, basic) {
   value_t v;
   conf_doc_t* doc = conf_doc_create(100);
@@ -163,4 +165,76 @@ TEST(ConfNode, set_get_wstr) {
 
   conf_doc_destroy(doc);
   wbuffer_deinit(&wb);
+}
+
+static tk_object_t* conf_node_test_object_create(void) {
+  tk_object_t* ret = object_default_create();
+  tk_object_set_prop_str(ret, "name", "test1");
+  tk_object_set_prop_uint32(ret, "id", 123);
+  tk_object_set_prop_str(ret, "desc", "aaa");
+
+  tk_object_t* obj = object_default_create();
+  tk_object_set_prop_str(obj, "name", "test2");
+  tk_object_set_prop_uint32(obj, "id", 567);
+  tk_object_set_prop_str(obj, "desc", "bbb");
+
+  tk_object_set_prop_object(ret, "obj", obj);
+  tk_object_unref(obj);
+
+  return ret;
+}
+
+TEST(ConfNode, set_get_object) {
+  value_t v;
+  conf_doc_t* doc = conf_doc_create(100);
+  tk_object_t* obj = conf_node_test_object_create();
+  str_t str;
+  str_init(&str, 64);
+
+  ASSERT_EQ(conf_doc_set(doc, "obj", value_set_object(&v, obj)), RET_OK);
+
+  ASSERT_EQ(conf_doc_save_json(doc, &str), RET_OK);
+  ASSERT_STREQ(str.str,
+               "{\n"
+               "    \"obj\" : {\n"
+               "        \"desc\" : \"aaa\",\n"
+               "        \"id\" : 123,\n"
+               "        \"name\" : \"test1\",\n"
+               "        \"obj\" : {\n"
+               "            \"desc\" : \"bbb\",\n"
+               "            \"id\" : 567,\n"
+               "            \"name\" : \"test2\"\n"
+               "        }\n"
+               "    }\n"
+               "}");
+  str_clear(&str);
+
+  wbuffer_t wb;
+  ubjson_writer_t ub;
+  wbuffer_init_extendable(&wb);
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+  conf_doc_save_ubjson(doc, &ub);
+
+  conf_doc_destroy(doc);
+  doc = conf_doc_load_ubjson(wb.data, wb.cursor);
+
+  ASSERT_EQ(conf_doc_get(doc, "obj.desc", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "aaa");
+  ASSERT_EQ(conf_doc_get(doc, "obj.id", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 123);
+  ASSERT_EQ(conf_doc_get(doc, "obj.name", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "test1");
+
+  ASSERT_EQ(conf_doc_get(doc, "obj.obj.desc", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "bbb");
+  ASSERT_EQ(conf_doc_get(doc, "obj.obj.id", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 567);
+  ASSERT_EQ(conf_doc_get(doc, "obj.obj.name", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "test2");
+
+  conf_doc_destroy(doc);
+  wbuffer_deinit(&wb);
+
+  str_reset(&str);
+  TK_OBJECT_UNREF(obj);
 }

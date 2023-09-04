@@ -488,7 +488,7 @@ typedef enum _conf_node_type_t {
 /**
  * @enum conf_node_value_t 
  * @prefix CONF_NODE_VALUE_
- * 节点值得类型。
+ * 节点值的类型。
  */
 typedef enum _conf_node_value_t {
   /**

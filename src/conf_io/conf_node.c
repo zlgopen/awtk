@@ -21,6 +21,9 @@
 
 #include "tkc/mem.h"
 #include "tkc/utils.h"
+#include "tkc/object.h"
+#include "tkc/object_default.h"
+#include "tkc/named_value.h"
 #include "conf_io/conf_node.h"
 
 static ret_t conf_node_destroy(conf_doc_t* doc, conf_node_t* node);
@@ -611,6 +614,31 @@ ret_t conf_node_get_value(conf_node_t* node, value_t* v) {
       value_set_str(v, node->value.small_str);
       break;
     }
+    case CONF_NODE_VALUE_NODE: {
+      switch (node->node_type) {
+        case CONF_NODE_OBJECT: {
+          value_t tmp;
+          conf_node_t* iter = NULL;
+          tk_object_t* obj = object_default_create();
+          return_value_if_fail(obj != NULL, RET_OOM);
+
+          iter = conf_node_get_first_child(node);
+          for (; iter != NULL; iter = iter->next) {
+            if (RET_OK == conf_node_get_value(iter, &tmp)) {
+              tk_object_set_prop(obj, conf_node_get_name(iter), &tmp);
+            }
+          }
+
+          value_set_object(&tmp, obj);
+          value_deep_copy(v, &tmp);
+          tk_object_unref(obj);
+        } break;
+        default: {
+          return RET_NOT_IMPL;
+        }
+      }
+      break;
+    }
     default: {
       return RET_NOT_IMPL;
     }
@@ -705,6 +733,27 @@ conf_node_t* conf_doc_find_node(conf_doc_t* doc, conf_node_t* node, const char* 
   return NULL;
 }
 
+typedef struct _conf_doc_set_object_prop_ctx_t {
+  conf_doc_t* doc;
+  const char* path;
+} conf_doc_set_object_prop_ctx_t;
+
+static ret_t conf_doc_set_object_prop(void* ctx, const void* data) {
+  ret_t ret = RET_OK;
+  conf_doc_set_object_prop_ctx_t* actx = ctx;
+  const named_value_t* nv = (const named_value_t*)data;
+  str_t path;
+  str_init(&path, TK_NAME_LEN + 1);
+  str_append(&path, actx->path);
+  str_append(&path, actx->doc->tokenizer.separtor);
+  str_append(&path, nv->name);
+
+  ret = conf_doc_set(actx->doc, path.str, &nv->value);
+
+  str_reset(&path);
+  return ret;
+}
+
 ret_t conf_doc_set(conf_doc_t* doc, const char* path, const value_t* v) {
   conf_node_t* node = NULL;
   return_value_if_fail(doc != NULL && path != NULL && v != NULL, RET_BAD_PARAMS);
@@ -716,6 +765,10 @@ ret_t conf_doc_set(conf_doc_t* doc, const char* path, const value_t* v) {
   node = conf_doc_get_node(doc, path, TRUE);
 
   if (node != NULL) {
+    if (v->type == VALUE_TYPE_OBJECT) {
+      conf_doc_set_object_prop_ctx_t ctx = {.doc = doc, .path = path};
+      return tk_object_foreach_prop(value_object(v), conf_doc_set_object_prop, &ctx);
+    }
     return conf_node_set_value(node, v);
   } else {
     return RET_OOM;
