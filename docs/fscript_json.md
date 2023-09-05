@@ -122,6 +122,9 @@ assert(object_get(a, "results.[0].last_update")=="2022-04-28T14:50:00+08:00");
 assert(object_get(a, "name")=="fscript");
 assert(object_get(a, "age")==100);
 
+// 获取数组类型节点的子元素个数
+assert(object_get(a, "results.#size")==1);
+
 //save to file
 var b=json_save(a)
 assert(file_write("test.json", b))
