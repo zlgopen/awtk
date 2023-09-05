@@ -146,8 +146,18 @@ ret_t idle_dispatch(void);
  */
 uint32_t idle_count(void);
 
-/*internal use*/
+/**
+ * @method idle_exist
+ * idle是否存在。
+ * @annotation ["static"]
+ * @param {idle_func_t} on_idle idle回调函数。
+ * @param {void*} ctx idle回调函数的上下文。
+ *
+ * @return {bool_t} 返回TRUE表示存在，否则表示不存在。
+ */
 bool_t idle_exist(idle_func_t on_idle, void* ctx);
+
+/*internal use*/
 ret_t idle_remove_all_by_ctx_and_type(uint32_t type, void* ctx);
 uint32_t idle_add_with_type(idle_func_t on_idle, void* ctx, uint32_t type);
 
