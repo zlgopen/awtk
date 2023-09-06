@@ -143,7 +143,7 @@ class complie_helper :
           save_data += ('# ' + desc)
           save_data += '\n'
         if isinstance(self.config[key]['value'], str) :
-          save_data += (key + ' = \'' + self.config[key]['value'] + '\'')
+          save_data += (key + ' = r\'' + self.config[key]['value'] + '\'')
         else :
           save_data += (key + ' = ' + str(self.config[key]['value']))
         save_data += '\n\n'
