@@ -75,15 +75,15 @@ ret_t widget_animator_time_elapse(widget_animator_t* animator, uint32_t delta_ti
   }
 
   elapsed_time = delta_time * animator->time_scale;
-  if (animator->delay > 0) {
-    int32_t delay = animator->delay - elapsed_time;
+  if (animator->delay_time > 0) {
+    int32_t delay = animator->delay_time - elapsed_time;
     if (delay > 0) {
-      animator->delay = delay;
+      animator->delay_time = delay;
       return RET_OK;
     } else {
       elapsed_time = -delay;
       animator->now = 0;
-      animator->delay = 0;
+      animator->delay_time = 0;
       animator->start_time = 0;
     }
   }
@@ -160,6 +160,7 @@ ret_t widget_animator_start(widget_animator_t* animator) {
   }
 
   animator->state = ANIMATOR_RUNNING;
+  animator->delay_time = animator->delay;
   emitter_dispatch(&(animator->emitter), widget_animator_event_init(&event, EVT_ANIM_START, animator->widget, animator));
   if (animator->delay == 0) {
     widget_invalidate_force(animator->widget, NULL);
