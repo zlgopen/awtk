@@ -1039,8 +1039,8 @@ ret_t tk_free_utf8_argv(int argc, char** argv);
  */
 int tk_sscanf_simple(const char* str, const char* format, ...);
 
-#define TK_STRDUP(str) ((str) != NULL) ? strdup(str) : NULL
-#define TK_STRNDUP(str) ((str) != NULL) ? strndup(str) : NULL
+#define TK_STRDUP(str) ((str) != NULL) ? tk_strdup(str) : NULL
+#define TK_STRNDUP(str, len) ((str) != NULL) ? tk_strndup(str, len) : NULL
 
 #define tk_str_cmp tk_strcmp
 #define tk_str_icmp tk_stricmp

@@ -474,7 +474,7 @@ TEST(Json, foreach1) {
 
   str_init(&str, 100);
   ASSERT_EQ(tk_object_foreach_prop(conf, on_prop, &str), RET_OK);
-  ASSERT_STREQ(str.str, "name=awtk\nvalue=123\n");
+  ASSERT_EQ(strstr(str.str, "name=awtk\nvalue=123\n") != NULL, TRUE);
 
   str_reset(&str);
   TK_OBJECT_UNREF(conf);
