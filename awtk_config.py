@@ -21,6 +21,10 @@ if not os.path.exists(WIN32_AWTK_RES):
     else:
         WIN32_AWTK_RES = os.path.join(TK_ROOT, 'win32_res/awtk.res')
 
+WIN32_AWTK_RES = complie_helper.get_value('WIN32_RES', WIN32_AWTK_RES)
+if not os.path.isabs(WIN32_AWTK_RES) :
+    WIN32_AWTK_RES = os.path.join(compile_config.get_curr_app_root(), WIN32_AWTK_RES)
+
 AWTK_STATIC_LIBS = ['awtk_global', 'fscript_ext_widgets', 'extwidgets', 'nfd',
                     'widgets', 'base', 'gpinyin', 'fribidi', 'linebreak', 'svgtiny']
 AWTK_STATIC_LIBS = AWTK_STATIC_LIBS+TKC_STATIC_LIBS

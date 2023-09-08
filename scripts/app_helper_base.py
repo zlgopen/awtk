@@ -41,6 +41,7 @@ COMPILE_CONFIG = {
   'FONT' : { 'value' : '', 'save_file' : False, 'desc' : ['app\'s font\'s name'], 'help_info' : 'app\'s font\'s name, FONT=XXXXX ' },
   'THEME' : { 'value' : '', 'save_file' : False, 'desc' : ['app\'s default\'s theme\'s name'], 'help_info' : 'app\'s default\'s theme\'s name, THEME=XXXXX ' },
   'RES_ROOT' : { 'value' : '', 'save_file' : False, 'desc' : ['app\'s res root'], 'help_info' : 'app\'s res root, RES_ROOT=XXXXX ' },
+  'WIN32_RES' : { 'value' : '', 'desc' : ['app\'s win32 res path'], 'help_info' : 'app\'s win32 res path, WIN32_RES=XXXXX, value\'s default=\'awtk/win32_res/awtk.res\' ' },
 }
 
 def set_compile_config(config) :
@@ -338,6 +339,7 @@ class AppHelperBase:
         os.chdir(self.AWTK_ROOT)
         compile_config.set_curr_app_root(tmp_cwd)
         tmp_complie_helper = compile_config.get_curr_config()
+        compile_config.set_app_win32_res(tmp_complie_helper.get_value('WIN32_RES'))
         compile_config.set_curr_config(None)
         import awtk_config as awtk
         os.chdir(tmp_cwd)

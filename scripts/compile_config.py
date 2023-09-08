@@ -11,6 +11,9 @@ COMPILE_CONFIG = None
 global APP_ROOT
 APP_ROOT = ''
 
+global WIN32_RES
+WIN32_RES = ''
+
 def get_curr_config() :
   global COMPILE_CONFIG
   return COMPILE_CONFIG
@@ -18,6 +21,10 @@ def get_curr_config() :
 def set_curr_config(complie_config) :
   global COMPILE_CONFIG
   COMPILE_CONFIG = complie_config
+
+def set_app_win32_res(dir_path) :
+  global WIN32_RES
+  WIN32_RES = dir_path
 
 def set_curr_app_root(app_root) :
   global APP_ROOT
@@ -28,12 +35,14 @@ def get_curr_app_root() :
   return APP_ROOT
 
 def get_curr_config_for_awtk() :
+  global WIN32_RES
   global COMPILE_CONFIG
   if COMPILE_CONFIG != None :
     return COMPILE_CONFIG
   else :
     COMPILE_CONFIG = complie_helper()
     COMPILE_CONFIG.try_load_default_config()
+    COMPILE_CONFIG.set_value('WIN32_RES', WIN32_RES)
     return COMPILE_CONFIG;
 
 class complie_helper :
@@ -60,6 +69,7 @@ class complie_helper :
     'BUILD_TESTS' : { 'value' : True, 'desc' : ['build awtk\'s gtest demo'], 'help_info' : 'build awtk\'s gtest demo, value is true or false, default value is true' },
     'BUILD_DEMOS' : { 'value' : True, 'desc' : ['build awtk\'s demo examples'], 'help_info' : 'build awtk\'s demo examples, value is true or false, default value is true' },
     'BUILD_TOOLS' : { 'value' : True, 'desc' : ['build awtk\'s tools'], 'help_info' : 'build awtk\'s tools, value is true or false, default value is true' },
+    'WIN32_RES' : { 'value' : '', 'save_file' : False, 'desc' : ['app\'s win32 res path'], 'help_info' : 'app\'s win32 res path, WIN32_RES=XXXXX, value\'s default=\'awtk/win32_res/awtk.res\' ' },
   }
 
   def try_load_default_config(self) :
