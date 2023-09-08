@@ -306,7 +306,7 @@ static ret_t bitmap_init_impl_by_rotate(bitmap_t* bitmap, uint32_t w, uint32_t h
       break;
     }
     case LCD_ORIENTATION_180: {
-      bdata = bdata + (h - 1) * line_length + w * bpp;
+      bdata = bdata + (h - 1) * line_length + (w - 1) * bpp;
       for (i = 0; i < h; i++) {
         uint8_t* d = bdata;
         for (j = 0; j < w; j++) {
