@@ -153,6 +153,11 @@ ret_t image_blend(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rect
   assert(dst_r->y >= 0 && (dst_r->y + dst_r->h) <= bitmap_get_physical_height(dst));
 
 #ifdef WITH_G2D
+  /* 
+   * 由于裁剪区的作用下，只重绘原来已经缩放的图片的一小部分区域
+   * 由于传入的是整型矩形，所以用出现精度丢失的问题
+   * 会导致原来缩放的图片和重绘的小区域对不上的问题，所以禁止硬件的 g2d 做缩放效果。
+   */
   if (src_r->w == dst_r->w && src_r->h == dst_r->h) {
     rect_t tmp_src_r = rect_from_rectf(src_r);
     rect_t tmp_dst_r = rect_from_rectf(dst_r);
