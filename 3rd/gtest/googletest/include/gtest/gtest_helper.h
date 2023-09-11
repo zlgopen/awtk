@@ -1,5 +1,6 @@
-#include "tkc/str.h"
 #include "tkc/fs.h"
+#include "tkc/str.h"
+#include "tkc/mem.h"
 #include "gtest/gtest.h"
 
 #ifndef GTEST_HELPER_H
