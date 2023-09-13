@@ -6,7 +6,7 @@ import shutil
 import platform
 import res_config
 import compile_config
-from SCons import Script
+from SCons import Script, Environment
 
 PLATFORM = platform.system()
 
@@ -215,6 +215,8 @@ class AppHelperBase:
         if not self.BUILD_DIR:
             Script.SConscript(SConscriptFiles)
         else:
+            env = Environment.Environment()
+            env.Default(self.BUILD_DIR)
             for sc in SConscriptFiles:
                 dir = os.path.dirname(sc)
                 build_dir = os.path.join(self.BUILD_DIR, dir)

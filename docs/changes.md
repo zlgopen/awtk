@@ -2,6 +2,7 @@
 
 2023/09/13
   * 增加[如何将资源编译到应用程序并使用它们](how_to_compile_res_into_app_and_use_them.md) (感谢雨欣提供补丁)
+  * 修复当BUILD_DIR指定的路径在SConstruct文件所在目录之外的目录时无法正常编译的问题(感谢培煌提供补丁)
   * 为 text\_selector 新增文本缩写功能(感谢颖健提供补丁) 
 
 2023/09/11
