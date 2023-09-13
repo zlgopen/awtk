@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/09/13
+  * 增加[如何将资源编译到应用程序并使用它们](how_to_compile_res_into_app_and_use_them.md) (感谢雨欣提供补丁)
+
 2023/09/11
   * 增加 ASSERT\_STREQ\_UNIX\_FILE
   * 增加blend的g2d的注释说明(感谢智明提供补丁)
