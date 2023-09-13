@@ -43,6 +43,7 @@ static ret_t text_selector_sync_yoffset_with_selected_index(text_selector_t* tex
 const char* s_text_selector_properties[] = {WIDGET_PROP_TEXT,
                                             WIDGET_PROP_VALUE,
                                             WIDGET_PROP_OPTIONS,
+                                            WIDGET_PROP_ELLIPSES,
                                             TEXT_SELECTOR_PROP_VISIBLE_NR,
                                             WIDGET_PROP_SELECTED_INDEX,
                                             WIDGET_PROP_LOCALIZE_OPTIONS,
@@ -161,7 +162,10 @@ static ret_t text_selector_prepare_highlight_style(widget_t* widget, canvas_t* c
 static ret_t text_selector_paint_text(widget_t* widget, canvas_t* c, rect_t* r,
                                       text_selector_option_t* iter, int32_t empty_item_height,
                                       int32_t item_height) {
+  text_selector_t* text_selector = NULL;
   uint32_t d = tk_abs(r->y - empty_item_height);
+
+  text_selector = TEXT_SELECTOR(widget);
 
   if (d < item_height) {
     text_selector_prepare_highlight_style(widget, c, (item_height - d) / (float_t)item_height,
@@ -169,7 +173,7 @@ static ret_t text_selector_paint_text(widget_t* widget, canvas_t* c, rect_t* r,
   } else {
     widget_prepare_text_style(widget, c);
   }
-  return canvas_draw_text_in_rect(c, iter->text.str, iter->text.size, r);
+  return widget_draw_text_in_rect(widget, c, iter->text.str, iter->text.size, r, text_selector->ellipses);
 }
 
 static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {
@@ -414,6 +418,9 @@ static ret_t text_selector_get_prop(widget_t* widget, const char* name, value_t*
   } else if (tk_str_eq(name, WIDGET_PROP_OPTIONS)) {
     value_set_str(v, text_selector->options);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ELLIPSES)) {
+    value_set_bool(v, text_selector->ellipses);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LOCALIZE_OPTIONS)) {
     value_set_bool(v, text_selector->localize_options);
     return RET_OK;
@@ -450,6 +457,8 @@ static ret_t text_selector_set_prop(widget_t* widget, const char* name, const va
   } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
     text_selector_set_text(widget, value_str(v));
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ELLIPSES)) {
+    return text_selector_set_ellipses(widget, value_bool(v));
   } else if (tk_str_eq(name, TEXT_SELECTOR_PROP_VISIBLE_NR)) {
     text_selector_set_visible_nr(widget, value_int(v));
     return RET_OK;
@@ -1139,4 +1148,13 @@ widget_t* text_selector_cast(widget_t* widget) {
   return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, text_selector), NULL);
 
   return widget;
+}
+
+ret_t text_selector_set_ellipses(widget_t* widget, bool_t ellipses) {
+  text_selector_t* text_selector = TEXT_SELECTOR(widget);
+  return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
+
+  text_selector->ellipses = ellipses;
+
+  return widget_invalidate(widget, NULL);
 }
