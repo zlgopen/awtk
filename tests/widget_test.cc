@@ -1680,3 +1680,46 @@ TEST(Widget, widget_to_screen_and_loacl) {
   
   widget_destroy(w);
 }
+
+TEST(Widget, get_content_area_ex) {
+  rect_t rect0;
+  rect_t rect1;
+  rect_t rect30;
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* label = label_create(w, 0, 0, 60, 60);
+
+  if (label != NULL && label->astyle != NULL) {
+    rect0 = rect_init(0, 0, label->w, label->h);
+    rect1 = rect_init(1, 1, label->w - 1 - 1, label->h - 1 - 1);
+    rect30 = rect_init(30, 30, label->w - 30 - 30, label->h - 30 - 30);
+  } else if (label != NULL) {
+    rect0 = rect_init(0, 0, label->w, label->h);
+    rect1 = rect_init(0, 0, label->w, label->h);
+    rect30 = rect_init(0, 0, label->w, label->h);
+  } else {
+    rect0 = rect_init(0, 0, 0, 0);
+    rect1 = rect_init(0, 0, 0, 0);
+    rect30 = rect_init(0, 0, 0, 0);
+  }
+
+  rect_t label_rect0 = widget_get_content_area_ex(label, 0);
+  rect_t label_rect1 = widget_get_content_area_ex(label, 1);
+  rect_t label_rect30 = widget_get_content_area_ex(label, 30);
+
+  ASSERT_EQ(label_rect0.x, rect0.x);
+  ASSERT_EQ(label_rect0.y, rect0.y);
+  ASSERT_EQ(label_rect0.w, rect0.w);
+  ASSERT_EQ(label_rect0.h, rect0.h);
+
+  ASSERT_EQ(label_rect1.x, rect1.x);
+  ASSERT_EQ(label_rect1.y, rect1.y);
+  ASSERT_EQ(label_rect1.w, rect1.w);
+  ASSERT_EQ(label_rect1.h, rect1.h);
+
+  ASSERT_EQ(label_rect30.x, rect30.x);
+  ASSERT_EQ(label_rect30.y, rect30.y);
+  ASSERT_EQ(label_rect30.w, rect30.w);
+  ASSERT_EQ(label_rect30.h, rect30.h);
+
+  widget_destroy(label);
+}

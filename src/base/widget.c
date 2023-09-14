@@ -1581,16 +1581,9 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
   return_value_if_fail(widget->astyle != NULL, RET_BAD_PARAMS);
 
   spacer = style_get_int(style, STYLE_ID_SPACER, 2);
-  margin = style_get_int(style, STYLE_ID_MARGIN, 0);
-  margin_top = style_get_int(style, STYLE_ID_MARGIN_TOP, margin);
-  margin_left = style_get_int(style, STYLE_ID_MARGIN_LEFT, margin);
-  margin_right = style_get_int(style, STYLE_ID_MARGIN_RIGHT, margin);
-  margin_bottom = style_get_int(style, STYLE_ID_MARGIN_BOTTOM, margin);
   icon_at = style_get_int(style, STYLE_ID_ICON_AT, ICON_AT_AUTO);
 
-  w = widget->w - margin_left - margin_right;
-  h = widget->h - margin_top - margin_bottom;
-  ir = rect_init(margin_left, margin_top, w, h);
+  ir = widget_get_content_area_ex(widget, 0);
 
   ellipses = widget_get_prop_bool(widget, WIDGET_PROP_ELLIPSES, FALSE);
 
@@ -5153,9 +5146,13 @@ bool_t widget_get_feedback(widget_t* widget) {
 }
 
 rect_t widget_get_content_area(widget_t* widget) {
+  return widget_get_content_area_ex(widget, 2);
+}
+
+rect_t widget_get_content_area_ex(widget_t* widget, int32_t default_margin) {
   if (widget != NULL && widget->astyle != NULL) {
     style_t* style = widget->astyle;
-    int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
+    int32_t margin = style_get_int(style, STYLE_ID_MARGIN, default_margin);
     int32_t margin_top = style_get_int(style, STYLE_ID_MARGIN_TOP, margin);
     int32_t margin_left = style_get_int(style, STYLE_ID_MARGIN_LEFT, margin);
     int32_t margin_right = style_get_int(style, STYLE_ID_MARGIN_RIGHT, margin);

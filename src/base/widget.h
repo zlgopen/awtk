@@ -3386,6 +3386,9 @@ ret_t widget_reload_style_recursive(widget_t* widget);
 ret_t widget_stroke_border_rect_for_border_type(canvas_t* c, const rect_t* r, color_t bd,
                                                 int32_t border, uint32_t border_width);
 
+/* internal use */
+rect_t widget_get_content_area_ex(widget_t* widget, int32_t default_margin);
+
 END_C_DECLS
 
 #endif /*TK_WIDGET_H*/

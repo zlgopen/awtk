@@ -80,7 +80,7 @@ static ret_t label_paint_text(widget_t* widget, canvas_t* c, const wchar_t* str,
   line_parser_t p;
   ret_t ret = RET_OK;
   label_t* label = LABEL(widget);
-  rect_t r = widget_get_content_area(widget);
+  rect_t r = widget_get_content_area_ex(widget, 0);
 
   return_value_if_fail((r.w > 0 && widget->h >= c->font_size), RET_FAIL);
   return_value_if_fail(line_parser_init(&p, c, widget->text.str, widget->text.size, c->font_size,
