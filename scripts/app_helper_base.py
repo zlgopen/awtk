@@ -404,6 +404,8 @@ class AppHelperBase:
         for iter in self.DEPENDS_LIBS:
             for so in iter['shared_libs']:
                 self.awtk.cleanSharedLib(self.APP_BIN_DIR, so)
+        shutil.rmtree(self.APP_BIN_DIR);
+        shutil.rmtree(self.APP_LIB_DIR);
 
     def genIdlAndDef(self):
         if self.DEF_FILE:
