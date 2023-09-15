@@ -32,15 +32,11 @@ ret_t path_basename_ex(const char* path, bool_t remove_ext_name, char* result, i
   return_value_if_fail(path != NULL && result != NULL, RET_BAD_PARAMS);
 
   memset(result, 0x00, size);
-  p = strrchr(path, TK_PATH_SEP);
-  if (p == NULL) {
-    p = strrchr(path, TK_PATH_SEP == '/' ? '\\' : '/');
-  }
-  if (p == NULL) {
-    p = path;
-  } else {
-    p++;
-  }
+  p = path + tk_strlen(path) - 1;
+  while (!IS_PATH_SEP(*p) && p >= path) {
+    p--;
+  };
+  p++;
 
   real_size = strlen(p);
   return_value_if_fail(real_size < size, RET_BAD_PARAMS);
