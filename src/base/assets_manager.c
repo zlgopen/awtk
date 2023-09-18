@@ -952,7 +952,7 @@ ret_t assets_managers_unref(assets_manager_t* am) {
 
   assert(am->refcount > 0);
   if (am->refcount == 1) {
-    darray_remove(s_assets_managers, am);
+    darray_remove(s_assets_managers, am->name);
     if (s_assets_managers->size == 0) {
       darray_destroy(s_assets_managers);
       s_assets_managers = NULL;
