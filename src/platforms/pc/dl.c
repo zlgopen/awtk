@@ -97,6 +97,7 @@ void* tk_dl_sym(tk_dl_t* dl, const char* name) {
 }
 
 const char* tk_dl_error(void) {
+  log_debug("GetLastError:%u\n", GetLastError());
   return NULL;
 }
 
