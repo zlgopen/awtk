@@ -227,7 +227,7 @@ static dialog_toast_t* dialog_toast_manager() {
 
 static ret_t dialog_toast_on_idle_close(const idle_info_t* info) {
   dialog_toast_t* dialog_toast = DIALOG_TOAST(info->ctx);
-  ENSURE(dialog_toast != NULL);
+  ENSURE(dialog_toast);
   if (!dialog_toast->is_opened) {
     return RET_REPEAT;
   }

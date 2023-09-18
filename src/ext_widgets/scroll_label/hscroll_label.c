@@ -45,6 +45,7 @@ static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t
   wstr_t* text = &(widget->text);
   uint32_t w = widget->w - left_margin - right_margin;
   hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
+  ENSURE(hscroll_label);
 
   hscroll_label->text_w = canvas_measure_text(c, text->str, text->size);
   if (hscroll_label->text_w != hscroll_label->old_text_w) {
@@ -237,6 +238,7 @@ static ret_t hscroll_label_get_prop(widget_t* widget, const char* name, value_t*
 
 static ret_t hscroll_label_set_prop(widget_t* widget, const char* name, const value_t* v) {
   hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
+  ENSURE(hscroll_label);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, HSCROLL_LABEL_PROP_LOOP)) {
@@ -271,6 +273,7 @@ static ret_t hscroll_label_set_prop(widget_t* widget, const char* name, const va
 
 static int32_t hscroll_label_get_range(widget_t* widget) {
   hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
+  ENSURE(hscroll_label);
   int32_t left_margin = style_get_int(widget->astyle, STYLE_ID_MARGIN_LEFT, 2);
   int32_t right_margin = style_get_int(widget->astyle, STYLE_ID_MARGIN_RIGHT, 2);
   int32_t w = widget->w - left_margin - right_margin;
@@ -281,6 +284,7 @@ static int32_t hscroll_label_get_range(widget_t* widget) {
 ret_t hscroll_label_step(widget_t* widget) {
   ret_t ret = RET_REPEAT;
   hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
+  ENSURE(hscroll_label);
   float_t percent = 0;
   uint32_t duration = 0;
   int32_t range = hscroll_label_get_range(widget);

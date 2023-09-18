@@ -61,6 +61,7 @@ static ret_t scroll_bar_mobile_get_dragger_size(widget_t* widget, rect_t* r) {
   int64_t widget_w = widget->w;
   int64_t widget_h = widget->h;
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  ENSURE(scroll_bar);
 
   if (scroll_bar->virtual_size <= 0) {
     return RET_OK;
@@ -118,6 +119,7 @@ static ret_t scroll_bar_desktop_on_click(widget_t* widget, pointer_event_t* e) {
   int32_t delta = 0;
   point_t p = {e->x, e->y};
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  ENSURE(scroll_bar);
 
   if (widget->target != NULL) {
     return RET_OK;
@@ -261,6 +263,7 @@ ret_t scroll_bar_add_delta_ex(widget_t* widget, int32_t d, bool_t animatable) {
   int64_t delta = 0;
   int64_t new_value = 0;
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  ENSURE(scroll_bar);
 
   if (widget->w > widget->h) {
     if (scroll_bar->virtual_size > widget->w) {
@@ -312,6 +315,7 @@ static ret_t scroll_bar_on_drag(void* ctx, event_t* e) {
   int64_t widget_w = widget->w;
   int64_t widget_h = widget->h;
   scroll_bar_t* scroll_bar = SCROLL_BAR(ctx);
+  ENSURE(scroll_bar);
   widget_t* dragger = scroll_bar->dragger;
   widget_t* up = widget_lookup(widget, CHILD_UP, FALSE);
   widget_t* down = widget_lookup(widget, CHILD_DOWN, FALSE);
@@ -367,6 +371,7 @@ static ret_t scroll_bar_on_layout_children(widget_t* widget) {
   int32_t widget_h = widget->h;
   rect_t r = rect_init(0, 0, 0, 0);
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  ENSURE(scroll_bar);
   widget_t* dragger = scroll_bar->dragger;
   widget_t* up = widget_lookup(widget, CHILD_UP, FALSE);
   widget_t* down = widget_lookup(widget, CHILD_DOWN, FALSE);
@@ -688,7 +693,7 @@ static ret_t scroll_bar_set_value_only_impl(widget_t* widget, int32_t value) {
 
 ret_t scroll_bar_set_value(widget_t* widget, int32_t value) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
-  return_value_if_fail(scroll_bar != NULL || value >= 0, RET_BAD_PARAMS);
+  return_value_if_fail(scroll_bar != NULL && value >= 0, RET_BAD_PARAMS);
 
   if (scroll_bar->value != value) {
     value_change_event_t evt;

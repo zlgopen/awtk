@@ -366,6 +366,7 @@ static bool_t edit_is_number(widget_t* widget) {
 
 static bool_t edit_is_size_valid(widget_t* widget) {
   edit_t* edit = EDIT(widget);
+  ENSURE(edit);
   uint32_t size = widget->text.size;
   uint32_t min = (uint32_t)(edit->min);
   uint32_t max = (uint32_t)(edit->max);
@@ -533,6 +534,7 @@ static ret_t edit_auto_fix_default(widget_t* widget) {
 
 static ret_t edit_update_status(widget_t* widget) {
   edit_t* edit = EDIT(widget);
+  ENSURE(edit);
   if (widget->text.size == 0) {
     if (widget->focused) {
       widget_set_state(widget, WIDGET_STATE_EMPTY_FOCUS);
@@ -1401,6 +1403,7 @@ static ret_t edit_set_text(widget_t* widget, const value_t* v) {
   wstr_t str;
   wstr_init(&str, 0);
   edit_t* edit = EDIT(widget);
+  ENSURE(edit);
   return_value_if_fail(wstr_from_value(&str, v) == RET_OK, RET_BAD_PARAMS);
 
   if (!wstr_equal(&(widget->text), &str)) {

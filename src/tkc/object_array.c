@@ -389,6 +389,7 @@ static tk_object_t* object_array_create_with_capacity(uint32_t init_capacity) {
   return_value_if_fail(obj != NULL, NULL);
   if (init_capacity > 0) {
     object_array_t* o = OBJECT_ARRAY(obj);
+    ENSURE(o);
 
     o->props = TKMEM_ZALLOCN(value_t, init_capacity);
     if (o->props != NULL) {
@@ -563,6 +564,7 @@ tk_object_t* object_array_dup(tk_object_t* obj, uint32_t start, uint32_t end) {
 ret_t object_array_remove_value(tk_object_t* obj, value_t* v) {
   uint32_t i = 0;
   object_array_t* o = OBJECT_ARRAY(obj);
+  ENSURE(o);
   return_value_if_fail(obj != NULL && v != NULL, RET_BAD_PARAMS);
 
   for (i = 0; i < o->size; i++) {
@@ -609,6 +611,7 @@ static int value_cmp_as_str_i_r(const void* a, const void* b) {
 
 ret_t object_array_sort(tk_object_t* obj, tk_compare_t cmp) {
   object_array_t* o = OBJECT_ARRAY(obj);
+  ENSURE(o);
   event_t e = event_init(EVT_ITEMS_CHANGED, o);
   return_value_if_fail(obj != NULL && cmp != NULL, RET_BAD_PARAMS);
 

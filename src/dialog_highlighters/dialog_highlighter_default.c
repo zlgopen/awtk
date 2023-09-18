@@ -290,6 +290,7 @@ static ret_t dialog_highlighter_default_system_bar_top_append_clip_rect(dialog_h
   dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
   if (rect->w != 0 && rect->h != 0) {
     rect_t* r = TKMEM_ZALLOC(rect_t);
+    ENSURE(r);
     memcpy(r, rect, sizeof(rect_t));
     ret = darray_push(&dh->system_bar_top_clip_rects, r);
   }
@@ -301,6 +302,7 @@ static ret_t dialog_highlighter_default_system_bar_bottom_append_clip_rect(dialo
   dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
   if (rect->w != 0 && rect->h != 0) {
     rect_t* r = TKMEM_ZALLOC(rect_t);
+    ENSURE(r);
     memcpy(r, rect, sizeof(rect_t));
     ret = darray_push(&dh->system_bar_bottom_clip_rects, r);
   }

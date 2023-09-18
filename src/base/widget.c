@@ -2025,6 +2025,7 @@ static ret_t fscript_info_prepare(fscript_info_t* info, event_t* evt) {
     case EVT_POINTER_MOVE:
     case EVT_POINTER_UP: {
       pointer_event_t* e = pointer_event_cast(evt);
+      ENSURE(e);
       tk_object_set_prop_int(obj, "x", e->x);
       tk_object_set_prop_int(obj, "y", e->y);
       tk_object_set_prop_bool(obj, "alt", e->alt);
@@ -2037,6 +2038,7 @@ static ret_t fscript_info_prepare(fscript_info_t* info, event_t* evt) {
     case EVT_KEY_LONG_PRESS:
     case EVT_KEY_UP: {
       key_event_t* e = key_event_cast(evt);
+      ENSURE(e);
       const key_type_value_t* kv = keys_type_find_by_value(e->key);
       if (kv != NULL) {
         tk_object_set_prop_str(obj, "key", kv->name);
@@ -2051,6 +2053,7 @@ static ret_t fscript_info_prepare(fscript_info_t* info, event_t* evt) {
     }
     case EVT_MODEL_CHANGE: {
       model_event_t* e = model_event_cast(evt);
+      ENSURE(e);
       tk_object_set_prop_str(obj, "name", e->name);
       tk_object_set_prop_str(obj, "change_type", e->change_type);
       tk_object_set_prop_object(obj, "model", e->model);

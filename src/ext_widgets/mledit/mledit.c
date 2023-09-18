@@ -341,6 +341,7 @@ static ret_t mledit_set_text(widget_t* widget, const value_t* v) {
   wstr_t str;
   wstr_init(&str, 0);
   mledit_t* mledit = MLEDIT(widget);
+  ENSURE(mledit);
   return_value_if_fail(wstr_from_value(&str, v) == RET_OK, RET_BAD_PARAMS);
 
   if (!wstr_equal(&(widget->text), &str)) {
@@ -774,6 +775,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_KEY_UP: {
       key_event_t* evt = key_event_cast(e);
+      ENSURE(evt);
       int32_t key = evt->key;
 
       if (key == TK_KEY_ESCAPE || (key >= TK_KEY_F1 && key <= TK_KEY_F12)) {
@@ -978,6 +980,7 @@ static ret_t mledit_on_text_edit_state_changed(void* ctx, text_edit_state_t* sta
 static ret_t mledit_on_scroll_bar_value_changed(void* ctx, event_t* e) {
   int32_t value = 0;
   mledit_t* mledit = MLEDIT(ctx);
+  ENSURE(mledit);
   widget_t* vscroll_bar = e != NULL ? WIDGET(e->target) : NULL;
   scroll_bar_t* scroll_bar = SCROLL_BAR(vscroll_bar);
 

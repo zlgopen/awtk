@@ -270,7 +270,9 @@ easing_func_t easing_get(easing_type_t type) {
 
 uint32_t easing_register(const char* type_name, easing_func_t easing_func) {
   easing_name_func_t* easing_name_func = TKMEM_ZALLOC(easing_name_func_t);
+  ENSURE(easing_name_func);
   easing_name_func->type_name_value = TKMEM_ZALLOC(key_type_value_t);
+  ENSURE(easing_name_func->type_name_value);
 
   easing_name_func->type_name_value->name =
       tk_str_copy(easing_name_func->type_name_value->name, type_name);

@@ -54,6 +54,7 @@ static ret_t rich_text_get_margin(widget_t* widget) {
   int32_t margin = 0;
   int32_t tmp_margin = 0;
   rich_text_t* rich_text = RICH_TEXT(widget);
+  ENSURE(rich_text);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
   margin = style_get_int(widget->astyle, STYLE_ID_MARGIN, 0);
   tmp_margin = rich_text->margin;

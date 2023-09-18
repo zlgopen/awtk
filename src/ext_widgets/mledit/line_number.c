@@ -46,6 +46,7 @@ static ret_t line_number_do_paint_self(widget_t* widget, canvas_t* c) {
   uint32_t w = widget->w - 2 * x;
   rect_t r = rect_init(0, 0, 0, 0);
   line_number_t* line_number = LINE_NUMBER(widget);
+  ENSURE(line_number);
   int32_t yoffset = line_number->yoffset;
   int32_t line_height = line_number->line_height;
   style_t* style = widget->astyle;

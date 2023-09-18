@@ -62,6 +62,7 @@ static ret_t button_notify_pressed_changed(widget_t* widget) {
   value_t v;
   prop_change_event_t e;
   button_t* button = BUTTON(widget);
+  ENSURE(button);
 
   e.e = event_init(EVT_PROP_CHANGED, widget);
   e.name = "pressed";
@@ -153,6 +154,7 @@ static ret_t button_draw_preview(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   point_t p = {0, 0};
   paint_event_t* evt = paint_event_cast(e);
+  ENSURE(evt);
   canvas_t* c = evt->c;
   int32_t ox = c->ox;
   int32_t oy = c->oy;
@@ -239,6 +241,7 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_UP: {
       pointer_event_t click;
       pointer_event_t* up = pointer_event_cast(e);
+      ENSURE(up);
       pointer_event_init(&click, EVT_CLICK, widget, up->x, up->y);
 
       if (button->pressed && widget_is_point_in(widget, click.x, click.y, FALSE)) {

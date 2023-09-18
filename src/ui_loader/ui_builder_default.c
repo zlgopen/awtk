@@ -79,9 +79,10 @@ static ret_t ui_builder_default_on_widget_end(ui_builder_t* b) {
 }
 
 static ret_t ui_builder_default_on_end(ui_builder_t* b) {
-  if (b->root != NULL) {
+  ENSURE(b);
+  widget_t* widget = b->root;
+  if (widget != NULL) {
     event_t e;
-    widget_t* widget = b->root;
 
     widget_invalidate_force(widget, NULL);
     if (widget && (widget->name == NULL || widget->name[0] == 0)) {

@@ -533,6 +533,7 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
       value_copy(d, s); /*func_set accept id/str as first param*/
     } else {
       const char* name = value_id(s);
+      ENSURE(name);
       if (value_id_index(s) >= 0) {
         return fscript_locals_get(fscript, s, d);
       }
@@ -1437,6 +1438,7 @@ static ret_t token_to_value(fscript_parser_t* parser, token_t* t, value_t* v) {
       const char* p = NULL;
       value_set_id(v, t->token, t->size);
       name = value_id(v);
+      ENSURE(name);
       p = strchr(name, '.');
       if (p != NULL) {
         char first_name[TK_NAME_LEN + 1];

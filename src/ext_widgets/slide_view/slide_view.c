@@ -406,6 +406,7 @@ static uint32_t slide_view_get_page_max_number(widget_t* widget) {
 
 static ret_t slide_view_get_prop(widget_t* widget, const char* name, value_t* v) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
+  ENSURE(slide_view);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_ACTIVE) ||
@@ -446,6 +447,7 @@ static ret_t slide_view_get_prop(widget_t* widget, const char* name, value_t* v)
 
 static ret_t slide_view_set_prop(widget_t* widget, const char* name, const value_t* v) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
+  ENSURE(slide_view);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_ACTIVE) ||
@@ -812,6 +814,7 @@ static ret_t slide_view_on_idle_init_save_target(const idle_info_t* idle) {
   slide_view_t* slide_view = NULL;
   return_value_if_fail(idle != NULL, RET_BAD_PARAMS);
   slide_view = SLIDE_VIEW(idle->ctx);
+  ENSURE(slide_view);
   if (slide_view->widget.focused) {
     slide_view_restore_target(WIDGET(slide_view));
     slide_view->init_idle_id = TK_INVALID_ID;
@@ -824,6 +827,7 @@ static ret_t slide_view_on_idle_move(const idle_info_t* idle) {
   slide_view_t* slide_view = NULL;
   return_value_if_fail(idle != NULL, RET_BAD_PARAMS);
   slide_view = SLIDE_VIEW(idle->ctx);
+  ENSURE(slide_view);
   if (slide_view->dragged) {
     widget_invalidate(WIDGET(slide_view), NULL);
   }
@@ -861,6 +865,7 @@ static ret_t slide_view_on_idle_set_target_focused(const idle_info_t* idle) {
   slide_view_t* slide_view = NULL;
   return_value_if_fail(idle != NULL, RET_BAD_PARAMS);
   slide_view = SLIDE_VIEW(idle->ctx);
+  ENSURE(slide_view);
 
   default_focused_child_set_target_focused(&(slide_view->str_target), WIDGET(slide_view));
 
@@ -968,6 +973,7 @@ static ret_t slide_view_set_active_animate(widget_t* widget, uint32_t active) {
 
 ret_t slide_view_set_active_ex(widget_t* widget, uint32_t index, bool_t animate) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
+  ENSURE(slide_view);
   widget_t* win = widget_get_window(widget);
 
   if (widget_count_children(widget) < 2 || slide_view->active == index || !animate || win == NULL) {

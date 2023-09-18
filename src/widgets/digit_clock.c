@@ -71,6 +71,7 @@ static ret_t digit_clock_on_display_time(void* ctx, event_t* e) {
 
 ret_t digit_clock_set_format(widget_t* widget, const char* format) {
   digit_clock_t* digit_clock = DIGIT_CLOCK(widget);
+  ENSURE(digit_clock);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   digit_clock->format = tk_str_copy(digit_clock->format, format);
@@ -81,6 +82,7 @@ ret_t digit_clock_set_format(widget_t* widget, const char* format) {
 
 static ret_t digit_clock_get_prop(widget_t* widget, const char* name, value_t* v) {
   digit_clock_t* digit_clock = DIGIT_CLOCK(widget);
+  ENSURE(digit_clock);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_FORMAT)) {

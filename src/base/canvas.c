@@ -326,7 +326,7 @@ ret_t canvas_set_text_align(canvas_t* c, align_h_t align_h, align_v_t align_v) {
 }
 
 static float_t canvas_measure_text_default(canvas_t* c, const wchar_t* str, uint32_t nr) {
-  glyph_t g;
+  glyph_t g = {0};
   float_t w = 0;
   uint32_t i = 0;
   return_value_if_fail(c != NULL && str != NULL && c->font != NULL, 0);

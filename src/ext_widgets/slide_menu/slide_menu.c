@@ -109,6 +109,7 @@ static int32_t slide_menu_get_visible_nr(widget_t* widget) {
   int32_t n = 0;
   int32_t menu_w = 0;
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
+  ENSURE(slide_menu);
   if (widget->w == 0 || widget->h == 0) return 0;
 
   menu_w = slide_menu_get_menu_w(slide_menu);
@@ -125,6 +126,7 @@ static rect_t slide_menu_get_clip_r(widget_t* widget) {
   int32_t w = 0;
   int32_t h = widget->h;
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
+  ENSURE(slide_menu);
   if (slide_menu->clip) {
     int32_t nr = slide_menu_get_visible_nr(widget) - 1;
     int32_t menu_w = slide_menu_get_menu_w(slide_menu);
@@ -282,6 +284,7 @@ static uint32_t slide_menu_get_visible_children(widget_t* widget,
   int32_t curr = 0;
   uint32_t nr = widget_count_children(widget);
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
+  ENSURE(slide_menu);
   rect_t clip_rect = slide_menu_get_clip_r(widget);
   int32_t delta_index = slide_menu_get_delta_index(widget);
   int32_t index = slide_menu_fix_index(widget, slide_menu->value - delta_index);
@@ -386,6 +389,7 @@ static ret_t slide_menu_do_layout_children(widget_t* widget) {
   int32_t visible_nr = MAX_VISIBLE_NR;
   widget_t* children[MAX_VISIBLE_NR];
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
+  ENSURE(slide_menu);
   int32_t menu_h = widget->h;
   int32_t menu_w = slide_menu_get_menu_w(slide_menu);
   int32_t menu_w_s = menu_w + slide_menu->spacer;
@@ -450,6 +454,7 @@ static ret_t slide_menu_layout_children(widget_t* widget) {
 
 static ret_t slide_menu_get_prop(widget_t* widget, const char* name, value_t* v) {
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
+  ENSURE(slide_menu);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_int(v, slide_menu->value);
@@ -482,6 +487,7 @@ static ret_t slide_menu_get_prop(widget_t* widget, const char* name, value_t* v)
 
 static ret_t slide_menu_set_prop(widget_t* widget, const char* name, const value_t* v) {
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
+  ENSURE(slide_menu);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     slide_menu_set_value(widget, value_int(v));

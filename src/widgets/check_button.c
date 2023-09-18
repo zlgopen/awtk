@@ -126,6 +126,7 @@ ret_t check_button_set_value(widget_t* widget, bool_t value) {
 
 static ret_t check_button_get_prop(widget_t* widget, const char* name, value_t* v) {
   check_button_t* check_button = CHECK_BUTTON(widget);
+  ENSURE(check_button);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {

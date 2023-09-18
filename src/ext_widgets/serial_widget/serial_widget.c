@@ -142,6 +142,7 @@ static ret_t serial_widget_get_prop(widget_t* widget, const char* name, value_t*
 
 static ret_t serial_widget_on_data(widget_t* widget) {
   serial_widget_t* serial_widget = SERIAL_WIDGET(widget);
+  ENSURE(serial_widget);
 
   widget_dispatch_simple_event(widget, EVT_DATA);
   if (!tk_object_get_prop_bool(TK_OBJECT(serial_widget->iostream), TK_STREAM_PROP_IS_OK, FALSE)) {
@@ -154,6 +155,7 @@ static ret_t serial_widget_on_data(widget_t* widget) {
 
 static ret_t serial_widget_close_device(widget_t* widget) {
   serial_widget_t* serial_widget = SERIAL_WIDGET(widget);
+  ENSURE(serial_widget);
 
   TK_OBJECT_UNREF(serial_widget->iostream);
   serial_widget->istream = NULL;
@@ -193,6 +195,7 @@ static ret_t serial_widget_on_event_source_event(event_source_t* source) {
 static ret_t serial_widget_check_if_data_available(const timer_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
   serial_widget_t* serial_widget = SERIAL_WIDGET(info->ctx);
+  ENSURE(serial_widget);
 
   if (serial_widget->iostream != NULL) {
     ret_t ret = tk_iostream_serial_wait_for_data(serial_widget->iostream, 10);
@@ -215,6 +218,7 @@ static ret_t serial_widget_apply_props_async(const idle_info_t* info) {
   int fd = -1;
   widget_t* widget = WIDGET(info->ctx);
   serial_widget_t* serial_widget = SERIAL_WIDGET(info->ctx);
+  ENSURE(serial_widget);
 
   serial_widget_close_device(widget);
   return_value_if_fail(serial_widget->device != NULL, RET_REMOVE);

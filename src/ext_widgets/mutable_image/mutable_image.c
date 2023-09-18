@@ -69,6 +69,7 @@ static bitmap_t* mutable_image_prepare_image(widget_t* widget, canvas_t* c) {
 
 ret_t mutable_image_on_paint_self(widget_t* widget, canvas_t* canvas) {
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
+  ENSURE(mutable_image);
   bitmap_t* bitmap = mutable_image->user_image != NULL
                          ? mutable_image->user_image
                          : mutable_image_prepare_image(widget, canvas);
@@ -135,6 +136,7 @@ ret_t mutable_image_on_attach_parent(widget_t* widget, widget_t* parent) {
 
 static ret_t mutable_image_set_prop(widget_t* widget, const char* name, const value_t* v) {
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
+  ENSURE(mutable_image);
   if (tk_str_eq(name, WIDGET_PROP_IMAGE) || tk_str_eq(name, WIDGET_PROP_VALUE)) {
     mutable_image->user_image = (bitmap_t*)value_bitmap(v);
     if (mutable_image->user_image != NULL && mutable_image->image != NULL) {
@@ -162,6 +164,7 @@ TK_DECL_VTABLE(mutable_image) = {.size = sizeof(mutable_image_t),
 static ret_t mutable_image_invalidate(const timer_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
+  ENSURE(mutable_image);
 
   if (mutable_image->need_redraw == NULL ||
       mutable_image->need_redraw(mutable_image->need_redraw_ctx)) {

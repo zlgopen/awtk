@@ -173,6 +173,7 @@ static ret_t vpage_on_enter(widget_t* widget, uint32_t index, uint32_t old_index
 
 static ret_t vpage_on_leave_done(widget_t* widget) {
   vpage_t* vpage = VPAGE(widget);
+  ENSURE(vpage);
 
   if (vpage->ui_asset != NULL) {
     vpage_dispatch_event(widget, EVT_VPAGE_CLOSE);

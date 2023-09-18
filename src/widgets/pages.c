@@ -53,6 +53,7 @@ static ret_t pages_on_idle_set_target_focused(const idle_info_t* idle) {
   pages_t* pages = NULL;
   return_value_if_fail(idle != NULL, RET_BAD_PARAMS);
   pages = PAGES(idle->ctx);
+  ENSURE(pages);
 
   default_focused_child_set_target_focused(&(pages->str_target), WIDGET(pages));
 
@@ -95,6 +96,7 @@ static ret_t pages_restore_target(widget_t* widget) {
 
 static ret_t pages_show_active(widget_t* widget) {
   pages_t* pages = PAGES(widget);
+  ENSURE(pages);
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   widget_set_visible(iter, i == pages->active);
   WIDGET_FOR_EACH_CHILD_END()
@@ -222,6 +224,7 @@ static ret_t pages_on_idle_init_save_target(const idle_info_t* idle) {
   pages_t* pages = NULL;
   return_value_if_fail(idle != NULL, RET_BAD_PARAMS);
   pages = PAGES(idle->ctx);
+  ENSURE(pages);
 
   pages_restore_target(WIDGET(pages));
   pages->init_idle_id = TK_INVALID_ID;

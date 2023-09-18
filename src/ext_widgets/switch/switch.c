@@ -193,6 +193,7 @@ static ret_t switch_on_event(widget_t* widget, event_t* e) {
 ret_t switch_fill_rect_color(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg) {
   style_t* style = widget->astyle;
   switch_t* aswitch = SWITCH(widget);
+  ENSURE(aswitch);
   color_t trans = color_init(0, 0, 0, 0);
   uint32_t radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
   const char* color_key = bg ? (aswitch->value ? STYLE_ID_SELECTED_BG_COLOR : STYLE_ID_BG_COLOR)

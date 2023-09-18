@@ -131,6 +131,7 @@ static ret_t color_tile_on_paint_self(widget_t* widget, canvas_t* c) {
 
 static ret_t color_tile_get_prop(widget_t* widget, const char* name, value_t* v) {
   color_tile_t* color_tile = COLOR_TILE(widget);
+  ENSURE(color_tile);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_BG_COLOR)) {

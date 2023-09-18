@@ -175,6 +175,7 @@ static ret_t conf_doc_save_xml_node(conf_doc_t* doc, str_t* str, conf_node_t* no
                                     uint32_t level) {
   uint32_t size = 0;
   const char* name = conf_node_get_name(node);
+  ENSURE(name);
   conf_node_t* text = NULL;
   conf_node_t* iter = conf_node_get_first_child(node);
 

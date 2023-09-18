@@ -448,6 +448,7 @@ static ret_t conf_sub_obj_foreach(tk_object_t* obj, tk_visit_t on_prop, void* ct
 
 static ret_t conf_sub_obj_destroy(tk_object_t* obj) {
   conf_sub_obj_t* o = CONF_SUB_OBJ(obj);
+  ENSURE(o);
   TK_OBJECT_UNREF(o->conf);
   o->root = NULL;
   o->real_root = NULL;
@@ -488,6 +489,7 @@ tk_object_t* conf_sub_obj_create(tk_object_t* conf, const char* path) {
     return_value_if_fail(root != NULL, NULL);
   } else {
     conf_obj = CONF_OBJ(conf);
+    ENSURE(conf_obj);
     root = conf_doc_find_node(conf_obj->doc, conf_obj->doc->root, path, FALSE);
     return_value_if_fail(root != NULL, NULL);
   }

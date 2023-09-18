@@ -33,6 +33,7 @@ static ret_t list_view_h_on_paint_self(widget_t* widget, canvas_t* c) {
 
 static ret_t list_view_h_get_prop(widget_t* widget, const char* name, value_t* v) {
   list_view_h_t* list_view_h = LIST_VIEW_H(widget);
+  ENSURE(list_view_h);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_ITEM_WIDTH)) {
@@ -48,6 +49,7 @@ static ret_t list_view_h_get_prop(widget_t* widget, const char* name, value_t* v
 
 static ret_t list_view_h_set_prop(widget_t* widget, const char* name, const value_t* v) {
   list_view_h_t* list_view_h = LIST_VIEW_H(widget);
+  ENSURE(list_view_h);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_ITEM_WIDTH)) {
@@ -151,6 +153,7 @@ static ret_t list_view_h_on_scroll_view_layout_children(widget_t* widget) {
 
 static ret_t list_view_h_on_add_child(widget_t* widget, widget_t* child) {
   list_view_h_t* list_view_h = LIST_VIEW_H(widget);
+  ENSURE(list_view_h);
   const char* type = widget_get_type(child);
 
   if (tk_str_eq(type, WIDGET_TYPE_SCROLL_VIEW)) {
@@ -169,6 +172,7 @@ widget_t* list_view_h_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
 ret_t list_view_h_set_item_width(widget_t* widget, int32_t item_width) {
   list_view_h_t* list_view_h = LIST_VIEW_H(widget);
+  ENSURE(list_view_h);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   list_view_h->item_width = item_width;
@@ -178,6 +182,7 @@ ret_t list_view_h_set_item_width(widget_t* widget, int32_t item_width) {
 
 ret_t list_view_h_set_spacing(widget_t* widget, int32_t spacing) {
   list_view_h_t* list_view_h = LIST_VIEW_H(widget);
+  ENSURE(list_view_h);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   list_view_h->spacing = spacing;

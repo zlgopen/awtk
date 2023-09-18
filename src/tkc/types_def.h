@@ -318,7 +318,12 @@ typedef enum _ret_t {
   }
 
 #if defined(NDEBUG) || defined(SYLIXOS)
+#ifdef WITH_INFERCHECK
+#define __INFER_ENSURE__(p) (void)(!!(p) || (exit(0), 0))
+#define ENSURE(p) __INFER_ENSURE__(p)
+#else
 #define ENSURE(p) (void)(p)
+#endif
 #define goto_error_if_fail(p) \
   if (!(p)) {                 \
     goto error;               \
@@ -399,9 +404,12 @@ typedef ret_t (*tk_callback_t)(void* ctx);
 enum { TK_NAME_LEN = 31, TK_FUNC_NAME_LEN = 63 };
 
 #ifdef WITH_CPPCHECK
-#define tk_str_eq strcmp("abc", "123")
-#define tk_str_ieq strcasecmp
-#define tk_str_eq_with_len strncmp
+int __cppcheck__strcmp(const char* s1, const char* s2);
+int __cppcheck__strcasecmp(const char* s1, const char* s2);
+int __cppcheck__strncmp(const char* s1, const char* s2, size_t n);
+#define tk_str_eq(s1, s2) (__cppcheck__strcmp((s1), (s2)) == 0)
+#define tk_str_ieq(s1, s2) (__cppcheck__strcasecmp((s1), (s2)) == 0)
+#define tk_str_eq_with_len(s1, s2, len) (__cppcheck__strncmp((s1), (s2), len) == 0)
 #else
 #define tk_str_eq(s1, s2)                                                           \
   (((s1) == NULL && (s2) == NULL) ||                                                \
@@ -498,7 +506,7 @@ typedef struct _event_source_manager_t event_source_manager_t;
 #endif
 
 #define tk_isspace(c) ((0 <= (int)(c)) && ((int)(c) < 128) && isspace(c))
-#define tk_isdigit(c) ((0 <= (int)(c)) && ((int)(c) < 128) && isdigit(c))
+#define tk_isdigit(c) ((int)(c) >= '0' && (int)(c) <= '9')
 #define tk_isxdigit(c) ((0 <= (int)(c)) && ((int)(c) < 128) && isxdigit(c))
 #define tk_isprint(c) ((0 <= (int)(c)) && ((int)(c) < 128) && isprint(c))
 #define tk_isalpha(c) ((0 <= (int)(c)) && ((int)(c) < 128) && isalpha(c))

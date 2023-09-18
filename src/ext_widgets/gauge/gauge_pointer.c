@@ -44,6 +44,7 @@ static rect_t gauge_pointer_calc_dirty_rect(widget_t* widget, int32_t img_w, int
   int32_t ox = widget->x;
   int32_t oy = widget->y;
   gauge_pointer_t* gauge_pointer = GAUGE_POINTER(widget);
+  ENSURE(gauge_pointer);
   float_t rotation = TK_D2R(gauge_pointer->angle);
   float_t anchor_x = tk_eval_ratio_or_px(gauge_pointer->anchor_x, widget->w);
   float_t anchor_y = tk_eval_ratio_or_px(gauge_pointer->anchor_y, widget->h);
@@ -135,6 +136,7 @@ static ret_t gauge_pointer_invalidate(widget_t* widget, const rect_t* rect) {
 
 ret_t gauge_pointer_set_angle(widget_t* widget, float_t angle) {
   gauge_pointer_t* gauge_pointer = GAUGE_POINTER(widget);
+  ENSURE(gauge_pointer);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (gauge_pointer->angle != angle) {
@@ -225,6 +227,7 @@ ret_t gauge_pointer_set_image(widget_t* widget, const char* image) {
 
 static ret_t gauge_pointer_get_prop(widget_t* widget, const char* name, value_t* v) {
   gauge_pointer_t* gauge_pointer = GAUGE_POINTER(widget);
+  ENSURE(gauge_pointer);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, GAUGE_POINTER_PROP_ANGLE) || tk_str_eq(name, WIDGET_PROP_VALUE)) {

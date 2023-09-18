@@ -84,6 +84,7 @@ static ret_t progress_circle_update_text(widget_t* widget) {
 static float_t progress_circle_value_to_angle(widget_t* widget, float_t value) {
   float_t end_angle = 0;
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
+  ENSURE(progress_circle);
   bool_t ccw = progress_circle->counter_clock_wise;
   float_t start_angle = TK_D2R(progress_circle->start_angle);
   float_t angle = (M_PI * 2 * value) / progress_circle->max;
@@ -104,6 +105,7 @@ static float_t progress_circle_get_radius(widget_t* widget) {
   xy_t cx = widget->w / 2;
   xy_t cy = widget->h / 2;
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
+  ENSURE(progress_circle);
 
   return tk_min(cx, cy) - progress_circle->line_width / 2;
 }
@@ -112,6 +114,7 @@ rect_t progress_circle_calc_text_dirty_rect(widget_t* widget) {
   rect_t r = {0, 0, 0, 0};
   canvas_t* c = widget_get_canvas(widget);
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
+  ENSURE(progress_circle);
 
   if (widget->w < 1 || widget->h < 1) {
     return r;
@@ -144,6 +147,7 @@ rect_t progress_circle_calc_line_dirty_rect(widget_t* widget, float_t old_value,
   point_t start_p = {0, 0};
   point_t end_p = {0, 0};
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
+  ENSURE(progress_circle);
   float_t line_width = progress_circle->line_width;
 
   start_angle = progress_circle_value_to_angle(widget, old_value);

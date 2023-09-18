@@ -83,6 +83,7 @@ static ret_t object_default_set_prop(tk_object_t* obj, const char* name, const v
   value_t* vv = NULL;
   ret_t ret = RET_NOT_FOUND;
   object_default_t* o = OBJECT_DEFAULT(obj);
+  ENSURE(o);
 
   if (o->props.size > 0 && o->enable_path) {
     tk_object_t* sub = tk_object_get_child_object(obj, name, &name);
@@ -214,6 +215,7 @@ static const object_vtable_t s_object_default_vtable = {
 tk_object_t* object_default_create_ex(bool_t enable_path) {
   tk_object_t* obj = tk_object_create(&s_object_default_vtable);
   object_default_t* o = OBJECT_DEFAULT(obj);
+  ENSURE(o);
   return_value_if_fail(obj != NULL, NULL);
 
   o->enable_path = enable_path;

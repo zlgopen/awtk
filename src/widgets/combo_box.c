@@ -419,6 +419,7 @@ static ret_t combo_box_on_key_event(widget_t* widget, key_event_t* evt) {
 
 static ret_t combo_box_init_popup_button(widget_t* widget) {
   widget_t* popup = button_create(widget, 0, 0, 0, 0);
+  ENSURE(popup);
   popup->auto_created = TRUE;
   widget_use_style(popup, "combobox_down");
   widget_invalidate_force(widget, NULL);
@@ -521,6 +522,7 @@ static ret_t combo_box_on_idle_init_popup_button(const idle_info_t* idle) {
 
   widget = WIDGET(idle->ctx);
   combo_box = COMBO_BOX(widget);
+  ENSURE(combo_box);
 
   if (!widget->destroying) {
     widget_t* button = widget_lookup_by_type(widget, WIDGET_TYPE_BUTTON, TRUE);
@@ -536,6 +538,7 @@ static ret_t combo_box_on_idle_init_popup_button(const idle_info_t* idle) {
 
 static ret_t combo_box_idle_init_popup_button(widget_t* widget) {
   combo_box_t* combo_box = COMBO_BOX(widget);
+  ENSURE(combo_box);
   if (combo_box->init_popup_button_idle_id == TK_INVALID_ID) {
     combo_box->init_popup_button_idle_id = idle_add(combo_box_on_idle_init_popup_button, widget);
   }
@@ -605,6 +608,7 @@ static ret_t combo_box_on_item_click(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   widget_t* item = WIDGET(e->target);
   combo_box_t* combo_box = COMBO_BOX(ctx);
+  ENSURE(combo_box);
   return_value_if_fail(widget != NULL && item != NULL, RET_BAD_PARAMS);
 
   if (combo_box->on_item_click != NULL) {
@@ -874,6 +878,7 @@ ret_t combo_box_reset_options(widget_t* widget) {
 
 ret_t combo_box_set_open_window(widget_t* widget, const char* open_window) {
   combo_box_t* combo_box = COMBO_BOX(widget);
+  ENSURE(combo_box);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(combo_box->open_window);
@@ -884,6 +889,7 @@ ret_t combo_box_set_open_window(widget_t* widget, const char* open_window) {
 
 ret_t combo_box_set_theme_of_popup(widget_t* widget, const char* theme_of_popup) {
   combo_box_t* combo_box = COMBO_BOX(widget);
+  ENSURE(combo_box);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(combo_box->theme_of_popup);
@@ -1077,6 +1083,7 @@ static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, w
 
 static ret_t combo_box_add_selected_index(widget_t* widget, int32_t delta) {
   combo_box_t* combo_box = COMBO_BOX(widget);
+  ENSURE(combo_box);
   uint32_t nr = combo_box_count_options(widget);
 
   if (nr > 0) {

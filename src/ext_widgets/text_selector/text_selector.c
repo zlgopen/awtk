@@ -63,6 +63,7 @@ static ret_t text_selector_paint_mask(widget_t* widget, canvas_t* c) {
   color_t mask_color = style_get_color(style, STYLE_ID_MASK_COLOR, trans);
 
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
+  ENSURE(text_selector);
   int32_t visible_nr = text_selector->visible_nr;
   int32_t item_height = text_selector->draw_widget_h / visible_nr;
   easing_func_t easing = easing_get(text_selector->mask_easing);
@@ -166,6 +167,7 @@ static ret_t text_selector_paint_text(widget_t* widget, canvas_t* c, rect_t* r,
   uint32_t d = tk_abs(r->y - empty_item_height);
 
   text_selector = TEXT_SELECTOR(widget);
+  ENSURE(text_selector);
 
   if (d < item_height) {
     text_selector_prepare_highlight_style(widget, c, (item_height - d) / (float_t)item_height,

@@ -55,6 +55,7 @@ static ret_t combo_box_ex_create_popup_items(combo_box_t* combo_box, widget_t* p
       widget_set_value(item, iter->value);
     }
 
+    ENSURE(item);
     if (combo_box->localize_options) {
       widget_set_tr_text(item, text);
     } else {

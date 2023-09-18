@@ -51,6 +51,7 @@ static uint32_t slider_get_bar_size(widget_t* widget) {
 static uint32_t slider_get_dragger_size(widget_t* widget) {
   bitmap_t img;
   slider_t* slider = SLIDER(widget);
+  ENSURE(slider);
   uint32_t dragger_size = slider->dragger_size;
   if (slider->auto_get_dragger_size) {
     dragger_size = slider_get_bar_size(widget) * 1.5f;
@@ -69,6 +70,7 @@ static rect_t slider_get_dirty_rect(widget_t* widget) {
   int32_t tolerance = 0;
   uint32_t dragger_size = 0;
   slider_t* slider = SLIDER(widget);
+  ENSURE(slider);
   rect_t r = rect_init(widget->x, widget->y, widget->w, widget->h);
 
   if (widget->initializing) {
@@ -258,6 +260,7 @@ static ret_t slider_paint_dragger(widget_t* widget, canvas_t* c) {
   uint32_t radius;
   style_t* style = widget->astyle;
   slider_t* slider = SLIDER(widget);
+  ENSURE(slider);
   rect_t* r = &(slider->dragger_rect);
   color_t trans = color_init(0, 0, 0, 0);
 
@@ -428,6 +431,7 @@ static ret_t slider_change_value_by_pointer_event(widget_t* widget, pointer_even
   uint32_t max_gap = 0;
   point_t p = {evt->x, evt->y};
   slider_t* slider = SLIDER(widget);
+  ENSURE(slider);
   double range = slider->max - slider->min;
   uint32_t dragger_size = slider_get_dragger_size(widget);
   int32_t margin = slider->no_dragger_icon ? 0 : style_get_int(widget->astyle, STYLE_ID_MARGIN, 0);

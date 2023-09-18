@@ -310,6 +310,7 @@ static ret_t time_clock_on_paint_self(widget_t* widget, canvas_t* c) {
   bitmap_t bitmap;
   float_t rotation = 0;
   time_clock_t* time_clock = TIME_CLOCK(widget);
+  ENSURE(time_clock);
   rect_t dst = rect_init(0, 0, widget->w, widget->h);
 
   if (time_clock_load_image(widget, time_clock->bg_image, &bitmap) == RET_OK) {

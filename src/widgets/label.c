@@ -80,6 +80,7 @@ static ret_t label_paint_text(widget_t* widget, canvas_t* c, const wchar_t* str,
   line_parser_t p;
   ret_t ret = RET_OK;
   label_t* label = LABEL(widget);
+  ENSURE(label);
   rect_t r = widget_get_content_area_ex(widget, 0);
 
   return_value_if_fail((r.w > 0 && widget->h >= c->font_size), RET_FAIL);
@@ -102,6 +103,7 @@ static ret_t label_paint_text(widget_t* widget, canvas_t* c, const wchar_t* str,
 static ret_t label_on_paint_self(widget_t* widget, canvas_t* c) {
   if (widget->text.size > 0 && style_is_valid(widget->astyle)) {
     label_t* label = LABEL(widget);
+    ENSURE(label);
     uint32_t size =
         label->length >= 0 ? tk_min(label->length, widget->text.size) : widget->text.size;
 
@@ -241,6 +243,7 @@ static ret_t label_auto_adjust_size_impl(widget_t* widget, canvas_t* c, uint32_t
   wh_t max_line_w = 0;
   int32_t line_height = 0;
   label_t* label = LABEL(widget);
+  ENSURE(label);
   style_t* style = widget->astyle;
   int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
   int32_t margin_top = style_get_int(style, STYLE_ID_MARGIN_TOP, margin);

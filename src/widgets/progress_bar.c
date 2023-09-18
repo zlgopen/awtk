@@ -45,6 +45,7 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   rect_t r;
   style_t* style = widget->astyle;
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
+  ENSURE(progress_bar);
   uint32_t radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
   const char* bg_image = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
   image_draw_type_t draw_type = progress_bar->vertical ? IMAGE_DRAW_PATCH3_Y : IMAGE_DRAW_PATCH3_X;

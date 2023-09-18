@@ -306,6 +306,7 @@ static ret_t grid_on_layout_children_impl(widget_t* widget) {
 
 static ret_t grid_on_layout_children(widget_t* widget) {
   grid_t* grid = GRID(widget);
+  ENSURE(grid);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (widget->children_layout != NULL) {
@@ -358,6 +359,7 @@ static ret_t grid_draw_grid(widget_t* widget, canvas_t* c) {
 
 static ret_t grid_on_paint_border(widget_t* widget, canvas_t* c) {
   grid_t* grid = GRID(widget);
+  ENSURE(grid);
 
   if (grid->show_grid && widget->astyle != NULL) {
     rect_t r = rect_init(0, 0, widget->w, widget->h);
