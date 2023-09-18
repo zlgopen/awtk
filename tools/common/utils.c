@@ -306,7 +306,7 @@ const char* to_lower(char* str) {
 const char* filter_name(char* name) {
   char* p = name;
   while (*p) {
-    if (!(isdigit(*p) || isalpha(*p) || *p == '_')) {
+    if (!(tk_isdigit(*p) || tk_isalpha(*p) || *p == '_')) {
       *p = '_';
     }
     p++;
