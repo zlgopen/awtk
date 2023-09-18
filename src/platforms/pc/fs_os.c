@@ -543,7 +543,20 @@ static ret_t fs_os_stat(fs_t* fs, const char* name, fs_stat_info_t* fst) {
   }
 #else
   struct stat st;
-  stat_ret = stat(name, &st);
+#ifdef MINGW
+  if (strlen(name) == 2 && name[1] == ':') {
+    /*append slash*/
+    char tmp_name[4];
+    tmp_name[0] = name[0];
+    tmp_name[1] = name[1];
+    tmp_name[2] = '\\';
+    tmp_name[3] = 0;
+    stat_ret = stat(tmp_name, &st);
+  } else 
+#endif
+  {
+    stat_ret = stat(name, &st);
+  }
 #endif
 
   if (stat_ret == -1) {
