@@ -78,9 +78,9 @@ TEST(LCDMem, rgba8888) {
 
   test_draw(c);
 
+  canvas_reset(c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(c);
 }
 
 TEST(LCDMem, bgra8888) {
@@ -92,9 +92,9 @@ TEST(LCDMem, bgra8888) {
 
   test_draw(c);
 
+  canvas_reset(c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(c);
 }
 
 TEST(LCDMem, bgr888) {
@@ -106,9 +106,9 @@ TEST(LCDMem, bgr888) {
 
   test_draw(c);
 
+  canvas_reset(c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(c);
 }
 
 TEST(LCDMem, rgb888) {
@@ -120,9 +120,9 @@ TEST(LCDMem, rgb888) {
 
   test_draw(c);
 
+  canvas_reset(c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(c);
 }
 
 TEST(LCDMem, bgr565) {
@@ -134,9 +134,9 @@ TEST(LCDMem, bgr565) {
 
   test_draw(c);
 
+  canvas_reset(c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(c);
 }
 
 TEST(LCDMem, rgb565) {
@@ -148,9 +148,9 @@ TEST(LCDMem, rgb565) {
 
   test_draw(c);
 
+  canvas_reset(c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(c);
 }
 
 TEST(LCDMem, resize) {

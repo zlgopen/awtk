@@ -44,9 +44,9 @@ TEST(Canvas, draw_hline) {
   ASSERT_EQ(lcd_log_get_commands(lcd), "dhl(291,110,9);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_vline) {
@@ -80,9 +80,9 @@ TEST(Canvas, draw_vline) {
   ASSERT_EQ(lcd_log_get_commands(lcd), "dvl(110,291,9);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, fill_rect) {
@@ -136,9 +136,9 @@ TEST(Canvas, fill_rect) {
   ASSERT_EQ(lcd_log_get_commands(lcd), "fr(100,120,30,40);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, clear_rect) {
@@ -192,9 +192,9 @@ TEST(Canvas, clear_rect) {
   ASSERT_EQ(lcd_log_get_commands(lcd), "cr(100,120,30,40);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_points) {
@@ -240,9 +240,9 @@ TEST(Canvas, draw_points) {
   ASSERT_EQ(lcd_log_get_commands(lcd), "dps((100,100)(200,200));");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_glyph) {
@@ -284,9 +284,9 @@ TEST(Canvas, draw_glyph) {
   ASSERT_EQ(lcd_log_get_commands(lcd), "dg(5,0,5,5,100,295);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image) {
@@ -361,9 +361,9 @@ TEST(Canvas, draw_image) {
   canvas_draw_image(&c, &img, &s, &d);
   ASSERT_EQ(lcd_log_get_commands(lcd), "dg(10,10,10,10,290,290,10,10);");
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_patch3_x_scale_y) {
@@ -409,9 +409,9 @@ TEST(Canvas, draw_image_patch3_x_scale_y) {
             "dg(0,0,10,32,0,0,10,16);dg(10,0,12,32,10,0,76,16);dg(22,0,10,32,86,0,10,16);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_patch3_y_scale_x) {
@@ -457,9 +457,9 @@ TEST(Canvas, draw_image_patch3_y_scale_x) {
             "dg(0,0,32,10,0,0,16,10);dg(0,10,32,12,0,10,16,76);dg(0,22,32,10,0,86,16,10);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_patch9) {
@@ -513,9 +513,9 @@ TEST(Canvas, draw_image_patch9) {
             "dg(27,10,5,12,11,10,5,76);dg(5,10,22,12,5,10,6,76);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_repeat_x) {
@@ -575,9 +575,9 @@ TEST(Canvas, draw_image_repeat_x) {
             "dg(0,0,32,32,0,0,32,42);dg(0,0,32,32,32,0,32,42);dg(0,0,10,32,64,0,10,42);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_repeat_y) {
@@ -638,9 +638,9 @@ TEST(Canvas, draw_image_repeat_y) {
             "dg(0,0,32,32,0,0,42,32);dg(0,0,32,32,0,32,42,32);dg(0,0,32,10,0,64,42,10);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_repeat_y_inverse) {
@@ -694,9 +694,9 @@ TEST(Canvas, draw_image_repeat_y_inverse) {
             "dg(0,0,32,32,0,42,42,32);dg(0,0,32,32,0,10,42,32);dg(0,22,32,10,0,0,42,10);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_repeat) {
@@ -745,9 +745,9 @@ TEST(Canvas, draw_image_repeat) {
             "32,10);dg(0,0,32,10,32,64,32,10);dg(0,0,10,10,64,64,10,10);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_repeat9) {
@@ -838,9 +838,9 @@ TEST(Canvas, draw_image_repeat9) {
             "30,2,1);dg(15,15,2,1,26,30,2,1);dg(15,15,2,1,28,30,2,1);dg(15,15,1,1,30,30,1,1);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_repeat3_x) {
@@ -895,9 +895,9 @@ TEST(Canvas, draw_image_repeat3_x) {
             "16,0,2,32,28,7,2,32);dg(16,0,1,32,30,7,1,32);dg(16,0,16,32,31,7,16,32);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_repeat3_y) {
@@ -952,9 +952,9 @@ TEST(Canvas, draw_image_repeat3_y) {
             "0,15,32,2,7,28,32,2);dg(0,15,32,1,7,30,32,1);dg(0,16,32,16,7,31,32,16);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_scale_w) {
@@ -1000,9 +1000,9 @@ TEST(Canvas, draw_image_scale_w) {
   ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,32,32,0,0,64,64);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_scale_h) {
@@ -1048,9 +1048,9 @@ TEST(Canvas, draw_image_scale_h) {
   ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,27,32,0,0,64,74);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_scale) {
@@ -1096,9 +1096,9 @@ TEST(Canvas, draw_image_scale) {
   ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,32,32,0,5,64,64);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_center) {
@@ -1144,9 +1144,9 @@ TEST(Canvas, draw_image_center) {
   ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,32,32,16,21,32,32);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_default_ex2) {
@@ -1181,9 +1181,9 @@ TEST(Canvas, draw_image_default_ex2) {
   ASSERT_EQ(lcd_log_get_commands(lcd), "dg(10,10,16,16,0,0,16,16);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_scale_ex2) {
@@ -1218,9 +1218,9 @@ TEST(Canvas, draw_image_scale_ex2) {
   ASSERT_EQ(lcd_log_get_commands(lcd), "dg(10,10,16,16,0,0,32,32);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_center_ex2) {
@@ -1255,9 +1255,9 @@ TEST(Canvas, draw_image_center_ex2) {
   ASSERT_EQ(lcd_log_get_commands(lcd), "dg(10,10,16,16,8,8,16,16);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_icon_ex2) {
@@ -1299,7 +1299,7 @@ TEST(Canvas, draw_image_icon_ex2) {
   ASSERT_EQ(lcd_log_get_commands(lcd), "dg(10,10,16,16,12,12,8,8);");
 
   canvas_end_frame(&c);
+  canvas_reset(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
-  canvas_reset(&c);
 }

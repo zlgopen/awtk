@@ -267,8 +267,8 @@ TEST(ImageValue, paint) {
   lcd_log_reset(lcd);
 
   canvas_end_frame(&c);
-  font_manager_deinit(&font_manager);
-  lcd_destroy(lcd);
   widget_destroy(w);
   canvas_reset(&c);
+  font_manager_deinit(&font_manager);
+  lcd_destroy(lcd);
 }
