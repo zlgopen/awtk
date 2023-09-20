@@ -57,6 +57,22 @@ tk_object_t* conf_obj_create(conf_doc_save_t save, conf_doc_load_t load, const c
                              bool_t create_if_not_exist);
 
 /**
+ * @method conf_obj_create_ex 
+ * 
+ * @annotation ["constructor"]
+ * 
+ * @param {conf_doc_save_t} save 保存函数。
+ * @param {conf_doc_load_t} load 加载函数。
+ * @param {const char*} url 路径。
+ * @param {bool_t} create_if_not_exist 如果不存在是否创建。 
+ * @param {bool_t} use_extend_type 是否使用拓展类型。
+ * 
+ * @return {tk_object_t*} 返回配置对象。
+ */
+tk_object_t* conf_obj_create_ex(conf_doc_save_t save, conf_doc_load_t load, const char* url,
+                                bool_t create_if_not_exist, bool_t use_extend_type);
+
+/**
  * @method conf_obj_create_sub_object 
  * 根据路径创建一个子对象。 
  * @annotation ["constructor"]

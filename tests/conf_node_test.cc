@@ -191,6 +191,8 @@ TEST(ConfNode, set_get_object) {
   str_t str;
   str_init(&str, 64);
 
+  conf_doc_use_extend_type(doc, TRUE);
+
   ASSERT_EQ(conf_doc_set(doc, "obj", value_set_object(&v, obj)), RET_OK);
 
   ASSERT_EQ(conf_doc_save_json(doc, &str), RET_OK);

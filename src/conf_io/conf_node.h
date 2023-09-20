@@ -42,6 +42,12 @@ typedef struct _conf_doc_t {
    */
   conf_node_t* root;
 
+  /**
+   * @property {bool_t} use_extend_type
+   * 使用拓展类型。
+   */
+  bool_t use_extend_type;
+
   /*private*/
   conf_node_t* prealloc_nodes;
   uint32_t prealloc_nodes_index;
@@ -49,6 +55,7 @@ typedef struct _conf_doc_t {
   uint32_t prealloc_nodes_nr;
   tokenizer_t tokenizer;
   uint32_t max_deep_level;
+  tk_object_t* obj_array;
 } conf_doc_t;
 
 /**
@@ -447,6 +454,18 @@ bool_t conf_doc_is_last(conf_doc_t* doc, const char* path);
 ret_t conf_doc_add_child(conf_doc_t* doc, const char* path);
 
 /**
+ * @method conf_doc_use_extend_type
+ *
+ * 使用拓展类型。
+ *
+ * @param {conf_doc_t*} doc 文档对象。
+ * @param {bool_t} use 是否使用拓展类型。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t conf_doc_use_extend_type(conf_doc_t* doc, bool_t use);
+
+/**
  * @method conf_doc_destroy
  *
  * 析构函数。
@@ -764,6 +783,10 @@ uint32_t conf_node_count_children(conf_node_t* node);
 #define CONF_SPECIAL_ATTR_SIZE "#size"
 #define CONF_SPECIAL_ATTR_NAME "#name"
 #define CONF_SPECIAL_ATTR_INDEX "#index"
+
+/* private */
+ret_t conf_doc_set_ex(conf_doc_t* doc, conf_node_t* node, const char* path, const value_t* v);
+ret_t conf_doc_get_value_extend_type(conf_doc_t* doc, conf_node_t* node, value_t* v);
 
 END_C_DECLS
 

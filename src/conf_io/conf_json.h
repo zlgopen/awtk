@@ -58,6 +58,19 @@ tk_object_t* conf_json_create(void);
 tk_object_t* conf_json_load(const char* url, bool_t create_if_not_exist);
 
 /**
+ * @method conf_json_load_ex
+ * 从指定URL加载JSON对象。
+ * @annotation ["constructor"]
+ *
+ * @param {const char*} url 路径(通常是文件路径)。
+ * @param {bool_t} create_if_not_exist 如果不存在是否创建。
+ * @param {bool_t} use_extend_type 是否使用拓展类型。
+ *
+ * @return {tk_object_t*} 返回配置对象。
+ */
+tk_object_t* conf_json_load_ex(const char* url, bool_t create_if_not_exist, bool_t use_extend_type);
+
+/**
  * @method conf_json_load_from_buff
  * 从内存加载JSON对象。
  * @annotation ["constructor"]

@@ -21,10 +21,9 @@
 
 #include "tkc/mem.h"
 #include "tkc/utils.h"
-#include "tkc/object.h"
-#include "tkc/object_default.h"
-#include "tkc/named_value.h"
+#include "tkc/object_array.h"
 #include "conf_io/conf_node.h"
+#include "conf_node_obj.inc"
 
 static ret_t conf_node_destroy(conf_doc_t* doc, conf_node_t* node);
 
@@ -187,8 +186,38 @@ ret_t conf_doc_set_node_prop(conf_doc_t* doc, conf_node_t* node, const char* nam
   }
 }
 
+static conf_node_obj_t* conf_doc_obj_array_find(conf_doc_t* doc, conf_node_t* node) {
+  conf_node_obj_t* ret = NULL;
+  uint32_t i = 0;
+  return_value_if_fail(doc != NULL && node != NULL, NULL);
+  return_value_if_fail(OBJECT_ARRAY(doc->obj_array) != NULL, NULL);
+
+  for (i = 0; i < OBJECT_ARRAY(doc->obj_array)->size; i++) {
+    value_t iter;
+    if (RET_OK == object_array_get(doc->obj_array, i, &iter)) {
+      conf_node_obj_t* iter_obj = CONF_NODE_OBJ(value_object(&iter));
+      assert(iter_obj != NULL);
+      if (iter_obj->node == node && iter_obj->doc == doc) {
+        ret = iter_obj;
+        break;
+      }
+    }
+  }
+  return ret;
+}
+
 ret_t conf_doc_destroy_node(conf_doc_t* doc, conf_node_t* node) {
   return_value_if_fail(doc != NULL && node != NULL, RET_BAD_PARAMS);
+
+  if (doc->use_extend_type) {
+    conf_node_obj_t* obj = conf_doc_obj_array_find(doc, node);
+    if (obj != NULL) {
+      value_t tmp;
+      obj->doc = NULL;
+      obj->node = NULL;
+      object_array_remove_value(doc->obj_array, value_set_object(&tmp, TK_OBJECT(obj)));
+    }
+  }
 
   if (!node->is_small_name) {
     TKMEM_FREE(node->name.str);
@@ -442,6 +471,7 @@ ret_t conf_doc_destroy(conf_doc_t* doc) {
   }
   tokenizer_deinit(&(doc->tokenizer));
   TKMEM_FREE(doc->prealloc_nodes);
+  TK_OBJECT_UNREF(doc->obj_array);
 
   TKMEM_FREE(doc);
 
@@ -595,7 +625,6 @@ ret_t conf_node_get_value(conf_node_t* node, value_t* v) {
     }
     case CONF_NODE_VALUE_FLOAT32: {
       value_set_float32(v, node->value.f32);
-
       break;
     }
     case CONF_NODE_VALUE_DOUBLE: {
@@ -612,31 +641,6 @@ ret_t conf_node_get_value(conf_node_t* node, value_t* v) {
     }
     case CONF_NODE_VALUE_SMALL_STR: {
       value_set_str(v, node->value.small_str);
-      break;
-    }
-    case CONF_NODE_VALUE_NODE: {
-      switch (node->node_type) {
-        case CONF_NODE_OBJECT: {
-          value_t tmp;
-          conf_node_t* iter = NULL;
-          tk_object_t* obj = object_default_create();
-          return_value_if_fail(obj != NULL, RET_OOM);
-
-          iter = conf_node_get_first_child(node);
-          for (; iter != NULL; iter = iter->next) {
-            if (RET_OK == conf_node_get_value(iter, &tmp)) {
-              tk_object_set_prop(obj, conf_node_get_name(iter), &tmp);
-            }
-          }
-
-          value_set_object(&tmp, obj);
-          value_deep_copy(v, &tmp);
-          tk_object_unref(obj);
-        } break;
-        default: {
-          return RET_NOT_IMPL;
-        }
-      }
       break;
     }
     default: {
@@ -733,14 +737,14 @@ conf_node_t* conf_doc_find_node(conf_doc_t* doc, conf_node_t* node, const char* 
   return NULL;
 }
 
-typedef struct _conf_doc_set_object_prop_ctx_t {
+typedef struct _conf_doc_set_extend_type_object_prop_ctx_t {
   conf_doc_t* doc;
   const char* path;
-} conf_doc_set_object_prop_ctx_t;
+} conf_doc_set_extend_type_object_prop_ctx_t;
 
-static ret_t conf_doc_set_object_prop(void* ctx, const void* data) {
+static ret_t conf_doc_set_extend_type_object_prop(void* ctx, const void* data) {
   ret_t ret = RET_OK;
-  conf_doc_set_object_prop_ctx_t* actx = ctx;
+  conf_doc_set_extend_type_object_prop_ctx_t* actx = ctx;
   const named_value_t* nv = (const named_value_t*)data;
   str_t path;
   str_init(&path, TK_NAME_LEN + 1);
@@ -754,31 +758,78 @@ static ret_t conf_doc_set_object_prop(void* ctx, const void* data) {
   return ret;
 }
 
-ret_t conf_doc_set(conf_doc_t* doc, const char* path, const value_t* v) {
-  conf_node_t* node = NULL;
+static ret_t conf_doc_set_extend_type(conf_doc_t* doc, const char* path, const value_t* v) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(doc != NULL && path != NULL && v != NULL, RET_BAD_PARAMS);
+
+  if (v->type == VALUE_TYPE_OBJECT) {
+    conf_doc_set_extend_type_object_prop_ctx_t ctx = {.doc = doc, .path = path};
+    ret = tk_object_foreach_prop(value_object(v), conf_doc_set_extend_type_object_prop, &ctx);
+  }
+
+  return ret;
+}
+
+ret_t conf_doc_set_ex(conf_doc_t* doc, conf_node_t* node, const char* path, const value_t* v) {
   return_value_if_fail(doc != NULL && path != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (doc->root == NULL) {
     doc->root = conf_doc_create_node(doc, CONF_NODE_ROOT_NAME);
   }
 
-  node = conf_doc_get_node(doc, path, TRUE);
+  node = conf_doc_find_node(doc, node, path, TRUE);
 
   if (node != NULL) {
-    if (v->type == VALUE_TYPE_OBJECT) {
-      conf_doc_set_object_prop_ctx_t ctx = {.doc = doc, .path = path};
-      return tk_object_foreach_prop(value_object(v), conf_doc_set_object_prop, &ctx);
+    ret_t ret = conf_node_set_value(node, v);
+    if (RET_NOT_IMPL == ret && doc->use_extend_type) {
+      ret = conf_doc_set_extend_type(doc, path, v);
     }
-    return conf_node_set_value(node, v);
+    return ret;
   } else {
     return RET_OOM;
   }
+}
+
+ret_t conf_doc_set(conf_doc_t* doc, const char* path, const value_t* v) {
+  return_value_if_fail(doc != NULL && path != NULL && v != NULL, RET_BAD_PARAMS);
+
+  return conf_doc_set_ex(doc, doc->root, path, v);
 }
 
 ret_t conf_doc_get(conf_doc_t* doc, const char* path, value_t* v) {
   return_value_if_fail(doc != NULL && path != NULL && v != NULL, RET_BAD_PARAMS);
 
   return conf_doc_get_ex(doc, doc->root, path, v);
+}
+
+ret_t conf_doc_get_value_extend_type(conf_doc_t* doc, conf_node_t* node, value_t* v) {
+  return_value_if_fail(doc != NULL && node != NULL && v != NULL, RET_BAD_PARAMS);
+
+  switch (node->value_type) {
+    case CONF_NODE_VALUE_NODE: {
+      switch (node->node_type) {
+        case CONF_NODE_OBJECT: {
+          tk_object_t* obj = TK_OBJECT(conf_doc_obj_array_find(doc, node));
+          if (obj == NULL) {
+            value_t tmp;
+            obj = conf_node_obj_create(doc, node);
+            object_array_push(doc->obj_array, value_set_object(&tmp, obj));
+            tk_object_unref(obj);
+          }
+          value_set_object(v, obj);
+        } break;
+        default: {
+          return RET_NOT_IMPL;
+        }
+      }
+      break;
+    }
+    default: {
+      return RET_NOT_IMPL;
+    }
+  }
+
+  return RET_OK;
 }
 
 ret_t conf_doc_get_ex(conf_doc_t* doc, conf_node_t* node, const char* path, value_t* v) {
@@ -789,7 +840,11 @@ ret_t conf_doc_get_ex(conf_doc_t* doc, conf_node_t* node, const char* path, valu
   if (node != NULL) {
     const char* special = strchr(path, '#');
     if (special == NULL) {
-      return conf_node_get_value(node, v);
+      ret_t ret = conf_node_get_value(node, v);
+      if (RET_NOT_IMPL == ret && doc->use_extend_type) {
+        ret = conf_doc_get_value_extend_type(doc, node, v);
+      }
+      return ret;
     } else if (tk_str_eq(special, CONF_SPECIAL_ATTR_NAME)) {
       value_set_str(v, conf_node_get_name(node));
       return RET_OK;
@@ -1007,6 +1062,22 @@ ret_t conf_doc_set_float(conf_doc_t* doc, const char* path, float v) {
 ret_t conf_doc_set_str(conf_doc_t* doc, const char* path, const char* v) {
   value_t vv;
   return conf_doc_set(doc, path, value_set_str(&vv, v));
+}
+
+ret_t conf_doc_use_extend_type(conf_doc_t* doc, bool_t use) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(doc != NULL, RET_BAD_PARAMS);
+
+  if (doc->use_extend_type != use) {
+    doc->use_extend_type = use;
+    if (use) {
+      doc->obj_array = object_array_create();
+    } else {
+      TK_OBJECT_UNREF(doc->obj_array);
+    }
+  }
+
+  return ret;
 }
 
 ret_t conf_node_get_child_value(conf_node_t* node, const char* name, value_t* v) {
