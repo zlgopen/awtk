@@ -230,6 +230,22 @@ TEST(Fs, foreach_file) {
 }
 
 #ifdef WIN32
+TEST(Fs, file_stat) {
+  fs_stat_info_t fst;
+  const char* str =
+      "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+      "11111111111111111111111111111111111\r\nabc";
+  const char* filename = "test.bin";
+
+  ASSERT_EQ(file_write(filename, str, strlen(str)), RET_OK);
+
+  fs_file_t* fp = fs_open_file(os_fs(), filename, "rb");
+  ASSERT_EQ(fp != NULL, true);
+  ASSERT_EQ(fs_file_stat(fp, &fst), RET_OK);
+  ASSERT_EQ(fs_file_close(fp), RET_OK);
+  ASSERT_EQ(file_remove(filename), RET_OK);
+}
+
 TEST(Fs, stat) {
   fs_stat_info_t st;
   ASSERT_EQ(fs_stat(os_fs(), "c:", &st), RET_OK);
@@ -240,6 +256,11 @@ TEST(Fs, stat) {
   ASSERT_EQ(dir_exist("c:\\awtk_test\\test"), TRUE);
   ASSERT_EQ(fs_remove_dir_r(os_fs(), "c:\\awtk_test"), RET_OK);
   ASSERT_EQ(dir_exist("c:\\awtk_test"), FALSE);
+
+  ASSERT_EQ(fs_create_dir_r(os_fs(), "c:\\致远电子-awtk\\test"), RET_OK);
+  ASSERT_EQ(dir_exist("c:\\致远电子-awtk\\test"), TRUE);
+  ASSERT_EQ(fs_remove_dir_r(os_fs(), "c:\\致远电子-awtk"), RET_OK);
+  ASSERT_EQ(dir_exist("c:\\致远电子-awtk"), FALSE);
 
   ASSERT_EQ(fs_create_dir_r(os_fs(), "c://awtk_test//test"), RET_OK);
   ASSERT_EQ(dir_exist("c:/awtk_test/test"), TRUE);

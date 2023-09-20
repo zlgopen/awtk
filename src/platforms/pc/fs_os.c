@@ -36,7 +36,7 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 
-#if defined(WIN32) && !defined(MINGW)
+#if defined(WIN32)
 static ret_t fs_stat_info_from_stat(fs_stat_info_t* fst, struct _stat64i32* st) {
 #else
 static ret_t fs_stat_info_from_stat(fs_stat_info_t* fst, struct stat* st) {
@@ -109,7 +109,7 @@ static int64_t fs_os_file_size(fs_file_t* file) {
 static ret_t fs_os_file_stat(fs_file_t* file, fs_stat_info_t* fst) {
   int rc = 0;
   FILE* fp = (FILE*)(file->data);
-#if defined(WIN32) && !defined(MINGW)
+#if defined(WIN32)
   struct _stat64i32 st;
   rc = _fstat64i32(fileno(fp), &st);
 #else
@@ -452,9 +452,9 @@ static ret_t fs_os_get_temp_path(fs_t* fs, char path[MAX_PATH + 1]) {
 
   return RET_OK;
 #elif defined(WIN32)
-  WCHAR tempdir[MAX_PATH + 1];
-  DWORD ret = GetTempPathW(MAX_PATH, tempdir);
   str_t str;
+  WCHAR tempdir[MAX_PATH + 1];
+  GetTempPathW(MAX_PATH, tempdir);
   str_init(&str, MAX_PATH);
   str_from_wstr(&str, tempdir);
   tk_strncpy(path, str.str, MAX_PATH);
@@ -526,37 +526,24 @@ static ret_t fs_os_stat(fs_t* fs, const char* name, fs_stat_info_t* fst) {
 
   int stat_ret = 0;
 
-#if defined(WIN32) && !defined(MINGW)
+#if defined(WIN32)
   struct _stat64i32 st;
   if (strlen(name) == 2 && name[1] == ':') {
     /*append slash*/
     wchar_t wname[4];
-    wname[0] = name[0];
+    wname[0] = name[0]; 
     wname[1] = name[1];
     wname[2] = '\\';
     wname[3] = 0;
-    stat_ret = _wstat(wname, &st);
+    stat_ret = _wstat64i32(wname, &st);
   } else {
     wchar_t* w_name = tk_wstr_dup_utf8(name);
-    stat_ret = _wstat(w_name, &st);
+    stat_ret = _wstat64i32(w_name, &st);
     TKMEM_FREE(w_name);
   }
 #else
   struct stat st;
-#ifdef MINGW
-  if (strlen(name) == 2 && name[1] == ':') {
-    /*append slash*/
-    char tmp_name[4];
-    tmp_name[0] = name[0];
-    tmp_name[1] = name[1];
-    tmp_name[2] = '\\';
-    tmp_name[3] = 0;
-    stat_ret = stat(tmp_name, &st);
-  } else 
-#endif
-  {
-    stat_ret = stat(name, &st);
-  }
+  stat_ret = stat(name, &st);
 #endif
 
   if (stat_ret == -1) {
