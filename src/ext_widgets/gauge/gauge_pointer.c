@@ -136,8 +136,7 @@ static ret_t gauge_pointer_invalidate(widget_t* widget, const rect_t* rect) {
 
 ret_t gauge_pointer_set_angle(widget_t* widget, float_t angle) {
   gauge_pointer_t* gauge_pointer = GAUGE_POINTER(widget);
-  ENSURE(gauge_pointer);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(gauge_pointer != NULL, RET_BAD_PARAMS);
 
   if (gauge_pointer->angle != angle) {
     value_change_event_t evt;
