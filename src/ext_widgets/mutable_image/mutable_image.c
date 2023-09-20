@@ -68,11 +68,17 @@ static bitmap_t* mutable_image_prepare_image(widget_t* widget, canvas_t* c) {
 }
 
 ret_t mutable_image_on_paint_self(widget_t* widget, canvas_t* canvas) {
+  bitmap_t* bitmap = NULL;
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
   ENSURE(mutable_image);
-  bitmap_t* bitmap = mutable_image->user_image != NULL
-                         ? mutable_image->user_image
-                         : mutable_image_prepare_image(widget, canvas);
+
+  if (mutable_image->need_redraw != NULL &&
+      !mutable_image->need_redraw(mutable_image->need_redraw_ctx)) {
+    bitmap = mutable_image->user_image != NULL ? mutable_image->user_image : mutable_image->image;
+  } else {
+    bitmap = mutable_image->user_image != NULL ? mutable_image->user_image
+                                               : mutable_image_prepare_image(widget, canvas);
+  }
 
   if (bitmap == NULL) {
     return RET_FAIL;
