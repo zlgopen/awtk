@@ -170,7 +170,7 @@ wchar_t* wcscpy(wchar_t* s1, const wchar_t* s2) {
   return wcs_cpy(s1, s2);
 }
 
-wchar_t* wcsncpy(wchar_t* s1, const wchar_t* s2, uint32_t n) {
+wchar_t* wcsncpy(wchar_t* s1, const wchar_t* s2, size_t n) {
   return wcs_ncpy(s1, s2, n);
 }
 
@@ -559,7 +559,7 @@ static uint32_t wstr_fraction_nr(wstr_t* str) {
   wchar_t* p = NULL;
   return_value_if_fail(str != NULL && str->str != NULL, 0);
 
-  p = wcschr(str->str, '.');
+  p = (wchar_t*)wcschr(str->str, '.');
   if (p != NULL) {
     nr = wcslen(p + 1);
   }
@@ -597,7 +597,7 @@ ret_t wstr_to_fix(wstr_t* str, uint32_t fraction_nr) {
   wchar_t* p = NULL;
   return_value_if_fail(str != NULL && str->str != NULL, RET_BAD_PARAMS);
 
-  p = wcschr(str->str, '.');
+  p = (wchar_t*)wcschr(str->str, '.');
   if (p) {
     p++;
     uint32_t nr = wcslen(p);

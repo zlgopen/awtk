@@ -1,6 +1,7 @@
 #ifndef WASM_HELPER_H
 #define WASM_HELPER_H
 
+#include <math.h>
 #include <stdio.h>
 
 BEGIN_C_DECLS
@@ -15,19 +16,18 @@ BEGIN_C_DECLS
 #define PRId64 __PRI64_PREFIX "d"
 #endif /*PRIu64*/
 
-#define INFINITY 3.40282347E+38f
-#define assert(__pp) wasm_assert(__pp, #__pp)
-
+#ifdef WITH_EASTL
+#include <wchar.h>
+#else
+#ifndef WITH_WCSXXX 
 #define WITH_WCSXXX 1
+#endif/*WITH_WCSXXX*/
+#endif/*WITH_EASTL*/
+
 #define WITHOUT_FSCRIPT
 
 #define log_impl printf
-#define abs(a) ((a) > 0 ? (a) : -(a))
-#define fabs(a) ((a) > 0 ? (a) : -(a))
-
-#ifndef __cplusplus
-typedef int wchar_t;
-#endif /*_cplusplus*/
+#define assert(__pp) wasm_assert(__pp, #__pp)
 
 #define ret_t_init(r) *r = RET_OK;
 
@@ -53,6 +53,10 @@ double floor(double x);
 double ceil(double x);
 #endif/*WIN32*/
 
+#ifndef __cplusplus
+typedef int wchar_t;
+#endif /*_cplusplus*/
+
 int iswupper(wchar_t ch);
 int iswlower(wchar_t ch);
 int iswdigit(wchar_t ch);
@@ -60,23 +64,30 @@ int iswxdigit(wchar_t ch);
 int iswalpha(wchar_t ch);
 int iswalnum(wchar_t ch);
 int iswspace(wchar_t ch);
-
 int islower(int c);
+
+#ifdef WITH_WCSXXX
 
 size_t wcslen(const wchar_t* s);
 int wcscmp(const wchar_t* s1, const wchar_t* s2);
 int wcscasecmp(const wchar_t* s1, const wchar_t* s2);
 int wcsncmp(const wchar_t* s1, const wchar_t* s2, size_t n);
-
 wchar_t* wcsdup(const wchar_t* s);
 wchar_t* wcschr(const wchar_t* s, wchar_t c);
 wchar_t* wcscpy(wchar_t* s1, const wchar_t* s2);
-wchar_t* wcsncpy(wchar_t* s1, const wchar_t* s2, uint32_t n);
-wchar_t* wcsstr(const wchar_t* s1, const wchar_t* s2);
+wchar_t* wcsncpy(wchar_t* s1, const wchar_t* s2, size_t n);
+const wchar_t* wcsstr(const wchar_t* s1, const wchar_t* s2);
+#endif /*WITH_WCSXXX*/
+
+#if defined(__GNUC__) && !defined(__cplusplus)
+typedef _Bool bool_t;
+#else
+typedef uint8_t bool_t;
+#endif
 
 double atof(const char* str);
 char* strrchr(const char* s, int c);
-void wasm_assert(int p, const char* text);
+int wasm_assert(bool_t p, const char* text);
 int strcasecmp(const char* s1, const char* s2);
 long strtol(const char* str, char** endptr, int base);
 long long strtoll(const char* str, char** endptr, int base);
