@@ -566,7 +566,18 @@ class AppHelperBase:
         APP_TOOLS = self.APP_TOOLS
         CXXFLAGS = self.APP_CXXFLAGS
         DEPENDS_LIBS = []
-        DEBUG = self.complie_helper.get_value('DEBUG', awtk.OS_DEBUG)
+        if hasattr(awtk, 'OS_DEBUG') :
+            OS_DEBUG = awtk.OS_DEBUG
+        else :
+            OS_DEBUG = True
+        if hasattr(awtk, 'BUILD_DEBUG_FLAG') :
+            BUILD_DEBUG_FLAG = awtk.BUILD_DEBUG_FLAG
+        else :
+            if hasattr(awtk, 'CC') :
+                BUILD_DEBUG_FLAG = ' -g -O0 '
+            else :
+                BUILD_DEBUG_FLAG = '  /MDd -D_DEBUG -DDEBUG /DEBUG /Od '
+        DEBUG = self.complie_helper.get_value('DEBUG', OS_DEBUG)
         self.APP_BIN_DIR = self.complie_helper.get_value('APP_BIN_DIR', os.path.join(self.APP_ROOT, self.BIN_DIR))
         self.APP_LIB_DIR = self.complie_helper.get_value('APP_LIB_DIR', os.path.join(self.APP_ROOT, self.LIB_DIR))
 
@@ -665,7 +676,7 @@ class AppHelperBase:
         LIBS = self.APP_LIBS + LIBS
 
         if hasattr(awtk, 'CC'):
-            if DEBUG != awtk.OS_DEBUG:
+            if DEBUG != OS_DEBUG:
                 if DEBUG :
                     CCFLAGS += ' -g -O0 '
                     CFLAGS += ' -g -O0 '
@@ -673,8 +684,8 @@ class AppHelperBase:
                     CCFLAGS += ' -Os '
                     CFLAGS += ' -Os '
             else :
-                CCFLAGS += awtk.BUILD_DEBUG_FLAG
-                CFLAGS += awtk.BUILD_DEBUG_FLAG
+                CCFLAGS += BUILD_DEBUG_FLAG
+                CFLAGS += BUILD_DEBUG_FLAG
                 
             env = DefaultEnvironment(
                 ENV = os.environ,
@@ -696,7 +707,7 @@ class AppHelperBase:
                 OS_SUBSYSTEM_CONSOLE=awtk.OS_SUBSYSTEM_CONSOLE,
                 OS_SUBSYSTEM_WINDOWS=awtk.OS_SUBSYSTEM_WINDOWS)
         else:
-            if DEBUG != awtk.OS_DEBUG:
+            if DEBUG != OS_DEBUG:
                 if DEBUG :
                     CCFLAGS += ' -D_DEBUG -DDEBUG /DEBUG /MDd /Od '
                     CFLAGS += ' -D_DEBUG -DDEBUG /DEBUG /MDd /Od '
@@ -707,8 +718,8 @@ class AppHelperBase:
                 if self.complie_helper.get_value('PDB') :
                     LINKFLAGS += ' /DEBUG '
             else :
-                CCFLAGS += awtk.BUILD_DEBUG_FLAG
-                CFLAGS += awtk.BUILD_DEBUG_FLAG
+                CCFLAGS += BUILD_DEBUG_FLAG
+                CFLAGS += BUILD_DEBUG_FLAG
                 LINKFLAGS += awtk.BUILD_DEBUG_LINKFLAGS
 
             env = DefaultEnvironment(
