@@ -141,6 +141,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_gif_image[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_menu_down_center[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_test_view[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_auto_play_portrait[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_scroll_view_ym[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_system_bar_bottom[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_text_selector[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_rich_text_view[]);
@@ -688,6 +689,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_menu_down_center);
   assets_manager_add(am, ui_test_view);
   assets_manager_add(am, ui_auto_play_portrait);
+  assets_manager_add(am, ui_scroll_view_ym);
   assets_manager_add(am, ui_system_bar_bottom);
   assets_manager_add(am, ui_text_selector);
   assets_manager_add(am, ui_rich_text_view);

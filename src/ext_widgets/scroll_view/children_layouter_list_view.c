@@ -364,6 +364,9 @@ static int32_t children_layouter_list_view_for_list_view_get_virtual_h(
       virtual_h += (h + spacing);
     }
   }
+  
+  virtual_h += y_margin;
+
   return virtual_h;
 }
 

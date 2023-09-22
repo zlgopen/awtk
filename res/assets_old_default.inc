@@ -141,6 +141,7 @@
 #include "assets/default/inc/ui/menu_down_center.data"
 #include "assets/default/inc/ui/test_view.data"
 #include "assets/default/inc/ui/auto_play_portrait.data"
+#include "assets/default/inc/ui/scroll_view_ym.data"
 #include "assets/default/inc/ui/system_bar_bottom.data"
 #include "assets/default/inc/ui/text_selector.data"
 #include "assets/default/inc/ui/rich_text_view.data"
@@ -688,6 +689,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_menu_down_center);
   assets_manager_add(am, ui_test_view);
   assets_manager_add(am, ui_auto_play_portrait);
+  assets_manager_add(am, ui_scroll_view_ym);
   assets_manager_add(am, ui_system_bar_bottom);
   assets_manager_add(am, ui_text_selector);
   assets_manager_add(am, ui_rich_text_view);
