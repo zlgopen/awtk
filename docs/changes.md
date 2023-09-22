@@ -2,6 +2,7 @@
 
 2023/09/21
   * 修改scroll\_view在children\_layout中设置ym垂直间距时，底部没有间距的bug，并在demouiold添加演示(感谢颖健提供补丁)
+  * 完善serial\_open的注释(感谢俊杰提供补丁)
 
 2023/09/20
   * 修复gauge\_pointer测试用例不过的问题(感谢智明提供补丁)

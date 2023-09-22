@@ -92,6 +92,7 @@ typedef enum { flowcontrol_none = 0, flowcontrol_software, flowcontrol_hardware 
 /**
  * @method serial_open
  * 打开串口
+ * > Windows下，需要在应用程序初始化时，调用 tk_socket_init。
  * @annotation ["global"]
  * @param {const char*} port 串口号。
  *
