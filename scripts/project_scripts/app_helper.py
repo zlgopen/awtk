@@ -5,8 +5,6 @@ import awtk_locator as locator
 from SCons import Script
 
 def Helper(ARGUMENTS):
-    locator.init(ARGUMENTS)
-
     from app_helper_base import AppHelperBase
     return AppHelperBase(ARGUMENTS)
 
