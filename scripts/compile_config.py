@@ -3,6 +3,7 @@ import io
 import sys
 import shutil
 import importlib
+import collections
 from distutils.util import strtobool
 
 global COMPILE_CONFIG
@@ -48,19 +49,19 @@ def get_curr_config_for_awtk() :
 class complie_helper :
   DEFAULT_CONFIG_FILE = './awtk_config_define.py'
 
-  COMPILE_CMD_INFO = {
+  COMPILE_CMD_INFO = collections.OrderedDict({
     'help' : { 'name': 'HELP', 'help_info' : 'show all usage'},
     'userdefine' : { 'name' : 'DEFINE_FILE', 'help_info' : 'set user config define file, DEFINE_FILE=XXXXX'},
     'save_file' : { 'name' : 'EXPORT_DEFINE_FILE', 'help_info' : 'current config define export to file, EXPORT_DEFINE_FILE=./awtk_config_define.py'},
-  }
+  })
 
-  config = {
+  config = collections.OrderedDict({
     'OUTPUT_DIR' : { 'value' : '', 'desc' : ['compiled export directory '], 'help_info' : 'set awtk compiled export directory, default value is \'\', \'\' is system\'s value'},
-    'TOOLS_NAME' : { 'value' : '', 'desc' : ['value is mingw or \'\''], 'help_info' : 'set awtk compile\'s name, default value is \'\', \'\' is system\'s value'},
-    'INPUT_ENGINE' : { 'value' : '', 'desc' : ['value is null/spinyin/t9/t9ext/pinyin'], 'help_info' : 'set awtk use input engine, default value is \'\', \'\' is system\'s value' },
-    'VGCANVAS' : { 'value' : '', 'desc' : ['value is NANOVG/NANOVG_PLUS/CAIRO'], 'help_info' : 'set awtk use render vgcanvas type, default value is \'\', \'\' is system\'s value' },
-    'NANOVG_BACKEND' : { 'value' : '', 'desc' : ['if NANOVG_BACKEND is valid, VGCANVAS must be NANOVG or \'\'', 'if VGCANVAS is NANOVG_PLUS, NANOVG_BACKEND must be GLES2/GLES3/GL3 or \'\'', 'NANOVG_BACKEND is GLES2/GLES3/GL3/AGG/AGGE'], 'help_info' : 'set awtk\'s nanovg use render model, default value is \'\', \'\' is system\'s value'},
-    'LCD_COLOR_FORMAT' : { 'value' : '', 'desc' : ['if NANOVG_BACKEND is GLES2/GLES3/GL3, LCD_COLOR_FORMAT must be bgra8888 or \'\'', 'if NANOVG_BACKEND is AGG/AGGE, LCD_COLOR_FORMAT must be bgr565/bgra8888/mono or \'\'', 'NANOVG_BACKEND is bgr565/bgra8888/mono'], 'help_info' : 'set awtk\'s lcd color format, default value is \'\', \'\' is system\'s value'},
+    'TOOLS_NAME' : { 'value' : '', 'str_enum' : ['mingw'], 'desc' : ['value is mingw or \'\''], 'help_info' : 'set awtk compile\'s name, default value is \'\', \'\' is system\'s value'},
+    'INPUT_ENGINE' : { 'value' : '', 'str_enum' : ['null', 'spinyin', 't9', 't9ext', 'pinyin'], 'desc' : ['value is null/spinyin/t9/t9ext/pinyin'], 'help_info' : 'set awtk use input engine, default value is \'\', \'\' is system\'s value' },
+    'VGCANVAS' : { 'value' : '', 'str_enum' : ['NANOVG', 'NANOVG_PLUS', 'CAIRO'], 'desc' : ['value is NANOVG/NANOVG_PLUS/CAIRO'], 'help_info' : 'set awtk use render vgcanvas type, default value is \'\', \'\' is system\'s value' },
+    'NANOVG_BACKEND' : { 'value' : '', 'str_enum' : ['GLES2', 'GLES3', 'GL3', 'AGG', 'AGGE'], 'desc' : ['if NANOVG_BACKEND is valid, VGCANVAS must be NANOVG or \'\'', 'if VGCANVAS is NANOVG_PLUS, NANOVG_BACKEND must be GLES2/GLES3/GL3 or \'\'', 'NANOVG_BACKEND is GLES2/GLES3/GL3/AGG/AGGE'], 'help_info' : 'set awtk\'s nanovg use render model, default value is \'\', \'\' is system\'s value'},
+    'LCD_COLOR_FORMAT' : { 'value' : '', 'str_enum' : ['bgr565', 'bgra8888', 'mono'], 'desc' : ['if NANOVG_BACKEND is GLES2/GLES3/GL3, LCD_COLOR_FORMAT must be bgra8888 or \'\'', 'if NANOVG_BACKEND is AGG/AGGE, LCD_COLOR_FORMAT must be bgr565/bgra8888/mono or \'\'', 'NANOVG_BACKEND is bgr565/bgra8888/mono'], 'help_info' : 'set awtk\'s lcd color format, default value is \'\', \'\' is system\'s value'},
     'DEBUG' : { 'value' : True, 'desc' : ['awtk\'s compile is debug'], 'help_info' : 'awtk\'s compile is debug, value is true or false, default value is true' },
     'PDB' : { 'value' : True, 'desc' : ['export pdb file'], 'help_info' : 'export pdb file, value is true or false' },
     'SDL_UBUNTU_USE_IME' : { 'value' : False, 'desc' : ['ubuntu use chinese input engine'], 'help_info' : 'ubuntu use ime, this sopt is ubuntu use chinese input engine, value is true or false, default value is false' },
@@ -70,7 +71,7 @@ class complie_helper :
     'BUILD_DEMOS' : { 'value' : True, 'desc' : ['build awtk\'s demo examples'], 'help_info' : 'build awtk\'s demo examples, value is true or false, default value is true' },
     'BUILD_TOOLS' : { 'value' : True, 'desc' : ['build awtk\'s tools'], 'help_info' : 'build awtk\'s tools, value is true or false, default value is true' },
     'WIN32_RES' : { 'value' : '', 'save_file' : False, 'desc' : ['app\'s win32 res path'], 'help_info' : 'app\'s win32 res path, WIN32_RES=XXXXX, value\'s default=\'awtk/win32_res/awtk.res\' ' },
-  }
+  })
 
   def try_load_default_config(self) :
     if os.path.exists(self.DEFAULT_CONFIG_FILE) :
@@ -88,6 +89,19 @@ class complie_helper :
           break;
         else :
           sys.exit('userdefine sopt is not found :' + file)
+
+  def check_config_legality(self) :
+    for key in self.config :
+      check = False
+      if not 'str_enum' in self.config[key] :
+        continue
+      if self.config[key]['value'] != '' :
+        for str_enum in self.config[key]['str_enum'] :
+          if str_enum == self.config[key]['value'] :
+            check = True
+            break
+        if not check :
+          sys.exit(key + ' \'s value is ' + self.config[key]['value'] + ', is not legality !')
 
   def scons_user_sopt(self, ARGUMENTS) :
     EXPORT_USERDEFINE_FILE = None
@@ -118,6 +132,8 @@ class complie_helper :
     if EXPORT_USERDEFINE_FILE != None :
       self.save_config(EXPORT_USERDEFINE_FILE)
       sys.exit()
+
+    self.check_config_legality()
 
 
   def show_usage(self) :
