@@ -30,6 +30,10 @@
 #define END_C_DECLS
 #endif
 
+#if defined(WIN32) || defined(LINUX) || defined(MACOS) || defined(ANDROID) || defined(IOS)
+#define WITH_SOCKET 1
+#endif /*WIN32 || MACOS || LINUX || IOS || ANDROID*/
+
 #include <stdarg.h>
 #include <ctype.h>
 #include <errno.h>
@@ -45,6 +49,25 @@
 #include <wchar.h>
 #include <assert.h>
 #include <wctype.h>
+#ifdef WITH_SOCKET
+#ifdef WIN32
+#define WIN32_LEAN_AND_MEAN 1
+#include <windows.h>
+#include <winsock2.h>
+typedef int socklen_t;
+#else
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <fcntl.h>
+#include <sys/select.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#endif /*WIN32*/
+#endif /*WITH_SOCKET*/
+
 #else
 #include "tkc/wasm_helper.h"
 #endif /*WITH_WASM*/
@@ -60,30 +83,6 @@
 #ifdef FRAGMENT_FRAME_BUFFER_SIZE
 #endif /*FRAGMENT_FRAME_BUFFER_SIZE*/
 #endif /*HAS_AWTK_CONFIG*/
-
-#if defined(WIN32) || defined(LINUX) || defined(MACOS) || defined(ANDROID) || defined(IOS)
-#define WITH_SOCKET 1
-#endif /*WIN32 || MACOS || LINUX || IOS || ANDROID*/
-
-#ifdef WITH_SOCKET
-#ifdef WIN32
-#define WIN32_LEAN_AND_MEAN 1
-#include <windows.h>
-#include <winsock2.h>
-typedef int socklen_t;
-#else
-#include <unistd.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
-#include <unistd.h>
-#include <arpa/inet.h>
-#include <fcntl.h>
-#include <sys/select.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#endif /*WIN32*/
-#endif /*WITH_SOCKET*/
 
 #if defined(HAS_STDIO) || defined(AWTK_WEB)
 #include <stdio.h>

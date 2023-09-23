@@ -31,10 +31,10 @@ static int32_t tk_ostream_tcp_write(tk_ostream_t* stream, const uint8_t* buff, u
   int32_t ret = 0;
   tk_ostream_tcp_t* ostream_tcp = TK_OSTREAM_TCP(stream);
 
-  ret = send(ostream_tcp->sock, buff, max_size, 0);
+  ret = tk_socket_send(ostream_tcp->sock, buff, max_size, 0);
   if (ret <= 0) {
     if (socket_last_io_has_error()) {
-      perror("send");
+      perror("tk_socket_send");
       ostream_tcp->is_broken = TRUE;
     }
   }

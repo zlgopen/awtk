@@ -310,4 +310,26 @@ const char* tk_socket_get_self_ip_str(int sockfd, char* ip, int len) {
   return NULL;
 }
 
+int tk_udp_socket(void) {
+  return (int)socket(AF_INET, SOCK_DGRAM, 0);
+}
+
+int32_t tk_socket_send(int sock, const void* buffer, uint32_t size, int flags) {
+  return send(sock, buffer, size, flags);
+}
+
+int32_t tk_socket_sendto(int sock, const void* buffer, uint32_t size, int flags, 
+  const struct sockaddr *dest_addr, uint32_t dest_len) {
+  return sendto(sock, buffer, size, flags, dest_addr, dest_len);
+}
+
+int32_t tk_socket_recv(int sock, void* buffer, uint32_t size, int flags) {
+  return recv(sock, buffer, sock, flags);
+}
+
+int32_t tk_socket_recvfrom(int sock, void* buffer, uint32_t size, int flags,
+  const struct sockaddr *dest_addr, uint32_t dest_len) {
+  return recvfrom(sock, buffer, size, flags, dest_addr, dest_len);
+}
+
 #endif /*WITH_SOCKET*/

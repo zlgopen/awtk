@@ -63,6 +63,71 @@ ret_t tk_socket_deinit(void);
 ret_t tk_socket_close(int sock);
 
 /**
+ * @method tk_socket_send
+ * @annotation ["static"]
+ * 
+ * 发送数据。
+ *
+ * @param {int} sock socket句柄。
+ * @param {const void*} buffer 数据缓冲区。
+ * @param {uint32_t} size 数据长度。
+ * @param {int} flags 标志。
+ * 
+ * @return {int32_t} 返回实际发送的字节数。
+ */
+int32_t tk_socket_send(int sock, const void* buffer, uint32_t size, int flags);
+
+/**
+ * @method tk_socket_sendto
+ * @annotation ["static"]
+ * 
+ * 发送数据到指定地址。
+ *
+ * @param {int} sock socket句柄。
+ * @param {const void*} buffer 数据缓冲区。
+ * @param {uint32_t} size 数据长度。
+ * @param {int} flags 标志。
+ * @param {const struct sockaddr*}  dest_addr 目标地址。
+ * @param {uint32_t} dest_len 目标地址长度。
+ *
+ * @return {int32_t} 返回实际发送的字节数。
+ */
+int32_t tk_socket_sendto(int sock, const void* buffer, uint32_t size, int flags, 
+  const struct sockaddr *dest_addr, uint32_t dest_len);
+
+/**
+ * @method tk_socket_recv
+ * @annotation ["static"]
+ * 
+ * 接收数据。
+ *
+ * @param {int} sock socket句柄。
+ * @param {void*} buffer 用于返回数据的缓冲区。
+ * @param {uint32_t} size 缓冲区大小。
+ * @param {int} flags 标志。
+ * 
+ * @return {int32_t} 返回实际接收的字节数。
+ */
+int32_t tk_socket_recv(int sock, void* buffer, uint32_t size, int flags);
+
+/**
+ * @method tk_socket_recvfrom
+ * @annotation ["static"]
+ * 从指定地址接收数据。
+ *
+ * @param {int} sock socket句柄。
+ * @param {void*} buffer 用于返回数据的缓冲区。
+ * @param {uint32_t} size 缓冲区大小。
+ * @param {int} flags 标志。
+ * @param {const struct sockaddr*}  dest_addr 目标地址。
+ * @param {uint32_t} dest_len 目标地址长度。
+ * 
+ * @return {int32_t} 返回实际接收的字节数。
+ */
+int32_t tk_socket_recvfrom(int sock, void* buffer, uint32_t size, int flags,
+  const struct sockaddr *dest_addr, uint32_t dest_len);
+
+/**
  * @method tk_socket_bind_ex
  * @annotation ["static"]
  * 绑定到指定IP和端口。
@@ -242,6 +307,15 @@ int tk_udp_listen(int port);
  * @return {int} 返回sock句柄。
  */
 int tk_udp_connect(const char* host, int port);
+
+/**
+ * @method tk_udp_socket
+ * @annotation ["static"]
+ * 创建UDP socket。
+ * 
+ * @return {int} 返回sock句柄。
+ */
+int tk_udp_socket(void);
 
 END_C_DECLS
 

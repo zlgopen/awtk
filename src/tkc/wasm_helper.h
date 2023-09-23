@@ -19,10 +19,10 @@ BEGIN_C_DECLS
 #ifdef WITH_EASTL
 #include <wchar.h>
 #else
-#ifndef WITH_WCSXXX 
+#ifndef WITH_WCSXXX
 #define WITH_WCSXXX 1
-#endif/*WITH_WCSXXX*/
-#endif/*WITH_EASTL*/
+#endif /*WITH_WCSXXX*/
+#endif /*WITH_EASTL*/
 
 #define WITHOUT_FSCRIPT
 
@@ -45,13 +45,13 @@ double exp(double x);
 
 #if defined(WIN32) && defined(_MSC_VER)
 _Check_return_ _ACRTIMP double __cdecl round(_In_ double _X);
-_Check_return_ _ACRTIMP double    __cdecl floor(_In_ double _X);
-_Check_return_ _ACRTIMP double    __cdecl ceil(_In_ double _X);
+_Check_return_ _ACRTIMP double __cdecl floor(_In_ double _X);
+_Check_return_ _ACRTIMP double __cdecl ceil(_In_ double _X);
 #else
 double round(double x);
 double floor(double x);
 double ceil(double x);
-#endif/*WIN32*/
+#endif /*WIN32*/
 
 #ifndef __cplusplus
 typedef int wchar_t;
@@ -94,12 +94,30 @@ long long strtoll(const char* str, char** endptr, int base);
 unsigned long strtoul(const char* str, char** endptr, int base);
 unsigned long long strtoull(const char* str, char** endptr, int base);
 
-void qsort (void *, size_t, size_t, int (*)(const void *, const void *));
+void qsort(void*, size_t, size_t, int (*)(const void*, const void*));
 
 #define towlower(c) tolower(c)
 #define towupper(c) toupper(c)
 
 #define HAS_NO_VSSCANF 1
+
+void perror(const char *s);
+
+struct in_addr {
+  unsigned long s_addr;
+};
+
+struct sockaddr {
+  unsigned short sa_family; 
+  char sa_data[14];
+};
+
+struct sockaddr_in {
+  short sin_family; 
+  unsigned short sin_port; 
+  struct in_addr sin_addr;
+  char sin_zero[8];
+};
 
 END_C_DECLS
 

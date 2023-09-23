@@ -31,14 +31,14 @@ static int32_t tk_istream_tcp_read(tk_istream_t* stream, uint8_t* buff, uint32_t
   int32_t ret = 0;
   tk_istream_tcp_t* istream_tcp = TK_ISTREAM_TCP(stream);
 
-  ret = recv(istream_tcp->sock, buff, max_size, 0);
+  ret = tk_socket_recv(istream_tcp->sock, buff, max_size, 0);
   if (ret <= 0) {
     if (socket_last_io_has_error()) {
-      perror("recv");
+      perror("tk_socket_recv");
       istream_tcp->is_broken = TRUE;
     } else {
       if (tk_socket_wait_for_data(istream_tcp->sock, 1) == RET_OK) {
-        ret = recv(istream_tcp->sock, buff, max_size, 0);
+        ret = tk_socket_recv(istream_tcp->sock, buff, max_size, 0);
         /*not timeout, but no data means connection is closed*/
         if (ret <= 0) {
           log_debug("socket %d is closed\n", istream_tcp->sock);

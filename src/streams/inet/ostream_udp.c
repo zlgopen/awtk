@@ -32,11 +32,11 @@ static int32_t tk_ostream_udp_write(tk_ostream_t* stream, const uint8_t* buff, u
   tk_ostream_udp_t* ostream_udp = TK_OSTREAM_UDP(stream);
   struct sockaddr* addr = (struct sockaddr*)&(ostream_udp->addr);
 
-  ret = sendto(ostream_udp->sock, buff, max_size, 0, addr, sizeof(ostream_udp->addr));
+  ret = tk_socket_sendto(ostream_udp->sock, buff, max_size, 0, addr, sizeof(ostream_udp->addr));
 
   if (ret <= 0) {
     if (socket_last_io_has_error()) {
-      perror("send to");
+      perror("tk_socket_send_to");
       ostream_udp->is_broken = TRUE;
     }
   }

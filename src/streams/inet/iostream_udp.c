@@ -104,7 +104,7 @@ tk_iostream_t* tk_iostream_udp_create_client_ex(const char* host, int port, cons
   struct sockaddr* addr = socket_resolve(host, port, &addr_in);
   return_value_if_fail(addr != NULL, NULL);
 
-  sock = (int)socket(AF_INET, SOCK_DGRAM, 0);
+  sock = tk_udp_socket();
   return_value_if_fail(sock >= 0, NULL);
 
   if (local_ip != NULL || local_port > 0) {

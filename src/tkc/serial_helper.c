@@ -394,7 +394,7 @@ ret_t serial_oflush(serial_handle_t handle) {
   return RET_OK;
 }
 
-int serial_close(serial_handle_t handle) {
+ret_t serial_close(serial_handle_t handle) {
   if (handle != NULL) {
     serial_dev_t dev = serial_handle_get_dev(handle);
 
@@ -432,7 +432,8 @@ int serial_close(serial_handle_t handle) {
     memset(handle, 0x0, sizeof(*handle));
     TKMEM_FREE(handle);
   }
-  return 0;
+
+  return RET_OK;
 }
 
 int32_t serial_read(serial_handle_t handle, uint8_t* buff, uint32_t max_size) {
@@ -956,7 +957,7 @@ ret_t serial_oflush(serial_handle_t handle) {
   return tcflush(dev, TCOFLUSH) == 0 ? RET_OK : RET_FAIL;
 }
 
-int serial_close(serial_handle_t handle) {
+ret_t serial_close(serial_handle_t handle) {
   serial_dev_t dev = serial_handle_get_dev(handle);
 
   serial_iflush(handle);
@@ -966,7 +967,7 @@ int serial_close(serial_handle_t handle) {
   memset(handle, 0x0, sizeof(*handle));
   TKMEM_FREE(handle);
 
-  return 0;
+  return RET_OK;
 }
 
 int serial_handle_get_fd(serial_handle_t handle) {
@@ -993,14 +994,6 @@ ret_t serial_wait_for_data(serial_handle_t handle, uint32_t timeout_ms) {
   int fd = serial_handle_get_fd(handle);
 
   return tk_socket_wait_for_data(fd, timeout_ms);
-}
-
-ret_t serial_timeout_set(serial_handle_t handle, serial_timeout_t* timeout) {
-  return RET_NOT_IMPL;
-}
-
-ret_t serial_timeout_get(serial_handle_t handle, serial_timeout_t* timeout) {
-  return RET_NOT_IMPL;
 }
 
 #endif /*WIN32*/
