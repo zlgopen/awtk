@@ -727,4 +727,5 @@ TEST(ObjectDefault, to_json2) {
 
   TK_OBJECT_UNREF(obj);
   TK_OBJECT_UNREF(detail);
+  str_reset(&str);
 }  

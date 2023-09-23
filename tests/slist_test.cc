@@ -212,6 +212,7 @@ TEST(SList, foreach_ex) {
   log = "";
   slist_foreach(s, visit_dump, &log);
   ASSERT_EQ(log, "2:4:");
+  slist_deinit(s);
 }
 
 TEST(SList, insert) {
