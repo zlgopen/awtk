@@ -141,7 +141,7 @@ ret_t tk_ostream_flush(tk_ostream_t* stream);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tk_ostream_write_str(tk_ostream_t* out, const char* str);
+ret_t tk_ostream_write_str(tk_ostream_t* stream, const char* str);
 
 /**
  * @method tk_ostream_printf
@@ -153,7 +153,7 @@ ret_t tk_ostream_write_str(tk_ostream_t* out, const char* str);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tk_ostream_printf(tk_ostream_t* out, const char* format, ...);
+ret_t tk_ostream_printf(tk_ostream_t* stream, const char* format, ...);
 
 #define TK_OSTREAM(obj) ((tk_ostream_t*)(obj))
 #define TK_OSTREAM_SEEKABLE(obj) (TK_OSTREAM(obj)->seek != NULL)

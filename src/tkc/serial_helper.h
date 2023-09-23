@@ -242,7 +242,7 @@ ret_t serial_config(serial_handle_t handle, uint32_t baudrate, bytesize_t bytesi
 int serial_handle_get_fd(serial_handle_t handle);
 
 /**
- * @method serial_handle_get_fd
+ * @method serial_handle_get_dev
  * 获取设备句柄。
  * @annotation ["global"]
  * @param {serial_handle_t} handle 串口句柄。
@@ -272,7 +272,7 @@ ret_t serial_iflush(serial_handle_t handle);
 ret_t serial_oflush(serial_handle_t handle);
 
 /**
- * @method tk_socket_wait_for_data
+ * @method serial_wait_for_data
  * @annotation ["static"]
  * 等待数据。
  *
