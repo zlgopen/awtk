@@ -326,7 +326,7 @@ int32_t tk_socket_sendto(int sock, const void* buffer, uint32_t size, int flags,
 }
 
 int32_t tk_socket_recv(int sock, void* buffer, uint32_t size, int flags) {
-  return recv(sock, buffer, sock, flags);
+  return recv(sock, buffer, size, flags);
 }
 
 int32_t tk_socket_recvfrom(int sock, void* buffer, uint32_t size, int flags,
