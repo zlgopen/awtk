@@ -1,8 +1,8 @@
 ﻿#include "tkc/utils.h"
 #include "tkc/platform.h"
 #include "tkc/socket_helper.h"
+#include "tkc/serial_helper.h"
 #include "streams/serial/iostream_serial.h"
-#include "streams/serial/serial_helper.h"
 
 #define TEST_READ_LEN 1
 

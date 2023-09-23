@@ -37,7 +37,7 @@
 #include "tkc/time_now.h"
 #include "tkc/socket_pair.h"
 #include "tkc/socket_helper.h"
-#include "streams/serial/serial_helper.h"
+#include "tkc/serial_helper.h"
 
 #ifdef WIN32
 #define prefix L"\\\\.\\"

@@ -26,7 +26,7 @@
 #include "base/main_loop.h"
 
 #include "serial_widget.h"
-#include "streams/serial/serial_helper.h"
+#include "tkc/serial_helper.h"
 #include "streams/serial/iostream_serial.h"
 
 static ret_t serial_widget_apply_props(widget_t* widget);

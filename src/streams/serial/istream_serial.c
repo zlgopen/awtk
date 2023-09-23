@@ -20,7 +20,6 @@
  */
 
 #include "tkc/mem.h"
-#include "streams/serial/serial_helper.h"
 #include "streams/serial/istream_serial.h"
 
 static int32_t tk_istream_serial_read(tk_istream_t* stream, uint8_t* buff, uint32_t max_size) {

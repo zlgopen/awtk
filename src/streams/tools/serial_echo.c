@@ -6,7 +6,7 @@
 #include "tkc/platform.h"
 #include "streams/serial/iostream_serial.h"
 #include "tkc/socket_helper.h"
-#include "streams/serial/serial_helper.h"
+#include "tkc/serial_helper.h"
 
 void do_echo(tk_iostream_t* iostream) {
   int32_t ret = 0;
