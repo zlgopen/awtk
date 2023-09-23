@@ -97,3 +97,18 @@ tk_iostream_t* tk_iostream_tcp_create(int sock) {
 
   return TK_IOSTREAM(obj);
 }
+
+tk_iostream_t* tk_iostream_tcp_create_client(const char* host, int port) {
+  int sock = 0;
+  tk_iostream_t* stream = NULL;
+  return_value_if_fail(host != NULL, NULL);
+  sock = tk_tcp_connect(host, port);
+  return_value_if_fail(sock >= 0, NULL);
+
+  stream = tk_iostream_tcp_create(sock);
+  if (stream == NULL) {
+    tk_socket_close(sock);
+  }
+
+  return stream;
+}

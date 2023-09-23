@@ -6,6 +6,8 @@
 
 BEGIN_C_DECLS
 
+#define WITH_SOCKET 1
+
 #ifndef PRIu64
 #if UINTPTR_MAX == 0xffffffff
 #define __PRI64_PREFIX "ll"

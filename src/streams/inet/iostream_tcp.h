@@ -58,6 +58,19 @@ struct _tk_iostream_tcp_t {
  */
 tk_iostream_t* tk_iostream_tcp_create(int sock);
 
+/**
+ * @method tk_iostream_tcp_create_client
+ *
+ * 创建iostream对象(客户端)。
+ *
+ * @param {const char*} host 服务器地址。
+ * @param {int} port 服务器端口。
+ *
+ * @return {tk_iostream_t*} 返回iostream对象。
+ *
+ */
+tk_iostream_t* tk_iostream_tcp_create_client(const char* host, int port);
+
 #define TK_IOSTREAM_TCP(obj) ((tk_iostream_tcp_t*)(obj))
 
 END_C_DECLS
