@@ -119,13 +119,13 @@ int32_t tk_socket_recv(int sock, void* buffer, uint32_t size, int flags);
  * @param {void*} buffer 用于返回数据的缓冲区。
  * @param {uint32_t} size 缓冲区大小。
  * @param {int} flags 标志。
- * @param {const struct sockaddr*}  dest_addr 目标地址。
- * @param {uint32_t} dest_len 目标地址长度。
+ * @param {struct sockaddr*}  dest_addr 目标地址。
+ * @param {uint32_t*} dest_len 目标地址长度。
  * 
  * @return {int32_t} 返回实际接收的字节数。
  */
 int32_t tk_socket_recvfrom(int sock, void* buffer, uint32_t size, int flags,
-  const struct sockaddr *dest_addr, uint32_t dest_len);
+  struct sockaddr *dest_addr, uint32_t* dest_len);
 
 /**
  * @method tk_socket_bind_ex
