@@ -9,3 +9,4 @@
 | APP\_MOBILE | 嵌入式或移动APP |
 | APP\_SIMULATOR | 模拟器。 |
 | APP\_DESKTOP | 桌面应用程序。 |
+| APP\_CONSOLE | 控制台（没有界面）。 |

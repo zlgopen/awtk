@@ -8,9 +8,31 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#font_managers_t_font_manager_fallback_get_font_default">font\_manager\_fallback\_get\_font\_default</a> |  |
 | <a href="#font_managers_t_font_managers_ref">font\_managers\_ref</a> | 获取指定小应用程序(applet)的字体管理器。 |
 | <a href="#font_managers_t_font_managers_unload_all">font\_managers\_unload\_all</a> | 卸载全部字体。 |
 | <a href="#font_managers_t_font_managers_unref">font\_managers\_unref</a> | 释放指定小应用程序(applet)的字体管理器。 |
+#### font\_manager\_fallback\_get\_font\_default 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="font_managers_t_font_manager_fallback_get_font_default">
+
+* 函数原型：
+
+```
+font_t* font_manager_fallback_get_font_default (void* ctx, const char* name, font_size_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | font\_t* | 返回字体对象。 |
+| ctx | void* | 上下文。 |
+| name | const char* | 名称。 |
+| size | font\_size\_t | 大小。 |
 #### font\_managers\_ref 函数
 -----------------------
 

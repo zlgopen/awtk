@@ -8,6 +8,8 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#path_t_path_abs">path\_abs</a> | 返回绝对路径。 |
+| <a href="#path_t_path_abs_normalize">path\_abs\_normalize</a> | 将相对路径转换为绝对路径并规范路径字符形式。 |
+| <a href="#path_t_path_abs_normalize_with_root">path\_abs\_normalize\_with\_root</a> | 将相对路径转换为绝对路径并规范路径字符形式。 |
 | <a href="#path_t_path_app_root">path\_app\_root</a> | 获取app所在目录。 |
 | <a href="#path_t_path_app_root_ex">path\_app\_root\_ex</a> | 获取app所在目录，并追加subpath到后面。 |
 | <a href="#path_t_path_basename">path\_basename</a> | 返回文件名。 |
@@ -46,6 +48,48 @@ ret_t path_abs (const char* path, char* result, int32_t size);
 | path | const char* | 路径。 |
 | result | char* | 用于返回绝对路径。 |
 | size | int32\_t | 缓冲区大小。 |
+#### path\_abs\_normalize 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="path_t_path_abs_normalize">将相对路径转换为绝对路径并规范路径字符形式。
+
+* 函数原型：
+
+```
+ret_t path_abs_normalize (const char* filename, char* result, int32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| filename | const char* | 相对路径。 |
+| result | char* | 用于返回绝对路径。 |
+| size | int32\_t | 缓冲区大小。 |
+#### path\_abs\_normalize\_with\_root 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="path_t_path_abs_normalize_with_root">将相对路径转换为绝对路径并规范路径字符形式。
+
+* 函数原型：
+
+```
+const char* path_abs_normalize_with_root (const char* root, const char* rel_filename, char* filename);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回绝对路径。 |
+| root | const char* | 根目录。 |
+| rel\_filename | const char* | 相对路径。 |
+| filename | char* | 用于返回绝对路径。 |
 #### path\_app\_root 函数
 -----------------------
 

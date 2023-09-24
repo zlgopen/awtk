@@ -52,6 +52,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L1
 | <a href="#label_t_label_create">label\_create</a> | 创建label对象 |
 | <a href="#label_t_label_get_widget_vtable">label\_get\_widget\_vtable</a> | 获取 label 虚表。 |
 | <a href="#label_t_label_resize_to_content">label\_resize\_to\_content</a> | 根据文本内容调节控件大小。 |
+| <a href="#label_t_label_set_ellipses">label\_set\_ellipses</a> | 是否开启缩写，开启后，当文字长度操作控件长度后，自动变为... |
 | <a href="#label_t_label_set_length">label\_set\_length</a> | 设置显示字符的个数(小余0时全部显示)。 |
 | <a href="#label_t_label_set_line_wrap">label\_set\_line\_wrap</a> | 设置是否自动换行。 |
 | <a href="#label_t_label_set_max_w">label\_set\_max\_w</a> | 设置max_w。 |
@@ -61,6 +62,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L1
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
+| <a href="#label_t_ellipses">ellipses</a> | bool\_t | 是否开启缩写，开启后，当文字长度操作控件长度后，自动变为... |
 | <a href="#label_t_length">length</a> | int32\_t | 显示字符的个数(小余0时全部显示)。 |
 | <a href="#label_t_line_wrap">line\_wrap</a> | bool\_t | 是否自动换行(默认FALSE)。 |
 | <a href="#label_t_max_w">max\_w</a> | int32\_t | 当auto_adjust_size为TRUE时，用于控制控件的最大宽度，超出该宽度后才自动换行。 |
@@ -148,6 +150,26 @@ ret_t label_resize_to_content (widget_t* widget, uint32_t min_w, uint32_t max_w,
 | max\_w | uint32\_t | 最大宽度。 |
 | min\_h | uint32\_t | 最小高度。 |
 | max\_h | uint32\_t | 最大高度。 |
+#### label\_set\_ellipses 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="label_t_label_set_ellipses">是否开启缩写，开启后，当文字长度操作控件长度后，自动变为...
+
+* 函数原型：
+
+```
+ret_t label_set_ellipses (widget_t* widget, bool_t ellipses);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| ellipses | bool\_t | 是否开启缩写。 |
 #### label\_set\_length 函数
 -----------------------
 
@@ -228,6 +250,23 @@ ret_t label_set_word_wrap (widget_t* widget, bool_t word_wrap);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | word\_wrap | bool\_t | 是否允许整个单词换行。 |
+#### ellipses 属性
+-----------------------
+> <p id="label_t_ellipses">是否开启缩写，开启后，当文字长度操作控件长度后，自动变为...
+> 和换行是冲突的，换行后，该属性不生效
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### length 属性
 -----------------------
 > <p id="label_t_length">显示字符的个数(小余0时全部显示)。

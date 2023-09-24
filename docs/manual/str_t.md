@@ -37,6 +37,7 @@ str_reset(&s);
 | <a href="#str_t_str_append_json_str_pair">str\_append\_json\_str\_pair</a> | 追加字符串格式的json键值对。 |
 | <a href="#str_t_str_append_more">str\_append\_more</a> | 追加多个字符串。以NULL结束。 |
 | <a href="#str_t_str_append_n_chars">str\_append\_n\_chars</a> | 同一个字符追加n次。 |
+| <a href="#str_t_str_append_uint32">str\_append\_uint32</a> | 追加一个uint32整数。 |
 | <a href="#str_t_str_append_uint64">str\_append\_uint64</a> | 追加一个uint64整数。 |
 | <a href="#str_t_str_append_unescape">str\_append\_unescape</a> | 对字符串s进行反转义，并追加到str对象。 |
 | <a href="#str_t_str_append_with_len">str\_append\_with\_len</a> | 追加字符串。 |
@@ -55,6 +56,7 @@ str_reset(&s);
 | <a href="#str_t_str_encode_xml_entity_with_len">str\_encode\_xml\_entity\_with\_len</a> | 对XML基本的entity进行编码，目前仅支持&lt;&gt;&quota;&amp;。 |
 | <a href="#str_t_str_end_with">str\_end\_with</a> | 判断字符串是否以指定的子串结尾。 |
 | <a href="#str_t_str_eq">str\_eq</a> | 判断两个字符串是否相等。 |
+| <a href="#str_t_str_equal">str\_equal</a> | 判断两个字符是否相同。 |
 | <a href="#str_t_str_expand_vars">str\_expand\_vars</a> | 将字符串中的变量展开为obj中对应的属性值。 |
 | <a href="#str_t_str_extend">str\_extend</a> | 扩展字符串到指定的容量。 |
 | <a href="#str_t_str_format">str\_format</a> | 通过格式设置字符串。 |
@@ -413,6 +415,26 @@ ret_t str_append_n_chars (str_t* str, char c, uint32_t n);
 | str | str\_t* | str对象。 |
 | c | char | 要追加的字符。 |
 | n | uint32\_t | 字符的个数。 |
+#### str\_append\_uint32 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_uint32">追加一个uint32整数。
+
+* 函数原型：
+
+```
+ret_t str_append_uint32 (str_t* str, uint32_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| value | uint32\_t | 要追加的整数。 |
 #### str\_append\_uint64 函数
 -----------------------
 
@@ -681,6 +703,7 @@ ret_t str_decode_xml_entity_with_len (str_t* str, const char* text, uint32_t len
 * 函数功能：
 
 > <p id="str_t_str_destroy">销毁str对象
+备注：最后调用str\_destroy释放内存。
 
 * 函数原型：
 
@@ -797,6 +820,26 @@ bool_t str_eq (str_t* str, const char* text);
 | 返回值 | bool\_t | 返回是否相等。 |
 | str | str\_t* | str对象。 |
 | text | const char* | 待比较的字符串。 |
+#### str\_equal 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_equal">判断两个字符是否相同。
+
+* 函数原型：
+
+```
+bool_t str_equal (str_t* str, str_t* other);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示相同，否则表示不同。 |
+| str | str\_t* | str对象。 |
+| other | str\_t* | str对象。 |
 #### str\_expand\_vars 函数
 -----------------------
 
@@ -1032,6 +1075,7 @@ ret_t str_from_wstr_with_len (str_t* str, const wchar_t* wstr, uint32_t len);
 * 函数功能：
 
 > <p id="str_t_str_init">初始化字符串对象。
+备注：最后调用str\_reset释放内存。
 
 * 函数原型：
 

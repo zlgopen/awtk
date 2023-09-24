@@ -10,11 +10,13 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#tk_ostream_t_tk_ostream_flush">tk\_ostream\_flush</a> | 刷新数据。 |
+| <a href="#tk_ostream_t_tk_ostream_printf">tk\_ostream\_printf</a> | 写入格式化字符串。 |
 | <a href="#tk_ostream_t_tk_ostream_seek">tk\_ostream\_seek</a> | 设置偏移量。 |
 | <a href="#tk_ostream_t_tk_ostream_tell">tk\_ostream\_tell</a> | 获取当前读取位置。 |
 | <a href="#tk_ostream_t_tk_ostream_write">tk\_ostream\_write</a> | 写入数据。 |
 | <a href="#tk_ostream_t_tk_ostream_write_byte">tk\_ostream\_write\_byte</a> | 写入一个字节的数据。 |
 | <a href="#tk_ostream_t_tk_ostream_write_len">tk\_ostream\_write\_len</a> | 写入指定长度的数据。 |
+| <a href="#tk_ostream_t_tk_ostream_write_str">tk\_ostream\_write\_str</a> | 写入字符串。 |
 #### tk\_ostream\_flush 函数
 -----------------------
 
@@ -34,6 +36,27 @@ ret_t tk_ostream_flush (tk_ostream_t* stream);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | stream | tk\_ostream\_t* | ostream对象。 |
+#### tk\_ostream\_printf 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_ostream_t_tk_ostream_printf">写入格式化字符串。
+> 长度不超过1024。
+
+* 函数原型：
+
+```
+ret_t tk_ostream_printf (tk_ostream_t* stream, const char* format);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| stream | tk\_ostream\_t* | ostream对象。 |
+| format | const char* | 格式化字符串。 |
 #### tk\_ostream\_seek 函数
 -----------------------
 
@@ -136,3 +159,23 @@ int32_t tk_ostream_write_len (tk_ostream_t* stream, const void* buff, uint32_t m
 | buff | const void* | 数据的缓冲区。 |
 | max\_size | uint32\_t | 缓冲区的大小。 |
 | timeout\_ms | uint32\_t | timeout. |
+#### tk\_ostream\_write\_str 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_ostream_t_tk_ostream_write_str">写入字符串。
+
+* 函数原型：
+
+```
+ret_t tk_ostream_write_str (tk_ostream_t* stream, const char* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| stream | tk\_ostream\_t* | ostream对象。 |
+| str | const char* | 字符串。 |

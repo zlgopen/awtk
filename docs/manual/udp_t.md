@@ -9,6 +9,7 @@
 | -------- | ------------ | 
 | <a href="#udp_t_tk_udp_connect">tk\_udp\_connect</a> | 连接到指定服务器。 |
 | <a href="#udp_t_tk_udp_listen">tk\_udp\_listen</a> | 监听指定端口，成功返回sock句柄。 |
+| <a href="#udp_t_tk_udp_socket">tk\_udp\_socket</a> | 创建UDP socket。 |
 #### tk\_udp\_connect 函数
 -----------------------
 
@@ -48,3 +49,21 @@ int tk_udp_listen (int port);
 | -------- | ----- | --------- |
 | 返回值 | int | 返回sock句柄。 |
 | port | int | 端口号。 |
+#### tk\_udp\_socket 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="udp_t_tk_udp_socket">创建UDP socket。
+
+* 函数原型：
+
+```
+int tk_udp_socket ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int | 返回sock句柄。 |

@@ -30,6 +30,7 @@ idle_add(something_on_idle, edit);
 | <a href="#idle_t_idle_add">idle\_add</a> | 增加一个idle。 |
 | <a href="#idle_t_idle_count">idle\_count</a> | 返回idle的个数。 |
 | <a href="#idle_t_idle_dispatch">idle\_dispatch</a> | 调用全部idle的函数。 |
+| <a href="#idle_t_idle_exist">idle\_exist</a> | idle是否存在。 |
 | <a href="#idle_t_idle_find">idle\_find</a> | 查找指定ID的idle。 |
 | <a href="#idle_t_idle_queue">idle\_queue</a> | 用于非GUI线程增加一个idle，本函数向主循环的事件队列中发送一个增加idle的请求。 |
 | <a href="#idle_t_idle_queue_ex">idle\_queue\_ex</a> | 用于非GUI线程增加一个idle，本函数向主循环的事件队列中发送一个增加idle的请求。 |
@@ -92,6 +93,26 @@ ret_t idle_dispatch ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+#### idle\_exist 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="idle_t_idle_exist">idle是否存在。
+
+* 函数原型：
+
+```
+bool_t idle_exist (idle_func_t on_idle, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示存在，否则表示不存在。 |
+| on\_idle | idle\_func\_t | idle回调函数。 |
+| ctx | void* | idle回调函数的上下文。 |
 #### idle\_find 函数
 -----------------------
 

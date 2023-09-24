@@ -55,6 +55,7 @@
 | WIDGET\_PROP\_LENGTH | 长度。 |
 | WIDGET\_PROP\_LINE\_WRAP | 自动换行。 |
 | WIDGET\_PROP\_WORD\_WRAP | 是否允许单词中换行。 |
+| WIDGET\_PROP\_ELLIPSES | 是否省略。 |
 | WIDGET\_PROP\_TEXT | 文本。 |
 | WIDGET\_PROP\_TR\_TEXT | 待翻译文本。 |
 | WIDGET\_PROP\_STYLE | style。 |

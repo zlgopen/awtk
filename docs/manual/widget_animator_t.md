@@ -14,6 +14,7 @@
 | <a href="#widget_animator_t_widget_animator_pause">widget\_animator\_pause</a> | 暂停动画。 |
 | <a href="#widget_animator_t_widget_animator_set_destroy_when_done">widget\_animator\_set\_destroy\_when\_done</a> | 设置完成时是否自动销毁动画对象(缺省销毁)。 |
 | <a href="#widget_animator_t_widget_animator_set_name">widget\_animator\_set\_name</a> | 设置名称。 |
+| <a href="#widget_animator_t_widget_animator_set_relayout">widget\_animator\_set\_relayout</a> | 设置每帧是否重新布局。 |
 | <a href="#widget_animator_t_widget_animator_set_repeat">widget\_animator\_set\_repeat</a> | 设置为重复模式。 |
 | <a href="#widget_animator_t_widget_animator_set_reversed">widget\_animator\_set\_reversed</a> | 设置为逆向模式。 |
 | <a href="#widget_animator_t_widget_animator_set_time_scale">widget\_animator\_set\_time\_scale</a> | 设置时间倍率，用于实现时间加速减速和停滞的功能。 |
@@ -169,6 +170,26 @@ ret_t widget_animator_set_name (widget_animator_t* animator, const char* name);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | animator | widget\_animator\_t* | 动画对象。 |
 | name | const char* | 名称。 |
+#### widget\_animator\_set\_relayout 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_animator_t_widget_animator_set_relayout">设置每帧是否重新布局。
+
+* 函数原型：
+
+```
+ret_t widget_animator_set_relayout (widget_animator_t* animator, bool_t relayout);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| animator | widget\_animator\_t* | 动画对象。 |
+| relayout | bool\_t | 是否重新布局。 |
 #### widget\_animator\_set\_repeat 函数
 -----------------------
 

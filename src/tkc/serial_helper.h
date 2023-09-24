@@ -171,10 +171,15 @@ typedef enum {
 } flowcontrol_t;
 
 /**
+ * @class serial_t
+ * @annotation ["fake"]
+ */
+
+/**
  * @method serial_open
  * 打开串口
  * > Windows下，需要在应用程序初始化时，调用 tk_socket_init。
- * @annotation ["global"]
+ * @annotation ["static"]
  * @param {const char*} port 串口号。
  *
  * @return {serial_handle_t} 失败返回NULL。
@@ -184,7 +189,7 @@ serial_handle_t serial_open(const char* port);
 /**
  * @method serial_read
  * 串口读数据
- * @annotation ["global"]
+ * @annotation ["static"]
  * @param {serial_handle_t} handle 串口句柄。
  * @param {uint8_t*} buff 数据缓冲区。
  * @param {uint32_t} max_size 数据长度。
@@ -196,7 +201,7 @@ int32_t serial_read(serial_handle_t handle, uint8_t* buff, uint32_t max_size);
 /**
  * @method serial_write
  * 串口写数据
- * @annotation ["global"]
+ * @annotation ["static"]
  * @param {serial_handle_t} handle 串口句柄。
  * @param {const uint8_t*} buff 数据缓冲区。
  * @param {uint32_t} max_size 数据长度。
@@ -208,7 +213,7 @@ int32_t serial_write(serial_handle_t handle, const uint8_t* buff, uint32_t max_s
 /**
  * @method serial_close
  * 关闭串口
- * @annotation ["global"]
+ * @annotation ["static"]
  * @param {serial_handle_t} handle 串口句柄。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -218,7 +223,7 @@ ret_t serial_close(serial_handle_t handle);
 /**
  * @method serial_config
  * 配置串口
- * @annotation ["global"]
+ * @annotation ["static"]
  * @param {serial_handle_t} handle 串口句柄。
  * @param {uint32_t} baudrate 波特率。
  * @param {bytesize_t} bytesize 数据位。
@@ -234,7 +239,7 @@ ret_t serial_config(serial_handle_t handle, uint32_t baudrate, bytesize_t bytesi
 /**
  * @method serial_handle_get_fd
  * 获取文件描述符。
- * @annotation ["global"]
+ * @annotation ["static"]
  * @param {serial_handle_t} handle 串口句柄。
  *
  * @return {int} 返回文件描述符。
@@ -244,7 +249,7 @@ int serial_handle_get_fd(serial_handle_t handle);
 /**
  * @method serial_handle_get_dev
  * 获取设备句柄。
- * @annotation ["global"]
+ * @annotation ["static"]
  * @param {serial_handle_t} handle 串口句柄。
  *
  * @return {serial_dev_t} 返回设备句柄。
@@ -254,7 +259,7 @@ serial_dev_t serial_handle_get_dev(serial_handle_t handle);
 /**
  * @method serial_iflush
  * 刷新input缓冲区。
- * @annotation ["global"]
+ * @annotation ["static"]
  * @param {serial_handle_t} handle 串口句柄。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -264,7 +269,7 @@ ret_t serial_iflush(serial_handle_t handle);
 /**
  * @method serial_oflush
  * 刷新output缓冲区。
- * @annotation ["global"]
+ * @annotation ["static"]
  * @param {serial_handle_t} handle 串口句柄。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -285,7 +290,7 @@ ret_t serial_wait_for_data(serial_handle_t handle, uint32_t timeout_ms);
 /**
  * @method serial_stopbits_from_str
  * 字符串转stopbits
- * @annotation ["global"]
+ * @annotation ["static"]
  * @param {const char*} str 字符串。
  *
  * @return {stopbits_t} 返回stopbits。
@@ -295,7 +300,7 @@ stopbits_t serial_stopbits_from_str(const char* str);
 /**
  * @method serial_flowcontrol_from_str
  * 字符串转flowcontrol
- * @annotation ["global"]
+ * @annotation ["static"]
  * @param {const char*} str 字符串。
  *
  * @return {flowcontrol_t} 返回flowcontrol。
@@ -305,7 +310,7 @@ flowcontrol_t serial_flowcontrol_from_str(const char* str);
 /**
  * @method serial_parity_from_str
  * 字符串转parity
- * @annotation ["global"]
+ * @annotation ["static"]
  * @param {const char*} str 字符串。
  *
  * @return {parity_t} 返回parity。
@@ -315,7 +320,7 @@ parity_t serial_parity_from_str(const char* str);
 /**
  * @method serial_bytesize_from_str
  * 字符串转bytesize
- * @annotation ["global"]
+ * @annotation ["static"]
  * @param {const char*} str 字符串。
  *
  * @return {bytesize_t} 返回bytesize。

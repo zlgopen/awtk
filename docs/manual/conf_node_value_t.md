@@ -1,6 +1,6 @@
 ## conf\_node\_value\_t
 ### 概述
-节点值得类型。
+节点值的类型。
 ### 常量
 <p id="conf_node_value_t_consts">
 

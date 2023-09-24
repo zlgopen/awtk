@@ -3,6 +3,7 @@
 2023/09/24
   * 增加函数tk\_iostream\_tcp\_create\_client
   * 增加函数hash\_table\_size
+  * 更新API文档。
 
 2023/09/23
   * 完善socket\_helper

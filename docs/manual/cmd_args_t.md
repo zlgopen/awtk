@@ -10,6 +10,7 @@
 | <a href="#cmd_args_t_cmd_args_init">cmd\_args\_init</a> | 初始化。 |
 | <a href="#cmd_args_t_cmd_args_process">cmd\_args\_process</a> | 处理。 |
 | <a href="#cmd_args_t_cmd_args_process_str">cmd\_args\_process\_str</a> | 处理。 |
+| <a href="#cmd_args_t_cmd_args_process_wstr">cmd\_args\_process\_wstr</a> | 处理。 |
 | <a href="#cmd_args_t_cmd_args_show_help">cmd\_args\_show\_help</a> | 显示帮助信息。 |
 #### cmd\_args\_init 函数
 -----------------------
@@ -76,6 +77,27 @@ ret_t cmd_args_process_str (cmd_args_t* args, const char* cmd_line);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | args | cmd\_args\_t* | args对象。 |
 | cmd\_line | const char* | 字符串格式的参数(适用于Windows)。 |
+#### cmd\_args\_process\_wstr 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="cmd_args_t_cmd_args_process_wstr">处理。
+
+* 函数原型：
+
+```
+ret_t cmd_args_process_wstr (cmd_args_t* args, int argc, wchar_t** argv);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| args | cmd\_args\_t* | args对象。 |
+| argc | int | 参数个数。 |
+| argv | wchar\_t** | 参数数组。 |
 #### cmd\_args\_show\_help 函数
 -----------------------
 

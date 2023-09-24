@@ -136,6 +136,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_get_window_theme">widget\_get\_window\_theme</a> | 获取控件的窗体样式。 |
 | <a href="#widget_t_widget_get_with_focus_state">widget\_get\_with\_focus\_state</a> | 获取控件with_focus_state属性值。 |
 | <a href="#widget_t_widget_grab">widget\_grab</a> | 让指定子控件抓住事件。 |
+| <a href="#widget_t_widget_has_highlighter">widget\_has\_highlighter</a> | 判断widget拥有高亮属性。 |
 | <a href="#widget_t_widget_index_of">widget\_index\_of</a> | 获取控件在父控件中的索引编号。 |
 | <a href="#widget_t_widget_init">widget\_init</a> | 初始化控件。仅在子类控件构造函数中使用。 |
 | <a href="#widget_t_widget_insert_child">widget\_insert\_child</a> | 插入子控件到指定的位置。 |
@@ -2149,6 +2150,25 @@ ret_t widget_grab (widget_t* widget, widget_t* child);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | child | widget\_t* | 子控件对象。 |
+#### widget\_has\_highlighter 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_has_highlighter">判断widget拥有高亮属性。
+
+* 函数原型：
+
+```
+bool_t widget_has_highlighter (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 拥有返回 TRUE，没有返回 FALSE。 |
+| widget | widget\_t* | 控件对象。 |
 #### widget\_index\_of 函数
 -----------------------
 
@@ -3723,6 +3743,7 @@ ret_t widget_set_child_text_with_int (widget_t* widget, const char* name, const 
 * 函数功能：
 
 > <p id="widget_t_widget_set_children_layout">设置子控件的布局参数。
+备注：下一帧才会生效数据
 
 * 函数原型：
 
@@ -4171,6 +4192,7 @@ ret_t widget_set_props (widget_t* widget, const char* params);
 * 函数功能：
 
 > <p id="widget_t_widget_set_self_layout">设置控件自己的布局参数。
+备注：下一帧才会生效数据
 
 * 函数原型：
 
@@ -4191,6 +4213,7 @@ ret_t widget_set_self_layout (widget_t* widget, const char* params);
 * 函数功能：
 
 > <p id="widget_t_widget_set_self_layout_params">设置控件自己的布局(缺省布局器)参数(过时，请用widget\_set\_self\_layout)。
+备注：下一帧才会生效数据
 
 * 函数原型：
 

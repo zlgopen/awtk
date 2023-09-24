@@ -37,6 +37,7 @@ hash_table_destroy(hash_table);
 | <a href="#hash_table_t_hash_table_init">hash\_table\_init</a> | 初始化hash_table对象。 |
 | <a href="#hash_table_t_hash_table_remove">hash\_table\_remove</a> | 删除第一个满足条件的元素。 |
 | <a href="#hash_table_t_hash_table_remove_all">hash\_table\_remove\_all</a> | 删除全部满足条件的元素。 |
+| <a href="#hash_table_t_hash_table_size">hash\_table\_size</a> | 返回全部元素个数。 |
 ### 属性
 <p id="hash_table_t_properties">
 
@@ -104,7 +105,7 @@ int32_t hash_table_count (hash_table_t* hash_table, tk_compare_t cmp, void* ctx)
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回元素个数。 |
-| hash\_table | hash\_table\_t* | 单向链表对象。 |
+| hash\_table | hash\_table\_t* | 哈希表对象。 |
 | cmp | tk\_compare\_t | 比较函数，为NULL则使用内置的比较函数。 |
 | ctx | void* | 比较函数的上下文。 |
 #### hash\_table\_create 函数
@@ -312,6 +313,25 @@ ret_t hash_table_remove_all (hash_table_t* hash_table, tk_compare_t cmp, void* c
 | hash\_table | hash\_table\_t* | 哈希表对象。 |
 | cmp | tk\_compare\_t | 比较函数，为NULL则使用内置的比较函数。 |
 | ctx | void* | 比较函数的上下文。 |
+#### hash\_table\_size 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="hash_table_t_hash_table_size">返回全部元素个数。
+
+* 函数原型：
+
+```
+int32_t hash_table_size (hash_table_t* hash_table);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int32\_t | 返回元素个数。 |
+| hash\_table | hash\_table\_t* | 哈希表对象。 |
 #### buckets 属性
 -----------------------
 > <p id="hash_table_t_buckets">buckets。

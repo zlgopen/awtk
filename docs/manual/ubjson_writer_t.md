@@ -567,7 +567,7 @@ ret_t ubjson_writer_write_kv_str_len (ubjson_writer_t* writer, const char* key, 
 * 函数原型：
 
 ```
-ret_t ubjson_writer_write_kv_value (ubjson_writer_t* writer, const char* key, value_t* value);
+ret_t ubjson_writer_write_kv_value (ubjson_writer_t* writer, const char* key, const value_t* value);
 ```
 
 * 参数说明：
@@ -577,7 +577,7 @@ ret_t ubjson_writer_write_kv_value (ubjson_writer_t* writer, const char* key, va
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | writer | ubjson\_writer\_t* | writer对象。 |
 | key | const char* | 键名。 |
-| value | value\_t* | 值。 |
+| value | const value\_t* | 值。 |
 #### ubjson\_writer\_write\_kv\_wstr 函数
 -----------------------
 

@@ -7,6 +7,8 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#utils_t_bits_stream_get">bits\_stream\_get</a> | 从buff中获取第index位的值。 |
+| <a href="#utils_t_bits_stream_set">bits\_stream\_set</a> | 设置buff中第index位的值。 |
 | <a href="#utils_t_compare_always_equal">compare\_always\_equal</a> | 始终返回相等。 |
 | <a href="#utils_t_data_url_copy">data\_url\_copy</a> | 将数据从源URL拷贝到目标URL。 |
 | <a href="#utils_t_default_destroy">default\_destroy</a> | 缺省的destroy函数。释放data指向的内存。 |
@@ -25,6 +27,7 @@
 | <a href="#utils_t_tk_atol">tk\_atol</a> | 将字符串转换为整型。 |
 | <a href="#utils_t_tk_atoul">tk\_atoul</a> | 将字符串转换为整型。 |
 | <a href="#utils_t_tk_eval_ratio_or_px">tk\_eval\_ratio\_or\_px</a> | 如果expr以px/PX结束，直接返回expr前面的数值。 |
+| <a href="#utils_t_tk_free_utf8_argv">tk\_free\_utf8\_argv</a> | 释放utf8字符串数组。 |
 | <a href="#utils_t_tk_ftoa">tk\_ftoa</a> | 将浮点型转换为字符串。 |
 | <a href="#utils_t_tk_is_ui_thread">tk\_is\_ui\_thread</a> | 判断当前线程是否是UI线程。 |
 | <a href="#utils_t_tk_is_valid_name">tk\_is\_valid\_name</a> | 判断是否是有效的属性名。 |
@@ -48,6 +51,7 @@
 | <a href="#utils_t_tk_skip_to_num">tk\_skip\_to\_num</a> | 跳过字符串函数，如：字符串"hello123world"，返回的结果是"123world"。 |
 | <a href="#utils_t_tk_snprintf">tk\_snprintf</a> | 将可变参数(...)按照format格式化字符串，并将字符串复制到str中。 |
 | <a href="#utils_t_tk_sscanf">tk\_sscanf</a> | 从字符串读取格式化输入。 |
+| <a href="#utils_t_tk_sscanf_simple">tk\_sscanf\_simple</a> | 从字符串读取格式化输入。 |
 | <a href="#utils_t_tk_str_append">tk\_str\_append</a> | 字符串追加函数。 |
 | <a href="#utils_t_tk_str_copy">tk\_str\_copy</a> | 字符串拷贝函数。 |
 | <a href="#utils_t_tk_str_end_with">tk\_str\_end\_with</a> | 检查字符串是否以指定的字符串appendix结尾。 |
@@ -69,7 +73,9 @@
 | <a href="#utils_t_tk_strtoi">tk\_strtoi</a> | 将字符串转换为整型。 |
 | <a href="#utils_t_tk_strtol">tk\_strtol</a> | 将字符串转换为长整型。 |
 | <a href="#utils_t_tk_strtoll">tk\_strtoll</a> | 将字符串转换为长整型。 |
+| <a href="#utils_t_tk_to_utf8_argv">tk\_to\_utf8\_argv</a> | 将宽字符串数组转换成utf8字符串数组。 |
 | <a href="#utils_t_tk_under_score_to_camel">tk\_under\_score\_to\_camel</a> | 将下划线名字转成驼峰名字。 |
+| <a href="#utils_t_tk_utf8_dup_wstr">tk\_utf8\_dup\_wstr</a> | 将UCS字符串拷贝为utf8字符串。 |
 | <a href="#utils_t_tk_vsnprintf">tk\_vsnprintf</a> | 将可变参数ap按照format格式化字符串，并将字符串复制到str中。 |
 | <a href="#utils_t_tk_watob">tk\_watob</a> | 将宽字符串转换为布尔类型。 |
 | <a href="#utils_t_tk_watof">tk\_watof</a> | 将宽字符串转换为浮点类型。 |
@@ -82,6 +88,50 @@
 | <a href="#utils_t_tk_wstrdup">tk\_wstrdup</a> | 宽字符串拷贝函数。 |
 | <a href="#utils_t_tk_wstricmp">tk\_wstricmp</a> | 字符串比较函数（不区分大小写）。 |
 | <a href="#utils_t_xml_file_expand_read">xml\_file\_expand\_read</a> | expand include process instruction to file content: <?include filename="view_me.inc" ?> |
+#### bits\_stream\_get 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_bits_stream_get">从buff中获取第index位的值。
+
+* 函数原型：
+
+```
+ret_t bits_stream_get (const uint8_t* buff, uint32_t size, uint32_t index, bool_t* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| buff | const uint8\_t* | 数据。 |
+| size | uint32\_t | 数据长度。 |
+| index | uint32\_t | 位索引。 |
+| value | bool\_t* | 返回值。 |
+#### bits\_stream\_set 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_bits_stream_set">设置buff中第index位的值。
+
+* 函数原型：
+
+```
+ret_t bits_stream_set (uint8_t* buff, uint32_t size, uint32_t index, bool_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| buff | uint8\_t* | 数据。 |
+| size | uint32\_t | 数据长度。 |
+| index | uint32\_t | 位索引。 |
+| value | bool\_t | 值。 |
 #### compare\_always\_equal 函数
 -----------------------
 
@@ -449,6 +499,26 @@ float_t tk_eval_ratio_or_px (const char* expr, int32_t value);
 | 返回值 | float\_t | 返回计算结果。 |
 | expr | const char* | 表达式(如100px, 0.5等) |
 | value | int32\_t | 值。 |
+#### tk\_free\_utf8\_argv 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_free_utf8_argv">释放utf8字符串数组。
+
+* 函数原型：
+
+```
+ret_t tk_free_utf8_argv (int argc, char** argv);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| argc | int | 参数个数。 |
+| argv | char** | 参数。 |
 #### tk\_ftoa 函数
 -----------------------
 
@@ -922,6 +992,27 @@ int tk_sscanf (const char* str, const char* format);
 | 返回值 | int | 返回成功匹配和赋值的个数。 |
 | str | const char* | 要输入的字符串。 |
 | format | const char* | 格式化字符串。 |
+#### tk\_sscanf\_simple 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_sscanf_simple">从字符串读取格式化输入。
+>TKC自己实现的，只支持几种简单的格式，在没有sscanf函数时使用。
+
+* 函数原型：
+
+```
+int tk_sscanf_simple (const char* str, const char* format);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int | 返回成功匹配和赋值的个数。 |
+| str | const char* | 要输入的字符串。 |
+| format | const char* | 格式化字符串。 |
 #### tk\_str\_append 函数
 -----------------------
 
@@ -1353,6 +1444,26 @@ int64_t tk_strtoll (const char* str, const char** end, int base);
 | str | const char* | 要转换为长整型的字符串。 |
 | end | const char** | 对类型char*的对象的引用。 |
 | base | int | 基数。 |
+#### tk\_to\_utf8\_argv 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_to_utf8_argv">将宽字符串数组转换成utf8字符串数组。
+
+* 函数原型：
+
+```
+char** tk_to_utf8_argv (int argc, wchar_t** argv);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | char** | 返回utf8字符串数组。 |
+| argc | int | 参数个数。 |
+| argv | wchar\_t** | 参数。 |
 #### tk\_under\_score\_to\_camel 函数
 -----------------------
 
@@ -1374,6 +1485,25 @@ const char* tk_under_score_to_camel (const char* name, char* out, uint32_t max_o
 | name | const char* | 下划线名字。 |
 | out | char* | 驼峰名字(保存结果)。 |
 | max\_out\_size | uint32\_t | 结果最大长度。 |
+#### tk\_utf8\_dup\_wstr 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_utf8_dup_wstr">将UCS字符串拷贝为utf8字符串。
+
+* 函数原型：
+
+```
+char* tk_utf8_dup_wstr (const wchar_t* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | char* | 返回UTF-8字符串(需要调用TKMEM\_FREE释放)。 |
+| str | const wchar\_t* | 字符串。 |
 #### tk\_vsnprintf 函数
 -----------------------
 

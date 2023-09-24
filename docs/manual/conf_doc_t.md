@@ -39,12 +39,14 @@
 | <a href="#conf_doc_t_conf_doc_set_int">conf\_doc\_set\_int</a> | 设置指定路径节点的值。 |
 | <a href="#conf_doc_t_conf_doc_set_node_prop">conf\_doc\_set\_node\_prop</a> | 设置节点的属性。 |
 | <a href="#conf_doc_t_conf_doc_set_str">conf\_doc\_set\_str</a> | 设置指定路径节点的值。 |
+| <a href="#conf_doc_t_conf_doc_use_extend_type">conf\_doc\_use\_extend\_type</a> | 使用拓展类型。 |
 ### 属性
 <p id="conf_doc_t_properties">
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#conf_doc_t_root">root</a> | conf\_node\_t* | 根节点。 |
+| <a href="#conf_doc_t_use_extend_type">use\_extend\_type</a> | bool\_t | 使用拓展类型。 |
 #### conf\_doc\_add\_child 函数
 -----------------------
 
@@ -705,9 +707,35 @@ ret_t conf_doc_set_str (conf_doc_t* doc, const char* path, const char* v);
 | doc | conf\_doc\_t* | 文档对象。 |
 | path | const char* | 节点的路径。 |
 | v | const char* | 值。 |
+#### conf\_doc\_use\_extend\_type 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_doc_t_conf_doc_use_extend_type">使用拓展类型。
+
+* 函数原型：
+
+```
+ret_t conf_doc_use_extend_type (conf_doc_t* doc, bool_t use);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| doc | conf\_doc\_t* | 文档对象。 |
+| use | bool\_t | 是否使用拓展类型。 |
 #### root 属性
 -----------------------
 > <p id="conf_doc_t_root">根节点。
 
 * 类型：conf\_node\_t*
+
+#### use\_extend\_type 属性
+-----------------------
+> <p id="conf_doc_t_use_extend_type">使用拓展类型。
+
+* 类型：bool\_t
 
