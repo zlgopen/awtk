@@ -28,7 +28,8 @@ BEGIN_C_DECLS
 
 #define WITHOUT_FSCRIPT
 
-#define log_impl printf
+int awplc_log(const char* format, ...);
+#define log_impl awplc_log
 #define assert(__pp) wasm_assert(__pp, #__pp)
 
 #define ret_t_init(r) *r = RET_OK;
