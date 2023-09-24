@@ -151,9 +151,18 @@ ret_t hash_table_remove(hash_table_t* hash_table, tk_compare_t cmp, void* ctx);
 ret_t hash_table_remove_all(hash_table_t* hash_table, tk_compare_t cmp, void* ctx);
 
 /**
+ * @method hash_table_size
+ * 返回全部元素个数。
+ * @param {hash_table_t*} hash_table 哈希表对象。
+ *
+ * @return {int32_t} 返回元素个数。
+ */
+int32_t hash_table_size(hash_table_t* hash_table);
+
+/**
  * @method hash_table_count
  * 返回满足条件元素的个数。
- * @param {hash_table_t*} hash_table 单向链表对象。
+ * @param {hash_table_t*} hash_table 哈希表对象。
  * @param {tk_compare_t} cmp 比较函数，为NULL则使用内置的比较函数。
  * @param {void*} ctx 比较函数的上下文。
  *

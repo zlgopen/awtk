@@ -1,12 +1,13 @@
 # 最新动态
 
 2023/09/24
-  * 增加tk\_iostream\_tcp\_create\_client
+  * 增加函数tk\_iostream\_tcp\_create\_client
+  * 增加函数hash\_table\_size
 
 2023/09/23
-  * 完善socket_helper
-  * 完善serial_helper
-  * 将serial_helper.c/.h移动到tkc目录。
+  * 完善socket\_helper
+  * 完善serial\_helper
+  * 将serial\_helper.c/.h移动到tkc目录。
 
 2023/09/21
   * 修改scroll\_view在children\_layout中设置ym垂直间距时，底部没有间距的bug，并在demouiold添加演示(感谢颖健提供补丁)

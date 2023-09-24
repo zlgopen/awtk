@@ -14,12 +14,14 @@ TEST(DHashTable, int_add_remove) {
   for (i = 0; i < n; i++) {
     ASSERT_EQ(hash_table_add(ht, tk_pointer_from_int(i), TRUE), RET_OK);
     ASSERT_EQ(hash_table_count(ht, compare_always_equal, NULL), (i + 1));
+    ASSERT_EQ(hash_table_size(ht), (i + 1));
     ASSERT_EQ(tk_pointer_to_int(hash_table_find(ht, int_compare, tk_pointer_from_int(i))), i);
   }
 
   for (i = 0; i < n; i++) {
     ASSERT_EQ(hash_table_remove(ht, int_compare, tk_pointer_from_int(i)), RET_OK);
     ASSERT_EQ(hash_table_count(ht, compare_always_equal, NULL), n - i - 1);
+    ASSERT_EQ(hash_table_size(ht), n - i - 1);
     ASSERT_EQ(tk_pointer_to_int(hash_table_find(ht, int_compare, tk_pointer_from_int(i))), 0);
   }
 
