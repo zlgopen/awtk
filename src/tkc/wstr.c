@@ -182,7 +182,7 @@ wchar_t* wcsdup(const wchar_t* s) {
   return wcs_dup(s);
 }
 
-int iswspace(wchar_t ch) {
+int iswspace(wint_t ch) {
   return ch == ' ';
 }
 

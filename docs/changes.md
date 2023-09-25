@@ -1,5 +1,6 @@
 # 最新动态
 2023/09/25
+  * 按标准c库修正iswspace 函数定义(感谢陈谭提供补丁)
   * 增加函数csv\_file\_object\_load/csv\_file\_object\_load\_from\_buff
   * 增加函数csv\_file\_object\_save\_to\_buff/csv\_file\_object\_save\_as
   * xml/json/ubjson/ini/hash_table增加示例代码。
