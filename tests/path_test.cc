@@ -270,6 +270,21 @@ TEST(Path, path_prepend_app_root) {
   char result[MAX_PATH + 1] = {0};
   ASSERT_EQ(path_prepend_app_root(result, "bin"), result);
   ASSERT_EQ(path_exist(result), TRUE);
+  log_debug("%s\n", result);
+}
+
+TEST(Path, path_prepend_temp_path) {
+  char result[MAX_PATH + 1] = {0};
+  ASSERT_EQ(path_prepend_temp_path(result, "test.txt"), result);
+  ASSERT_NE(strstr(result, "test.txt"), (char*)NULL);
+  log_debug("%s\n", result);
+}
+
+TEST(Path, path_prepend_user_storage_path) {
+  char result[MAX_PATH + 1] = {0};
+  ASSERT_EQ(path_prepend_user_storage_path(result, "test.txt"), result);
+  ASSERT_NE(strstr(result, "test.txt"), (char*)NULL);
+  log_debug("%s\n", result);
 }
 
 TEST(Path, abs_normalize) {

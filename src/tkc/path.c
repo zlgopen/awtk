@@ -346,6 +346,26 @@ const char* path_prepend_app_root(char full_path[MAX_PATH + 1], const char* path
   return full_path;
 }
 
+const char* path_prepend_temp_path(char full_path[MAX_PATH + 1], const char* path) {
+  char temp_path[MAX_PATH + 1] = {0};
+  return_value_if_fail(path != NULL, NULL);
+  return_value_if_fail(fs_get_temp_path(os_fs(), temp_path) == RET_OK, NULL);
+
+  path_build(full_path, MAX_PATH, temp_path, path, NULL);
+
+  return full_path;
+}
+
+const char* path_prepend_user_storage_path(char full_path[MAX_PATH + 1], const char* path) {
+  char user_storage_path[MAX_PATH + 1] = {0};
+  return_value_if_fail(path != NULL, NULL);
+  return_value_if_fail(fs_get_user_storage_path(os_fs(), user_storage_path) == RET_OK, NULL);
+
+  path_build(full_path, MAX_PATH, user_storage_path, path, NULL);
+
+  return full_path;
+}
+
 ret_t path_abs_normalize(const char* filename, char* result, int32_t size) {
   char path[MAX_PATH + 1];
   return_value_if_fail(filename != NULL && result != NULL && size > 0, RET_BAD_PARAMS);

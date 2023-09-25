@@ -1,5 +1,9 @@
 # 最新动态
 
+2023/09/25
+  * 增加函数path\_prepend\_temp\_path
+  * 增加函数path\_prepend\_user\_storage\_path
+
 2023/09/24
   * 增加函数tk\_iostream\_tcp\_create\_client
   * 增加函数hash\_table\_size

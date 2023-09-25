@@ -258,6 +258,26 @@ ret_t path_remove_last_slash(char* path);
 const char* path_prepend_app_root(char full_path[MAX_PATH + 1], const char* path);
 
 /**
+ * @method path_prepend_temp_path
+ * 将前面路径加上临时文件目录。
+ * @param {char*} full_path 用于返回完整路径。
+ * @param {const char*} path 路径。
+ *
+ * @return {const char*} 返回完整路径。
+ */
+const char* path_prepend_temp_path(char full_path[MAX_PATH + 1], const char* path);
+
+/**
+ * @method path_prepend_user_storage_path
+ * 将前面路径加上用户目录。
+ * @param {char*} full_path 用于返回完整路径。
+ * @param {const char*} path 路径。
+ *
+ * @return {const char*} 返回完整路径。
+ */
+const char* path_prepend_user_storage_path(char full_path[MAX_PATH + 1], const char* path);
+
+/**
  * @method path_abs_normalize
  * 将相对路径转换为绝对路径并规范路径字符形式。
  * @param {const char*} filename 相对路径。
