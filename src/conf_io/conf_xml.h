@@ -32,8 +32,48 @@ BEGIN_C_DECLS
  * @class conf_xml_t
  * @parent tk_object_t
  * @annotation ["fake"]
- * 
  * conf xml对象。
+ *
+ * 示例
+ *
+ *```c 
+ *  char filename[MAX_PATH + 1] = {0};
+ *  path_prepend_temp_path(filename, "test.xml");
+ *
+ *  const char *xml_data1 = "<root><name>awplc</name><age>18</age><weight>60.5</weight></root>";
+ *  ENSURE(file_write(filename, xml_data1, strlen(xml_data1)) == RET_OK);
+ *
+ *  // 从文件加载
+ *  tk_object_t *xml = conf_xml_load(filename, FALSE);
+ *
+ *  // 获取数据。注意：从文本节点获取数据，需要加上@text
+ *  ENSURE(tk_str_eq(tk_object_get_prop_str(xml, "root.name.@text"), "awplc"));
+ *  ENSURE(tk_object_get_prop_int(xml, "root.age.@text", 0) == 18);
+ *  ENSURE(tk_object_get_prop_double(xml, "root.weight.@text", 0) == 60.5);
+ *
+ *  // 销毁对象
+ *  TK_OBJECT_UNREF(xml);
+ *
+ *  // 从内存加载
+ *  const char *xml_data2 = "<root name=\"awplc\" age=\"18\" weight=\"60.5\"></root>";
+ *  xml = conf_xml_load_from_buff(xml_data2, strlen(xml_data2), FALSE);
+ *
+ *  // 获取数据
+ *  ENSURE(tk_str_eq(tk_object_get_prop_str(xml, "root.name"), "awplc"));
+ *  ENSURE(tk_object_get_prop_int(xml, "root.age", 0) == 18);
+ *  ENSURE(tk_object_get_prop_double(xml, "root.weight", 0) == 60.5);
+ *
+ *  // 设置数据
+ *  ENSURE(tk_object_set_prop_int(xml, "root.age", 20) == RET_OK);
+ *  ENSURE(tk_object_get_prop_int(xml, "root.age", 0) == 20);
+ *
+ *  // 保存到文件
+ *  ENSURE(conf_xml_save_as(xml, filename) == RET_OK);
+ *  ENSURE(file_exist(filename) == TRUE);
+ *
+ *  // 销毁对象
+ *  TK_OBJECT_UNREF(xml); 
+ *```        
  */
 
 /**

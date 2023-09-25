@@ -35,6 +35,45 @@ BEGIN_C_DECLS
  * @annotation ["fake"]
  * 
  * conf json对象。
+ *
+ * 示例
+ *
+ *```c
+ * char filename[MAX_PATH + 1] = {0};
+ * path_prepend_temp_path(filename, "test.ubjson");
+ *
+ * const char *ubjson_data1 = "{"
+ *                            "\"root\":{"
+ *                            "\"name\":\"awplc\","
+ *                            "\"age\":18,"
+ *                            "\"weight\":60.5"
+ *                            "}"
+ *                            "}";
+ *
+ * // 将JSON保存为UBJSON
+ * tk_object_t *json = conf_json_load_from_buff(ubjson_data1, strlen(ubjson_data1), FALSE);
+ * ENSURE(conf_ubjson_save_as(json, filename) == RET_OK);
+ * ENSURE(file_exist(filename) == TRUE);
+ *
+ * // 从文件加载
+ * tk_object_t *ubjson = conf_ubjson_load(filename, FALSE);
+ *
+ * // 获取数据。
+ * ENSURE(tk_str_eq(tk_object_get_prop_str(ubjson, "root.name"), "awplc"));
+ * ENSURE(tk_object_get_prop_int(ubjson, "root.age", 0) == 18);
+ * ENSURE(tk_object_get_prop_double(ubjson, "root.weight", 0) == 60.5);
+ *
+ * // 设置数据
+ * ENSURE(tk_object_set_prop_int(ubjson, "root.age", 20) == RET_OK);
+ * ENSURE(tk_object_get_prop_int(ubjson, "root.age", 0) == 20);
+ *
+ * // 保存到文件
+ * ENSURE(conf_ubjson_save_as(ubjson, filename) == RET_OK);
+ * ENSURE(file_exist(filename) == TRUE);
+ *
+ * // 销毁对象
+ * TK_OBJECT_UNREF(ubjson);
+ *```        
  */
 
 /**

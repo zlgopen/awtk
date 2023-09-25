@@ -35,8 +35,30 @@ BEGIN_C_DECLS
  *
  * 对象接口的缺省实现。
  *
- * 内部使用有序数组保存所有属性，可以快速查找指定名称的属性。
+ * 通用当作 map 数据结构使用，内部用有序数组保存所有属性，因此可以快速查找指定名称的属性。
  *
+ * 示例
+ *
+ *```c
+ * // 创建默认对象
+ * tk_object_t *obj = object_default_create();
+ *
+ * // 设置属性
+ * tk_object_set_prop_str(obj, "name", "awplc");
+ * tk_object_set_prop_int(obj, "age", 18);
+ * tk_object_set_prop_double(obj, "weight", 60.5);
+ *
+ * // 获取属性
+ * ENSURE(tk_str_eq(tk_object_get_prop_str(obj, "name"), "awplc"));
+ * ENSURE(tk_object_get_prop_int(obj, "age", 0) == 18);
+ * ENSURE(tk_object_get_prop_double(obj, "weight", 0) == 60.5);
+ *
+ * // 遍历属性
+ * tk_object_foreach_prop(obj, visit_obj, NULL);
+ *
+ * // 释放对象
+ * TK_OBJECT_UNREF(obj); 
+ *```        
  */
 typedef struct _object_default_t {
   tk_object_t object;
