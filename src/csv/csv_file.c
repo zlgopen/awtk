@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  csv file
  *
- * Copyright (c) 2020 - 2023  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2020 - 2022  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -21,6 +21,8 @@
 
 #include "tkc/mem.h"
 #include "tkc/utils.h"
+#include "tkc/data_writer.h"
+#include "tkc/data_writer_factory.h"
 
 #include "csv_file.h"
 #include "streams/mem/istream_mem.h"
@@ -624,6 +626,24 @@ ret_t csv_file_remove_row(csv_file_t* csv, uint32_t row) {
   return csv_rows_remove(&(csv->rows), row);
 }
 
+ret_t csv_file_save_to_buff(csv_file_t* csv, wbuffer_t* buff) {
+  str_t str;
+  uint32_t i = 0;
+  csv_row_t* r = NULL;
+  return_value_if_fail(csv != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(buff != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(str_init(&str, 512) != NULL, RET_OOM);
+
+  for (i = 0; i < csv->rows.size; i++) {
+    r = csv->rows.rows + i;
+    csv_row_to_str(r, &str, csv->sep);
+    ENSURE(wbuffer_write_binary(buff, str.str, str.size) == RET_OK);
+  }
+  str_reset(&str);
+
+  return RET_OK;
+}
+
 ret_t csv_file_save(csv_file_t* csv, const char* filename) {
   str_t str;
   uint32_t i = 0;
@@ -651,8 +671,7 @@ ret_t csv_file_save(csv_file_t* csv, const char* filename) {
     }
   }
   str_reset(&str);
-
-  return RET_NOT_IMPL;
+  return RET_OK;
 }
 
 const char* csv_file_get_title(csv_file_t* csv) {

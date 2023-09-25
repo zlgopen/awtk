@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  csv file object
  *
- * Copyright (c) 2020 - 2023  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2020 - 2022  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -23,7 +23,10 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/object.h"
+#include "tkc/data_reader.h"
+
 #include "csv_file.h"
+#include "csv_file_object.h"
 
 typedef struct _csv_file_object_t {
   tk_object_t object;
@@ -248,4 +251,36 @@ csv_file_t* csv_file_object_get_csv(tk_object_t* obj) {
   return_value_if_fail(o != NULL, NULL);
 
   return o->csv;
+}
+
+tk_object_t* csv_file_object_load(const char* filename, char sep) {
+  csv_file_t* csv = csv_file_create(filename, sep);
+  return_value_if_fail(csv != NULL, NULL);
+
+  return csv_file_object_create(csv);
+}
+
+tk_object_t* csv_file_object_load_from_buff(const void* buff, uint32_t size, char sep) {
+  csv_file_t* csv = NULL;
+  if (buff != NULL) {
+    csv = csv_file_create_with_buff(buff, size, sep);
+  } else {
+    csv = csv_file_create_empty(sep, NULL, NULL);
+  }
+  return_value_if_fail(csv != NULL, NULL);
+
+  return csv_file_object_create(csv);
+}
+
+ret_t csv_file_object_save_to_buff(tk_object_t* obj, wbuffer_t* wb) {
+  csv_file_object_t* o = CSV_FILE_OBJECT(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  return csv_file_save_to_buff(o->csv, wb);
+}
+
+ret_t csv_file_object_save_as(tk_object_t* obj, const char* filename) {
+  csv_file_object_t* o = CSV_FILE_OBJECT(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+  return csv_file_save(o->csv, filename);
 }

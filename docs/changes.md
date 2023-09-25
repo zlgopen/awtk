@@ -1,4 +1,7 @@
 # 最新动态
+2023/09/25
+  * 增加函数csv\_file\_object\_load/csv\_file\_object\_load\_from\_buff
+  * 增加函数csv\_file\_object\_save\_to\_buff/csv\_file\_object\_save\_as
 
 2023/09/25
   * 增加函数path\_prepend\_temp\_path

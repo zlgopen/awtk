@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  csv file
  *
- * Copyright (c) 2020 - 2023  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2020 - 2022  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -23,6 +23,7 @@
 #define TK_CSV_FILE_H
 
 #include "tkc/istream.h"
+#include "tkc/buffer.h"
 
 BEGIN_C_DECLS
 
@@ -312,6 +313,18 @@ ret_t csv_file_insert_row(csv_file_t* csv, uint32_t row, const char* data);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t csv_file_save(csv_file_t* csv, const char* filename);
+
+/**
+ * @method csv_file_save_to_buff
+ *
+ * 保存。
+ *
+ * @param {csv_file_t*} csv csv对象。
+ * @param {wbuffer_t*} buff 保存结果数据。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t csv_file_save_to_buff(csv_file_t* csv, wbuffer_t* buff);
 
 /**
  * @method csv_file_clear
