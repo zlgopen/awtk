@@ -155,6 +155,7 @@ static float nvg__absf(float a) { return a >= 0.0f ? a : -a; }
 static float nvg__signf(float a) { return a >= 0.0f ? 1.0f : -1.0f; }
 static float nvg__clampf(float a, float mn, float mx) { return a < mn ? mn : (a > mx ? mx : a); }
 static float nvg__cross(float dx0, float dy0, float dx1, float dy1) { return dx1*dy0 - dx0*dy1; }
+static int nvg__fequalf(float a, float b) { float t = a - b; return t > -1e-6 && t < 1e-6; }
 
 static float nvg__normalize(float *x, float* y)
 {
@@ -2465,6 +2466,7 @@ void nvgPathWinding(NVGcontext* ctx, int dir)
 
 void nvgArc(NVGcontext* ctx, float cx, float cy, float r, float a0, float a1, int dir)
 {
+	float ads_da = 0;
 	float a = 0, da = 0, hda = 0, kappa = 0;
 	float dx = 0, dy = 0, x = 0, y = 0, tanx = 0, tany = 0;
 	float px = 0, py = 0, ptanx = 0, ptany = 0;
@@ -2474,14 +2476,15 @@ void nvgArc(NVGcontext* ctx, float cx, float cy, float r, float a0, float a1, in
 
 	// Clamp angles
 	da = a1 - a0;
+	ads_da = nvg__absf(da);
 	if (dir == NVG_CW) {
-		if (nvg__absf(da) >= NVG_PI*2) {
+		if (ads_da > NVG_PI*2 || nvg__fequalf(ads_da, NVG_PI*2)) {
 			da = NVG_PI*2;
 		} else {
 			while (da < 0.0f) da += NVG_PI*2;
 		}
 	} else {
-		if (nvg__absf(da) >= NVG_PI*2) {
+		if (ads_da > NVG_PI*2 || nvg__fequalf(ads_da, NVG_PI*2)) {
 			da = -NVG_PI*2;
 		} else {
 			while (da > 0.0f) da -= NVG_PI*2;

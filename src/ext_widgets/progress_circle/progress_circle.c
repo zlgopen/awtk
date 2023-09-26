@@ -221,10 +221,16 @@ static ret_t progress_circle_on_paint_self(widget_t* widget, canvas_t* c) {
   if (vg != NULL && (has_image || color.rgba.a)) {
     xy_t cx = widget->w / 2;
     xy_t cy = widget->h / 2;
+    float_t end_angle = 0.0f;
     float_t r = progress_circle_get_radius(widget);
     bool_t ccw = progress_circle->counter_clock_wise;
     float_t start_angle = TK_D2R(progress_circle->start_angle);
-    float_t end_angle = progress_circle_value_to_angle(widget, progress_circle->value);
+    
+    if (tk_fequal(progress_circle->value, 0)) {
+      end_angle = start_angle;
+    } else {
+      end_angle = progress_circle_value_to_angle(widget, progress_circle->value);
+    }
 
     vgcanvas_save(vg);
     vgcanvas_translate(vg, c->ox, c->oy);
@@ -390,7 +396,8 @@ static ret_t progress_circle_get_prop(widget_t* widget, const char* name, value_
 }
 
 static ret_t progress_circle_set_prop(widget_t* widget, const char* name, const value_t* v) {
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
+  return_value_if_fail(progress_circle != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     return progress_circle_set_value(widget, value_float(v));
@@ -408,7 +415,11 @@ static ret_t progress_circle_set_prop(widget_t* widget, const char* name, const 
     return progress_circle_set_start_angle(widget, value_int(v));
   } else if (tk_str_eq(name, PROGRESS_CIRCLE_PROP_LINE_CAP)) {
     return progress_circle_set_line_cap(widget, value_str(v));
-  }
+  } else if (tk_str_eq(name, WIDGET_PROP_W)) {
+    progress_circle->dirty_rect = rect_init(0, 0, value_int(v), widget->h);
+  } else if (tk_str_eq(name, WIDGET_PROP_H)) {
+    progress_circle->dirty_rect = rect_init(0, 0, widget->w, value_int(v));
+  } 
 
   return RET_NOT_FOUND;
 }
@@ -442,6 +453,7 @@ widget_t* progress_circle_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
   progress_circle->start_angle = -90;
   progress_circle->show_text = TRUE;
   progress_circle->counter_clock_wise = FALSE;
+  progress_circle->dirty_rect = rect_init(0, 0, w, h);
   progress_circle_set_line_cap(widget, VGCANVAS_LINE_CAP_ROUND);
 
   return widget;
