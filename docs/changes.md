@@ -1,4 +1,7 @@
 # 最新动态
+2023/09/26
+  * 修复对旧linux-fb的debug模式为true的问题(感谢智明提供补丁)
+
 2023/09/25
   * 按标准c库修正iswspace 函数定义(感谢陈谭提供补丁)
   * 增加函数csv\_file\_object\_load/csv\_file\_object\_load\_from\_buff
