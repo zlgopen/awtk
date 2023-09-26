@@ -32,6 +32,57 @@ BEGIN_C_DECLS
  * @parent tk_object_t
  * @annotation["fake"]
  * 将cvs file包装成object对象。
+ * 
+ * 示例
+ * 
+ * ```c
+ *  char filename[MAX_PATH + 1] = {0};
+ *  path_prepend_temp_path(filename, "test.csv");
+ * 
+ *  const char *csv_data1 = "name,age,weight\n"
+ *                          "awplc,18,60.5\n"; 
+ *  ENSURE(file_write(filename, csv_data1, strlen(csv_data1)) == RET_OK);
+ * 
+ *  // 从文件加载
+ *  tk_object_t *csv = csv_file_object_load(filename, ',');
+ * 
+ *  // 获取数据: 通过属性名
+ *  ENSURE(tk_str_eq(tk_object_get_prop_str(csv, "[1].name"), "awplc"));
+ *  ENSURE(tk_object_get_prop_int(csv, "[1].age", 0) == 18);
+ *  ENSURE(tk_object_get_prop_double(csv, "[1].weight", 0) == 60.5);
+ * 
+ *  // 获取数据: 通过属性索引
+ *  ENSURE(tk_str_eq(tk_object_get_prop_str(csv, "[1].0"), "awplc"));
+ *  ENSURE(tk_object_get_prop_int(csv, "[1].1", 0) == 18);
+ *  ENSURE(tk_object_get_prop_double(csv, "[1].2", 0) == 60.5);
+ * 
+ *  // 销毁对象
+ *  TK_OBJECT_UNREF(csv);
+ * 
+ *  // 从内存加载
+ *  csv = csv_file_object_load_from_buff(csv_data1, strlen(csv_data1), ',');
+ * 
+ *  // 获取数据: 通过属性名
+ *  ENSURE(tk_str_eq(tk_object_get_prop_str(csv, "[1].name"), "awplc"));
+ *  ENSURE(tk_object_get_prop_int(csv, "[1].age", 0) == 18);
+ *  ENSURE(tk_object_get_prop_double(csv, "[1].weight", 0) == 60.5);
+ * 
+ *  // 获取数据: 通过属性索引
+ *  ENSURE(tk_str_eq(tk_object_get_prop_str(csv, "[1].0"), "awplc"));
+ *  ENSURE(tk_object_get_prop_int(csv, "[1].1", 0) == 18);
+ *  ENSURE(tk_object_get_prop_double(csv, "[1].2", 0) == 60.5);
+ * 
+ *  // 设置数据
+ *  ENSURE(tk_object_set_prop_int(csv, "[1].age", 20) == RET_OK);
+ *  ENSURE(tk_object_get_prop_int(csv, "[1].age", 0) == 20);
+ * 
+ *  // 保存到文件
+ *  ENSURE(csv_file_object_save_as(csv, filename) == RET_OK);
+ *  ENSURE(file_exist(filename) == TRUE);
+ * 
+ *  // 销毁对象
+ *  TK_OBJECT_UNREF(csv);
+ * ```
  */
 
 /**

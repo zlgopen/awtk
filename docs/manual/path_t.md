@@ -24,6 +24,8 @@
 | <a href="#path_t_path_is_abs">path\_is\_abs</a> | 判断路径是否为绝对路径。 |
 | <a href="#path_t_path_normalize">path\_normalize</a> | 规范路径字符形式。 |
 | <a href="#path_t_path_prepend_app_root">path\_prepend\_app\_root</a> | 将前面路径加上app root。 |
+| <a href="#path_t_path_prepend_temp_path">path\_prepend\_temp\_path</a> | 将前面路径加上临时文件目录。 |
+| <a href="#path_t_path_prepend_user_storage_path">path\_prepend\_user\_storage\_path</a> | 将前面路径加上用户目录。 |
 | <a href="#path_t_path_remove_last_slash">path\_remove\_last\_slash</a> | 去掉后面的/和\\字符。 |
 | <a href="#path_t_path_replace_basename">path\_replace\_basename</a> | 替换文件名。 |
 | <a href="#path_t_path_replace_extname">path\_replace\_extname</a> | 替换文件扩展名。 |
@@ -368,6 +370,46 @@ ret_t path_normalize (const char* path, char* result, int32_t size);
 
 ```
 const char* path_prepend_app_root (char* full_path, const char* path);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回完整路径。 |
+| full\_path | char* | 用于返回完整路径。 |
+| path | const char* | 路径。 |
+#### path\_prepend\_temp\_path 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="path_t_path_prepend_temp_path">将前面路径加上临时文件目录。
+
+* 函数原型：
+
+```
+const char* path_prepend_temp_path (char* full_path, const char* path);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回完整路径。 |
+| full\_path | char* | 用于返回完整路径。 |
+| path | const char* | 路径。 |
+#### path\_prepend\_user\_storage\_path 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="path_t_path_prepend_user_storage_path">将前面路径加上用户目录。
+
+* 函数原型：
+
+```
+const char* path_prepend_user_storage_path (char* full_path, const char* path);
 ```
 
 * 参数说明：

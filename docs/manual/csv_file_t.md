@@ -27,6 +27,7 @@
 | <a href="#csv_file_t_csv_file_remove_checked_rows">csv\_file\_remove\_checked\_rows</a> | 删除全部勾选的行。 |
 | <a href="#csv_file_t_csv_file_remove_row">csv\_file\_remove\_row</a> | 删除指定行。 |
 | <a href="#csv_file_t_csv_file_save">csv\_file\_save</a> | 保存。 |
+| <a href="#csv_file_t_csv_file_save_to_buff">csv\_file\_save\_to\_buff</a> | 保存。 |
 | <a href="#csv_file_t_csv_file_set">csv\_file\_set</a> | 修改指定行列的数据。 |
 | <a href="#csv_file_t_csv_file_set_filter">csv\_file\_set\_filter</a> | 设置过滤函数。 |
 | <a href="#csv_file_t_csv_file_set_row_checked">csv\_file\_set\_row\_checked</a> | 勾选指定行。 |
@@ -433,6 +434,26 @@ ret_t csv_file_save (csv_file_t* csv, const char* filename);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | csv | csv\_file\_t* | csv对象。 |
 | filename | const char* | 文件名。 |
+#### csv\_file\_save\_to\_buff 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="csv_file_t_csv_file_save_to_buff">保存。
+
+* 函数原型：
+
+```
+ret_t csv_file_save_to_buff (csv_file_t* csv, wbuffer_t* buff);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| csv | csv\_file\_t* | csv对象。 |
+| buff | wbuffer\_t* | 保存结果数据。 |
 #### csv\_file\_set 函数
 -----------------------
 
