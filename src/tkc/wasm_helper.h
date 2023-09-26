@@ -58,6 +58,7 @@ double ceil(double x);
 
 #ifndef __cplusplus
 typedef int wchar_t;
+typedef int wint_t;
 #endif /*_cplusplus*/
 
 int iswupper(wchar_t ch);
