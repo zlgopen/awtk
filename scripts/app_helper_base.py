@@ -266,7 +266,7 @@ class AppHelperBase:
         self.DEPENDS_LIBS = []
         self.GEN_IDL_DEF = True
         self.BUILD_SHARED = True
-        self.LINUX_FB = self.complie_helper.get_value('LINUX_FB')
+        self.LINUX_FB = self.complie_helper.get_value('LINUX_FB', False)
         self.AWTK_ROOT = self.getAwtkRoot()
         self.awtk = self.getAwtkConfig()
         self.AWTK_LIBS = self.awtk.LIBS
@@ -280,7 +280,7 @@ class AppHelperBase:
         self.APP_LIB_DIR = os.path.join(APP_ROOT, self.LIB_DIR)
         self.APP_SRC = os.path.join(APP_ROOT, 'src')
         self.APP_RES = os.path.join(APP_ROOT, 'res')
-        self.APP_LIBS = self.complie_helper.get_value('LIBS')
+        self.APP_LIBS = self.complie_helper.get_value('LIBS', [])
         self.APP_LINKFLAGS = ''
         self.PLATFORM_LIBS = []
         self.APP_TOOLS = None
@@ -294,8 +294,8 @@ class AppHelperBase:
             self.DEBUG = self.complie_helper.get_value('DEBUG')
 
         self.parseArgs(self.awtk, ARGUMENTS)
-        self.APP_CPPPATH = [self.APP_SRC, self.APP_RES] + self.complie_helper.get_value('CPPPATH')
-        self.APP_LIBPATH = [self.APP_LIB_DIR, self.APP_BIN_DIR] + self.complie_helper.get_value('LIBPATH')
+        self.APP_CPPPATH = [self.APP_SRC, self.APP_RES] + self.complie_helper.get_value('CPPPATH', [])
+        self.APP_LIBPATH = [self.APP_LIB_DIR, self.APP_BIN_DIR] + self.complie_helper.get_value('LIBPATH', [])
 
         mkdir_if_not_exist(self.APP_BIN_DIR)
         mkdir_if_not_exist(self.APP_LIB_DIR)
@@ -309,10 +309,10 @@ class AppHelperBase:
         if self.LINUX_FB:
             os.environ['LINUX_FB'] = 'true'
 
-        self.WITH_JERRYSCRIPT = self.complie_helper.get_value('WITH_JERRYSCRIPT')
-        self.WITH_IOTJS = self.complie_helper.get_value('WITH_IOTJS')
+        self.WITH_JERRYSCRIPT = self.complie_helper.get_value('WITH_JERRYSCRIPT', True)
+        self.WITH_IOTJS = self.complie_helper.get_value('WITH_IOTJS', False)
 
-        WITH_MVVM = self.complie_helper.get_value('WITH_MVVM')
+        WITH_MVVM = self.complie_helper.get_value('WITH_MVVM', False)
         MVVM_ROOT = self.complie_helper.get_value('MVVM_ROOT')
         if WITH_MVVM or os.path.exists(MVVM_ROOT):
             os.environ['WITH_MVVM'] = 'true'
@@ -321,7 +321,7 @@ class AppHelperBase:
             self.MVVM_ROOT = MVVM_ROOT
             print("MVVM_ROOT: " + self.MVVM_ROOT)
 
-        WITH_AWFLOW = self.complie_helper.get_value('WITH_AWFLOW')
+        WITH_AWFLOW = self.complie_helper.get_value('WITH_AWFLOW', False)
         AWFLOW_ROOT = self.complie_helper.get_value('AWFLOW_ROOT')
         print(WITH_AWFLOW)
         if WITH_AWFLOW or os.path.exists(AWFLOW_ROOT):
@@ -487,8 +487,8 @@ class AppHelperBase:
         APP_RES_ROOT = self.complie_helper.get_value('RES_ROOT', APP_RES_ROOT)
         self.APP_RES = os.path.abspath(os.path.join(self.APP_BIN_DIR, APP_RES_ROOT))
 
-        self.BUILD_SHARED = self.complie_helper.get_value('SHARED')
-        self.GEN_IDL_DEF = self.complie_helper.get_value('IDL_DEF')
+        self.BUILD_SHARED = self.complie_helper.get_value('SHARED', False)
+        self.GEN_IDL_DEF = self.complie_helper.get_value('IDL_DEF', True)
 
         if LCD_ORIENTATION == '90' or LCD_ORIENTATION == '270' :
             tmp = LCD_WIDTH;
