@@ -2164,7 +2164,7 @@ ret_t canvas_get_text_metrics(canvas_t* c, float_t* ascent, float_t* descent, fl
 
     *ascent = vmetrics.ascent;
     *descent = vmetrics.descent;
-    *line_hight = vmetrics.line_gap + vmetrics.ascent + vmetrics.descent;
+    *line_hight = vmetrics.ascent - vmetrics.descent + vmetrics.line_gap;
     return RET_OK;
   } else {
     *ascent = 0;
