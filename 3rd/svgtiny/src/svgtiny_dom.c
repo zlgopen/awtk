@@ -34,6 +34,7 @@ static inline tk_object_t* dom_xml_parser_create_obj(dom_obj_type type, tk_objec
       prev_child = NULL;
     } else {
       object_array_t* arr = OBJECT_ARRAY(children);
+      tk_object_ref(children);
       prev_child = value_object(arr->props + (arr->size - 1));
     }
     tk_object_set_prop_pointer(obj, DOM_PROP_PARENT, parent);
@@ -41,6 +42,7 @@ static inline tk_object_t* dom_xml_parser_create_obj(dom_obj_type type, tk_objec
     if (prev_child) {
       tk_object_set_prop_pointer(prev_child, DOM_PROP_NEXT_CHILD, obj);
     }
+    tk_object_unref(children);
   }
   return obj;
 }
