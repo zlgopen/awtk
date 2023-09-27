@@ -1,6 +1,7 @@
 ﻿import os
 import io
 import sys
+import json
 import shutil
 import importlib
 import collections
@@ -42,12 +43,40 @@ def get_curr_config_for_awtk() :
     return COMPILE_CONFIG
   else :
     COMPILE_CONFIG = complie_helper()
-    COMPILE_CONFIG.try_load_default_config()
+    if not COMPILE_CONFIG.load_last_complie_argv() :
+      print('========================= WARNING ================================')
+      print('not found last complie argv config file, so use default config file !!!!!')
+      ret = input('Do you want to continue compiling ? [y/n]').upper()
+      if ret != 'Y' :
+        sys.exit()
+      COMPILE_CONFIG.try_load_default_config()
     COMPILE_CONFIG.set_value('WIN32_RES', WIN32_RES)
     return COMPILE_CONFIG;
 
+def json_obj_load_file(file_path) :
+  obj = None;
+  if os.path.exists(file_path) :
+    try :
+      with io.open(file_path, 'r', encoding='utf-8') as file :
+        obj = json.load(file);
+    except Exception as e :
+        print(e)
+  return obj;
+
+def json_obj_save_file(obj, file_path) :
+  dir = os.path.dirname(file_path);
+  if os.path.exists(dir) :
+    try :
+      with io.open(file_path, 'w', encoding='utf-8') as file :
+        json.dump(obj, file, indent=4, ensure_ascii=False)
+    except Exception as e :
+        print(e)
+  else :
+    print(dir + ' is not exists')
+
 class complie_helper :
   DEFAULT_CONFIG_FILE = './awtk_config_define.py'
+  LAST_COMLIP_ARGV_FILE = './bin/last_complie_argv.json'
 
   COMPILE_CMD_INFO = collections.OrderedDict({
     'help' : { 'name': 'HELP', 'help_info' : 'show all usage'},
@@ -223,6 +252,15 @@ class complie_helper :
         self.config[name]['value'] = value
       else :
         self.config[name]['value'] = type(self.config[name]['value'])(value)
+
+  def save_last_complie_argv(self) :
+    json_obj_save_file(self.config, self.LAST_COMLIP_ARGV_FILE);
+  
+  def load_last_complie_argv(self) :
+    if os.path.exists(self.LAST_COMLIP_ARGV_FILE) :
+      self.config = collections.OrderedDict(json_obj_load_file(self.LAST_COMLIP_ARGV_FILE));
+      return True
+    return False
 
   def output_compile_data(self, awtk_root) :
     output_dir = self.config['OUTPUT_DIR']['value']

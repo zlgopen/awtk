@@ -95,6 +95,7 @@ SConscript(SConscriptFiles)
 
 
 def compile_end() :
+  complie_helper.save_last_complie_argv()
   complie_helper.output_compile_data(awtk.TK_ROOT)
 
 atexit.register(compile_end)
