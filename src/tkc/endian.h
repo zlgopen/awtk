@@ -75,6 +75,7 @@ static inline void swap_uint8(uint8_t* p1, uint8_t* p2) {
 /**
  * @method is_little_endian
  * @annotation ["static"]
+ * @export none
  * 检查当前系统是否是小端模式。
  *
  * @return {bool_t} 返回TRUE表示是，否则表示不是。
@@ -88,6 +89,7 @@ static inline bool_t is_little_endian(void) {
 /**
  * @method int16_endian_invert
  * @annotation ["static"]
+ * @export none
  * 16 整数大小端模式转换。
  * @param {int16_t} value 输入数据。
  *
@@ -105,6 +107,7 @@ static inline int16_t int16_endian_invert(int16_t value) {
 /**
  * @method int16_to_big_endian
  * @annotation ["static"]
+ * @export none
  * 16 整数转换为大端模式。
  * @param {int16_t} value 输入数据。
  *
@@ -117,6 +120,7 @@ static inline int16_t int16_to_big_endian(int16_t value) {
 /**
  * @method int16_from_big_endian
  * @annotation ["static"]
+ * @export none
  * 16 整数转换为小端模式。
  * @param {int16_t} value 输入数据。
  *
@@ -129,6 +133,7 @@ static inline int16_t int16_from_big_endian(int16_t value) {
 /**
  * @method int32_endian_invert
  * @annotation ["static"]
+ * @export none
  * 32 整数大小端模式转换。
  * @param {int32_t} value 输入数据。
  *
@@ -147,6 +152,7 @@ static inline int32_t int32_endian_invert(int32_t value) {
 /**
  * @method int32_to_big_endian
  * @annotation ["static"]
+ * @export none
  * 32 整数转换为大端模式。
  * @param {int32_t} value 输入数据。
  *
@@ -159,6 +165,7 @@ static inline int32_t int32_to_big_endian(int32_t value) {
 /**
  * @method int32_from_big_endian
  * @annotation ["static"]
+ * @export none
  * 32 整数转换为小端模式。
  * @param {int32_t} value 输入数据。
  *
@@ -171,6 +178,7 @@ static inline int32_t int32_from_big_endian(int32_t value) {
 /**
  * @method int64_endian_invert
  * @annotation ["static"]
+ * @export none
  * 64 整数大小端模式转换。
  * @param {int64_t} value 输入数据。
  *
@@ -191,6 +199,7 @@ static inline int64_t int64_endian_invert(int64_t value) {
 /**
  * @method int64_to_big_endian
  * @annotation ["static"]
+ * @export none
  * 64 整数转换为大端模式。
  * @param {int64_t} value 输入数据。
  *
@@ -203,6 +212,7 @@ static inline int64_t int64_to_big_endian(int64_t value) {
 /**
  * @method int64_from_big_endian
  * @annotation ["static"]
+ * @export none
  * 64 整数转换为小端模式。
  * @param {int64_t} value 输入数据。
  *
@@ -215,6 +225,7 @@ static inline int64_t int64_from_big_endian(int64_t value) {
 /**
  * @method float_endian_invert
  * @annotation ["static"]
+ * @export none
  * float浮点数大小端模式转换。
  * @param {float} value 输入数据。
  *
@@ -233,6 +244,7 @@ static inline float float_endian_invert(float value) {
 /**
  * @method float_to_big_endian
  * @annotation ["static"]
+ * @export none
  * float浮点数转换为大端模式。
  * @param {float} value 输入数据。
  *
@@ -245,6 +257,7 @@ static inline float float_to_big_endian(float value) {
 /**
  * @method float_from_big_endian
  * @annotation ["static"]
+ * @export none
  * float浮点数转换为小端模式。
  * @param {float} value 输入数据。
  *
@@ -257,6 +270,7 @@ static inline float float_from_big_endian(float value) {
 /**
  * @method double_endian_invert
  * @annotation ["static"]
+ * @export none
  * double浮点数大小端模式转换。
  * @param {double} value 输入数据。
  *
@@ -278,6 +292,7 @@ static inline double double_endian_invert(double value) {
 /**
  * @method double_to_big_endian
  * @annotation ["static"]
+ * @export none
  * double浮点数转换为大端模式。
  * @param {double} value 输入数据。
  *
@@ -290,6 +305,7 @@ static inline double double_to_big_endian(double value) {
 /**
  * @method double_from_big_endian
  * @annotation ["static"]
+ * @export none
  * double浮点数转换为小端模式。
  * @param {double} value 输入数据。
  *
