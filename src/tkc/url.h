@@ -184,6 +184,30 @@ ret_t url_set_param(url_t* url, const char* name, const char* value);
 const char* url_get_param(url_t* url, const char* name);
 
 /**
+ * @method url_get_param_int32
+ * 获取参数。
+ *
+ * @param {url_t*} url url对象。
+ * @param {const char*} name 参数名。
+ * @param {int32_t} defvalue 默认值。
+ *
+ * @return {int} 返回指定参数名的参数值。
+ */
+int32_t url_get_param_int32(url_t* url, const char* name, int32_t defval);
+
+/**
+ * @method url_get_param_bool
+ * 获取参数。
+ *
+ * @param {url_t*} url url对象。
+ * @param {const char*} name 参数名。
+ * @param {bool_t} defvalue 默认值。
+ *
+ * @return {int} 返回指定参数名的参数值。
+ */
+bool_t url_get_param_bool(url_t* url, const char* name, bool_t defval);
+
+/**
  * @method url_to_string
  * 格式化成字符串。
  *

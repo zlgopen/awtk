@@ -30,6 +30,8 @@ TEST(URL, noschema1) {
   ASSERT_STREQ(url->schema, "http");
   ASSERT_STREQ(url->host, "element");
   ASSERT_STREQ(url_get_param(url, "id"), "1");
+  ASSERT_EQ(url_get_param_int32(url, "id", 0), 1);
+  ASSERT_EQ(url_get_param_bool(url, "id", FALSE), TRUE);
   url_destroy(url);
 }
 
@@ -168,6 +170,7 @@ TEST(URL, http7) {
   ASSERT_EQ(url->port, 80);
   ASSERT_STREQ(url_get_param(url, "name"), "jim");
   ASSERT_STREQ(url_get_param(url, "age"), "100");
+  ASSERT_EQ(url_get_param_int32(url, "age", 0), 100);
   url_destroy(url);
 }
 
