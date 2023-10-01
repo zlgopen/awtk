@@ -91,7 +91,6 @@ uint16_t tk_crc16_byte(uint16_t crc, uint8_t data);
  * @method tk_crc16_modbus
  * 计算crc16(MODBUS)。
  * @annotation ["static"]
- * @param {uint16_t} crc 初始值(一般用PPPINITFCS16)
  * @param {const uint8_t*} data 数据。 
  * @param {int} size 数据长度。
  *

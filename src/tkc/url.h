@@ -191,9 +191,9 @@ const char* url_get_param(url_t* url, const char* name);
  * @param {const char*} name 参数名。
  * @param {int32_t} defvalue 默认值。
  *
- * @return {int} 返回指定参数名的参数值。
+ * @return {int32_t} 返回指定参数名的参数值。
  */
-int32_t url_get_param_int32(url_t* url, const char* name, int32_t defval);
+int32_t url_get_param_int32(url_t* url, const char* name, int32_t defvalue);
 
 /**
  * @method url_get_param_bool
@@ -203,9 +203,9 @@ int32_t url_get_param_int32(url_t* url, const char* name, int32_t defval);
  * @param {const char*} name 参数名。
  * @param {bool_t} defvalue 默认值。
  *
- * @return {int} 返回指定参数名的参数值。
+ * @return {bool_t} 返回指定参数名的参数值。
  */
-bool_t url_get_param_bool(url_t* url, const char* name, bool_t defval);
+bool_t url_get_param_bool(url_t* url, const char* name, bool_t defvalue);
 
 /**
  * @method url_to_string

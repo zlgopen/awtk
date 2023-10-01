@@ -65,6 +65,16 @@ BEGIN_C_DECLS
  */
 
 
+/**
+ * @method swap_uint8
+ * @annotation ["static", "private"]
+ * @export none
+ * 交换两个uint8_t的值。
+ * @param {uint8_t*} p1 数1.
+ * @param {uint8_t*} p2 数2.
+ *
+ * @return {void} 无。
+ */
 static inline void swap_uint8(uint8_t* p1, uint8_t* p2) {
   uint8_t c = *p1;
 
