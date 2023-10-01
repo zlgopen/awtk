@@ -86,6 +86,19 @@ uint16_t tk_crc16(uint16_t crc, const uint8_t* data, int size);
  * @return {uint16_t} 返回计算结果。
  */
 uint16_t tk_crc16_byte(uint16_t crc, uint8_t data);
+
+/**
+ * @method tk_crc16_modbus
+ * 计算crc16(MODBUS)。
+ * @annotation ["static"]
+ * @param {uint16_t} crc 初始值(一般用PPPINITFCS16)
+ * @param {const uint8_t*} data 数据。 
+ * @param {int} size 数据长度。
+ *
+ * @return {uint16_t} 返回计算结果。
+ */
+uint16_t tkc_crc16_modbus(const uint8_t* data, uint32_t len);
+
 #endif
 
 #ifdef CONFIG_ENABLE_FCS32

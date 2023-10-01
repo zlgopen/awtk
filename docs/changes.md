@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/10/02
+  * 增加函数tkc\_crc16\_modbus。
+
 2023/10/01
   * 增加函数url\_get\_param\_int32/url\_get\_param\_bool
 
