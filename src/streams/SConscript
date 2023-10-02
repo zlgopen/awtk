@@ -5,7 +5,7 @@ import awtk_config as awtk
 BIN_DIR=os.environ['BIN_DIR'];
 LIB_DIR=os.environ['LIB_DIR'];
 
-sources = Glob('buffered/*.c') + Glob('file/*.c') \
+sources = Glob('*.c') + Glob('buffered/*.c') + Glob('file/*.c') \
   +  Glob('inet/*.c') +  Glob('mem/*.c') +  Glob('serial/*.c') \
   +  Glob('shdlc/*.c') + Glob('noisy/*.c') + Glob('misc/*.c') + Glob('statistics/*.c'); 
 

@@ -2,6 +2,7 @@
 #include "gtest/gtest.h"
 
 TEST(SerialHelper, stopbits) {
+  ASSERT_EQ(serial_stopbits_from_str(NULL), stopbits_one);
   ASSERT_EQ(serial_stopbits_from_str("1"), stopbits_one);
   ASSERT_EQ(serial_stopbits_from_str("2"), stopbits_two);
   ASSERT_EQ(serial_stopbits_from_str("1.5"), stopbits_one_point_five);
