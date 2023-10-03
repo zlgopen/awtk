@@ -275,7 +275,11 @@ typedef enum _ret_t {
    * 没有权限。
    */
   RET_NO_PERMISSION,
-
+  /**
+   * @const RET_INVALID_ADDR
+   * 无效地址。
+   */
+  RET_INVALID_ADDR,
   /**
    * @const RET_MAX_NR
    * 最大值。
