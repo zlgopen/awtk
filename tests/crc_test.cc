@@ -7,5 +7,5 @@ TEST(crc, crc32_file) {
 
 TEST(crc, crc32_modbus) {
   uint8_t data[] = {0x11, 0x05, 0x01, 0x30, 0xff, 0x00};
-  ASSERT_EQ(tkc_crc16_modbus(data, sizeof(data)), 0x598f);
+  ASSERT_EQ(tk_crc16_modbus(data, sizeof(data)), 0x598f);
 }

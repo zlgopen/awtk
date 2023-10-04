@@ -96,7 +96,7 @@ uint16_t tk_crc16_byte(uint16_t crc, uint8_t data);
  *
  * @return {uint16_t} 返回计算结果。
  */
-uint16_t tkc_crc16_modbus(const uint8_t* data, uint32_t len);
+uint16_t tk_crc16_modbus(const uint8_t* data, uint32_t len);
 
 #endif
 
