@@ -281,6 +281,11 @@ typedef enum _ret_t {
    */
   RET_INVALID_ADDR,
   /**
+   * @const RET_EXCEED_RANGE
+   * 超出范围。
+   */
+  RET_EXCEED_RANGE,
+  /**
    * @const RET_MAX_NR
    * 最大值。
    */
