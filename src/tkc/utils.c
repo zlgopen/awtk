@@ -1621,7 +1621,7 @@ static const char* s_ret_names[RET_MAX_NR] = {[RET_OK] = "RET_OK",
                                     [RET_EOS] = "RET_EOS",
                                     [RET_NOT_MODIFIED] = "RET_NOT_MODIFIED",
                                     [RET_NO_PERMISSION] = "RET_NO_PERMISSION",
-                                    [RET_INVALID_ADDR] = "RET_INVALID_ADDR"
+                                    [RET_INVALID_ADDR] = "RET_INVALID_ADDR",
                                     [RET_EXCEED_RANGE] = "RET_EXCEED_RANGE"
                                     };
 
