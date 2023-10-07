@@ -6,7 +6,7 @@ BIN_DIR=os.environ['BIN_DIR'];
 LIB_DIR=os.environ['LIB_DIR'];
 
 sources = Glob('*.c') + Glob('buffered/*.c') + Glob('file/*.c') \
-  +  Glob('inet/*.c') +  Glob('mem/*.c') +  Glob('serial/*.c') \
+  +  Glob('inet/*.c') +  Glob('mem/*.c') +  Glob('serial/*.c') + Glob('process/*.c') \
   +  Glob('shdlc/*.c') + Glob('noisy/*.c') + Glob('misc/*.c') + Glob('statistics/*.c'); 
 
 env=DefaultEnvironment().Clone()

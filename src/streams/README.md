@@ -8,4 +8,5 @@
 * inet tcp/udp 流
 * serial 串口流
 * misc 其它流
+* process 子进程流
 

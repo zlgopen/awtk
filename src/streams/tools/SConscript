@@ -22,3 +22,6 @@ env.Program(os.path.join(BIN_DIR, 'https_client'), ['https_client.c'], LIBS=LIBS
 env.Program(os.path.join(BIN_DIR, 'https_server'), ['https_server.c'], LIBS=LIBS);
 env.Program(os.path.join(BIN_DIR, 'tcp_send'), ['tcp_send.c'], LIBS=LIBS);
 env.Program(os.path.join(BIN_DIR, 'tcp_recv'), ['tcp_recv.c'], LIBS=LIBS);
+
+env.Program(os.path.join(BIN_DIR, 'process_child'), ['process_child.c'], LIBS=LIBS);
+env.Program(os.path.join(BIN_DIR, 'process_parent'), ['process_parent.c'], LIBS=LIBS);
