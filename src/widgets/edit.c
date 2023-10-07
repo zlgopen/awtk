@@ -1617,6 +1617,49 @@ static ret_t edit_add_int(edit_t* edit, int delta) {
   return RET_OK;
 }
 
+static ret_t edit_add_hex(edit_t* edit, int delta) {
+  int32_t v = 0;
+  uint32_t size = 0;
+  wstr_t* text = NULL;
+  widget_t* widget = WIDGET(edit);
+  char buff[TK_NUM_MAX_LEN + 1] = {0};
+  wchar_t wbuff[TK_NUM_MAX_LEN] = {0};
+  char hex_buff[TK_NUM_MAX_LEN + 1] = {0};
+  return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
+
+  text = &(widget->text);
+  return_value_if_fail(text != NULL, RET_BAD_PARAMS);
+
+  if (text->size > 0) {
+    size = tk_min(text->size, TK_NUM_MAX_LEN) * sizeof(wchar_t);
+    tk_memcpy(wbuff, text->str, size);
+    tk_utf8_from_utf16_ex(wbuff, ARRAY_SIZE(wbuff), buff, ARRAY_SIZE(buff));
+    
+    tk_sscanf(buff, "%x", &v);
+
+  } else {
+    v = 0;
+  }
+  
+  v += delta;
+  if (edit->auto_fix && (edit->min < edit->max)) {
+    if (v < edit->min) {
+      v = (int32_t)(edit->min);
+    }
+
+    if (v > edit->max) {
+      v = (int32_t)(edit->max);
+    }
+  }
+
+  tk_snprintf(hex_buff, ARRAY_SIZE(hex_buff), "%x", v);
+  tk_str_toupper(hex_buff);
+
+  wstr_set_utf8(text, hex_buff);
+
+  return RET_OK;
+}
+
 int32_t edit_get_int(widget_t* widget) {
   int32_t v = 0;
   return_value_if_fail(widget != NULL, 0);
@@ -1699,6 +1742,18 @@ static ret_t edit_inc_default(edit_t* edit) {
       edit_add_int(edit, step);
       break;
     }
+    case INPUT_HEX: {
+      int32_t step = edit->step != 0.0 ? edit->step : 1;
+      if (text->size == 0) {
+        if (edit->min < 0) {
+          wstr_from_int(text, 0);
+        } else {
+          wstr_from_int(text, edit->min);
+        }
+      }
+      edit_add_hex(edit, step);
+      break;
+    }
     default:
       break;
   }
@@ -1740,6 +1795,18 @@ static ret_t edit_dec_default(edit_t* edit) {
         wstr_from_int(text, edit->max);
       }
       edit_add_int(edit, -step);
+      break;
+    }
+    case INPUT_HEX: {
+      int32_t step = edit->step != 0.0 ? edit->step : 1;
+      if (text->size == 0) {
+        if (edit->max < 0) {
+          wstr_from_int(text, 0);
+        } else {
+          wstr_from_int(text, edit->max);
+        }
+      }
+      edit_add_hex(edit, -step);
       break;
     }
     default:
