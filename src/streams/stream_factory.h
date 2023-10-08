@@ -41,7 +41,13 @@ BEGIN_C_DECLS
  * * udp client: udp://host:port
  * * serial    : serial://device?baudrate=115200&stopbits=1
  * * serial    : serial://device?baudrate=115200&stopbits=1&parity=odd&flowcontrol=soft&bytesize=8
- *
+ * 
+ * 串口URL参数说明：
+ * * baudrate {int} 波特率。常用值： 9600, 38400, 57600, 115200。(默认值：115200)
+ * * stopbits {string} 停止位。可选值：1, 1.5, 2。(默认值：1)
+ * * parity {string} 校验位。可选值：none, odd, even, mark, space。(默认值：none)
+ * * flowcontrol {string} 流控。可选值：none, hardware, software。(默认值：none)
+ * * bytesize {string} 数据位。可选值：5, 6, 7, 8 。(默认值：8) 
  * @param {const char*} url URL。
  *
  * @return {tk_iostream_t*} 返回iostream对象。
