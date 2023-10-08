@@ -494,7 +494,7 @@ static ret_t edit_auto_fix_default(widget_t* widget) {
       uint32_t min = (uint32_t)(edit->min);
       uint32_t max = (uint32_t)(edit->max);
 
-      wstr_to_int64(text, &v);
+      wstr_to_int64(text, (int64_t*)&v);
       if (v < min) {
         v = min;
       }
@@ -608,6 +608,7 @@ static ret_t edit_on_blur(widget_t* widget) {
     edit->is_key_inputing = FALSE;
     input_method_request(input_method(), NULL);
   }
+  edit->is_text_error = FALSE;
   edit_update_status(widget);
   edit_check_valid_value(widget);
   text_edit_preedit_confirm(edit->model);
@@ -1419,6 +1420,7 @@ static ret_t edit_set_text(widget_t* widget, const value_t* v) {
 
     text_edit_set_cursor(edit->model, widget->text.size);
     edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGED);
+    edit->is_text_error = FALSE;
     edit_update_status(widget);
     edit_check_valid_value(widget);
   }
