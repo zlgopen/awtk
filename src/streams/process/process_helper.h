@@ -72,10 +72,10 @@ struct _process_info_t {
  * 创建子进程。
  * @annotation ["static"]
  * @param {const char*} file_path 子进程程序路径。
- * @param {const char*} args 子进程参数。
+ * @param {const char**} args 子进程参数。
  * @param {uint32_t} argc 子进程参数长度。
  *
- * @return {process_handle_t*} 返回子进程句柄。
+ * @return {process_handle_t} 返回子进程句柄。
  */
 process_handle_t process_create(const char* file_path, const char* args[], uint32_t argc);
 
