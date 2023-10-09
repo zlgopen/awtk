@@ -13,6 +13,7 @@ wchar_t** argvw_create(int argc, char* argv[]) {
   }
   argvw[i] = NULL;
 
+  wstr_reset(&str);
   return argvw;
 }
 

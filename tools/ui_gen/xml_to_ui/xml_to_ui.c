@@ -119,7 +119,7 @@ static ret_t gen_folder(const char* in_foldername, const char* out_foldername, b
 
       str_t sub_res_name;
       str_init(&sub_res_name, 0);
-      str_set(&sub_res_name, res_name);
+      if (res_name != NULL) str_set(&sub_res_name, res_name);
       str_append(&sub_res_name, item.name);
       str_append(&sub_res_name, "/");
 
@@ -172,10 +172,9 @@ int wmain(int argc, wchar_t* argv[]) {
   fs_stat(os_fs(), in_filename, &in_stat_info);
   fs_stat(os_fs(), out_filename, &out_stat_info);
 
-  wchar_t* arg4 = argv[4];
   str_init(&_res_name, 0);
   if (argc > 4) {  //custom output res name
-    str_from_wstr(&_res_name, arg4);
+    str_from_wstr(&_res_name, argv[4]);
     str_trim(&_res_name, " ");
     res_name = _res_name.str;
   }

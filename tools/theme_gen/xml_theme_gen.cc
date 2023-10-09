@@ -20,6 +20,7 @@
  */
 
 #include "tkc/fs.h"
+#include "tkc/mem.h"
 #include "base/theme_xml.h"
 #include "tkc/asset_info.h"
 #include "common/utils.h"
@@ -39,5 +40,7 @@ bool xml_gen(const char* input_file, const char* output_file, const char* theme,
     output_res_c_source(output_file, theme, ASSET_TYPE_STYLE, 0, data, size);
   }
 
+  TKMEM_FREE(xml);
+  TKMEM_FREE(data);
   return true;
 }

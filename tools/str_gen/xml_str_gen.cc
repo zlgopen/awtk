@@ -22,6 +22,7 @@
 #include "str_gen.h"
 #include "tkc/fs.h"
 #include "tkc/str.h"
+#include "tkc/mem.h"
 #include "tkc/buffer.h"
 #include "base/enums.h"
 #include "base/theme.h"
@@ -109,7 +110,11 @@ static XmlBuilder* builder_init(xml_str_builder_t& b, StrGen* sg) {
 }
 
 bool xml_to_str_gen(const char* input_file, StrGen* sg) {
-  return xml_buff_to_str_gen((char*)file_read(input_file, NULL), sg);
+  bool ret = false;
+  char* buff = (char*)file_read(input_file, NULL);
+  ret = xml_buff_to_str_gen(buff, sg);
+  TKMEM_FREE(buff);
+  return ret;
 }
 
 bool xml_buff_to_str_gen(const char* buff, StrGen* sg) {
