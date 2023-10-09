@@ -950,6 +950,7 @@ static bool_t is_valid_anno(const char* anno) {
     0 == strcmp(anno, "\"persitent\"")      ||
     0 == strcmp(anno, "\"private\"")        ||
     0 == strcmp(anno, "\"string\"")         ||
+    0 == strcmp(anno, "\"persistent\"")     ||
     0 == strcmp(anno, "\"global\"");
 }
 

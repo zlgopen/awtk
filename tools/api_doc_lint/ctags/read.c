@@ -44,7 +44,8 @@ extern void freeSourceFileResources (void)
 	vStringDelete (File.source.name);
 	vStringDelete (File.line);
 	//free tagPath of the last parser file
-	eFree(File.source.tagPath);
+  if (File.source.tagPath)
+		eFree(File.source.tagPath);
 }
 
 /*
