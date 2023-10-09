@@ -46,7 +46,10 @@ def get_curr_config_for_awtk() :
     if not COMPILE_CONFIG.load_last_complie_argv() :
       print('========================= WARNING ================================')
       print('not found last complie argv config file, so use default config file !!!!!')
-      ret = input('Do you want to continue compiling ? [y/n]').upper()
+      if sys.version_info >= (3, 0):
+        ret = input('Do you want to continue compiling ? [y/n]').upper()
+      else :
+        ret = raw_input('Do you want to continue compiling ? [y/n]').upper()
       if ret != 'Y' :
         sys.exit()
       COMPILE_CONFIG.try_load_default_config()
