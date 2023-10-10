@@ -66,7 +66,10 @@ def json_obj_save_file(obj, file_path) :
   if os.path.exists(dir) :
     try :
       with io.open(file_path, 'w', encoding='utf-8') as file :
-        json.dump(obj, file, indent=4, ensure_ascii=False)
+        if sys.version_info >= (3, 0):
+          json.dump(obj, file, indent=4, ensure_ascii=False)
+        else :
+          file.write(json.dumps(obj, indent=4, ensure_ascii=False).decode('utf-8'))
     except Exception as e :
         print(e)
   else :
