@@ -1532,21 +1532,15 @@ const char* widget_get_bidi(widget_t* widget) {
 
 ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wstr_t* text) {
   rect_t ir;
-  wh_t w = 0;
   wh_t h = 0;
   bitmap_t img;
   rect_t r_icon;
   rect_t r_text;
   bool_t ellipses;
-  int32_t margin = 0;
   int32_t spacer = 0;
   int32_t icon_at = 0;
   uint16_t font_size = 0;
   float_t text_size = 0.0f;
-  int32_t margin_left = 0;
-  int32_t margin_right = 0;
-  int32_t margin_top = 0;
-  int32_t margin_bottom = 0;
   style_t* style = widget->astyle;
   int32_t align_h = ALIGN_H_LEFT;
   int32_t align_v = ALIGN_V_MIDDLE;
