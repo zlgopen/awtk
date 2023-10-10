@@ -224,3 +224,53 @@ TEST(Window, model_change) {
   widget_destroy(w1);
   widget_destroy(w2);
 }
+
+TEST(Window, applet_name) {
+  str_t str;
+  assets_manager_t* am = NULL;
+  locale_info_t* li = NULL;
+  widget_t* w1 = window_create(NULL, 10, 20, 30, 40);
+  widget_t* w2 = window_create(NULL, 10, 20, 30, 40);
+
+  widget_set_prop_str(w1, WIDGET_PROP_APPLET_NAME, "demo1");
+  widget_set_prop_str(w2, WIDGET_PROP_APPLET_NAME, "demo2");
+
+  am = widget_get_assets_manager(w1);
+  ASSERT_NE(am, assets_manager());
+  am = widget_get_assets_manager(w2);
+  ASSERT_NE(am, assets_manager());
+  
+  li = widget_get_locale_info(w1);
+  ASSERT_NE(li, locale_info());
+  li = widget_get_locale_info(w2);
+  ASSERT_NE(li, locale_info());
+
+  widget_set_prop_str(w1, WIDGET_PROP_APPLET_NAME, NULL);
+  widget_set_prop_str(w2, WIDGET_PROP_APPLET_NAME, NULL);
+
+  am = widget_get_assets_manager(w1);
+  ASSERT_EQ(am, assets_manager());
+  am = widget_get_assets_manager(w2);
+  ASSERT_EQ(am, assets_manager());
+  
+  li = widget_get_locale_info(w1);
+  ASSERT_EQ(li, locale_info());
+  li = widget_get_locale_info(w2);
+  ASSERT_EQ(li, locale_info());
+  
+  widget_set_prop_str(w1, WIDGET_PROP_APPLET_NAME, "");
+  widget_set_prop_str(w2, WIDGET_PROP_APPLET_NAME, "");
+
+  am = widget_get_assets_manager(w1);
+  ASSERT_EQ(am, assets_manager());
+  am = widget_get_assets_manager(w2);
+  ASSERT_EQ(am, assets_manager());
+  
+  li = widget_get_locale_info(w1);
+  ASSERT_EQ(li, locale_info());
+  li = widget_get_locale_info(w2);
+  ASSERT_EQ(li, locale_info());
+  
+  widget_destroy(w1);
+  widget_destroy(w2);
+}

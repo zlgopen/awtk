@@ -313,9 +313,13 @@ static ret_t window_base_set_applet_name(widget_t* widget, const char* applet_na
   widget->assets_manager = NULL;
   if (window_base->applet_name != NULL) {
     assets_managers_unref(window_base->assets_manager);
+    window_base->assets_manager = NULL;
     image_managers_unref(window_base->image_manager);
+    window_base->image_manager = NULL;
     font_managers_unref(window_base->font_manager);
+    window_base->font_manager = NULL;
     locale_infos_unref(window_base->locale_info);
+    window_base->locale_info = NULL;
   }
 
   if (TK_STR_IS_EMPTY(applet_name)) {
