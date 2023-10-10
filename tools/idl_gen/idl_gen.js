@@ -163,6 +163,9 @@ class IDLGen {
       let cls = this.getClass(method.className);
       cls.methods.push(method);
     } else if (this.cls) {
+      if(!this.cls.methods) {
+        this.cls.methods = [];
+      }
       this.cls.methods.push(method);
     }
 
