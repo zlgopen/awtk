@@ -295,7 +295,7 @@ ret_t locale_infos_unref(locale_info_t* locale_info) {
 
     assets_manager_set_locale_info(am, NULL);
     assets_managers_unref(am);
-    darray_remove(&(locale_infos->infos), locale_info);
+    darray_remove(&(locale_infos->infos), locale_info->name);
     if (locale_infos->infos.size == 0) {
       locale_infos_deinit();
     }
