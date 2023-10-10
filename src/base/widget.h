@@ -541,8 +541,6 @@ struct _widget_t {
    * 虚函数表。
    */
   const widget_vtable_t* vt;
-  /*private*/
-  assets_manager_t* assets_manager;
 };
 
 /**

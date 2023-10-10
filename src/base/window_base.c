@@ -179,6 +179,51 @@ static ret_t window_base_reload_theme_obj(widget_t* widget) {
   return RET_OK;
 }
 
+assets_manager_t* window_base_get_assets_manager(widget_t* widget) {
+  window_base_t* window_base = WINDOW_BASE(widget);
+  return_value_if_fail(window_base != NULL, NULL);
+
+  if (window_base->assets_manager != NULL) {
+    return window_base->assets_manager;
+  } else {
+    return assets_manager();
+  }
+}
+
+font_manager_t* window_base_get_font_manager(widget_t* widget) {
+  window_base_t* window_base = WINDOW_BASE(widget);
+  return_value_if_fail(window_base != NULL, NULL);
+
+  if (window_base->font_manager != NULL) {
+    return window_base->font_manager;
+  } else {
+    return font_manager();
+  }
+}
+
+locale_info_t* window_base_get_locale_info(widget_t* widget) {
+  window_base_t* window_base = WINDOW_BASE(widget);
+  return_value_if_fail(window_base != NULL, NULL);
+
+  if (window_base->locale_info != NULL) {
+    return window_base->locale_info;
+  } else {
+    return locale_info();
+  }
+}
+
+image_manager_t* window_base_get_image_manager(widget_t* widget) {
+  window_base_t* window_base = WINDOW_BASE(widget);
+  return_value_if_fail(window_base != NULL, NULL);
+
+  if (window_base->image_manager != NULL) {
+    return window_base->image_manager;
+  } else {
+    return image_manager();
+  }
+}
+
+
 ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
   window_base_t* window_base = WINDOW_BASE(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -220,32 +265,16 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_pointer(v, (void*)(window_base->default_theme_obj));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_IMAGE_MANAGER)) {
-    if (window_base->image_manager != NULL) {
-      value_set_pointer(v, (void*)(window_base->image_manager));
-    } else {
-      value_set_pointer(v, (void*)(image_manager()));
-    }
+    value_set_pointer(v, window_base_get_image_manager(widget));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LOCALE_INFO)) {
-    if (window_base->locale_info != NULL) {
-      value_set_pointer(v, (void*)(window_base->locale_info));
-    } else {
-      value_set_pointer(v, (void*)(locale_info()));
-    }
+    value_set_pointer(v, window_base_get_locale_info(widget));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_FONT_MANAGER)) {
-    if (window_base->font_manager != NULL) {
-      value_set_pointer(v, (void*)(window_base->font_manager));
-    } else {
-      value_set_pointer(v, (void*)(font_manager()));
-    }
+    value_set_pointer(v, window_base_get_font_manager(widget));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_ASSETS_MANAGER)) {
-    if (window_base->assets_manager != NULL) {
-      value_set_pointer(v, (void*)(window_base->assets_manager));
-    } else {
-      value_set_pointer(v, (void*)(assets_manager()));
-    }
+    value_set_pointer(v, window_base_get_assets_manager(widget));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_STAGE)) {
     value_set_int(v, window_base->stage);
@@ -310,7 +339,6 @@ static ret_t window_base_set_applet_name(widget_t* widget, const char* applet_na
     return RET_OK;
   }
 
-  widget->assets_manager = NULL;
   if (window_base->applet_name != NULL) {
     assets_managers_unref(window_base->assets_manager);
     window_base->assets_manager = NULL;

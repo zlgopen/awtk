@@ -464,6 +464,12 @@ TK_EXTERN_VTABLE(window_base);
  */
 ret_t window_base_auto_scale_children(widget_t* widget);
 
+/*public for internal use*/
+assets_manager_t* window_base_get_assets_manager(widget_t* widget);
+font_manager_t* window_base_get_font_manager(widget_t* widget);
+locale_info_t* window_base_get_locale_info(widget_t* widget);
+image_manager_t* window_base_get_image_manager(widget_t* widget);
+
 END_C_DECLS
 
 #endif /*TK_WINDOW_BASE_H*/

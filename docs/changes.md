@@ -2,6 +2,7 @@
 
 2023/10/10
   * 修复window\_base\_set\_applet\_name可能导致野指针的问题(感谢培煌发现问题)
+  * 重构widget\_get\_assets\_manager/widget\_get\_font\_manager等函数。
 
 2023/10/09
   * 修复编译脚本python2不兼容的问题(感谢智明提供补丁)

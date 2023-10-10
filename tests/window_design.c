@@ -15,16 +15,15 @@ ret_t window_design_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_pointer(v, theme());
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_IMAGE_MANAGER)) {
-    value_set_pointer(v, (void*)(t_image_manager));
+    value_set_pointer(v, t_image_manager);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LOCALE_INFO)) {
-    value_set_pointer(v, (void*)(t_locale_info));
+    value_set_pointer(v, t_locale_info);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_FONT_MANAGER)) {
-    value_set_pointer(v, (void*)(t_font_manager));
-    return RET_OK;
+    value_set_pointer(v, t_font_manager);
   } else if (tk_str_eq(name, WIDGET_PROP_ASSETS_MANAGER)) {
-    value_set_pointer(v, (void*)(t_assets_manager));
+    value_set_pointer(v, t_assets_manager);
     return RET_OK;
   }
 
@@ -44,5 +43,14 @@ TK_DECL_VTABLE(window_design) = {.type = WIDGET_TYPE_NORMAL_WINDOW,
                                  .on_destroy = window_base_on_destroy};
 
 widget_t* window_design_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return window_base_create(parent, TK_REF_VTABLE(window_design), x, y, w, h);
+  widget_t* widget = window_base_create(parent, TK_REF_VTABLE(window_design), x, y, w, h);
+  window_base_t* base = WINDOW_BASE(widget);
+  return_value_if_fail(base != NULL, NULL);
+
+  base->image_manager = t_image_manager;
+  base->locale_info = t_locale_info;
+  base->font_manager = t_font_manager;
+  base->assets_manager = t_assets_manager;
+
+  return widget;
 }

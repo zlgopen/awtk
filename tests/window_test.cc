@@ -231,6 +231,8 @@ TEST(Window, applet_name) {
   locale_info_t* li = NULL;
   widget_t* w1 = window_create(NULL, 10, 20, 30, 40);
   widget_t* w2 = window_create(NULL, 10, 20, 30, 40);
+  widget_t* b1 = button_create(w1, 0, 0, 20, 20);
+  widget_t* b2 = button_create(w1, 0, 0, 20, 20);
 
   widget_set_prop_str(w1, WIDGET_PROP_APPLET_NAME, "demo1");
   widget_set_prop_str(w2, WIDGET_PROP_APPLET_NAME, "demo2");
@@ -238,6 +240,11 @@ TEST(Window, applet_name) {
   am = widget_get_assets_manager(w1);
   ASSERT_NE(am, assets_manager());
   am = widget_get_assets_manager(w2);
+  ASSERT_NE(am, assets_manager());
+  
+  am = widget_get_assets_manager(b1);
+  ASSERT_NE(am, assets_manager());
+  am = widget_get_assets_manager(b2);
   ASSERT_NE(am, assets_manager());
   
   li = widget_get_locale_info(w1);
@@ -251,6 +258,11 @@ TEST(Window, applet_name) {
   am = widget_get_assets_manager(w1);
   ASSERT_EQ(am, assets_manager());
   am = widget_get_assets_manager(w2);
+  ASSERT_EQ(am, assets_manager());
+  
+  am = widget_get_assets_manager(b1);
+  ASSERT_EQ(am, assets_manager());
+  am = widget_get_assets_manager(b2);
   ASSERT_EQ(am, assets_manager());
   
   li = widget_get_locale_info(w1);
