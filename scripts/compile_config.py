@@ -44,15 +44,10 @@ def get_curr_config_for_awtk() :
   else :
     COMPILE_CONFIG = complie_helper()
     if not COMPILE_CONFIG.load_last_complie_argv() :
-      print('========================= WARNING ================================')
-      print('not found last complie argv config file, so use default config file !!!!!')
-      if sys.version_info >= (3, 0):
-        ret = input('Do you want to continue compiling ? [y/n]').upper()
-      else :
-        ret = raw_input('Do you want to continue compiling ? [y/n]').upper()
-      if ret != 'Y' :
-        sys.exit()
-      COMPILE_CONFIG.try_load_default_config()
+      print('========================= Error ================================')
+      print('Not found last complie argv config file !!!!!')
+      print('Please Recompile AWTK !!!!!')
+      sys.exit()
     COMPILE_CONFIG.set_value('WIN32_RES', WIN32_RES)
     return COMPILE_CONFIG;
 
