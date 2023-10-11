@@ -461,6 +461,37 @@ TEST(Utils, tk_wstr_count_c) {
   ASSERT_EQ(tk_wstr_count_c(L"abcaba", 'a'), 3u);
 }
 
+TEST(Utils, tk_wstr_select_word) {
+  int32_t left = 0;
+  int32_t right = 0;
+  wchar_t wstr[] = L"test TEST hello,你好123abc";
+  uint32_t len = wcslen(wstr);
+
+  ASSERT_EQ(tk_wstr_select_word(wstr, len, 1, &left, &right), RET_OK);
+  ASSERT_EQ(left, 0);
+  ASSERT_EQ(right, 4);
+
+  ASSERT_EQ(tk_wstr_select_word(wstr, len, 17, &left, &right), RET_OK);
+  ASSERT_EQ(left, 16);
+  ASSERT_EQ(right, 18);
+
+  ASSERT_EQ(tk_wstr_select_word(wstr, len, 19, &left, &right), RET_OK);
+  ASSERT_EQ(left, 18);
+  ASSERT_EQ(right, 21);
+
+  ASSERT_EQ(tk_wstr_select_word(wstr, len, 5, &left, &right), RET_OK);
+  ASSERT_EQ(left, 5);
+  ASSERT_EQ(right, 9);
+
+  ASSERT_EQ(tk_wstr_select_word(wstr, len, 15, &left, &right), RET_OK);
+  ASSERT_EQ(left, 10);
+  ASSERT_EQ(right, 15);
+
+  ASSERT_EQ(tk_wstr_select_word(wstr, len, 16, &left, &right), RET_OK);
+  ASSERT_EQ(left, 16);
+  ASSERT_EQ(right, 18);
+}
+
 TEST(Utils, tk_watoi_n) {
   ASSERT_EQ(tk_watoi_n(L"1234", 1), 1);
   ASSERT_EQ(tk_watoi_n(L"1234", 2), 12);

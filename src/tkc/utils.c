@@ -983,6 +983,77 @@ uint32_t tk_wstr_count_c(const wchar_t* str, wchar_t c) {
   return nr;
 }
 
+ret_t tk_wstr_select_word(const wchar_t* str, uint32_t len, uint32_t index, int32_t* left, int32_t* right) {
+  int32_t i = 0;
+  const wchar_t* no_start_symbols = L",.?!)>:;，。？！》）：；";
+
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(index <= len, RET_BAD_PARAMS);
+  return_value_if_fail(left != NULL && right != NULL, RET_BAD_PARAMS);
+
+  i = (int32_t)index;
+  while (str != NULL && i > 0 ) {
+    --i;
+    
+    if (i >= 0) {
+      if (wcs_chr(no_start_symbols, str[i]) != NULL) {
+        break;
+      } else if (str[i] == '\r' || str[i] == '\n') {
+        break;
+      } else if (tk_isspace(str[i])) {
+        break;
+      } else if (!tk_isspace(str[i + 1]) && wcs_chr(no_start_symbols, str[i + 1]) == NULL &&
+          (tk_isalpha(str[i]) && !tk_isalpha(str[i + 1])) || !tk_isalpha(str[i]) && tk_isalpha(str[i + 1])) {
+        break;
+      } else if ((tk_isdigit(str[i]) && !tk_isdigit(str[i + 1])) || !tk_isdigit(str[i]) && tk_isdigit(str[i + 1])) {
+        break;
+      }
+    }
+  }
+  
+  if (i <= 0) {
+    *left = 0;
+  } else {
+    *left = i + 1;
+  }
+
+  i = (int32_t)index;
+  while (str != NULL && i >= 0 && i < len) {
+    ++i;
+    
+    if (i >= 0 && i <= len) {
+      if (wcs_chr(no_start_symbols, str[i - 1]) != NULL) {
+        *right = i - 1;
+        break;
+      } else if (wcs_chr(no_start_symbols, str[i]) != NULL) {
+        *right = i;
+        break;
+      } else if (str[i - 1] == '\r' || str[i] == '\n') {
+        *right = i;
+        break;
+      } else if (tk_isspace(str[i])) {
+        *right = i;
+        break;
+      } else if (tk_isspace(str[i - 1])) {
+        *right = i - 1;
+        break;
+      } else if ((tk_isalpha(str[i]) && !tk_isalpha(str[i - 1])) || !tk_isalpha(str[i]) && tk_isalpha(str[i - 1])) {
+        *right = i;
+        break;
+      } else if ((tk_isdigit(str[i]) && !tk_isdigit(str[i - 1])) || !tk_isdigit(str[i]) && tk_isdigit(str[i - 1])) {
+        *right = i;
+        break;
+      }
+    }
+  }
+
+  if (i >= len) {
+    *right = len > 0 ? len : 0;
+  }
+
+  return RET_OK;
+}
+
 ret_t image_region_parse(uint32_t img_w, uint32_t img_h, const char* region, rect_t* r) {
   return_value_if_fail(r != NULL && region != NULL, RET_BAD_PARAMS);
   if (*region == '#') {

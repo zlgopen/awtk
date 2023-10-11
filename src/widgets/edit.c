@@ -842,6 +842,25 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       widget_invalidate(widget, NULL);
       break;
     }
+    case EVT_DOUBLE_CLICK: {
+      uint32_t len = 0;
+      int32_t left = 0;
+      int32_t right = 0;
+      uint32_t cursor = 0;
+      wchar_t* text = NULL;
+      pointer_event_t evt = *(pointer_event_t*)e;
+      
+      if (widget_find_target(widget, evt.x, evt.y) == NULL) {
+        cursor = edit_get_cursor(widget);
+        len = edit->model->widget->text.size;
+        text = edit->model->widget->text.str;
+
+        if (tk_wstr_select_word(text, len, cursor, &left, &right) == RET_OK) {
+          edit_set_select(widget, left, right);
+        }
+      }
+      break;
+    }
     case EVT_KEY_DOWN: {
       key_event_t* evt = (key_event_t*)e;
       int32_t key = evt->key;
