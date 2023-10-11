@@ -19,7 +19,7 @@ COMPILE_CONFIG = {
   'LINUX_FB' : { 'value' : False, 'desc' : ['use linux\'s building'], 'help_info' : 'use linux\'s compile tools prefix building, value is true or false'},
   'MVVM_ROOT' : { 'value' : '', 'desc' : ['awtk\'s mvvm root'], 'help_info' : 'set link awtk\'s mvvm root, MVVM_ROOT=XXXXX'},
   'WITH_MVVM' : { 'value' : False, 'desc' : ['use mvvm'], 'help_info' : 'use mvvm\'s lib, value is true or false'},
-  'WITH_JERRYSCRIPT' : { 'value' : True, 'desc' : ['use mvvm\'s js'], 'help_info' : 'use mvvm js\'s lib, value is true or false'},
+  'WITH_JERRYSCRIPT' : { 'value' : False, 'desc' : ['use mvvm\'s js'], 'help_info' : 'use mvvm js\'s lib, value is true or false'},
   'WITH_IOTJS' : { 'value' : False, 'desc' : ['use mvvm\'s iotjs'], 'help_info' : 'use mvvm iotjs\'s lib, value is true or false'},
   'AWFLOW_ROOT' : { 'value' : '', 'desc' : ['awtk\'s awflow root'], 'help_info' : 'set link awtk\'s awflow root, AWFLOW_ROOT=XXXXX'},
   'WITH_AWFLOW' : { 'value' : False, 'desc' : ['use awflow'], 'help_info' : 'use awflow\'s lib, value is true or false'},
@@ -309,7 +309,7 @@ class AppHelperBase:
         if self.LINUX_FB:
             os.environ['LINUX_FB'] = 'true'
 
-        self.WITH_JERRYSCRIPT = self.complie_helper.get_value('WITH_JERRYSCRIPT', True)
+        self.WITH_JERRYSCRIPT = self.complie_helper.get_value('WITH_JERRYSCRIPT', False)
         self.WITH_IOTJS = self.complie_helper.get_value('WITH_IOTJS', False)
 
         WITH_MVVM = self.complie_helper.get_value('WITH_MVVM', False)
