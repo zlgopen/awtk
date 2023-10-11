@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/10/11
+  * 修复字体管理器没有正常释放的问(感谢培煌提供补丁)
+
 2023/10/10
   * 修复window\_base\_set\_applet\_name可能导致野指针的问题(感谢培煌发现问题)
   * 重构widget\_get\_assets\_manager/widget\_get\_font\_manager等函数。
