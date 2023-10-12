@@ -50,11 +50,11 @@ struct _tk_iostream_process_t {
   char* file_path;
 
   /**
-   * @property {char**} args
+   * @property {const char**} args
    * @annotation ["readable"]
    * 参数列表。
    */
-  char** args;
+  const char** args;
 
   /**
    * @property {uint32_t} argc
@@ -76,7 +76,7 @@ struct _tk_iostream_process_t {
  * 创建iostream对象。
  * 备注：如果需要在 Windows 平台运行，请在应用程序初始化时，调用 tk_socket_init 函数初始化 socket。
  * 
- * @param {const char*} file_path 子进程程序路径。
+ * @param {const char*} file_path 子进程程序路径。(如果为空的话，使用命令行来执行参数)
  * @param {const char**} args 子进程参数。
  * @param {uint32_t} argc 子进程参数长度。
  *

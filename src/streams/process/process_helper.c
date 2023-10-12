@@ -86,7 +86,7 @@ ret_t process_destroy(process_handle_t handle) {
   return RET_OK;
 }
 
-process_handle_t process_create(const char* file_path, const char* args[], uint32_t argc) {
+process_handle_t process_create(const char* file_path, const char** args, uint32_t argc) {
   uint32_t i = 0;
   BOOL ret = FALSE;
   HANDLE h_std_in_rd;
@@ -115,7 +115,9 @@ process_handle_t process_create(const char* file_path, const char* args[], uint3
 	handle->start_info.dwFlags |= (STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW);
 
   wstr_init(&handle->cmd_line, WINDOW_CMD_LINE_SIZE);
-  handle->file_path = tk_wstr_dup_utf8(file_path);
+  if (file_path != NULL) {
+    handle->file_path = tk_wstr_dup_utf8(file_path);
+  }
 
   for (i = 0; i < argc; i++) {
     str_tmp = tk_wstr_dup_utf8(args[i]);
@@ -203,7 +205,7 @@ ret_t process_destroy(process_handle_t handle) {
   return RET_OK;
 }
 
-process_handle_t process_create(const char* file_path, const char* args[], uint32_t argc) {
+process_handle_t process_create(const char* file_path, const char** args, uint32_t argc) {
   pid_t pid;
   uint32_t i = 0;
   process_handle_t handle = TKMEM_ZALLOC(process_info_t);
@@ -224,7 +226,9 @@ process_handle_t process_create(const char* file_path, const char* args[], uint3
       close(handle->pfd[0]);  
     }
     str_init(&str_tmp, 1024);
-    str_append(&str_tmp, file_path);
+    if (file_path != NULL) {
+      str_append(&str_tmp, file_path);
+    }
     for (i = 0; i < argc; i++) {
       str_append_char(&str_tmp, ' ');
       str_append(&str_tmp, args[i]);

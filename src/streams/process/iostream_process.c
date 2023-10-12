@@ -119,7 +119,7 @@ tk_iostream_t* tk_iostream_process_create(const char* file_path, const char* arg
   uint32_t i = 0;
   tk_object_t* obj = NULL;
   tk_iostream_process_t* iostream_process = NULL;
-  return_value_if_fail(file_path != NULL, NULL);
+  return_value_if_fail(file_path != NULL || (args != NULL && argc > 0), NULL);
 
   obj = tk_object_create(&s_tk_iostream_process_vtable);
 
@@ -127,9 +127,11 @@ tk_iostream_t* tk_iostream_process_create(const char* file_path, const char* arg
   return_value_if_fail(iostream_process != NULL, NULL);
 
   iostream_process->argc = argc;
-  iostream_process->file_path = tk_strdup(file_path);
+  if (file_path != NULL) {
+    iostream_process->file_path = tk_strdup(file_path);
+  }
   if (argc > 0) {
-    iostream_process->args = TKMEM_ZALLOCN(char*, argc);
+    iostream_process->args = TKMEM_ZALLOCN(const char*, argc);
     for (i = 0; i < argc; i++) {
       iostream_process->args[i] = tk_strdup(args[i]);
     }

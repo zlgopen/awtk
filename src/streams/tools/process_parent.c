@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
     if (ret == RET_OK) {
       const char* data = "Y";
       tk_istream_read(istream, buff, sizeof(buff));
-      printf(buff);
+      printf("%s", buff);
       printf("Y\r\n");
       tk_iostream_write_len(process, data, tk_strlen(data), 1000);
       sleep_ms(500);
@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
       ret = tk_istream_wait_for_data(istream, 1000);
       if (ret == RET_OK) {
         tk_istream_read(istream, buff, sizeof(buff));
-        printf(buff);
+        printf("%s", buff);
       }
     }
 
