@@ -44,8 +44,14 @@ lldb-vscode -p 6789
 
 * 启动 WASM 运行时
 
+> 如果使用后面的测试程序，需要在 wasm-rt 目录下编译好测试程序
+
 ```
-./bin/runWasmPLC -d -f bin/genc_while1_main.wasm -l verbose
+scons -f SConstruct.wasm
+```
+
+```
+bin/runAWPLC.exe -d -f bin/genc_var_export9_main.wasm
 ```
 
 * 先启动 [DAP](https://code.visualstudio.com/docs/extensionAPI/api-debugging) 服务
@@ -79,8 +85,8 @@ lldb-vscode -p 6789
 * 2. 设置断点
 
 ```
-[fdb] # b main
-[fdb] # b foo
+[fdb] b genc_var_export9.st:30
+
 ```
 
 * 3. 列出断点
