@@ -1098,3 +1098,36 @@ ret_t conf_node_get_child_value_by_index(conf_node_t* node, uint32_t index, valu
 
   return conf_node_get_value(child, v);
 }
+
+int32_t conf_node_get_child_value_int32(conf_node_t* node, const char* name, int32_t defval) {
+  value_t v;
+  return_value_if_fail(node != NULL && name != NULL, defval);
+
+  if(conf_node_get_child_value(node, name, &v) == RET_OK) {
+    return value_int32(&v);
+  } else {
+    return defval;
+  }
+}
+
+bool_t conf_node_get_child_value_bool(conf_node_t* node, const char* name, bool_t defval) {
+  value_t v;
+  return_value_if_fail(node != NULL && name != NULL, defval);
+
+  if(conf_node_get_child_value(node, name, &v) == RET_OK) {
+    return value_bool(&v);
+  } else {
+    return defval;
+  }
+}
+
+const char* conf_node_get_child_value_str(conf_node_t* node, const char* name, const char* defval) {
+  value_t v;
+  return_value_if_fail(node != NULL && name != NULL, defval);
+
+  if(conf_node_get_child_value(node, name, &v) == RET_OK) {
+    return value_str(&v);
+  } else {
+    return defval;
+  }
+}

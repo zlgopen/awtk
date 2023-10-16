@@ -732,6 +732,45 @@ ret_t conf_node_get_value(conf_node_t* node, value_t* v);
 ret_t conf_node_get_child_value(conf_node_t* node, const char* name, value_t* v);
 
 /**
+ * @method conf_node_get_child_value_int32
+ *
+ * 获取子节点的值。
+ *
+ * @param {conf_node_t*} node 节点对象。
+ * @param {const char*} name 子节点名称。
+ * @param {int32_t} defval 默认值。
+ *
+ * @return {int32_t} 返回值。
+ */
+int32_t conf_node_get_child_value_int32(conf_node_t* node, const char* name, int32_t defval);
+
+/**
+ * @method conf_node_get_child_value_bool
+ *
+ * 获取子节点的值。
+ *
+ * @param {conf_node_t*} node 节点对象。
+ * @param {const char*} name 子节点名称。
+ * @param {bool_t} defval 默认值。
+ *
+ * @return {bool_t} 返回值。
+ */
+bool_t conf_node_get_child_value_bool(conf_node_t* node, const char* name, bool_t defval);
+
+/**
+ * @method conf_node_get_child_value_str
+ *
+ * 获取子节点的值。
+ *
+ * @param {conf_node_t*} node 节点对象。
+ * @param {const char*} name 子节点名称。
+ * @param {const char*} defval 默认值。
+ *
+ * @return {const char*} 返回值。
+ */
+const char* conf_node_get_child_value_str(conf_node_t* node, const char* name, const char* defval);
+
+/**
  * @method conf_node_get_child_value_by_index
  *
  * 获取子节点的值。

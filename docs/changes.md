@@ -1,4 +1,8 @@
 # 最新动态
+
+2023/10/16
+  * 增加函数 conf\_node\_get\_child\_value\_int32/conf\_node\_get\_child\_value\_bool/conf\_node\_get\_child\_value\_str
+
 2023/10/12
   * 增加process支持使用命令行启动子程序以及修复编译警告(感谢智明提供补丁)
 
