@@ -780,6 +780,13 @@ ret_t str_format(str_t* str, uint32_t size, const char* format, ...);
  */
 ret_t str_append_format(str_t* str, uint32_t size, const char* format, ...);
 
+#define STR_DESTROY(str) \
+  if (str != NULL) {     \
+    str_destroy(str);    \
+    str = NULL;          \
+  }
+
+
 END_C_DECLS
 
 #endif /*TK_STR_H*/
