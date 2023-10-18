@@ -957,9 +957,11 @@ static ret_t debugger_lldb_load_source(debugger_t* debugger, const char* path) {
       if (source != NULL) {
         tk_object_set_prop_str(lldb->sources, path, source);
         TKMEM_FREE(source);
+      } else {
+        log_debug("read source failed:%s\n", path);
       }
     } else {
-      log_debug("read source failed:%s\n", path);
+      log_debug("get source cache ok:%s\n", path);
     }
     lldb->current_frame_source = tk_object_get_prop_str(lldb->sources, path);
   } else {
