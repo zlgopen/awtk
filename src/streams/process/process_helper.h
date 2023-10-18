@@ -56,13 +56,21 @@ struct _process_info_t {
 
 
 #elif defined(LINUX) || defined(MACOS)
-#include <sys/wait.h>   
+#include <sys/wait.h>
+#include <sys/types.h>
 #include <errno.h>   
 #include <fcntl.h>   
+#include "tkc/str.h"
 
 struct _process_info_t {
-  int pfd[2];
+  bool_t broken;
+
   pid_t pid;
+  int read_pfd[2];
+  int write_pfd[2];
+
+  str_t str_tmp;
+  tk_thread_t* thread;
 };
 
 #endif
