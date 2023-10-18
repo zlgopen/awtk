@@ -604,13 +604,13 @@ ret_t str_to_float(str_t* str, double* value);
  * @method str_encode_hex
  * 把二进制的数据编码成16进制格式的字符串。
  * @param {str_t*} str str对象。
- * @param {const uint8_t*} data 数据。
+ * @param {const void*} data 数据。
  * @param {uint32_t} size 数据长度。
  * @param {const char*} format 格式(如:"%02x" 表示生成小写)
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t str_encode_hex(str_t* str, const uint8_t* data, uint32_t size, const char* format);
+ret_t str_encode_hex(str_t* str, const void* data, uint32_t size, const char* format);
 
 /**
  * @method str_decode_hex
@@ -779,12 +779,6 @@ ret_t str_format(str_t* str, uint32_t size, const char* format, ...);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t str_append_format(str_t* str, uint32_t size, const char* format, ...);
-
-#define STR_DESTROY(str) \
-  if (str != NULL) {     \
-    str_destroy(str);    \
-    str = NULL;          \
-  }
 
 END_C_DECLS
 
