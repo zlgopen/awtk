@@ -10,6 +10,8 @@ URL
 | <a href="#url_t_url_create">url\_create</a> | 创建URL对象。 |
 | <a href="#url_t_url_destroy">url\_destroy</a> | 销毁url对象。 |
 | <a href="#url_t_url_get_param">url\_get\_param</a> | 获取参数。 |
+| <a href="#url_t_url_get_param_bool">url\_get\_param\_bool</a> | 获取参数。 |
+| <a href="#url_t_url_get_param_int32">url\_get\_param\_int32</a> | 获取参数。 |
 | <a href="#url_t_url_set_host">url\_set\_host</a> | 设置主机名。 |
 | <a href="#url_t_url_set_param">url\_set\_param</a> | 设置参数。 |
 | <a href="#url_t_url_set_password">url\_set\_password</a> | 设置密码。 |
@@ -88,6 +90,48 @@ const char* url_get_param (url_t* url, const char* name);
 | 返回值 | const char* | 返回指定参数名的参数值。 |
 | url | url\_t* | url对象。 |
 | name | const char* | 参数名。 |
+#### url\_get\_param\_bool 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="url_t_url_get_param_bool">获取参数。
+
+* 函数原型：
+
+```
+bool_t url_get_param_bool (url_t* url, const char* name, bool_t defvalue);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回指定参数名的参数值。 |
+| url | url\_t* | url对象。 |
+| name | const char* | 参数名。 |
+| defvalue | bool\_t | 默认值。 |
+#### url\_get\_param\_int32 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="url_t_url_get_param_int32">获取参数。
+
+* 函数原型：
+
+```
+int32_t url_get_param_int32 (url_t* url, const char* name, int32_t defvalue);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int32\_t | 返回指定参数名的参数值。 |
+| url | url\_t* | url对象。 |
+| name | const char* | 参数名。 |
+| defvalue | int32\_t | 默认值。 |
 #### url\_set\_host 函数
 -----------------------
 

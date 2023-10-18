@@ -11,6 +11,7 @@ crc相关函数。
 | <a href="#crc_t_tk_chksum_byte">tk\_chksum\_byte</a> | 计算单子节的检验和。 |
 | <a href="#crc_t_tk_crc16">tk\_crc16</a> | 计算crc16。 |
 | <a href="#crc_t_tk_crc16_byte">tk\_crc16\_byte</a> | 计算单子节的crc16。 |
+| <a href="#crc_t_tk_crc16_modbus">tk\_crc16\_modbus</a> | 计算crc16(MODBUS)。 |
 | <a href="#crc_t_tk_crc32">tk\_crc32</a> | 计算crc32。 |
 | <a href="#crc_t_tk_crc32_byte">tk\_crc32\_byte</a> | 计算单子节的crc32。 |
 | <a href="#crc_t_tk_crc32_file">tk\_crc32\_file</a> | 计算文件的crc32哈希值。 |
@@ -96,6 +97,26 @@ uint16_t tk_crc16_byte (uint16_t crc, uint8_t data);
 | 返回值 | uint16\_t | 返回计算结果。 |
 | crc | uint16\_t | 初始值(一般用PPPINITFCS16，或者之前的值) |
 | data | uint8\_t | 数据。 |
+#### tk\_crc16\_modbus 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="crc_t_tk_crc16_modbus">计算crc16(MODBUS)。
+
+* 函数原型：
+
+```
+uint16_t tk_crc16_modbus (const uint8_t* data, int size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint16\_t | 返回计算结果。 |
+| data | const uint8\_t* | 数据。 |
+| size | int | 数据长度。 |
 #### tk\_crc32 函数
 -----------------------
 

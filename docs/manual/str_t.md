@@ -727,7 +727,7 @@ ret_t str_destroy (str_t* str);
 * 函数原型：
 
 ```
-ret_t str_encode_hex (str_t* str, const uint8_t* data, uint32_t size, const char* format);
+ret_t str_encode_hex (str_t* str, const void* data, uint32_t size, const char* format);
 ```
 
 * 参数说明：
@@ -736,7 +736,7 @@ ret_t str_encode_hex (str_t* str, const uint8_t* data, uint32_t size, const char
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| data | const uint8\_t* | 数据。 |
+| data | const void* | 数据。 |
 | size | uint32\_t | 数据长度。 |
 | format | const char* | 格式(如:"%02x" 表示生成小写) |
 #### str\_encode\_xml\_entity 函数

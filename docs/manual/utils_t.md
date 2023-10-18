@@ -84,6 +84,7 @@
 | <a href="#utils_t_tk_wild_card_match">tk\_wild\_card\_match</a> | 简单的通配符匹配。*匹配0到多个字符，?匹配1个字符。 |
 | <a href="#utils_t_tk_wstr_count_c">tk\_wstr\_count\_c</a> | 统计UCS字符串中某个字符出现的次数。 |
 | <a href="#utils_t_tk_wstr_dup_utf8">tk\_wstr\_dup\_utf8</a> | 将utf8字符串拷贝为UCS字符串。 |
+| <a href="#utils_t_tk_wstr_select_word">tk\_wstr\_select\_word</a> | 获取字符串中距离某个位置最近的单词（中文或英文字符）或数字字符的范围，选取的范围由标点符号或空格分隔开，得到的范围由left与right两个指针获取。 |
 | <a href="#utils_t_tk_wstrcmp">tk\_wstrcmp</a> | 字符串比较函数。 |
 | <a href="#utils_t_tk_wstrdup">tk\_wstrdup</a> | 宽字符串拷贝函数。 |
 | <a href="#utils_t_tk_wstricmp">tk\_wstricmp</a> | 字符串比较函数（不区分大小写）。 |
@@ -1668,6 +1669,29 @@ wchar_t* tk_wstr_dup_utf8 (const char* str);
 | -------- | ----- | --------- |
 | 返回值 | wchar\_t* | 返回UCS字符串(需要调用TKMEM\_FREE释放)。 |
 | str | const char* | utf8编码的字符串。 |
+#### tk\_wstr\_select\_word 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_wstr_select_word">获取字符串中距离某个位置最近的单词（中文或英文字符）或数字字符的范围，选取的范围由标点符号或空格分隔开，得到的范围由left与right两个指针获取。
+
+* 函数原型：
+
+```
+ret_t tk_wstr_select_word (const wchar_t* str, uint32_t len, uint32_t index, int32_t* left, int32_t* right);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | const wchar\_t* | 字符串。 |
+| len | uint32\_t | 字符串的长度。 |
+| index | uint32\_t | 字符串中某个位置的下标。 |
+| left | int32\_t* | int32\_t指针，用来获取范围结果的左边界值 |
+| right | int32\_t* | int32\_t指针，用来获取范围结果的右边界值 |
 #### tk\_wstrcmp 函数
 -----------------------
 

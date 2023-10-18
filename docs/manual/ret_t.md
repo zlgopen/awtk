@@ -29,4 +29,6 @@
 | RET\_EOS | End of Stream |
 | RET\_NOT\_MODIFIED | 没有改变。 |
 | RET\_NO\_PERMISSION | 没有权限。 |
+| RET\_INVALID\_ADDR | 无效地址。 |
+| RET\_EXCEED\_RANGE | 超出范围。 |
 | RET\_MAX\_NR | 最大值。 |
