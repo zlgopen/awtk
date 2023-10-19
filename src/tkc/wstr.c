@@ -188,7 +188,7 @@ int iswspace(wint_t ch) {
 
 #endif /*WITH_WCSXXX*/
 
-static ret_t wstr_extend(wstr_t* str, uint32_t capacity) {
+ret_t wstr_extend(wstr_t* str, uint32_t capacity) {
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
 
   if (capacity <= str->capacity) {

@@ -102,6 +102,16 @@ ret_t wstr_destroy(wstr_t* str);
 wstr_t* wstr_init(wstr_t* str, uint32_t capacity);
 
 /**
+ * @method wstr_extend
+ * 扩展字符串到指定的容量。
+ * @param {wstr_t*} str wstr对象。
+ * @param {uint32_t} capacity 初始容量。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wstr_extend(wstr_t* str, uint32_t capacity);
+
+/**
  * @method wstr_attach
  * 通过附加到一个buff来初始化str。 
  * >可以避免str动态分配内存，同时也不会自动扩展内存，使用完成后无需调用str_reset。
