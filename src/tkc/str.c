@@ -1003,13 +1003,14 @@ ret_t str_encode_hex(str_t* str, const void* data, uint32_t size, const char* fo
   return RET_OK;
 }
 
-ret_t str_decode_hex(str_t* str, uint8_t* data, uint32_t size) {
+ret_t str_decode_hex(str_t* str, void* data, uint32_t size) {
+  char* p = NULL;
+  char v[3] = {0, 0, 0};
+  uint8_t* d = data;
   uint8_t* dend = data + size;
-  char* p;
-  char v[3];
   return_value_if_fail(str != NULL && data != NULL, RET_BAD_PARAMS);
 
-  for (p = str->str; p < str->str + str->size && data < dend; p += 2) {
+  for (p = str->str; p < str->str + str->size && d < dend; p += 2) {
     while (p[0] == ' ') {
       p++;
     }
@@ -1017,8 +1018,8 @@ ret_t str_decode_hex(str_t* str, uint8_t* data, uint32_t size) {
       p += 2;
     }
     tk_strncpy(v, p, 2);
-    *data = tk_strtol(v, 0, 16);
-    data++;
+    *d = tk_strtol(v, 0, 16);
+    d++;
   }
 
   return RET_OK;
