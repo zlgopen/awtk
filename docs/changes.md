@@ -1,4 +1,7 @@
 # 最新动态
+2023/10/19
+  * 增加函数fs\_stat\_info\_create/fs\_stat\_info\_destroy
+
 2023/10/18
   * 修复process完成后读写崩溃的问题以及修改linux下全双工的管道问题(感谢智明提供补丁)
 

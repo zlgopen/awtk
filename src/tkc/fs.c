@@ -24,6 +24,22 @@
 #include "tkc/utils.h"
 #include "tkc/path.h"
 
+fs_stat_info_t* fs_stat_info_create(void) {
+  fs_stat_info_t* ret = TKMEM_ZALLOC(fs_stat_info_t);
+  return_value_if_fail(ret != NULL, NULL);
+
+  return ret;
+}
+
+ret_t fs_stat_info_destroy(fs_stat_info_t* fst) {
+  return_value_if_fail(fst != NULL, RET_BAD_PARAMS);
+
+  TKMEM_FREE(fst);
+
+  return RET_OK;
+}
+
+
 int32_t fs_file_read(fs_file_t* file, void* buffer, uint32_t size) {
   return_value_if_fail(file != NULL && file->vt != NULL && buffer != NULL && file->vt->read != NULL,
                        -1);

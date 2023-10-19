@@ -77,6 +77,21 @@ typedef struct _fs_stat_info_t {
   bool_t is_reg_file;
 } fs_stat_info_t;
 
+/**
+ * @method fs_stat_info_create
+ * 创建文件状态信息对象。
+ * @return {fs_stat_info_t*} 返回文件状态信息对象。
+*/
+fs_stat_info_t* fs_stat_info_create(void);
+
+/**
+ * @method fs_stat_info_destroy
+ * 销毁文件状态信息对象。
+ * @param {fs_stat_info_t*} fst 文件状态信息对象。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+*/
+ret_t fs_stat_info_destroy(fs_stat_info_t* fst);
+
 struct _fs_file_t;
 typedef struct _fs_file_t fs_file_t;
 
