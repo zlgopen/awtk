@@ -322,6 +322,26 @@ typedef struct _fs_item_t {
   char name[MAX_PATH + 1];
 } fs_item_t;
 
+/**
+ * @method fs_item_create
+ *
+ * 创建文件或目录对象。
+ *
+ * @return {fs_item_t*} 返回文件或目录对象。
+ */
+fs_item_t* fs_item_create(void);
+
+/**
+ * @method fs_item_destroy
+ *
+ * 销毁文件或目录对象。
+ *
+ * @param {fs_item_t*} item 文件或目录对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fs_item_destroy(fs_item_t* item);
+
 struct _fs_dir_t;
 typedef struct _fs_dir_t fs_dir_t;
 
