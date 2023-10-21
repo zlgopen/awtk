@@ -1007,7 +1007,7 @@ ret_t str_decode_hex(str_t* str, void* data, uint32_t size) {
   char* p = NULL;
   char v[3] = {0, 0, 0};
   uint8_t* d = data;
-  uint8_t* dend = data + size;
+  uint8_t* dend = d + size;
   return_value_if_fail(str != NULL && data != NULL, RET_BAD_PARAMS);
 
   for (p = str->str; p < str->str + str->size && d < dend; p += 2) {
