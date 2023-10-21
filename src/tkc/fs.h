@@ -123,7 +123,6 @@ typedef struct _fs_file_vtable_t {
 
 /**
  * @class fs_file_t
- * @annotation ["fake"]
  * 文件接口。
  *
  * 示例：
