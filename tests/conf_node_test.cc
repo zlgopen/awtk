@@ -87,6 +87,35 @@ TEST(ConfNode, basic) {
   ASSERT_STREQ(conf_node_get_child_value_str(doc->root, "4", NULL), "abc");
   ASSERT_STREQ(conf_node_get_child_value_str(doc->root, "abcd", "123"), "123");
 
+  value_t v1;
+  value_set_str(&v, "abc");
+  ASSERT_EQ(conf_node_set_value(node, &v), RET_OK);
+  ASSERT_EQ(conf_node_get_value(node, &v1), RET_OK);
+  ASSERT_EQ(conf_node_set_value(node, &v1), RET_OK);
+  ASSERT_EQ(conf_node_get_value(node, &v1), RET_OK);
+  ASSERT_STREQ(value_str(&v), "abc");
+
+  value_set_wstr(&v, L"abc");
+  ASSERT_EQ(conf_node_set_value(node, &v), RET_OK);
+  ASSERT_EQ(conf_node_get_value(node, &v1), RET_OK);
+  ASSERT_EQ(conf_node_set_value(node, &v1), RET_OK);
+  ASSERT_EQ(conf_node_get_value(node, &v1), RET_OK);
+  ASSERT_EQ(wcscmp(value_wstr(&v), L"abc"), 0);
+  
+  value_set_str(&v, "aaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbcccccc");
+  ASSERT_EQ(conf_node_set_value(node, &v), RET_OK);
+  ASSERT_EQ(conf_node_get_value(node, &v1), RET_OK);
+  ASSERT_EQ(conf_node_set_value(node, &v1), RET_OK);
+  ASSERT_EQ(conf_node_get_value(node, &v1), RET_OK);
+  ASSERT_STREQ(value_str(&v), "aaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbcccccc");
+
+  value_set_wstr(&v, L"aaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbcccccc");
+  ASSERT_EQ(conf_node_set_value(node, &v), RET_OK);
+  ASSERT_EQ(conf_node_get_value(node, &v1), RET_OK);
+  ASSERT_EQ(conf_node_set_value(node, &v1), RET_OK);
+  ASSERT_EQ(conf_node_get_value(node, &v1), RET_OK);
+  ASSERT_EQ(wcscmp(value_wstr(&v), L"aaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbcccccc"), 0);
+
   conf_doc_destroy(doc);
 }
 
