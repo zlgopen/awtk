@@ -1,4 +1,8 @@
 # 最新动态
+
+2023/10/23
+  * 增加函数wbuffer\_create/wbuffer\_destroy/rbuffer\_create/rbuffer\_destroy
+
 2023/10/20
   * 完善conf\_node\_set\_value
 

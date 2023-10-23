@@ -89,12 +89,44 @@ typedef struct _wbuffer_t {
  * 初始wbuffer对象。
  * @annotation ["constructor"]
  * @param {wbuffer_t*} wbuffer wbuffer对象。
- * @param {uint8_t*} data 缓冲区。
+ * @param {void*} data 缓冲区。
  * @param {uint32_t} capacity 缓冲区的容量。
  *
  * @return {wbuffer_t*} wbuffer对象本身。
  */
-wbuffer_t* wbuffer_init(wbuffer_t* wbuffer, uint8_t* data, uint32_t capacity);
+wbuffer_t* wbuffer_init(wbuffer_t* wbuffer, void* data, uint32_t capacity);
+
+/**
+ * @method wbuffer_init_extendable
+ * 初始化可自动扩展的wbuffer对象。使用完成后需要调用wbuffer\_deinit释放资源。
+ *
+ * @annotation ["constructor"]
+ * @param {wbuffer_t*} wbuffer wbuffer对象。
+ *
+ * @return {wbuffer_t*} wbuffer对象本身。
+ */
+wbuffer_t* wbuffer_init_extendable(wbuffer_t* wbuffer);
+
+/**
+ * @method wbuffer_create
+ * 创建wbuffer对象。
+ * @annotation ["constructor"]
+ * @param {void*} data 缓冲区。
+ * @param {uint32_t} capacity 缓冲区的容量。
+ *
+ * @return {wbuffer_t*} wbuffer对象本身。
+ */
+wbuffer_t* wbuffer_create(void* data, uint32_t capacity);
+
+/**
+ * @method wbuffer_create_extendable
+ * 创建可自动扩展的wbuffer对象。
+ *
+ * @annotation ["constructor"]
+ *
+ * @return {wbuffer_t*} wbuffer对象本身。
+ */
+wbuffer_t* wbuffer_create_extendable(void);
 
 /**
  * @method wbuffer_rewind
@@ -106,16 +138,6 @@ wbuffer_t* wbuffer_init(wbuffer_t* wbuffer, uint8_t* data, uint32_t capacity);
  */
 ret_t wbuffer_rewind(wbuffer_t* wbuffer);
 
-/**
- * @method wbuffer_init_extendable
- * 初始wbuffer对象，容量不够时是否支持自动扩展，使用完成后需要调用wbuffer\_deinit释放资源。
- *
- * @annotation ["constructor"]
- * @param {wbuffer_t*} wbuffer wbuffer对象。
- *
- * @return {wbuffer_t*} wbuffer对象本身。
- */
-wbuffer_t* wbuffer_init_extendable(wbuffer_t* wbuffer);
 
 /**
  * @method wbuffer_extend_capacity
@@ -135,6 +157,15 @@ ret_t wbuffer_extend_capacity(wbuffer_t* wbuffer, uint32_t capacity);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t wbuffer_deinit(wbuffer_t* wbuffer);
+
+/**
+ * @method wbuffer_destroy
+ * 销毁wbuffer对象。
+ * @param {wbuffer_t*} wbuffer wbuffer对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wbuffer_destroy(wbuffer_t* wbuffer);
 
 /**
  * @method wbuffer_skip
@@ -292,12 +323,23 @@ typedef struct _rbuffer_t {
  * 初始rbuffer对象。
  * @annotation ["constructor"]
  * @param {rbuffer_t*} rbuffer rbuffer对象。
- * @param {const uint8_t*} data 缓冲区。
+ * @param {const void*} data 缓冲区。
  * @param {uint32_t} capacity 缓冲区的容量。
  *
  * @return {rbuffer_t*} rbuffer对象本身。
  */
-rbuffer_t* rbuffer_init(rbuffer_t* rbuffer, const uint8_t* data, uint32_t capacity);
+rbuffer_t* rbuffer_init(rbuffer_t* rbuffer, const void* data, uint32_t capacity);
+
+/**
+ * @method rbuffer_create
+ * 创建rbuffer对象。
+ * @annotation ["constructor"]
+ * @param {const void*} data 缓冲区。
+ * @param {uint32_t} capacity 缓冲区的容量。
+ *
+ * @return {rbuffer_t*} rbuffer对象本身。
+ */
+rbuffer_t* rbuffer_create(const void* data, uint32_t capacity);
 
 /**
  * @method rbuffer_has_more
@@ -448,6 +490,24 @@ ret_t rbuffer_peek_uint16(rbuffer_t* rbuffer, uint16_t* value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t rbuffer_peek_uint32(rbuffer_t* rbuffer, uint32_t* value);
+
+/**
+ * @method rbuffer_deinit
+ * 释放rbuffer资源。
+ * @param {rbuffer_t*} rbuffer rbuffer对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rbuffer_deinit(rbuffer_t* rbuffer);
+
+/**
+ * @method rbuffer_destroy
+ * 销毁rbuffer对象。
+ * @param {rbuffer_t*} rbuffer rbuffer对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rbuffer_destroy(rbuffer_t* rbuffer);
 
 #define load_uint32(p, v)                                   \
   (v) = (p[0] | (p[1] << 8) | (p[2] << 16) | (p[3] << 24)); \

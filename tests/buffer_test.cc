@@ -257,3 +257,36 @@ TEST(Buffer, binary) {
 
   wbuffer_deinit(&wbuffer);
 }
+
+TEST(Buffer, create) {
+  wbuffer_t* wbuffer = NULL;
+  rbuffer_t* rbuffer = NULL;
+  const char* str = NULL;
+  uint8_t data[20] = {0};
+
+  wbuffer = wbuffer_create(data, sizeof(data));
+  ASSERT_EQ(wbuffer_write_string(wbuffer, "hello"), RET_OK);
+
+  rbuffer = rbuffer_create(wbuffer->data, wbuffer->cursor);
+  ASSERT_EQ(rbuffer_read_string(rbuffer, &str), RET_OK);
+  ASSERT_STREQ(str, "hello");
+
+  rbuffer_destroy(rbuffer);
+  wbuffer_destroy(wbuffer);
+}
+
+TEST(Buffer, create_extendable) {
+  wbuffer_t* wbuffer = NULL;
+  rbuffer_t* rbuffer = NULL;
+  const char* str = NULL;
+
+  wbuffer = wbuffer_create_extendable();
+  ASSERT_EQ(wbuffer_write_string(wbuffer, "hello"), RET_OK);
+
+  rbuffer = rbuffer_create(wbuffer->data, wbuffer->cursor);
+  ASSERT_EQ(rbuffer_read_string(rbuffer, &str), RET_OK);
+  ASSERT_STREQ(str, "hello");
+
+  rbuffer_destroy(rbuffer);
+  wbuffer_destroy(wbuffer);
+}
