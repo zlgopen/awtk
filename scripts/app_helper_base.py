@@ -489,11 +489,12 @@ class AppHelperBase:
 
         self.BUILD_SHARED = self.complie_helper.get_value('SHARED', False)
         self.GEN_IDL_DEF = self.complie_helper.get_value('IDL_DEF', True)
-
-        if LCD_ORIENTATION == '90' or LCD_ORIENTATION == '270' :
-            tmp = LCD_WIDTH;
-            LCD_WIDTH = LCD_HEIGHT;
-            LCD_HEIGHT = tmp;
+        
+        if not self.LINUX_FB :
+            if LCD_ORIENTATION == '90' or LCD_ORIENTATION == '270' :
+                tmp = LCD_WIDTH;
+                LCD_WIDTH = LCD_HEIGHT;
+                LCD_HEIGHT = tmp;
 
         APP_CCFLAGS = ' -DLCD_WIDTH=' + LCD_WIDTH + ' -DLCD_HEIGHT=' + LCD_HEIGHT + ' '
         APP_CCFLAGS = APP_CCFLAGS + ' -DAPP_DEFAULT_FONT=\\\"' + APP_DEFAULT_FONT + '\\\" '

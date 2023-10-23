@@ -266,7 +266,7 @@ class res_config:
 
   def get_res_lcd_orientation(self, theme_name = ''):
     orientation = '0'
-    if theme_name == '' and 'lcdOrientation' in self.assets :
+    if 'lcdOrientation' in self.assets :
         orientation = self.assets['lcdOrientation']
     elif theme_name != '' and self.has_lcd(theme_name) and 'orientation' in self.assets['themes'][theme_name]['lcd'] :
         orientation = self.assets['themes'][theme_name]['lcd']['orientation']

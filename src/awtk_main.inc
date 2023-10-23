@@ -208,14 +208,14 @@ int main(int argc, char* argv[]) {
   }
 #endif /*WITH_LCD_PORTRAIT*/
 
+#ifndef TK_IS_PC
 #ifdef APP_LCD_ORIENTATION
-  if (system_info()->app_type != APP_SIMULATOR) {
 #if defined(APP_ENABLE_FAST_LCD_PORTRAIT)
-    tk_enable_fast_lcd_portrait(TRUE);
+  tk_enable_fast_lcd_portrait(TRUE);
 #endif
-    tk_set_lcd_orientation(APP_LCD_ORIENTATION);
-  }
+  tk_set_lcd_orientation(APP_LCD_ORIENTATION);
 #endif
+#endif/*TK_IS_PC*/
 
   system_info_set_default_font(system_info(), APP_DEFAULT_FONT);
   assets_init();
