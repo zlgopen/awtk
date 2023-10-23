@@ -32,7 +32,7 @@
 #ifdef WIN32
 
 static ret_t process_close_server_sock(process_handle_t handle) {
-  if (handle->broken && tk_socket_wait_for_data(handle->server_fd, 1) == RET_TIMEOUT) {
+  if (handle->broken && tk_socket_wait_for_data(handle->client_fd, 1) == RET_TIMEOUT) {
     tk_socket_close(handle->server_fd);
     handle->server_fd = -1;
   }

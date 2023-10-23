@@ -35,7 +35,7 @@ static ret_t tk_iostream_process_get_prop(tk_object_t* obj, const char* name, va
     value_set_str(v, iostream_process->file_path);
     return RET_OK;
   } else if (tk_str_eq(name, TK_STREAM_PROP_IS_OK)) {
-    bool_t is_ok = process_handle_get_fd(iostream_process->handle) > 0 && process_is_broken(iostream_process->handle);
+    bool_t is_ok = process_handle_get_fd(iostream_process->handle) > 0 && !process_is_broken(iostream_process->handle);
     value_set_bool(v, is_ok);
 
     return RET_OK;
