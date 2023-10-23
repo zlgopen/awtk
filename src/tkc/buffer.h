@@ -178,6 +178,46 @@ ret_t wbuffer_destroy(wbuffer_t* wbuffer);
 ret_t wbuffer_skip(wbuffer_t* wbuffer, int32_t delta);
 
 /**
+ * @method wbuffer_write_int8
+ * 写入int8数据。
+ * @param {wbuffer_t*} wbuffer wbuffer对象。
+ * @param {int8_t} value 要写入的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wbuffer_write_int8(wbuffer_t* wbuffer, int8_t value);
+
+/**
+ * @method wbuffer_write_int16
+ * 写入int16数据。
+ * @param {wbuffer_t*} wbuffer wbuffer对象。
+ * @param {int16_t} value 要写入的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wbuffer_write_int16(wbuffer_t* wbuffer, int16_t value);
+
+/**
+ * @method wbuffer_write_int32
+ * 写入int32数据。
+ * @param {wbuffer_t*} wbuffer wbuffer对象。
+ * @param {int32_t} value 要写入的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wbuffer_write_int32(wbuffer_t* wbuffer, int32_t value);
+
+/**
+ * @method wbuffer_write_int64
+ * 写入int64数据。
+ * @param {wbuffer_t*} wbuffer wbuffer对象。
+ * @param {int64_t} value 要写入的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wbuffer_write_int64(wbuffer_t* wbuffer, int64_t value);
+
+/**
  * @method wbuffer_write_uint8
  * 写入uint8数据。
  * @param {wbuffer_t*} wbuffer wbuffer对象。
@@ -206,16 +246,6 @@ ret_t wbuffer_write_uint16(wbuffer_t* wbuffer, uint16_t value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t wbuffer_write_uint32(wbuffer_t* wbuffer, uint32_t value);
-
-/**
- * @method wbuffer_write_int32
- * 写入int32数据。
- * @param {wbuffer_t*} wbuffer wbuffer对象。
- * @param {int32_t} value 要写入的数据。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t wbuffer_write_int32(wbuffer_t* wbuffer, int32_t value);
 
 /**
  * @method wbuffer_write_uint64
@@ -401,6 +431,36 @@ ret_t rbuffer_read_uint16(rbuffer_t* rbuffer, uint16_t* value);
 ret_t rbuffer_read_uint32(rbuffer_t* rbuffer, uint32_t* value);
 
 /**
+ * @method rbuffer_read_uint64
+ * 读取uint64数据。
+ * @param {rbuffer_t*} rbuffer rbuffer对象。
+ * @param {uint64_t*} value 返回读取的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rbuffer_read_uint64(rbuffer_t* rbuffer, uint64_t* value);
+
+/**
+ * @method rbuffer_read_int8
+ * 读取int8数据。
+ * @param {rbuffer_t*} rbuffer rbuffer对象。
+ * @param {int8_t*} value 返回读取的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rbuffer_read_int8(rbuffer_t* rbuffer, int8_t* value);
+
+/**
+ * @method rbuffer_read_int16
+ * 读取int16数据。
+ * @param {rbuffer_t*} rbuffer rbuffer对象。
+ * @param {int16_t*} value 读取的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rbuffer_read_int16(rbuffer_t* rbuffer, int16_t* value);
+
+/**
  * @method rbuffer_read_int32
  * 读取int32数据。
  * @param {rbuffer_t*} rbuffer rbuffer对象。
@@ -411,14 +471,14 @@ ret_t rbuffer_read_uint32(rbuffer_t* rbuffer, uint32_t* value);
 ret_t rbuffer_read_int32(rbuffer_t* rbuffer, int32_t* value);
 
 /**
- * @method rbuffer_read_uint64
- * 读取uint64数据。
+ * @method rbuffer_read_int64
+ * 读取int64数据。
  * @param {rbuffer_t*} rbuffer rbuffer对象。
- * @param {uint64_t*} value 返回读取的数据。
+ * @param {int64_t*} value 返回读取的数据。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t rbuffer_read_uint64(rbuffer_t* rbuffer, uint64_t* value);
+ret_t rbuffer_read_int64(rbuffer_t* rbuffer, int64_t* value);
 
 /**
  * @method rbuffer_read_float
