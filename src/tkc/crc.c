@@ -57,10 +57,12 @@ uint16_t tk_crc16_byte(uint16_t crc, uint8_t data) {
   return (crc >> 8) ^ fcstab_16[(crc ^ (data)) & 0xff];
 }
 
-uint16_t tk_crc16(uint16_t crc, const uint8_t* data, int data_length) {
+uint16_t tk_crc16(uint16_t crc, const void* data, int data_length) {
+  const uint8_t* pdata = (const uint8_t*)data;
+
   while (data_length) {
-    crc = (crc >> 8) ^ fcstab_16[(crc ^ (*data)) & 0xff];
-    data++;
+    crc = (crc >> 8) ^ fcstab_16[(crc ^ (*pdata)) & 0xff];
+    pdata++;
     data_length--;
   }
 
@@ -109,13 +111,14 @@ static const uint8_t table_crc_lo[] = {
     0x88, 0x48, 0x49, 0x89, 0x4B, 0x8B, 0x8A, 0x4A, 0x4E, 0x8E, 0x8F, 0x4F, 0x8D, 0x4D, 0x4C, 0x8C,
     0x44, 0x84, 0x85, 0x45, 0x87, 0x47, 0x46, 0x86, 0x82, 0x42, 0x43, 0x83, 0x41, 0x81, 0x80, 0x40};
 
-uint16_t tk_crc16_modbus(const uint8_t* data, uint32_t len) {
+uint16_t tk_crc16_modbus(const void* data, uint32_t len) {
   unsigned int i = 0;
   uint8_t crc_hi = 0xFF;
   uint8_t crc_lo = 0xFF;
+  const uint8_t* pdata = (const uint8_t*)data;
 
   while (len--) {
-    i = crc_lo ^ *data++;
+    i = crc_lo ^ *pdata++;
     crc_lo = crc_hi ^ table_crc_hi[i];
     crc_hi = table_crc_lo[i];
   }
@@ -132,10 +135,12 @@ uint16_t tk_chksum_byte(uint16_t sum, uint8_t data) {
   return sum + data;
 }
 
-uint16_t tk_chksum(uint16_t sum, const uint8_t* data, int data_length) {
+uint16_t tk_chksum(uint16_t sum, const void* data, int data_length) {
+  const uint8_t* pdata = (const uint8_t*)data;
+
   while (data_length) {
-    sum = sum + *data;
-    data++;
+    sum = sum + *pdata;
+    pdata++;
     data_length--;
   }
 
@@ -223,10 +228,10 @@ static const uint32_t crc_tab32[] = {
     0x54DE5729ul, 0x23D967BFul, 0xB3667A2Eul, 0xC4614AB8ul, 0x5D681B02ul, 0x2A6F2B94ul,
     0xB40BBE37ul, 0xC30C8EA1ul, 0x5A05DF1Bul, 0x2D02EF8Dul};
 
-uint32_t tk_crc32(uint32_t init, const uint8_t* data, int size) {
+uint32_t tk_crc32(uint32_t init, const void* data, int size) {
   size_t a = 0;
   uint32_t crc = init;
-  const unsigned char* ptr = data;
+  const uint8_t* ptr = (const uint8_t*)data;
 
   if (ptr != NULL)
     for (a = 0; a < size; a++) {
@@ -248,7 +253,7 @@ uint32_t tk_crc32_byte(uint32_t crc, uint8_t data) {
 uint32_t tk_crc32_file(const char* filename, uint32_t block_size) {
   int32_t size = 0;
   fs_file_t* fp = NULL;
-  uint8_t* buff = NULL;
+  void* buff = NULL;
   uint32_t crc32 = PPPINITFCS32;
 
   return_value_if_fail(filename != NULL, crc32);

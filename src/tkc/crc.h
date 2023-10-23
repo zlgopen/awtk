@@ -41,12 +41,12 @@ BEGIN_C_DECLS
  * 计算检验和。
  * @annotation ["static"]
  * @param {uint16_t} sum 初始值(一般用INITCHECKSUM)
- * @param {const uint8_t*} data 数据。 
+ * @param {const void*} data 数据。 
  * @param {int} size 数据长度。
  *
  * @return {uint16_t} 返回计算结果。
  */
-uint16_t tk_chksum(uint16_t sum, const uint8_t* data, int size);
+uint16_t tk_chksum(uint16_t sum, const void* data, int size);
 
 /**
  * @method tk_chksum_byte
@@ -69,12 +69,12 @@ uint16_t tk_chksum_byte(uint16_t sum, uint8_t data);
  * 计算crc16。
  * @annotation ["static"]
  * @param {uint16_t} crc 初始值(一般用PPPINITFCS16)
- * @param {const uint8_t*} data 数据。 
+ * @param {const void*} data 数据。 
  * @param {int} size 数据长度。
  *
  * @return {uint16_t} 返回计算结果。
  */
-uint16_t tk_crc16(uint16_t crc, const uint8_t* data, int size);
+uint16_t tk_crc16(uint16_t crc, const void* data, int size);
 
 /**
  * @method tk_crc16_byte
@@ -91,12 +91,12 @@ uint16_t tk_crc16_byte(uint16_t crc, uint8_t data);
  * @method tk_crc16_modbus
  * 计算crc16(MODBUS)。
  * @annotation ["static"]
- * @param {const uint8_t*} data 数据。 
+ * @param {const void*} data 数据。 
  * @param {int} size 数据长度。
  *
  * @return {uint16_t} 返回计算结果。
  */
-uint16_t tk_crc16_modbus(const uint8_t* data, uint32_t len);
+uint16_t tk_crc16_modbus(const void* data, uint32_t len);
 
 #endif
 
@@ -108,12 +108,12 @@ uint16_t tk_crc16_modbus(const uint8_t* data, uint32_t len);
  * 计算crc32。
  * @annotation ["static"]
  * @param {uint32_t} crc 初始值(一般用PPPINITFCS32)
- * @param {const uint8_t*} data 数据。 
+ * @param {const void*} data 数据。 
  * @param {int} size 数据长度。
  *
  * @return {uint32_t} 返回计算结果。
  */
-uint32_t tk_crc32(uint32_t crc, const uint8_t* data, int size);
+uint32_t tk_crc32(uint32_t crc, const void* data, int size);
 
 /**
  * @method tk_crc32_byte
