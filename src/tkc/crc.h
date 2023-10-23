@@ -26,6 +26,7 @@ BEGIN_C_DECLS
 
 /**
  * @class crc_t
+ * @annotation ["fake"]
  * crc相关函数。
  */
 #define CONFIG_ENABLE_FCS16
