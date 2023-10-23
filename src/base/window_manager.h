@@ -59,6 +59,7 @@ typedef ret_t (*window_manager_snap_prev_window_t)(widget_t* widget, widget_t* p
                                                    bitmap_t* img);
 typedef dialog_highlighter_t* (*window_manager_get_dialog_highlighter_t)(widget_t* widget);
 typedef ret_t (*window_manager_resize_t)(widget_t* widget, wh_t w, wh_t h);
+typedef ret_t (*window_manager_set_fullscreen_t)(widget_t* widget, bool_t fullscreen);
 
 typedef struct _window_manager_vtable_t {
   window_manager_back_t back;
@@ -84,6 +85,7 @@ typedef struct _window_manager_vtable_t {
   window_manager_snap_prev_window_t snap_prev_window;
   window_manager_get_dialog_highlighter_t get_dialog_highlighter;
   window_manager_resize_t resize;
+  window_manager_set_fullscreen_t set_fullscreen;
 } window_manager_vtable_t;
 
 /**
@@ -471,6 +473,17 @@ ret_t window_manager_end_wait_pointer_cursor(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t window_manager_resize(widget_t* widget, wh_t w, wh_t h);
+
+/**
+ * @method window_manager_set_fullscreen
+ * 设置原生窗口是否全屏。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 窗口管理器对象。
+ * @param {bool_t} fullscreen 是否全屏
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_manager_set_fullscreen(widget_t* widget, bool_t fullscreen);
 
 /**
  * @method window_manager_close_all

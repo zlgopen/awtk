@@ -1513,6 +1513,13 @@ static ret_t window_manager_default_layout_child(widget_t* widget, widget_t* win
   }
 }
 
+static ret_t window_manager_default_set_fullscreen(widget_t* widget, bool_t fullscreen) {
+  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
+
+  return native_window_set_fullscreen(wm->native_window, fullscreen);
+}
+
 static ret_t window_manager_default_resize(widget_t* widget, wh_t w, wh_t h) {
   ret_t ret = RET_OK;
   rect_t r = rect_init(0, 0, w, h);
@@ -1768,7 +1775,8 @@ static window_manager_vtable_t s_window_manager_self_vtable = {
     .snap_curr_window = window_manager_default_snap_curr_window,
     .snap_prev_window = window_manager_default_snap_prev_window,
     .get_dialog_highlighter = window_manager_default_get_dialog_highlighter,
-    .resize = window_manager_default_resize};
+    .resize = window_manager_default_resize,
+    .set_fullscreen = window_manager_default_set_fullscreen};
 
 static const widget_vtable_t s_window_manager_vtable = {
     .size = sizeof(window_manager_t),

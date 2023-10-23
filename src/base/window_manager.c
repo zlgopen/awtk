@@ -650,6 +650,17 @@ ret_t window_manager_resize(widget_t* widget, wh_t w, wh_t h) {
   return RET_NOT_IMPL;
 }
 
+ret_t window_manager_set_fullscreen(widget_t* widget, bool_t fullscreen) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);
+
+  if (wm->vt->set_fullscreen != NULL) {
+    return wm->vt->set_fullscreen(widget, fullscreen);
+  }
+
+  return RET_NOT_IMPL;
+}
+
 ret_t window_manager_dispatch_top_window_changed(widget_t* widget) {
   window_event_t e;
 

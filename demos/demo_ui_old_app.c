@@ -1325,6 +1325,10 @@ static ret_t on_key_record_play_events(void* ctx, event_t* e) {
     tk_enable_fast_lcd_portrait(TRUE);
 #endif
     tk_set_lcd_orientation((lcd_orientation_t)o);
+  } else if (evt->key == TK_KEY_f) {
+    static bool_t fullscreen = TRUE;
+    window_manager_set_fullscreen(window_manager(), fullscreen);
+    fullscreen = !fullscreen;
   }
   return RET_OK;
 }

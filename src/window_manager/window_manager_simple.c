@@ -423,6 +423,13 @@ static ret_t window_manager_simple_layout_child(widget_t* widget, widget_t* wind
   return RET_OK;
 }
 
+static ret_t window_manager_default_set_fullscreen(widget_t* widget, bool_t fullscreen) {
+  window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
+  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
+
+  return native_window_set_fullscreen(wm->native_window, fullscreen);
+}
+
 static ret_t window_manager_simple_resize(widget_t* widget, wh_t w, wh_t h) {
   rect_t r = rect_init(0, 0, w, h);
   window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
@@ -516,6 +523,7 @@ static window_manager_vtable_t s_window_manager_self_vtable = {
     .dispatch_input_event = window_manager_simple_dispatch_input_event,
     .dispatch_native_window_event = window_manager_native_dispatch_native_window_event,
     .resize = window_manager_simple_resize,
+    .set_fullscreen = window_manager_default_set_fullscreen,
 };
 
 static const widget_vtable_t s_window_manager_vtable = {
