@@ -65,6 +65,7 @@ struct _tk_iostream_process_t {
 
   /*private*/
   process_handle_t handle;
+  process_start_info_t start_info;
   
   tk_istream_t* istream;
   tk_ostream_t* ostream;
@@ -95,6 +96,30 @@ tk_iostream_t* tk_iostream_process_create(const char* file_path, const char* arg
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t tk_iostream_process_start(tk_iostream_t* iostream);
+
+/**
+ * @method tk_iostream_process_kill
+ *
+ * 杀死子进程流。
+ *
+ * @param {tk_iostream_t*} iostream 子程序对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_iostream_process_kill(tk_iostream_t* iostream);
+
+/**
+ * @method tk_iostream_process_set_work_dir
+ *
+ * 设置子进程流工作目录。
+ *
+ * @param {tk_iostream_t*} iostream 子程序对象。
+ * @param {const char*} work_dir 工作目录。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_iostream_process_set_work_dir(tk_iostream_t* iostream, const char* work_dir);
+
 
 #define TK_IOSTREAM_PROCESS(obj) ((tk_iostream_process_t*)(obj))
 

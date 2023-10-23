@@ -5,6 +5,7 @@
 #include "streams/process/iostream_process.h"
 
 int main(int argc, char* argv[]) {
+  str_t work_dir;
   str_t file_path;
   ret_t ret = RET_OK;
   char exe[MAX_PATH + 1];
@@ -17,19 +18,22 @@ int main(int argc, char* argv[]) {
   tk_socket_init();
   platform_prepare();
 
-
+  str_init(&work_dir, 1024);
   str_init(&file_path, 1024);
-  str_append(&file_path, exe);
+  str_append(&work_dir, exe);
 #ifdef WIN32
-  str_trim_right(&file_path, "process_parent.exe");
+  str_trim_right(&work_dir, "process_parent.exe");
+  str_append(&file_path, work_dir.str);
   str_append(&file_path, "process_child.exe");
 #else
-  str_trim_right(&file_path, "process_parent");
+  str_trim_right(&work_dir, "process_parent");
+  str_append(&file_path, work_dir.str);
   str_append(&file_path, "process_child");
 #endif
+  str_append(&work_dir, "../src");
 
   process = tk_iostream_process_create(file_path.str, args, ARRAY_SIZE(args));
-
+  tk_iostream_process_set_work_dir(process, work_dir.str);
   if (tk_iostream_process_start(process) == RET_OK) {
     char buff[1024 * 10];
     tk_istream_t* istream = tk_iostream_get_istream(process);
@@ -49,6 +53,7 @@ int main(int argc, char* argv[]) {
         tk_istream_read(istream, buff, sizeof(buff));
         printf("%s", buff);
       }
+      tk_iostream_process_kill(process);
       tk_istream_wait_for_data(istream, 0xFFFFFFFF);
       if (tk_iostream_write_len(process, data, tk_strlen(data), 1000) == 0) {
         tk_istream_wait_for_data(istream, 0xFFFFFFFF);
@@ -57,6 +62,7 @@ int main(int argc, char* argv[]) {
     }
   }
 
+  str_reset(&work_dir);
   str_reset(&file_path);
   tk_object_unref(TK_OBJECT(process));
   tk_socket_deinit();

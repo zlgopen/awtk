@@ -32,6 +32,20 @@ struct _process_info_t;
 typedef struct _process_info_t process_info_t;
 typedef struct _process_info_t* process_handle_t;
 
+/**
+ * @class process_start_info_t
+ * 子程序启动配置结构体。
+ */
+typedef struct _process_start_info_t {
+  /**
+   * @property {char*} work_dir
+   * @annotation ["readable"]
+   * 子进程当前工作目录。（如果 NULL 的话，就为父进程的工作目录）
+   */
+  char* work_dir;
+} process_start_info_t;
+
+
 #ifdef WIN32
 
 #include "tkc/wstr.h"
@@ -82,10 +96,11 @@ struct _process_info_t {
  * @param {const char*} file_path 子进程程序路径。(如果为空的话，使用命令行来执行参数的内容)
  * @param {const char**} args 子进程参数。
  * @param {uint32_t} argc 子进程参数长度。
+ * @param {const process_start_info_t*} start_info 子进程启动信息。（如果 NULL，就使用默认是值）
  *
  * @return {process_handle_t} 返回子进程句柄。
  */
-process_handle_t process_create(const char* file_path, const char** args, uint32_t argc);
+process_handle_t process_create(const char* file_path, const char** args, uint32_t argc, const process_start_info_t* start_info);
 
 /**
  * @method process_destroy
@@ -151,6 +166,16 @@ int32_t process_write(process_handle_t handle, const uint8_t* buff, uint32_t max
  * @return {bool_t} 断开返回 true。
  */
 bool_t process_is_broken(process_handle_t handle);
+
+/**
+ * @method process_kill
+ * 杀死子进程
+ * @annotation ["static"]
+ * @param {process_handle_t} handle 子进程句柄。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t process_kill(process_handle_t handle);
 
 END_C_DECLS
 

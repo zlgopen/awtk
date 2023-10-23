@@ -65,11 +65,17 @@ static void* process_read_pipe_on_thread(void* args) {
   return NULL;
 }
 
+ret_t process_kill(process_handle_t handle) {
+  return_value_if_fail(handle != NULL, RET_BAD_PARAMS);
+  return TerminateProcess(handle->proc_info.hProcess, -1) ? RET_OK : RET_FAIL;
+}
+
 ret_t process_destroy(process_handle_t handle) {
   return_value_if_fail(handle != NULL, RET_BAD_PARAMS);
   handle->quit = TRUE;
 
-  // TerminateProcess
+  CloseHandle(handle->proc_info.hProcess);
+  CloseHandle(handle->proc_info.hThread);
 
   if (handle->h_std_out_rd != NULL) {
     CloseHandle(handle->h_std_out_rd);
@@ -97,13 +103,14 @@ ret_t process_destroy(process_handle_t handle) {
   return RET_OK;
 }
 
-process_handle_t process_create(const char* file_path, const char** args, uint32_t argc) {
+process_handle_t process_create(const char* file_path, const char** args, uint32_t argc, const process_start_info_t* start_info) {
   uint32_t i = 0;
   BOOL ret = FALSE;
   HANDLE h_std_in_rd;
   HANDLE h_std_out_wr;
   int socks[2] = {0, 0};
   wchar_t* str_tmp = NULL;
+  wchar_t* work_dir = NULL;
 	SECURITY_ATTRIBUTES sa_attr;
   process_handle_t handle = TKMEM_ZALLOC(process_info_t);
   return_value_if_fail(handle != NULL, NULL);
@@ -139,6 +146,12 @@ process_handle_t process_create(const char* file_path, const char** args, uint32
     }
   }
 
+  if (start_info != NULL) {
+    if (start_info->work_dir != NULL) {
+      work_dir = tk_wstr_dup_utf8(start_info->work_dir);
+    }
+  }
+
 	ret = CreateProcessW(handle->file_path,
                       handle->cmd_line.str,     // command line 
                       NULL,                     // process security attributes 
@@ -146,14 +159,16 @@ process_handle_t process_create(const char* file_path, const char** args, uint32
                       TRUE,                     // handles are inherited 
                       0,                        // creation flags 
                       NULL,                     // use parent's environment 
-                      NULL,                     // use parent's current directory 
+                      work_dir,                 // use parent's current directory 
                       &handle->start_info,      // STARTUPINFO pointer 
                       &handle->proc_info);      // receives PROCESS_INFORMATION 
-  
+
+  if (work_dir != NULL) {
+    TKMEM_FREE(work_dir);
+  }
+
   goto_error_if_fail(ret);
 
-  CloseHandle(handle->proc_info.hProcess);
-  CloseHandle(handle->proc_info.hThread);
   CloseHandle(h_std_out_wr);
   CloseHandle(h_std_in_rd);
 
@@ -204,6 +219,9 @@ bool_t process_is_broken(process_handle_t handle) {
 }
 
 #elif defined(LINUX) || defined(MACOS)
+#include <dirent.h>
+#include <stdio.h>
+#include <signal.h>
 
 static ret_t process_close_read_pipe(process_handle_t handle) {
   if (handle->broken && tk_socket_wait_for_data(handle->read_pfd[0], 1) == RET_TIMEOUT) {
@@ -230,6 +248,50 @@ static void* process_wait_for_on_thread(void* args) {
   return NULL;
 }
 
+static int process_get_pid_by_ppid(int ppid) {
+#define STR_PPID  "PPid:"
+  int pid = -1;
+  DIR* proc = opendir("/proc");
+  if (proc != NULL) {
+    struct dirent* entry = NULL;
+    while ((entry = readdir(proc)) != NULL && pid == -1) {
+      if (entry->d_type == DT_DIR && !tk_str_eq(entry->d_name, ".") && !tk_str_eq(entry->d_name, "..")) {
+        FILE* file = NULL;
+        char path[MAX_PATH + 1];
+        tk_snprintf(path, sizeof(path), "/proc/%s/status", entry->d_name);
+        file = fopen(path, "r");
+        if (file != NULL) {
+          char line[128];
+          memset(line, 0x0, sizeof(line));
+          while (fgets(line, sizeof(line), file)) {
+            char* p1 = strstr(line, STR_PPID);
+            if (p1 != NULL) {
+              int new_ppid = tk_atoi(p1 + sizeof(STR_PPID));
+              if (new_ppid == ppid) {
+                pid = tk_atoi(entry->d_name);
+                break;
+              }
+            }
+            memset(line, 0x0, sizeof(line));
+          }
+          fclose(file);
+        }
+      }
+    }
+  }
+  return pid;
+}
+
+ret_t process_kill(process_handle_t handle) {
+  int ret = -1, pid;
+  return_value_if_fail(handle != NULL, RET_BAD_PARAMS);
+  pid = process_get_pid_by_ppid(handle->pid);
+  if (pid > 0) {
+    ret = kill(pid, SIGKILL);
+  }
+  return ret == 0 ? RET_OK : RET_FAIL;
+}
+
 ret_t process_destroy(process_handle_t handle) { 
   return_value_if_fail(handle != NULL, RET_BAD_PARAMS);
 
@@ -252,7 +314,7 @@ ret_t process_destroy(process_handle_t handle) {
   return RET_OK;
 }
 
-process_handle_t process_create(const char* file_path, const char** args, uint32_t argc) {
+process_handle_t process_create(const char* file_path, const char** args, uint32_t argc, const process_start_info_t* start_info) {
   pid_t pid;
   uint32_t i = 0;
   process_handle_t handle = TKMEM_ZALLOC(process_info_t);
@@ -279,6 +341,9 @@ process_handle_t process_create(const char* file_path, const char** args, uint32
     if (handle->write_pfd[0] != STDIN_FILENO) {  
       goto_error_if_fail(dup2(handle->write_pfd[0], STDIN_FILENO) >= 0);  
       close(handle->write_pfd[0]);
+    }
+    if (start_info != NULL && start_info->work_dir != NULL) {
+      chdir(start_info->work_dir);
     }
     execl("/bin/sh", "sh", "-c", handle->str_tmp.str, NULL);
     _exit(127);  

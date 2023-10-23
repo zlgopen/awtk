@@ -74,6 +74,11 @@ static ret_t tk_iostream_process_on_destroy(tk_object_t* obj) {
     iostream_process->args = NULL;
   }
 
+  if (iostream_process->start_info.work_dir != NULL) {
+    TKMEM_FREE(iostream_process->start_info.work_dir);
+    iostream_process->start_info.work_dir = NULL;
+  }
+
   tk_object_unref(TK_OBJECT(iostream_process->istream));
   tk_object_unref(TK_OBJECT(iostream_process->ostream));
 
@@ -148,7 +153,7 @@ tk_iostream_t* tk_iostream_process_create(const char* file_path, const char* arg
 ret_t tk_iostream_process_start(tk_iostream_t* iostream) {
   tk_iostream_process_t* iostream_process = TK_IOSTREAM_PROCESS(iostream);
   return_value_if_fail(iostream_process != NULL, RET_BAD_PARAMS);
-  iostream_process->handle = process_create(iostream_process->file_path, iostream_process->args, iostream_process->argc);
+  iostream_process->handle = process_create(iostream_process->file_path, iostream_process->args, iostream_process->argc, &iostream_process->start_info);
   return_value_if_fail(iostream_process != NULL, RET_BAD_PARAMS);
   if (iostream_process->handle != NULL) {
     tk_istream_process_set_handle(iostream_process->istream, iostream_process->handle);
@@ -157,4 +162,22 @@ ret_t tk_iostream_process_start(tk_iostream_t* iostream) {
     return RET_OK;
   }
   return RET_FAIL;
+}
+
+ret_t tk_iostream_process_kill(tk_iostream_t* iostream) {
+  tk_iostream_process_t* iostream_process = TK_IOSTREAM_PROCESS(iostream);
+  return_value_if_fail(iostream_process != NULL, RET_BAD_PARAMS);
+  return process_kill(iostream_process->handle);
+}
+
+ret_t tk_iostream_process_set_work_dir(tk_iostream_t* iostream, const char* work_dir) {
+  tk_iostream_process_t* iostream_process = TK_IOSTREAM_PROCESS(iostream);
+  return_value_if_fail(iostream_process != NULL, RET_BAD_PARAMS);
+  if (work_dir == NULL && iostream_process->start_info.work_dir != NULL) {
+    TKMEM_FREE(iostream_process->start_info.work_dir);
+    iostream_process->start_info.work_dir = NULL;
+  } else {
+    iostream_process->start_info.work_dir = tk_str_copy(iostream_process->start_info.work_dir, work_dir);
+  }
+  return RET_OK;
 }
