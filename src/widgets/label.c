@@ -32,10 +32,11 @@ static ret_t label_paint_text_mlines(widget_t* widget, canvas_t* c, line_parser_
   int32_t bottom = y + h;
   style_t* style = widget->astyle;
   int32_t font_size = c->font_size;
-  int32_t line_height = font_size + style_get_int(style, STYLE_ID_SPACER, 2);
+  int32_t spacer = style_get_int(style, STYLE_ID_SPACER, 2);
   align_v_t align_v = (align_v_t)style_get_int(style, STYLE_ID_TEXT_ALIGN_V, ALIGN_V_MIDDLE);
   align_h_t align_h = (align_h_t)style_get_int(style, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_CENTER);
-  int32_t h_text = p->total_lines * line_height;
+  int32_t line_height = font_size + spacer;
+  int32_t h_text = p->total_lines * line_height - spacer;
 
   switch (align_v) {
     case ALIGN_V_MIDDLE: {
