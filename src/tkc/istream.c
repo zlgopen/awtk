@@ -250,61 +250,61 @@ ret_t tk_istream_read_line_str(tk_istream_t* stream, str_t* str) {
 }
 
 ret_t tk_istream_read_uint8(tk_istream_t* stream, uint8_t*  value) {
-  int32_t ret = tk_istream_read_len(stream, value, sizeof(*value), TK_OSTREAM_DEFAULT_TIMEOUT);
+  int32_t ret = tk_istream_read_len(stream, value, sizeof(*value), TK_ISTREAM_DEFAULT_TIMEOUT);
 
   return ret == sizeof(*value) ? RET_OK : RET_FAIL;
 }
 
 ret_t tk_istream_read_uint16(tk_istream_t* stream, uint16_t*  value) {
-  int32_t ret = tk_istream_read_len(stream, value, sizeof(*value), TK_OSTREAM_DEFAULT_TIMEOUT);
+  int32_t ret = tk_istream_read_len(stream, value, sizeof(*value), TK_ISTREAM_DEFAULT_TIMEOUT);
 
   return ret == sizeof(*value) ? RET_OK : RET_FAIL;
 }
 
 ret_t tk_istream_read_uint32(tk_istream_t* stream, uint32_t*  value) {
-  int32_t ret = tk_istream_read_len(stream, value, sizeof(*value), TK_OSTREAM_DEFAULT_TIMEOUT);
+  int32_t ret = tk_istream_read_len(stream, value, sizeof(*value), TK_ISTREAM_DEFAULT_TIMEOUT);
 
   return ret == sizeof(*value) ? RET_OK : RET_FAIL;
 }
 
 ret_t tk_istream_read_uint64(tk_istream_t* stream, uint64_t*  value) {
-  int32_t ret = tk_istream_read_len(stream, value, sizeof(*value), TK_OSTREAM_DEFAULT_TIMEOUT);
+  int32_t ret = tk_istream_read_len(stream, value, sizeof(*value), TK_ISTREAM_DEFAULT_TIMEOUT);
 
   return ret == sizeof(*value) ? RET_OK : RET_FAIL;
 }
 
 ret_t tk_istream_read_int8(tk_istream_t* stream, int8_t*  value) {
-  int32_t ret = tk_istream_read_len(stream, value, sizeof(*value), TK_OSTREAM_DEFAULT_TIMEOUT);
+  int32_t ret = tk_istream_read_len(stream, value, sizeof(*value), TK_ISTREAM_DEFAULT_TIMEOUT);
 
   return ret == sizeof(*value) ? RET_OK : RET_FAIL;
 }
 
 ret_t tk_istream_read_int16(tk_istream_t* stream, int16_t*  value) {
-  int32_t ret = tk_istream_read_len(stream, value, sizeof(*value), TK_OSTREAM_DEFAULT_TIMEOUT);
+  int32_t ret = tk_istream_read_len(stream, value, sizeof(*value), TK_ISTREAM_DEFAULT_TIMEOUT);
 
   return ret == sizeof(*value) ? RET_OK : RET_FAIL;
 }
 
 ret_t tk_istream_read_int32(tk_istream_t* stream, int32_t*  value) {
-  int32_t ret = tk_istream_read_len(stream, value, sizeof(*value), TK_OSTREAM_DEFAULT_TIMEOUT);
+  int32_t ret = tk_istream_read_len(stream, value, sizeof(*value), TK_ISTREAM_DEFAULT_TIMEOUT);
 
   return ret == sizeof(*value) ? RET_OK : RET_FAIL;
 }
 
 ret_t tk_istream_read_int64(tk_istream_t* stream, int64_t*  value) {
-  int32_t ret = tk_istream_read_len(stream, value, sizeof(*value), TK_OSTREAM_DEFAULT_TIMEOUT);
+  int32_t ret = tk_istream_read_len(stream, value, sizeof(*value), TK_ISTREAM_DEFAULT_TIMEOUT);
 
   return ret == sizeof(*value) ? RET_OK : RET_FAIL;
 }
 
 ret_t tk_istream_read_float(tk_istream_t* stream, float*  value) {
-  int32_t ret = tk_istream_read_len(stream, value, sizeof(*value), TK_OSTREAM_DEFAULT_TIMEOUT);
+  int32_t ret = tk_istream_read_len(stream, value, sizeof(*value), TK_ISTREAM_DEFAULT_TIMEOUT);
 
   return ret == sizeof(*value) ? RET_OK : RET_FAIL;
 }
 
 ret_t tk_istream_read_double(tk_istream_t* stream, double*  value) {
-  int32_t ret = tk_istream_read_len(stream, value, sizeof(*value), TK_OSTREAM_DEFAULT_TIMEOUT);
+  int32_t ret = tk_istream_read_len(stream, value, sizeof(*value), TK_ISTREAM_DEFAULT_TIMEOUT);
 
   return ret == sizeof(*value) ? RET_OK : RET_FAIL;
 }
