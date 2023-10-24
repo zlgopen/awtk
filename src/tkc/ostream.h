@@ -112,12 +112,142 @@ int32_t tk_ostream_write_len(tk_ostream_t* stream, const void* buff, uint32_t ma
  * 写入一个字节的数据。
  *
  * @param {tk_ostream_t*} stream ostream对象。
- * @param {uint8_t} byte 数据。
+ * @param {uint8_t} value 数据。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *
  */
-ret_t tk_ostream_write_byte(tk_ostream_t* stream, uint8_t byte);
+ret_t tk_ostream_write_byte(tk_ostream_t* stream, uint8_t value);
+
+/**
+ * @method tk_ostream_write_uint8
+ *
+ * 写入uint8数据。
+ *
+ * @param {tk_ostream_t*} stream ostream对象。
+ * @param {uint8_t} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_ostream_write_uint8(tk_ostream_t* stream, uint8_t value);
+
+/**
+ * @method tk_ostream_write_uint16
+ *
+ * 写入uint16数据。
+ *
+ * @param {tk_ostream_t*} stream ostream对象。
+ * @param {uint16_t} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_ostream_write_uint16(tk_ostream_t* stream, uint16_t value);
+
+/**
+ * @method tk_ostream_write_uint32
+ *
+ * 写入uint32数据。
+ *
+ * @param {tk_ostream_t*} stream ostream对象。
+ * @param {uint32_t} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_ostream_write_uint32(tk_ostream_t* stream, uint32_t value);
+
+/**
+ * @method tk_ostream_write_uint64
+ *
+ * 写入uint64数据。
+ *
+ * @param {tk_ostream_t*} stream ostream对象。
+ * @param {uint64_t} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_ostream_write_uint64(tk_ostream_t* stream, uint64_t value);
+
+/**
+ * @method tk_ostream_write_int8
+ *
+ * 写入int8数据。
+ *
+ * @param {tk_ostream_t*} stream ostream对象。
+ * @param {int8_t} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_ostream_write_int8(tk_ostream_t* stream, int8_t value);
+
+/**
+ * @method tk_ostream_write_int16
+ *
+ * 写入int16数据。
+ *
+ * @param {tk_ostream_t*} stream ostream对象。
+ * @param {int16_t} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_ostream_write_int16(tk_ostream_t* stream, int16_t value);
+
+/**
+ * @method tk_ostream_write_int32
+ *
+ * 写入int32数据。
+ *
+ * @param {tk_ostream_t*} stream ostream对象。
+ * @param {int32_t} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_ostream_write_int32(tk_ostream_t* stream, int32_t value);
+
+/**
+ * @method tk_ostream_write_int64
+ *
+ * 写入int64数据。
+ *
+ * @param {tk_ostream_t*} stream ostream对象。
+ * @param {int64_t} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_ostream_write_int64(tk_ostream_t* stream, int64_t value);
+
+/**
+ * @method tk_ostream_write_float
+ *
+ * 写入float数据。
+ *
+ * @param {tk_ostream_t*} stream ostream对象。
+ * @param {float} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_ostream_write_float(tk_ostream_t* stream, float value);
+
+/**
+ * @method tk_ostream_write_double
+ *
+ * 写入double数据。
+ *
+ * @param {tk_ostream_t*} stream ostream对象。
+ * @param {double} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_ostream_write_double(tk_ostream_t* stream, double value);
 
 /**
  * @method tk_ostream_flush
@@ -158,6 +288,16 @@ ret_t tk_ostream_printf(tk_ostream_t* stream, const char* format, ...);
 #define TK_OSTREAM(obj) ((tk_ostream_t*)(obj))
 #define TK_OSTREAM_SEEKABLE(obj) (TK_OSTREAM(obj)->seek != NULL)
 #define TK_OSTREAM_TELLABLE(obj) (TK_OSTREAM(obj)->tell != NULL)
+
+/**
+ * @method tk_ostream_unref
+ *
+ * 引用计数减1。引用计数为0时，销毁对象。
+ * @param {tk_ostream_t*} stream ostream对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_ostream_unref(tk_ostream_t* stream);
 
 END_C_DECLS
 

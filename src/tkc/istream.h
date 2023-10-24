@@ -133,6 +133,137 @@ ret_t tk_istream_wait_for_data(tk_istream_t* stream, uint32_t timeout_ms);
 ret_t tk_istream_flush(tk_istream_t* stream);
 
 /**
+ * @method tk_istream_read_uint8
+ *
+ * 写入uint8数据。
+ *
+ * @param {tk_istream_t*} stream istream对象。
+ * @param {uint8_t*} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_istream_read_uint8(tk_istream_t* stream, uint8_t*  value);
+
+/**
+ * @method tk_istream_read_uint16
+ *
+ * 写入uint16数据。
+ *
+ * @param {tk_istream_t*} stream istream对象。
+ * @param {uint16_t*} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_istream_read_uint16(tk_istream_t* stream, uint16_t*  value);
+
+/**
+ * @method tk_istream_read_uint32
+ *
+ * 写入uint32数据。
+ *
+ * @param {tk_istream_t*} stream istream对象。
+ * @param {uint32_t*} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_istream_read_uint32(tk_istream_t* stream, uint32_t*  value);
+
+/**
+ * @method tk_istream_read_uint64
+ *
+ * 写入uint64数据。
+ *
+ * @param {tk_istream_t*} stream istream对象。
+ * @param {uint64_t*} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_istream_read_uint64(tk_istream_t* stream, uint64_t*  value);
+
+/**
+ * @method tk_istream_read_int8
+ *
+ * 写入int8数据。
+ *
+ * @param {tk_istream_t*} stream istream对象。
+ * @param {int8_t*} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_istream_read_int8(tk_istream_t* stream, int8_t*  value);
+
+/**
+ * @method tk_istream_read_int16
+ *
+ * 写入int16数据。
+ *
+ * @param {tk_istream_t*} stream istream对象。
+ * @param {int16_t*} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_istream_read_int16(tk_istream_t* stream, int16_t*  value);
+
+/**
+ * @method tk_istream_read_int32
+ *
+ * 写入int32数据。
+ *
+ * @param {tk_istream_t*} stream istream对象。
+ * @param {int32_t*} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_istream_read_int32(tk_istream_t* stream, int32_t*  value);
+
+/**
+ * @method tk_istream_read_int64
+ *
+ * 写入int64数据。
+ *
+ * @param {tk_istream_t*} stream istream对象。
+ * @param {int64_t*} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_istream_read_int64(tk_istream_t* stream, int64_t*  value);
+
+/**
+ * @method tk_istream_read_float
+ *
+ * 写入float数据。
+ *
+ * @param {tk_istream_t*} stream istream对象。
+ * @param {float*} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_istream_read_float(tk_istream_t* stream, float*  value);
+
+/**
+ * @method tk_istream_read_double
+ *
+ * 写入double数据。
+ *
+ * @param {tk_istream_t*} stream istream对象。
+ * @param {double*} value 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_istream_read_double(tk_istream_t* stream, double*  value);
+
+
+/**
  * @method tk_istream_read_len
  *
  * 读取指定长度的数据。
@@ -177,6 +308,16 @@ int32_t tk_istream_read_line(tk_istream_t* stream, void* buff, uint32_t max_size
  *
  */
 ret_t tk_istream_read_line_str(tk_istream_t* stream, str_t* str);
+
+/**
+ * @method tk_istream_unref
+ *
+ * 引用计数减1。引用计数为0时，销毁对象。
+ * @param {tk_istream_t*} stream istream对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_istream_unref(tk_istream_t* stream);
 
 #define TK_ISTREAM(obj) ((tk_istream_t*)(obj))
 #define TK_ISTREAM_SEEKABLE(obj) (TK_ISTREAM(obj)->seek != NULL)

@@ -132,6 +132,16 @@ int32_t tk_iostream_write(tk_iostream_t* stream, const void* buff, uint32_t max_
 int32_t tk_iostream_write_len(tk_iostream_t* stream, const void* buff, uint32_t max_size,
                               uint32_t timeout_ms);
 
+/**
+ * @method tk_iostream_unref
+ *
+ * 引用计数减1。引用计数为0时，销毁对象。
+ * @param {tk_iostream_t*} stream iostream对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_iostream_unref(tk_iostream_t* stream);
+
 #define TK_IOSTREAM(obj) ((tk_iostream_t*)(obj))
 
 END_C_DECLS

@@ -41,7 +41,7 @@ struct _tk_ostream_mem_t {
 
   /*private*/
   bool_t own_the_buff;
-  uint8_t* buff;
+  void* buff;
   uint32_t size;
   uint32_t cursor;
   uint32_t packet_size;
@@ -52,16 +52,29 @@ struct _tk_ostream_mem_t {
  *
  * 创建ostream对象。
  *
- * @param {uint8_t*} buff 返回数据的缓冲区。
+ * @param {void*} buff 返回数据的缓冲区。
  * @param {uint32_t} size 缓冲区的大小。
- * @param {uint32_t} packet_size 缺省一次读取的数据的长度。
+ * @param {uint32_t} packet_size 缺省一次写入的数据的长度(一般无0)。
  * @param {bool_t} own_the_buff 是否让ostream对象拥有buff。
  *
  * @return {tk_ostream_t*} 返回ostream对象。
  *
  */
-tk_ostream_t* tk_ostream_mem_create(uint8_t* buff, uint32_t size, uint32_t packet_size,
+tk_ostream_t* tk_ostream_mem_create(void* buff, uint32_t size, uint32_t packet_size,
                                     bool_t own_the_buff);
+
+/**
+ * @method tk_ostream_mem_create_simple
+ *
+ * 创建ostream对象。
+ *
+ * @param {void*} buff 返回数据的缓冲区。
+ * @param {uint32_t} size 缓冲区的大小。
+ *
+ * @return {tk_ostream_t*} 返回ostream对象。
+ *
+ */
+tk_ostream_t* tk_ostream_mem_create_simple(void* buff, uint32_t size);
 
 #define TK_OSTREAM_MEM(obj) ((tk_ostream_mem_t*)(obj))
 

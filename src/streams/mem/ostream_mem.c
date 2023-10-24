@@ -82,7 +82,7 @@ static const object_vtable_t s_tk_ostream_mem_vtable = {.type = "tk_ostream_mem"
                                                         .get_prop = tk_ostream_mem_get_prop,
                                                         .set_prop = tk_ostream_mem_set_prop};
 
-tk_ostream_t* tk_ostream_mem_create(uint8_t* buff, uint32_t size, uint32_t packet_size,
+tk_ostream_t* tk_ostream_mem_create(void* buff, uint32_t size, uint32_t packet_size,
                                     bool_t own_the_buff) {
   tk_object_t* obj = NULL;
   tk_ostream_mem_t* ostream_mem = NULL;
@@ -102,4 +102,8 @@ tk_ostream_t* tk_ostream_mem_create(uint8_t* buff, uint32_t size, uint32_t packe
   TK_OSTREAM(obj)->tell = tk_ostream_mem_tell;
 
   return TK_OSTREAM(obj);
+}
+
+tk_ostream_t* tk_ostream_mem_create_simple(void* buff, uint32_t size) {
+  return tk_ostream_mem_create(buff, size, 0, FALSE);
 }
