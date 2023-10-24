@@ -54,10 +54,14 @@ int main(int argc, char* argv[]) {
         printf("%s", buff);
       }
       tk_iostream_process_kill(process);
-      tk_istream_wait_for_data(istream, 0xFFFFFFFF);
+      if (tk_istream_wait_for_data(istream, 0xFFFFFFFF) == RET_OK) {
+        memset(buff, 0x0, sizeof(buff));
+        tk_istream_read(istream, buff, sizeof(buff));
+      }
       if (tk_iostream_write_len(process, data, tk_strlen(data), 1000) == 0) {
-        tk_istream_wait_for_data(istream, 0xFFFFFFFF);
-        printf("close process !!!");
+        if (tk_istream_wait_for_data(istream, 0xFFFFFFFF) != RET_OK) {
+          printf("close process !!!");
+        }
       }
     }
   }

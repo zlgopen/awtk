@@ -31,14 +31,6 @@
 
 #ifdef WIN32
 
-static ret_t process_close_server_sock(process_handle_t handle) {
-  if (handle->broken && tk_socket_wait_for_data(handle->client_fd, 1) == RET_TIMEOUT) {
-    tk_socket_close(handle->server_fd);
-    handle->server_fd = -1;
-  }
-  return RET_OK;
-}
-
 static void* process_read_pipe_on_thread(void* args) {
   process_handle_t handle = (process_handle_t)args;
   return_value_if_fail(handle != NULL, NULL);
@@ -61,7 +53,8 @@ static void* process_read_pipe_on_thread(void* args) {
       pos += len;
     }
   }
-  process_close_server_sock(handle);
+  tk_socket_close(handle->server_fd);
+  handle->server_fd = -1;
   return NULL;
 }
 
@@ -92,7 +85,9 @@ ret_t process_destroy(process_handle_t handle) {
     handle->rthread = NULL;
   }
 
-  tk_socket_close(handle->client_fd);
+  if (handle->client_fd > 0) {
+    tk_socket_close(handle->client_fd);
+  }
   if (handle->server_fd > 0) {
     tk_socket_close(handle->server_fd);
   }
@@ -199,7 +194,10 @@ ret_t process_wait_for_data(process_handle_t handle, uint32_t timeout_ms) {
 int32_t process_read(process_handle_t handle, uint8_t* buff, uint32_t max_size) {
   int fd = process_handle_get_fd(handle);
   int32_t size = tk_socket_recv(fd, buff, max_size, 0);
-  process_close_server_sock(handle);
+  if (size <= 0 && handle->broken) {
+    tk_socket_close(handle->client_fd);
+    handle->client_fd = -1;
+  }
   return size;
 }
 

@@ -2,6 +2,7 @@
 
 2023/10/24
   * 完善stream。
+  * 修复子进程断开信号不正常的问题以及修改了测试用例(感谢智明提供补丁)
 
 2023/10/23
   * 增加函数wbuffer\_create/wbuffer\_destroy/rbuffer\_create/rbuffer\_destroy
