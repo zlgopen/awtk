@@ -5,6 +5,7 @@
   * 修复编译报错的问题(感谢智明提供补丁)
   * 增加函数str\_append\_lowercase/str\_append\_uppercase
   * WASM 实现vsscanf/sscanf
+  * 修复没有导出debugger\_launch\_app的问题(感谢智明提供补丁)
 
 2023/10/24
   * 完善stream。

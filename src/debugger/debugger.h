@@ -457,7 +457,7 @@ ret_t debugger_get_break_points(debugger_t* debugger, binary_data_t* break_point
  */
 tk_object_t* debugger_get_threads(debugger_t* debugger);
 
-/*
+/**
  * @method debugger_launch_app
  * 执行程序(仅用于调试原生程序，脚本不支持)。
  * @param {debugger_t*} debugger debugger对象。
