@@ -35,7 +35,7 @@ static int32_t tk_ostream_mem_write(tk_ostream_t* stream, const uint8_t* buff, u
   }
 
   if (size > 0) {
-    memcpy(ostream_mem->buff + ostream_mem->cursor, buff, size);
+    memcpy(((uint8_t*)ostream_mem->buff) + ostream_mem->cursor, buff, size);
     ostream_mem->cursor += size;
   }
 
