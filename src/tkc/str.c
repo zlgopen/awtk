@@ -147,6 +147,34 @@ ret_t str_append(str_t* str, const char* text) {
   return str_append_with_len(str, text, strlen(text));
 }
 
+ret_t str_append_uppercase(str_t* str, const char* text) {
+  ret_t ret = RET_OK;
+  const char* p = text;
+  return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
+
+  while (*p) {
+    ret = str_append_char(str, toupper(*p));
+    break_if_fail(ret == RET_OK);
+    p++;
+  }
+
+  return ret;
+}
+
+ret_t str_append_lowercase(str_t* str, const char* text) {
+  ret_t ret = RET_OK;
+  const char* p = text;
+  return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
+
+  while (*p) {
+    ret = str_append_char(str, tolower(*p));
+    break_if_fail(ret == RET_OK);
+    p++;
+  }
+
+  return ret;
+}
+
 ret_t str_append_more(str_t* str, const char* text, ...) {
   va_list va;
   const char* p = NULL;

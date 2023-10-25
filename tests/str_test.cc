@@ -12,6 +12,31 @@ TEST(Str, demo) {
 
   str_append(&s, "abc");
   str_append(&s, "123");
+  ASSERT_STREQ(s.str, "abc123");
+
+  str_reset(&s);
+}
+
+TEST(Str, append_uppercase) {
+  str_t s;
+  str_init(&s, 0);
+
+  str_append_uppercase(&s, "a");
+  str_append_uppercase(&s, "abc");
+  str_append_uppercase(&s, "123");
+  ASSERT_STREQ(s.str, "AABC123");
+
+  str_reset(&s);
+}
+
+TEST(Str, append_lowercase) {
+  str_t s;
+  str_init(&s, 0);
+
+  str_append_lowercase(&s, "a");
+  str_append_lowercase(&s, "ABC");
+  str_append_lowercase(&s, "123");
+  ASSERT_STREQ(s.str, "aabc123");
 
   str_reset(&s);
 }

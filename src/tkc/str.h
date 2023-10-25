@@ -215,6 +215,26 @@ ret_t str_set_with_len(str_t* str, const char* text, uint32_t len);
 ret_t str_append(str_t* str, const char* text);
 
 /**
+ * @method str_append_uppercase
+ * 将text转换为大写，并追加到str中。
+ * @param {str_t*} str str对象。
+ * @param {const char*} text 要追加的字符串。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_uppercase(str_t* str, const char* text);
+
+/**
+ * @method str_append_lowercase
+ * 将text转换为大写，并追加到str中。
+ * @param {str_t*} str str对象。
+ * @param {const char*} text 要追加的字符串。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_lowercase(str_t* str, const char* text);
+
+/**
  * @method str_append_more
  * 追加多个字符串。以NULL结束。
  *
@@ -785,7 +805,6 @@ ret_t str_append_format(str_t* str, uint32_t size, const char* format, ...);
     str_destroy(str);    \
     str = NULL;          \
   }
-
 
 END_C_DECLS
 
