@@ -4,6 +4,7 @@
   * 增加函数tk\_iostream\_serial\_create\_ex
   * 修复编译报错的问题(感谢智明提供补丁)
   * 增加函数str\_append\_lowercase/str\_append\_uppercase
+  * WASM 实现vsscanf/sscanf
 
 2023/10/24
   * 完善stream。

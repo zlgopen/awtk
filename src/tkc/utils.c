@@ -1981,6 +1981,20 @@ int tk_sscanf_simple(const char* str, const char* format, ...) {
 }
 
 #ifdef HAS_NO_VSSCANF
+int sscanf(const char* str, const char* format, ...) {
+  int ret = 0;
+  va_list va;
+  va_start(va, format);
+  ret = tk_vsscanf_simple(str, format, va);
+  va_end(va);
+
+  return ret;
+}
+
+int vsscanf(const char* str, const char* format, va_list args) {
+  return tk_vsscanf_simple(str, format, args);
+}
+
 int tk_sscanf(const char* str, const char* format, ...) {
   int ret = 0;
   va_list va;
