@@ -19,6 +19,8 @@
  *
  */
 
+#include "tkc/url.h"
+#include "tkc/path.h"
 #include "tkc/mem.h"
 #include "streams/serial/istream_serial.h"
 #include "streams/serial/ostream_serial.h"
@@ -190,3 +192,10 @@ ret_t tk_iostream_serial_wait_for_data(tk_iostream_t* iostream, uint32_t timeout
 
   return serial_wait_for_data(iostream_serial->fd, timeout);
 }
+
+#include "streams/stream_factory.h"
+
+tk_iostream_t* tk_iostream_serial_create_ex(const char* url) {
+  return tk_stream_factory_create_iostream(url);
+}
+

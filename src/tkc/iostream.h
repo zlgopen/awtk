@@ -51,7 +51,7 @@ struct _tk_iostream_t {
 /**
  * @method tk_iostream_get_istream
  *
- * 获取输入流对象。
+ * 获取输入流对象(不再使用时，无需UNREF返回的对象)。
  *
  * @param {tk_iostream_t*} stream iostream对象。
  *
@@ -63,7 +63,7 @@ tk_istream_t* tk_iostream_get_istream(tk_iostream_t* stream);
 /**
  * @method tk_iostream_get_ostream
  *
- * 获取输出流对象。
+ * 获取输出流对象(不再使用时，无需UNREF返回的对象)。
  *
  * @param {tk_iostream_t*} stream iostream对象。
  *
