@@ -558,10 +558,4 @@ typedef struct _lcd_t lcd_t;
 #define TK_DOUBLE_CLICK_XY 10
 #endif /*TK_DOUBLE_CLICK_XY*/
 
-#ifndef TK_IS_PC
-#if defined(WITH_SDL) && !defined(ANDROID) && !defined(IOS)
-#define TK_IS_PC 1
-#endif
-#endif /*TK_IS_PC*/
-
 #endif /*TK_TYPES_DEF_H*/

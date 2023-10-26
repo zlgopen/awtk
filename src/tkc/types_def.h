@@ -34,6 +34,12 @@
 #define WITH_SOCKET 1
 #endif /*WIN32 || MACOS || LINUX || IOS || ANDROID*/
 
+#ifndef TK_IS_PC
+#if defined(WITH_SDL) && !defined(ANDROID) && !defined(IOS)
+#define TK_IS_PC 1
+#endif
+#endif /*TK_IS_PC*/
+
 #include <stdarg.h>
 #include <ctype.h>
 #include <errno.h>
