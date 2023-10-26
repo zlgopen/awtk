@@ -49,5 +49,5 @@ image_set_draw_type(img, IMAGE_DRAW_CENTER);
 images.xml 展示了各种绘制方式。
 
 ```
-./bin/preview_ui demos/assets/raw/ui/images.xml
+./bin/preview_ui ui=design/default/ui/images.xml
 ```

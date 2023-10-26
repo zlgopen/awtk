@@ -151,7 +151,7 @@
 ### 3.3 运行例程
 
 ```bash
-./bin/preview_ui design/default/ui/image_packed.xml
+./bin/preview_ui ui=design/default/ui/image_packed.xml
 ```
 
 ## 4. 限制
