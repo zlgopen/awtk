@@ -39,8 +39,10 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
   }
 
   do {
-    if (image_base->image != NULL &&
-        widget_load_image(widget, image_base->image, &bitmap) == RET_OK) {
+    break_if_fail(image_base->image != NULL);
+    if (widget_load_image(widget, image_base->image, &bitmap) == RET_OK) {
+      const char* region = strrchr(image_base->image, '#');
+
       if (vg != NULL) {
         if (image_need_transform(widget)) {
           if (image->draw_type == IMAGE_DRAW_ICON || image->draw_type == IMAGE_DRAW_CENTER) {
@@ -62,7 +64,11 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
       }
 
       dst = rect_init(0, 0, widget->w, widget->h);
-      canvas_draw_image_ex(c, &bitmap, image->draw_type, &dst);
+      if (region == NULL) {
+        canvas_draw_image_ex(c, &bitmap, image->draw_type, &dst);
+      } else {
+        widget_draw_image_with_region(widget, c, &bitmap, region, &dst, image->draw_type);
+      }
     }
   } while (FALSE);
 

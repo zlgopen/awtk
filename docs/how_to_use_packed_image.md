@@ -156,5 +156,9 @@
 
 ## 4. 限制
 
-- 目前只能在 style 中使用。
+- 目前只能在 style 中 和 image 控件使用。
 - draw\_type 只支持 default|scale|center|icon 等几种。
+
+## 5. 其它
+  * [packed image demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/packed_image.c)
+

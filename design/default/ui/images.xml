@@ -49,6 +49,11 @@
       <label/>
       <image style="border" image="green_btn_n" draw_type="patch3_y_scale_x"><label w="100%" h="100%" text="patch3_y_scale_x" /></image>
      </list_item>
+     <list_item style="empty" children_layout="default(r=1,c=3,s=2,m=2)">
+      <image style="border" image="image_packed_fg#xywh(0,0,106,54)" draw_type="center"><label w="100%" h="100%" text="packed center" /></image>
+      <image style="border" image="image_packed_fg#grid(4,3,0,2)" draw_type="default"><label w="100%" h="100%" text="packed default" /></image>
+      <image style="border" image="image_packed_fg#xywh(106,0,106,54)" draw_type="scale"><label w="100%" h="100%" text="packed scale" /></image>
+     </list_item>
     </scroll_view>
     <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" value="0"/>
   </list_view>

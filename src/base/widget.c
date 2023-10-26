@@ -1605,6 +1605,25 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
   return RET_OK;
 }
 
+ret_t widget_draw_image_with_region(widget_t* widget, canvas_t* c, bitmap_t* img,
+  const char* region, const rect_t* dst, image_draw_type_t draw_type) {
+  rect_t src;
+  return_value_if_fail(widget != NULL && img != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(c != NULL && region != NULL && dst != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(region, "#")) {
+    src = rect_init(widget->x, widget->y, widget->w, widget->h);
+  } else if (tk_str_eq(region, "#g")) {
+    point_t p = {widget->x, widget->y};
+    widget_to_global(widget, &p);
+    src = rect_init(p.x, p.y, widget->w, widget->h);
+  } else {
+    image_region_parse(img->w, img->h, region, &src);
+  }
+
+  return canvas_draw_image_ex2(c, img, draw_type, &src, dst);
+}
+
 ret_t widget_fill_rect(widget_t* widget, canvas_t* c, const rect_t* r, bool_t bg,
                        image_draw_type_t draw_type) {
   bitmap_t img;
@@ -1655,33 +1674,14 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, const rect_t* r, bool_t bg
   }
 
   if (image_name != NULL && *image_name && r->w > 0 && r->h > 0) {
-    char name[MAX_PATH + 1];
-    const char* region = strrchr(image_name, '#');
-    if (region != NULL) {
-      memset(name, 0x00, sizeof(name));
-      tk_strncpy(name, image_name, region - image_name);
-      image_name = name;
-    }
-
     if (widget_load_image(widget, image_name, &img) == RET_OK) {
+      const char* region = strrchr(image_name, '#');
       draw_type = (image_draw_type_t)style_get_int(style, draw_type_key, draw_type);
 
       if (region == NULL) {
         canvas_draw_image_ex(c, &img, draw_type, r);
       } else {
-        rect_t src;
-        rect_t dst = *r;
-        if (tk_str_eq(region, "#")) {
-          src = rect_init(widget->x, widget->y, widget->w, widget->h);
-        } else if (tk_str_eq(region, "#g")) {
-          point_t p = {widget->x, widget->y};
-          widget_to_global(widget, &p);
-          src = rect_init(p.x, p.y, widget->w, widget->h);
-        } else {
-          image_region_parse(img.w, img.h, region, &src);
-        }
-
-        canvas_draw_image_ex2(c, &img, draw_type, &src, &dst);
+        widget_draw_image_with_region(widget, c, &img, region, r, draw_type);
       }
     }
   }
@@ -4032,10 +4032,18 @@ float_t widget_measure_text(widget_t* widget, const wchar_t* text) {
 }
 
 ret_t widget_load_image(widget_t* widget, const char* name, bitmap_t* bitmap) {
+  char real_name[MAX_PATH+1];
+  const char* region = NULL;
   image_manager_t* imm = widget_get_image_manager(widget);
 
   return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget != NULL && name != NULL && bitmap != NULL, RET_BAD_PARAMS);
+
+  region = strrchr(name, '#');
+  if (region != NULL) {
+    tk_strncpy(real_name, name, region-name);
+    name = real_name;
+  }
 
   return image_manager_get_bitmap(imm, name, bitmap);
 }
