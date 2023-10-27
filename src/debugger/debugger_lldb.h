@@ -56,6 +56,7 @@ typedef struct _debugger_lldb_t {
   int64_t current_frame_line;
   const char* current_frame_name;
   const char* current_frame_source;
+  const char* current_frame_file_path;
 
   tk_object_t* resps;
   /*代码文件缓存*/

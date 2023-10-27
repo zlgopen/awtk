@@ -458,6 +458,13 @@ typedef struct _debugger_breaked_event_t {
    * 中断运行的行号。
    */
   uint32_t line;
+
+  /**
+   * @property {const char*} file_path
+   * @annotation ["readable"]
+   * 中断运行的文件路径。（备注：可能文件路径为空）
+   */
+  const char* file_path;
 } debugger_breaked_event_t;
 
 /**
@@ -470,6 +477,18 @@ typedef struct _debugger_breaked_event_t {
  * @return {event_t*} 返回event对象。
  */
 event_t* debugger_breaked_event_init(debugger_breaked_event_t* event, uint32_t line);
+
+/**
+ * @method debugger_breaked_event_init_ex
+ * 初始调试器中断运行的事件。
+ *
+ * @param {debugger_breaked_event_t*} event event对象。
+ * @param {uint32_t} line 中断运行的行号。
+ * @param {const char*} file_path 中断运行的行号。
+ *
+ * @return {event_t*} 返回event对象。
+ */
+event_t* debugger_breaked_event_init_ex(debugger_breaked_event_t* event, uint32_t line, const char* file_path);
 
 /**
  * @method debugger_breaked_event_cast
@@ -503,6 +522,12 @@ typedef struct _debugger_frame_changed_event_t {
    */
   const char* func;
 
+  /**
+   * @property {const char*} file_path
+   * @annotation ["readable"]
+   * 文件路径。（备注：可能文件路径为空）
+   */
+  const char* file_path;
 } debugger_frame_changed_event_t;
 
 /**
@@ -516,6 +541,19 @@ typedef struct _debugger_frame_changed_event_t {
  * @return {event_t*} 返回event对象。
  */
 event_t* debugger_frame_changed_event_init(debugger_frame_changed_event_t* event, const char* func, uint32_t line);
+
+/**
+ * @method debugger_frame_changed_event_init
+ * 初始化
+ *
+ * @param {debugger_frame_changed_event_t*} event event对象。
+ * @param {const char*} func 函数名。
+ * @param {uint32_t} line 行号。
+ * @param {const char*} file_path 文件路径。
+ *
+ * @return {event_t*} 返回event对象。
+ */
+event_t* debugger_frame_changed_event_init_ex(debugger_frame_changed_event_t* event, const char* func, uint32_t line, const char* file_path);
 
 /**
  * @method debugger_frame_changed_event_cast

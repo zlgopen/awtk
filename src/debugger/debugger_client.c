@@ -65,12 +65,14 @@ static ret_t debugger_client_dispatch_message(debugger_t* debugger, debugger_res
   switch (resp->code) {
     case DEBUGGER_RESP_MSG_BREAKED: {
       uint32_t line = 0;
+      const char* file_path = NULL;
       debugger_breaked_event_t event;
       tk_object_t* obj = ubjson_to_object(client->buff, resp->size);
       return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
       line = tk_object_get_prop_int(obj, STR_DEBUGGER_EVENT_PROP_LINE, 0);
+      file_path = tk_object_get_prop_str(obj, STR_DEBUGGER_EVENT_PROP_FILE_PATH);
       debugger_set_state(debugger,  DEBUGGER_PROGRAM_STATE_PAUSED);
-      emitter_dispatch(EMITTER(debugger), debugger_breaked_event_init(&event, line));
+      emitter_dispatch(EMITTER(debugger), debugger_breaked_event_init_ex(&event, line, file_path));
       TK_OBJECT_UNREF(obj);
       break;
     }

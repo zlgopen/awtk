@@ -251,7 +251,7 @@ ret_t tk_socket_wait_for_data(int sock, uint32_t timeout_ms) {
   FD_SET(sock, &fdsr);
   ret = select(sock + 1, &fdsr, NULL, NULL, &tv);
 
-  return ret > 0 ? RET_OK : RET_TIMEOUT;
+  return ret > 0 && FD_ISSET(sock, &fdsr) ? RET_OK : RET_TIMEOUT;
 }
 
 bool_t tk_socket_last_io_has_error(void) {

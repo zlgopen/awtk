@@ -169,16 +169,18 @@ static ret_t debugger_lldb_emit(debugger_t* debugger, tk_object_t* resp) {
 
   if (tk_str_eq(event, EVENT_STOPPED)) {
     int32_t line = 0;
+    const char* file_path = NULL;
     debugger_breaked_event_t event;
     TK_OBJECT_UNREF(lldb->callstack);
-
+    
     lldb->stop_thread_id = tk_object_get_prop_int64(resp, "body.threadId", 0);
     lldb->callstack = debugger_lldb_get_callstack_impl(debugger, 0, 100);
+    file_path = debugger_lldb_get_source_path(debugger, debugger->current_frame_index);
     debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_PAUSED);
     debugger_set_current_frame(debugger, 0);
     /*LLDB 行号从1开始*/
     line = lldb->current_frame_line - 1;
-    emitter_dispatch(EMITTER(debugger), debugger_breaked_event_init(&event, line));
+    emitter_dispatch(EMITTER(debugger), debugger_breaked_event_init_ex(&event, line, file_path));
 
     log_debug("threadId = %d stopped\n", (int)lldb->stop_thread_id);
   } else if (tk_str_eq(event, EVENT_OUTPUT)) {
@@ -982,11 +984,12 @@ static ret_t debugger_lldb_set_current_frame(debugger_t* debugger, uint32_t fram
   lldb->current_frame_id = debugger_lldb_get_frame_id(debugger, frame_index);
   lldb->current_frame_name = debugger_lldb_get_frame_name(debugger, frame_index);
   lldb->current_frame_line = debugger_lldb_get_source_line(debugger, frame_index);
+  lldb->current_frame_file_path = debugger_lldb_get_source_path(debugger, frame_index);
 
   debugger_lldb_scopes_command(debugger, lldb->current_frame_id);
 
   /*LLDB 行号从1开始*/
-  debugger_frame_changed_event_init(&event, lldb->current_frame_name, lldb->current_frame_line - 1);
+  debugger_frame_changed_event_init_ex(&event, lldb->current_frame_name, lldb->current_frame_line - 1, lldb->current_frame_file_path);
   emitter_dispatch(EMITTER(debugger), (event_t*)&(event));
 
   return RET_OK;

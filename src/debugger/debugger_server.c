@@ -296,6 +296,7 @@ static ret_t debugger_server_on_events(void* ctx, event_t* e) {
     case DEBUGGER_RESP_MSG_BREAKED: {
       debugger_breaked_event_t* event = debugger_breaked_event_cast(e);
       tk_object_set_prop_int(obj, STR_DEBUGGER_EVENT_PROP_LINE, event->line);
+      tk_object_set_prop_str(obj, STR_DEBUGGER_EVENT_PROP_FILE_PATH, event->file_path);
       ret = debugger_server_send_object(server, &msg, obj);
       break;
     }

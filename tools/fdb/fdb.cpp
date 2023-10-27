@@ -251,11 +251,27 @@ static ret_t fdb_on_debugger_events(void* ctx, event_t* e) {
       debugger_frame_changed_event_t* event = debugger_frame_changed_event_cast(e);
       app->current_func = event->func;
       app->current_line = event->line;
+      str_append(str, ">[frame_info]");
+      if (event->file_path != NULL) {
+        str_append(str, event->file_path);
+        str_append(str, ":");
+      }
+      str_append_int64(str, event->line);
+      str_append(str, ":");
+      str_append(str, event->func);
       break;
     }
     case DEBUGGER_RESP_MSG_BREAKED: {
       debugger_breaked_event_t* event = debugger_breaked_event_cast(e);
       app->current_line = event->line;
+      str_append(str, ">[bread]");
+      if (event->file_path != NULL) {
+        str_append(str, event->file_path);
+        str_append(str, ":");
+      } else {
+        str_append(str, "line:");
+      }
+      str_append_int64(str, event->line);
       break;
     }
     case DEBUGGER_RESP_MSG_LOG: {

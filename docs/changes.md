@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/10/27
+  * debugger的中断事件和堆栈改变事件增加文件路径(感谢智明提供补丁)
+
 2023/10/26
   * 图片控件支持[packed image](how_to_use_packed_image.md)
 
