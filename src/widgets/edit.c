@@ -2177,6 +2177,8 @@ ret_t edit_pre_input_with_sep(widget_t* widget, uint32_t key, char sep) {
   return RET_OK;
 }
 
+#define EDIT_DEFAULT_CHAR '0'
+
 ret_t edit_pre_delete_with_sep(widget_t* widget, delete_type_t delete_type, char sep) {
   text_edit_state_t state;
   wstr_t* text = NULL;
@@ -2192,6 +2194,9 @@ ret_t edit_pre_delete_with_sep(widget_t* widget, delete_type_t delete_type, char
     for (i = state.select_start; i < state.select_end; i++, s++) {
       if (*s == sep) {
         *d++ = sep;
+      } else if(d[-1] == sep) {
+        /*避免连续分隔符*/
+        *d++ = EDIT_DEFAULT_CHAR;
       }
     }
 
@@ -2209,6 +2214,17 @@ ret_t edit_pre_delete_with_sep(widget_t* widget, delete_type_t delete_type, char
   } else {
     if (delete_type == DELETE_BY_KEY_BACKSPACE) {
       if (state.cursor > 0 && text->str[state.cursor - 1] == sep) {
+        /*不允许删除分隔符*/
+        text_edit_set_cursor(edit->model, state.cursor - 1);
+        return RET_STOP;
+      } else if (state.cursor > 1 && text->str[state.cursor - 2] == sep) {
+        /*分隔符之间保留一个字符*/
+        text->str[state.cursor - 1] = EDIT_DEFAULT_CHAR;
+        text_edit_set_cursor(edit->model, state.cursor - 1);
+        return RET_STOP;
+      } else if (state.cursor == 1) {
+        /*不允许删除首字符*/
+        text->str[0] = EDIT_DEFAULT_CHAR;
         text_edit_set_cursor(edit->model, state.cursor - 1);
         return RET_STOP;
       }
