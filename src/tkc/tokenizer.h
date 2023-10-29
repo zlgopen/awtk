@@ -166,6 +166,16 @@ const char* tokenizer_next_expr_until(tokenizer_t* tokenizer, const char* str);
 int tokenizer_next_int(tokenizer_t* tokenizer, int defval);
 
 /**
+ * @method tokenizer_next_int64
+ * 获取下一个token，并转换成int64_t。
+ * @param {tokenizer_t*} tokenizer tokenizer对象。
+ * @param {int64_t} defval 缺省值。
+ *
+ * @return {int64_t} 成功返回token的int64_t值，失败返回缺省值。
+ */
+int64_t tokenizer_next_int64(tokenizer_t* tokenizer, int64_t defval);
+
+/**
  * @method tokenizer_next_float
  * 获取下一个token，并转换成float。
  * @param {tokenizer_t*} tokenizer tokenizer对象。

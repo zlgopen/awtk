@@ -261,6 +261,15 @@ int tokenizer_next_int(tokenizer_t* tokenizer, int defval) {
   }
 }
 
+int64_t tokenizer_next_int64(tokenizer_t* tokenizer, int64_t defval) {
+  return_value_if_fail(tokenizer != NULL, defval);
+  if (tokenizer_has_more(tokenizer)) {
+    return tk_atol(tokenizer_next(tokenizer));
+  } else {
+    return defval;
+  }
+}
+
 float tokenizer_next_float(tokenizer_t* tokenizer, float defval) {
   return_value_if_fail(tokenizer != NULL, defval);
   if (tokenizer_has_more(tokenizer)) {
