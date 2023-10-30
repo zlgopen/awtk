@@ -136,6 +136,7 @@ static conf_node_t* conf_doc_dup_node_impl(conf_doc_t* doc, conf_node_t* node,
   return_value_if_fail(new_node != NULL, NULL);
 
   new_node->value_type = node->value_type;
+  new_node->node_type = node->node_type;
   if (node->value_type == CONF_NODE_VALUE_NODE) {
     conf_node_t* iter = conf_node_get_first_child(node);
     while (iter != NULL) {

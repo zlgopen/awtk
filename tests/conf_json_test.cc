@@ -520,7 +520,8 @@ TEST(ConfJson, dup0) {
   conf_doc_t* doc = conf_doc_load_json(data, -1);
   conf_node_t* node = conf_node_find_child(doc->root, "0");
   ASSERT_EQ(node != NULL, true);
-  conf_doc_dup_node(doc, node, NULL);
+  conf_node_t* new_node = conf_doc_dup_node(doc, node, NULL);
+  ASSERT_EQ(new_node->node_type, node->node_type);
 
   str_init(&str, 100);
   conf_doc_save_json(doc, &str);
@@ -535,8 +536,10 @@ TEST(ConfJson, dup1) {
   const char* data = "{\"age\":123}";
   conf_doc_t* doc = conf_doc_load_json(data, -1);
   conf_node_t* node = conf_node_find_child(doc->root, "age");
+  conf_node_t* weight = NULL;
   ASSERT_EQ(node != NULL, true);
-  conf_doc_dup_node(doc, node, "weight");
+  weight = conf_doc_dup_node(doc, node, "weight");
+  ASSERT_EQ(weight->node_type, node->node_type);
 
   str_init(&str, 100);
   conf_doc_save_json(doc, &str);
@@ -553,7 +556,8 @@ TEST(ConfJson, dup2) {
   conf_doc_t* doc = conf_doc_load_json(data, -1);
   conf_node_t* tom = conf_node_find_child(doc->root, "tom");
   ASSERT_EQ(tom != NULL, true);
-  conf_doc_dup_node(doc, tom, "jim");
+  conf_node_t* jim = conf_doc_dup_node(doc, tom, "jim");
+  ASSERT_EQ(jim->node_type, tom->node_type);
 
   ASSERT_EQ(conf_doc_get(doc, "jim.age", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 100);
@@ -563,6 +567,24 @@ TEST(ConfJson, dup2) {
   ASSERT_STREQ(str.str,
                "{\n    \"tom\" : {\n        \"name\" : \"\",\n        \"age\" : 100\n    },\n    "
                "\"jim\" : {\n        \"name\" : \"\",\n        \"age\" : 100\n    }\n}");
+  str_reset(&str);
+
+  conf_doc_destroy(doc);
+}
+
+TEST(ConfJson, dup3) {
+  value_t v;
+  str_t str;
+  const char* data = " {\"tom\" : [1,2,3,4] } ";
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+  conf_node_t* tom = conf_node_find_child(doc->root, "tom");
+  ASSERT_EQ(tom != NULL, true);
+  conf_node_t* jim = conf_doc_dup_node(doc, tom, "jim");
+  ASSERT_EQ(jim->node_type, tom->node_type);
+
+  str_init(&str, 100);
+  conf_doc_save_json(doc, &str);
+  ASSERT_STREQ(str.str, "{\n    \"tom\" : [\n        1,\n        2,\n        3,\n        4\n    ],\n    \"jim\" : [\n        1,\n        2,\n        3,\n        4\n    ]\n}");
   str_reset(&str);
 
   conf_doc_destroy(doc);
