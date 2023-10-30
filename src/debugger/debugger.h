@@ -508,6 +508,16 @@ ret_t debugger_remove_break_point_ex(debugger_t* debugger, const char* position)
 tk_object_t* debugger_get_var(debugger_t* debugger, const char* path);
 
 /**
+ * @method debugger_get_current_frame
+ *获取当前callstack的frame。
+ * > 处于暂停状态才能执行本命令。
+ * @param {debugger_t*} debugger debugger对象。
+ *
+ * @return {uint32_t} 成功返回frame序数(0表示当前)，失败返回-1。
+ */
+int32_t debugger_get_current_frame(debugger_t* debugger);
+
+/**
  * @method debugger_set_current_frame
  * 从callstack中选择当前的frame。
  * > 处于暂停状态才能执行本命令。

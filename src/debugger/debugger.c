@@ -310,6 +310,11 @@ tk_object_t* debugger_get_var(debugger_t* debugger, const char* path) {
   return debugger->vt->get_var(debugger, path);
 }
 
+int32_t debugger_get_current_frame(debugger_t* debugger) {
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, -1);
+  return debugger->current_frame_index;
+}
+
 ret_t debugger_set_current_frame(debugger_t* debugger, uint32_t frame_index) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
 

@@ -344,7 +344,7 @@ static ret_t func_local(app_info_t* app, tokenizer_t* tokenizer) {
   int32_t index = tokenizer_next_int(tokenizer, -1);
 
   if (index < 0) {
-    index = app->debugger->current_frame_index;
+    index = debugger_get_current_frame(app->debugger);
   }
   obj = debugger_get_local(app->debugger, index);
   fdb_show_variables("local vars", obj);
@@ -458,7 +458,7 @@ static ret_t fdb_show_callstack(app_info_t* app) {
   log_debug("callstack:\n---------------------------\n");
   while (tokenizer_has_more(&t)) {
     const char* func = tokenizer_next(&t);
-    if (i == app->debugger->current_frame_index) {
+    if (i == debugger_get_current_frame(app->debugger)) {
       log_debug(KGRN "=> [%d] %s\n" KNRM, i, func);
     } else {
       log_debug("   [%d] %s\n", i, func);
