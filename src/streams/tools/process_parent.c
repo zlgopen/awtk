@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
   str_t file_path;
   ret_t ret = RET_OK;
   char exe[MAX_PATH + 1];
-  const char* args[] = { "AAAAAA", "BBBBBB", "CCCCCC" };
+  const char* args[] = {"AAAAAA", "BBBBBB", "CCCCCC"};
   tk_iostream_t* process = NULL;
 
   path_exe(exe);
@@ -70,7 +70,6 @@ int main(int argc, char* argv[]) {
   str_reset(&file_path);
   tk_object_unref(TK_OBJECT(process));
   tk_socket_deinit();
-
 
   return 0;
 }

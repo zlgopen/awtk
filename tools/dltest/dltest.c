@@ -2,14 +2,14 @@
 
 ret_t dltest(const char* filename, const char* func) {
   tk_dl_t* dl = tk_dl_open(filename);
-  if(dl != NULL) {
+  if (dl != NULL) {
     void* p = tk_dl_sym(dl, func);
-    if(p != NULL) {
+    if (p != NULL) {
       log_debug("load %s %s ok\n", filename, func);
     } else {
       log_debug("get func failed:%s\n", tk_dl_error());
-    } 
-  } else{
+    }
+  } else {
     log_debug("load dll failed:%s\n", tk_dl_error());
   }
 
@@ -18,7 +18,7 @@ ret_t dltest(const char* filename, const char* func) {
 
 int main(int argc, char* argv[]) {
   platform_prepare();
-  if(argc != 3) {
+  if (argc != 3) {
     log_debug("Usage: %s dll func\n", argv[0]);
     return 0;
   }

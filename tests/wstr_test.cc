@@ -516,11 +516,11 @@ TEST(WStr, create) {
 TEST(WStr, eq) {
   wstr_t* str1 = wstr_create(0);
   wstr_t* str2 = wstr_create(0);
-  
+
   ASSERT_EQ(wstr_set(str1, L"hello"), RET_OK);
   ASSERT_EQ(wstr_set(str2, L"world"), RET_OK);
-  ASSERT_EQ(wstr_eq(str1,  L"hello"), TRUE);
-  ASSERT_EQ(wstr_eq(str2,  L"world"), TRUE);
+  ASSERT_EQ(wstr_eq(str1, L"hello"), TRUE);
+  ASSERT_EQ(wstr_eq(str2, L"world"), TRUE);
   ASSERT_EQ(wstr_equal(str1, str2), FALSE);
   ASSERT_EQ(wstr_set(str2, L"hello"), RET_OK);
   ASSERT_EQ(wstr_equal(str1, str2), TRUE);

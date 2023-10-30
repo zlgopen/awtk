@@ -133,7 +133,8 @@ uint32_t event_source_manager_get_wakeup_time(event_source_manager_t* manager) {
   return tk_min(manager->min_sleep_time, wakeup_time);
 }
 
-ret_t event_source_manager_set_min_sleep_time(event_source_manager_t* manager, uint32_t sleep_time) {
+ret_t event_source_manager_set_min_sleep_time(event_source_manager_t* manager,
+                                              uint32_t sleep_time) {
   return_value_if_fail(manager != NULL, RET_BAD_PARAMS);
 
   manager->min_sleep_time = sleep_time;

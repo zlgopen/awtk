@@ -432,7 +432,7 @@ typedef enum _image_draw_type_t {
    * 高度缩放显示。将图片缩放至目标矩形的高度，宽度按此比例进行缩放，超出不部分不显示。
    */
   IMAGE_DRAW_SCALE_H,
-  
+
   /**
    * @const IMAGE_DRAW_FILL
    * 填充整个区域。将图片缩放至目标矩形的高度或宽度，包装填满整个目标区域，超出不部分不显示。

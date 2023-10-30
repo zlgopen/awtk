@@ -198,7 +198,7 @@ static ret_t conf_doc_save_value(const value_t* v, str_t* str) {
       const char* p = value_str(v);
       return_value_if_fail(p != NULL, RET_BAD_PARAMS);
       return conf_doc_save_str(p, str);
-    }    
+    }
     case VALUE_TYPE_WSTRING: {
       str_t s;
       ret_t ret = RET_OK;
@@ -334,7 +334,7 @@ tk_object_t* conf_ini_create(void) {
 }
 
 tk_object_t* conf_ini_load_from_buff(const void* buff, uint32_t size, bool_t create_if_not_exist) {
-  char url[MAX_PATH+1] = {0};
+  char url[MAX_PATH + 1] = {0};
   return_value_if_fail(buff != NULL, NULL);
   data_reader_mem_build_url(buff, size, url);
 

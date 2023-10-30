@@ -76,7 +76,7 @@ static ret_t overlay_on_event(widget_t* widget, event_t* e) {
       }
       case EVT_BLUR:
         widget_set_state(widget, WIDGET_STATE_NORMAL);
-        break; 
+        break;
       default:
         break;
     }

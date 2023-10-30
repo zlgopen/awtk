@@ -27,13 +27,13 @@ wbuffer_t* wbuffer_create(void* data, uint32_t capacity) {
   wbuffer_t* buffer = NULL;
   return_value_if_fail(data != NULL && capacity > 0, NULL);
   buffer = TKMEM_ZALLOC(wbuffer_t);
-  
+
   return wbuffer_init(buffer, data, capacity);
 }
 
 wbuffer_t* wbuffer_create_extendable(void) {
   wbuffer_t* buffer = TKMEM_ZALLOC(wbuffer_t);
-  
+
   return wbuffer_init_extendable(buffer);
 }
 

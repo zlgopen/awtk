@@ -723,9 +723,11 @@ TEST(ObjectDefault, to_json2) {
   object_array_push(detail, value_set_str(&v, "4"));
 
   tk_object_to_json(obj, &str, 0, 0, TRUE);
-  ASSERT_STREQ(str.str, "{\"age\": 100,\"detail\": [1,2,\"3\",\"4\"],\"light\": false,\"name\": \"awtk\",\"weight\": 60.000000}");
+  ASSERT_STREQ(str.str,
+               "{\"age\": 100,\"detail\": [1,2,\"3\",\"4\"],\"light\": false,\"name\": "
+               "\"awtk\",\"weight\": 60.000000}");
 
   TK_OBJECT_UNREF(obj);
   TK_OBJECT_UNREF(detail);
   str_reset(&str);
-}  
+}

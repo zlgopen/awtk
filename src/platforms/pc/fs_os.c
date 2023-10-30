@@ -531,7 +531,7 @@ static ret_t fs_os_stat(fs_t* fs, const char* name, fs_stat_info_t* fst) {
   if (strlen(name) == 2 && name[1] == ':') {
     /*append slash*/
     wchar_t wname[4];
-    wname[0] = name[0]; 
+    wname[0] = name[0];
     wname[1] = name[1];
     wname[2] = '\\';
     wname[3] = 0;

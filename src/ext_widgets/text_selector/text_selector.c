@@ -175,7 +175,8 @@ static ret_t text_selector_paint_text(widget_t* widget, canvas_t* c, rect_t* r,
   } else {
     widget_prepare_text_style(widget, c);
   }
-  return widget_draw_text_in_rect(widget, c, iter->text.str, iter->text.size, r, text_selector->ellipses);
+  return widget_draw_text_in_rect(widget, c, iter->text.str, iter->text.size, r,
+                                  text_selector->ellipses);
 }
 
 static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {

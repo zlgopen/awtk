@@ -343,25 +343,25 @@ TEST(ComboBox, remove_option_by_index) {
   ASSERT_EQ(combo_box_remove_option_by_index(w, 1), RET_OK);
   ASSERT_EQ(combo_box_has_option_text(w, "blue"), FALSE);
   ASSERT_EQ(combo_box_count_options(w), 4);
-  
+
   ASSERT_EQ(combo_box_remove_option_by_index(w, 3), RET_OK);
   ASSERT_EQ(combo_box_has_option_text(w, "black"), FALSE);
   ASSERT_EQ(combo_box_count_options(w), 3);
-  
+
   ASSERT_EQ(combo_box_remove_option_by_index(w, 3), RET_NOT_FOUND);
 
   ASSERT_EQ(combo_box_remove_option_by_index(w, 2), RET_OK);
   ASSERT_EQ(combo_box_has_option_text(w, "gold"), FALSE);
   ASSERT_EQ(combo_box_count_options(w), 2);
-  
+
   ASSERT_EQ(combo_box_remove_option_by_index(w, 0), RET_OK);
   ASSERT_EQ(combo_box_has_option_text(w, "green"), FALSE);
   ASSERT_EQ(combo_box_count_options(w), 1);
-  
+
   ASSERT_EQ(combo_box_remove_option_by_index(w, 0), RET_OK);
   ASSERT_EQ(combo_box_has_option_text(w, "orange"), FALSE);
   ASSERT_EQ(combo_box_count_options(w), 0);
-  
+
   ASSERT_EQ(combo_box_remove_option_by_index(w, 0), RET_NOT_FOUND);
 
   widget_destroy(w);

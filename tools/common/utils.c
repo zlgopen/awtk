@@ -314,4 +314,3 @@ const char* filter_name(char* name) {
 
   return name;
 }
-

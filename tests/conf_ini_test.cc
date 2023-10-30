@@ -425,7 +425,6 @@ TEST(Ini, save_as) {
 }
 
 TEST(Ini, buff) {
-
   wbuffer_t wb;
   tk_object_t* conf = conf_ini_create();
   ASSERT_NE(conf, (tk_object_t*)NULL);

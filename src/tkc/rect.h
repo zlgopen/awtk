@@ -323,7 +323,8 @@ bool_t rect_has_intersect(const rect_t* r1, const rect_t* r2);
  *
  * @return {bool_t} 返回TRUE表示存在差集，否则表示不存在差集。
  */
-bool_t rect_diff(const rect_t* r1, const rect_t* r2, rect_t* out_r1, rect_t* out_r2, rect_t* out_r3, rect_t* out_r4);
+bool_t rect_diff(const rect_t* r1, const rect_t* r2, rect_t* out_r1, rect_t* out_r2, rect_t* out_r3,
+                 rect_t* out_r4);
 
 /**
  * @method rectf_scale

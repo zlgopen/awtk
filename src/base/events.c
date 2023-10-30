@@ -381,11 +381,15 @@ int32_t event_from_name(const char* name) {
 widget_animator_event_t* widget_animator_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);
   return_value_if_fail(event->size == sizeof(widget_animator_event_t), NULL);
-  return_value_if_fail(event->type == EVT_ANIM_START || event->type == EVT_ANIM_STOP || event->type == EVT_ANIM_PAUSE || event->type == EVT_ANIM_ONCE || event->type == EVT_ANIM_END, NULL);
+  return_value_if_fail(event->type == EVT_ANIM_START || event->type == EVT_ANIM_STOP ||
+                           event->type == EVT_ANIM_PAUSE || event->type == EVT_ANIM_ONCE ||
+                           event->type == EVT_ANIM_END,
+                       NULL);
   return (widget_animator_event_t*)event;
 }
 
-event_t* widget_animator_event_init(widget_animator_event_t* event, uint32_t type, widget_t* widget, void* animator) {
+event_t* widget_animator_event_init(widget_animator_event_t* event, uint32_t type, widget_t* widget,
+                                    void* animator) {
   return_value_if_fail(event != NULL && widget != NULL && animator != NULL, NULL);
   event->e = event_init(type, animator);
   event->e.size = sizeof(widget_animator_event_t);

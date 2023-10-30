@@ -43,7 +43,8 @@ ret_t image_base_on_event(widget_t* widget, event_t* e) {
       pointer_event_t* up = pointer_event_cast(e);
 
       if (image->pressed) {
-        if ((image->clickable || image->selectable) && widget_is_point_in(widget, up->x, up->y, FALSE)) {
+        if ((image->clickable || image->selectable) &&
+            widget_is_point_in(widget, up->x, up->y, FALSE)) {
           pointer_event_t evt;
           ret = widget_dispatch(widget, pointer_event_init(&evt, EVT_CLICK, widget, up->x, up->y));
         }

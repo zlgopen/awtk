@@ -186,4 +186,3 @@ ret_t tk_ostream_printf(tk_ostream_t* stream, const char* format, ...) {
 ret_t tk_ostream_unref(tk_ostream_t* stream) {
   return tk_object_unref(TK_OBJECT(stream));
 }
-

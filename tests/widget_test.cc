@@ -1122,9 +1122,14 @@ TEST(Widget, get_style) {
   color_t black = color_init(0, 0, 0, 0xff);
   color_t normal_bg_color = color_init(0xa0, 0xa0, 0xa0, 0xff);
   color_t disable_bg_color = color_init(0xbe, 0xbe, 0xbe, 0xff);
-  const char* str = "<button><style name=\"default\" border_color=\"#a0a0a0\" text_color=\"black\" round_radius=\"8\"><normal bg_color=\"#a0a0a0\" /><pressed bg_color=\"#c0c0c0\" x_offset=\"1\" y_offset=\"1\"/><over bg_color=\"#e0e0e0\" /><disable bg_color=\"gray\" text_color=\"#d0d0d0\" /></style></button>";
+  const char* str =
+      "<button><style name=\"default\" border_color=\"#a0a0a0\" text_color=\"black\" "
+      "round_radius=\"8\"><normal bg_color=\"#a0a0a0\" /><pressed bg_color=\"#c0c0c0\" "
+      "x_offset=\"1\" y_offset=\"1\"/><over bg_color=\"#e0e0e0\" /><disable bg_color=\"gray\" "
+      "text_color=\"#d0d0d0\" /></style></button>";
   theme_t* t = theme_xml_create(str);
-  const uint8_t* style_data = theme_find_style(t, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
+  const uint8_t* style_data =
+      theme_find_style(t, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
   style_t* s = style_factory_create_style(NULL, theme_get_style_type(t));
 
   widget_t* w = window_create(NULL, 0, 0, 400, 300);
@@ -1677,7 +1682,7 @@ TEST(Widget, widget_to_screen_and_loacl) {
   ASSERT_EQ(widget_to_screen(sv, &p), RET_OK);
   ASSERT_EQ(p.x, 10);
   ASSERT_EQ(p.y, 10);
-  
+
   widget_destroy(w);
 }
 

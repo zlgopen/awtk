@@ -51,11 +51,12 @@ static bool_t tk_istream_process_eos(tk_istream_t* stream) {
   return process_handle_get_fd(s->handle) > 0;
 }
 
-static const object_vtable_t s_tk_istream_process_vtable = {.type = "tk_istream_process",
-                                                           .desc = "tk_istream_process",
-                                                           .size = sizeof(tk_istream_process_t),
-                                                           .get_prop = tk_istream_process_get_prop,
-  };
+static const object_vtable_t s_tk_istream_process_vtable = {
+    .type = "tk_istream_process",
+    .desc = "tk_istream_process",
+    .size = sizeof(tk_istream_process_t),
+    .get_prop = tk_istream_process_get_prop,
+};
 
 tk_istream_t* tk_istream_process_create(void) {
   tk_object_t* obj = NULL;
@@ -77,4 +78,3 @@ ret_t tk_istream_process_set_handle(tk_istream_t* istream, process_handle_t hand
   istream_process->handle = handle;
   return RET_OK;
 }
-

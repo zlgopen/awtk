@@ -840,104 +840,121 @@ TEST(Str, escape_unescape) {
   str_t str1;
   str_t* s = str_init(&str, 0);
   str_t* s1 = str_init(&str1, 0);
-  
-  str_clear(s);str_clear(s1);
+
+  str_clear(s);
+  str_clear(s1);
   ASSERT_EQ(str_append_unescape(s, "abc", 0xffff), RET_OK);
   ASSERT_EQ(string(s->str), "abc");
   ASSERT_EQ(str_append_escape(s1, s->str, s->size), RET_OK);
   ASSERT_STREQ(s1->str, "abc");
 
-  str_clear(s);str_clear(s1);
+  str_clear(s);
+  str_clear(s1);
   ASSERT_EQ(str_append_unescape(s, "a\\nbc", 0xffff), RET_OK);
   ASSERT_EQ(string(s->str), "a\nbc");
   ASSERT_EQ(str_append_escape(s1, s->str, s->size), RET_OK);
   ASSERT_STREQ(s1->str, "a\\nbc");
 
-  str_clear(s);str_clear(s1);
+  str_clear(s);
+  str_clear(s1);
   ASSERT_EQ(str_append_unescape(s, "\\ra\\rbc\\r", 0xffff), RET_OK);
   ASSERT_EQ(string(s->str), "\ra\rbc\r");
   ASSERT_EQ(str_append_escape(s1, s->str, s->size), RET_OK);
   ASSERT_STREQ(s1->str, "\\ra\\rbc\\r");
 
-  str_clear(s);str_clear(s1);
+  str_clear(s);
+  str_clear(s1);
   ASSERT_EQ(str_append_unescape(s, "\\ta\\tbc\\t", 0xffff), RET_OK);
   ASSERT_EQ(string(s->str), "\ta\tbc\t");
   ASSERT_EQ(str_append_escape(s1, s->str, s->size), RET_OK);
   ASSERT_STREQ(s1->str, "\\ta\\tbc\\t");
 
-  str_clear(s);str_clear(s1);
+  str_clear(s);
+  str_clear(s1);
   ASSERT_EQ(str_append_unescape(s, "\\\\a\\\\bc\\\\", 0xffff), RET_OK);
   ASSERT_EQ(string(s->str), "\\a\\bc\\");
   ASSERT_EQ(str_append_escape(s1, s->str, s->size), RET_OK);
   ASSERT_STREQ(s1->str, "\\\\a\\\\bc\\\\");
 
-  str_clear(s);str_clear(s1);
+  str_clear(s);
+  str_clear(s1);
   ASSERT_EQ(str_append_unescape(s, "\\a", 0xffff), RET_OK);
   ASSERT_EQ(string(s->str), "\a");
   ASSERT_EQ(str_append_escape(s1, s->str, s->size), RET_OK);
   ASSERT_STREQ(s1->str, "\\a");
 
-  str_clear(s);str_clear(s1);
+  str_clear(s);
+  str_clear(s1);
   ASSERT_EQ(str_append_unescape(s, "\\b", 0xffff), RET_OK);
   ASSERT_EQ(string(s->str), "\b");
   ASSERT_EQ(str_append_escape(s1, s->str, s->size), RET_OK);
   ASSERT_STREQ(s1->str, "\\b");
 
-  str_clear(s);str_clear(s1);
+  str_clear(s);
+  str_clear(s1);
   ASSERT_EQ(str_append_unescape(s, "\\e", 0xffff), RET_OK);
   ASSERT_EQ(string(s->str), "\033");
   ASSERT_EQ(str_append_escape(s1, s->str, s->size), RET_OK);
   ASSERT_STREQ(s1->str, "\\e");
 
-  str_clear(s);str_clear(s1);
+  str_clear(s);
+  str_clear(s1);
   ASSERT_EQ(str_append_unescape(s, "\\f", 0xffff), RET_OK);
   ASSERT_EQ(string(s->str), "\f");
   ASSERT_EQ(str_append_escape(s1, s->str, s->size), RET_OK);
   ASSERT_STREQ(s1->str, "\\f");
 
-  str_clear(s);str_clear(s1);
+  str_clear(s);
+  str_clear(s1);
   ASSERT_EQ(str_append_unescape(s, "\\v", 0xffff), RET_OK);
   ASSERT_EQ(string(s->str), "\v");
   ASSERT_EQ(str_append_escape(s1, s->str, s->size), RET_OK);
   ASSERT_STREQ(s1->str, "\\v");
 
-  str_clear(s);str_clear(s1);
+  str_clear(s);
+  str_clear(s1);
   ASSERT_EQ(str_append_unescape(s, "\\?", 0xffff), RET_OK);
   ASSERT_EQ(string(s->str), "\?");
   ASSERT_EQ(str_append_escape(s1, s->str, s->size), RET_OK);
   ASSERT_STREQ(s1->str, "?");
 
-  str_clear(s);str_clear(s1);
+  str_clear(s);
+  str_clear(s1);
   ASSERT_EQ(str_append_unescape(s, "\\0", 0xffff), RET_OK);
   ASSERT_EQ(string(s->str), "");
   ASSERT_EQ(str_append_escape(s1, s->str, s->size), RET_OK);
   ASSERT_STREQ(s1->str, "");
 
-  str_clear(s);str_clear(s1);
+  str_clear(s);
+  str_clear(s1);
   ASSERT_EQ(str_append_unescape(s, "\x3a", 0xffff), RET_OK);
   ASSERT_EQ(string(s->str), ":");
   ASSERT_EQ(str_append_escape(s1, s->str, s->size), RET_OK);
   ASSERT_STREQ(s1->str, ":");
 
-  str_clear(s);str_clear(s1);
+  str_clear(s);
+  str_clear(s1);
   ASSERT_EQ(str_append_unescape(s, "\x3b", 0xffff), RET_OK);
   ASSERT_EQ(string(s->str), ";");
   ASSERT_EQ(str_append_escape(s1, s->str, s->size), RET_OK);
   ASSERT_STREQ(s1->str, ";");
 
-  str_clear(s);str_clear(s1);
+  str_clear(s);
+  str_clear(s1);
   ASSERT_EQ(str_append_unescape(s, "\x2d", 0xffff), RET_OK);
   ASSERT_EQ(string(s->str), "-");
   ASSERT_EQ(str_append_escape(s1, s->str, s->size), RET_OK);
   ASSERT_STREQ(s1->str, "-");
 
-  str_clear(s);str_clear(s1);
+  str_clear(s);
+  str_clear(s1);
   ASSERT_EQ(str_append_unescape(s, "\x2", 0xffff), RET_OK);
   ASSERT_EQ(string(s->str), "\x2");
   ASSERT_EQ(str_append_escape(s1, s->str, s->size), RET_OK);
   ASSERT_STREQ(s1->str, "\x2");
 
-  str_clear(s);str_clear(s1);
+  str_clear(s);
+  str_clear(s1);
   ASSERT_EQ(str_append_unescape(s, "\x0", 0xffff), RET_OK);
   ASSERT_EQ(string(s->str), "\0");
   ASSERT_EQ(str_append_escape(s1, s->str, s->size), RET_OK);
@@ -957,7 +974,7 @@ TEST(Str, cstr) {
   str_clear(s);
   ASSERT_EQ(str_append_c_str(s, "abc\r\nd\t"), RET_OK);
   ASSERT_STREQ(s->str, "\"abc\\r\\nd\\t\"");
-  
+
   str_clear(s);
   ASSERT_EQ(str_append_c_str(s, "T#10s"), RET_OK);
   ASSERT_STREQ(s->str, "\"T#10s\"");
@@ -968,11 +985,11 @@ TEST(Str, cstr) {
 TEST(Str, eq) {
   str_t* str1 = str_create(0);
   str_t* str2 = str_create(0);
-  
+
   ASSERT_EQ(str_set(str1, "hello"), RET_OK);
   ASSERT_EQ(str_set(str2, "world"), RET_OK);
-  ASSERT_EQ(str_eq(str1,  "hello"), TRUE);
-  ASSERT_EQ(str_eq(str2,  "world"), TRUE);
+  ASSERT_EQ(str_eq(str1, "hello"), TRUE);
+  ASSERT_EQ(str_eq(str2, "world"), TRUE);
   ASSERT_EQ(str_equal(str1, str2), FALSE);
   ASSERT_EQ(str_set(str2, "hello"), RET_OK);
   ASSERT_EQ(str_equal(str1, str2), TRUE);

@@ -31,7 +31,6 @@ TEST(ConfNode, basic) {
   ASSERT_EQ(conf_node_get_child_value_int32(doc->root, "1", 0), 1);
   ASSERT_EQ(conf_node_get_child_value_int32(doc->root, "abcd", 0), 0);
 
-
   node = conf_node_find_child(doc->root, "2");
   ASSERT_STREQ(conf_node_get_name(node), "2");
   value_set_int(&v, 2);
@@ -61,7 +60,7 @@ TEST(ConfNode, basic) {
   ASSERT_EQ(value_int(&v), 4);
   ASSERT_EQ(conf_node_get_child_value_by_index(doc->root, 3, &v), RET_OK);
   ASSERT_EQ(value_int(&v), 4);
-  
+
   ASSERT_EQ(conf_node_get_child_value(doc->root, "100", &v), RET_NOT_FOUND);
 
   ASSERT_EQ(conf_doc_remove_child_by_name(doc, doc->root, "2"), RET_OK);
@@ -74,14 +73,14 @@ TEST(ConfNode, basic) {
   node = conf_node_find_child(doc->root, "3");
   ASSERT_EQ(conf_doc_remove_child(doc, doc->root, node), RET_OK);
   ASSERT_NE(conf_doc_remove_child_by_name(doc, doc->root, "3"), RET_OK);
-  
+
   conf_doc_append_child(doc, doc->root, conf_doc_create_node(doc, "4"));
   node = conf_node_find_child(doc->root, "4");
   value_set_bool(&v, TRUE);
   ASSERT_EQ(conf_node_set_value(node, &v), RET_OK);
   ASSERT_EQ(conf_node_get_child_value_bool(doc->root, "4", FALSE), TRUE);
   ASSERT_EQ(conf_node_get_child_value_bool(doc->root, "abcd", FALSE), FALSE);
-  
+
   value_set_str(&v, "abc");
   ASSERT_EQ(conf_node_set_value(node, &v), RET_OK);
   ASSERT_STREQ(conf_node_get_child_value_str(doc->root, "4", NULL), "abc");
@@ -101,7 +100,7 @@ TEST(ConfNode, basic) {
   ASSERT_EQ(conf_node_set_value(node, &v1), RET_OK);
   ASSERT_EQ(conf_node_get_value(node, &v1), RET_OK);
   ASSERT_EQ(wcscmp(value_wstr(&v), L"abc"), 0);
-  
+
   value_set_str(&v, "aaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbcccccc");
   ASSERT_EQ(conf_node_set_value(node, &v), RET_OK);
   ASSERT_EQ(conf_node_get_value(node, &v1), RET_OK);
@@ -167,14 +166,14 @@ TEST(ConfNode, set_get_wstr) {
   ASSERT_EQ(conf_doc_set(doc, "names.[0]", value_set_wstr(&v, L"jim")), RET_OK);
   ASSERT_EQ(conf_doc_set(doc, "names.[1]", value_set_wstr(&v, L"tom")), RET_OK);
   ASSERT_EQ(conf_doc_set(doc, "names.[2]", value_set_wstr(&v, L"anny")), RET_OK);
-  
+
   ASSERT_EQ(conf_doc_get(doc, "names.[0]", &v), RET_OK);
   ASSERT_EQ(wcscmp(value_wstr(&v), L"jim"), 0);
   ASSERT_EQ(conf_doc_get(doc, "names.[1]", &v), RET_OK);
   ASSERT_EQ(wcscmp(value_wstr(&v), L"tom"), 0);
   ASSERT_EQ(conf_doc_get(doc, "names.[2]", &v), RET_OK);
   ASSERT_EQ(wcscmp(value_wstr(&v), L"anny"), 0);
-  
+
   str_t str;
   str_init(&str, 0);
   ASSERT_EQ(conf_doc_save_json(doc, &str), RET_OK);
@@ -183,23 +182,21 @@ TEST(ConfNode, set_get_wstr) {
       "{\n    \"names\" : [\n        \"jim\",\n        \"tom\",\n        \"anny\"\n    ]\n}");
 
   str_reset(&str);
-  
+
   str_init(&str, 0);
   ASSERT_EQ(conf_doc_save_ini(doc, &str), RET_OK);
-  ASSERT_STREQ(
-      str.str,
-      "[names]\n  [0] = jim\n  [1] = tom\n  [2] = anny\n");
+  ASSERT_STREQ(str.str, "[names]\n  [0] = jim\n  [1] = tom\n  [2] = anny\n");
   str_reset(&str);
- 
-  wbuffer_t wb; 
-  ubjson_writer_t ub; 
+
+  wbuffer_t wb;
+  ubjson_writer_t ub;
   wbuffer_init_extendable(&wb);
   ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
   conf_doc_save_ubjson(doc, &ub);
 
   conf_doc_destroy(doc);
   doc = conf_doc_load_ubjson(wb.data, wb.cursor);
-  
+
   ASSERT_EQ(conf_doc_get(doc, "names.[0]", &v), RET_OK);
   ASSERT_EQ(wcscmp(value_wstr(&v), L"jim"), 0);
   ASSERT_EQ(conf_doc_get(doc, "names.[1]", &v), RET_OK);

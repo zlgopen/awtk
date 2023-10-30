@@ -71,7 +71,8 @@ event_t* debugger_breaked_event_init(debugger_breaked_event_t* event, uint32_t l
   return (event_t*)event;
 }
 
-event_t* debugger_breaked_event_init_ex(debugger_breaked_event_t* event, uint32_t line, const char* file_path) {
+event_t* debugger_breaked_event_init_ex(debugger_breaked_event_t* event, uint32_t line,
+                                        const char* file_path) {
   return_value_if_fail(event != NULL, NULL);
 
   memset(event, 0x00, sizeof(*event));
@@ -90,7 +91,8 @@ debugger_breaked_event_t* debugger_breaked_event_cast(event_t* event) {
   return (debugger_breaked_event_t*)event;
 }
 
-event_t* debugger_frame_changed_event_init(debugger_frame_changed_event_t* event, const char* func, uint32_t line) {
+event_t* debugger_frame_changed_event_init(debugger_frame_changed_event_t* event, const char* func,
+                                           uint32_t line) {
   return_value_if_fail(event != NULL, NULL);
 
   memset(event, 0x00, sizeof(*event));
@@ -102,7 +104,9 @@ event_t* debugger_frame_changed_event_init(debugger_frame_changed_event_t* event
   return (event_t*)event;
 }
 
-event_t* debugger_frame_changed_event_init_ex(debugger_frame_changed_event_t* event, const char* func, uint32_t line, const char* file_path) {
+event_t* debugger_frame_changed_event_init_ex(debugger_frame_changed_event_t* event,
+                                              const char* func, uint32_t line,
+                                              const char* file_path) {
   return_value_if_fail(event != NULL, NULL);
 
   memset(event, 0x00, sizeof(*event));

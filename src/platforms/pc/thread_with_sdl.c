@@ -295,10 +295,10 @@ ret_t tk_thread_join(tk_thread_t* thread) {
     return RET_OK;
   }
 
-    if (thread->thread != NULL) {
-      SDL_WaitThread(thread->thread, NULL);
-      thread->thread = NULL;
-    }
+  if (thread->thread != NULL) {
+    SDL_WaitThread(thread->thread, NULL);
+    thread->thread = NULL;
+  }
 
   return RET_OK;
 }

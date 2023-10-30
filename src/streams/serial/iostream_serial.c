@@ -198,4 +198,3 @@ ret_t tk_iostream_serial_wait_for_data(tk_iostream_t* iostream, uint32_t timeout
 tk_iostream_t* tk_iostream_serial_create_ex(const char* url) {
   return tk_stream_factory_create_iostream(url);
 }
-

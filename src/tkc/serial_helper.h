@@ -71,27 +71,27 @@ typedef struct _serial_info_t* serial_handle_t;
  * @enum bytesize_t
  * 串口字节位数。
  */
-typedef enum { 
+typedef enum {
   /**
    * @const fivebits
    * 每字节5位。
    */
-  fivebits = 5, 
+  fivebits = 5,
   /**
    * @const sixbits
    * 每字节6位。
    */
-  sixbits = 6, 
+  sixbits = 6,
   /**
    * @const sevenbits
    * 每字节7位。
    */
-  sevenbits = 7, 
+  sevenbits = 7,
   /**
    * @const eightbits
    * 每字节8位。
    */
-  eightbits = 8 
+  eightbits = 8
 } bytesize_t;
 
 /**
@@ -130,44 +130,44 @@ typedef enum {
  * @enum stopbits_t
  * 串口停止位。
  */
-typedef enum { 
+typedef enum {
   /**
    * @const stopbits_one
    * 1位。
    */
-  stopbits_one = 1, 
+  stopbits_one = 1,
   /**
    * @const stopbits_two
    * 2位。
    */
-  stopbits_two = 2, 
+  stopbits_two = 2,
   /**
    * @const stopbits_one_point_five
    * 1.5位。
    */
-  stopbits_one_point_five 
+  stopbits_one_point_five
 } stopbits_t;
 
 /**
  * @enum flowcontrol_t
  * 串口流控。
  */
-typedef enum { 
+typedef enum {
   /**
    * @const flowcontrol_none
    * 无。
    */
-  flowcontrol_none = 0, 
+  flowcontrol_none = 0,
   /**
    * @const flowcontrol_software
    * 软件。
    */
-  flowcontrol_software, 
+  flowcontrol_software,
   /**
    * @const flowcontrol_hardware
    * 硬件。
    */
-  flowcontrol_hardware 
+  flowcontrol_hardware
 } flowcontrol_t;
 
 /**

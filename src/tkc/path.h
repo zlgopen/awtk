@@ -296,7 +296,7 @@ ret_t path_abs_normalize(const char* filename, char* result, int32_t size);
  * @return {const char*} 返回绝对路径。
 */
 const char* path_abs_normalize_with_root(const char* root, const char* rel_filename,
-                                     char filename[MAX_PATH + 1]);
+                                         char filename[MAX_PATH + 1]);
 
 END_C_DECLS
 

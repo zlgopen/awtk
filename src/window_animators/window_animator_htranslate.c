@@ -50,16 +50,16 @@ static ret_t window_animator_htranslate_draw_prev(window_animator_t* wa) {
     /* 非普通窗口应该需要重绘，因为可能会叠在 system_bar 上面，同时非普通窗口可能是半透明的 */
     canvas_translate(c, -x, 0);
     WIDGET_FOR_EACH_CHILD_BEGIN(wm, iter, i)
-      if (iter == wa->curr_win) {
-        break;
-      }
-      if (iter == wa->prev_win) {
-        start = TRUE;
-        continue;
-      }
-      if (start) {
-        widget_paint(iter, c);
-      }
+    if (iter == wa->curr_win) {
+      break;
+    }
+    if (iter == wa->prev_win) {
+      start = TRUE;
+      continue;
+    }
+    if (start) {
+      widget_paint(iter, c);
+    }
     WIDGET_FOR_EACH_CHILD_END()
     canvas_untranslate(c, -x, 0);
   }
@@ -67,15 +67,15 @@ static ret_t window_animator_htranslate_draw_prev(window_animator_t* wa) {
 #else
   canvas_translate(c, -x, 0);
   WIDGET_FOR_EACH_CHILD_BEGIN(wm, iter, i)
-    if (iter == wa->curr_win) {
-      break;
-    }
-    if (iter == wa->prev_win) {
-      start = TRUE;
-    }
-    if (start) {
-      widget_paint(iter, c);
-    }
+  if (iter == wa->curr_win) {
+    break;
+  }
+  if (iter == wa->prev_win) {
+    start = TRUE;
+  }
+  if (start) {
+    widget_paint(iter, c);
+  }
   WIDGET_FOR_EACH_CHILD_END()
   canvas_untranslate(c, -x, 0);
   return RET_OK;

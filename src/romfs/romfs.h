@@ -42,7 +42,8 @@ BEGIN_C_DECLS
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t romfs_init(const uint8_t* header_data, uint32_t header_size, const uint8_t* body_data, uint32_t body_size);
+ret_t romfs_init(const uint8_t* header_data, uint32_t header_size, const uint8_t* body_data,
+                 uint32_t body_size);
 
 /**
  * @method romfs_deinit
@@ -63,4 +64,3 @@ fs_t* romfs_get(void);
 END_C_DECLS
 
 #endif /*TK_ROMFS_H*/
-

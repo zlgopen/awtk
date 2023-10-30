@@ -849,7 +849,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       uint32_t cursor = 0;
       wchar_t* text = NULL;
       pointer_event_t evt = *(pointer_event_t*)e;
-      
+
       if (widget_find_target(widget, evt.x, evt.y) == NULL) {
         cursor = edit_get_cursor(widget);
         len = edit->model->widget->text.size;
@@ -1655,13 +1655,13 @@ static ret_t edit_add_hex(edit_t* edit, int delta) {
     size = tk_min(text->size, TK_NUM_MAX_LEN) * sizeof(wchar_t);
     tk_memcpy(wbuff, text->str, size);
     tk_utf8_from_utf16_ex(wbuff, ARRAY_SIZE(wbuff), buff, ARRAY_SIZE(buff));
-    
+
     tk_sscanf(buff, "%x", &v);
 
   } else {
     v = 0;
   }
-  
+
   v += delta;
   if (edit->auto_fix && (edit->min < edit->max)) {
     if (v < edit->min) {
@@ -2194,7 +2194,7 @@ ret_t edit_pre_delete_with_sep(widget_t* widget, delete_type_t delete_type, char
     for (i = state.select_start; i < state.select_end; i++, s++) {
       if (*s == sep) {
         *d++ = sep;
-      } else if(d[-1] == sep) {
+      } else if (d[-1] == sep) {
         /*避免连续分隔符*/
         *d++ = EDIT_DEFAULT_CHAR;
       }

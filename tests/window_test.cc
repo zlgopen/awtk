@@ -241,12 +241,12 @@ TEST(Window, applet_name) {
   ASSERT_NE(am, assets_manager());
   am = widget_get_assets_manager(w2);
   ASSERT_NE(am, assets_manager());
-  
+
   am = widget_get_assets_manager(b1);
   ASSERT_NE(am, assets_manager());
   am = widget_get_assets_manager(b2);
   ASSERT_NE(am, assets_manager());
-  
+
   li = widget_get_locale_info(w1);
   ASSERT_NE(li, locale_info());
   li = widget_get_locale_info(w2);
@@ -259,17 +259,17 @@ TEST(Window, applet_name) {
   ASSERT_EQ(am, assets_manager());
   am = widget_get_assets_manager(w2);
   ASSERT_EQ(am, assets_manager());
-  
+
   am = widget_get_assets_manager(b1);
   ASSERT_EQ(am, assets_manager());
   am = widget_get_assets_manager(b2);
   ASSERT_EQ(am, assets_manager());
-  
+
   li = widget_get_locale_info(w1);
   ASSERT_EQ(li, locale_info());
   li = widget_get_locale_info(w2);
   ASSERT_EQ(li, locale_info());
-  
+
   widget_set_prop_str(w1, WIDGET_PROP_APPLET_NAME, "");
   widget_set_prop_str(w2, WIDGET_PROP_APPLET_NAME, "");
 
@@ -277,12 +277,12 @@ TEST(Window, applet_name) {
   ASSERT_EQ(am, assets_manager());
   am = widget_get_assets_manager(w2);
   ASSERT_EQ(am, assets_manager());
-  
+
   li = widget_get_locale_info(w1);
   ASSERT_EQ(li, locale_info());
   li = widget_get_locale_info(w2);
   ASSERT_EQ(li, locale_info());
-  
+
   widget_destroy(w1);
   widget_destroy(w2);
 }

@@ -126,7 +126,6 @@ uint16_t tk_crc16_modbus(const void* data, uint32_t len) {
   return (crc_hi << 8 | crc_lo);
 }
 
-
 #endif
 
 #ifdef CONFIG_ENABLE_CHECKSUM

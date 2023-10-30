@@ -114,7 +114,9 @@ ret_t widget_animator_time_elapse(widget_animator_t* animator, uint32_t delta_ti
         animator->repeat_times = TK_UINT32_MAX;
       }
 
-      emitter_dispatch(&(animator->emitter), widget_animator_event_init(&event, EVT_ANIM_ONCE, animator->widget, animator));
+      emitter_dispatch(
+          &(animator->emitter),
+          widget_animator_event_init(&event, EVT_ANIM_ONCE, animator->widget, animator));
     } else if (animator->yoyo_times > 0) {
       animator->start_time = animator->now;
       animator->reversed = !animator->reversed;
@@ -127,12 +129,15 @@ ret_t widget_animator_time_elapse(widget_animator_t* animator, uint32_t delta_ti
         animator->yoyo_times = TK_UINT32_MAX;
       }
 
-      emitter_dispatch(&(animator->emitter), widget_animator_event_init(&event, EVT_ANIM_ONCE, animator->widget, animator));
+      emitter_dispatch(
+          &(animator->emitter),
+          widget_animator_event_init(&event, EVT_ANIM_ONCE, animator->widget, animator));
     }
 
     if (animator->repeat_times == 0 && animator->yoyo_times == 0) {
       animator->state = ANIMATOR_DONE;
-      emitter_dispatch(&(animator->emitter), widget_animator_event_init(&event, EVT_ANIM_END, animator->widget, animator));
+      emitter_dispatch(&(animator->emitter), widget_animator_event_init(
+                                                 &event, EVT_ANIM_END, animator->widget, animator));
 
       if (animator->destroy_when_done) {
         widget_animator_destroy(animator);
@@ -161,7 +166,8 @@ ret_t widget_animator_start(widget_animator_t* animator) {
 
   animator->state = ANIMATOR_RUNNING;
   animator->delay_time = animator->delay;
-  emitter_dispatch(&(animator->emitter), widget_animator_event_init(&event, EVT_ANIM_START, animator->widget, animator));
+  emitter_dispatch(&(animator->emitter),
+                   widget_animator_event_init(&event, EVT_ANIM_START, animator->widget, animator));
   if (animator->delay == 0) {
     widget_invalidate_force(animator->widget, NULL);
     widget_animator_update(animator, 0);
@@ -180,7 +186,8 @@ ret_t widget_animator_stop(widget_animator_t* animator) {
     animator->start_time = 0;
     animator->reversed = FALSE;
     animator->state = ANIMATOR_STOPPED;
-    emitter_dispatch(&(animator->emitter), widget_animator_event_init(&event, EVT_ANIM_STOP, animator->widget, animator));
+    emitter_dispatch(&(animator->emitter),
+                     widget_animator_event_init(&event, EVT_ANIM_STOP, animator->widget, animator));
     widget_invalidate_force(animator->widget, NULL);
     widget_animator_update(animator, 0);
     widget_invalidate_force(animator->widget, NULL);
@@ -196,7 +203,8 @@ ret_t widget_animator_pause(widget_animator_t* animator) {
 
   if (animator->state == ANIMATOR_RUNNING) {
     animator->state = ANIMATOR_PAUSED;
-    emitter_dispatch(&(animator->emitter), widget_animator_event_init(&event, EVT_ANIM_PAUSE, animator->widget, animator));
+    emitter_dispatch(&(animator->emitter), widget_animator_event_init(&event, EVT_ANIM_PAUSE,
+                                                                      animator->widget, animator));
 
     return RET_OK;
   } else {

@@ -259,8 +259,9 @@ tk_object_t* conf_ubjson_create(void) {
   return conf_ubjson_load(NULL, TRUE);
 }
 
-tk_object_t* conf_ubjson_load_from_buff(const void* buff, uint32_t size, bool_t create_if_not_exist) {
-  char url[MAX_PATH+1] = {0};
+tk_object_t* conf_ubjson_load_from_buff(const void* buff, uint32_t size,
+                                        bool_t create_if_not_exist) {
+  char url[MAX_PATH + 1] = {0};
   return_value_if_fail(buff != NULL, NULL);
   data_reader_mem_build_url(buff, size, url);
 

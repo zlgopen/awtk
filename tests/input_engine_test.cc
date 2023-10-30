@@ -337,7 +337,9 @@ TEST(input_engine, input_key) {
   }
   delete[] s_test_py_ji;
 #elif defined(WITH_IME_PINYIN)
-  ASSERT_EQ(strncmp((char*)s_test_gpinyin, candidate_info.char_candidates, candidate_info.char_number), 0);
+  ASSERT_EQ(
+      strncmp((char*)s_test_gpinyin, candidate_info.char_candidates, candidate_info.char_number),
+      0);
 #elif defined(WITH_IME_NULL)
 #endif
 #endif

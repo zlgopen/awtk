@@ -62,4 +62,3 @@ tk_iostream_t* tk_stream_factory_create_iostream(const char* url) {
 
   return io;
 }
-

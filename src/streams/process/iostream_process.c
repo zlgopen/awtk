@@ -24,7 +24,6 @@
 #include "ostream_process.h"
 #include "iostream_process.h"
 
-
 static ret_t tk_iostream_process_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   tk_iostream_process_t* iostream_process = TK_IOSTREAM_PROCESS(obj);
 
@@ -35,7 +34,8 @@ static ret_t tk_iostream_process_get_prop(tk_object_t* obj, const char* name, va
     value_set_str(v, iostream_process->file_path);
     return RET_OK;
   } else if (tk_str_eq(name, TK_STREAM_PROP_IS_OK)) {
-    bool_t is_ok = process_handle_get_fd(iostream_process->handle) > 0 && !process_is_broken(iostream_process->handle);
+    bool_t is_ok = process_handle_get_fd(iostream_process->handle) > 0 &&
+                   !process_is_broken(iostream_process->handle);
     value_set_bool(v, is_ok);
 
     return RET_OK;
@@ -50,7 +50,7 @@ static ret_t tk_iostream_process_set_prop(tk_object_t* obj, const char* name, co
   if (tk_str_eq(name, TK_IOSTREAM_PROCESS_FILE_PATH)) {
     iostream_process->file_path = tk_str_copy(iostream_process->file_path, value_str(v));
     return RET_OK;
-  } 
+  }
 
   return RET_NOT_FOUND;
 }
@@ -69,7 +69,7 @@ static ret_t tk_iostream_process_on_destroy(tk_object_t* obj) {
     for (i = 0; i < iostream_process->argc; i++) {
       TKMEM_FREE(iostream_process->args[i]);
     }
-    
+
     TKMEM_FREE(iostream_process->args);
     iostream_process->args = NULL;
   }
@@ -117,10 +117,10 @@ static const object_vtable_t s_tk_iostream_process_vtable = {
     .get_prop = tk_iostream_process_get_prop,
     .set_prop = tk_iostream_process_set_prop,
     .exec = tk_iostream_process_exec,
-    .on_destroy = tk_iostream_process_on_destroy
-  };
+    .on_destroy = tk_iostream_process_on_destroy};
 
-tk_iostream_t* tk_iostream_process_create(const char* file_path, const char* args[], uint32_t argc) {
+tk_iostream_t* tk_iostream_process_create(const char* file_path, const char* args[],
+                                          uint32_t argc) {
   uint32_t i = 0;
   tk_object_t* obj = NULL;
   tk_iostream_process_t* iostream_process = NULL;
@@ -153,7 +153,8 @@ tk_iostream_t* tk_iostream_process_create(const char* file_path, const char* arg
 ret_t tk_iostream_process_start(tk_iostream_t* iostream) {
   tk_iostream_process_t* iostream_process = TK_IOSTREAM_PROCESS(iostream);
   return_value_if_fail(iostream_process != NULL, RET_BAD_PARAMS);
-  iostream_process->handle = process_create(iostream_process->file_path, iostream_process->args, iostream_process->argc, &iostream_process->start_info);
+  iostream_process->handle = process_create(iostream_process->file_path, iostream_process->args,
+                                            iostream_process->argc, &iostream_process->start_info);
   return_value_if_fail(iostream_process != NULL, RET_BAD_PARAMS);
   if (iostream_process->handle != NULL) {
     tk_istream_process_set_handle(iostream_process->istream, iostream_process->handle);
@@ -177,7 +178,8 @@ ret_t tk_iostream_process_set_work_dir(tk_iostream_t* iostream, const char* work
     TKMEM_FREE(iostream_process->start_info.work_dir);
     iostream_process->start_info.work_dir = NULL;
   } else {
-    iostream_process->start_info.work_dir = tk_str_copy(iostream_process->start_info.work_dir, work_dir);
+    iostream_process->start_info.work_dir =
+        tk_str_copy(iostream_process->start_info.work_dir, work_dir);
   }
   return RET_OK;
 }

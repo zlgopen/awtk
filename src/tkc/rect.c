@@ -123,15 +123,19 @@ rect_t rect_init(xy_t x, xy_t y, wh_t w, wh_t h) {
   return r;
 }
 
-bool_t rect_diff(const rect_t* r1, const rect_t* r2, rect_t* out_r1, rect_t* out_r2, rect_t* out_r3, rect_t* out_r4) {
-#define RECT_DIFF_INIT(r, r_x, r_y, r_w, r_h) {                                                             \
-  (r)->x = (r_x);                                                                                           \
-  (r)->y = (r_y);                                                                                           \
-  (r)->w = (r_w);                                                                                           \
-  (r)->h = (r_h);                                                                                           \
-}
+bool_t rect_diff(const rect_t* r1, const rect_t* r2, rect_t* out_r1, rect_t* out_r2, rect_t* out_r3,
+                 rect_t* out_r4) {
+#define RECT_DIFF_INIT(r, r_x, r_y, r_w, r_h) \
+  {                                           \
+    (r)->x = (r_x);                           \
+    (r)->y = (r_y);                           \
+    (r)->w = (r_w);                           \
+    (r)->h = (r_h);                           \
+  }
   rect_t in;
-  return_value_if_fail(r1 != NULL && r2 != NULL && out_r1 != NULL && out_r2 != NULL && out_r3 != NULL && out_r4 != NULL, FALSE);
+  return_value_if_fail(r1 != NULL && r2 != NULL && out_r1 != NULL && out_r2 != NULL &&
+                           out_r3 != NULL && out_r4 != NULL,
+                       FALSE);
 
   memset(out_r1, 0x0, sizeof(rect_t));
   memset(out_r2, 0x0, sizeof(rect_t));
@@ -145,7 +149,7 @@ bool_t rect_diff(const rect_t* r1, const rect_t* r2, rect_t* out_r1, rect_t* out
   } else {
     if (memcmp(&in, r1, sizeof(rect_t)) == 0) {
       return FALSE;
-    } else {  
+    } else {
       int32_t right1 = r1->x + r1->w - 1;
       int32_t right2 = r2->x + r2->w - 1;
       int32_t bottom1 = r1->y + r1->h - 1;

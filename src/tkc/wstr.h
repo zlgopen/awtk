@@ -250,7 +250,6 @@ ret_t wstr_append(wstr_t* str, const wchar_t* text);
  */
 ret_t wstr_append_more(wstr_t* str, const wchar_t* text, ...);
 
-
 /**
  * @method wstr_append_with_len
  * 追加字符串。

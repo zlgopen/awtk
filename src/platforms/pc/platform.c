@@ -256,13 +256,13 @@ ret_t platform_prepare(void) {
 #ifdef WIN32
   /*let console output support utf8 text*/
   if (!IsValidCodePage(CP_UTF8)) {
-     log_debug("Not support UTF-8 output\n");
+    log_debug("Not support UTF-8 output\n");
   }
   if (!SetConsoleCP(CP_UTF8)) {
-     log_debug("Not support UTF-8 output\n");
+    log_debug("Not support UTF-8 output\n");
   }
   if (!SetConsoleOutputCP(CP_UTF8)) {
-     log_debug("Not support UTF-8 output\n");
+    log_debug("Not support UTF-8 output\n");
   }
 #endif /*WIN32*/
 

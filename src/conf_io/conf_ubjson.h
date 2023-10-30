@@ -109,7 +109,8 @@ tk_object_t* conf_ubjson_load(const char* url, bool_t create_if_not_exist);
  * 
  * @return {tk_object_t*} 返回配置对象。
  */
-tk_object_t* conf_ubjson_load_from_buff(const void* buff, uint32_t size, bool_t create_if_not_exist);
+tk_object_t* conf_ubjson_load_from_buff(const void* buff, uint32_t size,
+                                        bool_t create_if_not_exist);
 
 /**
  * @method conf_ubjson_save_to_buff

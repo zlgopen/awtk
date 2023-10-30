@@ -26,8 +26,8 @@
 
 BEGIN_C_DECLS
 
-#define WINDOW_ANIMATOR_VTRANSLATE_PROP_PREV_WIN_INDEX  "prev_win_index"
-#define WINDOW_ANIMATOR_VTRANSLATE_PROP_PREV_WIN_Y_RANGE  "prev_win_y_range"
+#define WINDOW_ANIMATOR_VTRANSLATE_PROP_PREV_WIN_INDEX "prev_win_index"
+#define WINDOW_ANIMATOR_VTRANSLATE_PROP_PREV_WIN_Y_RANGE "prev_win_y_range"
 
 window_animator_t* window_animator_vtranslate_create(bool_t open, tk_object_t* args);
 

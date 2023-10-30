@@ -105,20 +105,20 @@ void qsort(void*, size_t, size_t, int (*)(const void*, const void*));
 
 #define HAS_NO_VSSCANF 1
 
-void perror(const char *s);
+void perror(const char* s);
 
 struct in_addr {
   unsigned long s_addr;
 };
 
 struct sockaddr {
-  unsigned short sa_family; 
+  unsigned short sa_family;
   char sa_data[14];
 };
 
 struct sockaddr_in {
-  short sin_family; 
-  unsigned short sin_port; 
+  short sin_family;
+  unsigned short sin_port;
   struct in_addr sin_addr;
   char sin_zero[8];
 };

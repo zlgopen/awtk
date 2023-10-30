@@ -71,7 +71,7 @@ static ret_t debugger_client_dispatch_message(debugger_t* debugger, debugger_res
       return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
       line = tk_object_get_prop_int(obj, STR_DEBUGGER_EVENT_PROP_LINE, 0);
       file_path = tk_object_get_prop_str(obj, STR_DEBUGGER_EVENT_PROP_FILE_PATH);
-      debugger_set_state(debugger,  DEBUGGER_PROGRAM_STATE_PAUSED);
+      debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_PAUSED);
       emitter_dispatch(EMITTER(debugger), debugger_breaked_event_init_ex(&event, line, file_path));
       TK_OBJECT_UNREF(obj);
       break;
@@ -102,7 +102,7 @@ static ret_t debugger_client_dispatch_message(debugger_t* debugger, debugger_res
     }
     case DEBUGGER_RESP_MSG_COMPLETED: {
       client->program_completed = TRUE;
-      debugger_set_state(debugger,  DEBUGGER_PROGRAM_STATE_TERMINATED);
+      debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_TERMINATED);
       emitter_dispatch_simple_event(EMITTER(debugger), DEBUGGER_RESP_MSG_COMPLETED);
       break;
     }
@@ -302,7 +302,7 @@ static ret_t debugger_client_continue(debugger_t* debugger) {
 typedef struct _visit_var_info_t {
   uint32_t i;
   str_t* str;
-}visit_var_info_t;
+} visit_var_info_t;
 
 static ret_t visit_var(void* ctx, const void* data) {
   char buff[64] = {0};
@@ -310,9 +310,9 @@ static ret_t visit_var(void* ctx, const void* data) {
   str_t* str = info->str;
   named_value_t* nv = (named_value_t*)data;
 
-  if(info->i > 0) {
+  if (info->i > 0) {
     str_append(str, ",");
-  } 
+  }
   info->i++;
   str_append(str, "{");
   str_append_json_str_pair(str, "name", nv->name);
@@ -329,7 +329,7 @@ static ret_t visit_var(void* ctx, const void* data) {
 
 static tk_object_t* debugger_client_variables_to_dap_format(tk_object_t* obj) {
   str_t str;
-  char url[MAX_PATH+1] = {0};
+  char url[MAX_PATH + 1] = {0};
   visit_var_info_t info = {0, &str};
   return_value_if_fail(obj != NULL, NULL);
 
@@ -338,7 +338,7 @@ static tk_object_t* debugger_client_variables_to_dap_format(tk_object_t* obj) {
   tk_object_foreach_prop(obj, visit_var, &info);
   TK_OBJECT_UNREF(obj);
   str_append(&str, "]}}");
-  
+
   data_reader_mem_build_url(str.str, str.size, url);
   obj = conf_json_load(url, FALSE);
   str_reset(&str);

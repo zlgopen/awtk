@@ -581,7 +581,8 @@ widget_animator_event_t* widget_animator_event_cast(event_t* event);
  *
  * @return {event_t*} event对象。
  */
-event_t* widget_animator_event_init(widget_animator_event_t* event, uint32_t type, widget_t* widget, void* animator);
+event_t* widget_animator_event_init(widget_animator_event_t* event, uint32_t type, widget_t* widget,
+                                    void* animator);
 
 /**
  * @class model_event_t
@@ -1294,7 +1295,6 @@ drop_file_event_t* drop_file_event_cast(event_t* event);
  * @return {event_t*} event对象。
  */
 event_t* drop_file_event_init(drop_file_event_t* event, void* target, const char* filename);
-
 
 /**
  * @class system_event_t

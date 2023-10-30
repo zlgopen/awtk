@@ -53,6 +53,7 @@ style_t* style_const_create(void);
 
 END_C_DECLS
 /* private */
-const void* widget_get_const_style_data_for_state(widget_t* widget, const char* style_name, const char* state);
+const void* widget_get_const_style_data_for_state(widget_t* widget, const char* style_name,
+                                                  const char* state);
 
 #endif /*TK_STYLE_CONST_H*/

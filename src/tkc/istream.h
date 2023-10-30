@@ -143,7 +143,7 @@ ret_t tk_istream_flush(tk_istream_t* stream);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *
  */
-ret_t tk_istream_read_uint8(tk_istream_t* stream, uint8_t*  value);
+ret_t tk_istream_read_uint8(tk_istream_t* stream, uint8_t* value);
 
 /**
  * @method tk_istream_read_uint16
@@ -156,7 +156,7 @@ ret_t tk_istream_read_uint8(tk_istream_t* stream, uint8_t*  value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *
  */
-ret_t tk_istream_read_uint16(tk_istream_t* stream, uint16_t*  value);
+ret_t tk_istream_read_uint16(tk_istream_t* stream, uint16_t* value);
 
 /**
  * @method tk_istream_read_uint32
@@ -169,7 +169,7 @@ ret_t tk_istream_read_uint16(tk_istream_t* stream, uint16_t*  value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *
  */
-ret_t tk_istream_read_uint32(tk_istream_t* stream, uint32_t*  value);
+ret_t tk_istream_read_uint32(tk_istream_t* stream, uint32_t* value);
 
 /**
  * @method tk_istream_read_uint64
@@ -182,7 +182,7 @@ ret_t tk_istream_read_uint32(tk_istream_t* stream, uint32_t*  value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *
  */
-ret_t tk_istream_read_uint64(tk_istream_t* stream, uint64_t*  value);
+ret_t tk_istream_read_uint64(tk_istream_t* stream, uint64_t* value);
 
 /**
  * @method tk_istream_read_int8
@@ -195,7 +195,7 @@ ret_t tk_istream_read_uint64(tk_istream_t* stream, uint64_t*  value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *
  */
-ret_t tk_istream_read_int8(tk_istream_t* stream, int8_t*  value);
+ret_t tk_istream_read_int8(tk_istream_t* stream, int8_t* value);
 
 /**
  * @method tk_istream_read_int16
@@ -208,7 +208,7 @@ ret_t tk_istream_read_int8(tk_istream_t* stream, int8_t*  value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *
  */
-ret_t tk_istream_read_int16(tk_istream_t* stream, int16_t*  value);
+ret_t tk_istream_read_int16(tk_istream_t* stream, int16_t* value);
 
 /**
  * @method tk_istream_read_int32
@@ -221,7 +221,7 @@ ret_t tk_istream_read_int16(tk_istream_t* stream, int16_t*  value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *
  */
-ret_t tk_istream_read_int32(tk_istream_t* stream, int32_t*  value);
+ret_t tk_istream_read_int32(tk_istream_t* stream, int32_t* value);
 
 /**
  * @method tk_istream_read_int64
@@ -234,7 +234,7 @@ ret_t tk_istream_read_int32(tk_istream_t* stream, int32_t*  value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *
  */
-ret_t tk_istream_read_int64(tk_istream_t* stream, int64_t*  value);
+ret_t tk_istream_read_int64(tk_istream_t* stream, int64_t* value);
 
 /**
  * @method tk_istream_read_float
@@ -247,7 +247,7 @@ ret_t tk_istream_read_int64(tk_istream_t* stream, int64_t*  value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *
  */
-ret_t tk_istream_read_float(tk_istream_t* stream, float*  value);
+ret_t tk_istream_read_float(tk_istream_t* stream, float* value);
 
 /**
  * @method tk_istream_read_double
@@ -260,8 +260,7 @@ ret_t tk_istream_read_float(tk_istream_t* stream, float*  value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *
  */
-ret_t tk_istream_read_double(tk_istream_t* stream, double*  value);
-
+ret_t tk_istream_read_double(tk_istream_t* stream, double* value);
 
 /**
  * @method tk_istream_read_len

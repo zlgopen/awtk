@@ -119,7 +119,8 @@ ret_t input_device_status_on_ignore_input_event(input_device_status_t* ids, widg
  */
 ret_t input_device_status_abort_all_pressed_keys(input_device_status_t* ids);
 
-ret_t input_device_status_on_pointer_enter(input_device_status_t* ids, widget_t* widget, xy_t x, xy_t y);
+ret_t input_device_status_on_pointer_enter(input_device_status_t* ids, widget_t* widget, xy_t x,
+                                           xy_t y);
 
 ret_t input_device_status_on_pointer_leave(input_device_status_t* ids, widget_t* widget);
 

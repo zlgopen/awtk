@@ -68,7 +68,7 @@ TEST(Rect, diff) {
   ASSERT_EQ(test_rect_eq(out_r2, 0, 0, 0, 0), true);
   ASSERT_EQ(test_rect_eq(out_r3, 0, 0, 0, 0), true);
   ASSERT_EQ(test_rect_eq(out_r4, 0, 0, 0, 0), true);
-  
+
   r1 = rect_init(100, 100, 100, 100);
   r2 = rect_init(50, 50, 50, 100);
 
@@ -77,7 +77,7 @@ TEST(Rect, diff) {
   ASSERT_EQ(test_rect_eq(out_r2, 0, 0, 0, 0), true);
   ASSERT_EQ(test_rect_eq(out_r3, 0, 0, 0, 0), true);
   ASSERT_EQ(test_rect_eq(out_r4, 0, 0, 0, 0), true);
-  
+
   r1 = rect_init(100, 100, 100, 100);
   r2 = rect_init(50, 200, 50, 50);
 
@@ -95,7 +95,7 @@ TEST(Rect, diff) {
   ASSERT_EQ(test_rect_eq(out_r2, 0, 0, 0, 0), true);
   ASSERT_EQ(test_rect_eq(out_r3, 0, 0, 0, 0), true);
   ASSERT_EQ(test_rect_eq(out_r4, 0, 0, 0, 0), true);
-  
+
   r1 = rect_init(100, 100, 100, 100);
   r2 = rect_init(50, 50, 100, 50);
 
@@ -188,7 +188,7 @@ TEST(Rect, diff) {
   ASSERT_EQ(test_rect_eq(out_r2, 100, 100, 0, 25), true);
   ASSERT_EQ(test_rect_eq(out_r3, 150, 100, 50, 25), true);
   ASSERT_EQ(test_rect_eq(out_r4, 100, 125, 100, 75), true);
-  
+
   r1 = rect_init(100, 100, 100, 100);
   r2 = rect_init(50, 100, 200, 25);
 
@@ -206,7 +206,7 @@ TEST(Rect, diff) {
   ASSERT_EQ(test_rect_eq(out_r2, 100, 175, 0, 25), true);
   ASSERT_EQ(test_rect_eq(out_r3, 150, 175, 50, 25), true);
   ASSERT_EQ(test_rect_eq(out_r4, 100, 200, 100, 0), true);
-  
+
   r1 = rect_init(100, 100, 100, 100);
   r2 = rect_init(50, 175, 200, 25);
 
@@ -262,7 +262,7 @@ TEST(Rect, diff) {
   ASSERT_EQ(test_rect_eq(out_r2, 100, 100, 50, 100), true);
   ASSERT_EQ(test_rect_eq(out_r3, 175, 100, 25, 100), true);
   ASSERT_EQ(test_rect_eq(out_r4, 100, 200, 100, 0), true);
-  
+
   r1 = rect_init(100, 100, 100, 100);
   r2 = rect_init(100, 50, 25, 100);
 
@@ -280,7 +280,7 @@ TEST(Rect, diff) {
   ASSERT_EQ(test_rect_eq(out_r2, 100, 100, 0, 100), true);
   ASSERT_EQ(test_rect_eq(out_r3, 125, 100, 75, 100), true);
   ASSERT_EQ(test_rect_eq(out_r4, 100, 200, 100, 0), true);
-  
+
   r1 = rect_init(100, 100, 100, 100);
   r2 = rect_init(175, 50, 25, 100);
 

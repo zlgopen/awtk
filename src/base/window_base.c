@@ -223,7 +223,6 @@ image_manager_t* window_base_get_image_manager(widget_t* widget) {
   }
 }
 
-
 ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
   window_base_t* window_base = WINDOW_BASE(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);

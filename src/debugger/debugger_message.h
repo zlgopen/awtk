@@ -488,7 +488,8 @@ event_t* debugger_breaked_event_init(debugger_breaked_event_t* event, uint32_t l
  *
  * @return {event_t*} 返回event对象。
  */
-event_t* debugger_breaked_event_init_ex(debugger_breaked_event_t* event, uint32_t line, const char* file_path);
+event_t* debugger_breaked_event_init_ex(debugger_breaked_event_t* event, uint32_t line,
+                                        const char* file_path);
 
 /**
  * @method debugger_breaked_event_cast
@@ -514,7 +515,7 @@ typedef struct _debugger_frame_changed_event_t {
    * 行号。
    */
   uint32_t line;
-  
+
   /**
    * @property {const char*} func
    * @annotation ["readable"]
@@ -540,7 +541,8 @@ typedef struct _debugger_frame_changed_event_t {
  *
  * @return {event_t*} 返回event对象。
  */
-event_t* debugger_frame_changed_event_init(debugger_frame_changed_event_t* event, const char* func, uint32_t line);
+event_t* debugger_frame_changed_event_init(debugger_frame_changed_event_t* event, const char* func,
+                                           uint32_t line);
 
 /**
  * @method debugger_frame_changed_event_init
@@ -553,7 +555,9 @@ event_t* debugger_frame_changed_event_init(debugger_frame_changed_event_t* event
  *
  * @return {event_t*} 返回event对象。
  */
-event_t* debugger_frame_changed_event_init_ex(debugger_frame_changed_event_t* event, const char* func, uint32_t line, const char* file_path);
+event_t* debugger_frame_changed_event_init_ex(debugger_frame_changed_event_t* event,
+                                              const char* func, uint32_t line,
+                                              const char* file_path);
 
 /**
  * @method debugger_frame_changed_event_cast

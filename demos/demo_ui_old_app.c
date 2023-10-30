@@ -145,7 +145,8 @@ static void open_window(const char* name, widget_t* to_close) {
       widget_lookup(window_manager(), DEMOUI_MAIN_WINDOW_NAME, FALSE) == NULL;
   widget_t* win = to_close ? window_open_and_close(name, to_close) : window_open(name);
 
-  if ((tk_str_eq(name, DEMOUI_MAIN_WINDOW_NAME) && is_single_main_win) || widget_is_support_highlighter(win)) {
+  if ((tk_str_eq(name, DEMOUI_MAIN_WINDOW_NAME) && is_single_main_win) ||
+      widget_is_support_highlighter(win)) {
     widget_on(win, EVT_KEY_UP, main_window_on_key_up, win);
   }
 

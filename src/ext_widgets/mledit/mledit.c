@@ -705,7 +705,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       uint32_t cursor = 0;
       wchar_t* text = NULL;
       pointer_event_t evt = *(pointer_event_t*)e;
-      
+
       if (widget_find_target(widget, evt.x, evt.y) == NULL) {
         cursor = mledit_get_cursor(widget);
         len = mledit->model->widget->text.size;

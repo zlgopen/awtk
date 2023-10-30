@@ -138,7 +138,6 @@ wbuffer_t* wbuffer_create_extendable(void);
  */
 ret_t wbuffer_rewind(wbuffer_t* wbuffer);
 
-
 /**
  * @method wbuffer_extend_capacity
  * 扩展缓冲区至指定的大小。

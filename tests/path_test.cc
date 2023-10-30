@@ -21,7 +21,7 @@ TEST(Path, basename) {
 
 TEST(Path, basename_ex) {
   char result[MAX_PATH + 1];
-  
+
   ASSERT_EQ(path_basename_ex("/a\\b/c/test.bin", TRUE, result, sizeof(result)), RET_OK);
   ASSERT_EQ(string(result), string("test"));
 

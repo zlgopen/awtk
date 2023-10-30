@@ -195,8 +195,6 @@ ret_t cmd_args_process_str(cmd_args_t* args, const char* cmd_line) {
   return RET_OK;
 }
 
-
-
 ret_t cmd_args_process_wstr(cmd_args_t* args, int argc, wchar_t* _argv[]) {
   uint32_t i = 0;
   ret_t ret = RET_OK;
@@ -209,4 +207,3 @@ ret_t cmd_args_process_wstr(cmd_args_t* args, int argc, wchar_t* _argv[]) {
 
   return ret;
 }
-

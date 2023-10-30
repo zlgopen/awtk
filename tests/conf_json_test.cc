@@ -584,7 +584,9 @@ TEST(ConfJson, dup3) {
 
   str_init(&str, 100);
   conf_doc_save_json(doc, &str);
-  ASSERT_STREQ(str.str, "{\n    \"tom\" : [\n        1,\n        2,\n        3,\n        4\n    ],\n    \"jim\" : [\n        1,\n        2,\n        3,\n        4\n    ]\n}");
+  ASSERT_STREQ(str.str,
+               "{\n    \"tom\" : [\n        1,\n        2,\n        3,\n        4\n    ],\n    "
+               "\"jim\" : [\n        1,\n        2,\n        3,\n        4\n    ]\n}");
   str_reset(&str);
 
   conf_doc_destroy(doc);
@@ -655,7 +657,6 @@ TEST(Json, subobject2) {
 }
 
 TEST(Json, buff) {
-
   wbuffer_t wb;
   tk_object_t* conf = conf_json_create();
   ASSERT_NE(conf, (tk_object_t*)NULL);

@@ -244,7 +244,6 @@ void* slist_head(slist_t* slist) {
   return iter->data;
 }
 
-
 bool_t slist_is_empty(slist_t* slist) {
   return_value_if_fail(slist != NULL, TRUE);
   return slist->first == NULL;

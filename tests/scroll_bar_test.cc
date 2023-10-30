@@ -116,7 +116,8 @@ TEST(ScrollBar, clone) {
   ASSERT_EQ(widget_equal(w, w1), TRUE);
   ASSERT_EQ(widget_lookup(w, CHILD_UP, FALSE) == widget_lookup(w1, CHILD_UP, FALSE), TRUE);
   ASSERT_EQ(widget_lookup(w, CHILD_DOWN, FALSE) == widget_lookup(w1, CHILD_DOWN, FALSE), TRUE);
-  ASSERT_EQ(widget_lookup(w, CHILD_DRAGGER, FALSE) == widget_lookup(w1, CHILD_DRAGGER, FALSE), TRUE);
+  ASSERT_EQ(widget_lookup(w, CHILD_DRAGGER, FALSE) == widget_lookup(w1, CHILD_DRAGGER, FALSE),
+            TRUE);
   widget_destroy(w1);
 
   ASSERT_EQ(widget_set_prop_bool(w, SCROLL_BAR_PROP_IS_MOBILE, FALSE), RET_OK);
@@ -124,9 +125,13 @@ TEST(ScrollBar, clone) {
 
   w1 = widget_clone(w, NULL);
   ASSERT_EQ(widget_equal(w, w1), TRUE);
-  ASSERT_EQ(widget_equal(widget_lookup(w, CHILD_UP, FALSE), widget_lookup(w1, CHILD_UP, FALSE)), TRUE);
-  ASSERT_EQ(widget_equal(widget_lookup(w, CHILD_DOWN, FALSE), widget_lookup(w1, CHILD_DOWN, FALSE)), TRUE);
-  ASSERT_EQ(widget_equal(widget_lookup(w, CHILD_DRAGGER, FALSE), widget_lookup(w1, CHILD_DRAGGER, FALSE)), TRUE);
+  ASSERT_EQ(widget_equal(widget_lookup(w, CHILD_UP, FALSE), widget_lookup(w1, CHILD_UP, FALSE)),
+            TRUE);
+  ASSERT_EQ(widget_equal(widget_lookup(w, CHILD_DOWN, FALSE), widget_lookup(w1, CHILD_DOWN, FALSE)),
+            TRUE);
+  ASSERT_EQ(
+      widget_equal(widget_lookup(w, CHILD_DRAGGER, FALSE), widget_lookup(w1, CHILD_DRAGGER, FALSE)),
+      TRUE);
   widget_destroy(w1);
 
   widget_destroy(w);

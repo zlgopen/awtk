@@ -45,7 +45,6 @@ typedef struct _process_start_info_t {
   char* work_dir;
 } process_start_info_t;
 
-
 #ifdef WIN32
 
 #include "tkc/wstr.h"
@@ -62,18 +61,17 @@ struct _process_info_t {
 
   int client_fd;
   int server_fd;
-  
+
   wchar_t* file_path;
   wstr_t cmd_line;
   tk_thread_t* rthread;
 };
 
-
 #elif defined(LINUX) || defined(MACOS)
 #include <sys/wait.h>
 #include <sys/types.h>
-#include <errno.h>   
-#include <fcntl.h>   
+#include <errno.h>
+#include <fcntl.h>
 #include "tkc/str.h"
 
 struct _process_info_t {
@@ -100,7 +98,8 @@ struct _process_info_t {
  *
  * @return {process_handle_t} 返回子进程句柄。
  */
-process_handle_t process_create(const char* file_path, const char** args, uint32_t argc, const process_start_info_t* start_info);
+process_handle_t process_create(const char* file_path, const char** args, uint32_t argc,
+                                const process_start_info_t* start_info);
 
 /**
  * @method process_destroy
@@ -178,8 +177,6 @@ bool_t process_is_broken(process_handle_t handle);
 ret_t process_kill(process_handle_t handle);
 
 END_C_DECLS
-
-
 
 #endif
 #endif

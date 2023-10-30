@@ -338,7 +338,7 @@ ret_t fs_test_file(fs_t* fs) {
   char buff[32];
   fs_file_t* fp = NULL;
   const char* filename = "./test.txt";
-  char path[MAX_PATH+1] = {0};
+  char path[MAX_PATH + 1] = {0};
 
   assert(fs_get_cwd(os_fs(), path) == RET_OK);
   assert(fs_get_exe(os_fs(), path) == RET_OK);

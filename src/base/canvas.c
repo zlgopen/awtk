@@ -1616,7 +1616,7 @@ ret_t canvas_draw_image_fill(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   scale_w = (float)(dst->w) / img->w;
   scale_h = (float)(dst->h) / img->h;
 
-  if(scale_w > scale_h) {
+  if (scale_w > scale_h) {
     src_w = img->w;
     src_h = (float)(img->h * dst->h) / (img->h * scale_w);
   } else {

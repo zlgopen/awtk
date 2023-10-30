@@ -375,7 +375,7 @@ ret_t path_abs_normalize(const char* filename, char* result, int32_t size) {
 }
 
 const char* path_abs_normalize_with_root(const char* root, const char* rel_filename,
-                                     char filename[MAX_PATH + 1]) {
+                                         char filename[MAX_PATH + 1]) {
   char path[MAX_PATH + 1];
   char abs_root[MAX_PATH + 1];
   return_value_if_fail(root != NULL && rel_filename != NULL, NULL);
@@ -391,4 +391,3 @@ const char* path_abs_normalize_with_root(const char* root, const char* rel_filen
     return NULL;
   }
 }
-

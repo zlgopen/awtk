@@ -1121,9 +1121,8 @@ ret_t slide_view_remove_index(widget_t* widget, uint32_t index) {
       slide_view->remove_when_anim_done = FALSE;
     }
   } else {
-    ret = remove_index < current_index ?
-          slide_view_set_active_no_animate(widget, current_index - 1) :
-          RET_OK;
+    ret = remove_index < current_index ? slide_view_set_active_no_animate(widget, current_index - 1)
+                                       : RET_OK;
 
     if (ret == RET_OK) {
       ret = widget_destroy(widget_get_child(widget, remove_index));

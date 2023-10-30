@@ -453,7 +453,8 @@ ret_t input_device_status_on_ignore_input_event(input_device_status_t* ids, widg
   return input_device_status_dispatch_input_event(ids, widget, e, FALSE);
 }
 
-ret_t input_device_status_on_pointer_enter(input_device_status_t* ids, widget_t* widget, xy_t x, xy_t y) {
+ret_t input_device_status_on_pointer_enter(input_device_status_t* ids, widget_t* widget, xy_t x,
+                                           xy_t y) {
   pointer_event_t e;
   ret_t ret = RET_OK;
   return_value_if_fail(ids != NULL && widget != NULL, RET_BAD_PARAMS);

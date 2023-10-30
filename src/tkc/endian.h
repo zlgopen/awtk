@@ -64,7 +64,6 @@ BEGIN_C_DECLS
  * ```
  */
 
-
 /**
  * @method swap_uint8
  * @annotation ["static", "private"]

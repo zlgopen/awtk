@@ -30,7 +30,7 @@
 #define PAGE_NUM 18
 #if !defined(PAGE_NUM) || PAGE_NUM <= 0
 #error "PAGE_NUM not define or less than or equal to zero!"
-#endif                                /* PAGE_NUM */
+#endif /* PAGE_NUM */
 
 #define LANDSCAPE_WIDTH_THRESHOLD 540 /* 横屏窗口阈值 */
 

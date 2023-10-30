@@ -257,7 +257,8 @@ static ret_t func_widget_layout(fscript_t* fscript, fscript_args_t* args, value_
   return RET_OK;
 }
 
-static ret_t func_widget_request_relayout(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+static ret_t func_widget_request_relayout(fscript_t* fscript, fscript_args_t* args,
+                                          value_t* result) {
   widget_t* widget = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   widget = to_widget(fscript, args->args);

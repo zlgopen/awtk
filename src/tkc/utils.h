@@ -781,7 +781,8 @@ uint32_t tk_wstr_count_c(const wchar_t* str, wchar_t c);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tk_wstr_select_word(const wchar_t* str, uint32_t len, uint32_t index, int32_t* left, int32_t* right);
+ret_t tk_wstr_select_word(const wchar_t* str, uint32_t len, uint32_t index, int32_t* left,
+                          int32_t* right);
 
 /**
  * @method image_region_parse
@@ -1065,19 +1066,18 @@ int tk_sscanf_simple(const char* str, const char* format, ...);
   int wmain(int argc, wchar_t* wargv[]) { \
     char** argv = tk_to_utf8_argv(argc, wargv);
 
-#define END_MAIN(code)                 \
-    tk_free_utf8_argv(argc, argv); \
-    return code; \
+#define END_MAIN(code)           \
+  tk_free_utf8_argv(argc, argv); \
+  return code;                   \
   }
-#define MAIN_RETURN(code)                 \
-    tk_free_utf8_argv(argc, argv); \
-    return code; 
+#define MAIN_RETURN(code)        \
+  tk_free_utf8_argv(argc, argv); \
+  return code;
 #else
 #define MAIN() int main(int argc, char* argv[]) {
-#define MAIN_RETURN(code)                 \
-    return code; 
-#define END_MAIN(code)                 \
-    return code; \
+#define MAIN_RETURN(code) return code;
+#define END_MAIN(code) \
+  return code;         \
   }
 #endif
 

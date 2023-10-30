@@ -62,4 +62,3 @@ int32_t tk_iostream_write_len(tk_iostream_t* stream, const void* buff, uint32_t 
 ret_t tk_iostream_unref(tk_iostream_t* stream) {
   return tk_object_unref(TK_OBJECT(stream));
 }
-

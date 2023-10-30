@@ -309,7 +309,7 @@ ret_t tk_pre_init(void) {
 
 #if WITH_MAIN_LOOP_CONSOLE
 #include "main_loop/main_loop_console.h"
-#endif/*WITH_MAIN_LOOP_CONSOLE*/
+#endif /*WITH_MAIN_LOOP_CONSOLE*/
 
 ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const char* app_root) {
   main_loop_t* loop = NULL;

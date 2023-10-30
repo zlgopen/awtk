@@ -125,7 +125,6 @@ tk_object_t* conf_ini_load_from_buff(const void* buff, uint32_t size, bool_t cre
  */
 ret_t conf_ini_save_to_buff(tk_object_t* obj, wbuffer_t* wb);
 
-
 /**
  * @method conf_ini_save_as
  * 将doc对象保存到指定URL。

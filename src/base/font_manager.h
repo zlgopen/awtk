@@ -261,8 +261,7 @@ ret_t font_managers_unref(font_manager_t* imm);
  * @param {font_size_t} size 大小。
  * @return {font_t*} 返回字体对象。
  */
-font_t* font_manager_fallback_get_font_default(void* ctx, const char* name,
-                                                      font_size_t size);
+font_t* font_manager_fallback_get_font_default(void* ctx, const char* name, font_size_t size);
 END_C_DECLS
 
 #endif /*TK_FONT_MANAGER_H*/

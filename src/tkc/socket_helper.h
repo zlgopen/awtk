@@ -92,8 +92,8 @@ int32_t tk_socket_send(int sock, const void* buffer, uint32_t size, int flags);
  *
  * @return {int32_t} 返回实际发送的字节数。
  */
-int32_t tk_socket_sendto(int sock, const void* buffer, uint32_t size, int flags, 
-  const struct sockaddr *dest_addr, uint32_t dest_len);
+int32_t tk_socket_sendto(int sock, const void* buffer, uint32_t size, int flags,
+                         const struct sockaddr* dest_addr, uint32_t dest_len);
 
 /**
  * @method tk_socket_recv
@@ -125,7 +125,7 @@ int32_t tk_socket_recv(int sock, void* buffer, uint32_t size, int flags);
  * @return {int32_t} 返回实际接收的字节数。
  */
 int32_t tk_socket_recvfrom(int sock, void* buffer, uint32_t size, int flags,
-  struct sockaddr *dest_addr, uint32_t* dest_len);
+                           struct sockaddr* dest_addr, uint32_t* dest_len);
 
 /**
  * @method tk_socket_bind_ex

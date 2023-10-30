@@ -76,7 +76,8 @@ static ret_t dialog_highlighter_default_get_window_rect_diff(slist_t* rect_list,
   return RET_OK;
 }
 
-static ret_t dialog_highlighter_default_draw_window_rect_diff_on_visit(void* ctx, const void* data) {
+static ret_t dialog_highlighter_default_draw_window_rect_diff_on_visit(void* ctx,
+                                                                       const void* data) {
   void** arges = (void**)ctx;
   canvas_t* c = arges[0];
   rect_t* window_rect = (rect_t*)data;
@@ -87,7 +88,8 @@ static ret_t dialog_highlighter_default_draw_window_rect_diff_on_visit(void* ctx
   return RET_OK;
 }
 
-static ret_t dialog_highlighter_default_draw_mask_window(dialog_highlighter_t* h, canvas_t* c, uint8_t alpha) {
+static ret_t dialog_highlighter_default_draw_mask_window(dialog_highlighter_t* h, canvas_t* c,
+                                                         uint8_t alpha) {
   if (alpha > 1) {
     uint32_t i = 0;
     void* arges[2];
@@ -96,7 +98,8 @@ static ret_t dialog_highlighter_default_draw_mask_window(dialog_highlighter_t* h
 
     if (slist_is_empty(&dh->win_mask_rect_list)) {
       /* 排除掉显示裁剪区中的包括的 system_bar 的区域 */
-      slist_append(&dh->win_mask_rect_list, rect_create(h->clip_rect.x, h->clip_rect.y, h->clip_rect.w, h->clip_rect.h));
+      slist_append(&dh->win_mask_rect_list,
+                   rect_create(h->clip_rect.x, h->clip_rect.y, h->clip_rect.w, h->clip_rect.h));
       for (i = 0; i < dh->system_bar_top_clip_rects.size; i++) {
         rect_t* r = (rect_t*)darray_get(&dh->system_bar_top_clip_rects, i);
         dialog_highlighter_default_get_window_rect_diff(&dh->win_mask_rect_list, r);
@@ -109,13 +112,15 @@ static ret_t dialog_highlighter_default_draw_mask_window(dialog_highlighter_t* h
 
     arges[0] = c;
     arges[1] = tk_pointer_from_int(alpha);
-    slist_foreach(&dh->win_mask_rect_list, dialog_highlighter_default_draw_window_rect_diff_on_visit, arges);
+    slist_foreach(&dh->win_mask_rect_list,
+                  dialog_highlighter_default_draw_window_rect_diff_on_visit, arges);
   }
 
   return RET_OK;
 }
 
-static ret_t dialog_highlighter_default_draw_mask_system_bar(dialog_highlighter_t* h, canvas_t* c, uint8_t alpha, bool_t is_clip_rect) {
+static ret_t dialog_highlighter_default_draw_mask_system_bar(dialog_highlighter_t* h, canvas_t* c,
+                                                             uint8_t alpha, bool_t is_clip_rect) {
   if (alpha > 1) {
     uint32_t i = 0;
     widget_t* widget = window_manager();
@@ -155,19 +160,19 @@ static ret_t dialog_highlighter_default_draw_system_bar(dialog_highlighter_t* h,
   widget_t* widget = window_manager();
   dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, index)
-    if (iter->vt->is_window) {
-      if (tk_str_eq(iter->vt->type, WIDGET_TYPE_SYSTEM_BAR)) {
-        for (i = 0; i < dh->system_bar_top_clip_rects.size; i++) {
-          rect_t* r = (rect_t*)darray_get(&dh->system_bar_top_clip_rects, i);
-          widget_paint_with_clip(iter, r, c, widget_paint);
-        }
-      } else if(tk_str_eq(iter->vt->type, WIDGET_TYPE_SYSTEM_BAR_BOTTOM)) {
-        for (i = 0; i < dh->system_bar_bottom_clip_rects.size; i++) {
-          rect_t* r = (rect_t*)darray_get(&dh->system_bar_bottom_clip_rects, i);
-          widget_paint_with_clip(iter, r, c, widget_paint);
-        }
+  if (iter->vt->is_window) {
+    if (tk_str_eq(iter->vt->type, WIDGET_TYPE_SYSTEM_BAR)) {
+      for (i = 0; i < dh->system_bar_top_clip_rects.size; i++) {
+        rect_t* r = (rect_t*)darray_get(&dh->system_bar_top_clip_rects, i);
+        widget_paint_with_clip(iter, r, c, widget_paint);
+      }
+    } else if (tk_str_eq(iter->vt->type, WIDGET_TYPE_SYSTEM_BAR_BOTTOM)) {
+      for (i = 0; i < dh->system_bar_bottom_clip_rects.size; i++) {
+        rect_t* r = (rect_t*)darray_get(&dh->system_bar_bottom_clip_rects, i);
+        widget_paint_with_clip(iter, r, c, widget_paint);
       }
     }
+  }
   WIDGET_FOR_EACH_CHILD_END()
 
   return RET_OK;
@@ -269,11 +274,13 @@ static ret_t dialog_highlighter_default_draw(dialog_highlighter_t* h, float_t pe
     uint8_t alpha = ((dh->end_alpha - dh->start_alpha) * percent) + dh->start_alpha;
     uint8_t a = 0xff - ((dh->system_bar_alpha * (0xff - alpha)) >> 8);
     dialog_highlighter_default_draw_mask_window(h, c, alpha);
-    dialog_highlighter_default_draw_mask_system_bar(h, c, a, h->used_by_others && is_window_animator);
+    dialog_highlighter_default_draw_mask_system_bar(h, c, a,
+                                                    h->used_by_others && is_window_animator);
   } else {
     /* 解决黑色色块绘制到贴图导致 system_bar 的颜色不同步的问题 */
     uint8_t a = 0xff - ((dh->system_bar_alpha * (0xff - dh->end_alpha)) >> 8);
-    dialog_highlighter_default_draw_mask_system_bar(h, c, a, h->used_by_others && is_window_animator);
+    dialog_highlighter_default_draw_mask_system_bar(h, c, a,
+                                                    h->used_by_others && is_window_animator);
   }
 
   return RET_OK;
@@ -285,7 +292,8 @@ static bool_t dialog_highlighter_default_is_dynamic(dialog_highlighter_t* h) {
   return (dh->start_alpha != dh->end_alpha);
 }
 
-static ret_t dialog_highlighter_default_system_bar_top_append_clip_rect(dialog_highlighter_t* h, rect_t* rect) {
+static ret_t dialog_highlighter_default_system_bar_top_append_clip_rect(dialog_highlighter_t* h,
+                                                                        rect_t* rect) {
   ret_t ret = RET_OK;
   dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
   if (rect->w != 0 && rect->h != 0) {
@@ -297,7 +305,8 @@ static ret_t dialog_highlighter_default_system_bar_top_append_clip_rect(dialog_h
   return ret;
 }
 
-static ret_t dialog_highlighter_default_system_bar_bottom_append_clip_rect(dialog_highlighter_t* h, rect_t* rect) {
+static ret_t dialog_highlighter_default_system_bar_bottom_append_clip_rect(dialog_highlighter_t* h,
+                                                                           rect_t* rect) {
   ret_t ret = RET_OK;
   dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
   if (rect->w != 0 && rect->h != 0) {
@@ -335,7 +344,8 @@ static const dialog_highlighter_vtable_t s_dialog_highlighter_default_vt = {
     .set_system_bar_alpha = dialog_highlighter_default_set_system_bar_alpha,
     .set_bg_clip_rect = dialog_highlighter_default_set_bg_clip_rect,
     .on_destroy = dialog_highlighter_default_on_destroy,
-    .system_bar_bottom_append_clip_rect = dialog_highlighter_default_system_bar_bottom_append_clip_rect,
+    .system_bar_bottom_append_clip_rect =
+        dialog_highlighter_default_system_bar_bottom_append_clip_rect,
     .system_bar_top_append_clip_rect = dialog_highlighter_default_system_bar_top_append_clip_rect,
     .get_alpha = dialog_highlighter_default_get_alpha,
     .is_dynamic = dialog_highlighter_default_is_dynamic,

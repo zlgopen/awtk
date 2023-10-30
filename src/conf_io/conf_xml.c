@@ -312,7 +312,7 @@ tk_object_t* conf_xml_create(void) {
 }
 
 tk_object_t* conf_xml_load_from_buff(const void* buff, uint32_t size, bool_t create_if_not_exist) {
-  char url[MAX_PATH+1] = {0};
+  char url[MAX_PATH + 1] = {0};
   return_value_if_fail(buff != NULL, NULL);
   data_reader_mem_build_url(buff, size, url);
 

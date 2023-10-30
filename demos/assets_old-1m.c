@@ -258,7 +258,7 @@
 #endif /*WITH_VGCANVAS*/
 #if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)
 #include "../res/assets/default/inc/fonts/default.res"
-#else  /*WITH_STB_FONT or WITH_FT_FONT*/
+#else /*WITH_STB_FONT or WITH_FT_FONT*/
 #include "../res/assets/default/inc/fonts/default.data"
 #endif /*WITH_STB_FONT or WITH_FT_FONT*/
 #endif /*WITH_FS_RES*/
@@ -316,7 +316,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_image_value);
   assets_manager_add(am, ui_slide_view);
   assets_manager_add(am, ui_tab_top);
-	assets_manager_add(am, ui_tab_top_compact);
+  assets_manager_add(am, ui_tab_top_compact);
   assets_manager_add(am, ui_slide_view_v);
   assets_manager_add(am, ui_button);
   assets_manager_add(am, ui_system_bar);

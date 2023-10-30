@@ -22,7 +22,7 @@
 #include "ostream_process.h"
 
 static int32_t tk_ostream_process_write(tk_ostream_t* stream, const uint8_t* buff,
-                                       uint32_t max_size) {
+                                        uint32_t max_size) {
   tk_ostream_process_t* ostream_process = TK_OSTREAM_PROCESS(stream);
   return_value_if_fail(ostream_process != NULL && buff != NULL, RET_BAD_PARAMS);
 
@@ -41,10 +41,11 @@ static ret_t tk_ostream_process_get_prop(tk_object_t* obj, const char* name, val
   return RET_NOT_FOUND;
 }
 
-static const object_vtable_t s_tk_ostream_process_vtable = {.type = "tk_ostream_process",
-                                                           .desc = "tk_ostream_process",
-                                                           .size = sizeof(tk_ostream_process_t),
-                                                           .get_prop = tk_ostream_process_get_prop};
+static const object_vtable_t s_tk_ostream_process_vtable = {
+    .type = "tk_ostream_process",
+    .desc = "tk_ostream_process",
+    .size = sizeof(tk_ostream_process_t),
+    .get_prop = tk_ostream_process_get_prop};
 
 tk_ostream_t* tk_ostream_process_create(void) {
   tk_object_t* obj = NULL;
@@ -64,4 +65,3 @@ ret_t tk_ostream_process_set_handle(tk_ostream_t* ostream, process_handle_t hand
   ostream_process->handle = handle;
   return RET_OK;
 }
-

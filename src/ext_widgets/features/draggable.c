@@ -265,12 +265,20 @@ static ret_t draggable_move_target(widget_t* widget, xy_t x, xy_t y) {
   target = draggable_get_target(widget);
   return_value_if_fail(target != NULL, RET_BAD_PARAMS);
 
-  xy_t min_x = draggable->left != DRAGGABLE_UNSPECIFIED_NUM ? draggable->left : (draggable->allow_out_of_screen ? 1 - target->w : 0);
-  xy_t min_y = draggable->top != DRAGGABLE_UNSPECIFIED_NUM ? draggable->top : (draggable->allow_out_of_screen ? 1 - target->h : 0);
+  xy_t min_x = draggable->left != DRAGGABLE_UNSPECIFIED_NUM
+                   ? draggable->left
+                   : (draggable->allow_out_of_screen ? 1 - target->w : 0);
+  xy_t min_y = draggable->top != DRAGGABLE_UNSPECIFIED_NUM
+                   ? draggable->top
+                   : (draggable->allow_out_of_screen ? 1 - target->h : 0);
   xy_t max_x =
-      draggable->right != DRAGGABLE_UNSPECIFIED_NUM ? draggable->right - target->w : (draggable->allow_out_of_screen ? nw->rect.w - 1 : target->parent->w - target->w);
+      draggable->right != DRAGGABLE_UNSPECIFIED_NUM
+          ? draggable->right - target->w
+          : (draggable->allow_out_of_screen ? nw->rect.w - 1 : target->parent->w - target->w);
   xy_t max_y =
-      draggable->bottom != DRAGGABLE_UNSPECIFIED_NUM ? draggable->bottom - target->h : (draggable->allow_out_of_screen ? nw->rect.h - 1 : target->parent->h - target->h);
+      draggable->bottom != DRAGGABLE_UNSPECIFIED_NUM
+          ? draggable->bottom - target->h
+          : (draggable->allow_out_of_screen ? nw->rect.h - 1 : target->parent->h - target->h);
 
   if (min_x < max_x) {
     x = tk_clampi(x, min_x, max_x);

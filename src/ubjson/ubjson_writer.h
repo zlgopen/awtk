@@ -521,8 +521,8 @@ ret_t ubjson_writer_write_kv_wstr(ubjson_writer_t* writer, const char* key, cons
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t ubjson_writer_write_kv_wstr_len(ubjson_writer_t* writer, const char* key, const wchar_t* value,
-                                     uint32_t len);
+ret_t ubjson_writer_write_kv_wstr_len(ubjson_writer_t* writer, const char* key,
+                                      const wchar_t* value, uint32_t len);
 /**
  * @method ubjson_writer_write_kv_value
  *
