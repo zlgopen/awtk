@@ -983,7 +983,8 @@ uint32_t tk_wstr_count_c(const wchar_t* str, wchar_t c) {
   return nr;
 }
 
-ret_t tk_wstr_select_word(const wchar_t* str, uint32_t len, uint32_t index, int32_t* left, int32_t* right) {
+ret_t tk_wstr_select_word(const wchar_t* str, uint32_t len, uint32_t index, int32_t* left,
+                          int32_t* right) {
   int32_t i = 0;
   const wchar_t* no_start_symbols = L",.?!)>:;，。？！》）：；";
 
@@ -992,9 +993,9 @@ ret_t tk_wstr_select_word(const wchar_t* str, uint32_t len, uint32_t index, int3
   return_value_if_fail(left != NULL && right != NULL, RET_BAD_PARAMS);
 
   i = (int32_t)index;
-  while (str != NULL && i > 0 ) {
+  while (str != NULL && i > 0) {
     --i;
-    
+
     if (i >= 0) {
       if (wcs_chr(no_start_symbols, str[i]) != NULL) {
         break;
@@ -1003,14 +1004,16 @@ ret_t tk_wstr_select_word(const wchar_t* str, uint32_t len, uint32_t index, int3
       } else if (tk_isspace(str[i])) {
         break;
       } else if (!tk_isspace(str[i + 1]) && wcs_chr(no_start_symbols, str[i + 1]) == NULL &&
-          (tk_isalpha(str[i]) && !tk_isalpha(str[i + 1])) || !tk_isalpha(str[i]) && tk_isalpha(str[i + 1])) {
+                 ((tk_isalpha(str[i]) && !tk_isalpha(str[i + 1])) ||
+                  (!tk_isalpha(str[i]) && tk_isalpha(str[i + 1])))) {
         break;
-      } else if ((tk_isdigit(str[i]) && !tk_isdigit(str[i + 1])) || !tk_isdigit(str[i]) && tk_isdigit(str[i + 1])) {
+      } else if ((tk_isdigit(str[i]) && !tk_isdigit(str[i + 1])) ||
+                 (!tk_isdigit(str[i]) && tk_isdigit(str[i + 1]))) {
         break;
       }
     }
   }
-  
+
   if (i <= 0) {
     *left = 0;
   } else {
@@ -1020,7 +1023,7 @@ ret_t tk_wstr_select_word(const wchar_t* str, uint32_t len, uint32_t index, int3
   i = (int32_t)index;
   while (str != NULL && i >= 0 && i < len) {
     ++i;
-    
+
     if (i >= 0 && i <= len) {
       if (wcs_chr(no_start_symbols, str[i - 1]) != NULL) {
         *right = i - 1;
@@ -1037,10 +1040,12 @@ ret_t tk_wstr_select_word(const wchar_t* str, uint32_t len, uint32_t index, int3
       } else if (tk_isspace(str[i - 1])) {
         *right = i - 1;
         break;
-      } else if ((tk_isalpha(str[i]) && !tk_isalpha(str[i - 1])) || !tk_isalpha(str[i]) && tk_isalpha(str[i - 1])) {
+      } else if ((tk_isalpha(str[i]) && !tk_isalpha(str[i - 1])) ||
+                 (!tk_isalpha(str[i]) && tk_isalpha(str[i - 1]))) {
         *right = i;
         break;
-      } else if ((tk_isdigit(str[i]) && !tk_isdigit(str[i - 1])) || !tk_isdigit(str[i]) && tk_isdigit(str[i - 1])) {
+      } else if ((tk_isdigit(str[i]) && !tk_isdigit(str[i - 1])) ||
+                 (!tk_isdigit(str[i]) && tk_isdigit(str[i - 1]))) {
         *right = i;
         break;
       }
@@ -1670,31 +1675,30 @@ char* file_read_as_unix_text(const char* filename, uint32_t* size) {
 #endif /*WITH_WASM*/
 
 static const char* s_ret_names[RET_MAX_NR] = {[RET_OK] = "RET_OK",
-                                    [RET_OOM] = "RET_OOM",
-                                    [RET_FAIL] = "RET_FAIL",
-                                    [RET_NOT_IMPL] = "RET_NOT_IMPL",
-                                    [RET_QUIT] = "RET_QUIT",
-                                    [RET_FOUND] = "RET_FOUND",
-                                    [RET_BUSY] = "RET_BUSY",
-                                    [RET_REMOVE] = "RET_REMOVE",
-                                    [RET_REPEAT] = "RET_REPEAT",
-                                    [RET_NOT_FOUND] = "RET_NOT_FOUND",
-                                    [RET_DONE] = "RET_DONE",
-                                    [RET_STOP] = "RET_STOP",
-                                    [RET_SKIP] = "RET_SKIP",
-                                    [RET_CONTINUE] = "RET_CONTINUE",
-                                    [RET_OBJECT_CHANGED] = "RET_OBJECT_CHANGED",
-                                    [RET_ITEMS_CHANGED] = "RET_ITEMS_CHANGED",
-                                    [RET_BAD_PARAMS] = "RET_BAD_PARAMS",
-                                    [RET_TIMEOUT] = "RET_TIMEOUT",
-                                    [RET_CRC] = "RET_CRC",
-                                    [RET_IO] = "RET_IO",
-                                    [RET_EOS] = "RET_EOS",
-                                    [RET_NOT_MODIFIED] = "RET_NOT_MODIFIED",
-                                    [RET_NO_PERMISSION] = "RET_NO_PERMISSION",
-                                    [RET_INVALID_ADDR] = "RET_INVALID_ADDR",
-                                    [RET_EXCEED_RANGE] = "RET_EXCEED_RANGE"
-                                    };
+                                              [RET_OOM] = "RET_OOM",
+                                              [RET_FAIL] = "RET_FAIL",
+                                              [RET_NOT_IMPL] = "RET_NOT_IMPL",
+                                              [RET_QUIT] = "RET_QUIT",
+                                              [RET_FOUND] = "RET_FOUND",
+                                              [RET_BUSY] = "RET_BUSY",
+                                              [RET_REMOVE] = "RET_REMOVE",
+                                              [RET_REPEAT] = "RET_REPEAT",
+                                              [RET_NOT_FOUND] = "RET_NOT_FOUND",
+                                              [RET_DONE] = "RET_DONE",
+                                              [RET_STOP] = "RET_STOP",
+                                              [RET_SKIP] = "RET_SKIP",
+                                              [RET_CONTINUE] = "RET_CONTINUE",
+                                              [RET_OBJECT_CHANGED] = "RET_OBJECT_CHANGED",
+                                              [RET_ITEMS_CHANGED] = "RET_ITEMS_CHANGED",
+                                              [RET_BAD_PARAMS] = "RET_BAD_PARAMS",
+                                              [RET_TIMEOUT] = "RET_TIMEOUT",
+                                              [RET_CRC] = "RET_CRC",
+                                              [RET_IO] = "RET_IO",
+                                              [RET_EOS] = "RET_EOS",
+                                              [RET_NOT_MODIFIED] = "RET_NOT_MODIFIED",
+                                              [RET_NO_PERMISSION] = "RET_NO_PERMISSION",
+                                              [RET_INVALID_ADDR] = "RET_INVALID_ADDR",
+                                              [RET_EXCEED_RANGE] = "RET_EXCEED_RANGE"};
 
 ret_t ret_code_from_name(const char* name) {
   uint32_t i = 0;
@@ -1835,8 +1839,7 @@ int tk_vsscanf_simple(const char* str, const char* format, va_list args) {
 
   while (*format && *str) {
     if (*format != '%') {
-      if (*format != *str) 
-        break;
+      if (*format != *str) break;
 
       format++;
       str++;
@@ -2014,5 +2017,4 @@ int tk_sscanf(const char* str, const char* format, ...) {
 
   return ret;
 }
-#endif/*HAS_NO_VSSCANF*/
-
+#endif /*HAS_NO_VSSCANF*/
