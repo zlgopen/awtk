@@ -300,7 +300,7 @@ def get_appint_folder(path, regex = '/', include_self = True):
 
     for reg in regex_list:
         folder_list += get_appint_folder_ex(path, reg, [], '')
-    
+
     if include_self == True:
         folder_list.append(tuple((path, '')))
     return folder_list
@@ -652,6 +652,8 @@ def gen_res_all_font():
             for f in get_appint_folder(in_files, '.ttf', False):
                 out_files = f[0].replace(INPUT_DIR, join_path(OUTPUT_DIR, 'raw'))
                 out_foler = os.path.dirname(out_files)
+                if 'origin' in out_foler:
+                    continue
                 if not os.path.exists(out_foler):
                     make_dirs(out_foler)
                 copy_file(f[0], out_files)
@@ -699,6 +701,8 @@ def gen_res_all_font():
                 raw = f[0]
                 filename = filename.replace(INPUT_DIR, join_path(OUTPUT_DIR, 'inc'))
                 inc = filename + '.res'
+                if "origin" in inc:
+                    continue
                 resgen(raw, inc, THEME, '.res')
 
     emit_generate_res_after('font')
@@ -1212,12 +1216,12 @@ def get_args(args) :
 
 def get_opts(args) :
     import getopt
-    longsots = ['awtk_root=', 'AWTK_ROOT=', 
+    longsots = ['awtk_root=', 'AWTK_ROOT=',
                 'action=', 'ACTION=',
                 'help', 'HELP',
-                'dpi=', 'DPI=', 
-                'image_options=', 'IMAGE_OPTIONS=', 
-                'lcd_orientation=', 'LCD_ORIENTATION=', 
+                'dpi=', 'DPI=',
+                'image_options=', 'IMAGE_OPTIONS=',
+                'lcd_orientation=', 'LCD_ORIENTATION=',
                 'lcd_enable_fast_rotation=', 'LCD_ENABLE_FAST_ROTATION=',
                 'res_config_file=', 'RES_CONFIG_FILE=',
                 'res_config_script=', 'RES_CONFIG_SCRIPT=',

@@ -29,9 +29,11 @@
 ret_t gen_one(const char* input_file, const char* output_file, const char* theme,
               bool_t output_bin) {
   ret_t ret = RET_OK;
-  if (!xml_to_str_gen(input_file, output_file, theme, output_bin)) {
-    ret = RET_FAIL;
-    GEN_ERROR(input_file);
+  if (!exit_if_need_not_update(input_file, output_file)) {
+    if (!xml_to_str_gen(input_file, output_file, theme, output_bin)) {
+      ret = RET_FAIL;
+      GEN_ERROR(input_file);
+    }
   }
   return ret;
 }
