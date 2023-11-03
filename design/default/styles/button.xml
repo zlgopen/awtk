@@ -25,7 +25,12 @@
     <disable    bg_color="gray" text_color="#d0d0d0" />
     <focused    bg_color="linear-gradient(180deg, #FF0000 20%, #0000FF 80%);" border_color="green"/>
   </style>
-  
+  <style name="icon_top" icon="earth" icon_at="top" border_color="#a0a0a0"  text_color="black">
+    <normal     bg_color="#f0f0f0" />
+    <pressed    bg_color="#c0c0c0" x_offset="3" y_offset="3" />
+    <over       bg_color="#e0e0e0" />
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+  </style>
   <style name="icon" icon="earth" border_color="#a0a0a0"  text_color="black">
     <normal     bg_color="#f0f0f0" />
     <pressed    bg_color="#c0c0c0" x_offset="3" y_offset="3" />
@@ -57,4 +62,3 @@
     <normal />
   </style>
 </column>
-

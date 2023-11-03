@@ -98,6 +98,7 @@
 #include "assets/default/inc/ui/kb_default_t9ext.data"
 #include "assets/default/inc/ui/dragger.data"
 #include "assets/default/inc/ui/dialog2.data"
+#include "assets/default/inc/ui/t.data"
 #include "assets/default/inc/ui/color_picker_hsv.data"
 #include "assets/default/inc/ui/menu_down_right.data"
 #include "assets/default/inc/ui/tab_bottom.data"
@@ -1025,6 +1026,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_kb_default_t9ext);
   assets_manager_add(am, ui_dragger);
   assets_manager_add(am, ui_dialog2);
+  assets_manager_add(am, ui_t);
   assets_manager_add(am, ui_color_picker_hsv);
   assets_manager_add(am, ui_menu_down_right);
   assets_manager_add(am, ui_tab_bottom);
