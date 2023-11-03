@@ -2043,7 +2043,11 @@ widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy
   wstr_init(&(edit->last_changed_text), 0);
   widget_set_text(widget, L"");
   wstr_init(&(edit->saved_text), 0);
+
+  edit->model->ignore_layout = TRUE;
   edit_set_password_visible(widget, FALSE);
+  edit->model->ignore_layout = FALSE;
+
   edit_set_action_text(widget, ACTION_TEXT_DONE);
 
   return widget;
