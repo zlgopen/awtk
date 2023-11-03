@@ -56,7 +56,7 @@ struct _process_info_t {
 
   HANDLE h_std_in_wr;
   HANDLE h_std_out_rd;
-  STARTUPINFOW start_info;
+  STARTUPINFOEXW start_info;
   PROCESS_INFORMATION proc_info;
 
   int client_fd;

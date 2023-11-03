@@ -102,12 +102,16 @@ process_handle_t process_create(const char* file_path, const char** args, uint32
                                 const process_start_info_t* start_info) {
   uint32_t i = 0;
   BOOL ret = FALSE;
+  BOOL ret1 = FALSE;
   HANDLE h_std_in_rd;
   HANDLE h_std_out_wr;
+  HANDLE handle_pipe[2];
   int socks[2] = {0, 0};
   wchar_t* str_tmp = NULL;
   wchar_t* work_dir = NULL;
+  SIZE_T AttributeListSize;
   SECURITY_ATTRIBUTES sa_attr;
+  LPPROC_THREAD_ATTRIBUTE_LIST lpAttributeList;
   process_handle_t handle = TKMEM_ZALLOC(process_info_t);
   return_value_if_fail(handle != NULL, NULL);
 
@@ -121,12 +125,27 @@ process_handle_t process_create(const char* file_path, const char** args, uint32
   goto_error_if_fail(CreatePipe(&h_std_in_rd, &handle->h_std_in_wr, &sa_attr, 0));
   goto_error_if_fail(SetHandleInformation(handle->h_std_in_wr, HANDLE_FLAG_INHERIT, 0));
 
-  handle->start_info.cb = sizeof(STARTUPINFO);
-  handle->start_info.hStdError = h_std_out_wr;
-  handle->start_info.hStdOutput = h_std_out_wr;
-  handle->start_info.hStdInput = h_std_in_rd;
-  handle->start_info.wShowWindow = SW_HIDE;
-  handle->start_info.dwFlags |= (STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW);
+  
+	ZeroMemory(&handle->start_info, sizeof(handle->start_info));
+  handle->start_info.StartupInfo.cb = sizeof(handle->start_info);
+  handle->start_info.StartupInfo.hStdError = h_std_out_wr;
+  handle->start_info.StartupInfo.hStdOutput = h_std_out_wr;
+  handle->start_info.StartupInfo.hStdInput = h_std_in_rd;
+  handle->start_info.StartupInfo.wShowWindow = SW_HIDE;
+  handle->start_info.StartupInfo.dwFlags |= (STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW);
+
+  handle_pipe[0] = h_std_in_rd;
+  handle_pipe[1] = h_std_out_wr;
+
+  ret = InitializeProcThreadAttributeList(NULL, 1, 0, &AttributeListSize) || GetLastError() == ERROR_INSUFFICIENT_BUFFER;
+  goto_error_if_fail(ret);
+  lpAttributeList = (LPPROC_THREAD_ATTRIBUTE_LIST)HeapAlloc(GetProcessHeap(), 0, AttributeListSize);
+  goto_error_if_fail(lpAttributeList != NULL);
+  ret = InitializeProcThreadAttributeList(lpAttributeList, 1, 0, &AttributeListSize);
+  goto_error_if_fail(ret);
+  ret1 = UpdateProcThreadAttribute(lpAttributeList, 0, PROC_THREAD_ATTRIBUTE_HANDLE_LIST, handle_pipe, sizeof(handle_pipe), NULL, NULL);
+  goto_error_if_fail(ret1);
+  handle->start_info.lpAttributeList = lpAttributeList;
 
   wstr_init(&handle->cmd_line, CMD_LINE_SIZE);
   if (file_path != NULL) {
@@ -149,15 +168,15 @@ process_handle_t process_create(const char* file_path, const char** args, uint32
   }
 
   ret = CreateProcessW(handle->file_path,
-                       handle->cmd_line.str,  // command line
-                       NULL,                  // process security attributes
-                       NULL,                  // primary thread security attributes
-                       TRUE,                  // handles are inherited
-                       0,                     // creation flags
-                       NULL,                  // use parent's environment
-                       work_dir,              // use parent's current directory
-                       &handle->start_info,   // STARTUPINFO pointer
-                       &handle->proc_info);   // receives PROCESS_INFORMATION
+                       handle->cmd_line.str,                              // command line
+                       NULL,                                              // process security attributes
+                       NULL,                                              // primary thread security attributes
+                       TRUE,                                              // handles are inherited
+                       EXTENDED_STARTUPINFO_PRESENT,                      // creation flags
+                       NULL,                                              // use parent's environment
+                       work_dir,                                          // use parent's current directory
+                       (LPSTARTUPINFOW)&handle->start_info,               // STARTUPINFO pointer
+                       &handle->proc_info);                               // receives PROCESS_INFORMATION
 
   if (work_dir != NULL) {
     TKMEM_FREE(work_dir);
@@ -172,12 +191,21 @@ process_handle_t process_create(const char* file_path, const char** args, uint32
   handle->client_fd = socks[0];
   handle->server_fd = socks[1];
 
+  DeleteProcThreadAttributeList(lpAttributeList);
+  HeapFree(GetProcessHeap(), 0, lpAttributeList);
+
   handle->rthread = tk_thread_create(process_read_pipe_on_thread, handle);
   goto_error_if_fail(handle->rthread != NULL);
   goto_error_if_fail(tk_thread_start(handle->rthread) == RET_OK);
 
   return handle;
 error:
+  if (lpAttributeList != NULL) {
+    if (!ret1) {
+      DeleteProcThreadAttributeList(lpAttributeList);
+    }
+    HeapFree(GetProcessHeap(), 0, lpAttributeList);
+  }
   process_destroy(handle);
   return NULL;
 }
@@ -189,6 +217,9 @@ int process_handle_get_fd(process_handle_t handle) {
 
 ret_t process_wait_for_data(process_handle_t handle, uint32_t timeout_ms) {
   int fd = process_handle_get_fd(handle);
+  if (fd <= 0) {
+    return RET_IO;
+  }
   return tk_socket_wait_for_data(fd, timeout_ms);
 }
 
