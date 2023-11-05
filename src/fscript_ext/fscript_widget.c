@@ -31,54 +31,6 @@
 #include "file_browser/file_dialog.h"
 #include "ui_loader/ui_builder_default.h"
 
-static widget_t* find_target_widget(widget_t* widget, const char* path, uint32_t len,
-                                    bool_t recursive) {
-  bool_t is_first = TRUE;
-  tokenizer_t tokenizer;
-  widget_t* iter = widget;
-  tokenizer_t* t = NULL;
-  return_value_if_fail(widget != NULL && path != NULL, NULL);
-  if (strchr(path, '.') == NULL) {
-    const char* name = path;
-    if (tk_str_eq(name, STR_PROP_PARENT)) {
-      return widget->parent;
-    } else if (tk_str_eq(name, STR_PROP_SELF)) {
-      return widget;
-    } else if (tk_str_eq(name, STR_PROP_WINDOW)) {
-      return widget_get_window(widget);
-    } else if (tk_str_eq(name, STR_PROP_WINDOW_MANAGER)) {
-      return widget_get_window_manager(widget);
-    } else {
-      return widget_lookup(widget, name, recursive);
-    }
-  }
-  t = tokenizer_init(&tokenizer, path, len, ".");
-  return_value_if_fail(t != NULL, NULL);
-
-  while (tokenizer_has_more(t) && iter != NULL) {
-    const char* name = tokenizer_next(t);
-    if (is_first) {
-      if (tk_str_eq(name, STR_PROP_PARENT)) {
-        iter = widget->parent;
-      } else if (tk_str_eq(name, STR_PROP_SELF)) {
-        iter = widget;
-      } else if (tk_str_eq(name, STR_PROP_WINDOW)) {
-        iter = widget_get_window(widget);
-      } else if (tk_str_eq(name, STR_PROP_WINDOW_MANAGER)) {
-        iter = widget_get_window_manager(widget);
-      } else {
-        iter = widget_child(iter, name);
-      }
-      is_first = FALSE;
-    } else {
-      iter = widget_child(iter, name);
-    }
-  }
-  tokenizer_deinit(t);
-
-  return iter;
-}
-
 static widget_t* to_widget(fscript_t* fscript, const value_t* v) {
   widget_t* widget = NULL;
   if (v->type == VALUE_TYPE_STRING) {
@@ -86,9 +38,9 @@ static widget_t* to_widget(fscript_t* fscript, const value_t* v) {
     const char* path = value_str(v);
     return_value_if_fail(path != NULL, NULL);
 
-    widget = find_target_widget(self, path, strlen(path), TRUE);
+    widget = widget_find_by_path(self, path, TRUE);
     if (widget == NULL) {
-      widget = find_target_widget(widget_get_window(self), path, strlen(path), TRUE);
+      widget = widget_find_by_path(widget_get_window(self), path, TRUE);
     }
 
     return widget;
@@ -189,7 +141,10 @@ static ret_t widget_set(widget_t* self, const char* path, const value_t* v) {
   widget_t* widget = self;
   const char* prop = strrchr(path, '.');
   if (prop != NULL) {
-    widget = find_target_widget(self, path, prop - path, TRUE);
+    char name[MAX_PATH+1] = {0};
+    int32_t len = tk_min_int(prop - path, MAX_PATH);
+    tk_strncpy(name, path, len);
+    widget = widget_find_by_path(self, name, TRUE);
     prop++;
   } else {
     prop = path;
@@ -204,7 +159,10 @@ static ret_t widget_get(widget_t* self, const char* path, value_t* v) {
   widget_t* widget = self;
   const char* prop = strrchr(path, '.');
   if (prop != NULL) {
-    widget = find_target_widget(self, path, prop - path, TRUE);
+    char name[MAX_PATH+1] = {0};
+    int32_t len = tk_min_int(prop - path, MAX_PATH);
+    tk_strncpy(name, path, len);
+    widget = widget_find_by_path(self, name, TRUE);
     prop++;
   } else {
     prop = path;
@@ -286,7 +244,7 @@ static ret_t func_widget_lookup(fscript_t* fscript, fscript_args_t* args, value_
   }
 
   FSCRIPT_FUNC_CHECK(widget != NULL && path != NULL, RET_BAD_PARAMS);
-  widget = find_target_widget(widget, path, strlen(path), recursive);
+  widget = widget_find_by_path(widget, path, recursive);
   if (widget == NULL) {
     result->type = VALUE_TYPE_INVALID;
     return RET_NOT_FOUND;

@@ -23,6 +23,10 @@ BASE_SOURCES = Glob('layouters/*.c') + \
     Glob('widget_animators/*.c') + \
     Glob('window_animators/*.c') + \
     Glob('dialog_highlighters/*.c') + \
+    Glob('service/*.c') + \
+    Glob('remote_ui/service/*.c') + \
+    Glob('remote_ui/client/*.c') + \
+    Glob('remote_ui/shared/*.c') + \
     Glob('window_manager/window_manager_default.c')
 
 if GRAPHIC_BUFFER == "default" :

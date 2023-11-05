@@ -1,0 +1,6 @@
+import os
+
+env=DefaultEnvironment().Clone()
+BIN_DIR=os.environ['BIN_DIR'];
+
+env.Program(os.path.join(BIN_DIR, 'ui_test'), Glob('ui_test.c'))

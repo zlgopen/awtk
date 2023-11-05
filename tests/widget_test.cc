@@ -21,6 +21,7 @@
 #include "base/theme_xml.h"
 #include "base/style_factory.h"
 #include "base/window.h"
+#include "base/window_manager.h"
 
 using std::string;
 #include "common.h"
@@ -68,6 +69,46 @@ TEST(Widget, move_to_center) {
 
   ASSERT_EQ(b->x, 150);
   ASSERT_EQ(b->y, 120);
+  
+  widget_destroy(w);
+}
+
+TEST(Widget, find_by_path) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b = button_create(w, 0, 0, 100, 60);
+  widget_t* label = label_create(b, 0, 0, 100, 60);
+ 
+  widget_set_name(w, "win");
+  ASSERT_EQ(widget_find_by_path(w, STR_PROP_SELF, TRUE), w);
+  ASSERT_EQ(widget_find_by_path(w, STR_PROP_WINDOW, TRUE), w);
+  ASSERT_EQ(widget_find_by_path(w, STR_PROP_WINDOW_MANAGER, TRUE), window_manager());
+
+  widget_set_name(b, "foo");
+  ASSERT_EQ(widget_find_by_path(w, STR_PROP_SELF".foo", TRUE), b);
+  ASSERT_EQ(widget_find_by_path(w, STR_PROP_WINDOW".foo", TRUE), b);
+  
+  ASSERT_EQ(widget_find_by_path(w, "foo", TRUE), b);
+  ASSERT_EQ(widget_find_by_path(w, "foo", TRUE), b);
+  
+  widget_set_name(label, "bar");
+  
+  ASSERT_EQ(widget_find_by_path(w, STR_PROP_SELF".bar", TRUE), (widget_t*)NULL);
+  ASSERT_EQ(widget_find_by_path(w, STR_PROP_WINDOW".bar", TRUE), (widget_t*)NULL);
+  
+  ASSERT_EQ(widget_find_by_path(w, "foo.bar", TRUE), label);
+  ASSERT_EQ(widget_find_by_path(w, "foo.bar", TRUE), label);
+  
+  ASSERT_EQ(widget_find_by_path(w, "foo.bar", FALSE), label);
+  ASSERT_EQ(widget_find_by_path(w, "foo.bar", FALSE), label);
+  
+  ASSERT_EQ(widget_find_by_path(w, "bar", TRUE), label);
+  ASSERT_EQ(widget_find_by_path(w, "bar", TRUE), label);
+  
+  ASSERT_EQ(widget_find_by_path(w, "bar", FALSE), (widget_t*)NULL);
+  ASSERT_EQ(widget_find_by_path(w, "bar", FALSE), (widget_t*)NULL);
+
+  ASSERT_EQ(widget_find_by_path(w, STR_PROP_WINDOW_MANAGER ".win.foo.bar", TRUE), label);
+  ASSERT_EQ(widget_find_by_path(w, STR_PROP_WINDOW_MANAGER ".win.foo.bar", TRUE), label);
 
   widget_destroy(w);
 }

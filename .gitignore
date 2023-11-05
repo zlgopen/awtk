@@ -37,3 +37,6 @@ tools/idl_gen/idl.json
 tools/idl_gen/tkc.json
 t.*
 test.png
+README.md.download 
+manifest.txt 
+test.xml

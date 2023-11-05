@@ -76,6 +76,7 @@ if complie_helper.get_value('BUILD_TOOLS', True) :
     'tools/preview_ui/SConscript',
     'tools/fdb/SConscript',
     'tools/dltest/SConscript',
+    'tools/ui_test/SConscript',
     'src/hal/tools/network_shell/SConscript',
   ]
 

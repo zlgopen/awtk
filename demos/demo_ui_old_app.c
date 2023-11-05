@@ -27,6 +27,7 @@
 #include "ext_widgets.h"
 #include "base/font_manager.h"
 #include "base/event_recorder_player.h"
+#include "remote_ui/service/remote_ui_service.h"
 
 #define DEMOUI_MAIN_WINDOW_NAME "main"
 #define SCROLL_BAR_H_WIDGT_NAME "bar_h"
@@ -1416,6 +1417,12 @@ ret_t application_init() {
   fs_get_user_storage_path(os_fs(), path);
   log_debug("user storage path:%s\n", path);
 
+#ifndef REMOTE_UI_URL
+#define REMOTE_UI_URL "tcp://localhost:2233"
+#endif/*REMOTE_UI_URL*/
+
+  tk_service_start(main_loop_get_event_source_manager(main_loop()), REMOTE_UI_URL, remote_ui_service_create, NULL);
+  
   return show_preload_res_window();
 }
 

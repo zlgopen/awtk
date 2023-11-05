@@ -3390,6 +3390,8 @@ ret_t widget_draw_image_with_region(widget_t* widget, canvas_t* c, bitmap_t* img
                                     const char* region, const rect_t* dst,
                                     image_draw_type_t draw_type);
 
+widget_t* widget_find_by_path(widget_t* widget, const char* path, bool_t recursive);
+
 END_C_DECLS
 
 #endif /*TK_WIDGET_H*/
