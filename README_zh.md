@@ -245,6 +245,26 @@ scons
 bin\demoui
 ```
 
+### 编译参数
+
+编译帮助信息：
+
+```
+scons help
+```
+
+导入编译参数文件：
+
+```
+scons DEFINE_FILE=./awtk_config_define.py
+```
+
+生成编译参数文件：
+
+```
+scons EXPORT_DEFINE_FILE=./awtk_config_define.py
+```
+
 ### 所有平台
 
 * 如果 PIL 没有安装，请用 pip 安装：

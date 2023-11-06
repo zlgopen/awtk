@@ -241,6 +241,26 @@ scons
 bin\demoui
 ```
 
+### compile prams
+
+help info :
+
+```
+scons help
+```
+
+export compile prams file ：
+
+```
+scons DEFINE_FILE=./awtk_config_define.py
+```
+
+build compile prams file :
+
+```
+scons EXPORT_DEFINE_FILE=./awtk_config_define.py
+```
+
 ### for all platforms
 
 > If PIL isn't installed, please use pip to install:
