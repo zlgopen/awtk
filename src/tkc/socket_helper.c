@@ -28,6 +28,16 @@
 
 #ifdef WITH_SOCKET
 
+#if defined(LINUX) || defined(MACOS)
+#include <signal.h>
+static ret_t tk_ignore_sig_pipe(void) {
+  signal(SIGPIPE, SIG_IGN);
+  return RET_OK;
+}
+#else
+#define tk_ignore_sig_pipe()
+#endif/*LINUX*/
+
 #ifdef WIN32
 #pragma comment(lib, "ws2_32")
 ret_t tk_socket_init() {
@@ -38,6 +48,7 @@ ret_t tk_socket_init() {
     log_debug("WSAStartup failed: %d\n", iResult);
     return RET_FAIL;
   }
+  tk_ignore_sig_pipe();
 
   return RET_OK;
 }
@@ -55,6 +66,7 @@ ret_t tk_socket_close(int sock) {
 #else
 
 ret_t tk_socket_init() {
+  tk_ignore_sig_pipe();
   return RET_OK;
 }
 ret_t tk_socket_deinit() {
