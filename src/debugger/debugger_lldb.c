@@ -19,11 +19,12 @@
  *
  */
 
-#define SHOW_PROTOCOL_MESSAGES 0
+#define SHOW_PROTOCOL_MESSAGES 1
 
 #include "tkc.h"
 #include "debugger_lldb.h"
 #include "conf_io/conf_json.h"
+#include "conf_io/conf_ubjson.h"
 #include "streams/inet/iostream_tcp.h"
 
 #define N_WRITE_TIMEOUT 5000
@@ -101,11 +102,38 @@ static tk_object_t* debugger_lldb_get_callstack_impl(debugger_t* debugger, uint3
                                                      uint32_t levels);
 
 static ret_t debugger_lldb_lock(debugger_t* debugger) {
-  return RET_NOT_IMPL;
+  debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
+  return_value_if_fail(lldb != NULL, RET_BAD_PARAMS);
+  return tk_mutex_nest_lock(lldb->mutex);
 }
 
 static ret_t debugger_lldb_unlock(debugger_t* debugger) {
-  return RET_NOT_IMPL;
+  debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
+  return_value_if_fail(lldb != NULL, RET_BAD_PARAMS);
+  return tk_mutex_nest_unlock(lldb->mutex);
+}
+
+static uint64_t debugger_lldb_get_current_thread_id(debugger_t* debugger) {
+  uint64_t thread_id = 0;
+  debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
+  return_value_if_fail(lldb != NULL, thread_id);
+  if (debugger_lock(debugger) == RET_OK) {
+    thread_id = lldb->current_thread_id;
+    debugger_unlock(debugger);
+  }
+  return thread_id;
+}
+
+static ret_t debugger_lldb_set_current_thread_id(debugger_t* debugger, uint64_t thread_id) {
+  ret_t ret = RET_OK;
+  debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
+  return_value_if_fail(lldb != NULL, thread_id);
+  ret = debugger_lock(debugger);
+  if (ret == RET_OK) {
+    lldb->current_thread_id = thread_id;
+    debugger_unlock(debugger);
+  }
+  return ret;
 }
 
 static tk_object_t* debugger_lldb_get_callstack_obj(debugger_t* debugger) {
@@ -169,11 +197,13 @@ static ret_t debugger_lldb_emit(debugger_t* debugger, tk_object_t* resp) {
 
   if (tk_str_eq(event, EVENT_STOPPED)) {
     int32_t line = 0;
+    int64_t stop_thread_id = 0;
     const char* file_path = NULL;
     debugger_breaked_event_t event;
     TK_OBJECT_UNREF(lldb->callstack);
-
-    lldb->stop_thread_id = tk_object_get_prop_int64(resp, "body.threadId", 0);
+    
+    stop_thread_id = tk_object_get_prop_int64(resp, "body.threadId", 0);
+    debugger_lldb_set_current_thread_id(debugger, stop_thread_id);
     lldb->callstack = debugger_lldb_get_callstack_impl(debugger, 0, 100);
     file_path = debugger_lldb_get_source_path(debugger, debugger->current_frame_index);
     debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_PAUSED);
@@ -182,7 +212,7 @@ static ret_t debugger_lldb_emit(debugger_t* debugger, tk_object_t* resp) {
     line = lldb->current_frame_line - 1;
     emitter_dispatch(EMITTER(debugger), debugger_breaked_event_init_ex(&event, line, file_path));
 
-    log_debug("threadId = %d stopped\n", (int)lldb->stop_thread_id);
+    log_debug("threadId = %lld stopped\n", stop_thread_id);
   } else if (tk_str_eq(event, EVENT_OUTPUT)) {
     uint32_t line = 0;
     debugger_log_event_t event;
@@ -726,7 +756,7 @@ static tk_object_t* debugger_lldb_create_get_callstack_req(debugger_t* debugger,
   tk_object_t* req = NULL;
   tk_object_t* arguments = NULL;
   debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
-  int64_t thread_id = lldb->stop_thread_id;
+  int64_t thread_id = debugger_lldb_get_current_thread_id(debugger);
 
   req = object_default_create();
   return_value_if_fail(req != NULL, NULL);
@@ -864,8 +894,7 @@ static ret_t debugger_lldb_scopes_command(debugger_t* debugger, uint32_t frame_i
 static tk_object_t* debugger_lldb_create_simple_req(debugger_t* debugger, const char* cmd) {
   tk_object_t* req = NULL;
   tk_object_t* arguments = NULL;
-  debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
-  int64_t thread_id = lldb->stop_thread_id;
+  int64_t thread_id = debugger_lldb_get_current_thread_id(debugger);
 
   req = object_default_create();
   return_value_if_fail(req != NULL, NULL);
@@ -1074,31 +1103,47 @@ static tk_object_t* debugger_lldb_get_global(debugger_t* debugger) {
   return debugger_lldb_get_variables_impl(debugger, VARREF_LOCALS, 0, 0xffff);
 }
 
-static ret_t debugger_lldb_get_callstack(debugger_t* debugger, binary_data_t* ret) {
+static tk_object_t* debugger_lldb_get_callstack(debugger_t* debugger) {
   int32_t i = 0;
   int32_t n = 0;
   char path[MAX_PATH + 1] = {0};
+  tk_object_t* ret_obj = NULL;
   tk_object_t* callstack = NULL;
   debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
-  str_t* str = &(lldb->scallstack);
-  return_value_if_fail(ret != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(lldb != NULL, NULL);
 
   debugger_lldb_dispatch_messages(debugger);
   callstack = debugger_lldb_get_callstack_obj(debugger);
-  return_value_if_fail(callstack != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(callstack != NULL, NULL);
 
-  str_clear(str);
+  ret_obj = conf_ubjson_create();
+
   n = tk_object_get_prop_uint32(callstack, "body.stackFrames.#size", 0);
   for (i = 0; i < n; i++) {
-    tk_snprintf(path, sizeof(path) - 1, "body.stackFrames.[%d].name", i);
-    str_append(str, tk_object_get_prop_str(callstack, path));
-    str_append(str, "\n");
+    uint32_t line_number = 0;
+    const char* name = NULL;
+    const char* file_path = NULL;
+
+    tk_snprintf(path, sizeof(path), "body.stackFrames.[%d].name", i);
+    name = tk_object_get_prop_str(callstack, path);
+    
+    tk_snprintf(path, sizeof(path), "body.stackFrames.[%d].source.path", i);
+    file_path = tk_object_get_prop_str(callstack, path);
+
+    tk_snprintf(path, sizeof(path), "body.stackFrames.[%d].line", i);
+    line_number = tk_object_get_prop_uint32(callstack, path, 0);
+
+    tk_snprintf(path, sizeof(path), "%s.[%d].name", DEBUGER_CALLSTACK_NODE_NAME, i);
+    tk_object_set_prop_str(ret_obj, path, name);
+    
+    tk_snprintf(path, sizeof(path), "%s.[%d].path", DEBUGER_CALLSTACK_NODE_NAME, i);
+    tk_object_set_prop_str(ret_obj, path, file_path);
+    
+    tk_snprintf(path, sizeof(path), "%s.[%d].line", DEBUGER_CALLSTACK_NODE_NAME, i);
+    tk_object_set_prop_uint32(ret_obj, path, line_number);
   }
 
-  ret->data = str->str;
-  ret->size = str->size;
-
-  return RET_OK;
+  return ret_obj;
 }
 
 static ret_t debugger_lldb_update_break_points(debugger_t* debugger) {
@@ -1284,6 +1329,8 @@ static const debugger_vtable_t s_debugger_lldb_vtable = {
     .remove_break_point_ex = debugger_lldb_remove_break_point_ex,
     .clear_break_points = debugger_lldb_clear_break_points,
     .set_current_frame = debugger_lldb_set_current_frame,
+    .set_current_thread_id = debugger_lldb_set_current_thread_id,
+    .get_current_thread_id = debugger_lldb_get_current_thread_id,
     .deinit = debugger_lldb_deinit,
 };
 
@@ -1306,6 +1353,7 @@ static ret_t debugger_lldb_on_destroy(tk_object_t* obj) {
   str_reset(&(lldb->header));
   str_reset(&(lldb->scallstack));
   str_reset(&(lldb->sbreakpoints));
+  tk_mutex_nest_destroy(lldb->mutex);
   TK_OBJECT_UNREF(lldb->io);
   TK_OBJECT_UNREF(lldb->sources);
   TK_OBJECT_UNREF(lldb->callstack);
@@ -1336,6 +1384,7 @@ debugger_t* debugger_lldb_create_impl(tk_iostream_t* io) {
   str_init(&(debugger->header), 10000);
   str_init(&(debugger->scallstack), 10000);
   str_init(&(debugger->sbreakpoints), 10000);
+  debugger->mutex = tk_mutex_nest_create();
   debugger->resps = object_default_create();
   debugger->sources = object_default_create();
   debugger->source_break_points = object_default_create();

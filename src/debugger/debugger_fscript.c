@@ -21,6 +21,7 @@
 
 #include "tkc/async.h"
 #include "tkc/object_default.h"
+#include "conf_io/conf_ubjson.h"
 #include "debugger/debugger_server.h"
 #include "debugger/debugger_message.h"
 #include "debugger/debugger_fscript.h"
@@ -334,23 +335,25 @@ tk_object_t* debugger_fscript_get_global(debugger_t* debugger) {
   return TK_OBJECT_REF(fscript_get_global_object());
 }
 
-static ret_t debugger_fscript_get_callstack(debugger_t* debugger, binary_data_t* callstack) {
+static tk_object_t* debugger_fscript_get_callstack(debugger_t* debugger) {
   int32_t i = 0;
   int32_t n = 0;
+  tk_object_t* ret_obj = NULL;
   debugger_fscript_t* d = DEBUGGER_FSCRIPT(debugger);
-  return_value_if_fail(d != NULL && d->fscript != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(d != NULL && d->fscript != NULL, NULL);
+
+  ret_obj = conf_ubjson_create();
 
   str_clear(&(d->temp_str));
   n = d->call_stack_frames.size;
-  for (i = n - 1; i >= 0; i--) {
-    call_stack_frame_t* iter = (call_stack_frame_t*)darray_get(&(d->call_stack_frames), i);
-    str_append_more(&(d->temp_str), iter->name, "\n", NULL);
+  for (i = 0; i < n; i++) {
+    char path[MAX_PATH + 1] = {0};
+    call_stack_frame_t* iter = (call_stack_frame_t*)darray_get(&(d->call_stack_frames), n - i - 1);
+    tk_snprintf(path, sizeof(path), "%s.[%d].name", DEBUGER_CALLSTACK_NODE_NAME, i);
+    tk_object_set_prop_str(ret_obj, path, iter->name);
   }
 
-  callstack->data = d->temp_str.str;
-  callstack->size = d->temp_str.size + 1;
-
-  return RET_OK;
+  return ret_obj;
 }
 
 static ret_t debugger_fscript_get_break_points(debugger_t* debugger, binary_data_t* break_points) {

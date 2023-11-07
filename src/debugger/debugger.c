@@ -159,12 +159,11 @@ tk_object_t* debugger_get_global(debugger_t* debugger) {
   return debugger->vt->get_global(debugger);
 }
 
-ret_t debugger_get_callstack(debugger_t* debugger, binary_data_t* callstack) {
-  return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(debugger->vt->get_callstack != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(callstack != NULL, RET_BAD_PARAMS);
+tk_object_t* debugger_get_callstack(debugger_t* debugger) {
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, NULL);
+  return_value_if_fail(debugger->vt->get_callstack != NULL, NULL);
 
-  return debugger->vt->get_callstack(debugger, callstack);
+  return debugger->vt->get_callstack(debugger);
 }
 
 ret_t debugger_clear_break_points(debugger_t* debugger) {
@@ -323,6 +322,25 @@ ret_t debugger_set_current_frame(debugger_t* debugger, uint32_t frame_index) {
     return debugger->vt->set_current_frame(debugger, frame_index);
   } else {
     return RET_OK;
+  }
+}
+
+uint64_t debugger_get_current_thread_id(debugger_t* debugger) {
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, 0);
+  if (debugger->vt->get_current_thread_id != NULL) {
+    return debugger->vt->get_current_thread_id(debugger);
+  } else {
+    return 0;
+  }
+}
+
+ret_t debugger_set_current_thread_id(debugger_t* debugger, uint64_t thread_id) {
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
+
+  if (debugger->vt->set_current_thread_id != NULL) {
+    return debugger->vt->set_current_thread_id(debugger, thread_id);
+  } else {
+    return RET_NOT_IMPL;
   }
 }
 

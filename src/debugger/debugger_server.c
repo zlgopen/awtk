@@ -21,6 +21,8 @@
 
 #include "tkc/thread.h"
 #include "tkc/buffer.h"
+#include "conf_io/conf_obj.h"
+#include "conf_io/conf_ubjson.h"
 #include "tkc/object_default.h"
 #include "ubjson/ubjson_writer.h"
 #include "debugger/debugger_factory.h"
@@ -140,6 +142,34 @@ static ret_t debugger_server_send_data(debugger_server_t* server, debugger_resp_
     ret = debugger_server_send_data_impl(server->out, resp, data);
     tk_mutex_nest_unlock(server->mutex);
   }
+
+  return ret;
+}
+
+static ret_t debugger_server_send_ubjson(debugger_server_t* server, debugger_resp_t* resp,
+                                         tk_object_t* obj) {
+  wbuffer_t wb;
+  ret_t ret = RET_FAIL;
+  ubjson_writer_t writer;
+  binary_data_t data = {0, NULL};
+  return_value_if_fail(wbuffer_init_extendable(&wb) != NULL, RET_OOM);
+
+  if (obj != NULL) {
+    conf_doc_t* doc = conf_obj_get_doc(obj);
+    ubjson_writer_init(&writer, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+    ret = conf_doc_save_ubjson(doc, &writer);
+    assert(ret == RET_OK);
+    goto_error_if_fail(ret == RET_OK);
+  } else {
+    wbuffer_write_string(&wb, "{}");
+  }
+
+  data.data = wb.data;
+  data.size = wb.cursor;
+  ret = debugger_server_send_data(server, resp, &data);
+
+error:
+  wbuffer_deinit(&wb);
 
   return ret;
 }
@@ -575,8 +605,9 @@ static ret_t debugger_server_dispatch(debugger_server_t* server) {
       case DEBUGGER_REQ_GET_CALLSTACK: {
         binary_data_t data = {0, NULL};
         if (debugger_lock(debugger) == RET_OK) {
-          resp.error = debugger_get_callstack(debugger, &data);
-          ret = debugger_server_send_data(server, &resp, &data);
+          tk_object_t* obj = debugger_get_callstack(debugger);
+          ret = debugger_server_send_ubjson(server, &resp, obj);
+          TK_OBJECT_UNREF(obj);
           debugger_unlock(debugger);
           goto_error_if_fail(ret == RET_OK);
         }

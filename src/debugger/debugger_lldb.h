@@ -51,12 +51,14 @@ typedef struct _debugger_lldb_t {
   str_t sbreakpoints;
 
   tk_iostream_t* io;
-  int64_t stop_thread_id;
   int64_t current_frame_id;
+  int64_t current_thread_id;
   int64_t current_frame_line;
   const char* current_frame_name;
   const char* current_frame_source;
   const char* current_frame_file_path;
+
+  tk_mutex_nest_t* mutex;
 
   tk_object_t* resps;
   /*代码文件缓存*/

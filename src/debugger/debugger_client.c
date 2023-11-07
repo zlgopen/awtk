@@ -371,11 +371,11 @@ static tk_object_t* debugger_client_get_global(debugger_t* debugger) {
   }
 }
 
-static ret_t debugger_client_get_callstack(debugger_t* debugger, binary_data_t* callstack) {
+static tk_object_t* debugger_client_get_callstack(debugger_t* debugger) {
   if (debugger_client_write_simple(debugger, DEBUGGER_REQ_GET_CALLSTACK, 0) == RET_OK) {
-    return debugger_client_read_binary(debugger, DEBUGGER_RESP_GET_CALLSTACK, callstack);
+    return debugger_client_read_object(debugger, DEBUGGER_RESP_GET_CALLSTACK);
   } else {
-    return RET_FAIL;
+    return NULL;
   }
 }
 

@@ -29,6 +29,8 @@
 
 BEGIN_C_DECLS
 
+#define DEBUGER_CALLSTACK_NODE_NAME    "callstack"
+
 struct _debugger_t;
 typedef struct _debugger_t debugger_t;
 /**
@@ -74,7 +76,7 @@ typedef ret_t (*debugger_continue_t)(debugger_t* debugger);
 typedef tk_object_t* (*debugger_get_local_t)(debugger_t* debugger, uint32_t frame_index);
 typedef tk_object_t* (*debugger_get_self_t)(debugger_t* debugger);
 typedef tk_object_t* (*debugger_get_global_t)(debugger_t* debugger);
-typedef ret_t (*debugger_get_callstack_t)(debugger_t* debugger, binary_data_t* callstack);
+typedef tk_object_t* (*debugger_get_callstack_t)(debugger_t* debugger);
 typedef ret_t (*debugger_clear_break_points_t)(debugger_t* debugger);
 typedef ret_t (*debugger_set_break_point_t)(debugger_t* debugger, uint32_t line);
 typedef ret_t (*debugger_remove_break_point_t)(debugger_t* debugger, uint32_t line);
@@ -92,6 +94,8 @@ typedef ret_t (*debugger_set_state_t)(debugger_t* debugger, debugger_program_sta
 
 /*扩展接口以支持lldb的DAP协议{*/
 typedef tk_object_t* (*debugger_get_threads_t)(debugger_t* debugger);
+typedef ret_t (*debugger_set_current_thread_id_t)(debugger_t* debugger, uint64_t thread_id);
+typedef uint64_t (*debugger_get_current_thread_id_t)(debugger_t* debugger);
 typedef ret_t (*debugger_launch_app_t)(debugger_t* debugger, const char* program,
                                        const char* work_dir, int argc, char* argv[]);
 
@@ -139,6 +143,8 @@ typedef struct _debugger_vtable_t {
 
   /*扩展接口以支持lldb的DAP协议{*/
   debugger_get_threads_t get_threads;
+  debugger_get_current_thread_id_t get_current_thread_id;
+  debugger_set_current_thread_id_t set_current_thread_id;
   debugger_launch_app_t launch_app;
   debugger_get_var_t get_var;
   debugger_set_break_point_ex_t set_break_point_ex;
@@ -337,13 +343,13 @@ tk_object_t* debugger_get_global(debugger_t* debugger);
 
 /**
  * @method debugger_get_callstack
- * 获取callstack。
+ * 获取当前线程的callstack。
  * @param {debugger_t*} debugger debugger对象。
- * @param {binary_data_t*} callstack callstack。
+ * @param {binary_data_t*} callstack 返回callstack。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {tk_object_t*} 返回堆栈信息。
  */
-ret_t debugger_get_callstack(debugger_t* debugger, binary_data_t* callstack);
+tk_object_t* debugger_get_callstack(debugger_t* debugger);
 
 /**
  * @method debugger_clear_break_points
@@ -527,6 +533,27 @@ int32_t debugger_get_current_frame(debugger_t* debugger);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t debugger_set_current_frame(debugger_t* debugger, uint32_t frame_index);
+
+/**
+ * @method debugger_get_current_thread_id
+ *获取当前线程 ID。
+ * > 处于暂停状态才能执行本命令。
+ * @param {debugger_t*} debugger debugger对象。
+ *
+ * @return {uint64_t} 成功返回线程 ID，失败返回 0。
+ */
+uint64_t debugger_get_current_thread_id(debugger_t* debugger);
+
+/**
+ * @method debugger_set_current_thread_id
+ * 设置当前处于哪个一个线程的上下文中。
+ * > 处于暂停状态才能执行本命令。
+ * @param {debugger_t*} debugger debugger对象。
+ * @param {uint64_t} thread_id 线程 id
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t debugger_set_current_thread_id(debugger_t* debugger, uint64_t thread_id);
 
 /**
  * @method debugger_dispatch_messages
