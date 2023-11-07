@@ -307,8 +307,9 @@ TEST(Debugger, callstack1) {
 
   tk_object_t* ret_obj = debugger_get_callstack(client);
   ASSERT_EQ(ret_obj != NULL, true);
-  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".#size", 0), 1);
-  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[0].name"), "<root>");
+  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".#size", 0), 2);
+  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[0].name"), "foo");
+  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[1].name"), "<root>");
   TK_OBJECT_UNREF(ret_obj);
 
   tk_object_t* local = debugger_get_local(client, 0);
