@@ -50,7 +50,7 @@ struct _tk_service_t {
 /**
  * @method tk_service_dispatch
  * 处理服务器请求。
- *
+ * > 返回非RET_OK，停止服务器，并销毁service对象。
  * @param {tk_service_t*} service 服务对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -60,7 +60,7 @@ ret_t tk_service_dispatch(tk_service_t* service);
 /**
  * @method tk_service_destroy
  * 销毁服务对象。
- *
+ * > 服务负责销毁IO对象。
  * @param {tk_service_t*} service 服务对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -74,7 +74,7 @@ ret_t tk_service_destroy(tk_service_t* service);
  * @param {event_source_manager_t*} esm 事件源管理器。
  * @param {const char*} url 服务地址。
  * @param {tk_service_create_t} create 创建服务对象的函数。
- * @param {void*} args 参数。
+ * @param {void*} args 参数(对于TCP服务，该参数必须持续有效，使用全局或静态变量)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
