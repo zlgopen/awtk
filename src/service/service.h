@@ -147,6 +147,8 @@ ret_t tk_service_upload_file(tk_service_t* service, const char* filename);
  */
 ret_t tk_service_download_file(tk_service_t* service, const char* filename);
 
+#define TK_SERVICE(obj) ((obj) != NULL ? &((obj)->service) : NULL)
+
 END_C_DECLS
 
 #endif /*TK_SERVICE_H*/

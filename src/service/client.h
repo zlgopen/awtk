@@ -123,6 +123,8 @@ ret_t tk_client_download_file(tk_client_t* client, const char* remote_file, cons
  */
 ret_t tk_client_upload_file(tk_client_t* client, const char* remote_file, const char* local_file);
 
+#define TK_CLIENT(obj) ((obj) != NULL ? &((obj)->client) : NULL)
+
 END_C_DECLS
 
 #endif /*TK_CLIENT_H*/
