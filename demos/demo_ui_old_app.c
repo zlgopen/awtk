@@ -1397,7 +1397,7 @@ static ret_t wm_on_ime_stop(void* ctx, event_t* evt) {
 ret_t application_init() {
   char path[MAX_PATH + 1];
   widget_t* wm = window_manager();
-
+  tk_socket_init();
   image_manager_set_max_mem_size_of_cached_images(image_manager(), 8 * 1024 * 1024);
 
   /*enable screen saver*/
@@ -1428,6 +1428,7 @@ ret_t application_init() {
 
 ret_t application_exit() {
   log_debug("application_exit\n");
+  tk_socket_deinit();
   return RET_OK;
 }
 
