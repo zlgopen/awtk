@@ -603,7 +603,6 @@ static ret_t debugger_server_dispatch(debugger_server_t* server) {
         continue;
       }
       case DEBUGGER_REQ_GET_CALLSTACK: {
-        binary_data_t data = {0, NULL};
         if (debugger_lock(debugger) == RET_OK) {
           tk_object_t* obj = debugger_get_callstack(debugger);
           ret = debugger_server_send_ubjson(server, &resp, obj);

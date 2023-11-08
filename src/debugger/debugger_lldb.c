@@ -755,7 +755,6 @@ static tk_object_t* debugger_lldb_create_get_callstack_req(debugger_t* debugger,
                                                            uint32_t start_frame, uint32_t levels) {
   tk_object_t* req = NULL;
   tk_object_t* arguments = NULL;
-  debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
   int64_t thread_id = debugger_lldb_get_current_thread_id(debugger);
 
   req = object_default_create();
