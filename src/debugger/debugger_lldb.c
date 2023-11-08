@@ -19,7 +19,7 @@
  *
  */
 
-#define SHOW_PROTOCOL_MESSAGES 1
+#define SHOW_PROTOCOL_MESSAGES 0
 
 #include "tkc.h"
 #include "debugger_lldb.h"
