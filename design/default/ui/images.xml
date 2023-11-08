@@ -12,7 +12,7 @@
       <image style="border" image="3" draw_type="fill"><label w="100%" h="100%" text="fill" /></image>
      </list_item>
      <list_item style="empty" children_layout="default(r=1,c=3,s=2,m=2)">
-      <image style="border" image="earth" draw_type="default"><label w="100%" h="100%" text="default" /></image>
+      <image style="border" image="gray_8" draw_type="default"><label w="100%" h="100%" text="default" /></image>
       <image style="border" image="earth" draw_type="icon"><label w="100%" h="100%" text="icon" /></image>
       <image style="border" image="earth" draw_type="center"><label w="100%" h="100%" text="center" /></image>
      </list_item>
