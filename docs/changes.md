@@ -1,10 +1,10 @@
 # 最新动态
 
 2023/11/8
-  * 重构service/remote_ui。
+  * 重构service/remote\_ui。
   * 关闭lldb的打印调试信息(感谢智明提供补丁)
   * 统一处理提取路径文件名的处理函数(感谢智明提供补丁)
-
+  * 修改window\_manager\_switch\_to函数收到模态窗口影响的问题(感谢智明提供补丁)
 
 2023/11/7
   * socket初始化时忽略SIGPIPE。

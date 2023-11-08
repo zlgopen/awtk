@@ -417,7 +417,7 @@ ret_t window_manager_back_to(widget_t* widget, const char* target);
 /**
  * @method window_manager_switch_to
  * 切换到指定窗口。
- *
+ * 备注：会受到模态窗口影响，如果切换的窗口是模态窗口之前的窗口就会失败。
  * ```c
  * window_manager_switch_to(wm, win, widget_child(wm, "home"), FALSE);
  * ```

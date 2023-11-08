@@ -382,6 +382,14 @@ ret_t window_manager_switch_to(widget_t* widget, widget_t* curr_win, widget_t* t
     return RET_OK;
   }
 
+  WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+    if (widget_is_dialog(iter)) {
+      return RET_FAIL;
+    } else if (iter == target_win) {
+      break;
+    }
+  WIDGET_FOR_EACH_CHILD_END();
+
   if (wm->vt->switch_to != NULL) {
     return wm->vt->switch_to(widget, curr_win, target_win, close);
   } else {
