@@ -98,6 +98,17 @@ static ret_t tk_service_tcp_on_client(event_source_t* source) {
   return RET_OK;
 }
 
+static ret_t on_source_destroy(void* ctx, event_t* e) {
+  event_source_fd_t* source = EVENT_SOURCE_FD(e->target);
+  int listen_sock = source->fd;
+  int port = tk_pointer_to_int(ctx);
+
+  log_debug("stop service: socket=%d port=%d\n", listen_sock, port);
+  socket_close(listen_sock);
+
+  return RET_OK;
+}
+
 static ret_t tk_service_start_tcp(event_source_manager_t* esm, const char* url,
                                   tk_service_create_t create, void* args) {
   int port = 0;
@@ -117,6 +128,8 @@ static ret_t tk_service_start_tcp(event_source_manager_t* esm, const char* url,
   return_value_if_fail(source != NULL, RET_OOM);
   EVENT_SOURCE_FD(source)->ctx2 = args;
   event_source_manager_add(esm, source);
+  emitter_on(EMITTER(source), EVT_DESTROY, on_source_destroy, tk_pointer_from_int(port));
+
   OBJECT_UNREF(source);
   log_debug("service start: %s\n", url);
 
