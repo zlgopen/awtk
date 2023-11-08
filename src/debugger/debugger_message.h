@@ -545,7 +545,7 @@ event_t* debugger_frame_changed_event_init(debugger_frame_changed_event_t* event
                                            uint32_t line);
 
 /**
- * @method debugger_frame_changed_event_init
+ * @method debugger_frame_changed_event_init_ex
  * 初始化
  *
  * @param {debugger_frame_changed_event_t*} event event对象。

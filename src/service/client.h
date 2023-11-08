@@ -52,6 +52,7 @@ struct _tk_client_t {
  * @method tk_client_init
  * 初始化(仅供子类使用)。
  * @param {tk_client_t*} client 服务对象。
+ * @param {tk_iostream_t*} io io对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

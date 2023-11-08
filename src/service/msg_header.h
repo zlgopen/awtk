@@ -62,7 +62,7 @@ typedef enum _tk_msg_data_type_t {
  */
 typedef enum _tk_msg_code_t {
   /**
-   * @const tk_MSG_NONE
+   * @const MSG_NONE
    * 无效消息。
   */
   MSG_NONE = 0,

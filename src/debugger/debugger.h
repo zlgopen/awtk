@@ -345,7 +345,6 @@ tk_object_t* debugger_get_global(debugger_t* debugger);
  * @method debugger_get_callstack
  * 获取当前线程的callstack。
  * @param {debugger_t*} debugger debugger对象。
- * @param {binary_data_t*} callstack 返回callstack。
  *
  * @return {tk_object_t*} 返回堆栈信息。
  */
@@ -519,7 +518,7 @@ tk_object_t* debugger_get_var(debugger_t* debugger, const char* path);
  * > 处于暂停状态才能执行本命令。
  * @param {debugger_t*} debugger debugger对象。
  *
- * @return {uint32_t} 成功返回frame序数(0表示当前)，失败返回-1。
+ * @return {int32_t} 成功返回frame序数(0表示当前)，失败返回-1。
  */
 int32_t debugger_get_current_frame(debugger_t* debugger);
 
