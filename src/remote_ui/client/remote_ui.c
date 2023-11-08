@@ -86,7 +86,7 @@ ret_t remote_ui_get_dev_info(remote_ui_t* ui, remote_ui_dev_info_t* info) {
   wb = &(ui->client.wb);
   wbuffer_rewind(wb);
   memset(info, 0x00, sizeof(*info));
-  ret = tk_client_request(&(ui->client), REMOTE_UI_REQ_GET_DEV_INFO, MSG_DATA_TYPE_UBJSON, wb);
+  ret = tk_client_request(&(ui->client), REMOTE_UI_REQ_GET_DEV_INFO, MSG_DATA_TYPE_NONE, wb);
   if (ret == RET_OK) {
     tk_object_t* obj = conf_ubjson_load_from_buff(wb->data, wb->cursor, FALSE);
     if (obj != NULL) {

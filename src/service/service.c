@@ -173,8 +173,22 @@ ret_t tk_service_start(event_source_manager_t* esm, const char* url, tk_service_
   }
 }
 
-ret_t tk_service_send_resp(tk_service_t* service, uint32_t type, uint32_t data_type,
-                           uint32_t resp_code, wbuffer_t* wb) {
+static ret_t tk_service_confirm_packet(tk_service_t* service, bool_t valid) {
+  int32_t ret = 0;
+  tk_msg_header_t header;
+
+  header.size = 0;
+  header.type = MSG_REQ_CONFIRM;
+  header.data_type = MSG_DATA_TYPE_NONE;
+  header.resp_code = valid ? RET_OK : RET_CRC;
+
+  ret = tk_iostream_write_len(service->io, &header, sizeof(header), TK_OSTREAM_DEFAULT_TIMEOUT);
+
+  return ret == sizeof(header) ? RET_OK : RET_FAIL;
+}
+
+ret_t tk_service_send_resp_impl(tk_service_t* service, uint32_t type, uint32_t data_type,
+                                uint32_t resp_code, wbuffer_t* wb) {
   int32_t ret = 0;
   uint32_t size = 0;
   const void* data = NULL;
@@ -219,7 +233,40 @@ ret_t tk_service_send_resp(tk_service_t* service, uint32_t type, uint32_t data_t
   return RET_OK;
 }
 
-ret_t tk_service_read_req(tk_service_t* service, tk_msg_header_t* header, wbuffer_t* wb) {
+ret_t tk_service_send_resp(tk_service_t* service, uint32_t type, uint32_t data_type,
+                           uint32_t resp_code, wbuffer_t* wb) {
+  int32_t len = 0;
+  int32_t retry_times = 0;
+  tk_msg_header_t header;
+  return_value_if_fail(service != NULL && wb != NULL, RET_BAD_PARAMS);
+
+  while (retry_times < TK_MAX_RETRY_TIMES) {
+    ret_t ret = tk_service_send_resp_impl(service, type, data_type, resp_code, wb);
+    break_if_fail(ret == RET_OK);
+
+    /*读取确认包*/
+    memset(&header, 0x00, sizeof(header));
+    len = tk_iostream_read_len(service->io, &header, sizeof(header), TK_ISTREAM_DEFAULT_TIMEOUT);
+    break_if_fail(len == sizeof(header));
+
+    if (header.resp_code == RET_OK) {
+      return RET_OK;
+    }
+
+    if (header.resp_code == RET_CRC) {
+      retry_times++;
+      log_debug("crc error, retry times: %d", retry_times);
+      continue;
+    } else {
+      log_debug("unknown error\n.");
+      break;
+    }
+  }
+
+  return RET_FAIL;
+}
+
+ret_t tk_service_read_req_impl(tk_service_t* service, tk_msg_header_t* header, wbuffer_t* wb) {
   int32_t ret = 0;
   uint16_t crc_value = 0;
   tk_iostream_t* io = NULL;
@@ -249,7 +296,29 @@ ret_t tk_service_read_req(tk_service_t* service, tk_msg_header_t* header, wbuffe
 
   wb->cursor = header->size;
 
-  return header->resp_code;
+  return RET_OK;
+}
+
+ret_t tk_service_read_req(tk_service_t* service, tk_msg_header_t* header, wbuffer_t* wb) {
+  int32_t retry_times = 0;
+  return_value_if_fail(service != NULL && header != NULL && wb != NULL, RET_BAD_PARAMS);
+
+  while (retry_times < TK_MAX_RETRY_TIMES) {
+    ret_t ret = tk_service_read_req_impl(service, header, wb);
+    if (ret != RET_IO) {
+      tk_service_confirm_packet(service, ret != RET_CRC);
+    }
+
+    if (ret == RET_CRC) {
+      retry_times++;
+      log_debug("crc error, retry times: %d", retry_times);
+      continue;
+    } else {
+      return ret;
+    }
+  }
+
+  return RET_FAIL;
 }
 
 ret_t tk_service_upload_file(tk_service_t* service, const char* filename) {

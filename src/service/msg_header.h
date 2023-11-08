@@ -67,6 +67,11 @@ typedef enum _tk_msg_code_t {
   */
   MSG_NONE = 0,
   /**
+   * @const MSG_REQ_CONFIRM
+   * 数据包确认。
+   */
+  MSG_REQ_CONFIRM,
+  /**
    * @const MSG_REQ_LOGIN
    * 登录请求。
    */
@@ -170,6 +175,8 @@ typedef struct _tk_msg_header_t {
    */
   uint8_t resp_code;
 } tk_msg_header_t;
+
+#define TK_MAX_RETRY_TIMES 3
 
 END_C_DECLS
 

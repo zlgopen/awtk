@@ -45,7 +45,8 @@ ret_t tk_client_deinit(tk_client_t* client) {
   return RET_OK;
 }
 
-ret_t tk_client_send_req(tk_client_t* client, uint32_t type, uint32_t data_type, wbuffer_t* wb) {
+static ret_t tk_client_send_req_impl(tk_client_t* client, uint32_t type, uint32_t data_type,
+                                     wbuffer_t* wb) {
   int32_t ret = 0;
   uint32_t size = 0;
   const void* data = NULL;
@@ -88,7 +89,50 @@ ret_t tk_client_send_req(tk_client_t* client, uint32_t type, uint32_t data_type,
   return RET_OK;
 }
 
-ret_t tk_client_read_resp(tk_client_t* client, tk_msg_header_t* header, wbuffer_t* wb) {
+ret_t tk_client_send_req(tk_client_t* client, uint32_t type, uint32_t data_type, wbuffer_t* wb) {
+  int32_t len = 0;
+  int32_t retry_times = 0;
+  tk_msg_header_t header;
+
+  while (retry_times < TK_MAX_RETRY_TIMES) {
+    ret_t ret = tk_client_send_req_impl(client, type, data_type, wb);
+    break_if_fail(ret == RET_OK);
+
+    memset(&header, 0x00, sizeof(header));
+    len = tk_iostream_read_len(client->io, &header, sizeof(header), TK_ISTREAM_DEFAULT_TIMEOUT);
+    break_if_fail(len == sizeof(header));
+
+    if (header.resp_code == RET_OK) {
+      return RET_OK;
+    }
+
+    if (header.resp_code == RET_CRC) {
+      retry_times++;
+      log_debug("crc error, retry times: %d", retry_times);
+      continue;
+    } else {
+      break;
+    }
+  }
+
+  return RET_FAIL;
+}
+
+static ret_t tk_client_confirm_packet(tk_client_t* client, bool_t valid) {
+  int32_t ret = 0;
+  tk_msg_header_t header;
+
+  header.size = 0;
+  header.type = MSG_REQ_CONFIRM;
+  header.data_type = MSG_DATA_TYPE_NONE;
+  header.resp_code = valid ? RET_OK : RET_CRC;
+
+  ret = tk_iostream_write_len(client->io, &header, sizeof(header), TK_OSTREAM_DEFAULT_TIMEOUT);
+
+  return ret == sizeof(header) ? RET_OK : RET_FAIL;
+}
+
+static ret_t tk_client_read_resp_impl(tk_client_t* client, tk_msg_header_t* header, wbuffer_t* wb) {
   int32_t ret = 0;
   uint16_t crc_value = 0;
   tk_iostream_t* io = NULL;
@@ -115,7 +159,28 @@ ret_t tk_client_read_resp(tk_client_t* client, tk_msg_header_t* header, wbuffer_
 
   wb->cursor = header->size;
 
-  return header->resp_code;
+  return RET_OK;
+}
+
+ret_t tk_client_read_resp(tk_client_t* client, tk_msg_header_t* header, wbuffer_t* wb) {
+  int32_t retry_times = 0;
+
+  while (retry_times < TK_MAX_RETRY_TIMES) {
+    ret_t ret = tk_client_read_resp_impl(client, header, wb);
+    if (ret != RET_IO) {
+      tk_client_confirm_packet(client, ret != RET_CRC);
+    }
+
+    if (ret == RET_CRC) {
+      retry_times++;
+      log_debug("crc error, retry times: %d", retry_times);
+      continue;
+    } else {
+      return ret;
+    }
+  }
+
+  return RET_FAIL;
 }
 
 ret_t tk_client_request(tk_client_t* client, uint32_t type, uint32_t data_type, wbuffer_t* wb) {
