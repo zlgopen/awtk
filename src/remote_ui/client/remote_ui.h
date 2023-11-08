@@ -27,6 +27,7 @@
 #include "tkc/iostream.h"
 #include "ubjson/ubjson_writer.h"
 #include "remote_ui/shared/remote_ui_types_def.h"
+#include "service/client.h"
 
 BEGIN_C_DECLS
 
@@ -35,15 +36,9 @@ BEGIN_C_DECLS
  * remote ui客户端。 
 */
 typedef struct _remote_ui_t {
-  /**
-   * @property {tk_iostream_t*} io
-   * @annotation ["readable"]
-   * IO stream。
-   */
-  tk_iostream_t* io;
+  tk_client_t client;
 
   /*private*/
-  wbuffer_t wb;
   ubjson_writer_t writer;
   tk_object_t* event_handlers;
 } remote_ui_t;
@@ -94,6 +89,7 @@ ret_t remote_ui_get_dev_info(remote_ui_t* ui, remote_ui_dev_info_t* info);
 /**
  * @method remote_ui_reboot
  * @param {remote_ui_t*} ui remote ui客户端对象。
+ * @param {remote_ui_reboot_type_t} type 重启类型。
  * 重新启动。
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

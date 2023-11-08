@@ -51,24 +51,16 @@ typedef struct _remote_ui_service_args_t {
 typedef struct _remote_ui_service_t {
   tk_service_t service;
 
-  /**
-   * @property {tk_iostream_t*} io
-   * @annotation ["readable"]
-   * IO stream。
-   */
-  tk_iostream_t* io;
-
   /*private*/
-  wbuffer_t wb;
+  bool_t is_login;
   ubjson_writer_t writer;
   tk_object_t* event_handlers;
-  bool_t is_login;
   tk_service_auth_t auth; 
 } remote_ui_service_t;
 
 /**
  * @method remote_ui_service_create
- * 创建remote ui客户端。
+ * 创建remote ui服务端。
  *
  * @param {tk_iostream_t*} io IO流(由service释放)。
  * @param {void*} args 参数。

@@ -19,6 +19,7 @@
  *
  */
 #include "tkc/url.h"
+#include "tkc/crc.h"
 #include "tkc/utils.h"
 #include "service/service.h"
 #include "tkc/event_source_fd.h"
@@ -26,6 +27,16 @@
 #include "streams/serial/iostream_serial.h"
 
 #include "tkc/socket_helper.h"
+
+ret_t tk_service_init(tk_service_t* service, tk_iostream_t* io) {
+  return_value_if_fail(service != NULL, RET_BAD_PARAMS);
+
+  service->io = io;
+  wbuffer_init_extendable(&(service->wb));
+  wbuffer_extend_capacity(&(service->wb), 1024);
+
+  return RET_OK;
+}
 
 ret_t tk_service_dispatch(tk_service_t* service) {
   return_value_if_fail(service != NULL && service->dispatch != NULL, RET_BAD_PARAMS);
@@ -35,6 +46,9 @@ ret_t tk_service_dispatch(tk_service_t* service) {
 
 ret_t tk_service_destroy(tk_service_t* service) {
   return_value_if_fail(service != NULL && service->destroy != NULL, RET_BAD_PARAMS);
+
+  wbuffer_deinit(&(service->wb));
+  TK_OBJECT_UNREF(service->io);
 
   return service->destroy(service);
 }
@@ -144,4 +158,160 @@ ret_t tk_service_start(event_source_manager_t* esm, const char* url, tk_service_
     log_debug("not supported: %s\n", url);
     return RET_NOT_IMPL;
   }
+}
+
+ret_t tk_service_send_resp(tk_service_t* service, uint32_t type, uint32_t data_type,
+                           uint32_t resp_code, wbuffer_t* wb) {
+  int32_t ret = 0;
+  uint32_t size = 0;
+  const void* data = NULL;
+  tk_msg_header_t header;
+  tk_iostream_t* io = NULL;
+  uint16_t crc_value = PPPINITFCS16;
+  uint32_t timeout = TK_OSTREAM_DEFAULT_TIMEOUT;
+
+  memset(&header, 0x00, sizeof(header));
+  return_value_if_fail(wb != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(service != NULL && service->io != NULL, RET_BAD_PARAMS);
+
+  io = service->io;
+  data = wb->data;
+  size = wb->cursor;
+  if (size > 0) {
+    return_value_if_fail(data != NULL, RET_BAD_PARAMS);
+  }
+
+  header.type = type;
+  header.size = size;
+  header.data_type = data_type;
+  header.resp_code = resp_code;
+
+  crc_value = tk_crc16(crc_value, &header, sizeof(header));
+  if (data != NULL && size > 0) {
+    crc_value = tk_crc16(crc_value, data, size);
+  }
+
+  ret = tk_iostream_write_len(io, &header, sizeof(header), timeout);
+  return_value_if_fail(ret == sizeof(header), RET_IO);
+
+  if (size > 0) {
+    timeout = TK_OSTREAM_DEFAULT_TIMEOUT * (size / 10240) + TK_OSTREAM_DEFAULT_TIMEOUT;
+    ret = tk_iostream_write_len(io, data, size, timeout);
+    return_value_if_fail(ret == size, RET_IO);
+  }
+
+  ret = tk_iostream_write_len(io, &crc_value, sizeof(crc_value), TK_OSTREAM_DEFAULT_TIMEOUT);
+  return_value_if_fail(ret == sizeof(crc_value), RET_IO);
+
+  return RET_OK;
+}
+
+ret_t tk_service_read_req(tk_service_t* service, tk_msg_header_t* header, wbuffer_t* wb) {
+  int32_t ret = 0;
+  uint16_t crc_value = 0;
+  tk_iostream_t* io = NULL;
+  uint16_t real_crc_value = PPPINITFCS16;
+  return_value_if_fail(service != NULL && service->io != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(header != NULL && wb != NULL, RET_BAD_PARAMS);
+
+  io = service->io;
+  wbuffer_rewind(wb);
+  ret = tk_iostream_read_len(io, header, sizeof(*header), TK_ISTREAM_DEFAULT_TIMEOUT);
+  if (ret == 0) {
+    return RET_IO;
+  }
+  return_value_if_fail(ret == sizeof(*header), RET_IO);
+
+  real_crc_value = tk_crc16(real_crc_value, header, sizeof(*header));
+  if (header->size > 0) {
+    return_value_if_fail(wbuffer_extend_capacity(wb, header->size) == RET_OK, RET_OOM);
+    ret = tk_iostream_read_len(io, wb->data, header->size, TK_ISTREAM_DEFAULT_TIMEOUT);
+    return_value_if_fail(ret == header->size, RET_IO);
+    real_crc_value = tk_crc16(real_crc_value, wb->data, header->size);
+  }
+
+  ret = tk_iostream_read_len(io, &crc_value, sizeof(crc_value), TK_ISTREAM_DEFAULT_TIMEOUT);
+  return_value_if_fail(ret == sizeof(crc_value), RET_IO);
+  return_value_if_fail(crc_value == real_crc_value, RET_CRC);
+
+  wb->cursor = header->size;
+
+  return header->resp_code;
+}
+
+ret_t tk_service_upload_file(tk_service_t* service, const char* filename) {
+  int32_t len = 0;
+  ret_t ret = RET_OK;
+  fs_file_t* file = NULL;
+  wbuffer_t* wb = NULL;
+  tk_msg_header_t header;
+  return_value_if_fail(service != NULL && service->io != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(filename != NULL, RET_BAD_PARAMS);
+
+  wb = &(service->wb);
+  wbuffer_rewind(wb);
+  file = fs_open_file(os_fs(), filename, "wb+");
+  if (file != NULL) {
+    tk_service_send_resp(service, MSG_RESP_UPLOAD_FILE_BEGIN, MSG_DATA_TYPE_NONE, RET_OK, wb);
+  } else {
+    tk_service_send_resp(service, MSG_RESP_UPLOAD_FILE_BEGIN, MSG_DATA_TYPE_NONE, RET_FAIL, wb);
+  }
+  return_value_if_fail(file != NULL, RET_BAD_PARAMS);
+
+  memset(&header, 0x00, sizeof(header));
+  while ((ret = tk_service_read_req(service, &header, wb)) == RET_OK) {
+    if (header.type == MSG_REQ_UPLOAD_FILE_DATA) {
+      len = fs_file_write(file, wb->data, wb->cursor);
+      ret = (len == wb->cursor) ? RET_OK : RET_FAIL;
+      tk_service_send_resp(service, MSG_RESP_UPLOAD_FILE_DATA, MSG_DATA_TYPE_NONE, ret, wb);
+      break_if_fail(ret == RET_OK);
+    } else if (header.type == MSG_REQ_UPLOAD_FILE_END) {
+      ret = RET_OK;
+      ret = tk_service_send_resp(service, MSG_RESP_UPLOAD_FILE_END, MSG_DATA_TYPE_NONE, ret, wb);
+      break_if_fail(ret == RET_OK);
+      break;
+    } else {
+      assert(!"impossible");
+      ret = RET_FAIL;
+      tk_service_send_resp(service, MSG_RESP_UPLOAD_FILE_END, MSG_DATA_TYPE_NONE, ret, wb);
+      break;
+    }
+  }
+  fs_file_close(file);
+
+  return RET_OK;
+}
+
+ret_t tk_service_download_file(tk_service_t* service, const char* filename) {
+  wbuffer_t wb;
+  int32_t len = 0;
+  ret_t ret = RET_OK;
+  fs_file_t* file = NULL;
+  uint8_t buff[4096] = {0};
+  return_value_if_fail(service != NULL && service->io != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(filename != NULL, RET_BAD_PARAMS);
+
+  wbuffer_init(&wb, buff, sizeof(buff));
+  file = fs_open_file(os_fs(), filename, "rb");
+  if (file != NULL) {
+    tk_service_send_resp(service, MSG_RESP_DOWNLOAD_FILE_BEGIN, MSG_DATA_TYPE_NONE, RET_OK, &wb);
+  } else {
+    tk_service_send_resp(service, MSG_RESP_DOWNLOAD_FILE_BEGIN, MSG_DATA_TYPE_NONE, RET_FAIL, &wb);
+  }
+  return_value_if_fail(file != NULL, RET_BAD_PARAMS);
+
+  while ((len = fs_file_read(file, buff, sizeof(buff))) > 0) {
+    wbuffer_init(&wb, buff, len);
+    wb.cursor = len;
+    ret = tk_service_send_resp(service, MSG_RESP_DOWNLOAD_FILE_DATA, MSG_DATA_TYPE_BINARY, RET_OK,
+                               &wb);
+    break_if_fail(ret == RET_OK);
+  }
+
+  wbuffer_rewind(&wb);
+  ret = tk_service_send_resp(service, MSG_RESP_DOWNLOAD_FILE_END, MSG_DATA_TYPE_NONE, ret, &wb);
+
+  fs_file_close(file);
+
+  return RET_OK;
 }

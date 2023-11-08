@@ -22,7 +22,7 @@
 #ifndef TK_REMOTE_UI_TYPES_DEF_H
 #define TK_REMOTE_UI_TYPES_DEF_H
 
-#include "tkc/types_def.h"
+#include "service/msg_header.h"
 
 BEGIN_C_DECLS
 
@@ -34,50 +34,15 @@ BEGIN_C_DECLS
  */
 typedef enum _remote_ui_msg_code_t {
   /**
-   * @const REMOTE_UI_MSG_NONE
-   * 无效消息。
-  */
-  REMOTE_UI_MSG_NONE = 0,
-  /**
-   * @const REMOTE_UI_REQ_LOGIN
-   * 登录请求。
-   */
-  REMOTE_UI_REQ_LOGIN,
-  /**
-   * @const REMOTE_UI_REQ_LOGOUT
-   * 登出请求。
-  */
-  REMOTE_UI_REQ_LOGOUT,
-  /**
    * @const REMOTE_UI_REQ_GET_DEV_INFO
    * 获取设备信息。
    */
-  REMOTE_UI_REQ_GET_DEV_INFO,
+  REMOTE_UI_REQ_GET_DEV_INFO = MSG_USER_START,
   /**
    * @const REMOTE_UI_REQ_REBOOT
    * 重新加载请求。
    */
   REMOTE_UI_REQ_REBOOT,
-  /**
-   * @const REMOTE_UI_REQ_UPLOAD_FILE_BEGIN
-   * 上传文件请求开始。
-   */
-  REMOTE_UI_REQ_UPLOAD_FILE_BEGIN,
-  /**
-   * @const REMOTE_UI_REQ_UPLOAD_FILE_DATA
-   * 上传文件请求数据。
-   */
-  REMOTE_UI_REQ_UPLOAD_FILE_DATA,
-  /**
-   * @const REMOTE_UI_REQ_UPLOAD_FILE_END
-   * 上传文件请求结束。
-   */
-  REMOTE_UI_REQ_UPLOAD_FILE_END,
-  /**
-   * @const REMOTE_UI_REQ_DOWNLOAD_FILE_BEGIN
-   * 下载文件请求。
-   */
-  REMOTE_UI_REQ_DOWNLOAD_FILE_BEGIN,
   /**
    * @const REMOTE_UI_REQ_CREATE_DIR
    * 创建目录请求。
@@ -165,16 +130,6 @@ typedef enum _remote_ui_msg_code_t {
   REMOTE_UI_REQ_EXEC_FSCRIPT,
 
   /**
-   * @const REMOTE_UI_RESP_LOGIN
-   * 登录响应。
-   */
-  REMOTE_UI_RESP_LOGIN, 
-  /**
-   * @const REMOTE_UI_RESP_LOGOUT
-   * 登出响应。
-   */
-  REMOTE_UI_RESP_LOGOUT,
-  /**
    * @const REMOTE_UI_RESP_GET_DEV_INFO
    * 获取设备信息响应。
    */
@@ -184,36 +139,6 @@ typedef enum _remote_ui_msg_code_t {
    * 重新加载响应。
    */
   REMOTE_UI_RESP_REBOOT,
-  /**
-   * @const REMOTE_UI_RESP_UPLOAD_FILE_BEGIN
-   * 上传文件开始响应。
-   */
-  REMOTE_UI_RESP_UPLOAD_FILE_BEGIN,
-  /**
-   * @const REMOTE_UI_RESP_UPLOAD_FILE_DATA
-   * 上传文件数据响应。
-   */
-  REMOTE_UI_RESP_UPLOAD_FILE_DATA,
-  /**
-   * @const REMOTE_UI_RESP_UPLOAD_FILE_END
-   * 上传文件结束响应。
-   */
-  REMOTE_UI_RESP_UPLOAD_FILE_END,
-  /**
-   * @const REMOTE_UI_RESP_DOWNLOAD_FILE_BEGIN
-   * 下载文件开始响应。
-   */
-  REMOTE_UI_RESP_DOWNLOAD_FILE_BEGIN,
-  /**
-   * @const REMOTE_UI_RESP_DOWNLOAD_FILE_DATA
-   * 下载文件数据响应。
-   */
-  REMOTE_UI_RESP_DOWNLOAD_FILE_DATA,
-  /**
-   * @const REMOTE_UI_RESP_DOWNLOAD_FILE_END
-   * 下载文件数据响应。
-   */
-  REMOTE_UI_RESP_DOWNLOAD_FILE_END,
   /**
    * @const REMOTE_UI_RESP_CREATE_DIR
    * 创建目录响应。
@@ -305,61 +230,6 @@ typedef enum _remote_ui_msg_code_t {
    */
   REMOTE_UI_NOTIFY,
 } remote_ui_msg_code_t;
-
-/**
- * @enum remote_ui_data_type_t
- * @prefix REMOTE_UI_DATA_TYPE_
- * 数据类型。
-*/
-typedef enum _remote_ui_data_type_t {
-  /**
-   * @const REMOTE_UI_DATA_TYPE_NONE
-   * 无效数据类型。
-   */
-  REMOTE_UI_DATA_TYPE_NONE = 0,
-  /**
-   * @const REMOTE_UI_DATA_TYPE_UBJSON
-   * JSON数据类型。
-   */
-  REMOTE_UI_DATA_TYPE_UBJSON,
-  /**
-   * @const REMOTE_UI_DATA_TYPE_STRING
-   * 字符串数据类型。
-   */
-  REMOTE_UI_DATA_TYPE_STRING,
-  /**
-   * @const REMOTE_UI_DATA_TYPE_BINARY
-   * 二进制数据类型。
-   */
-  REMOTE_UI_DATA_TYPE_BINARY
-} remote_ui_data_type_t;
-
-/**
- * @class remote_ui_msg_header_t
- * 消息头。 
-*/
-typedef struct _remote_ui_msg_header_t {
-  /**
-   * @property {uint32_t} size
-   * 消息体的大小。
-   */
-  uint32_t size;
-  /**
-   * @property {uint16_t} type
-   * 消息类型。
-   */
-  uint16_t type;
-  /**
-   * @property {uint8_t} data_type
-   * 数据类型。
-   */
-  uint8_t data_type;
-  /**
-   * @property {uint8_t} resp_code 
-   * 响应码(仅适用于resp)。
-   */
-  uint8_t resp_code;
-} remote_ui_msg_header_t;
 
 /**
  * @class remote_ui_dev_info_t
