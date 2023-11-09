@@ -2,6 +2,7 @@
 
 2023/11/9
   * 完善serial helper
+  * 修复value_int64接口强转uin32类型值对象时出现溢出的问题(感谢雨欣提供补丁)
 
 2023/11/8
   * 重构service/remote\_ui。
