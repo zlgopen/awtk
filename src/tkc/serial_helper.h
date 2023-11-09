@@ -53,11 +53,14 @@ typedef struct _serial_info_t {
 
 typedef struct _serial_info_t* serial_handle_t;
 #else
+#if defined(LINUX) || defined(MACOS)
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/select.h>
 #include <sys/time.h>
 #include <sys/types.h>
+#endif/*LINUX || MACOS*/
+
 typedef int serial_dev_t;
 
 typedef struct _serial_info_t {

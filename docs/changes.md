@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/11/9
+  * 完善serial helper
+
 2023/11/8
   * 重构service/remote\_ui。
   * 关闭lldb的打印调试信息(感谢智明提供补丁)

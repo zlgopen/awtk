@@ -37,9 +37,13 @@ tk_iostream_t* tk_stream_factory_create_iostream(const char* url) {
   return_value_if_fail(aurl != NULL, NULL);
 
   if (tk_str_start_with(url, STR_SCHEMA_TCP)) {
+#ifdef WITH_SOCKET	  
     io = tk_iostream_tcp_create_client(aurl->host, aurl->port);
+#endif/*WITH_SOCKET*/    
   } else if (tk_str_start_with(url, STR_SCHEMA_UDP)) {
+#ifdef WITH_SOCKET	  
     io = tk_iostream_udp_create_client(aurl->host, aurl->port);
+#endif/*WITH_SOCKET*/    
   } else if (tk_str_eq(aurl->schema, "serial")) {
     char filename[MAX_PATH + 1] = {0};
 

@@ -143,7 +143,7 @@ tk_iostream_t* tk_iostream_serial_create(const char* port) {
   return_value_if_fail(port != NULL, NULL);
 
   fd = serial_open(port);
-  return_value_if_fail(fd > 0, NULL);
+  return_value_if_fail(fd >= 0, NULL);
 
   obj = tk_object_create(&s_tk_iostream_serial_vtable);
   iostream_serial = TK_IOSTREAM_SERIAL(obj);
