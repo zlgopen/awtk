@@ -223,6 +223,7 @@ static ret_t input_method_on_win_close(void* ctx, event_t* e) {
       window_close_force(im->keyboard);
 
       im->win = NULL;
+      im->busy = FALSE;
       im->keyboard = NULL;
       input_method_set_target_widget(im, NULL);
     }
