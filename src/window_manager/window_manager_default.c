@@ -1288,6 +1288,15 @@ static ret_t window_manager_default_get_prop(widget_t* widget, const char* name,
   } else if (tk_str_eq(name, WIDGET_PROP_CURR_WIN)) {
     value_set_pointer(v, wm->curr_win);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SCREEN_SAVER_TIME)) {
+    value_set_uint32(v, wm->screen_saver_time);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SHOW_FPS)) {
+    value_set_bool(v, WINDOW_MANAGER(wm)->show_fps);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_MAX_FPS)) {
+    value_set_uint32(v, WINDOW_MANAGER(wm)->max_fps);
+    return RET_OK;    
   }
 
   return RET_NOT_FOUND;
@@ -1302,6 +1311,13 @@ static ret_t window_manager_default_set_prop(widget_t* widget, const char* name,
   } else if (tk_str_eq(name, WIDGET_PROP_CURR_WIN)) {
     wm->curr_win = value_pointer(v);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SCREEN_SAVER_TIME)) {
+    return window_manager_set_screen_saver_time(widget, value_uint32(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SHOW_FPS)) {
+    return window_manager_set_show_fps(widget, value_bool(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_MAX_FPS)) {
+    return window_manager_set_max_fps(widget, value_uint32(v));
   }
 
   return RET_NOT_FOUND;

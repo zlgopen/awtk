@@ -1082,6 +1082,24 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_DIRTY_RECT "dirty_rect"
 
 /**
+ * @const WIDGET_PROP_SCREEN_SAVER_TIME
+ * 屏幕保护时间。
+ */
+#define WIDGET_PROP_SCREEN_SAVER_TIME "screen_saver_time"
+
+/**
+ * @const WIDGET_PROP_SHOW_FPS
+ * 是否显示FPS。
+ */
+#define WIDGET_PROP_SHOW_FPS "show_fps"
+
+/**
+ * @const WIDGET_PROP_MAX_FPS
+ * 最大FPS。
+ */
+#define WIDGET_PROP_MAX_FPS "max_fps"
+
+/**
  * @enum widget_type_t
  * @annotation ["scriptable", "string"]
  * @prefix WIDGET_TYPE_
@@ -1720,6 +1738,8 @@ typedef enum _window_closable_t {
 #define STR_PROP_SELF "self"
 #define STR_PROP_PARENT "parent"
 #define STR_PROP_WINDOW "window"
+#define STR_PROP_MAIN_WINDOW "main_window"
+#define STR_PROP_TOP_WINDOW "top_window"
 #define STR_PROP_WINDOW_MANAGER "window_manager"
 #define STR_PROP_MODEL "__model__"
 
