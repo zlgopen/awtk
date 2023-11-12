@@ -1181,7 +1181,23 @@ static widget_t* widget_lookup_child(widget_t* widget, const char* name) {
 }
 
 widget_t* widget_child(widget_t* widget, const char* path) {
-  return widget_lookup_child(widget, path);
+  return_value_if_fail(widget != NULL && path != NULL, NULL);
+  if (*path == '[' && path[strlen(path) - 1] == ']') {
+    int32_t index = tk_atoi(path + 1);
+
+    if (index < 0) {
+      index = widget_count_children(widget) - index;
+    }
+
+    if (index >= 0) {
+      return widget_get_child(widget, index);
+    } else {
+      log_debug("invalid index:%d\n", index);
+      return NULL;
+    }
+  } else {
+    return widget_lookup_child(widget, path);
+  }
 }
 
 widget_t* widget_get_focused_widget(widget_t* widget) {
@@ -5290,6 +5306,10 @@ widget_t* widget_find_by_path(widget_t* widget, const char* path, bool_t recursi
       return widget;
     } else if (tk_str_eq(name, STR_PROP_WINDOW)) {
       return widget_get_window(widget);
+    } else if (tk_str_eq(name, STR_PROP_TOP_WINDOW)) {
+      return window_manager_get_top_window(window_manager());
+    } else if (tk_str_eq(name, STR_PROP_MAIN_WINDOW)) {
+      return window_manager_get_top_main_window(window_manager());
     } else if (tk_str_eq(name, STR_PROP_WINDOW_MANAGER)) {
       return widget_get_window_manager(widget);
     } else {
@@ -5308,18 +5328,29 @@ widget_t* widget_find_by_path(widget_t* widget, const char* path, bool_t recursi
         iter = widget;
       } else if (tk_str_eq(name, STR_PROP_WINDOW)) {
         iter = widget_get_window(widget);
+      } else if (tk_str_eq(name, STR_PROP_TOP_WINDOW)) {
+        iter = window_manager_get_top_window(window_manager());
+      } else if (tk_str_eq(name, STR_PROP_MAIN_WINDOW)) {
+        iter = window_manager_get_top_main_window(window_manager());
       } else if (tk_str_eq(name, STR_PROP_WINDOW_MANAGER)) {
         iter = widget_get_window_manager(widget);
       } else {
+        widget_t* save = iter;
         iter = widget_child(iter, name);
+        if (iter == NULL) {
+          iter = widget_lookup_by_type_child(save, name);
+        }
       }
       is_first = FALSE;
     } else {
+      widget_t* save = iter;
       iter = widget_child(iter, name);
+      if (iter == NULL) {
+        iter = widget_lookup_by_type_child(save, name);
+      }
     }
   }
   tokenizer_deinit(t);
 
   return iter;
 }
-

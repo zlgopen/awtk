@@ -34,196 +34,112 @@ BEGIN_C_DECLS
  */
 typedef enum _remote_ui_msg_code_t {
   /**
-   * @const REMOTE_UI_REQ_GET_DEV_INFO
+   * @const REMOTE_UI_GET_DEV_INFO
    * 获取设备信息。
    */
-  REMOTE_UI_REQ_GET_DEV_INFO = MSG_USER_START,
+  REMOTE_UI_GET_DEV_INFO = MSG_USER_START,
   /**
-   * @const REMOTE_UI_REQ_REBOOT
+   * @const REMOTE_UI_REBOOT
    * 重新加载请求。
    */
-  REMOTE_UI_REQ_REBOOT,
+  REMOTE_UI_REBOOT,
   /**
-   * @const REMOTE_UI_REQ_CREATE_DIR
+   * @const REMOTE_UI_CREATE_DIR
    * 创建目录请求。
    */
-  REMOTE_UI_REQ_CREATE_DIR,  
+  REMOTE_UI_CREATE_DIR,  
   /**
-   * @const REMOTE_UI_REQ_REMOVE_DIR
+   * @const REMOTE_UI_REMOVE_DIR
    * 删除目录请求。
    */
-  REMOTE_UI_REQ_REMOVE_DIR,
+  REMOTE_UI_REMOVE_DIR,
   /**
-   * @const REMOTE_UI_REQ_REMOVE_FILE
+   * @const REMOTE_UI_REMOVE_FILE
    * 删除文件请求。
    */
-  REMOTE_UI_REQ_REMOVE_FILE,
+  REMOTE_UI_REMOVE_FILE,
   /**
-   * @const REMOTE_UI_REQ_ON_EVENT
+   * @const REMOTE_UI_ON_EVENT
    * 注册事件请求。
    */
-  REMOTE_UI_REQ_ON_EVENT,
+  REMOTE_UI_ON_EVENT,
   /**
-   * @const REMOTE_UI_REQ_OFF_EVENT
+   * @const REMOTE_UI_OFF_EVENT
    * 注销事件请求。
    */
-  REMOTE_UI_REQ_OFF_EVENT,
+  REMOTE_UI_OFF_EVENT,
   /**
-   * @const REMOTE_UI_REQ_SEND_EVENT
+   * @const REMOTE_UI_SEND_EVENT
    * 发送事件请求。
    */
-  REMOTE_UI_REQ_SEND_EVENT,
+  REMOTE_UI_SEND_EVENT,
   /**
-   * @const REMOTE_UI_REQ_OPEN_WINDOW
+   * @const REMOTE_UI_OPEN_WINDOW
    * 打开窗口请求。
    */
-  REMOTE_UI_REQ_OPEN_WINDOW,
+  REMOTE_UI_OPEN_WINDOW,
   /**
-   * @const REMOTE_UI_REQ_OPEN_DIALOG
+   * @const REMOTE_UI_OPEN_DIALOG
    * 打开基本对话框请求。
    */
-  REMOTE_UI_REQ_OPEN_DIALOG,
+  REMOTE_UI_OPEN_DIALOG,
   /**
-   * @const REMOTE_UI_REQ_CLOSE_WINDOW
+   * @const REMOTE_UI_CLOSE_WINDOW
    * 关闭窗口请求。
    */
-  REMOTE_UI_REQ_CLOSE_WINDOW,
+  REMOTE_UI_CLOSE_WINDOW,
   /**
-   * @const REMOTE_UI_REQ_BACK_TO_PREV
+   * @const REMOTE_UI_BACK_TO_PREV
    * 返回请求。
    */
-  REMOTE_UI_REQ_BACK_TO_PREV,
+  REMOTE_UI_BACK_TO_PREV,
   /**
-   * @const REMOTE_UI_REQ_BACK_TO_HOME
+   * @const REMOTE_UI_BACK_TO_HOME
    * 返回主页请求。
    */
-  REMOTE_UI_REQ_BACK_TO_HOME,
+  REMOTE_UI_BACK_TO_HOME,
   /**
-   * @const REMOTE_UI_REQ_SET_PROP
+   * @const REMOTE_UI_SET_PROP
    * 设置属性请求。
    */
-  REMOTE_UI_REQ_SET_PROP,
+  REMOTE_UI_SET_PROP,
   /**
-   * @const REMOTE_UI_REQ_GET_PROP
+   * @const REMOTE_UI_GET_PROP
    * 获取属性请求。
    */
-  REMOTE_UI_REQ_GET_PROP,
+  REMOTE_UI_GET_PROP,
   /**
-   * @const REMOTE_UI_REQ_SET_THEME
-   * 设置主题请求。
-   */
-  REMOTE_UI_REQ_SET_THEME,
-  /**
-   * @const REMOTE_UI_REQ_SET_LANGUAGE
-   * 设置语言请求。
-   */
-  REMOTE_UI_REQ_SET_LANGUAGE,
-  /**
-   * @const REMOTE_UI_REQ_GET_XML_SOURCE
+   * @const REMOTE_UI_GET_XML_SOURCE
    * 获取xml源码请求。
    */
-  REMOTE_UI_REQ_GET_XML_SOURCE,
+  REMOTE_UI_GET_XML_SOURCE,
   /**
-   * @const REMOTE_UI_REQ_EXEC_FSCRIPT
+   * @const REMOTE_UI_EXEC_FSCRIPT
    * 执行脚本请求。
    */
-  REMOTE_UI_REQ_EXEC_FSCRIPT,
+  REMOTE_UI_EXEC_FSCRIPT,
 
   /**
-   * @const REMOTE_UI_RESP_GET_DEV_INFO
-   * 获取设备信息响应。
-   */
-  REMOTE_UI_RESP_GET_DEV_INFO,
+   * @const REMOTE_UI_MOVE_WIDGET
+   * 移动控件请求。
+  */
+  REMOTE_UI_MOVE_WIDGET,
   /**
-   * @const REMOTE_UI_RESP_REBOOT
-   * 重新加载响应。
-   */
-  REMOTE_UI_RESP_REBOOT,
+   * @const REMOTE_UI_RESIZE_WIDGET
+   * 调整控件大小请求。
+  */
+  REMOTE_UI_RESIZE_WIDGET,
   /**
-   * @const REMOTE_UI_RESP_CREATE_DIR
-   * 创建目录响应。
-   */
-  REMOTE_UI_RESP_CREATE_DIR,
+   * @const REMOTE_UI_CREATE_WIDGET
+   * 创建控件请求。
+  */
+  REMOTE_UI_CREATE_WIDGET,
   /**
-   * @const REMOTE_UI_RESP_REMOVE_DIR
-   * 删除目录响应。
-   */
-  REMOTE_UI_RESP_REMOVE_DIR,
-  /**
-   * @const REMOTE_UI_RESP_REMOVE_FILE
-   * 删除文件响应。
-   */
-  REMOTE_UI_RESP_REMOVE_FILE,
-  /**
-   * @const REMOTE_UI_RESP_ON_EVENT
-   * 注册事件响应。
-   */
-  REMOTE_UI_RESP_ON_EVENT,
-  /**
-   * @const REMOTE_UI_RESP_OFF_EVENT
-   * 注销事件响应。
-   */
-  REMOTE_UI_RESP_OFF_EVENT,
-  /**
-   * @const REMOTE_UI_RESP_SEND_EVENT
-   * 发送事件响应。
-   */
-  REMOTE_UI_RESP_SEND_EVENT,
-  /**
-   * @const REMOTE_UI_RESP_OPEN_WINDOW
-   * 打开窗口响应。
-   */
-  REMOTE_UI_RESP_OPEN_WINDOW,
-  /**
-   * @const REMOTE_UI_RESP_OPEN_DIALOG
-   * 打开基本对话框响应。
-   */
-  REMOTE_UI_RESP_OPEN_DIALOG,
-  /**
-   * @const REMOTE_UI_RESP_CLOSE_WINDOW
-   * 关闭窗口响应。
-   */
-  REMOTE_UI_RESP_CLOSE_WINDOW,
-  /**
-   * @const REMOTE_UI_RESP_BACK_TO_PREV
-   * 返回响应。
-   */
-  REMOTE_UI_RESP_BACK_TO_PREV,
-  /**
-   * @const REMOTE_UI_RESP_BACK_TO_HOME
-   * 返回主页响应。
-   */
-  REMOTE_UI_RESP_BACK_TO_HOME,
-  /**
-   * @const REMOTE_UI_RESP_SET_PROP
-   * 设置属性响应。
-   */
-  REMOTE_UI_RESP_SET_PROP,
-  /**
-   * @const REMOTE_UI_RESP_GET_PROP
-   * 获取属性响应。
-   */
-  REMOTE_UI_RESP_GET_PROP,
-  /**
-   * @const REMOTE_UI_RESP_SET_THEME
-   * 设置主题响应。
-   */
-  REMOTE_UI_RESP_SET_THEME,
-  /**
-   * @const REMOTE_UI_RESP_SET_LANGUAGE
-   * 设置语言响应。
-   */
-  REMOTE_UI_RESP_SET_LANGUAGE,
-  /**
-   * @const REMOTE_UI_RESP_GET_XML_SOURCE
-   * 获取xml源码响应。
-   */
-  REMOTE_UI_RESP_GET_XML_SOURCE,
-  /**
-   * @const REMOTE_UI_RESP_EXEC_FSCRIPT
-   * 执行脚本响应。
-   */
-  REMOTE_UI_RESP_EXEC_FSCRIPT,
+   * @const REMOTE_UI_DESTROY_WIDGET
+   * 销毁控件请求。
+  */
+  REMOTE_UI_DESTROY_WIDGET,
+
   /**
    * @const REMOTE_UI_NOTIFY
    * 事件通知。
@@ -316,6 +232,8 @@ typedef enum _remote_ui_reboot_type_t {
 #define REMOTE_UI_KEY_INIT "init"
 #define REMOTE_UI_KEY_X "x"
 #define REMOTE_UI_KEY_Y "y"
+#define REMOTE_UI_KEY_W "w"
+#define REMOTE_UI_KEY_H "h"
 #define REMOTE_UI_KEY_CODE "code"
 #define REMOTE_UI_KEY_TYPE "type"
 #define REMOTE_UI_KEY_TITLE "title"
@@ -323,12 +241,23 @@ typedef enum _remote_ui_reboot_type_t {
 #define REMOTE_UI_KEY_DURATION "duration"
 #define REMOTE_UI_FILE_MANIFEST "__manifest__.txt"
 #define REMOTE_UI_FILE_XML_SOURCE "__xml_source__.xml"
-#define REMOTE_UI_FILE_SCREEN_SHOT "__screen_shot__.png"
+#define REMOTE_UI_FILE_SNAPSHOT "__snapshot__."
+
+#define REMOTE_UI_FILE_LOADED_IMAGES_INFO "__images_info__"
+#define REMOTE_UI_FILE_LOADED_ASSETS_INFO "__assets_info__"
 
 #define REMOTE_UI_DIALOG_TYPE_CONFIRM "confirm"
 #define REMOTE_UI_DIALOG_TYPE_WARN "warn"
 #define REMOTE_UI_DIALOG_TYPE_INFO "info"
 #define REMOTE_UI_DIALOG_TYPE_TOAST "toast"
+
+#define REMOTE_UI_TARGET_GLOBAL "global"
+#define REMOTE_UI_PROP_THEME "theme"
+#define REMOTE_UI_PROP_LANGUAGE "language"
+
+#ifndef REMOTE_UI_URL
+#define REMOTE_UI_URL "tcp://localhost:2233"
+#endif/*REMOTE_UI_URL*/
 
 END_C_DECLS
 

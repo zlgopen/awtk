@@ -178,7 +178,7 @@ static ret_t tk_service_confirm_packet(tk_service_t* service, bool_t valid) {
   tk_msg_header_t header;
 
   header.size = 0;
-  header.type = MSG_REQ_CONFIRM;
+  header.type = MSG_CODE_CONFIRM;
   header.data_type = MSG_DATA_TYPE_NONE;
   header.resp_code = valid ? RET_OK : RET_CRC;
 
@@ -334,28 +334,28 @@ ret_t tk_service_upload_file(tk_service_t* service, const char* filename) {
   wbuffer_rewind(wb);
   file = fs_open_file(os_fs(), filename, "wb+");
   if (file != NULL) {
-    tk_service_send_resp(service, MSG_RESP_UPLOAD_FILE_BEGIN, MSG_DATA_TYPE_NONE, RET_OK, wb);
+    tk_service_send_resp(service, MSG_CODE_UPLOAD_FILE_BEGIN, MSG_DATA_TYPE_NONE, RET_OK, wb);
   } else {
-    tk_service_send_resp(service, MSG_RESP_UPLOAD_FILE_BEGIN, MSG_DATA_TYPE_NONE, RET_FAIL, wb);
+    tk_service_send_resp(service, MSG_CODE_UPLOAD_FILE_BEGIN, MSG_DATA_TYPE_NONE, RET_FAIL, wb);
   }
   return_value_if_fail(file != NULL, RET_BAD_PARAMS);
 
   memset(&header, 0x00, sizeof(header));
   while ((ret = tk_service_read_req(service, &header, wb)) == RET_OK) {
-    if (header.type == MSG_REQ_UPLOAD_FILE_DATA) {
+    if (header.type == MSG_CODE_UPLOAD_FILE_DATA) {
       len = fs_file_write(file, wb->data, wb->cursor);
       ret = (len == wb->cursor) ? RET_OK : RET_FAIL;
-      tk_service_send_resp(service, MSG_RESP_UPLOAD_FILE_DATA, MSG_DATA_TYPE_NONE, ret, wb);
+      tk_service_send_resp(service, MSG_CODE_UPLOAD_FILE_DATA, MSG_DATA_TYPE_NONE, ret, wb);
       break_if_fail(ret == RET_OK);
-    } else if (header.type == MSG_REQ_UPLOAD_FILE_END) {
+    } else if (header.type == MSG_CODE_UPLOAD_FILE_END) {
       ret = RET_OK;
-      ret = tk_service_send_resp(service, MSG_RESP_UPLOAD_FILE_END, MSG_DATA_TYPE_NONE, ret, wb);
+      ret = tk_service_send_resp(service, MSG_CODE_UPLOAD_FILE_END, MSG_DATA_TYPE_NONE, ret, wb);
       break_if_fail(ret == RET_OK);
       break;
     } else {
       assert(!"impossible");
       ret = RET_FAIL;
-      tk_service_send_resp(service, MSG_RESP_UPLOAD_FILE_END, MSG_DATA_TYPE_NONE, ret, wb);
+      tk_service_send_resp(service, MSG_CODE_UPLOAD_FILE_END, MSG_DATA_TYPE_NONE, ret, wb);
       break;
     }
   }
@@ -376,22 +376,22 @@ ret_t tk_service_download_file(tk_service_t* service, const char* filename) {
   wbuffer_init(&wb, buff, sizeof(buff));
   file = fs_open_file(os_fs(), filename, "rb");
   if (file != NULL) {
-    tk_service_send_resp(service, MSG_RESP_DOWNLOAD_FILE_BEGIN, MSG_DATA_TYPE_NONE, RET_OK, &wb);
+    tk_service_send_resp(service, MSG_CODE_DOWNLOAD_FILE_BEGIN, MSG_DATA_TYPE_NONE, RET_OK, &wb);
   } else {
-    tk_service_send_resp(service, MSG_RESP_DOWNLOAD_FILE_BEGIN, MSG_DATA_TYPE_NONE, RET_FAIL, &wb);
+    tk_service_send_resp(service, MSG_CODE_DOWNLOAD_FILE_BEGIN, MSG_DATA_TYPE_NONE, RET_FAIL, &wb);
   }
   return_value_if_fail(file != NULL, RET_BAD_PARAMS);
 
   while ((len = fs_file_read(file, buff, sizeof(buff))) > 0) {
     wbuffer_init(&wb, buff, len);
     wb.cursor = len;
-    ret = tk_service_send_resp(service, MSG_RESP_DOWNLOAD_FILE_DATA, MSG_DATA_TYPE_BINARY, RET_OK,
+    ret = tk_service_send_resp(service, MSG_CODE_DOWNLOAD_FILE_DATA, MSG_DATA_TYPE_BINARY, RET_OK,
                                &wb);
     break_if_fail(ret == RET_OK);
   }
 
   wbuffer_rewind(&wb);
-  ret = tk_service_send_resp(service, MSG_RESP_DOWNLOAD_FILE_END, MSG_DATA_TYPE_NONE, ret, &wb);
+  ret = tk_service_send_resp(service, MSG_CODE_DOWNLOAD_FILE_END, MSG_DATA_TYPE_NONE, ret, &wb);
 
   fs_file_close(file);
 

@@ -153,22 +153,23 @@ ret_t remote_ui_remove_dir(remote_ui_t* ui, const char* remote_dir);
 ret_t remote_ui_remove_file(remote_ui_t* ui, const char* remote_file);
 
 /**
- * @method remote_ui_take_screen_shot
+ * @method remote_ui_take_snapshot
  * 截屏。
  *
  * @param {remote_ui_t*} ui remote ui客户端对象。
- * @param {const char*} file 文件名。
+ * @param {const char*} target 目标控件或窗口。
+ * @param {const char*} file 保存截图文件名。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t remote_ui_take_screen_shot(remote_ui_t* ui, const char* file);
+ret_t remote_ui_take_snapshot(remote_ui_t* ui, const char* target, const char* file);
 
 /**
  * @method remote_ui_get_manifest
  * 获取manifest。
  *
  * @param {remote_ui_t*} ui remote ui客户端对象。
- * @param {const char*} file 文件名。
+ * @param {const char*} file 保存数据的文件名。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -179,11 +180,12 @@ ret_t remote_ui_get_manifest(remote_ui_t* ui, const char* file);
  * 获取当前窗口的XML源码。
  *
  * @param {remote_ui_t*} ui remote ui客户端对象。
- * @param {const char*} file 文件名。
+ * @param {const char*} target 目标控件或窗口。
+ * @param {const char*} file 保存数据的文件名。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t remote_ui_get_xml_source(remote_ui_t* ui, const char* file);
+ret_t remote_ui_get_xml_source(remote_ui_t* ui, const char* target, const char* file);
 
 /**
  * @method remote_ui_on_event
@@ -223,6 +225,29 @@ ret_t remote_ui_off_event(remote_ui_t* ui, const char* target, uint32_t event);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t remote_ui_send_event(remote_ui_t* ui, const char* target, event_t* event);
+
+/**
+ * @method remote_ui_click
+ * 点击指定的控件。
+ *
+ * @param {remote_ui_t*} ui remote ui客户端对象。
+ * @param {const char*} target 目标。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t remote_ui_click(remote_ui_t* ui, const char* target);
+
+/**
+ * @method remote_ui_key
+ * 发送按键给控件。
+ *
+ * @param {remote_ui_t*} ui remote ui客户端对象。
+ * @param {const char*} target 目标。
+ * @param {int32_t} key_code 按键代码。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t remote_ui_key(remote_ui_t* ui, const char* target, int32_t key_code);
 
 /**
  * @method remote_ui_open_window
@@ -366,8 +391,67 @@ ret_t remote_ui_set_language(remote_ui_t* ui, const char* language);
  * @param {const char*} script 脚本。
  * @param {str_t*} result 执行结果。
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
-*/
+ */
 ret_t remote_ui_exec_fscript(remote_ui_t* ui, const char* script, str_t* result);
+
+/**
+ * @method remote_ui_move_widget
+ * 移动控件。
+ * @param {remote_ui_t*} ui remote ui客户端对象。
+ * @param {const char*} target 目标。
+ * @param {int32_t} x x坐标。
+ * @param {int32_t} y y坐标。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t remote_ui_move_widget(remote_ui_t* ui, const char* target, int32_t x, int32_t y);
+
+/**
+ * @method remote_ui_resize_widget
+ * 调整控件大小。
+ * @param {remote_ui_t*} ui remote ui客户端对象。
+ * @param {const char*} target 目标。
+ * @param {uint32_t} w 宽度。
+ * @param {uint32_t} h 高度。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t remote_ui_resize_widget(remote_ui_t* ui, const char* target, uint32_t w, uint32_t h);
+
+/**
+ * @method remote_ui_destroy_widget
+ * 销毁控件。
+ * @param {remote_ui_t*} ui remote ui客户端对象。
+ * @param {const char*} target 目标。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t remote_ui_destroy_widget(remote_ui_t* ui, const char* target);
+
+/**
+ * @method remote_ui_create_widget
+ * 创建控件。
+ * @param {remote_ui_t*} ui remote ui客户端对象。
+ * @param {const char*} target 目标。
+ * @param {const char*} xml XML。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t remote_ui_create_widget(remote_ui_t* ui, const char* target, const char* xml);
+
+/**
+ * @method remote_ui_get_loaded_images_info
+ * 获取已经加载的图片。
+ * @param {remote_ui_t*} ui remote ui客户端对象。
+ * @param {const char*} file 保存数据的文件名。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t remote_ui_get_loaded_images_info(remote_ui_t* ui, const char* file);
+
+/**
+ * @method remote_ui_get_loaded_assets_info
+ * 获取已经加载的资源。
+ * @param {remote_ui_t*} ui remote ui客户端对象。
+ * @param {const char*} file 保存数据的文件名。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。 
+*/
+ret_t remote_ui_get_loaded_assets_info(remote_ui_t* ui, const char* file);
 
 /**
  * @method remote_ui_dispatch

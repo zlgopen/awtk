@@ -1,0 +1,17 @@
+{
+  "title": {
+    "text": "init json demo"
+  },
+  "bar1": {
+    "value":50
+  },
+  "bar2": {
+    "value":80
+  },
+  "r1": {
+    "value":true
+  },
+  "r2": {
+    "value":true
+  }
+}

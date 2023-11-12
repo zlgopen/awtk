@@ -1417,12 +1417,10 @@ ret_t application_init() {
   fs_get_user_storage_path(os_fs(), path);
   log_debug("user storage path:%s\n", path);
 
-#ifndef REMOTE_UI_URL
-#define REMOTE_UI_URL "tcp://localhost:2233"
-#endif/*REMOTE_UI_URL*/
-
+#ifdef TK_IS_PC
   tk_service_start(main_loop_get_event_source_manager(main_loop()), REMOTE_UI_URL, remote_ui_service_create, NULL);
-  
+#endif/*TK_IS_PC*/ 
+
   return show_preload_res_window();
 }
 

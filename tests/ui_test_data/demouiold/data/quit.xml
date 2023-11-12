@@ -1,0 +1,1 @@
+<button name="quit" text="Quit" on:click="quit()" x="c" y="m" w="128" h="30"/>

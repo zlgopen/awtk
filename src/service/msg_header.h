@@ -67,81 +67,51 @@ typedef enum _tk_msg_code_t {
   */
   MSG_NONE = 0,
   /**
-   * @const MSG_REQ_CONFIRM
+   * @const MSG_CODE_CONFIRM
    * 数据包确认。
    */
-  MSG_REQ_CONFIRM,
+  MSG_CODE_CONFIRM,
   /**
-   * @const MSG_REQ_LOGIN
+   * @const MSG_CODE_LOGIN
    * 登录请求。
    */
-  MSG_REQ_LOGIN,
+  MSG_CODE_LOGIN,
   /**
-   * @const MSG_REQ_LOGOUT
+   * @const MSG_CODE_LOGOUT
    * 登出请求。
   */
-  MSG_REQ_LOGOUT,
+  MSG_CODE_LOGOUT,
   /**
-   * @const MSG_REQ_UPLOAD_FILE_BEGIN
+   * @const MSG_CODE_UPLOAD_FILE_BEGIN
    * 上传文件请求开始。
    */
-  MSG_REQ_UPLOAD_FILE_BEGIN,
+  MSG_CODE_UPLOAD_FILE_BEGIN,
   /**
-   * @const MSG_REQ_UPLOAD_FILE_DATA
+   * @const MSG_CODE_UPLOAD_FILE_DATA
    * 上传文件请求数据。
    */
-  MSG_REQ_UPLOAD_FILE_DATA,
+  MSG_CODE_UPLOAD_FILE_DATA,
   /**
-   * @const MSG_REQ_UPLOAD_FILE_END
+   * @const MSG_CODE_UPLOAD_FILE_END
    * 上传文件请求结束。
    */
-  MSG_REQ_UPLOAD_FILE_END,
+  MSG_CODE_UPLOAD_FILE_END,
   /**
-   * @const MSG_REQ_DOWNLOAD_FILE_BEGIN
+   * @const MSG_CODE_DOWNLOAD_FILE_BEGIN
    * 下载文件请求。
    */
-  MSG_REQ_DOWNLOAD_FILE_BEGIN,
+  MSG_CODE_DOWNLOAD_FILE_BEGIN,
+  /**
+   * @const MSG_CODE_DOWNLOAD_FILE_DATA
+   * 下载文件请求数据。
+   */
+  MSG_CODE_DOWNLOAD_FILE_DATA,
+  /**
+   * @const MSG_CODE_DOWNLOAD_FILE_END
+   * 下载文件请求结束。
+   */
+  MSG_CODE_DOWNLOAD_FILE_END,
 
-  /**
-   * @const MSG_RESP_LOGIN
-   * 登录响应。
-   */
-  MSG_RESP_LOGIN,
-  /**
-   * @const MSG_RESP_LOGOUT
-   * 登出响应。
-   */
-  MSG_RESP_LOGOUT,
-  /**
-   * @const MSG_RESP_UPLOAD_FILE_BEGIN
-   * 上传文件开始响应。
-   */
-  MSG_RESP_UPLOAD_FILE_BEGIN,
-  /**
-   * @const MSG_RESP_UPLOAD_FILE_DATA
-   * 上传文件数据响应。
-   */
-  MSG_RESP_UPLOAD_FILE_DATA,
-  /**
-   * @const MSG_RESP_UPLOAD_FILE_END
-   * 上传文件结束响应。
-   */
-  MSG_RESP_UPLOAD_FILE_END,
-  /**
-   * @const MSG_RESP_DOWNLOAD_FILE_BEGIN
-   * 下载文件开始响应。
-   */
-  MSG_RESP_DOWNLOAD_FILE_BEGIN,
-  /**
-   * @const MSG_RESP_DOWNLOAD_FILE_DATA
-   * 下载文件数据响应。
-   */
-  MSG_RESP_DOWNLOAD_FILE_DATA,
-  /**
-   * @const MSG_RESP_DOWNLOAD_FILE_END
-   * 下载文件数据响应。
-   */
-  MSG_RESP_DOWNLOAD_FILE_END,
   /**
    * @const MSG_USER_START
    * 用户扩展消息起始值。

@@ -1,0 +1,4 @@
+en_US: type=strings size=9138
+default: type=style size=60359
+default_full: type=font size=1732392
+system_bar: type=style size=884

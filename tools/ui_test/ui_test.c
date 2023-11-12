@@ -29,6 +29,9 @@
 #include "remote_ui/client/remote_ui.h"
 #include "streams/stream_factory.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb/stb_image.h"
+
 static const char* fix_str(const char* str) {
   return str != NULL ? str : "";
 }
@@ -50,6 +53,45 @@ static void check_return_code(ret_t ret, const char* expected_ret, const char* n
   }
 }
 
+static char* read_text_file(const char* name) {
+  char filename[MAX_PATH + 1] = {0};
+  path_prepend_app_root(filename, name);
+  return (char*)file_read(filename, NULL);
+}
+
+static bool_t image_equal(const char* filename1, const char* filename2) {
+  int x1 = 0;
+  int y1 = 0;
+  int n1 = 0;
+  int x2 = 0;
+  int y2 = 0;
+  int n2 = 0;
+  bool_t ret = FALSE;
+  float* data1 = stbi_loadf(filename1, &x1, &y1, &n1, 0);
+  float* data2 = stbi_loadf(filename2, &x2, &y2, &n2, 0);
+
+  return_value_if_fail(data1 != NULL && data2 != NULL, FALSE);
+  if (x1 != x2 || y1 != y2 || n1 != n2) {
+    goto error;
+  }
+
+  if (memcmp(data1, data2, x1 * y1 * n1) != 0) {
+    goto error;
+  }
+
+  ret = TRUE;
+error:
+  STBI_FREE(data1);
+  STBI_FREE(data2);
+
+  return ret;
+}
+
+static event_t* key_event_init_with_symbol(key_event_t* e, uint32_t type, const char* symbol) {
+  const key_type_value_t* kv = keys_type_find(symbol);
+  return_value_if_fail(kv != NULL, NULL);
+  return key_event_init(e, type, NULL, kv->value);
+}
 static void run_script(conf_doc_t* doc, uint32_t times) {
   ret_t ret = RET_OK;
   remote_ui_t* ui = NULL;
@@ -110,34 +152,129 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
       ret = remote_ui_get_dev_info(ui, &info);
       check_return_code(ret, expected_ret, name, info.name, info.os, info.arch);
       log_debug("width=%d height=%d\n", info.screen_width, info.screen_height);
-    } else if (tk_str_eq(name, "take_screen_shot")) {
+    } else if (tk_str_eq(name, "take_snapshot")) {
+      char temp_file[MAX_PATH + 1] = {0};
+      const char* target = conf_node_get_child_value_str(iter, "target", "");
       const char* filename = conf_node_get_child_value_str(iter, "filename", NULL);
-      ret = remote_ui_take_screen_shot(ui, filename);
+
+      path_prepend_temp_path(temp_file, "snapshot.png");
+      ret = remote_ui_take_snapshot(ui, target, temp_file);
+      if (ret == RET_OK) {
+        if (file_exist(filename)) {
+          if (image_equal(temp_file, filename)) {
+            ret = RET_OK;
+            fs_remove_file(os_fs(), temp_file);
+          } else {
+            ret = RET_FAIL;
+            log_debug("screen shot not equal:%s %s\n", temp_file, filename);
+          }
+        } else {
+          log_debug("copy %s to %s\n", temp_file, filename);
+          fs_copy_file(os_fs(), temp_file, filename);
+          fs_remove_file(os_fs(), temp_file);
+        }
+      }
       check_return_code(ret, expected_ret, name, filename, NULL, NULL);
     } else if (tk_str_eq(name, "get_source")) {
+      char temp_file[MAX_PATH + 1] = {0};
+      const char* target = conf_node_get_child_value_str(iter, "target", "");
       const char* filename = conf_node_get_child_value_str(iter, "filename", NULL);
-      ret = remote_ui_get_xml_source(ui, filename);
+
+      path_prepend_temp_path(temp_file, "source.xml");
+      ret = remote_ui_get_xml_source(ui, target, temp_file);
+      if (ret == RET_OK) {
+        if (file_exist(filename)) {
+          if (fs_file_equal(os_fs(), temp_file, filename)) {
+            ret = RET_OK;
+            fs_remove_file(os_fs(), temp_file);
+          } else {
+            ret = RET_FAIL;
+            log_debug("source not equal:%s %s\n", temp_file, filename);
+          }
+        } else {
+          log_debug("copy %s to %s\n", temp_file, filename);
+          fs_copy_file(os_fs(), temp_file, filename);
+          fs_remove_file(os_fs(), temp_file);
+        }
+      }
       check_return_code(ret, expected_ret, name, filename, NULL, NULL);
     } else if (tk_str_eq(name, "get_manifest")) {
       const char* filename = conf_node_get_child_value_str(iter, "filename", "manifest.txt");
       ret = remote_ui_get_manifest(ui, filename);
       check_return_code(ret, expected_ret, name, filename, NULL, NULL);
+    } else if (tk_str_eq(name, "get_loaded_images_info")) {
+      const char* filename = conf_node_get_child_value_str(iter, "filename", NULL);
+      ret = remote_ui_get_loaded_images_info(ui, filename);
+      check_return_code(ret, expected_ret, name, filename, NULL, NULL);
+    } else if (tk_str_eq(name, "get_loaded_assets_info")) {
+      const char* filename = conf_node_get_child_value_str(iter, "filename", NULL);
+      ret = remote_ui_get_loaded_assets_info(ui, filename);
+      check_return_code(ret, expected_ret, name, filename, NULL, NULL);
     } else if (tk_str_eq(name, "open_window")) {
       const char* wname = conf_node_get_child_value_str(iter, "name", NULL);
       const char* xml = conf_node_get_child_value_str(iter, "xml", NULL);
       const char* init = conf_node_get_child_value_str(iter, "init", NULL);
+      char* xml_content = NULL;
+      char* init_content = NULL;
+      if (xml != NULL && *xml == '@') {
+        xml_content = read_text_file(xml + 1);
+        xml = xml_content;
+      }
+      if (init != NULL && *init == '@') {
+        init_content = read_text_file(init + 1);
+        init = init_content;
+      }
       ret = remote_ui_open_window(ui, wname, xml, init);
       check_return_code(ret, expected_ret, name, wname, NULL, NULL);
+      if (xml_content != NULL) {
+        TKMEM_FREE(xml_content);
+      }
+      if (init_content != NULL) {
+        TKMEM_FREE(init_content);
+      }
+      sleep_ms(1000);
     } else if (tk_str_eq(name, "close_window")) {
       const char* wname = conf_node_get_child_value_str(iter, "name", NULL);
       ret = remote_ui_close_window(ui, wname);
       check_return_code(ret, expected_ret, name, wname, NULL, NULL);
+      sleep_ms(1000);
+    } else if (tk_str_eq(name, "create_widget")) {
+      const char* target = conf_node_get_child_value_str(iter, "target", NULL);
+      const char* xml = conf_node_get_child_value_str(iter, "xml", NULL);
+      char* xml_content = NULL;
+      if (xml != NULL && *xml == '@') {
+        xml_content = read_text_file(xml + 1);
+        xml = xml_content;
+      }
+      ret = remote_ui_create_widget(ui, target, xml);
+      check_return_code(ret, expected_ret, name, target, NULL, NULL);
+      if (xml_content != NULL) {
+        TKMEM_FREE(xml_content);
+      }
+    } else if (tk_str_eq(name, "destroy_widget")) {
+      const char* target = conf_node_get_child_value_str(iter, "target", NULL);
+      ret = remote_ui_destroy_widget(ui, target);
+      check_return_code(ret, expected_ret, name, target, NULL, NULL);
+    } else if (tk_str_eq(name, "move_widget")) {
+      const char* target = conf_node_get_child_value_str(iter, "target", NULL);
+      int32_t x = conf_node_get_child_value_int32(iter, "x", 0);
+      int32_t y = conf_node_get_child_value_int32(iter, "y", 0);
+      ret = remote_ui_move_widget(ui, target, x, y);
+      check_return_code(ret, expected_ret, name, target, NULL, NULL);
+    } else if (tk_str_eq(name, "resize_widget")) {
+      const char* target = conf_node_get_child_value_str(iter, "target", NULL);
+      int32_t w = conf_node_get_child_value_int32(iter, "w", 0);
+      int32_t h = conf_node_get_child_value_int32(iter, "h", 0);
+      ret = remote_ui_resize_widget(ui, target, w, h);
+      check_return_code(ret, expected_ret, name, target, NULL, NULL);
     } else if (tk_str_eq(name, "back")) {
       ret = remote_ui_back_to_prev(ui);
       check_return_code(ret, expected_ret, name, NULL, NULL, NULL);
+      sleep_ms(1000);
     } else if (tk_str_eq(name, "home")) {
       ret = remote_ui_back_to_home(ui);
       check_return_code(ret, expected_ret, name, NULL, NULL, NULL);
+      sleep_ms(1000);
     } else if (tk_str_eq(name, "logout")) {
       ret = remote_ui_logout(ui);
       check_return_code(ret, expected_ret, name, NULL, NULL, NULL);
@@ -174,17 +311,36 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
     } else if (tk_str_eq(name, "exec_fscript")) {
       str_t str;
       const char* fscript = conf_node_get_child_value_str(iter, "fscript", NULL);
+      char* fscript_content = NULL;
+      if (fscript != NULL && *fscript == '@') {
+        fscript_content = read_text_file(fscript + 1);
+        fscript = fscript_content;
+      }
       str_init(&str, 1000);
       ret = remote_ui_exec_fscript(ui, fscript, &str);
       check_return_code(ret, expected_ret, name, fscript, str.str, NULL);
       str_reset(&str);
+      if (fscript_content != NULL) {
+        TKMEM_FREE(fscript_content);
+      }
+    } else if (tk_str_eq(name, "click")) {
+      const char* target = conf_node_get_child_value_str(iter, "target", NULL);
+      ret = remote_ui_click(ui, target);
+      check_return_code(ret, expected_ret, name, target, NULL, NULL);
+    } else if (tk_str_eq(name, "key")) {
+      key_event_t event;
+      const char* target = conf_node_get_child_value_str(iter, "target", NULL);
+      const char* key = conf_node_get_child_value_str(iter, "key", NULL);
+      key_event_init_with_symbol(&event, EVT_KEY_DOWN, key);
+      ret = remote_ui_key(ui, target, event.key);
+      check_return_code(ret, expected_ret, name, target, key, NULL);
     } else if (tk_str_eq(name, "send_event")) {
       event_t* e = NULL;
       const char* target = conf_node_get_child_value_str(iter, "target", NULL);
       const char* type = conf_node_get_child_value_str(iter, "type", NULL);
       const char* key = conf_node_get_child_value_str(iter, "key", NULL);
-      const char* x = conf_node_get_child_value_str(iter, "x", NULL);
-      const char* y = conf_node_get_child_value_str(iter, "y", NULL);
+      int x = conf_node_get_child_value_int32(iter, "x", 0);
+      int y = conf_node_get_child_value_int32(iter, "y", 0);
       break_if_fail(type != NULL);
 
       if (target == NULL) {
@@ -194,27 +350,27 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
       if (strstr(type, "pointer") != NULL || strstr(type, "click") != NULL) {
         pointer_event_t event;
         if (strstr(type, "down") != NULL) {
-          e = pointer_event_init(&event, EVT_POINTER_DOWN, NULL, tk_atoi(x), tk_atoi(y));
+          e = pointer_event_init(&event, EVT_POINTER_DOWN, NULL, x, y);
         } else if (strstr(type, "up") != NULL) {
-          e = pointer_event_init(&event, EVT_POINTER_UP, NULL, tk_atoi(x), tk_atoi(y));
+          e = pointer_event_init(&event, EVT_POINTER_UP, NULL, x, y);
         } else if (strstr(type, "click") != NULL) {
-          e = pointer_event_init(&event, EVT_CLICK, NULL, tk_atoi(x), tk_atoi(y));
+          e = pointer_event_init(&event, EVT_CLICK, NULL, x, y);
         } else {
-          e = pointer_event_init(&event, EVT_POINTER_MOVE, NULL, tk_atoi(x), tk_atoi(y));
+          e = pointer_event_init(&event, EVT_POINTER_MOVE, NULL, x, y);
         }
         ret = remote_ui_send_event(ui, target, e);
       } else if (strstr(type, "key") != NULL) {
         key_event_t event;
-        const key_type_value_t* kv = keys_type_find(key);
-        break_if_fail(kv != NULL);
         if (strstr(type, "down") != NULL) {
-          e = key_event_init(&event, EVT_KEY_DOWN, NULL, kv->value);
+          e = key_event_init_with_symbol(&event, EVT_KEY_DOWN, key);
         } else {
-          e = key_event_init(&event, EVT_KEY_UP, NULL, kv->value);
+          e = key_event_init_with_symbol(&event, EVT_KEY_UP, key);
         }
         ret = remote_ui_send_event(ui, target, e);
       }
       check_return_code(ret, expected_ret, name, target, type, NULL);
+
+      sleep_ms(100);
     } else if (tk_str_eq(name, "confirm")) {
       const char* title = conf_node_get_child_value_str(iter, "title", NULL);
       const char* content = conf_node_get_child_value_str(iter, "content", NULL);

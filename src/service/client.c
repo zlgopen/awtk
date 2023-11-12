@@ -123,7 +123,7 @@ static ret_t tk_client_confirm_packet(tk_client_t* client, bool_t valid) {
   tk_msg_header_t header;
 
   header.size = 0;
-  header.type = MSG_REQ_CONFIRM;
+  header.type = MSG_CODE_CONFIRM;
   header.data_type = MSG_DATA_TYPE_NONE;
   header.resp_code = valid ? RET_OK : RET_CRC;
 
@@ -209,18 +209,18 @@ ret_t tk_client_upload_file(tk_client_t* client, const char* remote_file, const 
 
   wbuffer_init(&wb, (void*)remote_file, strlen(remote_file) + 1);
   wb.cursor = wb.capacity;
-  ret = tk_client_request(client, MSG_REQ_UPLOAD_FILE_BEGIN, MSG_DATA_TYPE_STRING, &wb);
+  ret = tk_client_request(client, MSG_CODE_UPLOAD_FILE_BEGIN, MSG_DATA_TYPE_STRING, &wb);
   goto_error_if_fail(ret == RET_OK);
 
   while ((len = fs_file_read(file, buff, sizeof(buff))) > 0) {
     wbuffer_init(&wb, buff, len);
     wb.cursor = len;
-    ret = tk_client_request(client, MSG_REQ_UPLOAD_FILE_DATA, MSG_DATA_TYPE_BINARY, &wb);
+    ret = tk_client_request(client, MSG_CODE_UPLOAD_FILE_DATA, MSG_DATA_TYPE_BINARY, &wb);
     break_if_fail(ret == RET_OK);
   }
 
   wbuffer_rewind(&wb);
-  ret = tk_client_request(client, MSG_REQ_UPLOAD_FILE_END, MSG_DATA_TYPE_NONE, &wb);
+  ret = tk_client_request(client, MSG_CODE_UPLOAD_FILE_END, MSG_DATA_TYPE_NONE, &wb);
 
   fs_file_close(file);
 
@@ -248,16 +248,16 @@ ret_t tk_client_download_file(tk_client_t* client, const char* remote_file,
   wb = &(client->wb);
   wbuffer_rewind(wb);
   wbuffer_write_string(wb, remote_file);
-  ret = tk_client_request(client, MSG_REQ_DOWNLOAD_FILE_BEGIN, MSG_DATA_TYPE_STRING, wb);
+  ret = tk_client_request(client, MSG_CODE_DOWNLOAD_FILE_BEGIN, MSG_DATA_TYPE_STRING, wb);
   goto_error_if_fail(ret == RET_OK);
 
   memset(&header, 0x00, sizeof(header));
 
   while ((ret = tk_client_read_resp(client, &header, wb)) == RET_OK) {
-    if (header.type == MSG_RESP_DOWNLOAD_FILE_DATA) {
+    if (header.type == MSG_CODE_DOWNLOAD_FILE_DATA) {
       len = fs_file_write(file, wb->data, wb->cursor);
       break_if_fail(len == wb->cursor);
-    } else if (header.type == MSG_RESP_DOWNLOAD_FILE_END) {
+    } else if (header.type == MSG_CODE_DOWNLOAD_FILE_END) {
       ret = RET_OK;
       break;
     } else {

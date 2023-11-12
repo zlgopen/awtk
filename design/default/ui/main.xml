@@ -2,7 +2,7 @@
   <slide_view x="0" y="0" w="100%" h="100%" loop="true">
     <view x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=8,m=5,s=5)">
       <button focusable="true" focused="true" name="open:basic" text="Basic"/>
-      <button focusable="true" name="open:button" text="Buttons"/>
+      <button focusable="true" name="open:button" tr_text="Button"/>
       <button focusable="true" name="open:edit" text="Edits"/>
       <button focusable="true" name="open:keyboard" text="KeyBoard"/>
       <button focusable="true" name="open:list_view" text="ListView"/>

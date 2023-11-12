@@ -1,5 +1,18 @@
 # 最新动态
 
+2023/11/12
+  * 修复im->busy没有正常复位的情况。
+  * 完善UI测试框架和demoui测试用例。
+  * 增加函数assets\_manager\_dump
+  * 增加函数image\_manager\_dump
+  * 完善widget\_child支持通过索引访问子控件。
+  * 完善widget\_find\_by\_path支持通过类型查找子控件。
+  * 窗口管理器支持属性WIDGET\_PROP\_SCREEN\_SAVER\_TIME/WIDGET\_PROP\_SHOW\_FPS/WIDGET\_PROP\_MAX\_FPS
+  
+2023/11/11
+  * 增加属性WIDGET\_PROP\_SCREEN\_SAVER\_TIME/WIDGET\_PROP\_SHOW\_FPS/WIDGET\_PROP\_MAX\_FPS
+  * 增加函数fs\_file\_equal
+
 2023/11/9
   * 完善serial helper
   * 修复value_int64接口强转uin32类型值对象时出现溢出的问题(感谢雨欣提供补丁)
