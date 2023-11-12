@@ -374,6 +374,18 @@ ret_t image_manager_unload_bitmap(image_manager_t* imm, bitmap_t* image) {
   return darray_remove_all(&(imm->images), NULL, &b);
 }
 
+ret_t image_manager_dump(image_manager_t* im, str_t* result) {
+  uint32_t i = 0;
+  return_value_if_fail(im != NULL && result != NULL, RET_BAD_PARAMS);
+
+  for(i = 0; i < im->images.size; i++) {
+    bitmap_cache_t* cache = (bitmap_cache_t*)darray_get(&(im->images), i);
+    str_append_format(result, 1024, "%s: w=%d h=%d format=%d\n", cache->name, cache->image.w, cache->image.h, cache->image.format);
+  }
+
+  return RET_OK;
+}
+
 ret_t image_manager_deinit(image_manager_t* imm) {
   return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
 
