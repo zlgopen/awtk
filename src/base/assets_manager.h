@@ -22,6 +22,7 @@
 #ifndef TK_ASSETS_MANAGER_H
 #define TK_ASSETS_MANAGER_H
 
+#include "tkc/str.h"
 #include "tkc/darray.h"
 #include "tkc/emitter.h"
 #include "tkc/asset_info.h"
@@ -383,6 +384,16 @@ ret_t assets_manager_clear_cache_ex(assets_manager_t* am, asset_type_t type, con
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t assets_manager_clear_all(assets_manager_t* am);
+
+/**
+ * @method assets_manager_dump
+ * 输出资源管理器的信息。
+ * @param {assets_manager_t*} am asset manager对象。
+ * @param {str_t*} result 输出的字符串。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t assets_manager_dump(assets_manager_t* am, str_t* result);
 
 /**
  * @method assets_manager_deinit
