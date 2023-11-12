@@ -516,6 +516,19 @@ ret_t fs_file_rename(fs_t* fs, const char* name, const char* new_name);
 ret_t fs_copy_file(fs_t* fs, const char* src, const char* dst);
 
 /**
+ * @method fs_file_equal
+ *
+ * 比较二进制文件。
+ *
+ * @param {fs_t*} fs 文件系统对象，一般赋值为os_fs()。
+ * @param {const char*} src 源文件名。
+ * @param {const char*} dst 目标文件名。
+ *
+ * @return {bool_t} 返回TRUE表示相同，否则表示不同。
+ */
+bool_t fs_file_equal(fs_t* fs, const char* src, const char* dst);
+
+/**
  * @method fs_copy_dir
  *
  * 拷贝目录。
