@@ -56,7 +56,7 @@ ret_t image_format_set(image_format_t* image_format, const wchar_t* format) {
   return RET_OK;
 }
 
-ret_t gen_one(const char* input_file, const char* output_file, const char* theme,
+ret_t gen_one(const char* input_file, const char* output_file, const char* theme, const char* name,
               image_format_t* image_format, lcd_orientation_t o) {
   ret_t ret = RET_OK;
   if (!exit_if_need_not_update(input_file, output_file)) {
@@ -68,7 +68,7 @@ ret_t gen_one(const char* input_file, const char* output_file, const char* theme
       ret = stb_load_image(0, buff, size, &image, image_format->transparent_bitmap_format,
                            image_format->opaque_bitmap_format, o);
       if (ret == RET_OK) {
-        ret = image_gen(&image, output_file, theme,
+        ret = image_gen(&image, output_file, theme, name,
                         image_format->opaque_bitmap_format == BITMAP_FMT_MONO);
       }
       TKMEM_FREE(buff);
@@ -82,7 +82,7 @@ ret_t gen_one(const char* input_file, const char* output_file, const char* theme
   return ret;
 }
 
-static ret_t gen_folder(const char* in_foldername, const char* out_foldername, const char* theme,
+static ret_t gen_folder(const char* in_foldername, const char* out_foldername, const char* theme, const char* dir_name,
                         image_format_t* image_format, lcd_orientation_t o) {
   fs_item_t item;
   ret_t ret = RET_OK;
@@ -93,30 +93,44 @@ static ret_t gen_folder(const char* in_foldername, const char* out_foldername, c
   while (fs_dir_read(dir, &item) != RET_FAIL) {
     if (item.is_reg_file) {
       str_t str_name;
+      str_t res_name;
       char ext_array[MAX_PATH] = {0};
+      const char* p = strrchr(item.name, '.');
+
       path_extname(item.name, ext_array, MAX_PATH);
 
+      str_init(&res_name, 0);
       str_init(&str_name, 0);
       str_set(&str_name, item.name);
       str_replace(&str_name, ext_array, "");
       filter_name(str_name.str);
       str_append(&str_name, ".data");
+
+      str_append(&res_name, dir_name);
+      str_append(&res_name, item.name);
+      str_replace(&res_name, p, "");
+
       path_build(in_name, MAX_PATH, in_foldername, item.name, NULL);
       path_build(out_name, MAX_PATH, out_foldername, str_name.str, NULL);
-      ret = gen_one(in_name, out_name, theme, image_format, o);
+      ret = gen_one(in_name, out_name, theme, res_name.str, image_format, o);
       str_reset(&str_name);
+      str_reset(&res_name);
       if (ret != RET_OK) {
         break;
       }
     } else if (item.is_dir && !tk_str_eq(item.name, ".") && !tk_str_eq(item.name, "..")) {
+      str_t res_name;
       path_build(in_name, MAX_PATH, in_foldername, item.name, NULL);
       path_build(out_name, MAX_PATH, out_foldername, item.name, NULL);
 
       if (!fs_dir_exist(os_fs(), out_name)) {
         fs_create_dir(os_fs(), out_name);
       }
-
-      ret = gen_folder(in_name, out_name, theme, image_format, o);
+      str_init(&res_name, 0);
+      str_append(&res_name, item.name);
+      str_append(&res_name, "/");
+      ret = gen_folder(in_name, out_name, theme, res_name.str, image_format, o);
+      str_reset(&res_name);
       if (ret != RET_OK) {
         break;
       }
@@ -180,9 +194,11 @@ int wmain(int argc, wchar_t* argv[]) {
   fs_stat(os_fs(), in_filename, &in_stat_info);
   fs_stat(os_fs(), out_filename, &out_stat_info);
   if (in_stat_info.is_dir == TRUE && out_stat_info.is_dir == TRUE) {
-    gen_folder(in_filename, out_filename, theme_name.str, &image_format, lcd_orientation);
+    gen_folder(in_filename, out_filename, theme_name.str, "", &image_format, lcd_orientation);
   } else if (in_stat_info.is_reg_file == TRUE) {
-    gen_one(in_filename, out_filename, theme_name.str, &image_format, lcd_orientation);
+    char name[MAX_PATH + 1] = {0};
+    path_basename_ex(in_filename, TRUE, name, sizeof(name));
+    gen_one(in_filename, out_filename, theme_name.str, name, &image_format, lcd_orientation);
   } else {
     GEN_ERROR(in_filename);
   }

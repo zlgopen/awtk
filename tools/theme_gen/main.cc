@@ -24,11 +24,11 @@
 #include "common/utils.h"
 #include "xml_theme_gen.h"
 
-ret_t gen_one(const char* input_file, const char* output_file, const char* theme,
+ret_t gen_one(const char* input_file, const char* output_file, const char* theme, const char *name,
               bool_t output_bin) {
   ret_t ret = RET_OK;
   if (!exit_if_need_not_update(input_file, output_file)) {
-    if (!xml_gen(input_file, output_file, theme, output_bin)) {
+    if (!xml_gen(input_file, output_file, theme, name, output_bin)) {
       ret = RET_FAIL;
       GEN_ERROR(input_file);
     }
@@ -36,7 +36,7 @@ ret_t gen_one(const char* input_file, const char* output_file, const char* theme
   return ret;
 }
 
-static ret_t gen_folder(const char* in_foldername, const char* out_foldername, const char* theme,
+static ret_t gen_folder(const char* in_foldername, const char* out_foldername, const char* theme, const char* dir_name,
                         bool_t output_bin) {
   fs_item_t item;
   ret_t ret = RET_OK;
@@ -44,12 +44,15 @@ static ret_t gen_folder(const char* in_foldername, const char* out_foldername, c
   char out_name[MAX_PATH] = {0};
   fs_dir_t* dir = fs_open_dir(os_fs(), in_foldername);
 
+
   while (fs_dir_read(dir, &item) != RET_FAIL) {
     if (item.is_reg_file && case_end_with(item.name, ".xml")) {
       str_t str_name;
+      str_t res_name;
       char ext_array[MAX_PATH] = {0};
       path_extname(item.name, ext_array, MAX_PATH);
 
+      str_init(&res_name, 0);
       str_init(&str_name, 0);
       str_set(&str_name, item.name);
       str_replace(&str_name, ext_array, "");
@@ -59,22 +62,33 @@ static ret_t gen_folder(const char* in_foldername, const char* out_foldername, c
         filter_name(str_name.str);
         str_append(&str_name, ".data");
       }
+
+      str_append(&res_name, dir_name);
+      str_append(&res_name, item.name);
+      str_replace(&res_name, ".xml", "");
+
       path_build(in_name, MAX_PATH, in_foldername, item.name, NULL);
       path_build(out_name, MAX_PATH, out_foldername, str_name.str, NULL);
-      ret = gen_one(in_name, out_name, theme, output_bin);
+      ret = gen_one(in_name, out_name, theme, res_name.str, output_bin);
       str_reset(&str_name);
+      str_reset(&res_name);
       if (ret == RET_FAIL) {
         break;
       }
     } else if (item.is_dir && !tk_str_eq(item.name, ".") && !tk_str_eq(item.name, "..")) {
+      str_t res_name;
       path_build(in_name, MAX_PATH, in_foldername, item.name, NULL);
       path_build(out_name, MAX_PATH, out_foldername, item.name, NULL);
 
       if (!fs_dir_exist(os_fs(), out_name)) {
         fs_create_dir(os_fs(), out_name);
       }
-
-      ret = gen_folder(in_name, out_name, theme, output_bin);
+      
+      str_init(&res_name, 0);
+      str_append(&res_name, item.name);
+      str_append(&res_name, "/");
+      ret = gen_folder(in_name, out_name, theme, res_name.str, output_bin);
+      str_reset(&res_name);
       if (ret != RET_OK) {
         break;
       }
@@ -118,9 +132,11 @@ int wmain(int argc, wchar_t* argv[]) {
   fs_stat(os_fs(), in_filename, &in_stat_info);
   fs_stat(os_fs(), out_filename, &out_stat_info);
   if (in_stat_info.is_dir == TRUE && out_stat_info.is_dir == TRUE) {
-    gen_folder(in_filename, out_filename, theme_name.str, output_bin);
+    gen_folder(in_filename, out_filename, theme_name.str, "", output_bin);
   } else if (in_stat_info.is_reg_file == TRUE) {
-    gen_one(in_filename, out_filename, theme_name.str, output_bin);
+    char name[MAX_PATH + 1] = {0};
+    path_basename_ex(in_filename, TRUE, name, sizeof(name));
+    gen_one(in_filename, out_filename, theme_name.str, name, output_bin);
   } else {
     GEN_ERROR(in_filename);
   }

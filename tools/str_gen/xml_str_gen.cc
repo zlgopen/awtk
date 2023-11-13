@@ -131,9 +131,10 @@ bool xml_buff_to_str_gen(const char* buff, StrGen* sg) {
   return true;
 }
 
-bool xml_to_str_gen(const char* input_file, const char* output_dir, const char* theme, bool bin) {
+bool xml_to_str_gen(const char* input_file, const char* output_dir, const char* theme, const char *name, bool bin) {
   StrGen sg;
   char path[MAX_PATH + 1];
+  char var_name[MAX_PATH + 1];
 
   return_value_if_fail(input_file != NULL && output_dir != NULL, false);
   return_value_if_fail(xml_to_str_gen(input_file, &sg) == true, false);
@@ -152,7 +153,12 @@ bool xml_to_str_gen(const char* input_file, const char* output_dir, const char* 
         file_write(path, wbuffer.data, size);
       } else {
         snprintf(path, MAX_PATH, "%s/%s.data", output_dir, iter.c_str());
-        output_res_c_source(path, theme, ASSET_TYPE_STRINGS, 0, wbuffer.data, size);
+        if (name == NULL || !*name) {
+          snprintf(var_name, MAX_PATH, "%s", iter.c_str());
+        } else {
+          snprintf(var_name, MAX_PATH, "%s/%s", name, iter.c_str());
+        }
+        output_res_c_source_ex(path, theme, ASSET_TYPE_STRINGS, 0, wbuffer.data, size, var_name);
       }
       log_debug("write %s\n", path);
     } else {

@@ -53,172 +53,6 @@
 #include "default/inc/ui/uiex/kb_uint.data"
 #ifndef AWTK_WEB
 #ifdef WITH_STB_IMAGE
-#include "default/inc/images/ani6.res"
-#include "default/inc/images/uiex_big_logo.res"
-#include "default/inc/images/uiex_num6.res"
-#include "default/inc/images/uiex_shifton.res"
-#include "default/inc/images/uiex_radio_d.res"
-#include "default/inc/images/uiex_arrow_left_p.res"
-#include "default/inc/images/uiex_num7.res"
-#include "default/inc/images/ani7.res"
-#include "default/inc/images/ani5.res"
-#include "default/inc/images/uiex_battery_5.res"
-#include "default/inc/images/debug_step_over_d.res"
-#include "default/inc/images/uiex_num5.res"
-#include "default/inc/images/uiex_Configuration_nor.res"
-#include "default/inc/images/uiex_radio_p.res"
-#include "default/inc/images/uiex_Boot_loading.res"
-#include "default/inc/images/uiex_num4.res"
-#include "default/inc/images/uiex_battery_4.res"
-#include "default/inc/images/ani4.res"
-#include "default/inc/images/uiex_arrow_right_n.res"
-#include "default/inc/images/uiex_Universal_sel.res"
-#include "default/inc/images/uiex_battery_0.res"
-#include "default/inc/images/uiex_num0.res"
-#include "default/inc/images/uiex_load2_bg.res"
-#include "default/inc/images/uiex_num1.res"
-#include "default/inc/images/uiex_battery_1.res"
-#include "default/inc/images/ani1.res"
-#include "default/inc/images/uiex_List_Mydevice.res"
-#include "default/inc/images/uiex_editor_TextAlignleft.res"
-#include "default/inc/images/ani3.res"
-#include "default/inc/images/debug_pause_o.res"
-#include "default/inc/images/uiex_clock_bg.res"
-#include "default/inc/images/debug_stop_d.res"
-#include "default/inc/images/debug_resume_n.res"
-#include "default/inc/images/uiex_numdot.res"
-#include "default/inc/images/uiex_editor_TextUnderscore.res"
-#include "default/inc/images/debug_step_return_d.res"
-#include "default/inc/images/uiex_battery_3.res"
-#include "default/inc/images/uiex_load2_loading.res"
-#include "default/inc/images/uiex_Sliding_dot.res"
-#include "default/inc/images/uiex_num3.res"
-#include "default/inc/images/uiex_List_password.res"
-#include "default/inc/images/uiex_num2.res"
-#include "default/inc/images/uiex_battery_2.res"
-#include "default/inc/images/uiex_List_Nextpage_n.res"
-#include "default/inc/images/debug_resume_o.res"
-#include "default/inc/images/uiex_Coverwindow.res"
-#include "default/inc/images/debug_pause_n.res"
-#include "default/inc/images/ani2.res"
-#include "default/inc/images/app3.res"
-#include "default/inc/images/uiex_texteditor_show.res"
-#include "default/inc/images/uiex_arrow_down_p.res"
-#include "default/inc/images/uiex_editor_Importpictures.res"
-#include "default/inc/images/uiex_Windowclosed_n.res"
-#include "default/inc/images/uiex_combobox_btn_n.res"
-#include "default/inc/images/uiex_radio_checked_p.res"
-#include "default/inc/images/uiex_editor_TextLinespacing.res"
-#include "default/inc/images/uiex_arrow_up_n.res"
-#include "default/inc/images/uiex_load1_loading.res"
-#include "default/inc/images/uiex_keyboard_backspace_n.res"
-#include "default/inc/images/uiex_check_p.res"
-#include "default/inc/images/app2.res"
-#include "default/inc/images/uiex_check_checked_d.res"
-#include "default/inc/images/uiex_RecordForm_bg.res"
-#include "default/inc/images/uiex_Portraitmenu_p.res"
-#include "default/inc/images/uiex_radio_checked_d.res"
-#include "default/inc/images/uiex_close_p.res"
-#include "default/inc/images/uiex_check_d.res"
-#include "default/inc/images/uiex_check_checked_p.res"
-#include "default/inc/images/app1.res"
-#include "default/inc/images/app5.res"
-#include "default/inc/images/uiex_Information_chat_bg.res"
-#include "default/inc/images/uiex_Sliding_Square.res"
-#include "default/inc/images/uiex_takeover_sel.res"
-#include "default/inc/images/uiex_editor_TextAlignBoth.res"
-#include "default/inc/images/uiex_send_nor.res"
-#include "default/inc/images/uiex_loading_repeat_bg.res"
-#include "default/inc/images/app4.res"
-#include "default/inc/images/debug_restart_d.res"
-#include "default/inc/images/uiex_editor_bgcolor.res"
-#include "default/inc/images/debug_step_into_d.res"
-#include "default/inc/images/debug_start_d.res"
-#include "default/inc/images/uiex_List_Connectandshare.res"
-#include "default/inc/images/uiex_arrow_down_n.res"
-#include "default/inc/images/uiex_combobox_btn_p.res"
-#include "default/inc/images/uiex_Windowclosed_p.res"
-#include "default/inc/images/uiex_Universal_nor.res"
-#include "default/inc/images/uiex_radio_checked_n.res"
-#include "default/inc/images/uiex_arrow_up_p.res"
-#include "default/inc/images/uiex_load1_bg.res"
-#include "default/inc/images/uiex_List_WLAN.res"
-#include "default/inc/images/uiex_keyboard_backspace_p.res"
-#include "default/inc/images/uiex_check_n.res"
-#include "default/inc/images/gauge_pointer.res"
-#include "default/inc/images/bg2_s.res"
-#include "default/inc/images/uiex_Portraitmenu_n.res"
-#include "default/inc/images/uiex_check.res"
-#include "default/inc/images/uiex_clock_Minutehand.res"
-#include "default/inc/images/uiex_keyboard_CN.res"
-#include "default/inc/images/uiex_button_Export.res"
-#include "default/inc/images/uiex_combobox_btn_d.res"
-#include "default/inc/images/uiex_close_n.res"
-#include "default/inc/images/uiex_editor_Textcolor.res"
-#include "default/inc/images/uiex_check_checked_n.res"
-#include "default/inc/images/logo_dynamic.res"
-#include "default/inc/images/uiex_texteditorhide.res"
-#include "default/inc/images/debug_restart_n.res"
-#include "default/inc/images/debug_step_into_n.res"
-#include "default/inc/images/uiex_clock_Dots.res"
-#include "default/inc/images/debug_start_o.res"
-#include "default/inc/images/debug_start_n.res"
-#include "default/inc/images/bg4_s.res"
-#include "default/inc/images/uiex_List_privacyprotection.res"
-#include "default/inc/images/debug_step_into_o.res"
-#include "default/inc/images/debug_restart_o.res"
-#include "default/inc/images/uiex_Configuration_sel.res"
-#include "default/inc/images/uiex_button_search.res"
-#include "default/inc/images/repeat3.res"
-#include "default/inc/images/uiex_editor_TextAlignright.res"
-#include "default/inc/images/bg1.res"
-#include "default/inc/images/uiex_List_sound.res"
-#include "default/inc/images/uiex_takeover_nor.res"
-#include "default/inc/images/debug_step_over_n.res"
-#include "default/inc/images/bg1_s.res"
-#include "default/inc/images/uiex_keyboard_EN.res"
-#include "default/inc/images/uiex_logo.res"
-#include "default/inc/images/uiex_arrow_left_n.res"
-#include "default/inc/images/uiex_editor_TextItalic.res"
-#include "default/inc/images/uiex_list_Battery.res"
-#include "default/inc/images/uiex_send_sel.res"
-#include "default/inc/images/debug_step_over_o.res"
-#include "default/inc/images/repeat2.res"
-#include "default/inc/images/bg2.res"
-#include "default/inc/images/uiex_Information_avatar.res"
-#include "default/inc/images/uiex_editor_TextCenteralignment.res"
-#include "default/inc/images/uiex_button_time.res"
-#include "default/inc/images/uiex_radio_n.res"
-#include "default/inc/images/uiex_clock_Secondhand.res"
-#include "default/inc/images/bg3_s.res"
-#include "default/inc/images/uiex_button_Empty.res"
-#include "default/inc/images/bg3.res"
-#include "default/inc/images/uiex_arrow_right_p.res"
-#include "default/inc/images/repeat1.res"
-#include "default/inc/images/uiex_editor_TextBold.res"
-#include "default/inc/images/ani9.res"
-#include "default/inc/images/debug_stop_n.res"
-#include "default/inc/images/debug_step_return_n.res"
-#include "default/inc/images/debug_resume_d.res"
-#include "default/inc/images/uiex_num9.res"
-#include "default/inc/images/uiex_button_Import.res"
-#include "default/inc/images/uiex_num8.res"
-#include "default/inc/images/uiex_List_Moresettings.res"
-#include "default/inc/images/debug_step_return_o.res"
-#include "default/inc/images/uiex_List_show.res"
-#include "default/inc/images/debug_stop_o.res"
-#include "default/inc/images/ani8.res"
-#include "default/inc/images/debug_pause_d.res"
-#include "default/inc/images/repeat4.res"
-#include "default/inc/images/uiex_clock_Hourhand.res"
-#include "default/inc/images/uiex_switch.res"
-#include "default/inc/images/bg4.res"
-#include "default/inc/images/uiex_List_Bluetooth.res"
-#include "default/inc/images/uiex_List_desktop.res"
-#include "default/inc/images/uiex_List_Nextpage_p.res"
-#include "default/inc/images/bg5.res"
-#include "default/inc/images/uiex_shift.res"
-#include "default/inc/images/bg5_s.res"
 #else /*WITH_STB_IMAGE*/
 #include "default/inc/images/uiex_keyboard_CN.data"
 #include "default/inc/images/uiex_arrow_left_n.data"
@@ -388,14 +222,176 @@
 #include "default/inc/images/uiex_check.data"
 #endif /*WITH_STB_IMAGE*/
 #ifdef WITH_TRUETYPE_FONT
-#include "default/inc/fonts/default.res"
 #else /*WITH_TRUETYPE_FONT*/
 #endif /*WITH_TRUETYPE_FONT*/
 #endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
-#include "default/inc/images/computer.bsvg"
-#include "default/inc/images/gradient.bsvg"
-#include "default/inc/images/windmill.bsvg"
+#include "default/inc/images/uiex_keyboard_CN.data"
+#include "default/inc/images/uiex_arrow_left_n.data"
+#include "default/inc/images/uiex_send_sel.data"
+#include "default/inc/images/uiex_radio_p.data"
+#include "default/inc/images/bg3.data"
+#include "default/inc/images/ani3.data"
+#include "default/inc/images/uiex_load1_bg.data"
+#include "default/inc/images/debug_step_over_n.data"
+#include "default/inc/images/uiex_num1.data"
+#include "default/inc/images/uiex_Windowclosed_p.data"
+#include "default/inc/images/repeat3.data"
+#include "default/inc/images/bg5_s.data"
+#include "default/inc/images/uiex_arrow_down_n.data"
+#include "default/inc/images/debug_step_into_d.data"
+#include "default/inc/images/logo_dynamic.data"
+#include "default/inc/images/app5.data"
+#include "default/inc/images/debug_restart_n.data"
+#include "default/inc/images/uiex_clock_Minutehand.data"
+#include "default/inc/images/debug_stop_n.data"
+#include "default/inc/images/uiex_switch.data"
+#include "default/inc/images/uiex_List_WLAN.data"
+#include "default/inc/images/uiex_Configuration_nor.data"
+#include "default/inc/images/debug_stop_o.data"
+#include "default/inc/images/uiex_shift.data"
+#include "default/inc/images/debug_restart_o.data"
+#include "default/inc/images/uiex_keyboard_EN.data"
+#include "default/inc/images/app4.data"
+#include "default/inc/images/uiex_Information_avatar.data"
+#include "default/inc/images/uiex_takeover_nor.data"
+#include "default/inc/images/uiex_keyboard_backspace_n.data"
+#include "default/inc/images/uiex_num0.data"
+#include "default/inc/images/repeat2.data"
+#include "default/inc/images/uiex_load1_loading.data"
+#include "default/inc/images/uiex_button_time.data"
+#include "default/inc/images/debug_step_over_o.data"
+#include "default/inc/images/ani2.data"
+#include "default/inc/images/bg2.data"
+#include "default/inc/images/uiex_logo.data"
+#include "default/inc/images/uiex_List_Connectandshare.data"
+#include "default/inc/images/uiex_Portraitmenu_p.data"
+#include "default/inc/images/uiex_radio_d.data"
+#include "default/inc/images/uiex_arrow_right_n.data"
+#include "default/inc/images/uiex_list_Battery.data"
+#include "default/inc/images/uiex_num7.data"
+#include "default/inc/images/uiex_loading_repeat_bg.data"
+#include "default/inc/images/uiex_editor_TextAlignleft.data"
+#include "default/inc/images/app3.data"
+#include "default/inc/images/uiex_editor_Textcolor.data"
+#include "default/inc/images/uiex_clock_bg.data"
+#include "default/inc/images/uiex_Information_chat_bg.data"
+#include "default/inc/images/uiex_Portraitmenu_n.data"
+#include "default/inc/images/ani9.data"
+#include "default/inc/images/bg3_s.data"
+#include "default/inc/images/uiex_arrow_right_p.data"
+#include "default/inc/images/uiex_send_nor.data"
+#include "default/inc/images/debug_step_over_d.data"
+#include "default/inc/images/uiex_List_sound.data"
+#include "default/inc/images/uiex_clock_Secondhand.data"
+#include "default/inc/images/uiex_List_Mydevice.data"
+#include "default/inc/images/debug_step_into_n.data"
+#include "default/inc/images/uiex_texteditorhide.data"
+#include "default/inc/images/uiex_load2_bg.data"
+#include "default/inc/images/uiex_keyboard_backspace_p.data"
+#include "default/inc/images/uiex_battery_0.data"
+#include "default/inc/images/uiex_editor_TextUnderscore.data"
+#include "default/inc/images/debug_restart_d.data"
+#include "default/inc/images/bg5.data"
+#include "default/inc/images/ani5.data"
+#include "default/inc/images/debug_stop_d.data"
+#include "default/inc/images/ani4.data"
+#include "default/inc/images/uiex_Windowclosed_n.data"
+#include "default/inc/images/bg4.data"
+#include "default/inc/images/uiex_battery_1.data"
+#include "default/inc/images/uiex_arrow_down_p.data"
+#include "default/inc/images/debug_step_into_o.data"
+#include "default/inc/images/uiex_editor_bgcolor.data"
+#include "default/inc/images/ani8.data"
+#include "default/inc/images/uiex_editor_TextLinespacing.data"
+#include "default/inc/images/uiex_Configuration_sel.data"
+#include "default/inc/images/uiex_arrow_left_p.data"
+#include "default/inc/images/uiex_List_desktop.data"
+#include "default/inc/images/app2.data"
+#include "default/inc/images/uiex_takeover_sel.data"
+#include "default/inc/images/bg1_s.data"
+#include "default/inc/images/uiex_List_show.data"
+#include "default/inc/images/uiex_radio_n.data"
+#include "default/inc/images/uiex_editor_TextItalic.data"
+#include "default/inc/images/uiex_num6.data"
+#include "default/inc/images/repeat4.data"
+#include "default/inc/images/uiex_check_checked_n.data"
+#include "default/inc/images/debug_step_return_n.data"
+#include "default/inc/images/app1.data"
+#include "default/inc/images/uiex_List_Nextpage_n.data"
+#include "default/inc/images/uiex_radio_checked_p.data"
+#include "default/inc/images/uiex_num5.data"
+#include "default/inc/images/bg4_s.data"
+#include "default/inc/images/ani7.data"
+#include "default/inc/images/debug_pause_o.data"
+#include "default/inc/images/uiex_shifton.data"
+#include "default/inc/images/uiex_battery_2.data"
+#include "default/inc/images/debug_start_o.data"
+#include "default/inc/images/uiex_arrow_up_n.data"
+#include "default/inc/images/uiex_big_logo.data"
+#include "default/inc/images/uiex_num9.data"
+#include "default/inc/images/uiex_clock_Dots.data"
+#include "default/inc/images/debug_resume_d.data"
+#include "default/inc/images/uiex_num8.data"
+#include "default/inc/images/uiex_List_privacyprotection.data"
+#include "default/inc/images/uiex_Coverwindow.data"
+#include "default/inc/images/uiex_battery_3.data"
+#include "default/inc/images/debug_start_n.data"
+#include "default/inc/images/uiex_combobox_btn_n.data"
+#include "default/inc/images/debug_pause_n.data"
+#include "default/inc/images/ani6.data"
+#include "default/inc/images/uiex_button_Import.data"
+#include "default/inc/images/uiex_num4.data"
+#include "default/inc/images/uiex_Universal_nor.data"
+#include "default/inc/images/uiex_check_n.data"
+#include "default/inc/images/debug_step_return_o.data"
+#include "default/inc/images/uiex_Boot_loading.data"
+#include "default/inc/images/uiex_radio_checked_d.data"
+#include "default/inc/images/uiex_editor_TextAlignBoth.data"
+#include "default/inc/images/uiex_numdot.data"
+#include "default/inc/images/uiex_close_p.data"
+#include "default/inc/images/ani1.data"
+#include "default/inc/images/uiex_editor_TextCenteralignment.data"
+#include "default/inc/images/uiex_check_checked_d.data"
+#include "default/inc/images/bg1.data"
+#include "default/inc/images/uiex_battery_4.data"
+#include "default/inc/images/uiex_check_p.data"
+#include "default/inc/images/uiex_clock_Hourhand.data"
+#include "default/inc/images/debug_step_return_d.data"
+#include "default/inc/images/uiex_button_Export.data"
+#include "default/inc/images/uiex_editor_TextAlignright.data"
+#include "default/inc/images/uiex_close_n.data"
+#include "default/inc/images/uiex_texteditor_show.data"
+#include "default/inc/images/uiex_button_search.data"
+#include "default/inc/images/bg2_s.data"
+#include "default/inc/images/repeat1.data"
+#include "default/inc/images/debug_resume_o.data"
+#include "default/inc/images/uiex_num3.data"
+#include "default/inc/images/uiex_List_password.data"
+#include "default/inc/images/uiex_combobox_btn_p.data"
+#include "default/inc/images/uiex_List_Bluetooth.data"
+#include "default/inc/images/uiex_load2_loading.data"
+#include "default/inc/images/debug_resume_n.data"
+#include "default/inc/images/uiex_num2.data"
+#include "default/inc/images/uiex_arrow_up_p.data"
+#include "default/inc/images/uiex_Universal_sel.data"
+#include "default/inc/images/debug_start_d.data"
+#include "default/inc/images/uiex_RecordForm_bg.data"
+#include "default/inc/images/gauge_pointer.data"
+#include "default/inc/images/uiex_combobox_btn_d.data"
+#include "default/inc/images/uiex_editor_TextBold.data"
+#include "default/inc/images/debug_pause_d.data"
+#include "default/inc/images/uiex_button_Empty.data"
+#include "default/inc/images/uiex_check_checked_p.data"
+#include "default/inc/images/uiex_Sliding_Square.data"
+#include "default/inc/images/uiex_check_d.data"
+#include "default/inc/images/uiex_radio_checked_n.data"
+#include "default/inc/images/uiex_List_Moresettings.data"
+#include "default/inc/images/uiex_battery_5.data"
+#include "default/inc/images/uiex_List_Nextpage_p.data"
+#include "default/inc/images/uiex_Sliding_dot.data"
+#include "default/inc/images/uiex_editor_Importpictures.data"
+#include "default/inc/images/uiex_check.data"
 #endif /*WITH_VGCANVAS*/
 #endif /*!defined(WITH_FS_RES) || defined(AWTK_WEB)*/
 
@@ -406,232 +402,228 @@ ret_t assets_init_default(void) {
 #if defined(WITH_FS_RES) && !defined(AWTK_WEB)
   assets_manager_preload(am, ASSET_TYPE_STYLE, "default");
 #else /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
-  assets_manager_add(am, strings_en_US);
-  assets_manager_add(am, style_uiex_dialog_warn);
-  assets_manager_add(am, style_dialog_toast);
-  assets_manager_add(am, style_uiex_keyboard);
-  assets_manager_add(am, style_uiex_dialog_info);
-  assets_manager_add(am, style_default);
-  assets_manager_add(am, style_uiex);
-  assets_manager_add(am, style_uiex_dialog_confirm);
-  assets_manager_add(am, ui_uiex_kb_ascii);
-  assets_manager_add(am, ui_uiex_page_list_view);
-  assets_manager_add(am, ui_uiex_kb_foo);
-  assets_manager_add(am, ui_uiex_page_slide_view);
-  assets_manager_add(am, ui_uiex_preload);
-  assets_manager_add(am, ui_uiex_page_window);
-  assets_manager_add(am, ui_uiex_page_color);
-  assets_manager_add(am, ui_uiex_page_edit);
-  assets_manager_add(am, ui_uiex_kb_int);
-  assets_manager_add(am, ui_uiex_kb_hex);
-  assets_manager_add(am, ui_uiex_page_date_time);
-  assets_manager_add(am, ui_uiex_sysbar_portrait);
-  assets_manager_add(am, ui_uiex_page_animate);
-  assets_manager_add(am, ui_uiex_page_layout);
-  assets_manager_add(am, ui_uiex_page_chart);
-  assets_manager_add(am, ui_uiex_page_checkbox);
-  assets_manager_add(am, ui_uiex_sysbar_landscape);
-  assets_manager_add(am, ui_uiex_page_button);
-  assets_manager_add(am, ui_uiex_page_progress);
-  assets_manager_add(am, ui_uiex_dlg_center_scale);
-  assets_manager_add(am, ui_uiex_htranslate);
-  assets_manager_add(am, ui_uiex_overlay);
-  assets_manager_add(am, ui_uiex_slide_down);
-  assets_manager_add(am, ui_uiex_slide_right);
-  assets_manager_add(am, ui_uiex_page_selector);
-  assets_manager_add(am, ui_uiex_dlg_popup);
-  assets_manager_add(am, ui_uiex_dlg_fade);
-  assets_manager_add(am, ui_uiex_dlg_popdown);
-  assets_manager_add(am, ui_uiex_page_slider);
-  assets_manager_add(am, ui_uiex_menu_portrait);
-  assets_manager_add(am, ui_uiex_page_mledit);
-  assets_manager_add(am, ui_uiex_page_image);
-  assets_manager_add(am, ui_uiex_slide_left);
-  assets_manager_add(am, ui_uiex_menu_landscape);
-  assets_manager_add(am, ui_uiex_page_tab_ctrl);
-  assets_manager_add(am, ui_uiex_vtranslate);
-  assets_manager_add(am, ui_uiex_kb_default);
-  assets_manager_add(am, ui_uiex_slide_up);
-  assets_manager_add(am, ui_uiex_menu_bar);
-  assets_manager_add(am, ui_uiex_popup);
-  assets_manager_add(am, ui_uiex_page_label);
-  assets_manager_add(am, ui_uiex_kb_uint);
+  assets_manager_add(am, strings_en_US_default);
+  assets_manager_add(am, style_uiex_dialog_warn_default);
+  assets_manager_add(am, style_dialog_toast_default);
+  assets_manager_add(am, style_uiex_keyboard_default);
+  assets_manager_add(am, style_uiex_dialog_info_default);
+  assets_manager_add(am, style_default_default);
+  assets_manager_add(am, style_uiex_default);
+  assets_manager_add(am, style_uiex_dialog_confirm_default);
+  assets_manager_add(am, ui_kb_ascii_default_uiex);
+  assets_manager_add(am, ui_page_list_view_default_uiex);
+  assets_manager_add(am, ui_kb_foo_default_uiex);
+  assets_manager_add(am, ui_page_slide_view_default_uiex);
+  assets_manager_add(am, ui_preload_default_uiex);
+  assets_manager_add(am, ui_page_window_default_uiex);
+  assets_manager_add(am, ui_page_color_default_uiex);
+  assets_manager_add(am, ui_page_edit_default_uiex);
+  assets_manager_add(am, ui_kb_int_default_uiex);
+  assets_manager_add(am, ui_kb_hex_default_uiex);
+  assets_manager_add(am, ui_page_date_time_default_uiex);
+  assets_manager_add(am, ui_sysbar_portrait_default_uiex);
+  assets_manager_add(am, ui_page_animate_default_uiex);
+  assets_manager_add(am, ui_page_layout_default_uiex);
+  assets_manager_add(am, ui_page_chart_default_uiex);
+  assets_manager_add(am, ui_page_checkbox_default_uiex);
+  assets_manager_add(am, ui_sysbar_landscape_default_uiex);
+  assets_manager_add(am, ui_page_button_default_uiex);
+  assets_manager_add(am, ui_page_progress_default_uiex);
+  assets_manager_add(am, ui_dlg_center_scale_default_uiex);
+  assets_manager_add(am, ui_htranslate_default_uiex);
+  assets_manager_add(am, ui_overlay_default_uiex);
+  assets_manager_add(am, ui_slide_down_default_uiex);
+  assets_manager_add(am, ui_slide_right_default_uiex);
+  assets_manager_add(am, ui_page_selector_default_uiex);
+  assets_manager_add(am, ui_dlg_popup_default_uiex);
+  assets_manager_add(am, ui_dlg_fade_default_uiex);
+  assets_manager_add(am, ui_dlg_popdown_default_uiex);
+  assets_manager_add(am, ui_page_slider_default_uiex);
+  assets_manager_add(am, ui_menu_portrait_default_uiex);
+  assets_manager_add(am, ui_page_mledit_default_uiex);
+  assets_manager_add(am, ui_page_image_default_uiex);
+  assets_manager_add(am, ui_slide_left_default_uiex);
+  assets_manager_add(am, ui_menu_landscape_default_uiex);
+  assets_manager_add(am, ui_page_tab_ctrl_default_uiex);
+  assets_manager_add(am, ui_vtranslate_default_uiex);
+  assets_manager_add(am, ui_kb_default_default_uiex);
+  assets_manager_add(am, ui_slide_up_default_uiex);
+  assets_manager_add(am, ui_menu_bar_default_uiex);
+  assets_manager_add(am, ui_popup_default_uiex);
+  assets_manager_add(am, ui_page_label_default_uiex);
+  assets_manager_add(am, ui_kb_uint_default_uiex);
 #ifndef AWTK_WEB
-  assets_manager_add(am, image_ani6);
-  assets_manager_add(am, image_uiex_big_logo);
-  assets_manager_add(am, image_uiex_num6);
-  assets_manager_add(am, image_uiex_shifton);
-  assets_manager_add(am, image_uiex_radio_d);
-  assets_manager_add(am, image_uiex_arrow_left_p);
-  assets_manager_add(am, image_uiex_num7);
-  assets_manager_add(am, image_ani7);
-  assets_manager_add(am, image_ani5);
-  assets_manager_add(am, image_uiex_battery_5);
-  assets_manager_add(am, image_debug_step_over_d);
-  assets_manager_add(am, image_uiex_num5);
-  assets_manager_add(am, image_uiex_Configuration_nor);
-  assets_manager_add(am, image_uiex_radio_p);
-  assets_manager_add(am, image_uiex_Boot_loading);
-  assets_manager_add(am, image_uiex_num4);
-  assets_manager_add(am, image_uiex_battery_4);
-  assets_manager_add(am, image_ani4);
-  assets_manager_add(am, image_uiex_arrow_right_n);
-  assets_manager_add(am, image_uiex_Universal_sel);
-  assets_manager_add(am, image_uiex_battery_0);
-  assets_manager_add(am, image_uiex_num0);
-  assets_manager_add(am, image_uiex_load2_bg);
-  assets_manager_add(am, image_uiex_num1);
-  assets_manager_add(am, image_uiex_battery_1);
-  assets_manager_add(am, image_ani1);
-  assets_manager_add(am, image_uiex_List_Mydevice);
-  assets_manager_add(am, image_uiex_editor_TextAlignleft);
-  assets_manager_add(am, image_ani3);
-  assets_manager_add(am, image_debug_pause_o);
-  assets_manager_add(am, image_uiex_clock_bg);
-  assets_manager_add(am, image_debug_stop_d);
-  assets_manager_add(am, image_debug_resume_n);
-  assets_manager_add(am, image_uiex_numdot);
-  assets_manager_add(am, image_uiex_editor_TextUnderscore);
-  assets_manager_add(am, image_debug_step_return_d);
-  assets_manager_add(am, image_uiex_battery_3);
-  assets_manager_add(am, image_uiex_load2_loading);
-  assets_manager_add(am, image_uiex_Sliding_dot);
-  assets_manager_add(am, image_uiex_num3);
-  assets_manager_add(am, image_uiex_List_password);
-  assets_manager_add(am, image_uiex_num2);
-  assets_manager_add(am, image_uiex_battery_2);
-  assets_manager_add(am, image_uiex_List_Nextpage_n);
-  assets_manager_add(am, image_debug_resume_o);
-  assets_manager_add(am, image_uiex_Coverwindow);
-  assets_manager_add(am, image_debug_pause_n);
-  assets_manager_add(am, image_ani2);
-  assets_manager_add(am, image_app3);
-  assets_manager_add(am, image_uiex_texteditor_show);
-  assets_manager_add(am, image_uiex_arrow_down_p);
-  assets_manager_add(am, image_uiex_editor_Importpictures);
-  assets_manager_add(am, image_uiex_Windowclosed_n);
-  assets_manager_add(am, image_uiex_combobox_btn_n);
-  assets_manager_add(am, image_uiex_radio_checked_p);
-  assets_manager_add(am, image_uiex_editor_TextLinespacing);
-  assets_manager_add(am, image_uiex_arrow_up_n);
-  assets_manager_add(am, image_uiex_load1_loading);
-  assets_manager_add(am, image_uiex_keyboard_backspace_n);
-  assets_manager_add(am, image_uiex_check_p);
-  assets_manager_add(am, image_app2);
-  assets_manager_add(am, image_uiex_check_checked_d);
-  assets_manager_add(am, image_uiex_RecordForm_bg);
-  assets_manager_add(am, image_uiex_Portraitmenu_p);
-  assets_manager_add(am, image_uiex_radio_checked_d);
-  assets_manager_add(am, image_uiex_close_p);
-  assets_manager_add(am, image_uiex_check_d);
-  assets_manager_add(am, image_uiex_check_checked_p);
-  assets_manager_add(am, image_app1);
-  assets_manager_add(am, image_app5);
-  assets_manager_add(am, image_uiex_Information_chat_bg);
-  assets_manager_add(am, image_uiex_Sliding_Square);
-  assets_manager_add(am, image_uiex_takeover_sel);
-  assets_manager_add(am, image_uiex_editor_TextAlignBoth);
-  assets_manager_add(am, image_uiex_send_nor);
-  assets_manager_add(am, image_uiex_loading_repeat_bg);
-  assets_manager_add(am, image_app4);
-  assets_manager_add(am, image_debug_restart_d);
-  assets_manager_add(am, image_uiex_editor_bgcolor);
-  assets_manager_add(am, image_debug_step_into_d);
-  assets_manager_add(am, image_debug_start_d);
-  assets_manager_add(am, image_uiex_List_Connectandshare);
-  assets_manager_add(am, image_uiex_arrow_down_n);
-  assets_manager_add(am, image_uiex_combobox_btn_p);
-  assets_manager_add(am, image_uiex_Windowclosed_p);
-  assets_manager_add(am, image_uiex_Universal_nor);
-  assets_manager_add(am, image_uiex_radio_checked_n);
-  assets_manager_add(am, image_uiex_arrow_up_p);
-  assets_manager_add(am, image_uiex_load1_bg);
-  assets_manager_add(am, image_uiex_List_WLAN);
-  assets_manager_add(am, image_uiex_keyboard_backspace_p);
-  assets_manager_add(am, image_uiex_check_n);
-  assets_manager_add(am, image_gauge_pointer);
-  assets_manager_add(am, image_bg2_s);
-  assets_manager_add(am, image_uiex_Portraitmenu_n);
-  assets_manager_add(am, image_uiex_check);
-  assets_manager_add(am, image_uiex_clock_Minutehand);
-  assets_manager_add(am, image_uiex_keyboard_CN);
-  assets_manager_add(am, image_uiex_button_Export);
-  assets_manager_add(am, image_uiex_combobox_btn_d);
-  assets_manager_add(am, image_uiex_close_n);
-  assets_manager_add(am, image_uiex_editor_Textcolor);
-  assets_manager_add(am, image_uiex_check_checked_n);
-  assets_manager_add(am, image_logo_dynamic);
-  assets_manager_add(am, image_uiex_texteditorhide);
-  assets_manager_add(am, image_debug_restart_n);
-  assets_manager_add(am, image_debug_step_into_n);
-  assets_manager_add(am, image_uiex_clock_Dots);
-  assets_manager_add(am, image_debug_start_o);
-  assets_manager_add(am, image_debug_start_n);
-  assets_manager_add(am, image_bg4_s);
-  assets_manager_add(am, image_uiex_List_privacyprotection);
-  assets_manager_add(am, image_debug_step_into_o);
-  assets_manager_add(am, image_debug_restart_o);
-  assets_manager_add(am, image_uiex_Configuration_sel);
-  assets_manager_add(am, image_uiex_button_search);
-  assets_manager_add(am, image_repeat3);
-  assets_manager_add(am, image_uiex_editor_TextAlignright);
-  assets_manager_add(am, image_bg1);
-  assets_manager_add(am, image_uiex_List_sound);
-  assets_manager_add(am, image_uiex_takeover_nor);
-  assets_manager_add(am, image_debug_step_over_n);
-  assets_manager_add(am, image_bg1_s);
-  assets_manager_add(am, image_uiex_keyboard_EN);
-  assets_manager_add(am, image_uiex_logo);
-  assets_manager_add(am, image_uiex_arrow_left_n);
-  assets_manager_add(am, image_uiex_editor_TextItalic);
-  assets_manager_add(am, image_uiex_list_Battery);
-  assets_manager_add(am, image_uiex_send_sel);
-  assets_manager_add(am, image_debug_step_over_o);
-  assets_manager_add(am, image_repeat2);
-  assets_manager_add(am, image_bg2);
-  assets_manager_add(am, image_uiex_Information_avatar);
-  assets_manager_add(am, image_uiex_editor_TextCenteralignment);
-  assets_manager_add(am, image_uiex_button_time);
-  assets_manager_add(am, image_uiex_radio_n);
-  assets_manager_add(am, image_uiex_clock_Secondhand);
-  assets_manager_add(am, image_bg3_s);
-  assets_manager_add(am, image_uiex_button_Empty);
-  assets_manager_add(am, image_bg3);
-  assets_manager_add(am, image_uiex_arrow_right_p);
-  assets_manager_add(am, image_repeat1);
-  assets_manager_add(am, image_uiex_editor_TextBold);
-  assets_manager_add(am, image_ani9);
-  assets_manager_add(am, image_debug_stop_n);
-  assets_manager_add(am, image_debug_step_return_n);
-  assets_manager_add(am, image_debug_resume_d);
-  assets_manager_add(am, image_uiex_num9);
-  assets_manager_add(am, image_uiex_button_Import);
-  assets_manager_add(am, image_uiex_num8);
-  assets_manager_add(am, image_uiex_List_Moresettings);
-  assets_manager_add(am, image_debug_step_return_o);
-  assets_manager_add(am, image_uiex_List_show);
-  assets_manager_add(am, image_debug_stop_o);
-  assets_manager_add(am, image_ani8);
-  assets_manager_add(am, image_debug_pause_d);
-  assets_manager_add(am, image_repeat4);
-  assets_manager_add(am, image_uiex_clock_Hourhand);
-  assets_manager_add(am, image_uiex_switch);
-  assets_manager_add(am, image_bg4);
-  assets_manager_add(am, image_uiex_List_Bluetooth);
-  assets_manager_add(am, image_uiex_List_desktop);
-  assets_manager_add(am, image_uiex_List_Nextpage_p);
-  assets_manager_add(am, image_bg5);
-  assets_manager_add(am, image_uiex_shift);
-  assets_manager_add(am, image_bg5_s);
 #ifdef WITH_TRUETYPE_FONT
-  assets_manager_add(am, font_default);
 #else /*WITH_TRUETYPE_FONT*/
 #endif /*WITH_TRUETYPE_FONT*/
 #endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
-  assets_manager_add(am, image_computer);
-  assets_manager_add(am, image_gradient);
-  assets_manager_add(am, image_windmill);
+  assets_manager_add(am, image_uiex_keyboard_CN_default);
+  assets_manager_add(am, image_uiex_arrow_left_n_default);
+  assets_manager_add(am, image_uiex_send_sel_default);
+  assets_manager_add(am, image_uiex_radio_p_default);
+  assets_manager_add(am, image_bg3_default);
+  assets_manager_add(am, image_ani3_default);
+  assets_manager_add(am, image_uiex_load1_bg_default);
+  assets_manager_add(am, image_debug_step_over_n_default);
+  assets_manager_add(am, image_uiex_num1_default);
+  assets_manager_add(am, image_uiex_Windowclosed_p_default);
+  assets_manager_add(am, image_repeat3_default);
+  assets_manager_add(am, image_bg5_s_default);
+  assets_manager_add(am, image_uiex_arrow_down_n_default);
+  assets_manager_add(am, image_debug_step_into_d_default);
+  assets_manager_add(am, image_logo_dynamic_default);
+  assets_manager_add(am, image_app5_default);
+  assets_manager_add(am, image_debug_restart_n_default);
+  assets_manager_add(am, image_uiex_clock_Minutehand_default);
+  assets_manager_add(am, image_debug_stop_n_default);
+  assets_manager_add(am, image_uiex_switch_default);
+  assets_manager_add(am, image_uiex_List_WLAN_default);
+  assets_manager_add(am, image_uiex_Configuration_nor_default);
+  assets_manager_add(am, image_debug_stop_o_default);
+  assets_manager_add(am, image_uiex_shift_default);
+  assets_manager_add(am, image_debug_restart_o_default);
+  assets_manager_add(am, image_uiex_keyboard_EN_default);
+  assets_manager_add(am, image_app4_default);
+  assets_manager_add(am, image_uiex_Information_avatar_default);
+  assets_manager_add(am, image_uiex_takeover_nor_default);
+  assets_manager_add(am, image_uiex_keyboard_backspace_n_default);
+  assets_manager_add(am, image_uiex_num0_default);
+  assets_manager_add(am, image_repeat2_default);
+  assets_manager_add(am, image_uiex_load1_loading_default);
+  assets_manager_add(am, image_uiex_button_time_default);
+  assets_manager_add(am, image_debug_step_over_o_default);
+  assets_manager_add(am, image_ani2_default);
+  assets_manager_add(am, image_bg2_default);
+  assets_manager_add(am, image_uiex_logo_default);
+  assets_manager_add(am, image_uiex_List_Connectandshare_default);
+  assets_manager_add(am, image_uiex_Portraitmenu_p_default);
+  assets_manager_add(am, image_uiex_radio_d_default);
+  assets_manager_add(am, image_uiex_arrow_right_n_default);
+  assets_manager_add(am, image_uiex_list_Battery_default);
+  assets_manager_add(am, image_uiex_num7_default);
+  assets_manager_add(am, image_uiex_loading_repeat_bg_default);
+  assets_manager_add(am, image_uiex_editor_TextAlignleft_default);
+  assets_manager_add(am, image_app3_default);
+  assets_manager_add(am, image_uiex_editor_Textcolor_default);
+  assets_manager_add(am, image_uiex_clock_bg_default);
+  assets_manager_add(am, image_uiex_Information_chat_bg_default);
+  assets_manager_add(am, image_uiex_Portraitmenu_n_default);
+  assets_manager_add(am, image_ani9_default);
+  assets_manager_add(am, image_bg3_s_default);
+  assets_manager_add(am, image_uiex_arrow_right_p_default);
+  assets_manager_add(am, image_uiex_send_nor_default);
+  assets_manager_add(am, image_debug_step_over_d_default);
+  assets_manager_add(am, image_uiex_List_sound_default);
+  assets_manager_add(am, image_uiex_clock_Secondhand_default);
+  assets_manager_add(am, image_uiex_List_Mydevice_default);
+  assets_manager_add(am, image_debug_step_into_n_default);
+  assets_manager_add(am, image_uiex_texteditorhide_default);
+  assets_manager_add(am, image_uiex_load2_bg_default);
+  assets_manager_add(am, image_uiex_keyboard_backspace_p_default);
+  assets_manager_add(am, image_uiex_battery_0_default);
+  assets_manager_add(am, image_uiex_editor_TextUnderscore_default);
+  assets_manager_add(am, image_debug_restart_d_default);
+  assets_manager_add(am, image_bg5_default);
+  assets_manager_add(am, image_ani5_default);
+  assets_manager_add(am, image_debug_stop_d_default);
+  assets_manager_add(am, image_ani4_default);
+  assets_manager_add(am, image_uiex_Windowclosed_n_default);
+  assets_manager_add(am, image_bg4_default);
+  assets_manager_add(am, image_uiex_battery_1_default);
+  assets_manager_add(am, image_uiex_arrow_down_p_default);
+  assets_manager_add(am, image_debug_step_into_o_default);
+  assets_manager_add(am, image_uiex_editor_bgcolor_default);
+  assets_manager_add(am, image_ani8_default);
+  assets_manager_add(am, image_uiex_editor_TextLinespacing_default);
+  assets_manager_add(am, image_uiex_Configuration_sel_default);
+  assets_manager_add(am, image_uiex_arrow_left_p_default);
+  assets_manager_add(am, image_uiex_List_desktop_default);
+  assets_manager_add(am, image_app2_default);
+  assets_manager_add(am, image_uiex_takeover_sel_default);
+  assets_manager_add(am, image_bg1_s_default);
+  assets_manager_add(am, image_uiex_List_show_default);
+  assets_manager_add(am, image_uiex_radio_n_default);
+  assets_manager_add(am, image_uiex_editor_TextItalic_default);
+  assets_manager_add(am, image_uiex_num6_default);
+  assets_manager_add(am, image_repeat4_default);
+  assets_manager_add(am, image_uiex_check_checked_n_default);
+  assets_manager_add(am, image_debug_step_return_n_default);
+  assets_manager_add(am, image_app1_default);
+  assets_manager_add(am, image_uiex_List_Nextpage_n_default);
+  assets_manager_add(am, image_uiex_radio_checked_p_default);
+  assets_manager_add(am, image_uiex_num5_default);
+  assets_manager_add(am, image_bg4_s_default);
+  assets_manager_add(am, image_ani7_default);
+  assets_manager_add(am, image_debug_pause_o_default);
+  assets_manager_add(am, image_uiex_shifton_default);
+  assets_manager_add(am, image_uiex_battery_2_default);
+  assets_manager_add(am, image_debug_start_o_default);
+  assets_manager_add(am, image_uiex_arrow_up_n_default);
+  assets_manager_add(am, image_uiex_big_logo_default);
+  assets_manager_add(am, image_uiex_num9_default);
+  assets_manager_add(am, image_uiex_clock_Dots_default);
+  assets_manager_add(am, image_debug_resume_d_default);
+  assets_manager_add(am, image_uiex_num8_default);
+  assets_manager_add(am, image_uiex_List_privacyprotection_default);
+  assets_manager_add(am, image_uiex_Coverwindow_default);
+  assets_manager_add(am, image_uiex_battery_3_default);
+  assets_manager_add(am, image_debug_start_n_default);
+  assets_manager_add(am, image_uiex_combobox_btn_n_default);
+  assets_manager_add(am, image_debug_pause_n_default);
+  assets_manager_add(am, image_ani6_default);
+  assets_manager_add(am, image_uiex_button_Import_default);
+  assets_manager_add(am, image_uiex_num4_default);
+  assets_manager_add(am, image_uiex_Universal_nor_default);
+  assets_manager_add(am, image_uiex_check_n_default);
+  assets_manager_add(am, image_debug_step_return_o_default);
+  assets_manager_add(am, image_uiex_Boot_loading_default);
+  assets_manager_add(am, image_uiex_radio_checked_d_default);
+  assets_manager_add(am, image_uiex_editor_TextAlignBoth_default);
+  assets_manager_add(am, image_uiex_numdot_default);
+  assets_manager_add(am, image_uiex_close_p_default);
+  assets_manager_add(am, image_ani1_default);
+  assets_manager_add(am, image_uiex_editor_TextCenteralignment_default);
+  assets_manager_add(am, image_uiex_check_checked_d_default);
+  assets_manager_add(am, image_bg1_default);
+  assets_manager_add(am, image_uiex_battery_4_default);
+  assets_manager_add(am, image_uiex_check_p_default);
+  assets_manager_add(am, image_uiex_clock_Hourhand_default);
+  assets_manager_add(am, image_debug_step_return_d_default);
+  assets_manager_add(am, image_uiex_button_Export_default);
+  assets_manager_add(am, image_uiex_editor_TextAlignright_default);
+  assets_manager_add(am, image_uiex_close_n_default);
+  assets_manager_add(am, image_uiex_texteditor_show_default);
+  assets_manager_add(am, image_uiex_button_search_default);
+  assets_manager_add(am, image_bg2_s_default);
+  assets_manager_add(am, image_repeat1_default);
+  assets_manager_add(am, image_debug_resume_o_default);
+  assets_manager_add(am, image_uiex_num3_default);
+  assets_manager_add(am, image_uiex_List_password_default);
+  assets_manager_add(am, image_uiex_combobox_btn_p_default);
+  assets_manager_add(am, image_uiex_List_Bluetooth_default);
+  assets_manager_add(am, image_uiex_load2_loading_default);
+  assets_manager_add(am, image_debug_resume_n_default);
+  assets_manager_add(am, image_uiex_num2_default);
+  assets_manager_add(am, image_uiex_arrow_up_p_default);
+  assets_manager_add(am, image_uiex_Universal_sel_default);
+  assets_manager_add(am, image_debug_start_d_default);
+  assets_manager_add(am, image_uiex_RecordForm_bg_default);
+  assets_manager_add(am, image_gauge_pointer_default);
+  assets_manager_add(am, image_uiex_combobox_btn_d_default);
+  assets_manager_add(am, image_uiex_editor_TextBold_default);
+  assets_manager_add(am, image_debug_pause_d_default);
+  assets_manager_add(am, image_uiex_button_Empty_default);
+  assets_manager_add(am, image_uiex_check_checked_p_default);
+  assets_manager_add(am, image_uiex_Sliding_Square_default);
+  assets_manager_add(am, image_uiex_check_d_default);
+  assets_manager_add(am, image_uiex_radio_checked_n_default);
+  assets_manager_add(am, image_uiex_List_Moresettings_default);
+  assets_manager_add(am, image_uiex_battery_5_default);
+  assets_manager_add(am, image_uiex_List_Nextpage_p_default);
+  assets_manager_add(am, image_uiex_Sliding_dot_default);
+  assets_manager_add(am, image_uiex_editor_Importpictures_default);
+  assets_manager_add(am, image_uiex_check_default);
 #endif /*WITH_VGCANVAS*/
 #endif /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
 

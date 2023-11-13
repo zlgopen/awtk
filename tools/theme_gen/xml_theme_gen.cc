@@ -25,7 +25,7 @@
 #include "tkc/asset_info.h"
 #include "common/utils.h"
 
-bool xml_gen(const char* input_file, const char* output_file, const char* theme,
+bool xml_gen(const char* input_file, const char* output_file, const char* theme, const char *name,
              bool_t output_bin) {
   return_value_if_fail(input_file != NULL && output_file != NULL, false);
   char* xml = (char*)file_read(input_file, NULL);
@@ -37,7 +37,7 @@ bool xml_gen(const char* input_file, const char* output_file, const char* theme,
   if (output_bin) {
     write_file(output_file, data, size);
   } else {
-    output_res_c_source(output_file, theme, ASSET_TYPE_STYLE, 0, data, size);
+    output_res_c_source_ex(output_file, theme, ASSET_TYPE_STYLE, 0, data, size, name);
   }
 
   TKMEM_FREE(xml);

@@ -2,6 +2,7 @@
 import sys
 import stat
 import re
+import io
 import copy
 import glob
 import shutil
@@ -314,17 +315,14 @@ def to_exe(name):
 
 
 def glob_asset_files(path):
-    if not path.endswith(os.sep + 'ui' + os.sep + '*.data'):
-        result = glob.glob(path)
-    else:
-        result = []
-        dir = path[0 : len(path) - 7]
-        if os.path.isdir(dir):
-            for root, dirs, files in os.walk(dir):
-                for f in files:
-                    filename, extname = os.path.splitext(f)
-                    if extname == '.data':
-                        result.append(join_path(root, f))
+    result = []
+    dir = path[0 : len(path) - 7]
+    if os.path.isdir(dir):
+        for root, dirs, files in os.walk(dir):
+            for f in files:
+                filename, extname = os.path.splitext(f)
+                if extname == '.data':
+                    result.append(join_path(root, f))
 
     return result
 
@@ -344,17 +342,12 @@ def is_excluded_file(filename):
 
 
 def to_asset_const_name(filename, root):
-    basename = os.path.splitext(filename)[0]
-    basename = basename.replace(root, '.')
-    basename = basename.replace('\\', '/')
-    basename = basename.replace('/fonts/', '/font/')
-    basename = basename.replace('/images/', '/image/')
-    basename = basename.replace('/styles/', '/style/')
-    basename = basename.replace('/scripts/', '/script/')
-    basename = basename.replace('/flows/', '/flow/')
-    basename = basename.replace('./', '')
-    basename = re.sub(r'[^a-zA-Z0-9]', '_', basename)
-    return basename
+    basename = ''
+    with io.open(filename, 'r', encoding='utf-8') as file :
+        head = 'TK_CONST_DATA_ALIGN(const unsigned char '
+        str_tmp = file.readline()
+        basename = str_tmp[len(head):str_tmp.find('[')]
+    return basename.strip()
 
 
 def build_all():
@@ -393,13 +386,11 @@ def themegen_bin(raw, bin):
 
 
 def strgen(raw, inc, theme):
-    if(os.path.isfile(raw)):
-        exec_cmd('\"' + to_exe('strgen') + '\" \"' + raw + '\" \"' + inc + '\" data ' + theme)
+    exec_cmd('\"' + to_exe('strgen') + '\" \"' + raw + '\" \"' + inc + '\" data ' + theme)
 
 
 def strgen_bin(raw, bin):
-    if(os.path.isfile(raw)):
-        exec_cmd('\"' + to_exe('strgen') + '\" \"' + raw + '\" \"' + bin + '\" bin')
+    exec_cmd('\"' + to_exe('strgen') + '\" \"' + raw + '\" \"' + bin + '\" bin')
 
 def resgen(raw, inc, theme, outExtname):
     exec_cmd('\"' + to_exe('resgen') + '\" \"' + raw + '\" \"' + inc + '\" ' + theme + ' ' + outExtname)
@@ -737,7 +728,7 @@ def gen_res_all_string():
     if not THEME_PACKAGED and THEME != 'default':
         return
 
-    raw = join_path(INPUT_DIR, 'strings/strings.xml')
+    raw = join_path(INPUT_DIR, 'strings')
     if not os.path.exists(raw):
         return
 

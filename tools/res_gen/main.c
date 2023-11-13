@@ -23,76 +23,80 @@
 #include "tkc/mem.h"
 #include "common/utils.h"
 #include "base/assets_manager.h"
-static ret_t gen_one(const char* in_filename, const char* out_filename, const char* theme) {
+static ret_t gen_one(const char* in_filename, const char* out_filename, const char* theme, str_t* res_name) {
   if (!exit_if_need_not_update(in_filename, out_filename)) {
     uint32_t size = 0;
     uint8_t* input_buff = NULL;
     input_buff = (uint8_t*)read_file(in_filename, &size);
     return_value_if_fail(input_buff != NULL, RET_FAIL);
     if (case_end_with(in_filename, ".ttf")) {
-      output_res_c_source(out_filename, theme, ASSET_TYPE_FONT, ASSET_TYPE_FONT_TTF, input_buff,
-                          size);
+      str_replace(res_name, ".ttf", "");
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_FONT, ASSET_TYPE_FONT_TTF, input_buff,
+                          size, res_name->str);
     } else if (case_end_with(in_filename, ".png")) {
-      output_res_c_source(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_PNG, input_buff,
-                          size);
+      str_replace(res_name, ".png", "");
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_PNG, input_buff,
+                          size, res_name->str);
     } else if (case_end_with(in_filename, ".bmp")) {
-      output_res_c_source(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_BMP, input_buff,
-                          size);
+      str_replace(res_name, ".bmp", "");
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_BMP, input_buff,
+                          size, res_name->str);
     } else if (case_end_with(in_filename, ".jpg")) {
-      output_res_c_source(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_JPG, input_buff,
-                          size);
+      str_replace(res_name, ".jpg", "");
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_JPG, input_buff,
+                          size, res_name->str);
     } else if (case_end_with(in_filename, ".jpeg")) {
-      output_res_c_source(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_JPG, input_buff,
-                          size);
+      str_replace(res_name, ".jpeg", "");
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_JPG, input_buff,
+                          size, res_name->str);
     } else if (case_end_with(in_filename, ".gif")) {
-      output_res_c_source(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_GIF, input_buff,
-                          size);
+      str_replace(res_name, ".gif", "");
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_GIF, input_buff,
+                          size, res_name->str);
     } else if (case_end_with(in_filename, ".lz4")) {
-      output_res_c_source(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_LZ4, input_buff,
-                          size);
+      str_replace(res_name, ".lz4", "");
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_LZ4, input_buff,
+                          size, res_name->str);
     } else if (case_end_with(in_filename, ".webp")) {
-      output_res_c_source(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_WEBP, input_buff,
-                          size);
+      str_replace(res_name, ".webp", "");
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_WEBP, input_buff,
+                          size, res_name->str);
     } else if (case_end_with(in_filename, ".js")) {
-      output_res_c_source(out_filename, theme, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_JS, input_buff,
-                          size);
+      str_replace(res_name, ".js", "");
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_JS, input_buff,
+                          size, res_name->str);
     } else if (case_end_with(in_filename, ".lua")) {
-      output_res_c_source(out_filename, theme, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_LUA, input_buff,
-                          size);
+      str_replace(res_name, ".lua", "");
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_LUA, input_buff,
+                          size, res_name->str);
     } else if (case_end_with(in_filename, ".py")) {
-      output_res_c_source(out_filename, theme, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_PYTHON,
-                          input_buff, size);
+      str_replace(res_name, ".py", "");
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_PYTHON,
+                          input_buff, size, res_name->str);
     } else if (case_end_with(in_filename, ".xml")) {
-      output_res_c_source(out_filename, theme, ASSET_TYPE_XML, 0, input_buff, size);
+      str_replace(res_name, ".xml", "");
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_XML, 0, input_buff, size, res_name->str);
     } else if (strstr(in_filename, "images") != NULL) {
       output_res_c_source(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_OTHER, input_buff,
                           size);
     } else if (strstr(in_filename, "flows") != NULL) {
       output_res_c_source(out_filename, theme, ASSET_TYPE_FLOW, 0, input_buff, size);
     } else {
-      const char* name = strrchr(in_filename, '/');
-      if (name == NULL) {
-        name = strrchr(in_filename, '\\');
-      }
-      if (name != NULL) {
-        name++;
-      }
-
       if (case_end_with(in_filename, ".txt")) {
         output_res_c_source_ex(out_filename, theme, ASSET_TYPE_DATA, ASSET_TYPE_DATA_TEXT,
-                               input_buff, size, name);
+                               input_buff, size, res_name->str);
       } else if (case_end_with(in_filename, ".json")) {
         output_res_c_source_ex(out_filename, theme, ASSET_TYPE_DATA, ASSET_TYPE_DATA_JSON,
-                               input_buff, size, name);
+                               input_buff, size, res_name->str);
       } else if (case_end_with(in_filename, ".bin")) {
         output_res_c_source_ex(out_filename, theme, ASSET_TYPE_DATA, ASSET_TYPE_DATA_BIN,
-                               input_buff, size, name);
+                               input_buff, size, res_name->str);
       } else if (case_end_with(in_filename, ".dat")) {
         output_res_c_source_ex(out_filename, theme, ASSET_TYPE_DATA, ASSET_TYPE_DATA_DAT,
-                               input_buff, size, name);
+                               input_buff, size, res_name->str);
       } else {
         output_res_c_source_ex(out_filename, theme, ASSET_TYPE_DATA, ASSET_TYPE_DATA_NONE,
-                               input_buff, size, name);
+                               input_buff, size, res_name->str);
       }
     }
     TKMEM_FREE(input_buff);
@@ -101,7 +105,7 @@ static ret_t gen_one(const char* in_filename, const char* out_filename, const ch
 }
 
 static ret_t gen_folder(const char* in_foldername, const char* out_foldername, const char* theme,
-                        const char* extname, bool_t data_folder) {
+                        const char* extname, const char* dir_name, bool_t data_folder) {
   fs_item_t item;
   ret_t ret = RET_OK;
   char in_name[MAX_PATH] = {0};
@@ -111,8 +115,11 @@ static ret_t gen_folder(const char* in_foldername, const char* out_foldername, c
   while (fs_dir_read(dir, &item) != RET_FAIL) {
     if (item.is_reg_file) {
       str_t str_name;
+      str_t res_name;
       char ext_array[MAX_PATH] = {0};
       path_extname(item.name, ext_array, MAX_PATH);
+      
+      str_init(&res_name, 0);
       str_init(&str_name, 0);
       str_set(&str_name, item.name);
       if (!data_folder) {
@@ -121,10 +128,15 @@ static ret_t gen_folder(const char* in_foldername, const char* out_foldername, c
       filter_name(str_name.str);
       str_append(&str_name, extname);
 
+      str_append(&res_name, dir_name);
+      str_append(&res_name, item.name);
+
       path_build(in_name, MAX_PATH, in_foldername, item.name, NULL);
       path_build(out_name, MAX_PATH, out_foldername, str_name.str, NULL);
-      ret = gen_one(in_name, out_name, theme);
+
+      ret = gen_one(in_name, out_name, theme, &res_name);
       str_reset(&str_name);
+      str_reset(&res_name);
       if (ret == RET_FAIL) {
         printf(
             "gen fail, filename = %s! desc = the resource file is empty, please confirm that the "
@@ -133,14 +145,18 @@ static ret_t gen_folder(const char* in_foldername, const char* out_foldername, c
         break;
       }
     } else if (item.is_dir && !tk_str_eq(item.name, ".") && !tk_str_eq(item.name, "..")) {
+      str_t res_name;
       path_build(in_name, MAX_PATH, in_foldername, item.name, NULL);
       path_build(out_name, MAX_PATH, out_foldername, item.name, NULL);
 
       if (!fs_dir_exist(os_fs(), out_name)) {
         fs_create_dir(os_fs(), out_name);
       }
-
-      ret = gen_folder(in_name, out_name, theme, extname, data_folder);
+      str_init(&res_name, 0);
+      str_append(&res_name, item.name);
+      str_append(&res_name, "/");
+      ret = gen_folder(in_name, out_name, theme, extname, res_name.str, data_folder);
+      str_reset(&res_name);
       if (ret != RET_OK) {
         break;
       }
@@ -194,15 +210,21 @@ int wmain(int argc, wchar_t* argv[]) {
   fs_stat(os_fs(), in_filename, &in_stat_info);
   fs_stat(os_fs(), out_filename, &out_stat_info);
   if (in_stat_info.is_dir == TRUE && out_stat_info.is_dir == TRUE) {
-    gen_folder(in_filename, out_filename, theme_name.str, str_extname.str,
+    gen_folder(in_filename, out_filename, theme_name.str, str_extname.str, "",
                is_data_folder(in_filename));
   } else if (in_stat_info.is_reg_file == TRUE) {
-    if (gen_one(in_filename, out_filename, theme_name.str) == RET_FAIL) {
+    str_t res_name;
+    char name[MAX_PATH + 1] = {0};
+    path_basename_ex(in_filename, TRUE, name, sizeof(name));
+    str_init(&res_name, 0);
+    str_append(&res_name, name);
+    if (gen_one(in_filename, out_filename, theme_name.str, &res_name) == RET_FAIL) {
       printf(
           "gen fail, filename = %s! desc = the resource file is empty, please confirm that the "
           "resource file has saved data.!\n",
           in_filename);
     }
+    str_reset(&res_name);
   } else {
     GEN_ERROR(in_filename);
   }

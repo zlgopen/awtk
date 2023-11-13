@@ -24,6 +24,6 @@
 #ifndef XML_THEME_GEN_H
 #define XML_THEME_GEN_H
 
-bool xml_gen(const char* input_file, const char* output_file, const char* theme, bool_t output_bin);
+bool xml_gen(const char* input_file, const char* output_file, const char* theme, const char *name, bool_t output_bin);
 
 #endif /*XML_THEME_GEN_H*/

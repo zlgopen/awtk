@@ -23,6 +23,7 @@
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
 #include "tkc/fs.h"
+#include "tkc/path.h"
 #include "base/bitmap.h"
 #include "common/utils.h"
 #include "font_gen/font_gen.h"
@@ -42,10 +43,12 @@ static int char_cmp(const void* a, const void* b) {
 }
 
 ret_t font_gen(font_t* font, uint16_t font_size, glyph_format_t format, const char* str,
-               const char* output_filename, const char* theme) {
+               const char* output_filename, const char* theme, const char* res_dir) {
   str_t tstr;
+  str_t name;
   wbuffer_t wbuffer;
   uint32_t size = 0;
+  str_init(&name, 0);
   str_init(&tstr, 100000);
   wbuffer_init_extendable(&wbuffer);
 
@@ -55,11 +58,20 @@ ret_t font_gen(font_t* font, uint16_t font_size, glyph_format_t format, const ch
   if (strstr(output_filename, ".bin") != NULL) {
     file_write(output_filename, wbuffer.data, size);
   } else {
-    output_res_c_source(output_filename, theme, ASSET_TYPE_FONT, ASSET_TYPE_FONT_BMP, wbuffer.data,
-                        size);
+    char path[MAX_PATH + 1] = {0};
+    if (TK_STR_IS_NOT_EMPTY(res_dir)) {
+      str_append(&name, res_dir);
+      str_append(&name, "/");
+    }
+    path_basename_ex(output_filename, TRUE, path, sizeof(path));
+    str_append(&name, path);
+
+    output_res_c_source_ex(output_filename, theme, ASSET_TYPE_FONT, ASSET_TYPE_FONT_BMP, wbuffer.data,
+                        size, name.str);
   }
 
   str_reset(&tstr);
+  str_reset(&name);
   wbuffer_deinit(&wbuffer);
 
   return RET_OK;

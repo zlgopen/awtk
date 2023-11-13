@@ -57,7 +57,7 @@ const char* font_gen_expand_one(const char* in, str_t* out) {
     p += 2;
 
     while (c <= end) {
-      tk_utf8_from_utf16_ex(&c, 1, buff, sizeof(buff));
+      tk_utf8_from_utf16_ex((const wchar_t *)&c, 1, buff, sizeof(buff));
       str_append(out, buff);
       c++;
     }

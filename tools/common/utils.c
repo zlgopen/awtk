@@ -158,12 +158,24 @@ int unique(wchar_t* str, int size) {
 
 static const char* to_var_name(char var_name[2 * TK_NAME_LEN + 1], const char* theme,
                                const char* prefix, const char* name) {
-  if (tk_str_eq(theme, "default") || theme == NULL) {
-    tk_snprintf(var_name, 2 * TK_NAME_LEN, "%s_%s", prefix ? prefix : "", name);
-  } else {
-    tk_snprintf(var_name, 2 * TK_NAME_LEN, "%s_%s_%s", prefix ? prefix : "", name, theme);
+  char tmp[TK_NAME_LEN + 1] = {0};
+  char tmp_var_name[2 * TK_NAME_LEN + 1];
+  const char* p = name + tk_strlen(name);
+  while (p != name) {
+    if (*p == '\\' || *p == '/') {
+      p++;
+      break;
+    }
+    p--;
   }
-
+  tk_strcpy(tmp, p);
+  tk_snprintf(tmp_var_name, 2 * TK_NAME_LEN, "%s_%s_%s", prefix == NULL ? "" : prefix, tmp, theme == NULL ? "default" : theme);
+  if (p != name) {
+    tk_strncpy(tmp, name, p - name - 1);
+    tk_snprintf(var_name, 2 * TK_NAME_LEN, "%s_%s", tmp_var_name, tmp);
+  } else {
+    tk_strcpy(var_name, tmp_var_name);
+  }
   return filter_name(var_name);
 }
 

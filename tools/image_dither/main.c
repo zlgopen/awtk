@@ -106,7 +106,9 @@ ret_t gen_one(str_t* in_file, str_t* out_file, const char* theme, output_format_
       if (output_format == OUTPUT_FORMAT_DATA) {
         ret = image_dither_load_image(buff, size, &bitmap, image_format, o, bg_color);
         if (ret == RET_OK) {
-          ret = image_gen(&bitmap, out_file->str, theme, FALSE);
+          char name[MAX_PATH + 1] = {0};
+          path_basename_ex(in_file->str, TRUE, name, sizeof(name));
+          ret = image_gen(&bitmap, out_file->str, theme, name, FALSE);
         }
       } else {
         bitmap_format_t temp_image_format = BITMAP_FMT_RGBA8888;

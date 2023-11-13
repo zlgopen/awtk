@@ -230,145 +230,6 @@
 #include "assets/default/inc/data/a_b_c_any.data"
 #ifndef AWTK_WEB
 #ifdef WITH_STB_IMAGE
-#include "assets/default/inc/images/ani6.res"
-#include "assets/default/inc/images/checked.res"
-#include "assets/default/inc/images/num_7.res"
-#include "assets/default/inc/images/close_p.res"
-#include "assets/default/inc/images/num_6.res"
-#include "assets/default/inc/images/shift.res"
-#include "assets/default/inc/images/ani7.res"
-#include "assets/default/inc/images/ania.res"
-#include "assets/default/inc/images/anic.res"
-#include "assets/default/inc/images/earth.res"
-#include "assets/default/inc/images/ani5.res"
-#include "assets/default/inc/images/flag_none.res"
-#include "assets/default/inc/images/bee.res"
-#include "assets/default/inc/images/contact.res"
-#include "assets/default/inc/images/battery_4.res"
-#include "assets/default/inc/images/num_4.res"
-#include "assets/default/inc/images/slider_fg.res"
-#include "assets/default/inc/images/contact_active.res"
-#include "assets/default/inc/images/close_d.res"
-#include "assets/default/inc/images/dialog_title.res"
-#include "assets/default/inc/images/battery_5.res"
-#include "assets/default/inc/images/num_5.res"
-#include "assets/default/inc/images/ani4.res"
-#include "assets/default/inc/images/anib.res"
-#include "assets/default/inc/images/me_active.res"
-#include "assets/default/inc/images/file.res"
-#include "assets/default/inc/images/arrow_up_n.res"
-#include "assets/default/inc/images/cursor_hand.res"
-#include "assets/default/inc/images/left_on.res"
-#include "assets/default/inc/images/num_1.res"
-#include "assets/default/inc/images/battery_1.res"
-#include "assets/default/inc/images/arrow_right_p.res"
-#include "assets/default/inc/images/slider_v_fg.res"
-#include "assets/default/inc/images/empty.res"
-#include "assets/default/inc/images/rgba.res"
-#include "assets/default/inc/images/num_0.res"
-#include "assets/default/inc/images/battery_0.res"
-#include "assets/default/inc/images/edit_clear_p.res"
-#include "assets/default/inc/images/arrow_up_o.res"
-#include "assets/default/inc/images/visible.res"
-#include "assets/default/inc/images/ani1.res"
-#include "assets/default/inc/images/arrow_left_o.res"
-#include "assets/default/inc/images/ani3.res"
-#include "assets/default/inc/images/clock_second.res"
-#include "assets/default/inc/images/battery_2.res"
-#include "assets/default/inc/images/num_2.res"
-#include "assets/default/inc/images/en.res"
-#include "assets/default/inc/images/slider_drag_o.res"
-#include "assets/default/inc/images/battery_3.res"
-#include "assets/default/inc/images/num_3.res"
-#include "assets/default/inc/images/ani2.res"
-#include "assets/default/inc/images/arrow_left_n.res"
-#include "assets/default/inc/images/middle_on.res"
-#include "assets/default/inc/images/bricks.res"
-#include "assets/default/inc/images/image_packed_bg.res"
-#include "assets/default/inc/images/msg.res"
-#include "assets/default/inc/images/play_o.res"
-#include "assets/default/inc/images/play_n.res"
-#include "assets/default/inc/images/msg_active.res"
-#include "assets/default/inc/images/img_slider_bg.res"
-#include "assets/default/inc/images/expand.res"
-#include "assets/default/inc/images/radio_checked.res"
-#include "assets/default/inc/images/active_dot.res"
-#include "assets/default/inc/images/zh.res"
-#include "assets/default/inc/images/question.res"
-#include "assets/default/inc/images/discovery_active.res"
-#include "assets/default/inc/images/dot.res"
-#include "assets/default/inc/images/gauge_bg.res"
-#include "assets/default/inc/images/shifton.res"
-#include "assets/default/inc/images/check.res"
-#include "assets/default/inc/images/cursor.res"
-#include "assets/default/inc/images/me.res"
-#include "assets/default/inc/images/info.res"
-#include "assets/default/inc/images/red_btn_p.res"
-#include "assets/default/inc/images/middle_off.res"
-#include "assets/default/inc/images/img_slider_icon.res"
-#include "assets/default/inc/images/arrow_down_n.res"
-#include "assets/default/inc/images/num_plus.res"
-#include "assets/default/inc/images/collapse.res"
-#include "assets/default/inc/images/return_up.res"
-#include "assets/default/inc/images/green_btn_o.res"
-#include "assets/default/inc/images/green_btn_n.res"
-#include "assets/default/inc/images/muted.res"
-#include "assets/default/inc/images/arrow_down_o.res"
-#include "assets/default/inc/images/rgb.res"
-#include "assets/default/inc/images/num_dot.res"
-#include "assets/default/inc/images/unmuted.res"
-#include "assets/default/inc/images/right_off.res"
-#include "assets/default/inc/images/message.res"
-#include "assets/default/inc/images/3.res"
-#include "assets/default/inc/images/play_p.res"
-#include "assets/default/inc/images/2.res"
-#include "assets/default/inc/images/slider_bg.res"
-#include "assets/default/inc/images/right_on.res"
-#include "assets/default/inc/images/gauge_pointer.res"
-#include "assets/default/inc/images/flag_US.res"
-#include "assets/default/inc/images/0.res"
-#include "assets/default/inc/images/left_off.res"
-#include "assets/default/inc/images/1.res"
-#include "assets/default/inc/images/progress_circle.res"
-#include "assets/default/inc/images/red_btn_o.res"
-#include "assets/default/inc/images/slider_drag.res"
-#include "assets/default/inc/images/num_minus.res"
-#include "assets/default/inc/images/cursor_text.res"
-#include "assets/default/inc/images/unchecked.res"
-#include "assets/default/inc/images/red_btn_n.res"
-#include "assets/default/inc/images/arrow_down_p.res"
-#include "assets/default/inc/images/slider_v_bg.res"
-#include "assets/default/inc/images/warn.res"
-#include "assets/default/inc/images/green_btn_p.res"
-#include "assets/default/inc/images/flag_CN.res"
-#include "assets/default/inc/images/switch.res"
-#include "assets/default/inc/images/radio_unchecked.res"
-#include "assets/default/inc/images/close_n.res"
-#include "assets/default/inc/images/close_o.res"
-#include "assets/default/inc/images/clock_bg.res"
-#include "assets/default/inc/images/clock_minute.res"
-#include "assets/default/inc/images/cross.res"
-#include "assets/default/inc/images/img_slider_fg.res"
-#include "assets/default/inc/images/clock.res"
-#include "assets/default/inc/images/image_packed_fg.res"
-#include "assets/default/inc/images/find.res"
-#include "assets/default/inc/images/ani9.res"
-#include "assets/default/inc/images/arrow_up_p.res"
-#include "assets/default/inc/images/edit_clear_o.res"
-#include "assets/default/inc/images/folder.res"
-#include "assets/default/inc/images/num_8.res"
-#include "assets/default/inc/images/arrow_right_n.res"
-#include "assets/default/inc/images/discovery.res"
-#include "assets/default/inc/images/arrow_right_o.res"
-#include "assets/default/inc/images/num_9.res"
-#include "assets/default/inc/images/edit_clear_n.res"
-#include "assets/default/inc/images/ani8.res"
-#include "assets/default/inc/images/logo.res"
-#include "assets/default/inc/images/invisible.res"
-#include "assets/default/inc/images/slider_drag_p.res"
-#include "assets/default/inc/images/backspace.res"
-#include "assets/default/inc/images/arrow_left_p.res"
-#include "assets/default/inc/images/clock_hour.res"
 #else /*WITH_STB_IMAGE*/
 #include "assets/default/inc/images/arrow_right_o.data"
 #include "assets/default/inc/images/image_packed_bg.data"
@@ -511,35 +372,153 @@
 #include "assets/default/inc/images/battery_2.data"
 #endif /*WITH_STB_IMAGE*/
 #ifdef WITH_TRUETYPE_FONT
-#include "assets/default/inc/fonts/default.res"
 #else /*WITH_TRUETYPE_FONT*/
 #include "assets/default/inc/fonts/default_20.data"
 #include "assets/default/inc/fonts/default_16.data"
 #include "assets/default/inc/fonts/default_18.data"
 #include "assets/default/inc/fonts/default_24.data"
 #endif /*WITH_TRUETYPE_FONT*/
-#include "assets/default/inc/scripts/dummy.res"
 #endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
-#include "assets/default/inc/images/paths_data_02_t.bsvg"
-#include "assets/default/inc/images/pointer_4.bsvg"
-#include "assets/default/inc/images/htest.bsvg"
-#include "assets/default/inc/images/ball.bsvg"
-#include "assets/default/inc/images/shapes_polyline_01_t.bsvg"
-#include "assets/default/inc/images/china.bsvg"
-#include "assets/default/inc/images/meter_pointer.bsvg"
-#include "assets/default/inc/images/pservers_grad_99_b.bsvg"
-#include "assets/default/inc/images/tiger.bsvg"
-#include "assets/default/inc/images/shapes_line_01_t.bsvg"
-#include "assets/default/inc/images/painting_stroke_05_t.bsvg"
-#include "assets/default/inc/images/paths_data_01_t.bsvg"
-#include "assets/default/inc/images/pointer_1.bsvg"
-#include "assets/default/inc/images/pointer.bsvg"
-#include "assets/default/inc/images/shapes_circle_01_t.bsvg"
-#include "assets/default/inc/images/shapes_rect_01_t.bsvg"
-#include "assets/default/inc/images/girl.bsvg"
-#include "assets/default/inc/images/shapes_ellipse_01_t.bsvg"
-#include "assets/default/inc/images/shapes_polygon_01_t.bsvg"
+#include "assets/default/inc/images/arrow_right_o.data"
+#include "assets/default/inc/images/image_packed_bg.data"
+#include "assets/default/inc/images/num_4.data"
+#include "assets/default/inc/images/0.data"
+#include "assets/default/inc/images/close_o.data"
+#include "assets/default/inc/images/battery_1.data"
+#include "assets/default/inc/images/slider_bg.data"
+#include "assets/default/inc/images/ani3.data"
+#include "assets/default/inc/images/progress_circle.data"
+#include "assets/default/inc/images/muted.data"
+#include "assets/default/inc/images/file.data"
+#include "assets/default/inc/images/num_plus.data"
+#include "assets/default/inc/images/gauge_bg.data"
+#include "assets/default/inc/images/num_8.data"
+#include "assets/default/inc/images/earth.data"
+#include "assets/default/inc/images/flag_none.data"
+#include "assets/default/inc/images/shift.data"
+#include "assets/default/inc/images/arrow_up_p.data"
+#include "assets/default/inc/images/discovery_active.data"
+#include "assets/default/inc/images/en.data"
+#include "assets/default/inc/images/right_on.data"
+#include "assets/default/inc/images/discovery.data"
+#include "assets/default/inc/images/collapse.data"
+#include "assets/default/inc/images/rgb.data"
+#include "assets/default/inc/images/num_9.data"
+#include "assets/default/inc/images/dot.data"
+#include "assets/default/inc/images/ani2.data"
+#include "assets/default/inc/images/battery_0.data"
+#include "assets/default/inc/images/find.data"
+#include "assets/default/inc/images/slider_fg.data"
+#include "assets/default/inc/images/close_n.data"
+#include "assets/default/inc/images/left_on.data"
+#include "assets/default/inc/images/1.data"
+#include "assets/default/inc/images/question.data"
+#include "assets/default/inc/images/invisible.data"
+#include "assets/default/inc/images/image_packed_fg.data"
+#include "assets/default/inc/images/num_5.data"
+#include "assets/default/inc/images/num_dot.data"
+#include "assets/default/inc/images/arrow_right_n.data"
+#include "assets/default/inc/images/bee.data"
+#include "assets/default/inc/images/visible.data"
+#include "assets/default/inc/images/clock_bg.data"
+#include "assets/default/inc/images/me_active.data"
+#include "assets/default/inc/images/cursor.data"
+#include "assets/default/inc/images/clock_minute.data"
+#include "assets/default/inc/images/switch.data"
+#include "assets/default/inc/images/checked.data"
+#include "assets/default/inc/images/middle_off.data"
+#include "assets/default/inc/images/close_p.data"
+#include "assets/default/inc/images/num_minus.data"
+#include "assets/default/inc/images/folder.data"
+#include "assets/default/inc/images/zh.data"
+#include "assets/default/inc/images/arrow_right_p.data"
+#include "assets/default/inc/images/ani9.data"
+#include "assets/default/inc/images/anib.data"
+#include "assets/default/inc/images/num_2.data"
+#include "assets/default/inc/images/arrow_up_o.data"
+#include "assets/default/inc/images/clock.data"
+#include "assets/default/inc/images/empty.data"
+#include "assets/default/inc/images/ani5.data"
+#include "assets/default/inc/images/ani4.data"
+#include "assets/default/inc/images/left_off.data"
+#include "assets/default/inc/images/radio_unchecked.data"
+#include "assets/default/inc/images/rgba.data"
+#include "assets/default/inc/images/shifton.data"
+#include "assets/default/inc/images/arrow_up_n.data"
+#include "assets/default/inc/images/num_3.data"
+#include "assets/default/inc/images/msg_active.data"
+#include "assets/default/inc/images/anic.data"
+#include "assets/default/inc/images/ani8.data"
+#include "assets/default/inc/images/active_dot.data"
+#include "assets/default/inc/images/close_d.data"
+#include "assets/default/inc/images/right_off.data"
+#include "assets/default/inc/images/unmuted.data"
+#include "assets/default/inc/images/img_slider_icon.data"
+#include "assets/default/inc/images/img_slider_bg.data"
+#include "assets/default/inc/images/cross.data"
+#include "assets/default/inc/images/expand.data"
+#include "assets/default/inc/images/backspace.data"
+#include "assets/default/inc/images/arrow_left_p.data"
+#include "assets/default/inc/images/edit_clear_n.data"
+#include "assets/default/inc/images/clock_second.data"
+#include "assets/default/inc/images/contact.data"
+#include "assets/default/inc/images/bricks.data"
+#include "assets/default/inc/images/dialog_title.data"
+#include "assets/default/inc/images/cursor_hand.data"
+#include "assets/default/inc/images/ani7.data"
+#include "assets/default/inc/images/play_p.data"
+#include "assets/default/inc/images/battery_5.data"
+#include "assets/default/inc/images/green_btn_p.data"
+#include "assets/default/inc/images/red_btn_p.data"
+#include "assets/default/inc/images/me.data"
+#include "assets/default/inc/images/num_0.data"
+#include "assets/default/inc/images/arrow_down_p.data"
+#include "assets/default/inc/images/num_1.data"
+#include "assets/default/inc/images/warn.data"
+#include "assets/default/inc/images/contact_active.data"
+#include "assets/default/inc/images/slider_drag_o.data"
+#include "assets/default/inc/images/battery_4.data"
+#include "assets/default/inc/images/ani6.data"
+#include "assets/default/inc/images/message.data"
+#include "assets/default/inc/images/edit_clear_o.data"
+#include "assets/default/inc/images/img_slider_fg.data"
+#include "assets/default/inc/images/ania.data"
+#include "assets/default/inc/images/ani1.data"
+#include "assets/default/inc/images/battery_3.data"
+#include "assets/default/inc/images/logo.data"
+#include "assets/default/inc/images/arrow_left_o.data"
+#include "assets/default/inc/images/2.data"
+#include "assets/default/inc/images/num_6.data"
+#include "assets/default/inc/images/check.data"
+#include "assets/default/inc/images/return_up.data"
+#include "assets/default/inc/images/middle_on.data"
+#include "assets/default/inc/images/arrow_down_o.data"
+#include "assets/default/inc/images/radio_checked.data"
+#include "assets/default/inc/images/red_btn_o.data"
+#include "assets/default/inc/images/green_btn_o.data"
+#include "assets/default/inc/images/slider_v_bg.data"
+#include "assets/default/inc/images/clock_hour.data"
+#include "assets/default/inc/images/flag_CN.data"
+#include "assets/default/inc/images/play_o.data"
+#include "assets/default/inc/images/play_n.data"
+#include "assets/default/inc/images/slider_drag.data"
+#include "assets/default/inc/images/unchecked.data"
+#include "assets/default/inc/images/gauge_pointer.data"
+#include "assets/default/inc/images/green_btn_n.data"
+#include "assets/default/inc/images/red_btn_n.data"
+#include "assets/default/inc/images/slider_drag_p.data"
+#include "assets/default/inc/images/slider_v_fg.data"
+#include "assets/default/inc/images/arrow_down_n.data"
+#include "assets/default/inc/images/info.data"
+#include "assets/default/inc/images/flag_US.data"
+#include "assets/default/inc/images/msg.data"
+#include "assets/default/inc/images/num_7.data"
+#include "assets/default/inc/images/cursor_text.data"
+#include "assets/default/inc/images/3.data"
+#include "assets/default/inc/images/arrow_left_n.data"
+#include "assets/default/inc/images/edit_clear_p.data"
+#include "assets/default/inc/images/battery_2.data"
 #endif /*WITH_VGCANVAS*/
 #endif /*!defined(WITH_FS_RES) || defined(AWTK_WEB)*/
 
@@ -550,403 +529,382 @@ ret_t assets_init(void) {
 #if defined(WITH_FS_RES) && !defined(AWTK_WEB)
   assets_manager_preload(am, ASSET_TYPE_STYLE, "default");
 #else /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
-  assets_manager_add(am, strings_zh_CN);
-  assets_manager_add(am, strings_en_US);
-  assets_manager_add(am, style_system_bar_dark);
-  assets_manager_add(am, style_slide_menu);
-  assets_manager_add(am, style_color_tile);
-  assets_manager_add(am, style_digit_clock);
-  assets_manager_add(am, style_dialog_toast);
-  assets_manager_add(am, style_edit);
-  assets_manager_add(am, style_modeless);
-  assets_manager_add(am, style_number);
-  assets_manager_add(am, style_keyboard);
-  assets_manager_add(am, style_color);
-  assets_manager_add(am, style_tab_bottom);
-  assets_manager_add(am, style_calibration);
-  assets_manager_add(am, style_tab_list);
-  assets_manager_add(am, style_gauge);
-  assets_manager_add(am, style_list_view_dynamic);
-  assets_manager_add(am, style_default);
-  assets_manager_add(am, style_system_bar_bottom);
-  assets_manager_add(am, style_big_font);
-  assets_manager_add(am, style_tab_top_compact);
-  assets_manager_add(am, style_dialog_info);
-  assets_manager_add(am, style_file_browser);
-  assets_manager_add(am, style_dialog_confirm);
-  assets_manager_add(am, style_image_value);
-  assets_manager_add(am, style_dialog);
-  assets_manager_add(am, style_tab_top);
-  assets_manager_add(am, style_button);
-  assets_manager_add(am, style_tab_bottom_compact);
-  assets_manager_add(am, style_dialog_warn);
-  assets_manager_add(am, style_image_packed);
-  assets_manager_add(am, ui_menu_up_right);
-  assets_manager_add(am, ui_kb_ascii);
-  assets_manager_add(am, ui_vgcanvas);
-  assets_manager_add(am, ui_rich_text1);
-  assets_manager_add(am, ui_vpage_vtrans);
-  assets_manager_add(am, ui_slider);
-  assets_manager_add(am, ui_menu_point);
-  assets_manager_add(am, ui_slide_menu);
-  assets_manager_add(am, ui_radial_gradient);
-  assets_manager_add(am, ui_menu_left_bottom);
-  assets_manager_add(am, ui_auto_play_landscape);
-  assets_manager_add(am, ui_color_picker_simple);
-  assets_manager_add(am, ui_bidi);
-  assets_manager_add(am, ui_animator_fscript);
-  assets_manager_add(am, ui_slide_view_v3);
-  assets_manager_add(am, ui_dialog_highlight_update_bg);
-  assets_manager_add(am, ui_progress_circle);
-  assets_manager_add(am, ui_accordion2);
-  assets_manager_add(am, ui_combo_box);
-  assets_manager_add(am, ui_color_tile);
-  assets_manager_add(am, ui_kb_phone);
-  assets_manager_add(am, ui_tab_scrollable);
-  assets_manager_add(am, ui_main);
-  assets_manager_add(am, ui_tab_button_view_page1);
-  assets_manager_add(am, ui_digit_clock);
-  assets_manager_add(am, ui_scroll_bar);
-  assets_manager_add(am, ui_kb_foo);
-  assets_manager_add(am, ui_lua);
-  assets_manager_add(am, ui_linear_gradient);
-  assets_manager_add(am, ui_preload);
-  assets_manager_add(am, ui_images);
-  assets_manager_add(am, ui_soft_keyboard);
-  assets_manager_add(am, ui_animate_widget);
-  assets_manager_add(am, ui_edit);
-  assets_manager_add(am, ui_modeless);
-  assets_manager_add(am, ui_close_window);
-  assets_manager_add(am, ui_menu_up_left);
-  assets_manager_add(am, ui_locale);
-  assets_manager_add(am, ui_kb_ascii_t9);
-  assets_manager_add(am, ui_kb_default_t9);
-  assets_manager_add(am, ui_animator_layout);
-  assets_manager_add(am, ui_kb_int);
-  assets_manager_add(am, ui_tab_control);
-  assets_manager_add(am, ui_slide_view_v2);
-  assets_manager_add(am, ui_animation);
-  assets_manager_add(am, ui_basic_fscript);
-  assets_manager_add(am, ui_kb_int_floating);
-  assets_manager_add(am, ui_keyboard);
-  assets_manager_add(am, ui_kb_hex);
-  assets_manager_add(am, ui_gauge_h);
-  assets_manager_add(am, ui_popdown);
-  assets_manager_add(am, ui_svg_test);
-  assets_manager_add(am, ui_slide_view_remove);
-  assets_manager_add(am, ui_color);
-  assets_manager_add(am, ui_color_picker);
-  assets_manager_add(am, ui_switch);
-  assets_manager_add(am, ui_back_to_home);
-  assets_manager_add(am, ui_menu_right_middle);
-  assets_manager_add(am, ui_kb_default_t9ext);
-  assets_manager_add(am, ui_dragger);
-  assets_manager_add(am, ui_dialog2);
-  assets_manager_add(am, ui_t);
-  assets_manager_add(am, ui_color_picker_hsv);
-  assets_manager_add(am, ui_menu_down_right);
-  assets_manager_add(am, ui_tab_bottom);
-  assets_manager_add(am, ui_fruit);
-  assets_manager_add(am, ui_list_view_m);
-  assets_manager_add(am, ui_slide_view_h_loop);
-  assets_manager_add(am, ui_main_fscript);
-  assets_manager_add(am, ui_mutable_image);
-  assets_manager_add(am, ui_drop_file);
-  assets_manager_add(am, ui_calibration_win);
-  assets_manager_add(am, ui_memtest);
-  assets_manager_add(am, ui_list_view_sync);
-  assets_manager_add(am, ui_slide_view_h2);
-  assets_manager_add(am, ui_slide_view_h3);
-  assets_manager_add(am, ui_folder_chooser);
-  assets_manager_add(am, ui_slide_view_v_loop);
-  assets_manager_add(am, ui_language);
-  assets_manager_add(am, ui_kb_float);
-  assets_manager_add(am, ui_htranslate);
-  assets_manager_add(am, ui_tab_dynamic_list);
-  assets_manager_add(am, ui_draggable);
-  assets_manager_add(am, ui_tab_remove);
-  assets_manager_add(am, ui_list_view_vh);
-  assets_manager_add(am, ui_rich_text);
-  assets_manager_add(am, ui_scroll_view);
-  assets_manager_add(am, ui_overlay);
-  assets_manager_add(am, ui_mledit);
-  assets_manager_add(am, ui_menu_down_left);
-  assets_manager_add(am, ui_svg_image);
-  assets_manager_add(am, ui_tab_list);
-  assets_manager_add(am, ui_animator);
-  assets_manager_add(am, ui_slide_down);
-  assets_manager_add(am, ui_value_anim);
-  assets_manager_add(am, ui_gauge);
-  assets_manager_add(am, ui_file_chooser_for_open);
-  assets_manager_add(am, ui_scroll_view_h);
-  assets_manager_add(am, ui_list_view_dynamic);
-  assets_manager_add(am, ui_tab_invisible_compact);
-  assets_manager_add(am, ui_menu_up_center);
-  assets_manager_add(am, ui_slide_right);
-  assets_manager_add(am, ui_scroll_bar_h);
-  assets_manager_add(am, ui_spinbox);
-  assets_manager_add(am, ui_label);
-  assets_manager_add(am, ui_list_view_auto_resize);
-  assets_manager_add(am, ui_gif_image);
-  assets_manager_add(am, ui_menu_down_center);
-  assets_manager_add(am, ui_test_view);
-  assets_manager_add(am, ui_auto_play_portrait);
-  assets_manager_add(am, ui_scroll_view_ym);
-  assets_manager_add(am, ui_system_bar_bottom);
-  assets_manager_add(am, ui_text_selector);
-  assets_manager_add(am, ui_rich_text_view);
-  assets_manager_add(am, ui_big_font);
-  assets_manager_add(am, ui_tab_top_compact);
-  assets_manager_add(am, ui_dialog_highlight_dynamic);
-  assets_manager_add(am, ui_slide_view_h);
-  assets_manager_add(am, ui_spin_box);
-  assets_manager_add(am, ui_dialogs);
-  assets_manager_add(am, ui_selectm);
-  assets_manager_add(am, ui_list_view);
-  assets_manager_add(am, ui_stroke_gradient);
-  assets_manager_add(am, ui_menu_left_middle);
-  assets_manager_add(am, ui_slide_view_h1);
-  assets_manager_add(am, ui_basic);
-  assets_manager_add(am, ui_auto_play);
-  assets_manager_add(am, ui_desktop);
-  assets_manager_add(am, ui_file_browser);
-  assets_manager_add(am, ui_color_picker_full);
-  assets_manager_add(am, ui_dialog1);
-  assets_manager_add(am, ui_dialog_highlight);
-  assets_manager_add(am, ui_fade);
-  assets_manager_add(am, ui_menu_right_top);
-  assets_manager_add(am, ui_list_view_d_f);
-  assets_manager_add(am, ui_image_list);
-  assets_manager_add(am, ui_slide_view_v1);
-  assets_manager_add(am, ui_test_fscript);
-  assets_manager_add(am, ui_mono_test);
-  assets_manager_add(am, ui_select1);
-  assets_manager_add(am, ui_list_view_animate);
-  assets_manager_add(am, ui_hscroll_label);
-  assets_manager_add(am, ui_slide_left);
-  assets_manager_add(am, ui_list_view_h1);
-  assets_manager_add(am, ui_image_animation);
-  assets_manager_add(am, ui_image_value);
-  assets_manager_add(am, ui_slide_view);
-  assets_manager_add(am, ui_time_clock);
-  assets_manager_add(am, ui_grid);
-  assets_manager_add(am, ui_tab_top);
-  assets_manager_add(am, ui_slide_view_v);
-  assets_manager_add(am, ui_top);
-  assets_manager_add(am, ui_button);
-  assets_manager_add(am, ui_edit_menu);
-  assets_manager_add(am, ui_menu);
-  assets_manager_add(am, ui_text_selector_fscript);
-  assets_manager_add(am, ui_button_fscript);
-  assets_manager_add(am, ui_file_chooser_for_save);
-  assets_manager_add(am, ui_system_bar);
-  assets_manager_add(am, ui_slide_view_appoint_remove);
-  assets_manager_add(am, ui_accordion1);
-  assets_manager_add(am, ui_menu_right_bottom);
-  assets_manager_add(am, ui_list_view_d);
-  assets_manager_add(am, ui_vtranslate);
-  assets_manager_add(am, ui_dialog_highlight_static);
-  assets_manager_add(am, ui_tab_invisible);
-  assets_manager_add(am, ui_menu_left_top);
-  assets_manager_add(am, ui_kb_ufloat);
-  assets_manager_add(am, ui_kb_default);
-  assets_manager_add(am, ui_tab_button_view_page2);
-  assets_manager_add(am, ui_slide_view_remove_loop);
-  assets_manager_add(am, ui_slide_up);
-  assets_manager_add(am, ui_rich_text2);
-  assets_manager_add(am, ui_list_view_h);
-  assets_manager_add(am, ui_floating_keyboard);
-  assets_manager_add(am, ui_color_picker_rgb);
-  assets_manager_add(am, ui_tab_bottom_compact);
-  assets_manager_add(am, ui_popup);
-  assets_manager_add(am, ui_serial);
-  assets_manager_add(am, ui_image_packed);
-  assets_manager_add(am, ui_kb_uint);
-  assets_manager_add(am, ui_scroll_view_v);
-  assets_manager_add(am, ui_slide_view_animating_time);
-  assets_manager_add(am, ui_win_anim_window);
-  assets_manager_add(am, ui_win_anim_center);
-  assets_manager_add(am, ui_win_anim_dialog);
-  assets_manager_add(am, ui_win_anim_popup);
-  assets_manager_add(am, xml_test);
-  assets_manager_add(am, data_com_zlg_app_json);
-  assets_manager_add(am, data_gpinyin_dat);
-  assets_manager_add(am, data_test_dat);
-  assets_manager_add(am, data_conf_test_json);
-  assets_manager_add(am, data_custom_keys_json);
-  assets_manager_add(am, data_suggest_words_zh_cn_dat);
-  assets_manager_add(am, data_test_json);
-  assets_manager_add(am, data_a_b_c_any);
+  assets_manager_add(am, strings_zh_CN_default);
+  assets_manager_add(am, strings_en_US_default);
+  assets_manager_add(am, style_system_bar_dark_dark);
+  assets_manager_add(am, style_slide_menu_default);
+  assets_manager_add(am, style_color_tile_default);
+  assets_manager_add(am, style_digit_clock_default);
+  assets_manager_add(am, style_dialog_toast_default);
+  assets_manager_add(am, style_edit_default);
+  assets_manager_add(am, style_modeless_default);
+  assets_manager_add(am, style_number_default);
+  assets_manager_add(am, style_keyboard_default);
+  assets_manager_add(am, style_color_default);
+  assets_manager_add(am, style_tab_bottom_default);
+  assets_manager_add(am, style_calibration_default);
+  assets_manager_add(am, style_tab_list_default);
+  assets_manager_add(am, style_gauge_default);
+  assets_manager_add(am, style_list_view_dynamic_default);
+  assets_manager_add(am, style_default_default);
+  assets_manager_add(am, style_system_bar_bottom_default);
+  assets_manager_add(am, style_big_font_default);
+  assets_manager_add(am, style_tab_top_compact_default);
+  assets_manager_add(am, style_dialog_info_default);
+  assets_manager_add(am, style_file_browser_default);
+  assets_manager_add(am, style_dialog_confirm_default);
+  assets_manager_add(am, style_image_value_default);
+  assets_manager_add(am, style_dialog_default);
+  assets_manager_add(am, style_tab_top_default);
+  assets_manager_add(am, style_button_default);
+  assets_manager_add(am, style_tab_bottom_compact_default);
+  assets_manager_add(am, style_dialog_warn_default);
+  assets_manager_add(am, style_image_packed_default);
+  assets_manager_add(am, ui_menu_up_right_default);
+  assets_manager_add(am, ui_kb_ascii_default);
+  assets_manager_add(am, ui_vgcanvas_default);
+  assets_manager_add(am, ui_rich_text1_default);
+  assets_manager_add(am, ui_vpage_vtrans_default);
+  assets_manager_add(am, ui_slider_default);
+  assets_manager_add(am, ui_menu_point_default);
+  assets_manager_add(am, ui_slide_menu_default);
+  assets_manager_add(am, ui_radial_gradient_default);
+  assets_manager_add(am, ui_menu_left_bottom_default);
+  assets_manager_add(am, ui_auto_play_landscape_default);
+  assets_manager_add(am, ui_color_picker_simple_default);
+  assets_manager_add(am, ui_bidi_default);
+  assets_manager_add(am, ui_animator_fscript_default);
+  assets_manager_add(am, ui_slide_view_v3_default);
+  assets_manager_add(am, ui_dialog_highlight_update_bg_default);
+  assets_manager_add(am, ui_progress_circle_default);
+  assets_manager_add(am, ui_accordion2_default);
+  assets_manager_add(am, ui_combo_box_default);
+  assets_manager_add(am, ui_color_tile_default);
+  assets_manager_add(am, ui_kb_phone_default);
+  assets_manager_add(am, ui_tab_scrollable_default);
+  assets_manager_add(am, ui_main_default);
+  assets_manager_add(am, ui_tab_button_view_page1_default);
+  assets_manager_add(am, ui_digit_clock_default);
+  assets_manager_add(am, ui_scroll_bar_default);
+  assets_manager_add(am, ui_kb_foo_default);
+  assets_manager_add(am, ui_lua_default);
+  assets_manager_add(am, ui_linear_gradient_default);
+  assets_manager_add(am, ui_preload_default);
+  assets_manager_add(am, ui_images_default);
+  assets_manager_add(am, ui_soft_keyboard_default);
+  assets_manager_add(am, ui_animate_widget_default);
+  assets_manager_add(am, ui_edit_default);
+  assets_manager_add(am, ui_modeless_default);
+  assets_manager_add(am, ui_close_window_default);
+  assets_manager_add(am, ui_menu_up_left_default);
+  assets_manager_add(am, ui_locale_default);
+  assets_manager_add(am, ui_kb_ascii_t9_default);
+  assets_manager_add(am, ui_kb_default_t9_default);
+  assets_manager_add(am, ui_animator_layout_default);
+  assets_manager_add(am, ui_kb_int_default);
+  assets_manager_add(am, ui_tab_control_default);
+  assets_manager_add(am, ui_slide_view_v2_default);
+  assets_manager_add(am, ui_animation_default);
+  assets_manager_add(am, ui_basic_fscript_default);
+  assets_manager_add(am, ui_kb_int_floating_default);
+  assets_manager_add(am, ui_keyboard_default);
+  assets_manager_add(am, ui_kb_hex_default);
+  assets_manager_add(am, ui_gauge_h_default);
+  assets_manager_add(am, ui_popdown_default);
+  assets_manager_add(am, ui_svg_test_default);
+  assets_manager_add(am, ui_slide_view_remove_default);
+  assets_manager_add(am, ui_color_default);
+  assets_manager_add(am, ui_color_picker_default);
+  assets_manager_add(am, ui_switch_default);
+  assets_manager_add(am, ui_back_to_home_default);
+  assets_manager_add(am, ui_menu_right_middle_default);
+  assets_manager_add(am, ui_kb_default_t9ext_default);
+  assets_manager_add(am, ui_dragger_default);
+  assets_manager_add(am, ui_dialog2_default);
+  assets_manager_add(am, ui_t_default);
+  assets_manager_add(am, ui_color_picker_hsv_default);
+  assets_manager_add(am, ui_menu_down_right_default);
+  assets_manager_add(am, ui_tab_bottom_default);
+  assets_manager_add(am, ui_fruit_default);
+  assets_manager_add(am, ui_list_view_m_default);
+  assets_manager_add(am, ui_slide_view_h_loop_default);
+  assets_manager_add(am, ui_main_fscript_default);
+  assets_manager_add(am, ui_mutable_image_default);
+  assets_manager_add(am, ui_drop_file_default);
+  assets_manager_add(am, ui_calibration_win_default);
+  assets_manager_add(am, ui_memtest_default);
+  assets_manager_add(am, ui_list_view_sync_default);
+  assets_manager_add(am, ui_slide_view_h2_default);
+  assets_manager_add(am, ui_slide_view_h3_default);
+  assets_manager_add(am, ui_folder_chooser_default);
+  assets_manager_add(am, ui_slide_view_v_loop_default);
+  assets_manager_add(am, ui_language_default);
+  assets_manager_add(am, ui_kb_float_default);
+  assets_manager_add(am, ui_htranslate_default);
+  assets_manager_add(am, ui_tab_dynamic_list_default);
+  assets_manager_add(am, ui_draggable_default);
+  assets_manager_add(am, ui_tab_remove_default);
+  assets_manager_add(am, ui_list_view_vh_default);
+  assets_manager_add(am, ui_rich_text_default);
+  assets_manager_add(am, ui_scroll_view_default);
+  assets_manager_add(am, ui_overlay_default);
+  assets_manager_add(am, ui_mledit_default);
+  assets_manager_add(am, ui_menu_down_left_default);
+  assets_manager_add(am, ui_svg_image_default);
+  assets_manager_add(am, ui_tab_list_default);
+  assets_manager_add(am, ui_animator_default);
+  assets_manager_add(am, ui_slide_down_default);
+  assets_manager_add(am, ui_value_anim_default);
+  assets_manager_add(am, ui_gauge_default);
+  assets_manager_add(am, ui_file_chooser_for_open_default);
+  assets_manager_add(am, ui_scroll_view_h_default);
+  assets_manager_add(am, ui_list_view_dynamic_default);
+  assets_manager_add(am, ui_tab_invisible_compact_default);
+  assets_manager_add(am, ui_menu_up_center_default);
+  assets_manager_add(am, ui_slide_right_default);
+  assets_manager_add(am, ui_scroll_bar_h_default);
+  assets_manager_add(am, ui_spinbox_default);
+  assets_manager_add(am, ui_label_default);
+  assets_manager_add(am, ui_list_view_auto_resize_default);
+  assets_manager_add(am, ui_gif_image_default);
+  assets_manager_add(am, ui_menu_down_center_default);
+  assets_manager_add(am, ui_test_view_default);
+  assets_manager_add(am, ui_auto_play_portrait_default);
+  assets_manager_add(am, ui_scroll_view_ym_default);
+  assets_manager_add(am, ui_system_bar_bottom_default);
+  assets_manager_add(am, ui_text_selector_default);
+  assets_manager_add(am, ui_rich_text_view_default);
+  assets_manager_add(am, ui_big_font_default);
+  assets_manager_add(am, ui_tab_top_compact_default);
+  assets_manager_add(am, ui_dialog_highlight_dynamic_default);
+  assets_manager_add(am, ui_slide_view_h_default);
+  assets_manager_add(am, ui_spin_box_default);
+  assets_manager_add(am, ui_dialogs_default);
+  assets_manager_add(am, ui_selectm_default);
+  assets_manager_add(am, ui_list_view_default);
+  assets_manager_add(am, ui_stroke_gradient_default);
+  assets_manager_add(am, ui_menu_left_middle_default);
+  assets_manager_add(am, ui_slide_view_h1_default);
+  assets_manager_add(am, ui_basic_default);
+  assets_manager_add(am, ui_auto_play_default);
+  assets_manager_add(am, ui_desktop_default);
+  assets_manager_add(am, ui_file_browser_default);
+  assets_manager_add(am, ui_color_picker_full_default);
+  assets_manager_add(am, ui_dialog1_default);
+  assets_manager_add(am, ui_dialog_highlight_default);
+  assets_manager_add(am, ui_fade_default);
+  assets_manager_add(am, ui_menu_right_top_default);
+  assets_manager_add(am, ui_list_view_d_f_default);
+  assets_manager_add(am, ui_image_list_default);
+  assets_manager_add(am, ui_slide_view_v1_default);
+  assets_manager_add(am, ui_test_fscript_default);
+  assets_manager_add(am, ui_mono_test_default);
+  assets_manager_add(am, ui_select1_default);
+  assets_manager_add(am, ui_list_view_animate_default);
+  assets_manager_add(am, ui_hscroll_label_default);
+  assets_manager_add(am, ui_slide_left_default);
+  assets_manager_add(am, ui_list_view_h1_default);
+  assets_manager_add(am, ui_image_animation_default);
+  assets_manager_add(am, ui_image_value_default);
+  assets_manager_add(am, ui_slide_view_default);
+  assets_manager_add(am, ui_time_clock_default);
+  assets_manager_add(am, ui_grid_default);
+  assets_manager_add(am, ui_tab_top_default);
+  assets_manager_add(am, ui_slide_view_v_default);
+  assets_manager_add(am, ui_top_default);
+  assets_manager_add(am, ui_button_default);
+  assets_manager_add(am, ui_edit_menu_default);
+  assets_manager_add(am, ui_menu_default);
+  assets_manager_add(am, ui_text_selector_fscript_default);
+  assets_manager_add(am, ui_button_fscript_default);
+  assets_manager_add(am, ui_file_chooser_for_save_default);
+  assets_manager_add(am, ui_system_bar_default);
+  assets_manager_add(am, ui_slide_view_appoint_remove_default);
+  assets_manager_add(am, ui_accordion1_default);
+  assets_manager_add(am, ui_menu_right_bottom_default);
+  assets_manager_add(am, ui_list_view_d_default);
+  assets_manager_add(am, ui_vtranslate_default);
+  assets_manager_add(am, ui_dialog_highlight_static_default);
+  assets_manager_add(am, ui_tab_invisible_default);
+  assets_manager_add(am, ui_menu_left_top_default);
+  assets_manager_add(am, ui_kb_ufloat_default);
+  assets_manager_add(am, ui_kb_default_default);
+  assets_manager_add(am, ui_tab_button_view_page2_default);
+  assets_manager_add(am, ui_slide_view_remove_loop_default);
+  assets_manager_add(am, ui_slide_up_default);
+  assets_manager_add(am, ui_rich_text2_default);
+  assets_manager_add(am, ui_list_view_h_default);
+  assets_manager_add(am, ui_floating_keyboard_default);
+  assets_manager_add(am, ui_color_picker_rgb_default);
+  assets_manager_add(am, ui_tab_bottom_compact_default);
+  assets_manager_add(am, ui_popup_default);
+  assets_manager_add(am, ui_serial_default);
+  assets_manager_add(am, ui_image_packed_default);
+  assets_manager_add(am, ui_kb_uint_default);
+  assets_manager_add(am, ui_scroll_view_v_default);
+  assets_manager_add(am, ui_slide_view_animating_time_default);
+  assets_manager_add(am, ui_window_default_win_anim);
+  assets_manager_add(am, ui_center_default_win_anim);
+  assets_manager_add(am, ui_dialog_default_win_anim);
+  assets_manager_add(am, ui_popup_default_win_anim);
+  assets_manager_add(am, xml_test_default);
+  assets_manager_add(am, data_com_zlg_app_json_default);
+  assets_manager_add(am, data_gpinyin_dat_default);
+  assets_manager_add(am, data_test_dat_default);
+  assets_manager_add(am, data_conf_test_json_default);
+  assets_manager_add(am, data_custom_keys_json_default);
+  assets_manager_add(am, data_suggest_words_zh_cn_dat_default);
+  assets_manager_add(am, data_test_json_default);
+  assets_manager_add(am, data_a_b_c_any_default);
 #ifndef AWTK_WEB
-  assets_manager_add(am, image_ani6);
-  assets_manager_add(am, image_checked);
-  assets_manager_add(am, image_num_7);
-  assets_manager_add(am, image_close_p);
-  assets_manager_add(am, image_num_6);
-  assets_manager_add(am, image_shift);
-  assets_manager_add(am, image_ani7);
-  assets_manager_add(am, image_ania);
-  assets_manager_add(am, image_anic);
-  assets_manager_add(am, image_earth);
-  assets_manager_add(am, image_ani5);
-  assets_manager_add(am, image_flag_none);
-  assets_manager_add(am, image_bee);
-  assets_manager_add(am, image_contact);
-  assets_manager_add(am, image_battery_4);
-  assets_manager_add(am, image_num_4);
-  assets_manager_add(am, image_slider_fg);
-  assets_manager_add(am, image_contact_active);
-  assets_manager_add(am, image_close_d);
-  assets_manager_add(am, image_dialog_title);
-  assets_manager_add(am, image_battery_5);
-  assets_manager_add(am, image_num_5);
-  assets_manager_add(am, image_ani4);
-  assets_manager_add(am, image_anib);
-  assets_manager_add(am, image_me_active);
-  assets_manager_add(am, image_file);
-  assets_manager_add(am, image_arrow_up_n);
-  assets_manager_add(am, image_cursor_hand);
-  assets_manager_add(am, image_left_on);
-  assets_manager_add(am, image_num_1);
-  assets_manager_add(am, image_battery_1);
-  assets_manager_add(am, image_arrow_right_p);
-  assets_manager_add(am, image_slider_v_fg);
-  assets_manager_add(am, image_empty);
-  assets_manager_add(am, image_rgba);
-  assets_manager_add(am, image_num_0);
-  assets_manager_add(am, image_battery_0);
-  assets_manager_add(am, image_edit_clear_p);
-  assets_manager_add(am, image_arrow_up_o);
-  assets_manager_add(am, image_visible);
-  assets_manager_add(am, image_ani1);
-  assets_manager_add(am, image_arrow_left_o);
-  assets_manager_add(am, image_ani3);
-  assets_manager_add(am, image_clock_second);
-  assets_manager_add(am, image_battery_2);
-  assets_manager_add(am, image_num_2);
-  assets_manager_add(am, image_en);
-  assets_manager_add(am, image_slider_drag_o);
-  assets_manager_add(am, image_battery_3);
-  assets_manager_add(am, image_num_3);
-  assets_manager_add(am, image_ani2);
-  assets_manager_add(am, image_arrow_left_n);
-  assets_manager_add(am, image_middle_on);
-  assets_manager_add(am, image_bricks);
-  assets_manager_add(am, image_image_packed_bg);
-  assets_manager_add(am, image_msg);
-  assets_manager_add(am, image_play_o);
-  assets_manager_add(am, image_play_n);
-  assets_manager_add(am, image_msg_active);
-  assets_manager_add(am, image_img_slider_bg);
-  assets_manager_add(am, image_expand);
-  assets_manager_add(am, image_radio_checked);
-  assets_manager_add(am, image_active_dot);
-  assets_manager_add(am, image_zh);
-  assets_manager_add(am, image_question);
-  assets_manager_add(am, image_discovery_active);
-  assets_manager_add(am, image_dot);
-  assets_manager_add(am, image_gauge_bg);
-  assets_manager_add(am, image_shifton);
-  assets_manager_add(am, image_check);
-  assets_manager_add(am, image_cursor);
-  assets_manager_add(am, image_me);
-  assets_manager_add(am, image_info);
-  assets_manager_add(am, image_red_btn_p);
-  assets_manager_add(am, image_middle_off);
-  assets_manager_add(am, image_img_slider_icon);
-  assets_manager_add(am, image_arrow_down_n);
-  assets_manager_add(am, image_num_plus);
-  assets_manager_add(am, image_collapse);
-  assets_manager_add(am, image_return_up);
-  assets_manager_add(am, image_green_btn_o);
-  assets_manager_add(am, image_green_btn_n);
-  assets_manager_add(am, image_muted);
-  assets_manager_add(am, image_arrow_down_o);
-  assets_manager_add(am, image_rgb);
-  assets_manager_add(am, image_num_dot);
-  assets_manager_add(am, image_unmuted);
-  assets_manager_add(am, image_right_off);
-  assets_manager_add(am, image_message);
-  assets_manager_add(am, image_3);
-  assets_manager_add(am, image_play_p);
-  assets_manager_add(am, image_2);
-  assets_manager_add(am, image_slider_bg);
-  assets_manager_add(am, image_right_on);
-  assets_manager_add(am, image_gauge_pointer);
-  assets_manager_add(am, image_flag_US);
-  assets_manager_add(am, image_0);
-  assets_manager_add(am, image_left_off);
-  assets_manager_add(am, image_1);
-  assets_manager_add(am, image_progress_circle);
-  assets_manager_add(am, image_red_btn_o);
-  assets_manager_add(am, image_slider_drag);
-  assets_manager_add(am, image_num_minus);
-  assets_manager_add(am, image_cursor_text);
-  assets_manager_add(am, image_unchecked);
-  assets_manager_add(am, image_red_btn_n);
-  assets_manager_add(am, image_arrow_down_p);
-  assets_manager_add(am, image_slider_v_bg);
-  assets_manager_add(am, image_warn);
-  assets_manager_add(am, image_green_btn_p);
-  assets_manager_add(am, image_flag_CN);
-  assets_manager_add(am, image_switch);
-  assets_manager_add(am, image_radio_unchecked);
-  assets_manager_add(am, image_close_n);
-  assets_manager_add(am, image_close_o);
-  assets_manager_add(am, image_clock_bg);
-  assets_manager_add(am, image_clock_minute);
-  assets_manager_add(am, image_cross);
-  assets_manager_add(am, image_img_slider_fg);
-  assets_manager_add(am, image_clock);
-  assets_manager_add(am, image_image_packed_fg);
-  assets_manager_add(am, image_find);
-  assets_manager_add(am, image_ani9);
-  assets_manager_add(am, image_arrow_up_p);
-  assets_manager_add(am, image_edit_clear_o);
-  assets_manager_add(am, image_folder);
-  assets_manager_add(am, image_num_8);
-  assets_manager_add(am, image_arrow_right_n);
-  assets_manager_add(am, image_discovery);
-  assets_manager_add(am, image_arrow_right_o);
-  assets_manager_add(am, image_num_9);
-  assets_manager_add(am, image_edit_clear_n);
-  assets_manager_add(am, image_ani8);
-  assets_manager_add(am, image_logo);
-  assets_manager_add(am, image_invisible);
-  assets_manager_add(am, image_slider_drag_p);
-  assets_manager_add(am, image_backspace);
-  assets_manager_add(am, image_arrow_left_p);
-  assets_manager_add(am, image_clock_hour);
 #ifdef WITH_TRUETYPE_FONT
-  assets_manager_add(am, font_default);
 #else /*WITH_TRUETYPE_FONT*/
-  assets_manager_add(am, font_default_20);
-  assets_manager_add(am, font_default_16);
-  assets_manager_add(am, font_default_18);
-  assets_manager_add(am, font_default_24);
+  assets_manager_add(am, font_default_20_default);
+  assets_manager_add(am, font_default_16_default);
+  assets_manager_add(am, font_default_18_default);
+  assets_manager_add(am, font_default_24_default);
 #endif /*WITH_TRUETYPE_FONT*/
-  assets_manager_add(am, script_dummy);
 #endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
-  assets_manager_add(am, image_paths_data_02_t);
-  assets_manager_add(am, image_pointer_4);
-  assets_manager_add(am, image_htest);
-  assets_manager_add(am, image_ball);
-  assets_manager_add(am, image_shapes_polyline_01_t);
-  assets_manager_add(am, image_china);
-  assets_manager_add(am, image_meter_pointer);
-  assets_manager_add(am, image_pservers_grad_99_b);
-  assets_manager_add(am, image_tiger);
-  assets_manager_add(am, image_shapes_line_01_t);
-  assets_manager_add(am, image_painting_stroke_05_t);
-  assets_manager_add(am, image_paths_data_01_t);
-  assets_manager_add(am, image_pointer_1);
-  assets_manager_add(am, image_pointer);
-  assets_manager_add(am, image_shapes_circle_01_t);
-  assets_manager_add(am, image_shapes_rect_01_t);
-  assets_manager_add(am, image_girl);
-  assets_manager_add(am, image_shapes_ellipse_01_t);
-  assets_manager_add(am, image_shapes_polygon_01_t);
+  assets_manager_add(am, image_arrow_right_o_default);
+  assets_manager_add(am, image_image_packed_bg_default);
+  assets_manager_add(am, image_num_4_default);
+  assets_manager_add(am, image_0_default);
+  assets_manager_add(am, image_close_o_default);
+  assets_manager_add(am, image_battery_1_default);
+  assets_manager_add(am, image_slider_bg_default);
+  assets_manager_add(am, image_ani3_default);
+  assets_manager_add(am, image_progress_circle_default);
+  assets_manager_add(am, image_muted_default);
+  assets_manager_add(am, image_file_default);
+  assets_manager_add(am, image_num_plus_default);
+  assets_manager_add(am, image_gauge_bg_default);
+  assets_manager_add(am, image_num_8_default);
+  assets_manager_add(am, image_earth_default);
+  assets_manager_add(am, image_flag_none_default);
+  assets_manager_add(am, image_shift_default);
+  assets_manager_add(am, image_arrow_up_p_default);
+  assets_manager_add(am, image_discovery_active_default);
+  assets_manager_add(am, image_en_default);
+  assets_manager_add(am, image_right_on_default);
+  assets_manager_add(am, image_discovery_default);
+  assets_manager_add(am, image_collapse_default);
+  assets_manager_add(am, image_rgb_default);
+  assets_manager_add(am, image_num_9_default);
+  assets_manager_add(am, image_dot_default);
+  assets_manager_add(am, image_ani2_default);
+  assets_manager_add(am, image_battery_0_default);
+  assets_manager_add(am, image_find_default);
+  assets_manager_add(am, image_slider_fg_default);
+  assets_manager_add(am, image_close_n_default);
+  assets_manager_add(am, image_left_on_default);
+  assets_manager_add(am, image_1_default);
+  assets_manager_add(am, image_question_default);
+  assets_manager_add(am, image_invisible_default);
+  assets_manager_add(am, image_image_packed_fg_default);
+  assets_manager_add(am, image_num_5_default);
+  assets_manager_add(am, image_num_dot_default);
+  assets_manager_add(am, image_arrow_right_n_default);
+  assets_manager_add(am, image_bee_default);
+  assets_manager_add(am, image_visible_default);
+  assets_manager_add(am, image_clock_bg_default);
+  assets_manager_add(am, image_me_active_default);
+  assets_manager_add(am, image_cursor_default);
+  assets_manager_add(am, image_clock_minute_default);
+  assets_manager_add(am, image_switch_default);
+  assets_manager_add(am, image_checked_default);
+  assets_manager_add(am, image_middle_off_default);
+  assets_manager_add(am, image_close_p_default);
+  assets_manager_add(am, image_num_minus_default);
+  assets_manager_add(am, image_folder_default);
+  assets_manager_add(am, image_zh_default);
+  assets_manager_add(am, image_arrow_right_p_default);
+  assets_manager_add(am, image_ani9_default);
+  assets_manager_add(am, image_anib_default);
+  assets_manager_add(am, image_num_2_default);
+  assets_manager_add(am, image_arrow_up_o_default);
+  assets_manager_add(am, image_clock_default);
+  assets_manager_add(am, image_empty_default);
+  assets_manager_add(am, image_ani5_default);
+  assets_manager_add(am, image_ani4_default);
+  assets_manager_add(am, image_left_off_default);
+  assets_manager_add(am, image_radio_unchecked_default);
+  assets_manager_add(am, image_rgba_default);
+  assets_manager_add(am, image_shifton_default);
+  assets_manager_add(am, image_arrow_up_n_default);
+  assets_manager_add(am, image_num_3_default);
+  assets_manager_add(am, image_msg_active_default);
+  assets_manager_add(am, image_anic_default);
+  assets_manager_add(am, image_ani8_default);
+  assets_manager_add(am, image_active_dot_default);
+  assets_manager_add(am, image_close_d_default);
+  assets_manager_add(am, image_right_off_default);
+  assets_manager_add(am, image_unmuted_default);
+  assets_manager_add(am, image_img_slider_icon_default);
+  assets_manager_add(am, image_img_slider_bg_default);
+  assets_manager_add(am, image_cross_default);
+  assets_manager_add(am, image_expand_default);
+  assets_manager_add(am, image_backspace_default);
+  assets_manager_add(am, image_arrow_left_p_default);
+  assets_manager_add(am, image_edit_clear_n_default);
+  assets_manager_add(am, image_clock_second_default);
+  assets_manager_add(am, image_contact_default);
+  assets_manager_add(am, image_bricks_default);
+  assets_manager_add(am, image_dialog_title_default);
+  assets_manager_add(am, image_cursor_hand_default);
+  assets_manager_add(am, image_ani7_default);
+  assets_manager_add(am, image_play_p_default);
+  assets_manager_add(am, image_battery_5_default);
+  assets_manager_add(am, image_green_btn_p_default);
+  assets_manager_add(am, image_red_btn_p_default);
+  assets_manager_add(am, image_me_default);
+  assets_manager_add(am, image_num_0_default);
+  assets_manager_add(am, image_arrow_down_p_default);
+  assets_manager_add(am, image_num_1_default);
+  assets_manager_add(am, image_warn_default);
+  assets_manager_add(am, image_contact_active_default);
+  assets_manager_add(am, image_slider_drag_o_default);
+  assets_manager_add(am, image_battery_4_default);
+  assets_manager_add(am, image_ani6_default);
+  assets_manager_add(am, image_message_default);
+  assets_manager_add(am, image_edit_clear_o_default);
+  assets_manager_add(am, image_img_slider_fg_default);
+  assets_manager_add(am, image_ania_default);
+  assets_manager_add(am, image_ani1_default);
+  assets_manager_add(am, image_battery_3_default);
+  assets_manager_add(am, image_logo_default);
+  assets_manager_add(am, image_arrow_left_o_default);
+  assets_manager_add(am, image_2_default);
+  assets_manager_add(am, image_num_6_default);
+  assets_manager_add(am, image_check_default);
+  assets_manager_add(am, image_return_up_default);
+  assets_manager_add(am, image_middle_on_default);
+  assets_manager_add(am, image_arrow_down_o_default);
+  assets_manager_add(am, image_radio_checked_default);
+  assets_manager_add(am, image_red_btn_o_default);
+  assets_manager_add(am, image_green_btn_o_default);
+  assets_manager_add(am, image_slider_v_bg_default);
+  assets_manager_add(am, image_clock_hour_default);
+  assets_manager_add(am, image_flag_CN_default);
+  assets_manager_add(am, image_play_o_default);
+  assets_manager_add(am, image_play_n_default);
+  assets_manager_add(am, image_slider_drag_default);
+  assets_manager_add(am, image_unchecked_default);
+  assets_manager_add(am, image_gauge_pointer_default);
+  assets_manager_add(am, image_green_btn_n_default);
+  assets_manager_add(am, image_red_btn_n_default);
+  assets_manager_add(am, image_slider_drag_p_default);
+  assets_manager_add(am, image_slider_v_fg_default);
+  assets_manager_add(am, image_arrow_down_n_default);
+  assets_manager_add(am, image_info_default);
+  assets_manager_add(am, image_flag_US_default);
+  assets_manager_add(am, image_msg_default);
+  assets_manager_add(am, image_num_7_default);
+  assets_manager_add(am, image_cursor_text_default);
+  assets_manager_add(am, image_3_default);
+  assets_manager_add(am, image_arrow_left_n_default);
+  assets_manager_add(am, image_edit_clear_p_default);
+  assets_manager_add(am, image_battery_2_default);
 #endif /*WITH_VGCANVAS*/
 #endif /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
 
