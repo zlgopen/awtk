@@ -201,7 +201,7 @@ ret_t dialog_quit(widget_t* widget, uint32_t code) {
 
   dialog->quited = TRUE;
   dialog->quit_code = (dialog_quit_code_t)code;
-  l->quit_num = dialog->quit_num;
+  l->quit_num += dialog->quit_num;
   main_loop_quit(l);
 #endif /*AWTK_WEB*/
 
