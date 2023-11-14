@@ -143,6 +143,19 @@ void* darray_find_ex(darray_t* darray, tk_compare_t cmp, void* ctx);
 int32_t darray_bsearch_index(darray_t* darray, tk_compare_t cmp, void* ctx);
 
 /**
+ * @method darray_bsearch_index_ex
+ * 二分查找(确保数组有序)，元素不存在时，返回low索引。
+ * 
+ * @param {darray_t*} darray 数组对象。
+ * @param {tk_compare_t} cmp 比较函数，为NULL则使用内置的比较函数。
+ * @param {void*} ctx 比较函数的上下文。
+ * @param {int32_t*} ret_low low索引。
+ *
+ * @return {int32_t} 如果找到，返回满足条件的对象的位置，否则返回-1。
+ */
+int32_t darray_bsearch_index_ex(darray_t* darray, tk_compare_t cmp, void* ctx, int32_t* ret_low);
+
+/**
  * @method darray_bsearch
  * 二分查找(确保数组有序)。
  * 
