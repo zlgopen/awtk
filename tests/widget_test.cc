@@ -1422,7 +1422,7 @@ TEST(Widget, set_text) {
   locale_info_t* save_locale_info = locale_info();
   locale_info_t* locale_info = locale_info_create("en", "us");
 
-  locale_info->strs = (asset_info_t*)strings_en_US;
+  locale_info->strs = (asset_info_t*)strings_en_US_default;
   locale_info_set(locale_info);
 
   ASSERT_EQ(widget_set_text_impl(w, L"test1", TRUE), RET_OK);
