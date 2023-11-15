@@ -404,7 +404,7 @@ ret_t widget_layout_self_with_rect(self_layouter_t* layouter, widget_t* widget, 
         (widget->auto_adjust_size && widget_get_prop_int(widget, WIDGET_PROP_MAX_W, 0) != 0);
 
     /*如果有指定max_w，需要在layout之前，先计算需要的高宽。*/
-    if (has_max_w && widget->vt->auto_adjust_size != NULL) {
+    if (has_max_w && widget->auto_adjust_size && widget->vt->auto_adjust_size != NULL) {
       widget->vt->auto_adjust_size(widget);
       r.w = widget->w;
       r.h = widget->h;
@@ -415,20 +415,22 @@ ret_t widget_layout_self_with_rect(self_layouter_t* layouter, widget_t* widget, 
     widget_layout_calc(l, &r, area->w, area->h);
 
     /*如果没有指定max_w，需要在layout之后，根据layout的高宽计算实际需要的高宽。*/
-    if (!has_max_w && widget->vt->auto_adjust_size != NULL) {
+    if (!has_max_w && widget->auto_adjust_size && widget->vt->auto_adjust_size != NULL) {
+      wh_t w = widget->w;
+      wh_t h = widget->h;
       widget->w = r.w;
       widget->h = r.h;
       widget->vt->auto_adjust_size(widget);
       r.w = widget->w;
       r.h = widget->h;
-      if (widget->auto_adjust_size) {
-        if (l->x_attr != X_ATTR_UNDEF && area->w > 0) {
-          r.x = tk_roundi(widget_layout_calc_by_x(l->x_attr, l->x, (double)r.w, area->w));
-        }
-        if (l->y_attr != Y_ATTR_UNDEF && area->h > 0) {
-          r.y = tk_roundi(widget_layout_calc_by_y(l->y_attr, l->y, (double)r.h, area->h));
-        }
+      if (l->x_attr != X_ATTR_UNDEF && area->w > 0) {
+        r.x = tk_roundi(widget_layout_calc_by_x(l->x_attr, l->x, (double)r.w, area->w));
       }
+      if (l->y_attr != Y_ATTR_UNDEF && area->h > 0) {
+        r.y = tk_roundi(widget_layout_calc_by_y(l->y_attr, l->y, (double)r.h, area->h));
+      }
+      widget->w = w;
+      widget->h = h;
     }
 
     widget_move_resize_ex(widget, r.x + area->x, r.y + area->y, r.w, r.h, FALSE);

@@ -1,4 +1,7 @@
 # 最新动态
+2023/11/15
+  * 修复layout的auto\_adjust\_size不触发修改事件的问题以及增加判断auto\_adjust\_size(感谢智明提供补丁)
+
 2023/11/14
   * 导出darray\_bsearch\_index\_ex接口(感谢雨欣提供补丁)
   * 完善生态页面内容(感谢陈谭提供补丁)

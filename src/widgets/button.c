@@ -388,10 +388,7 @@ static ret_t button_auto_adjust_size(widget_t* widget) {
     widget_prepare_text_style(widget, c);
     h = c->font_size + margin_top + margin_bottom;
     w = canvas_measure_text(c, widget->text.str, widget->text.size) + margin_left + margin_right;
-    widget->w = w;
-    widget->h = h;
-
-    return RET_OK;
+    return widget_move_resize_ex(widget, widget->x, widget->y, w, h, FALSE);
   }
 }
 
