@@ -526,6 +526,16 @@ typedef enum _event_type_t {
    */
   EVT_LOCALE_INFOS_UNLOAD_INFO,
   /**
+   * @const EVT_ACTIVATED
+   * 控件进入激活状态(event_t)。
+   */
+  EVT_ACTIVATED,
+  /**
+   * @const EVT_UNACTIVATED
+   * 控件退出激活状态(event_t)。
+   */
+  EVT_UNACTIVATED,
+  /**
    * @const EVT_REQ_START
    * event queue其它请求编号起始值。
    */

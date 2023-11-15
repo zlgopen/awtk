@@ -366,7 +366,8 @@ static ret_t candidates_on_keyup(widget_t* widget, key_event_t* e) {
         }
       }
     } else if (e->key == TK_KEY_LEFT || e->key == TK_KEY_RIGHT) {
-      if (nr > 2) {
+      keyboard_type_t keyboard_type = system_info()->keyboard_type;
+      if (nr > 2 && keyboard_type != KEYBOARD_3KEYS && keyboard_type != KEYBOARD_5KEYS) {
         candidates_move_focus(widget, e->key == TK_KEY_RIGHT);
         ret = RET_STOP;
       }

@@ -13,12 +13,14 @@
     <pressed    bg_color="#c0c0c0" />
     <over       bg_color="#e0e0e0" />
     <disable    bg_color="gray" text_color="#d0d0d0" />
+    <focused    bg_color="#c0c0c0" />
   </style>
   
   <style name="candidates" text_color="black" margin="5">
     <normal  />
     <pressed    bg_color="#f0f0f0" border_color="#a0a0a0"/>
     <over       bg_color="#e0e0e0" border_color="#a0a0a0"/>
+    <focused    bg_color="#e0e0e0" />
   </style>
   
   <style name="candidates_focusable" text_color="black" margin="5">
@@ -33,6 +35,7 @@
     <normal  bg_color="#f0f0f0"/>
     <pressed    bg_color="#c0c0c0" border_color="#a0a0a0"/>
     <over       bg_color="#e0e0e0" border_color="#a0a0a0"/>
+    <focused    bg_color="#e0e0e0" />
   </style>
 </button>
 

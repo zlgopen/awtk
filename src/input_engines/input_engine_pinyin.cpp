@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
 #include "tkc/buffer.h"
+#include "base/system_info.h"
 #include "base/input_engine.h"
 #include "base/input_method.h"
 
@@ -86,6 +87,7 @@ static ret_t input_engine_pinyin_search(input_engine_t* engine, const char* keys
   uint32_t i = 0;
   uint32_t keys_size = strlen(keys);
   uint32_t nr = 0;
+  keyboard_type_t keyboard_type = system_info()->keyboard_type;
 
   return_value_if_fail(engine != NULL, RET_FAIL);
 
@@ -110,8 +112,11 @@ static ret_t input_engine_pinyin_search(input_engine_t* engine, const char* keys
       break;
     }
   }
-
-  input_engine_dispatch_candidates(engine, 0);
+  if (keyboard_type != KEYBOARD_3KEYS && keyboard_type != KEYBOARD_5KEYS) {
+    input_engine_dispatch_candidates(engine, 0);
+  } else {
+    input_engine_dispatch_candidates(engine, -1);
+  }
 
   return RET_OK;
 }

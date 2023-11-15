@@ -1,0 +1,129 @@
+<window>
+  <style name="default">
+    <normal bg_color="#f0f0f0"/>
+  </style>
+</window>
+
+<button>
+  <style name="default" border_color="#a0a0a0"  text_color="black">
+    <normal     bg_color="#f0f0f0" />
+    <pressed    bg_color="#c0c0c0" x_offset="1" y_offset="1"/>
+    <over       bg_color="#e0e0e0" />
+    <focused    bg_color="#e0e0e0" />
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+  </style>
+</button>
+
+<edit selected_fg_color="#020202" selected_text_color="#010101" selected_bg_color="#b5d7fd">
+  <style name="default" border_color="#a0a0a0"  text_color="black" text_align_h="left">
+    <normal     bg_color="#f0f0f0" />
+    <activated  border_color="#0070C0" border_width="2" />
+    <focused    bg_color="#f0f0f0" border_color="black"/>
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+    <changed    bg_color="#f0f0f0" text_color="#ee0000" />
+    <error      bg_color="#f0f0f0" text_color="red" />
+    <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
+    <over       bg_color="#e0e0e0"/>
+    <empty_focus bg_color="#f0f0f0" text_color="#a0a0a0" border_color="black"/>
+  </style>
+</edit>
+
+<spin_box>
+  <style name="default" border_color="#a0a0a0"  text_color="black" text_align_h="left">
+    <normal     bg_color="#f0f0f0" />
+    <focused    bg_color="#f0f0f0" border_color="black"/>
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+    <error      bg_color="#f0f0f0" text_color="red" />
+    <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
+    <empty_focus bg_color="#f0f0f0" text_color="#a0a0a0" border_color="black"/>
+  </style>
+</spin_box>
+
+<slider>
+  <style>
+    <normal bg_color="#a0a0a0" fg_color="blue" border_color="#ffd700"/>
+    <pressed bg_color="#a0a0a0" fg_color="blue" border_color="#ffa700"/>
+    <over bg_color="#a0a0a0" fg_color="blue" border_color="#ffe700"/>    
+    <focused bg_color="#a0a0a0" fg_color="blue" border_color="#ffe700"/>    
+  </style>
+</slider>
+
+<check_button bg_color="#f0f0f0" text_color="black">
+  <style name="default" icon_at="left">
+    <normal  icon="unchecked" />
+    <pressed icon="unchecked" />
+    <over    icon="unchecked" text_color="green"/>
+    <focused icon="unchecked" text_color="green"/>
+    <normal_of_checked icon="checked" text_color="blue"/>
+    <pressed_of_checked icon="checked" text_color="blue"/>
+    <over_of_checked icon="checked" text_color="green"/>
+    <focused_of_checked icon="checked" text_color="green"/>
+  </style>
+</check_button>
+
+<radio_button>
+  <style name="default" bg_color="#f0f0f0" text_color="black" icon_at="left">
+    <normal  icon="radio_unchecked" />
+    <pressed icon="radio_unchecked" />
+    <over    icon="radio_unchecked" text_color="green"/>
+    <focused icon="radio_unchecked" text_color="green"/>
+    <normal_of_checked icon="radio_checked" text_color="red"/>
+    <pressed_of_checked icon="radio_checked" text_color="red"/>
+    <over_of_checked icon="radio_checked" text_color="green"/>
+    <focused_of_checked icon="radio_checked" text_color="green"/>
+  </style>
+</radio_button>
+
+<combo_box_ex>
+  <style name="default" border_color="#a0a0a0"  text_color="black" text_align_h="left" margin_left="4" margin_right="30">
+    <normal     bg_color="#f0f0f0" />
+    <focused    bg_color="#f0f0f0" border_color="black"/>
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+    <error      bg_color="#f0f0f0" text_color="red" />
+    <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
+    <over       bg_color="#e0e0e0" text_color="#88ff00" />
+    <activated  bg_color="#e0e0e0" border_color="#0070C0"  border_width="2" />
+  </style>
+</combo_box_ex>
+
+<text_selector>
+  <style name="default" fg_color="#a0a0a0"  text_color="black" text_align_h="center">
+    <normal     bg_color="#f0f0f0"/>
+    <focused    bg_color="#f0f0f0" border_color="black"/>
+    <activated  bg_color="#f0f0f0" border_color="#0070C0"  border_width="2" />
+  </style>
+</text_selector>
+
+<switch>
+  <style name="default">
+    <normal  bg_image="switch" />
+  </style>
+</switch>
+
+<slide_menu>
+  <style name="default" bg_color="#f0f0f0">
+    <normal />
+    <focused    border_color="black"/>
+    <activated  border_color="#0070C0" border_width="2" />
+  </style>
+</slide_menu>
+
+<mledit selected_fg_color="#020202" selected_text_color="#010101" selected_bg_color="#b5d7fd">
+  <style name="default" border_color="#a0a0a0"  text_color="black" text_align_h="left">
+    <normal     bg_color="#f0f0f0" />
+    <focused    bg_color="#f0f0f0" border_color="black"/>
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+    <error      bg_color="#f0f0f0" text_color="red" />
+    <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
+    <empty_focus bg_color="#f0f0f0" text_color="#a0a0a0" border_color="black"/>
+    <activated  border_color="#0070C0" border_width="2" />
+  </style>
+</mledit>
+
+<hscroll_label>
+  <style name="default" text_color="black">
+    <normal   />
+    <focused  border_color="blue" border_width="2" />
+    <activated  border_color="#0070C0"  border_width="2" />
+  </style>
+</hscroll_label>

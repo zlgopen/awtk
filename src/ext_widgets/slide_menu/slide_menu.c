@@ -737,8 +737,26 @@ static ret_t slide_menu_on_event(widget_t* widget, event_t* e) {
       ret = slide_menu->dragged ? RET_STOP : RET_OK;
       break;
     }
+    case EVT_ACTIVATED: {
+      slide_menu->is_activated = TRUE;
+      ret = RET_STOP;
+      break;
+    }
+    case EVT_UNACTIVATED: {
+      slide_menu->is_activated = FALSE;
+      break;
+    }
     case EVT_KEY_UP: {
       key_event_t* evt = (key_event_t*)e;
+      keyboard_type_t keyboard_type = system_info()->keyboard_type;
+      if (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS) {
+        if (!slide_menu->is_activated) {
+          break;
+        } else if (evt->key == TK_KEY_RETURN) {
+          slide_menu_focus_active_child(slide_menu);
+          ret = RET_STOP;
+        }
+      }
       if (evt->key == TK_KEY_LEFT) {
         slide_menu_scroll_to_prev(widget);
         ret = RET_STOP;

@@ -1,0 +1,29 @@
+<window name="5key_main">
+  <view w="100%" h="60" children_layout="default(c=2,r=1)">
+    <label text="Age"/>
+    <edit focusable="true" keyboard="kb_default_5key" />
+  </view>
+  <view w="100%" h="27" children_layout="default(c=2,r=1)" y="70">
+    <label text="Weight"/>
+    <slider name="slider" value="40" min="0" max="100" focusable="true" />
+  </view>
+  <view w="100%" h="60" y="110" children_layout="default(c=2,r=1)">
+    <label text="language"/>
+    <combo_box open_window="language" readonly="true" tr_text="english"/>
+  </view>
+  <hscroll_label x="c" w="80%" h="27" y="170" focusable="true" only_focus="true" ellipses="true" loop="true" text="(only_focus ellipses loop)为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的 GUI 引擎。" />
+  <mledit x="c" y="210" h="70" w="90%" keyboard="kb_default_5key" focusable="true" text="it is a multi-line editor\n1\n2\n3\n4"
+    left_margin="33" top_margin="2" bottom_margin="2" right_margin="16" wrap_word="true" max_lines="100"> 
+    <line_number x="0" y="0" w="32" h="100%" value="0"/>
+    <scroll_bar_d x="right" y="0" w="14" h="100%" value="0"/>
+  </mledit>
+  <text_selector x="30" y="300" h="70" w="70" visible_nr="3" text="2018" options="2000-2050" focusable="true" />
+  <slide_menu x="120" y="300" h="60" w="200" align_v="top" focusable="true" >
+    <button name="slide_button" with_focus_state="true" text="0"/>
+    <button name="slide_button" with_focus_state="true" text="1"/>
+    <button name="slide_button" with_focus_state="true" text="2"/>
+    <button name="slide_button" with_focus_state="true" text="3"/>
+    <button name="slide_button" with_focus_state="true" text="4"/>
+  </slide_menu>
+  <button name="open:confirm" x="110" y="434" w="100" h="36" text="confirm" focusable="true" focused="true" />
+</window>

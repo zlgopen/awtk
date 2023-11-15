@@ -58,7 +58,7 @@
     <normal      />
     <pressed    x_offset="1" y_offset="1"/>
     <over       border_color="#000000" />
-    <focused    />
+    <focused    bg_color="#e0e0e0" />
     <disable    text_color="#d0d0d0" />
   </style>
   

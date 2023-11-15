@@ -142,7 +142,7 @@ ret_t input_method_dispatch_key(input_method_t* im, uint32_t key) {
   return_value_if_fail(im != NULL, RET_BAD_PARAMS);
 
   if (im->engine != NULL) {
-    if (input_engine_input(im->engine, (char)key) == RET_OK) {
+    if (key <= 128 && input_engine_input(im->engine, (char)key) == RET_OK) {
       return RET_OK;
     }
   }

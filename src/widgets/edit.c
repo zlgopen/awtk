@@ -535,6 +535,9 @@ static ret_t edit_auto_fix_default(widget_t* widget) {
 static ret_t edit_update_status(widget_t* widget) {
   edit_t* edit = EDIT(widget);
   ENSURE(edit);
+  if (edit->is_activated) {
+    return RET_OK;
+  }
   if (widget->text.size == 0) {
     if (widget->focused) {
       widget_set_state(widget, WIDGET_STATE_EMPTY_FOCUS);
@@ -688,6 +691,7 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
   bool_t is_control = e->ctrl;
 #endif
   bool_t is_print = key < 128 && tk_isprint(key);
+  keyboard_type_t keyboard_type = system_info()->keyboard_type;
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   if (!is_control) {
@@ -698,7 +702,7 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
 
   if (key == TK_KEY_TAB || key == TK_KEY_ESCAPE || (key >= TK_KEY_F1 && key <= TK_KEY_F12)) {
     return RET_OK;
-  } else if (key == TK_KEY_DOWN) {
+  } else if (key == TK_KEY_DOWN && keyboard_type != KEYBOARD_3KEYS && keyboard_type != KEYBOARD_5KEYS) {
     if (widget_is_change_focus_key(widget, e)) {
       return RET_OK;
     }
@@ -709,7 +713,7 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
       widget_focus_next(widget);
     }
     return RET_STOP;
-  } else if (key == TK_KEY_UP) {
+  } else if (key == TK_KEY_UP && keyboard_type != KEYBOARD_3KEYS && keyboard_type != KEYBOARD_5KEYS) {
     if (widget_is_change_focus_key(widget, e)) {
       return RET_OK;
     }
@@ -799,6 +803,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
   uint32_t type = e->type;
   edit_t* edit = EDIT(widget);
+  keyboard_type_t keyboard_type = system_info()->keyboard_type;
   return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
 
   if (!widget->visible) {
@@ -869,6 +874,9 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
 #else
       bool_t is_control = evt->ctrl;
 #endif
+      if ((!edit->is_activated || key == TK_KEY_RETURN) && (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS)) {
+        break;
+      }
       if (edit->readonly) {
         if (is_control && (key == TK_KEY_C || key == TK_KEY_c)) {
           log_debug("copy\n");
@@ -886,6 +894,9 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_KEY_UP: {
+      if (!edit->is_activated && (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS)) {
+        break;
+      }
       edit->is_key_inputing = TRUE;
       ret = edit_on_key_up(widget, (key_event_t*)e);
       widget_invalidate(widget, NULL);
@@ -923,12 +934,33 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
       break;
     }
+    case EVT_UNACTIVATED: {
+      edit->is_activated = FALSE;
+      input_method_request(input_method(), NULL);
+      if (edit->timer_id != TK_INVALID_ID) {
+        timer_remove(edit->timer_id);
+        edit->timer_id = TK_INVALID_ID;
+        text_edit_set_caret_visible(edit->model, FALSE);
+      }
+      break;
+    }
+    case EVT_ACTIVATED: {
+      edit->is_activated = TRUE;
+      edit_do_request_input_method(widget);
+      edit_save_text(widget);
+      edit_update_status(widget);
+      widget_invalidate(widget, NULL);
+      edit_start_update_caret(edit);
+      break;
+    }
     case EVT_BLUR: {
       edit_on_blur(widget);
       break;
     }
     case EVT_FOCUS: {
-      if (edit->open_im_when_focused) {
+      if (keyboard_type != KEYBOARD_3KEYS && 
+          keyboard_type != KEYBOARD_5KEYS && 
+          edit->open_im_when_focused) {
         edit_on_focused(widget);
       }
       edit_save_text(widget);
