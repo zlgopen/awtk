@@ -676,7 +676,7 @@ static ret_t window_on_keydown_before_children(void* ctx, event_t* e) {
           case TK_KEY_LEFT:
           case TK_KEY_UP: {
             widget_focus_prev(focus);
-            break;
+            return RET_STOP;
           }
           case TK_KEY_RIGHT:
           case TK_KEY_DOWN: {
