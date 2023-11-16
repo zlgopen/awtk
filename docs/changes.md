@@ -1,6 +1,7 @@
 # 最新动态
 2023/11/16
   * 修复path\_basename\_ex 可能非法访问内存的问题(感谢俊圣提供补丁)
+  * 修复include路径问题(感谢文静提供补丁)
 
 2023/11/15
   * 修复layout的auto\_adjust\_size不触发修改事件的问题以及增加判断auto\_adjust\_size(感谢智明提供补丁)
