@@ -138,12 +138,12 @@ static tk_ostream_t* tk_iostream_serial_get_ostream(tk_iostream_t* stream) {
 
 tk_iostream_t* tk_iostream_serial_create(const char* port) {
   tk_object_t* obj = NULL;
-  serial_handle_t fd = 0;
+  serial_handle_t fd = NULL;
   tk_iostream_serial_t* iostream_serial = NULL;
   return_value_if_fail(port != NULL, NULL);
 
   fd = serial_open(port);
-  return_value_if_fail(fd >= 0, NULL);
+  return_value_if_fail(fd != (serial_handle_t)NULL, NULL);
 
   obj = tk_object_create(&s_tk_iostream_serial_vtable);
   iostream_serial = TK_IOSTREAM_SERIAL(obj);
