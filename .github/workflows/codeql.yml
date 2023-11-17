@@ -12,8 +12,8 @@
 name: "CodeQL"
 
 on:
-  # push:
-  #   branches: [ "main", "master" ]
+  push:
+    branches: [ "main", "master" ]
   schedule:
     - cron: '0 0 * * *'
   pull_request:
@@ -103,6 +103,7 @@ jobs:
           -**:cpp/suspicious-pointer-scaling-void
           -**:cpp/unsigned-comparison-zero
           -**/cmake*/Modules/**
+          -3rd/**
         input: ${{ steps.step1.outputs.sarif-output }}/cpp.sarif
         output: ${{ steps.step1.outputs.sarif-output }}/cpp.sarif
 
