@@ -33,7 +33,7 @@ static void* action_darray_thread_entry(void* args) {
 
   while (!(thread->quit)) {
     qaction_t* action = NULL;
-    while (waitable_action_darray_recv(thread->darray, &action, 1000) == RET_OK) {
+    while (waitable_action_darray_recv(thread->darray, &action, thread->idle_interval) == RET_OK) {
       ret_t ret = qaction_exec(action);
 
       if (ret == RET_QUIT) {
@@ -44,6 +44,9 @@ static void* action_darray_thread_entry(void* args) {
         qaction_destroy(action);
       }
 
+      if (thread->quit) {
+        break;
+      }
       thread->executed_actions_nr++;
     }
 
@@ -71,6 +74,8 @@ static action_darray_thread_t* action_darray_thread_create_internal(void) {
 
   thread->thread = tk_thread_create(action_darray_thread_entry, thread);
   goto_error_if_fail(thread->thread != NULL);
+
+  thread->idle_interval = 1000;
 
   return thread;
 error:
@@ -164,6 +169,14 @@ ret_t action_darray_thread_exec(action_darray_thread_t* thread, qaction_t* actio
   } else {
     return waitable_action_darray_send(thread->darray, action, 3000);
   }
+}
+
+ret_t action_darray_thread_set_idle_interval(action_darray_thread_t* thread, uint32_t interval) {
+  return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
+
+  thread->idle_interval = interval;
+
+  return RET_OK;
 }
 
 static ret_t qaction_quit_exec(qaction_t* action) {

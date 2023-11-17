@@ -4,6 +4,7 @@
   * 修复widget\_on\_with\_tag参数错误时返回不正确的ID。
   * 完善remote\_ui支持事件注册。
   * 修复Windows下打开串口失败tk\_iostream\_serial\_create崩溃的问题。
+  * 增加函数action\_darray\_thread\_set\_idle\_interval((感谢林福提供补丁)
 
 2023/11/16
   * 修复path\_basename\_ex 可能非法访问内存的问题(感谢俊圣提供补丁)
