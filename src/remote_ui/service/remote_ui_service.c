@@ -160,12 +160,13 @@ static widget_t* remote_ui_service_get_app_window(widget_t* widget) {
 
 static widget_t* remote_ui_service_get_target_widget(remote_ui_service_t* ui, const char* target) {
   widget_t* win = remote_ui_service_get_app_window(window_manager());
-  widget_t* widget = TK_STR_IS_EMPTY(target) ? win :  widget_find_by_path(win, target, TRUE);
+  widget_t* widget = TK_STR_IS_EMPTY(target) ? win : widget_find_by_path(win, target, TRUE);
 
   return widget;
 }
 
-static ret_t remote_ui_service_take_snapshot(remote_ui_service_t* ui, const char* target, const char* filename) {
+static ret_t remote_ui_service_take_snapshot(remote_ui_service_t* ui, const char* target,
+                                             const char* filename) {
   ret_t ret = RET_OK;
   bitmap_t* image = NULL;
   widget_t* widget = remote_ui_service_get_target_widget(ui, target);
@@ -191,7 +192,9 @@ static ret_t remote_ui_service_prepare_manifest(remote_ui_service_t* ui, const c
   return file_write(filename, "TODO", 5);
 }
 
-static ret_t remote_ui_service_prepare_loaded_images_info(remote_ui_service_t* ui, const char* target, const char* filename) {
+static ret_t remote_ui_service_prepare_loaded_images_info(remote_ui_service_t* ui,
+                                                          const char* target,
+                                                          const char* filename) {
   str_t result;
   str_init(&result, 10000);
   image_manager_dump(image_manager(), &result);
@@ -201,17 +204,20 @@ static ret_t remote_ui_service_prepare_loaded_images_info(remote_ui_service_t* u
   return RET_OK;
 }
 
-static ret_t remote_ui_service_prepare_loaded_assets_info(remote_ui_service_t* ui, const char* target, const char* filename) {
+static ret_t remote_ui_service_prepare_loaded_assets_info(remote_ui_service_t* ui,
+                                                          const char* target,
+                                                          const char* filename) {
   str_t result;
   str_init(&result, 10000);
   assets_manager_dump(assets_manager(), &result);
   file_write(filename, result.str, result.size);
   str_reset(&result);
-  
+
   return RET_OK;
 }
 
-static ret_t remote_ui_service_prepare_xml_source(remote_ui_service_t* ui, const char* target, const char* filename) {
+static ret_t remote_ui_service_prepare_xml_source(remote_ui_service_t* ui, const char* target,
+                                                  const char* filename) {
   str_t str;
   ret_t ret = RET_OK;
   widget_t* widget = remote_ui_service_get_target_widget(ui, target);
@@ -229,30 +235,107 @@ static ret_t remote_ui_service_prepare_xml_source(remote_ui_service_t* ui, const
 }
 
 static ret_t remote_ui_service_on_event_func(void* ctx, event_t* e) {
+  wbuffer_t* wb = NULL;
+  char target[32] = {0};
+  ubjson_writer_t* writer = NULL;
   remote_ui_service_t* ui = (remote_ui_service_t*)ctx;
-  return_value_if_fail(ui != NULL, RET_BAD_PARAMS);
-  /*TODO*/
-  return RET_OK;
+  return_value_if_fail(ui != NULL, RET_REMOVE);
+  return_value_if_fail(ui->service.destroy == (tk_service_destroy_t)remote_ui_service_destroy,
+                       RET_REMOVE);
+
+  wb = &(ui->service.wb);
+  writer = remote_ui_service_get_writer(ui);
+  log_debug("remote_ui_service_on_event_func type=%d\n", e->type);
+
+  tk_snprintf(target, sizeof(target) - 1, "%p", e->target);
+  ubjson_writer_write_object_begin(writer);
+  ubjson_writer_write_kv_str(writer, REMOTE_UI_KEY_TARGET, target);
+  ubjson_writer_write_kv_int(writer, REMOTE_UI_KEY_EVENT, e->type);
+
+  switch (e->type) {
+    case EVT_VALUE_CHANGED: {
+      char value[64] = {0};
+      value_change_event_t* event = value_change_event_cast(e);
+      value_t* v = &(event->new_value);
+      ubjson_writer_write_kv_int(writer, REMOTE_UI_KEY_VALUE_TYPE, v->type);
+      ubjson_writer_write_kv_str(writer, REMOTE_UI_KEY_VALUE,
+                                 value_str_ex(v, value, sizeof(value)));
+      break;
+    }
+    case EVT_KEY_DOWN:
+    case EVT_KEY_UP: {
+      key_event_t* event = key_event_cast(e);
+      ubjson_writer_write_kv_int(writer, REMOTE_UI_KEY_VALUE_TYPE, event->key);
+      break;
+    }
+    case EVT_POINTER_DOWN:
+    case EVT_POINTER_MOVE:
+    case EVT_POINTER_UP: {
+      pointer_event_t* event = pointer_event_cast(e);
+      ubjson_writer_write_kv_int(writer, REMOTE_UI_KEY_X, event->x);
+      ubjson_writer_write_kv_int(writer, REMOTE_UI_KEY_Y, event->y);
+      break;
+    }
+    default:
+      break;
+  }
+
+  ubjson_writer_write_object_end(writer);
+
+  return tk_service_send_resp(&(ui->service), MSG_CODE_NOTIFY, MSG_DATA_TYPE_UBJSON, RET_OK, wb);
 }
 
 static ret_t remote_ui_service_on_event(remote_ui_service_t* ui, const char* target,
                                         uint32_t event) {
-  widget_t* widget = remote_ui_service_get_target_widget(ui, target);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  uint32_t id = 0;
+  char buff[32] = {0};
+  void* target_obj = NULL;
+  ret_t ret = RET_NOT_FOUND;
+  wbuffer_t* wb = &(ui->service.wb);
 
-  widget_on(widget, event, remote_ui_service_on_event_func, ui);
+  if (tk_str_eq(target, REMOTE_UI_TARGET_GLOBAL)) {
+    window_manager_t* wm = WINDOW_MANAGER(window_manager());
+    id = emitter_on(wm->global_emitter, event, remote_ui_service_on_event_func, ui);
+    target_obj = wm->global_emitter;
+  } else {
+    widget_t* widget = remote_ui_service_get_target_widget(ui, target);
+    id = widget_on(widget, event, remote_ui_service_on_event_func, ui);
+    target_obj = widget;
+  }
+  ret = id > 0 ? RET_OK : RET_FAIL;
 
-  return RET_OK;
+  wbuffer_rewind(wb);
+  if (target_obj != NULL) {
+    tk_snprintf(buff, sizeof(buff) - 1, "%p", target_obj);
+    wbuffer_write_string(wb, buff);
+  }
+
+  return tk_service_send_resp(&(ui->service), REMOTE_UI_ON_EVENT, MSG_DATA_TYPE_STRING, ret, wb);
 }
 
 static ret_t remote_ui_service_off_event(remote_ui_service_t* ui, const char* target,
                                          uint32_t event) {
-  widget_t* widget = remote_ui_service_get_target_widget(ui, target);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  char buff[32] = {0};
+  void* target_obj = NULL;
+  ret_t ret = RET_NOT_FOUND;
+  wbuffer_t* wb = &(ui->service.wb);
+  if (tk_str_eq(target, REMOTE_UI_TARGET_GLOBAL)) {
+    window_manager_t* wm = WINDOW_MANAGER(window_manager());
+    ret = emitter_off_by_func(wm->global_emitter, event, remote_ui_service_on_event_func, ui);
+    target_obj = wm->global_emitter;
+  } else {
+    widget_t* widget = remote_ui_service_get_target_widget(ui, target);
+    ret = widget_off_by_func(widget, event, remote_ui_service_on_event_func, ui);
+    target_obj = widget;
+  }
 
-  widget_off_by_func(widget, event, remote_ui_service_on_event_func, ui);
+  wbuffer_rewind(wb);
+  if (target_obj != NULL) {
+    tk_snprintf(buff, sizeof(buff) - 1, "%p", target_obj);
+    wbuffer_write_string(wb, buff);
+  }
 
-  return RET_OK;
+  return tk_service_send_resp(&(ui->service), REMOTE_UI_OFF_EVENT, MSG_DATA_TYPE_STRING, ret, wb);
 }
 
 static ret_t remote_ui_service_send_event(remote_ui_service_t* ui, const char* target,
@@ -405,7 +488,7 @@ static ret_t remote_ui_service_get_prop(remote_ui_service_t* ui, const char* tar
       return RET_OK;
     } else if (tk_str_eq(name, REMOTE_UI_PROP_LANGUAGE)) {
       locale_info_t* info = widget_get_locale_info(window_manager());
-      tk_snprintf(buff, sizeof(buff)-1, "%s_%s", info->language, info->country);
+      tk_snprintf(buff, sizeof(buff) - 1, "%s_%s", info->language, info->country);
       value_dup_str(value, buff);
       return RET_OK;
     } else {
@@ -421,7 +504,7 @@ static ret_t remote_ui_service_get_prop(remote_ui_service_t* ui, const char* tar
 
 static ret_t remote_ui_service_exec_script(remote_ui_service_t* ui, const char* script,
                                            value_t* v) {
-  ret_t ret = RET_FAIL;                                           
+  ret_t ret = RET_FAIL;
   tk_object_t* obj = object_default_create();
 
   if (obj != NULL) {
@@ -668,18 +751,12 @@ static ret_t remote_ui_service_dispatch_impl(remote_ui_service_t* ui, tk_msg_hea
     case REMOTE_UI_ON_EVENT: {
       const char* target = tk_object_get_prop_str(obj, REMOTE_UI_KEY_TARGET);
       uint32_t event_type = tk_object_get_prop_int(obj, REMOTE_UI_KEY_EVENT, 0);
-      resp.resp_code = remote_ui_service_on_event(ui, target, event_type);
-      resp.data_type = MSG_DATA_TYPE_NONE;
-      wbuffer_rewind(wb);
-      break;
+      return remote_ui_service_on_event(ui, target, event_type);
     }
     case REMOTE_UI_OFF_EVENT: {
       const char* target = tk_object_get_prop_str(obj, REMOTE_UI_KEY_TARGET);
       uint32_t event_type = tk_object_get_prop_int(obj, REMOTE_UI_KEY_EVENT, 0);
-      resp.resp_code = remote_ui_service_off_event(ui, target, event_type);
-      resp.data_type = MSG_DATA_TYPE_NONE;
-      wbuffer_rewind(wb);
-      break;
+      return remote_ui_service_off_event(ui, target, event_type);
     }
     case REMOTE_UI_SEND_EVENT: {
       event_t* e = NULL;
@@ -800,6 +877,7 @@ static ret_t remote_ui_service_dispatch(remote_ui_service_t* ui) {
 static ret_t remote_ui_service_destroy(remote_ui_service_t* ui) {
   return_value_if_fail(ui != NULL, RET_BAD_PARAMS);
 
+  memset(ui, 0x00, sizeof(*ui));
   TKMEM_FREE(ui);
 
   return RET_OK;

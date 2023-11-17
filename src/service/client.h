@@ -31,6 +31,8 @@ BEGIN_C_DECLS
 struct _tk_client_t;
 typedef struct _tk_client_t tk_client_t;
 
+typedef ret_t (*tk_client_on_notify_t)(tk_client_t* client, tk_msg_header_t* header, wbuffer_t* wb);
+
 /**
  * @class tk_client_t
  * 客户端接口。
@@ -46,6 +48,9 @@ struct _tk_client_t {
    * IO对象。
    */
   tk_iostream_t* io;
+
+  /*private*/
+  tk_client_on_notify_t on_notify;
 };
 
 /**
@@ -53,10 +58,11 @@ struct _tk_client_t {
  * 初始化(仅供子类使用)。
  * @param {tk_client_t*} client 服务对象。
  * @param {tk_iostream_t*} io io对象。
+ * @param {tk_client_on_notify_t} on_notify 通知回调。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tk_client_init(tk_client_t* client, tk_iostream_t* io);
+ret_t tk_client_init(tk_client_t* client, tk_iostream_t* io, tk_client_on_notify_t on_notify);
 
 /**
  * @method tk_client_deinit
@@ -89,6 +95,15 @@ ret_t tk_client_send_req(tk_client_t* client, uint32_t type, uint32_t data_type,
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t tk_client_read_resp(tk_client_t* client, tk_msg_header_t* header, wbuffer_t* wb);
+
+/**
+ * @method tk_client_read_notify
+ * 客户端读取通知。
+ * @param {tk_client_t*} client client对象。
+ * @param {uint32_t} timeout_ms 超时时间。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_client_read_notify(tk_client_t* client, uint32_t timeout_ms);
 
 /**
  * @method tk_client_request

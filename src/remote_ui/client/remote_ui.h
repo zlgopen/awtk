@@ -41,6 +41,8 @@ typedef struct _remote_ui_t {
   /*private*/
   ubjson_writer_t writer;
   tk_object_t* event_handlers;
+  darray_t pending_events;
+  darray_t dispatching_events;
 } remote_ui_t;
 
 /**
@@ -193,14 +195,14 @@ ret_t remote_ui_get_xml_source(remote_ui_t* ui, const char* target, const char* 
  *
  * @param {remote_ui_t*} ui remote ui客户端对象。
  * @param {const char*} target 目标。
- * @param {uint32_t} event 事件。
+ * @param {event_type_t} event 事件。
  * @param {event_func_t} func 事件处理函数。
  * @param {void*} ctx 上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t remote_ui_on_event(remote_ui_t* ui, const char* target, uint32_t event, event_func_t func,
-                         void* ctx);
+ret_t remote_ui_on_event(remote_ui_t* ui, const char* target, event_type_t type,
+                         event_func_t func, void* ctx);
 
 /**
  * @method remote_ui_off_event
@@ -208,11 +210,14 @@ ret_t remote_ui_on_event(remote_ui_t* ui, const char* target, uint32_t event, ev
  *
  * @param {remote_ui_t*} ui remote ui客户端对象。
  * @param {const char*} target 目标。
- * @param {uint32_t} event 事件。
+ * @param {event_type_t} event 事件。
+ * @param {event_func_t} func 事件处理函数。
+ * @param {void*} ctx 上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t remote_ui_off_event(remote_ui_t* ui, const char* target, uint32_t event);
+ret_t remote_ui_off_event(remote_ui_t* ui, const char* target, event_type_t event,
+                          event_func_t func, void* ctx);
 
 /**
  * @method remote_ui_send_event
@@ -273,8 +278,7 @@ ret_t remote_ui_open_window(remote_ui_t* ui, const char* name, const char* xml,
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t remote_ui_show_confirm(remote_ui_t* ui, const char* title,
-                            const char* content);
+ret_t remote_ui_show_confirm(remote_ui_t* ui, const char* title, const char* content);
 /**
  * @method remote_ui_show_warn
  * 显示警告对话框。
@@ -285,8 +289,7 @@ ret_t remote_ui_show_confirm(remote_ui_t* ui, const char* title,
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t remote_ui_show_warn(remote_ui_t* ui, const char* title,
-                            const char* content);
+ret_t remote_ui_show_warn(remote_ui_t* ui, const char* title, const char* content);
 
 /**
  * @method remote_ui_show_info
@@ -298,8 +301,7 @@ ret_t remote_ui_show_warn(remote_ui_t* ui, const char* title,
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t remote_ui_show_info(remote_ui_t* ui, const char* title,
-                            const char* content);
+ret_t remote_ui_show_info(remote_ui_t* ui, const char* title, const char* content);
 /**
  * @method remote_ui_show_toast
  * 显示信息对话框。
@@ -310,8 +312,7 @@ ret_t remote_ui_show_info(remote_ui_t* ui, const char* title,
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t remote_ui_show_toast(remote_ui_t* ui, uint32_t duration,
-                            const char* content);
+ret_t remote_ui_show_toast(remote_ui_t* ui, uint32_t duration, const char* content);
 /**
  * @method remote_ui_close_window
  * 关闭窗口。

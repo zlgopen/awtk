@@ -47,7 +47,7 @@ typedef enum _remote_ui_msg_code_t {
    * @const REMOTE_UI_CREATE_DIR
    * 创建目录请求。
    */
-  REMOTE_UI_CREATE_DIR,  
+  REMOTE_UI_CREATE_DIR,
   /**
    * @const REMOTE_UI_REMOVE_DIR
    * 删除目录请求。
@@ -139,12 +139,6 @@ typedef enum _remote_ui_msg_code_t {
    * 销毁控件请求。
   */
   REMOTE_UI_DESTROY_WIDGET,
-
-  /**
-   * @const REMOTE_UI_NOTIFY
-   * 事件通知。
-   */
-  REMOTE_UI_NOTIFY,
 } remote_ui_msg_code_t;
 
 /**
@@ -167,7 +161,7 @@ typedef struct _remote_ui_dev_info_t {
    * 操作系统。
    */
   char os[16];
-  
+
   /**
    * @property {char*} arch
    * CPU架构。
@@ -227,6 +221,7 @@ typedef enum _remote_ui_reboot_type_t {
 #define REMOTE_UI_KEY_TARGET "target"
 #define REMOTE_UI_KEY_NAME "name"
 #define REMOTE_UI_KEY_VALUE "value"
+#define REMOTE_UI_KEY_VALUE_TYPE "value_type"
 #define REMOTE_UI_KEY_EVENT "event"
 #define REMOTE_UI_KEY_XML "xml"
 #define REMOTE_UI_KEY_INIT "init"
@@ -257,7 +252,7 @@ typedef enum _remote_ui_reboot_type_t {
 
 #ifndef REMOTE_UI_URL
 #define REMOTE_UI_URL "tcp://localhost:2233"
-#endif/*REMOTE_UI_URL*/
+#endif /*REMOTE_UI_URL*/
 
 END_C_DECLS
 

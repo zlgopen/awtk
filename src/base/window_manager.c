@@ -291,6 +291,7 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
   }
 
   target = e->target;
+  e->target = wm->global_emitter;
   if (emitter_dispatch(wm->global_emitter, e) == RET_STOP) {
     return RET_STOP;
   }
