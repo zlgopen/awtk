@@ -2,6 +2,7 @@
 
 2023/11/18
   * 修复STM32上编译问题。
+  * remote\_ui\_service支持设置find\_target回调函数。
 
 2023/11/17
   * 修复widget\_on\_with\_tag参数错误时返回不正确的ID。

@@ -57,8 +57,14 @@ tk_service_t* remote_ui_service_create(tk_iostream_t* io, void* args) {
   ui->service.dispatch = (tk_service_dispatch_t)remote_ui_service_dispatch;
   ui->service.destroy = (tk_service_destroy_t)remote_ui_service_destroy;
 
-  if (service_args != NULL && service_args->auth != NULL) {
-    ui->auth = service_args->auth;
+  if (service_args != NULL) {
+    if (service_args->auth != NULL) {
+      ui->auth = service_args->auth;
+    }
+
+    if (service_args->find_target != NULL) {
+      ui->find_target = service_args->find_target;
+    }
   }
 
   return (tk_service_t*)ui;
@@ -293,7 +299,17 @@ static ret_t remote_ui_service_on_event(remote_ui_service_t* ui, const char* tar
   ret_t ret = RET_NOT_FOUND;
   wbuffer_t* wb = &(ui->service.wb);
 
-  if (tk_str_eq(target, REMOTE_UI_TARGET_GLOBAL)) {
+  if (ui->find_target != NULL) {
+    tk_object_t* obj = ui->find_target(&(ui->service), target);
+    if (obj != NULL) {
+      id = emitter_on(obj, event, remote_ui_service_on_event_func, ui);
+      target_obj = obj;
+    }
+  }
+
+  if (target_obj != NULL) {
+    /*do nothing*/
+  } else if (tk_str_eq(target, REMOTE_UI_TARGET_GLOBAL)) {
     window_manager_t* wm = WINDOW_MANAGER(window_manager());
     id = emitter_on(wm->global_emitter, event, remote_ui_service_on_event_func, ui);
     target_obj = wm->global_emitter;
@@ -319,7 +335,18 @@ static ret_t remote_ui_service_off_event(remote_ui_service_t* ui, const char* ta
   void* target_obj = NULL;
   ret_t ret = RET_NOT_FOUND;
   wbuffer_t* wb = &(ui->service.wb);
-  if (tk_str_eq(target, REMOTE_UI_TARGET_GLOBAL)) {
+
+  if (ui->find_target != NULL) {
+    tk_object_t* obj = ui->find_target(&(ui->service), target);
+    if (obj != NULL) {
+      ret = emitter_off_by_func(obj, event, remote_ui_service_on_event_func, ui);
+      target_obj = obj;
+    }
+  }
+
+  if (target_obj != NULL) {
+    /*do nothing*/
+  } else if (tk_str_eq(target, REMOTE_UI_TARGET_GLOBAL)) {
     window_manager_t* wm = WINDOW_MANAGER(window_manager());
     ret = emitter_off_by_func(wm->global_emitter, event, remote_ui_service_on_event_func, ui);
     target_obj = wm->global_emitter;
@@ -463,6 +490,13 @@ static ret_t remote_ui_service_back_to_home(remote_ui_service_t* ui) {
 
 static ret_t remote_ui_service_set_prop(remote_ui_service_t* ui, const char* target,
                                         const char* name, const value_t* value) {
+  if (ui->find_target != NULL) {
+    tk_object_t* obj = ui->find_target(&(ui->service), target);
+    if (obj != NULL) {
+      return tk_object_set_prop(obj, name, value);
+    }
+  }
+
   if (tk_str_eq(target, REMOTE_UI_TARGET_GLOBAL)) {
     if (tk_str_eq(name, REMOTE_UI_PROP_THEME)) {
       return widget_set_theme(window_manager(), value_str(value));
@@ -482,6 +516,13 @@ static ret_t remote_ui_service_set_prop(remote_ui_service_t* ui, const char* tar
 static ret_t remote_ui_service_get_prop(remote_ui_service_t* ui, const char* target,
                                         const char* name, value_t* value) {
   char buff[128] = {0};
+  if (ui->find_target != NULL) {
+    tk_object_t* obj = ui->find_target(&(ui->service), target);
+    if (obj != NULL) {
+      return tk_object_get_prop(obj, name, value);
+    }
+  }
+
   if (tk_str_eq(target, REMOTE_UI_TARGET_GLOBAL)) {
     if (tk_str_eq(name, REMOTE_UI_PROP_THEME)) {
       value_set_str(value, widget_get_theme_name(window_manager()));
