@@ -279,4 +279,10 @@
  * #define WITH_FAST_LCD_PORTRAIT 1
  */
 
+/**
+ * 是否启用 data_reader/data_writer。如果要使用ini/json/xml/ubjson等配置文件时，必须启用
+ *
+ * #define WITH_DATA_READER_WRITER 1
+ */
+
 #endif /*AWTK_CONFIG_H*/
