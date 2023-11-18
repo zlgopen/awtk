@@ -882,3 +882,30 @@ static ret_t remote_ui_service_destroy(remote_ui_service_t* ui) {
 
   return RET_OK;
 }
+
+static ret_t remote_ui_dispatch_timer(const timer_info_t* info) {
+  tk_istream_t* in = NULL;
+  tk_service_t* service = (tk_service_t*)(info->ctx);
+  return_value_if_fail(service != NULL && service->io != NULL, RET_REMOVE);
+
+  in = tk_iostream_get_istream(service->io);
+  return_value_if_fail(in != NULL, RET_REMOVE);
+
+  if (tk_istream_wait_for_data(in, 20) == RET_OK) {
+    tk_service_dispatch(service);
+  }
+
+  return RET_REPEAT;
+}
+
+tk_service_t* remote_ui_service_start_with_uart(tk_iostream_t* io, void* args) {
+  tk_service_t* service = NULL;
+  return_value_if_fail(io != NULL, RET_BAD_PARAMS);
+
+  service = remote_ui_service_create(io, args);
+  return_value_if_fail(service != NULL, NULL);
+
+  timer_add(remote_ui_dispatch_timer, service, 20);
+
+  return service;
+}

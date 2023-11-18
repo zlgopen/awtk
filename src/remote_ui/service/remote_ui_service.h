@@ -69,6 +69,18 @@ typedef struct _remote_ui_service_t {
  */
 tk_service_t* remote_ui_service_create(tk_iostream_t* io, void* args);
 
+/**
+ * @method remote_ui_service_start_with_uart
+ * 启动基于串口的Remote UI服务。
+ * > 在很多RTOS上，没有select，所以通过timer定时检查串口是否有数据。
+ * 
+ * @param {tk_iostream_t*} io IO流(由service释放)。
+ * @param {void*} args 参数。
+ *
+ * @return {tk_service_t*} 返回service对象。
+ */
+tk_service_t* remote_ui_service_start_with_uart(tk_iostream_t* io, void* args);
+
 END_C_DECLS
 
 #endif /*TK_REMOTE_UI_SERVICE_H*/
