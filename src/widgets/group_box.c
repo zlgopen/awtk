@@ -122,6 +122,7 @@ ret_t group_box_set_value(widget_t* widget, uint32_t value) {
 
 TK_DECL_VTABLE(group_box) = {.size = sizeof(group_box_t),
                              .type = WIDGET_TYPE_GROUP_BOX,
+                             .inputable = TRUE,
                              .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                              .create = group_box_create,
                              .get_prop = group_box_get_prop,
