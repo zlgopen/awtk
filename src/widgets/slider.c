@@ -536,9 +536,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
       bool_t inc = FALSE;
       bool_t dec = FALSE;
       key_event_t* evt = (key_event_t*)e;
-      keyboard_type_t keyboard_type = system_info()->keyboard_type;
-
-      if (slider->vertical || keyboard_type == KEYBOARD_3KEYS) {
+      if (slider->vertical) {
         if (evt->key == TK_KEY_UP) {
           inc = TRUE;
         } else if (evt->key == TK_KEY_DOWN) {
@@ -546,7 +544,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
         }
       }
 
-      if (!slider->vertical || keyboard_type == KEYBOARD_3KEYS) {
+      if (!slider->vertical) {
         if (evt->key == TK_KEY_RIGHT) {
           inc = TRUE;
         } else if (evt->key == TK_KEY_LEFT) {

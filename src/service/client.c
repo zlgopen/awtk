@@ -26,10 +26,11 @@
 #include "streams/inet/iostream_tcp.h"
 #include "streams/serial/iostream_serial.h"
 
-ret_t tk_client_init(tk_client_t* client, tk_iostream_t* io) {
-  return_value_if_fail(client != NULL, RET_BAD_PARAMS);
+ret_t tk_client_init(tk_client_t* client, tk_iostream_t* io, tk_client_on_notify_t on_notify) {
+  return_value_if_fail(client != NULL && io != NULL, RET_BAD_PARAMS);
 
   client->io = io;
+  client->on_notify = on_notify;
   wbuffer_init_extendable(&(client->wb));
   wbuffer_extend_capacity(&(client->wb), 1024);
 
@@ -162,7 +163,8 @@ static ret_t tk_client_read_resp_impl(tk_client_t* client, tk_msg_header_t* head
   return RET_OK;
 }
 
-ret_t tk_client_read_resp(tk_client_t* client, tk_msg_header_t* header, wbuffer_t* wb) {
+static ret_t tk_client_read_resp_ex(tk_client_t* client, bool_t read_notify,
+                                    tk_msg_header_t* header, wbuffer_t* wb) {
   int32_t retry_times = 0;
 
   while (retry_times < TK_MAX_RETRY_TIMES) {
@@ -176,11 +178,43 @@ ret_t tk_client_read_resp(tk_client_t* client, tk_msg_header_t* header, wbuffer_
       log_debug("crc error, retry times: %d", retry_times);
       continue;
     } else {
+      if (header->type == MSG_CODE_NOTIFY) {
+        if (client->on_notify != NULL) {
+          client->on_notify(client, header, wb);
+        }
+
+        if (read_notify) {
+          return ret;
+        } else {
+          continue;
+        }
+      }
       return ret;
     }
   }
 
   return RET_FAIL;
+}
+
+ret_t tk_client_read_notify(tk_client_t* client, uint32_t timeout_ms) {
+  ret_t ret = RET_OK;
+  wbuffer_t* wb = NULL;
+  tk_msg_header_t header;
+  return_value_if_fail(client != NULL && client->io != NULL, RET_BAD_PARAMS);
+
+  ret = tk_istream_wait_for_data(tk_iostream_get_istream(client->io), timeout_ms);
+  if (ret == RET_OK) {
+    wb = &(client->wb);
+    wbuffer_rewind(wb);
+    memset(&header, 0x00, sizeof(header));
+    ret = tk_client_read_resp_ex(client, TRUE, &header, wb);
+  }
+
+  return ret;
+}
+
+ret_t tk_client_read_resp(tk_client_t* client, tk_msg_header_t* header, wbuffer_t* wb) {
+  return tk_client_read_resp_ex(client, FALSE, header, wb);
 }
 
 ret_t tk_client_request(tk_client_t* client, uint32_t type, uint32_t data_type, wbuffer_t* wb) {
@@ -189,6 +223,9 @@ ret_t tk_client_request(tk_client_t* client, uint32_t type, uint32_t data_type, 
     tk_msg_header_t header;
     memset(&header, 0x00, sizeof(header));
     ret = tk_client_read_resp(client, &header, wb);
+    if (ret == RET_OK) {
+      ret = header.resp_code;
+    }
   }
 
   return ret;

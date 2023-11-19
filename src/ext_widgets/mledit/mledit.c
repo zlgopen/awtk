@@ -541,6 +541,9 @@ static ret_t mledit_start_update_caret(mledit_t* mledit) {
 static ret_t mledit_update_status(widget_t* widget) {
   mledit_t* mledit = MLEDIT(widget);
   return_value_if_fail(mledit != NULL && widget != NULL, RET_BAD_PARAMS);
+  if (mledit->is_activated) {
+    return RET_OK;
+  }
   if (widget->text.size == 0) {
     if (widget->focused) {
       widget_set_state(widget, WIDGET_STATE_EMPTY_FOCUS);
@@ -641,6 +644,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
   uint32_t type = e->type;
   mledit_t* mledit = MLEDIT(widget);
+  keyboard_type_t keyboard_type = system_info()->keyboard_type;
   return_value_if_fail(widget != NULL && mledit != NULL && e != NULL, RET_BAD_PARAMS);
 
   if (!widget->visible) {
@@ -725,6 +729,9 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
 #else
       bool_t is_control = evt->ctrl;
 #endif
+      if ((!mledit->is_activated || key == TK_KEY_RETURN) && (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS)) {
+        break;
+      }
       if (key == TK_KEY_ESCAPE || (key >= TK_KEY_F1 && key <= TK_KEY_F12)) {
         break;
       }
@@ -796,7 +803,9 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       key_event_t* evt = key_event_cast(e);
       ENSURE(evt);
       int32_t key = evt->key;
-
+      if (!mledit->is_activated && (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS)) {
+        break;
+      }
       if (key == TK_KEY_ESCAPE || (key >= TK_KEY_F1 && key <= TK_KEY_F12)) {
         break;
       }
@@ -814,6 +823,27 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       mledit_rollback_text(widget);
       break;
     }
+    case EVT_UNACTIVATED: {
+      mledit->is_activated = FALSE;
+      input_method_request(input_method(), NULL);
+      if (mledit->timer_id != TK_INVALID_ID) {
+        timer_remove(mledit->timer_id);
+        mledit->timer_id = TK_INVALID_ID;
+        text_edit_set_caret_visible(mledit->model, FALSE);
+      }
+      break;
+    }
+    case EVT_ACTIVATED: {
+      mledit->is_activated = TRUE;
+      mledit_start_update_caret(mledit);
+      if (widget->target == NULL) {
+        widget_add_idle(widget, mledit_focus_request_input_method);
+      }
+      mledit_update_status(widget);
+      widget_invalidate(widget, NULL);
+      mledit_start_update_caret(mledit);
+      break;
+    }
     case EVT_BLUR: {
       if (mledit->close_im_when_blured) {
         mledit->is_key_inputing = FALSE;
@@ -827,10 +857,14 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_FOCUS: {
-      mledit_start_update_caret(mledit);
+      keyboard_type_t keyboard_type = system_info()->keyboard_type;
+      if (keyboard_type != KEYBOARD_3KEYS && 
+          keyboard_type != KEYBOARD_5KEYS ) {
+        mledit_start_update_caret(mledit);
 
-      if (widget->target == NULL) {
-        widget_add_idle(widget, mledit_focus_request_input_method);
+        if (widget->target == NULL) {
+          widget_add_idle(widget, mledit_focus_request_input_method);
+        }
       }
       mledit_save_text(widget);
       break;

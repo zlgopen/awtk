@@ -148,6 +148,7 @@ typedef struct _mledit_t {
   uint8_t bottom_margin;
 
   bool_t is_key_inputing;
+  bool_t is_activated;
 
   text_edit_t* model;
   uint32_t timer_id;

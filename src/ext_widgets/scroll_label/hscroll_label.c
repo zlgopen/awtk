@@ -470,13 +470,21 @@ static ret_t hscroll_label_on_event(widget_t* widget, event_t* e) {
   return_value_if_fail(hscroll_label != NULL && widget != NULL, RET_BAD_PARAMS);
 
   switch (type) {
+#ifdef WITH_STATE_ACTIVATED
+    case EVT_ACTIVATED: {
+#else
     case EVT_FOCUS: {
+#endif
       if (!hscroll_label_is_running(widget)) {
         hscroll_label_start(widget);
       }
       break;
     }
+#ifdef WITH_STATE_ACTIVATED
+    case EVT_UNACTIVATED:
+#else
     case EVT_BLUR:
+#endif
       if (!hscroll_label->only_focus) {
         break;
       }

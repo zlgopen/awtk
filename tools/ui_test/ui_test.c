@@ -92,6 +92,27 @@ static event_t* key_event_init_with_symbol(key_event_t* e, uint32_t type, const 
   return_value_if_fail(kv != NULL, NULL);
   return key_event_init(e, type, NULL, kv->value);
 }
+
+event_type_t remote_ui_event_type_from_str(const char* name) {
+  if (tk_str_eq(name, "click")) {
+    return EVT_CLICK;
+  } else if (tk_str_eq(name, "value_changed")) {
+    return EVT_VALUE_CHANGED;
+  } else if (tk_str_eq(name, "key_down")) {
+    return EVT_KEY_DOWN;
+  } else if (tk_str_eq(name, "key_up")) {
+    return EVT_KEY_UP;
+  } else if (tk_str_eq(name, "destroy")) {
+    return (event_type_t)EVT_DESTROY;
+  } else {
+    return (event_type_t)EVT_NONE;
+  }
+}
+static ret_t widget_on_events(void* ctx, event_t* e) {
+  log_debug("widget_on_events %u\n", e->type);
+  return RET_OK;
+}
+
 static void run_script(conf_doc_t* doc, uint32_t times) {
   ret_t ret = RET_OK;
   remote_ui_t* ui = NULL;
@@ -300,6 +321,21 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
         }
       }
       check_return_code(ret, expected_ret, name, target, prop, value_str(&v));
+    } else if (tk_str_eq(name, "on_event")) {
+      const char* target = conf_node_get_child_value_str(iter, "target", NULL);
+      const char* event_name = conf_node_get_child_value_str(iter, "event", NULL);
+      event_type_t event_type = remote_ui_event_type_from_str(event_name);
+      ret = remote_ui_on_event(ui, target, event_type, widget_on_events, NULL);
+      check_return_code(ret, expected_ret, name, target, event_name, NULL);
+    } else if (tk_str_eq(name, "off_event")) {
+      const char* target = conf_node_get_child_value_str(iter, "target", NULL);
+      const char* event_name = conf_node_get_child_value_str(iter, "event", NULL);
+      event_type_t event_type = remote_ui_event_type_from_str(event_name);
+      ret = remote_ui_off_event(ui, target, event_type, widget_on_events, NULL);
+      check_return_code(ret, expected_ret, name, target, event_name, NULL);
+    } else if (tk_str_eq(name, "dispatch")) {
+      tk_client_read_notify(&(ui->client), 1000000);
+      remote_ui_dispatch(ui);
     } else if (tk_str_eq(name, "set_theme")) {
       const char* theme = conf_node_get_child_value_str(iter, "theme", NULL);
       ret = remote_ui_set_theme(ui, theme);

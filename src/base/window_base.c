@@ -650,18 +650,23 @@ static ret_t window_on_keydown_before_children(void* ctx, event_t* e) {
     } else {
       /*其它控件，回车键用于切换模式*/
       if (evt->key == TK_KEY_RETURN) {
+        ret_t ret = RET_OK;
         base->moving_focus_mode = !base->moving_focus_mode;
         log_debug("change moving_focus_mode:%d\n", base->moving_focus_mode);
 
 #ifdef WITH_STATE_ACTIVATED
         if (!base->moving_focus_mode) {
+          event_t e = event_init(EVT_ACTIVATED, focus);
           widget_set_state(focus, WIDGET_STATE_ACTIVATED);
+          ret = widget_dispatch(focus, &e);
         } else {
+          event_t e = event_init(EVT_UNACTIVATED, focus);
           widget_set_state(focus, WIDGET_STATE_FOCUSED);
+          ret = widget_dispatch(focus, &e);
         }
 #endif /*WITH_STATE_ACTIVATED*/
 
-        return RET_OK;
+        return ret;
       }
     }
 
@@ -671,7 +676,7 @@ static ret_t window_on_keydown_before_children(void* ctx, event_t* e) {
           case TK_KEY_LEFT:
           case TK_KEY_UP: {
             widget_focus_prev(focus);
-            break;
+            return RET_STOP;
           }
           case TK_KEY_RIGHT:
           case TK_KEY_DOWN: {

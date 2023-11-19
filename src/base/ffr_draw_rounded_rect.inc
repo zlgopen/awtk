@@ -9,8 +9,8 @@
 #include "pixel.h"
 #include "base/lcd.h"
 #include "base/bitmap.h"
-#include "../tkc/darray.h"
-#include "../tkc/types_def.h"
+#include "tkc/darray.h"
+#include "tkc/types_def.h"
 
 /*
 把二维坐标的象限通过45度分为上下区域，一共8个区域

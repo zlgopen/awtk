@@ -225,6 +225,7 @@ typedef struct _edit_t {
   bool_t is_text_error;
 
   bool_t is_text_deleted;
+  bool_t is_activated;
 
   uint32_t idle_id;
   uint32_t timer_id;

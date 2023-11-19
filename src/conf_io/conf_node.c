@@ -588,7 +588,7 @@ ret_t conf_node_set_value(conf_node_t* node, const value_t* v) {
       if (str == NULL) {
         node->value.wstr = NULL;
       } else {
-        node->value.wstr = wcsdup(str);
+        node->value.wstr = tk_wstrdup(str);
         return_value_if_fail(node->value.wstr != NULL, RET_OOM);
       }
       break;

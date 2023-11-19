@@ -1422,7 +1422,7 @@ ret_t widget_dispatch_recursive(widget_t* widget, event_t* e) {
 
 uint32_t widget_on_with_tag(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx,
                             uint32_t tag) {
-  return_value_if_fail(widget != NULL && on_event != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && on_event != NULL, TK_INVALID_ID);
   if (widget->emitter == NULL) {
     widget->emitter = emitter_create();
   }

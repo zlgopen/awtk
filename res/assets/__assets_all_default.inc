@@ -22,6 +22,7 @@
 #include "default/inc/styles/list_view_dynamic.data"
 #include "default/inc/styles/default.data"
 #include "default/inc/styles/system_bar_bottom.data"
+#include "default/inc/styles/5key_main.data"
 #include "default/inc/styles/big_font.data"
 #include "default/inc/styles/tab_top_compact.data"
 #include "default/inc/styles/dialog_info.data"
@@ -151,6 +152,8 @@
 #include "default/inc/ui/system_bar_bottom.data"
 #include "default/inc/ui/text_selector.data"
 #include "default/inc/ui/rich_text_view.data"
+#include "default/inc/ui/kb_default_5key.data"
+#include "default/inc/ui/5key_main.data"
 #include "default/inc/ui/big_font.data"
 #include "default/inc/ui/tab_top_compact.data"
 #include "default/inc/ui/dialog_highlight_dynamic.data"
@@ -923,6 +926,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, style_list_view_dynamic_default);
   assets_manager_add(am, style_default_default);
   assets_manager_add(am, style_system_bar_bottom_default);
+  assets_manager_add(am, style_5key_main_default);
   assets_manager_add(am, style_big_font_default);
   assets_manager_add(am, style_tab_top_compact_default);
   assets_manager_add(am, style_dialog_info_default);
@@ -1052,6 +1056,8 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_system_bar_bottom_default);
   assets_manager_add(am, ui_text_selector_default);
   assets_manager_add(am, ui_rich_text_view_default);
+  assets_manager_add(am, ui_kb_default_5key_default);
+  assets_manager_add(am, ui_5key_main_default);
   assets_manager_add(am, ui_big_font_default);
   assets_manager_add(am, ui_tab_top_compact_default);
   assets_manager_add(am, ui_dialog_highlight_dynamic_default);

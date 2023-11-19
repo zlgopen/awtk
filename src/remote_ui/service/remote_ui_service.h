@@ -31,6 +31,8 @@
 
 BEGIN_C_DECLS
 
+typedef tk_object_t* (*remote_ui_service_find_target_t)(tk_service_t* service,
+                                                          const char* target);
 /**
  * @class remote_ui_service_args_t
  * remote ui服务端启动参数。 
@@ -42,6 +44,13 @@ typedef struct _remote_ui_service_args_t {
    * 登陆认证函数。
    */
   tk_service_auth_t auth;
+
+  /**
+   * @property {remote_ui_service_find_target_t} find_target
+   * @annotation ["readable"]
+   * 查找target的函数。
+   */
+  remote_ui_service_find_target_t find_target;
 } remote_ui_service_args_t;
 
 /**
@@ -55,7 +64,9 @@ typedef struct _remote_ui_service_t {
   bool_t is_login;
   ubjson_writer_t writer;
   tk_object_t* event_handlers;
-  tk_service_auth_t auth; 
+  
+  tk_service_auth_t auth;
+  remote_ui_service_find_target_t find_target;
 } remote_ui_service_t;
 
 /**
@@ -68,6 +79,18 @@ typedef struct _remote_ui_service_t {
  * @return {tk_service_t*} 返回service对象。
  */
 tk_service_t* remote_ui_service_create(tk_iostream_t* io, void* args);
+
+/**
+ * @method remote_ui_service_start_with_uart
+ * 启动基于串口的Remote UI服务。
+ * > 在很多RTOS上，没有select，所以通过timer定时检查串口是否有数据。
+ * 
+ * @param {tk_iostream_t*} io IO流(由service释放)。
+ * @param {void*} args 参数。
+ *
+ * @return {tk_service_t*} 返回service对象。
+ */
+tk_service_t* remote_ui_service_start_with_uart(tk_iostream_t* io, void* args);
 
 END_C_DECLS
 

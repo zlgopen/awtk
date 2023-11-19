@@ -1,6 +1,24 @@
 # 最新动态
+
+2023/11/18
+  * 修复STM32上编译问题。
+  * remote\_ui\_service支持设置find\_target回调函数。
+
+2023/11/17
+  * 修复widget\_on\_with\_tag参数错误时返回不正确的ID。
+  * 完善remote\_ui支持事件注册。
+  * 修复Windows下打开串口失败tk\_iostream\_serial\_create崩溃的问题。
+  * 增加函数action\_darray\_thread\_set\_idle\_interval((感谢林福提供补丁)
+
+2023/11/16
+  * 修复path\_basename\_ex 可能非法访问内存的问题(感谢俊圣提供补丁)
+  * 修复include路径问题(感谢文静提供补丁)
+  * 完善处理3keys事件处理(感谢颖健提供补丁)
+
 2023/11/15
   * 修复layout的auto\_adjust\_size不触发修改事件的问题以及增加判断auto\_adjust\_size(感谢智明提供补丁)
+  * 修复3key和5key不正常的逻辑以及增加一个5key的例子(感谢智明提供补丁)
+  * 修复在高亮对话框显示不正常的问题(感谢智明提供补丁)
 
 2023/11/14
   * 导出darray\_bsearch\_index\_ex接口(感谢雨欣提供补丁)

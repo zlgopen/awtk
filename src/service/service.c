@@ -66,6 +66,7 @@ static ret_t tk_service_on_data(event_source_t* source) {
   }
 }
 
+#ifdef WITH_SOCKET
 static ret_t tk_service_tcp_on_client(event_source_t* source) {
   event_source_fd_t* event_source_fd = (event_source_fd_t*)source;
   tk_service_create_t create = (tk_service_create_t)(event_source_fd->ctx);
@@ -136,6 +137,8 @@ static ret_t tk_service_start_tcp(event_source_manager_t* esm, const char* url,
   return RET_OK;
 }
 
+#endif/*WITH_SOCKET*/
+
 static ret_t tk_service_start_serial(event_source_manager_t* esm, const char* url,
                                      tk_service_create_t create, void* args) {
   tk_iostream_t* io = NULL;
@@ -162,10 +165,12 @@ static ret_t tk_service_start_serial(event_source_manager_t* esm, const char* ur
 ret_t tk_service_start(event_source_manager_t* esm, const char* url, tk_service_create_t create,
                        void* args) {
   return_value_if_fail(esm != NULL && create != NULL, RET_BAD_PARAMS);
-
+#ifdef WITH_SOCKET
   if (tk_str_start_with(url, STR_SCHEMA_TCP)) {
     return tk_service_start_tcp(esm, url, create, args);
-  } else if (tk_str_start_with(url, STR_SCHEMA_SERIAL)) {
+  } else 
+#endif/*WITH_SOCKET*/
+  if (tk_str_start_with(url, STR_SCHEMA_SERIAL)) {
     return tk_service_start_serial(esm, url, create, args);
   } else {
     log_debug("not supported: %s\n", url);

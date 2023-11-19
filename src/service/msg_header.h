@@ -67,6 +67,11 @@ typedef enum _tk_msg_code_t {
   */
   MSG_NONE = 0,
   /**
+   * @const MSG_CODE_NOTIFY
+   * 服务端主动通知。
+   */
+  MSG_CODE_NOTIFY,
+  /**
    * @const MSG_CODE_CONFIRM
    * 数据包确认。
    */

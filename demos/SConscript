@@ -22,6 +22,7 @@ env.Program(os.path.join(BIN_DIR, 'demo_animator'), ['demo_animator_app.c']);
 env.Program(os.path.join(BIN_DIR, 'demo_window_animator'), ['demo_window_animator.c']);
 env.Program(os.path.join(BIN_DIR, 'demo_scroll_view'), ['demo_scroll_view.c']);
 
+env.Program(os.path.join(BIN_DIR, 'demo_5key'), ['demo_5key_app.c']);
 env.Program(os.path.join(BIN_DIR, 'demo_desktop'), ['demo_desktop.c']);
 env.Program(os.path.join(BIN_DIR, 'demo_file_browser'), ['demo_file_browser.c']);
 env.Program(os.path.join(BIN_DIR, 'demo_canvas_offline'), ['demo_canvas_offline.c']);

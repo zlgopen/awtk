@@ -27,16 +27,19 @@
 #define IS_PATH_SEP(c) ((c) == '/' || (c) == '\\')
 
 ret_t path_basename_ex(const char* path, bool_t remove_ext_name, char* result, int32_t size) {
-  const char* p = NULL;
+  const char* p = NULL, *p2 = NULL;
   int32_t real_size = 0;
   return_value_if_fail(path != NULL && result != NULL, RET_BAD_PARAMS);
 
   memset(result, 0x00, size);
-  p = path + tk_strlen(path) - 1;
-  while (!IS_PATH_SEP(*p) && p >= path) {
-    p--;
-  };
-  p++;
+  p = strrchr(path, '/');
+  p2 = strrchr(path, '\\');
+  p = tk_max(p, p2);
+  if (p == NULL) {
+    p = path;
+  } else {
+    p++;
+  }
 
   real_size = strlen(p);
   return_value_if_fail(real_size < size, RET_BAD_PARAMS);
