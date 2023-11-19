@@ -1,0 +1,243 @@
+<keyboard theme="keyboard" x="0" y="bottom" w="100%" h="40%" grab_keys="true" >
+  <pages x="0" y="bottom" w="100%" h="-28" active="4">
+    <view name="upper" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=1,s=2,m=2)">
+      <group_box children_layout="default(r=1,c=10,s=2,m=2)">
+        <button name="Q" enable_preview="true" text="Q" focusable="true"/>
+        <button name="W" enable_preview="true" text="W" focusable="true"/>
+        <button name="E" enable_preview="true" text="E" focusable="true"/>
+        <button name="R" enable_preview="true" text="R" focusable="true"/>
+        <button name="T" enable_preview="true" text="T" focusable="true"/>
+        <button name="Y" enable_preview="true" text="Y" focusable="true"/>
+        <button name="U" enable_preview="true" text="U" focusable="true"/>
+        <button name="I" enable_preview="true" text="I" focusable="true"/>
+        <button name="O" enable_preview="true" text="O" focusable="true"/>
+        <button name="P" enable_preview="true" text="P" focusable="true"/>
+      </group_box>
+      <group_box children_layout="default(r=1,c=9,s=2,xm=10,ym=2)">
+        <button name="A" enable_preview="true" text="A" focusable="true"/>
+        <button name="S" enable_preview="true" text="S" focusable="true"/>
+        <button name="D" enable_preview="true" text="D" focusable="true"/>
+        <button name="F" enable_preview="true" text="F" focusable="true"/>
+        <button name="G" enable_preview="true" text="G" focusable="true"/>
+        <button name="H" enable_preview="true" text="H" focusable="true"/>
+        <button name="J" enable_preview="true" text="J" focusable="true"/>
+        <button name="K" enable_preview="true" text="K" focusable="true"/>
+        <button name="L" enable_preview="true" text="L" focusable="true"/>
+      </group_box>
+      <group_box children_layout="default(r=1,c=9,s=2,m=2)">
+        <button name="page:lower" focusable="true"><image draw_type="icon" image="shifton" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="Z" enable_preview="true" text="Z" focusable="true"/>
+        <button name="X" enable_preview="true" text="X" focusable="true"/>
+        <button name="C" enable_preview="true" text="C" focusable="true"/>
+        <button name="V" enable_preview="true" text="V" focusable="true"/>
+        <button name="B" enable_preview="true" text="B" focusable="true"/>
+        <button name="N" enable_preview="true" text="N" focusable="true"/>
+        <button name="M" enable_preview="true" text="M" focusable="true"/>
+        <button name="key:backspace" style="highlight" focusable="true"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+      </group_box>
+      <group_box children_layout="default(r=1,c=0,s=2,m=2)">
+        <button name="page:symnum" style="highlight" w="15%" enable_preview="true" text="123" focusable="true"/>
+        <button name="page:chinese" style="highlight" w="10%" focusable="true"><image draw_type="icon" image="zh" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="space" w="55%" enable_preview="true" text="Space" focusable="true"/>
+        <group_box children_layout="default(r=2,c=2)" w="20%">
+          <button name="key:UP" enable_preview="true" text="U" focusable="true"/>
+          <button name="key:DOWN" enable_preview="true" text="D" focusable="true"/>
+          <button name="key:LEFT" enable_preview="true" text="L" focusable="true"/>
+          <button name="key:RIGHT" enable_preview="true" text="R" focusable="true"/>
+        </group_box>
+      </group_box>
+    </view>
+    <view name="lower" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=1,s=2,m=2)">
+      <group_box children_layout="default(r=1,c=10,s=2,m=2)">
+        <button name="q" enable_preview="true" text="q" focusable="true"/>
+        <button name="w" enable_preview="true" text="w" focusable="true"/>
+        <button name="e" enable_preview="true" text="e" focusable="true"/>
+        <button name="r" enable_preview="true" text="r" focusable="true"/>
+        <button name="t" enable_preview="true" text="t" focusable="true"/>
+        <button name="y" enable_preview="true" text="y" focusable="true"/>
+        <button name="u" enable_preview="true" text="u" focusable="true"/>
+        <button name="i" enable_preview="true" text="i" focusable="true"/>
+        <button name="o" enable_preview="true" text="o" focusable="true"/>
+        <button name="p" enable_preview="true" text="p" focusable="true"/>
+      </group_box>
+      <group_box children_layout="default(r=1,c=9,s=2,xm=10,ym=2)">
+        <button name="a" enable_preview="true" text="a" focusable="true"/>
+        <button name="s" enable_preview="true" text="s" focusable="true"/>
+        <button name="d" enable_preview="true" text="d" focusable="true"/>
+        <button name="f" enable_preview="true" text="f" focusable="true"/>
+        <button name="g" enable_preview="true" text="g" focusable="true"/>
+        <button name="h" enable_preview="true" text="h" focusable="true"/>
+        <button name="j" enable_preview="true" text="j" focusable="true"/>
+        <button name="k" enable_preview="true" text="k" focusable="true"/>
+        <button name="l" enable_preview="true" text="l" focusable="true"/>
+      </group_box>
+      <group_box children_layout="default(r=1,c=9,s=2,m=2)">
+        <button name="page:upper" style="highlight" focusable="true"><image draw_type="icon" image="shift" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="z" enable_preview="true" text="z" focusable="true"/>
+        <button name="x" enable_preview="true" text="x" focusable="true"/>
+        <button name="c" enable_preview="true" text="c" focusable="true"/>
+        <button name="v" enable_preview="true" text="v" focusable="true"/>
+        <button name="b" enable_preview="true" text="b" focusable="true"/>
+        <button name="n" enable_preview="true" text="n" focusable="true"/>
+        <button name="m" enable_preview="true" text="m" focusable="true"/>
+        <button name="key:backspace" style="highlight" focusable="true"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+      </group_box>
+      <group_box children_layout="default(r=1,c=0,s=2,m=2)">
+        <button name="page:symnum" style="highlight" w="15%" enable_preview="true" text="123" focusable="true"/>
+        <button name="page:chinese" style="highlight" w="10%" focusable="true"><image draw_type="icon" image="zh" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="space" w="55%" enable_preview="true" text="Space" focusable="true"/>
+        <group_box children_layout="default(r=2,c=2)" w="20%">
+          <button name="key:UP" enable_preview="true" text="U" focusable="true"/>
+          <button name="key:DOWN" enable_preview="true" text="D" focusable="true"/>
+          <button name="key:LEFT" enable_preview="true" text="L" focusable="true"/>
+          <button name="key:RIGHT" enable_preview="true" text="R" focusable="true"/>
+        </group_box>
+      </group_box>
+    </view>
+    <view name="symnum" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=1,s=2,m=2)">
+      <group_box children_layout="default(r=1,c=10,s=2,m=2)">
+        <button name="1" enable_preview="true" text="1" focusable="true"/>
+        <button name="2" enable_preview="true" text="2" focusable="true"/>
+        <button name="3" enable_preview="true" text="3" focusable="true"/>
+        <button name="4" enable_preview="true" text="4" focusable="true"/>
+        <button name="5" enable_preview="true" text="5" focusable="true"/>
+        <button name="6" enable_preview="true" text="6" focusable="true"/>
+        <button name="7" enable_preview="true" text="7" focusable="true"/>
+        <button name="8" enable_preview="true" text="8" focusable="true"/>
+        <button name="9" enable_preview="true" text="9" focusable="true"/>
+        <button name="0" enable_preview="true" text="0" focusable="true"/>
+      </group_box>
+      <group_box children_layout="default(r=1,c=10,s=2,xm=10,ym=2)">
+        <button name="-" enable_preview="true" text="-" focusable="true"/>
+        <button name="/" enable_preview="true" text="/" focusable="true"/>
+        <button name=":" enable_preview="true" text=":" focusable="true"/>
+        <button name=";" enable_preview="true" text=";" focusable="true"/>
+        <button name="(" enable_preview="true" text="(" focusable="true"/>
+        <button name=")" enable_preview="true" text=")" focusable="true"/>
+        <button name="$" enable_preview="true" text="$" focusable="true"/>
+        <button name="@" enable_preview="true" text="@" focusable="true"/>
+        <button name="'" enable_preview="true" text="'" focusable="true"/>
+        <button name="&quot;" enable_preview="true" text="&quot;" focusable="true"/>
+      </group_box>
+      <group_box children_layout="default(r=1,c=10,s=2,m=2)">
+        <button name="page:symbol" style="highlight" enable_preview="true" text="#+=" focusable="true"/>
+        <button name="." enable_preview="true" text="." focusable="true"/>
+        <button name="," enable_preview="true" text="," focusable="true"/>
+        <button name="\" enable_preview="true" text="\" focusable="true"/>
+        <button name="?" enable_preview="true" text="?" focusable="true"/>
+        <button name="!" enable_preview="true" text="!" focusable="true"/>
+        <button name="<" enable_preview="true" text="<" focusable="true"/>
+        <button name=">" enable_preview="true" text=">" focusable="true"/>
+        <button name="#" enable_preview="true" text="#" focusable="true"/>
+        <button name="key:backspace" style="highlight" focusable="true"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+      </group_box>
+      <group_box children_layout="default(r=1,c=0,s=2,m=2)">
+        <button name="page:upper" style="highlight" w="15%" enable_preview="true" text="ABC" focusable="true"/>
+        <button name="page:chinese" style="highlight" w="10%" focusable="true"><image draw_type="icon" image="zh" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="space" w="55%" enable_preview="true" text="Space" focusable="true"/>
+        <group_box children_layout="default(r=2,c=2)" w="20%">
+          <button name="key:UP" enable_preview="true" text="U" focusable="true"/>
+          <button name="key:DOWN" enable_preview="true" text="D" focusable="true"/>
+          <button name="key:LEFT" enable_preview="true" text="L" focusable="true"/>
+          <button name="key:RIGHT" enable_preview="true" text="R" focusable="true"/>
+        </group_box>
+      </group_box>
+    </view>
+    <view name="symbol" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=1,s=2,m=2)">
+      <group_box children_layout="default(r=1,c=10,s=2,m=2)">
+        <button name="[" enable_preview="true" text="[" focusable="true"/>
+        <button name="]" enable_preview="true" text="]" focusable="true"/>
+        <button name="{" enable_preview="true" text="{" focusable="true"/>
+        <button name="}" enable_preview="true" text="}" focusable="true"/>
+        <button name="#" enable_preview="true" text="#" focusable="true"/>
+        <button name="%" enable_preview="true" text="%" focusable="true"/>
+        <button name="^" enable_preview="true" text="^" focusable="true"/>
+        <button name="*" enable_preview="true" text="*" focusable="true"/>
+        <button name="+" enable_preview="true" text="+" focusable="true"/>
+        <button name="=" enable_preview="true" text="=" focusable="true"/>
+      </group_box>
+      <group_box children_layout="default(r=1,c=9,s=2,xm=10,ym=2)">
+        <button name="_" enable_preview="true" text="_" focusable="true"/>
+        <button name="\" enable_preview="true" text="\" focusable="true"/>
+        <button name="|" enable_preview="true" text="|" focusable="true"/>
+        <button name="~" enable_preview="true" text="~" focusable="true"/>
+        <button name="<" enable_preview="true" text="<" focusable="true"/>
+        <button name=">" enable_preview="true" text=">" focusable="true"/>
+        <button name="$" enable_preview="true" text="$" focusable="true"/>
+        <button name="@" enable_preview="true" text="@" focusable="true"/>
+        <button name="`" enable_preview="true" text="`" focusable="true"/>
+      </group_box>
+      <group_box children_layout="default(r=1,c=8,s=2,m=2)">
+        <button name="page:symnum" style="highlight" enable_preview="true" text="123" focusable="true"/>
+        <button name="." enable_preview="true" text="." focusable="true"/>
+        <button name="," enable_preview="true" text="," focusable="true"/>
+        <button name="?" enable_preview="true" text="?" focusable="true"/>
+        <button name="!" enable_preview="true" text="!" focusable="true"/>
+        <button name="'" enable_preview="true" text="'" focusable="true"/>
+        <button name="&quot;" enable_preview="true" text="&quot;" focusable="true"/>
+        <button name="key:backspace" style="highlight" focusable="true"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+      </group_box>
+      <group_box children_layout="default(r=1,c=0,s=2,m=2)">
+        <button name="page:upper" style="highlight" w="15%" enable_preview="true" text="ABC" focusable="true"/>
+        <button name="page:chinese" style="highlight" w="10%" focusable="true"><image draw_type="icon" image="zh" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="space" w="55%" enable_preview="true" text="Space" focusable="true"/>
+        <group_box children_layout="default(r=2,c=2)" w="20%">
+          <button name="key:UP" enable_preview="true" text="U" focusable="true"/>
+          <button name="key:DOWN" enable_preview="true" text="D" focusable="true"/>
+          <button name="key:LEFT" enable_preview="true" text="L" focusable="true"/>
+          <button name="key:RIGHT" enable_preview="true" text="R" focusable="true"/>
+        </group_box>
+      </group_box>
+    </view>
+    <view name="chinese" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=1,s=2,m=2)">
+      <group_box children_layout="default(r=1,c=10,s=2,m=2)">
+        <button name="key:q" enable_preview="true" text="q" focusable="true" focused="true" />
+        <button name="key:w" enable_preview="true" text="w" focusable="true"/>
+        <button name="key:e" enable_preview="true" text="e" focusable="true"/>
+        <button name="key:r" enable_preview="true" text="r" focusable="true"/>
+        <button name="key:t" enable_preview="true" text="t" focusable="true"/>
+        <button name="key:y" enable_preview="true" text="y" focusable="true"/>
+        <button name="key:u" enable_preview="true" text="u" focusable="true"/>
+        <button name="key:i" enable_preview="true" text="i" focusable="true"/>
+        <button name="key:o" enable_preview="true" text="o" focusable="true"/>
+        <button name="key:p" enable_preview="true" text="p" focusable="true"/>
+      </group_box>
+      <group_box children_layout="default(r=1,c=9,s=2,xm=10,ym=2)">
+        <button name="key:a" enable_preview="true" text="a" focusable="true"/>
+        <button name="key:s" enable_preview="true" text="s" focusable="true"/>
+        <button name="key:d" enable_preview="true" text="d" focusable="true"/>
+        <button name="key:f" enable_preview="true" text="f" focusable="true"/>
+        <button name="key:g" enable_preview="true" text="g" focusable="true"/>
+        <button name="key:h" enable_preview="true" text="h" focusable="true"/>
+        <button name="key:j" enable_preview="true" text="j" focusable="true"/>
+        <button name="key:k" enable_preview="true" text="k" focusable="true"/>
+        <button name="key:l" enable_preview="true" text="l" focusable="true"/>
+      </group_box>
+      <group_box children_layout="default(r=1,c=9,s=2,m=2)">
+        <button name="page:upper" style="highlight" focusable="true"><image draw_type="icon" image="shift" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="key:z" enable_preview="true" text="z" focusable="true"/>
+        <button name="key:x" enable_preview="true" text="x" focusable="true"/>
+        <button name="key:c" enable_preview="true" text="c" focusable="true"/>
+        <button name="key:v" enable_preview="true" text="v" focusable="true"/>
+        <button name="key:b" enable_preview="true" text="b" focusable="true"/>
+        <button name="key:n" enable_preview="true" text="n" focusable="true"/>
+        <button name="key:m" enable_preview="true" text="m" focusable="true"/>
+        <button name="key:backspace" style="highlight" focusable="true"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+      </group_box>
+      <group_box children_layout="default(r=1,c=0,s=2,m=2)">
+        <button name="page:symnum" style="highlight" w="15%" enable_preview="true" text="123" focusable="true"/>
+        <button name="page:lower" style="highlight" w="10%" focusable="true"><image draw_type="icon" image="en" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="space" w="55%" enable_preview="true" text="Space" focusable="true"/>
+        
+        <group_box children_layout="default(r=2,c=2)" w="20%">
+          <button name="key:UP" enable_preview="true" text="U" focusable="true"/>
+          <button name="key:DOWN" enable_preview="true" text="D" focusable="true"/>
+          <button name="key:LEFT" enable_preview="true" text="L" focusable="true"/>
+          <button name="key:RIGHT" enable_preview="true" text="R" focusable="true"/>
+        </group_box>
+      </group_box>
+    </view>
+  </pages>
+  <candidates x="0" y="0" w="100%" h="30" enable_preview="true"/>
+  <button name="close" style="close" self_layout="default(x=r:2, y=2, w=20, h=20)" enable_preview="true" text="x" focusable="true"/>
+</keyboard>
