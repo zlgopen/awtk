@@ -67,6 +67,7 @@ typedef struct _remote_ui_service_t {
   
   tk_service_auth_t auth;
   remote_ui_service_find_target_t find_target;
+  bool_t dispatching;
 } remote_ui_service_t;
 
 /**

@@ -2,6 +2,7 @@
 
 2023/11/19
   * 完善group box，支持value属性，方便MVVM绑定radio button。
+  * 完善remote\_ui事件处理。
 
 2023/11/18
   * 修复STM32上编译问题。

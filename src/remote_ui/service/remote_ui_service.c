@@ -249,6 +249,11 @@ static ret_t remote_ui_service_on_event_func(void* ctx, event_t* e) {
   return_value_if_fail(ui->service.destroy == (tk_service_destroy_t)remote_ui_service_destroy,
                        RET_REMOVE);
 
+  if (ui->dispatching) {
+    log_debug("ignore event %d because busy\n", e->type);
+    return RET_OK;
+  }
+
   wb = &(ui->service.wb);
   writer = remote_ui_service_get_writer(ui);
   log_debug("remote_ui_service_on_event_func type=%d\n", e->type);
@@ -263,9 +268,14 @@ static ret_t remote_ui_service_on_event_func(void* ctx, event_t* e) {
       char value[64] = {0};
       value_change_event_t* event = value_change_event_cast(e);
       value_t* v = &(event->new_value);
-      ubjson_writer_write_kv_int(writer, REMOTE_UI_KEY_VALUE_TYPE, v->type);
-      ubjson_writer_write_kv_str(writer, REMOTE_UI_KEY_VALUE,
-                                 value_str_ex(v, value, sizeof(value)));
+      ubjson_writer_write_kv_value(writer, REMOTE_UI_KEY_VALUE, v);
+      break;
+    }
+    case EVT_PROP_CHANGED: {
+      prop_change_event_t* event = prop_change_event_cast(e);
+      value_t* v = (value_t*)(event->value);
+      ubjson_writer_write_kv_str(writer, REMOTE_UI_KEY_NAME, event->name);
+      ubjson_writer_write_kv_value(writer, REMOTE_UI_KEY_VALUE, v);
       break;
     }
     case EVT_KEY_DOWN:
@@ -302,7 +312,7 @@ static ret_t remote_ui_service_on_event(remote_ui_service_t* ui, const char* tar
   if (ui->find_target != NULL) {
     tk_object_t* obj = ui->find_target(&(ui->service), target);
     if (obj != NULL) {
-      id = emitter_on(obj, event, remote_ui_service_on_event_func, ui);
+      id = emitter_on(EMITTER(obj), event, remote_ui_service_on_event_func, ui);
       target_obj = obj;
     }
   }
@@ -339,7 +349,7 @@ static ret_t remote_ui_service_off_event(remote_ui_service_t* ui, const char* ta
   if (ui->find_target != NULL) {
     tk_object_t* obj = ui->find_target(&(ui->service), target);
     if (obj != NULL) {
-      ret = emitter_off_by_func(obj, event, remote_ui_service_on_event_func, ui);
+      ret = emitter_off_by_func(EMITTER(obj), event, remote_ui_service_on_event_func, ui);
       target_obj = obj;
     }
   }
@@ -597,6 +607,18 @@ static ret_t remote_ui_dev_info_write(ubjson_writer_t* writer, remote_ui_dev_inf
   return RET_OK;
 }
 
+static ret_t remote_ui_service_pack_value(remote_ui_service_t* ui, value_t* v) {
+  ubjson_writer_t* writer = NULL;
+  return_value_if_fail(ui != NULL && v != NULL, RET_BAD_PARAMS);
+
+  writer = remote_ui_service_get_writer(ui);
+  ubjson_writer_write_object_begin(writer);
+  ubjson_writer_write_kv_value(writer, REMOTE_UI_KEY_VALUE, v);
+  ubjson_writer_write_object_end(writer);
+
+  return RET_OK;
+}
+
 static ret_t remote_ui_service_dispatch_impl(remote_ui_service_t* ui, tk_msg_header_t* req,
                                              wbuffer_t* wb) {
   value_t v;
@@ -765,17 +787,14 @@ static ret_t remote_ui_service_dispatch_impl(remote_ui_service_t* ui, tk_msg_hea
       break;
     }
     case REMOTE_UI_GET_PROP: {
-      const char* str = NULL;
       const char* target = tk_object_get_prop_str(obj, REMOTE_UI_KEY_TARGET);
       const char* name = tk_object_get_prop_str(obj, REMOTE_UI_KEY_NAME);
 
       value_set_int(&v, 0);
       resp.resp_code = remote_ui_service_get_prop(ui, target, name, &v);
-      resp.data_type = MSG_DATA_TYPE_STRING;
-      str = value_str_ex(&v, buff, sizeof(buff));
+      resp.data_type = MSG_DATA_TYPE_UBJSON;
       wbuffer_rewind(wb);
-      wbuffer_write_string(wb, str);
-      value_reset(&v);
+      remote_ui_service_pack_value(ui, &v);
       break;
     }
     case REMOTE_UI_EXEC_FSCRIPT: {
@@ -912,7 +931,11 @@ static ret_t remote_ui_service_dispatch(remote_ui_service_t* ui) {
   ret = tk_service_read_req(&(ui->service), &header, &(ui->service.wb));
   return_value_if_fail(ret == RET_OK, ret);
 
-  return remote_ui_service_dispatch_impl(ui, &header, &(ui->service.wb));
+  ui->dispatching = TRUE;
+  ret = remote_ui_service_dispatch_impl(ui, &header, &(ui->service.wb));
+  ui->dispatching = FALSE;
+
+  return ret;
 }
 
 static ret_t remote_ui_service_destroy(remote_ui_service_t* ui) {
@@ -941,7 +964,7 @@ static ret_t remote_ui_dispatch_timer(const timer_info_t* info) {
 
 tk_service_t* remote_ui_service_start_with_uart(tk_iostream_t* io, void* args) {
   tk_service_t* service = NULL;
-  return_value_if_fail(io != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(io != NULL, NULL);
 
   service = remote_ui_service_create(io, args);
   return_value_if_fail(service != NULL, NULL);
