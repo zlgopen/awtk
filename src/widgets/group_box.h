@@ -60,7 +60,23 @@ BEGIN_C_DECLS
  */
 typedef struct _group_box_t {
   widget_t widget;
+  /**
+   * @property {uint32_t} value
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 选中的单选按钮的索引。
+  */
+  uint32_t value;
 } group_box_t;
+
+/**
+ * @event {value_change_event_t} EVT_VALUE_WILL_CHANGE
+ * 值(勾选状态)即将改变事件。
+ */
+
+/**
+ * @event {value_change_event_t} EVT_VALUE_CHANGED
+ * 值(勾选状态)改变事件。
+ */
 
 /**
  * @method group_box_create
@@ -75,6 +91,17 @@ typedef struct _group_box_t {
  * @return {widget_t*} 对象。
  */
 widget_t* group_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+
+/**
+ * @method group_box_set_value
+ * 设置选中的单选按钮的索引。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget group_box对象。
+ * @param {uint32_t} value 选中的单选按钮的索引。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t group_box_set_value(widget_t* widget, uint32_t value);
 
 /**
  * @method group_box_cast
