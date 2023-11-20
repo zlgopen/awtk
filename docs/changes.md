@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/11/20
+  * 完善部分函数的参数检查。
+
 2023/11/19
   * 完善group box，支持value属性，方便MVVM绑定radio button。
   * 完善remote\_ui事件处理。

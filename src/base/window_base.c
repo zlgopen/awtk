@@ -60,8 +60,9 @@ ret_t window_base_on_paint_end(widget_t* widget, canvas_t* c) {
 
 static ret_t window_base_unload_default_theme_obj_impl(widget_t* widget) {
   window_base_t* window_base = WINDOW_BASE(widget);
-  ENSURE(window_base);
   assets_manager_t* am = widget_get_assets_manager(widget);
+  return_value_if_fail(window_base != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(am != NULL, RET_BAD_PARAMS);
 
   if (window_base->default_res_theme != NULL) {
     assets_manager_unref(am, window_base->default_res_theme);
@@ -78,8 +79,9 @@ static ret_t window_base_unload_default_theme_obj_impl(widget_t* widget) {
 
 static ret_t window_base_unload_theme_obj_impl(widget_t* widget) {
   window_base_t* window_base = WINDOW_BASE(widget);
-  ENSURE(window_base);
   assets_manager_t* am = widget_get_assets_manager(widget);
+  return_value_if_fail(window_base != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(am != NULL, RET_BAD_PARAMS);
 
   if (window_base->res_theme != NULL) {
     assets_manager_unref(am, window_base->res_theme);
@@ -102,8 +104,9 @@ static ret_t window_base_unload_theme_obj(widget_t* widget) {
 
 static ret_t window_base_load_default_theme_obj_impl(widget_t* widget, bool_t* update_style) {
   window_base_t* window_base = WINDOW_BASE(widget);
-  ENSURE(window_base);
   assets_manager_t* am = widget_get_assets_manager(widget);
+  return_value_if_fail(window_base != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(am != NULL, RET_BAD_PARAMS);
 
   if (window_base->default_theme_obj != NULL) {
     return RET_OK;
@@ -129,8 +132,9 @@ static ret_t window_base_load_default_theme_obj_impl(widget_t* widget, bool_t* u
 static ret_t window_base_load_theme_obj_impl(widget_t* widget, bool_t* update_style) {
   const char* theme_name = widget->name;
   window_base_t* window_base = WINDOW_BASE(widget);
-  ENSURE(window_base);
   assets_manager_t* am = widget_get_assets_manager(widget);
+  return_value_if_fail(window_base != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(am != NULL, RET_BAD_PARAMS);
 
   if (window_base->theme_obj != NULL) {
     return RET_OK;
@@ -333,7 +337,8 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
 
 static ret_t window_base_set_applet_name(widget_t* widget, const char* applet_name) {
   window_base_t* window_base = WINDOW_BASE(widget);
-  ENSURE(window_base);
+  return_value_if_fail(window_base != NULL, RET_BAD_PARAMS);
+
   if (tk_str_eq(window_base->applet_name, applet_name)) {
     return RET_OK;
   }
@@ -514,8 +519,7 @@ static widget_t* window_base_get_key_target_leaf(widget_t* widget) {
 
 ret_t window_base_auto_scale_children(widget_t* widget) {
   window_base_t* win = WINDOW_BASE(widget);
-  ENSURE(win);
-  return_value_if_fail(win->design_w > 0 && win->design_h > 0, RET_BAD_PARAMS);
+  return_value_if_fail(win != NULL && win->design_w > 0 && win->design_h > 0, RET_BAD_PARAMS);
 
   return widget_auto_scale_children(widget, win->design_w, win->design_h,
                                     win->auto_scale_children_x, win->auto_scale_children_y,
@@ -637,11 +641,10 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
 static ret_t window_on_keydown_before_children(void* ctx, event_t* e) {
   widget_t* win = WIDGET(ctx);
   key_event_t* evt = key_event_cast(e);
-  ENSURE(evt);
   window_base_t* base = WINDOW_BASE(win);
-  ENSURE(base);
   widget_t* focus = widget_get_focused_widget(win);
   keyboard_type_t keyboard_type = system_info()->keyboard_type;
+  return_value_if_fail(win != NULL && evt != NULL && base != NULL, RET_BAD_PARAMS);
 
   if (focus != NULL) {
     if (focus->vt->return_key_to_activate) {
