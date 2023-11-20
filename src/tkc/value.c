@@ -2265,8 +2265,6 @@ ret_t value_min(value_t* arr, uint32_t size, value_t* result) {
     log_warn("not impl for this type");
     return RET_NOT_IMPL;
   }
-
-  return RET_OK;
 }
 
 ret_t value_max(value_t* arr, uint32_t size, value_t* result) {
@@ -2318,7 +2316,6 @@ ret_t value_max(value_t* arr, uint32_t size, value_t* result) {
     return RET_NOT_IMPL;
   }
 
-  return RET_OK;
 }
 
 static const char* s_type_names[] = {[VALUE_TYPE_BOOL] = "bool",

@@ -477,7 +477,6 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_POINTER_LEAVE:
       return combo_box_update_status(widget);
-      break;
     case EVT_POINTER_ENTER:
       if (combo_box_get_curr_text_size(widget) == 0) {
         widget_set_state(widget, WIDGET_STATE_EMPTY_OVER);
@@ -485,7 +484,6 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
         widget_set_state(widget, WIDGET_STATE_OVER);
       }
       return RET_OK;
-      break;
     case EVT_FOCUS:
       combo_box_update_status(widget);
       break;

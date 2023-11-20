@@ -322,5 +322,8 @@ END_C_DECLS
 #include "tkc/socket_helper_compat.h"
 
 #endif /*TK_SOCKET_HELPER_H*/
-
+#else
+/*提供两个空函数*/
+ret_t tk_socket_init(void);
+ret_t tk_socket_deinit(void);
 #endif /*WITH_SOCKET*/

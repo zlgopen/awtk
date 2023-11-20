@@ -1339,7 +1339,6 @@ static ret_t window_manager_default_set_prop(widget_t* widget, const char* name,
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_SCREEN_SAVER_TIME)) {
     return window_manager_set_screen_saver_time(widget, value_uint32(v));
-    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_SHOW_FPS)) {
     return window_manager_set_show_fps(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_MAX_FPS)) {
