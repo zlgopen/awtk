@@ -482,6 +482,7 @@ typedef void (*tk_sleep_ms_t)(uint32_t ms);
     AllocConsole();                           \
     FILE* fp = NULL;                          \
     freopen_s(&fp, "CONOUT$", "w+t", stdout); \
+    system("chcp 65001"); \
   }
 #else
 #define TK_ENABLE_CONSOLE()

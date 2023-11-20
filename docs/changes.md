@@ -4,6 +4,7 @@
   * 完善部分函数的参数检查。
   * 完善remote\_ui事件处理。
   * 修复编译警告。
+  * 修复控制台UTF-8中文乱码的问题。
 
 2023/11/19
   * 完善group box，支持value属性，方便MVVM绑定radio button。
