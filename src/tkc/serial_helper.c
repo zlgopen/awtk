@@ -86,6 +86,9 @@ static void* serial_thread_entry(void* args) {
     if (serial_wait_for_data_impl(handle, 100) == RET_OK) {
       while (send(fd, buff, sizeof(buff), 0) <= 0) {
         log_warn("send fb buff fail \r\n");
+        if (handle->closed) {
+          break;
+        }
       }
       serial_cond_var_wait(handle, 0xFFFFFFFF);
     }
