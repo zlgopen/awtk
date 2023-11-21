@@ -1,4 +1,4 @@
-#include "tkc.h"
+﻿#include "tkc.h"
 #include "enums.h"
 #include "conf_io/conf_json.h"
 

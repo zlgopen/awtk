@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   image_g2d.c
  * Author: AWTK Develop Team
  * Brief:  image 2d operations.

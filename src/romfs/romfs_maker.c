@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   romfs_maker.c
  * Author: AWTK Develop Team
  * Brief:  romfs maker

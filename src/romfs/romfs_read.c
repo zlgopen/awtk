@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   romfs_read.c
  * Author: AWTK Develop Team
  * Brief:  romfs read

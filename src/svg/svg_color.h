@@ -1,4 +1,4 @@
-
+﻿
 #ifndef TK_SVG_COLOR_H
 #define TK_SVG_COLOR_H
 

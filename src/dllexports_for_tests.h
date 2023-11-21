@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @method canvas_draw_image_scale_h
  * @annotation ["global"]
  */

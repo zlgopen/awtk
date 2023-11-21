@@ -39,6 +39,7 @@ static ret_t tk_ignore_sig_pipe(void) {
 #endif/*LINUX*/
 
 #ifdef WIN32
+#include <ws2tcpip.h>
 #pragma comment(lib, "ws2_32")
 ret_t tk_socket_init() {
   int iResult;

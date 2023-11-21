@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   platform.c
  * Author: AWTK Develop Team
  * Brief:  platform dependent function of aworks

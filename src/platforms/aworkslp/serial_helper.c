@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   serial_helper.c
  * Author: AWTK Develop Team
  * Brief:  serial helper functions

@@ -1,4 +1,4 @@
-#ifndef WASM_HELPER_H
+﻿#ifndef WASM_HELPER_H
 #define WASM_HELPER_H
 
 #include <math.h>
