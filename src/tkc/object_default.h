@@ -66,6 +66,8 @@ typedef struct _object_default_t {
   /*private*/
   darray_t props;
   bool_t enable_path;
+  /*设置属性值不改变属性的类型*/
+  bool_t keep_prop_type;
 } object_default_t;
 
 /**
@@ -130,6 +132,16 @@ ret_t object_default_unref(tk_object_t* obj);
  *
  */
 ret_t object_default_clear_props(tk_object_t* obj);
+
+/**
+ * @method object_default_set_keep_prop_type
+ * 设置属性值时不改变属性的类型。
+ * @annotation ["scriptable"]
+ * @param {tk_object_t*} obj 对象。
+ * @param {bool_t} keep_prop_type 不改变属性的类型。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_default_set_keep_prop_type(tk_object_t* obj, bool_t keep_prop_type);
 
 /**
  * @method object_default_find_prop

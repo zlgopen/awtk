@@ -731,3 +731,24 @@ TEST(ObjectDefault, to_json2) {
   TK_OBJECT_UNREF(detail);
   str_reset(&str);
 }
+
+TEST(ObjectDefault, keep_type) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+  object_default_t* o = OBJECT_DEFAULT(obj);
+  object_default_set_keep_prop_type(obj, TRUE);
+  ASSERT_EQ(o->keep_prop_type, TRUE);
+
+  tk_object_set_prop_int32(obj, "int32", 123);
+  ASSERT_EQ(tk_object_get_prop_int32(obj, "int32", 0), 123);
+  ASSERT_EQ(tk_object_get_prop(obj, "int32", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_INT32);
+
+  tk_object_set_prop_float(obj, "int32", 456);
+  ASSERT_EQ(tk_object_get_prop(obj, "int32", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_INT32);
+  ASSERT_EQ(value_int32(&v), 456);
+
+  TK_OBJECT_UNREF(obj);
+}
+
