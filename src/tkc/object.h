@@ -1093,6 +1093,12 @@ tk_object_t* tk_object_get_child_object(tk_object_t* obj, const char* path, cons
  */
 #define TK_OBJECT_PROP_CHECKED "checked"
 
+/**
+ * @const TK_OBJECT_PROP_SELECTED_INDEX
+ * 选中的索引。
+ */
+#define TK_OBJECT_PROP_SELECTED_INDEX "selected_index"
+
 #include "tkc/object_compat.h"
 
 END_C_DECLS
