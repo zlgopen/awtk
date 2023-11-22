@@ -62,6 +62,11 @@ struct _csv_file_t {
    */
   bool_t has_title;
 
+  /**
+   * @property {bool_t} single_select
+   * 是否单选。
+   */
+  bool_t single_select;
   /*private*/
   char sep;
   uint32_t cols;
@@ -184,6 +189,25 @@ const char* csv_file_get(csv_file_t* csv, uint32_t row, uint32_t col);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t csv_file_set(csv_file_t* csv, uint32_t row, uint32_t col, const char* value);
+
+/**
+ * @method csv_file_uncheck_all
+ *  取消勾选全部行。
+ * @param {csv_file_t*} csv csv对象。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+*/
+ret_t csv_file_uncheck_all(csv_file_t* csv);
+
+/**
+ * @method csv_file_get_first_checked
+ *
+ * 获取第一个勾选的行。
+ *
+ * @param {csv_file_t*} csv csv对象。
+ * 
+ * @return {int32_t} 返回行号。
+ */
+int32_t csv_file_get_first_checked(csv_file_t* csv);
 
 /**
  * @method csv_file_set_row_checked

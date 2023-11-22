@@ -110,6 +110,7 @@ static ret_t csv_file_object_set_prop(tk_object_t* obj, const char* name, const 
   return csv_file_set(o->csv, p.row, p.col, o->str.str);
 }
 
+
 static ret_t csv_file_object_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   csv_path_t p;
   uint32_t rows = 0;
@@ -120,6 +121,9 @@ static ret_t csv_file_object_get_prop(tk_object_t* obj, const char* name, value_
   rows = csv_file_get_rows(o->csv);
   if (tk_str_ieq(name, TK_OBJECT_PROP_SIZE)) {
     value_set_int(v, rows);
+    return RET_OK;
+  } else if(tk_str_eq(name, TK_OBJECT_PROP_SELECTED_INDEX)) {
+    value_set_int(v, csv_file_get_first_checked(o->csv));
     return RET_OK;
   }
 
