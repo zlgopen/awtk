@@ -71,7 +71,7 @@ else:
 # LCD='SDL_FB_MONO'
 
 if NANOVG_BACKEND == 'AGGE' or NANOVG_BACKEND == 'AGGE' :
-    lcd_color_format = complie_helper.get_value('LCD_COLOR_FORMAT')
+    lcd_color_format = complie_helper.get_value('LCD_COLOR_FORMAT', '')
     if lcd_color_format != '' :
         if lcd_color_format== 'mono' :
             LCD = 'SDL_FB_MONO'
@@ -234,7 +234,7 @@ elif OS_NAME == 'Windows':
         else :
             BUILD_DEBUG_FLAG = ' -DNDEBUG /MD /O2 /Oi  '
         
-        if complie_helper.get_value('PDB') :
+        if complie_helper.get_value('PDB', True) :
             BUILD_DEBUG_LINKFLAGS = ' /DEBUG '
 
 
