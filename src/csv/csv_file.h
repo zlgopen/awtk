@@ -73,6 +73,7 @@ struct _csv_file_t {
   char* filename;
   csv_rows_t rows;
   void* filter_ctx;
+  uint32_t max_rows;
   csv_file_filter_t filter;
 };
 
@@ -221,6 +222,28 @@ int32_t csv_file_get_first_checked(csv_file_t* csv);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t csv_file_set_row_checked(csv_file_t* csv, uint32_t row, bool_t checked);
+
+/**
+ * @method csv_file_set_max_rows
+ *
+ * 设置最大行数。
+ *
+ * @param {csv_file_t*} csv csv对象。
+ * @param {uint32_t} max_rows 最大行数。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t csv_file_set_max_rows(csv_file_t* csv, uint32_t max_rows);
+
+/**
+ * @method csv_file_set_single_select
+ * 设置是否单选。
+ * @param {csv_file_t*} csv csv对象。
+ * @param {bool_t} single_select 是否单选。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * 
+ */
+ret_t csv_file_set_single_select(csv_file_t* csv, bool_t single_select);
 
 /**
  * @method csv_file_is_row_checked

@@ -593,6 +593,22 @@ ret_t csv_file_set_row_checked(csv_file_t* csv, uint32_t row, bool_t checked) {
   return RET_OK;
 }
 
+ret_t csv_file_set_max_rows(csv_file_t* csv, uint32_t max_rows) {
+  return_value_if_fail(csv != NULL, RET_BAD_PARAMS);
+
+  csv->max_rows = max_rows;
+
+  return RET_OK;
+}
+
+ret_t csv_file_set_single_select(csv_file_t* csv, bool_t single_select) {
+  return_value_if_fail(csv != NULL, RET_BAD_PARAMS);
+
+  csv->single_select = single_select;
+
+  return RET_OK;
+}
+
 bool_t csv_file_is_row_checked(csv_file_t* csv, uint32_t row) {
   csv_row_t* r = csv_file_get_row(csv, row);
   return_value_if_fail(r != NULL, FALSE);
@@ -642,6 +658,10 @@ ret_t csv_file_append_row(csv_file_t* csv, const char* data) {
   csv_row_t* r = NULL;
   return_value_if_fail(csv != NULL && data != NULL, RET_BAD_PARAMS);
 
+  if (csv->max_rows > 0 && csv->rows.size >= csv->max_rows) {
+    csv_file_remove_row(csv, 0);
+  }
+  
   r = csv_rows_append(&(csv->rows));
   return_value_if_fail(r != NULL, RET_OOM);
 
