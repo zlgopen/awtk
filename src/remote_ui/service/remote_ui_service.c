@@ -260,8 +260,17 @@ static ret_t remote_ui_service_on_event_func(void* ctx, event_t* e) {
       break;
     }
     case EVT_PROP_CHANGED: {
+      value_t vv;
+      value_t* v = NULL;
       prop_change_event_t* event = prop_change_event_cast(e);
-      value_t* v = (value_t*)(event->value);
+      object_default_t* obj = OBJECT_DEFAULT(e->target);
+      /*保持类型不变*/
+      if (obj != NULL && obj->keep_prop_type) {
+        tk_object_get_prop(OBJECT(obj), event->name, &vv);
+        v = &vv;
+      } else {
+        v = (value_t*)(event->value);
+      }
       ubjson_writer_write_kv_str(writer, REMOTE_UI_KEY_NAME, event->name);
       ubjson_writer_write_kv_value(writer, REMOTE_UI_KEY_VALUE, v);
       break;
