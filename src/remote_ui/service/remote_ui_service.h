@@ -46,6 +46,13 @@ typedef struct _remote_ui_service_args_t {
   tk_service_auth_t auth;
 
   /**
+   * @property {tk_service_logout_t} logout
+   * @annotation ["readable"]
+   * 登出函数。
+   */
+  tk_service_logout_t logout;
+
+  /**
    * @property {remote_ui_service_find_target_t} find_target
    * @annotation ["readable"]
    * 查找target的函数。
@@ -66,6 +73,7 @@ typedef struct _remote_ui_service_t {
   tk_object_t* event_handlers;
   
   tk_service_auth_t auth;
+  tk_service_logout_t logout;
   remote_ui_service_find_target_t find_target;
   bool_t dispatching;
 } remote_ui_service_t;

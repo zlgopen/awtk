@@ -38,6 +38,7 @@ typedef ret_t (*tk_service_destroy_t)(tk_service_t* service);
 
 typedef ret_t (*tk_service_auth_t)(tk_service_t* service, const char* username,
                                    const char* password);
+typedef ret_t (*tk_service_logout_t)(tk_service_t* service);
 
 /**
  * @class tk_service_t

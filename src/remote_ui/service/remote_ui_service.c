@@ -65,6 +65,10 @@ tk_service_t* remote_ui_service_create(tk_iostream_t* io, void* args) {
     if (service_args->find_target != NULL) {
       ui->find_target = service_args->find_target;
     }
+
+    if (service_args->logout != NULL) {
+      ui->logout = service_args->logout;
+    }
   }
 
   return (tk_service_t*)ui;
@@ -95,6 +99,10 @@ static ret_t remote_ui_service_login(remote_ui_service_t* ui, const char* userna
 
 static ret_t remote_ui_service_logout(remote_ui_service_t* ui) {
   return_value_if_fail(ui != NULL && ui->service.io != NULL, RET_BAD_PARAMS);
+
+  if (ui->logout != NULL) {
+    ui->logout(&(ui->service));
+  }
 
   ui->is_login = FALSE;
 
@@ -230,6 +238,7 @@ static ret_t remote_ui_service_prepare_xml_source(remote_ui_service_t* ui, const
 }
 
 static ret_t remote_ui_service_on_event_func(void* ctx, event_t* e) {
+  ret_t ret = RET_OK;
   wbuffer_t* wb = NULL;
   char target[32] = {0};
   ubjson_writer_t* writer = NULL;
@@ -295,7 +304,13 @@ static ret_t remote_ui_service_on_event_func(void* ctx, event_t* e) {
 
   ubjson_writer_write_object_end(writer);
 
-  return tk_service_send_resp(&(ui->service), MSG_CODE_NOTIFY, MSG_DATA_TYPE_UBJSON, RET_OK, wb);
+  ret = tk_service_send_resp(&(ui->service), MSG_CODE_NOTIFY, MSG_DATA_TYPE_UBJSON, RET_OK, wb);
+  if (ret != RET_OK) {
+    log_debug("send event %d failed\n", e->type);
+    ret = RET_REMOVE;
+  }
+  
+  return ret;
 }
 
 static ret_t remote_ui_service_on_event(remote_ui_service_t* ui, const char* target,
