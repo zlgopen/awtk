@@ -578,6 +578,14 @@
     <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
     <over       bg_color="#e0e0e0" text_color="#88ff00" />
   </style>
+  <style name="auto_center" border_color="#a0a0a0" text_color="black" text_align_h="center">
+    <normal     bg_color="#f0f0f0" />
+    <focused    bg_color="#f0f0f0" border_color="black"/>
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+    <error      bg_color="#f0f0f0" text_color="red" />
+    <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
+    <over       bg_color="#e0e0e0" text_color="#88ff00" />
+  </style>
 </combo_box>
 
 <combo_box_ex>

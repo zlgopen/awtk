@@ -7,10 +7,10 @@
   <combo_box open_window="color" readonly="true" x="10" y="50" w="200" h="30" text="red"/>
   <combo_box_ex x="10" y="100" w="200" h="30" options="1;2;3;4;5;6;7;8;9;0;11;22;33;44;55" theme_of_popup="number"/>
 
-  <combo_box readonly="true" x="5" y="bottom:5" w="45%" h="30" options="1:ok;2:cancel;"/>
+  <combo_box style="auto_center" readonly="true" x="5" y="bottom:5" w="45%" h="30" options="1:ok;2:cancel;"/>
   <combo_box open_window="language" readonly="true" x="5" y="bottom:50" w="45%" h="30" tr_text="english"/>
   
-  <combo_box readonly="true" x="right:5" y="bottom:5" w="45%" h="30" text="ok" 
+  <combo_box style="auto_center" readonly="true" x="right:5" y="bottom:5" w="45%" h="30" text="ok" 
     localize_options="false"
     options="1:ok;2:cancel;"/>
 

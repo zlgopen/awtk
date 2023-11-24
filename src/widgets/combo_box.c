@@ -222,6 +222,20 @@ static ret_t combo_box_get_prop(widget_t* widget, const char* name, value_t* v) 
   } else if (tk_str_eq(name, WIDGET_PROP_ITEM_HEIGHT)) {
     value_set_int(v, combo_box->item_height);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_RIGHT_MARGIN)) {
+    uint32_t margin = 0;
+    if (widget->astyle != NULL) {
+      TEXT_EDIT_GET_STYLE_MARGIN(widget->astyle, margin, RIGHT);
+    }
+    if (margin == 0) {
+      edit_t* edit = EDIT(widget);
+      margin = edit->right_margin != 0 ? edit->right_margin : edit->margin;
+    }
+    if (margin == 0 && widget_get_prop_int(widget, WIDGET_PROP_LEFT_MARGIN, 0) == 0) {
+      margin = widget->h;
+    }
+    value_set_int(v, margin);
+    return RET_OK;
   } else {
     return edit_get_prop(widget, name, v);
   }
