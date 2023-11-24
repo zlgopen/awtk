@@ -104,38 +104,63 @@ bool_t debugger_match(debugger_t* debugger, const char* code_id) {
 }
 
 ret_t debugger_step_in(debugger_t* debugger) {
+  ret_t ret = RET_OK;
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->step_in != NULL, RET_BAD_PARAMS);
 
-  return debugger->vt->step_in(debugger);
+  ret = debugger->vt->step_in(debugger);
+  if (ret == RET_OK) {
+    debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_RUNNING);
+  }
+  return ret;
 }
 
 ret_t debugger_step_out(debugger_t* debugger) {
+  ret_t ret = RET_OK;
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->step_out != NULL, RET_BAD_PARAMS);
 
-  return debugger->vt->step_out(debugger);
+  ret = debugger->vt->step_out(debugger);
+  if (ret == RET_OK) {
+    debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_RUNNING);
+  }
+  return ret;
 }
 
 ret_t debugger_step_over(debugger_t* debugger) {
+  ret_t ret = RET_OK;
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->step_over != NULL, RET_BAD_PARAMS);
 
-  return debugger->vt->step_over(debugger);
+  ret = debugger->vt->step_over(debugger);
+  if (ret == RET_OK) {
+    debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_RUNNING);
+  }
+  return ret;
 }
 
 ret_t debugger_step_loop_over(debugger_t* debugger) {
+  ret_t ret = RET_OK;
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->step_loop_over != NULL, RET_BAD_PARAMS);
 
-  return debugger->vt->step_loop_over(debugger);
+  ret = debugger->vt->step_loop_over(debugger);
+  if (ret == RET_OK) {
+    debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_RUNNING);
+  }
+  return ret;
 }
 
 ret_t debugger_continue(debugger_t* debugger) {
+  ret_t ret = RET_OK;
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->continve != NULL, RET_BAD_PARAMS);
 
-  return debugger->vt->continve(debugger);
+  ret = debugger->vt->continve(debugger);
+  if (ret == RET_OK) {
+    debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_RUNNING);
+  }
+  return ret;
 }
 
 tk_object_t* debugger_get_local(debugger_t* debugger, uint32_t frame_index) {
@@ -344,9 +369,9 @@ ret_t debugger_set_current_thread_id(debugger_t* debugger, uint64_t thread_id) {
   }
 }
 
-ret_t debugger_dispatch_messages(debugger_t* debugger) {
+ret_t debugger_dispatch_messages(debugger_t* debugger, uint32_t timeout, uint32_t* ret_num) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(debugger->vt->dispatch_messages != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger->vt->dispatch_messages != NULL && ret_num != NULL, RET_BAD_PARAMS);
 
-  return debugger->vt->dispatch_messages(debugger);
+  return debugger->vt->dispatch_messages(debugger, timeout, ret_num);
 }

@@ -551,43 +551,43 @@ static ret_t func_remove_break(app_info_t* app, tokenizer_t* tokenizer) {
 }
 
 static ret_t func_step_in(app_info_t* app, tokenizer_t* tokenizer) {
+  uint32_t num = 0;
   debugger_step_in(app->debugger);
-  sleep_ms(300);
-  debugger_dispatch_messages(app->debugger);
+  debugger_dispatch_messages(app->debugger, 300, &num);
   return fdb_show_code(app, FALSE);
 }
 
 static ret_t func_next(app_info_t* app, tokenizer_t* tokenizer) {
+  uint32_t num = 0;
   debugger_step_over(app->debugger);
-  sleep_ms(300);
-  debugger_dispatch_messages(app->debugger);
+  debugger_dispatch_messages(app->debugger, 300, &num);
   return fdb_show_code(app, FALSE);
 }
 
 static ret_t func_continue(app_info_t* app, tokenizer_t* tokenizer) {
+  uint32_t num = 0;
   debugger_continue(app->debugger);
-  sleep_ms(300);
-  debugger_dispatch_messages(app->debugger);
+  debugger_dispatch_messages(app->debugger, 300, &num);
   return fdb_show_code(app, FALSE);
 }
 
 static ret_t func_flush(app_info_t* app, tokenizer_t* tokenizer) {
-  debugger_dispatch_messages(app->debugger);
-  sleep_ms(300);
+  uint32_t num = 0;
+  debugger_dispatch_messages(app->debugger, 300, &num);
   return RET_OK;
 }
 
 static ret_t func_step_out(app_info_t* app, tokenizer_t* tokenizer) {
+  uint32_t num = 0;
   debugger_step_out(app->debugger);
-  sleep_ms(300);
-  debugger_dispatch_messages(app->debugger);
+  debugger_dispatch_messages(app->debugger, 300, &num);
   return fdb_show_code(app, FALSE);
 }
 
 static ret_t func_step_loop_over(app_info_t* app, tokenizer_t* tokenizer) {
+  uint32_t num = 0;
   debugger_step_loop_over(app->debugger);
-  sleep_ms(300);
-  debugger_dispatch_messages(app->debugger);
+  debugger_dispatch_messages(app->debugger, 300, &num);
   return fdb_show_code(app, FALSE);
 }
 
@@ -750,20 +750,21 @@ ret_t fdb_shell_run(void) {
   register_functions(obj);
 
   while (TRUE) {
+    uint32_t num = 0;
     char* line = aw_read_line(KMAG "[fdb] # " KNRM);
     if (line == NULL) {
       break;
     }
 
     if (app.debugger != NULL) {
-      debugger_dispatch_messages(app.debugger);
+      debugger_dispatch_messages(app.debugger, 16, &num);
     }
     if (fdb_shell_exec(&app, line) == RET_STOP) {
       aw_read_line_free(line);
       break;
     }
     if (app.debugger != NULL) {
-      debugger_dispatch_messages(app.debugger);
+      debugger_dispatch_messages(app.debugger, 16, &num);
     }
 
     aw_read_line_add_history(line);

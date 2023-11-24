@@ -103,7 +103,7 @@ typedef tk_object_t* (*debugger_get_var_t)(debugger_t* debugger, const char* pat
 typedef ret_t (*debugger_set_break_point_ex_t)(debugger_t* debugger, const char* position);
 typedef ret_t (*debugger_remove_break_point_ex_t)(debugger_t* debugger, const char* position);
 typedef ret_t (*debugger_set_current_frame_t)(debugger_t* debugger, uint32_t frame_index);
-typedef ret_t (*debugger_dispatch_messages_t)(debugger_t* debugger);
+typedef ret_t (*debugger_dispatch_messages_t)(debugger_t* debugger, uint32_t timeout, uint32_t* ret_num);
 /*}扩展接口以支持lldb的DAP协议{*/
 
 typedef debugger_t* (*debugger_fscript_create_t)(void);
@@ -558,10 +558,12 @@ ret_t debugger_set_current_thread_id(debugger_t* debugger, uint64_t thread_id);
  * @method debugger_dispatch_messages
  * dispatch_messages(仅适用于客户端)
  * @param {debugger_t*} debugger debugger对象。
+ * @param {uint32_t} timeout 超时时间。
+ * @param {uint32_t*} ret_num 返回处理命令个数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t debugger_dispatch_messages(debugger_t* debugger);
+ret_t debugger_dispatch_messages(debugger_t* debugger, uint32_t timeout, uint32_t* ret_num);
 
 /**
  * @method debugger_set_state

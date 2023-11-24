@@ -667,7 +667,8 @@ TEST(Debugger, event1) {
   debugger_t* debugger = debugger_server_find_debugger(fscript->code_id);
   ASSERT_EQ(debugger_is_paused(debugger), TRUE);
 
-  debugger_dispatch_messages(client);
+  uint32_t num;
+  debugger_dispatch_messages(client, 1, &num);
   ASSERT_EQ(debugger_is_paused(client), TRUE);
 
   ASSERT_EQ(debugger_continue(client), RET_OK);

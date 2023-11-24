@@ -924,14 +924,16 @@ static ret_t debugger_lldb_simple_command(debugger_t* debugger, const char* cmd)
   return ret;
 }
 
-ret_t debugger_lldb_dispatch_messages(debugger_t* debugger) {
-  while (debugger_lldb_dispatch_one(debugger, 10) == RET_OK) {
+ret_t debugger_lldb_dispatch_messages(debugger_t* debugger, uint32_t timeout, uint32_t* ret_num) {
+  ret_t ret = RET_OK;
+  while ((ret = debugger_lldb_dispatch_one(debugger, timeout)) == RET_OK) {
+    *ret_num += 1;
     if (debugger_get_state(debugger) == DEBUGGER_PROGRAM_STATE_RUNNING) {
       break;
     }
   }
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t debugger_lldb_wait_for_completed(debugger_t* debugger) {
@@ -1105,13 +1107,14 @@ static tk_object_t* debugger_lldb_get_global(debugger_t* debugger) {
 static tk_object_t* debugger_lldb_get_callstack(debugger_t* debugger) {
   int32_t i = 0;
   int32_t n = 0;
+  uint32_t num = 0;
   char path[MAX_PATH + 1] = {0};
   tk_object_t* ret_obj = NULL;
   tk_object_t* callstack = NULL;
   debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
   return_value_if_fail(lldb != NULL, NULL);
 
-  debugger_lldb_dispatch_messages(debugger);
+  debugger_lldb_dispatch_messages(debugger, 10, &num);
   callstack = debugger_lldb_get_callstack_obj(debugger);
   return_value_if_fail(callstack != NULL, NULL);
 
@@ -1244,10 +1247,11 @@ static ret_t debugger_lldb_launch(debugger_t* debugger, const char* lang,
 }
 
 static ret_t debugger_lldb_get_code(debugger_t* debugger, binary_data_t* code) {
+  uint32_t num = 0;
   debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
   return_value_if_fail(lldb != NULL && code != NULL, RET_BAD_PARAMS);
 
-  debugger_lldb_dispatch_messages(debugger);
+  debugger_lldb_dispatch_messages(debugger, 10, &num);
 
   if (code != NULL && lldb->current_frame_source != NULL) {
     code->data = (void*)(lldb->current_frame_source);
