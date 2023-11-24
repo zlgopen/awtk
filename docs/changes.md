@@ -4,6 +4,7 @@
   * 完善remote ui service
   * 支持 combox 不需要手动写偏移文字也可以居中(感谢智明提供补丁)
   * 修改 debugger 的 dispatch_messages 函数和调试下一步等按钮会修改 debugger 状态(感谢智明提供补丁)
+  * 统一 page_changed 的事件含义(感谢智明提供补丁)
 
 2023/11/23
   * object\_default支持设置属性时保持属性类型不变。

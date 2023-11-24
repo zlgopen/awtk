@@ -462,12 +462,12 @@ typedef enum _event_type_t {
   EVT_MULTI_GESTURE,
   /**
    * @const EVT_PAGE_CHANGED
-   * 页面改变了(event_t)。
+   * 当前看到的页面改变了(event_t)。
    */
   EVT_PAGE_CHANGED,
   /**
    * @const EVT_PAGE_CHANGING
-   * 页面正在改变(offset_change_event_t)。
+   * 当前看到的页面正在改变(offset_change_event_t)。
    */
   EVT_PAGE_CHANGING,
   /**

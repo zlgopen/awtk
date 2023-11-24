@@ -122,6 +122,7 @@ ret_t pages_set_active(widget_t* widget, uint32_t index) {
       pages_show_active(widget);
       evt.e.type = EVT_VALUE_CHANGED;
       widget_dispatch(widget, (event_t*)&evt);
+      widget_dispatch_simple_event(widget, EVT_PAGE_CHANGED);
       widget_invalidate(widget, NULL);
     }
     pages_restore_target(widget);
@@ -249,8 +250,17 @@ static ret_t pages_on_destroy(widget_t* widget) {
 }
 
 static ret_t pages_on_add_child(widget_t* widget, widget_t* child) {
+  pages_t* pages = PAGES(widget);
+  widget_t* active = NULL;
+  return_value_if_fail(pages != NULL, RET_BAD_PARAMS);
+  active = widget_get_child(widget, pages->active);
+
   widget_add_child_default(widget, child);
   pages_show_active(widget);
+
+  if (active != widget_get_child(widget, pages->active)) {
+    widget_dispatch_simple_event(widget, EVT_PAGE_CHANGED);
+  }
   return RET_OK;
 }
 
@@ -259,16 +269,19 @@ static ret_t pages_on_remove_child(widget_t* widget, widget_t* child) {
   return_value_if_fail(widget != NULL && pages != NULL && child != NULL, RET_BAD_PARAMS);
 
   if (!widget->destroying) {
-    int32_t active = (int32_t)(pages->active);
+    widget_t* active = NULL;
+    int32_t index = (int32_t)(pages->active);
     int32_t remove_index = widget_index_of(child);
     return_value_if_fail(remove_index >= 0, RET_BAD_PARAMS);
-
-    if (remove_index < active ||
+    active = widget_get_child(widget, pages->active);
+    if (remove_index < index ||
         (remove_index == active && remove_index == widget->children->size - 1)) {
-      active = tk_max(active - 1, 0);
-      pages_set_active(widget, active);
+      index = tk_max(index - 1, 0);
+      pages_set_active(widget, index);
     }
-    widget_dispatch_simple_event(widget, EVT_PAGE_CHANGED);
+    if (active != widget_get_child(widget, pages->active)) {
+      widget_dispatch_simple_event(widget, EVT_PAGE_CHANGED);
+    }
   }
   return RET_CONTINUE;
 }
