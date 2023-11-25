@@ -460,8 +460,11 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_RESIZE:
     case EVT_MOVE_RESIZE: {
-      if (edit_get_right_margin(widget) == 0) {
+      uint32_t right_margin = edit_get_right_margin(widget);
+      if (right_margin == 0) {
         edit->right_margin = widget->h;
+      } else {
+        edit->right_margin = right_margin;
       }
       break;
     }
