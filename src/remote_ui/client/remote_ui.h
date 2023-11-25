@@ -195,13 +195,13 @@ ret_t remote_ui_get_xml_source(remote_ui_t* ui, const char* target, const char* 
  *
  * @param {remote_ui_t*} ui remote ui客户端对象。
  * @param {const char*} target 目标。
- * @param {event_type_t} event 事件。
+ * @param {uint32_t} event 事件。
  * @param {event_func_t} func 事件处理函数。
  * @param {void*} ctx 上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t remote_ui_on_event(remote_ui_t* ui, const char* target, event_type_t type,
+ret_t remote_ui_on_event(remote_ui_t* ui, const char* target, uint32_t type,
                          event_func_t func, void* ctx);
 
 /**
@@ -210,13 +210,13 @@ ret_t remote_ui_on_event(remote_ui_t* ui, const char* target, event_type_t type,
  *
  * @param {remote_ui_t*} ui remote ui客户端对象。
  * @param {const char*} target 目标。
- * @param {event_type_t} event 事件。
+ * @param {uint32_t} event 事件。
  * @param {event_func_t} func 事件处理函数。
  * @param {void*} ctx 上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t remote_ui_off_event(remote_ui_t* ui, const char* target, event_type_t event,
+ret_t remote_ui_off_event(remote_ui_t* ui, const char* target, uint32_t event,
                           event_func_t func, void* ctx);
 
 /**

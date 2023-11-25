@@ -79,7 +79,7 @@ static ret_t object_default_remove_prop(tk_object_t* obj, const char* name) {
   }
 }
 
-static ret_t value_deep_copy_keep_type(value_t* dst, value_t* src) {
+static ret_t value_deep_copy_keep_type(value_t* dst, const value_t* src) {
   ret_t ret = RET_OK;
   return_value_if_fail(dst != NULL && src != NULL, RET_BAD_PARAMS);
 

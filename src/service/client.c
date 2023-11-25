@@ -23,7 +23,9 @@
 #include "tkc/utils.h"
 #include "service/client.h"
 #include "tkc/event_source_fd.h"
+#ifdef WITH_SOCKET
 #include "streams/inet/iostream_tcp.h"
+#endif/*WITH_SOCKET*/
 #include "streams/serial/iostream_serial.h"
 
 ret_t tk_client_init(tk_client_t* client, tk_iostream_t* io, tk_client_on_notify_t on_notify) {
@@ -224,7 +226,7 @@ ret_t tk_client_request(tk_client_t* client, uint32_t type, uint32_t data_type, 
     memset(&header, 0x00, sizeof(header));
     ret = tk_client_read_resp(client, &header, wb);
     if (ret == RET_OK) {
-      ret = header.resp_code;
+      ret = (ret_t)header.resp_code;
     }
   }
 

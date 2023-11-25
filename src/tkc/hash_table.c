@@ -99,7 +99,7 @@ ret_t hash_table_remove_all(hash_table_t* hash_table, tk_compare_t cmp, void* ct
   uint32_t i = 0;
   uint32_t n = 0;
   darray_t** arrs = NULL;
-  return_value_if_fail(hash_table != NULL, 0);
+  return_value_if_fail(hash_table != NULL, RET_BAD_PARAMS);
 
   n = hash_table->buckets.size;
   arrs = (darray_t**)(hash_table->buckets.elms);

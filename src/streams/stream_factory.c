@@ -23,8 +23,10 @@
 #include "tkc/path.h"
 #include "tkc/utils.h"
 #include "tkc/serial_helper.h"
+#ifdef WITH_SOCKET	 
 #include "streams/inet/iostream_tcp.h"
 #include "streams/inet/iostream_udp.h"
+#endif/*WITH_SOCKET*/
 #include "streams/serial/iostream_serial.h"
 
 #include "streams/stream_factory.h"

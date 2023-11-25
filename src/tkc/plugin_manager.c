@@ -220,6 +220,7 @@ ret_t plugin_manager_dump(plugin_manager_t* plugin_manager) {
   for (i = 0; i < plugin_manager->plugins.size; i++) {
     plugin_t* iter = (plugin_t*)(plugin_manager->plugins.elms[i]);
     log_debug("%u: %s %p\n", i, iter->lib_name, iter->handle);
+    (void)iter;
   }
 
   return RET_OK;

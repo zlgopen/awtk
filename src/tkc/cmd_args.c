@@ -76,6 +76,7 @@ ret_t cmd_args_show_help(cmd_args_t* args) {
   for (i = 0; i < args->desc_nr; i++) {
     const cmd_arg_desc_t* iter = args->desc + i;
     log_info("  --%s/-%s %s\n", iter->name, iter->short_name, iter->desc);
+    (void)iter;
   }
 
   return RET_OK;
@@ -196,7 +197,6 @@ ret_t cmd_args_process_str(cmd_args_t* args, const char* cmd_line) {
 }
 
 ret_t cmd_args_process_wstr(cmd_args_t* args, int argc, wchar_t* _argv[]) {
-  uint32_t i = 0;
   ret_t ret = RET_OK;
   char** argv = NULL;
   return_value_if_fail(args != NULL && _argv != NULL, RET_BAD_PARAMS);

@@ -1690,7 +1690,7 @@ ret_t ret_code_from_name(const char* name) {
 }
 
 const char* ret_code_to_name(ret_t ret) {
-  if (ret >= RET_OK && ret < RET_MAX_NR) {
+  if (ret < RET_MAX_NR) {
     return s_ret_names[ret];
   } else {
     return "";

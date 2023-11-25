@@ -24,9 +24,11 @@
 #include "tkc/mem.h"
 #include "tkc/crc.h"
 #include "tkc/utils.h"
+#ifdef WITH_FULL_REMOTE_UI
 #include "base/keys.h"
 #include "base/events.h"
-#include "service/service.h"
+#endif/*WITH_FULL_REMOTE_UI*/
+
 #include "conf_io/conf_ubjson.h"
 #include "tkc/object_default.h"
 
@@ -215,7 +217,7 @@ ret_t remote_ui_get_xml_source(remote_ui_t* ui, const char* target, const char* 
   return remote_ui_download_file(ui, remote_file, file);
 }
 
-static ret_t remote_ui_on_event_local(remote_ui_t* ui, const char* target, event_type_t event,
+static ret_t remote_ui_on_event_local(remote_ui_t* ui, const char* target, uint32_t event,
                                       event_func_t func, void* ctx) {
   emitter_t* emitter = NULL;
   emitter = tk_object_get_prop_pointer(ui->event_handlers, target);
@@ -225,10 +227,12 @@ static ret_t remote_ui_on_event_local(remote_ui_t* ui, const char* target, event
     tk_object_set_prop_pointer_ex(ui->event_handlers, target, emitter,
                                   (tk_destroy_t)emitter_destroy);
   }
-  return emitter_on(emitter, event, func, ctx);
+  emitter_on(emitter, event, func, ctx);
+	
+  return RET_OK;
 }
 
-ret_t remote_ui_on_event(remote_ui_t* ui, const char* target, event_type_t event, event_func_t func,
+ret_t remote_ui_on_event(remote_ui_t* ui, const char* target, uint32_t event, event_func_t func,
                          void* ctx) {
   ret_t ret = RET_FAIL;
   ubjson_writer_t* writer = NULL;
@@ -253,7 +257,7 @@ ret_t remote_ui_on_event(remote_ui_t* ui, const char* target, event_type_t event
   return ret;
 }
 
-static ret_t remote_ui_off_event_local(remote_ui_t* ui, const char* target, event_type_t event,
+static ret_t remote_ui_off_event_local(remote_ui_t* ui, const char* target, uint32_t event,
                                        event_func_t func, void* ctx) {
   emitter_t* emitter = NULL;
   return_value_if_fail(ui != NULL && ui->event_handlers != NULL, RET_BAD_PARAMS);
@@ -271,7 +275,7 @@ static ret_t remote_ui_off_event_local(remote_ui_t* ui, const char* target, even
   return RET_OK;
 }
 
-ret_t remote_ui_off_event(remote_ui_t* ui, const char* target, event_type_t event,
+ret_t remote_ui_off_event(remote_ui_t* ui, const char* target, uint32_t event,
                           event_func_t func, void* ctx) {
   ret_t ret = RET_FAIL;
   ubjson_writer_t* writer = NULL;
@@ -294,6 +298,7 @@ ret_t remote_ui_off_event(remote_ui_t* ui, const char* target, event_type_t even
   return ret;
 }
 
+#ifdef WITH_FULL_REMOTE_UI	
 ret_t remote_ui_click(remote_ui_t* ui, const char* target) {
   pointer_event_t e;
   pointer_event_init(&e, EVT_CLICK, NULL, 0, 0);
@@ -370,6 +375,7 @@ ret_t remote_ui_open_window(remote_ui_t* ui, const char* name, const char* xml,
                            &(ui->client.wb));
 }
 
+#endif/*WITH_FULL_REMOTE_UI*/
 static ret_t remote_ui_show_dialog(remote_ui_t* ui, const char* type, const char* title,
                                    const char* content, uint32_t duration) {
   ubjson_writer_t* writer = NULL;
@@ -593,6 +599,7 @@ ret_t remote_ui_get_loaded_assets_info(remote_ui_t* ui, const char* file) {
   return remote_ui_download_file(ui, REMOTE_UI_FILE_LOADED_ASSETS_INFO, file);
 }
 
+#ifdef WITH_FULL_REMOTE_UI
 static ret_t value_from_str(value_t* v, int32_t value_type, const char* str) {
   switch (value_type) {
     case VALUE_TYPE_STRING: {
@@ -651,6 +658,8 @@ static ret_t value_from_str(value_t* v, int32_t value_type, const char* str) {
   }
   return RET_OK;
 }
+#endif/*WITH_FULL_REMOTE_UI*/
+
 ret_t remote_ui_dispatch_one(remote_ui_t* ui, tk_object_t* iter) {
   const char* target = NULL;
   uint32_t type = 0;
@@ -662,6 +671,7 @@ ret_t remote_ui_dispatch_one(remote_ui_t* ui, tk_object_t* iter) {
     emitter_t* emitter = tk_object_get_prop_pointer(ui->event_handlers, target);
     if (emitter != NULL) {
       switch (type) {
+#ifdef WITH_FULL_REMOTE_UI				
         case EVT_KEY_DOWN:
         case EVT_KEY_UP: {
           key_event_t e;
@@ -689,6 +699,7 @@ ret_t remote_ui_dispatch_one(remote_ui_t* ui, tk_object_t* iter) {
           value_reset(&(e.new_value));
           break;
         }
+#endif/*WITH_FULL_REMOTE_UI*/								
         case EVT_PROP_CHANGED: {
           value_t value;
           prop_change_event_t e;
