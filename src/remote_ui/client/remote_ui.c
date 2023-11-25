@@ -24,16 +24,16 @@
 #include "tkc/mem.h"
 #include "tkc/crc.h"
 #include "tkc/utils.h"
-#ifdef WITH_FULL_REMOTE_UI
-#include "base/keys.h"
-#include "base/events.h"
-#endif/*WITH_FULL_REMOTE_UI*/
-
 #include "conf_io/conf_ubjson.h"
 #include "tkc/object_default.h"
 
 #include "remote_ui/client/remote_ui.h"
 #include "remote_ui/shared/remote_ui_types_def.h"
+
+#ifdef WITH_FULL_REMOTE_UI
+#include "base/keys.h"
+#include "base/events.h"
+#endif/*WITH_FULL_REMOTE_UI*/
 
 #define REMOTE_UI_ISTREAM_TIMEOUT 100 * 1000
 

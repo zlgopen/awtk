@@ -29,6 +29,10 @@
 #include "remote_ui/shared/remote_ui_types_def.h"
 #include "service/client.h"
 
+#ifdef TK_IS_PC
+#define WITH_FULL_REMOTE_UI 1
+#endif/*TK_IS_PC*/
+
 BEGIN_C_DECLS
 
 /**
