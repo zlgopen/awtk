@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   client.c
  * Author: AWTK Develop Team
  * Brief:  client

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   object.c
  * Author: AWTK Develop Team
  * Brief:  reference count object

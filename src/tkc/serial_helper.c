@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   serial_helper.c
  * Author: AWTK Develop Team
  * Brief:  serial helper functions
@@ -37,10 +37,12 @@
 #include "tkc/time_now.h"
 #include "tkc/serial_helper.h"
 
-#ifdef WIN32
+#ifdef TK_IS_PC
 #include "tkc/socket_pair.h"
 #include "tkc/socket_helper.h"
+#endif/*TK_IS_PC*/
 
+#ifdef WIN32
 #define prefix L"\\\\.\\"
 
 static ret_t serial_wait_for_data_impl(serial_handle_t handle, uint32_t timeout_ms);
