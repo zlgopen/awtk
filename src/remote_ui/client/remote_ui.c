@@ -38,14 +38,14 @@
 #define REMOTE_UI_ISTREAM_TIMEOUT 100 * 1000
 
 static ret_t remote_ui_on_notify(remote_ui_t* ui, tk_msg_header_t* header, wbuffer_t* wb) {
-  tk_object_t* obj = NULL;
+  conf_doc_t* doc = NULL;
   return_value_if_fail(ui != NULL && header != NULL && wb != NULL, RET_BAD_PARAMS);
   return_value_if_fail(header->data_type == MSG_DATA_TYPE_UBJSON, RET_BAD_PARAMS);
 
-  obj = conf_ubjson_load_from_buff(wb->data, wb->cursor, FALSE);
-  return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
+  doc = conf_doc_load_ubjson(wb->data, wb->cursor);
+  return_value_if_fail(doc != NULL, RET_BAD_PARAMS);
 
-  darray_push(&(ui->pending_events), obj);
+  darray_push(&(ui->pending_events), doc);
 
   return RET_OK;
 }
@@ -60,7 +60,7 @@ remote_ui_t* remote_ui_create(tk_iostream_t* io) {
   ui->event_handlers = object_default_create_ex(FALSE);
   tk_client_init(&(ui->client), io, (tk_client_on_notify_t)remote_ui_on_notify);
   darray_init(&(ui->pending_events), 100, (tk_destroy_t)tk_object_unref, NULL);
-  darray_init(&(ui->dispatching_events), 100, (tk_destroy_t)tk_object_unref, NULL);
+  darray_init(&(ui->dispatching_events), 100, (tk_destroy_t)conf_doc_destroy, NULL);
 
   return ui;
 }
@@ -660,13 +660,13 @@ static ret_t value_from_str(value_t* v, int32_t value_type, const char* str) {
 }
 #endif/*WITH_FULL_REMOTE_UI*/
 
-ret_t remote_ui_dispatch_one(remote_ui_t* ui, tk_object_t* iter) {
+ret_t remote_ui_dispatch_one(remote_ui_t* ui, conf_doc_t* doc) {
   const char* target = NULL;
   uint32_t type = 0;
-  return_value_if_fail(ui != NULL && iter != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ui != NULL && doc != NULL, RET_BAD_PARAMS);
 
-  target = tk_object_get_prop_str(iter, REMOTE_UI_KEY_TARGET);
-  type = tk_object_get_prop_int(iter, REMOTE_UI_KEY_EVENT, 0);
+  target = conf_doc_get_str(doc, REMOTE_UI_KEY_TARGET, NULL);
+  type = conf_doc_get_int(doc, REMOTE_UI_KEY_EVENT, 0);
   if (target != NULL && type != 0) {
     emitter_t* emitter = tk_object_get_prop_pointer(ui->event_handlers, target);
     if (emitter != NULL) {
@@ -675,7 +675,7 @@ ret_t remote_ui_dispatch_one(remote_ui_t* ui, tk_object_t* iter) {
         case EVT_KEY_DOWN:
         case EVT_KEY_UP: {
           key_event_t e;
-          int key = tk_object_get_prop_int(iter, REMOTE_UI_KEY_CODE, 0);
+          int key = conf_doc_get_int(doc, REMOTE_UI_KEY_CODE, 0);
           log_debug("key_event:: type:%d key:%d\n", type, key);
           emitter_dispatch(emitter, key_event_init(&e, type, emitter, key));
           break;
@@ -685,8 +685,8 @@ ret_t remote_ui_dispatch_one(remote_ui_t* ui, tk_object_t* iter) {
         case EVT_POINTER_MOVE:
         case EVT_CLICK: {
           pointer_event_t e;
-          int x = tk_object_get_prop_int(iter, REMOTE_UI_KEY_X, 0);
-          int y = tk_object_get_prop_int(iter, REMOTE_UI_KEY_Y, 0);
+          int x = conf_doc_get_int(doc, REMOTE_UI_KEY_X, 0);
+          int y = conf_doc_get_int(doc, REMOTE_UI_KEY_Y, 0);
           log_debug("pointer_event:: type:%d x:%d y:%d\n", type, x, y);
           emitter_dispatch(emitter, pointer_event_init(&e, type, emitter, x, y));
           break;
@@ -694,7 +694,7 @@ ret_t remote_ui_dispatch_one(remote_ui_t* ui, tk_object_t* iter) {
         case EVT_VALUE_CHANGED: {
           value_change_event_t e;
           value_change_event_init(&e, type, emitter);
-          tk_object_get_prop(iter, REMOTE_UI_KEY_VALUE, &(e.new_value));
+          conf_doc_get(doc, REMOTE_UI_KEY_VALUE, &(e.new_value));
           emitter_dispatch(emitter, (event_t*)&e);
           value_reset(&(e.new_value));
           break;
@@ -703,10 +703,9 @@ ret_t remote_ui_dispatch_one(remote_ui_t* ui, tk_object_t* iter) {
         case EVT_PROP_CHANGED: {
           value_t value;
           prop_change_event_t e;
-          const char* name = tk_object_get_prop_str(iter, REMOTE_UI_KEY_NAME);
-
+          const char* name = conf_doc_get_str(doc, REMOTE_UI_KEY_NAME, NULL);
           value_set_int(&value, 0);
-          tk_object_get_prop(iter, REMOTE_UI_KEY_VALUE, &value);
+          conf_doc_get(doc, REMOTE_UI_KEY_VALUE, &value);
           prop_change_event_init(&e, type, name, &value);
           emitter_dispatch(emitter, (event_t*)&e);
           value_reset(&(value));
@@ -741,7 +740,7 @@ ret_t remote_ui_dispatch(remote_ui_t* ui) {
     src->size = 0;
 
     for (i = 0; i < n; i++) {
-      tk_object_t* iter = (tk_object_t*)darray_get(dest, i);
+      conf_doc_t* iter = (conf_doc_t*)darray_get(dest, i);
       remote_ui_dispatch_one(ui, iter);
     }
     darray_clear(dest);
