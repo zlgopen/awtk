@@ -24,7 +24,7 @@
 #include "service/client.h"
 #ifdef WITH_SOCKET
 #include "streams/inet/iostream_tcp.h"
-#endif/*WITH_SOCKET*/
+#endif /*WITH_SOCKET*/
 #include "streams/serial/iostream_serial.h"
 
 ret_t tk_client_init(tk_client_t* client, tk_iostream_t* io, tk_client_on_notify_t on_notify) {
@@ -95,8 +95,13 @@ ret_t tk_client_send_req(tk_client_t* client, uint32_t type, uint32_t data_type,
   int32_t len = 0;
   int32_t retry_times = 0;
   tk_msg_header_t header;
+  return_value_if_fail(client != NULL && client->io != NULL, RET_BAD_PARAMS);
 
-  while (retry_times < TK_MAX_RETRY_TIMES) {
+  if (client->retry_times < 1) {
+    return tk_client_send_req_impl(client, type, data_type, wb);
+  }
+
+  while (retry_times < client->retry_times) {
     ret_t ret = tk_client_send_req_impl(client, type, data_type, wb);
     break_if_fail(ret == RET_OK);
 
@@ -166,10 +171,31 @@ static ret_t tk_client_read_resp_impl(tk_client_t* client, tk_msg_header_t* head
 
 static ret_t tk_client_read_resp_ex(tk_client_t* client, bool_t read_notify,
                                     tk_msg_header_t* header, wbuffer_t* wb) {
+  ret_t ret = RET_OK;
   int32_t retry_times = 0;
+  return_value_if_fail(client != NULL && client->io != NULL, RET_BAD_PARAMS);
 
-  while (retry_times < TK_MAX_RETRY_TIMES) {
-    ret_t ret = tk_client_read_resp_impl(client, header, wb);
+  if (client->retry_times < 1) {
+    while (TRUE) {
+      ret = tk_client_read_resp_impl(client, header, wb);
+      if (header->type == MSG_CODE_NOTIFY) {
+        if (client->on_notify != NULL) {
+          client->on_notify(client, header, wb);
+        }
+
+        if (read_notify) {
+          return ret;
+        } else {
+          continue;
+        }
+      } else {
+        return ret;
+      }
+    }
+  }
+
+  while (retry_times < client->retry_times) {
+    ret = tk_client_read_resp_impl(client, header, wb);
     if (ret != RET_IO) {
       tk_client_confirm_packet(client, ret != RET_CRC);
     }
@@ -311,4 +337,12 @@ error:
   fs_file_close(file);
 
   return ret;
+}
+
+ret_t tk_client_set_retry_times(tk_client_t* client, uint32_t retry_times) {
+  return_value_if_fail(client != NULL, RET_BAD_PARAMS);
+
+  client->retry_times = retry_times;
+
+  return RET_OK;
 }

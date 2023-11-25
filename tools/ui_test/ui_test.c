@@ -310,17 +310,21 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
       check_return_code(ret, expected_ret, name, target, prop, value);
     } else if (tk_str_eq(name, "get_prop")) {
       value_t v;
+      char buff[64] = {0};
+      const char* ret_value = NULL;
       const char* target = conf_node_get_child_value_str(iter, "target", NULL);
       const char* prop = conf_node_get_child_value_str(iter, "name", NULL);
       const char* value = conf_node_get_child_value_str(iter, "value", NULL);
       value_set_str(&v, NULL);
       ret = remote_ui_get_prop(ui, target, prop, &v);
+      ret_value = value_str_ex(&v, buff, sizeof(buff));
       if (value != NULL) {
-        if (!tk_str_eq(value, value_str(&v))) {
+        if (!tk_str_eq(value, ret_value)) {
           ret = RET_FAIL;
         }
       }
-      check_return_code(ret, expected_ret, name, target, prop, value_str(&v));
+      check_return_code(ret, expected_ret, name, target, prop, ret_value);
+      value_reset(&v);
     } else if (tk_str_eq(name, "on_event")) {
       const char* target = conf_node_get_child_value_str(iter, "target", NULL);
       const char* event_name = conf_node_get_child_value_str(iter, "event", NULL);

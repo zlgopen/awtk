@@ -106,34 +106,34 @@ ret_t remote_ui_get_dev_info(remote_ui_t* ui, remote_ui_dev_info_t* info) {
   memset(info, 0x00, sizeof(*info));
   ret = tk_client_request(&(ui->client), REMOTE_UI_GET_DEV_INFO, MSG_DATA_TYPE_NONE, wb);
   if (ret == RET_OK) {
-    tk_object_t* obj = conf_ubjson_load_from_buff(wb->data, wb->cursor, FALSE);
-    if (obj != NULL) {
+    conf_doc_t* doc = conf_doc_load_ubjson(wb->data, wb->cursor);
+    if (doc != NULL) {
       const char* p = NULL;
-      p = tk_object_get_prop_str(obj, REMOTE_UI_KEY_DEV_NAME);
+      p = conf_doc_get_str(doc, REMOTE_UI_KEY_DEV_NAME, NULL);
       if (p != NULL) {
         tk_strncpy(info->name, p, sizeof(info->name) - 1);
       }
 
-      p = tk_object_get_prop_str(obj, REMOTE_UI_KEY_DEV_VERSION);
+      p = conf_doc_get_str(doc, REMOTE_UI_KEY_DEV_VERSION, NULL);
       if (p != NULL) {
         tk_strncpy(info->version, p, sizeof(info->version) - 1);
       }
 
-      p = tk_object_get_prop_str(obj, REMOTE_UI_KEY_DEV_OS);
+      p = conf_doc_get_str(doc, REMOTE_UI_KEY_DEV_OS, NULL);
       if (p != NULL) {
         tk_strncpy(info->os, p, sizeof(info->os) - 1);
       }
 
-      p = tk_object_get_prop_str(obj, REMOTE_UI_KEY_DEV_ARCH);
+      p = conf_doc_get_str(doc, REMOTE_UI_KEY_DEV_ARCH, NULL);
       if (p != NULL) {
         tk_strncpy(info->arch, p, sizeof(info->arch) - 1);
       }
 
-      info->screen_width = tk_object_get_prop_int(obj, REMOTE_UI_KEY_DEV_SCREEN_WIDTH, 0);
-      info->screen_height = tk_object_get_prop_int(obj, REMOTE_UI_KEY_DEV_SCREEN_HEIGHT, 0);
-      info->dpi = tk_object_get_prop_int(obj, REMOTE_UI_KEY_DEV_DPI, 0);
+      info->screen_width = conf_doc_get_int(doc, REMOTE_UI_KEY_DEV_SCREEN_WIDTH, 0);
+      info->screen_height = conf_doc_get_int(doc, REMOTE_UI_KEY_DEV_SCREEN_HEIGHT, 0);
+      info->dpi = conf_doc_get_int(doc, REMOTE_UI_KEY_DEV_DPI, 0);
 
-      TK_OBJECT_UNREF(obj);
+      conf_doc_destroy(doc);
     }
   }
 
@@ -487,10 +487,15 @@ ret_t remote_ui_get_prop(remote_ui_t* ui, const char* target, const char* name, 
   ret =
       tk_client_request(&(ui->client), REMOTE_UI_GET_PROP, MSG_DATA_TYPE_UBJSON, &(ui->client.wb));
   if (ret == RET_OK) {
-    tk_object_t* obj = conf_ubjson_load_from_buff(ui->client.wb.data, ui->client.wb.cursor, FALSE);
-    if (obj != NULL) {
-      ret = tk_object_get_prop(obj, REMOTE_UI_KEY_VALUE, value);
-      TK_OBJECT_UNREF(obj);
+    conf_doc_t* doc = conf_doc_load_ubjson(ui->client.wb.data, ui->client.wb.cursor);
+    if (doc != NULL) {
+      value_t v;
+      value_set_int(&v, 0);
+      ret = conf_doc_get(doc, REMOTE_UI_KEY_VALUE, &v);
+      if (ret == RET_OK) {
+        value_deep_copy(value, &v);
+      }
+      conf_doc_destroy(doc);
     } else {
       ret = RET_OOM;
     }

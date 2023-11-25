@@ -57,6 +57,7 @@ struct _tk_service_t {
   tk_iostream_t* io;
 
   /*private*/
+  uint32_t retry_times;
   tk_service_dispatch_t dispatch;
   tk_service_destroy_t destroy;
 };
@@ -147,6 +148,15 @@ ret_t tk_service_upload_file(tk_service_t* service, const char* filename);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t tk_service_download_file(tk_service_t* service, const char* filename);
+
+/**
+ * @method tk_service_set_retry_times
+ * 设置重试次数。
+ * @param {tk_service_t*} service service对象。
+ * @param {uint32_t} retry_times 重试次数。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_service_set_retry_times(tk_service_t* service, uint32_t retry_times);
 
 #define TK_SERVICE(obj) ((obj) != NULL ? &((obj)->service) : NULL)
 

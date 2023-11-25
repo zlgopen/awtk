@@ -50,6 +50,7 @@ struct _tk_client_t {
   tk_iostream_t* io;
 
   /*private*/
+  uint32_t retry_times;
   tk_client_on_notify_t on_notify;
 };
 
@@ -138,6 +139,16 @@ ret_t tk_client_download_file(tk_client_t* client, const char* remote_file, cons
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t tk_client_upload_file(tk_client_t* client, const char* remote_file, const char* local_file);
+
+/**
+ * @method tk_client_set_retry_times
+ * 设置重试次数。
+ * @param {tk_client_t*} client client对象。
+ * @param {uint32_t} retry_times 重试次数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_client_set_retry_times(tk_client_t* client, uint32_t retry_times);
 
 #define TK_CLIENT(obj) ((obj) != NULL ? &((obj)->client) : NULL)
 

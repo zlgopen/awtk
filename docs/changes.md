@@ -2,6 +2,9 @@
 
 2023/11/25
   * 修复combo_box的resize的处理不正常问题(感谢智明提供补丁) 
+  * 修复STM32上编译的一些问题。
+  * service/client支持设置重试的次数，默认不重试。
+  * 重构remote ui
 
 2023/11/24
   * 完善remote ui service

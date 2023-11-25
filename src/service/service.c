@@ -137,7 +137,7 @@ static ret_t tk_service_start_tcp(event_source_manager_t* esm, const char* url,
   return RET_OK;
 }
 
-#endif/*WITH_SOCKET*/
+#endif /*WITH_SOCKET*/
 
 static ret_t tk_service_start_serial(event_source_manager_t* esm, const char* url,
                                      tk_service_create_t create, void* args) {
@@ -168,14 +168,14 @@ ret_t tk_service_start(event_source_manager_t* esm, const char* url, tk_service_
 #ifdef WITH_SOCKET
   if (tk_str_start_with(url, STR_SCHEMA_TCP)) {
     return tk_service_start_tcp(esm, url, create, args);
-  } else 
-#endif/*WITH_SOCKET*/
-  if (tk_str_start_with(url, STR_SCHEMA_SERIAL)) {
-    return tk_service_start_serial(esm, url, create, args);
-  } else {
-    log_debug("not supported: %s\n", url);
-    return RET_NOT_IMPL;
-  }
+  } else
+#endif /*WITH_SOCKET*/
+    if (tk_str_start_with(url, STR_SCHEMA_SERIAL)) {
+      return tk_service_start_serial(esm, url, create, args);
+    } else {
+      log_debug("not supported: %s\n", url);
+      return RET_NOT_IMPL;
+    }
 }
 
 static ret_t tk_service_confirm_packet(tk_service_t* service, bool_t valid) {
@@ -245,7 +245,11 @@ ret_t tk_service_send_resp(tk_service_t* service, uint32_t type, uint32_t data_t
   tk_msg_header_t header;
   return_value_if_fail(service != NULL && wb != NULL, RET_BAD_PARAMS);
 
-  while (retry_times < TK_MAX_RETRY_TIMES) {
+  if (service->retry_times < 1) {
+    return tk_service_send_resp_impl(service, type, data_type, resp_code, wb);
+  }
+
+  while (retry_times < service->retry_times) {
     ret_t ret = tk_service_send_resp_impl(service, type, data_type, resp_code, wb);
     break_if_fail(ret == RET_OK);
 
@@ -308,7 +312,11 @@ ret_t tk_service_read_req(tk_service_t* service, tk_msg_header_t* header, wbuffe
   int32_t retry_times = 0;
   return_value_if_fail(service != NULL && header != NULL && wb != NULL, RET_BAD_PARAMS);
 
-  while (retry_times < TK_MAX_RETRY_TIMES) {
+  if (service->retry_times < 1) {
+    return tk_service_read_req_impl(service, header, wb);
+  }
+
+  while (retry_times < service->retry_times) {
     ret_t ret = tk_service_read_req_impl(service, header, wb);
     if (ret != RET_IO) {
       tk_service_confirm_packet(service, ret != RET_CRC);
@@ -399,6 +407,14 @@ ret_t tk_service_download_file(tk_service_t* service, const char* filename) {
   ret = tk_service_send_resp(service, MSG_CODE_DOWNLOAD_FILE_END, MSG_DATA_TYPE_NONE, ret, &wb);
 
   fs_file_close(file);
+
+  return RET_OK;
+}
+
+ret_t tk_service_set_retry_times(tk_service_t* service, uint32_t retry_times) {
+  return_value_if_fail(service != NULL, RET_BAD_PARAMS);
+
+  service->retry_times = retry_times;
 
   return RET_OK;
 }

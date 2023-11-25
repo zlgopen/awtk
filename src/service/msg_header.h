@@ -151,8 +151,6 @@ typedef struct _tk_msg_header_t {
   uint8_t resp_code;
 } tk_msg_header_t;
 
-#define TK_MAX_RETRY_TIMES 3
-
 END_C_DECLS
 
 #endif /*TK_MSG_HEADER_H*/
