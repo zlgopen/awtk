@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   object.c
  * Author: AWTK Develop Team
  * Brief:  reference count object
@@ -23,7 +23,10 @@
 #include "tkc/utils.h"
 #include "tkc/event.h"
 #include "tkc/object.h"
+#ifndef WITHOUT_FSCRIPT
 #include "tkc/fscript.h"
+#endif/*WITHOUT_FSCRIPT*/
+
 #include "tkc/named_value.h"
 
 ret_t tk_object_set_name(tk_object_t* obj, const char* name) {

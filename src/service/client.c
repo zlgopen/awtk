@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   client.c
  * Author: AWTK Develop Team
  * Brief:  client
@@ -22,7 +22,6 @@
 #include "tkc/crc.h"
 #include "tkc/utils.h"
 #include "service/client.h"
-#include "tkc/event_source_fd.h"
 #ifdef WITH_SOCKET
 #include "streams/inet/iostream_tcp.h"
 #endif/*WITH_SOCKET*/
