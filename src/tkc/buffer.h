@@ -288,6 +288,16 @@ ret_t wbuffer_write_double(wbuffer_t* wbuffer, double value);
 ret_t wbuffer_write_binary(wbuffer_t* wbuffer, const void* data, uint32_t size);
 
 /**
+ * @method wbuffer_write_value
+ * 写入value数据。
+ * @param {wbuffer_t*} wbuffer wbuffer对象。
+ * @param {const value_t*} v 要写入的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wbuffer_write_value(wbuffer_t* wbuffer, const value_t* v);
+
+/**
  * @method wbuffer_write_string
  * 写入字符串。
  * @param {wbuffer_t*} wbuffer wbuffer对象。
@@ -509,6 +519,16 @@ ret_t rbuffer_read_double(rbuffer_t* rbuffer, double* value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t rbuffer_read_binary(rbuffer_t* rbuffer, void* data, uint32_t size);
+
+/**
+ * @method rbuffer_read_value
+ * 读取value数据。
+ * @param {rbuffer_t*} rbuffer rbuffer对象。
+ * @param {value_t*} v 返回读取的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rbuffer_read_value(rbuffer_t* rbuffer, value_t* v);
 
 /**
  * @method rbuffer_read_string

@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/11/26
+  * 增加函数wbuffer\_write\_value/rbuffer\_read\_value
+
 2023/11/25
   * 修复combo_box的resize的处理不正常问题(感谢智明提供补丁) 
   * 修复STM32上编译的一些问题。

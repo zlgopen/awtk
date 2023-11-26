@@ -248,6 +248,82 @@ ret_t wbuffer_write_binary(wbuffer_t* wbuffer, const void* data, uint32_t size) 
   return RET_OK;
 }
 
+ret_t wbuffer_write_value(wbuffer_t* wbuffer, const value_t* v) {
+  ret_t ret = RET_FAIL;
+  return_value_if_fail(wbuffer != NULL && v != NULL, RET_BAD_PARAMS);
+
+  if (VALUE_TYPE_WSTRING == v->type) {
+    ret = wbuffer_write_uint8(wbuffer, VALUE_TYPE_STRING);
+  } else {
+    ret = wbuffer_write_uint8(wbuffer, v->type);
+  }
+  return_value_if_fail(ret == RET_OK, ret);
+
+  switch (v->type) {
+    case VALUE_TYPE_BOOL: {
+      ret = wbuffer_write_uint8(wbuffer, value_bool(v));
+      break;
+    }
+    case VALUE_TYPE_UINT8: {
+      ret = wbuffer_write_uint8(wbuffer, value_uint8(v));
+      break;
+    }
+    case VALUE_TYPE_INT8: {
+      ret = wbuffer_write_int8(wbuffer, value_int8(v));
+      break;
+    }
+    case VALUE_TYPE_UINT16: {
+      ret = wbuffer_write_uint16(wbuffer, value_uint16(v));
+      break;
+    }
+    case VALUE_TYPE_INT16: {
+      ret = wbuffer_write_int16(wbuffer, value_int16(v));
+      break;
+    }
+    case VALUE_TYPE_UINT32: {
+      ret = wbuffer_write_uint32(wbuffer, value_uint32(v));
+      break;
+    }
+    case VALUE_TYPE_INT32: {
+      ret = wbuffer_write_int32(wbuffer, value_int32(v));
+      break;
+    }
+    case VALUE_TYPE_UINT64: {
+      ret = wbuffer_write_uint64(wbuffer, value_uint16(v));
+      break;
+    }
+    case VALUE_TYPE_INT64: {
+      ret = wbuffer_write_int64(wbuffer, value_int64(v));
+      break;
+    }
+    case VALUE_TYPE_FLOAT32: {
+      ret = wbuffer_write_float(wbuffer, value_float32(v));
+      break;
+    }
+    case VALUE_TYPE_FLOAT:
+    case VALUE_TYPE_DOUBLE: {
+      ret = wbuffer_write_double(wbuffer, value_double(v));
+      break;
+    }
+    case VALUE_TYPE_STRING: {
+      ret = wbuffer_write_string(wbuffer, value_str(v));
+      break;
+    }
+    case VALUE_TYPE_WSTRING: {
+      char* str = tk_utf8_dup_wstr(value_wstr(v));
+      ret = wbuffer_write_string(wbuffer, str);
+      TKMEM_FREE(str);
+      break;
+    }
+    default: {
+      wbuffer_skip(wbuffer, -1);
+      ret = RET_NOT_IMPL;
+    }
+  }
+
+  return ret;
+}
+
 bool_t wbuffer_has_room(wbuffer_t* wbuffer, uint32_t size) {
   return_value_if_fail(wbuffer != NULL && wbuffer->data != NULL, FALSE);
 
@@ -401,6 +477,100 @@ ret_t rbuffer_read_binary(rbuffer_t* rbuffer, void* data, uint32_t size) {
   return RET_OK;
 }
 
+ret_t rbuffer_read_value(rbuffer_t* rbuffer, value_t* v) {
+  ret_t ret = RET_FAIL;
+  uint8_t type = 0;
+  return_value_if_fail(rbuffer != NULL && rbuffer->data != NULL && v != NULL, RET_BAD_PARAMS);
+  ret = rbuffer_read_uint8(rbuffer, &type);
+  return_value_if_fail(ret == RET_OK, ret);
+
+  switch (type) {
+    case VALUE_TYPE_BOOL: {
+      uint8_t value = 0;
+      ret = rbuffer_read_uint8(rbuffer, &value);
+      value_set_bool(v, value);
+      break;
+    }
+    case VALUE_TYPE_UINT8: {
+      uint8_t value = 0;
+      ret = rbuffer_read_uint8(rbuffer, &value);
+      value_set_uint8(v, value);
+      break;
+    }
+    case VALUE_TYPE_INT8: {
+      int8_t value = 0;
+      ret = rbuffer_read_int8(rbuffer, &value);
+      value_set_int8(v, value);
+      break;
+    }
+    case VALUE_TYPE_UINT16: {
+      uint16_t value = 0;
+      ret = rbuffer_read_uint16(rbuffer, &value);
+      value_set_uint16(v, value);
+      break;
+    }
+    case VALUE_TYPE_INT16: {
+      int16_t value = 0;
+      ret = rbuffer_read_int16(rbuffer, &value);
+      value_set_int16(v, value);
+      break;
+    }
+    case VALUE_TYPE_UINT32: {
+      uint32_t value = 0;
+      ret = rbuffer_read_uint32(rbuffer, &value);
+      value_set_uint32(v, value);
+      break;
+    }
+    case VALUE_TYPE_INT32: {
+      int32_t value = 0;
+      ret = rbuffer_read_int32(rbuffer, &value);
+      value_set_int32(v, value);
+      break;
+    }
+    case VALUE_TYPE_UINT64: {
+      uint64_t value = 0;
+      ret = rbuffer_read_uint64(rbuffer, &value);
+      value_set_uint64(v, value);
+      break;
+    }
+    case VALUE_TYPE_INT64: {
+      int64_t value = 0;
+      ret = rbuffer_read_int64(rbuffer, &value);
+      value_set_int64(v, value);
+      break;
+    }
+    case VALUE_TYPE_FLOAT32: {
+      float value = 0;
+      ret = rbuffer_read_float(rbuffer, &value);
+      value_set_float32(v, value);
+      break;
+    }
+    case VALUE_TYPE_FLOAT: {
+      double value = 0;
+      ret = rbuffer_read_double(rbuffer, &value);
+      value_set_float(v, value);
+      break;
+    }
+    case VALUE_TYPE_DOUBLE: {
+      double value = 0;
+      ret = rbuffer_read_double(rbuffer, &value);
+      value_set_double(v, value);
+      break;
+    }
+    case VALUE_TYPE_STRING: {
+      const char* value = NULL;
+      ret = rbuffer_read_string(rbuffer, &value);
+      value_set_str(v, value);
+      break;
+    }
+    default: {
+      rbuffer_skip(rbuffer, -1);
+      ret = RET_NOT_IMPL;
+    }
+  }
+
+  return ret;
+}
 ret_t rbuffer_read_string(rbuffer_t* rbuffer, const char** str) {
   uint32_t len = 0;
   uint32_t max_count = 0;

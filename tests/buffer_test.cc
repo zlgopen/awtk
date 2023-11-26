@@ -290,3 +290,126 @@ TEST(Buffer, create_extendable) {
   rbuffer_destroy(rbuffer);
   wbuffer_destroy(wbuffer);
 }
+
+TEST(Buffer, value) {
+  value_t v;
+  wbuffer_t wbuffer;
+  wbuffer_init_extendable(&wbuffer);
+
+  value_set_bool(&v, TRUE);
+  ASSERT_EQ(wbuffer_write_value(&wbuffer, &v), RET_OK);
+  ASSERT_EQ(wbuffer.cursor, 2u);
+
+  value_set_bool(&v, FALSE);
+  ASSERT_EQ(wbuffer_write_value(&wbuffer, &v), RET_OK);
+  ASSERT_EQ(wbuffer.cursor, 4u);
+
+  value_set_int8(&v, 1);
+  ASSERT_EQ(wbuffer_write_value(&wbuffer, &v), RET_OK);
+  ASSERT_EQ(wbuffer.cursor, 6u);
+
+  value_set_uint8(&v, 2);
+  ASSERT_EQ(wbuffer_write_value(&wbuffer, &v), RET_OK);
+  ASSERT_EQ(wbuffer.cursor, 8u);
+
+  value_set_int16(&v, 3);
+  ASSERT_EQ(wbuffer_write_value(&wbuffer, &v), RET_OK);
+  ASSERT_EQ(wbuffer.cursor, 11u);
+
+  value_set_uint16(&v, 4);
+  ASSERT_EQ(wbuffer_write_value(&wbuffer, &v), RET_OK);
+  ASSERT_EQ(wbuffer.cursor, 14u);
+
+  value_set_int32(&v, 5);
+  ASSERT_EQ(wbuffer_write_value(&wbuffer, &v), RET_OK);
+  ASSERT_EQ(wbuffer.cursor, 19u);
+
+  value_set_uint32(&v, 6);
+  ASSERT_EQ(wbuffer_write_value(&wbuffer, &v), RET_OK);
+  ASSERT_EQ(wbuffer.cursor, 24u);
+
+  value_set_int64(&v, 7);
+  ASSERT_EQ(wbuffer_write_value(&wbuffer, &v), RET_OK);
+  ASSERT_EQ(wbuffer.cursor, 33u);
+
+  value_set_uint64(&v, 8);
+  ASSERT_EQ(wbuffer_write_value(&wbuffer, &v), RET_OK);
+  ASSERT_EQ(wbuffer.cursor, 42u);
+
+  value_set_float(&v, 9.0f);
+  ASSERT_EQ(wbuffer_write_value(&wbuffer, &v), RET_OK);
+  ASSERT_EQ(wbuffer.cursor, 51u);
+
+  value_set_double(&v, 10.0);
+  ASSERT_EQ(wbuffer_write_value(&wbuffer, &v), RET_OK);
+  ASSERT_EQ(wbuffer.cursor, 60u);
+
+  value_set_str(&v, "hello");
+  ASSERT_EQ(wbuffer_write_value(&wbuffer, &v), RET_OK);
+  ASSERT_EQ(wbuffer.cursor, 67u);
+
+  value_set_wstr(&v, L"world");
+  ASSERT_EQ(wbuffer_write_value(&wbuffer, &v), RET_OK);
+  ASSERT_EQ(wbuffer.cursor, 74u);
+
+  rbuffer_t rbuffer;
+  rbuffer_init(&rbuffer, wbuffer.data, wbuffer.cursor);
+
+  ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
+  ASSERT_EQ(value_bool(&v), TRUE);
+  ASSERT_EQ(v.type, VALUE_TYPE_BOOL);
+
+  ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
+  ASSERT_EQ(value_bool(&v), FALSE);
+  ASSERT_EQ(v.type, VALUE_TYPE_BOOL);
+
+  ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
+  ASSERT_EQ(value_int8(&v), 1);
+  ASSERT_EQ(v.type, VALUE_TYPE_INT8);
+
+  ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
+  ASSERT_EQ(value_uint8(&v), 2);
+  ASSERT_EQ(v.type, VALUE_TYPE_UINT8);
+
+  ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
+  ASSERT_EQ(value_int16(&v), 3);
+  ASSERT_EQ(v.type, VALUE_TYPE_INT16);
+
+  ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
+  ASSERT_EQ(value_uint16(&v), 4);
+  ASSERT_EQ(v.type, VALUE_TYPE_UINT16);
+
+  ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
+  ASSERT_EQ(value_int32(&v), 5);
+  ASSERT_EQ(v.type, VALUE_TYPE_INT32);
+
+  ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
+  ASSERT_EQ(value_uint32(&v), 6);
+  ASSERT_EQ(v.type, VALUE_TYPE_UINT32);
+
+  ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
+  ASSERT_EQ(value_int64(&v), 7);
+  ASSERT_EQ(v.type, VALUE_TYPE_INT64);
+
+  ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
+  ASSERT_EQ(value_uint64(&v), 8);
+  ASSERT_EQ(v.type, VALUE_TYPE_UINT64);
+
+  ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
+  ASSERT_EQ(value_float(&v), 9.0f);
+  ASSERT_EQ(v.type, VALUE_TYPE_FLOAT);
+
+  ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
+  ASSERT_EQ(value_double(&v), 10.0);
+  ASSERT_EQ(v.type, VALUE_TYPE_DOUBLE);
+
+  ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "hello");
+  ASSERT_EQ(v.type, VALUE_TYPE_STRING);
+
+  ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "world");
+  ASSERT_EQ(v.type, VALUE_TYPE_STRING);
+  
+  wbuffer_deinit(&wbuffer);
+}
