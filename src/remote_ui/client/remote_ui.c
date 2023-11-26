@@ -68,7 +68,7 @@ static rbuffer_t* my_rbuffer_create(wbuffer_t* wb) {
 static ret_t remote_ui_on_notify(remote_ui_t* ui, tk_msg_header_t* header, wbuffer_t* wb) {
   rbuffer_t* rb = NULL;
   return_value_if_fail(ui != NULL && header != NULL && wb != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(header->data_type == MSG_DATA_TYPE_UBJSON, RET_BAD_PARAMS);
+  return_value_if_fail(header->data_type == MSG_DATA_TYPE_BINARY, RET_BAD_PARAMS);
 
   rb = my_rbuffer_create(wb);
   return_value_if_fail(rb != NULL, RET_OOM);
