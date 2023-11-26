@@ -2,6 +2,3 @@ en_US: type=strings size=9138
 default: type=style size=61468
 default_full: type=font size=1732392
 system_bar: type=style size=884
-edit: type=style size=2504
-trado: type=font size=281560
-keyboard: type=style size=4563

@@ -5,16 +5,9 @@ dialog_title: w=60 h=30 format=1
 rgb: w=30 h=30 format=1
 rgba: w=30 h=30 format=1
 close_d: w=48 h=48 format=1
-arrow_up_n: w=48 h=48 format=1
-arrow_down_n: w=48 h=48 format=1
-arrow_left_n: w=48 h=48 format=1
-arrow_right_n: w=48 h=48 format=1
-invisible: w=32 h=32 format=1
-find: w=48 h=48 format=1
-close_n: w=48 h=48 format=1
-backspace: w=32 h=32 format=1
 ani1: w=140 h=140 format=1
 anic: w=140 h=140 format=1
+close_n: w=48 h=48 format=1
 ani5: w=140 h=140 format=1
 ani4: w=140 h=140 format=1
 ani2: w=140 h=140 format=1

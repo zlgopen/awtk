@@ -2,6 +2,7 @@
 
 2023/11/26
   * 增加函数wbuffer\_write\_value/rbuffer\_read\_value
+  * 简化remote ui通讯协议。
 
 2023/11/25
   * 修复combo_box的resize的处理不正常问题(感谢智明提供补丁) 
