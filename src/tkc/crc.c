@@ -66,7 +66,7 @@ uint16_t tk_crc16(uint16_t crc, const void* data, int data_length) {
     data_length--;
   }
 
-  return crc ^ ~0U;
+  return crc;
 }
 
 /*https://modbus.org/docs/Modbus_over_serial_line_V1_01.pdf*/
