@@ -237,8 +237,7 @@ uint32_t tk_crc32(uint32_t init, const void* data, int size) {
       crc = (crc >> 8) ^ crc_tab32[(crc ^ (uint32_t)*ptr++) & 0x000000FFul];
     }
 
-  return (crc ^ 0xFFFFFFFFul);
-
+  return crc;
 } /* crc_32 */
 
 uint32_t tk_crc32_byte(uint32_t crc, uint8_t data) {
