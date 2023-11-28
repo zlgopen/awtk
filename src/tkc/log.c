@@ -72,7 +72,7 @@ ret_t log_set_hook(tk_log_hook_t log, void* ctx) {
   return RET_OK;
 }
 #else
-ret_t log_notify(const char* format, ...) {
+ret_t log_notify(log_level_t level, const char* format, ...) {
   return RET_OK;
 }
 ret_t log_set_hook(tk_log_hook_t log, void* ctx) {
