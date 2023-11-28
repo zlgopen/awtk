@@ -207,7 +207,7 @@ ret_t remote_ui_get_xml_source(remote_ui_t* ui, const char* target, const char* 
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t remote_ui_on_event(remote_ui_t* ui, const char* target, uint32_t type,
+ret_t remote_ui_on_event(remote_ui_t* ui, const char* target, uint32_t event,
                          event_func_t func, void* ctx);
 
 /**

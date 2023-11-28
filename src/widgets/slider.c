@@ -591,7 +591,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
   return ret;
 }
 
-ret_t slider_set_value_internal(widget_t* widget, double value, event_type_t etype, bool_t force) {
+ret_t slider_set_value_internal(widget_t* widget, double value, uint32_t etype, bool_t force) {
   double step = 0;
   double offset = 0;
   slider_t* slider = SLIDER(widget);

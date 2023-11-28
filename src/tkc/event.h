@@ -542,7 +542,7 @@ log_message_event_t* log_message_event_cast(event_t* event);
  *
  * @return {event_t*} event对象。
  */
-event_t* log_message_event_init(log_message_event_t* event, log_level_t, const char* message);
+event_t* log_message_event_init(log_message_event_t* event, log_level_t level, const char* message);
 
 END_C_DECLS
 

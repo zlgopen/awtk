@@ -290,12 +290,12 @@ ret_t slider_inc(widget_t* widget);
  *
  * @param {widget_t*} widget 控件对象。
  * @param {double}  value 值。
- * @param {event_type_t} etype 触发事件。
+ * @param {uint32_t} etype 触发事件。
  * @param {bool_t} force 不管有没有变化都设置。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t slider_set_value_internal(widget_t* widget, double value, event_type_t etype, bool_t force);
+ret_t slider_set_value_internal(widget_t* widget, double value, uint32_t etype, bool_t force);
 
 END_C_DECLS
 
