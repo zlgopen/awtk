@@ -170,3 +170,22 @@ uint32_t event_get_type(event_t* event) {
   return_value_if_fail(event != NULL, EVT_NONE);
   return event->type;
 }
+
+value_change_event_t* value_change_event_cast(event_t* event) {
+  return_value_if_fail(event != NULL, NULL);
+  return_value_if_fail(event->type >= EVT_VALUE_WILL_CHANGE && event->type <= EVT_VALUE_CHANGING,
+                       NULL);
+  return_value_if_fail(event->size == sizeof(value_change_event_t), NULL);
+
+  return (value_change_event_t*)event;
+}
+
+event_t* value_change_event_init(value_change_event_t* event, uint32_t type, void* target) {
+  return_value_if_fail(event != NULL, NULL);
+  memset(event, 0x00, sizeof(*event));
+  event->e = event_init(type, target);
+  event->e.size = sizeof(*event);
+
+  return (event_t*)event;
+}
+

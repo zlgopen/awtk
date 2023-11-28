@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/11/28
+  * 将 value change event 移到 tkc 中。
+
 2023/11/26
   * 增加函数wbuffer\_write\_value/rbuffer\_read\_value
   * 简化remote ui通讯协议。

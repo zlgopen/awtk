@@ -182,21 +182,6 @@ typedef enum _event_type_t {
    */
   EVT_MOVE_RESIZE,
   /**
-   * @const EVT_VALUE_WILL_CHANGE
-   * 控件的值即将改变的事件名(value_change_event_t)。
-   */
-  EVT_VALUE_WILL_CHANGE,
-  /**
-   * @const EVT_VALUE_CHANGED
-   * 控件的值改变的事件名(value_change_event_t)。
-   */
-  EVT_VALUE_CHANGED,
-  /**
-   * @const EVT_VALUE_CHANGING
-   * 控件的值持续改变(如编辑器正在编辑)的事件名(value_change_event_t)。
-   */
-  EVT_VALUE_CHANGING,
-  /**
    * @const EVT_PAINT
    * 绘制的事件名(paint_event_t)。
    */
@@ -751,54 +736,10 @@ event_t* orientation_event_init(orientation_event_t* event, uint32_t type, void*
                                 lcd_orientation_t new_orientation);
 
 /**
- * @class value_change_event_t
- * @annotation ["scriptable"]
- * @parent event_t
- * 值变化事件。
- */
-typedef struct _value_change_event_t {
-  event_t e;
-  /**
-   * @property {value_t} old_value
-   * @annotation ["readable"]
-   * 旧值。
-   */
-  value_t old_value;
-
-  /**
-   * @property {value_t} new_value
-   * @annotation ["readable"]
-   * 新值。
-   */
-  value_t new_value;
-} value_change_event_t;
-
-/**
- * @method value_change_event_cast
- * @annotation ["cast", "scriptable"]
- * 把event对象转value_change_event_t对象。
- * @param {event_t*} event event对象。
- *
- * @return {value_change_event_t*} event对象。
- */
-value_change_event_t* value_change_event_cast(event_t* event);
-
-/**
- * @method value_change_event_init
- * 初始化事件。
- * @param {value_change_event_t*} event event对象。
- * @param {uint32_t} type 事件类型。
- * @param {void*} target 事件目标。
- *
- * @return {event_t*} event对象。
- */
-event_t* value_change_event_init(value_change_event_t* event, uint32_t type, void* target);
-
-/**
  * @class offset_change_event_t
  * @annotation ["scriptable"]
  * @parent event_t
- * 值变化事件。
+ * offset变化事件。
  */
 typedef struct _offset_change_event_t {
   event_t e;

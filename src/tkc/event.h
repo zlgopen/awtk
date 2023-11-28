@@ -97,7 +97,22 @@ typedef enum _event_base_type_t {
    * @const EVT_DESTROY
    * 对象销毁事件名(event_t)。
    */
-  EVT_DESTROY
+  EVT_DESTROY,
+  /**
+   * @const EVT_VALUE_WILL_CHANGE
+   * 值即将改变的事件名(value_change_event_t)。
+   */
+  EVT_VALUE_WILL_CHANGE,
+  /**
+   * @const EVT_VALUE_CHANGED
+   * 值改变的事件名(value_change_event_t)。
+   */
+  EVT_VALUE_CHANGED,
+  /**
+   * @const EVT_VALUE_CHANGING
+   * 值持续改变(如编辑器正在编辑)的事件名(value_change_event_t)。
+   */
+  EVT_VALUE_CHANGING,
 } event_base_type_t;
 
 /**
@@ -435,6 +450,50 @@ cmd_exec_event_t* cmd_exec_event_cast(event_t* event);
  */
 event_t* cmd_exec_event_init(cmd_exec_event_t* event, uint32_t type, const char* name,
                              const char* args);
+
+/**
+ * @class value_change_event_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * 值变化事件。
+ */
+typedef struct _value_change_event_t {
+  event_t e;
+  /**
+   * @property {value_t} old_value
+   * @annotation ["readable"]
+   * 旧值。
+   */
+  value_t old_value;
+
+  /**
+   * @property {value_t} new_value
+   * @annotation ["readable"]
+   * 新值。
+   */
+  value_t new_value;
+} value_change_event_t;
+
+/**
+ * @method value_change_event_cast
+ * @annotation ["cast", "scriptable"]
+ * 把event对象转value_change_event_t对象。
+ * @param {event_t*} event event对象。
+ *
+ * @return {value_change_event_t*} event对象。
+ */
+value_change_event_t* value_change_event_cast(event_t* event);
+
+/**
+ * @method value_change_event_init
+ * 初始化事件。
+ * @param {value_change_event_t*} event event对象。
+ * @param {uint32_t} type 事件类型。
+ * @param {void*} target 事件目标。
+ *
+ * @return {event_t*} event对象。
+ */
+event_t* value_change_event_init(value_change_event_t* event, uint32_t type, void* target);
 
 END_C_DECLS
 

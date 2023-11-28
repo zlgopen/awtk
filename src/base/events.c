@@ -48,15 +48,6 @@ pointer_event_t* pointer_event_cast(event_t* event) {
   return (pointer_event_t*)event;
 }
 
-value_change_event_t* value_change_event_cast(event_t* event) {
-  return_value_if_fail(event != NULL, NULL);
-  return_value_if_fail(event->type >= EVT_VALUE_WILL_CHANGE && event->type <= EVT_VALUE_CHANGING,
-                       NULL);
-  return_value_if_fail(event->size == sizeof(value_change_event_t), NULL);
-
-  return (value_change_event_t*)event;
-}
-
 offset_change_event_t* offset_change_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);
   return_value_if_fail(event->size == sizeof(offset_change_event_t), NULL);
@@ -134,15 +125,6 @@ event_t* pointer_event_init(pointer_event_t* event, uint32_t type, void* target,
   event->x = x;
   event->y = y;
   event->button = 1;
-
-  return (event_t*)event;
-}
-
-event_t* value_change_event_init(value_change_event_t* event, uint32_t type, void* target) {
-  return_value_if_fail(event != NULL, NULL);
-  memset(event, 0x00, sizeof(*event));
-  event->e = event_init(type, target);
-  event->e.size = sizeof(*event);
 
   return (event_t*)event;
 }
