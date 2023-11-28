@@ -65,6 +65,15 @@ static rbuffer_t* my_rbuffer_create(wbuffer_t* wb) {
   return rb;
 }
 
+static ret_t remote_ui_request_simple(remote_ui_t* ui, uint32_t code) {
+  wbuffer_t* wb = NULL;
+  return_value_if_fail(ui != NULL && ui->client.io != NULL, RET_BAD_PARAMS);
+
+  wb = &(ui->client.wb);
+  wbuffer_rewind(wb);
+  return tk_client_request(&(ui->client), code, MSG_DATA_TYPE_NONE, wb);
+}
+
 static ret_t remote_ui_on_notify(remote_ui_t* ui, tk_msg_header_t* header, wbuffer_t* wb) {
   rbuffer_t* rb = NULL;
   return_value_if_fail(ui != NULL && header != NULL && wb != NULL, RET_BAD_PARAMS);
@@ -110,10 +119,7 @@ ret_t remote_ui_login(remote_ui_t* ui, const char* username, const char* passwor
 }
 
 ret_t remote_ui_logout(remote_ui_t* ui) {
-  return_value_if_fail(ui != NULL && ui->client.io != NULL, RET_BAD_PARAMS);
-
-  wbuffer_rewind(&(ui->client.wb));
-  return tk_client_request(&(ui->client), MSG_CODE_LOGOUT, MSG_DATA_TYPE_NONE, &(ui->client.wb));
+  return remote_ui_request_simple(ui, MSG_CODE_LOGOUT);
 }
 
 ret_t remote_ui_get_dev_info(remote_ui_t* ui, remote_ui_dev_info_t* info) {
@@ -453,19 +459,11 @@ ret_t remote_ui_close_window(remote_ui_t* ui, const char* name) {
 }
 
 ret_t remote_ui_back_to_prev(remote_ui_t* ui) {
-  return_value_if_fail(ui != NULL && ui->client.io != NULL, RET_BAD_PARAMS);
-
-  wbuffer_rewind(&(ui->client.wb));
-  return tk_client_request(&(ui->client), REMOTE_UI_BACK_TO_PREV, MSG_DATA_TYPE_NONE,
-                           &(ui->client.wb));
+  return remote_ui_request_simple(ui, REMOTE_UI_BACK_TO_PREV);
 }
 
 ret_t remote_ui_back_to_home(remote_ui_t* ui) {
-  return_value_if_fail(ui != NULL && ui->client.io != NULL, RET_BAD_PARAMS);
-
-  wbuffer_rewind(&(ui->client.wb));
-  return tk_client_request(&(ui->client), REMOTE_UI_BACK_TO_HOME, MSG_DATA_TYPE_NONE,
-                           &(ui->client.wb));
+  return remote_ui_request_simple(ui, REMOTE_UI_BACK_TO_HOME);
 }
 
 ret_t remote_ui_set_prop(remote_ui_t* ui, const char* target, const char* name,
@@ -676,7 +674,7 @@ ret_t remote_ui_dispatch_one(remote_ui_t* ui, rbuffer_t* rb) {
 
   if (target != NULL && type != 0) {
     emitter_t* emitter = tk_object_get_prop_pointer(ui->event_handlers, target);
-    if (emitter != NULL) {
+    if (emitter != NULL || type == EVT_LOG_MESSAGE) {
       switch (type) {
 #ifdef WITH_FULL_REMOTE_UI
         case EVT_KEY_DOWN:
@@ -701,6 +699,7 @@ ret_t remote_ui_dispatch_one(remote_ui_t* ui, rbuffer_t* rb) {
           emitter_dispatch(emitter, pointer_event_init(&e, type, emitter, x, y));
           break;
         }
+#endif /*WITH_FULL_REMOTE_UI*/
         case EVT_VALUE_CHANGED: {
           value_change_event_t e;
           value_change_event_init(&e, type, emitter);
@@ -708,7 +707,6 @@ ret_t remote_ui_dispatch_one(remote_ui_t* ui, rbuffer_t* rb) {
           emitter_dispatch(emitter, (event_t*)&e);
           break;
         }
-#endif /*WITH_FULL_REMOTE_UI*/
         case EVT_PROP_CHANGED: {
           value_t value;
           prop_change_event_t e;
@@ -720,6 +718,17 @@ ret_t remote_ui_dispatch_one(remote_ui_t* ui, rbuffer_t* rb) {
           emitter_dispatch(emitter, (event_t*)&e);
           break;
         }
+        case EVT_LOG_MESSAGE: {
+          const char* message = NULL;
+          int8_t level = LOG_LEVEL_DEBUG;
+          rbuffer_read_int8(rb, &level);
+          rbuffer_read_string(rb, &message);
+
+          if (ui->log_hook != NULL) {
+            ui->log_hook(ui->log_hook_ctx, level, message);
+          }
+          break;
+        }
         default: {
           log_debug("not supported event type:%d\n", type);
           break;
@@ -729,6 +738,22 @@ ret_t remote_ui_dispatch_one(remote_ui_t* ui, rbuffer_t* rb) {
   }
 
   return RET_OK;
+}
+
+ret_t remote_ui_hook_log(remote_ui_t* ui, tk_log_hook_t log, void* ctx) {
+  return_value_if_fail(ui != NULL, RET_BAD_PARAMS);
+  ui->log_hook = log;
+  ui->log_hook_ctx = ctx;
+
+  return remote_ui_request_simple(ui, REMOTE_UI_HOOK_LOG);
+}
+
+ret_t remote_ui_unhook_log(remote_ui_t* ui) {
+  return_value_if_fail(ui != NULL, RET_BAD_PARAMS);
+  ui->log_hook = NULL;
+  ui->log_hook_ctx = NULL;
+
+  return remote_ui_request_simple(ui, REMOTE_UI_UNHOOK_LOG);
 }
 
 ret_t remote_ui_dispatch(remote_ui_t* ui) {

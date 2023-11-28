@@ -139,6 +139,16 @@ typedef enum _remote_ui_msg_code_t {
    * 销毁控件请求。
   */
   REMOTE_UI_DESTROY_WIDGET,
+  /**
+   * @const REMOTE_UI_HOOK_LOG
+   * 接管日志。
+  */
+  REMOTE_UI_HOOK_LOG,
+  /**
+   * @const REMOTE_UI_UNHOOK_LOG
+   * 接管日志。
+  */
+  REMOTE_UI_UNHOOK_LOG
 } remote_ui_msg_code_t;
 
 /**

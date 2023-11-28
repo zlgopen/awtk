@@ -53,6 +53,12 @@ static void check_return_code(ret_t ret, const char* expected_ret, const char* n
   }
 }
 
+static ret_t on_log_message(void* ctx, log_level_t level, const char* message) {
+  log_debug("%d: %s", level, message);
+
+  return RET_OK;
+}
+
 static char* read_text_file(const char* name) {
   char filename[MAX_PATH + 1] = {0};
   path_prepend_app_root(filename, name);
@@ -93,7 +99,7 @@ static event_t* key_event_init_with_symbol(key_event_t* e, uint32_t type, const 
   return key_event_init(e, type, NULL, kv->value);
 }
 
-event_type_t remote_ui_event_type_from_str(const char* name) {
+uint32_t remote_ui_event_type_from_str(const char* name) {
   if (tk_str_eq(name, "click")) {
     return EVT_CLICK;
   } else if (tk_str_eq(name, "value_changed")) {
@@ -337,9 +343,6 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
       event_type_t event_type = remote_ui_event_type_from_str(event_name);
       ret = remote_ui_off_event(ui, target, event_type, widget_on_events, NULL);
       check_return_code(ret, expected_ret, name, target, event_name, NULL);
-    } else if (tk_str_eq(name, "dispatch")) {
-      tk_client_read_notify(&(ui->client), 1000000);
-      remote_ui_dispatch(ui);
     } else if (tk_str_eq(name, "set_theme")) {
       const char* theme = conf_node_get_child_value_str(iter, "theme", NULL);
       ret = remote_ui_set_theme(ui, theme);
@@ -434,9 +437,25 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
     } else if (tk_str_eq(name, "sleep")) {
       int32_t time_ms = conf_node_get_child_value_int32(iter, "time", 1000);
       sleep_ms(time_ms);
+    } else if (tk_str_eq(name, "hook_log")) {
+      ret = remote_ui_hook_log(ui, on_log_message, NULL);
+      check_return_code(ret, expected_ret, name, NULL, NULL, NULL);
+    } else if (tk_str_eq(name, "unhook_log")) {
+      ret = remote_ui_unhook_log(ui);
+      check_return_code(ret, expected_ret, name, NULL, NULL, NULL);
+    } else if (tk_str_eq(name, "dispatch")) {
+      while (tk_client_read_notify(&(ui->client), 10000) == RET_OK) {
+        remote_ui_dispatch(ui);
+      }
     } else if (tk_str_eq(name, "close")) {
       remote_ui_destroy(ui);
       ui = NULL;
+    }
+
+    if (ui != NULL && ui->client.io != NULL) {
+      while (tk_client_read_notify(&(ui->client), 10) == RET_OK) {
+        remote_ui_dispatch(ui);
+      }
     }
 
     iter = iter->next;

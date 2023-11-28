@@ -28,8 +28,8 @@ TEST(SHDLC, ack) {
   ASSERT_EQ(header.s.seqno, 1);
   ASSERT_EQ(header.s.reserve, 0);
 
-  ASSERT_EQ(wb->data[2], 0x22);
-  ASSERT_EQ(wb->data[3], 0x5f);
+  ASSERT_EQ(wb->data[2], 0xdd);
+  ASSERT_EQ(wb->data[3], 0xa0);
   ASSERT_EQ(wb->data[4], SHDLC_FLAG);
 
   istream = tk_istream_mem_create(wb->data, wb->cursor, 0, FALSE);
@@ -64,8 +64,8 @@ TEST(SHDLC, nack) {
   ASSERT_EQ(header.s.seqno, 1);
   ASSERT_EQ(header.s.reserve, 0);
 
-  ASSERT_EQ(wb->data[2], 0xab);
-  ASSERT_EQ(wb->data[3], 0x4e);
+  ASSERT_EQ(wb->data[2], 0x54);
+  ASSERT_EQ(wb->data[3], 0xb1);
   ASSERT_EQ(wb->data[4], SHDLC_FLAG);
 
   istream = tk_istream_mem_create(wb->data, wb->cursor, 0, FALSE);
@@ -104,8 +104,8 @@ TEST(SHDLC, data_ok) {
   ASSERT_EQ(wb->data[2], 'a');
   ASSERT_EQ(wb->data[3], 'b');
   ASSERT_EQ(wb->data[4], 'c');
-  ASSERT_EQ(wb->data[5], 0x54);
-  ASSERT_EQ(wb->data[6], 0x5d);
+  ASSERT_EQ(wb->data[5], 0xab);
+  ASSERT_EQ(wb->data[6], 0xa2);
   ASSERT_EQ(wb->data[7], SHDLC_FLAG);
 
   istream = tk_istream_mem_create(wb->data, wb->cursor, 0, FALSE);
@@ -148,8 +148,8 @@ TEST(SHDLC, data_crc_error) {
   ASSERT_EQ(wb->data[2], 'a');
   ASSERT_EQ(wb->data[3], 'b');
   ASSERT_EQ(wb->data[4], 'c');
-  ASSERT_EQ(wb->data[5], 66);
-  ASSERT_EQ(wb->data[6], 136);
+  ASSERT_EQ(wb->data[5], 0xbd);
+  ASSERT_EQ(wb->data[6], 0x77);
   ASSERT_EQ(wb->data[7], SHDLC_FLAG);
 
   wb->data[4] = 'd';
@@ -193,8 +193,8 @@ TEST(SHDLC, data_error) {
   ASSERT_EQ(wb->data[2], 'a');
   ASSERT_EQ(wb->data[3], 'b');
   ASSERT_EQ(wb->data[4], 'c');
-  ASSERT_EQ(wb->data[5], 7);
-  ASSERT_EQ(wb->data[6], 210);
+  ASSERT_EQ(wb->data[5], 0xf8);
+  ASSERT_EQ(wb->data[6], 0x2d);
   ASSERT_EQ(wb->data[7], SHDLC_FLAG);
 
   wb->data[7] = 'd';
@@ -229,8 +229,8 @@ TEST(SHDLC, data_escape) {
   ASSERT_EQ(wb->data[3], '\x7d');
   ASSERT_EQ(wb->data[4], 0x5d);
   ASSERT_EQ(wb->data[5], 'y');
-  ASSERT_EQ(wb->data[6], 93);
-  ASSERT_EQ(wb->data[7], 237);
+  ASSERT_EQ(wb->data[6], 0xa2);
+  ASSERT_EQ(wb->data[7], 0x12);
   ASSERT_EQ(wb->data[8], SHDLC_FLAG);
 
   istream = tk_istream_mem_create(wb->data, wb->cursor, 0, FALSE);

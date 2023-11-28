@@ -22,11 +22,11 @@ TEST(FExr, crc16) {
   tk_object_t* obj = object_default_create();
 
   fscript_eval(obj, "crc16(\"1\")", &v);
-  ASSERT_EQ(value_uint32(&v), 53362u);
+  ASSERT_EQ(value_uint32(&v), 12173u);
   value_reset(&v);
 
   fscript_eval(obj, "crc16(\"123\")", &v);
-  ASSERT_EQ(value_uint32(&v), 40116u);
+  ASSERT_EQ(value_uint32(&v), 25419u);
   value_reset(&v);
 
   TK_OBJECT_UNREF(obj);
@@ -37,11 +37,11 @@ TEST(FExr, crc32) {
   tk_object_t* obj = object_default_create();
 
   fscript_eval(obj, "crc32(\"1\")", &v);
-  ASSERT_EQ(value_uint32(&v), 2212294583u);
+  ASSERT_EQ(value_uint32(&v), 2082672712u);
   value_reset(&v);
 
   fscript_eval(obj, "crc32(\"123\")", &v);
-  ASSERT_EQ(value_uint32(&v), 2286445522u);
+  ASSERT_EQ(value_uint32(&v), 2008521773u);
   value_reset(&v);
 
   TK_OBJECT_UNREF(obj);

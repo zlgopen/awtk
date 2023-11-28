@@ -631,7 +631,7 @@ static ret_t debugger_fscript_log_ex(void* ctx, const char* msg, bool_t native) 
   return RET_OK;
 }
 
-static ret_t debugger_fscript_log(void* ctx, const char* msg) {
+static ret_t debugger_fscript_log(void* ctx, log_level_t level, const char* msg) {
   return debugger_fscript_log_ex(ctx, msg, TRUE);
 }
 
@@ -679,7 +679,7 @@ ret_t debugger_fscript_set_fscript(debugger_t* debugger, fscript_t* fscript) {
     debugger_fscript_clear_step_stops(d);
 
     fscript_set_print_func(fscript, debugger_fscript_print_func);
-    log_set_debugger_hook(debugger_fscript_log, fscript);
+    log_set_hook(debugger_fscript_log, fscript);
     fscript_set_on_error(fscript, debugger_fscript_on_error, d);
 
     fscript_ensure_locals(fscript);
@@ -693,7 +693,7 @@ ret_t debugger_fscript_set_fscript(debugger_t* debugger, fscript_t* fscript) {
   } else {
     debugger_fscript_leave_func(debugger);
     fscript_set_print_func(d->fscript, NULL);
-    log_set_debugger_hook(NULL, NULL);
+    log_set_hook(NULL, NULL);
     fscript_set_on_error(d->fscript, NULL, NULL);
     if (!d->fscript->rerun) {
       emitter_dispatch_simple_event(EMITTER(debugger), DEBUGGER_RESP_MSG_COMPLETED);

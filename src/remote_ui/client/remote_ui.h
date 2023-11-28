@@ -47,6 +47,8 @@ typedef struct _remote_ui_t {
   tk_object_t* event_handlers;
   darray_t pending_events;
   darray_t dispatching_events;
+  tk_log_hook_t log_hook;
+  void* log_hook_ctx;
 } remote_ui_t;
 
 /**
@@ -283,6 +285,7 @@ ret_t remote_ui_open_window(remote_ui_t* ui, const char* name, const char* xml,
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t remote_ui_show_confirm(remote_ui_t* ui, const char* title, const char* content);
+
 /**
  * @method remote_ui_show_warn
  * 显示警告对话框。
@@ -457,6 +460,24 @@ ret_t remote_ui_get_loaded_images_info(remote_ui_t* ui, const char* file);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。 
 */
 ret_t remote_ui_get_loaded_assets_info(remote_ui_t* ui, const char* file);
+
+/**
+ * @method remote_ui_hook_log
+ * 设置log钩子函数。
+ * @param {remote_ui_t*} ui remote ui客户端对象。
+ * @param {tk_log_hook_t} log log hook。
+ * @param {void*} ctx 上下文。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t remote_ui_hook_log(remote_ui_t* ui, tk_log_hook_t log, void* ctx);
+
+/**
+ * @method remote_ui_unhook_log
+ * 取消log钩子函数。
+ * @param {remote_ui_t*} ui remote ui客户端对象。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t remote_ui_unhook_log(remote_ui_t* ui);
 
 /**
  * @method remote_ui_dispatch

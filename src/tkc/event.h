@@ -113,6 +113,11 @@ typedef enum _event_base_type_t {
    * 值持续改变(如编辑器正在编辑)的事件名(value_change_event_t)。
    */
   EVT_VALUE_CHANGING,
+  /**
+   * @const EVT_LOG_MESSAGE
+   * 日志信息。
+   */
+  EVT_LOG_MESSAGE,
 } event_base_type_t;
 
 /**
@@ -494,6 +499,50 @@ value_change_event_t* value_change_event_cast(event_t* event);
  * @return {event_t*} event对象。
  */
 event_t* value_change_event_init(value_change_event_t* event, uint32_t type, void* target);
+
+/**
+ * @class log_message_event_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * 日志事件。
+ */
+typedef struct _log_message_event_t {
+  event_t e;
+  /**
+   * @property {log_level_t} level
+   * @annotation ["readable"]
+   * 级别。
+   */
+  log_level_t level;
+
+  /**
+   * @property {const char*} message
+   * @annotation ["readable"]
+   * 日志。
+   */
+   const char* message;
+} log_message_event_t;
+
+/**
+ * @method log_message_event_cast
+ * @annotation ["cast", "scriptable"]
+ * 把event对象转log_message_event_t对象。
+ * @param {event_t*} event event对象。
+ *
+ * @return {log_message_event_t*} event对象。
+ */
+log_message_event_t* log_message_event_cast(event_t* event);
+
+/**
+ * @method log_message_event_init
+ * 初始化事件。
+ * @param {log_message_event_t*} event event对象。
+ * @param {log_level_t} level 级别。
+ * @param {const char*} message 日志。
+ *
+ * @return {event_t*} event对象。
+ */
+event_t* log_message_event_init(log_message_event_t* event, log_level_t, const char* message);
 
 END_C_DECLS
 

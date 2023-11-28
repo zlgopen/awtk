@@ -42,6 +42,7 @@
 
 static ret_t remote_ui_service_dispatch(remote_ui_service_t* ui);
 static ret_t remote_ui_service_destroy(remote_ui_service_t* ui);
+static ret_t remote_ui_service_on_event_func(void* ctx, event_t* e);
 static ret_t remote_ui_service_set_language(remote_ui_service_t* ui, const char* language);
 
 tk_service_t* remote_ui_service_create(tk_iostream_t* io, void* args) {
@@ -604,6 +605,24 @@ static ret_t remote_ui_dev_info_write(wbuffer_t* wb, remote_ui_dev_info_t* info)
   return RET_OK;
 }
 
+static ret_t remote_ui_on_log(void* ctx, log_level_t level, const char* msg) {
+  remote_ui_service_t* ui = (remote_ui_service_t*)ctx;
+  if (ui != NULL && ui->service.destroy == (tk_service_destroy_t)remote_ui_service_destroy) {
+    wbuffer_t* wb = &(ui->service.wb);
+    wbuffer_rewind(wb);
+    wbuffer_write_string(wb, "<log>");
+    wbuffer_write_int32(wb, EVT_LOG_MESSAGE);
+    wbuffer_write_int8(wb, level);
+    wbuffer_write_string(wb, msg);
+
+    tk_service_send_resp(&(ui->service), MSG_CODE_NOTIFY, MSG_DATA_TYPE_BINARY, RET_OK, wb);
+  } else {
+    log_set_hook(NULL, NULL);
+  }
+
+  return RET_OK;
+}
+
 static ret_t remote_ui_service_dispatch_impl(remote_ui_service_t* ui, tk_msg_header_t* req,
                                              wbuffer_t* wb) {
   value_t v;
@@ -634,6 +653,7 @@ static ret_t remote_ui_service_dispatch_impl(remote_ui_service_t* ui, tk_msg_hea
       resp.resp_code = remote_ui_service_logout(ui);
       resp.data_type = MSG_DATA_TYPE_NONE;
       wbuffer_rewind(wb);
+      log_set_hook(NULL, NULL);
       break;
     }
     case REMOTE_UI_GET_DEV_INFO: {
@@ -942,6 +962,18 @@ static ret_t remote_ui_service_dispatch_impl(remote_ui_service_t* ui, tk_msg_hea
       wbuffer_rewind(wb);
       break;
     }
+    case REMOTE_UI_HOOK_LOG: {
+      log_set_hook(remote_ui_on_log, ui);
+      resp.resp_code = RET_OK;
+      resp.data_type = MSG_DATA_TYPE_NONE;
+      break;
+    }
+    case REMOTE_UI_UNHOOK_LOG: {
+      log_set_hook(NULL, NULL);
+      resp.resp_code = RET_OK;
+      resp.data_type = MSG_DATA_TYPE_NONE;
+      break;
+    }
     default: {
       resp.resp_code = RET_NOT_IMPL;
       break;
@@ -970,6 +1002,7 @@ static ret_t remote_ui_service_dispatch(remote_ui_service_t* ui) {
 static ret_t remote_ui_service_destroy(remote_ui_service_t* ui) {
   return_value_if_fail(ui != NULL, RET_BAD_PARAMS);
 
+  log_set_hook(NULL, NULL);
   memset(ui, 0x00, sizeof(*ui));
   TKMEM_FREE(ui);
 

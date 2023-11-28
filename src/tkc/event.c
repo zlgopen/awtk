@@ -189,3 +189,22 @@ event_t* value_change_event_init(value_change_event_t* event, uint32_t type, voi
   return (event_t*)event;
 }
 
+log_message_event_t* log_message_event_cast(event_t* event) {
+  return_value_if_fail(event != NULL, NULL);
+  return_value_if_fail(event->type == EVT_LOG_MESSAGE, NULL);
+  return_value_if_fail(event->size == sizeof(log_message_event_t), NULL);
+
+  return (log_message_event_t*)event;
+}
+
+event_t* log_message_event_init(log_message_event_t* event, log_level_t level, const char* message) {
+  return_value_if_fail(event != NULL, NULL);
+  memset(event, 0x00, sizeof(*event));
+  event->e = event_init(EVT_LOG_MESSAGE, NULL);
+  event->e.size = sizeof(*event);
+  event->level = level;
+  event->message = message;
+
+  return (event_t*)event;
+}
+
