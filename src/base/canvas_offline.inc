@@ -71,9 +71,13 @@ typedef struct _canvas_offline_gpu_t {
 #include "../lcd/lcd_mem_bgra8888.h"
 
 #ifdef LINUX
+#define WITH_LCD_RGB888 1
+#endif/*LINUX*/
+
+#ifdef WITH_LCD_RGB888
 #include "../lcd/lcd_mem_rgb888.h"
 #include "../lcd/lcd_mem_bgr888.h"
-#endif
+#endif/*WITH_LCD_RGB888*/
 
 #endif
 
@@ -215,13 +219,14 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
   } else if (bitmap->format == BITMAP_FMT_RGB565) {
     lcd = lcd_mem_rgb565_create_single_fb(bitmap->w, bitmap->h, buff);
   }
-#ifdef LINUX
+#ifdef WITH_LCD_RGB888
   else if (bitmap->format == BITMAP_FMT_RGB888) {
     lcd = lcd_mem_rgb888_create_single_fb(bitmap->w, bitmap->h, buff);
   } else if (bitmap->format == BITMAP_FMT_BGR888) {
     lcd = lcd_mem_bgr888_create_single_fb(bitmap->w, bitmap->h, buff);
   }
-#endif
+#endif /*WITH_LCD_RGB888*/
+
   else {
     assert(!" bitmap format not supported yet \n");
     log_warn(" bitmap format not supported yet \n");
