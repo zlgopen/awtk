@@ -310,10 +310,10 @@ void awtk_ios_log(const char* message, ...);
     log_impl(format, ##args);                   \
   }
 #else
-#define log_debug(format, args...)
-#define log_info(format, args...)
-#define log_warn(format, args...)
-#define log_error(format, args...)
+#define log_debug(format, args...) log_notify(LOG_LEVEL_DEBUG, format, ##args)
+#define log_info(format, args...)  log_notify(LOG_LEVEL_INFO, format, ##args)
+#define log_warn(format, args...)  log_notify(LOG_LEVEL_WARN, format, ##args)
+#define log_error(format, args...) log_notify(LOG_LEVEL_ERROR, format, ##args)
 #endif
 
 END_C_DECLS
