@@ -128,8 +128,11 @@ static ret_t conf_json_parse_object(json_parser_t* parser) {
     if (c == '}') {
       parser->cursor++;
       break;
-    } else if (c != ',') {
+    } else if (c == ',') {
+      parser->cursor++;
+    } else {
       log_debug("unexpected char %c at %s\n", c, parser->data + parser->cursor);
+      parser->cursor++;
     }
   }
 
