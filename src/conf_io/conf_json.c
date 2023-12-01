@@ -107,11 +107,11 @@ static ret_t conf_json_skip_spaces(json_parser_t* parser) {
 static ret_t conf_json_parse_object(json_parser_t* parser) {
   char c = '\0';
 
-  return_value_if_fail(conf_json_skip_spaces(parser) == RET_OK, RET_BAD_PARAMS);
+  conf_json_skip_all_comments(parser);
   parser->cursor++;
   while (parser->cursor < parser->size) {
-    return_value_if_fail(conf_json_skip_spaces(parser) == RET_OK, RET_BAD_PARAMS);
 
+    conf_json_skip_all_comments(parser);
     if (parser->data[parser->cursor] == '}') {
       parser->cursor++;
       break;
@@ -143,7 +143,7 @@ static ret_t conf_json_parse_array(json_parser_t* parser) {
   conf_node_t* node = NULL;
 
   parser->cursor++;
-  conf_json_skip_spaces(parser);
+  conf_json_skip_all_comments(parser);
   c = parser->data[parser->cursor];
   if (c == ']') {
     parser->cursor++;

@@ -774,3 +774,21 @@ TEST(ConfJson, save_json_ex) {
   conf_doc_destroy(doc);
   str_reset(&str);
 }
+
+TEST(ConfJson, comment) {
+const char* data = "\
+{\
+    \"log_message\": {\
+        \"enable\": true, /*是否启用告警信息*/\
+        \"fields_count\": 4, /*告警信息中带的字段个数: 级别 | 时间 | 设备 | 信息*/\
+        \"fields_seperator\": \"|\", /*字段之间的分隔符*/\
+        \"max_rows\": 1000 /*告警信息最大行数*/\
+    }\
+}";
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+  ASSERT_EQ(conf_doc_get_int(doc, "log_message.fields_count", 0), 4);
+  ASSERT_EQ(conf_doc_get_int(doc, "log_message.max_rows", 0), 1000);
+
+  conf_doc_destroy(doc);
+}
+
