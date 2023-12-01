@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/12/01
+  * conf_json 支持块注释/**/和行注释//
+
 2023/11/28
   * 将 value change event 移到 tkc 中。
   * remote\_ui 支持 hook log。

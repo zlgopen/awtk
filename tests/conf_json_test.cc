@@ -31,6 +31,35 @@ TEST(ConfJson, arr) {
   conf_doc_destroy(doc);
 }
 
+TEST(ConfJson, arr_comment) {
+  value_t v;
+  str_t str;
+  const char* data = " /*comment*/[/*comment*/[/*comment*/1/*comment*/,2/*comment*/,/*comment*/3]/*comment*/, /*comment*/\"abc\"/*comment*/] ";
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+
+  str_init(&str, 100);
+  conf_doc_save_json(doc, &str);
+  str_reset(&str);
+
+  ASSERT_EQ(conf_doc_get(doc, "[1]", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "abc");
+
+  ASSERT_EQ(conf_doc_get(doc, "[0].[0]", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+
+  ASSERT_EQ(conf_doc_get(doc, "[0].[1]", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 2);
+
+  ASSERT_EQ(conf_doc_get(doc, "[0].[2]", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 3);
+
+  str_init(&str, 100);
+  conf_doc_save_json(doc, &str);
+  str_reset(&str);
+
+  conf_doc_destroy(doc);
+}
+
 TEST(ConfJson, arr1) {
   value_t v;
   str_t str;
@@ -74,6 +103,32 @@ TEST(ConfJson, basic1) {
   str_t str;
   conf_node_t* node = NULL;
   const char* data = " {\"tom\" : { \"name\" : \"tom\", \"age\" : 100  }  } ";
+
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+
+  node = conf_node_find_child(doc->root, "tom");
+  ASSERT_EQ(node != NULL, true);
+  ASSERT_STREQ(conf_node_get_name(node), "tom");
+
+  ASSERT_EQ(conf_doc_get(doc, "tom.name", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "tom");
+
+  ASSERT_EQ(conf_doc_get(doc, "tom.age", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 100);
+
+  str_init(&str, 100);
+  conf_doc_save_json(doc, &str);
+
+  str_reset(&str);
+
+  conf_doc_destroy(doc);
+}
+
+TEST(ConfJson, basic1_comment) {
+  value_t v;
+  str_t str;
+  conf_node_t* node = NULL;
+  const char* data = " /*comment*/{//comment\r\"tom\"//comment\n : { //comment\r\n \"name\"//comment\r\n : //comment\r\n\"tom\"//comment\r\n, \"age\"//comment\r : 100 //comment\n } /*comment*/ /*comment*/} ";
 
   conf_doc_t* doc = conf_doc_load_json(data, -1);
 

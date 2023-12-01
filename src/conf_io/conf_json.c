@@ -27,18 +27,6 @@
 #include "tkc/data_reader_factory.h"
 #include "tkc/data_writer_factory.h"
 
-typedef enum _parser_state_t {
-  STATE_NONE = 0,
-  STATE_IN_NAME,
-  STATE_IN_VALUE_NUMBER,
-  STATE_IN_VALUE_STR,
-  STATE_GROUP,
-  STATE_BEFORE_KEY,
-  STATE_KEY,
-  STATE_BEFORE_VALUE,
-  STATE_AFTER_VALUE
-} parser_state_t;
-
 typedef struct _json_parser_t {
   const char* data;
   uint32_t size;
@@ -51,6 +39,7 @@ typedef struct _json_parser_t {
 } json_parser_t;
 
 static ret_t conf_json_parse_value(json_parser_t* parser);
+static ret_t conf_json_skip_all_comments(json_parser_t* parser);
 static ret_t conf_json_skip_to_char(json_parser_t* parser, char c);
 
 static ret_t conf_json_parse_name(json_parser_t* parser) {
@@ -134,7 +123,7 @@ static ret_t conf_json_parse_object(json_parser_t* parser) {
     return_value_if_fail(conf_json_parse_value(parser) == RET_OK, RET_FAIL);
     parser->current = parser->current->parent;
 
-    return_value_if_fail(conf_json_skip_spaces(parser) == RET_OK, RET_BAD_PARAMS);
+    conf_json_skip_all_comments(parser);
     c = parser->data[parser->cursor];
     if (c == '}') {
       parser->cursor++;
@@ -170,7 +159,7 @@ static ret_t conf_json_parse_array(json_parser_t* parser) {
     return_value_if_fail(conf_json_parse_value(parser) == RET_OK, RET_FAIL);
     parser->current = node->parent;
 
-    conf_json_skip_spaces(parser);
+    conf_json_skip_all_comments(parser);
     c = parser->data[parser->cursor];
     if (c == ']') {
       parser->cursor++;
@@ -244,6 +233,65 @@ static ret_t conf_json_parse_string(json_parser_t* parser) {
   return conf_node_set_value(parser->current, &v);
 }
 
+static ret_t conf_json_skip_comment(json_parser_t* parser) {
+  char c = 0;
+  char next_c = 0;
+  bool_t is_block_comment = FALSE;
+  bool_t is_line_comment = FALSE;
+  const char* p = parser->data;
+
+  conf_json_skip_spaces(parser);
+  if ((parser->cursor + 1) < parser->size) {
+    c = p[parser->cursor];
+    next_c = p[parser->cursor + 1];
+    if (c == '/' && next_c == '*') {
+      is_block_comment = TRUE;
+    } else if (c == '/' && next_c == '/') {
+      is_line_comment = TRUE;
+    } else {
+      return RET_FAIL;
+    }
+
+    parser->cursor += 2;
+    for (; (parser->cursor + 1) < parser->size; parser->cursor++) {
+      c = p[parser->cursor];
+      next_c = p[parser->cursor + 1];
+
+      if (is_block_comment) {
+        if (c == '*' && next_c == '/') {
+          parser->cursor += 2;
+          break;
+        }
+      } else if (is_line_comment) {
+        if (c == '\r') {
+          parser->cursor++;
+          if (next_c == '\n') {
+            parser->cursor++;
+          }
+          break;
+        } else if (c == '\n') {
+          parser->cursor++;
+          break;
+        }
+      }
+    }
+
+    return RET_OK;
+  } else {
+    return RET_FAIL;
+  }
+}
+
+static ret_t conf_json_skip_all_comments(json_parser_t* parser) {
+  while (conf_json_skip_comment(parser) == RET_OK) {
+    if (parser->cursor == parser->size) {
+      break;
+    }
+  }
+
+  return RET_OK;
+}
+
 static ret_t conf_json_parse_value(json_parser_t* parser) {
   char c = 0;
   conf_node_t* node = NULL;
@@ -251,9 +299,12 @@ static ret_t conf_json_parse_value(json_parser_t* parser) {
   conf_doc_t* doc = parser->doc;
 
   for (; parser->cursor < parser->size; parser->cursor++) {
+    conf_json_skip_all_comments(parser);
     c = p[parser->cursor];
 
-    if (c == '{' || c == '[') {
+    if (c == '\0' || parser->cursor == parser->size) {
+      break;
+    } else if (c == '{' || c == '[') {
       if (doc->root == NULL) {
         node = conf_doc_create_node(doc, CONF_NODE_ROOT_NAME);
         return_value_if_fail(node != NULL, RET_OOM);
