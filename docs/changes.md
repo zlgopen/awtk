@@ -2,6 +2,8 @@
 
 2023/12/01
   * conf_json 支持块注释/**/和行注释//
+  * 修复 iostream_serial.c 交叉编译问题(感谢明浩提供补丁)
+  * 完善utils.c编译WASM版本(感谢明浩提供补丁)
 
 2023/11/28
   * 将 value change event 移到 tkc 中。
