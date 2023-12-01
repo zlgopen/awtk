@@ -20,11 +20,11 @@
  */
 
 #ifndef WITH_WASM
-#include "tkc/fs.h"
-#include "tkc/path.h"
 #include "tkc/thread.h"
 #endif /*WITH_WASM*/
 
+#include "tkc/fs.h"
+#include "tkc/path.h"
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
 #include "tkc/wstr.h"
@@ -35,6 +35,20 @@
 #include "tkc/data_writer_factory.h"
 
 #define IS_ADDRESS_ALIGN_4(addr) !((((size_t)(addr)) & 0x3) | 0x0)
+
+#ifndef WITH_WASM
+static uint64_t s_ui_thread_id = 0;
+
+ret_t tk_set_ui_thread(uint64_t ui_thread_id) {
+  s_ui_thread_id = ui_thread_id;
+
+  return RET_OK;
+}
+
+bool_t tk_is_ui_thread(void) {
+  return s_ui_thread_id == tk_thread_self();
+}
+#endif/*WITH_WASM*/
 
 const char* tk_skip_to_num(const char* str) {
   const char* p = str;
@@ -1534,7 +1548,6 @@ uint32_t tk_strnlen(const char* str, uint32_t maxlen) {
   return s - str;
 }
 
-#ifndef WITH_WASM
 ret_t xml_file_expand(const char* filename, str_t* s, const char* data) {
   str_t ss;
   char subfilename[MAX_PATH + 1];
@@ -1622,18 +1635,6 @@ ret_t xml_file_expand_read(const char* filename, str_t* s) {
   return RET_OK;
 }
 
-static uint64_t s_ui_thread_id = 0;
-
-ret_t tk_set_ui_thread(uint64_t ui_thread_id) {
-  s_ui_thread_id = ui_thread_id;
-
-  return RET_OK;
-}
-
-bool_t tk_is_ui_thread(void) {
-  return s_ui_thread_id == tk_thread_self();
-}
-
 char* file_read_as_unix_text(const char* filename, uint32_t* size) {
   str_t str;
   uint32_t s = 0;
@@ -1648,7 +1649,6 @@ char* file_read_as_unix_text(const char* filename, uint32_t* size) {
 
   return data;
 }
-#endif /*WITH_WASM*/
 
 static const char* s_ret_names[RET_MAX_NR] = {[RET_OK] = "RET_OK",
                                               [RET_OOM] = "RET_OOM",
