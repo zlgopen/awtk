@@ -85,8 +85,8 @@ struct _tk_object_t {
   char* name;
 
   /*private*/
-  uint32_t visiting : 1;
   const object_vtable_t* vt;
+  uint32_t visiting;
 };
 
 /**
