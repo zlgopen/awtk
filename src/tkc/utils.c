@@ -703,11 +703,7 @@ int32_t tk_wstricmp(const wchar_t* a, const wchar_t* b) {
     return 1;
   }
 
-#ifdef MINGW
   return wcs_case_cmp(a, b);
-#else
-  return wcscasecmp(a, b);
-#endif
 }
 
 char* tk_str_copy(char* dst, const char* src) {

@@ -270,14 +270,14 @@ static ret_t pages_on_remove_child(widget_t* widget, widget_t* child) {
 
   if (!widget->destroying) {
     widget_t* active = NULL;
-    int32_t index = (int32_t)(pages->active);
+    int32_t active_index = (int32_t)(pages->active);
     int32_t remove_index = widget_index_of(child);
+    bool_t is_last = remove_index == (widget->children->size - 1);
     return_value_if_fail(remove_index >= 0, RET_BAD_PARAMS);
     active = widget_get_child(widget, pages->active);
-    if (remove_index < index ||
-        (remove_index == active && remove_index == widget->children->size - 1)) {
-      index = tk_max(index - 1, 0);
-      pages_set_active(widget, index);
+    if (remove_index < active_index || (remove_index == active_index && is_last)) {
+      active_index = tk_max(active_index - 1, 0);
+      pages_set_active(widget, active_index);
     }
     if (active != widget_get_child(widget, pages->active)) {
       widget_dispatch_simple_event(widget, EVT_PAGE_CHANGED);

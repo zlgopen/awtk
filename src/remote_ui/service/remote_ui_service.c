@@ -860,8 +860,8 @@ static ret_t remote_ui_service_dispatch_impl(remote_ui_service_t* ui, tk_msg_hea
         case EVT_POINTER_UP:
         case EVT_POINTER_MOVE: {
           pointer_event_t evt;
-          int x = 0;
-          int y = 0;
+          int32_t x = 0;
+          int32_t y = 0;
 
           rbuffer_read_int32(&rb, &x);
           rbuffer_read_int32(&rb, &y);
@@ -889,8 +889,8 @@ static ret_t remote_ui_service_dispatch_impl(remote_ui_service_t* ui, tk_msg_hea
       break;
     }
     case REMOTE_UI_MOVE_WIDGET: {
-      int x = 0;
-      int y = 0;
+      int32_t x = 0;
+      int32_t y = 0;
       widget_t* widget = NULL;
       const char* target = NULL;
 
