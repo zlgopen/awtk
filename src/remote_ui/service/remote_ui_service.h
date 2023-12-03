@@ -101,6 +101,15 @@ tk_service_t* remote_ui_service_create(tk_iostream_t* io, void* args);
  */
 tk_service_t* remote_ui_service_start_with_uart(tk_iostream_t* io, void* args);
 
+/**
+ * @method remote_ui_service_hook_log
+ * 是否hook log。
+ * @param {remote_ui_service_t*} ui remote ui服务端。
+ * @param {bool_t} hook 是否hook log。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t remote_ui_service_hook_log(remote_ui_service_t* ui, bool_t hook);
+
 END_C_DECLS
 
 #endif /*TK_REMOTE_UI_SERVICE_H*/

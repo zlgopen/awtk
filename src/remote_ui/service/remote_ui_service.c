@@ -617,7 +617,7 @@ static ret_t remote_ui_on_log(void* ctx, log_level_t level, const char* msg) {
 
     tk_service_send_resp(&(ui->service), MSG_CODE_NOTIFY, MSG_DATA_TYPE_BINARY, RET_OK, wb);
   } else {
-    log_set_hook(NULL, NULL);
+    remote_ui_service_hook_log(ui, FALSE);
   }
 
   return RET_OK;
@@ -653,7 +653,7 @@ static ret_t remote_ui_service_dispatch_impl(remote_ui_service_t* ui, tk_msg_hea
       resp.resp_code = remote_ui_service_logout(ui);
       resp.data_type = MSG_DATA_TYPE_NONE;
       wbuffer_rewind(wb);
-      log_set_hook(NULL, NULL);
+      remote_ui_service_hook_log(ui, FALSE);
       break;
     }
     case REMOTE_UI_GET_DEV_INFO: {
@@ -965,13 +965,13 @@ static ret_t remote_ui_service_dispatch_impl(remote_ui_service_t* ui, tk_msg_hea
       break;
     }
     case REMOTE_UI_HOOK_LOG: {
-      log_set_hook(remote_ui_on_log, ui);
+      remote_ui_service_hook_log(ui, TRUE);
       resp.resp_code = RET_OK;
       resp.data_type = MSG_DATA_TYPE_NONE;
       break;
     }
     case REMOTE_UI_UNHOOK_LOG: {
-      log_set_hook(NULL, NULL);
+      remote_ui_service_hook_log(ui, FALSE);
       resp.resp_code = RET_OK;
       resp.data_type = MSG_DATA_TYPE_NONE;
       break;
@@ -1004,7 +1004,7 @@ static ret_t remote_ui_service_dispatch(remote_ui_service_t* ui) {
 static ret_t remote_ui_service_destroy(remote_ui_service_t* ui) {
   return_value_if_fail(ui != NULL, RET_BAD_PARAMS);
 
-  log_set_hook(NULL, NULL);
+  remote_ui_service_hook_log(ui, FALSE);
   memset(ui, 0x00, sizeof(*ui));
   TKMEM_FREE(ui);
 
@@ -1037,3 +1037,16 @@ tk_service_t* remote_ui_service_start_with_uart(tk_iostream_t* io, void* args) {
 
   return service;
 }
+
+ret_t remote_ui_service_hook_log(remote_ui_service_t* ui, bool_t hook) {
+  return_value_if_fail(ui != NULL, RET_BAD_PARAMS);
+
+  if (hook) {
+    log_set_hook(remote_ui_on_log, ui);
+  } else {
+    log_set_hook(NULL, NULL);
+  }
+
+  return RET_OK;
+}      
+
