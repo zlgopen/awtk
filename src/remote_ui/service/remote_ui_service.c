@@ -177,6 +177,7 @@ static ret_t remote_ui_service_take_snapshot(remote_ui_service_t* ui, const char
   } else {
     fs_remove_file(os_fs(), filename);
   }
+  bitmap_destroy(image);
 
   return ret;
 }
@@ -566,6 +567,7 @@ static ret_t remote_ui_service_exec_script(remote_ui_service_t* ui, const char* 
     tk_object_set_prop_pointer(obj, STR_PROP_WINDOW_MANAGER, wm);
 
     ret = fscript_eval(obj, script, v);
+    TK_OBJECT_UNREF(obj);
   }
 
   return ret;
@@ -813,6 +815,7 @@ static ret_t remote_ui_service_dispatch_impl(remote_ui_service_t* ui, tk_msg_hea
       resp.data_type = MSG_DATA_TYPE_BINARY;
       wbuffer_rewind(wb);
       wbuffer_write_value(wb, &v);
+      value_reset(&v);
       break;
     }
     case REMOTE_UI_EXEC_FSCRIPT: {
@@ -823,6 +826,7 @@ static ret_t remote_ui_service_dispatch_impl(remote_ui_service_t* ui, tk_msg_hea
       resp.data_type = MSG_DATA_TYPE_NONE;
       wbuffer_rewind(wb);
       wbuffer_write_string(wb, value_str_ex(&v, buff, sizeof(buff)));
+      value_reset(&v);
 
       break;
     }
