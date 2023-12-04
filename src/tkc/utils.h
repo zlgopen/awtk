@@ -1055,6 +1055,16 @@ ret_t tk_free_utf8_argv(int argc, char** argv);
  */
 int tk_sscanf_simple(const char* str, const char* format, ...);
 
+/**
+ * @method tk_levelize
+ * 将value转换成level。
+ * 比如levels为"0-20;21-40;41-60;61-80;81-100"，value为50，那么返回2。
+ * @param {const char*} levels 级别字符串。
+ * @param {int32_t} value 值。
+ * @return {int32_t} 返回level。
+*/
+int32_t tk_levelize(const char* levels, int32_t value);
+
 #define TK_STRDUP(str) ((str) != NULL) ? tk_strdup(str) : NULL
 #define TK_STRNDUP(str, len) ((str) != NULL) ? tk_strndup(str, len) : NULL
 

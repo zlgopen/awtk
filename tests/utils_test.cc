@@ -1154,3 +1154,41 @@ TEST(Utils, sscanf_simple2) {
   ASSERT_EQ(tk_isdigit('-'), FALSE);
   ASSERT_EQ(tk_isdigit('+'), FALSE);
 }
+
+TEST(Utils, levelize1) {
+  ASSERT_EQ(tk_levelize("0-20;21-40;41-60;61-80;81-100", -1), 0);
+  ASSERT_EQ(tk_levelize("0-20;21-40;41-60;61-80;81-100", 0), 0);
+  ASSERT_EQ(tk_levelize("0-20;21-40;41-60;61-80;81-100", 10), 0);
+  ASSERT_EQ(tk_levelize("0-20;21-40;41-60;61-80;81-100", 20), 0);
+
+  ASSERT_EQ(tk_levelize("0-20;21-40;41-60;61-80;81-100", 21), 1);
+  ASSERT_EQ(tk_levelize("0-20;21-40;41-60;61-80;81-100", 30), 1);
+  ASSERT_EQ(tk_levelize("0-20;21-40;41-60;61-80;81-100", 40), 1);
+
+  ASSERT_EQ(tk_levelize("0-20;21-40;41-60;61-80;81-100", 41), 2);
+  ASSERT_EQ(tk_levelize("0-20;21-40;41-60;61-80;81-100", 50), 2);
+  ASSERT_EQ(tk_levelize("0-20;21-40;41-60;61-80;81-100", 60), 2);
+
+  ASSERT_EQ(tk_levelize("0-20;21-40;41-60;61-80;81-100", 61), 3);
+  ASSERT_EQ(tk_levelize("0-20;21-40;41-60;61-80;81-100", 70), 3);
+  ASSERT_EQ(tk_levelize("0-20;21-40;41-60;61-80;81-100", 80), 3);
+
+  ASSERT_EQ(tk_levelize("0-20;21-40;41-60;61-80;81-100", 81), 4);
+  ASSERT_EQ(tk_levelize("0-20;21-40;41-60;61-80;81-100", 90), 4);
+  ASSERT_EQ(tk_levelize("0-20;21-40;41-60;61-80;81-100", 100), 4);
+
+  ASSERT_EQ(tk_levelize("0-20;21-40;41-60;61-80;81-100", 1000), 4);
+}
+
+TEST(Utils, levelize2) {
+  ASSERT_EQ(tk_levelize("0-20", -1), 0);
+  ASSERT_EQ(tk_levelize("0-20", 0), 0);
+  ASSERT_EQ(tk_levelize("0-20", 10), 0);
+  ASSERT_EQ(tk_levelize("0-20", 100), 0);
+}
+
+TEST(Utils, levelize3) {
+  ASSERT_EQ(tk_levelize("0-20;21-40", -1), 0);
+  ASSERT_EQ(tk_levelize("0-20;21-40", 30), 1);
+  ASSERT_EQ(tk_levelize("0-20;21-40", 100), 1);
+}

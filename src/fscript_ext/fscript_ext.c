@@ -112,6 +112,19 @@ static ret_t func_value_get_binary_size(fscript_t* fscript, fscript_args_t* args
   return RET_FAIL;
 }
 
+static ret_t func_levelize(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  int32_t value = 0;
+  const char* levels = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  levels = value_str(args->args);
+  value = value_int32(args->args + 1);
+  return_value_if_fail(levels != NULL, RET_BAD_PARAMS);
+
+  value_set_int32(result, tk_levelize(levels, value));
+
+  return RET_OK;
+}
+
 static ret_t func_index_of_ex(fscript_t* fscript, fscript_args_t* args, value_t* result,
                               bool_t last) {
   const char* p = NULL;
@@ -409,6 +422,7 @@ static ret_t func_define_param(fscript_t* fscript, fscript_args_t* args, value_t
 }
 
 FACTORY_TABLE_BEGIN(s_ext_basic)
+FACTORY_TABLE_ENTRY("levelize", func_levelize)
 FACTORY_TABLE_ENTRY("index_of", func_index_of)
 FACTORY_TABLE_ENTRY("last_index_of", func_last_index_of)
 FACTORY_TABLE_ENTRY("ulen", func_ulen)

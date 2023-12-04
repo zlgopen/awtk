@@ -48,7 +48,7 @@ ret_t tk_set_ui_thread(uint64_t ui_thread_id) {
 bool_t tk_is_ui_thread(void) {
   return s_ui_thread_id == tk_thread_self();
 }
-#endif/*WITH_WASM*/
+#endif /*WITH_WASM*/
 
 const char* tk_skip_to_num(const char* str) {
   const char* p = str;
@@ -1990,3 +1990,41 @@ int tk_sscanf(const char* str, const char* format, ...) {
   return ret;
 }
 #endif /*HAS_NO_VSSCANF*/
+
+/**
+ * @method tk_levelize
+ * 将value转换成level。
+ * 比如levels为"0-20;21-40;41-60;61-80;81-100"，value为50，那么返回2。
+ * @param {const char*} levels 级别字符串。
+ * @param {int32_t} value 值。
+ * @return {int32_t} 返回level。
+*/
+int32_t tk_levelize(const char* levels, int32_t value) {
+  int32_t level = 0;
+  int32_t start = 0;
+  int32_t end = 0;
+  const char* p = levels;
+  return_value_if_fail(levels != NULL, 0);
+
+  while (*p) {
+    if (tk_sscanf(p, "%d-%d", &start, &end) == 2) {
+      if (value < start) {
+        break;
+      }
+
+      if (value >= start && value <= end) {
+        return level;
+      }
+    }
+
+    p = strchr(p, ';');
+    if (p != NULL) {
+      p = p + 1;
+      level++;
+    } else {
+      break;
+    }
+  }
+
+  return level;
+}
