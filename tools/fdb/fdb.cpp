@@ -568,7 +568,7 @@ static ret_t func_continue(app_info_t* app, tokenizer_t* tokenizer) {
   uint32_t num = 0;
   debugger_continue(app->debugger);
   debugger_dispatch_messages(app->debugger, 300, &num);
-  return fdb_show_code(app, FALSE);
+  return debugger_is_running(app->debugger) ? RET_OK : fdb_show_code(app, FALSE);
 }
 
 static ret_t func_flush(app_info_t* app, tokenizer_t* tokenizer) {

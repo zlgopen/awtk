@@ -947,7 +947,7 @@ ret_t debugger_lldb_wait_for_completed(debugger_t* debugger) {
 }
 
 static ret_t debugger_lldb_stop(debugger_t* debugger) {
-  return debugger_lldb_disconnect(debugger, TRUE);
+  return debugger_lldb_disconnect(debugger, FALSE);
 }
 
 static ret_t debugger_lldb_pause(debugger_t* debugger) {
