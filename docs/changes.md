@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/12/04
+  * 完善combobox的options，如果选项第一个字符不是数字，里面存在':'，也不视为分隔符。比如http://localhost视为一个整体。
+
 2023/12/03
   * 修复编译警告。
   * 完善remote ui service
