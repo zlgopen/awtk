@@ -96,9 +96,7 @@ static ret_t on_change_theme(void* ctx, event_t* e) {
   return change_theme(value_bool(&(evt->new_value)));
 }
 
-#define DIALOG_INFO_THEME THEME_NAME_PREFIX "dialog_info"
-#define DIALOG_WARN_THEME THEME_NAME_PREFIX "dialog_warn"
-#define DIALOG_CONFIRM_THEME THEME_NAME_PREFIX "dialog_confirm"
+#define DIALOG_THEME THEME_NAME_PREFIX "dialog"
 extern ret_t dialog_simple_show(const char* stitle, const char* scontent, const char* theme,
                                 bool_t has_ok, bool_t has_cancel);
 
@@ -132,7 +130,7 @@ static widget_t* window_open_with_prefix(const char* name) {
 }
 
 static ret_t on_quit(void* ctx, event_t* e) {
-  ret_t ret = dialog_simple_show("Confirm", "Do you really want to exit?", DIALOG_CONFIRM_THEME,
+  ret_t ret = dialog_simple_show("Confirm", "Do you really want to exit?", DIALOG_THEME,
                                  TRUE, TRUE);
   if (RET_OK == ret) {
     return tk_quit();
@@ -167,11 +165,11 @@ static ret_t on_open_window(void* ctx, event_t* e) {
   if (tk_str_eq(name, "toast")) {
     dialog_toast("Hello! AWTK.", 2000);
   } else if (tk_str_eq(name, "info")) {
-    dialog_simple_show("info", "Hello! AWTK.", DIALOG_INFO_THEME, TRUE, FALSE);
+    dialog_simple_show("info", "Hello! AWTK.", DIALOG_THEME, TRUE, FALSE);
   } else if (tk_str_eq(name, "warn")) {
-    dialog_simple_show("Warning", "Not sufficient funds!", DIALOG_WARN_THEME, TRUE, FALSE);
+    dialog_simple_show("Warning", "Not sufficient funds!", DIALOG_THEME, TRUE, FALSE);
   } else if (tk_str_eq(name, "confirm")) {
-    dialog_simple_show("Confirm", "Are you ready?", DIALOG_CONFIRM_THEME, TRUE, TRUE);
+    dialog_simple_show("Confirm", "Are you ready?", DIALOG_THEME, TRUE, TRUE);
   } else {
     widget_t* target = widget_lookup(window_manager(), name, TRUE);
 

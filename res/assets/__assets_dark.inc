@@ -2,9 +2,7 @@
 #include "base/assets_manager.h"
 #if !defined(WITH_FS_RES) || defined(AWTK_WEB)
 extern TK_CONST_DATA_ALIGN(const unsigned char strings_en_US_default[]);
-#include "dark/inc/styles/uiex_dialog_warn.data"
 #include "dark/inc/styles/uiex_keyboard.data"
-#include "dark/inc/styles/uiex_dialog_info.data"
 #include "dark/inc/styles/uiex.data"
 #include "dark/inc/styles/uiex_dialog_confirm.data"
 extern TK_CONST_DATA_ALIGN(const unsigned char style_dialog_toast_default[]);
@@ -403,9 +401,7 @@ ret_t assets_init_dark(void) {
   assets_manager_preload(am, ASSET_TYPE_STYLE, "default");
 #else /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
   assets_manager_add(am, strings_en_US_default);
-  assets_manager_add(am, style_uiex_dialog_warn_dark_dark);
   assets_manager_add(am, style_uiex_keyboard_dark_dark);
-  assets_manager_add(am, style_uiex_dialog_info_dark_dark);
   assets_manager_add(am, style_uiex_dark_dark);
   assets_manager_add(am, style_uiex_dialog_confirm_dark_dark);
   assets_manager_add(am, style_dialog_toast_default);

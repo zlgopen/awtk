@@ -3,9 +3,7 @@
 #if !defined(WITH_FS_RES) || defined(AWTK_WEB)
 extern TK_CONST_DATA_ALIGN(const unsigned char strings_zh_CN_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char strings_en_US_default[]);
-#include "dark/inc/styles/uiex_dialog_warn.data"
 #include "dark/inc/styles/uiex_keyboard.data"
-#include "dark/inc/styles/uiex_dialog_info.data"
 #include "dark/inc/styles/uiex.data"
 #include "dark/inc/styles/uiex_dialog_confirm.data"
 #include "dark/inc/styles/system_bar.data"
@@ -907,9 +905,7 @@ ret_t assets_init_dark(void) {
 #else /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
   assets_manager_add(am, strings_zh_CN_default);
   assets_manager_add(am, strings_en_US_default);
-  assets_manager_add(am, style_uiex_dialog_warn_dark_dark);
   assets_manager_add(am, style_uiex_keyboard_dark_dark);
-  assets_manager_add(am, style_uiex_dialog_info_dark_dark);
   assets_manager_add(am, style_uiex_dark_dark);
   assets_manager_add(am, style_uiex_dialog_confirm_dark_dark);
   assets_manager_add(am, style_system_bar_dark_dark);

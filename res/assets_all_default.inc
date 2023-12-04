@@ -4,7 +4,6 @@
 #include "assets/default/inc/strings/zh_CN.data"
 #include "assets/default/inc/strings/en_US.data"
 #include "assets/default/inc/styles/slide_menu.data"
-#include "assets/default/inc/styles/uiex_dialog_warn.data"
 #include "assets/default/inc/styles/color_tile.data"
 #include "assets/default/inc/styles/digit_clock.data"
 #include "assets/default/inc/styles/dialog_toast.data"
@@ -15,7 +14,6 @@
 #include "assets/default/inc/styles/uiex_keyboard.data"
 #include "assets/default/inc/styles/color.data"
 #include "assets/default/inc/styles/tab_bottom.data"
-#include "assets/default/inc/styles/uiex_dialog_info.data"
 #include "assets/default/inc/styles/calibration.data"
 #include "assets/default/inc/styles/tab_list.data"
 #include "assets/default/inc/styles/gauge.data"
@@ -908,7 +906,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, strings_zh_CN_default);
   assets_manager_add(am, strings_en_US_default);
   assets_manager_add(am, style_slide_menu_default);
-  assets_manager_add(am, style_uiex_dialog_warn_default);
   assets_manager_add(am, style_color_tile_default);
   assets_manager_add(am, style_digit_clock_default);
   assets_manager_add(am, style_dialog_toast_default);
@@ -919,7 +916,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, style_uiex_keyboard_default);
   assets_manager_add(am, style_color_default);
   assets_manager_add(am, style_tab_bottom_default);
-  assets_manager_add(am, style_uiex_dialog_info_default);
   assets_manager_add(am, style_calibration_default);
   assets_manager_add(am, style_tab_list_default);
   assets_manager_add(am, style_gauge_default);
