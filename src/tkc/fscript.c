@@ -2832,64 +2832,103 @@ static ret_t func_assert(fscript_t* fscript, fscript_args_t* args, value_t* resu
 }
 
 static ret_t func_min(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  double v1 = 0;
-  double v2 = 0;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
 
-  v1 = value_double(args->args);
-  v2 = value_double(args->args + 1);
-  value_set_double(result, tk_min(v1, v2));
+  if (value_double(args->args) < value_double(args->args + 1)) {
+    value_deep_copy(result, args->args);
+  } else {
+    value_deep_copy(result, args->args + 1);
+  }
 
   return RET_OK;
 }
 
 static ret_t func_max(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  double v1 = 0;
-  double v2 = 0;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
 
-  v1 = value_double(args->args);
-  v2 = value_double(args->args + 1);
-  value_set_double(result, tk_max(v1, v2));
+  if (value_double(args->args) > value_double(args->args + 1)) {
+    value_deep_copy(result, args->args);
+  } else {
+    value_deep_copy(result, args->args + 1);
+  }
 
   return RET_OK;
 }
 
 static ret_t func_clamp(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  double v1 = 0;
-  double v2 = 0;
-  double v3 = 0;
   FSCRIPT_FUNC_CHECK(args->size == 3, RET_BAD_PARAMS);
 
-  v1 = value_double(args->args);
-  v2 = value_double(args->args + 1);
-  v3 = value_double(args->args + 2);
-  value_set_double(result, tk_clamp(v1, v2, v3));
+  if (value_double(args->args) < value_double(args->args + 1)) {
+    value_deep_copy(result, args->args + 1);
+  } else if (value_double(args->args) > value_double(args->args + 2)) {
+    value_deep_copy(result, args->args + 2);
+  } else {
+    value_deep_copy(result, args->args);
+  }
 
   return RET_OK;
 }
 
 static ret_t func_round(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_set_double(result, tk_roundi(value_double(args->args)));
+  value_set_int64(result, round(value_double(args->args)));
   return RET_OK;
 }
 
 static ret_t func_floor(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_set_double(result, floor(value_double(args->args)));
+  value_set_int64(result, floor(value_double(args->args)));
   return RET_OK;
 }
 
 static ret_t func_ceil(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_set_double(result, ceil(value_double(args->args)));
+  value_set_int64(result, ceil(value_double(args->args)));
   return RET_OK;
 }
 
 static ret_t func_abs(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  value_t* v = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_set_double(result, tk_abs(value_double(args->args)));
+  v = args->args;
+  switch (v->type) {
+    case VALUE_TYPE_INT8: {
+      value_set_int8(result, tk_abs(value_int8(v)));
+      break;
+    }
+    case VALUE_TYPE_UINT8: {
+      value_set_uint8(result, tk_abs(value_uint8(v)));
+      break;
+    }
+    case VALUE_TYPE_INT16: {
+      value_set_int16(result, tk_abs(value_int16(v)));
+      break;
+    }
+    case VALUE_TYPE_UINT16: {
+      value_set_uint16(result, tk_abs(value_uint16(v)));
+      break;
+    }
+    case VALUE_TYPE_INT32: {
+      value_set_int(result, tk_abs(value_int(v)));
+      break;
+    }
+    case VALUE_TYPE_UINT32: {
+      value_set_uint32(result, tk_abs(value_uint32(v)));
+      break;
+    }
+    case VALUE_TYPE_INT64: {
+      value_set_int64(result, tk_abs(value_int64(v)));
+      break;
+    }
+    case VALUE_TYPE_UINT64: {
+      value_set_uint64(result, tk_abs(value_uint64(v)));
+      break;
+    }
+    default: {
+      value_set_double(result, tk_abs(value_double(v)));
+      break;
+    }
+  }
   return RET_OK;
 }
 
