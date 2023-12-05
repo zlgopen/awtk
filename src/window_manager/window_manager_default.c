@@ -434,6 +434,24 @@ static dialog_highlighter_t* window_manager_default_get_dialog_highlighter(widge
   return wm->dialog_highlighter;
 }
 
+static ret_t window_manager_default_dialog_highlighter_destroy(widget_t* widget) {
+  dialog_highlighter_t* dialog_highlighter = NULL;
+  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
+  dialog_highlighter = wm->dialog_highlighter;
+
+  if (dialog_highlighter != NULL) {
+    widget_t* dialog = dialog_highlighter->dialog;
+    if (dialog != NULL) {
+      widget_off_by_func(dialog, EVT_DESTROY, dialog_highlighter_on_dialog_destroy,
+                         dialog_highlighter);
+    }
+    dialog_highlighter_destroy(dialog_highlighter);
+    wm->dialog_highlighter = NULL;
+  }
+  return RET_OK;
+}
+
 static ret_t window_manager_default_create_dialog_highlighter(widget_t* widget,
                                                               widget_t* curr_win) {
   ret_t ret = RET_FAIL;
@@ -445,13 +463,8 @@ static ret_t window_manager_default_create_dialog_highlighter(widget_t* widget,
   if (dialog_highlighter != NULL && curr_highlight != NULL &&
       (dialog_highlighter->dialog != curr_win ||
        dialog_highlighter->used_by_others)) { /* dialog_highlighter被其他窗口使用过，需重新生成 */
-    widget_t* dialog = dialog_highlighter->dialog;
-    if (dialog != NULL) {
-      widget_off_by_func(dialog, EVT_DESTROY, dialog_highlighter_on_dialog_destroy,
-                         dialog_highlighter);
-    }
-    dialog_highlighter_destroy(dialog_highlighter);
-    wm->dialog_highlighter = dialog_highlighter = NULL;
+    window_manager_default_dialog_highlighter_destroy(widget);
+    dialog_highlighter = NULL;
   }
 
   if (dialog_highlighter == NULL && widget_is_support_highlighter(curr_win) &&
@@ -487,9 +500,11 @@ static ret_t window_manager_prepare_dialog_highlighter(widget_t* widget, widget_
                                                        widget_t* curr_win) {
   if (window_manager_default_create_dialog_highlighter(widget, curr_win) == RET_OK) {
     bitmap_t img = {0};
-    window_manager_default_snap_prev_window(widget, prev_win, &img);
-
-    return RET_OK;
+    ret_t ret = window_manager_default_snap_prev_window(widget, prev_win, &img);
+    if (ret != RET_OK) {
+      window_manager_default_dialog_highlighter_destroy(widget);
+    }
+    return ret;
   }
 
   return RET_FAIL;
@@ -587,6 +602,10 @@ static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info
   widget_t* curr_win = WIDGET(info->ctx);
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(curr_win->parent);
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
+
+  if (wm->dialog_highlighter != NULL && widget_is_normal_window(curr_win)) {
+    window_manager_default_dialog_highlighter_destroy(WIDGET(wm));
+  }
 
   window_manager_dispatch_window_event(curr_win, EVT_WINDOW_WILL_OPEN);
   wm->ready_animator = FALSE;
