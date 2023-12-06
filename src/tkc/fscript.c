@@ -3211,6 +3211,10 @@ static ret_t fscript_func_call_init_func(fscript_func_call_t* call, tk_object_t*
     }
   }
 
+  if (func == NULL && s_global_funcs != NULL) {
+    func = (fscript_func_t)general_factory_find(s_global_funcs, func_name);
+  }
+
   if (func == NULL) {
     value_t v;
     if (tk_object_get_prop(obj, func_name, &v) == RET_OK && v.type == VALUE_TYPE_FUNC_DEF) {
@@ -3234,10 +3238,6 @@ static ret_t fscript_func_call_init_func(fscript_func_call_t* call, tk_object_t*
       func = func_function;
       call->ctx = value_func_def(&v);
     }
-  }
-
-  if (func == NULL && s_global_funcs != NULL) {
-    func = (fscript_func_t)general_factory_find(s_global_funcs, func_name);
   }
 
   if (func == NULL) {
