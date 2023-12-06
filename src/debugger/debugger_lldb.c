@@ -30,64 +30,64 @@
 #define N_WRITE_TIMEOUT 5000
 #define STR_CONTENT_LENGTH "Content-Length:"
 
-#define CMD_NEXT "next"
-#define CMD_PAUSE "pause"
-#define CMD_ATTACH "attach"
-#define CMD_LAUNCH "launch"
-#define CMD_SOURCE "source"
-#define CMD_SCOPES "scopes"
-#define CMD_STEP_IN "stepIn"
-#define CMD_THREADS "threads"
-#define CMD_STEP_OUT "stepOut"
-#define CMD_CONTINUE "continue"
-#define CMD_VARIABLES "variables"
-#define CMD_INITIALIZE "initialize"
-#define CMD_DISCONNECT "disconnect"
-#define CMD_STACK_TRACE "stackTrace"
-#define CMD_SET_BREAK_POINTS "setBreakpoints"
-#define CMD_CONFIGURATION_DONE "configurationDone"
-#define CMD_SET_FUNCTION_BREAK_POINTS "setFunctionBreakpoints"
+#define LLDB_CMD_NEXT "next"
+#define LLDB_CMD_PAUSE "pause"
+#define LLDB_CMD_ATTACH "attach"
+#define LLDB_CMD_LAUNCH "launch"
+#define LLDB_CMD_SOURCE "source"
+#define LLDB_CMD_SCOPES "scopes"
+#define LLDB_CMD_STEP_IN "stepIn"
+#define LLDB_CMD_THREADS "threads"
+#define LLDB_CMD_STEP_OUT "stepOut"
+#define LLDB_CMD_CONTINUE "continue"
+#define LLDB_CMD_VARIABLES "variables"
+#define LLDB_CMD_INITIALIZE "initialize"
+#define LLDB_CMD_DISCONNECT "disconnect"
+#define LLDB_CMD_STACK_TRACE "stackTrace"
+#define LLDB_CMD_SET_BREAK_POINTS "setBreakpoints"
+#define LLDB_CMD_CONFIGURATION_DONE "configurationDone"
+#define LLDB_CMD_SET_FUNCTION_BREAK_POINTS "setFunctionBreakpoints"
 
-#define EVENT_EXITED "exited"
-#define EVENT_OUTPUT "output"
-#define EVENT_STOPPED "stopped"
-#define EVENT_PROCESS "process"
-#define EVENT_TERMINATED "terminated"
-#define EVENT_INITIALIZED "initialized"
+#define LLDB_EVENT_EXITED "exited"
+#define LLDB_EVENT_OUTPUT "output"
+#define LLDB_EVENT_STOPPED "stopped"
+#define LLDB_EVENT_PROCESS "process"
+#define LLDB_EVENT_TERMINATED "terminated"
+#define LLDB_EVENT_INITIALIZED "initialized"
 
-#define MSG_TYPE_EVENT "event"
-#define MSG_TYPE_REQUEST "request"
-#define MSG_TYPE_RESPONSE "response"
+#define LLDB_MSG_TYPE_EVENT "event"
+#define LLDB_MSG_TYPE_REQUEST "request"
+#define LLDB_MSG_TYPE_RESPONSE "response"
 
-#define KEY_ID "id"
-#define KEY_PID "pid"
-#define KEY_PORT "port"
-#define KEY_HOST "host"
-#define KEY_CWD "cwd"
-#define KEY_NAME "name"
-#define KEY_ARGS "args"
-#define KEY_LINE "line"
-#define KEY_TYPE "type"
-#define KEY_PATH "path"
-#define KEY_START "start"
-#define KEY_COUNT "count"
-#define KEY_EVENT "event"
-#define KEY_LEVELS "levels"
-#define KEY_SOURCE "source"
-#define KEY_PROGRAM "program"
-#define KEY_SUCCESS "success"
-#define KEY_COMMAND "command"
-#define KEY_FRAME_ID "frameId"
-#define KEY_THREAD_ID "threadId"
-#define KEY_ARGUMENTS "arguments"
-#define KEY_START_FRAME "startFrame"
-#define KEY_BREAK_POINTS "breakpoints"
-#define KEY_STOP_ON_ENTRY "stopOnEntry"
-#define KEY_DEBUGGER_ROOT "debuggerRoot"
-#define KEY_ATTACH_COMMANDS "attachCommands"
-#define KEY_SOURCE_REFERENCE "sourceReference"
-#define KEY_TERMINATE_DEBUGGEE "terminateDebuggee"
-#define KEY_VARIABLES_REFERENCE "variablesReference"
+#define LLDB_KEY_ID "id"
+#define LLDB_KEY_PID "pid"
+#define LLDB_KEY_PORT "port"
+#define LLDB_KEY_HOST "host"
+#define LLDB_KEY_CWD "cwd"
+#define LLDB_KEY_NAME "name"
+#define LLDB_KEY_ARGS "args"
+#define LLDB_KEY_LINE "line"
+#define LLDB_KEY_TYPE "type"
+#define LLDB_KEY_PATH "path"
+#define LLDB_KEY_START "start"
+#define LLDB_KEY_COUNT "count"
+#define LLDB_KEY_EVENT "event"
+#define LLDB_KEY_LEVELS "levels"
+#define LLDB_KEY_SOURCE "source"
+#define LLDB_KEY_PROGRAM "program"
+#define LLDB_KEY_SUCCESS "success"
+#define LLDB_KEY_COMMAND "command"
+#define LLDB_KEY_FRAME_ID "frameId"
+#define LLDB_KEY_THREAD_ID "threadId"
+#define LLDB_KEY_ARGUMENTS "arguments"
+#define LLDB_KEY_START_FRAME "startFrame"
+#define LLDB_KEY_BREAK_POINTS "breakpoints"
+#define LLDB_KEY_STOP_ON_ENTRY "stopOnEntry"
+#define LLDB_KEY_DEBUGGER_ROOT "debuggerRoot"
+#define LLDB_KEY_ATTACH_COMMANDS "attachCommands"
+#define LLDB_KEY_SOURCE_REFERENCE "sourceReference"
+#define LLDB_KEY_TERMINATE_DEBUGGEE "terminateDebuggee"
+#define LLDB_KEY_VARIABLES_REFERENCE "variablesReference"
 
 #define VARREF_LOCALS (int64_t)1
 #define VARREF_GLOBALS (int64_t)2
@@ -193,9 +193,9 @@ static int64_t debugger_lldb_get_frame_id(debugger_t* debugger, uint32_t frame_i
 
 static ret_t debugger_lldb_emit(debugger_t* debugger, tk_object_t* resp) {
   debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
-  const char* event = tk_object_get_prop_str(resp, KEY_EVENT);
+  const char* event = tk_object_get_prop_str(resp, LLDB_KEY_EVENT);
 
-  if (tk_str_eq(event, EVENT_STOPPED)) {
+  if (tk_str_eq(event, LLDB_EVENT_STOPPED)) {
     int32_t line = 0;
     int64_t stop_thread_id = 0;
     const char* file_path = NULL;
@@ -213,15 +213,15 @@ static ret_t debugger_lldb_emit(debugger_t* debugger, tk_object_t* resp) {
     emitter_dispatch(EMITTER(debugger), debugger_breaked_event_init_ex(&event, line, file_path));
 
     log_debug("threadId = %lld stopped\n", stop_thread_id);
-  } else if (tk_str_eq(event, EVENT_OUTPUT)) {
+  } else if (tk_str_eq(event, LLDB_EVENT_OUTPUT)) {
     uint32_t line = 0;
     debugger_log_event_t event;
     const char* message = tk_object_get_prop_str(resp, "body.output");
     emitter_dispatch(EMITTER(debugger), debugger_log_event_init(&event, line, message));
-  } else if (tk_str_eq(event, EVENT_EXITED)) {
+  } else if (tk_str_eq(event, LLDB_EVENT_EXITED)) {
     debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_TERMINATED);
     emitter_dispatch_simple_event(EMITTER(debugger), DEBUGGER_RESP_MSG_COMPLETED);
-  } else if (tk_str_eq(event, EVENT_TERMINATED)) {
+  } else if (tk_str_eq(event, LLDB_EVENT_TERMINATED)) {
     debugger_lldb_disconnect(debugger, FALSE);
     debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_TERMINATED);
     emitter_dispatch_simple_event(EMITTER(debugger), DEBUGGER_RESP_MSG_COMPLETED);
@@ -356,13 +356,13 @@ static tk_object_t* debugger_lldb_dispatch_until_get_resp(debugger_t* debugger, 
 
   while (tk_istream_wait_for_data(in, timeout) == RET_OK) {
     tk_object_t* resp = debugger_lldb_read_resp(debugger);
-    const char* type = tk_object_get_prop_str(resp, KEY_TYPE);
+    const char* type = tk_object_get_prop_str(resp, LLDB_KEY_TYPE);
     break_if_fail(resp != NULL && type != NULL);
 
-    if (tk_str_eq(type, MSG_TYPE_EVENT)) {
+    if (tk_str_eq(type, LLDB_MSG_TYPE_EVENT)) {
       debugger_lldb_emit(debugger, resp);
-    } else if (tk_str_eq(type, MSG_TYPE_RESPONSE)) {
-      const char* command = tk_object_get_prop_str(resp, KEY_COMMAND);
+    } else if (tk_str_eq(type, LLDB_MSG_TYPE_RESPONSE)) {
+      const char* command = tk_object_get_prop_str(resp, LLDB_KEY_COMMAND);
       if (tk_str_eq(command, cmd)) {
         return resp;
       } else {
@@ -389,7 +389,7 @@ static ret_t debugger_lldb_dispatch_until_get_resp_simple(debugger_t* debugger, 
   tk_object_t* resp = debugger_lldb_dispatch_until_get_resp(debugger, cmd, timeout);
 
   if (resp != NULL) {
-    bool_t success = tk_object_get_prop_bool(resp, KEY_SUCCESS, FALSE);
+    bool_t success = tk_object_get_prop_bool(resp, LLDB_KEY_SUCCESS, FALSE);
     log_debug("%s:%s\n", cmd, success ? "true" : "false");
     TK_OBJECT_UNREF(resp);
     return success ? RET_OK : RET_FAIL;
@@ -405,10 +405,10 @@ static ret_t debugger_lldb_dispatch_one(debugger_t* debugger, uint32_t timeout) 
   if (tk_istream_wait_for_data(in, timeout) == RET_OK) {
     tk_object_t* resp = debugger_lldb_read_resp(debugger);
     if (resp != NULL) {
-      const char* type = tk_object_get_prop_str(resp, KEY_TYPE);
-      if (tk_str_eq(type, MSG_TYPE_EVENT)) {
+      const char* type = tk_object_get_prop_str(resp, LLDB_KEY_TYPE);
+      if (tk_str_eq(type, LLDB_MSG_TYPE_EVENT)) {
         debugger_lldb_emit(debugger, resp);
-      } else if (tk_str_eq(type, MSG_TYPE_RESPONSE)) {
+      } else if (tk_str_eq(type, LLDB_MSG_TYPE_RESPONSE)) {
         TK_OBJECT_UNREF(resp);
       } else {
         assert(!"impossible");
@@ -428,8 +428,8 @@ static tk_object_t* debugger_lldb_create_init_req(debugger_t* debugger) {
   req = object_default_create();
   return_value_if_fail(req != NULL, NULL);
 
-  tk_object_set_prop_str(req, KEY_TYPE, MSG_TYPE_REQUEST);
-  tk_object_set_prop_str(req, KEY_COMMAND, CMD_INITIALIZE);
+  tk_object_set_prop_str(req, LLDB_KEY_TYPE, LLDB_MSG_TYPE_REQUEST);
+  tk_object_set_prop_str(req, LLDB_KEY_COMMAND, LLDB_CMD_INITIALIZE);
 
   return req;
 }
@@ -443,7 +443,7 @@ static ret_t debugger_lldb_init(debugger_t* debugger) {
 
   debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_NONE);
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, CMD_INITIALIZE, 3000);
+    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_INITIALIZE, 3000);
   }
 
   TK_OBJECT_UNREF(req);
@@ -460,12 +460,12 @@ static tk_object_t* debugger_lldb_create_disconnect_req(debugger_t* debugger,
   req = object_default_create();
   return_value_if_fail(req != NULL, NULL);
 
-  tk_object_set_prop_str(req, KEY_TYPE, MSG_TYPE_REQUEST);
-  tk_object_set_prop_str(req, KEY_COMMAND, CMD_DISCONNECT);
+  tk_object_set_prop_str(req, LLDB_KEY_TYPE, LLDB_MSG_TYPE_REQUEST);
+  tk_object_set_prop_str(req, LLDB_KEY_COMMAND, LLDB_CMD_DISCONNECT);
 
   arguments = object_default_create();
-  tk_object_set_prop_object(req, KEY_ARGUMENTS, arguments);
-  tk_object_set_prop_bool(arguments, KEY_TERMINATE_DEBUGGEE, terminate_debuggee);
+  tk_object_set_prop_object(req, LLDB_KEY_ARGUMENTS, arguments);
+  tk_object_set_prop_bool(arguments, LLDB_KEY_TERMINATE_DEBUGGEE, terminate_debuggee);
   TK_OBJECT_UNREF(arguments);
 
   return req;
@@ -479,7 +479,7 @@ static ret_t debugger_lldb_disconnect(debugger_t* debugger, bool_t terminate_deb
   return_value_if_fail(req != NULL, RET_BAD_PARAMS);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, CMD_DISCONNECT, 3000);
+    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_DISCONNECT, 3000);
   }
 
   TK_OBJECT_UNREF(req);
@@ -500,20 +500,20 @@ static tk_object_t* debugger_lldb_create_launch_req(debugger_t* debugger, const 
   req = object_default_create();
   goto_error_if_fail(req != NULL);
 
-  tk_object_set_prop_str(req, KEY_TYPE, MSG_TYPE_REQUEST);
-  tk_object_set_prop_str(req, KEY_COMMAND, CMD_LAUNCH);
+  tk_object_set_prop_str(req, LLDB_KEY_TYPE, LLDB_MSG_TYPE_REQUEST);
+  tk_object_set_prop_str(req, LLDB_KEY_COMMAND, LLDB_CMD_LAUNCH);
 
   arguments = object_default_create();
   goto_error_if_fail(arguments != NULL);
-  tk_object_set_prop_object(req, KEY_ARGUMENTS, arguments);
+  tk_object_set_prop_object(req, LLDB_KEY_ARGUMENTS, arguments);
 
-  tk_object_set_prop_bool(arguments, KEY_STOP_ON_ENTRY, FALSE);
-  tk_object_set_prop_str(arguments, KEY_DEBUGGER_ROOT, work_root);
-  tk_object_set_prop_str(arguments, KEY_CWD, work_root);
-  tk_object_set_prop_str(arguments, KEY_PROGRAM, program);
+  tk_object_set_prop_bool(arguments, LLDB_KEY_STOP_ON_ENTRY, FALSE);
+  tk_object_set_prop_str(arguments, LLDB_KEY_DEBUGGER_ROOT, work_root);
+  tk_object_set_prop_str(arguments, LLDB_KEY_CWD, work_root);
+  tk_object_set_prop_str(arguments, LLDB_KEY_PROGRAM, program);
 
   args = object_array_create();
-  tk_object_set_prop_object(arguments, KEY_ARGS, args);
+  tk_object_set_prop_object(arguments, LLDB_KEY_ARGS, args);
 
   for (i = 0; i < argc; i++) {
     value_set_str(&v, argv[i]);
@@ -537,9 +537,9 @@ static ret_t debugger_lldb_launch_app_impl(debugger_t* debugger, const char* pro
   return_value_if_fail(req != NULL, RET_BAD_PARAMS);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, CMD_LAUNCH, 60000);
+    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_LAUNCH, 60000);
     if (ret == RET_OK) {
-      debugger_lldb_simple_command(debugger, CMD_CONFIGURATION_DONE);
+      debugger_lldb_simple_command(debugger, LLDB_CMD_CONFIGURATION_DONE);
       debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_RUNNING);
       debugger_lldb_update_break_points(debugger);
     }
@@ -560,12 +560,12 @@ static tk_object_t* debugger_lldb_create_attach_req(debugger_t* debugger, const 
   req = object_default_create();
   goto_error_if_fail(req != NULL);
 
-  tk_object_set_prop_str(req, KEY_TYPE, MSG_TYPE_REQUEST);
-  tk_object_set_prop_str(req, KEY_COMMAND, CMD_ATTACH);
+  tk_object_set_prop_str(req, LLDB_KEY_TYPE, LLDB_MSG_TYPE_REQUEST);
+  tk_object_set_prop_str(req, LLDB_KEY_COMMAND, LLDB_CMD_ATTACH);
 
   arguments = object_default_create();
   goto_error_if_fail(arguments != NULL);
-  tk_object_set_prop_object(req, KEY_ARGUMENTS, arguments);
+  tk_object_set_prop_object(req, LLDB_KEY_ARGUMENTS, arguments);
 
   if (cmds != NULL) {
     value_t v;
@@ -573,11 +573,11 @@ static tk_object_t* debugger_lldb_create_attach_req(debugger_t* debugger, const 
 
     /*执行attach_commands，实现attach. WASM走这条路径。*/
     object_array_push(attach_commands, value_set_str(&v, cmds));
-    tk_object_set_prop_object(arguments, KEY_ATTACH_COMMANDS, attach_commands);
+    tk_object_set_prop_object(arguments, LLDB_KEY_ATTACH_COMMANDS, attach_commands);
     TK_OBJECT_UNREF(attach_commands);
   } else {
     /*attach到指定的PID*/
-    tk_object_set_prop_int(arguments, KEY_PID, pid);
+    tk_object_set_prop_int(arguments, LLDB_KEY_PID, pid);
   }
 
   return req;
@@ -594,11 +594,11 @@ static ret_t debugger_lldb_attach_impl(debugger_t* debugger, const char* cmds, i
   return_value_if_fail(req != NULL, RET_BAD_PARAMS);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, CMD_ATTACH, 60000);
+    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_ATTACH, 60000);
     if (ret == RET_OK) {
       debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_RUNNING);
       debugger_lldb_update_break_points(debugger);
-      debugger_lldb_simple_command(debugger, CMD_CONFIGURATION_DONE);
+      debugger_lldb_simple_command(debugger, LLDB_CMD_CONFIGURATION_DONE);
     }
   }
 
@@ -639,25 +639,25 @@ static tk_object_t* debugger_lldb_create_set_break_points_req(debugger_t* debugg
   req = object_default_create();
   return_value_if_fail(req != NULL, NULL);
 
-  tk_object_set_prop_str(req, KEY_TYPE, MSG_TYPE_REQUEST);
-  tk_object_set_prop_str(req, KEY_COMMAND, CMD_SET_BREAK_POINTS);
+  tk_object_set_prop_str(req, LLDB_KEY_TYPE, LLDB_MSG_TYPE_REQUEST);
+  tk_object_set_prop_str(req, LLDB_KEY_COMMAND, LLDB_CMD_SET_BREAK_POINTS);
 
   arguments = object_default_create();
-  tk_object_set_prop_object(req, KEY_ARGUMENTS, arguments);
+  tk_object_set_prop_object(req, LLDB_KEY_ARGUMENTS, arguments);
 
   source = object_default_create();
-  tk_object_set_prop_object(arguments, KEY_SOURCE, source);
-  tk_object_set_prop_str(source, KEY_PATH, path);
+  tk_object_set_prop_object(arguments, LLDB_KEY_SOURCE, source);
+  tk_object_set_prop_str(source, LLDB_KEY_PATH, path);
 
   break_points = object_array_create();
-  tk_object_set_prop_object(arguments, KEY_BREAK_POINTS, break_points);
+  tk_object_set_prop_object(arguments, LLDB_KEY_BREAK_POINTS, break_points);
 
   for (i = 0; i < lines->size; i++) {
     value_t* iter = lines->props + i;
     int32_t line = value_int(iter);
 
     bp = object_default_create();
-    tk_object_set_prop_int(bp, KEY_LINE, line);
+    tk_object_set_prop_int(bp, LLDB_KEY_LINE, line);
     object_array_push(break_points, value_set_object(&v, bp));
     TK_OBJECT_UNREF(bp);
   }
@@ -680,7 +680,7 @@ static ret_t debugger_lldb_on_source_break_point(void* ctx, const void* data) {
   return_value_if_fail(req != NULL, RET_BAD_PARAMS);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, CMD_SET_BREAK_POINTS, 3000);
+    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_SET_BREAK_POINTS, 3000);
   }
 
   TK_OBJECT_UNREF(req);
@@ -710,20 +710,20 @@ static tk_object_t* debugger_lldb_create_set_func_break_points_req(debugger_t* d
   req = object_default_create();
   return_value_if_fail(req != NULL, NULL);
 
-  tk_object_set_prop_str(req, KEY_TYPE, MSG_TYPE_REQUEST);
-  tk_object_set_prop_str(req, KEY_COMMAND, CMD_SET_FUNCTION_BREAK_POINTS);
+  tk_object_set_prop_str(req, LLDB_KEY_TYPE, LLDB_MSG_TYPE_REQUEST);
+  tk_object_set_prop_str(req, LLDB_KEY_COMMAND, LLDB_CMD_SET_FUNCTION_BREAK_POINTS);
 
   arguments = object_default_create();
-  tk_object_set_prop_object(req, KEY_ARGUMENTS, arguments);
+  tk_object_set_prop_object(req, LLDB_KEY_ARGUMENTS, arguments);
 
   break_points = object_array_create();
-  tk_object_set_prop_object(arguments, KEY_BREAK_POINTS, break_points);
+  tk_object_set_prop_object(arguments, LLDB_KEY_BREAK_POINTS, break_points);
 
   for (i = 0; i < arr->size; i++) {
     const char* func = (const char*)darray_get(arr, i);
 
     bp = object_default_create();
-    tk_object_set_prop_str(bp, KEY_NAME, func);
+    tk_object_set_prop_str(bp, LLDB_KEY_NAME, func);
     object_array_push(break_points, value_set_object(&v, bp));
   }
 
@@ -743,7 +743,7 @@ static ret_t debugger_lldb_update_func_break_points(debugger_t* debugger) {
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
     ret =
-        debugger_lldb_dispatch_until_get_resp_simple(debugger, CMD_SET_FUNCTION_BREAK_POINTS, 3000);
+        debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_SET_FUNCTION_BREAK_POINTS, 3000);
   }
 
   TK_OBJECT_UNREF(req);
@@ -760,14 +760,14 @@ static tk_object_t* debugger_lldb_create_get_callstack_req(debugger_t* debugger,
   req = object_default_create();
   return_value_if_fail(req != NULL, NULL);
 
-  tk_object_set_prop_str(req, KEY_TYPE, MSG_TYPE_REQUEST);
-  tk_object_set_prop_str(req, KEY_COMMAND, CMD_STACK_TRACE);
+  tk_object_set_prop_str(req, LLDB_KEY_TYPE, LLDB_MSG_TYPE_REQUEST);
+  tk_object_set_prop_str(req, LLDB_KEY_COMMAND, LLDB_CMD_STACK_TRACE);
 
   arguments = object_default_create();
-  tk_object_set_prop_object(req, KEY_ARGUMENTS, arguments);
-  tk_object_set_prop_uint32(arguments, KEY_START_FRAME, start_frame);
-  tk_object_set_prop_uint32(arguments, KEY_LEVELS, levels);
-  tk_object_set_prop_int64(arguments, KEY_THREAD_ID, thread_id);
+  tk_object_set_prop_object(req, LLDB_KEY_ARGUMENTS, arguments);
+  tk_object_set_prop_uint32(arguments, LLDB_KEY_START_FRAME, start_frame);
+  tk_object_set_prop_uint32(arguments, LLDB_KEY_LEVELS, levels);
+  tk_object_set_prop_int64(arguments, LLDB_KEY_THREAD_ID, thread_id);
 
   TK_OBJECT_UNREF(arguments);
 
@@ -783,7 +783,7 @@ static tk_object_t* debugger_lldb_get_callstack_impl(debugger_t* debugger, uint3
   return_value_if_fail(req != NULL, NULL);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    resp = debugger_lldb_dispatch_until_get_resp(debugger, CMD_STACK_TRACE, 3000);
+    resp = debugger_lldb_dispatch_until_get_resp(debugger, LLDB_CMD_STACK_TRACE, 3000);
   }
 
   TK_OBJECT_UNREF(req);
@@ -799,14 +799,14 @@ static tk_object_t* debugger_lldb_create_get_variables_req(debugger_t* debugger,
   req = object_default_create();
   return_value_if_fail(req != NULL, NULL);
 
-  tk_object_set_prop_str(req, KEY_TYPE, MSG_TYPE_REQUEST);
-  tk_object_set_prop_str(req, KEY_COMMAND, CMD_VARIABLES);
+  tk_object_set_prop_str(req, LLDB_KEY_TYPE, LLDB_MSG_TYPE_REQUEST);
+  tk_object_set_prop_str(req, LLDB_KEY_COMMAND, LLDB_CMD_VARIABLES);
 
   arguments = object_default_create();
-  tk_object_set_prop_object(req, KEY_ARGUMENTS, arguments);
-  tk_object_set_prop_uint32(arguments, KEY_VARIABLES_REFERENCE, type);
-  tk_object_set_prop_uint32(arguments, KEY_START, start);
-  tk_object_set_prop_int64(arguments, KEY_COUNT, count);
+  tk_object_set_prop_object(req, LLDB_KEY_ARGUMENTS, arguments);
+  tk_object_set_prop_uint32(arguments, LLDB_KEY_VARIABLES_REFERENCE, type);
+  tk_object_set_prop_uint32(arguments, LLDB_KEY_START, start);
+  tk_object_set_prop_int64(arguments, LLDB_KEY_COUNT, count);
 
   TK_OBJECT_UNREF(arguments);
 
@@ -822,7 +822,7 @@ static tk_object_t* debugger_lldb_get_variables_impl(debugger_t* debugger, uint3
   return_value_if_fail(req != NULL, NULL);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    resp = debugger_lldb_dispatch_until_get_resp(debugger, CMD_VARIABLES, 3000);
+    resp = debugger_lldb_dispatch_until_get_resp(debugger, LLDB_CMD_VARIABLES, 3000);
   }
 
   TK_OBJECT_UNREF(req);
@@ -835,8 +835,8 @@ static tk_object_t* debugger_lldb_create_get_threads_req(debugger_t* debugger) {
   req = object_default_create();
   return_value_if_fail(req != NULL, NULL);
 
-  tk_object_set_prop_str(req, KEY_TYPE, MSG_TYPE_REQUEST);
-  tk_object_set_prop_str(req, KEY_COMMAND, CMD_THREADS);
+  tk_object_set_prop_str(req, LLDB_KEY_TYPE, LLDB_MSG_TYPE_REQUEST);
+  tk_object_set_prop_str(req, LLDB_KEY_COMMAND, LLDB_CMD_THREADS);
 
   return req;
 }
@@ -849,7 +849,7 @@ static tk_object_t* debugger_lldb_get_threads(debugger_t* debugger) {
   return_value_if_fail(req != NULL, NULL);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    resp = debugger_lldb_dispatch_until_get_resp(debugger, CMD_THREADS, 3000);
+    resp = debugger_lldb_dispatch_until_get_resp(debugger, LLDB_CMD_THREADS, 3000);
   }
 
   TK_OBJECT_UNREF(req);
@@ -864,12 +864,12 @@ static tk_object_t* debugger_lldb_create_scopes_req(debugger_t* debugger, uint32
   req = object_default_create();
   return_value_if_fail(req != NULL, NULL);
 
-  tk_object_set_prop_str(req, KEY_TYPE, MSG_TYPE_REQUEST);
-  tk_object_set_prop_str(req, KEY_COMMAND, CMD_SCOPES);
+  tk_object_set_prop_str(req, LLDB_KEY_TYPE, LLDB_MSG_TYPE_REQUEST);
+  tk_object_set_prop_str(req, LLDB_KEY_COMMAND, LLDB_CMD_SCOPES);
 
   arguments = object_default_create();
-  tk_object_set_prop_object(req, KEY_ARGUMENTS, arguments);
-  tk_object_set_prop_uint32(arguments, KEY_FRAME_ID, frame_id);
+  tk_object_set_prop_object(req, LLDB_KEY_ARGUMENTS, arguments);
+  tk_object_set_prop_uint32(arguments, LLDB_KEY_FRAME_ID, frame_id);
 
   TK_OBJECT_UNREF(arguments);
 
@@ -884,7 +884,7 @@ static ret_t debugger_lldb_scopes_command(debugger_t* debugger, uint32_t frame_i
   return_value_if_fail(req != NULL, ret);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, CMD_SCOPES, 3000);
+    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_SCOPES, 3000);
   }
 
   return ret;
@@ -898,12 +898,12 @@ static tk_object_t* debugger_lldb_create_simple_req(debugger_t* debugger, const 
   req = object_default_create();
   return_value_if_fail(req != NULL, NULL);
 
-  tk_object_set_prop_str(req, KEY_TYPE, MSG_TYPE_REQUEST);
-  tk_object_set_prop_str(req, KEY_COMMAND, cmd);
+  tk_object_set_prop_str(req, LLDB_KEY_TYPE, LLDB_MSG_TYPE_REQUEST);
+  tk_object_set_prop_str(req, LLDB_KEY_COMMAND, cmd);
 
   arguments = object_default_create();
-  tk_object_set_prop_object(req, KEY_ARGUMENTS, arguments);
-  tk_object_set_prop_int64(arguments, KEY_THREAD_ID, thread_id);
+  tk_object_set_prop_object(req, LLDB_KEY_ARGUMENTS, arguments);
+  tk_object_set_prop_int64(arguments, LLDB_KEY_THREAD_ID, thread_id);
 
   TK_OBJECT_UNREF(arguments);
 
@@ -951,7 +951,7 @@ static ret_t debugger_lldb_stop(debugger_t* debugger) {
 }
 
 static ret_t debugger_lldb_pause(debugger_t* debugger) {
-  return debugger_lldb_simple_command(debugger, CMD_PAUSE);
+  return debugger_lldb_simple_command(debugger, LLDB_CMD_PAUSE);
 }
 
 static ret_t debugger_lldb_restart(debugger_t* debugger) {
@@ -959,15 +959,15 @@ static ret_t debugger_lldb_restart(debugger_t* debugger) {
 }
 
 static ret_t debugger_lldb_step_over(debugger_t* debugger) {
-  return debugger_lldb_simple_command(debugger, CMD_NEXT);
+  return debugger_lldb_simple_command(debugger, LLDB_CMD_NEXT);
 }
 
 static ret_t debugger_lldb_step_in(debugger_t* debugger) {
-  return debugger_lldb_simple_command(debugger, CMD_STEP_IN);
+  return debugger_lldb_simple_command(debugger, LLDB_CMD_STEP_IN);
 }
 
 static ret_t debugger_lldb_step_out(debugger_t* debugger) {
-  return debugger_lldb_simple_command(debugger, CMD_STEP_OUT);
+  return debugger_lldb_simple_command(debugger, LLDB_CMD_STEP_OUT);
 }
 
 static ret_t debugger_lldb_step_loop_over(debugger_t* debugger) {
@@ -975,7 +975,7 @@ static ret_t debugger_lldb_step_loop_over(debugger_t* debugger) {
 }
 
 static ret_t debugger_lldb_continue(debugger_t* debugger) {
-  return debugger_lldb_simple_command(debugger, CMD_CONTINUE);
+  return debugger_lldb_simple_command(debugger, LLDB_CMD_CONTINUE);
 }
 
 static ret_t debugger_lldb_load_source(debugger_t* debugger, const char* path) {
@@ -1194,10 +1194,9 @@ static ret_t debugger_lldb_update_break_points(debugger_t* debugger) {
 }
 
 static ret_t debugger_lldb_on_clear_breakpoints(void* ctx, const void* data) {
-  uint32_t i = 0;
-  str_t* str = (str_t*)ctx;
   named_value_t* nv = (named_value_t*)data;
   object_array_clear_props(value_object(&(nv->value)));
+
   return RET_OK;
 }
 
