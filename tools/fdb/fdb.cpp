@@ -354,10 +354,15 @@ static ret_t func_local(app_info_t* app, tokenizer_t* tokenizer) {
 }
 
 static ret_t func_print(app_info_t* app, tokenizer_t* tokenizer) {
+  tk_object_t* obj = NULL;
   const char* name = tokenizer->str + tokenizer->cursor;
-  tk_object_t* obj = debugger_get_var(app->debugger, name);
+  uint32_t size = tk_strlen(name);
+  char* var_name = tk_strdup(name);
+  var_name[size - 1] = '\0';
+  obj = debugger_get_var(app->debugger, var_name);
   fdb_show_variables("var", obj);
   TK_OBJECT_UNREF(obj);
+  TKMEM_FREE(var_name);
 
   return RET_OK;
 }

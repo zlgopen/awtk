@@ -1026,6 +1026,32 @@ static ret_t debugger_lldb_set_current_frame(debugger_t* debugger, uint32_t fram
   return RET_OK;
 }
 
+static tk_object_t* object_find_variable_value(tk_object_t* obj, const char* name, const char* full_name) {
+  uint32_t i = 0;
+  char path[MAX_PATH + 1] = {0};
+  char full_path[MAX_PATH + 1] = {0};
+  uint32_t n = tk_object_get_prop_uint32(obj, "body.variables.#size", 0);
+
+  for (i = 0; i < n; i++) {
+    tk_snprintf(path, sizeof(path) - 1, "body.variables.[%d]", i);
+    tk_snprintf(full_path, sizeof(full_path) - 1, "%s.name", path);
+    if (tk_str_eq(name, tk_object_get_prop_str(obj, full_path))) {
+      tk_object_t* ret_obj = conf_ubjson_create();
+
+      tk_object_set_prop_str(ret_obj, "body.variables.[0].evaluateName", full_name);
+      
+      tk_snprintf(full_path, sizeof(full_path) - 1, "%s.value", path);
+      tk_object_set_prop_str(ret_obj, "body.variables.[0].value", tk_object_get_prop_str(obj, full_path));
+      
+      tk_snprintf(full_path, sizeof(full_path) - 1, "%s.type", path);
+      tk_object_set_prop_str(ret_obj, "body.variables.[0].type", tk_object_get_prop_str(obj, full_path));
+      return ret_obj;
+    }
+  }
+
+  return NULL;
+}
+
 static int32_t object_find_variables_reference(tk_object_t* obj, const char* name) {
   uint32_t i = 0;
   char path[MAX_PATH + 1] = {0};
@@ -1076,9 +1102,19 @@ static tk_object_t* debugger_lldb_get_var(debugger_t* debugger, const char* path
         } else {
           variables_reference = object_find_variables_reference(obj, iter);
         }
-        TK_OBJECT_UNREF(obj);
         if (variables_reference > 0) {
+          TK_OBJECT_UNREF(obj);
           obj = debugger_lldb_get_variables_impl(debugger, variables_reference, 0, 0);
+        } else {
+          tk_object_t* value_obj = NULL;
+          if (is_array) {
+            value_obj = object_find_variable_value(obj, name, path);
+          } else {
+            value_obj = object_find_variable_value(obj, iter, path);
+          }
+          TK_OBJECT_UNREF(obj);
+          obj = value_obj;
+          break;
         }
       }
     }
@@ -1157,12 +1193,21 @@ static ret_t debugger_lldb_update_break_points(debugger_t* debugger) {
   return RET_OK;
 }
 
+static ret_t debugger_lldb_on_clear_breakpoints(void* ctx, const void* data) {
+  uint32_t i = 0;
+  str_t* str = (str_t*)ctx;
+  named_value_t* nv = (named_value_t*)data;
+  object_array_clear_props(value_object(&(nv->value)));
+  return RET_OK;
+}
+
 static ret_t debugger_lldb_clear_break_points(debugger_t* debugger) {
   debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
 
   darray_clear(&(lldb->functions_break_points));
-  object_default_clear_props(lldb->source_break_points);
+  tk_object_foreach_prop(lldb->source_break_points, debugger_lldb_on_clear_breakpoints, debugger);
   debugger_lldb_update_break_points(debugger);
+  object_default_clear_props(lldb->source_break_points);
 
   return RET_FAIL;
 }
