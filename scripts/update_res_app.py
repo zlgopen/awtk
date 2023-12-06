@@ -164,6 +164,7 @@ def run(awtk_root, is_excluded_file_handler = None, is_new_usage = False) :
     RES_OUTPUT_DIR='./res'
     TMP_LCD_FAST_ROTATION_MODE=None
     args = sys.argv[1:];
+    is_longsots_res_output_dir = False
     if common.is_all_sopts_args(args) :
         longsots_dict = common.get_longsopts_args(args)
         common.set_action(longsots_dict['action'])
@@ -174,8 +175,11 @@ def run(awtk_root, is_excluded_file_handler = None, is_new_usage = False) :
         TMP_LCD_ORIENTATION = get_dict_value(longsots_dict, 'lcd_orientation', TMP_LCD_ORIENTATION)
         TMP_LCD_FAST_ROTATION_MODE = get_dict_value(longsots_dict, 'lcd_enable_fast_rotation', TMP_LCD_FAST_ROTATION_MODE)
         RES_CONFIG_JSON_PATH = get_dict_value(longsots_dict, 'res_config_file', RES_CONFIG_JSON_PATH)
-        RES_OUTPUT_DIR = get_dict_value(longsots_dict, 'output_dir', RES_OUTPUT_DIR)
         TMP_APP_ROOT = get_dict_value(longsots_dict, 'app_root', TMP_APP_ROOT)
+
+        if 'output_dir' in longsots_dict:
+            is_longsots_res_output_dir = True
+            RES_OUTPUT_DIR = longsots_dict['output_dir']
 
         if 'res_config_script' in longsots_dict :
             res_config_script_argv = ''
@@ -183,7 +187,6 @@ def run(awtk_root, is_excluded_file_handler = None, is_new_usage = False) :
             if 'res_config_script_argv' in longsots_dict :
                 res_config_script_argv = longsots_dict['res_config_script_argv']
             set_res_config_by_script(res_config_script, res_config_script_argv)
-
     else :
         sys_args = common.get_args(args)
         if len(sys_args) > 0 :
@@ -211,7 +214,7 @@ def run(awtk_root, is_excluded_file_handler = None, is_new_usage = False) :
     THEMES = []
     APP_THEME = 'default'
     LCD_ORIENTATION = ''
-    OUTPUT_ROOT = './res'
+    OUTPUT_ROOT = None
     IS_GENERATE_INC_RES = True
     IS_GENERATE_INC_BITMAP = True
     LCD_FAST_ROTATION_MODE = False
@@ -221,7 +224,8 @@ def run(awtk_root, is_excluded_file_handler = None, is_new_usage = False) :
 
     use_default_theme_config(RES_CONFIG_JSON_PATH, RES_CONFIG)
 
-    OUTPUT_ROOT = os.path.abspath(common.join_path(RES_OUTPUT_DIR, 'assets'))
+    if is_longsots_res_output_dir or OUTPUT_ROOT == None :
+        OUTPUT_ROOT = os.path.abspath(common.join_path(RES_OUTPUT_DIR, 'assets'))
     if TMP_LCD_ORIENTATION != '' :
         LCD_ORIENTATION = TMP_LCD_ORIENTATION
     if TMP_LCD_FAST_ROTATION_MODE != None :
