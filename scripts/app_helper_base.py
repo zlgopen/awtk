@@ -249,7 +249,6 @@ class AppHelperBase:
         global SRT_SCONS_CONFIG_SCRIPT_ARGV
         if SRT_SCONS_CONFIG_SCRIPT in ARGUMENTS :
             self.complie_helper = self.get_complie_helper_by_script(ARGUMENTS, ARGUMENTS[SRT_SCONS_CONFIG_SCRIPT], ARGUMENTS.get(SRT_SCONS_CONFIG_SCRIPT_ARGV, ''))
-            exit()
         else :
             self.complie_helper = compile_config.complie_helper()
             self.complie_helper.set_compile_config(COMPILE_CONFIG)
