@@ -68,6 +68,31 @@ static ret_t func_date_time_set(fscript_t* fscript, fscript_args_t* args, value_
   return RET_OK;
 }
 
+static ret_t func_date_time_format(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  str_t str;
+  uint64_t t;
+  char buff[64] = {0};
+  date_time_t* dt = NULL;
+  const char* format = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+
+  format = value_str(args->args + 1);
+  if (args->args[0].type == VALUE_TYPE_OBJECT) {
+    dt = get_date_time(fscript, args);
+    return_value_if_fail(dt != NULL, RET_BAD_PARAMS);
+    t = date_time_to_time(dt);
+  } else {
+    t = value_uint64(args->args);
+  }
+
+  str_attach(&str, buff, sizeof(buff));
+  tk_date_time_format(t, format, &str);
+
+  value_dup_str(result, buff);
+
+  return RET_OK;
+}
+
 static ret_t func_time_now_us(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   value_set_uint64(result, time_now_us());
   return RET_OK;
@@ -140,6 +165,7 @@ FACTORY_TABLE_ENTRY("time_now_s", func_time_now_s)
 FACTORY_TABLE_ENTRY("time_now", func_time_now_s)
 FACTORY_TABLE_ENTRY("is_leap_year", func_year_is_leap)
 FACTORY_TABLE_ENTRY("get_days_of_month", func_get_days_of_month)
+FACTORY_TABLE_ENTRY("date_time_format", func_date_time_format)
 
 /*主要给AWBLOCK使用*/
 FACTORY_TABLE_ENTRY("date_time_set_prop", func_date_time_set_prop)

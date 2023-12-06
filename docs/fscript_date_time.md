@@ -216,6 +216,41 @@ var dt = date_time_create();
 var year = date_time_get_prop(dt, "year");
 ```
 
+### 12.date\_time\_format
+
+> 格式化日期对象为字符串。
+----------------------------
+
+> 格式规则：
+ * Y 代表年(完整显示)
+ * M 代表月(1-12)
+ * D 代表日(1-31)
+ * h 代表时(0-23)
+ * H 代表时(0-11)
+ * m 代表分(0-59)
+ * s 代表秒(0-59)
+ * YY 代表年(只显示末两位)
+ * MM 代表月(01-12)
+ * DD 代表日(01-31)
+ * hh 代表时(00-23)
+ * HH 代表时(00-11)
+ * mm 代表分(00-59)
+ * ss 代表秒(00-59)
+
+#### 原型
+
+```js
+date_time_format(dt, format) => str
+date_time_format(epoch_time, format) => str
+```
+
+#### 示例
+
+```js
+print(date_time_format(0, "Y-M-D h:m:s")); // => "1970-1-1 0:0:0"
+print(date_time_format(0, "YY-MM-DD hh:mm:ss")); // => "70-01-01 00:00:00"
+```
+
 ### 更多示例
 
 ```js

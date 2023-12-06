@@ -1062,8 +1062,49 @@ int tk_sscanf_simple(const char* str, const char* format, ...);
  * @param {const char*} levels 级别字符串。
  * @param {int32_t} value 值。
  * @return {int32_t} 返回level。
-*/
+ */
 int32_t tk_levelize(const char* levels, int32_t value);
+
+/**
+ * @method tk_count_char
+ * 统计字符串中某个字符出现的次数。
+ * @param {const char*} str 字符串。
+ * @param {char} c 字符。
+ * @return {uint32_t} 返回字符出现的次数。
+ */
+uint32_t tk_count_char(const char* str, char c);
+
+/**
+ * @method tk_date_time_format
+ * 格式化时间。
+ * 格式规则：
+ * * Y 代表年(完整显示)
+ * * M 代表月(1-12)
+ * * D 代表日(1-31)
+ * * h 代表时(0-23)
+ * * H 代表时(0-11)
+ * * m 代表分(0-59)
+ * * s 代表秒(0-59)
+ * * YY 代表年(只显示末两位)
+ * * MM 代表月(01-12)
+ * * DD 代表日(01-31)
+ * * hh 代表时(00-23)
+ * * HH 代表时(00-11)
+ * * mm 代表分(00-59)
+ * * ss 代表秒(00-59)
+ *
+ * 如 日期时间为：2018/11/12 9:10:20
+ * * "Y/M/D"显示为"2018/11/12"
+ * * "Y-M-D"显示为"2018-11-12"
+ * * "Y-M-D h:m:s"显示为"2018-11-12 9:10:20"
+ * * "Y-M-D hh:mm:ss"显示为"2018-11-12 09:10:20"
+ * 
+ * @param {uint64_t} time 时间。
+ * @param {const char*} format 格式化字符串。
+ * @param {str_t*} result 用于返回结果。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_date_time_format(uint64_t time, const char* format, str_t* result);
 
 #define TK_STRDUP(str) ((str) != NULL) ? tk_strdup(str) : NULL
 #define TK_STRNDUP(str, len) ((str) != NULL) ? tk_strndup(str, len) : NULL

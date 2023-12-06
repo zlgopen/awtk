@@ -1991,14 +1991,6 @@ int tk_sscanf(const char* str, const char* format, ...) {
 }
 #endif /*HAS_NO_VSSCANF*/
 
-/**
- * @method tk_levelize
- * 将value转换成level。
- * 比如levels为"0-20;21-40;41-60;61-80;81-100"，value为50，那么返回2。
- * @param {const char*} levels 级别字符串。
- * @param {int32_t} value 值。
- * @return {int32_t} 返回level。
-*/
 int32_t tk_levelize(const char* levels, int32_t value) {
   int32_t level = 0;
   int32_t start = 0;
@@ -2027,4 +2019,102 @@ int32_t tk_levelize(const char* levels, int32_t value) {
   }
 
   return level;
+}
+
+#include "tkc/date_time.h"
+
+uint32_t tk_count_char(const char* str, char c) {
+  uint32_t nr = 0;
+  return_value_if_fail(str != NULL, 0);
+
+  while (*str++ == c) {
+    nr++;
+    if (*str == '\0') {
+      break;
+    }
+  }
+
+  return nr;
+}
+
+ret_t tk_date_time_format(uint64_t time, const char* format, str_t* result) {
+  date_time_t dt;
+  wchar_t temp[32];
+  const char* p = format;
+  return_value_if_fail(format != NULL && result != NULL, RET_BAD_PARAMS);
+
+  str_clear(result);
+  date_time_init(&dt);
+  date_time_from_time(&dt, time);
+  memset(temp, 0x00, sizeof(temp));
+
+  while (*p) {
+    int32_t repeat = tk_count_char(p, *p);
+
+    switch (*p) {
+      case 'Y': {
+        if (repeat == 2) {
+          str_append_format(result, 32, "%02d", dt.year % 100);
+        } else {
+          str_append_format(result, 32, "%d", dt.year);
+        }
+        break;
+      }
+      case 'M': {
+        if (repeat == 2) {
+          str_append_format(result, 32, "%02d", dt.month);
+        } else {
+          str_append_format(result, 32, "%d", dt.month);
+        }
+        break;
+      }
+      case 'D': {
+        if (repeat == 2) {
+          str_append_format(result, 32, "%02d", dt.day);
+        } else {
+          str_append_format(result, 32, "%d", dt.day);
+        }
+        break;
+      }
+      case 'h': {
+        if (repeat == 2) {
+          str_append_format(result, 32, "%02d", dt.hour);
+        } else {
+          str_append_format(result, 32, "%d", dt.hour);
+        }
+        break;
+      }
+      case 'H': {
+        if (repeat == 2) {
+          str_append_format(result, 32, "%02d", dt.hour % 12);
+        } else {
+          str_append_format(result, 32, "%d", dt.hour % 12);
+        }
+        break;
+      }
+      case 'm': {
+        if (repeat == 2) {
+          str_append_format(result, 32, "%02d", dt.minute);
+        } else {
+          str_append_format(result, 32, "%d", dt.minute);
+        }
+        break;
+      }
+      case 's': {
+        if (repeat == 2) {
+          str_append_format(result, 32, "%02d", dt.second);
+        } else {
+          str_append_format(result, 32, "%d", dt.second);
+        }
+        break;
+      }
+      default: {
+        str_append_with_len(result, p, repeat);
+        break;
+      }
+    }
+    p += repeat;
+  }
+
+  return RET_OK;
 }

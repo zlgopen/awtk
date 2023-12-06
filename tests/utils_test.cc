@@ -1192,3 +1192,33 @@ TEST(Utils, levelize3) {
   ASSERT_EQ(tk_levelize("0-20;21-40", 30), 1);
   ASSERT_EQ(tk_levelize("0-20;21-40", 100), 1);
 }
+
+TEST(Utils, tk_date_time_format) {
+  str_t str;
+  char buff[128];
+
+  str_attach(&str, buff, sizeof(buff));
+  ASSERT_EQ(tk_date_time_format(0, "", &str), RET_OK);
+  ASSERT_STREQ(str.str, "");
+  
+  ASSERT_EQ(tk_date_time_format(0, "Y", &str), RET_OK);
+  ASSERT_STREQ(str.str, "1970");
+  
+  ASSERT_EQ(tk_date_time_format(0, "Y-M-D", &str), RET_OK);
+  ASSERT_STREQ(str.str, "1970-1-1");
+  
+  ASSERT_EQ(tk_date_time_format(0, "Y-M-D h:m:s", &str), RET_OK);
+  ASSERT_STREQ(str.str, "1970-1-1 0:0:0");
+  
+  ASSERT_EQ(tk_date_time_format(0, "YY", &str), RET_OK);
+  ASSERT_STREQ(str.str, "70");
+  
+  ASSERT_EQ(tk_date_time_format(0, "YY-MM-DD", &str), RET_OK);
+  ASSERT_STREQ(str.str, "70-01-01");
+  
+  ASSERT_EQ(tk_date_time_format(0, "YY-MM-DD hh:mm:ss", &str), RET_OK);
+  ASSERT_STREQ(str.str, "70-01-01 00:00:00");
+
+  ASSERT_EQ(tk_date_time_format(3765, "YY-MM-DD hh:mm:ss", &str), RET_OK);
+  ASSERT_STREQ(str.str, "70-01-01 01:02:45");
+}
