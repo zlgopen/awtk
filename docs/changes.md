@@ -2,6 +2,8 @@
 
 2023/12/06
   * fscript 增加 date\_time\_format
+  * 完善 fscript，先找全局函数，再找用户自定义的函数。
+  * 完善 csv 路径解析。
 
 2023/12/05
   * 完善fscript部分数学函数。

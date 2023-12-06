@@ -68,10 +68,12 @@ static ret_t csv_path_parse(csv_path_t* path, csv_file_t* csv, const char* name)
   }
 
   if (*p == '[') {
+    return_value_if_fail(tk_isdigit(p[1]), RET_BAD_PARAMS);
     path->col = tk_atoi(p + 1);
   } else {
     path->col = csv_file_get_col_of_name(csv, p);
     if (path->col < 0) {
+      return_value_if_fail(tk_isdigit(p[0]), RET_BAD_PARAMS);
       path->col = tk_atoi(p);
     }
   }
