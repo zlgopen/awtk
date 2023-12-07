@@ -315,13 +315,14 @@ def to_exe(name):
 
 
 def glob_asset_files(path):
+    filename, ext_name = os.path.splitext(path)
     result = []
     dir = path[0 : len(path) - 7]
     if os.path.isdir(dir):
         for root, dirs, files in os.walk(dir):
             for f in files:
                 filename, extname = os.path.splitext(f)
-                if extname == '.data':
+                if extname == ext_name:
                     result.append(join_path(root, f))
 
     return result
@@ -834,7 +835,7 @@ def gen_assets_add(filename, is_default_theme):
         return '  assets_manager_add(am, '+constname+');\n'
     else:
         constname = to_asset_const_name(filename, join_path(OUTPUT_DIR, 'inc'))
-        return '  assets_manager_add(am, '+constname+'_'+THEME+');\n'
+        return '  assets_manager_add(am, '+constname+');\n'
 
 
 def gen_assets_adds(curr_theme_path, defl_theme_path = None):

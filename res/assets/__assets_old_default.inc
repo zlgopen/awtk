@@ -383,145 +383,25 @@
 #endif /*WITH_TRUETYPE_FONT*/
 #endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
-#include "default/inc/images/arrow_right_o.data"
-#include "default/inc/images/image_packed_bg.data"
-#include "default/inc/images/num_4.data"
-#include "default/inc/images/0.data"
-#include "default/inc/images/close_o.data"
-#include "default/inc/images/battery_1.data"
-#include "default/inc/images/slider_bg.data"
-#include "default/inc/images/ani3.data"
-#include "default/inc/images/progress_circle.data"
-#include "default/inc/images/muted.data"
-#include "default/inc/images/file.data"
-#include "default/inc/images/num_plus.data"
-#include "default/inc/images/gauge_bg.data"
-#include "default/inc/images/num_8.data"
-#include "default/inc/images/earth.data"
-#include "default/inc/images/flag_none.data"
-#include "default/inc/images/shift.data"
-#include "default/inc/images/arrow_up_p.data"
-#include "default/inc/images/discovery_active.data"
-#include "default/inc/images/en.data"
-#include "default/inc/images/right_on.data"
-#include "default/inc/images/discovery.data"
-#include "default/inc/images/collapse.data"
-#include "default/inc/images/rgb.data"
-#include "default/inc/images/num_9.data"
-#include "default/inc/images/dot.data"
-#include "default/inc/images/ani2.data"
-#include "default/inc/images/battery_0.data"
-#include "default/inc/images/find.data"
-#include "default/inc/images/slider_fg.data"
-#include "default/inc/images/close_n.data"
-#include "default/inc/images/left_on.data"
-#include "default/inc/images/1.data"
-#include "default/inc/images/question.data"
-#include "default/inc/images/invisible.data"
-#include "default/inc/images/image_packed_fg.data"
-#include "default/inc/images/num_5.data"
-#include "default/inc/images/num_dot.data"
-#include "default/inc/images/arrow_right_n.data"
-#include "default/inc/images/bee.data"
-#include "default/inc/images/visible.data"
-#include "default/inc/images/clock_bg.data"
-#include "default/inc/images/me_active.data"
-#include "default/inc/images/cursor.data"
-#include "default/inc/images/clock_minute.data"
-#include "default/inc/images/switch.data"
-#include "default/inc/images/checked.data"
-#include "default/inc/images/middle_off.data"
-#include "default/inc/images/close_p.data"
-#include "default/inc/images/num_minus.data"
-#include "default/inc/images/folder.data"
-#include "default/inc/images/zh.data"
-#include "default/inc/images/arrow_right_p.data"
-#include "default/inc/images/ani9.data"
-#include "default/inc/images/anib.data"
-#include "default/inc/images/num_2.data"
-#include "default/inc/images/arrow_up_o.data"
-#include "default/inc/images/clock.data"
-#include "default/inc/images/empty.data"
-#include "default/inc/images/ani5.data"
-#include "default/inc/images/ani4.data"
-#include "default/inc/images/left_off.data"
-#include "default/inc/images/radio_unchecked.data"
-#include "default/inc/images/rgba.data"
-#include "default/inc/images/shifton.data"
-#include "default/inc/images/arrow_up_n.data"
-#include "default/inc/images/num_3.data"
-#include "default/inc/images/msg_active.data"
-#include "default/inc/images/anic.data"
-#include "default/inc/images/ani8.data"
-#include "default/inc/images/active_dot.data"
-#include "default/inc/images/close_d.data"
-#include "default/inc/images/right_off.data"
-#include "default/inc/images/unmuted.data"
-#include "default/inc/images/img_slider_icon.data"
-#include "default/inc/images/img_slider_bg.data"
-#include "default/inc/images/cross.data"
-#include "default/inc/images/expand.data"
-#include "default/inc/images/backspace.data"
-#include "default/inc/images/arrow_left_p.data"
-#include "default/inc/images/edit_clear_n.data"
-#include "default/inc/images/clock_second.data"
-#include "default/inc/images/contact.data"
-#include "default/inc/images/bricks.data"
-#include "default/inc/images/dialog_title.data"
-#include "default/inc/images/cursor_hand.data"
-#include "default/inc/images/ani7.data"
-#include "default/inc/images/play_p.data"
-#include "default/inc/images/battery_5.data"
-#include "default/inc/images/green_btn_p.data"
-#include "default/inc/images/red_btn_p.data"
-#include "default/inc/images/me.data"
-#include "default/inc/images/num_0.data"
-#include "default/inc/images/arrow_down_p.data"
-#include "default/inc/images/num_1.data"
-#include "default/inc/images/warn.data"
-#include "default/inc/images/contact_active.data"
-#include "default/inc/images/slider_drag_o.data"
-#include "default/inc/images/battery_4.data"
-#include "default/inc/images/ani6.data"
-#include "default/inc/images/message.data"
-#include "default/inc/images/edit_clear_o.data"
-#include "default/inc/images/img_slider_fg.data"
-#include "default/inc/images/ania.data"
-#include "default/inc/images/ani1.data"
-#include "default/inc/images/battery_3.data"
-#include "default/inc/images/logo.data"
-#include "default/inc/images/arrow_left_o.data"
-#include "default/inc/images/2.data"
-#include "default/inc/images/num_6.data"
-#include "default/inc/images/check.data"
-#include "default/inc/images/return_up.data"
-#include "default/inc/images/middle_on.data"
-#include "default/inc/images/arrow_down_o.data"
-#include "default/inc/images/radio_checked.data"
-#include "default/inc/images/red_btn_o.data"
-#include "default/inc/images/green_btn_o.data"
-#include "default/inc/images/slider_v_bg.data"
-#include "default/inc/images/clock_hour.data"
-#include "default/inc/images/flag_CN.data"
-#include "default/inc/images/play_o.data"
-#include "default/inc/images/play_n.data"
-#include "default/inc/images/slider_drag.data"
-#include "default/inc/images/unchecked.data"
-#include "default/inc/images/gauge_pointer.data"
-#include "default/inc/images/green_btn_n.data"
-#include "default/inc/images/red_btn_n.data"
-#include "default/inc/images/slider_drag_p.data"
-#include "default/inc/images/slider_v_fg.data"
-#include "default/inc/images/arrow_down_n.data"
-#include "default/inc/images/info.data"
-#include "default/inc/images/flag_US.data"
-#include "default/inc/images/msg.data"
-#include "default/inc/images/num_7.data"
-#include "default/inc/images/cursor_text.data"
-#include "default/inc/images/3.data"
-#include "default/inc/images/arrow_left_n.data"
-#include "default/inc/images/edit_clear_p.data"
-#include "default/inc/images/battery_2.data"
+#include "default/inc/images/paths_data_02_t.bsvg"
+#include "default/inc/images/pointer_4.bsvg"
+#include "default/inc/images/htest.bsvg"
+#include "default/inc/images/ball.bsvg"
+#include "default/inc/images/shapes_polyline_01_t.bsvg"
+#include "default/inc/images/china.bsvg"
+#include "default/inc/images/meter_pointer.bsvg"
+#include "default/inc/images/pservers_grad_99_b.bsvg"
+#include "default/inc/images/tiger.bsvg"
+#include "default/inc/images/shapes_line_01_t.bsvg"
+#include "default/inc/images/painting_stroke_05_t.bsvg"
+#include "default/inc/images/paths_data_01_t.bsvg"
+#include "default/inc/images/pointer_1.bsvg"
+#include "default/inc/images/pointer.bsvg"
+#include "default/inc/images/shapes_circle_01_t.bsvg"
+#include "default/inc/images/shapes_rect_01_t.bsvg"
+#include "default/inc/images/girl.bsvg"
+#include "default/inc/images/shapes_ellipse_01_t.bsvg"
+#include "default/inc/images/shapes_polygon_01_t.bsvg"
 #endif /*WITH_VGCANVAS*/
 #endif /*!defined(WITH_FS_RES) || defined(AWTK_WEB)*/
 
@@ -772,145 +652,25 @@ ret_t assets_init_default(void) {
 #endif /*WITH_TRUETYPE_FONT*/
 #endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
-  assets_manager_add(am, image_arrow_right_o_default);
-  assets_manager_add(am, image_image_packed_bg_default);
-  assets_manager_add(am, image_num_4_default);
-  assets_manager_add(am, image_0_default);
-  assets_manager_add(am, image_close_o_default);
-  assets_manager_add(am, image_battery_1_default);
-  assets_manager_add(am, image_slider_bg_default);
-  assets_manager_add(am, image_ani3_default);
-  assets_manager_add(am, image_progress_circle_default);
-  assets_manager_add(am, image_muted_default);
-  assets_manager_add(am, image_file_default);
-  assets_manager_add(am, image_num_plus_default);
-  assets_manager_add(am, image_gauge_bg_default);
-  assets_manager_add(am, image_num_8_default);
-  assets_manager_add(am, image_earth_default);
-  assets_manager_add(am, image_flag_none_default);
-  assets_manager_add(am, image_shift_default);
-  assets_manager_add(am, image_arrow_up_p_default);
-  assets_manager_add(am, image_discovery_active_default);
-  assets_manager_add(am, image_en_default);
-  assets_manager_add(am, image_right_on_default);
-  assets_manager_add(am, image_discovery_default);
-  assets_manager_add(am, image_collapse_default);
-  assets_manager_add(am, image_rgb_default);
-  assets_manager_add(am, image_num_9_default);
-  assets_manager_add(am, image_dot_default);
-  assets_manager_add(am, image_ani2_default);
-  assets_manager_add(am, image_battery_0_default);
-  assets_manager_add(am, image_find_default);
-  assets_manager_add(am, image_slider_fg_default);
-  assets_manager_add(am, image_close_n_default);
-  assets_manager_add(am, image_left_on_default);
-  assets_manager_add(am, image_1_default);
-  assets_manager_add(am, image_question_default);
-  assets_manager_add(am, image_invisible_default);
-  assets_manager_add(am, image_image_packed_fg_default);
-  assets_manager_add(am, image_num_5_default);
-  assets_manager_add(am, image_num_dot_default);
-  assets_manager_add(am, image_arrow_right_n_default);
-  assets_manager_add(am, image_bee_default);
-  assets_manager_add(am, image_visible_default);
-  assets_manager_add(am, image_clock_bg_default);
-  assets_manager_add(am, image_me_active_default);
-  assets_manager_add(am, image_cursor_default);
-  assets_manager_add(am, image_clock_minute_default);
-  assets_manager_add(am, image_switch_default);
-  assets_manager_add(am, image_checked_default);
-  assets_manager_add(am, image_middle_off_default);
-  assets_manager_add(am, image_close_p_default);
-  assets_manager_add(am, image_num_minus_default);
-  assets_manager_add(am, image_folder_default);
-  assets_manager_add(am, image_zh_default);
-  assets_manager_add(am, image_arrow_right_p_default);
-  assets_manager_add(am, image_ani9_default);
-  assets_manager_add(am, image_anib_default);
-  assets_manager_add(am, image_num_2_default);
-  assets_manager_add(am, image_arrow_up_o_default);
-  assets_manager_add(am, image_clock_default);
-  assets_manager_add(am, image_empty_default);
-  assets_manager_add(am, image_ani5_default);
-  assets_manager_add(am, image_ani4_default);
-  assets_manager_add(am, image_left_off_default);
-  assets_manager_add(am, image_radio_unchecked_default);
-  assets_manager_add(am, image_rgba_default);
-  assets_manager_add(am, image_shifton_default);
-  assets_manager_add(am, image_arrow_up_n_default);
-  assets_manager_add(am, image_num_3_default);
-  assets_manager_add(am, image_msg_active_default);
-  assets_manager_add(am, image_anic_default);
-  assets_manager_add(am, image_ani8_default);
-  assets_manager_add(am, image_active_dot_default);
-  assets_manager_add(am, image_close_d_default);
-  assets_manager_add(am, image_right_off_default);
-  assets_manager_add(am, image_unmuted_default);
-  assets_manager_add(am, image_img_slider_icon_default);
-  assets_manager_add(am, image_img_slider_bg_default);
-  assets_manager_add(am, image_cross_default);
-  assets_manager_add(am, image_expand_default);
-  assets_manager_add(am, image_backspace_default);
-  assets_manager_add(am, image_arrow_left_p_default);
-  assets_manager_add(am, image_edit_clear_n_default);
-  assets_manager_add(am, image_clock_second_default);
-  assets_manager_add(am, image_contact_default);
-  assets_manager_add(am, image_bricks_default);
-  assets_manager_add(am, image_dialog_title_default);
-  assets_manager_add(am, image_cursor_hand_default);
-  assets_manager_add(am, image_ani7_default);
-  assets_manager_add(am, image_play_p_default);
-  assets_manager_add(am, image_battery_5_default);
-  assets_manager_add(am, image_green_btn_p_default);
-  assets_manager_add(am, image_red_btn_p_default);
-  assets_manager_add(am, image_me_default);
-  assets_manager_add(am, image_num_0_default);
-  assets_manager_add(am, image_arrow_down_p_default);
-  assets_manager_add(am, image_num_1_default);
-  assets_manager_add(am, image_warn_default);
-  assets_manager_add(am, image_contact_active_default);
-  assets_manager_add(am, image_slider_drag_o_default);
-  assets_manager_add(am, image_battery_4_default);
-  assets_manager_add(am, image_ani6_default);
-  assets_manager_add(am, image_message_default);
-  assets_manager_add(am, image_edit_clear_o_default);
-  assets_manager_add(am, image_img_slider_fg_default);
-  assets_manager_add(am, image_ania_default);
-  assets_manager_add(am, image_ani1_default);
-  assets_manager_add(am, image_battery_3_default);
-  assets_manager_add(am, image_logo_default);
-  assets_manager_add(am, image_arrow_left_o_default);
-  assets_manager_add(am, image_2_default);
-  assets_manager_add(am, image_num_6_default);
-  assets_manager_add(am, image_check_default);
-  assets_manager_add(am, image_return_up_default);
-  assets_manager_add(am, image_middle_on_default);
-  assets_manager_add(am, image_arrow_down_o_default);
-  assets_manager_add(am, image_radio_checked_default);
-  assets_manager_add(am, image_red_btn_o_default);
-  assets_manager_add(am, image_green_btn_o_default);
-  assets_manager_add(am, image_slider_v_bg_default);
-  assets_manager_add(am, image_clock_hour_default);
-  assets_manager_add(am, image_flag_CN_default);
-  assets_manager_add(am, image_play_o_default);
-  assets_manager_add(am, image_play_n_default);
-  assets_manager_add(am, image_slider_drag_default);
-  assets_manager_add(am, image_unchecked_default);
-  assets_manager_add(am, image_gauge_pointer_default);
-  assets_manager_add(am, image_green_btn_n_default);
-  assets_manager_add(am, image_red_btn_n_default);
-  assets_manager_add(am, image_slider_drag_p_default);
-  assets_manager_add(am, image_slider_v_fg_default);
-  assets_manager_add(am, image_arrow_down_n_default);
-  assets_manager_add(am, image_info_default);
-  assets_manager_add(am, image_flag_US_default);
-  assets_manager_add(am, image_msg_default);
-  assets_manager_add(am, image_num_7_default);
-  assets_manager_add(am, image_cursor_text_default);
-  assets_manager_add(am, image_3_default);
-  assets_manager_add(am, image_arrow_left_n_default);
-  assets_manager_add(am, image_edit_clear_p_default);
-  assets_manager_add(am, image_battery_2_default);
+  assets_manager_add(am, image_paths_data_02_t_default);
+  assets_manager_add(am, image_pointer_4_default);
+  assets_manager_add(am, image_htest_default);
+  assets_manager_add(am, image_ball_default);
+  assets_manager_add(am, image_shapes_polyline_01_t_default);
+  assets_manager_add(am, image_china_default);
+  assets_manager_add(am, image_meter_pointer_default);
+  assets_manager_add(am, image_pservers_grad_99_b_default);
+  assets_manager_add(am, image_tiger_default);
+  assets_manager_add(am, image_shapes_line_01_t_default);
+  assets_manager_add(am, image_painting_stroke_05_t_default);
+  assets_manager_add(am, image_paths_data_01_t_default);
+  assets_manager_add(am, image_pointer_1_default);
+  assets_manager_add(am, image_pointer_default);
+  assets_manager_add(am, image_shapes_circle_01_t_default);
+  assets_manager_add(am, image_shapes_rect_01_t_default);
+  assets_manager_add(am, image_girl_default);
+  assets_manager_add(am, image_shapes_ellipse_01_t_default);
+  assets_manager_add(am, image_shapes_polygon_01_t_default);
 #endif /*WITH_VGCANVAS*/
 #endif /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
 
