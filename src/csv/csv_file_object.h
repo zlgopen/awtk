@@ -1,5 +1,5 @@
 ﻿/**
- * File:   object_csv_file.h
+ * File:   csv_file_object.h
  * Author: AWTK Develop Team
  * Brief:  csv file object
  *
@@ -27,10 +27,18 @@
 
 BEGIN_C_DECLS
 
+
+/**
+ * 返回值：
+   * RET_OK: 保留
+   * RET_STOP: 停止解析
+   * RET_FAIL: 忽略此行
+ */
+typedef ret_t (*csv_file_object_filter_t)(void* ctx, tk_object_t* args, uint32_t index, csv_row_t* row);
+
 /**
  * @class csv_file_object_t
  * @parent tk_object_t
- * @annotation["fake"]
  * 将cvs file包装成object对象。
  * 
  * 示例
@@ -84,6 +92,21 @@ BEGIN_C_DECLS
  *  TK_OBJECT_UNREF(csv);
  * ```
  */
+
+typedef struct _csv_file_object_t {
+  tk_object_t object;
+
+  /*private*/
+  csv_file_t* csv;
+  str_t str;
+  
+  tk_object_t* query_args;
+  uint32_t* rows_map;
+  uint32_t rows_map_size;
+  uint32_t rows_map_capacity;
+  csv_file_object_filter_t filter;
+  void* filter_ctx;
+} csv_file_object_t;
 
 /**
  * @method csv_file_object_create
@@ -145,6 +168,18 @@ tk_object_t* csv_file_object_load_from_buff(const void* buff, uint32_t size, cha
 ret_t csv_file_object_save_to_buff(tk_object_t* obj, wbuffer_t* wb);
 
 /**
+ * @method csv_file_object_set_filter
+ * 设置过滤器。
+ * 
+ * @param {tk_object_t*} obj doc对象。
+ * @param {csv_file_object_filter_t} filter 过滤器。
+ * @param {void*} ctx 上下文。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败
+ */
+ret_t csv_file_object_set_filter(tk_object_t* obj, csv_file_object_filter_t filter, void* ctx);
+
+/**
  * @method csv_file_object_save_as
  * 将doc对象保存到指定文件。
  * @annotation ["static"]
@@ -155,6 +190,10 @@ ret_t csv_file_object_save_to_buff(tk_object_t* obj, wbuffer_t* wb);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败
  */
 ret_t csv_file_object_save_as(tk_object_t* obj, const char* filename);
+
+#define CSV_QUERY_PREFIX "query."
+#define CSV_CMD_QUERY "query"
+#define CSV_CMD_QUERY_ARG_CLEAR "clear"
 
 END_C_DECLS
 
