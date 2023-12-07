@@ -258,7 +258,7 @@ ret_t combo_box_parse_options(widget_t* widget, const char* str) {
     int32_t value = 0;
     const char* token = tokenizer_next(t);
     if (*token) {
-      const char* text = tk_isdigit(*token) ? strchr(token, ':') : NULL;
+      const char* text = (*token == '-' || tk_isdigit(*token)) ? strchr(token, ':') : NULL;
       if (text != NULL) {
         text++;
         value = tk_atoi(token);
