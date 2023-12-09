@@ -407,14 +407,82 @@ ret_t csv_file_load_file(csv_file_t* csv, const char* filename);
  */
 ret_t csv_file_destroy(csv_file_t* csv);
 
-/*public for test*/
+/**
+ * @method csv_file_get_by_name
+ *
+ * 根据列名获取数据。
+ *
+ * @param {csv_file_t*} csv csv对象。
+ * @param {uint32_t} row 行号。
+ * @param {const char*} name 列名。
+ * 
+ * @return {const char*} 返回数据。
+ */
 const char* csv_file_get_by_name(csv_file_t* csv, uint32_t row, const char* name);
+
+/**
+ * @method csv_file_get_col_of_name
+ *
+ * 根据列名获取列号。
+ *
+ * @param {csv_file_t*} csv csv对象。
+ * @param {const char*} name 列名。
+ * 
+ * @return {int32_t} 返回列号。
+ */
 int32_t csv_file_get_col_of_name(csv_file_t* csv, const char* name);
+
+/**
+ * @method csv_file_get_row
+ *
+ * 获取指定行。
+ *
+ * @param {csv_file_t*} csv csv对象。
+ * @param {uint32_t} row 行号。
+ * 
+ * @return {csv_row_t*} 返回行对象。
+ */
 csv_row_t* csv_file_get_row(csv_file_t* csv, uint32_t row);
 
+/**
+ * @class csv_row_t
+ * 行对象。
+ */
+
+/**
+ * @method csv_row_count_cols
+ * 获取列数。
+ * @param {csv_row_t*} row 行对象。
+ * @return {uint32_t} 返回列数。
+ */
 uint32_t csv_row_count_cols(csv_row_t* row);
+
+/**
+ * @method csv_row_get
+ *
+ * 获取指定列的数据。
+ *
+ * @param {csv_row_t*} row 行对象。
+ * @param {uint32_t} col 列号。
+ * 
+ * @return {const char*} 返回数据。
+ */
 const char* csv_row_get(csv_row_t* row, uint32_t col);
+
+/**
+ * @method csv_row_set
+ *
+ * 修改指定列的数据。
+ *
+ * @param {csv_row_t*} row 行对象。
+ * @param {uint32_t} col 列号。
+ * @param {const char*} value 值。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t csv_row_set(csv_row_t* row, uint32_t col, const char* value);
+
+/*public for test*/
 ret_t csv_row_init(csv_row_t* row, char* buff, uint32_t size, bool_t should_free_buff);
 ret_t csv_row_reset(csv_row_t* row);
 
