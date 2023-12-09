@@ -666,3 +666,15 @@ TEST(Edit, set_props) {
 
   widget_destroy(e);
 }
+
+TEST(Edit, validator) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  widget_set_text(e, L"abcd");
+  ASSERT_EQ(edit_is_valid_value(e), TRUE);
+
+  edit_set_validator(e, "len(text) < 3");
+  ASSERT_EQ(edit_is_valid_value(e), FALSE);
+
+  widget_destroy(e);
+}

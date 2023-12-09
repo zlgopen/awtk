@@ -126,6 +126,14 @@ typedef struct _edit_t {
    * 
    */
   char* action_text;
+  /**
+   * @property {char*} validator
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * fscript脚本，用输入校验，如：(len(text) > 3) && (len(text) < 10)。
+   *
+   * > 用于校验输入的文本是否合法。
+   */
+  char* validator;
 
   /**
    * @property {char*} keyboard
@@ -566,6 +574,18 @@ ret_t edit_set_is_valid_char(widget_t* widget, edit_is_valid_char_t is_valid_cha
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t edit_set_is_valid_value(widget_t* widget, edit_is_valid_value_t is_valid_value);
+
+/**
+ * @method edit_set_validator
+ * 设置输入内容校验脚本。
+ *> 如果内置函数不能满足需求时，可以设置自定义的检查脚本。
+ *
+ * @param {widget_t*} widget widget对象。
+ * @param {const char*} validator 校验输入内容的脚本。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_validator(widget_t* widget, const char* validator);
 
 /**
  * @method edit_set_fix_value

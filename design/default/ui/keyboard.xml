@@ -2,8 +2,8 @@
   <list_view x="0"  y="0" w="100%" h="-50" item_height="36" auto_hide_scroll_bar="true">
     <scroll_view name="view" x="0"  y="0" w="-12" h="100%">
      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
-      <label w="30%" text="Name"/>
-      <edit w="70%" text="" tips="name"  action_text="next"/>
+      <label w="30%" text="Name(3-10)"/>
+      <edit w="70%" text="" tips="name"  action_text="next" validator="(len(text) >= 3) && (len(text) <= 10)"/>
      </list_item>
      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
       <label w="30%" text="Desc"/>

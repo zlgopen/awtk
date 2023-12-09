@@ -1100,6 +1100,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_MAX_FPS "max_fps"
 
 /**
+ * @const WIDGET_PROP_VALIDATOR
+ * 数据校验脚本。
+ */
+#define WIDGET_PROP_VALIDATOR "validator"
+
+/**
  * @enum widget_type_t
  * @annotation ["scriptable", "string"]
  * @prefix WIDGET_TYPE_

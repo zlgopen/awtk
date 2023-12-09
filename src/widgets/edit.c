@@ -48,7 +48,7 @@ static ret_t edit_reset_layout(widget_t* widget);
 static ret_t edit_update_status(widget_t* widget);
 static ret_t edit_check_valid_value(widget_t* widget);
 static ret_t edit_select_all_async(const idle_info_t* info);
-static ret_t edit_dispatch_value_change_event(widget_t* widget, event_type_t type);
+static ret_t edit_dispatch_value_change_event(widget_t* widget, uint32_t type);
 static ret_t edit_paste(widget_t* widget, const wchar_t* str, uint32_t size);
 
 static ret_t edit_save_text(widget_t* widget) {
@@ -87,7 +87,7 @@ static ret_t edit_commit_text(widget_t* widget) {
   return RET_OK;
 }
 
-static ret_t edit_dispatch_value_change_event(widget_t* widget, event_type_t type) {
+static ret_t edit_dispatch_value_change_event(widget_t* widget, uint32_t type) {
   value_change_event_t evt;
   edit_t* edit = EDIT(widget);
   wstr_t* text = &(widget->text);
@@ -702,7 +702,8 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
 
   if (key == TK_KEY_TAB || key == TK_KEY_ESCAPE || (key >= TK_KEY_F1 && key <= TK_KEY_F12)) {
     return RET_OK;
-  } else if (key == TK_KEY_DOWN && keyboard_type != KEYBOARD_3KEYS && keyboard_type != KEYBOARD_5KEYS) {
+  } else if (key == TK_KEY_DOWN && keyboard_type != KEYBOARD_3KEYS &&
+             keyboard_type != KEYBOARD_5KEYS) {
     if (widget_is_change_focus_key(widget, e)) {
       return RET_OK;
     }
@@ -713,7 +714,8 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
       widget_focus_next(widget);
     }
     return RET_STOP;
-  } else if (key == TK_KEY_UP && keyboard_type != KEYBOARD_3KEYS && keyboard_type != KEYBOARD_5KEYS) {
+  } else if (key == TK_KEY_UP && keyboard_type != KEYBOARD_3KEYS &&
+             keyboard_type != KEYBOARD_5KEYS) {
     if (widget_is_change_focus_key(widget, e)) {
       return RET_OK;
     }
@@ -874,7 +876,8 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
 #else
       bool_t is_control = evt->ctrl;
 #endif
-      if ((!edit->is_activated || key == TK_KEY_RETURN) && (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS)) {
+      if ((!edit->is_activated || key == TK_KEY_RETURN) &&
+          (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS)) {
         break;
       }
       if (edit->readonly) {
@@ -894,7 +897,8 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_KEY_UP: {
-      if (!edit->is_activated && (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS)) {
+      if (!edit->is_activated &&
+          (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS)) {
         break;
       }
       edit->is_key_inputing = TRUE;
@@ -958,8 +962,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_FOCUS: {
-      if (keyboard_type != KEYBOARD_3KEYS && 
-          keyboard_type != KEYBOARD_5KEYS && 
+      if (keyboard_type != KEYBOARD_3KEYS && keyboard_type != KEYBOARD_5KEYS &&
           edit->open_im_when_focused) {
         edit_on_focused(widget);
       }
@@ -1446,6 +1449,10 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_bool(v, inputing);
 
     return RET_OK;
+  } else if(tk_str_eq(name, WIDGET_PROP_VALIDATOR)) {
+    value_set_str(v, edit->validator);
+
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -1573,6 +1580,9 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_TEXT)) {
     edit_set_text(widget, v);
+    return RET_OK;
+  } else if(tk_str_eq(name, WIDGET_PROP_VALIDATOR)) {
+    edit_set_validator(widget, value_str(v));
     return RET_OK;
   }
 
@@ -1967,6 +1977,7 @@ ret_t edit_on_destroy(widget_t* widget) {
   TKMEM_FREE(edit->tips);
   TKMEM_FREE(edit->tr_tips);
   TKMEM_FREE(edit->keyboard);
+  TKMEM_FREE(edit->validator);
   TKMEM_FREE(edit->action_text);
   wstr_reset(&(edit->saved_text));
   wstr_reset(&(edit->last_changing_text));
@@ -2344,12 +2355,36 @@ static ret_t edit_auto_fix(widget_t* widget) {
   }
 }
 
+#include "tkc/fscript.h"
+#include "base/object_widget.h"
+
+ret_t edit_set_validator(widget_t* widget, const char* validator) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+
+  edit->validator = tk_str_copy(edit->validator, validator);
+
+  return RET_OK;
+}
+
 bool_t edit_is_valid_value(widget_t* widget) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
   if (edit->is_valid_value != NULL) {
     return edit->is_valid_value(widget);
   } else {
+#ifndef WITHOUT_FSCRIPT  
+    if (edit->validator != NULL) {
+      value_t v;
+      tk_object_t* obj = object_widget_create(widget);
+      if (fscript_eval(obj, edit->validator, &v) == RET_OK) {
+        TK_OBJECT_UNREF(obj);
+        return value_bool(&v);
+      }
+      TK_OBJECT_UNREF(obj);
+    }
+#endif/*WITHOUT_FSCRIPT*/
+
     return edit_is_valid_value_default(widget);
   }
 }
