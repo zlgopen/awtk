@@ -98,6 +98,33 @@ date_time_t* date_time_create(void);
 date_time_t* date_time_init(date_time_t* dt);
 
 /**
+ * @method date_time_parse_time
+ * 解析时间。
+ * @param {date_time_t*} dt date_time对象。
+ * @param {const char*} str 时间字符串。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t date_time_parse_time(date_time_t* dt, const char* str);
+
+/**
+ * @method date_time_parse_date
+ * 解析日期。
+ * @param {date_time_t*} dt date_time对象。
+ * @param {const char*} str 日期字符串。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t date_time_parse_date(date_time_t* dt, const char* str);
+
+/**
+ * @method date_time_parse_date_time
+ * 解析日期和时间。
+ * @param {date_time_t*} dt date_time对象。
+ * @param {const char*} str 日期和时间字符串。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t date_time_parse_date_time(date_time_t* dt, const char* str);
+
+/**
  * @method date_time_set_year
  * 设置年。
  *

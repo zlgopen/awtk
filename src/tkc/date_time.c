@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "tkc/date_time.h"
 
 static date_time_get_now_t s_date_time_get_now;
@@ -220,4 +221,64 @@ ret_t date_time_set_second(date_time_t* dt, uint32_t second) {
   dt->second = second;
 
   return RET_OK;
+}
+
+ret_t date_time_parse_time(date_time_t* dt, const char* str) {
+  int32_t hour = 0;
+  int32_t minute = 0;
+  int32_t second = 0;
+  int32_t n = 0;
+  return_value_if_fail(dt != NULL && str != NULL, RET_BAD_PARAMS);
+
+  n = tk_sscanf(str, "%d:%d:%d", &hour, &minute, &second);
+  if (n >= 2) {
+    return date_time_set_hour(dt, hour) || date_time_set_minute(dt, minute) ||
+           date_time_set_second(dt, second);
+  } else {
+    return RET_BAD_PARAMS;
+  }
+}
+
+ret_t date_time_parse_date(date_time_t* dt, const char* str) {
+  int32_t year = 0;
+  int32_t month = 0;
+  int32_t day = 0;
+  int32_t n = 0;
+  return_value_if_fail(dt != NULL && str != NULL, RET_BAD_PARAMS);
+
+  if(strchr(str, '/') != NULL) {
+    n = tk_sscanf(str, "%d/%d/%d", &year, &month, &day);
+  } else {
+    n = tk_sscanf(str, "%d-%d-%d", &year, &month, &day);
+  }
+  if (n == 3) {
+    return date_time_set_year(dt, year) || date_time_set_month(dt, month) ||
+           date_time_set_day(dt, day);
+  } else {
+    return RET_BAD_PARAMS;
+  }
+}
+
+ret_t date_time_parse_date_time(date_time_t* dt, const char* str) {
+  int32_t year = 0;
+  int32_t month = 0;
+  int32_t day = 0;
+  int32_t hour = 0;
+  int32_t minute = 0;
+  int32_t second = 0;
+  int32_t n = 0;
+  return_value_if_fail(dt != NULL && str != NULL, RET_BAD_PARAMS);
+
+  if(strchr(str, '/') != NULL) {
+    n = tk_sscanf(str, "%d/%d/%d %d:%d:%d", &year, &month, &day, &hour, &minute, &second);
+  } else {
+    n = tk_sscanf(str, "%d-%d-%d %d:%d:%d", &year, &month, &day, &hour, &minute, &second);
+  }
+  if (n >= 5) {
+    return date_time_set_year(dt, year) || date_time_set_month(dt, month) ||
+           date_time_set_day(dt, day) || date_time_set_hour(dt, hour) ||
+           date_time_set_minute(dt, minute) || date_time_set_second(dt, second);
+  } else {
+    return RET_BAD_PARAMS;
+  }
 }

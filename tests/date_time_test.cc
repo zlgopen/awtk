@@ -242,3 +242,78 @@ TEST(DateTime, fscript_object) {
 
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(DateTime, test_parse_time) {
+  date_time_t dt;
+  memset(&dt, 0x00, sizeof(dt));
+  ASSERT_EQ(date_time_parse_time(&dt, "01:02:03"), RET_OK);
+  ASSERT_EQ(dt.year, 0);
+  ASSERT_EQ(dt.month, 0);
+  ASSERT_EQ(dt.day, 0);
+  ASSERT_EQ(dt.hour, 1);
+  ASSERT_EQ(dt.minute, 2);
+  ASSERT_EQ(dt.second, 3);
+
+  ASSERT_EQ(date_time_parse_time(&dt, "01:02"), RET_OK);
+  ASSERT_EQ(dt.year, 0);
+  ASSERT_EQ(dt.month, 0);
+  ASSERT_EQ(dt.day, 0);
+  ASSERT_EQ(dt.hour, 1);
+  ASSERT_EQ(dt.minute, 2);
+  ASSERT_EQ(dt.second, 0);
+
+  ASSERT_NE(date_time_parse_time(&dt, "01"), RET_OK);
+}
+
+TEST(DateTime, test_parse_date) {
+  date_time_t dt;
+  memset(&dt, 0x00, sizeof(dt));
+  ASSERT_EQ(date_time_parse_date(&dt, "2020-01-02"), RET_OK);
+  ASSERT_EQ(dt.year, 2020);
+  ASSERT_EQ(dt.month, 1);
+  ASSERT_EQ(dt.day, 2);
+  ASSERT_EQ(dt.hour, 0);
+  ASSERT_EQ(dt.minute, 0);
+  ASSERT_EQ(dt.second, 0);
+
+  ASSERT_EQ(date_time_parse_date(&dt, "2020-01-02 01:02:03"), RET_OK);
+  ASSERT_EQ(dt.year, 2020);
+  ASSERT_EQ(dt.month, 1);
+  ASSERT_EQ(dt.day, 2);
+  ASSERT_EQ(dt.hour, 0);
+  ASSERT_EQ(dt.minute, 0);
+  ASSERT_EQ(dt.second, 0);
+}
+
+TEST(DateTime, test_parse_date_time) {
+  date_time_t dt;
+  memset(&dt, 0x00, sizeof(dt));
+  ASSERT_EQ(date_time_parse_date_time(&dt, "2020-01-02 01:02:03"), RET_OK);
+  ASSERT_EQ(dt.year, 2020);
+  ASSERT_EQ(dt.month, 1);
+  ASSERT_EQ(dt.day, 2);
+  ASSERT_EQ(dt.hour, 1);
+  ASSERT_EQ(dt.minute, 2);
+  ASSERT_EQ(dt.second, 3);
+
+  memset(&dt, 0x00, sizeof(dt));
+  ASSERT_EQ(date_time_parse_date_time(&dt, "2020-01-02 01:02"), RET_OK);
+  ASSERT_EQ(dt.year, 2020);
+  ASSERT_EQ(dt.month, 1);
+  ASSERT_EQ(dt.day, 2);
+  ASSERT_EQ(dt.hour, 1);
+  ASSERT_EQ(dt.minute, 2);
+  ASSERT_EQ(dt.second, 0);
+
+  memset(&dt, 0x00, sizeof(dt));
+  ASSERT_NE(date_time_parse_date_time(&dt, "2020-01-02 01"), RET_OK);
+
+  memset(&dt, 0x00, sizeof(dt));
+  ASSERT_NE(date_time_parse_date_time(&dt, "2020-01-02"), RET_OK);
+
+  ASSERT_NE(date_time_parse_date_time(&dt, "2020-01"), RET_OK);
+  ASSERT_NE(date_time_parse_date_time(&dt, "2020"), RET_OK);
+  ASSERT_EQ(date_time_parse_date_time(&dt, "2020-01-02 01:02:03.123"), RET_OK);
+  ASSERT_EQ(date_time_parse_date_time(&dt, "2020-01-02 01:02:03.123456"), RET_OK);
+}
+

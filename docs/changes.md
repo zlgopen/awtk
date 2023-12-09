@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/12/09
+  * 增加函数 date\_time\_parse\_date/date\_time\_parse\_time/date\_time\_parse\_date\_time
+
 2023/12/07
   * csv file object 支持通过 MVVM 来查询。
   * 修复生成资源c文件的资源主题名字和图片信息错误的问题(感谢智明提供补丁)
