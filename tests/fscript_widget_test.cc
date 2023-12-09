@@ -1,10 +1,12 @@
 #include "tkc/fscript.h"
 #include "tkc/object_default.h"
 #include "gtest/gtest.h"
+#include "widgets/edit.h"
 #include "widgets/button.h"
 #include "widgets/progress_bar.h"
 #include "base/window.h"
 #include "base/window_manager.h"
+#include "base/object_widget.h"
 
 TEST(FScriptWidget, basic) {
   value_t v;
@@ -57,5 +59,24 @@ TEST(FScriptWidget, layout) {
   ASSERT_EQ(((window_base_t*)win)->need_relayout, TRUE);
 
   widget_close_window(win);
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScriptWidget, ulen) {
+  value_t v;
+  widget_t* w = edit_create(NULL, 0, 0, 100, 20);
+  tk_object_t* obj = object_widget_create(w);
+
+  widget_set_text(w, L"中文");
+  fscript_eval(obj, "ulen(text)", &v);
+  ASSERT_EQ(value_int(&v), 2);
+  value_reset(&v);
+  
+  widget_set_text(w, L"abc");
+  fscript_eval(obj, "ulen(text)", &v);
+  ASSERT_EQ(value_int(&v), 3);
+  value_reset(&v);
+
+  widget_destroy(w);
   TK_OBJECT_UNREF(obj);
 }

@@ -3431,3 +3431,17 @@ TEST(FExr, abs) {
   TK_OBJECT_UNREF(obj);
 }
 
+TEST(FExr, ulen) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "ulen(1)", &v);
+  ASSERT_EQ(value_int32(&v), 1);
+  value_reset(&v);
+  
+  fscript_eval(obj, "ulen('abc')", &v);
+  ASSERT_EQ(value_int32(&v), 3);
+  value_reset(&v);
+  
+  TK_OBJECT_UNREF(obj);
+}

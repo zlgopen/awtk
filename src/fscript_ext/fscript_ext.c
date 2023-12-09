@@ -322,12 +322,17 @@ static ret_t func_ulen(fscript_t* fscript, fscript_args_t* args, value_t* result
   wstr_t wstr;
   const char* str = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  str = value_str(args->args);
 
-  wstr_init(&wstr, 0);
-  return_value_if_fail(wstr_set_utf8(&wstr, str) == RET_OK, RET_OOM);
-  value_set_int32(result, wstr.size);
-  wstr_reset(&wstr);
+  if (args->args->type == VALUE_TYPE_WSTRING) {
+    value_set_int32(result, wcs_len(value_wstr(args->args))); 
+  } else {
+    char buff[64] = {0};
+    str = value_str_ex(args->args, buff, sizeof(buff));
+    wstr_init(&wstr, 0);
+    return_value_if_fail(wstr_set_utf8(&wstr, str) == RET_OK, RET_OOM);
+    value_set_int32(result, wstr.size);
+    wstr_reset(&wstr);
+  }
 
   return RET_OK;
 }

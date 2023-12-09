@@ -2,6 +2,7 @@
 
 2023/12/09
   * 增加函数 date\_time\_parse\_date/date\_time\_parse\_time/date\_time\_parse\_date\_time
+  * 完善 fscript ulen。
 
 2023/12/07
   * csv file object 支持通过 MVVM 来查询。
