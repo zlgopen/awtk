@@ -80,6 +80,19 @@ ret_t tk_run(void);
  */
 ret_t tk_quit(void);
 
+
+/**
+ * @method tk_quit_ex
+ * 退出TK事件主循环。
+ * @alias global_quit_ex
+ * @annotation ["static", "scriptable"]
+ *
+ * @param {uint32_t} delay_ms 延迟退出的时间。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_quit_ex(uint32_t delay_ms);
+
 /**
  * @method tk_get_pointer_x
  * 获取全局指针的X坐标。

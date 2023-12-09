@@ -430,7 +430,7 @@ ret_t tk_run() {
   return main_loop_run(main_loop());
 }
 
-static ret_t tk_quit_idle(const timer_info_t* timer) {
+static ret_t tk_quit_in_timer(const timer_info_t* timer) {
   main_loop_t* loop = main_loop();
 
   loop->app_quited = TRUE;
@@ -438,9 +438,14 @@ static ret_t tk_quit_idle(const timer_info_t* timer) {
   return main_loop_quit(loop);
 }
 
-ret_t tk_quit() {
-  timer_add(tk_quit_idle, NULL, 0);
+ret_t tk_quit_ex(uint32_t delay_ms) {
+  timer_add(tk_quit_in_timer, NULL, delay_ms);
+
   return RET_OK;
+}
+
+ret_t tk_quit() {
+  return tk_quit_ex(0);
 }
 
 ret_t tk_set_lcd_orientation(lcd_orientation_t orientation) {
