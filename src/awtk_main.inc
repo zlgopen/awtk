@@ -49,6 +49,10 @@ END_C_DECLS
 #define GLOBAL_EXIT()
 #endif /*GLOBAL_EXIT*/
 
+#ifndef FINAL_EXIT
+#define FINAL_EXIT()
+#endif /*FINAL_EXIT*/
+
 #ifndef APP_NAME
 #define APP_NAME "awtk"
 #endif /*APP_NAME*/
@@ -251,6 +255,7 @@ int main(int argc, char* argv[]) {
   GLOBAL_EXIT();
   tk_exit();
 
+  FINAL_EXIT();
 #ifdef HAS_STDIO
   fflush(stdout);
 #endif /*HAS_STDIO*/
