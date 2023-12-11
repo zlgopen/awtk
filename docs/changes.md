@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/12/11
+  * 完善 cvs file object 保存命令。
+
 2023/12/09
   * 增加函数 date\_time\_parse\_date/date\_time\_parse\_time/date\_time\_parse\_date\_time
   * 完善 fscript ulen。

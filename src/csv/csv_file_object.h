@@ -106,6 +106,7 @@ typedef struct _csv_file_object_t {
   uint32_t rows_map_capacity;
   csv_file_object_filter_t filter;
   void* filter_ctx;
+  bool_t is_dirty;
 } csv_file_object_t;
 
 /**

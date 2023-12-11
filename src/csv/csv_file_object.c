@@ -142,6 +142,7 @@ static ret_t csv_file_object_remove_prop(tk_object_t* obj, const char* name) {
 
   return_value_if_fail(csv_path_parse_ex(o, &p, name, TRUE) == RET_OK, RET_FAIL);
 
+  o->is_dirty = TRUE;
   return csv_file_remove_row(o->csv, p.row);
 }
 
@@ -165,6 +166,7 @@ static ret_t csv_file_object_set_prop(tk_object_t* obj, const char* name, const 
     return csv_file_set_row_checked(o->csv, p.row, value_bool(v));
   }
 
+  o->is_dirty = TRUE;
   str_from_value(&(o->str), v);
   return csv_file_set(o->csv, p.row, p.col, o->str.str);
 }
@@ -218,7 +220,7 @@ static bool_t csv_file_object_can_exec(tk_object_t* obj, const char* name, const
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   if (tk_str_ieq(name, TK_OBJECT_CMD_SAVE)) {
-    return TRUE;
+    return o->is_dirty;
   } else if (tk_str_ieq(name, TK_OBJECT_CMD_RELOAD)) {
     return TRUE;
   } else if (tk_str_ieq(name, TK_OBJECT_CMD_CLEAR)) {
@@ -304,23 +306,35 @@ static ret_t csv_file_object_exec(tk_object_t* obj, const char* name, const char
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   if (tk_str_ieq(name, TK_OBJECT_CMD_SAVE)) {
-    ret = csv_file_save(o->csv, NULL);
+    if (o->is_dirty) {
+      o->is_dirty = FALSE;
+      ret = csv_file_save(o->csv, NULL);
+      emitter_dispatch_simple_event(EMITTER(obj), EVT_PROPS_CHANGED);
+    } else {
+      ret = RET_OK;
+      log_debug("csv file is not dirty, need not save.\n");
+    }
   } else if (tk_str_ieq(name, TK_OBJECT_CMD_RELOAD)) {
     csv_file_reload(o->csv);
     ret = RET_ITEMS_CHANGED;
     csv_file_object_clear_query(obj);
+    o->is_dirty = FALSE;
   } else if (tk_str_ieq(name, TK_OBJECT_CMD_CLEAR)) {
     csv_file_clear(o->csv);
     ret = RET_ITEMS_CHANGED;
     csv_file_object_clear_query(obj);
+    o->is_dirty = TRUE;
   } else if (tk_str_ieq(name, TK_OBJECT_CMD_REMOVE)) {
+    o->is_dirty = TRUE;
     ret = csv_file_object_remove_prop(obj, args) == RET_OK ? RET_ITEMS_CHANGED : RET_FAIL;
   } else if (tk_str_ieq(name, TK_OBJECT_CMD_REMOVE_CHECKED)) {
     ret = csv_file_remove_checked_rows(o->csv) == RET_OK ? RET_ITEMS_CHANGED : RET_FAIL;
     csv_file_object_clear_query(obj);
+    o->is_dirty = TRUE;
   } else if (tk_str_ieq(name, TK_OBJECT_CMD_ADD)) {
     return_value_if_fail(args != NULL, RET_FAIL);
     ret = csv_file_append_row(o->csv, args) == RET_OK ? RET_ITEMS_CHANGED : RET_FAIL;
+    o->is_dirty = TRUE;
   } else if (tk_str_eq(name, CSV_CMD_QUERY)) {
     if (tk_str_eq(args, CSV_CMD_QUERY_ARG_CLEAR)) {
       ret = csv_file_object_clear_query(obj);
