@@ -2377,6 +2377,7 @@ bool_t edit_is_valid_value(widget_t* widget) {
     if (edit->validator != NULL) {
       value_t v;
       tk_object_t* obj = object_widget_create(widget);
+      tk_object_set_prop_pointer(obj, STR_PROP_SELF, widget);
       if (fscript_eval(obj, edit->validator, &v) == RET_OK) {
         TK_OBJECT_UNREF(obj);
         return value_bool(&v);
