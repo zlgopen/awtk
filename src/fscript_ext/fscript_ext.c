@@ -18,6 +18,7 @@
 #include "tkc/utils.h"
 #include "tkc/wstr.h"
 #include "tkc/fscript.h"
+#include "tkc/sha256.h"
 
 #include "fscript_ext/fscript_ext.h"
 #include "fscript_ext/fscript_object.h"
@@ -324,7 +325,7 @@ static ret_t func_ulen(fscript_t* fscript, fscript_args_t* args, value_t* result
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
 
   if (args->args->type == VALUE_TYPE_WSTRING) {
-    value_set_int32(result, wcs_len(value_wstr(args->args))); 
+    value_set_int32(result, wcs_len(value_wstr(args->args)));
   } else {
     char buff[64] = {0};
     str = value_str_ex(args->args, buff, sizeof(buff));
@@ -426,6 +427,48 @@ static ret_t func_define_param(fscript_t* fscript, fscript_args_t* args, value_t
   return RET_OK;
 }
 
+static ret_t func_sha256(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  str_t str;
+  value_t* v = NULL;
+  uint32_t size = 0;
+  const void* data = NULL;
+  char buff[128] = {0};
+  str_attach(&str, buff, sizeof(buff));
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  v = args->args;
+  switch (v->type) {
+    case VALUE_TYPE_STRING: {
+      data = value_str(v);
+      size = tk_strlen(data);
+      break;
+    }
+    case VALUE_TYPE_BINARY: {
+      binary_data_t* bin = value_binary_data(v);
+      data = bin->data;
+      size = bin->size;
+      break;
+    }
+    case VALUE_TYPE_WSTRING: {
+      str_t* s = &(fscript->str);
+      str_from_wstr(s, value_wstr(v));
+      data = s->str;
+      size = s->size;
+      break;
+    }
+    default:
+      break;
+  }
+
+  if (data != NULL && size > 0) {
+    tk_sha256(data, size, &str);
+    value_dup_str(result, str.str);
+    return RET_OK;
+  } else {
+    value_set_str(result, "");
+    return RET_FAIL;
+  }
+}
+
 FACTORY_TABLE_BEGIN(s_ext_basic)
 FACTORY_TABLE_ENTRY("levelize", func_levelize)
 FACTORY_TABLE_ENTRY("index_of", func_index_of)
@@ -438,6 +481,8 @@ FACTORY_TABLE_ENTRY("char_at", func_char_at)
 FACTORY_TABLE_ENTRY("text_count", func_text_count)
 FACTORY_TABLE_ENTRY("text_reverse", func_text_reverse)
 FACTORY_TABLE_ENTRY("usubstr", func_usubstr)
+FACTORY_TABLE_ENTRY("sha256", func_sha256)
+
 /*用于反向解析保留信息*/
 FACTORY_TABLE_ENTRY("member_var", func_member_var)
 FACTORY_TABLE_ENTRY("global_var", func_global_var)

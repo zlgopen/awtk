@@ -3445,3 +3445,18 @@ TEST(FExr, ulen) {
   
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(FExr, sha256) {
+ value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "sha256('abc')", &v);
+  ASSERT_STREQ(value_str(&v), "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad");
+  value_reset(&v);
+  
+  fscript_eval(obj, "sha256(123)", &v);
+  ASSERT_STREQ(value_str(&v), "");
+  value_reset(&v);
+  
+  TK_OBJECT_UNREF(obj);  
+}
