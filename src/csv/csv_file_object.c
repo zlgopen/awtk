@@ -303,7 +303,7 @@ static ret_t csv_file_object_exec(tk_object_t* obj, const char* name, const char
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   if (tk_str_ieq(name, TK_OBJECT_CMD_SAVE)) {
-    if (o->is_dirty) {
+    if (o->is_dirty || tk_atob(args)) {
       o->is_dirty = FALSE;
       ret = csv_file_save(o->csv, NULL);
       emitter_dispatch_simple_event(EMITTER(obj), EVT_PROPS_CHANGED);
