@@ -397,6 +397,19 @@ ret_t csv_file_clear(csv_file_t* csv);
 ret_t csv_file_load_file(csv_file_t* csv, const char* filename);
 
 /**
+ * @method csv_file_find_first
+ *
+ * 查找第一个满足条件的行。
+ *
+ * @param {csv_file_t*} csv csv对象。
+ * @param {tk_compare_t} compare 比较函数。
+ * @param {void*} ctx 比较函数的上下文。
+ * 
+ * @return {csv_row_t*} 返回行对象。
+ */
+csv_row_t* csv_file_find_first(csv_file_t* csv, tk_compare_t compare, void* ctx);
+
+/**
  * @method csv_file_destroy
  *
  * 销毁csv对象。

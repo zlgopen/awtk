@@ -29,9 +29,6 @@
 #include "csv_file.h"
 #include "csv_file_object.h"
 
-static csv_file_object_t* csv_file_object_cast(tk_object_t* obj);
-#define CSV_FILE_OBJECT(obj) csv_file_object_cast((tk_object_t*)obj)
-
 typedef struct _csv_path_t {
   int32_t row;
   int32_t col;
@@ -108,7 +105,7 @@ static ret_t csv_file_object_remove_map(csv_file_object_t* o, uint32_t index) {
 }
 
 static ret_t csv_path_parse_ex(csv_file_object_t* o, csv_path_t* path, const char* name,
-                            bool_t for_remove) {
+                               bool_t for_remove) {
   ret_t ret = RET_BAD_PARAMS;
   return_value_if_fail(o != NULL && path != NULL && name != NULL, RET_BAD_PARAMS);
 
@@ -332,9 +329,13 @@ static ret_t csv_file_object_exec(tk_object_t* obj, const char* name, const char
     csv_file_object_clear_query(obj);
     o->is_dirty = TRUE;
   } else if (tk_str_ieq(name, TK_OBJECT_CMD_ADD)) {
-    return_value_if_fail(args != NULL, RET_FAIL);
-    ret = csv_file_append_row(o->csv, args) == RET_OK ? RET_ITEMS_CHANGED : RET_FAIL;
-    o->is_dirty = TRUE;
+    if (args != NULL) {
+      return_value_if_fail(args != NULL, RET_FAIL);
+      ret = csv_file_append_row(o->csv, args) == RET_OK ? RET_ITEMS_CHANGED : RET_FAIL;
+      o->is_dirty = TRUE;
+    } else {
+      ret = RET_OK;
+    }
   } else if (tk_str_eq(name, CSV_CMD_QUERY)) {
     if (tk_str_eq(args, CSV_CMD_QUERY_ARG_CLEAR)) {
       ret = csv_file_object_clear_query(obj);
@@ -378,7 +379,7 @@ static const object_vtable_t s_csv_file_object_vtable = {.type = "csv_file_objec
                                                          .set_prop = csv_file_object_set_prop,
                                                          .on_destroy = csv_file_object_destroy};
 
-static csv_file_object_t* csv_file_object_cast(tk_object_t* obj) {
+csv_file_object_t* csv_file_object_cast(tk_object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt == &s_csv_file_object_vtable, NULL);
 
   return (csv_file_object_t*)obj;
@@ -437,4 +438,23 @@ ret_t csv_file_object_save_as(tk_object_t* obj, const char* filename) {
   csv_file_object_t* o = CSV_FILE_OBJECT(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   return csv_file_save(o->csv, filename);
+}
+
+csv_row_t* csv_file_object_find_first(tk_object_t* obj, tk_compare_t compare, void* ctx) {
+  csv_file_object_t* o = CSV_FILE_OBJECT(obj);
+  return_value_if_fail(o != NULL, NULL);
+
+  return csv_file_find_first(o->csv, compare, ctx);
+}
+
+ret_t csv_file_object_set_check_new_row(tk_object_t* obj,
+                                        csv_filter_object_check_new_row_t check_new_row,
+                                        void* ctx) {
+  csv_file_object_t* o = CSV_FILE_OBJECT(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  o->check_new_row = check_new_row;
+  o->check_new_row_ctx = ctx;
+
+  return RET_OK;
 }

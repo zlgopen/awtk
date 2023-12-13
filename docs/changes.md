@@ -1,5 +1,9 @@
 # 最新动态
 
+2023/12/13
+  * 增加csv row object，方便在MVVM中创建对象。
+  * 增加函数csv\_file\_object\_find\_first
+
 2023/12/11
   * 完善 cvs file object 保存命令。
   * awtk\_main.inc 增加FINAL\_EXIT，修改部分脚本绑定退出崩溃的问题。

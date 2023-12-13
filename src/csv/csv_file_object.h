@@ -27,14 +27,16 @@
 
 BEGIN_C_DECLS
 
-
 /**
  * 返回值：
    * RET_OK: 保留
    * RET_STOP: 停止解析
    * RET_FAIL: 忽略此行
  */
-typedef ret_t (*csv_file_object_filter_t)(void* ctx, tk_object_t* args, uint32_t index, csv_row_t* row);
+typedef ret_t (*csv_file_object_filter_t)(void* ctx, tk_object_t* args, uint32_t index,
+                                          csv_row_t* row);
+
+typedef ret_t (*csv_filter_object_check_new_row_t)(void* ctx, csv_row_t* row);
 
 /**
  * @class csv_file_object_t
@@ -99,7 +101,7 @@ typedef struct _csv_file_object_t {
   /*private*/
   csv_file_t* csv;
   str_t str;
-  
+
   tk_object_t* query_args;
   uint32_t* rows_map;
   uint32_t rows_map_size;
@@ -107,6 +109,8 @@ typedef struct _csv_file_object_t {
   csv_file_object_filter_t filter;
   void* filter_ctx;
   bool_t is_dirty;
+  csv_filter_object_check_new_row_t check_new_row;
+  void* check_new_row_ctx;
 } csv_file_object_t;
 
 /**
@@ -191,6 +195,44 @@ ret_t csv_file_object_set_filter(tk_object_t* obj, csv_file_object_filter_t filt
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败
  */
 ret_t csv_file_object_save_as(tk_object_t* obj, const char* filename);
+
+/**
+ * @method csv_file_object_find_first
+ * 查找第一个满足条件的行。
+ * 
+ * @param {tk_object_t*} obj doc对象。
+ * @param {tk_compare_t} compare 比较函数。
+ * @param {void*} ctx 上下文。
+ * 
+ * @return {csv_row_t*} 返回行对象。
+ */
+csv_row_t* csv_file_object_find_first(tk_object_t* obj, tk_compare_t compare, void* ctx);
+
+/**
+ * @method csv_file_object_set_check_new_row
+ * 设置检查新行的回调。
+ * 
+ * @param {tk_object_t*} obj doc对象。
+ * @param {csv_filter_object_check_new_row_t} check_new_row 检查新行的回调。
+ * @param {void*} ctx 上下文。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败
+*/
+ret_t csv_file_object_set_check_new_row(tk_object_t* obj,
+                                        csv_filter_object_check_new_row_t check_new_row, void* ctx);
+
+/**
+ * @method csv_file_object_cast
+ * 转换为csv_file_object_t。
+ * @annotation ["cast", "scriptable"]
+ * 
+ * @param {tk_object_t*} obj doc对象。
+ * 
+ * @return {csv_file_object_t*} 返回csv_file_object_t对象。
+ */
+csv_file_object_t* csv_file_object_cast(tk_object_t* obj);
+
+#define CSV_FILE_OBJECT(obj) csv_file_object_cast((tk_object_t*)obj)
 
 #define CSV_QUERY_PREFIX "query."
 #define CSV_CMD_QUERY "query"

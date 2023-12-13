@@ -661,7 +661,7 @@ ret_t csv_file_append_row(csv_file_t* csv, const char* data) {
   if (csv->max_rows > 0 && csv->rows.size >= csv->max_rows) {
     csv_file_remove_row(csv, 0);
   }
-  
+
   r = csv_rows_append(&(csv->rows));
   return_value_if_fail(r != NULL, RET_OOM);
 
@@ -779,4 +779,19 @@ ret_t csv_file_load_file(csv_file_t* csv, const char* filename) {
   csv->filename = tk_str_copy(csv->filename, filename);
 
   return (csv_file_load(csv) != NULL) ? RET_OK : RET_FAIL;
+}
+
+csv_row_t* csv_file_find_first(csv_file_t* csv, tk_compare_t compare, void* ctx) {
+  uint32_t i = 0;
+  csv_row_t* r = NULL;
+  return_value_if_fail(csv != NULL && compare != NULL, NULL);
+
+  for (i = 0; i < csv->rows.size; i++) {
+    r = csv->rows.rows + i;
+    if (compare(ctx, r) == 0) {
+      return r;
+    }
+  }
+
+  return NULL;
 }
