@@ -64,7 +64,7 @@ static bool_t csv_row_object_can_exec(tk_object_t* obj, const char* name, const 
   if (tk_str_ieq(name, TK_OBJECT_CMD_SAVE) || tk_str_ieq(name, TK_OBJECT_CMD_ADD)) {
     csv_file_object_t* csv_file_object = CSV_FILE_OBJECT(o->csv);
     if (csv_file_object->check_new_row != NULL) {
-      return csv_file_object->check_new_row(csv_file_object, &(o->row));
+      return csv_file_object->check_new_row(csv_file_object, &(o->row)) == RET_OK;
     }
     return TRUE;
   }

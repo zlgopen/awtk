@@ -36,6 +36,12 @@ BEGIN_C_DECLS
 typedef ret_t (*csv_file_object_filter_t)(void* ctx, tk_object_t* args, uint32_t index,
                                           csv_row_t* row);
 
+
+/**
+ * 返回值：
+   * RET_OK: 数据有效
+   * RET_FAIL:数据无效
+ */
 typedef ret_t (*csv_filter_object_check_new_row_t)(void* ctx, csv_row_t* row);
 
 /**
