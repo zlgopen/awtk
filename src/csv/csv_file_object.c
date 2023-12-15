@@ -90,16 +90,26 @@ static ret_t csv_path_parse_impl(csv_path_t* path, csv_file_t* csv, const char* 
 static ret_t csv_file_object_remove_map(csv_file_object_t* o, uint32_t index) {
   uint32_t i = 0;
   uint32_t n = 0;
+  uint32_t row = 0;
   uint32_t* rows_map = NULL;
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   rows_map = o->rows_map;
   n = o->rows_map_size;
+  row = rows_map[index];
   for (i = index; i < n - 1; i++) {
     rows_map[i] = rows_map[i + 1];
   }
 
   o->rows_map_size--;
+  n = o->rows_map_size;
+
+  /*因为对应的row删除了，比row大的序号必须减1*/
+  for (i = 0; i < n; i++) {
+    if (rows_map[i] > row) {
+      rows_map[i] = rows_map[i] - 1;
+    }
+  }
 
   return RET_OK;
 }
@@ -221,9 +231,17 @@ static bool_t csv_file_object_can_exec(tk_object_t* obj, const char* name, const
   } else if (tk_str_ieq(name, TK_OBJECT_CMD_RELOAD)) {
     return TRUE;
   } else if (tk_str_ieq(name, TK_OBJECT_CMD_CLEAR)) {
-    return TRUE;
+    if (o->rows_map != NULL) {
+      return o->rows_map_size > 0;
+    } else {
+      return csv_file_get_rows(o->csv) > 0;
+    }
   } else if (tk_str_ieq(name, TK_OBJECT_CMD_REMOVE)) {
-    return TRUE;
+    if (o->rows_map != NULL) {
+      return o->rows_map_size > 0;
+    } else {
+      return csv_file_get_rows(o->csv) > 0;
+    }
   } else if (tk_str_ieq(name, TK_OBJECT_CMD_REMOVE_CHECKED)) {
     return csv_file_get_checked_rows(o->csv) > 0;
   } else if (tk_str_ieq(name, TK_OBJECT_CMD_ADD)) {
@@ -260,6 +278,20 @@ static ret_t csv_file_object_clear_query(tk_object_t* obj) {
   o->rows_map_size = 0;
   TKMEM_FREE(o->rows_map);
   o->rows_map_capacity = 0;
+
+  return RET_OK;
+}
+
+static ret_t csv_file_object_remove_all_query_result(tk_object_t* obj) {
+  uint32_t i = 0;
+  csv_file_object_t* o = CSV_FILE_OBJECT(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  for (i = o->rows_map_size; i > 0; i--) {
+    uint32_t row = o->rows_map[i - 1];
+    csv_file_remove_row(o->csv, row);
+  }
+  o->rows_map_size = 0;
 
   return RET_OK;
 }
@@ -317,10 +349,14 @@ static ret_t csv_file_object_exec(tk_object_t* obj, const char* name, const char
     csv_file_object_clear_query(obj);
     o->is_dirty = FALSE;
   } else if (tk_str_ieq(name, TK_OBJECT_CMD_CLEAR)) {
-    csv_file_clear(o->csv);
-    ret = RET_ITEMS_CHANGED;
-    csv_file_object_clear_query(obj);
+    if (o->rows_map != NULL) {
+      csv_file_object_remove_all_query_result(obj);
+    } else {
+      csv_file_clear(o->csv);
+      csv_file_object_clear_query(obj);
+    }
     o->is_dirty = TRUE;
+    ret = RET_ITEMS_CHANGED;
   } else if (tk_str_ieq(name, TK_OBJECT_CMD_REMOVE)) {
     o->is_dirty = TRUE;
     ret = csv_file_object_remove_prop(obj, args) == RET_OK ? RET_ITEMS_CHANGED : RET_FAIL;

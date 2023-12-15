@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/12/15
+  * 完善csv file object
+
 2023/12/13
   * 增加csv row object，方便在MVVM中创建对象。
   * 增加函数csv\_file\_object\_find\_first
