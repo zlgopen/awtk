@@ -232,8 +232,11 @@ ret_t date_time_parse_time(date_time_t* dt, const char* str) {
 
   n = tk_sscanf(str, "%d:%d:%d", &hour, &minute, &second);
   if (n >= 2) {
-    return date_time_set_hour(dt, hour) || date_time_set_minute(dt, minute) ||
-           date_time_set_second(dt, second);
+    date_time_set_hour(dt, hour);
+		date_time_set_minute(dt, minute);
+    date_time_set_second(dt, second);
+		
+		return RET_OK;
   } else {
     return RET_BAD_PARAMS;
   }
@@ -252,8 +255,11 @@ ret_t date_time_parse_date(date_time_t* dt, const char* str) {
     n = tk_sscanf(str, "%d-%d-%d", &year, &month, &day);
   }
   if (n == 3) {
-    return date_time_set_year(dt, year) || date_time_set_month(dt, month) ||
-           date_time_set_day(dt, day);
+    date_time_set_year(dt, year);
+		date_time_set_month(dt, month);
+		date_time_set_day(dt, day);
+		
+		return RET_OK;
   } else {
     return RET_BAD_PARAMS;
   }
@@ -275,10 +281,16 @@ ret_t date_time_parse_date_time(date_time_t* dt, const char* str) {
     n = tk_sscanf(str, "%d-%d-%d %d:%d:%d", &year, &month, &day, &hour, &minute, &second);
   }
   if (n >= 5) {
-    return date_time_set_year(dt, year) || date_time_set_month(dt, month) ||
-           date_time_set_day(dt, day) || date_time_set_hour(dt, hour) ||
-           date_time_set_minute(dt, minute) || date_time_set_second(dt, second);
+    date_time_set_year(dt, year);
+		date_time_set_month(dt, month);
+    date_time_set_day(dt, day);
+		date_time_set_hour(dt, hour);
+    date_time_set_minute(dt, minute);
+		date_time_set_second(dt, second);
+		
+		return RET_OK;
   } else {
     return RET_BAD_PARAMS;
   }
 }
+

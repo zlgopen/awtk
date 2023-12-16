@@ -2897,7 +2897,7 @@ static ret_t func_abs(fscript_t* fscript, fscript_args_t* args, value_t* result)
       break;
     }
     case VALUE_TYPE_UINT8: {
-      value_set_uint8(result, tk_abs(value_uint8(v)));
+      value_set_uint8(result, value_uint8(v));
       break;
     }
     case VALUE_TYPE_INT16: {
@@ -2905,7 +2905,7 @@ static ret_t func_abs(fscript_t* fscript, fscript_args_t* args, value_t* result)
       break;
     }
     case VALUE_TYPE_UINT16: {
-      value_set_uint16(result, tk_abs(value_uint16(v)));
+      value_set_uint16(result, value_uint16(v));
       break;
     }
     case VALUE_TYPE_INT32: {
@@ -2913,7 +2913,7 @@ static ret_t func_abs(fscript_t* fscript, fscript_args_t* args, value_t* result)
       break;
     }
     case VALUE_TYPE_UINT32: {
-      value_set_uint32(result, tk_abs(value_uint32(v)));
+      value_set_uint32(result, value_uint32(v));
       break;
     }
     case VALUE_TYPE_INT64: {
@@ -2921,7 +2921,7 @@ static ret_t func_abs(fscript_t* fscript, fscript_args_t* args, value_t* result)
       break;
     }
     case VALUE_TYPE_UINT64: {
-      value_set_uint64(result, tk_abs(value_uint64(v)));
+      value_set_uint64(result, value_uint64(v));
       break;
     }
     default: {
