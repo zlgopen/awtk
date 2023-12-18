@@ -100,6 +100,7 @@ static ret_t debugger_lldb_simple_command(debugger_t* debugger, const char* cmd)
 static ret_t debugger_lldb_disconnect(debugger_t* debugger, bool_t terminate_debuggee);
 static tk_object_t* debugger_lldb_get_callstack_impl(debugger_t* debugger, uint32_t start_frame,
                                                      uint32_t levels);
+static tk_object_t* object_find_variable_value(tk_object_t* obj, const char* name, const char* full_name);
 
 static ret_t debugger_lldb_lock(debugger_t* debugger) {
   debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
@@ -817,7 +818,9 @@ static tk_object_t* debugger_lldb_get_variables_impl(debugger_t* debugger, uint3
                                                      uint32_t start, uint32_t count) {
   tk_object_t* req = NULL;
   tk_object_t* resp = NULL;
+  tk_object_t* this_obj = NULL;
   return_value_if_fail(debugger != NULL, NULL);
+get_value:
   req = debugger_lldb_create_get_variables_req(debugger, type, start, count);
   return_value_if_fail(req != NULL, NULL);
 
@@ -826,6 +829,18 @@ static tk_object_t* debugger_lldb_get_variables_impl(debugger_t* debugger, uint3
   }
 
   TK_OBJECT_UNREF(req);
+
+  this_obj = object_find_variable_value(resp, "this", "this");
+  if (this_obj != NULL) {
+    const char* value = tk_object_get_prop_str(this_obj, "body.variables.[0].value");
+    if (TK_STR_IS_EMPTY(value)) {
+      tk_object_unref(this_obj);
+      tk_object_unref(resp);
+      goto get_value;
+    } else {
+      tk_object_unref(this_obj);
+    }
+  }
 
   return resp;
 }
