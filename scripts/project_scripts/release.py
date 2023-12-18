@@ -4,6 +4,7 @@ import platform
 import shutil
 import json
 import collections
+import fnmatch
 
 
 def join_path(root, subdir):
@@ -11,7 +12,7 @@ def join_path(root, subdir):
 
 
 OS_NAME = platform.system()
-PRJ_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PRJ_DIR = os.getcwd();
 OUTPUT_DIR = join_path(PRJ_DIR, 'release')
 BIN_DIR = join_path(PRJ_DIR, 'bin')
 
@@ -73,7 +74,9 @@ def release():
     res_root = to_file_system_coding(assets['outputDir'])
     assets_root = join_path(PRJ_DIR, res_root + '/assets')
 
-  exeName = CONFIG['appExeName']
+  exeName = '';
+  if 'appExeName' in CONFIG :
+    exeName = CONFIG['appExeName']
   if exeName == '':
     exeName = 'demo'
   exeName = exeName + '.exe' if OS_NAME == 'Windows' else exeName
