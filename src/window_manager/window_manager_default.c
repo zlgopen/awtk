@@ -725,7 +725,7 @@ static ret_t window_manager_default_open_window(widget_t* widget, widget_t* wind
 
 static ret_t window_manager_idle_destroy_window(const idle_info_t* info) {
   widget_t* win = WIDGET(info->ctx);
-  widget_destroy(win);
+  widget_destroy_sync(win);
 
   return RET_OK;
 }
@@ -796,6 +796,9 @@ static ret_t window_manager_default_close_window(widget_t* widget, widget_t* win
 
     widget_remove_child(widget, window);
     idle_add(window_manager_idle_destroy_window, window);
+    if (wm->dialog_highlighter != NULL && wm->dialog_highlighter->dialog == window) {
+      window_manager_default_dialog_highlighter_destroy(widget);
+    }
     /* 这里是解决没有结束动画，但是 prev_win 是高亮的对话框的情况 */
     prev_win = window_manager_get_top_window(widget);
     if (widget_is_keyboard(prev_win)) {
