@@ -39,7 +39,7 @@ BEGIN_C_DECLS
  * typed_array_push(a, value_set_int(&v, 123));
  * typed_array_push(a, value_set_int(&v, 234));
  * ...
- * typed_array_destroy(typed_array);
+ * typed_array_destroy(a);
  * ```
  *
  */
