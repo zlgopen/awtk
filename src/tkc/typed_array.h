@@ -35,7 +35,7 @@ BEGIN_C_DECLS
  *
  * ```c
  * value_t v;
- * typed_array_t* typed_array = typed_array_create(VALUE_TYPE_INT, 10);
+ * typed_array_t* a = typed_array_create(VALUE_TYPE_INT, 10);
  * typed_array_push(a, value_set_int(&v, 123));
  * typed_array_push(a, value_set_int(&v, 234));
  * ...
