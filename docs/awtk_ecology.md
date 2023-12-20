@@ -8,8 +8,9 @@
 
 ## 索引
 
+- [索引](#索引)
 - [操作系统适配](#操作系统适配)
-- [MCU芯片适配](#MCU芯片适配)
+- [MCU芯片适配](#mcu芯片适配)
 - [控件与示例](#控件与示例)
 - [编程语言绑定](#编程语言绑定)
 - [编译构建工具](#编译构建工具)
@@ -265,7 +266,7 @@
 | SCons    | MinGW    | https://github.com/zlgopen/awtk-scons-mingw | [ZLG](http://www.zlg.cn)                |
 | CMake    | MSVC     | https://github.com/zlgopen/awtk-msvc        | [ZLG](http://www.zlg.cn)                |
 | CMake    | macOS    | https://github.com/oskycar/awtktest_cmake   | [allenyang](https://github.com/oskycar) |
-
+| SCons    | Windows  | https://gitee.com/zlgopen/awtk-scons-cross-compile | [ZLG](http://www.zlg.cn)         |
 
 
 ## 商业应用案例

@@ -369,9 +369,19 @@ npm install -g glob
 
 * [Examples for Custom Widgets: rive](https://github.com/zlgopen/awtk-widget-rive)
 
+* [Examples for Custom Widgets: liquid flow](https://github.com/zlgopen/awtk-widget-liquid-flow)
+
 * [Examples for Custom Font Loader](https://github.com/zlgopen/awtk-custom-font-loader)
 
 * [Write AWTK App With ReactJS](https://github.com/zlgopen/react-awtk)
+
+* [awtk-modbus](https://github.com/zlgopen/awtk-modbus)
+
+* [awtk-ftpd](https://github.com/zlgopen/awtk-ftpd)
+
+* [awtk-ftp-fs](https://github.com/zlgopen/awtk-ftp-fs) 
+
+* [awtk-hmi](https://github.com/zlgopen/awtk-hmi)
 
 The third party provides: 
 

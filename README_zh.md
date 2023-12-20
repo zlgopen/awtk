@@ -373,9 +373,19 @@ npm install -g glob
 
 * [扩展控件实例：Rive动画](https://github.com/zlgopen/awtk-widget-rive)
 
+* [扩展控件实例：液体流动](https://github.com/zlgopen/awtk-widget-liquid-flow)
+
 * [自定义字体加载器：加载部分字体](https://github.com/zlgopen/awtk-custom-font-loader)
 
 * [用reactjs开发AWTK应用程序](https://github.com/zlgopen/react-awtk)
+
+* [MODBUS 协议](https://github.com/zlgopen/awtk-modbus)
+
+* [FTP 服务器](https://github.com/zlgopen/awtk-ftpd)
+
+* [基于FTP的文件系统](https://github.com/zlgopen/awtk-ftp-fs) 
+
+* [开源智能串口屏](https://github.com/zlgopen/awtk-hmi)
 
 第三方提供：
 
