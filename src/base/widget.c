@@ -173,9 +173,7 @@ ret_t widget_update_style(widget_t* widget) {
 static ret_t widget_real_destroy(widget_t* widget) {
   ENSURE(widget->ref_count == 1);
 
-  if (widget->vt->on_destroy) {
-    widget->vt->on_destroy(widget);
-  }
+  widget_vtable_on_destroy(widget);
 
   TKMEM_FREE(widget->name);
   TKMEM_FREE(widget->state);
@@ -618,9 +616,7 @@ ret_t widget_set_tr_text(widget_t* widget, const char* text) {
 }
 
 ret_t widget_re_translate_text(widget_t* widget) {
-  if (widget->vt->on_re_translate != NULL) {
-    widget->vt->on_re_translate(widget);
-  }
+  widget_vtable_on_re_translate(widget);
   if (widget->tr_text != NULL) {
     const char* tr_text = locale_info_tr(widget_get_locale_info(widget), widget->tr_text);
     widget_set_text_utf8_impl(widget, tr_text, FALSE);
@@ -1040,9 +1036,7 @@ ret_t widget_add_child_default(widget_t* widget, widget_t* child) {
 
   child->parent = widget;
 
-  if (child->vt->on_attach_parent) {
-    child->vt->on_attach_parent(child, widget);
-  }
+  widget_vtable_on_attach_parent(child, widget);
 
   ENSURE(darray_push(widget->children, child) == RET_OK);
 
@@ -1067,10 +1061,8 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
     widget->children = darray_create(4, NULL, NULL);
   }
 
-  if (widget->vt->on_add_child) {
-    if (widget->vt->on_add_child(widget, child) == RET_OK) {
-      return RET_OK;
-    }
+  if (widget_vtable_on_add_child(widget, child) == RET_OK) {
+    return RET_OK;
   }
 
   return widget_add_child_default(widget, child);
@@ -1098,15 +1090,11 @@ ret_t widget_remove_child_prepare(widget_t* widget, widget_t* child) {
     widget->key_target = NULL;
   }
 
-  if (widget->vt->on_remove_child) {
-    if (widget->vt->on_remove_child(widget, child) == RET_OK) {
-      return RET_OK;
-    }
+  if (widget_vtable_on_remove_child(widget, child) == RET_OK) {
+    return RET_OK;
   }
 
-  if (child->vt->on_detach_parent) {
-    child->vt->on_detach_parent(child, widget);
-  }
+  widget_vtable_on_detach_parent(child, widget);
   child->parent = NULL;
 
   return RET_OK;
@@ -1319,9 +1307,7 @@ widget_t* widget_find_target(widget_t* widget, xy_t x, xy_t y) {
   widget_t* ret = NULL;
   return_value_if_fail(widget != NULL, NULL);
 
-  if (widget->vt && widget->vt->find_target) {
-    ret = widget->vt->find_target(widget, x, y);
-  } else {
+  if (widget_vtable_find_target(widget, x, y, &ret) == RET_NOT_IMPL) {
     ret = widget_find_target_default(widget, x, y);
   }
 
@@ -1331,19 +1317,15 @@ widget_t* widget_find_target(widget_t* widget, xy_t x, xy_t y) {
 ret_t widget_on_event_before_children(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
-
-  if (widget->vt && widget->vt->on_event_before_children) {
-    ret = widget->vt->on_event_before_children(widget, e);
-  }
-
-  return ret;
+  ret = widget_vtable_on_event_before_children(widget, e);
+  return ret == RET_NOT_IMPL ? RET_OK : ret;
 }
 
 static const char* widget_get_pointer_cursor(widget_t* widget) {
   if (widget->pointer_cursor != NULL) {
     return widget->pointer_cursor;
-  } else if (widget->vt->pointer_cursor != NULL) {
-    return widget->vt->pointer_cursor;
+  } else if (widget_vtable_get_pointer_cursor(widget->vt) != NULL) {
+    return widget_vtable_get_pointer_cursor(widget->vt);
   }
 
   return WIDGET_CURSOR_DEFAULT;
@@ -1365,9 +1347,8 @@ ret_t widget_dispatch(widget_t* widget, event_t* e) {
     e->target = widget;
   }
 
-  if (widget->vt && widget->vt->on_event) {
-    ret = widget->vt->on_event(widget, e);
-  } else {
+  ret = widget_vtable_on_event(widget, e);
+  if (ret == RET_NOT_IMPL) {
     ret = widget_on_event_default(widget, e);
   }
 
@@ -2194,10 +2175,10 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     }
   }
 
-  if (widget->vt->set_prop) {
-    ret_t ret1 = widget->vt->set_prop(widget, name, v);
-    if (ret == RET_NOT_FOUND) {
-      ret = ret1;
+  if (ret == RET_NOT_FOUND) {
+    ret = widget_vtable_set_prop(widget, name, v);
+    if (ret == RET_NOT_IMPL) {
+      ret = RET_NOT_FOUND;
     }
   }
 
@@ -2337,9 +2318,8 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
       ret = RET_NOT_FOUND;
     }
   } else {
-    if (widget->vt->get_prop) {
-      ret = widget->vt->get_prop(widget, name, v);
-    } else {
+    ret = widget_vtable_get_prop(widget, name, v);
+    if (ret == RET_NOT_IMPL) {
       ret = RET_NOT_FOUND;
     }
   }
@@ -2482,9 +2462,9 @@ ret_t widget_on_paint_background(widget_t* widget, canvas_t* c) {
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  if (widget->vt->on_paint_background) {
-    ret = widget->vt->on_paint_background(widget, c);
-  } else {
+  ret = widget_vtable_on_paint_background(widget, c);
+  if (ret == RET_NOT_IMPL) {
+    ret = RET_OK;
     if (style_is_valid(widget->astyle)) {
       widget_draw_background(widget, c);
     }
@@ -2498,11 +2478,10 @@ ret_t widget_on_paint_self(widget_t* widget, canvas_t* c) {
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  if (widget->vt->on_paint_self) {
-    ret = widget->vt->on_paint_self(widget, c);
-  } else {
+  ret = widget_vtable_on_paint_self(widget, c);
+  if (ret == RET_NOT_IMPL) {
     paint_event_t e;
-    widget_dispatch(widget, paint_event_init(&e, EVT_PAINT, widget, c));
+    ret = widget_dispatch(widget, paint_event_init(&e, EVT_PAINT, widget, c));
   }
 
   return ret;
@@ -2513,9 +2492,8 @@ ret_t widget_on_paint_children(widget_t* widget, canvas_t* c) {
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  if (widget->vt->on_paint_children) {
-    ret = widget->vt->on_paint_children(widget, c);
-  } else {
+  ret = widget_vtable_on_paint_children(widget, c);
+  if (ret == RET_NOT_IMPL) {
     ret = widget_on_paint_children_default(widget, c);
   }
 
@@ -2527,9 +2505,9 @@ ret_t widget_on_paint_border(widget_t* widget, canvas_t* c) {
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  if (widget->vt->on_paint_border) {
-    ret = widget->vt->on_paint_border(widget, c);
-  } else {
+  ret = widget_vtable_on_paint_border(widget, c);
+  if (ret == RET_NOT_IMPL) {
+    ret = RET_OK;
     if (style_is_valid(widget->astyle)) {
       ret = widget_draw_border(widget, c);
     }
@@ -2543,14 +2521,10 @@ static ret_t widget_on_paint_begin(widget_t* widget, canvas_t* c) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
-
-  if (widget->vt->on_paint_begin) {
-    ret = widget->vt->on_paint_begin(widget, c);
-  }
-
+  ret = widget_vtable_on_paint_begin(widget, c);
   widget_dispatch(widget, paint_event_init(&e, EVT_BEFORE_PAINT, widget, c));
 
-  return ret;
+  return ret == RET_NOT_IMPL ? RET_OK : ret;
 }
 
 static ret_t widget_on_paint_done(widget_t* widget, canvas_t* c) {
@@ -2570,13 +2544,10 @@ static ret_t widget_on_paint_end(widget_t* widget, canvas_t* c) {
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
-  if (widget->vt->on_paint_end) {
-    ret = widget->vt->on_paint_end(widget, c);
-  }
-
+  ret = widget_vtable_on_paint_end(widget, c);
   widget_dispatch(widget, paint_event_init(&e, EVT_AFTER_PAINT, widget, c));
 
-  return ret;
+  return ret == RET_NOT_IMPL ? RET_OK : ret;
 }
 
 ret_t widget_dispatch_to_target(widget_t* widget, event_t* e) {
@@ -2671,11 +2642,9 @@ static ret_t widget_on_keydown_after_children(widget_t* widget, key_event_t* e) 
   ret_t ret = RET_OK;
 
   return_value_if_equal(ret = widget_dispatch(widget, (event_t*)e), RET_STOP);
-  if (widget->vt->on_keydown) {
-    ret = widget->vt->on_keydown(widget, e);
-  }
+  ret = widget_vtable_on_keydown(widget, e);
 
-  return ret;
+  return ret == RET_NOT_IMPL ? RET_OK : ret;
 }
 
 bool_t widget_is_activate_key(widget_t* widget, key_event_t* e) {
@@ -2867,11 +2836,8 @@ static ret_t widget_on_keyup_after_children(widget_t* widget, key_event_t* e) {
   ret_t ret = RET_OK;
 
   return_value_if_equal(ret = widget_dispatch(widget, (event_t*)e), RET_STOP);
-  if (widget->vt->on_keyup) {
-    ret = widget->vt->on_keyup(widget, e);
-  }
-
-  return ret;
+  ret = widget_vtable_on_keyup(widget, e);
+  return ret == RET_NOT_IMPL ? RET_OK : ret;
 }
 
 static ret_t widget_on_keyup_impl(widget_t* widget, key_event_t* e) {
@@ -2970,11 +2936,8 @@ static ret_t widget_on_wheel_after_children(widget_t* widget, wheel_event_t* e) 
   ret_t ret = RET_OK;
 
   return_value_if_equal(ret = widget_dispatch(widget, (event_t*)e), RET_STOP);
-  if (widget->vt->on_wheel) {
-    ret = widget->vt->on_wheel(widget, e);
-  }
-
-  return ret;
+  ret = widget_vtable_on_wheel(widget, e);
+  return ret == RET_NOT_IMPL ? RET_OK : ret;
 }
 
 static ret_t widget_on_wheel_impl(widget_t* widget, wheel_event_t* e) {
@@ -3120,12 +3083,13 @@ ret_t widget_on_pointer_down_children(widget_t* widget, pointer_event_t* e) {
 
 static ret_t widget_on_pointer_down_after_children(widget_t* widget, pointer_event_t* e) {
   ret_t ret = RET_OK;
+  ret_t ret1 = RET_OK;
 
   return_value_if_equal(ret = widget_dispatch(widget, (event_t*)e), RET_STOP);
-  if (widget->vt->on_pointer_down) {
-    return_value_if_equal(ret = widget->vt->on_pointer_down(widget, e), RET_STOP);
+  return_value_if_equal(ret1 = widget_vtable_on_pointer_down(widget, e), RET_STOP);
+  if (ret1 != RET_NOT_IMPL) {
+    ret = ret1;
   }
-
   return ret;
 }
 
@@ -3203,10 +3167,12 @@ ret_t widget_on_pointer_move_children(widget_t* widget, pointer_event_t* e) {
 
 static ret_t widget_on_pointer_move_after_children(widget_t* widget, pointer_event_t* e) {
   ret_t ret = RET_OK;
+  ret_t ret1 = RET_OK;
 
   return_value_if_equal(ret = widget_dispatch(widget, (event_t*)e), RET_STOP);
-  if (widget->vt->on_pointer_move) {
-    return_value_if_equal(ret = widget->vt->on_pointer_move(widget, e), RET_STOP);
+  return_value_if_equal(ret1 = widget_vtable_on_pointer_move(widget, e), RET_STOP);
+  if (ret1 != RET_NOT_IMPL) {
+    ret = ret1;
   }
 
   return ret;
@@ -3266,12 +3232,13 @@ ret_t widget_on_pointer_up_children(widget_t* widget, pointer_event_t* e) {
 
 static ret_t widget_on_pointer_up_after_children(widget_t* widget, pointer_event_t* e) {
   ret_t ret = RET_OK;
+  ret_t ret1 = RET_OK;
 
   return_value_if_equal(ret = widget_dispatch(widget, (event_t*)e), RET_STOP);
-  if (widget->vt->on_pointer_up) {
-    return_value_if_equal(ret = widget->vt->on_pointer_up(widget, e), RET_STOP);
+  return_value_if_equal(ret1 = widget_vtable_on_pointer_up(widget, e), RET_STOP);
+  if (ret1 != RET_NOT_IMPL) {
+    ret = ret1;
   }
-
   return ret;
 }
 
@@ -3320,12 +3287,13 @@ static ret_t widget_on_context_menu_children(widget_t* widget, pointer_event_t* 
 
 static ret_t widget_on_context_menu_after_children(widget_t* widget, pointer_event_t* e) {
   ret_t ret = RET_OK;
+  ret_t ret1 = RET_OK;
 
   return_value_if_equal(ret = widget_dispatch(widget, (event_t*)e), RET_STOP);
-  if (widget->vt->on_context_menu) {
-    return_value_if_equal(ret = widget->vt->on_context_menu(widget, e), RET_STOP);
+  return_value_if_equal(ret1 = widget_vtable_on_context_menu(widget, e), RET_STOP);
+  if (ret1 != RET_NOT_IMPL) {
+    ret = ret1;
   }
-
   return ret;
 }
 
@@ -3558,6 +3526,7 @@ static ret_t widget_set_parent_not_dirty(widget_t* widget) {
 }
 
 ret_t widget_invalidate(widget_t* widget, const rect_t* r) {
+  ret_t ret;
   rect_t rself;
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
 
@@ -3573,11 +3542,11 @@ ret_t widget_invalidate(widget_t* widget, const rect_t* r) {
   widget->dirty = TRUE;
   widget_set_parent_not_dirty(widget);
 
-  if (widget->vt && widget->vt->invalidate) {
-    return widget->vt->invalidate(widget, r);
-  } else {
+  ret = widget_vtable_invalidate(widget, r);
+  if (ret == RET_NOT_IMPL) {
     return widget_invalidate_default(widget, r);
   }
+  return ret;
 }
 
 ret_t widget_invalidate_force(widget_t* widget, const rect_t* r) {
@@ -3691,9 +3660,8 @@ ret_t widget_get_prop_default_value(widget_t* widget, const char* name, value_t*
   } else if (tk_str_eq(name, WIDGET_PROP_AUTO_ADJUST_SIZE)) {
     value_set_bool(v, FALSE);
   } else {
-    if (widget->vt->get_prop_default_value) {
-      ret = widget->vt->get_prop_default_value(widget, name, v);
-    } else {
+    ret = widget_vtable_get_prop_default_value(widget, name, v);
+    if (ret == RET_NOT_IMPL) {
       ret = RET_NOT_FOUND;
     }
   }
@@ -3705,14 +3673,12 @@ ret_t widget_get_offset(widget_t* widget, xy_t* out_x, xy_t* out_y) {
   return_value_if_fail(widget != NULL && out_x != NULL && out_y != NULL, RET_BAD_PARAMS);
   *out_x = 0;
   *out_y = 0;
-  if (widget->vt != NULL && widget->vt->get_offset != NULL) {
-    return widget->vt->get_offset(widget, out_x, out_y);
-  } else if (widget->vt != NULL && widget->vt->get_prop != NULL) {
+  if (widget_vtable_get_offset(widget, out_x, out_y) == RET_NOT_IMPL) {
     value_t v;
-    if (widget->vt->get_prop(widget, WIDGET_PROP_XOFFSET, &v) == RET_OK) {
+    if (widget_vtable_get_prop(widget, WIDGET_PROP_XOFFSET, &v) == RET_OK) {
       *out_x = value_int(&v);
     }
-    if (widget->vt->get_prop(widget, WIDGET_PROP_YOFFSET, &v) == RET_OK) {
+    if (widget_vtable_get_prop(widget, WIDGET_PROP_YOFFSET, &v) == RET_OK) {
       *out_y = value_int(&v);
     }
   }
@@ -3918,9 +3884,7 @@ static ret_t widget_copy(widget_t* widget, widget_t* other) {
     widget->custom_props = object_default_clone(OBJECT_DEFAULT(other->custom_props));
   }
 
-  if (widget->vt->on_copy != NULL) {
-    widget->vt->on_copy(widget, other);
-  } else {
+  if (widget_vtable_on_copy(widget, other) == RET_NOT_IMPL) {
     widget_on_copy_default(widget, other);
   }
 
@@ -3975,7 +3939,7 @@ bool_t widget_equal(widget_t* widget, widget_t* other) {
     return ret;
   }
 
-  properties = widget->vt->clone_properties;
+  properties = widget_vtable_get_clone_properties(widget->vt);
   if (properties != NULL) {
     value_t v1;
     value_t v2;
@@ -4095,6 +4059,7 @@ ret_t widget_unload_asset(widget_t* widget, const asset_info_t* asset) {
 
 bool_t widget_is_point_in(widget_t* widget, xy_t x, xy_t y, bool_t is_local) {
   point_t p = {x, y};
+  bool_t is_point_in = FALSE;
   return_value_if_fail(widget != NULL, FALSE);
 
   if (!is_local && widget->parent != NULL) {
@@ -4103,11 +4068,11 @@ bool_t widget_is_point_in(widget_t* widget, xy_t x, xy_t y, bool_t is_local) {
     p.y -= widget->y;
   }
 
-  if (widget->vt->is_point_in != NULL) {
-    return widget->vt->is_point_in(widget, p.x, p.y);
-  } else {
+  if (widget_vtable_is_point_in(widget, p.x, p.y, &is_point_in) == RET_NOT_IMPL) {
     rect_t r = rect_init(0, 0, widget->w, widget->h);
     return rect_contains(&r, p.x, p.y);
+  } else {
+    return is_point_in;
   }
 }
 
@@ -4251,6 +4216,7 @@ bool_t widget_is_keyboard(widget_t* widget) {
 }
 
 ret_t widget_on_visit_focusable(void* ctx, const void* data) {
+  ret_t ret = RET_OK;
   widget_t* widget = WIDGET(data);
   darray_t* all_focusable = (darray_t*)ctx;
 
@@ -4258,8 +4224,9 @@ ret_t widget_on_visit_focusable(void* ctx, const void* data) {
     return RET_SKIP;
   }
 
-  if (widget->vt->get_only_active_children != NULL) {
-    return widget->vt->get_only_active_children(widget, all_focusable);
+  ret = widget_vtable_get_only_active_children(widget, all_focusable);
+  if (ret != RET_NOT_IMPL) {
+    return ret;
   }
 
   if (widget_is_focusable(widget)) {

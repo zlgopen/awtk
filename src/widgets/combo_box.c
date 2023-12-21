@@ -23,6 +23,7 @@
 #include "tkc/utils.h"
 #include "base/layout.h"
 #include "base/window.h"
+#include "base/widget_vtable.h"
 #include "base/window_manager.h"
 #include "widgets/popup.h"
 #include "tkc/tokenizer.h"
@@ -46,7 +47,6 @@ const char* const s_combo_box_properties[] = {TK_EDIT_PROPS,
 
 static ret_t combo_box_active(widget_t* widget);
 static ret_t combo_box_add_selected_index(widget_t* widget, int32_t delta);
-static widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, widget_t* item);
 
 static ret_t combo_box_on_copy(widget_t* widget, widget_t* other) {
@@ -574,6 +574,25 @@ static ret_t combo_box_on_remove_child(widget_t* widget, widget_t* child) {
   return RET_FAIL;
 }
 
+static ret_t combo_box_init(widget_t* widget) {
+  ret_t ret = RET_OK;
+  combo_box_t* _combo_box = COMBO_BOX(widget);
+  return_value_if_fail(_combo_box != NULL, RET_BAD_PARAMS);
+
+  ret = widget_vtable_init_by_parent(widget, WIDGET_VTABLE_GET_VTABLE(combo_box));
+  return_value_if_fail(ret == RET_OK || ret == RET_NOT_IMPL, ret);
+
+  widget_set_prop_int(widget, WIDGET_PROP_MARGIN, 0);
+  widget_set_prop_int(widget, WIDGET_PROP_LEFT_MARGIN, 0);
+  widget_set_prop_int(widget, WIDGET_PROP_RIGHT_MARGIN, 0);
+  str_init(&(_combo_box->text), 32);
+  _combo_box->localize_options = TRUE;
+
+  combo_box_init_popup_button(widget);
+  combo_box_set_item_height(widget, 30);
+  return RET_OK;
+}
+
 TK_DECL_VTABLE(combo_box) = {.size = sizeof(combo_box_t),
                              .inputable = TRUE,
                              .type = WIDGET_TYPE_COMBO_BOX,
@@ -584,7 +603,8 @@ TK_DECL_VTABLE(combo_box) = {.size = sizeof(combo_box_t),
                              .clone_properties = s_combo_box_properties,
                              .persistent_properties = s_combo_box_properties,
                              .get_parent_vt = TK_GET_PARENT_VTABLE(edit),
-                             .create = combo_box_create_self,
+                             .create = combo_box_create,
+                             .init = combo_box_init,
                              .on_paint_self = edit_on_paint_self,
                              .set_prop = combo_box_set_prop,
                              .get_prop = combo_box_get_prop,
@@ -594,20 +614,6 @@ TK_DECL_VTABLE(combo_box) = {.size = sizeof(combo_box_t),
                              .on_destroy = combo_box_on_destroy,
                              .on_copy = combo_box_on_copy,
                              .on_event = combo_box_on_event};
-
-widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = edit_create_ex(parent, TK_REF_VTABLE(combo_box), x, y, w, h);
-  combo_box_t* combo_box = COMBO_BOX(widget);
-  edit_t* edit = EDIT(WIDGET(combo_box));
-  return_value_if_fail(combo_box != NULL && edit != NULL, NULL);
-  widget_set_prop_int(widget, WIDGET_PROP_MARGIN, 0);
-  widget_set_prop_int(widget, WIDGET_PROP_LEFT_MARGIN, 0);
-  widget_set_prop_int(widget, WIDGET_PROP_RIGHT_MARGIN, 0);
-  str_init(&(combo_box->text), 32);
-  combo_box->localize_options = TRUE;
-
-  return widget;
-}
 
 ret_t combo_box_set_on_item_click(widget_t* widget, event_func_t on_item_click, void* ctx) {
   combo_box_t* combo_box = COMBO_BOX(widget);
@@ -805,12 +811,9 @@ static ret_t combo_box_on_button_click(void* ctx, event_t* e) {
 }
 
 widget_t* combo_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = combo_box_create_self(parent, x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(combo_box), x, y, w, h);
   return_value_if_fail(widget != NULL, NULL);
-
-  combo_box_init_popup_button(widget);
-  combo_box_set_item_height(widget, 30);
-
+  combo_box_init(widget);
   return widget;
 }
 

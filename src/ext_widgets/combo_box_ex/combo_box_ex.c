@@ -21,6 +21,7 @@
 
 #include "base/layout.h"
 #include "widgets/popup.h"
+#include "base/widget_vtable.h"
 #include "widgets/combo_box_item.h"
 #include "ext_widgets/scroll_view/list_view.h"
 #include "ext_widgets/scroll_view/scroll_view.h"
@@ -161,13 +162,27 @@ static widget_t* custom_open_popup(widget_t* combo_box) {
   return combo_box_ex_create_scroll_popup(COMBO_BOX(combo_box));
 }
 
-widget_t* combo_box_ex_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* combo_box = combo_box_create(parent, x, y, w, h);
-  return_value_if_fail(combo_box != NULL, NULL);
-
-  widget_set_prop_str(combo_box, WIDGET_PROP_TYPE, WIDGET_TYPE_COMBO_BOX_EX);
-  combo_box_set_custom_open_popup(combo_box, custom_open_popup,
+static ret_t combo_box_ex_init(widget_t* widget) {
+  ret_t ret = widget_vtable_init_by_parent(widget, WIDGET_VTABLE_GET_VTABLE(combo_box_ex));
+  return_value_if_fail(ret == RET_OK || ret == RET_NOT_IMPL, ret);
+  return combo_box_set_custom_open_popup(widget, custom_open_popup,
                                   combo_box_ex_on_layout_children_for_combobox_popup);
+}
 
-  return combo_box;
+TK_DECL_VTABLE(combo_box_ex) = {.size = sizeof(combo_box_t),
+                                .inputable = TRUE,
+                                .type = WIDGET_TYPE_COMBO_BOX_EX,
+                                .focusable = TRUE,
+                                .space_key_to_activate = TRUE,
+                                .return_key_to_activate = TRUE,
+                                .get_parent_vt = TK_GET_PARENT_VTABLE(combo_box),
+                                .init = combo_box_ex_init,
+                                .create = combo_box_ex_create};
+
+
+widget_t* combo_box_ex_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(combo_box_ex), x, y, w, h);
+  return_value_if_fail(widget != NULL, NULL);
+  combo_box_ex_init(widget);
+  return widget;
 }

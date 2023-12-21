@@ -84,6 +84,7 @@ typedef ret_t (*widget_on_copy_t)(widget_t* widget, widget_t* other);
 typedef bool_t (*widget_is_point_in_t)(widget_t* widget, xy_t x, xy_t y);
 typedef widget_t* (*widget_find_target_t)(widget_t* widget, xy_t x, xy_t y);
 typedef widget_t* (*widget_create_t)(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+typedef ret_t (*widget_init_t)(widget_t* widget);
 typedef ret_t (*widget_on_destroy_t)(widget_t* widget);
 typedef ret_t (*widget_get_offset_t)(widget_t* widget, xy_t* out_x, xy_t* out_y);
 typedef ret_t (*widget_get_only_active_children_t)(widget_t* widget, darray_t* all_focusable);
@@ -104,51 +105,59 @@ struct _widget_vtable_t {
   const char* const* persistent_properties;
   /**
    * 是否可以滚动。
+   *>子类无法继承。
    */
   uint32_t scrollable : 1;
   /**
    * 是否属于可输入的控件(如：edit/slider等，用户可通过界面输入/改变数据或值)。
+   *>子类无法继承。
    */
   uint32_t inputable : 1;
   /**
    * 是否是focusable。
-   *
+   *>子类无法继承。
    *>如编辑器。
    */
   uint32_t focusable : 1;
   /**
    * 在查找focusable的控件时，是否跳过子控件。
+   *>子类无法继承。
    */
   uint32_t disallow_children_focusable : 1;
   /**
    * 收到空格键触发click事件。
-   *
+   *>子类无法继承。
    */
   uint32_t space_key_to_activate : 1;
   /**
    * 收到回车键触发click事件。
-   *
+   *>子类无法继承。
    */
   uint32_t return_key_to_activate : 1;
   /**
    * 是否是窗口。
+   *>子类无法继承。
    */
   uint32_t is_window : 1;
   /**
    * 是否是窗口管理。
+   *>子类无法继承。
    */
   uint32_t is_window_manager : 1;
   /**
    * 是否是设计窗口。
+   *>子类无法继承。
    */
   uint32_t is_designing_window : 1;
   /**
    * 是否是软键盘(点击软键盘不改变编辑器的焦点)。
+   *>子类无法继承。
    */
   uint32_t is_keyboard : 1;
 
   /**
    * 是否允许绘制到控件区域外部。
+   *>子类无法继承。
    */
   uint32_t allow_draw_outside : 1;
 
@@ -217,6 +226,7 @@ struct _widget_vtable_t {
   widget_on_event_t on_event;
   widget_on_event_before_children_t on_event_before_children;
   widget_on_destroy_t on_destroy;
+  widget_init_t init;
 };
 
 /**

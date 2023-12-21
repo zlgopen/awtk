@@ -22,6 +22,7 @@
 #include "widgets/button.h"
 #include "base/layout.h"
 #include "widgets/spin_box.h"
+#include "base/widget_vtable.h"
 
 #define SPIN_DEFAULT_REPEAT 300
 
@@ -141,6 +142,23 @@ static ret_t spin_box_on_layout_children(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t spin_box_init(widget_t* widget) {
+  ret_t ret = RET_OK;
+  edit_t* edit = NULL;
+  return_value_if_fail(SPIN_BOX(widget) != NULL, RET_BAD_PARAMS);
+
+  ret = widget_vtable_init_by_parent(widget, WIDGET_VTABLE_GET_VTABLE(spin_box));
+  return_value_if_fail(ret == RET_OK || ret == RET_NOT_IMPL, ret);
+
+  edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_FAIL);
+
+  edit->step = 1;
+  edit->input_type = INPUT_INT;
+
+  return RET_OK;
+}
+
 TK_DECL_VTABLE(spin_box) = {.size = sizeof(spin_box_t),
                             .type = WIDGET_TYPE_SPIN_BOX,
                             .inputable = TRUE,
@@ -160,12 +178,10 @@ TK_DECL_VTABLE(spin_box) = {.size = sizeof(spin_box_t),
                             .on_add_child = edit_on_add_child};
 
 widget_t* spin_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* spin_box = edit_create_ex(parent, TK_REF_VTABLE(spin_box), x, y, w, h);
-  edit_t* edit = EDIT(spin_box);
+  widget_t* spin_box = widget_create(parent, TK_REF_VTABLE(spin_box), x, y, w, h);
   return_value_if_fail(spin_box != NULL, NULL);
 
-  edit->step = 1;
-  edit->input_type = INPUT_INT;
+  spin_box_init(spin_box);
 
   return spin_box;
 }

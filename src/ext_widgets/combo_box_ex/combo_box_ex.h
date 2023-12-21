@@ -59,5 +59,8 @@ widget_t* combo_box_ex_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 #define COMBO_BOX_EX(widget) ((combo_box_ex_t*)(combo_box_cast(WIDGET(widget))))
 
+/*public for subclass and runtime type check*/
+TK_EXTERN_VTABLE(combo_box_ex);
+
 END_C_DECLS
 #endif

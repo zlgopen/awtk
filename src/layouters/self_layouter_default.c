@@ -23,6 +23,7 @@
 #include "base/widget.h"
 #include "tkc/tokenizer.h"
 #include "tkc/func_call_parser.h"
+#include "base/widget_vtable.h"
 #include "layouters/self_layouter_default.h"
 
 static ret_t percent_to_string(char* buff, uint32_t size, const char* prefix, double v) {
@@ -404,8 +405,8 @@ ret_t widget_layout_self_with_rect(self_layouter_t* layouter, widget_t* widget, 
         (widget->auto_adjust_size && widget_get_prop_int(widget, WIDGET_PROP_MAX_W, 0) != 0);
 
     /*如果有指定max_w，需要在layout之前，先计算需要的高宽。*/
-    if (has_max_w && widget->auto_adjust_size && widget->vt->auto_adjust_size != NULL) {
-      widget->vt->auto_adjust_size(widget);
+    if (has_max_w && widget->auto_adjust_size) {
+      widget_vtable_auto_adjust_size(widget);
       r.w = widget->w;
       r.h = widget->h;
       l->w_attr = W_ATTR_UNDEF;
@@ -415,12 +416,12 @@ ret_t widget_layout_self_with_rect(self_layouter_t* layouter, widget_t* widget, 
     widget_layout_calc(l, &r, area->w, area->h);
 
     /*如果没有指定max_w，需要在layout之后，根据layout的高宽计算实际需要的高宽。*/
-    if (!has_max_w && widget->auto_adjust_size && widget->vt->auto_adjust_size != NULL) {
+    if (!has_max_w && widget->auto_adjust_size) {
       wh_t w = widget->w;
       wh_t h = widget->h;
       widget->w = r.w;
       widget->h = r.h;
-      widget->vt->auto_adjust_size(widget);
+      widget_vtable_auto_adjust_size(widget);
       r.w = widget->w;
       r.h = widget->h;
       if (l->x_attr != X_ATTR_UNDEF && area->w > 0) {

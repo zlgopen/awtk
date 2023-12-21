@@ -2041,29 +2041,9 @@ ret_t edit_on_copy(widget_t* widget, widget_t* other) {
   return RET_OK;
 }
 
-TK_DECL_VTABLE(edit) = {.size = sizeof(edit_t),
-                        .type = WIDGET_TYPE_EDIT,
-                        .focusable = TRUE,
-                        .inputable = TRUE,
-                        .pointer_cursor = WIDGET_CURSOR_EDIT,
-                        .clone_properties = s_edit_properties,
-                        .persistent_properties = s_edit_properties,
-                        .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
-                        .create = edit_create,
-                        .on_re_translate = edit_on_re_translate,
-                        .on_paint_self = edit_on_paint_self,
-                        .set_prop = edit_set_prop,
-                        .get_prop = edit_get_prop,
-                        .on_destroy = edit_on_destroy,
-                        .on_copy = edit_on_copy,
-                        .on_event = edit_on_event,
-                        .on_add_child = edit_on_add_child};
-
-widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
-                         wh_t h) {
-  widget_t* widget = widget_create(parent, vt, x, y, w, h);
+static ret_t edit_init(widget_t* widget) {
   edit_t* edit = EDIT(widget);
-  return_value_if_fail(edit != NULL, NULL);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   edit->margin = 2;
   edit->top_margin = 0;
@@ -2093,11 +2073,33 @@ widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy
 
   edit_set_action_text(widget, ACTION_TEXT_DONE);
 
-  return widget;
+  return RET_OK;
 }
 
+TK_DECL_VTABLE(edit) = {.size = sizeof(edit_t),
+                        .type = WIDGET_TYPE_EDIT,
+                        .focusable = TRUE,
+                        .inputable = TRUE,
+                        .pointer_cursor = WIDGET_CURSOR_EDIT,
+                        .clone_properties = s_edit_properties,
+                        .persistent_properties = s_edit_properties,
+                        .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
+                        .create = edit_create,
+                        .init = edit_init,
+                        .on_re_translate = edit_on_re_translate,
+                        .on_paint_self = edit_on_paint_self,
+                        .set_prop = edit_set_prop,
+                        .get_prop = edit_get_prop,
+                        .on_destroy = edit_on_destroy,
+                        .on_copy = edit_on_copy,
+                        .on_event = edit_on_event,
+                        .on_add_child = edit_on_add_child};
+
 widget_t* edit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return edit_create_ex(parent, TK_REF_VTABLE(edit), x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(edit), x, y, w, h);
+  return_value_if_fail(widget != NULL, NULL);
+  edit_init(widget);
+  return widget;
 }
 
 widget_t* edit_cast(widget_t* widget) {

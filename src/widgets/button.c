@@ -392,6 +392,18 @@ static ret_t button_auto_adjust_size(widget_t* widget) {
   }
 }
 
+static ret_t button_init(widget_t* widget) {
+  button_t* button = BUTTON(widget);
+  return_value_if_fail(button != NULL, RET_BAD_PARAMS);
+  button->repeat = 0;
+  button->repeat_nr = 0;
+  button->pressed = FALSE;
+  button->enable_long_press = FALSE;
+  button->timer_id = TK_INVALID_ID;
+  button->long_press_time = TK_LONG_PRESS_TIME;
+  return RET_OK;
+}
+
 static const char* const s_button_properties[] = {WIDGET_PROP_REPEAT, WIDGET_PROP_LONG_PRESS_TIME,
                                                   WIDGET_PROP_ENABLE_LONG_PRESS,
                                                   WIDGET_PROP_ENABLE_PREVIEW, NULL};
@@ -402,6 +414,7 @@ TK_DECL_VTABLE(button) = {.size = sizeof(button_t),
                           .return_key_to_activate = TRUE,
                           .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                           .create = button_create,
+                          .init = button_init,
                           .invalidate = button_invalidate,
                           .clone_properties = s_button_properties,
                           .persistent_properties = s_button_properties,
@@ -415,16 +428,7 @@ TK_DECL_VTABLE(button) = {.size = sizeof(button_t),
 
 widget_t* button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(button), x, y, w, h);
-  button_t* button = BUTTON(widget);
-  return_value_if_fail(button != NULL, NULL);
-
-  button->repeat = 0;
-  button->repeat_nr = 0;
-  button->pressed = FALSE;
-  button->enable_long_press = FALSE;
-  button->timer_id = TK_INVALID_ID;
-  button->long_press_time = TK_LONG_PRESS_TIME;
-
+  button_init(widget);
   return widget;
 }
 

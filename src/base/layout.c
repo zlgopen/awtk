@@ -22,6 +22,7 @@
 #include "tkc/utils.h"
 #include "base/widget.h"
 #include "base/layout.h"
+#include "base/widget_vtable.h"
 #include "base/self_layouter_factory.h"
 #include "base/children_layouter_factory.h"
 
@@ -114,13 +115,14 @@ ret_t widget_layout_children_default(widget_t* widget) {
 }
 
 ret_t widget_layout_children(widget_t* widget) {
+  ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  if (widget->vt->on_layout_children != NULL) {
-    return widget->vt->on_layout_children(widget);
-  } else {
+  ret = widget_vtable_on_layout_children(widget);
+  if (ret == RET_NOT_IMPL) {
     return widget_layout_children_default(widget);
   }
+  return ret;
 }
 
 ret_t widget_set_self_layout(widget_t* widget, const char* params) {

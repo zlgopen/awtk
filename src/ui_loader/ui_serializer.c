@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
 #include "tkc/utils.h"
+#include "base/widget_vtable.h"
 #include "ui_loader/ui_serializer.h"
 
 ret_t ui_widget_serialize_prop(ui_builder_t* writer, const char* name, value_t* value) {
@@ -100,10 +101,10 @@ ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
   ui_builder_on_widget_start(writer, &desc);
 
   ui_widget_serialize_props(writer, widget, widget_get_persistent_props());
-  if (widget->vt->clone_properties || widget->vt->persistent_properties) {
-    const char* const* properties = widget->vt->persistent_properties;
+  if (widget_vtable_get_clone_properties(widget->vt) || widget_vtable_get_persistent_properties(widget->vt)) {
+    const char* const* properties = widget_vtable_get_persistent_properties(widget->vt);
     if (properties == NULL) {
-      properties = widget->vt->clone_properties;
+      properties = widget_vtable_get_clone_properties(widget->vt);
     }
     ui_widget_serialize_props(writer, widget, properties);
   }

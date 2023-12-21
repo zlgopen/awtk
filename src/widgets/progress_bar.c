@@ -219,6 +219,18 @@ static ret_t progress_bar_set_prop(widget_t* widget, const char* name, const val
   return RET_NOT_FOUND;
 }
 
+static ret_t progress_bar_init(widget_t* widget) {
+  progress_bar_t* progress_bar = PROGRESS_BAR(widget);
+  return_value_if_fail(progress_bar != NULL, RET_BAD_PARAMS);
+
+  progress_bar->max = 100;
+  progress_bar->value = 0;
+  progress_bar->vertical = FALSE;
+  progress_bar->show_text = FALSE;
+
+  return RET_OK;
+}
+
 static const char* s_progress_bar_clone_properties[] = {WIDGET_PROP_VALUE,     WIDGET_PROP_MAX,
                                                         WIDGET_PROP_FORMAT,    WIDGET_PROP_VERTICAL,
                                                         WIDGET_PROP_SHOW_TEXT, NULL};
@@ -227,6 +239,7 @@ TK_DECL_VTABLE(progress_bar) = {.size = sizeof(progress_bar_t),
                                 .clone_properties = s_progress_bar_clone_properties,
                                 .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                 .create = progress_bar_create,
+                                .init = progress_bar_init,
                                 .on_paint_self = progress_bar_on_paint_self,
                                 .on_paint_background = widget_on_paint_null,
                                 .on_destroy = progress_bar_on_destroy,
@@ -237,12 +250,7 @@ widget_t* progress_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) 
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(progress_bar), x, y, w, h);
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
   return_value_if_fail(progress_bar != NULL, NULL);
-
-  progress_bar->max = 100;
-  progress_bar->value = 0;
-  progress_bar->vertical = FALSE;
-  progress_bar->show_text = FALSE;
-
+  progress_bar_init(widget);
   return widget;
 }
 

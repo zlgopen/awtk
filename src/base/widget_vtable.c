@@ -22,6 +22,67 @@
 #include "base/widget_vtable.h"
 #include "tkc/mem.h"
 
+#define widget_vtable_get_value(vt, name, value) {                                                          \
+  const widget_vtable_t* iter = vt;                                                                         \
+  value = NULL;                                                                                             \
+  do {                                                                                                      \
+    if (iter-> name != NULL) {                                                                              \
+      value = iter-> name;                                                                                  \
+      break;                                                                                                \
+    }                                                                                                       \
+    iter = widget_get_parent_vtable(iter);                                                                  \
+  } while(iter != NULL);                                                                                    \
+}
+
+#define widget_vtable_func(widget, func, ret, find, arges_list) {                                           \
+  find = FALSE;                                                                                             \
+  const widget_vtable_t* iter = widget->vt;                                                                 \
+  do {                                                                                                      \
+    if (iter-> func != NULL) {                                                                              \
+      ret = iter-> func arges_list;                                                                         \
+      find = TRUE;                                                                                          \
+      break;                                                                                                \
+    }                                                                                                       \
+    iter = widget_get_parent_vtable(iter);                                                                  \
+  } while(iter != NULL);                                                                                    \
+}
+
+#define widget_vtable_func_ret(widget, func, ret, arges_list) {                                             \
+  const widget_vtable_t* iter = widget->vt;                                                                 \
+  do {                                                                                                      \
+    if (iter-> func != NULL) {                                                                              \
+      ret = iter-> func arges_list;                                                                         \
+      break;                                                                                                \
+    }                                                                                                       \
+    iter = widget_get_parent_vtable(iter);                                                                  \
+  } while(iter != NULL);                                                                                    \
+}
+
+#define widget_vtable_func_by_parent(curr_vt, func, ret, find, arges_list) {                                \
+  find = FALSE;                                                                                             \
+  const widget_vtable_t* iter = widget_get_parent_vtable(curr_vt);                                          \
+  do {                                                                                                      \
+    if (iter-> func != NULL) {                                                                              \
+      ret = iter-> func arges_list;                                                                         \
+      find = TRUE;                                                                                          \
+      break;                                                                                                \
+    }                                                                                                       \
+    iter = widget_get_parent_vtable(iter);                                                                  \
+  } while(iter != NULL);                                                                                    \
+}
+
+#define widget_vtable_func_ret_by_parent(curr_vt, func, ret, arges_list) {                                  \
+  const widget_vtable_t* iter = widget_get_parent_vtable(curr_vt);                                          \
+  do {                                                                                                      \
+    if (iter-> func != NULL) {                                                                              \
+      ret = iter-> func arges_list;                                                                         \
+      break;                                                                                                \
+    }                                                                                                       \
+    iter = widget_get_parent_vtable(iter);                                                                  \
+  } while(iter != NULL);                                                                                    \
+}
+
+
 widget_vtable_t* widget_vtable_init(widget_vtable_t* vt, const widget_vtable_t* parent) {
   return_value_if_fail(vt != NULL && parent != NULL, NULL);
   tk_memcpy(vt, parent, sizeof(widget_vtable_t));
@@ -41,6 +102,508 @@ const widget_vtable_t* widget_get_parent_vtable(const widget_vtable_t* vt) {
     return vt->get_parent_vt();
   }
   return NULL;
+}
+
+const char* const* widget_vtable_get_clone_properties(const widget_vtable_t* vt) {
+  const char* const* value = NULL;
+  return_value_if_fail(vt != NULL, 0);
+  widget_vtable_get_value(vt, clone_properties, value);
+  return value;
+}
+
+const char* const* widget_vtable_get_persistent_properties(const widget_vtable_t* vt) {
+  const char* const* value = NULL;
+  return_value_if_fail(vt != NULL, 0);
+  widget_vtable_get_value(vt, persistent_properties, value);
+  return value;
+}
+
+const char* widget_vtable_get_pointer_cursor(const widget_vtable_t* vt) {
+  const char* value = NULL;
+  return_value_if_fail(vt != NULL, 0);
+  widget_vtable_get_value(vt, pointer_cursor, value);
+  return value;
+}
+
+ret_t widget_vtable_get_prop(widget_t* widget, const char* name, value_t* v) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, get_prop, ret, (widget, name, v));
+  return ret;
+}
+
+ret_t widget_vtable_set_prop(widget_t* widget, const char* name, const value_t* v) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, set_prop, ret, (widget, name, v));
+  return ret;
+}
+
+ret_t widget_vtable_invalidate(widget_t* widget, const rect_t* r) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, invalidate, ret, (widget, r));
+  return ret;
+}
+
+ret_t widget_vtable_find_target(widget_t* widget, xy_t x, xy_t y, widget_t** ret_widget) {
+  bool_t find = FALSE;
+  widget_t* ret = NULL;
+  return_value_if_fail(widget != NULL && ret_widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func(widget, find_target, ret, find, (widget, x, y));
+  *ret_widget = ret;
+  return find ? RET_OK : RET_NOT_IMPL;
+}
+
+ret_t widget_vtable_is_point_in(widget_t* widget, xy_t x, xy_t y, bool_t* ret_is_point_in) {
+  bool_t ret = FALSE;
+  bool_t find = FALSE;
+  return_value_if_fail(widget != NULL && ret_is_point_in != NULL, RET_BAD_PARAMS);
+  widget_vtable_func(widget, is_point_in, ret, find, (widget, x, y));
+  *ret_is_point_in = ret;
+  return find ? RET_OK : RET_NOT_IMPL;
+}
+
+ret_t widget_vtable_get_offset(widget_t* widget, xy_t* out_x, xy_t* out_y) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, get_offset, ret, (widget, out_x, out_y));
+  return ret;
+}
+
+ret_t widget_vtable_auto_adjust_size(widget_t* widget) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, auto_adjust_size, ret, (widget));
+  return ret;
+}
+
+ret_t widget_vtable_get_prop_default_value(widget_t* widget, const char* name, value_t* v) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, get_prop_default_value, ret, (widget, name, v));
+  return ret;
+}
+
+ret_t widget_vtable_get_only_active_children(widget_t* widget, darray_t* all_focusable) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, get_only_active_children, ret, (widget, all_focusable));
+  return ret;
+}
+
+ret_t widget_vtable_on_copy(widget_t* widget, widget_t* other) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_copy, ret, (widget, other));
+  return ret;
+}
+
+ret_t widget_vtable_on_keyup(widget_t* widget, key_event_t* e) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_keyup, ret, (widget, e));
+  return ret;
+}
+
+ret_t widget_vtable_on_keydown(widget_t* widget, key_event_t* e) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_keydown, ret, (widget, e));
+  return ret;
+}
+
+ret_t widget_vtable_on_wheel(widget_t* widget, wheel_event_t* e) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_wheel, ret, (widget, e));
+  return ret;
+}
+
+ret_t widget_vtable_on_multi_gesture(widget_t* widget, multi_gesture_event_t* e) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_multi_gesture, ret, (widget, e));
+  return ret;
+}
+
+ret_t widget_vtable_on_re_translate(widget_t* widget) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_re_translate, ret, (widget));
+  return ret;
+}
+
+ret_t widget_vtable_on_paint_background(widget_t* widget, canvas_t* c) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_paint_background, ret, (widget, c));
+  return ret;
+}
+
+ret_t widget_vtable_on_paint_self(widget_t* widget, canvas_t* c) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_paint_self, ret, (widget, c));
+  return ret;
+}
+
+ret_t widget_vtable_on_paint_children(widget_t* widget, canvas_t* c) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_paint_children, ret, (widget, c));
+  return ret;
+}
+
+ret_t widget_vtable_on_paint_border(widget_t* widget, canvas_t* c) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_paint_border, ret, (widget, c));
+  return ret;
+}
+
+ret_t widget_vtable_on_paint_begin(widget_t* widget, canvas_t* c) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_paint_begin, ret, (widget, c));
+  return ret;
+}
+
+ret_t widget_vtable_on_paint_end(widget_t* widget, canvas_t* c) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_paint_end, ret, (widget, c));
+  return ret;
+}
+
+ret_t widget_vtable_on_pointer_down(widget_t* widget, pointer_event_t* e) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_pointer_down, ret, (widget, e));
+  return ret;
+}
+
+ret_t widget_vtable_on_pointer_move(widget_t* widget, pointer_event_t* e) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_pointer_move, ret, (widget, e));
+  return ret;
+}
+
+ret_t widget_vtable_on_pointer_up(widget_t* widget, pointer_event_t* e) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_pointer_up, ret, (widget, e));
+  return ret;
+}
+
+ret_t widget_vtable_on_context_menu(widget_t* widget, pointer_event_t* e) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_context_menu, ret, (widget, e));
+  return ret;
+}
+
+ret_t widget_vtable_on_layout_children(widget_t* widget) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_layout_children, ret, (widget));
+  return ret;
+}
+
+ret_t widget_vtable_on_add_child(widget_t* widget, widget_t* child) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_add_child, ret, (widget, child));
+  return ret;
+}
+
+ret_t widget_vtable_on_remove_child(widget_t* widget, widget_t* child) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_remove_child, ret, (widget, child));
+  return ret;
+}
+
+ret_t widget_vtable_on_attach_parent(widget_t* widget, widget_t* parent) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_attach_parent, ret, (widget, parent));
+  return ret;
+}
+
+ret_t widget_vtable_on_detach_parent(widget_t* widget, widget_t* parent) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_detach_parent, ret, (widget, parent));
+  return ret;
+}
+
+ret_t widget_vtable_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_event, ret, (widget, e));
+  return ret;
+}
+
+ret_t widget_vtable_on_event_before_children(widget_t* widget, event_t* e) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_event_before_children, ret, (widget, e));
+  return ret;
+}
+
+ret_t widget_vtable_on_destroy(widget_t* widget) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret(widget, on_destroy, ret, (widget));
+  return ret;
+}
+
+/*
+ *  用于继承的父类函数指针
+ */
+
+ret_t widget_vtable_get_prop_by_parent(widget_t* widget, const char* name, value_t* v, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, get_prop, ret, (widget, name, v));
+  return ret;
+}
+
+ret_t widget_vtable_set_prop_by_parent(widget_t* widget, const char* name, const value_t* v, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, set_prop, ret, (widget, name, v));
+  return ret;
+}
+
+ret_t widget_vtable_invalidate_by_parent(widget_t* widget, const rect_t* r, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, invalidate, ret, (widget, r));
+  return ret;
+}
+
+ret_t widget_vtable_find_target_by_parent(widget_t* widget, xy_t x, xy_t y, widget_t** ret_widget, const widget_vtable_t* curr_vt) {
+  bool_t find = FALSE;
+  widget_t* ret = NULL;
+  return_value_if_fail(widget != NULL && ret_widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_by_parent(curr_vt, find_target, ret, find, (widget, x, y));
+  *ret_widget = ret;
+  return find ? RET_OK : RET_NOT_IMPL;
+}
+
+ret_t widget_vtable_is_point_in_by_parent(widget_t* widget, xy_t x, xy_t y, bool_t* ret_is_point_in, const widget_vtable_t* curr_vt) {
+  bool_t ret = FALSE;
+  bool_t find = FALSE;
+  return_value_if_fail(widget != NULL && ret_is_point_in != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_by_parent(curr_vt, is_point_in, ret, find, (widget, x, y));
+  *ret_is_point_in = ret;
+  return find ? RET_OK : RET_NOT_IMPL;
+}
+
+ret_t widget_vtable_get_offset_by_parent(widget_t* widget, xy_t* out_x, xy_t* out_y, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, get_offset, ret, (widget, out_x, out_y));
+  return ret;
+}
+
+ret_t widget_vtable_auto_adjust_size_by_parent(widget_t* widget, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, auto_adjust_size, ret, (widget));
+  return ret;
+}
+
+ret_t widget_vtable_get_prop_default_value_by_parent(widget_t* widget, const char* name, value_t* v, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, get_prop_default_value, ret, (widget, name, v));
+  return ret;
+}
+
+ret_t widget_vtable_get_only_active_children_by_parent(widget_t* widget, darray_t* all_focusable, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, get_only_active_children, ret, (widget, all_focusable));
+  return ret;
+}
+
+ret_t widget_vtable_on_copy_by_parent(widget_t* widget, widget_t* other, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_copy, ret, (widget, other));
+  return ret;
+}
+
+ret_t widget_vtable_on_keyup_by_parent(widget_t* widget, key_event_t* e, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_keyup, ret, (widget, e));
+  return ret;
+}
+
+ret_t widget_vtable_on_keydown_by_parent(widget_t* widget, key_event_t* e, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_keydown, ret, (widget, e));
+  return ret;
+}
+
+ret_t widget_vtable_on_wheel_by_parent(widget_t* widget, wheel_event_t* e, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_wheel, ret, (widget, e));
+  return ret;
+}
+
+ret_t widget_vtable_on_multi_gesture_by_parent(widget_t* widget, multi_gesture_event_t* e, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_multi_gesture, ret, (widget, e));
+  return ret;
+}
+
+ret_t widget_vtable_on_re_translate_by_parent(widget_t* widget, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_re_translate, ret, (widget));
+  return ret;
+}
+
+ret_t widget_vtable_on_paint_background_by_parent(widget_t* widget, canvas_t* c, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_paint_background, ret, (widget, c));
+  return ret;
+}
+
+ret_t widget_vtable_on_paint_self_by_parent(widget_t* widget, canvas_t* c, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_paint_self, ret, (widget, c));
+  return ret;
+}
+
+ret_t widget_vtable_on_paint_children_by_parent(widget_t* widget, canvas_t* c, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_paint_children, ret, (widget, c));
+  return ret;
+}
+
+ret_t widget_vtable_on_paint_border_by_parent(widget_t* widget, canvas_t* c, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_paint_border, ret, (widget, c));
+  return ret;
+}
+
+ret_t widget_vtable_on_paint_begin_by_parent(widget_t* widget, canvas_t* c, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_paint_begin, ret, (widget, c));
+  return ret;
+}
+
+ret_t widget_vtable_on_paint_end_by_parent(widget_t* widget, canvas_t* c, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_paint_end, ret, (widget, c));
+  return ret;
+}
+
+ret_t widget_vtable_on_pointer_down_by_parent(widget_t* widget, pointer_event_t* e, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_pointer_down, ret, (widget, e));
+  return ret;
+}
+
+ret_t widget_vtable_on_pointer_move_by_parent(widget_t* widget, pointer_event_t* e, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_pointer_move, ret, (widget, e));
+  return ret;
+}
+
+ret_t widget_vtable_on_pointer_up_by_parent(widget_t* widget, pointer_event_t* e, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_pointer_up, ret, (widget, e));
+  return ret;
+}
+
+ret_t widget_vtable_on_context_menu_by_parent(widget_t* widget, pointer_event_t* e, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_context_menu, ret, (widget, e));
+  return ret;
+}
+
+ret_t widget_vtable_on_layout_children_by_parent(widget_t* widget, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_layout_children, ret, (widget));
+  return ret;
+}
+
+ret_t widget_vtable_on_add_child_by_parent(widget_t* widget, widget_t* child, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_add_child, ret, (widget, child));
+  return ret;
+}
+
+ret_t widget_vtable_on_remove_child_by_parent(widget_t* widget, widget_t* child, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_remove_child, ret, (widget, child));
+  return ret;
+}
+
+ret_t widget_vtable_on_attach_parent_by_parent(widget_t* widget, widget_t* parent, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_attach_parent, ret, (widget, parent));
+  return ret;
+}
+
+ret_t widget_vtable_on_detach_parent_by_parent(widget_t* widget, widget_t* parent, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_detach_parent, ret, (widget, parent));
+  return ret;
+}
+
+ret_t widget_vtable_on_event_by_parent(widget_t* widget, event_t* e, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_event, ret, (widget, e));
+  return ret;
+}
+
+ret_t widget_vtable_on_event_before_children_by_parent(widget_t* widget, event_t* e, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_event_before_children, ret, (widget, e));
+  return ret;
+}
+
+ret_t widget_vtable_on_destroy_by_parent(widget_t* widget, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL && curr_vt != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, on_destroy, ret, (widget));
+  return ret;
+}
+
+ret_t widget_vtable_init_by_parent(widget_t* widget, const widget_vtable_t* curr_vt) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget_vtable_func_ret_by_parent(curr_vt, init, ret, (widget));
+  return ret;
 }
 
 ret_t widget_set_self_vtable(widget_t* widget, const widget_vtable_t* vt) {
@@ -249,7 +812,7 @@ ret_t widget_copy_props(widget_t* dst, widget_t* src, const char* const* propert
 }
 
 ret_t widget_on_copy_default(widget_t* widget, widget_t* other) {
-  return widget_copy_props(widget, other, widget->vt->clone_properties);
+  return widget_copy_props(widget, other, widget_vtable_get_clone_properties(widget->vt));
 }
 
 ret_t widget_on_destroy_default(widget_t* widget) {
@@ -311,18 +874,4 @@ ret_t widget_on_paint_children_clip(widget_t* widget, canvas_t* c) {
 TK_DECL_VTABLE(widget) = {.size = sizeof(widget_t),
                           .type = WIDGET_TYPE_NONE,
                           .parent = NULL,
-                          .get_parent_vt = NULL,
-                          .on_copy = widget_on_copy_default,
-                          .invalidate = widget_invalidate_default,
-                          .on_event = widget_on_event_default,
-                          .on_paint_self = widget_on_paint_self_default,
-                          .on_paint_children = widget_on_paint_children_default,
-                          .on_keydown = widget_on_keydown_default,
-                          .on_keyup = widget_on_keyup_default,
-                          .on_pointer_down = widget_on_pointer_down_default,
-                          .on_pointer_move = widget_on_pointer_move_default,
-                          .on_pointer_up = widget_on_pointer_up_default,
-                          .get_prop = widget_get_prop_default,
-                          .set_prop = widget_set_prop_default,
-                          .find_target = widget_find_target_default,
-                          .on_destroy = widget_on_destroy_default};
+                          .get_parent_vt = NULL};
