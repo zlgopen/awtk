@@ -9,9 +9,9 @@
 注意：
 
 * 仍然需要自己注册控件，包含相应的头文件。
-* 拷贝自定义控件的 src 目录下的文件和子目录到此即可。
+* 拷贝自定义控件下载到本目录。
 
 如：
 ```
- cp -rf ../../../awtk-widget-vlabel/src/* .
+git clone https://gitee.com/zlgopen/awtk-widget-table-view
 ```

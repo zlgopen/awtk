@@ -1,5 +1,6 @@
 import os
 import sys
+import glob
 import os.path
 
 sys.path.insert(0, os.path.join(os.path.abspath(os.path.dirname(__file__)), 'scripts'))
@@ -274,6 +275,14 @@ CPPPATH = [TK_ROOT,
            joinPath(TK_3RD_ROOT, 'gtest/googletest'),
            joinPath(TK_3RD_ROOT, 'gtest/googletest/include'),
            TK_TOOLS_ROOT] + OS_CPPPATH + NANOVG_BACKEND_CPPPATH
+
+CUSTOM_WIDGETS_SRC=glob.glob('src/custom_widgets/*/src') + \
+  glob.glob('src/custom_widgets/*/src/*/src') + \
+  glob.glob('src/custom_widgets/*/src/*/include')
+
+for iter in CUSTOM_WIDGETS_SRC:
+  fullpath = os.path.join(TK_ROOT, str(iter));
+  CPPPATH.append(fullpath);
 
 os.environ['LCD'] = LCD
 os.environ['TK_ROOT'] = TK_ROOT
