@@ -45,6 +45,10 @@
 #include "base/vgcanvas_asset_manager.h"
 #endif
 
+#ifdef WITH_SOCKET
+#include "tkc/socket_helper.h"
+#endif/*WITH_SOCKET*/
+
 #ifdef WITH_FSCRIPT_EXT
 #ifndef WITH_DATA_READER_WRITER
 #define WITH_DATA_READER_WRITER
@@ -59,6 +63,9 @@
 #include "tkc/data_reader_file.h"
 #include "tkc/data_reader_mem.h"
 #include "base/data_reader_asset.h"
+#ifdef WITH_SOCKET
+#include "tkc/data_reader_http.h"
+#endif/*WITH_SOCKET*/
 #endif /*WITH_DATA_READER_WRITER*/
 
 #include "base/widget_animator_manager.h"
@@ -300,6 +307,12 @@ ret_t tk_pre_init(void) {
     data_reader_factory_register(data_reader_factory(), "asset", data_reader_asset_create);
     data_reader_factory_register(data_reader_factory(), "mem", data_reader_mem_create);
     data_writer_factory_register(data_writer_factory(), "wbuffer", data_writer_wbuffer_create);
+#ifdef WITH_SOCKET
+    data_reader_factory_register(data_reader_factory(), "http", data_reader_http_create);
+#ifdef WITH_MBEDTLS
+    data_reader_factory_register(data_reader_factory(), "https", data_reader_http_create);
+#endif/*WITH_MBEDTLS*/    
+#endif/*WITH_SOCKET*/
 #endif /*WITH_DATA_READER_WRITER*/
     inited = TRUE;
   }
@@ -327,6 +340,9 @@ ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const c
     loop = main_loop_init(w, h);
   }
   return_value_if_fail(loop != NULL, RET_FAIL);
+#ifdef WITH_SOCKET
+  tk_socket_init();
+#endif/*WITH_SOCKET*/
 
   return RET_OK;
 }
@@ -415,6 +431,10 @@ ret_t tk_deinit_internal(void) {
   fscript_global_deinit();
 #endif
   tk_semaphore_destroy(s_clear_cache_semaphore);
+
+#ifdef WITH_SOCKET
+  tk_socket_deinit();
+#endif/*WITH_SOCKET*/
 
   return RET_OK;
 }

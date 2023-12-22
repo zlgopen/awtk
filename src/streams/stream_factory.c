@@ -23,10 +23,13 @@
 #include "tkc/path.h"
 #include "tkc/utils.h"
 #include "tkc/serial_helper.h"
-#ifdef WITH_SOCKET	 
+#ifdef WITH_SOCKET
 #include "streams/inet/iostream_tcp.h"
 #include "streams/inet/iostream_udp.h"
-#endif/*WITH_SOCKET*/
+#endif /*WITH_SOCKET*/
+#ifdef WITH_MBEDTLS
+#include "streams/inet/iostream_mbedtls.h"
+#endif /*WITH_MBEDTLS*/
 #include "streams/serial/iostream_serial.h"
 
 #include "streams/stream_factory.h"
@@ -39,13 +42,21 @@ tk_iostream_t* tk_stream_factory_create_iostream(const char* url) {
   return_value_if_fail(aurl != NULL, NULL);
 
   if (tk_str_start_with(url, STR_SCHEMA_TCP)) {
-#ifdef WITH_SOCKET	  
+#ifdef WITH_SOCKET
     io = tk_iostream_tcp_create_client(aurl->host, aurl->port);
-#endif/*WITH_SOCKET*/    
+#endif /*WITH_SOCKET*/
   } else if (tk_str_start_with(url, STR_SCHEMA_UDP)) {
-#ifdef WITH_SOCKET	  
+#ifdef WITH_SOCKET
     io = tk_iostream_udp_create_client(aurl->host, aurl->port);
-#endif/*WITH_SOCKET*/    
+#endif /*WITH_SOCKET*/
+  } else if (tk_str_start_with(url, STR_SCHEMA_HTTP)) {
+#ifdef WITH_SOCKET
+    io = tk_iostream_tcp_create_client(aurl->host, aurl->port);
+#endif /*WITH_SOCKET*/
+  } else if (tk_str_start_with(url, STR_SCHEMA_HTTPS)) {
+#ifdef WITH_MBEDTLS
+    io = tk_iostream_mbedtls_create_client(aurl->host, aurl->port);
+#endif /*WITH_MBEDTLS*/
   } else if (tk_str_eq(aurl->schema, "serial")) {
     char filename[MAX_PATH + 1] = {0};
 

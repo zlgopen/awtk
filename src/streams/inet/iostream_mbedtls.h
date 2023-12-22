@@ -58,6 +58,19 @@ struct _tk_iostream_mbedtls_t {
  */
 tk_iostream_t* tk_iostream_mbedtls_create(mbedtls_conn_t* conn);
 
+/**
+ * @method tk_iostream_mbedtls_create_client
+ *
+ * 创建iostream对象。
+ *
+ * @param {const char*} host 主机地址。
+ * @param {uint16_t} port 端口号。
+ *
+ * @return {tk_iostream_t*} 返回iostream对象。
+ *
+ */
+tk_iostream_t* tk_iostream_mbedtls_create_client(const char* host, uint16_t port);
+
 #define TK_IOSTREAM_MBEDTLS(obj) ((tk_iostream_mbedtls_t*)(obj))
 
 END_C_DECLS
