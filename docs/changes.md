@@ -1,5 +1,9 @@
 # 最新动态
 
+2023/12/24
+  * 完善data reader
+  * data\_reader\_http 支持 chunked data 
+
 2023/12/23
   * 增加函数path\_expand\_vars
 

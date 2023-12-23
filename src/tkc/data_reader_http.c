@@ -49,6 +49,57 @@ static const char* url_get_path(const char* url) {
   return p;
 }
 
+static uint8_t* data_reader_http_get_chunked_data(uint8_t* data, uint32_t* size) {
+  uint8_t* p = data;
+  uint8_t* q = data;
+  uint32_t chunk_size = 0;
+
+  return_value_if_fail(data != NULL && size != NULL, NULL);
+
+  while (TRUE) {
+    if (p[0] == '\r' && p[1] == '\n') {
+      break;
+    }
+    p++;
+  }
+
+  chunk_size = tk_strtol((const char*)q, NULL, 16);
+  p += 2;
+
+  if (chunk_size == 0) {
+    *size = 0;
+    return NULL;
+  }
+
+  *size = chunk_size;
+  return p;
+}
+
+static ret_t data_reader_http_decode_chuncked_data(data_reader_http_t* http, wbuffer_t* wb) {
+  uint32_t size = 0;
+  uint8_t* src = NULL;
+  uint8_t* dst = NULL;
+
+  return_value_if_fail(http != NULL && wb != NULL, RET_BAD_PARAMS);
+  http->data = TKMEM_ALLOC(wb->cursor + 1);
+  return_value_if_fail(http->data != NULL, RET_OOM);
+
+  src = wb->data;
+  dst = http->data;
+  while ((src = data_reader_http_get_chunked_data(src, &size)) != NULL) {
+    memcpy(dst, src, size);
+    dst += size;
+    src += size + 2;
+  }
+
+  http->size = dst - http->data;
+  http->data[http->size] = '\0';
+
+  log_debug("%s\n", http->data);
+
+  return RET_OK;
+}
+
 static ret_t data_reader_http_get(data_reader_http_t* http, const char* url) {
   char buff[1024];
   int32_t nr = 0;
@@ -63,8 +114,8 @@ static ret_t data_reader_http_get(data_reader_http_t* http, const char* url) {
   io = tk_stream_factory_create_iostream(url);
   return_value_if_fail(io != NULL, RET_BAD_PARAMS);
 
-  tk_snprintf(buff, sizeof(buff) - 1, "GET %s HTTP/1.1\r\nHost: %s\r\n\r\n", url_get_path(url),
-              aurl->host);
+  tk_snprintf(buff, sizeof(buff) - 1, "GET %s HTTP/1.1\r\nHost: %s\r\nConnection: close\r\n\r\n",
+              url_get_path(url), aurl->host);
   nr = tk_iostream_write(io, buff, strlen(buff));
   url_destroy(aurl);
   goto_error_if_fail(nr > 0);
@@ -73,30 +124,56 @@ static ret_t data_reader_http_get(data_reader_http_t* http, const char* url) {
   if (nr > 0) {
     buff[nr] = '\0';
     p = strstr(buff, "Content-Length:");
-    goto_error_if_fail(p != NULL);
-    p += strlen("Content-Length:");
-    while (*p == ' ') {
-      p++;
+
+    if (p != NULL) {
+      p += strlen("Content-Length:");
+      while (*p == ' ') {
+        p++;
+      }
+      http->size = tk_atoi(p);
+      goto_error_if_fail(http->size > 0);
+
+      http->data = TKMEM_ALLOC(http->size + 1);
+      goto_error_if_fail(http->data != NULL);
+
+      p = strstr(buff, "\r\n\r\n");
+      goto_error_if_fail(p != NULL);
+
+      p += 4;
+      nr = nr - (p - buff);
+      memcpy(http->data, p, nr);
+
+      if (http->size > nr) {
+        nr = tk_iostream_read_len(io, http->data + nr, http->size - nr, TK_ISTREAM_DEFAULT_TIMEOUT);
+        goto_error_if_fail(nr > 0);
+      }
+
+      http->data[http->size] = '\0';
+    } else if (strstr(buff, "Transfer-Encoding: chunked") != NULL) {
+      wbuffer_t wb;
+
+      wbuffer_init_extendable(&wb);
+      wbuffer_extend_capacity(&wb, 10240);
+
+      p = strstr(buff, "\r\n\r\n");
+      goto_error_if_fail(p != NULL);
+
+      p += 4;
+      nr = nr - (p - buff);
+      wbuffer_write_binary(&wb, p, nr);
+
+      while ((nr = tk_iostream_read(io, buff, sizeof(buff) - 1)) > 0) {
+        if (wbuffer_write_binary(&wb, buff, nr) != RET_OK) {
+          wbuffer_deinit(&wb);
+          return RET_OOM;
+        }
+      }
+
+      data_reader_http_decode_chuncked_data(http, &wb);
+      wbuffer_deinit(&wb);
+    } else {
+      goto error;
     }
-    http->size = tk_atoi(p);
-    goto_error_if_fail(http->size > 0);
-
-    http->data = TKMEM_ALLOC(http->size + 1);
-    goto_error_if_fail(http->data != NULL);
-
-    p = strstr(buff, "\r\n\r\n");
-    goto_error_if_fail(p != NULL);
-
-    p += 4;
-    nr = nr - (p - buff);
-    memcpy(http->data, p, nr);
-
-    if (http->size > nr) {
-      nr = tk_iostream_read_len(io, http->data + nr, http->size - nr, TK_ISTREAM_DEFAULT_TIMEOUT);
-      goto_error_if_fail(nr > 0);
-    }
-
-    http->data[http->size] = '\0';
   }
 
   TK_OBJECT_UNREF(io);

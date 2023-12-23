@@ -100,15 +100,7 @@ data_reader_t* data_reader_factory_create_reader(data_reader_factory_t* factory,
 
   iter = darray_find(&(factory->creators), (void*)protocol);
   if (iter != NULL) {
-    p = strstr(url, "://");
-
-    if (p == NULL) {
-      p = url;
-    } else {
-      p += 3;
-    }
-
-    return iter->create(p);
+    return iter->create(url);
   }
 
   return NULL;
