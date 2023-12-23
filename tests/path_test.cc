@@ -1,4 +1,5 @@
 ﻿#include "tkc/path.h"
+#include "tkc/fs.h"
 #include "gtest/gtest.h"
 #include <string>
 
@@ -297,4 +298,31 @@ TEST(Path, abs_normalize_with_root) {
   char result[MAX_PATH + 1];
   ASSERT_EQ(path_abs_normalize_with_root("/path", "abc", result), result);
   ASSERT_EQ(strstr(result, "abc") != NULL, TRUE);
+}
+
+TEST(Path, expand_vars) {
+  char path[MAX_PATH + 1] = {0};
+  char result[MAX_PATH + 1] = {0};
+  ASSERT_EQ(path_expand_vars("abc", result, sizeof(result)), RET_OK);
+  ASSERT_EQ(strstr(result, "abc") != NULL, TRUE);
+
+  ASSERT_EQ(path_expand_vars("${app_dir}", result, sizeof(result)), RET_OK);
+  path_app_root(path);
+  ASSERT_STREQ(result, path);
+  
+  ASSERT_EQ(path_expand_vars("${app_dir}/abc/test.txt", result, sizeof(result)), RET_OK);
+  path_app_root(path);
+  ASSERT_EQ(string(result), string(path) + "/abc/test.txt");
+
+  ASSERT_EQ(path_expand_vars("${temp_dir}", result, sizeof(result)), RET_OK);
+  fs_get_temp_path(os_fs(), path);
+  ASSERT_STREQ(result, path);
+
+  ASSERT_EQ(path_expand_vars("${user_dir}", result, sizeof(result)), RET_OK);
+  fs_get_user_storage_path(os_fs(), path);
+  ASSERT_STREQ(result, path);
+  
+  ASSERT_EQ(path_expand_vars("${user_dir}/abc/test.txt", result, sizeof(result)), RET_OK);
+  fs_get_user_storage_path(os_fs(), path);
+  ASSERT_EQ(string(result), string(path) + "/abc/test.txt");
 }

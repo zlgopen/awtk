@@ -288,6 +288,22 @@ const char* path_prepend_user_storage_path(char full_path[MAX_PATH + 1], const c
 ret_t path_abs_normalize(const char* filename, char* result, int32_t size);
 
 /**
+ * @method path_expand_vars
+ * 将路径中的变量展开。
+ * 
+ *``` 
+ * ${app_dir} -> app 文件目录。
+ * ${temp_dir} -> 临时文件目录。
+ * ${user_dir} -> 用户目录。
+ *``` 
+ * @param {const char*} filename 相对路径。
+ * @param {char*} result 用于返回结果。
+ * @param {int32_t} size 缓冲区大小。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+*/
+ret_t path_expand_vars(const char* filename, char* result, int32_t size);
+
+/**
  * @method path_abs_normalize_with_root
  * 将相对路径转换为绝对路径并规范路径字符形式。
  * @param {const char*} root 根目录。

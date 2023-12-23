@@ -394,3 +394,26 @@ const char* path_abs_normalize_with_root(const char* root, const char* rel_filen
     return NULL;
   }
 }
+
+ret_t path_expand_vars(const char* filename, char* result, int32_t size) {
+  str_t str;
+  char path[MAX_PATH + 1] = {0};
+  return_value_if_fail(filename != NULL && result != NULL && size > 0, RET_BAD_PARAMS);
+
+  str_init(&str, MAX_PATH+1);
+  str_set(&str, filename);
+  
+  fs_get_user_storage_path(os_fs(), path);
+  str_replace(&str, "${user_dir}", path);
+  
+  fs_get_temp_path(os_fs(), path);
+  str_replace(&str, "${temp_dir}", path);
+
+  path_app_root(path);
+  str_replace(&str, "${app_dir}", path);
+
+  tk_strncpy_s(result, size, str.str, str.size);
+  str_reset(&str);
+
+  return RET_OK;
+}

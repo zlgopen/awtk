@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/12/23
+  * 增加函数path\_expand\_vars
+
 2023/12/22
   * 增加data\_reader\_http。
 
