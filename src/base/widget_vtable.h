@@ -684,7 +684,7 @@ ret_t widget_vtable_on_remove_child_by_parent(widget_t* widget, widget_t* child,
  * @annotation ["global"]
  *
  * @param {widget_t*} widget 子类控件对象。
- * @param {widget_t*} child 父控件对象。
+ * @param {widget_t*} parent 父控件对象。
  * @param {const widget_vtable_t*} curr_vt 调用类的虚表对象。
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
@@ -698,7 +698,7 @@ ret_t widget_vtable_on_attach_parent_by_parent(widget_t* widget, widget_t* paren
  * @annotation ["global"]
  *
  * @param {widget_t*} widget 子类控件对象。
- * @param {widget_t*} child 移除父控件对象。
+ * @param {widget_t*} parent 移除父控件对象。
  * @param {const widget_vtable_t*} curr_vt 调用类的虚表对象。
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
