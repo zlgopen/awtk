@@ -495,6 +495,18 @@ const char* csv_row_get(csv_row_t* row, uint32_t col);
  */
 ret_t csv_row_set(csv_row_t* row, uint32_t col, const char* value);
 
+/**
+ * @method csv_row_get_col
+ *
+ * 根据列名获取列号。
+ *
+ * @param {csv_row_t*} row 行对象。
+ * @param {const char*} value 列名。
+ * 
+ * @return {int32_t} 返回列号。
+ */
+int32_t csv_row_get_col(csv_row_t* row, const char* value);
+
 /*public for test*/
 ret_t csv_row_init(csv_row_t* row, char* buff, uint32_t size, bool_t should_free_buff);
 ret_t csv_row_reset(csv_row_t* row);

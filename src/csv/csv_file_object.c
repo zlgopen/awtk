@@ -35,12 +35,13 @@ typedef struct _csv_path_t {
   const char* col_name;
 } csv_path_t;
 
-static ret_t csv_path_parse_impl(csv_path_t* path, csv_file_t* csv, const char* name) {
+static ret_t csv_path_parse_impl(csv_file_object_t* o, csv_path_t* path, const char* name) {
   const char* p = name;
-  return_value_if_fail(path != NULL && csv != NULL && name != NULL, RET_BAD_PARAMS);
+  csv_file_t* csv = NULL;
+  return_value_if_fail(path != NULL && o != NULL && o->csv != NULL && name != NULL, RET_BAD_PARAMS);
 
+  csv = o->csv;
   memset(path, 0x00, sizeof(*path));
-
   while (tk_isspace(*p)) p++;
 
   if (tk_isdigit(*p)) {
@@ -75,7 +76,11 @@ static ret_t csv_path_parse_impl(csv_path_t* path, csv_file_t* csv, const char* 
   } else if (tk_isdigit(*p)) {
     path->col = tk_atoi(p);
   } else {
-    path->col = csv_file_get_col_of_name(csv, p);
+    if(o->fields.size > 0) {
+      path->col = csv_row_get_col(&(o->fields), p);
+    } else {
+      path->col = csv_file_get_col_of_name(csv, p);
+    }
     if (path->col < 0) {
       return_value_if_fail(tk_isdigit(p[0]), RET_BAD_PARAMS);
       path->col = tk_atoi(p);
@@ -119,7 +124,7 @@ static ret_t csv_path_parse_ex(csv_file_object_t* o, csv_path_t* path, const cha
   ret_t ret = RET_BAD_PARAMS;
   return_value_if_fail(o != NULL && path != NULL && name != NULL, RET_BAD_PARAMS);
 
-  ret = csv_path_parse_impl(path, o->csv, name);
+  ret = csv_path_parse_impl(o, path, name);
   if (ret == RET_OK) {
     if (o->rows_map != NULL) {
       uint32_t index = path->row;
@@ -161,6 +166,9 @@ static ret_t csv_file_object_set_prop(tk_object_t* obj, const char* name, const 
 
   if (tk_str_start_with(name, CSV_QUERY_PREFIX)) {
     return tk_object_set_prop(o->query_args, name, v);
+  } else if(tk_str_eq(name, CSV_PROP_COL_NAMES)) {
+    csv_row_set_data(&(o->fields), value_str(v), o->csv->sep);
+    return RET_OK;
   }
 
   rows = csv_file_get_rows(o->csv);
@@ -395,6 +403,7 @@ static ret_t csv_file_object_destroy(tk_object_t* obj) {
   csv_file_object_t* o = CSV_FILE_OBJECT(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
+  csv_row_reset(&(o->fields));
   csv_file_destroy(o->csv);
   o->csv = NULL;
   TK_OBJECT_UNREF(o->query_args);

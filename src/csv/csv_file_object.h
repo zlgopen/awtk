@@ -117,6 +117,8 @@ typedef struct _csv_file_object_t {
   bool_t is_dirty;
   csv_filter_object_check_new_row_t check_new_row;
   void* check_new_row_ctx;
+
+  csv_row_t fields;
 } csv_file_object_t;
 
 /**
@@ -243,6 +245,8 @@ csv_file_object_t* csv_file_object_cast(tk_object_t* obj);
 #define CSV_QUERY_PREFIX "query."
 #define CSV_CMD_QUERY "query"
 #define CSV_CMD_QUERY_ARG_CLEAR "clear"
+
+#define CSV_PROP_COL_NAMES "col_names"
 
 END_C_DECLS
 
