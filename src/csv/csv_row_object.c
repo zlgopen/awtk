@@ -28,20 +28,12 @@
 static csv_row_object_t* csv_row_object_cast(tk_object_t* obj);
 #define CSV_ROW_OBJECT(obj) csv_row_object_cast((tk_object_t*)obj)
 
-static uint32_t get_col_from_name(const char* name) {
-  if (name[0] == '[') {
-    return tk_atoi(name + 1);
-  } else {
-    return tk_atoi(name);
-  }
-}
-
 static ret_t csv_row_object_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   uint32_t col = 0;
   char buff[64] = {0};
   csv_row_object_t* o = CSV_ROW_OBJECT(obj);
   return_value_if_fail(o != NULL && name != NULL, RET_BAD_PARAMS);
-  col = get_col_from_name(name);
+  col = csv_file_object_parse_col(CSV_FILE_OBJECT(o->csv), name);
 
   return csv_row_set(&(o->row), col, value_str_ex(v, buff, sizeof(buff) - 1));
 }
@@ -50,7 +42,7 @@ static ret_t csv_row_object_get_prop(tk_object_t* obj, const char* name, value_t
   uint32_t col = 0;
   csv_row_object_t* o = CSV_ROW_OBJECT(obj);
   return_value_if_fail(o != NULL && name != NULL, RET_BAD_PARAMS);
-  col = get_col_from_name(name);
+  col = csv_file_object_parse_col(CSV_FILE_OBJECT(o->csv), name);
 
   value_set_str(v, csv_row_get(&(o->row), col));
 

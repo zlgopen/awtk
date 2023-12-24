@@ -118,7 +118,7 @@ typedef struct _csv_file_object_t {
   csv_filter_object_check_new_row_t check_new_row;
   void* check_new_row_ctx;
 
-  csv_row_t fields;
+  csv_row_t col_names;
 } csv_file_object_t;
 
 /**
@@ -228,6 +228,16 @@ csv_row_t* csv_file_object_find_first(tk_object_t* obj, tk_compare_t compare, vo
 */
 ret_t csv_file_object_set_check_new_row(tk_object_t* obj,
                                         csv_filter_object_check_new_row_t check_new_row, void* ctx);
+
+/**
+ * @method csv_file_object_parse_col
+ * 解析列名。
+ * @param {csv_file_object_t*} o csv_file_object_t对象。
+ * @param {const char*} name 列名。
+ *
+ * @return {int32_t} 返回列索引。
+ */ 
+int32_t csv_file_object_parse_col(csv_file_object_t* o, const char* name);
 
 /**
  * @method csv_file_object_cast

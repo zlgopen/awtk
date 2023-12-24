@@ -35,6 +35,32 @@ typedef struct _csv_path_t {
   const char* col_name;
 } csv_path_t;
 
+int32_t csv_file_object_parse_col(csv_file_object_t* o, const char* name) {
+  int32_t col = -1;
+  const char* p = name;
+  return_value_if_fail(p != NULL && o != NULL, -1);
+
+  if (*p == '[') {
+    return_value_if_fail(tk_isdigit(p[1]), -1);
+    col = tk_atoi(p + 1);
+  } else if (tk_isdigit(*p)) {
+    col = tk_atoi(p);
+  } else {
+    if (o->col_names.size > 0) {
+      col = csv_row_get_col(&(o->col_names), p);
+    } else {
+      col = csv_file_get_col_of_name(o->csv, p);
+    }
+
+    if (col < 0) {
+      return_value_if_fail(tk_isdigit(p[0]), -1);
+      col = tk_atoi(p);
+    }
+  }
+
+  return col;
+}
+
 static ret_t csv_path_parse_impl(csv_file_object_t* o, csv_path_t* path, const char* name) {
   const char* p = name;
   csv_file_t* csv = NULL;
@@ -70,22 +96,8 @@ static ret_t csv_path_parse_impl(csv_file_object_t* o, csv_path_t* path, const c
     return RET_OK;
   }
 
-  if (*p == '[') {
-    return_value_if_fail(tk_isdigit(p[1]), RET_BAD_PARAMS);
-    path->col = tk_atoi(p + 1);
-  } else if (tk_isdigit(*p)) {
-    path->col = tk_atoi(p);
-  } else {
-    if(o->fields.size > 0) {
-      path->col = csv_row_get_col(&(o->fields), p);
-    } else {
-      path->col = csv_file_get_col_of_name(csv, p);
-    }
-    if (path->col < 0) {
-      return_value_if_fail(tk_isdigit(p[0]), RET_BAD_PARAMS);
-      path->col = tk_atoi(p);
-    }
-  }
+  path->col = csv_file_object_parse_col(o, p); 
+
   return_value_if_fail((path->col >= 0) && (path->col < csv_file_get_cols(csv)), RET_BAD_PARAMS);
   return_value_if_fail((path->row >= 0) && (path->row < csv_file_get_rows(csv)), RET_BAD_PARAMS);
 
@@ -166,8 +178,8 @@ static ret_t csv_file_object_set_prop(tk_object_t* obj, const char* name, const 
 
   if (tk_str_start_with(name, CSV_QUERY_PREFIX)) {
     return tk_object_set_prop(o->query_args, name, v);
-  } else if(tk_str_eq(name, CSV_PROP_COL_NAMES)) {
-    csv_row_set_data(&(o->fields), value_str(v), o->csv->sep);
+  } else if (tk_str_eq(name, CSV_PROP_COL_NAMES)) {
+    csv_row_set_data(&(o->col_names), value_str(v), o->csv->sep);
     return RET_OK;
   }
 
@@ -403,7 +415,7 @@ static ret_t csv_file_object_destroy(tk_object_t* obj) {
   csv_file_object_t* o = CSV_FILE_OBJECT(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
-  csv_row_reset(&(o->fields));
+  csv_row_reset(&(o->col_names));
   csv_file_destroy(o->csv);
   o->csv = NULL;
   TK_OBJECT_UNREF(o->query_args);
