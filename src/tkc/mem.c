@@ -25,6 +25,7 @@
 #include "tkc/mem_allocator_oom.h"
 #include "tkc/mem_allocator_pool.h"
 
+#if !defined(WITH_OS_MEM)
 static mem_allocator_oom_t s_oom;
 
 #ifdef ENABLE_MEM_LEAK_CHECK
@@ -33,6 +34,7 @@ static mem_allocator_debug_t s_debug;
 #endif /*ENABLE_MEM_LEAK_CHECK*/
 
 static mem_allocator_t* s_allocator = NULL;
+#endif /*WITH_OS_MEM*/
 
 #define MAX_BLOCK_SIZE 0xffff0000
 
@@ -67,7 +69,7 @@ static mem_allocator_t* mem_allocator_get(void) {
 ret_t tk_mem_init_stage2(void) {
   return RET_OK;
 }
-
+#elif defined(WITH_OS_MEM)
 #else /*non std memory manager*/
 #include "tkc/mem_allocator_lock.h"
 #include "tkc/mem_allocator_composite.h"
@@ -146,6 +148,7 @@ void* realloc(void* ptr, size_t size) {
 
 #endif /*HAS_STD_MALLOC*/
 
+#if !defined(WITH_OS_MEM)
 void* tk_calloc(uint32_t nmemb, uint32_t size, const char* func, uint32_t line) {
   void* addr = NULL;
   uint32_t total_size = size * nmemb;
@@ -186,3 +189,5 @@ void tk_mem_dump(void) {
 
   mem_allocator_dump(allocator);
 }
+#endif /*WITH_OS_MEM*/
+

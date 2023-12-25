@@ -1,5 +1,8 @@
 # 最新动态
 
+2023/12/25
+  * 完善内存管理，支持直接使用OS提供的函数。
+
 2023/12/24
   * 完善data reader
   * data\_reader\_http 支持 chunked data 
