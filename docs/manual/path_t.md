@@ -19,6 +19,7 @@
 | <a href="#path_t_path_dirname">path\_dirname</a> | 返回目录。 |
 | <a href="#path_t_path_exe">path\_exe</a> | 获取可执行文件所在目录。 |
 | <a href="#path_t_path_exist">path\_exist</a> | 判断目录是否存在。 |
+| <a href="#path_t_path_expand_vars">path\_expand\_vars</a> | 将路径中的变量展开。 |
 | <a href="#path_t_path_extname">path\_extname</a> | 返回文件扩展名。 |
 | <a href="#path_t_path_extname_is">path\_extname\_is</a> | ```c |
 | <a href="#path_t_path_is_abs">path\_is\_abs</a> | 判断路径是否为绝对路径。 |
@@ -274,6 +275,33 @@ bool_t path_exist (const char* path);
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回TRUE表示成功，否则表示失败。 |
 | path | const char* | 目录。 |
+#### path\_expand\_vars 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="path_t_path_expand_vars">将路径中的变量展开。
+
+```
+${app_dir} -> app 文件目录。
+${temp_dir} -> 临时文件目录。
+${user_dir} -> 用户目录。
+```
+
+* 函数原型：
+
+```
+ret_t path_expand_vars (const char* filename, char* result, int32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| filename | const char* | 相对路径。 |
+| result | char* | 用于返回结果。 |
+| size | int32\_t | 缓冲区大小。 |
 #### path\_extname 函数
 -----------------------
 

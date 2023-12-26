@@ -2,7 +2,7 @@
 ### 概述
 ![image](images/offset_change_event_t_0.png)
 
-值变化事件。
+offset变化事件。
 ----------------------------------
 ### 函数
 <p id="offset_change_event_t_methods">

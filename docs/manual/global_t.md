@@ -21,6 +21,7 @@ TK全局对象。
 | <a href="#global_t_tk_is_pointer_pressed">tk\_is\_pointer\_pressed</a> | 获取全局指针是否按下。 |
 | <a href="#global_t_tk_pre_init">tk\_pre\_init</a> | 初始化基本功能。 |
 | <a href="#global_t_tk_quit">tk\_quit</a> | 退出TK事件主循环。 |
+| <a href="#global_t_tk_quit_ex">tk\_quit\_ex</a> | 退出TK事件主循环。 |
 | <a href="#global_t_tk_run">tk\_run</a> | 进入TK事件主循环。 |
 | <a href="#global_t_tk_run_in_ui_thread">tk\_run\_in\_ui\_thread</a> | 后台线程在UI线程执行指定的函数。 |
 | <a href="#global_t_tk_set_lcd_orientation">tk\_set\_lcd\_orientation</a> | 设置屏幕的旋转方向(XXX:目前仅支持0度,90度,180度和270度，旋转方向为逆时针方向)。 |
@@ -290,6 +291,25 @@ ret_t tk_quit ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+#### tk\_quit\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="global_t_tk_quit_ex">退出TK事件主循环。
+
+* 函数原型：
+
+```
+ret_t tk_quit_ex (uint32_t delay_ms);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| delay\_ms | uint32\_t | 延迟退出的时间。 |
 #### tk\_run 函数
 -----------------------
 

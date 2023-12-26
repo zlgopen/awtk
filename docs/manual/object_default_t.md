@@ -40,6 +40,7 @@ TK_OBJECT_UNREF(obj);
 | <a href="#object_default_t_object_default_create">object\_default\_create</a> | 创建对象。 |
 | <a href="#object_default_t_object_default_create_ex">object\_default\_create\_ex</a> | 创建对象。 |
 | <a href="#object_default_t_object_default_find_prop">object\_default\_find\_prop</a> | 查找满足条件的属性，并返回它的值。 |
+| <a href="#object_default_t_object_default_set_keep_prop_type">object\_default\_set\_keep\_prop\_type</a> | 设置属性值时不改变属性的类型。 |
 | <a href="#object_default_t_object_default_unref">object\_default\_unref</a> | for script gc |
 #### object\_default\_cast 函数
 -----------------------
@@ -156,6 +157,26 @@ value_t* object_default_find_prop (tk_object_t* obj, tk_compare_t cmp, const voi
 | obj | tk\_object\_t* | 对象。 |
 | cmp | tk\_compare\_t | 比较函数。 |
 | data | const void* | 要比较的数据。 |
+#### object\_default\_set\_keep\_prop\_type 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_default_t_object_default_set_keep_prop_type">设置属性值时不改变属性的类型。
+
+* 函数原型：
+
+```
+ret_t object_default_set_keep_prop_type (tk_object_t* obj, bool_t keep_prop_type);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | tk\_object\_t* | 对象。 |
+| keep\_prop\_type | bool\_t | 不改变属性的类型。 |
 #### object\_default\_unref 函数
 -----------------------
 

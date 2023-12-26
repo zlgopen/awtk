@@ -15,6 +15,7 @@
 | <a href="#action_darray_thread_t_action_darray_thread_create_with_darray_ex">action\_darray\_thread\_create\_with\_darray\_ex</a> | 创建action_darray_thread对象。 |
 | <a href="#action_darray_thread_t_action_darray_thread_destroy">action\_darray\_thread\_destroy</a> | 销毁。 |
 | <a href="#action_darray_thread_t_action_darray_thread_exec">action\_darray\_thread\_exec</a> | 让线程执行action。 |
+| <a href="#action_darray_thread_t_action_darray_thread_set_idle_interval">action\_darray\_thread\_set\_idle\_interval</a> | 设置空闲时的时间间隔。 |
 | <a href="#action_darray_thread_t_action_darray_thread_set_on_idle">action\_darray\_thread\_set\_on\_idle</a> | 设置空闲时的回调函数。 |
 | <a href="#action_darray_thread_t_action_darray_thread_set_on_quit">action\_darray\_thread\_set\_on\_quit</a> | 设置退出时的回调函数。 |
 | <a href="#action_darray_thread_t_action_darray_thread_set_strategy">action\_darray\_thread\_set\_strategy</a> | 设置策略 |
@@ -29,6 +30,7 @@
 | -------- | ----- | ------------ | 
 | <a href="#action_darray_thread_t_darray">darray</a> | waitable\_action\_darray\_t* | action darray。 |
 | <a href="#action_darray_thread_t_executed_actions_nr">executed\_actions\_nr</a> | uint32\_t | 已经执行action的个数。 |
+| <a href="#action_darray_thread_t_idle_interval">idle\_interval</a> | uint32\_t | 空闲时的时间间隔。 |
 | <a href="#action_darray_thread_t_thread">thread</a> | tk\_thread\_t* | 线程对象。 |
 #### action\_darray\_thread\_create 函数
 -----------------------
@@ -149,6 +151,26 @@ ret_t action_darray_thread_exec (action_darray_thread_t* thread, qaction_t* acti
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | thread | action\_darray\_thread\_t* | action\_darray\_thread对象。 |
 | action | qaction\_t* | action对象。 |
+#### action\_darray\_thread\_set\_idle\_interval 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="action_darray_thread_t_action_darray_thread_set_idle_interval">设置空闲时的时间间隔。
+
+* 函数原型：
+
+```
+ret_t action_darray_thread_set_idle_interval (action_darray_thread_t* thread, uint32_t interval);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| thread | action\_darray\_thread\_t* | action\_darray\_thread对象。 |
+| interval | uint32\_t | 时间间隔(ms)。 |
 #### action\_darray\_thread\_set\_on\_idle 函数
 -----------------------
 
@@ -302,6 +324,16 @@ ret_t action_queue_send (action_queue_t* q, qaction_t* action);
 #### executed\_actions\_nr 属性
 -----------------------
 > <p id="action_darray_thread_t_executed_actions_nr">已经执行action的个数。
+
+* 类型：uint32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+#### idle\_interval 属性
+-----------------------
+> <p id="action_darray_thread_t_idle_interval">空闲时的时间间隔。
 
 * 类型：uint32\_t
 

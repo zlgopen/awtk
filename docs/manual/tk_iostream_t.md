@@ -9,10 +9,11 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#tk_iostream_t_tk_iostream_get_istream">tk\_iostream\_get\_istream</a> | 获取输入流对象。 |
-| <a href="#tk_iostream_t_tk_iostream_get_ostream">tk\_iostream\_get\_ostream</a> | 获取输出流对象。 |
+| <a href="#tk_iostream_t_tk_iostream_get_istream">tk\_iostream\_get\_istream</a> | 获取输入流对象(不再使用时，无需UNREF返回的对象)。 |
+| <a href="#tk_iostream_t_tk_iostream_get_ostream">tk\_iostream\_get\_ostream</a> | 获取输出流对象(不再使用时，无需UNREF返回的对象)。 |
 | <a href="#tk_iostream_t_tk_iostream_read">tk\_iostream\_read</a> | 读取数据。 |
 | <a href="#tk_iostream_t_tk_iostream_read_len">tk\_iostream\_read\_len</a> | 读取指定长度的数据。 |
+| <a href="#tk_iostream_t_tk_iostream_unref">tk\_iostream\_unref</a> | 引用计数减1。引用计数为0时，销毁对象。 |
 | <a href="#tk_iostream_t_tk_iostream_write">tk\_iostream\_write</a> | 写入数据。 |
 | <a href="#tk_iostream_t_tk_iostream_write_len">tk\_iostream\_write\_len</a> | 写入指定长度的数据。 |
 #### tk\_iostream\_get\_istream 函数
@@ -20,7 +21,7 @@
 
 * 函数功能：
 
-> <p id="tk_iostream_t_tk_iostream_get_istream">获取输入流对象。
+> <p id="tk_iostream_t_tk_iostream_get_istream">获取输入流对象(不再使用时，无需UNREF返回的对象)。
 
 * 函数原型：
 
@@ -39,7 +40,7 @@ tk_istream_t* tk_iostream_get_istream (tk_iostream_t* stream);
 
 * 函数功能：
 
-> <p id="tk_iostream_t_tk_iostream_get_ostream">获取输出流对象。
+> <p id="tk_iostream_t_tk_iostream_get_ostream">获取输出流对象(不再使用时，无需UNREF返回的对象)。
 
 * 函数原型：
 
@@ -96,6 +97,25 @@ int32_t tk_iostream_read_len (tk_iostream_t* stream, void* buff, uint32_t max_si
 | buff | void* | 返回数据的缓冲区。 |
 | max\_size | uint32\_t | 缓冲区的大小。 |
 | timeout\_ms | uint32\_t | timeout. |
+#### tk\_iostream\_unref 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_iostream_t_tk_iostream_unref">引用计数减1。引用计数为0时，销毁对象。
+
+* 函数原型：
+
+```
+ret_t tk_iostream_unref (tk_iostream_t* stream);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| stream | tk\_iostream\_t* | iostream对象。 |
 #### tk\_iostream\_write 函数
 -----------------------
 

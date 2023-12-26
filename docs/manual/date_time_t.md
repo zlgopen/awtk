@@ -20,6 +20,9 @@
 | <a href="#date_time_t_date_time_global_init_ex">date\_time\_global\_init\_ex</a> | 时间日期全局初始化。 |
 | <a href="#date_time_t_date_time_init">date\_time\_init</a> | 初始为当前日期和时间。 |
 | <a href="#date_time_t_date_time_is_leap">date\_time\_is\_leap</a> | 是否是闰年。 |
+| <a href="#date_time_t_date_time_parse_date">date\_time\_parse\_date</a> | 解析日期。 |
+| <a href="#date_time_t_date_time_parse_date_time">date\_time\_parse\_date\_time</a> | 解析日期和时间。 |
+| <a href="#date_time_t_date_time_parse_time">date\_time\_parse\_time</a> | 解析时间。 |
 | <a href="#date_time_t_date_time_set">date\_time\_set</a> | 设置当前时间。 |
 | <a href="#date_time_t_date_time_set_day">date\_time\_set\_day</a> | 设置日。 |
 | <a href="#date_time_t_date_time_set_hour">date\_time\_set\_hour</a> | 设置小时。 |
@@ -255,6 +258,66 @@ bool_t date_time_is_leap (uint32_t year);
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回TRUE表示是，否则表示否。 |
 | year | uint32\_t | 年份。 |
+#### date\_time\_parse\_date 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="date_time_t_date_time_parse_date">解析日期。
+
+* 函数原型：
+
+```
+ret_t date_time_parse_date (date_time_t* dt, const char* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| dt | date\_time\_t* | date\_time对象。 |
+| str | const char* | 日期字符串。 |
+#### date\_time\_parse\_date\_time 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="date_time_t_date_time_parse_date_time">解析日期和时间。
+
+* 函数原型：
+
+```
+ret_t date_time_parse_date_time (date_time_t* dt, const char* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| dt | date\_time\_t* | date\_time对象。 |
+| str | const char* | 日期和时间字符串。 |
+#### date\_time\_parse\_time 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="date_time_t_date_time_parse_time">解析时间。
+
+* 函数原型：
+
+```
+ret_t date_time_parse_time (date_time_t* dt, const char* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| dt | date\_time\_t* | date\_time对象。 |
+| str | const char* | 时间字符串。 |
 #### date\_time\_set 函数
 -----------------------
 

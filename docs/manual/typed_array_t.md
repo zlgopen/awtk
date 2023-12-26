@@ -6,11 +6,11 @@
 
 ```c
 value_t v;
-typed_array_t* typed_array = typed_array_create(VALUE_TYPE_INT, 10);
+typed_array_t* a = typed_array_create(VALUE_TYPE_INT, 10);
 typed_array_push(a, value_set_int(&v, 123));
 typed_array_push(a, value_set_int(&v, 234));
 ...
-typed_array_destroy(typed_array);
+typed_array_destroy(a);
 ```
 ----------------------------------
 ### 函数

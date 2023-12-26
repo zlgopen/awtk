@@ -53,7 +53,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L1
 | <a href="#label_t_label_get_widget_vtable">label\_get\_widget\_vtable</a> | 获取 label 虚表。 |
 | <a href="#label_t_label_resize_to_content">label\_resize\_to\_content</a> | 根据文本内容调节控件大小。 |
 | <a href="#label_t_label_set_ellipses">label\_set\_ellipses</a> | 是否开启缩写，开启后，当文字长度操作控件长度后，自动变为... |
-| <a href="#label_t_label_set_length">label\_set\_length</a> | 设置显示字符的个数(小余0时全部显示)。 |
+| <a href="#label_t_label_set_length">label\_set\_length</a> | 设置显示字符的个数(小于0时全部显示)。 |
 | <a href="#label_t_label_set_line_wrap">label\_set\_line\_wrap</a> | 设置是否自动换行。 |
 | <a href="#label_t_label_set_max_w">label\_set\_max\_w</a> | 设置max_w。 |
 | <a href="#label_t_label_set_word_wrap">label\_set\_word\_wrap</a> | 设置是否允许整个单词换行。(需要开启自动换行才有效果) |
@@ -63,7 +63,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L1
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#label_t_ellipses">ellipses</a> | bool\_t | 是否开启缩写，开启后，当文字长度操作控件长度后，自动变为... |
-| <a href="#label_t_length">length</a> | int32\_t | 显示字符的个数(小余0时全部显示)。 |
+| <a href="#label_t_length">length</a> | int32\_t | 显示字符的个数(小于0时全部显示)。 |
 | <a href="#label_t_line_wrap">line\_wrap</a> | bool\_t | 是否自动换行(默认FALSE)。 |
 | <a href="#label_t_max_w">max\_w</a> | int32\_t | 当auto_adjust_size为TRUE时，用于控制控件的最大宽度，超出该宽度后才自动换行。 |
 | <a href="#label_t_word_wrap">word\_wrap</a> | bool\_t | 是否允许整个单词换行(默认FALSE)。 |
@@ -175,7 +175,7 @@ ret_t label_set_ellipses (widget_t* widget, bool_t ellipses);
 
 * 函数功能：
 
-> <p id="label_t_label_set_length">设置显示字符的个数(小余0时全部显示)。
+> <p id="label_t_label_set_length">设置显示字符的个数(小于0时全部显示)。
 
 * 函数原型：
 
@@ -269,7 +269,7 @@ ret_t label_set_word_wrap (widget_t* widget, bool_t word_wrap);
 | 可通过widget\_set\_prop修改 | 是 |
 #### length 属性
 -----------------------
-> <p id="label_t_length">显示字符的个数(小余0时全部显示)。
+> <p id="label_t_length">显示字符的个数(小于0时全部显示)。
 主要用于动态改变显示字符的个数，来实现类似[拨号中...]的动画效果。
 
 * 类型：int32\_t

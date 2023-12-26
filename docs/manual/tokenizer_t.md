@@ -27,6 +27,7 @@ tokenizer_deinit(t);
 | <a href="#tokenizer_t_tokenizer_next_expr_until">tokenizer\_next\_expr\_until</a> | 获取下一个expr，该expr直到遇到指定的char。 |
 | <a href="#tokenizer_t_tokenizer_next_float">tokenizer\_next\_float</a> | 获取下一个token，并转换成float。 |
 | <a href="#tokenizer_t_tokenizer_next_int">tokenizer\_next\_int</a> | 获取下一个token，并转换成int。 |
+| <a href="#tokenizer_t_tokenizer_next_int64">tokenizer\_next\_int64</a> | 获取下一个token，并转换成int64_t。 |
 | <a href="#tokenizer_t_tokenizer_next_str">tokenizer\_next\_str</a> | 获取下一个字符串(允许使用英文单引号和双引号界定字符串)。 |
 | <a href="#tokenizer_t_tokenizer_next_until">tokenizer\_next\_until</a> | 获取下一个token，该token直到遇到指定的char。 |
 ### 属性
@@ -201,6 +202,26 @@ int tokenizer_next_int (tokenizer_t* tokenizer, int defval);
 | 返回值 | int | 成功返回token的int值，失败返回缺省值。 |
 | tokenizer | tokenizer\_t* | tokenizer对象。 |
 | defval | int | 缺省值。 |
+#### tokenizer\_next\_int64 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tokenizer_t_tokenizer_next_int64">获取下一个token，并转换成int64_t。
+
+* 函数原型：
+
+```
+int64_t tokenizer_next_int64 (tokenizer_t* tokenizer, int64_t defval);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int64\_t | 成功返回token的int64\_t值，失败返回缺省值。 |
+| tokenizer | tokenizer\_t* | tokenizer对象。 |
+| defval | int64\_t | 缺省值。 |
 #### tokenizer\_next\_str 函数
 -----------------------
 

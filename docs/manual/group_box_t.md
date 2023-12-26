@@ -38,6 +38,20 @@ group\_box\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均�
 | <a href="#group_box_t_group_box_cast">group\_box\_cast</a> | 转换为group_box对象(供脚本语言使用)。 |
 | <a href="#group_box_t_group_box_create">group\_box\_create</a> | 创建group_box对象 |
 | <a href="#group_box_t_group_box_get_widget_vtable">group\_box\_get\_widget\_vtable</a> | 获取 group_box 虚表。 |
+| <a href="#group_box_t_group_box_set_value">group\_box\_set\_value</a> | 设置选中的单选按钮的索引。 |
+### 属性
+<p id="group_box_t_properties">
+
+| 属性名称 | 类型 | 说明 | 
+| -------- | ----- | ------------ | 
+| <a href="#group_box_t_value">value</a> | uint32\_t | 选中的单选按钮的索引。 |
+### 事件
+<p id="group_box_t_events">
+
+| 事件名称 | 类型  | 说明 | 
+| -------- | ----- | ------- | 
+| EVT\_VALUE\_WILL\_CHANGE | value\_change\_event\_t | 值(勾选状态)即将改变事件。 |
+| EVT\_VALUE\_CHANGED | value\_change\_event\_t | 值(勾选状态)改变事件。 |
 #### group\_box\_cast 函数
 -----------------------
 
@@ -98,3 +112,39 @@ const widget_vtable_t* group_box_get_widget_vtable ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | const widget\_vtable\_t* | 成功返回 group\_box 虚表。 |
+#### group\_box\_set\_value 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="group_box_t_group_box_set_value">设置选中的单选按钮的索引。
+
+* 函数原型：
+
+```
+ret_t group_box_set_value (widget_t* widget, uint32_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | group\_box对象。 |
+| value | uint32\_t | 选中的单选按钮的索引。 |
+#### value 属性
+-----------------------
+> <p id="group_box_t_value">选中的单选按钮的索引。
+
+* 类型：uint32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |

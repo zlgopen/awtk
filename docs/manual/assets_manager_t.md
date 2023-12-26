@@ -47,6 +47,7 @@ ui      UI描述数据。
 | <a href="#assets_manager_t_assets_manager_create">assets\_manager\_create</a> | 创建资源管理器。 |
 | <a href="#assets_manager_t_assets_manager_deinit">assets\_manager\_deinit</a> | 释放全部资源。 |
 | <a href="#assets_manager_t_assets_manager_destroy">assets\_manager\_destroy</a> | 释放全部资源并销毁asset manager对象。 |
+| <a href="#assets_manager_t_assets_manager_dump">assets\_manager\_dump</a> | 输出资源管理器的信息。 |
 | <a href="#assets_manager_t_assets_manager_find_in_cache">assets\_manager\_find\_in\_cache</a> | 在资源管理器的缓存中查找指定的资源(不引用)。 |
 | <a href="#assets_manager_t_assets_manager_get_res_root">assets\_manager\_get\_res\_root</a> | 获取资源所在的目录(其下目录结构请参考demos)。 |
 | <a href="#assets_manager_t_assets_manager_init">assets\_manager\_init</a> | 初始化资源管理器。 |
@@ -274,6 +275,26 @@ ret_t assets_manager_destroy (assets_manager_t* am);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | am | assets\_manager\_t* | asset manager对象。 |
+#### assets\_manager\_dump 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="assets_manager_t_assets_manager_dump">输出资源管理器的信息。
+
+* 函数原型：
+
+```
+ret_t assets_manager_dump (assets_manager_t* am, str_t* result);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| am | assets\_manager\_t* | asset manager对象。 |
+| result | str\_t* | 输出的字符串。 |
 #### assets\_manager\_find\_in\_cache 函数
 -----------------------
 

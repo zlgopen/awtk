@@ -32,6 +32,7 @@ wstr_reset(&s);
 | <a href="#wstr_t_wstr_destroy">wstr\_destroy</a> | 销毁str对象。 |
 | <a href="#wstr_t_wstr_eq">wstr\_eq</a> | 判断两个字符串是否相等。 |
 | <a href="#wstr_t_wstr_equal">wstr\_equal</a> | 判断两个字符是否相同。 |
+| <a href="#wstr_t_wstr_extend">wstr\_extend</a> | 扩展字符串到指定的容量。 |
 | <a href="#wstr_t_wstr_from_float">wstr\_from\_float</a> | 用浮点数初始化字符串。 |
 | <a href="#wstr_t_wstr_from_int">wstr\_from\_int</a> | 用整数初始化字符串。 |
 | <a href="#wstr_t_wstr_from_int64">wstr\_from\_int64</a> | 用整数初始化字符串。 |
@@ -322,6 +323,26 @@ bool_t wstr_equal (wstr_t* str, wstr_t* other);
 | 返回值 | bool\_t | 返回TRUE表示相同，否则表示不同。 |
 | str | wstr\_t* | str对象。 |
 | other | wstr\_t* | str对象。 |
+#### wstr\_extend 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wstr_t_wstr_extend">扩展字符串到指定的容量。
+
+* 函数原型：
+
+```
+ret_t wstr_extend (wstr_t* str, uint32_t capacity);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | wstr\_t* | wstr对象。 |
+| capacity | uint32\_t | 初始容量。 |
 #### wstr\_from\_float 函数
 -----------------------
 

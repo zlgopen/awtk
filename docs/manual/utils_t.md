@@ -26,12 +26,15 @@
 | <a href="#utils_t_tk_atoi">tk\_atoi</a> | 将字符串转换为整型数。 |
 | <a href="#utils_t_tk_atol">tk\_atol</a> | 将字符串转换为整型。 |
 | <a href="#utils_t_tk_atoul">tk\_atoul</a> | 将字符串转换为整型。 |
+| <a href="#utils_t_tk_count_char">tk\_count\_char</a> | 统计字符串中某个字符出现的次数。 |
+| <a href="#utils_t_tk_date_time_format">tk\_date\_time\_format</a> | 格式化时间。 |
 | <a href="#utils_t_tk_eval_ratio_or_px">tk\_eval\_ratio\_or\_px</a> | 如果expr以px/PX结束，直接返回expr前面的数值。 |
 | <a href="#utils_t_tk_free_utf8_argv">tk\_free\_utf8\_argv</a> | 释放utf8字符串数组。 |
 | <a href="#utils_t_tk_ftoa">tk\_ftoa</a> | 将浮点型转换为字符串。 |
 | <a href="#utils_t_tk_is_ui_thread">tk\_is\_ui\_thread</a> | 判断当前线程是否是UI线程。 |
 | <a href="#utils_t_tk_is_valid_name">tk\_is\_valid\_name</a> | 判断是否是有效的属性名。 |
 | <a href="#utils_t_tk_itoa">tk\_itoa</a> | 将整型转换为字符串。 |
+| <a href="#utils_t_tk_levelize">tk\_levelize</a> | 将value转换成level。 |
 | <a href="#utils_t_tk_lltoa">tk\_lltoa</a> | 将整型转换为字符串。 |
 | <a href="#utils_t_tk_memcpy">tk\_memcpy</a> | 内存拷贝。 |
 | <a href="#utils_t_tk_memcpy16">tk\_memcpy16</a> | 拷贝数据2字节。 |
@@ -469,6 +472,68 @@ uint64_t tk_atoul (const char* str);
 | -------- | ----- | --------- |
 | 返回值 | uint64\_t | 返回转换后的整型。 |
 | str | const char* | 要转换为整型的字符串。 |
+#### tk\_count\_char 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_count_char">统计字符串中某个字符出现的次数。
+
+* 函数原型：
+
+```
+uint32_t tk_count_char (const char* str, char c);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回字符出现的次数。 |
+| str | const char* | 字符串。 |
+| c | char | 字符。 |
+#### tk\_date\_time\_format 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_date_time_format">格式化时间。
+格式规则：
+* Y 代表年(完整显示)
+* M 代表月(1-12)
+* D 代表日(1-31)
+* h 代表时(0-23)
+* H 代表时(0-11)
+* m 代表分(0-59)
+* s 代表秒(0-59)
+* YY 代表年(只显示末两位)
+* MM 代表月(01-12)
+* DD 代表日(01-31)
+* hh 代表时(00-23)
+* HH 代表时(00-11)
+* mm 代表分(00-59)
+* ss 代表秒(00-59)
+
+如 日期时间为：2018/11/12 9:10:20
+* "Y/M/D"显示为"2018/11/12"
+* "Y-M-D"显示为"2018-11-12"
+* "Y-M-D h:m:s"显示为"2018-11-12 9:10:20"
+* "Y-M-D hh:mm:ss"显示为"2018-11-12 09:10:20"
+
+* 函数原型：
+
+```
+ret_t tk_date_time_format (uint64_t time, const char* format, str_t* result);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| time | uint64\_t | 时间。 |
+| format | const char* | 格式化字符串。 |
+| result | str\_t* | 用于返回结果。 |
 #### tk\_eval\_ratio\_or\_px 函数
 -----------------------
 
@@ -599,6 +664,27 @@ const char* tk_itoa (char* str, int len, int n);
 | str | char* | 保存字符串缓冲区。 |
 | len | int | 缓冲区大小。 |
 | n | int | 要转换的整型。 |
+#### tk\_levelize 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_levelize">将value转换成level。
+比如levels为"0-20;21-40;41-60;61-80;81-100"，value为50，那么返回2。
+
+* 函数原型：
+
+```
+int32_t tk_levelize (const char* levels, int32_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int32\_t | 返回level。 |
+| levels | const char* | 级别字符串。 |
+| value | int32\_t | 值。 |
 #### tk\_lltoa 函数
 -----------------------
 

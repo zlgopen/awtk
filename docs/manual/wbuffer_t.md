@@ -32,22 +32,29 @@ wbuffer_deinit(&wbuffer);
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#wbuffer_t_wbuffer_create">wbuffer\_create</a> | 创建wbuffer对象。 |
+| <a href="#wbuffer_t_wbuffer_create_extendable">wbuffer\_create\_extendable</a> | 创建可自动扩展的wbuffer对象。 |
 | <a href="#wbuffer_t_wbuffer_deinit">wbuffer\_deinit</a> | 释放资源。 |
+| <a href="#wbuffer_t_wbuffer_destroy">wbuffer\_destroy</a> | 销毁wbuffer对象。 |
 | <a href="#wbuffer_t_wbuffer_extend_capacity">wbuffer\_extend\_capacity</a> | 扩展缓冲区至指定的大小。 |
 | <a href="#wbuffer_t_wbuffer_has_room">wbuffer\_has\_room</a> | 是否还有空间。 |
 | <a href="#wbuffer_t_wbuffer_init">wbuffer\_init</a> | 初始wbuffer对象。 |
-| <a href="#wbuffer_t_wbuffer_init_extendable">wbuffer\_init\_extendable</a> | 初始wbuffer对象，容量不够时是否支持自动扩展，使用完成后需要调用wbuffer\_deinit释放资源。 |
+| <a href="#wbuffer_t_wbuffer_init_extendable">wbuffer\_init\_extendable</a> | 初始化可自动扩展的wbuffer对象。使用完成后需要调用wbuffer\_deinit释放资源。 |
 | <a href="#wbuffer_t_wbuffer_rewind">wbuffer\_rewind</a> | 重置当前写入位置。 |
 | <a href="#wbuffer_t_wbuffer_skip">wbuffer\_skip</a> | 跳过指定的长度。 |
 | <a href="#wbuffer_t_wbuffer_write_binary">wbuffer\_write\_binary</a> | 写入指定长度的二进制数据。 |
 | <a href="#wbuffer_t_wbuffer_write_double">wbuffer\_write\_double</a> | 写入double数据。 |
 | <a href="#wbuffer_t_wbuffer_write_float">wbuffer\_write\_float</a> | 写入float数据。 |
+| <a href="#wbuffer_t_wbuffer_write_int16">wbuffer\_write\_int16</a> | 写入int16数据。 |
 | <a href="#wbuffer_t_wbuffer_write_int32">wbuffer\_write\_int32</a> | 写入int32数据。 |
+| <a href="#wbuffer_t_wbuffer_write_int64">wbuffer\_write\_int64</a> | 写入int64数据。 |
+| <a href="#wbuffer_t_wbuffer_write_int8">wbuffer\_write\_int8</a> | 写入int8数据。 |
 | <a href="#wbuffer_t_wbuffer_write_string">wbuffer\_write\_string</a> | 写入字符串。 |
 | <a href="#wbuffer_t_wbuffer_write_uint16">wbuffer\_write\_uint16</a> | 写入uint16数据。 |
 | <a href="#wbuffer_t_wbuffer_write_uint32">wbuffer\_write\_uint32</a> | 写入uint32数据。 |
 | <a href="#wbuffer_t_wbuffer_write_uint64">wbuffer\_write\_uint64</a> | 写入uint64数据。 |
 | <a href="#wbuffer_t_wbuffer_write_uint8">wbuffer\_write\_uint8</a> | 写入uint8数据。 |
+| <a href="#wbuffer_t_wbuffer_write_value">wbuffer\_write\_value</a> | 写入value数据。 |
 ### 属性
 <p id="wbuffer_t_properties">
 
@@ -57,6 +64,44 @@ wbuffer_deinit(&wbuffer);
 | <a href="#wbuffer_t_cursor">cursor</a> | uint32\_t | 当前写入位置。 |
 | <a href="#wbuffer_t_data">data</a> | uint8\_t* | 数据缓冲区。用于保存写入的数据。 |
 | <a href="#wbuffer_t_extendable">extendable</a> | bool\_t | 容量不够时是否支持自动扩展。 |
+#### wbuffer\_create 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wbuffer_t_wbuffer_create">创建wbuffer对象。
+
+* 函数原型：
+
+```
+wbuffer_t* wbuffer_create (void* data, uint32_t capacity);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | wbuffer\_t* | wbuffer对象本身。 |
+| data | void* | 缓冲区。 |
+| capacity | uint32\_t | 缓冲区的容量。 |
+#### wbuffer\_create\_extendable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wbuffer_t_wbuffer_create_extendable">创建可自动扩展的wbuffer对象。
+
+* 函数原型：
+
+```
+wbuffer_t* wbuffer_create_extendable ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | wbuffer\_t* | wbuffer对象本身。 |
 #### wbuffer\_deinit 函数
 -----------------------
 
@@ -68,6 +113,25 @@ wbuffer_deinit(&wbuffer);
 
 ```
 ret_t wbuffer_deinit (wbuffer_t* wbuffer);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| wbuffer | wbuffer\_t* | wbuffer对象。 |
+#### wbuffer\_destroy 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wbuffer_t_wbuffer_destroy">销毁wbuffer对象。
+
+* 函数原型：
+
+```
+ret_t wbuffer_destroy (wbuffer_t* wbuffer);
 ```
 
 * 参数说明：
@@ -126,7 +190,7 @@ bool_t wbuffer_has_room (wbuffer_t* wbuffer, uint32_t size);
 * 函数原型：
 
 ```
-wbuffer_t* wbuffer_init (wbuffer_t* wbuffer, uint8_t* data, uint32_t capacity);
+wbuffer_t* wbuffer_init (wbuffer_t* wbuffer, void* data, uint32_t capacity);
 ```
 
 * 参数说明：
@@ -135,14 +199,14 @@ wbuffer_t* wbuffer_init (wbuffer_t* wbuffer, uint8_t* data, uint32_t capacity);
 | -------- | ----- | --------- |
 | 返回值 | wbuffer\_t* | wbuffer对象本身。 |
 | wbuffer | wbuffer\_t* | wbuffer对象。 |
-| data | uint8\_t* | 缓冲区。 |
+| data | void* | 缓冲区。 |
 | capacity | uint32\_t | 缓冲区的容量。 |
 #### wbuffer\_init\_extendable 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="wbuffer_t_wbuffer_init_extendable">初始wbuffer对象，容量不够时是否支持自动扩展，使用完成后需要调用wbuffer\_deinit释放资源。
+> <p id="wbuffer_t_wbuffer_init_extendable">初始化可自动扩展的wbuffer对象。使用完成后需要调用wbuffer\_deinit释放资源。
 
 * 函数原型：
 
@@ -256,6 +320,26 @@ ret_t wbuffer_write_float (wbuffer_t* wbuffer, float value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | wbuffer | wbuffer\_t* | wbuffer对象。 |
 | value | float | 要写入的数据。 |
+#### wbuffer\_write\_int16 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wbuffer_t_wbuffer_write_int16">写入int16数据。
+
+* 函数原型：
+
+```
+ret_t wbuffer_write_int16 (wbuffer_t* wbuffer, int16_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| wbuffer | wbuffer\_t* | wbuffer对象。 |
+| value | int16\_t | 要写入的数据。 |
 #### wbuffer\_write\_int32 函数
 -----------------------
 
@@ -276,6 +360,46 @@ ret_t wbuffer_write_int32 (wbuffer_t* wbuffer, int32_t value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | wbuffer | wbuffer\_t* | wbuffer对象。 |
 | value | int32\_t | 要写入的数据。 |
+#### wbuffer\_write\_int64 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wbuffer_t_wbuffer_write_int64">写入int64数据。
+
+* 函数原型：
+
+```
+ret_t wbuffer_write_int64 (wbuffer_t* wbuffer, int64_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| wbuffer | wbuffer\_t* | wbuffer对象。 |
+| value | int64\_t | 要写入的数据。 |
+#### wbuffer\_write\_int8 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wbuffer_t_wbuffer_write_int8">写入int8数据。
+
+* 函数原型：
+
+```
+ret_t wbuffer_write_int8 (wbuffer_t* wbuffer, int8_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| wbuffer | wbuffer\_t* | wbuffer对象。 |
+| value | int8\_t | 要写入的数据。 |
 #### wbuffer\_write\_string 函数
 -----------------------
 
@@ -376,6 +500,26 @@ ret_t wbuffer_write_uint8 (wbuffer_t* wbuffer, uint8_t value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | wbuffer | wbuffer\_t* | wbuffer对象。 |
 | value | uint8\_t | 要写入的数据。 |
+#### wbuffer\_write\_value 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wbuffer_t_wbuffer_write_value">写入value数据。
+
+* 函数原型：
+
+```
+ret_t wbuffer_write_value (wbuffer_t* wbuffer, const value_t* v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| wbuffer | wbuffer\_t* | wbuffer对象。 |
+| v | const value\_t* | 要写入的数据。 |
 #### capacity 属性
 -----------------------
 > <p id="wbuffer_t_capacity">数据缓冲区最大容量。

@@ -35,9 +35,6 @@
 | EVT\_RESIZE | 调整Widget大小的事件名(event\_t)。 |
 | EVT\_WILL\_MOVE\_RESIZE | 即将调整Widget大小/位置的事件名(event\_t)。 |
 | EVT\_MOVE\_RESIZE | 调整Widget大小/位置的事件名(event\_t)。 |
-| EVT\_VALUE\_WILL\_CHANGE | 控件的值即将改变的事件名(value\_change\_event\_t)。 |
-| EVT\_VALUE\_CHANGED | 控件的值改变的事件名(value\_change\_event\_t)。 |
-| EVT\_VALUE\_CHANGING | 控件的值持续改变(如编辑器正在编辑)的事件名(value\_change\_event\_t)。 |
 | EVT\_PAINT | 绘制的事件名(paint\_event\_t)。 |
 | EVT\_BEFORE\_PAINT | 即将绘制的事件名(paint\_event\_t)。 |
 | EVT\_AFTER\_PAINT | 绘制完成的事件名(paint\_event\_t)。 |
@@ -89,8 +86,8 @@
 | EVT\_SCROLL | scroll view滚动(event\_t)。 |
 | EVT\_SCROLL\_END | scroll view结束滚动(event\_t)。 |
 | EVT\_MULTI\_GESTURE | 多点触摸手势(multi\_gesture\_event\_t)。 |
-| EVT\_PAGE\_CHANGED | 页面改变了(event\_t)。 |
-| EVT\_PAGE\_CHANGING | 页面正在改变(offset\_change\_event\_t)。 |
+| EVT\_PAGE\_CHANGED | 当前看到的页面改变了(event\_t)。 |
+| EVT\_PAGE\_CHANGING | 当前看到的页面正在改变(offset\_change\_event\_t)。 |
 | EVT\_ASSET\_MANAGER\_LOAD\_ASSET | 资源管理加载某个资源(assets\_event\_t)。 |
 | EVT\_ASSET\_MANAGER\_UNLOAD\_ASSET | 资源管理卸载某个资源(assets\_event\_t)。 |
 | EVT\_ASSET\_MANAGER\_CLEAR\_CACHE | 资源管理移除同种资源缓存(assets\_event\_t)。 |
@@ -102,6 +99,8 @@
 | EVT\_DROP\_FILE | SDL文件拖入事件(drop\_file\_event\_t)。 |
 | EVT\_LOCALE\_INFOS\_LOAD\_INFO | locale\_infos加载某个本地化信息(event\_t)。 |
 | EVT\_LOCALE\_INFOS\_UNLOAD\_INFO | locale\_infos卸载某个本地化信息(event\_t)。 |
+| EVT\_ACTIVATED | 控件进入激活状态(event\_t)。 |
+| EVT\_UNACTIVATED | 控件退出激活状态(event\_t)。 |
 | EVT\_REQ\_START | event queue其它请求编号起始值。 |
 | EVT\_USER\_START | 用户定义事件起始值。 |
 | EVT\_NONE | 无效事件名称。 |
@@ -117,3 +116,7 @@
 | EVT\_DONE | 完成(done\_event\_t)。 |
 | EVT\_ERROR | 错误(error\_event\_t)。 |
 | EVT\_DESTROY | 对象销毁事件名(event\_t)。 |
+| EVT\_VALUE\_WILL\_CHANGE | 值即将改变的事件名(value\_change\_event\_t)。 |
+| EVT\_VALUE\_CHANGED | 值改变的事件名(value\_change\_event\_t)。 |
+| EVT\_VALUE\_CHANGING | 值持续改变(如编辑器正在编辑)的事件名(value\_change\_event\_t)。 |
+| EVT\_LOG\_MESSAGE | 日志信息。 |

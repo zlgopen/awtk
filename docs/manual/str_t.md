@@ -35,11 +35,13 @@ str_reset(&s);
 | <a href="#str_t_str_append_json_int_pair">str\_append\_json\_int\_pair</a> | 追加int格式的json键值对。 |
 | <a href="#str_t_str_append_json_str">str\_append\_json\_str</a> | 追加一个字符串，字符串前后加英文双引号，并按JSON规则转义特殊字符。 |
 | <a href="#str_t_str_append_json_str_pair">str\_append\_json\_str\_pair</a> | 追加字符串格式的json键值对。 |
+| <a href="#str_t_str_append_lowercase">str\_append\_lowercase</a> | 将text转换为大写，并追加到str中。 |
 | <a href="#str_t_str_append_more">str\_append\_more</a> | 追加多个字符串。以NULL结束。 |
 | <a href="#str_t_str_append_n_chars">str\_append\_n\_chars</a> | 同一个字符追加n次。 |
 | <a href="#str_t_str_append_uint32">str\_append\_uint32</a> | 追加一个uint32整数。 |
 | <a href="#str_t_str_append_uint64">str\_append\_uint64</a> | 追加一个uint64整数。 |
 | <a href="#str_t_str_append_unescape">str\_append\_unescape</a> | 对字符串s进行反转义，并追加到str对象。 |
+| <a href="#str_t_str_append_uppercase">str\_append\_uppercase</a> | 将text转换为大写，并追加到str中。 |
 | <a href="#str_t_str_append_with_len">str\_append\_with\_len</a> | 追加字符串。 |
 | <a href="#str_t_str_attach">str\_attach</a> | 通过附加到一个buff来初始化str。 |
 | <a href="#str_t_str_attach_with_size">str\_attach\_with\_size</a> | 通过附加到一个buff来初始化str。 |
@@ -362,6 +364,26 @@ ret_t str_append_json_str_pair (str_t* str, const char* key, const char* value);
 | str | str\_t* | str对象。 |
 | key | const char* | 键。 |
 | value | const char* | 值。 |
+#### str\_append\_lowercase 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_lowercase">将text转换为大写，并追加到str中。
+
+* 函数原型：
+
+```
+ret_t str_append_lowercase (str_t* str, const char* text);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| text | const char* | 要追加的字符串。 |
 #### str\_append\_more 函数
 -----------------------
 
@@ -476,6 +498,26 @@ ret_t str_append_unescape (str_t* str, const char* s, uint32_t size);
 | str | str\_t* | str对象。 |
 | s | const char* | 字符串。 |
 | size | uint32\_t | 字符串s的长度。 |
+#### str\_append\_uppercase 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_uppercase">将text转换为大写，并追加到str中。
+
+* 函数原型：
+
+```
+ret_t str_append_uppercase (str_t* str, const char* text);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| text | const char* | 要追加的字符串。 |
 #### str\_append\_with\_len 函数
 -----------------------
 
@@ -645,7 +687,7 @@ str_t* str_create (uint32_t capacity);
 * 函数原型：
 
 ```
-ret_t str_decode_hex (str_t* str, uint8_t* data, uint32_t size);
+ret_t str_decode_hex (str_t* str, void* data, uint32_t size);
 ```
 
 * 参数说明：
@@ -654,7 +696,7 @@ ret_t str_decode_hex (str_t* str, uint8_t* data, uint32_t size);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| data | uint8\_t* | 数据缓存区(返回)。 |
+| data | void* | 数据缓存区(返回)。 |
 | size | uint32\_t | 数据最大长度。 |
 #### str\_decode\_xml\_entity 函数
 -----------------------

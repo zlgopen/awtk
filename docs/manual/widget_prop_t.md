@@ -180,3 +180,7 @@
 | WIDGET\_PROP\_ANIMATE\_PREFIX | 改变控件属性时附带动画的前缀。 |
 | WIDGET\_PROP\_ANIMATE\_ANIMATING\_TIME | 改变控件属性时附带动画的播放时间。 |
 | WIDGET\_PROP\_DIRTY\_RECT | 控件脏矩形区域。 |
+| WIDGET\_PROP\_SCREEN\_SAVER\_TIME | 屏幕保护时间。 |
+| WIDGET\_PROP\_SHOW\_FPS | 是否显示FPS。 |
+| WIDGET\_PROP\_MAX\_FPS | 最大FPS。 |
+| WIDGET\_PROP\_VALIDATOR | 数据校验脚本。 |

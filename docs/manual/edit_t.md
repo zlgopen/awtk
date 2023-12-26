@@ -97,6 +97,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#edit_t_edit_set_text_limit">edit\_set\_text\_limit</a> | 设置为文本输入及其长度限制，不允许输入超过max个字符，少于min个字符时进入error状态。 |
 | <a href="#edit_t_edit_set_tips">edit\_set\_tips</a> | 设置编辑器的输入提示。 |
 | <a href="#edit_t_edit_set_tr_tips">edit\_set\_tr\_tips</a> | 获取翻译之后的文本，然后调用edit_set_tips。 |
+| <a href="#edit_t_edit_set_validator">edit\_set\_validator</a> | 设置输入内容校验脚本。 |
 ### 属性
 <p id="edit_t_properties">
 
@@ -117,6 +118,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#edit_t_step">step</a> | double | 步长。 |
 | <a href="#edit_t_tips">tips</a> | char* | 输入提示。 |
 | <a href="#edit_t_tr_tips">tr\_tips</a> | char* | 保存用于翻译的提示信息。 |
+| <a href="#edit_t_validator">validator</a> | char* | fscript脚本，用输入校验，如：(len(text) > 3) && (len(text) < 10)。 |
 ### 事件
 <p id="edit_t_events">
 
@@ -839,6 +841,27 @@ ret_t edit_set_tr_tips (widget_t* widget, const char* tr_tips);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | tr\_tips | const char* | 提示信息。 |
+#### edit\_set\_validator 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_set_validator">设置输入内容校验脚本。
+> 如果内置函数不能满足需求时，可以设置自定义的检查脚本。
+
+* 函数原型：
+
+```
+ret_t edit_set_validator (widget_t* widget, const char* validator);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| validator | const char* | 校验输入内容的脚本。 |
 #### action\_text 属性
 -----------------------
 > <p id="edit_t_action_text">软键盘上action按钮的文本。内置取值有：
@@ -1079,6 +1102,24 @@ ret_t edit_set_tr_tips (widget_t* widget, const char* tr_tips);
 #### tr\_tips 属性
 -----------------------
 > <p id="edit_t_tr_tips">保存用于翻译的提示信息。
+
+* 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### validator 属性
+-----------------------
+> <p id="edit_t_validator">fscript脚本，用输入校验，如：(len(text) > 3) && (len(text) < 10)。
+
+> 用于校验输入的文本是否合法。
 
 * 类型：char*
 

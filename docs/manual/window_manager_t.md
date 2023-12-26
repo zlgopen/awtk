@@ -34,6 +34,7 @@
 | <a href="#window_manager_t_window_manager_resize">window\_manager\_resize</a> | 调整原生窗口的大小。 |
 | <a href="#window_manager_t_window_manager_set">window\_manager\_set</a> | 设置缺省的窗口管理器。 |
 | <a href="#window_manager_t_window_manager_set_cursor">window\_manager\_set\_cursor</a> | 设置鼠标指针。 |
+| <a href="#window_manager_t_window_manager_set_fullscreen">window\_manager\_set\_fullscreen</a> | 设置原生窗口是否全屏。 |
 | <a href="#window_manager_t_window_manager_set_ignore_input_events">window\_manager\_set\_ignore\_input\_events</a> | 设置是否忽略用户输入事件。 |
 | <a href="#window_manager_t_window_manager_set_max_fps">window\_manager\_set\_max\_fps</a> | 限制最大帧率。 |
 | <a href="#window_manager_t_window_manager_set_screen_saver_time">window\_manager\_set\_screen\_saver\_time</a> | 设置屏保时间。 |
@@ -552,6 +553,26 @@ ret_t window_manager_set_cursor (widget_t* widget, const char* cursor);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 窗口管理器对象。 |
 | cursor | const char* | 图片名称(从图片管理器中加载)。 |
+#### window\_manager\_set\_fullscreen 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_set_fullscreen">设置原生窗口是否全屏。
+
+* 函数原型：
+
+```
+ret_t window_manager_set_fullscreen (widget_t* widget, bool_t fullscreen);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 窗口管理器对象。 |
+| fullscreen | bool\_t | 是否全屏 |
 #### window\_manager\_set\_ignore\_input\_events 函数
 -----------------------
 
@@ -640,7 +661,7 @@ ret_t window_manager_set_show_fps (widget_t* widget, bool_t show_fps);
 * 函数功能：
 
 > <p id="window_manager_t_window_manager_switch_to">切换到指定窗口。
-
+备注：会受到模态窗口影响，如果切换的窗口是模态窗口之前的窗口就会失败。
 ```c
 window_manager_switch_to(wm, win, widget_child(wm, "home"), FALSE);
 ```

@@ -271,7 +271,7 @@ ret_t slider_set_value (widget_t* widget, double value);
 * 函数原型：
 
 ```
-ret_t slider_set_value_internal (widget_t* widget, double value, event_type_t etype, bool_t force);
+ret_t slider_set_value_internal (widget_t* widget, double value, uint32_t etype, bool_t force);
 ```
 
 * 参数说明：
@@ -281,7 +281,7 @@ ret_t slider_set_value_internal (widget_t* widget, double value, event_type_t et
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | value | double | 值。 |
-| etype | event\_type\_t | 触发事件。 |
+| etype | uint32\_t | 触发事件。 |
 | force | bool\_t | 不管有没有变化都设置。 |
 #### slider\_set\_vertical 函数
 -----------------------

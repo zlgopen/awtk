@@ -24,6 +24,7 @@
 | <a href="#fs_t_fs_dir_exist">fs\_dir\_exist</a> | 判断目录是否存在。 |
 | <a href="#fs_t_fs_dir_is_empty">fs\_dir\_is\_empty</a> | 判断目录是否为空。 |
 | <a href="#fs_t_fs_dir_rename">fs\_dir\_rename</a> | 目录重命名。 |
+| <a href="#fs_t_fs_file_equal">fs\_file\_equal</a> | 比较二进制文件。 |
 | <a href="#fs_t_fs_file_exist">fs\_file\_exist</a> | 判断文件是否存在。 |
 | <a href="#fs_t_fs_file_rename">fs\_file\_rename</a> | 文件重命名。 |
 | <a href="#fs_t_fs_foreach_file">fs\_foreach\_file</a> | 遍历指定目录下全部常规文件。 |
@@ -385,6 +386,27 @@ ret_t fs_dir_rename (fs_t* fs, const char* name, const char* new_name);
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | name | const char* | 旧目录名称。 |
 | new\_name | const char* | 新目录名称。 |
+#### fs\_file\_equal 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="fs_t_fs_file_equal">比较二进制文件。
+
+* 函数原型：
+
+```
+bool_t fs_file_equal (fs_t* fs, const char* src, const char* dst);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示相同，否则表示不同。 |
+| fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
+| src | const char* | 源文件名。 |
+| dst | const char* | 目标文件名。 |
 #### fs\_file\_exist 函数
 -----------------------
 

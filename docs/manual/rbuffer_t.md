@@ -22,6 +22,9 @@ rbuffer_read_string(&rbuffer, &str);
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#rbuffer_t_rbuffer_create">rbuffer\_create</a> | 创建rbuffer对象。 |
+| <a href="#rbuffer_t_rbuffer_deinit">rbuffer\_deinit</a> | 释放rbuffer资源。 |
+| <a href="#rbuffer_t_rbuffer_destroy">rbuffer\_destroy</a> | 销毁rbuffer对象。 |
 | <a href="#rbuffer_t_rbuffer_has_more">rbuffer\_has\_more</a> | 判断是否还有数据可读。 |
 | <a href="#rbuffer_t_rbuffer_init">rbuffer\_init</a> | 初始rbuffer对象。 |
 | <a href="#rbuffer_t_rbuffer_peek_uint16">rbuffer\_peek\_uint16</a> | 读取uint16数据，但不改变cursor的位置。 |
@@ -30,12 +33,16 @@ rbuffer_read_string(&rbuffer, &str);
 | <a href="#rbuffer_t_rbuffer_read_binary">rbuffer\_read\_binary</a> | 读取指定长度的二进制数据。 |
 | <a href="#rbuffer_t_rbuffer_read_double">rbuffer\_read\_double</a> | 读取double数据。 |
 | <a href="#rbuffer_t_rbuffer_read_float">rbuffer\_read\_float</a> | 读取float数据。 |
+| <a href="#rbuffer_t_rbuffer_read_int16">rbuffer\_read\_int16</a> | 读取int16数据。 |
 | <a href="#rbuffer_t_rbuffer_read_int32">rbuffer\_read\_int32</a> | 读取int32数据。 |
+| <a href="#rbuffer_t_rbuffer_read_int64">rbuffer\_read\_int64</a> | 读取int64数据。 |
+| <a href="#rbuffer_t_rbuffer_read_int8">rbuffer\_read\_int8</a> | 读取int8数据。 |
 | <a href="#rbuffer_t_rbuffer_read_string">rbuffer\_read\_string</a> | 读取字符串。 |
 | <a href="#rbuffer_t_rbuffer_read_uint16">rbuffer\_read\_uint16</a> | 读取uint16数据。 |
 | <a href="#rbuffer_t_rbuffer_read_uint32">rbuffer\_read\_uint32</a> | 读取uint32数据。 |
 | <a href="#rbuffer_t_rbuffer_read_uint64">rbuffer\_read\_uint64</a> | 读取uint64数据。 |
 | <a href="#rbuffer_t_rbuffer_read_uint8">rbuffer\_read\_uint8</a> | 读取uint8数据。 |
+| <a href="#rbuffer_t_rbuffer_read_value">rbuffer\_read\_value</a> | 读取value数据。 |
 | <a href="#rbuffer_t_rbuffer_rewind">rbuffer\_rewind</a> | 重置当前读取位置。 |
 | <a href="#rbuffer_t_rbuffer_skip">rbuffer\_skip</a> | 跳过指定的长度。 |
 ### 属性
@@ -46,6 +53,64 @@ rbuffer_read_string(&rbuffer, &str);
 | <a href="#rbuffer_t_capacity">capacity</a> | uint32\_t | 缓存区的容量。 |
 | <a href="#rbuffer_t_cursor">cursor</a> | uint32\_t | 当前读取位置。 |
 | <a href="#rbuffer_t_data">data</a> | const uint8\_t* | 数据缓冲区。 |
+#### rbuffer\_create 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rbuffer_t_rbuffer_create">创建rbuffer对象。
+
+* 函数原型：
+
+```
+rbuffer_t* rbuffer_create (const void* data, uint32_t capacity);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | rbuffer\_t* | rbuffer对象本身。 |
+| data | const void* | 缓冲区。 |
+| capacity | uint32\_t | 缓冲区的容量。 |
+#### rbuffer\_deinit 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rbuffer_t_rbuffer_deinit">释放rbuffer资源。
+
+* 函数原型：
+
+```
+ret_t rbuffer_deinit (rbuffer_t* rbuffer);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| rbuffer | rbuffer\_t* | rbuffer对象。 |
+#### rbuffer\_destroy 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rbuffer_t_rbuffer_destroy">销毁rbuffer对象。
+
+* 函数原型：
+
+```
+ret_t rbuffer_destroy (rbuffer_t* rbuffer);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| rbuffer | rbuffer\_t* | rbuffer对象。 |
 #### rbuffer\_has\_more 函数
 -----------------------
 
@@ -75,7 +140,7 @@ bool_t rbuffer_has_more (rbuffer_t* rbuffer);
 * 函数原型：
 
 ```
-rbuffer_t* rbuffer_init (rbuffer_t* rbuffer, const uint8_t* data, uint32_t capacity);
+rbuffer_t* rbuffer_init (rbuffer_t* rbuffer, const void* data, uint32_t capacity);
 ```
 
 * 参数说明：
@@ -84,7 +149,7 @@ rbuffer_t* rbuffer_init (rbuffer_t* rbuffer, const uint8_t* data, uint32_t capac
 | -------- | ----- | --------- |
 | 返回值 | rbuffer\_t* | rbuffer对象本身。 |
 | rbuffer | rbuffer\_t* | rbuffer对象。 |
-| data | const uint8\_t* | 缓冲区。 |
+| data | const void* | 缓冲区。 |
 | capacity | uint32\_t | 缓冲区的容量。 |
 #### rbuffer\_peek\_uint16 函数
 -----------------------
@@ -207,6 +272,26 @@ ret_t rbuffer_read_float (rbuffer_t* rbuffer, float* value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | rbuffer | rbuffer\_t* | rbuffer对象。 |
 | value | float* | 返回读取的数据。 |
+#### rbuffer\_read\_int16 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rbuffer_t_rbuffer_read_int16">读取int16数据。
+
+* 函数原型：
+
+```
+ret_t rbuffer_read_int16 (rbuffer_t* rbuffer, int16_t* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| rbuffer | rbuffer\_t* | rbuffer对象。 |
+| value | int16\_t* | 读取的数据。 |
 #### rbuffer\_read\_int32 函数
 -----------------------
 
@@ -227,6 +312,46 @@ ret_t rbuffer_read_int32 (rbuffer_t* rbuffer, int32_t* value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | rbuffer | rbuffer\_t* | rbuffer对象。 |
 | value | int32\_t* | 返回读取的数据。 |
+#### rbuffer\_read\_int64 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rbuffer_t_rbuffer_read_int64">读取int64数据。
+
+* 函数原型：
+
+```
+ret_t rbuffer_read_int64 (rbuffer_t* rbuffer, int64_t* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| rbuffer | rbuffer\_t* | rbuffer对象。 |
+| value | int64\_t* | 返回读取的数据。 |
+#### rbuffer\_read\_int8 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rbuffer_t_rbuffer_read_int8">读取int8数据。
+
+* 函数原型：
+
+```
+ret_t rbuffer_read_int8 (rbuffer_t* rbuffer, int8_t* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| rbuffer | rbuffer\_t* | rbuffer对象。 |
+| value | int8\_t* | 返回读取的数据。 |
 #### rbuffer\_read\_string 函数
 -----------------------
 
@@ -327,6 +452,26 @@ ret_t rbuffer_read_uint8 (rbuffer_t* rbuffer, uint8_t* value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | rbuffer | rbuffer\_t* | rbuffer对象。 |
 | value | uint8\_t* | 返回读取的数据。 |
+#### rbuffer\_read\_value 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rbuffer_t_rbuffer_read_value">读取value数据。
+
+* 函数原型：
+
+```
+ret_t rbuffer_read_value (rbuffer_t* rbuffer, value_t* v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| rbuffer | rbuffer\_t* | rbuffer对象。 |
+| v | value\_t* | 返回读取的数据。 |
 #### rbuffer\_rewind 函数
 -----------------------
 

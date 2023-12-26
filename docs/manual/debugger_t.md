@@ -13,8 +13,10 @@
 | <a href="#debugger_t_debugger_deinit">debugger\_deinit</a> | 释放资源。 |
 | <a href="#debugger_t_debugger_dispatch_messages">debugger\_dispatch\_messages</a> | dispatch_messages(仅适用于客户端) |
 | <a href="#debugger_t_debugger_get_break_points">debugger\_get\_break\_points</a> | 获取断点列表。 |
-| <a href="#debugger_t_debugger_get_callstack">debugger\_get\_callstack</a> | 获取callstack。 |
+| <a href="#debugger_t_debugger_get_callstack">debugger\_get\_callstack</a> | 获取当前线程的callstack。 |
 | <a href="#debugger_t_debugger_get_code">debugger\_get\_code</a> | 获取代码。 |
+| <a href="#debugger_t_debugger_get_current_frame">debugger\_get\_current\_frame</a> | 获取当前callstack的frame。 |
+| <a href="#debugger_t_debugger_get_current_thread_id">debugger\_get\_current\_thread\_id</a> | 获取当前线程 ID。 |
 | <a href="#debugger_t_debugger_get_debuggers">debugger\_get\_debuggers</a> | 获取调试器列表。 |
 | <a href="#debugger_t_debugger_get_global">debugger\_get\_global</a> | 获取全局对象。 |
 | <a href="#debugger_t_debugger_get_local">debugger\_get\_local</a> | 获取局部变量对象。 |
@@ -26,6 +28,7 @@
 | <a href="#debugger_t_debugger_is_paused_or_running">debugger\_is\_paused\_or\_running</a> | 查看当前是否处于暂停运行状态。 |
 | <a href="#debugger_t_debugger_is_running">debugger\_is\_running</a> | 查看当前是否处于运行状态。 |
 | <a href="#debugger_t_debugger_launch">debugger\_launch</a> | 执行代码。 |
+| <a href="#debugger_t_debugger_launch_app">debugger\_launch\_app</a> | 执行程序(仅用于调试原生程序，脚本不支持)。 |
 | <a href="#debugger_t_debugger_lock">debugger\_lock</a> | 锁定debugger对象。 |
 | <a href="#debugger_t_debugger_match">debugger\_match</a> | 检查code_id是否与当前debugger匹配。 |
 | <a href="#debugger_t_debugger_pause">debugger\_pause</a> | 暂停运行。 |
@@ -35,6 +38,7 @@
 | <a href="#debugger_t_debugger_set_break_point">debugger\_set\_break\_point</a> | 设置断点。 |
 | <a href="#debugger_t_debugger_set_break_point_ex">debugger\_set\_break\_point\_ex</a> | 设置断点。 |
 | <a href="#debugger_t_debugger_set_current_frame">debugger\_set\_current\_frame</a> | 从callstack中选择当前的frame。 |
+| <a href="#debugger_t_debugger_set_current_thread_id">debugger\_set\_current\_thread\_id</a> | 设置当前处于哪个一个线程的上下文中。 |
 | <a href="#debugger_t_debugger_set_state">debugger\_set\_state</a> | 设置状态。 |
 | <a href="#debugger_t_debugger_step_in">debugger\_step\_in</a> | 进入函数。 |
 | <a href="#debugger_t_debugger_step_loop_over">debugger\_step\_loop\_over</a> | 执行下一条语句(跳过循环) |
@@ -132,7 +136,7 @@ ret_t debugger_deinit (debugger_t* debugger);
 * 函数原型：
 
 ```
-ret_t debugger_dispatch_messages (debugger_t* debugger);
+ret_t debugger_dispatch_messages (debugger_t* debugger, uint32_t timeout, uint32_t* ret_num);
 ```
 
 * 参数说明：
@@ -141,6 +145,8 @@ ret_t debugger_dispatch_messages (debugger_t* debugger);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | debugger | debugger\_t* | debugger对象。 |
+| timeout | uint32\_t | 超时时间。 |
+| ret\_num | uint32\_t* | 返回处理命令个数。 |
 #### debugger\_get\_break\_points 函数
 -----------------------
 
@@ -166,21 +172,20 @@ ret_t debugger_get_break_points (debugger_t* debugger, binary_data_t* break_poin
 
 * 函数功能：
 
-> <p id="debugger_t_debugger_get_callstack">获取callstack。
+> <p id="debugger_t_debugger_get_callstack">获取当前线程的callstack。
 
 * 函数原型：
 
 ```
-ret_t debugger_get_callstack (debugger_t* debugger, binary_data_t* callstack);
+tk_object_t* debugger_get_callstack (debugger_t* debugger);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| 返回值 | tk\_object\_t* | 返回堆栈信息。 |
 | debugger | debugger\_t* | debugger对象。 |
-| callstack | binary\_data\_t* | callstack。 |
 #### debugger\_get\_code 函数
 -----------------------
 
@@ -201,6 +206,46 @@ ret_t debugger_get_code (debugger_t* debugger, binary_data_t* code);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | debugger | debugger\_t* | debugger对象。 |
 | code | binary\_data\_t* | 代码。 |
+#### debugger\_get\_current\_frame 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="debugger_t_debugger_get_current_frame">获取当前callstack的frame。
+> 处于暂停状态才能执行本命令。
+
+* 函数原型：
+
+```
+int32_t debugger_get_current_frame (debugger_t* debugger);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int32\_t | 成功返回frame序数(0表示当前)，失败返回-1。 |
+| debugger | debugger\_t* | debugger对象。 |
+#### debugger\_get\_current\_thread\_id 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="debugger_t_debugger_get_current_thread_id">获取当前线程 ID。
+> 处于暂停状态才能执行本命令。
+
+* 函数原型：
+
+```
+uint64_t debugger_get_current_thread_id (debugger_t* debugger);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint64\_t | 成功返回线程 ID，失败返回 0。 |
+| debugger | debugger\_t* | debugger对象。 |
 #### debugger\_get\_debuggers 函数
 -----------------------
 
@@ -429,6 +474,29 @@ ret_t debugger_launch (debugger_t* debugger, const char* lang, const binary_data
 | debugger | debugger\_t* | debugger对象。 |
 | lang | const char* | 代码的语言。 |
 | code | const binary\_data\_t* | 代码。 |
+#### debugger\_launch\_app 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="debugger_t_debugger_launch_app">执行程序(仅用于调试原生程序，脚本不支持)。
+
+* 函数原型：
+
+```
+ret_t debugger_launch_app (debugger_t* debugger, const char* program, const char* work_dir, int argc, char** argv);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| debugger | debugger\_t* | debugger对象。 |
+| program | const char* | 程序。 |
+| work\_dir | const char* | 工作目录。 |
+| argc | int | 参数个数。 |
+| argv | char** | 参数列表。 |
 #### debugger\_lock 函数
 -----------------------
 
@@ -608,6 +676,27 @@ ret_t debugger_set_current_frame (debugger_t* debugger, uint32_t frame_index);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | debugger | debugger\_t* | debugger对象。 |
 | frame\_index | uint32\_t | frame序数(0表示当前) |
+#### debugger\_set\_current\_thread\_id 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="debugger_t_debugger_set_current_thread_id">设置当前处于哪个一个线程的上下文中。
+> 处于暂停状态才能执行本命令。
+
+* 函数原型：
+
+```
+ret_t debugger_set_current_thread_id (debugger_t* debugger, uint64_t thread_id);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| debugger | debugger\_t* | debugger对象。 |
+| thread\_id | uint64\_t | 线程 id |
 #### debugger\_set\_state 函数
 -----------------------
 

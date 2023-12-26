@@ -11,6 +11,7 @@
 | <a href="#image_manager_t_image_manager_create">image\_manager\_create</a> | 创建图片管理器。 |
 | <a href="#image_manager_t_image_manager_deinit">image\_manager\_deinit</a> | 析构图片管理器。 |
 | <a href="#image_manager_t_image_manager_destroy">image\_manager\_destroy</a> | 析构并释放图片管理器。 |
+| <a href="#image_manager_t_image_manager_dump">image\_manager\_dump</a> | 输出图片管理器的信息。 |
 | <a href="#image_manager_t_image_manager_get_bitmap">image\_manager\_get\_bitmap</a> | 获取指定的图片。 |
 | <a href="#image_manager_t_image_manager_has_bitmap">image\_manager\_has\_bitmap</a> | 图片是否在图片管理中。 |
 | <a href="#image_manager_t_image_manager_init">image\_manager\_init</a> | 初始化图片管理器。 |
@@ -102,6 +103,26 @@ ret_t image_manager_destroy (image_manager_t* im);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | im | image\_manager\_t* | 图片管理器对象。 |
+#### image\_manager\_dump 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="image_manager_t_image_manager_dump">输出图片管理器的信息。
+
+* 函数原型：
+
+```
+ret_t image_manager_dump (image_manager_t* im, str_t* result);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| im | image\_manager\_t* | 图片管理器对象。 |
+| result | str\_t* | 用于返回图片管理器的信息。 |
 #### image\_manager\_get\_bitmap 函数
 -----------------------
 

@@ -25,7 +25,7 @@ crc相关函数。
 * 函数原型：
 
 ```
-uint16_t tk_chksum (uint16_t sum, const uint8_t* data, int size);
+uint16_t tk_chksum (uint16_t sum, const void* data, int size);
 ```
 
 * 参数说明：
@@ -34,7 +34,7 @@ uint16_t tk_chksum (uint16_t sum, const uint8_t* data, int size);
 | -------- | ----- | --------- |
 | 返回值 | uint16\_t | 返回计算结果。 |
 | sum | uint16\_t | 初始值(一般用INITCHECKSUM) |
-| data | const uint8\_t* | 数据。 |
+| data | const void* | 数据。 |
 | size | int | 数据长度。 |
 #### tk\_chksum\_byte 函数
 -----------------------
@@ -66,7 +66,7 @@ uint16_t tk_chksum_byte (uint16_t sum, uint8_t data);
 * 函数原型：
 
 ```
-uint16_t tk_crc16 (uint16_t crc, const uint8_t* data, int size);
+uint16_t tk_crc16 (uint16_t crc, const void* data, int size);
 ```
 
 * 参数说明：
@@ -75,7 +75,7 @@ uint16_t tk_crc16 (uint16_t crc, const uint8_t* data, int size);
 | -------- | ----- | --------- |
 | 返回值 | uint16\_t | 返回计算结果。 |
 | crc | uint16\_t | 初始值(一般用PPPINITFCS16) |
-| data | const uint8\_t* | 数据。 |
+| data | const void* | 数据。 |
 | size | int | 数据长度。 |
 #### tk\_crc16\_byte 函数
 -----------------------
@@ -107,7 +107,7 @@ uint16_t tk_crc16_byte (uint16_t crc, uint8_t data);
 * 函数原型：
 
 ```
-uint16_t tk_crc16_modbus (const uint8_t* data, int size);
+uint16_t tk_crc16_modbus (const void* data, int size);
 ```
 
 * 参数说明：
@@ -115,7 +115,7 @@ uint16_t tk_crc16_modbus (const uint8_t* data, int size);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | uint16\_t | 返回计算结果。 |
-| data | const uint8\_t* | 数据。 |
+| data | const void* | 数据。 |
 | size | int | 数据长度。 |
 #### tk\_crc32 函数
 -----------------------
@@ -127,7 +127,7 @@ uint16_t tk_crc16_modbus (const uint8_t* data, int size);
 * 函数原型：
 
 ```
-uint32_t tk_crc32 (uint32_t crc, const uint8_t* data, int size);
+uint32_t tk_crc32 (uint32_t crc, const void* data, int size);
 ```
 
 * 参数说明：
@@ -136,7 +136,7 @@ uint32_t tk_crc32 (uint32_t crc, const uint8_t* data, int size);
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 返回计算结果。 |
 | crc | uint32\_t | 初始值(一般用PPPINITFCS32) |
-| data | const uint8\_t* | 数据。 |
+| data | const void* | 数据。 |
 | size | int | 数据长度。 |
 #### tk\_crc32\_byte 函数
 -----------------------
