@@ -66,8 +66,8 @@ ret_t widget_animator_init (widget_animator_t* animator, widget_t* widget, uint3
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | animator | widget\_animator\_t* | 动画对象。 |
 | widget | widget\_t* | 控件对象。 |
-| duration | uint32\_t | 动画持续时间。 |
-| delay | uint32\_t | 动画执行时间。 |
+| duration | uint32\_t | 动画持续时间(毫秒)。 |
+| delay | uint32\_t | 动画执行时间(毫秒)。 |
 | easing | easing\_func\_t | 插值函数。 |
 #### widget\_animator\_off 函数
 -----------------------

@@ -57,7 +57,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#button_t_button_get_widget_vtable">button\_get\_widget\_vtable</a> | 获取 button 虚表。 |
 | <a href="#button_t_button_set_enable_long_press">button\_set\_enable\_long\_press</a> | 设置是否启用长按事件。 |
 | <a href="#button_t_button_set_enable_preview">button\_set\_enable\_preview</a> | 设置是否启用预览。 |
-| <a href="#button_t_button_set_long_press_time">button\_set\_long\_press\_time</a> | 设置触发长按事件的时间。 |
+| <a href="#button_t_button_set_long_press_time">button\_set\_long\_press\_time</a> | 设置触发长按事件的时间(毫秒)。 |
 | <a href="#button_t_button_set_repeat">button\_set\_repeat</a> | 设置触发EVT\_CLICK事件的时间间隔。为0则不重复触发EVT\_CLICK事件。 |
 ### 属性
 <p id="button_t_properties">
@@ -66,7 +66,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | -------- | ----- | ------------ | 
 | <a href="#button_t_enable_long_press">enable\_long\_press</a> | bool\_t | 是否启用长按事件，为true时才触发长按事件。 |
 | <a href="#button_t_enable_preview">enable\_preview</a> | bool\_t | 是否启用预览(主要用于软键盘)。 |
-| <a href="#button_t_long_press_time">long\_press\_time</a> | uint32\_t | 触发长按事件的时间(ms) |
+| <a href="#button_t_long_press_time">long\_press\_time</a> | uint32\_t | 触发长按事件的时间(毫秒) |
 | <a href="#button_t_pressed">pressed</a> | bool\_t | 当前是否按下。 |
 | <a href="#button_t_repeat">repeat</a> | int32\_t | 重复触发EVT\_CLICK事件的时间间隔。 |
 ### 事件
@@ -181,7 +181,7 @@ ret_t button_set_enable_preview (widget_t* widget, bool_t enable_preview);
 
 * 函数功能：
 
-> <p id="button_t_button_set_long_press_time">设置触发长按事件的时间。
+> <p id="button_t_button_set_long_press_time">设置触发长按事件的时间(毫秒)。
 
 * 函数原型：
 
@@ -253,7 +253,7 @@ ret_t button_set_repeat (widget_t* widget, int32_t repeat);
 | 可通过widget\_set\_prop修改 | 是 |
 #### long\_press\_time 属性
 -----------------------
-> <p id="button_t_long_press_time">触发长按事件的时间(ms)
+> <p id="button_t_long_press_time">触发长按事件的时间(毫秒)
 
 * 类型：uint32\_t
 

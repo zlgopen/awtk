@@ -37,7 +37,7 @@
 | <a href="#window_manager_t_window_manager_set_fullscreen">window\_manager\_set\_fullscreen</a> | 设置原生窗口是否全屏。 |
 | <a href="#window_manager_t_window_manager_set_ignore_input_events">window\_manager\_set\_ignore\_input\_events</a> | 设置是否忽略用户输入事件。 |
 | <a href="#window_manager_t_window_manager_set_max_fps">window\_manager\_set\_max\_fps</a> | 限制最大帧率。 |
-| <a href="#window_manager_t_window_manager_set_screen_saver_time">window\_manager\_set\_screen\_saver\_time</a> | 设置屏保时间。 |
+| <a href="#window_manager_t_window_manager_set_screen_saver_time">window\_manager\_set\_screen\_saver\_time</a> | 设置屏保时间(毫秒)。 |
 | <a href="#window_manager_t_window_manager_set_show_fps">window\_manager\_set\_show\_fps</a> | 设置是否显示FPS。 |
 | <a href="#window_manager_t_window_manager_switch_to">window\_manager\_switch\_to</a> | 切换到指定窗口。 |
 ### 属性
@@ -620,7 +620,7 @@ ret_t window_manager_set_max_fps (widget_t* widget, uint32_t max_fps);
 
 * 函数功能：
 
-> <p id="window_manager_t_window_manager_set_screen_saver_time">设置屏保时间。
+> <p id="window_manager_t_window_manager_set_screen_saver_time">设置屏保时间(毫秒)。
 
 * 函数原型：
 

@@ -301,7 +301,7 @@ ret_t tk_quit ();
 * 函数原型：
 
 ```
-ret_t tk_quit_ex (uint32_t delay_ms);
+ret_t tk_quit_ex (uint32_t delay);
 ```
 
 * 参数说明：
@@ -309,7 +309,7 @@ ret_t tk_quit_ex (uint32_t delay_ms);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| delay\_ms | uint32\_t | 延迟退出的时间。 |
+| delay | uint32\_t | 延迟退出的时间(毫秒)。 |
 #### tk\_run 函数
 -----------------------
 

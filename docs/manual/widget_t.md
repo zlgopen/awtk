@@ -440,7 +440,7 @@ widget_add_timer(widget, digit_clock_on_timer, 1000);
 * 函数原型：
 
 ```
-uint32_t widget_add_timer (widget_t* widget, timer_func_t on_timer, uint32_t duration_ms);
+uint32_t widget_add_timer (widget_t* widget, timer_func_t on_timer, uint32_t duration);
 ```
 
 * 参数说明：
@@ -450,7 +450,7 @@ uint32_t widget_add_timer (widget_t* widget, timer_func_t on_timer, uint32_t dur
 | 返回值 | uint32\_t | 返回timer的ID，TK\_INVALID\_ID表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | on\_timer | timer\_func\_t | timer回调函数。 |
-| duration\_ms | uint32\_t | 时间。 |
+| duration | uint32\_t | 时间(毫秒)。 |
 #### widget\_add\_value 函数
 -----------------------
 

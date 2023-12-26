@@ -145,7 +145,7 @@ ret_t debugger_dispatch_messages (debugger_t* debugger, uint32_t timeout, uint32
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | debugger | debugger\_t* | debugger对象。 |
-| timeout | uint32\_t | 超时时间。 |
+| timeout | uint32\_t | 超时时间(毫秒)。 |
 | ret\_num | uint32\_t* | 返回处理命令个数。 |
 #### debugger\_get\_break\_points 函数
 -----------------------

@@ -48,10 +48,10 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml)
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#hscroll_label_t_duration">duration</a> | int32\_t | 完整的滚动一次需要的时间(ms)，缺省5000ms。 |
+| <a href="#hscroll_label_t_duration">duration</a> | int32\_t | 完整的滚动一次需要的时间(毫秒)，缺省5000ms。 |
 | <a href="#hscroll_label_t_ellipses">ellipses</a> | bool\_t | 文本显示不下时，在行尾显示省略号(缺省FALSE)。 |
 | <a href="#hscroll_label_t_loop">loop</a> | bool\_t | loop是否循环滚动(缺省FALSE)。 |
-| <a href="#hscroll_label_t_lull">lull</a> | int32\_t | 滚动之间的间歇时间(ms)，缺省3000ms。 |
+| <a href="#hscroll_label_t_lull">lull</a> | int32\_t | 滚动之间的间歇时间(毫秒)，缺省3000ms。 |
 | <a href="#hscroll_label_t_only_focus">only\_focus</a> | bool\_t | 只有处于focus时才滚动(缺省否)。 |
 | <a href="#hscroll_label_t_only_parent_focus">only\_parent\_focus</a> | bool\_t | 只有父控件处于focus时才滚动(缺省否)。 |
 | <a href="#hscroll_label_t_speed">speed</a> | float\_t | 滚动速度(px/ms)（设置后 duration 不生效）。 |
@@ -138,7 +138,7 @@ ret_t hscroll_label_set_duration (widget_t* widget, int32_t duration);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| duration | int32\_t | 滚动时间(ms)。 |
+| duration | int32\_t | 滚动时间(毫秒)。 |
 #### hscroll\_label\_set\_ellipses 函数
 -----------------------
 
@@ -198,7 +198,7 @@ ret_t hscroll_label_set_lull (widget_t* widget, int32_t lull);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| lull | int32\_t | 间歇时间(ms)。 |
+| lull | int32\_t | 间歇时间(毫秒)。 |
 #### hscroll\_label\_set\_only\_focus 函数
 -----------------------
 
@@ -359,7 +359,7 @@ ret_t hscroll_label_stop (widget_t* widget);
 | widget | widget\_t* | 控件对象。 |
 #### duration 属性
 -----------------------
-> <p id="hscroll_label_t_duration">完整的滚动一次需要的时间(ms)，缺省5000ms。
+> <p id="hscroll_label_t_duration">完整的滚动一次需要的时间(毫秒)，缺省5000ms。
 
 * 类型：int32\_t
 
@@ -405,7 +405,7 @@ ret_t hscroll_label_stop (widget_t* widget);
 | 可通过widget\_set\_prop修改 | 是 |
 #### lull 属性
 -----------------------
-> <p id="hscroll_label_t_lull">滚动之间的间歇时间(ms)，缺省3000ms。
+> <p id="hscroll_label_t_lull">滚动之间的间歇时间(毫秒)，缺省3000ms。
 
 * 类型：int32\_t
 

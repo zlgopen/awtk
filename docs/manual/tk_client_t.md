@@ -94,7 +94,7 @@ ret_t tk_client_init (tk_client_t* client, tk_iostream_t* io, tk_client_on_notif
 * 函数原型：
 
 ```
-ret_t tk_client_read_notify (tk_client_t* client, uint32_t timeout_ms);
+ret_t tk_client_read_notify (tk_client_t* client, uint32_t timeout);
 ```
 
 * 参数说明：
@@ -103,7 +103,7 @@ ret_t tk_client_read_notify (tk_client_t* client, uint32_t timeout_ms);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | client | tk\_client\_t* | client对象。 |
-| timeout\_ms | uint32\_t | 超时时间。 |
+| timeout | uint32\_t | 超时时间(毫秒)。 |
 #### tk\_client\_read\_resp 函数
 -----------------------
 

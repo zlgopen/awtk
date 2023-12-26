@@ -97,7 +97,7 @@
 | WIDGET\_PROP\_YOFFSET | Y方向的偏移。（如果控件有继承 get\_offset 函数指针的话，一定要和 get\_offset 返回值保持一致，否则容易出现问题）详情请看 docs/how\_to\_use\_offset\_in\_custom\_widget.md |
 | WIDGET\_PROP\_ALIGN\_V | 垂直对齐模式。 |
 | WIDGET\_PROP\_ALIGN\_H | 水平对齐模式。 |
-| WIDGET\_PROP\_AUTO\_PLAY | 是否自动播放或指定播放的时间。 |
+| WIDGET\_PROP\_AUTO\_PLAY | 是否自动播放或指定播放的时间(毫秒)。 |
 | WIDGET\_PROP\_LOOP | 是否循环播放或循环播放的次数。 |
 | WIDGET\_PROP\_RUNNING | 是否正在运行(播放)。 |
 | WIDGET\_PROP\_AUTO\_FIX | 是否启用自动更正功能。 |
@@ -126,7 +126,7 @@
 | WIDGET\_PROP\_XSLIDABLE | X方向是否可拖动。 |
 | WIDGET\_PROP\_YSLIDABLE | Y方向是否可拖动。 |
 | WIDGET\_PROP\_REPEAT | 重复次数。 |
-| WIDGET\_PROP\_LONG\_PRESS\_TIME | 触发长按事件的时间(ms)。 |
+| WIDGET\_PROP\_LONG\_PRESS\_TIME | 触发长按事件的时间(毫秒)。 |
 | WIDGET\_PROP\_ENABLE\_LONG\_PRESS | 是否启用长按。 |
 | WIDGET\_PROP\_ENABLE\_PREVIEW | 是否启用预览。 |
 | WIDGET\_PROP\_CLICK\_THROUGH | 是否启用点击穿透。 |
@@ -176,11 +176,11 @@
 | WIDGET\_PROP\_SHOW\_GRID | 是否显示网格线。 |
 | WIDGET\_PROP\_COLUMNS\_DEFINITION | 各列的定义。 |
 | WIDGET\_PROP\_DRAG\_THRESHOLD | 拖拽临界值。 |
-| WIDGET\_PROP\_ANIMATING\_TIME | 动画时间。 |
+| WIDGET\_PROP\_ANIMATING\_TIME | 动画时间(毫秒)。 |
 | WIDGET\_PROP\_ANIMATE\_PREFIX | 改变控件属性时附带动画的前缀。 |
-| WIDGET\_PROP\_ANIMATE\_ANIMATING\_TIME | 改变控件属性时附带动画的播放时间。 |
+| WIDGET\_PROP\_ANIMATE\_ANIMATING\_TIME | 改变控件属性时附带动画的播放时间(毫秒)。 |
 | WIDGET\_PROP\_DIRTY\_RECT | 控件脏矩形区域。 |
-| WIDGET\_PROP\_SCREEN\_SAVER\_TIME | 屏幕保护时间。 |
+| WIDGET\_PROP\_SCREEN\_SAVER\_TIME | 屏幕保护时间(毫秒)。 |
 | WIDGET\_PROP\_SHOW\_FPS | 是否显示FPS。 |
 | WIDGET\_PROP\_MAX\_FPS | 最大FPS。 |
 | WIDGET\_PROP\_VALIDATOR | 数据校验脚本。 |

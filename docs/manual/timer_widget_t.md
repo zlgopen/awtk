@@ -31,13 +31,13 @@
 | <a href="#timer_widget_t_timer_widget_cast">timer\_widget\_cast</a> | 转换为timer_widget对象(供脚本语言使用)。 |
 | <a href="#timer_widget_t_timer_widget_create">timer\_widget\_create</a> | 创建timer_widget对象 |
 | <a href="#timer_widget_t_timer_widget_get_widget_vtable">timer\_widget\_get\_widget\_vtable</a> | 获取 timer_widget 虚表。 |
-| <a href="#timer_widget_t_timer_widget_set_duration">timer\_widget\_set\_duration</a> | 设置 时长(ms)。 |
+| <a href="#timer_widget_t_timer_widget_set_duration">timer\_widget\_set\_duration</a> | 设置 时长(毫秒)。 |
 ### 属性
 <p id="timer_widget_t_properties">
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#timer_widget_t_duration">duration</a> | uint32\_t | 时长(ms)。 |
+| <a href="#timer_widget_t_duration">duration</a> | uint32\_t | 时长(毫秒)。 |
 ### 事件
 <p id="timer_widget_t_events">
 
@@ -109,7 +109,7 @@ const widget_vtable_t* timer_widget_get_widget_vtable ();
 
 * 函数功能：
 
-> <p id="timer_widget_t_timer_widget_set_duration">设置 时长(ms)。
+> <p id="timer_widget_t_timer_widget_set_duration">设置 时长(毫秒)。
 
 * 函数原型：
 
@@ -123,10 +123,10 @@ ret_t timer_widget_set_duration (widget_t* widget, uint32_t duration);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
-| duration | uint32\_t | 时长(ms)。 |
+| duration | uint32\_t | 时长(毫秒)。 |
 #### duration 属性
 -----------------------
-> <p id="timer_widget_t_duration">时长(ms)。
+> <p id="timer_widget_t_duration">时长(毫秒)。
 
 * 类型：uint32\_t
 

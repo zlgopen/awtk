@@ -116,7 +116,7 @@ ret_t waitable_action_darray_recv (waitable_action_darray_t* q, qaction_t** acti
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | q | waitable\_action\_darray\_t* | waitable\_action\_darray对象。 |
 | action | qaction\_t** | 用于返回action对象。 |
-| timeout\_ms | uint32\_t | 超时时间(ms) |
+| timeout\_ms | uint32\_t | 超时时间(毫秒) |
 #### waitable\_action\_darray\_remove 函数
 -----------------------
 
@@ -219,4 +219,4 @@ ret_t waitable_action_darray_send (waitable_action_darray_t* q, qaction_t* actio
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | q | waitable\_action\_darray\_t* | waitable\_action\_darray对象。 |
 | action | qaction\_t* | action对象。 |
-| timeout\_ms | uint32\_t | 超时时间(ms) |
+| timeout\_ms | uint32\_t | 超时时间(毫秒) |

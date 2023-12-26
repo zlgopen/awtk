@@ -59,7 +59,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#popup_t_popup_get_widget_vtable">popup\_get\_widget\_vtable</a> | 获取 popup 虚表。 |
 | <a href="#popup_t_popup_set_close_when_click">popup\_set\_close\_when\_click</a> | 设置点击时是否关闭窗口。 |
 | <a href="#popup_t_popup_set_close_when_click_outside">popup\_set\_close\_when\_click\_outside</a> | 设置点击窗口外部时是否关闭窗口。 |
-| <a href="#popup_t_popup_set_close_when_timeout">popup\_set\_close\_when\_timeout</a> | 设置超时关闭时间(ms)。 |
+| <a href="#popup_t_popup_set_close_when_timeout">popup\_set\_close\_when\_timeout</a> | 设置超时关闭时间(毫秒)。 |
 ### 属性
 <p id="popup_t_properties">
 
@@ -67,7 +67,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | -------- | ----- | ------------ | 
 | <a href="#popup_t_close_when_click">close\_when\_click</a> | bool\_t | 点击时是否关闭窗口。 |
 | <a href="#popup_t_close_when_click_outside">close\_when\_click\_outside</a> | bool\_t | 点击到窗口外时是否关闭窗口。 |
-| <a href="#popup_t_close_when_timeout">close\_when\_timeout</a> | uint32\_t | 超时后自动关闭窗口(ms)。 |
+| <a href="#popup_t_close_when_timeout">close\_when\_timeout</a> | uint32\_t | 超时后自动关闭窗口(毫秒)。 |
 #### popup\_cast 函数
 -----------------------
 
@@ -173,7 +173,7 @@ ret_t popup_set_close_when_click_outside (widget_t* widget, bool_t close_when_cl
 
 * 函数功能：
 
-> <p id="popup_t_popup_set_close_when_timeout">设置超时关闭时间(ms)。
+> <p id="popup_t_popup_set_close_when_timeout">设置超时关闭时间(毫秒)。
 
 * 函数原型：
 
@@ -187,7 +187,7 @@ ret_t popup_set_close_when_timeout (widget_t* widget, uint32_t close_when_timeou
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| close\_when\_timeout | uint32\_t | 大于0时，为定时器时间(ms)，超时关闭窗口。 |
+| close\_when\_timeout | uint32\_t | 大于0时，为定时器时间(毫秒)，超时关闭窗口。 |
 #### close\_when\_click 属性
 -----------------------
 > <p id="popup_t_close_when_click">点击时是否关闭窗口。
@@ -222,7 +222,7 @@ ret_t popup_set_close_when_timeout (widget_t* widget, uint32_t close_when_timeou
 | 可通过widget\_set\_prop修改 | 是 |
 #### close\_when\_timeout 属性
 -----------------------
-> <p id="popup_t_close_when_timeout">超时后自动关闭窗口(ms)。
+> <p id="popup_t_close_when_timeout">超时后自动关闭窗口(毫秒)。
 
 * 类型：uint32\_t
 

@@ -159,7 +159,7 @@ ret_t process_wait_for_data (process_handle_t handle, uint32_t timeout_ms);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | handle | process\_handle\_t | 子进程句柄。 |
-| timeout\_ms | uint32\_t | 等待时间(ms)。 |
+| timeout\_ms | uint32\_t | 等待时间(毫秒)。 |
 #### process\_write 函数
 -----------------------
 

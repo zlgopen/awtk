@@ -71,7 +71,7 @@ ret_t waitable_ring_buffer_read (waitable_ring_buffer_t* rb, void* buff, uint32_
 | rb | waitable\_ring\_buffer\_t* | waitable\_ring\_buffer对象。 |
 | buff | void* | 接收数据的buff。 |
 | size | uint32\_t | 读取数据的长度(必须等于 block\_size)。 |
-| timeout\_ms | uint32\_t | 超时时间(ms) |
+| timeout\_ms | uint32\_t | 超时时间(毫秒) |
 #### waitable\_ring\_buffer\_write 函数
 -----------------------
 
@@ -93,4 +93,4 @@ ret_t waitable_ring_buffer_write (waitable_ring_buffer_t* rb, const void* buff, 
 | rb | waitable\_ring\_buffer\_t* | waitable\_ring\_buffer对象。 |
 | buff | const void* | 要写入的数据。 |
 | size | uint32\_t | 数据的长度(必须等于 block\_size)。 |
-| timeout\_ms | uint32\_t | 超时时间(ms) |
+| timeout\_ms | uint32\_t | 超时时间(毫秒) |

@@ -32,7 +32,7 @@
 | <a href="#serial_widget_t_serial_widget_get_widget_vtable">serial\_widget\_get\_widget\_vtable</a> | 获取 serial_widget 虚表。 |
 | <a href="#serial_widget_t_serial_widget_set_baudrate">serial\_widget\_set\_baudrate</a> | 设置 波特率。 |
 | <a href="#serial_widget_t_serial_widget_set_bytesize">serial\_widget\_set\_bytesize</a> | 设置 字节位数。 |
-| <a href="#serial_widget_t_serial_widget_set_check_interval">serial\_widget\_set\_check\_interval</a> | 设置 轮询时间。 |
+| <a href="#serial_widget_t_serial_widget_set_check_interval">serial\_widget\_set\_check\_interval</a> | 设置 轮询时间(毫秒)。 |
 | <a href="#serial_widget_t_serial_widget_set_device">serial\_widget\_set\_device</a> | 设置 设备。 |
 | <a href="#serial_widget_t_serial_widget_set_flowcontrol">serial\_widget\_set\_flowcontrol</a> | 设置 流控。 |
 | <a href="#serial_widget_t_serial_widget_set_parity">serial\_widget\_set\_parity</a> | 设置 奇偶校验。 |
@@ -163,7 +163,7 @@ ret_t serial_widget_set_bytesize (widget_t* widget, uint32_t bytesize);
 
 * 函数功能：
 
-> <p id="serial_widget_t_serial_widget_set_check_interval">设置 轮询时间。
+> <p id="serial_widget_t_serial_widget_set_check_interval">设置 轮询时间(毫秒)。
 
 * 函数原型：
 

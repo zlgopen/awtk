@@ -106,4 +106,4 @@ ret_t tk_iostream_serial_wait_for_data (tk_iostream_t* iostream, uint32_t timeou
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | iostream | tk\_iostream\_t* | 串口对象。 |
-| timeout | uint32\_t | 等待时间(ms)。 |
+| timeout | uint32\_t | 等待时间(毫秒)。 |

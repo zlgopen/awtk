@@ -170,7 +170,7 @@ ret_t action_darray_thread_set_idle_interval (action_darray_thread_t* thread, ui
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | thread | action\_darray\_thread\_t* | action\_darray\_thread对象。 |
-| interval | uint32\_t | 时间间隔(ms)。 |
+| interval | uint32\_t | 时间间隔(毫秒)。 |
 #### action\_darray\_thread\_set\_on\_idle 函数
 -----------------------
 

@@ -27,7 +27,7 @@
 | <a href="#tk_ostream_retry_t_max_retry_times">max\_retry\_times</a> | uint32\_t | 尝试次数超过指定的值时丢弃该数据包。 |
 | <a href="#tk_ostream_retry_t_pending_bytes">pending\_bytes</a> | uint32\_t | 待重写的数据大小。 |
 | <a href="#tk_ostream_retry_t_pending_packets">pending\_packets</a> | uint32\_t | 待重写的数据包的个数。 |
-| <a href="#tk_ostream_retry_t_timeout">timeout</a> | uint32\_t | 写超时时间(ms)。 |
+| <a href="#tk_ostream_retry_t_timeout">timeout</a> | uint32\_t | 写超时时间(毫秒)。 |
 #### tk\_ostream\_retry\_clear\_buffer 函数
 -----------------------
 
@@ -190,7 +190,7 @@ ret_t tk_ostream_retry_set_max_retry_times (tk_ostream_t* ostream, uint32_t max_
 | 可直接修改 | 否 |
 #### timeout 属性
 -----------------------
-> <p id="tk_ostream_retry_t_timeout">写超时时间(ms)。
+> <p id="tk_ostream_retry_t_timeout">写超时时间(毫秒)。
 
 * 类型：uint32\_t
 

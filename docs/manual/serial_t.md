@@ -276,7 +276,7 @@ ret_t serial_wait_for_data (serial_handle_t handle, uint32_t timeout_ms);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | handle | serial\_handle\_t | 串口句柄。 |
-| timeout\_ms | uint32\_t | 等待时间(ms)。 |
+| timeout\_ms | uint32\_t | 等待时间(毫秒)。 |
 #### serial\_write 函数
 -----------------------
 

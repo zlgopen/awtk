@@ -50,7 +50,7 @@ demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image_animation.
 | <a href="#image_animation_t_image_animation_set_delay">image\_animation\_set\_delay</a> | 设置延迟播放时间(仅适用于自动播放)。 |
 | <a href="#image_animation_t_image_animation_set_format">image\_animation\_set\_format</a> | 设置生成图片名的格式。 |
 | <a href="#image_animation_t_image_animation_set_image">image\_animation\_set\_image</a> | 设置图片前缀。 |
-| <a href="#image_animation_t_image_animation_set_interval">image\_animation\_set\_interval</a> | 设置播放间隔时间。 |
+| <a href="#image_animation_t_image_animation_set_interval">image\_animation\_set\_interval</a> | 设置播放间隔时间(毫秒)。 |
 | <a href="#image_animation_t_image_animation_set_loop">image\_animation\_set\_loop</a> | 设置是否循环播放。 |
 | <a href="#image_animation_t_image_animation_set_range_sequence">image\_animation\_set\_range\_sequence</a> | 设置播放序列。比如image为"fire"，start_index为0, end_index为99, 将依次播放"fire0", ..., |
 | <a href="#image_animation_t_image_animation_set_reverse">image\_animation\_set\_reverse</a> | 设置是否倒序播放。 |
@@ -310,7 +310,7 @@ ret_t image_animation_set_image (widget_t* widget, const char* image);
 
 * 函数功能：
 
-> <p id="image_animation_t_image_animation_set_interval">设置播放间隔时间。
+> <p id="image_animation_t_image_animation_set_interval">设置播放间隔时间(毫秒)。
 
 * 函数原型：
 

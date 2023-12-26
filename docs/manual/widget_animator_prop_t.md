@@ -28,8 +28,8 @@ widget_animator_t* widget_animator_prop_create (widget_t* widget, uint32_t durat
 | -------- | ----- | --------- |
 | 返回值 | widget\_animator\_t* | 成功返回动画对象，失败返回NULL。 |
 | widget | widget\_t* | 控件对象。 |
-| duration | uint32\_t | 动画持续时间。 |
-| delay | uint32\_t | 动画执行时间。 |
+| duration | uint32\_t | 动画持续时间(毫秒)。 |
+| delay | uint32\_t | 动画执行时间(毫秒)。 |
 | easing | easing\_type\_t | 插值函数类型。 |
 | prop\_name | const char* | 属性的名称。 |
 #### widget\_animator\_prop\_set\_params 函数

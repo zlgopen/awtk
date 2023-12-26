@@ -17,7 +17,7 @@ reliable ostream base on simple HDLC
 | -------- | ----- | ------------ | 
 | <a href="#tk_ostream_shdlc_t_compress_threshold">compress\_threshold</a> | uint32\_t | 激活压缩的阈值。 |
 | <a href="#tk_ostream_shdlc_t_retry_times">retry\_times</a> | uint8\_t | 失败重传次数。 |
-| <a href="#tk_ostream_shdlc_t_timeout">timeout</a> | uint32\_t | 读写超时时间(ms) |
+| <a href="#tk_ostream_shdlc_t_timeout">timeout</a> | uint32\_t | 读写超时时间(毫秒) |
 #### tk\_ostream\_shdlc\_create 函数
 -----------------------
 
@@ -53,7 +53,7 @@ tk_ostream_t* tk_ostream_shdlc_create (tk_iostream_shdlc_t* iostream);
 
 #### timeout 属性
 -----------------------
-> <p id="tk_ostream_shdlc_t_timeout">读写超时时间(ms)
+> <p id="tk_ostream_shdlc_t_timeout">读写超时时间(毫秒)
 
 * 类型：uint32\_t
 

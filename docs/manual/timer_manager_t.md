@@ -23,7 +23,7 @@
 | <a href="#timer_manager_t_timer_manager_find">timer\_manager\_find</a> | 查找指定ID的定时器。 |
 | <a href="#timer_manager_t_timer_manager_get_next_timer_id">timer\_manager\_get\_next\_timer\_id</a> | 获取下一个可用的 timer_id。 |
 | <a href="#timer_manager_t_timer_manager_init">timer\_manager\_init</a> | 初始化定时器管理器。 |
-| <a href="#timer_manager_t_timer_manager_next_time">timer\_manager\_next\_time</a> | 返回最近的定时器到期时间。 |
+| <a href="#timer_manager_t_timer_manager_next_time">timer\_manager\_next\_time</a> | 返回最近的定时器到期时间(毫秒)。 |
 | <a href="#timer_manager_t_timer_manager_remove">timer\_manager\_remove</a> | 根据id删除定时器。 |
 | <a href="#timer_manager_t_timer_manager_reset">timer\_manager\_reset</a> | 重置定时器。 |
 | <a href="#timer_manager_t_timer_manager_set">timer\_manager\_set</a> | 设置缺省的定时器管理器。 |
@@ -66,7 +66,7 @@ uint32_t timer_manager_add (timer_manager_t* timer_manager, timer_func_t on_time
 | timer\_manager | timer\_manager\_t* | 定时器管理器对象。 |
 | on\_timer | timer\_func\_t | timer回调函数。 |
 | ctx | void* | timer回调函数的上下文。 |
-| duration | uint32\_t | 时间。 |
+| duration | uint32\_t | 时间(毫秒)。 |
 #### timer\_manager\_add\_with\_id 函数
 -----------------------
 
@@ -89,7 +89,7 @@ uint32_t timer_manager_add_with_id (timer_manager_t* timer_manager, uint32_t id,
 | id | uint32\_t | timer\_id。 |
 | on\_timer | timer\_func\_t | timer回调函数。 |
 | ctx | void* | timer回调函数的上下文。 |
-| duration | uint32\_t | 时间。 |
+| duration | uint32\_t | 时间(毫秒)。 |
 #### timer\_manager\_add\_with\_type 函数
 -----------------------
 
@@ -111,7 +111,7 @@ uint32_t timer_manager_add_with_type (timer_manager_t* timer_manager, timer_func
 | timer\_manager | timer\_manager\_t* | 定时器管理器对象。 |
 | on\_timer | timer\_func\_t | 定时器回调函数。 |
 | ctx | void* | 上下文。 |
-| duration | uint32\_t | 时间。 |
+| duration | uint32\_t | 时间(毫秒)。 |
 | timer\_info\_type | uint16\_t | timer\_info\_type。 |
 #### timer\_manager\_add\_with\_type\_and\_id 函数
 -----------------------
@@ -135,7 +135,7 @@ uint32_t timer_manager_add_with_type_and_id (timer_manager_t* timer_manager, uin
 | id | uint32\_t | id。 |
 | on\_timer | timer\_func\_t | 定时器回调函数。 |
 | ctx | void* | 上下文。 |
-| duration | uint32\_t | 时间。 |
+| duration | uint32\_t | 时间(毫秒)。 |
 | timer\_info\_type | uint16\_t | timer\_info\_type。 |
 | is\_check\_id | bool\_t | 是否校验id。 |
 #### timer\_manager\_all\_remove\_by\_ctx 函数
@@ -358,7 +358,7 @@ timer_manager_t* timer_manager_init (timer_manager_t* timer_manager, timer_get_t
 
 * 函数功能：
 
-> <p id="timer_manager_t_timer_manager_next_time">返回最近的定时器到期时间。
+> <p id="timer_manager_t_timer_manager_next_time">返回最近的定时器到期时间(毫秒)。
 
 * 函数原型：
 
@@ -370,7 +370,7 @@ uint64_t timer_manager_next_time (timer_manager_t* timer_manager);
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | uint64\_t | 返回最近的timer到期时间。 |
+| 返回值 | uint64\_t | 返回最近的timer到期时间(毫秒)。 |
 | timer\_manager | timer\_manager\_t* | 定时器管理器对象。 |
 #### timer\_manager\_remove 函数
 -----------------------

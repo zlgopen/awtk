@@ -11,7 +11,7 @@
 | <a href="#tk_cond_t_tk_cond_destroy">tk\_cond\_destroy</a> | 销毁cond对象。 |
 | <a href="#tk_cond_t_tk_cond_signal">tk\_cond\_signal</a> | 唤醒。 |
 | <a href="#tk_cond_t_tk_cond_wait">tk\_cond\_wait</a> | 等待。 |
-| <a href="#tk_cond_t_tk_cond_wait_timeout">tk\_cond\_wait\_timeout</a> | 等待指定时间。 |
+| <a href="#tk_cond_t_tk_cond_wait_timeout">tk\_cond\_wait\_timeout</a> | 等待指定时间(毫秒)。 |
 #### tk\_cond\_create 函数
 -----------------------
 
@@ -93,12 +93,12 @@ ret_t tk_cond_wait (tk_cond_t* cond, tk_mutex_t* mutex);
 
 * 函数功能：
 
-> <p id="tk_cond_t_tk_cond_wait_timeout">等待指定时间。
+> <p id="tk_cond_t_tk_cond_wait_timeout">等待指定时间(毫秒)。
 
 * 函数原型：
 
 ```
-ret_t tk_cond_wait_timeout (tk_cond_t* cond, tk_mutex_t* mutex, uint32_t ms);
+ret_t tk_cond_wait_timeout (tk_cond_t* cond, tk_mutex_t* mutex, uint32_t timeout);
 ```
 
 * 参数说明：
@@ -108,4 +108,4 @@ ret_t tk_cond_wait_timeout (tk_cond_t* cond, tk_mutex_t* mutex, uint32_t ms);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | cond | tk\_cond\_t* | cond对象。 |
 | mutex | tk\_mutex\_t* | mutex对象。 |
-| ms | uint32\_t | 最长等待时间。 |
+| timeout | uint32\_t | 最长等待时间(毫秒)。 |

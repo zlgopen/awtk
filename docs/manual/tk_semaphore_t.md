@@ -79,7 +79,7 @@ ret_t tk_semaphore_post (tk_semaphore_t* semaphore);
 * 函数原型：
 
 ```
-ret_t tk_semaphore_wait (tk_semaphore_t* semaphore, uint32_t timeout_ms);
+ret_t tk_semaphore_wait (tk_semaphore_t* semaphore, uint32_t timeout);
 ```
 
 * 参数说明：
@@ -88,4 +88,4 @@ ret_t tk_semaphore_wait (tk_semaphore_t* semaphore, uint32_t timeout_ms);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | semaphore | tk\_semaphore\_t* | 信号量对象。 |
-| timeout\_ms | uint32\_t | 超时时间。 |
+| timeout | uint32\_t | 超时时间(毫秒)。 |

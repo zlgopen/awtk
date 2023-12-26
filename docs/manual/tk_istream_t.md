@@ -430,4 +430,4 @@ ret_t tk_istream_wait_for_data (tk_istream_t* stream, uint32_t timeout_ms);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | stream | tk\_istream\_t* | istream对象。 |
-| timeout\_ms | uint32\_t | 超时时间。 |
+| timeout\_ms | uint32\_t | 超时时间(毫秒)。 |

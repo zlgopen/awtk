@@ -164,7 +164,7 @@ ret_t scroll_view_scroll_delta_to (widget_t* widget, int32_t xoffset_delta, int3
 | widget | widget\_t* | 控件对象。 |
 | xoffset\_delta | int32\_t | x偏移量。 |
 | yoffset\_delta | int32\_t | y偏移量。 |
-| duration | int32\_t | 时间。 |
+| duration | int32\_t | 时间(毫秒)。 |
 #### scroll\_view\_scroll\_to 函数
 -----------------------
 
@@ -186,7 +186,7 @@ ret_t scroll_view_scroll_to (widget_t* widget, int32_t xoffset_end, int32_t yoff
 | widget | widget\_t* | 控件对象。 |
 | xoffset\_end | int32\_t | x偏移量。 |
 | yoffset\_end | int32\_t | y偏移量。 |
-| duration | int32\_t | 时间。 |
+| duration | int32\_t | 时间(毫秒)。 |
 #### scroll\_view\_set\_move\_to\_page 函数
 -----------------------
 
