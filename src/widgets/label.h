@@ -79,7 +79,7 @@ typedef struct _label_t {
   /**
    * @property {int32_t} length
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 显示字符的个数(小余0时全部显示)。
+   * 显示字符的个数(小于0时全部显示)。
    * 主要用于动态改变显示字符的个数，来实现类似[拨号中...]的动画效果。
    */
   int32_t length;
@@ -132,7 +132,7 @@ widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
  * @method label_set_length
- * 设置显示字符的个数(小余0时全部显示)。
+ * 设置显示字符的个数(小于0时全部显示)。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {int32_t}  length 最大可显示字符个数。
