@@ -285,7 +285,7 @@ ret_t serial_oflush(serial_handle_t handle);
  * 等待数据。
  *
  * @param {serial_handle_t} handle 串口句柄。
- * @param {uint32_t} timeout_ms 等待时间(ms)。
+ * @param {uint32_t} timeout_ms 等待时间(毫秒)。
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t serial_wait_for_data(serial_handle_t handle, uint32_t timeout_ms);
@@ -332,8 +332,8 @@ bytesize_t serial_bytesize_from_str(const char* str);
 
 /*不再使用 begin{*/
 typedef struct {
-  uint32_t rd_timeout;          /* 读超时时间(ms) */
-  uint32_t rd_interval_timeout; /* 码间超时(ms) */
+  uint32_t rd_timeout;          /* 读超时时间(毫秒) */
+  uint32_t rd_interval_timeout; /* 码间超时(毫秒) */
 } serial_timeout_t;
 ret_t serial_timeout_set(serial_handle_t handle, serial_timeout_t* timeout);
 ret_t serial_timeout_get(serial_handle_t handle, serial_timeout_t* timeout);

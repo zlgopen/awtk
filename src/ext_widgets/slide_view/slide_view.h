@@ -89,7 +89,7 @@ typedef struct _slide_view_t {
   /**
    * @property {uint16_t} auto_play
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 自动播放。0表示禁止自动播放，非0表示自动播放时每一页播放的时间。
+   * 自动播放。0表示禁止自动播放，非0表示自动播放时每一页播放的时间(毫秒)。
    */
   uint16_t auto_play;
 
@@ -204,7 +204,7 @@ widget_t* slide_view_cast(widget_t* widget);
  * 设置为自动播放模式。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget slide_view对象。
- * @param {uint16_t} auto_play 0表示禁止自动播放，非0表示自动播放时每一页播放的时间。
+ * @param {uint16_t} auto_play 0表示禁止自动播放，非0表示自动播放时每一页播放的时间(毫秒)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -291,10 +291,10 @@ ret_t slide_view_set_drag_threshold(widget_t* widget, uint32_t drag_threshold);
 
 /**
  * @method slide_view_set_animating_time
- * 设置动画时间。
+ * 设置动画时间(毫秒)。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget slide_view对象。
- * @param {uint32_t} animating_time 动画时间。
+ * @param {uint32_t} animating_time 动画时间(毫秒)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

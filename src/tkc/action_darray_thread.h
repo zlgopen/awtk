@@ -158,7 +158,7 @@ ret_t action_darray_thread_set_strategy(action_darray_thread_t* thread,
  * @method action_darray_thread_set_idle_interval
  * 设置空闲时的时间间隔。
  * @param {action_darray_thread_t*} thread action_darray_thread对象。
- * @param {uint32_t} interval 时间间隔(ms)。
+ * @param {uint32_t} interval 时间间隔(毫秒)。
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t action_darray_thread_set_idle_interval(action_darray_thread_t* thread, uint32_t interval);

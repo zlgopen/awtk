@@ -43,7 +43,7 @@ struct _tk_ostream_shdlc_t {
 
   /**
    * @property {uint32_t} timeout
-   * 读写超时时间(ms)
+   * 读写超时时间(毫秒)
    */
   uint32_t timeout;
   /**

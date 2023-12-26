@@ -41,7 +41,7 @@ typedef ret_t (*event_source_on_event_t)(event_source_t* source);
  * 事件源有下列两种方式：
  *
  * * 对于有文件描述符的事件源(如socket)，get_fd返回一个有效的文件描述符。
- * * 对于定时器，则get_wakeup_time返回下次唤醒的时间。
+ * * 对于定时器，则get_wakeup_time返回下次唤醒的时间(毫秒)。
  *
  */
 struct _event_source_t {
@@ -108,11 +108,11 @@ ret_t event_source_check(event_source_t* source);
 /**
  * @method event_source_get_wakeup_time
  *
- * 获取唤醒时间(ms)。
+ * 获取唤醒时间(毫秒)。
  *
  * @param {event_source_t*} source event_source对象。
  *
- * @return {uint32_t} 返回唤醒时间(ms)。
+ * @return {uint32_t} 返回唤醒时间(毫秒)。
  *
  */
 uint32_t event_source_get_wakeup_time(event_source_t* source);

@@ -47,11 +47,11 @@ tk_semaphore_t* tk_semaphore_create(uint32_t value, const char* name);
  * @method tk_semaphore_wait
  * 获取资源。
  * @param {tk_semaphore_t*} semaphore 信号量对象。
- * @param {uint32_t} timeout_ms 超时时间。
+ * @param {uint32_t} timeout 超时时间(毫秒)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tk_semaphore_wait(tk_semaphore_t* semaphore, uint32_t timeout_ms);
+ret_t tk_semaphore_wait(tk_semaphore_t* semaphore, uint32_t timeout);
 
 /**
  * @method tk_semaphore_post

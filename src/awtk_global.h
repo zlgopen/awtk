@@ -87,11 +87,11 @@ ret_t tk_quit(void);
  * @alias global_quit_ex
  * @annotation ["static", "scriptable"]
  *
- * @param {uint32_t} delay_ms 延迟退出的时间。
+ * @param {uint32_t} delay 延迟退出的时间(毫秒)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tk_quit_ex(uint32_t delay_ms);
+ret_t tk_quit_ex(uint32_t delay);
 
 /**
  * @method tk_get_pointer_x

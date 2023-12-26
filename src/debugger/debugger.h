@@ -558,7 +558,7 @@ ret_t debugger_set_current_thread_id(debugger_t* debugger, uint64_t thread_id);
  * @method debugger_dispatch_messages
  * dispatch_messages(仅适用于客户端)
  * @param {debugger_t*} debugger debugger对象。
- * @param {uint32_t} timeout 超时时间。
+ * @param {uint32_t} timeout 超时时间(毫秒)。
  * @param {uint32_t*} ret_num 返回处理命令个数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

@@ -45,11 +45,11 @@ tk_cond_var_t* tk_cond_var_create(void);
  * @method tk_cond_var_wait
  * 等待。
  * @param {tk_cond_var_t*}    cond_var cond_var对象。
- * @param {uint32_t}  timeout_ms 最长等待时间。
+ * @param {uint32_t}  timeout 最长等待时间(毫秒)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tk_cond_var_wait(tk_cond_var_t* cond_var, uint32_t timeout_ms);
+ret_t tk_cond_var_wait(tk_cond_var_t* cond_var, uint32_t timeout);
 
 /**
  * @method tk_cond_var_awake

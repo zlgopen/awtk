@@ -94,14 +94,14 @@ typedef struct _hscroll_label_t {
   /**
    * @property {int32_t} lull
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 滚动之间的间歇时间(ms)，缺省3000ms。
+   * 滚动之间的间歇时间(毫秒)，缺省3000ms。
    */
   int32_t lull;
 
   /**
    * @property {int32_t} duration
    * @annotation ["set_prop","get_prop","readable","scriptable"]
-   * 完整的滚动一次需要的时间(ms)，缺省5000ms。
+   * 完整的滚动一次需要的时间(毫秒)，缺省5000ms。
    */
   int32_t duration;
 
@@ -162,7 +162,7 @@ widget_t* hscroll_label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
  * 设置lull。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {int32_t}  lull 间歇时间(ms)。
+ * @param {int32_t}  lull 间歇时间(毫秒)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -173,7 +173,7 @@ ret_t hscroll_label_set_lull(widget_t* widget, int32_t lull);
  * 设置duration。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {int32_t}  duration 滚动时间(ms)。
+ * @param {int32_t}  duration 滚动时间(毫秒)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

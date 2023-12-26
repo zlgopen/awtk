@@ -354,7 +354,7 @@ ret_t window_manager_set_ignore_input_events(widget_t* widget, bool_t ignore_inp
 
 /**
  * @method window_manager_set_screen_saver_time
- * 设置屏保时间。
+ * 设置屏保时间(毫秒)。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 窗口管理器对象。
  * @param {uint32_t}  screen_saver_time 屏保时间(单位毫秒), 为0关闭屏保。

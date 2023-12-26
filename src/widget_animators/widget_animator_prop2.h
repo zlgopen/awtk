@@ -45,8 +45,8 @@ typedef struct _widget_animator_prop2_t {
  * @method widget_animator_prop2_create
  * 创建双属性动画对象。
  * @param {widget_t*} widget 控件对象。
- * @param {uint32_t} duration 动画持续时间。
- * @param {uint32_t} delay 动画执行时间。
+ * @param {uint32_t} duration 动画持续时间(毫秒)。
+ * @param {uint32_t} delay 动画执行时间(毫秒)。
  * @param {easing_type_t} easing 插值函数类型。
  * @param {const char*} prop1_name 属性1的名称。
  * @param {const char*} prop2_name 属性2的名称。

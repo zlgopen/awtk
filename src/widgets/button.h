@@ -109,7 +109,7 @@ typedef struct _button_t {
   /**
    * @property {uint32_t} long_press_time
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 触发长按事件的时间(ms)
+   * 触发长按事件的时间(毫秒)
    *
    */
   uint32_t long_press_time;
@@ -174,7 +174,7 @@ ret_t button_set_repeat(widget_t* widget, int32_t repeat);
 
 /**
  * @method button_set_long_press_time
- * 设置触发长按事件的时间。
+ * 设置触发长按事件的时间(毫秒)。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {uint32_t}  long_press_time 触发长按事件的时间(毫秒)。

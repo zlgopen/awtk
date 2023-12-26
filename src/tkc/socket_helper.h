@@ -167,7 +167,7 @@ bool_t tk_socket_last_io_has_error(void);
  * 等待数据。
  *
  * @param {int} sock socket句柄。
- * @param {uint32_t} timeout_ms 等待时间(ms)。
+ * @param {uint32_t} timeout_ms 等待时间(毫秒)。
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t tk_socket_wait_for_data(int sock, uint32_t timeout_ms);

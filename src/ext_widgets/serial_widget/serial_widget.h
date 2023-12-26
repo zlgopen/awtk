@@ -227,7 +227,7 @@ ret_t serial_widget_set_flowcontrol(widget_t* widget, uint32_t flowcontrol);
 
 /**
  * @method serial_widget_set_check_interval
- * 设置 轮询时间。
+ * 设置 轮询时间(毫秒)。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
  * @param {uint32_t} check_interval 轮询时间（单位：ms）。

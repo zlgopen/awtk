@@ -2372,7 +2372,7 @@ bool_t widget_equal(widget_t* widget, widget_t* other);
  * 如果定时器的生命周期与控件无关，请直接调用**timer_add**，以避免不必要的内存开销。
  * @param {widget_t*} widget 控件对象。
  * @param {timer_func_t} on_timer timer回调函数。
- * @param {uint32_t} duration_ms 时间。
+ * @param {uint32_t} duration 时间(毫秒)。
  *
  * 使用示例：
  *
@@ -2389,7 +2389,7 @@ bool_t widget_equal(widget_t* widget, widget_t* other);
  *
  * @return {uint32_t} 返回timer的ID，TK_INVALID_ID表示失败。
  */
-uint32_t widget_add_timer(widget_t* widget, timer_func_t on_timer, uint32_t duration_ms);
+uint32_t widget_add_timer(widget_t* widget, timer_func_t on_timer, uint32_t duration);
 
 /**
  * @method widget_remove_timer

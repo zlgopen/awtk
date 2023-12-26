@@ -42,8 +42,8 @@ typedef struct _widget_animator_prop_t {
  * @method widget_animator_prop_create
  * 创建单属性动画对象。
  * @param {widget_t*} widget 控件对象。
- * @param {uint32_t} duration 动画持续时间。
- * @param {uint32_t} delay 动画执行时间。
+ * @param {uint32_t} duration 动画持续时间(毫秒)。
+ * @param {uint32_t} delay 动画执行时间(毫秒)。
  * @param {easing_type_t} easing 插值函数类型。
  * @param {const char*} prop_name 属性的名称。
  *

@@ -127,7 +127,7 @@ int process_handle_get_fd(process_handle_t handle);
  * 等待数据。
  *
  * @param {process_handle_t} handle 子进程句柄。
- * @param {uint32_t} timeout_ms 等待时间(ms)。
+ * @param {uint32_t} timeout_ms 等待时间(毫秒)。
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t process_wait_for_data(process_handle_t handle, uint32_t timeout_ms);

@@ -103,7 +103,7 @@ ret_t timer_manager_destroy(timer_manager_t* timer_manager);
  * @param {timer_manager_t*} timer_manager 定时器管理器对象。
  * @param {timer_func_t} on_timer timer回调函数。
  * @param {void*} ctx timer回调函数的上下文。
- * @param {uint32_t} duration 时间。
+ * @param {uint32_t} duration 时间(毫秒)。
  *
  * @return {uint32_t} 返回timer的ID，TK_INVALID_ID表示失败。
  */
@@ -117,7 +117,7 @@ uint32_t timer_manager_add(timer_manager_t* timer_manager, timer_func_t on_timer
  * @param {uint32_t} id timer_id。
  * @param {timer_func_t} on_timer timer回调函数。
  * @param {void*} ctx timer回调函数的上下文。
- * @param {uint32_t} duration 时间。
+ * @param {uint32_t} duration 时间(毫秒)。
  *
  * @return {uint32_t} 返回timer的ID，TK_INVALID_ID表示失败。
  */
@@ -184,10 +184,10 @@ uint32_t timer_manager_count(timer_manager_t* timer_manager);
 
 /**
  * @method timer_manager_next_time
- * 返回最近的定时器到期时间。
+ * 返回最近的定时器到期时间(毫秒)。
  * @param {timer_manager_t*} timer_manager 定时器管理器对象。
  *
- * @return {uint64_t} 返回最近的timer到期时间。
+ * @return {uint64_t} 返回最近的timer到期时间(毫秒)。
  */
 uint64_t timer_manager_next_time(timer_manager_t* timer_manager);
 
@@ -229,7 +229,7 @@ ret_t timer_manager_all_remove_by_ctx_and_type(timer_manager_t* timer_manager, u
  * @param {timer_manager_t*} timer_manager 定时器管理器对象。
  * @param {timer_func_t} on_timer 定时器回调函数。
  * @param {void*} ctx 上下文。
- * @param {uint32_t} duration 时间。
+ * @param {uint32_t} duration 时间(毫秒)。
  * @param {uint16_t} timer_info_type timer_info_type。
  * 
  * @return {uint32_t} 返回定时器id。
@@ -244,7 +244,7 @@ uint32_t timer_manager_add_with_type(timer_manager_t* timer_manager, timer_func_
  * @param {uint32_t} id id。
  * @param {timer_func_t} on_timer 定时器回调函数。
  * @param {void*} ctx 上下文。
- * @param {uint32_t} duration 时间。
+ * @param {uint32_t} duration 时间(毫秒)。
  * @param {uint16_t} timer_info_type timer_info_type。
  * @param {bool_t} is_check_id 是否校验id。
  *

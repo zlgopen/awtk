@@ -585,7 +585,7 @@ BEGIN_C_DECLS
 
 /**
  * @const WIDGET_PROP_AUTO_PLAY
- * 是否自动播放或指定播放的时间。
+ * 是否自动播放或指定播放的时间(毫秒)。
  */
 #define WIDGET_PROP_AUTO_PLAY "auto_play"
 
@@ -759,7 +759,7 @@ BEGIN_C_DECLS
 
 /**
  * @const WIDGET_PROP_LONG_PRESS_TIME
- * 触发长按事件的时间(ms)。
+ * 触发长按事件的时间(毫秒)。
  */
 #define WIDGET_PROP_LONG_PRESS_TIME "long_press_time"
 
@@ -1059,7 +1059,7 @@ BEGIN_C_DECLS
 
 /**
  * @const WIDGET_PROP_ANIMATING_TIME
- * 动画时间。
+ * 动画时间(毫秒)。
  */
 #define WIDGET_PROP_ANIMATING_TIME "animating_time"
 
@@ -1071,7 +1071,7 @@ BEGIN_C_DECLS
 
 /**
  * @const WIDGET_PROP_ANIMATE_ANIMATING_TIME
- * 改变控件属性时附带动画的播放时间。
+ * 改变控件属性时附带动画的播放时间(毫秒)。
  */
 #define WIDGET_PROP_ANIMATE_ANIMATING_TIME "animate:animating_time"
 
@@ -1083,7 +1083,7 @@ BEGIN_C_DECLS
 
 /**
  * @const WIDGET_PROP_SCREEN_SAVER_TIME
- * 屏幕保护时间。
+ * 屏幕保护时间(毫秒)。
  */
 #define WIDGET_PROP_SCREEN_SAVER_TIME "screen_saver_time"
 

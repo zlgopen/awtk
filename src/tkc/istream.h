@@ -113,7 +113,7 @@ bool_t tk_istream_eos(tk_istream_t* stream);
  * 等待数据。
  *
  * @param {tk_istream_t*} stream istream对象。
- * @param {uint32_t} timeout_ms 超时时间。
+ * @param {uint32_t} timeout_ms 超时时间(毫秒)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *

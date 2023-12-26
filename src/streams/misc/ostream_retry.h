@@ -96,7 +96,7 @@ struct _tk_ostream_retry_t {
   /**
    * @property {uint32_t} timeout
    * @annotation ["readable"]
-   * 写超时时间(ms)。
+   * 写超时时间(毫秒)。
    */
   uint32_t timeout;
   /**

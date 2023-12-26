@@ -101,10 +101,10 @@ ret_t tk_client_read_resp(tk_client_t* client, tk_msg_header_t* header, wbuffer_
  * @method tk_client_read_notify
  * 客户端读取通知。
  * @param {tk_client_t*} client client对象。
- * @param {uint32_t} timeout_ms 超时时间。
+ * @param {uint32_t} timeout 超时时间(毫秒)。
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tk_client_read_notify(tk_client_t* client, uint32_t timeout_ms);
+ret_t tk_client_read_notify(tk_client_t* client, uint32_t timeout);
 
 /**
  * @method tk_client_request

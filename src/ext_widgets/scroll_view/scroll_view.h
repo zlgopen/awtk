@@ -351,7 +351,7 @@ ret_t scroll_view_set_slide_limit_ratio(widget_t* widget, float_t slide_limit_ra
  * @param {widget_t*} widget 控件对象。
  * @param {int32_t} xoffset_end x偏移量。
  * @param {int32_t} yoffset_end y偏移量。
- * @param {int32_t} duration 时间。
+ * @param {int32_t} duration 时间(毫秒)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -365,7 +365,7 @@ ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffs
  * @param {widget_t*} widget 控件对象。
  * @param {int32_t} xoffset_delta x偏移量。
  * @param {int32_t} yoffset_delta y偏移量。
- * @param {int32_t} duration 时间。
+ * @param {int32_t} duration 时间(毫秒)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

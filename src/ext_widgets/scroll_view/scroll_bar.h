@@ -92,7 +92,7 @@ typedef struct _scroll_bar_t {
   /**
    * @property {uint32_t} animator_time
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 翻页滚动动画时间。
+   * 翻页滚动动画时间(毫秒)。
    */
   uint32_t animator_time;
   /**
@@ -197,7 +197,7 @@ ret_t scroll_bar_set_params(widget_t* widget, int32_t virtual_size, int32_t row)
  * @annotation ["scriptable"]
  * @param {widget_t*} widget scroll_bar控件。
  * @param {int32_t} value 值。
- * @param {int32_t} duration 动画持续时间。
+ * @param {int32_t} duration 动画持续时间(毫秒)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -273,11 +273,11 @@ bool_t scroll_bar_is_mobile(widget_t* widget);
 
 /**
  * @method scroll_bar_set_animator_time
- * 设置翻页滚动动画时间。
+ * 设置翻页滚动动画时间(毫秒)。
  *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget scroll_bar控件。
- * @param {uint32_t} animator_time 时间。
+ * @param {uint32_t} animator_time 时间(毫秒)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -289,8 +289,8 @@ ret_t scroll_bar_set_animator_time(widget_t* widget, uint32_t animator_time);
  *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget scroll_bar控件。
- * @param {int32_t} duration 动画持续时间。
- * @param {int32_t} delay 动画执行时间。
+ * @param {int32_t} duration 动画持续时间(毫秒)。
+ * @param {int32_t} delay 动画执行时间(毫秒)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -302,8 +302,8 @@ ret_t scroll_bar_hide_by_opacity_animation(widget_t* widget, int32_t duration, i
  *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget scroll_bar控件。
- * @param {int32_t} duration 动画持续时间。
- * @param {int32_t} delay 动画执行时间。
+ * @param {int32_t} duration 动画持续时间(毫秒)。
+ * @param {int32_t} delay 动画执行时间(毫秒)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

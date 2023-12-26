@@ -61,7 +61,7 @@ waitable_ring_buffer_t* waitable_ring_buffer_create(uint32_t capacity, uint32_t 
  * @param {waitable_ring_buffer_t*} rb waitable_ring_buffer对象。
  * @param {void*} buff 接收数据的buff。 
  * @param {uint32_t} size 读取数据的长度(必须等于 block_size)。
- * @param {uint32_t} timeout_ms 超时时间(ms)
+ * @param {uint32_t} timeout_ms 超时时间(毫秒)
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -75,7 +75,7 @@ ret_t waitable_ring_buffer_read(waitable_ring_buffer_t* rb, void* buff, uint32_t
  * @param {waitable_ring_buffer_t*} rb waitable_ring_buffer对象。
  * @param {const void*} buff 要写入的数据。 
  * @param {uint32_t} size 数据的长度(必须等于 block_size)。
- * @param {uint32_t} timeout_ms 超时时间(ms)
+ * @param {uint32_t} timeout_ms 超时时间(毫秒)
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

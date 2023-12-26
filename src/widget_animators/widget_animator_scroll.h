@@ -44,8 +44,8 @@ typedef struct _widget_animator_scroll_t {
  * @method widget_animator_scroll_create
  * 创建动画对象。
  * @param {widget_t*} widget 控件对象。
- * @param {uint32_t} duration 动画持续时间。
- * @param {uint32_t} delay 动画执行时间。
+ * @param {uint32_t} duration 动画持续时间(毫秒)。
+ * @param {uint32_t} delay 动画执行时间(毫秒)。
  * @param {easing_type_t} easing 插值函数类型。
  *
  * @return {widget_animator_t*} 成功返回动画对象，失败返回NULL。

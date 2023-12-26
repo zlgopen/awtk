@@ -57,7 +57,7 @@ velocity_t* velocity_reset(velocity_t* v);
  * 更新位置。
  *
  * @param {velocity_t*} v velocity对象。
- * @param {uint64_t} time 时间。
+ * @param {uint64_t} time 时间(毫秒)。
  * @param {xy_t} x x坐标。
  * @param {xy_t} y y坐标。
  *

@@ -110,7 +110,7 @@ ret_t tk_iostream_serial_config(tk_iostream_t* iostream, int32_t baudrate, bytes
  * @method tk_iostream_serial_wait_for_data
  * 等待串口数据。
  * @param {tk_iostream_t*} iostream 串口对象。
- * @param {uint32_t} timeout 等待时间(ms)。
+ * @param {uint32_t} timeout 等待时间(毫秒)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *

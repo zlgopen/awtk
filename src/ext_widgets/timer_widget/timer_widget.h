@@ -56,7 +56,7 @@ typedef struct _timer_widget_t {
   /**
    * @property {uint32_t} duration
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 时长(ms)。
+   * 时长(毫秒)。
    */
   uint32_t duration;
 
@@ -95,10 +95,10 @@ widget_t* timer_widget_cast(widget_t* widget);
 
 /**
  * @method timer_widget_set_duration
- * 设置 时长(ms)。
+ * 设置 时长(毫秒)。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {uint32_t} duration 时长(ms)。
+ * @param {uint32_t} duration 时长(毫秒)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
