@@ -109,6 +109,17 @@ slist_t* slist_init(slist_t* slist, tk_destroy_t destroy, tk_compare_t compare);
 void* slist_find(slist_t* slist, void* ctx);
 
 /**
+ * @method slist_find_ex
+ * 查找第一个满足条件的元素。
+ * @param {slist_t*} slist 单向链表对象。
+ * @param {tk_compare_t} compare 元素比较函数。
+ * @param {void*} ctx 比较函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+void* slist_find_ex(slist_t* slist, tk_compare_t compare, void* ctx);
+
+/**
  * @method slist_remove
  * 删除第一个满足条件的元素。
  * @param {slist_t*} slist 单向链表对象。
@@ -119,21 +130,23 @@ void* slist_find(slist_t* slist, void* ctx);
 ret_t slist_remove(slist_t* slist, void* ctx);
 
 /**
- * @method slist_remove_with_compare
+ * @method slist_remove_ex
  * 删除满足条件的元素。
  * 备注：
  * 如果队列中符合条件的元素不足 remove_size，移除最后一个符合条件的元素后返回 RET_OK。
  * 如果队列中符合条件的元素大于 remove_size，在队列中移除 remove_size 个元素后返回 RET_OK。
  * remove_size 为负数则会移除所有符合条件的元素。
  * @param {slist_t*} slist 单向链表对象。
- * @param {void*} ctx 比较函数的上下文。
  * @param {tk_compare_t} compare 元素比较函数。
+ * @param {void*} ctx 比较函数的上下文。
  * @param {int32_t} remove_size 删除个数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t slist_remove_with_compare(slist_t* slist, void* ctx, tk_compare_t compare,
+ret_t slist_remove_ex(slist_t* slist, tk_compare_t compare, void* ctx,
                                 int32_t remove_size);
+
+#define slist_remove_with_compare(slist, ctx, compare, remove_size) slist_remove_ex(slist, compare, ctx, remove_size)
 
 /**
  * @method slist_remove_all

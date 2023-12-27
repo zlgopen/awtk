@@ -69,6 +69,27 @@ TEST(SList, find) {
   slist_deinit(s);
 }
 
+TEST(SList, find_ex) {
+  slist_t slist;
+  slist_t* s = &slist;
+
+  slist_init(s, NULL, NULL);
+
+  ASSERT_EQ(slist_size(s), 0);
+
+  ASSERT_EQ(slist_append(s, TO_POINTER(1)), RET_OK);
+
+  ASSERT_EQ(TO_INT(slist_find_ex(s, pointer_compare, TO_POINTER(1))), 1);
+
+  ASSERT_EQ(slist_append(s, TO_POINTER(2)), RET_OK);
+
+  ASSERT_EQ(TO_INT(slist_find_ex(s, pointer_compare, TO_POINTER(2))), 2);
+  
+  ASSERT_EQ(TO_INT(slist_find_ex(s, compare_always_equal, TO_POINTER(2))), 1);
+
+  slist_deinit(s);
+}
+
 TEST(SList, tail_pop) {
   slist_t slist;
   slist_t* s = &slist;
@@ -146,6 +167,34 @@ TEST(SList, remove) {
   ASSERT_EQ(slist_remove(s, TO_POINTER(2)), RET_OK);
   ASSERT_EQ(slist_count(s, TO_POINTER(2)), 0);
   ASSERT_EQ(slist_is_empty(s), TRUE);
+
+  slist_deinit(s);
+}
+
+TEST(SList, remove_ex) {
+  slist_t slist;
+  slist_t* s = &slist;
+
+  slist_init(s, NULL, NULL);
+
+  ASSERT_EQ(slist_is_empty(s), TRUE);
+  ASSERT_EQ(slist_size(s), 0);
+
+  ASSERT_EQ(slist_append(s, TO_POINTER(1)), RET_OK);
+  ASSERT_EQ(slist_append(s, TO_POINTER(2)), RET_OK);
+  ASSERT_EQ(slist_append(s, TO_POINTER(1)), RET_OK);
+  ASSERT_EQ(slist_append(s, TO_POINTER(1)), RET_OK);
+  ASSERT_EQ(slist_append(s, TO_POINTER(3)), RET_OK);
+  ASSERT_EQ(slist_is_empty(s), FALSE);
+
+  ASSERT_EQ(slist_remove_ex(s, pointer_compare, TO_POINTER(1), 1), RET_OK);
+  ASSERT_EQ(slist_size(s), 4);
+  
+  ASSERT_EQ(slist_remove_ex(s, pointer_compare, TO_POINTER(1), 2), RET_OK);
+  ASSERT_EQ(slist_size(s), 2);
+  
+  ASSERT_EQ(slist_remove_ex(s, compare_always_equal, TO_POINTER(1), 2), RET_OK);
+  ASSERT_EQ(slist_size(s), 0);
 
   slist_deinit(s);
 }

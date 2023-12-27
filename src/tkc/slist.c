@@ -57,16 +57,19 @@ slist_t* slist_init(slist_t* slist, tk_destroy_t destroy, tk_compare_t compare) 
   return slist;
 }
 
-void* slist_find(slist_t* slist, void* ctx) {
+void* slist_find_ex(slist_t* slist, tk_compare_t compare, void* ctx) {
   slist_node_t* iter = NULL;
+  tk_compare_t real_compare = NULL;
   return_value_if_fail(slist != NULL, NULL);
   if (slist->first == NULL) {
     return NULL;
   }
 
+  real_compare = (compare != NULL) ? compare : slist->compare;
+
   iter = slist->first;
   while (iter != NULL) {
-    if (slist->compare(iter->data, ctx) == 0) {
+    if (real_compare(iter->data, ctx) == 0) {
       return iter->data;
     }
     iter = iter->next;
@@ -75,7 +78,11 @@ void* slist_find(slist_t* slist, void* ctx) {
   return NULL;
 }
 
-ret_t slist_remove_with_compare(slist_t* slist, void* ctx, tk_compare_t compare,
+void* slist_find(slist_t* slist, void* ctx) {
+  return slist_find_ex(slist, NULL, ctx);
+}
+
+ret_t slist_remove_ex(slist_t* slist, tk_compare_t compare, void* ctx,
                                 int32_t remove_size) {
   int32_t n = remove_size;
   slist_node_t* iter = NULL;
@@ -109,7 +116,7 @@ ret_t slist_remove_with_compare(slist_t* slist, void* ctx, tk_compare_t compare,
 }
 
 ret_t slist_remove(slist_t* slist, void* ctx) {
-  return slist_remove_with_compare(slist, ctx, slist->compare, 1);
+  return slist_remove_ex(slist, slist->compare, ctx, 1);
 }
 
 ret_t slist_append(slist_t* slist, void* data) {
