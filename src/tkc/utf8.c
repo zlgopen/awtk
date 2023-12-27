@@ -84,14 +84,14 @@ uint32_t tk_utf8_get_bytes_of_leading(uint8_t c) {
 const char* const g_utf8_skip = utf8_skip_data;
 #define g_utf8_next_char(p) (char*)((p) + g_utf8_skip[*(const unsigned char*)(p)])
 
-static uint32_t utf8_get_char(const char* p, const char** next) {
+static int32_t utf8_get_char(const char* p, const char** next) {
   uint32_t mask = 0;
-  uint32_t result = 0;
+  int32_t result = 0;
   int32_t i = 0, len = 0;
   unsigned char c = (unsigned char)*p;
 
   UTF8_COMPUTE(c, mask, len);
-  if (len == -1) return (uint32_t)-1;
+  if (len == -1) return -1;
   UTF8_GET(result, p, i, mask, len);
 
   if (next != NULL) {
@@ -261,7 +261,7 @@ wchar_t* tk_utf8_to_utf16(const char* str, wchar_t* out, uint32_t out_size) {
 
 wchar_t* tk_utf8_to_utf16_ex(const char* str, uint32_t size, wchar_t* out, uint32_t out_size) {
   uint32_t i = 0;
-  uint32_t val = 0;
+  int32_t val = 0;
   const char* p = str;
   const char* end = NULL;
   const char* next = NULL;
