@@ -308,6 +308,18 @@ static ret_t svg_image_set_prop(widget_t* widget, const char* name, const value_
   }
 }
 
+static ret_t svg_image_init(widget_t* widget) {
+  svg_image_t* svg_image = SVG_IMAGE(widget);
+  return_value_if_fail(svg_image != NULL, RET_BAD_PARAMS);
+
+  svg_image->is_cache_mode = FALSE;
+  svg_image->canvas_offline = NULL;
+  svg_image->draw_type = IMAGE_DRAW_DEFAULT;
+
+  image_base_init(widget);
+  return RET_OK;
+}
+
 static const char* s_svg_image_properties[] = {WIDGET_PROP_IMAGE,     WIDGET_PROP_SCALE_X,
                                                WIDGET_PROP_SCALE_Y,   WIDGET_PROP_ANCHOR_X,
                                                WIDGET_PROP_ANCHOR_Y,  WIDGET_PROP_ROTATION,
@@ -320,6 +332,7 @@ TK_DECL_VTABLE(svg_image) = {.size = sizeof(svg_image_t),
                              .persistent_properties = s_svg_image_properties,
                              .get_parent_vt = TK_GET_PARENT_VTABLE(image_base),
                              .create = svg_image_create,
+                             .init = svg_image_init,
                              .on_destroy = svg_image_on_destroy,
                              .on_event = image_base_on_event,
                              .on_paint_self = svg_image_on_paint_self,
@@ -329,15 +342,7 @@ TK_DECL_VTABLE(svg_image) = {.size = sizeof(svg_image_t),
 
 widget_t* svg_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(svg_image), x, y, w, h);
-  svg_image_t* svg_image = SVG_IMAGE(widget);
-  return_value_if_fail(svg_image != NULL, NULL);
-
-  svg_image->is_cache_mode = FALSE;
-  svg_image->canvas_offline = NULL;
-  svg_image->draw_type = IMAGE_DRAW_DEFAULT;
-
-  image_base_init(widget);
-
+  return_value_if_fail(svg_image_init(widget) == RET_OK, NULL);
   return widget;
 }
 

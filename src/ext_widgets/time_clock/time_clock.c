@@ -27,6 +27,7 @@
 #include "base/image_manager.h"
 #include "time_clock/time_clock.h"
 
+static ret_t time_clock_init(widget_t* widget);
 static ret_t time_clock_update_time(time_clock_t* time_clock);
 
 ret_t time_clock_set_hour_anchor(widget_t* widget, const char* anchor_x, const char* anchor_y) {
@@ -380,6 +381,7 @@ TK_DECL_VTABLE(time_clock) = {.size = sizeof(time_clock_t),
                               .persistent_properties = s_time_clock_properties,
                               .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                               .create = time_clock_create,
+                              .init = time_clock_init,
                               .on_paint_self = time_clock_on_paint_self,
                               .set_prop = time_clock_set_prop,
                               .get_prop = time_clock_get_prop,
@@ -399,10 +401,9 @@ static ret_t time_clock_update_time(time_clock_t* time_clock) {
   }
 }
 
-widget_t* time_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, TK_REF_VTABLE(time_clock), x, y, w, h);
+static ret_t time_clock_init(widget_t* widget) {
   time_clock_t* time_clock = TIME_CLOCK(widget);
-  return_value_if_fail(time_clock != NULL, NULL);
+  return_value_if_fail(time_clock != NULL, RET_BAD_PARAMS);
 
   time_clock_update_time(time_clock);
   widget_add_timer(widget, time_clock_on_timer, 1000);
@@ -413,7 +414,12 @@ widget_t* time_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   time_clock->minute_anchor_y = tk_str_copy(NULL, "0.5");
   time_clock->second_anchor_x = tk_str_copy(NULL, "0.5");
   time_clock->second_anchor_y = tk_str_copy(NULL, "0.5");
+  return RET_OK;
+}
 
+widget_t* time_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(time_clock), x, y, w, h);
+  return_value_if_fail(time_clock_init(widget) == RET_OK, NULL);
   return widget;
 }
 

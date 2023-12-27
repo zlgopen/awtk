@@ -28,6 +28,7 @@
 #include "color_picker/color_picker.h"
 #include "color_picker/color_component.h"
 
+static ret_t color_picker_init(widget_t* widget);
 static ret_t color_picker_on_paint_begin(widget_t* widget, canvas_t* c);
 
 static ret_t color_picker_get_prop(widget_t* widget, const char* name, value_t* v) {
@@ -59,6 +60,7 @@ TK_DECL_VTABLE(color_picker) = {.size = sizeof(color_picker_t),
                                 .get_prop = color_picker_get_prop,
                                 .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                 .on_paint_begin = color_picker_on_paint_begin,
+                                .init = color_picker_init,
                                 .create = color_picker_create};
 
 static ret_t color_picker_update_child(void* ctx, const void* iter) {
@@ -361,13 +363,18 @@ static ret_t color_picker_hook_children(void* ctx, const void* iter) {
   return RET_OK;
 }
 
-widget_t* color_picker_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, TK_REF_VTABLE(color_picker), x, y, w, h);
+static ret_t color_picker_init(widget_t* widget) {
   color_picker_t* color_picker = COLOR_PICKER(widget);
-  return_value_if_fail(color_picker != NULL, NULL);
+  return_value_if_fail(color_picker != NULL, RET_BAD_PARAMS);
 
   color_picker->inited = FALSE;
   color_picker_set_color(widget, "gold");
+  return RET_OK;
+}
+
+widget_t* color_picker_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(color_picker), x, y, w, h);
+  return_value_if_fail(color_picker_init(widget) == RET_OK, NULL);
 
   return widget;
 }

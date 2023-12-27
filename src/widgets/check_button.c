@@ -163,6 +163,22 @@ static ret_t check_button_set_prop(widget_t* widget, const char* name, const val
   return RET_NOT_FOUND;
 }
 
+static ret_t radio_button_init(widget_t* widget) {
+  check_button_t* check_button = CHECK_BUTTON(widget);
+  return_value_if_fail(check_button != NULL, RET_BAD_PARAMS);
+
+  check_button->radio = FALSE;
+  return RET_OK;
+}
+
+static ret_t radio_button_init_radio(widget_t* widget) {
+  check_button_t* check_button = CHECK_BUTTON(widget);
+  return_value_if_fail(check_button != NULL, RET_BAD_PARAMS);
+
+  check_button->radio = TRUE;
+  return RET_OK;
+}
+
 static const char* s_check_button_properties[] = {WIDGET_PROP_VALUE, NULL};
 TK_DECL_VTABLE(check_button) = {
     .inputable = TRUE,
@@ -170,6 +186,7 @@ TK_DECL_VTABLE(check_button) = {
     .type = WIDGET_TYPE_CHECK_BUTTON,
     .space_key_to_activate = TRUE,
     .return_key_to_activate = TRUE,
+    .init = radio_button_init,
     .clone_properties = s_check_button_properties,
     .persistent_properties = s_check_button_properties,
     .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
@@ -186,6 +203,7 @@ TK_DECL_VTABLE(radio_button) = {
     .type = WIDGET_TYPE_RADIO_BUTTON,
     .space_key_to_activate = TRUE,
     .return_key_to_activate = TRUE,
+    .init = radio_button_init_radio,
     .clone_properties = s_check_button_properties,
     .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
     .create = check_button_create_radio,
@@ -197,10 +215,8 @@ TK_DECL_VTABLE(radio_button) = {
 
 widget_t* check_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(check_button), x, y, w, h);
-  check_button_t* check_button = CHECK_BUTTON(widget);
-  return_value_if_fail(check_button != NULL, NULL);
+  return_value_if_fail(radio_button_init(widget) == RET_OK, NULL);
 
-  check_button->radio = FALSE;
   check_button_set_value_only(widget, FALSE);
 
   return widget;
@@ -208,10 +224,8 @@ widget_t* check_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) 
 
 widget_t* check_button_create_radio(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(radio_button), x, y, w, h);
-  check_button_t* check_button = CHECK_BUTTON(widget);
-  return_value_if_fail(check_button != NULL, NULL);
+  return_value_if_fail(radio_button_init_radio(widget) == RET_OK, NULL);
 
-  check_button->radio = TRUE;
   check_button_set_value_only(widget, FALSE);
 
   return widget;

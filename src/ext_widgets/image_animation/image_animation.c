@@ -26,6 +26,7 @@
 #include "base/image_manager.h"
 #include "image_animation/image_animation.h"
 
+static ret_t image_animation_init(widget_t* widget);
 static ret_t image_animation_start_init_if_not_inited(widget_t* widget);
 
 static ret_t image_animation_play_to_done(image_animation_t* image_animation) {
@@ -235,6 +236,7 @@ TK_DECL_VTABLE(image_animation) = {.size = sizeof(image_animation_t),
                                    .clone_properties = s_image_animation_clone_properties,
                                    .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                    .create = image_animation_create,
+                                   .init = image_animation_init,
                                    .on_destroy = image_animation_on_destroy,
                                    .get_prop = image_animation_get_prop,
                                    .set_prop = image_animation_set_prop,
@@ -275,11 +277,10 @@ static ret_t image_animation_start_init_if_not_inited(widget_t* widget) {
   return RET_OK;
 }
 
-widget_t* image_animation_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, TK_REF_VTABLE(image_animation), x, y, w, h);
+static ret_t image_animation_init(widget_t* widget) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
 
-  return_value_if_fail(image_animation != NULL, NULL);
+  return_value_if_fail(image_animation != NULL, RET_BAD_PARAMS);
 
   image_animation->index = 0;
   image_animation->end_index = 0;
@@ -287,6 +288,12 @@ widget_t* image_animation_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
   image_animation->interval = 16;
   image_animation->loop = TRUE;
   image_animation->auto_play = FALSE;
+  return RET_OK;
+}
+
+widget_t* image_animation_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(image_animation), x, y, w, h);
+  return_value_if_fail(image_animation_init(widget) == RET_OK, NULL);
 
   return widget;
 }

@@ -286,6 +286,14 @@ static ret_t tab_button_group_on_remove_child(widget_t* widget, widget_t* child)
   return RET_CONTINUE;
 }
 
+static ret_t tab_button_group_init(widget_t* widget) {
+  tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
+  return_value_if_fail(tab_button_group != NULL, RET_BAD_PARAMS);
+
+  tab_button_group->hscrollable = hscrollable_create(widget);
+  return RET_OK;
+}
+
 TK_DECL_VTABLE(tab_button_group) = {.size = sizeof(tab_button_group_t),
                                     .type = WIDGET_TYPE_TAB_BUTTON_GROUP,
                                     .scrollable = TRUE,
@@ -302,11 +310,7 @@ TK_DECL_VTABLE(tab_button_group) = {.size = sizeof(tab_button_group_t),
 
 widget_t* tab_button_group_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(tab_button_group), x, y, w, h);
-  tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
-  ENSURE(tab_button_group);
-  return_value_if_fail(widget != NULL, NULL);
-
-  tab_button_group->hscrollable = hscrollable_create(widget);
+  return_value_if_fail(tab_button_group_init(widget) == RET_OK, NULL);
 
   return widget;
 }

@@ -352,6 +352,14 @@ static ret_t gauge_pointer_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t gauge_pointer_init(widget_t* widget) {
+  gauge_pointer_t* gauge_pointer = GAUGE_POINTER(widget);
+  return_value_if_fail(gauge_pointer != NULL, RET_BAD_PARAMS);
+  gauge_pointer->anchor_x = tk_strdup("0.5");
+  gauge_pointer->anchor_y = tk_strdup("0.5");
+  return RET_OK;
+}
+
 static const char* s_gauge_pointer_properties[] = {
     GAUGE_POINTER_PROP_ANGLE, WIDGET_PROP_IMAGE, WIDGET_PROP_ANCHOR_X, WIDGET_PROP_ANCHOR_Y, NULL};
 
@@ -362,6 +370,7 @@ TK_DECL_VTABLE(gauge_pointer) = {.size = sizeof(gauge_pointer_t),
                                  .allow_draw_outside = TRUE,
                                  .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                  .create = gauge_pointer_create,
+                                 .init = gauge_pointer_init,
                                  .on_paint_self = gauge_pointer_on_paint_self,
                                  .on_paint_background = widget_on_paint_null,
                                  .set_prop = gauge_pointer_set_prop,
@@ -370,12 +379,9 @@ TK_DECL_VTABLE(gauge_pointer) = {.size = sizeof(gauge_pointer_t),
                                  .on_destroy = gauge_pointer_on_destroy};
 
 widget_t* gauge_pointer_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  gauge_pointer_t* gauge_pointer =
-      GAUGE_POINTER(widget_create(parent, TK_REF_VTABLE(gauge_pointer), x, y, w, h));
-  return_value_if_fail(gauge_pointer != NULL, NULL);
-  gauge_pointer->anchor_x = tk_strdup("0.5");
-  gauge_pointer->anchor_y = tk_strdup("0.5");
-  return (widget_t*)gauge_pointer;
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(gauge_pointer), x, y, w, h);
+  return_value_if_fail(gauge_pointer_init(widget) == RET_OK, NULL);
+  return widget;
 }
 
 widget_t* gauge_pointer_cast(widget_t* widget) {

@@ -594,12 +594,21 @@ ret_t rich_text_set_yslidable(widget_t* widget, bool_t yslidable) {
   return RET_OK;
 }
 
+static ret_t rich_text_init(widget_t* widget) {
+  rich_text_t* rich_text = RICH_TEXT(widget);
+  return_value_if_fail(rich_text != NULL, RET_BAD_PARAMS);
+
+  rich_text->yslidable = TRUE;
+  return RET_OK;
+}
+
 static const char* s_rich_text_clone_properties[] = {WIDGET_PROP_MARGIN, WIDGET_PROP_LINE_GAP,
                                                      NULL};
 TK_DECL_VTABLE(rich_text) = {.size = sizeof(rich_text_t),
                              .type = "rich_text",
                              .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                              .create = rich_text_create,
+                             .init = rich_text_init,
                              .clone_properties = s_rich_text_clone_properties,
                              .on_event = rich_text_on_event,
                              .set_prop = rich_text_set_prop,
@@ -609,11 +618,7 @@ TK_DECL_VTABLE(rich_text) = {.size = sizeof(rich_text_t),
 
 widget_t* rich_text_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(rich_text), x, y, w, h);
-  rich_text_t* rich_text = RICH_TEXT(widget);
-  return_value_if_fail(rich_text != NULL, NULL);
-
-  rich_text->yslidable = TRUE;
-
+  return_value_if_fail(rich_text_init(widget) == RET_OK, NULL);
   return widget;
 }
 

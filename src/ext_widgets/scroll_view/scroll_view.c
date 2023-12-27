@@ -762,6 +762,18 @@ static ret_t scroll_view_get_only_active_children(widget_t* widget, darray_t* al
   return RET_SKIP;
 }
 
+static ret_t scroll_view_init(widget_t* widget) {
+  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  return_value_if_fail(scroll_view != NULL, RET_BAD_PARAMS);
+
+  scroll_view->snap_to_page = FALSE;
+  scroll_view->xspeed_scale = SCROLL_VIEW_DEFAULT_XSPEED_SCALE;
+  scroll_view->yspeed_scale = SCROLL_VIEW_DEFAULT_YSPEED_SCALE;
+  scroll_view->fix_end_offset = scroll_view_fix_end_offset_default;
+  scroll_view->slide_limit_ratio = 1.0;
+  return RET_OK;
+}
+
 static const char* s_scroll_view_clone_properties[] = {
     WIDGET_PROP_VIRTUAL_W,     WIDGET_PROP_VIRTUAL_H,     WIDGET_PROP_XSLIDABLE,
     WIDGET_PROP_YSLIDABLE,     WIDGET_PROP_XOFFSET,       WIDGET_PROP_YOFFSET,
@@ -785,15 +797,7 @@ TK_DECL_VTABLE(scroll_view) = {.size = sizeof(scroll_view_t),
 
 widget_t* scroll_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(scroll_view), x, y, w, h);
-  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
-  return_value_if_fail(scroll_view != NULL, NULL);
-
-  scroll_view->snap_to_page = FALSE;
-  scroll_view->xspeed_scale = SCROLL_VIEW_DEFAULT_XSPEED_SCALE;
-  scroll_view->yspeed_scale = SCROLL_VIEW_DEFAULT_YSPEED_SCALE;
-  scroll_view->fix_end_offset = scroll_view_fix_end_offset_default;
-  scroll_view->slide_limit_ratio = 1.0;
-
+  return_value_if_fail(scroll_view_init(widget) == RET_OK, NULL);
   return widget;
 }
 

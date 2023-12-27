@@ -342,6 +342,17 @@ static ret_t label_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
+static ret_t label_init(widget_t* widget) {
+  label_t* label = LABEL(widget);
+  return_value_if_fail(label != NULL, RET_BAD_PARAMS);
+
+  label->max_w = 0;
+  label->length = -1;
+  label->line_wrap = FALSE;
+  label->word_wrap = FALSE;
+  return RET_OK;
+}
+
 static const char* const s_label_properties[] = {WIDGET_PROP_LENGTH,   WIDGET_PROP_LINE_WRAP,
                                                  WIDGET_PROP_MAX_W,    WIDGET_PROP_WORD_WRAP,
                                                  WIDGET_PROP_ELLIPSES, NULL};
@@ -352,6 +363,7 @@ TK_DECL_VTABLE(label) = {.size = sizeof(label_t),
                          .clone_properties = s_label_properties,
                          .persistent_properties = s_label_properties,
                          .create = label_create,
+                         .init = label_init,
                          .set_prop = label_set_prop,
                          .get_prop = label_get_prop,
                          .on_event = label_on_event,
@@ -360,13 +372,7 @@ TK_DECL_VTABLE(label) = {.size = sizeof(label_t),
 
 widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(label), x, y, w, h);
-  label_t* label = LABEL(widget);
-  return_value_if_fail(label != NULL, NULL);
-
-  label->max_w = 0;
-  label->length = -1;
-  label->line_wrap = FALSE;
-  label->word_wrap = FALSE;
+  return_value_if_fail(label_init(widget) == RET_OK, NULL);
 
   return widget;
 }

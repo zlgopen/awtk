@@ -411,12 +411,24 @@ static ret_t grid_on_paint_background(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t grid_init(widget_t* widget) {
+  grid_t* grid = GRID(widget);
+  return_value_if_fail(grid != NULL, RET_BAD_PARAMS);
+
+  grid->rows = 3;
+  grid->show_grid = FALSE;
+  grid->columns_definition = NULL;
+  darray_init(&(grid->cols_definition), 5, (tk_destroy_t)column_definition_destroy, NULL);
+  return RET_OK;
+}
+
 TK_DECL_VTABLE(grid) = {.size = sizeof(grid_t),
                         .type = WIDGET_TYPE_GRID,
                         .clone_properties = s_grid_properties,
                         .persistent_properties = s_grid_properties,
                         .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                         .create = grid_create,
+                        .init = grid_init,
                         .on_paint_self = grid_on_paint_self,
                         .set_prop = grid_set_prop,
                         .get_prop = grid_get_prop,
@@ -428,14 +440,7 @@ TK_DECL_VTABLE(grid) = {.size = sizeof(grid_t),
 
 widget_t* grid_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(grid), x, y, w, h);
-  grid_t* grid = GRID(widget);
-  return_value_if_fail(grid != NULL, NULL);
-
-  grid->rows = 3;
-  grid->show_grid = FALSE;
-  grid->columns_definition = NULL;
-  darray_init(&(grid->cols_definition), 5, (tk_destroy_t)column_definition_destroy, NULL);
-
+  return_value_if_fail(grid_init(widget) == RET_OK, NULL);
   return widget;
 }
 

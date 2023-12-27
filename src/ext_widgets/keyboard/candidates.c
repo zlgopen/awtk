@@ -28,6 +28,7 @@
 #include "base/system_info.h"
 #include "base/widget_vtable.h"
 
+static ret_t candidates_init(widget_t* widget);
 static ret_t candidates_on_im_candidates_event(void* ctx, event_t* e);
 
 static ret_t candidates_on_button_focused(void* ctx, event_t* e) {
@@ -401,6 +402,7 @@ TK_DECL_VTABLE(candidates) = {.size = sizeof(candidates_t),
                               .clone_properties = s_candidates_properties,
                               .persistent_properties = s_candidates_properties,
                               .create = candidates_create,
+                              .init = candidates_init,
                               .on_event = candidates_on_event,
                               .on_paint_self = candidates_on_paint_self,
                               .on_paint_children = candidates_on_paint_children,
@@ -430,16 +432,21 @@ static ret_t candidates_on_im_candidates_event(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-widget_t* candidates_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, TK_REF_VTABLE(candidates), x, y, w, h);
+static ret_t candidates_init(widget_t* widget) {
   candidates_t* candidates = CANDIDATES(widget);
-  return_value_if_fail(candidates != NULL, NULL);
+  return_value_if_fail(candidates != NULL, RET_BAD_PARAMS);
 
   candidates->select_by_num = TRUE;
   candidates->hscrollable = hscrollable_create(widget);
   hscrollable_set_always_scrollable(candidates->hscrollable, TRUE);
 
   ENSURE(candidates->hscrollable != NULL);
+  return RET_OK;
+}
+
+widget_t* candidates_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(candidates), x, y, w, h);
+  return_value_if_fail(candidates_init(widget) == RET_OK, NULL);
 
   return widget;
 }

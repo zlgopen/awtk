@@ -30,17 +30,23 @@ static ret_t dialog_title_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);
 }
 
+static ret_t dialog_title_init(widget_t* widget) {
+  return_value_if_fail(DIALOG_TITLE(widget) != NULL, RET_BAD_PARAMS);
+  widget_set_name(widget, "title");
+  return RET_OK;
+}
+
 TK_DECL_VTABLE(dialog_title) = {.size = sizeof(dialog_title_t),
                                 .type = WIDGET_TYPE_DIALOG_TITLE,
                                 .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                 .create = dialog_title_create,
+                                .init = dialog_title_init,
                                 .on_paint_self = dialog_title_on_paint_self};
 
 widget_t* dialog_title_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(dialog_title), x, y, w, h);
   return_value_if_fail(widget != NULL, NULL);
-
-  widget_set_name(widget, "title");
+  return_value_if_fail(dialog_title_init(widget) == RET_OK, NULL);
 
   return widget;
 }

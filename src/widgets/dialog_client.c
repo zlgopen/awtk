@@ -27,18 +27,24 @@ static ret_t dialog_client_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);
 }
 
+static ret_t dialog_client_init(widget_t* widget) {
+  return_value_if_fail(DIALOG_CLIENT(widget) != NULL, RET_BAD_PARAMS);
+  widget_set_name(widget, "client");
+  widget_set_state(widget, WIDGET_STATE_NORMAL);
+  return RET_OK;
+}
+
 TK_DECL_VTABLE(dialog_client) = {.size = sizeof(dialog_client_t),
                                  .type = WIDGET_TYPE_DIALOG_CLIENT,
                                  .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                  .create = dialog_client_create,
+                                 .init = dialog_client_init,
                                  .on_paint_self = dialog_client_on_paint_self};
 
 widget_t* dialog_client_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(dialog_client), x, y, w, h);
   return_value_if_fail(widget != NULL, NULL);
-
-  widget_set_name(widget, "client");
-  widget_set_state(widget, WIDGET_STATE_NORMAL);
+  return_value_if_fail(dialog_client_init(widget) == RET_OK, NULL)
 
   return widget;
 }

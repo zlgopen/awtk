@@ -82,6 +82,14 @@ static ret_t lang_indicator_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t lang_indicator_init(widget_t* widget) {
+  lang_indicator_t* lang_indicator = LANG_INDICATOR(widget);
+  return_value_if_fail(lang_indicator != NULL, RET_BAD_PARAMS);
+  lang_indicator->event_id =
+      input_method_on(input_method(), EVT_IM_LANG_CHANGED, lang_indicator_on_lang_changed, widget);
+  return RET_OK;
+}
+
 TK_DECL_VTABLE(lang_indicator) = {.size = sizeof(lang_indicator_t),
                                   .type = WIDGET_TYPE_LANG_INDICATOR,
                                   .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
@@ -89,15 +97,12 @@ TK_DECL_VTABLE(lang_indicator) = {.size = sizeof(lang_indicator_t),
                                   .get_prop = lang_indicator_get_prop,
                                   .on_destroy = lang_indicator_on_destroy,
                                   .on_paint_self = lang_indicator_on_paint_self,
+                                  .init = lang_indicator_init,
                                   .create = lang_indicator_create};
 
 widget_t* lang_indicator_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(lang_indicator), x, y, w, h);
-  lang_indicator_t* lang_indicator = LANG_INDICATOR(widget);
-  return_value_if_fail(lang_indicator != NULL, NULL);
-  lang_indicator->event_id =
-      input_method_on(input_method(), EVT_IM_LANG_CHANGED, lang_indicator_on_lang_changed, widget);
-
+  return_value_if_fail(lang_indicator_init(widget) == RET_OK, NULL);
   return widget;
 }
 

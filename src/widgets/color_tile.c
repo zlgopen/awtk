@@ -164,12 +164,22 @@ static ret_t color_tile_set_prop(widget_t* widget, const char* name, const value
   return RET_NOT_FOUND;
 }
 
+static ret_t color_tile_init(widget_t* widget) {
+  color_tile_t* color_tile = COLOR_TILE(widget);
+  return_value_if_fail(color_tile != NULL, RET_BAD_PARAMS);
+
+  color_tile_set_bg_color(widget, "#ffffff");
+  color_tile_set_border_color(widget, "#00000000");
+  return RET_OK;
+}
+
 static const char* const s_color_tile_properties[] = {WIDGET_PROP_BG_COLOR,
                                                       WIDGET_PROP_BORDER_COLOR, NULL};
 TK_DECL_VTABLE(color_tile) = {.size = sizeof(color_tile_t),
                               .type = WIDGET_TYPE_COLOR_TILE,
                               .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                               .create = color_tile_create,
+                              .init = color_tile_init,
                               .clone_properties = s_color_tile_properties,
                               .persistent_properties = s_color_tile_properties,
                               .set_prop = color_tile_set_prop,
@@ -178,11 +188,7 @@ TK_DECL_VTABLE(color_tile) = {.size = sizeof(color_tile_t),
 
 widget_t* color_tile_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(color_tile), x, y, w, h);
-  color_tile_t* color_tile = COLOR_TILE(widget);
-  return_value_if_fail(color_tile != NULL, NULL);
-
-  color_tile_set_bg_color(widget, "#ffffff");
-  color_tile_set_border_color(widget, "#00000000");
+  return_value_if_fail(color_tile_init(widget) == RET_OK, NULL);
 
   return widget;
 }

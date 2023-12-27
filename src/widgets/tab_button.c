@@ -27,6 +27,8 @@
 #include "base/widget_vtable.h"
 #include "widgets/pages.h"
 
+static ret_t tab_button_open_idle_func(const idle_info_t* idle);
+
 static ret_t tab_button_pointer_up_cleanup(widget_t* widget) {
   tab_button_t* tab_button = TAB_BUTTON(widget);
   return_value_if_fail(tab_button != NULL, RET_BAD_PARAMS);
@@ -302,6 +304,19 @@ static ret_t tab_button_on_destroy(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t tab_button_init(widget_t* widget) {
+  tab_button_t* tab_button = TAB_BUTTON(widget);
+  return_value_if_fail(tab_button != NULL, RET_BAD_PARAMS);
+
+  tab_button->ui = NULL;
+  tab_button->load_ui = NULL;
+
+  tab_button_set_value_only(widget, FALSE);
+
+  widget_add_idle(widget, tab_button_open_idle_func);
+  return RET_OK;
+}
+
 static const char* s_tab_button_clone_properties[] = {WIDGET_PROP_VALUE, NULL};
 TK_DECL_VTABLE(tab_button) = {.size = sizeof(tab_button_t),
                               .type = WIDGET_TYPE_TAB_BUTTON,
@@ -310,6 +325,7 @@ TK_DECL_VTABLE(tab_button) = {.size = sizeof(tab_button_t),
                               .clone_properties = s_tab_button_clone_properties,
                               .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                               .create = tab_button_create,
+                              .init = tab_button_init,
                               .on_event = tab_button_on_event,
                               .on_paint_self = tab_button_on_paint_self,
                               .get_prop = tab_button_get_prop,
@@ -350,16 +366,7 @@ static ret_t tab_button_open_idle_func(const idle_info_t* idle) {
 
 widget_t* tab_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(tab_button), x, y, w, h);
-  tab_button_t* tab_button = TAB_BUTTON(widget);
-  return_value_if_fail(tab_button != NULL, NULL);
-
-  tab_button->ui = NULL;
-  tab_button->load_ui = NULL;
-
-  tab_button_set_value_only(widget, FALSE);
-
-  widget_add_idle(widget, tab_button_open_idle_func);
-
+  return_value_if_fail(tab_button_init(widget) == RET_OK, NULL);
   return widget;
 }
 

@@ -294,6 +294,16 @@ static ret_t pages_get_only_active_children(widget_t* widget, darray_t* all_focu
   return RET_SKIP;
 }
 
+static ret_t pages_init(widget_t* widget) {
+  pages_t* pages = PAGES(widget);
+  return_value_if_fail(pages != NULL, RET_BAD_PARAMS);
+  str_init(&(pages->str_target), DEFAULT_FOCUSED_CHILD_SAVE_TARGET_TAG_LENGT);
+  pages->init_idle_id = idle_add(pages_on_idle_init_save_target, widget);
+  pages->active = 0xffffffff;
+  pages->auto_focused = TRUE;
+  return RET_OK;
+}
+
 static const char* const s_pages_clone_properties[] = {WIDGET_PROP_VALUE, NULL};
 
 TK_DECL_VTABLE(pages) = {.size = sizeof(pages_t),
@@ -303,6 +313,7 @@ TK_DECL_VTABLE(pages) = {.size = sizeof(pages_t),
                          .clone_properties = s_pages_clone_properties,
                          .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                          .create = pages_create,
+                         .init = pages_init,
                          .on_paint_self = widget_on_paint_null,
                          .on_paint_children = widget_on_paint_children_clip,
                          .find_target = pages_find_target,
@@ -315,12 +326,7 @@ TK_DECL_VTABLE(pages) = {.size = sizeof(pages_t),
 
 widget_t* pages_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(pages), x, y, w, h);
-  pages_t* pages = PAGES(widget);
-  return_value_if_fail(pages != NULL, NULL);
-  str_init(&(pages->str_target), DEFAULT_FOCUSED_CHILD_SAVE_TARGET_TAG_LENGT);
-  pages->init_idle_id = idle_add(pages_on_idle_init_save_target, widget);
-  pages->active = 0xffffffff;
-  pages->auto_focused = TRUE;
+  return_value_if_fail(pages_init(widget) == RET_OK, NULL);
 
   return widget;
 }

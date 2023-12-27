@@ -135,6 +135,11 @@ static ret_t system_bar_on_copy(widget_t* widget, widget_t* other) {
   return widget_copy_props(widget, other, s_system_bar_properties);
 }
 
+static ret_t system_bar_init(widget_t* widget) {
+  widget_on(widget->parent, EVT_TOP_WINDOW_CHANGED, system_bar_on_top_window_changed, widget);
+  return RET_OK;
+}
+
 TK_DECL_VTABLE(system_bar) = {.size = sizeof(system_bar_t),
                               .type = WIDGET_TYPE_SYSTEM_BAR,
                               .is_window = TRUE,
@@ -142,6 +147,7 @@ TK_DECL_VTABLE(system_bar) = {.size = sizeof(system_bar_t),
                               .persistent_properties = s_system_bar_properties,
                               .get_parent_vt = TK_GET_PARENT_VTABLE(window_base),
                               .create = system_bar_create,
+                              .init = system_bar_init,
                               .on_copy = system_bar_on_copy,
                               .on_event = system_bar_on_event,
                               .set_prop = window_base_set_prop,
@@ -155,7 +161,7 @@ widget_t* system_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = window_base_create(parent, TK_REF_VTABLE(system_bar), x, y, w, h);
   return_value_if_fail(widget != NULL, NULL);
 
-  widget_on(widget->parent, EVT_TOP_WINDOW_CHANGED, system_bar_on_top_window_changed, widget);
+  system_bar_init(widget);
 
   return widget;
 }
@@ -167,6 +173,7 @@ TK_DECL_VTABLE(system_bar_bottom) = {.size = sizeof(system_bar_t),
                                      .persistent_properties = s_system_bar_properties,
                                      .get_parent_vt = TK_GET_PARENT_VTABLE(window_base),
                                      .create = system_bar_create,
+                                     .init = system_bar_init,
                                      .on_event = system_bar_on_event,
                                      .set_prop = window_base_set_prop,
                                      .get_prop = window_base_get_prop,
@@ -179,7 +186,7 @@ widget_t* system_bar_bottom_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_
   widget_t* widget = window_base_create(parent, TK_REF_VTABLE(system_bar_bottom), x, y, w, h);
   return_value_if_fail(widget != NULL, NULL);
 
-  widget_on(widget->parent, EVT_TOP_WINDOW_CHANGED, system_bar_on_top_window_changed, widget);
+  system_bar_init(widget);
 
   return widget;
 }

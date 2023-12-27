@@ -161,10 +161,21 @@ static ret_t calibration_win_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t calibration_win_init(widget_t* widget) {
+  calibration_win_t* win = CALIBRATION_WIN(widget);
+  return_value_if_fail(win != NULL, RET_BAD_PARAMS);
+  win->cursor = 0;
+  win->x_offset = 20;
+  win->y_offset = 20;
+  win->cross_size = 16;
+  return RET_OK;
+}
+
 TK_DECL_VTABLE(calibration_win) = {.size = sizeof(calibration_win_t),
                                    .type = WIDGET_TYPE_CALIBRATION_WIN,
                                    .is_window = TRUE,
                                    .get_parent_vt = TK_GET_PARENT_VTABLE(window_base),
+                                   .init = calibration_win_init,
                                    .create = calibration_win_create,
                                    .on_event = calibration_win_on_event,
                                    .set_prop = window_base_set_prop,
@@ -197,14 +208,7 @@ ret_t calibration_win_set_on_click(widget_t* widget, calibration_win_on_click_t 
 
 widget_t* calibration_win_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = window_base_create(parent, TK_REF_VTABLE(calibration_win), x, y, w, h);
-  calibration_win_t* win = CALIBRATION_WIN(widget);
-
-  return_value_if_fail(win != NULL, NULL);
-
-  win->cursor = 0;
-  win->x_offset = 20;
-  win->y_offset = 20;
-  win->cross_size = 16;
+  return_value_if_fail(calibration_win_init(widget) == RET_OK, NULL);
 
   widget_resize(widget, widget->parent->w, widget->parent->h);
 

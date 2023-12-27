@@ -320,6 +320,18 @@ static ret_t serial_widget_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
+static ret_t serial_widget_init(widget_t* widget) {
+  serial_widget_t* serial_widget = SERIAL_WIDGET(widget);
+  return_value_if_fail(serial_widget != NULL, RET_BAD_PARAMS);
+
+  serial_widget->baudrate = 115200;
+  serial_widget->bytesize = eightbits;
+  serial_widget->stopbits = stopbits_one;
+  serial_widget->flowcontrol = flowcontrol_none;
+  serial_widget->check_interval = 100;
+  return RET_OK;
+}
+
 const char* s_serial_widget_properties[] = {SERIAL_WIDGET_PROP_BAUDRATE,
                                             SERIAL_WIDGET_PROP_BYTESIZE,
                                             SERIAL_WIDGET_PROP_PARITY,
@@ -338,19 +350,12 @@ TK_DECL_VTABLE(serial_widget) = {.size = sizeof(serial_widget_t),
                                  .set_prop = serial_widget_set_prop,
                                  .get_prop = serial_widget_get_prop,
                                  .on_event = serial_widget_on_event,
+                                 .init = serial_widget_init,
                                  .on_destroy = serial_widget_on_destroy};
 
 widget_t* serial_widget_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(serial_widget), x, y, w, h);
-  serial_widget_t* serial_widget = SERIAL_WIDGET(widget);
-  return_value_if_fail(serial_widget != NULL, NULL);
-
-  serial_widget->baudrate = 115200;
-  serial_widget->bytesize = eightbits;
-  serial_widget->stopbits = stopbits_one;
-  serial_widget->flowcontrol = flowcontrol_none;
-  serial_widget->check_interval = 100;
-
+  return_value_if_fail(serial_widget_init(widget) == RET_OK, NULL);
   return widget;
 }
 

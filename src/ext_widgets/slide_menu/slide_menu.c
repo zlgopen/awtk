@@ -782,6 +782,19 @@ static ret_t slide_menu_on_destroy(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t slide_menu_init(widget_t* widget) {
+  slide_menu_t* slide_menu = SLIDE_MENU(widget);
+  return_value_if_fail(slide_menu != NULL, RET_BAD_PARAMS);
+
+  slide_menu->value = 1;
+  slide_menu->min_scale = 0.8f;
+  slide_menu->align_v = ALIGN_V_BOTTOM;
+  slide_menu->spacer = 0;
+  slide_menu->menu_w = tk_strdup("");
+  slide_menu->clip = TRUE;
+  return RET_OK;
+}
+
 const char* s_slide_menu_properties[] = {WIDGET_PROP_VALUE,
                                          WIDGET_PROP_ALIGN_V,
                                          SLIDE_MENU_PROP_MIN_SCALE,
@@ -797,6 +810,7 @@ TK_DECL_VTABLE(slide_menu) = {.size = sizeof(slide_menu_t),
                               .persistent_properties = s_slide_menu_properties,
                               .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                               .create = slide_menu_create,
+                              .init = slide_menu_init,
                               .set_prop = slide_menu_set_prop,
                               .get_prop = slide_menu_get_prop,
                               .find_target = slide_menu_find_target,
@@ -807,16 +821,7 @@ TK_DECL_VTABLE(slide_menu) = {.size = sizeof(slide_menu_t),
 
 widget_t* slide_menu_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(slide_menu), x, y, w, h);
-  slide_menu_t* slide_menu = SLIDE_MENU(widget);
-  return_value_if_fail(slide_menu != NULL, NULL);
-
-  slide_menu->value = 1;
-  slide_menu->min_scale = 0.8f;
-  slide_menu->align_v = ALIGN_V_BOTTOM;
-  slide_menu->spacer = 0;
-  slide_menu->menu_w = tk_strdup("");
-  slide_menu->clip = TRUE;
-
+  return_value_if_fail(slide_menu_init(widget) == RET_OK, NULL);
   return widget;
 }
 

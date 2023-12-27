@@ -125,6 +125,15 @@ static ret_t image_on_copy(widget_t* widget, widget_t* other) {
   return RET_OK;
 }
 
+static ret_t image_init(widget_t* widget) {
+  image_t* image = IMAGE(widget);
+  return_value_if_fail(image != NULL, RET_BAD_PARAMS);
+
+  image_base_init(widget);
+  image->draw_type = IMAGE_DRAW_ICON;
+  return RET_OK;
+}
+
 TK_DECL_VTABLE(image) = {.size = sizeof(image_t),
                          .type = WIDGET_TYPE_IMAGE,
                          .space_key_to_activate = TRUE,
@@ -133,6 +142,7 @@ TK_DECL_VTABLE(image) = {.size = sizeof(image_t),
                          .persistent_properties = s_image_properties,
                          .get_parent_vt = TK_GET_PARENT_VTABLE(image_base),
                          .create = image_create,
+                         .init = image_init,
                          .on_copy = image_on_copy,
                          .on_destroy = image_base_on_destroy,
                          .on_event = image_base_on_event,
@@ -142,11 +152,7 @@ TK_DECL_VTABLE(image) = {.size = sizeof(image_t),
 
 widget_t* image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(image), x, y, w, h);
-  image_t* image = IMAGE(widget);
-  return_value_if_fail(image != NULL, NULL);
-
-  image_base_init(widget);
-  image->draw_type = IMAGE_DRAW_ICON;
+  return_value_if_fail(image_init(widget) == RET_OK, NULL);
 
   return widget;
 }
@@ -159,6 +165,7 @@ TK_DECL_VTABLE(icon) = {.size = sizeof(image_t),
                         .persistent_properties = s_image_properties,
                         .get_parent_vt = TK_GET_PARENT_VTABLE(image_base),
                         .create = image_create,
+                        .init = image_init,
                         .on_copy = image_on_copy,
                         .on_destroy = image_base_on_destroy,
                         .on_event = image_base_on_event,
@@ -168,11 +175,7 @@ TK_DECL_VTABLE(icon) = {.size = sizeof(image_t),
 
 widget_t* icon_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(icon), x, y, w, h);
-  image_t* image = IMAGE(widget);
-  return_value_if_fail(image != NULL, NULL);
-
-  image_base_init(widget);
-  image->draw_type = IMAGE_DRAW_ICON;
+  return_value_if_fail(image_init(widget) == RET_OK, NULL);
 
   return widget;
 }

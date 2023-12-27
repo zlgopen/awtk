@@ -45,6 +45,7 @@
 #define SCROLL_BAR_UP_AND_DOWN_BUTTON_STYLE_IS_EXIST(up, down) \
   ((up) != NULL && (up)->style != NULL && (down) != NULL && (down)->style != NULL)
 
+static ret_t scroll_bar_init(widget_t* widget);
 static ret_t scroll_bar_update_dragger(widget_t* widget);
 static ret_t scroll_bar_create_children(widget_t* widget);
 static ret_t scroll_bar_set_is_mobile(widget_t* widget, bool_t value);
@@ -566,6 +567,7 @@ TK_DECL_VTABLE(scroll_bar_mobile) = {.size = sizeof(scroll_bar_t),
                                      .clone_properties = s_scroll_bar_clone_properties,
                                      .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                      .create = scroll_bar_create_mobile,
+                                     .init = scroll_bar_init,
                                      .set_prop = scroll_bar_set_prop,
                                      .get_prop = scroll_bar_get_prop,
                                      .on_copy = scroll_bar_on_copy,
@@ -579,6 +581,7 @@ TK_DECL_VTABLE(scroll_bar_desktop) = {.size = sizeof(scroll_bar_t),
                                       .persistent_properties = s_scroll_bar_persitent_properties,
                                       .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                       .create = scroll_bar_create_desktop_self,
+                                      .init = scroll_bar_init,
                                       .on_event = scroll_bar_desktop_on_event,
                                       .on_layout_children = scroll_bar_on_layout_children,
                                       .on_copy = scroll_bar_on_copy,
@@ -749,18 +752,22 @@ static ret_t scroll_bar_set_is_mobile(widget_t* widget, bool_t value) {
   return RET_OK;
 }
 
-static widget_t* scroll_bar_create_internal(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h,
-                                            const widget_vtable_t* vt) {
-  widget_t* widget = widget_create(parent, vt, x, y, w, h);
+static ret_t scroll_bar_init(widget_t* widget) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
-  return_value_if_fail(scroll_bar != NULL, NULL);
+  return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
 
   scroll_bar->animatable = TRUE;
   scroll_bar->animator_time = TK_ANIMATING_TIME;
 
   scroll_bar_set_auto_hide(widget, scroll_bar_is_mobile(widget));
   widget_set_state(widget, WIDGET_STATE_NORMAL);
+  return RET_OK;
+}
 
+static widget_t* scroll_bar_create_internal(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h,
+                                            const widget_vtable_t* vt) {
+  widget_t* widget = widget_create(parent, vt, x, y, w, h);
+  return_value_if_fail(scroll_bar_init(widget) == RET_OK, NULL);
   return widget;
 }
 

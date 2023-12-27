@@ -799,24 +799,9 @@ static ret_t text_selector_on_locale_changed(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-TK_DECL_VTABLE(text_selector) = {.size = sizeof(text_selector_t),
-                                 .inputable = TRUE,
-                                 .type = WIDGET_TYPE_TEXT_SELECTOR,
-                                 .clone_properties = s_text_selector_properties,
-                                 .persistent_properties = s_text_selector_properties,
-                                 .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
-                                 .create = text_selector_create,
-                                 .on_paint_self = text_selector_on_paint_self,
-                                 .on_layout_children = text_selector_on_layout_children,
-                                 .set_prop = text_selector_set_prop,
-                                 .get_prop = text_selector_get_prop,
-                                 .on_destroy = text_selector_on_destroy,
-                                 .on_event = text_selector_on_event};
-
-widget_t* text_selector_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, TK_REF_VTABLE(text_selector), x, y, w, h);
+static ret_t text_selector_init(widget_t* widget) {
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
-  return_value_if_fail(text_selector != NULL, NULL);
+  return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
 
   text_selector->visible_nr = 5;
   text_selector->pressed = FALSE;
@@ -830,7 +815,27 @@ widget_t* text_selector_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
   text_selector->mask_area_scale = 1;
 
   str_init(&(text_selector->text), 0);
+  return RET_OK;
+}
 
+TK_DECL_VTABLE(text_selector) = {.size = sizeof(text_selector_t),
+                                 .inputable = TRUE,
+                                 .type = WIDGET_TYPE_TEXT_SELECTOR,
+                                 .clone_properties = s_text_selector_properties,
+                                 .persistent_properties = s_text_selector_properties,
+                                 .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
+                                 .create = text_selector_create,
+                                 .init = text_selector_init,
+                                 .on_paint_self = text_selector_on_paint_self,
+                                 .on_layout_children = text_selector_on_layout_children,
+                                 .set_prop = text_selector_set_prop,
+                                 .get_prop = text_selector_get_prop,
+                                 .on_destroy = text_selector_on_destroy,
+                                 .on_event = text_selector_on_event};
+
+widget_t* text_selector_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(text_selector), x, y, w, h);
+  return_value_if_fail(text_selector_init(widget) == RET_OK, NULL)
   return widget;
 }
 

@@ -103,12 +103,20 @@ static ret_t gauge_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t gauge_init(widget_t* widget) {
+  gauge_t* gauge = GAUGE(widget);
+  return_value_if_fail(gauge != NULL, RET_BAD_PARAMS);
+  gauge->draw_type = IMAGE_DRAW_CENTER;
+  return RET_OK;
+}
+
 TK_DECL_VTABLE(gauge) = {.size = sizeof(gauge_t),
                          .type = WIDGET_TYPE_GAUGE,
                          .clone_properties = s_gauge_properties,
                          .persistent_properties = s_gauge_properties,
                          .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                          .create = gauge_create,
+                         .init = gauge_init,
                          .on_paint_self = gauge_on_paint_self,
                          .set_prop = gauge_set_prop,
                          .get_prop = gauge_get_prop,
@@ -116,12 +124,7 @@ TK_DECL_VTABLE(gauge) = {.size = sizeof(gauge_t),
 
 widget_t* gauge_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(gauge), x, y, w, h);
-  gauge_t* gauge = GAUGE(widget);
-
-  return_value_if_fail(gauge != NULL, NULL);
-
-  gauge->draw_type = IMAGE_DRAW_CENTER;
-
+  return_value_if_fail(gauge_init(widget) == RET_OK, NULL);
   return widget;
 }
 

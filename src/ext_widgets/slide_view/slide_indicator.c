@@ -911,6 +911,14 @@ ret_t slide_indicator_on_idle_chech_hide(const idle_info_t* idle) {
   return RET_REPEAT;
 }
 
+static ret_t slide_indicator_arc_init(widget_t* widget) {
+  slide_indicator_t* slide_indicator = SLIDE_INDICATOR(widget);
+  return_value_if_fail(slide_indicator != NULL, RET_BAD_PARAMS);
+
+  slide_indicator->spacing = 5;
+  return RET_OK;
+}
+
 static const char* s_slide_indicator_properties[] = {WIDGET_PROP_VALUE,
                                                      WIDGET_PROP_MAX,
                                                      SLIDE_INDICATOR_PROP_DEFAULT_PAINT,
@@ -943,6 +951,7 @@ TK_DECL_VTABLE(slide_indicator_arc) = {.size = sizeof(slide_indicator_t),
                                        .persistent_properties = s_slide_indicator_properties,
                                        .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                        .create = slide_indicator_create_arc,
+                                       .init = slide_indicator_arc_init,
                                        .on_event = slide_indicator_on_event,
                                        .get_prop = slide_indicator_get_prop,
                                        .set_prop = slide_indicator_set_prop,
@@ -989,10 +998,7 @@ widget_t* slide_indicator_create_linear(widget_t* parent, xy_t x, xy_t y, wh_t w
 widget_t* slide_indicator_create_arc(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget =
       slide_indicator_create_internal(parent, x, y, w, h, TK_REF_VTABLE(slide_indicator_arc));
-  slide_indicator_t* slide_indicator = SLIDE_INDICATOR(widget);
-  return_value_if_fail(slide_indicator != NULL, NULL);
-
-  slide_indicator->spacing = 5;
+  return_value_if_fail(slide_indicator_arc_init(widget) == RET_OK, NULL);
   return widget;
 }
 

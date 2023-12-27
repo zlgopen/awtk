@@ -424,6 +424,16 @@ static ret_t switch_set_prop(widget_t* widget, const char* name, const value_t* 
   return RET_NOT_FOUND;
 }
 
+static ret_t switch_init(widget_t* widget) {
+  switch_t* aswitch = SWITCH(widget);
+  return_value_if_fail(aswitch != NULL, RET_BAD_PARAMS);
+
+  aswitch->value = TRUE;
+  aswitch->pressed = FALSE;
+  aswitch->max_xoffset_ratio = 1.0f / 3.0f;
+  return RET_OK;
+}
+
 static const char* s_switch_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_XOFFSET,
                                             SWITCH_PROP_MAX_XOFFSET_RATIO, NULL};
 
@@ -437,6 +447,7 @@ TK_DECL_VTABLE(switch) = {
     .persistent_properties = s_switch_properties,
     .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
     .create = switch_create,
+    .init = switch_init,
     .on_event = switch_on_event,
     .on_paint_background = switch_on_paint_background,
     .on_paint_self = switch_on_paint_self,
@@ -446,13 +457,7 @@ TK_DECL_VTABLE(switch) = {
 
 widget_t* switch_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(switch), x, y, w, h);
-  switch_t* aswitch = SWITCH(widget);
-  return_value_if_fail(aswitch != NULL, NULL);
-
-  aswitch->value = TRUE;
-  aswitch->pressed = FALSE;
-  aswitch->max_xoffset_ratio = 1.0f / 3.0f;
-
+  return_value_if_fail(switch_init(widget) == RET_OK, NULL);
   return widget;
 }
 

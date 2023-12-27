@@ -75,6 +75,18 @@ static ret_t keyboard_on_event(widget_t* widget, event_t* e) {
   return window_base_on_event(widget, e);
 }
 
+static ret_t keyboard_init(widget_t* widget) {
+  keyboard_t* keyboard = KEYBOARD(widget);
+  return_value_if_fail(keyboard != NULL, RET_BAD_PARAMS);
+
+  str_init(&(keyboard->temp), 0);
+  darray_init(&(keyboard->action_buttons), 0, NULL, NULL);
+  widget_on(widget, EVT_WINDOW_LOAD, keyboard_on_load, widget);
+  keyboard->action_info_id =
+      input_method_on(input_method(), EVT_IM_ACTION_INFO, keyboard_on_action_info, widget);
+  return RET_OK;
+}
+
 TK_DECL_VTABLE(keyboard) = {.size = sizeof(keyboard_t),
                             .type = WIDGET_TYPE_KEYBOARD,
                             .is_window = TRUE,
@@ -83,6 +95,7 @@ TK_DECL_VTABLE(keyboard) = {.size = sizeof(keyboard_t),
                             .persistent_properties = s_keyboard_properties,
                             .get_parent_vt = TK_GET_PARENT_VTABLE(window_base),
                             .create = keyboard_create,
+                            .init = keyboard_init,
                             .on_event = keyboard_on_event,
                             .on_paint_self = window_base_on_paint_self,
                             .on_paint_begin = window_base_on_paint_begin,
@@ -93,15 +106,7 @@ TK_DECL_VTABLE(keyboard) = {.size = sizeof(keyboard_t),
 
 widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = window_base_create(parent, TK_REF_VTABLE(keyboard), x, y, w, h);
-  keyboard_t* keyboard = KEYBOARD(widget);
-  return_value_if_fail(keyboard != NULL, NULL);
-
-  str_init(&(keyboard->temp), 0);
-  darray_init(&(keyboard->action_buttons), 0, NULL, NULL);
-  widget_on(widget, EVT_WINDOW_LOAD, keyboard_on_load, widget);
-  keyboard->action_info_id =
-      input_method_on(input_method(), EVT_IM_ACTION_INFO, keyboard_on_action_info, widget);
-
+  return_value_if_fail(keyboard_init(widget) == RET_OK, NULL);
   return widget;
 }
 

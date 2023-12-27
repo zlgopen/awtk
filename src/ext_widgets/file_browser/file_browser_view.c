@@ -502,6 +502,20 @@ static ret_t file_browser_view_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
+static ret_t file_browser_view_init(widget_t* widget) {
+  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
+  return_value_if_fail(file_browser_view != NULL, RET_BAD_PARAMS);
+
+  file_browser_view->sort_ascending = TRUE;
+  file_browser_view->show_check_button = FALSE;
+  file_browser_view->ignore_hidden_files = TRUE;
+  file_browser_view->fb = file_browser_create(os_fs());
+  darray_init(&(file_browser_view->selected_items), 10, NULL, NULL);
+  darray_init(&(file_browser_view->file_items_cache), 10, (tk_destroy_t)widget_unref, NULL);
+  darray_init(&(file_browser_view->folder_items_cache), 10, (tk_destroy_t)widget_unref, NULL);
+  return RET_OK;
+}
+
 const char* s_file_browser_view_properties[] = {
     FILE_BROWSER_VIEW_PROP_SORT_BY, FILE_BROWSER_VIEW_PROP_INIT_DIR,
     FILE_BROWSER_VIEW_PROP_SORT_ASCENDING, FILE_BROWSER_VIEW_PROP_IGNORE_HIDDEN_FILES, NULL};
@@ -512,6 +526,7 @@ TK_DECL_VTABLE(file_browser_view) = {.size = sizeof(file_browser_view_t),
                                      .persistent_properties = s_file_browser_view_properties,
                                      .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                      .create = file_browser_view_create,
+                                     .init = file_browser_view_init,
                                      .on_paint_self = file_browser_view_on_paint_self,
                                      .set_prop = file_browser_view_set_prop,
                                      .get_prop = file_browser_view_get_prop,
@@ -520,16 +535,7 @@ TK_DECL_VTABLE(file_browser_view) = {.size = sizeof(file_browser_view_t),
 
 widget_t* file_browser_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(file_browser_view), x, y, w, h);
-  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
-  return_value_if_fail(file_browser_view != NULL, NULL);
-
-  file_browser_view->sort_ascending = TRUE;
-  file_browser_view->show_check_button = FALSE;
-  file_browser_view->ignore_hidden_files = TRUE;
-  file_browser_view->fb = file_browser_create(os_fs());
-  darray_init(&(file_browser_view->selected_items), 10, NULL, NULL);
-  darray_init(&(file_browser_view->file_items_cache), 10, (tk_destroy_t)widget_unref, NULL);
-  darray_init(&(file_browser_view->folder_items_cache), 10, (tk_destroy_t)widget_unref, NULL);
+  return_value_if_fail(file_browser_view_init(widget) == RET_OK, NULL);
 
   return widget;
 }

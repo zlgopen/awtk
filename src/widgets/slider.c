@@ -784,6 +784,20 @@ static ret_t slider_on_destroy(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t slider_init(widget_t* widget) {
+  slider_t* slider = SLIDER(widget);
+  return_value_if_fail(slider != NULL, RET_BAD_PARAMS);
+
+  slider->min = 0;
+  slider->max = 100;
+  slider->step = 1;
+  slider->value = 0;
+  slider->auto_get_dragger_size = TRUE;
+  slider->dragger_adapt_to_icon = TRUE;
+  slider->slide_with_bar = FALSE;
+  return RET_OK;
+}
+
 static const char* s_slider_properties[] = {WIDGET_PROP_VALUE,
                                             WIDGET_PROP_VERTICAL,
                                             WIDGET_PROP_MIN,
@@ -803,6 +817,7 @@ TK_DECL_VTABLE(slider) = {.size = sizeof(slider_t),
                           .persistent_properties = s_slider_properties,
                           .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                           .create = slider_create,
+                          .init = slider_init,
                           .on_event = slider_on_event,
                           .on_paint_self = slider_on_paint_self,
                           .on_paint_border = widget_on_paint_null,
@@ -815,16 +830,7 @@ TK_DECL_VTABLE(slider) = {.size = sizeof(slider_t),
 
 widget_t* slider_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(slider), x, y, w, h);
-  slider_t* slider = SLIDER(widget);
-  return_value_if_fail(slider != NULL, NULL);
-
-  slider->min = 0;
-  slider->max = 100;
-  slider->step = 1;
-  slider->value = 0;
-  slider->auto_get_dragger_size = TRUE;
-  slider->dragger_adapt_to_icon = TRUE;
-  slider->slide_with_bar = FALSE;
+  return_value_if_fail(slider_init(widget) == RET_OK, NULL);
 
   return widget;
 }

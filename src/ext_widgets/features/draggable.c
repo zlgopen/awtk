@@ -371,6 +371,23 @@ static ret_t draggable_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
+static ret_t draggable_init(widget_t* widget) {
+  draggable_t* draggable = DRAGGABLE(widget);
+  return_value_if_fail(draggable != NULL, RET_BAD_PARAMS);
+
+  draggable->top = DRAGGABLE_UNSPECIFIED_NUM;
+  draggable->bottom = DRAGGABLE_UNSPECIFIED_NUM;
+  draggable->left = DRAGGABLE_UNSPECIFIED_NUM;
+  draggable->right = DRAGGABLE_UNSPECIFIED_NUM;
+  draggable->vertical_only = FALSE;
+  draggable->horizontal_only = FALSE;
+  draggable->drag_window = FALSE;
+  draggable->pressed = FALSE;
+  draggable->allow_out_of_screen = FALSE;
+  widget_set_sensitive(widget, FALSE);
+  return RET_OK;
+}
+
 const char* s_draggable_properties[] = {
     DRAGGABLE_PROP_TOP,           DRAGGABLE_PROP_BOTTOM,
     DRAGGABLE_PROP_LEFT,          DRAGGABLE_PROP_RIGHT,
@@ -383,6 +400,7 @@ TK_DECL_VTABLE(draggable) = {.size = sizeof(draggable_t),
                              .persistent_properties = s_draggable_properties,
                              .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                              .create = draggable_create,
+                             .init = draggable_init,
                              .on_paint_self = draggable_on_paint_self,
                              .set_prop = draggable_set_prop,
                              .get_prop = draggable_get_prop,
@@ -393,19 +411,7 @@ TK_DECL_VTABLE(draggable) = {.size = sizeof(draggable_t),
 
 widget_t* draggable_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(draggable), x, y, w, h);
-  draggable_t* draggable = DRAGGABLE(widget);
-  return_value_if_fail(draggable != NULL, NULL);
-
-  draggable->top = DRAGGABLE_UNSPECIFIED_NUM;
-  draggable->bottom = DRAGGABLE_UNSPECIFIED_NUM;
-  draggable->left = DRAGGABLE_UNSPECIFIED_NUM;
-  draggable->right = DRAGGABLE_UNSPECIFIED_NUM;
-  draggable->vertical_only = FALSE;
-  draggable->horizontal_only = FALSE;
-  draggable->drag_window = FALSE;
-  draggable->pressed = FALSE;
-  draggable->allow_out_of_screen = FALSE;
-  widget_set_sensitive(widget, FALSE);
+  return_value_if_fail(draggable_init(widget) == RET_OK, NULL)
 
   return widget;
 }

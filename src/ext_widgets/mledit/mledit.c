@@ -29,6 +29,7 @@
 #include "base/input_method.h"
 #include "scroll_view/scroll_bar.h"
 
+static ret_t mledit_init(widget_t* widget);
 static ret_t mledit_update_status(widget_t* widget);
 static ret_t mledit_dispatch_event(widget_t* widget, event_type_t type);
 
@@ -1251,6 +1252,7 @@ TK_DECL_VTABLE(mledit) = {.size = sizeof(mledit_t),
                           .persistent_properties = s_mledit_properties,
                           .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                           .create = mledit_create,
+                          .init = mledit_init,
                           .on_paint_self = mledit_on_paint_self,
                           .on_re_translate = mledit_on_re_translate,
                           .set_prop = mledit_set_prop,
@@ -1259,10 +1261,9 @@ TK_DECL_VTABLE(mledit) = {.size = sizeof(mledit_t),
                           .on_add_child = mledit_on_add_child,
                           .on_destroy = mledit_on_destroy};
 
-widget_t* mledit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = widget_create(parent, TK_REF_VTABLE(mledit), x, y, w, h);
+static ret_t mledit_init(widget_t* widget) {
   mledit_t* mledit = MLEDIT(widget);
-  return_value_if_fail(mledit != NULL, NULL);
+  return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
 
   mledit->model = text_edit_create(widget, FALSE);
   ENSURE(mledit->model != NULL);
@@ -1284,7 +1285,12 @@ widget_t* mledit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
   mledit_update_status(widget);
   widget_add_idle(widget, mledit_init_idle_func);
+  return RET_OK;
+}
 
+widget_t* mledit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(mledit), x, y, w, h);
+  return_value_if_fail(mledit_init(widget) == RET_OK, NULL);
   return widget;
 }
 

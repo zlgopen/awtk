@@ -210,10 +210,18 @@ static ret_t line_number_set_prop(widget_t* widget, const char* name, const valu
   return RET_NOT_FOUND;
 }
 
+static ret_t line_number_init(widget_t* widget) {
+  line_number_t* line_number = LINE_NUMBER(widget);
+  return_value_if_fail(line_number != NULL, RET_BAD_PARAMS);
+  line_number->active_line = -1;
+  return RET_OK;
+}
+
 TK_DECL_VTABLE(line_number) = {.size = sizeof(line_number_t),
                                .type = WIDGET_TYPE_LINE_NUMBER,
                                .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                .create = line_number_create,
+                               .init = line_number_init,
                                .set_prop = line_number_set_prop,
                                .get_prop = line_number_get_prop,
                                .on_paint_self = line_number_on_paint_self,
@@ -221,10 +229,7 @@ TK_DECL_VTABLE(line_number) = {.size = sizeof(line_number_t),
 
 widget_t* line_number_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(line_number), x, y, w, h);
-  line_number_t* line_number = LINE_NUMBER(widget);
-  return_value_if_fail(line_number != NULL, NULL);
-  line_number->active_line = -1;
-
+  return_value_if_fail(line_number_init(widget) == RET_OK, NULL);
   return widget;
 }
 

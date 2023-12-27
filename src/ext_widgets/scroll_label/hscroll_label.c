@@ -549,6 +549,26 @@ static ret_t hscroll_label_on_detach_parent(widget_t* widget, widget_t* parent) 
   return RET_OK;
 }
 
+static ret_t hscroll_label_init(widget_t* widget) {
+  hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
+  return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
+
+  hscroll_label->xoffset = 0;
+  hscroll_label->lull = 3000;
+  hscroll_label->duration = 5000;
+
+  hscroll_label->loop = FALSE;
+  hscroll_label->yoyo = FALSE;
+  hscroll_label->ellipses = FALSE;
+  hscroll_label->only_focus = FALSE;
+  hscroll_label->stop_at_begin = FALSE;
+
+  hscroll_label->paused = FALSE;
+
+  hscroll_label->timer_id = TK_INVALID_ID;
+  return RET_OK;
+}
+
 static const char* const s_hscroll_label_properties[] = {HSCROLL_LABEL_PROP_YOYO,
                                                          HSCROLL_LABEL_PROP_LOOP,
                                                          HSCROLL_LABEL_PROP_LULL,
@@ -564,6 +584,7 @@ TK_DECL_VTABLE(hscroll_label) = {.size = sizeof(hscroll_label_t),
                                  .clone_properties = s_hscroll_label_properties,
                                  .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                  .create = hscroll_label_create,
+                                 .init = hscroll_label_init,
                                  .on_destroy = hscroll_label_on_destroy,
                                  .on_attach_parent = hscroll_label_on_attach_parent,
                                  .on_detach_parent = hscroll_label_on_detach_parent,
@@ -574,23 +595,7 @@ TK_DECL_VTABLE(hscroll_label) = {.size = sizeof(hscroll_label_t),
 
 widget_t* hscroll_label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(hscroll_label), x, y, w, h);
-  hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
-  return_value_if_fail(hscroll_label != NULL, NULL);
-
-  hscroll_label->xoffset = 0;
-  hscroll_label->lull = 3000;
-  hscroll_label->duration = 5000;
-
-  hscroll_label->loop = FALSE;
-  hscroll_label->yoyo = FALSE;
-  hscroll_label->ellipses = FALSE;
-  hscroll_label->only_focus = FALSE;
-  hscroll_label->stop_at_begin = FALSE;
-
-  hscroll_label->paused = FALSE;
-
-  hscroll_label->timer_id = TK_INVALID_ID;
-
+  return_value_if_fail(hscroll_label_init(widget) == RET_OK, NULL);
   return widget;
 }
 

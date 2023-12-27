@@ -26,6 +26,9 @@
 #include "base/widget_vtable.h"
 #include "mutable_image/mutable_image.h"
 
+static ret_t mutable_image_init_impl(widget_t* widget);
+static ret_t mutable_image_invalidate(const timer_info_t* info);
+
 static bitmap_format_t mutable_image_get_disire_format(widget_t* widget, canvas_t* c) {
   bitmap_format_t format = BITMAP_FMT_NONE;
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
@@ -159,6 +162,7 @@ TK_DECL_VTABLE(mutable_image) = {.size = sizeof(mutable_image_t),
                                  .clone_properties = s_mutable_image_clone_properties,
                                  .get_parent_vt = TK_GET_PARENT_VTABLE(image_base),
                                  .create = mutable_image_create,
+                                 .init = mutable_image_init_impl,
                                  .on_destroy = mutable_image_on_destroy,
                                  .on_event = image_base_on_event,
                                  .on_paint_self = mutable_image_on_paint_self,
@@ -166,6 +170,18 @@ TK_DECL_VTABLE(mutable_image) = {.size = sizeof(mutable_image_t),
                                  .on_attach_parent = mutable_image_on_attach_parent,
                                  .set_prop = mutable_image_set_prop,
                                  .get_prop = image_base_get_prop};
+
+static ret_t mutable_image_init_impl(widget_t* widget) {
+  mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
+  return_value_if_fail(mutable_image != NULL, RET_BAD_PARAMS);
+  image_base_init(widget);
+  mutable_image->timer_id = widget_add_timer(widget, mutable_image_invalidate, 16);
+
+  if (widget->parent != NULL && widget != NULL) {
+    mutable_image_on_attach_parent(widget, widget->parent);
+  }
+  return RET_OK;
+}
 
 static ret_t mutable_image_invalidate(const timer_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
@@ -182,23 +198,13 @@ static ret_t mutable_image_invalidate(const timer_info_t* info) {
 
 widget_t* mutable_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(mutable_image), x, y, w, h);
-  mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
-  return_value_if_fail(mutable_image != NULL, NULL);
+  return_value_if_fail(mutable_image_init_impl(widget) == RET_OK, NULL);
 
-  mutable_image_init(widget);
-
-  if (parent != NULL && widget != NULL) {
-    mutable_image_on_attach_parent(widget, parent);
-  }
   return widget;
 }
 
 widget_t* mutable_image_init(widget_t* widget) {
-  mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
-  return_value_if_fail(mutable_image != NULL, NULL);
-  image_base_init(widget);
-  mutable_image->timer_id = widget_add_timer(widget, mutable_image_invalidate, 16);
-
+  return_value_if_fail(mutable_image_init_impl(widget) == RET_OK, NULL);
   return widget;
 }
 

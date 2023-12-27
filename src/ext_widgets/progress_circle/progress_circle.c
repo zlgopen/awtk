@@ -426,6 +426,20 @@ static ret_t progress_circle_set_prop(widget_t* widget, const char* name, const 
   return RET_NOT_FOUND;
 }
 
+static ret_t progress_circle_init(widget_t* widget) {
+  progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
+  return_value_if_fail(progress_circle != NULL, RET_BAD_PARAMS);
+
+  progress_circle->max = 100;
+  progress_circle->line_width = 8;
+  progress_circle->start_angle = -90;
+  progress_circle->show_text = TRUE;
+  progress_circle->counter_clock_wise = FALSE;
+  progress_circle->dirty_rect = rect_init(0, 0, widget->w, widget->h);
+  progress_circle_set_line_cap(widget, VGCANVAS_LINE_CAP_ROUND);
+  return RET_OK;
+}
+
 static const char* s_progress_circle_clone_properties[] = {WIDGET_PROP_VALUE,
                                                            WIDGET_PROP_MAX,
                                                            WIDGET_PROP_FORMAT,
@@ -439,6 +453,7 @@ TK_DECL_VTABLE(progress_circle) = {.size = sizeof(progress_circle_t),
                                    .clone_properties = s_progress_circle_clone_properties,
                                    .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                    .create = progress_circle_create,
+                                   .init = progress_circle_init,
                                    .on_paint_self = progress_circle_on_paint_self,
                                    .on_paint_background = progress_circle_on_paint_background,
                                    .on_destroy = progress_circle_on_destroy,
@@ -447,16 +462,7 @@ TK_DECL_VTABLE(progress_circle) = {.size = sizeof(progress_circle_t),
 
 widget_t* progress_circle_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(progress_circle), x, y, w, h);
-  progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
-  return_value_if_fail(progress_circle != NULL, NULL);
-
-  progress_circle->max = 100;
-  progress_circle->line_width = 8;
-  progress_circle->start_angle = -90;
-  progress_circle->show_text = TRUE;
-  progress_circle->counter_clock_wise = FALSE;
-  progress_circle->dirty_rect = rect_init(0, 0, w, h);
-  progress_circle_set_line_cap(widget, VGCANVAS_LINE_CAP_ROUND);
+  return_value_if_fail(progress_circle_init(widget) == RET_OK, NULL);
 
   return widget;
 }
