@@ -1222,3 +1222,34 @@ TEST(Utils, tk_date_time_format) {
   ASSERT_EQ(tk_date_time_format(3765, "YY-MM-DD hh:mm:ss", &str), RET_OK);
   ASSERT_STREQ(str.str, "70-01-01 01:02:45");
 }
+
+TEST(Utils, upper) {
+  ASSERT_EQ(tk_isupper('A'), TRUE);
+  ASSERT_EQ(tk_isupper('a'), FALSE);
+  ASSERT_EQ(tk_isupper('1'), FALSE);
+  ASSERT_EQ(tk_isupper('Z'), TRUE);
+  ASSERT_EQ(tk_isupper('z'), FALSE);
+  ASSERT_EQ(tk_isupper(','), FALSE);
+  ASSERT_EQ(tk_isupper(' '), FALSE);
+}
+
+TEST(Utils, lower) {
+  ASSERT_EQ(tk_islower('A'), FALSE);
+  ASSERT_EQ(tk_islower('a'), TRUE);
+  ASSERT_EQ(tk_islower('1'), FALSE);
+  ASSERT_EQ(tk_islower('Z'), FALSE);
+  ASSERT_EQ(tk_islower('z'), TRUE);
+  ASSERT_EQ(tk_islower(','), FALSE);
+  ASSERT_EQ(tk_islower(' '), FALSE);
+}
+
+TEST(Utils, alpha) {
+  ASSERT_EQ(tk_isalpha('A'), TRUE);
+  ASSERT_EQ(tk_isalpha('a'), TRUE);
+  ASSERT_EQ(tk_isalpha('1'), FALSE);
+  ASSERT_EQ(tk_isalpha('Z'), TRUE);
+  ASSERT_EQ(tk_isalpha('z'), TRUE);
+  ASSERT_EQ(tk_isalpha(','), FALSE);
+  ASSERT_EQ(tk_isalpha(' '), FALSE);
+}
+
