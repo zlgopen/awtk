@@ -67,9 +67,10 @@ static ret_t rich_text_view_sync_rich_text_to_scroll_bar(widget_t* widget) {
 
   if (rich_text_view->scroll_bar != NULL) {
     emitter_disable(rich_text_view->scroll_bar->emitter);
-    widget_set_prop_int(rich_text_view->scroll_bar, WIDGET_PROP_MAX, max);
-    widget_set_prop_int(rich_text_view->scroll_bar, WIDGET_PROP_VALUE, value);
+    widget_set_prop_int(rich_text_view->scroll_bar, WIDGET_PROP_MAX, tk_max(0, max - h));
+    widget_set_prop_int(rich_text_view->scroll_bar, WIDGET_PROP_VALUE, tk_max(0, value));
     emitter_enable(rich_text_view->scroll_bar->emitter);
+    widget_layout(widget);
   }
 
   return RET_OK;
