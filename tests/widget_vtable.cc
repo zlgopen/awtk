@@ -9,7 +9,10 @@ using namespace std;
 
 static string s_log;
 
-static ret_t debugger_log(void* ctx, log_level_t level, const char* msg) {
+static ret_t debugger_log(void* ctx, log_level_t level, const char* format, va_list ap) {
+  char msg[1024] = {0};
+  tk_vsnprintf(msg, sizeof(msg)-1, format, ap);
+
   s_log += msg;
   return RET_OK;
 }

@@ -197,7 +197,7 @@ log_message_event_t* log_message_event_cast(event_t* event) {
   return (log_message_event_t*)event;
 }
 
-event_t* log_message_event_init(log_message_event_t* event, log_level_t level, const char* message) {
+event_t* log_message_event_init(log_message_event_t* event, tk_log_level_t level, const char* message) {
   return_value_if_fail(event != NULL, NULL);
   memset(event, 0x00, sizeof(*event));
   event->e = event_init(EVT_LOG_MESSAGE, NULL);

@@ -509,11 +509,11 @@ event_t* value_change_event_init(value_change_event_t* event, uint32_t type, voi
 typedef struct _log_message_event_t {
   event_t e;
   /**
-   * @property {log_level_t} level
+   * @property {tk_log_level_t} level
    * @annotation ["readable"]
    * 级别。
    */
-  log_level_t level;
+  tk_log_level_t level;
 
   /**
    * @property {const char*} message
@@ -537,12 +537,12 @@ log_message_event_t* log_message_event_cast(event_t* event);
  * @method log_message_event_init
  * 初始化事件。
  * @param {log_message_event_t*} event event对象。
- * @param {log_level_t} level 级别。
+ * @param {tk_log_level_t} level 级别。
  * @param {const char*} message 日志。
  *
  * @return {event_t*} event对象。
  */
-event_t* log_message_event_init(log_message_event_t* event, log_level_t level, const char* message);
+event_t* log_message_event_init(log_message_event_t* event, tk_log_level_t level, const char* message);
 
 END_C_DECLS
 

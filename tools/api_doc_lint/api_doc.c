@@ -107,7 +107,7 @@ static inline bool_t is_space(char c) { return c == ' ' || c == '\t'; }
  LOG_LEVEL_WARN
  LOG_LEVEL_ERROR
  */
-static void default_log_hook(void* ctx, log_level_t level, const char* s) {
+static void default_log_hook(void* ctx, tk_log_level_t level, const char* s) {
   if (level == LOG_LEVEL_ERROR) {
     log_error("%s", s);
   } else if (level == LOG_LEVEL_WARN) {
@@ -117,7 +117,7 @@ static void default_log_hook(void* ctx, log_level_t level, const char* s) {
   }
 }
 
-static void app_log(check_ctx_t* ctx, log_level_t level, const char* fmt, ...) {
+static void app_log(check_ctx_t* ctx, tk_log_level_t level, const char* fmt, ...) {
   va_list va;
   char buf[2048+1] = {0};
   return_if_fail(fmt != NULL);

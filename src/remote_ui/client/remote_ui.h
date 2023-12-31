@@ -33,6 +33,8 @@
 #define WITH_FULL_REMOTE_UI 1
 #endif/*TK_IS_PC*/
 
+typedef ret_t (*remote_ui_on_log_message_t)(void* ctx, tk_log_level_t level, const char* msg); 
+
 BEGIN_C_DECLS
 
 /**
@@ -47,7 +49,7 @@ typedef struct _remote_ui_t {
   tk_object_t* event_handlers;
   darray_t pending_events;
   darray_t dispatching_events;
-  tk_log_hook_t log_hook;
+  remote_ui_on_log_message_t log_hook;
   void* log_hook_ctx;
 } remote_ui_t;
 
@@ -465,11 +467,11 @@ ret_t remote_ui_get_loaded_assets_info(remote_ui_t* ui, const char* file);
  * @method remote_ui_hook_log
  * 设置log钩子函数。
  * @param {remote_ui_t*} ui remote ui客户端对象。
- * @param {tk_log_hook_t} log log hook。
+ * @param {remote_ui_on_log_message_t} log log hook。
  * @param {void*} ctx 上下文。
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t remote_ui_hook_log(remote_ui_t* ui, tk_log_hook_t log, void* ctx);
+ret_t remote_ui_hook_log(remote_ui_t* ui, remote_ui_on_log_message_t log, void* ctx);
 
 /**
  * @method remote_ui_unhook_log

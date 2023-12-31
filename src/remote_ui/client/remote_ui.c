@@ -740,7 +740,7 @@ ret_t remote_ui_dispatch_one(remote_ui_t* ui, rbuffer_t* rb) {
   return RET_OK;
 }
 
-ret_t remote_ui_hook_log(remote_ui_t* ui, tk_log_hook_t log, void* ctx) {
+ret_t remote_ui_hook_log(remote_ui_t* ui, remote_ui_on_log_message_t log, void* ctx) {
   return_value_if_fail(ui != NULL, RET_BAD_PARAMS);
   ui->log_hook = log;
   ui->log_hook_ctx = ctx;

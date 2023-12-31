@@ -25,11 +25,11 @@
 BEGIN_C_DECLS
 
 /**
- * @enum log_level_t
+ * @enum tk_log_level_t
  * @prefix LOG_LEVEL_
  * LOG的级别。 
  */
-typedef enum _log_level_t {
+typedef enum _tk_log_level_t {
   /**
    * @const LOG_LEVEL_DEBUG
    * DEBUG
@@ -50,7 +50,7 @@ typedef enum _log_level_t {
    * ERROR 
    */
   LOG_LEVEL_ERROR
-} log_level_t;
+} tk_log_level_t;
 
 /**
  * @class log_t
@@ -64,20 +64,20 @@ typedef enum _log_level_t {
  *
  * 获取log的级别。
  *
- * @return {log_level_t} 返回log的级别。
+ * @return {tk_log_level_t} 返回log的级别。
  */
-log_level_t log_get_log_level(void);
+tk_log_level_t log_get_log_level(void);
 
 /**
  * @method log_set_log_level
  *
  * 设置log的级别。
  *
- * @param {log_level_t} log_level log的级别。
+ * @param {tk_log_level_t} log_level log的级别。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t log_set_log_level(log_level_t log_level);
+ret_t log_set_log_level(tk_log_level_t log_level);
 
 int32_t log_dummy(const char* fmt, ...);
 
@@ -146,14 +146,14 @@ int32_t log_dummy(const char* fmt, ...);
  * 用于拦截日志，发送给客户端。
  * > 变参函数。
  *
- * @param {log_level_t} level 级别。
+ * @param {tk_log_level_t} level 级别。
  * @param {const char*} format 格式或信息。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t log_notify(log_level_t level, const char* format, ...);
+ret_t log_notify(tk_log_level_t level, const char* format, ...);
 
-typedef ret_t (*tk_log_hook_t)(void* ctx, log_level_t level, const char* msg);
+typedef ret_t (*tk_log_hook_t)(void* ctx, tk_log_level_t level, const char * format, va_list ap);
 
 /**
  * @method log_set_hook

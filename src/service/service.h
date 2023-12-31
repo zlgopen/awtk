@@ -22,6 +22,7 @@
 #ifndef TK_SERVICE_H
 #define TK_SERVICE_H
 
+#include "tkc/mutex.h"
 #include "tkc/buffer.h"
 #include "tkc/iostream.h"
 #include "service/msg_header.h"
@@ -58,6 +59,7 @@ struct _tk_service_t {
 
   /*private*/
   uint32_t retry_times;
+  tk_mutex_t* mutex;
   tk_service_dispatch_t dispatch;
   tk_service_destroy_t destroy;
 };
@@ -71,6 +73,24 @@ struct _tk_service_t {
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t tk_service_init(tk_service_t* service, tk_iostream_t* io);
+
+/**
+ * @method tk_service_lock
+ * 加锁。
+ * @param {tk_service_t*} service 服务对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_service_lock(tk_service_t* service);
+
+/**
+ * @method tk_service_unlock
+ * 解锁。
+ * @param {tk_service_t*} service 服务对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_service_unlock(tk_service_t* service);
 
 /**
  * @method tk_service_dispatch

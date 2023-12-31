@@ -631,7 +631,7 @@ static ret_t debugger_fscript_log_ex(void* ctx, const char* msg, bool_t native) 
   return RET_OK;
 }
 
-static ret_t debugger_fscript_log(void* ctx, log_level_t level, const char* msg) {
+static ret_t debugger_fscript_log(void* ctx, tk_log_level_t level, const char* msg) {
   return debugger_fscript_log_ex(ctx, msg, TRUE);
 }
 

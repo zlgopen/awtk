@@ -32,10 +32,23 @@ ret_t tk_service_init(tk_service_t* service, tk_iostream_t* io) {
   return_value_if_fail(service != NULL, RET_BAD_PARAMS);
 
   service->io = io;
+  service->mutex = tk_mutex_create();
   wbuffer_init_extendable(&(service->wb));
   wbuffer_extend_capacity(&(service->wb), 1024);
 
   return RET_OK;
+}
+
+ret_t tk_service_lock(tk_service_t* service) {
+  return_value_if_fail(service != NULL && service->mutex != NULL, RET_BAD_PARAMS);
+
+  return tk_mutex_lock(service->mutex);
+}
+
+ret_t tk_service_unlock(tk_service_t* service) {
+  return_value_if_fail(service != NULL && service->mutex != NULL, RET_BAD_PARAMS);
+
+  return tk_mutex_unlock(service->mutex);
 }
 
 ret_t tk_service_dispatch(tk_service_t* service) {
@@ -50,6 +63,9 @@ ret_t tk_service_destroy(tk_service_t* service) {
   wbuffer_deinit(&(service->wb));
   TK_OBJECT_UNREF(service->io);
 
+  tk_mutex_destroy(service->mutex);
+  service->mutex = NULL;
+  
   return service->destroy(service);
 }
 
@@ -243,10 +259,13 @@ ret_t tk_service_send_resp(tk_service_t* service, uint32_t type, uint32_t data_t
   int32_t len = 0;
   int32_t retry_times = 0;
   tk_msg_header_t header;
+  ret_t ret = RET_OK;
   return_value_if_fail(service != NULL && wb != NULL, RET_BAD_PARAMS);
 
+  tk_service_lock(service);
   if (service->retry_times < 1) {
-    return tk_service_send_resp_impl(service, type, data_type, resp_code, wb);
+    ret = tk_service_send_resp_impl(service, type, data_type, resp_code, wb);
+    goto end;
   }
 
   while (retry_times < service->retry_times) {
@@ -259,7 +278,8 @@ ret_t tk_service_send_resp(tk_service_t* service, uint32_t type, uint32_t data_t
     break_if_fail(len == sizeof(header));
 
     if (header.resp_code == RET_OK) {
-      return RET_OK;
+      ret = RET_OK;
+      goto end;
     }
 
     if (header.resp_code == RET_CRC) {
@@ -271,8 +291,12 @@ ret_t tk_service_send_resp(tk_service_t* service, uint32_t type, uint32_t data_t
       break;
     }
   }
+  ret = RET_FAIL;
 
-  return RET_FAIL;
+end:
+  tk_service_unlock(service);
+
+  return ret;
 }
 
 ret_t tk_service_read_req_impl(tk_service_t* service, tk_msg_header_t* header, wbuffer_t* wb) {

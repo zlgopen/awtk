@@ -605,17 +605,26 @@ static ret_t remote_ui_dev_info_write(wbuffer_t* wb, remote_ui_dev_info_t* info)
   return RET_OK;
 }
 
-static ret_t remote_ui_on_log(void* ctx, log_level_t level, const char* msg) {
+static ret_t remote_ui_on_log(void* ctx, tk_log_level_t level, const char* format, va_list ap) {
   remote_ui_service_t* ui = (remote_ui_service_t*)ctx;
+  
   if (ui != NULL && ui->service.destroy == (tk_service_destroy_t)remote_ui_service_destroy) {
+    char msg[1024] = {0};
     wbuffer_t* wb = &(ui->service.wb);
+    
+    tk_vsnprintf(msg, sizeof(msg)-1, format, ap);
+
     wbuffer_rewind(wb);
     wbuffer_write_string(wb, "<log>");
     wbuffer_write_int32(wb, EVT_LOG_MESSAGE);
     wbuffer_write_int8(wb, level);
     wbuffer_write_string(wb, msg);
 
-    tk_service_send_resp(&(ui->service), MSG_CODE_NOTIFY, MSG_DATA_TYPE_BINARY, RET_OK, wb);
+    if (ui->dispatching) {
+      log_debug("ignore log message because busy\n");
+    } else {
+      tk_service_send_resp(&(ui->service), MSG_CODE_NOTIFY, MSG_DATA_TYPE_BINARY, RET_OK, wb);
+    }
   } else {
     remote_ui_service_hook_log(ui, FALSE);
   }

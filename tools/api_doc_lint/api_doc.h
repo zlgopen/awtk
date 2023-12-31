@@ -24,7 +24,7 @@
 
 BEGIN_C_DECLS
 
-typedef void (*log_hook_t)(void* ctx, log_level_t level, const char* s);
+typedef void (*log_hook_t)(void* ctx, tk_log_level_t level, const char* s);
 bool_t check_api_doc(code_assist_t* ca, const char* filename, log_hook_t hook, void* log_ctx, bool_t auto_fix, bool_t* checked);
 
 /* 方便自动测试 */

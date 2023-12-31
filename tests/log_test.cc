@@ -1,9 +1,13 @@
 #include "tkc/str.h"
 #include "tkc/log.h"
+#include "tkc/utils.h"
 #include "gtest/gtest.h"
 
-static ret_t debugger_log(void* ctx, log_level_t level, const char* msg) {
+static ret_t debugger_log(void* ctx, log_level_t level, const char* format, va_list ap) {
   str_t* str = (str_t*)ctx;
+  char msg[1024] = {0};
+  tk_vsnprintf(msg, sizeof(msg)-1, format, ap);
+
   str_append_more(str, msg, ";", NULL);
 
   return RET_OK;
