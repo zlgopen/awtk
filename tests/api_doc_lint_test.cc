@@ -27,7 +27,7 @@ typedef struct _out_info_t {
   str_t warn;
 } out_info_t;
 
-void log_to_str(void* ctx, log_level_t level, const char* s) {
+void log_to_str(void* ctx, tk_log_level_t level, const char* s) {
   out_info_t* info = (out_info_t*)ctx;
   if (s) {
     if (level == LOG_LEVEL_WARN) {
@@ -63,7 +63,7 @@ static const char* warns[] = {
     "(1078): warning: @prefix missing\n",
 };
 
-void dummy_log(void* ctx, log_level_t level, const char* s) {
+void dummy_log(void* ctx, tk_log_level_t level, const char* s) {
 }
 
 void auto_fix_hook(const char* path, const char* actual, uint32_t size) {

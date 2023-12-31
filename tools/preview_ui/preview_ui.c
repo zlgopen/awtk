@@ -399,7 +399,7 @@ ret_t assets_init(void) {
 }
 
 static ret_t global_init(void) {
-  log_level_t log_level =
+  tk_log_level_t log_level =
       s_log_level != NULL && *s_log_level != '\0' ? tk_atoi(s_log_level) : LOG_LEVEL_DEBUG;
 
   log_set_log_level(log_level);

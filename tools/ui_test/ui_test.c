@@ -53,7 +53,7 @@ static void check_return_code(ret_t ret, const char* expected_ret, const char* n
   }
 }
 
-static ret_t on_log_message(void* ctx, log_level_t level, const char* message) {
+static ret_t on_log_message(void* ctx, tk_log_level_t level, const char* message) {
   log_debug("%d: %s", level, message);
 
   return RET_OK;

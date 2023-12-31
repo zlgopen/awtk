@@ -69,7 +69,7 @@ typedef struct _out_info_t {
   int32_t nerr;
 } out_info_t;
 
-void log_to_str(void* ctx, log_level_t level, const char* s) {
+void log_to_str(void* ctx, tk_log_level_t level, const char* s) {
   out_info_t* info = (out_info_t*)ctx;
   if (s) {
     if (level == LOG_LEVEL_WARN) {

@@ -3,7 +3,7 @@
 #include "tkc/utils.h"
 #include "gtest/gtest.h"
 
-static ret_t debugger_log(void* ctx, log_level_t level, const char* format, va_list ap) {
+static ret_t debugger_log(void* ctx, tk_log_level_t level, const char* format, va_list ap) {
   str_t* str = (str_t*)ctx;
   char msg[1024] = {0};
   tk_vsnprintf(msg, sizeof(msg)-1, format, ap);
