@@ -93,7 +93,6 @@ static ret_t dialog_highlighter_default_draw_mask_window(dialog_highlighter_t* h
   if (alpha > 1) {
     uint32_t i = 0;
     void* arges[2];
-    widget_t* widget = window_manager();
     dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
 
     if (slist_is_empty(&dh->win_mask_rect_list)) {
@@ -123,7 +122,6 @@ static ret_t dialog_highlighter_default_draw_mask_system_bar(dialog_highlighter_
                                                              uint8_t alpha, bool_t is_clip_rect) {
   if (alpha > 1) {
     uint32_t i = 0;
-    widget_t* widget = window_manager();
     color_t mask = color_init(0, 0, 0, alpha);
     dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
     for (i = 0; i < dh->system_bar_top_clip_rects.size; i++) {

@@ -1510,7 +1510,7 @@ ret_t value_bit_or(value_t* v, value_t* other, value_t* result) {
   type = tk_max_int((int)(v->type), (int)(other->type));
   switch (type) {
     case VALUE_TYPE_BOOL: {
-      bool_t vv = value_bool(v) | value_bool(other);
+      bool_t vv = value_bool(v) || value_bool(other);
       value_set_bool(result, vv);
       break;
     }
@@ -1573,7 +1573,7 @@ ret_t value_bit_and(value_t* v, value_t* other, value_t* result) {
   type = tk_max_int((int)(v->type), (int)(other->type));
   switch (type) {
     case VALUE_TYPE_BOOL: {
-      bool_t vv = value_bool(v) & value_bool(other);
+      bool_t vv = value_bool(v) && value_bool(other);
       value_set_bool(result, vv);
       break;
     }

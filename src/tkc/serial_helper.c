@@ -950,6 +950,8 @@ ret_t serial_config(serial_handle_t handle, uint32_t baudrate, bytesize_t bytesi
     byte_time_ns += ((1.5 - stopbits_one_point_five) * bit_time_ns);
   }
 
+  (void)bit_time_ns;
+
   return RET_OK;
 }
 

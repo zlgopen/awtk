@@ -98,7 +98,6 @@ static ret_t vgcanvas_nanovg_destroy_fbo(vgcanvas_t* vgcanvas, framebuffer_objec
 
 static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
   NVGcontext* vg = NULL;
-  system_info_t* info = system_info();
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGLUframebuffer* handle = (NVGLUframebuffer*)fbo->handle;
   
@@ -131,7 +130,6 @@ static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t
 static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
   uint32_t w, h;
   NVGcontext* vg = NULL;
-  system_info_t* info = system_info();
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGLUframebuffer* handle = (NVGLUframebuffer*)fbo->handle;
 

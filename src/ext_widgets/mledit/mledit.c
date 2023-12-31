@@ -31,7 +31,7 @@
 
 static ret_t mledit_init(widget_t* widget);
 static ret_t mledit_update_status(widget_t* widget);
-static ret_t mledit_dispatch_event(widget_t* widget, event_type_t type);
+static ret_t mledit_dispatch_event(widget_t* widget, uint32_t type);
 
 static ret_t mledit_save_text(widget_t* widget) {
   mledit_t* mledit = MLEDIT(widget);
@@ -69,7 +69,7 @@ static ret_t mledit_commit_text(widget_t* widget) {
   return RET_OK;
 }
 
-static ret_t mledit_dispatch_event(widget_t* widget, event_type_t type) {
+static ret_t mledit_dispatch_event(widget_t* widget, uint32_t type) {
   value_change_event_t evt;
   mledit_t* mledit = MLEDIT(widget);
   wstr_t* text = &(widget->text);
