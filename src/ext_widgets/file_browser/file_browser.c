@@ -98,8 +98,13 @@ file_browser_t* file_browser_create(fs_t* fs) {
 
 ret_t file_browser_set_cwd(file_browser_t* fb, const char* cwd) {
   char path[MAX_PATH + 1];
+  char cwd_path[MAX_PATH + 1];
   return_value_if_fail(fb != NULL && cwd != NULL, RET_BAD_PARAMS);
   assert(strlen(cwd) <= MAX_PATH);
+
+  memset(path, 0x00, sizeof(path));
+  path_expand_vars(cwd, cwd_path, sizeof(cwd_path) -1);
+  cwd = cwd_path;
 
   if (path_is_abs(cwd)) {
     path_normalize(cwd, fb->cwd, MAX_PATH);
@@ -117,10 +122,14 @@ ret_t file_browser_set_cwd(file_browser_t* fb, const char* cwd) {
 
 ret_t file_browser_set_top_dir(file_browser_t* fb, const char* top_dir) {
   char path[MAX_PATH + 1];
+  char top_path[MAX_PATH + 1];
   return_value_if_fail(fb != NULL && top_dir != NULL, RET_BAD_PARAMS);
   assert(strlen(top_dir) <= MAX_PATH);
 
   memset(path, 0x00, sizeof(path));
+  path_expand_vars(top_dir, top_path, sizeof(top_path) -1);
+  top_dir = top_path;
+
   if (path_is_abs(top_dir)) {
     path_normalize(top_dir, path, MAX_PATH);
   } else {
