@@ -102,16 +102,16 @@ static ret_t file_browser_normlize_path(const char* in, char* out, uint32_t out_
 
   memset(path, 0x00, sizeof(path));
   path_expand_vars(in, path, sizeof(path) - 1);
-  in = path;
 
-  if (file_exist(in)) {
-    char* p = in + strlen(in);
-    while (p > in && *p != '/' && *p != '\\') {
+  if (file_exist(path)) {
+    char* p = path + strlen(path);
+    while (p > path && *p != '/' && *p != '\\') {
       p--;
     }
     *p = '\0';
   }
 
+  in = path;
   if (path_is_abs(in)) {
     path_normalize(in, out, out_size);
   } else {
