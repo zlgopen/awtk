@@ -305,7 +305,7 @@ static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
 }
 
 static ret_t keyboard_update_action_button_info(widget_t* button, const char* text, bool_t enable) {
-  text = locale_info_tr(locale_info(), (text ? text : STR_RETURN));
+  text = locale_info_tr(locale_info(), (TK_STR_IS_NOT_EMPTY(text) ? text : STR_RETURN));
 
   widget_set_text_utf8(button, text);
   widget_set_enable(button, enable);
