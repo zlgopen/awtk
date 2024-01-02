@@ -29,6 +29,31 @@
 #ifdef WITH_NATIVE_FILE_DIALOG
 #include "../3rd/nativefiledialog/src/include/nfd.h"
 
+static ret_t tk_choose_restore_window_manager_ignore_input_events(const idle_info_t* idle) {
+  window_manager_set_ignore_input_events(window_manager(), FALSE);
+  return RET_REMOVE;
+}
+
+/* 忽略本帧内的输入事件，避免出现关闭nfd后误触发awtk窗口内的其他事件（如在nfd里双击选择文件） */
+static ret_t tk_choose_window_manager_ignore_input_events(void) {
+  ret_t ret = RET_OK;
+  window_manager_t* wm = WINDOW_MANAGER(window_manager());
+  return_value_if_fail(wm != NULL, RET_FAIL);
+
+  if (!wm->ignore_input_events) {
+    ret = window_manager_set_ignore_input_events(wm, TRUE);
+    if (RET_OK == ret) {
+      uint32_t id = idle_add(tk_choose_restore_window_manager_ignore_input_events, wm);
+      ret = (id != TK_INVALID_ID) ? RET_OK : RET_FAIL;
+      if (RET_OK != ret) {
+        window_manager_set_ignore_input_events(wm, FALSE);
+      }
+    }
+  }
+
+  return ret;
+}
+
 static const char* filters_to_nfd(const char* filters, str_t* str) {
   str_set(str, filters);
   str_replace(str, ".", ",");
@@ -47,6 +72,8 @@ static darray_t* tk_choose_files_native(const char* filters, const char* init_di
 
   result = NFD_OpenDialogMultiple(filters_to_nfd(filters, &str), init_dir, &pathSet);
   str_reset(&str);
+
+  tk_choose_window_manager_ignore_input_events();
 
   if (result == NFD_OKAY) {
     size_t i = 0;
@@ -75,6 +102,8 @@ static char* tk_choose_file_native(const char* filters, const char* init_dir) {
   nfdresult_t result = NFD_OpenDialog(filters_to_nfd(filters, &str), init_dir, &outPath);
   str_reset(&str);
 
+  tk_choose_window_manager_ignore_input_events();
+
   if (result == NFD_OKAY) {
     char* ret = tk_strdup(outPath);
     log_debug("%s\n", outPath);
@@ -92,6 +121,8 @@ static char* tk_choose_file_native(const char* filters, const char* init_dir) {
 static char* tk_choose_folder_native(const char* init_dir) {
   nfdchar_t* outPath = NULL;
   nfdresult_t result = NFD_PickFolder(init_dir, &outPath);
+
+  tk_choose_window_manager_ignore_input_events();
 
   if (result == NFD_OKAY) {
     char* ret = tk_strdup(outPath);
@@ -115,6 +146,8 @@ static char* tk_choose_file_for_save_native(const char* filters, const char* ini
   str_init(&str, 64);
   result = NFD_SaveDialog(filters_to_nfd(filters, &str), init_dir, &outPath);
   str_reset(&str);
+
+  tk_choose_window_manager_ignore_input_events();
 
   if (result == NFD_OKAY) {
     char* ret = tk_strdup(outPath);
