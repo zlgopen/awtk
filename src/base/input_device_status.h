@@ -61,6 +61,7 @@ typedef struct _input_device_status_t {
   xy_t last_x;
   xy_t last_y;
   bool_t pressed;
+  bool_t in_pointer_up;
   bool_t pointer_has_left_window;
 
   uint64_t last_pointer_down_time;

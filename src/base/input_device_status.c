@@ -340,8 +340,10 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
         delta_x = evt->x - ids->last_pointer_up_x;
         delta_y = evt->y - ids->last_pointer_up_y;
 
+        ids->in_pointer_up = TRUE;
         input_device_status_init_pointer_event(ids, evt);
         widget_on_pointer_up(widget, evt);
+        ids->in_pointer_up = FALSE;
 
         if (delta_time < TK_DOUBLE_CLICK_TIME && tk_abs(delta_x) < TK_DOUBLE_CLICK_XY &&
             tk_abs(delta_y) < TK_DOUBLE_CLICK_XY) {

@@ -421,7 +421,7 @@ xy_t window_manager_get_pointer_x(widget_t* widget) {
   return_value_if_fail(wm != NULL && wm->vt != NULL, 0);
   return_value_if_fail(wm->vt->get_pointer != NULL, 0);
 
-  wm->vt->get_pointer(widget, &x, &y, &pressed);
+  wm->vt->get_pointer(widget, &x, &y, &pressed, NULL);
 
   return x;
 }
@@ -435,7 +435,7 @@ xy_t window_manager_get_pointer_y(widget_t* widget) {
   return_value_if_fail(wm != NULL && wm->vt != NULL, 0);
   return_value_if_fail(wm->vt->get_pointer != NULL, 0);
 
-  wm->vt->get_pointer(widget, &x, &y, &pressed);
+  wm->vt->get_pointer(widget, &x, &y, &pressed, NULL);
 
   return y;
 }
@@ -444,12 +444,16 @@ bool_t window_manager_get_pointer_pressed(widget_t* widget) {
   xy_t x = 0;
   xy_t y = 0;
   bool_t pressed = TRUE;
+  bool_t in_pointer_up = TRUE;
 
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL && wm->vt != NULL, 0);
   return_value_if_fail(wm->vt->get_pointer != NULL, 0);
 
-  wm->vt->get_pointer(widget, &x, &y, &pressed);
+  wm->vt->get_pointer(widget, &x, &y, &pressed, &in_pointer_up);
+  if (in_pointer_up) {
+    pressed = FALSE;
+  }
 
   return pressed;
 }

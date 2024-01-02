@@ -1416,8 +1416,8 @@ static ret_t window_manager_default_dispatch_input_event(widget_t* widget, event
 static ret_t window_manager_default_set_screen_saver_time(widget_t* widget,
                                                           uint32_t screen_saver_time);
 
-static ret_t window_manager_default_get_pointer(widget_t* widget, xy_t* x, xy_t* y,
-                                                bool_t* pressed) {
+static ret_t window_manager_default_get_pointer(widget_t* widget, xy_t* x, xy_t* y, bool_t* pressed,
+                                                bool_t* in_pointer_up) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -1429,6 +1429,9 @@ static ret_t window_manager_default_get_pointer(widget_t* widget, xy_t* x, xy_t*
   }
   if (pressed != NULL) {
     *pressed = wm->input_device_status.pressed;
+  }
+  if (in_pointer_up != NULL) {
+    *in_pointer_up = wm->input_device_status.in_pointer_up;
   }
 
   return RET_OK;

@@ -3,6 +3,7 @@
 2024/01/02
   * 增加函数 tokenizer\_next\_str\_until
   * widget 增加 widget->vt 的空指针检查。
+  * 修复tk\_is\_pointer\_pressed接口在处理鼠标抬起事件过程中返回值错误的问题(感谢雨欣提供补丁）
 
 2024/01/01
   * 文件浏览支持变量。

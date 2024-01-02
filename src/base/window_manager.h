@@ -47,7 +47,8 @@ typedef ret_t (*window_manager_back_t)(widget_t* widget);
 typedef ret_t (*window_manager_back_to_t)(widget_t* widget, const char* name);
 typedef ret_t (*window_manager_switch_to_t)(widget_t* widget, widget_t* curr_win,
                                             widget_t* target_win, bool_t close);
-typedef ret_t (*window_manager_get_pointer_t)(widget_t* widget, xy_t* x, xy_t* y, bool_t* pressed);
+typedef ret_t (*window_manager_get_pointer_t)(widget_t* widget, xy_t* x, xy_t* y, bool_t* pressed,
+                                              bool_t* in_pointer_up);
 typedef ret_t (*window_manager_is_animating_t)(widget_t* widget, bool_t* playing);
 
 typedef ret_t (*window_manager_dispatch_native_window_event_t)(widget_t* widget, event_t* e,

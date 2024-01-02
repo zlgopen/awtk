@@ -336,8 +336,8 @@ static ret_t window_manager_simple_resize(widget_t* widget, wh_t w, wh_t h);
 static ret_t window_manager_simple_post_init(widget_t* widget, wh_t w, wh_t h);
 static ret_t window_manager_simple_dispatch_input_event(widget_t* widget, event_t* e);
 
-static ret_t window_manager_simple_get_pointer(widget_t* widget, xy_t* x, xy_t* y,
-                                               bool_t* pressed) {
+static ret_t window_manager_simple_get_pointer(widget_t* widget, xy_t* x, xy_t* y, bool_t* pressed,
+                                               bool_t* in_pointer_up) {
   window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -349,6 +349,9 @@ static ret_t window_manager_simple_get_pointer(widget_t* widget, xy_t* x, xy_t* 
   }
   if (pressed != NULL) {
     *pressed = wm->input_device_status.pressed;
+  }
+  if (in_pointer_up != NULL) {
+    *in_pointer_up = wm->input_device_status.in_pointer_up;
   }
 
   return RET_OK;
