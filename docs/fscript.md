@@ -52,7 +52,7 @@ print("hello fscript")
 * 字符串类型 (string)。UTF-8 字符串，用英文双引号扩起来。
 * 布尔类型 (bool)。标准取值为：true 和 false，非 0 的数值视为 true。
 * 可以通过扩展实现混合数据类型的数组、固定类型的数组和 map。
-* 可以通过类型转换函数得到各种基本类型。如 int8/int16/int32/int64/uint8/uint16/uint32/uintg64/float/double。
+* 可以通过类型转换函数得到各种基本类型。如 int8/int16/int32/int64/uint8/uint16/uint32/uint64/float/double。
 
 ### 3.2 注释
 

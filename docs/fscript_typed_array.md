@@ -38,7 +38,7 @@ type 参数为字符串，可选取值如下：
 #### 示例
 
 ```js
-var a = typed_array_create("i8", s10);
+var a = typed_array_create("i8", 10);
 ```
 
 ### 2.typed\_array\_push
