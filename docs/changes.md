@@ -2,6 +2,7 @@
 
 2024/01/02
   * 增加函数 tokenizer\_next\_str\_until
+  * widget 增加 widget->vt 的空指针检查。
 
 2024/01/01
   * 文件浏览支持变量。
