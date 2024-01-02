@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  虚拟页面(根据情况自动加载/卸载页面)。
  *
- * Copyright (c) 2021 - 2023 Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2021 - 2024 Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of

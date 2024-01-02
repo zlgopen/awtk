@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  wrap istream for fscript
  *
- * Copyright (c) 2020 - 2023  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2020 - 2024  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  */
 

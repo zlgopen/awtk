@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  a simple functional script language
  *
- * Copyright (c) 2020 - 2023  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2020 - 2024  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  */
 
