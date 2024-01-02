@@ -87,13 +87,14 @@ bool_t tokenizer_has_more(tokenizer_t* tokenizer) {
 static ret_t tokenizer_skip_quoted_str(tokenizer_t* tokenizer) {
   bool_t escaped = FALSE;
   char c = tokenizer->str[tokenizer->cursor];
-  return_value_if_fail(c == '\"', RET_BAD_PARAMS);
+  char quot_c = c;
+  return_value_if_fail(c == '\"' || c == '\'', RET_BAD_PARAMS);
 
   tokenizer->cursor++;
   while (tokenizer->str[tokenizer->cursor]) {
     c = tokenizer->str[tokenizer->cursor++];
 
-    if (c == '\"') {
+    if (c == quot_c) {
       if (!escaped) {
         break;
       }
@@ -116,7 +117,7 @@ static ret_t tokenizer_closing_bracket_until(tokenizer_t* tokenizer, char openin
   tokenizer->cursor++;
   while (tokenizer->str[tokenizer->cursor]) {
     char c = tokenizer->str[tokenizer->cursor];
-    if (c == '\"') {
+    if (c == '\"' || c == '\'') {
       tokenizer_skip_quoted_str(tokenizer);
       continue;
     } else if (c == opening_bracket) {
@@ -134,6 +135,38 @@ static ret_t tokenizer_closing_bracket_until(tokenizer_t* tokenizer, char openin
   return RET_OK;
 }
 
+const char* tokenizer_next_str_until(tokenizer_t* tokenizer, const char* str) {
+  return_value_if_fail(tokenizer_skip_separator(tokenizer) == RET_OK && str != NULL, NULL);
+
+  if (tokenizer_has_more(tokenizer)) {
+    uint32_t len = 0;
+    str_t* s = &(tokenizer->token);
+    uint32_t start = tokenizer->cursor;
+    char c = tokenizer->str[tokenizer->cursor];
+    if (c == '\"' || c == '\'') {
+      return tokenizer_next_str(tokenizer);
+    }
+
+    while (tokenizer->str[tokenizer->cursor]) {
+      c = tokenizer->str[tokenizer->cursor];
+
+      if (strchr(str, c) != NULL) {
+        break;
+      }
+
+      tokenizer->cursor++;
+    }
+
+    len = tokenizer->cursor - start;
+    str_set_with_len(s, tokenizer->str + start, len);
+    tokenizer_skip_separator(tokenizer);
+
+    return s->str;
+  }
+
+  return NULL;
+}
+
 const char* tokenizer_next_expr_until(tokenizer_t* tokenizer, const char* str) {
   return_value_if_fail(tokenizer_skip_separator(tokenizer) == RET_OK && str != NULL, NULL);
 
@@ -144,7 +177,7 @@ const char* tokenizer_next_expr_until(tokenizer_t* tokenizer, const char* str) {
 
     while (tokenizer->str[tokenizer->cursor]) {
       char c = tokenizer->str[tokenizer->cursor];
-      if (c == '\"') {
+      if (c == '\"' || c == '\'') {
         tokenizer_skip_quoted_str(tokenizer);
         continue;
       } else if (c == '(') {

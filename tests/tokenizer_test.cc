@@ -101,6 +101,33 @@ TEST(Tokenizer, until2) {
   tokenizer_deinit(t);
 }
 
+TEST(Tokenizer, str1) {
+  tokenizer_t tokenizer;
+
+  tokenizer_t* t = tokenizer_init_ex(&tokenizer, "{\"a,a\"}", 100, "{}", "=,");
+  ASSERT_EQ(string(tokenizer_next_str_until(t, ",}")), string("a,a"));
+
+  tokenizer_deinit(t);
+}
+
+TEST(Tokenizer, str2) {
+  tokenizer_t tokenizer;
+
+  tokenizer_t* t = tokenizer_init_ex(&tokenizer, "{'a,a'}", 100, "{}", "=,");
+  ASSERT_EQ(string(tokenizer_next_str_until(t, ",}")), string("a,a"));
+
+  tokenizer_deinit(t);
+}
+
+TEST(Tokenizer, str3) {
+  tokenizer_t tokenizer;
+
+  tokenizer_t* t = tokenizer_init_ex(&tokenizer, "{a,a}", 100, "{}", "=,");
+  ASSERT_EQ(string(tokenizer_next_str_until(t, ",}")), string("a"));
+
+  tokenizer_deinit(t);
+}
+
 TEST(Tokenizer, expr1) {
   tokenizer_t tokenizer;
 
