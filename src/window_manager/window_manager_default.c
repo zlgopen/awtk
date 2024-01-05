@@ -725,7 +725,7 @@ static ret_t window_manager_default_open_window(widget_t* widget, widget_t* wind
 
 static ret_t window_manager_idle_destroy_window(const idle_info_t* info) {
   widget_t* win = WIDGET(info->ctx);
-  widget_destroy_sync(win);
+  widget_destroy(win);
 
   return RET_OK;
 }
