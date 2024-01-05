@@ -326,6 +326,10 @@ def scons_db_check_and_remove():
       with open(f, "rb") as fs:
         pickle.load(fs)
         fs.close()
-    except:
+    except Exception as e :
         fs.close()
-        os.remove(f)
+        print(e)
+        try:
+            os.remove(f)
+        except Exception as e :
+            print(e)

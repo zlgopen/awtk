@@ -180,7 +180,7 @@ class AppHelperBase:
         if plat == PLATFORM:
             self.APP_LINKFLAGS += APP_LINKFLAGS
         return self
-        
+
     def root_get_scons_db_files(self, root):
         scons_db_files = []
         scons_db_filename = ".sconsign.dblite"
@@ -207,9 +207,13 @@ class AppHelperBase:
                 with open(f, "rb") as fs:
                     pickle.load(fs)
                     fs.close()
-            except ValueError as e:
+            except Exception as e :
                 fs.close()
-                os.remove(f)
+                print(e)
+                try:
+                    os.remove(f)
+                except Exception as e :
+                    print(e)
 
     def SConscript(self, SConscriptFiles):
         if not self.BUILD_DIR:
@@ -329,7 +333,7 @@ class AppHelperBase:
                 AWFLOW_ROOT = self.getAwflowRoot()
             self.AWFLOW_ROOT = AWFLOW_ROOT
             print("AWFLOW_ROOT: " + self.AWFLOW_ROOT)
-        
+
         if self.TKC_ONLY :
             self.set_tkc_only()
 
@@ -487,7 +491,7 @@ class AppHelperBase:
 
         self.BUILD_SHARED = self.complie_helper.get_value('SHARED', False)
         self.GEN_IDL_DEF = self.complie_helper.get_value('IDL_DEF', True)
-        
+
         if not self.LINUX_FB :
             if LCD_ORIENTATION == '90' or LCD_ORIENTATION == '270' :
                 tmp = LCD_WIDTH;
@@ -730,11 +734,11 @@ class AppHelperBase:
                 TARGET_ARCH=TARGET_ARCH,
                 OS_SUBSYSTEM_CONSOLE=awtk.OS_SUBSYSTEM_CONSOLE,
                 OS_SUBSYSTEM_WINDOWS=awtk.OS_SUBSYSTEM_WINDOWS)
-        
+
         def variant_SConscript(env, SConscriptFiles):
             self.SConscript(SConscriptFiles)
         env.AddMethod(variant_SConscript, "SConscript")
-    
+
         if not Script.GetOption('clean'):
             self.prepare()
         else:
