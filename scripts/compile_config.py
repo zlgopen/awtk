@@ -5,7 +5,7 @@ import json
 import shutil
 import importlib
 import collections
-from distutils.util import strtobool
+from utils import strtobool
 
 global COMPILE_CONFIG
 COMPILE_CONFIG = None
