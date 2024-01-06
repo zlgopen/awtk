@@ -96,6 +96,15 @@ COMMON_CFLAGS = ''
 OS_DEBUG = complie_helper.get_value('DEBUG', True)
 
 if OS_NAME == 'Darwin':
+
+    # Find the correct SDL2 version
+    sdl_path = "/opt/homebrew/Cellar/sdl2/" 
+    sdl_versions = os.listdir(sdl_path)
+    if len(sdl_versions)==0:
+        print("Can not find the SDL version")
+        exit(-1)
+    sdl_lib = sdl_path+ sdl_versions[0]+"/lib"
+
     TOOLS_NAME = ''
     OS_FLAGS = '-Wall -Wno-unused-function -fPIC -DWITHOUT_GLAD=1 '
     OS_LIBS = ['stdc++', 'iconv', 'pthread', 'm', 'dl']
@@ -103,7 +112,7 @@ if OS_NAME == 'Darwin':
     OS_FLAGS = OS_FLAGS + ' -DHAS_SEM_OPEN '
     OS_FLAGS = OS_FLAGS + ' -D__APPLE__ -DHAS_PTHREAD -DMACOS -Dmacintosh '
     OS_FLAGS = OS_FLAGS + ' -D__STDC_LIMIT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_CONSTANT_MACROS  -DBGFX_CONFIG_RENDERER_METAL=1 '
-    OS_LIBPATH = ['/usr/local/lib/', '/opt/homebrew/Cellar/sdl2/2.28.0/lib']
+    OS_LIBPATH = ['/usr/local/lib/', sdl_lib]
 
 elif OS_NAME == 'Linux':
     TOOLS_NAME = ''
