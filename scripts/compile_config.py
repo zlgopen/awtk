@@ -45,9 +45,8 @@ def get_curr_config_for_awtk() :
     COMPILE_CONFIG = complie_helper()
     if not COMPILE_CONFIG.load_last_complie_argv() :
       print('========================= Error ================================')
-      print('Not found last complie argv config file !!!!!')
       print('Please Recompile AWTK !!!!!')
-      sys.exit()
+      sys.exit('Not found last complie argv config file !!!!!')
     COMPILE_CONFIG.set_value('WIN32_RES', WIN32_RES)
     return COMPILE_CONFIG;
 
