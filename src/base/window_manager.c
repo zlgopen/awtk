@@ -94,6 +94,9 @@ static ret_t window_manager_back_to_win_sync(widget_t* widget, widget_t* target)
     }
   } else {
     if (!widget_is_system_bar(iter)) {
+      if (widget_is_dialog(iter) && DIALOG(iter)->quited) {
+        continue;
+      }
       darray_push(&wins, iter);
     }
   }
