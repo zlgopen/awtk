@@ -218,11 +218,10 @@ static url_t* url_parse(url_t* url, const char* surl) {
       }
       case STATE_VALUE: {
         if (*p == '&' || *p == '\0') {
-          const char* name = str.str;
-          const char* value = str.str + str.size + 1;
+          uint32_t name_size = str.size;
           str.size++;
           goto_error_if_fail(str_append_with_len(&str, start, p - start) == RET_OK);
-          goto_error_if_fail(url_set_param(url, name, value) == RET_OK);
+          goto_error_if_fail(url_set_param(url, str.str, str.str + name_size + 1) == RET_OK);
           state = STATE_KEY;
           start = p + 1;
         }
