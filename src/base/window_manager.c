@@ -100,6 +100,10 @@ static ret_t window_manager_back_to_win_sync(widget_t* widget, widget_t* target)
   WIDGET_FOR_EACH_CHILD_END()
 
   top = wins.size > 0 ? WIDGET(darray_pop(&wins)) : NULL;
+  if (widget_is_dialog(top) && dialog_is_modal(top)) {
+    dialog_quit(top, DIALOG_QUIT_NONE);
+    top = NULL;
+  }
   for (k = 0; k < wins.size; k++) {
     widget_t* iter = WIDGET(wins.elms[k]);
     if (widget_is_dialog(iter) && dialog_is_modal(iter)) {
