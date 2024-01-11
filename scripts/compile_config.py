@@ -85,21 +85,21 @@ class complie_helper :
   })
 
   config = collections.OrderedDict({
-    'OUTPUT_DIR' : { 'value' : None, 'desc' : ['compiled export directory '], 'help_info' : 'set awtk compiled export directory, default value is \'\', \'\' is system\'s value'},
-    'TOOLS_NAME' : { 'value' : None, 'str_enum' : ['mingw'], 'desc' : ['value is \'mingw\' or None'], 'help_info' : 'set awtk compile\'s name, default value is None, None is system\'s value'},
-    'INPUT_ENGINE' : { 'value' : None, 'str_enum' : ['null', 'spinyin', 't9', 't9ext', 'pinyin'], 'desc' : ['value is null/spinyin/t9/t9ext/pinyin'], 'help_info' : 'set awtk use input engine, default value is None, None is system\'s value' },
-    'VGCANVAS' : { 'value' : None, 'str_enum' : ['NANOVG', 'NANOVG_PLUS', 'CAIRO'], 'desc' : ['value is NANOVG/NANOVG_PLUS/CAIRO'], 'help_info' : 'set awtk use render vgcanvas type, default value is None, None is system\'s value' },
-    'NANOVG_BACKEND' : { 'value' : None, 'str_enum' : ['GLES2', 'GLES3', 'GL3', 'AGG', 'AGGE'], 'desc' : ['if NANOVG_BACKEND is valid, VGCANVAS must be NANOVG or \'\'', 'if VGCANVAS is NANOVG_PLUS, NANOVG_BACKEND must be GLES2/GLES3/GL3 or None', 'NANOVG_BACKEND is GLES2/GLES3/GL3/AGG/AGGE'], 'help_info' : 'set awtk\'s nanovg use render model, default value is None, None is system\'s value'},
-    'LCD_COLOR_FORMAT' : { 'value' : None, 'str_enum' : ['bgr565', 'bgra8888', 'mono'], 'desc' : ['if NANOVG_BACKEND is GLES2/GLES3/GL3, LCD_COLOR_FORMAT must be bgra8888 or \'\'', 'if NANOVG_BACKEND is AGG/AGGE, LCD_COLOR_FORMAT must be bgr565/bgra8888/mono or None', 'NANOVG_BACKEND is bgr565/bgra8888/mono'], 'help_info' : 'set awtk\'s lcd color format, default value is None, None is system\'s value'},
-    'DEBUG' : { 'value' : True, 'desc' : ['awtk\'s compile is debug'], 'help_info' : 'awtk\'s compile is debug, value is true or false, default value is true' },
-    'PDB' : { 'value' : True, 'desc' : ['export pdb file'], 'help_info' : 'export pdb file, value is true or false' },
-    'SDL_UBUNTU_USE_IME' : { 'value' : False, 'desc' : ['ubuntu use chinese input engine'], 'help_info' : 'ubuntu use ime, this sopt is ubuntu use chinese input engine, value is true or false, default value is false' },
-    'NATIVE_WINDOW_BORDERLESS' : { 'value' : False, 'desc' : ['pc desktop program no borerless'], 'help_info' : 'pc desktop program no borerless, value is true or false, default value is false' },
-    'NATIVE_WINDOW_NOT_RESIZABLE' : { 'value' : False, 'desc' : ['pc desktop program do not resize program'], 'help_info' : 'pc desktop program do not resize program\'s size, value is true or false, default value is false' },
-    'BUILD_TESTS' : { 'value' : True, 'desc' : ['build awtk\'s gtest demo'], 'help_info' : 'build awtk\'s gtest demo, value is true or false, default value is true' },
-    'BUILD_DEMOS' : { 'value' : True, 'desc' : ['build awtk\'s demo examples'], 'help_info' : 'build awtk\'s demo examples, value is true or false, default value is true' },
-    'BUILD_TOOLS' : { 'value' : True, 'desc' : ['build awtk\'s tools'], 'help_info' : 'build awtk\'s tools, value is true or false, default value is true' },
-    'WIN32_RES' : { 'value' : None, 'save_file' : False, 'desc' : ['app\'s win32 res path'], 'help_info' : 'app\'s win32 res path, WIN32_RES=XXXXX, value\'s default=\'awtk/win32_res/awtk.res\' ' },
+    'OUTPUT_DIR' : { 'value' : None, 'type' : type(str), 'desc' : ['compiled export directory '], 'help_info' : 'set awtk compiled export directory, default value is \'\', \'\' is system\'s value'},
+    'TOOLS_NAME' : { 'value' : None, 'type' : type(str), 'str_enum' : ['mingw'], 'desc' : ['value is \'mingw\' or None'], 'help_info' : 'set awtk compile\'s name, default value is None, None is system\'s value'},
+    'INPUT_ENGINE' : { 'value' : None, 'type' : type(str), 'str_enum' : ['null', 'spinyin', 't9', 't9ext', 'pinyin'], 'desc' : ['value is null/spinyin/t9/t9ext/pinyin'], 'help_info' : 'set awtk use input engine, default value is None, None is system\'s value' },
+    'VGCANVAS' : { 'value' : None, 'type' : type(str), 'str_enum' : ['NANOVG', 'NANOVG_PLUS', 'CAIRO'], 'desc' : ['value is NANOVG/NANOVG_PLUS/CAIRO'], 'help_info' : 'set awtk use render vgcanvas type, default value is None, None is system\'s value' },
+    'NANOVG_BACKEND' : { 'value' : None, 'type' : type(str), 'str_enum' : ['GLES2', 'GLES3', 'GL3', 'AGG', 'AGGE'], 'desc' : ['if NANOVG_BACKEND is valid, VGCANVAS must be NANOVG or \'\'', 'if VGCANVAS is NANOVG_PLUS, NANOVG_BACKEND must be GLES2/GLES3/GL3 or None', 'NANOVG_BACKEND is GLES2/GLES3/GL3/AGG/AGGE'], 'help_info' : 'set awtk\'s nanovg use render model, default value is None, None is system\'s value'},
+    'LCD_COLOR_FORMAT' : { 'value' : None, 'type' : type(str), 'str_enum' : ['bgr565', 'bgra8888', 'mono'], 'desc' : ['if NANOVG_BACKEND is GLES2/GLES3/GL3, LCD_COLOR_FORMAT must be bgra8888 or \'\'', 'if NANOVG_BACKEND is AGG/AGGE, LCD_COLOR_FORMAT must be bgr565/bgra8888/mono or None', 'NANOVG_BACKEND is bgr565/bgra8888/mono'], 'help_info' : 'set awtk\'s lcd color format, default value is None, None is system\'s value'},
+    'DEBUG' : { 'value' : True, 'type' : type(bool), 'desc' : ['awtk\'s compile is debug'], 'help_info' : 'awtk\'s compile is debug, value is true or false, default value is true' },
+    'PDB' : { 'value' : True, 'type' : type(bool), 'desc' : ['export pdb file'], 'help_info' : 'export pdb file, value is true or false' },
+    'SDL_UBUNTU_USE_IME' : { 'value' : False, 'type' : type(bool), 'desc' : ['ubuntu use chinese input engine'], 'help_info' : 'ubuntu use ime, this sopt is ubuntu use chinese input engine, value is true or false, default value is false' },
+    'NATIVE_WINDOW_BORDERLESS' : { 'value' : False, 'type' : type(bool), 'desc' : ['pc desktop program no borerless'], 'help_info' : 'pc desktop program no borerless, value is true or false, default value is false' },
+    'NATIVE_WINDOW_NOT_RESIZABLE' : { 'value' : False, 'type' : type(bool), 'desc' : ['pc desktop program do not resize program'], 'help_info' : 'pc desktop program do not resize program\'s size, value is true or false, default value is false' },
+    'BUILD_TESTS' : { 'value' : True, 'type' : type(bool), 'desc' : ['build awtk\'s gtest demo'], 'help_info' : 'build awtk\'s gtest demo, value is true or false, default value is true' },
+    'BUILD_DEMOS' : { 'value' : True, 'type' : type(bool), 'desc' : ['build awtk\'s demo examples'], 'help_info' : 'build awtk\'s demo examples, value is true or false, default value is true' },
+    'BUILD_TOOLS' : { 'value' : True, 'type' : type(bool), 'desc' : ['build awtk\'s tools'], 'help_info' : 'build awtk\'s tools, value is true or false, default value is true' },
+    'WIN32_RES' : { 'value' : None, 'type' : type(str), 'save_file' : False, 'desc' : ['app\'s win32 res path'], 'help_info' : 'app\'s win32 res path, WIN32_RES=XXXXX, value\'s default=\'awtk/win32_res/awtk.res\' ' },
   })
 
   def try_load_default_config(self) :
@@ -247,12 +247,14 @@ class complie_helper :
         self.config[name]['value'] = value
       elif isinstance(self.config[name]['value'], bool) and isinstance(value, str) :
         self.config[name]['value'] = strtobool(value) == 1
+      elif 'type' in self.config[name] and self.config[name]['type'] == type(bool) and isinstance(value, str) :
+        self.config[name]['value'] = strtobool(value) == 1
       elif isinstance(self.config[name]['value'], list) and isinstance(value, str) :
         self.config[name]['value'] = value.split(',')
-      elif self.config[name]['value'] == None :
+      elif self.config[name]['value'] == None and (not 'type' in self.config[name]):
         self.config[name]['value'] = value
       else :
-        self.config[name]['value'] = type(self.config[name]['value'])(value)
+        self.config[name]['value'] = type(self.config[name]['type'])(value)
 
   def save_last_complie_argv(self) :
     json_obj_save_file(self.config, self.LAST_COMLIP_ARGV_FILE);

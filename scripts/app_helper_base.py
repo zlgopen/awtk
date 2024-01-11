@@ -15,33 +15,33 @@ SRT_SCONS_CONFIG_SCRIPT = 'SCONS_CONFIG_SCRIPT'
 SRT_SCONS_CONFIG_SCRIPT_ARGV = 'SCONS_CONFIG_SCRIPT_ARGV'
 
 COMPILE_CONFIG = {
-  'AWTK_ROOT' : { 'value' : None, 'desc' : ['awtk root'], 'help_info' : 'set link awtk root, AWTK_ROOT=XXXXX'},
-  'LINUX_FB' : { 'value' : False, 'desc' : ['use linux\'s building'], 'help_info' : 'use linux\'s compile tools prefix building, value is true or false'},
-  'MVVM_ROOT' : { 'value' : None, 'desc' : ['awtk\'s mvvm root'], 'help_info' : 'set link awtk\'s mvvm root, MVVM_ROOT=XXXXX'},
-  'WITH_MVVM' : { 'value' : False, 'desc' : ['use mvvm'], 'help_info' : 'use mvvm\'s lib, value is true or false'},
-  'WITH_JERRYSCRIPT' : { 'value' : False, 'desc' : ['use mvvm\'s js'], 'help_info' : 'use mvvm js\'s lib, value is true or false'},
-  'WITH_IOTJS' : { 'value' : False, 'desc' : ['use mvvm\'s iotjs'], 'help_info' : 'use mvvm iotjs\'s lib, value is true or false'},
-  'AWFLOW_ROOT' : { 'value' : None, 'desc' : ['awtk\'s awflow root'], 'help_info' : 'set link awtk\'s awflow root, AWFLOW_ROOT=XXXXX'},
-  'WITH_AWFLOW' : { 'value' : False, 'desc' : ['use awflow'], 'help_info' : 'use awflow\'s lib, value is true or false'},
-  SRT_SCONS_CONFIG_SCRIPT : { 'value' : None, 'save_file' : False, 'desc' : ['set script file path, this is script has {0}(COMPILE_CONFIG, ARGUMENTS, argv) function'.format(SRT_SCONS_CONFIG_FUN)], 'help_info' : 'set res config file path, this is script must has {0}(COMPILE_CONFIG, ARGUMENTS, argv) function, {0}\'s function return compile_config\'s class, CONFIG_SCRIPT=XXXXX'.format(SRT_SCONS_CONFIG_FUN)},
-  SRT_SCONS_CONFIG_SCRIPT_ARGV : { 'value' : None, 'save_file' : False, 'desc' : ['value is {0}\s argv for script file '.format(SRT_SCONS_CONFIG_FUN)], 'help_info' : 'value is {0}\s argv for script file\'s {0}, SCONS_CONFIG_SCRIPT_ARGV=XXXXX'.format(SRT_SCONS_CONFIG_FUN)},
-  'BUILD_DIR' : { 'value' : None, 'desc' : ['build dir, compile temp file dir'], 'help_info' : 'set build dir, save compile temp file dir or *.obj/.*o dir, BUILD_DIR=XXXXX'},
-#   'APP_BIN_DIR' : { 'value' : None, 'desc' : ['build bin dir'], 'help_info' : 'set build bin dir, APP_BIN_DIR=XXXXX'},
-#   'APP_LIB_DIR' : { 'value' : None, 'desc' : ['build lib dir'], 'help_info' : 'set build lib dir, APP_LIB_DIR=XXXXX'},
-  'DEBUG' : { 'value' : None, 'desc' : ['awtk\'s compile is debug'], 'help_info' : 'awtk\'s compile is debug, value is true or false' },
-  'PDB' : { 'value' : True, 'desc' : ['export pdb file'], 'help_info' : 'export pdb file, value is true or false' },
-  'FLAGS' : { 'value' : None, 'desc' : ['compile flags'], 'help_info' : 'set compile\'s flags, so care of system and compile tools'},
-  'LIBS' : { 'value' : [], 'desc' : ['compile libs'], 'help_info' : 'set compile\'s libs, so care of system and compile tools, use \',\' split muliple libraries '},
-  'LIBPATH' : { 'value' : [], 'desc' : ['compile lib paths'], 'help_info' : 'set compile\'s lib paths, so care of system and compile tools, use \',\' split muliple librarie\'s paths '},
-  'CPPPATH' : { 'value' : [], 'desc' : ['compile include paths'], 'help_info' : 'set compile\'s include paths, so care of system and compile tools, use \',\' split muliple include path '},
-  'SHARED' : { 'value' : True, 'desc' : ['compile is SharedLibrary'], 'help_info' : 'app\'s compile is Shared Library, value is true or false' },
-  'IDL_DEF' : { 'value' : True, 'desc' : ['compile build idl def file'], 'help_info' : 'app\'s compile build idl def file, value is true or false' },
-  'LCD' : { 'value' : None, 'save_file' : False, 'desc' : ['app\'s lcd\'s size'], 'help_info' : 'app\'s lcd\'s size, value is [lcd_width]_[lcd_height], example is LCD=320_480' },
-  'LANGUAGE' : { 'value' : None, 'save_file' : False, 'desc' : ['app\'s language'], 'help_info' : 'app\'s language, value is [country]_[language], example is LANGUAGE=zh_CH' },
-  'FONT' : { 'value' : None, 'save_file' : False, 'desc' : ['app\'s font\'s name'], 'help_info' : 'app\'s font\'s name, FONT=XXXXX ' },
-  'THEME' : { 'value' : None, 'save_file' : False, 'desc' : ['app\'s default\'s theme\'s name'], 'help_info' : 'app\'s default\'s theme\'s name, THEME=XXXXX ' },
-  'RES_ROOT' : { 'value' : None, 'save_file' : False, 'desc' : ['app\'s res root'], 'help_info' : 'app\'s res root, RES_ROOT=XXXXX ' },
-  'WIN32_RES' : { 'value' : None, 'desc' : ['app\'s win32 res path'], 'help_info' : 'app\'s win32 res path, WIN32_RES=XXXXX, value\'s default=\'awtk/win32_res/awtk.res\' ' },
+  'AWTK_ROOT' : { 'value' : None, 'type' : type(str), 'desc' : ['awtk root'], 'help_info' : 'set link awtk root, AWTK_ROOT=XXXXX'},
+  'LINUX_FB' : { 'value' : False, 'type' : type(bool), 'desc' : ['use linux\'s building'], 'help_info' : 'use linux\'s compile tools prefix building, value is true or false'},
+  'MVVM_ROOT' : { 'value' : None, 'type' : type(str), 'desc' : ['awtk\'s mvvm root'], 'help_info' : 'set link awtk\'s mvvm root, MVVM_ROOT=XXXXX'},
+  'WITH_MVVM' : { 'value' : False, 'type' : type(bool), 'desc' : ['use mvvm'], 'help_info' : 'use mvvm\'s lib, value is true or false'},
+  'WITH_JERRYSCRIPT' : { 'value' : False, 'type' : type(bool), 'desc' : ['use mvvm\'s js'], 'help_info' : 'use mvvm js\'s lib, value is true or false'},
+  'WITH_IOTJS' : { 'value' : False, 'type' : type(bool), 'desc' : ['use mvvm\'s iotjs'], 'help_info' : 'use mvvm iotjs\'s lib, value is true or false'},
+  'AWFLOW_ROOT' : { 'value' : None, 'type' : type(str), 'desc' : ['awtk\'s awflow root'], 'help_info' : 'set link awtk\'s awflow root, AWFLOW_ROOT=XXXXX'},
+  'WITH_AWFLOW' : { 'value' : False, 'type' : type(bool), 'desc' : ['use awflow'], 'help_info' : 'use awflow\'s lib, value is true or false'},
+  SRT_SCONS_CONFIG_SCRIPT : { 'value' : None, 'type' : type(str), 'save_file' : False, 'desc' : ['set script file path, this is script has {0}(COMPILE_CONFIG, ARGUMENTS, argv) function'.format(SRT_SCONS_CONFIG_FUN)], 'help_info' : 'set res config file path, this is script must has {0}(COMPILE_CONFIG, ARGUMENTS, argv) function, {0}\'s function return compile_config\'s class, CONFIG_SCRIPT=XXXXX'.format(SRT_SCONS_CONFIG_FUN)},
+  SRT_SCONS_CONFIG_SCRIPT_ARGV : { 'value' : None, 'type' : type(str), 'save_file' : False, 'desc' : ['value is {0}\s argv for script file '.format(SRT_SCONS_CONFIG_FUN)], 'help_info' : 'value is {0}\s argv for script file\'s {0}, SCONS_CONFIG_SCRIPT_ARGV=XXXXX'.format(SRT_SCONS_CONFIG_FUN)},
+  'BUILD_DIR' : { 'value' : None, 'type' : type(str), 'desc' : ['build dir, compile temp file dir'], 'help_info' : 'set build dir, save compile temp file dir or *.obj/.*o dir, BUILD_DIR=XXXXX'},
+#   'APP_BIN_DIR' : { 'value' : None, 'type' : type(str), 'desc' : ['build bin dir'], 'help_info' : 'set build bin dir, APP_BIN_DIR=XXXXX'},
+#   'APP_LIB_DIR' : { 'value' : None, 'type' : type(str), 'desc' : ['build lib dir'], 'help_info' : 'set build lib dir, APP_LIB_DIR=XXXXX'},
+  'DEBUG' : { 'value' : None, 'type' : type(bool), 'desc' : ['awtk\'s compile is debug'], 'help_info' : 'awtk\'s compile is debug, value is true or false' },
+  'PDB' : { 'value' : True, 'type' : type(bool), 'desc' : ['export pdb file'], 'help_info' : 'export pdb file, value is true or false' },
+  'FLAGS' : { 'value' : None, 'type' : type(str), 'desc' : ['compile flags'], 'help_info' : 'set compile\'s flags, so care of system and compile tools'},
+  'LIBS' : { 'value' : [], 'type' : type(list), 'desc' : ['compile libs'], 'help_info' : 'set compile\'s libs, so care of system and compile tools, use \',\' split muliple libraries '},
+  'LIBPATH' : { 'value' : [], 'type' : type(list), 'desc' : ['compile lib paths'], 'help_info' : 'set compile\'s lib paths, so care of system and compile tools, use \',\' split muliple librarie\'s paths '},
+  'CPPPATH' : { 'value' : [], 'type' : type(list), 'desc' : ['compile include paths'], 'help_info' : 'set compile\'s include paths, so care of system and compile tools, use \',\' split muliple include path '},
+  'SHARED' : { 'value' : True, 'type' : type(bool), 'desc' : ['compile is SharedLibrary'], 'help_info' : 'app\'s compile is Shared Library, value is true or false' },
+  'IDL_DEF' : { 'value' : True, 'type' : type(bool), 'desc' : ['compile build idl def file'], 'help_info' : 'app\'s compile build idl def file, value is true or false' },
+  'LCD' : { 'value' : None, 'type' : type(str), 'save_file' : False, 'desc' : ['app\'s lcd\'s size'], 'help_info' : 'app\'s lcd\'s size, value is [lcd_width]_[lcd_height], example is LCD=320_480' },
+  'LANGUAGE' : { 'value' : None, 'type' : type(str), 'save_file' : False, 'desc' : ['app\'s language'], 'help_info' : 'app\'s language, value is [country]_[language], example is LANGUAGE=zh_CH' },
+  'FONT' : { 'value' : None, 'type' : type(str), 'save_file' : False, 'desc' : ['app\'s font\'s name'], 'help_info' : 'app\'s font\'s name, FONT=XXXXX ' },
+  'THEME' : { 'value' : None, 'type' : type(str), 'save_file' : False, 'desc' : ['app\'s default\'s theme\'s name'], 'help_info' : 'app\'s default\'s theme\'s name, THEME=XXXXX ' },
+  'RES_ROOT' : { 'value' : None, 'type' : type(str), 'save_file' : False, 'desc' : ['app\'s res root'], 'help_info' : 'app\'s res root, RES_ROOT=XXXXX ' },
+  'WIN32_RES' : { 'value' : None, 'type' : type(str), 'desc' : ['app\'s win32 res path'], 'help_info' : 'app\'s win32 res path, WIN32_RES=XXXXX, value\'s default=\'awtk/win32_res/awtk.res\' ' },
 }
 
 def set_compile_config(config) :
@@ -291,10 +291,15 @@ class AppHelperBase:
         self.WITH_IOTJS = False
         self.MVVM_ROOT = None
         self.AWFLOW_ROOT = None
-        if self.LINUX_FB and 'DEBUG' not in ARGUMENTS :
-            self.DEBUG = False
+        self.AWTK_OS_DEBUG = True
+        if hasattr(self.awtk, 'OS_DEBUG') :
+            self.AWTK_OS_DEBUG = self.awtk.OS_DEBUG
         else :
-            self.DEBUG = self.complie_helper.get_value('DEBUG', True)
+            self.AWTK_OS_DEBUG = self.DEBUG
+        self.DEBUG = self.complie_helper.get_value('DEBUG', self.AWTK_OS_DEBUG)
+        if isinstance(self.DEBUG, str) :
+            from utils import strtobool
+            self.DEBUG = strtobool(self.DEBUG) == 1
 
         self.parseArgs(self.awtk, ARGUMENTS)
         self.APP_CPPPATH = [self.APP_SRC, self.APP_RES] + self.complie_helper.get_value('CPPPATH', [])
@@ -572,10 +577,6 @@ class AppHelperBase:
         APP_TOOLS = self.APP_TOOLS
         CXXFLAGS = self.APP_CXXFLAGS
         DEPENDS_LIBS = []
-        if hasattr(awtk, 'OS_DEBUG') :
-            OS_DEBUG = awtk.OS_DEBUG
-        else :
-            OS_DEBUG = self.DEBUG
         if hasattr(awtk, 'BUILD_DEBUG_FLAG') :
             BUILD_DEBUG_FLAG = awtk.BUILD_DEBUG_FLAG
         else :
@@ -583,7 +584,6 @@ class AppHelperBase:
                 BUILD_DEBUG_FLAG = ' '
             else :
                 BUILD_DEBUG_FLAG = '  /MDd -D_DEBUG -DDEBUG /DEBUG /Od '
-        DEBUG = self.complie_helper.get_value('DEBUG', OS_DEBUG)
         self.APP_BIN_DIR = self.complie_helper.get_value('APP_BIN_DIR', os.path.join(self.APP_ROOT, self.BIN_DIR))
         self.APP_LIB_DIR = self.complie_helper.get_value('APP_LIB_DIR', os.path.join(self.APP_ROOT, self.LIB_DIR))
 
@@ -682,12 +682,11 @@ class AppHelperBase:
         LIBS = self.APP_LIBS + LIBS
 
         if hasattr(awtk, 'CC'):
-            if DEBUG != OS_DEBUG:
-                if DEBUG :
-                    CCFLAGS += ' -g -O0 '
-                else :
-                    CCFLAGS += ' -Os '
+            if self.DEBUG :
+                CCFLAGS += ' -g -O0 '
             else :
+                CCFLAGS += ' -Os '
+            if self.DEBUG == self.AWTK_OS_DEBUG:
                 CCFLAGS += BUILD_DEBUG_FLAG
 
             env = DefaultEnvironment(
@@ -710,15 +709,14 @@ class AppHelperBase:
                 OS_SUBSYSTEM_CONSOLE=awtk.OS_SUBSYSTEM_CONSOLE,
                 OS_SUBSYSTEM_WINDOWS=awtk.OS_SUBSYSTEM_WINDOWS)
         else:
-            if DEBUG != OS_DEBUG:
-                if DEBUG :
-                    CCFLAGS += ' -D_DEBUG -DDEBUG /DEBUG /MDd /Od '
-                else :
-                    CCFLAGS += ' -DNDEBUG /MD /O2 /Oi '
-
-                if self.complie_helper.get_value('PDB', True) :
-                    LINKFLAGS += ' /DEBUG '
+            if self.DEBUG :
+                CCFLAGS += ' -D_DEBUG -DDEBUG /DEBUG /MDd /Od '
             else :
+                CCFLAGS += ' -DNDEBUG /MD /O2 /Oi '
+
+            if self.complie_helper.get_value('PDB', True) :
+                LINKFLAGS += ' /DEBUG '
+            if self.DEBUG == self.AWTK_OS_DEBUG:
                 CCFLAGS += BUILD_DEBUG_FLAG
                 LINKFLAGS += awtk.BUILD_DEBUG_LINKFLAGS
 
