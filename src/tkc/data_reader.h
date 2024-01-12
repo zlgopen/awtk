@@ -93,6 +93,16 @@ ret_t data_reader_destroy(data_reader_t* reader);
  */
 void* data_reader_read_all(const char* url, uint32_t* size);
 
+/**
+ * @method data_reader_can_read
+ * 查询 url 中是否有数据。
+ *
+ * @param {const char*} url URL。
+ *
+ * @return {bool_t} 返回 bool_t 值。
+ */
+bool_t data_reader_can_read(const char* url);
+
 #define DATA_READER(reader) ((data_reader_t*)(reader))
 
 END_C_DECLS

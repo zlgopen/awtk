@@ -66,3 +66,16 @@ void* data_reader_read_all(const char* url, uint32_t* size) {
 
   return data;
 }
+
+bool_t data_reader_can_read(const char* url) {
+  bool_t can = FALSE;
+  data_reader_t* reader = data_reader_factory_create_reader(data_reader_factory(), url);
+  if (!reader) {
+    return FALSE;
+  }
+  if (data_reader_get_size(reader) > 0) {
+    can = TRUE;
+  }
+  data_reader_destroy(reader);
+  return can;
+}
