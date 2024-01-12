@@ -49,6 +49,7 @@ static ret_t candidates_on_button_focused(void* ctx, event_t* e) {
 
 static ret_t candidates_on_button_click(void* ctx, event_t* e) {
   char str[32];
+  widget_t* focus = NULL;
   widget_t* widget = WIDGET(ctx);
   widget_t* button = WIDGET(e->target);
   widget_t* keyboard = widget_get_window(widget);
@@ -69,8 +70,14 @@ static ret_t candidates_on_button_click(void* ctx, event_t* e) {
           if (suggest_words->words_nr > 0) {
             widget_set_focused(widget_get_child(button->parent, 0), TRUE);
             candidates->is_suggest = TRUE;
+          } else {
+            focus = widget_get_focused_widget(keyboard);
+            widget_focus_down(focus);
           }
           log_debug("suggest_words->words:%s\n", suggest_words->words);
+        } else {
+          focus = widget_get_focused_widget(keyboard);
+          widget_focus_down(focus);
         }
       }
       /* After commit text, if candidates is hidden we need to blur it and reset key_target! */
