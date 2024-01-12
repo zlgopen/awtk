@@ -1150,3 +1150,46 @@ const char* conf_node_get_child_value_str(conf_node_t* node, const char* name, c
     return defval;
   }
 }
+
+static ret_t conf_node_foreach_sibling(const char* root, conf_node_t* iter,
+                                       conf_doc_on_visit_t on_visit, void* ctx) {
+  value_t v;
+  bool_t is_array;
+  int32_t index = 0;
+  char path[MAX_PATH + 1];
+
+  if (iter == NULL) {
+    return RET_OK;
+  }
+
+  is_array = iter->parent->node_type == CONF_NODE_ARRAY;
+  if (root == NULL) {
+    root = "";
+  }
+
+  while (iter != NULL) {
+    if (is_array) {
+      tk_snprintf(path, MAX_PATH, "%s[%d]", root, index);
+      index++;
+    } else {
+      tk_snprintf(path, MAX_PATH, "%s%s", root, conf_node_get_name(iter));
+    }
+
+    if (iter->node_type == CONF_NODE_SIMPLE) {
+      return_value_if_fail(conf_node_get_value(iter, &v) == RET_OK, RET_BAD_PARAMS);
+
+      on_visit(ctx, path, &v);
+    } else {
+      tk_str_append(path, MAX_PATH, ".");
+      conf_node_foreach_sibling(path, conf_node_get_first_child(iter), on_visit, ctx);
+    }
+
+    iter = iter->next;
+  }
+  return RET_OK;
+}
+
+ret_t conf_doc_foreach(conf_doc_t* doc, conf_doc_on_visit_t on_visit, void* ctx) {
+  return_value_if_fail(doc && on_visit, RET_BAD_PARAMS);
+  return conf_node_foreach_sibling(NULL, conf_node_get_first_child(doc->root), on_visit, ctx);
+}

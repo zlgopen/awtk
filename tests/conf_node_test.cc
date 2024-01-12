@@ -1,5 +1,6 @@
 ﻿#include "gtest/gtest.h"
 #include "tkc/buffer.h"
+#include "tkc/utils.h"
 #include "ubjson/ubjson_writer.h"
 #include "conf_io/conf_ini.h"
 #include "conf_io/conf_json.h"
@@ -280,4 +281,39 @@ TEST(ConfNode, set_get_object) {
 
   str_reset(&str);
   TK_OBJECT_UNREF(obj);
+}
+
+static ret_t conf_doc_on_check_data(void* ctx, const char* path, value_t* v) {
+  value_t vv;
+  ENSURE(tk_object_get_prop(OBJECT(ctx), path, &vv) == RET_OK);
+  ENSURE(value_equal(&vv, v));
+  tk_object_remove_prop(OBJECT(ctx), path);
+  log_info("    %s=%s\n", path, value_str(v));
+  return RET_OK;
+}
+
+static ret_t conf_doc_on_copy_data(void* ctx, const void* data) {
+  named_value_t* nv = (named_value_t*)data;
+  ENSURE(conf_doc_set((conf_doc_t*)ctx, nv->name, &nv->value) == RET_OK);
+  return RET_OK;
+}
+
+TEST(ConfNode, foreach) {
+  conf_doc_t* doc = conf_doc_create(100);
+
+  tk_object_t* data = object_default_create();
+  tk_object_set_prop_str(data, "server.ip", "192.168.8.101");
+  tk_object_set_prop_str(data, "server.port", "8383");
+  tk_object_set_prop_str(data, "server.stat.up", "true");
+  tk_object_set_prop_str(data, "server.stat.linkup", "false");
+  tk_object_set_prop_str(data, "server.dns.[0]", "8.8.8.1");
+  tk_object_set_prop_str(data, "server.dns.[1]", "4.4.4.1");
+
+  tk_object_foreach_prop(data, conf_doc_on_copy_data, doc);
+
+  conf_doc_foreach(doc, conf_doc_on_check_data, data);
+  ENSURE(tk_object_get_prop_int(data, OBJECT_PROP_SIZE, -1) == 0);
+
+  conf_doc_destroy(doc);
+  TK_OBJECT_UNREF(data);
 }

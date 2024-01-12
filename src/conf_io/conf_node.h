@@ -30,6 +30,7 @@ BEGIN_C_DECLS
 
 struct _conf_node_t;
 typedef struct _conf_node_t conf_node_t;
+typedef ret_t (*conf_doc_on_visit_t)(void* ctx, const char* path, value_t* v);
 
 /**
  * @class conf_doc_t
@@ -122,7 +123,7 @@ conf_node_t* conf_doc_dup_node(conf_doc_t* doc, conf_node_t* node, const char* n
 /**
  * @method conf_doc_set_node_prop
  *
- * 设置节点的属性。 
+ * 设置节点的属性。
  *
  * @param {conf_doc_t*} doc 文档对象。
  * @param {conf_node_t*} node 节点对象。
@@ -477,66 +478,66 @@ ret_t conf_doc_use_extend_type(conf_doc_t* doc, bool_t use);
 ret_t conf_doc_destroy(conf_doc_t* doc);
 
 /**
- * @enum conf_node_type_t 
+ * @enum conf_node_type_t
  * @prefix CONF_NODE_
  * 节点类型。
  */
 typedef enum _conf_node_type_t {
   /**
-   * @const CONF_NODE_NONE 
+   * @const CONF_NODE_NONE
    * 无效节点。
    */
   CONF_NODE_NONE = 0,
   /**
-   * @const CONF_NODE_OBJECT 
+   * @const CONF_NODE_OBJECT
    * 对象节点。
    */
   CONF_NODE_OBJECT,
   /**
-   * @const CONF_NODE_ARRAY 
+   * @const CONF_NODE_ARRAY
    * 数组节点。
    */
   CONF_NODE_ARRAY,
   /**
-   * @const CONF_NODE_SIMPLE 
+   * @const CONF_NODE_SIMPLE
    * 简单节点。
    */
   CONF_NODE_SIMPLE
 } conf_node_type_t;
 
 /**
- * @enum conf_node_value_t 
+ * @enum conf_node_value_t
  * @prefix CONF_NODE_VALUE_
  * 节点值的类型。
  */
 typedef enum _conf_node_value_t {
   /**
-   * @const CONF_NODE_VALUE_NONE 
+   * @const CONF_NODE_VALUE_NONE
    * 无效类型。
    */
   CONF_NODE_VALUE_NONE = 0,
   /**
-   * @const CONF_NODE_VALUE_BOOL 
+   * @const CONF_NODE_VALUE_BOOL
    * bool_t类型。
    */
   CONF_NODE_VALUE_BOOL,
   /**
-   * @const CONF_NODE_VALUE_INT8 
+   * @const CONF_NODE_VALUE_INT8
    * int8_t类型。
    */
   CONF_NODE_VALUE_INT8,
   /**
-   * @const CONF_NODE_VALUE_UINT8 
+   * @const CONF_NODE_VALUE_UINT8
    * uint8_t类型。
    */
   CONF_NODE_VALUE_UINT8,
   /**
-   * @const CONF_NODE_VALUE_INT16 
+   * @const CONF_NODE_VALUE_INT16
    * int16_t类型。
    */
   CONF_NODE_VALUE_INT16,
   /**
-   * @const CONF_NODE_VALUE_UINT16 
+   * @const CONF_NODE_VALUE_UINT16
    * uint16_t类型。
    */
   CONF_NODE_VALUE_UINT16,
@@ -599,7 +600,7 @@ typedef enum _conf_node_value_t {
  */
 struct _conf_node_t {
   /**
-   * @property {conf_node_t*} next 
+   * @property {conf_node_t*} next
    * 下一个兄弟节点。
    */
   conf_node_t* next;
@@ -816,6 +817,18 @@ ret_t conf_node_set_first_child(conf_node_t* node, conf_node_t* child);
  * @return {uint32_t} 成功返回节点个数。
  */
 uint32_t conf_node_count_children(conf_node_t* node);
+
+/**
+ * @method conf_doc_foreach
+ * 遍历节点类型为 CONF_NODE_SIMPLE 的节点。
+ *
+ * @param {conf_doc_t*}         doc 文档对象。
+ * @param {conf_doc_on_visit_t} on_visit 回调。
+ * @param {void*}               ctx 回调参数。
+ *
+ * @return {ret_t} 返回 ret_t 值
+ */
+ret_t conf_doc_foreach(conf_doc_t* doc, conf_doc_on_visit_t on_visit, void* ctx);
 
 #define CONF_NODE_ROOT_NAME "root"
 
