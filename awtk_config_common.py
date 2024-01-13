@@ -99,6 +99,9 @@ if OS_NAME == 'Darwin':
 
     # Find the correct SDL2 version
     sdl_path = "/opt/homebrew/Cellar/sdl2/" 
+    if not os.path.exists(sdl_path) :
+        # Compatible with old systems
+        sdl_path = '/usr/local/Cellar/sdl2'
     sdl_versions = os.listdir(sdl_path)
     if len(sdl_versions)==0:
         print("Can not find the SDL version")
