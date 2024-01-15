@@ -714,18 +714,22 @@ class AppHelperBase:
                 OS_SUBSYSTEM_CONSOLE=awtk.OS_SUBSYSTEM_CONSOLE,
                 OS_SUBSYSTEM_WINDOWS=awtk.OS_SUBSYSTEM_WINDOWS)
         else:
+            is_msvc = True;
+            if hasattr(awtk, 'TOOLS_NAME') :
+                if awtk.TOOLS_NAME != '':
+                    is_msvc = False
             if self.DEBUG :
-                if self.OS_NAME == 'Windows':
+                if self.OS_NAME == 'Windows' and is_msvc:
                     CCFLAGS += ' -D_DEBUG -DDEBUG /DEBUG /MDd /Od '
                 elif self.OS_NAME == 'Darwin' or self.OS_NAME == 'Linux' :
                     CCFLAGS += ' -g -O0 '
             else :
-                if self.OS_NAME == 'Windows':
+                if self.OS_NAME == 'Windows' and is_msvc:
                     CCFLAGS += ' -DNDEBUG /MD /O2 /Oi '
                 elif self.OS_NAME == 'Darwin' or self.OS_NAME == 'Linux' :
                     CCFLAGS += ' -Os '
 
-            if self.OS_NAME == 'Windows' and self.complie_helper.get_value('PDB', True) :
+            if self.OS_NAME == 'Windows' and is_msvc and self.complie_helper.get_value('PDB', True) :
                 LINKFLAGS += ' /DEBUG '
             if self.DEBUG == self.AWTK_OS_DEBUG:
                 CCFLAGS += BUILD_DEBUG_FLAG
