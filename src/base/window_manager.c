@@ -186,12 +186,12 @@ static widget_t* window_manager_default_impl_get_top_window(widget_t* widget) {
   return_value_if_fail(widget != NULL, NULL);
 
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-    if (widget_is_dialog(iter) && DIALOG(iter)->quited) {
-      continue;
-    }
-    if (iter->visible) {
-      return iter;
-    }
+  if (widget_is_dialog(iter) && DIALOG(iter)->quited) {
+    continue;
+  }
+  if (iter->visible) {
+    return iter;
+  }
   WIDGET_FOR_EACH_CHILD_END();
 
   return NULL;
@@ -394,11 +394,11 @@ ret_t window_manager_switch_to(widget_t* widget, widget_t* curr_win, widget_t* t
   }
 
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-    if (widget_is_dialog(iter)) {
-      return RET_FAIL;
-    } else if (iter == target_win) {
-      break;
-    }
+  if (widget_is_dialog(iter) && !DIALOG(iter)->quited) {
+    return RET_FAIL;
+  } else if (iter == target_win) {
+    break;
+  }
   WIDGET_FOR_EACH_CHILD_END();
 
   if (wm->vt->switch_to != NULL) {
