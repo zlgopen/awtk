@@ -873,6 +873,14 @@ void* tk_pointer_from_int(int32_t v) {
   return (void*)(intptr_t)v;
 }
 
+uint64_t tk_pointer_to_long(const void* p) {
+  return (uint64_t)(intptr_t)p;
+}
+
+void* tk_pointer_from_long(uint64_t v) {
+  return (void*)(intptr_t)v;
+}
+
 char* tk_str_toupper(char* str) {
   char* p = str;
   return_value_if_fail(str != NULL, NULL);
@@ -2118,3 +2126,8 @@ ret_t tk_date_time_format(uint64_t time, const char* format, str_t* result) {
 
   return RET_OK;
 }
+
+uint32_t tk_bits_to_bytes(uint32_t bits) {
+  return (bits + 7) / 8;
+}
+

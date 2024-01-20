@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/01/21
+  * add tk\_pointer\_to\_long/tk\_pointer\_from\_long/tk\_bits\_to\_bytes
+
 2024/01/17
   * 修复传参widget为空导致崩溃的问题(感谢兆坤提供补丁)。
 
