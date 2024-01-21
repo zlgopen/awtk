@@ -1133,6 +1133,14 @@ uint32_t tk_count_char(const char* str, char c);
  */
 ret_t tk_date_time_format(uint64_t time, const char* format, str_t* result);
 
+/**
+ * @method tk_bits_to_bytes
+ * 将bits转换成bytes。
+ * @param {uint32_t} bits bits。
+ * @return {uint32_t} 返回bytes。
+ */
+uint32_t tk_bits_to_bytes(uint32_t bits);
+
 #define TK_STRDUP(str) ((str) != NULL) ? tk_strdup(str) : NULL
 #define TK_STRNDUP(str, len) ((str) != NULL) ? tk_strndup(str, len) : NULL
 
@@ -1161,8 +1169,6 @@ ret_t tk_date_time_format(uint64_t time, const char* format, str_t* result);
 
 /*public for test*/
 ret_t xml_file_expand(const char* filename, str_t* s, const char* data);
-
-uint32_t tk_bits_to_bytes(uint32_t bits);
 
 END_C_DECLS
 

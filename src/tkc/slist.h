@@ -115,7 +115,7 @@ void* slist_find(slist_t* slist, void* ctx);
  * @param {tk_compare_t} compare 元素比较函数。
  * @param {void*} ctx 比较函数的上下文。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {void*} 返回节点。
  */
 void* slist_find_ex(slist_t* slist, tk_compare_t compare, void* ctx);
 
