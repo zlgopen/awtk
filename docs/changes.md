@@ -2,6 +2,7 @@
 
 2024/01/23
   * 完善 event\_from\_name（感谢志鹏提供补丁）
+  * 修复edit控件输入类型为uint时，最大值设为4294967295导致溢出的问题(感谢雨欣提供补丁）
 
 2024/01/21
   * add tk\_pointer\_to\_long/tk\_pointer\_from\_long/tk\_bits\_to\_bytes

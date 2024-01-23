@@ -402,9 +402,9 @@ static bool_t edit_is_valid_value_default(widget_t* widget) {
     }
     case INPUT_INT:
     case INPUT_UINT: {
-      int32_t v = 0;
-      int32_t min = (int32_t)(edit->min);
-      int32_t max = (int32_t)(edit->max);
+      int64_t v = 0;
+      int64_t min = (int64_t)(edit->min);
+      int64_t max = (int64_t)(edit->max);
 
       if (text->size == 0 || text->size > 11) {
         return FALSE;
@@ -414,13 +414,13 @@ static bool_t edit_is_valid_value_default(widget_t* widget) {
         return TRUE;
       }
 
-      wstr_to_int(text, &v);
+      wstr_to_int64(text, &v);
       if (text->size >= 10) {
         wstr_t str;
         bool_t result = FALSE;
 
         wstr_init(&str, 32);
-        wstr_from_int(&str, v);
+        wstr_from_int64(&str, v);
         result = wstr_equal(&str, text);
         wstr_reset(&str);
         if (!result) {
