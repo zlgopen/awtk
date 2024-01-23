@@ -239,16 +239,27 @@ int32_t event_from_name(const char* name) {
       if (tk_str_eq(name, "focus")) {
         return EVT_FOCUS;
       }
+      break;
     }
     case 'b': {
       if (tk_str_eq(name, "blur")) {
         return EVT_BLUR;
       }
+      break;
     }
     case 'd': {
       if (tk_str_eq(name, "data")) {
         return EVT_DATA;
+      } else if (tk_str_eq(name, "drag_start")) {
+        return EVT_DRAG_START;
+      } else if (tk_str_eq(name, "drag")) {
+        return EVT_DRAG;
+      } else if (tk_str_eq(name, "drag_end")) {
+        return EVT_DRAG_END;
+      } else if (tk_str_eq(name, "double_click")) {
+        return EVT_DOUBLE_CLICK;
       }
+      break;
     }
     case 'g': {
       if (tk_str_eq(name, "global_key_up")) {
@@ -349,8 +360,16 @@ int32_t event_from_name(const char* name) {
     case 'm': {
       if (tk_str_eq(name, "model_change")) {
         return EVT_MODEL_CHANGE;
+      } else if (tk_str_eq(name, "move")) {
+        return EVT_MOVE;
       } else if (tk_str_eq(name, "move_resize")) {
         return EVT_MOVE_RESIZE;
+      }
+      break;
+    }
+    case 'r': {
+      if (tk_str_eq(name, "resize")) {
+        return EVT_RESIZE;
       }
       break;
     }
