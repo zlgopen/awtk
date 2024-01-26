@@ -425,8 +425,9 @@ ret_t tk_thread_start(tk_thread_t* thread) {
 
     thread->param.sched_priority = thread->priority;
     pthread_attr_setschedparam(&thread->attr, &thread->param);
-
+#ifndef ANDROID
     pthread_attr_setinheritsched(&thread->attr, PTHREAD_EXPLICIT_SCHED);
+#endif/*ANDROID*/    
   }
   if (thread->stack_size > 0) {
     pthread_attr_setstacksize(&thread->attr, thread->stack_size);
