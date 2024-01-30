@@ -2094,9 +2094,17 @@ ret_t tk_date_time_format(uint64_t time, const char* format, str_t* result) {
       }
       case 'H': {
         if (repeat == 2) {
-          str_append_format(result, 32, "%02d", dt.hour % 12);
+          if (dt.hour == 0) {
+            str_append_format(result, 32, "%02d", 12);
+          } else {
+            str_append_format(result, 32, "%02d", ((dt.hour > 12) ? (dt.hour - 12) : (dt.hour)));
+          }
         } else {
-          str_append_format(result, 32, "%d", dt.hour % 12);
+          if (dt.hour == 0) {
+            str_append_format(result, 32, "%d", 12);
+          } else {
+            str_append_format(result, 32, "%d", ((dt.hour > 12) ? (dt.hour - 12) : (dt.hour)));
+          }
         }
         break;
       }

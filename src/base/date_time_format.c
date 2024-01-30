@@ -116,9 +116,17 @@ ret_t wstr_format_date_time(wstr_t* str, const char* format, const date_time_t* 
       }
       case 'H': {
         if (repeat == 2) {
-          wstr_push_int(str, "%02d", dt->hour % 12);
+          if (dt->hour == 0) {
+            wstr_push_int(str, "%02d", 12);
+          } else {
+            wstr_push_int(str, "%02d", ((dt->hour > 12) ? (dt->hour - 12) : (dt->hour)));
+          }
         } else {
-          wstr_push_int(str, "%d", dt->hour % 12);
+          if (dt->hour == 0) {
+            wstr_push_int(str, "%d", 12);
+          } else {
+            wstr_push_int(str, "%d", ((dt->hour > 12) ? (dt->hour - 12) : (dt->hour)));
+          }
         }
         break;
       }
