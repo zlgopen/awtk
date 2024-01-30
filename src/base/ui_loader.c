@@ -40,11 +40,11 @@ widget_t* ui_loader_load_widget(const char* name) {
 widget_t* ui_loader_load_widget_with_parent(const char* name, widget_t* parent) {
   widget_t* root = NULL;
   char rname[128] = {0};
-  char applet_name[TK_NAME_LEN + 1] = {0};
-  const asset_info_t* ui = NULL;
   ui_builder_t* builder = NULL;
-  ui_loader_t* loader = default_ui_loader();
+  const asset_info_t* ui = NULL;
+  char applet_name[MAX_PATH + 1] = {0};
   assets_manager_t* am = assets_manager();
+  ui_loader_t* loader = default_ui_loader();
   if (strncmp(name, STR_SCHEMA_FILE, strlen(STR_SCHEMA_FILE)) != 0 &&
       assets_managers_is_applet_assets_supported()) {
     const char* p = strchr(name, '.');
