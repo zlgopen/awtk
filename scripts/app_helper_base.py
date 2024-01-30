@@ -411,7 +411,7 @@ class AppHelperBase:
 
         for iter in self.DEPENDS_LIBS:
             for so in iter['shared_libs']:
-                self.awtk.copySharedLib(iter['root'], self.APP_BIN_DIR, so)
+                self.awtk.copySharedLib(join_path(iter['root'], self.BUILD_DIR), self.BIN_DIR, so)
 
     def cleanAwtkSharedLib(self):
         if self.TKC_ONLY:
@@ -682,8 +682,8 @@ class AppHelperBase:
                     LIBPATH = LIBPATH + [join_path(iter['root'], f)]
             else:
                 if self.isBuildShared():
-                    LIBPATH += [join_path(iter['root'], 'bin')]
-                LIBPATH += [join_path(iter['root'], 'lib')]
+                    LIBPATH += [join_path(iter['root'], self.BIN_DIR)]
+                LIBPATH += [join_path(iter['root'], self.LIB_DIR)]
         LIBS = self.APP_LIBS + LIBS
 
         if hasattr(awtk, 'CC'):
