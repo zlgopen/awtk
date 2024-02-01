@@ -991,6 +991,7 @@ assets_manager_t* assets_managers_ref(const char* name) {
 
   am = (assets_manager_t*)darray_find(s_assets_managers, (void*)name);
   if (am == NULL) {
+    assets_manager_t* g_am = assets_manager();
     char res_root[MAX_PATH + 1] = {0};
     am = assets_manager_create(5);
     return_value_if_fail(am != NULL, NULL);
@@ -1001,6 +1002,10 @@ assets_manager_t* assets_managers_ref(const char* name) {
     assets_manager_set_res_root(am, res_root);
     assets_manager_set_fallback_load_asset(
         am, (assets_manager_load_asset_t)assets_manager_load_asset_fallback_default, NULL);
+
+    if (g_am != NULL && g_am->theme != NULL) {
+      am->theme = tk_str_copy(am->theme, g_am->theme);
+    }
   } else {
     am->refcount++;
   }
