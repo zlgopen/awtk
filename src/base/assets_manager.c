@@ -826,50 +826,11 @@ ret_t assets_manager_preload(assets_manager_t* am, asset_type_t type, const char
 }
 
 static const char* asset_type_to_str(asset_type_t type) {
-  const char* str = NULL;
-  switch (type) {
-    case ASSET_TYPE_FONT: {
-      str = "font";
-      break;
-    }
-    case ASSET_TYPE_SCRIPT: {
-      str = "script";
-      break;
-    }
-    case ASSET_TYPE_FLOW: {
-      str = "flow";
-      break;
-    }
-    case ASSET_TYPE_STYLE: {
-      str = "style";
-      break;
-    }
-    case ASSET_TYPE_STRINGS: {
-      str = "strings";
-      break;
-    }
-    case ASSET_TYPE_IMAGE: {
-      str = "image";
-      break;
-    }
-    case ASSET_TYPE_UI: {
-      str = "ui";
-      break;
-    }
-    case ASSET_TYPE_XML: {
-      str = "xml";
-      break;
-    }
-    case ASSET_TYPE_DATA: {
-      str = "data";
-      break;
-    }
-    default: {
-      str = "unknown";
-      break;
-    }
+  const char* str = "unknown";
+  const key_type_value_t* v = asset_type_find_by_value((uint32_t)type);
+  if (v != NULL) {
+    str = v->name;
   }
-
   return str;
 }
 
