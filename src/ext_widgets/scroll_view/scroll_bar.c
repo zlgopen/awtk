@@ -360,7 +360,7 @@ static ret_t scroll_bar_on_copy(widget_t* widget, widget_t* other) {
 
   widget_on_copy_default(widget, other);
   if (!scroll_bar_is_mobile(widget)) {
-    scroll_bar_create_children(other);
+    scroll_bar_create_children(widget);
   }
 
   return RET_OK;
