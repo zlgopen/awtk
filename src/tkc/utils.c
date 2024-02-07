@@ -2139,3 +2139,27 @@ uint32_t tk_bits_to_bytes(uint32_t bits) {
   return (bits + 7) / 8;
 }
 
+ret_t tk_bits_data_from_bytes_data(uint8_t* bits, uint32_t bits_size, uint8_t* bytes,
+                                   uint32_t bytes_size) {
+  uint32_t i = 0;
+
+  for (i = 0; i < bytes_size; i++) {
+    bits_stream_set(bits, bits_size, i, bytes[i] != 0);
+  }
+
+  return RET_OK;
+}
+
+ret_t tk_bits_data_to_bytes_data(uint8_t* bits, uint32_t bits_size, uint8_t* bytes,
+                                 uint32_t bytes_size) {
+  uint32_t i = 0;
+  for (i = 0; i < bytes_size; i++) {
+    bool_t value = FALSE;
+
+    if (bits_stream_get(bits, bits_size, i, &value) == RET_OK) {
+      bytes[i] = value ? 1 : 0;
+    }
+  }
+
+  return RET_OK;
+}

@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/02/07
+  * 增加函数tk\_bits\_data\_to\_bytes\_data/tk\_bits\_data\_from\_bytes\_data
+
 2024/02/05
   * 修复点击复制出来的scroll\_bar\_d控件的空白处会崩溃的问题(感谢培煌提供补丁)
 

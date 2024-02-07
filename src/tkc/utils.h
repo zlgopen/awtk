@@ -1135,11 +1135,35 @@ ret_t tk_date_time_format(uint64_t time, const char* format, str_t* result);
 
 /**
  * @method tk_bits_to_bytes
- * 将bits转换成bytes。
+ * 将bits数转换成bytes数。
  * @param {uint32_t} bits bits。
  * @return {uint32_t} 返回bytes。
  */
 uint32_t tk_bits_to_bytes(uint32_t bits);
+
+/**
+ * @method tk_bits_data_from_bytes_data
+ * 将bytes数据转换成bits数据(每个字节对应一位)。
+ * @param {uint8_t*} bits bits。
+ * @param {uint32_t} bits_size bits内存的长度(字节数)。
+ * @param {uint8_t*} bytes bytes。
+ * @param {uint32_t} bytes_size bytes内存的长度(字节数)。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_bits_data_from_bytes_data(uint8_t* bits, uint32_t bits_size, uint8_t* bytes,
+                                   uint32_t bytes_size);
+
+/**
+ * @method tk_bits_data_to_bytes_data
+ * 将bits数据转换成bytes数据(每个字节对应一位)。
+ * @param {uint8_t*} bits bits。
+ * @param {uint32_t} bits_size bits内存的长度(字节数)。
+ * @param {uint8_t*} bytes bytes。
+ * @param {uint32_t} bytes_size bytes内存的长度(字节数)。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_bits_data_to_bytes_data(uint8_t* bits, uint32_t bits_size, uint8_t* bytes,
+                                 uint32_t bytes_size);
 
 #define TK_STRDUP(str) ((str) != NULL) ? tk_strdup(str) : NULL
 #define TK_STRNDUP(str, len) ((str) != NULL) ? tk_strndup(str, len) : NULL

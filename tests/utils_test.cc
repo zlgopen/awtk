@@ -1200,22 +1200,22 @@ TEST(Utils, tk_date_time_format) {
   str_attach(&str, buff, sizeof(buff));
   ASSERT_EQ(tk_date_time_format(0, "", &str), RET_OK);
   ASSERT_STREQ(str.str, "");
-  
+
   ASSERT_EQ(tk_date_time_format(0, "Y", &str), RET_OK);
   ASSERT_STREQ(str.str, "1970");
-  
+
   ASSERT_EQ(tk_date_time_format(0, "Y-M-D", &str), RET_OK);
   ASSERT_STREQ(str.str, "1970-1-1");
-  
+
   ASSERT_EQ(tk_date_time_format(0, "Y-M-D h:m:s", &str), RET_OK);
   ASSERT_STREQ(str.str, "1970-1-1 0:0:0");
-  
+
   ASSERT_EQ(tk_date_time_format(0, "YY", &str), RET_OK);
   ASSERT_STREQ(str.str, "70");
-  
+
   ASSERT_EQ(tk_date_time_format(0, "YY-MM-DD", &str), RET_OK);
   ASSERT_STREQ(str.str, "70-01-01");
-  
+
   ASSERT_EQ(tk_date_time_format(0, "YY-MM-DD hh:mm:ss", &str), RET_OK);
   ASSERT_STREQ(str.str, "70-01-01 00:00:00");
 
@@ -1253,3 +1253,25 @@ TEST(Utils, alpha) {
   ASSERT_EQ(tk_isalpha(' '), FALSE);
 }
 
+TEST(Utils, bits_data_byte_data) {
+  uint16_t data = 0;
+  uint8_t output[16];
+  uint8_t bytes[16] = {0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1};
+  uint8_t* bits = (uint8_t*)&data;
+
+  memset(output, 0, sizeof(output));
+  ASSERT_EQ(tk_bits_data_from_bytes_data(bits, sizeof(data), bytes, 2), RET_OK);
+  ASSERT_EQ(data, 0x02);
+  ASSERT_EQ(tk_bits_data_to_bytes_data(bits, sizeof(data), output, 2), RET_OK);
+  ASSERT_EQ(memcmp(output, bytes, 2), 0);
+
+  ASSERT_EQ(tk_bits_data_from_bytes_data(bits, sizeof(data), bytes, 8), RET_OK);
+  ASSERT_EQ(data, 0x0aa);
+  ASSERT_EQ(tk_bits_data_to_bytes_data(bits, sizeof(data), output, 8), RET_OK);
+  ASSERT_EQ(memcmp(output, bytes, 8), 0);
+
+  ASSERT_EQ(tk_bits_data_from_bytes_data(bits, sizeof(data), bytes, sizeof(bytes)), RET_OK);
+  ASSERT_EQ(data, 0xaaaa);
+  ASSERT_EQ(tk_bits_data_to_bytes_data(bits, sizeof(data), output, 16), RET_OK);
+  ASSERT_EQ(memcmp(output, bytes, 16), 0);
+}
