@@ -1,12 +1,15 @@
+#include "gtest/gtest.h"
+
 #include "tkc/fscript.h"
 #include "tkc/object_default.h"
-#include "gtest/gtest.h"
-#include "widgets/edit.h"
-#include "widgets/button.h"
-#include "widgets/progress_bar.h"
 #include "base/window.h"
 #include "base/window_manager.h"
 #include "base/object_widget.h"
+
+#include "widgets/view.h"
+#include "widgets/edit.h"
+#include "widgets/button.h"
+#include "widgets/progress_bar.h"
 
 TEST(FScriptWidget, basic) {
   value_t v;
@@ -71,12 +74,45 @@ TEST(FScriptWidget, ulen) {
   fscript_eval(obj, "ulen(text)", &v);
   ASSERT_EQ(value_int(&v), 2);
   value_reset(&v);
-  
+
   widget_set_text(w, L"abc");
   fscript_eval(obj, "ulen(text)", &v);
   ASSERT_EQ(value_int(&v), 3);
   value_reset(&v);
 
   widget_destroy(w);
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScriptWidget, foreach) {
+  value_t v = {0};
+  tk_object_t* obj = object_default_create();
+  widget_t* w = view_create(NULL, 0, 0, 320, 240);
+  widget_t* children[3] = {NULL};
+  tk_object_set_prop_pointer(obj, STR_PROP_SELF, w);
+
+  children[0] = edit_create(NULL, 0, 0, 100, 20);
+  widget_add_child(w, children[0]);
+
+  children[1] = button_create(NULL, 0, 20, 90, 30);
+  widget_add_child(w, children[1]);
+
+  children[2] = view_create(NULL, 0, 50, 100, 100);
+  widget_add_child(w, children[2]);
+
+  fscript_eval(obj, "widget_count_children('self')", &v);
+  ASSERT_EQ(value_int32(&v), 3);
+  value_reset(&v);
+
+  for (size_t i = 0; i < ARRAY_SIZE(children); i++) {
+    char script[64] = {0};
+    tk_snprintf(script, ARRAY_SIZE(script) - 1, "widget_get_child('self', %d)", i);
+    fscript_eval(obj, script, &v);
+    ASSERT_EQ(tk_object_get_prop_pointer(value_object(&v), OBJECT_WIDGET_PROP_NATIVE_WIDGET),
+              children[i]);
+    value_reset(&v);
+  }
+
+  widget_unref(w);
   TK_OBJECT_UNREF(obj);
 }

@@ -55,6 +55,17 @@ static widget_t* to_widget(fscript_t* fscript, const value_t* v) {
   }
 }
 
+static ret_t fscript_value_set_widget(value_t* v, widget_t* widget) {
+  tk_object_t* obj_widget = NULL;
+  return_value_if_fail(v != NULL && widget != NULL, RET_BAD_PARAMS);
+
+  obj_widget = object_widget_create(widget);
+  value_set_object(v, obj_widget);
+  v->free_handle = TRUE;
+
+  return RET_OK;
+}
+
 static ret_t func_tr(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   locale_info_t* info = NULL;
   widget_t* widget = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
@@ -74,7 +85,6 @@ static ret_t func_tr(fscript_t* fscript, fscript_args_t* args, value_t* result) 
 static ret_t func_window_open(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   widget_t* widget = NULL;
   const char* name = NULL;
-  tk_object_t* obj_widget = NULL;
   bool_t close_current = FALSE;
   bool_t switch_to_if_exist = FALSE;
   widget_t* wm = window_manager();
@@ -90,10 +100,7 @@ static ret_t func_window_open(fscript_t* fscript, fscript_args_t* args, value_t*
     widget_t* widget = widget_child(wm, name);
     if (widget != NULL) {
       window_manager_switch_to(wm, curr_win, widget, close_current);
-      obj_widget = object_widget_create(widget);
-      value_set_object(result, obj_widget);
-      result->free_handle = TRUE;
-      return RET_OK;
+      return fscript_value_set_widget(result, widget);
     }
   }
 
@@ -103,11 +110,7 @@ static ret_t func_window_open(fscript_t* fscript, fscript_args_t* args, value_t*
     widget = window_open(value_str(args->args));
   }
 
-  obj_widget = object_widget_create(widget);
-  value_set_object(result, obj_widget);
-  result->free_handle = TRUE;
-
-  return RET_OK;
+  return fscript_value_set_widget(result, widget);
 }
 
 static ret_t func_window_close_and_open(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -141,7 +144,7 @@ static ret_t widget_set(widget_t* self, const char* path, const value_t* v) {
   widget_t* widget = self;
   const char* prop = strrchr(path, '.');
   if (prop != NULL) {
-    char name[MAX_PATH+1] = {0};
+    char name[MAX_PATH + 1] = {0};
     int32_t len = tk_min_int(prop - path, MAX_PATH);
     tk_strncpy(name, path, len);
     widget = widget_find_by_path(self, name, TRUE);
@@ -159,7 +162,7 @@ static ret_t widget_get(widget_t* self, const char* path, value_t* v) {
   widget_t* widget = self;
   const char* prop = strrchr(path, '.');
   if (prop != NULL) {
-    char name[MAX_PATH+1] = {0};
+    char name[MAX_PATH + 1] = {0};
     int32_t len = tk_min_int(prop - path, MAX_PATH);
     tk_strncpy(name, path, len);
     widget = widget_find_by_path(self, name, TRUE);
@@ -231,7 +234,6 @@ static ret_t func_widget_lookup(fscript_t* fscript, fscript_args_t* args, value_
   widget_t* widget = NULL;
   const char* path = NULL;
   bool_t recursive = FALSE;
-  tk_object_t* obj_widget = NULL;
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
 
   if (args->size == 1) {
@@ -249,10 +251,7 @@ static ret_t func_widget_lookup(fscript_t* fscript, fscript_args_t* args, value_
     result->type = VALUE_TYPE_INVALID;
     return RET_NOT_FOUND;
   } else {
-    obj_widget = object_widget_create(widget);
-    value_set_object(result, obj_widget);
-    result->free_handle = TRUE;
-    return RET_OK;
+    return fscript_value_set_widget(result, widget);
   }
 }
 
@@ -271,6 +270,30 @@ static ret_t func_widget_get(fscript_t* fscript, fscript_args_t* args, value_t* 
   FSCRIPT_FUNC_CHECK(widget != NULL && path != NULL, RET_BAD_PARAMS);
 
   return widget_get(widget, path, result);
+}
+
+static ret_t func_widget_get_child(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  value_t* v = NULL;
+  widget_t* widget = NULL;
+  widget_t* widget_child = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  widget = to_widget(fscript, args->args);
+  v = args->args + 1;
+
+  widget_child = widget_get_child(widget, value_int32(v));
+
+  return fscript_value_set_widget(result, widget_child);
+}
+
+static ret_t func_widget_count_children(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  widget_t* widget = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  widget = to_widget(fscript, args->args);
+  FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
+
+  value_set_int32(result, widget_count_children(widget));
+
+  return RET_OK;
 }
 
 static ret_t func_widget_eval(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -345,7 +368,6 @@ static ret_t func_widget_create(fscript_t* fscript, fscript_args_t* args, value_
   const char* type = NULL;
   widget_t* widget = NULL;
   widget_t* parent = NULL;
-  tk_object_t* obj_widget = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 6, RET_BAD_PARAMS);
   type = value_str(args->args);
   parent = to_widget(fscript, args->args + 1);
@@ -356,11 +378,7 @@ static ret_t func_widget_create(fscript_t* fscript, fscript_args_t* args, value_
   h = value_int(args->args + 5);
   widget = widget_factory_create_widget(widget_factory(), type, parent, x, y, w, h);
 
-  obj_widget = object_widget_create(widget);
-  value_set_object(result, obj_widget);
-  result->free_handle = TRUE;
-
-  return RET_OK;
+  return fscript_value_set_widget(result, widget);
 }
 
 static ret_t func_widget_destroy(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -381,10 +399,7 @@ static ret_t func_widget_clone(fscript_t* fscript, fscript_args_t* args, value_t
   FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
 
   widget = widget_clone(widget, widget->parent);
-  value_set_object(result, object_widget_create(widget));
-  result->free_handle = TRUE;
-
-  return RET_OK;
+  return fscript_value_set_widget(result, widget);
 }
 
 static ret_t func_widget_destroy_children(fscript_t* fscript, fscript_args_t* args,
@@ -791,6 +806,8 @@ FACTORY_TABLE_ENTRY("widget_layout", func_widget_layout)
 FACTORY_TABLE_ENTRY("widget_request_relayout", func_widget_request_relayout)
 FACTORY_TABLE_ENTRY("widget_lookup", func_widget_lookup)
 FACTORY_TABLE_ENTRY("widget_get", func_widget_get)
+FACTORY_TABLE_ENTRY("widget_get_child", func_widget_get_child)
+FACTORY_TABLE_ENTRY("widget_count_children", func_widget_count_children)
 FACTORY_TABLE_ENTRY("widget_eval", func_widget_eval)
 FACTORY_TABLE_ENTRY("widget_set", func_widget_set)
 FACTORY_TABLE_ENTRY("widget_add_value", func_widget_add_value)

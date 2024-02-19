@@ -1293,6 +1293,50 @@ show_fps(true)
 show_fps(false)
 ```
 
+### 5.39 widget_get_child
+
+> 获取指定索引的子控件
+----------------------------
+
+#### 原型
+
+```js
+widget_get_child(widget, index) => obj_widget
+```
+
+* widget 可以是 widget 对象，也可以是 widget 的路径。
+* index 索引。
+* 返回子控件对象。
+
+#### 示例
+
+```js
+var a = widget_get_child('self', 0)
+```
+
+### 5.40 widget_count_children
+
+> 获取子控件的个数
+----------------------------
+
+#### 原型
+
+```js
+widget_count_children(widget) => int32
+```
+
+* widget 可以是 widget 对象，也可以是 widget 的路径。
+* 返回子控件的个数。
+
+#### 示例
+
+```js
+var size = widget_count_children(widget)
+for (var a = 0; a < size; a = a + 1) {
+  var b = widget_get_child(widget, a)
+}
+```
+
 ### 示例参考
 
 * https://github.com/zlgopen/awtk/blob/master/design/default/ui/main_fscript.xml
