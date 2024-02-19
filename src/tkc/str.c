@@ -1123,3 +1123,63 @@ ret_t str_append_format(str_t* str, uint32_t size, const char* format, ...) {
 
   return RET_OK;
 }
+
+ret_t str_append_json_pair(str_t* str, const char* key, const value_t* value) {
+  ret_t ret;
+  return_value_if_fail(str != NULL && key != NULL && value, RET_BAD_PARAMS);
+
+  return_value_if_fail(str_append_json_str(str, key) == RET_OK, RET_OOM);
+  return_value_if_fail(str_append_char(str, ':') == RET_OK, RET_OOM);
+
+  if (value->type == VALUE_TYPE_BOOL) {
+    return_value_if_fail(str_append(str, value_bool(value) ? "true" : "false") == RET_OK, RET_OOM);
+
+  } else if (value->type == VALUE_TYPE_INT8 || value->type == VALUE_TYPE_INT16 ||
+             value->type == VALUE_TYPE_INT32) {
+    return_value_if_fail(str_append_int(str, value_int32(value)) == RET_OK, RET_OOM);
+
+  } else if (value->type == VALUE_TYPE_UINT8 || value->type == VALUE_TYPE_UINT16 ||
+             value->type == VALUE_TYPE_UINT32) {
+    return_value_if_fail(str_append_uint32(str, value_uint32(value)) == RET_OK, RET_OOM);
+
+  } else if (value->type == VALUE_TYPE_UINT64) {
+    return_value_if_fail(str_append_uint64(str, value_uint64(value)) == RET_OK, RET_OOM);
+
+  } else if (value->type == VALUE_TYPE_INT64) {
+    return_value_if_fail(str_append_int64(str, value_int64(value)) == RET_OK, RET_OOM);
+
+  } else if (value->type == VALUE_TYPE_DOUBLE || value->type == VALUE_TYPE_FLOAT32 ||
+             value->type == VALUE_TYPE_FLOAT) {
+    return_value_if_fail(str_append_double(str, NULL, value_double(value)) == RET_OK, RET_OOM);
+
+  } else if (value->type == VALUE_TYPE_STRING) {
+    return_value_if_fail(str_append_json_str(str, value_str(value)) == RET_OK, RET_OOM);
+
+  } else if (value->type == VALUE_TYPE_SIZED_STRING) {
+    sized_str_t* ss = value_sized_str(value);
+    return_value_if_fail(ss, RET_BAD_PARAMS);
+    return_value_if_fail(str_append_json_str(str, ss->str) == RET_OK, RET_OOM);
+
+  } else if (value->type == VALUE_TYPE_BINARY) {
+    str_t hexstr;
+    binary_data_t* bd = value_binary_data(value);
+
+    return_value_if_fail(bd, RET_BAD_PARAMS);
+    return_value_if_fail(str_init(&hexstr, bd->size * 2 + 1) != NULL, RET_OOM);
+
+    ret = str_encode_hex(&hexstr, bd->data, bd->size, NULL);
+    if (ret != RET_OK) {
+      str_reset(&hexstr);
+      return ret;
+    }
+
+    ret = str_append_json_str(str, hexstr.str);
+    if (ret != RET_OK) {
+      str_reset(&hexstr);
+      return ret;
+    }
+    str_reset(&hexstr);
+  }
+
+  return RET_OK;
+}

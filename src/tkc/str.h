@@ -800,6 +800,17 @@ ret_t str_format(str_t* str, uint32_t size, const char* format, ...);
  */
 ret_t str_append_format(str_t* str, uint32_t size, const char* format, ...);
 
+/**
+ * @method str_append_json_pair
+ * 追加json键值对。
+ * @param {str_t*} str str对象。
+ * @param {const char*} key 键。
+ * @param {const value_t*} value 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_json_pair(str_t* str, const char* key, const value_t* value);
+
 #define STR_DESTROY(str) \
   if (str != NULL) {     \
     str_destroy(str);    \

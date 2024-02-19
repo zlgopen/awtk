@@ -4,6 +4,7 @@
   * 补充事件名(感谢兆坤提供补丁)
   * 增加widget 通过 get\_prop/set\_prop函数设置state属性的功能(感谢兆坤提供补丁)
   * fscript 增加 widget\_get\_child 和 widget\_count\_children函数(感谢兆坤提供补丁)
+  * 增加函数str_append_json_pair（感谢林福提供补丁)
 
 2024/02/07
   * 增加函数tk\_bits\_data\_to\_bytes\_data/tk\_bits\_data\_from\_bytes\_data

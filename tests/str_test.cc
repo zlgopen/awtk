@@ -1001,3 +1001,70 @@ TEST(Str, eq) {
   STR_DESTROY(str1);
   STR_DESTROY(str2);
 }
+
+TEST(Str, str_append_json_pair) {
+  str_t str;
+  value_t v;
+  str_t* s = str_init(&str, 0);
+  value_set_int8(&v, 100);
+  ASSERT_EQ(str_append_json_pair(s, "x", &v), RET_OK);
+  ASSERT_STREQ(s->str, "\"x\":100");
+
+  str_clear(s);
+  value_set_int16(&v, 100);
+  ASSERT_EQ(str_append_json_pair(s, "x", &v), RET_OK);
+  ASSERT_STREQ(s->str, "\"x\":100");
+
+  str_clear(s);
+  value_set_int32(&v, 100);
+  ASSERT_EQ(str_append_json_pair(s, "x", &v), RET_OK);
+  ASSERT_STREQ(s->str, "\"x\":100");
+
+  str_clear(s);
+  value_set_int64(&v, 100);
+  ASSERT_EQ(str_append_json_pair(s, "x", &v), RET_OK);
+  ASSERT_STREQ(s->str, "\"x\":100");
+
+  str_clear(s);
+  value_set_uint8(&v, 100);
+  ASSERT_EQ(str_append_json_pair(s, "x", &v), RET_OK);
+  ASSERT_STREQ(s->str, "\"x\":100");
+
+  str_clear(s);
+  value_set_uint16(&v, 100);
+  ASSERT_EQ(str_append_json_pair(s, "x", &v), RET_OK);
+  ASSERT_STREQ(s->str, "\"x\":100");
+
+  str_clear(s);
+  value_set_uint32(&v, 100);
+  ASSERT_EQ(str_append_json_pair(s, "x", &v), RET_OK);
+  ASSERT_STREQ(s->str, "\"x\":100");
+
+  str_clear(s);
+  value_set_uint64(&v, 100);
+  ASSERT_EQ(str_append_json_pair(s, "x", &v), RET_OK);
+  ASSERT_STREQ(s->str, "\"x\":100");
+
+  str_clear(s);
+  value_set_float32(&v, 100);
+  ASSERT_EQ(str_append_json_pair(s, "x", &v), RET_OK);
+  ASSERT_STREQ(s->str, "\"x\":100.0000");
+
+  str_clear(s);
+  value_set_double(&v, 100);
+  ASSERT_EQ(str_append_json_pair(s, "x", &v), RET_OK);
+  ASSERT_STREQ(s->str, "\"x\":100.0000");
+
+  str_clear(s);
+  value_set_bool(&v, TRUE);
+  ASSERT_EQ(str_append_json_pair(s, "x", &v), RET_OK);
+  ASSERT_STREQ(s->str, "\"x\":true");
+
+  str_clear(s);
+  value_set_str(&v, "abc");
+  ASSERT_EQ(str_append_json_pair(s, "x", &v), RET_OK);
+  ASSERT_STREQ(s->str, "\"x\":\"abc\"");
+  
+
+  str_reset(s);
+}
