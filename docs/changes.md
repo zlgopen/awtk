@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/02/19
+  * 补充事件名(感谢兆坤提供补丁)
+
 2024/02/07
   * 增加函数tk\_bits\_data\_to\_bytes\_data/tk\_bits\_data\_from\_bytes\_data
 

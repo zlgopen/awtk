@@ -292,8 +292,14 @@ int32_t event_from_name(const char* name) {
         return EVT_POINTER_UP;
       } else if (tk_str_eq(name, "pointer_down")) {
         return EVT_POINTER_DOWN;
+      } else if (tk_str_eq(name, "pointer_down_abort")) {
+        return EVT_POINTER_DOWN_ABORT;
       } else if (tk_str_eq(name, "pointer_move")) {
         return EVT_POINTER_MOVE;
+      } else if (tk_str_eq(name, "pointer_enter")) {
+        return EVT_POINTER_ENTER;
+      } else if (tk_str_eq(name, "pointer_leave")) {
+        return EVT_POINTER_LEAVE;
       }
       break;
     }
