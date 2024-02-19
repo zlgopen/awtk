@@ -453,7 +453,7 @@ struct _widget_t {
   uint8_t destroying : 1;
   /**
    * @property {char*} state
-   * @annotation ["readable"]
+   * @annotation ["set_prop","get_prop","readable"]
    * 控件的状态(取值参考widget_state_t)。
    */
   char* state;
@@ -1557,7 +1557,7 @@ ret_t widget_set_focusable(widget_t* widget, bool_t focusable);
  * 设置控件的状态。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {const char*} state 状态(必须为真正的常量字符串，在widget的整个生命周期有效)。
+ * @param {const char*} state 状态。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

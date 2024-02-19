@@ -354,6 +354,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_STYLE "style"
 
 /**
+ * @const WIDGET_PROP_STATE
+ * 状态。
+ */
+#define WIDGET_PROP_STATE "state"
+
+/**
  * @const WIDGET_PROP_ENABLE
  * 是否启用。
  */
