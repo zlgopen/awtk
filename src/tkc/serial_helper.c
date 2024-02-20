@@ -37,7 +37,7 @@
 #include "tkc/time_now.h"
 #include "tkc/serial_helper.h"
 
-#ifdef TK_IS_PC
+#if defined(TK_IS_PC) || defined(LINUX) || defined(IOS) || defined(ANDROID)
 #include "tkc/socket_pair.h"
 #include "tkc/socket_helper.h"
 #endif/*TK_IS_PC*/
