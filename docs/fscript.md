@@ -915,6 +915,27 @@ exec("clear", "all")
 
 > 具体功能与 object 的实现有关。
 
+#### 4.1.26 can_exec
+
+> 判断 object 里的一个命令是否可执行。
+----------------------------
+
+##### 原型
+
+```js
+can_exec(cmd, arg) => bool
+```
+
+##### 示例
+
+```js
+if (can_exec("clear", "all")) {
+  exec("clear", "all")
+}
+```
+
+> 具体功能与 object 的实现有关。
+
 ### 4.2 字符串函数
 
 #### 4.2.1 join

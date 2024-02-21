@@ -3047,6 +3047,17 @@ static ret_t func_contains(fscript_t* fscript, fscript_args_t* args, value_t* re
   return RET_OK;
 }
 
+static ret_t func_can_exec(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  char buff[64];
+  const char* cmd = NULL;
+  const char* cmd_args = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  cmd = value_str(args->args);
+  cmd_args = value_str_ex(args->args + 1, buff, sizeof(buff) - 1);
+  value_set_bool(result, tk_object_can_exec(fscript->obj, cmd, cmd_args));
+  return RET_OK;
+}
+
 static ret_t func_exec(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   char buff[64];
   const char* cmd = NULL;
@@ -3092,6 +3103,7 @@ static const func_entry_t s_builtin_funcs[] = {{"func", func_function_def, 4},
                                                {"minus", func_minus, 1},
                                                {"||", func_or, 2},
                                                {"and", func_and, 2},
+                                               {"can_exec", func_can_exec, 2},
                                                {"exec", func_exec, 2},
                                                {"join", func_join, 8},
                                                {"one_of", func_one_of, 3},
