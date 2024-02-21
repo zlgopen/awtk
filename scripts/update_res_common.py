@@ -34,6 +34,7 @@ IS_GENERATE_RAW = True
 IS_GENERATE_INC_RES = True
 IS_GENERATE_INC_BITMAP = True
 ASSETS_SUBNAME = '__assets_'
+STORAGE_DIR = None
 ###########################
 
 
@@ -158,6 +159,7 @@ def set_current_theme(index):
     global IMAGEGEN_OPTIONS
     global INPUT_DIR
     global OUTPUT_DIR
+    global STORAGE_DIR
 
     if index >= len(THEMES):
         return
@@ -174,6 +176,8 @@ def set_current_theme(index):
             IMAGEGEN_OPTIONS = theme['imagegen_options']
         if 'packaged' in theme:
             THEME_PACKAGED = theme['packaged']
+        if 'storage_dir' in theme:
+            STORAGE_DIR = theme['storage_dir']
 
     INPUT_DIR = join_path(ASSETS_ROOT, THEME+'/raw')
     if not os.path.exists(INPUT_DIR):
@@ -613,6 +617,9 @@ def gen_res_all_xml():
 
 
 def gen_res_bitmap_font(input_dir, font_options, theme):
+    if STORAGE_DIR:
+        input_dir = join_path(STORAGE_DIR, theme)
+
     if not os.path.exists(join_path(input_dir, 'fonts/config')):
         return
 
@@ -621,13 +628,14 @@ def gen_res_bitmap_font(input_dir, font_options, theme):
         fontname = os.path.basename(filename)
         index = fontname.rfind('_')
         if index > 0:
-            raw = os.path.dirname(os.path.dirname(filename)) + '/origin/' + fontname[0 : index] + '.ttf'
+            raw = join_path(input_dir, 'fonts') + '/origin/' + fontname[0: index] + '.ttf'
             if not os.path.exists(raw):
-                raw = os.path.dirname(os.path.dirname(filename)) + '/' + fontname[0 : index] + '.ttf'
+                raw = os.path.dirname(os.path.dirname(filename)) + '/' + fontname[0: index] + '.ttf'
             if os.path.exists(raw):
                 size = fontname[index + 1 : len(fontname)]
-                inc = join_path(OUTPUT_DIR, 'inc/fonts/' + fontname[0 : index] + '_' + str(size) + '.data')
-                fontgen(raw, f, inc, size, font_options, theme)
+                if size.isdigit():
+                    inc = join_path(OUTPUT_DIR, 'inc/fonts/' + fontname[0: index] + '_' + str(size) + '.data')
+                    fontgen(raw, f, inc, size, font_options, theme)
 
 
 def gen_res_all_font():

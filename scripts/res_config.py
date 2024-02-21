@@ -78,6 +78,7 @@ class res_config:
   inc_res = True
   inc_bitmap = True
   inc_bitmap_font = True
+  storage_dir = None
 
   def __init__(self) :
     self.assets = res_multidict();
@@ -167,13 +168,13 @@ class res_config:
   
   def get_res_fonts_key(self, theme_name) :
     if self.has_themes() :
-      return self.assets[theme_name]['fonts'].keys()
+      return self.assets['themes'][theme_name]['fonts'].keys()
     return list()
 
   def get_res_font_size_key(self, theme_name, font_name) :
     key = []
     if self.has_themes() :
-      for name in self.assets[theme_name]['fonts'][font_name].keys() : 
+      for name in self.assets['themes'][theme_name]['fonts'][font_name].keys() :
         if name != 'text' or name != 'bpp' :
           key.append(name)
     return key
@@ -328,3 +329,7 @@ class res_config:
   
   def get_inc_bitmap_font(self) :
     return self.inc_bitmap_font
+
+  def get_storage_dir(self):
+    return self.storage_dir
+

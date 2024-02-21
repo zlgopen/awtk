@@ -77,9 +77,9 @@ def use_theme_config_from_res_config(res_config_path, config = None):
                     font_name = common.to_file_system_coding(font_name)
                     font_size = common.to_file_system_coding(font_size)
                     filename = common.join_path(config_dir, font_name+'_'+font_size+'.txt')
-                    common.write_file(filename, content.get_res_font_value(theme_name, font_name, font_size))
+                    common.write_file(filename, content.get_res_font_value(theme_name, font_name, font_size, ''))
 
-        theme = {'name': theme_name, 'imagegen_options': imagegen_options, 'packaged': content.get_res_packaged(theme_name)}
+        theme = {'name': theme_name, 'imagegen_options': imagegen_options, 'packaged': content.get_res_packaged(theme_name), 'storage_dir': content.get_storage_dir()}
         if theme_name == 'default':
             THEMES.insert(0, theme)
         else:
