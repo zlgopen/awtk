@@ -3896,7 +3896,9 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent) {
   widget_copy(clone, widget);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  widget_clone(iter, clone);
+  if (iter->auto_created != TRUE) {
+    widget_clone(iter, clone);
+  }
   WIDGET_FOR_EACH_CHILD_END();
 
   return clone;
