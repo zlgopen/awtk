@@ -291,9 +291,8 @@ TEST(Utils, xml_file_expand) {
   ASSERT_EQ(xml_file_expand(filename, &s, xml_string_3), RET_OK);
   str_replace(&s, "\r\n", "\n");
   ASSERT_EQ(string(s.str),
-            "<window><mledit><property name=\"text\"><?include "
-            "filename=\"button.xml\"?></property></mledit><label />\n</window>");
-
+            "<window><mledit><property name=\"text\"><button />\n</property></mledit><label "
+            "/>\n</window>");
   str_reset(&s);
 }
 

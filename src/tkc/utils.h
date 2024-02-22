@@ -1194,6 +1194,9 @@ ret_t tk_bits_data_to_bytes_data(uint8_t* bits, uint32_t bits_size, uint8_t* byt
 /*public for test*/
 ret_t xml_file_expand(const char* filename, str_t* s, const char* data);
 
+/*public for tools*/
+ret_t xml_file_expand_subfilenames_get(const char* filename, char*** subfilenames, uint32_t* size);
+
 END_C_DECLS
 
 #endif /*TK_UTILS_H*/

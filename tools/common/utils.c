@@ -33,6 +33,41 @@
 #include "tkc/path.h"
 #include "base/assets_manager.h"
 
+static bool_t exit_if_need_not_update_for_include_subfile(const char* in, fs_stat_info_t* fst_out) {
+  fs_stat_info_t fst_in;
+  uint32_t i = 0, size = 0;
+  char** subfilenames = NULL;
+  bool_t is_need_not_update = TRUE;
+  return_value_if_fail(in != NULL && fst_out != NULL, TRUE);
+
+  if (!path_extname_is(in, ".xml")) {
+    return TRUE;
+  }
+
+  if (xml_file_expand_subfilenames_get(in, &subfilenames, &size) != RET_OK) {
+    return TRUE;
+  }
+
+  for (i = 0; i < size; i++) {
+    const char* iter = subfilenames[i];
+    if (is_need_not_update) {
+      if (fs_stat(os_fs(), iter, &fst_in) != RET_OK) {
+        TKMEM_FREE(iter);
+        is_need_not_update = FALSE;
+        log_debug("get \"%s\" filetime failed\n", iter);
+        continue;
+      }
+      if (fst_in.mtime > fst_out->mtime) {
+        is_need_not_update = FALSE;
+      }
+    }
+    TKMEM_FREE(iter);
+  }
+  TKMEM_FREE(subfilenames);
+
+  return is_need_not_update;
+}
+
 bool_t exit_if_need_not_update(const char* in, const char* out) {
   if (in == NULL || out == NULL) {
     log_debug("invalid params: %s %s\n", in, out);
@@ -67,8 +102,7 @@ bool_t exit_if_need_not_update(const char* in, const char* out) {
     log_debug("get \"%s\" filetime failed\n", out);
     return TRUE;
   }
-
-  if (fst_in.mtime < fst_out.mtime) {
+  if (fst_in.mtime < fst_out.mtime && exit_if_need_not_update_for_include_subfile(in, &fst_out)) {
     log_debug("Skip because: %s is newer than %s\n", out, in);
     return TRUE;
   }

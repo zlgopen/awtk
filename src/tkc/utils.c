@@ -615,12 +615,6 @@ static xml_property_close_state_t xml_property_get_close_state(const char* start
       } else if (close_state == XML_PROPERTY_CLOSE_STATE_CLOSE) {
         close_state = XML_PROPERTY_CLOSE_STATE_OPEN_SINGLE_QUOTE;
       }
-    } else if (strstr(tmp, TAG_PROPERTY) == tmp) {
-      if (close_state == XML_PROPERTY_CLOSE_STATE_OPEN_PROPERTY) {
-        close_state = XML_PROPERTY_CLOSE_STATE_CLOSE;
-      } else if (close_state == XML_PROPERTY_CLOSE_STATE_CLOSE) {
-        close_state = XML_PROPERTY_CLOSE_STATE_OPEN_PROPERTY;
-      }
     }
     tmp++;
   }
@@ -1552,6 +1546,40 @@ uint32_t tk_strnlen(const char* str, uint32_t maxlen) {
   return s - str;
 }
 
+static ret_t xml_file_expand_subfilename_get(const char** p, const char* filename,
+                                             char subfilename[MAX_PATH + 1]) {
+  str_t s;
+  const char* sp = *p;
+  ret_t ret = RET_FAIL;
+  return_value_if_fail(sp != NULL && filename != NULL && subfilename != NULL, RET_BAD_PARAMS);
+
+  str_init(&s, 1024);
+
+  /*<include filename="subfilename">*/
+  while (*sp != '\"' && *sp != '\0') {
+    sp++;
+  }
+  goto_error_if_fail(*sp == '\"');
+  sp++;
+  while (*sp != '\"' && *sp != '\0') {
+    str_append_char(&s, *sp++);
+  }
+  goto_error_if_fail(*sp == '\"');
+  while (*sp != '>' && *sp != '\0') {
+    sp++;
+  }
+  goto_error_if_fail(*sp == '>');
+  sp++;
+
+  path_replace_basename(subfilename, MAX_PATH, filename, s.str);
+
+  *p = sp;
+  ret = RET_OK;
+error:
+  str_reset(&s);
+  return ret;
+}
+
 ret_t xml_file_expand(const char* filename, str_t* s, const char* data) {
   str_t ss;
   char subfilename[MAX_PATH + 1];
@@ -1561,31 +1589,14 @@ ret_t xml_file_expand(const char* filename, str_t* s, const char* data) {
 
   str_init(&ss, 1024);
   while (p != NULL) {
-    /* 过滤在属性中的 INCLUDE_XML */
+    /* 过滤在属性中的 INCLUDE_XML(目前只过滤在 \' 或 \" 作用域下的文件扩展, 对于property属性中的扩展不再做限制) */
     xml_property_close_state_t close_state = xml_property_get_close_state(start, p);
     if (close_state == XML_PROPERTY_CLOSE_STATE_CLOSE) {
       str_set(&ss, "");
       str_append_with_len(s, start, p - start);
-
-      /*<include filename="subfilename">*/
-      while (*p != '\"' && *p != '\0') {
-        p++;
-      }
-      return_value_if_fail(*p == '\"', RET_FAIL);
-      p++;
-      while (*p != '\"' && *p != '\0') {
-        str_append_char(&ss, *p++);
-      }
-      return_value_if_fail(*p == '\"', RET_FAIL);
-      while (*p != '>' && *p != '\0') {
-        p++;
-      }
-      return_value_if_fail(*p == '>', RET_FAIL);
-      p++;
-
-      path_replace_basename(subfilename, MAX_PATH, filename, ss.str);
+      return_value_if_fail(xml_file_expand_subfilename_get(&p, filename, subfilename) == RET_OK,
+                           RET_FAIL);
       xml_file_expand_read(subfilename, &ss);
-
       str_append(s, ss.str);
     } else {
       int size = 0;
@@ -1637,6 +1648,46 @@ ret_t xml_file_expand_read(const char* filename, str_t* s) {
   TKMEM_FREE(buff);
 
   return RET_OK;
+}
+
+ret_t xml_file_expand_subfilenames_get(const char* filename, char*** subfilenames, uint32_t* size) {
+  ret_t ret = RET_FAIL;
+  uint32_t i = 0, buff_len = 0;
+  char *buff = NULL, *start = NULL, *p = NULL;
+  char subfilename[MAX_PATH + 1] = {0}, **tmp_subfilenames = NULL;
+  return_value_if_fail(filename != NULL && subfilenames != NULL && size != NULL, RET_BAD_PARAMS);
+
+  buff = file_read(filename, &buff_len);
+  return_value_if_fail(buff != NULL, RET_FAIL);
+
+  *size = 0;
+
+  start = buff;
+  p = strstr(start, INCLUDE_XML);
+  while (p != NULL) {
+    xml_property_close_state_t close_state = xml_property_get_close_state(start, p);
+    if (close_state == XML_PROPERTY_CLOSE_STATE_CLOSE) {
+      goto_error_if_fail(xml_file_expand_subfilename_get(&p, filename, subfilename) == RET_OK);
+      tmp_subfilenames = TKMEM_REALLOCT(char*, *subfilenames, (++(*size)));
+      goto_error_if_fail(tmp_subfilenames != NULL);
+      tmp_subfilenames[*size - 1] = tk_strdup(subfilename);
+      *subfilenames = tmp_subfilenames;
+    }
+    start = p;
+    p = strstr(start, INCLUDE_XML);
+  }
+  ret = RET_OK;
+
+error:
+  if (ret != RET_OK && *size > 0) {
+    for (i = 0; i < *size; i++) {
+      TKMEM_FREE(*subfilenames[i]);
+    }
+    *size = 0;
+    TKMEM_FREE(*subfilenames);
+  }
+  TKMEM_FREE(buff);
+  return ret;
 }
 
 char* file_read_as_unix_text(const char* filename, uint32_t* size) {
