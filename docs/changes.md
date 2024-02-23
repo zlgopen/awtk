@@ -1,4 +1,6 @@
 # 最新动态
+2024/02/23
+  * 增加了tk\_tcp\_connect\_ex函数，给tk\_stream\_factory\_create\_iostream函数增加了设置连接超时的timeout参数支持，主要是让awtk-hmi的modbus主站可以设置超时参数，比如url":"tcp://localhost:502?timeout=3000(感谢陈谭提供补丁)
 
 2024/02/22
   * 修复widget\_clone克隆时重复创建控件问题(感谢颖健提供补丁)

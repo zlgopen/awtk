@@ -43,7 +43,8 @@ tk_iostream_t* tk_stream_factory_create_iostream(const char* url) {
 
   if (tk_str_start_with(url, STR_SCHEMA_TCP)) {
 #ifdef WITH_SOCKET
-    io = tk_iostream_tcp_create_client(aurl->host, aurl->port);
+    int timeout = url_get_param_int32(aurl, "timeout", 0);
+    io = tk_iostream_tcp_create_client_ex(aurl->host, aurl->port, timeout, NULL);
 #endif /*WITH_SOCKET*/
   } else if (tk_str_start_with(url, STR_SCHEMA_UDP)) {
 #ifdef WITH_SOCKET
@@ -51,7 +52,8 @@ tk_iostream_t* tk_stream_factory_create_iostream(const char* url) {
 #endif /*WITH_SOCKET*/
   } else if (tk_str_start_with(url, STR_SCHEMA_HTTP)) {
 #ifdef WITH_SOCKET
-    io = tk_iostream_tcp_create_client(aurl->host, aurl->port);
+    int timeout = url_get_param_int32(aurl, "timeout", 0);
+    io = tk_iostream_tcp_create_client_ex(aurl->host, aurl->port, timeout, NULL);
 #endif /*WITH_SOCKET*/
   } else if (tk_str_start_with(url, STR_SCHEMA_HTTPS)) {
 #ifdef WITH_MBEDTLS

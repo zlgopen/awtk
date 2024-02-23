@@ -201,6 +201,82 @@ int tk_tcp_connect(const char* host, int port) {
   return sock;
 }
 
+int tk_tcp_connect_ex(const char* host, int port, int timeout, void* opts) {
+  int ret = 0;
+  int sock = 0;
+  int sockfd = -1;
+  int error = 0, wsaError = 0;
+  socklen_t len;
+  fd_set rset, wset;
+  struct sockaddr_in s_in;
+  struct timeval tv = {0, 0};
+  struct sockaddr* addr = socket_resolve(host, port, &s_in);
+  return_value_if_fail(addr != NULL, -1);
+  return_value_if_fail(opts == NULL, -1);
+
+  if (timeout <= 0) {
+    return tk_tcp_connect(host, port);
+  }
+
+  if ((sock = (int)socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
+    log_debug("socket error\n");
+    return -1;
+  }
+
+  tk_socket_set_blocking(sock, FALSE);
+
+  ret = connect(sock, addr, sizeof(s_in));
+
+#ifdef _WIN32
+  if (ret < 0) {
+    wsaError = WSAGetLastError();
+  }
+  if (wsaError != WSAEWOULDBLOCK && wsaError != WSAEINPROGRESS) {
+#else
+  (void)wsaError;
+  if (ret < 0 && errno != EINPROGRESS) {
+#endif
+    log_debug("connect error\n");
+    goto done;
+  } else if (ret == 0) {
+    sockfd = sock;
+    goto done;
+  }
+
+  FD_ZERO(&rset);
+  FD_ZERO(&wset);
+  FD_SET(sock, &rset);
+  FD_SET(sock, &wset);
+  tv.tv_sec = timeout / 1000;
+  tv.tv_usec = (timeout % 1000) * 1000;
+
+  ret = select(sock + 1, &rset, &wset, NULL, timeout == 0xFFFFFFFF ? NULL : &tv);
+  if (ret <= 0) {
+    /* Timeout or fail */
+    goto done;
+  }
+  if (FD_ISSET(sock, &rset) || FD_ISSET(sock, &wset)) {
+    len = sizeof(error);
+    ret = getsockopt(sock, SOL_SOCKET, SO_ERROR, (void *)&error, &len);
+    if (ret != 0 || error != 0) {
+#ifndef _WIN32
+      errno = ECONNREFUSED;
+#endif
+      goto done;
+    } else {
+      sockfd = sock;
+    }
+  } else {
+    goto done;
+  }
+done :
+  tk_socket_set_blocking(sock, TRUE);
+  if (sockfd == -1) {
+    tk_socket_close(sock);
+  }
+  return sockfd;
+}
+
 int tk_udp_connect(const char* host, int port) {
   int sock = 0;
   struct sockaddr_in s_in;

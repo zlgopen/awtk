@@ -282,6 +282,19 @@ int tk_tcp_accept(int sock);
 int tk_tcp_connect(const char* host, int port);
 
 /**
+ * @method tk_tcp_connect_ex
+ * @annotation ["static"]
+ * 连接到指定服务器。
+ * @param {const char*} host 主机名或IP地址。
+ * @param {int} port 端口号。
+ * @param {int} timeout 连接超时（毫秒）设置，设置为0代表按系统默认超时。
+ * @param {void*} opts 保留参数设置，当前只接受NULL值。
+ *
+ * @return {int} 返回sock句柄。
+ */
+int tk_tcp_connect_ex(const char* host, int port, int timeout, void* opts);
+
+/**
  * @class udp_t
  * @annotation ["fake"]
  */
