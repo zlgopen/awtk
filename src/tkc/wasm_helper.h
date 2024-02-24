@@ -98,6 +98,9 @@ long long strtoll(const char* str, char** endptr, int base);
 unsigned long strtoul(const char* str, char** endptr, int base);
 unsigned long long strtoull(const char* str, char** endptr, int base);
 
+long random(void);
+void srand(unsigned seed);
+
 void qsort(void*, size_t, size_t, int (*)(const void*, const void*));
 
 #define towlower(c) tolower(c)
