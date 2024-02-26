@@ -1,4 +1,7 @@
 # 最新动态
+2024/02/26
+  * 修复了同一帧设置多个edit焦点时会导致这些edit 内容都给全选的bug(感谢颖健提供补丁)
+
 2024/02/23
   * 增加了tk\_tcp\_connect\_ex函数，给tk\_stream\_factory\_create\_iostream函数增加了设置连接超时的timeout参数支持，主要是让awtk-hmi的modbus主站可以设置超时参数，比如url":"tcp://localhost:502?timeout=3000(感谢陈谭提供补丁)
 

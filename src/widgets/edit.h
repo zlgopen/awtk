@@ -239,6 +239,7 @@ typedef struct _edit_t {
   uint32_t timer_id;
   text_edit_t* model;
   wstr_t saved_text;
+  uint32_t selected_idle_id;
   wstr_t last_changing_text;
   wstr_t last_changed_text;
   edit_inc_value_t inc_value;

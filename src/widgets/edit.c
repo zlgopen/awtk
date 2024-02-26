@@ -607,6 +607,8 @@ static ret_t edit_request_input_method(widget_t* widget) {
 static ret_t edit_on_blur(widget_t* widget) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+  widget_remove_idle(widget, edit->selected_idle_id);
+  edit->selected_idle_id = TK_INVALID_ID;
   if (edit->close_im_when_blured) {
     edit->is_key_inputing = FALSE;
     input_method_request(input_method(), NULL);
@@ -641,7 +643,7 @@ static ret_t edit_on_focused(widget_t* widget) {
     widget_add_idle(widget, edit_focus_request_input_method);
 
     if (!edit->select_none_when_focused && !edit->readonly) {
-      widget_add_idle(widget, edit_select_all_async);
+      edit->selected_idle_id = widget_add_idle(widget, edit_select_all_async);
     }
   }
   edit_update_status(widget);
