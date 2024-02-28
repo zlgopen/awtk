@@ -32,15 +32,37 @@ const char* const s_spin_box_properties[] = {TK_EDIT_PROPS, WIDGET_PROP_REPEAT,
 
 widget_t* spin_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
+static ret_t spin_box_create_children(widget_t* widget) {
+  widget_t* inc = NULL;
+  widget_t* dec = NULL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  inc = button_create(widget, 0, 0, 0, 0);
+  inc->auto_created = TRUE;
+  button_set_repeat(inc, SPIN_DEFAULT_REPEAT);
+  widget_set_name(inc, STR_EDIT_INC_NAME);
+
+  dec = button_create(widget, 0, 0, 0, 0);
+  dec->auto_created = TRUE;
+  button_set_repeat(dec, SPIN_DEFAULT_REPEAT);
+  widget_set_name(dec, STR_EDIT_DEC_NAME);
+
+  widget_set_need_relayout_children(widget);
+
+  return RET_OK;
+}
+
 static ret_t spin_box_on_copy(widget_t* widget, widget_t* other) {
   spin_box_t* spin_box = SPIN_BOX(widget);
   spin_box_t* spin_box_other = SPIN_BOX(other);
   return_value_if_fail(spin_box != NULL && spin_box_other != NULL, RET_BAD_PARAMS);
+
   spin_box->easy_touch_mode = spin_box_other->easy_touch_mode;
   spin_box->button_position =
       tk_str_copy(spin_box->button_position, spin_box_other->button_position);
 
-  return edit_on_copy(widget, other);
+  edit_on_copy(widget, other);
+  return spin_box_create_children(widget);
 }
 
 ret_t spin_set_repeat(widget_t* widget, int32_t repeat) {
@@ -188,22 +210,11 @@ widget_t* spin_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 }
 
 widget_t* spin_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* inc = NULL;
-  widget_t* dec = NULL;
   widget_t* spin_box = spin_box_create_self(parent, x, y, w, h);
   return_value_if_fail(spin_box != NULL, NULL);
 
   spin_box_set_button_position(spin_box, SPIN_BOX_BUTTON_POSITION_NONE);
-
-  inc = button_create(spin_box, 0, 0, 0, 0);
-  inc->auto_created = TRUE;
-  button_set_repeat(inc, SPIN_DEFAULT_REPEAT);
-  widget_set_name(inc, STR_EDIT_INC_NAME);
-
-  dec = button_create(spin_box, 0, 0, 0, 0);
-  dec->auto_created = TRUE;
-  button_set_repeat(dec, SPIN_DEFAULT_REPEAT);
-  widget_set_name(dec, STR_EDIT_DEC_NAME);
+  spin_box_create_children(spin_box);
 
   return spin_box;
 }
