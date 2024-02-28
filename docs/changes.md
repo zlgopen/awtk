@@ -1,6 +1,7 @@
 # 最新动态
 2024/02/28
-  * 完善spin_box clone(感谢颖健提供补丁)
+  * 完善spin\_box clone(感谢颖健提供补丁)
+  * 添加对selected\_idle\_id在TK\_INVALID\_ID状态下的判(感谢颖健提供补丁)
 
 2024/02/26
   * 修复了同一帧设置多个edit焦点时会导致这些edit 内容都给全选的bug(感谢颖健提供补丁)

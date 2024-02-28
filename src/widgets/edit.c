@@ -607,11 +607,14 @@ static ret_t edit_request_input_method(widget_t* widget) {
 static ret_t edit_on_blur(widget_t* widget) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
-  widget_remove_idle(widget, edit->selected_idle_id);
-  edit->selected_idle_id = TK_INVALID_ID;
   if (edit->close_im_when_blured) {
     edit->is_key_inputing = FALSE;
     input_method_request(input_method(), NULL);
+  }
+
+  if (edit->selected_idle_id != TK_INVALID_ID) {
+    widget_remove_idle(widget, edit->selected_idle_id);
+    edit->selected_idle_id = TK_INVALID_ID;
   }
   edit->is_text_error = FALSE;
   edit_update_status(widget);
@@ -2058,6 +2061,7 @@ static ret_t edit_init(widget_t* widget) {
 
   edit_update_status(widget);
   edit->timer_id = TK_INVALID_ID;
+  edit->selected_idle_id = TK_INVALID_ID;
 
   edit->model = text_edit_create(widget, TRUE);
   ENSURE(edit->model != NULL);
