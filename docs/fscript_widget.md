@@ -1339,7 +1339,7 @@ for (var a = 0; a < size; a = a + 1) {
 
 ### 5.41 widget_unload_image
 
-> unload image 
+> 卸载图片
 ----------------------------
 
 #### 原型
@@ -1348,7 +1348,7 @@ for (var a = 0; a < size; a = a + 1) {
 widget_unload_image(name)
 ```
 
-* name - image name 
+* name - 图片名称。
 
 #### 示例
 

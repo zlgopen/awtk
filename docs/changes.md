@@ -1,7 +1,8 @@
 # 最新动态
+
 2024/03/02
-	* improve dialog: quit when key up.
-	* add script function widget_unload_image
+  * toast 按任意键退出。
+	* 增加fscritp函数 widget\_unload\_image。
 
 2024/02/28
   * 完善spin\_box clone(感谢颖健提供补丁)
