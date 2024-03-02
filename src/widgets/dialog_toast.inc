@@ -61,7 +61,7 @@ static ret_t dialog_toast_set_label_self_layout(widget_t* toast, widget_t* label
 
 static ret_t dialog_get_size_limits(rect_t* r);
 static ret_t dialog_toast_on_destroy(void* ctx, event_t* e);
-static ret_t dialog_toast_on_click_to_quit(void* ctx, event_t* e);
+static ret_t dialog_toast_on_ui_event_to_quit(void* ctx, event_t* e);
 static ret_t dialog_toast_set_curr_message(dialog_toast_t* dialog_toast, dialog_toast_message_t* message, uint32_t duration, bool_t add_timer);
 
 static ret_t dialog_toast_on_dialog_will_open(void* ctx, event_t* e) {
@@ -114,7 +114,8 @@ static ret_t dialog_toast_init(dialog_toast_t* dialog_toast, bool_t init_list) {
 
     widget_on(dialog_toast->toast, EVT_DESTROY, dialog_toast_on_destroy, dialog_toast);
     widget_on(dialog_toast->toast, EVT_WINDOW_OPEN, dialog_toast_on_dialog_open, dialog_toast);
-    widget_on(dialog_toast->toast, EVT_POINTER_UP, dialog_toast_on_click_to_quit, dialog_toast);
+    widget_on(dialog_toast->toast, EVT_KEY_UP, dialog_toast_on_ui_event_to_quit, dialog_toast);
+    widget_on(dialog_toast->toast, EVT_POINTER_UP, dialog_toast_on_ui_event_to_quit, dialog_toast);
     widget_on(dialog_toast->toast, EVT_WINDOW_WILL_OPEN, dialog_toast_on_dialog_will_open, dialog_toast);
 
     return RET_OK;
@@ -202,8 +203,9 @@ static ret_t dialog_toast_on_timer_to_quit(const timer_info_t* info) {
   return RET_REMOVE;
 }
 
-static ret_t dialog_toast_on_click_to_quit(void* ctx, event_t* e) {
+static ret_t dialog_toast_on_ui_event_to_quit(void* ctx, event_t* e) {
   dialog_toast_quit(DIALOG_TOAST(ctx), FALSE);
+  log_debug("dialog_toast_on_ui_event_to_quit\n");
   return RET_REMOVE;
 }
 

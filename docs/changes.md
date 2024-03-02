@@ -1,4 +1,7 @@
 # 最新动态
+2024/03/02
+	* improve dialog: quit when key up.
+	
 2024/02/28
   * 完善spin\_box clone(感谢颖健提供补丁)
   * 添加对selected\_idle\_id在TK\_INVALID\_ID状态下的判(感谢颖健提供补丁)
