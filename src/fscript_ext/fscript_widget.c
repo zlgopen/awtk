@@ -344,6 +344,32 @@ static ret_t func_widget_set(fscript_t* fscript, fscript_args_t* args, value_t* 
   return ret;
 }
 
+static ret_t func_widget_unload_image(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  ret_t ret = RET_OK;
+  widget_t* widget = NULL;
+  const char* name = NULL;
+  image_manager_t* imm = NULL;
+  FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
+
+  if (args->size == 1) {
+    widget = WIDGET(tk_object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+    name = value_str(args->args);
+  } else {
+    widget = to_widget(fscript, args->args);
+    name = value_str(args->args + 1);
+  }
+  FSCRIPT_FUNC_CHECK(widget != NULL && name != NULL, RET_BAD_PARAMS);
+
+  imm = widget_get_image_manager(widget);
+  if (imm == NULL) {
+    imm = image_manager();
+  }
+
+  image_manager_unload_bitmap_by_name(imm, name);
+
+  return ret;
+}
+
 static ret_t func_widget_add_value(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   value_t* v = NULL;
   ret_t ret = RET_OK;
@@ -810,6 +836,7 @@ FACTORY_TABLE_ENTRY("widget_get_child", func_widget_get_child)
 FACTORY_TABLE_ENTRY("widget_count_children", func_widget_count_children)
 FACTORY_TABLE_ENTRY("widget_eval", func_widget_eval)
 FACTORY_TABLE_ENTRY("widget_set", func_widget_set)
+FACTORY_TABLE_ENTRY("widget_unload_image", func_widget_unload_image)
 FACTORY_TABLE_ENTRY("widget_add_value", func_widget_add_value)
 FACTORY_TABLE_ENTRY("widget_create", func_widget_create)
 FACTORY_TABLE_ENTRY("widget_clone", func_widget_clone)

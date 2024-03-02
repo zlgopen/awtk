@@ -45,6 +45,16 @@ TEST(ImageManager, unload) {
   ASSERT_EQ(image_manager_lookup(image_manager(), "checked", &bmp), RET_NOT_FOUND);
 }
 
+TEST(ImageManager, unload_by_name) {
+  bitmap_t bmp;
+  memset(&bmp, 0x00, sizeof(bmp));
+
+  ASSERT_EQ(image_manager_get_bitmap(image_manager(), "checked", &bmp), RET_OK);
+  ASSERT_EQ(image_manager_lookup(image_manager(), "checked", &bmp), RET_OK);
+  ASSERT_EQ(image_manager_unload_bitmap_by_name(image_manager(), "checked"), RET_OK);
+  ASSERT_EQ(image_manager_lookup(image_manager(), "checked", &bmp), RET_NOT_FOUND);
+}
+
 TEST(ImageManager, unload_unused) {
   bitmap_t bmp;
   memset(&bmp, 0x00, sizeof(bmp));

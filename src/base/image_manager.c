@@ -45,6 +45,10 @@ static int bitmap_cache_cmp_data(bitmap_cache_t* a, bitmap_cache_t* b) {
   return (char*)(a->image.buffer) - (char*)(b->image.buffer);
 }
 
+static int bitmap_cache_cmp_with_name(bitmap_cache_t* a, const char* name) {
+  return strcmp(a->name, name);
+}
+
 static int bitmap_cache_cmp_access_time_dec(bitmap_cache_t* a, bitmap_cache_t* b) {
   return (b->last_access_time) - (a->last_access_time);
 }
@@ -372,6 +376,13 @@ ret_t image_manager_unload_bitmap(image_manager_t* imm, bitmap_t* image) {
   imm->images.compare = (tk_compare_t)bitmap_cache_cmp_data;
 
   return darray_remove_all(&(imm->images), NULL, &b);
+}
+
+ret_t image_manager_unload_bitmap_by_name(image_manager_t* imm, const char* name) {
+  return_value_if_fail(imm != NULL && name != NULL, RET_BAD_PARAMS);
+
+
+  return darray_remove_all(&(imm->images), (tk_compare_t)bitmap_cache_cmp_with_name, (void*)name);
 }
 
 ret_t image_manager_dump(image_manager_t* im, str_t* result) {

@@ -1337,6 +1337,25 @@ for (var a = 0; a < size; a = a + 1) {
 }
 ```
 
+### 5.41 widget_unload_image
+
+> unload image 
+----------------------------
+
+#### 原型
+
+```js
+widget_unload_image(name)
+```
+
+* name - image name 
+
+#### 示例
+
+```js
+widget_unload_image('bg1')
+```
+
 ### 示例参考
 
 * https://github.com/zlgopen/awtk/blob/master/design/default/ui/main_fscript.xml

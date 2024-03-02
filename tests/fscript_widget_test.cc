@@ -34,6 +34,19 @@ TEST(FScriptWidget, basic) {
   TK_OBJECT_UNREF(obj);
 }
 
+TEST(FScriptWidget, unload_image) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+  widget_t* w = progress_bar_create(NULL, 0, 0, 100, 20);
+
+  tk_object_set_prop_pointer(obj, STR_PROP_SELF, w);
+  fscript_eval(obj, "widget_unload_image('check')", &v);
+  value_reset(&v);
+
+  widget_unref(w);
+  TK_OBJECT_UNREF(obj);
+}
+
 TEST(FScriptWidget, layout) {
   value_t v;
   wh_t w = 10;
