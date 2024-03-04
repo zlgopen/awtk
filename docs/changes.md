@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/03/04
+  * 增加zip_file。
+
 2024/03/02
   * toast 按任意键退出。
 	* 增加fscritp函数 widget\_unload\_image。
