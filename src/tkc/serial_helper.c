@@ -40,7 +40,7 @@
 #if defined(TK_IS_PC) || defined(LINUX) || defined(IOS) || defined(ANDROID)
 #include "tkc/socket_pair.h"
 #include "tkc/socket_helper.h"
-#endif/*TK_IS_PC*/
+#endif /*TK_IS_PC*/
 
 #ifdef WIN32
 #define prefix L"\\\\.\\"

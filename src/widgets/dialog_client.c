@@ -46,7 +46,7 @@ widget_t* dialog_client_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
   return_value_if_fail(widget != NULL, NULL);
   return_value_if_fail(dialog_client_init(widget) == RET_OK, NULL)
 
-  return widget;
+      return widget;
 }
 
 widget_t* dialog_client_cast(widget_t* widget) {

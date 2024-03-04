@@ -65,7 +65,7 @@ ret_t tk_service_destroy(tk_service_t* service) {
 
   tk_mutex_destroy(service->mutex);
   service->mutex = NULL;
-  
+
   return service->destroy(service);
 }
 

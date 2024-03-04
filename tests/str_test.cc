@@ -1064,7 +1064,6 @@ TEST(Str, str_append_json_pair) {
   value_set_str(&v, "abc");
   ASSERT_EQ(str_append_json_pair(s, "x", &v), RET_OK);
   ASSERT_STREQ(s->str, "\"x\":\"abc\"");
-  
 
   str_reset(s);
 }

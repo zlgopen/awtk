@@ -410,6 +410,6 @@ TEST(Buffer, value) {
   ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
   ASSERT_STREQ(value_str(&v), "world");
   ASSERT_EQ(v.type, VALUE_TYPE_STRING);
-  
+
   wbuffer_deinit(&wbuffer);
 }

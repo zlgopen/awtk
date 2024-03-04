@@ -26,8 +26,8 @@
 #include "base/assets_manager.h"
 #include "svg/svg_to_bsvg.h"
 
-static ret_t bsvg_gen(const char* input_file, const char* output_file, const char* theme, const char *name,
-                      bool_t bin) {
+static ret_t bsvg_gen(const char* input_file, const char* output_file, const char* theme,
+                      const char* name, bool_t bin) {
   uint32_t* out = NULL;
   uint32_t size = 0;
   uint32_t out_size = 0;
@@ -38,7 +38,7 @@ static ret_t bsvg_gen(const char* input_file, const char* output_file, const cha
       write_file(output_file, out, out_size);
     } else {
       output_res_c_source_ex(output_file, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_BSVG,
-                          (uint8_t*)out, out_size, name);
+                             (uint8_t*)out, out_size, name);
     }
   }
 
@@ -47,8 +47,8 @@ static ret_t bsvg_gen(const char* input_file, const char* output_file, const cha
   return RET_OK;
 }
 
-static ret_t gen_one(const char* input_file, const char* output_file, const char* theme, const char *name,
-                     bool_t bin) {
+static ret_t gen_one(const char* input_file, const char* output_file, const char* theme,
+                     const char* name, bool_t bin) {
   ret_t ret = RET_OK;
   if (!exit_if_need_not_update(input_file, output_file)) {
     ret = bsvg_gen(input_file, output_file, theme, name, bin);
@@ -59,8 +59,8 @@ static ret_t gen_one(const char* input_file, const char* output_file, const char
   return ret;
 }
 
-static ret_t gen_folder(const char* in_foldername, const char* out_foldername, const char* theme, const char* dir_name,
-                        bool_t bin) {
+static ret_t gen_folder(const char* in_foldername, const char* out_foldername, const char* theme,
+                        const char* dir_name, bool_t bin) {
   fs_item_t item;
   ret_t ret = RET_OK;
   char in_name[MAX_PATH] = {0};
@@ -103,7 +103,7 @@ static ret_t gen_folder(const char* in_foldername, const char* out_foldername, c
       if (!fs_dir_exist(os_fs(), out_name)) {
         fs_create_dir(os_fs(), out_name);
       }
-      
+
       str_init(&res_name, 0);
       str_append(&res_name, item.name);
       str_append(&res_name, "/");

@@ -81,7 +81,7 @@ data_reader_t* data_reader_asset_create(const char* assetname) {
   return_value_if_fail(assetname != NULL, NULL);
   asset = TKMEM_ZALLOC(data_reader_asset_t);
   return_value_if_fail(asset != NULL && am != NULL, NULL);
-  
+
   p = strstr(assetname, "://");
   if (p != NULL) {
     p += 3;

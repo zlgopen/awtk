@@ -6,7 +6,7 @@
 static ret_t debugger_log(void* ctx, tk_log_level_t level, const char* format, va_list ap) {
   str_t* str = (str_t*)ctx;
   char msg[1024] = {0};
-  tk_vsnprintf(msg, sizeof(msg)-1, format, ap);
+  tk_vsnprintf(msg, sizeof(msg) - 1, format, ap);
 
   str_append_more(str, msg, ";", NULL);
 

@@ -96,7 +96,7 @@ static ret_t csv_path_parse_impl(csv_file_object_t* o, csv_path_t* path, const c
     return RET_OK;
   }
 
-  path->col = csv_file_object_parse_col(o, p); 
+  path->col = csv_file_object_parse_col(o, p);
 
   return_value_if_fail((path->col >= 0) && (path->col < csv_file_get_cols(csv)), RET_BAD_PARAMS);
   return_value_if_fail((path->row >= 0) && (path->row < csv_file_get_rows(csv)), RET_BAD_PARAMS);

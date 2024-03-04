@@ -316,4 +316,3 @@ TEST(DateTime, test_parse_date_time) {
   ASSERT_EQ(date_time_parse_date_time(&dt, "2020-01-02 01:02:03.123"), RET_OK);
   ASSERT_EQ(date_time_parse_date_time(&dt, "2020-01-02 01:02:03.123456"), RET_OK);
 }
-

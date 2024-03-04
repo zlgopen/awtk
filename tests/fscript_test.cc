@@ -3234,18 +3234,18 @@ TEST(FScript, levelize) {
   value_t v;
   value_t s;
   tk_object_t* obj = object_default_create();
-  
+
   fscript_eval(obj, "var t = levelize('0-20;21-40;41-60;61-80;81-100', 10); t", &v);
   ASSERT_EQ(value_int(&v), 0);
 
   fscript_eval(obj, "var t = levelize('0-20;21-40;41-60;61-80;81-100', 30); t", &v);
   ASSERT_EQ(value_int(&v), 1);
-  
+
   fscript_eval(obj, "var t = levelize('0-20;21-40;41-60;61-80;81-100', 200); t", &v);
   ASSERT_EQ(value_int(&v), 4);
 
   value_reset(&v);
-  
+
   TK_OBJECT_UNREF(obj);
 }
 
@@ -3256,15 +3256,15 @@ TEST(FExr, min) {
   fscript_eval(obj, "min(1, 2)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_INT32);
   ASSERT_EQ(value_int32(&v), 1);
-  
+
   fscript_eval(obj, "min(1, 2.1)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_INT32);
   ASSERT_EQ(value_int32(&v), 1);
-  
+
   fscript_eval(obj, "min(i8(1), 2.1)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_INT8);
   ASSERT_EQ(value_int32(&v), 1);
-  
+
   fscript_eval(obj, "min(1.0, 2)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_DOUBLE);
   ASSERT_EQ(value_int32(&v), 1);
@@ -3281,15 +3281,15 @@ TEST(FExr, max) {
   fscript_eval(obj, "max(1, 0)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_INT32);
   ASSERT_EQ(value_int32(&v), 1);
-  
+
   fscript_eval(obj, "max(1, 0.1)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_INT32);
   ASSERT_EQ(value_int32(&v), 1);
-  
+
   fscript_eval(obj, "max(i8(1), 0.1)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_INT8);
   ASSERT_EQ(value_int32(&v), 1);
-  
+
   fscript_eval(obj, "max(1.0, 0.2)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_DOUBLE);
   ASSERT_EQ(value_int32(&v), 1);
@@ -3306,15 +3306,15 @@ TEST(FExr, clamp) {
   fscript_eval(obj, "clamp(1, 2, 5.0)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_INT32);
   ASSERT_EQ(value_int32(&v), 2);
-  
+
   fscript_eval(obj, "clamp(1, 0.1, 5)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_INT32);
   ASSERT_EQ(value_int32(&v), 1);
-  
+
   fscript_eval(obj, "clamp(i8(1), 0.1, 6)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_INT8);
   ASSERT_EQ(value_int32(&v), 1);
-  
+
   fscript_eval(obj, "clamp(1.0, 0.1, 10)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_DOUBLE);
   ASSERT_EQ(value_int32(&v), 1);
@@ -3322,11 +3322,11 @@ TEST(FExr, clamp) {
   fscript_eval(obj, "clamp(1, i8(3), 6)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_INT8);
   ASSERT_EQ(value_int32(&v), 3);
-  
+
   fscript_eval(obj, "clamp(10, i8(3), i8(6))", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_INT8);
   ASSERT_EQ(value_int32(&v), 6);
-  
+
   fscript_eval(obj, "clamp(10, i8(3), 6.0)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_DOUBLE);
   ASSERT_EQ(value_int32(&v), 6);
@@ -3344,11 +3344,11 @@ TEST(FExr, round) {
   ASSERT_EQ(v.type, VALUE_TYPE_INT64);
   ASSERT_EQ(value_int32(&v), 1);
   value_reset(&v);
-  
+
   fscript_eval(obj, "round(1.2)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_INT64);
   ASSERT_EQ(value_int32(&v), 1);
-  
+
   fscript_eval(obj, "round(1.5)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_INT64);
   ASSERT_EQ(value_int32(&v), 2);
@@ -3365,11 +3365,11 @@ TEST(FExr, floor) {
   ASSERT_EQ(v.type, VALUE_TYPE_INT64);
   ASSERT_EQ(value_int32(&v), 1);
   value_reset(&v);
-  
+
   fscript_eval(obj, "floor(1.2)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_INT64);
   ASSERT_EQ(value_int32(&v), 1);
-  
+
   fscript_eval(obj, "floor(1.5)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_INT64);
   ASSERT_EQ(value_int32(&v), 1);
@@ -3386,11 +3386,11 @@ TEST(FExr, ceil) {
   ASSERT_EQ(v.type, VALUE_TYPE_INT64);
   ASSERT_EQ(value_int32(&v), 1);
   value_reset(&v);
-  
+
   fscript_eval(obj, "ceil(1.2)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_INT64);
   ASSERT_EQ(value_int32(&v), 2);
-  
+
   fscript_eval(obj, "ceil(1.5)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_INT64);
   ASSERT_EQ(value_int32(&v), 2);
@@ -3407,27 +3407,27 @@ TEST(FExr, abs) {
   ASSERT_EQ(v.type, VALUE_TYPE_INT32);
   ASSERT_EQ(value_int32(&v), 1);
   value_reset(&v);
-  
+
   fscript_eval(obj, "abs(1.0)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_DOUBLE);
   ASSERT_EQ(value_int32(&v), 1);
   value_reset(&v);
-  
+
   fscript_eval(obj, "abs(i8(-1))", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_INT8);
   ASSERT_EQ(value_int32(&v), 1);
   value_reset(&v);
-  
+
   fscript_eval(obj, "abs(-1)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_INT32);
   ASSERT_EQ(value_int32(&v), 1);
   value_reset(&v);
-  
+
   fscript_eval(obj, "abs(-1.0)", &v);
   ASSERT_EQ(v.type, VALUE_TYPE_DOUBLE);
   ASSERT_EQ(value_int32(&v), 1);
   value_reset(&v);
-  
+
   TK_OBJECT_UNREF(obj);
 }
 
@@ -3438,25 +3438,25 @@ TEST(FExr, ulen) {
   fscript_eval(obj, "ulen(1)", &v);
   ASSERT_EQ(value_int32(&v), 1);
   value_reset(&v);
-  
+
   fscript_eval(obj, "ulen('abc')", &v);
   ASSERT_EQ(value_int32(&v), 3);
   value_reset(&v);
-  
+
   TK_OBJECT_UNREF(obj);
 }
 
 TEST(FExr, sha256) {
- value_t v;
+  value_t v;
   tk_object_t* obj = object_default_create();
 
   fscript_eval(obj, "sha256('abc')", &v);
   ASSERT_STREQ(value_str(&v), "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad");
   value_reset(&v);
-  
+
   fscript_eval(obj, "sha256(123)", &v);
   ASSERT_STREQ(value_str(&v), "");
   value_reset(&v);
-  
-  TK_OBJECT_UNREF(obj);  
+
+  TK_OBJECT_UNREF(obj);
 }

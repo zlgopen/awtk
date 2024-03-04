@@ -360,19 +360,19 @@ ret_t tk_thread_set_stack_size(tk_thread_t* thread, uint32_t stack_size) {
 
 int32_t tk_thread_get_priority_from_platform(tk_thread_priority_t priority) {
   switch (priority) {
-  case TK_THREAD_PRIORITY_TIME_CRITICAL :
+    case TK_THREAD_PRIORITY_TIME_CRITICAL:
       return 99;
-  case TK_THREAD_PRIORITY_HIGHEST :
+    case TK_THREAD_PRIORITY_HIGHEST:
       return 79;
-  case TK_THREAD_PRIORITY_ABOVE_NORAML :
+    case TK_THREAD_PRIORITY_ABOVE_NORAML:
       return 59;
-  case TK_THREAD_PRIORITY_NORMAL :
+    case TK_THREAD_PRIORITY_NORMAL:
       return 39;
-  case  TK_THREAD_PRIORITY_BELOW_NORAML:
+    case TK_THREAD_PRIORITY_BELOW_NORAML:
       return 19;
-  case TK_THREAD_PRIORITY_LOWEST :
+    case TK_THREAD_PRIORITY_LOWEST:
       return 1;
-  default:
+    default:
       return -1;
   }
 }
@@ -427,7 +427,7 @@ ret_t tk_thread_start(tk_thread_t* thread) {
     pthread_attr_setschedparam(&thread->attr, &thread->param);
 #ifndef ANDROID
     pthread_attr_setinheritsched(&thread->attr, PTHREAD_EXPLICIT_SCHED);
-#endif/*ANDROID*/    
+#endif /*ANDROID*/
   }
   if (thread->stack_size > 0) {
     pthread_attr_setstacksize(&thread->attr, thread->stack_size);

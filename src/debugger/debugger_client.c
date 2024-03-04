@@ -131,7 +131,8 @@ static ret_t debugger_client_dispatch_one(debugger_t* debugger, debugger_resp_t*
   return debugger_client_dispatch_message(debugger, resp);
 }
 
-static ret_t debugger_client_dispatch_messages(debugger_t* debugger, uint32_t timeout, uint32_t* ret_num) {
+static ret_t debugger_client_dispatch_messages(debugger_t* debugger, uint32_t timeout,
+                                               uint32_t* ret_num) {
   ret_t ret = RET_OK;
   debugger_resp_t resp;
   tk_istream_t* in = NULL;

@@ -27,7 +27,7 @@
 #define IS_PATH_SEP(c) ((c) == '/' || (c) == '\\')
 
 ret_t path_basename_ex(const char* path, bool_t remove_ext_name, char* result, int32_t size) {
-  const char* p = NULL, *p2 = NULL;
+  const char *p = NULL, *p2 = NULL;
   int32_t real_size = 0;
   return_value_if_fail(path != NULL && result != NULL, RET_BAD_PARAMS);
 
@@ -400,12 +400,12 @@ ret_t path_expand_vars(const char* filename, char* result, int32_t size) {
   char path[MAX_PATH + 1] = {0};
   return_value_if_fail(filename != NULL && result != NULL && size > 0, RET_BAD_PARAMS);
 
-  str_init(&str, MAX_PATH+1);
+  str_init(&str, MAX_PATH + 1);
   str_set(&str, filename);
-  
+
   fs_get_user_storage_path(os_fs(), path);
   str_replace(&str, "${user_dir}", path);
-  
+
   fs_get_temp_path(os_fs(), path);
   str_replace(&str, "${temp_dir}", path);
 

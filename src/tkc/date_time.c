@@ -233,10 +233,10 @@ ret_t date_time_parse_time(date_time_t* dt, const char* str) {
   n = tk_sscanf(str, "%d:%d:%d", &hour, &minute, &second);
   if (n >= 2) {
     date_time_set_hour(dt, hour);
-		date_time_set_minute(dt, minute);
+    date_time_set_minute(dt, minute);
     date_time_set_second(dt, second);
-		
-		return RET_OK;
+
+    return RET_OK;
   } else {
     return RET_BAD_PARAMS;
   }
@@ -249,17 +249,17 @@ ret_t date_time_parse_date(date_time_t* dt, const char* str) {
   int32_t n = 0;
   return_value_if_fail(dt != NULL && str != NULL, RET_BAD_PARAMS);
 
-  if(strchr(str, '/') != NULL) {
+  if (strchr(str, '/') != NULL) {
     n = tk_sscanf(str, "%d/%d/%d", &year, &month, &day);
   } else {
     n = tk_sscanf(str, "%d-%d-%d", &year, &month, &day);
   }
   if (n == 3) {
     date_time_set_year(dt, year);
-		date_time_set_month(dt, month);
-		date_time_set_day(dt, day);
-		
-		return RET_OK;
+    date_time_set_month(dt, month);
+    date_time_set_day(dt, day);
+
+    return RET_OK;
   } else {
     return RET_BAD_PARAMS;
   }
@@ -275,22 +275,21 @@ ret_t date_time_parse_date_time(date_time_t* dt, const char* str) {
   int32_t n = 0;
   return_value_if_fail(dt != NULL && str != NULL, RET_BAD_PARAMS);
 
-  if(strchr(str, '/') != NULL) {
+  if (strchr(str, '/') != NULL) {
     n = tk_sscanf(str, "%d/%d/%d %d:%d:%d", &year, &month, &day, &hour, &minute, &second);
   } else {
     n = tk_sscanf(str, "%d-%d-%d %d:%d:%d", &year, &month, &day, &hour, &minute, &second);
   }
   if (n >= 5) {
     date_time_set_year(dt, year);
-		date_time_set_month(dt, month);
+    date_time_set_month(dt, month);
     date_time_set_day(dt, day);
-		date_time_set_hour(dt, hour);
+    date_time_set_hour(dt, hour);
     date_time_set_minute(dt, minute);
-		date_time_set_second(dt, second);
-		
-		return RET_OK;
+    date_time_set_second(dt, second);
+
+    return RET_OK;
   } else {
     return RET_BAD_PARAMS;
   }
 }
-

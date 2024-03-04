@@ -11,7 +11,7 @@ static string s_log;
 
 static ret_t debugger_log(void* ctx, tk_log_level_t level, const char* format, va_list ap) {
   char msg[1024] = {0};
-  tk_vsnprintf(msg, sizeof(msg)-1, format, ap);
+  tk_vsnprintf(msg, sizeof(msg) - 1, format, ap);
 
   s_log += msg;
   return RET_OK;
@@ -30,7 +30,8 @@ TEST(Widget_Vtable, all_base_class) {
 
   ASSERT_EQ(clone_properties, widget_vtable_get_clone_properties(all_base_class->vt));
   ASSERT_EQ(clone_properties, widget_vtable_get_persistent_properties(all_base_class->vt));
-  ASSERT_STREQ(WIDGET_VTABLE_CLASS_POINTER_CURSOR, widget_vtable_get_pointer_cursor(all_base_class->vt));
+  ASSERT_STREQ(WIDGET_VTABLE_CLASS_POINTER_CURSOR,
+               widget_vtable_get_pointer_cursor(all_base_class->vt));
 
   s_log = "";
   widget_vtable_get_prop(all_base_class, NULL, NULL);
@@ -73,11 +74,11 @@ TEST(Widget_Vtable, all_base_class) {
   ASSERT_EQ("all_base_class_on_copy", s_log);
 
   s_log = "";
-  widget_vtable_on_keyup(all_base_class,NULL);
+  widget_vtable_on_keyup(all_base_class, NULL);
   ASSERT_EQ("all_base_class_on_keyup", s_log);
 
   s_log = "";
-  widget_vtable_on_keydown(all_base_class,NULL);
+  widget_vtable_on_keydown(all_base_class, NULL);
   ASSERT_EQ("all_base_class_on_keydown", s_log);
 
   s_log = "";
@@ -163,7 +164,7 @@ TEST(Widget_Vtable, all_base_class) {
   s_log = "";
   widget_vtable_on_destroy(all_base_class);
   ASSERT_EQ("all_base_class_on_destroy", s_log);
-  
+
   log_set_hook(NULL, NULL);
   log_set_hook(NULL, NULL);
 }
@@ -225,11 +226,11 @@ TEST(Widget_Vtable, empty_class) {
   ASSERT_EQ("all_base_class_on_copy", s_log);
 
   s_log = "";
-  widget_vtable_on_keyup(widget,NULL);
+  widget_vtable_on_keyup(widget, NULL);
   ASSERT_EQ("all_base_class_on_keyup", s_log);
 
   s_log = "";
-  widget_vtable_on_keydown(widget,NULL);
+  widget_vtable_on_keydown(widget, NULL);
   ASSERT_EQ("all_base_class_on_keydown", s_log);
 
   s_log = "";
@@ -315,7 +316,7 @@ TEST(Widget_Vtable, empty_class) {
   s_log = "";
   widget_vtable_on_destroy(widget);
   ASSERT_EQ("all_base_class_on_destroy", s_log);
-  
+
   log_set_hook(NULL, NULL);
   log_set_hook(NULL, NULL);
 }
@@ -340,7 +341,8 @@ TEST(Widget_Vtable, base_class) {
   ASSERT_EQ(clone_properties, widget_vtable_get_persistent_properties(widget->vt));
 
   ASSERT_STRNE(WIDGET_VTABLE_CLASS_POINTER_CURSOR, widget_vtable_get_pointer_cursor(widget->vt));
-  ASSERT_STREQ(WIDGET_VTABLE_CLASS_BASE_POINTER_CURSOR, widget_vtable_get_pointer_cursor(widget->vt));
+  ASSERT_STREQ(WIDGET_VTABLE_CLASS_BASE_POINTER_CURSOR,
+               widget_vtable_get_pointer_cursor(widget->vt));
 
   s_log = "";
   widget_vtable_get_prop(widget, NULL, NULL);
@@ -383,11 +385,11 @@ TEST(Widget_Vtable, base_class) {
   ASSERT_EQ("all_base_class_on_copy", s_log);
 
   s_log = "";
-  widget_vtable_on_keyup(widget,NULL);
+  widget_vtable_on_keyup(widget, NULL);
   ASSERT_EQ("all_base_class_on_keyup", s_log);
 
   s_log = "";
-  widget_vtable_on_keydown(widget,NULL);
+  widget_vtable_on_keydown(widget, NULL);
   ASSERT_EQ("base_class_on_keydown_all_base_class_on_keydown", s_log);
 
   s_log = "";
@@ -473,11 +475,10 @@ TEST(Widget_Vtable, base_class) {
   s_log = "";
   widget_vtable_on_destroy(widget);
   ASSERT_EQ("all_base_class_on_destroy", s_log);
-  
+
   log_set_hook(NULL, NULL);
   log_set_hook(NULL, NULL);
 }
-
 
 TEST(Widget_Vtable, sun_class) {
   log_set_hook(debugger_log, NULL);
@@ -500,7 +501,8 @@ TEST(Widget_Vtable, sun_class) {
   ASSERT_EQ(clone_properties, widget_vtable_get_persistent_properties(widget->vt));
 
   ASSERT_STRNE(WIDGET_VTABLE_CLASS_POINTER_CURSOR, widget_vtable_get_pointer_cursor(widget->vt));
-  ASSERT_STREQ(WIDGET_VTABLE_CLASS_BASE_POINTER_CURSOR, widget_vtable_get_pointer_cursor(widget->vt));
+  ASSERT_STREQ(WIDGET_VTABLE_CLASS_BASE_POINTER_CURSOR,
+               widget_vtable_get_pointer_cursor(widget->vt));
 
   s_log = "";
   widget_vtable_get_prop(widget, NULL, NULL);
@@ -543,11 +545,11 @@ TEST(Widget_Vtable, sun_class) {
   ASSERT_EQ("sun_class_on_copy_all_base_class_on_copy", s_log);
 
   s_log = "";
-  widget_vtable_on_keyup(widget,NULL);
+  widget_vtable_on_keyup(widget, NULL);
   ASSERT_EQ("sun_class_on_keyup_all_base_class_on_keyup", s_log);
 
   s_log = "";
-  widget_vtable_on_keydown(widget,NULL);
+  widget_vtable_on_keydown(widget, NULL);
   ASSERT_EQ("base_class_on_keydown_all_base_class_on_keydown", s_log);
 
   s_log = "";
@@ -633,8 +635,7 @@ TEST(Widget_Vtable, sun_class) {
   s_log = "";
   widget_vtable_on_destroy(widget);
   ASSERT_EQ("sun_class_on_destroy_all_base_class_on_destroy", s_log);
-  
+
   log_set_hook(NULL, NULL);
   log_set_hook(NULL, NULL);
 }
-

@@ -37,10 +37,10 @@ static int32_t tk_istream_mem_read(tk_istream_t* stream, uint8_t* buff, uint32_t
   if (size > 0) {
     memcpy(buff, ((uint8_t*)istream_mem->buff) + istream_mem->cursor, size);
     istream_mem->cursor += size;
-#ifdef TK_IS_PC    
+#ifdef TK_IS_PC
   } else {
     errno = EIO;
-#endif /*TK_IS_PC*/    
+#endif /*TK_IS_PC*/
   }
 
   return size;

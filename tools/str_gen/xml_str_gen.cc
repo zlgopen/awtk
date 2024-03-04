@@ -131,7 +131,8 @@ bool xml_buff_to_str_gen(const char* buff, StrGen* sg) {
   return true;
 }
 
-bool xml_to_str_gen(const char* input_file, const char* output_dir, const char* theme, const char *name, bool bin) {
+bool xml_to_str_gen(const char* input_file, const char* output_dir, const char* theme,
+                    const char* name, bool bin) {
   StrGen sg;
   char path[MAX_PATH + 1];
   char var_name[MAX_PATH + 1];

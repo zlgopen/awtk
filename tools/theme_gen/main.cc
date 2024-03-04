@@ -24,7 +24,7 @@
 #include "common/utils.h"
 #include "xml_theme_gen.h"
 
-ret_t gen_one(const char* input_file, const char* output_file, const char* theme, const char *name,
+ret_t gen_one(const char* input_file, const char* output_file, const char* theme, const char* name,
               bool_t output_bin) {
   ret_t ret = RET_OK;
   if (!exit_if_need_not_update(input_file, output_file)) {
@@ -36,14 +36,13 @@ ret_t gen_one(const char* input_file, const char* output_file, const char* theme
   return ret;
 }
 
-static ret_t gen_folder(const char* in_foldername, const char* out_foldername, const char* theme, const char* dir_name,
-                        bool_t output_bin) {
+static ret_t gen_folder(const char* in_foldername, const char* out_foldername, const char* theme,
+                        const char* dir_name, bool_t output_bin) {
   fs_item_t item;
   ret_t ret = RET_OK;
   char in_name[MAX_PATH] = {0};
   char out_name[MAX_PATH] = {0};
   fs_dir_t* dir = fs_open_dir(os_fs(), in_foldername);
-
 
   while (fs_dir_read(dir, &item) != RET_FAIL) {
     if (item.is_reg_file && case_end_with(item.name, ".xml")) {
@@ -83,7 +82,7 @@ static ret_t gen_folder(const char* in_foldername, const char* out_foldername, c
       if (!fs_dir_exist(os_fs(), out_name)) {
         fs_create_dir(os_fs(), out_name);
       }
-      
+
       str_init(&res_name, 0);
       str_append(&res_name, item.name);
       str_append(&res_name, "/");

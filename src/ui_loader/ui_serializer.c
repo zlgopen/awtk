@@ -101,7 +101,8 @@ ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
   ui_builder_on_widget_start(writer, &desc);
 
   ui_widget_serialize_props(writer, widget, widget_get_persistent_props());
-  if (widget_vtable_get_clone_properties(widget->vt) || widget_vtable_get_persistent_properties(widget->vt)) {
+  if (widget_vtable_get_clone_properties(widget->vt) ||
+      widget_vtable_get_persistent_properties(widget->vt)) {
     const char* const* properties = widget_vtable_get_persistent_properties(widget->vt);
     if (properties == NULL) {
       properties = widget_vtable_get_clone_properties(widget->vt);

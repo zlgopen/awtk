@@ -60,7 +60,7 @@ TEST(GroupBox, radio_button) {
   ASSERT_EQ(value1, 0);
   ASSERT_EQ(value2, 0);
   ASSERT_EQ(group_box->value, 0);
-  
+
   widget_set_value_int(r3, 1);
   ASSERT_EQ(value1, 3);
   ASSERT_EQ(value2, 3);

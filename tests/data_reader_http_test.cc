@@ -5,7 +5,7 @@
 TEST(DataReaderHTTP, http) {
   data_reader_t* reader = data_reader_http_create("http://www.baidu.com");
 
-  if(reader != NULL) {
+  if (reader != NULL) {
     char buffer[1024];
     uint32_t size = data_reader_get_size(reader);
     int32_t ret = data_reader_read(reader, 0, buffer, sizeof(buffer));
@@ -19,7 +19,7 @@ TEST(DataReaderHTTP, http) {
 TEST(DataReaderHTTP, https) {
   data_reader_t* reader = data_reader_http_create("https://www.baidu.com");
 
-  if(reader != NULL) {
+  if (reader != NULL) {
     char buffer[1024];
     uint32_t size = data_reader_get_size(reader);
     int32_t ret = data_reader_read(reader, 0, buffer, sizeof(buffer));
@@ -30,4 +30,3 @@ TEST(DataReaderHTTP, https) {
     data_reader_destroy(reader);
   }
 }
-

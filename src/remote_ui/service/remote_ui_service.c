@@ -607,12 +607,12 @@ static ret_t remote_ui_dev_info_write(wbuffer_t* wb, remote_ui_dev_info_t* info)
 
 static ret_t remote_ui_on_log(void* ctx, tk_log_level_t level, const char* format, va_list ap) {
   remote_ui_service_t* ui = (remote_ui_service_t*)ctx;
-  
+
   if (ui != NULL && ui->service.destroy == (tk_service_destroy_t)remote_ui_service_destroy) {
     char msg[1024] = {0};
     wbuffer_t* wb = &(ui->service.wb);
-    
-    tk_vsnprintf(msg, sizeof(msg)-1, format, ap);
+
+    tk_vsnprintf(msg, sizeof(msg) - 1, format, ap);
 
     wbuffer_rewind(wb);
     wbuffer_write_string(wb, "<log>");
@@ -1057,5 +1057,4 @@ ret_t remote_ui_service_hook_log(remote_ui_service_t* ui, bool_t hook) {
   }
 
   return RET_OK;
-}      
-
+}

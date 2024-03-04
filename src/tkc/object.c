@@ -25,7 +25,7 @@
 #include "tkc/object.h"
 #ifndef WITHOUT_FSCRIPT
 #include "tkc/fscript.h"
-#endif/*WITHOUT_FSCRIPT*/
+#endif /*WITHOUT_FSCRIPT*/
 
 #include "tkc/named_value.h"
 

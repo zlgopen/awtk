@@ -820,20 +820,20 @@ static ret_t window_manager_default_close_window(widget_t* widget, widget_t* win
         window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_FOREGROUND);
 
         WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-          if (!find && iter == prev_win) {
-            find = TRUE;
+        if (!find && iter == prev_win) {
+          find = TRUE;
+        }
+        if (find) {
+          if (!widget_is_support_highlighter(iter)) {
+            is_create = FALSE;
+            break;
           }
-          if (find) {
-            if (!widget_is_support_highlighter(iter)) {
-              is_create = FALSE;
-              break;
-            }
-            curr_highlight = widget_get_prop_str(iter, WIDGET_PROP_HIGHLIGHT, NULL);
-            if (curr_highlight != NULL && *curr_highlight != '\0') {
-              widget_highlighter = iter;
-              break;
-            }
+          curr_highlight = widget_get_prop_str(iter, WIDGET_PROP_HIGHLIGHT, NULL);
+          if (curr_highlight != NULL && *curr_highlight != '\0') {
+            widget_highlighter = iter;
+            break;
           }
+        }
         WIDGET_FOR_EACH_CHILD_END();
         if (is_create) {
           wm->curr_win = widget_highlighter;
@@ -1344,7 +1344,7 @@ static ret_t window_manager_default_get_prop(widget_t* widget, const char* name,
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MAX_FPS)) {
     value_set_uint32(v, WINDOW_MANAGER(wm)->max_fps);
-    return RET_OK;    
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;

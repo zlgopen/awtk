@@ -34,7 +34,9 @@ TEST(ConfJson, arr) {
 TEST(ConfJson, arr_comment) {
   value_t v;
   str_t str;
-  const char* data = " /*comment*/[/*comment*/[/*comment*/1/*comment*/,2/*comment*/,/*comment*/3]/*comment*/, /*comment*/\"abc\"/*comment*/] ";
+  const char* data =
+      " /*comment*/[/*comment*/[/*comment*/1/*comment*/,2/*comment*/,/*comment*/3]/*comment*/, "
+      "/*comment*/\"abc\"/*comment*/] ";
   conf_doc_t* doc = conf_doc_load_json(data, -1);
 
   str_init(&str, 100);
@@ -128,7 +130,10 @@ TEST(ConfJson, basic1_comment) {
   value_t v;
   str_t str;
   conf_node_t* node = NULL;
-  const char* data = " /*comment*/{//comment\r\"tom\"//comment\n : { //comment\r\n \"name\"//comment\r\n : //comment\r\n\"tom\"//comment\r\n, \"age\"//comment\r : 100 //comment\n } /*comment*/ /*comment*/} ";
+  const char* data =
+      " /*comment*/{//comment\r\"tom\"//comment\n : { //comment\r\n \"name\"//comment\r\n : "
+      "//comment\r\n\"tom\"//comment\r\n, \"age\"//comment\r : 100 //comment\n } /*comment*/ "
+      "/*comment*/} ";
 
   conf_doc_t* doc = conf_doc_load_json(data, -1);
 
@@ -776,7 +781,8 @@ TEST(ConfJson, save_json_ex) {
 }
 
 TEST(ConfJson, comment) {
-const char* data = "\
+  const char* data =
+      "\
 {\
     \"log_message\": {\
         \"a\":1,\"b\":2,\
@@ -794,4 +800,3 @@ const char* data = "\
 
   conf_doc_destroy(doc);
 }
-

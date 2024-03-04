@@ -36,7 +36,7 @@ static ret_t tk_ignore_sig_pipe(void) {
 }
 #else
 #define tk_ignore_sig_pipe()
-#endif/*LINUX*/
+#endif /*LINUX*/
 
 #ifdef WIN32
 #include <ws2tcpip.h>
@@ -257,7 +257,7 @@ int tk_tcp_connect_ex(const char* host, int port, int timeout, void* opts) {
   }
   if (FD_ISSET(sock, &rset) || FD_ISSET(sock, &wset)) {
     len = sizeof(error);
-    ret = getsockopt(sock, SOL_SOCKET, SO_ERROR, (void *)&error, &len);
+    ret = getsockopt(sock, SOL_SOCKET, SO_ERROR, (void*)&error, &len);
     if (ret != 0 || error != 0) {
 #ifndef _WIN32
       errno = ECONNREFUSED;
@@ -269,7 +269,7 @@ int tk_tcp_connect_ex(const char* host, int port, int timeout, void* opts) {
   } else {
     goto done;
   }
-done :
+done:
   tk_socket_set_blocking(sock, TRUE);
   if (sockfd == -1) {
     tk_socket_close(sock);

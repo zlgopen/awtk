@@ -65,7 +65,7 @@ static ret_t group_box_on_child_value_change(void* ctx, event_t* e) {
   if (i == group_box->value) {
     return RET_OK;
   }
-  
+
   e = value_change_event_init(&evt, e->type, widget);
   value_set_uint32(&(evt.old_value), group_box->value);
   value_set_uint32(&(evt.new_value), i);

@@ -36,7 +36,6 @@ BEGIN_C_DECLS
 typedef ret_t (*csv_file_object_filter_t)(void* ctx, tk_object_t* args, uint32_t index,
                                           csv_row_t* row);
 
-
 /**
  * 返回值：
    * RET_OK: 数据有效
@@ -236,7 +235,7 @@ ret_t csv_file_object_set_check_new_row(tk_object_t* obj,
  * @param {const char*} name 列名。
  *
  * @return {int32_t} 返回列索引。
- */ 
+ */
 int32_t csv_file_object_parse_col(csv_file_object_t* o, const char* name);
 
 /**

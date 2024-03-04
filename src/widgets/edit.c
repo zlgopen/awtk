@@ -1454,7 +1454,7 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_bool(v, inputing);
 
     return RET_OK;
-  } else if(tk_str_eq(name, WIDGET_PROP_VALIDATOR)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_VALIDATOR)) {
     value_set_str(v, edit->validator);
 
     return RET_OK;
@@ -1586,7 +1586,7 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_TEXT)) {
     edit_set_text(widget, v);
     return RET_OK;
-  } else if(tk_str_eq(name, WIDGET_PROP_VALIDATOR)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_VALIDATOR)) {
     edit_set_validator(widget, value_str(v));
     return RET_OK;
   }
@@ -2381,7 +2381,7 @@ bool_t edit_is_valid_value(widget_t* widget) {
   if (edit->is_valid_value != NULL) {
     return edit->is_valid_value(widget);
   } else {
-#ifndef WITHOUT_FSCRIPT  
+#ifndef WITHOUT_FSCRIPT
     if (edit->validator != NULL) {
       value_t v;
       tk_object_t* obj = object_widget_create(widget);
@@ -2392,7 +2392,7 @@ bool_t edit_is_valid_value(widget_t* widget) {
       }
       TK_OBJECT_UNREF(obj);
     }
-#endif/*WITHOUT_FSCRIPT*/
+#endif /*WITHOUT_FSCRIPT*/
 
     return edit_is_valid_value_default(widget);
   }

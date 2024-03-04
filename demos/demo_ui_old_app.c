@@ -1418,8 +1418,9 @@ ret_t application_init() {
   log_debug("user storage path:%s\n", path);
 
 #ifdef TK_IS_PC
-  tk_service_start(main_loop_get_event_source_manager(main_loop()), REMOTE_UI_URL, remote_ui_service_create, NULL);
-#endif/*TK_IS_PC*/ 
+  tk_service_start(main_loop_get_event_source_manager(main_loop()), REMOTE_UI_URL,
+                   remote_ui_service_create, NULL);
+#endif /*TK_IS_PC*/
 
   return show_preload_res_window();
 }

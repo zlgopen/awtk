@@ -84,7 +84,8 @@ tk_iostream_t* tk_iostream_tcp_create_client(const char* host, int port);
  * @return {tk_iostream_t*} 返回iostream对象。
  *
  */
- tk_iostream_t* tk_iostream_tcp_create_client_ex(const char* host, int port, int timeout, void* opts);
+tk_iostream_t* tk_iostream_tcp_create_client_ex(const char* host, int port, int timeout,
+                                                void* opts);
 
 #define TK_IOSTREAM_TCP(obj) ((tk_iostream_tcp_t*)(obj))
 

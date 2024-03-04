@@ -27,7 +27,8 @@
 #include "base/assets_manager.h"
 #include "image_loader/image_loader_stb.h"
 
-ret_t image_gen(bitmap_t* image, const char* output_filename, const char* theme, const char* name, bool_t mono) {
+ret_t image_gen(bitmap_t* image, const char* output_filename, const char* theme, const char* name,
+                bool_t mono) {
   uint32_t size = 0;
   wbuffer_t wbuffer;
   wbuffer_init_extendable(&wbuffer);
@@ -35,7 +36,7 @@ ret_t image_gen(bitmap_t* image, const char* output_filename, const char* theme,
   size = image_gen_buff(image, &wbuffer, mono);
   if (size) {
     output_res_c_source_ex(output_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_RAW,
-                        wbuffer.data, size, name);
+                           wbuffer.data, size, name);
   } else {
     ret = RET_FAIL;
   }

@@ -38,8 +38,8 @@ ret_t gen_one(const char* input_file, const char* output_file, const char* theme
   return ret;
 }
 
-static ret_t gen_folder(const char* in_foldername, const char* out_foldername, const char* theme, const char* dir_name,
-                        bool_t output_bin) {
+static ret_t gen_folder(const char* in_foldername, const char* out_foldername, const char* theme,
+                        const char* dir_name, bool_t output_bin) {
   ret_t ret = RET_OK;
   fs_dir_t* dir = fs_open_dir(os_fs(), in_foldername);
   fs_item_t item;

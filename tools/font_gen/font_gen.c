@@ -66,8 +66,8 @@ ret_t font_gen(font_t* font, uint16_t font_size, glyph_format_t format, const ch
     path_basename_ex(output_filename, TRUE, path, sizeof(path));
     str_append(&name, path);
 
-    output_res_c_source_ex(output_filename, theme, ASSET_TYPE_FONT, ASSET_TYPE_FONT_BMP, wbuffer.data,
-                        size, name.str);
+    output_res_c_source_ex(output_filename, theme, ASSET_TYPE_FONT, ASSET_TYPE_FONT_BMP,
+                           wbuffer.data, size, name.str);
   }
 
   str_reset(&tstr);

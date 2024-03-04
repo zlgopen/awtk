@@ -730,7 +730,8 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
 #else
       bool_t is_control = evt->ctrl;
 #endif
-      if ((!mledit->is_activated || key == TK_KEY_RETURN) && (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS)) {
+      if ((!mledit->is_activated || key == TK_KEY_RETURN) &&
+          (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS)) {
         break;
       }
       if (key == TK_KEY_ESCAPE || (key >= TK_KEY_F1 && key <= TK_KEY_F12)) {
@@ -804,7 +805,8 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       key_event_t* evt = key_event_cast(e);
       ENSURE(evt);
       int32_t key = evt->key;
-      if (!mledit->is_activated && (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS)) {
+      if (!mledit->is_activated &&
+          (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS)) {
         break;
       }
       if (key == TK_KEY_ESCAPE || (key >= TK_KEY_F1 && key <= TK_KEY_F12)) {
@@ -859,8 +861,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_FOCUS: {
       keyboard_type_t keyboard_type = system_info()->keyboard_type;
-      if (keyboard_type != KEYBOARD_3KEYS && 
-          keyboard_type != KEYBOARD_5KEYS ) {
+      if (keyboard_type != KEYBOARD_3KEYS && keyboard_type != KEYBOARD_5KEYS) {
         mledit_start_update_caret(mledit);
 
         if (widget->target == NULL) {

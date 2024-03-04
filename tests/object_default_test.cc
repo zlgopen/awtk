@@ -751,4 +751,3 @@ TEST(ObjectDefault, keep_type) {
 
   TK_OBJECT_UNREF(obj);
 }
-

@@ -27,7 +27,8 @@
 
 BEGIN_C_DECLS
 
-ret_t image_gen(bitmap_t* image, const char* output_filename, const char* theme, const char* name, bool_t mono);
+ret_t image_gen(bitmap_t* image, const char* output_filename, const char* theme, const char* name,
+                bool_t mono);
 uint32_t image_gen_buff(bitmap_t* image, wbuffer_t* wbuffer, bool_t mono);
 
 END_C_DECLS

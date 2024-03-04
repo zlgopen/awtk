@@ -113,7 +113,8 @@ tk_iostream_t* tk_iostream_tcp_create_client(const char* host, int port) {
   return stream;
 }
 
- tk_iostream_t* tk_iostream_tcp_create_client_ex(const char* host, int port, int timeout, void* opts) {
+tk_iostream_t* tk_iostream_tcp_create_client_ex(const char* host, int port, int timeout,
+                                                void* opts) {
   int sock = 0;
   tk_iostream_t* stream = NULL;
   return_value_if_fail(host != NULL, NULL);

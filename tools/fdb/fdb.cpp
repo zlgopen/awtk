@@ -457,7 +457,8 @@ static ret_t fdb_show_callstack(app_info_t* app) {
   tk_object_t* obj = debugger_get_callstack(app->debugger);
   return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
 
-  log_debug("thread_id:%lld callstack:\n---------------------------\n", debugger_get_current_thread_id(app->debugger));
+  log_debug("thread_id:%lld callstack:\n---------------------------\n",
+            debugger_get_current_thread_id(app->debugger));
   n = tk_object_get_prop_uint32(obj, DEBUGER_CALLSTACK_NODE_NAME ".#size", 0);
   for (i = 0; i < n; i++) {
     char path[MAX_PATH + 1] = {0};
@@ -485,7 +486,7 @@ static ret_t fdb_show_callstack(app_info_t* app) {
       if (file_path != NULL) {
         log_debug(" (%s) ", file_path);
       }
-      log_debug("\r\n"KNRM);
+      log_debug("\r\n" KNRM);
     } else {
       log_debug("   [%d] ", i);
       if (func != NULL) {
@@ -522,7 +523,7 @@ static ret_t func_set_thread_id(app_info_t* app, tokenizer_t* tokenizer) {
 
     for (i = 0; i < n; i++) {
       int32_t id = 0;
-      char path [MAX_PATH + 1] = {0};
+      char path[MAX_PATH + 1] = {0};
       tk_snprintf(path, sizeof(path) - 1, "body.threads.[%d].id", i);
       id = tk_object_get_prop_int32(obj, path, 0);
       if (thread_id == id) {
@@ -542,7 +543,6 @@ static ret_t func_set_thread_id(app_info_t* app, tokenizer_t* tokenizer) {
     return RET_BAD_PARAMS;
   }
 }
-
 
 static ret_t func_remove_break(app_info_t* app, tokenizer_t* tokenizer) {
   const char* bp = tokenizer_next(tokenizer);

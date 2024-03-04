@@ -84,7 +84,7 @@ TEST(SList, find_ex) {
   ASSERT_EQ(slist_append(s, TO_POINTER(2)), RET_OK);
 
   ASSERT_EQ(TO_INT(slist_find_ex(s, pointer_compare, TO_POINTER(2))), 2);
-  
+
   ASSERT_EQ(TO_INT(slist_find_ex(s, compare_always_equal, TO_POINTER(2))), 1);
 
   slist_deinit(s);
@@ -189,10 +189,10 @@ TEST(SList, remove_ex) {
 
   ASSERT_EQ(slist_remove_ex(s, pointer_compare, TO_POINTER(1), 1), RET_OK);
   ASSERT_EQ(slist_size(s), 4);
-  
+
   ASSERT_EQ(slist_remove_ex(s, pointer_compare, TO_POINTER(1), 2), RET_OK);
   ASSERT_EQ(slist_size(s), 2);
-  
+
   ASSERT_EQ(slist_remove_ex(s, compare_always_equal, TO_POINTER(1), 2), RET_OK);
   ASSERT_EQ(slist_size(s), 0);
 

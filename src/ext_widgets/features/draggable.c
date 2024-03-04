@@ -413,7 +413,7 @@ widget_t* draggable_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(draggable), x, y, w, h);
   return_value_if_fail(draggable_init(widget) == RET_OK, NULL)
 
-  return widget;
+      return widget;
 }
 
 widget_t* draggable_cast(widget_t* widget) {

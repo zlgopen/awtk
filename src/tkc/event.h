@@ -520,7 +520,7 @@ typedef struct _log_message_event_t {
    * @annotation ["readable"]
    * 日志。
    */
-   const char* message;
+  const char* message;
 } log_message_event_t;
 
 /**
@@ -542,7 +542,8 @@ log_message_event_t* log_message_event_cast(event_t* event);
  *
  * @return {event_t*} event对象。
  */
-event_t* log_message_event_init(log_message_event_t* event, tk_log_level_t level, const char* message);
+event_t* log_message_event_init(log_message_event_t* event, tk_log_level_t level,
+                                const char* message);
 
 END_C_DECLS
 

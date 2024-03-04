@@ -82,8 +82,7 @@ void* slist_find(slist_t* slist, void* ctx) {
   return slist_find_ex(slist, NULL, ctx);
 }
 
-ret_t slist_remove_ex(slist_t* slist, tk_compare_t compare, void* ctx,
-                                int32_t remove_size) {
+ret_t slist_remove_ex(slist_t* slist, tk_compare_t compare, void* ctx, int32_t remove_size) {
   int32_t n = remove_size;
   slist_node_t* iter = NULL;
   slist_node_t* prev = NULL;

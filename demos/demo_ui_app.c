@@ -130,8 +130,8 @@ static widget_t* window_open_with_prefix(const char* name) {
 }
 
 static ret_t on_quit(void* ctx, event_t* e) {
-  ret_t ret = dialog_simple_show("Confirm", "Do you really want to exit?", DIALOG_THEME,
-                                 TRUE, TRUE);
+  ret_t ret =
+      dialog_simple_show("Confirm", "Do you really want to exit?", DIALOG_THEME, TRUE, TRUE);
   if (RET_OK == ret) {
     return tk_quit();
   }

@@ -309,7 +309,7 @@ TEST(Path, expand_vars) {
   ASSERT_EQ(path_expand_vars("${app_dir}", result, sizeof(result)), RET_OK);
   path_app_root(path);
   ASSERT_STREQ(result, path);
-  
+
   ASSERT_EQ(path_expand_vars("${app_dir}/abc/test.txt", result, sizeof(result)), RET_OK);
   path_app_root(path);
   ASSERT_EQ(string(result), string(path) + "/abc/test.txt");
@@ -321,7 +321,7 @@ TEST(Path, expand_vars) {
   ASSERT_EQ(path_expand_vars("${user_dir}", result, sizeof(result)), RET_OK);
   fs_get_user_storage_path(os_fs(), path);
   ASSERT_STREQ(result, path);
-  
+
   ASSERT_EQ(path_expand_vars("${user_dir}/abc/test.txt", result, sizeof(result)), RET_OK);
   fs_get_user_storage_path(os_fs(), path);
   ASSERT_EQ(string(result), string(path) + "/abc/test.txt");

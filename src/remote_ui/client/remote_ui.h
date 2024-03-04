@@ -31,9 +31,9 @@
 
 #ifdef TK_IS_PC
 #define WITH_FULL_REMOTE_UI 1
-#endif/*TK_IS_PC*/
+#endif /*TK_IS_PC*/
 
-typedef ret_t (*remote_ui_on_log_message_t)(void* ctx, tk_log_level_t level, const char* msg); 
+typedef ret_t (*remote_ui_on_log_message_t)(void* ctx, tk_log_level_t level, const char* msg);
 
 BEGIN_C_DECLS
 
@@ -209,8 +209,8 @@ ret_t remote_ui_get_xml_source(remote_ui_t* ui, const char* target, const char* 
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t remote_ui_on_event(remote_ui_t* ui, const char* target, uint32_t event,
-                         event_func_t func, void* ctx);
+ret_t remote_ui_on_event(remote_ui_t* ui, const char* target, uint32_t event, event_func_t func,
+                         void* ctx);
 
 /**
  * @method remote_ui_off_event
@@ -224,8 +224,8 @@ ret_t remote_ui_on_event(remote_ui_t* ui, const char* target, uint32_t event,
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t remote_ui_off_event(remote_ui_t* ui, const char* target, uint32_t event,
-                          event_func_t func, void* ctx);
+ret_t remote_ui_off_event(remote_ui_t* ui, const char* target, uint32_t event, event_func_t func,
+                          void* ctx);
 
 /**
  * @method remote_ui_send_event

@@ -502,7 +502,7 @@ TEST(Debugger, step_in) {
   ASSERT_EQ(ret_obj != NULL, true);
   ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".#size", 0), 1);
   ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[0].name"), "<root>");
-  
+
   tk_object_t* local = NULL;
 
   ASSERT_EQ(debugger_step_in(client), RET_OK);

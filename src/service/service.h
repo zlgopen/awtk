@@ -148,8 +148,8 @@ ret_t tk_service_read_req(tk_service_t* service, tk_msg_header_t* header, wbuffe
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tk_service_send_resp(tk_service_t* service, uint32_t type, uint32_t data_type, uint32_t resp_code,
-                           wbuffer_t* wb);
+ret_t tk_service_send_resp(tk_service_t* service, uint32_t type, uint32_t data_type,
+                           uint32_t resp_code, wbuffer_t* wb);
 
 /**
  * @method tk_service_upload_file

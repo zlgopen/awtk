@@ -30,8 +30,9 @@
 #include "font_loader/font_loader_ft.h"
 #endif /*WITH_STB_FONT*/
 
-ret_t gen_one(const char* ttf_filename, const char* str_filename, const char* out_filename, const char* theme_name, const char* res_dir, uint32_t font_size, glyph_format_t format, bool_t mono) {
-  
+ret_t gen_one(const char* ttf_filename, const char* str_filename, const char* out_filename,
+              const char* theme_name, const char* res_dir, uint32_t font_size,
+              glyph_format_t format, bool_t mono) {
   uint32_t size = 0;
   font_t* font = NULL;
   char* str_buff = NULL;
@@ -80,7 +81,10 @@ int wmain(int argc, wchar_t* argv[]) {
   platform_prepare();
 
   if (argc < 5) {
-    printf("Usage: %S ttf_filename str_filename out_filename font_size [mono|4bits|alpha] theme res_dir\n", argv[0]);
+    printf(
+        "Usage: %S ttf_filename str_filename out_filename font_size [mono|4bits|alpha] theme "
+        "res_dir\n",
+        argv[0]);
 
     return 0;
   }

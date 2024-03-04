@@ -125,8 +125,7 @@ process_handle_t process_create(const char* file_path, const char** args, uint32
   goto_error_if_fail(CreatePipe(&h_std_in_rd, &handle->h_std_in_wr, &sa_attr, 0));
   goto_error_if_fail(SetHandleInformation(handle->h_std_in_wr, HANDLE_FLAG_INHERIT, 0));
 
-  
-	ZeroMemory(&handle->start_info, sizeof(handle->start_info));
+  ZeroMemory(&handle->start_info, sizeof(handle->start_info));
   handle->start_info.StartupInfo.cb = sizeof(handle->start_info);
   handle->start_info.StartupInfo.hStdError = h_std_out_wr;
   handle->start_info.StartupInfo.hStdOutput = h_std_out_wr;
@@ -137,13 +136,15 @@ process_handle_t process_create(const char* file_path, const char** args, uint32
   handle_pipe[0] = h_std_in_rd;
   handle_pipe[1] = h_std_out_wr;
 
-  ret = InitializeProcThreadAttributeList(NULL, 1, 0, &AttributeListSize) || GetLastError() == ERROR_INSUFFICIENT_BUFFER;
+  ret = InitializeProcThreadAttributeList(NULL, 1, 0, &AttributeListSize) ||
+        GetLastError() == ERROR_INSUFFICIENT_BUFFER;
   goto_error_if_fail(ret);
   lpAttributeList = (LPPROC_THREAD_ATTRIBUTE_LIST)HeapAlloc(GetProcessHeap(), 0, AttributeListSize);
   goto_error_if_fail(lpAttributeList != NULL);
   ret = InitializeProcThreadAttributeList(lpAttributeList, 1, 0, &AttributeListSize);
   goto_error_if_fail(ret);
-  ret1 = UpdateProcThreadAttribute(lpAttributeList, 0, PROC_THREAD_ATTRIBUTE_HANDLE_LIST, handle_pipe, sizeof(handle_pipe), NULL, NULL);
+  ret1 = UpdateProcThreadAttribute(lpAttributeList, 0, PROC_THREAD_ATTRIBUTE_HANDLE_LIST,
+                                   handle_pipe, sizeof(handle_pipe), NULL, NULL);
   goto_error_if_fail(ret1);
   handle->start_info.lpAttributeList = lpAttributeList;
 
@@ -168,15 +169,15 @@ process_handle_t process_create(const char* file_path, const char** args, uint32
   }
 
   ret = CreateProcessW(handle->file_path,
-                       handle->cmd_line.str,                              // command line
-                       NULL,                                              // process security attributes
-                       NULL,                                              // primary thread security attributes
-                       TRUE,                                              // handles are inherited
-                       EXTENDED_STARTUPINFO_PRESENT,                      // creation flags
-                       NULL,                                              // use parent's environment
-                       work_dir,                                          // use parent's current directory
-                       (LPSTARTUPINFOW)&handle->start_info,               // STARTUPINFO pointer
-                       &handle->proc_info);                               // receives PROCESS_INFORMATION
+                       handle->cmd_line.str,                 // command line
+                       NULL,                                 // process security attributes
+                       NULL,                                 // primary thread security attributes
+                       TRUE,                                 // handles are inherited
+                       EXTENDED_STARTUPINFO_PRESENT,         // creation flags
+                       NULL,                                 // use parent's environment
+                       work_dir,                             // use parent's current directory
+                       (LPSTARTUPINFOW)&handle->start_info,  // STARTUPINFO pointer
+                       &handle->proc_info);                  // receives PROCESS_INFORMATION
 
   if (work_dir != NULL) {
     TKMEM_FREE(work_dir);

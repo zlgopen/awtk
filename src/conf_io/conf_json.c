@@ -110,7 +110,6 @@ static ret_t conf_json_parse_object(json_parser_t* parser) {
   conf_json_skip_all_comments(parser);
   parser->cursor++;
   while (parser->cursor < parser->size) {
-
     conf_json_skip_all_comments(parser);
     if (parser->data[parser->cursor] == '}') {
       parser->cursor++;

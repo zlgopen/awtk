@@ -23,7 +23,8 @@
 #include "tkc/mem.h"
 #include "common/utils.h"
 #include "base/assets_manager.h"
-static ret_t gen_one(const char* in_filename, const char* out_filename, const char* theme, str_t* res_name) {
+static ret_t gen_one(const char* in_filename, const char* out_filename, const char* theme,
+                     str_t* res_name) {
   if (!exit_if_need_not_update(in_filename, out_filename)) {
     uint32_t size = 0;
     uint8_t* input_buff = NULL;
@@ -32,50 +33,51 @@ static ret_t gen_one(const char* in_filename, const char* out_filename, const ch
     if (case_end_with(in_filename, ".ttf")) {
       str_replace(res_name, ".ttf", "");
       output_res_c_source_ex(out_filename, theme, ASSET_TYPE_FONT, ASSET_TYPE_FONT_TTF, input_buff,
-                          size, res_name->str);
+                             size, res_name->str);
     } else if (case_end_with(in_filename, ".png")) {
       str_replace(res_name, ".png", "");
-      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_PNG, input_buff,
-                          size, res_name->str);
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_PNG,
+                             input_buff, size, res_name->str);
     } else if (case_end_with(in_filename, ".bmp")) {
       str_replace(res_name, ".bmp", "");
-      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_BMP, input_buff,
-                          size, res_name->str);
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_BMP,
+                             input_buff, size, res_name->str);
     } else if (case_end_with(in_filename, ".jpg")) {
       str_replace(res_name, ".jpg", "");
-      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_JPG, input_buff,
-                          size, res_name->str);
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_JPG,
+                             input_buff, size, res_name->str);
     } else if (case_end_with(in_filename, ".jpeg")) {
       str_replace(res_name, ".jpeg", "");
-      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_JPG, input_buff,
-                          size, res_name->str);
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_JPG,
+                             input_buff, size, res_name->str);
     } else if (case_end_with(in_filename, ".gif")) {
       str_replace(res_name, ".gif", "");
-      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_GIF, input_buff,
-                          size, res_name->str);
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_GIF,
+                             input_buff, size, res_name->str);
     } else if (case_end_with(in_filename, ".lz4")) {
       str_replace(res_name, ".lz4", "");
-      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_LZ4, input_buff,
-                          size, res_name->str);
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_LZ4,
+                             input_buff, size, res_name->str);
     } else if (case_end_with(in_filename, ".webp")) {
       str_replace(res_name, ".webp", "");
-      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_WEBP, input_buff,
-                          size, res_name->str);
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_WEBP,
+                             input_buff, size, res_name->str);
     } else if (case_end_with(in_filename, ".js")) {
       str_replace(res_name, ".js", "");
-      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_JS, input_buff,
-                          size, res_name->str);
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_JS,
+                             input_buff, size, res_name->str);
     } else if (case_end_with(in_filename, ".lua")) {
       str_replace(res_name, ".lua", "");
-      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_LUA, input_buff,
-                          size, res_name->str);
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_LUA,
+                             input_buff, size, res_name->str);
     } else if (case_end_with(in_filename, ".py")) {
       str_replace(res_name, ".py", "");
       output_res_c_source_ex(out_filename, theme, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_PYTHON,
-                          input_buff, size, res_name->str);
+                             input_buff, size, res_name->str);
     } else if (case_end_with(in_filename, ".xml")) {
       str_replace(res_name, ".xml", "");
-      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_XML, 0, input_buff, size, res_name->str);
+      output_res_c_source_ex(out_filename, theme, ASSET_TYPE_XML, 0, input_buff, size,
+                             res_name->str);
     } else if (strstr(in_filename, "images") != NULL) {
       output_res_c_source(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_OTHER, input_buff,
                           size);
@@ -118,7 +120,7 @@ static ret_t gen_folder(const char* in_foldername, const char* out_foldername, c
       str_t res_name;
       char ext_array[MAX_PATH] = {0};
       path_extname(item.name, ext_array, MAX_PATH);
-      
+
       str_init(&res_name, 0);
       str_init(&str_name, 0);
       str_set(&str_name, item.name);

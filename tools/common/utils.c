@@ -203,7 +203,8 @@ static const char* to_var_name(char var_name[2 * TK_NAME_LEN + 1], const char* t
     p--;
   }
   tk_strcpy(tmp, p);
-  tk_snprintf(tmp_var_name, 2 * TK_NAME_LEN, "%s_%s_%s", prefix == NULL ? "" : prefix, tmp, theme == NULL ? "default" : theme);
+  tk_snprintf(tmp_var_name, 2 * TK_NAME_LEN, "%s_%s_%s", prefix == NULL ? "" : prefix, tmp,
+              theme == NULL ? "default" : theme);
   if (p != name) {
     tk_strncpy(tmp, name, p - name - 1);
     tk_snprintf(var_name, 2 * TK_NAME_LEN, "%s_%s", tmp_var_name, tmp);

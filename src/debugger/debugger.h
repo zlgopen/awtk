@@ -29,7 +29,7 @@
 
 BEGIN_C_DECLS
 
-#define DEBUGER_CALLSTACK_NODE_NAME    "callstack"
+#define DEBUGER_CALLSTACK_NODE_NAME "callstack"
 
 struct _debugger_t;
 typedef struct _debugger_t debugger_t;
@@ -103,7 +103,8 @@ typedef tk_object_t* (*debugger_get_var_t)(debugger_t* debugger, const char* pat
 typedef ret_t (*debugger_set_break_point_ex_t)(debugger_t* debugger, const char* position);
 typedef ret_t (*debugger_remove_break_point_ex_t)(debugger_t* debugger, const char* position);
 typedef ret_t (*debugger_set_current_frame_t)(debugger_t* debugger, uint32_t frame_index);
-typedef ret_t (*debugger_dispatch_messages_t)(debugger_t* debugger, uint32_t timeout, uint32_t* ret_num);
+typedef ret_t (*debugger_dispatch_messages_t)(debugger_t* debugger, uint32_t timeout,
+                                              uint32_t* ret_num);
 /*}扩展接口以支持lldb的DAP协议{*/
 
 typedef debugger_t* (*debugger_fscript_create_t)(void);

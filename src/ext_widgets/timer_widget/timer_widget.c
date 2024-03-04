@@ -124,8 +124,7 @@ TK_DECL_VTABLE(timer_widget) = {.size = sizeof(timer_widget_t),
 
 widget_t* timer_widget_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(timer_widget), x, y, w, h);
-  return_value_if_fail(timer_widget_init(widget) == RET_OK, NULL)
-  return widget;
+  return_value_if_fail(timer_widget_init(widget) == RET_OK, NULL) return widget;
 }
 
 widget_t* timer_widget_cast(widget_t* widget) {

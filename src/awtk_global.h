@@ -80,7 +80,6 @@ ret_t tk_run(void);
  */
 ret_t tk_quit(void);
 
-
 /**
  * @method tk_quit_ex
  * 退出TK事件主循环。

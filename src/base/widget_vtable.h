@@ -293,7 +293,8 @@ const widget_vtable_t* widget_get_self_vtable(widget_t* widget);
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_get_prop_by_parent(widget_t* widget, const char* name, value_t* v, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_get_prop_by_parent(widget_t* widget, const char* name, value_t* v,
+                                       const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_set_prop_by_parent
@@ -308,7 +309,8 @@ ret_t widget_vtable_get_prop_by_parent(widget_t* widget, const char* name, value
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_set_prop_by_parent(widget_t* widget, const char* name, const value_t* v, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_set_prop_by_parent(widget_t* widget, const char* name, const value_t* v,
+                                       const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_invalidate_by_parent
@@ -322,7 +324,8 @@ ret_t widget_vtable_set_prop_by_parent(widget_t* widget, const char* name, const
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_invalidate_by_parent(widget_t* widget, const rect_t* r, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_invalidate_by_parent(widget_t* widget, const rect_t* r,
+                                         const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_find_target_by_parent
@@ -338,7 +341,8 @@ ret_t widget_vtable_invalidate_by_parent(widget_t* widget, const rect_t* r, cons
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_find_target_by_parent(widget_t* widget, xy_t x, xy_t y, widget_t** ret_widget, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_find_target_by_parent(widget_t* widget, xy_t x, xy_t y, widget_t** ret_widget,
+                                          const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_is_point_in_by_parent
@@ -354,7 +358,8 @@ ret_t widget_vtable_find_target_by_parent(widget_t* widget, xy_t x, xy_t y, widg
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_is_point_in_by_parent(widget_t* widget, xy_t x, xy_t y, bool_t* ret_is_point_in, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_is_point_in_by_parent(widget_t* widget, xy_t x, xy_t y, bool_t* ret_is_point_in,
+                                          const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_get_offset_by_parent
@@ -369,7 +374,8 @@ ret_t widget_vtable_is_point_in_by_parent(widget_t* widget, xy_t x, xy_t y, bool
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_get_offset_by_parent(widget_t* widget, xy_t* out_x, xy_t* out_y, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_get_offset_by_parent(widget_t* widget, xy_t* out_x, xy_t* out_y,
+                                         const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_auto_adjust_size_by_parent
@@ -397,7 +403,8 @@ ret_t widget_vtable_auto_adjust_size_by_parent(widget_t* widget, const widget_vt
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_get_prop_default_value_by_parent(widget_t* widget, const char* name, value_t* v, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_get_prop_default_value_by_parent(widget_t* widget, const char* name, value_t* v,
+                                                     const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_get_only_active_children_by_parent
@@ -411,7 +418,8 @@ ret_t widget_vtable_get_prop_default_value_by_parent(widget_t* widget, const cha
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_get_only_active_children_by_parent(widget_t* widget, darray_t* all_focusable, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_get_only_active_children_by_parent(widget_t* widget, darray_t* all_focusable,
+                                                       const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_copy_by_parent
@@ -425,7 +433,8 @@ ret_t widget_vtable_get_only_active_children_by_parent(widget_t* widget, darray_
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_copy_by_parent(widget_t* widget, widget_t* other, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_copy_by_parent(widget_t* widget, widget_t* other,
+                                      const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_keyup_by_parent
@@ -439,7 +448,8 @@ ret_t widget_vtable_on_copy_by_parent(widget_t* widget, widget_t* other, const w
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_keyup_by_parent(widget_t* widget, key_event_t* e, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_keyup_by_parent(widget_t* widget, key_event_t* e,
+                                       const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_keydown_by_parent
@@ -453,7 +463,8 @@ ret_t widget_vtable_on_keyup_by_parent(widget_t* widget, key_event_t* e, const w
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_keydown_by_parent(widget_t* widget, key_event_t* e, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_keydown_by_parent(widget_t* widget, key_event_t* e,
+                                         const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_wheel_by_parent
@@ -467,7 +478,8 @@ ret_t widget_vtable_on_keydown_by_parent(widget_t* widget, key_event_t* e, const
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_wheel_by_parent(widget_t* widget, wheel_event_t* e, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_wheel_by_parent(widget_t* widget, wheel_event_t* e,
+                                       const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_multi_gesture_by_parent
@@ -481,7 +493,8 @@ ret_t widget_vtable_on_wheel_by_parent(widget_t* widget, wheel_event_t* e, const
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_multi_gesture_by_parent(widget_t* widget, multi_gesture_event_t* e, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_multi_gesture_by_parent(widget_t* widget, multi_gesture_event_t* e,
+                                               const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_re_translate_by_parent
@@ -508,7 +521,8 @@ ret_t widget_vtable_on_re_translate_by_parent(widget_t* widget, const widget_vta
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_paint_background_by_parent(widget_t* widget, canvas_t* c, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_paint_background_by_parent(widget_t* widget, canvas_t* c,
+                                                  const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_paint_self_by_parent
@@ -522,7 +536,8 @@ ret_t widget_vtable_on_paint_background_by_parent(widget_t* widget, canvas_t* c,
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_paint_self_by_parent(widget_t* widget, canvas_t* c, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_paint_self_by_parent(widget_t* widget, canvas_t* c,
+                                            const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_paint_children_by_parent
@@ -536,7 +551,8 @@ ret_t widget_vtable_on_paint_self_by_parent(widget_t* widget, canvas_t* c, const
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_paint_children_by_parent(widget_t* widget, canvas_t* c, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_paint_children_by_parent(widget_t* widget, canvas_t* c,
+                                                const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_paint_border_by_parent
@@ -550,7 +566,8 @@ ret_t widget_vtable_on_paint_children_by_parent(widget_t* widget, canvas_t* c, c
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_paint_border_by_parent(widget_t* widget, canvas_t* c, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_paint_border_by_parent(widget_t* widget, canvas_t* c,
+                                              const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_paint_begin_by_parent
@@ -564,7 +581,8 @@ ret_t widget_vtable_on_paint_border_by_parent(widget_t* widget, canvas_t* c, con
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_paint_begin_by_parent(widget_t* widget, canvas_t* c, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_paint_begin_by_parent(widget_t* widget, canvas_t* c,
+                                             const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_paint_end_by_parent
@@ -578,7 +596,8 @@ ret_t widget_vtable_on_paint_begin_by_parent(widget_t* widget, canvas_t* c, cons
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_paint_end_by_parent(widget_t* widget, canvas_t* c, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_paint_end_by_parent(widget_t* widget, canvas_t* c,
+                                           const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_pointer_down_by_parent
@@ -592,7 +611,8 @@ ret_t widget_vtable_on_paint_end_by_parent(widget_t* widget, canvas_t* c, const 
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_pointer_down_by_parent(widget_t* widget, pointer_event_t* e, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_pointer_down_by_parent(widget_t* widget, pointer_event_t* e,
+                                              const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_pointer_move_by_parent
@@ -606,7 +626,8 @@ ret_t widget_vtable_on_pointer_down_by_parent(widget_t* widget, pointer_event_t*
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_pointer_move_by_parent(widget_t* widget, pointer_event_t* e, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_pointer_move_by_parent(widget_t* widget, pointer_event_t* e,
+                                              const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_pointer_up_by_parent
@@ -620,7 +641,8 @@ ret_t widget_vtable_on_pointer_move_by_parent(widget_t* widget, pointer_event_t*
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_pointer_up_by_parent(widget_t* widget, pointer_event_t* e, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_pointer_up_by_parent(widget_t* widget, pointer_event_t* e,
+                                            const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_context_menu_by_parent
@@ -634,7 +656,8 @@ ret_t widget_vtable_on_pointer_up_by_parent(widget_t* widget, pointer_event_t* e
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_context_menu_by_parent(widget_t* widget, pointer_event_t* e, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_context_menu_by_parent(widget_t* widget, pointer_event_t* e,
+                                              const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_layout_children_by_parent
@@ -661,7 +684,8 @@ ret_t widget_vtable_on_layout_children_by_parent(widget_t* widget, const widget_
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_add_child_by_parent(widget_t* widget, widget_t* child, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_add_child_by_parent(widget_t* widget, widget_t* child,
+                                           const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_remove_child_by_parent
@@ -675,7 +699,8 @@ ret_t widget_vtable_on_add_child_by_parent(widget_t* widget, widget_t* child, co
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_remove_child_by_parent(widget_t* widget, widget_t* child, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_remove_child_by_parent(widget_t* widget, widget_t* child,
+                                              const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_attach_parent_by_parent
@@ -689,7 +714,8 @@ ret_t widget_vtable_on_remove_child_by_parent(widget_t* widget, widget_t* child,
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_attach_parent_by_parent(widget_t* widget, widget_t* parent, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_attach_parent_by_parent(widget_t* widget, widget_t* parent,
+                                               const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_detach_parent_by_parent
@@ -703,7 +729,8 @@ ret_t widget_vtable_on_attach_parent_by_parent(widget_t* widget, widget_t* paren
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_detach_parent_by_parent(widget_t* widget, widget_t* parent, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_detach_parent_by_parent(widget_t* widget, widget_t* parent,
+                                               const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_event_by_parent
@@ -717,7 +744,8 @@ ret_t widget_vtable_on_detach_parent_by_parent(widget_t* widget, widget_t* paren
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_event_by_parent(widget_t* widget, event_t* e, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_event_by_parent(widget_t* widget, event_t* e,
+                                       const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_event_before_children_by_parent
@@ -731,7 +759,8 @@ ret_t widget_vtable_on_event_by_parent(widget_t* widget, event_t* e, const widge
  *
  * @return {ret_t} 返回 RET_OK 表示成功，返回 RET_NOT_IMPL 表示父类不支持该函数，否则表示失败。
  */
-ret_t widget_vtable_on_event_before_children_by_parent(widget_t* widget, event_t* e, const widget_vtable_t* curr_vt);
+ret_t widget_vtable_on_event_before_children_by_parent(widget_t* widget, event_t* e,
+                                                       const widget_vtable_t* curr_vt);
 
 /**
  * @method widget_vtable_on_destroy_by_parent
