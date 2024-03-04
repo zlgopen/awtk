@@ -134,7 +134,7 @@ static ret_t on_context_menu(void* ctx, event_t* e) {
 
 static ret_t update_title_on_timer(const timer_info_t* info) {
   char text[128];
-  tk_snprintf(text, sizeof(text), "change title:%d", random() % 100);
+  tk_snprintf(text, sizeof(text), "change title:%ld", random() % 100);
 
   widget_set_text_utf8(WIDGET(info->ctx), text);
 
