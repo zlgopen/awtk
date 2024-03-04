@@ -80,6 +80,8 @@ static conf_doc_t* create_doc(void) {
   conf_doc_append_child(doc, obj, node);
 
   arr = conf_doc_create_node(doc, "data");
+  return_value_if_fail(arr != NULL, doc);
+
   arr->node_type = CONF_NODE_ARRAY;
   conf_doc_append_child(doc, obj, arr);
 
