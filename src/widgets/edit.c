@@ -887,7 +887,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       }
       if (edit->readonly) {
         if (is_control && (key == TK_KEY_C || key == TK_KEY_c)) {
-          log_debug("copy\n");
+          text_edit_copy(edit->model);
         } else if (key == TK_KEY_DOWN || key == TK_KEY_UP) {
           log_debug("key down or key up\n");
         }
