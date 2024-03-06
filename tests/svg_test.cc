@@ -1,5 +1,6 @@
 ﻿#include "svg/bsvg.h"
 #include "svg/bsvg_builder.h"
+#include "svg/svg_path_parser.h"
 #include "tkc/utils.h"
 #include "gtest/gtest.h"
 #include "svg/bsvg_to_svg.h"
@@ -84,6 +85,13 @@ static ret_t on_path(void* ctx, const void* data) {
   return RET_OK;
 }
 
+static ret_t on_path_parse(void* ctx, const void* data) {
+  cmp_path(((const svg_path_t**)ctx)[s_on_path_count], (const svg_path_t*)data);
+  s_on_path_count++;
+
+  return RET_OK;
+}
+
 static ret_t on_shape_null(void* ctx, const void* data) {
   (void)ctx;
   (void)data;
@@ -134,4 +142,90 @@ TEST(SvgPath, curve) {
   svg_path_curve_to_t path;
   svg_path_t* p = svg_path_curve_to_init(&path, 1, 2, 3, 4, 5, 6);
   test_one_path(p, " C1.0 2.0 3.0 4.0 5.0 6.0");
+}
+
+static void test_one_path_parse(const char* str, svg_path_t** ctx, uint32_t c) {
+  s_on_path_count = 0;
+  svg_path_parse(str, ctx, on_path_parse);
+  ASSERT_EQ(s_on_path_count, c);
+}
+
+TEST(SVGPathParser, move) {
+  svg_path_t* ctx[2];
+  svg_path_move_t path[2];
+  memset(&path, 0, sizeof(path));
+
+  ctx[0] = svg_path_move_init(&path[0], 409.6, 281.6);
+  ctx[1] = svg_path_move_init(&path[1], 409.6, 281.6);
+  test_one_path_parse("M409.6 281.6", (svg_path_t**)ctx, 1);
+  test_one_path_parse("M409.6 281.6 409.6 281.6", (svg_path_t**)ctx, 2);
+
+  ctx[0] = svg_path_move_init(&path[0], 409.6, 281.6);
+  ctx[1] = svg_path_move_init(&path[1], 409.6 * 2, 281.6 * 2);
+  test_one_path_parse("m409.6 281.6", (svg_path_t**)ctx, 1);
+  test_one_path_parse("m409.6 281.6 409.6 281.6", (svg_path_t**)ctx, 2);
+}
+
+TEST(SVGPathParser, line) {
+  svg_path_t* ctx[2];
+  svg_path_line_t path[2] = {0};
+  memset(&path, 0, sizeof(path));
+
+  ctx[0] = svg_path_line_init(&path[0], 128, -128.5);
+  ctx[1] = svg_path_line_init(&path[1], 128, -128.5);
+  test_one_path_parse("L128-128.5", (svg_path_t**)ctx, 1);
+  test_one_path_parse("L128-128.5 128-128.5", (svg_path_t**)ctx, 2);
+
+  ctx[0] = svg_path_line_init(&path[0], 128, -128.5);
+  ctx[1] = svg_path_line_init(&path[1], 128 * 2, -128.5 * 2);
+  test_one_path_parse("l128-128.5", (svg_path_t**)ctx, 1);
+  test_one_path_parse("l128-128.5 128-128.5", (svg_path_t**)ctx, 2);
+}
+
+TEST(SVGPathParser, hline) {
+  svg_path_t* ctx[2];
+  svg_path_line_t path[2] = {0};
+  memset(&path, 0, sizeof(path));
+
+  ctx[0] = svg_path_line_init(&path[0], 179.2, 0);
+  ctx[1] = svg_path_line_init(&path[1], 179.2, 0);
+  test_one_path_parse("H179.2", (svg_path_t**)ctx, 1);
+  test_one_path_parse("H179.2 179.2", (svg_path_t**)ctx, 2);
+
+  ctx[0] = svg_path_line_init(&path[0], 179.2, 0);
+  ctx[1] = svg_path_line_init(&path[1], 179.2 * 2, 0);
+  test_one_path_parse("h179.2", (svg_path_t**)ctx, 1);
+  test_one_path_parse("h179.2 179.2", (svg_path_t**)ctx, 2);
+}
+
+TEST(SVGPathParser, vline) {
+  svg_path_t* ctx[2];
+  svg_path_line_t path[2];
+  memset(&path, 0, sizeof(path));
+
+  ctx[0] = svg_path_line_init(&path[0], 0, -179.2);
+  ctx[1] = svg_path_line_init(&path[1], 0, -179.2);
+  test_one_path_parse("V-179.2", (svg_path_t**)ctx, 1);
+  test_one_path_parse("V-179.2-179.2", (svg_path_t**)ctx, 2);
+
+  ctx[0] = svg_path_line_init(&path[0], 0, -179.2);
+  ctx[1] = svg_path_line_init(&path[1], 0, -179.2 * 2);
+  test_one_path_parse("v-179.2", (svg_path_t**)ctx, 1);
+  test_one_path_parse("v-179.2-179.2", (svg_path_t**)ctx, 2);
+}
+
+TEST(SVGPathParser, curve) {
+  svg_path_t* ctx[2];
+  svg_path_curve_to_t path[2];
+  memset(&path, 0, sizeof(path));
+
+  ctx[0] = svg_path_curve_to_init(&path[0], 1, 2, 3, 4, 5, 6);
+  ctx[1] = svg_path_curve_to_init(&path[1], 1, 2, 3, 4, 5, 6);
+  test_one_path_parse("C1 2 3 4 5 6", (svg_path_t**)ctx, 1);
+  test_one_path_parse("C1 2 3 4 5 6 1 2 3 4 5 6 ", (svg_path_t**)ctx, 2);
+
+  ctx[0] = svg_path_curve_to_init(&path[0], 1, 2, 3, 4, 5, 6);
+  ctx[1] = svg_path_curve_to_init(&path[1], 1 + 5, 2 + 6, 3 + 5, 4 + 6, 5 * 2, 6 * 2);
+  test_one_path_parse("c1 2 3 4 5 6", (svg_path_t**)ctx, 1);
+  test_one_path_parse("c1 2 3 4 5 6 1 2 3 4 5 6 ", (svg_path_t**)ctx, 2);
 }

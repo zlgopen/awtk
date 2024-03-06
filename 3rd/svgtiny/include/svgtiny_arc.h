@@ -99,7 +99,7 @@ static ret_t arc_info_init(arc_info_t* info, pointf_t from, pointf_t to, pointf_
   return RET_OK;
 }
 
-bool_t arc_info_next(arc_info_t* info, pointf_t* cp1, pointf_t* cp2, pointf_t* to) {
+static bool_t arc_info_next(arc_info_t* info, pointf_t* cp1, pointf_t* cp2, pointf_t* to) {
   if (info->seg_index == info->num_segs) {
     return FALSE;
   }
