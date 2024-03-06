@@ -41,12 +41,12 @@ static ret_t tk_choose_window_manager_ignore_input_events(void) {
   return_value_if_fail(wm != NULL, RET_FAIL);
 
   if (!wm->ignore_input_events) {
-    ret = window_manager_set_ignore_input_events(wm, TRUE);
+    ret = window_manager_set_ignore_input_events(WIDGET(wm), TRUE);
     if (RET_OK == ret) {
       uint32_t id = idle_add(tk_choose_restore_window_manager_ignore_input_events, wm);
       ret = (id != TK_INVALID_ID) ? RET_OK : RET_FAIL;
       if (RET_OK != ret) {
-        window_manager_set_ignore_input_events(wm, FALSE);
+        window_manager_set_ignore_input_events(WIDGET(wm), FALSE);
       }
     }
   }
