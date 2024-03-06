@@ -181,6 +181,26 @@ struct sockaddr* tk_socket_resolve(const char* host, int port, struct sockaddr_i
   return (struct sockaddr*)addr;
 }
 
+bool_t tk_tcp_is_port_in_use(int port) {
+  int sock = 0;
+  struct sockaddr_in s_in;
+  const char* host = "0.0.0.0";
+  struct sockaddr* addr = tk_socket_resolve(host, port, &s_in);
+  return_value_if_fail(addr != NULL, -1);
+
+  if ((sock = (int)socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
+    return FALSE;
+  }
+
+  if (connect(sock, addr, sizeof(s_in)) < 0) {
+    tk_socket_close(sock);
+    return FALSE;
+  } else {
+    tk_socket_close(sock);
+    return TRUE;
+  }
+}
+
 int tk_tcp_connect(const char* host, int port) {
   int sock = 0;
   struct sockaddr_in s_in;
@@ -188,12 +208,12 @@ int tk_tcp_connect(const char* host, int port) {
   return_value_if_fail(addr != NULL, -1);
 
   if ((sock = (int)socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
-    log_debug("socket error\n");
+    log_debug("socket for %s %d failed\n", host, port);
     return -1;
   }
 
   if (connect(sock, addr, sizeof(s_in)) < 0) {
-    log_debug("connect error\n");
+    log_debug("connect %s %d failed\n", host, port);
     tk_socket_close(sock);
     return -1;
   }

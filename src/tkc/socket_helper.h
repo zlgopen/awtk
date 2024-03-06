@@ -282,6 +282,16 @@ int tk_tcp_accept(int sock);
 int tk_tcp_connect(const char* host, int port);
 
 /**
+ * @method tk_tcp_is_port_in_use
+ * @annotation ["static"]
+ * 判断指定端口是否被占用。
+ * @param {int} port 端口号。
+ *
+ * @return {bool_t} 返回TRUE表示被占用，否则表示未被占用。
+ */
+bool_t tk_tcp_is_port_in_use(int port);
+
+/**
  * @method tk_tcp_connect_ex
  * @annotation ["static"]
  * 连接到指定服务器。

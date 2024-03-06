@@ -2,6 +2,7 @@
 
 2024/03/06
   * 完善svg支持awtk-widget-shape(感谢陈聪提供补丁)
+  * 增加函数tk\_tcp\_is\_port\_in\_use
 
 2024/03/04
   * 增加zip_file。
