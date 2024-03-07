@@ -1758,6 +1758,10 @@ ret_t bits_stream_get(const uint8_t* buff, uint32_t size, uint32_t index, bool_t
   uint32_t max_index = size * 8;
   return_value_if_fail(buff != NULL, RET_BAD_PARAMS);
   return_value_if_fail(value != NULL, RET_BAD_PARAMS);
+  if (index >= max_index) {
+    log_debug("bits_stream_get failed: %u >= %u\n", index, max_index);
+    return RET_BAD_PARAMS;
+  }
   return_value_if_fail(index < max_index, RET_BAD_PARAMS);
 
   v = buff[index >> 3];
@@ -1772,6 +1776,10 @@ ret_t bits_stream_set(uint8_t* buff, uint32_t size, uint32_t index, bool_t value
   uint32_t offset = index % 8;
   uint32_t max_index = size * 8;
   return_value_if_fail(buff != NULL, RET_BAD_PARAMS);
+  if (index >= max_index) {
+    log_debug("bits_stream_get failed: %u >= %u\n", index, max_index);
+    return RET_BAD_PARAMS;
+  }
   return_value_if_fail(index < max_index, RET_BAD_PARAMS);
 
   v = buff[index >> 3];
