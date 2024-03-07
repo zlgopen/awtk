@@ -2,6 +2,7 @@
 
 2024/03/07
   * debuger支持load config，用于让lldb加载init命令。
+  * 导出 xml\_file\_expand\_subfilenames\_get(感谢颖健提供补丁)
 
 2024/03/06
   * 完善svg支持awtk-widget-shape(感谢陈聪提供补丁)

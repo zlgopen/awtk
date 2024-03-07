@@ -566,6 +566,19 @@ ret_t filename_to_name_ex(const char* filename, char* str, uint32_t size, bool_t
 ret_t xml_file_expand_read(const char* filename, str_t* s);
 
 /**
+ * @method xml_file_expand_subfilenames_get
+ *
+ * 从xml文件中获取所有使用 <?include filename="" ?> 导入的文件名称
+ *
+ * @param {const char*} filename 文件名。
+ * @param {char***} subfilenames 用于返回文件名称集合。
+ * @param {uint32_t*} size 用于返回文件名称集合的大小。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t xml_file_expand_subfilenames_get(const char* filename, char*** subfilenames, uint32_t* size);
+
+/**
  * @method tk_str_copy
  *
  * 字符串拷贝函数。
@@ -1193,9 +1206,6 @@ ret_t tk_bits_data_to_bytes_data(uint8_t* bits, uint32_t bits_size, uint8_t* byt
 
 /*public for test*/
 ret_t xml_file_expand(const char* filename, str_t* s, const char* data);
-
-/*public for tools*/
-ret_t xml_file_expand_subfilenames_get(const char* filename, char*** subfilenames, uint32_t* size);
 
 END_C_DECLS
 
