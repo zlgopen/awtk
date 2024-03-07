@@ -88,6 +88,7 @@ typedef ret_t (*debugger_launch_t)(debugger_t* debugger, const char* lang,
                                    const binary_data_t* code);
 typedef ret_t (*debugger_attach_t)(debugger_t* debugger, const char* lang, const char* code_id);
 typedef ret_t (*debugger_deinit_t)(debugger_t* debugger);
+typedef ret_t (*debugger_load_config_t)(debugger_t* debugger, const char* filename);
 
 typedef debugger_program_state_t (*debugger_get_state_t)(debugger_t* debugger);
 typedef ret_t (*debugger_set_state_t)(debugger_t* debugger, debugger_program_state_t state);
@@ -118,6 +119,7 @@ typedef struct _debugger_vtable_t {
   debugger_stop_t stop;
   debugger_pause_t pause;
   debugger_match_t match;
+  debugger_load_config_t load_config;
 
   debugger_step_in_t step_in;
   debugger_restart_t restart;
@@ -206,6 +208,16 @@ ret_t debugger_stop(debugger_t* debugger);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t debugger_pause(debugger_t* debugger);
+
+/**
+ * @method debugger_load_config
+ * 加载配置。
+ * @param {debugger_t*} debugger debugger
+ * @param {const char*} filename 配置文件名。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t debugger_load_config(debugger_t* debugger, const char* filename);
 
 /**
  * @method debugger_restart

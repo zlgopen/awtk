@@ -407,6 +407,12 @@ static ret_t func_restart(app_info_t* app, tokenizer_t* tokenizer) {
   return fdb_show_code(app, FALSE);
 }
 
+static ret_t func_config(app_info_t* app, tokenizer_t* tokenizer) {
+  const char* filename = tokenizer_next(tokenizer);
+  return debugger_load_config(app->debugger, filename);
+}
+
+
 static ret_t func_set_break(app_info_t* app, tokenizer_t* tokenizer) {
   if (app->debugger->vt->set_break_point_ex != NULL) {
     const char* position = tokenizer_next(tokenizer);
@@ -643,6 +649,7 @@ static const cmd_entry_t s_cmds[] = {
     {"backtrace", "bt", "show backtrace", "bt", func_backtrace},
     {"quit", "q", "Quit debugger", "q", func_quit},
     {"restart", "rs", "restart app", "rs", func_restart},
+    {"config", "conf", "load config", "conf lldb.json", func_config},
     {NULL, NULL, NULL}};
 
 static char* command_generator(const char* text, int state) {

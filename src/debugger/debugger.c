@@ -50,6 +50,13 @@ debugger_program_state_t debugger_get_state(debugger_t* debugger) {
   return state;
 }
 
+ret_t debugger_load_config(debugger_t* debugger, const char* filename) {
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(debugger->vt->load_config != NULL, RET_BAD_PARAMS);
+
+  return debugger->vt->load_config(debugger, filename);
+}
+
 ret_t debugger_set_state(debugger_t* debugger, debugger_program_state_t state) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   if (debugger->vt->set_state != NULL) {

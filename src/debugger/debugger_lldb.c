@@ -26,6 +26,7 @@
 #include "conf_io/conf_json.h"
 #include "conf_io/conf_ubjson.h"
 #include "streams/inet/iostream_tcp.h"
+#include "tkc/object_array.h"
 
 #define N_WRITE_TIMEOUT 5000
 #define STR_CONTENT_LENGTH "Content-Length:"
@@ -84,6 +85,7 @@
 #define LLDB_KEY_BREAK_POINTS "breakpoints"
 #define LLDB_KEY_STOP_ON_ENTRY "stopOnEntry"
 #define LLDB_KEY_DEBUGGER_ROOT "debuggerRoot"
+#define LLDB_KEY_INIT_COMMANDS "initCommands"
 #define LLDB_KEY_ATTACH_COMMANDS "attachCommands"
 #define LLDB_KEY_SOURCE_REFERENCE "sourceReference"
 #define LLDB_KEY_TERMINATE_DEBUGGEE "terminateDebuggee"
@@ -102,6 +104,47 @@ static tk_object_t* debugger_lldb_get_callstack_impl(debugger_t* debugger, uint3
                                                      uint32_t levels);
 static tk_object_t* object_find_variable_value(tk_object_t* obj, const char* name,
                                                const char* full_name);
+
+static ret_t debugger_lldb_load_init_commands(debugger_lldb_t* lldb, conf_node_t* node) {
+  conf_node_t* iter = conf_node_get_first_child(node);
+  object_array_clear_props(lldb->init_commands);
+
+  while (iter != NULL) {
+    value_t v;
+    if (conf_node_get_value(iter, &v) == RET_OK) {
+      const char* cmd = value_str(&v);
+      if (cmd != NULL) {
+        log_debug("init command: %s\n", cmd);
+        object_array_push(lldb->init_commands, value_set_str(&v, cmd));
+      }
+    }
+
+    iter = iter->next;
+  }
+
+  return RET_OK;
+}
+
+static ret_t debugger_lldb_load_config(debugger_t* debugger, const char* filename) {
+  ret_t ret = RET_FAIL;
+  conf_doc_t* doc = NULL;
+  tk_object_t* conf = NULL;
+  conf_node_t* node = NULL;
+  debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
+  return_value_if_fail(debugger != NULL, RET_BAD_PARAMS);
+  conf = conf_json_load(filename, FALSE);
+  return_value_if_fail(conf != NULL, RET_FAIL);
+  doc = conf_obj_get_doc(conf);
+  if (doc != NULL) {
+    node = conf_node_find_child(doc->root, "initCommands");
+    if (node != NULL) {
+      ret = debugger_lldb_load_init_commands(lldb, node);
+    }
+  }
+  TK_OBJECT_UNREF(conf);
+
+  return ret;
+}
 
 static ret_t debugger_lldb_lock(debugger_t* debugger) {
   debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
@@ -439,6 +482,7 @@ static tk_object_t* debugger_lldb_create_init_req(debugger_t* debugger) {
 static ret_t debugger_lldb_init(debugger_t* debugger) {
   ret_t ret = RET_FAIL;
   tk_object_t* req = NULL;
+  debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
   return_value_if_fail(debugger != NULL, RET_BAD_PARAMS);
   req = debugger_lldb_create_init_req(debugger);
   return_value_if_fail(req != NULL, RET_BAD_PARAMS);
@@ -447,7 +491,7 @@ static ret_t debugger_lldb_init(debugger_t* debugger) {
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
     ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_INITIALIZE, 3000);
   }
-
+  lldb->init_commands = object_array_create();
   TK_OBJECT_UNREF(req);
 
   return ret;
@@ -496,6 +540,7 @@ static tk_object_t* debugger_lldb_create_launch_req(debugger_t* debugger, const 
   tk_object_t* args = NULL;
   tk_object_t* req = NULL;
   tk_object_t* arguments = NULL;
+  debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
   return_value_if_fail(debugger != NULL, NULL);
   return_value_if_fail(program != NULL, NULL);
 
@@ -521,6 +566,11 @@ static tk_object_t* debugger_lldb_create_launch_req(debugger_t* debugger, const 
     value_set_str(&v, argv[i]);
     object_array_push(args, &v);
   }
+  
+  if (lldb->init_commands != NULL) {
+    tk_object_set_prop_object(arguments, LLDB_KEY_INIT_COMMANDS, lldb->init_commands);
+  }
+
   TK_OBJECT_UNREF(args);
   TK_OBJECT_UNREF(arguments);
 
@@ -556,6 +606,7 @@ static tk_object_t* debugger_lldb_create_attach_req(debugger_t* debugger, const 
                                                     int32_t pid) {
   tk_object_t* req = NULL;
   tk_object_t* arguments = NULL;
+  debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
   return_value_if_fail(debugger != NULL, NULL);
   return_value_if_fail(cmds != NULL, NULL);
 
@@ -580,6 +631,10 @@ static tk_object_t* debugger_lldb_create_attach_req(debugger_t* debugger, const 
   } else {
     /*attach到指定的PID*/
     tk_object_set_prop_int(arguments, LLDB_KEY_PID, pid);
+  }
+
+  if (lldb->init_commands != NULL) {
+    tk_object_set_prop_object(arguments, LLDB_KEY_INIT_COMMANDS, lldb->init_commands);
   }
 
   return req;
@@ -1397,6 +1452,7 @@ static const debugger_vtable_t s_debugger_lldb_vtable = {
     .set_current_frame = debugger_lldb_set_current_frame,
     .set_current_thread_id = debugger_lldb_set_current_thread_id,
     .get_current_thread_id = debugger_lldb_get_current_thread_id,
+    .load_config = debugger_lldb_load_config,
     .deinit = debugger_lldb_deinit,
 };
 
@@ -1420,9 +1476,11 @@ static ret_t debugger_lldb_on_destroy(tk_object_t* obj) {
   str_reset(&(lldb->scallstack));
   str_reset(&(lldb->sbreakpoints));
   tk_mutex_nest_destroy(lldb->mutex);
+
   TK_OBJECT_UNREF(lldb->io);
   TK_OBJECT_UNREF(lldb->sources);
   TK_OBJECT_UNREF(lldb->callstack);
+  TK_OBJECT_UNREF(lldb->init_commands);
   TK_OBJECT_UNREF(lldb->source_break_points);
   TK_OBJECT_UNREF(lldb->resps);
   darray_deinit(&(lldb->functions_break_points));

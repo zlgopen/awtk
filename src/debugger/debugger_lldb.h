@@ -69,6 +69,7 @@ typedef struct _debugger_lldb_t {
   darray_t functions_break_points;
   /*源代码行号断点*/
   tk_object_t* source_break_points;
+  tk_object_t* init_commands;
 } debugger_lldb_t;
 
 /**

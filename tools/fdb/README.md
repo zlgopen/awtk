@@ -241,4 +241,14 @@ var:
 [fdb] # d
 ```
 
+* 17. 加载配置
+
+> 目前主要用于加载 lldb 初始命令，示例请参考tools/fdb/lldb.json。本命令在target命令之后，在run命令之前执行。
+
+```
+[fdb] target lldb
+[fdb] # conf tools/fdb/lldb.json
+[fdb] r wasm
+```
+
 > 本文以 Linux/MacOS 为例，Windows 可能会微妙差异，请酌情处理。
