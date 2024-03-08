@@ -1178,6 +1178,36 @@ ret_t tk_bits_data_from_bytes_data(uint8_t* bits, uint32_t bits_size, uint8_t* b
 ret_t tk_bits_data_to_bytes_data(uint8_t* bits, uint32_t bits_size, uint8_t* bytes,
                                  uint32_t bytes_size);
 
+/**
+ * @method tk_buffer_set_value
+ * 设置buffer中的值。
+ * @param {uint8_t*} buffer buffer。
+ * @param {uint32_t} size buffer的长度。
+ * @param {value_type_t} type 类型。
+ * @param {int16_t} offset 偏移。
+ * @param {int16_t} bit_offset 位偏移。
+ * @param {const value_t*} value 值。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_buffer_set_value(uint8_t* buffer, uint32_t size, value_type_t type, int16_t offset,
+                       int16_t bit_offset, const value_t* value);
+
+/**
+ * @method tk_buffer_get_value
+ * 获取buffer中的值。
+ * @param {uint8_t*} buffer buffer。
+ * @param {uint32_t} size buffer的长度。
+ * @param {value_type_t} type 类型。
+ * @param {int16_t} offset 偏移。
+ * @param {int16_t} bit_offset 位偏移。
+ * @param {value_t*} value 值。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_buffer_get_value(uint8_t* buffer, uint32_t size, value_type_t type, int16_t offset,
+                       int16_t bit_offset, value_t* value);
+
 #define TK_STRDUP(str) ((str) != NULL) ? tk_strdup(str) : NULL
 #define TK_STRNDUP(str, len) ((str) != NULL) ? tk_strndup(str, len) : NULL
 

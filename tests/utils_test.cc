@@ -1274,3 +1274,309 @@ TEST(Utils, bits_data_byte_data) {
   ASSERT_EQ(tk_bits_data_to_bytes_data(bits, sizeof(data), output, 16), RET_OK);
   ASSERT_EQ(memcmp(output, bytes, 16), 0);
 }
+
+TEST(Utils, buffer_get_value_int8) {
+  value_t v;
+  uint8_t buffer[] = {0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa};
+  value_set_int(&v, 0);
+
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT8, 0, 0, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 0);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT8, 0, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT8, 1, 0, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 0);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT8, 1, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT8, 0, -1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 0xaa);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT8, 4, -1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 0xaa);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_INT8, 1, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_INT8, 4, -1, &v), RET_OK);
+  ASSERT_EQ(value_uint8(&v), 0xaa);
+}
+
+TEST(Utils, buffer_set_value_int8) {
+  value_t v;
+  uint8_t buffer[] = {0, 0, 0, 0, 0, 0, 0, 0};
+  value_set_int(&v, 0);
+
+  value_set_int(&v, 1);
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT8, 0, 0, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 1);
+  
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT8, 0, 1, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 0b11);
+  
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT8, 1, 0, &v), RET_OK);
+  ASSERT_EQ(buffer[1], 1);
+  
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT8, 1, 1, &v), RET_OK);
+  ASSERT_EQ(buffer[1], 0b11);
+  
+  value_set_int(&v, 0xaa);
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT8, 0, -1, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 0xaa);
+  
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT8, 1, -1, &v), RET_OK);
+  ASSERT_EQ(buffer[1], 0xaa);
+  
+  value_set_int(&v, 0);
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_INT8, 0, -1, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 0);
+
+  value_set_int(&v, 1);
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_INT8, 0, 1, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 0b10);
+}
+
+TEST(Utils, buffer_get_value_int16) {
+  value_t v;
+  uint16_t buffer[] = {0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa};
+  value_set_int(&v, 0);
+
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT16, 0, 0, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 0);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT16, 0, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT16, 1, 0, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 0);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT16, 1, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT16, 0, -1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 0xaa);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT16, 4, -1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 0xaa);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_INT16, 1, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_INT16, 4, -1, &v), RET_OK);
+  ASSERT_EQ(value_uint16(&v), 0xaa);
+}
+
+TEST(Utils, buffer_set_value_int16) {
+  value_t v;
+  uint16_t buffer[] = {0, 0, 0, 0, 0, 0, 0, 0};
+  value_set_int(&v, 0);
+
+  value_set_int(&v, 1);
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT16, 0, 0, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 1);
+  
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT16, 0, 1, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 0b11);
+  
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT16, 1, 0, &v), RET_OK);
+  ASSERT_EQ(buffer[1], 1);
+  
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT16, 1, 1, &v), RET_OK);
+  ASSERT_EQ(buffer[1], 0b11);
+  
+  value_set_int(&v, 0xaa);
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT16, 0, -1, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 0xaa);
+  
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT16, 1, -1, &v), RET_OK);
+  ASSERT_EQ(buffer[1], 0xaa);
+  
+  value_set_int(&v, 0);
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_INT16, 0, -1, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 0);
+
+  value_set_int(&v, 1);
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_INT16, 0, 1, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 0b10);
+}
+
+TEST(Utils, buffer_get_value_int32) {
+  value_t v;
+  uint32_t buffer[] = {0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa};
+  value_set_int(&v, 0);
+
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT32, 0, 0, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 0);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT32, 0, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT32, 1, 0, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 0);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT32, 1, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT32, 0, -1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 0xaa);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT32, 4, -1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 0xaa);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_INT32, 1, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_INT32, 4, -1, &v), RET_OK);
+  ASSERT_EQ(value_uint32(&v), 0xaa);
+}
+
+TEST(Utils, buffer_set_value_int32) {
+  value_t v;
+  uint32_t buffer[] = {0, 0, 0, 0, 0, 0, 0, 0};
+  value_set_int(&v, 0);
+
+  value_set_int(&v, 1);
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT32, 0, 0, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 1);
+  
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT32, 0, 1, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 0b11);
+  
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT32, 1, 0, &v), RET_OK);
+  ASSERT_EQ(buffer[1], 1);
+  
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT32, 1, 1, &v), RET_OK);
+  ASSERT_EQ(buffer[1], 0b11);
+  
+  value_set_int(&v, 0xaa);
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT32, 0, -1, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 0xaa);
+  
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT32, 1, -1, &v), RET_OK);
+  ASSERT_EQ(buffer[1], 0xaa);
+  
+  value_set_int(&v, 0);
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_INT32, 0, -1, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 0);
+
+  value_set_int(&v, 1);
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_INT32, 0, 1, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 0b10);
+}
+
+TEST(Utils, buffer_get_value_int64) {
+  value_t v;
+  uint64_t buffer[] = {0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa};
+  value_set_int(&v, 0);
+
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT64, 0, 0, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 0);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT64, 0, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT64, 1, 0, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 0);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT64, 1, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT64, 0, -1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 0xaa);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT64, 4, -1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 0xaa);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_INT64, 1, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_INT64, 4, -1, &v), RET_OK);
+  ASSERT_EQ(value_uint64(&v), 0xaa);
+}
+
+TEST(Utils, buffer_set_value_int64) {
+  value_t v;
+  uint64_t buffer[] = {0, 0, 0, 0, 0, 0, 0, 0};
+  value_set_int(&v, 0);
+
+  value_set_int(&v, 1);
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT64, 0, 0, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 1);
+  
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT64, 0, 1, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 0b11);
+  
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT64, 1, 0, &v), RET_OK);
+  ASSERT_EQ(buffer[1], 1);
+  
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT64, 1, 1, &v), RET_OK);
+  ASSERT_EQ(buffer[1], 0b11);
+  
+  value_set_int(&v, 0xaa);
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT64, 0, -1, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 0xaa);
+  
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_UINT64, 1, -1, &v), RET_OK);
+  ASSERT_EQ(buffer[1], 0xaa);
+  
+  value_set_int(&v, 0);
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_INT64, 0, -1, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 0);
+
+  value_set_int(&v, 1);
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_INT64, 0, 1, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 0b10);
+}
+
+TEST(Utils, buffer_get_value_float) {
+  value_t v;
+  float buffer[] = {0, 1,2,3,4,5,6};
+  value_set_int(&v, 0);
+
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_FLOAT32, 0, -1, &v), RET_OK);
+  ASSERT_EQ(value_float(&v), 0);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_FLOAT32, 4, -1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), buffer[4]);
+}
+
+TEST(Utils, buffer_set_value_float) {
+  value_t v;
+  float buffer[] = {0, 0, 0, 0, 0, 0, 0, 0};
+  value_set_int(&v, 0);
+
+  value_set_int(&v, 0xaa);
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_FLOAT32, 0, -1, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 0xaa);
+  
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_FLOAT32, 1, -1, &v), RET_OK);
+  ASSERT_EQ(buffer[1], 0xaa);
+}
+
+TEST(Utils, buffer_get_value_double) {
+  value_t v;
+  double buffer[] = {0, 1,2,3,4,5,6};
+  value_set_int(&v, 0);
+
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_DOUBLE, 0, -1, &v), RET_OK);
+  ASSERT_EQ(value_double(&v), 0);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_DOUBLE, 4, -1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), buffer[4]);
+}
+
+TEST(Utils, buffer_set_value_double) {
+  value_t v;
+  double buffer[] = {0, 0, 0, 0, 0, 0, 0, 0};
+  value_set_int(&v, 0);
+
+  value_set_int(&v, 0xaa);
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_DOUBLE, 0, -1, &v), RET_OK);
+  ASSERT_EQ(buffer[0], 0xaa);
+  
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_DOUBLE, 1, -1, &v), RET_OK);
+  ASSERT_EQ(buffer[1], 0xaa);
+}

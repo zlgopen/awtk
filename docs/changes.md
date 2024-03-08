@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/03/08
+  * 增加函数 tk\_buffer\_set\_value/tk\_buffer\_get\_value
+
 2024/03/07
   * debuger支持load config，用于让lldb加载init命令。
   * 导出 xml\_file\_expand\_subfilenames\_get(感谢颖健提供补丁)
