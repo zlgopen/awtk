@@ -1580,3 +1580,34 @@ TEST(Utils, buffer_set_value_double) {
   ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer, sizeof(buffer), VALUE_TYPE_DOUBLE, 1, -1, &v), RET_OK);
   ASSERT_EQ(buffer[1], 0xaa);
 }
+
+TEST(Utils, tk_basic_type_from_name) {
+  ASSERT_EQ(tk_basic_type_from_name("int8"), VALUE_TYPE_INT8);
+  ASSERT_EQ(tk_basic_type_from_name("uint8"), VALUE_TYPE_UINT8);
+  ASSERT_EQ(tk_basic_type_from_name("BYTE"), VALUE_TYPE_UINT8);
+  ASSERT_EQ(tk_basic_type_from_name("int16"), VALUE_TYPE_INT16);
+  ASSERT_EQ(tk_basic_type_from_name("uint16"), VALUE_TYPE_UINT16);
+  ASSERT_EQ(tk_basic_type_from_name("WORD"), VALUE_TYPE_UINT16);
+  ASSERT_EQ(tk_basic_type_from_name("int32"), VALUE_TYPE_INT32);
+  ASSERT_EQ(tk_basic_type_from_name("uint32"), VALUE_TYPE_UINT32);
+  ASSERT_EQ(tk_basic_type_from_name("dWORD"), VALUE_TYPE_UINT32);
+  ASSERT_EQ(tk_basic_type_from_name("int64"), VALUE_TYPE_INT64);
+  ASSERT_EQ(tk_basic_type_from_name("uint64"), VALUE_TYPE_UINT64);
+  ASSERT_EQ(tk_basic_type_from_name("LWORD"), VALUE_TYPE_UINT64);
+  ASSERT_EQ(tk_basic_type_from_name("float"), VALUE_TYPE_FLOAT32);
+  ASSERT_EQ(tk_basic_type_from_name("double"), VALUE_TYPE_DOUBLE);
+  ASSERT_EQ(tk_basic_type_from_name("bool"), VALUE_TYPE_BOOL);
+  
+  ASSERT_EQ(tk_basic_type_from_name("int8_t"), VALUE_TYPE_INT8);
+  ASSERT_EQ(tk_basic_type_from_name("uint8_t"), VALUE_TYPE_UINT8);
+  ASSERT_EQ(tk_basic_type_from_name("int16_t"), VALUE_TYPE_INT16);
+  ASSERT_EQ(tk_basic_type_from_name("uint16_t"), VALUE_TYPE_UINT16);
+  ASSERT_EQ(tk_basic_type_from_name("int32_t"), VALUE_TYPE_INT32);
+  ASSERT_EQ(tk_basic_type_from_name("uint32_t"), VALUE_TYPE_UINT32);
+  ASSERT_EQ(tk_basic_type_from_name("int64_t"), VALUE_TYPE_INT64);
+  ASSERT_EQ(tk_basic_type_from_name("uint64_t"), VALUE_TYPE_UINT64);
+  ASSERT_EQ(tk_basic_type_from_name("float_t"), VALUE_TYPE_FLOAT32);
+  ASSERT_EQ(tk_basic_type_from_name("double_t"), VALUE_TYPE_DOUBLE);
+  ASSERT_EQ(tk_basic_type_from_name("bool_t"), VALUE_TYPE_BOOL);
+  ASSERT_EQ(tk_basic_type_from_name("unknown"), VALUE_TYPE_INVALID);
+}

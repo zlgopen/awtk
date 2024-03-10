@@ -2462,3 +2462,31 @@ ret_t tk_buffer_get_value(uint8_t* buffer, uint32_t size, value_type_t type, int
 
   return RET_OK;
 }
+
+value_type_t tk_basic_type_from_name(const char* type) {
+  if (strncasecmp(type, "int8", 4) == 0) {
+    return VALUE_TYPE_INT8;
+  } else if (strncasecmp(type, "bool", 4) == 0) {
+    return VALUE_TYPE_BOOL;
+  } else if (strncasecmp(type, "int16", 5) == 0) {
+    return VALUE_TYPE_INT16;
+  } else if (strncasecmp(type, "int32", 5) == 0) {
+    return VALUE_TYPE_INT32;
+  } else if (strncasecmp(type, "int64", 5) == 0) {
+    return VALUE_TYPE_INT64;
+  } else if (strncasecmp(type, "uint8", 5) == 0 || strncasecmp(type, "byte", 4) == 0) {
+    return VALUE_TYPE_UINT8;
+  } else if (strncasecmp(type, "uint16", 6) == 0 || strncasecmp(type, "word", 4) == 0) {
+    return VALUE_TYPE_UINT16;
+  } else if (strncasecmp(type, "uint32", 6) == 0 || strncasecmp(type, "dword", 5) == 0) {
+    return VALUE_TYPE_UINT32;
+  } else if (strncasecmp(type, "uint64", 6) == 0 || strncasecmp(type, "lword", 5) == 0) {
+    return VALUE_TYPE_UINT64;
+  } else if (strncasecmp(type, "float", 5) == 0) {
+    return VALUE_TYPE_FLOAT32;
+  } else if (strncasecmp(type, "double", 6) == 0) {
+    return VALUE_TYPE_DOUBLE;
+  }
+
+  return VALUE_TYPE_INVALID;
+}

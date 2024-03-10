@@ -1208,6 +1208,14 @@ ret_t tk_buffer_set_value(uint8_t* buffer, uint32_t size, value_type_t type, int
 ret_t tk_buffer_get_value(uint8_t* buffer, uint32_t size, value_type_t type, int16_t offset,
                        int16_t bit_offset, value_t* value);
 
+/**
+ * @method tk_basic_type_from_name
+ * 将类型名称转换成对应的类型。
+ * @param {const char*} type 类型名称。
+ * @return {value_type_t} 返回对应的类型。
+ */
+value_type_t tk_basic_type_from_name(const char* type);
+
 #define TK_STRDUP(str) ((str) != NULL) ? tk_strdup(str) : NULL
 #define TK_STRNDUP(str, len) ((str) != NULL) ? tk_strndup(str, len) : NULL
 

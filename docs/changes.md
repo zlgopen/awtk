@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/03/10
+  * 增加函数tk\_basic\_type\_from\_name
+
 2024/03/08
   * 增加函数 tk\_buffer\_set\_value/tk\_buffer\_get\_value
 
