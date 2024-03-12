@@ -1209,6 +1209,18 @@ ret_t tk_buffer_get_value(uint8_t* buffer, uint32_t size, value_type_t type, int
                        int16_t bit_offset, value_t* value);
 
 /**
+ * @method tk_skip_to_offset
+ * 跳转到指定的偏移位置。
+ * @param {uint8_t*} data 数据。
+ * @param {uint32_t} size 数据长度。
+ * @param {value_type_t} type 类型。
+ * @param {int16_t} index 索引。
+ * 
+ * @return {uint8_t*} 返回跳转后的位置。
+ */
+uint8_t* tk_skip_to_offset(uint8_t* data, uint32_t size, value_type_t type, int16_t index);
+
+/**
  * @method tk_basic_type_from_name
  * 将类型名称转换成对应的类型。
  * @param {const char*} type 类型名称。

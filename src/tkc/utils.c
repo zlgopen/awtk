@@ -2224,38 +2224,38 @@ ret_t tk_bits_data_to_bytes_data(uint8_t* bits, uint32_t bits_size, uint8_t* byt
   return RET_OK;
 }
 
-static uint8_t* skip_to_offset(uint8_t* data, uint32_t size, value_type_t type, int16_t offset) {
+uint8_t* tk_skip_to_offset(uint8_t* data, uint32_t size, value_type_t type, int16_t index) {
   return_value_if_fail(data != NULL, NULL);
 
   switch (type) {
     case VALUE_TYPE_INT8:
     case VALUE_TYPE_UINT8:
     case VALUE_TYPE_BOOL: {
-      return_value_if_fail((offset + 1) <= size, NULL);
-      return data + offset;
+      return_value_if_fail((index + 1) <= size, NULL);
+      return data + index;
     }
     case VALUE_TYPE_INT16:
     case VALUE_TYPE_UINT16: {
-      return_value_if_fail((offset + 1) * 2 <= size, NULL);
-      return data + offset * 2;
+      return_value_if_fail((index + 1) * 2 <= size, NULL);
+      return data + index * 2;
     }
     case VALUE_TYPE_INT32:
     case VALUE_TYPE_UINT32: {
-      return_value_if_fail((offset + 1) * 4 <= size, NULL);
-      return data + offset * 4;
+      return_value_if_fail((index + 1) * 4 <= size, NULL);
+      return data + index * 4;
     }
     case VALUE_TYPE_INT64:
     case VALUE_TYPE_UINT64: {
-      return_value_if_fail((offset + 1) * 8 <= size, NULL);
-      return data + offset * 8;
+      return_value_if_fail((index + 1) * 8 <= size, NULL);
+      return data + index * 8;
     }
     case VALUE_TYPE_FLOAT32: {
-      return_value_if_fail((offset + 1) * 4 <= size, NULL);
-      return data + offset * 4;
+      return_value_if_fail((index + 1) * 4 <= size, NULL);
+      return data + index * 4;
     }
     case VALUE_TYPE_DOUBLE: {
-      return_value_if_fail((offset + 1) * 8 <= size, NULL);
-      return data + offset * 8;
+      return_value_if_fail((index + 1) * 8 <= size, NULL);
+      return data + index * 8;
     }
     default:
       break;
@@ -2266,7 +2266,7 @@ static uint8_t* skip_to_offset(uint8_t* data, uint32_t size, value_type_t type, 
 
 ret_t tk_buffer_set_value(uint8_t* buffer, uint32_t size, value_type_t type, int16_t offset,
                        int16_t bit_offset, const value_t* value) {
-  uint8_t* data = skip_to_offset(buffer, size, type, offset);
+  uint8_t* data = tk_skip_to_offset(buffer, size, type, offset);
   return_value_if_fail(data != NULL, RET_BAD_PARAMS);
 
   switch (type) {
@@ -2370,7 +2370,7 @@ ret_t tk_buffer_set_value(uint8_t* buffer, uint32_t size, value_type_t type, int
 ret_t tk_buffer_get_value(uint8_t* buffer, uint32_t size, value_type_t type, int16_t offset,
                        int16_t bit_offset, value_t* value) {
   bool_t v = FALSE;
-  uint8_t* data = skip_to_offset(buffer, size, type, offset);
+  uint8_t* data = tk_skip_to_offset(buffer, size, type, offset);
   return_value_if_fail(data != NULL, RET_BAD_PARAMS);
 
   switch (type) {
