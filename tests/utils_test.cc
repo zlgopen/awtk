@@ -1568,6 +1568,17 @@ TEST(Utils, buffer_get_value_double) {
   ASSERT_EQ(value_int(&v), buffer[4]);
 }
 
+TEST(Utils, buffer_get_value_double_unaligned) {
+  value_t v;
+  double buffer[] = {0, 1,2,3,4,5,6};
+
+  value_set_double(&v, 123);
+  ASSERT_EQ(tk_buffer_set_value((uint8_t*)buffer+1, sizeof(buffer), VALUE_TYPE_DOUBLE, 1, -1, &v), RET_OK);
+  
+  ASSERT_EQ(tk_buffer_get_value((uint8_t*)buffer+1, sizeof(buffer), VALUE_TYPE_DOUBLE, 1, -1, &v), RET_OK);
+  ASSERT_EQ(value_double(&v), 123);
+}
+
 TEST(Utils, buffer_set_value_double) {
   value_t v;
   double buffer[] = {0, 0, 0, 0, 0, 0, 0, 0};
