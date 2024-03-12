@@ -1191,7 +1191,7 @@ ret_t tk_bits_data_to_bytes_data(uint8_t* bits, uint32_t bits_size, uint8_t* byt
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t tk_buffer_set_value(uint8_t* buffer, uint32_t size, value_type_t type, int16_t offset,
-                       int16_t bit_offset, const value_t* value);
+                          int16_t bit_offset, const value_t* value);
 
 /**
  * @method tk_buffer_get_value
@@ -1206,19 +1206,15 @@ ret_t tk_buffer_set_value(uint8_t* buffer, uint32_t size, value_type_t type, int
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t tk_buffer_get_value(uint8_t* buffer, uint32_t size, value_type_t type, int16_t offset,
-                       int16_t bit_offset, value_t* value);
+                          int16_t bit_offset, value_t* value);
 
 /**
- * @method tk_skip_to_offset
- * 跳转到指定的偏移位置。
- * @param {uint8_t*} data 数据。
- * @param {uint32_t} size 数据长度。
+ * @method tk_size_of_basic_type
+ * 获取基本类型的大小(字节数)。
  * @param {value_type_t} type 类型。
- * @param {int16_t} index 索引。
- * 
- * @return {uint8_t*} 返回跳转后的位置。
+ * @return {uint32_t} 返回大小。
  */
-uint8_t* tk_skip_to_offset(uint8_t* data, uint32_t size, value_type_t type, int16_t index);
+uint32_t tk_size_of_basic_type(value_type_t type);
 
 /**
  * @method tk_basic_type_from_name

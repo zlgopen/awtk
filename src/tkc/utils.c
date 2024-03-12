@@ -2224,265 +2224,185 @@ ret_t tk_bits_data_to_bytes_data(uint8_t* bits, uint32_t bits_size, uint8_t* byt
   return RET_OK;
 }
 
-uint8_t* tk_skip_to_offset(uint8_t* data, uint32_t size, value_type_t type, int16_t index) {
-  return_value_if_fail(data != NULL, NULL);
-
+uint32_t tk_size_of_basic_type(value_type_t type) {
   switch (type) {
     case VALUE_TYPE_INT8:
     case VALUE_TYPE_UINT8:
-    case VALUE_TYPE_BOOL: {
-      return_value_if_fail((index + 1) <= size, NULL);
-      return data + index;
-    }
+    case VALUE_TYPE_BOOL:
+      return 1;
     case VALUE_TYPE_INT16:
-    case VALUE_TYPE_UINT16: {
-      return_value_if_fail((index + 1) * 2 <= size, NULL);
-      return data + index * 2;
-    }
+    case VALUE_TYPE_UINT16:
+      return 2;
     case VALUE_TYPE_INT32:
-    case VALUE_TYPE_UINT32: {
-      return_value_if_fail((index + 1) * 4 <= size, NULL);
-      return data + index * 4;
-    }
+    case VALUE_TYPE_UINT32:
+    case VALUE_TYPE_FLOAT32:
+      return 4;
     case VALUE_TYPE_INT64:
-    case VALUE_TYPE_UINT64: {
-      return_value_if_fail((index + 1) * 8 <= size, NULL);
-      return data + index * 8;
-    }
-    case VALUE_TYPE_FLOAT32: {
-      return_value_if_fail((index + 1) * 4 <= size, NULL);
-      return data + index * 4;
-    }
-    case VALUE_TYPE_DOUBLE: {
-      return_value_if_fail((index + 1) * 8 <= size, NULL);
-      return data + index * 8;
-    }
+    case VALUE_TYPE_UINT64:
+    case VALUE_TYPE_DOUBLE:
+      return 8;
     default:
       break;
   }
 
-  return NULL;
+  return 0;
+}
+
+uint8_t* tk_skip_to_offset(uint8_t* data, uint32_t size, value_type_t type, int16_t index) {
+  uint32_t type_size = tk_size_of_basic_type(type);
+  uint32_t offset = index * type_size;
+  return_value_if_fail(data != NULL && type_size > 0, NULL);
+  return_value_if_fail((offset + type_size) <= size, RET_BAD_PARAMS);
+
+  return data + offset;
 }
 
 ret_t tk_buffer_set_value(uint8_t* buffer, uint32_t size, value_type_t type, int16_t offset,
-                       int16_t bit_offset, const value_t* value) {
+                          int16_t bit_offset, const value_t* value) {
+  uint32_t type_size = tk_size_of_basic_type(type);
   uint8_t* data = tk_skip_to_offset(buffer, size, type, offset);
   return_value_if_fail(data != NULL, RET_BAD_PARAMS);
 
+  if (bit_offset >= 0) {
+    return_value_if_fail(bit_offset < type_size * 8, RET_BAD_PARAMS);
+    return bits_stream_set(data, type_size, bit_offset, value_bool(value));
+  }
+
   switch (type) {
     case VALUE_TYPE_INT8: {
-      if (bit_offset < 0) {
-        *data = value_int8(value);
-      } else {
-        return_value_if_fail(bit_offset < 8, RET_BAD_PARAMS);
-        bits_stream_set(data, 1, bit_offset, value_int8(value) != 0);
-      }
+      *data = value_int8(value);
       break;
     }
     case VALUE_TYPE_UINT8: {
-      if (bit_offset < 0) {
-        *data = value_uint8(value);
-      } else {
-        return_value_if_fail(bit_offset < 8, RET_BAD_PARAMS);
-        bits_stream_set(data, 1, bit_offset, value_uint8(value) != 0);
-      }
+      *data = value_uint8(value);
       break;
     }
     case VALUE_TYPE_INT16: {
-      if (bit_offset < 0) {
-        int16_t v = value_int16(value);
-        memcpy(data, &v, sizeof(v));
-      } else {
-        return_value_if_fail(bit_offset < 16, RET_BAD_PARAMS);
-        bits_stream_set(data, 2, bit_offset, value_int16(value) != 0);
-      }
+      int16_t v = value_int16(value);
+      memcpy(data, &v, sizeof(v));
       break;
     }
     case VALUE_TYPE_UINT16: {
-      if (bit_offset < 0) {
-        uint16_t v = value_uint16(value);
-        memcpy(data, &v, sizeof(v));
-      } else {
-        return_value_if_fail(bit_offset < 16, RET_BAD_PARAMS);
-        bits_stream_set(data, 2, bit_offset, value_uint16(value) != 0);
-      }
+      uint16_t v = value_uint16(value);
+      memcpy(data, &v, sizeof(v));
       break;
     }
     case VALUE_TYPE_INT32: {
-      if (bit_offset < 0) {
-        int32_t v = value_int32(value);
-        memcpy(data, &v, sizeof(v));
-      } else {
-        return_value_if_fail(bit_offset < 32, RET_BAD_PARAMS);
-        bits_stream_set(data, 4, bit_offset, value_int32(value) != 0);
-      }
+      int32_t v = value_int32(value);
+      memcpy(data, &v, sizeof(v));
       break;
     }
     case VALUE_TYPE_UINT32: {
-      if (bit_offset < 0) {
-        uint32_t v = value_uint32(value);
-        memcpy(data, &v, sizeof(v));
-      } else {
-        return_value_if_fail(bit_offset < 32, RET_BAD_PARAMS);
-        bits_stream_set(data, 4, bit_offset, value_uint32(value) != 0);
-      }
+      uint32_t v = value_uint32(value);
+      memcpy(data, &v, sizeof(v));
       break;
     }
     case VALUE_TYPE_INT64: {
-      if (bit_offset < 0) {
-        int64_t v = value_int64(value);
-        memcpy(data, &v, sizeof(v));
-      } else {
-        return_value_if_fail(bit_offset < 64, RET_BAD_PARAMS);
-        bits_stream_set(data, 8, bit_offset, value_int64(value) != 0);
-      }
+      int64_t v = value_int64(value);
+      memcpy(data, &v, sizeof(v));
       break;
     }
     case VALUE_TYPE_UINT64: {
-      if (bit_offset < 0) {
-        uint64_t v = value_uint64(value);
-        memcpy(data, &v, sizeof(v));
-      } else {
-        return_value_if_fail(bit_offset < 64, RET_BAD_PARAMS);
-        bits_stream_set(data, 8, bit_offset, value_uint64(value) != 0);
-      }
+      uint64_t v = value_uint64(value);
+      memcpy(data, &v, sizeof(v));
       break;
     }
     case VALUE_TYPE_FLOAT32: {
-      assert(bit_offset < 0);
       float v = value_float32(value);
       memcpy(data, &v, sizeof(v));
       break;
     }
     case VALUE_TYPE_DOUBLE: {
-      assert(bit_offset < 0);
       double v = value_double(value);
       memcpy(data, &v, sizeof(v));
       break;
     }
-    default:
-      break;
+    default: {
+      log_debug("tk_buffer_set_value: not support %d\n", type);
+      return RET_NOT_IMPL;
+    }
   }
 
   return RET_OK;
 }
 
 ret_t tk_buffer_get_value(uint8_t* buffer, uint32_t size, value_type_t type, int16_t offset,
-                       int16_t bit_offset, value_t* value) {
+                          int16_t bit_offset, value_t* value) {
   bool_t v = FALSE;
+  uint32_t type_size = tk_size_of_basic_type(type);
   uint8_t* data = tk_skip_to_offset(buffer, size, type, offset);
   return_value_if_fail(data != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(type_size > 0, RET_BAD_PARAMS);
+
+  if (bit_offset >= 0) {
+    return_value_if_fail(bit_offset < type_size * 8, RET_BAD_PARAMS);
+    bits_stream_get(data, type_size, bit_offset, &v);
+    value_set_bool(value, v);
+
+    return RET_OK;
+  }
 
   switch (type) {
     case VALUE_TYPE_INT8: {
-      if (bit_offset < 0) {
-        value_set_int8(value, *data);
-      } else {
-        return_value_if_fail(bit_offset < 8, RET_BAD_PARAMS);
-        bits_stream_get(data, 1, bit_offset, &v);
-        value_set_bool(value, v);
-      }
+      value_set_int8(value, *data);
       break;
     }
     case VALUE_TYPE_UINT8: {
-      if (bit_offset < 0) {
-        value_set_uint8(value, *data);
-      } else {
-        return_value_if_fail(bit_offset < 8, RET_BAD_PARAMS);
-        bits_stream_get(data, 1, bit_offset, &v);
-        value_set_bool(value, v);
-      }
+      value_set_uint8(value, *data);
       break;
     }
     case VALUE_TYPE_INT16: {
-      if (bit_offset < 0) {
-        int16_t v = 0;
-        memcpy(&v, data, sizeof(v));
-        value_set_int16(value, v);
-      } else {
-        return_value_if_fail(bit_offset < 16, RET_BAD_PARAMS);
-        bits_stream_get(data, 2, bit_offset, &v);
-        value_set_bool(value, v);
-      }
+      int16_t v = 0;
+      memcpy(&v, data, sizeof(v));
+      value_set_int16(value, v);
       break;
     }
     case VALUE_TYPE_UINT16: {
-      if (bit_offset < 0) {
-        value_set_uint16(value, *(uint16_t*)data);
-        uint16_t v = 0;
-        memcpy(&v, data, sizeof(v));
-        value_set_uint16(value, v);
-      } else {
-        return_value_if_fail(bit_offset < 16, RET_BAD_PARAMS);
-        bits_stream_get(data, 2, bit_offset, &v);
-        value_set_bool(value, v);
-      }
+      uint16_t v = 0;
+      memcpy(&v, data, sizeof(v));
+      value_set_uint16(value, v);
       break;
     }
     case VALUE_TYPE_INT32: {
-      if (bit_offset < 0) {
-        int32_t v = 0;
-        memcpy(&v, data, sizeof(v));
-        value_set_int32(value, v);
-      } else {
-        return_value_if_fail(bit_offset < 32, RET_BAD_PARAMS);
-        bits_stream_get(data, 4, bit_offset, &v);
-        value_set_bool(value, v);
-      }
+      int32_t v = 0;
+      memcpy(&v, data, sizeof(v));
+      value_set_int32(value, v);
       break;
     }
     case VALUE_TYPE_UINT32: {
-      if (bit_offset < 0) {
-        uint32_t v = 0;
-        memcpy(&v, data, sizeof(v));
-        value_set_uint32(value, v);
-      } else {
-        return_value_if_fail(bit_offset < 32, RET_BAD_PARAMS);
-        bits_stream_get(data, 4, bit_offset, &v);
-        value_set_bool(value, v);
-      }
+      uint32_t v = 0;
+      memcpy(&v, data, sizeof(v));
+      value_set_uint32(value, v);
       break;
     }
     case VALUE_TYPE_INT64: {
-      if (bit_offset < 0) {
-        int64_t v = 0;
-        memcpy(&v, data, sizeof(v));
-        value_set_int64(value, v);
-      } else {
-        return_value_if_fail(bit_offset < 64, RET_BAD_PARAMS);
-        bits_stream_get(data, 8, bit_offset, &v);
-        value_set_bool(value, v);
-      }
+      int64_t v = 0;
+      memcpy(&v, data, sizeof(v));
+      value_set_int64(value, v);
       break;
     }
     case VALUE_TYPE_UINT64: {
-      if (bit_offset < 0) {
-        uint64_t v = 0;
-        memcpy(&v, data, sizeof(v));
-        value_set_uint64(value, v);
-      } else {
-        return_value_if_fail(bit_offset < 64, RET_BAD_PARAMS);
-        bits_stream_get(data, 8, bit_offset, &v);
-        value_set_bool(value, v);
-      }
+      uint64_t v = 0;
+      memcpy(&v, data, sizeof(v));
+      value_set_uint64(value, v);
       break;
     }
     case VALUE_TYPE_FLOAT32: {
       float v = 0;
-      assert(bit_offset < 0);
       memcpy(&v, data, sizeof(v));
       value_set_float32(value, v);
       break;
     }
     case VALUE_TYPE_DOUBLE: {
       double v = 0;
-      assert(bit_offset < 0);
       memcpy(&v, data, sizeof(v));
       value_set_double(value, v);
       break;
     }
-    default:
-      break;
+    default: {
+      log_debug("tk_buffer_get_value: not support %d\n", type);
+      return RET_NOT_IMPL;
+    }
   }
 
   return RET_OK;
