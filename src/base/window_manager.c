@@ -485,10 +485,12 @@ static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   font_manager_t* fm = widget_get_font_manager(widget);
   image_manager_t* imm = widget_get_image_manager(widget);
+  assets_manager_t* am = widget_get_assets_manager(widget);
 
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
   return_value_if_fail(fm != NULL && imm != NULL, RET_BAD_PARAMS);
 
+  assets_manager_clear_all_cache(am);
   font_manager_unload_all(fm);
   image_manager_unload_all(imm);
 

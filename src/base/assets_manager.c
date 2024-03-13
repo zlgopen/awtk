@@ -607,9 +607,7 @@ ret_t assets_manager_set_res_root(assets_manager_t* am, const char* res_root) {
 ret_t assets_manager_clear_all(assets_manager_t* am) {
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
 
-  assets_manager_clear_cache(am, ASSET_TYPE_UI);
-  assets_manager_clear_cache(am, ASSET_TYPE_STYLE);
-  assets_manager_clear_cache(am, ASSET_TYPE_FONT);
+  assets_manager_clear_all_cache(am);
 
   return darray_clear(&(am->assets));
 }
@@ -619,13 +617,19 @@ const char* assets_manager_get_theme_name(assets_manager_t* am) {
   return am->theme;
 }
 
+ret_t assets_manager_clear_all_cache(assets_manager_t* am) {
+  assets_manager_clear_cache(am, ASSET_TYPE_UI);
+  assets_manager_clear_cache(am, ASSET_TYPE_STYLE);
+  assets_manager_clear_cache(am, ASSET_TYPE_FONT);
+
+  return RET_OK;
+}
+
 ret_t assets_manager_set_theme(assets_manager_t* am, const char* theme) {
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
 
   am->theme = tk_str_copy(am->theme, theme);
-  assets_manager_clear_cache(am, ASSET_TYPE_UI);
-  assets_manager_clear_cache(am, ASSET_TYPE_STYLE);
-  assets_manager_clear_cache(am, ASSET_TYPE_FONT);
+  assets_manager_clear_all_cache(am);
 
   return RET_OK;
 }
@@ -699,7 +703,31 @@ static const asset_info_t* assets_manager_ref_impl(assets_manager_t* am, asset_t
   const asset_info_t* info = assets_manager_find_in_cache(am, type, subtype, name);
 
   if (info == NULL) {
-    info = assets_manager_load_ex(am, type, subtype, name);
+    if (type == ASSET_TYPE_FONT) {
+      char name_ex[TK_NAME_LEN * 2 + 1] = {0};
+      system_info_t* sinfo = assets_manager_get_system_info(am);
+      const char* lang = tk_object_get_prop_str(TK_OBJECT(sinfo), SYSTEM_INFO_PROP_LANGUAGE);
+      const char* country = tk_object_get_prop_str(TK_OBJECT(sinfo), SYSTEM_INFO_PROP_COUNTRY);
+
+      tk_snprintf(name_ex, sizeof(name_ex) - 1, "%s.%s_%s", name, lang, country);
+      log_debug("try font load %s\n", name_ex);
+      info = assets_manager_load_ex(am, type, subtype, name_ex);
+      if (info == NULL) {
+        tk_snprintf(name_ex, sizeof(name_ex) - 1, "%s.%s", name, lang);
+        log_debug("try font load %s\n", name_ex);
+        info = assets_manager_load_ex(am, type, subtype, name_ex);
+      }
+
+      if (info == NULL) {
+        info = assets_manager_load_ex(am, type, subtype, name);
+      }
+
+      if (info != NULL) {
+        log_debug("load asset %s\n", asset_info_get_name(info));
+      }
+    } else {
+      info = assets_manager_load_ex(am, type, subtype, name);
+    }
   } else {
     asset_info_ref((asset_info_t*)info);
   }

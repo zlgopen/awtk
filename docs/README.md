@@ -101,6 +101,7 @@
 * [如何自定义资源加载方式](how_to_set_custom_load_asset.md)
 * [如何处理将文件拖入到窗口的事件](how_to_handle_drop_file_event.md)
 * [如何将资源编译到应用程序并使用它们](how_to_compile_res_into_app_and_use_them.md)
+* [如何为不同语言加载不同的字体文件](how_to_load_font_for_specific_language.md)
 
 ### 3. 内部原理
 * [AWTK 脚本绑定原理](script_binding.md)

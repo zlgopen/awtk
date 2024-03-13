@@ -377,6 +377,15 @@ ret_t assets_manager_clear_cache(assets_manager_t* am, asset_type_t type);
 ret_t assets_manager_clear_cache_ex(assets_manager_t* am, asset_type_t type, const char* name);
 
 /**
+ * @method assets_manager_clear_all_cache
+ * 清除缓存。
+ * @param {assets_manager_t*} am asset manager对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t assets_manager_clear_all_cache(assets_manager_t* am);
+
+/**
  * @method assets_manager_clear_all
  * 清除全部缓存的资源。
  * @param {assets_manager_t*} am asset manager对象。
