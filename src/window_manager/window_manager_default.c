@@ -752,8 +752,8 @@ static ret_t window_manager_prepare_close_window(widget_t* widget, widget_t* win
 
 static ret_t window_manager_default_on_idle_check_and_close_window(const idle_info_t* idle) {
   widget_t* win = WIDGET(idle->ctx);
-  window_manager_close_window(window_manager(), win);
-  return RET_REPEAT;
+  window_manager_close_window_force(window_manager(), win);
+  return RET_REMOVE;
 }
 
 static ret_t window_manager_default_close_window(widget_t* widget, widget_t* window) {
