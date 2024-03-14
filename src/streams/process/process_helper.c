@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   process_helper.c
  * Author: AWTK Develop Team
  * Brief:  process helper
@@ -113,6 +113,7 @@ process_handle_t process_create(const char* file_path, const char** args, uint32
   SECURITY_ATTRIBUTES sa_attr;
   LPPROC_THREAD_ATTRIBUTE_LIST lpAttributeList;
   process_handle_t handle = TKMEM_ZALLOC(process_info_t);
+  int lastError = 0;
   return_value_if_fail(handle != NULL, NULL);
 
   sa_attr.nLength = sizeof(SECURITY_ATTRIBUTES);
@@ -201,6 +202,9 @@ process_handle_t process_create(const char* file_path, const char** args, uint32
 
   return handle;
 error:
+  lastError = GetLastError();
+  log_error("%s:lastError = %d\r\n", __FUNCTION__, lastError);
+
   if (lpAttributeList != NULL) {
     if (!ret1) {
       DeleteProcThreadAttributeList(lpAttributeList);
