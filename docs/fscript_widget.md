@@ -627,7 +627,7 @@ if(!value_is_null(a)) {
   widget_destroy(a)
 } else {
   print('not found foobar');
-}s
+}
 ```
 
 ```js
