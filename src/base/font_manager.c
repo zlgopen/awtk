@@ -247,12 +247,13 @@ ret_t font_manager_unload_all(font_manager_t* fm) {
 ret_t font_manager_deinit(font_manager_t* fm) {
   return_value_if_fail(fm != NULL, RET_BAD_PARAMS);
   TKMEM_FREE(fm->name);
+  emitter_off_by_ctx(EMITTER(fm->assets_manager), fm);
+
   return darray_deinit(&(fm->fonts));
 }
 
 ret_t font_manager_destroy(font_manager_t* fm) {
   return_value_if_fail(fm != NULL, RET_BAD_PARAMS);
-  emitter_off_by_ctx(EMITTER(fm->assets_manager), fm);
   font_manager_deinit(fm);
   TKMEM_FREE(fm);
 
