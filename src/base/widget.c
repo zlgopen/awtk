@@ -4101,12 +4101,12 @@ bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt) {
 }
 
 static ret_t widget_ensure_visible_in_scroll_view(widget_t* scroll_view, widget_t* widget) {
-  rect_t r;
   point_t p;
   int32_t ox = 0;
   int32_t oy = 0;
   int32_t old_ox = 0;
   int32_t old_oy = 0;
+  rect_t r, r_visable;
   return_value_if_fail(widget != NULL && scroll_view != NULL, RET_BAD_PARAMS);
 
   memset(&p, 0x0, sizeof(point_t));
@@ -4117,6 +4117,11 @@ static ret_t widget_ensure_visible_in_scroll_view(widget_t* scroll_view, widget_
   oy = widget_get_prop_int(scroll_view, WIDGET_PROP_YOFFSET, 0);
   old_ox = ox;
   old_oy = oy;
+
+  r_visable = rect_init(ox, oy, scroll_view->w, scroll_view->h);
+  if (rect_has_intersect(&r, &r_visable)) {
+    return RET_OK;
+  }
 
   if (oy > r.y) {
     oy = r.y;
