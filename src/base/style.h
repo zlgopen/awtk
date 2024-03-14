@@ -48,6 +48,12 @@ BEGIN_C_DECLS
 #define STYLE_ID_FG_COLOR "fg_color"
 
 /**
+ * @const STYLE_ID_DRAGGER_COLOR
+ * dragger颜色。
+ */
+#define STYLE_ID_DRAGGER_COLOR "dragger_color"
+
+/**
  * @const STYLE_ID_MASK_COLOR
  * 蒙版颜色。
  */
