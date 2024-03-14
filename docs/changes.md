@@ -4,6 +4,7 @@
   * 补充调试信息(感谢兆坤提供补丁)
   * 完善doc (感谢兆坤提供补丁)
   * 修复可滑动控件得到焦点时，自动右对齐的问题(感谢雨欣提供补丁)
+  * 修复调用self\_layouter\_default\_set\_param时没有把xy复位的问题(感谢福明提供补丁)
 
 2024/03/12
   * 完善函数 tk\_buffer\_set\_value/tk\_buffer\_get\_value

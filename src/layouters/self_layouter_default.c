@@ -210,6 +210,7 @@ ret_t self_layouter_default_set_param(self_layouter_t* layouter, const char* nam
 
   switch (*name) {
     case 'x': {
+      layout->x = 0;
       const char* x = value;
       if (x[0] == 'c') {
         const char* v = strchr(x, ':');
@@ -243,6 +244,7 @@ ret_t self_layouter_default_set_param(self_layouter_t* layouter, const char* nam
       break;
     }
     case 'y': {
+      layout->y = 0;
       const char* y = value;
       if (y[0] == 'm') {
         const char* v = strchr(y, ':');

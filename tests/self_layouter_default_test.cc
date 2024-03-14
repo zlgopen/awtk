@@ -801,4 +801,20 @@ TEST(SelfLayoutDefault, set_self_layout_params2) {
   ASSERT_EQ(self_layouter_get_param_int(layouter, "y_attr", 0), Y_ATTR_MIDDLE);
   ASSERT_EQ(self_layouter_get_param_int(layouter, "w_attr", 0), W_ATTR_UNDEF);
   ASSERT_EQ(self_layouter_get_param_int(layouter, "h_attr", 0), W_ATTR_UNDEF);
+
+  widget_set_self_layout_params(btn, "100", NULL, NULL, NULL);
+  ASSERT_EQ(widget_layout_self(btn), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(btn, "x", 0), 100);
+  widget_set_self_layout_params(btn, "c", NULL, "100", NULL);
+  ASSERT_EQ(widget_layout_self(btn), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(btn, "x", 0), 50);
+  ASSERT_EQ(widget_get_prop_int(btn, "w", 0), 100);
+
+  widget_set_self_layout_params(btn, NULL, "10", NULL, NULL);
+  ASSERT_EQ(widget_layout_self(btn), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(btn, "y", 0), 10);
+  widget_set_self_layout_params(btn, NULL, "m", NULL, "50");
+  ASSERT_EQ(widget_layout_self(btn), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(btn, "y", 0), 25);
+  ASSERT_EQ(widget_get_prop_int(btn, "h", 0), 50);
 }
