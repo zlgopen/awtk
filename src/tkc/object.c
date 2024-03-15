@@ -295,7 +295,7 @@ ret_t tk_object_set_prop_pointer_ex(tk_object_t* obj, const char* name, void* va
   ret_t ret = RET_OK;
   value_set_pointer_ex(&v, value, destroy);
 
-  ret = tk_object_set_prop(obj, name, &v);
+  ret = tk_object_set_prop(obj, name, value_set_pointer_ex(&v, value, destroy));
   value_reset(&v);
 
   return ret;
@@ -303,9 +303,8 @@ ret_t tk_object_set_prop_pointer_ex(tk_object_t* obj, const char* name, void* va
 
 ret_t tk_object_set_prop_object(tk_object_t* obj, const char* name, tk_object_t* value) {
   value_t v;
-  value_set_object(&v, value);
 
-  return tk_object_set_prop(obj, name, &v);
+  return tk_object_set_prop(obj, name, value_set_object(&v, value));
 }
 
 ret_t tk_object_set_prop_int(tk_object_t* obj, const char* name, int32_t value) {

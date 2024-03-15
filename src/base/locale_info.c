@@ -197,6 +197,7 @@ static ret_t locale_info_deinit(locale_info_t* locale_info) {
   assets_manager_t* am = locale_info_get_assets_manager(locale_info);
   return_value_if_fail(locale_info != NULL, RET_OK);
 
+  TKMEM_FREE(locale_info->name);
   emitter_destroy(locale_info->emitter);
   if (locale_info->strs != NULL) {
     assets_manager_unref(am, locale_info->strs);

@@ -1178,6 +1178,11 @@ TEST(Widget, get_style) {
   window_base_t* window_base = WINDOW_BASE(w);
   window_base->theme_obj = t;
   ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
+  if (b->astyle != NULL) {
+    style_destroy(b->astyle);
+    b->astyle = NULL;
+  }
+
   b->astyle = s;
 
   value_set_int(&v, 123);
@@ -1498,6 +1503,7 @@ TEST(Widget, set_text) {
 
   widget_destroy(w);
   locale_info_set(save_locale_info);
+  locale_info_destroy(locale_info);
 }
 
 TEST(Widget, tr_text) {
