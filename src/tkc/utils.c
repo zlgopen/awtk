@@ -2435,3 +2435,52 @@ value_type_t tk_basic_type_from_name(const char* type) {
 
   return VALUE_TYPE_INVALID;
 }
+
+uint32_t tk_distance(int x1, int y1, int x2, int y2) {
+  return (uint32_t)sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+}
+
+double tk_value_to_angle(double value, double min, double max, double start_angle, double end_angle,
+                         bool_t counter_clock_wise) {
+  double offset_angle = 0;
+  double range = max - min;
+  double range_angle = 0;
+  return_value_if_fail(range > 0, 0);
+
+  start_angle = TK_D2R(start_angle);
+  end_angle = TK_D2R(end_angle);
+  range_angle = end_angle - start_angle;
+  value = tk_clamp(value, min, max);
+  offset_angle = (range_angle / range) * (value - min);
+
+  if (counter_clock_wise) {
+    return end_angle - offset_angle;
+  } else {
+    return start_angle + offset_angle;
+  }
+
+  return end_angle;
+}
+
+double tk_angle(int cx, int cy, int x, int y) {
+  double angle = 0;
+  double dx = x - cx;
+  double dy = -(y - cy);
+
+  if (dx == 0) {
+    if (dy > 0) {
+      angle = M_PI / 2;
+    } else {
+      angle = -M_PI / 2;
+    }
+  } else {
+    angle = atan2(dy, dx);
+  }
+
+  if (angle < 0) {
+    angle = angle + 2 * M_PI;
+  }
+
+  return angle;
+}
+

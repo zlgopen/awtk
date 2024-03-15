@@ -1622,3 +1622,56 @@ TEST(Utils, tk_basic_type_from_name) {
   ASSERT_EQ(tk_basic_type_from_name("bool_t"), VALUE_TYPE_BOOL);
   ASSERT_EQ(tk_basic_type_from_name("unknown"), VALUE_TYPE_INVALID);
 }
+
+TEST(Utils, tk_distance) {
+  ASSERT_EQ(tk_distance(0, 0, 0, 0), 0);
+  ASSERT_EQ(tk_distance(0, 0, 1, 0), 1);
+  ASSERT_EQ(tk_distance(0, 0, 0, 1), 1);
+  ASSERT_EQ(tk_distance(0, 0, 1, 1), 1);
+  ASSERT_EQ(tk_distance(0, 0, 1, 2), 2);
+  ASSERT_EQ(tk_distance(0, 0, 2, 1), 2);
+  ASSERT_EQ(tk_distance(0, 0, 2, 2), 2);
+  ASSERT_EQ(tk_distance(0, 0, 3, 4), 5);
+  ASSERT_EQ(tk_distance(0, 0, 4, 3), 5);
+  ASSERT_EQ(tk_distance(0, 0, 4, 4), 5);
+  ASSERT_EQ(tk_distance(0, 0, 5, 5), 7);
+  ASSERT_EQ(tk_distance(0, 0, 6, 6), 8);
+  ASSERT_EQ(tk_distance(0, 0, 8, 8), 11);
+}
+
+TEST(Utils, tk_value_to_angle) {
+  int32_t v = TK_R2D(tk_value_to_angle(50, 0, 100, 0, 360, FALSE));
+  ASSERT_EQ(v, 180);
+
+  v = TK_R2D(tk_value_to_angle(0, 0, 100, 0, 360, FALSE));
+  ASSERT_EQ(v, 0);
+
+  v = TK_R2D(tk_value_to_angle(100, 0, 100, 0, 360, FALSE));
+  ASSERT_EQ(v, 360);
+
+  v = round(TK_R2D(tk_value_to_angle(50, 0, 100, 0, 360, TRUE)));
+  ASSERT_EQ(v, 180);
+
+  v = TK_R2D(tk_value_to_angle(0, 0, 100, 0, 360, TRUE));
+  ASSERT_EQ(v, 360);
+
+  v = TK_R2D(tk_value_to_angle(100, 0, 100, 0, 360, TRUE));
+  ASSERT_EQ(v, 0);
+}
+
+TEST(Utils, tk_angle) {
+  int32_t v = TK_R2D(tk_angle(0, 0, 100, 0));
+  ASSERT_EQ(v, 0);
+
+  v = TK_R2D(tk_angle(0, 0, 0, 90));
+  ASSERT_EQ(v, 270);
+
+  v = TK_R2D(tk_angle(0, 0, 0, -90));
+  ASSERT_EQ(v, 90);
+
+  v = TK_R2D(tk_angle(0, 0, -180, 0));
+  ASSERT_EQ(v, 180);
+  
+  v = TK_R2D(tk_angle(0, 0, 90, 90));
+  ASSERT_EQ(v, 315);
+}

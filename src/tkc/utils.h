@@ -1224,6 +1224,43 @@ uint32_t tk_size_of_basic_type(value_type_t type);
  */
 value_type_t tk_basic_type_from_name(const char* type);
 
+/**
+ * @method tk_distance
+ * 计算两点之间的距离。
+ * @param {int} x1 x1。
+ * @param {int} y1 y1。
+ * @param {int} x2 x2。
+ * @param {int} y2 y2。
+ * @return {uint32_t} 返回距离。
+ */
+uint32_t tk_distance(int x1, int y1, int x2, int y2);
+
+/**
+ * @method tk_value_to_angle
+ * 将value转换成角度。
+ * @param {double} value 值。
+ * @param {double} min 最小值。
+ * @param {double} max 最大值。
+ * @param {double} start_angle 开始角度。
+ * @param {double} end_angle 结束角度。
+ * @param {bool_t} counter_clock_wise 是否逆时针。
+ * @return {double} 返回角度。
+ */
+double tk_value_to_angle(double value, double min, double max, double start_angle, double end_angle,
+                         bool_t counter_clock_wise);
+
+/**
+ * @method tk_angle
+ * 计算两点之间的角度(逆时针方向为正，GUI坐标)。
+ * @param {int} cx cx。
+ * @param {int} cy cy。
+ * @param {int} x x。
+ * @param {int} y y。
+ * 
+ * @return {double} 返回角度。
+ */
+double tk_angle(int cx, int cy, int x, int y);
+
 #define TK_STRDUP(str) ((str) != NULL) ? tk_strdup(str) : NULL
 #define TK_STRNDUP(str, len) ((str) != NULL) ? tk_strndup(str, len) : NULL
 

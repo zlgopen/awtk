@@ -4,6 +4,7 @@
   * 修复内存泄露。
   * 增加fscript 函数mem_dump。
   * 修复change locale导致崩溃的问题(感谢颖健发现问题)
+  * 增加函数tk\_distance/tk\_value\_to\_angle/tk\_angle
 
 2024/03/14
   * 补充调试信息(感谢兆坤提供补丁)
