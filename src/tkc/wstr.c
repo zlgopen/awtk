@@ -310,6 +310,20 @@ ret_t wstr_set_utf8(wstr_t* str, const char* text) {
   return RET_OK;
 }
 
+ret_t wstr_append_utf8(wstr_t* str, const char* text) {
+  return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(wstr_extend(str, str->size + strlen(text) + 2) == RET_OK, RET_OOM);
+
+  if (tk_utf8_to_utf16(text, str->str + str->size, str->capacity - str->size - 1) == NULL) {
+    log_warn("wstr_append_utf8 fail, please ensure the parameters are UTF-8 encoded!\n");
+    return RET_BAD_PARAMS;
+  }
+
+  str->size = wcslen(str->str);
+
+  return RET_OK;
+}
+
 ret_t wstr_get_utf8(wstr_t* str, char* text, uint32_t size) {
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
   tk_utf8_from_utf16(str->str, text, size);

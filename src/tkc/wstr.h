@@ -229,6 +229,16 @@ ret_t wstr_insert(wstr_t* str, uint32_t offset, const wchar_t* text, uint32_t nr
 ret_t wstr_append(wstr_t* str, const wchar_t* text);
 
 /**
+ * @method wstr_append_utf8
+ * 追加UTF8字符串。
+ * @param {wstr_t*} str str对象。
+ * @param {const char*} text 要设置的字符串。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wstr_append_utf8(wstr_t* str, const char* text);
+
+/**
  * @method wstr_append_more
  * 追加多个字符串。以NULL结束。
  *

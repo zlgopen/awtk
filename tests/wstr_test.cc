@@ -555,3 +555,21 @@ TEST(WStr, append_more2) {
 
   wstr_reset(s);
 }
+
+TEST(WStr, append_utf8) {
+  wstr_t str;
+  wstr_t* s = NULL;
+  s = wstr_init(&str, 100);
+  ASSERT_EQ(wstr_append_utf8(s, "123"), RET_OK);
+  ASSERT_EQ(wstr_eq(s, L"123"), TRUE);
+
+  ASSERT_EQ(wstr_append_utf8(s, "abc"), RET_OK);
+  ASSERT_EQ(wstr_eq(s, L"123abc"), TRUE);
+
+#ifndef WIN32  
+  ASSERT_EQ(wstr_append_utf8(s, "中国"), RET_OK);
+  ASSERT_EQ(wstr_eq(s, L"123abc中国"), TRUE);
+#endif
+
+  wstr_reset(s);
+}
