@@ -427,6 +427,11 @@ static ret_t func_define_param(fscript_t* fscript, fscript_args_t* args, value_t
   return RET_OK;
 }
 
+static ret_t func_mem_dump(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  tk_mem_dump();
+  return RET_OK;
+}
+
 static ret_t func_sha256(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   str_t str;
   value_t* v = NULL;
@@ -504,6 +509,7 @@ FACTORY_TABLE_ENTRY("char_at_random", func_char_at_random)
 FACTORY_TABLE_ENTRY("flow_get", func_flow_get)
 FACTORY_TABLE_ENTRY("flow_set", func_flow_set)
 FACTORY_TABLE_ENTRY("define_param", func_define_param)
+FACTORY_TABLE_ENTRY("mem_dump", func_mem_dump)
 
 FACTORY_TABLE_END()
 
