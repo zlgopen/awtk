@@ -1775,3 +1775,15 @@ TEST(Widget, get_content_area_ex) {
 
   widget_destroy(label);
 }
+
+TEST(Widget, widget_set_text_with_double) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b = button_create(w, 0, 0, 100, 60);
+
+  ASSERT_EQ(widget_set_text_with_double(b, "%2.2lf", 12.3), RET_OK);
+  ASSERT_EQ(wstr_eq(&(b->text), L"12.30"), TRUE);
+  ASSERT_EQ(widget_set_text_with_double(b, "%2.4lfkg", 12.3), RET_OK);
+  ASSERT_EQ(wstr_eq(&(b->text), L"12.3000kg"), TRUE);
+  
+  widget_destroy(w);
+}

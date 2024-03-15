@@ -3371,6 +3371,37 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e);
  */
 ret_t widget_on_keyup(widget_t* widget, key_event_t* e);
 
+/**
+ * @method widget_set_text_with_double
+ * 设置控件的文本。
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} format 格式。
+ * @param {double} value 值。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_text_with_double(widget_t* widget, const char* format, double value);
+
+/**
+ * @method widget_draw_arc
+ * 绘制圆弧。
+ * 
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c 画布对象。
+ * @param {bool_t} bg 是否是背景。
+ * @param {double} line_width 线宽。
+ * @param {double} start_angle 开始角度。
+ * @param {double} end_angle 结束角度。
+ * @param {bool_t} counter_clock_wise 是否是逆时针。
+ * @param {const char*} line_cap 线帽。
+ * @param {double} r 半径。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_draw_arc(widget_t* widget, canvas_t* c, bool_t bg, double line_width,
+                      double start_angle, double end_angle, bool_t counter_clock_wise,
+                      const char* line_cap, double r);
+
 ret_t widget_get_offset(widget_t* widget, xy_t* out_x, xy_t* out_y);
 ret_t widget_on_wheel(widget_t* widget, wheel_event_t* e);
 ret_t widget_on_multi_gesture(widget_t* widget, multi_gesture_event_t* e);

@@ -1401,6 +1401,23 @@ ret_t vgcanvas_unbind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
  */
 ret_t vgcanvas_fbo_to_bitmap(vgcanvas_t* vg, framebuffer_object_t* fbo, bitmap_t* img,
                              const rect_t* r);
+
+/**
+ * @method vgcanvas_draw_circle
+ * 画圆。
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {double} x x坐标。
+ * @param {double} y y坐标。
+ * @param {double} r 半径。
+ * @param {color_t} color 颜色。
+ * @param {bool_t} fill 是否填充。
+ * @param {bool_t} stroke 是否画线。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_draw_circle(vgcanvas_t* vg, double x, double y, double r, color_t color, bool_t fill,
+                           bool_t stroke);
+
 ret_t fbo_to_img(framebuffer_object_t* fbo, bitmap_t* img);
 ret_t vgcanvas_set_assets_manager(vgcanvas_t* vg, assets_manager_t* assets_manager);
 ret_t vgcanvas_set_canvas(vgcanvas_t* vg, canvas_t* c);

@@ -5001,14 +5001,10 @@ ret_t widget_get_child_text_utf8(widget_t* widget, const char* name, char* text,
 
 ret_t widget_set_child_text_with_double(widget_t* widget, const char* name, const char* format,
                                         double value) {
-  char text[128];
   widget_t* child = widget_lookup(widget, name, TRUE);
   return_value_if_fail(child != NULL && format != NULL, RET_BAD_PARAMS);
 
-  memset(text, 0x00, sizeof(text));
-  tk_snprintf(text, sizeof(text) - 1, format, value);
-
-  return widget_set_text_utf8(child, text);
+  return widget_set_text_with_double(child, format, value);
 }
 
 ret_t widget_set_child_text_with_int(widget_t* widget, const char* name, const char* format,
@@ -5321,3 +5317,64 @@ widget_t* widget_find_by_path(widget_t* widget, const char* path, bool_t recursi
 
   return iter;
 }
+
+ret_t widget_set_text_with_double(widget_t* widget, const char* format, double value) {
+  char str[TK_NUM_MAX_LEN + 1];
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  if (format == NULL) {
+    format = "%.4f";
+  }
+
+  if (strchr(format, 'd') != NULL || strchr(format, 'u') != NULL || strchr(format, 'x') != NULL ||
+      strchr(format, 'X') != NULL) {
+    tk_snprintf(str, TK_NUM_MAX_LEN, format, tk_roundi(value));
+  } else {
+    tk_snprintf(str, TK_NUM_MAX_LEN, format, value);
+  }
+
+  return widget_set_text_utf8(widget, str);
+}
+
+ret_t widget_draw_arc(widget_t* widget, canvas_t* c, bool_t bg, double line_width,
+                      double start_angle, double end_angle, bool_t counter_clock_wise,
+                      const char* line_cap, double r) {
+  bitmap_t img;
+  color_t trans = color_init(0, 0, 0, 0);
+  vgcanvas_t* vg = canvas_get_vgcanvas(c);
+  style_t* style = widget != NULL ? widget->astyle : NULL;
+  color_t color = style_get_color(style, bg ? STYLE_ID_BG_COLOR : STYLE_ID_FG_COLOR, trans);
+  const char* image_name = style_get_str(style, bg ? STYLE_ID_BG_IMAGE : STYLE_ID_FG_IMAGE, NULL);
+  bool_t has_image = image_name && widget_load_image(widget, image_name, &img) == RET_OK;
+  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
+
+  if (vg != NULL && (has_image || color.rgba.a)) {
+    xy_t cx = widget->w / 2;
+    xy_t cy = widget->h / 2;
+
+    vgcanvas_save(vg);
+    vgcanvas_translate(vg, c->ox, c->oy);
+    vgcanvas_set_stroke_color(vg, color);
+    vgcanvas_set_line_width(vg, line_width);
+    if (tk_str_eq(line_cap, VGCANVAS_LINE_CAP_ROUND)) {
+      vgcanvas_set_line_cap(vg, VGCANVAS_LINE_CAP_ROUND);
+    } else if (tk_str_eq(line_cap, VGCANVAS_LINE_CAP_SQUARE)) {
+      vgcanvas_set_line_cap(vg, VGCANVAS_LINE_CAP_SQUARE);
+    } else {
+      vgcanvas_set_line_cap(vg, VGCANVAS_LINE_CAP_BUTT);
+    }
+
+    vgcanvas_begin_path(vg);
+    vgcanvas_arc(vg, cx, cy, r, start_angle, end_angle, counter_clock_wise);
+    if (has_image) {
+      vgcanvas_paint(vg, TRUE, &img);
+    } else {
+      vgcanvas_stroke(vg);
+    }
+
+    vgcanvas_restore(vg);
+  }
+
+  return RET_OK;
+}
+

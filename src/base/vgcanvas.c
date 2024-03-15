@@ -631,3 +631,23 @@ ret_t vgcanvas_set_fill_gradient(vgcanvas_t* vg, const vg_gradient_t* gradient) 
 }
 
 #include "vg_gradient.inc"
+
+ret_t vgcanvas_draw_circle(vgcanvas_t* vg, double x, double y, double r, color_t color, bool_t fill,
+                           bool_t stroke) {
+  vgcanvas_save(vg);
+  vgcanvas_set_fill_color(vg, color);
+  vgcanvas_begin_path(vg);
+  vgcanvas_arc(vg, x, y, r, 0, 2 * M_PI, FALSE);
+
+  if (fill) {
+    vgcanvas_fill(vg);
+  }
+
+  if (stroke) {
+    vgcanvas_stroke(vg);
+  }
+  vgcanvas_restore(vg);
+
+  return RET_OK;
+}
+
