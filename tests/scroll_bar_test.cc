@@ -37,10 +37,20 @@ TEST(ScrollBar, basic) {
   ASSERT_EQ(value_bool(&v1), value_bool(&v2));
 
   w1 = widget_clone(w, NULL);
-  ASSERT_EQ(widget_equal(w, w1), TRUE);
+  str_t str1;
+  str_t str2;
+  str_init(&str1, 100);
+  str_init(&str2, 100);
+
+  widget_to_xml(w, &str1);
+  widget_to_xml(w1, &str2);
+  ASSERT_STREQ(str1.str, str2.str);
+  str_reset(&str1);
+  str_reset(&str2);
 
   widget_destroy(w);
   widget_destroy(w1);
+  idle_manager_dispatch(idle_manager());
 }
 
 TEST(ScrollBar, to_xml) {

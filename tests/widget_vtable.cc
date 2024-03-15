@@ -162,7 +162,7 @@ TEST(Widget_Vtable, all_base_class) {
   ASSERT_EQ("all_base_class_on_event_before_children", s_log);
 
   s_log = "";
-  widget_vtable_on_destroy(all_base_class);
+  widget_unref(all_base_class);
   ASSERT_EQ("all_base_class_on_destroy", s_log);
 
   log_set_hook(NULL, NULL);
@@ -314,7 +314,7 @@ TEST(Widget_Vtable, empty_class) {
   ASSERT_EQ("all_base_class_on_event_before_children", s_log);
 
   s_log = "";
-  widget_vtable_on_destroy(widget);
+  widget_unref(widget);
   ASSERT_EQ("all_base_class_on_destroy", s_log);
 
   log_set_hook(NULL, NULL);
@@ -473,7 +473,7 @@ TEST(Widget_Vtable, base_class) {
   ASSERT_EQ("base_class_on_event_before_children_all_base_class_on_event_before_children", s_log);
 
   s_log = "";
-  widget_vtable_on_destroy(widget);
+  widget_unref(widget);
   ASSERT_EQ("all_base_class_on_destroy", s_log);
 
   log_set_hook(NULL, NULL);
@@ -633,7 +633,7 @@ TEST(Widget_Vtable, sun_class) {
   ASSERT_EQ("base_class_on_event_before_children_all_base_class_on_event_before_children", s_log);
 
   s_log = "";
-  widget_vtable_on_destroy(widget);
+  widget_unref(widget);
   ASSERT_EQ("sun_class_on_destroy_all_base_class_on_destroy", s_log);
 
   log_set_hook(NULL, NULL);
