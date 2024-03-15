@@ -15,6 +15,8 @@ static ret_t mbedtls_conn_client_destroy(mbedtls_conn_t* conn) {
   mbedtls_ctr_drbg_free(&(client->ctr_drbg));
   mbedtls_entropy_free(&(client->entropy));
 
+  TKMEM_FREE(conn);
+
   return RET_OK;
 }
 
