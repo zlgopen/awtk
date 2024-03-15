@@ -490,9 +490,9 @@ static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
   return_value_if_fail(fm != NULL && imm != NULL, RET_BAD_PARAMS);
 
-  assets_manager_clear_all_cache(am);
   font_manager_unload_all(fm);
   image_manager_unload_all(imm);
+  assets_manager_clear_font_cache(am);
 
   if (widget_count_children(widget) > 0) {
     widget_reset_canvas(widget_get_child(widget, 0));

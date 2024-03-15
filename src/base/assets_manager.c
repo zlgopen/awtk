@@ -625,6 +625,12 @@ ret_t assets_manager_clear_all_cache(assets_manager_t* am) {
   return RET_OK;
 }
 
+ret_t assets_manager_clear_font_cache(assets_manager_t* am) {
+  assets_manager_clear_cache(am, ASSET_TYPE_FONT);
+
+  return RET_OK;
+}
+
 ret_t assets_manager_set_theme(assets_manager_t* am, const char* theme) {
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
 
