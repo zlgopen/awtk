@@ -25,80 +25,41 @@
 #include "base/image_manager.h"
 #include "progress_circle/progress_circle.h"
 
+static float_t progress_circle_get_radius(widget_t* widget);
 static ret_t progress_circle_on_paint_background(widget_t* widget, canvas_t* c) {
-  bitmap_t img;
-  style_t* style = widget->astyle;
-  color_t trans = color_init(0, 0, 0, 0);
-  vgcanvas_t* vg = canvas_get_vgcanvas(c);
+  float_t r = 0;
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
-  color_t color = style_get_color(style, STYLE_ID_BG_COLOR, trans);
-  const char* image_name = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
-  bool_t has_image = image_name && widget_load_image(widget, image_name, &img) == RET_OK;
+  return_value_if_fail(progress_circle != NULL, RET_BAD_PARAMS);
 
-  if (vg != NULL && (has_image || color.rgba.a)) {
-    xy_t cx = widget->w / 2;
-    xy_t cy = widget->h / 2;
-    float_t r = tk_min(cx, cy) - progress_circle->line_width / 2;
-    vgcanvas_save(vg);
-    vgcanvas_translate(vg, c->ox, c->oy);
-    vgcanvas_set_stroke_color(vg, color);
-    vgcanvas_set_line_width(vg, progress_circle->line_width);
-    vgcanvas_begin_path(vg);
-    vgcanvas_arc(vg, cx, cy, r, 0, M_PI * 2, FALSE);
-    if (has_image) {
-      vgcanvas_paint(vg, TRUE, &img);
-    } else {
-      vgcanvas_stroke(vg);
-    }
+  r = progress_circle_get_radius(widget);
+  return widget_draw_arc_at_center(widget, c, TRUE, progress_circle->line_width, 0, M_PI * 2,
+                                   progress_circle->counter_clock_wise, progress_circle->line_cap,
+                                   r);
+}
 
-    vgcanvas_restore(vg);
+static ret_t progress_circle_update_text(widget_t* widget) {
+  const char* unit = NULL;
+  const char* format = NULL;
+  progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
+  return_value_if_fail(progress_circle != NULL, RET_BAD_PARAMS);
+
+  unit = widget_get_prop_str(widget, PROGRESS_CIRCLE_PROP_UNIT, NULL);
+  format = progress_circle->format ? progress_circle->format : "%d";
+  widget_set_text_with_double(widget, format, progress_circle->value);
+  if (unit != NULL) {
+    wstr_append_utf8(&(widget->text), unit);
   }
 
   return RET_OK;
 }
 
-static ret_t progress_circle_update_text(widget_t* widget) {
-  char format[TK_NUM_MAX_LEN + 1];
-  char str[TK_NUM_MAX_LEN + 1];
-  progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
-  return_value_if_fail(progress_circle != NULL, RET_BAD_PARAMS);
-
-  const char* unit = widget_get_prop_str(widget, PROGRESS_CIRCLE_PROP_UNIT, NULL);
-  if (progress_circle->format == NULL) {
-    const char* temp = unit != NULL ? unit : "";
-    tk_snprintf(format, TK_NUM_MAX_LEN, "%u%s", (uint32_t)progress_circle->value, temp);
-  } else {
-    uint32_t len = tk_strlen(progress_circle->format);
-    tk_strncpy_s(format, TK_NUM_MAX_LEN, progress_circle->format, len);
-  }
-
-  if (strchr(format, 'd') != NULL || strchr(format, 'x') != NULL || strchr(format, 'X') != NULL) {
-    tk_snprintf(str, TK_NUM_MAX_LEN, format, tk_roundi(progress_circle->value));
-  } else {
-    tk_snprintf(str, TK_NUM_MAX_LEN, format, progress_circle->value);
-  }
-
-  return widget_set_text_utf8(widget, str);
-}
-
 static float_t progress_circle_value_to_angle(widget_t* widget, float_t value) {
-  float_t end_angle = 0;
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
-  ENSURE(progress_circle);
-  bool_t ccw = progress_circle->counter_clock_wise;
-  float_t start_angle = TK_D2R(progress_circle->start_angle);
-  float_t angle = (M_PI * 2 * value) / progress_circle->max;
+  return_value_if_fail(progress_circle != NULL, 0);
 
-  if (ccw) {
-    end_angle = start_angle - angle + M_PI * 2;
-    if (fabs(end_angle - start_angle) < 0.001f) {
-      end_angle = start_angle + 0.001f;
-    }
-  } else {
-    end_angle = start_angle + angle;
-  }
-
-  return end_angle;
+  return tk_value_to_angle(progress_circle->value, 0, progress_circle->max,
+                           progress_circle->start_angle, progress_circle->start_angle + 360,
+                           progress_circle->counter_clock_wise);
 }
 
 static float_t progress_circle_get_radius(widget_t* widget) {

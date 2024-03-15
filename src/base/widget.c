@@ -5336,7 +5336,7 @@ ret_t widget_set_text_with_double(widget_t* widget, const char* format, double v
   return widget_set_text_utf8(widget, str);
 }
 
-ret_t widget_draw_arc(widget_t* widget, canvas_t* c, bool_t bg, double line_width,
+ret_t widget_draw_arc_at_center(widget_t* widget, canvas_t* c, bool_t bg, double line_width,
                       double start_angle, double end_angle, bool_t counter_clock_wise,
                       const char* line_cap, double r) {
   bitmap_t img;

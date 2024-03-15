@@ -5,7 +5,8 @@
   * 增加fscript 函数mem_dump。
   * 修复change locale导致崩溃的问题(感谢颖健发现问题)
   * 增加函数tk\_distance/tk\_value\_to\_angle/tk\_angle
-  * 增加函数vgcanvas\_draw\_circle/widget\_set\_text\_with\_double/widget\_draw\_arc/widget\_draw\_arc
+  * 增加函数vgcanvas\_draw\_circle/widget\_set\_text\_with\_double/widget\_draw\_arc/widget\_draw\_arc\_at\_center
+  * 增加函数wstr\_append\_utf8
 
 2024/03/14
   * 补充调试信息(感谢兆坤提供补丁)

@@ -3383,8 +3383,8 @@ ret_t widget_on_keyup(widget_t* widget, key_event_t* e);
 ret_t widget_set_text_with_double(widget_t* widget, const char* format, double value);
 
 /**
- * @method widget_draw_arc
- * 绘制圆弧。
+ * @method widget_draw_arc_at_center
+ * 以控件中心为中心绘制圆弧。
  * 
  * @param {widget_t*} widget 控件对象。
  * @param {canvas_t*} c 画布对象。
@@ -3398,7 +3398,7 @@ ret_t widget_set_text_with_double(widget_t* widget, const char* format, double v
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_draw_arc(widget_t* widget, canvas_t* c, bool_t bg, double line_width,
+ret_t widget_draw_arc_at_center(widget_t* widget, canvas_t* c, bool_t bg, double line_width,
                       double start_angle, double end_angle, bool_t counter_clock_wise,
                       const char* line_cap, double r);
 
