@@ -57,7 +57,7 @@ static float_t progress_circle_value_to_angle(widget_t* widget, float_t value) {
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
   return_value_if_fail(progress_circle != NULL, 0);
 
-  return tk_value_to_angle(progress_circle->value, 0, progress_circle->max,
+  return tk_value_to_angle(value, 0, progress_circle->max,
                            progress_circle->start_angle, progress_circle->start_angle + 360,
                            progress_circle->counter_clock_wise);
 }
@@ -245,6 +245,7 @@ ret_t progress_circle_set_value(widget_t* widget, float_t value) {
       rect_t r = progress_circle_calc_line_dirty_rect(widget, old_value, value);
       rect_merge(&progress_circle->dirty_rect, &r);
       rect_merge(&r, &progress_circle->last_dirty_rect);
+
       widget_invalidate_force(widget, &r);
 
       progress_circle->value = value;
