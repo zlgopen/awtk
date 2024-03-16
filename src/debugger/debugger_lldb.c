@@ -669,8 +669,15 @@ static tk_object_t* debugger_lldb_create_attach_req(debugger_t* debugger, const 
         log_debug("no targetCreateCommands\n");
       }
     } else {
+      uint32_t i = 0;
+      object_array_t* target_create_commands = OBJECT_ARRAY(lldb->target_create_commands);
       attach_commands = object_array_create();
+      return_value_if_fail(attach_commands != NULL, NULL);
+      
       object_array_push(attach_commands, value_set_str(&v, cmds));
+      for (i = 0; i < target_create_commands->size; i++) {
+        object_array_push(attach_commands, target_create_commands->props + i);
+      }
     }
 
     /*执行attach_commands，实现attach. WASM走这条路径。*/
