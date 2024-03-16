@@ -222,7 +222,7 @@ static ret_t func_launch(app_info_t* app, tokenizer_t* tokenizer) {
   if (tk_str_start_with(program, STR_SCHEMA_PID) || tk_str_start_with(program, STR_SCHEMA_WASM)) {
     return debugger_launch_app(app->debugger, program, work_dir, argc, argv);
   } else if (tk_str_eq(program, "wasm")) {
-    return debugger_launch_app(app->debugger, "wasm://127.0.0.1:1234", work_dir, argc, argv);
+    return debugger_launch_app(app->debugger, STR_LLDB_CONFIG, work_dir, argc, argv);
   }
 
   while (tokenizer_has_more(tokenizer)) {

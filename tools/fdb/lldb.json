@@ -1,6 +1,10 @@
 {
     "initCommands": [
         "command script import \"/Users/jim/work/awtk-root/awtk/tools/fdb/awplc.py\"",
-        "target stop-hook add -P awplc.StopHook" 
+        "target stop-hook add -P awplc.StopHook"
+    ],
+    "targetCreateCommands": [
+        "process connect -p wasm connect://192.168.31.87:1234",
+        "add-dsym /Users/jim/work/awtk-root/awplc/wasm-rt/nobody.wasm"
     ]
 }

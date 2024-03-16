@@ -108,7 +108,7 @@ static uint32_t debugger_lldb_get_timeout(debugger_t* debugger) {
   debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
   return_value_if_fail(lldb != NULL, 3000);
 
-  return lldb->timeout; 
+  return lldb->timeout;
 }
 
 #define LLDB_REQUEST_TIMEOUT debugger_lldb_get_timeout(debugger)
@@ -133,6 +133,27 @@ static ret_t debugger_lldb_load_init_commands(debugger_lldb_t* lldb, conf_node_t
   return RET_OK;
 }
 
+static ret_t debugger_lldb_load_target_create_commands_commands(debugger_lldb_t* lldb,
+                                                                conf_node_t* node) {
+  conf_node_t* iter = conf_node_get_first_child(node);
+  object_array_clear_props(lldb->target_create_commands);
+
+  while (iter != NULL) {
+    value_t v;
+    if (conf_node_get_value(iter, &v) == RET_OK) {
+      const char* cmd = value_str(&v);
+      if (cmd != NULL) {
+        log_debug("target create command: %s\n", cmd);
+        object_array_push(lldb->target_create_commands, value_set_str(&v, cmd));
+      }
+    }
+
+    iter = iter->next;
+  }
+
+  return RET_OK;
+}
+
 static ret_t debugger_lldb_load_config(debugger_t* debugger, const char* filename) {
   ret_t ret = RET_FAIL;
   conf_doc_t* doc = NULL;
@@ -147,6 +168,11 @@ static ret_t debugger_lldb_load_config(debugger_t* debugger, const char* filenam
     node = conf_node_find_child(doc->root, "initCommands");
     if (node != NULL) {
       ret = debugger_lldb_load_init_commands(lldb, node);
+    }
+
+    node = conf_node_find_child(doc->root, "targetCreateCommands");
+    if (node != NULL) {
+      ret = debugger_lldb_load_target_create_commands_commands(lldb, node);
     }
   }
   TK_OBJECT_UNREF(conf);
@@ -502,6 +528,7 @@ static ret_t debugger_lldb_init(debugger_t* debugger) {
     ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_INITIALIZE, 3000);
   }
   lldb->init_commands = object_array_create();
+  lldb->target_create_commands = object_array_create();
   TK_OBJECT_UNREF(req);
 
   return ret;
@@ -576,7 +603,7 @@ static tk_object_t* debugger_lldb_create_launch_req(debugger_t* debugger, const 
     value_set_str(&v, argv[i]);
     object_array_push(args, &v);
   }
-  
+
   if (lldb->init_commands != NULL) {
     tk_object_set_prop_object(arguments, LLDB_KEY_INIT_COMMANDS, lldb->init_commands);
   }
@@ -599,7 +626,8 @@ static ret_t debugger_lldb_launch_app_impl(debugger_t* debugger, const char* pro
   return_value_if_fail(req != NULL, RET_BAD_PARAMS);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_LAUNCH, LLDB_REQUEST_TIMEOUT);
+    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_LAUNCH,
+                                                       LLDB_REQUEST_TIMEOUT);
     if (ret == RET_OK) {
       debugger_lldb_simple_command(debugger, LLDB_CMD_CONFIGURATION_DONE);
       debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_RUNNING);
@@ -632,10 +660,20 @@ static tk_object_t* debugger_lldb_create_attach_req(debugger_t* debugger, const 
 
   if (cmds != NULL) {
     value_t v;
-    tk_object_t* attach_commands = object_array_create();
+    tk_object_t* attach_commands = NULL;
+    if (tk_str_eq(cmds, STR_LLDB_CONFIG)) {
+      attach_commands = lldb->target_create_commands;
+      tk_object_ref(attach_commands);
+      log_debug("use attach commands in config\n");
+      if (OBJECT_ARRAY(attach_commands)->size == 0) {
+        log_debug("no targetCreateCommands\n");
+      }
+    } else {
+      attach_commands = object_array_create();
+      object_array_push(attach_commands, value_set_str(&v, cmds));
+    }
 
     /*执行attach_commands，实现attach. WASM走这条路径。*/
-    object_array_push(attach_commands, value_set_str(&v, cmds));
     tk_object_set_prop_object(arguments, LLDB_KEY_ATTACH_COMMANDS, attach_commands);
     TK_OBJECT_UNREF(attach_commands);
   } else {
@@ -661,7 +699,8 @@ static ret_t debugger_lldb_attach_impl(debugger_t* debugger, const char* cmds, i
   return_value_if_fail(req != NULL, RET_BAD_PARAMS);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_ATTACH, LLDB_REQUEST_TIMEOUT);
+    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_ATTACH,
+                                                       LLDB_REQUEST_TIMEOUT);
     if (ret == RET_OK) {
       debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_RUNNING);
       debugger_lldb_update_break_points(debugger);
@@ -676,7 +715,9 @@ static ret_t debugger_lldb_attach_impl(debugger_t* debugger, const char* cmds, i
 
 static ret_t debugger_lldb_launch_app(debugger_t* debugger, const char* program, const char* cwd,
                                       int argc, char* argv[]) {
-  if (tk_str_start_with(program, STR_SCHEMA_WASM)) {
+  if (tk_str_start_with(program, STR_LLDB_CONFIG)) {
+    return debugger_lldb_attach_impl(debugger, STR_LLDB_CONFIG, -1);
+  } else if (tk_str_start_with(program, STR_SCHEMA_WASM)) {
     char cmd[MAX_PATH + 1] = {0};
     const char* p = program + strlen(STR_SCHEMA_WASM);
     return_value_if_fail(p != NULL, RET_BAD_PARAMS);
@@ -1491,6 +1532,7 @@ static ret_t debugger_lldb_on_destroy(tk_object_t* obj) {
   TK_OBJECT_UNREF(lldb->sources);
   TK_OBJECT_UNREF(lldb->callstack);
   TK_OBJECT_UNREF(lldb->init_commands);
+  TK_OBJECT_UNREF(lldb->target_create_commands);
   TK_OBJECT_UNREF(lldb->source_break_points);
   TK_OBJECT_UNREF(lldb->resps);
   darray_deinit(&(lldb->functions_break_points));

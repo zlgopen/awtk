@@ -70,6 +70,7 @@ typedef struct _debugger_lldb_t {
   /*源代码行号断点*/
   tk_object_t* source_break_points;
   tk_object_t* init_commands;
+  tk_object_t* target_create_commands;
   uint32_t timeout;
 } debugger_lldb_t;
 
@@ -96,6 +97,7 @@ debugger_t* debugger_lldb_create_ex(const char* host, uint32_t port, uint32_t ti
 
 #define STR_SCHEMA_PID "pid://"
 #define STR_SCHEMA_WASM "wasm://"
+#define STR_LLDB_CONFIG STR_SCHEMA_WASM"config"
 
 END_C_DECLS
 
