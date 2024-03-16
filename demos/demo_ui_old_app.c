@@ -1292,6 +1292,19 @@ static ret_t on_screen_saver(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_key_long_pressed(void* ctx, event_t* e) {
+  key_event_t* evt = (key_event_t*)e;
+  if (evt->key == TK_KEY_1) {
+    log_debug("TK_KEY_1 long pressed\n");
+  } else if (evt->key == TK_KEY_2) {
+    log_debug("TK_KEY_2 long pressed\n");
+  } else if (evt->key == TK_KEY_3) {
+    log_debug("TK_KEY_3 long pressed\n");
+  }
+
+  return RET_OK;
+}
+
 static ret_t on_key_record_play_events(void* ctx, event_t* e) {
   key_event_t* evt = (key_event_t*)e;
 #ifdef WITH_EVENT_RECORDER_PLAYER
@@ -1413,6 +1426,14 @@ ret_t application_init() {
   widget_on(wm, EVT_REQUEST_QUIT_APP, wm_on_request_quit, wm);
   widget_on(wm, EVT_IM_START, wm_on_ime_start, wm);
   widget_on(wm, EVT_IM_STOP, wm_on_ime_stop, wm);
+  widget_on(wm, EVT_KEY_LONG_PRESS, on_key_long_pressed, wm);
+
+  {
+    input_device_status_t* ids = window_manager_get_input_device_status(wm);
+    input_device_status_set_key_long_press_time(ids, TK_KEY_1, 2000);
+    input_device_status_set_key_long_press_time(ids, TK_KEY_2, 4000);
+    input_device_status_set_key_long_press_time(ids, TK_KEY_3, 6000);
+  }
 
   fs_get_user_storage_path(os_fs(), path);
   log_debug("user storage path:%s\n", path);

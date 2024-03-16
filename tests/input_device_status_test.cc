@@ -19,6 +19,7 @@ TEST(InputDeviceStatus, basic) {
   ASSERT_EQ(ids->pressed, TK_FALSE);
   ASSERT_EQ(ids->last_x, 0);
   ASSERT_EQ(ids->last_y, 0);
+  input_device_status_deinit(ids);
 }
 
 static string s_log;
@@ -68,6 +69,7 @@ TEST(InputDeviceStatus, alt) {
   ASSERT_EQ(s_log, "keyup");
 
   widget_destroy(w);
+  input_device_status_deinit(ids);
 }
 
 TEST(InputDeviceStatus, ctrl) {
@@ -100,6 +102,7 @@ TEST(InputDeviceStatus, ctrl) {
   ASSERT_EQ(s_log, "keyup");
 
   widget_destroy(w);
+  input_device_status_deinit(ids);
 }
 
 TEST(InputDeviceStatus, capslock) {
@@ -134,6 +137,7 @@ TEST(InputDeviceStatus, capslock) {
   ASSERT_EQ(ids->capslock, TK_FALSE);
 
   widget_destroy(w);
+  input_device_status_deinit(ids);
 }
 
 TEST(InputDeviceStatus, numlock) {
@@ -168,6 +172,7 @@ TEST(InputDeviceStatus, numlock) {
   ASSERT_EQ(ids->numlock, TK_FALSE);
 
   widget_destroy(w);
+  input_device_status_deinit(ids);
 }
 
 TEST(InputDeviceStatus, pointer) {
@@ -208,6 +213,7 @@ TEST(InputDeviceStatus, pointer) {
   ASSERT_EQ(s_log, "pointerup");
 
   widget_destroy(w);
+  input_device_status_deinit(ids);
 }
 
 TEST(InputDeviceStatus, should_abort) {
@@ -241,4 +247,28 @@ TEST(InputDeviceStatus, should_abort) {
   ASSERT_EQ(s_log, "keydown");
 
   widget_destroy(w);
+  input_device_status_deinit(ids);
+}
+
+TEST(InputDeviceStatus, long_press) {
+  key_long_press_info_t* info = NULL;
+  input_device_status_t input_device_status;
+  input_device_status_t* ids = input_device_status_init(&input_device_status);
+
+  ASSERT_EQ(input_device_status_set_key_long_press_time(ids, TK_KEY_0, 2000), RET_OK);
+  info = input_device_status_find_key_long_press_info(ids, TK_KEY_0);
+  ASSERT_EQ(info->key, TK_KEY_0);
+  ASSERT_EQ(info->time, 2000);
+  
+  ASSERT_EQ(input_device_status_set_key_long_press_time(ids, TK_KEY_1, 3000), RET_OK);
+  info = input_device_status_find_key_long_press_info(ids, TK_KEY_1);
+  ASSERT_EQ(info->key, TK_KEY_1);
+  ASSERT_EQ(info->time, 3000);
+
+  ASSERT_EQ(input_device_status_set_key_long_press_time(ids, TK_KEY_2, 4000), RET_OK);
+  info = input_device_status_find_key_long_press_info(ids, TK_KEY_2);
+  ASSERT_EQ(info->key, TK_KEY_2);
+  ASSERT_EQ(info->time, 4000);
+
+  input_device_status_deinit(ids);
 }

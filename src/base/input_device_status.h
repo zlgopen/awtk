@@ -72,6 +72,7 @@ typedef struct _input_device_status_t {
   widget_t* widget;
   uint32_t long_press_check_timer;
   key_pressed_info_t pressed_info[MAX_PRESSED_KEYS_NR + 1];
+  darray_t key_long_press_time;
 } input_device_status_t;
 
 /**
@@ -83,6 +84,18 @@ typedef struct _input_device_status_t {
  * @return {input_device_status_t*} 返回输入设备状态管理器对象。
  */
 input_device_status_t* input_device_status_init(input_device_status_t* ids);
+
+/**
+ * @method input_device_status_set_key_long_press_time
+ * 设置按键长按时间。
+ * @param {input_device_status_t*} ids 输入设备状态管理器对象。
+ * @param {uint32_t} key 按键。
+ * @param {uint32_t} time 长按时间。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+*/
+ret_t input_device_status_set_key_long_press_time(input_device_status_t* ids, uint32_t key,
+                                                  uint32_t time);
 
 /**
  * @method input_device_status_on_input_event
@@ -153,6 +166,24 @@ ret_t input_device_status_on_pointer_leave(input_device_status_t* ids, widget_t*
  */
 ret_t input_device_status_deinit(input_device_status_t* ids);
 
+/*public for test*/
+
+
+typedef struct _key_long_press_info_t {
+  uint32_t key;
+  uint32_t time;
+} key_long_press_info_t;
+
+/**
+ * @method input_device_status_find_key_long_press_info
+ * 查找按键的长按信息。
+ * @param {input_device_status_t*} ids 输入设备状态管理器对象。
+ * @param {uint32_t} key 按键。
+ * 
+ * @return {key_long_press_info_t*} 返回按键的长按信息。
+ */
+key_long_press_info_t* input_device_status_find_key_long_press_info(input_device_status_t* ids,
+                                                           uint32_t key);
 END_C_DECLS
 
 #endif /*TK_INPUT_DEVICE_STATUS_H*/

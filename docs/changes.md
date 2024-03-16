@@ -4,7 +4,8 @@
   * 重构window manager将input device status对象放到基类。
   * 完善debugger_lldb修改请求超时时间。
   * 完善debugger_lldb支持targetCreateCommands
-
+  * 支持为指定的键设置长按时间 [如何为指定的键设置长按时间](how_to_set_key_long_press_time.md)
+  
 2024/03/15
   * 修复内存泄露。
   * 增加fscript 函数mem_dump。

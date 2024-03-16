@@ -26,13 +26,61 @@
 #include "base/window_manager.h"
 #include "base/input_device_status.h"
 
+static key_long_press_info_t* key_long_press_info_create(uint32_t key, uint32_t time) {
+  key_long_press_info_t* info = TKMEM_ZALLOC(key_long_press_info_t);
+  return_value_if_fail(info != NULL, NULL);
+
+  info->key = key;
+  info->time = time;
+
+  return info;
+}
+
+static void key_long_press_info_destroy(key_long_press_info_t* info) {
+  TKMEM_FREE(info);
+}
+
+key_long_press_info_t* input_device_status_find_key_long_press_info(input_device_status_t* ids,
+                                                           uint32_t key) {
+  uint32_t i = 0;
+  darray_t* arr = NULL;
+  return_value_if_fail(ids != NULL, NULL);
+
+  arr = &(ids->key_long_press_time);
+  for (i = 0; i < arr->size; i++) {
+    key_long_press_info_t* iter = (key_long_press_info_t*)darray_get(arr, i);
+    if (iter->key == key) {
+      return iter;
+    }
+  }
+
+  return NULL;
+}
+
 static ret_t input_device_status_init_key_event(input_device_status_t* ids, key_event_t* evt);
 
 input_device_status_t* input_device_status_init(input_device_status_t* ids) {
   return_value_if_fail(ids != NULL, NULL);
   memset(ids, 0x00, sizeof(input_device_status_t));
+  darray_init(&(ids->key_long_press_time), 2, (tk_destroy_t)key_long_press_info_destroy, NULL);
 
   return ids;
+}
+
+ret_t input_device_status_set_key_long_press_time(input_device_status_t* ids, uint32_t key,
+                                                  uint32_t time) {
+  key_long_press_info_t* info = input_device_status_find_key_long_press_info(ids, key);
+  return_value_if_fail(ids != NULL, RET_BAD_PARAMS);
+
+  if (info == NULL) {
+    info = key_long_press_info_create(key, time);
+    return_value_if_fail(info != NULL, RET_OOM);
+    darray_push(&(ids->key_long_press_time), info);
+  } else {
+    info->time = time;
+  }
+
+  return RET_OK;
 }
 
 ret_t input_device_status_deinit(input_device_status_t* ids) {
@@ -42,6 +90,7 @@ ret_t input_device_status_deinit(input_device_status_t* ids) {
     timer_remove(ids->long_press_check_timer);
     ids->long_press_check_timer = TK_INVALID_ID;
   }
+  darray_deinit(&(ids->key_long_press_time));
 
   return RET_OK;
 }
@@ -95,7 +144,10 @@ static ret_t input_device_status_dispatch_long_press(input_device_status_t* ids)
     key_pressed_info_t* iter = ids->pressed_info + i;
     if (iter->key && !iter->emitted && !iter->should_abort) {
       uint64_t t = now - iter->time;
-      if (t >= TK_KEY_LONG_PRESS_TIME) {
+      key_long_press_info_t* info = input_device_status_find_key_long_press_info(ids, iter->key);
+      uint32_t long_press_time = info ? info->time : TK_KEY_LONG_PRESS_TIME;
+
+      if (t >= long_press_time) {
         window_manager_t* wm = WINDOW_MANAGER(window_manager());
         event_t* e = key_event_init(&evt, EVT_KEY_LONG_PRESS, wm->global_emitter, iter->key);
 
@@ -105,7 +157,7 @@ static ret_t input_device_status_dispatch_long_press(input_device_status_t* ids)
           widget_on_keydown(widget, &evt);
         }
 
-        log_debug("long press:%d\n", iter->key);
+        log_debug("long press:%d long_press_time=%d\n", iter->key, long_press_time);
         iter->emitted = TRUE;
       }
     }
