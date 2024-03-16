@@ -28,7 +28,10 @@
 #include "streams/inet/iostream_tcp.h"
 #include "tkc/object_array.h"
 
-#define N_WRITE_TIMEOUT 5000
+#ifndef LLDB_REQUEST_TIMEOUT
+#define LLDB_REQUEST_TIMEOUT 3000
+#endif/*LLDB_REQUEST_TIMEOUT*/
+
 #define STR_CONTENT_LENGTH "Content-Length:"
 
 #define LLDB_CMD_NEXT "next"
@@ -290,13 +293,13 @@ static ret_t debugger_lldb_write_req(debugger_t* debugger, tk_object_t* obj) {
 
   tk_object_to_json(obj, body, 2, 0, FALSE);
   str_format(header, 200, "%s %u\r\n\r\n", STR_CONTENT_LENGTH, body->size);
-  ret = tk_ostream_write_len(out, header->str, header->size, N_WRITE_TIMEOUT);
+  ret = tk_ostream_write_len(out, header->str, header->size, LLDB_REQUEST_TIMEOUT);
 
   if (ret == header->size) {
 #if SHOW_PROTOCOL_MESSAGES
     log_debug("send:%s\n", body->str);
 #endif /*SHOW_PROTOCOL_MESSAGES*/
-    ret = tk_ostream_write_len(out, body->str, body->size, N_WRITE_TIMEOUT);
+    ret = tk_ostream_write_len(out, body->str, body->size, LLDB_REQUEST_TIMEOUT);
   }
 
   return RET_OK;
@@ -320,7 +323,7 @@ static int32_t debugger_lldb_read_content_length(debugger_t* debugger) {
   tk_istream_t* in = tk_iostream_get_istream(lldb->io);
 
   str_clear(header);
-  while (tk_istream_read_len(in, &c, 1, N_WRITE_TIMEOUT) == 1) {
+  while (tk_istream_read_len(in, &c, 1, LLDB_REQUEST_TIMEOUT) == 1) {
     str_append_char(header, c);
     switch (state) {
       case STATE_KEY: {
@@ -377,7 +380,7 @@ static tk_object_t* debugger_lldb_read_resp(debugger_t* debugger) {
 
     str_clear(body);
     goto_error_if_fail(str_extend(body, content_length + 1) == RET_OK);
-    goto_error_if_fail(tk_istream_read_len(in, body->str, content_length, N_WRITE_TIMEOUT) ==
+    goto_error_if_fail(tk_istream_read_len(in, body->str, content_length, LLDB_REQUEST_TIMEOUT) ==
                        content_length);
     body->size = content_length;
     body->str[content_length] = '\0';
@@ -438,6 +441,8 @@ static ret_t debugger_lldb_dispatch_until_get_resp_simple(debugger_t* debugger, 
     log_debug("%s:%s\n", cmd, success ? "true" : "false");
     TK_OBJECT_UNREF(resp);
     return success ? RET_OK : RET_FAIL;
+  } else {
+    log_debug("%s failed\n", cmd);
   }
 
   return RET_FAIL;
@@ -589,7 +594,7 @@ static ret_t debugger_lldb_launch_app_impl(debugger_t* debugger, const char* pro
   return_value_if_fail(req != NULL, RET_BAD_PARAMS);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_LAUNCH, 60000);
+    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_LAUNCH, LLDB_REQUEST_TIMEOUT);
     if (ret == RET_OK) {
       debugger_lldb_simple_command(debugger, LLDB_CMD_CONFIGURATION_DONE);
       debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_RUNNING);
@@ -651,7 +656,7 @@ static ret_t debugger_lldb_attach_impl(debugger_t* debugger, const char* cmds, i
   return_value_if_fail(req != NULL, RET_BAD_PARAMS);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_ATTACH, 60000);
+    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_ATTACH, LLDB_REQUEST_TIMEOUT);
     if (ret == RET_OK) {
       debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_RUNNING);
       debugger_lldb_update_break_points(debugger);
