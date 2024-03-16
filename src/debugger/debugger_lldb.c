@@ -28,10 +28,6 @@
 #include "streams/inet/iostream_tcp.h"
 #include "tkc/object_array.h"
 
-#ifndef LLDB_REQUEST_TIMEOUT
-#define LLDB_REQUEST_TIMEOUT 3000
-#endif/*LLDB_REQUEST_TIMEOUT*/
-
 #define STR_CONTENT_LENGTH "Content-Length:"
 
 #define LLDB_CMD_NEXT "next"
@@ -107,6 +103,15 @@ static tk_object_t* debugger_lldb_get_callstack_impl(debugger_t* debugger, uint3
                                                      uint32_t levels);
 static tk_object_t* object_find_variable_value(tk_object_t* obj, const char* name,
                                                const char* full_name);
+
+static uint32_t debugger_lldb_get_timeout(debugger_t* debugger) {
+  debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
+  return_value_if_fail(lldb != NULL, 3000);
+
+  return lldb->timeout; 
+}
+
+#define LLDB_REQUEST_TIMEOUT debugger_lldb_get_timeout(debugger)
 
 static ret_t debugger_lldb_load_init_commands(debugger_lldb_t* lldb, conf_node_t* node) {
   conf_node_t* iter = conf_node_get_first_child(node);
@@ -1500,13 +1505,14 @@ static const object_vtable_t s_object_debugger_lldb_vtable = {
     .is_collection = FALSE,
     .on_destroy = debugger_lldb_on_destroy};
 
-debugger_t* debugger_lldb_create_impl(tk_iostream_t* io) {
+debugger_t* debugger_lldb_create_impl(tk_iostream_t* io, uint32_t timeout) {
   debugger_lldb_t* debugger = NULL;
   return_value_if_fail(io != NULL, NULL);
   debugger = (debugger_lldb_t*)tk_object_create(&s_object_debugger_lldb_vtable);
   return_value_if_fail(debugger != NULL, NULL);
 
   debugger->io = io;
+  debugger->timeout = timeout;
   TK_OBJECT_REF(debugger->io);
   debugger->debugger.vt = &s_debugger_lldb_vtable;
   str_init(&(debugger->body), 10000);
@@ -1522,7 +1528,7 @@ debugger_t* debugger_lldb_create_impl(tk_iostream_t* io) {
   return (debugger_t*)debugger;
 }
 
-debugger_t* debugger_lldb_create(const char* host, uint32_t port) {
+debugger_t* debugger_lldb_create_ex(const char* host, uint32_t port, uint32_t timeout) {
   int32_t sock = 0;
   tk_iostream_t* io = NULL;
   debugger_t* debugger = NULL;
@@ -1533,7 +1539,7 @@ debugger_t* debugger_lldb_create(const char* host, uint32_t port) {
 
   io = tk_iostream_tcp_create(sock);
   if (io != NULL) {
-    debugger = debugger_lldb_create_impl(io);
+    debugger = debugger_lldb_create_impl(io, timeout);
     TK_OBJECT_UNREF(io);
     debugger_lldb_init(debugger);
   } else {
@@ -1541,4 +1547,8 @@ debugger_t* debugger_lldb_create(const char* host, uint32_t port) {
   }
 
   return debugger;
+}
+
+debugger_t* debugger_lldb_create(const char* host, uint32_t port) {
+  return debugger_lldb_create_ex(host, port, 3000);
 }

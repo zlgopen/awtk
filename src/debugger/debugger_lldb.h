@@ -70,6 +70,7 @@ typedef struct _debugger_lldb_t {
   /*源代码行号断点*/
   tk_object_t* source_break_points;
   tk_object_t* init_commands;
+  uint32_t timeout;
 } debugger_lldb_t;
 
 /**
@@ -81,6 +82,17 @@ typedef struct _debugger_lldb_t {
  * @return {debugger_t*} 返回debugger对象。
  */
 debugger_t* debugger_lldb_create(const char* host, uint32_t port);
+
+/**
+ * @method debugger_lldb_create_ex
+ * 创建调试器TCP客户端对象。
+ * @param {const char*} host 目标主机。
+ * @param {uint32_t} port 目标端口。
+ * @param {uint32_t} timeout 超时时间。
+ *
+ * @return {debugger_t*} 返回debugger对象。
+ */
+debugger_t* debugger_lldb_create_ex(const char* host, uint32_t port, uint32_t timeout);
 
 #define STR_SCHEMA_PID "pid://"
 #define STR_SCHEMA_WASM "wasm://"

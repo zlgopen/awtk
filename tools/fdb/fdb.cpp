@@ -315,7 +315,7 @@ static ret_t func_target(app_info_t* app, tokenizer_t* tokenizer) {
 
   TK_OBJECT_UNREF(app->debugger);
   if (tk_str_eq(target, "lldb")) {
-    debugger = debugger_lldb_create(host, DEBUGGER_TCP_PORT);
+    debugger = debugger_lldb_create_ex(host, DEBUGGER_TCP_PORT, 5000);
   } else {
     const char* code_id = DEBUGGER_DEFAULT_CODE_ID;
 
