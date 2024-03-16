@@ -39,7 +39,6 @@ typedef struct _window_manager_simple_t {
   uint32_t last_paint_cost;
 
   widget_t* system_bar;
-  input_device_status_t input_device_status;
 
   widget_t* prev_win;
   native_window_t* native_window;

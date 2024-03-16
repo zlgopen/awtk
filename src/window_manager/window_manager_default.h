@@ -54,7 +54,6 @@ typedef struct _window_manager_default_t {
   char cursor[TK_NAME_LEN + 1];
   rect_t r_cursor;
 
-  input_device_status_t input_device_status;
   uint32_t screen_saver_timer_id;
   uint32_t screen_saver_time;
 

@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/03/16
+  * 重构window manager将input device status对象放到基类。
+
 2024/03/15
   * 修复内存泄露。
   * 增加fscript 函数mem_dump。

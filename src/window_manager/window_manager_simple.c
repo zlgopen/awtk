@@ -339,19 +339,20 @@ static ret_t window_manager_simple_dispatch_input_event(widget_t* widget, event_
 static ret_t window_manager_simple_get_pointer(widget_t* widget, xy_t* x, xy_t* y, bool_t* pressed,
                                                bool_t* in_pointer_up) {
   window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  input_device_status_t* ids = window_manager_get_input_device_status(widget);
+  return_value_if_fail(wm != NULL && ids != NULL, RET_BAD_PARAMS);
 
   if (x != NULL) {
-    *x = wm->input_device_status.last_x;
+    *x = ids->last_x;
   }
   if (y != NULL) {
-    *y = wm->input_device_status.last_y;
+    *y = ids->last_y;
   }
   if (pressed != NULL) {
-    *pressed = wm->input_device_status.pressed;
+    *pressed = ids->pressed;
   }
   if (in_pointer_up != NULL) {
-    *in_pointer_up = wm->input_device_status.in_pointer_up;
+    *in_pointer_up = ids->in_pointer_up;
   }
 
   return RET_OK;
@@ -468,10 +469,11 @@ static ret_t window_manager_simple_post_init(widget_t* widget, wh_t w, wh_t h) {
 
 static ret_t window_manager_simple_dispatch_input_event(widget_t* widget, event_t* e) {
   window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
-  return_value_if_fail(wm != NULL && e != NULL, RET_BAD_PARAMS);
+  input_device_status_t* ids = window_manager_get_input_device_status(widget);
+  return_value_if_fail(wm != NULL && ids != NULL && e != NULL, RET_BAD_PARAMS);
 
   native_window_preprocess_event(wm->native_window, e);
-  input_device_status_on_input_event(&(wm->input_device_status), widget, e);
+  input_device_status_on_input_event(ids, widget, e);
 
   return RET_OK;
 }

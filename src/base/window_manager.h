@@ -104,14 +104,16 @@ typedef struct _window_manager_t {
    * 全局事情分发器。
    */
   emitter_t* global_emitter;
+  
 
   /*private*/
   bool_t show_fps;
+  uint32_t max_fps;
   widget_t* widget_grab_key;
   bool_t ignore_input_events;
   bool_t show_waiting_pointer_cursor;
   const window_manager_vtable_t* vt;
-  uint32_t max_fps;
+  input_device_status_t input_device_status;
   uint32_t curr_expected_sleep_time;
 } window_manager_t;
 
@@ -526,6 +528,15 @@ ret_t window_manager_destroy(widget_t* widget);
  */
 widget_t* window_manager_init(window_manager_t* wm, const widget_vtable_t* wvt,
                               const window_manager_vtable_t* vt);
+
+/**
+ * @method window_manager_get_input_device_status
+ * 获取输入设备状态。
+ * @param {widget_t*} widget 窗口管理器对象。
+ * 
+ * @return {input_device_status_t*} 返回输入设备状态。
+*/
+input_device_status_t* window_manager_get_input_device_status(widget_t* widget);
 
 widget_t* window_manager_find_target_by_win(widget_t* widget, void* native_win);
 widget_t* window_manager_find_target(widget_t* widget, void* native_win, xy_t x, xy_t y);

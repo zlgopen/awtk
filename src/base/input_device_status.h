@@ -120,10 +120,38 @@ ret_t input_device_status_on_ignore_input_event(input_device_status_t* ids, widg
  */
 ret_t input_device_status_abort_all_pressed_keys(input_device_status_t* ids);
 
+/**
+ * @method input_device_status_on_pointer_enter
+ * 处理指针进入事件。
+ * @param {input_device_status_t*} ids 输入设备状态管理器对象。
+ * @param {widget_t*} widget 窗口管理器对象。
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y y坐标。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t input_device_status_on_pointer_enter(input_device_status_t* ids, widget_t* widget, xy_t x,
                                            xy_t y);
 
+/**
+ * @method input_device_status_on_pointer_leave
+ * 处理指针离开事件。
+ * @param {input_device_status_t*} ids 输入设备状态管理器对象。
+ * @param {widget_t*} widget 窗口管理器对象。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t input_device_status_on_pointer_leave(input_device_status_t* ids, widget_t* widget);
+
+/**
+ * @method input_device_status_deinit
+ * 销毁输入设备状态管理器。
+ * @annotation ["destructor"]
+ * @param {input_device_status_t*} ids 输入设备状态管理器对象。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t input_device_status_deinit(input_device_status_t* ids);
 
 END_C_DECLS
 

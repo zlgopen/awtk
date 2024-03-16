@@ -547,6 +547,7 @@ widget_t* window_manager_init(window_manager_t* wm, const widget_vtable_t* wvt,
   wm->global_emitter = emitter_create();
   wm->curr_expected_sleep_time = 0xFFFFFFFF;
   widget_on(widget, EVT_DESTROY, window_manager_on_destroy, widget);
+  input_device_status_init(&(wm->input_device_status));
 
   return widget;
 }
@@ -789,5 +790,15 @@ ret_t window_manager_destroy(widget_t* widget) {
     log_warn("window manager will be forcibly destroyed!!!\n");
   }
 
+  input_device_status_deinit(&(wm->input_device_status));
+
   return widget_destroy_sync(widget);
 }
+
+input_device_status_t* window_manager_get_input_device_status(widget_t* widget) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(wm != NULL, NULL);
+  
+  return &(wm->input_device_status);
+}
+

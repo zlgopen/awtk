@@ -1419,19 +1419,20 @@ static ret_t window_manager_default_set_screen_saver_time(widget_t* widget,
 static ret_t window_manager_default_get_pointer(widget_t* widget, xy_t* x, xy_t* y, bool_t* pressed,
                                                 bool_t* in_pointer_up) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  input_device_status_t* ids = window_manager_get_input_device_status(widget);
+  return_value_if_fail(wm != NULL && ids != NULL, RET_BAD_PARAMS);
 
   if (x != NULL) {
-    *x = wm->input_device_status.last_x;
+    *x = ids->last_x;
   }
   if (y != NULL) {
-    *y = wm->input_device_status.last_y;
+    *y = ids->last_y;
   }
   if (pressed != NULL) {
-    *pressed = wm->input_device_status.pressed;
+    *pressed = ids->pressed;
   }
   if (in_pointer_up != NULL) {
-    *in_pointer_up = wm->input_device_status.in_pointer_up;
+    *in_pointer_up = ids->in_pointer_up;
   }
 
   return RET_OK;
@@ -1466,7 +1467,9 @@ static ret_t window_manager_default_orientation(widget_t* widget, wh_t w, wh_t h
 ret_t window_manager_default_on_event(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  input_device_status_t* ids = window_manager_get_input_device_status(widget);
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
+
   if (e->type == EVT_ORIENTATION_WILL_CHANGED) {
     wh_t w, h;
     lcd_orientation_t new_orientation;
@@ -1503,7 +1506,7 @@ ret_t window_manager_default_on_event(widget_t* widget, event_t* e) {
     window_manager_default_reset_window_animator(widget);
     window_manager_default_reset_dialog_highlighter(widget);
   } else if (e->type == EVT_TOP_WINDOW_CHANGED) {
-    input_device_status_abort_all_pressed_keys(&(wm->input_device_status));
+    input_device_status_abort_all_pressed_keys(ids);
   }
 
   return RET_OK;
@@ -1656,14 +1659,13 @@ static ret_t window_manager_default_post_init(widget_t* widget, wh_t w, wh_t h) 
 }
 
 static ret_t window_manager_default_dispatch_input_event(widget_t* widget, event_t* e) {
-  input_device_status_t* ids = NULL;
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  input_device_status_t* ids = window_manager_get_input_device_status(widget);
   return_value_if_fail(wm != NULL && e != NULL, RET_BAD_PARAMS);
 
   window_manager_start_or_reset_screen_saver_timer(wm);
 
   native_window_preprocess_event(wm->native_window, e);
-  ids = &(wm->input_device_status);
   if (wm->ignore_user_input) {
     log_debug("animating ignore input\n");
     input_device_status_on_ignore_input_event(ids, widget, e);
@@ -1828,17 +1830,16 @@ static ret_t window_manager_default_on_locale_changed(void* ctx, event_t* e) {
 
 static ret_t window_manager_default_dispatch_native_window_event(widget_t* widget, event_t* e,
                                                                  void* handle) {
+  input_device_status_t* ids = window_manager_get_input_device_status(widget);
+  return_value_if_fail(ids != NULL, RET_BAD_PARAMS);
+
   if (e->type == EVT_NATIVE_WINDOW_RESIZED) {
     window_manager_default_native_window_resized(widget, handle);
   } else if (e->type == EVT_NATIVE_WINDOW_ENTER) {
     int32_t x = ((pointer_event_t*)e)->x;
     int32_t y = ((pointer_event_t*)e)->y;
-    window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
-    input_device_status_t* ids = &wm->input_device_status;
     input_device_status_on_pointer_enter(ids, widget, x, y);
   } else if (e->type == EVT_NATIVE_WINDOW_LEAVE) {
-    window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
-    input_device_status_t* ids = &wm->input_device_status;
     input_device_status_on_pointer_leave(ids, widget);
   }
 

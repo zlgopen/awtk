@@ -35,6 +35,17 @@ input_device_status_t* input_device_status_init(input_device_status_t* ids) {
   return ids;
 }
 
+ret_t input_device_status_deinit(input_device_status_t* ids) {
+  return_value_if_fail(ids != NULL, RET_BAD_PARAMS);
+
+  if (ids->long_press_check_timer != TK_INVALID_ID) {
+    timer_remove(ids->long_press_check_timer);
+    ids->long_press_check_timer = TK_INVALID_ID;
+  }
+
+  return RET_OK;
+}
+
 static key_pressed_info_t* input_device_status_find_press_info(input_device_status_t* ids,
                                                                uint32_t key) {
   uint32_t i = 0;
