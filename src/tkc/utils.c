@@ -2252,7 +2252,7 @@ uint8_t* tk_skip_to_offset(uint8_t* data, uint32_t size, value_type_t type, int1
   uint32_t type_size = tk_size_of_basic_type(type);
   uint32_t offset = index * type_size;
   return_value_if_fail(data != NULL && type_size > 0, NULL);
-  return_value_if_fail((offset + type_size) <= size, RET_BAD_PARAMS);
+  return_value_if_fail((offset + type_size) <= size, NULL);
 
   return data + offset;
 }
