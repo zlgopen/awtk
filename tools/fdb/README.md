@@ -1,5 +1,7 @@
 # debugger 命令行测试工具
 
+> 注意：[fdb] # 是命令行提示前缀，后面才是实际的命令。
+
 ## 1. 调试 fscript
 
 * 先启动服务
@@ -85,7 +87,7 @@ lldb-vscode -p 6789
 * 2. 设置断点
 
 ```
-[fdb] b genc_var_export9.st:30
+[fdb] # b genc_var_export9.st:30
 
 ```
 
@@ -246,9 +248,9 @@ var:
 > 目前主要用于加载 lldb 初始命令，示例请参考tools/fdb/lldb.json。本命令在target命令之后，在run命令之前执行。
 
 ```
-[fdb] target lldb
+[fdb] # target lldb
 [fdb] # conf tools/fdb/lldb.json
-[fdb] r wasm
+[fdb] # r wasm
 ```
 
 > 本文以 Linux/MacOS 为例，Windows 可能会微妙差异，请酌情处理。
