@@ -118,7 +118,6 @@ typedef struct _list_view_t {
   bool_t is_over;
   widget_t* scroll_view;
   widget_t* scroll_bar;
-  uint32_t wheel_before_id;
 } list_view_t;
 
 /**

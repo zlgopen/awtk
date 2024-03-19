@@ -124,10 +124,6 @@ static ret_t list_view_on_pointer_leave(list_view_t* list_view) {
     widget_t* win = widget_get_window(WIDGET(list_view));
     scroll_bar_hide_by_opacity_animation(list_view->scroll_bar,
                                          LIST_VIEW_FLOATING_SCROLL_BAR_HIDE_TIME, 0);
-    if (list_view->wheel_before_id != TK_INVALID_ID) {
-      widget_off(win, list_view->wheel_before_id);
-      list_view->wheel_before_id = TK_INVALID_ID;
-    }
   }
   return RET_OK;
 }
@@ -139,10 +135,6 @@ static ret_t list_view_on_pointer_enter(list_view_t* list_view) {
     widget_t* win = widget_get_window(WIDGET(list_view));
     scroll_bar_show_by_opacity_animation(list_view->scroll_bar,
                                          LIST_VIEW_FLOATING_SCROLL_BAR_SHOW_TIME, 0);
-    if (list_view->wheel_before_id == TK_INVALID_ID) {
-      list_view->wheel_before_id =
-          widget_on(win, EVT_WHEEL_BEFORE_CHILDREN, list_view_on_wheel_before, WIDGET(list_view));
-    }
   }
   return RET_OK;
 }
@@ -155,7 +147,9 @@ static ret_t list_view_on_event(widget_t* widget, event_t* e) {
 
   switch (e->type) {
     case EVT_WHEEL: {
-      ret = list_view_hanlde_wheel_event(list_view, e);
+      if (list_view->is_over) {
+        ret = list_view_hanlde_wheel_event(list_view, e);
+      }
       break;
     }
     case EVT_KEY_DOWN: {
@@ -372,6 +366,7 @@ static ret_t list_view_on_add_child(widget_t* widget, widget_t* child) {
                          list_view_on_scroll_bar_value_changed, widget);
     }
     list_view->scroll_bar = child;
+    scroll_bar_set_parent_pointer_enter(list_view->scroll_bar, list_view->floating_scroll_bar);
     widget_on(child, EVT_VALUE_CHANGED, list_view_on_scroll_bar_value_changed, widget);
   }
 

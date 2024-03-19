@@ -25,6 +25,7 @@
 #include "base/layout.h"
 #include "widgets/dragger.h"
 #include "base/widget_vtable.h"
+#include "base/window_manager.h"
 #include "scroll_view/scroll_bar.h"
 #include "widget_animators/widget_animator_value.h"
 #include "widget_animators/widget_animator_opacity.h"
@@ -519,6 +520,9 @@ static ret_t scroll_bar_get_prop(widget_t* widget, const char* name, value_t* v)
     bool_t is_horizon = (widget->w > widget->h) ? TRUE : FALSE;
     value_set_bool(v, is_horizon);
     return RET_OK;
+  } else if (tk_str_eq(name, SCROLL_BAR_PROP_PATENT_POINTER_ENTER)) {
+    value_set_bool(v, scroll_bar->parent_pointer_enter);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -548,9 +552,65 @@ static ret_t scroll_bar_set_prop(widget_t* widget, const char* name, const value
     return RET_OK;
   } else if (tk_str_eq(name, SCROLL_BAR_PROP_ANIMATOR_TIME)) {
     return scroll_bar_set_animator_time(widget, value_uint32(v));
+  } else if (tk_str_eq(name, SCROLL_BAR_PROP_PATENT_POINTER_ENTER)) {
+    return scroll_bar_set_parent_pointer_enter(widget, value_bool(v));
   }
 
   return RET_NOT_FOUND;
+}
+
+static ret_t scroll_bar_desktop_on_parent_wheel_event(void* ctx, event_t* e) {
+  wheel_event_t* evt = (wheel_event_t*)e;
+  int32_t delta = -evt->dy;
+  widget_t* widget = WIDGET(ctx);
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
+  if (scroll_bar->parent_pointer_enter) {
+    scroll_bar_add_delta(widget, delta);
+    return RET_STOP;
+  } else {
+    return RET_OK;
+  }
+}
+
+static ret_t scroll_bar_desktop_on_parent_pointer_enter(void* ctx, event_t* e) {
+  scroll_bar_t* scroll_bar = SCROLL_BAR(ctx);
+  return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
+  if (scroll_bar->wheel_before_id == TK_INVALID_ID) {
+    widget_t* win = window_manager()->key_target;
+    return_value_if_fail(win != NULL, RET_BAD_PARAMS);
+    scroll_bar->wheel_before_id = widget_on(win, EVT_WHEEL_BEFORE_CHILDREN, scroll_bar_desktop_on_parent_wheel_event, WIDGET(scroll_bar));
+  }
+  return RET_OK;
+}
+
+static ret_t scroll_bar_desktop_on_parent_pointer_leave(void* ctx, event_t* e) {
+  scroll_bar_t* scroll_bar = SCROLL_BAR(ctx);
+  return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
+  if (scroll_bar->wheel_before_id != TK_INVALID_ID) {
+    widget_t* win = window_manager()->key_target;
+    return_value_if_fail(win != NULL, RET_BAD_PARAMS);
+    widget_off(win, scroll_bar->wheel_before_id);
+    scroll_bar->wheel_before_id = TK_INVALID_ID;
+  }
+  return RET_OK;
+}
+
+static ret_t scroll_bar_desktop_on_attach_parent(widget_t* widget, widget_t* parent) {
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  return_value_if_fail(scroll_bar != NULL && parent != NULL, RET_BAD_PARAMS);
+  scroll_bar->pointer_enter_event_id = widget_on(parent, EVT_POINTER_ENTER, scroll_bar_desktop_on_parent_pointer_enter, WIDGET(scroll_bar));
+  scroll_bar->pointer_leave_event_id = widget_on(parent, EVT_POINTER_LEAVE, scroll_bar_desktop_on_parent_pointer_leave, WIDGET(scroll_bar));
+  return RET_OK;
+}
+static ret_t scroll_bar_desktop_on_detach_parent(widget_t* widget, widget_t* parent) {
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  return_value_if_fail(scroll_bar != NULL && parent != NULL, RET_BAD_PARAMS);
+  if (!parent->destroying) {
+    widget_off(parent, scroll_bar->pointer_enter_event_id);
+    widget_off(parent, scroll_bar->pointer_leave_event_id);
+  }
+  return RET_OK;
 }
 
 static const char* s_scroll_bar_clone_properties[] = {WIDGET_PROP_MAX,
@@ -582,6 +642,8 @@ TK_DECL_VTABLE(scroll_bar_desktop) = {.size = sizeof(scroll_bar_t),
                                       .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
                                       .create = scroll_bar_create_desktop_self,
                                       .init = scroll_bar_init,
+                                      .on_attach_parent = scroll_bar_desktop_on_attach_parent,
+                                      .on_detach_parent = scroll_bar_desktop_on_detach_parent,
                                       .on_event = scroll_bar_desktop_on_event,
                                       .on_layout_children = scroll_bar_on_layout_children,
                                       .on_copy = scroll_bar_on_copy,
@@ -869,5 +931,12 @@ ret_t scroll_bar_set_animator_time(widget_t* widget, uint32_t animator_time) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
   scroll_bar->animator_time = animator_time;
+  return RET_OK;
+}
+
+ret_t scroll_bar_set_parent_pointer_enter(widget_t* widget, bool_t parent_pointer_enter) {
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  return_value_if_fail(scroll_bar != NULL && !scroll_bar_is_mobile(widget), RET_BAD_PARAMS);
+  scroll_bar->parent_pointer_enter = parent_pointer_enter;
   return RET_OK;
 }

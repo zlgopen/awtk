@@ -1,5 +1,9 @@
 # 最新动态
 
+2024/03/19
+  * 完善fdb文档(感谢朝泽发现问题)。
+  * scroll\_bar\_d增加鼠标悬停后滚动的功能(感谢智明提供补丁)
+
 2024/03/16
   * 重构window manager将input device status对象放到基类。
   * 完善debugger_lldb修改请求超时时间。
