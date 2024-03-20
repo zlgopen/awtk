@@ -30,6 +30,19 @@
 #define END_C_DECLS
 #endif
 
+#include <stdarg.h>
+#include <ctype.h>
+#include <errno.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
+#include <inttypes.h>
+
+#if defined(HAS_AWTK_CONFIG)
+#include "awtk_config.h"
+#endif /*HAS_AWTK_CONFIG*/
+
 #if defined(WIN32) || defined(LINUX) || defined(MACOS) || defined(ANDROID) || defined(IOS)
 #define WITH_SOCKET 1
 #endif /*WIN32 || MACOS || LINUX || IOS || ANDROID*/
@@ -39,15 +52,6 @@
 #define TK_IS_PC 1
 #endif
 #endif /*TK_IS_PC*/
-
-#include <stdarg.h>
-#include <ctype.h>
-#include <errno.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
-#include <limits.h>
-#include <inttypes.h>
 
 #ifndef WITH_WASM
 #include <math.h>
@@ -83,12 +87,6 @@ typedef int socklen_t;
 #define MINGW 1
 #endif
 #endif
-
-#if defined(HAS_AWTK_CONFIG)
-#include "awtk_config.h"
-#ifdef FRAGMENT_FRAME_BUFFER_SIZE
-#endif /*FRAGMENT_FRAME_BUFFER_SIZE*/
-#endif /*HAS_AWTK_CONFIG*/
 
 #if defined(HAS_STDIO) || defined(AWTK_WEB)
 #include <stdio.h>

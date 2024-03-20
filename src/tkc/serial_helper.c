@@ -528,7 +528,7 @@ ret_t serial_wait_for_data(serial_handle_t handle, uint32_t timeout_ms) {
   return tk_socket_wait_for_data(fd, timeout_ms);
 }
 
-#elif defined(LINUX) || defined(MACOS)
+#elif defined(LINUX) || defined(MACOS) || defined(IOS) || defined(ANDROID)
 
 #include <stdio.h>
 #include <string.h>
