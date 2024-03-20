@@ -751,3 +751,15 @@ TEST(ObjectDefault, keep_type) {
 
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(ObjectDefault, set_proo_str_with_format) {
+  tk_object_t* obj = object_default_create();
+
+  ASSERT_EQ(tk_object_set_prop_str_with_format(obj, "name", "%s", "awtk"), RET_OK);
+  ASSERT_STREQ(tk_object_get_prop_str(obj, "name"), "awtk");
+
+  ASSERT_EQ(tk_object_set_prop_str_with_format(obj, "name", "%d", 123), RET_OK);
+  ASSERT_STREQ(tk_object_get_prop_str(obj, "name"), "123");
+  
+  TK_OBJECT_UNREF(obj);
+}

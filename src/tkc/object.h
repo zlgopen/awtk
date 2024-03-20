@@ -355,6 +355,18 @@ ret_t tk_object_set_prop(tk_object_t* obj, const char* name, const value_t* valu
 ret_t tk_object_set_prop_str(tk_object_t* obj, const char* name, const char* value);
 
 /**
+ * @method tk_object_set_prop_str_with_format
+ * 设置指定属性的字符串类型的值。
+ *
+ * @param {tk_object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {const char*} format 格式字符串。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_object_set_prop_str_with_format(tk_object_t* obj, const char* name, const char* format,...);
+
+/**
  * @method tk_object_set_prop_pointer
  * 设置指定属性的指针类型的值。
  *

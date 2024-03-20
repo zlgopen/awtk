@@ -945,3 +945,15 @@ ret_t tk_object_to_json(tk_object_t* obj, str_t* json, uint32_t indent, uint32_t
 
   return RET_OK;
 }
+
+ret_t tk_object_set_prop_str_with_format(tk_object_t* obj, const char* name, const char* format,...) {
+  char str[256] = {0};
+  return_value_if_fail(obj != NULL && name != NULL && format != NULL, RET_BAD_PARAMS);
+
+  va_list args;
+  va_start(args, format);
+  vsnprintf(str, sizeof(str)-1, format, args);
+  va_end(args);
+
+  return tk_object_set_prop_str(obj, name, str);
+}

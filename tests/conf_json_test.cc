@@ -800,3 +800,17 @@ TEST(ConfJson, comment) {
 
   conf_doc_destroy(doc);
 }
+
+TEST(Json, format) {
+  wbuffer_t wb;
+  tk_object_t* conf = conf_json_create();
+  ASSERT_NE(conf, (tk_object_t*)NULL);
+  ASSERT_EQ(tk_object_set_prop_str_with_format(conf, "age", "%d", 123), RET_OK);
+
+  ASSERT_EQ(conf_json_save_to_buff(conf, &wb), RET_OK);
+  ASSERT_STREQ((char*)(wb.data), "{\n    \"age\" : \"123\"\n}");
+  TK_OBJECT_UNREF(conf);
+
+
+  wbuffer_deinit(&wb);
+}
