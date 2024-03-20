@@ -625,12 +625,6 @@ ret_t assets_manager_clear_all_cache(assets_manager_t* am) {
   return RET_OK;
 }
 
-ret_t assets_manager_clear_font_cache(assets_manager_t* am) {
-  assets_manager_clear_cache(am, ASSET_TYPE_FONT);
-
-  return RET_OK;
-}
-
 ret_t assets_manager_set_theme(assets_manager_t* am, const char* theme) {
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
 
@@ -1006,6 +1000,20 @@ assets_manager_t* assets_managers_ref(const char* name) {
   }
 
   return am;
+}
+
+ret_t assets_managers_clear_cache(asset_type_t type) {
+  assets_manager_clear_cache(assets_manager(), type);
+
+  if (s_assets_managers != NULL) {
+    uint32_t i = 0;
+    for (i = 0; i < s_assets_managers->size; i++) {
+      assets_manager_t* am = (assets_manager_t*)darray_get(s_assets_managers, i);
+      assets_manager_clear_cache(am, type);
+    }
+  }
+
+  return RET_OK;
 }
 
 ret_t assets_managers_unref(assets_manager_t* am) {

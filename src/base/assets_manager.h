@@ -386,15 +386,6 @@ ret_t assets_manager_clear_cache_ex(assets_manager_t* am, asset_type_t type, con
 ret_t assets_manager_clear_all_cache(assets_manager_t* am);
 
 /**
- * @method assets_manager_clear_font_cache
- * 清除缓存。
- * @param {assets_manager_t*} am asset manager对象。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t assets_manager_clear_font_cache(assets_manager_t* am);
-
-/**
  * @method assets_manager_clear_all
  * 清除全部缓存的资源。
  * @param {assets_manager_t*} am asset manager对象。
@@ -507,6 +498,15 @@ bool_t assets_managers_is_applet_assets_supported(void);
  * @return {assets_manager_t*} 返回asset manager对象。
  */
 assets_manager_t* assets_managers_ref(const char* name);
+
+/**
+ * @method assets_managers_clear_cache
+ * 清除指定类型的全部缓存。
+ * @param {asset_type_t} type 资源的类型。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t assets_managers_clear_cache(asset_type_t type);
 
 /**
  * @method assets_managers_set_theme

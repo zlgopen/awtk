@@ -483,16 +483,12 @@ bool_t window_manager_is_animating(widget_t* widget) {
 
 static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
-  font_manager_t* fm = widget_get_font_manager(widget);
-  image_manager_t* imm = widget_get_image_manager(widget);
-  assets_manager_t* am = widget_get_assets_manager(widget);
-
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(fm != NULL && imm != NULL, RET_BAD_PARAMS);
 
-  font_manager_unload_all(fm);
-  image_manager_unload_all(imm);
-  assets_manager_clear_font_cache(am);
+  font_managers_unload_all();
+  image_managers_unload_all();
+  assets_managers_clear_cache(ASSET_TYPE_FONT);
+  assets_managers_clear_cache(ASSET_TYPE_IMAGE);
 
   if (widget_count_children(widget) > 0) {
     widget_reset_canvas(widget_get_child(widget, 0));
@@ -798,7 +794,6 @@ ret_t window_manager_destroy(widget_t* widget) {
 input_device_status_t* window_manager_get_input_device_status(widget_t* widget) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL, NULL);
-  
+
   return &(wm->input_device_status);
 }
-
