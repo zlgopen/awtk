@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/03/21
+  * 完善tk\_buffer\_set\_value/tk\_buffer\_get\_value
+
 2024/03/20
   * 增加函数tk\_object\_set\_prop\_str\_with\_format
   * 修复使用applet_name时，切换语言导致程序崩溃的问题(感谢雨欣提供补丁)

@@ -2227,6 +2227,8 @@ ret_t tk_bits_data_to_bytes_data(uint8_t* bits, uint32_t bits_size, uint8_t* byt
 uint32_t tk_size_of_basic_type(value_type_t type) {
   switch (type) {
     case VALUE_TYPE_INT8:
+    case VALUE_TYPE_STRING:
+    case VALUE_TYPE_BINARY:
     case VALUE_TYPE_UINT8:
     case VALUE_TYPE_BOOL:
       return 1;
@@ -2317,6 +2319,24 @@ ret_t tk_buffer_set_value(uint8_t* buffer, uint32_t size, value_type_t type, int
       memcpy(data, &v, sizeof(v));
       break;
     }
+    case VALUE_TYPE_STRING: {
+      const char* str = value_str(value);
+      int32_t dst_len = size - (data - buffer);
+      int32_t src_len = tk_strlen(str) + 1;
+      return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+      return_value_if_fail(dst_len >= src_len, RET_BAD_PARAMS);
+
+      memcpy(data, str, src_len);
+      break;
+    }
+    case VALUE_TYPE_BINARY: {
+      binary_data_t* bdata = value_binary_data(value);
+      int32_t dst_len = size - (data - buffer);
+      return_value_if_fail(bdata != NULL, RET_BAD_PARAMS);
+      return_value_if_fail(dst_len >= bdata->size, RET_BAD_PARAMS);
+      memcpy(data, bdata->data, bdata->size);
+      break;
+    }
     default: {
       log_debug("tk_buffer_set_value: not support %d\n", type);
       return RET_NOT_IMPL;
@@ -2399,6 +2419,15 @@ ret_t tk_buffer_get_value(uint8_t* buffer, uint32_t size, value_type_t type, int
       value_set_double(value, v);
       break;
     }
+    case VALUE_TYPE_STRING: {
+      value_set_str(value, (char*)data);
+      break;
+    }
+    case VALUE_TYPE_BINARY: {
+      uint32_t bsize = size - (data - buffer); 
+      value_set_binary_data(value, data, bsize);
+      break;
+    }
     default: {
       log_debug("tk_buffer_get_value: not support %d\n", type);
       return RET_NOT_IMPL;
@@ -2431,6 +2460,12 @@ value_type_t tk_basic_type_from_name(const char* type) {
     return VALUE_TYPE_FLOAT32;
   } else if (strncasecmp(type, "double", 6) == 0) {
     return VALUE_TYPE_DOUBLE;
+  } else if (strncasecmp(type, "str", 3) == 0) {
+    return VALUE_TYPE_STRING;
+  } else if (strncasecmp(type, "wstr", 4) == 0) {
+    return VALUE_TYPE_WSTRING;
+  } else if (strncasecmp(type, "bin", 3) == 0) {
+    return VALUE_TYPE_BINARY;
   }
 
   return VALUE_TYPE_INVALID;
