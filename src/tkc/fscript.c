@@ -20,6 +20,7 @@
 #include "tkc/darray.h"
 #include "tkc/fscript.h"
 #include "tkc/int_str.h"
+#include "tkc/buffer.h"
 #include "tkc/object_default.h"
 #include "tkc/general_factory.h"
 #include "tkc/object_locker.h"
@@ -2188,6 +2189,7 @@ static ret_t func_sum(fscript_t* fscript, fscript_args_t* args, value_t* result)
   double v = 0;
   uint32_t i = 0;
   bool_t has_str = FALSE;
+  bool_t has_bin = FALSE;
   bool_t has_float = FALSE;
   FSCRIPT_FUNC_CHECK(args->size > 0, RET_BAD_PARAMS);
 
@@ -2195,8 +2197,10 @@ static ret_t func_sum(fscript_t* fscript, fscript_args_t* args, value_t* result)
     int type = args->args[i].type;
     if (type == VALUE_TYPE_STRING) {
       has_str = TRUE;
-    }
-    if (type == VALUE_TYPE_FLOAT || type == VALUE_TYPE_DOUBLE || type == VALUE_TYPE_FLOAT32) {
+    } else if (type == VALUE_TYPE_BINARY) {
+      has_bin = TRUE;
+    } else if (type == VALUE_TYPE_FLOAT || type == VALUE_TYPE_DOUBLE ||
+               type == VALUE_TYPE_FLOAT32) {
       has_float = TRUE;
     }
   }
@@ -2210,6 +2214,22 @@ static ret_t func_sum(fscript_t* fscript, fscript_args_t* args, value_t* result)
     }
     value_dup_str(result, str.str);
     str_reset(&str);
+  } else if (has_bin) {
+    wbuffer_t wb;
+    char buff[64];
+    wbuffer_init_extendable(&wb);
+    for (i = 0; i < args->size; i++) {
+      value_t* iter = args->args + i;
+
+      if (iter->type == VALUE_TYPE_BINARY) {
+        binary_data_t* b = value_binary_data(iter);
+        wbuffer_write_binary(&wb, b->data, b->size);
+      } else {
+        wbuffer_write_string(&wb, value_str_ex(iter, buff, sizeof(buff) - 1));
+      }
+    }
+    value_set_binary_data(result, wb.data, wb.cursor);
+    result->free_handle = TRUE;
   } else {
     for (i = 0; i < args->size; i++) {
       v += value_double(args->args + i);

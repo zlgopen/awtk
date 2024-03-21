@@ -3460,3 +3460,41 @@ TEST(FExr, sha256) {
 
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(FExr, sum_bin1) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  value_set_binary_data(&v, (void*)"abc", 3);
+  tk_object_set_prop(obj, "v1", &v);
+
+  value_set_binary_data(&v, (void*)"123", 3);
+  tk_object_set_prop(obj, "v2", &v);
+
+  fscript_eval(obj, "v1+v2", &v);
+  binary_data_t* b = value_binary_data(&v);
+  ASSERT_STREQ((char*)(b->data), "abc123");
+  ASSERT_EQ(b->size, 6);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FExr, sum_bin2) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  value_set_binary_data(&v, (void*)"abc", 3);
+  tk_object_set_prop(obj, "v1", &v);
+
+  value_set_int(&v, 123);
+  tk_object_set_prop(obj, "v2", &v);
+
+  fscript_eval(obj, "v1+v2", &v);
+  binary_data_t* b = value_binary_data(&v);
+  ASSERT_STREQ((char*)(b->data), "abc123");
+  ASSERT_EQ(b->size, 7);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}

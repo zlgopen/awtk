@@ -2,6 +2,7 @@
 
 2024/03/21
   * 完善tk\_buffer\_set\_value/tk\_buffer\_get\_value
+  * fscript 支持用+拼接binary\_data
 
 2024/03/20
   * 增加函数tk\_object\_set\_prop\_str\_with\_format
