@@ -108,6 +108,24 @@ static ret_t scroll_view_offset_changed(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_key_down(void* ctx, event_t* e) {
+  key_event_t* evt = (key_event_t*)e;
+  if (evt->key == TK_KEY_LSHIFT) {
+    scroll_bar_set_wheel_scroll(bar_h, TRUE);
+    scroll_bar_set_wheel_scroll(bar_v, FALSE);
+  }
+  return RET_OK;
+}
+
+static ret_t on_key_up(void* ctx, event_t* e) {
+  key_event_t* evt = (key_event_t*)e;
+  if (evt->key == TK_KEY_LSHIFT) {
+    scroll_bar_set_wheel_scroll(bar_h, FALSE);
+    scroll_bar_set_wheel_scroll(bar_v, TRUE);
+  }
+  return RET_OK;
+}
+
 static ret_t install_one(void* ctx, const void* iter) {
   widget_t* widget = WIDGET(iter);
   if (widget->name != NULL) {
@@ -137,8 +155,12 @@ ret_t on_idle_scroll_view_set_virtual_wh(const idle_info_t* idle) {
 }
 
 ret_t application_init() {
+  widget_t* wm = window_manager();
   widget_t* win = window_open("scroll_view");
   widget_foreach(win, install_one, win);
+  widget_on(wm, EVT_KEY_DOWN, on_key_down, NULL);
+  widget_on(wm, EVT_KEY_UP, on_key_up, NULL);
+
   idle_add(on_idle_scroll_view_set_virtual_wh, win);
   return RET_OK;
 }

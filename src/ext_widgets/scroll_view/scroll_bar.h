@@ -108,17 +108,19 @@ typedef struct _scroll_bar_t {
    */
   bool_t auto_hide;
   /**
-   * @property {bool_t} parent_pointer_enter
+   * @property {bool_t} wheel_scroll
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 是否鼠标悬停到父控件上面自动获取控制权(仅对desktop风格的滚动条有效)。
+   * 设置鼠标滚轮是否滚动(仅对desktop风格的滚动条有效)（垂直滚动条缺省值为TRUE，水平滚动条缺省值为FALSE）。
    */
-  bool_t parent_pointer_enter;
+  bool_t wheel_scroll;
 
   /*private*/
   widget_t* dragger;
   widget_animator_t* wa_value;
   widget_animator_t* wa_opactiy;
 
+  widget_t* target_win;
+  uint32_t target_win_id;
   uint32_t wheel_before_id;
   uint32_t pointer_enter_event_id;
   uint32_t pointer_leave_event_id;
@@ -320,24 +322,23 @@ ret_t scroll_bar_hide_by_opacity_animation(widget_t* widget, int32_t duration, i
 ret_t scroll_bar_show_by_opacity_animation(widget_t* widget, int32_t duration, int32_t delay);
 
 /**
- * @method scroll_bar_set_parent_pointer_enter
- * 设置是否鼠标悬停到父控件上面自动获取控制权(仅对desktop风格的滚动条有效)。
- * >如果设置为 TRUE 的话，当鼠标悬停到父控件（一般为 list_view 等带有滚动的控件），此时可以直接操作该滚动条进行滚动。
+ * @method scroll_bar_set_wheel_scroll
+ * 设置鼠标滚轮是否滚动(仅对desktop风格的滚动条有效)。
  * 
  * @annotation ["scriptable"]
  * @param {widget_t*} widget scroll_bar控件。
- * @param {bool_t} parent_pointer_enter 是否设置该功能。
+ * @param {bool_t} scroll 是否设置该功能。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t scroll_bar_set_parent_pointer_enter(widget_t* widget, bool_t parent_pointer_enter);
+ret_t scroll_bar_set_wheel_scroll(widget_t* widget, bool_t scroll);
 
 /* private */
 
 #define SCROLL_BAR_PROP_IS_MOBILE "is_mobile"
 #define SCROLL_BAR_PROP_IS_HORIZON "is_horizon"
 #define SCROLL_BAR_PROP_ANIMATOR_TIME "animator_time"
-#define SCROLL_BAR_PROP_PATENT_POINTER_ENTER "parent_pointer_enter"
+#define SCROLL_BAR_PROP_WHEEL_SCROLL "wheel_scroll"
 #define SCROLL_BAR(widget) ((scroll_bar_t*)(scroll_bar_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/

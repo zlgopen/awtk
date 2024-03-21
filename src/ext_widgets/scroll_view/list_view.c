@@ -366,7 +366,6 @@ static ret_t list_view_on_add_child(widget_t* widget, widget_t* child) {
                          list_view_on_scroll_bar_value_changed, widget);
     }
     list_view->scroll_bar = child;
-    scroll_bar_set_parent_pointer_enter(list_view->scroll_bar, list_view->floating_scroll_bar);
     widget_on(child, EVT_VALUE_CHANGED, list_view_on_scroll_bar_value_changed, widget);
   }
 
