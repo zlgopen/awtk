@@ -56,9 +56,12 @@ TEST(ConfNode, basic) {
   ASSERT_STREQ(conf_node_get_name(node), "4");
   value_set_int(&v, 4);
   ASSERT_EQ(conf_node_set_value(node, &v), RET_OK);
+  ASSERT_EQ(conf_node_get_value_int32(node, 0), 4);
   value_set_int(&v, 0);
   ASSERT_EQ(conf_node_get_child_value(doc->root, "4", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 4);
+  ASSERT_EQ(conf_node_get_child_value_float(doc->root, "4", 0), 4.0f);
+  ASSERT_EQ(conf_node_get_child_value_double(doc->root, "4", 0), 4.0f);
   ASSERT_EQ(conf_node_get_child_value_by_index(doc->root, 3, &v), RET_OK);
   ASSERT_EQ(value_int(&v), 4);
 
@@ -79,6 +82,7 @@ TEST(ConfNode, basic) {
   node = conf_node_find_child(doc->root, "4");
   value_set_bool(&v, TRUE);
   ASSERT_EQ(conf_node_set_value(node, &v), RET_OK);
+  ASSERT_EQ(conf_node_get_value_bool(node, FALSE), TRUE);
   ASSERT_EQ(conf_node_get_child_value_bool(doc->root, "4", FALSE), TRUE);
   ASSERT_EQ(conf_node_get_child_value_bool(doc->root, "abcd", FALSE), FALSE);
 
@@ -94,6 +98,7 @@ TEST(ConfNode, basic) {
   ASSERT_EQ(conf_node_set_value(node, &v1), RET_OK);
   ASSERT_EQ(conf_node_get_value(node, &v1), RET_OK);
   ASSERT_STREQ(value_str(&v), "abc");
+  ASSERT_STREQ(conf_node_get_value_str(node, NULL), "abc");
 
   value_set_wstr(&v, L"abc");
   ASSERT_EQ(conf_node_set_value(node, &v), RET_OK);

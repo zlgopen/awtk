@@ -670,6 +670,60 @@ ret_t conf_node_get_value(conf_node_t* node, value_t* v) {
   return RET_OK;
 }
 
+int32_t conf_node_get_value_int32(conf_node_t* node, int32_t defval) {
+  value_t v;
+  if (conf_node_get_value(node, &v) == RET_OK) {
+    return value_int32(&v);
+  } else {
+    return defval;
+  }
+}
+
+uint32_t conf_node_get_value_uint32(conf_node_t* node, uint32_t defval) {
+  value_t v;
+  if (conf_node_get_value(node, &v) == RET_OK) {
+    return value_uint32(&v);
+  } else {
+    return defval;
+  }
+}
+
+float conf_node_get_value_float(conf_node_t* node, float defval) {
+  value_t v;
+  if (conf_node_get_value(node, &v) == RET_OK) {
+    return value_float(&v);
+  } else {
+    return defval;
+  }
+}
+
+double conf_node_get_value_double(conf_node_t* node, double defval) {
+  value_t v;
+  if (conf_node_get_value(node, &v) == RET_OK) {
+    return value_double(&v);
+  } else {
+    return defval;
+  }
+}
+
+bool_t conf_node_get_value_bool(conf_node_t* node, bool_t defval) {
+  value_t v;
+  if (conf_node_get_value(node, &v) == RET_OK) {
+    return value_bool(&v);
+  } else {
+    return defval;
+  }
+}
+
+const char* conf_node_get_value_str(conf_node_t* node, const char* defval) {
+  value_t v;
+  if (conf_node_get_value(node, &v) == RET_OK) {
+    return value_str(&v);
+  } else {
+    return defval;
+  }
+}
+
 static tokenizer_t* conf_doc_get_tokenizer(conf_doc_t* doc, const char* path) {
   tokenizer_t* tokenizer = &(doc->tokenizer);
   tokenizer->str = path;
@@ -1124,6 +1178,39 @@ int32_t conf_node_get_child_value_int32(conf_node_t* node, const char* name, int
 
   if (conf_node_get_child_value(node, name, &v) == RET_OK) {
     return value_int32(&v);
+  } else {
+    return defval;
+  }
+}
+
+uint32_t conf_node_get_child_value_uint32(conf_node_t* node, const char* name, uint32_t defval) {
+  value_t v;
+  return_value_if_fail(node != NULL && name != NULL, defval);
+
+  if (conf_node_get_child_value(node, name, &v) == RET_OK) {
+    return value_uint32(&v);
+  } else {
+    return defval;
+  }
+}
+
+float conf_node_get_child_value_float(conf_node_t* node, const char* name, float defval) {
+  value_t v;
+  return_value_if_fail(node != NULL && name != NULL, defval);
+
+  if (conf_node_get_child_value(node, name, &v) == RET_OK) {
+    return value_float32(&v);
+  } else {
+    return defval;
+  }
+}
+
+double conf_node_get_child_value_double(conf_node_t* node, const char* name, double defval) {
+  value_t v;
+  return_value_if_fail(node != NULL && name != NULL, defval);
+
+  if (conf_node_get_child_value(node, name, &v) == RET_OK) {
+    return value_double(&v);
   } else {
     return defval;
   }

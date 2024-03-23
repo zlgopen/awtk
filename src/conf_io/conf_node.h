@@ -720,6 +720,78 @@ ret_t conf_node_set_value(conf_node_t* node, const value_t* v);
 ret_t conf_node_get_value(conf_node_t* node, value_t* v);
 
 /**
+ * @method conf_node_get_value_int32
+ *
+ * 获取节点的值。
+ *
+ * @param {conf_node_t*} node 节点对象。
+ * @param {int32_t} defval 默认值。
+ *
+ * @return {int32_t} 返回值。
+ */
+int32_t conf_node_get_value_int32(conf_node_t* node, int32_t defval);
+
+/**
+ * @method conf_node_get_value_uint32
+ *
+ * 获取节点的值。
+ *
+ * @param {conf_node_t*} node 节点对象。
+ * @param {uint32_t} defval 默认值。
+ *
+ * @return {uint32_t} 返回值。
+ */
+uint32_t conf_node_get_value_uint32(conf_node_t* node, uint32_t defval);
+
+/**
+ * @method conf_node_get_value_float
+ *
+ * 获取节点的值。
+ *
+ * @param {conf_node_t*} node 节点对象。
+ * @param {float} defval 默认值。
+ *
+ * @return {float} 返回值。
+ */
+float conf_node_get_value_float(conf_node_t* node, float defval);
+
+/**
+ * @method conf_node_get_value_double
+ *
+ * 获取节点的值。
+ *
+ * @param {conf_node_t*} node 节点对象。
+ * @param {double} defval 默认值。
+ *
+ * @return {double} 返回值。
+ */
+double conf_node_get_value_double(conf_node_t* node, double defval);
+
+/**
+ * @method conf_node_get_value_bool
+ *
+ * 获取节点的值。
+ *
+ * @param {conf_node_t*} node 节点对象。
+ * @param {bool_t} defval 默认值。
+ *
+ * @return {bool_t} 返回值。
+ */
+bool_t conf_node_get_value_bool(conf_node_t* node, bool_t defval);
+
+/**
+ * @method conf_node_get_value_str
+ *
+ * 获取节点的值。
+ *
+ * @param {conf_node_t*} node 节点对象。
+ * @param {const char*} defval 默认值。
+ *
+ * @return {const char*} 返回值。
+ */
+const char* conf_node_get_value_str(conf_node_t* node, const char* defval);
+
+/**
  * @method conf_node_get_child_value
  *
  * 获取子节点的值。
@@ -744,6 +816,45 @@ ret_t conf_node_get_child_value(conf_node_t* node, const char* name, value_t* v)
  * @return {int32_t} 返回值。
  */
 int32_t conf_node_get_child_value_int32(conf_node_t* node, const char* name, int32_t defval);
+
+/**
+ * @method conf_node_get_child_value_uint32
+ *
+ * 获取子节点的值。
+ *
+ * @param {conf_node_t*} node 节点对象。
+ * @param {const char*} name 子节点名称。
+ * @param {uint32_t} defval 默认值。
+ *
+ * @return {uint32_t} 返回值。
+ */
+uint32_t conf_node_get_child_value_uint32(conf_node_t* node, const char* name, uint32_t defval);
+
+/**
+ * @method conf_node_get_child_value_float
+ *
+ * 获取子节点的值。
+ *
+ * @param {conf_node_t*} node 节点对象。
+ * @param {const char*} name 子节点名称。
+ * @param {float} defval 默认值。
+ *
+ * @return {float} 返回值。
+ */
+float conf_node_get_child_value_float(conf_node_t* node, const char* name, float defval);
+
+/**
+ * @method conf_node_get_child_value_double
+ *
+ * 获取子节点的值。
+ *
+ * @param {conf_node_t*} node 节点对象。
+ * @param {const char*} name 子节点名称。
+ * @param {double} defval 默认值。
+ *
+ * @return {double} 返回值。
+ */
+double conf_node_get_child_value_double(conf_node_t* node, const char* name, double defval);
 
 /**
  * @method conf_node_get_child_value_bool
