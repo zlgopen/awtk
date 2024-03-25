@@ -2,6 +2,7 @@
 
 2024/03/25
   * 新增事件EVT\_WIDGET\_WILL\_UPDATE\_STYLE和EVT\_WIDGET\_UPDATE\_STYLE(感谢雨欣提供补丁) 
+  * scroll\_bar\_d有概率野指针的问题(感谢智明提供补丁)
 
 2024/03/23
   * 增加函数 conf\_node\_get\_xxx
