@@ -416,6 +416,16 @@ typedef enum _event_type_t {
    */
   EVT_THEME_CHANGED,
   /**
+   * @const EVT_WIDGET_WILL_UPDATE_STYLE
+   * 控件根据自己当前状态即将更新style(event_t)。
+   */
+  EVT_WIDGET_WILL_UPDATE_STYLE,
+  /**
+   * @const EVT_WIDGET_UPDATE_STYLE
+   * 控件根据自己当前状态更新style(event_t)。
+   */
+  EVT_WIDGET_UPDATE_STYLE,
+  /**
    * @const EVT_WIDGET_ADD_CHILD
    * 控件加载新的子控件(event_t)。
    */

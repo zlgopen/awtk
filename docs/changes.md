@@ -1,7 +1,10 @@
 # 最新动态
 
+2024/03/25
+  * 新增事件EVT\_WIDGET\_WILL\_UPDATE\_STYLE和EVT\_WIDGET\_UPDATE\_STYLE(感谢雨欣提供补丁) 
+
 2024/03/23
-  * 增加函数 conf_node_get_xxx
+  * 增加函数 conf\_node\_get\_xxx
 
 2024/03/21
   * 完善tk\_buffer\_set\_value/tk\_buffer\_get\_value

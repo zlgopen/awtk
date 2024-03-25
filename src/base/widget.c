@@ -160,14 +160,20 @@ ret_t widget_set_need_update_style_recursive(widget_t* widget) {
 }
 
 ret_t widget_update_style(widget_t* widget) {
+  ret_t ret = RET_OK;
+  event_t e = event_init(EVT_WIDGET_WILL_UPDATE_STYLE, widget);
   return_value_if_fail(widget != NULL && widget->astyle != NULL, RET_BAD_PARAMS);
 
   if (widget->need_update_style) {
+    widget_dispatch(widget, &e);
     widget->need_update_style = FALSE;
-    return style_notify_widget_state_changed(widget->astyle, widget);
+    ret = style_notify_widget_state_changed(widget->astyle, widget);
+    e.type = EVT_WIDGET_UPDATE_STYLE;
+    widget_dispatch(widget, &e);
+    return ret;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t widget_real_destroy(widget_t* widget) {
@@ -5337,8 +5343,8 @@ ret_t widget_set_text_with_double(widget_t* widget, const char* format, double v
 }
 
 ret_t widget_draw_arc_at_center(widget_t* widget, canvas_t* c, bool_t bg, double line_width,
-                      double start_angle, double end_angle, bool_t counter_clock_wise,
-                      const char* line_cap, double r) {
+                                double start_angle, double end_angle, bool_t counter_clock_wise,
+                                const char* line_cap, double r) {
   bitmap_t img;
   color_t trans = color_init(0, 0, 0, 0);
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
@@ -5377,4 +5383,3 @@ ret_t widget_draw_arc_at_center(widget_t* widget, canvas_t* c, bool_t bg, double
 
   return RET_OK;
 }
-
