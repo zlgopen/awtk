@@ -55,7 +55,9 @@ static ret_t pages_on_idle_set_target_focused(const idle_info_t* idle) {
   pages = PAGES(idle->ctx);
   ENSURE(pages);
 
-  default_focused_child_set_target_focused(&(pages->str_target), WIDGET(pages));
+  if (pages->widget.focused) {
+    default_focused_child_set_target_focused(&(pages->str_target), WIDGET(pages));
+  }
 
   pages->focused_idle_id = TK_INVALID_ID;
 
