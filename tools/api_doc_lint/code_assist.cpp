@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  代码辅助模块接口实现。
  *
- * Copyright (c) 2022 - 2023 Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2022 - 2024 Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of

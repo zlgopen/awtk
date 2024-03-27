@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  fscript remote debugger
  *
- * Copyright (c) 2022 - 2022  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2022 - 2024  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  */
 

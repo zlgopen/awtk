@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  检查 api doc是否合法, 支持自动修正
  *
- * Copyright (c) 2022 - 2023 Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2022 - 2024 Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of

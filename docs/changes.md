@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/03/27
+  * 更新部分文件的copyright日期(感谢俊圣提供补丁)。
+
 2024/03/25
   * 新增事件EVT\_WIDGET\_WILL\_UPDATE\_STYLE和EVT\_WIDGET\_UPDATE\_STYLE(感谢雨欣提供补丁) 
   * scroll\_bar\_d有概率野指针的问题(感谢智明提供补丁)
