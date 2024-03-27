@@ -73,6 +73,7 @@ TEST(ObjectLocker, basic) {
   ASSERT_EQ(tk_object_remove_prop(obj, "5"), RET_OK);
   ASSERT_EQ(tk_object_get_prop(obj, "3", &v), RET_NOT_FOUND);
   ASSERT_EQ(tk_object_remove_prop(obj, "3"), RET_NOT_FOUND);
+  ASSERT_EQ(tk_object_is_instance_of(obj, OBJECT_LOCKER_TYPE), TRUE);
 
   TK_OBJECT_UNREF(o);
   TK_OBJECT_UNREF(obj);

@@ -270,8 +270,8 @@ value_t* object_default_find_prop(tk_object_t* obj, tk_compare_t cmp, const void
 }
 
 static const object_vtable_t s_object_default_vtable = {
-    .type = "object_default",
-    .desc = "object_default",
+    .type = OBJECT_DEFAULT_TYPE,
+    .desc = OBJECT_DEFAULT_TYPE,
     .size = sizeof(object_default_t),
     .is_collection = FALSE,
     .on_destroy = object_default_on_destroy,

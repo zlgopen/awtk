@@ -166,7 +166,10 @@ value_t* object_default_find_prop(tk_object_t* obj, tk_compare_t cmp, const void
  * @return {object_default_t*} object_default对象。
  */
 object_default_t* object_default_cast(tk_object_t* obj);
+
 #define OBJECT_DEFAULT(obj) object_default_cast(obj)
+
+#define OBJECT_DEFAULT_TYPE "object_default"
 
 END_C_DECLS
 

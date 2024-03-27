@@ -57,8 +57,8 @@ static ret_t object_wbuffer_get_prop(tk_object_t* obj, const char* name, value_t
   return ret;
 }
 
-static const object_vtable_t s_object_wbuffer_vtable = {.type = "object_wbuffer",
-                                                        .desc = "object_wbuffer",
+static const object_vtable_t s_object_wbuffer_vtable = {.type = OBJECT_WBUFFER_TYPE,
+                                                        .desc = OBJECT_WBUFFER_TYPE,
                                                         .size = sizeof(object_wbuffer_t),
                                                         .is_collection = FALSE,
                                                         .on_destroy = object_wbuffer_on_destroy,

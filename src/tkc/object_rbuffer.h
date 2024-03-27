@@ -72,7 +72,10 @@ tk_object_t* object_rbuffer_create(const uint8_t* data, uint32_t capacity);
  * @return {object_rbuffer_t*} object_rbuffer对象。
  */
 object_rbuffer_t* object_rbuffer_cast(tk_object_t* obj);
+
 #define OBJECT_RBUFFER(obj) object_rbuffer_cast(obj)
+
+#define OBJECT_RBUFFER_TYPE "object_rbuffer"
 
 END_C_DECLS
 

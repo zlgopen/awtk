@@ -75,8 +75,8 @@ static ret_t object_typed_array_get_prop(tk_object_t* obj, const char* name, val
 }
 
 static const object_vtable_t s_object_typed_array_vtable = {
-    .type = "object_typed_array",
-    .desc = "object_typed_array",
+    .type = OBJECT_TYPED_ARRAY_TYPE,
+    .desc = OBJECT_TYPED_ARRAY_TYPE,
     .size = sizeof(object_typed_array_t),
     .is_collection = FALSE,
     .on_destroy = object_typed_array_on_destroy,

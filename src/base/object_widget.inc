@@ -68,8 +68,8 @@ static ret_t object_widget_get_prop(tk_object_t* obj, const char* name, value_t*
   return ret;
 }
 
-static const object_vtable_t s_object_widget_vtable = {.type = "object_widget",
-                                                       .desc = "object_widget",
+static const object_vtable_t s_object_widget_vtable = {.type = OBJECT_WIDGET_TYPE,
+                                                       .desc = OBJECT_WIDGET_TYPE,
                                                        .size = sizeof(object_widget_t),
                                                        .is_collection = FALSE,
                                                        .on_destroy = object_widget_on_destroy,

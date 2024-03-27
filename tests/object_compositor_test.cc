@@ -83,6 +83,7 @@ TEST(ObjectComposite, basic) {
 
   ASSERT_EQ(tk_object_get_prop(obj, "3", &v), RET_NOT_FOUND);
   ASSERT_EQ(tk_object_remove_prop(obj, "3"), RET_NOT_FOUND);
+  ASSERT_EQ(tk_object_is_instance_of(obj, OBJECT_COMPOSITOR_TYPE), TRUE);
 
   TK_OBJECT_UNREF(obj);
   TK_OBJECT_UNREF(obj1);

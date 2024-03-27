@@ -84,7 +84,10 @@ tk_object_t* object_wbuffer_create_extendable(void);
  * @return {object_wbuffer_t*} object_wbuffer对象。
  */
 object_wbuffer_t* object_wbuffer_cast(tk_object_t* obj);
+
 #define OBJECT_WBUFFER(obj) object_wbuffer_cast(obj)
+
+#define OBJECT_WBUFFER_TYPE "object_wbuffer"
 
 END_C_DECLS
 

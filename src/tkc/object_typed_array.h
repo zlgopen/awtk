@@ -69,7 +69,10 @@ tk_object_t* object_typed_array_create(value_type_t type, uint32_t capacity);
  * @return {object_typed_array_t*} object_typed_array对象。
  */
 object_typed_array_t* object_typed_array_cast(tk_object_t* obj);
+
 #define OBJECT_TYPED_ARRAY(obj) object_typed_array_cast(obj)
+
+#define OBJECT_TYPED_ARRAY_TYPE "object_typed_array"
 
 END_C_DECLS
 

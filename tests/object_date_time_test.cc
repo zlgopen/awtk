@@ -45,6 +45,7 @@ TEST(ObjectDateTime, basic) {
   log = "";
   tk_object_foreach_prop(obj, visit_dump, &log);
   ASSERT_EQ(log, "year:3000month:3minute:6day:4hour:5second:7wday:1");
+  ASSERT_EQ(tk_object_is_instance_of(obj, OBJECT_DATE_TIME_TYPE), TRUE);
 
   TK_OBJECT_UNREF(obj);
 }

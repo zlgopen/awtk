@@ -1001,6 +1001,20 @@ ret_t tk_object_to_json(tk_object_t* obj, str_t* json, uint32_t indent, uint32_t
  */
 tk_object_t* tk_object_get_child_object(tk_object_t* obj, const char* path, const char** next_path);
 
+/**
+ * @method tk_object_is_instance_of
+ * 检查对象是否是指定类型的实例。
+ * ```
+ * if(tk_object_is_instance_of(obj, OBJECT_ARRRAY_TYPE)) {
+ * }
+ * ```
+ * @param {tk_object_t*} obj object对象。
+ * @param {const char*} type 类型。
+ * 
+ * @return {bool_t} 返回TRUE表示是指定类型的实例，否则表示不是。
+ */
+bool_t tk_object_is_instance_of(tk_object_t* obj, const char* type);
+
 #define TK_OBJECT(obj) ((tk_object_t*)(obj))
 
 #define TK_OBJECT_REF(obj) tk_object_ref((tk_object_t*)(obj))

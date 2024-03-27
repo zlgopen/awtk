@@ -109,8 +109,8 @@ static ret_t object_compositor_exec(tk_object_t* obj, const char* name, const ch
 }
 
 static const object_vtable_t s_object_compositor_vtable = {
-    .type = "object_compositor",
-    .desc = "object_compositor",
+    .type = OBJECT_COMPOSITOR_TYPE,
+    .desc = OBJECT_COMPOSITOR_TYPE,
     .size = sizeof(object_compositor_t),
     .is_collection = FALSE,
     .on_destroy = object_compositor_on_destroy,

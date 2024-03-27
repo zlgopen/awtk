@@ -957,3 +957,9 @@ ret_t tk_object_set_prop_str_with_format(tk_object_t* obj, const char* name, con
 
   return tk_object_set_prop_str(obj, name, str);
 }
+
+bool_t tk_object_is_instance_of(tk_object_t* obj, const char* type) {
+  return_value_if_fail(obj != NULL && obj->vt != NULL, FALSE);
+
+  return tk_str_eq(obj->vt->type, type);
+}

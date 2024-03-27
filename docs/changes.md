@@ -2,6 +2,7 @@
 
 2024/03/27
   * 更新部分文件的copyright日期(感谢俊圣提供补丁)。
+  * 增加函数 tk\_object\_is\_instance\_of
 
 2024/03/25
   * 新增事件EVT\_WIDGET\_WILL\_UPDATE\_STYLE和EVT\_WIDGET\_UPDATE\_STYLE(感谢雨欣提供补丁) 

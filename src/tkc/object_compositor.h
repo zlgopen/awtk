@@ -65,7 +65,10 @@ tk_object_t* object_compositor_create(tk_object_t* obj1, tk_object_t* obj2);
  * @return {object_compositor_t*} object_compositor对象。
  */
 object_compositor_t* object_compositor_cast(tk_object_t* obj);
+
 #define OBJECT_COMPOSITOR(obj) object_compositor_cast(obj)
+
+#define OBJECT_COMPOSITOR_TYPE "object_compositor"
 
 END_C_DECLS
 

@@ -370,8 +370,8 @@ static ret_t object_array_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, voi
   return ret;
 }
 
-static const object_vtable_t s_object_array_vtable = {.type = "object_array",
-                                                      .desc = "object_array",
+static const object_vtable_t s_object_array_vtable = {.type = OBJECT_ARRRAY_TYPE,
+                                                      .desc = OBJECT_ARRRAY_TYPE,
                                                       .size = sizeof(object_array_t),
                                                       .is_collection = TRUE,
                                                       .on_destroy = object_array_on_destroy,

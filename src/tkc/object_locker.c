@@ -116,8 +116,8 @@ static ret_t object_locker_exec(tk_object_t* obj, const char* name, const char* 
   return ret;
 }
 
-static const object_vtable_t s_object_locker_vtable = {.type = "object_locker",
-                                                       .desc = "object_locker",
+static const object_vtable_t s_object_locker_vtable = {.type = OBJECT_LOCKER_TYPE,
+                                                       .desc = OBJECT_LOCKER_TYPE,
                                                        .size = sizeof(object_locker_t),
                                                        .is_collection = FALSE,
                                                        .on_destroy = object_locker_on_destroy,

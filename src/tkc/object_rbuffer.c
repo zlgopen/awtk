@@ -51,8 +51,8 @@ static ret_t object_rbuffer_get_prop(tk_object_t* obj, const char* name, value_t
   return ret;
 }
 
-static const object_vtable_t s_object_rbuffer_vtable = {.type = "object_rbuffer",
-                                                        .desc = "object_rbuffer",
+static const object_vtable_t s_object_rbuffer_vtable = {.type = OBJECT_RBUFFER_TYPE,
+                                                        .desc = OBJECT_RBUFFER_TYPE,
                                                         .size = sizeof(object_rbuffer_t),
                                                         .is_collection = FALSE,
                                                         .on_destroy = object_rbuffer_on_destroy,

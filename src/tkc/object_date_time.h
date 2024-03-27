@@ -67,7 +67,10 @@ tk_object_t* object_date_time_create(void);
  * @return {object_date_time_t*} object_date_time对象。
  */
 object_date_time_t* object_date_time_cast(tk_object_t* obj);
+
 #define OBJECT_DATE_TIME(obj) object_date_time_cast(obj)
+
+#define OBJECT_DATE_TIME_TYPE "object_date_time"
 
 #define OBJECT_DATE_TIME_PROP_YEAR "year"
 #define OBJECT_DATE_TIME_PROP_MONTH "month"

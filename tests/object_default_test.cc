@@ -760,6 +760,7 @@ TEST(ObjectDefault, set_proo_str_with_format) {
 
   ASSERT_EQ(tk_object_set_prop_str_with_format(obj, "name", "%d", 123), RET_OK);
   ASSERT_STREQ(tk_object_get_prop_str(obj, "name"), "123");
+  ASSERT_EQ(tk_object_is_instance_of(obj, OBJECT_DEFAULT_TYPE), TRUE);
   
   TK_OBJECT_UNREF(obj);
 }

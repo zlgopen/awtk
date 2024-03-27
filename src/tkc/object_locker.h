@@ -65,7 +65,10 @@ tk_object_t* object_locker_create(tk_object_t* obj);
  * @return {object_locker_t*} object_locker对象。
  */
 object_locker_t* object_locker_cast(tk_object_t* obj);
+
 #define OBJECT_LOCKER(obj) object_locker_cast(obj)
+
+#define OBJECT_LOCKER_TYPE "object_locker"
 
 END_C_DECLS
 

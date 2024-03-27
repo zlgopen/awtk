@@ -764,6 +764,7 @@ TEST(ObjectArray, push_and_remove) {
   ASSERT_EQ(OBJECT_ARRAY(obj)->size, 2);
   ASSERT_EQ(object_array_get(obj, 1, &v), RET_OK);
   ASSERT_EQ(value_int(&v), 40);
+  ASSERT_EQ(tk_object_is_instance_of(obj, OBJECT_ARRRAY_TYPE), TRUE);
 
   TK_OBJECT_UNREF(obj);
 }
