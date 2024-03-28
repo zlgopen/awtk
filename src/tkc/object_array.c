@@ -374,13 +374,13 @@ static const object_vtable_t s_object_array_vtable = {.type = OBJECT_ARRRAY_TYPE
                                                       .desc = OBJECT_ARRRAY_TYPE,
                                                       .size = sizeof(object_array_t),
                                                       .is_collection = TRUE,
-                                                      .on_destroy = object_array_on_destroy,
 
                                                       .compare = object_array_compare,
                                                       .get_prop = object_array_get_prop,
                                                       .set_prop = object_array_set_prop,
                                                       .can_exec = object_array_can_exec,
                                                       .exec = object_array_exec,
+                                                      .clone = object_array_clone,
                                                       .remove_prop = object_array_remove_prop,
                                                       .foreach_prop = object_array_foreach_prop};
 
