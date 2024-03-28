@@ -119,11 +119,7 @@ typedef struct _scroll_bar_t {
   widget_animator_t* wa_value;
   widget_animator_t* wa_opactiy;
 
-  widget_t* target_win;
-  uint32_t target_win_id;
   uint32_t wheel_before_id;
-  uint32_t pointer_enter_event_id;
-  uint32_t pointer_leave_event_id;
 } scroll_bar_t;
 
 /**

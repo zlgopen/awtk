@@ -331,6 +331,8 @@ static ret_t input_device_status_init_pointer_event(input_device_status_t* ids,
 
 static ret_t input_device_status_init_wheel_event(input_device_status_t* ids, wheel_event_t* evt) {
   return_value_if_fail(ids != NULL && evt != NULL, RET_BAD_PARAMS);
+  evt->x = ids->last_x;
+  evt->y = ids->last_y;
   evt->alt = ids->alt;
   evt->ctrl = ids->ctrl;
   evt->shift = ids->shift;

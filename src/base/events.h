@@ -651,6 +651,18 @@ event_t* model_event_init(model_event_t* event, const char* name, const char* ch
 typedef struct _wheel_event_t {
   event_t e;
   /**
+   * @property {xy_t} x
+   * @annotation ["readable", "scriptable"]
+   * x坐标。
+   */
+  xy_t x;
+  /**
+   * @property {xy_t} y
+   * @annotation ["readable", "scriptable"]
+   * y坐标。
+   */
+  xy_t y;
+  /**
    * @property {int32_t} dy
    * @annotation ["readable", "scriptable"]
    * 滚轮的y值。

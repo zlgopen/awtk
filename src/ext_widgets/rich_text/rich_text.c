@@ -477,9 +477,9 @@ static ret_t rich_text_on_event(widget_t* widget, event_t* e) {
     case EVT_WHEEL: {
       if (scrollable) {
         wheel_event_t* evt = (wheel_event_t*)e;
-        if (evt->dy > 0) {
+        if (evt->dy < 0) {
           rich_text_down(widget);
-        } else if (evt->dy < 0) {
+        } else if (evt->dy > 0) {
           rich_text_up(widget);
         }
 

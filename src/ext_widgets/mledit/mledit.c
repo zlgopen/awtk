@@ -875,23 +875,12 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       key_event_t kevt;
       wheel_event_t* evt = (wheel_event_t*)e;
       int32_t delta = evt->dy;
-      widget_t* vscroll_bar = widget_lookup_by_type(widget, WIDGET_TYPE_SCROLL_BAR_DESKTOP, TRUE);
-
-      if (vscroll_bar != NULL) {
-        int32_t font_size = style_get_int(widget->astyle, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
-        if (delta > 0) {
-          scroll_bar_add_delta(vscroll_bar, -font_size * mledit->scroll_line);
-        } else if (delta < 0) {
-          scroll_bar_add_delta(vscroll_bar, font_size * mledit->scroll_line);
-        }
-      } else {
-        if (delta > 0) {
-          key_event_init(&kevt, EVT_KEY_DOWN, widget, TK_KEY_UP);
-          text_edit_key_down(mledit->model, (key_event_t*)&kevt);
-        } else if (delta < 0) {
-          key_event_init(&kevt, EVT_KEY_DOWN, widget, TK_KEY_DOWN);
-          text_edit_key_down(mledit->model, (key_event_t*)&kevt);
-        }
+      if (delta > 0) {
+        key_event_init(&kevt, EVT_KEY_DOWN, widget, TK_KEY_UP);
+        text_edit_key_down(mledit->model, (key_event_t*)&kevt);
+      } else if (delta < 0) {
+        key_event_init(&kevt, EVT_KEY_DOWN, widget, TK_KEY_DOWN);
+        text_edit_key_down(mledit->model, (key_event_t*)&kevt);
       }
       ret = RET_STOP;
       widget_invalidate(widget, NULL);

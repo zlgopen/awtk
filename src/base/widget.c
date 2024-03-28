@@ -2923,9 +2923,9 @@ static ret_t widget_on_wheel_before_children(widget_t* widget, wheel_event_t* e)
 
 static ret_t widget_on_wheel_children(widget_t* widget, wheel_event_t* e) {
   ret_t ret = RET_OK;
-
-  if (widget->key_target != NULL) {
-    ret = widget_on_wheel(widget->key_target, e);
+  widget_t* target = widget_find_target(widget, e->x, e->y);
+  if (target != NULL) {
+    ret = widget_on_wheel(target, e);
   }
 
   return ret;

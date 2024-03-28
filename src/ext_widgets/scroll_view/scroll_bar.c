@@ -51,7 +51,6 @@ static ret_t scroll_bar_desktop_init(widget_t* widget);
 static ret_t scroll_bar_update_dragger(widget_t* widget);
 static ret_t scroll_bar_create_children(widget_t* widget);
 static ret_t scroll_bar_set_is_mobile(widget_t* widget, bool_t value);
-static ret_t scroll_bar_desktop_target_win_ungrab(scroll_bar_t* scroll_bar);
 widget_t* scroll_bar_create_desktop_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /*mobile*/
@@ -577,90 +576,29 @@ static ret_t scroll_bar_desktop_on_parent_wheel_event(void* ctx, event_t* e) {
   }
 }
 
-static ret_t scroll_bar_desktop_target_win_on_destroy(void* ctx, event_t* e) {
-  scroll_bar_t* scroll_bar = SCROLL_BAR(ctx);
-  return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
-  scroll_bar_desktop_target_win_ungrab(scroll_bar);
-  return RET_OK;
-}
-
-static ret_t scroll_bar_desktop_target_win_grab(scroll_bar_t* scroll_bar) {
-  return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
-  if (scroll_bar->wheel_before_id == TK_INVALID_ID) {
-    widget_t* win = window_manager()->key_target;
-    return_value_if_fail(win != NULL, RET_BAD_PARAMS);
-    scroll_bar->target_win = win;
-    scroll_bar->target_win_id = widget_on(win, EVT_DESTROY, scroll_bar_desktop_target_win_on_destroy, scroll_bar);
-    scroll_bar->wheel_before_id = widget_on(win, EVT_WHEEL_BEFORE_CHILDREN, scroll_bar_desktop_on_parent_wheel_event, WIDGET(scroll_bar));
-  }
-  return RET_OK;
-}
-
-static ret_t scroll_bar_desktop_target_win_ungrab(scroll_bar_t* scroll_bar) {
-  return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
-  if (scroll_bar->target_win != NULL) {
-    if (scroll_bar->target_win_id != TK_INVALID_ID) {
-      widget_off(scroll_bar->target_win, scroll_bar->target_win_id);
-      scroll_bar->target_win_id = TK_INVALID_ID;
-    }
-    if (scroll_bar->wheel_before_id != TK_INVALID_ID) {
-      widget_off(scroll_bar->target_win, scroll_bar->wheel_before_id);
-      scroll_bar->wheel_before_id = TK_INVALID_ID;
-    }
-    scroll_bar->target_win = NULL;
-  }
-  return RET_OK;
-}
-
-static ret_t scroll_bar_desktop_on_parent_pointer_enter(void* ctx, event_t* e) {
-  scroll_bar_t* scroll_bar = SCROLL_BAR(ctx);
-  return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
-  scroll_bar_desktop_target_win_ungrab(scroll_bar);
-  scroll_bar_desktop_target_win_grab(scroll_bar);
-  return RET_OK;
-}
-
-static ret_t scroll_bar_desktop_on_parent_pointer_leave(void* ctx, event_t* e) {
-  scroll_bar_t* scroll_bar = SCROLL_BAR(ctx);
-  return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
-  scroll_bar_desktop_target_win_ungrab(scroll_bar);
-  return RET_OK;
-}
-
 static ret_t scroll_bar_desktop_on_attach_parent(widget_t* widget, widget_t* parent) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL && parent != NULL, RET_BAD_PARAMS);
-  scroll_bar->pointer_enter_event_id = widget_on(parent, EVT_POINTER_ENTER, scroll_bar_desktop_on_parent_pointer_enter, WIDGET(scroll_bar));
-  scroll_bar->pointer_leave_event_id = widget_on(parent, EVT_POINTER_LEAVE, scroll_bar_desktop_on_parent_pointer_leave, WIDGET(scroll_bar));
+  scroll_bar->wheel_before_id = widget_on(parent, EVT_WHEEL_BEFORE_CHILDREN, scroll_bar_desktop_on_parent_wheel_event, WIDGET(scroll_bar));
   return RET_OK;
 }
 static ret_t scroll_bar_desktop_on_detach_parent(widget_t* widget, widget_t* parent) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL && parent != NULL, RET_BAD_PARAMS);
   if (!parent->destroying) {
-    widget_off(parent, scroll_bar->pointer_enter_event_id);
-    widget_off(parent, scroll_bar->pointer_leave_event_id);
-    scroll_bar->pointer_enter_event_id = TK_INVALID_ID;
-    scroll_bar->pointer_leave_event_id = TK_INVALID_ID;
+    widget_off(parent, scroll_bar->wheel_before_id);
   }
-  scroll_bar_desktop_target_win_ungrab(scroll_bar);
+  scroll_bar->wheel_before_id = TK_INVALID_ID;
   return RET_OK;
 }
 
 static ret_t scroll_bar_desktop_on_destroy(widget_t* widget) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
-  if (scroll_bar->pointer_enter_event_id != TK_INVALID_ID && widget->parent != NULL) {
-    widget_off(widget->parent, scroll_bar->pointer_enter_event_id);
-    scroll_bar->pointer_enter_event_id = TK_INVALID_ID;
+  if (scroll_bar->wheel_before_id != TK_INVALID_ID && widget->parent != NULL) {
+    widget_off(widget->parent, scroll_bar->wheel_before_id);
+    scroll_bar->wheel_before_id = TK_INVALID_ID;
   }
-  
-  if (scroll_bar->pointer_leave_event_id != TK_INVALID_ID && widget->parent != NULL) {
-    widget_off(widget->parent, scroll_bar->pointer_leave_event_id);
-    scroll_bar->pointer_leave_event_id = TK_INVALID_ID;
-  }
-
-  scroll_bar_desktop_target_win_ungrab(scroll_bar);
   return RET_OK;
 }
 
