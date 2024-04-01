@@ -465,6 +465,13 @@ typedef struct _debugger_breaked_event_t {
    * 中断运行的文件路径。（备注：可能文件路径为空）
    */
   const char* file_path;
+
+  /**
+   * @property {const char*} frame_name
+   * @annotation ["readable"]
+   * 中断运行的函数名字。（备注：可能文件路径为空）
+   */
+  const char* frame_name;
 } debugger_breaked_event_t;
 
 /**
@@ -485,11 +492,12 @@ event_t* debugger_breaked_event_init(debugger_breaked_event_t* event, uint32_t l
  * @param {debugger_breaked_event_t*} event event对象。
  * @param {uint32_t} line 中断运行的行号。
  * @param {const char*} file_path 中断运行的行号。
+ * @param {const char*} frame_name 中断运行的函数。
  *
  * @return {event_t*} 返回event对象。
  */
 event_t* debugger_breaked_event_init_ex(debugger_breaked_event_t* event, uint32_t line,
-                                        const char* file_path);
+                                        const char* file_path, const char* frame_name);
 
 /**
  * @method debugger_breaked_event_cast

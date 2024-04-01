@@ -72,7 +72,7 @@ event_t* debugger_breaked_event_init(debugger_breaked_event_t* event, uint32_t l
 }
 
 event_t* debugger_breaked_event_init_ex(debugger_breaked_event_t* event, uint32_t line,
-                                        const char* file_path) {
+                                        const char* file_path, const char* frame_name) {
   return_value_if_fail(event != NULL, NULL);
 
   memset(event, 0x00, sizeof(*event));
@@ -80,6 +80,7 @@ event_t* debugger_breaked_event_init_ex(debugger_breaked_event_t* event, uint32_
   event->e.size = sizeof(*event);
   event->line = line;
   event->file_path = file_path;
+  event->frame_name = frame_name;
 
   return (event_t*)event;
 }
