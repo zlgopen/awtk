@@ -165,6 +165,8 @@ static ret_t debugger_lldb_load_config(debugger_t* debugger, const char* filenam
   return_value_if_fail(conf != NULL, RET_FAIL);
   doc = conf_obj_get_doc(conf);
   if (doc != NULL) {
+    lldb->timeout = conf_doc_get_int(doc, "timeout", 3000);
+    log_debug("timeout:%d\n", lldb->timeout);
     node = conf_node_find_child(doc->root, "initCommands");
     if (node != NULL) {
       ret = debugger_lldb_load_init_commands(lldb, node);
@@ -291,7 +293,7 @@ static ret_t debugger_lldb_emit(debugger_t* debugger, tk_object_t* resp) {
     line = lldb->current_frame_line - 1;
     emitter_dispatch(EMITTER(debugger), debugger_breaked_event_init_ex(&event, line, file_path));
 
-    log_debug("threadId = %lld stopped\n", stop_thread_id);
+    log_debug("threadId = %"PRIu64" stopped\n", (uint64_t)stop_thread_id);
   } else if (tk_str_eq(event, LLDB_EVENT_OUTPUT)) {
     uint32_t line = 0;
     debugger_log_event_t event;
@@ -525,7 +527,7 @@ static ret_t debugger_lldb_init(debugger_t* debugger) {
 
   debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_NONE);
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_INITIALIZE, 3000);
+    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_INITIALIZE, LLDB_REQUEST_TIMEOUT);
   }
   lldb->init_commands = object_array_create();
   lldb->target_create_commands = object_array_create();
@@ -562,7 +564,7 @@ static ret_t debugger_lldb_disconnect(debugger_t* debugger, bool_t terminate_deb
   return_value_if_fail(req != NULL, RET_BAD_PARAMS);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_DISCONNECT, 3000);
+    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_DISCONNECT, LLDB_REQUEST_TIMEOUT);
   }
 
   TK_OBJECT_UNREF(req);
@@ -795,7 +797,7 @@ static ret_t debugger_lldb_on_source_break_point(void* ctx, const void* data) {
   return_value_if_fail(req != NULL, RET_BAD_PARAMS);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_SET_BREAK_POINTS, 3000);
+    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_SET_BREAK_POINTS, LLDB_REQUEST_TIMEOUT);
   }
 
   TK_OBJECT_UNREF(req);
@@ -858,7 +860,7 @@ static ret_t debugger_lldb_update_func_break_points(debugger_t* debugger) {
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
     ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_SET_FUNCTION_BREAK_POINTS,
-                                                       3000);
+                                                       LLDB_REQUEST_TIMEOUT);
   }
 
   TK_OBJECT_UNREF(req);
@@ -898,7 +900,7 @@ static tk_object_t* debugger_lldb_get_callstack_impl(debugger_t* debugger, uint3
   return_value_if_fail(req != NULL, NULL);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    resp = debugger_lldb_dispatch_until_get_resp(debugger, LLDB_CMD_STACK_TRACE, 3000);
+    resp = debugger_lldb_dispatch_until_get_resp(debugger, LLDB_CMD_STACK_TRACE, LLDB_REQUEST_TIMEOUT);
   }
 
   TK_OBJECT_UNREF(req);
@@ -939,7 +941,7 @@ get_value:
   return_value_if_fail(req != NULL, NULL);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    resp = debugger_lldb_dispatch_until_get_resp(debugger, LLDB_CMD_VARIABLES, 3000);
+    resp = debugger_lldb_dispatch_until_get_resp(debugger, LLDB_CMD_VARIABLES, LLDB_REQUEST_TIMEOUT);
   }
 
   TK_OBJECT_UNREF(req);
@@ -978,7 +980,7 @@ static tk_object_t* debugger_lldb_get_threads(debugger_t* debugger) {
   return_value_if_fail(req != NULL, NULL);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    resp = debugger_lldb_dispatch_until_get_resp(debugger, LLDB_CMD_THREADS, 3000);
+    resp = debugger_lldb_dispatch_until_get_resp(debugger, LLDB_CMD_THREADS, LLDB_REQUEST_TIMEOUT);
   }
 
   TK_OBJECT_UNREF(req);
@@ -1013,7 +1015,7 @@ static ret_t debugger_lldb_scopes_command(debugger_t* debugger, uint32_t frame_i
   return_value_if_fail(req != NULL, ret);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_SCOPES, 3000);
+    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_SCOPES, LLDB_REQUEST_TIMEOUT);
   }
 
   return ret;
@@ -1047,7 +1049,7 @@ static ret_t debugger_lldb_simple_command(debugger_t* debugger, const char* cmd)
   return_value_if_fail(req != NULL, ret);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, cmd, 3000);
+    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, cmd, LLDB_REQUEST_TIMEOUT);
   }
 
   return ret;

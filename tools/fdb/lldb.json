@@ -1,4 +1,5 @@
 {
+    "timeout": 3000,
     "initCommands": [
         "command script import \"/Users/jim/work/awtk-root/awtk/tools/fdb/awplc.py\"",
         "target stop-hook add -P awplc.StopHook"
