@@ -128,6 +128,7 @@ typedef struct _progress_circle_t {
   bool_t show_text;
 
   /* private */
+  bool_t is_redraw;
   rect_t dirty_rect;
   rect_t last_dirty_rect;
 } progress_circle_t;

@@ -124,7 +124,7 @@ rect_t progress_circle_calc_line_dirty_rect(widget_t* widget, float_t old_value,
     end_angle = t;
   }
 
-  if ((end_angle - start_angle) < (M_PI / 2)) {
+  if (!progress_circle->is_redraw && (end_angle - start_angle) < (M_PI / 2)) {
     xy_t cx = widget->w / 2;
     xy_t cy = widget->h / 2;
     float_t r = progress_circle_get_radius(widget);
@@ -159,6 +159,7 @@ rect_t progress_circle_calc_line_dirty_rect(widget_t* widget, float_t old_value,
     rect.x += cx;
     rect.y += cy;
   } else {
+    progress_circle->is_redraw = FALSE;
     rect = rect_init(0, 0, widget->w, widget->h);
   }
 
@@ -366,22 +367,29 @@ static ret_t progress_circle_set_prop(widget_t* widget, const char* name, const 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     return progress_circle_set_value(widget, value_float(v));
   } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
+    progress_circle->is_redraw = TRUE;
     return progress_circle_set_max(widget, value_int(v));
   } else if (tk_str_eq(name, WIDGET_PROP_FORMAT)) {
     return progress_circle_set_format(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_SHOW_TEXT)) {
     return progress_circle_set_show_text(widget, value_bool(v));
   } else if (tk_str_eq(name, PROGRESS_CIRCLE_PROP_COUNTER_CLOCK_WISE)) {
+    progress_circle->is_redraw = TRUE;
     return progress_circle_set_counter_clock_wise(widget, value_bool(v));
   } else if (tk_str_eq(name, PROGRESS_CIRCLE_PROP_LINE_WIDTH)) {
+    progress_circle->is_redraw = TRUE;
     return progress_circle_set_line_width(widget, value_int(v));
   } else if (tk_str_eq(name, PROGRESS_CIRCLE_PROP_START_ANGLE)) {
+    progress_circle->is_redraw = TRUE;
     return progress_circle_set_start_angle(widget, value_int(v));
   } else if (tk_str_eq(name, PROGRESS_CIRCLE_PROP_LINE_CAP)) {
+    progress_circle->is_redraw = TRUE;
     return progress_circle_set_line_cap(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_W)) {
+    progress_circle->is_redraw = TRUE;
     progress_circle->dirty_rect = rect_init(0, 0, value_int(v), widget->h);
   } else if (tk_str_eq(name, WIDGET_PROP_H)) {
+    progress_circle->is_redraw = TRUE;
     progress_circle->dirty_rect = rect_init(0, 0, widget->w, value_int(v));
   }
 

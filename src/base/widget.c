@@ -4670,7 +4670,7 @@ ret_t widget_set_style(widget_t* widget, const char* state_and_name, const value
     state = WIDGET_STATE_NORMAL;
   }
 
-  widget_invalidate(widget, NULL);
+  widget_invalidate_force(widget, NULL);
 
   return style_set(widget->astyle, state, name, value);
 }
