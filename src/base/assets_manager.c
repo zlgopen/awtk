@@ -709,11 +709,11 @@ static const asset_info_t* assets_manager_ref_impl(assets_manager_t* am, asset_t
       const char* lang = tk_object_get_prop_str(TK_OBJECT(sinfo), SYSTEM_INFO_PROP_LANGUAGE);
       const char* country = tk_object_get_prop_str(TK_OBJECT(sinfo), SYSTEM_INFO_PROP_COUNTRY);
 
-      tk_snprintf(name_ex, sizeof(name_ex) - 1, "%s.%s_%s", name, lang, country);
+      tk_snprintf(name_ex, sizeof(name_ex) - 1, "%s_%s_%s", name, lang, country);
       log_debug("try font load %s\n", name_ex);
       info = assets_manager_load_ex(am, type, subtype, name_ex);
       if (info == NULL) {
-        tk_snprintf(name_ex, sizeof(name_ex) - 1, "%s.%s", name, lang);
+        tk_snprintf(name_ex, sizeof(name_ex) - 1, "%s_%s", name, lang);
         log_debug("try font load %s\n", name_ex);
         info = assets_manager_load_ex(am, type, subtype, name_ex);
       }
