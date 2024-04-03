@@ -931,7 +931,6 @@ typedef struct _key_event_t {
   /**
    * @property {bool_t} ctrl
    * @annotation ["readable", "scriptable"]
-   * right alt键是否按下。
    * ctrl键是否按下。
    */
   bool_t ctrl;
@@ -968,7 +967,6 @@ typedef struct _key_event_t {
   /**
    * @property {bool_t} cmd
    * @annotation ["readable", "scriptable"]
-   * left shift键是否按下。
    * cmd/win键是否按下。
    */
   bool_t cmd;

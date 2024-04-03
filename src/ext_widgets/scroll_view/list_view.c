@@ -88,7 +88,7 @@ static ret_t list_view_set_prop(widget_t* widget, const char* name, const value_
   return RET_NOT_FOUND;
 }
 
-static ret_t list_view_hanlde_wheel_event(list_view_t* list_view, event_t* e) {
+static ret_t list_view_handle_wheel_event(list_view_t* list_view, event_t* e) {
   wheel_event_t* evt = (wheel_event_t*)e;
   int32_t delta = -evt->dy;
   if (list_view->scroll_bar != NULL) {
@@ -99,7 +99,7 @@ static ret_t list_view_hanlde_wheel_event(list_view_t* list_view, event_t* e) {
 }
 
 static ret_t list_view_on_wheel_before(void* ctx, event_t* e) {
-  return list_view_hanlde_wheel_event(LIST_VIEW(ctx), e);
+  return list_view_handle_wheel_event(LIST_VIEW(ctx), e);
 }
 
 static bool_t list_view_is_play_floating_scroll_bar_animtion(list_view_t* list_view) {
@@ -148,27 +148,29 @@ static ret_t list_view_on_event(widget_t* widget, event_t* e) {
   switch (e->type) {
     case EVT_WHEEL: {
       if (list_view->is_over) {
-        ret = list_view_hanlde_wheel_event(list_view, e);
+        ret = list_view_handle_wheel_event(list_view, e);
       }
       break;
     }
     case EVT_KEY_DOWN: {
       key_event_t* evt = (key_event_t*)e;
-      if (evt->key == TK_KEY_PAGEDOWN) {
-        scroll_view_scroll_delta_to(list_view->scroll_view, 0, widget->h, TK_ANIMATING_TIME);
-        ret = RET_STOP;
-      } else if (evt->key == TK_KEY_PAGEUP) {
-        scroll_view_scroll_delta_to(list_view->scroll_view, 0, -widget->h, TK_ANIMATING_TIME);
-        ret = RET_STOP;
-      } else if (keyboard_type == KEYBOARD_NORMAL) {
-        if (evt->key == TK_KEY_UP) {
-          uint32_t item_height = tk_max(list_view->item_height, list_view->default_item_height);
-          scroll_view_scroll_delta_to(list_view->scroll_view, 0, -item_height, TK_ANIMATING_TIME);
+      if (!evt->alt && !evt->ctrl && !evt->shift && !evt->cmd && !evt->menu) {
+        if (evt->key == TK_KEY_PAGEDOWN) {
+          scroll_view_scroll_delta_to(list_view->scroll_view, 0, widget->h, TK_ANIMATING_TIME);
           ret = RET_STOP;
-        } else if (evt->key == TK_KEY_DOWN) {
-          uint32_t item_height = tk_max(list_view->item_height, list_view->default_item_height);
-          scroll_view_scroll_delta_to(list_view->scroll_view, 0, item_height, TK_ANIMATING_TIME);
+        } else if (evt->key == TK_KEY_PAGEUP) {
+          scroll_view_scroll_delta_to(list_view->scroll_view, 0, -widget->h, TK_ANIMATING_TIME);
           ret = RET_STOP;
+        } else if (keyboard_type == KEYBOARD_NORMAL) {
+          if (evt->key == TK_KEY_UP) {
+            uint32_t item_height = tk_max(list_view->item_height, list_view->default_item_height);
+            scroll_view_scroll_delta_to(list_view->scroll_view, 0, -item_height, TK_ANIMATING_TIME);
+            ret = RET_STOP;
+          } else if (evt->key == TK_KEY_DOWN) {
+            uint32_t item_height = tk_max(list_view->item_height, list_view->default_item_height);
+            scroll_view_scroll_delta_to(list_view->scroll_view, 0, item_height, TK_ANIMATING_TIME);
+            ret = RET_STOP;
+          }
         }
       }
       break;
