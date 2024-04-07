@@ -32,6 +32,7 @@
 static tk_object_t* s_global_obj = NULL;
 static tk_object_t* s_consts_obj = NULL;
 static const fscript_hooks_t* s_hooks;
+static ret_t fscript_locals_create(fscript_t* fscript, const char* name, const value_t* v);
 
 static ret_t fscript_hook_on_init(fscript_t* fscript, const char* code) {
   const fscript_hooks_t* hooks = fscript->hooks != NULL ? fscript->hooks : s_hooks;
@@ -148,6 +149,23 @@ ret_t fscript_ensure_locals(fscript_t* fscript) {
   return fscript->locals != NULL ? RET_OK : RET_FAIL;
 }
 
+ret_t fscript_ensure_locals_by_symbols(fscript_t* fscript) {
+  value_t v;
+  uint32_t i = 0;
+  const char* id = NULL;
+  return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
+
+  if (fscript->symbols != NULL) {
+    memset(&v, 0x00, sizeof(value_t));
+    for (i = 0; i < fscript->symbols->size; i++) {
+      id = (const char*)darray_get(fscript->symbols, i);
+      fscript_locals_create(fscript, id, &v);
+    }
+  }
+
+  return RET_OK;
+}
+
 static ret_t fscript_locals_remove(fscript_t* fscript, uint32_t index) {
   named_value_t* nv = (named_value_t*)(fscript->locals->elms[index]);
   return value_reset(&(nv->value));
@@ -206,7 +224,9 @@ static ret_t fscript_locals_create(fscript_t* fscript, const char* name, const v
   index = darray_find_index(fscript->locals, (void*)name);
 
   if (index >= 0) {
-    fscript_set_error(fscript, RET_FAIL, "<>", "duplicated var name.");
+    if (fscript->symbols != NULL && darray_find_index(fscript->symbols, (void*)name) < 0) {
+      fscript_set_error(fscript, RET_FAIL, "<>", "duplicated var name.");
+    }
     return fscript_locals_set_with_index(fscript, index, v);
   }
 
@@ -870,6 +890,7 @@ ret_t fscript_exec(fscript_t* fscript, value_t* result) {
   do {
     fscript->rerun = FALSE;
     fscript_hook_before_exec(fscript);
+    fscript_ensure_locals_by_symbols(fscript);
 
     value_set_str(result, NULL);
     iter = fscript->first;
@@ -902,6 +923,10 @@ ret_t fscript_clean(fscript_t* fscript) {
 
   str_reset(&(fscript->str));
   fscript_locals_destroy(fscript);
+
+  if (fscript->symbols) {
+    darray_destroy(fscript->symbols);
+  }
 
   if (fscript->funcs_def != NULL) {
     tk_object_foreach_prop(fscript->funcs_def, on_free_func_def, NULL);
@@ -966,8 +991,10 @@ static ret_t fscript_parser_init(fscript_parser_t* parser, tk_object_t* obj, con
 static ret_t fscript_parser_deinit(fscript_parser_t* parser) {
   str_reset(&(parser->temp));
   TKMEM_FREE(parser->code_id);
-  darray_destroy(parser->symbols);
   fscript_func_call_destroy(parser->first);
+  if (parser->symbols != NULL) {
+    darray_destroy(parser->symbols);
+  }
   if (parser->funcs_def != NULL) {
     tk_object_foreach_prop(parser->funcs_def, on_free_func_def, NULL);
   }
@@ -1922,6 +1949,7 @@ static fscript_t* fscript_init_with_parser(fscript_t* fscript, fscript_parser_t*
   fscript->first = parser->first;
   fscript->funcs_def = parser->funcs_def;
   fscript->code_id = parser->code_id;
+  fscript->symbols = parser->symbols;
   fscript->lines = parser->row + 1;
 
   fscript_hook_on_init(fscript, parser->str);
@@ -1931,6 +1959,7 @@ static fscript_t* fscript_init_with_parser(fscript_t* fscript, fscript_parser_t*
   parser->temp.str = NULL;
   parser->funcs_def = NULL;
   parser->code_id = NULL;
+  parser->symbols = NULL;
 
   return fscript;
 }

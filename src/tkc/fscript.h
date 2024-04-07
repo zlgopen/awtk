@@ -180,6 +180,8 @@ struct _fscript_t {
   bool_t rerun;
   uint8_t loop_count;
 
+  /*预解析的临时变量*/
+  darray_t* symbols;
   /*函数局部变量和参数*/
   darray_t* locals;
   /*脚本定义的函数*/
