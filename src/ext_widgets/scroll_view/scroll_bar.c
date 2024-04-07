@@ -568,7 +568,7 @@ static ret_t scroll_bar_desktop_on_parent_wheel_event(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
-  if (scroll_bar->wheel_scroll) {
+  if (widget->enable && widget->sensitive && scroll_bar->wheel_scroll) {
     scroll_bar_add_delta(widget, delta);
     return RET_STOP;
   } else {
@@ -828,7 +828,6 @@ widget_t* scroll_bar_create_mobile(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_
 }
 
 static ret_t scroll_bar_desktop_init(widget_t* widget) {
-  ret_t ret = RET_OK;
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
   scroll_bar->wheel_scroll = TRUE;
