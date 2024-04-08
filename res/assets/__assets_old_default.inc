@@ -233,6 +233,145 @@
 #include "default/inc/data/a_b_c_any.data"
 #ifndef AWTK_WEB
 #ifdef WITH_STB_IMAGE
+#include "default/inc/images/ani6.res"
+#include "default/inc/images/checked.res"
+#include "default/inc/images/num_7.res"
+#include "default/inc/images/close_p.res"
+#include "default/inc/images/num_6.res"
+#include "default/inc/images/shift.res"
+#include "default/inc/images/ani7.res"
+#include "default/inc/images/ania.res"
+#include "default/inc/images/anic.res"
+#include "default/inc/images/earth.res"
+#include "default/inc/images/ani5.res"
+#include "default/inc/images/flag_none.res"
+#include "default/inc/images/bee.res"
+#include "default/inc/images/contact.res"
+#include "default/inc/images/battery_4.res"
+#include "default/inc/images/num_4.res"
+#include "default/inc/images/slider_fg.res"
+#include "default/inc/images/contact_active.res"
+#include "default/inc/images/close_d.res"
+#include "default/inc/images/dialog_title.res"
+#include "default/inc/images/battery_5.res"
+#include "default/inc/images/num_5.res"
+#include "default/inc/images/ani4.res"
+#include "default/inc/images/anib.res"
+#include "default/inc/images/me_active.res"
+#include "default/inc/images/file.res"
+#include "default/inc/images/arrow_up_n.res"
+#include "default/inc/images/cursor_hand.res"
+#include "default/inc/images/left_on.res"
+#include "default/inc/images/num_1.res"
+#include "default/inc/images/battery_1.res"
+#include "default/inc/images/arrow_right_p.res"
+#include "default/inc/images/slider_v_fg.res"
+#include "default/inc/images/empty.res"
+#include "default/inc/images/rgba.res"
+#include "default/inc/images/num_0.res"
+#include "default/inc/images/battery_0.res"
+#include "default/inc/images/edit_clear_p.res"
+#include "default/inc/images/arrow_up_o.res"
+#include "default/inc/images/visible.res"
+#include "default/inc/images/ani1.res"
+#include "default/inc/images/arrow_left_o.res"
+#include "default/inc/images/ani3.res"
+#include "default/inc/images/clock_second.res"
+#include "default/inc/images/battery_2.res"
+#include "default/inc/images/num_2.res"
+#include "default/inc/images/en.res"
+#include "default/inc/images/slider_drag_o.res"
+#include "default/inc/images/battery_3.res"
+#include "default/inc/images/num_3.res"
+#include "default/inc/images/ani2.res"
+#include "default/inc/images/arrow_left_n.res"
+#include "default/inc/images/middle_on.res"
+#include "default/inc/images/bricks.res"
+#include "default/inc/images/image_packed_bg.res"
+#include "default/inc/images/msg.res"
+#include "default/inc/images/play_o.res"
+#include "default/inc/images/play_n.res"
+#include "default/inc/images/msg_active.res"
+#include "default/inc/images/img_slider_bg.res"
+#include "default/inc/images/expand.res"
+#include "default/inc/images/radio_checked.res"
+#include "default/inc/images/active_dot.res"
+#include "default/inc/images/zh.res"
+#include "default/inc/images/question.res"
+#include "default/inc/images/discovery_active.res"
+#include "default/inc/images/dot.res"
+#include "default/inc/images/gauge_bg.res"
+#include "default/inc/images/shifton.res"
+#include "default/inc/images/check.res"
+#include "default/inc/images/cursor.res"
+#include "default/inc/images/me.res"
+#include "default/inc/images/info.res"
+#include "default/inc/images/red_btn_p.res"
+#include "default/inc/images/middle_off.res"
+#include "default/inc/images/img_slider_icon.res"
+#include "default/inc/images/arrow_down_n.res"
+#include "default/inc/images/num_plus.res"
+#include "default/inc/images/collapse.res"
+#include "default/inc/images/return_up.res"
+#include "default/inc/images/green_btn_o.res"
+#include "default/inc/images/green_btn_n.res"
+#include "default/inc/images/muted.res"
+#include "default/inc/images/arrow_down_o.res"
+#include "default/inc/images/rgb.res"
+#include "default/inc/images/num_dot.res"
+#include "default/inc/images/unmuted.res"
+#include "default/inc/images/right_off.res"
+#include "default/inc/images/message.res"
+#include "default/inc/images/3.res"
+#include "default/inc/images/play_p.res"
+#include "default/inc/images/2.res"
+#include "default/inc/images/slider_bg.res"
+#include "default/inc/images/right_on.res"
+#include "default/inc/images/gauge_pointer.res"
+#include "default/inc/images/flag_US.res"
+#include "default/inc/images/0.res"
+#include "default/inc/images/left_off.res"
+#include "default/inc/images/1.res"
+#include "default/inc/images/progress_circle.res"
+#include "default/inc/images/red_btn_o.res"
+#include "default/inc/images/slider_drag.res"
+#include "default/inc/images/num_minus.res"
+#include "default/inc/images/cursor_text.res"
+#include "default/inc/images/unchecked.res"
+#include "default/inc/images/red_btn_n.res"
+#include "default/inc/images/arrow_down_p.res"
+#include "default/inc/images/slider_v_bg.res"
+#include "default/inc/images/warn.res"
+#include "default/inc/images/green_btn_p.res"
+#include "default/inc/images/flag_CN.res"
+#include "default/inc/images/switch.res"
+#include "default/inc/images/radio_unchecked.res"
+#include "default/inc/images/close_n.res"
+#include "default/inc/images/close_o.res"
+#include "default/inc/images/clock_bg.res"
+#include "default/inc/images/clock_minute.res"
+#include "default/inc/images/cross.res"
+#include "default/inc/images/img_slider_fg.res"
+#include "default/inc/images/clock.res"
+#include "default/inc/images/image_packed_fg.res"
+#include "default/inc/images/find.res"
+#include "default/inc/images/ani9.res"
+#include "default/inc/images/arrow_up_p.res"
+#include "default/inc/images/edit_clear_o.res"
+#include "default/inc/images/folder.res"
+#include "default/inc/images/num_8.res"
+#include "default/inc/images/arrow_right_n.res"
+#include "default/inc/images/discovery.res"
+#include "default/inc/images/arrow_right_o.res"
+#include "default/inc/images/num_9.res"
+#include "default/inc/images/edit_clear_n.res"
+#include "default/inc/images/ani8.res"
+#include "default/inc/images/logo.res"
+#include "default/inc/images/invisible.res"
+#include "default/inc/images/slider_drag_p.res"
+#include "default/inc/images/backspace.res"
+#include "default/inc/images/arrow_left_p.res"
+#include "default/inc/images/clock_hour.res"
 #else /*WITH_STB_IMAGE*/
 #include "default/inc/images/arrow_right_o.data"
 #include "default/inc/images/image_packed_bg.data"
@@ -375,12 +514,14 @@
 #include "default/inc/images/battery_2.data"
 #endif /*WITH_STB_IMAGE*/
 #ifdef WITH_TRUETYPE_FONT
+#include "default/inc/fonts/default.res"
 #else /*WITH_TRUETYPE_FONT*/
 #include "default/inc/fonts/default_20.data"
 #include "default/inc/fonts/default_16.data"
 #include "default/inc/fonts/default_18.data"
 #include "default/inc/fonts/default_24.data"
 #endif /*WITH_TRUETYPE_FONT*/
+#include "default/inc/scripts/dummy.res"
 #endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
 #include "default/inc/images/paths_data_02_t.bsvg"
@@ -643,13 +784,154 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, data_test_json_default);
   assets_manager_add(am, data_a_b_c_any_default);
 #ifndef AWTK_WEB
+  assets_manager_add(am, image_ani6_default);
+  assets_manager_add(am, image_checked_default);
+  assets_manager_add(am, image_num_7_default);
+  assets_manager_add(am, image_close_p_default);
+  assets_manager_add(am, image_num_6_default);
+  assets_manager_add(am, image_shift_default);
+  assets_manager_add(am, image_ani7_default);
+  assets_manager_add(am, image_ania_default);
+  assets_manager_add(am, image_anic_default);
+  assets_manager_add(am, image_earth_default);
+  assets_manager_add(am, image_ani5_default);
+  assets_manager_add(am, image_flag_none_default);
+  assets_manager_add(am, image_bee_default);
+  assets_manager_add(am, image_contact_default);
+  assets_manager_add(am, image_battery_4_default);
+  assets_manager_add(am, image_num_4_default);
+  assets_manager_add(am, image_slider_fg_default);
+  assets_manager_add(am, image_contact_active_default);
+  assets_manager_add(am, image_close_d_default);
+  assets_manager_add(am, image_dialog_title_default);
+  assets_manager_add(am, image_battery_5_default);
+  assets_manager_add(am, image_num_5_default);
+  assets_manager_add(am, image_ani4_default);
+  assets_manager_add(am, image_anib_default);
+  assets_manager_add(am, image_me_active_default);
+  assets_manager_add(am, image_file_default);
+  assets_manager_add(am, image_arrow_up_n_default);
+  assets_manager_add(am, image_cursor_hand_default);
+  assets_manager_add(am, image_left_on_default);
+  assets_manager_add(am, image_num_1_default);
+  assets_manager_add(am, image_battery_1_default);
+  assets_manager_add(am, image_arrow_right_p_default);
+  assets_manager_add(am, image_slider_v_fg_default);
+  assets_manager_add(am, image_empty_default);
+  assets_manager_add(am, image_rgba_default);
+  assets_manager_add(am, image_num_0_default);
+  assets_manager_add(am, image_battery_0_default);
+  assets_manager_add(am, image_edit_clear_p_default);
+  assets_manager_add(am, image_arrow_up_o_default);
+  assets_manager_add(am, image_visible_default);
+  assets_manager_add(am, image_ani1_default);
+  assets_manager_add(am, image_arrow_left_o_default);
+  assets_manager_add(am, image_ani3_default);
+  assets_manager_add(am, image_clock_second_default);
+  assets_manager_add(am, image_battery_2_default);
+  assets_manager_add(am, image_num_2_default);
+  assets_manager_add(am, image_en_default);
+  assets_manager_add(am, image_slider_drag_o_default);
+  assets_manager_add(am, image_battery_3_default);
+  assets_manager_add(am, image_num_3_default);
+  assets_manager_add(am, image_ani2_default);
+  assets_manager_add(am, image_arrow_left_n_default);
+  assets_manager_add(am, image_middle_on_default);
+  assets_manager_add(am, image_bricks_default);
+  assets_manager_add(am, image_image_packed_bg_default);
+  assets_manager_add(am, image_msg_default);
+  assets_manager_add(am, image_play_o_default);
+  assets_manager_add(am, image_play_n_default);
+  assets_manager_add(am, image_msg_active_default);
+  assets_manager_add(am, image_img_slider_bg_default);
+  assets_manager_add(am, image_expand_default);
+  assets_manager_add(am, image_radio_checked_default);
+  assets_manager_add(am, image_active_dot_default);
+  assets_manager_add(am, image_zh_default);
+  assets_manager_add(am, image_question_default);
+  assets_manager_add(am, image_discovery_active_default);
+  assets_manager_add(am, image_dot_default);
+  assets_manager_add(am, image_gauge_bg_default);
+  assets_manager_add(am, image_shifton_default);
+  assets_manager_add(am, image_check_default);
+  assets_manager_add(am, image_cursor_default);
+  assets_manager_add(am, image_me_default);
+  assets_manager_add(am, image_info_default);
+  assets_manager_add(am, image_red_btn_p_default);
+  assets_manager_add(am, image_middle_off_default);
+  assets_manager_add(am, image_img_slider_icon_default);
+  assets_manager_add(am, image_arrow_down_n_default);
+  assets_manager_add(am, image_num_plus_default);
+  assets_manager_add(am, image_collapse_default);
+  assets_manager_add(am, image_return_up_default);
+  assets_manager_add(am, image_green_btn_o_default);
+  assets_manager_add(am, image_green_btn_n_default);
+  assets_manager_add(am, image_muted_default);
+  assets_manager_add(am, image_arrow_down_o_default);
+  assets_manager_add(am, image_rgb_default);
+  assets_manager_add(am, image_num_dot_default);
+  assets_manager_add(am, image_unmuted_default);
+  assets_manager_add(am, image_right_off_default);
+  assets_manager_add(am, image_message_default);
+  assets_manager_add(am, image_3_default);
+  assets_manager_add(am, image_play_p_default);
+  assets_manager_add(am, image_2_default);
+  assets_manager_add(am, image_slider_bg_default);
+  assets_manager_add(am, image_right_on_default);
+  assets_manager_add(am, image_gauge_pointer_default);
+  assets_manager_add(am, image_flag_US_default);
+  assets_manager_add(am, image_0_default);
+  assets_manager_add(am, image_left_off_default);
+  assets_manager_add(am, image_1_default);
+  assets_manager_add(am, image_progress_circle_default);
+  assets_manager_add(am, image_red_btn_o_default);
+  assets_manager_add(am, image_slider_drag_default);
+  assets_manager_add(am, image_num_minus_default);
+  assets_manager_add(am, image_cursor_text_default);
+  assets_manager_add(am, image_unchecked_default);
+  assets_manager_add(am, image_red_btn_n_default);
+  assets_manager_add(am, image_arrow_down_p_default);
+  assets_manager_add(am, image_slider_v_bg_default);
+  assets_manager_add(am, image_warn_default);
+  assets_manager_add(am, image_green_btn_p_default);
+  assets_manager_add(am, image_flag_CN_default);
+  assets_manager_add(am, image_switch_default);
+  assets_manager_add(am, image_radio_unchecked_default);
+  assets_manager_add(am, image_close_n_default);
+  assets_manager_add(am, image_close_o_default);
+  assets_manager_add(am, image_clock_bg_default);
+  assets_manager_add(am, image_clock_minute_default);
+  assets_manager_add(am, image_cross_default);
+  assets_manager_add(am, image_img_slider_fg_default);
+  assets_manager_add(am, image_clock_default);
+  assets_manager_add(am, image_image_packed_fg_default);
+  assets_manager_add(am, image_find_default);
+  assets_manager_add(am, image_ani9_default);
+  assets_manager_add(am, image_arrow_up_p_default);
+  assets_manager_add(am, image_edit_clear_o_default);
+  assets_manager_add(am, image_folder_default);
+  assets_manager_add(am, image_num_8_default);
+  assets_manager_add(am, image_arrow_right_n_default);
+  assets_manager_add(am, image_discovery_default);
+  assets_manager_add(am, image_arrow_right_o_default);
+  assets_manager_add(am, image_num_9_default);
+  assets_manager_add(am, image_edit_clear_n_default);
+  assets_manager_add(am, image_ani8_default);
+  assets_manager_add(am, image_logo_default);
+  assets_manager_add(am, image_invisible_default);
+  assets_manager_add(am, image_slider_drag_p_default);
+  assets_manager_add(am, image_backspace_default);
+  assets_manager_add(am, image_arrow_left_p_default);
+  assets_manager_add(am, image_clock_hour_default);
 #ifdef WITH_TRUETYPE_FONT
+  assets_manager_add(am, font_default_default);
 #else /*WITH_TRUETYPE_FONT*/
   assets_manager_add(am, font_default_20_default);
   assets_manager_add(am, font_default_16_default);
   assets_manager_add(am, font_default_18_default);
   assets_manager_add(am, font_default_24_default);
 #endif /*WITH_TRUETYPE_FONT*/
+  assets_manager_add(am, script_dummy_default);
 #endif /*AWTK_WEB*/
 #ifdef WITH_VGCANVAS
   assets_manager_add(am, image_paths_data_02_t_default);

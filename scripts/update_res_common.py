@@ -321,7 +321,7 @@ def to_exe(name):
 def glob_asset_files(path):
     filename, ext_name = os.path.splitext(path)
     result = []
-    dir = path[0 : len(path) - 7]
+    dir = os.path.dirname(path)
     if os.path.isdir(dir):
         for root, dirs, files in os.walk(dir):
             for f in files:
