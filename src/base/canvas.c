@@ -581,6 +581,8 @@ ret_t canvas_fill_rect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h) {
 static ret_t canvas_fill_rect_gradient_impl(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h,
                                             gradient_t* gradient) {
   rect_t r;
+  xy_t widget_y = y;
+  wh_t widget_h = h;
   xy_t x2 = x + w - 1;
   xy_t y2 = y + h - 1;
   vgcanvas_t* vg = NULL;
@@ -610,8 +612,15 @@ static ret_t canvas_fill_rect_gradient_impl(canvas_t* c, xy_t x, xy_t y, wh_t w,
     if (gradient->degree == 180) {
       uint32_t i = 0;
       lcd_t* lcd = c->lcd;
+      float_t offset = 0.0f;
+      float_t base_y = 0.0f;
+
+      if (r.y > widget_y && r.h < widget_h) {
+        base_y = (float_t)(tk_abs(r.y - widget_y));
+      }
+
       for (i = 0; i < h; i++) {
-        float offset = (float)i / (float)h;
+        offset = (float_t)(base_y + i) / (float_t)widget_h;
         color_t color = gradient_get_color(gradient, offset);
         lcd_set_stroke_color(lcd, color);
         lcd_draw_hline(lcd, x, y + i, w);
