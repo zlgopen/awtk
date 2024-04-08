@@ -94,6 +94,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_color_picker_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_switch_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_back_to_home_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_menu_right_middle_default[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_list_view_check_button_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_kb_default_t9ext_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_dragger_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_dialog2_default[]);
@@ -717,6 +718,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_switch_default);
   assets_manager_add(am, ui_back_to_home_default);
   assets_manager_add(am, ui_menu_right_middle_default);
+  assets_manager_add(am, ui_list_view_check_button_default);
   assets_manager_add(am, ui_kb_default_t9ext_default);
   assets_manager_add(am, ui_dragger_default);
   assets_manager_add(am, ui_dialog2_default);

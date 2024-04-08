@@ -15,6 +15,7 @@
             <button name="open:accordion2" text="Accordion Exclusive"/>
             <button name="open:list_view_animate" text="Animate"/>
             <button name="open:list_view_sync" text="Sync Scrolling"/>
+            <button name="open:list_view_check_button" text="Check Button"/>
 			<button name="open:scroll_view_ym" text="Test Scroll View ym"/>
             <button name="close" text="Close"/>
         </scroll_view>

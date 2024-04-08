@@ -1,0 +1,24 @@
+<window anim_hint="htranslate">
+  <list_view x="0"  y="0" w="100%" h="-50" item_height="40">
+    <scroll_view name="view" x="0"  y="0" w="-12" h="100%" children_layout="list_view(x_margin=5,spacing=10)">
+      <check_button text="checkable list item 1" />
+      <check_button text="checkable list item 2" />
+      <check_button text="checkable list item 3" />
+      <check_button text="checkable list item 4" />
+      <check_button text="checkable list item 5" />
+      <check_button text="checkable list item 6" />
+      <check_button text="checkable list item 7" />
+      <check_button text="checkable list item 8" />
+      <check_button text="checkable list item 9" />
+      <check_button text="checkable list item 10" />
+      <check_button text="checkable list item 11" />
+      <check_button text="checkable list item 12" />
+      <check_button text="checkable list item 12" />
+      <check_button text="checkable list item 13" />
+      <check_button text="checkable list item 14" />
+      <check_button text="checkable list item 15" />
+    </scroll_view>
+    <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" animator_time="0" value="0"/>
+  </list_view>
+  <button name="close" x="center" y="bottom:10" w="50%" h="30" text="close"/>
+</window>

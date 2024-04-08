@@ -94,6 +94,7 @@
 #include "assets/default/inc/ui/switch.data"
 #include "assets/default/inc/ui/back_to_home.data"
 #include "assets/default/inc/ui/menu_right_middle.data"
+#include "assets/default/inc/ui/list_view_check_button.data"
 #include "assets/default/inc/ui/kb_default_t9ext.data"
 #include "assets/default/inc/ui/dragger.data"
 #include "assets/default/inc/ui/dialog2.data"
@@ -717,6 +718,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_switch_default);
   assets_manager_add(am, ui_back_to_home_default);
   assets_manager_add(am, ui_menu_right_middle_default);
+  assets_manager_add(am, ui_list_view_check_button_default);
   assets_manager_add(am, ui_kb_default_t9ext_default);
   assets_manager_add(am, ui_dragger_default);
   assets_manager_add(am, ui_dialog2_default);
