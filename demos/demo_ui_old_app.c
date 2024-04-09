@@ -740,6 +740,7 @@ static ret_t on_show_fps(void* ctx, event_t* e) {
 
   widget_invalidate(widget, NULL);
   window_manager_set_show_fps(widget, !wm->show_fps);
+  window_manager_set_show_fps_position(window_manager(), (window_manager()->w - 60) / 2, 0);
   widget_set_text(button, wm->show_fps ? L"Hide FPS" : L"Show FPS");
 
   return RET_OK;
@@ -1064,6 +1065,18 @@ static ret_t on_click_slide_view_appoint_remove_evt(void* ctx, event_t* e) {
   return widget_invalidate(native_window, NULL);
 }
 
+static ret_t progress_circle_on_timer(const timer_info_t* timer) {
+  widget_t* widget = WIDGET(timer->ctx);
+  uint32_t value = widget_get_prop_int(widget, WIDGET_PROP_VALUE, 0);
+
+  if (value >= 128) {
+    widget_set_style_color(widget, "normal:fg_color", 0xFF0000FF);
+  } else {
+    widget_set_style_color(widget, "normal:fg_color", 0xFF000000);
+  }
+  return RET_REPEAT;
+}
+
 static ret_t install_one(void* ctx, const void* iter) {
   widget_t* widget = WIDGET(iter);
   widget_t* win = widget_get_window(widget);
@@ -1199,6 +1212,8 @@ static ret_t install_one(void* ctx, const void* iter) {
     if (tk_str_eq("fruit", (COMBO_BOX(widget))->open_window)) {
       combo_box_set_on_item_click(widget, on_combo_box_item_click, widget);
     }
+  } else if (tk_str_eq(widget->vt->type, "progress_circle")) {
+    widget_add_timer(widget, progress_circle_on_timer, 100);
   }
   (void)ctx;
 
