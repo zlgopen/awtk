@@ -41,8 +41,7 @@ static int32_t conf_node_obj_compare(tk_object_t* obj, tk_object_t* other) {
 static ret_t conf_node_obj_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   conf_node_obj_t* o = CONF_NODE_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(o->doc != NULL, RET_FAIL);
-  return_value_if_fail(o->node != NULL, RET_FAIL);
+  return_value_if_fail(o->doc != NULL && o->node != NULL, RET_FAIL);
 
   return conf_doc_get_ex(o->doc, o->node, name, v);
 }
@@ -50,8 +49,7 @@ static ret_t conf_node_obj_get_prop(tk_object_t* obj, const char* name, value_t*
 static ret_t conf_node_obj_set_prop(tk_object_t* obj, const char* name, const value_t* v) {
   conf_node_obj_t* o = CONF_NODE_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(o->doc != NULL, RET_FAIL);
-  return_value_if_fail(o->node != NULL, RET_FAIL);
+  return_value_if_fail(o->doc != NULL && o->node != NULL, RET_FAIL);
 
   return conf_doc_set_ex(o->doc, o->node, name, v);
 }
@@ -59,8 +57,7 @@ static ret_t conf_node_obj_set_prop(tk_object_t* obj, const char* name, const va
 static ret_t conf_node_obj_remove_prop(tk_object_t* obj, const char* name) {
   conf_node_obj_t* o = CONF_NODE_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(o->doc != NULL, RET_FAIL);
-  return_value_if_fail(o->node != NULL, RET_FAIL);
+  return_value_if_fail(o->doc != NULL && o->node != NULL, RET_FAIL);
 
   return conf_doc_remove_child_by_name(o->doc, o->node, name);
 }
@@ -71,8 +68,7 @@ static ret_t conf_node_obj_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, vo
   ret_t ret = RET_OK;
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   return_value_if_fail(on_prop != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(o->doc != NULL, RET_FAIL);
-  return_value_if_fail(o->node != NULL, RET_FAIL);
+  return_value_if_fail(o->doc != NULL && o->node != NULL, RET_FAIL);
 
   for (child = conf_node_get_first_child(o->node); child != NULL && RET_OK == ret;
        child = child->next) {
@@ -90,7 +86,7 @@ static ret_t conf_node_obj_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, vo
 
 static const object_vtable_t s_conf_node_obj_vtable = {
     .type = "conf_node_obj",
-    .desc = "conf_node_obj",
+    .desc = "conf node object",
     .size = sizeof(conf_node_obj_t),
     .is_collection = FALSE,
     .compare = conf_node_obj_compare,
@@ -100,18 +96,38 @@ static const object_vtable_t s_conf_node_obj_vtable = {
     .foreach_prop = conf_node_obj_foreach_prop,
 };
 
+static const object_vtable_t s_conf_node_obj_array_vtable = {
+    .type = "conf_node_obj",
+    .desc = "conf node object array",
+    .size = sizeof(conf_node_obj_t),
+    .is_collection = TRUE,
+    .compare = conf_node_obj_compare,
+    .get_prop = conf_node_obj_get_prop,
+    .set_prop = conf_node_obj_set_prop,
+    .remove_prop = conf_node_obj_remove_prop,
+    .foreach_prop = conf_node_obj_foreach_prop,
+};
+
 tk_object_t* conf_node_obj_create(conf_doc_t* doc, conf_node_t* node) {
-  tk_object_t* obj = tk_object_create(&s_conf_node_obj_vtable);
-  conf_node_obj_t* o = CONF_NODE_OBJ(obj);
-  return_value_if_fail(o != NULL, NULL);
+  conf_node_obj_t* obj = NULL;
+  return_value_if_fail(doc != NULL && node != NULL, NULL);
 
-  o->doc = doc;
-  o->node = node;
+  if (CONF_NODE_ARRAY == node->node_type) {
+    obj = CONF_NODE_OBJ(tk_object_create(&s_conf_node_obj_array_vtable));
+  } else {
+    obj = CONF_NODE_OBJ(tk_object_create(&s_conf_node_obj_vtable));
+  }
+  return_value_if_fail(obj != NULL, NULL);
 
-  return obj;
+  obj->doc = doc;
+  obj->node = node;
+
+  return TK_OBJECT(obj);
 }
 
 conf_node_obj_t* conf_node_obj_cast(tk_object_t* obj) {
-  return_value_if_fail(obj != NULL && obj->vt == &s_conf_node_obj_vtable, NULL);
+  return_value_if_fail(obj != NULL && (obj->vt == &s_conf_node_obj_vtable ||
+                                       obj->vt == &s_conf_node_obj_array_vtable),
+                       NULL);
   return (conf_node_obj_t*)(obj);
 }

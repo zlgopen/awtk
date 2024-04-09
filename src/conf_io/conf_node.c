@@ -831,13 +831,20 @@ static ret_t conf_doc_set_extend_type_object_prop(void* ctx, const void* data) {
   return ret;
 }
 
-static ret_t conf_doc_set_extend_type(conf_doc_t* doc, const char* path, const value_t* v) {
+static ret_t conf_doc_set_extend_type(conf_doc_t* doc, conf_node_t* node, const char* path,
+                                      const value_t* v) {
   ret_t ret = RET_NOT_IMPL;
-  return_value_if_fail(doc != NULL && path != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(doc != NULL && node != NULL && path != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (v->type == VALUE_TYPE_OBJECT) {
+    tk_object_t* obj = value_object(v);
+    if (tk_object_is_collection(obj)) {
+      node->node_type = CONF_NODE_ARRAY;
+    } else {
+      node->node_type = CONF_NODE_OBJECT;
+    }
     conf_doc_set_extend_type_object_prop_ctx_t ctx = {.doc = doc, .path = path};
-    ret = tk_object_foreach_prop(value_object(v), conf_doc_set_extend_type_object_prop, &ctx);
+    ret = tk_object_foreach_prop(obj, conf_doc_set_extend_type_object_prop, &ctx);
   }
 
   return ret;
@@ -855,7 +862,7 @@ ret_t conf_doc_set_ex(conf_doc_t* doc, conf_node_t* node, const char* path, cons
   if (node != NULL) {
     ret_t ret = conf_node_set_value(node, v);
     if (RET_NOT_IMPL == ret && doc->use_extend_type) {
-      ret = conf_doc_set_extend_type(doc, path, v);
+      ret = conf_doc_set_extend_type(doc, node, path, v);
     }
     return ret;
   } else {
@@ -881,7 +888,8 @@ ret_t conf_doc_get_value_extend_type(conf_doc_t* doc, conf_node_t* node, value_t
   switch (node->value_type) {
     case CONF_NODE_VALUE_NODE: {
       switch (node->node_type) {
-        case CONF_NODE_OBJECT: {
+        case CONF_NODE_OBJECT:
+        case CONF_NODE_ARRAY: {
           tk_object_t* obj = TK_OBJECT(conf_doc_obj_array_find(doc, node));
           if (obj == NULL) {
             value_t tmp;

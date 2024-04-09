@@ -8,6 +8,7 @@
 #include "conf_io/conf_node.h"
 
 #include "tkc/object_default.h"
+#include "tkc/object_array.h"
 
 TEST(ConfNode, basic) {
   value_t v;
@@ -279,6 +280,81 @@ TEST(ConfNode, set_get_object) {
   ASSERT_EQ(conf_doc_get(doc, "obj.obj.id", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 567);
   ASSERT_EQ(conf_doc_get(doc, "obj.obj.name", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "test2");
+
+  conf_doc_destroy(doc);
+  wbuffer_deinit(&wb);
+
+  str_reset(&str);
+  TK_OBJECT_UNREF(obj);
+}
+
+static tk_object_t* conf_node_test_object_array_create(void) {
+  value_t v;
+  tk_object_t* ret = object_array_create();
+  object_array_push(ret, value_set_str(&v, "aaa"));
+  object_array_push(ret, value_set_uint32(&v, 123));
+  object_array_push(ret, value_set_str(&v, "test1"));
+
+  tk_object_t* obj = object_array_create();
+  object_array_push(obj, value_set_str(&v, "bbb"));
+  object_array_push(obj, value_set_uint32(&v, 567));
+  object_array_push(obj, value_set_str(&v, "test2"));
+
+  object_array_push(ret, value_set_object(&v, obj));
+  tk_object_unref(obj);
+
+  return ret;
+}
+
+TEST(ConfNode, set_get_object_array) {
+  value_t v;
+  conf_doc_t* doc = conf_doc_create(100);
+  tk_object_t* obj = conf_node_test_object_array_create();
+  str_t str;
+  str_init(&str, 64);
+
+  conf_doc_use_extend_type(doc, TRUE);
+
+  ASSERT_EQ(conf_doc_set(doc, "obj", value_set_object(&v, obj)), RET_OK);
+
+  ASSERT_EQ(conf_doc_save_json(doc, &str), RET_OK);
+  ASSERT_STREQ(str.str,
+               "{\n"
+               "    \"obj\" : [\n"
+               "        \"aaa\",\n"
+               "        123,\n"
+               "        \"test1\",\n"
+               "        [\n"
+               "            \"bbb\",\n"
+               "            567,\n"
+               "            \"test2\"\n"
+               "        ]\n"
+               "    ]\n"
+               "}");
+  str_clear(&str);
+
+  wbuffer_t wb;
+  ubjson_writer_t ub;
+  wbuffer_init_extendable(&wb);
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+  conf_doc_save_ubjson(doc, &ub);
+
+  conf_doc_destroy(doc);
+  doc = conf_doc_load_ubjson(wb.data, wb.cursor);
+
+  ASSERT_EQ(conf_doc_get(doc, "obj.[0]", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "aaa");
+  ASSERT_EQ(conf_doc_get(doc, "obj.[1]", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 123);
+  ASSERT_EQ(conf_doc_get(doc, "obj.[2]", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "test1");
+
+  ASSERT_EQ(conf_doc_get(doc, "obj.[3].[0]", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "bbb");
+  ASSERT_EQ(conf_doc_get(doc, "obj.[3].[1]", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 567);
+  ASSERT_EQ(conf_doc_get(doc, "obj.[3].[2]", &v), RET_OK);
   ASSERT_STREQ(value_str(&v), "test2");
 
   conf_doc_destroy(doc);
