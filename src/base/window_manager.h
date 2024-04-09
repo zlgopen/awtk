@@ -108,6 +108,7 @@ typedef struct _window_manager_t {
 
   /*private*/
   bool_t show_fps;
+  point_t fps_position;
   uint32_t max_fps;
   widget_t* widget_grab_key;
   bool_t ignore_input_events;
@@ -329,6 +330,18 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t window_manager_set_show_fps(widget_t* widget, bool_t show_fps);
+
+/**
+ * @method window_manager_set_show_fps_position
+ * 设置显示FPS的起始坐标。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 窗口管理器对象。
+ * @param {xy_t} x 左上角x坐标。
+ * @param {xy_t} y 左上角x坐标。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_manager_set_show_fps_position(widget_t* widget, xy_t x, xy_t y);
 
 /**
  * @method window_manager_set_max_fps

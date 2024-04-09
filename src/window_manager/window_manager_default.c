@@ -950,7 +950,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
 
   fps_inc(&(wm->fps));
   if (WINDOW_MANAGER(wm)->show_fps) {
-    rect_t fps_rect = rect_init(0, 0, 60, 30);
+    rect_t fps_rect = rect_init(WINDOW_MANAGER(wm)->fps_position.x, WINDOW_MANAGER(wm)->fps_position.y, 60, 30);
     window_manager_default_invalidate(widget, &fps_rect);
   }
 #ifdef FRAGMENT_FRAME_BUFFER_SIZE
@@ -1194,7 +1194,7 @@ static ret_t window_manager_default_update_fps(widget_t* widget) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
 
   c = native_window_get_canvas(wm->native_window);
-  canvas_set_fps(c, WINDOW_MANAGER(wm)->show_fps, fps_get(&(wm->fps)));
+  canvas_set_fps_ex(c, WINDOW_MANAGER(wm)->show_fps, fps_get(&(wm->fps)), wm->window_manager.fps_position.x,  wm->window_manager.fps_position.y);
 
   return RET_OK;
 }

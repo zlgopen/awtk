@@ -319,6 +319,13 @@ ret_t window_manager_set_show_fps(widget_t* widget, bool_t show_fps) {
   }
 }
 
+ret_t window_manager_set_show_fps_position(widget_t* widget, xy_t x, xy_t y) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
+  wm->fps_position = point_init(x, y);
+  return RET_OK;
+}
+
 ret_t window_manager_set_max_fps(widget_t* widget, uint32_t max_fps) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);

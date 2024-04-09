@@ -1918,12 +1918,17 @@ ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y) {
   return canvas_do_draw_image(c, img, &src, &dst);
 }
 
-ret_t canvas_set_fps(canvas_t* c, bool_t show_fps, uint32_t fps) {
+ret_t canvas_set_fps_ex(canvas_t* c, bool_t show_fps, uint32_t fps, xy_t x, xy_t y) {
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
   c->show_fps = show_fps;
   c->fps = fps;
+  c->fps_position = point_init(x, y);
 
   return RET_OK;
+}
+
+ret_t canvas_set_fps(canvas_t* c, bool_t show_fps, uint32_t fps) {
+  return canvas_set_fps_ex(c, show_fps, fps, 0, 0);
 }
 
 static ret_t canvas_draw_fps(canvas_t* c) {
@@ -1934,7 +1939,7 @@ static ret_t canvas_draw_fps(canvas_t* c) {
     char fps[20];
     wchar_t wfps[20];
 
-    r = rect_init(0, 0, 60, 30);
+    r = rect_init(c->fps_position.x, c->fps_position.y, 60, 30);
     canvas_set_font(c, NULL, 16);
     canvas_set_text_color(c, color_init(0xf0, 0xf0, 0xf0, 0xff));
     canvas_set_fill_color(c, color_init(0x20, 0x20, 0x20, 0xff));

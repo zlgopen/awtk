@@ -104,6 +104,13 @@ struct _canvas_t {
   xy_t clip_bottom;
 
   /**
+   * @property {point_t} fps_position
+   * @annotation ["readable"]
+   * 当前的帧率绘制坐标。
+   */
+  point_t fps_position;
+
+  /**
    * @property {uint32_t} fps
    * @annotation ["readable"]
    * 当前的帧率。
@@ -801,6 +808,7 @@ ret_t canvas_draw_image_matrix(canvas_t* c, bitmap_t* img, matrix_t* matrix);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t canvas_set_fps(canvas_t* c, bool_t show_fps, uint32_t fps);
+ret_t canvas_set_fps_ex(canvas_t* c, bool_t show_fps, uint32_t fps, xy_t x, xy_t y);
 
 /**
  * @method canvas_set_font_manager
