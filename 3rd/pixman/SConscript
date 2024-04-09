@@ -38,32 +38,62 @@ sources=[
 #  "pixman/pixman-vmx.c",
 ]
 
-arm_sources=[
-  "pixman/pixman-arm-neon.c",
-  "pixman/pixman-arm-simd.c",
-  "pixman/pixman-arm-neon-asm-bilinear.S",
-  "pixman/pixman-arm-neon-asm.S",
-  "pixman/pixman-arm-simd-asm.S",
-  "pixman/pixman-arm-simd-asm-scaled.S",
-]
-
-ppc_sources=[
-]
-
-x86_sources=[
-#  "pixman/pixman-mmx.c",
-#  "pixman/pixman-sse2.c",
-#  "pixman/pixman-ssse3.c",
-]
-
-vmx_sources=[
-]
-
-mips_sources=[
-  "pixman/pixman-mips-dspr2.c",
-  "pixman/pixman-mips-dspr2-asm.S",
-  "pixman/pixman-mips-memcpy-asm.S",
-]
-
+def useOption(key):
+  return key in os.environ and os.environ[key] == 'true'
+  
 env=DefaultEnvironment().Clone()
-env.Library(os.path.join(LIB_DIR, 'pixman'), sources + x86_sources)
+
+OPTIMAL_CFLAGS=''
+optimal_sources = []
+if useOption('USE_X86_MMX'):
+  print('USE_X86_MMX');
+  OPTIMAL_CFLAGS=' -DUSE_X86_MMX '
+  optimal_sources =  [
+    "pixman/pixman-mmx.c",
+  ]
+
+if useOption('USE_SSE2'):
+  print('USE_SSE2');
+  OPTIMAL_CFLAGS=' -DUSE_SSE2 '
+  optimal_sources =  [
+  "pixman/pixman-sse2.c",
+  ]
+
+if useOption('USE_SSSE3'):
+  print('USE_SSSE3');
+  OPTIMAL_CFLAGS=' -DUSE_SSSE3 '
+  optimal_sources =  [
+  "pixman/pixman-ssse3.c",
+  ]
+
+if useOption('USE_MIPS_DSPR2'):
+  print('USE_MIPS_DSPR2');
+  OPTIMAL_CFLAGS=' -DUSE_MIPS_DSPR2 '
+  optimal_sources =  [
+    "pixman/pixman-mips-dspr2.c",
+    "pixman/pixman-mips-dspr2-asm.S",
+    "pixman/pixman-mips-memcpy-asm.S",
+  ]
+
+if useOption('USE_ARM_SIMD'):
+  print('USE_ARM_SIMD');
+  OPTIMAL_CFLAGS=' -DUSE_ARM_SIMD '
+  optimal_sources =  [
+    "pixman/pixman-arm-simd.c",
+    "pixman/pixman-arm-simd-asm.S",
+    "pixman/pixman-arm-simd-asm-scaled.S",
+  ]
+
+if useOption('USE_ARM_NEON'):
+  print('USE_ARM_NEON');
+  OPTIMAL_CFLAGS=' -DUSE_ARM_NEON '
+  optimal_sources =  [
+    "pixman/pixman-arm-neon.c",
+    "pixman/pixman-arm-neon-asm-bilinear.S",
+    "pixman/pixman-arm-neon-asm.S"
+  ]
+
+sources += optimal_sources;
+
+CFLAGS=env['CFLAGS'] + OPTIMAL_CFLAGS
+env.Library(os.path.join(LIB_DIR, 'pixman'), sources, CFLAGS=CFLAGS)

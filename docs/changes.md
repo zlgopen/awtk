@@ -1,6 +1,7 @@
 # 最新动态
 
 2024/04/09
+  * improve pixmap Scons script
   * conf doc extend type\ 支持数组类型(感谢兆坤提供补丁)
   * 增加fps的位置直接修改的功能(感谢智明提供补丁)
   * 增加demouiold的测试环形进度条的变色例子和增加修改fps位置的例子(感谢智明提供补丁)
