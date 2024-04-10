@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/04/10
+  * popup右键关闭(感谢兆坤提供补丁)
+
 2024/04/09
   * improve pixmap Scons script
   * conf doc extend type\ 支持数组类型(感谢兆坤提供补丁)

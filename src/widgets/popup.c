@@ -140,7 +140,26 @@ static ret_t popup_on_event(widget_t* widget, event_t* e) {
           widget_add_idle(widget, popup_idle_window_close);
         }
       }
+      break;
+    }
+    case EVT_CONTEXT_MENU: {
+      if (window_base->stage != WINDOW_STAGE_CLOSED) {
+        bool_t close_window = FALSE;
+        pointer_event_t* evt = (pointer_event_t*)e;
 
+        if (popup->close_when_click) {
+          close_window = TRUE;
+        } else if (popup->close_when_click_outside) {
+          rect_t r = rect_init(widget->x, widget->y, widget->w, widget->h);
+          if (!rect_contains(&r, evt->x, evt->y)) {
+            close_window = TRUE;
+          }
+        }
+
+        if (close_window) {
+          widget_add_idle(widget, popup_idle_window_close);
+        }
+      }
       break;
     }
     default:
