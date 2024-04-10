@@ -60,7 +60,7 @@ static ret_t on_paint_vgcanvas(void* ctx, event_t* e) {
   vgcanvas_translate(vg, 0, 50);
   stroke_lines(vg);
   vgcanvas_translate(vg, 0, 50);
-  draw_image(vg);
+  draw_image(vg, "bricks");
 
   vgcanvas_translate(vg, 50, 100);
   draw_matrix(vg);

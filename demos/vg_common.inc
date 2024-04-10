@@ -335,12 +335,12 @@ static void stroke_lines(vgcanvas_t* vg) {
   vgcanvas_restore(vg);
 }
 
-static void draw_image(vgcanvas_t* vg) {
+static void draw_image(vgcanvas_t* vg, const char* name) {
   bitmap_t img;
 
   vgcanvas_save(vg);
 
-  image_manager_get_bitmap(image_manager(), "bricks", &img);
+  image_manager_get_bitmap(image_manager(), name, &img);
 
   vgcanvas_translate(vg, (vg->w - img.w) / 2, 0);
 
@@ -429,7 +429,8 @@ static inline ret_t on_paint_vg(void* ctx, event_t* e) {
   vgcanvas_translate(vg, 0, 50);
   stroke_lines(vg);
   vgcanvas_translate(vg, 0, 50);
-  draw_image(vg);
+  draw_image(vg, "bricks");
+  draw_image(vg, "message");
 
   vgcanvas_translate(vg, 50, 100);
   draw_matrix(vg);
