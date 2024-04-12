@@ -144,6 +144,10 @@ static ret_t text_edit_update_input_rect(text_edit_t* text_edit) {
   SDL_Rect r = {0, 0, 0, 0};
   widget_t* widget = text_edit->widget;
 
+  if (system_info()->app_type != APP_DESKTOP) {
+    return RET_OK;
+  }
+
   return_value_if_fail(impl != NULL && widget != NULL, RET_BAD_PARAMS);
 
   text_layout_info_t* layout_info = &(impl->layout_info);
