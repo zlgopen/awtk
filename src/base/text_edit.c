@@ -135,6 +135,40 @@ static ret_t text_edit_notify(text_edit_t* text_edit);
 static bool_t text_edit_is_need_layout(text_edit_t* text_edit);
 static int32_t text_edit_calc_x(text_edit_t* text_edit, line_info_t* iter);
 
+#ifdef WITH_SDL
+#include <SDL.h>
+
+static ret_t text_edit_update_input_rect(text_edit_t* text_edit) {
+  point_t p = {0, 0};
+  DECL_IMPL(text_edit);
+  SDL_Rect r = {0, 0, 0, 0};
+  widget_t* widget = text_edit->widget;
+
+  return_value_if_fail(impl != NULL && widget != NULL, RET_BAD_PARAMS);
+
+  text_layout_info_t* layout_info = &(impl->layout_info);
+  uint32_t x = layout_info->margin_l + impl->caret.x - layout_info->ox;
+  uint32_t y = layout_info->margin_t + impl->caret.y - layout_info->oy;
+
+  widget_to_screen(widget, &p);
+  p.x = p.x + x;
+  p.y = p.y + y;
+
+  r.x = p.x;
+  r.y = p.y;
+  r.w = text_edit->widget->w;
+  r.h = text_edit->widget->h;
+
+  SDL_SetTextInputRect(&r);
+
+  return RET_OK;
+}
+#else
+static ret_t text_edit_update_input_rect(text_edit_t* text_edit) {
+  return RET_OK;
+}
+#endif /*WITH_SDL*/
+
 static align_h_t widget_get_text_align_h(widget_t* widget) {
   return (align_h_t)style_get_int(widget->astyle, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_LEFT);
 }
@@ -537,6 +571,8 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
   impl->rows->size = i;
 
   text_edit_fix_oy(impl);
+
+  text_edit_update_input_rect(text_edit);
 
   text_edit_notify(text_edit);
 
@@ -1235,6 +1271,8 @@ ret_t text_edit_click(text_edit_t* text_edit, xy_t x, xy_t y) {
     text_edit_update_caret_pos(text_edit);
   }
 
+  text_edit_update_input_rect(text_edit);
+
   return RET_OK;
 }
 
@@ -1599,6 +1637,8 @@ layout:
   } else {
     text_edit_layout(text_edit);
   }
+
+  text_edit_update_input_rect(text_edit);
 
   return RET_OK;
 }
