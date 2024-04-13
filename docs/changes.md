@@ -2,6 +2,7 @@
 
 2024/04/13
   * nanovg 支持 GL2。
+  * 增加函数 window\_manager\_create\_native\_window
 
 2024/04/12
   * 完善text\_edit，增加原生输入法跟随光标移动功能(感谢颖健提供补丁)

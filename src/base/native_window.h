@@ -255,6 +255,8 @@ canvas_t* native_window_get_canvas(native_window_t* win);
  */
 native_window_t* native_window_create(widget_t* widget);
 
+typedef native_window_t* (*native_window_create_t)(widget_t* widget);
+
 /**
  * @method native_window_invalidate
  * 请求重绘指定区域。

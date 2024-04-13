@@ -455,7 +455,7 @@ static ret_t window_manager_simple_post_init(widget_t* widget, wh_t w, wh_t h) {
 
   wm->lcd_w = w;
   wm->lcd_h = h;
-  wm->native_window = native_window_create(widget);
+  wm->native_window = window_manager_create_native_window(wm, widget);
 
   if (native_window_get_info(wm->native_window, &info) == RET_OK) {
     w = info.w;

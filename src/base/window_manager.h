@@ -116,6 +116,8 @@ typedef struct _window_manager_t {
   const window_manager_vtable_t* vt;
   input_device_status_t input_device_status;
   uint32_t curr_expected_sleep_time;
+
+  native_window_create_t create_native_window;
 } window_manager_t;
 
 /**
@@ -559,6 +561,7 @@ ret_t window_manager_dispatch_window_event(widget_t* window, event_type_t type);
 uint32_t window_manager_get_curr_expected_sleep_time(widget_t* widget);
 ret_t window_manager_set_curr_expected_sleep_time(widget_t* widget,
                                                   uint32_t curr_expected_sleep_time);
+native_window_t* window_manager_create_native_window(window_manager_t* wm, widget_t* widget);
 
 /* public for dialog highlighter */
 #define WIDGET_PROP_CURR_WIN "curr_win"

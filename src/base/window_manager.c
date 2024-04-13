@@ -804,3 +804,13 @@ input_device_status_t* window_manager_get_input_device_status(widget_t* widget) 
 
   return &(wm->input_device_status);
 }
+
+native_window_t* window_manager_create_native_window(window_manager_t* wm, widget_t* widget) {
+  return_value_if_fail(wm != NULL && widget != NULL, NULL);
+
+  if (wm->create_native_window != NULL) {
+    return wm->create_native_window(widget);
+  } else {
+    return native_window_create(widget);
+  }
+}
