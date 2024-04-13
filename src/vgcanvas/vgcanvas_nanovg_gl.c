@@ -29,6 +29,10 @@
 #define NANOVG_GL3_IMPLEMENTATION
 #endif
 
+#if defined(WITH_NANOVG_GL2)
+#define NANOVG_GL2_IMPLEMENTATION
+#endif
+
 #if defined(WITH_NANOVG_GLES2)
 #define NANOVG_GLES2_IMPLEMENTATION
 #endif
@@ -128,7 +132,9 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
 
   vgcanvas_nanovg_init((vgcanvas_t*)nanovg);
 
-#if defined(WITH_NANOVG_GL3)
+#if defined(WITH_NANOVG_GL2)
+  nanovg->vg = nvgCreateGL2(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
+#elif defined(WITH_NANOVG_GL3)
   nanovg->vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
 #elif defined(WITH_NANOVG_GLES2)
   nanovg->vg = nvgCreateGLES2(NVG_ANTIALIAS | NVG_STENCIL_STROKES);

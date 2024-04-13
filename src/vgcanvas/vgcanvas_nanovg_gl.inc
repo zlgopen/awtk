@@ -226,7 +226,9 @@ static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas) {
   vgcanvas_asset_manager_remove_vg(vgcanvas_asset_manager(), vgcanvas);
 
   vgcanvas_nanovg_deinit(vgcanvas);
-#if defined(WITH_NANOVG_GL3)
+#if defined(WITH_NANOVG_GL2)
+  nvgDeleteGL2(vg);
+#elif defined(WITH_NANOVG_GL3)
   nvgDeleteGL3(vg);
 #elif defined(WITH_NANOVG_GLES2)
   nvgDeleteGLES2(vg);
