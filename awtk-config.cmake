@@ -13,6 +13,9 @@ add_compile_definitions(HAS_STD_MALLOC)
 set(AWTK_LIBRARIES ${AWTK_LIBRARY})
 set(AWTK_INCLUDE_DIRS ${AWTK_ROOT_DIR}/src ${AWTK_ROOT_DIR}/3rd ${AWTK_ROOT_DIR}/src/ext_widgets ${AWTK_ROOT_DIR}/src ${AWTK_ROOT_DIR}/3rd/SDL/include)
 
+link_directories(${AWTK_ROOT_DIR}/bin)
+include_directories(${AWTK_INCLUDE_DIRS})
+
 if(WIN32)
   file(COPY  ${AWTK_ROOT_DIR}/bin/awtk.dll DESTINATION ${CMAKE_BINARY_DIR}/Debug)
 endif()
