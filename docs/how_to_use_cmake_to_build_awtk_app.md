@@ -40,7 +40,7 @@ include_directories(
     
 ```cmake
 file(GLOB SOURCES src/*.c 3rd/sqlite3/sqlite3.c)
- add_executable(hello ${SOURCES})
+add_executable(hello ${SOURCES})
 ```
 
 * 添加链接库(请根据自己的情况调整)
