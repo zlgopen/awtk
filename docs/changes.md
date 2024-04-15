@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/04/15
+* 增加文档 [如何使用 CMake 构建 AWTK 应用](how_to_use_cmake_to_build_awtk_app.md)
+
 2024/04/13
   * nanovg 支持 GL2。
   * 增加函数 window\_manager\_create\_native\_window
