@@ -6,7 +6,6 @@ find_library(AWTK_LIBRARY NAMES awtk PATHS ${AWTK_ROOT_DIR}/bin)
 file(COPY  ${AWTK_LIBRARY} DESTINATION ${PROJECT_SOURCE_DIR}/bin)
 
 add_compile_definitions(WITH_FS_RES)
-add_compile_definitions(WITH_SDL)
 add_compile_definitions(HAS_STDIO)
 add_compile_definitions(HAS_STD_MALLOC)
 
