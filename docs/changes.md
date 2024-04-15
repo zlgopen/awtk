@@ -2,6 +2,7 @@
 
 2024/04/15
 * 增加文档 [如何使用 CMake 构建 AWTK 应用](how_to_use_cmake_to_build_awtk_app.md)
+* 修改输入框增加回车按键触发跳转下一个控件的属性(感谢智明提供补丁)
 
 2024/04/13
   * nanovg 支持 GL2。

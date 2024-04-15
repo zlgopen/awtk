@@ -761,7 +761,7 @@ static ret_t edit_on_key_up(widget_t* widget, key_event_t* e) {
       edit_on_focused(widget);
     } else {
       keyboard_type_t keyboard_type = system_info()->keyboard_type;
-      if (keyboard_type != KEYBOARD_3KEYS && keyboard_type != KEYBOARD_5KEYS) {
+      if (edit->focus_next_when_enter && keyboard_type != KEYBOARD_3KEYS && keyboard_type != KEYBOARD_5KEYS) {
         widget_focus_next(widget);
         widget_set_focused(widget, FALSE);
       }
@@ -1458,6 +1458,9 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_str(v, edit->validator);
 
     return RET_OK;
+  } else if (tk_str_eq(name, EDIT_PROP_FOCUS_NEXT_WHEN_ENTER)) {
+    value_set_bool(v, edit->focus_next_when_enter);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -1589,6 +1592,8 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_VALIDATOR)) {
     edit_set_validator(widget, value_str(v));
     return RET_OK;
+  } else if (tk_str_eq(name, EDIT_PROP_FOCUS_NEXT_WHEN_ENTER)) {
+    return edit_set_focus_next_when_enter(widget, value_bool(v));
   }
 
   edit_update_status(widget);
@@ -2057,6 +2062,7 @@ static ret_t edit_init(widget_t* widget) {
   edit->bottom_margin = 0;
   edit->close_im_when_blured = TRUE;
   edit->open_im_when_focused = TRUE;
+  edit->focus_next_when_enter = TRUE;
   edit_set_text_limit(widget, 0, 1024);
 
   edit_update_status(widget);
@@ -2396,4 +2402,11 @@ bool_t edit_is_valid_value(widget_t* widget) {
 
     return edit_is_valid_value_default(widget);
   }
+}
+
+ret_t edit_set_focus_next_when_enter(widget_t* widget, bool_t focus_next_when_enter) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+  edit->focus_next_when_enter = focus_next_when_enter;
+  return RET_OK;
 }

@@ -221,7 +221,14 @@ typedef struct _edit_t {
    * > * 2.为TRUE时，如果内容有变化，会设置编辑器的状态为changed，所以此时编辑器需要支持changed状态的style。
    */
   bool_t cancelable;
-
+  /**
+   * @property {bool_t} focus_next_when_enter
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 
+   * 输入回车后是否跳到下一个控件中。
+   *
+   */
+  bool_t focus_next_when_enter;
   /*private*/
   uint8_t margin;
   uint8_t top_margin;
@@ -671,6 +678,17 @@ ret_t edit_set_select(widget_t* widget, uint32_t start, uint32_t end);
  */
 char* edit_get_selected_text(widget_t* widget);
 
+/**
+ * @method edit_set_focus_next_when_enter
+ * 设置输入回车后是否跳到下一个控件中。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {bool_t} focus_next_when_enter 是否跳入下一个控件中。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_focus_next_when_enter(widget_t* widget, bool_t focus_next_when_enter);
+
 #define EDIT(widget) ((edit_t*)(edit_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/
@@ -705,6 +723,7 @@ ret_t edit_pre_delete_with_sep(widget_t* widget, delete_type_t delete_type, char
 #define STR_EDIT_DEC_NAME "dec"
 #define STR_EDIT_CLEAR_NAME "clear"
 #define STR_EDIT_VISIBLE_NAME "visible"
+#define EDIT_PROP_FOCUS_NEXT_WHEN_ENTER "focus_next_when_enter"
 
 #define TK_EDIT_PROPS                                                                            \
   WIDGET_PROP_MIN, WIDGET_PROP_MAX, WIDGET_PROP_STEP, WIDGET_PROP_INPUT_TYPE,                    \
