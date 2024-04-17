@@ -1325,10 +1325,22 @@ static const char* widget_get_pointer_cursor(widget_t* widget) {
 }
 
 ret_t widget_update_pointer_cursor(widget_t* widget) {
+  point_t p = {0, 0};
+  xy_t pointer_x = 0;
+  xy_t pointer_y = 0;
   widget_t* wm = widget_get_window_manager(widget);
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
 
-  return window_manager_set_cursor(wm, widget_get_pointer_cursor(widget));
+  widget_to_global(widget, &p);
+  pointer_x = window_manager_get_pointer_x(wm);
+  pointer_y = window_manager_get_pointer_y(wm);
+
+  if (pointer_x >= p.x && pointer_x <= (p.x + widget->w) && 
+      pointer_y >= p.y && pointer_y <= (p.y + widget->h)) {
+    return window_manager_set_cursor(wm, widget_get_pointer_cursor(widget));
+  }
+  
+  return RET_OK;
 }
 
 ret_t widget_dispatch(widget_t* widget, event_t* e) {
