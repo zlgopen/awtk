@@ -739,7 +739,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       }
 
       if (mledit->readonly) {
-        if (is_control && (key == TK_KEY_C || key == TK_KEY_c)) {
+        if (is_control && (key == TK_KEY_C || key == TK_KEY_c || key == TK_KEY_A || key == TK_KEY_a)) {
           log_debug("copy\n");
         } else {
           break;
