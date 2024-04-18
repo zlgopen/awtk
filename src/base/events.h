@@ -531,6 +531,11 @@ typedef enum _event_type_t {
    */
   EVT_UNACTIVATED,
   /**
+   * @const EVT_UI_LOAD
+   * UI加载完成事件(event_t)。
+   */
+  EVT_UI_LOAD,
+  /**
    * @const EVT_REQ_START
    * event queue其它请求编号起始值。
    */
@@ -1303,6 +1308,53 @@ system_event_t* system_event_cast(event_t* event);
  * @return {event_t*} event对象。
  */
 event_t* system_event_init(system_event_t* event, void* target, void* sdl_event);
+
+/**
+ * @class ui_load_event_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * UI加载完成事件。
+ */
+typedef struct _ui_load_event_t {
+  event_t e;
+
+  /**
+   * @property {widget_t*} root
+   * @annotation ["readable", "scriptable"]
+   * UI的根控件对象。
+   */
+  widget_t* root;
+
+  /**
+   * @property {const char*} name
+   * @annotation ["readable", "scriptable"]
+   * UI的名称。
+   */
+  const char* name;
+
+} ui_load_event_t;
+
+/**
+ * @method ui_load_event_cast
+ * @annotation ["cast", "scriptable"]
+ * 把event对象转ui_load_event_t对象。
+ * @param {event_t*} event event对象。
+ *
+ * @return {ui_load_event_t*} event 对象。
+ */
+ui_load_event_t* ui_load_event_cast(event_t* event);
+
+/**
+ * @method ui_load_event_init
+ * 初始化事件。
+ * @param {ui_load_event_t*} event event对象。
+ * @param {void*} target 事件目标。
+ * @param {widget_t*} root UI的根控件对象。
+ * @param {const char*} name UI的名称。
+ *
+ * @return {event_t*} event对象。
+ */
+event_t* ui_load_event_init(ui_load_event_t* event, void* target, widget_t* root, const char* name);
 
 /**
  * @class event_t

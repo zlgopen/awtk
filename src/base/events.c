@@ -445,6 +445,27 @@ event_t* system_event_init(system_event_t* event, void* target, void* sdl_event)
   return (event_t*)event;
 }
 
+ui_load_event_t* ui_load_event_cast(event_t* event) {
+  return_value_if_fail(event != NULL, NULL);
+  return_value_if_fail(event->type == EVT_UI_LOAD, NULL);
+  return_value_if_fail(event->size == sizeof(ui_load_event_t), NULL);
+
+  return (ui_load_event_t*)event;
+}
+
+event_t* ui_load_event_init(ui_load_event_t* event, void* target, widget_t* root,
+                            const char* name) {
+  return_value_if_fail(event != NULL, NULL);
+  memset(event, 0x00, sizeof(ui_load_event_t));
+
+  event->e = event_init(EVT_UI_LOAD, target);
+  event->e.size = sizeof(*event);
+  event->root = root;
+  event->name = name;
+
+  return (event_t*)event;
+}
+
 drop_file_event_t* drop_file_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);
   return_value_if_fail(event->type == EVT_DROP_FILE, NULL);

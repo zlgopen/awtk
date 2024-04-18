@@ -23,6 +23,7 @@
 #include "base/enums.h"
 #include "base/dialog.h"
 #include "base/widget_factory.h"
+#include "base/window_manager.h"
 #include "ui_loader/ui_builder_default.h"
 #include "ui_loader/ui_loader_default.h"
 
@@ -82,6 +83,7 @@ static ret_t ui_builder_default_on_end(ui_builder_t* b) {
   ENSURE(b);
   widget_t* widget = b->root;
   if (widget != NULL) {
+    widget_t* wm = window_manager();
     event_t e;
 
     widget_invalidate_force(widget, NULL);
@@ -96,6 +98,12 @@ static ret_t ui_builder_default_on_end(ui_builder_t* b) {
       e = event_init(EVT_WINDOW_LOAD, widget);
       widget_dispatch_recursive(widget, &e);
     }
+
+    if (wm != NULL) {
+      ui_load_event_t evt;
+      widget_dispatch(wm, ui_load_event_init(&evt, NULL, widget, b->name));
+    }
+
     widget->loading = FALSE;
   }
 
