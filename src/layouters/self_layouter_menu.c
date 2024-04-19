@@ -33,27 +33,189 @@ typedef enum _layout_position_t {
   POSITION_RIGHT = 'r',
   POSITION_UP = 'u',
   POSITION_DOWN = 'd',
+  POSITION_UNDEF = '\0'
 } layout_position_t;
+
+static ret_t percent_to_string(char* buff, uint32_t size, const char* prefix, double v) {
+  if (v == floor(v)) {
+    tk_snprintf(buff, size - 1, "%s%d%%", prefix, (int)(v));
+  } else {
+    tk_snprintf(buff, size - 1, "%s%2.2lf%%", prefix, v);
+  }
+
+  return RET_OK;
+}
+
+const char* self_layouter_menu_to_string(self_layouter_t* layouter) {
+  char value[32];
+  str_t* str = &(layouter->params);
+  self_layouter_menu_t* layout = (self_layouter_menu_t*)layouter;
+  return_value_if_fail(layout != NULL, NULL);
+  str_set(str, "menu(");
+  memset(value, 0x00, sizeof(value));
+
+  switch (layout->position) {
+    case POSITION_UP: {
+      tk_snprintf(value, sizeof(value), "up");
+      break;
+    }
+    case POSITION_DOWN: {
+      tk_snprintf(value, sizeof(value), "down");
+      break;
+    }
+    case POSITION_LEFT: {
+      tk_snprintf(value, sizeof(value), "left");
+      break;
+    }
+    case POSITION_RIGHT: {
+      tk_snprintf(value, sizeof(value), "right");
+      break;
+    }
+    case POSITION_POINT: {
+      tk_snprintf(value, sizeof(value), "point");
+      break;
+    }
+    case POSITION_UNDEF: {
+      *value = '\0';
+    }
+  }
+
+  if (*value) {
+    str_append_more(str, "position=", value, NULL);
+  }
+
+  switch (layout->x_attr) {
+    case X_ATTR_UNDEF: {
+      *value = '\0';
+      break;
+    }
+    case X_ATTR_CENTER: {
+      tk_snprintf(value, sizeof(value), "center");
+      break;
+    }
+    case X_ATTR_RIGHT: {
+      tk_snprintf(value, sizeof(value), "right");
+      break;
+    }
+    case X_ATTR_DEFAULT: {
+      tk_snprintf(value, sizeof(value), "left");
+      break;
+    }
+    default: {
+      tk_snprintf(value, sizeof(value), "%d", (int)layout->x_attr);
+      break;
+    }
+  }
+
+  if (*value) {
+    str_append_more(str, ",x=", value, NULL);
+  }
+
+  switch (layout->y_attr) {
+    case Y_ATTR_UNDEF: {
+      *value = '\0';
+      break;
+    }
+    case Y_ATTR_MIDDLE: {
+      tk_snprintf(value, sizeof(value), "middle");
+      break;
+    }
+    case Y_ATTR_BOTTOM: {
+      tk_snprintf(value, sizeof(value), "bottom");
+      break;
+    }
+    case Y_ATTR_DEFAULT: {
+      tk_snprintf(value, sizeof(value), "top");
+      break;
+    }
+    default: {
+      tk_snprintf(value, sizeof(value), "%d", (int)layout->y_attr);
+      break;
+    }
+  }
+
+  if (*value) {
+    str_append_more(str, ",y=", value, NULL);
+  }
+
+  switch(layout->w_attr) {
+    case W_ATTR_UNDEF: {
+      *value = '\0';
+      break;
+    }
+    case W_ATTR_PERCENT: {
+      percent_to_string(value, sizeof(value), "", layout->w);
+      break;
+    }
+    default: {
+      tk_snprintf(value, sizeof(value) - 1, "%d", (int)layout->w);
+      break;
+    }
+  }
+
+  if (*value) {
+    str_append_more(str, ",w=", value, NULL);
+  }
+
+  switch (layout->h_attr) {
+    case H_ATTR_UNDEF: {
+      *value = '\0';
+      break;
+    }
+    case H_ATTR_PERCENT: {
+      percent_to_string(value, sizeof(value), "", layout->h);
+      break;
+    }
+    default: {
+      tk_snprintf(value, sizeof(value) - 1, "%d", (int)layout->h);
+      break;
+    }
+  }
+
+  if (*value) {
+    str_append_more(str, ",h=", value, ")", NULL);
+  } else {
+    str_append_char(str, ')');
+  }
+
+  return str->str;
+}
 
 ret_t self_layouter_menu_get_param(self_layouter_t* layouter, const char* name, value_t* v) {
   self_layouter_menu_t* l = (self_layouter_menu_t*)layouter;
 
   switch (*name) {
     case 'x': {
-      value_set_int(v, l->x_attr);
+      if (l->x_attr == X_ATTR_UNDEF) {
+        value_set_int(v, X_ATTR_DEFAULT);
+      } else {
+        value_set_int(v, l->x_attr);
+      }
       return RET_OK;
     }
     case 'y': {
-      value_set_int(v, l->y_attr);
+      if (l->y_attr == Y_ATTR_UNDEF) {
+        value_set_int(v, Y_ATTR_DEFAULT);
+      } else {
+        value_set_int(v, l->y_attr);
+      }
       return RET_OK;
     }
     case 'p': {
-      value_set_int(v, l->position);
+      if (l->position == POSITION_UNDEF) {
+        value_set_int(v, POSITION_POINT);
+      } else {
+        value_set_int(v, l->position);
+      }
       return RET_OK;
     }
     case 'w': {
       if (name[1]) {
-        value_set_int(v, l->w_attr);
+        if (l->w_attr == W_ATTR_UNDEF) {
+          value_set_int(v, W_ATTR_PIXEL);
+        } else {
+          value_set_int(v, l->w_attr);
+        }
       } else {
         value_set_int(v, l->w);
       }
@@ -62,7 +224,11 @@ ret_t self_layouter_menu_get_param(self_layouter_t* layouter, const char* name, 
     }
     case 'h': {
       if (name[1]) {
-        value_set_int(v, l->h_attr);
+        if (l->h_attr == H_ATTR_UNDEF) {
+          value_set_int(v, H_ATTR_PIXEL);
+        } else {
+          value_set_int(v, l->h_attr);
+        }
       } else {
         value_set_int(v, l->h);
       }
@@ -87,11 +253,13 @@ ret_t self_layouter_menu_set_param(self_layouter_t* layouter, const char* name, 
         layout->x_attr = X_ATTR_CENTER;
       } else if (x[0] == 'r') {
         layout->x_attr = X_ATTR_RIGHT;
+      } else if (x[0] == 'l') {
+        layout->x_attr = X_ATTR_DEFAULT;
       } else {
         if (tk_isdigit(*x)) {
           layout->x_attr = tk_atoi(x);
         } else {
-          layout->x_attr = X_ATTR_DEFAULT;
+          layout->x_attr = X_ATTR_UNDEF;
         }
       }
       break;
@@ -102,11 +270,13 @@ ret_t self_layouter_menu_set_param(self_layouter_t* layouter, const char* name, 
         layout->y_attr = Y_ATTR_MIDDLE;
       } else if (y[0] == 'b') {
         layout->y_attr = Y_ATTR_BOTTOM;
+      } else if (y[0] == 't') {
+          layout->y_attr = X_ATTR_DEFAULT;
       } else {
         if (tk_isdigit(*y)) {
           layout->y_attr = tk_atoi(y);
         } else {
-          layout->y_attr = X_ATTR_DEFAULT;
+          layout->y_attr = X_ATTR_UNDEF;
         }
       }
       break;
@@ -121,8 +291,10 @@ ret_t self_layouter_menu_set_param(self_layouter_t* layouter, const char* name, 
         layout->position = POSITION_UP;
       } else if (p[0] == 'd') {
         layout->position = POSITION_DOWN;
-      } else {
+      } else if (p[0] == 'p') {
         layout->position = POSITION_POINT;
+      } else {
+        layout->position = POSITION_UNDEF;
       }
       break;
     }
@@ -133,6 +305,8 @@ ret_t self_layouter_menu_set_param(self_layouter_t* layouter, const char* name, 
       if (w != NULL) {
         if (strchr(w, '%') != NULL) {
           layout->w_attr = W_ATTR_PERCENT;
+        } else if (strchr(w, 'n') != NULL) {
+          layout->w_attr = W_ATTR_UNDEF;
         }
       }
       break;
@@ -144,6 +318,8 @@ ret_t self_layouter_menu_set_param(self_layouter_t* layouter, const char* name, 
       if (h != NULL) {
         if (strchr(h, '%') != NULL) {
           layout->h_attr = H_ATTR_PERCENT;
+        } else if (strchr(h, 'n') != NULL) {
+          layout->w_attr = W_ATTR_UNDEF;
         }
       }
       break;
@@ -185,6 +361,7 @@ static ret_t widget_layout_calc(self_layouter_menu_t* layout, rect_t* r, wh_t pa
     r->h = h;
 
     switch (layout->position) {
+      case POSITION_UNDEF:
       case POSITION_POINT: {
         int32_t px = layout->pressed.x;
         int32_t py = layout->pressed.y;
@@ -215,10 +392,10 @@ static ret_t widget_layout_calc(self_layouter_menu_t* layout, rect_t* r, wh_t pa
 
         if (layout->position == POSITION_LEFT) {
           x = px - r->w;
-          x -= layout->x_attr;
+          x -= (layout->x_attr == X_ATTR_UNDEF ? X_ATTR_DEFAULT : layout->x_attr);
         } else {
           x = px + pw;
-          x += layout->x_attr;
+          x += (layout->x_attr == X_ATTR_UNDEF ? X_ATTR_DEFAULT : layout->x_attr);
         }
 
         switch (layout->y_attr) {
@@ -251,10 +428,10 @@ static ret_t widget_layout_calc(self_layouter_menu_t* layout, rect_t* r, wh_t pa
 
         if (layout->position == POSITION_DOWN) {
           y = py + ph;
-          y -= layout->y_attr;
+          y -= (layout->y_attr == Y_ATTR_UNDEF ? Y_ATTR_DEFAULT : layout->y_attr);
         } else {
           y = py - r->h;
-          y += layout->y_attr;
+          y += (layout->y_attr == Y_ATTR_UNDEF ? Y_ATTR_DEFAULT : layout->y_attr);
         }
 
         switch (layout->x_attr) {
@@ -372,6 +549,7 @@ static self_layouter_t* self_layouter_menu_clone(self_layouter_t* layouter) {
 static const self_layouter_vtable_t s_self_layouter_menu_vtable = {
     .type = "menu",
     .clone = self_layouter_menu_clone,
+    .to_string = self_layouter_menu_to_string,
     .get_param = self_layouter_menu_get_param,
     .set_param = self_layouter_menu_set_param,
     .layout = self_layouter_menu_layout,
@@ -390,11 +568,11 @@ self_layouter_t* self_layouter_menu_create(void) {
 
   l = (self_layouter_t*)layouter;
 
-  layouter->x_attr = 0;
-  layouter->y_attr = 0;
+  layouter->x_attr = X_ATTR_UNDEF;
+  layouter->y_attr = Y_ATTR_UNDEF;
   layouter->w_attr = W_ATTR_UNDEF;
   layouter->h_attr = H_ATTR_UNDEF;
-  layouter->position = POSITION_POINT;
+  layouter->position = POSITION_UNDEF;
 
   str_init(&(l->params), 0);
   l->vt = &s_self_layouter_menu_vtable;

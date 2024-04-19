@@ -28,6 +28,7 @@ TEST(SelfLayoutMenu, point) {
   ASSERT_EQ(w->y, 30);
   ASSERT_EQ(w->w, 30);
   ASSERT_EQ(w->h, 40);
+  ASSERT_EQ(string(self_layouter_to_string(layouter)), string(layout_params));
 
   self_layouter_destroy(layouter);
   widget_destroy(w);
@@ -55,6 +56,7 @@ TEST(SelfLayoutMenu, left_top) {
   ASSERT_EQ(w->y, 100);
   ASSERT_EQ(w->w, 30);
   ASSERT_EQ(w->h, 40);
+  ASSERT_EQ(string(self_layouter_to_string(layouter)), string(layout_params));
 
   self_layouter_destroy(layouter);
   widget_destroy(w);
@@ -83,6 +85,7 @@ TEST(SelfLayoutMenu, right_top) {
   ASSERT_EQ(w->y, 100);
   ASSERT_EQ(w->w, 200);
   ASSERT_EQ(w->h, 150);
+  ASSERT_EQ(string(self_layouter_to_string(layouter)), string(layout_params));
 
   self_layouter_destroy(layouter);
   widget_destroy(w);
@@ -109,6 +112,7 @@ TEST(SelfLayoutMenu, left_middle) {
   ASSERT_EQ(w->y, 105);
   ASSERT_EQ(w->w, 30);
   ASSERT_EQ(w->h, 40);
+  ASSERT_EQ(string(self_layouter_to_string(layouter)), string(layout_params));
 
   self_layouter_destroy(layouter);
   widget_destroy(w);
@@ -135,6 +139,7 @@ TEST(SelfLayoutMenu, left_bottom) {
   ASSERT_EQ(w->y, 110);
   ASSERT_EQ(w->w, 30);
   ASSERT_EQ(w->h, 40);
+  ASSERT_EQ(string(self_layouter_to_string(layouter)), string(layout_params));
 
   self_layouter_destroy(layouter);
   widget_destroy(w);
@@ -161,6 +166,7 @@ TEST(SelfLayoutMenu, up_left) {
   ASSERT_EQ(w->y, 160);
   ASSERT_EQ(w->w, 30);
   ASSERT_EQ(w->h, 40);
+  ASSERT_EQ(string(self_layouter_to_string(layouter)), string(layout_params));
 
   self_layouter_destroy(layouter);
   widget_destroy(w);
@@ -187,6 +193,7 @@ TEST(SelfLayoutMenu, down_left) {
   ASSERT_EQ(w->y, 50);
   ASSERT_EQ(w->w, 30);
   ASSERT_EQ(w->h, 40);
+  ASSERT_EQ(string(self_layouter_to_string(layouter)), string(layout_params));
 
   self_layouter_destroy(layouter);
   widget_destroy(w);
@@ -257,6 +264,7 @@ TEST(SelfLayoutMenu, out_of_area) {
   ASSERT_EQ(w->y, 530);
   ASSERT_EQ(w->w, 100);
   ASSERT_EQ(w->h, 70);
+  ASSERT_EQ(string(self_layouter_to_string(layouter)), string(layout_params));
 
   self_layouter_destroy(layouter);
   widget_destroy(w);
