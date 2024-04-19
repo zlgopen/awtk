@@ -920,13 +920,8 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
         max_size = tk_min(max_size, mledit->max_chars);
       }
 
-      if (max_size != widget->text.size) {
-        char* text = TKMEM_ZALLOCN(char, widget->text.size);
-        wstr_get_utf8(&widget->text, text, widget->text.size + 1);
-        text[max_size] = '\0';
-        widget_set_text_utf8(widget, text);
-        TKMEM_FREE(text);
-      }
+      wstr_shrink(&(widget->text), max_size);
+
       break;
     }
     case EVT_CONTEXT_MENU: {
