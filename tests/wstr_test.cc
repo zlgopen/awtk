@@ -28,6 +28,20 @@ TEST(WStr, demo) {
   wstr_reset(&s);
 }
 
+TEST(WStr, shrink) {
+  wstr_t s;
+  wstr_init(&s, 0);
+
+  wstr_append(&s, L"abc123");
+  ASSERT_EQ(wstr_shrink(&s, 3), RET_OK);
+  ASSERT_EQ(wcs_cmp(s.str, L"abc"), 0);
+  
+  ASSERT_EQ(wstr_shrink(&s, 30), RET_OK);
+  ASSERT_EQ(wcs_cmp(s.str, L"abc"), 0);
+
+  wstr_reset(&s);
+}
+
 TEST(WStr, basic) {
   /* 兼容非utf8编码的编译器，采用utf8编码初始化str，编码内容："中文" */
   char str[7] = {(char)0xe4, (char)0xb8, (char)0xad, (char)0xe6, (char)0x96, (char)0x87, 0};

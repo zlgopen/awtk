@@ -211,6 +211,17 @@ ret_t wstr_extend(wstr_t* str, uint32_t capacity) {
   return RET_OK;
 }
 
+ret_t wstr_shrink(wstr_t* str, uint32_t size) {
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+
+  if (size < str->size) {
+    str->size = size;
+    str->str[size] = 0;
+  }
+
+  return RET_OK;
+}
+
 wstr_t* wstr_create(uint32_t capacity) {
   wstr_t* str = TKMEM_ZALLOC(wstr_t);
   return_value_if_fail(str != NULL, NULL);
