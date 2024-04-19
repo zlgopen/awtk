@@ -18,6 +18,12 @@
  * 2018-04-14 Li XianJing <xianjimli@hotmail.com> created
  *
  */
+#ifndef WITHOUT_GLAD
+#include "glad/glad.h"
+#define loadGL gladLoadGL
+#else
+#define loadGL()
+#endif/*WITHOUT_GLAD*/
 
 #if defined(WITH_FAST_LCD_PORTRAIT)
 #error "OpenGL do not supported fast lcd portrait"
@@ -131,6 +137,12 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   nanovg->base.ratio = info.ratio;
 
   vgcanvas_nanovg_init((vgcanvas_t*)nanovg);
+
+  loadGL();
+  glDisable(GL_STENCIL_TEST);
+  glDisable(GL_ALPHA_TEST);
+  glDisable(GL_DEPTH_TEST);
+  glDisable(GL_SCISSOR_TEST);
 
 #if defined(WITH_NANOVG_GL2)
   nanovg->vg = nvgCreateGL2(NVG_ANTIALIAS | NVG_STENCIL_STROKES);

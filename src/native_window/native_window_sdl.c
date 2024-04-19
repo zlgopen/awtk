@@ -26,9 +26,7 @@
 #ifdef WITH_GPU_GL
 #ifndef WITHOUT_GLAD
 #include "glad/glad.h"
-#define loadGL gladLoadGL
 #else
-#define loadGL()
 #ifdef IOS
 #include <OpenGLES/gltypes.h>
 #include <OpenGLES/ES2/gl.h>
@@ -575,12 +573,6 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
 #ifdef WITH_GPU_GL
   sdl->context = SDL_GL_CreateContext(sdl->window);
   SDL_GL_SetSwapInterval(1);
-
-  loadGL();
-  glDisable(GL_STENCIL_TEST);
-  glDisable(GL_ALPHA_TEST);
-  glDisable(GL_DEPTH_TEST);
-  glDisable(GL_SCISSOR_TEST);
 #endif /*WITH_GPU_GL*/
 
   if (native_window_get_info(win, &info) == RET_OK) {
