@@ -41,6 +41,20 @@ TEST(Str, append_lowercase) {
   str_reset(&s);
 }
 
+TEST(Str, shrink) {
+  str_t s;
+  str_init(&s, 0);
+
+  str_append(&s, "1234");
+  ASSERT_EQ(str_shrink(&s, 2), RET_OK);
+  ASSERT_STREQ(s.str, "12");
+  
+  ASSERT_EQ(str_shrink(&s, 20), RET_OK);
+  ASSERT_STREQ(s.str, "12");
+
+  str_reset(&s);
+}
+
 TEST(Str, basic) {
   str_t str;
   str_t* s = NULL;

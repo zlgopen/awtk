@@ -67,6 +67,17 @@ ret_t str_extend(str_t* str, uint32_t capacity) {
   return RET_OK;
 }
 
+ret_t str_shrink(str_t* str, uint32_t size) {
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+
+  if (size < str->size) {
+    str->size = size;
+    str->str[size] = '\0';
+  }
+
+  return RET_OK;
+}
+
 str_t* str_init(str_t* str, uint32_t capacity) {
   return_value_if_fail(str != NULL, NULL);
 

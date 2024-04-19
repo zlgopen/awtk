@@ -148,11 +148,21 @@ str_t* str_attach_with_size(str_t* str, char* buff, uint32_t size, uint32_t capa
  * @method str_extend
  * 扩展字符串到指定的容量。
  * @param {str_t*} str str对象。
- * @param {uint32_t} capacity 初始容量。
+ * @param {uint32_t} capacity 新的容量。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t str_extend(str_t* str, uint32_t capacity);
+
+/**
+ * @method str_shrink
+ * 如果字符串长度大于指定长度，收缩字符串到指定的长度。 
+ * @param {str_t*} str str对象。
+ * @param {uint32_t} size 新的长度。 
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_shrink(str_t* str, uint32_t size);
 
 /**
  * @method str_eq
