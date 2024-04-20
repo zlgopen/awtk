@@ -267,9 +267,42 @@ typedef native_window_t* (*native_window_create_t)(widget_t* widget);
  */
 ret_t native_window_invalidate(native_window_t* win, const rect_t* r);
 
+/**
+ * @method native_window_swap_buffer
+ * 交换缓冲区。
+ * @param {native_window_t*} win win对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t native_window_swap_buffer(native_window_t* win);
+
+/**
+ * @method native_window_gl_make_current
+ * 设置当前的opengl上下文。
+ * @param {native_window_t*} win win对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t native_window_gl_make_current(native_window_t* win);
+
+/**
+ * @method native_window_preprocess_event
+ * 预处理事件。
+ * @param {native_window_t*} win win对象。
+ * @param {event_t*} e 事件。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t native_window_preprocess_event(native_window_t* win, event_t* e);
+
+/**
+ * @method native_window_get_info
+ * 获取窗口信息。
+ * @param {native_window_t*} win win对象。
+ * @param {native_window_info_t*} info 窗口信息。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t native_window_get_info(native_window_t* win, native_window_info_t* info);
 
 /*public for window manager only*/

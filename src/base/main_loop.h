@@ -77,12 +77,69 @@ main_loop_t* main_loop_init(int w, int h);
  */
 main_loop_t* main_loop(void);
 
+/**
+ * @method main_loop_set
+ * 设置当前main_loop对象
+ * @param {main_loop_t*} loop main_loop对象。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t main_loop_set(main_loop_t* loop);
+
+/**
+ * @method main_loop_run
+ * 运行主循环。
+ * @param {main_loop_t*} l main_loop对象。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t main_loop_run(main_loop_t* l);
+
+/**
+ * @method main_loop_wakeup
+ * 唤醒主循环。
+ * @param {main_loop_t*} l main_loop对象。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t main_loop_wakeup(main_loop_t* l);
+
+/**
+ * @method main_loop_quit
+ * 退出主循环。
+ * @param {main_loop_t*} l main_loop对象。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t main_loop_quit(main_loop_t* l);
+
+/**
+ * @method main_loop_queue_event
+ * 将事件加入到事件队列。
+ * @param {main_loop_t*} l main_loop对象。
+ * @param {const event_queue_req_t*} e 事件。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t main_loop_queue_event(main_loop_t* l, const event_queue_req_t* e);
+
+/**
+ * @method main_loop_recv_event
+ * 从事件队列中获取事件。
+ * @param {main_loop_t*} l main_loop对象。
+ * @param {event_queue_req_t*} r 事件。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t main_loop_recv_event(main_loop_t* l, event_queue_req_t* r);
+
+/**
+ * @method main_loop_destroy
+ * 销毁main_loop对象。
+ * @param {main_loop_t*} l main_loop对象。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t main_loop_destroy(main_loop_t* l);
 
 /**

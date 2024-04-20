@@ -159,7 +159,6 @@ ret_t input_device_status_on_pointer_leave(input_device_status_t* ids, widget_t*
 /**
  * @method input_device_status_deinit
  * 销毁输入设备状态管理器。
- * @annotation ["destructor"]
  * @param {input_device_status_t*} ids 输入设备状态管理器对象。
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

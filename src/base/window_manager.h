@@ -302,7 +302,6 @@ ret_t window_manager_paint(widget_t* widget);
  *
  *> 仅由主循环调用。
  *
- * @annotation ["private"]
  * @param {widget_t*} widget 窗口管理器对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
