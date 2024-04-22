@@ -460,6 +460,12 @@ TEST(Utils, tk_wstr_count_c) {
   ASSERT_EQ(tk_wstr_count_c(L"abcaba", 'a'), 3u);
 }
 
+TEST(Utils, tk_count_char) {
+  ASSERT_EQ(tk_count_char("", 'a'), 0u);
+  ASSERT_EQ(tk_count_char("a", 'a'), 1u);
+  ASSERT_EQ(tk_count_char("abcaba", 'a'), 3u);
+}
+
 TEST(Utils, tk_wstr_select_word) {
   int32_t left = 0;
   int32_t right = 0;

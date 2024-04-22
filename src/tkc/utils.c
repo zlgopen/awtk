@@ -971,6 +971,21 @@ uint32_t tk_wstr_count_c(const wchar_t* str, wchar_t c) {
   return nr;
 }
 
+uint32_t tk_count_char(const char* str, char c) {
+  uint32_t nr = 0;
+  const char* p = str;
+  return_value_if_fail(p != NULL, nr);
+
+  while (*p) {
+    if (*p == c) {
+      nr++;
+    }
+    p++;
+  }
+
+  return nr;
+}
+
 ret_t tk_wstr_select_word(const wchar_t* str, uint32_t len, uint32_t index, int32_t* left,
                           int32_t* right) {
   int32_t i = 0;
@@ -2091,7 +2106,7 @@ int32_t tk_levelize(const char* levels, int32_t value) {
 
 #include "tkc/date_time.h"
 
-uint32_t tk_count_char(const char* str, char c) {
+static uint32_t tk_count_repeat_char(const char* str, char c) {
   uint32_t nr = 0;
   return_value_if_fail(str != NULL, 0);
 
@@ -2117,7 +2132,7 @@ ret_t tk_date_time_format(uint64_t time, const char* format, str_t* result) {
   memset(temp, 0x00, sizeof(temp));
 
   while (*p) {
-    int32_t repeat = tk_count_char(p, *p);
+    int32_t repeat = tk_count_repeat_char(p, *p);
 
     switch (*p) {
       case 'Y': {
