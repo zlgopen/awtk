@@ -1,16 +1,28 @@
 <window anim_hint="htranslate" theme="tab_list">
   <pages name="pages" x="right" y="0" w="70%" h="100%"> 
+    <view w="100%" h="100%">
+      <label x="c" y="m" w="100%" h="60" text="General" /> 
+      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
+    </view>
+    <view w="100%" h="100%">
+      <label x="c" y="m" w="100%" h="60" text="Network" /> 
+      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
+    </view>
+    <view w="100%" h="100%">
+      <label x="c" y="m" w="100%" h="60" text="Security" /> 
+      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
+    </view>
   </pages>
 
   <list_view x="0" y="0" w="30%" h="100%" item_height="40" auto_hide_scroll_bar="true">
     <scroll_view name="view" x="0"  y="0" w="-12" h="100%">
       <tab_button name="tab_button1" text="page1" value="true" load_ui="tab_button_view_page1" />
       <tab_button name="tab_button2" text="page2" load_ui="tab_button_view_page2" />
-      <tab_button name="tab_button3" text="page3" load_ui="tab_button_view_page1" />
-      <tab_button name="tab_button4" text="page4" load_ui="tab_button_view_page2" />
+      <tab_button name="tab_button_local1" text="page3" />
+      <tab_button name="tab_button_local2" text="page4" />
       <tab_button name="tab_button5" text="page5" load_ui="tab_button_view_page1" />
       <tab_button name="tab_button6" text="page6" load_ui="tab_button_view_page2" />
-      <tab_button name="tab_button7" text="page7" load_ui="tab_button_view_page1" />
+      <tab_button name="tab_button_local3" text="page7" />
       <tab_button name="tab_button8" text="page8" load_ui="tab_button_view_page2" />
       <tab_button name="tab_button9" text="page9" load_ui="tab_button_view_page1" />
       <tab_button name="tab_button10" text="page10" load_ui="tab_button_view_page2" />
