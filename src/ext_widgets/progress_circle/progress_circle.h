@@ -102,7 +102,7 @@ typedef struct _progress_circle_t {
   /**
    * @property {uint32_t} line_width
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 环线的厚度(缺省为8)。
+   * 环线的厚度(缺省为8)，line_width > r/2时，使用扇形绘制。
    */
   uint32_t line_width;
 

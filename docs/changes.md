@@ -2,6 +2,8 @@
 
 2024/04/24
   * 增加函数tk\_skip\_chars/tk\_skip\_to\_chars
+  * 修复progress circle在最大值时没有绘制的问题。
+  * progress circle支持扇形绘制。
 
 2024/04/23
   * 去掉拼音输入法中不必要的断言(输入14个z时出现)(感谢颖健提供补丁)

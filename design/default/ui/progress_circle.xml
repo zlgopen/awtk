@@ -1,5 +1,5 @@
 <window >
-  <view x="c" y="m" w="200" h="200" children_layout="default(r=2,c=2,s=5)">
+  <view x="c" y="m" w="200" h="400" children_layout="default(r=4,c=2,s=5)">
     <progress_circle max="360" show_text="true" line_cap="square" 
       animation="value(from=0, to=360, yoyo_times=1000, duration=3000, easing=sin_inout)" />
 
@@ -12,6 +12,21 @@
     <progress_circle style="image" max="100" show_text="true" start_angle="90" start_angle="-225"  
       counter_clock_wise="true" format="%d%%"
       animation="value(from=10, to=100, yoyo_times=1000, duration=3000, easing=sin_inout)" />
+    
+    <progress_circle max="360" show_text="true" line_cap="square" line_width="50" 
+      animation="value(from=0, to=360, yoyo_times=1000, duration=3000, easing=sin_inout)" />
+    
+    <progress_circle style="image" max="100" show_text="true" start_angle="90" start_angle="-225"  
+      format="%d%%" line_width="50"
+      animation="value(from=10, to=100, yoyo_times=1000, duration=3000, easing=sin_inout)" />
+    
+    <progress_circle max="360" show_text="true" line_cap="square" line_width="50" value="0" 
+      counter_clock_wise="true" animation="value(from=0, to=360, yoyo_times=1000, duration=3000, easing=sin_inout)" />
+    
+    <progress_circle style="image" max="100" show_text="true" start_angle="90" start_angle="-225"  
+      counter_clock_wise="true" format="%d%%" line_width="50" value="100"
+      animation="value(from=10, to=100, yoyo_times=1000, duration=3000, easing=sin_inout)" />
+
    </view>
    
    <button name="close" x="center" y="bottom:10" w="25%" h="30" text="Close"/>

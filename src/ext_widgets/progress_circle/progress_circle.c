@@ -57,9 +57,8 @@ static float_t progress_circle_value_to_angle(widget_t* widget, float_t value) {
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
   return_value_if_fail(progress_circle != NULL, 0);
 
-  return tk_value_to_angle(value, 0, progress_circle->max,
-                           progress_circle->start_angle, progress_circle->start_angle + 360,
-                           progress_circle->counter_clock_wise);
+  return tk_value_to_angle(value, 0, progress_circle->max, progress_circle->start_angle,
+                           progress_circle->start_angle + 360, progress_circle->counter_clock_wise);
 }
 
 static float_t progress_circle_get_radius(widget_t* widget) {
@@ -192,6 +191,9 @@ static ret_t progress_circle_on_paint_self(widget_t* widget, canvas_t* c) {
       end_angle = start_angle;
     } else {
       end_angle = progress_circle_value_to_angle(widget, progress_circle->value);
+      if (progress_circle->value == progress_circle->max) {
+        end_angle = start_angle + M_PI * 2;
+      }
     }
 
     vgcanvas_save(vg);
@@ -206,12 +208,29 @@ static ret_t progress_circle_on_paint_self(widget_t* widget, canvas_t* c) {
       vgcanvas_set_line_cap(vg, VGCANVAS_LINE_CAP_BUTT);
     }
     vgcanvas_begin_path(vg);
+
     if (end_angle > start_angle) {
-      vgcanvas_arc(vg, cx, cy, r, start_angle, end_angle, ccw);
-      if (has_image) {
-        vgcanvas_paint(vg, TRUE, &img);
+      float max_r = tk_min(widget->w, widget->h) / 2;
+      if (progress_circle->line_width > max_r / 2) {
+        //画扇形
+        vgcanvas_set_fill_color(vg, color);
+        vgcanvas_move_to(vg, cx, cy);
+        vgcanvas_line_to(vg, cx + max_r * cos(start_angle), cy + max_r * sin(start_angle));
+        vgcanvas_arc(vg, cx, cy, max_r, start_angle, end_angle, ccw);
+        vgcanvas_close_path(vg);
+
+        if (has_image) {
+          vgcanvas_paint(vg, FALSE, &img);
+        } else {
+          vgcanvas_fill(vg);
+        }
       } else {
-        vgcanvas_stroke(vg);
+        vgcanvas_arc(vg, cx, cy, r, start_angle, end_angle, ccw);
+        if (has_image) {
+          vgcanvas_paint(vg, TRUE, &img);
+        } else {
+          vgcanvas_stroke(vg);
+        }
       }
     }
 
