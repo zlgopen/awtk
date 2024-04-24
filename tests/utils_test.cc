@@ -1827,3 +1827,19 @@ TEST(Utils, tk_angle) {
   v = TK_R2D(tk_angle(0, 0, 90, 90));
   ASSERT_EQ(v, 315);
 }
+
+
+TEST(Utils, skip_chars) {
+  ASSERT_STREQ(tk_skip_chars("abc123", "abc"), "123");
+  ASSERT_STREQ(tk_skip_chars("abc123", ""), "abc123");
+  ASSERT_STREQ(tk_skip_chars("abc123", "A"), "abc123");
+  ASSERT_STREQ(tk_skip_chars("abc123", "a"), "bc123");
+}
+
+TEST(Utils, skip_to_chars) {
+  ASSERT_STREQ(tk_skip_to_chars("abc123", "123"), "123");
+  ASSERT_STREQ(tk_skip_to_chars("abc123", "21"), "123");
+  ASSERT_STREQ(tk_skip_to_chars("abc123", ""), "");
+  ASSERT_STREQ(tk_skip_to_chars("abc123", "A"), "");
+  ASSERT_STREQ(tk_skip_to_chars("abc123", "a"), "abc123");
+}

@@ -2534,3 +2534,20 @@ double tk_angle(int cx, int cy, int x, int y) {
   return angle;
 }
 
+const char* tk_skip_chars(const char* str, const char* chars) {
+  return_value_if_fail(str != NULL && chars != NULL, str);
+
+  while (*str && strchr(chars, *str) != NULL) {
+    str++;
+  }
+  return str;
+}
+
+const char* tk_skip_to_chars(const char* str, const char* chars) {
+  return_value_if_fail(str != NULL && chars != NULL, str);
+
+  while (*str && strchr(chars, *str) == NULL) {
+    str++;
+  }
+  return str;
+}

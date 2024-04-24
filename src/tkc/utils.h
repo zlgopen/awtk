@@ -1261,6 +1261,26 @@ double tk_value_to_angle(double value, double min, double max, double start_angl
  */
 double tk_angle(int cx, int cy, int x, int y);
 
+/**
+ * @method tk_skip_chars
+ * 跳过字符串中的字符。
+ * @param {const char*} str 字符串。
+ * @param {const char*} chars 字符集。
+ * 
+ * @return {const char*} 返回跳过后的字符串。
+ */
+const char* tk_skip_chars(const char* str, const char* chars);
+
+/**
+ * @method tk_skip_to_chars
+ * 跳到字符串中的字符。
+ * @param {const char*} str 字符串。
+ * @param {const char*} chars 字符集。
+ * 
+ * @return {const char*} 返回跳到的字符串。
+ */
+const char* tk_skip_to_chars(const char* str, const char* chars);
+
 #define TK_STRDUP(str) ((str) != NULL) ? tk_strdup(str) : NULL
 #define TK_STRNDUP(str, len) ((str) != NULL) ? tk_strndup(str, len) : NULL
 
