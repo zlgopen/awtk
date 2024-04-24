@@ -128,7 +128,7 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
   while (iter != NULL) {
     const char* name = conf_node_get_name(iter);
 
-    if (tk_str_eq(name, "create")) {
+    if (tk_str_start_with(name, "create")) {
       const char* url = conf_node_get_child_value_str(iter, "url", "tcp://localhost:2233");
       tk_iostream_t* io = tk_stream_factory_create_iostream(url);
 
@@ -147,39 +147,39 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
     }
 
     expected_ret = conf_node_get_child_value_str(iter, "ret", NULL);
-    if (tk_str_eq(name, "login")) {
+    if (tk_str_start_with(name, "login")) {
       const char* user = conf_node_get_child_value_str(iter, "user", "admin");
       const char* password = conf_node_get_child_value_str(iter, "password", "admin");
       ret = remote_ui_login(ui, user, password);
       check_return_code(ret, expected_ret, name, user, NULL, NULL);
-    } else if (tk_str_eq(name, "create_dir")) {
+    } else if (tk_str_start_with(name, "create_dir")) {
       const char* path = conf_node_get_child_value_str(iter, "path", NULL);
       ret = remote_ui_create_dir(ui, path);
       check_return_code(ret, expected_ret, name, path, NULL, NULL);
-    } else if (tk_str_eq(name, "remove_dir")) {
+    } else if (tk_str_start_with(name, "remove_dir")) {
       const char* path = conf_node_get_child_value_str(iter, "path", NULL);
       ret = remote_ui_remove_dir(ui, path);
       check_return_code(ret, expected_ret, name, path, NULL, NULL);
-    } else if (tk_str_eq(name, "remove_file")) {
+    } else if (tk_str_start_with(name, "remove_file")) {
       const char* filename = conf_node_get_child_value_str(iter, "filename", NULL);
       ret = remote_ui_remove_file(ui, filename);
       check_return_code(ret, expected_ret, name, filename, NULL, NULL);
-    } else if (tk_str_eq(name, "upload")) {
+    } else if (tk_str_start_with(name, "upload")) {
       const char* remote = conf_node_get_child_value_str(iter, "remote", NULL);
       const char* local = conf_node_get_child_value_str(iter, "local", NULL);
       ret = remote_ui_upload_file(ui, remote, local);
       check_return_code(ret, expected_ret, name, remote, local, NULL);
-    } else if (tk_str_eq(name, "download")) {
+    } else if (tk_str_start_with(name, "download")) {
       const char* remote = conf_node_get_child_value_str(iter, "remote", NULL);
       const char* local = conf_node_get_child_value_str(iter, "local", NULL);
       ret = remote_ui_download_file(ui, remote, local);
       check_return_code(ret, expected_ret, name, remote, local, NULL);
-    } else if (tk_str_eq(name, "get_dev_info")) {
+    } else if (tk_str_start_with(name, "get_dev_info")) {
       remote_ui_dev_info_t info;
       ret = remote_ui_get_dev_info(ui, &info);
       check_return_code(ret, expected_ret, name, info.name, info.os, info.arch);
       log_debug("width=%d height=%d\n", info.screen_width, info.screen_height);
-    } else if (tk_str_eq(name, "take_snapshot")) {
+    } else if (tk_str_start_with(name, "take_snapshot")) {
       char temp_file[MAX_PATH + 1] = {0};
       const char* target = conf_node_get_child_value_str(iter, "target", "");
       const char* filename = conf_node_get_child_value_str(iter, "filename", NULL);
@@ -202,7 +202,7 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
         }
       }
       check_return_code(ret, expected_ret, name, filename, NULL, NULL);
-    } else if (tk_str_eq(name, "get_source")) {
+    } else if (tk_str_start_with(name, "get_source")) {
       char temp_file[MAX_PATH + 1] = {0};
       const char* target = conf_node_get_child_value_str(iter, "target", "");
       const char* filename = conf_node_get_child_value_str(iter, "filename", NULL);
@@ -225,19 +225,19 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
         }
       }
       check_return_code(ret, expected_ret, name, filename, NULL, NULL);
-    } else if (tk_str_eq(name, "get_manifest")) {
+    } else if (tk_str_start_with(name, "get_manifest")) {
       const char* filename = conf_node_get_child_value_str(iter, "filename", "manifest.txt");
       ret = remote_ui_get_manifest(ui, filename);
       check_return_code(ret, expected_ret, name, filename, NULL, NULL);
-    } else if (tk_str_eq(name, "get_loaded_images_info")) {
+    } else if (tk_str_start_with(name, "get_loaded_images_info")) {
       const char* filename = conf_node_get_child_value_str(iter, "filename", NULL);
       ret = remote_ui_get_loaded_images_info(ui, filename);
       check_return_code(ret, expected_ret, name, filename, NULL, NULL);
-    } else if (tk_str_eq(name, "get_loaded_assets_info")) {
+    } else if (tk_str_start_with(name, "get_loaded_assets_info")) {
       const char* filename = conf_node_get_child_value_str(iter, "filename", NULL);
       ret = remote_ui_get_loaded_assets_info(ui, filename);
       check_return_code(ret, expected_ret, name, filename, NULL, NULL);
-    } else if (tk_str_eq(name, "open_window")) {
+    } else if (tk_str_start_with(name, "open_window")) {
       const char* wname = conf_node_get_child_value_str(iter, "name", NULL);
       const char* xml = conf_node_get_child_value_str(iter, "xml", NULL);
       const char* init = conf_node_get_child_value_str(iter, "init", NULL);
@@ -260,12 +260,12 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
         TKMEM_FREE(init_content);
       }
       sleep_ms(1000);
-    } else if (tk_str_eq(name, "close_window")) {
+    } else if (tk_str_start_with(name, "close_window")) {
       const char* wname = conf_node_get_child_value_str(iter, "name", NULL);
       ret = remote_ui_close_window(ui, wname);
       check_return_code(ret, expected_ret, name, wname, NULL, NULL);
       sleep_ms(1000);
-    } else if (tk_str_eq(name, "create_widget")) {
+    } else if (tk_str_start_with(name, "create_widget")) {
       const char* target = conf_node_get_child_value_str(iter, "target", NULL);
       const char* xml = conf_node_get_child_value_str(iter, "xml", NULL);
       char* xml_content = NULL;
@@ -278,34 +278,34 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
       if (xml_content != NULL) {
         TKMEM_FREE(xml_content);
       }
-    } else if (tk_str_eq(name, "destroy_widget")) {
+    } else if (tk_str_start_with(name, "destroy_widget")) {
       const char* target = conf_node_get_child_value_str(iter, "target", NULL);
       ret = remote_ui_destroy_widget(ui, target);
       check_return_code(ret, expected_ret, name, target, NULL, NULL);
-    } else if (tk_str_eq(name, "move_widget")) {
+    } else if (tk_str_start_with(name, "move_widget")) {
       const char* target = conf_node_get_child_value_str(iter, "target", NULL);
       int32_t x = conf_node_get_child_value_int32(iter, "x", 0);
       int32_t y = conf_node_get_child_value_int32(iter, "y", 0);
       ret = remote_ui_move_widget(ui, target, x, y);
       check_return_code(ret, expected_ret, name, target, NULL, NULL);
-    } else if (tk_str_eq(name, "resize_widget")) {
+    } else if (tk_str_start_with(name, "resize_widget")) {
       const char* target = conf_node_get_child_value_str(iter, "target", NULL);
       int32_t w = conf_node_get_child_value_int32(iter, "w", 0);
       int32_t h = conf_node_get_child_value_int32(iter, "h", 0);
       ret = remote_ui_resize_widget(ui, target, w, h);
       check_return_code(ret, expected_ret, name, target, NULL, NULL);
-    } else if (tk_str_eq(name, "back")) {
+    } else if (tk_str_start_with(name, "back")) {
       ret = remote_ui_back_to_prev(ui);
       check_return_code(ret, expected_ret, name, NULL, NULL, NULL);
       sleep_ms(1000);
-    } else if (tk_str_eq(name, "home")) {
+    } else if (tk_str_start_with(name, "home")) {
       ret = remote_ui_back_to_home(ui);
       check_return_code(ret, expected_ret, name, NULL, NULL, NULL);
       sleep_ms(1000);
-    } else if (tk_str_eq(name, "logout")) {
+    } else if (tk_str_start_with(name, "logout")) {
       ret = remote_ui_logout(ui);
       check_return_code(ret, expected_ret, name, NULL, NULL, NULL);
-    } else if (tk_str_eq(name, "set_prop")) {
+    } else if (tk_str_start_with(name, "set_prop")) {
       value_t v;
       const char* target = conf_node_get_child_value_str(iter, "target", NULL);
       const char* prop = conf_node_get_child_value_str(iter, "name", NULL);
@@ -314,7 +314,7 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
       value_set_str(&v, value);
       ret = remote_ui_set_prop(ui, target, prop, &v);
       check_return_code(ret, expected_ret, name, target, prop, value);
-    } else if (tk_str_eq(name, "get_prop")) {
+    } else if (tk_str_start_with(name, "get_prop")) {
       value_t v;
       char buff[64] = {0};
       const char* ret_value = NULL;
@@ -331,27 +331,27 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
       }
       check_return_code(ret, expected_ret, name, target, prop, ret_value);
       value_reset(&v);
-    } else if (tk_str_eq(name, "on_event")) {
+    } else if (tk_str_start_with(name, "on_event")) {
       const char* target = conf_node_get_child_value_str(iter, "target", NULL);
       const char* event_name = conf_node_get_child_value_str(iter, "event", NULL);
       event_type_t event_type = remote_ui_event_type_from_str(event_name);
       ret = remote_ui_on_event(ui, target, event_type, widget_on_events, NULL);
       check_return_code(ret, expected_ret, name, target, event_name, NULL);
-    } else if (tk_str_eq(name, "off_event")) {
+    } else if (tk_str_start_with(name, "off_event")) {
       const char* target = conf_node_get_child_value_str(iter, "target", NULL);
       const char* event_name = conf_node_get_child_value_str(iter, "event", NULL);
       event_type_t event_type = remote_ui_event_type_from_str(event_name);
       ret = remote_ui_off_event(ui, target, event_type, widget_on_events, NULL);
       check_return_code(ret, expected_ret, name, target, event_name, NULL);
-    } else if (tk_str_eq(name, "set_theme")) {
+    } else if (tk_str_start_with(name, "set_theme")) {
       const char* theme = conf_node_get_child_value_str(iter, "theme", NULL);
       ret = remote_ui_set_theme(ui, theme);
       check_return_code(ret, expected_ret, name, theme, NULL, NULL);
-    } else if (tk_str_eq(name, "set_language")) {
+    } else if (tk_str_start_with(name, "set_language")) {
       const char* language = conf_node_get_child_value_str(iter, "language", NULL);
       ret = remote_ui_set_language(ui, language);
       check_return_code(ret, expected_ret, name, language, NULL, NULL);
-    } else if (tk_str_eq(name, "exec_fscript")) {
+    } else if (tk_str_start_with(name, "exec_fscript")) {
       str_t str;
       const char* fscript = conf_node_get_child_value_str(iter, "fscript", NULL);
       char* fscript_content = NULL;
@@ -366,18 +366,18 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
       if (fscript_content != NULL) {
         TKMEM_FREE(fscript_content);
       }
-    } else if (tk_str_eq(name, "click")) {
+    } else if (tk_str_start_with(name, "click")) {
       const char* target = conf_node_get_child_value_str(iter, "target", NULL);
       ret = remote_ui_click(ui, target);
       check_return_code(ret, expected_ret, name, target, NULL, NULL);
-    } else if (tk_str_eq(name, "key")) {
+    } else if (tk_str_start_with(name, "key")) {
       key_event_t event;
       const char* target = conf_node_get_child_value_str(iter, "target", NULL);
       const char* key = conf_node_get_child_value_str(iter, "key", NULL);
       key_event_init_with_symbol(&event, EVT_KEY_DOWN, key);
       ret = remote_ui_key(ui, target, event.key);
       check_return_code(ret, expected_ret, name, target, key, NULL);
-    } else if (tk_str_eq(name, "send_event")) {
+    } else if (tk_str_start_with(name, "send_event")) {
       event_t* e = NULL;
       const char* target = conf_node_get_child_value_str(iter, "target", NULL);
       const char* type = conf_node_get_child_value_str(iter, "type", NULL);
@@ -414,40 +414,55 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
       check_return_code(ret, expected_ret, name, target, type, NULL);
 
       sleep_ms(100);
-    } else if (tk_str_eq(name, "confirm")) {
+    } else if (tk_str_start_with(name, "confirm")) {
       const char* title = conf_node_get_child_value_str(iter, "title", NULL);
       const char* content = conf_node_get_child_value_str(iter, "content", NULL);
       ret = remote_ui_show_confirm(ui, title, content);
       check_return_code(ret, expected_ret, name, title, content, NULL);
-    } else if (tk_str_eq(name, "warn")) {
+    } else if (tk_str_start_with(name, "warn")) {
       const char* title = conf_node_get_child_value_str(iter, "title", NULL);
       const char* content = conf_node_get_child_value_str(iter, "content", NULL);
       ret = remote_ui_show_warn(ui, title, content);
       check_return_code(ret, expected_ret, name, title, content, NULL);
-    } else if (tk_str_eq(name, "info")) {
+    } else if (tk_str_start_with(name, "info")) {
       const char* title = conf_node_get_child_value_str(iter, "title", NULL);
       const char* content = conf_node_get_child_value_str(iter, "content", NULL);
       ret = remote_ui_show_info(ui, title, content);
       check_return_code(ret, expected_ret, name, title, content, NULL);
-    } else if (tk_str_eq(name, "toast")) {
+    } else if (tk_str_start_with(name, "toast")) {
       const char* content = conf_node_get_child_value_str(iter, "content", NULL);
       int32_t duration = conf_node_get_child_value_int32(iter, "duration", 3000);
       ret = remote_ui_show_toast(ui, duration, content);
       check_return_code(ret, expected_ret, name, content, NULL, NULL);
-    } else if (tk_str_eq(name, "sleep")) {
+    } else if (tk_str_start_with(name, "sleep")) {
       int32_t time_ms = conf_node_get_child_value_int32(iter, "time", 1000);
       sleep_ms(time_ms);
-    } else if (tk_str_eq(name, "hook_log")) {
+    } else if (tk_str_start_with(name, "hook_log")) {
       ret = remote_ui_hook_log(ui, on_log_message, NULL);
       check_return_code(ret, expected_ret, name, NULL, NULL, NULL);
-    } else if (tk_str_eq(name, "unhook_log")) {
+    } else if (tk_str_start_with(name, "unhook_log")) {
       ret = remote_ui_unhook_log(ui);
       check_return_code(ret, expected_ret, name, NULL, NULL, NULL);
-    } else if (tk_str_eq(name, "dispatch")) {
+    } else if (tk_str_start_with(name, "dispatch")) {
       while (tk_client_read_notify(&(ui->client), 10000) == RET_OK) {
         remote_ui_dispatch(ui);
       }
-    } else if (tk_str_eq(name, "close")) {
+    } else if (tk_str_start_with(name, "rewind")) {
+      iter = conf_node_get_first_child(doc->root);
+      log_debug("rewind\n");
+      continue;
+    } else if (tk_str_start_with(name, "goto")) {
+      const char* target = conf_node_get_child_value_str(iter, "target", NULL);
+      iter = conf_node_get_first_child(doc->root);
+      while (iter != NULL) {
+        if (tk_str_eq(conf_node_get_name(iter), target)) {
+          log_debug("goto %s\n", target);
+          break;
+        }
+        iter = iter->next;
+      }
+      continue;
+    } else if (tk_str_start_with(name, "close")) {
       remote_ui_destroy(ui);
       ui = NULL;
     }
