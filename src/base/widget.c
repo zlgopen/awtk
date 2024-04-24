@@ -4938,15 +4938,24 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r) {
 bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r) {
   wh_t w = 0;
   wh_t h = 0;
+  wh_t lcd_w = 0;
+  wh_t lcd_h = 0;
   canvas_t canvas;
   lcd_t* lcd = NULL;
   uint8_t* buff = NULL;
   bitmap_t* bitmap = NULL;
+  system_info_t* info = NULL;
   bitmap_t* bitmap_clip = NULL;
   return_value_if_fail(widget != NULL && widget->vt != NULL, NULL);
 
   w = widget->w;
   h = widget->h;
+  
+  info = system_info();
+  if (info != NULL) {
+    lcd_w = info->lcd_w;
+    lcd_h = info->lcd_h;
+  }
 
   bitmap = bitmap_create_ex(w, h, w * 4, BITMAP_FMT_RGBA8888);
   return_value_if_fail(bitmap != NULL, NULL);
@@ -4962,6 +4971,8 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r) {
     canvas_end_frame(&canvas);
     canvas_reset(&canvas);
     lcd_destroy(lcd);
+    system_info_set_lcd_w(info, lcd_w);
+    system_info_set_lcd_h(info, lcd_h);
   }
 
   bitmap_unlock_buffer(bitmap);
