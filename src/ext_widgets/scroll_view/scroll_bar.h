@@ -96,6 +96,12 @@ typedef struct _scroll_bar_t {
    */
   uint32_t animator_time;
   /**
+   * @property {uint32_t} scroll_delta
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 每次鼠标滚动值。（缺省值为0，0 则使用鼠标滚动默认值）
+   */
+  uint32_t scroll_delta;
+  /**
    * @property {bool_t} animatable
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 滚动时是否启用动画。
@@ -115,6 +121,7 @@ typedef struct _scroll_bar_t {
   bool_t wheel_scroll;
 
   /*private*/
+  bool_t user_wheel_scroll;
   widget_t* dragger;
   widget_animator_t* wa_value;
   widget_animator_t* wa_opactiy;
@@ -329,12 +336,25 @@ ret_t scroll_bar_show_by_opacity_animation(widget_t* widget, int32_t duration, i
  */
 ret_t scroll_bar_set_wheel_scroll(widget_t* widget, bool_t scroll);
 
+/**
+ * @method scroll_bar_set_scroll_delta
+ * 设置鼠标滚轮幅度(仅对desktop风格的滚动条有效)。
+ * 
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget scroll_bar控件。
+ * @param {uint32_t} scroll_delta 滚动幅度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t scroll_bar_set_scroll_delta(widget_t* widget, uint32_t scroll_delta);
+
 /* private */
 
 #define SCROLL_BAR_PROP_IS_MOBILE "is_mobile"
 #define SCROLL_BAR_PROP_IS_HORIZON "is_horizon"
 #define SCROLL_BAR_PROP_ANIMATOR_TIME "animator_time"
 #define SCROLL_BAR_PROP_WHEEL_SCROLL "wheel_scroll"
+#define SCROLL_BAR_PROP_SCROLL_DELTA "scroll_delta"
 #define SCROLL_BAR(widget) ((scroll_bar_t*)(scroll_bar_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/

@@ -180,7 +180,9 @@ static ret_t scroll_bar_desktop_on_event(widget_t* widget, event_t* e) {
       widget_t* up = widget_lookup(widget, CHILD_UP, FALSE);
       widget_t* down = widget_lookup(widget, CHILD_DOWN, FALSE);
       bool_t horizon = widget->w > widget->h;
-      scroll_bar->wheel_scroll = !horizon;
+      if (!scroll_bar->user_wheel_scroll) {
+        scroll_bar->wheel_scroll = !horizon;
+      }
       if (up != NULL) {
         const char* style_name =
             horizon ? SCROLL_BAR_LEFT_BUTTON_STYLE_NAME : SCROLL_BAR_UP_BUTTON_STYLE_NAME;
@@ -526,7 +528,10 @@ static ret_t scroll_bar_get_prop(widget_t* widget, const char* name, value_t* v)
   } else if (tk_str_eq(name, SCROLL_BAR_PROP_WHEEL_SCROLL)) {
     value_set_bool(v, scroll_bar->wheel_scroll);
     return RET_OK;
-  }
+  } else if (tk_str_eq(name, SCROLL_BAR_PROP_SCROLL_DELTA)) {
+    value_set_uint32(v, scroll_bar->scroll_delta);
+    return RET_OK;
+  } 
 
   return RET_NOT_FOUND;
 }
@@ -557,16 +562,18 @@ static ret_t scroll_bar_set_prop(widget_t* widget, const char* name, const value
     return scroll_bar_set_animator_time(widget, value_uint32(v));
   } else if (tk_str_eq(name, SCROLL_BAR_PROP_WHEEL_SCROLL)) {
     return scroll_bar_set_wheel_scroll(widget, value_bool(v));
-  }
+  } else if (tk_str_eq(name, SCROLL_BAR_PROP_SCROLL_DELTA)) {
+    return scroll_bar_set_scroll_delta(widget, value_uint32(v));
+  } 
 
   return RET_NOT_FOUND;
 }
 
 static ret_t scroll_bar_desktop_on_parent_wheel_event(void* ctx, event_t* e) {
   wheel_event_t* evt = (wheel_event_t*)e;
-  int32_t delta = -evt->dy;
   widget_t* widget = WIDGET(ctx);
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  int32_t delta = scroll_bar->scroll_delta == 0 ? -evt->dy : (evt->dy > 0 ? -scroll_bar->scroll_delta : scroll_bar->scroll_delta);
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
   if (widget->enable && widget->sensitive && scroll_bar->wheel_scroll) {
     scroll_bar_add_delta(widget, delta);
@@ -937,5 +944,13 @@ ret_t scroll_bar_set_wheel_scroll(widget_t* widget, bool_t wheel_scroll) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL && !scroll_bar_is_mobile(widget), RET_BAD_PARAMS);
   scroll_bar->wheel_scroll = wheel_scroll;
+  scroll_bar->user_wheel_scroll = TRUE;
+  return RET_OK;
+}
+
+ret_t scroll_bar_set_scroll_delta(widget_t* widget, uint32_t scroll_delta) {
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  return_value_if_fail(scroll_bar != NULL && !scroll_bar_is_mobile(widget), RET_BAD_PARAMS);
+  scroll_bar->scroll_delta = scroll_delta;
   return RET_OK;
 }
