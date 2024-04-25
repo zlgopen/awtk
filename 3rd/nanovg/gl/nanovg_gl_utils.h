@@ -28,9 +28,9 @@ struct NVGLUframebuffer {
 typedef struct NVGLUframebuffer NVGLUframebuffer;
 
 // Helper function to create GL frame buffer to render to.
-void nvgluBindFramebuffer(NVGLUframebuffer* fb);
-NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* ctx, int w, int h, int imageFlags);
-void nvgluDeleteFramebuffer(NVGLUframebuffer* fb);
+static void nvgluBindFramebuffer(NVGLUframebuffer* fb);
+static NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* ctx, int w, int h, int imageFlags);
+static void nvgluDeleteFramebuffer(NVGLUframebuffer* fb);
 
 #endif // NANOVG_GL_UTILS_H
 
@@ -49,7 +49,7 @@ void nvgluDeleteFramebuffer(NVGLUframebuffer* fb);
 
 static GLint defaultFBO = -1;
 
-int nvgluGetCurrFramebuffer() {
+static int nvgluGetCurrFramebuffer() {
 #ifdef NANOVG_FBO_VALID
 	GLint defaultFBO;
 	glGetIntegerv(GL_FRAMEBUFFER_BINDING, &defaultFBO);
@@ -59,7 +59,7 @@ int nvgluGetCurrFramebuffer() {
 #endif
 }
 
-NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* ctx, int w, int h, int imageFlags)
+static NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* ctx, int w, int h, int imageFlags)
 {
 #ifdef NANOVG_FBO_VALID
 	GLint defaultFBO;
@@ -130,7 +130,7 @@ error:
 #endif
 }
 
-void nvgluBindFramebuffer(NVGLUframebuffer* fb)
+static void nvgluBindFramebuffer(NVGLUframebuffer* fb)
 {
 #ifdef NANOVG_FBO_VALID
 	if (defaultFBO == -1) glGetIntegerv(GL_FRAMEBUFFER_BINDING, &defaultFBO);
@@ -140,7 +140,7 @@ void nvgluBindFramebuffer(NVGLUframebuffer* fb)
 #endif
 }
 
-void nvgluReadCurrentFramebufferData(unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int width, unsigned int height, void* pixels)
+static void nvgluReadCurrentFramebufferData(unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int width, unsigned int height, void* pixels)
 {
 	if(x + w <= width && y + h <= height && pixels != NULL) {
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -148,7 +148,7 @@ void nvgluReadCurrentFramebufferData(unsigned int x, unsigned int y, unsigned in
 	}
 }
 
-void nvgluDeleteFramebuffer(NVGLUframebuffer* fb)
+static void nvgluDeleteFramebuffer(NVGLUframebuffer* fb)
 {
 #ifdef NANOVG_FBO_VALID
 	if (fb == NULL) return;

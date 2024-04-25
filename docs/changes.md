@@ -3,6 +3,7 @@
 2024/04/25
   * 完善UI测试工具，支持压力测试。
   * 增加切换语言的压力测试用例。
+  * 增加vgcanvas\_nanovg\_gl2/vgcanvas\_nanovg\_gl3
 
 2024/04/24
   * 增加函数tk\_skip\_chars/tk\_skip\_to\_chars

@@ -67,6 +67,8 @@ else:
         BASE_SOURCES += ['vgcanvas/vgcanvas_nanovg_soft.c']
     else:
         BASE_SOURCES += ['vgcanvas/vgcanvas_nanovg_gl.c']
+        BASE_SOURCES += ['vgcanvas/vgcanvas_nanovg_gl2.c']
+        BASE_SOURCES += ['vgcanvas/vgcanvas_nanovg_gl3.c']
 
 if os.environ['INPUT_ENGINE'] == 'null':
     BASE_SOURCES += Glob('input_engines/input_engine_null.c')

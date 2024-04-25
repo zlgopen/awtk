@@ -19,7 +19,12 @@
  *
  */
 
-#define VGCANVAS_CREATE_GL vgcanvas_create
+#undef WITH_NANOVG_GL3
+#undef WITH_NANOVG_GLES2
+#undef WITH_NANOVG_GLES3
+
+#define WITH_NANOVG_GL2 1
+#define VGCANVAS_CREATE_GL vgcanvas_create_gl2
 
 #include "vgcanvas_nanovg_gl_common.inc"
 

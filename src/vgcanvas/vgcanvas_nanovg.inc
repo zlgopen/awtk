@@ -280,7 +280,7 @@ static bool_t vgcanvas_nanovg_is_rectf_in_clip_rect(vgcanvas_t* vgcanvas, float_
 }
 
 
-const rectf_t* vgcanvas_nanovg_get_clip_rect(vgcanvas_t* vgcanvas) {
+static const rectf_t* vgcanvas_nanovg_get_clip_rect(vgcanvas_t* vgcanvas) {
   return &(vgcanvas->clip_rect);
 }
 

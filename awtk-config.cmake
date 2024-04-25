@@ -10,7 +10,7 @@ add_compile_definitions(HAS_STDIO)
 add_compile_definitions(HAS_STD_MALLOC)
 
 set(AWTK_LIBRARIES ${AWTK_LIBRARY})
-set(AWTK_INCLUDE_DIRS ${AWTK_ROOT_DIR}/src ${AWTK_ROOT_DIR}/3rd ${AWTK_ROOT_DIR}/src/ext_widgets ${AWTK_ROOT_DIR}/src ${AWTK_ROOT_DIR}/3rd/SDL/include)
+set(AWTK_INCLUDE_DIRS ${AWTK_ROOT_DIR}/src ${AWTK_ROOT_DIR}/3rd ${AWTK_ROOT_DIR}/src/ext_widgets ${AWTK_ROOT_DIR}/src ${AWTK_ROOT_DIR}/3rd/SDL/include ${AWTK_ROOT_DIR}/3rd/nanovg/base)
 
 link_directories(${AWTK_ROOT_DIR}/bin)
 include_directories(${AWTK_INCLUDE_DIRS})
