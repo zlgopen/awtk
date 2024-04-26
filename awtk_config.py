@@ -46,9 +46,7 @@ VGCANVAS = complie_helper.get_value('VGCANVAS', VGCANVAS)
 
 if OS_NAME == 'Windows':
     TK_ROOT = TK_ROOT.replace('\\', '\\\\')
-    NANOVG_BACKEND = 'GLES2'
-else:
-    NANOVG_BACKEND = 'GL3'
+NANOVG_BACKEND = 'GL3'
 
 # NANOVG_BACKEND='GLES2'
 # NANOVG_BACKEND='GLES3'
