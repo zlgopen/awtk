@@ -28,6 +28,16 @@ BEGIN_C_DECLS
 
 main_loop_t* main_loop_init(int w, int h);
 
+/**
+ * @method main_loop_sdl2_dispatch
+ * dispatch events.
+ * @annotation ["global"]
+ * @param {main_loop_simple_t*} loop the main loop.
+ *
+ * @return {ret_t} return RET_OK if successful, otherwise return RET_FAIL.
+ */
+ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop);
+
 END_C_DECLS
 
 #endif /*TK_MAIN_LOOP_SDL_H*/

@@ -283,7 +283,7 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
   return RET_OK;
 }
 
-static ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
+ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
   SDL_Event event;
   ret_t ret = RET_OK;
   widget_t* wm = loop->base.wm;
