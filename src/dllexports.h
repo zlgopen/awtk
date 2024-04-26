@@ -140,3 +140,73 @@
  * @annotation ["global"]
  * @return {const char*}
  */
+
+
+/**
+ * @method SDL_CreateWindow
+ * @annotation ["global"]
+ * @return {int}
+ */
+
+/**
+ * @method SDL_DestroyWindow 
+ * @annotation ["global"]
+ * @return {int}
+ */
+
+/**
+ * @method SDL_GL_CreateContext
+ * @annotation ["global"]
+ * @return {int}
+ */
+
+/**
+ * @method SDL_GL_MakeCurrent
+ * @annotation ["global"]
+ * @return {int}
+ */
+
+
+/**
+ * @method SDL_GL_GetDrawableSize
+ * @annotation ["global"]
+ * @return {int}
+ */
+
+/**
+ * @method SDL_GL_DeleteContext
+ * @annotation ["global"]
+ * @return {int}
+ */
+
+SDL_GL_DeleteContext
+/**
+ * @method SDL_GL_DeleteContext
+ * @annotation ["global"]
+ * @return {int}
+ */
+
+/**
+ * @method SDL_GL_SwapWindow
+ * @annotation ["global"]
+ * @return {int}
+ */
+
+/**
+ * @method SDL_GL_SetSwapInterval
+ * @annotation ["global"]
+ * @return {int}
+ */
+
+/**
+ * @method SDL_GetWindowPosition
+ * @annotation ["global"]
+ * @return {int}
+ */
+
+/**
+ * @method SDL_GetWindowSize
+ * @annotation ["global"]
+ * @return {int}
+ */
+
