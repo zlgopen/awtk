@@ -23,6 +23,8 @@
 
 #include "base/vgcanvas.h"
 
+BEGIN_C_DECLS
+
 /**
  * @class vgcanvas_nanovg_gl_t
  * @annotation ["fake"]
@@ -58,6 +60,8 @@ vgcanvas_t* vgcanvas_create_gl2(uint32_t w, uint32_t h, uint32_t stride, bitmap_
  */
 vgcanvas_t* vgcanvas_create_gl3(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
                             void* win);
+
+END_C_DECLS
 
 #endif /*TK_VG_NANOVG_GL_H*/
 
