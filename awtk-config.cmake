@@ -17,6 +17,7 @@ include_directories(${AWTK_INCLUDE_DIRS})
 
 if(WIN32)
   file(COPY  ${AWTK_ROOT_DIR}/bin/awtk.dll DESTINATION ${CMAKE_BINARY_DIR}/Debug)
+  file(COPY  ${AWTK_ROOT_DIR}/bin/awtk.dll DESTINATION ${PROJECT_SOURCE_DIR}/bin)
 endif()
 
 #示例请参考 awtk-hello/CMakeLists.txt
