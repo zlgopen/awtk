@@ -375,6 +375,14 @@ npm install -g glob
 
 * [扩展控件实例：液体流动](https://github.com/zlgopen/awtk-widget-liquid-flow)
 
+* [扩展控件实例：液体流动](https://github.com/zlgopen/awtk-widget-liquid-flow)
+
+* [扩展控件实例：环形调节器](https://github.com/zlgopen/awtk-widget-slider-circle)
+ 
+* [扩展控件实例：异形进度条](https://github.com/zlgopen/awtk-widget-progress-polygon)
+
+* [集成 3D 引擎 OGRE](https://github.com/zlgopen/awtk-ogre)
+
 * [自定义字体加载器：加载部分字体](https://github.com/zlgopen/awtk-custom-font-loader)
 
 * [用reactjs开发AWTK应用程序](https://github.com/zlgopen/react-awtk)

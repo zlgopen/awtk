@@ -369,6 +369,12 @@ npm install -g glob
 
 * [Examples for Custom Widgets: rive](https://github.com/zlgopen/awtk-widget-rive)
 
+* [Examples for Custom Widgets: slider circle](https://github.com/zlgopen/awtk-widget-slider-circle)
+ 
+* [Examples for Custom Widgets: progress polygon](https://github.com/zlgopen/awtk-widget-progress-polygon)
+
+* [Integrate 3D engine OGRE](https://github.com/zlgopen/awtk-ogre)
+
 * [Examples for Custom Widgets: liquid flow](https://github.com/zlgopen/awtk-widget-liquid-flow)
 
 * [Examples for Custom Font Loader](https://github.com/zlgopen/awtk-custom-font-loader)
