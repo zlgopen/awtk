@@ -5,10 +5,10 @@
 如果 AWTK 默认的资源加载方式无法满足需求，例如在无文件系统的嵌入式平台上使用外扩 flash 用来存储资源，可以自定义资源的加载方式，只需调用 assets_manager_set_custom_load_asset() 并注册资源加载回调函数即可，AWTK 加载资源时会优先调用用户自定义的加载方式，接口声明如下：
 
 ```c
-typedef asset_info_t* (*assets_manager_load_asset_t)(assets_manager_t* am, 
-                                                     asset_type_t type,
-                                                     uint16_t subtype, 
-                                                     const char* name);
+typedef asset_info_t* (*assets_manager_load_asset_t)(void* ctx,          /* 回调函数上下文 */
+                                                     asset_type_t type,  /* 资源的类型 */
+                                                     uint16_t subtype,   /* 资源的子类型 */
+                                                     const char* name);  /* 资源的名称 */
 
 /**
  * @method assets_manager_set_custom_load_asset
@@ -63,7 +63,7 @@ W25QXX_Write((u8*)ui_home_page,0 + 260,ui_size);   /* 写入资源数组 */
 #define NAME_MAX_LEN 256
 #define U32_SIZE 4
 /* 自定义资源加载函数 */
-asset_info_t* load_assets_from_flash(assets_manager_t* am, asset_type_t type, 
+asset_info_t* load_assets_from_flash(void* ctx, asset_type_t type, 
                                      uint16_t subtype, const char* name) {
   u32 assets_size;
   u32 start_position;
@@ -93,6 +93,15 @@ asset_info_t* load_assets_from_flash(assets_manager_t* am, asset_type_t type,
   }
 
   return info;
+}
+```
+
+最后在项目application.c代码文件的application_on_launch()中注册该自定义资源加载函数，示例代码如下：
+
+```c
+static ret_t application_on_launch(void) {
+  assets_manager_set_custom_load_asset(assets_manager(), load_assets_from_flash, NULL);
+  return RET_OK;
 }
 ```
 
