@@ -781,6 +781,7 @@ ret_t widget_set_enable(widget_t* widget, bool_t enable) {
   if (widget->enable != enable) {
     widget->enable = enable;
     widget_set_need_update_style_recursive(widget);
+    widget_set_need_relayout_children(widget->parent);
     widget_invalidate(widget, NULL);
   }
 
@@ -1335,11 +1336,11 @@ ret_t widget_update_pointer_cursor(widget_t* widget) {
   pointer_x = window_manager_get_pointer_x(wm);
   pointer_y = window_manager_get_pointer_y(wm);
 
-  if (pointer_x >= p.x && pointer_x <= (p.x + widget->w) && 
-      pointer_y >= p.y && pointer_y <= (p.y + widget->h)) {
+  if (pointer_x >= p.x && pointer_x <= (p.x + widget->w) && pointer_y >= p.y &&
+      pointer_y <= (p.y + widget->h)) {
     return window_manager_set_cursor(wm, widget_get_pointer_cursor(widget));
   }
-  
+
   return RET_OK;
 }
 
@@ -4950,7 +4951,7 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r) {
 
   w = widget->w;
   h = widget->h;
-  
+
   info = system_info();
   if (info != NULL) {
     lcd_w = info->lcd_w;
