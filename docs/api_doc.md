@@ -4,6 +4,7 @@ AWTK 中的 API 注释，除了作为 API 的文档之外，还有以下用途�
 
 * 提取 JSON 格式的 IDL，用于生成各种语言的绑定代码。
 * 用于设计器 (designer) 获取各个控件的元信息。
+* MVVM 用来生成 ViewModel 的代码。
 * 生成动态库的导出符号表。
 
 这里采用了类似于 [jsduck](https://github.com/senchalabs/jsduck) 的 API 注释格式，但是 jsduck 并不支持 C 语言的数据类型，所以没有办法完全兼容 jsduck 的格式。
