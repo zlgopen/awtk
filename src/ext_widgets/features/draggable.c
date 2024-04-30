@@ -251,6 +251,8 @@ static ret_t draggable_on_parent_pointer_down(void* ctx, event_t* e) {
     }
 
     widget_grab(widget->parent->parent, widget->parent);
+
+    widget_dispatch_simple_event(widget, EVT_DRAG_START);
   }
 
   return RET_OK;
@@ -314,6 +316,8 @@ static ret_t draggable_on_parent_pointer_move(void* ctx, event_t* e) {
     } else {
       draggable_move_target(widget, x, y);
     }
+
+    widget_dispatch_simple_event(widget, EVT_DRAG);
   }
 
   return RET_OK;
@@ -341,6 +345,8 @@ static ret_t draggable_on_parent_pointer_up(void* ctx, event_t* e) {
     }
 
     widget_ungrab(widget->parent->parent, widget->parent);
+
+    widget_dispatch_simple_event(widget, EVT_DRAG_END);
   }
 
   return RET_OK;
