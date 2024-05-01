@@ -1,6 +1,6 @@
 /*
- * Copyright 2011-2019 Branimir Karadzic. All rights reserved.
- * License: https://github.com/bkaradzic/bgfx#license-bsd-2-clause
+ * Copyright 2011-2024 Branimir Karadzic. All rights reserved.
+ * License: https://github.com/bkaradzic/bgfx/blob/master/LICENSE
  */
 
 #ifndef NANOVG_BGFX_H_HEADER_GUARD
@@ -18,6 +18,11 @@ struct NVGLUframebuffer
   bgfx::FrameBufferHandle handle;
   int image;
   bgfx::ViewId viewId;
+};
+
+// These are additional flags on top of NVGimageFlags.
+enum NVGimageFlagsGL {
+	NVG_IMAGE_NODELETE = 1<<16, // Do not delete GL texture handle.
 };
 
 ///
@@ -62,6 +67,12 @@ NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* _ctx, int32_t _width, int32
 NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* _ctx, int32_t _width, int32_t _height, int32_t _imageFlags);
 
 ///
+NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* _ctx, int32_t _imageFlags, bgfx::ViewId _viewId);
+
+///
+NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* _ctx, int32_t _imageFlags);
+
+///
 void nvgluBindFramebuffer(NVGLUframebuffer* _framebuffer);
 
 ///
@@ -69,5 +80,8 @@ void nvgluDeleteFramebuffer(NVGLUframebuffer* _framebuffer);
 
 ///
 void nvgluSetViewFramebuffer(bgfx::ViewId _viewId, NVGLUframebuffer* _framebuffer);
+
+///
+int nvgCreateBgfxTexture(struct NVGcontext *_ctx, bgfx::TextureHandle _id, int _width, int _height, int _flags);
 
 #endif // NANOVG_BGFX_H_HEADER_GUARD

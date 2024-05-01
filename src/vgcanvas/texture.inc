@@ -2,6 +2,11 @@
 #include "base/types_def.h"
 #include "base/vgcanvas_asset_manager.h"
 
+typedef struct _vgcanvas_nanovg_gl_texture_t {
+  int32_t image_id;
+  framebuffer_object_t* fbo;
+} vgcanvas_nanovg_gl_texture_t;
+
 static int vgcanvas_nanovg_bitmap_flag_to_NVGimageFlags(bitmap_flag_t flags) {
 
   if(flags & BITMAP_FLAG_PREMULTI_ALPHA) {

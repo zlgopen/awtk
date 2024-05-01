@@ -231,7 +231,7 @@ void fons__tt_renderGlyphBitmap(FONSttFontImpl *font, unsigned char *output, int
 {
 	FT_GlyphSlot ftGlyph = font->font->glyph;
 	int ftGlyphOffset = 0;
-	int x, y;
+	unsigned int x, y;
 	FONS_NOTUSED(outWidth);
 	FONS_NOTUSED(outHeight);
 	FONS_NOTUSED(scaleX);
@@ -261,7 +261,6 @@ int fons__tt_getGlyphKernAdvance(FONSttFontImpl *font, int glyph1, int glyph2)
 static void* fons__tmpalloc(size_t size, void* up);
 static void fons__tmpfree(void* ptr, void* up);
 #else
-#	include <malloc.h>
 #	include <string.h>
 #endif // 0
 

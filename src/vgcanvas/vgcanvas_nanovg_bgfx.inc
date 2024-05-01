@@ -20,7 +20,7 @@ static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, const dirty_rects
 
   setBGFXViewRect(0, 0, 0, vgcanvas->w, vgcanvas->h);
   touchBGFX(curViewId);
-  nvgBeginFrame(canvas->vg, vgcanvas->w, vgcanvas->h, vgcanvas->ratio);
+  nvgBeginFrame(canvas->vg, vgcanvas->w, vgcanvas->h, vgcanvas->ratio, NVG_ORIENTATION_0);
 
   return RET_OK;
 }
@@ -78,7 +78,7 @@ static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t
   struct NVGLUframebuffer* handle = (struct NVGLUframebuffer*)fbo->handle;
 
   nvgluBindFramebufferEx(handle);
-  nvgBeginFrame(vg, fbo->w, fbo->h, fbo->ratio);
+  nvgBeginFrame(vg, fbo->w, fbo->h, fbo->ratio, NVG_ORIENTATION_0);
 
   return RET_OK;
 }

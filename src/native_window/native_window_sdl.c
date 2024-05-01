@@ -306,6 +306,7 @@ static ret_t native_window_sdl_get_info(native_window_t* win, native_window_info
   info->h = wh;
   info->ratio = (float_t)fw / (float_t)ww;
 #endif /**/
+  info->handle = win->handle;
 
   win->rect.x = info->x;
   win->rect.y = info->y;
@@ -587,6 +588,8 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
 #ifdef WITH_NANOVG_SOFT
   lcd = lcd_sdl2_init(sdl->render);
 #elif WITH_NANOVG_GPU
+  lcd = lcd_nanovg_init(win);
+#elif WITH_NANOVG_BGFX
   lcd = lcd_nanovg_init(win);
 #endif /*WITH_NANOVG_SOFT*/
 #endif /*WITH_LCD_MONO*/

@@ -3,8 +3,9 @@
 #include <bgfx/platform.h>
 #include "SDL_syswm.h"
 #include "nanovg_bgfx.h"
+#include "bx/platform.h"
 
-bool sdlSetWindow(SDL_Window* _window)
+bool sdlSetWindow(SDL_Window* _window, bgfx::PlatformData& pd)
 	{
 		SDL_SysWMinfo wmi;
 		SDL_VERSION(&wmi.version);
@@ -13,7 +14,6 @@ bool sdlSetWindow(SDL_Window* _window)
 			return false;
 		}
 
-		bgfx::PlatformData pd;
 #	if BX_PLATFORM_LINUX || BX_PLATFORM_BSD
 		pd.ndt          = wmi.info.x11.display;
 		pd.nwh          = (void*)(uintptr_t)wmi.info.x11.window;
@@ -30,24 +30,25 @@ bool sdlSetWindow(SDL_Window* _window)
 		pd.context      = NULL;
 		pd.backBuffer   = NULL;
 		pd.backBufferDS = NULL;
-		bgfx::setPlatformData(pd);
 
 		return true;
 	}
 
 NVGcontext* nvgCreateBGFX(int32_t _edgeaa, uint16_t _viewId ,uint32_t _width, uint32_t _height, SDL_Window* _window) {
 
-		if (!sdlSetWindow(_window))
-		{
-			return NULL;
-		}
-		//bgfx::renderFrame();
 		bgfx::Init init;
 		init.type     = bgfx::RendererType::Count;
 		init.vendorId = BGFX_PCI_ID_NONE;
 		init.resolution.width  = _width;
 		init.resolution.height = _height;
 		init.resolution.reset  = BGFX_RESET_VSYNC;
+		init.platformData.nwh = _window;
+		
+		if (!sdlSetWindow(_window, init.platformData))
+		{
+			return NULL;
+		}
+
 		bgfx::init(init);
 
 		bgfx::setViewClear(0

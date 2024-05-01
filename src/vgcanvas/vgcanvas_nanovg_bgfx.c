@@ -36,8 +36,14 @@ typedef struct _vgcanvas_nanovg_t {
   native_window_t* window;
 } vgcanvas_nanovg_t;
 
+static ret_t vgcanvas_nanovg_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo,
+                                           bitmap_t* img, const rect_t* r) {
+  return RET_OK;                                           
+}               
+
 #include "texture.inc"
 #include "vgcanvas_nanovg_bgfx.inc"
+#include "vgcanvas_asset_manager_nanovg.inc"
 
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
                             void* win) {
@@ -54,13 +60,17 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   nanovg->base.ratio = info.ratio;
 
   vgcanvas_nanovg_init((vgcanvas_t*)nanovg);
-  nanovg->vg = nvgCreateBGFX(1, 0, fw, fh, info->handle);
+  nanovg->vg = nvgCreateBGFX(1, 0, w * info.ratio, h * info.ratio, info.handle);
 
   if (nanovg->vg == NULL) {
     assert(!"BGFX is not supported!");
   }
 
   log_debug("use BGFX backend\n");
+
+  vgcanvas_asset_manager_add_vg(vgcanvas_asset_manager(), &(nanovg->base),
+                                vgcanvas_asset_manager_nanovg_bitmap_destroy,
+                                vgcanvas_asset_manager_nanovg_font_destroy);
 
   return &(nanovg->base);
 }

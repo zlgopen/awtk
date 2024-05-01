@@ -31,15 +31,18 @@ elif NANOVG_BACKEND == 'AGGE':
 #  env.Program(os.path.join(BIN_DIR, 'agge_draw_image'), Glob('demos/agge_draw_image.c'));
 elif NANOVG_BACKEND == 'BGFX':
   CPPPATH = [
+      TK_3RD_ROOT,
       joinPath(TK_3RD_ROOT, 'nanovg/base'), 
       joinPath(TK_3RD_ROOT, 'bgfx/bx/include'),
       joinPath(TK_3RD_ROOT, 'bgfx/bgfx/include'),
       joinPath(TK_3RD_ROOT, 'SDL/include')]
   if OS_NAME == 'Darwin':
-    CCFLAGS = CCFLAGS + ' -std=c++14 '
+    CCFLAGS = CCFLAGS + ' -std=c++17 '
   elif OS_NAME == 'Windows':
-    CCFLAGS = CCFLAGS + ' /std:c++14 ';
+    CCFLAGS = CCFLAGS + ' /std:c++17 ';
     CPPPATH = CPPPATH + [joinPath(TK_3RD_ROOT, 'bgfx/bx/include/compat/msvc')];
+  CCFLAGS += ' -DBX_CONFIG_DEBUG -DBIMG_DECODE_ENABLE=0 '
+
   env.Library(os.path.join(LIB_DIR, 'nanovg-bgfx'), Glob('bgfx/*.cpp'), CPPPATH = CPPPATH, CCFLAGS = CCFLAGS)
 
 #  env['LIBS'] = ['nanovg-bgfx', 'bgfx', 'nanovg'] + env['LIBS']
