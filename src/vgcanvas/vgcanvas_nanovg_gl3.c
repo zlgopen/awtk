@@ -26,5 +26,13 @@
 #define WITH_NANOVG_GL3 1
 #define VGCANVAS_CREATE_GL vgcanvas_create_gl3
 
+#if !defined(WITH_GPU)
+#include "base/vgcanvas.h"
+vgcanvas_t* VGCANVAS_CREATE_GL(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
+                            void* win) {
+  return NULL;  
+}  
+#else
 #include "vgcanvas_nanovg_gl_common.inc"
+#endif/*WIN32*/
 

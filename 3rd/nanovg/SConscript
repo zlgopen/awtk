@@ -39,7 +39,7 @@ elif NANOVG_BACKEND == 'BGFX':
   if OS_NAME == 'Darwin':
     CCFLAGS = CCFLAGS + ' -std=c++17 '
   elif OS_NAME == 'Windows':
-    CCFLAGS = CCFLAGS + ' /std:c++17 ';
+    CCFLAGS = CCFLAGS + ' /std:c++17 /Zc:__cplusplus ';
     CPPPATH = CPPPATH + [joinPath(TK_3RD_ROOT, 'bgfx/bx/include/compat/msvc')];
   CCFLAGS += ' -DBX_CONFIG_DEBUG -DBIMG_DECODE_ENABLE=0 '
 

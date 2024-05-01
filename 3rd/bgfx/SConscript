@@ -22,10 +22,13 @@ BgfxSources = [
     'bimg/src/image_gnf.cpp',
     'bgfx/src/amalgamated.cpp'
 ]
+BgfxSources += Glob('bimg/3rdparty/astc-encoder/source/*.cpp')
 
 if OS_NAME == 'Windows':
-  CCFLAGS = CCFLAGS + ' /std:c++17 ';
-  BgfxCppPath = BgfxCppPath + ['bx/include/compat/msvc','bgfx/3rdparty/dxsdk/include']
+  CCFLAGS = CCFLAGS + ' /std:c++17 /Zc:__cplusplus ';
+  BgfxCppPath = BgfxCppPath + ['bx/include/compat/msvc',
+    'bgfx/3rdparty/dxsdk/include',
+    'bgfx/3rdparty/directx-headers/include/directx']
 elif OS_NAME == 'Darwin':
   CCFLAGS = CCFLAGS + ' -std=c++17 '
   BgfxCppPath= BgfxCppPath + ['bx/include/compat/osx']

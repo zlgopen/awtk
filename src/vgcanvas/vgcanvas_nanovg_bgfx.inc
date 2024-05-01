@@ -65,9 +65,9 @@ static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32
 
 static ret_t vgcanvas_nanovg_destroy_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
   struct NVGLUframebuffer* handle = (struct NVGLUframebuffer*)fbo->handle;
-  
+  uint32_t index = getBgfxFboViewId(handle); 
   nvgluDeleteFramebufferEx(handle);
-  arrayViewId[getBgfxFboViewId(handle)] = false;
+  arrayViewId[index] = false;
   curViewId = 0;
   (void)vgcanvas;
   return RET_OK;
