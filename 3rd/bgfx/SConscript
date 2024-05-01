@@ -30,6 +30,9 @@ elif OS_NAME == 'Darwin':
   CCFLAGS = CCFLAGS + ' -std=c++17 '
   BgfxCppPath= BgfxCppPath + ['bx/include/compat/osx']
   BgfxSources= BgfxSources + ['bgfx/src/renderer_mtl.mm']
+elif OS_NAME == 'Linux':
+  CCFLAGS = CCFLAGS + ' -std=c++17 '
+  BgfxCppPath= BgfxCppPath + ['bx/include/compat/linux']
 CCFLAGS = CCFLAGS + ' -DBX_CONFIG_DEBUG -DBIMG_DECODE_ENABLE=0 -DBGFX_CONFIG_MULTITHREADED=0 '        
 
 env.Library(os.path.join(LIB_DIR, 'bgfx'), BgfxSources, CPPPATH = BgfxCppPath,CCFLAGS = CCFLAGS)

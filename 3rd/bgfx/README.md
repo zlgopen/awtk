@@ -15,11 +15,24 @@ git clone https://github.com/bkaradzic/bgfx.git
 
 已知问题：
 
-bgfx.h中的init函数，在部分编译器上有问题，可以按下列方式修改：
 
+* linux
 
+src/config.h
+
+```patch
+ #      ifndef BGFX_CONFIG_RENDERER_DIRECT3D11
+ #              define BGFX_CONFIG_RENDERER_DIRECT3D11 (0 \
+-                                       || BX_PLATFORM_LINUX          \
+                                        || BX_PLATFORM_WINDOWS        \
+                                        || BX_PLATFORM_WINRT          \
+                                        || BX_PLATFORM_XBOXONE        \
+@@ -46,7 +45,6 @@
+
+ #      ifndef BGFX_CONFIG_RENDERER_DIRECT3D12
+ #              define BGFX_CONFIG_RENDERER_DIRECT3D12 (0 \
+-                                       || BX_PLATFORM_LINUX          \
+                                        || BX_PLATFORM_WINDOWS        \
+                                        || BX_PLATFORM_WINRT          \
+                                        || BX_PLATFORM_XBOXONE        \
 ```
--   bool init(const Init& _init = {});
-+ bool init(const Init& _init);
-```
-
