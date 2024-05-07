@@ -630,7 +630,7 @@ static ret_t edit_focus_request_input_method(const idle_info_t* info) {
   edit_t* edit = EDIT(info->ctx);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
-  if (edit->open_im_when_focused) {
+  if (edit->open_im_when_focused && edit->widget.target == NULL) {
     edit_request_input_method(WIDGET(edit));
   }
 
