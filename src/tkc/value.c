@@ -158,6 +158,8 @@ uint32_t value_uint32(const value_t* v) {
 
   if (v->type == VALUE_TYPE_UINT32) {
     return v->value.u32;
+  } else if (v->type == VALUE_TYPE_STRING) {
+    return (uint32_t)tk_atoul(v->value.str);
   } else {
     return (uint32_t)value_int(v);
   }

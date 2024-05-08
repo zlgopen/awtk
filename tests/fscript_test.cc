@@ -335,6 +335,10 @@ TEST(FScript, iformat) {
   fscript_eval(obj, "iformat(\"hello:%d\", 123) + str(456)", &v);
   ASSERT_STREQ(value_str(&v), "hello:123456");
   value_reset(&v);
+  
+  fscript_eval(obj, "iformat(\"aaaaabbbhello1234567890hello1234567890hello1234567890123456789012345:%d\",2147483647)", &v);
+  ASSERT_STREQ(value_str(&v), "aaaaabbbhello1234567890hello1234567890hello1234567890123456789");
+  value_reset(&v);
 
   TK_OBJECT_UNREF(obj);
 }
