@@ -71,6 +71,8 @@ typedef struct _debugger_lldb_t {
   tk_object_t* source_break_points;
   tk_object_t* init_commands;
   tk_object_t* target_create_commands;
+  /* st 特有的首行代码断点 */
+  tk_object_t* st_first_code_breakpoints;
   uint32_t timeout;
 } debugger_lldb_t;
 

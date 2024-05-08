@@ -90,6 +90,8 @@
 #define LLDB_KEY_TERMINATE_DEBUGGEE "terminateDebuggee"
 #define LLDB_KEY_VARIABLES_REFERENCE "variablesReference"
 
+#define LLDB_KEY_ST_FIRST_CODE_BREAKPOINTS "stFirstCodeBreakPoints"
+
 #define VARREF_LOCALS (int64_t)1
 #define VARREF_GLOBALS (int64_t)2
 #define VARREF_REGS (int64_t)3
@@ -133,6 +135,26 @@ static ret_t debugger_lldb_load_init_commands(debugger_lldb_t* lldb, conf_node_t
   return RET_OK;
 }
 
+static ret_t debugger_lldb_load_st_first_code_breakpoints(debugger_lldb_t* lldb, conf_node_t* node) {
+  conf_node_t* iter = conf_node_get_first_child(node);
+  object_array_clear_props(lldb->st_first_code_breakpoints);
+
+  while (iter != NULL) {
+    value_t v;
+    if (conf_node_get_value(iter, &v) == RET_OK) {
+      const char* cmd = value_str(&v);
+      if (cmd != NULL) {
+        log_debug("init command: %s\n", cmd);
+        object_array_push(lldb->st_first_code_breakpoints, value_set_str(&v, cmd));
+      }
+    }
+
+    iter = iter->next;
+  }
+
+  return RET_OK;
+}
+
 static ret_t debugger_lldb_load_target_create_commands_commands(debugger_lldb_t* lldb,
                                                                 conf_node_t* node) {
   conf_node_t* iter = conf_node_get_first_child(node);
@@ -167,9 +189,14 @@ static ret_t debugger_lldb_load_config(debugger_t* debugger, const char* filenam
   if (doc != NULL) {
     lldb->timeout = conf_doc_get_int(doc, "timeout", 3000);
     log_debug("timeout:%d\n", lldb->timeout);
-    node = conf_node_find_child(doc->root, "initCommands");
+    node = conf_node_find_child(doc->root, LLDB_KEY_INIT_COMMANDS);
     if (node != NULL) {
       ret = debugger_lldb_load_init_commands(lldb, node);
+    }
+
+    node = conf_node_find_child(doc->root, LLDB_KEY_ST_FIRST_CODE_BREAKPOINTS);
+    if (node != NULL) {
+      ret = debugger_lldb_load_st_first_code_breakpoints(lldb, node);
     }
 
     node = conf_node_find_child(doc->root, "targetCreateCommands");
@@ -532,6 +559,7 @@ static ret_t debugger_lldb_init(debugger_t* debugger) {
     ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_INITIALIZE, LLDB_REQUEST_TIMEOUT);
   }
   lldb->init_commands = object_array_create();
+  lldb->st_first_code_breakpoints = object_array_create();
   lldb->target_create_commands = object_array_create();
   TK_OBJECT_UNREF(req);
 
@@ -610,6 +638,10 @@ static tk_object_t* debugger_lldb_create_launch_req(debugger_t* debugger, const 
 
   if (lldb->init_commands != NULL) {
     tk_object_set_prop_object(arguments, LLDB_KEY_INIT_COMMANDS, lldb->init_commands);
+  }
+
+  if (lldb->st_first_code_breakpoints != NULL) {
+    tk_object_set_prop_object(arguments, LLDB_KEY_ST_FIRST_CODE_BREAKPOINTS, lldb->st_first_code_breakpoints);
   }
 
   TK_OBJECT_UNREF(args);
@@ -694,6 +726,9 @@ static tk_object_t* debugger_lldb_create_attach_req(debugger_t* debugger, const 
 
   if (lldb->init_commands != NULL) {
     tk_object_set_prop_object(arguments, LLDB_KEY_INIT_COMMANDS, lldb->init_commands);
+  }
+  if (lldb->st_first_code_breakpoints != NULL) {
+    tk_object_set_prop_object(arguments, LLDB_KEY_ST_FIRST_CODE_BREAKPOINTS, lldb->st_first_code_breakpoints);
   }
 
   return req;
@@ -1543,6 +1578,7 @@ static ret_t debugger_lldb_on_destroy(tk_object_t* obj) {
   TK_OBJECT_UNREF(lldb->sources);
   TK_OBJECT_UNREF(lldb->callstack);
   TK_OBJECT_UNREF(lldb->init_commands);
+  TK_OBJECT_UNREF(lldb->st_first_code_breakpoints);
   TK_OBJECT_UNREF(lldb->target_create_commands);
   TK_OBJECT_UNREF(lldb->source_break_points);
   TK_OBJECT_UNREF(lldb->resps);
