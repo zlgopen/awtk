@@ -413,7 +413,7 @@ The third party provides:
 * [Joint Ecology Building Plan](docs/awtk_ecology.md)
 * In-depth Partners
 
-[![](docs/images/logo_nxp.svg)](https://www.nxp.com)　[![](docs/images/logo_anyka.jpg)](http://www.anyka.com)　[![](docs/images/logo_ingenic.jpg)](http://www.ingenic.com.cn)　[![](docs/images/logo_mindmotion.png)](http://www.mindmotion.com.cn)
+[![](docs/images/logo_nxp.svg)](https://www.nxp.com)　[![](docs/images/logo_anyka.jpg)](http://www.anyka.com)　[![](docs/images/logo_ingenic.jpg)](http://www.ingenic.com.cn)　[![](docs/images/logo_mindmotion.png)](http://www.mindmotion.com.cn)　[![](docs/images/logo_bestechnic.jpg)](https://www.bestechnic.com)
 
 ## XI. Developer Community
 

@@ -418,7 +418,7 @@ npm install -g glob
 * [生态共建计划](docs/awtk_ecology.md)
 * 深度合作伙伴
 
-[![](docs/images/logo_nxp.svg)](https://www.nxp.com)　[![](docs/images/logo_anyka.jpg)](http://www.anyka.com)　[![](docs/images/logo_ingenic.jpg)](http://www.ingenic.com.cn)　[![](docs/images/logo_mindmotion.png)](http://www.mindmotion.com.cn)
+[![](docs/images/logo_nxp.svg)](https://www.nxp.com)　[![](docs/images/logo_anyka.jpg)](http://www.anyka.com)　[![](docs/images/logo_ingenic.jpg)](http://www.ingenic.com.cn)　[![](docs/images/logo_mindmotion.png)](http://www.mindmotion.com.cn)　[![](docs/images/logo_bestechnic.jpg)](https://www.bestechnic.com)
 
 ## 十一、开发者交流群
 
