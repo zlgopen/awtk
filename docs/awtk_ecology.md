@@ -37,6 +37,7 @@
 | RT-Thread    | 详见[MCU芯片适配](#MCU芯片适配)          |                          |
 | TencentOS    | 详见[MCU芯片适配](#MCU芯片适配)          |                          |
 | FreeRTOS     | 详见[MCU芯片适配](#MCU芯片适配)          |                          |
+| Nuttx        | 详见[MCU芯片适配](#MCU芯片适配)          |                          |
 | SylixOS      | https://github.com/zlgopen/awtk-sylixos  |                          |
 | MS-RTOS      | https://github.com/ms-rtos/awtk          |                          |
 
@@ -72,6 +73,12 @@
 | D21x系列 | RT-Thread | https://gitee.com/artinchip/luban-lite | [ArtInChip](http://www.artinchip.com)【原厂】 |
 | D13x系列 | RT-Thread | https://gitee.com/artinchip/luban-lite | [ArtInChip](http://www.artinchip.com)【原厂】 |
 | D12x系列 | RT-Thread | https://gitee.com/artinchip/luban-lite | [ArtInChip](http://www.artinchip.com)【原厂】 |
+
+- #### Bestechnic
+
+| 芯片          | 操作系统 | 下载地址   | 作者                              |
+| ------------- | -------- | ---------- | --------------------------------- |
+| BES2600WM系列 | Nuttx    | 请联系作者 | [立功科技](http://www.zlgmcu.com) |
 
 - #### Espressif
 
