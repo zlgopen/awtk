@@ -25,18 +25,29 @@
 #include "base/widget_vtable.h"
 #include "scroll_label/hscroll_label.h"
 
-#ifndef HSCROLL_LABEL_STOP_TIMER_DURATION
-#define HSCROLL_LABEL_STOP_TIMER_DURATION 500
-#endif
-
 static ret_t hscroll_label_remove_timer(widget_t* widget);
 static ret_t hscroll_label_check_and_start(widget_t* widget);
+static int32_t hscroll_label_get_range(widget_t* widget, bool_t stop_at_begin);
 
 static bool_t hscroll_label_is_running(widget_t* widget) {
   hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
   return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
 
   return hscroll_label->timer_id != TK_INVALID_ID;
+}
+
+static uint32_t hscroll_label_get_loop_end_and_begin_distance(widget_t* widget) {
+  int32_t w, left_margin, right_margin;
+  hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
+  return_value_if_fail(hscroll_label != NULL, 0);
+  if (hscroll_label->loop_interval_distance >= 0) {
+    return hscroll_label->loop_interval_distance;
+  } else {
+    left_margin = style_get_int(widget->astyle, STYLE_ID_MARGIN_LEFT, 2);
+    right_margin = style_get_int(widget->astyle, STYLE_ID_MARGIN_RIGHT, 2);
+    w = widget->w - left_margin - right_margin;
+    return w;
+  }
 }
 
 static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t left_margin,
@@ -72,7 +83,19 @@ static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t
   }
 
   r = rect_init(left_margin - hscroll_label->xoffset, 0, w, widget->h);
-  return widget_draw_text_in_rect(widget, c, text->str, text->size, &r, FALSE);
+  widget_draw_text_in_rect(widget, c, text->str, text->size, &r, FALSE);
+
+
+  if (hscroll_label->stop_at_begin) {
+    int32_t range = hscroll_label_get_range(widget, FALSE);
+    int32_t offset = hscroll_label->xoffset - range - hscroll_label_get_loop_end_and_begin_distance(widget);
+    if (offset > 0) {
+      r = rect_init(w - offset + left_margin, 0, w, widget->h);
+      widget_draw_text_in_rect(widget, c, text->str, text->size, &r, FALSE);
+    }
+  }
+
+  return RET_OK;
 }
 
 static ret_t hscroll_label_on_paint_self(widget_t* widget, canvas_t* c) {
@@ -129,6 +152,24 @@ ret_t hscroll_label_set_duration(widget_t* widget, int32_t duration) {
   return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
 
   hscroll_label->duration = duration;
+
+  return RET_OK;
+}
+
+ret_t hscroll_label_set_delay(widget_t* widget, uint32_t delay) {
+  hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
+  return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
+
+  hscroll_label->delay = delay;
+
+  return RET_OK;
+}
+
+ret_t hscroll_label_set_loop_interval_distance(widget_t* widget, int32_t loop_interval_distance) {
+  hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
+  return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
+
+  hscroll_label->loop_interval_distance = loop_interval_distance;
 
   return RET_OK;
 }
@@ -231,6 +272,12 @@ static ret_t hscroll_label_get_prop(widget_t* widget, const char* name, value_t*
   } else if (tk_str_eq(name, HSCROLL_LABEL_PROP_STOP_AT_BEGIN)) {
     value_set_bool(v, hscroll_label->stop_at_begin);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_DELAY)) {
+    value_set_uint32(v, hscroll_label->delay);
+    return RET_OK;
+  } else if (tk_str_eq(name, HSCROLL_LABEL_PROP_LOOP_INTERVAL_DISTANCE)) {
+    value_set_int32(v, hscroll_label->loop_interval_distance);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -266,19 +313,26 @@ static ret_t hscroll_label_set_prop(widget_t* widget, const char* name, const va
     return RET_NOT_FOUND;
   } else if (tk_str_eq(name, HSCROLL_LABEL_PROP_STOP_AT_BEGIN)) {
     return hscroll_label_set_stop_at_begin(widget, value_bool(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_DELAY)) {
+    return hscroll_label_set_delay(widget, value_uint32(v));
+  } else if (tk_str_eq(name, HSCROLL_LABEL_PROP_LOOP_INTERVAL_DISTANCE)) {
+    return hscroll_label_set_loop_interval_distance(widget, value_int32(v));
   }
 
   return RET_NOT_FOUND;
 }
 
-static int32_t hscroll_label_get_range(widget_t* widget) {
+static int32_t hscroll_label_get_range(widget_t* widget, bool_t stop_at_begin) {
   hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
   ENSURE(hscroll_label);
   int32_t left_margin = style_get_int(widget->astyle, STYLE_ID_MARGIN_LEFT, 2);
   int32_t right_margin = style_get_int(widget->astyle, STYLE_ID_MARGIN_RIGHT, 2);
   int32_t w = widget->w - left_margin - right_margin;
-
-  return hscroll_label->text_w - w;
+  if (stop_at_begin) {
+    return hscroll_label->text_w + hscroll_label_get_loop_end_and_begin_distance(widget);
+  } else {
+    return hscroll_label->text_w - w;
+  }
 }
 
 ret_t hscroll_label_step(widget_t* widget) {
@@ -287,7 +341,7 @@ ret_t hscroll_label_step(widget_t* widget) {
   ENSURE(hscroll_label);
   float_t percent = 0;
   uint32_t duration = 0;
-  int32_t range = hscroll_label_get_range(widget);
+  int32_t range = hscroll_label_get_range(widget, hscroll_label->stop_at_begin);
 
   if (range < 0) {
     range = 0;
@@ -387,7 +441,7 @@ static ret_t hscroll_label_on_timer(const timer_info_t* info) {
   ret = hscroll_label_step(widget);
 
   if (hscroll_label->speed > 0) {
-    int32_t range = hscroll_label_get_range(widget);
+    int32_t range = hscroll_label_get_range(widget, hscroll_label->stop_at_begin);
     if (range > 0) {
       duration = range / hscroll_label->speed;
     }
@@ -403,9 +457,6 @@ static ret_t hscroll_label_on_timer(const timer_info_t* info) {
     if (!hscroll_label->loop) {
       ret = RET_REMOVE;
       hscroll_label_remove_timer(widget);
-      if (hscroll_label->stop_at_begin) {
-        widget_add_timer(widget, hscroll_label_on_timer_stop, HSCROLL_LABEL_STOP_TIMER_DURATION);
-      }
     } else {
       if (hscroll_label->lull > 0) {
         ret = RET_REMOVE;
@@ -422,13 +473,24 @@ static ret_t hscroll_label_on_timer(const timer_info_t* info) {
   return ret;
 }
 
+static ret_t hscroll_label_delay_on_timer(const timer_info_t* info) {
+  hscroll_label_t* hscroll_label = HSCROLL_LABEL(info->ctx);
+  return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
+  hscroll_label->timer_id = widget_add_timer(WIDGET(hscroll_label), hscroll_label_on_timer, 16);
+  return RET_OK;
+}
+
 ret_t hscroll_label_start(widget_t* widget) {
   hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
   return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
 
   if (hscroll_label->timer_id == TK_INVALID_ID) {
     hscroll_label->elapsed = 0;
-    hscroll_label->timer_id = widget_add_timer(widget, hscroll_label_on_timer, 16);
+    if (hscroll_label->delay == 0) {
+      hscroll_label->timer_id = widget_add_timer(widget, hscroll_label_on_timer, 16);
+    } else {
+      hscroll_label->timer_id = widget_add_timer(widget, hscroll_label_delay_on_timer, hscroll_label->delay);
+    }
   }
 
   return RET_OK;
@@ -452,6 +514,7 @@ ret_t hscroll_label_stop(widget_t* widget) {
 
   hscroll_label->xoffset = 0;
   hscroll_label->reversed = FALSE;
+  widget_invalidate(widget, NULL);
 
   return hscroll_label_remove_timer(widget);
 }
@@ -566,6 +629,8 @@ static ret_t hscroll_label_init(widget_t* widget) {
   hscroll_label->paused = FALSE;
 
   hscroll_label->timer_id = TK_INVALID_ID;
+
+  hscroll_label->loop_interval_distance = -1;
   return RET_OK;
 }
 

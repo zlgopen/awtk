@@ -101,9 +101,16 @@ typedef struct _hscroll_label_t {
   /**
    * @property {int32_t} duration
    * @annotation ["set_prop","get_prop","readable","scriptable"]
-   * 完整的滚动一次需要的时间(毫秒)，缺省5000ms。
+   * 滚动一次需要的时间(毫秒)，缺省5000ms。
    */
   int32_t duration;
+
+  /**
+   * @property {uint32_t} delay
+   * @annotation ["set_prop","get_prop","readable","scriptable"]
+   * 延迟多久才开始滚动，缺省0ms。
+   */
+  uint32_t delay;
 
   /**
    * @property {float_t} speed
@@ -130,9 +137,16 @@ typedef struct _hscroll_label_t {
    * @property {bool_t} stop_at_begin
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 滚动完毕后停在文本开头(缺省FALSE)。
-   * > 注：loop为FALSE时才可用。
+   * > 注：yoyo 为 TRUE 时，该功能失效。
    */
   bool_t stop_at_begin;
+
+  /**
+   * @property {int32_t} loop_interval_distance
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 滚动文本结尾和文本开头间隔距离(缺省值为 -1，小于 0 视为使用控件宽度作为间隔距离)。
+   */
+  int32_t loop_interval_distance;
 
   /*private*/
   int32_t old_text_w;
@@ -257,6 +271,28 @@ ret_t hscroll_label_set_ellipses(widget_t* widget, bool_t ellipses);
 ret_t hscroll_label_set_stop_at_begin(widget_t* widget, bool_t stop_at_begin);
 
 /**
+ * @method hscroll_label_set_delay
+ * 设置开始延迟时间。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t} delay 开始延迟时间。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t hscroll_label_set_delay(widget_t* widget, uint32_t delay);
+
+/**
+ * @method hscroll_label_set_loop_interval_distance
+ * 设置滚动文本结尾和文本开头间隔距离
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {int32_t} loop_interval_distance 间隔距离。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t hscroll_label_set_loop_interval_distance(widget_t* widget, int32_t loop_interval_distance);
+
+/**
  * @method hscroll_label_set_xoffset
  * 设置x偏移(一般无需用户调用)。。
  * @annotation ["scriptable"]
@@ -307,6 +343,7 @@ widget_t* hscroll_label_cast(widget_t* widget);
 #define HSCROLL_LABEL_PROP_ONLY_FOCUS "only_focus"
 #define HSCROLL_LABEL_PROP_ONLY_PARENT_FOCUS "only_parent_focus"
 #define HSCROLL_LABEL_PROP_STOP_AT_BEGIN "stop_at_begin"
+#define HSCROLL_LABEL_PROP_LOOP_INTERVAL_DISTANCE "loop_interval_distance"
 
 #define WIDGET_TYPE_HSCROLL_LABEL "hscroll_label"
 #define HSCROLL_LABEL(widget) ((hscroll_label_t*)(hscroll_label_cast(WIDGET(widget))))
