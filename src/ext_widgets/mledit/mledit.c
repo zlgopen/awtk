@@ -853,8 +853,10 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
         input_method_request(input_method(), NULL);
       }
       mledit_update_status(widget);
+      text_edit_set_lock_scrollbar_value(mledit->model, TRUE);
       text_edit_preedit_confirm(mledit->model);
       text_edit_unselect(mledit->model);
+      text_edit_set_lock_scrollbar_value(mledit->model, mledit->lock_scrollbar_value);
       mledit_dispatch_event(widget, EVT_VALUE_CHANGED);
       mledit_commit_text(widget);
       break;
