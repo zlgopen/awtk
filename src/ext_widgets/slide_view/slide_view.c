@@ -1045,7 +1045,7 @@ widget_t* slide_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   slide_view->animating_time = TK_ANIMATING_TIME;
   slide_view->check_last = FALSE;
 
-  str_init(&(slide_view->str_target), DEFAULT_FOCUSED_CHILD_SAVE_TARGET_TAG_LENGT);
+  str_init(&(slide_view->str_target), DEFAULT_FOCUSED_CHILD_SAVE_TARGET_TAG_LENGTH);
   slide_view->init_idle_id = idle_add(slide_view_on_idle_init_save_target, widget);
   slide_view->move_idle_id = idle_add(slide_view_on_idle_move, widget);
 

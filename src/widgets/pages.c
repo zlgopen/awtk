@@ -299,7 +299,7 @@ static ret_t pages_get_only_active_children(widget_t* widget, darray_t* all_focu
 static ret_t pages_init(widget_t* widget) {
   pages_t* pages = PAGES(widget);
   return_value_if_fail(pages != NULL, RET_BAD_PARAMS);
-  str_init(&(pages->str_target), DEFAULT_FOCUSED_CHILD_SAVE_TARGET_TAG_LENGT);
+  str_init(&(pages->str_target), DEFAULT_FOCUSED_CHILD_SAVE_TARGET_TAG_LENGTH);
   pages->init_idle_id = idle_add(pages_on_idle_init_save_target, widget);
   pages->active = 0xffffffff;
   pages->auto_focused = TRUE;
