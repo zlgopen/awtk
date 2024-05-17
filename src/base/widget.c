@@ -4467,7 +4467,7 @@ static widget_t* widget_find_matched_focus_widget(widget_t* widget, darray_t* al
   rect_t rwidget = {0, 0, 0, 0};
   rect_t rmatched = {0, 0, 0, 0};
 
-  widget_to_global(widget, &p);
+  widget_to_screen(widget, &p);
   rwidget = rect_init(p.x, p.y, widget->w, widget->h);
 
   for (i = 0; i < all_focusable->size; i++) {
@@ -4478,7 +4478,7 @@ static widget_t* widget_find_matched_focus_widget(widget_t* widget, darray_t* al
 
     p.x = 0;
     p.y = 0;
-    widget_to_global(iter, &p);
+    widget_to_screen(iter, &p);
 
     riter = rect_init(p.x, p.y, iter->w, iter->h);
     if (match(&rwidget, (matched != NULL ? &rmatched : NULL), &riter)) {
