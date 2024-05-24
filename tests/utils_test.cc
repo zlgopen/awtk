@@ -643,6 +643,18 @@ TEST(Utils, is_in_array) {
   ASSERT_EQ(tk_str_is_in_array("123", arr3, ARRAY_SIZE(arr3)), TRUE);
 }
 
+TEST(Utils, int_is_in_array) {
+  int32_t arr1[] = {123};
+  int32_t arr2[] = {123, 200};
+  int32_t arr3[] = {100, 210, 123};
+
+  ASSERT_EQ(tk_int_is_in_array(123, arr1, ARRAY_SIZE(arr1)), TRUE);
+  ASSERT_EQ(tk_int_is_in_array(123, arr2, ARRAY_SIZE(arr2)), TRUE);
+  ASSERT_EQ(tk_int_is_in_array(123, arr3, ARRAY_SIZE(arr3)), TRUE);
+  ASSERT_EQ(tk_int_is_in_array(23, arr3, ARRAY_SIZE(arr1)), FALSE);
+  ASSERT_EQ(tk_int_is_in_array(23, arr3, ARRAY_SIZE(arr3)), FALSE);
+}
+
 TEST(Utils, memcpy_by_align_4) {
 #define path_max_len 64
   uint8_t path[path_max_len * 2] = {0};

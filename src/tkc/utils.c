@@ -1283,6 +1283,19 @@ const char* tk_strrstr(const char* str, const char* substr) {
   return NULL;
 }
 
+bool_t tk_int_is_in_array(int32_t v, const int32_t* array, uint32_t array_size) {
+  uint32_t i = 0;
+  return_value_if_fail(array != NULL && array_size > 0, FALSE);
+
+  for (i = 0; i < array_size; i++) {
+    if (v == array[i]) {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
+}
+
 bool_t tk_str_is_in_array(const char* str, const char** str_array, uint32_t array_size) {
   uint32_t i = 0;
   return_value_if_fail(str != NULL && str_array != NULL && array_size > 0, FALSE);

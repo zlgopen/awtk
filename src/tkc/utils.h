@@ -888,6 +888,19 @@ ret_t tk_qsort(void** array, size_t nr, tk_compare_t cmp);
 bool_t tk_str_is_in_array(const char* str, const char** str_array, uint32_t array_size);
 
 /**
+ * @method tk_int_is_in_array
+ * 
+ * 检查整数是否在整数数组中。
+ *
+ * @param {int32_t} v 整数。
+ * @param {const int32_t*} array 整数数组。
+ * @param {uint32_t} array_size 整数数组中整数的个数。
+ *
+ * @return {bool_t} 返回TRUE表示在，否则表示不在。
+ */
+bool_t tk_int_is_in_array(int32_t v, const int32_t* array, uint32_t array_size);
+
+/**
  * @method tk_memcpy
  * 
  * 内存拷贝。
