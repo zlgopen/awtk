@@ -73,6 +73,10 @@ static locale_info_t* assets_manager_get_locale_info(assets_manager_t* am) {
   return am->locale_info != NULL ? am->locale_info : locale_info();
 }
 
+static system_info_t* assets_manager_get_system_info(assets_manager_t* am) {
+  return system_info();
+}
+
 #if defined(AWTK_WEB)
 static asset_info_t* assets_manager_load_impl(assets_manager_t* am, asset_type_t type,
                                               uint16_t subtype, const char* name) {
@@ -91,12 +95,6 @@ static asset_info_t* assets_manager_load_impl(assets_manager_t* am, asset_type_t
 }
 #else
 #include "tkc/fs.h"
-
-static system_info_t* assets_manager_get_system_info(assets_manager_t* am) {
-  return_value_if_fail(am != NULL, NULL);
-
-  return am->system_info != NULL ? am->system_info : system_info();
-}
 
 const char* assets_manager_get_res_root(assets_manager_t* am) {
   return_value_if_fail(am != NULL, NULL);
