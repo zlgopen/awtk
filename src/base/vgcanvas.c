@@ -277,9 +277,11 @@ ret_t vgcanvas_set_text_align(vgcanvas_t* vg, const char* text_align) {
 ret_t vgcanvas_set_text_baseline(vgcanvas_t* vg, const char* text_baseline) {
   return_value_if_fail(vg != NULL && vg->vt->set_text_baseline != NULL && text_baseline != NULL,
                        RET_BAD_PARAMS);
+#ifndef AWTK_WEB                       
   if (tk_str_eq(vg->text_baseline, text_baseline)) {
     return RET_OK;
   }
+#endif/*AWTK_WEB*/
 
   vg->text_baseline = tk_str_copy(vg->text_baseline, text_baseline);
 
