@@ -82,7 +82,7 @@ def gen_res(name = 'assets', is_excluded_file_func = default_is_excluded_file_fu
     elif action == 'clean':
         common.clean_res()
     elif action == 'web':
-        common.gen_res_web_c()
+        common.gen_res_c()
     elif action == 'json':
         common.gen_res_json()
     elif action != 'pinyin' and action != 'res':

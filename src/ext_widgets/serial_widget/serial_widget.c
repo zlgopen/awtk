@@ -29,6 +29,12 @@
 #include "tkc/serial_helper.h"
 #include "streams/serial/iostream_serial.h"
 
+#ifdef AWTK_WEB
+#define tk_iostream_serial_wait_for_data(a, b) RET_NOT_IMPL
+#define tk_iostream_serial_create(a) NULL
+#define tk_iostream_serial_config(a, b, c, d, e, f)
+#endif/*AWTK_WEB*/
+
 static ret_t serial_widget_apply_props(widget_t* widget);
 
 ret_t serial_widget_set_baudrate(widget_t* widget, uint32_t baudrate) {
