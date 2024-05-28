@@ -349,7 +349,7 @@ static int32_t children_layouter_list_view_for_list_view_get_virtual_h(
   children = (widget_t**)children_for_layout->elms;
   if (cols <= 1) {
     for (i = 0; i < children_for_layout->size; i++) {
-      virtual_h += (children[i]->h + spacing);
+      virtual_h += (children[i]->h + (i == 0 ? 0 : spacing));
     }
   } else {
     int32_t j = 0;
@@ -361,7 +361,7 @@ static int32_t children_layouter_list_view_for_list_view_get_virtual_h(
       for (j = 0, h = 0; j < cols && num < children_for_layout->size; j++, num++) {
         h = tk_max(h, children[num]->h);
       }
-      virtual_h += (h + spacing);
+      virtual_h += (h + (i == 0 ? 0 : spacing));
     }
   }
 

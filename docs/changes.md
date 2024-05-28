@@ -4,6 +4,7 @@
   * event\_source\_manager支持微秒级的sleep。
   * 增加sleep\_us(目前只支持linux)
   * 给复选框增加一个不确定状态(感谢智明提供补丁)
+  * 修复list_view有spacing的时候计算虚高不正确的问(感谢智明提供补丁)
 
 2024/05/24
   * 修复awtk-web编译错误。
