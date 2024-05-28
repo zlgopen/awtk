@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/tokenizer.h"
+#include "base/window_manager.h"
 
 #define DEFAULT_FOCUSED_CHILD_SAVE_TARGET_TAG_LENGTH 16
 #define DEFAULT_FOCUSED_CHILD_FIND_SAVE_TARGET_NUMBER 32
@@ -141,17 +142,27 @@ static ret_t default_focused_child_set_save_target(widget_t* widget, widget_t* a
 }
 
 static ret_t default_focused_child_set_target_focused(str_t* tag, widget_t* widget) {
+  pointer_event_t event;
   widget_t* target = NULL;
   widget_t* save_target = NULL;
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  input_device_status_t* ids = window_manager_get_input_device_status(window_manager());
+  return_value_if_fail(widget != NULL && ids != NULL, RET_BAD_PARAMS);
   save_target = target = default_focused_child_save_target_from_string(tag, widget);
   if (target != NULL) {
     while (target->parent != NULL) {
+      widget_t* tmp_target = target;
       if (target == target->parent->target) {
         break;
       }
+      pointer_event_init((event_t*)&event, EVT_POINTER_LEAVE, target->parent->target, ids->last_x, ids->last_y);
+      widget_dispatch_leave_event(target->parent->target, &event);
+      
       target->parent->target = target;
       target = target->parent;
+
+      event.e.type = EVT_POINTER_ENTER;
+      event.e.target = tmp_target;
+      widget_dispatch(tmp_target, (event_t*)(&event));
     }
 
     widget_set_focused(save_target, TRUE);
