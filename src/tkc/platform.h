@@ -60,6 +60,17 @@ uint64_t get_time_us64(void);
 void sleep_ms(uint32_t ms);
 
 /**
+ * @method sleep_us
+ *
+ * 睡眠指定时间。
+ *
+ * @param {uint32_t} us 睡眠时间(微秒)。
+ *
+ * @return {void} 无。
+ */
+void sleep_us(uint32_t us);
+
+/**
  * @method platform_prepare
  *
  * 平台准备函数。

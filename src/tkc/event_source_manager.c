@@ -106,12 +106,12 @@ ret_t event_source_manager_destroy(event_source_manager_t* manager) {
   return manager->destroy(manager);
 }
 
-uint32_t event_source_manager_get_wakeup_time(event_source_manager_t* manager) {
+uint64_t event_source_manager_get_wakeup_time(event_source_manager_t* manager) {
   uint32_t i = 0;
   uint32_t t = 0;
   uint32_t n = 0;
   event_source_t* iter = NULL;
-  uint32_t wakeup_time = 0xffff;
+  uint64_t wakeup_time = 0xffff;
   event_source_t** sources = NULL;
   return_value_if_fail(manager != NULL, 0);
 
@@ -126,6 +126,8 @@ uint32_t event_source_manager_get_wakeup_time(event_source_manager_t* manager) {
         wakeup_time = t;
       }
     }
+
+    wakeup_time = wakeup_time * 1000;
   } else {
     wakeup_time = manager->min_sleep_time;
   }
@@ -133,11 +135,16 @@ uint32_t event_source_manager_get_wakeup_time(event_source_manager_t* manager) {
   return tk_min(manager->min_sleep_time, wakeup_time);
 }
 
-ret_t event_source_manager_set_min_sleep_time(event_source_manager_t* manager,
+ret_t event_source_manager_set_min_sleep_time_us(event_source_manager_t* manager,
                                               uint32_t sleep_time) {
   return_value_if_fail(manager != NULL, RET_BAD_PARAMS);
 
   manager->min_sleep_time = sleep_time;
 
   return RET_OK;
+}
+
+ret_t event_source_manager_set_min_sleep_time(event_source_manager_t* manager,
+                                              uint32_t sleep_time) {
+  return event_source_manager_set_min_sleep_time_us(manager, sleep_time * 1000);
 }

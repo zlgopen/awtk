@@ -42,7 +42,7 @@ typedef int socklen_t;
 #endif /*WIN32*/
 
 static ret_t event_source_manager_default_dispatch_fds(event_source_manager_t* manager,
-                                                       uint32_t sleep_time) {
+                                                       uint64_t sleep_time) {
   fd_set fdsr;
   uint32_t i = 0;
   int32_t fd = 0;
@@ -54,8 +54,8 @@ static ret_t event_source_manager_default_dispatch_fds(event_source_manager_t* m
   return_value_if_fail(manager != NULL, 0);
 
   FD_ZERO(&fdsr);
-  tv.tv_sec = sleep_time / 1000;
-  tv.tv_usec = (sleep_time % 1000) * 1000;
+  tv.tv_sec = sleep_time / 1000000;
+  tv.tv_usec = (sleep_time % 1000000);
 
   sources = (event_source_t**)(manager->dispatching_sources.elms);
 
@@ -103,7 +103,7 @@ static ret_t event_source_manager_default_dispatch_fds(event_source_manager_t* m
 }
 #else
 static ret_t event_source_manager_default_dispatch_fds(event_source_manager_t* manager,
-                                                       uint32_t sleep_time) {
+                                                       uint64_t sleep_time) {
   return RET_OK;
 }
 #endif /*WITH_SOCKET*/
@@ -138,7 +138,7 @@ static ret_t event_source_manager_default_dispatch_no_fd(event_source_manager_t*
 }
 
 static ret_t event_source_manager_default_dispatch(event_source_manager_t* manager) {
-  uint32_t sleep_time = event_source_manager_get_wakeup_time(manager);
+  uint64_t sleep_time = event_source_manager_get_wakeup_time(manager);
 
   ret_t ret = event_source_manager_default_dispatch_fds(manager, sleep_time);
   /*dispatch_no_fd不会失败，保留dispatch_fds的错误给调用者。*/
