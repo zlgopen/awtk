@@ -96,6 +96,13 @@ typedef struct _check_button_t {
   bool_t value;
 
   /**
+   * @property {bool_t} indeterminate
+   * @annotation ["set_prop","get_prop"]
+   * 复选框是否是为不确定状态。（该值为TRUE的话，value 值存于不确定状态，该值为FALSE的话，value 值存于确定状态）
+   */
+  bool_t indeterminate;
+
+  /**
    * @property {bool_t} radio
    * @annotation ["set_prop","get_prop"]
    * 是否是单选按钮。
@@ -172,6 +179,29 @@ ret_t check_button_set_value(widget_t* widget, bool_t value);
  */
 widget_t* check_button_get_checked_button(widget_t* widget);
 
+
+/**
+ * @method check_button_set_value
+ * 设置控件的不确定状态。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget check_button对象。
+ * @param {bool_t}  indeterminate 不确定状态。（该值为TRUE的话，value 值存于不确定状态，该值为FALSE的话，value 值存于确定状态）
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t check_button_set_indeterminate(widget_t* widget, bool_t indeterminate);
+
+
+/**
+ * @method check_button_set_value
+ * 获取控件的是否存于不确定状态。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget check_button对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+bool_t check_button_get_indeterminate(widget_t* widget);
+
 /**
  * @method check_button_cast
  * 转换check_button对象(供脚本语言使用)。
@@ -203,6 +233,38 @@ TK_EXTERN_VTABLE(check_button);
  */
 widget_t* check_button_create_ex(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h, const char* type,
                                  bool_t radio);
+
+/**
+ * @const WIDGET_STATE_NORMAL_OF_INDETERMINATE
+ * 正常状态(选项不确定)。
+ */
+#define WIDGET_STATE_NORMAL_OF_INDETERMINATE "normal_of_indeterminate"
+
+/**
+ * @const WIDGET_STATE_PRESSED_OF_INDETERMINATE
+ * 指针按下状态(选项不确定)。
+ */
+#define WIDGET_STATE_PRESSED_OF_INDETERMINATE "pressed_of_indeterminate"
+
+/**
+ * @const WIDGET_STATE_OVER_OF_INDETERMINATE
+ * 指针悬浮状态(选项不确定)。
+ */
+#define WIDGET_STATE_OVER_OF_INDETERMINATE "over_of_indeterminate"
+
+/**
+ * @const WIDGET_STATE_DISABLE_OF_INDETERMINATE
+ * 禁用状态(选项不确定)。
+ */
+#define WIDGET_STATE_DISABLE_OF_INDETERMINATE "disable_of_indeterminate"
+
+/**
+ * @const WIDGET_STATE_FOCUSED_OF_INDETERMINATE
+ * 焦点状态(选项不确定)。
+ */
+#define WIDGET_STATE_FOCUSED_OF_INDETERMINATE "focused_of_indeterminate"
+
+#define CHECK_BUTTON_PROP_INDETERMINATE "indeterminate"
 
 END_C_DECLS
 

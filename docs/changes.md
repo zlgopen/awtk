@@ -3,6 +3,7 @@
 2024/05/28
   * event\_source\_manager支持微秒级的sleep。
   * 增加sleep\_us(目前只支持linux)
+  * 给复选框增加一个不确定状态(感谢智明提供补丁)
 
 2024/05/24
   * 修复awtk-web编译错误。

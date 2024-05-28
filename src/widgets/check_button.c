@@ -87,7 +87,7 @@ static ret_t check_button_on_paint_self(widget_t* widget, canvas_t* c) {
 static ret_t check_button_set_value_only(widget_t* widget, bool_t value) {
   check_button_t* check_button = CHECK_BUTTON(widget);
   return_value_if_fail(check_button != NULL, RET_BAD_PARAMS);
-
+  check_button->indeterminate = FALSE;
   if (check_button->value != value) {
     value_change_event_t evt;
     value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
@@ -133,7 +133,23 @@ static ret_t check_button_get_prop(widget_t* widget, const char* name, value_t* 
     value_set_bool(v, check_button->value);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_STATE_FOR_STYLE)) {
-    value_set_str(v, widget_get_state_for_style(widget, FALSE, check_button->value));
+    if (!check_button->radio && check_button->indeterminate) {
+      const char* state = widget_get_state_for_style(widget, FALSE, FALSE);
+      if (tk_str_eq(state, WIDGET_STATE_NORMAL)) {
+        state = WIDGET_STATE_NORMAL_OF_INDETERMINATE;
+      } else if (tk_str_eq(state, WIDGET_STATE_PRESSED)) {
+        state = WIDGET_STATE_PRESSED_OF_INDETERMINATE;
+      } else if (tk_str_eq(state, WIDGET_STATE_OVER)) {
+        state = WIDGET_STATE_OVER_OF_INDETERMINATE;
+      } else if (widget_is_focusable(widget) && widget->focused) {
+        state = WIDGET_STATE_FOCUSED_OF_INDETERMINATE;
+      } else if (tk_str_eq(state, WIDGET_STATE_DISABLE)) {
+        state = WIDGET_STATE_DISABLE_OF_INDETERMINATE;
+      }
+      value_set_str(v, state);
+    } else {
+      value_set_str(v, widget_get_state_for_style(widget, FALSE, check_button->value));
+    }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_RADIO)) {
     value_set_bool(v, check_button->radio);
@@ -145,7 +161,10 @@ static ret_t check_button_get_prop(widget_t* widget, const char* name, value_t* 
       value_set_str(v, widget->vt->type);
     }
     return RET_OK;
-  }
+  } else if (tk_str_eq(name, CHECK_BUTTON_PROP_INDETERMINATE)) {
+    value_set_bool(v, check_button->indeterminate);
+    return RET_OK;
+  } 
 
   return RET_NOT_FOUND;
 }
@@ -158,6 +177,8 @@ static ret_t check_button_set_prop(widget_t* widget, const char* name, const val
   } else if (tk_str_eq(name, WIDGET_PROP_RADIO)) {
     check_button_set_radio(widget, value_bool(v));
     return RET_OK;
+  } else if (tk_str_eq(name, CHECK_BUTTON_PROP_INDETERMINATE)) {
+    return check_button_set_indeterminate(widget, value_bool(v));
   }
 
   return RET_NOT_FOUND;
@@ -284,4 +305,17 @@ widget_t* check_button_create_ex(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
   check_button->type = type;
 
   return widget;
+}
+
+ret_t check_button_set_indeterminate(widget_t* widget, bool_t indeterminate) {
+  check_button_t* check_button = CHECK_BUTTON(widget);
+  return_value_if_fail(check_button != NULL && !check_button->radio, RET_BAD_PARAMS);
+  check_button->indeterminate = indeterminate;
+  return RET_OK;
+}
+
+bool_t check_button_get_indeterminate(widget_t* widget) {
+  check_button_t* check_button = CHECK_BUTTON(widget);
+  return_value_if_fail(check_button != NULL && !check_button->radio, FALSE);
+  return check_button->indeterminate;
 }

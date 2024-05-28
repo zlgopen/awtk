@@ -437,6 +437,7 @@
 #include "default/inc/images/green_btn_o.res"
 #include "default/inc/images/green_btn_n.res"
 #include "default/inc/images/debug_start_d.res"
+#include "default/inc/images/indeterminate.res"
 #include "default/inc/images/muted.res"
 #include "default/inc/images/uiex_List_Connectandshare.res"
 #include "default/inc/images/arrow_down_o.res"
@@ -790,6 +791,7 @@
 #include "default/inc/images/uiex_combobox_btn_n.data"
 #include "default/inc/images/battery_4.data"
 #include "default/inc/images/bg_landscape_3.data"
+#include "default/inc/images/indeterminate.data"
 #include "default/inc/images/debug_pause_n.data"
 #include "default/inc/images/ani6.data"
 #include "default/inc/images/uiex_button_Import.data"
@@ -1365,6 +1367,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_green_btn_o_default);
   assets_manager_add(am, image_green_btn_n_default);
   assets_manager_add(am, image_debug_start_d_default);
+  assets_manager_add(am, image_indeterminate_default);
   assets_manager_add(am, image_muted_default);
   assets_manager_add(am, image_uiex_List_Connectandshare_default);
   assets_manager_add(am, image_arrow_down_o_default);

@@ -360,6 +360,10 @@
     <pressed_of_checked icon="checked" text_color="blue"/>
     <over_of_checked icon="checked" text_color="green"/>
     <focused_of_checked icon="checked" text_color="green"/>
+    <normal_of_indeterminate icon="indeterminate" text_color="blue"/>
+    <pressed_of_indeterminate icon="indeterminate" text_color="blue"/>
+    <over_of_indeterminate icon="indeterminate" text_color="green"/>
+    <focused_of_indeterminate icon="indeterminate" text_color="green"/>
   </style>
   <style name="mute" >
     <normal  icon="unmuted" />
