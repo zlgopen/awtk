@@ -1300,7 +1300,7 @@ static tk_object_t* debugger_lldb_get_local(debugger_t* debugger, uint32_t frame
   int64_t frame_id = debugger_lldb_get_frame_id(debugger, frame_index);
   debugger_lldb_scopes_command(debugger, frame_id);
 
-  return debugger_lldb_get_variables_impl(debugger, VARREF_LOCALS, 0, 0xffff);
+  return debugger_lldb_get_variables_impl(debugger, VARREF_LOCALS, 0, 0);
 }
 
 static tk_object_t* debugger_lldb_get_self(debugger_t* debugger) {
@@ -1308,7 +1308,7 @@ static tk_object_t* debugger_lldb_get_self(debugger_t* debugger) {
 }
 
 static tk_object_t* debugger_lldb_get_global(debugger_t* debugger) {
-  return debugger_lldb_get_variables_impl(debugger, VARREF_LOCALS, 0, 0xffff);
+  return debugger_lldb_get_variables_impl(debugger, VARREF_GLOBALS, 0, 0);
 }
 
 static tk_object_t* debugger_lldb_get_callstack(debugger_t* debugger) {

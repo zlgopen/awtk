@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/05/29
+  * 修复debugger_lldb获取局部变量和全局变量的函数都是获取全部变量的问题(感谢智明提供补丁)
+
 2024/05/28
   * event\_source\_manager支持微秒级的sleep。
   * 增加sleep\_us(目前只支持linux)
