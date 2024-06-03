@@ -232,16 +232,29 @@ static uint64_t debugger_lldb_get_current_thread_id(debugger_t* debugger) {
   return thread_id;
 }
 
-static ret_t debugger_lldb_set_current_thread_id(debugger_t* debugger, uint64_t thread_id) {
+static ret_t debugger_lldb_set_current_thread_id_ex(debugger_t* debugger, uint64_t thread_id, bool_t force) {
   ret_t ret = RET_OK;
+  bool_t swith = FALSE;
   debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
   return_value_if_fail(lldb != NULL, thread_id);
   ret = debugger_lock(debugger);
   if (ret == RET_OK) {
-    lldb->current_thread_id = thread_id;
+    if (force || lldb->current_thread_id != thread_id) {
+      lldb->current_thread_id = thread_id;
+      swith = TRUE;
+    }
     debugger_unlock(debugger);
   }
+  if (swith) {
+    lldb->callstack = debugger_lldb_get_callstack_impl(debugger, 0, 100);
+    debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_PAUSED);
+    debugger_set_current_frame(debugger, 0);
+  }
   return ret;
+}
+
+static ret_t debugger_lldb_set_current_thread_id(debugger_t* debugger, uint64_t thread_id) {
+  return debugger_lldb_set_current_thread_id_ex(debugger, thread_id, FALSE);
 }
 
 static tk_object_t* debugger_lldb_get_callstack_obj(debugger_t* debugger) {
@@ -312,12 +325,9 @@ static ret_t debugger_lldb_emit(debugger_t* debugger, tk_object_t* resp) {
     TK_OBJECT_UNREF(lldb->callstack);
 
     stop_thread_id = tk_object_get_prop_int64(resp, "body.threadId", 0);
-    debugger_lldb_set_current_thread_id(debugger, stop_thread_id);
-    lldb->callstack = debugger_lldb_get_callstack_impl(debugger, 0, 100);
+    debugger_lldb_set_current_thread_id_ex(debugger, stop_thread_id, TRUE);
     frame_name = debugger_lldb_get_frame_name(debugger, debugger->current_frame_index);
     file_path = debugger_lldb_get_source_path(debugger, debugger->current_frame_index);
-    debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_PAUSED);
-    debugger_set_current_frame(debugger, 0);
     /*LLDB 行号从1开始*/
     line = lldb->current_frame_line - 1;
     emitter_dispatch(EMITTER(debugger), debugger_breaked_event_init_ex(&event, line, file_path, frame_name));
