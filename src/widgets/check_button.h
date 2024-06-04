@@ -179,9 +179,8 @@ ret_t check_button_set_value(widget_t* widget, bool_t value);
  */
 widget_t* check_button_get_checked_button(widget_t* widget);
 
-
 /**
- * @method check_button_set_value
+ * @method check_button_set_indeterminate
  * 设置控件的不确定状态。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget check_button对象。
@@ -191,14 +190,13 @@ widget_t* check_button_get_checked_button(widget_t* widget);
  */
 ret_t check_button_set_indeterminate(widget_t* widget, bool_t indeterminate);
 
-
 /**
- * @method check_button_set_value
+ * @method check_button_get_indeterminate
  * 获取控件的是否存于不确定状态。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget check_button对象。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {bool_t} 返回控件的是否存于不确定状态。
  */
 bool_t check_button_get_indeterminate(widget_t* widget);
 
@@ -233,6 +231,13 @@ TK_EXTERN_VTABLE(check_button);
  */
 widget_t* check_button_create_ex(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h, const char* type,
                                  bool_t radio);
+
+/**
+ * @enum widget_state_t
+ * @annotation ["string"]
+ * @prefix WIDGET_STATE_
+ * 控件的状态。
+ */
 
 /**
  * @const WIDGET_STATE_NORMAL_OF_INDETERMINATE
