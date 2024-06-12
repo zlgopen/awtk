@@ -165,7 +165,7 @@ ret_t input_engine_input(input_engine_t* engine, int key) {
     }
   } else {
     if (engine->keys.size >= TK_IM_MAX_INPUT_CHARS) {
-      return RET_BAD_PARAMS;
+      return RET_SKIP;
     }
 
     if (engine->input != NULL) {
