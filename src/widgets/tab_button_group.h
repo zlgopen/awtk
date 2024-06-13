@@ -82,6 +82,21 @@ typedef struct _tab_button_group_t {
   bool_t scrollable;
 
   /**
+   * @property {char*} scrollable_mode
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 滚动模式 (缺省all) (all:鼠标滚轮+鼠标拖拽滚动，wheel:鼠标滚轮，dragged:鼠标拖拽滚动。
+   */
+
+  /**
+   * @property {bool_t} drag_child
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否支持拖拽并且修改 tab_button 控件的位置(缺省FALSE)。
+   *
+   * > 紧凑型排版子控件时才支持滚动，开启该功能后，就不能拖拽滚动了，只能鼠标滚轮滚动了。
+   */
+  bool_t drag_child;
+
+  /**
    * @property {bool_t} enable_hscroll_animator
    * @annotation ["set_prop","get_prop","readable","persitent","design","fake"]
    * 是否开启 tab_button 的左右滚动动画(缺省TRUE)。
@@ -89,7 +104,12 @@ typedef struct _tab_button_group_t {
    */
 
   /*private*/
+  bool_t is_active_in_viewport;
+  xy_t last_pointer_x;
+  rect_t* last_iter_rect;
+  widget_t* dragged;
   int32_t active;
+  uint32_t scrollable_mode_flags;
   hscrollable_t* hscrollable;
 } tab_button_group_t;
 
@@ -130,6 +150,17 @@ ret_t tab_button_group_set_compact(widget_t* widget, bool_t compact);
 ret_t tab_button_group_set_scrollable(widget_t* widget, bool_t scrollable);
 
 /**
+ * @method tab_button_group_set_drag_child
+ * 设置拖拽 tab_button 控件位置。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t}  drag_child 是否拖拽(缺省FALSE)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tab_button_group_set_drag_child(widget_t* widget, bool_t drag_child);
+
+/**
  * @method tab_button_group_cast
  * 转换tab_button_group对象(供脚本语言使用)。
  * @annotation ["cast", "scriptable"]
@@ -143,6 +174,9 @@ widget_t* tab_button_group_cast(widget_t* widget);
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(tab_button_group);
+
+#define TAB_BUTTON_GROUP_PROP_DRAG_CHILD        "drag_child"
+#define TAB_BUTTON_GROUP_PROP_SCROLLABLE_MODE  "scrollable_mode"
 
 END_C_DECLS
 

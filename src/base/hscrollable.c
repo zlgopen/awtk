@@ -131,21 +131,19 @@ ret_t hscrollable_scroll_to(hscrollable_t* hscrollable, int32_t xoffset_end, int
   return RET_OK;
 }
 
-#define SPEED_SCALE 2
-#define MIN_DELTA 10
-
 static ret_t hscrollable_on_pointer_up(hscrollable_t* hscrollable, pointer_event_t* e) {
+#ifndef WITHOUT_WIDGET_ANIMATORS
   velocity_t* v = &(hscrollable->velocity);
   int32_t move_dx = e->x - hscrollable->down.x;
 
   velocity_update(v, e->e.time, e->x, e->y);
-  if (move_dx) {
+  if (move_dx && hscrollable->enable_hscroll_animator) {
     int xv = tk_min(v->xv, 100);
 
     hscrollable->xoffset_end = hscrollable->xoffset - xv;
     hscrollable_scroll_to(hscrollable, hscrollable->xoffset_end, 300);
   }
-
+#endif
   return RET_OK;
 }
 

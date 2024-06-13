@@ -20,7 +20,19 @@
  */
 
 #include "tkc/mem.h"
+#include "widgets/tab_button.h"
 #include "widgets/tab_button_group.h"
+
+#define TK_TAB_BUTTON_DRAG_THRESHOLD 5
+
+#define TAB_BUTTON_GROUP_SCROLLABLE_MODE_WHELL     1 << 0
+#define TAB_BUTTON_GROUP_SCROLLABLE_MODE_DRAGGED   1 << 1
+#define TAB_BUTTON_GROUP_SCROLLABLE_MODE_ALL       0xFFFFFFFFF
+
+#define TAB_BUTTON_GROUP_SCROLLABLE_MODE_WHELL_STRING     "wheel"
+#define TAB_BUTTON_GROUP_SCROLLABLE_MODE_DRAGGED_STRING   "dragged"
+#define TAB_BUTTON_GROUP_SCROLLABLE_MODE_ALL_STRING       "all"
+
 
 static ret_t tab_button_group_on_layout_children_non_compact(widget_t* widget) {
   int32_t x = 0;
@@ -84,6 +96,10 @@ static ret_t tab_button_group_on_layout_children_compact(widget_t* widget) {
     w = iter->w;
   }
 
+  if (widget_get_prop(iter, WIDGET_PROP_MAX_W, &v) == RET_OK) {
+    w = tk_min(w, value_int(&v));
+  }
+
   widget_move_resize(iter, x, y, w, h);
   widget_layout_children(iter);
   x += w;
@@ -100,10 +116,16 @@ static ret_t tab_button_group_on_layout_children_compact(widget_t* widget) {
     hscrollable_set_always_scrollable(tab_button_group->hscrollable, FALSE);
   }
 
-  if (active != NULL) {
+  if (active != NULL && tab_button_group->is_active_in_viewport) {
     widget_ensure_visible_in_viewport(active);
   }
 
+  return RET_OK;
+}
+
+static ret_t tab_button_group_set_active_in_viewport_on_layout(tab_button_group_t* tab_button_group, bool_t active_in_viewport) {
+  return_value_if_fail(tab_button_group != NULL, RET_BAD_PARAMS);
+  tab_button_group->is_active_in_viewport = active_in_viewport;
   return RET_OK;
 }
 
@@ -131,6 +153,9 @@ static ret_t tab_button_group_get_prop(widget_t* widget, const char* name, value
   } else if (tk_str_eq(name, WIDGET_PROP_SCROLLABLE)) {
     value_set_bool(v, tab_button_group->scrollable);
     return RET_OK;
+  } else if (tk_str_eq(name, TAB_BUTTON_GROUP_PROP_DRAG_CHILD)) {
+    value_set_bool(v, tab_button_group->drag_child);
+    return RET_OK;
   }
 
   if (tab_button_group->hscrollable != NULL) {
@@ -149,6 +174,22 @@ static ret_t tab_button_group_set_prop(widget_t* widget, const char* name, const
   } else if (tk_str_eq(name, WIDGET_PROP_SCROLLABLE)) {
     tab_button_group_set_scrollable(widget, value_bool(v));
     return RET_OK;
+  } else if (tk_str_eq(name, TAB_BUTTON_GROUP_PROP_DRAG_CHILD)) {
+    tab_button_group_set_drag_child(widget, value_bool(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, TAB_BUTTON_GROUP_PROP_SCROLLABLE_MODE)) {
+    const char* str = value_str(v);
+    if (str != NULL) {
+      if (tk_stricmp(str, TAB_BUTTON_GROUP_SCROLLABLE_MODE_WHELL_STRING) == 0) {
+        tab_button_group->scrollable_mode_flags = TAB_BUTTON_GROUP_SCROLLABLE_MODE_WHELL;
+      } else if (tk_stricmp(str, TAB_BUTTON_GROUP_SCROLLABLE_MODE_DRAGGED_STRING) == 0) {
+        tab_button_group->scrollable_mode_flags = TAB_BUTTON_GROUP_SCROLLABLE_MODE_DRAGGED;
+      } else {
+        tab_button_group->scrollable_mode_flags = TAB_BUTTON_GROUP_SCROLLABLE_MODE_ALL;
+      }
+      return RET_OK;
+    }
+    return RET_FAIL;
   }
 
   if (tab_button_group->hscrollable != NULL) {
@@ -204,6 +245,87 @@ static bool_t tab_button_group_active_is_valid(widget_t* widget, uint32_t active
   return (active < widget_count_children(widget));
 }
 
+static ret_t tab_button_group_last_iter_rect_destroy(tab_button_group_t* tab_button_group) {
+  return_value_if_fail(tab_button_group != NULL, RET_BAD_PARAMS);
+  if (tab_button_group->last_iter_rect != NULL) {
+    rect_destroy(tab_button_group->last_iter_rect);
+    tab_button_group->last_iter_rect = NULL;
+  }
+  return RET_OK;
+}
+
+static ret_t tab_button_group_on_pointer_down(widget_t* widget, pointer_event_t* e) {
+  widget_t* target = NULL;
+  tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
+  return_value_if_fail(tab_button_group != NULL && e != NULL, RET_BAD_PARAMS);
+
+  target = widget_find_target(widget, e->x, e->y);
+  if (target != NULL) {
+    if (tab_button_group->drag_child) {
+      widget_grab(widget->parent, widget);
+      tab_button_group->dragged = target;
+    }
+    widget_set_prop_bool(target, WIDGET_PROP_VALUE, TRUE);
+    tab_button_group_last_iter_rect_destroy(tab_button_group);
+  }
+  return RET_OK;
+}
+
+static ret_t tab_button_group_on_pointer_move(widget_t* widget, pointer_event_t* e) {
+  point_t p;
+  ret_t ret = RET_OK;
+  tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
+  return_value_if_fail(tab_button_group != NULL && e != NULL, RET_BAD_PARAMS);
+  p.x = e->x;
+  p.y = e->y;
+  ret = widget_to_local(widget->parent, &p);
+  p.x -= widget->x;
+  p.y -= widget->y;
+  if (ret == RET_OK && p.y >= 0 && p.y <= widget->h) {
+    if (p.x > 0 && p.x < widget->w) {
+      p.x = e->x;
+      p.y = e->y;
+      if (widget_to_local(widget, &p) == RET_OK) {
+        WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+        xy_t xx = p.x - iter->x;
+        xy_t yy = p.y - iter->y;
+        if (widget_is_point_in(iter, xx, yy, TRUE)) {
+          if (iter != tab_button_group->dragged) {
+            if (!(tab_button_group->last_iter_rect != NULL && rect_contains(tab_button_group->last_iter_rect, p.x, p.y))) {
+              tab_button_group_last_iter_rect_destroy(tab_button_group);
+              tab_button_group->last_iter_rect = rect_create(iter->x, iter->y, iter->w, iter->h);
+              tab_button_group_set_active_in_viewport_on_layout(tab_button_group, TRUE);
+              tab_button_restack(tab_button_group->dragged, i);
+              widget_layout(widget);
+            }
+          } else {
+            tab_button_group_last_iter_rect_destroy(tab_button_group);
+          }
+          break;
+        }
+        WIDGET_FOR_EACH_CHILD_END();
+      }
+    } else if (p.x <= 0) {
+      if (p.x <= -TK_TAB_BUTTON_DRAG_THRESHOLD && tab_button_group->last_pointer_x > e->x) {
+        int32_t index = widget_index_of(tab_button_group->dragged);
+        tab_button_group_set_active_in_viewport_on_layout(tab_button_group, TRUE);
+        tab_button_restack(tab_button_group->dragged, tk_max(index - 1, 0));
+        widget_layout(widget);
+      }
+    } else {
+      if (p.x >= TK_TAB_BUTTON_DRAG_THRESHOLD + widget->w && tab_button_group->last_pointer_x < e->x) {
+        int32_t index = widget_index_of(tab_button_group->dragged);
+        int32_t count = widget_count_children(widget);
+        tab_button_group_set_active_in_viewport_on_layout(tab_button_group, TRUE);
+        tab_button_restack(tab_button_group->dragged, tk_min(index + 1, count));
+        widget_layout(widget);
+      }
+    }
+  }
+  tab_button_group->last_pointer_x = e->x;
+  return RET_OK;
+}
+
 static ret_t tab_button_group_on_event(widget_t* widget, event_t* e) {
   tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
   return_value_if_fail(tab_button_group != NULL, RET_BAD_PARAMS);
@@ -219,13 +341,62 @@ static ret_t tab_button_group_on_event(widget_t* widget, event_t* e) {
       }
       break;
     }
+    case EVT_WHEEL: {
+      if (tab_button_group->scrollable && tab_button_group->compact && 
+          (tab_button_group->scrollable_mode_flags & TAB_BUTTON_GROUP_SCROLLABLE_MODE_WHELL)) {
+        wheel_event_t* evt = (wheel_event_t*)e;
+        int32_t xoffset = tab_button_group->hscrollable->xoffset;
+
+        xoffset -= evt->dy;
+        if ((xoffset + widget->w) > tab_button_group->hscrollable->virtual_w) {
+          xoffset = tab_button_group->hscrollable->virtual_w - widget->w;
+        }
+        if (xoffset < 0) {
+          xoffset = 0;
+        }
+        tab_button_group_set_active_in_viewport_on_layout(tab_button_group, FALSE);
+        hscrollable_set_xoffset(tab_button_group->hscrollable, xoffset);
+        widget_invalidate(widget, NULL);
+      }
+      break;
+    }
+    case EVT_POINTER_DOWN:
+      tab_button_group_on_pointer_down(widget, (pointer_event_t*)e);
+      break;
+    case EVT_POINTER_UP: {
+      if (tab_button_group->drag_child) {
+        pointer_event_t* evt = (pointer_event_t*)e;
+        tab_button_group->dragged = NULL;
+        widget_ungrab(widget->parent, widget);
+      }
+      break;
+    }
+    case EVT_POINTER_MOVE: {
+      if (tab_button_group->drag_child) {
+        pointer_event_t* evt = (pointer_event_t*)e;
+        if (!evt->pressed) {
+          break;
+        }
+        if (tab_button_group->dragged != NULL) {
+          tab_button_group_on_pointer_move(widget, (pointer_event_t*)e);
+        }
+      }
+      break;
+    }
+    default:
+      break;
   }
 
-  if (tab_button_group->scrollable && tab_button_group->compact) {
-    return hscrollable_on_event(tab_button_group->hscrollable, e);
-  } else {
-    return RET_OK;
+  if (tab_button_group->scrollable && tab_button_group->compact && !tab_button_group->drag_child && 
+      (tab_button_group->scrollable_mode_flags & TAB_BUTTON_GROUP_SCROLLABLE_MODE_DRAGGED)) {
+    int32_t xoffset = tab_button_group->hscrollable->xoffset;
+    ret_t ret = hscrollable_on_event(tab_button_group->hscrollable, e);
+    if (tab_button_group->is_active_in_viewport) {
+      tab_button_group_set_active_in_viewport_on_layout(tab_button_group, xoffset == tab_button_group->hscrollable->xoffset);
+    }
+    return ret;
   }
+  return RET_OK;
 }
 
 ret_t tab_button_group_set_compact(widget_t* widget, bool_t compact) {
@@ -246,11 +417,22 @@ ret_t tab_button_group_set_scrollable(widget_t* widget, bool_t scrollable) {
   return RET_OK;
 }
 
+ret_t tab_button_group_set_drag_child(widget_t* widget, bool_t drag_child) {
+  tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
+  return_value_if_fail(tab_button_group != NULL, RET_BAD_PARAMS);
+
+  tab_button_group->drag_child = drag_child;
+
+  return RET_OK;
+}
+
+
 static ret_t tab_button_group_on_destroy(widget_t* widget) {
   tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
   return_value_if_fail(widget != NULL && tab_button_group != NULL, RET_BAD_PARAMS);
 
   hscrollable_destroy(tab_button_group->hscrollable);
+  tab_button_group_last_iter_rect_destroy(tab_button_group);
 
   return RET_OK;
 }
@@ -291,6 +473,8 @@ static ret_t tab_button_group_init(widget_t* widget) {
   return_value_if_fail(tab_button_group != NULL, RET_BAD_PARAMS);
 
   tab_button_group->hscrollable = hscrollable_create(widget);
+  tab_button_group->is_active_in_viewport = TRUE;
+  tab_button_group->scrollable_mode_flags = TAB_BUTTON_GROUP_SCROLLABLE_MODE_ALL;
   return RET_OK;
 }
 

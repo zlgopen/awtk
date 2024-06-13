@@ -413,6 +413,12 @@ static ret_t on_close(void* ctx, event_t* e) {
   return window_close(win);
 }
 
+static ret_t on_widget_layout(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(ctx);
+  (void)e;
+  return widget_layout(win);
+}
+
 static ret_t on_start(void* ctx, event_t* e) {
   widget_start_animator(NULL, NULL);
 
@@ -1148,6 +1154,8 @@ static ret_t install_one(void* ctx, const void* iter) {
       widget_on(widget, EVT_CLICK, on_dec, win);
     } else if (tk_str_eq(name, "close")) {
       widget_on(widget, EVT_CLICK, on_close, win);
+    } else if (tk_str_eq(name, "widget_layout")) {
+      widget_on(widget, EVT_CLICK, on_widget_layout, win);
     } else if (tk_str_eq(name, "fullscreen")) {
       widget_on(widget, EVT_CLICK, on_fullscreen, widget);
     } else if (tk_str_eq(name, "unload_image")) {

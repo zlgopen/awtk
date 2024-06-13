@@ -289,6 +289,11 @@ static ret_t tab_button_get_prop(widget_t* widget, const char* name, value_t* v)
   } else if (tk_str_eq(name, WIDGET_PROP_LOAD_UI)) {
     value_set_str(v, tab_button->load_ui);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_MAX_W)) {
+    if (tab_button->max_w >= 0) {
+      value_set_int32(v, tab_button->max_w);
+      return RET_OK;
+    }
   }
 
   return RET_NOT_FOUND;
@@ -305,6 +310,8 @@ static ret_t tab_button_set_prop(widget_t* widget, const char* name, const value
     return tab_button_set_active_icon(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_LOAD_UI)) {
     return tab_button_set_load_ui(widget, value_str(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_MAX_W)) {
+    return tab_button_set_max_w(widget, value_int32(v));
   }
 
   return RET_NOT_FOUND;
@@ -328,13 +335,15 @@ static ret_t tab_button_init(widget_t* widget) {
   tab_button->ui = NULL;
   tab_button->load_ui = NULL;
 
+  tab_button->max_w = -1;
+
   tab_button_set_value_only(widget, FALSE);
 
   widget_add_idle(widget, tab_button_open_idle_func);
   return RET_OK;
 }
 
-static const char* s_tab_button_clone_properties[] = {WIDGET_PROP_VALUE, NULL};
+static const char* s_tab_button_clone_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_MAX_W, WIDGET_PROP_ELLIPSES, NULL};
 TK_DECL_VTABLE(tab_button) = {.size = sizeof(tab_button_t),
                               .type = WIDGET_TYPE_TAB_BUTTON,
                               .space_key_to_activate = TRUE,
@@ -356,6 +365,26 @@ ret_t tab_button_set_icon(widget_t* widget, const char* name) {
 
   TKMEM_FREE(tab_button->icon);
   tab_button->icon = tk_strdup(name);
+
+  return RET_OK;
+}
+
+ret_t tab_button_set_max_w(widget_t* widget, int32_t max_w) {
+  tab_button_t* tab_button = TAB_BUTTON(widget);
+  return_value_if_fail(tab_button != NULL, RET_BAD_PARAMS);
+  tab_button->max_w = max_w;
+  return RET_OK;
+}
+
+ret_t tab_button_restack(widget_t* widget, uint32_t index) {
+  widget_t* page = NULL;
+  widget_t* pages = tab_button_get_pages(widget);
+  int32_t page_index = tab_button_page_index_of(widget);
+  return_value_if_fail(widget != NULL && pages != NULL && page_index >= 0, RET_BAD_PARAMS);
+  page = widget_get_child(pages, page_index);
+
+  widget_restack(page, index);
+  widget_restack(widget, index);
 
   return RET_OK;
 }

@@ -161,6 +161,7 @@
 #include "assets/default/inc/ui/selectm.data"
 #include "assets/default/inc/ui/list_view.data"
 #include "assets/default/inc/ui/stroke_gradient.data"
+#include "assets/default/inc/ui/tab_scrollable_and_dragchild.data"
 #include "assets/default/inc/ui/menu_left_middle.data"
 #include "assets/default/inc/ui/slide_view_h1.data"
 #include "assets/default/inc/ui/basic.data"
@@ -1092,6 +1093,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_selectm_default);
   assets_manager_add(am, ui_list_view_default);
   assets_manager_add(am, ui_stroke_gradient_default);
+  assets_manager_add(am, ui_tab_scrollable_and_dragchild_default);
   assets_manager_add(am, ui_menu_left_middle_default);
   assets_manager_add(am, ui_slide_view_h1_default);
   assets_manager_add(am, ui_basic_default);

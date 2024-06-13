@@ -1,10 +1,10 @@
 <window anim_hint="htranslate" theme="tab_top_compact">
-  <tab_button_group x="c" y="12" w="90%" h="30" compact="true" scrollable="true" enable_hscroll_animator="false" >
+  <tab_button_group x="c" y="12" w="90%" h="30" compact="true" scrollable="true" enable_hscroll_animator="false" scrollable_mode="wheel" drag_child="true" >
     <tab_button text="General"/>
-    <tab_button text="Network111111111111111111111111111111111111111" max_w="70" ellipses="true"/>
+    <tab_button text="Network111111111111111111111111111111111111111" max_w="100" ellipses="true"/>
     <tab_button name="clone_button" text="Security" value="true"/>
   </tab_button_group>
-  <pages x="c" y="42" w="90%" h="-120" value="1">
+  <pages x="c" y="42" w="90%" h="-120" value="2">
     <view w="100%" h="100%">
       <label x="c" y="m" w="100%" h="60" text="General" /> 
       <button name="close" x="c" y="bottom:100" w="80" h="40" tr_text="Close" />
