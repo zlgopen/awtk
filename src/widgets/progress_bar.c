@@ -276,7 +276,7 @@ ret_t progress_bar_set_max(widget_t* widget, double max) {
 
 ret_t progress_bar_set_format(widget_t* widget, const char* format) {
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
-  return_value_if_fail(progress_bar != NULL && format != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(progress_bar != NULL, RET_BAD_PARAMS);
 
   progress_bar->format = tk_str_copy(progress_bar->format, format);
 

@@ -98,7 +98,7 @@ static ret_t mledit_dispatch_event(widget_t* widget, uint32_t type) {
 
 ret_t mledit_set_tips(widget_t* widget, const char* tips) {
   mledit_t* mledit = MLEDIT(widget);
-  return_value_if_fail(mledit != NULL && tips != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
 
   mledit->tips = tk_str_copy(mledit->tips, tips);
   text_edit_set_tips(mledit->model, mledit->tips, TRUE);
@@ -121,9 +121,9 @@ static ret_t mledit_apply_tr_text_before_paint(void* ctx, event_t* e) {
 ret_t mledit_set_tr_tips(widget_t* widget, const char* tr_tips) {
   mledit_t* mledit = MLEDIT(widget);
   widget_t* win = widget_get_window(widget);
-  return_value_if_fail(mledit != NULL && tr_tips != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
 
-  if (*tr_tips == '\0') {
+  if (TK_STR_IS_EMPTY(tr_tips)) {
     TKMEM_FREE(mledit->tr_tips);
     return RET_OK;
   }
@@ -141,7 +141,7 @@ ret_t mledit_set_tr_tips(widget_t* widget, const char* tr_tips) {
 
 ret_t mledit_set_keyboard(widget_t* widget, const char* keyboard) {
   mledit_t* mledit = MLEDIT(widget);
-  return_value_if_fail(mledit != NULL && keyboard != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
 
   mledit->keyboard = tk_str_copy(mledit->keyboard, keyboard);
 
