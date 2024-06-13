@@ -48,6 +48,7 @@
 #include "base/assets_manager.h"
 #include "blend/image_g2d.h"
 #include "base/style_const.h"
+#include "base/widget_visible_in_scroll_view.inc"
 
 ret_t widget_focus_up(widget_t* widget);
 ret_t widget_focus_down(widget_t* widget);
@@ -4125,39 +4126,29 @@ static ret_t widget_ensure_visible_in_scroll_view(widget_t* scroll_view, widget_
   int32_t oy = 0;
   int32_t old_ox = 0;
   int32_t old_oy = 0;
-  rect_t r, r_visable;
+  int32_t max_w = 0;
+  int32_t max_h = 0;
+  rect_t r;
+  widget_visible_reveal_in_scroll_func_t func;
   return_value_if_fail(widget != NULL && scroll_view != NULL, RET_BAD_PARAMS);
 
   memset(&p, 0x0, sizeof(point_t));
   widget_to_screen_ex(widget, scroll_view, &p);
   r = rect_init(p.x, p.y, widget->w, widget->h);
-
+  func = widget_get_visible_reveal_in_scroll_func(scroll_view);
   ox = widget_get_prop_int(scroll_view, WIDGET_PROP_XOFFSET, 0);
   oy = widget_get_prop_int(scroll_view, WIDGET_PROP_YOFFSET, 0);
   old_ox = ox;
   old_oy = oy;
 
-  r_visable = rect_init(ox, oy, scroll_view->w, scroll_view->h);
-  if (rect_has_intersect(&r, &r_visable)) {
-    return RET_OK;
-  }
+  func(&r, ox, oy, scroll_view->w, scroll_view->h, &ox, &oy);
 
-  if (oy > r.y) {
-    oy = r.y;
-  }
+  max_w = widget_get_prop_int(scroll_view, WIDGET_PROP_VIRTUAL_W, scroll_view->w);
+  max_h = widget_get_prop_int(scroll_view, WIDGET_PROP_VIRTUAL_H, scroll_view->h);
 
-  if (ox > r.x) {
-    ox = r.x;
-  }
-
-  if ((r.y + r.h) > (oy + scroll_view->h)) {
-    oy = r.y + r.h - scroll_view->h;
-  }
-
-  if ((r.x + r.w) > (ox + scroll_view->w)) {
-    ox = r.x + r.w - scroll_view->w;
-  }
-
+  ox = tk_min(ox, max_w - scroll_view->w);
+  oy = tk_min(oy, max_h - scroll_view->h);
+  
   if (ox != old_ox) {
     widget_set_prop_int(scroll_view, WIDGET_PROP_XOFFSET, ox);
   }

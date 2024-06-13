@@ -1,7 +1,7 @@
 <window anim_hint="htranslate">
-  <view x="0" y="0" w="100%" h="70%">
+  <view x="0" y="0" w="100%" h="60%">
     <scroll_view x="10%" y="10%" w="80%" h="80%" xoffset="0" yoffset="0" recursive="true" style.normal.border_color="#ff0000" >
-      <view x="1" y="1" w="30" h="30" style.normal.border_color="#0000ff" >
+      <view x="1" y="1" w="30" h="30" style.normal.border_color="#0000ff" style.normal.bg_color="red" >
         <image image="earth" name="earth1" x="0" y="0" w="24" h="24"/>
       </view>
       <view x="1" y="100" w="30" h="30" style.normal.border_color="#0000ff">
@@ -15,7 +15,7 @@
       </view>
       <view x="1" y="400" w="60" h="60" style.normal.border_color="#0000ff">
         <view x="0" y="5" w="50" h="50" style.normal.border_color="#ff00ff">
-          <image image="earth" name="earth2" x="0" y="b" w="24" h="24"/>
+          <image image="earth" name="earth2" x="0" y="b" w="24" h="24" style.normal.bg_color="red"/>
         </view>
       </view>
       <view x="100" y="100" w="30" h="30" style.normal.border_color="#0000ff">
@@ -31,19 +31,26 @@
         <image image="earth" x="0" y="0" w="24" h="24"/>
       </view>
       <view x="400" y="400" w="60" h="60" style.normal.border_color="#0000ff">
-        <image image="earth" name="earth3" x="0" y="0" w="24" h="24"/>
+        <image image="earth" name="earth3" x="0" y="0" w="24" h="24" style.normal.bg_color="red"/>
       </view>
       <view x="200" y="400" w="30" h="30" style.normal.border_color="#0000ff">
-        <image image="earth" name="earth4" x="60" y="60" w="24" h="24"/>
+        <image image="earth" name="earth4" x="60" y="60" w="24" h="24" style.normal.bg_color="red"/>
       </view>
     </scroll_view>
     <scroll_bar_d name="bar_h" x="10%" y="b" w="80%" h="10%" value="0"/>
     <scroll_bar_d name="bar_v" x="r" y="10%" w="10%" h="80%" value="0"/>
   </view>
-  <view x="0" y="b" w="100%" h="30%" children_layout="default(c=2,r=4,m=5,s=5)" >
+  <view style:border_color="red" x="0" y="60%" w="100%" h="15%" children_layout="default(c=2,r=2,m=5,s=5)" >
     <button name="focused:earth1" text="earth1" />
     <button name="focused:earth2" text="earth2" />
     <button name="focused:earth3" text="earth3" />
     <button name="focused:earth4" text="earth4" />
+  </view>
+  <view style:border_color="red" x="0" y="75%" w="100%" h="25%" children_layout="default(c=2,r=3,m=5,s=5)" >
+    <button name="set_prop:default" text="default" />
+    <button name="set_prop:in_center" text="in_center" />
+    <button name="set_prop:in_center_if_outside_viewport" text="in_center_outside" />
+    <button name="set_prop:at_top" text="at_top" />
+    <button name="set_prop:no_operation" text="no_operation" />
   </view>
 </window>

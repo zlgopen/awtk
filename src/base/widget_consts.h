@@ -336,6 +336,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_ELLIPSES "ellipses"
 
 /**
+ * @const WIDGET_PROP_VISIBLE_REVEAL_IN_SCROLL
+ * 可见控件在滚动控件中的可见处理方案。（影响 widget_ensure_visible_in_viewport 函数）
+ */
+#define WIDGET_PROP_VISIBLE_REVEAL_IN_SCROLL "visible_reveal_in_scroll"
+
+/**
  * @const WIDGET_PROP_TEXT
  * 文本。
  */

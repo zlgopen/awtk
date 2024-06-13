@@ -29,6 +29,7 @@ widget_t* scroll_view = NULL;
 #define SCROLL_BAR_H_WIDGT_NAME "bar_h"
 #define SCROLL_BAR_V_WIDGT_NAME "bar_v"
 #define BUTTON_SET_FOCUSE_STRING "focused:"
+#define BUTTON_SET_PROP_VISIBLE_REVEAL_IN_SCROLL_STRING "set_prop:"
 
 static int32_t scroll_bar_value_to_scroll_view_offset_y(scroll_bar_t* scroll_bar,
                                                         scroll_view_t* sv) {
@@ -94,6 +95,16 @@ static ret_t on_set_focuse_item(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_set_visible_reveal_in_scroll(void* ctx, event_t* e) {
+  const char* name = (const char*)ctx;
+
+  if (name != NULL) {
+    widget_set_prop_str(scroll_view, WIDGET_PROP_VISIBLE_REVEAL_IN_SCROLL, name);
+  }
+
+  return RET_OK;
+}
+
 static ret_t scroll_view_offset_changed(void* ctx, event_t* e) {
   scroll_view_t* sv = SCROLL_VIEW(scroll_view);
   scroll_bar_t* scroll_bar_h = SCROLL_BAR(bar_h);
@@ -133,6 +144,9 @@ static ret_t install_one(void* ctx, const void* iter) {
     if (strstr(name, BUTTON_SET_FOCUSE_STRING) != NULL) {
       widget_on(widget, EVT_CLICK, on_set_focuse_item,
                 (void*)(name + tk_strlen(BUTTON_SET_FOCUSE_STRING)));
+    } else if (strstr(name, BUTTON_SET_PROP_VISIBLE_REVEAL_IN_SCROLL_STRING) != NULL) {
+      widget_on(widget, EVT_CLICK, on_set_visible_reveal_in_scroll,
+                (void*)(name + tk_strlen(BUTTON_SET_PROP_VISIBLE_REVEAL_IN_SCROLL_STRING)));
     } else if (tk_str_eq(name, SCROLL_BAR_H_WIDGT_NAME)) {
       bar_h = widget;
       widget_on(widget, EVT_VALUE_CHANGED, scroll_bar_value_changed, widget);
