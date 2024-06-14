@@ -1,4 +1,24 @@
-﻿
+﻿/**
+ * File:   widget_visible_in_scroll_view.inc
+ * Author: AWTK Develop Team
+ * Brief:  for widget_ensure_visible_in_scroll_view function
+ *
+ * Copyright (c) 2019 - 2024  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * License file for more details.
+ *
+ */
+
+/**
+ * History:
+ * ================================================================
+ * 2024-06-13 Luo Zhiming <luozhiming@zlg.cn> created
+ *
+ */
+
 #define WIDGET_VISIBLE_REVEAL_IN_SCROLL_TYPE_DEFAULT                               "default"
 
 #define WIDGET_VISIBLE_REVEAL_IN_SCROLL_TYPE_IN_CENTER                             "in_center"
@@ -15,20 +35,29 @@ typedef ret_t (*widget_visible_reveal_in_scroll_func_t)(const rect_t* r, xy_t ox
  * 调整到最近的可视位置，即块已在可视区域内，如果显示区域比滚动区域还要大，则不做任何操作，否则选择最短的路径移到到可视区域。
  */
 static ret_t widget_visible_reveal_in_scroll_by_default(const rect_t* r, xy_t ox, xy_t oy, wh_t scroll_w, wh_t scroll_h, xy_t* new_ox, xy_t* new_oy) {
+  wh_t r_bottom, r_right, s_bottom, s_right;
   return_value_if_fail(r != NULL && new_ox != NULL && new_oy != NULL, RET_BAD_PARAMS);
 
-  if (oy > r->y) {
-    oy = r->y;
-  }
-  if ((r->y + r->h) > (oy + scroll_h)) {
-    oy = r->y + r->h - scroll_h;
-  }
+  r_right = r->x + r->w;
+  s_right = ox + scroll_w;
+  r_bottom = r->y + r->h;
+  s_bottom = oy + scroll_h;
 
-  if (ox > r->x) {
-    ox = r->x;
+  if (!(oy > r->y && r_bottom > s_bottom)) {
+    if (oy > r->y) {
+      oy = r->y;
+    }
+    if (r_bottom > s_bottom) {
+      oy = r_bottom - scroll_h;
+    }
   }
-  if ((r->x + r->w) > (ox + scroll_w)) {
-    ox = r->x + r->w - scroll_w;
+  if (!(ox > r->x && r_right > s_right)) {
+    if (ox > r->x) {
+      ox = r->x;
+    }
+    if (r_right > s_right) {
+      ox = r_right - scroll_w;
+    }
   }
 
   *new_ox = tk_max(ox, 0);
