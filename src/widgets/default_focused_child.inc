@@ -154,7 +154,7 @@ static ret_t default_focused_child_set_target_focused(str_t* tag, widget_t* widg
       if (target == target->parent->target) {
         break;
       }
-      pointer_event_init((event_t*)&event, EVT_POINTER_LEAVE, target->parent->target, ids->last_x, ids->last_y);
+      pointer_event_init(&event, EVT_POINTER_LEAVE, target->parent->target, ids->last_x, ids->last_y);
       widget_dispatch_leave_event(target->parent->target, &event);
       
       target->parent->target = target;

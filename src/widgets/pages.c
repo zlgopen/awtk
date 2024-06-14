@@ -51,11 +51,12 @@ static ret_t pages_save_target(widget_t* widget) {
 
 static ret_t pages_on_idle_set_target_focused(const idle_info_t* idle) {
   pages_t* pages = NULL;
+  system_info_t* info = system_info();
   return_value_if_fail(idle != NULL, RET_BAD_PARAMS);
   pages = PAGES(idle->ctx);
   ENSURE(pages);
 
-  if (pages->widget.focused) {
+  if (pages->widget.focused || info->keyboard_type == KEYBOARD_3KEYS || info->keyboard_type == KEYBOARD_5KEYS) {
     default_focused_child_set_target_focused(&(pages->str_target), WIDGET(pages));
   }
 
