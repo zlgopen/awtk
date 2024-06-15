@@ -377,7 +377,9 @@ static int32_t children_layouter_list_view_for_list_view_get_scroll_view_w(list_
   widget_t* scroll_bar = NULL;
   return_value_if_fail(list_view != NULL && scroll_view != NULL, 0);
   scroll_bar = list_view->scroll_bar;
-  if (list_view->floating_scroll_bar || scroll_bar == NULL || scroll_bar_is_mobile(scroll_bar) ||
+  if (list_view->floating_scroll_bar) {
+    scroll_view_w = scroll_view->w;
+  } else if (scroll_bar == NULL || scroll_bar_is_mobile(scroll_bar) ||
       (!scroll_bar_is_mobile(scroll_bar) && list_view->auto_hide_scroll_bar &&
        scroll_view->h >= virtual_h)) {
     scroll_view_w = list_view->widget.w;
@@ -452,7 +454,7 @@ static ret_t children_layouter_list_view_for_list_view_set_scroll_bar_info(widge
   } else {
     if (scroll_view->h >= virtual_h) {
       scroll_bar_set_value(widget, 0);
-      if (list_view->auto_hide_scroll_bar || list_view->floating_scroll_bar) {
+      if (list_view->auto_hide_scroll_bar) {
         widget_set_sensitive(widget, FALSE);
         widget_set_visible_only(widget, FALSE);
       } else {

@@ -110,7 +110,7 @@ static bool_t list_view_is_play_floating_scroll_bar_animtion(list_view_t* list_v
     scroll_view = SCROLL_VIEW(list_view->scroll_view);
     return_value_if_fail(scroll_view != NULL, FALSE);
 
-    if (list_view->floating_scroll_bar && scroll_view->virtual_h >= list_view->widget.h) {
+    if (list_view->floating_scroll_bar && scroll_view->virtual_h > list_view->widget.h) {
       return TRUE;
     }
   }
