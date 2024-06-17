@@ -170,6 +170,7 @@ static ret_t combo_box_set_text_only(widget_t* widget, const char* text, const w
     }
   }
   combo_box_update_status(value_widget);
+  edit_set_cursor(widget, 0);
   return RET_OK;
 }
 
@@ -193,7 +194,7 @@ static ret_t combo_box_set_text(widget_t* widget, const char* text, const wchar_
       widget_set_text_utf8(value_widget, text);
     }
   }
-
+  edit_set_cursor(widget, 0);
   return RET_OK;
 }
 
