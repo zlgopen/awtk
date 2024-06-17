@@ -422,8 +422,12 @@ static ret_t native_window_sdl_set_cursor(native_window_t* win, const char* name
     SDL_FreeCursor(sdl->cursor);
     sdl->cursor = NULL;
   }
-
-  if (system_info()->app_type == APP_DESKTOP) {
+  
+  if (img != NULL) {
+    point_t hot_spot = {0, 0};
+    calc_cursor_hot_spot(name, img, &hot_spot);
+    return native_window_sdl_cursor_from_bitmap(win, img, &hot_spot);
+  } else if (system_info()->app_type == APP_DESKTOP) {
     int system_cursor = map_to_sdl_cursor(name);
     if (system_cursor >= 0) {
       sdl->cursor = SDL_CreateSystemCursor((SDL_SystemCursor)system_cursor);
@@ -431,10 +435,6 @@ static ret_t native_window_sdl_set_cursor(native_window_t* win, const char* name
 
       return RET_OK;
     }
-  } else if (img != NULL) {
-    point_t hot_spot = {0, 0};
-    calc_cursor_hot_spot(name, img, &hot_spot);
-    return native_window_sdl_cursor_from_bitmap(win, img, &hot_spot);
   }
 
   return RET_FAIL;
