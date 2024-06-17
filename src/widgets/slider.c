@@ -490,13 +490,12 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
 
           slider->down = p;
           slider->pressed = TRUE;
-          slider->dragging = TRUE;
           widget_set_state(widget, WIDGET_STATE_PRESSED);
           widget_grab(widget->parent, widget);
           widget_invalidate(widget, NULL);
         }
       }
-      ret = slider->dragging ? RET_STOP : RET_OK;
+      ret = slider->pressed ? RET_STOP : RET_OK;
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
@@ -507,6 +506,23 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
       pointer_event_t* evt = (pointer_event_t*)e;
       if (slider->dragging) {
         slider_change_value_by_pointer_event(widget, evt);
+      } else if (evt->pressed && slider->pressed) {
+        int32_t delta;
+        point_t p = {evt->x, evt->y};
+        widget_to_local(widget, &p);
+        if (slider->vertical) {
+          delta = evt->y - slider->down.y;
+        } else {
+          delta = evt->x - slider->down.x;
+        }
+
+        if (tk_abs(delta) > slider->drag_threshold) {
+          pointer_event_t abort;
+          pointer_event_init(&abort, EVT_POINTER_DOWN_ABORT, widget, evt->x, evt->y);
+          widget_dispatch_event_to_target_recursive(widget, (event_t*)(&abort));
+          slider->dragging = TRUE;
+          slider_change_value_by_pointer_event(widget, evt);
+        }
       }
 
       break;
@@ -695,6 +711,14 @@ ret_t slider_set_line_cap(widget_t* widget, const char* line_cap) {
   return widget_invalidate(widget, NULL);
 }
 
+ret_t slider_set_drag_threshold(widget_t* widget, uint32_t drag_threshold) {
+  slider_t* slider = SLIDER(widget);
+  return_value_if_fail(slider != NULL, RET_BAD_PARAMS);
+
+  slider->drag_threshold = drag_threshold;
+  return RET_OK;
+}
+
 static ret_t slider_get_prop(widget_t* widget, const char* name, value_t* v) {
   slider_t* slider = SLIDER(widget);
   return_value_if_fail(slider != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -735,6 +759,9 @@ static ret_t slider_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_DIRTY_RECT)) {
     value_set_rect(v, slider_get_dirty_rect(widget));
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_DRAG_THRESHOLD)) {
+    value_set_uint32(v, slider->drag_threshold);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -768,6 +795,8 @@ static ret_t slider_set_prop(widget_t* widget, const char* name, const value_t* 
     return RET_OK;
   } else if (tk_str_eq(name, SLIDER_PROP_SLIDE_LINE_CAP)) {
     return slider_set_line_cap(widget, value_str(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_DRAG_THRESHOLD)) {
+    return slider_set_drag_threshold(widget, value_uint32(v));
   }
 
   return RET_NOT_FOUND;
@@ -807,6 +836,7 @@ static const char* s_slider_properties[] = {WIDGET_PROP_VALUE,
                                             SLIDER_PROP_DRAGGER_SIZE,
                                             SLIDER_PROP_DRAGGER_ADAPT_TO_ICON,
                                             SLIDER_PROP_SLIDE_WITH_BAR,
+                                            WIDGET_PROP_DRAG_THRESHOLD,
                                             NULL};
 
 TK_DECL_VTABLE(slider) = {.size = sizeof(slider_t),

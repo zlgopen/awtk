@@ -143,6 +143,14 @@ typedef struct _slider_t {
    */
   bool_t slide_with_bar;
 
+  /**
+   * @property {uint32_t} drag_threshold
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 拖动临界值。
+   *
+   */
+  uint32_t drag_threshold;
+
   /*private*/
   bool_t pressed;
   bool_t dragging;
@@ -269,6 +277,17 @@ ret_t slider_set_bar_size(widget_t* widget, uint32_t bar_size);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t slider_set_vertical(widget_t* widget, bool_t vertical);
+
+/**
+ * @method slider_set_drag_threshold
+ * 设置拖拽临界值。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t}  drag_threshold 拖拽临界值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t slider_set_drag_threshold(widget_t* widget, uint32_t drag_threshold);
 
 #define SLIDER_PROP_DRAGGER_SIZE "dragger_size"
 #define SLIDER_PROP_DRAGGER_ADAPT_TO_ICON "dragger_adapt_to_icon"
