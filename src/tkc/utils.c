@@ -836,6 +836,27 @@ bool_t tk_str_end_with(const char* str, const char* appendix) {
   }
 }
 
+bool_t tk_str_case_start_with(const char* str, const char* prefix) {
+  return_value_if_fail(str != NULL && prefix != NULL, FALSE);
+
+  return strncasecmp(str, prefix, strlen(prefix)) == 0;
+}
+
+bool_t tk_str_case_end_with(const char* str, const char* appendix) {
+  uint32_t len_str = 0;
+  uint32_t len_appendix = 0;
+  return_value_if_fail(str != NULL && appendix != NULL, FALSE);
+
+  len_str = strlen(str);
+  len_appendix = strlen(appendix);
+
+  if (len_str < len_appendix) {
+    return FALSE;
+  } else {
+    return strncasecmp(str + len_str - len_appendix, appendix, len_appendix) == 0;
+  }
+}
+
 const char* tk_under_score_to_camel(const char* name, char* out, uint32_t max_out_size) {
   uint32_t i = 0;
   const char* s = name;

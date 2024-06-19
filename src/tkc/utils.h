@@ -672,6 +672,30 @@ bool_t tk_str_start_with(const char* str, const char* prefix);
 bool_t tk_str_end_with(const char* str, const char* appendix);
 
 /**
+ * @method tk_str_case_start_with
+ *
+ * 检查字符串是否以指定的字符串prefix开头(忽略大小写)。
+ *
+ * @param {const char*} str 要检查字符串。
+ * @param {const char*} prefix 被检查的字符串。
+ *
+ * @return {bool_t} 返回TRUE表示是；否则表示不是。
+ */
+bool_t tk_str_case_start_with(const char* str, const char* prefix);
+
+/**
+ * @method tk_str_case_end_with
+ *
+ * 检查字符串是否以指定的字符串appendix结尾(忽略大小写)。
+ *
+ * @param {const char*} str 要检查字符串。
+ * @param {const char*} appendix 被检查的字符串。
+ *
+ * @return {bool_t} 返回TRUE表示是；否则表示不是。
+ */
+bool_t tk_str_case_end_with(const char* str, const char* appendix);
+
+/**
  * @method tk_under_score_to_camel
  *
  * 将下划线名字转成驼峰名字。

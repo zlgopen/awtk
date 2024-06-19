@@ -1,4 +1,6 @@
 # 最新动态
+2024/06/19
+  * 增加函数tk\_str\_case\_start\_with/tk\_str\_case\_end\_with
 
 2024/06/17
   * slider控件添加drag_threshold用于判断是否需要进入拖动状态(感谢泽武提供补丁)

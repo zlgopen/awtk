@@ -390,6 +390,24 @@ TEST(Utils, tk_str_end_with) {
   ASSERT_EQ(tk_str_end_with("abc123", "aabc123"), FALSE);
 }
 
+TEST(Utils, tk_str_case_start_with) {
+  ASSERT_EQ(tk_str_case_start_with("abc123", "A"), TRUE);
+  ASSERT_EQ(tk_str_case_start_with("abc123", "aB"), TRUE);
+  ASSERT_EQ(tk_str_case_start_with("abc123", "abC"), TRUE);
+  ASSERT_EQ(tk_str_case_start_with("abc123", ""), TRUE);
+  ASSERT_EQ(tk_str_case_start_with("abc123", "b"), FALSE);
+}
+
+TEST(Utils, tk_str_case_end_with) {
+  ASSERT_EQ(tk_str_case_end_with("abc123abc", "AbC"), TRUE);
+  ASSERT_EQ(tk_str_case_end_with("abc123abc", "C"), TRUE);
+  ASSERT_EQ(tk_str_case_end_with("abc123abc", "bC"), TRUE);
+  ASSERT_EQ(tk_str_case_end_with("abc123", ""), TRUE);
+  ASSERT_EQ(tk_str_case_end_with("abc123A", "abc123A"), TRUE);
+  ASSERT_EQ(tk_str_case_end_with("abc123A", "a"), TRUE);
+  ASSERT_EQ(tk_str_case_end_with("abc123", "aabc123"), FALSE);
+}
+
 TEST(Utils, ieq) {
   ASSERT_EQ(strcasecmp("Trigger", "trigger"), 0);
   ASSERT_EQ(tk_str_ieq("Trigger", "trigger"), TRUE);
