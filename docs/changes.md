@@ -2,6 +2,7 @@
 
 2024/06/21
   * 修改list_view悬浮和自动隐藏的属性的描述和实际不相符的问题(感谢智明提供补丁)
+  * awtk-web支持fscript扩展
 
 2024/06/19
   * 增加函数tk\_str\_case\_start\_with/tk\_str\_case\_end\_with

@@ -17,6 +17,14 @@
 #include "tkc/endian.h"
 #include "tkc/fscript.h"
 
+#ifdef AWTK_WEB
+/*AWTK_WEB 不支持下面函数*/
+#define htonl(n) n
+#define ntohl(n) n
+#define htons(n) n
+#define ntohs(n) n
+#endif/*AWTK_WEB*/
+
 static ret_t func_is_little_endian(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 0, RET_BAD_PARAMS);
   value_set_bool(result, is_little_endian());

@@ -21,6 +21,7 @@
 
 static ret_t func_iostream_serial_create(fscript_t* fscript, fscript_args_t* args,
                                          value_t* result) {
+#ifndef AWTK_WEB                                         
   int baudrate = 115200;
   tk_object_t* obj = NULL;
   const char* devname = NULL;
@@ -70,8 +71,10 @@ static ret_t func_iostream_serial_create(fscript_t* fscript, fscript_args_t* arg
   result->free_handle = TRUE;
 
   tk_iostream_serial_config(TK_IOSTREAM(obj), baudrate, bytesize, parity, stopbits, flowcontrol);
-
   return RET_OK;
+#else
+  return RET_NOT_IMPL;
+#endif
 }
 
 FACTORY_TABLE_BEGIN(s_ext_iostream_serial)
