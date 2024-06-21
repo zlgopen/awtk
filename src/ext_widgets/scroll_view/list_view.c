@@ -102,7 +102,7 @@ static ret_t list_view_on_wheel_before(void* ctx, event_t* e) {
   return list_view_handle_wheel_event(LIST_VIEW(ctx), e);
 }
 
-static bool_t list_view_is_play_floating_scroll_bar_animtion(list_view_t* list_view) {
+static bool_t list_view_is_play_auto_hide_scroll_bar_animtion(list_view_t* list_view) {
   scroll_view_t* scroll_view = NULL;
   return_value_if_fail(list_view != NULL && list_view->scroll_view != NULL, FALSE);
 
@@ -110,7 +110,7 @@ static bool_t list_view_is_play_floating_scroll_bar_animtion(list_view_t* list_v
     scroll_view = SCROLL_VIEW(list_view->scroll_view);
     return_value_if_fail(scroll_view != NULL, FALSE);
 
-    if (list_view->floating_scroll_bar && scroll_view->virtual_h > list_view->widget.h) {
+    if (list_view->auto_hide_scroll_bar && scroll_view->virtual_h > list_view->widget.h) {
       return TRUE;
     }
   }
@@ -120,7 +120,7 @@ static bool_t list_view_is_play_floating_scroll_bar_animtion(list_view_t* list_v
 static ret_t list_view_on_pointer_leave(list_view_t* list_view) {
   return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
   list_view->is_over = FALSE;
-  if (list_view_is_play_floating_scroll_bar_animtion(list_view)) {
+  if (list_view_is_play_auto_hide_scroll_bar_animtion(list_view)) {
     widget_t* win = widget_get_window(WIDGET(list_view));
     scroll_bar_hide_by_opacity_animation(list_view->scroll_bar,
                                          LIST_VIEW_FLOATING_SCROLL_BAR_HIDE_TIME, 0);
@@ -131,7 +131,7 @@ static ret_t list_view_on_pointer_leave(list_view_t* list_view) {
 static ret_t list_view_on_pointer_enter(list_view_t* list_view) {
   return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
   list_view->is_over = TRUE;
-  if (list_view_is_play_floating_scroll_bar_animtion(list_view)) {
+  if (list_view_is_play_auto_hide_scroll_bar_animtion(list_view)) {
     widget_t* win = widget_get_window(WIDGET(list_view));
     scroll_bar_show_by_opacity_animation(list_view->scroll_bar,
                                          LIST_VIEW_FLOATING_SCROLL_BAR_SHOW_TIME, 0);
