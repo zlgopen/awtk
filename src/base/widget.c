@@ -2222,11 +2222,16 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
 
 #ifndef WITHOUT_FSCRIPT
       if (strncmp(name, STR_ON_EVENT_PREFIX, sizeof(STR_ON_EVENT_PREFIX) - 1) == 0) {
-        bool_t is_global_vars_changed =
-            tk_str_eq(name, STR_ON_EVENT_PREFIX "" STR_GLOBAL_VARS_CHANGED);
-        int32_t etype = is_global_vars_changed
-                            ? EVT_PROP_CHANGED
-                            : event_from_name(name + sizeof(STR_ON_EVENT_PREFIX) - 1);
+        const char* p_str = STR_ON_EVENT_PREFIX "" STR_GLOBAL_VARS_CHANGED;
+        bool_t is_global_vars_changed = tk_str_eq(name, p_str);
+
+        const char* event_name = name + sizeof(STR_ON_EVENT_PREFIX) - 1;
+        int32_t etype = is_global_vars_changed ? EVT_PROP_CHANGED : event_from_name(event_name);
+
+        if (etype == EVT_NONE) {
+          etype = fscript_find_event(event_name);
+        }
+
         if (etype != EVT_NONE) {
           fscript_info_t* info = fscript_info_create(value_str(v), widget);
           if (info != NULL) {

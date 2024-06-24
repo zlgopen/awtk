@@ -368,6 +368,16 @@ ret_t fscript_set_global_object(tk_object_t* obj);
 ret_t fscript_register_func(const char* name, fscript_func_t func);
 
 /**
+ * @method fscript_register_event
+ * 注册自定义事件。
+ * @param {const char*} name 事件名。
+ * @param {uint32_t} etype 事件的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_register_event(const char* name, uint32_t etype);
+
+/**
  * @method fscript_register_const_value
  * 注册常量。
  * @param {const char*} name 常量名。
@@ -562,6 +572,15 @@ ret_t fscript_ensure_locals(fscript_t* fscript);
  * @return {fscript_func_t} 返回函数指针，NULL表示失败。
  */
 fscript_func_t fscript_find_func(fscript_t* fscript, const char* name, uint32_t size);
+
+/**
+ * @method fscript_find_event
+ * 查找事件。
+ * @param {const char*} name 事件名。
+ *
+ * @return {uint32_t} 返回事件的值。
+ */
+uint32_t fscript_find_event(const char* name);
 
 /**
  * @method fscript_get_code_id

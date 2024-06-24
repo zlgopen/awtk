@@ -3256,6 +3256,19 @@ fscript_func_t fscript_find_func(fscript_t* fscript, const char* name, uint32_t 
   return func;
 }
 
+static tk_object_t* s_custom_events;
+
+uint32_t fscript_find_event(const char* name) {
+  uint32_t etype = EVT_NONE;
+  return_value_if_fail(name != NULL, EVT_NONE);
+
+  if (s_custom_events != NULL) {
+    etype = tk_object_get_prop_uint32(s_custom_events, name, EVT_NONE);
+  }
+
+  return etype;
+}
+
 static ret_t fscript_func_call_init_func(fscript_func_call_t* call, tk_object_t* obj,
                                          tk_object_t* funcs_def, const char* name, uint32_t size) {
   uint32_t i = 0;
@@ -3389,6 +3402,7 @@ ret_t fscript_global_init(void) {
 ret_t fscript_global_deinit(void) {
   TK_OBJECT_UNREF(s_consts_obj);
   TK_OBJECT_UNREF(s_global_obj);
+  TK_OBJECT_UNREF(s_custom_events);
   general_factory_destroy(s_global_funcs);
   s_global_funcs = NULL;
   return RET_OK;
@@ -3432,6 +3446,20 @@ ret_t fscript_register_func(const char* name, fscript_func_t func) {
   }
 
   return general_factory_register(s_global_funcs, name, (tk_create_t)func);
+}
+
+ret_t fscript_register_event(const char* name, uint32_t etype) {
+  return_value_if_fail(name != NULL, RET_BAD_PARAMS);
+
+  if (fscript_find_event(name) != EVT_NONE) {
+    return RET_FOUND;
+  }
+
+  if (s_custom_events == NULL) {
+    s_custom_events = object_default_create();
+  }
+
+  return tk_object_set_prop_uint32(s_custom_events, name, etype);
 }
 
 double tk_expr_eval(const char* expr) {
