@@ -4131,9 +4131,8 @@ static ret_t widget_ensure_visible_in_scroll_view(widget_t* scroll_view, widget_
   int32_t oy = 0;
   int32_t old_ox = 0;
   int32_t old_oy = 0;
-  int32_t max_w = 0;
-  int32_t max_h = 0;
   rect_t r;
+  value_t v;
   widget_visible_reveal_in_scroll_func_t func;
   return_value_if_fail(widget != NULL && scroll_view != NULL, RET_BAD_PARAMS);
 
@@ -4148,11 +4147,12 @@ static ret_t widget_ensure_visible_in_scroll_view(widget_t* scroll_view, widget_
 
   func(&r, ox, oy, scroll_view->w, scroll_view->h, &ox, &oy);
 
-  max_w = widget_get_prop_int(scroll_view, WIDGET_PROP_VIRTUAL_W, scroll_view->w);
-  max_h = widget_get_prop_int(scroll_view, WIDGET_PROP_VIRTUAL_H, scroll_view->h);
-
-  ox = tk_min(ox, max_w - scroll_view->w);
-  oy = tk_min(oy, max_h - scroll_view->h);
+  if (widget_get_prop(scroll_view, WIDGET_PROP_VIRTUAL_W, &v) == RET_OK) {
+    ox = tk_min(ox, value_uint32(&v) - scroll_view->w);
+  }
+  if ( widget_get_prop(scroll_view, WIDGET_PROP_VIRTUAL_H, &v) == RET_OK) {
+    oy = tk_min(oy, value_uint32(&v) - scroll_view->h);
+  }
   
   if (ox != old_ox) {
     widget_set_prop_int(scroll_view, WIDGET_PROP_XOFFSET, ox);
