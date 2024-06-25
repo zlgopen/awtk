@@ -1472,7 +1472,9 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
     case TK_KEY_KP_8:
     case TK_KEY_KP_9:
       return RET_OK;
+#ifndef AWTK_WEB      
     case TK_KEY_KP_ENTER:
+#endif/*AWTK_WEB*/    
     case TK_KEY_RETURN: {
       key = STB_TEXTEDIT_NEWLINE;
       break;
@@ -1575,11 +1577,13 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
     case TK_KEY_F10:
     case TK_KEY_F11:
     case TK_KEY_F12:
+#ifndef AWTK_WEB      
     case TK_KEY_LSHIFT:
-    case TK_KEY_RSHIFT:
-    case TK_KEY_LCTRL:
-    case TK_KEY_RCTRL:
     case TK_KEY_LALT:
+    case TK_KEY_LCTRL:
+#endif/*AWTK_WEB*/    
+    case TK_KEY_RSHIFT:
+    case TK_KEY_RCTRL:
     case TK_KEY_RALT:
     case TK_KEY_CAPSLOCK:
     case TK_KEY_COMMAND:
