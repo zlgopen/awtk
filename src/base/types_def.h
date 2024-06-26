@@ -196,17 +196,17 @@ typedef enum _icon_at_type_t {
   ICON_AT_LEFT = 1,
   /**
    * @const ICON_AT_RIGHT
-   * 水平右边，垂直居中(not used now)。
+   * 水平右边，垂直居中。
    */
   ICON_AT_RIGHT = 2,
   /**
    * @const ICON_AT_TOP
-   * 水平居中，垂直顶部(not used now)。
+   * 水平居中，垂直顶部。
    */
   ICON_AT_TOP = 3,
   /**
    * @const ICON_AT_BOTTOM
-   * 水平居中，垂直低部(not used now)。
+   * 水平居中，垂直低部。
    */
   ICON_AT_BOTTOM = 4,
   /**
@@ -218,7 +218,27 @@ typedef enum _icon_at_type_t {
    * @const ICON_AT_CENTER
    * 水平居中，垂直居中。
    */
-  ICON_AT_CENTER = ICON_AT_CENTRE
+  ICON_AT_CENTER = ICON_AT_CENTRE,
+  /**
+   * @const ICON_AT_LEFT_TOP
+   * 左上。
+   */
+  ICON_AT_LEFT_TOP = 6,
+  /**
+   * @const ICON_AT_RIGHT_TOP
+   * 右上。
+   */
+  ICON_AT_RIGHT_TOP = 7,
+  /**
+   * @const ICON_AT_LEFT_BOTTOM
+   * 左下。
+   */
+  ICON_AT_LEFT_BOTTOM = 8,
+  /**
+   * @const ICON_AT_RIGHT_BOTTOM
+   * 右下。
+   */
+  ICON_AT_RIGHT_BOTTOM = 9
 } icon_at_type_t;
 
 /**

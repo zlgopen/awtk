@@ -1,0 +1,136 @@
+
+<check_button bg_color="#f0f0f0" text_color="black">
+  <style name="left" icon_at="left">
+    <normal  icon="unchecked" />
+    <pressed icon="unchecked" />
+    <over    icon="unchecked" text_color="green"/>
+    <focused icon="unchecked" text_color="green"/>
+    <normal_of_checked icon="checked" text_color="blue"/>
+    <pressed_of_checked icon="checked" text_color="blue"/>
+    <over_of_checked icon="checked" text_color="green"/>
+    <focused_of_checked icon="checked" text_color="green"/>
+    <normal_of_indeterminate icon="indeterminate" text_color="blue"/>
+    <pressed_of_indeterminate icon="indeterminate" text_color="blue"/>
+    <over_of_indeterminate icon="indeterminate" text_color="green"/>
+    <focused_of_indeterminate icon="indeterminate" text_color="green"/>
+  </style>
+  
+  <style name="right" icon_at="right">
+    <normal  icon="unchecked" />
+    <pressed icon="unchecked" />
+    <over    icon="unchecked" text_color="green"/>
+    <focused icon="unchecked" text_color="green"/>
+    <normal_of_checked icon="checked" text_color="blue"/>
+    <pressed_of_checked icon="checked" text_color="blue"/>
+    <over_of_checked icon="checked" text_color="green"/>
+    <focused_of_checked icon="checked" text_color="green"/>
+    <normal_of_indeterminate icon="indeterminate" text_color="blue"/>
+    <pressed_of_indeterminate icon="indeterminate" text_color="blue"/>
+    <over_of_indeterminate icon="indeterminate" text_color="green"/>
+    <focused_of_indeterminate icon="indeterminate" text_color="green"/>
+  </style>
+  
+  <style name="top" icon_at="top">
+    <normal  icon="unchecked" />
+    <pressed icon="unchecked" />
+    <over    icon="unchecked" text_color="green"/>
+    <focused icon="unchecked" text_color="green"/>
+    <normal_of_checked icon="checked" text_color="blue"/>
+    <pressed_of_checked icon="checked" text_color="blue"/>
+    <over_of_checked icon="checked" text_color="green"/>
+    <focused_of_checked icon="checked" text_color="green"/>
+    <normal_of_indeterminate icon="indeterminate" text_color="blue"/>
+    <pressed_of_indeterminate icon="indeterminate" text_color="blue"/>
+    <over_of_indeterminate icon="indeterminate" text_color="green"/>
+    <focused_of_indeterminate icon="indeterminate" text_color="green"/>
+  </style>
+  
+  <style name="bottom" icon_at="bottom">
+    <normal  icon="unchecked" />
+    <pressed icon="unchecked" />
+    <over    icon="unchecked" text_color="green"/>
+    <focused icon="unchecked" text_color="green"/>
+    <normal_of_checked icon="checked" text_color="blue"/>
+    <pressed_of_checked icon="checked" text_color="blue"/>
+    <over_of_checked icon="checked" text_color="green"/>
+    <focused_of_checked icon="checked" text_color="green"/>
+    <normal_of_indeterminate icon="indeterminate" text_color="blue"/>
+    <pressed_of_indeterminate icon="indeterminate" text_color="blue"/>
+    <over_of_indeterminate icon="indeterminate" text_color="green"/>
+    <focused_of_indeterminate icon="indeterminate" text_color="green"/>
+  </style>
+  
+  <style name="center" icon_at="center">
+    <normal  icon="unchecked" />
+    <pressed icon="unchecked" />
+    <over    icon="unchecked" text_color="green"/>
+    <focused icon="unchecked" text_color="green"/>
+    <normal_of_checked icon="checked" text_color="blue"/>
+    <pressed_of_checked icon="checked" text_color="blue"/>
+    <over_of_checked icon="checked" text_color="green"/>
+    <focused_of_checked icon="checked" text_color="green"/>
+    <normal_of_indeterminate icon="indeterminate" text_color="blue"/>
+    <pressed_of_indeterminate icon="indeterminate" text_color="blue"/>
+    <over_of_indeterminate icon="indeterminate" text_color="green"/>
+    <focused_of_indeterminate icon="indeterminate" text_color="green"/>
+  </style>
+  
+  <style name="left_top" icon_at="left_top">
+    <normal  icon="unchecked" />
+    <pressed icon="unchecked" />
+    <over    icon="unchecked" text_color="green"/>
+    <focused icon="unchecked" text_color="green"/>
+    <normal_of_checked icon="checked" text_color="blue"/>
+    <pressed_of_checked icon="checked" text_color="blue"/>
+    <over_of_checked icon="checked" text_color="green"/>
+    <focused_of_checked icon="checked" text_color="green"/>
+    <normal_of_indeterminate icon="indeterminate" text_color="blue"/>
+    <pressed_of_indeterminate icon="indeterminate" text_color="blue"/>
+    <over_of_indeterminate icon="indeterminate" text_color="green"/>
+    <focused_of_indeterminate icon="indeterminate" text_color="green"/>
+  </style>
+  
+  <style name="right_top" icon_at="right_top">
+    <normal  icon="unchecked" />
+    <pressed icon="unchecked" />
+    <over    icon="unchecked" text_color="green"/>
+    <focused icon="unchecked" text_color="green"/>
+    <normal_of_checked icon="checked" text_color="blue"/>
+    <pressed_of_checked icon="checked" text_color="blue"/>
+    <over_of_checked icon="checked" text_color="green"/>
+    <focused_of_checked icon="checked" text_color="green"/>
+    <normal_of_indeterminate icon="indeterminate" text_color="blue"/>
+    <pressed_of_indeterminate icon="indeterminate" text_color="blue"/>
+    <over_of_indeterminate icon="indeterminate" text_color="green"/>
+    <focused_of_indeterminate icon="indeterminate" text_color="green"/>
+  </style>
+  <style name="left_bottom" icon_at="left_bottom">
+    <normal  icon="unchecked" />
+    <pressed icon="unchecked" />
+    <over    icon="unchecked" text_color="green"/>
+    <focused icon="unchecked" text_color="green"/>
+    <normal_of_checked icon="checked" text_color="blue"/>
+    <pressed_of_checked icon="checked" text_color="blue"/>
+    <over_of_checked icon="checked" text_color="green"/>
+    <focused_of_checked icon="checked" text_color="green"/>
+    <normal_of_indeterminate icon="indeterminate" text_color="blue"/>
+    <pressed_of_indeterminate icon="indeterminate" text_color="blue"/>
+    <over_of_indeterminate icon="indeterminate" text_color="green"/>
+    <focused_of_indeterminate icon="indeterminate" text_color="green"/>
+  </style>
+  
+  <style name="right_bottom" icon_at="right_bottom">
+    <normal  icon="unchecked" />
+    <pressed icon="unchecked" />
+    <over    icon="unchecked" text_color="green"/>
+    <focused icon="unchecked" text_color="green"/>
+    <normal_of_checked icon="checked" text_color="blue"/>
+    <pressed_of_checked icon="checked" text_color="blue"/>
+    <over_of_checked icon="checked" text_color="green"/>
+    <focused_of_checked icon="checked" text_color="green"/>
+    <normal_of_indeterminate icon="indeterminate" text_color="blue"/>
+    <pressed_of_indeterminate icon="indeterminate" text_color="blue"/>
+    <over_of_indeterminate icon="indeterminate" text_color="green"/>
+    <focused_of_indeterminate icon="indeterminate" text_color="green"/>
+  </style>
+</check_button>

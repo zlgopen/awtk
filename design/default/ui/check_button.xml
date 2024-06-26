@@ -1,0 +1,53 @@
+<window anim_hint="htranslate" move_focus_prev_key="up" move_focus_next_key="down" text="Basic Controls">
+  <view x="0" y="10" w="100%" h="100%" children_layout="default(r=5,c=2,m=10)">
+    <column children_layout="default(r=2,c=1,ym=2,s=10)" >
+      <check_button name="r1" text="icon at left1" focusable="true"/>
+      <check_button name="r2" text="icon at left2" focusable="true" indeterminate="true" />
+    </column>
+
+    <column children_layout="default(r=2,c=1,ym=2,s=10)" >
+      <check_button name="r1" text="icon at right1" focusable="true" style="right" />
+      <check_button name="r2" text="icon at right2" focusable="true" indeterminate="true" style="right" />
+    </column>
+    
+    <column children_layout="default(r=2,c=1,ym=2,s=10)" >
+      <check_button name="r1" text="icon at top1" focusable="true" style="top" />
+      <check_button name="r2" text="icon at top2" focusable="true" indeterminate="true" style="top" />
+    </column>
+    
+    <column children_layout="default(r=2,c=1,ym=2,s=10)" >
+      <check_button name="r1" text="icon at bottom1" focusable="true" style="bottom" />
+      <check_button name="r2" text="icon at bottom2" focusable="true" indeterminate="true" style="bottom" />
+    </column>
+    
+    <column children_layout="default(r=2,c=1,ym=2,s=10)" >
+      <check_button name="r1" text="icon at center1" focusable="true" style="center" />
+      <check_button name="r2" text="icon at center2" focusable="true" indeterminate="true" style="center" />
+    </column>
+    
+    <column children_layout="default(r=2,c=1,ym=2,s=10)" >
+      <check_button name="r1" text="icon at center1" focusable="true" style="center" />
+      <check_button name="r2" text="icon at center2" focusable="true" indeterminate="true" style="center" />
+    </column>
+
+    <column children_layout="default(r=2,c=1,ym=2,s=10)" >
+      <check_button name="r1" text="icon at left_top1" focusable="true" style="left_top" />
+      <check_button name="r2" text="icon at left_top2" focusable="true" indeterminate="true" style="left_top" />
+    </column>
+    
+    <column children_layout="default(r=2,c=1,ym=2,s=10)" >
+      <check_button name="r1" text="icon at right_top1" focusable="true" style="right_top" />
+      <check_button name="r2" text="icon at right_top2" focusable="true" indeterminate="true" style="right_top" />
+    </column>
+    
+    <column children_layout="default(r=2,c=1,ym=2,s=10)" >
+      <check_button name="r1" text="icon at left_bottom1" focusable="true" style="left_bottom" />
+      <check_button name="r2" text="icon at left_bottom2" focusable="true" indeterminate="true" style="left_bottom" />
+    </column>
+    
+    <column children_layout="default(r=2,c=1,ym=2,s=10)" >
+      <check_button name="r1" text="icon at right_bottom1" focusable="true" style="right_bottom" />
+      <check_button name="r2" text="icon at right_bottom2" focusable="true" indeterminate="true" style="right_bottom" />
+    </column>
+  </view>
+</window>

@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/06/26
+  * icon\_at 增加 left\_top/left\_bottom/right\_top/right\_bottom四种位置。
+
 2024/06/25
   * 完善awtk-web键值映射。
 

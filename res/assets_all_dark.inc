@@ -13,6 +13,7 @@
 #include "assets/default/inc/styles/dialog_toast.data"
 #include "assets/default/inc/styles/edit.data"
 #include "assets/default/inc/styles/modeless.data"
+#include "assets/default/inc/styles/check_button.data"
 #include "assets/default/inc/styles/number.data"
 #include "assets/default/inc/styles/keyboard.data"
 #include "assets/default/inc/styles/color.data"
@@ -75,6 +76,7 @@
 #include "assets/default/inc/ui/menu_up_left.data"
 #include "assets/default/inc/ui/locale.data"
 #include "assets/default/inc/ui/kb_ascii_t9.data"
+#include "assets/default/inc/ui/check_button.data"
 #include "assets/default/inc/ui/kb_default_t9.data"
 #include "assets/default/inc/ui/animator_layout.data"
 #include "assets/default/inc/ui/kb_int.data"
@@ -945,6 +947,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, style_dialog_toast_default);
   assets_manager_add(am, style_edit_default);
   assets_manager_add(am, style_modeless_default);
+  assets_manager_add(am, style_check_button_default);
   assets_manager_add(am, style_number_default);
   assets_manager_add(am, style_keyboard_default);
   assets_manager_add(am, style_color_default);
@@ -1007,6 +1010,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_menu_up_left_default);
   assets_manager_add(am, ui_locale_default);
   assets_manager_add(am, ui_kb_ascii_t9_default);
+  assets_manager_add(am, ui_check_button_default);
   assets_manager_add(am, ui_kb_default_t9_default);
   assets_manager_add(am, ui_animator_layout_default);
   assets_manager_add(am, ui_kb_int_default);

@@ -1468,6 +1468,9 @@ ret_t widget_off_by_func(widget_t* widget, uint32_t type, event_func_t on_event,
 ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, float_t text_size,
                                  int32_t icon_at, uint32_t img_w, uint32_t img_h, int32_t spacer,
                                  rect_t* r_text, rect_t* r_icon) {
+  float_t ratio = system_info()->device_pixel_ratio;
+  uint32_t img_w_r = 0;
+  uint32_t img_h_r = 0;
   return_value_if_fail(ir != NULL && (r_text != NULL || r_icon != NULL), RET_BAD_PARAMS);
 
   if (r_icon == NULL) {
@@ -1482,6 +1485,9 @@ ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, float_t te
     return RET_OK;
   }
 
+  img_w_r = img_w / ratio;
+  img_h_r = img_h / ratio;
+
   return_value_if_fail(spacer < ir->h && spacer < ir->w, RET_BAD_PARAMS);
   switch (icon_at) {
     case ICON_AT_CENTRE: {
@@ -1491,15 +1497,20 @@ ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, float_t te
       *r_icon = rect_init(ir->x + w / 2, ir->y + icon_h / 2, img_w, img_h);
       break;
     }
-    case ICON_AT_RIGHT: {
-      uint32_t w = img_w;
-      float_t ratio = system_info()->device_pixel_ratio;
-      if (ratio > 1) {
-        w = img_w / ratio;
-      }
+    case ICON_AT_RIGHT: 
+    case ICON_AT_RIGHT_TOP:
+    case ICON_AT_RIGHT_BOTTOM: {
+      uint32_t w = img_w_r;
       w = tk_min(tk_max(w, ir->h), ir->w);
       *r_icon = rect_init(ir->x + ir->w - w, ir->y, w, ir->h);
       *r_text = rect_init(ir->x, ir->y, ir->w - ir->h - spacer, ir->h);
+
+      if (icon_at == ICON_AT_RIGHT_TOP || icon_at == ICON_AT_RIGHT_BOTTOM) {
+        r_icon->w = img_w_r;
+        r_icon->h = img_h_r;
+        
+        r_icon->y = icon_at == ICON_AT_RIGHT_TOP ? 0 : (ir->h - img_h_r);
+      }
       break;
     }
     case ICON_AT_TOP: {
@@ -1515,10 +1526,17 @@ ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, float_t te
       break;
     }
     case ICON_AT_LEFT:
+    case ICON_AT_LEFT_TOP:
+    case ICON_AT_LEFT_BOTTOM:
     default: {
       wh_t w = tk_min(ir->h, ir->w);
       *r_icon = rect_init(ir->x, ir->y, w, ir->h);
       *r_text = rect_init(ir->x + w + spacer, ir->y, ir->w - w - spacer, ir->h);
+      if (icon_at == ICON_AT_LEFT_TOP || icon_at == ICON_AT_LEFT_BOTTOM) {
+        r_icon->w = img_w_r;
+        r_icon->h = img_h_r;
+        r_icon->y = icon_at == ICON_AT_LEFT_TOP ? 0 : (ir->h - img_h_r);
+      }
       break;
     }
   }
