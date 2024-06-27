@@ -357,7 +357,7 @@ namespace agge
 						else
 						{
 							b2 = y2 - k2 * x2;
-							x = (y + b2) / k2;
+							x = (y - b2) / k2;
 						}
 					}
 					else
@@ -386,7 +386,7 @@ namespace agge
 						else
 						{
 							b1 = y1 - k1 * x1;
-							x = (y + b1) / k1;
+							x = (y - b1) / k1;
 						}
 					}
 					else

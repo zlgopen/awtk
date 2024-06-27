@@ -2,6 +2,7 @@
 
 2024/06/27
   * 修复overlay导致对话框高亮消失的问题和overlay的焦点切换问题(感谢智明提供补丁)
+  * 修复了在agge模式下，当line_join为miter时出现的绘制错误(感谢泽武提供补丁)
 
 2024/06/26
   * icon\_at 增加 left\_top/left\_bottom/right\_top/right\_bottom四种位置。
