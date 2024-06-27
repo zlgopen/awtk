@@ -1,0 +1,32 @@
+<window>
+  <view name="view" x="0%" y="0" w="100%" h="10%" style:normal:border_color="#000000">
+    <check_button name="always_on_top" x="10" y="m" w="35%" h="50%" text="always_on_top"/>
+    <button name="open:top" x="55%" y="m" w="40%" h="50%" text="open_overlay"/>
+  </view>
+  <view name="view" x="0" y="10%" w="100%" h="16%" style:normal:border_color="#000000">
+    <button name="open:dialog1" x="55%" y="m" w="40%" h="50%" text="open_overlay"/>
+    <view name="view2" x="0" y="m" w="50%" h="100%" children_layout="default(c=1,r=3)">
+      <check_button name="highlight" value="true" text="highlight"/>
+      <check_button name="window_anim" value="false" text="window_anim"/>
+      <check_button name="timer_open_overlay" value="true" text="timer_open_overlay"/>
+    </view>
+  </view>
+  <combo_box name="combo_box" x="10" y="135" w="132" h="28" item_height="30" localize_options="false" readonly="true" options="a;b;c;d" selected_index="0"/>
+  <view name="view1" x="0" y="b" w="100%" h="60%" style:normal:border_color="#000000" children_layout="default(c=3,r=5,x=5,y=5,s=5)">
+    <button name="open:menu_down_left" visible="true" text="DownLeft"/>
+    <button name="open:menu_down_center" visible="true" text="DownCenter"/>
+    <button name="open:menu_down_right" visible="true" text="DownRight"/>
+    <button name="open:menu_right_top" visible="true" text="RightTop"/>
+    <button name="open:menu_point" visible="true" text="Point"/>
+    <button name="open:menu_left_top" visible="true" text="LeftTop"/>
+    <button name="open:menu_right_middle" visible="true" text="RightMiddle"/>
+    <button name="close" visible="true" text="Close"/>
+    <button name="open:menu_left_middle" visible="true" text="LeftMiddle"/>
+    <button name="open:menu_right_bottom" visible="true" text="LeftBottom"/>
+    <button name="open:menu_point" visible="true" text="Point"/>
+    <button name="open:menu_left_bottom" visible="true" text="LeftBottom"/>
+    <button name="open:menu_up_left" visible="true" text="UpLeft"/>
+    <button name="open:menu_up_center" visible="true" text="UpCenter"/>
+    <button name="open:menu_up_right" visible="true" text="UpRight"/>
+  </view>
+</window>

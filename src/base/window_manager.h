@@ -190,6 +190,16 @@ widget_t* window_manager_get_top_main_window(widget_t* widget);
 widget_t* window_manager_get_top_window(widget_t* widget);
 
 /**
+ * @method window_manager_get_foreground_window
+ * 获取前景窗口。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 窗口管理器对象。
+ *
+ * @return {widget_t*} 返回窗口对象。
+ */
+widget_t* window_manager_get_foreground_window(widget_t* widget);
+
+/**
  * @method window_manager_get_prev_window
  * 获取前一个的窗口。
  * @annotation ["scriptable"]

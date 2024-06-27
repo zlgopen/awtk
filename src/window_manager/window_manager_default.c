@@ -811,7 +811,6 @@ static ret_t window_manager_default_close_window(widget_t* widget, widget_t* win
     }
     if (prev_win != NULL) {
       if (!widget_is_keyboard(window)) {
-        bool_t find = FALSE;
         bool_t is_create = TRUE;
         const char* curr_highlight = NULL;
         widget_t* widget_highlighter = prev_win;
@@ -820,20 +819,16 @@ static ret_t window_manager_default_close_window(widget_t* widget, widget_t* win
         window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_FOREGROUND);
 
         WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-        if (!find && iter == prev_win) {
-          find = TRUE;
-        }
-        if (find) {
-          if (!widget_is_support_highlighter(iter)) {
-            is_create = FALSE;
+          if (widget_is_normal_window(iter)) {
             break;
           }
-          curr_highlight = widget_get_prop_str(iter, WIDGET_PROP_HIGHLIGHT, NULL);
-          if (curr_highlight != NULL && *curr_highlight != '\0') {
-            widget_highlighter = iter;
-            break;
+          if (widget_is_support_highlighter(iter)) {
+            curr_highlight = widget_get_prop_str(iter, WIDGET_PROP_HIGHLIGHT, NULL);
+            if (curr_highlight != NULL && *curr_highlight != '\0') {
+              widget_highlighter = iter;
+              break;
+            }
           }
-        }
         WIDGET_FOR_EACH_CHILD_END();
         if (is_create) {
           wm->curr_win = widget_highlighter;
@@ -1646,7 +1641,7 @@ static ret_t window_manager_default_post_init(widget_t* widget, wh_t w, wh_t h) 
 
   wm->lcd_w = w;
   wm->lcd_h = h;
-  wm->native_window = window_manager_create_native_window(wm, widget);
+  wm->native_window = window_manager_create_native_window(WINDOW_MANAGER(wm), widget);
 
   if (native_window_get_info(wm->native_window, &info) == RET_OK) {
     w = info.w;

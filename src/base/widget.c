@@ -3092,6 +3092,15 @@ ret_t widget_on_pointer_down_children(widget_t* widget, pointer_event_t* e) {
     if (!(widget_is_keyboard(target))) {
       if (widget_is_focusable(target) || !widget_is_strongly_focus(widget)) {
         if (!target->focused) {
+          if (widget_is_window(target)) {
+            widget_t* foreground_win = window_manager_get_foreground_window(window_manager());
+            if (foreground_win != NULL) {
+              if (widget_is_overlay(foreground_win) || widget_is_overlay(target)) {
+                window_manager_dispatch_window_event(target, EVT_WINDOW_TO_FOREGROUND);
+                window_manager_dispatch_window_event(foreground_win, EVT_WINDOW_TO_BACKGROUND);
+              }
+            }
+          }
           widget_set_focused_internal(target, TRUE);
         } else {
           widget->key_target = target;

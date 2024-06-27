@@ -216,6 +216,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_floating_keyboard_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_color_picker_rgb_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_tab_bottom_compact_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_popup_default[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_overlay_test_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_serial_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_image_packed_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_kb_uint_default[]);
@@ -773,6 +774,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_color_picker_rgb_default);
   assets_manager_add(am, ui_tab_bottom_compact_default);
   assets_manager_add(am, ui_popup_default);
+  assets_manager_add(am, ui_overlay_test_default);
   assets_manager_add(am, ui_serial_default);
   assets_manager_add(am, ui_image_packed_default);
   assets_manager_add(am, ui_kb_uint_default);

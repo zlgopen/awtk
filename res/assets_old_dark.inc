@@ -216,6 +216,7 @@
 #include "assets/default/inc/ui/color_picker_rgb.data"
 #include "assets/default/inc/ui/tab_bottom_compact.data"
 #include "assets/default/inc/ui/popup.data"
+#include "assets/default/inc/ui/overlay_test.data"
 #include "assets/default/inc/ui/serial.data"
 #include "assets/default/inc/ui/image_packed.data"
 #include "assets/default/inc/ui/kb_uint.data"
@@ -773,6 +774,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_color_picker_rgb_default);
   assets_manager_add(am, ui_tab_bottom_compact_default);
   assets_manager_add(am, ui_popup_default);
+  assets_manager_add(am, ui_overlay_test_default);
   assets_manager_add(am, ui_serial_default);
   assets_manager_add(am, ui_image_packed_default);
   assets_manager_add(am, ui_kb_uint_default);

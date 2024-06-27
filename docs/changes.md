@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/06/27
+  * 修复overlay导致对话框高亮消失的问题和overlay的焦点切换问题(感谢智明提供补丁)
+
 2024/06/26
   * icon\_at 增加 left\_top/left\_bottom/right\_top/right\_bottom四种位置。
 

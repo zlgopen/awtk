@@ -224,6 +224,20 @@ widget_t* window_manager_get_top_window(widget_t* widget) {
   }
 }
 
+widget_t* window_manager_get_foreground_window(widget_t* widget) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(wm != NULL && wm->vt != NULL, NULL);
+
+  WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+  int32_t stage = widget_get_prop_int(iter, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
+  if (stage == WINDOW_STAGE_OPENED) {
+    return iter;
+  }
+  WIDGET_FOR_EACH_CHILD_END();
+  return NULL;
+}
+
+
 widget_t* window_manager_get_prev_window(widget_t* widget) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL && wm->vt != NULL, NULL);

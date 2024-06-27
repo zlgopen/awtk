@@ -219,6 +219,7 @@
 #include "default/inc/ui/color_picker_rgb.data"
 #include "default/inc/ui/tab_bottom_compact.data"
 #include "default/inc/ui/popup.data"
+#include "default/inc/ui/overlay_test.data"
 #include "default/inc/ui/serial.data"
 #include "default/inc/ui/image_packed.data"
 #include "default/inc/ui/kb_uint.data"
@@ -1153,6 +1154,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_color_picker_rgb_default);
   assets_manager_add(am, ui_tab_bottom_compact_default);
   assets_manager_add(am, ui_popup_default);
+  assets_manager_add(am, ui_overlay_test_default);
   assets_manager_add(am, ui_serial_default);
   assets_manager_add(am, ui_image_packed_default);
   assets_manager_add(am, ui_kb_uint_default);
