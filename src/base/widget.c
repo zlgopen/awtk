@@ -1508,7 +1508,7 @@ ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, float_t te
       if (icon_at == ICON_AT_RIGHT_TOP || icon_at == ICON_AT_RIGHT_BOTTOM) {
         r_icon->w = img_w_r;
         r_icon->h = img_h_r;
-        
+        r_icon->x = ir->x + ir->w - img_w_r;        
         r_icon->y = icon_at == ICON_AT_RIGHT_TOP ? 0 : (ir->h - img_h_r);
       }
       break;
@@ -1535,6 +1535,7 @@ ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, float_t te
       if (icon_at == ICON_AT_LEFT_TOP || icon_at == ICON_AT_LEFT_BOTTOM) {
         r_icon->w = img_w_r;
         r_icon->h = img_h_r;
+        r_icon->x = ir->x;
         r_icon->y = icon_at == ICON_AT_LEFT_TOP ? 0 : (ir->h - img_h_r);
       }
       break;
