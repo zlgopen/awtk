@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/06/30
+  * 完善 icon at并增加文档 [如何控制图标的位置](how_to_use_icon_at_to_set_icon_position.md)
+
 2024/06/27
   * 修复overlay导致对话框高亮消失的问题和overlay的焦点切换问题(感谢智明提供补丁)
   * 修复了在agge模式下，当line_join为miter时出现的绘制错误(感谢泽武提供补丁)
