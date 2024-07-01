@@ -849,6 +849,23 @@ ret_t widget_on_copy_default(widget_t* widget, widget_t* other) {
   return widget_copy_props(widget, other, widget_vtable_get_clone_properties(widget->vt));
 }
 
+ret_t widget_on_copy_recursive(widget_t* widget, widget_t* other) {
+  ret_t ret = RET_OK;
+  const widget_vtable_t* vt = NULL;
+  return_value_if_fail(widget != NULL && other != NULL, RET_BAD_PARAMS);
+
+  vt = widget->vt;
+  while (vt != NULL) {
+    ret = widget_copy_props(widget, other, vt->clone_properties);
+    if (ret != RET_OK) {
+      break;
+    }
+    vt = widget_get_parent_vtable(vt);
+  }
+
+  return ret;
+}
+
 ret_t widget_on_destroy_default(widget_t* widget) {
   (void)widget;
   return RET_OK;

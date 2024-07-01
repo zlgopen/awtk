@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/07/01
+  * 新增widget\_on\_copy\_recursive接口，并在控件类重载的on_copy函数中调用(感谢雨欣提供补丁)
+
 2024/06/30
   * 完善 icon at并增加文档 [如何控制图标的位置](how_to_use_icon_at_to_set_icon_position.md)
 

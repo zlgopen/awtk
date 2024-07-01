@@ -26,6 +26,7 @@
 #include "base/layout.h"
 #include "base/dialog.h"
 #include "base/main_loop.h"
+#include "base/widget_vtable.h"
 #include "base/image_manager.h"
 #include "base/window_manager.h"
 #include "layouters/self_layouter_default.h"
@@ -94,7 +95,7 @@ static ret_t dialog_on_destroy(widget_t* widget) {
 
 static ret_t dialog_on_copy(widget_t* widget, widget_t* other) {
   window_base_on_copy(widget, other);
-  return widget_copy_props(widget, other, s_dialog_properties);
+  return widget_on_copy_recursive(widget, other);
 }
 
 TK_DECL_VTABLE(dialog) = {.size = sizeof(dialog_t),

@@ -28,6 +28,7 @@
 #include "base/widget.h"
 #include "base/layout.h"
 #include "widgets/popup.h"
+#include "base/widget_vtable.h"
 #include "base/image_manager.h"
 #include "base/window_manager.h"
 
@@ -188,7 +189,7 @@ static const char* const s_popup_properties[] = {WIDGET_PROP_CLOSE_WHEN_CLICK,
 
 static ret_t popup_on_copy(widget_t* widget, widget_t* other) {
   window_base_on_copy(widget, other);
-  return widget_copy_props(widget, other, s_popup_properties);
+  return widget_on_copy_recursive(widget, other);
 }
 
 TK_DECL_VTABLE(popup) = {.size = sizeof(popup_t),

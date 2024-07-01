@@ -23,6 +23,7 @@
 #include "tkc/utils.h"
 #include "base/enums.h"
 #include "widgets/overlay.h"
+#include "base/widget_vtable.h"
 #include "base/window_manager.h"
 
 static ret_t overlay_set_prop(widget_t* widget, const char* name, const value_t* v) {
@@ -110,7 +111,7 @@ static const char* const s_overlay_properties[] = {WIDGET_PROP_CLICK_THROUGH,
 
 static ret_t overlay_on_copy(widget_t* widget, widget_t* other) {
   window_base_on_copy(widget, other);
-  return widget_copy_props(widget, other, s_overlay_properties);
+  return widget_on_copy_recursive(widget, other);
 }
 
 TK_DECL_VTABLE(overlay) = {.type = WIDGET_TYPE_OVERLAY,

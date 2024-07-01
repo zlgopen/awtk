@@ -27,6 +27,7 @@
 #include "base/layout.h"
 #include "base/window.h"
 #include "widgets/system_bar.h"
+#include "base/widget_vtable.h"
 #include "base/window_manager.h"
 
 static const char* s_system_bar_properties[] = {NULL};
@@ -132,7 +133,7 @@ static ret_t system_bar_on_destroy(widget_t* widget) {
 
 static ret_t system_bar_on_copy(widget_t* widget, widget_t* other) {
   window_base_on_copy(widget, other);
-  return widget_copy_props(widget, other, s_system_bar_properties);
+  return widget_on_copy_recursive(widget, other);
 }
 
 static ret_t system_bar_init(widget_t* widget) {

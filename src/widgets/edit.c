@@ -32,6 +32,7 @@
 #include "base/enums.h"
 #include "base/events.h"
 #include "base/clip_board.h"
+#include "base/widget_vtable.h"
 #include "base/window_manager.h"
 #include "widgets/edit_ipv4.h"
 #include "widgets/edit_date.h"
@@ -2027,6 +2028,8 @@ ret_t edit_on_copy(widget_t* widget, widget_t* other) {
   edit_t* edit = EDIT(widget);
   edit_t* edit_other = EDIT(other);
   return_value_if_fail(edit != NULL && edit_other != NULL, RET_BAD_PARAMS);
+
+  widget_on_copy_recursive(widget, other);
 
   edit->min = edit_other->min;
   edit->max = edit_other->max;

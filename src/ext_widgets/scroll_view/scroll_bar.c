@@ -364,7 +364,7 @@ static ret_t scroll_bar_on_copy(widget_t* widget, widget_t* other) {
   scroll_bar_t* scroll_bar_other = SCROLL_BAR(other);
   return_value_if_fail(scroll_bar != NULL && scroll_bar_other != NULL, RET_BAD_PARAMS);
 
-  widget_on_copy_default(widget, other);
+  widget_on_copy_recursive(widget, other);
   if (!scroll_bar_is_mobile(widget)) {
     scroll_bar_create_children(widget);
   }

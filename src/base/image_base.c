@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "base/image_base.h"
+#include "base/widget_vtable.h"
 
 ret_t image_base_on_event(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
@@ -290,6 +291,7 @@ ret_t image_base_on_copy(widget_t* widget, widget_t* other) {
   image_base_t* image_other = IMAGE_BASE(other);
   return_value_if_fail(image != NULL && image_other != NULL, RET_BAD_PARAMS);
 
+  widget_on_copy_recursive(widget, other);
   image->anchor_x = image_other->anchor_x;
   image->anchor_y = image_other->anchor_y;
   image->scale_x = image_other->scale_x;

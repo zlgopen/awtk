@@ -179,6 +179,17 @@ ret_t widget_on_pointer_up_default(widget_t* widget, pointer_event_t* e);
 ret_t widget_on_copy_default(widget_t* widget, widget_t* other);
 
 /**
+ * @method widget_on_copy_recursive
+ * 拷贝控件的递归实现（逐级递归基类控件）。
+ * @annotation ["global"]
+ * @param {widget_t*} widget 目的控件对象。
+ * @param {widget_t*} other 源控件对象。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_on_copy_recursive(widget_t* widget, widget_t* other);
+
+/**
  * @method widget_copy_props
  * 拷贝控件属性。
  * @annotation ["global"]
