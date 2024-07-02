@@ -21,7 +21,7 @@
     "app_name": "org.zlgopen.demoui",
     "sources": [
       "demos/assets.c",
-      "demos/demo_ui_app.c",
+      "demos/demo_ui_old_app.c",
       "demos/vg_common.inc",
       "res/assets.inc",
       "res/assets/__assets_dark.inc",
@@ -32,7 +32,7 @@
     "app_name": "org.zlgopen.demoui",
     "sources": [
       "demos/assets.c",
-      "demos/demo_ui_app.c",
+      "demos/demo_ui_old_app.c",
       "demos/vg_common.inc",
       "res/assets.inc",
       "res/assets/__assets_dark.inc",
