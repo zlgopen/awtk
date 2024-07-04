@@ -86,7 +86,7 @@ ret_t tk_socket_close(int sock) {
 
 ret_t tk_socket_bind_ex(int sock, const char* ip, int port) {
   struct sockaddr_in s;
-  return_value_if_fail(sock >= 0 && port > 0, RET_BAD_PARAMS);
+  return_value_if_fail(sock >= 0 && port >= 0, RET_BAD_PARAMS);
 
   memset(&s, 0, sizeof(s));
 
@@ -129,6 +129,15 @@ int tk_tcp_listen(int port) {
   if (listen(sock, 5) < 0) {
     log_debug("listen error\n");
     return -1;
+  }
+
+  if (port == 0) {
+    struct sockaddr_in serv_addr;
+    socklen_t serv_addr_len = sizeof(serv_addr);
+
+    if (getsockname(sock, (struct sockaddr *)&serv_addr, &serv_addr_len) >= 0) {
+      log_debug("port is 0, system auto allocted port is %d\n", ntohs(serv_addr.sin_port));
+    }
   }
 
   return (sock);
