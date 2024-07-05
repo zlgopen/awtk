@@ -190,7 +190,9 @@ ret_t assets_manager_set_locale_info(assets_manager_t* am, locale_info_t* locale
 /**
  * @method assets_manager_add
  * 向资源管理器中增加一个资源。
- * 备注：同一份资源多次调用会出现缓存叠加的问题，导致内存泄露
+ * 备注：
+ *      1. 同一份资源多次调用会出现缓存叠加的问题，导致内存泄露
+ *      2. 该资源需要用户自己管理，AWTK 内部只会增加引用计数而已。
  * @param {assets_manager_t*} am asset manager对象。
  * @param {const void*} info 待增加的资源。
  *
@@ -201,7 +203,9 @@ ret_t assets_manager_add(assets_manager_t* am, const void* info);
 /**
  * @method assets_manager_add_data
  * 向资源管理器中增加一个资源data。
- * 备注：同一份资源多次调用会出现缓存叠加的问题，导致内存泄露
+ * 备注：
+ *      1. 同一份资源多次调用会出现缓存叠加的问题，导致内存泄露
+ *      2. 该资源会交给 AWTK 内部托管管理，data 数据就可以删除了。
  * @param {assets_manager_t*} am asset manager对象。
  * @param {const char*} name 待增加的资源的名字。
  * @param {uint16_t} type 待增加的资源的主类型枚举。
