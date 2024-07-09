@@ -261,6 +261,16 @@ const char* tk_socket_get_self_ip_str(int sockfd, char* ip, int len);
 int tk_tcp_listen(int port);
 
 /**
+ * @method tk_socket_get_port
+ * @annotation ["static"]
+ * 获取当前 socket 的监听指定端口。
+ * @param {int} port 端口号。
+ *
+ * @return {int} 成功返回端口，失败返回 -1。
+ */
+int tk_socket_get_port(int sock);
+
+/**
  * @method tk_tcp_accept
  * @annotation ["static"]
  * 监听指定端口，成功返回sock句柄。

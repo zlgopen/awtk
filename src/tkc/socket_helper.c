@@ -110,6 +110,16 @@ ret_t tk_socket_bind(int sock, int port) {
   return tk_socket_bind_ex(sock, NULL, port);
 }
 
+int tk_socket_get_port(int sock) {
+  struct sockaddr_in serv_addr;
+  socklen_t serv_addr_len = sizeof(serv_addr);
+
+  if (getsockname(sock, (struct sockaddr *)&serv_addr, &serv_addr_len) >= 0) {
+    return ntohs(serv_addr.sin_port);
+  }
+  return -1;
+}
+
 int tk_tcp_listen(int port) {
   int sock;
   int on = 1;
