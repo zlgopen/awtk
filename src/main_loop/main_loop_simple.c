@@ -262,6 +262,21 @@ static event_source_manager_t* main_loop_simple_get_event_source_manager(main_lo
   return loop->event_source_manager;
 }
 
+ret_t main_loop_simple_reset(main_loop_simple_t* loop) {
+  return_value_if_fail(loop != NULL, RET_BAD_PARAMS);
+
+  event_source_manager_destroy(loop->event_source_manager);
+  event_queue_destroy(loop->queue);
+
+  if (loop->mutex != NULL) {
+    tk_mutex_destroy(loop->mutex);
+  }
+
+  memset(loop, 0x00, sizeof(main_loop_simple_t));
+
+  return RET_OK;
+}
+
 main_loop_simple_t* main_loop_simple_init(int w, int h, main_loop_queue_event_t queue_event,
                                           main_loop_recv_event_t recv_event) {
   event_source_t* idle_source = NULL;
@@ -281,6 +296,7 @@ main_loop_simple_t* main_loop_simple_init(int w, int h, main_loop_queue_event_t 
 
   loop->base.run = main_loop_simple_run;
   loop->base.step = main_loop_simple_step;
+  loop->base.destroy = (main_loop_destroy_t*)main_loop_simple_reset;
 
   if (recv_event != NULL && queue_event != NULL) {
     loop->base.recv_event = recv_event;
@@ -307,19 +323,4 @@ main_loop_simple_t* main_loop_simple_init(int w, int h, main_loop_queue_event_t 
   TK_OBJECT_UNREF(timer_source);
 
   return loop;
-}
-
-ret_t main_loop_simple_reset(main_loop_simple_t* loop) {
-  return_value_if_fail(loop != NULL, RET_BAD_PARAMS);
-
-  event_source_manager_destroy(loop->event_source_manager);
-  event_queue_destroy(loop->queue);
-
-  if (loop->mutex != NULL) {
-    tk_mutex_destroy(loop->mutex);
-  }
-
-  memset(loop, 0x00, sizeof(main_loop_simple_t));
-
-  return RET_OK;
 }
