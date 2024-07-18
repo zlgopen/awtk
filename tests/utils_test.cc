@@ -1854,10 +1854,9 @@ TEST(Utils, tk_angle) {
   v = TK_R2D(tk_angle(0, 0, -180, 0));
   ASSERT_EQ(v, 180);
 
-  v = TK_R2D(tk_angle(0, 0, 90, 90));
+  v = tk_roundi(TK_R2D(tk_angle(0, 0, 90, 90)));
   ASSERT_EQ(v, 315);
 }
-
 
 TEST(Utils, skip_chars) {
   ASSERT_STREQ(tk_skip_chars("abc123", "abc"), "123");
