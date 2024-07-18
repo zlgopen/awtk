@@ -48,6 +48,53 @@ TEST(Edit, int) {
   widget_destroy(b);
 }
 
+TEST(Edit, uint) {
+  value_t v1;
+  value_t v2;
+  widget_t* b = edit_create(NULL, 10, 20, 30, 40);
+  edit_set_input_type(b, INPUT_UINT);
+
+  ASSERT_EQ(edit_set_int_limit(b, 1, 100, 5), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
+  ASSERT_EQ(1, value_int(&v2));
+
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MAX, &v2), RET_OK);
+  ASSERT_EQ(100, value_int(&v2));
+
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_STEP, &v2), RET_OK);
+  ASSERT_EQ(5, value_int(&v2));
+
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_INPUT_TYPE, &v2), RET_OK);
+  ASSERT_EQ(INPUT_UINT, value_int(&v2));
+
+  value_set_int(&v1, 10);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MIN, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
+  ASSERT_EQ(value_int(&v1), value_int(&v2));
+
+  value_set_int(&v1, 100);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_MAX, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MAX, &v2), RET_OK);
+  ASSERT_EQ(value_int(&v1), value_int(&v2));
+
+  value_set_int(&v1, 10);
+  ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_STEP, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_STEP, &v2), RET_OK);
+  ASSERT_EQ(value_int(&v1), value_int(&v2));
+
+  ASSERT_EQ(edit_set_int_limit(b, 0, 0xFFFFFFFF, 5), RET_OK);
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MIN, &v2), RET_OK);
+  ASSERT_EQ(0, value_int(&v2));
+
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_MAX, &v2), RET_OK);
+  ASSERT_EQ(0xFFFFFFFF, value_uint32(&v2));
+
+  ASSERT_EQ(widget_get_prop(b, WIDGET_PROP_INPUT_TYPE, &v2), RET_OK);
+  ASSERT_EQ(INPUT_UINT, value_int(&v2));
+
+  widget_destroy(b);
+}
+
 TEST(Edit, tips) {
   widget_t* b = edit_create(NULL, 10, 20, 30, 40);
 

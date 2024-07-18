@@ -1075,13 +1075,15 @@ ret_t edit_set_int_limit(widget_t* widget, int32_t min, int32_t max, uint32_t st
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
-  edit->min = min;
-  edit->max = max;
-  edit->step = step;
   if (edit->input_type != INPUT_UINT) {
+    edit->min = min;
+    edit->max = max;
     edit->input_type = INPUT_INT;
+  } else {
+    edit->min = (uint32_t)min;
+    edit->max = (uint32_t)max;
   }
-
+  edit->step = step;
   return RET_OK;
 }
 
