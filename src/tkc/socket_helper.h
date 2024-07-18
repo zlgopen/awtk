@@ -264,7 +264,7 @@ int tk_tcp_listen(int port);
  * @method tk_socket_get_port
  * @annotation ["static"]
  * 获取当前 socket 的监听指定端口。
- * @param {int} port 端口号。
+ * @param {int} sock socket句柄。
  *
  * @return {int} 成功返回端口，失败返回 -1。
  */
