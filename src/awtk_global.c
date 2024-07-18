@@ -414,6 +414,8 @@ ret_t tk_deinit_internal(void) {
   assets_manager_destroy(assets_manager());
   assets_manager_set(NULL);
 
+  assets_managers_clear_applet_res_roots();
+
 #ifdef WITH_VGCANVAS
   vgcanvas_asset_manager_destroy(vgcanvas_asset_manager());
   vgcanvas_asset_manager_set(NULL);

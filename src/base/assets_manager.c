@@ -19,6 +19,7 @@
  *
  */
 
+#include "tkc/fs.h"
 #include "tkc/mem.h"
 #include "tkc/path.h"
 #include "tkc/utils.h"
@@ -941,16 +942,56 @@ ret_t assets_manager_set_loader(assets_manager_t* am, asset_loader_t* loader) {
   return RET_OK;
 }
 
-static const char* s_applet_res_root = NULL;
+static darray_t* s_applet_res_roots = NULL;
 
 ret_t assets_managers_set_applet_res_root(const char* res_root) {
-  s_applet_res_root = res_root;
+  return_value_if_fail(res_root != NULL, RET_BAD_PARAMS);
+  return assets_managers_add_applet_res_root(res_root);
+}
 
+ret_t assets_managers_add_applet_res_root(const char* res_root) {
+  char* iter = NULL;
+  ret_t ret = RET_OK;
+  return_value_if_fail(res_root != NULL, RET_BAD_PARAMS);
+
+  if (s_applet_res_roots == NULL) {
+    s_applet_res_roots = darray_create(5, default_destroy, tk_str_cmp);
+  }
+
+  iter = tk_strdup(res_root);
+  ret = darray_push_unique(s_applet_res_roots, iter);
+  if (ret != RET_OK) {
+    TKMEM_FREE(iter);
+  }
+
+  return ret;
+}
+
+ret_t assets_managers_remove_applet_res_root(const char* res_root) {
+  ret_t ret = RET_NOT_FOUND;
+  return_value_if_fail(res_root != NULL, RET_BAD_PARAMS);
+
+  if (s_applet_res_roots != NULL) {
+    ret = darray_remove(s_applet_res_roots, (void*)res_root);
+    if (s_applet_res_roots->size == 0) {
+      darray_destroy(s_applet_res_roots);
+      s_applet_res_roots = NULL;
+    }
+  }
+
+  return ret;
+}
+
+ret_t assets_managers_clear_applet_res_roots(void) {
+  if (s_applet_res_roots != NULL) {
+    darray_destroy(s_applet_res_roots);
+    s_applet_res_roots = NULL;
+  }
   return RET_OK;
 }
 
 bool_t assets_managers_is_applet_assets_supported(void) {
-  return s_applet_res_root != NULL;
+  return s_applet_res_roots != NULL && s_applet_res_roots->size > 0;
 }
 
 static darray_t* s_assets_managers = NULL;
@@ -981,18 +1022,25 @@ assets_manager_t* assets_managers_ref(const char* name) {
 
   am = (assets_manager_t*)darray_find(s_assets_managers, (void*)name);
   if (am == NULL) {
-    assets_manager_t* g_am = assets_manager();
+    uint32_t i = 0;
+    const char* iter = NULL;
     char res_root[MAX_PATH + 1] = {0};
     am = assets_manager_create(5);
     return_value_if_fail(am != NULL, NULL);
+    for (i = 0; i < s_applet_res_roots->size; i++) {
+      iter = (const char*)darray_get(s_applet_res_roots, i);
+      path_build(res_root, MAX_PATH, iter, name, NULL);
+      if (fs_dir_exist(os_fs(), res_root)) {
+        break;
+      }
+    }
     am->name = tk_strdup(name);
-    path_build(res_root, MAX_PATH, s_applet_res_root, name, NULL);
-
     darray_push(s_assets_managers, am);
     assets_manager_set_res_root(am, res_root);
     assets_manager_set_fallback_load_asset(
         am, (assets_manager_load_asset_t)assets_manager_load_asset_fallback_default, NULL);
 
+    assets_manager_t* g_am = assets_manager();
     if (g_am != NULL && g_am->theme != NULL) {
       am->theme = tk_str_copy(am->theme, g_am->theme);
     }

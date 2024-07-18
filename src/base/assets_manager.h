@@ -486,6 +486,32 @@ bool_t assets_manager_is_save_assets_list(asset_type_t type);
 ret_t assets_managers_set_applet_res_root(const char* res_root);
 
 /**
+ * @method assets_managers_add_applet_res_root
+ * 添加小应用程序(applet)的资源根目录。
+ * @param {const char*} res_root 资源根目录。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t assets_managers_add_applet_res_root(const char* res_root);
+
+/**
+ * @method assets_managers_remove_applet_res_root
+ * 删除小应用程序(applet)的资源根目录。
+ * @param {const char*} res_root 资源根目录。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t assets_managers_remove_applet_res_root(const char* res_root);
+
+/**
+ * @method assets_managers_clear_applet_res_roots
+ * 清除全部小应用程序(applet)的资源根目录。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t assets_managers_clear_applet_res_roots(void);
+
+/**
  * @method assets_managers_is_applet_assets_supported
  * 是否支持小应用程序(applet)拥有独立资源目录。
  *
