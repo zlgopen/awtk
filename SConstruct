@@ -11,7 +11,7 @@ compile_config.set_curr_config(complie_helper)
 
 import awtk_config as awtk
 
-APP_TOOLS = None
+APP_TOOLS = ['default']
 OS_NAME = platform.system()
 awtk.scons_db_check_and_remove()
 

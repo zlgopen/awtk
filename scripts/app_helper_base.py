@@ -286,7 +286,7 @@ class AppHelperBase:
         self.APP_LIBS = self.complie_helper.get_value('LIBS', [])
         self.APP_LINKFLAGS = ''
         self.PLATFORM_LIBS = []
-        self.APP_TOOLS = None
+        self.APP_TOOLS = ['default']
         self.WITH_JERRYSCRIPT = False
         self.WITH_IOTJS = False
         self.MVVM_ROOT = None
