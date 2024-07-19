@@ -91,6 +91,7 @@
 #define LLDB_KEY_VARIABLES_REFERENCE "variablesReference"
 
 #define LLDB_KEY_ST_FIRST_CODE_BREAKPOINTS "stFirstCodeBreakPoints"
+#define LLDB_KEY_STOPFORDESTROYORDETACH "StopForDestroyOrDetach"
 
 #define VARREF_LOCALS (int64_t)1
 #define VARREF_GLOBALS (int64_t)2
@@ -740,6 +741,7 @@ static tk_object_t* debugger_lldb_create_attach_req(debugger_t* debugger, const 
   if (lldb->st_first_code_breakpoints != NULL) {
     tk_object_set_prop_object(arguments, LLDB_KEY_ST_FIRST_CODE_BREAKPOINTS, lldb->st_first_code_breakpoints);
   }
+  tk_object_set_prop_bool(arguments, LLDB_KEY_STOPFORDESTROYORDETACH, FALSE);
 
   return req;
 error:
