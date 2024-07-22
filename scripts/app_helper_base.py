@@ -259,7 +259,10 @@ class AppHelperBase:
             self.complie_helper.scons_user_sopt(ARGUMENTS)
         compile_config.set_curr_config(self.complie_helper)
 
-        APP_ROOT = os.path.normpath(os.getcwd())
+        APP_ROOT = compile_config.get_curr_app_root()
+        if len(APP_ROOT) == 0:
+            APP_ROOT = os.path.normpath(os.getcwd())
+            compile_config.set_curr_app_root(APP_ROOT)
 
         self.SRC_DIR = 'src'
         self.TKC_ONLY = getTkcOnly();
@@ -356,14 +359,12 @@ class AppHelperBase:
 
     def getAwtkConfig(self):
         sys.path.insert(0, self.AWTK_ROOT)
-        tmp_cwd = os.getcwd()
         os.chdir(self.AWTK_ROOT)
-        compile_config.set_curr_app_root(tmp_cwd)
         tmp_complie_helper = compile_config.get_curr_config()
         compile_config.set_app_win32_res(tmp_complie_helper.get_value('WIN32_RES', None))
         compile_config.set_curr_config(None)
         import awtk_config as awtk
-        os.chdir(tmp_cwd)
+        os.chdir(compile_config.get_curr_app_root())
         compile_config.set_curr_config(tmp_complie_helper)
         return awtk
 

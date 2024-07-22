@@ -2,6 +2,7 @@
 
 2024/07/22
   * 修正dragger save\_x和save\_y(感谢颖健提供补丁)
+  * 修改app_helper优先使用compile config设定的APP_ROOT(感谢朝泽提供补丁)
 
 2024/07/19
   * 支持lldb正常退出后不会暂停runtime程序(感谢智明提供补丁)
