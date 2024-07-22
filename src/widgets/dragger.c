@@ -77,9 +77,9 @@ static ret_t dragger_on_event(widget_t* widget, event_t* e) {
       if (dragger->moving) {
         dragger_move(widget, pointer_event->x - dragger->down_x,
                      pointer_event->y - dragger->down_y);
+        widget_dispatch_simple_event(widget, EVT_DRAG);
         dragger->save_x = widget->x;
         dragger->save_y = widget->y;
-        widget_dispatch_simple_event(widget, EVT_DRAG);
       }
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       widget_dispatch(widget, (event_t*)&evt);
