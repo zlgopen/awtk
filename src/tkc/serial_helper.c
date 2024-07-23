@@ -574,15 +574,21 @@ ret_t serial_wait_for_data(serial_handle_t handle, uint32_t timeout_ms) {
 #endif
 
 serial_handle_t serial_open(const char* port) {
+  int flags = 0;
   serial_handle_t handle = TKMEM_ZALLOC(serial_info_t);
   return_value_if_fail(handle != NULL && port != NULL && *port != '\0', NULL);
-  handle->dev = open(port, O_RDWR | O_NOCTTY | O_NONBLOCK);
+
+  flags = O_RDWR | O_NOCTTY | O_NDELAY | O_EXCL;
+#ifdef O_CLOEXEC
+  flags |= O_CLOEXEC;
+#endif
+  handle->dev = open(port, flags);
 
   if (handle->dev <= 0) {
     TKMEM_FREE(handle);
     return NULL;
   }
-
+  handle->old_options = TKMEM_ALLOC(sizeof(struct termios));
   return handle;
 }
 
@@ -595,8 +601,9 @@ ret_t serial_config(serial_handle_t handle, uint32_t baudrate, bytesize_t bytesi
   serial_dev_t dev = serial_handle_get_dev(handle);
   return_value_if_fail(dev >= 0, RET_BAD_PARAMS);
 
-  return_value_if_fail(tcgetattr(dev, &options) >= 0, RET_BAD_PARAMS);
+  return_value_if_fail(tcgetattr(dev, (struct termios*)handle->old_options) >= 0, RET_BAD_PARAMS);
 
+  memset(&options, 0x0, sizeof(struct termios));
   options.c_cflag |= (tcflag_t)(CLOCAL | CREAD);
   options.c_lflag &=
       (tcflag_t) ~(ICANON | ECHO | ECHOE | ECHOK | ECHONL | ISIG | IEXTEN);  //|ECHOPRT
@@ -970,7 +977,8 @@ ret_t serial_close(serial_handle_t handle) {
 
   serial_iflush(handle);
   serial_oflush(handle);
-
+  tcsetattr(dev, TCSANOW, (struct termios*)handle->old_options);
+  TKMEM_FREE(handle->old_options);
   close(dev);
   memset(handle, 0x0, sizeof(*handle));
   TKMEM_FREE(handle);

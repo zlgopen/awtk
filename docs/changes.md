@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/07/23
+  * 修复部分linux设备获取串口配置不正常的问题(感谢智明提供补丁) 
+
 2024/07/22
   * 修正dragger save\_x和save\_y(感谢颖健提供补丁)
   * 修改app_helper优先使用compile config设定的APP_ROOT(感谢朝泽提供补丁)

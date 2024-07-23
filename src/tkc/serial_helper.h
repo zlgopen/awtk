@@ -65,6 +65,7 @@ typedef int serial_dev_t;
 
 typedef struct _serial_info_t {
   serial_dev_t dev;
+  uint8_t* old_options;
 } serial_info_t;
 
 typedef struct _serial_info_t* serial_handle_t;
