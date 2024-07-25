@@ -796,7 +796,7 @@ ret_t assets_manager_unref(assets_manager_t* am, const asset_info_t* info) {
 
   if (info->refcount == 1) {
     assets_manager_dispatch_event(am, EVT_ASSET_MANAGER_UNLOAD_ASSET, (asset_info_t*)info);
-    darray_remove(&(am->assets), (void*)info);
+    darray_remove_ex(&(am->assets), asset_cache_cmp_type_and_name, (void*)info);
 
     return RET_OK;
   }
@@ -955,7 +955,7 @@ ret_t assets_managers_add_applet_res_root(const char* res_root) {
   return_value_if_fail(res_root != NULL, RET_BAD_PARAMS);
 
   if (s_applet_res_roots == NULL) {
-    s_applet_res_roots = darray_create(5, default_destroy, tk_str_cmp);
+    s_applet_res_roots = darray_create(5, default_destroy, (tk_compare_t)tk_str_cmp);
   }
 
   iter = tk_strdup(res_root);
