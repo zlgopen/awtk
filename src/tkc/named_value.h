@@ -172,6 +172,31 @@ int32_t named_value_compare(named_value_t* nv, const named_value_t* other);
  */
 int32_t named_value_compare_by_name(named_value_t* nv, const char* name);
 
+
+/**
+ * @method named_value_icompare
+ *
+ * 大小写不敏感比较。
+ *
+ * @param {named_value_t*} nv named_value对象。
+ * @param {const named_value_t*} other named_value对象。
+ *
+ * @return {int32_t} 返回RET_OK表示成功，否则表示失败。
+ */
+int32_t named_value_icompare(named_value_t* nv, const named_value_t* other);
+
+/**
+ * @method named_value_icompare_by_name
+ *
+ * 大小写不敏感比较。
+ *
+ * @param {named_value_t*} nv named_value对象。
+ * @param {const char*} name 名称。
+ *
+ * @return {int32_t} 返回RET_OK表示成功，否则表示失败。
+ */
+int32_t named_value_icompare_by_name(named_value_t* nv, const char* name);
+
 /**
  * @method named_value_destroy
  *

@@ -68,6 +68,7 @@ typedef struct _object_default_t {
   bool_t enable_path;
   /*设置属性值不改变属性的类型*/
   bool_t keep_prop_type;
+  bool_t name_case_insensitive;
 } object_default_t;
 
 /**
@@ -142,6 +143,16 @@ ret_t object_default_clear_props(tk_object_t* obj);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t object_default_set_keep_prop_type(tk_object_t* obj, bool_t keep_prop_type);
+
+/**
+ * @method object_default_set_name_case_insensitive
+ * 设置属性名是否大小写不敏感。
+ * @annotation ["scriptable"]
+ * @param {tk_object_t*} obj 对象。
+ * @param {bool_t} name_case_insensitive 属性名是否大小写不敏感。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_default_set_name_case_insensitive(tk_object_t* obj, bool_t name_case_insensitive);
 
 /**
  * @method object_default_find_prop

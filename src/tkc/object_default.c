@@ -24,6 +24,22 @@
 #include "tkc/utils.h"
 #include "tkc/object_default.h"
 
+static tk_compare_t object_default_get_cmp(object_default_t* o) {
+  if (o->name_case_insensitive) {
+    return (tk_compare_t)named_value_icompare;
+  } else {
+    return (tk_compare_t)named_value_compare;
+  }
+}
+
+static tk_compare_t object_default_get_cmp_by_name(object_default_t* o) {
+  if (o->name_case_insensitive) {
+    return (tk_compare_t)named_value_icompare_by_name;
+  } else {
+    return (tk_compare_t)named_value_compare_by_name;
+  }
+}
+
 static value_t* object_default_find_prop_by_name(tk_object_t* obj, const char* name) {
   named_value_t* nv = NULL;
   object_default_t* o = OBJECT_DEFAULT(obj);
@@ -34,7 +50,7 @@ static value_t* object_default_find_prop_by_name(tk_object_t* obj, const char* n
     return_value_if_fail(index < o->props.size, NULL);
     nv = (named_value_t*)(o->props.elms[index]);
   } else {
-    nv = darray_bsearch(&(o->props), (tk_compare_t)named_value_compare_by_name, (void*)name);
+    nv = darray_bsearch(&(o->props), object_default_get_cmp_by_name(o), (void*)name);
   }
 
   return nv != NULL ? &(nv->value) : NULL;
@@ -71,7 +87,7 @@ static ret_t object_default_remove_prop(tk_object_t* obj, const char* name) {
     }
   }
 
-  index = darray_bsearch_index(&(o->props), (tk_compare_t)named_value_compare_by_name, (void*)name);
+  index = darray_bsearch_index(&(o->props), object_default_get_cmp_by_name(o), (void*)name);
   if (index >= 0) {
     return darray_remove_index(&(o->props), index);
   } else {
@@ -172,7 +188,7 @@ static ret_t object_default_set_prop(tk_object_t* obj, const char* name, const v
   } else {
     named_value_t* nv = named_value_create_ex(name, v);
     return_value_if_fail(nv != NULL, RET_OOM);
-    ret = darray_sorted_insert(&(o->props), nv, (tk_compare_t)named_value_compare, FALSE);
+    ret = darray_sorted_insert(&(o->props), nv, object_default_get_cmp(o), FALSE);
     if (ret != RET_OK) {
       named_value_destroy(nv);
     }
@@ -328,6 +344,15 @@ ret_t object_default_set_keep_prop_type(tk_object_t* obj, bool_t keep_prop_type)
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   o->keep_prop_type = keep_prop_type;
+
+  return RET_OK;
+}
+
+ret_t object_default_set_name_case_insensitive(tk_object_t* obj, bool_t name_case_insensitive) {
+  object_default_t* o = OBJECT_DEFAULT(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  o->name_case_insensitive = name_case_insensitive;
 
   return RET_OK;
 }

@@ -1,5 +1,9 @@
 # 最新动态
 
+2024/07/30
+  * 增加函数 named_value_icompare/named_value_icompare_by_name
+  * object_default支持属性名大小写不敏感比较。
+
 2024/07/24
   * 修复assets_manager_unref接口删除资源错误的问题(感谢雨欣提供补丁)
 

@@ -764,3 +764,23 @@ TEST(ObjectDefault, set_proo_str_with_format) {
   
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(ObjectDefault, case_insensitive) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+  object_default_t* o = OBJECT_DEFAULT(obj);
+
+  object_default_set_name_case_insensitive(obj, TRUE);
+  ASSERT_EQ(tk_object_set_prop(obj, "abc", value_set_int(&v, 50)), RET_OK);
+  ASSERT_EQ(o->props.size, 1u);
+  
+  ASSERT_EQ(tk_object_set_prop(obj, "ABC", value_set_int(&v, 150)), RET_OK);
+  ASSERT_EQ(o->props.size, 1u);
+
+  ASSERT_EQ(tk_object_get_prop_int(obj, "abc", 0), 150);
+  
+  ASSERT_EQ(tk_object_remove_prop(obj, "aBC"), RET_OK);
+  ASSERT_EQ(o->props.size, 0u);
+  
+  TK_OBJECT_UNREF(obj);
+}
