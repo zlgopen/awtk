@@ -506,6 +506,7 @@ class AppHelperBase:
         self.BUILD_SHARED = self.complie_helper.get_value('SHARED', False)
         self.GEN_IDL_DEF = self.complie_helper.get_value('IDL_DEF', True)
 
+        LCD_ORIENTATION = self.complie_helper.get_value('LCD_ORIENTATION', LCD_ORIENTATION)
         if not self.LINUX_FB :
             if LCD_ORIENTATION == '90' or LCD_ORIENTATION == '270' :
                 tmp = LCD_WIDTH;

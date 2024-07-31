@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/07/31
+  * 修改app_helper没有从compile config中获取LCD_ORIENTATION的问题(感谢朝泽提供补丁)
+
 2024/07/30
   * 增加函数 named_value_icompare/named_value_icompare_by_name
   * object_default支持属性名大小写不敏感比较。
