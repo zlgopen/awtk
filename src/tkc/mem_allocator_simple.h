@@ -161,7 +161,9 @@ static void tk_free_impl(mem_allocator_t* allocator, void* ptr) {
   free_node_t* free_iter = NULL;
   mem_info_t* info = &(MEM_ALLOCATOR_SIMPLE(allocator)->info);
 
-  return_if_fail(ptr != NULL);
+  if (ptr == NULL) {
+    return;
+  }
 
   free_iter = (free_node_t*)((char*)ptr - sizeof(uint32_t));
 
