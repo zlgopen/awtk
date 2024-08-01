@@ -511,6 +511,7 @@ TEST(ObjectDefault, size) {
 
   ASSERT_STREQ(tk_object_get_prop_str(obj, "[0]"), "123");
   ASSERT_STREQ(tk_object_get_prop_str(obj, "[1]"), "abc");
+  ASSERT_STREQ(tk_object_get_prop_str(obj, "[a]"), NULL);
 
   tk_object_unref(obj);
 }

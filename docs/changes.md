@@ -1,4 +1,6 @@
 # 最新动态
+2024/08/1
+  * 修复了object_default读写 "[a]" 这样的属性名会出错的问题（感谢陈聪提供补丁）
 
 2024/07/31
   * 修改app_helper没有从compile config中获取LCD_ORIENTATION的问题(感谢朝泽提供补丁)

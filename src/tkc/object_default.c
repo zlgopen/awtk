@@ -45,7 +45,7 @@ static value_t* object_default_find_prop_by_name(tk_object_t* obj, const char* n
   object_default_t* o = OBJECT_DEFAULT(obj);
   return_value_if_fail(o != NULL && name != NULL, NULL);
 
-  if (*name == '[') {
+  if (*name == '[' && tk_isdigit(name[1]) && tk_str_end_with(name, "]")) {
     uint32_t index = tk_atoi(name + 1);
     return_value_if_fail(index < o->props.size, NULL);
     nv = (named_value_t*)(o->props.elms[index]);
