@@ -319,21 +319,25 @@ static ret_t debugger_lldb_emit(debugger_t* debugger, tk_object_t* resp) {
 
   if (tk_str_eq(event, LLDB_EVENT_STOPPED)) {
     int32_t line = 0;
+    bool_t focus = FALSE;
     int64_t stop_thread_id = 0;
     const char* file_path = NULL;
     const char* frame_name = NULL;
     debugger_breaked_event_t event;
     TK_OBJECT_UNREF(lldb->callstack);
 
-    stop_thread_id = tk_object_get_prop_int64(resp, "body.threadId", 0);
-    debugger_lldb_set_current_thread_id_ex(debugger, stop_thread_id, TRUE);
-    frame_name = debugger_lldb_get_frame_name(debugger, debugger->current_frame_index);
-    file_path = debugger_lldb_get_source_path(debugger, debugger->current_frame_index);
-    /*LLDB 行号从1开始*/
-    line = lldb->current_frame_line - 1;
-    emitter_dispatch(EMITTER(debugger), debugger_breaked_event_init_ex(&event, line, file_path, frame_name));
+    focus = tk_object_get_prop_bool(resp, "body.threadCausedFocus", FALSE);
+    if (focus) {
+      stop_thread_id = tk_object_get_prop_int64(resp, "body.threadId", 0);
+      debugger_lldb_set_current_thread_id_ex(debugger, stop_thread_id, TRUE);
+      frame_name = debugger_lldb_get_frame_name(debugger, debugger->current_frame_index);
+      file_path = debugger_lldb_get_source_path(debugger, debugger->current_frame_index);
+      /*LLDB 行号从1开始*/
+      line = lldb->current_frame_line - 1;
+      emitter_dispatch(EMITTER(debugger), debugger_breaked_event_init_ex(&event, line, file_path, frame_name));
 
-    log_debug("threadId = %"PRIu64" stopped\n", (uint64_t)stop_thread_id);
+      log_debug("threadId = %"PRIu64" stopped\n", (uint64_t)stop_thread_id);
+    }
   } else if (tk_str_eq(event, LLDB_EVENT_OUTPUT)) {
     uint32_t line = 0;
     debugger_log_event_t event;
