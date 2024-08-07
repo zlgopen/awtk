@@ -101,6 +101,7 @@ typedef struct _text_edit_impl_t {
   uint32_t line_height;
   uint32_t last_line_number;
   uint32_t last_row_number;
+  uint32_t caret_row_index;
   uint32_t caret_line_index;
   text_layout_info_t layout_info;
 
@@ -258,7 +259,7 @@ static ret_t rows_destroy(rows_t* rows) {
 }
 
 static ret_t text_edit_set_caret_pos(text_edit_impl_t* impl, uint32_t x, uint32_t y,
-                                     uint32_t font_size, uint32_t line_number) {
+                                     uint32_t font_size, uint32_t line_number, uint32_t row_num) {
   text_layout_info_t* layout_info = &(impl->layout_info);
   uint32_t caret_top = layout_info->margin_t + y;
   uint32_t caret_bottom = layout_info->margin_t + y + font_size;
@@ -273,6 +274,7 @@ static ret_t text_edit_set_caret_pos(text_edit_impl_t* impl, uint32_t x, uint32_
   impl->caret.x = x;
   impl->caret.y = y;
   impl->caret_line_index = line_number;
+  impl->caret_row_index = row_num;
 
   if (!impl->lock_scrollbar_value) {
     if (view_top > caret_top) {
@@ -380,7 +382,7 @@ static row_info_t* text_edit_single_line_layout_line(text_edit_t* text_edit, uin
       caret_x = (layout_info->w - text_w) / 2 + caret_text_w;
     }
   }
-  text_edit_set_caret_pos(impl, caret_x, y, c->font_size, line_index);
+  text_edit_set_caret_pos(impl, caret_x, y, c->font_size, line_index, row_num);
 
   return row;
 }
@@ -495,7 +497,7 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
   }
   if (caret.x >= 0 && caret.y >= 0) {
     /* 计算好了再统一修改光标坐标，以免多次修改导致滚动条的位置突变 */
-    text_edit_set_caret_pos(impl, caret.x, caret.y, c->font_size, line_index);
+    text_edit_set_caret_pos(impl, caret.x, caret.y, c->font_size, line_index, row_num);
   }
 
   last_line = (line_info_t*)darray_get(&row->info, row->line_num - 1);
@@ -1243,9 +1245,9 @@ static ret_t text_edit_update_caret_pos(text_edit_t* text_edit) {
         }
         is_setting = TRUE;
         if (last_char == STB_TEXTEDIT_NEWLINE) {
-          text_edit_set_caret_pos(impl, 0, y + line_height, c->font_size, line_index);
+          text_edit_set_caret_pos(impl, 0, y + line_height, c->font_size, line_index, i);
         } else {
-          text_edit_set_caret_pos(impl, x, y, c->font_size, line_index);
+          text_edit_set_caret_pos(impl, x, y, c->font_size, line_index, i);
         }
         break;
       }
@@ -1869,7 +1871,8 @@ ret_t text_edit_get_state(text_edit_t* text_edit, text_edit_state_t* state) {
   state->caret = impl->caret;
   state->preedit = impl->preedit;
   state->line_height = impl->line_height;
-
+  state->current_row_index = impl->caret_row_index;
+  state->current_line_index = impl->caret_line_index;
   state->cursor = impl->state.cursor;
   state->max_rows = impl->rows->capacity;
   state->last_row_number = impl->last_row_number;

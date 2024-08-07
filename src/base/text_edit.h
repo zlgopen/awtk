@@ -73,6 +73,8 @@ typedef struct _text_edit_state_t {
   wchar_t mask_char;
   bool_t caret_visible;
   bool_t single_line;
+  uint32_t current_row_index;
+  uint32_t current_line_index;
 } text_edit_state_t;
 
 typedef ret_t (*text_edit_on_state_changed_t)(void* ctx, text_edit_state_t* state);

@@ -1286,3 +1286,23 @@ widget_t* mledit_cast(widget_t* widget) {
 
   return widget;
 }
+
+uint32_t mledit_get_current_line_index(widget_t* widget) {
+  text_edit_state_t state;
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL && mledit->model != NULL, 0);
+
+  return_value_if_fail(text_edit_get_state(mledit->model, &state) == RET_OK, 0);
+
+  return state.current_line_index;
+}
+
+uint32_t mledit_get_current_row_index(widget_t* widget) {
+  text_edit_state_t state;
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL && mledit->model != NULL, 0);
+
+  return_value_if_fail(text_edit_get_state(mledit->model, &state) == RET_OK, 0);
+
+  return state.current_row_index;
+}

@@ -388,6 +388,26 @@ ret_t mledit_set_select(widget_t* widget, uint32_t start, uint32_t end);
 char* mledit_get_selected_text(widget_t* widget);
 
 /**
+ * @method mledit_get_current_line_index
+ * 获取光标所在视觉行号(一行文本可能分多行显示)。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {uint32_t} 返回光标所在行号。
+ */
+uint32_t mledit_get_current_line_index(widget_t* widget);
+
+/**
+ * @method mledit_get_current_row_index
+ * 获取光标所在物理行号。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {uint32_t} 返回光标所在行号。
+ */
+uint32_t mledit_get_current_row_index(widget_t* widget);
+
+/**
  * @method mledit_insert_text
  * 插入一段文本。
  * @annotation ["scriptable"]

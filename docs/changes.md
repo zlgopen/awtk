@@ -1,4 +1,7 @@
 # 最新动态
+2024/08/7
+  * 增加函数mledit_get_current_line_index/mledit_get_current_row_index。
+
 2024/08/2
   * 增加判断当前停在哪个线程的逻辑(感谢朝泽提供补丁)
 
