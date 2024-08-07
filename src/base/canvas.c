@@ -2126,6 +2126,11 @@ ret_t canvas_restore(canvas_t* c) {
   vgcanvas_restore(lcd_get_vgcanvas(c->lcd));
 #endif /*AWTK_WEB*/
 
+#if defined(WITH_GPU)
+  lcd_set_font_name(c->lcd, c->font_name);
+  lcd_set_font_size(c->lcd, c->font_size);
+#endif /*WITH_GPU*/
+
   return RET_OK;
 }
 
