@@ -116,8 +116,6 @@ ret_t main_loop_post_pointer_event(main_loop_t* l, bool_t pressed, xy_t x, xy_t 
       return main_loop_queue_event(l, &r);
     }
   }
-
-  return RET_OK;
 }
 
 ret_t main_loop_post_key_event(main_loop_t* l, bool_t pressed, uint8_t key) {
@@ -296,7 +294,7 @@ main_loop_simple_t* main_loop_simple_init(int w, int h, main_loop_queue_event_t 
 
   loop->base.run = main_loop_simple_run;
   loop->base.step = main_loop_simple_step;
-  loop->base.destroy = (main_loop_destroy_t*)main_loop_simple_reset;
+  loop->base.destroy = (main_loop_destroy_t)main_loop_simple_reset;
 
   if (recv_event != NULL && queue_event != NULL) {
     loop->base.recv_event = recv_event;

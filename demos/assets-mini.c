@@ -32,36 +32,36 @@
 ret_t assets_init(void) {
   assets_manager_t* am = assets_manager();
 
-  assets_manager_add(am, font_default_18);
-  assets_manager_add(am, image_checked);
-  assets_manager_add(am, image_earth);
-  assets_manager_add(am, image_left_off);
-  assets_manager_add(am, image_left_on);
-  assets_manager_add(am, image_middle_off);
-  assets_manager_add(am, image_middle_on);
-  assets_manager_add(am, image_muted);
-  assets_manager_add(am, image_question);
-  assets_manager_add(am, image_radio_checked);
-  assets_manager_add(am, image_radio_unchecked);
-  assets_manager_add(am, image_red_btn_n);
-  assets_manager_add(am, image_red_btn_o);
-  assets_manager_add(am, image_red_btn_p);
-  assets_manager_add(am, image_right_off);
-  assets_manager_add(am, image_right_on);
-  assets_manager_add(am, image_unchecked);
-  assets_manager_add(am, image_unmuted);
-  assets_manager_add(am, style_default);
-  assets_manager_add(am, ui_basic);
-  assets_manager_add(am, ui_system_bar);
-  assets_manager_add(am, image_rgb);
-  assets_manager_add(am, image_rgba);
-  assets_manager_add(am, image_message);
-  assets_manager_add(am, image_close_p);
-  assets_manager_add(am, image_close_n);
-  assets_manager_add(am, image_close_o);
-  assets_manager_add(am, image_question);
+  assets_manager_add(am, font_default_18_default);
+  assets_manager_add(am, image_checked_default);
+  assets_manager_add(am, image_earth_default);
+  assets_manager_add(am, image_left_off_default);
+  assets_manager_add(am, image_left_on_default);
+  assets_manager_add(am, image_middle_off_default);
+  assets_manager_add(am, image_middle_on_default);
+  assets_manager_add(am, image_muted_default);
+  assets_manager_add(am, image_question_default);
+  assets_manager_add(am, image_radio_checked_default);
+  assets_manager_add(am, image_radio_unchecked_default);
+  assets_manager_add(am, image_red_btn_n_default);
+  assets_manager_add(am, image_red_btn_o_default);
+  assets_manager_add(am, image_red_btn_p_default);
+  assets_manager_add(am, image_right_off_default);
+  assets_manager_add(am, image_right_on_default);
+  assets_manager_add(am, image_unchecked_default);
+  assets_manager_add(am, image_unmuted_default);
+  assets_manager_add(am, style_default_default);
+  assets_manager_add(am, ui_basic_default);
+  assets_manager_add(am, ui_system_bar_default);
+  assets_manager_add(am, image_rgb_default);
+  assets_manager_add(am, image_rgba_default);
 
-  assets_manager_add(am, style_system_bar);
+  assets_manager_add(am, image_close_p_default);
+  assets_manager_add(am, image_close_n_default);
+  assets_manager_add(am, image_close_o_default);
+  assets_manager_add(am, image_question_default);
+
+  assets_manager_add(am, style_system_bar_default);
 
   tk_init_assets();
   return RET_OK;
