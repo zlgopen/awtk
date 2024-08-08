@@ -3,6 +3,7 @@
 2024/08/8
   * 修复stm32工程编译问题。
   * 生成最新文档。
+  * 增加\ tk_swap(感谢兆坤提供补丁)
 
 2024/08/7
   * 增加函数mledit\_get\_current\_line\_index/mledit\_get\_current\_row\_index。

@@ -394,6 +394,12 @@ typedef enum _ret_t {
 #define tk_roundi(a) (int32_t)(((a) >= 0) ? ((a) + 0.5f) : ((a)-0.5f))
 #define tk_clamp(a, mn, mx) ((a) < (mn) ? (mn) : ((a) > (mx) ? (mx) : (a)))
 #define tk_clampi(a, mn, mx) (int32_t)((a) < (mn) ? (mn) : ((a) > (mx) ? (mx) : (a)))
+#define tk_swap(a, b, type) \
+  {                         \
+    type temp = a;          \
+    a = b;                  \
+    b = temp;               \
+  }
 
 #ifndef ARRAY_SIZE
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
