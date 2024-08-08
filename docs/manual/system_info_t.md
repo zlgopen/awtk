@@ -14,6 +14,7 @@
 | <a href="#system_info_t_system_info_deinit">system\_info\_deinit</a> | 释放system_info对象。 |
 | <a href="#system_info_t_system_info_fix_font_name">system\_info\_fix\_font\_name</a> | 修正字体名称，如果为NULL，返回缺省字体。 |
 | <a href="#system_info_t_system_info_init">system\_info\_init</a> | 初始化system_info对象。 |
+| <a href="#system_info_t_system_info_set_app_name">system\_info\_set\_app\_name</a> | 设置应用程序的名称。 |
 | <a href="#system_info_t_system_info_set_app_root">system\_info\_set\_app\_root</a> | 设置app root。 |
 | <a href="#system_info_t_system_info_set_default_font">system\_info\_set\_default\_font</a> | 设置缺省字体。 |
 | <a href="#system_info_t_system_info_set_device_pixel_ratio">system\_info\_set\_device\_pixel\_ratio</a> | 设置LCD密度。 |
@@ -23,6 +24,7 @@
 | <a href="#system_info_t_system_info_set_lcd_orientation">system\_info\_set\_lcd\_orientation</a> | 设置LCD的旋转角度。 |
 | <a href="#system_info_t_system_info_set_lcd_type">system\_info\_set\_lcd\_type</a> | 设置LCD类型。 |
 | <a href="#system_info_t_system_info_set_lcd_w">system\_info\_set\_lcd\_w</a> | 设置LCD宽度。 |
+| <a href="#system_info_t_tk_is_swap_size_by_orientation">tk\_is\_swap\_size\_by\_orientation</a> | 根据旧的和新的方向判断是否需要交换宽度和高度。 |
 ### 属性
 <p id="system_info_t_properties">
 
@@ -140,6 +142,26 @@ ret_t system_info_init (app_type_t app_type, const char* app_name, const char* a
 | app\_type | app\_type\_t | 应用程序的类型。 |
 | app\_name | const char* | 应用程序的名称。 |
 | app\_root | const char* | 应用程序的根目录，用于定位资源文件。 |
+#### system\_info\_set\_app\_name 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="system_info_t_system_info_set_app_name">设置应用程序的名称。
+
+* 函数原型：
+
+```
+ret_t system_info_set_app_name (system_info_t* info, const char* app_name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| info | system\_info\_t* | system\_info对象。 |
+| app\_name | const char* | 应用程序的名称。 |
 #### system\_info\_set\_app\_root 函数
 -----------------------
 
@@ -320,6 +342,26 @@ ret_t system_info_set_lcd_w (system_info_t* info, uint32_t lcd_w);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | info | system\_info\_t* | system\_info对象。 |
 | lcd\_w | uint32\_t | 设置LCD宽度。 |
+#### tk\_is\_swap\_size\_by\_orientation 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="system_info_t_tk_is_swap_size_by_orientation">根据旧的和新的方向判断是否需要交换宽度和高度。
+
+* 函数原型：
+
+```
+bool_t tk_is_swap_size_by_orientation (lcd_orientation_t old_orientation, lcd_orientation_t new_orientation);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回是否需要交换宽度和高度。 |
+| old\_orientation | lcd\_orientation\_t | 旧的方向。 |
+| new\_orientation | lcd\_orientation\_t | 新的方向。 |
 #### app\_name 属性
 -----------------------
 > <p id="system_info_t_app_name">应用程序的名称。

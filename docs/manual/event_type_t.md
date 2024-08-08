@@ -80,6 +80,8 @@
 | EVT\_REQUEST\_QUIT\_APP | 请求退出应用程序事件。点击原生窗口关闭按钮时，通过窗口管理器触发，注册该事件并返回RET\_STOP，可以阻止窗口关闭。 |
 | EVT\_THEME\_WILL\_CHANGE | 即将改变主题(event\_t)。 |
 | EVT\_THEME\_CHANGED | 主题变化(event\_t)。 |
+| EVT\_WIDGET\_WILL\_UPDATE\_STYLE | 控件根据自己当前状态即将更新style(event\_t)。 |
+| EVT\_WIDGET\_UPDATE\_STYLE | 控件根据自己当前状态更新style(event\_t)。 |
 | EVT\_WIDGET\_ADD\_CHILD | 控件加载新的子控件(event\_t)。 |
 | EVT\_WIDGET\_REMOVE\_CHILD | 控件移除子控件(event\_t)。 |
 | EVT\_SCROLL\_START | scroll view开始滚动(event\_t)。 |
@@ -101,6 +103,7 @@
 | EVT\_LOCALE\_INFOS\_UNLOAD\_INFO | locale\_infos卸载某个本地化信息(event\_t)。 |
 | EVT\_ACTIVATED | 控件进入激活状态(event\_t)。 |
 | EVT\_UNACTIVATED | 控件退出激活状态(event\_t)。 |
+| EVT\_UI\_LOAD | UI加载完成事件(event\_t)。 |
 | EVT\_REQ\_START | event queue其它请求编号起始值。 |
 | EVT\_USER\_START | 用户定义事件起始值。 |
 | EVT\_NONE | 无效事件名称。 |

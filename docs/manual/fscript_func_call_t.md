@@ -9,6 +9,7 @@
 | -------- | ------------ | 
 | <a href="#fscript_func_call_t_fscript_ensure_locals">fscript\_ensure\_locals</a> | export for debugger |
 | <a href="#fscript_func_call_t_fscript_exec_func_default">fscript\_exec\_func\_default</a> | 执行函数的默认实现。 |
+| <a href="#fscript_func_call_t_fscript_find_event">fscript\_find\_event</a> | 查找事件。 |
 | <a href="#fscript_func_call_t_fscript_find_func">fscript\_find\_func</a> | 查找函数。 |
 | <a href="#fscript_func_call_t_fscript_get_code_id">fscript\_get\_code\_id</a> | 获取code_id。 |
 | <a href="#fscript_func_call_t_fscript_set_hooks">fscript\_set\_hooks</a> | 设置回调函数。 |
@@ -63,6 +64,25 @@ ret_t fscript_exec_func_default (fscript_t* fscript, fscript_func_call_t* iter, 
 | fscript | fscript\_t* | 脚本引擎对象。 |
 | iter | fscript\_func\_call\_t* | 当前函数。 |
 | result | value\_t* | 返回结果。 |
+#### fscript\_find\_event 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="fscript_func_call_t_fscript_find_event">查找事件。
+
+* 函数原型：
+
+```
+uint32_t fscript_find_event (const char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回事件的值。 |
+| name | const char* | 事件名。 |
 #### fscript\_find\_func 函数
 -----------------------
 

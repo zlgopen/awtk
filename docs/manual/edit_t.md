@@ -80,6 +80,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#edit_t_edit_set_fix_value">edit\_set\_fix\_value</a> | 设置修正输入内容的回调函数。 |
 | <a href="#edit_t_edit_set_float_limit">edit\_set\_float\_limit</a> | 设置为浮点数输入及取值范围。 |
 | <a href="#edit_t_edit_set_focus">edit\_set\_focus</a> | 设置为焦点。 |
+| <a href="#edit_t_edit_set_focus_next_when_enter">edit\_set\_focus\_next\_when\_enter</a> | 设置输入回车后是否跳到下一个控件中。 |
 | <a href="#edit_t_edit_set_inc_value">edit\_set\_inc\_value</a> | 设置增加值的回调函数。 |
 | <a href="#edit_t_edit_set_input_type">edit\_set\_input\_type</a> | 设置编辑器的输入类型。 |
 | <a href="#edit_t_edit_set_int">edit\_set\_int</a> | 设置int类型的值。 |
@@ -107,6 +108,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#edit_t_auto_fix">auto\_fix</a> | bool\_t | 输入无效时，是否自动改正。 |
 | <a href="#edit_t_cancelable">cancelable</a> | bool\_t | 是否支持撤销编辑。如果为TRUE，在失去焦点之前可以撤销所有修改(恢复获得焦点之前的内容)。 |
 | <a href="#edit_t_close_im_when_blured">close\_im\_when\_blured</a> | bool\_t | 是否在失去焦点时关闭输入法(默认是)。 |
+| <a href="#edit_t_focus_next_when_enter">focus\_next\_when\_enter</a> | bool\_t | 输入回车后是否跳到下一个控件中。 |
 | <a href="#edit_t_input_type">input\_type</a> | input\_type\_t | 输入类型。 |
 | <a href="#edit_t_keyboard">keyboard</a> | char* | 自定义软键盘名称。AWTK优先查找keyboard属性设置的键盘文件名（该键盘的XML文件需要在default\raw\ui目录下存在），如果没有指定keyboard，就找input_type设置的键盘类型。如果指定为空字符串，则表示不需要软键盘。 |
 | <a href="#edit_t_max">max</a> | double | 最大值或最大长度。 |
@@ -489,6 +491,26 @@ ret_t edit_set_focus (widget_t* widget, bool_t focus);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | focus | bool\_t | 是否为焦点。 |
+#### edit\_set\_focus\_next\_when\_enter 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_set_focus_next_when_enter">设置输入回车后是否跳到下一个控件中。
+
+* 函数原型：
+
+```
+ret_t edit_set_focus_next_when_enter (widget_t* widget, bool_t focus_next_when_enter);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| focus\_next\_when\_enter | bool\_t | 是否跳入下一个控件中。 |
 #### edit\_set\_inc\_value 函数
 -----------------------
 
@@ -921,6 +943,22 @@ ret_t edit_set_validator (widget_t* widget, const char* validator);
 #### close\_im\_when\_blured 属性
 -----------------------
 > <p id="edit_t_close_im_when_blured">是否在失去焦点时关闭输入法(默认是)。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### focus\_next\_when\_enter 属性
+-----------------------
+> <p id="edit_t_focus_next_when_enter">输入回车后是否跳到下一个控件中。
 
 * 类型：bool\_t
 

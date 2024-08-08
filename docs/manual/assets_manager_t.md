@@ -42,6 +42,7 @@ ui      UI描述数据。
 | <a href="#assets_manager_t_assets_manager_add_data">assets\_manager\_add\_data</a> | 向资源管理器中增加一个资源data。 |
 | <a href="#assets_manager_t_assets_manager_build_asset_filename">assets\_manager\_build\_asset\_filename</a> | 构建资源文件名。 |
 | <a href="#assets_manager_t_assets_manager_clear_all">assets\_manager\_clear\_all</a> | 清除全部缓存的资源。 |
+| <a href="#assets_manager_t_assets_manager_clear_all_cache">assets\_manager\_clear\_all\_cache</a> | 清除缓存。 |
 | <a href="#assets_manager_t_assets_manager_clear_cache">assets\_manager\_clear\_cache</a> | 清除指定类型的缓存。 |
 | <a href="#assets_manager_t_assets_manager_clear_cache_ex">assets\_manager\_clear\_cache\_ex</a> | 清除指定类型和名称的缓存。 |
 | <a href="#assets_manager_t_assets_manager_create">assets\_manager\_create</a> | 创建资源管理器。 |
@@ -92,7 +93,9 @@ assets_manager_t* assets_manager ();
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_add">向资源管理器中增加一个资源。
-备注：同一份资源多次调用会出现缓存叠加的问题，导致内存泄露
+备注：
+1. 同一份资源多次调用会出现缓存叠加的问题，导致内存泄露
+2. 该资源需要用户自己管理，AWTK 内部只会增加引用计数而已。
 
 * 函数原型：
 
@@ -113,7 +116,9 @@ ret_t assets_manager_add (assets_manager_t* am, const void* info);
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_add_data">向资源管理器中增加一个资源data。
-备注：同一份资源多次调用会出现缓存叠加的问题，导致内存泄露
+备注：
+1. 同一份资源多次调用会出现缓存叠加的问题，导致内存泄露
+2. 该资源会交给 AWTK 内部托管管理，data 数据就可以删除了。
 
 * 函数原型：
 
@@ -169,6 +174,25 @@ ret_t assets_manager_build_asset_filename (assets_manager_t* am, char* path, uin
 
 ```
 ret_t assets_manager_clear_all (assets_manager_t* am);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| am | assets\_manager\_t* | asset manager对象。 |
+#### assets\_manager\_clear\_all\_cache 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="assets_manager_t_assets_manager_clear_all_cache">清除缓存。
+
+* 函数原型：
+
+```
+ret_t assets_manager_clear_all_cache (assets_manager_t* am);
 ```
 
 * 参数说明：

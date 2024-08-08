@@ -15,6 +15,8 @@
 | <a href="#named_value_t_named_value_deinit">named\_value\_deinit</a> | 重置named_value对象。 |
 | <a href="#named_value_t_named_value_destroy">named\_value\_destroy</a> | 销毁named_value对象。 |
 | <a href="#named_value_t_named_value_get_value">named\_value\_get\_value</a> | 获取值对象(主要给脚本语言使用)。 |
+| <a href="#named_value_t_named_value_icompare">named\_value\_icompare</a> | 大小写不敏感比较。 |
+| <a href="#named_value_t_named_value_icompare_by_name">named\_value\_icompare\_by\_name</a> | 大小写不敏感比较。 |
 | <a href="#named_value_t_named_value_init">named\_value\_init</a> | 初始化。 |
 | <a href="#named_value_t_named_value_set_name">named\_value\_set\_name</a> | 设置名称。 |
 | <a href="#named_value_t_named_value_set_value">named\_value\_set\_value</a> | 设置值。 |
@@ -179,6 +181,46 @@ value_t* named_value_get_value (named_value_t* nv);
 | -------- | ----- | --------- |
 | 返回值 | value\_t* | 返回值对象。 |
 | nv | named\_value\_t* | named\_value对象。 |
+#### named\_value\_icompare 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="named_value_t_named_value_icompare">大小写不敏感比较。
+
+* 函数原型：
+
+```
+int32_t named_value_icompare (named_value_t* nv, const named_value_t* other);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int32\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| nv | named\_value\_t* | named\_value对象。 |
+| other | const named\_value\_t* | named\_value对象。 |
+#### named\_value\_icompare\_by\_name 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="named_value_t_named_value_icompare_by_name">大小写不敏感比较。
+
+* 函数原型：
+
+```
+int32_t named_value_icompare_by_name (named_value_t* nv, const char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int32\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| nv | named\_value\_t* | named\_value对象。 |
+| name | const char* | 名称。 |
 #### named\_value\_init 函数
 -----------------------
 

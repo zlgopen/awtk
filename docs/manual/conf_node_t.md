@@ -7,6 +7,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#conf_node_t_conf_doc_foreach">conf\_doc\_foreach</a> | 遍历节点类型为 CONF_NODE_SIMPLE 的节点。 |
 | <a href="#conf_node_t_conf_node_count_children">conf\_node\_count\_children</a> | 获取节点的子集个数。 |
 | <a href="#conf_node_t_conf_node_find_child">conf\_node\_find\_child</a> | 查找指定名称的子节点。 |
 | <a href="#conf_node_t_conf_node_find_child_by_index">conf\_node\_find\_child\_by\_index</a> | 查找指定索引的子节点。 |
@@ -14,11 +15,20 @@
 | <a href="#conf_node_t_conf_node_get_child_value">conf\_node\_get\_child\_value</a> | 获取子节点的值。 |
 | <a href="#conf_node_t_conf_node_get_child_value_bool">conf\_node\_get\_child\_value\_bool</a> | 获取子节点的值。 |
 | <a href="#conf_node_t_conf_node_get_child_value_by_index">conf\_node\_get\_child\_value\_by\_index</a> | 获取子节点的值。 |
+| <a href="#conf_node_t_conf_node_get_child_value_double">conf\_node\_get\_child\_value\_double</a> | 获取子节点的值。 |
+| <a href="#conf_node_t_conf_node_get_child_value_float">conf\_node\_get\_child\_value\_float</a> | 获取子节点的值。 |
 | <a href="#conf_node_t_conf_node_get_child_value_int32">conf\_node\_get\_child\_value\_int32</a> | 获取子节点的值。 |
 | <a href="#conf_node_t_conf_node_get_child_value_str">conf\_node\_get\_child\_value\_str</a> | 获取子节点的值。 |
+| <a href="#conf_node_t_conf_node_get_child_value_uint32">conf\_node\_get\_child\_value\_uint32</a> | 获取子节点的值。 |
 | <a href="#conf_node_t_conf_node_get_first_child">conf\_node\_get\_first\_child</a> | 获取第一个子节点。 |
 | <a href="#conf_node_t_conf_node_get_name">conf\_node\_get\_name</a> | 获得节点的名称。 |
 | <a href="#conf_node_t_conf_node_get_value">conf\_node\_get\_value</a> | 获取节点的值。 |
+| <a href="#conf_node_t_conf_node_get_value_bool">conf\_node\_get\_value\_bool</a> | 获取节点的值。 |
+| <a href="#conf_node_t_conf_node_get_value_double">conf\_node\_get\_value\_double</a> | 获取节点的值。 |
+| <a href="#conf_node_t_conf_node_get_value_float">conf\_node\_get\_value\_float</a> | 获取节点的值。 |
+| <a href="#conf_node_t_conf_node_get_value_int32">conf\_node\_get\_value\_int32</a> | 获取节点的值。 |
+| <a href="#conf_node_t_conf_node_get_value_str">conf\_node\_get\_value\_str</a> | 获取节点的值。 |
+| <a href="#conf_node_t_conf_node_get_value_uint32">conf\_node\_get\_value\_uint32</a> | 获取节点的值。 |
 | <a href="#conf_node_t_conf_node_set_first_child">conf\_node\_set\_first\_child</a> | 设置第一个子节点。 |
 | <a href="#conf_node_t_conf_node_set_value">conf\_node\_set\_value</a> | 设置节点的值。 |
 ### 属性
@@ -30,6 +40,27 @@
 | <a href="#conf_node_t_node_type">node\_type</a> | uint8\_t | 节点类型。 |
 | <a href="#conf_node_t_parent">parent</a> | conf\_node\_t* | 父节点。 |
 | <a href="#conf_node_t_value_type">value\_type</a> | uint8\_t | 值的类型。 |
+#### conf\_doc\_foreach 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_node_t_conf_doc_foreach">遍历节点类型为 CONF_NODE_SIMPLE 的节点。
+
+* 函数原型：
+
+```
+ret_t conf_doc_foreach (conf_doc_t* doc, conf_doc_on_visit_t on_visit, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回 ret\_t 值 |
+| doc | conf\_doc\_t* | 文档对象。 |
+| on\_visit | conf\_doc\_on\_visit\_t | 回调。 |
+| ctx | void* | 回调参数。 |
 #### conf\_node\_count\_children 函数
 -----------------------
 
@@ -172,6 +203,48 @@ ret_t conf_node_get_child_value_by_index (conf_node_t* node, uint32_t index, val
 | node | conf\_node\_t* | 节点对象。 |
 | index | uint32\_t | 子节点的序数。 |
 | v | value\_t* | 值(返回)。 |
+#### conf\_node\_get\_child\_value\_double 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_node_t_conf_node_get_child_value_double">获取子节点的值。
+
+* 函数原型：
+
+```
+double conf_node_get_child_value_double (conf_node_t* node, const char* name, double defval);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | double | 返回值。 |
+| node | conf\_node\_t* | 节点对象。 |
+| name | const char* | 子节点名称。 |
+| defval | double | 默认值。 |
+#### conf\_node\_get\_child\_value\_float 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_node_t_conf_node_get_child_value_float">获取子节点的值。
+
+* 函数原型：
+
+```
+float conf_node_get_child_value_float (conf_node_t* node, const char* name, float defval);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | float | 返回值。 |
+| node | conf\_node\_t* | 节点对象。 |
+| name | const char* | 子节点名称。 |
+| defval | float | 默认值。 |
 #### conf\_node\_get\_child\_value\_int32 函数
 -----------------------
 
@@ -214,6 +287,27 @@ const char* conf_node_get_child_value_str (conf_node_t* node, const char* name, 
 | node | conf\_node\_t* | 节点对象。 |
 | name | const char* | 子节点名称。 |
 | defval | const char* | 默认值。 |
+#### conf\_node\_get\_child\_value\_uint32 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_node_t_conf_node_get_child_value_uint32">获取子节点的值。
+
+* 函数原型：
+
+```
+uint32_t conf_node_get_child_value_uint32 (conf_node_t* node, const char* name, uint32_t defval);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回值。 |
+| node | conf\_node\_t* | 节点对象。 |
+| name | const char* | 子节点名称。 |
+| defval | uint32\_t | 默认值。 |
 #### conf\_node\_get\_first\_child 函数
 -----------------------
 
@@ -272,6 +366,126 @@ ret_t conf_node_get_value (conf_node_t* node, value_t* v);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | node | conf\_node\_t* | 节点对象。 |
 | v | value\_t* | 值(返回)。 |
+#### conf\_node\_get\_value\_bool 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_node_t_conf_node_get_value_bool">获取节点的值。
+
+* 函数原型：
+
+```
+bool_t conf_node_get_value_bool (conf_node_t* node, bool_t defval);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回值。 |
+| node | conf\_node\_t* | 节点对象。 |
+| defval | bool\_t | 默认值。 |
+#### conf\_node\_get\_value\_double 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_node_t_conf_node_get_value_double">获取节点的值。
+
+* 函数原型：
+
+```
+double conf_node_get_value_double (conf_node_t* node, double defval);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | double | 返回值。 |
+| node | conf\_node\_t* | 节点对象。 |
+| defval | double | 默认值。 |
+#### conf\_node\_get\_value\_float 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_node_t_conf_node_get_value_float">获取节点的值。
+
+* 函数原型：
+
+```
+float conf_node_get_value_float (conf_node_t* node, float defval);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | float | 返回值。 |
+| node | conf\_node\_t* | 节点对象。 |
+| defval | float | 默认值。 |
+#### conf\_node\_get\_value\_int32 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_node_t_conf_node_get_value_int32">获取节点的值。
+
+* 函数原型：
+
+```
+int32_t conf_node_get_value_int32 (conf_node_t* node, int32_t defval);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int32\_t | 返回值。 |
+| node | conf\_node\_t* | 节点对象。 |
+| defval | int32\_t | 默认值。 |
+#### conf\_node\_get\_value\_str 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_node_t_conf_node_get_value_str">获取节点的值。
+
+* 函数原型：
+
+```
+const char* conf_node_get_value_str (conf_node_t* node, const char* defval);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回值。 |
+| node | conf\_node\_t* | 节点对象。 |
+| defval | const char* | 默认值。 |
+#### conf\_node\_get\_value\_uint32 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_node_t_conf_node_get_value_uint32">获取节点的值。
+
+* 函数原型：
+
+```
+uint32_t conf_node_get_value_uint32 (conf_node_t* node, uint32_t defval);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回值。 |
+| node | conf\_node\_t* | 节点对象。 |
+| defval | uint32\_t | 默认值。 |
 #### conf\_node\_set\_first\_child 函数
 -----------------------
 

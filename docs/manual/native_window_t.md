@@ -12,10 +12,13 @@
 | <a href="#native_window_t_native_window_center">native\_window\_center</a> | 窗口居中。 |
 | <a href="#native_window_t_native_window_create">native\_window\_create</a> | 创建win对象。 |
 | <a href="#native_window_t_native_window_get_canvas">native\_window\_get\_canvas</a> | 获取canvas。 |
+| <a href="#native_window_t_native_window_get_info">native\_window\_get\_info</a> | 获取窗口信息。 |
+| <a href="#native_window_t_native_window_gl_make_current">native\_window\_gl\_make\_current</a> | 设置当前的opengl上下文。 |
 | <a href="#native_window_t_native_window_invalidate">native\_window\_invalidate</a> | 请求重绘指定区域。 |
 | <a href="#native_window_t_native_window_maximize">native\_window\_maximize</a> | 最大化窗口。 |
 | <a href="#native_window_t_native_window_minimize">native\_window\_minimize</a> | 最小化窗口。 |
 | <a href="#native_window_t_native_window_move">native\_window\_move</a> | 移动窗口。 |
+| <a href="#native_window_t_native_window_preprocess_event">native\_window\_preprocess\_event</a> | 预处理事件。 |
 | <a href="#native_window_t_native_window_resize">native\_window\_resize</a> | 调整窗口大小。 |
 | <a href="#native_window_t_native_window_restore">native\_window\_restore</a> | 恢复窗口大小。 |
 | <a href="#native_window_t_native_window_set_cursor">native\_window\_set\_cursor</a> | 设置鼠标光标。 |
@@ -23,6 +26,7 @@
 | <a href="#native_window_t_native_window_set_orientation">native\_window\_set\_orientation</a> | 调整窗口旋转。 |
 | <a href="#native_window_t_native_window_set_title">native\_window\_set\_title</a> | 设置程序窗口的名称。 |
 | <a href="#native_window_t_native_window_show_border">native\_window\_show\_border</a> | 是否显示边框。 |
+| <a href="#native_window_t_native_window_swap_buffer">native\_window\_swap\_buffer</a> | 交换缓冲区。 |
 #### native\_window\_center 函数
 -----------------------
 
@@ -79,6 +83,45 @@ canvas_t* native_window_get_canvas (native_window_t* win);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | canvas\_t* | 返回canvas对象。 |
+| win | native\_window\_t* | win对象。 |
+#### native\_window\_get\_info 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="native_window_t_native_window_get_info">获取窗口信息。
+
+* 函数原型：
+
+```
+ret_t native_window_get_info (native_window_t* win, native_window_info_t* info);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| win | native\_window\_t* | win对象。 |
+| info | native\_window\_info\_t* | 窗口信息。 |
+#### native\_window\_gl\_make\_current 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="native_window_t_native_window_gl_make_current">设置当前的opengl上下文。
+
+* 函数原型：
+
+```
+ret_t native_window_gl_make_current (native_window_t* win);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | win | native\_window\_t* | win对象。 |
 #### native\_window\_invalidate 函数
 -----------------------
@@ -160,6 +203,26 @@ ret_t native_window_move (native_window_t* win, xy_t x, xy_t y, bool_t force);
 | x | xy\_t | x坐标。 |
 | y | xy\_t | y坐标。 |
 | force | bool\_t | 无论是否shared都move。 |
+#### native\_window\_preprocess\_event 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="native_window_t_native_window_preprocess_event">预处理事件。
+
+* 函数原型：
+
+```
+ret_t native_window_preprocess_event (native_window_t* win, event_t* e);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| win | native\_window\_t* | win对象。 |
+| e | event\_t* | 事件。 |
 #### native\_window\_resize 函数
 -----------------------
 
@@ -303,3 +366,22 @@ ret_t native_window_show_border (native_window_t* win, bool_t show);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | win | native\_window\_t* | win对象。 |
 | show | bool\_t | 是否显示。 |
+#### native\_window\_swap\_buffer 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="native_window_t_native_window_swap_buffer">交换缓冲区。
+
+* 函数原型：
+
+```
+ret_t native_window_swap_buffer (native_window_t* win);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| win | native\_window\_t* | win对象。 |

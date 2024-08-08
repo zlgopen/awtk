@@ -73,14 +73,14 @@ void log_error (const char* format);
 * 函数原型：
 
 ```
-log_level_t log_get_log_level ();
+tk_log_level_t log_get_log_level ();
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | log\_level\_t | 返回log的级别。 |
+| 返回值 | tk\_log\_level\_t | 返回log的级别。 |
 #### log\_info 函数
 -----------------------
 
@@ -116,7 +116,7 @@ void log_info (const char* format);
 * 函数原型：
 
 ```
-ret_t log_notify (log_level_t level, const char* format);
+ret_t log_notify (tk_log_level_t level, const char* format);
 ```
 
 * 参数说明：
@@ -124,7 +124,7 @@ ret_t log_notify (log_level_t level, const char* format);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| level | log\_level\_t | 级别。 |
+| level | tk\_log\_level\_t | 级别。 |
 | format | const char* | 格式或信息。 |
 #### log\_set\_hook 函数
 -----------------------
@@ -156,7 +156,7 @@ ret_t log_set_hook (tk_log_hook_t log, void* ctx);
 * 函数原型：
 
 ```
-ret_t log_set_log_level (log_level_t log_level);
+ret_t log_set_log_level (tk_log_level_t log_level);
 ```
 
 * 参数说明：
@@ -164,7 +164,7 @@ ret_t log_set_log_level (log_level_t log_level);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| log\_level | log\_level\_t | log的级别。 |
+| log\_level | tk\_log\_level\_t | log的级别。 |
 #### log\_warn 函数
 -----------------------
 

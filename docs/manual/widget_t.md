@@ -82,6 +82,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_dispatch_simple_event">widget\_dispatch\_simple\_event</a> | 分发一个简单事件。 |
 | <a href="#widget_t_widget_dispatch_to_key_target">widget\_dispatch\_to\_key\_target</a> | 递归的分发一个事件到所有key_target子控件。 |
 | <a href="#widget_t_widget_dispatch_to_target">widget\_dispatch\_to\_target</a> | 递归的分发一个事件到所有target子控件。 |
+| <a href="#widget_t_widget_draw_arc_at_center">widget\_draw\_arc\_at\_center</a> | 以控件中心为中心绘制圆弧。 |
 | <a href="#widget_t_widget_draw_background">widget\_draw\_background</a> | 根据控件的style绘制背景矩形。 |
 | <a href="#widget_t_widget_draw_text_in_rect">widget\_draw\_text\_in\_rect</a> | 在canvas绘制一行文本。 |
 | <a href="#widget_t_widget_end_wait_pointer_cursor">widget\_end\_wait\_pointer\_cursor</a> | 结束等待鼠标指针。 |
@@ -245,6 +246,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_set_text_ex">widget\_set\_text\_ex</a> | 设置控件的文本。 |
 | <a href="#widget_t_widget_set_text_utf8">widget\_set\_text\_utf8</a> | 设置控件的文本。（如果字符串相同，则不会重复设置以及触发事件） |
 | <a href="#widget_t_widget_set_text_utf8_ex">widget\_set\_text\_utf8\_ex</a> | 设置控件的文本。 |
+| <a href="#widget_t_widget_set_text_with_double">widget\_set\_text\_with\_double</a> | 设置控件的文本。 |
 | <a href="#widget_t_widget_set_theme">widget\_set\_theme</a> | 设置theme的名称，用于动态切换主题。名称与当前主题名称相同，则重新加载全部资源。 |
 | <a href="#widget_t_widget_set_tr_text">widget\_set\_tr\_text</a> | 获取翻译之后的文本，然后调用widget_set_text。 |
 | <a href="#widget_t_widget_set_value">widget\_set\_value</a> | 设置控件的值。 |
@@ -1061,6 +1063,33 @@ ret_t widget_dispatch_to_target (widget_t* widget, event_t* e);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | e | event\_t* | 事件。 |
+#### widget\_draw\_arc\_at\_center 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_draw_arc_at_center">以控件中心为中心绘制圆弧。
+
+* 函数原型：
+
+```
+ret_t widget_draw_arc_at_center (widget_t* widget, canvas_t* c, bool_t bg, double line_width, double start_angle, double end_angle, bool_t counter_clock_wise, const char* line_cap, double r);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| c | canvas\_t* | 画布对象。 |
+| bg | bool\_t | 是否是背景。 |
+| line\_width | double | 线宽。 |
+| start\_angle | double | 开始角度。 |
+| end\_angle | double | 结束角度。 |
+| counter\_clock\_wise | bool\_t | 是否是逆时针。 |
+| line\_cap | const char* | 线帽。 |
+| r | double | 半径。 |
 #### widget\_draw\_background 函数
 -----------------------
 
@@ -4270,7 +4299,7 @@ ret_t widget_set_state (widget_t* widget, const char* state);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| state | const char* | 状态(必须为真正的常量字符串，在widget的整个生命周期有效)。 |
+| state | const char* | 状态。 |
 #### widget\_set\_style 函数
 -----------------------
 
@@ -4453,6 +4482,27 @@ ret_t widget_set_text_utf8_ex (widget_t* widget, const char* text, bool_t check_
 | widget | widget\_t* | 控件对象。 |
 | text | const char* | 文本。 |
 | check\_diff | bool\_t | 是否检查设置的文本是否和控件中的文本一样。 |
+#### widget\_set\_text\_with\_double 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_set_text_with_double">设置控件的文本。
+
+* 函数原型：
+
+```
+ret_t widget_set_text_with_double (widget_t* widget, const char* format, double value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| format | const char* | 格式。 |
+| value | double | 值。 |
 #### widget\_set\_theme 函数
 -----------------------
 
@@ -5329,6 +5379,9 @@ ret_t widget_use_style (widget_t* widget, const char* style);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### style 属性
 -----------------------
 > <p id="widget_t_style">style的名称。

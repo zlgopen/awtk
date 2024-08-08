@@ -51,6 +51,7 @@
 | <a href="#tk_object_t_tk_object_has_prop">tk\_object\_has\_prop</a> | 检查是否存在指定的属性。 |
 | <a href="#tk_object_t_tk_object_has_prop_by_path">tk\_object\_has\_prop\_by\_path</a> | 检查是否存在指定的属性。 |
 | <a href="#tk_object_t_tk_object_is_collection">tk\_object\_is\_collection</a> | 判断对象是否是集合。 |
+| <a href="#tk_object_t_tk_object_is_instance_of">tk\_object\_is\_instance\_of</a> | 检查对象是否是指定类型的实例。 |
 | <a href="#tk_object_t_tk_object_notify_changed">tk\_object\_notify\_changed</a> | 触发EVT_PROPS_CHANGED事件。 |
 | <a href="#tk_object_t_tk_object_ref">tk\_object\_ref</a> | 引用计数加1。 |
 | <a href="#tk_object_t_tk_object_remove_prop">tk\_object\_remove\_prop</a> | 删除指定属性。 |
@@ -75,6 +76,7 @@
 | <a href="#tk_object_t_tk_object_set_prop_pointer_ex">tk\_object\_set\_prop\_pointer\_ex</a> | 设置指定属性的指针类型的值。 |
 | <a href="#tk_object_t_tk_object_set_prop_str">tk\_object\_set\_prop\_str</a> | 设置指定属性的字符串类型的值。 |
 | <a href="#tk_object_t_tk_object_set_prop_str_by_path">tk\_object\_set\_prop\_str\_by\_path</a> | 设置指定属性的字符串类型的值。 |
+| <a href="#tk_object_t_tk_object_set_prop_str_with_format">tk\_object\_set\_prop\_str\_with\_format</a> | 设置指定属性的字符串类型的值。 |
 | <a href="#tk_object_t_tk_object_set_prop_uint16">tk\_object\_set\_prop\_uint16</a> | 设置指定属性的uint16类型的值。 |
 | <a href="#tk_object_t_tk_object_set_prop_uint32">tk\_object\_set\_prop\_uint32</a> | 设置指定属性的uint32类型的值。 |
 | <a href="#tk_object_t_tk_object_set_prop_uint64">tk\_object\_set\_prop\_uint64</a> | 设置指定属性的uint64类型的值。 |
@@ -955,6 +957,30 @@ bool_t tk_object_is_collection (tk_object_t* obj);
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回TRUE表示是集合，否则不是。 |
 | obj | tk\_object\_t* | object对象。 |
+#### tk\_object\_is\_instance\_of 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_object_t_tk_object_is_instance_of">检查对象是否是指定类型的实例。
+```
+if(tk_object_is_instance_of(obj, OBJECT_ARRRAY_TYPE)) {
+}
+```
+
+* 函数原型：
+
+```
+bool_t tk_object_is_instance_of (tk_object_t* obj, const char* type);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示是指定类型的实例，否则表示不是。 |
+| obj | tk\_object\_t* | object对象。 |
+| type | const char* | 类型。 |
 #### tk\_object\_notify\_changed 函数
 -----------------------
 
@@ -1454,6 +1480,27 @@ ret_t tk_object_set_prop_str_by_path (tk_object_t* obj, const char* path, const 
 | obj | tk\_object\_t* | object对象。 |
 | path | const char* | 属性的path。 |
 | value | const char* | 属性的值。 |
+#### tk\_object\_set\_prop\_str\_with\_format 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_object_t_tk_object_set_prop_str_with_format">设置指定属性的字符串类型的值。
+
+* 函数原型：
+
+```
+ret_t tk_object_set_prop_str_with_format (tk_object_t* obj, const char* name, const char* format);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | tk\_object\_t* | object对象。 |
+| name | const char* | 属性的名称。 |
+| format | const char* | 格式字符串。 |
 #### tk\_object\_set\_prop\_uint16 函数
 -----------------------
 

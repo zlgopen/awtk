@@ -419,7 +419,7 @@ ret_t remote_ui_get_xml_source (remote_ui_t* ui, const char* target, const char*
 * 函数原型：
 
 ```
-ret_t remote_ui_hook_log (remote_ui_t* ui, tk_log_hook_t log, void* ctx);
+ret_t remote_ui_hook_log (remote_ui_t* ui, remote_ui_on_log_message_t log, void* ctx);
 ```
 
 * 参数说明：
@@ -428,7 +428,7 @@ ret_t remote_ui_hook_log (remote_ui_t* ui, tk_log_hook_t log, void* ctx);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | ui | remote\_ui\_t* | remote ui客户端对象。 |
-| log | tk\_log\_hook\_t | log hook。 |
+| log | remote\_ui\_on\_log\_message\_t | log hook。 |
 | ctx | void* | 上下文。 |
 #### remote\_ui\_key 函数
 -----------------------

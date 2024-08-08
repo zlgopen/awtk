@@ -30,6 +30,7 @@ slist_destroy(slist);
 | <a href="#slist_t_slist_deinit">slist\_deinit</a> | 清除单向链表中的元素。 |
 | <a href="#slist_t_slist_destroy">slist\_destroy</a> | 清除单向链表中的元素，并释放单向链表对象。 |
 | <a href="#slist_t_slist_find">slist\_find</a> | 查找第一个满足条件的元素。 |
+| <a href="#slist_t_slist_find_ex">slist\_find\_ex</a> | 查找第一个满足条件的元素。 |
 | <a href="#slist_t_slist_foreach">slist\_foreach</a> | 遍历元素。 |
 | <a href="#slist_t_slist_head">slist\_head</a> | 返回第一个元素。 |
 | <a href="#slist_t_slist_head_pop">slist\_head\_pop</a> | 弹出第一个元素。 |
@@ -39,7 +40,7 @@ slist_destroy(slist);
 | <a href="#slist_t_slist_prepend">slist\_prepend</a> | 在头部追加一个元素。 |
 | <a href="#slist_t_slist_remove">slist\_remove</a> | 删除第一个满足条件的元素。 |
 | <a href="#slist_t_slist_remove_all">slist\_remove\_all</a> | 删除全部元素。 |
-| <a href="#slist_t_slist_remove_with_compare">slist\_remove\_with\_compare</a> | 删除满足条件的元素。 |
+| <a href="#slist_t_slist_remove_ex">slist\_remove\_ex</a> | 删除满足条件的元素。 |
 | <a href="#slist_t_slist_size">slist\_size</a> | 返回元素个数。 |
 | <a href="#slist_t_slist_tail">slist\_tail</a> | 返回最后一个元素。 |
 | <a href="#slist_t_slist_tail_pop">slist\_tail\_pop</a> | 弹出最后一个元素。 |
@@ -168,6 +169,27 @@ void* slist_find (slist_t* slist, void* ctx);
 | -------- | ----- | --------- |
 | 返回值 | void* | 如果找到，返回满足条件的对象，否则返回NULL。 |
 | slist | slist\_t* | 单向链表对象。 |
+| ctx | void* | 比较函数的上下文。 |
+#### slist\_find\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slist_t_slist_find_ex">查找第一个满足条件的元素。
+
+* 函数原型：
+
+```
+void* slist_find_ex (slist_t* slist, tk_compare_t compare, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | void* | 返回节点。 |
+| slist | slist\_t* | 单向链表对象。 |
+| compare | tk\_compare\_t | 元素比较函数。 |
 | ctx | void* | 比较函数的上下文。 |
 #### slist\_foreach 函数
 -----------------------
@@ -348,12 +370,12 @@ ret_t slist_remove_all (slist_t* slist);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | slist | slist\_t* | 单向链表对象。 |
-#### slist\_remove\_with\_compare 函数
+#### slist\_remove\_ex 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="slist_t_slist_remove_with_compare">删除满足条件的元素。
+> <p id="slist_t_slist_remove_ex">删除满足条件的元素。
 备注：
 如果队列中符合条件的元素不足 remove_size，移除最后一个符合条件的元素后返回 RET_OK。
 如果队列中符合条件的元素大于 remove_size，在队列中移除 remove_size 个元素后返回 RET_OK。
@@ -362,7 +384,7 @@ remove_size 为负数则会移除所有符合条件的元素。
 * 函数原型：
 
 ```
-ret_t slist_remove_with_compare (slist_t* slist, void* ctx, tk_compare_t compare, int32_t remove_size);
+ret_t slist_remove_ex (slist_t* slist, tk_compare_t compare, void* ctx, int32_t remove_size);
 ```
 
 * 参数说明：
@@ -371,8 +393,8 @@ ret_t slist_remove_with_compare (slist_t* slist, void* ctx, tk_compare_t compare
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | slist | slist\_t* | 单向链表对象。 |
-| ctx | void* | 比较函数的上下文。 |
 | compare | tk\_compare\_t | 元素比较函数。 |
+| ctx | void* | 比较函数的上下文。 |
 | remove\_size | int32\_t | 删除个数。 |
 #### slist\_size 函数
 -----------------------

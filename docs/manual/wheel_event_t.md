@@ -20,6 +20,8 @@
 | <a href="#wheel_event_t_ctrl">ctrl</a> | bool\_t | ctrl键是否按下。 |
 | <a href="#wheel_event_t_dy">dy</a> | int32\_t | 滚轮的y值。 |
 | <a href="#wheel_event_t_shift">shift</a> | bool\_t | shift键是否按下。 |
+| <a href="#wheel_event_t_x">x</a> | xy\_t | x坐标。 |
+| <a href="#wheel_event_t_y">y</a> | xy\_t | y坐标。 |
 #### wheel\_event\_cast 函数
 -----------------------
 
@@ -99,6 +101,28 @@ event_t* wheel_event_init (wheel_event_t* event, uint32_t type, void* target, in
 > <p id="wheel_event_t_shift">shift键是否按下。
 
 * 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可脚本化   | 是 |
+#### x 属性
+-----------------------
+> <p id="wheel_event_t_x">x坐标。
+
+* 类型：xy\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可脚本化   | 是 |
+#### y 属性
+-----------------------
+> <p id="wheel_event_t_y">y坐标。
+
+* 类型：xy\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

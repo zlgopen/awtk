@@ -11,6 +11,7 @@
 | <a href="#platform_t_get_time_us64">get\_time\_us64</a> | 获取当前时间(微秒)。 |
 | <a href="#platform_t_platform_prepare">platform\_prepare</a> | 平台准备函数。 |
 | <a href="#platform_t_sleep_ms">sleep\_ms</a> | 睡眠指定时间。 |
+| <a href="#platform_t_sleep_us">sleep\_us</a> | 睡眠指定时间。 |
 #### get\_time\_ms64 函数
 -----------------------
 
@@ -84,3 +85,22 @@ void sleep_ms (uint32_t ms);
 | -------- | ----- | --------- |
 | 返回值 | void | 无。 |
 | ms | uint32\_t | 睡眠时间(毫秒)。 |
+#### sleep\_us 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="platform_t_sleep_us">睡眠指定时间。
+
+* 函数原型：
+
+```
+void sleep_us (uint32_t us);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | void | 无。 |
+| us | uint32\_t | 睡眠时间(微秒)。 |

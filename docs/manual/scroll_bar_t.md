@@ -56,8 +56,10 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L3
 | <a href="#scroll_bar_t_scroll_bar_set_animator_time">scroll\_bar\_set\_animator\_time</a> | 设置翻页滚动动画时间(毫秒)。 |
 | <a href="#scroll_bar_t_scroll_bar_set_auto_hide">scroll\_bar\_set\_auto\_hide</a> | 设置auto_hide属性。 |
 | <a href="#scroll_bar_t_scroll_bar_set_params">scroll\_bar\_set\_params</a> | 设置参数。 |
+| <a href="#scroll_bar_t_scroll_bar_set_scroll_delta">scroll\_bar\_set\_scroll\_delta</a> | 设置鼠标滚轮幅度(仅对desktop风格的滚动条有效)。 |
 | <a href="#scroll_bar_t_scroll_bar_set_value">scroll\_bar\_set\_value</a> | 设置值，并触发EVT_VALUE_CHANGED事件。 |
 | <a href="#scroll_bar_t_scroll_bar_set_value_only">scroll\_bar\_set\_value\_only</a> | 设置值，但不触发EVT_VALUE_CHANGED事件。 |
+| <a href="#scroll_bar_t_scroll_bar_set_wheel_scroll">scroll\_bar\_set\_wheel\_scroll</a> | 设置鼠标滚轮是否滚动(仅对desktop风格的滚动条有效)。 |
 | <a href="#scroll_bar_t_scroll_bar_show_by_opacity_animation">scroll\_bar\_show\_by\_opacity\_animation</a> | 通过动画显示滚动条。 |
 ### 属性
 <p id="scroll_bar_t_properties">
@@ -68,8 +70,10 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L3
 | <a href="#scroll_bar_t_animator_time">animator\_time</a> | uint32\_t | 翻页滚动动画时间(毫秒)。 |
 | <a href="#scroll_bar_t_auto_hide">auto\_hide</a> | bool\_t | 是否自动隐藏(仅对mobile风格的滚动条有效)。 |
 | <a href="#scroll_bar_t_row">row</a> | int32\_t | 行的高度。 |
+| <a href="#scroll_bar_t_scroll_delta">scroll\_delta</a> | uint32\_t | 每次鼠标滚动值。（缺省值为0，0 则使用鼠标滚动默认值） |
 | <a href="#scroll_bar_t_value">value</a> | int32\_t | 当前的值。 |
 | <a href="#scroll_bar_t_virtual_size">virtual\_size</a> | int32\_t | 虚拟宽度或高度。 |
+| <a href="#scroll_bar_t_wheel_scroll">wheel\_scroll</a> | bool\_t | 设置鼠标滚轮是否滚动(仅对desktop风格的滚动条有效)（垂直滚动条缺省值为TRUE，水平滚动条缺省值为FALSE）。 |
 ### 事件
 <p id="scroll_bar_t_events">
 
@@ -331,6 +335,26 @@ ret_t scroll_bar_set_params (widget_t* widget, int32_t virtual_size, int32_t row
 | widget | widget\_t* | scroll\_bar控件。 |
 | virtual\_size | int32\_t | 虚拟高度。 |
 | row | int32\_t | 每一行的高度。 |
+#### scroll\_bar\_set\_scroll\_delta 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="scroll_bar_t_scroll_bar_set_scroll_delta">设置鼠标滚轮幅度(仅对desktop风格的滚动条有效)。
+
+* 函数原型：
+
+```
+ret_t scroll_bar_set_scroll_delta (widget_t* widget, uint32_t scroll_delta);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | scroll\_bar控件。 |
+| scroll\_delta | uint32\_t | 滚动幅度。 |
 #### scroll\_bar\_set\_value 函数
 -----------------------
 
@@ -371,6 +395,26 @@ ret_t scroll_bar_set_value_only (widget_t* widget, int32_t value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | scroll\_bar控件。 |
 | value | int32\_t | 值。 |
+#### scroll\_bar\_set\_wheel\_scroll 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="scroll_bar_t_scroll_bar_set_wheel_scroll">设置鼠标滚轮是否滚动(仅对desktop风格的滚动条有效)。
+
+* 函数原型：
+
+```
+ret_t scroll_bar_set_wheel_scroll (widget_t* widget, bool_t scroll);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | scroll\_bar控件。 |
+| scroll | bool\_t | 是否设置该功能。 |
 #### scroll\_bar\_show\_by\_opacity\_animation 函数
 -----------------------
 
@@ -456,6 +500,22 @@ ret_t scroll_bar_show_by_opacity_animation (widget_t* widget, int32_t duration, 
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 | 可通过widget\_set\_prop修改 | 是 |
+#### scroll\_delta 属性
+-----------------------
+> <p id="scroll_bar_t_scroll_delta">每次鼠标滚动值。（缺省值为0，0 则使用鼠标滚动默认值）
+
+* 类型：uint32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### value 属性
 -----------------------
 > <p id="scroll_bar_t_value">当前的值。
@@ -477,6 +537,22 @@ ret_t scroll_bar_show_by_opacity_animation (widget_t* widget, int32_t duration, 
 > <p id="scroll_bar_t_virtual_size">虚拟宽度或高度。
 
 * 类型：int32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### wheel\_scroll 属性
+-----------------------
+> <p id="scroll_bar_t_wheel_scroll">设置鼠标滚轮是否滚动(仅对desktop风格的滚动条有效)（垂直滚动条缺省值为TRUE，水平滚动条缺省值为FALSE）。
+
+* 类型：bool\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

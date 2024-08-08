@@ -67,13 +67,16 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#check_button_t_check_button_create_ex">check\_button\_create\_ex</a> | 创建check button对象 |
 | <a href="#check_button_t_check_button_create_radio">check\_button\_create\_radio</a> | 创建单选按钮对象 |
 | <a href="#check_button_t_check_button_get_checked_button">check\_button\_get\_checked\_button</a> | 用于radio button获取同组中勾选的radio button。 |
+| <a href="#check_button_t_check_button_get_indeterminate">check\_button\_get\_indeterminate</a> | 获取控件的是否存于不确定状态。 |
 | <a href="#check_button_t_check_button_get_widget_vtable">check\_button\_get\_widget\_vtable</a> | 获取 check_button 虚表。 |
+| <a href="#check_button_t_check_button_set_indeterminate">check\_button\_set\_indeterminate</a> | 设置控件的不确定状态。 |
 | <a href="#check_button_t_check_button_set_value">check\_button\_set\_value</a> | 设置控件的值。 |
 ### 属性
 <p id="check_button_t_properties">
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
+| <a href="#check_button_t_indeterminate">indeterminate</a> | bool\_t | 复选框是否是为不确定状态。（该值为TRUE的话，value 值存于不确定状态，该值为FALSE的话，value 值存于确定状态） |
 | <a href="#check_button_t_radio">radio</a> | bool\_t | 是否是单选按钮。 |
 | <a href="#check_button_t_value">value</a> | bool\_t | 值(勾选为TRUE，非勾选为FALSE)。 |
 ### 事件
@@ -193,6 +196,25 @@ widget_t* check_button_get_checked_button (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 同组中勾选的radio button对象。 |
 | widget | widget\_t* | radio\_button对象。 |
+#### check\_button\_get\_indeterminate 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="check_button_t_check_button_get_indeterminate">获取控件的是否存于不确定状态。
+
+* 函数原型：
+
+```
+bool_t check_button_get_indeterminate (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回控件的是否存于不确定状态。 |
+| widget | widget\_t* | check\_button对象。 |
 #### check\_button\_get\_widget\_vtable 函数
 -----------------------
 
@@ -211,6 +233,26 @@ const widget_vtable_t* check_button_get_widget_vtable ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | const widget\_vtable\_t* | 成功返回 check\_button 虚表。 |
+#### check\_button\_set\_indeterminate 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="check_button_t_check_button_set_indeterminate">设置控件的不确定状态。
+
+* 函数原型：
+
+```
+ret_t check_button_set_indeterminate (widget_t* widget, bool_t indeterminate);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | check\_button对象。 |
+| indeterminate | bool\_t | 不确定状态。（该值为TRUE的话，value 值存于不确定状态，该值为FALSE的话，value 值存于确定状态） |
 #### check\_button\_set\_value 函数
 -----------------------
 
@@ -231,6 +273,19 @@ ret_t check_button_set_value (widget_t* widget, bool_t value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | check\_button对象。 |
 | value | bool\_t | 值(勾选为TRUE，非勾选为FALSE)。 |
+#### indeterminate 属性
+-----------------------
+> <p id="check_button_t_indeterminate">复选框是否是为不确定状态。（该值为TRUE的话，value 值存于不确定状态，该值为FALSE的话，value 值存于确定状态）
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 否 |
+| 可直接修改 | 否 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### radio 属性
 -----------------------
 > <p id="check_button_t_radio">是否是单选按钮。

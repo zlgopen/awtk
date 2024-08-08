@@ -69,9 +69,11 @@ tab\_button\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均
 | <a href="#tab_button_t_tab_button_cast">tab\_button\_cast</a> | 转换tab_button对象(供脚本语言使用)。 |
 | <a href="#tab_button_t_tab_button_create">tab\_button\_create</a> | 创建tab_button对象 |
 | <a href="#tab_button_t_tab_button_get_widget_vtable">tab\_button\_get\_widget\_vtable</a> | 获取 tab_button 虚表。 |
+| <a href="#tab_button_t_tab_button_restack">tab\_button\_restack</a> | 调整控件在父控件中的位置序数。 |
 | <a href="#tab_button_t_tab_button_set_active_icon">tab\_button\_set\_active\_icon</a> | 设置控件的active图标。 |
 | <a href="#tab_button_t_tab_button_set_icon">tab\_button\_set\_icon</a> | 设置控件的图标。 |
 | <a href="#tab_button_t_tab_button_set_load_ui">tab\_button\_set\_load\_ui</a> | 设置控件动态加载显示UI。 |
+| <a href="#tab_button_t_tab_button_set_max_w">tab\_button\_set\_max\_w</a> | 设置控件的最大宽度。 |
 | <a href="#tab_button_t_tab_button_set_value">tab\_button\_set\_value</a> | 设置为当前标签。 |
 ### 属性
 <p id="tab_button_t_properties">
@@ -81,6 +83,7 @@ tab\_button\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均
 | <a href="#tab_button_t_active_icon">active\_icon</a> | char* | 当前项的图标的名称。 |
 | <a href="#tab_button_t_icon">icon</a> | char* | 非当前项的图标的名称。 |
 | <a href="#tab_button_t_load_ui">load\_ui</a> | char* | 激活后加载的UI名字。 |
+| <a href="#tab_button_t_max_w">max\_w</a> | int32\_t | 最大宽度。（缺省值为-1，小于 0 则最大宽度无效） |
 | <a href="#tab_button_t_value">value</a> | bool\_t | 值。 |
 ### 事件
 <p id="tab_button_t_events">
@@ -150,6 +153,26 @@ const widget_vtable_t* tab_button_get_widget_vtable ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | const widget\_vtable\_t* | 成功返回 tab\_button 虚表。 |
+#### tab\_button\_restack 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tab_button_t_tab_button_restack">调整控件在父控件中的位置序数。
+
+* 函数原型：
+
+```
+ret_t tab_button_restack (widget_t* widget, uint32_t index);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | tab\_button对象。 |
+| index | uint32\_t | 位置序数(大于等于总个数，则放到最后)。 |
 #### tab\_button\_set\_active\_icon 函数
 -----------------------
 
@@ -210,6 +233,26 @@ ret_t tab_button_set_load_ui (widget_t* widget, const char* name);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | tab\_button对象。 |
 | name | const char* | 动态加载UI的资源名称。 |
+#### tab\_button\_set\_max\_w 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tab_button_t_tab_button_set_max_w">设置控件的最大宽度。
+
+* 函数原型：
+
+```
+ret_t tab_button_set_max_w (widget_t* widget, int32_t max_w);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | tab\_button对象。 |
+| max\_w | int32\_t | 最大宽度。 |
 #### tab\_button\_set\_value 函数
 -----------------------
 
@@ -267,6 +310,22 @@ ret_t tab_button_set_value (widget_t* widget, bool_t value);
 > <p id="tab_button_t_load_ui">激活后加载的UI名字。
 
 * 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### max\_w 属性
+-----------------------
+> <p id="tab_button_t_max_w">最大宽度。（缺省值为-1，小于 0 则最大宽度无效）
+
+* 类型：int32\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

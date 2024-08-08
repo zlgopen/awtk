@@ -10,8 +10,12 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#assets_managers_t_assets_manager_get_theme_name">assets\_manager\_get\_theme\_name</a> | 获取当前的主题名称。 |
+| <a href="#assets_managers_t_assets_managers_add_applet_res_root">assets\_managers\_add\_applet\_res\_root</a> | 添加小应用程序(applet)的资源根目录。 |
+| <a href="#assets_managers_t_assets_managers_clear_applet_res_roots">assets\_managers\_clear\_applet\_res\_roots</a> | 清除全部小应用程序(applet)的资源根目录。 |
+| <a href="#assets_managers_t_assets_managers_clear_cache">assets\_managers\_clear\_cache</a> | 清除指定类型的全部缓存。 |
 | <a href="#assets_managers_t_assets_managers_is_applet_assets_supported">assets\_managers\_is\_applet\_assets\_supported</a> | 是否支持小应用程序(applet)拥有独立资源目录。 |
 | <a href="#assets_managers_t_assets_managers_ref">assets\_managers\_ref</a> | 获取指定小应用程序(applet)的资源管理器。 |
+| <a href="#assets_managers_t_assets_managers_remove_applet_res_root">assets\_managers\_remove\_applet\_res\_root</a> | 删除小应用程序(applet)的资源根目录。 |
 | <a href="#assets_managers_t_assets_managers_set_applet_res_root">assets\_managers\_set\_applet\_res\_root</a> | 设置小应用程序(applet)的资源根目录。 |
 | <a href="#assets_managers_t_assets_managers_set_theme">assets\_managers\_set\_theme</a> | 设置当前的主题。 |
 | <a href="#assets_managers_t_assets_managers_unref">assets\_managers\_unref</a> | 释放指定小应用程序(applet)的资源管理器。 |
@@ -34,6 +38,62 @@ const char* assets_manager_get_theme_name (assets_manager_t* am);
 | -------- | ----- | --------- |
 | 返回值 | const char* | 返回主题名称。 |
 | am | assets\_manager\_t* | 资源管理器对象。 |
+#### assets\_managers\_add\_applet\_res\_root 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="assets_managers_t_assets_managers_add_applet_res_root">添加小应用程序(applet)的资源根目录。
+
+* 函数原型：
+
+```
+ret_t assets_managers_add_applet_res_root (const char* res_root);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| res\_root | const char* | 资源根目录。 |
+#### assets\_managers\_clear\_applet\_res\_roots 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="assets_managers_t_assets_managers_clear_applet_res_roots">清除全部小应用程序(applet)的资源根目录。
+
+* 函数原型：
+
+```
+ret_t assets_managers_clear_applet_res_roots ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+#### assets\_managers\_clear\_cache 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="assets_managers_t_assets_managers_clear_cache">清除指定类型的全部缓存。
+
+* 函数原型：
+
+```
+ret_t assets_managers_clear_cache (asset_type_t type);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| type | asset\_type\_t | 资源的类型。 |
 #### assets\_managers\_is\_applet\_assets\_supported 函数
 -----------------------
 
@@ -71,6 +131,25 @@ assets_manager_t* assets_managers_ref (const char* name);
 | -------- | ----- | --------- |
 | 返回值 | assets\_manager\_t* | 返回asset manager对象。 |
 | name | const char* | 小应用程序(applet)的名称。 |
+#### assets\_managers\_remove\_applet\_res\_root 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="assets_managers_t_assets_managers_remove_applet_res_root">删除小应用程序(applet)的资源根目录。
+
+* 函数原型：
+
+```
+ret_t assets_managers_remove_applet_res_root (const char* res_root);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| res\_root | const char* | 资源根目录。 |
 #### assets\_managers\_set\_applet\_res\_root 函数
 -----------------------
 

@@ -54,6 +54,7 @@ vgcanvas_restore(vg);
 | <a href="#vgcanvas_t_vgcanvas_create_fbo">vgcanvas\_create\_fbo</a> | 创建 fbo 对象。 |
 | <a href="#vgcanvas_t_vgcanvas_destroy">vgcanvas\_destroy</a> | 销毁vgcanvas对象。 |
 | <a href="#vgcanvas_t_vgcanvas_destroy_fbo">vgcanvas\_destroy\_fbo</a> | 销毁 fbo 对象。 |
+| <a href="#vgcanvas_t_vgcanvas_draw_circle">vgcanvas\_draw\_circle</a> | 画圆。 |
 | <a href="#vgcanvas_t_vgcanvas_draw_icon">vgcanvas\_draw\_icon</a> | 绘制图标。 |
 | <a href="#vgcanvas_t_vgcanvas_draw_image">vgcanvas\_draw\_image</a> | 绘制图片。 |
 | <a href="#vgcanvas_t_vgcanvas_draw_image_repeat">vgcanvas\_draw\_image\_repeat</a> | 绘制图片。 |
@@ -476,6 +477,31 @@ ret_t vgcanvas_destroy_fbo (vgcanvas_t* vg, framebuffer_object_t* fbo);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | fbo | framebuffer\_object\_t* | 需要创建 fbo 的对象。 |
+#### vgcanvas\_draw\_circle 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_draw_circle">画圆。
+
+* 函数原型：
+
+```
+ret_t vgcanvas_draw_circle (vgcanvas_t* vg, double x, double y, double r, color_t color, bool_t fill, bool_t stroke);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| x | double | x坐标。 |
+| y | double | y坐标。 |
+| r | double | 半径。 |
+| color | color\_t | 颜色。 |
+| fill | bool\_t | 是否填充。 |
+| stroke | bool\_t | 是否画线。 |
 #### vgcanvas\_draw\_icon 函数
 -----------------------
 

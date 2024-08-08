@@ -24,6 +24,7 @@ wstr_reset(&s);
 | <a href="#wstr_t_wstr_append">wstr\_append</a> | 追加字符串。 |
 | <a href="#wstr_t_wstr_append_int">wstr\_append\_int</a> | 追加整数到字符串。 |
 | <a href="#wstr_t_wstr_append_more">wstr\_append\_more</a> | 追加多个字符串。以NULL结束。 |
+| <a href="#wstr_t_wstr_append_utf8">wstr\_append\_utf8</a> | 追加UTF8字符串。 |
 | <a href="#wstr_t_wstr_append_with_len">wstr\_append\_with\_len</a> | 追加字符串。 |
 | <a href="#wstr_t_wstr_attach">wstr\_attach</a> | 通过附加到一个buff来初始化str。 |
 | <a href="#wstr_t_wstr_clear">wstr\_clear</a> | 清除字符串内容。 |
@@ -50,6 +51,7 @@ wstr_reset(&s);
 | <a href="#wstr_t_wstr_set_utf8">wstr\_set\_utf8</a> | 设置UTF8字符串。 |
 | <a href="#wstr_t_wstr_set_utf8_with_len">wstr\_set\_utf8\_with\_len</a> | 设置UTF8字符串。 |
 | <a href="#wstr_t_wstr_set_with_len">wstr\_set\_with\_len</a> | 设置字符串。 |
+| <a href="#wstr_t_wstr_shrink">wstr\_shrink</a> | 如果字符串长度大于指定长度，收缩字符串到指定的长度。 |
 | <a href="#wstr_t_wstr_to_float">wstr\_to\_float</a> | 将字符串转成浮点数。 |
 | <a href="#wstr_t_wstr_to_int">wstr\_to\_int</a> | 将字符串转成整数。 |
 | <a href="#wstr_t_wstr_to_int64">wstr\_to\_int64</a> | 将字符串转成整数。 |
@@ -154,6 +156,26 @@ ret_t wstr_append_more (wstr_t* str, const wchar_t* text);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | str对象。 |
 | text | const wchar\_t* | 要追加的字符串。 |
+#### wstr\_append\_utf8 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wstr_t_wstr_append_utf8">追加UTF8字符串。
+
+* 函数原型：
+
+```
+ret_t wstr_append_utf8 (wstr_t* str, const char* text);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | wstr\_t* | str对象。 |
+| text | const char* | 要设置的字符串。 |
 #### wstr\_append\_with\_len 函数
 -----------------------
 
@@ -342,7 +364,7 @@ ret_t wstr_extend (wstr_t* str, uint32_t capacity);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | wstr对象。 |
-| capacity | uint32\_t | 初始容量。 |
+| capacity | uint32\_t | 新的容量。 |
 #### wstr\_from\_float 函数
 -----------------------
 
@@ -689,6 +711,26 @@ ret_t wstr_set_with_len (wstr_t* str, const wchar_t* text, uint32_t len);
 | str | wstr\_t* | str对象。 |
 | text | const wchar\_t* | 要设置的字符串。 |
 | len | uint32\_t | 字符串长度。 |
+#### wstr\_shrink 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wstr_t_wstr_shrink">如果字符串长度大于指定长度，收缩字符串到指定的长度。
+
+* 函数原型：
+
+```
+ret_t wstr_shrink (wstr_t* str, uint32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | wstr\_t* | wstr对象。 |
+| size | uint32\_t | 新的长度。 |
 #### wstr\_to\_float 函数
 -----------------------
 

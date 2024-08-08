@@ -79,6 +79,7 @@
 | <a href="#canvas_t_font_name">font\_name</a> | char* | 当前字体名称。 |
 | <a href="#canvas_t_font_size">font\_size</a> | font\_size\_t | 当前字体大小。 |
 | <a href="#canvas_t_fps">fps</a> | uint32\_t | 当前的帧率。 |
+| <a href="#canvas_t_fps_position">fps\_position</a> | point\_t | 当前的帧率绘制坐标。 |
 | <a href="#canvas_t_global_alpha">global\_alpha</a> | uint8\_t | 当前全局alpha。 |
 | <a href="#canvas_t_lcd">lcd</a> | lcd\_t* | lcd对象。 |
 | <a href="#canvas_t_ox">ox</a> | xy\_t | x坐标偏移。 |
@@ -1424,6 +1425,16 @@ ret_t canvas_untranslate (canvas_t* c, xy_t dx, xy_t dy);
 > <p id="canvas_t_fps">当前的帧率。
 
 * 类型：uint32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+#### fps\_position 属性
+-----------------------
+> <p id="canvas_t_fps_position">当前的帧率绘制坐标。
+
+* 类型：point\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

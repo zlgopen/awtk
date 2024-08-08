@@ -29,6 +29,7 @@
 | <a href="#debugger_t_debugger_is_running">debugger\_is\_running</a> | 查看当前是否处于运行状态。 |
 | <a href="#debugger_t_debugger_launch">debugger\_launch</a> | 执行代码。 |
 | <a href="#debugger_t_debugger_launch_app">debugger\_launch\_app</a> | 执行程序(仅用于调试原生程序，脚本不支持)。 |
+| <a href="#debugger_t_debugger_load_config">debugger\_load\_config</a> | 加载配置。 |
 | <a href="#debugger_t_debugger_lock">debugger\_lock</a> | 锁定debugger对象。 |
 | <a href="#debugger_t_debugger_match">debugger\_match</a> | 检查code_id是否与当前debugger匹配。 |
 | <a href="#debugger_t_debugger_pause">debugger\_pause</a> | 暂停运行。 |
@@ -497,6 +498,26 @@ ret_t debugger_launch_app (debugger_t* debugger, const char* program, const char
 | work\_dir | const char* | 工作目录。 |
 | argc | int | 参数个数。 |
 | argv | char** | 参数列表。 |
+#### debugger\_load\_config 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="debugger_t_debugger_load_config">加载配置。
+
+* 函数原型：
+
+```
+ret_t debugger_load_config (debugger_t* debugger, const char* filename);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| debugger | debugger\_t* | debugger |
+| filename | const char* | 配置文件名。 |
 #### debugger\_lock 函数
 -----------------------
 

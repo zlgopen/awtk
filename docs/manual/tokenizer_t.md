@@ -29,6 +29,7 @@ tokenizer_deinit(t);
 | <a href="#tokenizer_t_tokenizer_next_int">tokenizer\_next\_int</a> | 获取下一个token，并转换成int。 |
 | <a href="#tokenizer_t_tokenizer_next_int64">tokenizer\_next\_int64</a> | 获取下一个token，并转换成int64_t。 |
 | <a href="#tokenizer_t_tokenizer_next_str">tokenizer\_next\_str</a> | 获取下一个字符串(允许使用英文单引号和双引号界定字符串)。 |
+| <a href="#tokenizer_t_tokenizer_next_str_until">tokenizer\_next\_str\_until</a> | 获取下一个str，该str直到遇到指定的char。 |
 | <a href="#tokenizer_t_tokenizer_next_until">tokenizer\_next\_until</a> | 获取下一个token，该token直到遇到指定的char。 |
 ### 属性
 <p id="tokenizer_t_properties">
@@ -241,6 +242,26 @@ const char* tokenizer_next_str (tokenizer_t* tokenizer);
 | -------- | ----- | --------- |
 | 返回值 | const char* | 成功返回字符串，失败返回NULL。 |
 | tokenizer | tokenizer\_t* | tokenizer对象。 |
+#### tokenizer\_next\_str\_until 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tokenizer_t_tokenizer_next_str_until">获取下一个str，该str直到遇到指定的char。
+
+* 函数原型：
+
+```
+const char* tokenizer_next_str_until (tokenizer_t* tokenizer, const char* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 成功返回token，失败返回NULL。 |
+| tokenizer | tokenizer\_t* | tokenizer对象。 |
+| str | const char* | 字符集。 |
 #### tokenizer\_next\_until 函数
 -----------------------
 

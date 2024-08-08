@@ -22,6 +22,7 @@
 | <a href="#image_manager_t_image_manager_set_max_mem_size_of_cached_images">image\_manager\_set\_max\_mem\_size\_of\_cached\_images</a> | 设置图片缓存占用的最大内存。 |
 | <a href="#image_manager_t_image_manager_unload_all">image\_manager\_unload\_all</a> | 卸载全部图片。 |
 | <a href="#image_manager_t_image_manager_unload_bitmap">image\_manager\_unload\_bitmap</a> | 从图片管理器中卸载指定的图片。 |
+| <a href="#image_manager_t_image_manager_unload_bitmap_by_name">image\_manager\_unload\_bitmap\_by\_name</a> | 从图片管理器中卸载指定的图片。 |
 | <a href="#image_manager_t_image_manager_unload_unused">image\_manager\_unload\_unused</a> | 从图片管理器中卸载指定时间内没有使用的图片。 |
 | <a href="#image_manager_t_image_manager_update_specific">image\_manager\_update\_specific</a> | 更新缓存中图片的specific信息。 |
 ### 属性
@@ -331,6 +332,26 @@ ret_t image_manager_unload_bitmap (image_manager_t* imm, bitmap_t* image);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | imm | image\_manager\_t* | 图片管理器对象。 |
 | image | bitmap\_t* | 图片。 |
+#### image\_manager\_unload\_bitmap\_by\_name 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="image_manager_t_image_manager_unload_bitmap_by_name">从图片管理器中卸载指定的图片。
+
+* 函数原型：
+
+```
+ret_t image_manager_unload_bitmap_by_name (image_manager_t* imm, const char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| imm | image\_manager\_t* | 图片管理器对象。 |
+| name | const char* | 图片。 |
 #### image\_manager\_unload\_unused 函数
 -----------------------
 

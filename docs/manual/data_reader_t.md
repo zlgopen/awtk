@@ -9,10 +9,30 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#data_reader_t_data_reader_can_read">data\_reader\_can\_read</a> | 查询 url 中是否有数据。 |
 | <a href="#data_reader_t_data_reader_destroy">data\_reader\_destroy</a> | 销毁reader对象。 |
 | <a href="#data_reader_t_data_reader_get_size">data\_reader\_get\_size</a> | 获取数据长度。 |
 | <a href="#data_reader_t_data_reader_read">data\_reader\_read</a> | 在指定位置读取数据。 |
 | <a href="#data_reader_t_data_reader_read_all">data\_reader\_read\_all</a> | 从指定的URL读取全部数据。 |
+#### data\_reader\_can\_read 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="data_reader_t_data_reader_can_read">查询 url 中是否有数据。
+
+* 函数原型：
+
+```
+bool_t data_reader_can_read (const char* url);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回 bool\_t 值。 |
+| url | const char* | URL。 |
 #### data\_reader\_destroy 函数
 -----------------------
 

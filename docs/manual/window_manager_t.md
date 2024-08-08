@@ -15,12 +15,15 @@
 | <a href="#window_manager_t_window_manager_back_to_home">window\_manager\_back\_to\_home</a> | 回到主窗口，关闭之上的全部窗口。 |
 | <a href="#window_manager_t_window_manager_begin_wait_pointer_cursor">window\_manager\_begin\_wait\_pointer\_cursor</a> | 开始等待鼠标指针。 |
 | <a href="#window_manager_t_window_manager_cast">window\_manager\_cast</a> | 转换为window_manager对象(供脚本语言使用)。 |
+| <a href="#window_manager_t_window_manager_check_and_layout">window\_manager\_check\_and\_layout</a> | 检查各个窗口的layout并且把有需要的执行对应的layout。 |
 | <a href="#window_manager_t_window_manager_close_all">window\_manager\_close\_all</a> | 关闭全部窗口。 |
 | <a href="#window_manager_t_window_manager_close_window_force">window\_manager\_close\_window\_force</a> | 强制立即关闭窗口(内部使用函数，关闭窗口请使用 window_manager_close_window)。 |
 | <a href="#window_manager_t_window_manager_destroy">window\_manager\_destroy</a> | 销毁window_manager。 |
 | <a href="#window_manager_t_window_manager_dispatch_input_event">window\_manager\_dispatch\_input\_event</a> | 分发输入事件。 |
 | <a href="#window_manager_t_window_manager_dispatch_native_window_event">window\_manager\_dispatch\_native\_window\_event</a> | 处理native window事件。 |
 | <a href="#window_manager_t_window_manager_end_wait_pointer_cursor">window\_manager\_end\_wait\_pointer\_cursor</a> | 结束等待鼠标指针。 |
+| <a href="#window_manager_t_window_manager_get_foreground_window">window\_manager\_get\_foreground\_window</a> | 获取前景窗口。 |
+| <a href="#window_manager_t_window_manager_get_input_device_status">window\_manager\_get\_input\_device\_status</a> | 获取输入设备状态。 |
 | <a href="#window_manager_t_window_manager_get_pointer_pressed">window\_manager\_get\_pointer\_pressed</a> | 获取指针当前是否按下。 |
 | <a href="#window_manager_t_window_manager_get_pointer_x">window\_manager\_get\_pointer\_x</a> | 获取指针当前的X坐标。 |
 | <a href="#window_manager_t_window_manager_get_pointer_y">window\_manager\_get\_pointer\_y</a> | 获取指针当前的Y坐标。 |
@@ -39,6 +42,7 @@
 | <a href="#window_manager_t_window_manager_set_max_fps">window\_manager\_set\_max\_fps</a> | 限制最大帧率。 |
 | <a href="#window_manager_t_window_manager_set_screen_saver_time">window\_manager\_set\_screen\_saver\_time</a> | 设置屏保时间(毫秒)。 |
 | <a href="#window_manager_t_window_manager_set_show_fps">window\_manager\_set\_show\_fps</a> | 设置是否显示FPS。 |
+| <a href="#window_manager_t_window_manager_set_show_fps_position">window\_manager\_set\_show\_fps\_position</a> | 设置显示FPS的起始坐标。 |
 | <a href="#window_manager_t_window_manager_switch_to">window\_manager\_switch\_to</a> | 切换到指定窗口。 |
 ### 属性
 <p id="window_manager_t_properties">
@@ -176,6 +180,27 @@ widget_t* window_manager_cast (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | window\_manager对象。 |
 | widget | widget\_t* | window\_manager对象。 |
+#### window\_manager\_check\_and\_layout 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_check_and_layout">检查各个窗口的layout并且把有需要的执行对应的layout。
+
+> 仅由主循环调用。
+
+* 函数原型：
+
+```
+ret_t window_manager_check_and_layout (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 窗口管理器对象。 |
 #### window\_manager\_close\_all 函数
 -----------------------
 
@@ -297,6 +322,44 @@ ret_t window_manager_end_wait_pointer_cursor (widget_t* widget);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。。 |
+| widget | widget\_t* | 窗口管理器对象。 |
+#### window\_manager\_get\_foreground\_window 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_get_foreground_window">获取前景窗口。
+
+* 函数原型：
+
+```
+widget_t* window_manager_get_foreground_window (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | 返回窗口对象。 |
+| widget | widget\_t* | 窗口管理器对象。 |
+#### window\_manager\_get\_input\_device\_status 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_get_input_device_status">获取输入设备状态。
+
+* 函数原型：
+
+```
+input_device_status_t* window_manager_get_input_device_status (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | input\_device\_status\_t* | 返回输入设备状态。 |
 | widget | widget\_t* | 窗口管理器对象。 |
 #### window\_manager\_get\_pointer\_pressed 函数
 -----------------------
@@ -655,6 +718,27 @@ ret_t window_manager_set_show_fps (widget_t* widget, bool_t show_fps);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 窗口管理器对象。 |
 | show\_fps | bool\_t | 是否显示FPS。 |
+#### window\_manager\_set\_show\_fps\_position 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_set_show_fps_position">设置显示FPS的起始坐标。
+
+* 函数原型：
+
+```
+ret_t window_manager_set_show_fps_position (widget_t* widget, xy_t x, xy_t y);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 窗口管理器对象。 |
+| x | xy\_t | 左上角x坐标。 |
+| y | xy\_t | 左上角x坐标。 |
 #### window\_manager\_switch\_to 函数
 -----------------------
 

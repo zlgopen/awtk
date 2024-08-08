@@ -21,16 +21,25 @@
 | <a href="#utils_t_pointer_compare">pointer\_compare</a> | 指针比较。 |
 | <a href="#utils_t_ret_code_from_name">ret\_code\_from\_name</a> | 将ret_t的文本名称转换成对应的值。 |
 | <a href="#utils_t_ret_code_to_name">ret\_code\_to\_name</a> | 将ret_t转换成对应的文本名称。 |
+| <a href="#utils_t_tk_angle">tk\_angle</a> | 计算两点之间的角度(逆时针方向为正，GUI坐标)。 |
 | <a href="#utils_t_tk_atob">tk\_atob</a> | 将字符串转换为布尔类型。 |
 | <a href="#utils_t_tk_atof">tk\_atof</a> | 将字符串转换为浮点类型。 |
 | <a href="#utils_t_tk_atoi">tk\_atoi</a> | 将字符串转换为整型数。 |
 | <a href="#utils_t_tk_atol">tk\_atol</a> | 将字符串转换为整型。 |
 | <a href="#utils_t_tk_atoul">tk\_atoul</a> | 将字符串转换为整型。 |
+| <a href="#utils_t_tk_basic_type_from_name">tk\_basic\_type\_from\_name</a> | 将类型名称转换成对应的类型。 |
+| <a href="#utils_t_tk_bits_data_from_bytes_data">tk\_bits\_data\_from\_bytes\_data</a> | 将bytes数据转换成bits数据(每个字节对应一位)。 |
+| <a href="#utils_t_tk_bits_data_to_bytes_data">tk\_bits\_data\_to\_bytes\_data</a> | 将bits数据转换成bytes数据(每个字节对应一位)。 |
+| <a href="#utils_t_tk_bits_to_bytes">tk\_bits\_to\_bytes</a> | 将bits数转换成bytes数。 |
+| <a href="#utils_t_tk_buffer_get_value">tk\_buffer\_get\_value</a> | 获取buffer中的值。 |
+| <a href="#utils_t_tk_buffer_set_value">tk\_buffer\_set\_value</a> | 设置buffer中的值。 |
 | <a href="#utils_t_tk_count_char">tk\_count\_char</a> | 统计字符串中某个字符出现的次数。 |
 | <a href="#utils_t_tk_date_time_format">tk\_date\_time\_format</a> | 格式化时间。 |
+| <a href="#utils_t_tk_distance">tk\_distance</a> | 计算两点之间的距离。 |
 | <a href="#utils_t_tk_eval_ratio_or_px">tk\_eval\_ratio\_or\_px</a> | 如果expr以px/PX结束，直接返回expr前面的数值。 |
 | <a href="#utils_t_tk_free_utf8_argv">tk\_free\_utf8\_argv</a> | 释放utf8字符串数组。 |
 | <a href="#utils_t_tk_ftoa">tk\_ftoa</a> | 将浮点型转换为字符串。 |
+| <a href="#utils_t_tk_int_is_in_array">tk\_int\_is\_in\_array</a> | 检查整数是否在整数数组中。 |
 | <a href="#utils_t_tk_is_ui_thread">tk\_is\_ui\_thread</a> | 判断当前线程是否是UI线程。 |
 | <a href="#utils_t_tk_is_valid_name">tk\_is\_valid\_name</a> | 判断是否是有效的属性名。 |
 | <a href="#utils_t_tk_itoa">tk\_itoa</a> | 将整型转换为字符串。 |
@@ -46,16 +55,23 @@
 | <a href="#utils_t_tk_normalize_key_name">tk\_normalize\_key\_name</a> | 标准化key_name |
 | <a href="#utils_t_tk_pixel_copy">tk\_pixel\_copy</a> | 已bpp字节为标准拷贝数据。 |
 | <a href="#utils_t_tk_pointer_from_int">tk\_pointer\_from\_int</a> | 将int转换成指针。 |
+| <a href="#utils_t_tk_pointer_from_long">tk\_pointer\_from\_long</a> | 将long转换成指针。 |
 | <a href="#utils_t_tk_pointer_to_int">tk\_pointer\_to\_int</a> | 将指针转换成int。 |
+| <a href="#utils_t_tk_pointer_to_long">tk\_pointer\_to\_long</a> | 将指针转换成long。 |
 | <a href="#utils_t_tk_qsort">tk\_qsort</a> | 快速排序。 |
 | <a href="#utils_t_tk_replace_char">tk\_replace\_char</a> | 替换字符。 |
 | <a href="#utils_t_tk_replace_locale">tk\_replace\_locale</a> | 将文本中的$locale$替换为对应的语言。 |
 | <a href="#utils_t_tk_set_ui_thread">tk\_set\_ui\_thread</a> | 设置UI线程的ID。 |
+| <a href="#utils_t_tk_size_of_basic_type">tk\_size\_of\_basic\_type</a> | 获取基本类型的大小(字节数)。 |
+| <a href="#utils_t_tk_skip_chars">tk\_skip\_chars</a> | 跳过字符串中的字符。 |
+| <a href="#utils_t_tk_skip_to_chars">tk\_skip\_to\_chars</a> | 跳到字符串中的字符。 |
 | <a href="#utils_t_tk_skip_to_num">tk\_skip\_to\_num</a> | 跳过字符串函数，如：字符串"hello123world"，返回的结果是"123world"。 |
 | <a href="#utils_t_tk_snprintf">tk\_snprintf</a> | 将可变参数(...)按照format格式化字符串，并将字符串复制到str中。 |
 | <a href="#utils_t_tk_sscanf">tk\_sscanf</a> | 从字符串读取格式化输入。 |
 | <a href="#utils_t_tk_sscanf_simple">tk\_sscanf\_simple</a> | 从字符串读取格式化输入。 |
 | <a href="#utils_t_tk_str_append">tk\_str\_append</a> | 字符串追加函数。 |
+| <a href="#utils_t_tk_str_case_end_with">tk\_str\_case\_end\_with</a> | 检查字符串是否以指定的字符串appendix结尾(忽略大小写)。 |
+| <a href="#utils_t_tk_str_case_start_with">tk\_str\_case\_start\_with</a> | 检查字符串是否以指定的字符串prefix开头(忽略大小写)。 |
 | <a href="#utils_t_tk_str_copy">tk\_str\_copy</a> | 字符串拷贝函数。 |
 | <a href="#utils_t_tk_str_end_with">tk\_str\_end\_with</a> | 检查字符串是否以指定的字符串appendix结尾。 |
 | <a href="#utils_t_tk_str_is_in_array">tk\_str\_is\_in\_array</a> | 检查字符串是否在字符串数组中。 |
@@ -79,6 +95,7 @@
 | <a href="#utils_t_tk_to_utf8_argv">tk\_to\_utf8\_argv</a> | 将宽字符串数组转换成utf8字符串数组。 |
 | <a href="#utils_t_tk_under_score_to_camel">tk\_under\_score\_to\_camel</a> | 将下划线名字转成驼峰名字。 |
 | <a href="#utils_t_tk_utf8_dup_wstr">tk\_utf8\_dup\_wstr</a> | 将UCS字符串拷贝为utf8字符串。 |
+| <a href="#utils_t_tk_value_to_angle">tk\_value\_to\_angle</a> | 将value转换成角度。 |
 | <a href="#utils_t_tk_vsnprintf">tk\_vsnprintf</a> | 将可变参数ap按照format格式化字符串，并将字符串复制到str中。 |
 | <a href="#utils_t_tk_watob">tk\_watob</a> | 将宽字符串转换为布尔类型。 |
 | <a href="#utils_t_tk_watof">tk\_watof</a> | 将宽字符串转换为浮点类型。 |
@@ -92,6 +109,7 @@
 | <a href="#utils_t_tk_wstrdup">tk\_wstrdup</a> | 宽字符串拷贝函数。 |
 | <a href="#utils_t_tk_wstricmp">tk\_wstricmp</a> | 字符串比较函数（不区分大小写）。 |
 | <a href="#utils_t_xml_file_expand_read">xml\_file\_expand\_read</a> | expand include process instruction to file content: <?include filename="view_me.inc" ?> |
+| <a href="#utils_t_xml_file_expand_subfilenames_get">xml\_file\_expand\_subfilenames\_get</a> | 从xml文件中获取所有使用 <?include filename="" ?> 导入的文件名称 |
 #### bits\_stream\_get 函数
 -----------------------
 
@@ -377,6 +395,28 @@ const char* ret_code_to_name (ret_t ret);
 | -------- | ----- | --------- |
 | 返回值 | const char* | 返回对应的名称。 |
 | ret | ret\_t | 代码。 |
+#### tk\_angle 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_angle">计算两点之间的角度(逆时针方向为正，GUI坐标)。
+
+* 函数原型：
+
+```
+double tk_angle (int cx, int cy, int x, int y);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | double | 返回角度。 |
+| cx | int | cx。 |
+| cy | int | cy。 |
+| x | int | x。 |
+| y | int | y。 |
 #### tk\_atob 函数
 -----------------------
 
@@ -472,6 +512,136 @@ uint64_t tk_atoul (const char* str);
 | -------- | ----- | --------- |
 | 返回值 | uint64\_t | 返回转换后的整型。 |
 | str | const char* | 要转换为整型的字符串。 |
+#### tk\_basic\_type\_from\_name 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_basic_type_from_name">将类型名称转换成对应的类型。
+
+* 函数原型：
+
+```
+value_type_t tk_basic_type_from_name (const char* type);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | value\_type\_t | 返回对应的类型。 |
+| type | const char* | 类型名称。 |
+#### tk\_bits\_data\_from\_bytes\_data 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_bits_data_from_bytes_data">将bytes数据转换成bits数据(每个字节对应一位)。
+
+* 函数原型：
+
+```
+ret_t tk_bits_data_from_bytes_data (uint8_t* bits, uint32_t bits_size, uint8_t* bytes, uint32_t bytes_size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| bits | uint8\_t* | bits。 |
+| bits\_size | uint32\_t | bits内存的长度(字节数)。 |
+| bytes | uint8\_t* | bytes。 |
+| bytes\_size | uint32\_t | bytes内存的长度(字节数)。 |
+#### tk\_bits\_data\_to\_bytes\_data 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_bits_data_to_bytes_data">将bits数据转换成bytes数据(每个字节对应一位)。
+
+* 函数原型：
+
+```
+ret_t tk_bits_data_to_bytes_data (uint8_t* bits, uint32_t bits_size, uint8_t* bytes, uint32_t bytes_size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| bits | uint8\_t* | bits。 |
+| bits\_size | uint32\_t | bits内存的长度(字节数)。 |
+| bytes | uint8\_t* | bytes。 |
+| bytes\_size | uint32\_t | bytes内存的长度(字节数)。 |
+#### tk\_bits\_to\_bytes 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_bits_to_bytes">将bits数转换成bytes数。
+
+* 函数原型：
+
+```
+uint32_t tk_bits_to_bytes (uint32_t bits);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回bytes。 |
+| bits | uint32\_t | bits。 |
+#### tk\_buffer\_get\_value 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_buffer_get_value">获取buffer中的值。
+
+* 函数原型：
+
+```
+ret_t tk_buffer_get_value (uint8_t* buffer, uint32_t size, value_type_t type, int16_t offset, int16_t bit_offset, value_t* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| buffer | uint8\_t* | buffer。 |
+| size | uint32\_t | buffer的长度。 |
+| type | value\_type\_t | 类型。 |
+| offset | int16\_t | 偏移。 |
+| bit\_offset | int16\_t | 位偏移。 |
+| value | value\_t* | 值。 |
+#### tk\_buffer\_set\_value 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_buffer_set_value">设置buffer中的值。
+
+* 函数原型：
+
+```
+ret_t tk_buffer_set_value (uint8_t* buffer, uint32_t size, value_type_t type, int16_t offset, int16_t bit_offset, const value_t* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| buffer | uint8\_t* | buffer。 |
+| size | uint32\_t | buffer的长度。 |
+| type | value\_type\_t | 类型。 |
+| offset | int16\_t | 偏移。 |
+| bit\_offset | int16\_t | 位偏移。 |
+| value | const value\_t* | 值。 |
 #### tk\_count\_char 函数
 -----------------------
 
@@ -503,14 +673,14 @@ uint32_t tk_count_char (const char* str, char c);
 * M 代表月(1-12)
 * D 代表日(1-31)
 * h 代表时(0-23)
-* H 代表时(0-11)
+* H 代表时(1-12)
 * m 代表分(0-59)
 * s 代表秒(0-59)
 * YY 代表年(只显示末两位)
 * MM 代表月(01-12)
 * DD 代表日(01-31)
 * hh 代表时(00-23)
-* HH 代表时(00-11)
+* HH 代表时(01-12)
 * mm 代表分(00-59)
 * ss 代表秒(00-59)
 
@@ -534,6 +704,28 @@ ret_t tk_date_time_format (uint64_t time, const char* format, str_t* result);
 | time | uint64\_t | 时间。 |
 | format | const char* | 格式化字符串。 |
 | result | str\_t* | 用于返回结果。 |
+#### tk\_distance 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_distance">计算两点之间的距离。
+
+* 函数原型：
+
+```
+uint32_t tk_distance (int x1, int y1, int x2, int y2);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回距离。 |
+| x1 | int | x1。 |
+| y1 | int | y1。 |
+| x2 | int | x2。 |
+| y2 | int | y2。 |
 #### tk\_eval\_ratio\_or\_px 函数
 -----------------------
 
@@ -606,6 +798,27 @@ const char* tk_ftoa (char* str, int len, double f);
 | str | char* | 保存字符串缓冲区。 |
 | len | int | 缓冲区大小。 |
 | f | double | 要转换的浮点型。 |
+#### tk\_int\_is\_in\_array 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_int_is_in_array">检查整数是否在整数数组中。
+
+* 函数原型：
+
+```
+bool_t tk_int_is_in_array (int32_t v, const int32_t* array, uint32_t array_size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示在，否则表示不在。 |
+| v | int32\_t | 整数。 |
+| array | const int32\_t* | 整数数组。 |
+| array\_size | uint32\_t | 整数数组中整数的个数。 |
 #### tk\_is\_ui\_thread 函数
 -----------------------
 
@@ -916,6 +1129,27 @@ void* tk_pointer_from_int (int32_t v);
 | -------- | ----- | --------- |
 | 返回值 | void* | 返回对应的指针。 |
 | v | int32\_t | 整数。 |
+#### tk\_pointer\_from\_long 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_pointer_from_long">将long转换成指针。
+
+> 常用于将long类型的数据作为回调函数的ctx。
+
+* 函数原型：
+
+```
+void* tk_pointer_from_long (uint64_t v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | void* | 返回对应的指针。 |
+| v | uint64\_t | 整数。 |
 #### tk\_pointer\_to\_int 函数
 -----------------------
 
@@ -936,6 +1170,27 @@ int32_t tk_pointer_to_int (const void* p);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回对应的int数据。 |
+| p | const void* | 指针。 |
+#### tk\_pointer\_to\_long 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_pointer_to_long">将指针转换成long。
+
+>与tk_pointer_from_long配套使用，也就是pointer本身必须就是整数，而不是指针，否则pointer会被截断。
+
+* 函数原型：
+
+```
+uint64_t tk_pointer_to_long (const void* p);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint64\_t | 返回对应的long数据。 |
 | p | const void* | 指针。 |
 #### tk\_qsort 函数
 -----------------------
@@ -1019,6 +1274,65 @@ ret_t tk_set_ui_thread (uint64_t ui_thread_id);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | ui\_thread\_id | uint64\_t | UI线程的ID。 |
+#### tk\_size\_of\_basic\_type 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_size_of_basic_type">获取基本类型的大小(字节数)。
+
+* 函数原型：
+
+```
+uint32_t tk_size_of_basic_type (value_type_t type);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回大小。 |
+| type | value\_type\_t | 类型。 |
+#### tk\_skip\_chars 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_skip_chars">跳过字符串中的字符。
+
+* 函数原型：
+
+```
+const char* tk_skip_chars (const char* str, const char* chars);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回跳过后的字符串。 |
+| str | const char* | 字符串。 |
+| chars | const char* | 字符集。 |
+#### tk\_skip\_to\_chars 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_skip_to_chars">跳到字符串中的字符。
+
+* 函数原型：
+
+```
+const char* tk_skip_to_chars (const char* str, const char* chars);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回跳到的字符串。 |
+| str | const char* | 字符串。 |
+| chars | const char* | 字符集。 |
 #### tk\_skip\_to\_num 函数
 -----------------------
 
@@ -1121,6 +1435,46 @@ ret_t tk_str_append (char* str, uint32_t max_len, const char* s);
 | str | char* | 被追加字符串。 |
 | max\_len | uint32\_t | 字符串的最大长度。 |
 | s | const char* | 要追加的字符串。 |
+#### tk\_str\_case\_end\_with 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_str_case_end_with">检查字符串是否以指定的字符串appendix结尾(忽略大小写)。
+
+* 函数原型：
+
+```
+bool_t tk_str_case_end_with (const char* str, const char* appendix);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示是；否则表示不是。 |
+| str | const char* | 要检查字符串。 |
+| appendix | const char* | 被检查的字符串。 |
+#### tk\_str\_case\_start\_with 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_str_case_start_with">检查字符串是否以指定的字符串prefix开头(忽略大小写)。
+
+* 函数原型：
+
+```
+bool_t tk_str_case_start_with (const char* str, const char* prefix);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示是；否则表示不是。 |
+| str | const char* | 要检查字符串。 |
+| prefix | const char* | 被检查的字符串。 |
 #### tk\_str\_copy 函数
 -----------------------
 
@@ -1591,6 +1945,30 @@ char* tk_utf8_dup_wstr (const wchar_t* str);
 | -------- | ----- | --------- |
 | 返回值 | char* | 返回UTF-8字符串(需要调用TKMEM\_FREE释放)。 |
 | str | const wchar\_t* | 字符串。 |
+#### tk\_value\_to\_angle 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_value_to_angle">将value转换成角度。
+
+* 函数原型：
+
+```
+double tk_value_to_angle (double value, double min, double max, double start_angle, double end_angle, bool_t counter_clock_wise);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | double | 返回角度。 |
+| value | double | 值。 |
+| min | double | 最小值。 |
+| max | double | 最大值。 |
+| start\_angle | double | 开始角度。 |
+| end\_angle | double | 结束角度。 |
+| counter\_clock\_wise | bool\_t | 是否逆时针。 |
 #### tk\_vsnprintf 函数
 -----------------------
 
@@ -1857,3 +2235,24 @@ ret_t xml_file_expand_read (const char* filename, str_t* s);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | filename | const char* | 文件名。 |
 | s | str\_t* | 用于返回内容。 |
+#### xml\_file\_expand\_subfilenames\_get 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_xml_file_expand_subfilenames_get">从xml文件中获取所有使用 <?include filename="" ?> 导入的文件名称
+
+* 函数原型：
+
+```
+ret_t xml_file_expand_subfilenames_get (const char* filename, char*** subfilenames, uint32_t* size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| filename | const char* | 文件名。 |
+| subfilenames | char*** | 用于返回文件名称集合。 |
+| size | uint32\_t* | 用于返回文件名称集合的大小。 |

@@ -11,10 +11,12 @@
 | <a href="#tk_service_t_tk_service_dispatch">tk\_service\_dispatch</a> | 处理服务器请求。 |
 | <a href="#tk_service_t_tk_service_download_file">tk\_service\_download\_file</a> | 处理下载文件。 |
 | <a href="#tk_service_t_tk_service_init">tk\_service\_init</a> | 初始化服务对象(仅供子类使用)。 |
+| <a href="#tk_service_t_tk_service_lock">tk\_service\_lock</a> | 加锁。 |
 | <a href="#tk_service_t_tk_service_read_req">tk\_service\_read\_req</a> | 服务端读取请求。 |
 | <a href="#tk_service_t_tk_service_send_resp">tk\_service\_send\_resp</a> | 服务端发送响应。 |
 | <a href="#tk_service_t_tk_service_set_retry_times">tk\_service\_set\_retry\_times</a> | 设置重试次数。 |
 | <a href="#tk_service_t_tk_service_start">tk\_service\_start</a> | 启动服务。 |
+| <a href="#tk_service_t_tk_service_unlock">tk\_service\_unlock</a> | 解锁。 |
 | <a href="#tk_service_t_tk_service_upload_file">tk\_service\_upload\_file</a> | 处理上传文件。 |
 ### 属性
 <p id="tk_service_t_properties">
@@ -103,6 +105,25 @@ ret_t tk_service_init (tk_service_t* service, tk_iostream_t* io);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | service | tk\_service\_t* | 服务对象。 |
 | io | tk\_iostream\_t* | IO对象。 |
+#### tk\_service\_lock 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_service_t_tk_service_lock">加锁。
+
+* 函数原型：
+
+```
+ret_t tk_service_lock (tk_service_t* service);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| service | tk\_service\_t* | 服务对象。 |
 #### tk\_service\_read\_req 函数
 -----------------------
 
@@ -189,6 +210,25 @@ ret_t tk_service_start (event_source_manager_t* esm, const char* url, tk_service
 | url | const char* | 服务地址。 |
 | create | tk\_service\_create\_t | 创建服务对象的函数。 |
 | args | void* | 参数(对于TCP服务，该参数必须持续有效，使用全局或静态变量)。 |
+#### tk\_service\_unlock 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_service_t_tk_service_unlock">解锁。
+
+* 函数原型：
+
+```
+ret_t tk_service_unlock (tk_service_t* service);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| service | tk\_service\_t* | 服务对象。 |
 #### tk\_service\_upload\_file 函数
 -----------------------
 

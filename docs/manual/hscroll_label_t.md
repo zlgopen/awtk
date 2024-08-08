@@ -31,9 +31,11 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml)
 | <a href="#hscroll_label_t_hscroll_label_cast">hscroll\_label\_cast</a> | 转换为hscroll_label对象(供脚本语言使用)。 |
 | <a href="#hscroll_label_t_hscroll_label_create">hscroll\_label\_create</a> | 创建hscroll_label对象 |
 | <a href="#hscroll_label_t_hscroll_label_get_widget_vtable">hscroll\_label\_get\_widget\_vtable</a> | 获取 hscroll_label 虚表。 |
+| <a href="#hscroll_label_t_hscroll_label_set_delay">hscroll\_label\_set\_delay</a> | 设置开始延迟时间。 |
 | <a href="#hscroll_label_t_hscroll_label_set_duration">hscroll\_label\_set\_duration</a> | 设置duration。 |
 | <a href="#hscroll_label_t_hscroll_label_set_ellipses">hscroll\_label\_set\_ellipses</a> | 设置ellipses。 |
 | <a href="#hscroll_label_t_hscroll_label_set_loop">hscroll\_label\_set\_loop</a> | 设置loop。 |
+| <a href="#hscroll_label_t_hscroll_label_set_loop_interval_distance">hscroll\_label\_set\_loop\_interval\_distance</a> | 设置滚动文本结尾和文本开头间隔距离 |
 | <a href="#hscroll_label_t_hscroll_label_set_lull">hscroll\_label\_set\_lull</a> | 设置lull。 |
 | <a href="#hscroll_label_t_hscroll_label_set_only_focus">hscroll\_label\_set\_only\_focus</a> | 设置only_focus。 |
 | <a href="#hscroll_label_t_hscroll_label_set_only_parent_focus">hscroll\_label\_set\_only\_parent\_focus</a> | 设置only_parent_focus。 |
@@ -48,9 +50,11 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml)
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#hscroll_label_t_duration">duration</a> | int32\_t | 完整的滚动一次需要的时间(毫秒)，缺省5000ms。 |
+| <a href="#hscroll_label_t_delay">delay</a> | uint32\_t | 延迟多久才开始滚动，缺省0ms。 |
+| <a href="#hscroll_label_t_duration">duration</a> | int32\_t | 滚动一次需要的时间(毫秒)，缺省5000ms。 |
 | <a href="#hscroll_label_t_ellipses">ellipses</a> | bool\_t | 文本显示不下时，在行尾显示省略号(缺省FALSE)。 |
 | <a href="#hscroll_label_t_loop">loop</a> | bool\_t | loop是否循环滚动(缺省FALSE)。 |
+| <a href="#hscroll_label_t_loop_interval_distance">loop\_interval\_distance</a> | int32\_t | 滚动文本结尾和文本开头间隔距离(缺省值为 -1，小于 0 视为使用控件宽度作为间隔距离)。 |
 | <a href="#hscroll_label_t_lull">lull</a> | int32\_t | 滚动之间的间歇时间(毫秒)，缺省3000ms。 |
 | <a href="#hscroll_label_t_only_focus">only\_focus</a> | bool\_t | 只有处于focus时才滚动(缺省否)。 |
 | <a href="#hscroll_label_t_only_parent_focus">only\_parent\_focus</a> | bool\_t | 只有父控件处于focus时才滚动(缺省否)。 |
@@ -119,6 +123,26 @@ const widget_vtable_t* hscroll_label_get_widget_vtable ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | const widget\_vtable\_t* | 成功返回 hscroll\_label 虚表。 |
+#### hscroll\_label\_set\_delay 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="hscroll_label_t_hscroll_label_set_delay">设置开始延迟时间。
+
+* 函数原型：
+
+```
+ret_t hscroll_label_set_delay (widget_t* widget, uint32_t delay);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| delay | uint32\_t | 开始延迟时间。 |
 #### hscroll\_label\_set\_duration 函数
 -----------------------
 
@@ -179,6 +203,26 @@ ret_t hscroll_label_set_loop (widget_t* widget, bool_t loop);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | loop | bool\_t | 是否循环滚动。 |
+#### hscroll\_label\_set\_loop\_interval\_distance 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="hscroll_label_t_hscroll_label_set_loop_interval_distance">设置滚动文本结尾和文本开头间隔距离
+
+* 函数原型：
+
+```
+ret_t hscroll_label_set_loop_interval_distance (widget_t* widget, int32_t loop_interval_distance);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| loop\_interval\_distance | int32\_t | 间隔距离。 |
 #### hscroll\_label\_set\_lull 函数
 -----------------------
 
@@ -357,9 +401,23 @@ ret_t hscroll_label_stop (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
+#### delay 属性
+-----------------------
+> <p id="hscroll_label_t_delay">延迟多久才开始滚动，缺省0ms。
+
+* 类型：uint32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可脚本化   | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### duration 属性
 -----------------------
-> <p id="hscroll_label_t_duration">完整的滚动一次需要的时间(毫秒)，缺省5000ms。
+> <p id="hscroll_label_t_duration">滚动一次需要的时间(毫秒)，缺省5000ms。
 
 * 类型：int32\_t
 
@@ -392,6 +450,22 @@ ret_t hscroll_label_stop (widget_t* widget);
 > <p id="hscroll_label_t_loop">loop是否循环滚动(缺省FALSE)。
 
 * 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### loop\_interval\_distance 属性
+-----------------------
+> <p id="hscroll_label_t_loop_interval_distance">滚动文本结尾和文本开头间隔距离(缺省值为 -1，小于 0 视为使用控件宽度作为间隔距离)。
+
+* 类型：int32\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -468,7 +542,7 @@ ret_t hscroll_label_stop (widget_t* widget);
 #### stop\_at\_begin 属性
 -----------------------
 > <p id="hscroll_label_t_stop_at_begin">滚动完毕后停在文本开头(缺省FALSE)。
-> 注：loop为FALSE时才可用。
+> 注：yoyo 为 TRUE 时，该功能失效。
 
 * 类型：bool\_t
 

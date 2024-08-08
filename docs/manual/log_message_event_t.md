@@ -16,7 +16,7 @@
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#log_message_event_t_level">level</a> | log\_level\_t | 级别。 |
+| <a href="#log_message_event_t_level">level</a> | tk\_log\_level\_t | 级别。 |
 | <a href="#log_message_event_t_message">message</a> | const char* | 日志。 |
 #### log\_message\_event\_cast 函数
 -----------------------
@@ -47,7 +47,7 @@ log_message_event_t* log_message_event_cast (event_t* event);
 * 函数原型：
 
 ```
-event_t* log_message_event_init (log_message_event_t* event, log_level_t level, const char* message);
+event_t* log_message_event_init (log_message_event_t* event, tk_log_level_t level, const char* message);
 ```
 
 * 参数说明：
@@ -56,13 +56,13 @@ event_t* log_message_event_init (log_message_event_t* event, log_level_t level, 
 | -------- | ----- | --------- |
 | 返回值 | event\_t* | event对象。 |
 | event | log\_message\_event\_t* | event对象。 |
-| level | log\_level\_t | 级别。 |
+| level | tk\_log\_level\_t | 级别。 |
 | message | const char* | 日志。 |
 #### level 属性
 -----------------------
 > <p id="log_message_event_t_level">级别。
 
-* 类型：log\_level\_t
+* 类型：tk\_log\_level\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

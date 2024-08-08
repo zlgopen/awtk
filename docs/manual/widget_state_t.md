@@ -33,3 +33,8 @@
 | WIDGET\_STATE\_OVER\_OF\_ACTIVE | 指针悬浮状态(当前项)。 |
 | WIDGET\_STATE\_DISABLE\_OF\_ACTIVE | 禁用状态(当前项)。 |
 | WIDGET\_STATE\_FOCUSED\_OF\_ACTIVE | 焦点状态(当前项)。 |
+| WIDGET\_STATE\_NORMAL\_OF\_INDETERMINATE | 正常状态(选项不确定)。 |
+| WIDGET\_STATE\_PRESSED\_OF\_INDETERMINATE | 指针按下状态(选项不确定)。 |
+| WIDGET\_STATE\_OVER\_OF\_INDETERMINATE | 指针悬浮状态(选项不确定)。 |
+| WIDGET\_STATE\_DISABLE\_OF\_INDETERMINATE | 禁用状态(选项不确定)。 |
+| WIDGET\_STATE\_FOCUSED\_OF\_INDETERMINATE | 焦点状态(选项不确定)。 |

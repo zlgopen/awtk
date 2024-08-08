@@ -237,6 +237,12 @@ ret_t file_browser_set_compare (file_browser_t* fb, tk_compare_t compare);
 * 函数功能：
 
 > <p id="file_browser_t_file_browser_set_cwd">设置当前目录。
+目录支持变量：
+```
+${app_dir} -> app 文件目录。
+${temp_dir} -> 临时文件目录。
+${user_dir} -> 用户目录。
+```
 
 * 函数原型：
 
@@ -298,6 +304,13 @@ ret_t file_browser_set_ignore_hidden_files (file_browser_t* fb, bool_t ignore_hi
 * 函数功能：
 
 > <p id="file_browser_t_file_browser_set_top_dir">设置顶层目录。
+
+目录支持变量：
+```
+${app_dir} -> app 文件目录。
+${temp_dir} -> 临时文件目录。
+${user_dir} -> 用户目录。
+```
 
 * 函数原型：
 

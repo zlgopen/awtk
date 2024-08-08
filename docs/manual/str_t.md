@@ -33,6 +33,7 @@ str_reset(&s);
 | <a href="#str_t_str_append_json_bool_pair">str\_append\_json\_bool\_pair</a> | 追加bool格式的json键值对。 |
 | <a href="#str_t_str_append_json_double_pair">str\_append\_json\_double\_pair</a> | 追加doube格式的json键值对。 |
 | <a href="#str_t_str_append_json_int_pair">str\_append\_json\_int\_pair</a> | 追加int格式的json键值对。 |
+| <a href="#str_t_str_append_json_pair">str\_append\_json\_pair</a> | 追加json键值对。 |
 | <a href="#str_t_str_append_json_str">str\_append\_json\_str</a> | 追加一个字符串，字符串前后加英文双引号，并按JSON规则转义特殊字符。 |
 | <a href="#str_t_str_append_json_str_pair">str\_append\_json\_str\_pair</a> | 追加字符串格式的json键值对。 |
 | <a href="#str_t_str_append_lowercase">str\_append\_lowercase</a> | 将text转换为大写，并追加到str中。 |
@@ -80,6 +81,7 @@ str_reset(&s);
 | <a href="#str_t_str_reverse">str\_reverse</a> | 前后颠倒字符串。 |
 | <a href="#str_t_str_set">str\_set</a> | 设置字符串。 |
 | <a href="#str_t_str_set_with_len">str\_set\_with\_len</a> | 设置字符串。 |
+| <a href="#str_t_str_shrink">str\_shrink</a> | 如果字符串长度大于指定长度，收缩字符串到指定的长度。 |
 | <a href="#str_t_str_start_with">str\_start\_with</a> | 判断字符串是否以指定的子串开头。 |
 | <a href="#str_t_str_to_float">str\_to\_float</a> | 将字符串转成浮点数。 |
 | <a href="#str_t_str_to_int">str\_to\_int</a> | 将字符串转成整数。 |
@@ -323,6 +325,27 @@ ret_t str_append_json_int_pair (str_t* str, const char* key, int32_t value);
 | str | str\_t* | str对象。 |
 | key | const char* | 键。 |
 | value | int32\_t | 值。 |
+#### str\_append\_json\_pair 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_json_pair">追加json键值对。
+
+* 函数原型：
+
+```
+ret_t str_append_json_pair (str_t* str, const char* key, const value_t* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| key | const char* | 键。 |
+| value | const value\_t* | 值。 |
 #### str\_append\_json\_str 函数
 -----------------------
 
@@ -928,7 +951,7 @@ ret_t str_extend (str_t* str, uint32_t capacity);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| capacity | uint32\_t | 初始容量。 |
+| capacity | uint32\_t | 新的容量。 |
 #### str\_format 函数
 -----------------------
 
@@ -1315,6 +1338,26 @@ ret_t str_set_with_len (str_t* str, const char* text, uint32_t len);
 | str | str\_t* | str对象。 |
 | text | const char* | 要设置的字符串。 |
 | len | uint32\_t | 字符串长度。 |
+#### str\_shrink 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_shrink">如果字符串长度大于指定长度，收缩字符串到指定的长度。
+
+* 函数原型：
+
+```
+ret_t str_shrink (str_t* str, uint32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| size | uint32\_t | 新的长度。 |
 #### str\_start\_with 函数
 -----------------------
 

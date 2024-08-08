@@ -10,6 +10,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#object_widget_t_object_widget_cast">object\_widget\_cast</a> | 类型转换。 |
 | <a href="#object_widget_t_object_widget_create">object\_widget\_create</a> | 创建widget对象。 |
 ### 属性
 <p id="object_widget_t_properties">
@@ -17,6 +18,25 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#object_widget_t_widget">widget</a> | widget\_t* | widget对象。 |
+#### object\_widget\_cast 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_widget_t_object_widget_cast">类型转换。
+
+* 函数原型：
+
+```
+object_widget_t* object_widget_cast (tk_object_t* obj);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | object\_widget\_t* | 返回object\_widget对象。 |
+| obj | tk\_object\_t* | object对象。 |
 #### object\_widget\_create 函数
 -----------------------
 

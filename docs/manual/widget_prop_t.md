@@ -56,9 +56,11 @@
 | WIDGET\_PROP\_LINE\_WRAP | 自动换行。 |
 | WIDGET\_PROP\_WORD\_WRAP | 是否允许单词中换行。 |
 | WIDGET\_PROP\_ELLIPSES | 是否省略。 |
+| WIDGET\_PROP\_VISIBLE\_REVEAL\_IN\_SCROLL | 可见控件在滚动控件中的可见处理方案。（影响 widget\_ensure\_visible\_in\_viewport 函数） |
 | WIDGET\_PROP\_TEXT | 文本。 |
 | WIDGET\_PROP\_TR\_TEXT | 待翻译文本。 |
 | WIDGET\_PROP\_STYLE | style。 |
+| WIDGET\_PROP\_STATE | 状态。 |
 | WIDGET\_PROP\_ENABLE | 是否启用。 |
 | WIDGET\_PROP\_FEEDBACK | 是否启用按键音等反馈。 |
 | WIDGET\_PROP\_FLOATING | 是否启用floating布局。 |

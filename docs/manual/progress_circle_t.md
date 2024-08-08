@@ -64,7 +64,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#progress_circle_t_counter_clock_wise">counter\_clock\_wise</a> | bool\_t | 是否为逆时针方向(缺省为FALSE)。 |
 | <a href="#progress_circle_t_format">format</a> | char* | 数值到字符串转换时的格式，缺省为"%d"。 |
 | <a href="#progress_circle_t_line_cap">line\_cap</a> | char* | 线帽类型(round:圆头，square:方头，butt:平头)。 |
-| <a href="#progress_circle_t_line_width">line\_width</a> | uint32\_t | 环线的厚度(缺省为8)。 |
+| <a href="#progress_circle_t_line_width">line\_width</a> | uint32\_t | 环线的厚度(缺省为8)，line_width > r/2时，使用扇形绘制。 |
 | <a href="#progress_circle_t_max">max</a> | float\_t | 最大值(缺省为100)。 |
 | <a href="#progress_circle_t_show_text">show\_text</a> | bool\_t | 是否显示文本(缺省为TRUE)。 |
 | <a href="#progress_circle_t_start_angle">start\_angle</a> | int32\_t | 起始角度(单位为度，缺省-90)。 |
@@ -367,7 +367,7 @@ ret_t progress_circle_set_value (widget_t* widget, float_t value);
 | 可通过widget\_set\_prop修改 | 是 |
 #### line\_width 属性
 -----------------------
-> <p id="progress_circle_t_line_width">环线的厚度(缺省为8)。
+> <p id="progress_circle_t_line_width">环线的厚度(缺省为8)，line_width > r/2时，使用扇形绘制。
 
 * 类型：uint32\_t
 

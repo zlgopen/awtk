@@ -41,6 +41,7 @@ widget\_t的函数均适用于tab\_button\_group\_t控件。
 | <a href="#tab_button_group_t_tab_button_group_create">tab\_button\_group\_create</a> | 创建tab_button_group对象 |
 | <a href="#tab_button_group_t_tab_button_group_get_widget_vtable">tab\_button\_group\_get\_widget\_vtable</a> | 获取 tab_button_group 虚表。 |
 | <a href="#tab_button_group_t_tab_button_group_set_compact">tab\_button\_group\_set\_compact</a> | 设置compact。 |
+| <a href="#tab_button_group_t_tab_button_group_set_drag_child">tab\_button\_group\_set\_drag\_child</a> | 设置拖拽 tab_button 控件位置。 |
 | <a href="#tab_button_group_t_tab_button_group_set_scrollable">tab\_button\_group\_set\_scrollable</a> | 设置scrollable。 |
 ### 属性
 <p id="tab_button_group_t_properties">
@@ -48,8 +49,10 @@ widget\_t的函数均适用于tab\_button\_group\_t控件。
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#tab_button_group_t_compact">compact</a> | bool\_t | 紧凑型排版子控件(缺省FALSE)。 |
+| <a href="#tab_button_group_t_drag_child">drag\_child</a> | bool\_t | 是否支持拖拽并且修改 tab_button 控件的位置(缺省FALSE)。 |
 | <a href="#tab_button_group_t_enable_hscroll_animator">enable\_hscroll\_animator</a> | bool\_t | 是否开启 tab_button 的左右滚动动画(缺省TRUE)。 |
 | <a href="#tab_button_group_t_scrollable">scrollable</a> | bool\_t | 是否支持滚动(缺省FALSE)。 |
+| <a href="#tab_button_group_t_scrollable_mode">scrollable\_mode</a> | char* | 滚动模式 (缺省all) (all:鼠标滚轮+鼠标拖拽滚动，wheel:鼠标滚轮，dragged:鼠标拖拽滚动。 |
 #### tab\_button\_group\_cast 函数
 -----------------------
 
@@ -130,6 +133,26 @@ ret_t tab_button_group_set_compact (widget_t* widget, bool_t compact);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | compact | bool\_t | 是否使用紧凑布局(缺省FALSE)。 |
+#### tab\_button\_group\_set\_drag\_child 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tab_button_group_t_tab_button_group_set_drag_child">设置拖拽 tab_button 控件位置。
+
+* 函数原型：
+
+```
+ret_t tab_button_group_set_drag_child (widget_t* widget, bool_t drag_child);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| drag\_child | bool\_t | 是否拖拽(缺省FALSE)。 |
 #### tab\_button\_group\_set\_scrollable 函数
 -----------------------
 
@@ -166,6 +189,24 @@ ret_t tab_button_group_set_scrollable (widget_t* widget, bool_t scrollable);
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 | 可通过widget\_set\_prop修改 | 是 |
+#### drag\_child 属性
+-----------------------
+> <p id="tab_button_group_t_drag_child">是否支持拖拽并且修改 tab_button 控件的位置(缺省FALSE)。
+
+> 紧凑型排版子控件时才支持滚动，开启该功能后，就不能拖拽滚动了，只能鼠标滚轮滚动了。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### enable\_hscroll\_animator 属性
 -----------------------
 > <p id="tab_button_group_t_enable_hscroll_animator">是否开启 tab_button 的左右滚动动画(缺省TRUE)。
@@ -188,6 +229,22 @@ ret_t tab_button_group_set_scrollable (widget_t* widget, bool_t scrollable);
 > 紧凑型排版子控件时才支持滚动。
 
 * 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### scrollable\_mode 属性
+-----------------------
+> <p id="tab_button_group_t_scrollable_mode">滚动模式 (缺省all) (all:鼠标滚轮+鼠标拖拽滚动，wheel:鼠标滚轮，dragged:鼠标拖拽滚动。
+
+* 类型：char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

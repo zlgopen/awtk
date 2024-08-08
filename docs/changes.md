@@ -1,5 +1,9 @@
 # 最新动态
 
+2024/08/8
+  * 修复stm32工程编译问题。
+  * 生成最新文档。
+
 2024/08/7
   * 增加函数mledit\_get\_current\_line\_index/mledit\_get\_current\_row\_index。
   * 修复了 OpenGL 模式下播放窗口动画后，lcd 对象的字体参数未还原造成的绘制异常问题(感谢雨欣提供补丁)

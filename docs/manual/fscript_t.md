@@ -22,6 +22,7 @@
 | <a href="#fscript_t_fscript_register_const_double">fscript\_register\_const\_double</a> | 注册浮点数常量。 |
 | <a href="#fscript_t_fscript_register_const_int">fscript\_register\_const\_int</a> | 注册整数常量。 |
 | <a href="#fscript_t_fscript_register_const_value">fscript\_register\_const\_value</a> | 注册常量。 |
+| <a href="#fscript_t_fscript_register_event">fscript\_register\_event</a> | 注册自定义事件。 |
 | <a href="#fscript_t_fscript_register_func">fscript\_register\_func</a> | 注册全局自定义函数。 |
 | <a href="#fscript_t_fscript_register_funcs">fscript\_register\_funcs</a> | 注册全局自定义函数。 |
 | <a href="#fscript_t_fscript_reload">fscript\_reload</a> | 重新加载代码。 |
@@ -319,6 +320,26 @@ ret_t fscript_register_const_value (const char* name, const value_t* value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | name | const char* | 常量名。 |
 | value | const value\_t* | 数据。 |
+#### fscript\_register\_event 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="fscript_t_fscript_register_event">注册自定义事件。
+
+* 函数原型：
+
+```
+ret_t fscript_register_event (const char* name, uint32_t etype);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| name | const char* | 事件名。 |
+| etype | uint32\_t | 事件的值。 |
 #### fscript\_register\_func 函数
 -----------------------
 

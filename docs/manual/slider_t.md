@@ -51,6 +51,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#slider_t_slider_create">slider\_create</a> | 创建slider对象 |
 | <a href="#slider_t_slider_get_widget_vtable">slider\_get\_widget\_vtable</a> | 获取 slider 虚表。 |
 | <a href="#slider_t_slider_set_bar_size">slider\_set\_bar\_size</a> | 设置bar的宽度或高度。 |
+| <a href="#slider_t_slider_set_drag_threshold">slider\_set\_drag\_threshold</a> | 设置拖拽临界值。 |
 | <a href="#slider_t_slider_set_line_cap">slider\_set\_line\_cap</a> | 设置前景色的线帽形状。（默认为跟随风格的圆角设置，但是在没有设置圆角的时候无法使用 "round" 来设置圆角） |
 | <a href="#slider_t_slider_set_max">slider\_set\_max</a> | 设置滑块的最大值。 |
 | <a href="#slider_t_slider_set_min">slider\_set\_min</a> | 设置滑块的最小值。 |
@@ -64,6 +65,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#slider_t_bar_size">bar\_size</a> | uint32\_t | 轴的宽度或高度（单位：像素），为0表示为控件的宽度或高度的一半，缺省为0。 |
+| <a href="#slider_t_drag_threshold">drag\_threshold</a> | uint32\_t | 拖动临界值。 |
 | <a href="#slider_t_dragger_adapt_to_icon">dragger\_adapt\_to\_icon</a> | bool\_t | 滑块的宽度或高度是否与icon适应，缺省为true。 |
 | <a href="#slider_t_dragger_size">dragger\_size</a> | uint32\_t | 滑块的宽度或高度（单位：像素），缺省为 bar_size * 1.5。 |
 | <a href="#slider_t_line_cap">line\_cap</a> | char* | 前景色的线帽形状。（取值：butt|round，默认为跟随风格的圆角设置, 但是在没有设置圆角的时候无法使用 "round" 来设置圆角） |
@@ -161,6 +163,26 @@ ret_t slider_set_bar_size (widget_t* widget, uint32_t bar_size);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | bar\_size | uint32\_t | bar的宽度或高度。 |
+#### slider\_set\_drag\_threshold 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slider_t_slider_set_drag_threshold">设置拖拽临界值。
+
+* 函数原型：
+
+```
+ret_t slider_set_drag_threshold (widget_t* widget, uint32_t drag_threshold);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| drag\_threshold | uint32\_t | 拖拽临界值。 |
 #### slider\_set\_line\_cap 函数
 -----------------------
 
@@ -306,6 +328,22 @@ ret_t slider_set_vertical (widget_t* widget, bool_t vertical);
 #### bar\_size 属性
 -----------------------
 > <p id="slider_t_bar_size">轴的宽度或高度（单位：像素），为0表示为控件的宽度或高度的一半，缺省为0。
+
+* 类型：uint32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### drag\_threshold 属性
+-----------------------
+> <p id="slider_t_drag_threshold">拖动临界值。
 
 * 类型：uint32\_t
 

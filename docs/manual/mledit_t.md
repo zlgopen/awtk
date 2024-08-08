@@ -33,6 +33,8 @@ time\_clock一般不需要设置style。
 | -------- | ------------ | 
 | <a href="#mledit_t_mledit_cast">mledit\_cast</a> | 转换为mledit对象(供脚本语言使用)。 |
 | <a href="#mledit_t_mledit_create">mledit\_create</a> | 创建mledit对象 |
+| <a href="#mledit_t_mledit_get_current_line_index">mledit\_get\_current\_line\_index</a> | 获取光标所在视觉行号(一行文本可能分多行显示)。 |
+| <a href="#mledit_t_mledit_get_current_row_index">mledit\_get\_current\_row\_index</a> | 获取光标所在物理行号。 |
 | <a href="#mledit_t_mledit_get_cursor">mledit\_get\_cursor</a> | 获取编辑器光标位置。 |
 | <a href="#mledit_t_mledit_get_selected_text">mledit\_get\_selected\_text</a> | 获取选中的文本。 |
 | <a href="#mledit_t_mledit_get_widget_vtable">mledit\_get\_widget\_vtable</a> | 获取 mledit 虚表。 |
@@ -119,6 +121,44 @@ widget_t* mledit_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### mledit\_get\_current\_line\_index 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="mledit_t_mledit_get_current_line_index">获取光标所在视觉行号(一行文本可能分多行显示)。
+
+* 函数原型：
+
+```
+uint32_t mledit_get_current_line_index (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回光标所在行号。 |
+| widget | widget\_t* | widget对象。 |
+#### mledit\_get\_current\_row\_index 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="mledit_t_mledit_get_current_row_index">获取光标所在物理行号。
+
+* 函数原型：
+
+```
+uint32_t mledit_get_current_row_index (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回光标所在行号。 |
+| widget | widget\_t* | widget对象。 |
 #### mledit\_get\_cursor 函数
 -----------------------
 
