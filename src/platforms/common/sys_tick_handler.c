@@ -38,3 +38,12 @@ void sleep_ms(uint32_t ms) {
     tk_sys_tick_sleep_tick(ms);
   }
 }
+
+void sleep_us(uint32_t us) {
+  /*FIXME: implement this function*/
+
+  while(us > 0) {
+    us--;
+  }
+}
+
