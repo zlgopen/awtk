@@ -10,7 +10,6 @@
 #include "../res/assets/default/inc/strings/en_US.data"
 #include "../res/assets/default/inc/styles/dialog_toast.data"
 #include "../res/assets/default/inc/styles/uiex.data"
-#include "../res/assets/default/inc/styles/uiex_dialog.data"
 #include "../res/assets/default/inc/styles/uiex_keyboard.data"
 #include "../res/assets/default/inc/ui/uiex/dlg_center_scale.data"
 #include "../res/assets/default/inc/ui/uiex/dlg_fade.data"
@@ -121,7 +120,6 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, strings_en_US_default);
   assets_manager_add(am, style_dialog_toast_default);
   assets_manager_add(am, style_uiex_default);
-  assets_manager_add(am, style_uiex_dialog_default);
   assets_manager_add(am, style_uiex_keyboard_default);
   assets_manager_add(am, ui_dlg_center_scale_default_uiex);
   assets_manager_add(am, ui_dlg_fade_default_uiex);
