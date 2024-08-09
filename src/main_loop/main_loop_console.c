@@ -155,7 +155,7 @@ main_loop_console_t* main_loop_console_init(void) {
 
   loop->base.run = main_loop_console_run;
   loop->base.step = main_loop_console_step;
-  loop->base.destroy = (main_loop_destroy_t*)main_loop_console_reset;
+  loop->base.destroy = (main_loop_destroy_t)main_loop_console_reset;
 
   loop->mutex = tk_mutex_create();
   return_value_if_fail(loop->mutex != NULL, NULL);

@@ -2,6 +2,7 @@
 
 2024/08/9
   * 增加 goto_error_if_fail_ex(感谢兆坤提供补丁)
+  * 修复编译警告 main_loop_console(感谢兆坤提供补丁)
 
 2024/08/8
   * 修复stm32工程编译问题。
