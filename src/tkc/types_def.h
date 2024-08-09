@@ -341,6 +341,12 @@ typedef enum _ret_t {
     goto error;               \
   }
 
+#define goto_error_if_fail_ex(p, sentence) \
+  if (!(p)) {                              \
+    sentence;                              \
+    goto error;                            \
+  }
+
 #define return_if_fail(p) \
   if (!(p)) {             \
     return;               \
@@ -360,6 +366,13 @@ typedef enum _ret_t {
 #define goto_error_if_fail(p)                                              \
   if (!(p)) {                                                              \
     log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
+    goto error;                                                            \
+  }
+
+#define goto_error_if_fail_ex(p, sentence)                                 \
+  if (!(p)) {                                                              \
+    log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
+    sentence;                                                              \
     goto error;                                                            \
   }
 
