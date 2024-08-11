@@ -386,34 +386,43 @@ static ret_t remote_ui_service_send_event(remote_ui_service_t* ui, const char* t
 
   event->target = widget;
   if (!widget_is_window_manager(widget) && !widget_is_window(widget)) {
-    return widget_dispatch_async(widget, event);
+    widget_dispatch_async(widget, event);
+
+    return RET_OK;
   }
 
   switch (event->type) {
     case EVT_CLICK: {
-      return widget_dispatch_async(widget, event);
+      widget_dispatch_async(widget, event);
+      break;
     }
     case EVT_POINTER_DOWN: {
-      return widget_on_pointer_down(widget, pointer_event_cast(event));
+      widget_on_pointer_down(widget, pointer_event_cast(event));
+      break;
     }
     case EVT_POINTER_MOVE: {
-      return widget_on_pointer_move(widget, pointer_event_cast(event));
+      widget_on_pointer_move(widget, pointer_event_cast(event));
+      break;
     }
     case EVT_POINTER_UP: {
-      return widget_on_pointer_up(widget, pointer_event_cast(event));
+      widget_on_pointer_up(widget, pointer_event_cast(event));
+      break;
     }
     case EVT_KEY_DOWN: {
-      return widget_on_keydown(widget, key_event_cast(event));
+      widget_on_keydown(widget, key_event_cast(event));
+      break;
     }
     case EVT_KEY_UP: {
-      return widget_on_keyup(widget, key_event_cast(event));
+      widget_on_keyup(widget, key_event_cast(event));
+      break;
     }
     default: {
+      return RET_FAIL;
       break;
     }
   }
 
-  return RET_FAIL;
+  return RET_OK;
 }
 
 static ret_t remote_ui_service_open_dialog(remote_ui_service_t* ui, const char* type,

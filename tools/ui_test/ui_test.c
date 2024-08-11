@@ -128,7 +128,7 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
   while (iter != NULL) {
     const char* name = conf_node_get_name(iter);
 
-    if (tk_str_start_with(name, "create")) {
+    if (tk_str_start_with(name, "create") && !tk_str_start_with(name, "create_widget")) {
       const char* url = conf_node_get_child_value_str(iter, "url", "tcp://localhost:2233");
       tk_iostream_t* io = tk_stream_factory_create_iostream(url);
 
