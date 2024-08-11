@@ -1,4 +1,6 @@
 # 最新动态
+2024/08/11
+  * 增加函数 tk_mergesort
 
 2024/08/9
   * 增加 goto_error_if_fail_ex(感谢兆坤提供补丁)

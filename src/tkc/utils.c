@@ -1590,8 +1590,7 @@ uint32_t tk_strnlen(const char* str, uint32_t maxlen) {
   const char* s;
   return_value_if_fail(str != NULL, 0);
 
-  for (s = str; maxlen-- && *s != '\0'; ++s)
-    ;
+  for (s = str; maxlen-- && *s != '\0'; ++s);
   return s - str;
 }
 
@@ -2473,7 +2472,7 @@ ret_t tk_buffer_get_value(uint8_t* buffer, uint32_t size, value_type_t type, int
       break;
     }
     case VALUE_TYPE_BINARY: {
-      uint32_t bsize = size - (data - buffer); 
+      uint32_t bsize = size - (data - buffer);
       value_set_binary_data(value, data, bsize);
       break;
     }
@@ -2584,4 +2583,78 @@ const char* tk_skip_to_chars(const char* str, const char* chars) {
     str++;
   }
   return str;
+}
+
+static void merge(void* base, size_t size, tk_compare_t cmp, void* left,
+                  size_t leftSize, void* right, size_t rightSize) {
+  // 创建临时数组
+  void* temp = TKMEM_ALLOC((leftSize + rightSize) * size);
+  if (temp == NULL) {
+    fprintf(stderr, "Memory allocation failed\n");
+    exit(EXIT_FAILURE);
+  }
+
+  size_t i = 0, j = 0, k = 0;
+
+  // 归并两个子数组
+  while (i < leftSize && j < rightSize) {
+    if (cmp((char*)left + i * size, (char*)right + j * size) <= 0) {
+      memcpy((char*)temp + k * size, (char*)left + i * size, size);
+      i++;
+    } else {
+      memcpy((char*)temp + k * size, (char*)right + j * size, size);
+      j++;
+    }
+    k++;
+  }
+
+  // 复制剩余的左边部分
+  while (i < leftSize) {
+    memcpy((char*)temp + k * size, (char*)left + i * size, size);
+    i++;
+    k++;
+  }
+
+  // 复制剩余的右边部分
+  while (j < rightSize) {
+    memcpy((char*)temp + k * size, (char*)right + j * size, size);
+    j++;
+    k++;
+  }
+
+  // 将排序后的内容复制回原数组
+  memcpy(base, temp, (leftSize + rightSize) * size);
+  TKMEM_FREE(temp);
+}
+
+static void tk_mergesort_impl(void* base, size_t nmemb, size_t size,
+                              tk_compare_t cmp) {
+  if (nmemb < 2) return;  // 如果只有一个元素，不需要排序
+
+  size_t mid = nmemb / 2;
+
+  // 递归排序左半部分
+  tk_mergesort_impl(base, mid, size, cmp);
+  // 递归排序右半部分
+  tk_mergesort_impl((char*)base + mid * size, nmemb - mid, size, cmp);
+
+  // 归并排序的结果
+  void* left = base;
+  void* right = (char*)base + mid * size;
+
+  // 计算左右部分的大小
+  size_t leftSize = mid;
+  size_t rightSize = nmemb - mid;
+
+  // 合并两个已排序的部分
+  merge(base, size, cmp, left, leftSize, right, rightSize);
+}
+
+ret_t tk_mergesort(void* base, size_t nmemb, size_t size, tk_compare_t cmp) {
+  return_value_if_fail(cmp != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(base != NULL&& nmemb != 0 && size != 0, RET_BAD_PARAMS);
+
+  tk_mergesort_impl(base, nmemb, size, cmp);
+
+  return RET_OK;
 }

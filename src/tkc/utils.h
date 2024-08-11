@@ -1318,6 +1318,17 @@ const char* tk_skip_chars(const char* str, const char* chars);
  */
 const char* tk_skip_to_chars(const char* str, const char* chars);
 
+/**
+ * @method tk_mergesort
+ * 归并排序(如果需要稳定的排序，可以选择归并排序，而不是快速排序)。
+ * @param {void*} base 数据。
+ * @param {size_t} nmemb 元素个数。
+ * @param {size_t} size 元素大小。
+ * @param {tk_compare_t} cmp 比较函数。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_mergesort(void* base, size_t nmemb, size_t size, tk_compare_t cmp);
+
 #define TK_STRDUP(str) ((str) != NULL) ? tk_strdup(str) : NULL
 #define TK_STRNDUP(str, len) ((str) != NULL) ? tk_strndup(str, len) : NULL
 

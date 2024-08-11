@@ -1872,3 +1872,42 @@ TEST(Utils, skip_to_chars) {
   ASSERT_STREQ(tk_skip_to_chars("abc123", "A"), "");
   ASSERT_STREQ(tk_skip_to_chars("abc123", "a"), "abc123");
 }
+
+static int tk_compare_int32(const void* a, const void* b) {
+  return *(int*)a - *(int*)b;
+}
+
+typedef struct _person_t {
+  int age;
+  char name[32];
+} person_t;
+
+static int person_cmp_age(const void* a, const void* b) {
+  return ((person_t*)a)->age - ((person_t*)b)->age;
+}
+
+TEST(Utils, mergesort1) {
+  int32_t arr[] = {38, 27, 43, 3, 9, 82, 10};
+  tk_mergesort(arr, ARRAY_SIZE(arr), sizeof(arr[0]), tk_compare_int32);
+
+  ASSERT_EQ(arr[0], 3);
+  ASSERT_EQ(arr[1], 9);
+  ASSERT_EQ(arr[2], 10);
+  ASSERT_EQ(arr[3], 27);
+  ASSERT_EQ(arr[4], 38);
+  ASSERT_EQ(arr[5], 43);
+  ASSERT_EQ(arr[6], 82);
+}
+
+TEST(Utils, mergesort2) {
+  person_t arr[] = {{38, "a"}, {27, "b"}, {43, "c"}, {3, "d"}, {9, "e"}, {82, "f"}, {10, "g"}};
+  tk_mergesort(arr, ARRAY_SIZE(arr), sizeof(arr[0]), person_cmp_age);
+
+  ASSERT_EQ(arr[0].age, 3);
+  ASSERT_EQ(arr[1].age, 9);
+  ASSERT_EQ(arr[2].age, 10);
+  ASSERT_EQ(arr[3].age, 27);
+  ASSERT_EQ(arr[4].age, 38);
+  ASSERT_EQ(arr[5].age, 43);
+  ASSERT_EQ(arr[6].age, 82); 
+}
