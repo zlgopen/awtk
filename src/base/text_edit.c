@@ -1805,7 +1805,11 @@ ret_t text_edit_set_tips(text_edit_t* text_edit, const char* tips, bool_t mlines
   return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
 
   impl->is_mlines = mlines;
-  wstr_set_utf8(&(impl->tips), tips);
+  if (TK_STR_IS_EMPTY(tips)) {
+    wstr_clear(&(impl->tips));
+  } else {
+    wstr_set_utf8(&(impl->tips), tips);
+  }
   text_edit_layout(text_edit);
 
   return RET_OK;

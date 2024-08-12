@@ -2,6 +2,7 @@
 
 2024/08/12
   * 增加文档[1.8 Release notes](docs/release_notes/awtk-1.8.md)
+  * 去掉edit控件上的一些不必要的参数判断(感谢朝泽提供补丁)
 
 2024/08/11
   * 增加函数 tk_mergesort

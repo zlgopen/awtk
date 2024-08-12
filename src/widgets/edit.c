@@ -1214,7 +1214,7 @@ ret_t edit_set_input_type(widget_t* widget, input_type_t type) {
 
 ret_t edit_set_tips(widget_t* widget, const char* tips) {
   edit_t* edit = EDIT(widget);
-  return_value_if_fail(edit != NULL && tips != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   edit->tips = tk_str_copy(edit->tips, tips);
   text_edit_set_tips(edit->model, edit->tips, FALSE);
@@ -1254,9 +1254,9 @@ static ret_t edit_reset_layout(widget_t* widget) {
 ret_t edit_set_tr_tips(widget_t* widget, const char* tr_tips) {
   edit_t* edit = EDIT(widget);
   widget_t* win = widget_get_window(widget);
-  return_value_if_fail(edit != NULL && tr_tips != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
-  if (*tr_tips == '\0') {
+  if (TK_STR_IS_EMPTY(tr_tips)) {
     TKMEM_FREE(edit->tr_tips);
     return RET_OK;
   }
@@ -1274,7 +1274,7 @@ ret_t edit_set_tr_tips(widget_t* widget, const char* tr_tips) {
 
 ret_t edit_set_keyboard(widget_t* widget, const char* keyboard) {
   edit_t* edit = EDIT(widget);
-  return_value_if_fail(edit != NULL && keyboard != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   edit->keyboard = tk_str_copy(edit->keyboard, keyboard);
 
