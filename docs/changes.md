@@ -1,4 +1,8 @@
 # 最新动态
+
+2024/08/12
+  * 增加文档[1.8 Release notes](docs/release_notes/awtk-1.8.md)
+
 2024/08/11
   * 增加函数 tk_mergesort
   * 完善 UI Test
