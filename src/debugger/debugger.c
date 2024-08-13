@@ -198,6 +198,13 @@ tk_object_t* debugger_get_callstack(debugger_t* debugger) {
   return debugger->vt->get_callstack(debugger);
 }
 
+tk_object_t* debugger_get_callstack_ex(debugger_t* debugger, uint32_t start, uint32_t levels) {
+  return_value_if_fail(debugger != NULL && debugger->vt != NULL, NULL);
+  return_value_if_fail(debugger->vt->get_callstack_ex != NULL, NULL);
+
+  return debugger->vt->get_callstack_ex(debugger, start, levels);
+}
+
 ret_t debugger_clear_break_points(debugger_t* debugger) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(debugger->vt->clear_break_points != NULL, RET_BAD_PARAMS);

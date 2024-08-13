@@ -93,6 +93,9 @@
 #define LLDB_KEY_ST_FIRST_CODE_BREAKPOINTS "stFirstCodeBreakPoints"
 #define LLDB_KEY_STOPFORDESTROYORDETACH "StopForDestroyOrDetach"
 
+#define LLDB_CALLSTCK_DEFAULT_STARTFRAME  0
+#define LLDB_CALLSTCK_DEFAULT_LEVELS      100
+
 #define VARREF_LOCALS (int64_t)1
 #define VARREF_GLOBALS (int64_t)2
 #define VARREF_REGS (int64_t)3
@@ -258,14 +261,18 @@ static ret_t debugger_lldb_set_current_thread_id(debugger_t* debugger, uint64_t 
   return debugger_lldb_set_current_thread_id_ex(debugger, thread_id, FALSE);
 }
 
-static tk_object_t* debugger_lldb_get_callstack_obj(debugger_t* debugger) {
+static tk_object_t* debugger_lldb_get_callstack_ex_obj(debugger_t* debugger, uint32_t start, uint32_t levels) {
   debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
 
   if (lldb->callstack == NULL) {
-    lldb->callstack = debugger_lldb_get_callstack_impl(debugger, 0, 100);
+    lldb->callstack = debugger_lldb_get_callstack_impl(debugger, start, levels);
   }
 
   return lldb->callstack;
+}
+
+static tk_object_t* debugger_lldb_get_callstack_obj(debugger_t* debugger) {
+  return debugger_lldb_get_callstack_ex_obj(debugger, LLDB_CALLSTCK_DEFAULT_STARTFRAME, LLDB_CALLSTCK_DEFAULT_LEVELS);
 }
 
 static const char* debugger_lldb_get_source_path(debugger_t* debugger, uint32_t frame_index) {
@@ -1327,7 +1334,7 @@ static tk_object_t* debugger_lldb_get_global(debugger_t* debugger) {
   return debugger_lldb_get_variables_impl(debugger, VARREF_GLOBALS, 0, 0);
 }
 
-static tk_object_t* debugger_lldb_get_callstack(debugger_t* debugger) {
+static tk_object_t* debugger_lldb_get_callstack_ex(debugger_t* debugger, uint32_t start, uint32_t levels) {
   int32_t i = 0;
   int32_t n = 0;
   uint32_t num = 0;
@@ -1338,7 +1345,7 @@ static tk_object_t* debugger_lldb_get_callstack(debugger_t* debugger) {
   return_value_if_fail(lldb != NULL, NULL);
 
   debugger_lldb_dispatch_messages(debugger, 10, &num);
-  callstack = debugger_lldb_get_callstack_obj(debugger);
+  callstack = debugger_lldb_get_callstack_ex_obj(debugger, start, levels);
   return_value_if_fail(callstack != NULL, NULL);
 
   ret_obj = conf_ubjson_create();
@@ -1369,6 +1376,10 @@ static tk_object_t* debugger_lldb_get_callstack(debugger_t* debugger) {
   }
 
   return ret_obj;
+}
+
+static tk_object_t* debugger_lldb_get_callstack(debugger_t* debugger) {
+  return debugger_lldb_get_callstack_ex(debugger, LLDB_CALLSTCK_DEFAULT_STARTFRAME, LLDB_CALLSTCK_DEFAULT_LEVELS);
 }
 
 static ret_t debugger_lldb_update_break_points(debugger_t* debugger) {
@@ -1557,6 +1568,7 @@ static const debugger_vtable_t s_debugger_lldb_vtable = {
     .get_debuggers = debugger_lldb_get_debuggers,
     .get_break_points = debugger_lldb_get_break_points,
     .get_callstack = debugger_lldb_get_callstack,
+    .get_callstack_ex = debugger_lldb_get_callstack_ex,
     .dispatch_messages = debugger_lldb_dispatch_messages,
     .update_code = debugger_lldb_update_code,
     .set_break_point_ex = debugger_lldb_set_break_point_ex,

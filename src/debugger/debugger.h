@@ -77,6 +77,7 @@ typedef tk_object_t* (*debugger_get_local_t)(debugger_t* debugger, uint32_t fram
 typedef tk_object_t* (*debugger_get_self_t)(debugger_t* debugger);
 typedef tk_object_t* (*debugger_get_global_t)(debugger_t* debugger);
 typedef tk_object_t* (*debugger_get_callstack_t)(debugger_t* debugger);
+typedef tk_object_t* (*debugger_get_callstack_ex_t)(debugger_t* debugger, uint32_t start, uint32_t levels);
 typedef ret_t (*debugger_clear_break_points_t)(debugger_t* debugger);
 typedef ret_t (*debugger_set_break_point_t)(debugger_t* debugger, uint32_t line);
 typedef ret_t (*debugger_remove_break_point_t)(debugger_t* debugger, uint32_t line);
@@ -131,6 +132,7 @@ typedef struct _debugger_vtable_t {
   debugger_get_self_t get_self;
   debugger_get_global_t get_global;
   debugger_get_callstack_t get_callstack;
+  debugger_get_callstack_ex_t get_callstack_ex;
   debugger_get_code_t get_code;
   debugger_get_debuggers_t get_debuggers;
   debugger_get_break_points_t get_break_points;
@@ -362,6 +364,17 @@ tk_object_t* debugger_get_global(debugger_t* debugger);
  * @return {tk_object_t*} 返回堆栈信息。
  */
 tk_object_t* debugger_get_callstack(debugger_t* debugger);
+
+/**
+ * @method debugger_get_callstack_ex
+ * 获取当前线程的callstack。
+ * @param {debugger_t*} debugger debugger对象。
+ * @param {uint32_t} start 堆栈 startFrame。
+ * @param {uint32_t} levels 堆栈层数。
+ *
+ * @return {tk_object_t*} 返回堆栈信息。
+ */
+tk_object_t* debugger_get_callstack_ex(debugger_t* debugger, uint32_t start, uint32_t levels);
 
 /**
  * @method debugger_clear_break_points

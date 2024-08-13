@@ -1,4 +1,6 @@
 # 最新动态
+2024/08/13
+  * debugger增加一个获取指定层数堆栈的api(感谢智明提供补丁)
 
 2024/08/12
   * 增加文档[1.8 Release notes](docs/release_notes/awtk-1.8.md)
