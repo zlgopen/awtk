@@ -484,7 +484,7 @@ print(is_positive(7));
 #### 原型
 
 ```js
-random0to1() => bool
+random0to1() => double
 ```
 
 #### 示例
