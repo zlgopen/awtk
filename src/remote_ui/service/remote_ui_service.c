@@ -158,6 +158,10 @@ static widget_t* remote_ui_service_get_target_widget(remote_ui_service_t* ui, co
   widget_t* win = remote_ui_service_get_app_window(window_manager());
   widget_t* widget = TK_STR_IS_EMPTY(target) ? win : widget_find_by_path(win, target, TRUE);
 
+  if (widget == NULL) {
+    widget = widget_lookup_by_type(win, target, TRUE);
+  }
+
   return widget;
 }
 

@@ -1,9 +1,4 @@
 en_US: type=strings size=9138
-system_bar: type=style size=884
 default: type=style size=62184
 default_full: type=font size=1732392
-button: type=style size=7368
-edit: type=style size=2504
-trado: type=font size=281560
-keyboard: type=style size=4563
-dialog_toast: type=style size=292
+system_bar: type=style size=884

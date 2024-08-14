@@ -119,12 +119,48 @@ static ret_t widget_on_events(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t conf_node_eval(conf_node_t* iter, tk_object_t* vars, const char* name, value_t* v) {
+   const char* value = NULL;
+   return_value_if_fail(vars != NULL && name != NULL && v != NULL && iter != NULL, RET_BAD_PARAMS);
+
+   value = conf_node_get_child_value_str(iter, name, NULL);
+   if (value != NULL && *value == '$') {
+      return fscript_eval(vars, value + 1, v);
+   } else if (value != NULL) {
+      return conf_node_get_child_value(iter, name, v);
+   } else {
+    return RET_FAIL;
+   }
+}
+
+static value_t s_value;
+
+static int32_t conf_node_eval_int(conf_node_t* iter, tk_object_t* vars, const char* name, int32_t defval) {
+  value_reset(&s_value);
+  if(conf_node_eval(iter, vars, name, &s_value) == RET_OK) {
+    return value_int(&s_value);
+  } else {
+    return defval;
+  }
+}
+
+static const char* conf_node_eval_str(conf_node_t* iter, tk_object_t* vars, const char* name) {
+  value_reset(&s_value);
+  if(conf_node_eval(iter, vars, name, &s_value) == RET_OK) {
+    return value_str(&s_value);
+  } else {
+    return NULL;
+  }
+}
+
 static void run_script(conf_doc_t* doc, uint32_t times) {
   ret_t ret = RET_OK;
   remote_ui_t* ui = NULL;
   const char* expected_ret = NULL;
   conf_node_t* iter = conf_node_get_first_child(doc->root);
+  tk_object_t* vars = object_default_create();
 
+  value_set_int32(&s_value, 0);
   while (iter != NULL) {
     const char* name = conf_node_get_name(iter);
 
@@ -309,7 +345,7 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
       value_t v;
       const char* target = conf_node_get_child_value_str(iter, "target", NULL);
       const char* prop = conf_node_get_child_value_str(iter, "name", NULL);
-      const char* value = conf_node_get_child_value_str(iter, "value", NULL);
+      const char* value = conf_node_eval_str(iter, vars, "value");
 
       value_set_str(&v, value);
       ret = remote_ui_set_prop(ui, target, prop, &v);
@@ -320,15 +356,25 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
       const char* ret_value = NULL;
       const char* target = conf_node_get_child_value_str(iter, "target", NULL);
       const char* prop = conf_node_get_child_value_str(iter, "name", NULL);
-      const char* value = conf_node_get_child_value_str(iter, "value", NULL);
+      const char* value = conf_node_eval_str(iter, vars, "value");
+      const char* save_to_var = conf_node_get_child_value_str(iter, "save_to_var", NULL);
+
       value_set_str(&v, NULL);
       ret = remote_ui_get_prop(ui, target, prop, &v);
       ret_value = value_str_ex(&v, buff, sizeof(buff));
       if (value != NULL) {
         if (!tk_str_eq(value, ret_value)) {
+          log_debug("value(%s) != ret_value(%s)\n", value, ret_value);
           ret = RET_FAIL;
         }
       }
+
+      if (ret == RET_OK) {
+        if (save_to_var != NULL) {
+          tk_object_set_prop(vars, save_to_var, &v);
+        }
+      }
+
       check_return_code(ret, expected_ret, name, target, prop, ret_value);
       value_reset(&v);
     } else if (tk_str_start_with(name, "on_event")) {
@@ -381,9 +427,9 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
       event_t* e = NULL;
       const char* target = conf_node_get_child_value_str(iter, "target", NULL);
       const char* type = conf_node_get_child_value_str(iter, "type", NULL);
-      const char* key = conf_node_get_child_value_str(iter, "key", NULL);
-      int x = conf_node_get_child_value_int32(iter, "x", 0);
-      int y = conf_node_get_child_value_int32(iter, "y", 0);
+      const char* key = conf_node_eval_str(iter, vars, "key");
+      int x = conf_node_eval_int(iter, vars, "x", 0);
+      int y = conf_node_eval_int(iter, vars, "y", 0);
       break_if_fail(type != NULL);
 
       if (target == NULL) {
@@ -402,14 +448,31 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
           e = pointer_event_init(&event, EVT_POINTER_MOVE, NULL, x, y);
         }
         ret = remote_ui_send_event(ui, target, e);
+        log_debug("type=%s x=%d y=%d\n", type, x, y);
       } else if (strstr(type, "key") != NULL) {
         key_event_t event;
-        if (strstr(type, "down") != NULL) {
+        uint32_t code = random()%256;
+
+        if (strstr(type, "down") != NULL && key != NULL) {
           e = key_event_init_with_symbol(&event, EVT_KEY_DOWN, key);
-        } else {
+          ret = remote_ui_send_event(ui, target, e);
+        } else if (strstr(type, "up") != NULL && key != NULL) {
           e = key_event_init_with_symbol(&event, EVT_KEY_UP, key);
+          ret = remote_ui_send_event(ui, target, e);
+        } else {
+          if (key == NULL) {
+            e = key_event_init(&event, EVT_KEY_DOWN, NULL, code);
+            ret = remote_ui_send_event(ui, target, e);
+            e = key_event_init(&event, EVT_KEY_UP, NULL, code);
+            ret = remote_ui_send_event(ui, target, e);
+            log_debug("send rand key down/up %u\n", code);
+          } else {
+            e = key_event_init_with_symbol(&event, EVT_KEY_DOWN, key);
+            ret = remote_ui_send_event(ui, target, e);
+            e = key_event_init_with_symbol(&event, EVT_KEY_UP, key);
+            ret = remote_ui_send_event(ui, target, e);
+          }
         }
-        ret = remote_ui_send_event(ui, target, e);
       }
       check_return_code(ret, expected_ret, name, target, type, NULL);
 
@@ -486,6 +549,8 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
     }
   }
 
+  value_reset(&s_value);
+  TK_OBJECT_UNREF(vars);
   if (ui != NULL) {
     remote_ui_destroy(ui);
     ui = NULL;
@@ -498,6 +563,7 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
 #include "tkc/data_writer_wbuffer.h"
 #include "tkc/data_reader_file.h"
 #include "tkc/data_reader_mem.h"
+#include "fscript_ext/fscript_ext.h"
 
 int main(int argc, char* argv[]) {
   char* data = NULL;
@@ -506,6 +572,9 @@ int main(int argc, char* argv[]) {
   uint32_t times = argc > 2 ? tk_atoi(argv[2]) : 1;
 
   platform_prepare();
+  fscript_global_init();
+  fscript_ext_init();
+
   data_writer_factory_set(data_writer_factory_create());
   data_reader_factory_set(data_reader_factory_create());
   data_writer_factory_register(data_writer_factory(), "file", data_writer_file_create);

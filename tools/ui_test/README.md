@@ -350,7 +350,7 @@ fscript 的用法请参考 [FSCRIPT 参考文档](https://awtk.zlg.cn/docs/awtk_
 参数：
   * target - 目标控件（或 global 全局对象）。
   * name - 属性名。
-  * value - 属性值。
+  * value - 属性值。可以使用表达式，以$开头视为表达式。
 
 示例：
 
@@ -361,6 +361,13 @@ fscript 的用法请参考 [FSCRIPT 参考文档](https://awtk.zlg.cn/docs/awtk_
   target=window_manager
   name=show_fps
   value=false
+```
+
+```ini
+[set_prop]
+  target=temperator
+  name=value
+  value=$ random0to1() * 100
 ```
 
 > 设置屏保时间 (ms)
@@ -397,8 +404,9 @@ fscript 的用法请参考 [FSCRIPT 参考文档](https://awtk.zlg.cn/docs/awtk_
 参数：
   * target - 目标控件（或 global 全局对象）。
   * name - 属性名。
-  * value - 属性值（预期的值，如果实际值与之不同，认为测试失败）。
-  
+  * value - 属性值（预期的值，如果实际值与之不同，认为测试失败）。可以使用表达式，以$开头视为表达式。
+  * save\_to\_var - 将返回的值保持到变量。
+
 示例：
 
 > 获取控件的文本
@@ -408,6 +416,7 @@ fscript 的用法请参考 [FSCRIPT 参考文档](https://awtk.zlg.cn/docs/awtk_
   target=button
   name=text
   value=按钮
+  save_to_var=button_text
 ```
 
 > 获取当前的语言
@@ -454,6 +463,7 @@ key 的取值请参考（去掉前缀 TK\_KEY\_） [按键定义] https://gitee.
 参数：
   * target - 目标。
   * type - 事件类型。
+    * key - 按键按下/弹起。
     * key_down - 按键按下。
     * key_up - 按键弹起。
     * pointer_down - 指针按下。
@@ -461,9 +471,9 @@ key 的取值请参考（去掉前缀 TK\_KEY\_） [按键定义] https://gitee.
     * pointer_move - 指针移动。
     * click - 点击。
   
-  * x - x 坐标 (pointer 事件）。
-  * y - y 坐标 (pointer 事件）。
-  * key - key (key 事件）。
+  * x - x 坐标 (pointer 事件）。可以使用表达式，以$开头视为表达式。
+  * y - y 坐标 (pointer 事件）。可以使用表达式，以$开头视为表达式。
+  * key - key (key 事件）。可以使用表达式，以$开头视为表达式。不指定时，如果type=key，发送随机按键按下和弹起事件。
 
 ```ini
 [send_event]
@@ -473,6 +483,13 @@ key 的取值请参考（去掉前缀 TK\_KEY\_） [按键定义] https://gitee.
 [send_event]
   type=key_up
   key=RIGHT
+
+[send_event]
+  type=key
+  key=RIGHT
+
+[send_event]
+  type=key
 
 [send_event]
   target=window
