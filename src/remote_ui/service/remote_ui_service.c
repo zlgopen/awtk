@@ -386,8 +386,12 @@ static ret_t remote_ui_service_off_event(remote_ui_service_t* ui, const char* ta
 static ret_t remote_ui_service_send_event(remote_ui_service_t* ui, const char* target,
                                           event_t* event) {
   widget_t* widget = remote_ui_service_get_target_widget(ui, target);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  if (tk_str_eq(target, "global") && widget == NULL) {
+    window_manager_dispatch_input_event(window_manager(), event);
+    return RET_OK;
+  }
 
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
   event->target = widget;
   if (!widget_is_window_manager(widget) && !widget_is_window(widget)) {
     widget_dispatch_async(widget, event);

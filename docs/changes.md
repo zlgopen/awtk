@@ -2,6 +2,7 @@
 2024/08/14
   * fix fscript_math.md
   * 完善ui test支持保存变量和表达式
+  * 完善ui test支持条件跳转和条件停止
 
 2024/08/13
   * debugger增加一个获取指定层数堆栈的api(感谢智明提供补丁)

@@ -120,24 +120,25 @@ static ret_t widget_on_events(void* ctx, event_t* e) {
 }
 
 static ret_t conf_node_eval(conf_node_t* iter, tk_object_t* vars, const char* name, value_t* v) {
-   const char* value = NULL;
-   return_value_if_fail(vars != NULL && name != NULL && v != NULL && iter != NULL, RET_BAD_PARAMS);
+  const char* value = NULL;
+  return_value_if_fail(vars != NULL && name != NULL && v != NULL && iter != NULL, RET_BAD_PARAMS);
 
-   value = conf_node_get_child_value_str(iter, name, NULL);
-   if (value != NULL && *value == '$') {
-      return fscript_eval(vars, value + 1, v);
-   } else if (value != NULL) {
-      return conf_node_get_child_value(iter, name, v);
-   } else {
+  value = conf_node_get_child_value_str(iter, name, NULL);
+  if (value != NULL && *value == '$') {
+    return fscript_eval(vars, value + 1, v);
+  } else if (value != NULL) {
+    return conf_node_get_child_value(iter, name, v);
+  } else {
     return RET_FAIL;
-   }
+  }
 }
 
 static value_t s_value;
 
-static int32_t conf_node_eval_int(conf_node_t* iter, tk_object_t* vars, const char* name, int32_t defval) {
+static int32_t conf_node_eval_int(conf_node_t* iter, tk_object_t* vars, const char* name,
+                                  int32_t defval) {
   value_reset(&s_value);
-  if(conf_node_eval(iter, vars, name, &s_value) == RET_OK) {
+  if (conf_node_eval(iter, vars, name, &s_value) == RET_OK) {
     return value_int(&s_value);
   } else {
     return defval;
@@ -146,8 +147,9 @@ static int32_t conf_node_eval_int(conf_node_t* iter, tk_object_t* vars, const ch
 
 static const char* conf_node_eval_str(conf_node_t* iter, tk_object_t* vars, const char* name) {
   value_reset(&s_value);
-  if(conf_node_eval(iter, vars, name, &s_value) == RET_OK) {
-    return value_str(&s_value);
+  if (conf_node_eval(iter, vars, name, &s_value) == RET_OK) {
+    static char buff[64] = {0};
+    return value_str_ex(&s_value, buff, sizeof(buff) - 1);
   } else {
     return NULL;
   }
@@ -183,7 +185,11 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
     }
 
     expected_ret = conf_node_get_child_value_str(iter, "ret", NULL);
-    if (tk_str_start_with(name, "login")) {
+    if (tk_str_start_with(name, "stop")) {
+      if (conf_node_eval_int(iter, vars, "condition", 1)) {
+        break;
+      }
+    } else if (tk_str_start_with(name, "login")) {
       const char* user = conf_node_get_child_value_str(iter, "user", "admin");
       const char* password = conf_node_get_child_value_str(iter, "password", "admin");
       ret = remote_ui_login(ui, user, password);
@@ -443,7 +449,9 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
         } else if (strstr(type, "up") != NULL) {
           e = pointer_event_init(&event, EVT_POINTER_UP, NULL, x, y);
         } else if (strstr(type, "click") != NULL) {
-          e = pointer_event_init(&event, EVT_CLICK, NULL, x, y);
+          e = pointer_event_init(&event, EVT_POINTER_DOWN, NULL, x, y);
+          ret = remote_ui_send_event(ui, target, e);
+          e = pointer_event_init(&event, EVT_POINTER_UP, NULL, x, y);
         } else {
           e = pointer_event_init(&event, EVT_POINTER_MOVE, NULL, x, y);
         }
@@ -451,7 +459,7 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
         log_debug("type=%s x=%d y=%d\n", type, x, y);
       } else if (strstr(type, "key") != NULL) {
         key_event_t event;
-        uint32_t code = random()%256;
+        uint32_t code = random() % 256;
 
         if (strstr(type, "down") != NULL && key != NULL) {
           e = key_event_init_with_symbol(&event, EVT_KEY_DOWN, key);
@@ -515,16 +523,18 @@ static void run_script(conf_doc_t* doc, uint32_t times) {
       log_debug("rewind\n");
       continue;
     } else if (tk_str_start_with(name, "goto")) {
-      const char* target = conf_node_get_child_value_str(iter, "target", NULL);
-      iter = conf_node_get_first_child(doc->root);
-      while (iter != NULL) {
-        if (tk_str_eq(conf_node_get_name(iter), target)) {
-          log_debug("goto %s\n", target);
-          break;
+      if (conf_node_eval_int(iter, vars, "condition", 1)) {
+        const char* target = conf_node_get_child_value_str(iter, "target", NULL);
+        iter = conf_node_get_first_child(doc->root);
+        while (iter != NULL) {
+          if (tk_str_eq(conf_node_get_name(iter), target)) {
+            log_debug("goto %s\n", target);
+            break;
+          }
+          iter = iter->next;
         }
-        iter = iter->next;
+        continue;
       }
-      continue;
     } else if (tk_str_start_with(name, "close")) {
       remote_ui_destroy(ui);
       ui = NULL;

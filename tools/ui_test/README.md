@@ -552,4 +552,32 @@ key 的取值请参考（去掉前缀 TK\_KEY\_） [按键定义] https://gitee.
   filename=loaded_assets_info.txt  
 ```
 
+### 4.20 stop
+功能：停止测试
+
+参数：
+  * condition 停止条件(可选，表达式为非0时停止)
+
+示例：
+
+```ini
+[stop]
+  condition=$ value > 0
+```
+
+### 4.21 goto
+功能：跳转到指定的目标
+
+参数：
+  * condition 跳转条件(可选，表达式为非0时跳转)
+  * target 目标
+
+示例：
+
+```ini
+[goto]
+  target=key
+  condition=$ value < 50
+```
+
 * [参考示例](https://github.com/zlgopen/awtk/tree/master/tests/ui_test_data/demouiold/)
