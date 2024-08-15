@@ -162,7 +162,7 @@ static ret_t fdb_show_threads(const char* title, tk_object_t* obj) {
   log_debug("---------------------\n");
   if (obj != NULL) {
     uint32_t i = 0;
-    int32_t id = 0;
+    uint64_t id = 0;
     const char* name = NULL;
     char path[MAX_PATH + 1] = {0};
     uint32_t n = tk_object_get_prop_uint32(obj, "body.threads.#size", 0);
@@ -172,9 +172,9 @@ static ret_t fdb_show_threads(const char* title, tk_object_t* obj) {
       name = tk_object_get_prop_str(obj, path);
 
       tk_snprintf(path, sizeof(path) - 1, "body.threads.[%d].id", i);
-      id = tk_object_get_prop_int32(obj, path, 0);
+      id = tk_object_get_prop_uint64(obj, path, 0);
 
-      log_debug("[%d]: %s\n", id, name);
+      log_debug("[%llu]: %s\n", id, name);
     }
   }
 
@@ -397,7 +397,9 @@ static ret_t func_pause(app_info_t* app, tokenizer_t* tokenizer) {
 }
 
 static ret_t func_stop(app_info_t* app, tokenizer_t* tokenizer) {
+  tk_object_t* obj = TK_OBJECT(app->debugger);
   debugger_stop(app->debugger);
+  TK_OBJECT_UNREF(obj);
   return RET_OK;
 }
 
@@ -458,10 +460,15 @@ static ret_t func_list_debuggers(app_info_t* app, tokenizer_t* tokenizer) {
   return RET_OK;
 }
 
-static ret_t fdb_show_callstack(app_info_t* app) {
+static ret_t fdb_show_callstack(app_info_t* app, uint32_t start, uint32_t level, bool_t is_ex) {
   int32_t i = 0, n = 0;
   tk_object_t* obj = debugger_get_callstack(app->debugger);
   return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
+  if (is_ex) {
+    obj = debugger_get_callstack_ex(app->debugger, start, level, debugger_get_current_thread_id(app->debugger));
+  } else {
+    obj = debugger_get_callstack(app->debugger);
+  }
 
   log_debug("thread_id:%lld callstack:\n---------------------------\n",
             debugger_get_current_thread_id(app->debugger));
@@ -513,13 +520,15 @@ static ret_t fdb_show_callstack(app_info_t* app) {
 }
 
 static ret_t func_backtrace(app_info_t* app, tokenizer_t* tokenizer) {
-  fdb_show_callstack(app);
+  int32_t level = tokenizer_next_int(tokenizer, -1);
+  bool_t is_ex = level >= 0;
+  fdb_show_callstack(app, 0, level, is_ex);
 
   return RET_OK;
 }
 
 static ret_t func_set_thread_id(app_info_t* app, tokenizer_t* tokenizer) {
-  int32_t thread_id = tokenizer_next_int(tokenizer, -1);
+  uint64_t thread_id = tokenizer_next_int64(tokenizer, -1);
   if (thread_id >= 0) {
     ret_t ret = RET_OK;
     bool_t find = FALSE;
@@ -528,10 +537,10 @@ static ret_t func_set_thread_id(app_info_t* app, tokenizer_t* tokenizer) {
     n = tk_object_get_prop_uint32(obj, "body.threads.#size", 0);
 
     for (i = 0; i < n; i++) {
-      int32_t id = 0;
+      uint64_t id = 0;
       char path[MAX_PATH + 1] = {0};
       tk_snprintf(path, sizeof(path) - 1, "body.threads.[%d].id", i);
-      id = tk_object_get_prop_int32(obj, path, 0);
+      id = tk_object_get_prop_uint64(obj, path, 0);
       if (thread_id == id) {
         find = TRUE;
         break;
@@ -540,7 +549,7 @@ static ret_t func_set_thread_id(app_info_t* app, tokenizer_t* tokenizer) {
     if (find) {
       ret = debugger_set_current_thread_id(app->debugger, thread_id);
       return_value_if_fail(ret == RET_OK, ret);
-      return fdb_show_callstack(app);
+      return fdb_show_callstack(app, 0, 0, FALSE);
     } else {
       log_debug("not found thread id, set fail ! \r\n");
       return RET_NOT_FOUND;
@@ -612,6 +621,14 @@ static ret_t func_frame(app_info_t* app, tokenizer_t* tokenizer) {
   }
 }
 
+static ret_t func_get_curr_frame(app_info_t* app, tokenizer_t* tokenizer) {
+  uint64_t thread_id = debugger_get_current_thread_id(app->debugger);
+  int32_t frame = debugger_get_current_frame(app->debugger);
+  log_debug("thread_id:%llu, frame:%d", thread_id, frame);
+  log_debug("\n");
+  return RET_OK;
+}
+
 static ret_t func_get_code(app_info_t* app, tokenizer_t* tokenizer) {
   fdb_show_code(app, FALSE);
   return RET_OK;
@@ -628,6 +645,7 @@ static const cmd_entry_t s_cmds[] = {
     {"run", "r", "run a program", "r program arg1 arg2...", func_launch},
     {"print", "p", "show a var, support path(eg: a.b[1].name).", "p name", func_print},
     {"frame", "f", "select current frame", "f index", func_frame},
+    {"get_frame", "gf", "get current frame", "gf", func_get_curr_frame},
     {"flush", "fl", "flush socket", "fl", func_flush},
     {"next", "n", "run next line code", "n", func_next},
     {"pause", "ps", "pause the running program", "pause", func_pause},
@@ -646,7 +664,7 @@ static const cmd_entry_t s_cmds[] = {
     {"global", "global", "show global variables", "global", func_global},
     {"threads", "threads", "show threads", "threads", func_threads},
     {"set_thread", "st", "set curr thread id", "st id", func_set_thread_id},
-    {"backtrace", "bt", "show backtrace", "bt", func_backtrace},
+    {"backtrace (level)", "bt", "show backtrace (level)", "bt (level)", func_backtrace},
     {"quit", "q", "Quit debugger", "q", func_quit},
     {"restart", "rs", "restart app", "rs", func_restart},
     {"config", "conf", "load config", "conf lldb.json", func_config},

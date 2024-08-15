@@ -77,7 +77,7 @@ typedef tk_object_t* (*debugger_get_local_t)(debugger_t* debugger, uint32_t fram
 typedef tk_object_t* (*debugger_get_self_t)(debugger_t* debugger);
 typedef tk_object_t* (*debugger_get_global_t)(debugger_t* debugger);
 typedef tk_object_t* (*debugger_get_callstack_t)(debugger_t* debugger);
-typedef tk_object_t* (*debugger_get_callstack_ex_t)(debugger_t* debugger, uint32_t start, uint32_t levels);
+typedef tk_object_t* (*debugger_get_callstack_ex_t)(debugger_t* debugger, uint32_t start, uint32_t levels, uint64_t thread_id);
 typedef ret_t (*debugger_clear_break_points_t)(debugger_t* debugger);
 typedef ret_t (*debugger_set_break_point_t)(debugger_t* debugger, uint32_t line);
 typedef ret_t (*debugger_remove_break_point_t)(debugger_t* debugger, uint32_t line);
@@ -368,13 +368,17 @@ tk_object_t* debugger_get_callstack(debugger_t* debugger);
 /**
  * @method debugger_get_callstack_ex
  * 获取当前线程的callstack。
+ * 备注：
+ *      1，如果 tk_object_t 的 callstack.#size 返回来的长度小于 levels 的话，就已经全部拿完了。
+ *      2，返回值和 debugger_get_callstack 是一样的。
  * @param {debugger_t*} debugger debugger对象。
  * @param {uint32_t} start 堆栈 startFrame。
- * @param {uint32_t} levels 堆栈层数。
+ * @param {uint32_t} levels 堆栈层数。（如果是输入 0 的话，就获取最大层数）
+ * @param {uint64_t} thread_id 线程 id。
  *
  * @return {tk_object_t*} 返回堆栈信息。
  */
-tk_object_t* debugger_get_callstack_ex(debugger_t* debugger, uint32_t start, uint32_t levels);
+tk_object_t* debugger_get_callstack_ex(debugger_t* debugger, uint32_t start, uint32_t levels, uint64_t thread_id);
 
 /**
  * @method debugger_clear_break_points

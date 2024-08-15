@@ -1,4 +1,8 @@
 # 最新动态
+
+2024/08/15
+  * 修改debugger_lldb_get_callstack_ex增加tid的参数并且增加fdb的测试例子(感谢智明提供补丁)
+
 2024/08/14
   * fix fscript_math.md
   * 完善ui test支持保存变量和表达式
