@@ -716,254 +716,57 @@ typedef enum _key_code_t {
   TK_KEY_RCOMMAND = TK_KEY_RGUI,
   TK_KEY_BACK = TK_KEY_AC_BACK,
 #elif defined(AWTK_WEB)
-  /**
-   * @const TK_KEY_LSHIFT
-   * TK_KEY_LSHIFT
-   */
   TK_KEY_LSHIFT = 16,
-  /**
-   * @const TK_KEY_RSHIFT
-   * TK_KEY_RSHIFT
-   */
   TK_KEY_RSHIFT = 16,
-  /**
-   * @const TK_KEY_LCTRL
-   * TK_KEY_LCTRL
-   */
   TK_KEY_LCTRL = 17,
-  /**
-   * @const TK_KEY_RCTRL
-   * TK_KEY_RCTRL
-   */
   TK_KEY_RCTRL = 17,
-  /**
-   * @const TK_KEY_LALT
-   * TK_KEY_LALT
-   */
   TK_KEY_LALT = 18,
-  /**
-   * @const TK_KEY_RALT
-   * TK_KEY_RALT
-   */
   TK_KEY_RALT = 18,
-  /**
-   * @const TK_KEY_CAPSLOCK
-   * TK_KEY_CAPSLOCK
-   */
   TK_KEY_CAPSLOCK = 20,
-  /**
-   * @const TK_KEY_HOME
-   * TK_KEY_HOME
-   */
   TK_KEY_HOME = 36,
-  /**
-   * @const TK_KEY_END
-   * TK_KEY_END
-   */
   TK_KEY_END = 35,
-  /**
-   * @const TK_KEY_INSERT
-   * TK_KEY_INSERT
-   */
   TK_KEY_INSERT = 45,
-  /**
-   * @const TK_KEY_UP
-   * TK_KEY_UP
-   */
   TK_KEY_UP = 38,
-  /**
-   * @const TK_KEY_DOWN
-   * TK_KEY_DOWN
-   */
   TK_KEY_DOWN = 40,
-  /**
-   * @const TK_KEY_LEFT
-   * TK_KEY_LEFT
-   */
   TK_KEY_LEFT = 37,
-  /**
-   * @const TK_KEY_RIGHT
-   * TK_KEY_RIGHT
-   */
   TK_KEY_RIGHT = 39,
-  /**
-   * @const TK_KEY_PAGEUP
-   * TK_KEY_PAGEUP
-   */
   TK_KEY_PAGEUP = 33,
-  /**
-   * @const TK_KEY_PAGEDOWN
-   * TK_KEY_PAGEDOWN
-   */
   TK_KEY_PAGEDOWN = 34,
-  /**
-   * @const TK_KEY_F1
-   * TK_KEY_F1
-   */
   TK_KEY_F1 = 112,
-  /**
-   * @const TK_KEY_F2
-   * TK_KEY_F2
-   */
   TK_KEY_F2 = 113,
-  /**
-   * @const TK_KEY_F3
-   * TK_KEY_F3
-   */
   TK_KEY_F3 = 114,
-  /**
-   * @const TK_KEY_F4
-   * TK_KEY_F4
-   */
   TK_KEY_F4 = 115,
-  /**
-   * @const TK_KEY_F5
-   * TK_KEY_F5
-   */
   TK_KEY_F5 = 116,
-  /**
-   * @const TK_KEY_F6
-   * TK_KEY_F6
-   */
   TK_KEY_F6 = 117,
-  /**
-   * @const TK_KEY_F7
-   * TK_KEY_F7
-   */
   TK_KEY_F7 = 118,
-  /**
-   * @const TK_KEY_F8
-   * TK_KEY_F8
-   */
   TK_KEY_F8 = 119,
-  /**
-   * @const TK_KEY_F9
-   * TK_KEY_F9
-   */
   TK_KEY_F9 = 120,
-  /**
-   * @const TK_KEY_F10
-   * TK_KEY_F10
-   */
   TK_KEY_F10 = 121,
-  /**
-   * @const TK_KEY_F11
-   * TK_KEY_F11
-   */
   TK_KEY_F11 = 122,
-  /**
-   * @const TK_KEY_F12
-   * TK_KEY_F12
-   */
   TK_KEY_F12 = 123,
-  /**
-   * @const TK_KEY_MENU
-   * TK_KEY_MENU
-   */
   TK_KEY_MENU = 0x20 + 163,
-  /**
-   * @const TK_KEY_COMMAND
-   * TK_KEY_COMMAND
-   */
   TK_KEY_COMMAND = 91,
   TK_KEY_LCOMMAND = 91,
   TK_KEY_RCOMMAND = 91,
-  /**
-   * @const TK_KEY_BACK
-   * TK_KEY_BACK
-   */
   TK_KEY_BACK = 0x20 + 166,
-  /**
-   * @const TK_KEY_CANCEL
-   * TK_KEY_CANCEL
-   */
   TK_KEY_CANCEL = 0x20 + 167,
-  /**
-   * @const TK_KEY_KP_DIVIDE
-   * TK_KEY_KP_DIVIDE
-   */
   TK_KEY_KP_DIVIDE = 111,
-  /**
-   * @const TK_KEY_KP_MULTIPLY
-   * TK_KEY_KP_MULTIPLY
-   */
   TK_KEY_KP_MULTIPLY = 106,
-  /**
-   * @const TK_KEY_KP_MINUS
-   * TK_KEY_KP_MINUS
-   */
   TK_KEY_KP_MINUS = 109,
-  /**
-   * @const TK_KEY_KP_PLUS
-   * TK_KEY_KP_PLUS
-   */
   TK_KEY_KP_PLUS = 107,
-  /**
-   * @const TK_KEY_KP_ENTER
-   * TK_KEY_KP_ENTER
-   */
   TK_KEY_KP_ENTER = 13,
-  /**
-   * @const TK_KEY_KP_1
-   * TK_KEY_KP_1
-   */
   TK_KEY_KP_1 = 97,
-  /**
-   * @const TK_KEY_KP_2
-   * TK_KEY_KP_2
-   */
   TK_KEY_KP_2 = 98,
-  /**
-   * @const TK_KEY_KP_3
-   * TK_KEY_KP_3
-   */
   TK_KEY_KP_3 = 99,
-  /**
-   * @const TK_KEY_KP_4
-   * TK_KEY_KP_4
-   */
   TK_KEY_KP_4 = 100,
-  /**
-   * @const TK_KEY_KP_5
-   * TK_KEY_KP_5
-   */
   TK_KEY_KP_5 = 101,
-  /**
-   * @const TK_KEY_KP_6
-   * TK_KEY_KP_6
-   */
   TK_KEY_KP_6 = 102,
-  /**
-   * @const TK_KEY_KP_7
-   * TK_KEY_KP_7
-   */
   TK_KEY_KP_7 = 103,
-  /**
-   * @const TK_KEY_KP_8
-   * TK_KEY_KP_8
-   */
   TK_KEY_KP_8 = 104,
-  /**
-   * @const TK_KEY_KP_9
-   * TK_KEY_KP_9
-   */
   TK_KEY_KP_9 = 105,
-  /**
-   * @const TK_KEY_KP_0
-   * TK_KEY_KP_0
-   */
   TK_KEY_KP_0 = 96,
-  /**
-   * @const TK_KEY_KP_PERIOD
-   * TK_KEY_KP_PERIOD
-   */
   TK_KEY_KP_PERIOD = 110,
-  /**
-   * @const TK_KEY_NUMLOCKCLEAR
-   * TK_KEY_NUMLOCKCLEAR
-   */
   TK_KEY_NUMLOCKCLEAR = 12,
-
 #else
   /**
    * @const TK_KEY_LSHIFT

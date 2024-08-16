@@ -83,7 +83,7 @@ typedef struct _tab_button_group_t {
 
   /**
    * @property {char*} scrollable_mode
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design", "fake"]
    * 滚动模式 (缺省all) (all:鼠标滚轮+鼠标拖拽滚动，wheel:鼠标滚轮，dragged:鼠标拖拽滚动。
    */
 

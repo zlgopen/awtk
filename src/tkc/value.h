@@ -645,7 +645,6 @@ bool_t value_equal(const value_t* value, const value_t* other);
 /**
  * @method value_int
  * 转换为int的值。
- * @annotation ["scriptable"]
  * @param {const value_t*} v value对象。
  *
  * @return {int} 值。
