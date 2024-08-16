@@ -3,6 +3,6 @@ import sys
 sys.path.append("../common")
 import awtk_files as awtk;
 
-CPPFLAGS = '-DHAS_STD_MALLOC -DNDEBUG --enable=warning  --enable=performance -DWITH_CPPCHECK '
+CPPFLAGS = '-DHAS_STD_MALLOC -DNDEBUG --enable=warning  --enable=performance -DWITH_CPPCHECK --check-level=exhaustive '
 
 awtk.run('cppcheck', CPPFLAGS, awtk.getCppCheckFiles())

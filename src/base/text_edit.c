@@ -978,7 +978,7 @@ static int text_edit_insert(STB_TEXTEDIT_STRING* str, int pos, STB_TEXTEDIT_CHAR
   uint32_t i = 0;
 
   for (i = 0; i < num; i++) {
-    if (i + 1 < num && TWINS_WCHAR_IS_LINE_BREAK(newtext[i], newtext[i + 1])) {
+    if ((i + 1) < num && (TWINS_WCHAR_IS_LINE_BREAK(newtext[i], newtext[i + 1]))) {
       line_break_num--;
       i++;
     } else if (WCHAR_IS_LINE_BREAK(newtext[i])) {

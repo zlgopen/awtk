@@ -386,7 +386,6 @@ static ret_t csv_file_object_exec(tk_object_t* obj, const char* name, const char
     o->is_dirty = TRUE;
   } else if (tk_str_ieq(name, TK_OBJECT_CMD_ADD)) {
     if (args != NULL) {
-      return_value_if_fail(args != NULL, RET_FAIL);
       ret = csv_file_append_row(o->csv, args) == RET_OK ? RET_ITEMS_CHANGED : RET_FAIL;
       o->is_dirty = TRUE;
     } else {

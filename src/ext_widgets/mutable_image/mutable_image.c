@@ -177,7 +177,7 @@ static ret_t mutable_image_init_impl(widget_t* widget) {
   image_base_init(widget);
   mutable_image->timer_id = widget_add_timer(widget, mutable_image_invalidate, 16);
 
-  if (widget->parent != NULL && widget != NULL) {
+  if (widget != NULL && widget->parent != NULL) {
     mutable_image_on_attach_parent(widget, widget->parent);
   }
   return RET_OK;

@@ -1243,12 +1243,14 @@ static widget_t* widget_lookup_by_type_all(widget_t* widget, const char* type) {
   return_value_if_fail(widget != NULL && type != NULL, NULL);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  if (tk_str_eq(iter->vt->type, type)) {
+  if (iter == NULL) {
+    continue;
+  } else if(tk_str_eq(iter->vt->type, type)) {
     return iter;
   } else {
-    iter = widget_lookup_by_type_all(iter, type);
-    if (iter != NULL) {
-      return iter;
+    widget_t* ret = widget_lookup_by_type_all(iter, type);
+    if (ret != NULL) {
+      return ret;
     }
   }
   WIDGET_FOR_EACH_CHILD_END();
