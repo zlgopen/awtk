@@ -82,7 +82,7 @@ static ret_t encoding_convert_impl(encoding_name_t from, const char* from_str, u
 
   memset(to_str, 0, to_size);
 
-  if (iconv(icv, pin, &inlen, pout, &outlen) < 0) {
+  if (iconv(icv, (const char**)pin, &inlen, pout, &outlen) < 0) {
     ret = RET_FAIL;
   }
 

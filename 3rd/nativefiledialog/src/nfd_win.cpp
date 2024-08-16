@@ -367,7 +367,7 @@ static nfdresult_t SetDefaultPath( IFileDialog *dialog, const char *defaultPath 
 
     if ( !SUCCEEDED(result) )
     {
-        printf("%08x %08x\n", (int)result, GetLastError());
+        printf("%08x %08lx\n", (int)result, GetLastError());
         NFDi_SetError("Error creating ShellItem");
         NFDi_Free( defaultPathW );
         return NFD_ERROR;
@@ -484,6 +484,7 @@ nfdresult_t NFD_OpenDialogMultiple( const nfdchar_t *filterList,
 
 
     HRESULT coResult = COMInit();
+    HWND parent_window = GetActiveWindow();
     if (!COMIsInitialized(coResult))
     {
         NFDi_SetError("Could not initialize COM.");        
@@ -531,7 +532,6 @@ nfdresult_t NFD_OpenDialogMultiple( const nfdchar_t *filterList,
     }
  
     // Show the dialog.
-    HWND parent_window = GetActiveWindow();
     result = fileOpenDialog->Show(parent_window);
     if ( SUCCEEDED(result) )
     {

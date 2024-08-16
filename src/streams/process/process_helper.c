@@ -239,7 +239,7 @@ int32_t process_read(process_handle_t handle, uint8_t* buff, uint32_t max_size) 
 }
 
 int32_t process_write(process_handle_t handle, const uint8_t* buff, uint32_t max_size) {
-  uint32_t size = 0;
+  DWORD size = 0;
   return_value_if_fail(handle != NULL && buff != NULL, -1);
 
   goto_error_if_fail(WriteFile(handle->h_std_in_wr, buff, max_size, &size, NULL));
