@@ -81,8 +81,11 @@ static ret_t encoding_convert_impl(encoding_name_t from, const char* from_str, u
   return_value_if_fail(icv != 0, RET_FAIL);
 
   memset(to_str, 0, to_size);
-
+#ifdef WIN32
   if (iconv(icv, (const char**)pin, &inlen, pout, &outlen) < 0) {
+#else
+  if (iconv(icv, (char**)pin, &inlen, pout, &outlen) < 0) {
+#endif/*WIN32*/
     ret = RET_FAIL;
   }
 
