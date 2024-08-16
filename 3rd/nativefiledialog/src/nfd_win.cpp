@@ -390,6 +390,7 @@ nfdresult_t NFD_OpenDialog( const nfdchar_t *filterList,
                             nfdchar_t **outPath )
 {
     nfdresult_t nfdResult = NFD_ERROR;
+    HWND parent_window = GetActiveWindow();
 
     
     HRESULT coResult = COMInit();
@@ -424,7 +425,6 @@ nfdresult_t NFD_OpenDialog( const nfdchar_t *filterList,
     }    
 
     // Show the dialog.
-    HWND parent_window = GetActiveWindow();
     result = fileOpenDialog->Show(parent_window);
     if ( SUCCEEDED(result) )
     {
@@ -576,6 +576,7 @@ nfdresult_t NFD_SaveDialog( const nfdchar_t *filterList,
                             nfdchar_t **outPath )
 {
     nfdresult_t nfdResult = NFD_ERROR;
+    HWND parent_window = GetActiveWindow();
 
     HRESULT coResult = COMInit();
     if (!COMIsInitialized(coResult))
@@ -610,7 +611,6 @@ nfdresult_t NFD_SaveDialog( const nfdchar_t *filterList,
     }
 
     // Show the dialog.
-    HWND parent_window = GetActiveWindow();
     result = fileSaveDialog->Show(parent_window);
     if ( SUCCEEDED(result) )
     {
@@ -669,6 +669,7 @@ nfdresult_t NFD_PickFolder(const nfdchar_t *defaultPath,
 {
     nfdresult_t nfdResult = NFD_ERROR;
     DWORD dwOptions = 0;
+    HWND parent_window = GetActiveWindow();
 
     HRESULT coResult = COMInit();
     if (!COMIsInitialized(coResult))
@@ -711,7 +712,6 @@ nfdresult_t NFD_PickFolder(const nfdchar_t *defaultPath,
     }
 
     // Show the dialog to the user
-    HWND parent_window = GetActiveWindow();
     result = fileDialog->Show(parent_window);
     if ( SUCCEEDED(result) )
     {
