@@ -13,12 +13,10 @@ static ret_t qaction_exec_dummy(qaction_t* req) {
 }
 
 static void* consumer(void* args) {
-  uint32_t n = 0;
   qaction_t* action = NULL;
 
   log_debug("consumer start\n");
   while (waitable_action_queue_recv(q, &action, 3000) == RET_OK) {
-    n++;
     qaction_exec(action);
     qaction_destroy(action);
   }

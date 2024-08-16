@@ -365,7 +365,6 @@ static ret_t tab_button_group_on_event(widget_t* widget, event_t* e) {
       break;
     case EVT_POINTER_UP: {
       if (tab_button_group->drag_child) {
-        pointer_event_t* evt = (pointer_event_t*)e;
         tab_button_group->dragged = NULL;
         widget_ungrab(widget->parent, widget);
       }

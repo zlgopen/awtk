@@ -181,8 +181,6 @@ static ret_t input_method_default_restore_win_size(input_method_t* im) {
 }
 
 static ret_t input_method_default_restore_win_position(input_method_t* im) {
-  widget_t* widget = im->last_widget != NULL && im->keyboard != NULL ? im->last_widget : im->widget;
-
   if (im->last_widget != NULL) {
     im->last_win_delta_y = im->win_delta_y;
   } else {

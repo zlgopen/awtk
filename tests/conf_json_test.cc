@@ -633,7 +633,6 @@ TEST(ConfJson, dup2) {
 }
 
 TEST(ConfJson, dup3) {
-  value_t v;
   str_t str;
   const char* data = " {\"tom\" : [1,2,3,4] } ";
   conf_doc_t* doc = conf_doc_load_json(data, -1);

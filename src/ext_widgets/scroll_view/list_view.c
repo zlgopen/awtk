@@ -121,7 +121,6 @@ static ret_t list_view_on_pointer_leave(list_view_t* list_view) {
   return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
   list_view->is_over = FALSE;
   if (list_view_is_play_auto_hide_scroll_bar_animtion(list_view)) {
-    widget_t* win = widget_get_window(WIDGET(list_view));
     scroll_bar_hide_by_opacity_animation(list_view->scroll_bar,
                                          LIST_VIEW_FLOATING_SCROLL_BAR_HIDE_TIME, 0);
   }
@@ -132,7 +131,6 @@ static ret_t list_view_on_pointer_enter(list_view_t* list_view) {
   return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
   list_view->is_over = TRUE;
   if (list_view_is_play_auto_hide_scroll_bar_animtion(list_view)) {
-    widget_t* win = widget_get_window(WIDGET(list_view));
     scroll_bar_show_by_opacity_animation(list_view->scroll_bar,
                                          LIST_VIEW_FLOATING_SCROLL_BAR_SHOW_TIME, 0);
   }

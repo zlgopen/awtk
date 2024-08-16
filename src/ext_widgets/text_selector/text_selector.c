@@ -182,7 +182,6 @@ static ret_t text_selector_paint_text(widget_t* widget, canvas_t* c, rect_t* r,
 static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {
   rect_t r;
   uint32_t y = 0;
-  uint32_t i = 0;
   text_selector_option_t* iter = NULL;
   int32_t max_yoffset, tolal_height;
   int32_t yoffset, visible_nr, item_height;
@@ -233,7 +232,6 @@ static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {
       text_selector_paint_text(widget, c, &r, iter, empty_item_height, item_height);
     }
 
-    i++;
     iter = iter->next;
     y += item_height;
   }

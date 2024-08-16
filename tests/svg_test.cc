@@ -168,7 +168,7 @@ TEST(SVGPathParser, move) {
 
 TEST(SVGPathParser, line) {
   svg_path_t* ctx[2];
-  svg_path_line_t path[2] = {0};
+  svg_path_line_t path[2];
   memset(&path, 0, sizeof(path));
 
   ctx[0] = svg_path_line_init(&path[0], 128, -128.5);
@@ -184,7 +184,7 @@ TEST(SVGPathParser, line) {
 
 TEST(SVGPathParser, hline) {
   svg_path_t* ctx[2];
-  svg_path_line_t path[2] = {0};
+  svg_path_line_t path[2];
   memset(&path, 0, sizeof(path));
 
   ctx[0] = svg_path_line_init(&path[0], 179.2, 0);

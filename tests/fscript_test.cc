@@ -3236,7 +3236,6 @@ TEST(FScript, consts) {
 
 TEST(FScript, levelize) {
   value_t v;
-  value_t s;
   tk_object_t* obj = object_default_create();
 
   fscript_eval(obj, "var t = levelize('0-20;21-40;41-60;61-80;81-100', 10); t", &v);

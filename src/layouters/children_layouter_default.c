@@ -385,7 +385,6 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
       widget_layout_children(children[i]);
     }
   } else if (cols > 0 && rows > 0) { /*grid|vlist|hlist*/
-    uint8_t r = 0;
     uint8_t c = 0;
     wh_t item_w = 0;
     wh_t item_h = 0;
@@ -425,7 +424,6 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
 
       c++;
       if (c == cols) {
-        r++;
         y += item_h + spacing;
         c = 0;
         x = x_margin;

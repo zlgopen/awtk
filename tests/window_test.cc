@@ -226,7 +226,6 @@ TEST(Window, model_change) {
 }
 
 TEST(Window, applet_name) {
-  str_t str;
   assets_manager_t* am = NULL;
   locale_info_t* li = NULL;
   widget_t* w1 = window_create(NULL, 10, 20, 30, 40);

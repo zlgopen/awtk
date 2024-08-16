@@ -106,6 +106,8 @@ canvas_t* canvas_offline_create_by_widget(widget_t* widget, bitmap_format_t form
       h = widget->w;
     }
   }
+#else
+  (void)info;
 #endif
   canvas = canvas_offline_create(w, h, format);
   return_value_if_fail(canvas != NULL, NULL);
@@ -281,6 +283,8 @@ ret_t canvas_offline_set_canvas_orientation(canvas_t* canvas, lcd_orientation_t 
         canvas_offline->bitmap->w = canvas_offline->physical_width;
       }
     }
+#else
+  (void)info;
 #endif
     canvas_offline->canvas_orientation = canvas_orientation;
   }

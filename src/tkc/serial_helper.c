@@ -601,6 +601,7 @@ ret_t serial_config(serial_handle_t handle, uint32_t baudrate, bytesize_t bytesi
   serial_dev_t dev = serial_handle_get_dev(handle);
   return_value_if_fail(dev >= 0, RET_BAD_PARAMS);
 
+  (void)byte_time_ns;
   return_value_if_fail(tcgetattr(dev, (struct termios*)handle->old_options) >= 0, RET_BAD_PARAMS);
 
   memset(&options, 0x0, sizeof(struct termios));

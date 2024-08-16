@@ -244,7 +244,6 @@ TEST(Emitter, remove_in_func3) {
   uint32_t n1 = 0;
   uint32_t n2 = 0;
   uint32_t id1 = 0;
-  uint32_t id2 = 0;
   uint32_t type1 = 12;
   uint32_t type2 = 13;
   emitter_t* emitter = emitter_create();
@@ -253,7 +252,7 @@ TEST(Emitter, remove_in_func3) {
 
   emitter_on(emitter, type1, on_event, &n2);
   id1 = emitter_on(emitter, type1, on_emitter_dispatch, &type2);
-  id2 = emitter_on(emitter, type2, on_remove_id, &id1);
+  emitter_on(emitter, type2, on_remove_id, &id1);
   emitter_on(emitter, type2, on_event, &n1);
   ASSERT_EQ(emitter_dispatch(emitter, &e), RET_OK);
   ASSERT_EQ(emitter_size(emitter), 2u);

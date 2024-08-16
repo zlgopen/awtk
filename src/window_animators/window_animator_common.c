@@ -327,7 +327,6 @@ ret_t window_animator_overlap_default_draw_prev(window_animator_t* wa) {
 }
 
 ret_t window_animator_begin_frame(window_animator_t* wa) {
-  bool_t paint_system_bar = TRUE;
   return_value_if_fail(wa != NULL && wa->vt != NULL, RET_OK);
 
   ENSURE(canvas_begin_frame(wa->canvas, NULL, LCD_DRAW_ANIMATION) == RET_OK);

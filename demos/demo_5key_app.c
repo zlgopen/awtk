@@ -42,7 +42,6 @@ static ret_t on_open_toast(void* ctx, event_t* e) {
 
 static ret_t install_one(void* ctx, const void* iter) {
   widget_t* widget = WIDGET(iter);
-  widget_t* win = widget_get_window(widget);
 
   if (widget->name != NULL) {
     const char* name = widget->name;

@@ -628,6 +628,9 @@ static ret_t canvas_fill_rect_gradient_impl(canvas_t* c, xy_t x, xy_t y, wh_t w,
       return RET_OK;
     }
   }
+#else
+  (void)widget_y;
+  (void)widget_h;
 #endif
   vg = canvas_get_vgcanvas(c);
   if (vg != NULL) {

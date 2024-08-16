@@ -10,15 +10,15 @@ TEST(AssetsManager, basic) {
   const asset_info_t* null_res = NULL;
   assets_manager_t* rm = assets_manager_create(10);
 
-  asset_info_t img1 = {ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_BMP, TRUE, 100, 0, "img1"};
-  asset_info_t img2 = {ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_PNG, TRUE, 101, 0, "img2"};
-  asset_info_t img3 = {ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_BSVG, TRUE, 102, 0, "img2"};
-  asset_info_t ui1 = {ASSET_TYPE_UI, ASSET_TYPE_UI_BIN, TRUE, 103, 0, "ui1"};
-  asset_info_t ui2 = {ASSET_TYPE_UI, ASSET_TYPE_UI_XML, TRUE, 104, 0, "ui2"};
-  asset_info_t script1 = {ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_JS, TRUE, 105, 0, "script1"};
-  asset_info_t script2 = {ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_LUA, TRUE, 106, 0, "script1"};
-  asset_info_t font1 = {ASSET_TYPE_FONT, ASSET_TYPE_FONT_TTF, TRUE, 107, 0, "font1"};
-  asset_info_t font2 = {ASSET_TYPE_FONT, ASSET_TYPE_FONT_BMP, TRUE, 108, 0, "font1"};
+  asset_info_t img1 = {ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_BMP, TRUE, 100, 0, {"img1"}};
+  asset_info_t img2 = {ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_PNG, TRUE, 101, 0, {"img2"}};
+  asset_info_t img3 = {ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_BSVG, TRUE, 102, 0, {"img2"}};
+  asset_info_t ui1 = {ASSET_TYPE_UI, ASSET_TYPE_UI_BIN, TRUE, 103, 0, {"ui1"}};
+  asset_info_t ui2 = {ASSET_TYPE_UI, ASSET_TYPE_UI_XML, TRUE, 104, 0, {"ui2"}};
+  asset_info_t script1 = {ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_JS, TRUE, 105, 0, {"script1"}};
+  asset_info_t script2 = {ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_LUA, TRUE, 106, 0, {"script1"}};
+  asset_info_t font1 = {ASSET_TYPE_FONT, ASSET_TYPE_FONT_TTF, TRUE, 107, 0, {"font1"}};
+  asset_info_t font2 = {ASSET_TYPE_FONT, ASSET_TYPE_FONT_BMP, TRUE, 108, 0, {"font1"}};
 
   ASSERT_EQ(assets_manager_add(rm, &img1), RET_OK);
   ASSERT_EQ(assets_manager_add(rm, &img2), RET_OK);

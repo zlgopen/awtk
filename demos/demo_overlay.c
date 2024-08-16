@@ -73,7 +73,7 @@ static void open_window(const char* name, widget_t* to_close) {
       widget_set_prop_str(win, WIDGET_PROP_ANIM_HINT, "");
     }
     if (tk_str_eq(widget_get_type(win), WIDGET_TYPE_DIALOG)) {
-      int32_t ret = dialog_modal(win);
+      dialog_modal(win);
     }
   }
 }
