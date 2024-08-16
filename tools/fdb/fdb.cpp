@@ -174,7 +174,7 @@ static ret_t fdb_show_threads(const char* title, tk_object_t* obj) {
       tk_snprintf(path, sizeof(path) - 1, "body.threads.[%d].id", i);
       id = tk_object_get_prop_uint64(obj, path, 0);
 
-      log_debug("[%llu]: %s\n", id, name);
+      log_debug("[%" PRIu64 "]: %s\n", id, name);
     }
   }
 
@@ -470,7 +470,7 @@ static ret_t fdb_show_callstack(app_info_t* app, uint32_t start, uint32_t level,
     obj = debugger_get_callstack(app->debugger);
   }
 
-  log_debug("thread_id:%lld callstack:\n---------------------------\n",
+  log_debug("thread_id:%" PRIu64 " callstack:\n---------------------------\n",
             debugger_get_current_thread_id(app->debugger));
   n = tk_object_get_prop_uint32(obj, DEBUGER_CALLSTACK_NODE_NAME ".#size", 0);
   for (i = 0; i < n; i++) {
@@ -624,7 +624,7 @@ static ret_t func_frame(app_info_t* app, tokenizer_t* tokenizer) {
 static ret_t func_get_curr_frame(app_info_t* app, tokenizer_t* tokenizer) {
   uint64_t thread_id = debugger_get_current_thread_id(app->debugger);
   int32_t frame = debugger_get_current_frame(app->debugger);
-  log_debug("thread_id:%llu, frame:%d", thread_id, frame);
+  log_debug("thread_id:%" PRIu64 ", frame:%d", thread_id, frame);
   log_debug("\n");
   return RET_OK;
 }

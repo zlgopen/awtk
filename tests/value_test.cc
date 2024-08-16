@@ -1384,7 +1384,7 @@ TEST(value, expt) {
 }
 
 TEST(value, min) {
-  int32_t i = 0;
+  uint32_t i = 0;
   value_t v[10];
   value_t o;
 
@@ -1461,7 +1461,7 @@ TEST(value, min) {
 }
 
 TEST(value, max) {
-  int32_t i = 0;
+  uint32_t i = 0;
   value_t v[10];
   value_t o;
 
