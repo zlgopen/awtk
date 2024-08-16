@@ -85,7 +85,6 @@ int SDL_main(int argc, char* argv[]) {
 
 #elif defined(WIN32) && !defined(MINGW)
 #include <windows.h>
-#include <combaseapi.h>
 #ifndef MAX_ARGV
 #define MAX_ARGV 7
 #endif
@@ -137,7 +136,6 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdli
   str_from_wstr(&str, lpcmdline);
   command_line_to_argv(str.str, argv, &argc);
 
-  CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
   tk_pre_init();
 #ifdef ON_CMD_LINE
