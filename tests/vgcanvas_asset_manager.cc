@@ -58,6 +58,7 @@ TEST(Vgcanvas_asset_manager, image) {
   void* vg3 = tk_pointer_from_int(TEST_VGCANAS3_PTR);
   assets_manager_t* rm = assets_manager_create(10);
   const asset_info_t* res = assets_manager_ref(rm, ASSET_TYPE_IMAGE, "earth");
+  vgcanvas_asset_manager_t* save_vgcanvas_asset_manager = vgcanvas_asset_manager();
 
   memset(&image, 0x00, sizeof(bitmap_t));
   ASSERT_EQ(vgcanvas_asset_manager_set(vgcanvas_asset_manager_create()), RET_OK);
@@ -138,7 +139,7 @@ TEST(Vgcanvas_asset_manager, image) {
   ASSERT_EQ(ret, RET_FAIL);
 
   ASSERT_EQ(vgcanvas_asset_manager_destroy(vgcanvas_asset_manager()), RET_OK);
-  ASSERT_EQ(vgcanvas_asset_manager_set(NULL), RET_OK);
+  ASSERT_EQ(vgcanvas_asset_manager_set(save_vgcanvas_asset_manager), RET_OK);
 
   assets_manager_unref(rm, res);
   assets_manager_destroy(rm);
@@ -156,6 +157,7 @@ TEST(Vgcanvas_asset_manager, font) {
   s_specific_by_vg1 = 0;
   s_specific_by_vg2 = 0;
   s_specific_by_vg3 = 0;
+  vgcanvas_asset_manager_t* save_vgcanvas_asset_manager = vgcanvas_asset_manager();
 
   ASSERT_EQ(vgcanvas_asset_manager_set(vgcanvas_asset_manager_create()), RET_OK);
 
@@ -235,5 +237,5 @@ TEST(Vgcanvas_asset_manager, font) {
   ASSERT_EQ(ret, RET_FAIL);
 
   ASSERT_EQ(vgcanvas_asset_manager_destroy(vgcanvas_asset_manager()), RET_OK);
-  ASSERT_EQ(vgcanvas_asset_manager_set(NULL), RET_OK);
+  ASSERT_EQ(vgcanvas_asset_manager_set(save_vgcanvas_asset_manager), RET_OK);
 }

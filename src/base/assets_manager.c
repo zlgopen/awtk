@@ -796,9 +796,9 @@ ret_t assets_manager_unref(assets_manager_t* am, const asset_info_t* info) {
 
   if (info->refcount == 1) {
     assets_manager_dispatch_event(am, EVT_ASSET_MANAGER_UNLOAD_ASSET, (asset_info_t*)info);
-    darray_remove_ex(&(am->assets), asset_cache_cmp_type_and_name, (void*)info);
-
-    return RET_OK;
+    if (darray_remove_ex(&(am->assets), asset_cache_cmp_type_and_name, (void*)info) == RET_OK) {
+      return RET_OK;
+    }
   }
 
   return asset_info_unref((asset_info_t*)info);
