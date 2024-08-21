@@ -40,17 +40,30 @@ static tk_compare_t object_default_get_cmp_by_name(object_default_t* o) {
   }
 }
 
+static int32_t object_default_find_prop_index_by_name(tk_object_t* obj, const char* name) {
+  int32_t ret = -1;
+  object_default_t* o = OBJECT_DEFAULT(obj);
+  return_value_if_fail(o != NULL && name != NULL, -1);
+
+  if (*name == '[' && tk_isdigit(name[1]) && tk_str_end_with(name, "]")) {
+    ret = tk_atoi(name + 1);
+    return_value_if_fail(ret < o->props.size, -1);
+  } else {
+    ret = darray_bsearch_index(&(o->props), object_default_get_cmp_by_name(o), (void*)name);
+  }
+
+  return ret;
+}
+
 static value_t* object_default_find_prop_by_name(tk_object_t* obj, const char* name) {
   named_value_t* nv = NULL;
   object_default_t* o = OBJECT_DEFAULT(obj);
+  int32_t index = -1;
   return_value_if_fail(o != NULL && name != NULL, NULL);
 
-  if (*name == '[' && tk_isdigit(name[1]) && tk_str_end_with(name, "]")) {
-    uint32_t index = tk_atoi(name + 1);
-    return_value_if_fail(index < o->props.size, NULL);
-    nv = (named_value_t*)(o->props.elms[index]);
-  } else {
-    nv = darray_bsearch(&(o->props), object_default_get_cmp_by_name(o), (void*)name);
+  index = object_default_find_prop_index_by_name(obj, name);
+  if (index >= 0) {
+    nv = (named_value_t*)darray_get(&o->props, index);
   }
 
   return nv != NULL ? &(nv->value) : NULL;
@@ -87,7 +100,7 @@ static ret_t object_default_remove_prop(tk_object_t* obj, const char* name) {
     }
   }
 
-  index = darray_bsearch_index(&(o->props), object_default_get_cmp_by_name(o), (void*)name);
+  index = object_default_find_prop_index_by_name(obj, name);
   if (index >= 0) {
     return darray_remove_index(&(o->props), index);
   } else {
