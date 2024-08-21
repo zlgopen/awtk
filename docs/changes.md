@@ -7,6 +7,7 @@
   * darray去除告警信息(感谢兆坤提供补丁)
   * 保持object_default_remove_prop\ 与\ set_prop\ get_prop\ 逻辑一致(感谢兆坤提供补丁)
   * 修正 object_default_test(感谢兆坤提供补丁)
+  * 增加 object_hash/named_value_hash(感谢兆坤提供补丁)
 
 2024/08/16
   * 修复编译警告。
