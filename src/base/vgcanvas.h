@@ -609,8 +609,8 @@ ret_t vgcanvas_arc_to(vgcanvas_t* vg, float_t x1, float_t y1, float_t x2, float_
  * @param {float_t} x 原点x坐标。
  * @param {float_t} y 原点y坐标。
  * @param {float_t} r 半径。
- * @param {float_t} start_angle 起始角度。
- * @param {float_t} end_angle 结束角度。
+ * @param {float_t} start_angle 起始角度（单位：弧度）。
+ * @param {float_t} end_angle 结束角度（单位：弧度）。
  * @param {bool_t} ccw 是否逆时针。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -710,7 +710,7 @@ ret_t vgcanvas_path_winding(vgcanvas_t* vg, bool_t dir);
  *
  * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
- * @param {float_t} rad 旋转角度(单位弧度)
+ * @param {float_t} rad 旋转角度(单位：弧度)
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
