@@ -79,8 +79,8 @@ static ret_t scroll_view_update_virtual_size(widget_t* widget) {
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
   return_value_if_fail(scroll_view != NULL && widget != NULL, RET_BAD_PARAMS);
 
-  virtual_w = tk_max(scroll_view->virtual_w, widget->w);
-  virtual_h = tk_max(scroll_view->virtual_h, widget->h);
+  virtual_w = widget->w;
+  virtual_h = widget->h;
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   int32_t r = 0;
