@@ -248,7 +248,8 @@ TEST(ObjectDefault, random) {
   srandom(time(0));
 
   for (i = 0; i < n; i++) {
-    int32_t num = tk_abs((int32_t)random());
+    int r = random();
+    int32_t num = tk_abs((int32_t)r);
     tk_snprintf(name, sizeof(name), "%d", num);
     ASSERT_EQ(tk_object_set_prop(obj, name, value_set_int(&v, num)), RET_OK);
     ASSERT_EQ(tk_object_get_prop(obj, name, &v), RET_OK);
@@ -753,7 +754,7 @@ TEST(ObjectDefault, keep_type) {
   TK_OBJECT_UNREF(obj);
 }
 
-TEST(ObjectDefault, set_proo_str_with_format) {
+TEST(ObjectDefault, set_prop_str_with_format) {
   tk_object_t* obj = object_default_create();
 
   ASSERT_EQ(tk_object_set_prop_str_with_format(obj, "name", "%s", "awtk"), RET_OK);
