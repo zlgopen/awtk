@@ -174,7 +174,9 @@ ret_t darray_remove_all(darray_t* darray, tk_compare_t cmp, void* ctx) {
   for (i = 0, k = 0; i < size; i++) {
     void* iter = elms[i];
     if (cmp(iter, ctx) == 0) {
-      darray->destroy(iter);
+      if (iter != NULL) {
+        darray->destroy(iter);
+      }
       elms[i] = NULL;
     } else {
       if (k != i) {
