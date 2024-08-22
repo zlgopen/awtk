@@ -382,18 +382,28 @@ ret_t object_hash_set_keep_prop_type(tk_object_t* obj, bool_t keep_prop_type) {
   return RET_OK;
 }
 
-ret_t object_hash_set_hash_base(tk_object_t* obj, uint64_t base) {
+static ret_t object_hash_update_props_hash(tk_object_t* obj) {
   object_hash_t* o = OBJECT_HASH(obj);
   uint32_t i = 0;
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-
-  o->hash_base = base;
 
   for (i = 0; i < o->props.size; i++) {
     named_value_hash_t* iter = (named_value_hash_t*)(o->props.elms[i]);
     iter->hash = named_value_hash_get_hash_from_str(iter->base.name, o->hash_base);
   }
   darray_sort(&o->props, (tk_compare_t)named_value_hash_compare);
+
+  return RET_OK;
+}
+
+ret_t object_hash_set_hash_base(tk_object_t* obj, uint64_t base) {
+  object_hash_t* o = OBJECT_HASH(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  if (o->hash_base != base) {
+    o->hash_base = base;
+    object_hash_update_props_hash(obj);
+  }
 
   return RET_OK;
 }

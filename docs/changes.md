@@ -5,6 +5,7 @@
   * 完善 object_hash 测试 (感谢兆坤提供补丁)
   * 修复 object_clone (感谢兆坤提供补丁)
   * 完善注释(感谢兆坤提供补丁)
+  * 完善object_hash(感谢兆坤提供补丁)
 
 2024/08/21
   * release 1.8
