@@ -54,8 +54,8 @@ static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char*
                                       (void*)hash, &bucket)) {
           named_value_hash_t* right_nvh = NULL;
           darray_sort(&bucket, (tk_compare_t)named_value_compare);
-          right_nvh =
-              darray_bsearch(&bucket, (tk_compare_t)named_value_compare_by_name, (void*)name);
+          right_nvh = (named_value_hash_t*)darray_bsearch(
+              &bucket, (tk_compare_t)named_value_compare_by_name, (void*)name);
           if (right_nvh != NULL) {
             ret = darray_find_index_ex(&o->props, pointer_compare, (void*)right_nvh);
           }
@@ -355,6 +355,11 @@ tk_object_t* object_hash_clone(object_hash_t* o) {
   return_value_if_fail(dup != NULL, NULL);
 
   dupo = OBJECT_HASH(dup);
+
+  dupo->hash_base = o->hash_base;
+  dupo->enable_path = o->enable_path;
+  dupo->keep_prop_type = o->keep_prop_type;
+
   for (i = 0; i < o->props.size; i++) {
     named_value_hash_t* iter = (named_value_hash_t*)(o->props.elms[i]);
     named_value_hash_t* nvh = named_value_hash_clone(iter);

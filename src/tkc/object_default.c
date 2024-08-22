@@ -339,6 +339,11 @@ tk_object_t* object_default_clone(object_default_t* o) {
   return_value_if_fail(dup != NULL, NULL);
 
   dupo = OBJECT_DEFAULT(dup);
+
+  dupo->enable_path = o->enable_path;
+  dupo->keep_prop_type = o->keep_prop_type;
+  dupo->name_case_insensitive = o->name_case_insensitive;
+
   for (i = 0; i < o->props.size; i++) {
     named_value_t* iter = (named_value_t*)(o->props.elms[i]);
     named_value_t* nv = named_value_create_ex(iter->name, &(iter->value));
