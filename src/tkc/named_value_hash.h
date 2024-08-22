@@ -26,11 +26,15 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @const HASH_BASE_DEFAULT
+ * 默认字符串散列进制。
+ */
 #define HASH_BASE_DEFAULT 13331
 
 /**
  * @class named_value_hash_t
- * @parent tk_object_t
+ * @parent named_value_t
  * @annotation ["scriptable"]
  * 带有散列值的命名的值。
  *
