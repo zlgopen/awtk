@@ -769,14 +769,21 @@ TEST(ObjectHash, set_prop_str_with_format) {
 }
 
 TEST(ObjectHash, hash_base) {
-  value_t v;
   tk_object_t* obj = object_hash_create();
-  object_hash_t* o = OBJECT_HASH(obj);
 
-  ASSERT_EQ(tk_object_set_prop(obj, "abc", value_set_int(&v, 50)), RET_OK);
-  ASSERT_EQ(tk_object_set_prop(obj, "efg", value_set_int(&v, 150)), RET_OK);
+  tk_object_set_prop_uint32(obj, "id", 1001);
+  tk_object_set_prop_str(obj, "name", "awtk");
+  tk_object_set_prop_bool(obj, "light", TRUE);
+  tk_object_set_prop_int(obj, "age", 100);
+  tk_object_set_prop_float(obj, "weight", 60);
 
   ASSERT_EQ(object_hash_set_hash_base(obj, 131), RET_OK);
+
+  ASSERT_EQ(tk_object_get_prop_uint32(obj, "id", 0), 1001);
+  ASSERT_STREQ(tk_object_get_prop_str(obj, "name"), "awtk");
+  ASSERT_EQ(tk_object_get_prop_bool(obj, "light", FALSE), TRUE);
+  ASSERT_EQ(tk_object_get_prop_int(obj, "age", 0), 100);
+  ASSERT_EQ(tk_object_get_prop_float(obj, "weight", 0), 60);
 
   TK_OBJECT_UNREF(obj);
 }
