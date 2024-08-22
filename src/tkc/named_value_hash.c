@@ -65,7 +65,7 @@ named_value_hash_t* named_value_hash_init(named_value_hash_t* nvh, const char* n
 
   if (RET_OK == ret) {
     if (value != NULL) {
-      named_value_set_value(nvh, value);
+      named_value_set_value((named_value_t*)nvh, value);
     }
   }
 
@@ -99,14 +99,12 @@ named_value_hash_t* named_value_hash_create(void) {
 }
 
 int32_t named_value_hash_compare(named_value_hash_t* nvh, const named_value_hash_t* other) {
-  int32_t ret = -1;
   return_value_if_fail(nvh != NULL && other != NULL, -1);
 
   return nvh->hash - other->hash;
 }
 
 int32_t named_value_hash_compare_by_hash(named_value_hash_t* nvh, uint64_t hash) {
-  int32_t ret = -1;
   return_value_if_fail(nvh != NULL, -1);
 
   return nvh->hash - hash;

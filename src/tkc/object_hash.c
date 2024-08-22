@@ -104,7 +104,6 @@ static int32_t object_hash_compare(tk_object_t* obj, tk_object_t* other) {
 
 static ret_t object_hash_remove_prop(tk_object_t* obj, const char* name) {
   int32_t index = 0;
-  uint64_t hash = 0;
   object_hash_t* o = OBJECT_HASH(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
