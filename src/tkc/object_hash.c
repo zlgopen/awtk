@@ -37,6 +37,33 @@ static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char*
     uint64_t hash = named_value_hash_get_hash_from_str(name, o->hash_base);
     ret = darray_bsearch_index(&(o->props), (tk_compare_t)named_value_hash_compare_by_hash,
                                (void*)hash);
+
+    if (ret >= 0) {
+      named_value_hash_t* nvh = (named_value_hash_t*)darray_get(&o->props, ret);
+      if (!tk_str_eq(name, nvh->base.name)) {
+        darray_t bucket;
+        darray_init(&bucket, 8, NULL, (tk_compare_t)named_value_compare);
+
+        log_debug("%s: Hashing collision!\r\n", __FUNCTION__);
+        log_debug("Hash: %lld\r\n", hash);
+        log_debug("Wrong name: %s\r\n", nvh->base.name);
+        log_debug("Target name: %s\r\n\r\n", name);
+
+        ret = -1;
+        if (RET_OK == darray_find_all(&o->props, (tk_compare_t)named_value_hash_compare_by_hash,
+                                      (void*)hash, &bucket)) {
+          named_value_hash_t* right_nvh = NULL;
+          darray_sort(&bucket, (tk_compare_t)named_value_compare);
+          right_nvh =
+              darray_bsearch(&bucket, (tk_compare_t)named_value_compare_by_name, (void*)name);
+          if (right_nvh != NULL) {
+            ret = darray_find_index_ex(&o->props, pointer_compare, (void*)right_nvh);
+          }
+        }
+
+        darray_deinit(&bucket);
+      }
+    }
   }
 
   return ret;
