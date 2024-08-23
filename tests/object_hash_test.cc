@@ -575,7 +575,7 @@ TEST(ObjectHash, insert1) {
   }
   ASSERT_EQ(tk_object_get_prop_int(obj, TK_OBJECT_PROP_SIZE, 0), n);
 
-  object_hash_clear_props(obj);
+  tk_object_clear_props(obj);
   ASSERT_EQ(tk_object_get_prop_int(obj, TK_OBJECT_PROP_SIZE, 0), 0);
   for (i = n; i > 0; i--) {
     tk_snprintf(name, sizeof(name), "name%u", i);
@@ -584,7 +584,7 @@ TEST(ObjectHash, insert1) {
   }
   ASSERT_EQ(tk_object_get_prop_int(obj, TK_OBJECT_PROP_SIZE, 0), n);
 
-  object_hash_clear_props(obj);
+  tk_object_clear_props(obj);
   ASSERT_EQ(tk_object_get_prop_int(obj, TK_OBJECT_PROP_SIZE, 0), 0);
   for (i = n; i > 0; i--) {
     tk_snprintf(name, sizeof(name), "name%u", i);
@@ -629,6 +629,56 @@ TEST(ObjectHash, copy) {
 
   tk_object_unref(obj1);
   tk_object_unref(obj2);
+}
+
+static int value_type_compare(const void* iter, const void* ctx) {
+  const named_value_t* nv = (const named_value_t*)(iter);
+  value_type_t type = (value_type_t)tk_pointer_to_int(ctx);
+
+  return nv->value.type - type;
+}
+
+TEST(ObjectHash, find_prop) {
+  tk_object_t* obj = object_hash_create();
+  object_hash_t* o = OBJECT_HASH(obj);
+  value_t* v = NULL;
+
+  tk_object_set_prop_uint32(obj, "id", 1001);
+  tk_object_set_prop_str(obj, "name", "awtk");
+  tk_object_set_prop_bool(obj, "light", TRUE);
+  tk_object_set_prop_int(obj, "age", 100);
+  tk_object_set_prop_float(obj, "weight", 60);
+
+  v = tk_object_find_prop(obj, value_type_compare, tk_pointer_from_int(VALUE_TYPE_STRING));
+  ASSERT_EQ(v != NULL, TRUE);
+  ASSERT_EQ(v->type, VALUE_TYPE_STRING);
+  ASSERT_STREQ(value_str(v), "awtk");
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(ObjectHash, find_props) {
+  tk_object_t* obj = object_hash_create();
+  object_hash_t* o = OBJECT_HASH(obj);
+  darray_t matched;
+  darray_init(&matched, 0, NULL, NULL);
+
+  tk_object_set_prop_uint32(obj, "id", 1001);
+  tk_object_set_prop_str(obj, "name", "awtk");
+  tk_object_set_prop_bool(obj, "light", TRUE);
+  tk_object_set_prop_uint32(obj, "age", 100);
+  tk_object_set_prop_float(obj, "weight", 60);
+
+  ASSERT_EQ(tk_object_find_props(obj, value_type_compare, tk_pointer_from_int(VALUE_TYPE_UINT32),
+                                 &matched),
+            RET_OK);
+  ASSERT_EQ(matched.size, 2u);
+  ASSERT_EQ(value_int((value_t*)darray_get(&matched, 0)), 1001);
+  ASSERT_EQ(value_int((value_t*)darray_get(&matched, 1)), 100);
+
+  darray_deinit(&matched);
+
+  TK_OBJECT_UNREF(obj);
 }
 
 #include "tkc/utils.h"

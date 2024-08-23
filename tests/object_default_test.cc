@@ -574,7 +574,7 @@ TEST(ObjectDefault, insert1) {
   }
   ASSERT_EQ(tk_object_get_prop_int(obj, TK_OBJECT_PROP_SIZE, 0), n);
 
-  object_default_clear_props(obj);
+  tk_object_clear_props(obj);
   ASSERT_EQ(tk_object_get_prop_int(obj, TK_OBJECT_PROP_SIZE, 0), 0);
   for (i = n; i > 0; i--) {
     tk_snprintf(name, sizeof(name), "name%u", i);
@@ -583,7 +583,7 @@ TEST(ObjectDefault, insert1) {
   }
   ASSERT_EQ(tk_object_get_prop_int(obj, TK_OBJECT_PROP_SIZE, 0), n);
 
-  object_default_clear_props(obj);
+  tk_object_clear_props(obj);
   ASSERT_EQ(tk_object_get_prop_int(obj, TK_OBJECT_PROP_SIZE, 0), 0);
   for (i = n; i > 0; i--) {
     tk_snprintf(name, sizeof(name), "name%u", i);
@@ -628,6 +628,56 @@ TEST(ObjectDefault, copy) {
 
   tk_object_unref(obj1);
   tk_object_unref(obj2);
+}
+
+static int value_type_compare(const void* iter, const void* ctx) {
+  const named_value_t* nv = (const named_value_t*)(iter);
+  value_type_t type = (value_type_t)tk_pointer_to_int(ctx);
+
+  return nv->value.type - type;
+}
+
+TEST(ObjectDefault, find_prop) {
+  tk_object_t* obj = object_default_create();
+  object_default_t* o = OBJECT_DEFAULT(obj);
+  value_t* v = NULL;
+
+  tk_object_set_prop_uint32(obj, "id", 1001);
+  tk_object_set_prop_str(obj, "name", "awtk");
+  tk_object_set_prop_bool(obj, "light", TRUE);
+  tk_object_set_prop_int(obj, "age", 100);
+  tk_object_set_prop_float(obj, "weight", 60);
+
+  v = tk_object_find_prop(obj, value_type_compare, tk_pointer_from_int(VALUE_TYPE_STRING));
+  ASSERT_EQ(v != NULL, TRUE);
+  ASSERT_EQ(v->type, VALUE_TYPE_STRING);
+  ASSERT_STREQ(value_str(v), "awtk");
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(ObjectDefault, find_props) {
+  tk_object_t* obj = object_default_create();
+  object_default_t* o = OBJECT_DEFAULT(obj);
+  darray_t matched;
+  darray_init(&matched, 0, NULL, NULL);
+
+  tk_object_set_prop_uint32(obj, "id", 1001);
+  tk_object_set_prop_str(obj, "name", "awtk");
+  tk_object_set_prop_bool(obj, "light", TRUE);
+  tk_object_set_prop_uint32(obj, "age", 100);
+  tk_object_set_prop_float(obj, "weight", 60);
+
+  ASSERT_EQ(tk_object_find_props(obj, value_type_compare, tk_pointer_from_int(VALUE_TYPE_UINT32),
+                                 &matched),
+            RET_OK);
+  ASSERT_EQ(matched.size, 2u);
+  ASSERT_EQ(value_int((value_t*)darray_get(&matched, 0)), 100);
+  ASSERT_EQ(value_int((value_t*)darray_get(&matched, 1)), 1001);
+
+  darray_deinit(&matched);
+
+  TK_OBJECT_UNREF(obj);
 }
 
 #include "tkc/utils.h"
@@ -763,7 +813,7 @@ TEST(ObjectDefault, set_prop_str_with_format) {
   ASSERT_EQ(tk_object_set_prop_str_with_format(obj, "name", "%d", 123), RET_OK);
   ASSERT_STREQ(tk_object_get_prop_str(obj, "name"), "123");
   ASSERT_EQ(tk_object_is_instance_of(obj, OBJECT_DEFAULT_TYPE), TRUE);
-  
+
   TK_OBJECT_UNREF(obj);
 }
 
@@ -775,14 +825,14 @@ TEST(ObjectDefault, case_insensitive) {
   object_default_set_name_case_insensitive(obj, TRUE);
   ASSERT_EQ(tk_object_set_prop(obj, "abc", value_set_int(&v, 50)), RET_OK);
   ASSERT_EQ(o->props.size, 1u);
-  
+
   ASSERT_EQ(tk_object_set_prop(obj, "ABC", value_set_int(&v, 150)), RET_OK);
   ASSERT_EQ(o->props.size, 1u);
 
   ASSERT_EQ(tk_object_get_prop_int(obj, "abc", 0), 150);
-  
+
   ASSERT_EQ(tk_object_remove_prop(obj, "aBC"), RET_OK);
   ASSERT_EQ(o->props.size, 0u);
-  
+
   TK_OBJECT_UNREF(obj);
 }

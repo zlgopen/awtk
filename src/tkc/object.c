@@ -825,6 +825,97 @@ uint64_t tk_object_get_prop_uint64(tk_object_t* obj, const char* name, uint64_t 
   }
 }
 
+ret_t tk_object_clear_props(tk_object_t* obj) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(obj != NULL && obj->vt != NULL, RET_BAD_PARAMS);
+
+  if (obj->vt->clear_props != NULL) {
+    ret = obj->vt->clear_props(obj);
+  }
+
+  return ret;
+}
+
+typedef struct _find_prop_default_ctx_t {
+  tk_compare_t cmp;
+  void* data;
+  value_t* value;
+} find_prop_default_ctx_t;
+
+static ret_t tk_object_find_prop_default_on_visit(void* ctx, const void* data) {
+  const named_value_t* nv = (const named_value_t*)data;
+  find_prop_default_ctx_t* actx = (find_prop_default_ctx_t*)(ctx);
+  if (0 == actx->cmp(data, actx->data)) {
+    actx->value = (value_t*)&nv->value;
+    return RET_FOUND;
+  }
+  return RET_OK;
+}
+
+static value_t* tk_object_find_prop_default(tk_object_t* obj, tk_compare_t cmp, const void* data) {
+  find_prop_default_ctx_t actx;
+  actx.cmp = cmp;
+  actx.data = data;
+  actx.value = NULL;
+  if (RET_OK == tk_object_foreach_prop(obj, tk_object_find_prop_default_on_visit, &actx)) {
+    return actx.value;
+  }
+  return NULL;
+}
+
+value_t* tk_object_find_prop(tk_object_t* obj, tk_compare_t cmp, const void* data) {
+  value_t* ret = NULL;
+  return_value_if_fail(obj != NULL && obj->vt != NULL, NULL);
+  return_value_if_fail(cmp != NULL, NULL);
+
+  if (obj->vt->find_prop != NULL) {
+    ret = obj->vt->find_prop(obj, cmp, data);
+  } else {
+    ret = tk_object_find_prop_default(obj, cmp, data);
+  }
+
+  return ret;
+}
+
+typedef struct _find_props_default_ctx_t {
+  tk_compare_t cmp;
+  void* data;
+  darray_t* matched;
+} find_props_default_ctx_t;
+
+static ret_t tk_object_find_props_default_on_visit(void* ctx, const void* data) {
+  const named_value_t* nv = (const named_value_t*)data;
+  find_props_default_ctx_t* actx = (find_props_default_ctx_t*)(ctx);
+  if (0 == actx->cmp(data, actx->data)) {
+    return darray_push(actx->matched, (value_t*)&nv->value);
+  }
+  return RET_OK;
+}
+
+static ret_t tk_object_find_props_default(tk_object_t* obj, tk_compare_t cmp, const void* data,
+                                          darray_t* matched) {
+  find_props_default_ctx_t actx;
+  actx.cmp = cmp;
+  actx.data = data;
+  actx.matched = matched;
+  return tk_object_foreach_prop(obj, tk_object_find_props_default_on_visit, &actx);
+}
+
+ret_t tk_object_find_props(tk_object_t* obj, tk_compare_t cmp, const void* data,
+                           darray_t* matched) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(obj != NULL && obj->vt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(cmp != NULL && matched != NULL, RET_BAD_PARAMS);
+
+  if (obj->vt->find_props != NULL) {
+    ret = obj->vt->find_props(obj, cmp, data, matched);
+  } else {
+    ret = tk_object_find_props_default(obj, cmp, data, matched);
+  }
+
+  return ret;
+}
+
 tk_object_t* tk_object_get_child_object(tk_object_t* obj, const char* path,
                                         const char** next_path) {
   return_value_if_fail(obj != NULL && path != NULL && next_path != NULL, NULL);
@@ -946,13 +1037,14 @@ ret_t tk_object_to_json(tk_object_t* obj, str_t* json, uint32_t indent, uint32_t
   return RET_OK;
 }
 
-ret_t tk_object_set_prop_str_with_format(tk_object_t* obj, const char* name, const char* format,...) {
+ret_t tk_object_set_prop_str_with_format(tk_object_t* obj, const char* name, const char* format,
+                                         ...) {
   char str[256] = {0};
   return_value_if_fail(obj != NULL && name != NULL && format != NULL, RET_BAD_PARAMS);
 
   va_list args;
   va_start(args, format);
-  vsnprintf(str, sizeof(str)-1, format, args);
+  vsnprintf(str, sizeof(str) - 1, format, args);
   va_end(args);
 
   return tk_object_set_prop_str(obj, name, str);

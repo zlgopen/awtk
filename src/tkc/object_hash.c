@@ -83,7 +83,7 @@ static value_t* object_hash_find_prop_by_name(tk_object_t* obj, const char* name
   return nvh != NULL ? &(nvh->base.value) : NULL;
 }
 
-ret_t object_hash_clear_props(tk_object_t* obj) {
+static ret_t object_hash_clear_props(tk_object_t* obj) {
   object_hash_t* o = OBJECT_HASH(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
@@ -304,47 +304,15 @@ static ret_t object_hash_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, void
   return ret;
 }
 
-value_t* object_hash_find_prop(tk_object_t* obj, tk_compare_t cmp, const void* ctx) {
+static value_t* object_hash_find_prop(tk_object_t* obj, tk_compare_t cmp, const void* data) {
   named_value_hash_t* nvh = NULL;
   object_hash_t* o = OBJECT_HASH(obj);
   return_value_if_fail(o != NULL && cmp != NULL, NULL);
-  nvh = (named_value_hash_t*)darray_find_ex(&(o->props), cmp, (void*)ctx);
+  nvh = (named_value_hash_t*)darray_find_ex(&(o->props), cmp, (void*)data);
   return nvh != NULL ? &(nvh->base.value) : NULL;
 }
 
-static const object_vtable_t s_object_hash_vtable = {.type = OBJECT_HASH_TYPE,
-                                                     .desc = OBJECT_HASH_TYPE,
-                                                     .size = sizeof(object_hash_t),
-                                                     .is_collection = FALSE,
-                                                     .on_destroy = object_hash_on_destroy,
-                                                     .clone = (tk_object_clone_t)object_hash_clone,
-                                                     .compare = object_hash_compare,
-                                                     .get_prop = object_hash_get_prop,
-                                                     .set_prop = object_hash_set_prop,
-                                                     .can_exec = object_hash_can_exec,
-                                                     .exec = object_hash_exec,
-                                                     .remove_prop = object_hash_remove_prop,
-                                                     .foreach_prop = object_hash_foreach_prop};
-
-tk_object_t* object_hash_create_ex(bool_t enable_path) {
-  tk_object_t* obj = tk_object_create(&s_object_hash_vtable);
-  object_hash_t* o = OBJECT_HASH(obj);
-  ENSURE(o);
-  return_value_if_fail(obj != NULL, NULL);
-
-  o->enable_path = enable_path;
-  o->hash_base = HASH_BASE_DEFAULT;
-  darray_init(&(o->props), 8, (tk_destroy_t)named_value_hash_destroy,
-              (tk_compare_t)named_value_hash_compare);
-
-  return obj;
-}
-
-tk_object_t* object_hash_create(void) {
-  return object_hash_create_ex(TRUE);
-}
-
-tk_object_t* object_hash_clone(object_hash_t* o) {
+static tk_object_t* object_hash_clone(object_hash_t* o) {
   uint32_t i = 0;
   tk_object_t* dup = NULL;
   object_hash_t* dupo = NULL;
@@ -370,6 +338,42 @@ tk_object_t* object_hash_clone(object_hash_t* o) {
   }
 
   return dup;
+}
+
+static const object_vtable_t s_object_hash_vtable = {
+    .type = OBJECT_HASH_TYPE,
+    .desc = OBJECT_HASH_TYPE,
+    .size = sizeof(object_hash_t),
+    .is_collection = FALSE,
+    .on_destroy = object_hash_on_destroy,
+    .clone = (tk_object_clone_t)object_hash_clone,
+    .compare = object_hash_compare,
+    .get_prop = object_hash_get_prop,
+    .set_prop = object_hash_set_prop,
+    .can_exec = object_hash_can_exec,
+    .exec = object_hash_exec,
+    .remove_prop = object_hash_remove_prop,
+    .foreach_prop = object_hash_foreach_prop,
+    .clear_props = object_hash_clear_props,
+    .find_prop = object_hash_find_prop,
+};
+
+tk_object_t* object_hash_create_ex(bool_t enable_path) {
+  tk_object_t* obj = tk_object_create(&s_object_hash_vtable);
+  object_hash_t* o = OBJECT_HASH(obj);
+  ENSURE(o);
+  return_value_if_fail(obj != NULL, NULL);
+
+  o->enable_path = enable_path;
+  o->hash_base = HASH_BASE_DEFAULT;
+  darray_init(&(o->props), 8, (tk_destroy_t)named_value_hash_destroy,
+              (tk_compare_t)named_value_hash_compare);
+
+  return obj;
+}
+
+tk_object_t* object_hash_create(void) {
+  return object_hash_create_ex(TRUE);
 }
 
 ret_t object_hash_set_keep_prop_type(tk_object_t* obj, bool_t keep_prop_type) {

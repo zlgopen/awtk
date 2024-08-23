@@ -1,4 +1,7 @@
 # 最新动态
+  
+2024/08/23
+  * 增加 clear_props、find_prop、find_props接口(感谢兆坤提供补丁)
 
 2024/08/22
   * 解决 object_hash 冲突问题(感谢兆坤提供补丁)

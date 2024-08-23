@@ -23,6 +23,7 @@
 #define TK_OBJECT_H
 
 #include "tkc/str.h"
+#include "tkc/darray.h"
 #include "tkc/emitter.h"
 
 BEGIN_C_DECLS
@@ -37,6 +38,10 @@ typedef ret_t (*tk_object_remove_prop_t)(tk_object_t* obj, const char* name);
 typedef ret_t (*tk_object_get_prop_t)(tk_object_t* obj, const char* name, value_t* v);
 typedef ret_t (*tk_object_foreach_prop_t)(tk_object_t* obj, tk_visit_t on_prop, void* ctx);
 typedef ret_t (*tk_object_set_prop_t)(tk_object_t* obj, const char* name, const value_t* v);
+typedef ret_t (*tk_object_clear_props_t)(tk_object_t* obj);
+typedef value_t* (*tk_object_find_prop_t)(tk_object_t* obj, tk_compare_t cmp, const void* ctx);
+typedef ret_t (*tk_object_find_props_t)(tk_object_t* obj, tk_compare_t cmp, const void* ctx,
+                                        darray_t* matched);
 typedef bool_t (*tk_object_can_exec_t)(tk_object_t* obj, const char* name, const char* args);
 typedef ret_t (*tk_object_exec_t)(tk_object_t* obj, const char* name, const char* args);
 typedef tk_object_t* (*tk_object_clone_t)(tk_object_t* obj);
@@ -53,6 +58,9 @@ struct _tk_object_vtable_t {
   tk_object_set_prop_t set_prop;
   tk_object_remove_prop_t remove_prop;
   tk_object_foreach_prop_t foreach_prop;
+  tk_object_clear_props_t clear_props;
+  tk_object_find_prop_t find_prop;
+  tk_object_find_props_t find_props;
   tk_object_can_exec_t can_exec;
   tk_object_exec_t exec;
   tk_object_clone_t clone;
@@ -364,7 +372,8 @@ ret_t tk_object_set_prop_str(tk_object_t* obj, const char* name, const char* val
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tk_object_set_prop_str_with_format(tk_object_t* obj, const char* name, const char* format,...);
+ret_t tk_object_set_prop_str_with_format(tk_object_t* obj, const char* name, const char* format,
+                                         ...);
 
 /**
  * @method tk_object_set_prop_pointer
@@ -972,6 +981,50 @@ uint64_t tk_object_get_prop_uint64(tk_object_t* obj, const char* name, uint64_t 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t tk_object_set_prop_uint64(tk_object_t* obj, const char* name, uint64_t value);
+
+/**
+ * @method tk_object_clear_props
+ * 清除全部属性。
+ *
+ * @annotation ["scriptable"]
+ * @param {tk_object_t*} obj 对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_object_clear_props(tk_object_t* obj);
+
+/**
+ * @method tk_object_find_prop
+ * 查找满足条件的属性，并返回它的值。
+ *
+ * @param {tk_object_t*} obj 对象。
+ * @param {tk_compare_t} cmp 比较函数。
+ * @param {const void*} data 要比较的数据。
+ *
+ * @return {value_t*} 返回属性的值。
+ *
+ */
+value_t* tk_object_find_prop(tk_object_t* obj, tk_compare_t cmp, const void* data);
+
+/**
+ * @method tk_object_find_props
+ * 查找全部满足条件的属性。
+ *
+ * ```c
+ * darray_t matched;
+ * darray_init(&matched, 0, NULL, NULL);
+ * tk_object_find_props(obj, my_cmp, my_data, &matched);
+ * ...
+ * darray_deinit(&matched);
+ * ```
+ * @param {tk_object_t*} obj 对象。
+ * @param {tk_compare_t} cmp 比较函数。
+ * @param {const void*} data 要比较的数据。
+ * @param {darray_t*} matched 返回满足条件的属性。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_object_find_props(tk_object_t* obj, tk_compare_t cmp, const void* data, darray_t* matched);
 
 /**
  * @method tk_object_to_json

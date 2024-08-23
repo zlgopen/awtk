@@ -290,43 +290,12 @@ static ret_t object_default_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, v
   return ret;
 }
 
-value_t* object_default_find_prop(tk_object_t* obj, tk_compare_t cmp, const void* ctx) {
+value_t* object_default_find_prop(tk_object_t* obj, tk_compare_t cmp, const void* data) {
   named_value_t* nv = NULL;
   object_default_t* o = OBJECT_DEFAULT(obj);
   return_value_if_fail(o != NULL && cmp != NULL, NULL);
-  nv = (named_value_t*)darray_find_ex(&(o->props), cmp, (void*)ctx);
+  nv = (named_value_t*)darray_find_ex(&(o->props), cmp, (void*)data);
   return nv != NULL ? &(nv->value) : NULL;
-}
-
-static const object_vtable_t s_object_default_vtable = {
-    .type = OBJECT_DEFAULT_TYPE,
-    .desc = OBJECT_DEFAULT_TYPE,
-    .size = sizeof(object_default_t),
-    .is_collection = FALSE,
-    .on_destroy = object_default_on_destroy,
-    .clone = (tk_object_clone_t)object_default_clone,
-    .compare = object_default_compare,
-    .get_prop = object_default_get_prop,
-    .set_prop = object_default_set_prop,
-    .can_exec = object_default_can_exec,
-    .exec = object_default_exec,
-    .remove_prop = object_default_remove_prop,
-    .foreach_prop = object_default_foreach_prop};
-
-tk_object_t* object_default_create_ex(bool_t enable_path) {
-  tk_object_t* obj = tk_object_create(&s_object_default_vtable);
-  object_default_t* o = OBJECT_DEFAULT(obj);
-  ENSURE(o);
-  return_value_if_fail(obj != NULL, NULL);
-
-  o->enable_path = enable_path;
-  darray_init(&(o->props), 5, (tk_destroy_t)named_value_destroy, (tk_compare_t)named_value_compare);
-
-  return obj;
-}
-
-tk_object_t* object_default_create(void) {
-  return object_default_create_ex(TRUE);
 }
 
 tk_object_t* object_default_clone(object_default_t* o) {
@@ -355,6 +324,40 @@ tk_object_t* object_default_clone(object_default_t* o) {
   }
 
   return dup;
+}
+
+static const object_vtable_t s_object_default_vtable = {
+    .type = OBJECT_DEFAULT_TYPE,
+    .desc = OBJECT_DEFAULT_TYPE,
+    .size = sizeof(object_default_t),
+    .is_collection = FALSE,
+    .on_destroy = object_default_on_destroy,
+    .clone = (tk_object_clone_t)object_default_clone,
+    .compare = object_default_compare,
+    .get_prop = object_default_get_prop,
+    .set_prop = object_default_set_prop,
+    .can_exec = object_default_can_exec,
+    .exec = object_default_exec,
+    .remove_prop = object_default_remove_prop,
+    .foreach_prop = object_default_foreach_prop,
+    .clear_props = object_default_clear_props,
+    .find_prop = object_default_find_prop,
+};
+
+tk_object_t* object_default_create_ex(bool_t enable_path) {
+  tk_object_t* obj = tk_object_create(&s_object_default_vtable);
+  object_default_t* o = OBJECT_DEFAULT(obj);
+  ENSURE(o);
+  return_value_if_fail(obj != NULL, NULL);
+
+  o->enable_path = enable_path;
+  darray_init(&(o->props), 5, (tk_destroy_t)named_value_destroy, (tk_compare_t)named_value_compare);
+
+  return obj;
+}
+
+tk_object_t* object_default_create(void) {
+  return object_default_create_ex(TRUE);
 }
 
 ret_t object_default_set_keep_prop_type(tk_object_t* obj, bool_t keep_prop_type) {
