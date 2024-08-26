@@ -161,6 +161,18 @@ ret_t ubjson_writer_write_uint8(ubjson_writer_t* writer, uint8_t value);
 ret_t ubjson_writer_write_int16(ubjson_writer_t* writer, int16_t value);
 
 /**
+ * @method ubjson_writer_write_uint16
+ *
+ * 写入uint16。
+ *
+ * @param {ubjson_writer_t*} writer writer对象。
+ * @param {uint16_t} value 要写入的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t ubjson_writer_write_uint16(ubjson_writer_t* writer, uint16_t value);
+
+/**
  * @method ubjson_writer_write_int32
  *
  * 写入int32。
@@ -173,6 +185,18 @@ ret_t ubjson_writer_write_int16(ubjson_writer_t* writer, int16_t value);
 ret_t ubjson_writer_write_int32(ubjson_writer_t* writer, int32_t value);
 
 /**
+ * @method ubjson_writer_write_uint32
+ *
+ * 写入uint32。
+ *
+ * @param {ubjson_writer_t*} writer writer对象。
+ * @param {uint32_t} value 要写入的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t ubjson_writer_write_uint32(ubjson_writer_t* writer, uint32_t value);
+
+/**
  * @method ubjson_writer_write_int64
  *
  * 写入int64。
@@ -183,6 +207,18 @@ ret_t ubjson_writer_write_int32(ubjson_writer_t* writer, int32_t value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t ubjson_writer_write_int64(ubjson_writer_t* writer, int64_t value);
+
+/**
+ * @method ubjson_writer_write_uint64
+ *
+ * 写入uint64。
+ *
+ * @param {ubjson_writer_t*} writer writer对象。
+ * @param {uint64_t} value 要写入的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t ubjson_writer_write_uint64(ubjson_writer_t* writer, uint64_t value);
 
 /**
  * @method ubjson_writer_write_float32

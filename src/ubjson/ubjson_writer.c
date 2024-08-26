@@ -158,6 +158,15 @@ ret_t ubjson_writer_write_int16(ubjson_writer_t* writer, int16_t value) {
   return RET_OK;
 }
 
+ret_t ubjson_writer_write_uint16(ubjson_writer_t* writer, uint16_t value) {
+  return_value_if_fail(writer != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ubjson_writer_write_marker(writer, UBJSON_MARKER_UINT16) == RET_OK, RET_OOM);
+  value = uint16_to_big_endian(value);
+  return_value_if_fail(ubjson_writer_write_data(writer, &value, sizeof(value)) == RET_OK, RET_OOM);
+
+  return RET_OK;
+}
+
 ret_t ubjson_writer_write_int32(ubjson_writer_t* writer, int32_t value) {
   return_value_if_fail(writer != NULL, RET_BAD_PARAMS);
   return_value_if_fail(ubjson_writer_write_marker(writer, UBJSON_MARKER_INT32) == RET_OK, RET_OOM);
@@ -167,11 +176,24 @@ ret_t ubjson_writer_write_int32(ubjson_writer_t* writer, int32_t value) {
   return RET_OK;
 }
 
+ret_t ubjson_writer_write_uint32(ubjson_writer_t* writer, uint32_t value) {
+  return_value_if_fail(writer != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ubjson_writer_write_marker(writer, UBJSON_MARKER_UINT32) == RET_OK, RET_OOM);
+  value = uint32_to_big_endian(value);
+  return_value_if_fail(ubjson_writer_write_data(writer, &value, sizeof(value)) == RET_OK, RET_OOM);
+
+  return RET_OK;
+}
+
 ret_t ubjson_writer_write_int(ubjson_writer_t* writer, int32_t value) {
-  if (tk_abs(value) < 128) {
+  if (INT8_MIN <= value && value <= INT8_MAX) {
     return ubjson_writer_write_int8(writer, (int8_t)value);
-  } else if (tk_abs(value) < 32768) {
+  } else if (0 <= value && value <= UINT8_MAX) {
+    return ubjson_writer_write_uint8(writer, (uint8_t)value);
+  } else if (INT16_MIN <= value && value <= INT16_MAX) {
     return ubjson_writer_write_int16(writer, (int16_t)value);
+  } else if (0 <= value && value <= UINT16_MAX) {
+    return ubjson_writer_write_uint16(writer, (uint16_t)value);
   } else {
     return ubjson_writer_write_int32(writer, value);
   }
@@ -181,6 +203,15 @@ ret_t ubjson_writer_write_int64(ubjson_writer_t* writer, int64_t value) {
   return_value_if_fail(writer != NULL, RET_BAD_PARAMS);
   return_value_if_fail(ubjson_writer_write_marker(writer, UBJSON_MARKER_INT64) == RET_OK, RET_OOM);
   value = int64_to_big_endian(value);
+  return_value_if_fail(ubjson_writer_write_data(writer, &value, sizeof(value)) == RET_OK, RET_OOM);
+
+  return RET_OK;
+}
+
+ret_t ubjson_writer_write_uint64(ubjson_writer_t* writer, uint64_t value) {
+  return_value_if_fail(writer != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ubjson_writer_write_marker(writer, UBJSON_MARKER_UINT64) == RET_OK, RET_OOM);
+  value = uint64_to_big_endian(value);
   return_value_if_fail(ubjson_writer_write_data(writer, &value, sizeof(value)) == RET_OK, RET_OOM);
 
   return RET_OK;
@@ -338,14 +369,22 @@ ret_t ubjson_writer_write_kv_value(ubjson_writer_t* writer, const char* key, con
     return ubjson_writer_write_float64(writer, value_double(value));
   } else if (value->type == VALUE_TYPE_FLOAT32) {
     return ubjson_writer_write_float32(writer, value_float32(value));
-  } else if (value->type == VALUE_TYPE_INT8 || value->type == VALUE_TYPE_UINT8) {
+  } else if (value->type == VALUE_TYPE_INT8) {
     return ubjson_writer_write_int8(writer, value_int8(value));
-  } else if (value->type == VALUE_TYPE_INT16 || value->type == VALUE_TYPE_UINT16) {
+  } else if (value->type == VALUE_TYPE_UINT8) {
+    return ubjson_writer_write_uint8(writer, value_uint8(value));
+  } else if (value->type == VALUE_TYPE_INT16) {
     return ubjson_writer_write_int16(writer, value_int16(value));
-  } else if (value->type == VALUE_TYPE_INT32 || value->type == VALUE_TYPE_UINT32) {
+  } else if (value->type == VALUE_TYPE_UINT16) {
+    return ubjson_writer_write_uint16(writer, value_uint16(value));
+  } else if (value->type == VALUE_TYPE_INT32) {
     return ubjson_writer_write_int32(writer, value_int32(value));
-  } else if (value->type == VALUE_TYPE_INT64 || value->type == VALUE_TYPE_UINT64) {
+  } else if (value->type == VALUE_TYPE_UINT32) {
+    return ubjson_writer_write_uint32(writer, value_uint32(value));
+  } else if (value->type == VALUE_TYPE_INT64) {
     return ubjson_writer_write_int64(writer, value_int64(value));
+  } else if (value->type == VALUE_TYPE_UINT64) {
+    return ubjson_writer_write_uint64(writer, value_uint64(value));
   } else {
     char str[64];
     log_debug("not supported type\n");

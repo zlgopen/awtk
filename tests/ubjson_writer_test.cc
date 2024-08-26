@@ -127,6 +127,21 @@ TEST(UBJsonWriter, int16) {
   ASSERT_EQ(wb.cursor, 3u);
 }
 
+TEST(UBJsonWriter, uint16) {
+  uint8_t buff[256];
+  wbuffer_t wb;
+  ubjson_writer_t ub;
+  wbuffer_init(&wb, buff, sizeof(buff));
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+
+  ASSERT_EQ(ubjson_writer_write_uint16(&ub, 0x1122), RET_OK);
+
+  ASSERT_EQ(buff[0], UBJSON_MARKER_UINT16);
+  ASSERT_EQ(buff[1], 0x11);
+  ASSERT_EQ(buff[2], 0x22);
+  ASSERT_EQ(wb.cursor, 3u);
+}
+
 TEST(UBJsonWriter, int32) {
   uint8_t buff[256];
   wbuffer_t wb;
@@ -144,6 +159,23 @@ TEST(UBJsonWriter, int32) {
   ASSERT_EQ(wb.cursor, 5u);
 }
 
+TEST(UBJsonWriter, uint32) {
+  uint8_t buff[256];
+  wbuffer_t wb;
+  ubjson_writer_t ub;
+  wbuffer_init(&wb, buff, sizeof(buff));
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+
+  ASSERT_EQ(ubjson_writer_write_uint32(&ub, 0x11223344), RET_OK);
+
+  ASSERT_EQ(buff[0], UBJSON_MARKER_UINT32);
+  ASSERT_EQ(buff[1], 0x11);
+  ASSERT_EQ(buff[2], 0x22);
+  ASSERT_EQ(buff[3], 0x33);
+  ASSERT_EQ(buff[4], 0x44);
+  ASSERT_EQ(wb.cursor, 5u);
+}
+
 TEST(UBJsonWriter, int64) {
   uint8_t buff[256];
   wbuffer_t wb;
@@ -154,6 +186,27 @@ TEST(UBJsonWriter, int64) {
   ASSERT_EQ(ubjson_writer_write_int64(&ub, 0x1122334455667788), RET_OK);
 
   ASSERT_EQ(buff[0], UBJSON_MARKER_INT64);
+  ASSERT_EQ(buff[1], 0x11);
+  ASSERT_EQ(buff[2], 0x22);
+  ASSERT_EQ(buff[3], 0x33);
+  ASSERT_EQ(buff[4], 0x44);
+  ASSERT_EQ(buff[5], 0x55);
+  ASSERT_EQ(buff[6], 0x66);
+  ASSERT_EQ(buff[7], 0x77);
+  ASSERT_EQ(buff[8], 0x88);
+  ASSERT_EQ(wb.cursor, 9u);
+}
+
+TEST(UBJsonWriter, uint64) {
+  uint8_t buff[256];
+  wbuffer_t wb;
+  ubjson_writer_t ub;
+  wbuffer_init(&wb, buff, sizeof(buff));
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+
+  ASSERT_EQ(ubjson_writer_write_uint64(&ub, 0x1122334455667788), RET_OK);
+
+  ASSERT_EQ(buff[0], UBJSON_MARKER_UINT64);
   ASSERT_EQ(buff[1], 0x11);
   ASSERT_EQ(buff[2], 0x22);
   ASSERT_EQ(buff[3], 0x33);

@@ -138,6 +138,19 @@ TEST(UBJsonReader, int16) {
   ubjson_reader_reset(&ur);
 }
 
+TEST(UBJsonReader, uint16) {
+  PREPARE_TEST();
+
+  ASSERT_EQ(ubjson_writer_write_uint16(&ub, 0x1122), RET_OK);
+
+  rb.capacity = wb.cursor;
+  ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);
+  ASSERT_EQ(v.type == VALUE_TYPE_UINT16, true);
+  ASSERT_EQ(value_int(&v), 0x1122);
+
+  ubjson_reader_reset(&ur);
+}
+
 TEST(UBJsonReader, int32) {
   PREPARE_TEST();
 
@@ -146,6 +159,19 @@ TEST(UBJsonReader, int32) {
   rb.capacity = wb.cursor;
   ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);
   ASSERT_EQ(v.type == VALUE_TYPE_INT32, true);
+  ASSERT_EQ(value_int(&v), 0x11223344);
+
+  ubjson_reader_reset(&ur);
+}
+
+TEST(UBJsonReader, uint32) {
+  PREPARE_TEST();
+
+  ASSERT_EQ(ubjson_writer_write_uint32(&ub, 0x11223344), RET_OK);
+
+  rb.capacity = wb.cursor;
+  ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);
+  ASSERT_EQ(v.type == VALUE_TYPE_UINT32, true);
   ASSERT_EQ(value_int(&v), 0x11223344);
 
   ubjson_reader_reset(&ur);
@@ -173,6 +199,19 @@ TEST(UBJsonReader, int64) {
   ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);
   ASSERT_EQ(v.type == VALUE_TYPE_INT64, true);
   ASSERT_EQ(value_int64(&v), 0x1122334455667788);
+
+  ubjson_reader_reset(&ur);
+}
+
+TEST(UBJsonReader, uint64) {
+  PREPARE_TEST();
+
+  ASSERT_EQ(ubjson_writer_write_uint64(&ub, 0x1122334455667788), RET_OK);
+
+  rb.capacity = wb.cursor;
+  ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);
+  ASSERT_EQ(v.type == VALUE_TYPE_UINT64, true);
+  ASSERT_EQ(value_uint64(&v), 0x1122334455667788);
 
   ubjson_reader_reset(&ur);
 }

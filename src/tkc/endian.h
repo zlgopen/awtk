@@ -140,6 +140,50 @@ static inline int16_t int16_from_big_endian(int16_t value) {
 }
 
 /**
+ * @method uint16_endian_invert
+ * @annotation ["static"]
+ * @export none
+ * 16 无符号整数大小端模式转换。
+ * @param {uint16_t} value 输入数据。
+ *
+ * @return {uint16_t} 返回转换后的数据。
+ */
+static inline uint16_t uint16_endian_invert(uint16_t value) {
+  uint16_t ret = value;
+  uint8_t* p = (uint8_t*)&ret;
+
+  swap_uint8(p, p + 1);
+
+  return ret;
+}
+
+/**
+ * @method uint16_to_big_endian
+ * @annotation ["static"]
+ * @export none
+ * 16 无符号整数转换为大端模式。
+ * @param {uint16_t} value 输入数据。
+ *
+ * @return {uint16_t} 返回转换后的数据。
+ */
+static inline uint16_t uint16_to_big_endian(uint16_t value) {
+  return is_little_endian() ? uint16_endian_invert(value) : value;
+}
+
+/**
+ * @method uint16_from_big_endian
+ * @annotation ["static"]
+ * @export none
+ * 16 无符号整数转换为小端模式。
+ * @param {uint16_t} value 输入数据。
+ *
+ * @return {uint16_t} 返回转换后的数据。
+ */
+static inline uint16_t uint16_from_big_endian(uint16_t value) {
+  return is_little_endian() ? uint16_endian_invert(value) : value;
+}
+
+/**
  * @method int32_endian_invert
  * @annotation ["static"]
  * @export none
@@ -182,6 +226,51 @@ static inline int32_t int32_to_big_endian(int32_t value) {
  */
 static inline int32_t int32_from_big_endian(int32_t value) {
   return is_little_endian() ? int32_endian_invert(value) : value;
+}
+
+/**
+ * @method uint32_endian_invert
+ * @annotation ["static"]
+ * @export none
+ * 32 无符号整数大小端模式转换。
+ * @param {uint32_t} value 输入数据。
+ *
+ * @return {uint32_t} 返回转换后的数据。
+ */
+static inline uint32_t uint32_endian_invert(uint32_t value) {
+  uint32_t ret = value;
+  uint8_t* p = (uint8_t*)&ret;
+
+  swap_uint8(p, p + 3);
+  swap_uint8(p + 1, p + 2);
+
+  return ret;
+}
+
+/**
+ * @method uint32_to_big_endian
+ * @annotation ["static"]
+ * @export none
+ * 32 无符号整数转换为大端模式。
+ * @param {uint32_t} value 输入数据。
+ *
+ * @return {uint32_t} 返回转换后的数据。
+ */
+static inline uint32_t uint32_to_big_endian(uint32_t value) {
+  return is_little_endian() ? uint32_endian_invert(value) : value;
+}
+
+/**
+ * @method uint32_from_big_endian
+ * @annotation ["static"]
+ * @export none
+ * 32 无符号整数转换为小端模式。
+ * @param {uint32_t} value 输入数据。
+ *
+ * @return {uint32_t} 返回转换后的数据。
+ */
+static inline uint32_t uint32_from_big_endian(uint32_t value) {
+  return is_little_endian() ? uint32_endian_invert(value) : value;
 }
 
 /**
@@ -229,6 +318,53 @@ static inline int64_t int64_to_big_endian(int64_t value) {
  */
 static inline int64_t int64_from_big_endian(int64_t value) {
   return is_little_endian() ? int64_endian_invert(value) : value;
+}
+
+/**
+ * @method uint64_endian_invert
+ * @annotation ["static"]
+ * @export none
+ * 64 无符号整数大小端模式转换。
+ * @param {uint64_t} value 输入数据。
+ *
+ * @return {uint64_t} 返回转换后的数据。
+ */
+static inline uint64_t uint64_endian_invert(uint64_t value) {
+  uint64_t ret = value;
+  uint8_t* p = (uint8_t*)&ret;
+
+  swap_uint8(p, p + 7);
+  swap_uint8(p + 1, p + 6);
+  swap_uint8(p + 2, p + 5);
+  swap_uint8(p + 3, p + 4);
+
+  return ret;
+}
+
+/**
+ * @method uint64_to_big_endian
+ * @annotation ["static"]
+ * @export none
+ * 64 无符号整数转换为大端模式。
+ * @param {uint64_t} value 输入数据。
+ *
+ * @return {uint64_t} 返回转换后的数据。
+ */
+static inline uint64_t uint64_to_big_endian(uint64_t value) {
+  return is_little_endian() ? uint64_endian_invert(value) : value;
+}
+
+/**
+ * @method uint64_from_big_endian
+ * @annotation ["static"]
+ * @export none
+ * 64 无符号整数转换为小端模式。
+ * @param {uint64_t} value 输入数据。
+ *
+ * @return {uint64_t} 返回转换后的数据。
+ */
+static inline uint64_t uint64_from_big_endian(uint64_t value) {
+  return is_little_endian() ? uint64_endian_invert(value) : value;
 }
 
 /**

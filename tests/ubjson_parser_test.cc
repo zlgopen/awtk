@@ -230,16 +230,16 @@ TEST(UBJsonParser, ubjson_writer_write_kv_value) {
   value_set_double(&v, 2.5);
   ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "f64", &v), RET_OK);
 
-  value_set_int8(&v, 3);
+  value_set_int8(&v, -3);
   ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "int8", &v), RET_OK);
 
-  value_set_int16(&v, 4);
+  value_set_int16(&v, -4);
   ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "int16", &v), RET_OK);
 
-  value_set_int32(&v, 5);
+  value_set_int32(&v, -5);
   ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "int32", &v), RET_OK);
 
-  value_set_int64(&v, 6);
+  value_set_int64(&v, -6);
   ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "int64", &v), RET_OK);
 
   value_set_uint8(&v, 7);
@@ -258,16 +258,16 @@ TEST(UBJsonParser, ubjson_writer_write_kv_value) {
   tk_object_unref(obj);
 
   obj = object_from_ubjson(wb.data, wb.cursor);
-  ASSERT_EQ(tk_object_get_prop_int8(obj, "int8", 0), 3);
-  ASSERT_EQ(tk_object_get_prop_int16(obj, "int16", 0), 4);
-  ASSERT_EQ(tk_object_get_prop_int32(obj, "int32", 0), 5);
-  ASSERT_EQ(tk_object_get_prop_int64(obj, "int64", 0), 6);
+  ASSERT_EQ(tk_object_get_prop_float(obj, "f32", 0), 1.5);
+  ASSERT_EQ(tk_object_get_prop_double(obj, "f64", 0), 2.5);
+  ASSERT_EQ(tk_object_get_prop_int8(obj, "int8", 0), -3);
+  ASSERT_EQ(tk_object_get_prop_int16(obj, "int16", 0), -4);
+  ASSERT_EQ(tk_object_get_prop_int32(obj, "int32", 0), -5);
+  ASSERT_EQ(tk_object_get_prop_int64(obj, "int64", 0), -6);
   ASSERT_EQ(tk_object_get_prop_uint8(obj, "uint8", 0), 7);
   ASSERT_EQ(tk_object_get_prop_uint16(obj, "uint16", 0), 8);
   ASSERT_EQ(tk_object_get_prop_uint32(obj, "uint32", 0), 9);
   ASSERT_EQ(tk_object_get_prop_uint64(obj, "uint64", 0), 10);
-  ASSERT_EQ(tk_object_get_prop_float(obj, "f32", 0), 1.5);
-  ASSERT_EQ(tk_object_get_prop_double(obj, "f64", 0), 2.5);
 
   tk_object_unref(obj);
 }

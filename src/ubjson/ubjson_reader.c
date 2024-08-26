@@ -106,6 +106,13 @@ ret_t ubjson_reader_read(ubjson_reader_t* reader, value_t* v) {
       value_set_int16(v, int16_from_big_endian(value));
       break;
     }
+    case UBJSON_MARKER_UINT16: {
+      uint16_t value = 0;
+      return_value_if_fail(ubjson_reader_read_data(reader, &value, sizeof(value)) == RET_OK,
+                           RET_FAIL);
+      value_set_uint16(v, uint16_from_big_endian(value));
+      break;
+    }
     case UBJSON_MARKER_INT32: {
       int32_t value = 0;
       return_value_if_fail(ubjson_reader_read_data(reader, &value, sizeof(value)) == RET_OK,
@@ -113,11 +120,25 @@ ret_t ubjson_reader_read(ubjson_reader_t* reader, value_t* v) {
       value_set_int32(v, int32_from_big_endian(value));
       break;
     }
+    case UBJSON_MARKER_UINT32: {
+      uint32_t value = 0;
+      return_value_if_fail(ubjson_reader_read_data(reader, &value, sizeof(value)) == RET_OK,
+                           RET_FAIL);
+      value_set_uint32(v, uint32_from_big_endian(value));
+      break;
+    }
     case UBJSON_MARKER_INT64: {
       int64_t value = 0;
       return_value_if_fail(ubjson_reader_read_data(reader, &value, sizeof(value)) == RET_OK,
                            RET_FAIL);
       value_set_int64(v, int64_from_big_endian(value));
+      break;
+    }
+    case UBJSON_MARKER_UINT64: {
+      uint64_t value = 0;
+      return_value_if_fail(ubjson_reader_read_data(reader, &value, sizeof(value)) == RET_OK,
+                           RET_FAIL);
+      value_set_uint64(v, uint64_from_big_endian(value));
       break;
     }
     case UBJSON_MARKER_FLOAT32: {
