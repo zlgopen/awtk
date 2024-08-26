@@ -1,4 +1,8 @@
 # 最新动态
+
+2024/08/26
+ * 简化named\_value\_hash函数，去除进制设置(感谢兆坤提供补丁)
+ * 修复named\_value\_hash\_compare比较大小错误的问题(感谢兆坤提供补丁)
   
 2024/08/23
   * 增加 clear_props、find_prop、find_props接口(感谢兆坤提供补丁)

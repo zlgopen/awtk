@@ -25,7 +25,8 @@
 
 #include "tkc/object_hash.h"
 
-static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char* name) {
+static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char* name,
+                                                   bool_t* p_is_gen_hash, uint64_t* p_hash) {
   int32_t ret = -1;
   object_hash_t* o = OBJECT_HASH(obj);
   return_value_if_fail(o != NULL && name != NULL, -1);
@@ -34,7 +35,13 @@ static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char*
     ret = tk_atoi(name + 1);
     return_value_if_fail(ret < o->props.size, -1);
   } else {
-    uint64_t hash = named_value_hash_get_hash_from_str(name, o->hash_base);
+    uint64_t hash = named_value_hash_get_hash_from_str(name);
+    if (p_hash != NULL) {
+      (*p_hash) = hash;
+    }
+    if (p_is_gen_hash != NULL) {
+      (*p_is_gen_hash) = TRUE;
+    }
     ret = darray_bsearch_index(&(o->props), (tk_compare_t)named_value_hash_compare_by_hash,
                                (void*)hash);
 
@@ -69,13 +76,14 @@ static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char*
   return ret;
 }
 
-static value_t* object_hash_find_prop_by_name(tk_object_t* obj, const char* name) {
+static value_t* object_hash_find_prop_by_name(tk_object_t* obj, const char* name,
+                                              bool_t* p_is_gen_hash, uint64_t* p_hash) {
   named_value_hash_t* nvh = NULL;
   object_hash_t* o = OBJECT_HASH(obj);
   int32_t index = -1;
   return_value_if_fail(o != NULL && name != NULL, NULL);
 
-  index = object_hash_find_prop_index_by_name(obj, name);
+  index = object_hash_find_prop_index_by_name(obj, name, p_is_gen_hash, p_hash);
   if (index >= 0) {
     nvh = (named_value_hash_t*)darray_get(&o->props, index);
   }
@@ -114,7 +122,7 @@ static ret_t object_hash_remove_prop(tk_object_t* obj, const char* name) {
     }
   }
 
-  index = object_hash_find_prop_index_by_name(obj, name);
+  index = object_hash_find_prop_index_by_name(obj, name, NULL, NULL);
   if (index >= 0) {
     return darray_remove_index(&(o->props), index);
   } else {
@@ -195,6 +203,8 @@ static ret_t object_hash_set_prop(tk_object_t* obj, const char* name, const valu
   value_t* vv = NULL;
   ret_t ret = RET_NOT_FOUND;
   object_hash_t* o = OBJECT_HASH(obj);
+  bool_t is_gen_hash = FALSE;
+  uint64_t hash = 0;
   ENSURE(o);
 
   if (o->props.size > 0 && o->enable_path) {
@@ -204,7 +214,7 @@ static ret_t object_hash_set_prop(tk_object_t* obj, const char* name, const valu
     }
   }
 
-  vv = object_hash_find_prop_by_name(obj, name);
+  vv = object_hash_find_prop_by_name(obj, name, &is_gen_hash, &hash);
   if (vv != NULL) {
     if (o->keep_prop_type) {
       ret = value_deep_copy_keep_type(vv, v);
@@ -213,8 +223,16 @@ static ret_t object_hash_set_prop(tk_object_t* obj, const char* name, const valu
       ret = value_deep_copy(vv, v);
     }
   } else {
-    named_value_hash_t* nvh = named_value_hash_create_ex(name, v, o->hash_base);
+    named_value_hash_t* nvh = named_value_hash_create_ex(NULL, v);
     return_value_if_fail(nvh != NULL, RET_OOM);
+
+    if (is_gen_hash) {
+      named_value_set_name(&nvh->base, name);
+      nvh->hash = hash;
+    } else {
+      named_value_hash_set_name(nvh, name);
+    }
+
     ret = darray_sorted_insert(&(o->props), nvh, (tk_compare_t)named_value_hash_compare, FALSE);
     if (ret != RET_OK) {
       named_value_hash_destroy(nvh);
@@ -241,7 +259,7 @@ static ret_t object_hash_get_prop(tk_object_t* obj, const char* name, value_t* v
   }
 
   if (o->props.size > 0) {
-    const value_t* vv = object_hash_find_prop_by_name(obj, name);
+    const value_t* vv = object_hash_find_prop_by_name(obj, name, NULL, NULL);
     if (vv != NULL) {
       ret = value_copy(v, vv);
     } else {
@@ -323,7 +341,6 @@ static tk_object_t* object_hash_clone(object_hash_t* o) {
 
   dupo = OBJECT_HASH(dup);
 
-  dupo->hash_base = o->hash_base;
   dupo->enable_path = o->enable_path;
   dupo->keep_prop_type = o->keep_prop_type;
 
@@ -365,7 +382,6 @@ tk_object_t* object_hash_create_ex(bool_t enable_path) {
   return_value_if_fail(obj != NULL, NULL);
 
   o->enable_path = enable_path;
-  o->hash_base = HASH_BASE_DEFAULT;
   darray_init(&(o->props), 8, (tk_destroy_t)named_value_hash_destroy,
               (tk_compare_t)named_value_hash_compare);
 
@@ -381,32 +397,6 @@ ret_t object_hash_set_keep_prop_type(tk_object_t* obj, bool_t keep_prop_type) {
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   o->keep_prop_type = keep_prop_type;
-
-  return RET_OK;
-}
-
-static ret_t object_hash_update_props_hash(tk_object_t* obj) {
-  object_hash_t* o = OBJECT_HASH(obj);
-  uint32_t i = 0;
-  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-
-  for (i = 0; i < o->props.size; i++) {
-    named_value_hash_t* iter = (named_value_hash_t*)(o->props.elms[i]);
-    iter->hash = named_value_hash_get_hash_from_str(iter->base.name, o->hash_base);
-  }
-  darray_sort(&o->props, (tk_compare_t)named_value_hash_compare);
-
-  return RET_OK;
-}
-
-ret_t object_hash_set_hash_base(tk_object_t* obj, uint64_t base) {
-  object_hash_t* o = OBJECT_HASH(obj);
-  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-
-  if (o->hash_base != base) {
-    o->hash_base = base;
-    object_hash_update_props_hash(obj);
-  }
 
   return RET_OK;
 }

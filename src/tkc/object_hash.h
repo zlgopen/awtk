@@ -64,7 +64,6 @@ typedef struct _object_hash_t {
 
   /*private*/
   darray_t props;
-  uint64_t hash_base;
   bool_t enable_path : 1;
 
   /*设置属性值不改变属性的类型*/
@@ -104,16 +103,6 @@ tk_object_t* object_hash_create_ex(bool_t enable_path);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t object_hash_set_keep_prop_type(tk_object_t* obj, bool_t keep_prop_type);
-
-/**
- * @method object_hash_set_hash_base
- * 设置字符串哈希进制。
- * @annotation ["scriptable"]
- * @param {tk_object_t*} obj 对象。
- * @param {uint64_t} base 进制。
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t object_hash_set_hash_base(tk_object_t* obj, uint64_t base);
 
 /**
  * @method object_hash_cast

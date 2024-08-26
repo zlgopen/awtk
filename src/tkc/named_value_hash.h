@@ -27,12 +27,6 @@
 BEGIN_C_DECLS
 
 /**
- * @const HASH_BASE_DEFAULT
- * 默认字符串散列进制。
- */
-#define HASH_BASE_DEFAULT 13331
-
-/**
  * @class named_value_hash_t
  * @parent named_value_t
  * @annotation ["scriptable"]
@@ -67,12 +61,10 @@ named_value_hash_t* named_value_hash_create(void);
  *
  * @param {const char*} name 名称。
  * @param {const value_t*} value 值。
- * @param {uint64_t} hash_base 字符串散列进制。
  *
  * @return {named_value_hash_t*} 返回named_value_hash对象。
  */
-named_value_hash_t* named_value_hash_create_ex(const char* name, const value_t* value,
-                                               uint64_t hash_base);
+named_value_hash_t* named_value_hash_create_ex(const char* name, const value_t* value);
 
 /**
  * @method named_value_hash_init
@@ -83,12 +75,11 @@ named_value_hash_t* named_value_hash_create_ex(const char* name, const value_t* 
  * @param {named_value_hash_t*} nvh named_value_hash对象。
  * @param {const char*} name 名称。
  * @param {const value_t*} value 值。
- * @param {uint64_t} hash_base 字符串散列进制。
  *
  * @return {named_value_hash_t*} 返回named_value_hash对象。
  */
 named_value_hash_t* named_value_hash_init(named_value_hash_t* nvh, const char* name,
-                                          const value_t* value, uint64_t hash_base);
+                                          const value_t* value);
 
 /**
  * @method named_value_hash_set_name
@@ -98,11 +89,10 @@ named_value_hash_t* named_value_hash_init(named_value_hash_t* nvh, const char* n
  *
  * @param {named_value_hash_t*} nvh named_value_hash对象。
  * @param {const char*} name 名称。
- * @param {uint64_t} hash_base 字符串散列进制。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t named_value_hash_set_name(named_value_hash_t* nvh, const char* name, uint64_t hash_base);
+ret_t named_value_hash_set_name(named_value_hash_t* nvh, const char* name);
 
 /**
  * @method named_value_hash_deinit
@@ -121,24 +111,24 @@ ret_t named_value_hash_deinit(named_value_hash_t* nvh);
  *
  * 比较。
  *
- * @param {named_value_hash_t*} nvh named_value_hash对象。
+ * @param {const named_value_hash_t*} nvh named_value_hash对象。
  * @param {const named_value_hash_t*} other named_value_hash对象。
  *
  * @return {int32_t} 返回RET_OK表示成功，否则表示失败。
  */
-int32_t named_value_hash_compare(named_value_hash_t* nvh, const named_value_hash_t* other);
+int32_t named_value_hash_compare(const named_value_hash_t* nvh, const named_value_hash_t* other);
 
 /**
  * @method named_value_hash_compare_by_hash
  *
  * 比较。
  *
- * @param {named_value_hash_t*} nvh named_value_hash对象。
+ * @param {const named_value_hash_t*} nvh named_value_hash对象。
  * @param {uint64_t} hash 散列值。
  *
  * @return {int32_t} 返回RET_OK表示成功，否则表示失败。
  */
-int32_t named_value_hash_compare_by_hash(named_value_hash_t* nvh, uint64_t hash);
+int32_t named_value_hash_compare_by_hash(const named_value_hash_t* nvh, uint64_t hash);
 
 /**
  * @method named_value_hash_destroy
@@ -171,11 +161,10 @@ named_value_hash_t* named_value_hash_clone(named_value_hash_t* nvh);
  * @annotation ["static", "scriptable"]
  *
  * @param {const char*} str 字符串。
- * @param {uint64_t} base 进制。
  *
  * @return {uint64_t} 返回散列值。
  */
-uint64_t named_value_hash_get_hash_from_str(const char* str, uint64_t base);
+uint64_t named_value_hash_get_hash_from_str(const char* str);
 
 END_C_DECLS
 

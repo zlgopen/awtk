@@ -747,8 +747,8 @@ TEST(ObjectHash, to_json1) {
   str_clear(&str);
   tk_object_to_json(obj, &str, 2, 0, FALSE);
   ASSERT_STREQ(str.str,
-               "{\n  \"detail\":    {\n      \"city\": \"sz\"\n   },\n  \"age\": 100,\n  \"name\": "
-               "\"jim\"\n}");
+               "{\n  \"age\": 100,\n  \"name\": \"jim\",\n  \"detail\":    {\n      \"city\": "
+               "\"sz\"\n   }\n}");
 
   str_reset(&str);
   TK_OBJECT_UNREF(obj);
@@ -777,8 +777,8 @@ TEST(ObjectHash, to_json2) {
 
   tk_object_to_json(obj, &str, 0, 0, TRUE);
   ASSERT_STREQ(str.str,
-               "{\"age\": 100,\"name\": \"awtk\",\"light\": false,\"weight\": "
-               "60.000000,\"detail\": [1,2,\"3\",\"4\"]}");
+               "{\"age\": 100,\"name\": \"awtk\",\"light\": false,\"detail\": "
+               "[1,2,\"3\",\"4\"],\"weight\": 60.000000}");
 
   TK_OBJECT_UNREF(obj);
   TK_OBJECT_UNREF(detail);
@@ -814,26 +814,6 @@ TEST(ObjectHash, set_prop_str_with_format) {
   ASSERT_EQ(tk_object_set_prop_str_with_format(obj, "name", "%d", 123), RET_OK);
   ASSERT_STREQ(tk_object_get_prop_str(obj, "name"), "123");
   ASSERT_EQ(tk_object_is_instance_of(obj, OBJECT_HASH_TYPE), TRUE);
-
-  TK_OBJECT_UNREF(obj);
-}
-
-TEST(ObjectHash, hash_base) {
-  tk_object_t* obj = object_hash_create();
-
-  tk_object_set_prop_uint32(obj, "id", 1001);
-  tk_object_set_prop_str(obj, "name", "awtk");
-  tk_object_set_prop_bool(obj, "light", TRUE);
-  tk_object_set_prop_int(obj, "age", 100);
-  tk_object_set_prop_float(obj, "weight", 60);
-
-  ASSERT_EQ(object_hash_set_hash_base(obj, 131), RET_OK);
-
-  ASSERT_EQ(tk_object_get_prop_uint32(obj, "id", 0), 1001);
-  ASSERT_STREQ(tk_object_get_prop_str(obj, "name"), "awtk");
-  ASSERT_EQ(tk_object_get_prop_bool(obj, "light", FALSE), TRUE);
-  ASSERT_EQ(tk_object_get_prop_int(obj, "age", 0), 100);
-  ASSERT_EQ(tk_object_get_prop_float(obj, "weight", 0), 60);
 
   TK_OBJECT_UNREF(obj);
 }
