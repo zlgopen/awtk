@@ -917,6 +917,10 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       text_edit_get_state(edit->model, &state);
       im_commit_event_t* evt = (im_commit_event_t*)e;
 
+      if (edit->readonly || !widget->focused) {
+        break;
+      }
+
       if (state.preedit) {
         text_edit_preedit_clear(edit->model);
       }

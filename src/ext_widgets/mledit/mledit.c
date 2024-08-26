@@ -766,7 +766,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       text_edit_get_state(mledit->model, &state);
       im_commit_event_t* evt = (im_commit_event_t*)e;
 
-      if (mledit->readonly) {
+      if (mledit->readonly || !widget->focused) {
         break;
       }
 
