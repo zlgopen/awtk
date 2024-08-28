@@ -240,6 +240,12 @@ int main(int argc, char* argv[]) {
   window_manager_set_cursor(window_manager(), "cursor");
 #endif /*ENABLE_CURSOR*/
 
+#ifdef WIN32
+  setvbuf(stdout, NULL, _IONBF, 0);
+#elif defined(HAS_STDIO)
+  setlinebuf(stdout);
+#endif /*WIN32*/
+
   GLOBAL_INIT();
 #if defined(APP_DEFAULT_LANGUAGE) && defined(APP_DEFAULT_COUNTRY)
   locale_info_change(locale_info(), APP_DEFAULT_LANGUAGE, APP_DEFAULT_COUNTRY);
