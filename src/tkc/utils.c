@@ -2590,8 +2590,8 @@ static void merge(void* base, size_t size, tk_compare_t cmp, void* left,
   // 创建临时数组
   void* temp = TKMEM_ALLOC((leftSize + rightSize) * size);
   if (temp == NULL) {
-    fprintf(stderr, "Memory allocation failed\n");
-    exit(EXIT_FAILURE);
+    log_warn("Memory allocation failed\n");
+    return;
   }
 
   size_t i = 0, j = 0, k = 0;
