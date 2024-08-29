@@ -59,9 +59,16 @@ static const cmd_arg_desc_t* cmd_args_find(cmd_args_t* args, const char* name) {
 
   for (i = 0; i < args->desc_nr; i++) {
     const cmd_arg_desc_t* iter = args->desc + i;
-    if (tk_str_eq_with_len(name, iter->name, len) ||
-        tk_str_eq_with_len(name, iter->short_name, len)) {
-      return iter;
+    if (p != NULL) {
+      if (tk_str_eq_with_len(name, iter->name, len) ||
+          tk_str_eq_with_len(name, iter->short_name, len)) {
+        return iter;
+      }
+    } else {
+      if (tk_str_eq(name, iter->name) ||
+          tk_str_eq(name, iter->short_name)) {
+        return iter;
+      }
     }
   }
 
