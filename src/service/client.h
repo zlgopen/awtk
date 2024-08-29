@@ -51,6 +51,8 @@ struct _tk_client_t {
 
   /*private*/
   uint32_t retry_times;
+  uint32_t wtimeout_ms;
+  uint32_t rtimeout_ms;
   tk_client_on_notify_t on_notify;
 };
 
@@ -149,6 +151,17 @@ ret_t tk_client_upload_file(tk_client_t* client, const char* remote_file, const 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t tk_client_set_retry_times(tk_client_t* client, uint32_t retry_times);
+
+/**
+ * @method tk_client_set_timeout_ms
+ * 设置超时时间。
+ * @param {tk_client_t*} client client对象。
+ * @param {uint32_t} wtimeout_ms 读数据超时时间。
+ * @param {uint32_t} rtimeout_ms 写数据超时时间。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_client_set_timeout_ms(tk_client_t* client, uint32_t wtimeout_ms, uint32_t rtimeout_ms);
 
 #define TK_CLIENT(obj) ((obj) != NULL ? &((obj)->client) : NULL)
 

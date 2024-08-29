@@ -32,6 +32,8 @@ ret_t tk_client_init(tk_client_t* client, tk_iostream_t* io, tk_client_on_notify
 
   client->io = io;
   client->on_notify = on_notify;
+  client->rtimeout_ms = TK_ISTREAM_DEFAULT_TIMEOUT;
+  client->wtimeout_ms = TK_OSTREAM_DEFAULT_TIMEOUT;
   wbuffer_init_extendable(&(client->wb));
   wbuffer_extend_capacity(&(client->wb), 1024);
 
@@ -55,7 +57,7 @@ static ret_t tk_client_send_req_impl(tk_client_t* client, uint32_t type, uint32_
   tk_msg_header_t header;
   tk_iostream_t* io = NULL;
   uint16_t crc_value = PPPINITFCS16;
-  uint32_t timeout = TK_OSTREAM_DEFAULT_TIMEOUT;
+  uint32_t timeout = client->wtimeout_ms;
 
   memset(&header, 0x00, sizeof(header));
   return_value_if_fail(wb != NULL, RET_BAD_PARAMS);
@@ -80,12 +82,12 @@ static ret_t tk_client_send_req_impl(tk_client_t* client, uint32_t type, uint32_
   return_value_if_fail(ret == sizeof(header), RET_IO);
 
   if (size > 0) {
-    timeout = TK_OSTREAM_DEFAULT_TIMEOUT * (size / 10240) + TK_OSTREAM_DEFAULT_TIMEOUT;
+    timeout = client->wtimeout_ms * (size / 10240) + client->wtimeout_ms;
     ret = tk_iostream_write_len(io, data, size, timeout);
     return_value_if_fail(ret == size, RET_IO);
   }
 
-  ret = tk_iostream_write_len(io, &crc_value, sizeof(crc_value), TK_OSTREAM_DEFAULT_TIMEOUT);
+  ret = tk_iostream_write_len(io, &crc_value, sizeof(crc_value), client->wtimeout_ms);
   return_value_if_fail(ret == sizeof(crc_value), RET_IO);
 
   return RET_OK;
@@ -106,7 +108,7 @@ ret_t tk_client_send_req(tk_client_t* client, uint32_t type, uint32_t data_type,
     break_if_fail(ret == RET_OK);
 
     memset(&header, 0x00, sizeof(header));
-    len = tk_iostream_read_len(client->io, &header, sizeof(header), TK_ISTREAM_DEFAULT_TIMEOUT);
+    len = tk_iostream_read_len(client->io, &header, sizeof(header), client->rtimeout_ms);
     break_if_fail(len == sizeof(header));
 
     if (header.resp_code == RET_OK) {
@@ -134,7 +136,7 @@ static ret_t tk_client_confirm_packet(tk_client_t* client, bool_t valid) {
   header.data_type = MSG_DATA_TYPE_NONE;
   header.resp_code = valid ? RET_OK : RET_CRC;
 
-  ret = tk_iostream_write_len(client->io, &header, sizeof(header), TK_OSTREAM_DEFAULT_TIMEOUT);
+  ret = tk_iostream_write_len(client->io, &header, sizeof(header), client->wtimeout_ms);
 
   return ret == sizeof(header) ? RET_OK : RET_FAIL;
 }
@@ -149,18 +151,18 @@ static ret_t tk_client_read_resp_impl(tk_client_t* client, tk_msg_header_t* head
 
   io = client->io;
   wbuffer_rewind(wb);
-  ret = tk_iostream_read_len(io, header, sizeof(*header), TK_ISTREAM_DEFAULT_TIMEOUT);
+  ret = tk_iostream_read_len(io, header, sizeof(*header), client->rtimeout_ms);
   return_value_if_fail(ret == sizeof(*header), RET_IO);
 
   real_crc_value = tk_crc16(real_crc_value, header, sizeof(*header));
   if (header->size > 0) {
     return_value_if_fail(wbuffer_extend_capacity(wb, header->size) == RET_OK, RET_OOM);
-    ret = tk_iostream_read_len(io, wb->data, header->size, TK_ISTREAM_DEFAULT_TIMEOUT);
+    ret = tk_iostream_read_len(io, wb->data, header->size, client->rtimeout_ms);
     return_value_if_fail(ret == header->size, RET_IO);
     real_crc_value = tk_crc16(real_crc_value, wb->data, header->size);
   }
 
-  ret = tk_iostream_read_len(io, &crc_value, sizeof(crc_value), TK_ISTREAM_DEFAULT_TIMEOUT);
+  ret = tk_iostream_read_len(io, &crc_value, sizeof(crc_value), client->rtimeout_ms);
   return_value_if_fail(ret == sizeof(crc_value), RET_IO);
   return_value_if_fail(real_crc_value == crc_value, RET_CRC);
 
@@ -343,6 +345,15 @@ ret_t tk_client_set_retry_times(tk_client_t* client, uint32_t retry_times) {
   return_value_if_fail(client != NULL, RET_BAD_PARAMS);
 
   client->retry_times = retry_times;
+
+  return RET_OK;
+}
+
+ret_t tk_client_set_timeout_ms(tk_client_t* client, uint32_t wtimeout_ms, uint32_t rtimeout_ms) {
+  return_value_if_fail(client != NULL, RET_BAD_PARAMS);
+
+  client->wtimeout_ms = wtimeout_ms;
+  client->rtimeout_ms = rtimeout_ms;
 
   return RET_OK;
 }
