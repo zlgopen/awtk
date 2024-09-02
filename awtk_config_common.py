@@ -148,7 +148,7 @@ elif OS_NAME == 'Windows':
     if not os.path.exists(os.path.abspath(TK_LIB_DIR)):
         os.makedirs(os.path.abspath(TK_LIB_DIR))
     if TOOLS_NAME == '':
-        OS_LIBS = ['gdi32', 'user32', 'winmm.lib', 'imm32.lib', 'version.lib', 'shell32.lib',
+        OS_LIBS = ['gdi32', 'user32', 'winmm.lib', 'imm32.lib', 'version.lib', 'shell32.lib', 'Setupapi',
                    'ole32.lib', 'Oleaut32.lib', 'Advapi32.lib', 'DelayImp.lib', 'psapi.lib', "ws2_32"]
         OS_FLAGS = '-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE   /FS /Z7 /utf-8 '
         if TARGET_ARCH == 'x86':
@@ -165,7 +165,7 @@ elif OS_NAME == 'Windows':
         OS_FLAGS = OS_FLAGS + ' -DHAVE_LIBC '
 
     elif TOOLS_NAME == 'mingw':
-        OS_LIBS = ['kernel32', 'gdi32', 'user32', 'winmm', 'imm32', 'version', 'shell32',
+        OS_LIBS = ['kernel32', 'gdi32', 'user32', 'winmm', 'imm32', 'version', 'shell32', 'Setupapi',
                    'ole32', 'Oleaut32', 'Advapi32', 'oleaut32', 'uuid', 'stdc++', "ws2_32"]
         OS_FLAGS = '-DMINGW -DWINDOWS -D_CONSOLE  -Wall'
         OS_LINKFLAGS = ' -Wl,-rpath=./bin -Wl,-rpath=./ '
