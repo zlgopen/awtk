@@ -49,7 +49,7 @@ widget_t* ui_loader_load_widget_with_parent(const char* name, widget_t* parent) 
       assets_managers_is_applet_assets_supported()) {
     const char* p = strchr(name, '.');
     if (p != NULL) {
-      tk_strncpy_s(applet_name, sizeof(applet_name) - 1, name, p - name);
+      tk_strncpy_s(applet_name, sizeof(applet_name), name, p - name);
       am = assets_managers_ref(applet_name);
       name = p + 1;
     }

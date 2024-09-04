@@ -5287,7 +5287,7 @@ ret_t widget_set_props(widget_t* widget, const char* params) {
   tokenizer_init(&t, params, strlen(params), "&=");
   while (tokenizer_has_more(&t)) {
     k = tokenizer_next(&t);
-    tk_strncpy_s(key, sizeof(key) - 1, k, tk_strlen(k));
+    tk_strncpy_s(key, sizeof(key), k, tk_strlen(k));
 
     k = key;
     v = tokenizer_next(&t);

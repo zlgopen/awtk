@@ -389,7 +389,7 @@ static ret_t debugger_server_attach_debugger(debugger_server_t* server, const ch
   code_id = strchr(arg, ':');
   return_value_if_fail(code_id != NULL, RET_BAD_PARAMS);
 
-  tk_strncpy_s(lang, TK_NAME_LEN, arg, code_id - arg);
+  tk_strncpy_s(lang, sizeof(lang), arg, code_id - arg);
   code_id++;
 
   if (server->single_mode) {
@@ -407,7 +407,7 @@ static ret_t debugger_server_launch_debugger(debugger_server_t* server, binary_d
   code = strchr((char*)(arg->data), ':');
   return_value_if_fail(code != NULL, RET_BAD_PARAMS);
 
-  tk_strncpy_s(lang, TK_NAME_LEN, (char*)(arg->data), code - (char*)(arg->data));
+  tk_strncpy_s(lang, sizeof(lang), (char*)(arg->data), code - (char*)(arg->data));
   code++;
   if (tk_mutex_nest_lock(server->mutex) == RET_OK) {
     binary_data_t data;

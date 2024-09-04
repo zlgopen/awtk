@@ -156,9 +156,9 @@ static void xml_gen_on_state_end(XmlBuilder* thiz) {
   tk_object_copy_props(style, b->state_style, TRUE);
 
   item.offset = 0;
-  tk_strncpy_s(item.name, sizeof(item.name) - 1, b->style_name, tk_strlen(b->style_name));
-  tk_strncpy_s(item.state, sizeof(item.state) - 1, b->state_name, tk_strlen(b->state_name));
-  tk_strncpy_s(item.widget_type, sizeof(item.widget_type) - 1, b->widget_type,
+  tk_strncpy_s(item.name, sizeof(item.name), b->style_name, tk_strlen(b->style_name));
+  tk_strncpy_s(item.state, sizeof(item.state), b->state_name, tk_strlen(b->state_name));
+  tk_strncpy_s(item.widget_type, sizeof(item.widget_type), b->widget_type,
                tk_strlen(b->widget_type));
 
   if (darray_push(&(b->styles), style) == RET_OK) {

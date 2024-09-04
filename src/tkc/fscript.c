@@ -1421,7 +1421,7 @@ static ret_t fscript_parser_unget_token(fscript_parser_t* parser) {
 static ret_t token_to_value(fscript_parser_t* parser, token_t* t, value_t* v) {
   if (t->type == TOKEN_NUMBER) {
     char number[64];
-    tk_strncpy_s(number, sizeof(number) - 1, t->token, t->size);
+    tk_strncpy_s(number, sizeof(number), t->token, t->size);
     if (strchr(number, '.') != NULL) {
       value_set_double(v, tk_atof(number));
     } else {
@@ -1470,7 +1470,7 @@ static ret_t token_to_value(fscript_parser_t* parser, token_t* t, value_t* v) {
       p = strchr(name, '.');
       if (p != NULL) {
         char first_name[TK_NAME_LEN + 1];
-        tk_strncpy_s(first_name, TK_NAME_LEN, name, p - name);
+        tk_strncpy_s(first_name, sizeof(first_name), name, p - name);
         value_id_suboffset(v) = p - name + 1;
         value_id_index(v) = darray_find_index(parser->symbols, (void*)first_name);
       } else {
