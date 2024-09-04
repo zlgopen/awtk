@@ -306,6 +306,8 @@ int32_t event_from_name(const char* name) {
     case 'c': {
       if (tk_str_eq(name, "click")) {
         return EVT_CLICK;
+      } else if (tk_str_eq(name, "context_menu")) {
+        return EVT_CONTEXT_MENU;
       } else if (tk_str_eq(name, "connect")) {
         return EVT_CONNECT;
       } else if (tk_str_eq(name, STR_COMPONENT_OPEN)) {
