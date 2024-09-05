@@ -50,13 +50,13 @@ typedef struct _conf_doc_t {
   bool_t use_extend_type;
 
   /*private*/
+  tokenizer_t tokenizer;
+  tk_object_t* obj_array;
   conf_node_t* prealloc_nodes;
   uint32_t prealloc_nodes_index;
   uint32_t prealloc_nodes_used;
   uint32_t prealloc_nodes_nr;
-  tokenizer_t tokenizer;
   uint32_t max_deep_level;
-  tk_object_t* obj_array;
 } conf_doc_t;
 
 /**
@@ -611,18 +611,18 @@ struct _conf_node_t {
   conf_node_t* parent;
 
   /**
-   * @property {uint8_t} value_type
+   * @property {conf_node_value_t} value_type
    * 值的类型。
    */
-  uint8_t value_type : 4;
+  conf_node_value_t value_type : 5;
   /**
-   * @property {uint8_t} node_type
+   * @property {conf_node_type_t} node_type
    * 节点类型。
    */
-  uint8_t node_type : 3;
+  conf_node_type_t node_type : 3;
 
   /*private*/
-  uint8_t is_small_name : 1;
+  bool_t is_small_name : 1;
 
   union {
     char* str;

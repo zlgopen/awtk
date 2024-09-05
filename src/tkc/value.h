@@ -220,10 +220,10 @@ typedef struct _pointer_ref_t {
  *
  */
 struct _value_t {
-  uint32_t type : 8;
+  value_type_t type : 8;
   /*sub_type用细分类型。目前不做定义，请根据上下文使用。*/
   uint32_t sub_type : 8;
-  uint32_t free_handle : 1;
+  bool_t free_handle : 1;
   union {
     int8_t i8;
     uint8_t u8;

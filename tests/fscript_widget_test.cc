@@ -98,7 +98,7 @@ TEST(FScriptWidget, ulen) {
 }
 
 TEST(FScriptWidget, foreach) {
-  value_t v = {0};
+  value_t v;
   tk_object_t* obj = object_default_create();
   widget_t* w = view_create(NULL, 0, 0, 320, 240);
   widget_t* children[3] = {NULL};
