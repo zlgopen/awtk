@@ -277,11 +277,11 @@ ret_t vgcanvas_set_text_align(vgcanvas_t* vg, const char* text_align) {
 ret_t vgcanvas_set_text_baseline(vgcanvas_t* vg, const char* text_baseline) {
   return_value_if_fail(vg != NULL && vg->vt->set_text_baseline != NULL && text_baseline != NULL,
                        RET_BAD_PARAMS);
-#ifndef AWTK_WEB                       
+#ifndef AWTK_WEB
   if (tk_str_eq(vg->text_baseline, text_baseline)) {
     return RET_OK;
   }
-#endif/*AWTK_WEB*/
+#endif /*AWTK_WEB*/
 
   vg->text_baseline = tk_str_copy(vg->text_baseline, text_baseline);
 
@@ -653,3 +653,43 @@ ret_t vgcanvas_draw_circle(vgcanvas_t* vg, double x, double y, double r, color_t
   return RET_OK;
 }
 
+ret_t vgcanvas_append_opengl_draw(vgcanvas_t* vg, vgcanvas_opengl_draw_t* call) {
+  return_value_if_fail(vg != NULL && call != NULL, RET_BAD_PARAMS);
+
+  call->next = NULL;
+  if (vg->opengl_draws == NULL) {
+    vg->opengl_draws = call;
+  } else {
+    vgcanvas_opengl_draw_t* iter = vg->opengl_draws;
+    while (iter->next != NULL) {
+      iter = iter->next;
+    }
+    iter->next = call;
+  }
+
+  return RET_OK;
+}
+
+ret_t vgcanvas_call_opengl_draws(vgcanvas_t* vg, bool_t before_ui) {
+  return_value_if_fail(vg != NULL, RET_BAD_PARAMS);
+
+  if (vg->opengl_draws != NULL) {
+    vgcanvas_opengl_draw_t* iter = vg->opengl_draws;
+    while (iter != NULL) {
+      if ((!!iter->call_before_ui) == (!!before_ui)) {
+        iter->draw(iter->ctx);
+      }
+      iter = iter->next;
+    }
+  }
+
+  return RET_OK;
+}
+
+ret_t vgcanvas_clear_opengl_draws(vgcanvas_t* vg) {
+  return_value_if_fail(vg != NULL, RET_BAD_PARAMS);
+
+  vg->opengl_draws = NULL;
+
+  return RET_OK;
+}
