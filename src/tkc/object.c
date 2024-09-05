@@ -857,7 +857,7 @@ static value_t* tk_object_find_prop_default(tk_object_t* obj, tk_compare_t cmp, 
   actx.cmp = cmp;
   actx.data = data;
   actx.value = NULL;
-  if (RET_OK == tk_object_foreach_prop(obj, tk_object_find_prop_default_on_visit, &actx)) {
+  if (RET_FOUND == tk_object_foreach_prop(obj, tk_object_find_prop_default_on_visit, &actx)) {
     return actx.value;
   }
   return NULL;
