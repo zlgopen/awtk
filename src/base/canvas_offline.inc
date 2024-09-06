@@ -24,6 +24,7 @@
 #include "tkc/utf8.h"
 #include "tkc/utils.h"
 #include "base/canvas.h"
+#include "base/opengl.h"
 #include "base/system_info.h"
 
 #include "widget.h"
@@ -39,22 +40,6 @@
 #endif
 
 #ifdef WITH_GPU
-
-#ifdef WITHOUT_GLAD
-#include <SDL.h>
-
-#ifdef IOS
-#include <OpenGLES/gltypes.h>
-#include <OpenGLES/ES2/gl.h>
-#include <OpenGLES/ES2/glext.h>
-#else
-#include <SDL_opengl.h>
-#include <SDL_opengl_glext.h>
-#endif /*IOS*/
-
-#else
-#include "glad/glad.h"
-#endif /*WITHOUT_GLAD*/
 
 typedef struct _canvas_offline_gpu_t {
   canvas_offline_t base;

@@ -19,15 +19,7 @@
  *
  */
 
-#ifdef WITH_GPU_GL
-#ifndef WITHOUT_GLAD
-#include "glad/glad.h"
-#define loadGL gladLoadGL
-#else
-#define loadGL()
-#endif /*WITHOUT_GLAD*/
-#endif /*WITH_GPU_GL*/
-
+#include "base/opengl.h"
 #include "base/widget.h"
 #include "lcd/lcd_nanovg.h"
 #include "base/widget_consts.h"
@@ -228,7 +220,7 @@ static native_window_t* native_window_create_internal(uint32_t w, uint32_t h, fl
   win->vt = &s_native_window_vtable;
   win->rect = rect_init(0, 0, w, h);
 
-  loadGL();
+  opengl_init();
 
   canvas_t* c = &(fb_gl->canvas);
 #if WITH_NANOVG_GPU

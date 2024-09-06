@@ -85,4 +85,5 @@
 #include "base/window_base.h"
 #include "base/window_manager.h"
 #include "base/style_mutable.h"
+#include "base/opengl.h"
 #endif /*TK_BASE_H*/
