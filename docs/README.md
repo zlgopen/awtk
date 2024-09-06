@@ -105,6 +105,7 @@
 * [如何为指定的键设置长按时间](how_to_set_key_long_press_time.md)
 * [如何使用 CMake 构建 AWTK 应用](how_to_use_cmake_to_build_awtk_app.md)
 * [如何控制图标的位置](how_to_use_icon_at_to_set_icon_position.md)  
+* [如何使用 OpenGL 绘制图形](how_to_draw_with_opengl.md)
 
 ### 3. 内部原理
 * [AWTK 脚本绑定原理](script_binding.md)

@@ -2,6 +2,7 @@
 
 2024/09/06
   * 将opengl公共头文件和宏放到base/opengl.h中。
+  * 增加文档[如何使用 OpenGL 绘制图形](how_to_draw_with_opengl.md)
 
 2024/09/05
   * 完善部分变量定义方便调试(感谢兆坤提供补丁)
