@@ -12,6 +12,7 @@ env=DefaultEnvironment().Clone();
 
 INCLUDE_PATH = [TK_ROOT, 
   GTEST_ROOT,
+  TK_3RD_ROOT,
   os.path.join(TK_ROOT, 'src'),  
   os.path.join(TK_3RD_ROOT, 'SDL/src'), 
   os.path.join(TK_3RD_ROOT, 'SDL/include'), 
