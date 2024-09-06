@@ -20,7 +20,7 @@
 # include "e_amiga.h"
 #elif defined (DJGPP)
 # include "e_djgpp.h"
-#elif defined (macintosh)
+#elif defined (__APPLE__)
 # include "e_mac.h"
 #elif defined (MSDOS) || defined (WIN32)
 # include "e_msoft.h"
