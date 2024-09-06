@@ -263,6 +263,48 @@ ret_t ubjson_writer_write_kv_int(ubjson_writer_t* writer, const char* key, int32
   return ubjson_writer_write_int(writer, value);
 }
 
+ret_t ubjson_writer_write_kv_int8(ubjson_writer_t* writer, const char* key, int8_t value) {
+  return_value_if_fail(writer != NULL && key != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
+
+  return ubjson_writer_write_int8(writer, value);
+}
+
+ret_t ubjson_writer_write_kv_int16(ubjson_writer_t* writer, const char* key, int16_t value) {
+  return_value_if_fail(writer != NULL && key != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
+
+  return ubjson_writer_write_int16(writer, value);
+}
+
+ret_t ubjson_writer_write_kv_int32(ubjson_writer_t* writer, const char* key, int32_t value) {
+  return_value_if_fail(writer != NULL && key != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
+
+  return ubjson_writer_write_int32(writer, value);
+}
+
+ret_t ubjson_writer_write_kv_uint8(ubjson_writer_t* writer, const char* key, uint8_t value) {
+  return_value_if_fail(writer != NULL && key != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
+
+  return ubjson_writer_write_uint8(writer, value);
+}
+
+ret_t ubjson_writer_write_kv_uint16(ubjson_writer_t* writer, const char* key, uint16_t value) {
+  return_value_if_fail(writer != NULL && key != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
+
+  return ubjson_writer_write_uint16(writer, value);
+}
+
+ret_t ubjson_writer_write_kv_uint32(ubjson_writer_t* writer, const char* key, uint32_t value) {
+  return_value_if_fail(writer != NULL && key != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
+
+  return ubjson_writer_write_uint32(writer, value);
+}
+
 ret_t ubjson_writer_write_kv_float(ubjson_writer_t* writer, const char* key, float value) {
   return_value_if_fail(writer != NULL && key != NULL, RET_BAD_PARAMS);
   return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
@@ -282,6 +324,13 @@ ret_t ubjson_writer_write_kv_int64(ubjson_writer_t* writer, const char* key, int
   return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
 
   return ubjson_writer_write_int64(writer, value);
+}
+
+ret_t ubjson_writer_write_kv_uint64(ubjson_writer_t* writer, const char* key, uint64_t value) {
+  return_value_if_fail(writer != NULL && key != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
+
+  return ubjson_writer_write_uint64(writer, value);
 }
 
 ret_t ubjson_writer_write_kv_object_begin(ubjson_writer_t* writer, const char* key) {

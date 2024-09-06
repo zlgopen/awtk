@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/09/07
+  * 增加ubjson_writer整型接口(感谢智明提供补丁)
+
 2024/09/06
   * 将opengl公共头文件和宏放到base/opengl.h中。
   * 增加文档[如何使用 OpenGL 绘制图形](how_to_draw_with_opengl.md)
