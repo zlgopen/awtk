@@ -239,40 +239,6 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_destroy_t destroy;
 } vgcanvas_vtable_t;
 
-struct _vgcanvas_opengl_draw_t;
-typedef struct _vgcanvas_opengl_draw_t vgcanvas_opengl_draw_t;
-
-/**
- * @class vgcanvas_opengl_draw_t
- * OpenGL绘制回调。
- */
-struct _vgcanvas_opengl_draw_t {
-  /**
-   * @property {void*} ctx
-   * @annotation ["readable"]
-   * 上下文。
-   */
-  void* ctx;
-  /**
-   * @property {tk_callback_t} draw
-   * @annotation ["readable"]
-   * 绘制回调。
-   */
-  tk_callback_t draw;
-  /**
-   * @property {bool_t} call_before_ui
-   * @annotation ["readable"]
-   * 是否在UI之前绘制。
-   */
-  bool_t call_before_ui;
-  /**
-   * @property {vgcanvas_opengl_draw_t*} next
-   * @annotation ["readable"]
-   * 下一个。
-   */
-  vgcanvas_opengl_draw_t* next;
-};
-
 /**
  * @class vgcanvas_t
  * 矢量图画布抽象基类。
@@ -447,9 +413,6 @@ struct _vgcanvas_t {
   assets_manager_t* assets_manager;
   /*确保begin_frame/end_frame配对使用*/
   uint32_t began_frame;
-
-  /*用于开发者自己绘制 OpenGL */
-  vgcanvas_opengl_draw_t* opengl_draws;
 };
 
 /**
@@ -1454,33 +1417,6 @@ ret_t vgcanvas_fbo_to_bitmap(vgcanvas_t* vg, framebuffer_object_t* fbo, bitmap_t
  */
 ret_t vgcanvas_draw_circle(vgcanvas_t* vg, double x, double y, double r, color_t color, bool_t fill,
                            bool_t stroke);
-
-/**
- * @method vgcanvas_append_opengl_draw
- * 添加一个绘制函数(仅在OpenGL模式下，开发者自己用OpenGL进行绘制)。
- * > 每次 PAINT 事件都要注册，否则只会调用一次。
- * @param {vgcanvas_t*} vg vgcanvas对象。
- * @param {vgcanvas_opengl_draw_t*} call 函数信息(生命周期必须保证在下一次调用时有效, next会被修改)。
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t vgcanvas_append_opengl_draw(vgcanvas_t* vg, vgcanvas_opengl_draw_t* call);
-
-/**
- * @method vgcanvas_call_opengl_draws
- * 调用所有OpenGL绘制函数。
- * @param {vgcanvas_t*} vg vgcanvas对象。
- * @param {bool_t} before_ui 是否在绘制UI之前调用。
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t vgcanvas_call_opengl_draws(vgcanvas_t* vg, bool_t before_ui);
-
-/**
- * @method vgcanvas_clear_opengl_draws
- * 清除所有OpenGL绘制函数。
- * @param {vgcanvas_t*} vg vgcanvas对象。
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t vgcanvas_clear_opengl_draws(vgcanvas_t* vg);
 
 ret_t fbo_to_img(framebuffer_object_t* fbo, bitmap_t* img);
 ret_t vgcanvas_set_assets_manager(vgcanvas_t* vg, assets_manager_t* assets_manager);

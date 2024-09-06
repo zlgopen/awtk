@@ -17,7 +17,6 @@ env.Program(os.path.join(BIN_DIR, 'demovg'), ['demo_vg_app.c']);
 env.Program(os.path.join(BIN_DIR, 'demouiold'), ['demo_ui_old_app.c']);
 env.Program(os.path.join(BIN_DIR, 'demotr'), ['demo_tr_app.c']);
 env.Program(os.path.join(BIN_DIR, 'demo_basic'), ['demo_basic.c']);
-env.Program(os.path.join(BIN_DIR, 'demo_opengl'), ['demo_opengl.c']);
 env.Program(os.path.join(BIN_DIR, 'demo_thread'), ['demo_thread_app.c']);
 env.Program(os.path.join(BIN_DIR, 'demo_animator'), ['demo_animator_app.c']);
 env.Program(os.path.join(BIN_DIR, 'demo_window_animator'), ['demo_window_animator.c']);

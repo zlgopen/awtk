@@ -59,10 +59,7 @@ static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGcontext* vg = canvas->vg;
 
-  vgcanvas_call_opengl_draws(vgcanvas, TRUE);
   nvgEndFrame(vg);
-  vgcanvas_call_opengl_draws(vgcanvas, FALSE);
-  vgcanvas_clear_opengl_draws(vgcanvas);
 
   native_window_swap_buffer(canvas->window);
 
