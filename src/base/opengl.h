@@ -14,11 +14,7 @@
 #define  opengl_init()
 #else
 #include "glad/glad.h"
-#ifdef WIN32
 #define opengl_init gladLoadGL
-#else
-#define  opengl_init()
-#endif
 #endif /*WITHOUT_GLAD*/
 
 #endif/*WITH_GPU_GL*/
