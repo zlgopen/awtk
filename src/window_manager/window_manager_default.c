@@ -36,6 +36,8 @@
 #include "base/dialog_highlighter_factory.h"
 #include "window_manager/window_manager_default.h"
 
+#define WINDOW_MANAGER_DEFAULT_NOT_OPENED_BUT_CLOSE_WINDOW_IDLE_ID "not_opened_but_close_window_idle_id"
+
 static ret_t window_manager_animate_done(widget_t* widget);
 static ret_t window_manager_default_update_fps(widget_t* widget);
 static ret_t window_manager_invalidate_system_bar(widget_t* widget);
@@ -763,10 +765,10 @@ static ret_t window_manager_default_close_window(widget_t* widget, widget_t* win
   return_value_if_fail(widget_is_window(window), RET_BAD_PARAMS);
 
   if (!window_is_opened(window)) {
-    uint32_t idle_id = widget_get_prop_int(window, "check_and_close_window_idle_id", 0);
+    uint32_t idle_id = widget_get_prop_int(window, WINDOW_MANAGER_DEFAULT_NOT_OPENED_BUT_CLOSE_WINDOW_IDLE_ID, TK_INVALID_ID);
     if (idle_id == 0) {
       idle_id = widget_add_idle(window, window_manager_default_on_idle_check_and_close_window);
-      widget_set_prop_int(window, "check_and_close_window_idle_id", idle_id);
+      widget_set_prop_int(window, WINDOW_MANAGER_DEFAULT_NOT_OPENED_BUT_CLOSE_WINDOW_IDLE_ID, idle_id);
     }
     return RET_OK;
   }
@@ -868,6 +870,10 @@ static ret_t window_manager_default_close_window_force(widget_t* widget, widget_
   }
 
   if (close_window) {
+    widget_t* prev_win = window_manager_find_prev_window(widget);
+    if (prev_win != NULL) {
+      window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_FOREGROUND);
+    }
     window_manager_prepare_close_window(widget, window);
     window_manager_dispatch_window_event(window, EVT_WINDOW_CLOSE);
     widget_remove_child(widget, window);
@@ -1088,16 +1094,18 @@ static ret_t window_manager_animate_done(widget_t* widget) {
     widget_t* top_dialog_highligth = NULL;
     widget_t* prev_win = wm->animator->prev_win;
     widget_t* curr_win = wm->animator->curr_win;
+    bool_t curr_win_is_keyboard, curr_win_is_normal_window, close_window_when_open_animate;
 
     window_animator_destroy(wm->animator);
-    bool_t curr_win_is_keyboard = widget_is_keyboard(curr_win);
-    bool_t curr_win_is_normal_window = widget_is_normal_window(curr_win);
+    curr_win_is_keyboard = widget_is_keyboard(curr_win);
+    curr_win_is_normal_window = widget_is_normal_window(curr_win);
+    close_window_when_open_animate = widget_get_prop_int(curr_win, WINDOW_MANAGER_DEFAULT_NOT_OPENED_BUT_CLOSE_WINDOW_IDLE_ID, TK_INVALID_ID) != TK_INVALID_ID;
 
     wm->animator = NULL;
     wm->animating = FALSE;
     wm->ignore_user_input = FALSE;
 
-    if (is_open) {
+    if (is_open && !close_window_when_open_animate) {
       /*此时前一个窗口并非是真正的前一个窗口，而是前一个normal窗口，所以这里重新找真正的前一个窗口*/
       prev_win = window_manager_find_prev_window(WIDGET(wm));
       /* 结束打开窗口动画后 */
