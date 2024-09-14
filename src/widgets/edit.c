@@ -762,7 +762,8 @@ static ret_t edit_on_key_up(widget_t* widget, key_event_t* e) {
       edit_on_focused(widget);
     } else {
       keyboard_type_t keyboard_type = system_info()->keyboard_type;
-      if (edit->focus_next_when_enter && keyboard_type != KEYBOARD_3KEYS && keyboard_type != KEYBOARD_5KEYS) {
+      if (edit->focus_next_when_enter && keyboard_type != KEYBOARD_3KEYS &&
+          keyboard_type != KEYBOARD_5KEYS) {
         widget_focus_next(widget);
         widget_set_focused(widget, FALSE);
       }
@@ -983,14 +984,16 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       if (edit->readonly) {
         break;
       }
-      wheel_event_t* evt = (wheel_event_t*)e;
-      int32_t delta = evt->dy;
-      if (delta > 0) {
-        edit_dec(edit);
-      } else if (delta < 0) {
-        edit_inc(edit);
+      if (widget->focused) {
+        wheel_event_t* evt = (wheel_event_t*)e;
+        int32_t delta = evt->dy;
+        if (delta > 0) {
+          edit_dec(edit);
+        } else if (delta < 0) {
+          edit_inc(edit);
+        }
+        ret = RET_STOP;
       }
-      ret = RET_STOP;
       break;
     }
     case EVT_RESIZE:
