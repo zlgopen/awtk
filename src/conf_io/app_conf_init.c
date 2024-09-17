@@ -23,33 +23,12 @@
 #include "tkc/mem.h"
 #include "tkc/path.h"
 #include "tkc/utils.h"
+
 #include "conf_io/conf_obj.h"
+#include "conf_io/object_app_conf.inc"
 #include "conf_io/app_conf_init.h"
 #include "tkc/data_reader_factory.h"
 #include "tkc/data_writer_factory.h"
-
-static bool_t app_conf_file_exist(const char* url) {
-  bool_t exist = FALSE;
-  data_reader_t* reader = data_reader_factory_create_reader(data_reader_factory(), url);
-
-  if (reader != NULL) {
-    if (data_reader_get_size(reader) > 0) {
-      exist = TRUE;
-    }
-    data_reader_destroy(reader);
-  }
-
-  return exist;
-}
-
-static ret_t app_conf_prepare_default(const char* url, const char* default_url) {
-  ret_t ret = RET_OK;
-  if (!app_conf_file_exist(url)) {
-    ret = data_url_copy(url, default_url);
-  }
-
-  return ret;
-}
 
 static ret_t app_conf_get_url(char url[MAX_PATH + 1], const char* app_name, const char* extname) {
   char path[MAX_PATH + 1];
@@ -77,7 +56,10 @@ static ret_t app_conf_get_url(char url[MAX_PATH + 1], const char* app_name, cons
 }
 
 ret_t app_conf_init(conf_load_t load, const char* app_name, const char* extname) {
+  ret_t ret = RET_FAIL;
   tk_object_t* obj = NULL;
+  tk_object_t* default_obj = NULL;
+  tk_object_t* user_obj = NULL;
   char path[MAX_PATH + 1];
 #ifdef APP_CONF_URL
   const char* app_conf_name = APP_CONF_URL;
@@ -88,24 +70,35 @@ ret_t app_conf_init(conf_load_t load, const char* app_name, const char* extname)
 
   log_info("app conf: %s\n", app_conf_name);
   tk_snprintf(path, MAX_PATH, "asset://data/%s.%s", app_name, extname);
-  app_conf_prepare_default(app_conf_name, path);
 
-  obj = load(app_conf_name, TRUE);
-  return_value_if_fail(obj != NULL, RET_FAIL);
+  log_info("load default conf: %s\n", path);
+  default_obj = load(path, TRUE);
+  goto_error_if_fail(default_obj != NULL);
+
+  log_info("load user conf: %s\n", app_conf_name);
+  user_obj = load(app_conf_name, TRUE);
+  goto_error_if_fail(user_obj != NULL);
+
+  obj = object_app_conf_create(user_obj, default_obj);
+  goto_error_if_fail(obj != NULL);
+
   app_conf_set_instance(obj);
   app_conf_set_str(CONF_OBJ_PROP_DEFAULT_URL, path);
 
-  TK_OBJECT_UNREF(obj);
-
   return RET_OK;
+error:
+  TK_OBJECT_UNREF(obj);
+  TK_OBJECT_UNREF(user_obj);
+  TK_OBJECT_UNREF(default_obj);
+
+  return ret;
 }
 
 ret_t app_conf_reset(void) {
   const char* url = app_conf_get_str(CONF_OBJ_PROP_URL, NULL);
-  const char* default_url = app_conf_get_str(CONF_OBJ_PROP_DEFAULT_URL, NULL);
 
-  return_value_if_fail(url != NULL && default_url != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(data_url_copy(url, default_url) == RET_OK, RET_BAD_PARAMS);
+  return_value_if_fail(url != NULL, RET_BAD_PARAMS);
+  data_writer_write_all(url, "\0", 1);
   return_value_if_fail(app_conf_reload() == RET_OK, RET_BAD_PARAMS);
 
   return RET_OK;

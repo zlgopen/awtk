@@ -24,6 +24,8 @@ AWTK 提供了 [app_conf](https://github.com/zlgopen/awtk/blob/master/docs/manua
 
 * Flash(TODO)
 
+> 为了方便软件升级时，保留用户配置，先从用户配置读取，如果配置不存在，再读取默认配置。
+
 ## 2. 初始化（任意选一种格式即可）
 
 [app_conf](https://github.com/zlgopen/awtk/blob/master/docs/manual/app_conf_t.md) 作为可选组件，需要开发者自己初始化。
@@ -467,7 +469,7 @@ app_conf_on_changed(app_conf_changed, NULL);
 
 3.8 恢复出厂设置
 
-用默认配置文件替换当前配置文件，并重新加载。
+删除用户配置文件，并重新加载。
 
 ```c
 /**
@@ -615,7 +617,7 @@ ret_t application_exit() {
   ENSURE(app_conf_init_json("demo") == RET_OK);
 ```
 
-> 在初始化时，如果配置文件不存在，则将缺省配置拷贝到配置文件。
+> 优先读取用户配置，如果没有读到，再读取默认配置。
 
 ## 9. 注意事项
 
