@@ -405,10 +405,7 @@ ret_t ubjson_writer_write_kv_value(ubjson_writer_t* writer, const char* key, con
   } else if (value->type == VALUE_TYPE_STRING) {
     return ubjson_writer_write_str(writer, value_str(value));
   } else if (value->type == VALUE_TYPE_WSTRING) {
-    char* str = tk_utf8_dup_wstr(value_wstr(value));
-    ret_t ret = ubjson_writer_write_str(writer, str);
-    TKMEM_FREE(str);
-    return ret;
+    return ubjson_writer_write_wstr(writer, value_wstr(value));
   } else if (value->type == VALUE_TYPE_BINARY) {
     binary_data_t* data = value_binary_data(value);
     return ubjson_writer_write_str_len(writer, data->data, data->size);
