@@ -179,7 +179,7 @@ ret_t date_time_set_year(date_time_t* dt, uint32_t year) {
 
 ret_t date_time_set_month(date_time_t* dt, uint32_t month) {
   return_value_if_fail(dt != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(month > 0 && month <= 31, RET_BAD_PARAMS);
+  return_value_if_fail(month > 0 && month <= 12, RET_BAD_PARAMS);
 
   dt->month = month;
   dt->wday = date_time_get_wday(dt->year, dt->month, dt->day);
@@ -189,6 +189,7 @@ ret_t date_time_set_month(date_time_t* dt, uint32_t month) {
 
 ret_t date_time_set_day(date_time_t* dt, uint32_t day) {
   return_value_if_fail(dt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(day > 0 && day <= 31, RET_BAD_PARAMS);
 
   dt->day = day;
   dt->wday = date_time_get_wday(dt->year, dt->month, dt->day);
