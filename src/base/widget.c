@@ -2964,7 +2964,7 @@ static ret_t widget_on_wheel_before_children(widget_t* widget, wheel_event_t* e)
   return widget_on_event_before_children(widget, (event_t*)e);
 }
 
-static ret_t widget_on_wheel_children(widget_t* widget, wheel_event_t* e) {
+ret_t widget_on_wheel_children(widget_t* widget, wheel_event_t* e) {
   ret_t ret = RET_OK;
   widget_t* target = widget_find_target(widget, e->x, e->y);
   if (target != NULL) {

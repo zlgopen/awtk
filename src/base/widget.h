@@ -3426,6 +3426,7 @@ ret_t widget_stroke_border_rect_for_border_type(canvas_t* c, const rect_t* r, co
                                                 int32_t border, uint32_t border_width);
 
 /* internal use */
+ret_t widget_on_wheel_children(widget_t* widget, wheel_event_t* e);
 rect_t widget_get_content_area_ex(widget_t* widget, int32_t default_margin);
 ret_t widget_draw_image_with_region(widget_t* widget, canvas_t* c, bitmap_t* img,
                                     const char* region, const rect_t* dst,
