@@ -843,6 +843,8 @@ static ret_t conf_doc_set_extend_type(conf_doc_t* doc, conf_node_t* node, const 
     } else {
       node->node_type = CONF_NODE_OBJECT;
     }
+    node->value_type = CONF_NODE_VALUE_NODE;
+
     conf_doc_set_extend_type_object_prop_ctx_t ctx = {.doc = doc, .path = path};
     ret = tk_object_foreach_prop(obj, conf_doc_set_extend_type_object_prop, &ctx);
   }
