@@ -575,7 +575,7 @@ static ret_t scroll_bar_desktop_on_parent_wheel_event(void* ctx, event_t* e) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   int32_t delta = scroll_bar->scroll_delta == 0 ? -evt->dy : (evt->dy > 0 ? -scroll_bar->scroll_delta : scroll_bar->scroll_delta);
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
-  return_value_if_equal(widget_on_wheel_children(widget->parent, e), RET_STOP);
+  return_value_if_equal(widget_on_wheel_children(widget->parent, evt), RET_STOP);
   if (widget->enable && widget->sensitive && scroll_bar->wheel_scroll) {
     scroll_bar_add_delta(widget, delta);
     return RET_STOP;
