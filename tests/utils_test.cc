@@ -333,13 +333,40 @@ TEST(Utils, str_append) {
   ASSERT_EQ(string(str), string("12345"));
 }
 
+TEST(Utils, tk_strcpy) {
+  char str[TK_NAME_LEN + 1];
+
+  tk_strcpy(str, "abc");
+  ASSERT_STREQ(str, "abc");
+
+  tk_strcpy(str, "abc123");
+  ASSERT_STREQ(str, "abc123");
+
+  tk_strcpy(str, str);
+  ASSERT_STREQ(str, "abc123");
+
+  tk_strcpy(str, str + 3);
+  ASSERT_STREQ(str, "123");
+}
+
 TEST(Utils, tk_str_copy) {
+  char* prev = NULL;
   char* p = NULL;
   p = tk_str_copy(p, "abc");
   ASSERT_STREQ(p, "abc");
 
   p = tk_str_copy(p, "abc123");
   ASSERT_STREQ(p, "abc123");
+
+  prev = p;
+  p = tk_str_copy(p, p);
+  ASSERT_STREQ(p, "abc123");
+  ASSERT_EQ(p, prev);
+
+  prev = p;
+  p = tk_str_copy(p, p + 3);
+  ASSERT_STREQ(p, "123");
+  ASSERT_EQ(p, prev);
 
   TKMEM_FREE(p);
 }
@@ -1909,5 +1936,5 @@ TEST(Utils, mergesort2) {
   ASSERT_EQ(arr[3].age, 27);
   ASSERT_EQ(arr[4].age, 38);
   ASSERT_EQ(arr[5].age, 43);
-  ASSERT_EQ(arr[6].age, 82); 
+  ASSERT_EQ(arr[6].age, 82);
 }

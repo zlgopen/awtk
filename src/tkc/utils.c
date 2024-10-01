@@ -60,7 +60,7 @@ const char* tk_skip_to_num(const char* str) {
 }
 
 int tk_str2bool(const char* str) {
-  if (str == NULL || str[0] == '0' || strcmp(str, "false") == 0 || strcmp(str, "no") == 0) {
+  if (str == NULL || str[0] == '0' || tk_strcmp(str, "false") == 0 || tk_strcmp(str, "no") == 0) {
     return 0;
   }
 
@@ -337,7 +337,10 @@ const char* tk_ftoa(char* str, int len, double value) {
 char* tk_strcpy(char* dst, const char* src) {
   return_value_if_fail(dst != NULL && src != NULL, NULL);
   if (dst != src) {
-    return strcpy(dst, src);
+    uint32_t len = tk_strlen(src);
+    memmove(dst, src, len);
+    dst[len] = '\0';
+    return dst;
   } else {
     return dst;
   }
@@ -392,7 +395,7 @@ void* tk_memdup(const void* data, uint32_t len) {
 char* tk_strdup(const char* str) {
   return_value_if_fail(str != NULL, NULL);
 
-  return tk_strndup(str, strlen(str));
+  return tk_strndup(str, tk_strlen(str));
 }
 
 wchar_t* tk_wstrdup(const wchar_t* str) {
@@ -626,8 +629,8 @@ ret_t tk_str_append(char* str, uint32_t max_len, const char* s) {
   uint32_t org_len = 0;
   return_value_if_fail(str != NULL && s != NULL, RET_BAD_PARAMS);
 
-  len = strlen(s);
-  org_len = strlen(str);
+  len = tk_strlen(s);
+  org_len = tk_strlen(str);
 
   return_value_if_fail(max_len > (len + org_len), RET_FAIL);
   memcpy(str + org_len, s, len);
@@ -702,16 +705,15 @@ int32_t tk_wstricmp(const wchar_t* a, const wchar_t* b) {
 
 char* tk_str_copy(char* dst, const char* src) {
   if (src != NULL) {
-    uint32_t size = strlen(src) + 1;
+    uint32_t size = tk_strlen(src) + 1;
     if (dst != NULL) {
       char* str = TKMEM_REALLOCT(char, dst, size);
       return_value_if_fail(str != NULL, dst);
-      memcpy(str, src, size);
+      memmove(str, src, size);
       dst = str;
     } else {
-      char* str = (char*)TKMEM_ALLOC(size);
+      char* str = tk_strndup(src, size - 1);
       return_value_if_fail(str != NULL, dst);
-      memcpy(str, src, size);
       dst = str;
     }
   } else {
@@ -779,8 +781,8 @@ ret_t tk_replace_locale(const char* name, char out[TK_NAME_LEN + 1], const char*
   char* p = NULL;
   int32_t len = 0;
   const char* s = NULL;
-  return_value_if_fail(strlen(name) < TK_NAME_LEN, RET_BAD_PARAMS);
-  return_value_if_fail(strlen(locale) <= strlen(TK_LOCALE_MAGIC), RET_BAD_PARAMS);
+  return_value_if_fail(tk_strlen(name) < TK_NAME_LEN, RET_BAD_PARAMS);
+  return_value_if_fail(tk_strlen(locale) <= tk_strlen(TK_LOCALE_MAGIC), RET_BAD_PARAMS);
   return_value_if_fail(name != NULL && out != NULL && locale != NULL, RET_BAD_PARAMS);
 
   d = out;
@@ -792,11 +794,11 @@ ret_t tk_replace_locale(const char* name, char out[TK_NAME_LEN + 1], const char*
   memcpy(d, s, len);
   d += len;
 
-  len = strlen(locale);
+  len = tk_strlen(locale);
   memcpy(d, locale, len);
 
   d += len;
-  strcpy(d, p + strlen(TK_LOCALE_MAGIC));
+  tk_strcpy(d, p + tk_strlen(TK_LOCALE_MAGIC));
 
   return RET_OK;
 }
@@ -818,7 +820,7 @@ bool_t tk_is_valid_name(const char* name) {
 bool_t tk_str_start_with(const char* str, const char* prefix) {
   return_value_if_fail(str != NULL && prefix != NULL, FALSE);
 
-  return strncmp(str, prefix, strlen(prefix)) == 0;
+  return strncmp(str, prefix, tk_strlen(prefix)) == 0;
 }
 
 bool_t tk_str_end_with(const char* str, const char* appendix) {
@@ -826,8 +828,8 @@ bool_t tk_str_end_with(const char* str, const char* appendix) {
   uint32_t len_appendix = 0;
   return_value_if_fail(str != NULL && appendix != NULL, FALSE);
 
-  len_str = strlen(str);
-  len_appendix = strlen(appendix);
+  len_str = tk_strlen(str);
+  len_appendix = tk_strlen(appendix);
 
   if (len_str < len_appendix) {
     return FALSE;
@@ -839,7 +841,7 @@ bool_t tk_str_end_with(const char* str, const char* appendix) {
 bool_t tk_str_case_start_with(const char* str, const char* prefix) {
   return_value_if_fail(str != NULL && prefix != NULL, FALSE);
 
-  return strncasecmp(str, prefix, strlen(prefix)) == 0;
+  return strncasecmp(str, prefix, tk_strlen(prefix)) == 0;
 }
 
 bool_t tk_str_case_end_with(const char* str, const char* appendix) {
@@ -847,8 +849,8 @@ bool_t tk_str_case_end_with(const char* str, const char* appendix) {
   uint32_t len_appendix = 0;
   return_value_if_fail(str != NULL && appendix != NULL, FALSE);
 
-  len_str = strlen(str);
-  len_appendix = strlen(appendix);
+  len_str = tk_strlen(str);
+  len_appendix = tk_strlen(appendix);
 
   if (len_str < len_appendix) {
     return FALSE;
@@ -942,7 +944,7 @@ const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN 
   uint32_t len = 0;
   return_value_if_fail(name != NULL && fixed_name != NULL, NULL);
 
-  len = strlen(name);
+  len = tk_strlen(name);
   tk_strncpy(fixed_name, name, TK_NAME_LEN);
 
   if (len > 1) {
@@ -966,7 +968,7 @@ wchar_t* tk_wstr_dup_utf8(const char* str) {
   wchar_t* wstr = NULL;
   return_value_if_fail(str != NULL, NULL);
 
-  len = strlen(str) + 1;
+  len = tk_strlen(str) + 1;
   size = len * sizeof(wchar_t);
   wstr = TKMEM_ALLOC(size);
   return_value_if_fail(wstr != NULL, NULL);
@@ -1290,8 +1292,8 @@ const char* tk_strrstr(const char* str, const char* substr) {
   return_value_if_fail(str != NULL && substr != NULL, NULL);
 
   c = *substr;
-  len = strlen(substr);
-  end = str + strlen(str) - 1;
+  len = tk_strlen(substr);
+  end = str + tk_strlen(str) - 1;
 
   for (p = end; p >= str; p--) {
     if (*p == c) {
@@ -2585,8 +2587,8 @@ const char* tk_skip_to_chars(const char* str, const char* chars) {
   return str;
 }
 
-static void merge(void* base, size_t size, tk_compare_t cmp, void* left,
-                  size_t leftSize, void* right, size_t rightSize) {
+static void merge(void* base, size_t size, tk_compare_t cmp, void* left, size_t leftSize,
+                  void* right, size_t rightSize) {
   // 创建临时数组
   void* temp = TKMEM_ALLOC((leftSize + rightSize) * size);
   if (temp == NULL) {
@@ -2627,8 +2629,7 @@ static void merge(void* base, size_t size, tk_compare_t cmp, void* left,
   TKMEM_FREE(temp);
 }
 
-static void tk_mergesort_impl(void* base, size_t nmemb, size_t size,
-                              tk_compare_t cmp) {
+static void tk_mergesort_impl(void* base, size_t nmemb, size_t size, tk_compare_t cmp) {
   if (nmemb < 2) return;  // 如果只有一个元素，不需要排序
 
   size_t mid = nmemb / 2;
@@ -2652,7 +2653,7 @@ static void tk_mergesort_impl(void* base, size_t nmemb, size_t size,
 
 ret_t tk_mergesort(void* base, size_t nmemb, size_t size, tk_compare_t cmp) {
   return_value_if_fail(cmp != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(base != NULL&& nmemb != 0 && size != 0, RET_BAD_PARAMS);
+  return_value_if_fail(base != NULL && nmemb != 0 && size != 0, RET_BAD_PARAMS);
 
   tk_mergesort_impl(base, nmemb, size, cmp);
 
