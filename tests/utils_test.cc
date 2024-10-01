@@ -347,6 +347,9 @@ TEST(Utils, tk_strcpy) {
 
   tk_strcpy(str, str + 3);
   ASSERT_STREQ(str, "123");
+
+  tk_strncpy(str + 2, str, 3);
+  ASSERT_STREQ(str, "12123");
 }
 
 TEST(Utils, tk_str_copy) {

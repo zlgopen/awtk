@@ -335,26 +335,18 @@ const char* tk_ftoa(char* str, int len, double value) {
 }
 
 char* tk_strcpy(char* dst, const char* src) {
+  return tk_strncpy(dst, src, tk_strlen(src));
+}
+
+char* tk_strncpy(char* dst, const char* src, size_t len) {
   return_value_if_fail(dst != NULL && src != NULL, NULL);
   if (dst != src) {
-    uint32_t len = tk_strlen(src);
     memmove(dst, src, len);
     dst[len] = '\0';
     return dst;
   } else {
     return dst;
   }
-}
-
-char* tk_strncpy(char* dst, const char* src, size_t len) {
-  return_value_if_fail(dst != NULL && src != NULL, NULL);
-
-  if (dst != src) {
-    strncpy(dst, src, len);
-    dst[len] = '\0';
-  }
-
-  return dst;
 }
 
 char* tk_strncpy_s(char* dst, size_t dst_len, const char* src, size_t src_len) {
@@ -707,10 +699,14 @@ char* tk_str_copy(char* dst, const char* src) {
   if (src != NULL) {
     uint32_t size = tk_strlen(src) + 1;
     if (dst != NULL) {
-      char* str = TKMEM_REALLOCT(char, dst, size);
-      return_value_if_fail(str != NULL, dst);
-      memmove(str, src, size);
-      dst = str;
+      if (dst <= src && src <= dst + tk_strlen(dst)) {
+        tk_strncpy(dst, src, size - 1);
+      } else {
+        char* str = TKMEM_REALLOCT(char, dst, size);
+        return_value_if_fail(str != NULL, dst);
+        memcpy(str, src, size);
+        dst = str;
+      }
     } else {
       char* str = tk_strndup(src, size - 1);
       return_value_if_fail(str != NULL, dst);
