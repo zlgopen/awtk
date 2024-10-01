@@ -79,13 +79,13 @@ TEST(DList, find_ex) {
 
   ASSERT_EQ(dlist_append(s, TO_POINTER(1)), RET_OK);
 
-  ASSERT_EQ(TO_INT(dlist_find_ex(s, pointer_compare, TO_POINTER(1))), 1);
+  ASSERT_EQ(TO_INT(dlist_find_ex(s, pointer_compare, TO_POINTER(1), FALSE)), 1);
 
   ASSERT_EQ(dlist_append(s, TO_POINTER(2)), RET_OK);
 
-  ASSERT_EQ(TO_INT(dlist_find_ex(s, pointer_compare, TO_POINTER(2))), 2);
+  ASSERT_EQ(TO_INT(dlist_find_ex(s, pointer_compare, TO_POINTER(2), FALSE)), 2);
 
-  ASSERT_EQ(TO_INT(dlist_find_ex(s, compare_always_equal, TO_POINTER(2))), 1);
+  ASSERT_EQ(TO_INT(dlist_find_ex(s, compare_always_equal, TO_POINTER(2), FALSE)), 1);
 
   dlist_deinit(s);
 }
@@ -187,13 +187,13 @@ TEST(DList, remove_ex) {
   ASSERT_EQ(dlist_append(s, TO_POINTER(3)), RET_OK);
   ASSERT_EQ(dlist_is_empty(s), FALSE);
 
-  ASSERT_EQ(dlist_remove_ex(s, pointer_compare, TO_POINTER(1), 1), RET_OK);
+  ASSERT_EQ(dlist_remove_ex(s, pointer_compare, TO_POINTER(1), 1, FALSE), RET_OK);
   ASSERT_EQ(dlist_size(s), 4);
 
-  ASSERT_EQ(dlist_remove_ex(s, pointer_compare, TO_POINTER(1), 2), RET_OK);
+  ASSERT_EQ(dlist_remove_ex(s, pointer_compare, TO_POINTER(1), 2, FALSE), RET_OK);
   ASSERT_EQ(dlist_size(s), 2);
 
-  ASSERT_EQ(dlist_remove_ex(s, compare_always_equal, TO_POINTER(1), 2), RET_OK);
+  ASSERT_EQ(dlist_remove_ex(s, compare_always_equal, TO_POINTER(1), 2, FALSE), RET_OK);
   ASSERT_EQ(dlist_size(s), 0);
 
   dlist_deinit(s);
@@ -295,4 +295,89 @@ TEST(DList, insert) {
   ASSERT_EQ(log, "5:0:1:6:2:10:");
 
   dlist_deinit(s);
+}
+
+TEST(DList, reverse) {
+  string log;
+  dlist_t dlist;
+
+  dlist_init(&dlist, NULL, NULL);
+
+  ASSERT_EQ(dlist_append(&dlist, TO_POINTER(1)), RET_OK);
+  ASSERT_EQ(dlist_append(&dlist, TO_POINTER(2)), RET_OK);
+  ASSERT_EQ(dlist_append(&dlist, TO_POINTER(3)), RET_OK);
+  ASSERT_EQ(dlist_append(&dlist, TO_POINTER(4)), RET_OK);
+  ASSERT_EQ(dlist_append(&dlist, TO_POINTER(5)), RET_OK);
+
+  log = "";
+  dlist_foreach(&dlist, visit_dump, &log);
+  ASSERT_EQ(log, "1:2:3:4:5:");
+
+  ASSERT_EQ(dlist_reverse(&dlist), RET_OK);
+
+  log = "";
+  dlist_foreach(&dlist, visit_dump, &log);
+  ASSERT_EQ(log, "5:4:3:2:1:");
+
+  dlist_deinit(&dlist);
+}
+
+TEST(DList, foreach_reverse) {
+  string log;
+  dlist_t dlist;
+
+  dlist_init(&dlist, NULL, NULL);
+
+  ASSERT_EQ(dlist_append(&dlist, TO_POINTER(1)), RET_OK);
+  ASSERT_EQ(dlist_append(&dlist, TO_POINTER(2)), RET_OK);
+  ASSERT_EQ(dlist_append(&dlist, TO_POINTER(3)), RET_OK);
+  ASSERT_EQ(dlist_append(&dlist, TO_POINTER(4)), RET_OK);
+  ASSERT_EQ(dlist_append(&dlist, TO_POINTER(5)), RET_OK);
+
+  log = "";
+  dlist_foreach(&dlist, visit_dump, &log);
+  ASSERT_EQ(log, "1:2:3:4:5:");
+
+  log = "";
+  dlist_foreach_reverse(&dlist, visit_dump, &log);
+  ASSERT_EQ(log, "5:4:3:2:1:");
+
+  dlist_deinit(&dlist);
+}
+
+TEST(DList, remove_last) {
+  string log;
+  dlist_t dlist;
+
+  dlist_init(&dlist, NULL, NULL);
+
+  ASSERT_EQ(dlist_append(&dlist, TO_POINTER(1)), RET_OK);
+  ASSERT_EQ(dlist_append(&dlist, TO_POINTER(2)), RET_OK);
+  ASSERT_EQ(dlist_append(&dlist, TO_POINTER(3)), RET_OK);
+  ASSERT_EQ(dlist_append(&dlist, TO_POINTER(2)), RET_OK);
+  ASSERT_EQ(dlist_append(&dlist, TO_POINTER(5)), RET_OK);
+
+  ASSERT_EQ(dlist_remove_last(&dlist, TO_POINTER(2)), RET_OK);
+
+  log = "";
+  dlist_foreach(&dlist, visit_dump, &log);
+  ASSERT_EQ(log, "1:2:3:5:");
+
+  dlist_deinit(&dlist);
+}
+
+TEST(DList, find_last) {
+  dlist_t dlist;
+
+  dlist_init(&dlist, NULL, (tk_compare_t)tk_str_icmp);
+
+  ASSERT_EQ(dlist_append(&dlist, (void*)"name"), RET_OK);
+  ASSERT_EQ(dlist_append(&dlist, (void*)"id"), RET_OK);
+  ASSERT_EQ(dlist_append(&dlist, (void*)"NAME"), RET_OK);
+  ASSERT_EQ(dlist_append(&dlist, (void*)"ID"), RET_OK);
+
+  ASSERT_STREQ((char*)(dlist_find(&dlist, (void*)"name")), "name");
+  ASSERT_STREQ((char*)(dlist_find_last(&dlist, (void*)"name")), "NAME");
+
+  dlist_deinit(&dlist);
 }

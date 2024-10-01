@@ -26,10 +26,12 @@
 
 BEGIN_C_DECLS
 
-typedef struct _slist_node_t {
-  struct _slist_node_t* next;
+typedef struct _slist_node_t slist_node_t;
+
+struct _slist_node_t {
+  slist_node_t* next;
   void* data;
-} slist_node_t;
+};
 
 /**
  * @class slist_t
@@ -264,6 +266,15 @@ int32_t slist_size(slist_t* slist);
 int32_t slist_count(slist_t* slist, void* ctx);
 
 /**
+ * @method slist_reverse
+ * 反转链表。
+ * @param {slist_t*} slist 单向链表对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t slist_reverse(slist_t* slist);
+
+/**
  * @method slist_deinit
  * 清除单向链表中的元素。
  * @param {slist_t*} slist 单向链表对象。
@@ -278,7 +289,6 @@ ret_t slist_deinit(slist_t* slist);
  * @param {slist_t*} slist 单向链表对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- *
  */
 ret_t slist_destroy(slist_t* slist);
 

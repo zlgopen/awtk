@@ -119,15 +119,26 @@ dlist_t* dlist_init(dlist_t* dlist, tk_destroy_t destroy, tk_compare_t compare);
 void* dlist_find(dlist_t* dlist, void* ctx);
 
 /**
+ * @method dlist_find_last
+ * 查找最后一个满足条件的元素。
+ * @param {dlist_t*} dlist 双向链表对象。
+ * @param {void*} ctx 比较函数的上下文。
+ *
+ * @return {void*} 如果找到，返回满足条件的对象，否则返回NULL。
+ */
+void* dlist_find_last(dlist_t* dlist, void* ctx);
+
+/**
  * @method dlist_find_ex
  * 查找第一个满足条件的元素。
  * @param {dlist_t*} dlist 双向链表对象。
  * @param {tk_compare_t} compare 元素比较函数。
  * @param {void*} ctx 比较函数的上下文。
+ * @param {bool_t} reverse 逆序查找。
  *
  * @return {void*} 返回节点。
  */
-void* dlist_find_ex(dlist_t* dlist, tk_compare_t compare, void* ctx);
+void* dlist_find_ex(dlist_t* dlist, tk_compare_t compare, void* ctx, bool_t reverse);
 
 /**
  * @method dlist_remove
@@ -140,6 +151,16 @@ void* dlist_find_ex(dlist_t* dlist, tk_compare_t compare, void* ctx);
 ret_t dlist_remove(dlist_t* dlist, void* ctx);
 
 /**
+ * @method dlist_remove_last
+ * 删除最后一个满足条件的元素。
+ * @param {dlist_t*} dlist 双向链表对象。
+ * @param {void*} ctx 比较函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t dlist_remove_last(dlist_t* dlist, void* ctx);
+
+/**
  * @method dlist_remove_ex
  * 删除满足条件的元素。
  * 备注：
@@ -150,10 +171,12 @@ ret_t dlist_remove(dlist_t* dlist, void* ctx);
  * @param {tk_compare_t} compare 元素比较函数。
  * @param {void*} ctx 比较函数的上下文。
  * @param {int32_t} remove_size 删除个数。
+ * @param {bool_t} reverse 逆序删除。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t dlist_remove_ex(dlist_t* dlist, tk_compare_t compare, void* ctx, int32_t remove_size);
+ret_t dlist_remove_ex(dlist_t* dlist, tk_compare_t compare, void* ctx, int32_t remove_size,
+                      bool_t reverse);
 
 /**
  * @method dlist_remove_all
@@ -205,6 +228,17 @@ ret_t dlist_prepend(dlist_t* dlist, void* data);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t dlist_foreach(dlist_t* dlist, tk_visit_t visit, void* ctx);
+
+/**
+ * @method dlist_foreach_reverse
+ * 反向遍历元素。
+ * @param {dlist_t*} dlist 双向链表对象。
+ * @param {tk_visit_t} visit 遍历函数。
+ * @param {void*} ctx 遍历函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t dlist_foreach_reverse(dlist_t* dlist, tk_visit_t visit, void* ctx);
 
 /**
  * @method dlist_tail_pop
@@ -271,6 +305,15 @@ int32_t dlist_size(dlist_t* dlist);
 int32_t dlist_count(dlist_t* dlist, void* ctx);
 
 /**
+ * @method dlist_reverse
+ * 反转链表。
+ * @param {dlist_t*} dlist 双向链表对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t dlist_reverse(dlist_t* dlist);
+
+/**
  * @method dlist_deinit
  * 清除双向链表中的元素。
  * @param {dlist_t*} dlist 双向链表对象。
@@ -285,7 +328,6 @@ ret_t dlist_deinit(dlist_t* dlist);
  * @param {dlist_t*} dlist 双向链表对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- *
  */
 ret_t dlist_destroy(dlist_t* dlist);
 

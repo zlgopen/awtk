@@ -338,3 +338,20 @@ ret_t slist_insert(slist_t* slist, uint32_t index, void* data) {
 
   return RET_OK;
 }
+
+ret_t slist_reverse(slist_t* slist) {
+  slist_node_t* iter = NULL;
+  slist_node_t* prev = NULL;
+  return_value_if_fail(slist != NULL, RET_BAD_PARAMS);
+
+  iter = slist->first;
+  while (iter != NULL) {
+    slist_node_t* next = iter->next;
+    iter->next = prev;
+    prev = iter;
+    iter = next;
+  }
+  slist->first = prev;
+
+  return RET_OK;
+}

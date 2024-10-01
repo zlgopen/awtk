@@ -296,3 +296,28 @@ TEST(SList, insert) {
 
   slist_deinit(s);
 }
+
+TEST(SList, reverse) {
+  string log;
+  slist_t slist;
+
+  slist_init(&slist, NULL, NULL);
+
+  ASSERT_EQ(slist_append(&slist, TO_POINTER(1)), RET_OK);
+  ASSERT_EQ(slist_append(&slist, TO_POINTER(2)), RET_OK);
+  ASSERT_EQ(slist_append(&slist, TO_POINTER(3)), RET_OK);
+  ASSERT_EQ(slist_append(&slist, TO_POINTER(4)), RET_OK);
+  ASSERT_EQ(slist_append(&slist, TO_POINTER(5)), RET_OK);
+
+  log = "";
+  slist_foreach(&slist, visit_dump, &log);
+  ASSERT_EQ(log, "1:2:3:4:5:");
+
+  ASSERT_EQ(slist_reverse(&slist), RET_OK);
+
+  log = "";
+  slist_foreach(&slist, visit_dump, &log);
+  ASSERT_EQ(log, "5:4:3:2:1:");
+
+  slist_deinit(&slist);
+}
