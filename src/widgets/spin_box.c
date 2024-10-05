@@ -73,8 +73,13 @@ ret_t spin_set_repeat(widget_t* widget, int32_t repeat) {
   inc = widget_lookup(widget, STR_EDIT_INC_NAME, FALSE);
   dec = widget_lookup(widget, STR_EDIT_DEC_NAME, FALSE);
 
-  button_set_repeat(inc, repeat);
-  button_set_repeat(dec, repeat);
+  if (inc != NULL) {
+    button_set_repeat(inc, repeat);
+  }
+
+  if (dec != NULL) {
+    button_set_repeat(dec, repeat);
+  }
 
   return RET_OK;
 }
