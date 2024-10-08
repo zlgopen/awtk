@@ -341,6 +341,7 @@ char* tk_strcpy(char* dst, const char* src) {
 char* tk_strncpy(char* dst, const char* src, size_t len) {
   return_value_if_fail(dst != NULL && src != NULL, NULL);
   if (dst != src) {
+    len = tk_min_int(len, tk_strlen(src));
     memmove(dst, src, len);
     dst[len] = '\0';
     return dst;

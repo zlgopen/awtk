@@ -194,6 +194,13 @@ TEST(Utils, tk_strncpy) {
   ASSERT_EQ(string(tk_strncpy(dst, str, 1)), string("h"));
   ASSERT_EQ(string(tk_strncpy(dst, str, strlen(str))), string(str));
   ASSERT_EQ(string(tk_strncpy(dst, str, strlen(str) + 1)), string(str));
+  ASSERT_EQ(string(tk_strncpy(dst, str, strlen(str) + 10)), string(str));
+  ASSERT_EQ(string(tk_strncpy(dst, str, strlen(str) + 10)), string(str));
+
+  
+  ASSERT_EQ(string(tk_strncpy(dst, dst, strlen(str) + 10)), string(str));
+  
+  ASSERT_EQ(string(tk_strncpy(dst, dst+5, strlen(str) + 10)), string(str+5));
 }
 
 TEST(Utils, tk_strncpy_s) {
