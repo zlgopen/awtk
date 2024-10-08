@@ -321,6 +321,8 @@ static ret_t conf_json_parse_value(json_parser_t* parser) {
         parser->current = node;
       }
 
+      parser->current->value_type = CONF_NODE_VALUE_NODE;
+
       if (c == '[') {
         parser->current->node_type = CONF_NODE_ARRAY;
         return conf_json_parse_array(parser);
