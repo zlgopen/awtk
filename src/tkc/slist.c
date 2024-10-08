@@ -51,6 +51,8 @@ slist_t* slist_create(tk_destroy_t destroy, tk_compare_t compare) {
 slist_t* slist_init(slist_t* slist, tk_destroy_t destroy, tk_compare_t compare) {
   return_value_if_fail(slist != NULL, NULL);
   slist->first = NULL;
+  slist->last = NULL;
+  slist->size = 0;
   slist->destroy = destroy != NULL ? destroy : dummy_destroy;
   slist->compare = compare != NULL ? compare : pointer_compare;
 
@@ -82,27 +84,65 @@ void* slist_find(slist_t* slist, void* ctx) {
   return slist_find_ex(slist, NULL, ctx);
 }
 
+static ret_t slist_insert_node(slist_t* slist, slist_node_t* node, slist_node_t* prev) {
+  return_value_if_fail(slist != NULL && node != NULL, RET_BAD_PARAMS);
+
+  if (slist->first == NULL || slist->last == NULL) {
+    slist->first = slist->last = node;
+  } else if (prev == NULL) {
+    /* prepend */
+    node->next = slist->first;
+    slist->first = node;
+  } else {
+    if (prev == slist->last) {
+      /* append */
+      slist->last = node;
+    }
+    node->next = prev->next;
+    prev->next = node;
+  }
+
+  slist->size++;
+
+  return RET_OK;
+}
+
+static ret_t slist_remove_node(slist_t* slist, slist_node_t* prev, slist_node_t* iter) {
+  return_value_if_fail(slist != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(slist->size > 0, RET_FAIL);
+
+  if (slist->first == slist->last) {
+    slist->first = slist->last = NULL;
+  } else if (prev == NULL || iter == slist->first) {
+    /* head_pop */
+    slist->first = slist->first->next;
+  } else if (prev->next == slist->last || iter == slist->last) {
+    /* tail_pop */
+    prev->next = NULL;
+    slist->last = prev;
+  } else {
+    prev->next = prev->next->next;
+  }
+
+  slist->size--;
+
+  return RET_OK;
+}
+
 ret_t slist_remove_ex(slist_t* slist, tk_compare_t compare, void* ctx, int32_t remove_size) {
   int32_t n = remove_size;
   slist_node_t* iter = NULL;
   slist_node_t* prev = NULL;
-  slist_node_t* next = NULL;
   return_value_if_fail(slist != NULL, RET_BAD_PARAMS);
 
   iter = slist->first;
-  prev = slist->first;
   while (iter != NULL) {
     if (compare(iter->data, ctx) == 0) {
-      if (iter == slist->first) {
-        slist->first = slist->first->next;
-      } else {
-        prev->next = iter->next;
-      }
-      next = iter->next;
+      slist_node_t* next = iter->next;
+      slist_remove_node(slist, prev, iter);
       slist_node_destroy(iter, slist->destroy);
       iter = next;
-      n--;
-      if (n == 0) {
+      if (--n == 0) {
         return RET_OK;
       }
     } else {
@@ -125,17 +165,7 @@ ret_t slist_append(slist_t* slist, void* data) {
   node = slist_node_create(data);
   return_value_if_fail(node != NULL, RET_OOM);
 
-  iter = slist->first;
-  if (iter == NULL) {
-    slist->first = node;
-  } else {
-    while (iter->next != NULL) {
-      iter = iter->next;
-    }
-    iter->next = node;
-  }
-
-  return RET_OK;
+  return slist_insert_node(slist, node, slist->last);
 }
 
 ret_t slist_prepend(slist_t* slist, void* data) {
@@ -145,16 +175,13 @@ ret_t slist_prepend(slist_t* slist, void* data) {
   node = slist_node_create(data);
   return_value_if_fail(node != NULL, RET_OOM);
 
-  node->next = slist->first;
-  slist->first = node;
-
-  return RET_OK;
+  return slist_insert_node(slist, node, NULL);
 }
 
 ret_t slist_foreach(slist_t* slist, tk_visit_t visit, void* ctx) {
   ret_t ret = RET_OK;
   slist_node_t* iter = NULL;
-  slist_node_t* prev_iter = NULL;
+  slist_node_t* prev = NULL;
   return_value_if_fail(slist != NULL && visit != NULL, RET_BAD_PARAMS);
 
   iter = slist->first;
@@ -162,18 +189,14 @@ ret_t slist_foreach(slist_t* slist, tk_visit_t visit, void* ctx) {
     ret = visit(ctx, iter->data);
     if (ret == RET_REMOVE) {
       slist_node_t* next = iter->next;
-      if (prev_iter == NULL) {
-        slist->first = next;
-      } else {
-        prev_iter->next = next;
-      }
+      slist_remove_node(slist, prev, iter);
       slist_node_destroy(iter, slist->destroy);
       iter = next;
       continue;
     } else if (ret != RET_OK) {
       break;
     }
-    prev_iter = iter;
+    prev = iter;
     iter = iter->next;
   }
 
@@ -183,22 +206,19 @@ ret_t slist_foreach(slist_t* slist, tk_visit_t visit, void* ctx) {
 void* slist_tail_pop(slist_t* slist) {
   void* data = NULL;
   slist_node_t* iter = NULL;
-  slist_node_t* last_iter = NULL;
+  slist_node_t* prev = NULL;
   return_value_if_fail(slist != NULL, NULL);
 
   iter = slist->first;
-  return_value_if_fail(iter != NULL, NULL);
-
-  if (iter->next == NULL) {
-    slist->first = NULL;
-  } else {
-    while (iter->next != NULL) {
-      last_iter = iter;
-      iter = iter->next;
-    }
-
-    last_iter->next = NULL;
+  if (iter == NULL) {
+    return NULL;
   }
+
+  while (iter->next != NULL) {
+    prev = iter;
+    iter = iter->next;
+  }
+  slist_remove_node(slist, prev, iter);
 
   data = iter->data;
   TKMEM_FREE(iter);
@@ -216,7 +236,7 @@ void* slist_head_pop(slist_t* slist) {
     return NULL;
   }
 
-  slist->first = iter->next;
+  slist_remove_node(slist, NULL, iter);
 
   data = iter->data;
   TKMEM_FREE(iter);
@@ -228,11 +248,9 @@ void* slist_tail(slist_t* slist) {
   slist_node_t* iter = NULL;
   return_value_if_fail(slist != NULL, NULL);
 
-  iter = slist->first;
-  return_value_if_fail(iter != NULL, NULL);
-
-  while (iter->next != NULL) {
-    iter = iter->next;
+  iter = slist->last;
+  if (iter == NULL) {
+    return NULL;
   }
 
   return iter->data;
@@ -252,21 +270,12 @@ void* slist_head(slist_t* slist) {
 
 bool_t slist_is_empty(slist_t* slist) {
   return_value_if_fail(slist != NULL, TRUE);
-  return slist->first == NULL;
+  return slist->size == 0;
 }
 
 int32_t slist_size(slist_t* slist) {
-  int32_t size = 0;
-  slist_node_t* iter = NULL;
   return_value_if_fail(slist != NULL, 0);
-
-  iter = slist->first;
-  while (iter != NULL) {
-    size++;
-    iter = iter->next;
-  }
-
-  return size;
+  return slist->size;
 }
 
 int32_t slist_count(slist_t* slist, void* ctx) {
@@ -301,6 +310,8 @@ ret_t slist_remove_all(slist_t* slist) {
       iter = next;
     }
     slist->first = NULL;
+    slist->last = NULL;
+    slist->size = 0;
   }
 
   return RET_OK;
@@ -320,12 +331,7 @@ ret_t slist_insert(slist_t* slist, uint32_t index, void* data) {
   slist_node_t* prev = NULL;
   return_value_if_fail(slist != NULL, RET_BAD_PARAMS);
 
-  if (index == 0 || slist->first == NULL) {
-    return slist_prepend(slist, data);
-  }
-
   iter = slist->first;
-  prev = slist->first;
   while (iter != NULL && index > 0) {
     index--;
     prev = iter;
@@ -333,10 +339,9 @@ ret_t slist_insert(slist_t* slist, uint32_t index, void* data) {
   }
 
   node = slist_node_create(data);
-  node->next = prev->next;
-  prev->next = node;
+  return_value_if_fail(node != NULL, RET_OOM);
 
-  return RET_OK;
+  return slist_insert_node(slist, node, prev);
 }
 
 ret_t slist_reverse(slist_t* slist) {

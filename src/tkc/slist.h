@@ -64,6 +64,20 @@ typedef struct _slist_t {
   slist_node_t* first;
 
   /**
+   * @property {slist_node_t*} last
+   * @annotation ["readable"]
+   * 尾节点。
+   */
+  slist_node_t* last;
+
+  /**
+   * @property {int32_t} size
+   * @annotation ["readable"]
+   * 元素个数。
+   */
+  int32_t size;
+
+  /**
    * @property {tk_destroy_t} destroy
    * @annotation ["readable"]
    * 元素销毁函数。

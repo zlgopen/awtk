@@ -72,6 +72,13 @@ typedef struct _dlist_t {
   dlist_node_t* last;
 
   /**
+   * @property {int32_t} size
+   * @annotation ["readable"]
+   * 元素个数。
+   */
+  int32_t size;
+
+  /**
    * @property {tk_destroy_t} destroy
    * @annotation ["readable"]
    * 元素销毁函数。
