@@ -319,6 +319,22 @@ static ret_t func_trim_right(fscript_t* fscript, fscript_args_t* args, value_t* 
   return RET_OK;
 }
 
+static ret_t func_str_start_with(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  bool_t ret = FALSE;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  ret = tk_str_start_with(value_str(&args->args[0]), value_str(&args->args[1]));
+  value_set_bool(result, ret);
+  return RET_OK;
+}
+
+static ret_t func_str_end_with(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  bool_t ret = FALSE;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  ret = tk_str_end_with(value_str(&args->args[0]), value_str(&args->args[1]));
+  value_set_bool(result, ret);
+  return RET_OK;
+}
+
 static ret_t func_ulen(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   wstr_t wstr;
   const char* str = NULL;
@@ -481,6 +497,8 @@ FACTORY_TABLE_ENTRY("last_index_of", func_last_index_of)
 FACTORY_TABLE_ENTRY("ulen", func_ulen)
 FACTORY_TABLE_ENTRY("trim_left", func_trim_left)
 FACTORY_TABLE_ENTRY("trim_right", func_trim_right)
+FACTORY_TABLE_ENTRY("str_start_with", func_str_start_with)
+FACTORY_TABLE_ENTRY("str_end_with", func_str_end_with)
 FACTORY_TABLE_ENTRY("totitle", func_totitle)
 FACTORY_TABLE_ENTRY("char_at", func_char_at)
 FACTORY_TABLE_ENTRY("text_count", func_text_count)

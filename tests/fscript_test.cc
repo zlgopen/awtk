@@ -335,8 +335,11 @@ TEST(FScript, iformat) {
   fscript_eval(obj, "iformat(\"hello:%d\", 123) + str(456)", &v);
   ASSERT_STREQ(value_str(&v), "hello:123456");
   value_reset(&v);
-  
-  fscript_eval(obj, "iformat(\"aaaaabbbhello1234567890hello1234567890hello1234567890123456789012345:%d\",2147483647)", &v);
+
+  fscript_eval(obj,
+               "iformat(\"aaaaabbbhello1234567890hello1234567890hello1234567890123456789012345:%"
+               "d\",2147483647)",
+               &v);
   ASSERT_STREQ(value_str(&v), "aaaaabbbhello1234567890hello1234567890hello1234567890123456789");
   value_reset(&v);
 
@@ -590,6 +593,36 @@ TEST(FScript, trim) {
 
   fscript_eval(obj, "trim(\"aaa \") + str(123)", &v);
   ASSERT_STREQ(value_str(&v), "aaa123");
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, str_start_with) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "str_start_with('AWTK', 'AW')", &v);
+  ASSERT_EQ(value_bool(&v), TRUE);
+  value_reset(&v);
+
+  fscript_eval(obj, "str_start_with('AWTK', 'ABC')", &v);
+  ASSERT_EQ(value_bool(&v), FALSE);
+  value_reset(&v);
+
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, str_end_with) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+
+  fscript_eval(obj, "str_end_with('AWTK', 'TK')", &v);
+  ASSERT_EQ(value_bool(&v), TRUE);
+  value_reset(&v);
+
+  fscript_eval(obj, "str_end_with('AWTK', 'WT')", &v);
+  ASSERT_EQ(value_bool(&v), FALSE);
   value_reset(&v);
 
   TK_OBJECT_UNREF(obj);

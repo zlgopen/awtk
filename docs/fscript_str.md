@@ -305,3 +305,37 @@ char_at_random(str) => str
 ```js
 print(char_at_random("hello"));
 ```
+
+### 18.str_start_with
+
+> 检查字符串是否以指定的字符串开头。
+----------------------------
+
+#### 原型
+
+```js
+str_start_with(str, prefix) => bool
+```
+
+#### 示例
+
+```js
+str_start_with('AWTK', 'AW')
+```
+
+### 19.str_end_with
+
+> 检查字符串是否以指定的字符串结尾。
+----------------------------
+
+#### 原型
+
+```js
+str_end_with(str, prefix) => bool
+```
+
+#### 示例
+
+```js
+str_end_with('AWTK', 'TK')
+```
