@@ -50,8 +50,8 @@ typedef struct _fscript_array_vtable_t {
   fscript_func_t array_size;
 } fscript_array_vtable_t;
 
-#define FSCRIPT_ARRAY_PROP_VTABEL_NAME "_vtable_"
-#define FSCRIPT_ARRAY_PROP_VTABEL_TYPE_STRING "_fscript_array_type_"
+#define FSCRIPT_ARRAY_PROP_VTABLE_NAME "_vtable_"
+#define FSCRIPT_ARRAY_PROP_VTABLE_TYPE_STRING "_fscript_array_type_"
 
 /**
  * @method fscript_array_register
