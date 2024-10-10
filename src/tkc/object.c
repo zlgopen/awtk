@@ -367,7 +367,9 @@ int tk_object_compare(tk_object_t* obj, tk_object_t* other) {
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, -1);
   return_value_if_fail(other != NULL && other->vt != NULL && other->ref_count >= 0, -1);
 
-  if (obj->vt->compare != NULL) {
+  if (obj == other) {
+    ret = 0;
+  } else if (obj->vt->compare != NULL) {
     ret = obj->vt->compare(obj, other);
   }
 
