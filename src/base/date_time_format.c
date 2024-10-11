@@ -19,152 +19,35 @@
  *
  */
 
-#include "tkc/utf8.h"
+#include "tkc/utils.h"
 #include "base/locale_info.h"
 #include "base/date_time_format.h"
 
-static uint32_t count_char(const wchar_t* p, wchar_t c) {
-  uint32_t nr = 0;
+static ret_t date_time_format_translate_callback(void* ctx, const void* data) {
+  const char** dst = (const char**)(ctx);
+  const char* src = (const char*)(data);
+  return_value_if_fail(dst != NULL && src != NULL, RET_BAD_PARAMS);
 
-  while (*p++ == c) {
-    nr++;
-  }
+  *dst = locale_info_tr(locale_info(), src);
 
-  return nr;
-}
-
-static wchar_t* translate_wday(wchar_t* str, uint32_t size, uint32_t wday) {
-  return_value_if_fail(wday < 7, NULL);
-
-  static const char* const wdays[] = {
-      "Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat",
-  };
-
-  const char* utf8 = locale_info_tr(locale_info(), wdays[wday]);
-  return tk_utf8_to_utf16(utf8, str, size);
-}
-
-static wchar_t* translate_meridiem(wchar_t* str, uint32_t size, uint32_t hour) {
-  const char* utf8 = locale_info_tr(locale_info(), hour < 12 ? "AM" : "PM");
-  return tk_utf8_to_utf16(utf8, str, size);
-}
-
-static wchar_t* translate_month(wchar_t* str, uint32_t size, uint32_t month) {
-  return_value_if_fail(month < 13 && month > 0, NULL);
-
-  static const char* const months[] = {"Jan", "Feb", "Mar",  "Apr", "May", "Jun",
-                                       "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
-
-  const char* utf8 = locale_info_tr(locale_info(), months[month - 1]);
-  return tk_utf8_to_utf16(utf8, str, size);
+  return RET_OK;
 }
 
 ret_t wstr_format_date_time(wstr_t* str, const char* format, const date_time_t* dt) {
-  wchar_t temp[32];
-  return_value_if_fail(format != NULL && str != NULL, RET_BAD_PARAMS);
+  ret_t ret = RET_OK;
+  str_t result;
+  return_value_if_fail(str != NULL && format != NULL, RET_BAD_PARAMS);
 
-  wstr_t wformat;
-  wstr_init(&wformat, strlen(format) + 2);
-  wstr_set_utf8(&wformat, format);
-  const wchar_t* p = wformat.str;
+  str_init(&result, tk_strlen(format));
 
-  str->size = 0;
-  memset(temp, 0x00, sizeof(temp));
-  while (*p) {
-    int32_t repeat = count_char(p, *p);
-
-    switch (*p) {
-      case 'Y': {
-        if (repeat == 2) {
-          wstr_push_int(str, "%02d", (dt->year % 100));
-        } else {
-          wstr_push_int(str, "%d", dt->year);
-        }
-        break;
-      }
-      case 'M': {
-        if (repeat == 2) {
-          wstr_push_int(str, "%02d", dt->month);
-        } else if (repeat == 3) {
-          translate_month(temp, ARRAY_SIZE(temp), dt->month);
-          wstr_append(str, temp);
-        } else {
-          wstr_push_int(str, "%d", dt->month);
-        }
-        break;
-      }
-      case 'D': {
-        if (repeat == 2) {
-          wstr_push_int(str, "%02d", dt->day);
-        } else {
-          wstr_push_int(str, "%d", dt->day);
-        }
-        break;
-      }
-      case 'h': {
-        if (repeat == 2) {
-          wstr_push_int(str, "%02d", dt->hour);
-        } else {
-          wstr_push_int(str, "%d", dt->hour);
-        }
-        break;
-      }
-      case 'T': {
-        translate_meridiem(temp, ARRAY_SIZE(temp), dt->hour);
-        wstr_append(str, temp);
-        break;
-      }
-      case 'H': {
-        if (repeat == 2) {
-          if (dt->hour == 0) {
-            wstr_push_int(str, "%02d", 12);
-          } else {
-            wstr_push_int(str, "%02d", ((dt->hour > 12) ? (dt->hour - 12) : (dt->hour)));
-          }
-        } else {
-          if (dt->hour == 0) {
-            wstr_push_int(str, "%d", 12);
-          } else {
-            wstr_push_int(str, "%d", ((dt->hour > 12) ? (dt->hour - 12) : (dt->hour)));
-          }
-        }
-        break;
-      }
-      case 'm': {
-        if (repeat == 2) {
-          wstr_push_int(str, "%02d", dt->minute);
-        } else {
-          wstr_push_int(str, "%d", dt->minute);
-        }
-        break;
-      }
-      case 's': {
-        if (repeat == 2) {
-          wstr_push_int(str, "%02d", dt->second);
-        } else {
-          wstr_push_int(str, "%d", dt->second);
-        }
-        break;
-      }
-      case 'w': {
-        wstr_push_int(str, "%d", dt->wday);
-        break;
-      }
-      case 'W': {
-        translate_wday(temp, ARRAY_SIZE(temp), dt->wday);
-        wstr_append(str, temp);
-        break;
-      }
-      default: {
-        wstr_append_with_len(str, p, repeat);
-        break;
-      }
-    }
-    p += repeat;
+  ret = tk_date_time_format_impl(dt, format, &result, date_time_format_translate_callback);
+  if (RET_OK == ret) {
+    ret = wstr_set_utf8_with_len(str, result.str, result.size);
   }
-  wstr_reset(&wformat);
 
-  return RET_OK;
+  str_reset(&result);
+
+  return ret;
 }
 
 ret_t wstr_format_time(wstr_t* str, const char* format, uint64_t time) {

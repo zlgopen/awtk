@@ -22,7 +22,6 @@
 #ifndef TK_DATE_TIME_FORMAT_H
 #define TK_DATE_TIME_FORMAT_H
 
-#include "tkc/str.h"
 #include "tkc/wstr.h"
 #include "tkc/types_def.h"
 #include "tkc/date_time.h"

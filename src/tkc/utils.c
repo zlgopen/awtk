@@ -2136,8 +2136,6 @@ int32_t tk_levelize(const char* levels, int32_t value) {
   return level;
 }
 
-#include "tkc/date_time.h"
-
 static uint32_t tk_count_repeat_char(const char* str, char c) {
   uint32_t nr = 0;
   return_value_if_fail(str != NULL, 0);
@@ -2152,16 +2150,12 @@ static uint32_t tk_count_repeat_char(const char* str, char c) {
   return nr;
 }
 
-ret_t tk_date_time_format(uint64_t time, const char* format, str_t* result) {
-  date_time_t dt;
-  wchar_t temp[32];
+ret_t tk_date_time_format_impl(const date_time_t* dt, const char* format, str_t* result,
+                               tk_on_result_t translate_callback) {
   const char* p = format;
-  return_value_if_fail(format != NULL && result != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(dt != NULL && format != NULL && result != NULL, RET_BAD_PARAMS);
 
   str_clear(result);
-  date_time_init(&dt);
-  date_time_from_time(&dt, time);
-  memset(temp, 0x00, sizeof(temp));
 
   while (*p) {
     int32_t repeat = tk_count_repeat_char(p, *p);
@@ -2169,65 +2163,101 @@ ret_t tk_date_time_format(uint64_t time, const char* format, str_t* result) {
     switch (*p) {
       case 'Y': {
         if (repeat == 2) {
-          str_append_format(result, 32, "%02d", dt.year % 100);
+          str_append_format(result, 32, "%02d", dt->year % 100);
         } else {
-          str_append_format(result, 32, "%d", dt.year);
+          str_append_format(result, 32, "%d", dt->year);
         }
         break;
       }
       case 'M': {
         if (repeat == 2) {
-          str_append_format(result, 32, "%02d", dt.month);
+          str_append_format(result, 32, "%02d", dt->month);
+        } else if (repeat == 3) {
+          static const char* const months[] = {"Jan", "Feb", "Mar",  "Apr", "May", "Jun",
+                                               "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
+          if (dt->month - 1 < ARRAY_SIZE(months)) {
+            const char* tr_str = months[dt->month - 1];
+            if (translate_callback != NULL) {
+              translate_callback(&tr_str, months[dt->month - 1]);
+            }
+            str_append(result, tr_str);
+          }
         } else {
-          str_append_format(result, 32, "%d", dt.month);
+          str_append_format(result, 32, "%d", dt->month);
         }
         break;
       }
       case 'D': {
         if (repeat == 2) {
-          str_append_format(result, 32, "%02d", dt.day);
+          str_append_format(result, 32, "%02d", dt->day);
         } else {
-          str_append_format(result, 32, "%d", dt.day);
+          str_append_format(result, 32, "%d", dt->day);
         }
         break;
       }
       case 'h': {
         if (repeat == 2) {
-          str_append_format(result, 32, "%02d", dt.hour);
+          str_append_format(result, 32, "%02d", dt->hour);
         } else {
-          str_append_format(result, 32, "%d", dt.hour);
+          str_append_format(result, 32, "%d", dt->hour);
         }
+        break;
+      }
+      case 'T': {
+        const char* str = (dt->hour < 12) ? "AM" : "PM";
+        const char* tr_str = str;
+        if (translate_callback != NULL) {
+          translate_callback(&tr_str, str);
+        }
+        str_append(result, tr_str);
         break;
       }
       case 'H': {
         if (repeat == 2) {
-          if (dt.hour == 0) {
+          if (dt->hour == 0) {
             str_append_format(result, 32, "%02d", 12);
           } else {
-            str_append_format(result, 32, "%02d", ((dt.hour > 12) ? (dt.hour - 12) : (dt.hour)));
+            str_append_format(result, 32, "%02d", ((dt->hour > 12) ? (dt->hour - 12) : (dt->hour)));
           }
         } else {
-          if (dt.hour == 0) {
+          if (dt->hour == 0) {
             str_append_format(result, 32, "%d", 12);
           } else {
-            str_append_format(result, 32, "%d", ((dt.hour > 12) ? (dt.hour - 12) : (dt.hour)));
+            str_append_format(result, 32, "%d", ((dt->hour > 12) ? (dt->hour - 12) : (dt->hour)));
           }
         }
         break;
       }
       case 'm': {
         if (repeat == 2) {
-          str_append_format(result, 32, "%02d", dt.minute);
+          str_append_format(result, 32, "%02d", dt->minute);
         } else {
-          str_append_format(result, 32, "%d", dt.minute);
+          str_append_format(result, 32, "%d", dt->minute);
         }
         break;
       }
       case 's': {
         if (repeat == 2) {
-          str_append_format(result, 32, "%02d", dt.second);
+          str_append_format(result, 32, "%02d", dt->second);
         } else {
-          str_append_format(result, 32, "%d", dt.second);
+          str_append_format(result, 32, "%d", dt->second);
+        }
+        break;
+      }
+      case 'w': {
+        str_append_format(result, 32, "%d", dt->wday);
+        break;
+      }
+      case 'W': {
+        static const char* const wdays[] = {
+            "Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat",
+        };
+        if (dt->wday < ARRAY_SIZE(wdays)) {
+          const char* tr_str = wdays[dt->wday];
+          if (translate_callback != NULL) {
+            translate_callback(&tr_str, wdays[dt->wday]);
+          }
+          str_append(result, tr_str);
         }
         break;
       }
@@ -2240,6 +2270,16 @@ ret_t tk_date_time_format(uint64_t time, const char* format, str_t* result) {
   }
 
   return RET_OK;
+}
+
+ret_t tk_date_time_format(uint64_t time, const char* format, str_t* result) {
+  date_time_t dt;
+  return_value_if_fail(format != NULL && result != NULL, RET_BAD_PARAMS);
+
+  memset(&dt, 0x00, sizeof(dt));
+  date_time_from_time(&dt, time);
+
+  return tk_date_time_format_impl(&dt, format, result, NULL);
 }
 
 uint32_t tk_bits_to_bytes(uint32_t bits) {

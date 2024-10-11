@@ -1,4 +1,5 @@
 ﻿#include "gtest/gtest.h"
+#include "tkc/str.h"
 #include "base/date_time_format.h"
 
 TEST(DateTimeFormat, basic) {

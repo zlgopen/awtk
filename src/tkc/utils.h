@@ -1162,6 +1162,9 @@ uint32_t tk_count_char(const char* str, char c);
  * * H 代表时(1-12)
  * * m 代表分(0-59)
  * * s 代表秒(0-59)
+ * * w 代表星期(0-6)
+ * * W 代表星期的英文缩写
+ * * T 代表时段AM/PM
  * * YY 代表年(只显示末两位)
  * * MM 代表月(01-12)
  * * DD 代表日(01-31)
@@ -1169,6 +1172,7 @@ uint32_t tk_count_char(const char* str, char c);
  * * HH 代表时(01-12)
  * * mm 代表分(00-59)
  * * ss 代表秒(00-59)
+ * * MMM 代表月的英文缩写
  *
  * 如 日期时间为：2018/11/12 9:10:20
  * * "Y/M/D"显示为"2018/11/12"
@@ -1357,6 +1361,11 @@ ret_t tk_mergesort(void* base, size_t nmemb, size_t size, tk_compare_t cmp);
 
 /*public for test*/
 ret_t xml_file_expand(const char* filename, str_t* s, const char* data);
+
+/* private */
+#include "tkc/date_time.h"
+ret_t tk_date_time_format_impl(const date_time_t* dt, const char* format, str_t* result,
+                               tk_on_result_t translate_callback);
 
 END_C_DECLS
 
