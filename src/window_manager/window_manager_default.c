@@ -600,6 +600,16 @@ static ret_t on_idle_invalidate(const timer_info_t* info) {
   return RET_REMOVE;
 }
 
+static ret_t window_manager_default_will_do_open_window_but_destroy(void* ctx, event_t* e) {
+  widget_t* window = WIDGET(e->target);
+  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(ctx);
+  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
+
+  wm->ready_animator = FALSE;
+
+  return RET_OK;
+}
+
 static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info) {
   widget_t* curr_win = WIDGET(info->ctx);
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(curr_win->parent);
@@ -621,6 +631,9 @@ static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info
     window_manager_dispatch_window_event(curr_win, EVT_WINDOW_OPEN);
     widget_add_timer(curr_win, on_idle_invalidate, 100);
   }
+
+  widget_off_by_func(curr_win, EVT_DESTROY, window_manager_default_will_do_open_window_but_destroy,
+                     wm);
 
   return RET_REMOVE;
 }
@@ -665,6 +678,9 @@ static ret_t window_manager_idle_dispatch_window_open(const idle_info_t* info) {
   if (wm != NULL) {
     wm->ready_animator = FALSE;
     window_manager_dispatch_window_open(curr_win);
+
+    widget_off_by_func(curr_win, EVT_DESTROY,
+                       window_manager_default_will_do_open_window_but_destroy, wm);
   }
 
   return RET_REMOVE;
@@ -676,12 +692,15 @@ static ret_t window_manager_check_if_need_close_animation(window_manager_default
 }
 
 static ret_t window_manager_default_do_open_window(widget_t* widget, widget_t* window) {
+  uint32_t id = TK_INVALID_ID;
   if (widget->children != NULL && widget->children->size > 0) {
-    widget_add_idle(window, (idle_func_t)window_manager_check_if_need_open_animation);
+    id = widget_add_idle(window, (idle_func_t)window_manager_check_if_need_open_animation);
   } else {
-    widget_add_idle(window, (idle_func_t)window_manager_idle_dispatch_window_open);
+    id = widget_add_idle(window, (idle_func_t)window_manager_idle_dispatch_window_open);
   }
-
+  if (TK_INVALID_ID != id) {
+    widget_on(window, EVT_DESTROY, window_manager_default_will_do_open_window_but_destroy, widget);
+  }
   return RET_OK;
 }
 
