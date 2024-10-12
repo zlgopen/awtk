@@ -53,6 +53,9 @@ typedef struct _fscript_array_vtable_t {
 #define FSCRIPT_ARRAY_PROP_VTABLE_NAME "_vtable_"
 #define FSCRIPT_ARRAY_PROP_VTABLE_TYPE_STRING "_fscript_array_type_"
 
+#define FSCRIPT_ARRAY_PROP_VTABEL_NAME FSCRIPT_ARRAY_PROP_VTABLE_NAME
+#define FSCRIPT_ARRAY_PROP_VTABEL_TYPE_STRING FSCRIPT_ARRAY_PROP_VTABLE_TYPE_STRING
+
 /**
  * @method fscript_array_register
  * 注册typed array函数。
