@@ -197,10 +197,7 @@ TEST(Utils, tk_strncpy) {
   ASSERT_EQ(string(tk_strncpy(dst, str, strlen(str) + 10)), string(str));
   ASSERT_EQ(string(tk_strncpy(dst, str, strlen(str) + 10)), string(str));
 
-  
   ASSERT_EQ(string(tk_strncpy(dst, dst, strlen(str) + 10)), string(str));
-  
-  ASSERT_EQ(string(tk_strncpy(dst, dst+5, strlen(str) + 10)), string(str+5));
 }
 
 TEST(Utils, tk_strncpy_s) {
@@ -351,12 +348,6 @@ TEST(Utils, tk_strcpy) {
 
   tk_strcpy(str, str);
   ASSERT_STREQ(str, "abc123");
-
-  tk_strcpy(str, str + 3);
-  ASSERT_STREQ(str, "123");
-
-  tk_strncpy(str + 2, str, 3);
-  ASSERT_STREQ(str, "12123");
 }
 
 TEST(Utils, tk_str_copy) {

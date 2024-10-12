@@ -335,19 +335,21 @@ const char* tk_ftoa(char* str, int len, double value) {
 }
 
 char* tk_strcpy(char* dst, const char* src) {
-  return tk_strncpy(dst, src, tk_strlen(src));
+  return_value_if_fail(dst != NULL && src != NULL, NULL);
+  if (dst != src) {
+    return strcpy(dst, src);
+  } else {
+    return dst;
+  }
 }
 
 char* tk_strncpy(char* dst, const char* src, size_t len) {
   return_value_if_fail(dst != NULL && src != NULL, NULL);
   if (dst != src) {
-    len = tk_min_int(len, tk_strlen(src));
-    memmove(dst, src, len);
+    strncpy(dst, src, len);
     dst[len] = '\0';
-    return dst;
-  } else {
-    return dst;
   }
+  return dst;
 }
 
 char* tk_strncpy_s(char* dst, size_t dst_len, const char* src, size_t src_len) {
@@ -701,7 +703,9 @@ char* tk_str_copy(char* dst, const char* src) {
     uint32_t size = tk_strlen(src) + 1;
     if (dst != NULL) {
       if (dst <= src && src <= dst + tk_strlen(dst)) {
-        tk_strncpy(dst, src, size - 1);
+        if (dst != src) {
+          memcpy(dst, src, size);
+        }
       } else {
         char* str = TKMEM_REALLOCT(char, dst, size);
         return_value_if_fail(str != NULL, dst);
