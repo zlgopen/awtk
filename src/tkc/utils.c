@@ -2027,7 +2027,7 @@ int tk_vsscanf_simple(const char* str, const char* format, va_list args) {
           if (strncasecmp(str, "0x", 2) == 0) {
             str += 2;
           }
-          *p = (void*)tk_strtol(str, NULL, 16);
+          *p = (void*)(int64_t)tk_strtol(str, NULL, 16);
           str = str_skip_xint(str);
           assignments++;
           format++;
@@ -2182,7 +2182,7 @@ ret_t tk_date_time_format_impl(const date_time_t* dt, const char* format, str_t*
           if (dt->month - 1 < ARRAY_SIZE(months)) {
             const char* tr_str = months[dt->month - 1];
             if (translate_callback != NULL) {
-              translate_callback(&tr_str, months[dt->month - 1]);
+              translate_callback((void*)(&tr_str), months[dt->month - 1]);
             }
             str_append(result, tr_str);
           }
@@ -2211,7 +2211,7 @@ ret_t tk_date_time_format_impl(const date_time_t* dt, const char* format, str_t*
         const char* str = (dt->hour < 12) ? "AM" : "PM";
         const char* tr_str = str;
         if (translate_callback != NULL) {
-          translate_callback(&tr_str, str);
+          translate_callback((void*)(&tr_str), str);
         }
         str_append(result, tr_str);
         break;
@@ -2259,7 +2259,7 @@ ret_t tk_date_time_format_impl(const date_time_t* dt, const char* format, str_t*
         if (dt->wday < ARRAY_SIZE(wdays)) {
           const char* tr_str = wdays[dt->wday];
           if (translate_callback != NULL) {
-            translate_callback(&tr_str, wdays[dt->wday]);
+            translate_callback((void*)(&tr_str), wdays[dt->wday]);
           }
           str_append(result, tr_str);
         }

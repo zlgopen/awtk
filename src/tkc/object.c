@@ -840,7 +840,7 @@ ret_t tk_object_clear_props(tk_object_t* obj) {
 
 typedef struct _find_prop_default_ctx_t {
   tk_compare_t cmp;
-  void* data;
+  const void* data;
   value_t* value;
 } find_prop_default_ctx_t;
 
@@ -881,7 +881,7 @@ value_t* tk_object_find_prop(tk_object_t* obj, tk_compare_t cmp, const void* dat
 
 typedef struct _find_props_default_ctx_t {
   tk_compare_t cmp;
-  void* data;
+  const void* data;
   darray_t* matched;
 } find_props_default_ctx_t;
 
