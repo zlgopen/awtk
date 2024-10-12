@@ -3,6 +3,7 @@
 #include "tkc/thread.h"
 #include "tkc/platform.h"
 #include "tkc/action_thread.h"
+#include "tkc/object_default.h"
 
 #define NR 10000
 
@@ -10,7 +11,9 @@ static uint32_t exec_times = 0;
 
 static ret_t qaction_dummy_on_event(qaction_t* action, event_t* e) {
   if (e->type == EVT_DONE) {
+    tk_object_t* args = TK_OBJECT(*action->args);
     log_debug("done\n");
+    TK_OBJECT_UNREF(args);
     qaction_destroy(action);
   }
 
@@ -42,7 +45,8 @@ void test() {
   action_thread_set_on_quit(thread1, on_quit, NULL);
 
   for (i = 0; i < NR; i++) {
-    qaction_t* a = qaction_create(qaction_dummy_exec, NULL, 0);
+    tk_object_t* args = object_default_create();
+    qaction_t* a = qaction_create(qaction_dummy_exec, &args, sizeof(tk_object_t*));
     qaction_set_on_event(a, qaction_dummy_on_event);
     action_thread_exec(thread1, a);
   }

@@ -52,11 +52,11 @@ struct _qaction_t {
   qaction_on_event_t on_event;
 
   /**
-   * @property {uint32_t*} args
+   * @property {uint64_t*} args
    * @annotation ["readable"]
    * exec的参数(视具体的action而不同)。
    */
-  uint32_t args[1];
+  uint64_t args[1];
 };
 
 /**
