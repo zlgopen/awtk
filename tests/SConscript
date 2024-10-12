@@ -11,6 +11,13 @@ GTEST_ROOT=os.environ['GTEST_ROOT'];
 
 env=DefaultEnvironment().Clone();
 
+sys.path.insert(0, './scripts')
+import compile_config
+complie_helper = compile_config.complie_helper()
+
+if not complie_helper.get_value('BUILD_DEMOS', True) :
+  env.Library(os.path.join(LIB_DIR, 'assets'), ['../demos/assets.c'], LINKFLAGS = env['OS_SUBSYSTEM_WINDOWS'] + env['LINKFLAGS']);
+
 INCLUDE_PATH = [TK_ROOT, 
   GTEST_ROOT,
   TK_3RD_ROOT,
@@ -32,7 +39,6 @@ SOURCES = [
 ] + Glob('*.cc') + Glob('*.c')
 
 env['LIBS']=['debugger'] + env['LIBS']
-env.Library(os.path.join(LIB_DIR, 'assets'), ['../demos/assets.c']);
 env.Program(os.path.join(BIN_DIR, 'runTest'), SOURCES);
 env.Program(os.path.join(BIN_DIR, 'recycle_test'), ["recycle_test.cpp"])
 env.Program(os.path.join(BIN_DIR, 'waitable_action_queue_test'), ["waitable_action_queue_test.cpp"])
