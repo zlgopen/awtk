@@ -464,11 +464,26 @@ static ret_t on_copy_on_prop(void* ctx, const void* data) {
   return RET_OK;
 }
 
-ret_t tk_object_copy_props(tk_object_t* obj, tk_object_t* src, bool_t overwrite) {
+static inline ret_t tk_object_copy_props_default(tk_object_t* obj, tk_object_t* src,
+                                                 bool_t overwrite) {
   copy_ctx_t ctx = {overwrite, obj};
-  return_value_if_fail(obj != NULL && src != NULL, RET_BAD_PARAMS);
-
   return tk_object_foreach_prop(src, on_copy_on_prop, &ctx);
+}
+
+ret_t tk_object_copy_props(tk_object_t* obj, tk_object_t* src, bool_t overwrite) {
+  ret_t ret = RET_NOT_IMPL;
+  return_value_if_fail(obj != NULL && src != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(obj->vt != NULL, RET_BAD_PARAMS);
+
+  if (obj->vt->copy_props != NULL) {
+    ret = obj->vt->copy_props(obj, src, overwrite);
+  }
+
+  if (RET_NOT_IMPL == ret) {
+    ret = tk_object_copy_props_default(obj, src, overwrite);
+  }
+
+  return ret;
 }
 
 #ifndef WITHOUT_FSCRIPT

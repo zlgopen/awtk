@@ -370,6 +370,25 @@ static ret_t object_array_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, voi
   return ret;
 }
 
+static ret_t object_array_copy_props(tk_object_t* obj, tk_object_t* src, bool_t overwrite) {
+  if (!tk_object_is_instance_of(src, OBJECT_ARRRAY_TYPE)) {
+    return RET_NOT_IMPL;
+  } else {
+    object_array_t* o = OBJECT_ARRAY(obj);
+    object_array_t* src_array = OBJECT_ARRAY(src);
+    uint32_t i = 0;
+    for (i = 0; i < src_array->size; i++) {
+      value_t* iter = &src_array->props[i];
+      if (i >= o->size) {
+        object_array_push(obj, iter);
+      } else if (overwrite) {
+        object_array_set(obj, i, iter);
+      }
+    }
+  }
+  return RET_OK;
+}
+
 static const object_vtable_t s_object_array_vtable = {
     .type = OBJECT_ARRRAY_TYPE,
     .desc = OBJECT_ARRRAY_TYPE,
@@ -385,6 +404,7 @@ static const object_vtable_t s_object_array_vtable = {
     .remove_prop = object_array_remove_prop,
     .foreach_prop = object_array_foreach_prop,
     .clear_props = object_array_clear_props,
+    .copy_props = object_array_copy_props,
 };
 
 static tk_object_t* object_array_create_with_capacity(uint32_t init_capacity) {

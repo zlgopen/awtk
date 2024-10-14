@@ -768,3 +768,84 @@ TEST(ObjectArray, push_and_remove) {
 
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(ObjectArray, copy_props) {
+  value_t v;
+  tk_object_t* src = object_array_create();
+  tk_object_t* dst = object_array_create();
+
+  value_set_int(&v, 10);
+  object_array_push(src, &v);
+  value_set_int(&v, 20);
+  object_array_push(src, &v);
+  value_set_int(&v, 30);
+  object_array_push(src, &v);
+  value_set_int(&v, 40);
+  object_array_push(src, &v);
+
+  ASSERT_EQ(tk_object_copy_props(dst, src, TRUE), RET_OK);
+
+  ASSERT_EQ(OBJECT_ARRAY(dst)->size, 4);
+
+  ASSERT_EQ(object_array_get(dst, 0, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 10);
+  ASSERT_EQ(object_array_get(dst, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 20);
+  ASSERT_EQ(object_array_get(dst, 2, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 30);
+  ASSERT_EQ(object_array_get(dst, 3, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 40);
+
+  /************************************************************/
+
+  value_set_int(&v, 11);
+  object_array_set(src, 0, &v);
+  value_set_int(&v, 22);
+  object_array_set(src, 1, &v);
+  value_set_int(&v, 33);
+  object_array_set(src, 2, &v);
+  value_set_int(&v, 44);
+  object_array_set(src, 3, &v);
+
+  value_set_int(&v, 50);
+  object_array_push(src, &v);
+  value_set_int(&v, 60);
+  object_array_push(src, &v);
+
+  ASSERT_EQ(tk_object_copy_props(dst, src, FALSE), RET_OK);
+
+  ASSERT_EQ(OBJECT_ARRAY(dst)->size, 6);
+
+  ASSERT_EQ(object_array_get(dst, 0, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 10);
+  ASSERT_EQ(object_array_get(dst, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 20);
+  ASSERT_EQ(object_array_get(dst, 2, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 30);
+  ASSERT_EQ(object_array_get(dst, 3, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 40);
+  ASSERT_EQ(object_array_get(dst, 4, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 50);
+  ASSERT_EQ(object_array_get(dst, 5, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 60);
+
+  ASSERT_EQ(tk_object_copy_props(dst, src, TRUE), RET_OK);
+
+  ASSERT_EQ(OBJECT_ARRAY(dst)->size, 6);
+
+  ASSERT_EQ(object_array_get(dst, 0, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 11);
+  ASSERT_EQ(object_array_get(dst, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 22);
+  ASSERT_EQ(object_array_get(dst, 2, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 33);
+  ASSERT_EQ(object_array_get(dst, 3, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 44);
+  ASSERT_EQ(object_array_get(dst, 4, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 50);
+  ASSERT_EQ(object_array_get(dst, 5, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 60);
+
+  TK_OBJECT_UNREF(dst);
+  TK_OBJECT_UNREF(src);
+}

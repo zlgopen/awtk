@@ -38,6 +38,7 @@ typedef ret_t (*tk_object_remove_prop_t)(tk_object_t* obj, const char* name);
 typedef ret_t (*tk_object_get_prop_t)(tk_object_t* obj, const char* name, value_t* v);
 typedef ret_t (*tk_object_foreach_prop_t)(tk_object_t* obj, tk_visit_t on_prop, void* ctx);
 typedef ret_t (*tk_object_set_prop_t)(tk_object_t* obj, const char* name, const value_t* v);
+typedef ret_t (*tk_object_copy_props_t)(tk_object_t* obj, tk_object_t* src, bool_t overwrite);
 typedef ret_t (*tk_object_clear_props_t)(tk_object_t* obj);
 typedef value_t* (*tk_object_find_prop_t)(tk_object_t* obj, tk_compare_t cmp, const void* ctx);
 typedef ret_t (*tk_object_find_props_t)(tk_object_t* obj, tk_compare_t cmp, const void* ctx,
@@ -56,6 +57,7 @@ struct _tk_object_vtable_t {
   tk_object_compare_t compare;
   tk_object_get_prop_t get_prop;
   tk_object_set_prop_t set_prop;
+  tk_object_copy_props_t copy_props;
   tk_object_remove_prop_t remove_prop;
   tk_object_foreach_prop_t foreach_prop;
   tk_object_clear_props_t clear_props;
