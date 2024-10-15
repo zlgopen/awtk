@@ -77,11 +77,11 @@ int32_t tk_thread_get_priority_from_platform(tk_thread_priority_t priority) {
       return lowest_priority - 6;
     case TK_THREAD_PRIORITY_HIGHEST:
       return lowest_priority - 5;
-    case TK_THREAD_PRIORITY_ABOVE_NORAML:
+    case TK_THREAD_PRIORITY_ABOVE_NORMAL:
       return lowest_priority - 4;
     case TK_THREAD_PRIORITY_NORMAL:
       return lowest_priority - 3;
-    case TK_THREAD_PRIORITY_BELOW_NORAML:
+    case TK_THREAD_PRIORITY_BELOW_NORMAL:
       return lowest_priority - 2;
     case TK_THREAD_PRIORITY_LOWEST:
       return lowest_priority - 1;
