@@ -624,7 +624,7 @@ bool_t value_equal(const value_t* v, const value_t* other) {
       return v->value.u64 == other->value.u64;
     }
     case VALUE_TYPE_FLOAT: {
-      return tk_fequal(v->value.f, other->value.f32);
+      return tk_fequal(v->value.f, other->value.f);
     }
     case VALUE_TYPE_FLOAT32: {
       return tk_fequal(v->value.f32, other->value.f32);

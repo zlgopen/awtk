@@ -1551,3 +1551,72 @@ TEST(value, dup_wstr) {
   ASSERT_EQ(v.free_handle == FALSE, true);
   ASSERT_EQ(v.value.wstr == NULL, true);
 }
+
+TEST(value, equal) {
+  value_t v1;
+  value_t v2;
+
+  value_set_int8(&v1, 10);
+  value_set_int8(&v2, 10);
+  ASSERT_EQ(value_equal(&v1, &v2), TRUE);
+
+  value_set_uint8(&v1, 10);
+  value_set_uint8(&v2, 10);
+  ASSERT_EQ(value_equal(&v1, &v2), TRUE);
+
+  value_set_int16(&v1, 10);
+  value_set_int16(&v2, 10);
+  ASSERT_EQ(value_equal(&v1, &v2), TRUE);
+
+  value_set_uint16(&v1, 10);
+  value_set_uint16(&v2, 10);
+  ASSERT_EQ(value_equal(&v1, &v2), TRUE);
+
+  value_set_int32(&v1, 10);
+  value_set_int32(&v2, 10);
+  ASSERT_EQ(value_equal(&v1, &v2), TRUE);
+
+  value_set_uint32(&v1, 10);
+  value_set_uint32(&v2, 10);
+  ASSERT_EQ(value_equal(&v1, &v2), TRUE);
+
+  value_set_int64(&v1, 10);
+  value_set_int64(&v2, 10);
+  ASSERT_EQ(value_equal(&v1, &v2), TRUE);
+
+  value_set_uint64(&v1, 10);
+  value_set_uint64(&v2, 10);
+  ASSERT_EQ(value_equal(&v1, &v2), TRUE);
+
+  value_set_double(&v1, 10);
+  value_set_double(&v2, 10);
+  ASSERT_EQ(value_equal(&v1, &v2), TRUE);
+
+  value_set_float(&v1, 10);
+  value_set_float(&v2, 10);
+  ASSERT_EQ(value_equal(&v1, &v2), TRUE);
+
+  value_set_float(&v1, 10000000000000);
+  value_set_float(&v2, 10000000000000);
+  ASSERT_EQ(value_equal(&v1, &v2), TRUE);
+
+  value_set_bool(&v1, TRUE);
+  value_set_bool(&v2, TRUE);
+  ASSERT_EQ(value_equal(&v1, &v2), TRUE);
+
+  value_set_float32(&v1, 10);
+  value_set_float32(&v2, 10);
+  ASSERT_EQ(value_equal(&v1, &v2), TRUE);
+
+  value_set_float32(&v1, 10);
+  value_set_int(&v2, 10);
+  ASSERT_EQ(value_equal(&v1, &v2), FALSE);
+
+  value_set_str(&v1, "hello");
+  value_set_str(&v2, "hello");
+  ASSERT_EQ(value_equal(&v1, &v2), TRUE);
+
+  value_set_wstr(&v1, L"hello");
+  value_set_wstr(&v2, L"hello");
+  ASSERT_EQ(value_equal(&v1, &v2), TRUE);
+}
