@@ -298,7 +298,7 @@ typedef enum _ret_t {
 
 #include "tkc/log.h"
 
-#if defined(WIN32) || defined(__ARMCC_VERSION)
+#if defined(WIN32) || defined(__ARMCC_VERSION) || defined(MINGW)
 #define random rand
 #define srandom srand
 #endif /*WIN32||__ARMCC_VERSION*/
