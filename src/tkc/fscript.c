@@ -225,7 +225,9 @@ static ret_t fscript_locals_create(fscript_t* fscript, const char* name, const v
 
   if (index >= 0) {
     if (fscript->symbols != NULL && darray_find_index(fscript->symbols, (void*)name) < 0) {
-      fscript_set_error(fscript, RET_FAIL, "<>", "duplicated var name.");
+      char msg[128];
+      tk_snprintf(msg, sizeof(msg) - 1, "duplicated var name \"%s\".", name);
+      fscript_set_error(fscript, RET_FAIL, "<>", msg);
     }
     return fscript_locals_set_with_index(fscript, index, v);
   }
@@ -259,6 +261,8 @@ static ret_t fscript_exec_func(fscript_t* fscript, const char* name, fscript_fun
   return ret;
 }
 
+static ret_t ret_name_from_value(ret_t value, const char** name);
+
 ret_t fscript_set_error(fscript_t* fscript, ret_t code, const char* func, const char* message) {
   fscript->error_code = code;
   fscript->error_message = tk_str_copy(fscript->error_message, message);
@@ -269,8 +273,14 @@ ret_t fscript_set_error(fscript_t* fscript, ret_t code, const char* func, const 
     fscript->error_col = fscript->curr->col;
 
     if (code != RET_OK) {
-      log_debug("(%d:%d): %s code=%d %s\n", fscript->curr->row, fscript->curr->col, func, code,
-                message);
+      const char* code_str = NULL;
+      if (ret_name_from_value(code, &code_str) == RET_OK) {
+        log_debug("(%d:%d): %s code=%s %s\n", fscript->curr->row, fscript->curr->col, func,
+                  code_str, message);
+      } else {
+        log_debug("(%d:%d): %s code=%d %s\n", fscript->curr->row, fscript->curr->col, func, code,
+                  message);
+      }
     }
   }
 
@@ -502,6 +512,20 @@ static ret_t ret_name_to_value(const char* name, value_t* v) {
     }
   }
   value_set_int32(v, RET_FAIL);
+
+  return RET_NOT_FOUND;
+}
+
+static ret_t ret_name_from_value(ret_t value, const char** name) {
+  uint32_t i = 0;
+
+  for (i = 0; i < ARRAY_SIZE(s_ret_enums); i++) {
+    const int_str_t* iter = s_ret_enums + i;
+    if (iter->name == value) {
+      *name = iter->value;
+      return RET_OK;
+    }
+  }
 
   return RET_NOT_FOUND;
 }
@@ -3475,4 +3499,4 @@ double tk_expr_eval(const char* expr) {
   return value_double(&v);
 }
 
-#endif
+#endif /* WITHOUT_FSCRIPT */
