@@ -23,6 +23,47 @@
 #include "tkc/time_now.h"
 #include "base/lcd_orientation_helper.h"
 
+#include "tkc/object_default.h"
+
+static tk_object_t* s_custom_event_names = NULL;
+
+ret_t event_register_custom_name(int32_t event_type, const char* name) {
+  return_value_if_fail(name != NULL, RET_BAD_PARAMS);
+
+  if (s_custom_event_names == NULL) {
+    s_custom_event_names = object_default_create_ex(FALSE);
+    return_value_if_fail(s_custom_event_names != NULL, RET_OOM);
+  }
+  return_value_if_fail(!tk_object_has_prop(s_custom_event_names, name), RET_FAIL);
+
+  return tk_object_set_prop_int32(s_custom_event_names, name, event_type);
+}
+
+ret_t event_unregister_custom_name(const char* name) {
+  ret_t ret = RET_NOT_FOUND;
+  return_value_if_fail(name != NULL, RET_BAD_PARAMS);
+
+  if (s_custom_event_names != NULL) {
+    ret = tk_object_remove_prop(s_custom_event_names, name);
+    if (RET_OK == ret) {
+      int32_t size = tk_object_get_prop_int(s_custom_event_names, TK_OBJECT_PROP_SIZE, 0);
+      if (0 == size) {
+        TK_OBJECT_UNREF(s_custom_event_names);
+      }
+    }
+  }
+
+  return ret;
+}
+
+static inline int32_t event_get_custom_name(const char* name) {
+  if (s_custom_event_names == NULL) {
+    return EVT_NONE;
+  } else {
+    return tk_object_get_prop_int32(s_custom_event_names, name, EVT_NONE);
+  }
+}
+
 wheel_event_t* wheel_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);
   return_value_if_fail(event->type == EVT_WHEEL || event->type == EVT_WHEEL_BEFORE_CHILDREN, NULL);
@@ -384,7 +425,7 @@ int32_t event_from_name(const char* name) {
     default:
       break;
   }
-  return EVT_NONE;
+  return event_get_custom_name(name);
 }
 
 widget_animator_event_t* widget_animator_event_cast(event_t* event) {

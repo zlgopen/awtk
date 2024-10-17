@@ -55,3 +55,16 @@ TEST(Events, from_name) {
   ASSERT_EQ(event_from_name("key_down_before_children"), EVT_KEY_DOWN_BEFORE_CHILDREN);
   ASSERT_EQ(event_from_name("key_up_before_children"), EVT_KEY_UP_BEFORE_CHILDREN);
 }
+
+TEST(Events, from_custom_name) {
+  int32_t custom1_evt_type = EVT_USER_START + 1;
+  const char* custom1_evt_name = "custom1";
+
+  ASSERT_EQ(event_from_name(custom1_evt_name), EVT_NONE);
+
+  ASSERT_EQ(event_register_custom_name(custom1_evt_type, custom1_evt_name), RET_OK);
+  ASSERT_EQ(event_from_name(custom1_evt_name), custom1_evt_type);
+  ASSERT_EQ(event_unregister_custom_name(custom1_evt_name), RET_OK);
+
+  ASSERT_EQ(event_from_name(custom1_evt_name), EVT_NONE);
+}

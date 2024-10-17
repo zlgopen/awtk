@@ -1361,15 +1361,37 @@ event_t* ui_load_event_init(ui_load_event_t* event, void* target, widget_t* root
  * @annotation ["scriptable"]
  * 事件基类。
  */
+
 /**
  * @method event_from_name
- * 将事件名转换成事件的值。
+ * 将事件名转换成事件的类型。
  * @annotation ["scriptable", "static"]
  * @param {const char*} name 事件名。
  *
- * @return {int32_t} 返回事件的值。
+ * @return {int32_t} 返回事件的类型。
  */
 int32_t event_from_name(const char* name);
+
+/**
+ * @method event_register_custom_name
+ * 给事件注册名称。
+ * @annotation ["scriptable", "static"]
+ * @param {int32_t} event_type 事件类型。
+ * @param {const char*} name 事件名。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t event_register_custom_name(int32_t event_type, const char* name);
+
+/**
+ * @method event_unregister_custom_name
+ * 注销事件名称。
+ * @annotation ["scriptable", "static"]
+ * @param {const char*} name 事件名。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t event_unregister_custom_name(const char* name);
 
 #define STR_ON_EVENT_PREFIX "on:"
 #define STR_GLOBAL_EVENT_PREFIX "global"
