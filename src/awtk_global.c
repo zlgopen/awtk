@@ -36,6 +36,7 @@
 #include "base/window_manager.h"
 #include "base/widget_factory.h"
 #include "base/assets_manager.h"
+#include "base/events.h"
 #include "fscript_ext/fscript_ext.h"
 #ifdef FSCRIPT_WITH_WIDGET
 #include "fscript_ext/fscript_widget.h"
@@ -432,6 +433,9 @@ ret_t tk_deinit_internal(void) {
 #ifndef WITHOUT_FSCRIPT
   fscript_global_deinit();
 #endif
+
+  event_clear_custom_name();
+
   tk_semaphore_destroy(s_clear_cache_semaphore);
 
 #ifdef WITH_SOCKET

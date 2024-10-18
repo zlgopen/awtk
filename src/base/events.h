@@ -1393,6 +1393,9 @@ ret_t event_register_custom_name(int32_t event_type, const char* name);
  */
 ret_t event_unregister_custom_name(const char* name);
 
+/* private */
+ret_t event_clear_custom_name(void);
+
 #define STR_ON_EVENT_PREFIX "on:"
 #define STR_GLOBAL_EVENT_PREFIX "global"
 #define STR_GLOBAL_VARS_CHANGED "global_vars_changed"

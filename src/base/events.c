@@ -45,15 +45,14 @@ ret_t event_unregister_custom_name(const char* name) {
 
   if (s_custom_event_names != NULL) {
     ret = tk_object_remove_prop(s_custom_event_names, name);
-    if (RET_OK == ret) {
-      int32_t size = tk_object_get_prop_int(s_custom_event_names, TK_OBJECT_PROP_SIZE, 0);
-      if (0 == size) {
-        TK_OBJECT_UNREF(s_custom_event_names);
-      }
-    }
   }
 
   return ret;
+}
+
+ret_t event_clear_custom_name(void) {
+  TK_OBJECT_UNREF(s_custom_event_names);
+  return RET_OK;
 }
 
 static inline int32_t event_get_custom_name(const char* name) {
