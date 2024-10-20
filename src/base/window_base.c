@@ -462,6 +462,7 @@ ret_t window_base_on_destroy(widget_t* widget) {
   }
 
   TKMEM_FREE(window_base->theme);
+  TKMEM_FREE(window_base->applet_name);
   TKMEM_FREE(window_base->open_anim_hint);
   TKMEM_FREE(window_base->close_anim_hint);
   TKMEM_FREE(window_base->move_focus_prev_key);
