@@ -39,5 +39,6 @@ elif OS_NAME == 'Darwin':
 CCFLAGS=os.environ['CCFLAGS'];
 CCFLAGS = CCFLAGS + ' -DSDL_STATIC_LIB -D__FLTUSED__ '
 
-env.Library(os.path.join(LIB_DIR, 'nfd'), sources, CPPPATH = CPPPATH, CCFLAGS = CCFLAGS)
+if os.getenv('SDL_VIDEODRIVER') is None:
+  env.Library(os.path.join(LIB_DIR, 'nfd'), sources, CPPPATH = CPPPATH, CCFLAGS = CCFLAGS)
 

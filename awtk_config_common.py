@@ -120,16 +120,10 @@ if OS_NAME == 'Darwin':
 elif OS_NAME == 'Linux':
     TOOLS_NAME = ''
     OS_FLAGS = ' -Wall -Wno-unused-function -fPIC '
-    OS_LIBS = ['GL', 'gtk-3', 'gdk-3', 'glib-2.0', 'gobject-2.0', 'Xext', 'X11',
-               'sndio', 'stdc++', 'asound', 'pthread', 'm', 'dl']
+    OS_LIBS = ['sndio', 'stdc++', 'asound', 'pthread', 'm', 'dl']
     COMMON_CFLAGS = COMMON_CFLAGS+' -std=gnu99 '
     OS_FLAGS = OS_FLAGS + ' -DLINUX -DHAS_PTHREAD'
-    OS_FLAGS = OS_FLAGS + ' -DSDL_TIMER_UNIX -DSDL_VIDEO_DRIVER_X11 -DSDL_VIDEO_DRIVER_X11_SUPPORTS_GENERIC_EVENTS '
-    OS_FLAGS = OS_FLAGS + \
-        ' -DSDL_AUDIO_DRIVER_SNDIO -DSDL_VIDEO_OPENGL_GLX -DSDL_VIDEO_RENDER_OGL '
-    OS_FLAGS = OS_FLAGS + ' -DSDL_LOADSO_DLOPEN -DSDL_VIDEO_OPENGL_EGL -DSDL_VIDEO_OPENGL_ES2 '
-    OS_FLAGS = OS_FLAGS + \
-        ' -DSDL_REAL_API -DSDL_HAPTIC_DISABLED -DSDL_SENSOR_DISABLED -DSDL_JOYSTICK_DISABLED '
+
     OS_PROJECTS = ['3rd/SDL/SConscript']
     if TARGET_ARCH == 'x86':
         OS_FLAGS = OS_FLAGS + ' -U__FLT_EVAL_METHOD__ -D__FLT_EVAL_METHOD__=0 '
@@ -140,6 +134,16 @@ elif OS_NAME == 'Linux':
     if is_raspberrypi():
       OS_FLAGS = OS_FLAGS + ' -DRASPBERRYPI '
       os.environ['RASPBERRYPI'] = 'true'
+    
+    SDL_VIDEODRIVER=os.getenv('SDL_VIDEODRIVER');
+    if SDL_VIDEODRIVER is None:
+      SDL_VIDEODRIVER = 'x11'
+  
+    if SDL_VIDEODRIVER == 'wayland':
+      OS_LIBS = ['GL', 'xkbcommon', 'wayland-cursor', 'wayland-egl', 'wayland-client'] + OS_LIBS;
+      OS_FLAGS += '-DWITHOUT_NATIVE_FILE_DIALOG '
+    else:
+      OS_LIBS = ['GL', 'gtk-3', 'gdk-3', 'glib-2.0', 'gobject-2.0', 'Xext', 'X11'] + OS_LIBS;
 
 
 elif OS_NAME == 'Windows':
@@ -175,8 +179,6 @@ elif OS_NAME == 'Windows':
         OS_FLAGS = OS_FLAGS+' -U__FLT_EVAL_METHOD__ -D__FLT_EVAL_METHOD__=0 -DDECLSPEC=  '
 
     #OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /Od  /FS /Z7 -D_DEBUG /MDd '
-    OS_FLAGS = OS_FLAGS + \
-        ' -DSDL_REAL_API -DSDL_HAPTIC_DISABLED -DSDL_SENSOR_DISABLED -DSDL_JOYSTICK_DISABLED '
     OS_FLAGS = OS_FLAGS + '-D__STDC_LIMIT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_CONSTANT_MACROS -D_HAS_EXCEPTIONS=0 -D_HAS_ITERATOR_DEBUGGING=0 -D_ITERATOR_DEBUG_LEVEL=0 -D_SCL_SECURE=0'
     OS_FLAGS = OS_FLAGS + \
         '-D_SECURE_SCL=0 -D_SCL_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_DEPRECATE '

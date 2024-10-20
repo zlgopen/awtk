@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/10/20
+  * [如何使用 wayland 作为 SDL 的 Video Driver](how_to_use_wayland_as_sdl_video_driver.md)
+
 2024/10/18
   * 程序结束时自动释放事件注册名称(感谢兆坤提供补丁)
 

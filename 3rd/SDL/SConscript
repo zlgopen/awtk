@@ -5,6 +5,9 @@ sources=[]
 env=DefaultEnvironment().Clone()
 OS_NAME=platform.system()
 LIB_DIR=os.environ['LIB_DIR'];
+
+SDL_FLAGS = ' -DSDL_REAL_API -DSDL_HAPTIC_DISABLED -DSDL_SENSOR_DISABLED -DSDL_JOYSTICK_DISABLED '
+
 if OS_NAME == 'Windows':
   CPPPATH=['include','src', 'src/video/khronos']
   sources=Glob('src/atomic/*.c')+\
@@ -87,7 +90,6 @@ elif OS_NAME == 'Linux':
   Glob('src/loadso/dlopen//*.c')+\
   Glob('src/audio/dummy/*.c')+\
   Glob('src/audio/sndio/*.c')+\
-  Glob('src/video/x11/*.c')+\
   Glob('src/video/dummy/*.c')+\
   Glob('src/audio/alsa/*.c')+\
   Glob('src/core/linux/*.c')+\
@@ -98,7 +100,26 @@ elif OS_NAME == 'Linux':
   Glob('src/core/unix/*.c')+\
   Glob('src/main/dummy/*.c')
 
-CCFLAGS=os.environ['CCFLAGS'];
+  SDL_FLAGS += ' -DSDL_TIMER_UNIX  -DSDL_AUDIO_DRIVER_SNDIO -DSDL_LOADSO_DLOPEN '
+  SDL_FLAGS += ' -DSDL_VIDEO_OPENGL_EGL -DSDL_VIDEO_OPENGL_ES2 '
+
+  SDL_VIDEODRIVER=os.getenv('SDL_VIDEODRIVER');
+  if SDL_VIDEODRIVER is None:
+    SDL_VIDEODRIVER = 'x11'
+
+  if SDL_VIDEODRIVER == 'x11' or SDL_VIDEODRIVER == 'wayland':
+    sources += Glob('src/video/'+SDL_VIDEODRIVER+'/*.c')
+  else:
+    SDL_VIDEODRIVER = 'x11'
+    sources += Glob('src/video/'+SDL_VIDEODRIVER+'/*.c')
+
+  if SDL_VIDEODRIVER == 'x11':
+    SDL_FLAGS += ' -DSDL_VIDEO_DRIVER_X11 -DSDL_VIDEO_DRIVER_X11_SUPPORTS_GENERIC_EVENTS '
+    SDL_FLAGS += ' -DSDL_VIDEO_OPENGL_GLX -DSDL_VIDEO_RENDER_OGL '
+  elif SDL_VIDEODRIVER == 'wayland':
+    SDL_FLAGS = SDL_FLAGS + ' -DSDL_VIDEO_DRIVER_WAYLAND -DWITHOUT_NATIVE_FILE_DIALOG '
+      
+CCFLAGS=os.environ['CCFLAGS'] + SDL_FLAGS;
 CCFLAGS = CCFLAGS + ' -DSDL_STATIC_LIB -D__FLTUSED__ '
 
 if OS_NAME == 'Linux':

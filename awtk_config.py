@@ -26,8 +26,12 @@ WIN32_AWTK_RES = complie_helper.get_value('WIN32_RES', WIN32_AWTK_RES)
 if not os.path.isabs(WIN32_AWTK_RES) :
     WIN32_AWTK_RES = os.path.join(compile_config.get_curr_app_root(), WIN32_AWTK_RES)
 
-AWTK_STATIC_LIBS = ['awtk_global', 'fscript_ext_widgets', 'extwidgets', 'nfd',
+AWTK_STATIC_LIBS = ['awtk_global', 'fscript_ext_widgets', 'extwidgets',
                     'widgets', 'base', 'gpinyin', 'fribidi', 'linebreak', 'svgtiny']
+
+if os.getenv('SDL_VIDEODRIVER') is None:
+  AWTK_STATIC_LIBS += ['nfd']
+
 AWTK_STATIC_LIBS = AWTK_STATIC_LIBS+TKC_STATIC_LIBS
 
 # INPUT_ENGINE='null'
