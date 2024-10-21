@@ -962,9 +962,9 @@ typedef struct _json_info_t {
   str_t* json;
   uint32_t indent;
   uint32_t level;
-  bool_t oneline;
   uint32_t index;
-  bool_t is_array;
+  bool_t oneline : 1;
+  bool_t is_array : 1;
 } json_info_t;
 
 static ret_t to_json(void* ctx, const void* data) {
@@ -976,11 +976,11 @@ static ret_t to_json(void* ctx, const void* data) {
   bool_t oneline = info->oneline;
 
   if (info->index > 0) {
-    str_append(s, ",");
+    str_append_char(s, ',');
   }
 
   if (!oneline) {
-    str_append(s, "\n");
+    str_append_char(s, '\n');
   }
 
   info->index++;
@@ -1030,26 +1030,30 @@ static ret_t to_json(void* ctx, const void* data) {
 ret_t tk_object_to_json(tk_object_t* obj, str_t* json, uint32_t indent, uint32_t level,
                         bool_t oneline) {
   bool_t is_array = FALSE;
-  json_info_t info = {json, indent, level, oneline, 0};
+  json_info_t info = {
+      .json = json,
+      .indent = indent,
+      .level = level,
+      .oneline = oneline,
+      .index = 0,
+  };
   return_value_if_fail(obj != NULL && json != NULL, RET_BAD_PARAMS);
 
   if (!oneline) {
     str_append_n_chars(json, ' ', indent * level);
   }
 
-  is_array = tk_str_eq(obj->vt->type, "object_array");
+  is_array = tk_object_is_collection(obj);
   info.is_array = is_array;
-  str_append(json, is_array ? "[" : "{");
+  str_append_char(json, is_array ? '[' : '{');
   info.level++;
   tk_object_foreach_prop(obj, to_json, &info);
-  if (!oneline) {
-    str_append(json, "\n");
-  }
 
   if (!oneline) {
+    str_append_char(json, '\n');
     str_append_n_chars(json, ' ', indent * level);
   }
-  str_append(json, is_array ? "]" : "}");
+  str_append_char(json, is_array ? ']' : '}');
 
   return RET_OK;
 }
