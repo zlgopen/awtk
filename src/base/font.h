@@ -154,6 +154,9 @@ typedef struct _font_vmetrics_t {
   int16_t ascent;
   int16_t descent;
   int32_t line_gap;
+  uint16_t units_per_em;
+  int16_t font_ascender;
+  int16_t font_descender;
 } font_vmetrics_t;
 
 typedef font_vmetrics_t (*font_get_vmetrics_t)(font_t* f, font_size_t font_size);

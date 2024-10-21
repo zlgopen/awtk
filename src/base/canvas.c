@@ -278,11 +278,35 @@ ret_t canvas_set_global_alpha(canvas_t* c, uint8_t alpha) {
   return RET_OK;
 }
 
+static float_t canvas_standard_font_size_to_local_size(canvas_t* c, const char* font_name, font_size_t px) {
+  font_t* font = NULL;
+  font_vmetrics_t vmetrics;
+  float_t local_size = 0.0f;
+  float_t font_height = 0.0f;
+  font_manager_t* fm = c->font_manager;
+  return_value_if_fail(c != NULL && fm != NULL && font_name != NULL && px > 0, 0.0f);
+
+  font = font_manager_get_font(c->font_manager, font_name, px);
+
+  vmetrics = font_get_vmetrics(font, px);
+  font_height = (float_t)(vmetrics.font_ascender - vmetrics.font_descender);
+  local_size = ((float_t)(px *  font_height) / (float_t)vmetrics.units_per_em);
+
+  return local_size;
+}
+
 ret_t canvas_set_font(canvas_t* c, const char* name, font_size_t size) {
+  float_t local_size = 0.0f;
   return_value_if_fail(c != NULL && c->lcd != NULL, RET_BAD_PARAMS);
 
   name = system_info_fix_font_name(name);
-  size = system_info()->font_scale * size;
+
+  if (font_manager_get_standard_font_size(c->font_manager) == TRUE) {
+    local_size = canvas_standard_font_size_to_local_size(c, name, size);
+    size = system_info()->font_scale * local_size;
+  } else {
+    size = system_info()->font_scale * size;
+  }
 
   if (c->font_size != size || c->lcd->font_size != size) {
     c->font_size = size;

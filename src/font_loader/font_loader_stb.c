@@ -85,6 +85,8 @@ static bool_t font_stb_match(font_t* f, const char* name, font_size_t font_size)
 }
 
 static font_vmetrics_t font_stb_get_vmetrics(font_t* f, font_size_t font_size) {
+  int16_t ascender = 0;
+  int16_t descender = 0;
   font_vmetrics_t vmetrics;
   font_stb_t* font = (font_stb_t*)f;
   stbtt_fontinfo* sf = &(font->stb_font);
@@ -96,6 +98,11 @@ static font_vmetrics_t font_stb_get_vmetrics(font_t* f, font_size_t font_size) {
   vmetrics.ascent = tk_roundi(scale * font->ascent);
   vmetrics.descent = tk_roundi(scale * font->descent);
   vmetrics.line_gap = scale * font->line_gap;
+
+  stbtt_GetFontVMetrics(sf, &ascender, &descender, NULL);
+  vmetrics.font_ascender = ascender;
+  vmetrics.font_descender = descender;
+  vmetrics.units_per_em = ttUSHORT(sf->data + sf->head + 18);
 
   return vmetrics;
 }

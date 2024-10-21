@@ -56,6 +56,13 @@ struct _font_manager_t {
    */
   assets_manager_t* assets_manager;
 
+  /**
+   * @property {bool_t} standard_font_size
+   * @annotation ["private"]
+   * 是否使用标准字号
+   */
+  bool_t standard_font_size;
+
   /*private*/
   char* name;
   int32_t refcount;
@@ -152,6 +159,29 @@ font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t 
  */
 ret_t font_manager_set_fallback_get_font(font_manager_t* fm,
                                          font_manager_get_font_t fallback_get_font, void* ctx);
+
+/**
+ * @method font_manager_set_standard_font_size
+ * 设置是否使用标准字号
+ * @annotation ["scriptable"]
+ *
+ * @param {font_manager_t*} fm 字体管理器对象。
+ * @param {bool_t} is_standard 是否使用标准字号
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t font_manager_set_standard_font_size(font_manager_t* fm, bool_t is_standard);
+
+/**
+ * @method font_manager_get_standard_font_size
+ * 获取是否使用标准字号
+ * @annotation ["scriptable"]
+ *
+ * @param {font_manager_t*} fm 字体管理器对象。
+ *
+ * @return {bool_t} 返回TRUE表示使用标准字号，否则表示不是。
+ */
+bool_t font_manager_get_standard_font_size(font_manager_t* fm);
 
 /**
  * @method font_manager_unload_font

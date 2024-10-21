@@ -134,6 +134,10 @@ static font_vmetrics_t font_ft_get_vmetrics(font_t* f, font_size_t font_size) {
   vmetrics.descent = FT_MulFix(sf->face->descender, sf->face->size->metrics.y_scale);
   vmetrics.line_gap = height - (vmetrics.ascent - vmetrics.descent);
 
+  vmetrics.font_ascender = sf->face->ascender;
+  vmetrics.font_descender = sf->face->descender;
+  vmetrics.units_per_em = sf->face->units_per_EM;
+
   vmetrics.ascent = vmetrics.ascent >> 6;
   vmetrics.descent = vmetrics.descent >> 6;
   vmetrics.line_gap = vmetrics.line_gap >> 6;

@@ -93,6 +93,10 @@ static font_vmetrics_t font_bitmap_get_vmetrics(font_t* f, font_size_t font_size
   vmetrics.descent = header->descent;
   vmetrics.line_gap = header->line_gap;
 
+  vmetrics.units_per_em = 0;
+  vmetrics.font_ascender = header->ascent;
+  vmetrics.font_descender = header->descent;
+
   return vmetrics;
 }
 

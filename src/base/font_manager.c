@@ -197,6 +197,20 @@ font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t 
   return font;
 }
 
+ret_t font_manager_set_standard_font_size(font_manager_t* fm, bool_t is_standard) {
+  return_value_if_fail(fm != NULL, FALSE);
+
+  fm->standard_font_size = is_standard;
+
+  return RET_OK;
+}
+
+bool_t font_manager_get_standard_font_size(font_manager_t* fm) {
+  return_value_if_fail(fm != NULL, NULL);
+
+  return fm->standard_font_size;
+}
+
 ret_t font_manager_unload_font(font_manager_t* fm, const char* name, font_size_t size) {
   ret_t ret = RET_OK;
   font_cmp_info_t info = {name, size};
