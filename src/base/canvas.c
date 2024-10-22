@@ -287,6 +287,7 @@ static float_t canvas_standard_font_size_to_local_size(canvas_t* c, const char* 
   return_value_if_fail(c != NULL && fm != NULL && font_name != NULL && px > 0, 0.0f);
 
   font = font_manager_get_font(c->font_manager, font_name, px);
+  return_value_if_fail(font != NULL, 0.0f);
 
   vmetrics = font_get_vmetrics(font, px);
   font_height = (float_t)(vmetrics.font_ascender - vmetrics.font_descender);
