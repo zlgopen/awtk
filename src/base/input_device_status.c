@@ -542,3 +542,21 @@ ret_t input_device_status_on_pointer_leave(input_device_status_t* ids, widget_t*
 
   return widget_dispatch_leave_event(widget, &e);
 }
+
+ret_t input_device_status_abort_keys_and_mouse(input_device_status_t* ids) {
+  return_value_if_fail(ids != NULL, RET_BAD_PARAMS);
+
+  ids->cmd = FALSE;
+  ids->alt = FALSE;
+  ids->menu = FALSE;
+  ids->lalt = FALSE;
+  ids->ralt = FALSE;
+  ids->ctrl = FALSE;
+  ids->lctrl = FALSE;
+  ids->rctrl = FALSE;
+  ids->shift = FALSE;
+  ids->lshift = FALSE;
+  ids->rshift = FALSE;
+
+  return RET_OK;
+}

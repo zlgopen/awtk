@@ -183,6 +183,10 @@ typedef struct _key_long_press_info_t {
  */
 key_long_press_info_t* input_device_status_find_key_long_press_info(input_device_status_t* ids,
                                                            uint32_t key);
+
+/* private */
+ret_t input_device_status_abort_keys_and_mouse(input_device_status_t* ids);
+
 END_C_DECLS
 
 #endif /*TK_INPUT_DEVICE_STATUS_H*/

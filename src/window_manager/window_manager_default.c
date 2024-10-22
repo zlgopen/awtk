@@ -1863,6 +1863,8 @@ static ret_t window_manager_default_dispatch_native_window_event(widget_t* widge
     input_device_status_on_pointer_enter(ids, widget, x, y);
   } else if (e->type == EVT_NATIVE_WINDOW_LEAVE) {
     input_device_status_on_pointer_leave(ids, widget);
+  } else if (e->type == EVT_NATIVE_WINDOW_FOCUS_LOST) {
+    input_device_status_abort_keys_and_mouse(ids);
   }
 
   return RET_OK;
