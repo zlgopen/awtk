@@ -1160,7 +1160,7 @@ static ret_t to_json_on_prop(void* ctx, const void* data) {
     case VALUE_TYPE_OBJECT: {
       str_t str;
       str_init(&str, 100);
-      object_to_json(value_object(&(nv->value)), &str);
+      tk_object_to_json(value_object(&(nv->value)), &str, 2, 0, FALSE);
       str_append(info->str, str.str);
       str_reset(&str);
       break;
@@ -1185,23 +1185,6 @@ static ret_t to_json_on_prop(void* ctx, const void* data) {
   }
 
   info->index++;
-  return RET_OK;
-}
-
-ret_t object_to_json(tk_object_t* obj, str_t* str) {
-  to_json_ctx_t ctx = {obj, str, 0};
-  return_value_if_fail(obj != NULL && str != NULL, RET_BAD_PARAMS);
-
-  if (tk_object_is_collection(obj)) {
-    str_set(str, "[");
-    tk_object_foreach_prop(obj, to_json_on_prop, &ctx);
-    str_append_char(str, ']');
-  } else {
-    str_set(str, "{");
-    tk_object_foreach_prop(obj, to_json_on_prop, &ctx);
-    str_append_char(str, '}');
-  }
-
   return RET_OK;
 }
 
@@ -2699,4 +2682,8 @@ ret_t tk_mergesort(void* base, size_t nmemb, size_t size, tk_compare_t cmp) {
   tk_mergesort_impl(base, nmemb, size, cmp);
 
   return RET_OK;
+}
+
+ret_t object_to_json(tk_object_t* obj, str_t* str) {
+  return tk_object_to_json(obj, str, 2, 0, FALSE);
 }

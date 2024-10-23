@@ -612,9 +612,7 @@ TEST(Utils, to_json) {
 
   str_init(&str, 1000);
   ASSERT_EQ(object_to_json(obj, &str), RET_OK);
-  ASSERT_STREQ(str.str,
-               "{\"addr\":{\"city\":\"sz\",\"country\":\"zh\"},\"age\":100,\"arr\":[1,2,\"abc\","
-               "\"hello\"],\"name\":\"jim\"}");
+  ASSERT_STREQ(str.str, "{\n  \"addr\":    {\n      \"city\": \"sz\",\n      \"country\": \"zh\"\n   },\n  \"age\": 100,\n  \"arr\":    [\n      1,\n      2,\n      \"abc\",\n      \"hello\"\n   ],\n  \"name\": \"jim\"\n}");
 
   str_reset(&str);
   TK_OBJECT_UNREF(obj);
