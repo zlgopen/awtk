@@ -85,12 +85,15 @@ static bool_t font_stb_match(font_t* f, const char* name, font_size_t font_size)
 }
 
 static font_vmetrics_t font_stb_get_vmetrics(font_t* f, font_size_t font_size) {
-  int16_t ascender = 0;
-  int16_t descender = 0;
-  font_vmetrics_t vmetrics;
+  int ascender = 0;
+  int descender = 0;
+  float scale = 0.0f;
   font_stb_t* font = (font_stb_t*)f;
-  stbtt_fontinfo* sf = &(font->stb_font);
-  float scale = stbtt_ScaleForPixelHeight(sf, font_size);
+  const stbtt_fontinfo* sf = &(font->stb_font);
+  font_vmetrics_t vmetrics = {font_size, 0, 0, 0, 0, 0};
+
+  return_value_if_fail(sf != NULL, vmetrics);
+  scale = stbtt_ScaleForPixelHeight(sf, font_size);
   if (scale == INFINITY) {
     scale = stbtt_ScaleForMappingEmToPixels(sf, font_size);
   }
