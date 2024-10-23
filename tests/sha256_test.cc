@@ -26,3 +26,16 @@ TEST(SHA256, file) {
 
   str_reset(&str);
 }
+
+TEST(SHA256, from_to_str) {
+  uint8_t hash[TK_SHA256_HASH_LEN + 1] = {0};
+  str_t str;
+  str_init(&str, 100);
+
+  tk_sha256((const uint8_t*)"foobar", 6, &str);
+  ASSERT_EQ(tk_sha256_hash_from_str(hash, str.str), RET_OK);
+  ASSERT_EQ(tk_sha256_hash_to_str(hash, &str), RET_OK);
+  ASSERT_STREQ(str.str, "c3ab8ff13720e8ad9047dd39466b3c8974e592c2fa383d4a3960714caef0c4f2");
+
+  str_reset(&str);
+}

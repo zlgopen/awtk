@@ -203,13 +203,27 @@ ret_t tk_sha256_done(tk_sha256_t* sha256, uint8_t hash[TK_SHA256_HASH_LEN + 1]) 
   return RET_OK;
 }
 
-static ret_t tk_sha256_hash_to_str(str_t* hash, uint8_t result[TK_SHA256_HASH_LEN + 1]) {
-  char text[32];
+ret_t tk_sha256_hash_from_str(uint8_t hash[TK_SHA256_HASH_LEN + 1], const char* str) {
   uint32_t i = 0;
+  return_value_if_fail(hash != NULL && str != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(tk_strlen(str) == 2 * TK_SHA256_HASH_LEN, RET_BAD_PARAMS);
 
   for (i = 0; i < TK_SHA256_HASH_LEN; i++) {
-    tk_snprintf(text, sizeof(text), "%02x", (int)(result[i]));
-    str_append(hash, text);
+    char text[4] = {'\0'};
+    tk_strncpy(text, &str[2 * i], 2);
+    hash[i] = (uint8_t)tk_strtoi(text, NULL, 16);
+  }
+
+  return RET_OK;
+}
+
+ret_t tk_sha256_hash_to_str(uint8_t hash[TK_SHA256_HASH_LEN + 1], str_t* str) {
+  uint32_t i = 0;
+  return_value_if_fail(hash != NULL && str != NULL, RET_BAD_PARAMS);
+
+  str_clear(str);
+  for (i = 0; i < TK_SHA256_HASH_LEN; i++) {
+    str_append_format(str, 4, "%02x", (int32_t)(hash[i]));
   }
 
   return RET_OK;
@@ -224,7 +238,7 @@ ret_t tk_sha256(const void* data, uint32_t len, str_t* hash) {
   tk_sha256_hash(&sha256, (const uint8_t*)data, len);
   tk_sha256_done(&sha256, result);
 
-  return tk_sha256_hash_to_str(hash, result);
+  return tk_sha256_hash_to_str(result, hash);
 }
 
 #include "tkc/fs.h"
@@ -257,7 +271,7 @@ ret_t tk_sha256_file(const char* filename, uint32_t block_size, str_t* hash) {
     tk_sha256_hash(&sha256, buff, size);
   }
   tk_sha256_done(&sha256, result);
-  ret = tk_sha256_hash_to_str(hash, result);
+  ret = tk_sha256_hash_to_str(result, hash);
 
 error:
   fs_file_close(fp);

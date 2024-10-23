@@ -70,6 +70,26 @@ ret_t tk_sha256(const void* data, uint32_t len, str_t* hash);
  */
 ret_t tk_sha256_file(const char* filename, uint32_t block_size, str_t* hash);
 
+/**
+ * @method tk_sha256_hash_from_str
+ * 从字符串中提取哈希值。
+ * @param {uint8_t*} hash 哈希值。
+ * @param {const char*} str 哈希值字符串形式。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_sha256_hash_from_str(uint8_t hash[TK_SHA256_HASH_LEN + 1], const char* str);
+
+/**
+ * @method tk_sha256_hash_to_str
+ * 哈希值转为字符串形式。
+ * @param {uint8_t*} hash 哈希值。
+ * @param {const char*} str 哈希值字符串形式。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_sha256_hash_to_str(uint8_t hash[TK_SHA256_HASH_LEN + 1], str_t* str);
+
 END_C_DECLS
 
 #endif /*TK_SHA256_H*/
