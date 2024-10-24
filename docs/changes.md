@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/10/24
+  * tk_swap防止临时变量重名(感谢兆坤提供补丁)
+
 2024/10/23
   * 修复mingw编译下font_stb_get_vmetrics异常问题(感谢颖健提供补丁) 
   * 增加tk_sha256_hash_from_str(感谢兆坤提供补丁)
