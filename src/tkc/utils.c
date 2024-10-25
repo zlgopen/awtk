@@ -46,7 +46,7 @@ ret_t tk_set_ui_thread(uint64_t ui_thread_id) {
 }
 
 bool_t tk_is_ui_thread(void) {
-  return s_ui_thread_id == tk_thread_self();
+  return s_ui_thread_id == (uint64_t)tk_thread_self();
 }
 #endif /*WITH_WASM*/
 
@@ -1944,7 +1944,7 @@ int tk_vsscanf_simple(const char* str, const char* format, va_list args) {
           if (strncasecmp(str, "0x", 2) == 0) {
             str += 2;
           }
-          *p = (void*)(int64_t)tk_strtol(str, NULL, 16);
+          *p = (void*)tk_strtol(str, NULL, 16);
           str = str_skip_xint(str);
           assignments++;
           format++;
@@ -2501,8 +2501,6 @@ double tk_value_to_angle(double value, double min, double max, double start_angl
   } else {
     return start_angle + offset_angle;
   }
-
-  return end_angle;
 }
 
 double tk_angle(int cx, int cy, int x, int y) {

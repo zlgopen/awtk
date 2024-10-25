@@ -80,7 +80,7 @@ static rect_t slider_get_dirty_rect(widget_t* widget) {
   if (widget->astyle != NULL) {
     tolerance = widget->dirty_rect_tolerance;
     margin = style_get_int(widget->astyle, WIDGET_PROP_MARGIN, 0);
-    dragger_size = tk_roundi(slider_get_dragger_size(widget) / 2);
+    dragger_size = tk_roundi((double)slider_get_dragger_size(widget) / 2);
 
     if (margin < 0 && !slider->no_dragger_icon) {
       if (slider->vertical) {
@@ -156,7 +156,7 @@ static ret_t slider_update_dragger_rect(widget_t* widget, canvas_t* c) {
   margin = slider->no_dragger_icon ? 0 : style_get_int(widget->astyle, STYLE_ID_MARGIN, 0);
 
   dragger_size = slider_get_dragger_size(widget);
-  max_gap = tk_roundi(dragger_size / 2);
+  max_gap = tk_roundi((double)dragger_size / 2);
   margin = margin > -max_gap ? margin : -max_gap;
 
   if (slider->vertical) {
@@ -436,7 +436,7 @@ static ret_t slider_change_value_by_pointer_event(widget_t* widget, pointer_even
   uint32_t dragger_size = slider_get_dragger_size(widget);
   int32_t margin = slider->no_dragger_icon ? 0 : style_get_int(widget->astyle, STYLE_ID_MARGIN, 0);
 
-  max_gap = tk_roundi(dragger_size / 2);
+  max_gap = tk_roundi((double)dragger_size / 2);
   margin = margin > -max_gap ? margin : -max_gap;
 
   widget_to_local(widget, &p);

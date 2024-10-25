@@ -159,7 +159,6 @@ ret_t slist_remove(slist_t* slist, void* ctx) {
 }
 
 ret_t slist_append(slist_t* slist, void* data) {
-  slist_node_t* iter = NULL;
   slist_node_t* node = NULL;
   return_value_if_fail(slist != NULL, RET_BAD_PARAMS);
   node = slist_node_create(data);

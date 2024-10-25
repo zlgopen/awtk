@@ -198,7 +198,7 @@ font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t 
 }
 
 ret_t font_manager_set_standard_font_size(font_manager_t* fm, bool_t is_standard) {
-  return_value_if_fail(fm != NULL, FALSE);
+  return_value_if_fail(fm != NULL, RET_BAD_PARAMS);
 
   fm->standard_font_size = is_standard;
 

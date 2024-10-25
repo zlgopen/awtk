@@ -1065,7 +1065,7 @@ ret_t tk_object_set_prop_str_with_format(tk_object_t* obj, const char* name, con
 
   va_list args;
   va_start(args, format);
-  vsnprintf(str, sizeof(str) - 1, format, args);
+  tk_vsnprintf(str, sizeof(str) - 1, format, args);
   va_end(args);
 
   return tk_object_set_prop_str(obj, name, str);

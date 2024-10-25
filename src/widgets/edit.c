@@ -299,15 +299,6 @@ bool_t edit_is_valid_char(widget_t* widget, wchar_t c) {
   }
 }
 
-static bool_t edit_has_selection(widget_t* widget) {
-  text_edit_state_t state;
-  edit_t* edit = EDIT(widget);
-  return_value_if_fail(edit != NULL, FALSE);
-  text_edit_get_state(edit->model, &state);
-
-  return state.select_start != state.select_end;
-}
-
 ret_t edit_input_char(widget_t* widget, wchar_t c) {
   return edit_paste(widget, &c, 1);
 }

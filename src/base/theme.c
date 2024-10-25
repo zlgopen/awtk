@@ -128,8 +128,6 @@ theme_t* theme_load_from_data(const char* name, const uint8_t* data, uint32_t si
   } else {
     return NULL;
   }
-
-  return t;
 }
 
 #ifndef WITHOUT_XML_STYLE

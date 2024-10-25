@@ -128,11 +128,11 @@ rect_t progress_circle_calc_line_dirty_rect(widget_t* widget, float_t old_value,
     xy_t cy = widget->h / 2;
     float_t r = progress_circle_get_radius(widget);
 
-    start_p.y = round(r * sin(start_angle));
-    start_p.x = round(r * cos(start_angle));
+    start_p.y = tk_roundi(r * sin(start_angle));
+    start_p.x = tk_roundi(r * cos(start_angle));
 
-    end_p.y = round(r * sin(end_angle));
-    end_p.x = round(r * cos(end_angle));
+    end_p.y = tk_roundi(r * sin(end_angle));
+    end_p.x = tk_roundi(r * cos(end_angle));
 
     min_x = tk_min(start_p.x, end_p.x) - line_width;
     max_x = tk_max(start_p.x, end_p.x) + line_width;

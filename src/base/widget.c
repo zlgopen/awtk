@@ -2090,7 +2090,7 @@ static ret_t fscript_info_exec(fscript_info_t* info) {
 
     if (ret == RET_OK) {
       if (result.type == VALUE_TYPE_UINT32 || result.type == VALUE_TYPE_INT32) {
-        ret = value_int(&result);
+        ret = (ret_t)value_int(&result);
       }
     }
 
@@ -2124,13 +2124,6 @@ static ret_t widget_exec_code(void* ctx, event_t* evt) {
   return ret;
 }
 
-static ret_t widget_free_code(void* ctx, event_t* evt) {
-  widget_t* widget = WIDGET(evt->target);
-  widget_off_by_ctx(widget, ctx);
-  TKMEM_FREE(ctx);
-
-  return RET_REMOVE;
-}
 #endif /*WITHOUT_FSCRIPT*/
 
 ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
