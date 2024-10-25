@@ -98,10 +98,6 @@ static ret_t list_view_handle_wheel_event(list_view_t* list_view, event_t* e) {
   return RET_STOP;
 }
 
-static ret_t list_view_on_wheel_before(void* ctx, event_t* e) {
-  return list_view_handle_wheel_event(LIST_VIEW(ctx), e);
-}
-
 static bool_t list_view_is_play_auto_hide_scroll_bar_animtion(list_view_t* list_view) {
   scroll_view_t* scroll_view = NULL;
   return_value_if_fail(list_view != NULL && list_view->scroll_view != NULL, FALSE);

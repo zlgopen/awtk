@@ -14,9 +14,10 @@ static inline ret_t dirty_rects_dump(dirty_rects_t* dirty_rects) {
 
   log_debug("===========================================================\n");
   for (i = 0; i < dirty_rects->nr; i++) {
-    rect_t* iter = dirty_rects->rects + i;
+    iter = dirty_rects->rects + i;
     log_debug("(%d %d %d %d)", iter->x, iter->y, iter->w, iter->h);
   }
+  (void)iter;
   log_debug("\n");
   log_debug("===========================================================\n\n");
 
@@ -37,6 +38,7 @@ static inline ret_t dirty_rects_paint(dirty_rects_t* dirty_rects, widget_t* widg
     return RET_OK;
   }
 
+	(void)cost;
   if (dirty_rects->disable_multiple || !is_support_dirty_rect) {
     full_screen = rect_init(0, 0, canvas_get_width(c), canvas_get_height(c));
     iter = is_support_dirty_rect ? &(dirty_rects->max) : &full_screen;

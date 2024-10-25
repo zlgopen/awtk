@@ -601,7 +601,6 @@ static ret_t on_idle_invalidate(const timer_info_t* info) {
 }
 
 static ret_t window_manager_default_will_do_open_window_but_destroy(void* ctx, event_t* e) {
-  widget_t* window = WIDGET(e->target);
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(ctx);
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
 

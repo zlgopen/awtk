@@ -127,7 +127,6 @@ static ret_t slider_on_invalidate(widget_t* widget, const rect_t* rect) {
   } else {
     return RET_OK;
   }
-  return RET_OK;
 }
 
 static bool_t slider_on_is_point_in(widget_t* widget, xy_t x, xy_t y) {

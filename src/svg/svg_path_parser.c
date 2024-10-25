@@ -54,7 +54,7 @@ static ret_t svg_path_parser_parse(svg_path_parser_t* parser) {
     float x, y, x1, y1, x2, y2, rx, ry, rotation, large_arc, sweep;
 
     /* moveto (M, m) (2 arguments) */
-    if (sscanf(s, " %1[Mm] %f %f %n", command, &x, &y, &n) == 3) {
+    if (tk_sscanf(s, " %1[Mm] %f %f %n", command, &x, &y, &n) == 3) {
       svg_path_move_t path;
 
       do {
@@ -70,10 +70,10 @@ static ret_t svg_path_parser_parse(svg_path_parser_t* parser) {
         svg_path_move_init(&path, x, y);
         parser->on_path(parser->ctx, (svg_path_t*)&path);
 
-      } while (sscanf(s, "%f %f %n", &x, &y, &n) == 2);
+      } while (tk_sscanf(s, "%f %f %n", &x, &y, &n) == 2);
 
       /* lineto (L, l) (2 arguments) */
-    } else if (sscanf(s, " %1[Ll] %f %f %n", command, &x, &y, &n) == 3) {
+    } else if (tk_sscanf(s, " %1[Ll] %f %f %n", command, &x, &y, &n) == 3) {
       svg_path_line_t path;
 
       do {
@@ -89,10 +89,10 @@ static ret_t svg_path_parser_parse(svg_path_parser_t* parser) {
         svg_path_line_init(&path, x, y);
         parser->on_path(parser->ctx, (svg_path_t*)&path);
 
-      } while (sscanf(s, "%f %f %n", &x, &y, &n) == 2);
+      } while (tk_sscanf(s, "%f %f %n", &x, &y, &n) == 2);
 
       /* closepath (Z, z) (no arguments) */
-    } else if (sscanf(s, " %1[Zz] %n", command, &n) == 1) {
+    } else if (tk_sscanf(s, " %1[Zz] %n", command, &n) == 1) {
       svg_path_t path;
 
       last_x = first_x;
@@ -104,7 +104,7 @@ static ret_t svg_path_parser_parse(svg_path_parser_t* parser) {
       parser->on_path(parser->ctx, (svg_path_t*)&path);
 
       /* horizontal lineto (H, h) (1 argument) */
-    } else if (sscanf(s, " %1[Hh] %f %n", command, &x, &n) == 2) {
+    } else if (tk_sscanf(s, " %1[Hh] %f %n", command, &x, &n) == 2) {
       svg_path_line_t path;
 
       do {
@@ -119,10 +119,10 @@ static ret_t svg_path_parser_parse(svg_path_parser_t* parser) {
         svg_path_line_init(&path, x, last_y);
         parser->on_path(parser->ctx, (svg_path_t*)&path);
 
-      } while (sscanf(s, "%f %n", &x, &n) == 1);
+      } while (tk_sscanf(s, "%f %n", &x, &n) == 1);
 
       /* vertical lineto (V, v) (1 argument) */
-    } else if (sscanf(s, " %1[Vv] %f %n", command, &y, &n) == 2) {
+    } else if (tk_sscanf(s, " %1[Vv] %f %n", command, &y, &n) == 2) {
       svg_path_line_t path;
 
       do {
@@ -137,10 +137,10 @@ static ret_t svg_path_parser_parse(svg_path_parser_t* parser) {
         svg_path_line_init(&path, last_x, y);
         parser->on_path(parser->ctx, (svg_path_t*)&path);
 
-      } while (sscanf(s, "%f %n", &y, &n) == 1);
+      } while (tk_sscanf(s, "%f %n", &y, &n) == 1);
 
       /* curveto (C, c) (6 arguments) */
-    } else if (sscanf(s, " %1[Cc] %f %f %f %f %f %f %n", command, &x1, &y1, &x2, &y2, &x, &y, &n) ==
+    } else if (tk_sscanf(s, " %1[Cc] %f %f %f %f %f %f %n", command, &x1, &y1, &x2, &y2, &x, &y, &n) ==
                7) {
       svg_path_curve_to_t path;
 
@@ -163,10 +163,10 @@ static ret_t svg_path_parser_parse(svg_path_parser_t* parser) {
         svg_path_curve_to_init(&path, x1, y1, x2, y2, x, y);
         parser->on_path(parser->ctx, (svg_path_t*)&path);
 
-      } while (sscanf(s, "%f %f %f %f %f %f %n", &x1, &y1, &x2, &y2, &x, &y, &n) == 6);
+      } while (tk_sscanf(s, "%f %f %f %f %f %f %n", &x1, &y1, &x2, &y2, &x, &y, &n) == 6);
 
       /* shorthand/smooth curveto (S, s) (4 arguments) */
-    } else if (sscanf(s, " %1[Ss] %f %f %f %f %n", command, &x2, &y2, &x, &y, &n) == 5) {
+    } else if (tk_sscanf(s, " %1[Ss] %f %f %f %f %n", command, &x2, &y2, &x, &y, &n) == 5) {
       svg_path_curve_to_t path;
 
       do {
@@ -188,10 +188,10 @@ static ret_t svg_path_parser_parse(svg_path_parser_t* parser) {
         svg_path_curve_to_init(&path, x1, y1, x2, y2, x, y);
         parser->on_path(parser->ctx, (svg_path_t*)&path);
 
-      } while (sscanf(s, "%f %f %f %f %n", &x2, &y2, &x, &y, &n) == 4);
+      } while (tk_sscanf(s, "%f %f %f %f %n", &x2, &y2, &x, &y, &n) == 4);
 
       /* quadratic Bezier curveto (Q, q) (4 arguments) */
-    } else if (sscanf(s, " %1[Qq] %f %f %f %f %n", command, &x1, &y1, &x, &y, &n) == 5) {
+    } else if (tk_sscanf(s, " %1[Qq] %f %f %f %f %n", command, &x1, &y1, &x, &y, &n) == 5) {
       svg_path_curve_to_t path;
       float p[4];
 
@@ -216,11 +216,11 @@ static ret_t svg_path_parser_parse(svg_path_parser_t* parser) {
         svg_path_curve_to_init(&path, p[0], p[1], p[2], p[3], x, y);
         parser->on_path(parser->ctx, (svg_path_t*)&path);
 
-      } while (sscanf(s, "%f %f %f %f %n", &x1, &y1, &x, &y, &n) == 4);
+      } while (tk_sscanf(s, "%f %f %f %f %n", &x1, &y1, &x, &y, &n) == 4);
 
       /* shorthand/smooth quadratic Bezier curveto (T, t)
 		   (2 arguments) */
-    } else if (sscanf(s, " %1[Tt] %f %f %n", command, &x, &y, &n) == 3) {
+    } else if (tk_sscanf(s, " %1[Tt] %f %f %n", command, &x, &y, &n) == 3) {
       svg_path_curve_to_t path;
       float p[4];
 
@@ -245,10 +245,10 @@ static ret_t svg_path_parser_parse(svg_path_parser_t* parser) {
         svg_path_curve_to_init(&path, p[0], p[1], p[2], p[3], x, y);
         parser->on_path(parser->ctx, (svg_path_t*)&path);
 
-      } while (sscanf(s, "%f %f %n", &x, &y, &n) == 2);
+      } while (tk_sscanf(s, "%f %f %n", &x, &y, &n) == 2);
 
       /* elliptical arc (A, a) (7 arguments) */
-    } else if (sscanf(s, " %1[Aa] %f %f %f %f %f %f %f %n", command, &rx, &ry, &rotation,
+    } else if (tk_sscanf(s, " %1[Aa] %f %f %f %f %f %f %f %n", command, &rx, &ry, &rotation,
                       &large_arc, &sweep, &x, &y, &n) == 8) {
       svg_path_curve_to_t path;
 
@@ -274,7 +274,7 @@ static ret_t svg_path_parser_parse(svg_path_parser_t* parser) {
         last_x = to.x;
         last_y = to.y;
         s += n;
-      } while (sscanf(s, "%f %f %f %f %f %f %f %n", &rx, &ry, &rotation, &large_arc, &sweep, &x, &y,
+      } while (tk_sscanf(s, "%f %f %f %f %f %f %f %n", &rx, &ry, &rotation, &large_arc, &sweep, &x, &y,
                       &n) == 7);
 
     } else {

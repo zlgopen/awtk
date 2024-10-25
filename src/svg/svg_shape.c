@@ -47,8 +47,8 @@ static uint32_t _svg_shape_size(const svg_shape_t* shape) {
 }
 
 uint32_t svg_shape_size(const svg_shape_t* shape) {
-  return _svg_shape_size(shape) + svg_color_size(shape->fill_type) +
-         svg_color_size(shape->stroke_type);
+  return _svg_shape_size(shape) + svg_color_size((svg_color_type_t)(shape->fill_type)) +
+         svg_color_size((svg_color_type_t)(shape->stroke_type));
 }
 
 svg_color_t* svg_shape_get_fill(const svg_shape_t* s) {
@@ -59,7 +59,7 @@ svg_color_t* svg_shape_get_fill(const svg_shape_t* s) {
 
 svg_color_t* svg_shape_get_stroke(const svg_shape_t* s) {
   return_value_if_fail(s != NULL && s->stroke_type != SVG_COLOR_NULL, NULL);
-  uint8_t* p = (uint8_t*)s + _svg_shape_size(s) + svg_color_size(s->fill_type);
+  uint8_t* p = (uint8_t*)s + _svg_shape_size(s) + svg_color_size((svg_color_type_t)(s->fill_type));
   return (svg_color_t*)p;
 }
 

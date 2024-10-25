@@ -399,7 +399,7 @@ static int32_t scroll_view_calc_bight_offset(scroll_view_t* scroll_view, int32_t
     virtual_size = scroll_view->virtual_w;
   }
 
-  r = max_d * M_SQRT2 / (M_SQRT2 - 1.0);
+  r = (float_t)(max_d * M_SQRT2 / (M_SQRT2 - 1.0f));
   translate = r - max_d;
 
   /* Calculation formula: (offset - translate)^2 + (ret + translate)^2 = r^2 */

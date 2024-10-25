@@ -45,7 +45,7 @@ bool_t value_bool(const value_t* v) {
 }
 
 value_t* value_init(value_t* v, uint32_t type) {
-  v->type = type;
+  v->type = (value_type_t)type;
   v->free_handle = FALSE;
 
   return v;

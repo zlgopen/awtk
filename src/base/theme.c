@@ -115,7 +115,6 @@ ret_t theme_set(theme_t* theme) {
 #include "theme_default.h"
 
 theme_t* theme_load_from_data(const char* name, const uint8_t* data, uint32_t size) {
-  theme_t* t = NULL;
   theme_header_t* header = (theme_header_t*)data;
   return_value_if_fail(name != NULL && data != NULL, NULL);
 

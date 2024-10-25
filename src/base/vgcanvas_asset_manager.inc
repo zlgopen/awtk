@@ -120,7 +120,8 @@ static ret_t vgcanvas_asset_manager_font_ctx_list_destroy(void* data) {
     font_ctx->font_destroy(NULL, font_ctx->font_name, font_ctx->base.ctx);
   }
   TKMEM_FREE(font_ctx);
-  return 1;
+
+  return RET_OK;
 }
 
 static ret_t vgcanvas_asset_manager_image_list_destroy(void* data) {
@@ -156,7 +157,8 @@ static ret_t vgcanvas_asset_manager_image_ctx_list_destroy(void* data) {
     ctx->bitmap_destroy(NULL, ctx->base.ctx);
   }
   TKMEM_FREE(ctx);
-  return 1;
+
+  return RET_OK;
 }
 
 static int vgcanvas_asset_manager_vg_list_compare_by_id(const void* a, const void* b) {

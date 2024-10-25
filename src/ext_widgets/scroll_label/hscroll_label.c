@@ -402,16 +402,6 @@ static ret_t hscroll_label_on_timer_start(const timer_info_t* info) {
   return RET_REMOVE;
 }
 
-static ret_t hscroll_label_on_timer_stop(const timer_info_t* info) {
-  widget_t* widget = WIDGET(info->ctx);
-  hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
-  return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
-
-  hscroll_label_stop(widget);
-
-  return RET_REMOVE;
-}
-
 static ret_t hscroll_label_on_timer(const timer_info_t* info) {
   ret_t ret = RET_OK;
   widget_t* widget = WIDGET(info->ctx);
