@@ -567,6 +567,11 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
     sdl->render = SDL_CreateRenderer(sdl->window, -1, SDL_RENDERER_SOFTWARE);
   }
 #endif /*WITH_NANOVG_SOFT*/
+  
+  if (sdl->window == NULL) {
+    log_debug("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+    assert(!"Window could not be created");
+  }
 
   win->handle = sdl->window;
   win->vt = &s_native_window_vtable;
