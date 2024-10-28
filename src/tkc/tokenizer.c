@@ -25,6 +25,9 @@
 tokenizer_t* tokenizer_init_ex(tokenizer_t* tokenizer, const char* str, uint32_t size,
                                const char* separtor, const char* single_char_token) {
   uint32_t str_size = 0;
+  if (tokenizer != NULL) {
+    memset(tokenizer, 0x00, sizeof(tokenizer_t));
+  }
   return_value_if_fail(tokenizer != NULL && str != NULL && separtor != NULL, NULL);
 
   str_size = strlen(str);
