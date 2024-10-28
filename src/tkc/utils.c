@@ -1944,7 +1944,7 @@ int tk_vsscanf_simple(const char* str, const char* format, va_list args) {
           if (strncasecmp(str, "0x", 2) == 0) {
             str += 2;
           }
-          *p = (void*)tk_strtol(str, NULL, 16);
+          *p = tk_pointer_from_long(tk_strtol(str, NULL, 16));
           str = str_skip_xint(str);
           assignments++;
           format++;
