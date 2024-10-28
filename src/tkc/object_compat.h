@@ -79,6 +79,8 @@
 #define object_set_prop_uint64 tk_object_set_prop_uint64
 #define object_set_prop_uint8 tk_object_set_prop_uint8
 #define object_unref tk_object_unref
+#define object_clear_props tk_object_clear_props
+
 #define OBJECT TK_OBJECT
 #define OBJECT_REF TK_OBJECT_REF
 #define OBJECT_UNREF TK_OBJECT_UNREF
