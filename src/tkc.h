@@ -117,5 +117,7 @@
 #include "tkc/plugin_manager.h"
 #include "tkc/str_str.h"
 #include "tkc/sha256.h"
+#include "tkc/named_value_hash.h"
+#include "tkc/object_hash.h"
 
 #endif /*TK_TKC_ONLY_H*/
