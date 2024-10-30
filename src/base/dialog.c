@@ -31,6 +31,10 @@
 #include "base/window_manager.h"
 #include "layouters/self_layouter_default.h"
 
+#if defined(AWTK_WEB) || defined(HARMONY_OS)
+#define WITHOUT_MODAL_DIALOG 1
+#endif
+
 static ret_t dialog_on_add_child(widget_t* widget, widget_t* child) {
   dialog_t* dialog = DIALOG(widget);
   return_value_if_fail(dialog != NULL, RET_BAD_PARAMS);
@@ -151,7 +155,7 @@ widget_t* dialog_get_client(widget_t* widget) {
 }
 
 dialog_quit_code_t dialog_modal(widget_t* widget) {
-#ifdef AWTK_WEB
+#ifdef WITHOUT_MODAL_DIALOG
   log_debug("awtk web not support dialog_modal\n");
   return DIALOG_QUIT_NONE;
 #else
@@ -172,7 +176,7 @@ dialog_quit_code_t dialog_modal(widget_t* widget) {
   idle_add(dialog_idle_close, widget);
 
   return (dialog_quit_code_t)(dialog->quit_code);
-#endif /*AWTK_WEB*/
+#endif /*WITHOUT_MODAL_DIALOG*/
 }
 
 static bool_t is_dialog_opened(widget_t* widget) {
@@ -191,7 +195,7 @@ static bool_t is_dialog_opened(widget_t* widget) {
 }
 
 ret_t dialog_quit(widget_t* widget, uint32_t code) {
-#ifdef AWTK_WEB
+#ifdef WITHOUT_MODAL_DIALOG
   log_debug("awtk web not support dialog_modal\n");
   dialog_close(widget);
 #else
@@ -204,7 +208,7 @@ ret_t dialog_quit(widget_t* widget, uint32_t code) {
   dialog->quit_code = (dialog_quit_code_t)code;
   l->quit_num += dialog->quit_num;
   main_loop_quit(l);
-#endif /*AWTK_WEB*/
+#endif /*WITHOUT_MODAL_DIALOG*/
 
   return RET_OK;
 }
