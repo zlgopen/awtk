@@ -474,7 +474,7 @@ def gen_res_svg():
 def gen_res_png_jpg():
     if IS_GENERATE_RAW:
         if INPUT_DIR != join_path(OUTPUT_DIR, 'raw'):
-            dirs = ['xx', 'x1', 'x2', 'x3']
+            dirs = ['xx', 'x1', 'x2', 'x3', 'x4']
             for d in dirs:
                 raw = join_path(INPUT_DIR, 'images/'+d)
                 if os.path.exists(raw):
