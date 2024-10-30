@@ -34,10 +34,6 @@ typedef struct _conf_node_obj_t {
 conf_node_obj_t* conf_node_obj_cast(tk_object_t* obj);
 #define CONF_NODE_OBJ(obj) conf_node_obj_cast(obj)
 
-static int32_t conf_node_obj_compare(tk_object_t* obj, tk_object_t* other) {
-  return pointer_compare((const void*)obj, (const void*)other);
-}
-
 static ret_t conf_node_obj_get_prop(tk_object_t* obj, const char* name, value_t* v) {
   conf_node_obj_t* o = CONF_NODE_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
@@ -89,7 +85,6 @@ static const object_vtable_t s_conf_node_obj_vtable = {
     .desc = "conf node object",
     .size = sizeof(conf_node_obj_t),
     .is_collection = FALSE,
-    .compare = conf_node_obj_compare,
     .get_prop = conf_node_obj_get_prop,
     .set_prop = conf_node_obj_set_prop,
     .remove_prop = conf_node_obj_remove_prop,
@@ -101,7 +96,6 @@ static const object_vtable_t s_conf_node_obj_array_vtable = {
     .desc = "conf node object array",
     .size = sizeof(conf_node_obj_t),
     .is_collection = TRUE,
-    .compare = conf_node_obj_compare,
     .get_prop = conf_node_obj_get_prop,
     .set_prop = conf_node_obj_set_prop,
     .remove_prop = conf_node_obj_remove_prop,

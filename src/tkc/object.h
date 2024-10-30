@@ -221,9 +221,9 @@ ret_t tk_object_set_name(tk_object_t* obj, const char* name);
  * @param {tk_object_t*} obj object对象。
  * @param {tk_object_t*} other 比较的object对象。
  *
- * @return {int} 返回比较结果。
+ * @return {int32_t} 返回比较结果。
  */
-int tk_object_compare(tk_object_t* obj, tk_object_t* other);
+int32_t tk_object_compare(tk_object_t* obj, tk_object_t* other);
 
 /**
  * @method tk_object_get_prop
@@ -1069,6 +1069,21 @@ tk_object_t* tk_object_get_child_object(tk_object_t* obj, const char* path, cons
  * @return {bool_t} 返回TRUE表示是指定类型的实例，否则表示不是。
  */
 bool_t tk_object_is_instance_of(tk_object_t* obj, const char* type);
+
+/* private */
+
+/**
+ * @method tk_object_compare_name_without_nullptr
+ * @annotation ["static"]
+ * @export none
+ * 根据名称比较两个对象，如果两个对象的名称都为NULL，则比较两个对象的地址。
+ *
+ * @param {tk_object_t*} obj object对象。
+ * @param {tk_object_t*} other 比较的object对象。
+ *
+ * @return {int32_t} 返回比较结果。
+ */
+int32_t tk_object_compare_name_without_nullptr(tk_object_t* obj, tk_object_t* other);
 
 #define TK_OBJECT(obj) ((tk_object_t*)(obj))
 

@@ -85,10 +85,6 @@ static ret_t object_array_on_destroy(tk_object_t* obj) {
   return RET_OK;
 }
 
-static int32_t object_array_compare(tk_object_t* obj, tk_object_t* other) {
-  return tk_str_cmp(obj->name, other->name);
-}
-
 static ret_t object_array_extend(tk_object_t* obj) {
   ret_t ret = RET_OOM;
   object_array_t* o = OBJECT_ARRAY(obj);
@@ -395,7 +391,7 @@ static const object_vtable_t s_object_array_vtable = {
     .size = sizeof(object_array_t),
     .is_collection = TRUE,
     .on_destroy = object_array_on_destroy,
-    .compare = object_array_compare,
+    .compare = tk_object_compare_name_without_nullptr,
     .get_prop = object_array_get_prop,
     .set_prop = object_array_set_prop,
     .can_exec = object_array_can_exec,

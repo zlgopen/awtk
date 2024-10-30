@@ -105,11 +105,6 @@ static ret_t object_hash_on_destroy(tk_object_t* obj) {
   return darray_deinit(&(o->props));
 }
 
-static int32_t object_hash_compare(tk_object_t* obj, tk_object_t* other) {
-  return_value_if_fail(obj != NULL && other != NULL, -1);
-  return tk_str_cmp(obj->name, other->name);
-}
-
 static ret_t object_hash_remove_prop(tk_object_t* obj, const char* name) {
   int32_t index = 0;
   object_hash_t* o = OBJECT_HASH(obj);
@@ -364,7 +359,7 @@ static const object_vtable_t s_object_hash_vtable = {
     .is_collection = FALSE,
     .on_destroy = object_hash_on_destroy,
     .clone = (tk_object_clone_t)object_hash_clone,
-    .compare = object_hash_compare,
+    .compare = tk_object_compare_name_without_nullptr,
     .get_prop = object_hash_get_prop,
     .set_prop = object_hash_set_prop,
     .can_exec = object_hash_can_exec,

@@ -362,18 +362,29 @@ ret_t tk_object_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, void* ctx) {
   return ret;
 }
 
-int tk_object_compare(tk_object_t* obj, tk_object_t* other) {
+int32_t tk_object_compare(tk_object_t* obj, tk_object_t* other) {
   int32_t ret = -1;
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, -1);
   return_value_if_fail(other != NULL && other->vt != NULL && other->ref_count >= 0, -1);
 
-  if (obj == other) {
-    ret = 0;
-  } else if (obj->vt->compare != NULL) {
-    ret = obj->vt->compare(obj, other);
+  ret = pointer_compare(obj, other);
+
+  if (ret != 0) {
+    if (obj->vt->compare != NULL) {
+      ret = obj->vt->compare(obj, other);
+    }
   }
 
   return ret;
+}
+
+int32_t tk_object_compare_name_without_nullptr(tk_object_t* obj, tk_object_t* other) {
+  return_value_if_fail(obj != NULL && other != NULL, -1);
+  if (obj->name == NULL && other->name == NULL) {
+    return pointer_compare(obj, other);
+  } else {
+    return tk_str_cmp(obj->name, other->name);
+  }
 }
 
 bool_t tk_object_can_exec(tk_object_t* obj, const char* name, const char* args) {
