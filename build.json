@@ -1,5 +1,5 @@
 {
-  "name": "demouiold",
+  "name": "demoui",
   "version": "1.0",
   "assets": "res/assets",
   "author": "xianjimli@hotmail.com",
@@ -10,7 +10,7 @@
     "assets": "design",
     "sources": [
       "demos/assets.c",
-      "demos/demo_ui_old_app.c"
+      "demos/demo_ui_app.c"
     ],
     "config": {
       "fontScale": "0.8",
