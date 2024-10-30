@@ -86,10 +86,6 @@ vgcanvas_t* VGCANVAS_CREATE_GL(uint32_t w, uint32_t h, uint32_t stride, bitmap_f
   vgcanvas_nanovg_init((vgcanvas_t*)nanovg);
 
   opengl_init();
-  glDisable(GL_STENCIL_TEST);
-  glDisable(GL_ALPHA_TEST);
-  glDisable(GL_DEPTH_TEST);
-  glDisable(GL_SCISSOR_TEST);
 
 #if defined(WITH_NANOVG_GL2)
   nanovg->vg = nvgCreateGL2(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
