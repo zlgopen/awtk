@@ -19,6 +19,7 @@
  *
  */
 
+#include "tkc/fs.h"
 #include "tkc/mem.h"
 
 #ifdef WITH_ASSET_LOADER_ZIP
