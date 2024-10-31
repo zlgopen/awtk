@@ -96,6 +96,13 @@ int dumb_socketpair(int socks[2], int make_overlapped) {
   WSASetLastError(e);
   return SOCKET_ERROR;
 }
+#elif defined(WITH_LWIP)
+int dumb_socketpair(int socks[2], int dummy) {
+  socks[0] = -1;
+  socks[1] = -1;
+
+  return -1;
+}
 #else
 int dumb_socketpair(int socks[2], int dummy) {
   (void)dummy;

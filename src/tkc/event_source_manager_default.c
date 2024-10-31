@@ -29,18 +29,6 @@
 
 #ifdef WITH_SOCKET
 
-#ifdef WIN32
-#include "windows.h"
-#include <winsock2.h>
-#include <ws2tcpip.h>
-typedef int socklen_t;
-#else
-#include <unistd.h>
-#include <sys/select.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#endif /*WIN32*/
-
 static ret_t event_source_manager_default_dispatch_fds(event_source_manager_t* manager,
                                                        uint64_t sleep_time) {
   fd_set fdsr;

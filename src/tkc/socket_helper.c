@@ -75,7 +75,7 @@ ret_t tk_socket_deinit() {
 }
 
 ret_t tk_socket_close(int sock) {
-#ifdef AWORKS
+#if defined(AWORKS) || defined(WITH_LWIP)
   closesocket(sock);
 #else
   close(sock);

@@ -65,6 +65,10 @@
 #include <windows.h>
 #include <winsock2.h>
 typedef int socklen_t;
+#elif defined(WITH_LWIP)
+#include "lwip/sockets.h"
+#include "lwip/netdb.h"
+#define perror(s)
 #else
 #include <sys/socket.h>
 #include <netinet/in.h>
