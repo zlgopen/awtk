@@ -65,6 +65,10 @@ END_C_DECLS
 #define APP_ENABLE_CONSOLE TRUE
 #endif /*APP_ENABLE_CONSOLE*/
 
+#ifndef APP_USE_STD_FONT_SIZE
+#define APP_USE_STD_FONT_SIZE FALSE
+#endif /*APP_USE_STD_FONT_SIZE*/
+
 #include "base/custom_keys.inc"
 #include "base/asset_loader_zip.h"
 
@@ -219,6 +223,7 @@ int main(int argc, char* argv[]) {
 #endif
 #endif/*TK_IS_PC*/
 
+  font_manager_set_standard_font_size(font_manager(), APP_USE_STD_FONT_SIZE);
   system_info_set_default_font(system_info(), APP_DEFAULT_FONT);
   assets_init();
 #ifndef WITH_FS_RES
