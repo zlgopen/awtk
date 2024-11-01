@@ -485,6 +485,10 @@ ret_t scroll_bar_set_params(widget_t* widget, int32_t virtual_size, int32_t row)
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
 
+  if (scroll_bar->virtual_size == virtual_size && scroll_bar->row == row) {
+    return RET_OK;
+  }
+
   widget_set_need_relayout_children(widget);
   scroll_bar->virtual_size = virtual_size;
   scroll_bar->row = row;
@@ -531,7 +535,7 @@ static ret_t scroll_bar_get_prop(widget_t* widget, const char* name, value_t* v)
   } else if (tk_str_eq(name, SCROLL_BAR_PROP_SCROLL_DELTA)) {
     value_set_uint32(v, scroll_bar->scroll_delta);
     return RET_OK;
-  } 
+  }
 
   return RET_NOT_FOUND;
 }
@@ -564,7 +568,7 @@ static ret_t scroll_bar_set_prop(widget_t* widget, const char* name, const value
     return scroll_bar_set_wheel_scroll(widget, value_bool(v));
   } else if (tk_str_eq(name, SCROLL_BAR_PROP_SCROLL_DELTA)) {
     return scroll_bar_set_scroll_delta(widget, value_uint32(v));
-  } 
+  }
 
   return RET_NOT_FOUND;
 }
@@ -573,7 +577,9 @@ static ret_t scroll_bar_desktop_on_parent_wheel_event(void* ctx, event_t* e) {
   wheel_event_t* evt = (wheel_event_t*)e;
   widget_t* widget = WIDGET(ctx);
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
-  int32_t delta = scroll_bar->scroll_delta == 0 ? -evt->dy : (evt->dy > 0 ? -scroll_bar->scroll_delta : scroll_bar->scroll_delta);
+  int32_t delta = scroll_bar->scroll_delta == 0
+                      ? -evt->dy
+                      : (evt->dy > 0 ? -scroll_bar->scroll_delta : scroll_bar->scroll_delta);
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
   return_value_if_equal(widget_on_wheel_children(widget->parent, evt), RET_STOP);
   if (widget->enable && widget->sensitive && scroll_bar->wheel_scroll) {
@@ -587,7 +593,9 @@ static ret_t scroll_bar_desktop_on_parent_wheel_event(void* ctx, event_t* e) {
 static ret_t scroll_bar_desktop_on_attach_parent(widget_t* widget, widget_t* parent) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL && parent != NULL, RET_BAD_PARAMS);
-  scroll_bar->wheel_before_id = widget_on(parent, EVT_WHEEL_BEFORE_CHILDREN, scroll_bar_desktop_on_parent_wheel_event, WIDGET(scroll_bar));
+  scroll_bar->wheel_before_id =
+      widget_on(parent, EVT_WHEEL_BEFORE_CHILDREN, scroll_bar_desktop_on_parent_wheel_event,
+                WIDGET(scroll_bar));
   return RET_OK;
 }
 static ret_t scroll_bar_desktop_on_detach_parent(widget_t* widget, widget_t* parent) {
@@ -843,7 +851,8 @@ static ret_t scroll_bar_desktop_init(widget_t* widget) {
 }
 
 widget_t* scroll_bar_create_desktop_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* widget = scroll_bar_create_internal(parent, x, y, w, h, TK_REF_VTABLE(scroll_bar_desktop));
+  widget_t* widget =
+      scroll_bar_create_internal(parent, x, y, w, h, TK_REF_VTABLE(scroll_bar_desktop));
   scroll_bar_desktop_init(widget);
   return widget;
 }
