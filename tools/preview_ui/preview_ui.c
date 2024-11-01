@@ -34,7 +34,7 @@
 
 #define DEFAULT_UI "./demos/assets/raw/ui/main.xml"
 
-#define MAX_ARGV 12
+#define MAX_ARGV 14
 
 #ifndef APP_RES_ROOT_DEFAULT_VALUE
 #define APP_RES_ROOT_DEFAULT_VALUE NULL
@@ -50,6 +50,7 @@ static const char* s_language = NULL;
 static const char* s_theme = NULL;
 static const char* s_log_level = NULL;
 static const char* s_fps = NULL;
+static bool_t s_enable_std_font = FALSE;
 
 #undef APP_RES_ROOT  // 以便可以通过命令行参数指定res目录
 
@@ -70,7 +71,7 @@ static const char* s_fps = NULL;
     const char* usage =                                                           \
         "Usage: %s ui=xxx [lcd_w=800] [lcd_h=480] [res_root=xxx] "                \
         "[language=xxx] [theme=xxx] [system_bar=xxx] [bottom_system_bar=xxx] "    \
-        "[plugins_path=xxx] [render_mode=xxx] [enable_console=xxx]\n";            \
+        "[plugins_path=xxx] [render_mode=xxx] [enable_std_font=xxx] [enable_console=xxx]\n";            \
     if (argc >= 2) {                                                              \
       char key[TK_NAME_LEN + 1];                                                  \
       int i = 1;                                                                  \
@@ -116,6 +117,8 @@ static const char* s_fps = NULL;
           s_log_level = val + 1;                                                  \
         } else if (tk_str_icmp(key, "fps") == 0) {                                \
           s_fps = val + 1;                                                        \
+        }  else if (tk_str_icmp(key, "enable_std_font") == 0) {                   \
+          s_enable_std_font = tk_atob(val + 1);                                   \
         } else {                                                                  \
           SET_ENABLE_CONSOLE()                                                    \
         }                                                                         \
@@ -263,6 +266,7 @@ static ret_t application_on_launch(void) {
   }
 
   widget_set_style_str(window_manager(), "bg_color", "white");
+  font_manager_set_standard_font_size(font_manager(), s_enable_std_font);
 
   return RET_OK;
 }
