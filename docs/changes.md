@@ -2,6 +2,7 @@
 
 2024/11/03
   * 针对 awtk-android/awtk-ios/awtk-harmonyos-next 完善。
+  * 完善 device_pixel_ratio_to_str
 
 2024/11/01
   * preview_ui添加是否启用标准字体大小的参数(感谢培煌提供补丁)

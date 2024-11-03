@@ -171,11 +171,13 @@ static ret_t build_asset_filename_default(char* path, uint32_t size, const char*
 
 static const char* device_pixel_ratio_to_str(float_t dpr) {
   const char* ratio = "x1";
-  if (dpr >= 4) {
+  int32_t idpr = tk_roundi(dpr);
+
+  if (idpr >= 4) {
     ratio = "x4";
-  } else if (dpr >= 3) {
+  } else if (idpr >= 3) {
     ratio = "x3";
-  } else if (dpr >= 2) {
+  } else if (idpr >= 2) {
     ratio = "x2";
   }
 
