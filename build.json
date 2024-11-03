@@ -6,12 +6,7 @@
   "app_name": "org.zlgopen.demoui",
   "author": "xianjimli@hotmail.com",
   "copyright": "Guangzhou ZHIYUAN Electronics Co.,Ltd.",
-  "icon": "design/default/images/xx/awtk_icon.png",
   "themes":["default", "dark"],
-  "title": {
-    "en_US": "DemoUI",
-    "zh_CN": "控件演示"
-  },
   "sources": [
      "demos/assets.c",
      "demos/vg_common.inc",
@@ -29,6 +24,11 @@
     }
   },
   "harmonyos": {
+    "icon": "design/default/images/xx/awtk_icon.png",
+    "title": {
+      "en_US": "DemoUI",
+      "zh_CN": "控件演示"
+    },
     "sources": [
     ]
   },

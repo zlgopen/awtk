@@ -9,18 +9,9 @@
 * name 应用程序名称（不支持中文和特殊符号）。
 * vendor 开发商。
 * version 版本号。
-* icon 图标。
 * assets 资源所在的目录（相对于配置文件所在的目录，android/ios 一般使用"res/assets", web 一般使用 design）。
 * sources 源文件列表（相对于配置文件所在的目录）。文件名支持通配符如*.c。只要添加应用程序本身和使用的第三方库的源码即可，AWTK 本身用到的代码会自动添加。
 * includes 头文件搜索路径列表（相对于配置文件所在的目录）。
-* title 标题，下面包含不同语言的翻译。
-
-```  
-  "title": {
-    "en_US": "DemoUI",
-    "zh_CN": "控件演示"
-  },
-```
 
 > sources 虽然是通用选项，但是不同平台，包含的源文件可能并不相同，此时应该放到具体平台之下，如果两者都有，则对其进行合并。
 
@@ -129,7 +120,21 @@ android 平台选项放在 android 子键下面，目前支持以下选项：
   }
 ```
 
-## 五、完整示例
+## 五、harmonyos 平台选项
+
+harmonyos 平台选项放在 harmonyos 子键下面。
+
+* icon 图标。
+* title 标题，下面包含不同语言的翻译。
+
+```  
+  "title": {
+    "en_US": "DemoUI",
+    "zh_CN": "控件演示"
+  },
+```
+
+## 六、完整示例
 
 下面是 demoui 的完整示例
 
@@ -138,47 +143,46 @@ android 平台选项放在 android 子键下面，目前支持以下选项：
   "name": "demoui",
   "version": "1.0",
   "assets": "res/assets",
+  "vendor": "zlgopen",
+  "app_name": "org.zlgopen.demoui",
   "author": "xianjimli@hotmail.com",
   "copyright": "Guangzhou ZHIYUAN Electronics Co.,Ltd.",
+  "themes":["default", "dark"],
+  "sources": [
+     "demos/assets.c",
+     "demos/vg_common.inc",
+     "demos/demo_ui_app.c",
+     "res/assets.inc",
+     "res/assets/__assets_dark.inc",
+     "res/assets/__assets_default.inc"
+  ],
   "web": {
     "app_type": "c",
     "assets": "design",
-    "sources": [
-      "demos/assets.c",
-      "demos/demo_ui_app.c"
-    ],
     "config": {
       "fontScale": "0.8",
       "defaultFont": "sans"
     }
   },
-  "android": {
-    "app_name": "org.zlgopen.demoui",
+  "harmonyos": {
+    "icon": "design/default/images/xx/awtk_icon.png",
+    "title": {
+      "en_US": "DemoUI",
+      "zh_CN": "控件演示"
+    },
     "sources": [
-      "demos/assets.c",
-      "demos/demo_ui_app.c",
-      "demos/vg_common.inc",
-      "res/assets.inc",
-      "res/assets/__assets_default.inc"
+    ]
+  },
+  "android": {
+    "sources": [
     ]
   },
   "ios": {
-    "app_name": "org.zlgopen.demoui",
     "sources": [
-      "demos/assets.c",
-      "demos/demo_ui_app.c",
-      "demos/vg_common.inc",
-      "res/assets.inc",
-      "res/assets/__assets_default.inc"
     ]
   }
 }
-
 ```
-
-## 六、harmonyos 平台选项
-
-harmonyos 平台选项放在 harmonyos 子键下面
 
 ## 七、export.json 的用法
 
