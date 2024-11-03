@@ -42,7 +42,7 @@
 * 支持开发 Linux 应用程序。✔
 * 支持开发 MacOS 应用程序。✔
 * 支持开发 Windows 应用程序。✔
-* 支持开发 [Web](https://github.com/zlgopen/awtk-webt .git) APP。✔
+* 支持开发 [Web](https://github.com/zlgopen/awtk-webt.git) 应用程序。✔
 * 支持开发 [Android](https://github.com/zlgopen/awtk-android.git) 应用程序。✔
 * 支持开发 [iOS](https://github.com/zlgopen/awtk-ios.git) 应用程序。✔
 * 支持开发 [鸿蒙系统](https://github.com/zlgopen/awtk-harmonyos-next.git) 应用程序。✔
