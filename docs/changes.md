@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/11/03
+  * 针对 awtk-android/awtk-ios/awtk-harmonyos-next 完善。
+
 2024/11/01
   * preview_ui添加是否启用标准字体大小的参数(感谢培煌提供补丁)
   * 优化scroll_bar_set_params接口的效率，参数没有变化时跳过layout，避免全屏重绘(感谢雨欣提供补丁)

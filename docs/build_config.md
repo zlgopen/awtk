@@ -7,10 +7,20 @@
 ## 一、通用选项
 
 * name 应用程序名称（不支持中文和特殊符号）。
+* vendor 开发商。
 * version 版本号。
+* icon 图标。
 * assets 资源所在的目录（相对于配置文件所在的目录，android/ios 一般使用"res/assets", web 一般使用 design）。
 * sources 源文件列表（相对于配置文件所在的目录）。文件名支持通配符如*.c。只要添加应用程序本身和使用的第三方库的源码即可，AWTK 本身用到的代码会自动添加。
 * includes 头文件搜索路径列表（相对于配置文件所在的目录）。
+* title 标题，下面包含不同语言的翻译。
+
+```  
+  "title": {
+    "en_US": "DemoUI",
+    "zh_CN": "控件演示"
+  },
+```
 
 > sources 虽然是通用选项，但是不同平台，包含的源文件可能并不相同，此时应该放到具体平台之下，如果两者都有，则对其进行合并。
 
@@ -166,7 +176,11 @@ android 平台选项放在 android 子键下面，目前支持以下选项：
 
 ```
 
-## 六、export.json 的用法
+## 六、harmonyos 平台选项
+
+harmonyos 平台选项放在 harmonyos 子键下面
+
+## 七、export.json 的用法
 
 > 为了方便引用自定义控件，自定义控件（包括无界面的库）需要提供一个 export.json 的配置文件，用于声明对外提供的源文件和编译参数。
 
@@ -206,7 +220,7 @@ android 平台选项放在 android 子键下面，目前支持以下选项：
 }
 ```
 
-## 七、示例与参考
+## 八、示例与参考
 
 * [awtk-http-client 的配置文件](https://github.com/zlgopen/awtk-http-client/blob/master/build.json)
 
@@ -215,3 +229,4 @@ android 平台选项放在 android 子键下面，目前支持以下选项：
 * [Android/IOS 插件的配置文件](https://github.com/zlgopen/awtk-mobile-plugins/blob/master/build.json)
 
 * [awtk-web-js 的配置文件](https://github.com/zlgopen/awtk-jerryscript/blob/master/build_web.json)
+

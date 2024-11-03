@@ -28,9 +28,6 @@ static ret_t opengl_init(void) {
   opengl_loadGL();
 
   glDisable(GL_STENCIL_TEST);
-#ifndef HARMONY_OS  
-  glDisable(GL_ALPHA_TEST);
-#endif/*HARMONY_OS*/  
   glDisable(GL_DEPTH_TEST);
   glDisable(GL_SCISSOR_TEST);
 
