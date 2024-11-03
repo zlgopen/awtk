@@ -43,11 +43,11 @@ def merge_depend(config, root, depend, target_platform):
             merge_config_files(config["includes"], depend_config["includes"])
         if "cflags" in depend_config:
             if "cflags" not in config:
-                config["cflags"] = []
+                config["cflags"] = ""
             merge_config_flags(config["cflags"], depend_config["cflags"])
         if "cxxflags" in depend_config:
             if "cxxflags" not in config:
-                config["cxxflags"] = []
+                config["cxxflags"] = ""
             merge_config_flags(config["cxxflags"], depend_config["cxxflags"])
 
 
@@ -100,10 +100,6 @@ def load_app_config(filename, target_platform):
         config["sources"] = list(set(config["sources"]))
     if "includes" in config:
         config["includes"] = list(set(config["includes"]))
-    if "cflags" in config:
-        config["cflags"] = list(set(config["cflags"]))
-    if "cxxflags" in config:
-        config["cxxflags"] = list(set(config["cxxflags"]))
 
     return config
 
@@ -295,11 +291,17 @@ def config_get_app_icon(config):
 
 
 def config_get_app_vendor(config):
-    return config["vendor"]
+    if "vendor" in config:
+        return config["vendor"]
+    else:
+      return "zlgopen"
 
 
 def config_get_app_full_name(config):
-    return config["app_name"]
+    if "app_name" in config:
+        return config["app_name"]
+    else:
+      return "awtkdemo"
 
 
 def config_get_app_name(config):
