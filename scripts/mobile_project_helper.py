@@ -397,3 +397,19 @@ def create_assets_zip(app_root_src, app_root_dst, zip_file):
     print("CMD_CREATE_ASSETS_ZIP:" + CMD_CREATE_ASSETS_ZIP)
 
     os.system(CMD_CREATE_ASSETS_ZIP)
+
+def merge_files(srcs, dst):
+    print(dst)
+    with open(dst, 'w') as outfile:
+        for fname in srcs:
+            print(fname)
+            with open(fname, encoding='utf-8-sig') as infile:
+                outfile.write(infile.read())
+                outfile.write("\n")
+
+
+def append_file(src, dst):
+    with open(dst, 'a') as outfile:
+        with open(src) as infile:
+            outfile.write(infile.read())
+            outfile.write("\n")    
