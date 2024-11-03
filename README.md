@@ -42,12 +42,10 @@
 * To support development of Linux applications.✔
 * To support development of MacOS applications.✔
 * To support development of Windows applications.✔
-* To support development of Web applications.✔
-* To support development of Android applications.✔
-* To support development of iOS applications.✔
-* To support development of WeChat mini programs.
-* To support development of AliPay mini programs.
-* To support development of Baidu mini programs.
+* To support development of [Web](https://github.com/zlgopen/awtk-web.git) applications.✔
+* To support development of [Android](https://github.com/zlgopen/awtk-android.git) applications.✔
+* To support development of [iOS](https://github.com/zlgopen/awtk-ios.git) applications.✔
+* To support development of [HarmonyOs](https://github.com/zlgopen/awtk-harmonyos-next.git) applications.✔
 * To support development of 2D mini games.
 
 ## III. Main Features
@@ -56,7 +54,7 @@
 
 [AWTK](README.md) is a cross-platform GUI engine , which has two meanings as follows:
 
-* AWTK's code is cross-platform. At present, it is compatible with platforms such as ZLG AWorksOS, Windows, Linux, MacOS, embedded Linux, Android, iOS, Web and embedded raw systems. It can be easily ported to variety of different RTOS. In the future, AWTK can be also run as mini programs. 
+* AWTK's code is cross-platform. At present, it is compatible with platforms such as ZLG AWorksOS, Windows, Linux, MacOS, embedded Linux, Android, iOS, HarmonyOS, Web and embedded raw systems. It can be easily ported to variety of different RTOS. In the future, AWTK can be also run as mini programs. 
 
 * In addition, AWTK has a cross-platform library of basic tools, which includes lists, arrays, strings (UTF8 and widechar), event emitters, values, objects, file system, mutex, threads, formulas and string analysis, in order that the applications you develop with AWTK can really run across platforms.
 

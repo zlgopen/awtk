@@ -42,12 +42,10 @@
 * 支持开发 Linux 应用程序。✔
 * 支持开发 MacOS 应用程序。✔
 * 支持开发 Windows 应用程序。✔
-* 支持开发 Web APP。✔
-* 支持开发 Android 应用程序。✔
-* 支持开发 iOS 应用程序。✔
-* 支持开发微信小程序。
-* 支持开发支付宝小程序。
-* 支持开发百度小程序。
+* 支持开发 [Web](https://github.com/zlgopen/awtk-webt .git) APP。✔
+* 支持开发 [Android](https://github.com/zlgopen/awtk-android.git) 应用程序。✔
+* 支持开发 [iOS](https://github.com/zlgopen/awtk-ios.git) 应用程序。✔
+* 支持开发 [鸿蒙系统](https://github.com/zlgopen/awtk-harmonyos-next.git) 应用程序。✔
 * 支持开发 2D 小游戏。
 
 ## 三、主要特色
@@ -56,7 +54,7 @@
 
 [AWTK](README.md) 是跨平台的，这有两个方面的意思：
 
-* AWTK 本身是跨平台的。目前支持的平台有 ZLG AWorksOS、Windows、Linux、MacOS、嵌入式 Linux、Android、iOS、Web 和嵌入式裸系统，可以轻松的移植到各种 RTOS 上。AWTK 以后也可以运行在各种小程序平台上运行。
+* AWTK 本身是跨平台的。目前支持的平台有 ZLG AWorksOS、Windows、Linux、MacOS、嵌入式 Linux、Android、iOS、鸿蒙系统、Web 和嵌入式裸系统，可以轻松的移植到各种 RTOS 上。AWTK 以后也可以运行在各种小程序平台上运行。
 
 * AWTK 同时还提供了一套跨平台的基础工具库。其中包括链表、数组、字符串 (UTF8 和 widechar)，事件发射器、值、对象、文件系统、互斥锁和线程、表达式和字符串解析等等，让你用 AWTK 开发的应用程序可以真正跨平台运行。
 
