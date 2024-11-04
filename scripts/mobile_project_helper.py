@@ -7,6 +7,8 @@ import shutil
 EXPORT_JSON = "export.json"
 
 
+import assets_zip
+
 def join_path(root, subdir):
     return os.path.abspath(os.path.normpath(os.path.join(root, subdir)))
 
@@ -378,13 +380,6 @@ def show_usage():
 
 
 def create_assets_zip(app_root_src, app_root_dst, zip_file):
-    CREATE_ASSETS_ZIP = os.path.abspath(
-        os.path.normpath(AWTK_DIR + "/scripts/create_assets_zip.sh")
-    )
-    if not os.path.exists(CREATE_ASSETS_ZIP):
-        print("ERROR: " + CREATE_ASSETS_ZIP + " not found!")
-        sys.exit(0)
-
     ASSETS_DIR = join_path(app_root_src, "res/assets")
     ASSETS_ZIP = join_path(app_root_dst, zip_file)
 
@@ -393,12 +388,9 @@ def create_assets_zip(app_root_src, app_root_dst, zip_file):
 
     if os.path.exists(ASSETS_ZIP):
         os.remove(ASSETS_ZIP)
-    CMD_CREATE_ASSETS_ZIP = (
-        CREATE_ASSETS_ZIP + ' "' + ASSETS_DIR + '" "' + ASSETS_ZIP + '"'
-    )
-    print("CMD_CREATE_ASSETS_ZIP:" + CMD_CREATE_ASSETS_ZIP)
 
-    os.system(CMD_CREATE_ASSETS_ZIP)
+    assets_zip.create(ASSETS_DIR, ASSETS_ZIP)
+
 
 def merge_files(srcs, dst):
     print(dst)
