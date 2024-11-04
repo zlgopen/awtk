@@ -28,24 +28,24 @@ BEGIN_C_DECLS
 
 /**
  * @class named_value_t
+ * @parent value_t
  * @annotation ["scriptable"]
  * 命名的值。
  *
  */
 typedef struct _named_value_t {
   /**
-   * @property {char*} name
-   * @annotation ["readable", "scriptable"]
-   * 名称。
-   */
-  char* name;
-
-  /**
    * @property {value_t} value
    * @annotation ["readable"]
    * 值。
    */
   value_t value;
+  /**
+   * @property {char*} name
+   * @annotation ["readable", "scriptable"]
+   * 名称。
+   */
+  char* name;
 } named_value_t;
 
 /**
@@ -171,7 +171,6 @@ int32_t named_value_compare(named_value_t* nv, const named_value_t* other);
  * @return {int32_t} 返回RET_OK表示成功，否则表示失败。
  */
 int32_t named_value_compare_by_name(named_value_t* nv, const char* name);
-
 
 /**
  * @method named_value_icompare

@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/11/04
+  * 完善\ object_array\ 和\ named_value(感谢兆坤提供补丁)
+
 2024/11/03
   * 针对 awtk-android/awtk-ios/awtk-harmonyos-next 完善。
   * 完善 device_pixel_ratio_to_str

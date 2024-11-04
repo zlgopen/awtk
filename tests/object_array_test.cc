@@ -23,8 +23,7 @@ static ret_t event_dump(void* ctx, event_t* e) {
 
 static ret_t visit_dump(void* ctx, const void* data) {
   string& str = *(string*)ctx;
-  const named_value_t* nv = (named_value_t*)data;
-  const value_t* v = &(nv->value);
+  const value_t* v = (const value_t*)data;
 
   if (v->type == VALUE_TYPE_STRING) {
     str += value_str(v);
@@ -766,6 +765,32 @@ TEST(ObjectArray, push_and_remove) {
   ASSERT_EQ(value_int(&v), 40);
   ASSERT_EQ(tk_object_is_instance_of(obj, OBJECT_ARRRAY_TYPE), TRUE);
 
+  TK_OBJECT_UNREF(obj);
+}
+
+static int is_even(const void* ctx, const void* data) {
+  const named_value_t* nv = (const named_value_t*)(data);
+  uint32_t num = value_uint32(&nv->value);
+  return (num % 2 == 0) ? 0 : -1;
+}
+
+TEST(ObjectArray, find_prop) {
+  tk_object_t* obj = object_array_create_with_str("1,2,3,4", ",", VALUE_TYPE_UINT32);
+  value_t* v = tk_object_find_prop(obj, is_even, NULL);
+  ASSERT_EQ(v != NULL, TRUE);
+  ASSERT_EQ(value_uint32(v), 2);
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(ObjectArray, find_props) {
+  string log = "";
+  tk_object_t* obj = object_array_create_with_str("1,2,3,4", ",", VALUE_TYPE_UINT32);
+  darray_t matched;
+  darray_init(&matched, 0, NULL, NULL);
+  ASSERT_EQ(tk_object_find_props(obj, is_even, NULL, &matched), RET_OK);
+  darray_foreach(&matched, visit_dump, &log);
+  ASSERT_EQ(log, "24");
+  darray_deinit(&matched);
   TK_OBJECT_UNREF(obj);
 }
 

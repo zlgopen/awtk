@@ -348,7 +348,7 @@ static ret_t object_array_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, voi
     nv.name = name;
     for (i = 0; i < o->size; i++) {
       value_t* iter = o->props + i;
-      tk_snprintf(name, TK_NAME_LEN, "%u", i);
+      tk_snprintf(name, TK_NAME_LEN, "%" PRIu32, i);
 
       value_copy(&(nv.value), iter);
       ret = on_prop(ctx, &nv);
@@ -385,6 +385,52 @@ static ret_t object_array_copy_props(tk_object_t* obj, tk_object_t* src, bool_t 
   return RET_OK;
 }
 
+static ret_t object_array_find_props(tk_object_t* obj, tk_compare_t cmp, const void* data,
+                                     darray_t* matched) {
+  ret_t ret = RET_OK;
+  object_array_t* o = OBJECT_ARRAY(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  if (o->size > 0) {
+    uint32_t i = 0;
+    named_value_t nv;
+    char name[TK_NAME_LEN + 1];
+    nv.name = name;
+    for (i = 0; i < o->size && RET_OK == ret; i++) {
+      value_t* iter = &o->props[i];
+      tk_snprintf(name, TK_NAME_LEN, "%" PRIu32, i);
+      value_copy(&(nv.value), iter);
+      if (0 == cmp(data, &nv)) {
+        ret = darray_push(matched, iter);
+      }
+    }
+  }
+
+  return ret;
+}
+
+static value_t* object_array_find_prop(tk_object_t* obj, tk_compare_t cmp, const void* ctx) {
+  object_array_t* o = OBJECT_ARRAY(obj);
+  return_value_if_fail(o != NULL, NULL);
+
+  if (o->size > 0) {
+    uint32_t i = 0;
+    named_value_t nv;
+    char name[TK_NAME_LEN + 1];
+    nv.name = name;
+    for (i = 0; i < o->size; i++) {
+      value_t* iter = &o->props[i];
+      tk_snprintf(name, TK_NAME_LEN, "%" PRIu32, i);
+      value_copy(&(nv.value), iter);
+      if (0 == cmp(ctx, &nv)) {
+        return iter;
+      }
+    }
+  }
+
+  return NULL;
+}
+
 static const object_vtable_t s_object_array_vtable = {
     .type = OBJECT_ARRRAY_TYPE,
     .desc = OBJECT_ARRRAY_TYPE,
@@ -401,6 +447,8 @@ static const object_vtable_t s_object_array_vtable = {
     .foreach_prop = object_array_foreach_prop,
     .clear_props = object_array_clear_props,
     .copy_props = object_array_copy_props,
+    .find_props = object_array_find_props,
+    .find_prop = object_array_find_prop,
 };
 
 static tk_object_t* object_array_create_with_capacity(uint32_t init_capacity) {
