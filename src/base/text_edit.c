@@ -541,7 +541,6 @@ static ret_t text_edit_layout_fragment(text_edit_t* text_edit, uint32_t start, u
   uint32_t x = 0;
   uint32_t offset0 = start;
   uint32_t offset = start;
-  wchar_t last_char = 0;
   DECL_IMPL(text_edit);
   wstr_t* text = &(text_edit->widget->text);
   canvas_t* c = GET_CANVAS(text_edit);
@@ -557,7 +556,6 @@ static ret_t text_edit_layout_fragment(text_edit_t* text_edit, uint32_t start, u
     break_type_t word_break = LINE_BREAK_NO;
     break_type_t line_break = LINE_BREAK_NO;
     uint32_t char_w = canvas_measure_text(c, p, 1) + CHAR_SPACING;
-    last_char = *p;
     line_break = line_break_check(*p, p[1]);
     if (line_break == LINE_BREAK_MUST || i == end - 1) {
       last_line = (line_info_t*)darray_get(&row->info, row->line_num - 1);

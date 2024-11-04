@@ -1152,8 +1152,6 @@ static ret_t mledit_insert_text_overwrite(widget_t* widget, uint32_t offset, con
   mledit_t* mledit = MLEDIT(widget);
   wstr_t s = {0};
   wstr_t* text = NULL;
-  uint32_t line_num = 1;
-  int32_t i = 0;
   uint32_t rm_cnt = 0;
   uint32_t newtext_len = 0;
   return_value_if_fail(mledit != NULL && mledit->model != NULL, RET_BAD_PARAMS);
