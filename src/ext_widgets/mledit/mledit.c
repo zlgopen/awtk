@@ -31,6 +31,7 @@
 
 static ret_t mledit_init(widget_t* widget);
 static ret_t mledit_update_status(widget_t* widget);
+static ret_t mledit_update_text(widget_t* widget);
 static ret_t mledit_dispatch_event(widget_t* widget, uint32_t type);
 
 static ret_t mledit_save_text(widget_t* widget) {
@@ -201,6 +202,7 @@ ret_t mledit_set_max_lines(widget_t* widget, uint32_t max_lines) {
 
   mledit->max_lines = max_lines;
   text_edit_set_max_rows(mledit->model, max_lines);
+  mledit_update_text(widget);
   text_edit_layout(mledit->model);
 
   return RET_OK;
@@ -212,6 +214,7 @@ ret_t mledit_set_max_chars(widget_t* widget, uint32_t max_chars) {
 
   mledit->max_chars = max_chars;
   text_edit_set_max_chars(mledit->model, max_chars);
+  mledit_update_text(widget);
   text_edit_layout(mledit->model);
 
   return RET_OK;
@@ -1104,29 +1107,16 @@ static void mledit_fix_state(mledit_t* mledit, uint32_t offset, uint32_t rm_num,
 
   mledit->model->ignore_layout = TRUE;
   text_edit_set_select(mledit->model, state.select_start, state.select_end);
-  mledit->model->ignore_layout = FALSE;
-
   text_edit_set_cursor(mledit->model, cursor);
+  mledit->model->ignore_layout = FALSE;
 }
 
-static ret_t mledit_insert_text_overwrite(widget_t* widget, uint32_t offset, const char* newtext) {
+static uint32_t mledit_update_text(widget_t* widget) {
   mledit_t* mledit = MLEDIT(widget);
-  wstr_t s = {0};
-  wstr_t* text = NULL;
-  uint32_t line_num = 1;
   int32_t i = 0;
   uint32_t rm_cnt = 0;
-  uint32_t newtext_len = 0;
-  return_value_if_fail(mledit != NULL && mledit->model != NULL, RET_BAD_PARAMS);
-
-  /* generate new text */
-  wstr_init(&s, 0);
-  wstr_set_utf8(&s, newtext);
-  text = &(mledit->model->widget->text);
-  offset = tk_min(offset, text->size);
-  wstr_insert(text, offset, s.str, s.size);
-  newtext_len = s.size;
-  wstr_reset(&s);
+  uint32_t line_num = 1;
+  wstr_t* text = &(mledit->model->widget->text);
 
   /* handle max_chars */
   if (mledit->max_chars != 0 && mledit->max_chars < text->size) {
@@ -1155,8 +1145,33 @@ static ret_t mledit_insert_text_overwrite(widget_t* widget, uint32_t offset, con
     wstr_remove(text, 0, i + 1);
   }
 
-  /* fix select & cursor */
+  return rm_cnt;
+}
+
+static ret_t mledit_insert_text_overwrite(widget_t* widget, uint32_t offset, const char* newtext) {
+  mledit_t* mledit = MLEDIT(widget);
+  wstr_t s = {0};
+  wstr_t* text = NULL;
+  uint32_t line_num = 1;
+  int32_t i = 0;
+  uint32_t rm_cnt = 0;
+  uint32_t newtext_len = 0;
+  return_value_if_fail(mledit != NULL && mledit->model != NULL, RET_BAD_PARAMS);
+
+  /* generate new text */
+  wstr_init(&s, 0);
+  wstr_set_utf8(&s, newtext);
+  text = &(mledit->model->widget->text);
+  offset = tk_min(offset, text->size);
+  wstr_insert(text, offset, s.str, s.size);
+  newtext_len = s.size;
+
+  rm_cnt = mledit_update_text(widget);
+
+  /* layout insert text & fix select & cursor */
+  text_edit_muti_line_insert_text_layout(mledit->model, offset, newtext_len, s.str, TRUE, rm_cnt);
   mledit_fix_state(mledit, offset, rm_cnt, text->size);
+  wstr_reset(&s);
 
   /* 新加入的文本 由于 max_chars 或 max_lines的限制， 实际上完全没加到文本中 */
   if (offset + newtext_len <= rm_cnt) {
@@ -1180,6 +1195,7 @@ ret_t mledit_insert_text(widget_t* widget, uint32_t offset, const char* text) {
     mledit_dispatch_event(widget, EVT_VALUE_CHANGED);
     mledit_update_status(widget);
   }
+  widget_invalidate(widget, NULL);
 
   return ret;
 }
