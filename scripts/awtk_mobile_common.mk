@@ -1,6 +1,8 @@
 set(AWTK_ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/awtk)
+set(AWTK_APP_PATH ${CMAKE_CURRENT_SOURCE_DIR}/app)
 set(AWTK_3RD_PATH ${AWTK_ROOT_PATH}/3rd)
 set(AWTK_SRC_PATH ${AWTK_ROOT_PATH}/src)
+set(SDL2_SOURCE_DIR ${AWTK_ROOT_PATH}/3rd/SDL)
 
 set(AWTK_COMMON_INCLUDES 
   ${AWTK_SRC_PATH}
@@ -73,3 +75,44 @@ file(GLOB AWTK_COMMON_SOURCE_FILES
   ${AWTK_SRC_PATH}/platforms/pc/*.c
   ${AWTK_SRC_PATH}/vgcanvas/vgcanvas_nanovg_gl.c  
 )
+
+set(AWTK_SDL_COMMON_SOURCE_FILES
+	${SDL2_SOURCE_DIR}/src/*.c
+	${SDL2_SOURCE_DIR}/src/audio/*.c
+	${SDL2_SOURCE_DIR}/src/audio/dummy/*.c
+	${SDL2_SOURCE_DIR}/src/atomic/*.c
+	${SDL2_SOURCE_DIR}/src/cpuinfo/*.c
+	${SDL2_SOURCE_DIR}/src/dynapi/*.c
+	${SDL2_SOURCE_DIR}/src/events/*.c
+	${SDL2_SOURCE_DIR}/src/file/*.c
+	${SDL2_SOURCE_DIR}/src/haptic/*.c
+	${SDL2_SOURCE_DIR}/src/joystick/*.c
+	${SDL2_SOURCE_DIR}/src/joystick/hidapi/*.c
+	${SDL2_SOURCE_DIR}/src/loadso/dlopen/*.c
+	${SDL2_SOURCE_DIR}/src/power/*.c
+	${SDL2_SOURCE_DIR}/src/sensor/*.c
+	${SDL2_SOURCE_DIR}/src/render/*.c
+	${SDL2_SOURCE_DIR}/src/render/*/*.c
+	${SDL2_SOURCE_DIR}/src/stdlib/*.c
+	${SDL2_SOURCE_DIR}/src/thread/*.c
+	${SDL2_SOURCE_DIR}/src/thread/pthread/*.c
+	${SDL2_SOURCE_DIR}/src/timer/*.c
+	${SDL2_SOURCE_DIR}/src/timer/unix/*.c
+	${SDL2_SOURCE_DIR}/src/video/*.c
+	${SDL2_SOURCE_DIR}/src/video/yuv2rgb/*.c
+  ${SDL2_SOURCE_DIR}/src/video/dummy/*.c
+  ${SDL2_SOURCE_DIR}/src/haptic/dummy/*.c	
+	${AWTK_SRC_PATH}/input_methods/input_method_creator.c
+	${AWTK_SRC_PATH}/main_loop/main_loop_sdl.c
+	${AWTK_SRC_PATH}/native_window/native_window_sdl.c
+)
+
+file(GLOB AWTK_APP_SOURCE_FILES
+  ${AWTK_APP_PATH}/*.c
+  ${AWTK_APP_PATH}/*.cpp
+  ${AWTK_APP_PATH}/**/*.c
+  ${AWTK_APP_PATH}/**/*.cpp
+  ${AWTK_APP_PATH}/**/**/*.c
+  ${AWTK_APP_PATH}/**/**/*.cpp
+)
+
