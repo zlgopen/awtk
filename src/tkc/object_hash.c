@@ -52,7 +52,7 @@ static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char*
         darray_init(&bucket, 8, NULL, (tk_compare_t)named_value_compare);
 
         log_debug("%s: Hashing collision!\r\n", __FUNCTION__);
-        log_debug("Hash: %lld\r\n", hash);
+        log_debug("Hash: %" PRId64 "\r\n", hash);
         log_debug("Wrong name: %s\r\n", nvh->base.name);
         log_debug("Target name: %s\r\n\r\n", name);
 
