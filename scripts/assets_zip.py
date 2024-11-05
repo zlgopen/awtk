@@ -6,7 +6,7 @@ import zipfile
 def main():
     # 获取源目录和目标 ZIP 文件路径
     src = sys.argv[1] if len(sys.argv) > 1 else 'res/assets'
-    dst = sys.argv[2] if len(sys.argv) > 2 else '../assets.zip'
+    dst = sys.argv[2] if len(sys.argv) > 2 else 'assets.zip'
     create(src, dst)
 
 def create(src, dst):
@@ -70,7 +70,9 @@ def create(src, dst):
     with zipfile.ZipFile(dst, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for root, dirs, files in os.walk(os.path.join(temp_dir, 'assets')):
             for file in files:
-                zipf.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(temp_dir, 'assets')))
+                filenameOutZip = os.path.join(root, file)
+                filenameInZip = os.path.relpath(os.path.join(root, file), temp_dir);
+                zipf.write(filenameOutZip, filenameInZip)
 
     # 清理临时目录
     shutil.rmtree(temp_dir)

@@ -48,12 +48,11 @@ done
 
 cd ..
 
-zip -rq $DST assets
+zip -r $DST assets
+echo "assets saved to $DST:"
+ls -l $DST
 
 cd ..
 rm -rf temp
-
-echo "assets saved to $DST:"
-ls -l $DST
 
 
