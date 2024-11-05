@@ -26,7 +26,7 @@ set(AWTK_COMMON_FLAGS "${AWTK_COMMON_FLAGS} -DWITH_GPU_GL ")
 set(AWTK_COMMON_FLAGS "${AWTK_COMMON_FLAGS} -DHAS_PTHREAD -DHAS_GET_TIME_US64=1 ")
 set(AWTK_COMMON_FLAGS "${AWTK_COMMON_FLAGS} -DWITH_DATA_READER_WRITER=1 ")
 
-file(GLOB AWTK_COMMON_SOURCE_FILES
+file(GLOB AWTK_BASE_SOURCE_FILES 
   ${AWTK_3RD_PATH}/libunibreak/*.c
   ${AWTK_3RD_PATH}/miniz/*.c
   ${AWTK_3RD_PATH}/nanovg/base/*.c
@@ -37,7 +37,6 @@ file(GLOB AWTK_COMMON_SOURCE_FILES
   ${AWTK_SRC_PATH}/ui_loader/*.c
   ${AWTK_SRC_PATH}/xml/*.c
   ${AWTK_SRC_PATH}/svg/*.c
-  ${AWTK_SRC_PATH}/blend/*.c
   ${AWTK_SRC_PATH}/clip_board/*.c
   ${AWTK_SRC_PATH}/font_loader/*.c
   ${AWTK_SRC_PATH}/graphic_buffer/*.c
@@ -51,30 +50,32 @@ file(GLOB AWTK_COMMON_SOURCE_FILES
   ${AWTK_SRC_PATH}/custom_widgets/*/*.cxx
   ${AWTK_SRC_PATH}/custom_widgets/*.cpp
   ${AWTK_SRC_PATH}/custom_widgets/*/*.cpp
-  ${AWTK_SRC_PATH}/image_loader/*.c
   ${AWTK_SRC_PATH}/widget_animators/*.c
   ${AWTK_SRC_PATH}/window_animators/*.c
   ${AWTK_SRC_PATH}/window_manager/window_manager_default.c
   ${AWTK_SRC_PATH}/dialog_highlighters/*.c
   ${AWTK_SRC_PATH}/*.c
   ${AWTK_SRC_PATH}/ubjson/*.c
-  ${AWTK_SRC_PATH}/streams/serial/*.c
   ${AWTK_SRC_PATH}/streams/buffered/*.c
   ${AWTK_SRC_PATH}/streams/mem/*.c
   ${AWTK_SRC_PATH}/streams/file/*.c
-  ${AWTK_SRC_PATH}/streams/inet/*.c
   ${AWTK_SRC_PATH}/streams/*.c
   ${AWTK_SRC_PATH}/csv/*.c
   ${AWTK_SRC_PATH}/conf_io/*.c
   ${AWTK_SRC_PATH}/fscript_ext/*.c
   ${AWTK_SRC_PATH}/charset/*.c
-  ${AWTK_SRC_PATH}/input_engines/input_engine_pinyin.cpp
+)
+  
+file(GLOB AWTK_COMMON_SOURCE_FILES
+  ${AWTK_BASE_SOURCE_FILES}
+  ${AWTK_SRC_PATH}/streams/inet/*.c
+  ${AWTK_SRC_PATH}/streams/serial/*.c
   ${AWTK_SRC_PATH}/lcd/lcd_nanovg.c
+  ${AWTK_SRC_PATH}/image_loader/*.c
   ${AWTK_SRC_PATH}/main_loop/main_loop_simple.c
   ${AWTK_SRC_PATH}/main_loop/main_loop_console.c
-  ${AWTK_SRC_PATH}/platforms/pc/*.c
-  ${AWTK_SRC_PATH}/vgcanvas/vgcanvas_nanovg_gl.c  
-)
+  ${AWTK_SRC_PATH}/input_engines/input_engine_pinyin.cpp
+  ${AWTK_SRC_PATH}/platforms/pc/*.c)
 
 set(AWTK_SDL_COMMON_SOURCE_FILES
 	${SDL2_SOURCE_DIR}/src/*.c
