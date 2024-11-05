@@ -71,10 +71,12 @@ file(GLOB AWTK_COMMON_SOURCE_FILES
   ${AWTK_SRC_PATH}/streams/inet/*.c
   ${AWTK_SRC_PATH}/streams/serial/*.c
   ${AWTK_SRC_PATH}/lcd/lcd_nanovg.c
+  ${AWTK_SRC_PATH}/blend/*.c
   ${AWTK_SRC_PATH}/image_loader/*.c
   ${AWTK_SRC_PATH}/main_loop/main_loop_simple.c
   ${AWTK_SRC_PATH}/main_loop/main_loop_console.c
   ${AWTK_SRC_PATH}/input_engines/input_engine_pinyin.cpp
+  ${AWTK_SRC_PATH}/vgcanvas/vgcanvas_nanovg_gl.c
   ${AWTK_SRC_PATH}/platforms/pc/*.c)
 
 set(AWTK_SDL_COMMON_SOURCE_FILES
