@@ -133,6 +133,8 @@ def file_read(name):
 
 
 def file_write(name, content):
+    dirname = os.path.dirname(name)
+    mkdir_if_not_exist(dirname);
     with open(name, "w") as outfile:
         outfile.write(content)
 
@@ -242,12 +244,18 @@ def copy_app_sources(config, app_sources_dst, app_root_src):
     sources = config_get_sources(config)
 
     for f in sources:
-        sfrom = join_path(app_root_src, f)
+        sfrom = f
+        if os.path.isabs(f):
+            relpath = os.path.relpath(f, app_root_src)
+        else:
+            relpath = f
+            sfrom = join_path(app_root_src, f)
+
         if sfrom.find("*") >= 0:
             sto = app_sources_dst
             copy_glob_files(sfrom, app_root_src, sto)
         else:
-            sto = join_path(app_sources_dst, f)
+            sto = join_path(app_sources_dst, relpath)
             copy_file(sfrom, sto)
 
 
@@ -279,11 +287,21 @@ def update_cmake_file(config, filename):
     cflags = to_string(config_get_cflags(config))
     defines = to_string(config_get_defines(config))
     cppflags = to_string(config_get_cppflags(config))
+
+    if config_get_app_type(config) == "js":
+      cflags += "-DAWTK_WEB_JS"
+      cppflags += "-DAWTK_WEB_JS"
+
     file_replace(filename, "EXTRA_CFLAGS", cflags)
     file_replace(filename, "EXTRA_DEFINES", defines)
     file_replace(filename, "EXTRA_CPPFLAGS", cppflags)
     file_replace(filename, "EXTRA_INCLUDES", sincludes)
 
+def config_get_app_type(config):
+    if "app_type" in config:
+        return config["app_type"]
+    else:
+        return "c"
 
 def config_get_app_icon(config):
     if "icon" in config:
@@ -303,7 +321,7 @@ def config_get_app_full_name(config):
     if "app_name" in config:
         return config["app_name"]
     else:
-      return "awtkdemo"
+      return "com.zlgopen." + config["name"]
 
 
 def config_get_app_name(config):
