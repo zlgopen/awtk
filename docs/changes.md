@@ -5,6 +5,7 @@
   * 修复AWTK-WEB输入法的问题。
   * object hash 增加 keep_props_order 属性(感谢兆坤提供补丁)
   * 去除克隆combo_box时不必要的打印信息 (感谢雨欣提供补丁)
+  * 完善 named_value_hash(感谢兆坤提供补丁)
 
 2024/11/04
   * 完善\ object_array\ 和\ named_value(感谢兆坤提供补丁)

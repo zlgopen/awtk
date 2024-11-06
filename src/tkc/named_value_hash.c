@@ -24,15 +24,17 @@
 
 #include "tkc/named_value_hash.h"
 
-static uint64_t bkdr_hash(const char* str) {
-  const uint64_t base = 131;
+#define NAMED_VALUE_HASH_BKDR_HASH_BASE 131
+/*在Brian Kernighan与Dennis Ritchie的《The C Programming Language》一书被展示而得名，是一种简单快捷的hash算法，也是Java目前采用的字符串的Hash算法。*/
+static inline uint64_t bkdr_hash(const char* str) {
   const char* iter = NULL;
   uint64_t ret = 0;
   for (ret = 0, iter = str; (*iter) != '\0'; iter++) {
-    ret = ret * base + (*iter);
+    ret = ret * NAMED_VALUE_HASH_BKDR_HASH_BASE + (*iter);
   }
   return ret;
 }
+#undef NAMED_VALUE_HASH_BKDR_HASH_BASE
 
 uint64_t named_value_hash_get_hash_from_str(const char* str) {
   return bkdr_hash(str);
