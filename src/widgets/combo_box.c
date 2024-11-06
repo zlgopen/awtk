@@ -901,7 +901,9 @@ ret_t combo_box_set_open_window(widget_t* widget, const char* open_window) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(combo_box->open_window);
-  combo_box->open_window = tk_strdup(open_window);
+  if (TK_STR_IS_NOT_EMPTY(open_window)) {
+    combo_box->open_window = tk_strdup(open_window);
+  }
 
   return RET_OK;
 }
