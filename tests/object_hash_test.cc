@@ -805,6 +805,50 @@ TEST(ObjectHash, keep_type) {
   TK_OBJECT_UNREF(obj);
 }
 
+TEST(ObjectHash, keep_props_order) {
+  str_t str;
+  value_t v;
+  tk_object_t* detail = object_array_create();
+  tk_object_t* obj = object_hash_create();
+  object_hash_t* o = OBJECT_HASH(obj);
+
+  object_hash_set_keep_props_order(obj, TRUE);
+  ASSERT_EQ(o->keep_props_order, TRUE);
+
+  str_init(&str, 100);
+
+  tk_object_set_prop_str(obj, "name", "awtk");
+  tk_object_set_prop_bool(obj, "light", FALSE);
+  tk_object_set_prop_int(obj, "age", 100);
+  tk_object_set_prop_float(obj, "weight", 60);
+  tk_object_set_prop_object(obj, "detail", detail);
+
+  object_array_push(detail, value_set_int(&v, 1));
+  object_array_push(detail, value_set_uint32(&v, 2));
+  object_array_push(detail, value_set_str(&v, "3"));
+  object_array_push(detail, value_set_str(&v, "4"));
+
+  tk_object_to_json(obj, &str, 0, 0, TRUE);
+  ASSERT_STREQ(str.str,
+               "{\"name\": \"awtk\",\"light\": false,\"age\": 100,\"weight\": "
+               "60.000000,\"detail\": [1,2,\"3\",\"4\"]}");
+
+  /****************************************************************************/
+
+  object_hash_set_keep_props_order(obj, FALSE);
+  ASSERT_EQ(o->keep_props_order, FALSE);
+
+  str_clear(&str);
+  tk_object_to_json(obj, &str, 0, 0, TRUE);
+  ASSERT_STREQ(str.str,
+               "{\"age\": 100,\"name\": \"awtk\",\"light\": false,\"detail\": "
+               "[1,2,\"3\",\"4\"],\"weight\": 60.000000}");
+
+  TK_OBJECT_UNREF(obj);
+  TK_OBJECT_UNREF(detail);
+  str_reset(&str);
+}
+
 TEST(ObjectHash, set_prop_str_with_format) {
   tk_object_t* obj = object_hash_create();
 

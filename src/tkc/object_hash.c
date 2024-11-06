@@ -42,8 +42,14 @@ static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char*
     if (p_is_gen_hash != NULL) {
       (*p_is_gen_hash) = TRUE;
     }
-    ret = darray_bsearch_index(&(o->props), (tk_compare_t)named_value_hash_compare_by_hash,
-                               (void*)hash);
+
+    if (!o->keep_props_order) {
+      ret = darray_bsearch_index(&(o->props), (tk_compare_t)named_value_hash_compare_by_hash,
+                                 tk_pointer_from_long(hash));
+    } else {
+      ret = darray_find_index_ex(&(o->props), (tk_compare_t)named_value_hash_compare_by_hash,
+                                 tk_pointer_from_long(hash));
+    }
 
     if (ret >= 0) {
       named_value_hash_t* nvh = (named_value_hash_t*)darray_get(&o->props, ret);
@@ -58,7 +64,7 @@ static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char*
 
         ret = -1;
         if (RET_OK == darray_find_all(&o->props, (tk_compare_t)named_value_hash_compare_by_hash,
-                                      (void*)hash, &bucket)) {
+                                      tk_pointer_from_long(hash), &bucket)) {
           named_value_hash_t* right_nvh = NULL;
           darray_sort(&bucket, (tk_compare_t)named_value_compare);
           right_nvh = (named_value_hash_t*)darray_bsearch(
@@ -228,7 +234,11 @@ static ret_t object_hash_set_prop(tk_object_t* obj, const char* name, const valu
       named_value_hash_set_name(nvh, name);
     }
 
-    ret = darray_sorted_insert(&(o->props), nvh, (tk_compare_t)named_value_hash_compare, FALSE);
+    if (!o->keep_props_order) {
+      ret = darray_sorted_insert(&(o->props), nvh, NULL, FALSE);
+    } else {
+      ret = darray_push(&(o->props), nvh);
+    }
     if (ret != RET_OK) {
       named_value_hash_destroy(nvh);
     }
@@ -392,6 +402,21 @@ ret_t object_hash_set_keep_prop_type(tk_object_t* obj, bool_t keep_prop_type) {
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   o->keep_prop_type = keep_prop_type;
+
+  return RET_OK;
+}
+
+ret_t object_hash_set_keep_props_order(tk_object_t* obj, bool_t keep_props_order) {
+  object_hash_t* o = OBJECT_HASH(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  if (o->keep_props_order != keep_props_order) {
+    o->keep_props_order = keep_props_order;
+
+    if (!keep_props_order) {
+      darray_sort(&(o->props), NULL);
+    }
+  }
 
   return RET_OK;
 }

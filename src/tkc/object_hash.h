@@ -68,6 +68,9 @@ typedef struct _object_hash_t {
 
   /*设置属性值不改变属性的类型*/
   bool_t keep_prop_type : 1;
+
+  /*保持属性间的顺序*/
+  bool_t keep_props_order : 1;
 } object_hash_t;
 
 /**
@@ -103,6 +106,16 @@ tk_object_t* object_hash_create_ex(bool_t enable_path);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t object_hash_set_keep_prop_type(tk_object_t* obj, bool_t keep_prop_type);
+
+/**
+ * @method object_hash_set_keep_props_order
+ * 设置是否保持属性间的顺序。
+ * @annotation ["scriptable"]
+ * @param {tk_object_t*} obj 对象。
+ * @param {bool_t} keep_props_order 保持属性间的顺序。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_hash_set_keep_props_order(tk_object_t* obj, bool_t keep_props_order);
 
 /**
  * @method object_hash_cast
