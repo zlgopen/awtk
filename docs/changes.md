@@ -1,5 +1,9 @@
 # 最新动态
 
+2024/11/06
+  * 完善编译脚本。
+  * 修复AWTK-WEB输入法的问题。
+
 2024/11/04
   * 完善\ object_array\ 和\ named_value(感谢兆坤提供补丁)
   * 为text_edit添加insert时的layout函数，优化layout效率。修复shift + end/home 无法正常选中文本的问题。修复mledit在修改最大行数和字符数后没有更新文本的问题（感谢泽武提供补丁）

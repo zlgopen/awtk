@@ -909,10 +909,14 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       text_edit_get_state(edit->model, &state);
       im_commit_event_t* evt = (im_commit_event_t*)e;
 
-      if (edit->readonly || !widget->focused) {
+      if (edit->readonly) {
         break;
       }
-
+#ifndef AWTK_WEB      
+      if (!widget->focused) {
+        break;
+      }
+#endif/*AWTK_WEB*/
       if (state.preedit) {
         text_edit_preedit_clear(edit->model);
       }
@@ -921,7 +925,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
         edit_clear(edit);
       }
       edit_commit_str(widget, evt->text);
-
+      log_debug("EVT_IM_COMMIT:%s\n", evt->text);
       widget_invalidate(widget, NULL);
 
       break;
