@@ -443,6 +443,7 @@
 #include "default/inc/images/debug_start_d.res"
 #include "default/inc/images/indeterminate.res"
 #include "default/inc/images/muted.res"
+#include "default/inc/images/awtk_icon.res"
 #include "default/inc/images/uiex_List_Connectandshare.res"
 #include "default/inc/images/arrow_down_o.res"
 #include "default/inc/images/rgb.res"
@@ -805,6 +806,7 @@
 #include "default/inc/images/uiex_check_n.data"
 #include "default/inc/images/edit_clear_o.data"
 #include "default/inc/images/debug_step_return_o.data"
+#include "default/inc/images/awtk_icon.data"
 #include "default/inc/images/uiex_Boot_loading.data"
 #include "default/inc/images/uiex_radio_checked_d.data"
 #include "default/inc/images/img_slider_fg.data"
@@ -1377,6 +1379,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_debug_start_d_default);
   assets_manager_add(am, image_indeterminate_default);
   assets_manager_add(am, image_muted_default);
+  assets_manager_add(am, image_awtk_icon_default);
   assets_manager_add(am, image_uiex_List_Connectandshare_default);
   assets_manager_add(am, image_arrow_down_o_default);
   assets_manager_add(am, image_rgb_default);

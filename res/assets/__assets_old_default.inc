@@ -321,6 +321,7 @@
 #include "default/inc/images/green_btn_n.res"
 #include "default/inc/images/indeterminate.res"
 #include "default/inc/images/muted.res"
+#include "default/inc/images/awtk_icon.res"
 #include "default/inc/images/arrow_down_o.res"
 #include "default/inc/images/rgb.res"
 #include "default/inc/images/num_dot.res"
@@ -481,6 +482,7 @@
 #include "default/inc/images/ani6.data"
 #include "default/inc/images/message.data"
 #include "default/inc/images/edit_clear_o.data"
+#include "default/inc/images/awtk_icon.data"
 #include "default/inc/images/img_slider_fg.data"
 #include "default/inc/images/ania.data"
 #include "default/inc/images/ani1.data"
@@ -878,6 +880,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_green_btn_n_default);
   assets_manager_add(am, image_indeterminate_default);
   assets_manager_add(am, image_muted_default);
+  assets_manager_add(am, image_awtk_icon_default);
   assets_manager_add(am, image_arrow_down_o_default);
   assets_manager_add(am, image_rgb_default);
   assets_manager_add(am, image_num_dot_default);
