@@ -55,7 +55,7 @@ static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char*
       named_value_hash_t* nvh = (named_value_hash_t*)darray_get(&o->props, ret);
       if (!tk_str_eq(name, nvh->base.name)) {
         darray_t bucket;
-        darray_init(&bucket, 8, NULL, (tk_compare_t)named_value_compare);
+        darray_init(&bucket, 8, NULL, NULL);
 
         log_debug("%s: Hashing collision!\r\n", __FUNCTION__);
         log_debug("Hash: %" PRId64 "\r\n", hash);
@@ -65,9 +65,7 @@ static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char*
         ret = -1;
         if (RET_OK == darray_find_all(&o->props, (tk_compare_t)named_value_hash_compare_by_hash,
                                       tk_pointer_from_long(hash), &bucket)) {
-          named_value_hash_t* right_nvh = NULL;
-          darray_sort(&bucket, (tk_compare_t)named_value_compare);
-          right_nvh = (named_value_hash_t*)darray_bsearch(
+          named_value_hash_t* right_nvh = (named_value_hash_t*)darray_find_ex(
               &bucket, (tk_compare_t)named_value_compare_by_name, (void*)name);
           if (right_nvh != NULL) {
             ret = darray_find_index_ex(&o->props, pointer_compare, (void*)right_nvh);
