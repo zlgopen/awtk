@@ -25,6 +25,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include "base/opengl.h"
 #include "../base/nanovg_plus.h"
 
 #ifndef NVGP_GL_INIT_CALL_NUMBER 

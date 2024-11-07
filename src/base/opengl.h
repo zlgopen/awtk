@@ -1,3 +1,5 @@
+#ifndef AWTK_OPENGL_H
+#define AWTK_OPENGL_H
 #if defined(WITH_GPU_GL)
 
 #ifdef WITHOUT_GLAD
@@ -24,14 +26,15 @@
 #define opengl_loadGL() gladLoadGL()
 #endif /*WITHOUT_GLAD*/
 
-static ret_t opengl_init(void) {
+static void opengl_init(void) {
   opengl_loadGL();
 
   glDisable(GL_STENCIL_TEST);
   glDisable(GL_DEPTH_TEST);
   glDisable(GL_SCISSOR_TEST);
 
-  return RET_OK;
+  return;
 }
 #endif/*WITH_GPU_GL*/
+#endif/*AWTK_OPENGL_H*/
 

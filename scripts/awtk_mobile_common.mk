@@ -9,13 +9,22 @@ set(AWTK_COMMON_INCLUDES
   ${AWTK_SRC_PATH}
   ${AWTK_3RD_PATH}
   ${AWTK_3RD_PATH}/glad
-  ${AWTK_3RD_PATH}/nanovg
-  ${AWTK_3RD_PATH}/nanovg/gl
-  ${AWTK_3RD_PATH}/nanovg/base
   ${AWTK_3RD_PATH}/gpinyin/include
   ${AWTK_3RD_PATH}/libunibreak
   ${AWTK_SRC_PATH}/ext_widgets
   ${AWTK_SRC_PATH}/custom_widgets)
+  
+set(AWTK_NANOVG_INCLUDES
+  ${AWTK_3RD_PATH}/nanovg
+  ${AWTK_3RD_PATH}/nanovg/gl
+  ${AWTK_3RD_PATH}/nanovg/base
+)
+
+set(AWTK_NANOVG_PLUS_INCLUDES
+  ${AWTK_3RD_PATH}/nanovg_plus
+  ${AWTK_3RD_PATH}/nanovg_plus/gl
+  ${AWTK_3RD_PATH}/nanovg_plus/base
+)
 
 set(AWTK_COMMON_FLAGS "${AWTK_COMMON_FLAGS} -DMOBILE_APP -DWITH_ASSET_LOADER ")
 set(AWTK_COMMON_FLAGS "${AWTK_COMMON_FLAGS} -DWITH_STB_FONT -DWITHOUT_GLAD ")
@@ -27,10 +36,12 @@ set(AWTK_COMMON_FLAGS "${AWTK_COMMON_FLAGS} -DWITH_GPU_GL ")
 set(AWTK_COMMON_FLAGS "${AWTK_COMMON_FLAGS} -DHAS_PTHREAD -DHAS_GET_TIME_US64=1 ")
 set(AWTK_COMMON_FLAGS "${AWTK_COMMON_FLAGS} -DWITH_DATA_READER_WRITER=1 ")
 
+set(AWTK_VGCANVAS_GLES2_FLAGS "-DWITH_GPU_GLES2 -DWITH_GPU_GL -DWITH_NANOVG_PLUS_GPU -DNVGP_GLES2 ")
+set(AWTK_VGCANVAS_GLES3_FLAGS "-DWITH_GPU_GLES3 -DWITH_GPU_GL -DWITH_NANOVG_PLUS_GPU -DNVGP_GLES3 ")
+
 file(GLOB AWTK_BASE_SOURCE_FILES 
   ${AWTK_3RD_PATH}/libunibreak/*.c
   ${AWTK_3RD_PATH}/miniz/*.c
-  ${AWTK_3RD_PATH}/nanovg/base/*.c
   ${AWTK_SRC_PATH}/tkc/*.c
   ${AWTK_SRC_PATH}/base/*.c
   ${AWTK_SRC_PATH}/layouters/*.c
@@ -66,18 +77,30 @@ file(GLOB AWTK_BASE_SOURCE_FILES
   ${AWTK_SRC_PATH}/fscript_ext/*.c
   ${AWTK_SRC_PATH}/charset/*.c
 )
+
+file(GLOB AWTK_VGCANVAS_NANOVG_SOURCE_FILES
+  ${AWTK_3RD_PATH}/nanovg/base/*.c
+  ${AWTK_SRC_PATH}/lcd/lcd_nanovg.c
+  ${AWTK_SRC_PATH}/vgcanvas/vgcanvas_nanovg.c
+  ${AWTK_SRC_PATH}/vgcanvas/vgcanvas_nanovg_gl.c
+)
   
+file(GLOB AWTK_VGCANVAS_NANOVG_PLUS_SOURCE_FILES
+  ${AWTK_3RD_PATH}/nanovg_plus/base/*.c
+  ${AWTK_3RD_PATH}/nanovg_plus/gl/*.c
+  ${AWTK_SRC_PATH}/lcd/lcd_nanovg.c
+  ${AWTK_SRC_PATH}/vgcanvas/vgcanvas_nanovg_plus.c
+)
+
 file(GLOB AWTK_COMMON_SOURCE_FILES
   ${AWTK_BASE_SOURCE_FILES}
   ${AWTK_SRC_PATH}/streams/inet/*.c
   ${AWTK_SRC_PATH}/streams/serial/*.c
-  ${AWTK_SRC_PATH}/lcd/lcd_nanovg.c
   ${AWTK_SRC_PATH}/blend/*.c
   ${AWTK_SRC_PATH}/image_loader/*.c
   ${AWTK_SRC_PATH}/main_loop/main_loop_simple.c
   ${AWTK_SRC_PATH}/main_loop/main_loop_console.c
   ${AWTK_SRC_PATH}/input_engines/input_engine_pinyin.cpp
-  ${AWTK_SRC_PATH}/vgcanvas/vgcanvas_nanovg_gl.c
   ${AWTK_SRC_PATH}/platforms/pc/*.c)
 
 set(AWTK_SDL_COMMON_SOURCE_FILES

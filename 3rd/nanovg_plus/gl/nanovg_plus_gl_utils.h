@@ -22,23 +22,6 @@
 #ifndef __NANOVG_PLUS_GL_UTILS_H__
 #define __NANOVG_PLUS_GL_UTILS_H__
 
-#ifdef WITHOUT_GLAD
-#include <SDL.h>
-
-#ifdef IOS
-#include <OpenGLES/gltypes.h>
-#include <OpenGLES/ES2/gl.h>
-#include <OpenGLES/ES2/glext.h>
-#else
-#define GL_GLEXT_PROTOTYPES 1
-#include <SDL_opengl.h>
-#include <SDL_opengl_glext.h>
-#endif /*IOS*/
-
-#else
-#include <glad/glad.h>
-#endif /*WITHOUT_GLAD*/
-
 #include "nanovg_plus_gl.h"
 
 typedef struct _nvgp_gl_util_framebuffer {
