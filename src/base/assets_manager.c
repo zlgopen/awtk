@@ -650,9 +650,7 @@ ret_t assets_manager_set_system_info(assets_manager_t* am, system_info_t* system
 ret_t assets_manager_set_locale_info(assets_manager_t* am, locale_info_t* locale_info) {
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
 
-  if (locale_info != NULL) {
-    am->locale_info = locale_info;
-  }
+  am->locale_info = locale_info;
 
   return RET_OK;
 }
