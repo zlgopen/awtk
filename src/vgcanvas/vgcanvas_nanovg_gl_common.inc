@@ -24,6 +24,7 @@
 #endif
 
 #include "base/system_info.h"
+#include "base/vgcanvas_asset_manager.h"
 
 #if defined(WITH_NANOVG_GL3)
 #define NANOVG_GL3_IMPLEMENTATION
@@ -41,7 +42,12 @@
 #define NANOVG_GLES3_IMPLEMENTATION
 #endif
 
+#ifdef WITH_NANOVG_PLUS_GPU
+#include "nanovg_plus.h"
+#else
 #include "nanovg.h"
+#endif
+
 #include "tkc/utf8.h"
 #include "tkc/mem.h"
 #include "base/opengl.h"
@@ -49,23 +55,36 @@
 #include "base/image_manager.h"
 #include "base/native_window.h"
 
+#ifdef WITH_NANOVG_PLUS_GPU
+#include "nanovg_plus_gl.h"
+#define vgcanvas_nanovg_init vgcanvas_nanovg_plus_init
+#else
 #include "nanovg_gl.h"
 #include "nanovg_gl_utils.h"
+#endif
 
 typedef struct _vgcanvas_nanovg_t {
   vgcanvas_t base;
 
   int font_id;
+#ifdef WITH_NANOVG_PLUS_GPU
+  nvgp_context_t* vg;
+#else
   NVGcontext* vg;
+#endif
   uint32_t text_align_v;
   uint32_t text_align_h;
 
   native_window_t* window;
 } vgcanvas_nanovg_t;
 
+#ifdef WITH_NANOVG_PLUS_GPU
+#include "vgcanvas_nanovg_plus.h"
+#else
 #include "texture.inc"
 #include "vgcanvas_nanovg_gl.inc"
 #include "vgcanvas_asset_manager_nanovg.inc"
+#endif
 
 vgcanvas_t* VGCANVAS_CREATE_GL(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
                             void* win) {
@@ -79,15 +98,22 @@ vgcanvas_t* VGCANVAS_CREATE_GL(uint32_t w, uint32_t h, uint32_t stride, bitmap_f
 
   nanovg->base.w = w;
   nanovg->base.h = h;
-  nanovg->base.vt = &vt;
   nanovg->window = window;
   nanovg->base.ratio = info.ratio;
+
+#if defined(WITH_NANOVG_PLUS_GPU)
+  nanovg->base.vt = vgcanvas_nanovg_plus_get_vt();
+#else
+  nanovg->base.vt = &vt;
+#endif
 
   vgcanvas_nanovg_init((vgcanvas_t*)nanovg);
 
   opengl_init();
 
-#if defined(WITH_NANOVG_GL2)
+#if defined(WITH_NANOVG_PLUS_GPU)
+  nanovg->vg = nvgp_create(NVGP_MODE_GPU, w, h);
+#elif defined(WITH_NANOVG_GL2)
   nanovg->vg = nvgCreateGL2(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
 #elif defined(WITH_NANOVG_GL3)
   nanovg->vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
@@ -101,8 +127,15 @@ vgcanvas_t* VGCANVAS_CREATE_GL(uint32_t w, uint32_t h, uint32_t stride, bitmap_f
     assert(!"OpenGL is not supported!");
   }
 
+#if defined(WITH_NANOVG_PLUS_GPU)
+  vgcanvas_asset_manager_add_vg(vgcanvas_asset_manager(), &(nanovg->base),
+                                vgcanvas_asset_manager_nanovg_plus_bitmap_destroy,
+                                vgcanvas_asset_manager_nanovg_plus_font_destroy);
+#else
   vgcanvas_asset_manager_add_vg(vgcanvas_asset_manager(), &(nanovg->base),
                                 vgcanvas_asset_manager_nanovg_bitmap_destroy,
                                 vgcanvas_asset_manager_nanovg_font_destroy);
+#endif
+
   return &(nanovg->base);
 }

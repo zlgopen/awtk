@@ -5,6 +5,7 @@
 #include "base/image_manager.h"
 #include "base/native_window.h"
 
+#include "base/opengl.h"
 #include "nanovg_plus.h"
 #include "nanovg_plus_gl.h"
 #include "nanovg_plus_gl_utils.h"
@@ -276,7 +277,7 @@ static ret_t vgcanvas_nanovg_plus_destroy(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
-static ret_t vgcanvas_asset_manager_nanovg_plus_font_destroy(void* vg, const char* font_name,
+ret_t vgcanvas_asset_manager_nanovg_plus_font_destroy(void* vg, const char* font_name,
                                                              void* specific) {
   int32_t id = tk_pointer_to_int(specific);
   vgcanvas_nanovg_plus_t* canvas = (vgcanvas_nanovg_plus_t*)vg;
@@ -286,7 +287,7 @@ static ret_t vgcanvas_asset_manager_nanovg_plus_font_destroy(void* vg, const cha
   return RET_OK;
 }
 
-static ret_t vgcanvas_asset_manager_nanovg_plus_bitmap_destroy(void* vg, void* specific) {
+ret_t vgcanvas_asset_manager_nanovg_plus_bitmap_destroy(void* vg, void* specific) {
   vgcanvas_nanovg_plus_t* canvas = (vgcanvas_nanovg_plus_t*)vg;
   vgcanvas_nanovg_plus_gl_texture_t* texture = (vgcanvas_nanovg_plus_gl_texture_t*)specific;
   if (canvas != NULL && canvas->vg != NULL && texture != NULL) {
@@ -320,6 +321,8 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   nanovg->base.ratio = info.ratio;
 
   vgcanvas_nanovg_plus_init((vgcanvas_t*)nanovg);
+  
+  opengl_init();
 
   nanovg->vg = nvgp_create(NVGP_MODE_GPU, w, h);
 

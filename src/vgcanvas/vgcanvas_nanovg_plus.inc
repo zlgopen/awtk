@@ -40,7 +40,7 @@ static ret_t vgcanvas_nanovg_plus_on_asset_events(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_plus_init(vgcanvas_t* vgcanvas) {
+ret_t vgcanvas_nanovg_plus_init(vgcanvas_t* vgcanvas) {
   (void)vgcanvas;
   return RET_OK;
 }
@@ -800,3 +800,7 @@ static const vgcanvas_vtable_t vt = {
     .fbo_to_bitmap = vgcanvas_nanovg_plus_fbo_to_bitmap,
     .clear_cache = vgcanvas_nanovg_plus_clear_cache,
     .destroy = vgcanvas_nanovg_plus_destroy};
+
+const vgcanvas_vtable_t* vgcanvas_nanovg_plus_get_vt() {
+  return &vt;
+}
