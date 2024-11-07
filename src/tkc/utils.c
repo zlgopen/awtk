@@ -59,16 +59,8 @@ const char* tk_skip_to_num(const char* str) {
   return p;
 }
 
-int tk_str2bool(const char* str) {
-  if (str == NULL || str[0] == '0' || tk_strcmp(str, "false") == 0 || tk_strcmp(str, "no") == 0) {
-    return 0;
-  }
-
-  return 1;
-}
-
 bool_t tk_atob(const char* str) {
-  if (str == NULL || *str == 'f' || *str == 'F') {
+  if (TK_STR_IS_EMPTY(str) || *str == 'f' || *str == 'F' || tk_str_eq(str, "0")) {
     return FALSE;
   }
 

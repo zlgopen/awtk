@@ -612,7 +612,10 @@ TEST(Utils, to_json) {
 
   str_init(&str, 1000);
   ASSERT_EQ(object_to_json(obj, &str), RET_OK);
-  ASSERT_STREQ(str.str, "{\n  \"addr\":    {\n      \"city\": \"sz\",\n      \"country\": \"zh\"\n   },\n  \"age\": 100,\n  \"arr\":    [\n      1,\n      2,\n      \"abc\",\n      \"hello\"\n   ],\n  \"name\": \"jim\"\n}");
+  ASSERT_STREQ(str.str,
+               "{\n  \"addr\":    {\n      \"city\": \"sz\",\n      \"country\": \"zh\"\n   },\n  "
+               "\"age\": 100,\n  \"arr\":    [\n      1,\n      2,\n      \"abc\",\n      "
+               "\"hello\"\n   ],\n  \"name\": \"jim\"\n}");
 
   str_reset(&str);
   TK_OBJECT_UNREF(obj);
@@ -1936,4 +1939,37 @@ TEST(Utils, mergesort2) {
   ASSERT_EQ(arr[4].age, 38);
   ASSERT_EQ(arr[5].age, 43);
   ASSERT_EQ(arr[6].age, 82);
+}
+
+TEST(Utils, atob) {
+  ASSERT_EQ(tk_atob("FALSE"), FALSE);
+  ASSERT_EQ(tk_atob("False"), FALSE);
+  ASSERT_EQ(tk_atob("F"), FALSE);
+  ASSERT_EQ(tk_atob("f"), FALSE);
+
+  ASSERT_EQ(tk_atob("\"FALSE\""), TRUE);
+  ASSERT_EQ(tk_atob("'FALSE'"), TRUE);
+  ASSERT_EQ(tk_atob(" FALSE "), TRUE);
+
+  ASSERT_EQ(tk_atob("TRUE"), TRUE);
+  ASSERT_EQ(tk_atob("True"), TRUE);
+  ASSERT_EQ(tk_atob("T"), TRUE);
+  ASSERT_EQ(tk_atob("t"), TRUE);
+
+  ASSERT_EQ(tk_atob("\"TRUE\""), TRUE);
+  ASSERT_EQ(tk_atob("'TRUE'"), TRUE);
+  ASSERT_EQ(tk_atob(" TRUE "), TRUE);
+
+  ASSERT_EQ(tk_atob(NULL), FALSE);
+  ASSERT_EQ(tk_atob(""), FALSE);
+  ASSERT_EQ(tk_atob(" "), TRUE);
+
+  ASSERT_EQ(tk_atob("0"), FALSE);
+  ASSERT_EQ(tk_atob("00"), TRUE);
+  ASSERT_EQ(tk_atob("0AWTK"), TRUE);
+  ASSERT_EQ(tk_atob("1"), TRUE);
+  ASSERT_EQ(tk_atob("-1"), TRUE);
+  ASSERT_EQ(tk_atob("2"), TRUE);
+
+  ASSERT_EQ(tk_atob("abcd"), TRUE);
 }
