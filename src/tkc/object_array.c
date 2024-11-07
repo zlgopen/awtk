@@ -400,7 +400,7 @@ static ret_t object_array_find_props(tk_object_t* obj, tk_compare_t cmp, const v
       value_t* iter = &o->props[i];
       tk_snprintf(name, TK_NAME_LEN, "%" PRIu32, i);
       value_copy(&(nv.value), iter);
-      if (0 == cmp(data, &nv)) {
+      if (0 == cmp(&nv, data)) {
         ret = darray_push(matched, iter);
       }
     }
@@ -422,7 +422,7 @@ static value_t* object_array_find_prop(tk_object_t* obj, tk_compare_t cmp, const
       value_t* iter = &o->props[i];
       tk_snprintf(name, TK_NAME_LEN, "%" PRIu32, i);
       value_copy(&(nv.value), iter);
-      if (0 == cmp(ctx, &nv)) {
+      if (0 == cmp(&nv, ctx)) {
         return iter;
       }
     }

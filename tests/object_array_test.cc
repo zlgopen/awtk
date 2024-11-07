@@ -768,7 +768,7 @@ TEST(ObjectArray, push_and_remove) {
   TK_OBJECT_UNREF(obj);
 }
 
-static int is_even(const void* ctx, const void* data) {
+static int is_even(const void* data, const void* ctx) {
   const named_value_t* nv = (const named_value_t*)(data);
   uint32_t num = value_uint32(&nv->value);
   return (num % 2 == 0) ? 0 : -1;
