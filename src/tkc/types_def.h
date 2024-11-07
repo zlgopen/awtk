@@ -465,6 +465,9 @@ int __cppcheck__strncmp(const char* s1, const char* s2, size_t n);
     wcscmp((s1), (s2)) == 0))
 #endif /*WITH_CPPCHECK*/
 
+#define tk_str_indexable(s) \
+  ((s) != NULL && (s)[0] == '[' && tk_isdigit((s)[1]) && (s)[tk_strlen(s) - 1] == ']')
+
 #define tk_fequal(f1, f2) (fabs((f1) - (f2)) < 0.0001)
 #define tk_lfequal(f1, f2) (fabs((f1) - (f2)) < 0.0000001)
 

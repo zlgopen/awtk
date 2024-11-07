@@ -38,7 +38,7 @@ static ret_t object_typed_array_set_prop(tk_object_t* obj, const char* name, con
   object_typed_array_t* o = OBJECT_TYPED_ARRAY(obj);
   return_value_if_fail(o != NULL && o->arr != NULL, RET_BAD_PARAMS);
 
-  if (*name == '[') {
+  if (tk_str_indexable(name)) {
     int32_t index = tk_atoi(name + 1);
     return typed_array_set(o->arr, index, v);
   }
@@ -66,7 +66,7 @@ static ret_t object_typed_array_get_prop(tk_object_t* obj, const char* name, val
   } else if (tk_str_eq(name, "data")) {
     value_set_pointer(v, o->arr->data);
     ret = RET_OK;
-  } else if (*name == '[') {
+  } else if (tk_str_indexable(name)) {
     int32_t index = tk_atoi(name + 1);
     ret = typed_array_get(o->arr, index, v);
   }

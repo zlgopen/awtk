@@ -143,7 +143,7 @@ ret_t object_array_push(tk_object_t* obj, const value_t* v) {
 static int32_t object_array_parse_index(const char* name) {
   if (tk_isdigit(*name)) {
     return tk_atoi(name);
-  } else if (*name == '[') {
+  } else if (tk_str_indexable(name)) {
     return tk_atoi(name + 1);
   } else if (tk_str_eq(name, "-1")) {
     return -1;

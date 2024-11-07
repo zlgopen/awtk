@@ -31,7 +31,7 @@ static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char*
   object_hash_t* o = OBJECT_HASH(obj);
   return_value_if_fail(o != NULL && name != NULL, -1);
 
-  if (*name == '[' && tk_isdigit(name[1]) && tk_str_end_with(name, "]")) {
+  if (tk_str_indexable(name)) {
     ret = tk_atoi(name + 1);
     return_value_if_fail(ret < o->props.size, -1);
   } else {

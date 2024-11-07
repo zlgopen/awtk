@@ -45,7 +45,7 @@ static int32_t object_default_find_prop_index_by_name(tk_object_t* obj, const ch
   object_default_t* o = OBJECT_DEFAULT(obj);
   return_value_if_fail(o != NULL && name != NULL, -1);
 
-  if (*name == '[' && tk_isdigit(name[1]) && tk_str_end_with(name, "]")) {
+  if (tk_str_indexable(name)) {
     ret = tk_atoi(name + 1);
     return_value_if_fail(ret < o->props.size, -1);
   } else {

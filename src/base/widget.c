@@ -1165,7 +1165,7 @@ static widget_t* widget_lookup_child(widget_t* widget, const char* name) {
 
 widget_t* widget_child(widget_t* widget, const char* path) {
   return_value_if_fail(widget != NULL && path != NULL, NULL);
-  if (*path == '[' && path[strlen(path) - 1] == ']') {
+  if (tk_str_indexable(path)) {
     int32_t index = tk_atoi(path + 1);
 
     if (index < 0) {
