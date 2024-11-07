@@ -1572,6 +1572,7 @@ static ret_t text_edit_update_caret_pos(text_edit_t* text_edit) {
   uint32_t font_size = impl->font_size;
   uint32_t line_height = impl->line_height;
   wstr_t* text = &(text_edit->widget->text);
+  return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
   canvas_set_font(c, impl->font_name, font_size);
 
