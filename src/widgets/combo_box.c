@@ -914,7 +914,9 @@ ret_t combo_box_set_theme_of_popup(widget_t* widget, const char* theme_of_popup)
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(combo_box->theme_of_popup);
-  combo_box->theme_of_popup = tk_strdup(theme_of_popup);
+  if (TK_STR_IS_NOT_EMPTY(theme_of_popup)) {
+    combo_box->theme_of_popup = tk_strdup(theme_of_popup);
+  }
 
   return RET_OK;
 }

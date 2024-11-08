@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/11/08
+  * 去除克隆combo_box时不必要的打印信息(感谢雨欣提供补丁)
+
 2024/11/07
   * 修复locale_infos_unref接口释放info对象无法清除assets_manager上的野指针导致崩溃的问题(感谢雨欣提供补丁)
   * 完善object_hash(感谢兆坤提供补丁)
