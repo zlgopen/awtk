@@ -2115,8 +2115,12 @@ ret_t text_edit_set_cursor(text_edit_t* text_edit, uint32_t cursor) {
 
   if (impl->state.cursor != cursor) {
     impl->state.cursor = cursor;
-    text_edit_update_caret_pos(text_edit);
-    text_edit_update_input_rect(text_edit);
+    if (impl->single_line) {
+      text_edit_layout(text_edit);
+    } else {
+      text_edit_update_caret_pos(text_edit);
+      text_edit_update_input_rect(text_edit);
+    }
   }
 
   return RET_OK;
