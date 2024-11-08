@@ -139,10 +139,16 @@ set(AWTK_SDL_COMMON_SOURCE_FILES
 
 file(GLOB AWTK_APP_SOURCE_FILES
   ${AWTK_APP_PATH}/*.c
+  ${AWTK_APP_PATH}/*.cc
   ${AWTK_APP_PATH}/*.cpp
   ${AWTK_APP_PATH}/**/*.c
+  ${AWTK_APP_PATH}/**/*.cc
   ${AWTK_APP_PATH}/**/*.cpp
   ${AWTK_APP_PATH}/**/**/*.c
+  ${AWTK_APP_PATH}/**/**/*.cc
   ${AWTK_APP_PATH}/**/**/*.cpp
+  ${AWTK_APP_PATH}/**/**/**/*.c
+  ${AWTK_APP_PATH}/**/**/**/*.cc
+  ${AWTK_APP_PATH}/**/**/**/*.cpp
 )
 
