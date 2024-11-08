@@ -221,7 +221,6 @@ def files_replace_with_config(files, app_root_dst, config):
     app_full_name = config_get_app_full_name(config)
     app_name = config_get_app_name(config)
     vendor = config_get_app_vendor(config)
-
     files_replace(files, app_root_dst, app_full_name, app_name, vendor)
 
 
@@ -287,6 +286,7 @@ def update_cmake_file(config, filename):
     cflags = to_string(config_get_cflags(config))
     defines = to_string(config_get_defines(config))
     cppflags = to_string(config_get_cppflags(config))
+    default_font_name = config_get_font_name(config)
 
     if config_get_app_type(config) == "js":
       cflags += "-DAWTK_WEB_JS"
@@ -296,6 +296,7 @@ def update_cmake_file(config, filename):
     file_replace(filename, "EXTRA_DEFINES", defines)
     file_replace(filename, "EXTRA_CPPFLAGS", cppflags)
     file_replace(filename, "EXTRA_INCLUDES", sincludes)
+    file_replace(filename, "AWTK_DEFAULT_FONT_NAME", default_font_name)
 
 def config_get_app_type(config):
     if "app_type" in config:
@@ -316,6 +317,12 @@ def config_get_app_vendor(config):
     else:
       return "zlgopen"
 
+def config_get_font_name(config):
+    if "config" in config:
+      cfg = config["config"]
+      if "defaultFont" in cfg:
+        return cfg["defaultFont"]
+    return "default"
 
 def config_get_app_full_name(config):
     if "app_name" in config:

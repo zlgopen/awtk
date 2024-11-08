@@ -29,6 +29,9 @@
       "en_US": "DemoUI",
       "zh_CN": "控件演示"
     },
+    "config": {
+      "defaultFont": "default_full"
+    },
     "sources": [
     ]
   },
