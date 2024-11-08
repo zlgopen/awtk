@@ -1367,6 +1367,8 @@ ret_t xml_file_expand(const char* filename, str_t* s, const char* data);
 ret_t tk_date_time_format_impl(const date_time_t* dt, const char* format, str_t* result,
                                tk_on_result_t translate_callback);
 
+bool_t tk_str_indexable(const char* str);
+
 END_C_DECLS
 
 #endif /*TK_UTILS_H*/

@@ -2611,3 +2611,26 @@ ret_t tk_mergesort(void* base, size_t nmemb, size_t size, tk_compare_t cmp) {
 ret_t object_to_json(tk_object_t* obj, str_t* str) {
   return tk_object_to_json(obj, str, 2, 0, FALSE);
 }
+
+bool_t tk_str_indexable(const char* str) {
+  bool_t ret = TRUE;
+  return_value_if_fail(str != NULL, FALSE);
+
+  ret = (str[0] == '[');
+  if (ret) {
+    uint32_t len = tk_strlen(str);
+    ret = (len >= 3);
+    if (ret) {
+      ret = (str[len - 1] == ']');
+      if (ret) {
+        if ((len >= 4) && (str[1] == '-')) {
+          ret = tk_isdigit(str[2]);
+        } else {
+          ret = tk_isdigit(str[1]);
+        }
+      }
+    }
+  }
+
+  return ret;
+}

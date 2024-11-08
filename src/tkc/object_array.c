@@ -243,7 +243,7 @@ ret_t object_array_set(tk_object_t* obj, uint32_t index, const value_t* v) {
     value_reset(iter);
     ret = value_deep_copy(iter, v);
     emitter_dispatch(EMITTER(o), &e);
-  } else if (index == 0xffffffff) {
+  } else if (index == -1) {
     ret = object_array_push(obj, v);
   } else {
     ret = RET_BAD_PARAMS;
@@ -274,10 +274,20 @@ static ret_t object_array_set_prop(tk_object_t* obj, const char* name, const val
 ret_t object_array_get(tk_object_t* obj, uint32_t i, value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   object_array_t* o = OBJECT_ARRAY(obj);
+  value_t* iter = NULL;
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
+  if (o->size == 0) {
+    return RET_NOT_FOUND;
+  }
+
   if (i < o->size) {
-    value_t* iter = o->props + i;
+    iter = o->props + i;
+  } else if (i == -1) {
+    iter = o->props + (o->size - 1);
+  }
+
+  if (iter != NULL) {
     ret = value_copy(v, iter);
   }
 

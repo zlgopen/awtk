@@ -138,6 +138,31 @@ TEST(ObjectArray, basic) {
   TK_OBJECT_UNREF(obj);
 }
 
+TEST(ObjectArray, get_set_prop) {
+  value_t v;
+  tk_object_t* obj = object_array_create();
+
+  object_array_push(obj, value_set_int(&v, 0));
+  object_array_push(obj, value_set_int(&v, 1));
+  ASSERT_EQ(tk_object_set_prop_int(obj, "-1", 2), RET_OK);
+  ASSERT_EQ(tk_object_set_prop_int(obj, "[-1]", 3), RET_OK);
+
+  ASSERT_EQ(tk_object_get_prop_int(obj, "0", -1), 0);
+  ASSERT_EQ(tk_object_get_prop_int(obj, "1", -1), 1);
+  ASSERT_EQ(tk_object_get_prop_int(obj, "2", -1), 2);
+  ASSERT_EQ(tk_object_get_prop_int(obj, "3", -1), 3);
+
+  ASSERT_EQ(tk_object_get_prop_int(obj, "[0]", -1), 0);
+  ASSERT_EQ(tk_object_get_prop_int(obj, "[1]", -1), 1);
+  ASSERT_EQ(tk_object_get_prop_int(obj, "[2]", -1), 2);
+  ASSERT_EQ(tk_object_get_prop_int(obj, "[3]", -1), 3);
+
+  ASSERT_EQ(tk_object_get_prop_int(obj, "-1", -1), 3);
+  ASSERT_EQ(tk_object_get_prop_int(obj, "[-1]", -1), 3);
+
+  TK_OBJECT_UNREF(obj);
+}
+
 TEST(ObjectArray, clone) {
   value_t v;
   string log;
