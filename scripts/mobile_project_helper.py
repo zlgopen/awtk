@@ -278,10 +278,10 @@ def to_string(input):
 def update_cmake_file(config, filename):
     includes = config_get_includes(config)
     sincludes = (
-        "${APP_SOURCE_DIR}/res\n ${APP_SOURCE_DIR}/src\n  ${APP_SOURCE_DIR}/3rd\n"
+        "${AWTK_APP_PATH}/res\n  ${AWTK_APP_PATH}/src\n  ${AWTK_APP_PATH}/3rd\n"
     )
     for f in includes:
-        sincludes += "  ${APP_SOURCE_DIR}/" + f + "\n"
+        sincludes += "  ${AWTK_APP_PATH}/" + f + "\n"
     print("process " + filename)
 
     cflags = to_string(config_get_cflags(config))
@@ -321,7 +321,7 @@ def config_get_app_full_name(config):
     if "app_name" in config:
         return config["app_name"]
     else:
-      return "com.zlgopen." + config["name"]
+      return "org.zlgopen." + config["name"]
 
 
 def config_get_app_name(config):
