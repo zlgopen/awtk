@@ -291,7 +291,7 @@ void nvgp_destroy(nvgp_context_t* ctx) {
   }
 }
 
-static nvgp_clear_path_cache(nvgp_path_cache_t* cache) {
+static void nvgp_clear_path_cache(nvgp_path_cache_t* cache) {
   cache->nverts = 0;
   NVGP_MEMSET(cache->bounds, 0x0, sizeof(cache->bounds));
   nvgp_darray_clear(&cache->paths);
