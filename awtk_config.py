@@ -8,7 +8,7 @@ import compile_config
 complie_helper = compile_config.get_curr_config_for_awtk()
 
 from awtk_config_common import OS_NAME, TARGET_ARCH, TOOLS_PREFIX, TK_SRC, TK_BIN_DIR, TK_LIB_DIR, TK_3RD_ROOT, TK_TOOLS_ROOT, OS_DEBUG, TK_DEMO_ROOT, GTEST_ROOT, TKC_STATIC_LIBS, TOOLS_NAME, NANOVG_BACKEND, NATIVE_WINDOW, TK_ROOT
-from awtk_config_common import joinPath, toWholeArchive, genIdlAndDefEx, setEnvSpawn, genDllLinkFlags, copySharedLib, cleanSharedLib, scons_db_check_and_remove
+from awtk_config_common import joinPath, toWholeArchive, genIdlAndDefEx, setEnvSpawn, genDllLinkFlags, copySharedLib, cleanSharedLib, scons_db_check_and_remove, is_raspberrypi
 from awtk_config_common import OS_FLAGS, OS_LIBS, OS_LIBPATH, OS_CPPPATH, OS_LINKFLAGS, OS_SUBSYSTEM_CONSOLE, OS_SUBSYSTEM_WINDOWS, OS_PROJECTS, COMMON_CFLAGS
 
 WIN32_AWTK_RES = 'win32_res/awtk.res'
@@ -57,6 +57,9 @@ NANOVG_BACKEND = 'GL3'
 # NANOVG_BACKEND='AGG'
 # NANOVG_BACKEND='AGGE'
 # NANOVG_BACKEND='GL2'
+if is_raspberrypi():
+  NANOVG_BACKEND='GLES2'
+
 NANOVG_BACKEND = complie_helper.get_value('NANOVG_BACKEND', NANOVG_BACKEND)
 #NANOVG_BACKEND='BGFX'
 
