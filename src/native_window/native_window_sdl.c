@@ -578,6 +578,10 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
 
 #ifdef WITH_GPU_GL
   sdl->context = SDL_GL_CreateContext(sdl->window);
+  if (sdl->context == NULL) {
+    log_debug("SDL_GL_CreateContext failed: %s\n", SDL_GetError());
+    assert(!"SDL_GL_CreateContext failed");
+  }
   SDL_GL_SetSwapInterval(1);
 #endif /*WITH_GPU_GL*/
 
