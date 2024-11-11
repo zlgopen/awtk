@@ -212,6 +212,6 @@
       </group_box>
     </view>
   </pages>
-  <candidates x="0" y="0" w="100%" h="30" enable_preview="true"/>
+  <candidates x="0" y="0" w="100%" h="30" enable_preview="true" visible_num="7"/>
   <button name="close" style="close" self_layout="default(x=r:2, y=2, w=20, h=20)" enable_preview="true" text="x" />
 </keyboard>
