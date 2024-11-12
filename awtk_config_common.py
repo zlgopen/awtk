@@ -11,9 +11,13 @@ if sys.version_info.major == 2:
 else:
   import pickle
 
+OS_NAME = platform.system()
+
 import subprocess
 
 def is_raspberrypi():
+  if OS_NAME == "Windows":
+    return False
   result = str(subprocess.check_output(["uname", "-a"]))
   return result.find('Linux raspberrypi') >= 0
 
@@ -22,7 +26,6 @@ def is_raspberrypi():
 #######################################################
 
 TOOLS_PREFIX = ''
-OS_NAME = platform.system()
 MACH = platform.machine()
 ARCH = platform.architecture()
 is32bit = (ARCH[0] == '32bit')
