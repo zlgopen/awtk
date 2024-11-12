@@ -210,3 +210,9 @@ SDL_GL_DeleteContext
  * @return {int}
  */
 
+/**
+ * @method SDL_GetWindowWMInfo
+ * @annotation ["global"]
+ * @return {int}
+ */
+
