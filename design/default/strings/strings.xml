@@ -512,6 +512,10 @@ Translate text
   <language name="zh_CN">请输入内容</language>
   <language name="en_US">Please enter your text</language>
 </string>
+<string name="Please enter your value">
+  <language name="zh_CN">请输入数值</language>
+  <language name="en_US">Please enter your value</language>
+</string>
 <string name="Horizontal Progress">
   <language name="zh_CN">水平进度条</language>
   <language name="en_US">Horizontal Progress</language>
