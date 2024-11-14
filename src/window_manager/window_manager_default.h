@@ -69,6 +69,7 @@ typedef struct _window_manager_default_t {
   int32_t lcd_w;
   int32_t lcd_h;
 
+  bool_t keep_all_pressed_keys;
 } window_manager_default_t;
 
 /**

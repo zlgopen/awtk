@@ -753,6 +753,11 @@ static ret_t window_manager_idle_destroy_window(const idle_info_t* info) {
 static ret_t window_manager_prepare_close_window(widget_t* widget, widget_t* window) {
   return_value_if_fail(widget != NULL && window != NULL, RET_BAD_PARAMS);
 
+  if (window_manager_get_top_window(widget) == window && !window->sensitive) {
+    window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+    wm->keep_all_pressed_keys = TRUE;
+  }
+
   if (widget->target == window) {
     widget->target = NULL;
   }
@@ -1527,7 +1532,18 @@ ret_t window_manager_default_on_event(widget_t* widget, event_t* e) {
     window_manager_default_reset_window_animator(widget);
     window_manager_default_reset_dialog_highlighter(widget);
   } else if (e->type == EVT_TOP_WINDOW_CHANGED) {
-    input_device_status_abort_all_pressed_keys(ids);
+    bool_t keep_all_pressed_keys = wm->keep_all_pressed_keys;
+    if (!keep_all_pressed_keys) {
+      widget_t* top_window = window_manager_get_top_window(widget);
+      if (top_window != NULL) {
+        keep_all_pressed_keys = !top_window->sensitive;
+      }
+    } else {
+      wm->keep_all_pressed_keys = FALSE;
+    }
+    if (!keep_all_pressed_keys) {
+      input_device_status_abort_all_pressed_keys(ids);
+    }
   }
 
   return RET_OK;
