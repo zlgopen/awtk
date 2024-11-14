@@ -237,7 +237,6 @@ widget_t* window_manager_get_foreground_window(widget_t* widget) {
   return NULL;
 }
 
-
 widget_t* window_manager_get_prev_window(widget_t* widget) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL && wm->vt != NULL, NULL);
@@ -728,7 +727,9 @@ ret_t window_manager_dispatch_window_event(widget_t* window, event_type_t type) 
     window_manager_dispatch_top_window_changed(window->parent);
   } else if (type == EVT_WINDOW_TO_FOREGROUND) {
     window->parent->target = window;
-    window->parent->key_target = window;
+    if (window->sensitive) {
+      window->parent->key_target = window;
+    }
   }
 
   return widget_dispatch(window->parent, (event_t*)&(evt));
