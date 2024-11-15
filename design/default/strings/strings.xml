@@ -816,9 +816,9 @@ Translate text
   <language name="zh_CN">系统信息初始化...</language>
   <language name="en_US">System info init...</language>
 </string>
-<string name="Reource to load...">
+<string name="Resource to load...">
   <language name="zh_CN">资源加载...</language>
-  <language name="en_US">Reource to load...</language>
+  <language name="en_US">Resource to load...</language>
 </string>
 <string name="plural">
   <language name="zh_CN">复数</language>

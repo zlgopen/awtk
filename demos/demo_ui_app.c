@@ -785,7 +785,7 @@ typedef ret_t (*page_enter_func_t)(widget_t* page);
 static page_enter_func_t s_page_enter_func_array[PAGE_NUM] = {NULL};
 
 static const char* preload_info[] = {"Time init...", "Memory init...", "System info init...",
-                                     "Reource to load..."};
+                                     "Resource to load..."};
 
 static ret_t fix_widget_size(void* ctx, const void* iter) {
   widget_t* widget = WIDGET(iter);
