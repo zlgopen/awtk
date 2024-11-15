@@ -1333,6 +1333,17 @@ const char* tk_skip_to_chars(const char* str, const char* chars);
  */
 ret_t tk_mergesort(void* base, size_t nmemb, size_t size, tk_compare_t cmp);
 
+/**
+ * @method tk_strs_bsearch
+ * 在字符串数组中查找字符串。
+ * @param {const char**} strs 字符串数组(已排序)。
+ * @param {uint32_t} nr 字符串个数。
+ * @param {const char*} str 字符串。
+ * @param {bool_t} case_sensitive 是否区分大小写。
+ * @return {const char*} 返回找到的字符串。
+ */
+const char* tk_strs_bsearch(const char** strs, uint32_t nr, const char* str, bool_t case_sensitive);
+
 #define TK_STRDUP(str) ((str) != NULL) ? tk_strdup(str) : NULL
 #define TK_STRNDUP(str, len) ((str) != NULL) ? tk_strndup(str, len) : NULL
 

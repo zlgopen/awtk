@@ -573,6 +573,8 @@ typedef struct _event_source_manager_t event_source_manager_t;
 
 #define TK_VALUE_UNDEFINED "undefined"
 
+#define TK_ADR_EQ(p1, p2) (((uint8_t*)(p1)) - ((uint8_t*)(p2)) == 0)
+
 typedef struct _key_type_value_t {
   char* name;
   uint32_t type;

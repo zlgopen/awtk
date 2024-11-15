@@ -18,6 +18,10 @@ BEGIN_C_DECLS
 #define PRId64 __PRI64_PREFIX "d"
 #endif /*PRIu64*/
 
+#ifndef PRIu32
+#define PRIu32 "u"
+#endif/*PRIu32*/
+
 #ifdef WITH_EASTL
 #include <wchar.h>
 #else
