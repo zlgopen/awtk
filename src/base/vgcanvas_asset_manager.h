@@ -88,12 +88,12 @@ ret_t vgcanvas_asset_manager_destroy(vgcanvas_asset_manager_t* vgcanvas_asset_ma
  * @param {vgcanvas_asset_manager_t*} vgcanvas_asset_manager 矢量画布资源管理器。
  * @param {void*} vg 使用该字库的矢量画布对象
  * @param {bitmap_t*} img 贴图对象。
- * @param {ret_t*} reuslt 返回获取结果是否成功，成功返回 RET_OK，否则表示失败。
+ * @param {ret_t*} result 返回获取结果是否成功，成功返回 RET_OK，否则表示失败。
  *
  * @return {const void*} 返回特殊上下文。
  */
 const void* vgcanvas_asset_manager_get_image_specific(
-    vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg, bitmap_t* img, ret_t* reuslt);
+    vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg, bitmap_t* img, ret_t* result);
 
 /**
  * @method vgcanvas_asset_manager_add_image
@@ -129,12 +129,12 @@ ret_t vgcanvas_asset_manager_remove_image(vgcanvas_asset_manager_t* vgcanvas_ass
  * @param {vgcanvas_asset_manager_t*} vgcanvas_asset_manager 矢量画布资源管理器。
  * @param {void*} vg 使用该字库的矢量画布对象
  * @param {const char*} font_name 字库名称。
- * @param {ret_t*} reuslt 返回获取结果是否成功，成功返回 RET_OK，否则表示失败。
+ * @param {ret_t*} result 返回获取结果是否成功，成功返回 RET_OK，否则表示失败。
  *
  * @return {const void*} 返回上下文。
  */
 const void* vgcanvas_asset_manager_get_font_ctx(vgcanvas_asset_manager_t* vgcanvas_asset_manager,
-                                                void* vg, const char* font_name, ret_t* reuslt);
+                                                void* vg, const char* font_name, ret_t* result);
 
 /**
  * @method vgcanvas_asset_manager_add_font

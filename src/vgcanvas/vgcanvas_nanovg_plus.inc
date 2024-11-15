@@ -314,7 +314,7 @@ static int vgcanvas_nanovg_plus_ensure_image(vgcanvas_nanovg_plus_t* canvas, bit
   return_value_if_fail(img != NULL && graphic_buffer_is_valid_for(img->buffer, img), -1);
 
   if (img->flags & BITMAP_FLAG_TEXTURE) {
-    ret_t reuslt = RET_FAIL;
+    ret_t result = RET_FAIL;
     const void* specific = NULL;
     if (img->flags & BITMAP_FLAG_GPU_FBO_TEXTURE) {
       img->flags &= ~BITMAP_FLAG_GPU_FBO_TEXTURE;
@@ -322,9 +322,9 @@ static int vgcanvas_nanovg_plus_ensure_image(vgcanvas_nanovg_plus_t* canvas, bit
       fbo = (framebuffer_object_t*)img->specific_ctx;
       goto create_texture_info;
     } else {
-      specific = vgcanvas_asset_manager_get_image_specific(vgcanvas_asset_manager(), (vgcanvas_t*)canvas, img, &reuslt);
+      specific = vgcanvas_asset_manager_get_image_specific(vgcanvas_asset_manager(), (vgcanvas_t*)canvas, img, &result);
     }
-    if (reuslt == RET_OK) {
+    if (result == RET_OK) {
       i = ((vgcanvas_nanovg_plus_gl_texture_t*)specific)->image_id;
 
       if (img->flags & BITMAP_FLAG_CHANGED) {
@@ -405,14 +405,14 @@ static ret_t vgcanvas_nanovg_plus_set_font_size(vgcanvas_t* vgcanvas, float_t si
 
 static ret_t vgcanvas_nanovg_plus_set_font(vgcanvas_t* vgcanvas, const char* name) {
   int font_id = 0;
-  ret_t reuslt = RET_FAIL;
+  ret_t result = RET_FAIL;
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
   vgcanvas_nanovg_plus_t* canvas = (vgcanvas_nanovg_plus_t*)vgcanvas;
   return_value_if_fail(name && *name, RET_BAD_PARAMS);
 
-  font_id = tk_pointer_to_int(vgcanvas_asset_manager_get_font_ctx(vgcanvas_asset_manager(), vgcanvas, name, &reuslt));
+  font_id = tk_pointer_to_int(vgcanvas_asset_manager_get_font_ctx(vgcanvas_asset_manager(), vgcanvas, name, &result));
 
-  if (reuslt != RET_OK) {
+  if (result != RET_OK) {
     assets_manager_t* am = vgcanvas->assets_manager ? vgcanvas->assets_manager : assets_manager();
     const asset_info_t* r = assets_manager_ref(am, ASSET_TYPE_FONT, name);
 

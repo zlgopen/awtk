@@ -332,14 +332,14 @@ static ret_t vgcanvas_nanovg_set_font_size(vgcanvas_t* vgcanvas, float_t size) {
 
 static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
   int font_id = 0;
-  ret_t reuslt = RET_FAIL;
+  ret_t result = RET_FAIL;
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   return_value_if_fail(name && *name, RET_BAD_PARAMS);
 
-  font_id = tk_pointer_to_int(vgcanvas_asset_manager_get_font_ctx(vgcanvas_asset_manager(), vgcanvas, name, &reuslt));
+  font_id = tk_pointer_to_int(vgcanvas_asset_manager_get_font_ctx(vgcanvas_asset_manager(), vgcanvas, name, &result));
 
-  if (reuslt != RET_OK) {
+  if (result != RET_OK) {
     assets_manager_t* am = vgcanvas->assets_manager ? vgcanvas->assets_manager : assets_manager();
     const asset_info_t* r = assets_manager_ref(am, ASSET_TYPE_FONT, name);
 

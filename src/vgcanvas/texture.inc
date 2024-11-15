@@ -25,7 +25,7 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
   uint8_t* img_data = bitmap_lock_buffer_for_read(img);
 
   if (img->flags & BITMAP_FLAG_TEXTURE) {
-    ret_t reuslt = RET_FAIL;
+    ret_t result = RET_FAIL;
     const void* specific = NULL;
     if (img->flags & BITMAP_FLAG_GPU_FBO_TEXTURE) {
       img->flags &= ~BITMAP_FLAG_GPU_FBO_TEXTURE;
@@ -33,9 +33,9 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
       fbo = (framebuffer_object_t*)img->specific_ctx;
       goto create_texture_info;
     } else {
-      specific = vgcanvas_asset_manager_get_image_specific(vgcanvas_asset_manager(), (vgcanvas_t*)canvas, img, &reuslt);
+      specific = vgcanvas_asset_manager_get_image_specific(vgcanvas_asset_manager(), (vgcanvas_t*)canvas, img, &result);
     }
-    if (reuslt == RET_OK) {
+    if (result == RET_OK) {
       i = ((vgcanvas_nanovg_gl_texture_t*)specific)->image_id;
 
       if (img->flags & BITMAP_FLAG_CHANGED) {

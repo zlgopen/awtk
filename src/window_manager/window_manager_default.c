@@ -1114,7 +1114,7 @@ static ret_t window_manager_animate_done(widget_t* widget) {
 
   if (wm->animator != NULL) {
     bool_t is_open = wm->animator->open;
-    widget_t* top_dialog_highligth = NULL;
+    widget_t* top_dialog_highlight = NULL;
     widget_t* prev_win = wm->animator->prev_win;
     widget_t* curr_win = wm->animator->curr_win;
     bool_t curr_win_is_keyboard, curr_win_is_normal_window, close_window_when_open_animate;
@@ -1136,11 +1136,11 @@ static ret_t window_manager_animate_done(widget_t* widget) {
         window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_BACKGROUND);
       }
       if (!curr_win_is_normal_window) {
-        top_dialog_highligth = window_manager_default_find_top_dialog_highlighter(
+        top_dialog_highlight = window_manager_default_find_top_dialog_highlighter(
             widget, prev_win, curr_win_is_keyboard ? curr_win : NULL);
       }
       if (widget_is_window_opened(curr_win)) {
-        //for swtich to
+        //for switch to
         window_manager_dispatch_window_event(curr_win, EVT_WINDOW_TO_FOREGROUND);
       } else {
         window_manager_dispatch_window_event(curr_win, EVT_WINDOW_OPEN);
@@ -1150,14 +1150,14 @@ static ret_t window_manager_animate_done(widget_t* widget) {
       if (!curr_win_is_keyboard) {
         window_manager_animate_done_set_window_foreground(widget, prev_win, curr_win);
       }
-      top_dialog_highligth =
+      top_dialog_highlight =
           window_manager_default_find_top_dialog_highlighter(widget, prev_win, curr_win);
     }
     /* 制作一张没有最后一个对话框的高亮背景贴图 */
-    if (top_dialog_highligth != NULL) {
+    if (top_dialog_highlight != NULL) {
       widget_t* tmp_curr_win = wm->curr_win;
-      wm->curr_win = top_dialog_highligth;
-      window_manager_create_highlighter(widget, top_dialog_highligth);
+      wm->curr_win = top_dialog_highlight;
+      window_manager_create_highlighter(widget, top_dialog_highlight);
       wm->curr_win = tmp_curr_win;
     }
 

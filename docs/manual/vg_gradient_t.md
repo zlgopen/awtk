@@ -296,7 +296,7 @@ ret_t vgcanvas_asset_manager_destroy (vgcanvas_asset_manager_t* vgcanvas_asset_m
 * 函数原型：
 
 ```
-const void* vgcanvas_asset_manager_get_font_ctx (vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg, const char* font_name, ret_t* reuslt);
+const void* vgcanvas_asset_manager_get_font_ctx (vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg, const char* font_name, ret_t* result);
 ```
 
 * 参数说明：
@@ -307,7 +307,7 @@ const void* vgcanvas_asset_manager_get_font_ctx (vgcanvas_asset_manager_t* vgcan
 | vgcanvas\_asset\_manager | vgcanvas\_asset\_manager\_t* | 矢量画布资源管理器。 |
 | vg | void* | 使用该字库的矢量画布对象 |
 | font\_name | const char* | 字库名称。 |
-| reuslt | ret\_t* | 返回获取结果是否成功，成功返回 RET\_OK，否则表示失败。 |
+| result | ret\_t* | 返回获取结果是否成功，成功返回 RET\_OK，否则表示失败。 |
 #### vgcanvas\_asset\_manager\_get\_image\_specific 函数
 -----------------------
 
@@ -318,7 +318,7 @@ const void* vgcanvas_asset_manager_get_font_ctx (vgcanvas_asset_manager_t* vgcan
 * 函数原型：
 
 ```
-const void* vgcanvas_asset_manager_get_image_specific (vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg, bitmap_t* img, ret_t* reuslt);
+const void* vgcanvas_asset_manager_get_image_specific (vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg, bitmap_t* img, ret_t* result);
 ```
 
 * 参数说明：
@@ -329,7 +329,7 @@ const void* vgcanvas_asset_manager_get_image_specific (vgcanvas_asset_manager_t*
 | vgcanvas\_asset\_manager | vgcanvas\_asset\_manager\_t* | 矢量画布资源管理器。 |
 | vg | void* | 使用该字库的矢量画布对象 |
 | img | bitmap\_t* | 贴图对象。 |
-| reuslt | ret\_t* | 返回获取结果是否成功，成功返回 RET\_OK，否则表示失败。 |
+| result | ret\_t* | 返回获取结果是否成功，成功返回 RET\_OK，否则表示失败。 |
 #### vgcanvas\_asset\_manager\_remove\_font 函数
 -----------------------
 

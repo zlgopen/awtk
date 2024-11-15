@@ -170,9 +170,9 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
 
   if (img->flags & BITMAP_FLAG_TEXTURE) {
     if (img->specific != 0) {
-      ret_t reuslt = RET_FAIL;
-      const void* specific = vgcanvas_asset_manager_get_image_specific(vgcanvas_asset_manager(), (vgcanvas_t*)canvas, img, &reuslt);
-      if (reuslt == RET_OK && specific != NULL) {
+      ret_t result = RET_FAIL;
+      const void* specific = vgcanvas_asset_manager_get_image_specific(vgcanvas_asset_manager(), (vgcanvas_t*)canvas, img, &result);
+      if (result == RET_OK && specific != NULL) {
         const vgcanvas_nanovg_soft_texture_t* tmp = (const vgcanvas_nanovg_soft_texture_t*)specific;
         i = nvgFindTextureRaw(canvas->vg, tmp->data);
         if (i > 0) {
