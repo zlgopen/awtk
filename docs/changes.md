@@ -4,6 +4,7 @@
   * 修复拼写错误(感谢兆坤提供补丁)
   * 修复 demoui dialog(感谢兆坤提供补丁)
   * 增加tk_strs_bsearch
+  * 修复text_selector测试用例报错问题(感谢颖健提供补丁)
 
 2024/11/14
   * 修复 edit键盘长按Backspace键，弹出提示窗口后就不能连续删除字符(感谢兆坤提供补丁)

@@ -656,7 +656,9 @@ static ret_t text_selector_scroll_to(widget_t* widget, int32_t yoffset_end) {
 
   yoffset = text_selector->yoffset;
   if (yoffset == yoffset_end) {
-    text_selector_on_scroll_done(widget, NULL);
+    if (item_height > 0) {
+      text_selector_on_scroll_done(widget, NULL);
+    }
     return RET_OK;
   }
 
