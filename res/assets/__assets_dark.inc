@@ -3,8 +3,8 @@
 #if !defined(WITH_FS_RES) || defined(AWTK_WEB)
 extern TK_CONST_DATA_ALIGN(const unsigned char strings_en_US_default[]);
 #include "dark/inc/styles/uiex_keyboard.data"
+#include "dark/inc/styles/uiex_dialog.data"
 #include "dark/inc/styles/uiex.data"
-#include "dark/inc/styles/uiex_dialog_confirm.data"
 extern TK_CONST_DATA_ALIGN(const unsigned char style_dialog_toast_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char style_default_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_kb_ascii_default_uiex[]);
@@ -406,8 +406,8 @@ ret_t assets_init_dark(void) {
 #else /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
   assets_manager_add(am, strings_en_US_default);
   assets_manager_add(am, style_uiex_keyboard_dark);
+  assets_manager_add(am, style_uiex_dialog_dark);
   assets_manager_add(am, style_uiex_dark);
-  assets_manager_add(am, style_uiex_dialog_confirm_dark);
   assets_manager_add(am, style_dialog_toast_default);
   assets_manager_add(am, style_default_default);
   assets_manager_add(am, ui_kb_ascii_default_uiex);

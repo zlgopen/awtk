@@ -3,8 +3,8 @@
 #if !defined(WITH_FS_RES) || defined(AWTK_WEB)
 #include "assets/default/inc/strings/en_US.data"
 #include "assets/dark/inc/styles/uiex_keyboard.data"
+#include "assets/dark/inc/styles/uiex_dialog.data"
 #include "assets/dark/inc/styles/uiex.data"
-#include "assets/dark/inc/styles/uiex_dialog_confirm.data"
 #include "assets/default/inc/styles/dialog_toast.data"
 #include "assets/default/inc/styles/default.data"
 #include "assets/default/inc/ui/uiex/kb_ascii.data"
@@ -406,8 +406,8 @@ ret_t assets_init(void) {
 #else /*defined(WITH_FS_RES) && !defined(AWTK_WEB)*/
   assets_manager_add(am, strings_en_US_default);
   assets_manager_add(am, style_uiex_keyboard_dark);
+  assets_manager_add(am, style_uiex_dialog_dark);
   assets_manager_add(am, style_uiex_dark);
-  assets_manager_add(am, style_uiex_dialog_confirm_dark);
   assets_manager_add(am, style_dialog_toast_default);
   assets_manager_add(am, style_default_default);
   assets_manager_add(am, ui_kb_ascii_default_uiex);

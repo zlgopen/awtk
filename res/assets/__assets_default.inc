@@ -4,9 +4,9 @@
 #include "default/inc/strings/en_US.data"
 #include "default/inc/styles/dialog_toast.data"
 #include "default/inc/styles/uiex_keyboard.data"
+#include "default/inc/styles/uiex_dialog.data"
 #include "default/inc/styles/default.data"
 #include "default/inc/styles/uiex.data"
-#include "default/inc/styles/uiex_dialog_confirm.data"
 #include "default/inc/ui/uiex/kb_ascii.data"
 #include "default/inc/ui/uiex/page_list_view.data"
 #include "default/inc/ui/uiex/kb_foo.data"
@@ -407,9 +407,9 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, strings_en_US_default);
   assets_manager_add(am, style_dialog_toast_default);
   assets_manager_add(am, style_uiex_keyboard_default);
+  assets_manager_add(am, style_uiex_dialog_default);
   assets_manager_add(am, style_default_default);
   assets_manager_add(am, style_uiex_default);
-  assets_manager_add(am, style_uiex_dialog_confirm_default);
   assets_manager_add(am, ui_kb_ascii_default_uiex);
   assets_manager_add(am, ui_page_list_view_default_uiex);
   assets_manager_add(am, ui_kb_foo_default_uiex);

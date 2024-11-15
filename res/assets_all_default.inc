@@ -19,6 +19,7 @@
 #include "assets/default/inc/styles/tab_list.data"
 #include "assets/default/inc/styles/gauge.data"
 #include "assets/default/inc/styles/list_view_dynamic.data"
+#include "assets/default/inc/styles/uiex_dialog.data"
 #include "assets/default/inc/styles/default.data"
 #include "assets/default/inc/styles/system_bar_bottom.data"
 #include "assets/default/inc/styles/5key_main.data"
@@ -27,7 +28,6 @@
 #include "assets/default/inc/styles/dialog_info.data"
 #include "assets/default/inc/styles/uiex.data"
 #include "assets/default/inc/styles/file_browser.data"
-#include "assets/default/inc/styles/uiex_dialog_confirm.data"
 #include "assets/default/inc/styles/dialog_confirm.data"
 #include "assets/default/inc/styles/image_value.data"
 #include "assets/default/inc/styles/dialog.data"
@@ -956,6 +956,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, style_tab_list_default);
   assets_manager_add(am, style_gauge_default);
   assets_manager_add(am, style_list_view_dynamic_default);
+  assets_manager_add(am, style_uiex_dialog_default);
   assets_manager_add(am, style_default_default);
   assets_manager_add(am, style_system_bar_bottom_default);
   assets_manager_add(am, style_5key_main_default);
@@ -964,7 +965,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, style_dialog_info_default);
   assets_manager_add(am, style_uiex_default);
   assets_manager_add(am, style_file_browser_default);
-  assets_manager_add(am, style_uiex_dialog_confirm_default);
   assets_manager_add(am, style_dialog_confirm_default);
   assets_manager_add(am, style_image_value_default);
   assets_manager_add(am, style_dialog_default);

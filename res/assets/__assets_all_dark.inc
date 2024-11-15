@@ -4,8 +4,8 @@
 extern TK_CONST_DATA_ALIGN(const unsigned char strings_zh_CN_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char strings_en_US_default[]);
 #include "dark/inc/styles/uiex_keyboard.data"
+#include "dark/inc/styles/uiex_dialog.data"
 #include "dark/inc/styles/uiex.data"
-#include "dark/inc/styles/uiex_dialog_confirm.data"
 #include "dark/inc/styles/system_bar.data"
 extern TK_CONST_DATA_ALIGN(const unsigned char style_slide_menu_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char style_color_tile_default[]);
@@ -941,8 +941,8 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, strings_zh_CN_default);
   assets_manager_add(am, strings_en_US_default);
   assets_manager_add(am, style_uiex_keyboard_dark);
+  assets_manager_add(am, style_uiex_dialog_dark);
   assets_manager_add(am, style_uiex_dark);
-  assets_manager_add(am, style_uiex_dialog_confirm_dark);
   assets_manager_add(am, style_system_bar_dark);
   assets_manager_add(am, style_slide_menu_default);
   assets_manager_add(am, style_color_tile_default);

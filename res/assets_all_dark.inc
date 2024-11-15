@@ -4,8 +4,8 @@
 #include "assets/default/inc/strings/zh_CN.data"
 #include "assets/default/inc/strings/en_US.data"
 #include "assets/dark/inc/styles/uiex_keyboard.data"
+#include "assets/dark/inc/styles/uiex_dialog.data"
 #include "assets/dark/inc/styles/uiex.data"
-#include "assets/dark/inc/styles/uiex_dialog_confirm.data"
 #include "assets/dark/inc/styles/system_bar.data"
 #include "assets/default/inc/styles/slide_menu.data"
 #include "assets/default/inc/styles/color_tile.data"
@@ -941,8 +941,8 @@ ret_t assets_init(void) {
   assets_manager_add(am, strings_zh_CN_default);
   assets_manager_add(am, strings_en_US_default);
   assets_manager_add(am, style_uiex_keyboard_dark);
+  assets_manager_add(am, style_uiex_dialog_dark);
   assets_manager_add(am, style_uiex_dark);
-  assets_manager_add(am, style_uiex_dialog_confirm_dark);
   assets_manager_add(am, style_system_bar_dark);
   assets_manager_add(am, style_slide_menu_default);
   assets_manager_add(am, style_color_tile_default);
