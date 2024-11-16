@@ -2615,7 +2615,7 @@ const char* tk_strs_bsearch(const char** strs, uint32_t nr, const char* str, boo
   int32_t result = 0;
   const char* iter = NULL;
   tk_compare_t cmp = case_sensitive ? (tk_compare_t)strcmp : (tk_compare_t)strcasecmp;
-  return_value_if_fail(strs != NULL && str != NULL, -1);
+  return_value_if_fail(strs != NULL && str != NULL, NULL);
 
   if (nr == 0) {
     return NULL; 
