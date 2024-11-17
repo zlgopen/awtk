@@ -408,7 +408,8 @@ object_array_t* object_array_cast(tk_object_t* obj);
 #define TK_OBJECT_ARRAY_PROP_SIZE "size"
 #define TK_OBJECT_ARRAY_PROP_LENGTH "length"
 
-#define OBJECT_ARRRAY_TYPE "object_array"
+#define OBJECT_ARRAY_TYPE "object_array"
+#define OBJECT_ARRRAY_TYPE OBJECT_ARRAY_TYPE
 
 END_C_DECLS
 

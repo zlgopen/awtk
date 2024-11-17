@@ -1060,7 +1060,7 @@ tk_object_t* tk_object_get_child_object(tk_object_t* obj, const char* path, cons
  * @method tk_object_is_instance_of
  * 检查对象是否是指定类型的实例。
  * ```
- * if(tk_object_is_instance_of(obj, OBJECT_ARRRAY_TYPE)) {
+ * if(tk_object_is_instance_of(obj, OBJECT_ARRAY_TYPE)) {
  * }
  * ```
  * @param {tk_object_t*} obj object对象。

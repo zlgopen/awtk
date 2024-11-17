@@ -377,7 +377,7 @@ static ret_t object_array_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, voi
 }
 
 static ret_t object_array_copy_props(tk_object_t* obj, tk_object_t* src, bool_t overwrite) {
-  if (!tk_object_is_instance_of(src, OBJECT_ARRRAY_TYPE)) {
+  if (!tk_object_is_instance_of(src, OBJECT_ARRAY_TYPE)) {
     return RET_NOT_IMPL;
   } else {
     object_array_t* o = OBJECT_ARRAY(obj);
@@ -442,8 +442,8 @@ static value_t* object_array_find_prop(tk_object_t* obj, tk_compare_t cmp, const
 }
 
 static const object_vtable_t s_object_array_vtable = {
-    .type = OBJECT_ARRRAY_TYPE,
-    .desc = OBJECT_ARRRAY_TYPE,
+    .type = OBJECT_ARRAY_TYPE,
+    .desc = OBJECT_ARRAY_TYPE,
     .size = sizeof(object_array_t),
     .is_collection = TRUE,
     .on_destroy = object_array_on_destroy,

@@ -964,7 +964,7 @@ bool_t tk_object_is_collection (tk_object_t* obj);
 
 > <p id="tk_object_t_tk_object_is_instance_of">检查对象是否是指定类型的实例。
 ```
-if(tk_object_is_instance_of(obj, OBJECT_ARRRAY_TYPE)) {
+if(tk_object_is_instance_of(obj, OBJECT_ARRAY_TYPE)) {
 }
 ```
 
