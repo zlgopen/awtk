@@ -3,6 +3,8 @@ import sys
 import platform
 import awtk_config as awtk
 
+OS_NAME = platform.system();
+
 BIN_DIR=os.environ['BIN_DIR'];
 LIB_DIR=os.environ['LIB_DIR'];
 TK_ROOT=os.environ['TK_ROOT'];
@@ -51,10 +53,14 @@ env.Program(os.path.join(BIN_DIR, 'ubjson_to_json'), ["ubjson_to_json.cpp"])
 env.Program(os.path.join(BIN_DIR, 'format_xml'), ["format_xml.cpp"])
 env.Program(os.path.join(BIN_DIR, 'async_call_test'), ["async_call_test.cpp"])
 
+if OS_NAME == 'Windows' :
+  env.Program(os.path.join(BIN_DIR, 'atomic_test'), ["atomic_test.cpp"])
+else :
+  env.Program(os.path.join(BIN_DIR, 'atomic_test'), ["atomic_test.cpp"], CCFLAGS = env["CCFLAGS"] + ' -std=c++11 ')
+
 env.SharedLibrary(os.path.join(BIN_DIR+"/plugins_for_test", 'a'), ["a.c"])
 env.SharedLibrary(os.path.join(BIN_DIR+"/plugins_for_test", 'b'), ["b.c"])
 
-OS_NAME = platform.system();
 CROSS_COMPILE='CROSS_COMPILE' in os.environ and os.environ['CROSS_COMPILE'] == 'True'
 if not CROSS_COMPILE:
   LIBS=env['LIBS']
