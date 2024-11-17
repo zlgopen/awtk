@@ -1066,7 +1066,7 @@ ret_t value_lshift(value_t* v, value_t* result, uint32_t n) {
     }
     default: {
       ret = RET_BAD_PARAMS;
-      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
+      log_debug("%s not supported type:\"%s\"\n", __FUNCTION__, value_type_name(v->type));
       break;
     }
   }
@@ -1113,7 +1113,7 @@ ret_t value_rshift(value_t* v, value_t* result, uint32_t n) {
     }
     default: {
       ret = RET_BAD_PARAMS;
-      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
+      log_debug("%s not supported type:\"%s\"\n", __FUNCTION__, value_type_name(v->type));
       break;
     }
   }
@@ -1176,7 +1176,7 @@ ret_t value_lshift_r(value_t* v, value_t* result, uint32_t n) {
     }
     default: {
       ret = RET_BAD_PARAMS;
-      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
+      log_debug("%s not supported type:\"%s\"\n", __FUNCTION__, value_type_name(v->type));
       break;
     }
   }
@@ -1239,7 +1239,7 @@ ret_t value_rshift_r(value_t* v, value_t* result, uint32_t n) {
     }
     default: {
       ret = RET_BAD_PARAMS;
-      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
+      log_debug("%s not supported type:\"%s\"\n", __FUNCTION__, value_type_name(v->type));
       break;
     }
   }
@@ -1302,7 +1302,7 @@ ret_t value_get_bit(value_t* v, value_t* result, uint32_t n) {
     }
     default: {
       ret = RET_BAD_PARAMS;
-      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
+      log_debug("%s not supported type:\"%s\"\n", __FUNCTION__, value_type_name(v->type));
       break;
     }
   }
@@ -1372,7 +1372,7 @@ ret_t value_set_bit(value_t* v, value_t* result, uint32_t n, bool_t bit) {
     }
     default: {
       ret = RET_BAD_PARAMS;
-      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
+      log_debug("%s not supported type:\"%s\"\n", __FUNCTION__, value_type_name(v->type));
       break;
     }
   }
@@ -1435,7 +1435,7 @@ ret_t value_toggle_bit(value_t* v, value_t* result, uint32_t n) {
     }
     default: {
       ret = RET_BAD_PARAMS;
-      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
+      log_debug("%s not supported type:\"%s\"\n", __FUNCTION__, value_type_name(v->type));
       break;
     }
   }
@@ -1495,7 +1495,7 @@ ret_t value_bit_not(value_t* v, value_t* result) {
     }
     default: {
       ret = RET_BAD_PARAMS;
-      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
+      log_debug("%s not supported type:\"%s\"\n", __FUNCTION__, value_type_name(v->type));
       break;
     }
   }
@@ -1558,7 +1558,7 @@ ret_t value_bit_or(value_t* v, value_t* other, value_t* result) {
     }
     default: {
       ret = RET_BAD_PARAMS;
-      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
+      log_debug("%s not supported type:\"%s\"\n", __FUNCTION__, value_type_name(v->type));
       break;
     }
   }
@@ -1621,7 +1621,7 @@ ret_t value_bit_and(value_t* v, value_t* other, value_t* result) {
     }
     default: {
       ret = RET_BAD_PARAMS;
-      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
+      log_debug("%s not supported type:\"%s\"\n", __FUNCTION__, value_type_name(v->type));
       break;
     }
   }
@@ -1684,7 +1684,7 @@ ret_t value_bit_xor(value_t* v, value_t* other, value_t* result) {
     }
     default: {
       ret = RET_BAD_PARAMS;
-      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
+      log_debug("%s not supported type:\"%s\"\n", __FUNCTION__, value_type_name(v->type));
       break;
     }
   }
@@ -1759,7 +1759,7 @@ ret_t value_abs(value_t* v, value_t* result) {
     }
     default: {
       ret = RET_BAD_PARAMS;
-      log_debug("%s not supported type:%d\n", __FUNCTION__, v->type);
+      log_debug("%s not supported type:\"%s\"\n", __FUNCTION__, value_type_name(v->type));
       break;
     }
   }
@@ -1849,7 +1849,7 @@ ret_t value_add(value_t* v, value_t* other, value_t* result) {
     }
     default: {
       ret = RET_BAD_PARAMS;
-      log_debug("%s not supported type:%d\n", __FUNCTION__, type);
+      log_debug("%s not supported type:\"%s\"\n", __FUNCTION__, value_type_name(type));
       break;
     }
   }
@@ -1939,7 +1939,7 @@ ret_t value_sub(value_t* v, value_t* other, value_t* result) {
     }
     default: {
       ret = RET_BAD_PARAMS;
-      log_debug("%s not supported type:%d\n", __FUNCTION__, type);
+      log_debug("%s not supported type:\"%s\"\n", __FUNCTION__, value_type_name(type));
       break;
     }
   }
@@ -2029,7 +2029,7 @@ ret_t value_mul(value_t* v, value_t* other, value_t* result) {
     }
     default: {
       ret = RET_BAD_PARAMS;
-      log_debug("%s not supported type:%d\n", __FUNCTION__, type);
+      log_debug("%s not supported type:\"%s\"\n", __FUNCTION__, value_type_name(type));
       break;
     }
   }
@@ -2103,7 +2103,7 @@ ret_t value_div(value_t* v, value_t* other, value_t* result) {
     }
     default: {
       ret = RET_BAD_PARAMS;
-      log_debug("%s not supported type:%d\n", __FUNCTION__, type);
+      log_debug("%s not supported type:\"%s\"\n", __FUNCTION__, value_type_name(type));
       break;
     }
   }
@@ -2166,7 +2166,7 @@ ret_t value_mod(value_t* v, value_t* other, value_t* result) {
     }
     default: {
       ret = RET_BAD_PARAMS;
-      log_debug("%s not supported type:%d\n", __FUNCTION__, type);
+      log_debug("%s not supported type:\"%s\"\n", __FUNCTION__, value_type_name(type));
       break;
     }
   }
