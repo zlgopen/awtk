@@ -125,7 +125,8 @@ typedef int socklen_t;
 #define FALSE 0
 #endif /*FALSE*/
 
-#define TK_STRINGIZE(symbol) #symbol
+#define _TK_STRINGIZE_(symbol) #symbol
+#define TK_SRTINGIZE(macro) _TK_STRINGIZE_(macro)
 
 #if defined(__GNUC__) && !defined(__cplusplus)
 typedef _Bool bool_t;
