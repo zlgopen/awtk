@@ -713,13 +713,13 @@ static ret_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
 }
 #else
 /* 不支持原子操作，已退化为互斥锁，编译时请指定C11以上的C语言标准，以确保支持原子操作！ */
-#pragma message(__FILE__ "(" TK_SRTINGIZE( \
+#pragma message(__FILE__ "(" TK_STRINGIZE( \
     __LINE__) "): "                        \
               "Warning : Atomic operation is not supported and have degenerated into mutex, please specify the C language standard above C11 when compiling to ensure that atomic operation is supported!")
 #ifdef __cplusplus
-#pragma message("__cplusplus = " TK_SRTINGIZE(__cplusplus))
+#pragma message("__cplusplus = " TK_STRINGIZE(__cplusplus))
 #else
-#pragma message("__STDC_VERSION__ = " TK_SRTINGIZE(__STDC_VERSION__))
+#pragma message("__STDC_VERSION__ = " TK_STRINGIZE(__STDC_VERSION__))
 #endif /* __cplusplus */
 #ifdef __STDC_NO_ATOMICS__
 #pragma message("__STDC_NO_ATOMICS__ = TRUE")
