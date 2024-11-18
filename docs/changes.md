@@ -3,6 +3,7 @@
 2024/11/18
   * 完善 atomic(感谢兆坤提供补丁)
   * 修复拼写错误(感谢兆坤提供补丁)
+  * fix memory error whene change theme.
 
 2024/11/17
   * 完善 TK_STRINGIZE(感谢兆坤提供补丁)

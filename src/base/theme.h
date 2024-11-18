@@ -22,6 +22,7 @@
 #ifndef TK_THEME_H
 #define TK_THEME_H
 
+#include "tkc/asset_info.h"
 #include "base/theme_data.h"
 
 BEGIN_C_DECLS
@@ -48,6 +49,7 @@ typedef ret_t (*theme_destroy_t)(theme_t* theme);
 struct _theme_t {
   const uint8_t* data;
   bool_t need_free_data;
+  asset_info_t* info;
 
   theme_foreach_t foreach;
   theme_find_style_t find_style;
@@ -137,6 +139,16 @@ ret_t theme_destroy(theme_t* theme);
  * @return {theme_t*} 返回窗体样式对象。
  */
 theme_t* theme_load_from_data(const char* name, const uint8_t* data, uint32_t size);
+
+/**
+ * @method theme_load_from_asset
+ * 加载窗体样式对象。
+ * @annotation ["constructor"]
+ * @param {asset_info_t*} info 资源对象。
+ *
+ * @return {theme_t*} 返回窗体样式对象。
+ */
+theme_t* theme_load_from_asset(asset_info_t* info);
 
 #define TK_DEFAULT_STYLE "default"
 #define THEME_DEFAULT_STYLE_TYPE "style_const"

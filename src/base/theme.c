@@ -79,6 +79,11 @@ ret_t theme_destroy(theme_t* theme) {
     TKMEM_FREE(theme->data);
   }
 
+  if (theme->info != NULL) {
+    asset_info_unref(theme->info);
+    theme->info = NULL;
+  }
+  
   if (theme->theme_destroy != NULL) {
     theme->theme_destroy(theme);
   } else {
@@ -127,6 +132,21 @@ theme_t* theme_load_from_data(const char* name, const uint8_t* data, uint32_t si
   } else {
     return NULL;
   }
+}
+
+theme_t* theme_load_from_asset(asset_info_t* info) {
+  theme_t* theme = NULL;
+  const char* name = NULL;
+  return_value_if_fail(info != NULL, NULL);
+
+  name = asset_info_get_name(info);
+  theme = theme_load_from_data(name, info->data, info->size);
+  return_value_if_fail(theme != NULL, NULL);
+
+  theme->info = info;
+  asset_info_ref(info);
+
+  return theme;
 }
 
 #ifndef WITHOUT_XML_STYLE

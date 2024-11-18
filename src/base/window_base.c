@@ -118,8 +118,7 @@ static ret_t window_base_load_default_theme_obj_impl(widget_t* widget, bool_t* u
 
   if (window_base->default_res_theme != NULL) {
     asset_info_t* res = (asset_info_t*)window_base->default_res_theme;
-    window_base->default_theme_obj =
-        theme_load_from_data(asset_info_get_name(res), res->data, res->size);
+    window_base->default_theme_obj = theme_load_from_asset(res);
   }
 
   if (window_base->default_theme_obj != NULL) {
@@ -152,7 +151,7 @@ static ret_t window_base_load_theme_obj_impl(widget_t* widget, bool_t* update_st
 
   if (window_base->res_theme != NULL) {
     asset_info_t* res = (asset_info_t*)window_base->res_theme;
-    window_base->theme_obj = theme_load_from_data(asset_info_get_name(res), res->data, res->size);
+    window_base->theme_obj = theme_load_from_asset(res);
   }
 
   if (window_base->theme_obj != NULL) {

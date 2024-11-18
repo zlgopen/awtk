@@ -145,7 +145,7 @@ ret_t tk_init_assets(void) {
         theme_t* t = theme();
         const char* iter_name = asset_info_get_name(iter);
         if ((t == NULL || t->data == NULL) && tk_str_eq(iter_name, TK_DEFAULT_STYLE)) {
-          theme_set(theme_load_from_data(iter_name, iter->data, iter->size));
+          theme_set(theme_load_from_asset((asset_info_t*)iter));
         }
         break;
       }
