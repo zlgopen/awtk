@@ -12,7 +12,6 @@
 static tk_atomic_t s_atomic;
 
 static void* inc_thread(void* args) {
-  uint32_t id = (uint32_t)tk_pointer_to_int(args);
   uint64_t i = 0;
   value_t v;
 
@@ -26,7 +25,6 @@ static void* inc_thread(void* args) {
 }
 
 static void* dec_thread(void* args) {
-  uint32_t id = (uint32_t)tk_pointer_to_int(args);
   uint64_t i = 0;
   value_t v;
 
@@ -62,13 +60,13 @@ int main(int argc, char* argv[]) {
   platform_prepare();
   timer_prepare(time_now_ms);
 
-  tk_atomic_init(&s_atomic, value_set_int(&v, 0));
+  tk_atomic_init(&s_atomic, value_set_uint64(&v, 0));
 
   for (i = 0; i < ARRAY_SIZE(entrys); i++) {
     uint32_t j = 0;
     value_t tmp;
 
-    log_debug("entrys[%u] start\n", i);
+    log_debug("entrys[%" PRIu32 "] start\n", i);
 
     tk_atomic_store(&s_atomic, value_set_uint64(&v, entrys_init_value[i]));
 
@@ -82,7 +80,7 @@ int main(int argc, char* argv[]) {
     for (j = 0; j < ARRAY_SIZE(threads); j++) {
       tk_thread_join(threads[j]);
       tk_thread_destroy(threads[j]);
-      log_debug("%u stop\n", j);
+      log_debug("%" PRIu32 " stop\n", j);
     }
 
     entrys_time[i] = timer_manager()->get_time() - entrys_time[i];
@@ -90,7 +88,7 @@ int main(int argc, char* argv[]) {
     tk_atomic_load(&s_atomic, &tmp);
 
     entrys_result[i] = value_uint64(&tmp);
-    log_debug("entrys[%u] result %llu\n", i, entrys_result[i]);
+    log_debug("entrys[%" PRIu32 "] result %" PRIu64 "\n", i, entrys_result[i]);
   }
 
   tk_atomic_deinit(&s_atomic);
@@ -98,12 +96,13 @@ int main(int argc, char* argv[]) {
   log_debug("\n");
 
   for (i = 0; i < ARRAY_SIZE(entrys); i++) {
-    log_debug("entrys[%u] : time = %llu ms, result = %llu, correct = %s\n", i, entrys_time[i],
-              entrys_result[i], entrys_result[i] == entrys_correct[i] ? "True" : "False");
+    log_debug("entrys[%" PRIu32 "] : time = %" PRIu64 " ms, result = %" PRIu64 ", correct = %s\n",
+              i, entrys_time[i], entrys_result[i],
+              entrys_result[i] == entrys_correct[i] ? "True" : "False");
     total_time += entrys_time[i];
   }
 
-  log_debug("\ntotal time = %llu ms\n", total_time);
+  log_debug("\ntotal time = %" PRIu64 " ms\n", total_time);
 
   return 0;
 }

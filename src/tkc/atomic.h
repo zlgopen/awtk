@@ -60,6 +60,89 @@ static inline bool_t tk_atomic_support_value_type(value_type_t type) {
   }
 }
 
+/**
+ * @method tk_atomic_deinit
+ * @export none
+ * 释放原子操作类对象。
+ *
+ * @param {tk_atomic_t*} atomic 原子操作类对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+static ret_t tk_atomic_deinit(tk_atomic_t* atomic);
+
+/**
+ * @method tk_atomic_init
+ * @export none
+ * 初始化原子操作类对象。
+ *
+ * @param {tk_atomic_t*} atomic 原子操作类对象。
+ * @param {const value_t*} v 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+static ret_t tk_atomic_init(tk_atomic_t* atomic, const value_t* v);
+
+/**
+ * @method tk_atomic_exchange
+ * @export none
+ * 原子交换操作。
+ *
+ * @param {const tk_atomic_t*} atomic 原子操作类对象。
+ * @param {value_t*} v 交换值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+static ret_t tk_atomic_exchange(tk_atomic_t* atomic, value_t* v);
+
+/**
+ * @method tk_atomic_store
+ * @export none
+ * 原子写操作。
+ *
+ * @param {tk_atomic_t*} atomic 原子操作类对象。
+ * @param {const value_t*} v 写入值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+static ret_t tk_atomic_store(tk_atomic_t* atomic, const value_t* v);
+
+/**
+ * @method tk_atomic_load
+ * @export none
+ * 原子读操作。
+ *
+ * @param {const tk_atomic_t*} atomic 原子操作类对象。
+ * @param {value_t*} v 用于返回读取值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+static ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v);
+
+/**
+ * @method tk_atomic_fetch_add
+ * @export none
+ * 原子加操作。
+ *
+ * @param {const tk_atomic_t*} atomic 原子操作类对象。
+ * @param {value_t*} v 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+static ret_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v);
+
+/**
+ * @method tk_atomic_fetch_sub
+ * @export none
+ * 原子减操作。
+ *
+ * @param {const tk_atomic_t*} atomic 原子操作类对象。
+ * @param {value_t*} v 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+static ret_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v);
+
 #if defined(WIN32) && !defined(MINGW)
 #include <winnt.h>
 
@@ -651,15 +734,6 @@ struct _tk_atomic_t {
   tk_mutex_t* lock;
 };
 
-/**
- * @method tk_atomic_deinit
- * @export none
- * 释放原子操作类对象。
- *
- * @param {tk_atomic_t*} atomic 原子操作类对象。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
 static inline ret_t tk_atomic_deinit(tk_atomic_t* atomic) {
   ret_t ret = RET_OK;
   return_value_if_fail(atomic != NULL, RET_BAD_PARAMS);
@@ -672,16 +746,6 @@ static inline ret_t tk_atomic_deinit(tk_atomic_t* atomic) {
   return ret;
 }
 
-/**
- * @method tk_atomic_init
- * @export none
- * 初始化原子操作类对象。
- *
- * @param {tk_atomic_t*} atomic 原子操作类对象。
- * @param {const value_t*} v 值。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
 static inline ret_t tk_atomic_init(tk_atomic_t* atomic, const value_t* v) {
   ret_t ret = RET_OK;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
@@ -699,43 +763,23 @@ static inline ret_t tk_atomic_init(tk_atomic_t* atomic, const value_t* v) {
   return ret;
 }
 
-/**
- * @method tk_atomic_exchange
- * @export none
- * 原子交换操作。
- *
- * @param {const tk_atomic_t*} atomic 原子操作类对象。
- * @param {value_t*} v 交换值。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
 static inline ret_t tk_atomic_exchange(tk_atomic_t* atomic, value_t* v) {
   ret_t ret = RET_OK;
+  value_t tmp;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
 
   ret = tk_mutex_lock(atomic->lock);
   return_value_if_fail(RET_OK == ret, ret);
 
   /* 读-修改-写 */
-  value_t tmp;
   value_copy(&tmp, &atomic->value);
   ret = value_copy(&atomic->value, v);
   value_copy(v, &tmp);
-error:
+
   tk_mutex_unlock(atomic->lock);
   return ret;
 }
 
-/**
- * @method tk_atomic_store
- * @export none
- * 原子写操作。
- *
- * @param {tk_atomic_t*} atomic 原子操作类对象。
- * @param {const value_t*} v 写入值。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
 static inline ret_t tk_atomic_store(tk_atomic_t* atomic, const value_t* v) {
   ret_t ret = RET_OK;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
@@ -744,21 +788,11 @@ static inline ret_t tk_atomic_store(tk_atomic_t* atomic, const value_t* v) {
   return_value_if_fail(RET_OK == ret, ret);
 
   ret = value_copy(&atomic->value, v);
-error:
+
   tk_mutex_unlock(atomic->lock);
   return ret;
 }
 
-/**
- * @method tk_atomic_load
- * @export none
- * 原子读操作。
- *
- * @param {const tk_atomic_t*} atomic 原子操作类对象。
- * @param {value_t*} v 用于返回读取值。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
 static inline ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v) {
   ret_t ret = RET_OK;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
@@ -767,21 +801,11 @@ static inline ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v) {
   return_value_if_fail(RET_OK == ret, ret);
 
   ret = value_copy(v, &atomic->value);
-error:
+
   tk_mutex_unlock(atomic->lock);
   return ret;
 }
 
-/**
- * @method tk_atomic_fetch_add
- * @export none
- * 原子加操作。
- *
- * @param {const tk_atomic_t*} atomic 原子操作类对象。
- * @param {value_t*} v 值。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
 static inline ret_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
   ret_t ret = RET_OK;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
@@ -790,21 +814,11 @@ static inline ret_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
   return_value_if_fail(RET_OK == ret, ret);
 
   ret = value_add(&atomic->value, v, &atomic->value);
-error:
+
   tk_mutex_unlock(atomic->lock);
   return ret;
 }
 
-/**
- * @method tk_atomic_fetch_sub
- * @export none
- * 原子减操作。
- *
- * @param {const tk_atomic_t*} atomic 原子操作类对象。
- * @param {value_t*} v 值。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
 static inline ret_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
   ret_t ret = RET_OK;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
@@ -813,7 +827,7 @@ static inline ret_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
   return_value_if_fail(RET_OK == ret, ret);
 
   ret = value_sub(&atomic->value, v, &atomic->value);
-error:
+
   tk_mutex_unlock(atomic->lock);
   return ret;
 }
