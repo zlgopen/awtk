@@ -22,16 +22,10 @@
 #ifndef TK_ATOMIC_H
 #define TK_ATOMIC_H
 
-#include "tkc/types_def.h"
+#include "atomic_typedef.h"
+
 #include "tkc/value.h"
 #include "tkc/mem.h"
-
-/**
- * @class tk_atomic_t
- * @export none
- * 原子操作类。
- */
-typedef struct _tk_atomic_t tk_atomic_t;
 
 /**
  * @method tk_atomic_support_value_type
