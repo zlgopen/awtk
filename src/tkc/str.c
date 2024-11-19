@@ -1135,6 +1135,29 @@ ret_t str_append_format(str_t* str, uint32_t size, const char* format, ...) {
   return RET_OK;
 }
 
+ret_t str_append_format_padding(str_t* str, uint32_t size, const char* format, ...) {
+  va_list va;
+  int32_t ret = 0;
+  uint32_t old_size = 0;
+  return_value_if_fail(str != NULL && format != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(str_extend(str, str->size + size + 1) == RET_OK, RET_OOM);
+
+  old_size = str->size;
+  va_start(va, format);
+  ret = tk_vsnprintf(str->str + str->size, size, format, va);
+  va_end(va);
+  
+  return_value_if_fail(ret >= 0, RET_BAD_PARAMS);
+  str->size += ret;
+  
+  if (str->size < (old_size + size)) {
+    uint32_t n = (old_size + size) - str->size;
+    str_append_n_chars(str, ' ', n);
+  }
+
+  return RET_OK;
+}
+
 ret_t str_append_json_pair(str_t* str, const char* key, const value_t* value) {
   ret_t ret;
   return_value_if_fail(str != NULL && key != NULL && value, RET_BAD_PARAMS);

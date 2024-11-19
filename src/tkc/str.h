@@ -811,6 +811,17 @@ ret_t str_format(str_t* str, uint32_t size, const char* format, ...);
 ret_t str_append_format(str_t* str, uint32_t size, const char* format, ...);
 
 /**
+ * @method str_append_format_padding
+ * 通过格式追加字符串(字符串不够size长时，自动填充空格)。
+ * @param {str_t*} str str对象。
+ * @param {uint32_t} size format生成的字符串的最大长度(用于预先分配内存)。
+ * @param {const char*} format 格式。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_format_padding(str_t* str, uint32_t size, const char* format, ...);
+
+/**
  * @method str_append_json_pair
  * 追加json键值对。
  * @param {str_t*} str str对象。

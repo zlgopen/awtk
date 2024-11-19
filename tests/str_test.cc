@@ -48,7 +48,7 @@ TEST(Str, shrink) {
   str_append(&s, "1234");
   ASSERT_EQ(str_shrink(&s, 2), RET_OK);
   ASSERT_STREQ(s.str, "12");
-  
+
   ASSERT_EQ(str_shrink(&s, 20), RET_OK);
   ASSERT_STREQ(s.str, "12");
 
@@ -1080,4 +1080,45 @@ TEST(Str, str_append_json_pair) {
   ASSERT_STREQ(s->str, "\"x\":\"abc\"");
 
   str_reset(s);
+}
+
+TEST(Str, append_format_ex) {
+  str_t s;
+  str_init(&s, 0);
+  str_append(&s, "Name          Date          Temperature    Humidity\n");
+
+  str_append_format_padding(&s, 14, "Device%d", 1);
+  str_append_format_padding(&s, 14, "2024-11-01");
+  str_append_format_padding(&s, 16, "%2.2f \xC2\xB0\x43", 26.5);
+  str_append_format(&s, 14, "50\n");
+
+  str_append_format_padding(&s, 14, "Device%d", 2);
+  str_append_format_padding(&s, 14, "2024-11-02");
+  str_append_format_padding(&s, 16, "%2.2f \xC2\xB0\x43", (float)27);
+  str_append_format(&s, 14, "60\n");
+
+  log_debug("\n%s\n", s.str);
+
+  str_clear(&s);
+  str_append_format_padding(&s, 14, "Device%d", 2);
+  ASSERT_STREQ(s.str, "Device2       ");
+
+  str_clear(&s);
+  str_append_format_padding(&s, 14, "%2.4f", 2.5);
+  ASSERT_STREQ(s.str, "2.5000        ");
+
+  str_clear(&s);
+  str_append_format_padding(&s, 14, "%2.4f", 27.0);
+  ASSERT_STREQ(s.str, "27.0000       ");
+
+  str_clear(&s);
+  str_append_format_padding(&s, 14, "%2.4f", (float)27);
+  ASSERT_STREQ(s.str, "27.0000       ");
+
+  str_clear(&s);
+  float v = 27;
+  str_append_format_padding(&s, 14, "%2.4f", v);
+  ASSERT_STREQ(s.str, "27.0000       ");
+
+  str_reset(&s);
 }
