@@ -308,7 +308,7 @@ static bool_t tk_atomic_compare_exchange_strong(tk_atomic_t* atomic, value_t* ex
     default: {
       /* tk_atomic_support_value_type() 已经判断过了，正常不可能会跑到这里 */
       assert(!"Not support type!");
-      return RET_BAD_PARAMS;
+      return FALSE;
     } break;
   }
 
@@ -696,7 +696,7 @@ static bool_t tk_atomic_compare_exchange_weak(tk_atomic_t* atomic, value_t* expe
     default: {
       /* tk_atomic_support_value_type() 已经判断过了，正常不可能会跑到这里 */
       assert(!"Not support type!");
-      return RET_BAD_PARAMS;
+      return FALSE;
     } break;
   }
 
@@ -757,7 +757,7 @@ static bool_t tk_atomic_compare_exchange_strong(tk_atomic_t* atomic, value_t* ex
     default: {
       /* tk_atomic_support_value_type() 已经判断过了，正常不可能会跑到这里 */
       assert(!"Not support type!");
-      return RET_BAD_PARAMS;
+      return FALSE;
     } break;
   }
 

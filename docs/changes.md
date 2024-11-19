@@ -3,6 +3,7 @@
 2024/11/19
   * 增加函数 str_append_format_padding
   * 增加 atomic_compare_exchange(感谢兆坤提供补丁)
+  * 完善 atomic(感谢兆坤提供补丁)
 
 2024/11/18
   * 完善 atomic(感谢兆坤提供补丁)
