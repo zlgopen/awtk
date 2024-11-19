@@ -90,6 +90,39 @@ static ret_t tk_atomic_init(tk_atomic_t* atomic, const value_t* v);
 static ret_t tk_atomic_exchange(tk_atomic_t* atomic, value_t* v);
 
 /**
+ * @method tk_atomic_compare_exchange_weak
+ * @export none
+ * 原子比较交换操作(Compare And Swap)。
+ * > 如果 atomic 等于 expect，则将 atomic 改为 desire, 否则将 expect 改为 atomic。
+ * 
+ * weak版本的CAS允许偶然出乎意料的返回（比如在字段值和期待值一样的时候却返回了FALSE），
+ * 不过在一些循环算法中，这是可以接受的。通常它比起strong有更高的性能。
+ *
+ * @param {const tk_atomic_t*} atomic 原子操作类对象。
+ * @param {value_t*} expect 期望值。
+ * @param {value_t*} desire 设定值。
+ *
+ * @return {bool_t} 返回TRUE表示成功，否则表示失败。
+ */
+static bool_t tk_atomic_compare_exchange_weak(tk_atomic_t* atomic, value_t* expect,
+                                              value_t* desire);
+
+/**
+ * @method tk_atomic_compare_exchange_strong
+ * @export none
+ * 原子比较交换操作(Compare And Swap)。
+ * > 如果 atomic 等于 expect，则将 atomic 改为 desire, 否则将 expect 改为 atomic。
+ *
+ * @param {const tk_atomic_t*} atomic 原子操作类对象。
+ * @param {value_t*} expect 期望值。
+ * @param {value_t*} desire 设定值。
+ *
+ * @return {bool_t} 返回TRUE表示成功，否则表示失败。
+ */
+static bool_t tk_atomic_compare_exchange_strong(tk_atomic_t* atomic, value_t* expect,
+                                                value_t* desire);
+
+/**
  * @method tk_atomic_store
  * @export none
  * 原子写操作。
@@ -213,6 +246,78 @@ static ret_t tk_atomic_exchange(tk_atomic_t* atomic, value_t* v) {
   }
 
   return value_copy(v, &tmp);
+}
+
+static inline bool_t tk_atomic_compare_exchange_weak(tk_atomic_t* atomic, value_t* expect,
+                                                     value_t* desire) {
+  return tk_atomic_compare_exchange_strong(atomic, expect, desire);
+}
+
+static bool_t tk_atomic_compare_exchange_strong(tk_atomic_t* atomic, value_t* expect,
+                                                value_t* desire) {
+  bool_t ret = TRUE;
+  value_t tmp;
+  return_value_if_fail(atomic != NULL && expect != NULL && desire != NULL, FALSE);
+
+  switch (atomic->value.type) {
+    case VALUE_TYPE_BOOL: {
+      value_set_bool(
+          &tmp, InterlockedCompareExchange16((SHORT*)(&atomic->value.value.b),
+                                             (SHORT)value_bool(desire), (SHORT)value_bool(expect)));
+    } break;
+    case VALUE_TYPE_INT8: {
+      value_set_int8(
+          &tmp, InterlockedCompareExchange16((SHORT*)(&atomic->value.value.i8),
+                                             (SHORT)value_int8(desire), (SHORT)value_int8(expect)));
+    } break;
+    case VALUE_TYPE_UINT8: {
+      value_set_uint8(&tmp, InterlockedCompareExchange16((SHORT*)(&atomic->value.value.u8),
+                                                         (SHORT)value_uint8(desire),
+                                                         (SHORT)value_uint8(expect)));
+    } break;
+    case VALUE_TYPE_INT16: {
+      value_set_int16(&tmp, InterlockedCompareExchange16((SHORT*)(&atomic->value.value.i16),
+                                                         (SHORT)value_int16(desire),
+                                                         (SHORT)value_int16(expect)));
+    } break;
+    case VALUE_TYPE_UINT16: {
+      value_set_uint16(&tmp, InterlockedCompareExchange16((SHORT*)(&atomic->value.value.u16),
+                                                          (SHORT)value_uint16(desire),
+                                                          (SHORT)value_uint16(expect)));
+    } break;
+    case VALUE_TYPE_INT32: {
+      value_set_int32(
+          &tmp, InterlockedCompareExchange((LONG*)(&atomic->value.value.i32),
+                                           (LONG)value_int32(desire), (LONG)value_int32(expect)));
+    } break;
+    case VALUE_TYPE_UINT32: {
+      value_set_uint32(
+          &tmp, InterlockedCompareExchange((LONG*)(&atomic->value.value.u32),
+                                           (LONG)value_uint32(desire), (LONG)value_uint32(expect)));
+    } break;
+    case VALUE_TYPE_INT64: {
+      value_set_int64(&tmp, InterlockedCompareExchange64((LONG64*)(&atomic->value.value.i64),
+                                                         (LONG64)value_int64(desire),
+                                                         (LONG64)value_int64(expect)));
+    } break;
+    case VALUE_TYPE_UINT64: {
+      value_set_uint64(&tmp, InterlockedCompareExchange64((LONG64*)(&atomic->value.value.u64),
+                                                          (LONG64)value_uint64(desire),
+                                                          (LONG64)value_uint64(expect)));
+    } break;
+    default: {
+      /* tk_atomic_support_value_type() 已经判断过了，正常不可能会跑到这里 */
+      assert(!"Not support type!");
+      return RET_BAD_PARAMS;
+    } break;
+  }
+
+  ret = value_equal(expect, &tmp);
+  if (!ret) {
+    value_copy(expect, &tmp);
+  }
+
+  return ret;
 }
 
 static inline ret_t tk_atomic_store(tk_atomic_t* atomic, const value_t* v) {
@@ -537,6 +642,128 @@ static ret_t tk_atomic_exchange(tk_atomic_t* atomic, value_t* v) {
   return value_copy(v, &tmp);
 }
 
+static bool_t tk_atomic_compare_exchange_weak(tk_atomic_t* atomic, value_t* expect,
+                                              value_t* desire) {
+  bool_t ret = TRUE;
+  return_value_if_fail(atomic != NULL && expect != NULL && desire != NULL, FALSE);
+
+  switch (atomic->type) {
+    case VALUE_TYPE_BOOL: {
+      bool_t tmp = value_bool(expect);
+      ret = atomic_compare_exchange_weak(&atomic->value.b, &tmp, value_bool(desire));
+      value_set_bool(expect, tmp);
+    } break;
+    case VALUE_TYPE_INT8: {
+      int8_t tmp = value_int8(expect);
+      ret = atomic_compare_exchange_weak(&atomic->value.i8, &tmp, value_int8(desire));
+      value_set_int8(expect, tmp);
+    } break;
+    case VALUE_TYPE_UINT8: {
+      uint8_t tmp = value_uint8(expect);
+      ret = atomic_compare_exchange_weak(&atomic->value.u8, &tmp, value_uint8(desire));
+      value_set_uint8(expect, tmp);
+    } break;
+    case VALUE_TYPE_INT16: {
+      int16_t tmp = value_int16(expect);
+      ret = atomic_compare_exchange_weak(&atomic->value.i16, &tmp, value_int16(desire));
+      value_set_int16(expect, tmp);
+    } break;
+    case VALUE_TYPE_UINT16: {
+      uint16_t tmp = value_uint16(expect);
+      ret = atomic_compare_exchange_weak(&atomic->value.u16, &tmp, value_uint16(desire));
+      value_set_uint16(expect, tmp);
+    } break;
+    case VALUE_TYPE_INT32: {
+      int32_t tmp = value_int32(expect);
+      ret = atomic_compare_exchange_weak(&atomic->value.i32, &tmp, value_int32(desire));
+      value_set_int32(expect, tmp);
+    } break;
+    case VALUE_TYPE_UINT32: {
+      uint32_t tmp = value_uint32(expect);
+      ret = atomic_compare_exchange_weak(&atomic->value.u32, &tmp, value_uint32(desire));
+      value_set_uint32(expect, tmp);
+    } break;
+    case VALUE_TYPE_INT64: {
+      int64_t tmp = value_int64(expect);
+      ret = atomic_compare_exchange_weak(&atomic->value.i64, &tmp, value_int64(desire));
+      value_set_int64(expect, tmp);
+    } break;
+    case VALUE_TYPE_UINT64: {
+      uint64_t tmp = value_uint64(expect);
+      ret = atomic_compare_exchange_weak(&atomic->value.u64, &tmp, value_uint64(desire));
+      value_set_uint64(expect, tmp);
+    } break;
+    default: {
+      /* tk_atomic_support_value_type() 已经判断过了，正常不可能会跑到这里 */
+      assert(!"Not support type!");
+      return RET_BAD_PARAMS;
+    } break;
+  }
+
+  return ret;
+}
+
+static bool_t tk_atomic_compare_exchange_strong(tk_atomic_t* atomic, value_t* expect,
+                                                value_t* desire) {
+  bool_t ret = TRUE;
+  return_value_if_fail(atomic != NULL && expect != NULL && desire != NULL, FALSE);
+
+  switch (atomic->type) {
+    case VALUE_TYPE_BOOL: {
+      bool_t tmp = value_bool(expect);
+      ret = atomic_compare_exchange_strong(&atomic->value.b, &tmp, value_bool(desire));
+      value_set_bool(expect, tmp);
+    } break;
+    case VALUE_TYPE_INT8: {
+      int8_t tmp = value_int8(expect);
+      ret = atomic_compare_exchange_strong(&atomic->value.i8, &tmp, value_int8(desire));
+      value_set_int8(expect, tmp);
+    } break;
+    case VALUE_TYPE_UINT8: {
+      uint8_t tmp = value_uint8(expect);
+      ret = atomic_compare_exchange_strong(&atomic->value.u8, &tmp, value_uint8(desire));
+      value_set_uint8(expect, tmp);
+    } break;
+    case VALUE_TYPE_INT16: {
+      int16_t tmp = value_int16(expect);
+      ret = atomic_compare_exchange_strong(&atomic->value.i16, &tmp, value_int16(desire));
+      value_set_int16(expect, tmp);
+    } break;
+    case VALUE_TYPE_UINT16: {
+      uint16_t tmp = value_uint16(expect);
+      ret = atomic_compare_exchange_strong(&atomic->value.u16, &tmp, value_uint16(desire));
+      value_set_uint16(expect, tmp);
+    } break;
+    case VALUE_TYPE_INT32: {
+      int32_t tmp = value_int32(expect);
+      ret = atomic_compare_exchange_strong(&atomic->value.i32, &tmp, value_int32(desire));
+      value_set_int32(expect, tmp);
+    } break;
+    case VALUE_TYPE_UINT32: {
+      uint32_t tmp = value_uint32(expect);
+      ret = atomic_compare_exchange_strong(&atomic->value.u32, &tmp, value_uint32(desire));
+      value_set_uint32(expect, tmp);
+    } break;
+    case VALUE_TYPE_INT64: {
+      int64_t tmp = value_int64(expect);
+      ret = atomic_compare_exchange_strong(&atomic->value.i64, &tmp, value_int64(desire));
+      value_set_int64(expect, tmp);
+    } break;
+    case VALUE_TYPE_UINT64: {
+      uint64_t tmp = value_uint64(expect);
+      ret = atomic_compare_exchange_strong(&atomic->value.u64, &tmp, value_uint64(desire));
+      value_set_uint64(expect, tmp);
+    } break;
+    default: {
+      /* tk_atomic_support_value_type() 已经判断过了，正常不可能会跑到这里 */
+      assert(!"Not support type!");
+      return RET_BAD_PARAMS;
+    } break;
+  }
+
+  return ret;
+}
+
 static ret_t tk_atomic_store(tk_atomic_t* atomic, const value_t* v) {
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
 
@@ -769,6 +996,44 @@ static inline ret_t tk_atomic_exchange(tk_atomic_t* atomic, value_t* v) {
   value_copy(&tmp, &atomic->value);
   ret = value_copy(&atomic->value, v);
   value_copy(v, &tmp);
+
+  tk_mutex_unlock(atomic->lock);
+  return ret;
+}
+
+static inline bool_t tk_atomic_compare_exchange_weak(tk_atomic_t* atomic, value_t* expect,
+                                                     value_t* desire) {
+  bool_t ret = TRUE;
+  return_value_if_fail(atomic != NULL && expect != NULL && desire != NULL, FALSE);
+
+  ret = (RET_OK == tk_mutex_try_lock(atomic->lock));
+  if (ret) {
+    ret = value_equal(&atomic->value, expect);
+    if (ret) {
+      value_copy(&atomic->value, desire);
+    } else {
+      value_copy(expect, &atomic->value);
+    }
+
+    tk_mutex_unlock(atomic->lock);
+  }
+
+  return ret;
+}
+
+static inline bool_t tk_atomic_compare_exchange_strong(tk_atomic_t* atomic, value_t* expect,
+                                                       value_t* desire) {
+  bool_t ret = TRUE;
+  return_value_if_fail(atomic != NULL && expect != NULL && desire != NULL, FALSE);
+
+  return_value_if_fail(RET_OK == tk_mutex_lock(atomic->lock), FALSE);
+
+  ret = value_equal(&atomic->value, expect);
+  if (ret) {
+    value_copy(&atomic->value, desire);
+  } else {
+    value_copy(expect, &atomic->value);
+  }
 
   tk_mutex_unlock(atomic->lock);
   return ret;

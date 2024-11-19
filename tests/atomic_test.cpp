@@ -37,6 +37,46 @@ static void* dec_thread(void* args) {
   return NULL;
 }
 
+static void* cas_weak_thread(void* args) {
+  uint64_t last_value = 0;
+  value_t v;
+
+  tk_atomic_load(&s_atomic, &v);
+  last_value = value_uint64(&v);
+
+  while (last_value < NR * STEP) {
+    value_t tmp;
+    if (!tk_atomic_compare_exchange_weak(&s_atomic, value_set_uint64(&tmp, last_value),
+                                         value_set_uint64(&v, last_value + STEP))) {
+      last_value = value_uint64(&tmp);
+    } else {
+      last_value = value_uint64(&v);
+    }
+  }
+
+  return NULL;
+}
+
+static void* cas_strong_thread(void* args) {
+  uint64_t last_value = 0;
+  value_t v;
+
+  tk_atomic_load(&s_atomic, &v);
+  last_value = value_uint64(&v);
+
+  while (last_value < NR * STEP) {
+    value_t tmp;
+    if (!tk_atomic_compare_exchange_strong(&s_atomic, value_set_uint64(&tmp, last_value),
+                                           value_set_uint64(&v, last_value + STEP))) {
+      last_value = value_uint64(&tmp);
+    } else {
+      last_value = value_uint64(&v);
+    }
+  }
+
+  return NULL;
+}
+
 int main(int argc, char* argv[]) {
   uint32_t i = 0;
   value_t v;
@@ -44,14 +84,20 @@ int main(int argc, char* argv[]) {
   tk_thread_entry_t entrys[] = {
       inc_thread,
       dec_thread,
+      cas_weak_thread,
+      cas_strong_thread,
   };
   uint64_t entrys_init_value[ARRAY_SIZE(entrys)] = {
       0,
       THREAD_NUM * NR * STEP,
+      0,
+      0,
   };
   uint64_t entrys_correct[ARRAY_SIZE(entrys)] = {
       THREAD_NUM * NR * STEP,
       0,
+      NR * STEP,
+      NR * STEP,
   };
   uint64_t entrys_result[ARRAY_SIZE(entrys)] = {0};
   uint64_t entrys_time[ARRAY_SIZE(entrys)] = {0};
