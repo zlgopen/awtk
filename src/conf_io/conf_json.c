@@ -55,6 +55,7 @@ static ret_t conf_json_parse_name(json_parser_t* parser) {
   }
 
   str_set_with_len(s, parser->data + parser->cursor, i - parser->cursor);
+  str_unescape(s);
   parser->cursor = i + 1;
   node = conf_doc_create_node(parser->doc, s->str);
   return_value_if_fail(node != NULL, RET_OOM);
@@ -447,9 +448,11 @@ static ret_t conf_json_save_node(conf_node_t* node, str_t* str, uint32_t level, 
 
   if (indent > 0) {
     return_value_if_fail(conf_json_write_indent(str, level, indent) == RET_OK, RET_OOM);
-    return_value_if_fail(str_append_more(str, "\"", name, "\" : ", NULL) == RET_OK, RET_OOM);
+    return_value_if_fail(str_append_json_str(str, name) == RET_OK, RET_OOM);
+    return_value_if_fail(str_append(str, " : ") == RET_OK, RET_OOM);
   } else {
-    return_value_if_fail(str_append_more(str, "\"", name, "\":", NULL) == RET_OK, RET_OOM);
+    return_value_if_fail(str_append_json_str(str, name) == RET_OK, RET_OOM);
+    return_value_if_fail(str_append(str, ":") == RET_OK, RET_OOM);
   }
 
   return conf_json_save_node_value(node, str, level, indent);

@@ -1,6 +1,7 @@
 ﻿#include "gtest/gtest.h"
 #include "tkc/named_value.h"
 #include "conf_io/conf_json.h"
+#include "tkc/object_default.h"
 
 TEST(ConfJson, arr) {
   value_t v;
@@ -402,6 +403,9 @@ TEST(Json, save_as) {
   ASSERT_NE(conf, (tk_object_t*)NULL);
   ASSERT_EQ(tk_object_set_prop_int(conf, "value", 123), RET_OK);
   ASSERT_EQ(tk_object_get_prop_int(conf, "value", 0), 123);
+  ASSERT_EQ(tk_object_set_prop_str(conf, "config\\awtk", "430bf786fb5f536c84ee0846f11f12aa"),
+            RET_OK);
+  ASSERT_STREQ(tk_object_get_prop_str(conf, "config\\awtk"), "430bf786fb5f536c84ee0846f11f12aa");
   wbuffer_init_extendable(&wb);
   data_writer_wbuffer_build_url(&wb, url);
 
@@ -413,7 +417,34 @@ TEST(Json, save_as) {
   ASSERT_NE(conf, (tk_object_t*)NULL);
 
   ASSERT_EQ(tk_object_get_prop_int(conf, "value", 0), 123);
+  ASSERT_STREQ(tk_object_get_prop_str(conf, "config\\awtk"), "430bf786fb5f536c84ee0846f11f12aa");
   wbuffer_deinit(&wb);
+  TK_OBJECT_UNREF(conf);
+}
+
+TEST(Json, object_from_json) {
+  char url[MAX_PATH + 1] = {0};
+  tk_object_t* conf = NULL;
+  tk_object_t* obj = object_default_create_ex(FALSE);
+  str_t str_json;
+
+  str_init(&str_json, 0);
+
+  tk_object_set_prop_str(obj, "config\\awtk.json", "430bf786fb5f536c84ee0846f11f12aa");
+  object_to_json(obj, &str_json);
+
+  data_reader_mem_build_url(str_json.str, str_json.size, url);
+  conf = conf_json_load(url, FALSE);
+
+  TK_OBJECT_UNREF(obj);
+  obj = object_default_create_ex(FALSE);
+  tk_object_copy_props(obj, conf, TRUE);
+
+  ASSERT_STREQ(tk_object_get_prop_str(obj, "config\\awtk.json"),
+               "430bf786fb5f536c84ee0846f11f12aa");
+
+  str_reset(&str_json);
+  TK_OBJECT_UNREF(obj);
   TK_OBJECT_UNREF(conf);
 }
 
@@ -809,7 +840,6 @@ TEST(Json, format) {
   ASSERT_EQ(conf_json_save_to_buff(conf, &wb), RET_OK);
   ASSERT_STREQ((char*)(wb.data), "{\n    \"age\" : \"123\"\n}");
   TK_OBJECT_UNREF(conf);
-
 
   wbuffer_deinit(&wb);
 }
