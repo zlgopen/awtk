@@ -43,7 +43,7 @@ static nvgp_bool_t gtest_update_texture(void* uptr, int image, int x, int y, int
   return TRUE;
 }
 
-static int gtest_get_texture_size(void* uptr, int image, int* w, int* h) {
+static nvgp_bool_t gtest_get_texture_size(void* uptr, int image, int* w, int* h) {
   gtest_nvgp_ctx_t* ctx = (gtest_nvgp_ctx_t*)uptr;
   if (ctx->image != 0) {
     *w = ctx->w;
