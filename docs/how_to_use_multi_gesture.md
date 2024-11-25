@@ -88,7 +88,7 @@ ret_t multi_gesture_post_event_from_points(main_loop_t* loop, multi_gesture_touc
 
 > 具体用法请参考
 >
-> [multi\_gesture.inc](https://github.com/zlgopen/awtk/blob/master/demos/multi_gesture.inc)
+> [multi\_gesture.inc](https://github.com/zlgopen/awtk/blob/master/src/base/multi_gesture.inc)
 
 ### 三，如何使用
 
