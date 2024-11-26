@@ -280,10 +280,15 @@ def update_cmake_file(config, filename):
         "${AWTK_APP_PATH}/res\n  ${AWTK_APP_PATH}/src\n  ${AWTK_APP_PATH}/3rd\n"
     )
     for f in includes:
-        sincludes += "  ${AWTK_APP_PATH}/" + f + "\n"
+        if os.path.isabs(f):
+          sincludes += "  " + f + "\n"
+        else:
+          sincludes += "  ${AWTK_APP_PATH}/" + f + "\n"
+
     print("process " + filename)
 
     cflags = to_string(config_get_cflags(config))
+    linkflags = to_string(config_get_linkflags(config))
     defines = to_string(config_get_defines(config))
     cppflags = to_string(config_get_cppflags(config))
     default_font_name = config_get_font_name(config)
@@ -296,6 +301,7 @@ def update_cmake_file(config, filename):
     file_replace(filename, "EXTRA_DEFINES", defines)
     file_replace(filename, "EXTRA_CPPFLAGS", cppflags)
     file_replace(filename, "EXTRA_INCLUDES", sincludes)
+    file_replace(filename, "EXTRA_LINK_FLAGS", linkflags)
     file_replace(filename, "AWTK_DEFAULT_FONT_NAME", default_font_name)
 
 def config_get_app_type(config):
@@ -358,6 +364,12 @@ def config_get_themes(config):
 def config_get_cflags(config):
     if "cflags" in config:
         return config["cflags"]
+    else:
+        return ""
+
+def config_get_linkflags(config):
+    if "linkflags" in config:
+        return config["linkflags"]
     else:
         return ""
 
