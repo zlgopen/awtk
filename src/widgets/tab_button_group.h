@@ -161,6 +161,17 @@ ret_t tab_button_group_set_scrollable(widget_t* widget, bool_t scrollable);
 ret_t tab_button_group_set_drag_child(widget_t* widget, bool_t drag_child);
 
 /**
+ * @method tab_button_group_remove_index
+ * 设置删除 tab_button_group 控件中的 tab_button 控件和对应页。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t} index tab_button 的序号。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tab_button_group_remove_index(widget_t* widget, uint32_t index);
+
+/**
  * @method tab_button_group_cast
  * 转换tab_button_group对象(供脚本语言使用)。
  * @annotation ["cast", "scriptable"]

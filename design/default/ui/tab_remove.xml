@@ -10,7 +10,7 @@
       <button name="remove_tab" x="r" y="m" w="20" h="20" tr_text="x"/>
     </tab_button>
   </tab_button_group>
-  <pages x="c" y="42" w="90%" h="-60" value="1">
+  <pages x="c" y="42" w="90%" h="350" value="1">
     <view name="clone_view" w="100%" h="100%">
       <label x="c" y="m" w="100%" h="60" text="0"/> 
       <button name="clone_tab" x="c" y="bottom:100" w="80" h="40" tr_text="Clone" />
@@ -24,4 +24,8 @@
       <button name="clone_tab" x="c" y="bottom:100" w="80" h="40" tr_text="Clone" />
     </view>
   </pages>
+  <view x="c" y="400" w="90%" h="40">
+    <edit name="remove_tab_index" x="0" y="0" w="80" h="40" input_type="uint" step="1" text="0" />
+    <button name="remove_tab_by_index" x="100" y="0" w="80" h="40" tr_text="Remove" />
+  </view>
 </window>

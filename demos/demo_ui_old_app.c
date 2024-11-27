@@ -639,6 +639,19 @@ static ret_t on_clone_view(void* ctx, event_t* e) {
   return RET_FAIL;
 }
 
+static ret_t on_remove_tab_by_index(void* ctx, event_t* e) {
+  char buff[MAX_PATH] = {0};
+  widget_t* iter = WIDGET(e->target);
+  widget_t* win = widget_get_window(iter);  
+  widget_t* edit = widget_lookup(win, "remove_tab_index", TRUE);
+  widget_t* tab_button_group = widget_lookup_by_type(win, WIDGET_TYPE_TAB_BUTTON_GROUP, FALSE);
+
+  if (edit != NULL && widget_get_text_utf8(edit, buff, sizeof(buff)) == RET_OK) {
+    return tab_button_group_remove_index(tab_button_group, tk_atoi(buff));
+  }
+  return RET_FAIL;
+}
+
 static ret_t on_remove_tab_idle(const idle_info_t* idle) {
   widget_t* iter = WIDGET(idle->ctx);
   int32_t remove_index = widget_index_of(iter);
@@ -1134,7 +1147,10 @@ static ret_t install_one(void* ctx, const void* iter) {
       } else {
         widget_on(widget, EVT_CLICK, on_remove_tab, widget);
       }
-    } else if (tk_str_eq(name, "remove_self")) {
+    } else if (tk_str_eq(name, "remove_tab_by_index")) {
+      widget_on(widget, EVT_CLICK, on_remove_tab_by_index, widget);
+    } 
+    else if (tk_str_eq(name, "remove_self")) {
       widget_on(widget, EVT_CLICK, on_remove_self, widget);
     } else if (tk_str_eq(name, "remove_view")) {
       widget_on(widget, EVT_CLICK, on_remove_view, widget);

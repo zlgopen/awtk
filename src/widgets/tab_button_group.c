@@ -425,6 +425,18 @@ ret_t tab_button_group_set_drag_child(widget_t* widget, bool_t drag_child) {
   return RET_OK;
 }
 
+ret_t tab_button_group_remove_index(widget_t* widget, uint32_t index) {
+  widget_t* pages = NULL;
+  tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
+  return_value_if_fail(tab_button_group != NULL && index < widget_count_children(widget), RET_BAD_PARAMS);
+
+  pages = widget_lookup_by_type(widget->parent, WIDGET_TYPE_PAGES, TRUE);
+
+  widget_destroy(widget_get_child(pages, index));
+  widget_destroy(widget_get_child(widget, index));
+
+  return RET_OK;
+}
 
 static ret_t tab_button_group_on_destroy(widget_t* widget) {
   tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
