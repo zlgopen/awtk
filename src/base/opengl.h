@@ -26,7 +26,7 @@
 #define opengl_loadGL() gladLoadGL()
 #endif /*WITHOUT_GLAD*/
 
-static void opengl_init(void) {
+static inline void opengl_init(void) {
   opengl_loadGL();
 
   glDisable(GL_STENCIL_TEST);

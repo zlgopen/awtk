@@ -1086,7 +1086,6 @@ nvgp_error_t nvgp_get_curr_clip_rect(nvgp_context_t* ctx, float* x, float* y, fl
   CHECK_OBJECT_IS_NULL(ctx);
   state = nvgp_get_state(ctx);
   if (state != NULL) {
-    float rect[4];
     float ex, ey, tex, tey;
     nvgp_matrix_t pxform, invxorm;
 
@@ -1516,7 +1515,7 @@ static int nvgp_alloc_text_atlas(nvgp_context_t* ctx) {
 
 void nvgp_text_metrics(nvgp_context_t* ctx, float* ascender, float* descender, float* lineh) {
   nvgp_state_t* state = NULL;
-  float scale, invscale, width;
+  float scale, invscale;
   CHECK_OBJECT_IS_NULL(ctx);
   state = nvgp_get_state(ctx);
   scale = nvgp_get_font_scale(state) * ctx->ratio;
@@ -1702,7 +1701,6 @@ static void nvgp_flatten_paths(nvgp_context_t* ctx) {
   nvgp_path_t* path;
   nvgp_point_t* p0;
   nvgp_point_t* p1;
-  nvgp_point_t* pts;
   nvgp_point_t* last;
   nvgp_path_cache_t* cache = &ctx->cache;
   nvgp_darray_t* commands = &ctx->commands;
@@ -1763,7 +1761,6 @@ static void nvgp_flatten_paths(nvgp_context_t* ctx) {
   // Calculate the direction and length of line segments.
   for (j = 0; j < cache->paths.size; j++) {
     path = nvgp_darray_get_ptr(&cache->paths, j, nvgp_path_t);
-    pts = nvgp_darray_get_ptr(&cache->points, path->first, nvgp_point_t);
 
     // If the first and last points are the same, remove the last, mark as closed path.
     p0 = nvgp_darray_get_ptr(&cache->points, path->first + path->count - 1, nvgp_point_t);
@@ -2014,7 +2011,6 @@ static nvgp_error_t nvgp_expand_fill(nvgp_context_t* ctx, float w, nvgp_line_joi
     nvgp_point_t* p0;
     nvgp_point_t* p1;
     nvgp_path_t* path = nvgp_darray_get_ptr(&cache->paths, i, nvgp_path_t);
-    nvgp_point_t* pts = nvgp_darray_get_ptr(&cache->points, path->first, nvgp_point_t);
 
     // Calculate shape vertices.
     woff = 0.5f * aa;
@@ -2288,7 +2284,6 @@ static nvgp_error_t nvgp_expand_stroke(nvgp_context_t* ctx, float w, float fring
     nvgp_point_t* p0;
     nvgp_point_t* p1;
     nvgp_path_t* path = nvgp_darray_get_ptr(&cache->paths, i, nvgp_path_t);
-    nvgp_point_t* pts = nvgp_darray_get_ptr(&cache->points, path->first, nvgp_point_t);
 
     path->fill = 0;
     path->nfill = 0;
