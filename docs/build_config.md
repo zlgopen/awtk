@@ -77,6 +77,7 @@ android 平台选项放在 android 子键下面，目前支持以下选项：
 * app_name 应用程序的完整名称。如：org.zlgopen.demoui
 * cflags C 代码额外的编译参数。
 * cppflags C++代码额外的编译参数。
+* linkflags 额外的链接参数。
 * features 平台专用特性。目前支持：
   * fullscreen 是否全屏。true 表示全屏，false 表示不全屏。
 
