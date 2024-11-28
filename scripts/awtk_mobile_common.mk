@@ -79,6 +79,7 @@ file(GLOB AWTK_BASE_SOURCE_FILES
   ${AWTK_SRC_PATH}/conf_io/*.c
   ${AWTK_SRC_PATH}/fscript_ext/*.c
   ${AWTK_SRC_PATH}/charset/*.c
+  ${AWTK_SRC_PATH}/blend/*.c
 )
 
 file(GLOB AWTK_VGCANVAS_NANOVG_SOURCE_FILES
@@ -99,7 +100,6 @@ file(GLOB AWTK_COMMON_SOURCE_FILES
   ${AWTK_BASE_SOURCE_FILES}
   ${AWTK_SRC_PATH}/streams/inet/*.c
   ${AWTK_SRC_PATH}/streams/serial/*.c
-  ${AWTK_SRC_PATH}/blend/*.c
   ${AWTK_SRC_PATH}/image_loader/*.c
   ${AWTK_SRC_PATH}/main_loop/main_loop_simple.c
   ${AWTK_SRC_PATH}/main_loop/main_loop_console.c
