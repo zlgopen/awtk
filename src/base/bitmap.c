@@ -901,36 +901,54 @@ ret_t bitmap_mono_dump(const uint8_t* buff, uint32_t w, uint32_t h) {
   return RET_OK;
 }
 
+typedef enum _bitmap_lock_type_t {
+  BITMAP_LOCK_NONE = 0,
+  BITMAP_LOCK_READ,
+  BITMAP_LOCK_WRITE
+} bitmap_lock_type_t;
+
 uint8_t* bitmap_lock_buffer_for_read(bitmap_t* bitmap) {
+  uint8_t* data = NULL;
   return_value_if_fail(bitmap != NULL, NULL);
 
   if (bitmap->buffer != NULL) {
     if (!graphic_buffer_is_valid_for(bitmap->buffer, bitmap)) {
       assert(!" graphic_buffer is not valid ");
-      return NULL;
     }
-    return graphic_buffer_lock_for_read(bitmap->buffer);
-  } else {
-    return NULL;
+    data = graphic_buffer_lock_for_read(bitmap->buffer);
   }
+
+  if (data != NULL) {
+    bitmap->lock_type = BITMAP_LOCK_READ;
+  }
+
+  return data;
 }
 
 uint8_t* bitmap_lock_buffer_for_write(bitmap_t* bitmap) {
+  uint8_t* data = NULL;
   return_value_if_fail(bitmap != NULL, NULL);
 
   if (bitmap->buffer != NULL) {
     if (!graphic_buffer_is_valid_for(bitmap->buffer, bitmap)) {
       assert(!" graphic_buffer is not valid ");
-      return NULL;
     }
-    return graphic_buffer_lock_for_write(bitmap->buffer);
-  } else {
-    return NULL;
+    data = graphic_buffer_lock_for_write(bitmap->buffer);
   }
+
+  if (data != NULL) {
+    bitmap->lock_type = BITMAP_LOCK_WRITE;
+  }
+
+  return data;
 }
 
 ret_t bitmap_unlock_buffer(bitmap_t* bitmap) {
   return_value_if_fail(bitmap != NULL, RET_BAD_PARAMS);
+
+  if (bitmap->lock_type == BITMAP_LOCK_WRITE) {
+    bitmap_set_dirty(bitmap, TRUE);
+  }
 
   if (bitmap->buffer != NULL) {
     assert(graphic_buffer_is_valid_for(bitmap->buffer, bitmap));
@@ -938,6 +956,24 @@ ret_t bitmap_unlock_buffer(bitmap_t* bitmap) {
   } else {
     return RET_FAIL;
   }
+}
+
+ret_t bitmap_set_dirty(bitmap_t* bitmap, bool_t dirty) {
+  return_value_if_fail(bitmap != NULL, RET_BAD_PARAMS);
+
+  if (dirty) {
+    bitmap->flags |= BITMAP_FLAG_CHANGED;
+  } else {
+    bitmap->flags &= ~BITMAP_FLAG_CHANGED;
+  }
+
+  return RET_OK;
+}
+
+bool_t bitmap_is_dirty(bitmap_t* bitmap) {
+  return_value_if_fail(bitmap != NULL, FALSE);
+
+  return (bitmap->flags & BITMAP_FLAG_CHANGED) ? TRUE : FALSE;
 }
 
 ret_t bitmap_transform(bitmap_t* bitmap, bitmap_transform_t transform, void* ctx) {
@@ -1036,7 +1072,6 @@ ret_t bitmap_transform(bitmap_t* bitmap, bitmap_transform_t transform, void* ctx
     }
   }
   bitmap_unlock_buffer(bitmap);
-  bitmap->flags |= BITMAP_FLAG_CHANGED;
 
   return ret;
 }

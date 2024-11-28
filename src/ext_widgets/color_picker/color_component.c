@@ -201,7 +201,7 @@ static ret_t color_component_ensure_image(widget_t* widget) {
     bitmap_t* image = color_component->image;
 
     color_component->update(widget);
-    image->flags |= BITMAP_FLAG_CHANGED;
+    bitmap_set_dirty(image, TRUE);
     color_component->need_update = FALSE;
   }
 

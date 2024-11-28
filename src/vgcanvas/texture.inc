@@ -38,8 +38,8 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
     if (result == RET_OK) {
       i = ((vgcanvas_nanovg_gl_texture_t*)specific)->image_id;
 
-      if (img->flags & BITMAP_FLAG_CHANGED) {
-        img->flags &= (~(BITMAP_FLAG_CHANGED));
+      if (bitmap_is_dirty(img)) {
+        bitmap_set_dirty(img, FALSE);
         nvgUpdateImage(canvas->vg, i, img_data);
       }
       bitmap_unlock_buffer(img);

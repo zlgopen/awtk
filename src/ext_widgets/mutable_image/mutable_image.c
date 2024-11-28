@@ -64,7 +64,7 @@ static bitmap_t* mutable_image_prepare_image(widget_t* widget, canvas_t* c) {
     void* ctx = mutable_image->prepare_image_ctx;
 
     return_value_if_fail(mutable_image->prepare_image(ctx, image) == RET_OK, NULL);
-    image->flags |= BITMAP_FLAG_CHANGED;
+    bitmap_set_dirty(image, TRUE);
   }
 
   return mutable_image->image;

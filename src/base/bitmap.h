@@ -30,6 +30,7 @@ BEGIN_C_DECLS
 
 typedef ret_t (*bitmap_destroy_t)(bitmap_t* bitmap);
 
+
 /**
  * @class bitmap_t
  * @order -9
@@ -111,9 +112,10 @@ struct _bitmap_t {
   /*用于销毁specific*/
   bitmap_destroy_t specific_destroy;
 
+  int lock_type;
+
   /*virtual functions*/
   bitmap_destroy_t destroy;
-
   image_manager_t* image_manager;
 };
 
@@ -319,6 +321,23 @@ ret_t bitmap_init(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t form
  */
 ret_t bitmap_init_ex(bitmap_t* bitmap, uint32_t w, uint32_t h, uint32_t line_length,
                      bitmap_format_t format, uint8_t* data);
+
+/**
+ * @method bitmap_set_dirty
+ * 设置图片是否脏。
+ * @param {bitmap_t*} bitmap bitmap对象。
+ * @param {bool_t} dirty 是否脏。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t bitmap_set_dirty(bitmap_t* bitmap, bool_t dirty);
+
+/**
+ * @method bitmap_is_dirty
+ * 获取图片是否脏。
+ * @param {bitmap_t*} bitmap bitmap对象。
+ * @return {bool_t} 返回TRUE表示脏，FALSE表示不脏。
+ */
+bool_t bitmap_is_dirty(bitmap_t* bitmap);
 
 #if defined(WITH_STB_IMAGE) || defined(WITH_FS_RES)
 /*for helping debug drawing bugs*/

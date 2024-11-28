@@ -10,7 +10,10 @@ TEST(Bitmap, basic) {
     uint8_t* bdata = bitmap_lock_buffer_for_write(b);
     ASSERT_EQ(((intptr_t)(bdata)) % BITMAP_ALIGN_SIZE, (intptr_t)0);
     ASSERT_EQ(bitmap_get_line_length(b), b->w * 4u);
+    ASSERT_EQ(bitmap_is_dirty(b), TRUE);
     bitmap_unlock_buffer(b);
+    ASSERT_EQ(bitmap_is_dirty(b), FALSE);
+
     bitmap_destroy(b);
   }
 

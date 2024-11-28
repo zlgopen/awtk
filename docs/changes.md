@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/11/28
+  * 增加函数 bitmap_set_dirty/bitmap_is_dirty
+
 2024/11/26
   * 增加tab_button_group删除tab_button和对应page的函数(感谢智明提供补丁)
 
