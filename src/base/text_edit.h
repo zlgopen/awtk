@@ -373,7 +373,7 @@ ret_t text_edit_layout(text_edit_t* text_edit);
  * @param {text_edit_t*} text_edit text_edit对象。
  * @param {uint32_t} offset 插入的字符串偏移。
  * @param {uint32_t} insert_length 插入的字符串长度。
- * @param {wchar_t*} wtext 插入的字符串。
+ * @param {const wchar_t*} wtext 插入的字符串。
  * @param {bool_t} overwrite 是否为覆写模式。
  * @param {uint32_t} rm_num 移除的字符串长度。
  *
