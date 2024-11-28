@@ -1,20 +1,21 @@
 # 最新动态
 
 2024/11/28
-  * 增加函数 bitmap_set_dirty/bitmap_is_dirty
+  * 增加函数 bitmap\_set\_dirty/bitmap\_is\_dirty
+  * 重构bitmap，用bitmap\_init\_ex 实现bitmap\_create\_ex
 
 2024/11/26
-  * 增加tab_button_group删除tab_button和对应page的函数(感谢智明提供补丁)
+  * 增加tab\_button\_group删除tab\_button和对应page的函数(感谢智明提供补丁)
 
 2024/11/22
   * 修复 mledit编译警告(感谢泽武提供补丁)
 
 2024/11/21
-  * 完善conf_json(感谢兆坤提供补丁)
+  * 完善conf\_json(感谢兆坤提供补丁)
 
 2024/11/19
-  * 增加函数 str_append_format_padding
-  * 增加 atomic_compare_exchange(感谢兆坤提供补丁)
+  * 增加函数 str\_append\_format\_padding
+  * 增加 atomic\_compare\_exchange(感谢兆坤提供补丁)
   * 完善 atomic(感谢兆坤提供补丁)
 
 2024/11/18
@@ -23,7 +24,7 @@
   * fix memory error whene change theme.
 
 2024/11/17
-  * 完善 TK_STRINGIZE(感谢兆坤提供补丁)
+  * 完善 TK\_STRINGIZE(感谢兆坤提供补丁)
   * value完善调试log(感谢兆坤提供补丁)
   * 修复拼写错误(感谢兆坤提供补丁)
   * 增加原子操作(感谢兆坤提供补丁)
@@ -31,8 +32,8 @@
 2024/11/15
   * 修复拼写错误(感谢兆坤提供补丁)
   * 修复 demoui dialog(感谢兆坤提供补丁)
-  * 增加tk_strs_bsearch
-  * 修复text_selector测试用例报错问题(感谢颖健提供补丁)
+  * 增加tk\_strs\_bsearch
+  * 修复text\_selector测试用例报错问题(感谢颖健提供补丁)
   * 修复控件有offset时更新指针icon没更新的问题(感谢颖健提供补丁)
 
 2024/11/14

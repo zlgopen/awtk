@@ -2,7 +2,7 @@
 #include "base/bitmap.h"
 #include "gtest/gtest.h"
 
-TEST(Bitmap, basic) {
+TEST(Bitmap, basic1) {
   uint32_t n = 100;
   uint32_t i = 0;
   for (i = 0; i < n; i++) {
@@ -10,10 +10,10 @@ TEST(Bitmap, basic) {
     uint8_t* bdata = bitmap_lock_buffer_for_write(b);
     ASSERT_EQ(((intptr_t)(bdata)) % BITMAP_ALIGN_SIZE, (intptr_t)0);
     ASSERT_EQ(bitmap_get_line_length(b), b->w * 4u);
-    ASSERT_EQ(bitmap_is_dirty(b), TRUE);
-    bitmap_unlock_buffer(b);
     ASSERT_EQ(bitmap_is_dirty(b), FALSE);
-
+    bitmap_unlock_buffer(b);
+    ASSERT_EQ(bitmap_is_dirty(b), TRUE);
+    ASSERT_EQ(b->should_free_handle, TRUE);
     bitmap_destroy(b);
   }
 
@@ -23,7 +23,35 @@ TEST(Bitmap, basic) {
     ASSERT_EQ(((intptr_t)(bdata)) % BITMAP_ALIGN_SIZE, (intptr_t)0);
     ASSERT_EQ(bitmap_get_line_length(b), b->w * 2u);
     bitmap_unlock_buffer(b);
+    ASSERT_EQ(b->should_free_handle, TRUE);
     bitmap_destroy(b);
+  }
+}
+
+TEST(Bitmap, basic2) {
+  bitmap_t bitmap;
+  uint32_t n = 100;
+  uint32_t i = 0;
+  bitmap_t* b = &bitmap;
+
+  for (i = 0; i < n; i++) {
+    bitmap_init_ex(b, i + 1, i + 1, 0, BITMAP_FMT_BGRA8888, NULL);
+    uint8_t* bdata = bitmap_lock_buffer_for_write(b);
+    ASSERT_EQ(((intptr_t)(bdata)) % BITMAP_ALIGN_SIZE, (intptr_t)0);
+    ASSERT_EQ(bitmap_get_line_length(b), b->w * 4u);
+    ASSERT_EQ(bitmap_is_dirty(b), FALSE);
+    bitmap_unlock_buffer(b);
+    ASSERT_EQ(bitmap_is_dirty(b), TRUE);
+    ASSERT_EQ(b->should_free_handle, FALSE);
+  }
+
+  for (i = 0; i < n; i++) {
+    bitmap_init_ex(b, i + 1, i + 1, 0, BITMAP_FMT_BGR565, NULL);
+    uint8_t* bdata = bitmap_lock_buffer_for_write(b);
+    ASSERT_EQ(((intptr_t)(bdata)) % BITMAP_ALIGN_SIZE, (intptr_t)0);
+    ASSERT_EQ(bitmap_get_line_length(b), b->w * 2u);
+    bitmap_unlock_buffer(b);
+    ASSERT_EQ(b->should_free_handle, FALSE);
   }
 }
 

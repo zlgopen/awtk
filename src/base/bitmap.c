@@ -124,40 +124,34 @@ static ret_t bitmap_web_destroy(bitmap_t* bitmap) {
   return RET_OK;
 }
 
+static ret_t bitmap_platform_create(bitmap_t* bitmap) {
+  uint32_t w = bitmap->w;
+  uint32_t h = bitmap->h;
+  uint32_t line_length = bitmap_get_physical_line_length(bitmap);
+  bitmap_format_t format = bitmap->format;
+
+  uint8_t* data = bitmap_lock_buffer_for_write(bitmap);
+  return_value_if_fail(format == BITMAP_FMT_RGBA8888, NULL);
+  int32_t id = EM_ASM_INT(
+      { return VGCanvas.createMutableImage($0, $1, $2, $3, $4); }, data, w, h, line_length, format);
+  bitmap->specific = tk_pointer_from_int(id);
+  bitmap->specific_destroy = bitmap_web_destroy;
+  bitmap_unlock_buffer(bitmap);
+
+  return RET_OK;
+}
+#else
+static ret_t bitmap_platform_create(bitmap_t* bitmap) {
+  return RET_OK;
+}
 #endif /*AWTK_WEB*/
 
 bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, uint32_t line_length, bitmap_format_t format) {
   bitmap_t* bitmap = TKMEM_ZALLOC(bitmap_t);
-  uint32_t bpp = bitmap_get_bpp_of_format(format);
-
   return_value_if_fail(bitmap != NULL, NULL);
-
-  bitmap->w = w;
-  bitmap->h = h;
-  bitmap->format = format;
+  
+  bitmap_init_ex(bitmap, w, h, line_length, format, NULL);
   bitmap->should_free_handle = TRUE;
-
-  if (bpp < 4) {
-    bitmap->flags = BITMAP_FLAG_OPAQUE;
-  }
-
-  bitmap_set_line_length(bitmap, line_length);
-
-  bitmap_alloc_data(bitmap);
-  if (bitmap->buffer == NULL) {
-    TKMEM_FREE(bitmap);
-    bitmap = NULL;
-  } else {
-#ifdef AWTK_WEB
-    uint8_t* data = bitmap_lock_buffer_for_write(bitmap);
-    return_value_if_fail(format == BITMAP_FMT_RGBA8888, NULL);
-    int32_t id = EM_ASM_INT({ return VGCanvas.createMutableImage($0, $1, $2, $3, $4); }, data, w, h,
-                            line_length, format);
-    bitmap->specific = tk_pointer_from_int(id);
-    bitmap->specific_destroy = bitmap_web_destroy;
-    bitmap_unlock_buffer(bitmap);
-#endif /*AWTK_WEB*/
-  }
 
   return bitmap;
 }
@@ -587,6 +581,7 @@ ret_t bitmap_init(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t form
     uint32_t bpp = bitmap_get_bpp_of_format(format);
     line_length = tk_max(w * bpp, line_length);
   }
+
   return bitmap_init_ex(bitmap, w, h, line_length, format, data);
 }
 
@@ -612,6 +607,10 @@ ret_t bitmap_init_ex(bitmap_t* bitmap, uint32_t w, uint32_t h, uint32_t line_len
     bitmap->should_free_data = TRUE;
   }
 
+  if (bitmap->buffer == NULL) {
+    bitmap_platform_create(bitmap);
+  }
+  
   return bitmap->buffer != NULL ? RET_OK : RET_OOM;
 }
 
