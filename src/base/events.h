@@ -536,6 +536,21 @@ typedef enum _event_type_t {
    */
   EVT_UI_LOAD,
   /**
+   * @const EVT_TOUCH_DOWN
+   * 触摸按下事件名(touch_event_t)。
+   */
+  EVT_TOUCH_DOWN,
+  /**
+   * @const EVT_TOUCH_MOVE
+   * 触摸移动事件名(touch_event_t)。
+   */
+  EVT_TOUCH_MOVE,
+  /**
+   * @const EVT_TOUCH_UP
+   * 触摸抬起事件名(touch_event_t)。
+   */
+  EVT_TOUCH_UP,
+  /**
    * @const EVT_REQ_START
    * event queue其它请求编号起始值。
    */
@@ -1308,6 +1323,75 @@ system_event_t* system_event_cast(event_t* event);
  * @return {event_t*} event对象。
  */
 event_t* system_event_init(system_event_t* event, void* target, void* sdl_event);
+
+/**
+ * @class touch_event_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * 多点触摸事件(目前主要对接 SDL_TouchFingerEvent(SDL_FINGERMOTION/SDL_FINGERDOWN/SDL_FINGERUP))。
+ */
+typedef struct _touch_event_t {
+  event_t e;
+
+  /**
+   * @property {int64_t} touch_id
+   * @annotation ["readable", "scriptable"]
+   * 触摸ID。
+   */
+  int64_t touch_id;
+  /**
+   * @property {int64_t} finger_id
+   * @annotation ["readable", "scriptable"]
+   * 手指ID。
+   */
+  int64_t finger_id;
+  /**
+   * @property {float} x
+   * @annotation ["readable", "scriptable"]
+   * x坐标。
+   */
+  float x;
+  /**
+   * @property {float} y
+   * @annotation ["readable", "scriptable"]
+   * y坐标。
+   */
+  float y;
+  /**
+   * @property {float} pressure
+   * @annotation ["readable", "scriptable"]
+   * 压力。
+   */
+  float pressure;
+
+} touch_event_t;
+
+/**
+ * @method touch_event_cast
+ * @annotation ["cast", "scriptable"]
+ * 把event对象转touch_event_t对象。
+ * @param {event_t*} event event对象。
+ *
+ * @return {touch_event_t*} event 对象。
+ */
+touch_event_t* touch_event_cast(event_t* event);
+
+/**
+ * @method touch_event_init
+ * 初始化事件。
+ * @param {touch_event_t*} event event对象。
+ * @param {uint32_t} type 事件类型。
+ * @param {void*} target 事件目标。
+ * @param {int64_t} touch_id 触摸ID。
+ * @param {int64_t} finger_id 手指ID。
+ * @param {float} x x坐标。
+ * @param {float} y y坐标。
+ * @param {float} pressure 压力。
+ *
+ * @return {event_t*} event对象。
+ */
+event_t* touch_event_init(touch_event_t* event, uint32_t type, void* target, int64_t touch_id,
+                          int64_t finger_id, float x, float y, float pressure);
 
 /**
  * @class ui_load_event_t

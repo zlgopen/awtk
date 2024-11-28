@@ -487,6 +487,32 @@ event_t* system_event_init(system_event_t* event, void* target, void* sdl_event)
   return (event_t*)event;
 }
 
+touch_event_t* touch_event_cast(event_t* event) {
+  return_value_if_fail(event != NULL, NULL);
+  return_value_if_fail(
+      event->type == EVT_TOUCH_DOWN || event->type == EVT_TOUCH_UP || event->type == EVT_TOUCH_MOVE,
+      NULL);
+  return_value_if_fail(event->size == sizeof(touch_event_t), NULL);
+
+  return (touch_event_t*)event;
+}
+
+event_t* touch_event_init(touch_event_t* event, uint32_t type, void* target, int64_t touch_id,
+                          int64_t finger_id, float x, float y, float pressure) {
+  return_value_if_fail(event != NULL, NULL);
+  memset(event, 0x00, sizeof(touch_event_t));
+
+  event->e = event_init(type, target);
+  event->e.size = sizeof(*event);
+  event->touch_id = touch_id;
+  event->finger_id = finger_id;
+  event->x = x;
+  event->y = y;
+  event->pressure = pressure;
+
+  return (event_t*)event;
+}
+
 ui_load_event_t* ui_load_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);
   return_value_if_fail(event->type == EVT_UI_LOAD, NULL);

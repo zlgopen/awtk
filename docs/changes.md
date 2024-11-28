@@ -3,6 +3,7 @@
 2024/11/28
   * 增加函数 bitmap\_set\_dirty/bitmap\_is\_dirty
   * 重构bitmap，用bitmap\_init\_ex 实现bitmap\_create\_ex
+  * 将SDL_TouchFingerEvent转发到top windows
 
 2024/11/26
   * 增加tab\_button\_group删除tab\_button和对应page的函数(感谢智明提供补丁)

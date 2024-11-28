@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   main_loop_sdl.c
  * Author: AWTK Develop Team
  * Brief:  sdl2 implemented main_loop interface
@@ -114,6 +114,45 @@ static ret_t main_loop_sdl2_dispatch_multi_gesture_event(main_loop_simple_t* loo
 
   event.e.native_window_handle = NULL;
   window_manager_dispatch_input_event(widget, e);
+
+  return RET_OK;
+}
+
+static ret_t main_loop_sdl2_dispatch_touch_event(main_loop_simple_t* loop, SDL_Event* sdl_event) {
+  event_t* e = NULL;
+  touch_event_t event;
+  int type = EVT_TOUCH_DOWN;
+  widget_t* widget = loop->base.wm;
+  SDL_TouchFingerEvent* finger_event = (SDL_TouchFingerEvent*)sdl_event;
+
+  memset(&event, 0x00, sizeof(event));
+  switch (sdl_event->type) {
+    case SDL_FINGERDOWN: {
+      type = EVT_TOUCH_DOWN;
+      break;
+    }
+    case SDL_FINGERUP: {
+      type = EVT_TOUCH_UP;
+      break;
+    }
+    case SDL_FINGERMOTION: {
+      type = EVT_TOUCH_MOVE;
+      break;
+    }
+    default:
+      break;
+  }
+
+  e = touch_event_init(&event, type, widget, finger_event->touchId, finger_event->fingerId,
+                       finger_event->x, finger_event->y, finger_event->pressure);
+
+  if (e != NULL) {
+    widget_t* win = window_manager_get_top_window(widget);
+    widget_dispatch(win, e);
+  }
+
+  log_debug("touch event: type=%d touch_id=% " PRId64 " finger_id=%" PRId64 "  x=%f y=%f\n", type,
+            event.touch_id, event.finger_id, event.x, event.y);
 
   return RET_OK;
 }
@@ -315,6 +354,12 @@ ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
       case SDL_MOUSEBUTTONDOWN:
       case SDL_MOUSEBUTTONUP: {
         ret = main_loop_sdl2_dispatch_mouse_event(loop, &event);
+        break;
+      }
+      case SDL_FINGERDOWN:
+      case SDL_FINGERUP:
+      case SDL_FINGERMOTION: {
+        ret = main_loop_sdl2_dispatch_touch_event(loop, &event);
         break;
       }
       case SDL_TEXTINPUT: {
