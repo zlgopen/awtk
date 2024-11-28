@@ -23,6 +23,7 @@
 #include "blend/soft_g2d.h"
 #include "blend/image_g2d.h"
 
+#ifndef AWTK_WEB
 #if defined(WITH_G2D) && !defined(WITHOUT_DEFAULT_G2D)
 
 ret_t TK_WEAK g2d_fill_rect(bitmap_t* fb, const rect_t* dst, color_t c) {
@@ -239,3 +240,4 @@ ret_t image_rotate_blend(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, con
   return RET_NOT_IMPL;
 }
 #endif
+#endif/*ndef AWTK_WEB*/
