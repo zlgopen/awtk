@@ -125,15 +125,16 @@ static ret_t bitmap_web_destroy(bitmap_t* bitmap) {
 }
 
 static ret_t bitmap_platform_create(bitmap_t* bitmap) {
+  int32_t id = 0;
+  uint8_t* data = NULL;
   uint32_t w = bitmap->w;
   uint32_t h = bitmap->h;
   uint32_t line_length = bitmap_get_physical_line_length(bitmap);
   bitmap_format_t format = bitmap->format;
-
-  uint8_t* data = bitmap_lock_buffer_for_write(bitmap);
   return_value_if_fail(format == BITMAP_FMT_RGBA8888, RET_BAD_PARAMS);
 
-  int32_t id = EM_ASM_INT(
+  data = bitmap_lock_buffer_for_write(bitmap);
+  id = EM_ASM_INT(
       { return VGCanvas.createMutableImage($0, $1, $2, $3, $4); }, data, w, h, line_length, format);
   bitmap->specific = tk_pointer_from_int(id);
   bitmap->specific_destroy = bitmap_web_destroy;
