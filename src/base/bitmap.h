@@ -378,6 +378,15 @@ ret_t bitmap_mono_dump(const uint8_t* buff, uint32_t w, uint32_t h);
 ret_t bitmap_destroy_with_self(bitmap_t* bitmap);
 
 /**
+ * @method bitmap_deinit
+ * 反初始化图片。
+ * @annotation ["deconstructor"]
+ * @param {bitmap_t*} bitmap bitmap对象。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t bitmap_deinit(bitmap_t* bitmap);
+
+/**
  * @method bitmap_destroy
  * 销毁图片。
  * @annotation ["deconstructor"]

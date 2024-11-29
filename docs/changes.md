@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/11/29
+  * 增加函数 bitmap_deinit
+
 2024/11/28
   * 增加函数 bitmap\_set\_dirty/bitmap\_is\_dirty
   * 重构bitmap，用bitmap\_init\_ex 实现bitmap\_create\_ex

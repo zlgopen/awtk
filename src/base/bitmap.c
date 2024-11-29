@@ -41,7 +41,7 @@ ret_t bitmap_destroy_with_self(bitmap_t* bitmap) {
   return bitmap_destroy(bitmap);
 }
 
-ret_t bitmap_destroy(bitmap_t* bitmap) {
+ret_t bitmap_deinit(bitmap_t* bitmap) {
   return_value_if_fail(bitmap != NULL, RET_BAD_PARAMS);
 
   if (bitmap->specific_destroy != NULL) {
@@ -67,9 +67,21 @@ ret_t bitmap_destroy(bitmap_t* bitmap) {
 
   if (bitmap->should_free_handle) {
     memset(bitmap, 0x00, sizeof(bitmap_t));
-    TKMEM_FREE(bitmap);
+    bitmap->should_free_handle = TRUE;
   } else {
     memset(bitmap, 0x00, sizeof(bitmap_t));
+  }
+
+  return RET_OK;
+}
+
+ret_t bitmap_destroy(bitmap_t* bitmap) {
+  return_value_if_fail(bitmap != NULL, RET_BAD_PARAMS);
+
+  bitmap_deinit(bitmap);
+  if (bitmap->should_free_handle) {
+    bitmap->should_free_handle = FALSE;
+    TKMEM_FREE(bitmap);
   }
 
   return RET_OK;
