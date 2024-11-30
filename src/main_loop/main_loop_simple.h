@@ -109,6 +109,18 @@ ret_t main_loop_post_key_event(main_loop_t* l, bool_t pressed, uint8_t key);
 ret_t main_loop_post_pointer_event(main_loop_t* l, bool_t pressed, xy_t x, xy_t y);
 
 /**
+ * @method main_loop_post_touch_event
+ * 发送触摸事件。
+ * @param {main_loop_t*} l 主循环对象。
+ * @param {event_type_t} event_type 事件类型(EVT_TOUCH_DOWN/EVT_TOUCH_UP/EVT_TOUCH_MOVE)。
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y y坐标。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t main_loop_post_touch_event(main_loop_t* l, event_type_t event_type, xy_t x, xy_t y);
+
+/**
  * @method main_loop_post_multi_gesture_event
  * 发送多点触控事件。
  * @param {main_loop_t*} l 主循环对象。

@@ -1348,13 +1348,13 @@ typedef struct _touch_event_t {
   /**
    * @property {float} x
    * @annotation ["readable", "scriptable"]
-   * x坐标。
+   * x坐标(在 0-1 之间，表示与屏幕宽度的比例）。
    */
   float x;
   /**
    * @property {float} y
    * @annotation ["readable", "scriptable"]
-   * y坐标。
+   * y坐标(在 0-1 之间，表示与屏幕高度的比例）。
    */
   float y;
   /**

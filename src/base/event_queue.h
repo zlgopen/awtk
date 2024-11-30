@@ -65,6 +65,7 @@ typedef union _event_queue_req_t {
   event_t event;
   key_event_t key_event;
   wheel_event_t wheel_event;
+  touch_event_t touch_event;
   pointer_event_t pointer_event;
   multi_gesture_event_t multi_gesture_event;
   add_idle_t add_idle;

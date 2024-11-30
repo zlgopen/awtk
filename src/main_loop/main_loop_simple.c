@@ -66,6 +66,26 @@ ret_t main_loop_post_multi_gesture_event(main_loop_t* l, multi_gesture_event_t* 
   return main_loop_queue_event(l, &r);
 }
 
+ret_t main_loop_post_touch_event(main_loop_t* l, event_type_t event_type, xy_t x, xy_t y) {
+  event_queue_req_t r;
+  touch_event_t event;
+  main_loop_simple_t* loop = (main_loop_simple_t*)l;
+
+  memset(&r, 0x00, sizeof(r));
+  memset(&event, 0x00, sizeof(event));
+  return_value_if_fail(loop != NULL, RET_BAD_PARAMS);
+
+  event.x = x;
+  event.y = y;
+  event.e.type = event_type;
+  event.e.time = time_now_ms();
+  event.e.size = sizeof(touch_event_t);
+
+  r.touch_event = event;
+
+  return main_loop_queue_event(l, &r);
+}
+
 ret_t main_loop_post_pointer_event(main_loop_t* l, bool_t pressed, xy_t x, xy_t y) {
   event_queue_req_t r;
   pointer_event_t event;

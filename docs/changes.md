@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/11/30  
+  * 增加函数 main_loop_post_touch_event
+
 2024/11/29
   * 增加函数 bitmap_deinit
 
