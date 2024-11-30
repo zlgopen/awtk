@@ -1,7 +1,8 @@
 # 最新动态
 
 2024/11/30  
-  * 增加函数 main_loop_post_touch_event
+  * 增加函数 main\_loop\_post\_touch\_event
+  * 增加文档 [如何使用多点触摸事件](how_to_use_multi_touch_event.md)
 
 2024/11/29
   * 增加函数 bitmap_deinit
