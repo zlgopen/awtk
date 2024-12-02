@@ -13,7 +13,7 @@
 | <a href="#utils_t_data_url_copy">data\_url\_copy</a> | 将数据从源URL拷贝到目标URL。 |
 | <a href="#utils_t_default_destroy">default\_destroy</a> | 缺省的destroy函数。释放data指向的内存。 |
 | <a href="#utils_t_dummy_destroy">dummy\_destroy</a> | 空的destroy函数。 |
-| <a href="#utils_t_file_read_as_unix_text">file\_read\_as\_unix\_text</a> | 读取文本文件。并将windows换行(\r\n)或macos换行(\r)转换为uinux换行(\n)。 |
+| <a href="#utils_t_file_read_as_unix_text">file\_read\_as\_unix\_text</a> | 读取文本文件。并将windows换行(\r\n)或macos换行(\r)转换为unix换行(\n)。 |
 | <a href="#utils_t_filename_to_name">filename\_to\_name</a> | 从完整文件名中获取文件名。 |
 | <a href="#utils_t_filename_to_name_ex">filename\_to\_name\_ex</a> | 从完整文件名中获取文件名。 |
 | <a href="#utils_t_image_region_parse">image\_region\_parse</a> | 解析子图的区域信息。 |
@@ -237,7 +237,7 @@ ret_t dummy_destroy (void* data);
 
 * 函数功能：
 
-> <p id="utils_t_file_read_as_unix_text">读取文本文件。并将windows换行(\r\n)或macos换行(\r)转换为uinux换行(\n)。
+> <p id="utils_t_file_read_as_unix_text">读取文本文件。并将windows换行(\r\n)或macos换行(\r)转换为unix换行(\n)。
 
 * 函数原型：
 
