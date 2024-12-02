@@ -226,6 +226,7 @@ static ret_t on_resized_timer(const timer_info_t* info) {
   widget_t* wm = WIDGET(info->ctx);
   widget_set_need_relayout_children(wm);
   widget_invalidate_force(wm, NULL);
+  window_manager_set_ignore_input_events(wm, FALSE);
 
   log_debug("on_resized_timer\n");
   return RET_REMOVE;
@@ -251,6 +252,7 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
                 event->window.data2);
       break;
     case SDL_WINDOWEVENT_RESIZED:
+      window_manager_set_ignore_input_events(l->wm, TRUE);
       log_debug("Window %d resized to %dx%d\n", event->window.windowID, event->window.data1,
                 event->window.data2);
       timer_add(on_resized_timer, l->wm, 100);
@@ -261,6 +263,7 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
       SDL_Window* win = SDL_GetWindowFromID(event->window.windowID);
       native_window_t* native_window =
           (native_window_t*)widget_get_prop_pointer(window_manager(), WIDGET_PROP_NATIVE_WINDOW);
+      window_manager_set_ignore_input_events(l->wm, TRUE);
       native_window_get_info(native_window, &info);
       system_info_set_lcd_w(system_info(), info.w);
       system_info_set_lcd_h(system_info(), info.h);
