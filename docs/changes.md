@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/12/02
+  * 修正 edit 未处理 key down 事件时不应返回 RET_STOP 的问题(感谢朝泽提供补丁)
+
 2024/11/30  
   * 增加函数 main\_loop\_post\_touch\_event
   * 增加文档 [如何使用多点触摸事件](how_to_use_multi_touch_event.md)

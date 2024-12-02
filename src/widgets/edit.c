@@ -725,21 +725,25 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
     return RET_STOP;
   } else if (key == TK_KEY_LEFT || key == TK_KEY_RIGHT || key == TK_KEY_HOME || key == TK_KEY_END) {
     text_edit_key_down(edit->model, e);
+    return RET_STOP;
   } else if (is_print || key == TK_KEY_BACKSPACE || key == TK_KEY_DELETE) {
     wstr_set(&(edit->last_changing_text), widget->text.str);
     text_edit_key_down(edit->model, e);
     edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
+    return RET_STOP;
   } else {
     if (widget->emitter != NULL) {
+      ret_t ret = RET_OK;
       void* saved_target = e->e.target;
 
       e->e.target = widget;
-      emitter_dispatch(widget->emitter, (event_t*)e);
+      ret = emitter_dispatch(widget->emitter, (event_t*)e);
       e->e.target = saved_target;
+      return ret;
     }
   }
 
-  return RET_STOP;
+  return RET_OK;
 }
 
 static ret_t edit_on_key_up(widget_t* widget, key_event_t* e) {
