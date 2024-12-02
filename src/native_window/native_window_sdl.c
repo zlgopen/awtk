@@ -55,6 +55,7 @@ typedef struct _native_window_sdl_t {
   canvas_t canvas;
   SDL_Cursor* cursor;
   SDL_Surface* cursor_surface;
+  SDL_Rect hit_test_rect;
 } native_window_sdl_t;
 
 static native_window_t* s_shared_win = NULL;
@@ -166,6 +167,32 @@ static ret_t native_window_sdl_show_border(native_window_t* win, bool_t show) {
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
 
   SDL_SetWindowBordered(sdl->window, show);
+
+  return RET_OK;
+}
+
+static SDL_HitTestResult hit_test_imp(SDL_Window* window, const SDL_Point* pt, void* data) {
+  (void)window;
+  native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(data);
+
+  if (SDL_PointInRect(pt, &sdl->hit_test_rect)) {
+    return SDL_HITTEST_DRAGGABLE;
+  }
+
+  return SDL_HITTEST_NORMAL;
+}
+
+static ret_t native_window_sdl_set_window_hit_test(native_window_t* win, xy_t x, xy_t y, wh_t w,
+                                                   wh_t h) {
+  native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
+  SDL_Rect area = {x, y, w, h};
+
+  sdl->hit_test_rect.x = x;
+  sdl->hit_test_rect.y = x;
+  sdl->hit_test_rect.w = w;
+  sdl->hit_test_rect.h = h;
+
+  SDL_SetWindowHitTest(sdl->window, hit_test_imp, sdl);
 
   return RET_OK;
 }
@@ -422,7 +449,7 @@ static ret_t native_window_sdl_set_cursor(native_window_t* win, const char* name
     SDL_FreeCursor(sdl->cursor);
     sdl->cursor = NULL;
   }
-  
+
   if (img != NULL) {
     point_t hot_spot = {0, 0};
     calc_cursor_hot_spot(name, img, &hot_spot);
@@ -450,6 +477,7 @@ static const native_window_vtable_t s_native_window_vtable = {
     .restore = native_window_sdl_restore,
     .center = native_window_sdl_center,
     .show_border = native_window_sdl_show_border,
+    .set_window_hit_test = native_window_sdl_set_window_hit_test,
     .set_fullscreen = native_window_sdl_set_fullscreen,
     .get_info = native_window_sdl_get_info,
     .preprocess_event = native_window_sdl_preprocess_event,
@@ -567,7 +595,7 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
     sdl->render = SDL_CreateRenderer(sdl->window, -1, SDL_RENDERER_SOFTWARE);
   }
 #endif /*WITH_NANOVG_SOFT*/
-  
+
   if (sdl->window == NULL) {
     log_debug("Window could not be created! SDL_Error: %s\n", SDL_GetError());
     assert(!"Window could not be created");

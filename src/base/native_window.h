@@ -57,6 +57,8 @@ typedef ret_t (*native_window_maximize_t)(native_window_t* win);
 typedef ret_t (*native_window_restore_t)(native_window_t* win);
 typedef ret_t (*native_window_center_t)(native_window_t* win);
 typedef ret_t (*native_window_show_border_t)(native_window_t* win, bool_t show);
+typedef ret_t (*native_window_set_window_hit_test_t)(native_window_t* win, xy_t x, xy_t y, wh_t w,
+                                                     wh_t h);
 typedef ret_t (*native_window_set_fullscreen_t)(native_window_t* win, bool_t fullscreen);
 typedef ret_t (*native_window_set_cursor_t)(native_window_t* win, const char* name, bitmap_t* img);
 
@@ -74,6 +76,7 @@ typedef struct _native_window_vtable_t {
   native_window_minimize_t minimize;
   native_window_maximize_t maximize;
   native_window_show_border_t show_border;
+  native_window_set_window_hit_test_t set_window_hit_test;
   native_window_set_fullscreen_t set_fullscreen;
   native_window_set_cursor_t set_cursor;
   native_window_set_orientation_t set_orientation;
@@ -197,6 +200,22 @@ ret_t native_window_center(native_window_t* win);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t native_window_show_border(native_window_t* win, bool_t show);
+
+/**
+ * @method native_window_set_window_hit_test
+ * 设置hitTest。 
+ *
+ * @annotation ["scriptable"]
+ * @param {native_window_t*} win win对象。
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y y坐标。
+ * @param {wh_t} w w宽度。
+ * @param {wh_t} h h高度。
+ *
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t native_window_set_window_hit_test(native_window_t* win, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
  * @method native_window_set_fullscreen

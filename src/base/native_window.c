@@ -207,6 +207,16 @@ ret_t native_window_show_border(native_window_t* win, bool_t show) {
   return RET_NOT_IMPL;
 }
 
+ret_t native_window_set_window_hit_test(native_window_t* win, xy_t x, xy_t y, wh_t w, wh_t h) {
+  return_value_if_fail(win != NULL && win->vt != NULL, RET_BAD_PARAMS);
+
+  if (win->vt->set_window_hit_test != NULL) {
+    return win->vt->set_window_hit_test(win, x, y, w, h);
+  }
+
+  return RET_NOT_IMPL;
+}
+
 ret_t native_window_set_fullscreen(native_window_t* win, bool_t fullscreen) {
   return_value_if_fail(win != NULL && win->vt != NULL, RET_BAD_PARAMS);
 
