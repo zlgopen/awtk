@@ -30,6 +30,21 @@
 #define END_C_DECLS
 #endif
 
+#if TK_DISABLE_DEPRECATE_WARNINGS
+#define TK_DEPRECATED(message)
+#else
+#if ((__GNUC__ * 100 + __GNUC_MINOR__) >= 405) || defined(__clang__)
+#define TK_DEPRECATED(message) __attribute__((deprecated(message)))
+#elif ((__GNUC__ * 100 + __GNUC_MINOR__) >= 301)
+#define TK_DEPRECATED(message) __attribute__((deprecated))
+#elif defined(_MSC_VER)
+#define TK_DEPRECATED(message) __declspec(deprecated(message))
+#else
+/* Not support TK_DEPRECATED */
+#define TK_DEPRECATED(message)
+#endif
+#endif /* TK_DISABLE_DEPRECATE_WARNINGS */
+
 #include <stdarg.h>
 #include <ctype.h>
 #include <errno.h>

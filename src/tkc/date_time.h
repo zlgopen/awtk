@@ -336,7 +336,9 @@ typedef struct _date_time_vtable_t {
 ret_t date_time_global_init_ex(const date_time_vtable_t* vt);
 
 /*deprecated*/
+TK_DEPRECATED("")
 ret_t date_time_set_impl(date_time_get_now_t date_time_get_now);
+TK_DEPRECATED("")
 ret_t date_time_global_init(date_time_get_now_t get, date_time_set_now_t set);
 END_C_DECLS
 

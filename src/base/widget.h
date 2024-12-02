@@ -2931,6 +2931,7 @@ ret_t widget_set_children_layout(widget_t* widget, const char* params);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
+TK_DEPRECATED("Please use widget_set_self_layout() instead.")
 ret_t widget_set_self_layout_params(widget_t* widget, const char* x, const char* y, const char* w,
                                     const char* h);
 
@@ -3399,8 +3400,8 @@ ret_t widget_set_text_with_double(widget_t* widget, const char* format, double v
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_draw_arc_at_center(widget_t* widget, canvas_t* c, bool_t bg, double line_width,
-                      double start_angle, double end_angle, bool_t counter_clock_wise,
-                      const char* line_cap, double r);
+                                double start_angle, double end_angle, bool_t counter_clock_wise,
+                                const char* line_cap, double r);
 
 ret_t widget_get_offset(widget_t* widget, xy_t* out_x, xy_t* out_y);
 ret_t widget_on_wheel(widget_t* widget, wheel_event_t* e);
