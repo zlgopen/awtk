@@ -44,6 +44,7 @@ typedef enum _ubjson_marker_t {
   UBJSON_MARKER_CHAR = 'C',
   UBJSON_MARKER_STRING = 'S',
   UBJSON_MARKER_WSTRING = 'W', /*extended feature*/
+  UBJSON_MARKER_POINTER = 'P', /*extended feature*/
   UBJSON_MARKER_ARRAY_BEGIN = '[',
   UBJSON_MARKER_ARRAY_END = ']',
   UBJSON_MARKER_OBJECT_BEGIN = '{',

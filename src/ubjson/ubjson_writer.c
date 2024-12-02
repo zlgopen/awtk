@@ -217,6 +217,16 @@ ret_t ubjson_writer_write_uint64(ubjson_writer_t* writer, uint64_t value) {
   return RET_OK;
 }
 
+ret_t ubjson_writer_write_pointer(ubjson_writer_t* writer, void* value) {
+  uint64_t adrr;
+  return_value_if_fail(writer != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ubjson_writer_write_marker(writer, UBJSON_MARKER_POINTER) == RET_OK, RET_OOM);
+  adrr = uint64_to_big_endian(tk_pointer_to_long(value));
+  return_value_if_fail(ubjson_writer_write_data(writer, &adrr, sizeof(adrr)) == RET_OK, RET_OOM);
+
+  return RET_OK;
+}
+
 ret_t ubjson_writer_write_float32(ubjson_writer_t* writer, float value) {
   return_value_if_fail(writer != NULL, RET_BAD_PARAMS);
   return_value_if_fail(ubjson_writer_write_marker(writer, UBJSON_MARKER_FLOAT32) == RET_OK,
@@ -333,6 +343,13 @@ ret_t ubjson_writer_write_kv_uint64(ubjson_writer_t* writer, const char* key, ui
   return ubjson_writer_write_uint64(writer, value);
 }
 
+ret_t ubjson_writer_write_kv_pointer(ubjson_writer_t* writer, const char* key, void* value) {
+  return_value_if_fail(writer != NULL && key != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
+
+  return ubjson_writer_write_pointer(writer, value);
+}
+
 ret_t ubjson_writer_write_kv_object_begin(ubjson_writer_t* writer, const char* key) {
   return_value_if_fail(writer != NULL && key != NULL, RET_BAD_PARAMS);
   return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
@@ -431,6 +448,8 @@ ret_t ubjson_writer_write_kv_value(ubjson_writer_t* writer, const char* key, con
     return ubjson_writer_write_int64(writer, value_int64(value));
   } else if (value->type == VALUE_TYPE_UINT64) {
     return ubjson_writer_write_uint64(writer, value_uint64(value));
+  } else if (value->type == VALUE_TYPE_POINTER) {
+    return ubjson_writer_write_pointer(writer, value_pointer(value));
   } else {
     char str[64];
     log_debug("not supported type\n");

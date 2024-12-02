@@ -884,11 +884,11 @@ void* tk_pointer_from_int(int32_t v) {
 }
 
 uint64_t tk_pointer_to_long(const void* p) {
-  return (uint64_t)(intptr_t)p;
+  return (uint64_t)(uintptr_t)p;
 }
 
 void* tk_pointer_from_long(uint64_t v) {
-  return (void*)(intptr_t)v;
+  return (void*)(uintptr_t)v;
 }
 
 char* tk_str_toupper(char* str) {

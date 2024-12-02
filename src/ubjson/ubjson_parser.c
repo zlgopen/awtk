@@ -338,6 +338,8 @@ static ret_t ubjson_on_key_value_dump(void* ctx, const char* key, value_t* v) {
       log_debug("%lf", value_double(v));
     } else if (v->type == VALUE_TYPE_STRING) {
       log_debug("\"%s\"", value_str(v));
+    } else if (v->type == VALUE_TYPE_POINTER) {
+      log_debug("\"%p\"", value_pointer(v));
     } else if (v->type == VALUE_TYPE_BINARY) {
       uint32_t i = 0;
       binary_data_t* data = value_binary_data(v);

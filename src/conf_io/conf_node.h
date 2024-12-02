@@ -562,6 +562,11 @@ typedef enum _conf_node_value_t {
    */
   CONF_NODE_VALUE_UINT64,
   /**
+   * @const CONF_NODE_VALUE_POINTER
+   * 指针类型。
+   */
+  CONF_NODE_VALUE_POINTER,
+  /**
    * @const CONF_NODE_VALUE_FLOAT32
    * float类型。
    */
@@ -614,7 +619,7 @@ struct _conf_node_t {
    * @property {conf_node_value_t} value_type
    * 值的类型。
    */
-  conf_node_value_t value_type : 5;
+  conf_node_value_t value_type : 6;
   /**
    * @property {conf_node_type_t} node_type
    * 节点类型。

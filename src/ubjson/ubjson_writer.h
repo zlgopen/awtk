@@ -221,6 +221,18 @@ ret_t ubjson_writer_write_int64(ubjson_writer_t* writer, int64_t value);
 ret_t ubjson_writer_write_uint64(ubjson_writer_t* writer, uint64_t value);
 
 /**
+ * @method ubjson_writer_write_pointer
+ *
+ * 写入地址。
+ *
+ * @param {ubjson_writer_t*} writer writer对象。
+ * @param {void*} value 要写入的地址。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t ubjson_writer_write_pointer(ubjson_writer_t* writer, void* value);
+
+/**
  * @method ubjson_writer_write_float32
  *
  * 写入float。
@@ -555,6 +567,20 @@ ret_t ubjson_writer_write_kv_uint32(ubjson_writer_t* writer, const char* key, ui
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t ubjson_writer_write_kv_uint64(ubjson_writer_t* writer, const char* key, uint64_t value);
+
+/**
+ * @method ubjson_writer_write_kv_pointer
+ *
+ * 写入key和uint64_t的地址值。
+ *
+ * > 即："key": value (其中 value 为 uint64_t 地址整型，需要强转为指针才可以使用。)
+ * @param {ubjson_writer_t*} writer writer对象。
+ * @param {const char*} key 键名。
+ * @param {void*} value 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t ubjson_writer_write_kv_pointer(ubjson_writer_t* writer, const char* key, void* value);
 
 /**
  * @method ubjson_writer_write_kv_float

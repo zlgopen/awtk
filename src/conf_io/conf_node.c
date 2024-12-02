@@ -554,6 +554,11 @@ ret_t conf_node_set_value(conf_node_t* node, const value_t* v) {
       node->value.u64 = value_uint64(v);
       break;
     }
+    case VALUE_TYPE_POINTER: {
+      node->value_type = CONF_NODE_VALUE_POINTER;
+      node->value.u64 = tk_pointer_to_long(value_pointer(v));
+      break;
+    }
     case VALUE_TYPE_FLOAT:
     case VALUE_TYPE_FLOAT32: {
       node->value_type = CONF_NODE_VALUE_FLOAT32;
@@ -640,6 +645,10 @@ ret_t conf_node_get_value(conf_node_t* node, value_t* v) {
     }
     case CONF_NODE_VALUE_UINT64: {
       value_set_uint64(v, node->value.u64);
+      break;
+    }
+    case CONF_NODE_VALUE_POINTER: {
+      value_set_pointer(v, tk_pointer_from_long(node->value.u64));
       break;
     }
     case CONF_NODE_VALUE_FLOAT32: {

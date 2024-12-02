@@ -18,7 +18,7 @@
  * 2019-09-14 Li XianJing <xianjimli@hotmail.com> created
  *
  */
-
+#include "tkc/utils.h"
 #include "tkc/endian.h"
 #include "ubjson/ubjson_reader.h"
 
@@ -139,6 +139,13 @@ ret_t ubjson_reader_read(ubjson_reader_t* reader, value_t* v) {
       return_value_if_fail(ubjson_reader_read_data(reader, &value, sizeof(value)) == RET_OK,
                            RET_FAIL);
       value_set_uint64(v, uint64_from_big_endian(value));
+      break;
+    }
+    case UBJSON_MARKER_POINTER: {
+      uint64_t value = 0;
+      return_value_if_fail(ubjson_reader_read_data(reader, &value, sizeof(value)) == RET_OK,
+                           RET_FAIL);
+      value_set_pointer(v, tk_pointer_from_long(uint64_from_big_endian(value)));
       break;
     }
     case UBJSON_MARKER_FLOAT32: {
