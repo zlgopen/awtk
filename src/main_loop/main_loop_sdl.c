@@ -30,7 +30,7 @@
 #include "base/timer.h"
 #include "base/system_info.h"
 #include <SDL.h>
-
+#include <SDL_syswm.h>
 #include <stdio.h>
 #include "awtk_global.h"
 #include "tkc/time_now.h"
@@ -162,6 +162,7 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_E
   pointer_event_t event;
   int type = sdl_event->type;
   widget_t* widget = loop->base.wm;
+  SDL_SysWMinfo sdl_info;
 
   memset(&event, 0x00, sizeof(event));
   switch (type) {
@@ -173,8 +174,13 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_E
         event.button = sdl_event->button.button;
         event.pressed = loop->pressed;
         event.e.native_window_handle = SDL_GetWindowFromID(sdl_event->button.windowID);
-
         SDL_CaptureMouse(TRUE);
+        SDL_GetWindowWMInfo(event.e.native_window_handle, &sdl_info);
+        if (sdl_event->button.x < loop->w && sdl_event->button.y < loop->h) {
+#ifdef WIN32
+          SendMessage(sdl_info.info.win.window, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+#endif
+        }
         window_manager_dispatch_input_event(widget, (event_t*)&event);
       } else if (sdl_event->button.button == 2) {
         key_event_init(&key_event, EVT_KEY_DOWN, widget, TK_KEY_WHEEL);
