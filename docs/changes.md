@@ -6,6 +6,7 @@
   * 增加 native\_window\_set\_window\_hit\_test(感谢俊杰提供补丁)
   * ubjson支持传输指针类型(感谢智明提供补丁)
   * 增加弃用编译警告(感谢兆坤提供补丁)
+  * 修复dragger初始化与动画结束可能出现闪现的问题(感谢颖健提供补丁)
 
 2024/11/30  
   * 增加函数 main\_loop\_post\_touch\_event
