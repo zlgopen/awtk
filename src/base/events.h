@@ -890,6 +890,13 @@ typedef struct _pointer_event_t {
    * shift键是否按下。
    */
   bool_t shift;
+
+  /**
+   * @property {int32_t} finger_id
+   * @annotation ["readable", "scriptable"]
+   * 触摸ID。
+   */
+  int32_t finger_id;
 } pointer_event_t;
 
 /**
