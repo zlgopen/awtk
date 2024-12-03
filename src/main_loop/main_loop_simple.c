@@ -179,6 +179,14 @@ static ret_t main_loop_dispatch_events(main_loop_simple_t* loop) {
   while ((time_out - time_in < 20) && (main_loop_recv_event((main_loop_t*)loop, &r) == RET_OK)) {
     widget_t* widget = loop->base.wm;
     switch (r.event.type) {
+      case EVT_TOUCH_DOWN:
+      case EVT_TOUCH_MOVE:
+      case EVT_TOUCH_UP: {
+        widget_t* win = window_manager_get_top_window(widget);
+        event_t* e = (event_t*)(&r.touch_event);
+        widget_dispatch(win, e);
+        break;
+      }
       case EVT_CONTEXT_MENU:
       case EVT_POINTER_DOWN:
       case EVT_POINTER_MOVE:
