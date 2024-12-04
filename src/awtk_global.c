@@ -345,6 +345,10 @@ ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const c
   tk_socket_init();
 #endif /*WITH_SOCKET*/
 
+#ifdef WITH_G2D
+  tk_g2d_init();
+#endif /*WITH_G2D*/
+
   return RET_OK;
 }
 
@@ -441,6 +445,10 @@ ret_t tk_deinit_internal(void) {
 #ifdef WITH_SOCKET
   tk_socket_deinit();
 #endif /*WITH_SOCKET*/
+
+#ifdef WITH_G2D
+  tk_g2d_deinit();
+#endif /*WITH_G2D*/
 
   return RET_OK;
 }

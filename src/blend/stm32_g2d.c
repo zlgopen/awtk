@@ -286,4 +286,12 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, const rect_t* dst, const rect
 
   return RET_OK;
 }
+
+ret_t tk_g2d_init(void) {
+  return RET_OK;
+}
+
+ret_t tk_g2d_deinit(void) {
+  return RET_OK;
+}
 #endif /*WITH_STM32_G2D*/

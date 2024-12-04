@@ -122,6 +122,22 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, const rect_t* dst, const rect
 ret_t g2d_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r,
                              const rectf_t* src_r, uint8_t alpha, lcd_orientation_t o);
 
+/**
+ * @method tk_g2d_init
+ * @export none
+ * 初始化g2d模块。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_g2d_init(void);
+
+/**
+ * @method tk_g2d_deinit
+ * @export none
+ * 反初始化g2d模块。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_g2d_deinit(void);
+
 END_C_DECLS
 
 #endif /*TK_G2D_H*/
