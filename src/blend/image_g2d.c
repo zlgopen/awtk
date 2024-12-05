@@ -240,4 +240,75 @@ ret_t image_rotate_blend(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, con
   return RET_NOT_IMPL;
 }
 #endif
+
+#if defined(WITH_G2D)
+#include "tkc/time_now.h"
+
+ret_t image_g2d_benchmark(void) {
+  int w = 1024;
+  int h = 1024;
+  int i = 0;
+  int n = 10;
+  rect_t r = rect_init(0, 0, w, h);
+  color_t c = color_init(0x80, 0x80, 0x80, 0xff);
+  bitmap_t* img_rgba8888 = bitmap_create_ex(w, h, w * 4, BITMAP_FMT_RGBA8888);
+  bitmap_t* img_rgba8888_src = bitmap_create_ex(w, h, w * 4, BITMAP_FMT_RGBA8888);
+  bitmap_t* img_rgb565 = bitmap_create_ex(w, h, w * 4, BITMAP_FMT_BGR565);
+  bitmap_t* img_rgb565_src = bitmap_create_ex(w, h, w * 4, BITMAP_FMT_BGR565);
+  uint64_t start = time_now_us();
+  uint32_t cost = 0; 
+  for (i = 0; i < n; i++) {
+    soft_fill_rect(img_rgba8888, &r, c);
+    soft_fill_rect(img_rgb565, &r, c);
+  }
+  cost = time_now_us() - start;
+  log_debug("soft_fill_rect cost=%u\n", cost);
+  
+  start = time_now_us();
+  for (i = 0; i < n; i++) {
+    g2d_fill_rect(img_rgba8888, &r, c);
+    g2d_fill_rect(img_rgb565, &r, c);
+  }
+  cost = time_now_us() - start;
+  log_debug("g2d_fill_rect cost=%u\n", cost);
+  
+  start = time_now_us();
+  for (i = 0; i < n; i++) {
+    soft_copy_image(img_rgb565, img_rgb565_src, &r, 0, 0);
+  }
+  cost = time_now_us() - start;
+  log_debug("soft_copy_image cost=%u\n", cost);
+  
+  start = time_now_us();
+  for (i = 0; i < n; i++) {
+    g2d_copy_image(img_rgb565, img_rgb565_src, &r, 0, 0);
+  }
+  cost = time_now_us() - start;
+  log_debug("g2d_copy_image cost=%u\n", cost);
+  
+  start = time_now_us();
+  for (i = 0; i < n; i++) {
+    rectf_t rf = {0, 0, w, h};
+    soft_blend_image(img_rgba8888, img_rgba8888_src, &rf, &rf, 0xff);
+  }
+  cost = time_now_us() - start;
+  log_debug("soft_blend_image cost=%u\n", cost);
+  
+  start = time_now_us();
+  for (i = 0; i < n; i++) {
+    g2d_blend_image(img_rgba8888, img_rgba8888_src, &r, &r, 0xff);
+  }
+  cost = time_now_us() - start;
+  log_debug("g2d_blend_image cost=%u\n", cost);
+   
+  bitmap_destroy(img_rgba8888);
+  bitmap_destroy(img_rgba8888_src);
+  bitmap_destroy(img_rgb565);
+  bitmap_destroy(img_rgb565_src);
+
+  return RET_OK;
+}
+
+#endif/*WITH_G2D*/
+
 #endif/*ndef AWTK_WEB*/

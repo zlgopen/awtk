@@ -122,6 +122,8 @@ ret_t image_rotate_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx
 ret_t image_rotate_blend(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r, const rectf_t* src_r,
                          uint8_t global_alpha, lcd_orientation_t o);
 
+
+ret_t image_g2d_benchmark(void);
 #endif
 
 END_C_DECLS

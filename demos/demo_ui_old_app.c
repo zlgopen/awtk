@@ -24,6 +24,8 @@
  */
 
 #include "awtk.h"
+#include "blend/image_g2d.h"
+
 #include "ext_widgets.h"
 #include "base/font_manager.h"
 #include "base/event_recorder_player.h"
@@ -89,6 +91,10 @@ uint32_t tk_mem_speed_test(void* buffer, uint32_t length, uint32_t* pmemcpy_spee
   if (pmemcpy_speed != NULL) {
     *pmemcpy_speed = memcpy_speed;
   }
+
+#ifdef WITH_G2D
+  image_g2d_benchmark();
+#endif/*WITH_G2D*/
 
   return total_cost;
 }
