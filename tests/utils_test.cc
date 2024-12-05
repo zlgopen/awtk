@@ -1975,15 +1975,15 @@ TEST(Utils, atob) {
 }
 
 TEST(Utils, tk_strs_bsearch) {
-  const char* strs[] = {"abc1", "abc2", "abc3", "abc4", "abc5", "b","c", "d"};
+  const char* strs[] = {"abc1", "abc2", "abc3", "abc4", "abc5", "b", "c", "d"};
   ASSERT_EQ(tk_strs_bsearch(strs, 0, "Abc1", TRUE), (char*)NULL);
   ASSERT_EQ(tk_strs_bsearch(strs, 0, "Abc1", FALSE), (char*)NULL);
-  
+
   ASSERT_EQ(tk_strs_bsearch(strs, 1, "Abc1", TRUE), (char*)NULL);
   ASSERT_STREQ(tk_strs_bsearch(strs, 1, "Abc1", FALSE), "abc1");
-  
-  for(uint32_t i = 1; i < ARRAY_SIZE(strs); i++) {
-    for(uint32_t j = 0; j < ARRAY_SIZE(strs); j++) {  
+
+  for (uint32_t i = 1; i < ARRAY_SIZE(strs); i++) {
+    for (uint32_t j = 0; j < ARRAY_SIZE(strs); j++) {
       if (j >= i) {
         ASSERT_EQ(tk_strs_bsearch(strs, i, strs[j], TRUE), (char*)NULL);
       } else {

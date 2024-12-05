@@ -83,7 +83,7 @@ ret_t theme_destroy(theme_t* theme) {
     asset_info_unref(theme->info);
     theme->info = NULL;
   }
-  
+
   if (theme->theme_destroy != NULL) {
     theme->theme_destroy(theme);
   } else {

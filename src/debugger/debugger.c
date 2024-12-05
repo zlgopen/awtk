@@ -198,7 +198,8 @@ tk_object_t* debugger_get_callstack(debugger_t* debugger) {
   return debugger->vt->get_callstack(debugger);
 }
 
-tk_object_t* debugger_get_callstack_ex(debugger_t* debugger, uint32_t start, uint32_t levels, uint64_t thread_id) {
+tk_object_t* debugger_get_callstack_ex(debugger_t* debugger, uint32_t start, uint32_t levels,
+                                       uint64_t thread_id) {
   return_value_if_fail(debugger != NULL && debugger->vt != NULL, NULL);
   return_value_if_fail(debugger->vt->get_callstack_ex != NULL, NULL);
 

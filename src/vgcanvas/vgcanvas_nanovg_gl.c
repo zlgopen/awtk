@@ -22,4 +22,3 @@
 #define VGCANVAS_CREATE_GL vgcanvas_create
 
 #include "vgcanvas_nanovg_gl_common.inc"
-

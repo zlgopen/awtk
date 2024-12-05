@@ -335,8 +335,7 @@ static void xml_parser_parse_start_tag(XmlParser* parser) {
     xml_builder_on_end(parser->builder, tag_name);
   }
 
-  for (; *parser->read_ptr != '>' && *parser->read_ptr != '\0'; parser->read_ptr++)
-    ;
+  for (; *parser->read_ptr != '>' && *parser->read_ptr != '\0'; parser->read_ptr++);
 
   return;
 }
@@ -443,8 +442,7 @@ static void xml_parser_parse_pi(XmlParser* parser) {
   tag_name = parser->buffer + tk_pointer_to_int(tag_name);
   xml_builder_on_pi(parser->builder, tag_name, (const char**)parser->attrs);
 
-  for (; *parser->read_ptr != '>' && *parser->read_ptr != '\0'; parser->read_ptr++)
-    ;
+  for (; *parser->read_ptr != '>' && *parser->read_ptr != '\0'; parser->read_ptr++);
 
   return;
 }

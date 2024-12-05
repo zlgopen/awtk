@@ -33,7 +33,7 @@
 #define tk_iostream_serial_wait_for_data(a, b) RET_NOT_IMPL
 #define tk_iostream_serial_create(a) NULL
 #define tk_iostream_serial_config(a, b, c, d, e, f)
-#endif/*AWTK_WEB*/
+#endif /*AWTK_WEB*/
 
 static ret_t serial_widget_apply_props(widget_t* widget);
 

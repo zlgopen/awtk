@@ -278,7 +278,7 @@ static ret_t vgcanvas_nanovg_plus_destroy(vgcanvas_t* vgcanvas) {
 }
 
 ret_t vgcanvas_asset_manager_nanovg_plus_font_destroy(void* vg, const char* font_name,
-                                                             void* specific) {
+                                                      void* specific) {
   int32_t id = tk_pointer_to_int(specific);
   vgcanvas_nanovg_plus_t* canvas = (vgcanvas_nanovg_plus_t*)vg;
   if (canvas != NULL && canvas->vg != NULL && id >= 0) {
@@ -321,7 +321,7 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   nanovg->base.ratio = info.ratio;
 
   vgcanvas_nanovg_plus_init((vgcanvas_t*)nanovg);
-  
+
   opengl_init();
 
   nanovg->vg = nvgp_create(NVGP_MODE_GPU, w, h);

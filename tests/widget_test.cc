@@ -1784,6 +1784,6 @@ TEST(Widget, widget_set_text_with_double) {
   ASSERT_EQ(wstr_eq(&(b->text), L"12.30"), TRUE);
   ASSERT_EQ(widget_set_text_with_double(b, "%2.4lfkg", 12.3), RET_OK);
   ASSERT_EQ(wstr_eq(&(b->text), L"12.3000kg"), TRUE);
-  
+
   widget_destroy(w);
 }

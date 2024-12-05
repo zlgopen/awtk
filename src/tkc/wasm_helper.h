@@ -20,7 +20,7 @@ BEGIN_C_DECLS
 
 #ifndef PRIu32
 #define PRIu32 "u"
-#endif/*PRIu32*/
+#endif /*PRIu32*/
 
 #ifdef WITH_EASTL
 #include <wchar.h>

@@ -140,8 +140,8 @@ static ret_t svg_path_parser_parse(svg_path_parser_t* parser) {
       } while (tk_sscanf(s, "%f %n", &y, &n) == 1);
 
       /* curveto (C, c) (6 arguments) */
-    } else if (tk_sscanf(s, " %1[Cc] %f %f %f %f %f %f %n", command, &x1, &y1, &x2, &y2, &x, &y, &n) ==
-               7) {
+    } else if (tk_sscanf(s, " %1[Cc] %f %f %f %f %f %f %n", command, &x1, &y1, &x2, &y2, &x, &y,
+                         &n) == 7) {
       svg_path_curve_to_t path;
 
       do {
@@ -249,7 +249,7 @@ static ret_t svg_path_parser_parse(svg_path_parser_t* parser) {
 
       /* elliptical arc (A, a) (7 arguments) */
     } else if (tk_sscanf(s, " %1[Aa] %f %f %f %f %f %f %f %n", command, &rx, &ry, &rotation,
-                      &large_arc, &sweep, &x, &y, &n) == 8) {
+                         &large_arc, &sweep, &x, &y, &n) == 8) {
       svg_path_curve_to_t path;
 
       do {
@@ -274,8 +274,8 @@ static ret_t svg_path_parser_parse(svg_path_parser_t* parser) {
         last_x = to.x;
         last_y = to.y;
         s += n;
-      } while (tk_sscanf(s, "%f %f %f %f %f %f %f %n", &rx, &ry, &rotation, &large_arc, &sweep, &x, &y,
-                      &n) == 7);
+      } while (tk_sscanf(s, "%f %f %f %f %f %f %f %n", &rx, &ry, &rotation, &large_arc, &sweep, &x,
+                         &y, &n) == 7);
 
     } else {
       log_error("parse failed at \"%s\"\n", s);

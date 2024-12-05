@@ -2701,8 +2701,9 @@ static ret_t func_iformat(fscript_t* fscript, fscript_args_t* args, value_t* res
   format = value_str(args->args);
   FSCRIPT_FUNC_CHECK(format != NULL, RET_BAD_PARAMS);
 
-  
-  tk_snprintf(str->str, str->capacity > FSCRIPT_STR_CAPACITY ? FSCRIPT_STR_CAPACITY - 1 : str->capacity - 1, format, value_int(args->args + 1));
+  tk_snprintf(str->str,
+              str->capacity > FSCRIPT_STR_CAPACITY ? FSCRIPT_STR_CAPACITY - 1 : str->capacity - 1,
+              format, value_int(args->args + 1));
   value_dup_str(result, str->str);
 
   return RET_OK;

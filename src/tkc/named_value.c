@@ -140,7 +140,6 @@ int32_t named_value_compare(named_value_t* nv, const named_value_t* other) {
   return tk_str_cmp(nv->name, other->name);
 }
 
-
 int32_t named_value_icompare(named_value_t* nv, const named_value_t* other) {
   return_value_if_fail(nv != NULL && other != NULL, -1);
 

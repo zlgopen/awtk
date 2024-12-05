@@ -35,7 +35,7 @@ TEST(WStr, shrink) {
   wstr_append(&s, L"abc123");
   ASSERT_EQ(wstr_shrink(&s, 3), RET_OK);
   ASSERT_EQ(wcs_cmp(s.str, L"abc"), 0);
-  
+
   ASSERT_EQ(wstr_shrink(&s, 30), RET_OK);
   ASSERT_EQ(wcs_cmp(s.str, L"abc"), 0);
 
@@ -580,7 +580,7 @@ TEST(WStr, append_utf8) {
   ASSERT_EQ(wstr_append_utf8(s, "abc"), RET_OK);
   ASSERT_EQ(wstr_eq(s, L"123abc"), TRUE);
 
-#ifndef WIN32  
+#ifndef WIN32
   ASSERT_EQ(wstr_append_utf8(s, "中国"), RET_OK);
   ASSERT_EQ(wstr_eq(s, L"123abc中国"), TRUE);
 #endif

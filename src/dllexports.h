@@ -141,7 +141,6 @@
  * @return {const char*}
  */
 
-
 /**
  * @method SDL_CreateWindow
  * @annotation ["global"]
@@ -166,7 +165,6 @@
  * @return {int}
  */
 
-
 /**
  * @method SDL_GL_GetDrawableSize
  * @annotation ["global"]
@@ -180,39 +178,38 @@
  */
 
 SDL_GL_DeleteContext
-/**
+    /**
  * @method SDL_GL_DeleteContext
  * @annotation ["global"]
  * @return {int}
  */
 
-/**
+    /**
  * @method SDL_GL_SwapWindow
  * @annotation ["global"]
  * @return {int}
  */
 
-/**
+    /**
  * @method SDL_GL_SetSwapInterval
  * @annotation ["global"]
  * @return {int}
  */
 
-/**
+    /**
  * @method SDL_GetWindowPosition
  * @annotation ["global"]
  * @return {int}
  */
 
-/**
+    /**
  * @method SDL_GetWindowSize
  * @annotation ["global"]
  * @return {int}
  */
 
-/**
+    /**
  * @method SDL_GetWindowWMInfo
  * @annotation ["global"]
  * @return {int}
  */
-

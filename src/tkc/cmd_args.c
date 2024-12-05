@@ -65,8 +65,7 @@ static const cmd_arg_desc_t* cmd_args_find(cmd_args_t* args, const char* name) {
         return iter;
       }
     } else {
-      if (tk_str_eq(name, iter->name) ||
-          tk_str_eq(name, iter->short_name)) {
+      if (tk_str_eq(name, iter->name) || tk_str_eq(name, iter->short_name)) {
         return iter;
       }
     }

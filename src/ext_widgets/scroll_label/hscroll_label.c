@@ -85,10 +85,10 @@ static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t
   r = rect_init(left_margin - hscroll_label->xoffset, 0, w, widget->h);
   widget_draw_text_in_rect(widget, c, text->str, text->size, &r, FALSE);
 
-
   if (hscroll_label->stop_at_begin) {
     int32_t range = hscroll_label_get_range(widget, FALSE);
-    int32_t offset = hscroll_label->xoffset - range - hscroll_label_get_loop_end_and_begin_distance(widget);
+    int32_t offset =
+        hscroll_label->xoffset - range - hscroll_label_get_loop_end_and_begin_distance(widget);
     if (offset > 0) {
       r = rect_init(w - offset + left_margin, 0, w, widget->h);
       widget_draw_text_in_rect(widget, c, text->str, text->size, &r, FALSE);
@@ -479,7 +479,8 @@ ret_t hscroll_label_start(widget_t* widget) {
     if (hscroll_label->delay == 0) {
       hscroll_label->timer_id = widget_add_timer(widget, hscroll_label_on_timer, 16);
     } else {
-      hscroll_label->timer_id = widget_add_timer(widget, hscroll_label_delay_on_timer, hscroll_label->delay);
+      hscroll_label->timer_id =
+          widget_add_timer(widget, hscroll_label_delay_on_timer, hscroll_label->delay);
     }
   }
 

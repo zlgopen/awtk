@@ -238,6 +238,6 @@ TEST(Tokenizer, str) {
 TEST(Tokenizer, null) {
   tokenizer_t tokenizer;
   tokenizer_t* t = tokenizer_init(&tokenizer, NULL, 0, NULL);
-  ASSERT_EQ(t == NULL, TRUE); 
+  ASSERT_EQ(t == NULL, TRUE);
   tokenizer_deinit(t);
 }

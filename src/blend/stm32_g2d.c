@@ -44,8 +44,7 @@
 #define DMA2D_WORKING ((DMA2D->CR & DMA2D_CR_START))
 #define DMA2D_WAIT                  \
   do {                              \
-    while (DMA2D_WORKING)           \
-      ;                             \
+    while (DMA2D_WORKING);          \
     DMA2D->IFCR = DMA2D_IFSR_CTCIF; \
   } while (0);
 

@@ -380,8 +380,8 @@ static int32_t children_layouter_list_view_for_list_view_get_scroll_view_w(list_
   if (list_view->floating_scroll_bar) {
     scroll_view_w = scroll_view->w;
   } else if (scroll_bar == NULL || scroll_bar_is_mobile(scroll_bar) ||
-      (!scroll_bar_is_mobile(scroll_bar) && list_view->auto_hide_scroll_bar &&
-       scroll_view->h >= virtual_h)) {
+             (!scroll_bar_is_mobile(scroll_bar) && list_view->auto_hide_scroll_bar &&
+              scroll_view->h >= virtual_h)) {
     scroll_view_w = list_view->widget.w;
   } else {
     scroll_view_w = list_view->widget.w - scroll_bar->w;

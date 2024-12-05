@@ -164,7 +164,7 @@ static ret_t check_button_get_prop(widget_t* widget, const char* name, value_t* 
   } else if (tk_str_eq(name, CHECK_BUTTON_PROP_INDETERMINATE)) {
     value_set_bool(v, check_button->indeterminate);
     return RET_OK;
-  } 
+  }
 
   return RET_NOT_FOUND;
 }

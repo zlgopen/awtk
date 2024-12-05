@@ -44,7 +44,7 @@ BEGIN_C_DECLS
  * @return {vgcanvas_t*} 返回vgcanvas对象。
  */
 vgcanvas_t* vgcanvas_create_gl2(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
-                            void* win);
+                                void* win);
 
 /**
  * @method vgcanvas_create_gl3
@@ -59,9 +59,8 @@ vgcanvas_t* vgcanvas_create_gl2(uint32_t w, uint32_t h, uint32_t stride, bitmap_
  * @return {vgcanvas_t*} 返回vgcanvas对象。
  */
 vgcanvas_t* vgcanvas_create_gl3(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
-                            void* win);
+                                void* win);
 
 END_C_DECLS
 
 #endif /*TK_VG_NANOVG_GL_H*/
-

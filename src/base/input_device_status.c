@@ -41,7 +41,7 @@ static void key_long_press_info_destroy(key_long_press_info_t* info) {
 }
 
 key_long_press_info_t* input_device_status_find_key_long_press_info(input_device_status_t* ids,
-                                                           uint32_t key) {
+                                                                    uint32_t key) {
   uint32_t i = 0;
   darray_t* arr = NULL;
   return_value_if_fail(ids != NULL, NULL);

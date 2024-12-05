@@ -130,8 +130,8 @@ static const key_type_value_t keys_type_name_value[] = {
     {"SLASH", 0, TK_KEY_SLASH},
     {"RIGHTPAREN", 0, TK_KEY_RIGHTPAREN},
     {"LEFTBRACKET", 0, TK_KEY_LEFTBRACKET},
-    {"ASTERISK", 0, TK_KEY_ASTERISK},    
-#ifndef AWTK_WEB  /*web上key冲突，去掉一些不常用的键*/  
+    {"ASTERISK", 0, TK_KEY_ASTERISK},
+#ifndef AWTK_WEB /*web上key冲突，去掉一些不常用的键*/
     {"PERCENT", 0, TK_KEY_PERCENT},
     {"AMPERSAND", 0, TK_KEY_AMPERSAND},
     {"QUOTE", 0, TK_KEY_QUOTE},
@@ -141,7 +141,7 @@ static const key_type_value_t keys_type_name_value[] = {
     {"EXCLAIM", 0, TK_KEY_EXCLAIM},
     {"HASH", 0, TK_KEY_HASH},
     {"DOLLAR", 0, TK_KEY_DOLLAR},
-#endif/*AWTK_WEB*/    
+#endif /*AWTK_WEB*/
     {"0", 0, TK_KEY_0},
     {"1", 0, TK_KEY_1},
     {"2", 0, TK_KEY_2},

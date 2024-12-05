@@ -138,7 +138,7 @@ const char* self_layouter_menu_to_string(self_layouter_t* layouter) {
     str_append_more(str, ",y=", value, NULL);
   }
 
-  switch(layout->w_attr) {
+  switch (layout->w_attr) {
     case W_ATTR_UNDEF: {
       *value = '\0';
       break;
@@ -271,7 +271,7 @@ ret_t self_layouter_menu_set_param(self_layouter_t* layouter, const char* name, 
       } else if (y[0] == 'b') {
         layout->y_attr = Y_ATTR_BOTTOM;
       } else if (y[0] == 't') {
-          layout->y_attr = X_ATTR_DEFAULT;
+        layout->y_attr = X_ATTR_DEFAULT;
       } else {
         if (tk_isdigit(*y)) {
           layout->y_attr = tk_atoi(y);

@@ -64,9 +64,9 @@
     (Result) |= ((Chars)[(Count)] & 0x3f);        \
   }
 
-#define UNICODE_VALID(Char)                                                                        \
-  ((Char) < 0x110000 && (((Char)&0xFFFFF800) != 0xD800) && ((Char) < 0xFDD0 || (Char) > 0xFDEF) && \
-   ((Char)&0xFFFE) != 0xFFFE)
+#define UNICODE_VALID(Char)                                  \
+  ((Char) < 0x110000 && (((Char) & 0xFFFFF800) != 0xD800) && \
+   ((Char) < 0xFDD0 || (Char) > 0xFDEF) && ((Char) & 0xFFFE) != 0xFFFE)
 static const char utf8_skip_data[256] = {
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -138,7 +138,7 @@ static int unichar_to_utf8(uint32_t c, char* outbuf) {
   return len;
 }
 
-#define SURROGATE_VALUE(h, l) (((h)-0xd800) * 0x400 + (l)-0xdc00 + 0x10000)
+#define SURROGATE_VALUE(h, l) (((h) - 0xd800) * 0x400 + (l) - 0xdc00 + 0x10000)
 
 static char* utf16_to_utf8(const wchar_t* str, int32_t len, char* utf8, int out_len) {
   /* This function and g_utf16_to_ucs4 are almost exactly identical - The lines

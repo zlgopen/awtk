@@ -99,7 +99,7 @@ debugger_t* debugger_lldb_create_ex(const char* host, uint32_t port, uint32_t ti
 
 #define STR_SCHEMA_PID "pid://"
 #define STR_SCHEMA_WASM "wasm://"
-#define STR_LLDB_CONFIG STR_SCHEMA_WASM"config"
+#define STR_LLDB_CONFIG STR_SCHEMA_WASM "config"
 
 END_C_DECLS
 

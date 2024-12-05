@@ -208,7 +208,6 @@ ret_t tab_button_set_value(widget_t* widget, bool_t value) {
       int32_t index = tab_button_page_index_of(widget);
       return_value_if_fail(index >= 0, RET_BAD_PARAMS);
       if (tab_button->load_ui == NULL) {
-
         widget_set_value(pages, index);
       } else if (tab_button->ui == NULL && !widget->loading) {
         tab_button_load_ui(tab_button, pages);
@@ -343,7 +342,8 @@ static ret_t tab_button_init(widget_t* widget) {
   return RET_OK;
 }
 
-static const char* s_tab_button_clone_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_MAX_W, WIDGET_PROP_ELLIPSES, NULL};
+static const char* s_tab_button_clone_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_MAX_W,
+                                                      WIDGET_PROP_ELLIPSES, NULL};
 TK_DECL_VTABLE(tab_button) = {.size = sizeof(tab_button_t),
                               .type = WIDGET_TYPE_TAB_BUTTON,
                               .space_key_to_activate = TRUE,

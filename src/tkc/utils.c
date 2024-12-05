@@ -2608,7 +2608,8 @@ ret_t tk_mergesort(void* base, size_t nmemb, size_t size, tk_compare_t cmp) {
   return RET_OK;
 }
 
-const char* tk_strs_bsearch(const char** strs, uint32_t nr, const char* str, bool_t case_sensitive) {
+const char* tk_strs_bsearch(const char** strs, uint32_t nr, const char* str,
+                            bool_t case_sensitive) {
   int32_t low = 0;
   int32_t mid = 0;
   int32_t high = 0;
@@ -2618,12 +2619,12 @@ const char* tk_strs_bsearch(const char** strs, uint32_t nr, const char* str, boo
   return_value_if_fail(strs != NULL && str != NULL, NULL);
 
   if (nr == 0) {
-    return NULL; 
+    return NULL;
   }
 
   high = nr - 1;
   while (low <= high) {
-    mid = low + ((high - low) >> 1); 
+    mid = low + ((high - low) >> 1);
     iter = strs[mid];
 
     result = cmp(iter, str);
@@ -2634,7 +2635,7 @@ const char* tk_strs_bsearch(const char** strs, uint32_t nr, const char* str, boo
       low = mid + 1;
     } else {
       high = mid - 1;
-    }   
+    }
   }
 
   return NULL;

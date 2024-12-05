@@ -154,7 +154,7 @@ ret_t g2d_rotate_image(bitmap_t* fb, bitmap_t* img, const rect_t* src, lcd_orien
 }
 
 ret_t g2d_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r,
-                                     const rectf_t* src_r, uint8_t alpha, lcd_orientation_t o) {
+                             const rectf_t* src_r, uint8_t alpha, lcd_orientation_t o) {
   return RET_NOT_IMPL;
 }
 
@@ -173,8 +173,8 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, const rect_t* dst, const rect
   return RET_OK;
 }
 
-ret_t g2d_rotate_image_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx,
-                                  xy_t dy, lcd_orientation_t o) {
+ret_t g2d_rotate_image_ex(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy,
+                          lcd_orientation_t o) {
   return RET_NOT_IMPL;
 }
 

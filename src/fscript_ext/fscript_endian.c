@@ -23,7 +23,7 @@
 #define ntohl(n) n
 #define htons(n) n
 #define ntohs(n) n
-#endif/*AWTK_WEB*/
+#endif /*AWTK_WEB*/
 
 static ret_t func_is_little_endian(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 0, RET_BAD_PARAMS);

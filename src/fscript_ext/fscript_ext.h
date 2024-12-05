@@ -30,7 +30,8 @@ BEGIN_C_DECLS
  */
 ret_t fscript_ext_init(void);
 
-#if defined(LINUX) || defined(WINDOWS) || defined(MACOS) || defined(ANDROID) || defined(IOS) || defined(AWTK_WEB)
+#if defined(LINUX) || defined(WINDOWS) || defined(MACOS) || defined(ANDROID) || defined(IOS) || \
+    defined(AWTK_WEB)
 #define WITH_FSCRIPT_EXT 1
 
 #define FSCRIPT_WITH_CRC 1

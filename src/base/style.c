@@ -190,11 +190,11 @@ static uint32_t to_icon_at(const char* value) {
     return ICON_AT_RIGHT;
   } else if (strstr(value, "top")) {
     return ICON_AT_TOP;
-  } else  if (strstr(value, "bottom")) {
+  } else if (strstr(value, "bottom")) {
     return ICON_AT_BOTTOM;
   }
 
-  return ICON_AT_LEFT; 
+  return ICON_AT_LEFT;
 }
 
 ret_t style_normalize_value(const char* name, const char* value, value_t* out) {

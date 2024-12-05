@@ -30,7 +30,6 @@ static widget_t* window_anim_widget = NULL;
 static ret_t install_one(void* ctx, const void* iter);
 static void open_window(const char* name, widget_t* to_close);
 
-
 static ret_t timer_open_open_overlay(const timer_info_t* timer) {
   open_window("top", NULL);
   return RET_REMOVE;
@@ -60,9 +59,10 @@ static void open_window(const char* name, widget_t* to_close) {
     widget_set_prop_bool(win, WIDGET_PROP_ALWAYS_ON_TOP, always_on_top);
   } else if (tk_str_eq(name, "dialog1")) {
     bool_t highlight = widget_get_prop_bool(highlight_widget, WIDGET_PROP_VALUE, FALSE);
-    bool_t timer_open_overlay = widget_get_prop_bool(timer_open_overlay_widget, WIDGET_PROP_VALUE, FALSE);
+    bool_t timer_open_overlay =
+        widget_get_prop_bool(timer_open_overlay_widget, WIDGET_PROP_VALUE, FALSE);
     bool_t window_anim = widget_get_prop_bool(window_anim_widget, WIDGET_PROP_VALUE, FALSE);
-    
+
     if (timer_open_overlay) {
       timer_add(timer_open_open_overlay, NULL, 1000);
     }
@@ -129,7 +129,6 @@ static ret_t install_one(void* ctx, const void* iter) {
     } else if (tk_str_eq(name, "close")) {
       widget_on(widget, EVT_CLICK, on_close, win);
     }
-
   }
   return RET_OK;
 }

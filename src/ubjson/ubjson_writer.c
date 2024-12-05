@@ -220,7 +220,8 @@ ret_t ubjson_writer_write_uint64(ubjson_writer_t* writer, uint64_t value) {
 ret_t ubjson_writer_write_pointer(ubjson_writer_t* writer, void* value) {
   uint64_t adrr;
   return_value_if_fail(writer != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(ubjson_writer_write_marker(writer, UBJSON_MARKER_POINTER) == RET_OK, RET_OOM);
+  return_value_if_fail(ubjson_writer_write_marker(writer, UBJSON_MARKER_POINTER) == RET_OK,
+                       RET_OOM);
   adrr = uint64_to_big_endian(tk_pointer_to_long(value));
   return_value_if_fail(ubjson_writer_write_data(writer, &adrr, sizeof(adrr)) == RET_OK, RET_OOM);
 

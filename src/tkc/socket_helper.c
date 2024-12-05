@@ -114,7 +114,7 @@ int tk_socket_get_port(int sock) {
   struct sockaddr_in serv_addr;
   socklen_t serv_addr_len = sizeof(serv_addr);
 
-  if (getsockname(sock, (struct sockaddr *)&serv_addr, &serv_addr_len) >= 0) {
+  if (getsockname(sock, (struct sockaddr*)&serv_addr, &serv_addr_len) >= 0) {
     return ntohs(serv_addr.sin_port);
   }
   return -1;
@@ -145,7 +145,7 @@ int tk_tcp_listen(int port) {
     struct sockaddr_in serv_addr;
     socklen_t serv_addr_len = sizeof(serv_addr);
 
-    if (getsockname(sock, (struct sockaddr *)&serv_addr, &serv_addr_len) >= 0) {
+    if (getsockname(sock, (struct sockaddr*)&serv_addr, &serv_addr_len) >= 0) {
       log_debug("port is 0, system auto allocted port is %d\n", ntohs(serv_addr.sin_port));
     }
   }

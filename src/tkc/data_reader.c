@@ -79,4 +79,3 @@ bool_t data_reader_can_read(const char* url) {
   data_reader_destroy(reader);
   return can;
 }
-

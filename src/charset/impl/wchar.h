@@ -49,7 +49,7 @@ typedef uint32_t uint32;
 #define lengthof(array) (sizeof(array) / sizeof((array)[0]))
 
 #define HIGHBIT (0x80)
-#define IS_HIGHBIT_SET(ch) ((unsigned char)(ch)&HIGHBIT)
+#define IS_HIGHBIT_SET(ch) ((unsigned char)(ch) & HIGHBIT)
 
 /*
  * The pg_wchar type

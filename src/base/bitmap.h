@@ -30,7 +30,6 @@ BEGIN_C_DECLS
 
 typedef ret_t (*bitmap_destroy_t)(bitmap_t* bitmap);
 
-
 /**
  * @class bitmap_t
  * @order -9

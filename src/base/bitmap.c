@@ -163,7 +163,7 @@ static ret_t bitmap_platform_create(bitmap_t* bitmap) {
 bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, uint32_t line_length, bitmap_format_t format) {
   bitmap_t* bitmap = TKMEM_ZALLOC(bitmap_t);
   return_value_if_fail(bitmap != NULL, NULL);
-  
+
   bitmap_init_ex(bitmap, w, h, line_length, format, NULL);
   bitmap->should_free_handle = TRUE;
 
@@ -624,7 +624,7 @@ ret_t bitmap_init_ex(bitmap_t* bitmap, uint32_t w, uint32_t h, uint32_t line_len
   if (bitmap->buffer != NULL) {
     bitmap_platform_create(bitmap);
   }
-  
+
   return bitmap->buffer != NULL ? RET_OK : RET_OOM;
 }
 

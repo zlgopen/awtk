@@ -426,8 +426,8 @@ typedef enum _ret_t {
 #define tk_min(a, b) ((a) < (b) ? (a) : (b))
 #define tk_abs(a) ((a) < (0) ? (-(a)) : (a))
 #define tk_max(a, b) ((a) > (b) ? (a) : (b))
-#define tk_roundi(a) (int32_t)(((a) >= 0) ? ((a) + 0.5f) : ((a)-0.5f))
-#define tk_roundi64(a) (int64_t)(((a) >= 0) ? ((a) + 0.5f) : ((a)-0.5f))
+#define tk_roundi(a) (int32_t)(((a) >= 0) ? ((a) + 0.5f) : ((a) - 0.5f))
+#define tk_roundi64(a) (int64_t)(((a) >= 0) ? ((a) + 0.5f) : ((a) - 0.5f))
 #define tk_clamp(a, mn, mx) ((a) < (mn) ? (mn) : ((a) > (mx) ? (mx) : (a)))
 #define tk_clampi(a, mn, mx) (int32_t)((a) < (mn) ? (mn) : ((a) > (mx) ? (mx) : (a)))
 #define tk_swap(a, b, type)                                         \
@@ -504,8 +504,8 @@ int __cppcheck__strncmp(const char* s1, const char* s2, size_t n);
 #define TK_LOCALE_MAGIC "$locale$"
 #define TK_OBJECT_PROP_NAME_MAX_LEN 64u
 
-#define TK_D2R(d) (((d)*M_PI) / 180)
-#define TK_R2D(r) (((r)*180) / M_PI)
+#define TK_D2R(d) (((d) * M_PI) / 180)
+#define TK_R2D(r) (((r) * 180) / M_PI)
 
 #ifdef _MSC_VER
 #define TK_CONST_DATA_ALIGN(v) __declspec(align(8)) v
@@ -543,7 +543,7 @@ typedef struct _event_source_manager_t event_source_manager_t;
 #define TK_ROUND_TO4(size) ((((size) + 3) >> 2) << 2)
 #define TK_ROUND_TO8(size) ((((size) + 7) >> 3) << 3)
 #define TK_ROUND_TO_MACH(size) ((sizeof(void*) == 4) ? TK_ROUND_TO4(size) : TK_ROUND_TO8(size))
-#define TK_ROUND_TO(size, round_size) ((((size) + (round_size)-1) / (round_size)) * (round_size))
+#define TK_ROUND_TO(size, round_size) ((((size) + (round_size) - 1) / (round_size)) * (round_size))
 
 #define TK_SET_BIT(v, n) ((v) |= 1UL << (n))
 #define TK_CLEAR_BIT(v, n) ((v) &= ~(1UL << (n)))

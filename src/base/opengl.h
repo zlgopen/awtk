@@ -15,7 +15,7 @@
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 
-#else                                   
+#else
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <SDL_opengl_glext.h>
@@ -35,6 +35,5 @@ static inline void opengl_init(void) {
 
   return;
 }
-#endif/*WITH_GPU_GL*/
-#endif/*AWTK_OPENGL_H*/
-
+#endif /*WITH_GPU_GL*/
+#endif /*AWTK_OPENGL_H*/

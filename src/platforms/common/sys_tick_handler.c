@@ -42,8 +42,7 @@ void sleep_ms(uint32_t ms) {
 void sleep_us(uint32_t us) {
   /*FIXME: implement this function*/
 
-  while(us > 0) {
+  while (us > 0) {
     us--;
   }
 }
-

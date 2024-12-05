@@ -186,8 +186,8 @@ widget_t* tab_button_group_cast(widget_t* widget);
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(tab_button_group);
 
-#define TAB_BUTTON_GROUP_PROP_DRAG_CHILD        "drag_child"
-#define TAB_BUTTON_GROUP_PROP_SCROLLABLE_MODE  "scrollable_mode"
+#define TAB_BUTTON_GROUP_PROP_DRAG_CHILD "drag_child"
+#define TAB_BUTTON_GROUP_PROP_SCROLLABLE_MODE "scrollable_mode"
 
 END_C_DECLS
 

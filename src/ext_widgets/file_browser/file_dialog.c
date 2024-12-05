@@ -26,7 +26,7 @@
 #if defined(WITH_SDL) && (!defined(LINUX_FB) && !defined(ANDROID) && !defined(IOS))
 #define WITH_NATIVE_FILE_DIALOG 1
 #endif /*WITH_SDL*/
-#endif/*WITHOUT_NATIVE_FILE_DIALOG*/
+#endif /*WITHOUT_NATIVE_FILE_DIALOG*/
 
 #ifdef WITH_NATIVE_FILE_DIALOG
 #include "../3rd/nativefiledialog/src/include/nfd.h"

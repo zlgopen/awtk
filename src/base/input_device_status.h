@@ -167,7 +167,6 @@ ret_t input_device_status_deinit(input_device_status_t* ids);
 
 /*public for test*/
 
-
 typedef struct _key_long_press_info_t {
   uint32_t key;
   uint32_t time;
@@ -182,7 +181,7 @@ typedef struct _key_long_press_info_t {
  * @return {key_long_press_info_t*} 返回按键的长按信息。
  */
 key_long_press_info_t* input_device_status_find_key_long_press_info(input_device_status_t* ids,
-                                                           uint32_t key);
+                                                                    uint32_t key);
 
 /* private */
 ret_t input_device_status_abort_keys_and_mouse(input_device_status_t* ids);

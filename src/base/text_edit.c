@@ -536,7 +536,8 @@ static row_info_t* text_edit_layout_line(text_edit_t* text_edit, uint32_t row_nu
 
 /* 用于layout指定位置的text文本 */
 static ret_t text_edit_layout_fragment(text_edit_t* text_edit, uint32_t start, uint32_t end,
-                                       row_info_t* row_tmp, uint32_t* line_index, uint32_t* row_num) {
+                                       row_info_t* row_tmp, uint32_t* line_index,
+                                       uint32_t* row_num) {
   uint32_t i;
   uint32_t x = 0;
   uint32_t offset0 = start;
@@ -574,7 +575,7 @@ static ret_t text_edit_layout_fragment(text_edit_t* text_edit, uint32_t start, u
       while (row->info.size > row->line_num) {
         row->info.destroy(darray_pop(&row->info));
       }
-      if (i != end -1) {
+      if (i != end - 1) {
         row = row_tmp + *row_num;
         row->line_num = 1;
       }
@@ -624,8 +625,9 @@ static ret_t text_edit_layout_fragment(text_edit_t* text_edit, uint32_t start, u
 }
 
 /* 用于前移或者后移某部分行数据 */
-static ret_t text_edit_row_transfer(text_edit_t* text_edit, uint32_t start, uint32_t interval, bool_t forward,
-                                    uint32_t change_num, bool_t overwrite, uint32_t rm_row_num) {
+static ret_t text_edit_row_transfer(text_edit_t* text_edit, uint32_t start, uint32_t interval,
+                                    bool_t forward, uint32_t change_num, bool_t overwrite,
+                                    uint32_t rm_row_num) {
   uint32_t i, j;
   DECL_IMPL(text_edit);
   row_info_t* row;
@@ -674,8 +676,9 @@ static ret_t text_edit_row_transfer(text_edit_t* text_edit, uint32_t start, uint
   return RET_OK;
 }
 
-ret_t text_edit_muti_line_insert_text_layout(text_edit_t* text_edit, uint32_t offset, uint32_t insert_length,
-                                             const wchar_t* wtext, bool_t overwrite, uint32_t rm_num) {
+ret_t text_edit_muti_line_insert_text_layout(text_edit_t* text_edit, uint32_t offset,
+                                             uint32_t insert_length, const wchar_t* wtext,
+                                             bool_t overwrite, uint32_t rm_num) {
   uint32_t i, j;
   uint32_t row_num = 0;
   uint32_t row_num_tmp = 0;
@@ -717,7 +720,7 @@ ret_t text_edit_muti_line_insert_text_layout(text_edit_t* text_edit, uint32_t of
     text_edit_layout(text_edit);
     wstr_reset(&s);
     return RET_OK;
-  } 
+  }
 
   /* overwrite模式的处理 */
   if (overwrite && rm_num > 0) {
@@ -783,7 +786,8 @@ ret_t text_edit_muti_line_insert_text_layout(text_edit_t* text_edit, uint32_t of
         break;
       }
     }
-    text_edit_layout_fragment(text_edit, rm_num, rm_line_offset, impl->rows->row, &line_index, &row_num_tmp);
+    text_edit_layout_fragment(text_edit, rm_num, rm_line_offset, impl->rows->row, &line_index,
+                              &row_num_tmp);
     if (row_num_tmp == 0) {
       i = 0;
     } else {
@@ -820,7 +824,7 @@ ret_t text_edit_muti_line_insert_text_layout(text_edit_t* text_edit, uint32_t of
     if (!(last_char == STB_TEXTEDIT_NEWLINE || last_char == STB_TEXTEDIT_NEWLINER)) {
       row_num--;
       if (insert_row_num > 0 && (*(s.str + insert_length - 1) == STB_TEXTEDIT_NEWLINE ||
-          *(s.str + insert_length - 1) == STB_TEXTEDIT_NEWLINER)) {
+                                 *(s.str + insert_length - 1) == STB_TEXTEDIT_NEWLINER)) {
         insert_row_num--;
         layout_row_num--;
       }
@@ -829,7 +833,7 @@ ret_t text_edit_muti_line_insert_text_layout(text_edit_t* text_edit, uint32_t of
         insert_row_num = 1;
         layout_row_num = 1;
       } else if (!(*(s.str + insert_length - 1) == STB_TEXTEDIT_NEWLINE ||
-                  *(s.str + insert_length - 1) == STB_TEXTEDIT_NEWLINER)) {
+                   *(s.str + insert_length - 1) == STB_TEXTEDIT_NEWLINER)) {
         insert_row_num++;
       }
       layout_row_num = insert_row_num;
@@ -854,8 +858,10 @@ ret_t text_edit_muti_line_insert_text_layout(text_edit_t* text_edit, uint32_t of
     darray_push(&row_tmp[i].info, TKMEM_ZALLOC(line_info_t));
   }
 
-  text_edit_layout_fragment(text_edit, offset0, insert_line_offset, row_tmp, &line_index, &row_num_tmp);
-  text_edit_row_transfer(text_edit, row_num, insert_row_num, FALSE, insert_length, overwrite, rm_row_num);
+  text_edit_layout_fragment(text_edit, offset0, insert_line_offset, row_tmp, &line_index,
+                            &row_num_tmp);
+  text_edit_row_transfer(text_edit, row_num, insert_row_num, FALSE, insert_length, overwrite,
+                         rm_row_num);
 
   row = impl->rows->row + row_num;
   if (row_num < impl->rows->capacity) {
@@ -1358,7 +1364,7 @@ static int text_edit_insert(STB_TEXTEDIT_STRING* str, int pos, STB_TEXTEDIT_CHAR
 #define STB_TEXTEDIT_STRINGLEN(str) ((str)->widget->text.size)
 #define STB_TEXTEDIT_LAYOUTROW text_edit_layout_for_stb
 #define STB_TEXTEDIT_GETWIDTH(str, n, i) text_edit_get_char_width(str, n, i)
-#define STB_TEXTEDIT_KEYTOTEXT(key) (((key)&KEYDOWN_BIT) ? 0 : ((uint16_t)key))
+#define STB_TEXTEDIT_KEYTOTEXT(key) (((key) & KEYDOWN_BIT) ? 0 : ((uint16_t)key))
 #define STB_TEXTEDIT_GETCHAR(str, i) (((str)->widget->text).str[i])
 #define STB_TEXTEDIT_IS_SPACE(ch) iswspace(ch)
 #define STB_TEXTEDIT_DELETECHARS text_edit_remove
@@ -1826,9 +1832,9 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
     case TK_KEY_KP_8:
     case TK_KEY_KP_9:
       return RET_OK;
-#ifndef AWTK_WEB      
+#ifndef AWTK_WEB
     case TK_KEY_KP_ENTER:
-#endif/*AWTK_WEB*/    
+#endif /*AWTK_WEB*/
     case TK_KEY_RETURN: {
       key = STB_TEXTEDIT_NEWLINE;
       break;
@@ -1929,11 +1935,11 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
     case TK_KEY_F10:
     case TK_KEY_F11:
     case TK_KEY_F12:
-#ifndef AWTK_WEB      
+#ifndef AWTK_WEB
     case TK_KEY_LSHIFT:
     case TK_KEY_LALT:
     case TK_KEY_LCTRL:
-#endif/*AWTK_WEB*/    
+#endif /*AWTK_WEB*/
     case TK_KEY_RSHIFT:
     case TK_KEY_RCTRL:
     case TK_KEY_RALT:

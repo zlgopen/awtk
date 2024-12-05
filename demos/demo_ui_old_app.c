@@ -94,7 +94,7 @@ uint32_t tk_mem_speed_test(void* buffer, uint32_t length, uint32_t* pmemcpy_spee
 
 #ifdef WITH_G2D
   image_g2d_benchmark();
-#endif/*WITH_G2D*/
+#endif /*WITH_G2D*/
 
   return total_cost;
 }
@@ -648,7 +648,7 @@ static ret_t on_clone_view(void* ctx, event_t* e) {
 static ret_t on_remove_tab_by_index(void* ctx, event_t* e) {
   char buff[MAX_PATH] = {0};
   widget_t* iter = WIDGET(e->target);
-  widget_t* win = widget_get_window(iter);  
+  widget_t* win = widget_get_window(iter);
   widget_t* edit = widget_lookup(win, "remove_tab_index", TRUE);
   widget_t* tab_button_group = widget_lookup_by_type(win, WIDGET_TYPE_TAB_BUTTON_GROUP, FALSE);
 
@@ -1155,8 +1155,7 @@ static ret_t install_one(void* ctx, const void* iter) {
       }
     } else if (tk_str_eq(name, "remove_tab_by_index")) {
       widget_on(widget, EVT_CLICK, on_remove_tab_by_index, widget);
-    } 
-    else if (tk_str_eq(name, "remove_self")) {
+    } else if (tk_str_eq(name, "remove_self")) {
       widget_on(widget, EVT_CLICK, on_remove_self, widget);
     } else if (tk_str_eq(name, "remove_view")) {
       widget_on(widget, EVT_CLICK, on_remove_view, widget);

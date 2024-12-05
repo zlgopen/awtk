@@ -21,7 +21,7 @@
 
 static ret_t func_iostream_serial_create(fscript_t* fscript, fscript_args_t* args,
                                          value_t* result) {
-#ifndef AWTK_WEB                                         
+#ifndef AWTK_WEB
   int baudrate = 115200;
   tk_object_t* obj = NULL;
   const char* devname = NULL;

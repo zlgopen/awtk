@@ -56,7 +56,8 @@ static ret_t pages_on_idle_set_target_focused(const idle_info_t* idle) {
   pages = PAGES(idle->ctx);
   ENSURE(pages);
 
-  if (pages->widget.focused || info->keyboard_type == KEYBOARD_3KEYS || info->keyboard_type == KEYBOARD_5KEYS) {
+  if (pages->widget.focused || info->keyboard_type == KEYBOARD_3KEYS ||
+      info->keyboard_type == KEYBOARD_5KEYS) {
     default_focused_child_set_target_focused(&(pages->str_target), WIDGET(pages));
   }
 

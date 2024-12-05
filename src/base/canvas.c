@@ -278,7 +278,8 @@ ret_t canvas_set_global_alpha(canvas_t* c, uint8_t alpha) {
   return RET_OK;
 }
 
-static float_t canvas_standard_font_size_to_local_size(canvas_t* c, const char* font_name, font_size_t px) {
+static float_t canvas_standard_font_size_to_local_size(canvas_t* c, const char* font_name,
+                                                       font_size_t px) {
   font_t* font = NULL;
   font_vmetrics_t vmetrics;
   float_t local_size = 0.0f;
@@ -291,7 +292,7 @@ static float_t canvas_standard_font_size_to_local_size(canvas_t* c, const char* 
 
   vmetrics = font_get_vmetrics(font, px);
   font_height = (float_t)(vmetrics.font_ascender - vmetrics.font_descender);
-  local_size = ((float_t)(px *  font_height) / (float_t)vmetrics.units_per_em);
+  local_size = ((float_t)(px * font_height) / (float_t)vmetrics.units_per_em);
 
   return local_size;
 }

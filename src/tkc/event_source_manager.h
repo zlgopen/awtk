@@ -157,7 +157,8 @@ ret_t event_source_manager_set_min_sleep_time(event_source_manager_t* manager, u
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *
  */
-ret_t event_source_manager_set_min_sleep_time_us(event_source_manager_t* manager, uint32_t sleep_time);
+ret_t event_source_manager_set_min_sleep_time_us(event_source_manager_t* manager,
+                                                 uint32_t sleep_time);
 
 /**
  * @method event_source_manager_destroy

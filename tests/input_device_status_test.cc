@@ -259,7 +259,7 @@ TEST(InputDeviceStatus, long_press) {
   info = input_device_status_find_key_long_press_info(ids, TK_KEY_0);
   ASSERT_EQ(info->key, TK_KEY_0);
   ASSERT_EQ(info->time, 2000);
-  
+
   ASSERT_EQ(input_device_status_set_key_long_press_time(ids, TK_KEY_1, 3000), RET_OK);
   info = input_device_status_find_key_long_press_info(ids, TK_KEY_1);
   ASSERT_EQ(info->key, TK_KEY_1);

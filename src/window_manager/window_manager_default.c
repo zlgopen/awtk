@@ -36,7 +36,8 @@
 #include "base/dialog_highlighter_factory.h"
 #include "window_manager/window_manager_default.h"
 
-#define WINDOW_MANAGER_DEFAULT_NOT_OPENED_BUT_CLOSE_WINDOW_IDLE_ID "not_opened_but_close_window_idle_id"
+#define WINDOW_MANAGER_DEFAULT_NOT_OPENED_BUT_CLOSE_WINDOW_IDLE_ID \
+  "not_opened_but_close_window_idle_id"
 
 static ret_t window_manager_animate_done(widget_t* widget);
 static ret_t window_manager_default_update_fps(widget_t* widget);
@@ -788,10 +789,12 @@ static ret_t window_manager_default_close_window(widget_t* widget, widget_t* win
   return_value_if_fail(widget_is_window(window), RET_BAD_PARAMS);
 
   if (!window_is_opened(window)) {
-    uint32_t idle_id = widget_get_prop_int(window, WINDOW_MANAGER_DEFAULT_NOT_OPENED_BUT_CLOSE_WINDOW_IDLE_ID, TK_INVALID_ID);
+    uint32_t idle_id = widget_get_prop_int(
+        window, WINDOW_MANAGER_DEFAULT_NOT_OPENED_BUT_CLOSE_WINDOW_IDLE_ID, TK_INVALID_ID);
     if (idle_id == 0) {
       idle_id = widget_add_idle(window, window_manager_default_on_idle_check_and_close_window);
-      widget_set_prop_int(window, WINDOW_MANAGER_DEFAULT_NOT_OPENED_BUT_CLOSE_WINDOW_IDLE_ID, idle_id);
+      widget_set_prop_int(window, WINDOW_MANAGER_DEFAULT_NOT_OPENED_BUT_CLOSE_WINDOW_IDLE_ID,
+                          idle_id);
     }
     return RET_OK;
   }
@@ -844,16 +847,16 @@ static ret_t window_manager_default_close_window(widget_t* widget, widget_t* win
         window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_FOREGROUND);
 
         WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-          if (widget_is_normal_window(iter)) {
+        if (widget_is_normal_window(iter)) {
+          break;
+        }
+        if (widget_is_support_highlighter(iter)) {
+          curr_highlight = widget_get_prop_str(iter, WIDGET_PROP_HIGHLIGHT, NULL);
+          if (curr_highlight != NULL && *curr_highlight != '\0') {
+            widget_highlighter = iter;
             break;
           }
-          if (widget_is_support_highlighter(iter)) {
-            curr_highlight = widget_get_prop_str(iter, WIDGET_PROP_HIGHLIGHT, NULL);
-            if (curr_highlight != NULL && *curr_highlight != '\0') {
-              widget_highlighter = iter;
-              break;
-            }
-          }
+        }
         WIDGET_FOR_EACH_CHILD_END();
         if (is_create) {
           wm->curr_win = widget_highlighter;
@@ -974,7 +977,8 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
 
   fps_inc(&(wm->fps));
   if (WINDOW_MANAGER(wm)->show_fps) {
-    rect_t fps_rect = rect_init(WINDOW_MANAGER(wm)->fps_position.x, WINDOW_MANAGER(wm)->fps_position.y, 60, 30);
+    rect_t fps_rect =
+        rect_init(WINDOW_MANAGER(wm)->fps_position.x, WINDOW_MANAGER(wm)->fps_position.y, 60, 30);
     window_manager_default_invalidate(widget, &fps_rect);
   }
 #ifdef FRAGMENT_FRAME_BUFFER_SIZE
@@ -1122,7 +1126,9 @@ static ret_t window_manager_animate_done(widget_t* widget) {
     window_animator_destroy(wm->animator);
     curr_win_is_keyboard = widget_is_keyboard(curr_win);
     curr_win_is_normal_window = widget_is_normal_window(curr_win);
-    close_window_when_open_animate = widget_get_prop_int(curr_win, WINDOW_MANAGER_DEFAULT_NOT_OPENED_BUT_CLOSE_WINDOW_IDLE_ID, TK_INVALID_ID) != TK_INVALID_ID;
+    close_window_when_open_animate =
+        widget_get_prop_int(curr_win, WINDOW_MANAGER_DEFAULT_NOT_OPENED_BUT_CLOSE_WINDOW_IDLE_ID,
+                            TK_INVALID_ID) != TK_INVALID_ID;
 
     wm->animator = NULL;
     wm->animating = FALSE;
@@ -1220,7 +1226,8 @@ static ret_t window_manager_default_update_fps(widget_t* widget) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
 
   c = native_window_get_canvas(wm->native_window);
-  canvas_set_fps_ex(c, WINDOW_MANAGER(wm)->show_fps, fps_get(&(wm->fps)), wm->window_manager.fps_position.x,  wm->window_manager.fps_position.y);
+  canvas_set_fps_ex(c, WINDOW_MANAGER(wm)->show_fps, fps_get(&(wm->fps)),
+                    wm->window_manager.fps_position.x, wm->window_manager.fps_position.y);
 
   return RET_OK;
 }

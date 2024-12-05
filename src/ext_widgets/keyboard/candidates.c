@@ -177,7 +177,7 @@ static ret_t candidates_relayout_children(widget_t* widget) {
       average_child_w += (candidates_calc_child_width(c, children[i]) + child_margin * 2);
     }
     average_child_w = tk_roundi((float_t)average_child_w / truly_num);
-    spacer = tk_roundi(( (float_t)widget->w / (float_t)candidates->visible_num ));
+    spacer = tk_roundi(((float_t)widget->w / (float_t)candidates->visible_num));
     if (spacer < (average_child_w + margin)) {
       spacer = 0;
     } else {
@@ -196,7 +196,8 @@ static ret_t candidates_relayout_children(widget_t* widget) {
     if (c->font != NULL) {
       font_get_glyph(c->font, *(iter->text.str), font_size, &g);
     }
-    if ((c->font != NULL && iter->text.size && g.data != NULL) || (c->font == NULL && iter->text.size)) {
+    if ((c->font != NULL && iter->text.size && g.data != NULL) ||
+        (c->font == NULL && iter->text.size)) {
       widget_set_enable(iter, TRUE);
       widget_set_visible(iter, TRUE, FALSE);
     } else {

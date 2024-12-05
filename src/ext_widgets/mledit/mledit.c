@@ -742,7 +742,8 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       }
 
       if (mledit->readonly) {
-        if (is_control && (key == TK_KEY_C || key == TK_KEY_c || key == TK_KEY_A || key == TK_KEY_a)) {
+        if (is_control &&
+            (key == TK_KEY_C || key == TK_KEY_c || key == TK_KEY_A || key == TK_KEY_a)) {
           log_debug("copy\n");
         } else {
           break;
@@ -772,11 +773,11 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       if (mledit->readonly) {
         break;
       }
-#ifndef AWTK_WEB      
+#ifndef AWTK_WEB
       if (!widget->focused) {
         break;
       }
-#endif/*AWTK_WEB*/
+#endif /*AWTK_WEB*/
 
       if (state.preedit) {
         text_edit_preedit_clear(mledit->model);

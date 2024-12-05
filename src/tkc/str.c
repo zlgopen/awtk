@@ -1146,10 +1146,10 @@ ret_t str_append_format_padding(str_t* str, uint32_t size, const char* format, .
   va_start(va, format);
   ret = tk_vsnprintf(str->str + str->size, size, format, va);
   va_end(va);
-  
+
   return_value_if_fail(ret >= 0, RET_BAD_PARAMS);
   str->size += ret;
-  
+
   if (str->size < (old_size + size)) {
     uint32_t n = (old_size + size) - str->size;
     str_append_n_chars(str, ' ', n);

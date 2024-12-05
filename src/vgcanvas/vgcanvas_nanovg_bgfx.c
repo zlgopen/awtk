@@ -38,8 +38,8 @@ typedef struct _vgcanvas_nanovg_t {
 
 static ret_t vgcanvas_nanovg_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo,
                                            bitmap_t* img, const rect_t* r) {
-  return RET_OK;                                           
-}               
+  return RET_OK;
+}
 
 #include "texture.inc"
 #include "vgcanvas_nanovg_bgfx.inc"

@@ -93,9 +93,9 @@
 #define LLDB_KEY_ST_FIRST_CODE_BREAKPOINTS "stFirstCodeBreakPoints"
 #define LLDB_KEY_STOPFORDESTROYORDETACH "StopForDestroyOrDetach"
 
-#define LLDB_CALLSTCK_DEFAULT_STARTFRAME  0
+#define LLDB_CALLSTCK_DEFAULT_STARTFRAME 0
 // 获取全部层数
-#define LLDB_CALLSTCK_DEFAULT_LEVELS      0
+#define LLDB_CALLSTCK_DEFAULT_LEVELS 0
 
 #define VARREF_LOCALS (int64_t)1
 #define VARREF_GLOBALS (int64_t)2
@@ -108,8 +108,9 @@ static ret_t debugger_lldb_simple_command(debugger_t* debugger, const char* cmd)
 static ret_t debugger_lldb_disconnect(debugger_t* debugger, bool_t terminate_debuggee);
 static tk_object_t* debugger_lldb_get_callstack_impl(debugger_t* debugger, uint32_t start_frame,
                                                      uint32_t levels);
-static tk_object_t* debugger_lldb_get_callstack_for_tid_impl(debugger_t* debugger, uint32_t start_frame,
-                                                     uint32_t levels, int64_t thread_id);
+static tk_object_t* debugger_lldb_get_callstack_for_tid_impl(debugger_t* debugger,
+                                                             uint32_t start_frame, uint32_t levels,
+                                                             int64_t thread_id);
 static tk_object_t* object_find_variable_value(tk_object_t* obj, const char* name,
                                                const char* full_name);
 
@@ -142,7 +143,8 @@ static ret_t debugger_lldb_load_init_commands(debugger_lldb_t* lldb, conf_node_t
   return RET_OK;
 }
 
-static ret_t debugger_lldb_load_st_first_code_breakpoints(debugger_lldb_t* lldb, conf_node_t* node) {
+static ret_t debugger_lldb_load_st_first_code_breakpoints(debugger_lldb_t* lldb,
+                                                          conf_node_t* node) {
   conf_node_t* iter = conf_node_get_first_child(node);
   object_array_clear_props(lldb->st_first_code_breakpoints);
 
@@ -239,7 +241,8 @@ static uint64_t debugger_lldb_get_current_thread_id(debugger_t* debugger) {
   return thread_id;
 }
 
-static ret_t debugger_lldb_set_current_thread_id_ex(debugger_t* debugger, uint64_t thread_id, bool_t force) {
+static ret_t debugger_lldb_set_current_thread_id_ex(debugger_t* debugger, uint64_t thread_id,
+                                                    bool_t force) {
   ret_t ret = RET_OK;
   bool_t swith = FALSE;
   debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
@@ -253,7 +256,8 @@ static ret_t debugger_lldb_set_current_thread_id_ex(debugger_t* debugger, uint64
     debugger_unlock(debugger);
   }
   if (swith) {
-    lldb->callstack = debugger_lldb_get_callstack_impl(debugger, LLDB_CALLSTCK_DEFAULT_STARTFRAME, LLDB_CALLSTCK_DEFAULT_LEVELS);
+    lldb->callstack = debugger_lldb_get_callstack_impl(debugger, LLDB_CALLSTCK_DEFAULT_STARTFRAME,
+                                                       LLDB_CALLSTCK_DEFAULT_LEVELS);
     debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_PAUSED);
     debugger_set_current_frame(debugger, 0);
   }
@@ -264,7 +268,9 @@ static ret_t debugger_lldb_set_current_thread_id(debugger_t* debugger, uint64_t 
   return debugger_lldb_set_current_thread_id_ex(debugger, thread_id, FALSE);
 }
 
-static tk_object_t* debugger_lldb_get_callstack_for_tid_obj(debugger_t* debugger, uint32_t start, uint32_t levels, int64_t tid, bool_t no_cache) {
+static tk_object_t* debugger_lldb_get_callstack_for_tid_obj(debugger_t* debugger, uint32_t start,
+                                                            uint32_t levels, int64_t tid,
+                                                            bool_t no_cache) {
   debugger_lldb_t* lldb = DEBUGGER_LLDB(debugger);
 
   if (no_cache) {
@@ -280,7 +286,8 @@ static tk_object_t* debugger_lldb_get_callstack_obj(debugger_t* debugger) {
   uint64_t thread_id = 0;
   return_value_if_fail(debugger != NULL, NULL);
   thread_id = debugger_lldb_get_current_thread_id(debugger);
-  return debugger_lldb_get_callstack_for_tid_obj(debugger, LLDB_CALLSTCK_DEFAULT_STARTFRAME, LLDB_CALLSTCK_DEFAULT_LEVELS, thread_id, FALSE);
+  return debugger_lldb_get_callstack_for_tid_obj(debugger, LLDB_CALLSTCK_DEFAULT_STARTFRAME,
+                                                 LLDB_CALLSTCK_DEFAULT_LEVELS, thread_id, FALSE);
 }
 
 static const char* debugger_lldb_get_source_path(debugger_t* debugger, uint32_t frame_index) {
@@ -349,9 +356,10 @@ static ret_t debugger_lldb_emit(debugger_t* debugger, tk_object_t* resp) {
       file_path = debugger_lldb_get_source_path(debugger, debugger->current_frame_index);
       /*LLDB 行号从1开始*/
       line = lldb->current_frame_line - 1;
-      emitter_dispatch(EMITTER(debugger), debugger_breaked_event_init_ex(&event, line, file_path, frame_name));
+      emitter_dispatch(EMITTER(debugger),
+                       debugger_breaked_event_init_ex(&event, line, file_path, frame_name));
 
-      log_debug("threadId = %"PRIu64" stopped\n", (uint64_t)stop_thread_id);
+      log_debug("threadId = %" PRIu64 " stopped\n", (uint64_t)stop_thread_id);
     }
   } else if (tk_str_eq(event, LLDB_EVENT_OUTPUT)) {
     uint32_t line = 0;
@@ -586,7 +594,8 @@ static ret_t debugger_lldb_init(debugger_t* debugger) {
 
   debugger_set_state(debugger, DEBUGGER_PROGRAM_STATE_NONE);
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_INITIALIZE, LLDB_REQUEST_TIMEOUT);
+    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_INITIALIZE,
+                                                       LLDB_REQUEST_TIMEOUT);
   }
   lldb->init_commands = object_array_create();
   lldb->st_first_code_breakpoints = object_array_create();
@@ -624,7 +633,8 @@ static ret_t debugger_lldb_disconnect(debugger_t* debugger, bool_t terminate_deb
   return_value_if_fail(req != NULL, RET_BAD_PARAMS);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_DISCONNECT, LLDB_REQUEST_TIMEOUT);
+    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_DISCONNECT,
+                                                       LLDB_REQUEST_TIMEOUT);
   }
 
   TK_OBJECT_UNREF(req);
@@ -671,7 +681,8 @@ static tk_object_t* debugger_lldb_create_launch_req(debugger_t* debugger, const 
   }
 
   if (lldb->st_first_code_breakpoints != NULL) {
-    tk_object_set_prop_object(arguments, LLDB_KEY_ST_FIRST_CODE_BREAKPOINTS, lldb->st_first_code_breakpoints);
+    tk_object_set_prop_object(arguments, LLDB_KEY_ST_FIRST_CODE_BREAKPOINTS,
+                              lldb->st_first_code_breakpoints);
   }
 
   TK_OBJECT_UNREF(args);
@@ -739,7 +750,7 @@ static tk_object_t* debugger_lldb_create_attach_req(debugger_t* debugger, const 
       object_array_t* target_create_commands = OBJECT_ARRAY(lldb->target_create_commands);
       attach_commands = object_array_create();
       return_value_if_fail(attach_commands != NULL, NULL);
-      
+
       object_array_push(attach_commands, value_set_str(&v, cmds));
       for (i = 0; i < target_create_commands->size; i++) {
         object_array_push(attach_commands, target_create_commands->props + i);
@@ -758,7 +769,8 @@ static tk_object_t* debugger_lldb_create_attach_req(debugger_t* debugger, const 
     tk_object_set_prop_object(arguments, LLDB_KEY_INIT_COMMANDS, lldb->init_commands);
   }
   if (lldb->st_first_code_breakpoints != NULL) {
-    tk_object_set_prop_object(arguments, LLDB_KEY_ST_FIRST_CODE_BREAKPOINTS, lldb->st_first_code_breakpoints);
+    tk_object_set_prop_object(arguments, LLDB_KEY_ST_FIRST_CODE_BREAKPOINTS,
+                              lldb->st_first_code_breakpoints);
   }
   tk_object_set_prop_bool(arguments, LLDB_KEY_STOPFORDESTROYORDETACH, FALSE);
 
@@ -865,7 +877,8 @@ static ret_t debugger_lldb_on_source_break_point(void* ctx, const void* data) {
   return_value_if_fail(req != NULL, RET_BAD_PARAMS);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_SET_BREAK_POINTS, LLDB_REQUEST_TIMEOUT);
+    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_SET_BREAK_POINTS,
+                                                       LLDB_REQUEST_TIMEOUT);
   }
 
   TK_OBJECT_UNREF(req);
@@ -937,7 +950,8 @@ static ret_t debugger_lldb_update_func_break_points(debugger_t* debugger) {
 }
 
 static tk_object_t* debugger_lldb_create_get_callstack_req(debugger_t* debugger,
-                                                           uint32_t start_frame, uint32_t levels, int64_t thread_id ) {
+                                                           uint32_t start_frame, uint32_t levels,
+                                                           int64_t thread_id) {
   tk_object_t* req = NULL;
   tk_object_t* arguments = NULL;
 
@@ -958,8 +972,9 @@ static tk_object_t* debugger_lldb_create_get_callstack_req(debugger_t* debugger,
   return req;
 }
 
-static tk_object_t* debugger_lldb_get_callstack_for_tid_impl(debugger_t* debugger, uint32_t start_frame,
-                                                     uint32_t levels, int64_t thread_id) {
+static tk_object_t* debugger_lldb_get_callstack_for_tid_impl(debugger_t* debugger,
+                                                             uint32_t start_frame, uint32_t levels,
+                                                             int64_t thread_id) {
   tk_object_t* req = NULL;
   tk_object_t* resp = NULL;
   return_value_if_fail(debugger != NULL, NULL);
@@ -967,7 +982,8 @@ static tk_object_t* debugger_lldb_get_callstack_for_tid_impl(debugger_t* debugge
   return_value_if_fail(req != NULL, NULL);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    resp = debugger_lldb_dispatch_until_get_resp(debugger, LLDB_CMD_STACK_TRACE, LLDB_REQUEST_TIMEOUT);
+    resp =
+        debugger_lldb_dispatch_until_get_resp(debugger, LLDB_CMD_STACK_TRACE, LLDB_REQUEST_TIMEOUT);
   }
 
   TK_OBJECT_UNREF(req);
@@ -1016,7 +1032,8 @@ get_value:
   return_value_if_fail(req != NULL, NULL);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    resp = debugger_lldb_dispatch_until_get_resp(debugger, LLDB_CMD_VARIABLES, LLDB_REQUEST_TIMEOUT);
+    resp =
+        debugger_lldb_dispatch_until_get_resp(debugger, LLDB_CMD_VARIABLES, LLDB_REQUEST_TIMEOUT);
   }
 
   TK_OBJECT_UNREF(req);
@@ -1090,7 +1107,8 @@ static ret_t debugger_lldb_scopes_command(debugger_t* debugger, uint32_t frame_i
   return_value_if_fail(req != NULL, ret);
 
   if (debugger_lldb_write_req(debugger, req) == RET_OK) {
-    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_SCOPES, LLDB_REQUEST_TIMEOUT);
+    ret = debugger_lldb_dispatch_until_get_resp_simple(debugger, LLDB_CMD_SCOPES,
+                                                       LLDB_REQUEST_TIMEOUT);
   }
 
   return ret;
@@ -1349,7 +1367,9 @@ static tk_object_t* debugger_lldb_get_global(debugger_t* debugger) {
   return debugger_lldb_get_variables_impl(debugger, VARREF_GLOBALS, 0, 0);
 }
 
-static tk_object_t* debugger_lldb_get_callstack_ex_impl(debugger_t* debugger, uint32_t start, uint32_t levels, uint64_t thread_id, bool_t no_cache) {
+static tk_object_t* debugger_lldb_get_callstack_ex_impl(debugger_t* debugger, uint32_t start,
+                                                        uint32_t levels, uint64_t thread_id,
+                                                        bool_t no_cache) {
   int32_t i = 0;
   int32_t n = 0;
   uint32_t num = 0;
@@ -1393,7 +1413,8 @@ static tk_object_t* debugger_lldb_get_callstack_ex_impl(debugger_t* debugger, ui
   return ret_obj;
 }
 
-static tk_object_t* debugger_lldb_get_callstack_ex(debugger_t* debugger, uint32_t start, uint32_t levels, uint64_t thread_id) {
+static tk_object_t* debugger_lldb_get_callstack_ex(debugger_t* debugger, uint32_t start,
+                                                   uint32_t levels, uint64_t thread_id) {
   return debugger_lldb_get_callstack_ex_impl(debugger, start, levels, thread_id, TRUE);
 }
 
@@ -1401,7 +1422,8 @@ static tk_object_t* debugger_lldb_get_callstack(debugger_t* debugger) {
   uint64_t thread_id = 0;
   return_value_if_fail(debugger != NULL, NULL);
   thread_id = debugger_lldb_get_current_thread_id(debugger);
-  return debugger_lldb_get_callstack_ex_impl(debugger, LLDB_CALLSTCK_DEFAULT_STARTFRAME, LLDB_CALLSTCK_DEFAULT_LEVELS, thread_id, FALSE);
+  return debugger_lldb_get_callstack_ex_impl(debugger, LLDB_CALLSTCK_DEFAULT_STARTFRAME,
+                                             LLDB_CALLSTCK_DEFAULT_LEVELS, thread_id, FALSE);
 }
 
 static ret_t debugger_lldb_update_break_points(debugger_t* debugger) {
