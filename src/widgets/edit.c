@@ -859,7 +859,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       wchar_t* text = NULL;
       pointer_event_t evt = *(pointer_event_t*)e;
 
-      if (widget_find_target(widget, evt.x, evt.y) == NULL) {
+      if (widget_find_target(widget, evt.x, evt.y) == NULL && widget->focused) {
         cursor = edit_get_cursor(widget);
         len = edit->model->widget->text.size;
         text = edit->model->widget->text.str;
