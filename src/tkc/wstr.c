@@ -384,6 +384,14 @@ ret_t wstr_insert(wstr_t* str, uint32_t offset, const wchar_t* text, uint32_t nr
   return RET_OK;
 }
 
+ret_t wstr_modify_wchar(wstr_t* str, uint32_t pos, wchar_t c) {
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(str->size > pos, RET_BAD_PARAMS);
+
+  str->str[pos] = c;
+  return RET_OK;
+}
+
 ret_t wstr_append_with_len(wstr_t* str, const wchar_t* text, uint32_t size) {
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
 

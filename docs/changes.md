@@ -1,8 +1,11 @@
 # 最新动态
 
+2024/12/08
+  * 增加wstr\_modify\_wchar(感谢智明提供补丁)
+
 2024/12/05
-  * 增加pixman_g2d.c，在使用cairo时自动启用。
-  * 完善生成的awtk_config_define.py文件的注释(感谢雨欣提供补丁)
+  * 增加pixman\_g2d.c，在使用cairo时自动启用。
+  * 完善生成的awtk\_config\_define.py文件的注释(感谢雨欣提供补丁)
   * 双击edit时，当焦点位于当前控件上才允许全选文本(感谢雨欣提供补丁)
 
 2024/12/02

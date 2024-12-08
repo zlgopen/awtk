@@ -271,6 +271,17 @@ ret_t wstr_append_utf8(wstr_t* str, const char* text);
 ret_t wstr_append_more(wstr_t* str, const wchar_t* text, ...);
 
 /**
+ * @method wstr_modify_wchar
+ * 修改字符。
+ * @param {wstr_t*} str str对象。
+ * @param {uint32_t} pos 修改的位置。
+ * @param {wchar_t} c 修改的字符。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wstr_modify_wchar(wstr_t* str, uint32_t pos, wchar_t c);
+
+/**
  * @method wstr_append_with_len
  * 追加字符串。
  * @param {wstr_t*} str str对象。
