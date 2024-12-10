@@ -404,7 +404,7 @@ static ret_t scroll_bar_on_layout_children(widget_t* widget) {
     }
   }
 
-  if (scroll_bar->virtual_size <= 0) {
+  if (scroll_bar->virtual_size < 0) {
     return RET_OK;
   }
   return_value_if_fail(scroll_bar_destop_get_dragger_size(widget, &r) == RET_OK, RET_FAIL);
