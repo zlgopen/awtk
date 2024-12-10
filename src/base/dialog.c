@@ -208,6 +208,10 @@ ret_t dialog_quit(widget_t* widget, uint32_t code) {
   dialog->quit_code = (dialog_quit_code_t)code;
   l->quit_num += dialog->quit_num;
   main_loop_quit(l);
+  if (widget->parent != NULL) {
+    widget->parent->target = NULL;
+    widget->parent->key_target = NULL;
+  }
 #endif /*WITHOUT_MODAL_DIALOG*/
 
   return RET_OK;
