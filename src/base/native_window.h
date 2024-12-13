@@ -343,6 +343,7 @@ typedef enum _native_window_event_type_t {
   EVT_NATIVE_WINDOW_DESTROY,
   EVT_NATIVE_WINDOW_ENTER,
   EVT_NATIVE_WINDOW_LEAVE,
+  EVT_NATIVE_WINDOW_FOCUS_GAINED,
   EVT_NATIVE_WINDOW_FOCUS_LOST,
 } native_window_event_type_t;
 

@@ -302,9 +302,14 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
       window_manager_dispatch_native_window_event(l->wm, &e, win);
       break;
     }
-    case SDL_WINDOWEVENT_FOCUS_GAINED:
+    case SDL_WINDOWEVENT_FOCUS_GAINED: {
+      event_t e = event_init(EVT_NATIVE_WINDOW_FOCUS_GAINED, NULL);
+      SDL_Window* win = SDL_GetWindowFromID(event->window.windowID);
+
       log_debug("Window %d gained keyboard focus\n", event->window.windowID);
+      window_manager_dispatch_native_window_event(l->wm, &e, win);
       break;
+    }
     case SDL_WINDOWEVENT_FOCUS_LOST: {
       event_t e = event_init(EVT_NATIVE_WINDOW_FOCUS_LOST, NULL);
       SDL_Window* win = SDL_GetWindowFromID(event->window.windowID);
