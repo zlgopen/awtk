@@ -114,7 +114,7 @@ ret_t application_init() {
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
   widget_t* canvas_widget = canvas_widget_create(win, 0, 0, win->w, win->h);
   widget_t* button = button_create(win, 0, 0, 0, 0);
-  widget_set_self_layout_params(button, "c", "b", "100", "40");
+  widget_set_self_layout(button, "default(x=c,y=b,w=100,h=40)");
   widget_on(win, EVT_DESTROY, window_on_destroy, NULL);
 
   /* 创建离线的 canvas */

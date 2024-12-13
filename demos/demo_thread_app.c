@@ -139,15 +139,15 @@ ret_t application_init() {
   widget_t* progress_bar4 = progress_bar_create(win, 0, 0, 0, 0);
 
   widget_set_text(label, L"Update progressbar in non GUI thread");
-  widget_set_self_layout_params(label, "center", "middle:-90", "80%", "30");
+  widget_set_self_layout(label, "default(x=center,y=middle:-90,w=80%,h=30)");
 
-  widget_set_self_layout_params(progress_bar1, "center", "middle:-60", "80%", "20");
-  widget_set_self_layout_params(progress_bar2, "center", "middle:-30", "80%", "20");
-  widget_set_self_layout_params(progress_bar3, "center", "middle:0", "80%", "20");
-  widget_set_self_layout_params(progress_bar4, "center", "middle:30", "80%", "20");
+  widget_set_self_layout(progress_bar1, "default(x=center,y=middle:-60,w=80%,h=20)");
+  widget_set_self_layout(progress_bar2, "default(x=center,y=middle:-30,w=80%,h=20)");
+  widget_set_self_layout(progress_bar3, "default(x=center,y=middle:0,w=80%,h=20)");
+  widget_set_self_layout(progress_bar4, "default(x=center,y=middle:30,w=80%,h=20)");
 
   widget_set_text(close, L"close");
-  widget_set_self_layout_params(close, "center", "bottom:30", "50%", "30");
+  widget_set_self_layout(close, "default(x=center,y=bottom:30,w=50%,h=30)");
 
   thread1 = tk_thread_create(test_thread1, progress_bar1);
   tk_thread_start(thread1);

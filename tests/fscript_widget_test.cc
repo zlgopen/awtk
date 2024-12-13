@@ -56,7 +56,7 @@ TEST(FScriptWidget, layout) {
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
   widget_t* widget = progress_bar_create(win, 0, 0, w, h);
 
-  widget_set_self_layout_params(widget, "c", "m", NULL, NULL);
+  widget_set_self_layout(widget, "default(x=c,y=m)");
   tk_object_set_prop_pointer(obj, STR_PROP_SELF, widget);
   fscript_eval(obj, "widget_layout('self')", &v);
   ASSERT_EQ(widget->x, (wm->w - w) / 2);
@@ -65,7 +65,7 @@ TEST(FScriptWidget, layout) {
   ASSERT_EQ(widget->h, h);
 
   ((window_base_t*)win)->need_relayout = FALSE;
-  widget_set_self_layout_params(widget, "c:10", "m:10", NULL, NULL);
+  widget_set_self_layout(widget, "default(x=c:10,y=m:10)");
   tk_object_set_prop_pointer(obj, STR_PROP_SELF, widget);
   fscript_eval(obj, "widget_request_relayout('self')", &v);
   ASSERT_EQ(widget->x, (wm->w - w) / 2);

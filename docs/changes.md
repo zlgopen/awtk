@@ -2,6 +2,7 @@
 
 2024/12/13
   * 增加EVT\_NATIVE\_WINDOW\_FOCUS\_GAINED(感谢兆坤提供补丁)
+  * 用widget\_set\_self\_layout替换widget\_set\_self\_layout\_params(感谢兆坤提供补丁)
 
 2024/12/10
   * 修复scroll\_bar\_d不指定max时控件内的dragger不显示的问题(感谢雨欣提供补丁)

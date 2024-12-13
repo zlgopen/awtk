@@ -43,7 +43,7 @@ TEST(UISerializer, layout_self) {
   str_t str;
   widget_t* w = button_create(NULL, 10, 20, 30, 40);
 
-  widget_set_self_layout_params(w, "right:100", "middle:10", "fill", "10%");
+  widget_set_self_layout(w, "default(x=right:100,y=middle:10,w=fill,h=10%)");
   str_init(&str, 1024);
   widget_to_xml(w, &str);
 
@@ -60,7 +60,7 @@ TEST(UISerializer, layout_self1) {
   str_t str;
   widget_t* w = button_create(NULL, 10, 20, 30, 40);
 
-  widget_set_self_layout_params(w, "center:100", "bottom:10", "fill", "10%");
+  widget_set_self_layout(w, "default(x=center:100,y=bottom:10,w=fill,h=10%)");
   str_init(&str, 1024);
   widget_to_xml(w, &str);
 

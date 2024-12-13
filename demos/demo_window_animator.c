@@ -87,9 +87,9 @@ static ret_t new_window_set_param(widget_t* new_win, widget_t* curr_win) {
     widget_set_prop_bool(new_win, WIDGET_PROP_DISABLE_ANIM, FALSE);
     widget_set_prop_str(new_win, WIDGET_PROP_ANIM_HINT, anim);
     if (tk_str_eq(anim_hint, "popup")) {
-      widget_set_self_layout_params(new_win, NULL, "b:20", NULL, NULL);
+      widget_set_self_layout(new_win, "default(y=b:20)");
     } else if (tk_str_eq(anim_hint, "popdown")) {
-      widget_set_self_layout_params(new_win, NULL, "20", NULL, NULL);
+      widget_set_self_layout(new_win, "default(y=20)");
     }
     log_debug("%s\r\n", anim);
   } else {

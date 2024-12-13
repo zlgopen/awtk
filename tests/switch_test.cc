@@ -37,7 +37,7 @@ TEST(Switch, clone) {
 
   value_set_int(&v1, 200);
   ASSERT_EQ(widget_set_prop(w1, WIDGET_PROP_REPEAT, &v1), RET_OK);
-  widget_set_self_layout_params(w1, "1", "2", "3", "4");
+  widget_set_self_layout(w1, "default(x=1,y=2,w=3,h=4)");
   widget_set_children_layout(w1, "default(r=0, c=0, x=10, y=10, s=10)");
   ASSERT_EQ(switch_cast(w1), w1);
 

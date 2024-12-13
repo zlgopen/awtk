@@ -55,7 +55,7 @@ TEST(ScrollView, layout) {
   ASSERT_EQ(scroll_view_set_virtual_w(widget, 400), RET_OK);
   ASSERT_EQ(scroll_view_set_virtual_h(widget, 800), RET_OK);
 
-  widget_set_self_layout_params(button, "right", "bottom", "10%", "10%");
+  widget_set_self_layout(button, "default(x=right,y=bottom,w=10%,h=10%)");
   widget_layout(widget);
 
   ASSERT_EQ(button->x, 360);
