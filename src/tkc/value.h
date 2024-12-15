@@ -187,8 +187,8 @@ typedef struct _sized_str_t {
 } sized_str_t;
 
 typedef struct _id_info_t {
-  int32_t suboffset : 16;
-  int32_t index : 16;
+  int16_t suboffset;
+  int16_t index;
   char* id;
 } id_info_t;
 
@@ -220,10 +220,10 @@ typedef struct _pointer_ref_t {
  *
  */
 struct _value_t {
-  value_type_t type : 8;
+  value_type_t type;
   /*sub_type用细分类型。目前不做定义，请根据上下文使用。*/
-  uint32_t sub_type : 8;
-  bool_t free_handle : 1;
+  uint8_t sub_type;
+  bool_t free_handle;
   union {
     int8_t i8;
     uint8_t u8;

@@ -107,59 +107,59 @@ struct _widget_vtable_t {
    * 是否可以滚动。
    *>子类无法继承。
    */
-  uint32_t scrollable : 1;
+  bool_t scrollable;
   /**
    * 是否属于可输入的控件(如：edit/slider等，用户可通过界面输入/改变数据或值)。
    *>子类无法继承。
    */
-  uint32_t inputable : 1;
+  bool_t inputable;
   /**
    * 是否是focusable。
    *>子类无法继承。
    *>如编辑器。
    */
-  uint32_t focusable : 1;
+  bool_t focusable;
   /**
    * 在查找focusable的控件时，是否跳过子控件。
    *>子类无法继承。
    */
-  uint32_t disallow_children_focusable : 1;
+  bool_t disallow_children_focusable;
   /**
    * 收到空格键触发click事件。
    *>子类无法继承。
    */
-  uint32_t space_key_to_activate : 1;
+  bool_t space_key_to_activate;
   /**
    * 收到回车键触发click事件。
    *>子类无法继承。
    */
-  uint32_t return_key_to_activate : 1;
+  bool_t return_key_to_activate;
   /**
    * 是否是窗口。
    *>子类无法继承。
    */
-  uint32_t is_window : 1;
+  bool_t is_window;
   /**
    * 是否是窗口管理。
    *>子类无法继承。
    */
-  uint32_t is_window_manager : 1;
+  bool_t is_window_manager;
   /**
    * 是否是设计窗口。
    *>子类无法继承。
    */
-  uint32_t is_designing_window : 1;
+  bool_t is_designing_window;
   /**
    * 是否是软键盘(点击软键盘不改变编辑器的焦点)。
    *>子类无法继承。
    */
-  uint32_t is_keyboard : 1;
+  bool_t is_keyboard;
 
   /**
    * 是否允许绘制到控件区域外部。
    *>子类无法继承。
    */
-  uint32_t allow_draw_outside : 1;
+  bool_t allow_draw_outside;
 
   /**
    * dynamic parent class vtable
@@ -352,31 +352,31 @@ struct _widget_t {
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 启用/禁用状态。
    */
-  uint8_t enable : 1;
+  bool_t enable;
   /**
    * @property {bool_t} feedback
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否启用按键音、触屏音和震动等反馈。
    */
-  uint8_t feedback : 1;
+  bool_t feedback;
   /**
    * @property {bool_t} visible
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否可见。
    */
-  uint8_t visible : 1;
+  bool_t visible;
   /**
    * @property {bool_t} sensitive
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否接受用户事件。
    */
-  uint8_t sensitive : 1;
+  bool_t sensitive;
   /**
    * @property {bool_t} focusable
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否支持焦点停留。
    */
-  uint8_t focusable : 1;
+  bool_t focusable;
 
   /**
    * @property {bool_t} with_focus_state
@@ -384,7 +384,7 @@ struct _widget_t {
    * 是否支持焦点状态。
    * > 如果希望style支持焦点状态，但又不希望焦点停留，可用本属性。
    */
-  uint8_t with_focus_state : 1;
+  bool_t with_focus_state;
 
   /**
    * @property {bool_t} auto_adjust_size
@@ -394,38 +394,38 @@ struct _widget_t {
    *> 为true时，最好不要使用 layout 的相关东西，否则可能有冲突。
    *> 注意：只是调整控件的本身的宽高，不会修改控件本身的位置。
    */
-  uint8_t auto_adjust_size : 1;
+  bool_t auto_adjust_size;
 
   /**
    * @property {bool_t} focused
    * @annotation ["readable"]
    * 是否得到焦点。
    */
-  uint8_t focused : 1;
+  bool_t focused;
   /**
    * @property {bool_t} auto_created
    * @annotation ["readable"]
    * 是否由父控件自动创建。
    */
-  uint8_t auto_created : 1;
+  bool_t auto_created;
   /**
    * @property {bool_t} dirty
    * @annotation ["readable"]
    * 标识控件是否需要重绘。
    */
-  uint8_t dirty : 1;
+  bool_t dirty;
   /**
    * @property {bool_t} floating
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 标识控件是否启用浮动布局，不受父控件的children_layout的控制。
    */
-  uint8_t floating : 1;
+  bool_t floating;
   /**
    * @property {bool_t} need_update_style
    * @annotation ["readable"]
    * 标识控件是否需要update style。
    */
-  uint8_t need_update_style : 1;
+  bool_t need_update_style;
   /**
    * @property {int32_t} ref_count
    * @annotation ["readable"]
@@ -438,19 +438,19 @@ struct _widget_t {
    * @annotation ["readable"]
    * 标识控件正在初始化。
    */
-  uint8_t initializing : 1;
+  bool_t initializing;
   /**
    * @property {bool_t} loading
    * @annotation ["readable"]
    * 标识控件正在加载。
    */
-  uint8_t loading : 1;
+  bool_t loading;
   /**
    * @property {bool_t} destroying
    * @annotation ["readable"]
    * 标识控件正在被销毁。
    */
-  uint8_t destroying : 1;
+  bool_t destroying;
   /**
    * @property {char*} state
    * @annotation ["set_prop","get_prop","readable"]
