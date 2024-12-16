@@ -68,7 +68,11 @@ void sleep_ms(uint32_t ms);
  *
  * @return {void} 无。
  */
+#ifndef HAS_SLEEP_US64
 void sleep_us(uint32_t us);
+#else
+void sleep_us(uint64_t us);
+#endif/*HAS_SLEEP_US64*/
 
 /**
  * @method platform_prepare
