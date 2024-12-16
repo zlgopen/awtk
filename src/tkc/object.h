@@ -50,8 +50,8 @@ typedef tk_object_t* (*tk_object_clone_t)(tk_object_t* obj);
 struct _tk_object_vtable_t {
   const char* type;
   const char* desc;
-  uint32_t size : 28;
-  uint32_t is_collection : 1;
+  uint32_t size;
+  bool_t is_collection;
   tk_object_on_destroy_t on_destroy;
 
   tk_object_compare_t compare;
