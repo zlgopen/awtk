@@ -50,6 +50,7 @@ file(GLOB AWTK_PORT_SOURCE_FILES
 set(AWTK_RAW_COMMON_SOURCE_FILES
   ${AWTK_SRC_PATH}/native_window/native_window_raw.c
   ${AWTK_SRC_PATH}/main_loop/main_loop_simple.c
+  ${AWTK_SRC_PATH}/input_methods/input_method_creator.c
 )
 
 file(GLOB AWTK_PORT_RAW_SOURCE_FILES 
