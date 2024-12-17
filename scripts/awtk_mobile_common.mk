@@ -52,6 +52,15 @@ set(AWTK_RAW_COMMON_SOURCE_FILES
   ${AWTK_SRC_PATH}/main_loop/main_loop_simple.c
 )
 
+file(GLOB AWTK_PORT_RAW_SOURCE_FILES 
+  ${AWTK_SRC_PATH}/platforms/raw/mutex_null.c
+  ${AWTK_SRC_PATH}/platforms/raw/semaphore_null.c
+  ${AWTK_SRC_PATH}/platforms/raw/thread_null.c
+  ${AWTK_SRC_PATH}/platforms/raw/dl_null.c
+  ${AWTK_SRC_PATH}/platforms/raw/cond_var_null.c
+  ${AWTK_SRC_PATH}/platforms/raw/fs_os.c
+)
+
 file(GLOB AWTK_BASE_SOURCE_FILES 
   ${AWTK_3RD_PATH}/libunibreak/*.c
   ${AWTK_3RD_PATH}/miniz/*.c
