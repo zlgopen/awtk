@@ -222,7 +222,7 @@ static bool_t edit_is_valid_char_default(widget_t* widget, wchar_t c) {
         }
         break;
       } else if (c == '.' || c == 'e') {
-        if (cursor_pos > 0 && wcs_chr(text->str, c) == NULL) {
+        if (cursor_pos > 0 && wcschr(text->str, c) == NULL) {
           ret = TRUE;
         }
       }
@@ -233,7 +233,7 @@ static bool_t edit_is_valid_char_default(widget_t* widget, wchar_t c) {
           c == '.' || c == '_' || c == ' ') {
         ret = TRUE;
       } else if (c == '@') {
-        if (cursor_pos > 0 && wcs_chr(text->str, c) == NULL) {
+        if (cursor_pos > 0 && wcschr(text->str, c) == NULL) {
           ret = TRUE;
         }
       }
@@ -256,7 +256,7 @@ static bool_t edit_is_valid_char_default(widget_t* widget, wchar_t c) {
         ret = TRUE;
         break;
       } else if (c == '-') {
-        if (cursor_pos > 0 && wcs_chr(text->str, c) == NULL) {
+        if (cursor_pos > 0 && wcschr(text->str, c) == NULL) {
           ret = TRUE;
         }
       }

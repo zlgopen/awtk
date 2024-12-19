@@ -341,7 +341,7 @@ static ret_t func_ulen(fscript_t* fscript, fscript_args_t* args, value_t* result
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
 
   if (args->args->type == VALUE_TYPE_WSTRING) {
-    value_set_int32(result, wcs_len(value_wstr(args->args)));
+    value_set_int32(result, wcslen(value_wstr(args->args)));
   } else {
     char buff[64] = {0};
     str = value_str_ex(args->args, buff, sizeof(buff));

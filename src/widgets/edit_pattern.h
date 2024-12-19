@@ -21,7 +21,7 @@ static bool_t edit_pattern_is_valid(widget_t* widget, wchar_t sep, uint32_t sep_
   }
 
   ps = text->str;
-  pe = wcs_chr(ps, sep);
+  pe = wcschr(ps, sep);
 
   do {
     int v = 0;
@@ -41,7 +41,7 @@ static bool_t edit_pattern_is_valid(widget_t* widget, wchar_t sep, uint32_t sep_
 
     i++;
     ps = pe + 1;
-    pe = wcs_chr(ps, sep);
+    pe = wcschr(ps, sep);
     if (pe == NULL) {
       pe = ps + wcslen(ps);
     }
@@ -70,7 +70,7 @@ static ret_t edit_pattern_fix_ex(widget_t* widget, bool_t strict, const char* de
   }
 
   ps = text->str;
-  pe = wcs_chr(ps, sep);
+  pe = wcschr(ps, sep);
 
   do {
     int v = 0;
@@ -93,7 +93,7 @@ static ret_t edit_pattern_fix_ex(widget_t* widget, bool_t strict, const char* de
     i++;
     pd = p;
     ps = pe + 1;
-    pe = wcs_chr(ps, sep);
+    pe = wcschr(ps, sep);
     if (pe == NULL) {
       pe = ps + wcslen(ps);
     }
