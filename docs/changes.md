@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/12/19
+  * 增加 wchar32 以及相关函数。
+
 2024/12/13
   * 增加EVT\_NATIVE\_WINDOW\_FOCUS\_GAINED(感谢兆坤提供补丁)
   * 用widget\_set\_self\_layout替换widget\_set\_self\_layout\_params(感谢兆坤提供补丁)

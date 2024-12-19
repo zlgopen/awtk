@@ -1,7 +1,7 @@
 ﻿/**
  * File:   wstr.h
  * Author: AWTK Develop Team
- * Brief:  width char
+ * Brief:  wide char string
  *
  * Copyright (c) 2018 - 2024  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -470,81 +470,13 @@ uint32_t wstr_count_char(wstr_t* str, wchar_t c);
  */
 ret_t wstr_reset(wstr_t* str);
 
-/**
- * @method wcs_chr
- * 查找字符位置
- * @annotation ["global"]
- * @param {const wchar_t*} s wchar_t*。
- * @param {wchar_t} c wchar_t。
- *
- * @return {const wchar_t*} 返回找到c的地址。
- */
-const wchar_t* wcs_chr(const wchar_t* s, wchar_t c);
-
-/**
- * @method wcs_cpy
- * 复制字符串
- * @annotation ["global"]
- * @param {wchar_t*} s1 目标串。
- * @param {const wchar_t*} s2 源串。
- *
- * @return {wchar_t*} 复制后的串地址。
- */
-wchar_t* wcs_cpy(wchar_t* s1, const wchar_t* s2);
-
-/**
- * @method wcs_ncpy
- * 按照长度来复制字符串
- * @annotation ["global"]
- * @param {wchar_t*} s1 目标串。
- * @param {const wchar_t*} s2 源串。
- * @param {uint32_t} n 拷贝长度。
- *
- * @return {wchar_t*} 复制后的串地址。
- */
-wchar_t* wcs_ncpy(wchar_t* s1, const wchar_t* s2, uint32_t n);
-
-/**
- * @method wcs_cmp
- * 比较字符串
- * @annotation ["global"]
- * @param {const wchar_t*} s1 目标串。
- * @param {const wchar_t*} s2 源串。
- *
- * @return {int} 小于0表示s1<s2,等于0表示s1==s2,大于0表示s1>s2。
- */
-int wcs_cmp(const wchar_t* s1, const wchar_t* s2);
-
-/**
- * @method wcs_case_cmp
- * 字符串比较函数（不区分大小写）
- * @annotation ["global"]
- * @param {const wchar_t*} s1 目标串。
- * @param {const wchar_t*} s2 源串。
- *
- * @return {int} 小于0表示s1<s2,等于0表示s1==s2,大于0表示s1>s2。
- */
-int wcs_case_cmp(const wchar_t* s1, const wchar_t* s2);
-
-/**
- * @method wcs_len
- * 获取字符串长度。
- * @annotation ["global"]
- * @param {const wchar_t*} s 串地址。
- *
- * @return {size_t} 返回串长度'\0'结尾。
- */
-size_t wcs_len(const wchar_t* s);
-
-/**
- * @method wcs_dup
- * 获取一个新的内存保存s串。
- * @annotation ["global"]
- * @param {const wchar_t*} s 源字符串。
- *
- * @return {wchar_t*} 返回新的字符串地址。
- */
-wchar_t* wcs_dup(const wchar_t* s);
+#define wcs_dup wcsdup
+#define wcs_len wcslen
+#define wcs_case_cmp wcscasecmp
+#define wcs_cmp wcscmp
+#define wcs_ncpy wcsncpy
+#define wcs_cpy wcscpy
+#define wcs_chr wcschr
 
 #ifdef WITH_WCSXXX
 #ifndef WITH_WASM

@@ -687,7 +687,7 @@ int32_t tk_wstricmp(const wchar_t* a, const wchar_t* b) {
     return 1;
   }
 
-  return wcs_case_cmp(a, b);
+  return wcscasecmp(a, b);
 }
 
 char* tk_str_copy(char* dst, const char* src) {
@@ -1016,13 +1016,13 @@ ret_t tk_wstr_select_word(const wchar_t* str, uint32_t len, uint32_t index, int3
     --i;
 
     if (i >= 0) {
-      if (wcs_chr(no_start_symbols, str[i]) != NULL) {
+      if (wcschr(no_start_symbols, str[i]) != NULL) {
         break;
       } else if (str[i] == '\r' || str[i] == '\n') {
         break;
       } else if (tk_isspace(str[i])) {
         break;
-      } else if (!tk_isspace(str[i + 1]) && wcs_chr(no_start_symbols, str[i + 1]) == NULL &&
+      } else if (!tk_isspace(str[i + 1]) && wcschr(no_start_symbols, str[i + 1]) == NULL &&
                  ((tk_isalpha(str[i]) && !tk_isalpha(str[i + 1])) ||
                   (!tk_isalpha(str[i]) && tk_isalpha(str[i + 1])))) {
         break;
@@ -1044,10 +1044,10 @@ ret_t tk_wstr_select_word(const wchar_t* str, uint32_t len, uint32_t index, int3
     ++i;
 
     if (i >= 0 && i <= len) {
-      if (wcs_chr(no_start_symbols, str[i - 1]) != NULL) {
+      if (wcschr(no_start_symbols, str[i - 1]) != NULL) {
         *right = i - 1;
         break;
-      } else if (wcs_chr(no_start_symbols, str[i]) != NULL) {
+      } else if (wcschr(no_start_symbols, str[i]) != NULL) {
         *right = i;
         break;
       } else if (str[i - 1] == '\r' || str[i] == '\n') {

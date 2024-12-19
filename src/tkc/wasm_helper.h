@@ -74,19 +74,6 @@ int iswalnum(wchar_t ch);
 int iswspace(wchar_t ch);
 int islower(int c);
 
-#ifdef WITH_WCSXXX
-
-size_t wcslen(const wchar_t* s);
-int wcscmp(const wchar_t* s1, const wchar_t* s2);
-int wcscasecmp(const wchar_t* s1, const wchar_t* s2);
-int wcsncmp(const wchar_t* s1, const wchar_t* s2, size_t n);
-wchar_t* wcsdup(const wchar_t* s);
-wchar_t* wcschr(const wchar_t* s, wchar_t c);
-wchar_t* wcscpy(wchar_t* s1, const wchar_t* s2);
-wchar_t* wcsncpy(wchar_t* s1, const wchar_t* s2, size_t n);
-const wchar_t* wcsstr(const wchar_t* s1, const wchar_t* s2);
-#endif /*WITH_WCSXXX*/
-
 #if defined(__GNUC__) && !defined(__cplusplus)
 typedef _Bool bool_t;
 #else
