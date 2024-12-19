@@ -2,6 +2,7 @@
 
 2024/12/19
   * 增加 wchar32 以及相关函数。
+  * 修复mledit在设置文本时没有检查max_chars和max_lines的问题(感谢泽武提供补丁)
 
 2024/12/13
   * 增加EVT\_NATIVE\_WINDOW\_FOCUS\_GAINED(感谢兆坤提供补丁)

@@ -350,6 +350,7 @@ static ret_t mledit_set_text(widget_t* widget, const value_t* v) {
 
   if (!wstr_equal(&(widget->text), &str)) {
     wstr_set(&(widget->text), str.str);
+    mledit_update_text(widget);
     mledit_reset_text_edit_layout(mledit->model);
     text_edit_layout(mledit->model);
     mledit_dispatch_event(widget, EVT_VALUE_CHANGED);
