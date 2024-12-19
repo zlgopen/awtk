@@ -14,7 +14,7 @@
 （2）完成菜单的界面设计后，在源代码中注册对应控件的 EVT_CONTEXT_MENU 事件，例如此处为"open:menu_point"按钮注册该事件，在事件的回调函数中打开步骤（1）中设计好的菜单 UI 文件，代码如下：
 
 ```c
-/* awtk/demos/demo_ui_app.c */
+/* awtk/demos/demo_ui_old_app.c */
 static ret_t on_context_menu(void* ctx, event_t* e) {
   open_window("menu_point", NULL);
 
@@ -38,6 +38,6 @@ static ret_t install_one(void* ctx, const void* iter) {
 }
 ```
 
-（3）运行 awtk/bin/demoui，打开"ContextMenu"页面，鼠标右键点击"Point"按钮，效果如下图所示。
+（3）运行 awtk/bin/demouiold，打开"ContextMenu"页面，鼠标右键点击"Point"按钮，效果如下图所示。
 
 ![右键弹出菜单](./images/popup_menu.png)

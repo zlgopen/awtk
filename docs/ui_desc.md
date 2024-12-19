@@ -134,7 +134,7 @@ XML UI 文件写好后，可以用预览工具预览。如：
 assets_manager_add((const asset_info_t*)ui_window1);
 ```
 
-在需要打开该窗口时，调用 window\_open 函数（对话框用 dialog\_open):
+在需要打开该窗口时，调用 window\_open 函数（对话框用 dialog\_open）:
 
 ```
   widget_t* win = window_open(name);

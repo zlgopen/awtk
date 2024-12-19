@@ -83,7 +83,7 @@
 * [scroll\_view](manual/scroll_view_t.md) 滚动视图控件。
 * [mledit](manual/mledit_t.md) 多行编辑器控件。
 * [line\_number](manual/line_number_t.md) 多行编辑器的行号控件。
-* [mutable\_image](manual/mutable_image_t.md) mutable 图片控件（用于辅助实现 camera/video)。
+* [mutable\_image](manual/mutable_image_t.md) mutable 图片控件（用于辅助实现 camera/video）。
 * [file\_browser\_view](manual/file_browser_view_t.md) 文件浏览控件。
 
 ### 常用常量

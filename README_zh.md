@@ -122,7 +122,7 @@
 * 可以扩展自己的控件布局算法。
 * 可以扩展自己的对话框高亮策略。
 * 可以实现自己的 LCD 接口。
-* 可以扩展自己的矢量引擎 （如使用 skia/cairo)。
+* 可以扩展自己的矢量引擎 （如使用 skia/cairo）。
 * 所有扩展组件和内置组件具有相同的待遇。
 
 ### 7. 多种开发语言
@@ -152,9 +152,9 @@
 * 内存开销小。
 * 隔离更彻底。
 * 可移植到其它 GUI。
-* 代码小 (~5000 行）。
+* 代码小（~5000 行）。
 * 无需学习 AWTK 控件本身的 API。
-* 支持多种编程语言（目前支持 C/JS)。
+* 支持多种编程语言（目前支持 C/JS）。
 
 > 详情请参考：https://github.com/zlgopen/awtk-mvvm
 
@@ -194,7 +194,7 @@ git pull
 
 ### Mac
 
-如果没有安装 nodejs, scons 和 sdl2，请在终端运行下面的命令 （假定已安装 brew)：
+如果没有安装 nodejs, scons 和 sdl2，请在终端运行下面的命令 （假定已安装 brew）：
 
 ```
 brew install scons sdl2 node
@@ -207,7 +207,7 @@ scons
 ./bin/demoui
 ```
 
-### Ubuntu （版本 >=16)
+### Ubuntu （版本 >=16）
 
 如果没有安装 scons 和依赖的软件包，请在终端运行下面的命令：
 
@@ -226,7 +226,7 @@ scons
 
 ### Windows
 
-> 请先安装 python(64 位系统要安装 64 位版本的 python)，scons 和 Visual Studio C++（版本 >=2017)
+> 请先安装 python(64 位系统要安装 64 位版本的 python)，scons 和 Visual Studio C++（版本 >=2017）
 
 > 如果没有安装 pywin32，请 pip 安装：
 

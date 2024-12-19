@@ -202,7 +202,7 @@ scons
 ./bin/demoui
 ```
 
-### Ubuntu （version >=16)
+### Ubuntu (version >=16)
 
  If scons and the dependent software pack aren't installed, please run the following command in the terminal:
 

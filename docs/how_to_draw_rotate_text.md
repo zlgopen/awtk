@@ -4,7 +4,7 @@
 
 不过没有关系，毕竟在嵌入式平台，旋转文字的需求不多，如果确实需要，也是有解决方案的。本文介绍一种跨平台的绘制旋转的文字方法。
 
-字体引擎（比如 stb/freetype) 会把矢量字体转换成一种特殊位图，这个位图只有透明通道 (alpha) 信息，在 AWTK 中用 glyph\_t 表示。[vgcanvas](https://github.com/zlgopen/awtk/blob/master/docs/manual/vgcanvas_t.md) 引擎都支持贴图功能，只要把 glyph\_t 转换成正常 bitmap\_t 对象，就可以利用 vgcanvas 各种变换效果了。
+字体引擎（比如 stb/freetype）会把矢量字体转换成一种特殊位图，这个位图只有透明通道 (alpha) 信息，在 AWTK 中用 glyph\_t 表示。[vgcanvas](https://github.com/zlgopen/awtk/blob/master/docs/manual/vgcanvas_t.md) 引擎都支持贴图功能，只要把 glyph\_t 转换成正常 bitmap\_t 对象，就可以利用 vgcanvas 各种变换效果了。
 
 下面这个函数可以把字符串对应的 glyph 转换成位图对象（拿去用就好了）：
 

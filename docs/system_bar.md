@@ -6,7 +6,7 @@ system\_bar 是可选的，可以启用也可以不启用。如果要启用 syst
 
 ## 一、创建 system\_bar 窗口
 
-system\_bar 和普通窗口类似，你可以用代码创建，也可以用 XML UI 描述文件创建，比如下面是 demoui 中的 system\_bar 的 XML UI 描述文件 (system\_bar.xml)：
+system\_bar 和普通窗口类似，你可以用代码创建，也可以用 XML UI 描述文件创建，比如下面是 demouiold 中的 system\_bar 的 XML UI 描述文件 (system\_bar.xml)：
 
 ```
 <system_bar h="30">
@@ -49,7 +49,7 @@ window_open("system_bar");
 
 ## 三、style
 
-system\_bar 的 style 和其它窗口一样，可以在 styles 目录下放一个与窗口同名的 style 文件 (system\_bar.xml)。比如下面是 demoui 中的 system\_bar 的 style(system\_bar.xml)：
+system\_bar 的 style 和其它窗口一样，可以在 styles 目录下放一个与窗口同名的 style 文件 (system\_bar.xml)。比如下面是 demouiold 中的 system\_bar 的 style(system\_bar.xml)：
 
 ```
 <system_bar>

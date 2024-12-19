@@ -6,7 +6,7 @@
 
 * 主要用于对函数的参数或函数的返回值进行检查（这是防御性编程的手段之一）。
 
-> return\_value\_if\_fail 这个宏并非是 AWTK 原创，而是从 GTK+（或者说 glib) 里拿来的。
+> return\_value\_if\_fail 这个宏并非是 AWTK 原创，而是从 GTK+（或者说 glib）里拿来的。
 
 **优点**
 
@@ -67,7 +67,7 @@ widget_t* slider = widget_lookup(win, "slider", TRUE);
 double value = SLIDER(slider)->value;
 ```
 
-> 直接访问控件属性时，需要用对应的宏（如上面的 SLIDER) 进行类型转换。
+> 直接访问控件属性时，需要用对应的宏（如上面的 SLIDER） 进行类型转换。
 
 #### 6.Ubuntu 14 上无法启动，有什么办法吗？
 

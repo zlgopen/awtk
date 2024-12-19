@@ -274,7 +274,7 @@ awtk-port
 | src/platforms/raw/fs\_os.c       | 如果没有文件系统请加入，否则请自行实现 fs 接口
 | src/platforms/raw/mutex\_null.c  | 如果没有 mutex 请加入，否则请自行实现 mutex 接口
 | src/platforms/raw/sys\_tick.c    | 如果需要自己实现 sys tick 中断，可以加入
-| src/vgcanvas                     | 如果需要矢量图或图片旋转（不支持 lcd\_reg) 请加入 vgcanvas\_nanovg_soft.c，否则加入 vgcanvas\_null.c
+| src/vgcanvas                     | 如果需要矢量图或图片旋转（不支持 lcd\_reg）请加入 vgcanvas\_nanovg_soft.c，否则加入 vgcanvas\_null.c
 | src/widget\_animators            | 除了使用 LCD\_REG 的平台外推荐全部加入
 | src/window\_animators            | 加入全部文件，根据宏决定是否启用。
 | src/ubjson                       | 不用不加。

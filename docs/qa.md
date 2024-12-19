@@ -4,7 +4,7 @@
 
 * **架构设计。** 软件架构对代码的质量有决定性的影响，但好的架构不是预先设计出来的，而是在应对各种需求和变化时，不断完善和优化出来的。常常见到，有人花十年时间打造一件绝世作品，也有人花几年时间让一套软件变成不可维护，这就是说明软件架构是在不断变化的，是变好还是变坏，则取决于开发者的意志。从一开始我们就把 [AWTK](https://github.com/zlgopen/awtk) 的架构优化放在首要地位，无论是增加新的功能还是修改 BUG，每一次改动都对 [AWTK](https://github.com/zlgopen/awtk) 的架构进行改进和优化。[AWTK](https://github.com/zlgopen/awtk) 的设计思想基本来自《系统程序员成长计划》，另外《设计模式》、《实时设计模式》、《软件框架设计的艺术》和《架构整洁之道》等书籍对 [AWTK](https://github.com/zlgopen/awtk) 架构的发展影响也很大。[AWTK](https://github.com/zlgopen/awtk) 的架构还有很大的改进空间，但我们相信通过不断的优化，[AWTK](https://github.com/zlgopen/awtk) 的架构会越来越完善。
 
-* **单元测试。** 代码的可测试对于单元测试至关重要，如果在设计系统架构时，没有考虑可测试性，那么单元测试是很难写的（请参考 Bob 大叔的《架构整洁之道》)。所幸在设计 [AWTK](https://github.com/zlgopen/awtk) 之初，我们就非常注重它可测试性。针对接口编程和依赖注入 (DIP) 是提高代码可测试重要的方法，在 [AWTK](https://github.com/zlgopen/awtk) 中有大量的接口和依赖注入，这使得 [AWTK](https://github.com/zlgopen/awtk) 绝大部分组件都可以编写单元测试。有人说单元测试只能解决 25%-50%的问题。我赞同这个观点，单元测试不是全能的，但它确实非常有用，我们也在不断完善 [AWTK](https://github.com/zlgopen/awtk) 的测试用例，让单元测试起到更大的作用。
+* **单元测试。** 代码的可测试对于单元测试至关重要，如果在设计系统架构时，没有考虑可测试性，那么单元测试是很难写的（请参考 Bob 大叔的《架构整洁之道》）。所幸在设计 [AWTK](https://github.com/zlgopen/awtk) 之初，我们就非常注重它可测试性。针对接口编程和依赖注入 (DIP) 是提高代码可测试重要的方法，在 [AWTK](https://github.com/zlgopen/awtk) 中有大量的接口和依赖注入，这使得 [AWTK](https://github.com/zlgopen/awtk) 绝大部分组件都可以编写单元测试。有人说单元测试只能解决 25%-50%的问题。我赞同这个观点，单元测试不是全能的，但它确实非常有用，我们也在不断完善 [AWTK](https://github.com/zlgopen/awtk) 的测试用例，让单元测试起到更大的作用。
 
 * **Code Review。** Code Review 也是提高代码质量极好的手段，每次增加新的功能或修改 BUG，我们都会去 Review 相关的代码。在 Review 时，经常发现一些丑陋的代码，有时甚至完全不相信这些代码是自己写出来的，这时会庆幸进行了 Code Review，否则这些丑陋的代码就不被发现。通过 Code Review 发现这些丑陋的代码，并及时对其重构，不但让提高了代码的质量，还能有效防止破窗效应的出现。
 

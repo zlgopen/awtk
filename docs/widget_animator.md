@@ -9,8 +9,8 @@ AWTK 目前支持的动画有：
 * move：通过改变控件的位置形成动画效果。
 * value：通过改变控件的值形成动画效果。
 * opacity：通过改变控件的透明度形成动画效果。
-* scale：通过改变控件的缩放比例形成动画效果（目前需要 vgcanvas)。
-* rotation：通过改变控件的旋转角度形成动画效果（目前需要 vgcanvas)。
+* scale：通过改变控件的缩放比例形成动画效果（目前需要 vgcanvas）。
+* rotation：通过改变控件的旋转角度形成动画效果（目前需要 vgcanvas）。
 * 其它任何数值型的属性。如 x/y/w/h 等等。
 
 ### 二、主要特色
@@ -179,14 +179,14 @@ animation 参数的格式，类似与函数调用。多个参数可以用『;』
 
 #### 1. 公共参数
 
-* name 动画名称（缺省为动画的类型如 move)。
+* name 动画名称（缺省为动画的类型如 move）。
 * delay 延迟启动时间（毫秒）。
 * duration 时长（毫秒）。
 * easing 插值算法（见后面描述）。
 * yoyo\_times 往返的次数 (x2)，为 0 视为永久播放。
 * repeat\_times 重复的次数，为 0 视为永久播放。
-* auto\_start 创建后自动启动（缺省为 true)。
-* auto\_destroy 完成后自动销毁（缺省为 true)。
+* auto\_start 创建后自动启动（缺省为 true）。
+* auto\_destroy 完成后自动销毁（缺省为 true）。
 
 > 以下参数的缺省值为控件当前对应的值。
 

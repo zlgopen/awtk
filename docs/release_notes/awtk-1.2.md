@@ -106,7 +106,7 @@
 * 可以扩展自己的控件布局算法。
 * 可以扩展自己的对话框高亮策略。
 * 可以实现自己的 LCD 接口。
-* 可以扩展自己的矢量引擎（如使用 skia/cairo)。
+* 可以扩展自己的矢量引擎（如使用 skia/cairo）。
 * 所有扩展组件和内置组件具有相同的待遇。
 
 ### 7. 多种开发语言
@@ -143,7 +143,7 @@
   * edit 在焦点状态时，如果文本为空，仍然显示 tips。
   * button/check\_button 在收到回车和空格键时触发 click 事件。
   * 重构 pointer/key 事件处理流程，分成三个阶段：子控件处理前、子控件和子控件处理后。
-  * 重构 image loader 支持自定义的 image loader（使用 imae\_loader\_register 注册自己的 loader)。
+  * 重构 image loader 支持自定义的 image loader（使用 imae\_loader\_register 注册自己的 loader）。
   * 因为脚本绑定生成工具只接受一个 IDL 文件，所以增加 merge.js 工具用于将多个 IDL 文件合并成一个 IDL 文件。
   * 支持用 focusable 属性将控件设置可获得焦点，实现 tab stop 类似的效果。focusable 的控件，其 style 必须具有 focused 状态，否则无法显示。
   * 窗口在切换到前台和后台时分别触发事件 EVT\_WINDOW\_TO\_FOREGROUND 和 EVT\_WINDOW\_TO\_BACKGROUND
