@@ -805,7 +805,7 @@
     <pressed bg_color="#CECDCD"/>
     <pressed_of_active border="left|right|top" text_color="#1971DD"/>
   </style>
-  <style name="bottom" bg_color="#EBEBEB" border="none" margin_bottom="5" margin_top="5" text_color="#7FAD1C">
+  <style name="bottom" bg_color="#EBEBEB" border="none" margin_bottom="5" margin_top="5" text_color="#7FAD1C" icon_at="top">
     <normal text_color="#8E8E93"/>
     <disable bg_color="#EBEBEB66" text_color="#8E8E9366"/>
     <disable_of_active/>

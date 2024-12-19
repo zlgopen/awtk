@@ -6,7 +6,7 @@
 </tab_button_group>
 
 <tab_button>
-  <style name="default" margin="4" bg_color="#eeeeee">
+  <style name="default" margin="4" bg_color="#eeeeee" icon_at="top">
     <normal     text_color="black"/>
     <pressed    text_color="black"/>
     <over       text_color="black"/>
