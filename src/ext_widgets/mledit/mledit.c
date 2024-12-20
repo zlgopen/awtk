@@ -1132,20 +1132,25 @@ static uint32_t mledit_update_text(widget_t* widget) {
   }
 
   /* handle max_lines */
-  for (i = (int32_t)(text->size) - 1; i >= 0; --i) {
-    if (i > 0 && TWINS_WCHAR_IS_LINE_BREAK(text->str[i - 1], text->str[i])) {
-      ++line_num;
-      if (line_num > mledit->max_lines) {
-        break;
-      }
+  if (mledit->max_lines > 0) {
+    for (i = (int32_t)(text->size) - 1; i >= 0; --i) {
+      if (i > 0 && TWINS_WCHAR_IS_LINE_BREAK(text->str[i - 1], text->str[i])) {
+        ++line_num;
+        if (line_num > mledit->max_lines) {
+          break;
+        }
 
-      --i;
-    } else if (WCHAR_IS_LINE_BREAK(text->str[i])) {
-      ++line_num;
-      if (line_num > mledit->max_lines) {
-        break;
+        --i;
+      } else if (WCHAR_IS_LINE_BREAK(text->str[i])) {
+        ++line_num;
+        if (line_num > mledit->max_lines) {
+          break;
+        }
       }
     }
+  } else {
+    rm_cnt = text->size;
+    wstr_remove(text, 0, text->size);
   }
   if (i >= 0) {
     rm_cnt += i + 1;
@@ -1283,6 +1288,7 @@ static ret_t mledit_init(widget_t* widget) {
   mledit->right_margin = 0;
   mledit->bottom_margin = 0;
   mledit->scroll_line = 1.0f;
+  mledit->max_lines = 100;
   wstr_init(&(mledit->temp), 0);
   wstr_init(&(mledit->last_changing_text), 0);
   wstr_init(&(mledit->last_changed_text), 0);

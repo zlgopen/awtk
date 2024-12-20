@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/12/20
+  * 同步mledit的max_lines初始值与text_edit的max_rows初始值；修复mledit在max_lines为0时的字符串裁剪错误(感谢泽武提供补丁)
+
 2024/12/19
   * 增加 wchar32 以及相关函数。
   * 修复mledit在设置文本时没有检查max_chars和max_lines的问题(感谢泽武提供补丁)
