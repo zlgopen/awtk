@@ -1029,11 +1029,14 @@ assets_manager_t* assets_managers_ref(const char* name) {
     char res_root[MAX_PATH + 1] = {0};
     am = assets_manager_create(5);
     return_value_if_fail(am != NULL, NULL);
-    for (i = 0; i < s_applet_res_roots->size; i++) {
-      iter = (const char*)darray_get(s_applet_res_roots, i);
-      path_build(res_root, MAX_PATH, iter, name, NULL);
-      if (fs_dir_exist(os_fs(), res_root)) {
-        break;
+
+    if (s_applet_res_roots != NULL) {
+      for (i = 0; i < s_applet_res_roots->size; i++) {
+        iter = (const char*)darray_get(s_applet_res_roots, i);
+        path_build(res_root, MAX_PATH, iter, name, NULL);
+        if (fs_dir_exist(os_fs(), res_root)) {
+          break;
+        }
       }
     }
     am->name = tk_strdup(name);
