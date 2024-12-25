@@ -1070,6 +1070,9 @@ ret_t widget_remove_child_prepare(widget_t* widget, widget_t* child) {
     widget_set_need_relayout_children(widget);
   }
 
+  if (widget_is_window_opened(child)) {
+    widget_set_focused(child, FALSE);
+  }
   widget_invalidate_force(child, NULL);
   if (widget->target == child) {
     widget->target = NULL;

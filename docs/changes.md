@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/12/25
+  * 修改widget从父上移除时先复位焦点状态，避免由于idle的原因导致焦点处理有误，比如，销毁一个有焦点的edit，同时创建一个新的edit并设置焦点，新的edit由于上一个edit的blur时input_method_request(input_method(), NULL)，导致接收不到输入法事件(感谢朝泽提供补丁)
+
 2024/12/20
   * 同步mledit的max_lines初始值与text_edit的max_rows初始值；修复mledit在max_lines为0时的字符串裁剪错误(感谢泽武提供补丁)
 
