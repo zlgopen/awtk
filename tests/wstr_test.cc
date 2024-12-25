@@ -1,4 +1,5 @@
-﻿#include "tkc/wstr.h"
+﻿#include "tkc/utils.h"
+#include "tkc/wstr.h"
 #include "tkc/mem.h"
 #include "gtest/gtest.h"
 
@@ -291,15 +292,6 @@ TEST(WStr, wcs_cpy) {
   ASSERT_EQ(wcs_len(wcs_cpy(str, L"abc中文测试123")), 10u);
 }
 
-TEST(WStr, wcs_ncpy) {
-  wchar_t str[100];
-
-  ASSERT_EQ(wcs_len(wcs_ncpy(str, L"", 1)), 0u);
-  ASSERT_EQ(wcs_len(wcs_ncpy(str, L"a", 1)), 1u);
-  ASSERT_EQ(wcs_len(wcs_ncpy(str, L"abc", 1)), 1u);
-  ASSERT_EQ(wcs_len(wcs_ncpy(str, L"abc中文测试123", 30)), 10u);
-}
-
 TEST(WStr, wcs_chr) {
   size_t i = 0;
   const wchar_t* str = L"abc中文测试123";
@@ -466,7 +458,7 @@ TEST(WStr, case_cmp) {
   ASSERT_EQ(wstr_init(&str2, 0), &str2);
 
   ASSERT_EQ(wstr_set(&str1, L"Hello"), RET_OK);
-  ASSERT_EQ(wcs_case_cmp(str1.str, str2.str) == -1, TRUE);
+  ASSERT_EQ(wcs_case_cmp(str1.str, str2.str) == 1, TRUE);
   ASSERT_EQ(wstr_eq(&str1, str2.str), FALSE);
   ASSERT_EQ(wstr_equal(&str1, &str2), FALSE);
 

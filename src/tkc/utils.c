@@ -687,7 +687,15 @@ int32_t tk_wstricmp(const wchar_t* a, const wchar_t* b) {
     return 1;
   }
 
-  return wcscasecmp(a, b);
+  while (towlower(*a) == towlower(*b)) {
+    if (*a == 0) {
+      return 0;
+    }
+    a++;
+    b++;
+  }
+
+  return tolower(*a) - tolower(*b);
 }
 
 char* tk_str_copy(char* dst, const char* src) {

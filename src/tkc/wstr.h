@@ -472,7 +472,7 @@ ret_t wstr_reset(wstr_t* str);
 
 #define wcs_dup wcsdup
 #define wcs_len wcslen
-#define wcs_case_cmp wcscasecmp
+#define wcs_case_cmp tk_wstricmp
 #define wcs_cmp wcscmp
 #define wcs_ncpy wcsncpy
 #define wcs_cpy wcscpy
