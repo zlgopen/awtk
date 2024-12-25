@@ -185,8 +185,10 @@ ret_t soft_fill_rect(bitmap_t* dst, const rect_t* dst_r, color_t c) {
       return fill_abgr8888_rect(dst, dst_r, c);
     }
 #endif /*LCD_BGR565_LITE*/
-    default:
+    default: {
+      log_debug("not support format: w=%u h=%u format=%u\n", dst->w, dst->h, dst->format);
       break;
+    }
   }
 
   assert(!"not supported format");
@@ -219,8 +221,10 @@ ret_t soft_rotate_image(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, lcd_o
       return rotate_bgra8888_image(dst, src, src_r, o);
     }
 #endif /*LCD_BGR565_LITE*/
-    default:
+    default: {
+      log_debug("not support format: w=%u h=%u format=%u\n", dst->w, dst->h, dst->format);
       break;
+    }
   }
 
   assert(!"not supported format");

@@ -56,18 +56,32 @@ static uint32_t lcd_get_physical_line_length(lcd_mem_t* mem) {
   return tk_max(lcd_get_physical_width((lcd_t*)mem) * bpp, mem->line_length);
 }
 
+static bitmap_t* lcd_mem_find_fb_bitmap_by_buff(lcd_t* lcd, uint8_t* fbuff) {
+  uint32_t i = 0;
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+  for (i = 0; i < ARRAY_SIZE(mem->fb_bitmaps); i++) {
+    bitmap_t* iter = mem->fb_bitmaps[i];
+    if (iter != NULL) {
+      uint8_t* b = bitmap_lock_buffer_for_write(iter);
+      bitmap_unlock_buffer(iter);
+      if (b == fbuff) {
+        return iter;
+      }
+    }
+  }
+  assert(!"not found fb bitmap");
+  return NULL;
+}
+
 static pixel_t* lcd_mem_init_drawing_fb(lcd_t* lcd, bitmap_t* fb) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   uint8_t* fbuff = mem->offline_fb;
 
   if (fb != NULL) {
-    memset(fb, 0x00, sizeof(bitmap_t));
+    *fb = *lcd_mem_find_fb_bitmap_by_buff(lcd ,fbuff);
 
-    fb->format = mem->format;
-    fb->buffer = mem->offline_gb;
     fb->w = lcd_get_physical_width(lcd);
     fb->h = lcd_get_physical_height(lcd);
-    graphic_buffer_attach(mem->offline_gb, mem->offline_fb, fb->w, fb->h);
     bitmap_set_line_length(fb, lcd_get_physical_line_length(mem));
   }
 
@@ -95,12 +109,9 @@ static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientatio
     }
   }
 
-  memset(fb, 0x00, sizeof(bitmap_t));
+  *fb = *lcd_mem_find_fb_bitmap_by_buff(lcd, mem->online_fb);
   fb->w = w;
   fb->h = h;
-  fb->buffer = mem->online_gb;
-  fb->format = mem->format;
-  graphic_buffer_attach(mem->online_gb, mem->online_fb, w, h);
   bitmap_set_line_length(fb, tk_max(fb->w * bpp, mem->online_line_length));
 
   return fb;
@@ -205,7 +216,7 @@ static ret_t lcd_mem_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
   color_t c = lcd->stroke_color;
   uint8_t a = (c.rgba.a * lcd->global_alpha) / 0xff;
   uint32_t line_length = lcd_get_physical_line_length((lcd_mem_t*)lcd);
-  uint8_t* fbuff = (uint8_t*)lcd_mem_init_drawing_fb(lcd, NULL);
+  uint8_t* fbuff = (uint8_t*)lcd_mem_get_offline_fb((lcd_mem_t*)lcd);
 
 #ifdef WITH_FAST_LCD_PORTRAIT
   if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
@@ -259,7 +270,7 @@ static ret_t lcd_mem_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
   pixel_t pixel = color_to_pixel(c);
   uint8_t a = (c.rgba.a * lcd->global_alpha) / 0xff;
   uint32_t line_length = lcd_get_physical_line_length((lcd_mem_t*)lcd);
-  uint8_t* fbuff = (uint8_t*)lcd_mem_init_drawing_fb(lcd, NULL);
+  uint8_t* fbuff = (uint8_t*)lcd_mem_get_offline_fb((lcd_mem_t*)lcd);
 
   for (i = 0; i < nr; i++) {
     point_t* point = points + i;
@@ -287,7 +298,7 @@ static ret_t lcd_mem_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
 static color_t lcd_mem_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
   color_t c;
   uint32_t line_length = lcd_get_physical_line_length((lcd_mem_t*)lcd);
-  uint8_t* fbuff = (uint8_t*)lcd_mem_init_drawing_fb(lcd, NULL);
+  uint8_t* fbuff = (uint8_t*)lcd_mem_get_offline_fb((lcd_mem_t*)lcd);
 #ifdef WITH_FAST_LCD_PORTRAIT
   if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
     lcd_orientation_point_rotate_by_anticlockwise(&x, &y, system_info()->lcd_orientation, lcd_get_width(lcd), lcd_get_height(lcd));
@@ -317,7 +328,7 @@ static ret_t lcd_mem_draw_glyph4(lcd_t* lcd, glyph_t* glyph, const rect_t* src, 
   uint8_t global_alpha = lcd->global_alpha;
   uint8_t color_alpha = (color.rgba.a * global_alpha) >> 8;
   uint32_t line_length = lcd_get_physical_line_length((lcd_mem_t*)lcd);
-  uint8_t* fbuff = (uint8_t*)lcd_mem_init_drawing_fb(lcd, NULL);
+  uint8_t* fbuff = (uint8_t*)lcd_mem_get_offline_fb((lcd_mem_t*)lcd);
   const uint8_t* src_p = glyph->data + pitch * sy + sx / 2;
   wh_t dst_offset = line_length;
   pixel_t pixel = color_to_pixel(color);
@@ -390,7 +401,7 @@ static ret_t lcd_mem_draw_glyph8(lcd_t* lcd, glyph_t* glyph, const rect_t* src, 
   uint8_t global_alpha = lcd->global_alpha;
   uint8_t color_alpha = (color.rgba.a * global_alpha) >> 8;
   uint32_t line_length = lcd_get_physical_line_length((lcd_mem_t*)lcd);
-  uint8_t* fbuff = (uint8_t*)lcd_mem_init_drawing_fb(lcd, NULL);
+  uint8_t* fbuff = (uint8_t*)lcd_mem_get_offline_fb((lcd_mem_t*)lcd);
   const uint8_t* src_p = glyph->data + glyph->w * src->y + src->x;
   wh_t dst_offset = line_length;
   pixel_t pixel = color_to_pixel(color);
@@ -546,7 +557,7 @@ static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
   uint32_t w = lcd_get_physical_width(lcd);
   uint32_t h = lcd_get_physical_height(lcd);
   uint32_t line_length = lcd_get_physical_line_length(mem);
-  uint32_t* fbdata = (uint32_t*)lcd_mem_init_drawing_fb(lcd, NULL);
+  uint32_t* fbdata = (uint32_t*)lcd_mem_get_offline_fb((lcd_mem_t*)lcd);
 
   if (mem->vgcanvas == NULL) {
     mem->vgcanvas = vgcanvas_create(w, h, line_length, format, fbdata);
@@ -742,15 +753,11 @@ static lcd_t* lcd_mem_init(lcd_mem_t* lcd, wh_t w, wh_t h, bool_t alloc) {
   lcd_fb_dirty_rects_init(&(lcd->fb_dirty_rects_list), w, h);
 
   if (alloc) {
-    uint8_t* offline_fb = (uint8_t*)TKMEM_ALLOC(w * h * (uint32_t)sizeof(pixel_t));
-    ret_t ret = lcd_mem_set_offline_fb(lcd, offline_fb);
-    if (ret != RET_OK && offline_fb != NULL) {
-      TKMEM_FREE(offline_fb);
-    }
-    return_value_if_fail(lcd->offline_fb != NULL && ret == RET_OK, NULL);
+    lcd->should_destroy_fb_bitmaps = TRUE;
+    lcd->fb_bitmaps[0] = bitmap_create_ex(w, h, bpp * w, LCD_FORMAT);
+    lcd->offline_fb = bitmap_lock_buffer_for_write(lcd->fb_bitmaps[0]);
+    lcd_mem_set_offline_fb(lcd, lcd->offline_fb);
   }
-
-  lcd->own_offline_fb = alloc;
 
   base->begin_frame = lcd_mem_begin_frame;
   base->draw_vline = lcd_mem_draw_vline;
@@ -789,8 +796,6 @@ static lcd_t* lcd_mem_init(lcd_mem_t* lcd, wh_t w, wh_t h, bool_t alloc) {
   lcd->format = LCD_FORMAT;
   lcd->line_length = w * bpp;
   lcd->online_line_length = lcd->line_length;
-  lcd->online_gb = graphic_buffer_create_with_data(NULL, w, h, LCD_FORMAT);
-  lcd->offline_gb = graphic_buffer_create_with_data(NULL, w, h, LCD_FORMAT);
 
   system_info_set_lcd_w(info, base->w);
   system_info_set_lcd_h(info, base->h);
@@ -806,12 +811,29 @@ static lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   return lcd_mem_init(lcd, w, h, alloc);
 }
 
+static lcd_t* lcd_mem_create_single_fb(wh_t w, wh_t h, uint8_t* fbuff) {
+  lcd_t* lcd = lcd_mem_create(w, h, FALSE);
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+  lcd_mem_set_offline_fb(mem, fbuff);
+  mem->online_fb = NULL;
+  lcd->flush = NULL;
+  
+  mem->should_destroy_fb_bitmaps = TRUE;
+  mem->fb_bitmaps[0] = bitmap_create_ex2(w, h, 0, LCD_FORMAT, fbuff, FALSE);
+
+  return lcd;
+}
+
 static lcd_t* lcd_mem_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb) {
   lcd_t* lcd = lcd_mem_create(w, h, FALSE);
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
-
+  
   lcd_mem_set_online_fb(mem, online_fb);
   lcd_mem_set_offline_fb(mem, offline_fb);
+  
+  mem->should_destroy_fb_bitmaps = TRUE;
+  mem->fb_bitmaps[0] = bitmap_create_ex2(w, h, 0, LCD_FORMAT, online_fb, FALSE);
+  mem->fb_bitmaps[1] = bitmap_create_ex2(w, h, 0, LCD_FORMAT, offline_fb, FALSE);
 
   return lcd;
 }
@@ -825,16 +847,53 @@ static lcd_t* lcd_mem_create_three_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_
   lcd_mem_set_online_fb(mem, online_fb);
   lcd_mem_set_offline_fb(mem, offline_fb);
 
+  mem->should_destroy_fb_bitmaps = TRUE;
+  mem->fb_bitmaps[0] = bitmap_create_ex2(w, h, 0, LCD_FORMAT, online_fb, FALSE);
+  mem->fb_bitmaps[1] = bitmap_create_ex2(w, h, 0, LCD_FORMAT, offline_fb, FALSE);
+  mem->fb_bitmaps[2] = bitmap_create_ex2(w, h, 0, LCD_FORMAT, next_fb, FALSE);
+
   return lcd;
 }
 
-static lcd_t* lcd_mem_create_single_fb(wh_t w, wh_t h, uint8_t* fbuff) {
-  lcd_t* lcd = lcd_mem_create(w, h, FALSE);
-  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+static lcd_t* lcd_mem_create_single_fb_bitmap(bitmap_t* offline_fb_bitmap) {
+  lcd_t* lcd = NULL;
+  return_value_if_fail(offline_fb_bitmap != NULL, NULL);
+  assert(offline_fb_bitmap->format == LCD_FORMAT); 
+  lcd = lcd_mem_create(offline_fb_bitmap->w, offline_fb_bitmap->h, FALSE);
+  return_value_if_fail(lcd != NULL, NULL);
 
-  lcd_mem_set_offline_fb(mem, fbuff);
-  mem->online_fb = NULL;
+  lcd_mem_set_single_fb_bitmap(lcd, offline_fb_bitmap);
   lcd->flush = NULL;
 
+  log_debug("lcd_mem_create_single_fb_bitmap: %u %u %u\n", offline_fb_bitmap->w, offline_fb_bitmap->h, offline_fb_bitmap->format);
   return lcd;
 }
+
+static lcd_t* lcd_mem_create_double_fb_bitmap(bitmap_t* online_fb_bitmap, bitmap_t* offline_fb_bitmap) {
+  lcd_t* lcd = NULL;
+  return_value_if_fail(online_fb_bitmap != NULL && offline_fb_bitmap != NULL, NULL);
+  assert(online_fb_bitmap->format == LCD_FORMAT);
+  lcd = lcd_mem_create(offline_fb_bitmap->w, offline_fb_bitmap->h, FALSE);
+  return_value_if_fail(lcd != NULL, NULL);
+
+  lcd_mem_set_double_fb_bitmap(lcd, online_fb_bitmap, offline_fb_bitmap);
+  log_debug("lcd_mem_create_double_fb_bitmap: %u %u %u\n", offline_fb_bitmap->w, offline_fb_bitmap->h, offline_fb_bitmap->format);
+
+  return lcd;
+}
+
+static lcd_t* lcd_mem_create_three_fb_bitmap(bitmap_t* online_fb_bitmap, bitmap_t* offline_fb_bitmap,
+                                      bitmap_t* next_fb_bitmap) {
+  lcd_t* lcd = NULL;
+  return_value_if_fail(online_fb_bitmap != NULL && offline_fb_bitmap != NULL && next_fb_bitmap != NULL, NULL);
+  assert(next_fb_bitmap->format == LCD_FORMAT);
+  assert(online_fb_bitmap->format == LCD_FORMAT);
+  lcd = lcd_mem_create(offline_fb_bitmap->w, offline_fb_bitmap->h, FALSE);
+  return_value_if_fail(lcd != NULL, NULL);
+
+  lcd_mem_set_three_fb_bitmap(lcd, online_fb_bitmap, offline_fb_bitmap, next_fb_bitmap);
+  log_debug("lcd_mem_create_three_fb_bitmap: %u %u %u\n", offline_fb_bitmap->w, offline_fb_bitmap->h, offline_fb_bitmap->format);
+
+  return lcd;
+}
+

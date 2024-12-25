@@ -104,6 +104,24 @@ graphic_buffer_t* graphic_buffer_create_with_data(const uint8_t* data, uint32_t 
                                                   bitmap_format_t format);
 
 /**
+ * @method graphic_buffer_create_with_data_ex
+ * 创建缓冲区。
+ *
+ * > 为了兼容raw图像。
+ * @param {const uint8_t*} virtual_data 数据虚拟地址。
+ * @param {const uint8_t*} physical_data 数据物理地址。
+ * @param {uint32_t} w 宽度。
+ * @param {uint32_t} h 宽度。
+ * @param {uint32_t} line_length 每行宽度(字节数)
+ * @param {bitmap_format_t} format 格式。
+ *
+ * @return {graphic_buffer_t*} 返回缓存区。
+ */
+graphic_buffer_t* graphic_buffer_create_with_data_ex(const uint8_t* virtual_data,
+                                                     const uint8_t* physical_data, uint32_t w,
+                                                     uint32_t h, uint32_t line_length,
+                                                     bitmap_format_t format);
+/**
  * @method graphic_buffer_lock_for_read
  * 为读取数据而锁定缓冲区。
  * @param {graphic_buffer_t*} buffer 图像缓冲区对象。
@@ -198,6 +216,8 @@ ret_t graphic_buffer_destroy(graphic_buffer_t* buffer);
 #define GRAPHIC_BUFFER_CREATE_WITH_DATA(data, w, h, format) \
   graphic_buffer_create_with_data(data, w, h, format)
 
+#define GRAPHIC_BUFFER_CREATE_WITH_DATA_EX(data, physical_data_addr, w, h, line_length, format) \
+  graphic_buffer_create_with_data_ex(data, physical_data_addr, w, h, line_length, format)
 END_C_DECLS
 
 #endif /*TK_GRAPHIC_BUFFER_H*/

@@ -102,6 +102,42 @@ lcd_t* lcd_mem_rgb565_create_three_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_
  */
 lcd_t* lcd_mem_rgb565_init(lcd_mem_t* lcd, wh_t w, wh_t h, bool_t alloc);
 
+/**
+ * @method lcd_mem_rgb565_create_single_fb_bitmap
+ *
+ * 创建single fb lcd对象。
+ *
+ * @param {bitmap_t*} offline_fb_bitmap 帧率缓冲区。
+ *
+ * @return {lcd_t*} 返回lcd对象。
+ */
+lcd_t* lcd_mem_rgb565_create_single_fb_bitmap(bitmap_t* offline_fb_bitmap);
+
+/**
+ * @method lcd_mem_rgb565_create_double_fb_bitmap
+ *
+ * 创建double fb lcd对象。
+ *
+ * @param {bitmap_t*} online_fb_bitmap 在线帧率缓冲区。
+ * @param {bitmap_t*} offline_fb_bitmap 离线帧率缓冲区。
+ *
+ * @return {lcd_t*} 返回lcd对象。
+ */
+lcd_t* lcd_mem_rgb565_create_double_fb_bitmap(bitmap_t* online_fb_bitmap, bitmap_t* offline_fb_bitmap);
+
+/**
+ * @method lcd_mem_rgb565_create_three_fb_bitmap
+ * 
+ * 创建three fb lcd对象。
+ *
+ * @param {bitmap_t*} online_fb_bitmap 在线帧率缓冲区。
+ * @param {bitmap_t*} offline_fb_bitmap 离线帧率缓冲区。
+ * @param {bitmap_t*} next_fb_bitmap 待显示的帧率缓冲区。
+ *
+ * @return {lcd_t*} 返回lcd对象。
+ */
+lcd_t* lcd_mem_rgb565_create_three_fb_bitmap(bitmap_t* online_fb_bitmap, bitmap_t* offline_fb_bitmap,
+                                      bitmap_t* next_fb_bitmap);
 END_C_DECLS
 
 #endif /*TK_LCD_MEM_RGB565_H*/

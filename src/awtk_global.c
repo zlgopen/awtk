@@ -331,6 +331,10 @@ ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const c
   ENSURE(system_info_init(app_type, app_name, app_root) == RET_OK);
   return_value_if_fail(tk_init_internal() == RET_OK, RET_FAIL);
 
+#ifdef WITH_G2D
+  tk_g2d_init();
+#endif /*WITH_G2D*/
+
   if (APP_CONSOLE == system_info()->app_type) {
 #if WITH_MAIN_LOOP_CONSOLE
     loop = (main_loop_t*)main_loop_console_init();
@@ -344,10 +348,6 @@ ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const c
 #ifdef WITH_SOCKET
   tk_socket_init();
 #endif /*WITH_SOCKET*/
-
-#ifdef WITH_G2D
-  tk_g2d_init();
-#endif /*WITH_G2D*/
 
   return RET_OK;
 }
