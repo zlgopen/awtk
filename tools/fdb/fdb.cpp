@@ -809,7 +809,9 @@ ret_t fdb_shell_run(void) {
       break;
     }
   }
-
+  if (last_line != NULL) {
+    TKMEM_FREE(last_line);
+  }
   app.debugger = NULL;
   TK_OBJECT_UNREF(obj);
 
