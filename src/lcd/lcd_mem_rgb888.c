@@ -42,8 +42,8 @@ lcd_t* lcd_mem_rgb888_create(wh_t w, wh_t h, bool_t alloc) {
   return lcd_mem_create(w, h, alloc);
 }
 
-lcd_t* lcd_mem_rgb888_create_single_fb(wh_t w, wh_t h, uint8_t* fbuff) {
-  return lcd_mem_create_single_fb(w, h, fbuff);
+lcd_t* lcd_mem_rgb888_create_single_fb(wh_t w, wh_t h, uint8_t* offline_fb) {
+  return lcd_mem_create_single_fb(w, h, offline_fb);
 }
 
 lcd_t* lcd_mem_rgb888_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb) {
@@ -53,4 +53,17 @@ lcd_t* lcd_mem_rgb888_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8
 lcd_t* lcd_mem_rgb888_create_three_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb,
                                       uint8_t* next_fb) {
   return lcd_mem_create_three_fb(w, h, online_fb, offline_fb, next_fb);
+}
+
+lcd_t* lcd_mem_rgb888_create_single_fb_bitmap(bitmap_t* offline_fb_bitmap) {
+  return lcd_mem_create_single_fb_bitmap(offline_fb_bitmap);
+}
+
+lcd_t* lcd_mem_rgb888_create_double_fb_bitmap(bitmap_t* online_fb_bitmap, bitmap_t* offline_fb_bitmap) {
+  return lcd_mem_create_double_fb_bitmap(online_fb_bitmap, offline_fb_bitmap);
+}
+
+lcd_t* lcd_mem_rgb888_create_three_fb_bitmap(bitmap_t* online_fb_bitmap, bitmap_t* offline_fb_bitmap,
+                                      bitmap_t* next_fb_bitmap) {
+  return lcd_mem_create_three_fb_bitmap(online_fb_bitmap, offline_fb_bitmap, next_fb_bitmap);
 }

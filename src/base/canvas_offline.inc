@@ -198,19 +198,19 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
   buff = bitmap_lock_buffer_for_write(bitmap);
   return_value_if_fail(buff != NULL, NULL);
   if (bitmap->format == BITMAP_FMT_RGBA8888) {
-    lcd = lcd_mem_rgba8888_create_single_fb(bitmap->w, bitmap->h, buff);
+    lcd = lcd_mem_rgba8888_create_single_fb_bitmap(bitmap);
   } else if (bitmap->format == BITMAP_FMT_BGRA8888) {
-    lcd = lcd_mem_bgra8888_create_single_fb(bitmap->w, bitmap->h, buff);
+    lcd = lcd_mem_bgra8888_create_single_fb_bitmap(bitmap);
   } else if (bitmap->format == BITMAP_FMT_BGR565) {
-    lcd = lcd_mem_bgr565_create_single_fb(bitmap->w, bitmap->h, buff);
+    lcd = lcd_mem_bgr565_create_single_fb_bitmap(bitmap);
   } else if (bitmap->format == BITMAP_FMT_RGB565) {
-    lcd = lcd_mem_rgb565_create_single_fb(bitmap->w, bitmap->h, buff);
+    lcd = lcd_mem_rgb565_create_single_fb_bitmap(bitmap);
   }
 #ifdef WITH_LCD_RGB888
   else if (bitmap->format == BITMAP_FMT_RGB888) {
-    lcd = lcd_mem_rgb888_create_single_fb(bitmap->w, bitmap->h, buff);
+    lcd = lcd_mem_rgb888_create_single_fb_bitmap(bitmap);
   } else if (bitmap->format == BITMAP_FMT_BGR888) {
-    lcd = lcd_mem_bgr888_create_single_fb(bitmap->w, bitmap->h, buff);
+    lcd = lcd_mem_bgr888_create_single_fb_bitmap(bitmap);
   }
 #endif /*WITH_LCD_RGB888*/
 

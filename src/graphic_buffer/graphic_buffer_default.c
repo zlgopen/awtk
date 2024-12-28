@@ -178,6 +178,13 @@ graphic_buffer_t* graphic_buffer_create_with_data(const uint8_t* data, uint32_t 
   return GRAPHIC_BUFFER(buffer);
 }
 
+graphic_buffer_t* graphic_buffer_create_with_data_ex(const uint8_t* virtual_data,
+                                                     const uint8_t* physical_data, uint32_t w,
+                                                     uint32_t h, uint32_t line_length,
+                                                     bitmap_format_t format) {
+  return graphic_buffer_create_with_data(virtual_data, w, h, format);
+}
+
 ret_t graphic_buffer_create_for_bitmap(bitmap_t* bitmap) {
   uint32_t line_length = bitmap_get_line_length(bitmap);
   return_value_if_fail(bitmap != NULL && bitmap->buffer == NULL, RET_BAD_PARAMS);

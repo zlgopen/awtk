@@ -140,6 +140,55 @@ bitmap_t* bitmap_create(void);
 bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, uint32_t line_length, bitmap_format_t format);
 
 /**
+ * @method bitmap_create_ex2
+ * 创建图片对象。
+ * @annotation ["constructor", "scriptable", "gc"]
+ * @param {uint32_t} w 宽度。
+ * @param {uint32_t} h 高度。
+ * @param {uint32_t} line_length line_length。
+ * @param {bitmap_format_t} format 格式。
+ * @param {uint8_t*} data 图像数据。
+ * @param {bool_t} should_free_data 是否释放数据。
+ *
+ * @return {bitmap_t*} 返回bitmap对象。
+ */
+bitmap_t* bitmap_create_ex2(uint32_t w, uint32_t h, uint32_t line_length, bitmap_format_t format,
+                            uint8_t* data, bool_t should_free_data);
+
+/**
+ * @method bitmap_create_ex3
+ * 创建图片对象。
+ * @annotation ["constructor", "scriptable", "gc"]
+ * @param {uint32_t} w 宽度。
+ * @param {uint32_t} h 高度。
+ * @param {uint32_t} line_length line_length。
+ * @param {bitmap_format_t} format 格式。
+ * @param {uint8_t*} data 图像数据。
+ * @param {uint8_t*} physical_data_addr 物理地址(部分硬件加速需要)。
+ * @param {bool_t} should_free_data 是否释放数据。
+ *
+ * @return {bitmap_t*} 返回bitmap对象。
+ */
+bitmap_t* bitmap_create_ex3(uint32_t w, uint32_t h, uint32_t line_length, bitmap_format_t format,
+                            uint8_t* data, uint8_t* physical_data_addr, bool_t should_free_data);
+/**
+ * @method bitmap_init_ex2
+ * 创建图片对象。
+ * @annotation ["constructor", "scriptable", "gc"]
+ * @param {uint32_t} w 宽度。
+ * @param {uint32_t} h 高度。
+ * @param {uint32_t} line_length line_length。
+ * @param {bitmap_format_t} format 格式。
+ * @param {uint8_t*} data 图像数据。
+ * @param {uint8_t*} physical_data_addr 物理地址(部分硬件加速需要)。
+ * @param {bool_t} should_free_data 是否释放数据。
+ *
+ * @return {bitmap_t*} 返回bitmap对象。
+ */
+ret_t bitmap_init_ex2(bitmap_t* bitmap, uint32_t w, uint32_t h, uint32_t line_length,
+                      bitmap_format_t format, uint8_t* data, uint8_t* physical_data_addr,
+                      bool_t should_free_data);
+/**
  * @method bitmap_get_bpp
  * 获取图片一个像素占用的字节数。
  * @annotation ["scriptable"]
