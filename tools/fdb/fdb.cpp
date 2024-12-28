@@ -768,6 +768,7 @@ static ret_t fdb_shell_exec(app_info_t* app, const char* line) {
 
 ret_t fdb_shell_run(void) {
   app_info_t app;
+  char* last_line = NULL;
   tk_object_t* obj = object_default_create();
 
   memset(&app, 0x00, sizeof(app));
@@ -784,6 +785,10 @@ ret_t fdb_shell_run(void) {
     char* line = aw_read_line(KMAG "[fdb] # " KNRM);
     if (line == NULL) {
       break;
+    } else if (*line == '\n') {
+      line = last_line;
+    } else {
+      last_line = tk_str_copy(last_line, line);
     }
 
     if (app.debugger != NULL) {
@@ -804,7 +809,9 @@ ret_t fdb_shell_run(void) {
       break;
     }
   }
-
+  if (last_line != NULL) {
+    TKMEM_FREE(last_line);
+  }
   app.debugger = NULL;
   TK_OBJECT_UNREF(obj);
 
