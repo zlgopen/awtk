@@ -395,7 +395,7 @@ static ret_t open_menu_bar(widget_t* pages) {
 }
 
 /*** page_button **********************************************************************/
-static ret_t on_fps_visable(void* ctx, event_t* e) {
+static ret_t on_fps_visible(void* ctx, event_t* e) {
   value_change_event_t* vce = value_change_event_cast(e);
   return_value_if_fail(vce != NULL, RET_BAD_PARAMS);
 
@@ -446,7 +446,7 @@ static ret_t page_button_init(widget_t* page) {
   cb_ratio = widget_lookup(page, "cb_ratio", TRUE);
   if (cb_fps != NULL && tk_str_eq(widget_get_type(cb_fps), WIDGET_TYPE_CHECK_BUTTON)) {
     widget_set_value(cb_fps, WINDOW_MANAGER(window_manager())->show_fps);
-    widget_on(cb_fps, EVT_VALUE_CHANGED, on_fps_visable, NULL);
+    widget_on(cb_fps, EVT_VALUE_CHANGED, on_fps_visible, NULL);
   }
   if (cb_ratio != NULL) {
     widget_on(cb_ratio, EVT_CLICK, on_switch_ratio, NULL);
@@ -1006,8 +1006,8 @@ static ret_t on_menu_bar_open(void* ctx, event_t* e) {
 
 #define WIDGET_PROP_DISABLE_IN_1M "disable_in_1m"
 #define WIDGET_PROP_INVISIBLE_IN_1M "invisible_in_1m"
-static ret_t on_adject_vpage_in_1m_assets(void* ctx, event_t* e);
-static ret_t adject_widget_in_1m_assets(void* ctx, const void* iter) {
+static ret_t on_adjust_vpage_in_1m_assets(void* ctx, event_t* e);
+static ret_t adjust_widget_in_1m_assets(void* ctx, const void* iter) {
   widget_t* widget = WIDGET(iter);
   bool_t invisible_in_1m = widget_get_prop_bool(widget, WIDGET_PROP_INVISIBLE_IN_1M, FALSE);
 
@@ -1022,7 +1022,7 @@ static ret_t adject_widget_in_1m_assets(void* ctx, const void* iter) {
 
     if (tk_str_eq(widget->name, "vpages")) {
       WIDGET_FOR_EACH_CHILD_BEGIN(widget, page, i)
-      widget_on(page, EVT_VPAGE_WILL_OPEN, on_adject_vpage_in_1m_assets, NULL);
+      widget_on(page, EVT_VPAGE_WILL_OPEN, on_adjust_vpage_in_1m_assets, NULL);
       WIDGET_FOR_EACH_CHILD_END()
     }
   }
@@ -1030,17 +1030,17 @@ static ret_t adject_widget_in_1m_assets(void* ctx, const void* iter) {
   return RET_OK;
 }
 
-static ret_t on_adject_vpage_in_1m_assets(void* ctx, event_t* e) {
+static ret_t on_adjust_vpage_in_1m_assets(void* ctx, event_t* e) {
   widget_t* vpage = WIDGET(e->target);
   return_value_if_fail(vpage != NULL, RET_BAD_PARAMS);
-  return widget_foreach(vpage, adject_widget_in_1m_assets, NULL);
+  return widget_foreach(vpage, adjust_widget_in_1m_assets, NULL);
 }
 
-static ret_t on_adject_win_in_1m_assets(void* ctx, event_t* e) {
+static ret_t on_adjust_win_in_1m_assets(void* ctx, event_t* e) {
   window_event_t* we = window_event_cast(e);
   return_value_if_fail(we != NULL, RET_BAD_PARAMS);
 
-  return widget_foreach(we->window, adject_widget_in_1m_assets, NULL);
+  return widget_foreach(we->window, adjust_widget_in_1m_assets, NULL);
 }
 
 static bool_t check_is_use_1m_assets(void) {
@@ -1241,7 +1241,7 @@ ret_t application_init(void) {
   s_win_default_portrait = get_portrait(wm->w, wm->h);
 
   if (check_is_use_1m_assets()) {
-    widget_on(window_manager(), EVT_WINDOW_WILL_OPEN, on_adject_win_in_1m_assets, NULL);
+    widget_on(window_manager(), EVT_WINDOW_WILL_OPEN, on_adjust_win_in_1m_assets, NULL);
   }
 
 #if !defined(WITH_SDL) && !defined(LINUX)
