@@ -15,9 +15,9 @@ env=DefaultEnvironment().Clone();
 
 sys.path.insert(0, './scripts')
 import compile_config
-complie_helper = compile_config.complie_helper()
+compile_helper = compile_config.compile_helper()
 
-if not complie_helper.get_value('BUILD_DEMOS', True) :
+if not compile_helper.get_value('BUILD_DEMOS', True) :
   env.Library(os.path.join(LIB_DIR, 'assets'), ['../demos/assets.c'], LINKFLAGS = env['OS_SUBSYSTEM_WINDOWS'] + env['LINKFLAGS']);
 
 INCLUDE_PATH = [TK_ROOT, 

@@ -3,7 +3,7 @@ import os.path
 import platform
 import shutil
 import compile_config
-complie_helper = compile_config.get_curr_config_for_awtk()
+compile_helper = compile_config.get_curr_config_for_awtk()
 
 import sys
 if sys.version_info.major == 2:
@@ -81,7 +81,7 @@ TOOLS_NAME = ''
 NANOVG_BACKEND = ''
 NATIVE_WINDOW = ''
 #TOOLS_NAME = 'mingw'
-TOOLS_NAME = complie_helper.get_value('TOOLS_NAME', TOOLS_NAME)
+TOOLS_NAME = compile_helper.get_value('TOOLS_NAME', TOOLS_NAME)
 
 if OS_NAME == 'Windows':
     TK_ROOT = TK_ROOT.replace('\\', '\\\\')
@@ -96,7 +96,7 @@ OS_SUBSYSTEM_WINDOWS = ''
 OS_PROJECTS = []
 # only for c compiler flags
 COMMON_CFLAGS = ''
-OS_DEBUG = complie_helper.get_value('DEBUG', True)
+OS_DEBUG = compile_helper.get_value('DEBUG', True)
 
 if OS_NAME == 'Darwin':
 

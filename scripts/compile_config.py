@@ -19,9 +19,9 @@ def get_curr_config() :
   global COMPILE_CONFIG
   return COMPILE_CONFIG
 
-def set_curr_config(complie_config) :
+def set_curr_config(compile_config) :
   global COMPILE_CONFIG
-  COMPILE_CONFIG = complie_config
+  COMPILE_CONFIG = compile_config
 
 def set_app_win32_res(dir_path) :
   global WIN32_RES
@@ -41,11 +41,11 @@ def get_curr_config_for_awtk() :
   if COMPILE_CONFIG != None :
     return COMPILE_CONFIG
   else :
-    COMPILE_CONFIG = complie_helper()
-    if not COMPILE_CONFIG.load_last_complie_argv() :
+    COMPILE_CONFIG = compile_helper()
+    if not COMPILE_CONFIG.load_last_compile_argv() :
       print('========================= Error ================================')
       print('Please Recompile AWTK !!!!!')
-      sys.exit('Not found last complie argv config file !!!!!')
+      sys.exit('Not found last compile argv config file !!!!!')
     COMPILE_CONFIG.set_value('WIN32_RES', WIN32_RES)
     return COMPILE_CONFIG;
 
@@ -73,9 +73,9 @@ def json_obj_save_file(obj, file_path) :
   else :
     print(dir + ' is not exists')
 
-class complie_helper :
+class compile_helper :
   DEFAULT_CONFIG_FILE = './awtk_config_define.py'
-  LAST_COMLIP_ARGV_FILE = './bin/last_complie_argv.json'
+  LAST_COMLIP_ARGV_FILE = './bin/last_compile_argv.json'
 
   COMPILE_CMD_INFO = collections.OrderedDict({
     'help' : { 'name': 'HELP', 'help_info' : 'show all usage'},
@@ -257,10 +257,10 @@ class complie_helper :
       else:
         self.config[name]['value'] = value
 
-  def save_last_complie_argv(self) :
+  def save_last_compile_argv(self) :
     json_obj_save_file(self.config, self.LAST_COMLIP_ARGV_FILE);
   
-  def load_last_complie_argv(self) :
+  def load_last_compile_argv(self) :
     if os.path.exists(self.LAST_COMLIP_ARGV_FILE) :
       obj = json_obj_load_file(self.LAST_COMLIP_ARGV_FILE);
       if obj != None :

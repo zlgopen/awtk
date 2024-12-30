@@ -5,7 +5,7 @@ import os.path
 
 sys.path.insert(0, os.path.join(os.path.abspath(os.path.dirname(__file__)), 'scripts'))
 import compile_config
-complie_helper = compile_config.get_curr_config_for_awtk()
+compile_helper = compile_config.get_curr_config_for_awtk()
 
 from awtk_config_common import OS_NAME, TARGET_ARCH, TOOLS_PREFIX, TK_SRC, TK_BIN_DIR, TK_LIB_DIR, TK_3RD_ROOT, TK_TOOLS_ROOT, OS_DEBUG, TK_DEMO_ROOT, GTEST_ROOT, TKC_STATIC_LIBS, TOOLS_NAME, NANOVG_BACKEND, NATIVE_WINDOW, TK_ROOT
 from awtk_config_common import joinPath, toWholeArchive, genIdlAndDefEx, setEnvSpawn, genDllLinkFlags, copySharedLib, cleanSharedLib, scons_db_check_and_remove, is_raspberrypi
@@ -22,7 +22,7 @@ if not os.path.exists(WIN32_AWTK_RES):
     else:
         WIN32_AWTK_RES = os.path.join(TK_ROOT, 'win32_res/awtk.res')
 
-WIN32_AWTK_RES = complie_helper.get_value('WIN32_RES', WIN32_AWTK_RES)
+WIN32_AWTK_RES = compile_helper.get_value('WIN32_RES', WIN32_AWTK_RES)
 if not os.path.isabs(WIN32_AWTK_RES) :
     WIN32_AWTK_RES = os.path.join(compile_config.get_curr_app_root(), WIN32_AWTK_RES)
 
@@ -40,13 +40,13 @@ AWTK_STATIC_LIBS = AWTK_STATIC_LIBS+TKC_STATIC_LIBS
 # INPUT_ENGINE='t9ext'
 INPUT_ENGINE = 'pinyin'
 
-INPUT_ENGINE = complie_helper.get_value('INPUT_ENGINE', INPUT_ENGINE)
+INPUT_ENGINE = compile_helper.get_value('INPUT_ENGINE', INPUT_ENGINE)
 
 VGCANVAS = 'NANOVG'
 VGCANVAS='NANOVG_PLUS'
 # VGCANVAS='CAIRO'
 
-VGCANVAS = complie_helper.get_value('VGCANVAS', VGCANVAS)
+VGCANVAS = compile_helper.get_value('VGCANVAS', VGCANVAS)
 
 if OS_NAME == 'Windows':
     TK_ROOT = TK_ROOT.replace('\\', '\\\\')
@@ -60,7 +60,7 @@ NANOVG_BACKEND = 'GL3'
 if is_raspberrypi():
   NANOVG_BACKEND='GLES2'
 
-NANOVG_BACKEND = complie_helper.get_value('NANOVG_BACKEND', NANOVG_BACKEND)
+NANOVG_BACKEND = compile_helper.get_value('NANOVG_BACKEND', NANOVG_BACKEND)
 #NANOVG_BACKEND='BGFX'
 
 FRAME_BUFFER_FORMAT = ''
@@ -78,7 +78,7 @@ else:
 # LCD='SDL_FB_MONO'
 
 if NANOVG_BACKEND == 'AGGE' or NANOVG_BACKEND == 'AGGE' :
-    lcd_color_format = complie_helper.get_value('LCD_COLOR_FORMAT', '')
+    lcd_color_format = compile_helper.get_value('LCD_COLOR_FORMAT', '')
     if lcd_color_format != '' :
         if lcd_color_format== 'mono' :
             LCD = 'SDL_FB_MONO'
@@ -102,10 +102,10 @@ COMMON_CCFLAGS = ' -DTK_ROOT=\"\\\"'+TK_ROOT+'\\\"\" '
 #COMMON_CCFLAGS=COMMON_CCFLAGS+' -DENABLE_MEM_LEAK_CHECK=1 '
 COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITH_STATE_ACTIVATED=1 '
 
-if complie_helper.get_value('NATIVE_WINDOW_BORDERLESS', False) :
+if compile_helper.get_value('NATIVE_WINDOW_BORDERLESS', False) :
     COMMON_CCFLAGS=COMMON_CCFLAGS+' -DNATIVE_WINDOW_BORDERLESS=1 '
 
-if complie_helper.get_value('NATIVE_WINDOW_NOT_RESIZABLE', False) :
+if compile_helper.get_value('NATIVE_WINDOW_NOT_RESIZABLE', False) :
     COMMON_CCFLAGS=COMMON_CCFLAGS+' -DNATIVE_WINDOW_NOT_RESIZABLE=1 '
 
 
@@ -246,7 +246,7 @@ elif OS_NAME == 'Windows':
         else :
             BUILD_DEBUG_FLAG = ' -DNDEBUG /MD /O2 /Oi  '
         
-        if complie_helper.get_value('PDB', True) :
+        if compile_helper.get_value('PDB', True) :
             BUILD_DEBUG_LINKFLAGS = ' /DEBUG '
 
 
@@ -315,7 +315,7 @@ os.environ['WITH_AWTK_SO'] = 'true'
 os.environ['AWTK_CCFLAGS'] = AWTK_CCFLAGS + BUILD_DEBUG_FLAG
 os.environ['CROSS_COMPILE'] = str(not TOOLS_PREFIX == '')
 
-os.environ['SDL_UBUNTU_USE_IME'] = str(complie_helper.get_value('SDL_UBUNTU_USE_IME', False))
+os.environ['SDL_UBUNTU_USE_IME'] = str(compile_helper.get_value('SDL_UBUNTU_USE_IME', False))
 # os.environ['SDL_UBUNTU_USE_IME'] = str(True)
 OS_LIBS = ['SDL2', 'glad'] + OS_LIBS
 

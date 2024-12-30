@@ -4,10 +4,10 @@ import platform
 import sys
 sys.path.insert(0, './scripts')
 import compile_config
-complie_helper = compile_config.complie_helper()
-complie_helper.try_load_default_config()
-complie_helper.scons_user_sopt(ARGUMENTS)
-compile_config.set_curr_config(complie_helper)
+compile_helper = compile_config.compile_helper()
+compile_helper.try_load_default_config()
+compile_helper.scons_user_sopt(ARGUMENTS)
+compile_config.set_curr_config(compile_helper)
 
 import awtk_config as awtk
 
@@ -58,8 +58,8 @@ SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
   'src/romfs/SConscript',
   ]
 
-os.environ['BUILD_TOOLS'] = str(complie_helper.get_value('BUILD_TOOLS', True))
-if complie_helper.get_value('BUILD_TOOLS', True) :
+os.environ['BUILD_TOOLS'] = str(compile_helper.get_value('BUILD_TOOLS', True))
+if compile_helper.get_value('BUILD_TOOLS', True) :
   SConscriptFiles += [
     'src/streams/tools/SConscript',
     'tools/common/SConscript', 
@@ -80,10 +80,10 @@ if complie_helper.get_value('BUILD_TOOLS', True) :
     'src/hal/tools/network_shell/SConscript',
   ]
 
-if complie_helper.get_value('BUILD_DEMOS', True) :
+if compile_helper.get_value('BUILD_DEMOS', True) :
   SConscriptFiles += ['demos/SConscript']
 
-if complie_helper.get_value('BUILD_TESTS', True) :
+if compile_helper.get_value('BUILD_TESTS', True) :
   SConscriptFiles += ['tests/SConscript']
 
 SConscriptFiles += awtk.OS_PROJECTS
@@ -96,7 +96,7 @@ SConscript(SConscriptFiles)
 
 
 def compile_end() :
-  complie_helper.save_last_complie_argv()
-  complie_helper.output_compile_data(awtk.TK_ROOT)
+  compile_helper.save_last_compile_argv()
+  compile_helper.output_compile_data(awtk.TK_ROOT)
 
 atexit.register(compile_end)

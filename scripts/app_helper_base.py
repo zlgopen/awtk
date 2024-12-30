@@ -229,7 +229,7 @@ class AppHelperBase:
     def get_curr_config(self) :
         return compile_config.get_curr_config()
 
-    def get_complie_helper_by_script(self, ARGUMENTS, script_path, script_argv) :
+    def get_compile_helper_by_script(self, ARGUMENTS, script_path, script_argv) :
         global COMPILE_CONFIG
         script_path = os.path.abspath(script_path)
         if os.path.exists(script_path) :
@@ -252,12 +252,12 @@ class AppHelperBase:
         global SRT_SCONS_CONFIG_SCRIPT
         global SRT_SCONS_CONFIG_SCRIPT_ARGV
         if SRT_SCONS_CONFIG_SCRIPT in ARGUMENTS :
-            self.complie_helper = self.get_complie_helper_by_script(ARGUMENTS, ARGUMENTS[SRT_SCONS_CONFIG_SCRIPT], ARGUMENTS.get(SRT_SCONS_CONFIG_SCRIPT_ARGV, ''))
+            self.compile_helper = self.get_compile_helper_by_script(ARGUMENTS, ARGUMENTS[SRT_SCONS_CONFIG_SCRIPT], ARGUMENTS.get(SRT_SCONS_CONFIG_SCRIPT_ARGV, ''))
         else :
-            self.complie_helper = compile_config.complie_helper()
-            self.complie_helper.set_compile_config(COMPILE_CONFIG)
-            self.complie_helper.scons_user_sopt(ARGUMENTS)
-        compile_config.set_curr_config(self.complie_helper)
+            self.compile_helper = compile_config.compile_helper()
+            self.compile_helper.set_compile_config(COMPILE_CONFIG)
+            self.compile_helper.scons_user_sopt(ARGUMENTS)
+        compile_config.set_curr_config(self.compile_helper)
 
         APP_ROOT = compile_config.get_curr_app_root()
         if len(APP_ROOT) == 0:
@@ -272,21 +272,21 @@ class AppHelperBase:
         self.DEPENDS_LIBS = []
         self.GEN_IDL_DEF = True
         self.BUILD_SHARED = True
-        self.LINUX_FB = self.complie_helper.get_value('LINUX_FB', False)
+        self.LINUX_FB = self.compile_helper.get_value('LINUX_FB', False)
         self.AWTK_ROOT = self.getAwtkRoot()
         self.awtk = self.getAwtkConfig()
         self.AWTK_LIBS = self.awtk.LIBS
         self.AWTK_CFLAGS = self.awtk.CFLAGS
         self.AWTK_CCFLAGS = self.awtk.CCFLAGS
         self.APP_ROOT = APP_ROOT
-        self.BUILD_DIR = self.complie_helper.get_value('BUILD_DIR', '')
+        self.BUILD_DIR = self.compile_helper.get_value('BUILD_DIR', '')
         self.BIN_DIR = os.path.join(self.BUILD_DIR, 'bin')
         self.LIB_DIR = os.path.join(self.BUILD_DIR, 'lib')
         self.APP_BIN_DIR = os.path.join(APP_ROOT, self.BIN_DIR)
         self.APP_LIB_DIR = os.path.join(APP_ROOT, self.LIB_DIR)
         self.APP_SRC = os.path.join(APP_ROOT, 'src')
         self.APP_RES = os.path.join(APP_ROOT, 'res')
-        self.APP_LIBS = self.complie_helper.get_value('LIBS', [])
+        self.APP_LIBS = self.compile_helper.get_value('LIBS', [])
         self.APP_LINKFLAGS = ''
         self.PLATFORM_LIBS = []
         self.APP_TOOLS = ['default']
@@ -304,7 +304,7 @@ class AppHelperBase:
             self.AWTK_OS_DEBUG = self.awtk.OS_DEBUG
         else :
             self.AWTK_OS_DEBUG = self.DEBUG
-        self.DEBUG = self.complie_helper.get_value('DEBUG', self.AWTK_OS_DEBUG)
+        self.DEBUG = self.compile_helper.get_value('DEBUG', self.AWTK_OS_DEBUG)
         if isinstance(self.DEBUG, str) :
             try :
                 from utils import strtobool
@@ -313,8 +313,8 @@ class AppHelperBase:
                 self.DEBUG == self.DEBUG.lower() == 'true';
 
         self.parseArgs(self.awtk, ARGUMENTS)
-        self.APP_CPPPATH = [self.APP_SRC, self.APP_RES] + self.complie_helper.get_value('CPPPATH', [])
-        self.APP_LIBPATH = [self.APP_LIB_DIR, self.APP_BIN_DIR] + self.complie_helper.get_value('LIBPATH', [])
+        self.APP_CPPPATH = [self.APP_SRC, self.APP_RES] + self.compile_helper.get_value('CPPPATH', [])
+        self.APP_LIBPATH = [self.APP_LIB_DIR, self.APP_BIN_DIR] + self.compile_helper.get_value('LIBPATH', [])
 
         mkdir_if_not_exist(self.APP_BIN_DIR)
         mkdir_if_not_exist(self.APP_LIB_DIR)
@@ -328,11 +328,11 @@ class AppHelperBase:
         if self.LINUX_FB:
             os.environ['LINUX_FB'] = 'true'
 
-        self.WITH_JERRYSCRIPT = self.complie_helper.get_value('WITH_JERRYSCRIPT', False)
-        self.WITH_IOTJS = self.complie_helper.get_value('WITH_IOTJS', False)
+        self.WITH_JERRYSCRIPT = self.compile_helper.get_value('WITH_JERRYSCRIPT', False)
+        self.WITH_IOTJS = self.compile_helper.get_value('WITH_IOTJS', False)
 
-        WITH_MVVM = self.complie_helper.get_value('WITH_MVVM', False)
-        MVVM_ROOT = self.complie_helper.get_value('MVVM_ROOT', '')
+        WITH_MVVM = self.compile_helper.get_value('WITH_MVVM', False)
+        MVVM_ROOT = self.compile_helper.get_value('MVVM_ROOT', '')
         if WITH_MVVM or os.path.exists(MVVM_ROOT):
             os.environ['WITH_MVVM'] = 'true'
             if not os.path.exists(MVVM_ROOT):
@@ -340,8 +340,8 @@ class AppHelperBase:
             self.MVVM_ROOT = MVVM_ROOT
             print("MVVM_ROOT: " + self.MVVM_ROOT)
 
-        WITH_AWFLOW = self.complie_helper.get_value('WITH_AWFLOW', False)
-        AWFLOW_ROOT = self.complie_helper.get_value('AWFLOW_ROOT', '')
+        WITH_AWFLOW = self.compile_helper.get_value('WITH_AWFLOW', False)
+        AWFLOW_ROOT = self.compile_helper.get_value('AWFLOW_ROOT', '')
         print(WITH_AWFLOW)
         if WITH_AWFLOW or os.path.exists(AWFLOW_ROOT):
             os.environ['WITH_AWFLOW'] = 'true'
@@ -360,12 +360,12 @@ class AppHelperBase:
     def getAwtkConfig(self):
         sys.path.insert(0, self.AWTK_ROOT)
         os.chdir(self.AWTK_ROOT)
-        tmp_complie_helper = compile_config.get_curr_config()
-        compile_config.set_app_win32_res(tmp_complie_helper.get_value('WIN32_RES', None))
+        tmp_compile_helper = compile_config.get_curr_config()
+        compile_config.set_app_win32_res(tmp_compile_helper.get_value('WIN32_RES', None))
         compile_config.set_curr_config(None)
         import awtk_config as awtk
         os.chdir(compile_config.get_curr_app_root())
-        compile_config.set_curr_config(tmp_complie_helper)
+        compile_config.set_curr_config(tmp_compile_helper)
         return awtk
 
     def saveUsesSdkInfo(self):
@@ -478,7 +478,7 @@ class AppHelperBase:
             APP_RES_ROOT = config.get_res_res_root()
             LCD_ORIENTATION = config.get_res_lcd_orientation(APP_THEME)
 
-        LCD = self.complie_helper.get_value('LCD', '')
+        LCD = self.compile_helper.get_value('LCD', '')
         if len(LCD) > 0:
             wh = LCD.split('_')
             if len(wh) >= 1:
@@ -486,13 +486,13 @@ class AppHelperBase:
             if len(wh) >= 2:
                 LCD_HEIGHT = wh[1]
 
-        FONT = self.complie_helper.get_value('FONT', '')
+        FONT = self.compile_helper.get_value('FONT', '')
         if len(FONT) > 0:
             APP_DEFAULT_FONT = FONT
 
-        APP_THEME = self.complie_helper.get_value('THEME', APP_THEME)
+        APP_THEME = self.compile_helper.get_value('THEME', APP_THEME)
 
-        LANGUAGE = self.complie_helper.get_value('LANGUAGE', '')
+        LANGUAGE = self.compile_helper.get_value('LANGUAGE', '')
         if len(LANGUAGE) > 0:
             lan = LANGUAGE.split('_')
             if len(lan) >= 1:
@@ -500,13 +500,13 @@ class AppHelperBase:
             if len(lan) >= 2:
                 APP_DEFAULT_COUNTRY = lan[1]
 
-        APP_RES_ROOT = self.complie_helper.get_value('RES_ROOT', APP_RES_ROOT)
+        APP_RES_ROOT = self.compile_helper.get_value('RES_ROOT', APP_RES_ROOT)
         self.APP_RES = os.path.abspath(os.path.join(self.APP_BIN_DIR, APP_RES_ROOT))
 
-        self.BUILD_SHARED = self.complie_helper.get_value('SHARED', False)
-        self.GEN_IDL_DEF = self.complie_helper.get_value('IDL_DEF', True)
+        self.BUILD_SHARED = self.compile_helper.get_value('SHARED', False)
+        self.GEN_IDL_DEF = self.compile_helper.get_value('IDL_DEF', True)
 
-        LCD_ORIENTATION = self.complie_helper.get_value('LCD_ORIENTATION', LCD_ORIENTATION)
+        LCD_ORIENTATION = self.compile_helper.get_value('LCD_ORIENTATION', LCD_ORIENTATION)
         if not self.LINUX_FB :
             if LCD_ORIENTATION == '90' or LCD_ORIENTATION == '270' :
                 tmp = LCD_WIDTH;
@@ -525,7 +525,7 @@ class AppHelperBase:
             self.APP_ROOT.replace('\\', '/') + '\\\"\" '
 
         self.APP_CFLAGS = ''
-        self.APP_CCFLAGS = APP_CCFLAGS + self.complie_helper.get_value('FLAGS', '')
+        self.APP_CCFLAGS = APP_CCFLAGS + self.compile_helper.get_value('FLAGS', '')
         self.APP_CXXFLAGS = ''
 
         if PLATFORM == 'Linux':
@@ -591,8 +591,8 @@ class AppHelperBase:
             BUILD_DEBUG_FLAG = awtk.BUILD_DEBUG_FLAG
         else :
             BUILD_DEBUG_FLAG = ' '
-        self.APP_BIN_DIR = self.complie_helper.get_value('APP_BIN_DIR', os.path.join(self.APP_ROOT, self.BIN_DIR))
-        self.APP_LIB_DIR = self.complie_helper.get_value('APP_LIB_DIR', os.path.join(self.APP_ROOT, self.LIB_DIR))
+        self.APP_BIN_DIR = self.compile_helper.get_value('APP_BIN_DIR', os.path.join(self.APP_ROOT, self.BIN_DIR))
+        self.APP_LIB_DIR = self.compile_helper.get_value('APP_LIB_DIR', os.path.join(self.APP_ROOT, self.LIB_DIR))
 
         if self.MVVM_ROOT:
             MVVM_3RD_ROOT = join_path(self.MVVM_ROOT, '3rd')
@@ -731,7 +731,7 @@ class AppHelperBase:
                 elif self.OS_NAME == 'Darwin' or self.OS_NAME == 'Linux' :
                     CCFLAGS += ' -Os '
 
-            if self.OS_NAME == 'Windows' and is_msvc and self.complie_helper.get_value('PDB', True) :
+            if self.OS_NAME == 'Windows' and is_msvc and self.compile_helper.get_value('PDB', True) :
                 LINKFLAGS += ' /DEBUG '
             if self.DEBUG == self.AWTK_OS_DEBUG:
                 CCFLAGS += BUILD_DEBUG_FLAG
