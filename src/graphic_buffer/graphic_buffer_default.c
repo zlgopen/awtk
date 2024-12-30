@@ -94,6 +94,27 @@ static ret_t graphic_buffer_default_destroy(graphic_buffer_t* buffer) {
   return RET_OK;
 }
 
+static ret_t graphic_buffer_default_set_physical_width(graphic_buffer_t* buffer, uint32_t width) {
+  graphic_buffer_default_t* b = GRAPHIC_BUFFER_DEFAULT(buffer);
+  return_value_if_fail(b != NULL, RET_BAD_PARAMS);
+  b->w = width;
+  return RET_OK;
+}
+
+static ret_t graphic_buffer_default_set_physical_height(graphic_buffer_t* buffer, uint32_t height) {
+  graphic_buffer_default_t* b = GRAPHIC_BUFFER_DEFAULT(buffer);
+  return_value_if_fail(b != NULL, RET_BAD_PARAMS);
+  b->h = height;
+  return RET_OK;
+}
+
+static ret_t graphic_buffer_default_set_physical_line_length(graphic_buffer_t* buffer, uint32_t line_length) {
+  graphic_buffer_default_t* b = GRAPHIC_BUFFER_DEFAULT(buffer);
+  return_value_if_fail(b != NULL, RET_BAD_PARAMS);
+  b->line_length = line_length;
+  return RET_OK;
+}
+
 static uint32_t graphic_buffer_default_get_physical_width(graphic_buffer_t* buffer) {
   graphic_buffer_default_t* b = GRAPHIC_BUFFER_DEFAULT(buffer);
   return_value_if_fail(b != NULL, 0);
@@ -121,6 +142,9 @@ static const graphic_buffer_vtable_t s_graphic_buffer_default_vtable = {
     .unlock = graphic_buffer_default_unlock,
     .attach = graphic_buffer_default_attach,
     .is_valid_for = graphic_buffer_default_is_valid_for,
+    .set_width = graphic_buffer_default_set_physical_width,
+    .set_height = graphic_buffer_default_set_physical_height,
+    .set_line_length = graphic_buffer_default_set_physical_line_length,
     .get_width = graphic_buffer_default_get_physical_width,
     .get_height = graphic_buffer_default_get_physical_height,
     .get_line_length = graphic_buffer_default_get_physical_line_length,

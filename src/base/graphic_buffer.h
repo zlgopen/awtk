@@ -34,6 +34,9 @@ typedef uint8_t* (*graphic_buffer_lock_for_write_t)(graphic_buffer_t* buffer);
 typedef uint32_t (*graphic_buffer_get_physical_width_t)(graphic_buffer_t* buffer);
 typedef uint32_t (*graphic_buffer_get_physical_height_t)(graphic_buffer_t* buffer);
 typedef uint32_t (*graphic_buffer_get_physical_line_length_t)(graphic_buffer_t* buffer);
+typedef ret_t (*graphic_buffer_set_physical_width_t)(graphic_buffer_t* buffer, uint32_t width);
+typedef ret_t (*graphic_buffer_set_physical_height_t)(graphic_buffer_t* buffer, uint32_t height);
+typedef ret_t (*graphic_buffer_set_physical_line_length_t)(graphic_buffer_t* buffer, uint32_t line_length);
 typedef ret_t (*graphic_buffer_unlock_t)(graphic_buffer_t* buffer);
 typedef ret_t (*graphic_buffer_attach_t)(graphic_buffer_t* buffer, void* data, uint32_t w,
                                          uint32_t h);
@@ -69,6 +72,9 @@ typedef struct _graphic_buffer_vtable_t {
   graphic_buffer_get_physical_width_t get_width;
   graphic_buffer_get_physical_height_t get_height;
   graphic_buffer_get_physical_line_length_t get_line_length;
+  graphic_buffer_set_physical_width_t set_width;
+  graphic_buffer_set_physical_height_t set_height;
+  graphic_buffer_set_physical_line_length_t set_line_length;
 } graphic_buffer_vtable_t;
 
 /**
@@ -170,6 +176,39 @@ ret_t graphic_buffer_attach(graphic_buffer_t* buffer, void* data, uint32_t w, ui
  * @return {bool_t} 返回TRUE表示有效，否则表示无效。
  */
 bool_t graphic_buffer_is_valid_for(graphic_buffer_t* buffer, bitmap_t* bitmap);
+
+/**
+ * @method graphic_buffer_set_physical_width
+ * 设置 graphic_buffer 真实物理的的宽度
+ * 
+ * @param {graphic_buffer_t*} buffer 图像缓冲区对象。
+ * @param {uint32_t} width 真实物理的的宽度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t graphic_buffer_set_physical_width(graphic_buffer_t* buffer, uint32_t width);
+
+/**
+ * @method graphic_buffer_set_physical_height
+ * 设置 graphic_buffer 真实物理的的高度
+ * 
+ * @param {graphic_buffer_t*} buffer 图像缓冲区对象。
+ * @param {uint32_t} height 真实物理的的高度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t graphic_buffer_set_physical_height(graphic_buffer_t* buffer, uint32_t height);
+
+/**
+ * @method graphic_buffer_set_physical_line_length
+ * 设置 graphic_buffer 真实物理的的行长度
+ * 
+ * @param {graphic_buffer_t*} buffer 图像缓冲区对象。
+ * @param {uint32_t} line_length 真实物理的的行长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t graphic_buffer_set_physical_line_length(graphic_buffer_t* buffer, uint32_t line_length);
 
 /**
  * @method graphic_buffer_get_physical_width

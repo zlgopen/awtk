@@ -80,6 +80,7 @@ static pixel_t* lcd_mem_init_drawing_fb(lcd_t* lcd, bitmap_t* fb) {
   if (fb != NULL) {
     *fb = *lcd_mem_find_fb_bitmap_by_buff(lcd ,fbuff);
 
+    fb->orientation = LCD_ORIENTATION_0;
     fb->w = lcd_get_physical_width(lcd);
     fb->h = lcd_get_physical_height(lcd);
     bitmap_set_line_length(fb, lcd_get_physical_line_length(mem));
@@ -686,12 +687,26 @@ static ret_t lcd_mem_destroy(lcd_t* lcd) {
 }
 
 static ret_t lcd_mem_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length) {
+  uint32_t i = 0;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   uint32_t bpp = bitmap_get_bpp_of_format(LCD_FORMAT);
 
   lcd->w = w;
   lcd->h = h;
   mem->line_length = tk_max(mem->base.w * bpp, line_length);
+
+  for (i = 0; i < ARRAY_SIZE(mem->fb_bitmaps); i++) {
+    bitmap_t* iter = mem->fb_bitmaps[i];
+    if (iter != NULL) {
+      iter->w = lcd_get_physical_width(lcd);
+      iter->h = lcd_get_physical_height(lcd);
+      bitmap_set_line_length(iter, lcd_get_physical_line_length(mem));
+      graphic_buffer_set_physical_width(iter->buffer, iter->w);
+      graphic_buffer_set_physical_height(iter->buffer, iter->h);
+      graphic_buffer_set_physical_line_length(iter->buffer, iter->line_length);
+    }
+  }
+
   if (mem->vgcanvas != NULL) {
     vgcanvas_clip_rect(mem->vgcanvas, 0, 0, w, h);
   }
