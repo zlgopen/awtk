@@ -54,7 +54,7 @@
 #include <limits.h>
 #include <inttypes.h>
 
-#if defined(HAS_AWTK_CONFIG)
+#if defined(HAS_AWTK_CONFIG) || defined(CONFIG_HAS_AWTK_CONFIG)
 #include "awtk_config.h"
 #endif /*HAS_AWTK_CONFIG*/
 
