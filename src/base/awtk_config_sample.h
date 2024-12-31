@@ -285,4 +285,11 @@
  * #define WITH_DATA_READER_WRITER 1
  */
 
+
+/**
+ * OS 对应平台有自己的内存管理函数，但是不是标准的malloc/free，请定义本宏，并自己实现tk_alloc/tk_free系列函数。
+ *
+ * #define WITH_OS_MEM 1
+ */
+
 #endif /*AWTK_CONFIG_H*/
