@@ -118,7 +118,7 @@ static gradient_t* gradient_parse_linear(gradient_t* gradient, tokenizer_t* t) {
   return_value_if_fail(token != NULL, NULL);
 
   gradient_set_type(gradient, GRADIENT_LINEAR);
-  if (isdigit(*token)) {
+  if (tk_isdigit(*token)) {
     if (strstr(token, "deg") != NULL) {
     /*
      * linear-gradient(0deg, blue, green 40%, red);
