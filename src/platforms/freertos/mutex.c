@@ -19,11 +19,10 @@
  *
  */
 
-#include "FreeRTOS.h"
-#include "semphr.h"
-
 #include "tkc/mem.h"
 #include "tkc/mutex.h"
+
+#include "freertos_headers.h"
 
 struct _tk_mutex_t {
   SemaphoreHandle_t mutex;

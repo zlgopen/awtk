@@ -19,9 +19,8 @@
  *
  */
 
-#include "FreeRTOS.h"
-#include "task.h"
 #include "platforms/common/rtos.h"
+#include "freertos_headers.h"
 
 static bool_t s_is_running = FALSE;
 

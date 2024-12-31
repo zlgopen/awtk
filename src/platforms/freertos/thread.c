@@ -23,8 +23,8 @@
 #include "tkc/utils.h"
 #include "tkc/thread.h"
 #include "tkc/mutex.h"
-#include "FreeRTOS.h"
-#include "task.h"
+
+#include "freertos_headers.h"
 
 struct _tk_thread_t {
   void* args;

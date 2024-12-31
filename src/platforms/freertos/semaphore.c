@@ -19,13 +19,12 @@
  *
  */
 
-#include "FreeRTOS.h"
-#include "semphr.h"
-
 #include "tkc/mem.h"
 #include "tkc/time_now.h"
 #include "tkc/platform.h"
 #include "tkc/semaphore.h"
+
+#include "freertos_headers.h"
 
 struct _tk_semaphore_t {
   SemaphoreHandle_t sem;
