@@ -27,6 +27,13 @@ set(AWTK_NANOVG_PLUS_INCLUDES
   ${AWTK_3RD_PATH}/nanovg_plus/base
 )
 
+set(AWTK_NANOVG_AGGE_INCLUDES
+  ${AWTK_3RD_PATH}/agge
+  ${AWTK_3RD_PATH}/nanovg
+  ${AWTK_3RD_PATH}/nanovg/agge
+  ${AWTK_3RD_PATH}/nanovg/base
+)
+
 set(AWTK_COMMON_FLAGS "${AWTK_COMMON_FLAGS} -DMOBILE_APP -DWITH_ASSET_LOADER ")
 set(AWTK_COMMON_FLAGS "${AWTK_COMMON_FLAGS} -DWITH_STB_FONT -DWITHOUT_GLAD ")
 set(AWTK_COMMON_FLAGS "${AWTK_COMMON_FLAGS} -DSTBTT_STATIC -DSTB_IMAGE_STATIC -DWITH_STB_IMAGE ")
@@ -47,10 +54,17 @@ file(GLOB AWTK_PORT_SOURCE_FILES
   ${AWTK_PORT_ROOT_PATH}/*.c
 )
 
-set(AWTK_RAW_COMMON_SOURCE_FILES
+file(GLOB AWTK_RAW_COMMON_SOURCE_FILES
+  ${AWTK_SRC_PATH}/image_loader/*.c
   ${AWTK_SRC_PATH}/native_window/native_window_raw.c
   ${AWTK_SRC_PATH}/main_loop/main_loop_simple.c
   ${AWTK_SRC_PATH}/input_methods/input_method_creator.c
+)
+
+file(GLOB AWTK_PORT_FREERTOS_SOURCE_FILES 
+  ${AWTK_SRC_PATH}/platforms/freertos/*.c
+  ${AWTK_SRC_PATH}/platforms/raw/fs_os.c
+  ${AWTK_SRC_PATH}/platforms/raw/dl_null.c
 )
 
 file(GLOB AWTK_PORT_RAW_SOURCE_FILES 
@@ -100,6 +114,15 @@ file(GLOB AWTK_BASE_SOURCE_FILES
   ${AWTK_SRC_PATH}/fscript_ext/*.c
   ${AWTK_SRC_PATH}/charset/*.c
   ${AWTK_SRC_PATH}/blend/*.c
+)
+
+
+file(GLOB AWTK_VGCANVAS_SOFT_SOURCE_FILES
+  ${AWTK_3RD_PATH}/nanovg/base/*.c
+  ${AWTK_3RD_PATH}/nanovg/agge/*.cpp
+  ${AWTK_3RD_PATH}/agge/agge/*.cpp
+  ${AWTK_SRC_PATH}/lcd/lcd_mem*.c
+  ${AWTK_SRC_PATH}/vgcanvas/vgcanvas_nanovg_soft.c
 )
 
 file(GLOB AWTK_VGCANVAS_NANOVG_SOURCE_FILES
