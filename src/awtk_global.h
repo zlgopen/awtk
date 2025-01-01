@@ -187,6 +187,10 @@ ret_t tk_exit(void);
  */
 ret_t tk_run_in_ui_thread(tk_callback_t func, void* ctx, bool_t wait_until_done);
 
+#ifdef USE_GUI_MAIN
+int gui_app_start(int lcd_w, int lcd_h);
+#endif/*USE_GUI_MAIN*/
+
 END_C_DECLS
 
 #endif /*TK_GLOBAL_H*/
