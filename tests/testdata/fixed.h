@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  代码编辑器控件。
  *
- * Copyright (c) 2023 - 2024 Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2023 - 2025 Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of

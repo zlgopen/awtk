@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  用散列值查询属性的object
  *
- * Copyright (c) 2024 - 2025  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2024 - 2025 Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of

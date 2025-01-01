@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  state_machine
  *
- * Copyright (c) 2019 - 2025  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2019 - 2025 Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  */
 
