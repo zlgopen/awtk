@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  object functions for fscript
  *
- * Copyright (c) 2020 - 2024  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2020 - 2025  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  */
 
