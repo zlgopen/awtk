@@ -123,10 +123,6 @@ static mem_allocator_t* mem_allocator_get(void) {
   return s_allocator;
 }
 
-#if (!defined(WITH_SDL) && !defined(LINUX))
-#define EXPORT_STD_MALLOC 1
-#endif
-
 #if defined(EXPORT_STD_MALLOC)
 /*export std malloc*/
 void* calloc(size_t count, size_t size) {
