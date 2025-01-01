@@ -47,6 +47,7 @@
 | --------- | -------------------------------------------------- | ----------------------------------------- |
 | Android   | https://github.com/zlgopen/awtk-android            | [ZLG](http://www.zlg.cn)                  |
 | iOS       | https://github.com/zlgopen/awtk-ios                | [ZLG](http://www.zlg.cn)                  |
+| 鸿蒙系统  | https://github.com/zlgopen/awtk-harmonyos-next     | [ZLG](http://www.zlg.cn)                  |
 | Web       | https://github.com/zlgopen/awtk-web                | [ZLG](http://www.zlg.cn)                  |
 | 海思Linux | https://github.com/zlgopen/awtk-linux-fb/issues/28 | [kent52712](https://github.com/kent52712) |
 | VSF平台   | https://github.com/vsfteam/vsf                     | [vsfteam](https://github.com/vsfteam)     |
@@ -84,6 +85,7 @@
 
 | 芯片  | 操作系统 | 下载地址                                | 作者                                      |
 | ----- | -------- | --------------------------------------- | ----------------------------------------- |
+| ESP32 | FreeRTOS | https://github.com/zlgopen/awtk-esp     | [ZLG](http://www.zlg.cn)                  |
 | ESP32 | FreeRTOS | https://github.com/jason-mao/esp32-awtk | [jason-mao](https://github.com/jason-mao) |
 
 - #### GigaDevice
