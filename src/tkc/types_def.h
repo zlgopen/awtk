@@ -576,7 +576,6 @@ typedef struct _event_source_manager_t event_source_manager_t;
 #define STR_SCHEMA_FTP "ftp://"
 #define STR_SCHEMA_HTTP "http://"
 #define STR_SCHEMA_HTTPS "https://"
-#define STR_SCHEMA_SERIAL "serial://"
 #define STR_SCHEMA_MEM "mem://"
 
 #define TK_STR_IS_EMPTY(s) (s == NULL || *s == '\0')
