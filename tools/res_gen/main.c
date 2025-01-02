@@ -21,6 +21,7 @@
 #include "tkc/fs.h"
 #include "tkc/path.h"
 #include "tkc/mem.h"
+#include "tkc/tokenizer.h"
 #include "common/utils.h"
 #include "base/assets_manager.h"
 static ret_t gen_one(const char* in_filename, const char* out_filename, const char* theme,
@@ -168,24 +169,104 @@ static ret_t gen_folder(const char* in_foldername, const char* out_foldername, c
   return ret;
 }
 
+
+static ret_t gen_sources(const char* src_filename, const char* in_foldername,
+                         const char* out_foldername, const char* theme, const char* extname,
+                         const char* dir_name, bool_t data_folder) {
+  fs_item_t item;
+  ret_t ret = RET_OK;
+  char in_name[MAX_PATH] = {0};
+  char out_name[MAX_PATH] = {0};
+
+  if (!fs_file_exist(os_fs(), src_filename)) {
+    log_debug("gen fail, sources file \"%s\" not exist!", src_filename);
+    return RET_FAIL;
+  }
+
+  if (!fs_dir_exist(os_fs(), out_foldername)) {
+    fs_create_dir(os_fs(), out_foldername);
+  }
+
+  darray_t sources;
+  darray_init(&sources, 0, default_destroy, NULL);
+
+  char type[63] = {0};
+  path_basename(out_foldername, type, sizeof(type));
+  const char* dpr = get_image_dpr(in_foldername);
+  if (dpr) {
+    get_image_names_from_sources_file(src_filename, &sources, dpr);
+    TKMEM_FREE(dpr);
+  } else {
+    get_res_names_from_sources_file(src_filename, &sources);
+  }
+
+  for (size_t i = 0; i < sources.size; i++) {
+    str_t str_name;
+    str_t res_name;
+    char ext_array[MAX_PATH] = {0};
+    const char* name = (const char*)darray_get(&sources, i);
+
+    path_build(in_name, MAX_PATH, in_foldername, name, NULL);
+    if (!fs_file_exist(os_fs(), in_name)) {
+      continue;
+    }
+    path_extname(name, ext_array, MAX_PATH);
+
+    str_init(&res_name, 0);
+    str_init(&str_name, 0);
+    str_set(&str_name, name);
+    if (!data_folder) {
+      str_replace(&str_name, ext_array, "");
+    }
+    ensure_output_res_name(&str_name, FALSE, extname);
+
+    str_append(&res_name, dir_name);
+    str_append(&res_name, name);
+
+    path_build(in_name, MAX_PATH, in_foldername, name, NULL);
+    path_build(out_name, MAX_PATH, out_foldername, str_name.str, NULL);
+
+    char out_folder[MAX_PATH + 1] = {0};
+    path_dirname(out_name, out_folder, MAX_PATH);
+    makesure_folder_exist(out_folder);
+
+    ret = gen_one(in_name, out_name, theme, &res_name);
+    str_reset(&str_name);
+    str_reset(&res_name);
+    if (ret == RET_FAIL) {
+      printf(
+          "gen fail, filename = %s! desc = the resource file is empty, please confirm that the "
+          "resource file has saved data.!\n",
+          in_name);
+      break;
+    }
+  }
+
+  darray_deinit(&sources);
+  return ret;
+}
+
 bool_t is_data_folder(const char* folder_name) {
   char basename[MAX_PATH] = {0};
   path_basename(folder_name, basename, MAX_PATH);
   return tk_str_eq(basename, "data");
 }
 
+
 int wmain(int argc, wchar_t* argv[]) {
   const char* in_filename = NULL;
   const char* out_filename = NULL;
+  const char* src_filename = NULL;
   platform_prepare();
 
   if (argc < 3) {
-    printf("Usage: %S in_filename out_filename [theme] [out_extname]\n", argv[0]);
+    printf("Usage: %S in_filename out_filename [src_filename] [theme] [out_extname]\n", argv[0]);
     return 0;
   }
 
   str_t in_file;
   str_t out_file;
+  str_t src_file;
   str_t str_extname;
   str_t theme_name;
 
@@ -195,13 +276,22 @@ int wmain(int argc, wchar_t* argv[]) {
   str_from_wstr(&in_file, argv[1]);
   str_from_wstr(&out_file, argv[2]);
 
-  str_init(&theme_name, 0);
+  str_init(&src_file, 0);
   if (argc > 3) {
-    str_from_wstr(&theme_name, argv[3]);
+    str_from_wstr(&src_file, argv[3]);
+    str_trim(&src_file, " ");
+    if (!str_eq(&src_file, "")) {
+      src_filename = src_file.str;
+    }
+  }
+
+  str_init(&theme_name, 0);
+  if (argc > 4) {
+    str_from_wstr(&theme_name, argv[4]);
   }
   str_init(&str_extname, 0);
-  if (argc > 4) {
-    str_from_wstr(&str_extname, argv[4]);
+  if (argc > 5) {
+    str_from_wstr(&str_extname, argv[5]);
   }
 
   in_filename = in_file.str;
@@ -212,8 +302,13 @@ int wmain(int argc, wchar_t* argv[]) {
   fs_stat(os_fs(), in_filename, &in_stat_info);
   fs_stat(os_fs(), out_filename, &out_stat_info);
   if (in_stat_info.is_dir == TRUE && out_stat_info.is_dir == TRUE) {
-    gen_folder(in_filename, out_filename, theme_name.str, str_extname.str, "",
-               is_data_folder(in_filename));
+    if (src_filename != NULL) {
+      gen_sources(src_filename, in_filename, out_filename, theme_name.str, str_extname.str, "",
+                  is_data_folder(in_filename));
+    } else {
+      gen_folder(in_filename, out_filename, theme_name.str, str_extname.str, "",
+                 is_data_folder(in_filename));
+    }
   } else if (in_stat_info.is_reg_file == TRUE) {
     str_t res_name;
     char name[MAX_PATH + 1] = {0};
@@ -233,6 +328,7 @@ int wmain(int argc, wchar_t* argv[]) {
 
   str_reset(&in_file);
   str_reset(&out_file);
+  str_reset(&src_file);
   str_reset(&theme_name);
   str_reset(&str_extname);
 

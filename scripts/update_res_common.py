@@ -8,6 +8,8 @@ import glob
 import shutil
 import platform
 import subprocess
+import fnmatch
+import json
 
 ###########################
 DPI = 'x1'
@@ -382,12 +384,12 @@ def exec_cmd(cmd):
             sys.exit(1)
 
 
-def themegen(raw, inc, theme):
-    exec_cmd('\"' + to_exe('themegen') + '\" \"' + raw + '\" \"' + inc + '\" data ' + theme)
+def themegen(raw, inc, theme, sources_file = ' '):
+    exec_cmd('\"' + to_exe('themegen') + '\" \"' + raw + '\" \"' + inc + '\" \"' + sources_file + '\" data ' + theme)
 
 
-def themegen_bin(raw, bin):
-    exec_cmd('\"' + to_exe('themegen') + '\" \"' + raw + '\" \"' + bin + '\" bin')
+def themegen_bin(raw, bin, sources_file = ' '):
+    exec_cmd('\"' + to_exe('themegen') + '\" \"' + raw + '\" \"' + bin + '\" \"' + sources_file +  '\" bin')
 
 
 def strgen(raw, inc, theme):
@@ -397,8 +399,8 @@ def strgen(raw, inc, theme):
 def strgen_bin(raw, bin):
     exec_cmd('\"' + to_exe('strgen') + '\" \"' + raw + '\" \"' + bin + '\" bin')
 
-def resgen(raw, inc, theme, outExtname):
-    exec_cmd('\"' + to_exe('resgen') + '\" \"' + raw + '\" \"' + inc + '\" ' + theme + ' ' + outExtname)
+def resgen(raw, inc, theme, outExtname, sources_file = ' '):
+    exec_cmd('\"' + to_exe('resgen') + '\" \"' + raw + '\" \"' + inc + '\" \"' + sources_file + '\" ' + theme + ' ' + outExtname)
 
 
 def fontgen(raw, text, inc, size, options, theme):
@@ -410,26 +412,26 @@ def fontgen(raw, text, inc, size, options, theme):
         str(size) + ' ' + options + ' ' + theme)
 
 
-def imagegen(raw, inc, options, theme, lcd_orientation, lcd_fast_rotation_mode):
+def imagegen(raw, inc, options, theme, lcd_orientation, lcd_fast_rotation_mode, sources_file = ' '):
     if not lcd_fast_rotation_mode :
         lcd_orientation = '0'
-    exec_cmd('\"' + to_exe('imagegen') + '\" \"' + raw + '\" \"' + inc + '\" ' + options + ' ' + theme + ' ' + lcd_orientation)
+    exec_cmd('\"' + to_exe('imagegen') + '\" \"' + raw + '\" \"' + inc + '\" ' + options + ' \"' + sources_file + '\" ' + theme + ' ' + lcd_orientation)
 
 
-def svggen(raw, inc, theme):
-    exec_cmd('\"' + to_exe('bsvggen') + '\" \"' + raw + '\" \"' + inc + '\" data ' + theme)
+def svggen(raw, inc, theme, sources_file = ' '):
+    exec_cmd('\"' + to_exe('bsvggen') + '\" \"' + raw + '\" \"' + inc + '\" \"' + sources_file + '\" data ' + theme)
 
 
-def svggen_bin(raw, bin):
-    exec_cmd('\"' + to_exe('bsvggen') + '\" \"' + raw + '\" \"' + bin + '\" bin')
+def svggen_bin(raw, bin, sources_file = ' '):
+    exec_cmd('\"' + to_exe('bsvggen') + '\" \"' + raw + '\" \"' + bin + '\" \"' + sources_file + '\" bin')
 
 
-def xml_to_ui(raw, inc, theme):
-    exec_cmd('\"' + to_exe('xml_to_ui') + '\" \"' + raw + '\" \"' + inc + '\" data \"\" ' + theme)
+def xml_to_ui(raw, inc, theme, sources_file = ' '):
+    exec_cmd('\"' + to_exe('xml_to_ui') + '\" \"' + raw + '\" \"' + inc + '\" \"' + sources_file + '\" data \"\" ' + theme)
 
 
-def xml_to_ui_bin(raw, bin):
-    exec_cmd('\"' + to_exe('xml_to_ui') + '\" \"' + raw + '\" \"' + bin + '\" bin')
+def xml_to_ui_bin(raw, bin, sources_file = ' '):
+    exec_cmd('\"' + to_exe('xml_to_ui') + '\" \"' + raw + '\" \"' + bin + '\" \"' + sources_file + '\" bin')
 
 
 def gen_res_all_style():
@@ -442,15 +444,19 @@ def gen_res_all_style():
 
     emit_generate_res_before('style')
 
+    sources_file = ' '
+    if STORAGE_DIR:
+        sources_file = join_path(STORAGE_DIR, THEME + '/styles.json')
+
     if IS_GENERATE_RAW:
         bin = join_path(OUTPUT_DIR, 'raw/styles')
         make_dirs(bin)
-        themegen_bin(raw, bin)
+        themegen_bin(raw, bin, sources_file)
 
     if IS_GENERATE_INC_RES or IS_GENERATE_INC_BITMAP:
         inc = join_path(OUTPUT_DIR, 'inc/styles')
         make_dirs(inc)
-        themegen(raw, inc, THEME)
+        themegen(raw, inc, THEME, sources_file)
 
     emit_generate_res_after('style')
 
@@ -460,40 +466,62 @@ def gen_res_svg():
     if not os.path.exists(raw):
         return
 
+    sources_file = ' '
+    if STORAGE_DIR:
+        sources_file = join_path(STORAGE_DIR, THEME + '/images.json')
+
     if IS_GENERATE_RAW:
         bin = join_path(OUTPUT_DIR, 'raw/images/svg')
         make_dirs(bin)
-        svggen_bin(raw, bin)
+        svggen_bin(raw, bin, sources_file)
 
     if IS_GENERATE_INC_RES or IS_GENERATE_INC_BITMAP:
         inc = join_path(OUTPUT_DIR, 'inc/images')
         make_dirs(inc)
-        svggen(raw, inc, THEME)
+        svggen(raw, inc, THEME, sources_file)
 
 
 def gen_res_png_jpg():
     if IS_GENERATE_RAW:
         if INPUT_DIR != join_path(OUTPUT_DIR, 'raw'):
-            dirs = ['xx', 'x1', 'x2', 'x3', 'x4']
-            for d in dirs:
-                raw = join_path(INPUT_DIR, 'images/'+d)
-                if os.path.exists(raw):
-                    dst = join_path(OUTPUT_DIR, 'raw/images/'+d)
-                    if os.path.exists(dst):
-                        remove_dir(dst)
-                    copy_dir(raw, dst)
+            names = None
+            in_folder = join_path(INPUT_DIR, 'images/')
+            out_folder = in_folder.replace(INPUT_DIR, join_path(OUTPUT_DIR, 'raw'))
+            if STORAGE_DIR:
+                sources_file = join_path(STORAGE_DIR, THEME + '/images.json')
+                names = get_res_names_from_sources_file(sources_file)
+            if isinstance(names, list):
+                for name in names:
+                    if name.startswith('svg/'):
+                        continue
+                    in_file = join_path(in_folder, name)
+                    out_file = join_path(out_folder, name)
+                    make_dirs(os.path.dirname(out_file))
+                    copy_file(in_file, out_file)
+            else:
+                dirs = ['xx', 'x1', 'x2', 'x3', 'x4']
+                for d in dirs:
+                    raw = join_path(INPUT_DIR, 'images/'+d)
+                    if os.path.exists(raw):
+                        dst = join_path(OUTPUT_DIR, 'raw/images/'+d)
+                        if os.path.exists(dst):
+                            remove_dir(dst)
+                        copy_dir(raw, dst)
 
     if IS_GENERATE_INC_RES or IS_GENERATE_INC_BITMAP:
         inc = join_path(OUTPUT_DIR, 'inc/images')
         dirs = [DPI, 'xx']
+        sources_file = ' '
+        if STORAGE_DIR:
+            sources_file = join_path(STORAGE_DIR, THEME + '/images.json')
         for d in dirs:
             raw = join_path(INPUT_DIR, 'images/'+d)
             if os.path.exists(raw):
                 make_dirs(inc)
                 if IS_GENERATE_INC_RES:
-                    resgen(raw, inc, THEME, '.res')
+                    resgen(raw, inc, THEME, '.res', sources_file)
                 if IS_GENERATE_INC_BITMAP:
-                    imagegen(raw, inc, IMAGEGEN_OPTIONS, THEME, LCD_ORIENTATION, LCD_FAST_ROTATION_MODE)
+                    imagegen(raw, inc, IMAGEGEN_OPTIONS, THEME, LCD_ORIENTATION, LCD_FAST_ROTATION_MODE, sources_file)
 
         # 如果当前主题的gen选项与default主题不一致，则按新的gen选项重新生成图片的位图数据
         if IS_GENERATE_INC_BITMAP and THEME != 'default':
@@ -506,7 +534,7 @@ def gen_res_png_jpg():
 
                     if os.path.exists(raw):
                         make_dirs(inc)
-                        imagegen(raw, inc, IMAGEGEN_OPTIONS, THEME, LCD_ORIENTATION, LCD_FAST_ROTATION_MODE)
+                        imagegen(raw, inc, IMAGEGEN_OPTIONS, THEME, LCD_ORIENTATION, LCD_FAST_ROTATION_MODE, sources_file)
 
 
 def gen_res_all_image():
@@ -518,7 +546,6 @@ def gen_res_all_image():
     gen_res_svg()
     emit_generate_res_after('image')
 
-
 def gen_res_all_ui():
     if not THEME_PACKAGED and THEME != 'default':
         return
@@ -529,15 +556,19 @@ def gen_res_all_ui():
 
     emit_generate_res_before('ui')
 
+    sources_file = ' '
+    if STORAGE_DIR:
+        sources_file = join_path(STORAGE_DIR, THEME + '/ui.json')
+
     if IS_GENERATE_RAW:
         bin = join_path(OUTPUT_DIR, 'raw/ui')
         make_dirs(bin)
-        xml_to_ui_bin(raw, bin)
+        xml_to_ui_bin(raw, bin, sources_file)
 
     if IS_GENERATE_INC_RES or IS_GENERATE_INC_BITMAP:
         inc = join_path(OUTPUT_DIR, 'inc/ui')
         make_dirs(inc)
-        xml_to_ui(raw, inc, THEME)
+        xml_to_ui(raw, inc, THEME, sources_file)
 
     emit_generate_res_after('ui')
 
@@ -552,17 +583,30 @@ def gen_res_all_data():
 
     emit_generate_res_before('data')
 
+    sources_file = ' '
+    if STORAGE_DIR:
+        sources_file = join_path(STORAGE_DIR, THEME + '/data.json')
+
     if IS_GENERATE_RAW:
         if INPUT_DIR != join_path(OUTPUT_DIR, 'raw'):
-            dst = join_path(OUTPUT_DIR, 'raw/data')
-            if os.path.exists(dst):
-                remove_dir(dst)
-            copy_dir(raw, dst)
+            in_folder = join_path(INPUT_DIR, 'data')
+            out_folder = join_path(OUTPUT_DIR, 'raw/data')
+            if sources_file != ' ':
+                names = get_res_names_from_sources_file(sources_file)
+                for name in names:
+                    in_file = join_path(in_folder, name)
+                    out_file = join_path(out_folder, name)
+                    make_dirs(os.path.dirname(out_file))
+                    copy_file(in_file, out_file)
+            else:
+                if os.path.exists(out_folder):
+                    remove_dir(out_folder)
+                copy_dir(raw, out_folder)
 
     if IS_GENERATE_INC_RES or IS_GENERATE_INC_BITMAP:
         inc = join_path(OUTPUT_DIR, 'inc/data')
         make_dirs(inc)
-        resgen(raw, inc, THEME, '.data')
+        resgen(raw, inc, THEME, '.data', sources_file)
 
     emit_generate_res_after('data')
 
@@ -617,25 +661,39 @@ def gen_res_all_xml():
 
 
 def gen_res_bitmap_font(input_dir, font_options, theme):
+    storage_dir = input_dir
     if STORAGE_DIR:
-        input_dir = join_path(STORAGE_DIR, theme)
+        storage_dir = join_path(STORAGE_DIR, theme)
 
-    if not os.path.exists(join_path(input_dir, 'fonts/config')):
+    if not os.path.exists(join_path(storage_dir, 'fonts/config')):
         return
 
-    for f in glob.glob(join_path(input_dir, 'fonts/config/*.txt')):
+    font_names = None
+    if STORAGE_DIR:
+        sources_file = join_path(STORAGE_DIR, THEME + '/fonts.json')
+        font_names = get_res_names_from_sources_file(sources_file)
+        if font_names:
+            font_names = list(map(lambda s: os.path.splitext(s)[0], font_names))
+
+    for f in glob.glob(join_path(storage_dir, 'fonts/config/*.txt')):
         filename, extname = os.path.splitext(f)
         fontname = os.path.basename(filename)
+
         index = fontname.rfind('_')
         if index > 0:
-            raw = join_path(input_dir, 'fonts') + '/origin/' + fontname[0: index] + '.ttf'
+            size = fontname[index + 1 : len(fontname)]
+            fontname = fontname[0: index]
+
+            if font_names and fontname not in font_names: #有指定资源,但当前字体不在指定资源内，则跳过
+                continue
+
+            raw = join_path(storage_dir, 'fonts') + '/origin/' + fontname + '.ttf'
             if not os.path.exists(raw):
-                raw = os.path.dirname(os.path.dirname(filename)) + '/' + fontname[0: index] + '.ttf'
-            if os.path.exists(raw):
-                size = fontname[index + 1 : len(fontname)]
-                if size.isdigit():
-                    inc = join_path(OUTPUT_DIR, 'inc/fonts/' + fontname[0: index] + '_' + str(size) + '.data')
-                    fontgen(raw, f, inc, size, font_options, theme)
+                raw = join_path(input_dir, 'fonts') + '/' + fontname + '.ttf'
+
+            if os.path.exists(raw) and size.isdigit():
+                inc = join_path(OUTPUT_DIR, 'inc/fonts/' + fontname + '_' + str(size) + '.data')
+                fontgen(raw, f, inc, size, font_options, theme)
 
 
 def gen_res_all_font():
@@ -643,20 +701,33 @@ def gen_res_all_font():
         return
 
     emit_generate_res_before('font')
+    font_files = None
+    if STORAGE_DIR:
+        sources_file = join_path(STORAGE_DIR, THEME + '/fonts.json')
+        names = get_res_names_from_sources_file(sources_file)
+        if isinstance(names, list):
+            font_files = list(map(lambda n: join_path(join_path(INPUT_DIR, 'fonts/'), n), names))
 
     if IS_GENERATE_RAW:
         if INPUT_DIR != join_path(OUTPUT_DIR, 'raw'):
             make_dirs(join_path(OUTPUT_DIR, 'raw/fonts'))
-
-            in_files = join_path(INPUT_DIR, 'fonts/')
-            for f in get_appint_folder(in_files, '.ttf', False):
-                out_files = f[0].replace(INPUT_DIR, join_path(OUTPUT_DIR, 'raw'))
-                out_foler = os.path.dirname(out_files)
-                if 'origin' in out_foler:
-                    continue
-                if not os.path.exists(out_foler):
-                    make_dirs(out_foler)
-                copy_file(f[0], out_files)
+            in_folder = join_path(INPUT_DIR, 'fonts/')
+            if isinstance(font_files, list):
+                for in_file in font_files:
+                    out_file = in_file.replace(INPUT_DIR, join_path(OUTPUT_DIR, 'raw'))
+                    out_folder = os.path.dirname(out_file)
+                    if not os.path.exists(out_folder):
+                        make_dirs(out_folder)
+                    copy_file(in_file, out_file)
+            else:
+                for f in get_appint_folder(in_folder, '.ttf', False):
+                    out_files = f[0].replace(INPUT_DIR, join_path(OUTPUT_DIR, 'raw'))
+                    out_folder = os.path.dirname(out_files)
+                    if 'origin' in out_folder:
+                        continue
+                    if not os.path.exists(out_folder):
+                        make_dirs(out_folder)
+                    copy_file(f[0], out_files)
 
     if IS_GENERATE_INC_RES or IS_GENERATE_INC_BITMAP:
         inc_dir = join_path(OUTPUT_DIR, 'inc/fonts')
@@ -693,18 +764,28 @@ def gen_res_all_font():
                         fontgen(raw, text, inc, size, font_options, THEME)
 
         if IS_GENERATE_INC_RES:
-            if not os.path.exists(join_path(INPUT_DIR, 'fonts')):
+            in_folder = join_path(INPUT_DIR, 'fonts')
+            if not os.path.exists(in_folder):
                 return
 
-            for f in get_appint_folder(join_path(INPUT_DIR, 'fonts/'), ".ttf", False):
-                filename, extname = os.path.splitext(f[0])
-                raw = f[0]
-                filename = filename.replace(INPUT_DIR, join_path(OUTPUT_DIR, 'inc'))
-                inc = filename + '.res'
-                if "origin" in inc:
-                    continue
-                resgen(raw, inc, THEME, '.res')
-
+            if isinstance(font_files, list):
+                for in_file in font_files:
+                    filename, extname = os.path.splitext(in_file)
+                    out_file = filename.replace(INPUT_DIR, join_path(OUTPUT_DIR, 'inc'))
+                    out_file = out_file + '.res'
+                    out_folder = os.path.dirname(out_file)
+                    if not os.path.exists(out_folder):
+                        make_dirs(out_folder)
+                    resgen(in_file, out_file, THEME, '.res')
+            else:
+                for f in get_appint_folder(in_folder, ".ttf", False):
+                    filename, extname = os.path.splitext(f[0])
+                    raw = f[0]
+                    filename = filename.replace(INPUT_DIR, join_path(OUTPUT_DIR, 'inc'))
+                    inc = filename + '.res'
+                    if "origin" in inc:
+                        continue
+                    resgen(raw, inc, THEME, '.res')
     emit_generate_res_after('font')
 
 
@@ -1228,38 +1309,38 @@ def get_opts(args) :
                 'res_config_script_argv=', 'RES_CONFIG_SCRIPT_ARGV=',
                 'output_dir=', 'OUTPUT_DIR=',
                 'app_root=', 'APP_ROOT',
-                ];
+                ]
     try :
-        opts, tmp_args = getopt.getopt(args, 'h', longsots);
-        return opts;
+        opts, tmp_args = getopt.getopt(args, 'h', longsots)
+        return opts
     except getopt.GetoptError as err:
-        print(err.msg);
-    return None;
+        print(err.msg)
+    return None
 
 def is_all_sopts_args(args) :
     for arg in args:
         if not arg.startswith('--') and not arg.startswith('-'):
-            return False;
-    return True;
+            return False
+    return True
 
 def get_longsopt_name_by_tuple(tuple) :
-    return tuple[0][2:].lower();
+    return tuple[0][2:].lower()
 
 def get_shortopt_name_by_tuple(tuple) :
-    return tuple[0][1:].lower();
+    return tuple[0][1:].lower()
 
 def get_longsopts_args(args) :
-    opts = get_opts(args);
+    opts = get_opts(args)
     if opts != None :
-        data = {};
+        data = {}
         for tmp_opts in opts :
             value = tmp_opts[1]
             if isinstance(value, str) and value[0] == '"' and value[-1] == '"' :
                 value = value[1:-1]
             data[get_longsopt_name_by_tuple(tmp_opts)] = value
-        return data;
+        return data
     else :
-        return None;
+        return None
 
 def show_usage_imlp(is_new_usage):
     if is_new_usage :
@@ -1340,19 +1421,19 @@ def show_usage(is_new_usage = False):
     if len(sys.argv) == 1:
         show_usage_imlp(is_new_usage)
     else:
-        args = sys.argv[1:];
+        args = sys.argv[1:]
         if is_all_sopts_args(args) :
-            opts = get_opts(args);
+            opts = get_opts(args)
             if opts == None :
                 show_usage_imlp(is_new_usage)
             else :
-                find_action = False;
+                find_action = False
                 for tmp_opts in opts :
-                    str_opt = get_longsopt_name_by_tuple(tmp_opts);
+                    str_opt = get_longsopt_name_by_tuple(tmp_opts)
                     if str_opt == 'help' or get_shortopt_name_by_tuple(tmp_opts) == 'h':
                         show_usage_imlp(is_new_usage)
                     elif str_opt == 'action' :
-                        find_action = True;
+                        find_action = True
                 if not find_action :
                     show_usage_imlp(is_new_usage)
         else :
@@ -1360,3 +1441,21 @@ def show_usage(is_new_usage = False):
             if len(sys_args) == 0 :
                 show_usage_imlp(is_new_usage)
 
+def find_ttf_files(folder):
+    ttf_files = []
+    for root, dirs, files in os.walk(folder):
+        t_files = fnmatch.filter(files, '*.ttf')
+        for filename in t_files:
+            ttf_files.append(os.path.join(root, filename))
+    return ttf_files
+
+def get_res_names_from_sources_file(sources_file):
+    try:
+        with open(sources_file, 'r', encoding='utf-8') as file:
+            data = json.load(file)
+            if 'sources' in data:
+                return data['sources']
+            return []
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        print('An error occurred: {}'.format(e))
+        return None

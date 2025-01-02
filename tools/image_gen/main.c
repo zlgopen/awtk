@@ -22,6 +22,7 @@
 #include "tkc/fs.h"
 #include "tkc/path.h"
 #include "tkc/mem.h"
+#include "tkc/tokenizer.h"
 #include "image_gen.h"
 #include "common/utils.h"
 #include "base/image_manager.h"
@@ -140,10 +141,87 @@ static ret_t gen_folder(const char* in_foldername, const char* out_foldername, c
   return RET_OK;
 }
 
+static ret_t gen_sources(const char* src_filename, const char* in_foldername,
+                         const char* out_foldername, const char* theme, const char* dir_name,
+                         image_format_t* image_format, lcd_orientation_t o) {
+  fs_item_t item;
+  ret_t ret = RET_OK;
+  char in_name[MAX_PATH] = {0};
+  char out_name[MAX_PATH] = {0};
+  fs_dir_t* dir = fs_open_dir(os_fs(), in_foldername);
+
+  if (!fs_file_exist(os_fs(), src_filename)) {
+    log_debug("gen fail, sources file \"%s\" not exist!", src_filename);
+    return RET_FAIL;
+  }
+
+  if (!fs_dir_exist(os_fs(), out_foldername)) {
+    fs_create_dir(os_fs(), out_foldername);
+  }
+
+  darray_t sources;
+  darray_init(&sources, 10, default_destroy, NULL);
+
+  char type[63] = {0};
+  path_basename(out_foldername, type, sizeof(type));
+  const char* dpr = get_image_dpr(in_foldername);
+  if (dpr) {
+    get_image_names_from_sources_file(src_filename, &sources, dpr);
+    TKMEM_FREE(dpr);
+  } else {
+    get_res_names_from_sources_file(src_filename, &sources);
+  }
+
+  for (size_t i = 0; i < sources.size; i++) {
+    str_t str_name;
+    str_t res_name;
+    char ext_array[MAX_PATH] = {0};
+    const char* name = (const char*)darray_get(&sources, i);
+
+    path_build(in_name, MAX_PATH, in_foldername, name, NULL);
+    if (!fs_file_exist(os_fs(), in_name)) {
+      continue;
+    }
+
+    const char* p = strrchr(name, '.');
+    path_extname(name, ext_array, MAX_PATH);
+
+    str_init(&res_name, 0);
+    str_init(&str_name, 0);
+    str_set(&str_name, name);
+    str_replace(&str_name, ext_array, "");
+    ensure_output_res_name(&str_name, FALSE, ".data");
+
+    str_append(&res_name, dir_name);
+    str_append(&res_name, name);
+    str_replace(&res_name, p, "");
+
+    path_build(in_name, MAX_PATH, in_foldername, name, NULL);
+    path_build(out_name, MAX_PATH, out_foldername, str_name.str, NULL);
+
+    char out_folder[MAX_PATH + 1] = {0};
+    path_dirname(out_name, out_folder, MAX_PATH);
+    makesure_folder_exist(out_folder);
+
+    ret = gen_one(in_name, out_name, theme, res_name.str, image_format, o);
+    str_reset(&str_name);
+    str_reset(&res_name);
+    if (ret != RET_OK) {
+      break;
+    }
+  }
+
+  darray_deinit(&sources);
+
+  return ret;
+}
+
 int wmain(int argc, wchar_t* argv[]) {
   const char* in_filename = NULL;
   const char* out_filename = NULL;
+  const char* src_filename = NULL;
   const wchar_t* format = NULL;
+  const char* sources = NULL;
   lcd_orientation_t lcd_orientation = LCD_ORIENTATION_0;
 
   platform_prepare();
@@ -160,17 +238,27 @@ int wmain(int argc, wchar_t* argv[]) {
   image_format_t image_format = {BITMAP_FMT_RGBA8888, BITMAP_FMT_RGBA8888};
   image_format_set(&image_format, format);
 
-  str_t theme_name;
-  str_init(&theme_name, 0);
+  str_t src_file;
+  str_init(&src_file, 0);
   if (argc > 4) {
-    str_from_wstr(&theme_name, argv[4]);
+    str_from_wstr(&src_file, argv[4]);
+    str_trim(&src_file, " ");
+    if (!str_eq(&src_file, "")) {
+      src_filename = src_file.str;
+    }
   }
 
+  str_t theme_name;
+  str_init(&theme_name, 0);
   if (argc > 5) {
+    str_from_wstr(&theme_name, argv[5]);
+  }
+
+  if (argc > 6) {
     wstr_t str_lcd_orientation;
     int tmp_lcd_orientation = 0;
     wstr_init(&str_lcd_orientation, 0);
-    wstr_append(&str_lcd_orientation, argv[5]);
+    wstr_append(&str_lcd_orientation, argv[6]);
     if (wstr_to_int(&str_lcd_orientation, &tmp_lcd_orientation) == RET_OK) {
       lcd_orientation = (lcd_orientation_t)tmp_lcd_orientation;
     }
@@ -194,7 +282,12 @@ int wmain(int argc, wchar_t* argv[]) {
   fs_stat(os_fs(), in_filename, &in_stat_info);
   fs_stat(os_fs(), out_filename, &out_stat_info);
   if (in_stat_info.is_dir == TRUE && out_stat_info.is_dir == TRUE) {
-    gen_folder(in_filename, out_filename, theme_name.str, "", &image_format, lcd_orientation);
+    if (src_filename != NULL) {
+      gen_sources(src_filename, in_filename, out_filename, theme_name.str, "", &image_format,
+                  lcd_orientation);
+    } else {
+      gen_folder(in_filename, out_filename, theme_name.str, "", &image_format, lcd_orientation);
+    }
   } else if (in_stat_info.is_reg_file == TRUE) {
     char name[MAX_PATH + 1] = {0};
     path_basename_ex(in_filename, TRUE, name, sizeof(name));

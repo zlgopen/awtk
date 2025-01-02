@@ -26,12 +26,18 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+
 #include "tkc/fs.h"
 #include "tkc/mem.h"
 #include "tkc/wstr.h"
-#include "base/enums.h"
 #include "tkc/path.h"
+#include "tkc/str.h"
+#include "tkc/data_reader_factory.h"
+#include "tkc/data_reader_file.h"
+#include "base/enums.h"
 #include "base/assets_manager.h"
+#include "conf_io/conf_json.h"
+#include "utils.h"
 
 static bool_t exit_if_need_not_update_for_include_subfile(const char* in, fs_stat_info_t* fst_out) {
   fs_stat_info_t fst_in;
@@ -190,10 +196,31 @@ int unique(wchar_t* str, int size) {
   return d - str;
 }
 
+static str_t* format_folder_name(const char* name) {
+  str_t* str = str_create(2 * TK_NAME_LEN + 1);
+
+  tokenizer_t t;
+  tokenizer_init(&t, name, strlen(name), "/\\");
+  while (tokenizer_has_more(&t)) {
+    const char* text = tokenizer_next(&t);
+    if(str->size == 0) {
+      str_set(str, text);
+    } else {
+      str_append(str, "_"); // 目录名称前再加一个 "_"，避免文件重名冲突。
+      str_append(str, text);
+    }
+    str_append(str, "_"); // 将斜杠替换为 "_"
+  }
+  tokenizer_deinit(&t);
+
+  str_pop(str); // 去掉末尾多余的"_"
+  return str;
+}
+
 static const char* to_var_name(char var_name[2 * TK_NAME_LEN + 1], const char* theme,
                                const char* prefix, const char* name) {
   char tmp[TK_NAME_LEN + 1] = {0};
-  char tmp_var_name[2 * TK_NAME_LEN + 1];
+  char tmp_var_name[2 * TK_NAME_LEN + 1] = {0};
   const char* p = name + tk_strlen(name);
   while (p != name) {
     if (*p == '\\' || *p == '/') {
@@ -360,4 +387,178 @@ const char* filter_name(char* name) {
   }
 
   return name;
+}
+
+ret_t ensure_output_res_name(str_t* str_name, bool_t is_bin, const char* ext) {
+  return_value_if_fail(str_name != NULL, RET_BAD_PARAMS);
+
+  if (!is_bin) {
+    char basename[MAX_PATH] = {0};
+    char dirname[MAX_PATH] = {0};
+
+    path_basename(str_name->str, basename, MAX_PATH);
+    if (!tk_str_eq(str_name->str, basename)) {
+      path_dirname(str_name->str, dirname, MAX_PATH);
+      str_set(str_name, dirname);
+      str_append(str_name, "/");
+      str_append(str_name, filter_name(basename));
+    } else {
+      str_set(str_name, filter_name(basename));
+    }
+  }
+
+  str_append(str_name, ext);
+
+  return RET_OK;
+}
+
+ret_t makesure_folder_exist(const char* folder) {
+  char tmp[MAX_PATH + 1] = {0};
+  if (end_with(folder, "\\") || end_with(folder, "/")) {
+    tk_strncpy(tmp, folder, tk_strlen(folder) - 1);
+    folder = tmp;
+  }
+
+  char p_folder[MAX_PATH + 1] = {0};
+  path_dirname(folder, p_folder, MAX_PATH);
+  if (!fs_dir_exist(os_fs(), p_folder)) {
+    makesure_folder_exist(p_folder);
+  }
+
+  if (!fs_dir_exist(os_fs(), folder)) {
+    fs_create_dir(os_fs(), folder);
+  }
+
+  return RET_OK;
+}
+
+darray_t* get_res_names_from_sources_file(const char* src_filename, darray_t* sources) {
+  data_reader_factory_t* factory = data_reader_factory();
+  if (factory == NULL) {
+    data_reader_factory_set(data_reader_factory_create());
+    data_reader_factory_register(data_reader_factory(), "file", data_reader_file_create);
+  }
+
+  tk_object_t* json = conf_json_load(src_filename, FALSE);
+  if (json != NULL) {
+    char propname[MAX_PATH] = {0};
+    int32_t size = tk_object_get_prop_int(json, "sources.#size", -1);
+    if (size > 0) {
+      for (int32_t i = 0; i < size; i++) {
+        memset(propname, 0x00, sizeof(propname));
+        tk_snprintf(propname, sizeof(propname), "sources.[%d]", i);
+
+        const char* item = tk_object_get_prop_str(json, propname);
+        char* name = tk_str_copy(NULL, item);
+        darray_push(sources, name);
+      }
+    }
+  }
+
+  return sources;
+}
+
+darray_t* get_image_names_from_sources_file(const char* src_filename, darray_t* sources,
+                                            const char* dpr) {
+  data_reader_factory_t* factory = data_reader_factory();
+  if (factory == NULL) {
+    data_reader_factory_set(data_reader_factory_create());
+    data_reader_factory_register(data_reader_factory(), "file", data_reader_file_create);
+  }
+
+  tk_object_t* json = conf_json_load(src_filename, FALSE);
+
+  char propname[MAX_PATH] = {0};
+  int32_t size = tk_object_get_prop_int(json, "sources.#size", -1);
+  if (size > 0) {
+    for (int32_t i = 0; i < size; i++) {
+      memset(propname, 0x00, sizeof(propname));
+      tk_snprintf(propname, sizeof(propname), "sources.[%d]", i);
+
+      const char* item = tk_object_get_prop_str(json, propname);
+      if (tk_str_start_with(item, dpr)) {
+        char* file = tk_str_copy(NULL, item + strlen(dpr) + 1);
+        darray_push(sources, file);
+      }
+    }
+  }
+
+  return sources;
+}
+
+darray_t* get_res_names_from_sources_file_bak(const char* src_filename, darray_t* sources,
+                                              const char* theme, const char* type) {
+  data_reader_factory_t* factory = data_reader_factory();
+  if (factory == NULL) {
+    data_reader_factory_set(data_reader_factory_create());
+    data_reader_factory_register(data_reader_factory(), "file", data_reader_file_create);
+  }
+
+  tk_object_t* json = conf_json_load(src_filename, FALSE);
+
+  char type_prop[128] = {0};
+  tk_snprintf(type_prop, sizeof(type_prop), "sources.%s.%s", theme, type);
+  char propname[MAX_PATH] = {0};
+  tk_snprintf(propname, sizeof(propname), "%s.#size", type_prop);
+
+  int32_t size = tk_object_get_prop_int(json, propname, -1);
+  if (size > 0) {
+    for (int32_t i = 0; i < size; i++) {
+      memset(propname, 0x00, sizeof(propname));
+      tk_snprintf(propname, sizeof(propname), "%s.[%d]", type_prop, i);
+
+      const char* item = tk_object_get_prop_str(json, propname);
+      char* file = tk_str_copy(NULL, item);
+      darray_push(sources, file);
+    }
+  }
+
+  return sources;
+}
+
+darray_t* get_image_names_from_sources_file_bak(const char* src_filename, darray_t* sources,
+                                                const char* theme, const char* dpr) {
+  data_reader_factory_t* factory = data_reader_factory();
+  if (factory == NULL) {
+    data_reader_factory_set(data_reader_factory_create());
+    data_reader_factory_register(data_reader_factory(), "file", data_reader_file_create);
+  }
+
+  tk_object_t* json = conf_json_load(src_filename, FALSE);
+
+  char type_prop[128] = {0};
+  tk_snprintf(type_prop, sizeof(type_prop), "sources.%s.%s", theme, "images");
+  char propname[MAX_PATH] = {0};
+  tk_snprintf(propname, sizeof(propname), "%s.#size", type_prop);
+
+  int32_t size = tk_object_get_prop_int(json, propname, -1);
+  if (size > 0) {
+    for (int32_t i = 0; i < size; i++) {
+      memset(propname, 0x00, sizeof(propname));
+      tk_snprintf(propname, sizeof(propname), "%s.[%d]", type_prop, i);
+
+      const char* item = tk_object_get_prop_str(json, propname);
+      if (tk_str_start_with(item, dpr)) {
+        char* file = tk_str_copy(NULL, item + strlen(dpr) + 1);
+        darray_push(sources, file);
+      }
+    }
+  }
+
+  return sources;
+}
+
+char* get_image_dpr(const char* folder) {
+  char dpr_names[5][4] = {"xx", "x1", "x2", "x3", "x4"};
+  char basename[MAX_PATH] = {0};
+  path_basename(folder, basename, MAX_PATH);
+
+  for (int32_t i = 0; i < 5; i++) {
+    if (tk_str_eq(basename, dpr_names[i])) {
+      char* dpr = TKMEM_ZALLOCN(char, 4);
+      return tk_str_copy(dpr, basename);
+    }
+  }
+
+  return NULL;
 }

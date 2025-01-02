@@ -34,7 +34,7 @@ def use_theme_config_from_res_config(res_config_path, config = None):
             if not os.path.exists(config_json) :
                 print(config_json + ' is not exists.')
                 return
-        
+
         content = res_config.res_config()
         content.load_file(config_json)
     else :
@@ -68,7 +68,7 @@ def use_theme_config_from_res_config(res_config_path, config = None):
             else:
                 imagegen_options = 'rgba'
 
-        if IS_GENERATE_INC_BITMAP:
+        if IS_GENERATE_INC_BITMAP and not content.get_storage_dir():
             config_dir = common.join_path(ASSETS_ROOT, common.join_path(theme_name, 'fonts/config'))
             common.remove_dir(config_dir)
             common.make_dirs(config_dir)
@@ -242,7 +242,7 @@ def run(awtk_root, is_excluded_file_handler = None, is_new_usage = False) :
         print('For details, please read scripts/README.md.')
     else:
         if GDPI != '':
-           DPI = GDPI
+            DPI = GDPI
         if IMAGEGEN_OPTIONS != '':
             for theme in THEMES :
                 theme["imagegen_options"] = IMAGEGEN_OPTIONS

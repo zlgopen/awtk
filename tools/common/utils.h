@@ -24,6 +24,7 @@
 
 #include "tkc/str.h"
 #include "tkc/utils.h"
+#include "tkc/darray.h"
 
 BEGIN_C_DECLS
 
@@ -53,6 +54,12 @@ bool_t case_end_with(const char* p, const char* str);
 const char* get_next_token(const char* p, char* token, char c);
 
 const char* filter_name(char* name);
+ret_t makesure_folder_exist(const char* folder);
+darray_t* get_res_names_from_sources_file(const char* src_filename, darray_t* sources);
+darray_t* get_image_names_from_sources_file(const char* src_filename, darray_t* sources,
+                                            const char* dpr);
+char* get_image_dpr(const char* folder);
+ret_t ensure_output_res_name(str_t* str_name, bool_t is_bin, const char* ext);
 
 END_C_DECLS
 
