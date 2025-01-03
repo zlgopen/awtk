@@ -184,7 +184,7 @@ bitmap_t* bitmap_create_ex3(uint32_t w, uint32_t h, uint32_t line_length, bitmap
  * @param {uint8_t*} physical_data_addr 物理地址(部分硬件加速需要)。
  * @param {bool_t} should_free_data 是否释放数据。
  *
- * @return {bitmap_t*} 返回bitmap对象。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t bitmap_init_ex2(bitmap_t* bitmap, uint32_t w, uint32_t h, uint32_t line_length,
                       bitmap_format_t format, uint8_t* data, uint8_t* physical_data_addr,

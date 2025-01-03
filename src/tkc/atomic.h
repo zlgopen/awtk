@@ -82,7 +82,7 @@ static ret_t tk_atomic_init(tk_atomic_t* atomic, const value_t* v);
  * @export none
  * 原子交换操作。
  *
- * @param {const tk_atomic_t*} atomic 原子操作类对象。
+ * @param {tk_atomic_t*} atomic 原子操作类对象。
  * @param {value_t*} v 交换值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -98,7 +98,7 @@ static ret_t tk_atomic_exchange(tk_atomic_t* atomic, value_t* v);
  * weak版本的CAS允许偶然出乎意料的返回（比如在字段值和期待值一样的时候却返回了FALSE），
  * 不过在一些循环算法中，这是可以接受的。通常它比起strong有更高的性能。
  *
- * @param {const tk_atomic_t*} atomic 原子操作类对象。
+ * @param {tk_atomic_t*} atomic 原子操作类对象。
  * @param {value_t*} expect 期望值。
  * @param {value_t*} desire 设定值。
  *
@@ -113,7 +113,7 @@ static bool_t tk_atomic_compare_exchange_weak(tk_atomic_t* atomic, value_t* expe
  * 原子比较交换操作(Compare And Swap)。
  * > 如果 atomic 等于 expect，则将 atomic 改为 desire, 否则将 expect 改为 atomic。
  *
- * @param {const tk_atomic_t*} atomic 原子操作类对象。
+ * @param {tk_atomic_t*} atomic 原子操作类对象。
  * @param {value_t*} expect 期望值。
  * @param {value_t*} desire 设定值。
  *
@@ -151,7 +151,7 @@ static ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v);
  * @export none
  * 原子加操作。
  *
- * @param {const tk_atomic_t*} atomic 原子操作类对象。
+ * @param {tk_atomic_t*} atomic 原子操作类对象。
  * @param {value_t*} v 值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -163,7 +163,7 @@ static ret_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v);
  * @export none
  * 原子减操作。
  *
- * @param {const tk_atomic_t*} atomic 原子操作类对象。
+ * @param {tk_atomic_t*} atomic 原子操作类对象。
  * @param {value_t*} v 值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
