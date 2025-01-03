@@ -369,7 +369,7 @@ ret_t text_edit_layout(text_edit_t* text_edit);
 
 /**
  * @method text_edit_muti_line_insert_text_layout
- * 重新排版。
+ * 插入字符串后的重新排版。（内部使用函数）
  * @param {text_edit_t*} text_edit text_edit对象。
  * @param {uint32_t} offset 插入的字符串偏移。
  * @param {uint32_t} insert_length 插入的字符串长度。

@@ -2384,7 +2384,7 @@ static ret_t text_edit_insert_wtext_with_len(text_edit_t* text_edit, uint32_t of
 
   len = text_edit_insert(text_edit, offset, (wchar_t*)wtext, len);
 
-  ret = !!len ? RET_OK : RET_SKIP;
+  ret = len > 0 ? RET_OK : RET_SKIP;
 
   if (ret == RET_OK) {
     if (impl->single_line) {
