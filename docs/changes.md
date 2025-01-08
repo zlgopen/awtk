@@ -2,6 +2,8 @@
 
 2025/01/08
   * 修改定义WITH_LCD_MONO宏的时候会链接到SDL的文件(感谢智明提供补丁)
+  * 完善 draggable_create(感谢俊杰发现问题)
+
 2025/01/03
   * 完善 bitmap API 注释(感谢朝泽提供补丁)
   * 完善 text edit(感谢泽武提供补丁)
