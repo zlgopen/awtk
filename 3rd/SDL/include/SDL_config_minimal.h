@@ -86,6 +86,8 @@ typedef unsigned long uintptr_t;
 #define SDL_FILESYSTEM_DUMMY  1
 
 /* Enable the dummy filesystem driver (src/audio/alsa/\*.c) */
+#ifndef SDL_AUDIO_DRIVER_DUMMY
 #define SDL_AUDIO_DRIVER_ALSA 1
+#endif/*SDL_AUDIO_DRIVER_DUMMY*/
 
 #endif /* SDL_config_minimal_h_ */

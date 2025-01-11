@@ -1,5 +1,7 @@
 # 最新动态
 
+2025/01/11
+  * improve for qnx
 2025/01/08
   * 修改定义WITH_LCD_MONO宏的时候会链接到SDL的文件(感谢智明提供补丁)
   * 完善 draggable_create(感谢俊杰发现问题)

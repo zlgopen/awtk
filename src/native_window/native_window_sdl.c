@@ -185,7 +185,6 @@ static SDL_HitTestResult hit_test_imp(SDL_Window* window, const SDL_Point* pt, v
 static ret_t native_window_sdl_set_window_hit_test(native_window_t* win, xy_t x, xy_t y, wh_t w,
                                                    wh_t h) {
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
-  SDL_Rect area = {x, y, w, h};
 
   sdl->hit_test_rect.x = x;
   sdl->hit_test_rect.y = x;
@@ -691,7 +690,11 @@ ret_t native_window_sdl_init(bool_t shared, uint32_t w, uint32_t h) {
 
   SDL_SetHint(SDL_HINT_VIDEO_ALLOW_SCREENSAVER, "1");
   SDL_SetHint(SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH, "1");
+#if defined(SDL_AUDIO_DISABLED)
+  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
+#else
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_AUDIO) != 0) {
+#endif /*SDL_AUDIO_DISABLED*/
     log_debug("Failed to initialize SDL: %s", SDL_GetError());
     exit(0);
     return RET_FAIL;

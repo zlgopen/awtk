@@ -5245,6 +5245,7 @@ History:
 #endif /* !HAVE_MALLOC */
 
 #ifdef HAVE_MALLOC
+#include <stdlib.h>
 #define real_malloc malloc
 #define real_calloc calloc
 #define real_realloc realloc

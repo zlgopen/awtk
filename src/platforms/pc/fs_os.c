@@ -169,10 +169,16 @@ static ret_t fs_os_dir_read(fs_dir_t* dir, fs_item_t* item) {
 
   memset(item, 0x00, sizeof(fs_item_t));
   if (ent != NULL) {
+#ifdef QNX
+    /*FIXME*/
+    item->is_reg_file = 1;
+#else
     uint8_t type = ent->d_type;
     item->is_dir = (type & DT_DIR) != 0;
     item->is_link = (type & DT_LNK) != 0;
     item->is_reg_file = (type & DT_REG) != 0;
+#endif
+
 #ifdef WIN32
     str_t str;
     str_init(&str, wcslen(ent->d_name) * 4 + 1);

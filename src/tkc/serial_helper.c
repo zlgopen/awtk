@@ -535,13 +535,18 @@ ret_t serial_wait_for_data(serial_handle_t handle, uint32_t timeout_ms) {
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
-#include <sys/signal.h>
 #include <errno.h>
 #include <paths.h>
-#include <sysexits.h>
 #include <termios.h>
 #include <sys/param.h>
 #include <pthread.h>
+
+#ifndef QNX
+#include <sysexits.h>
+#include <sys/signal.h>
+#else
+#include <signal.h>
+#endif/*QNX*/
 
 #if defined(__linux__)
 #include <linux/serial.h>
@@ -934,6 +939,7 @@ ret_t serial_config(serial_handle_t handle, uint32_t baudrate, bytesize_t bytesi
     options.c_cflag |= (CNEW_RTSCTS);
   else
     options.c_cflag &= (unsigned long)~(CNEW_RTSCTS);
+#elif defined(QNX)
 #else
 #error "OS Support seems wrong."
 #endif

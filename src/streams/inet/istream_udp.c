@@ -22,7 +22,6 @@
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN 1
 #endif /*WIN32_LEAN_AND_MEAN*/
-
 #include "tkc/mem.h"
 #include "tkc/socket_helper.h"
 #include "streams/inet/istream_udp.h"

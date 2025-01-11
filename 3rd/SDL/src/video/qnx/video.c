@@ -21,9 +21,14 @@
 #include "../../SDL_internal.h"
 #include "../SDL_sysvideo.h"
 #include "sdl_qnx.h"
+#include "SDL_events.h"
+#include "../../events/SDL_events_c.h"
+#include "../../events/SDL_mouse_c.h"
+#include "../../events/SDL_touch_c.h"
 
 static screen_context_t context;
 static screen_event_t   event;
+static int prev_pressed = 0;
 
 /**
  * Initializes the QNX video plugin.
@@ -52,6 +57,7 @@ videoInit(_THIS)
     }
 
     _this->num_displays = 1;
+
     return 0;
 }
 
@@ -211,6 +217,9 @@ static void
 pumpEvents(_THIS)
 {
     int             type;
+    int val;                       /* used for simple property queries */
+    int pair[2];                   /* used to query pos, size */    
+    screen_event_t screen_ev;
 
     for (;;) {
         if (screen_get_event(context, event, 0) < 0) {
@@ -226,11 +235,33 @@ pumpEvents(_THIS)
             break;
         }
 
+        screen_ev = event;
         switch (type) {
         case SCREEN_EVENT_KEYBOARD:
             handleKeyboardEvent(event);
             break;
+        case SCREEN_EVENT_POINTER: {
+          int x = 0;
+          int y = 0;
+          int pressed = 0;
+          SDL_Mouse *mouse = SDL_GetMouse();
 
+          screen_get_event_property_iv(screen_ev, SCREEN_PROPERTY_DEVICE, &val);
+          screen_get_event_property_iv(screen_ev, SCREEN_PROPERTY_POSITION, pair);
+          x = pair[0];
+          y = pair[1];
+          screen_get_event_property_iv(screen_ev, SCREEN_PROPERTY_DISPLACEMENT, pair);
+          pressed =  val;
+          screen_get_event_property_iv(screen_ev, SCREEN_PROPERTY_MOUSE_HORIZONTAL_WHEEL, &val);
+          screen_get_event_property_iv(screen_ev, SCREEN_PROPERTY_MOUSE_WHEEL, &val);
+         
+          if (prev_pressed == pressed) {
+              SDL_SendMouseMotion(mouse->focus, mouse->mouseID, 0, x, y);
+          } else {
+              prev_pressed = pressed;
+              SDL_SendMouseButton(mouse->focus, mouse->mouseID, pressed ? SDL_PRESSED : SDL_RELEASED, 1);
+          }
+        }
         default:
             break;
         }
@@ -269,6 +300,7 @@ showWindow(_THIS, SDL_Window *window)
 
     screen_set_window_property_iv(impl->window, SCREEN_PROPERTY_VISIBLE,
                                   &visible);
+    SDL_SetMouseFocus(window);
 }
 
 /**
@@ -284,6 +316,7 @@ hideWindow(_THIS, SDL_Window *window)
 
     screen_set_window_property_iv(impl->window, SCREEN_PROPERTY_VISIBLE,
         &visible);
+    SDL_SetMouseFocus(NULL);
 }
 
 /**

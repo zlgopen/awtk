@@ -2,3 +2,4 @@
 libmbed*
 *.sln
 *.vcxproj
+/build/
