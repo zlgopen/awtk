@@ -364,6 +364,7 @@ typedef struct _fs_dir_vtable_t {
 struct _fs_dir_t {
   const fs_dir_vtable_t* vt;
   void* data;
+  char* dirname;
 };
 
 /**

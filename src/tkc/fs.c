@@ -145,7 +145,7 @@ ret_t fs_dir_read(fs_dir_t* dir, fs_item_t* item) {
 
 ret_t fs_dir_close(fs_dir_t* dir) {
   return_value_if_fail(dir != NULL && dir->vt != NULL && dir->vt->close != NULL, RET_BAD_PARAMS);
-
+  TKMEM_FREE(dir->dirname);
   return dir->vt->close(dir);
 }
 
@@ -175,9 +175,14 @@ ret_t fs_file_rename(fs_t* fs, const char* name, const char* new_name) {
 }
 
 fs_dir_t* fs_open_dir(fs_t* fs, const char* name) {
+  fs_dir_t* dir = NULL;
   return_value_if_fail(fs != NULL && fs->open_dir != NULL && name != NULL, NULL);
 
-  return fs->open_dir(fs, name);
+  dir = fs->open_dir(fs, name);
+  return_value_if_fail(dir != NULL, NULL);
+  dir->dirname = tk_strdup(name);
+
+  return dir;
 }
 
 ret_t fs_remove_dir(fs_t* fs, const char* name) {
