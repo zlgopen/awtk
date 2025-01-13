@@ -455,7 +455,7 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
       }
 
       if (combo_box_get_curr_text_size(widget) == 0 && widget->tr_text == NULL) {
-        combo_box_sync_index_to_value(widget, 0, TRUE);
+        combo_box_sync_index_to_value(widget, 0, FALSE);
       }
       break;
     }
