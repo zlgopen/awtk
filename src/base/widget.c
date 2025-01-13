@@ -3448,6 +3448,19 @@ static widget_t* widget_get_window_or_keyboard(widget_t* widget) {
   return NULL;
 }
 
+static widget_t* widget_get_real_window_or_keyboard(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL, NULL);
+
+  widget_t* win = widget_get_window_or_keyboard(widget);
+
+  while (win != NULL && win->parent != NULL && !widget_is_keyboard(win) &&
+         !widget_is_window_manager(win->parent)) {
+    win = widget_get_window_or_keyboard(win->parent);
+  }
+
+  return win;
+}
+
 widget_t* widget_get_window_manager(widget_t* widget) {
   widget_t* iter = widget;
   return_value_if_fail(widget != NULL && widget->vt != NULL, NULL);
@@ -4281,7 +4294,7 @@ ret_t widget_on_visit_focusable(void* ctx, const void* data) {
 }
 
 static ret_t widget_get_all_focusable_widgets_in_window(widget_t* widget, darray_t* all_focusable) {
-  widget_t* win = widget_get_window_or_keyboard(widget);
+  widget_t* win = widget_get_real_window_or_keyboard(widget);
   return_value_if_fail(win != NULL, RET_BAD_PARAMS);
 
   widget_foreach(win, widget_on_visit_focusable, all_focusable);
