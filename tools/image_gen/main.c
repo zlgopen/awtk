@@ -227,7 +227,10 @@ int wmain(int argc, wchar_t* argv[]) {
   platform_prepare();
 
   if (argc < 3) {
-    printf("Usage: %S in_filename out_filename (bgra|bgr565|rgb565|bgr888|rgb888|mono)\n", argv[0]);
+    printf(
+        "Usage: %S in_filename out_filename (bgra|bgr565|rgb565|bgr888|rgb888|mono) [theme] "
+        "[lcd_orientation] [src_filename]\n",
+        argv[0]);
 
     return 0;
   }
@@ -238,31 +241,31 @@ int wmain(int argc, wchar_t* argv[]) {
   image_format_t image_format = {BITMAP_FMT_RGBA8888, BITMAP_FMT_RGBA8888};
   image_format_set(&image_format, format);
 
-  str_t src_file;
-  str_init(&src_file, 0);
-  if (argc > 4) {
-    str_from_wstr(&src_file, argv[4]);
-    str_trim(&src_file, " ");
-    if (!str_eq(&src_file, "")) {
-      src_filename = src_file.str;
-    }
-  }
-
   str_t theme_name;
   str_init(&theme_name, 0);
-  if (argc > 5) {
-    str_from_wstr(&theme_name, argv[5]);
+  if (argc > 4) {
+    str_from_wstr(&theme_name, argv[4]);
   }
 
-  if (argc > 6) {
+  if (argc > 5) {
     wstr_t str_lcd_orientation;
     int tmp_lcd_orientation = 0;
     wstr_init(&str_lcd_orientation, 0);
-    wstr_append(&str_lcd_orientation, argv[6]);
+    wstr_append(&str_lcd_orientation, argv[5]);
     if (wstr_to_int(&str_lcd_orientation, &tmp_lcd_orientation) == RET_OK) {
       lcd_orientation = (lcd_orientation_t)tmp_lcd_orientation;
     }
     wstr_reset(&str_lcd_orientation);
+  }
+
+  str_t src_file;
+  str_init(&src_file, 0);
+  if (argc > 6) {
+    str_from_wstr(&src_file, argv[6]);
+    str_trim(&src_file, " ");
+    if (!str_eq(&src_file, "")) {
+      src_filename = src_file.str;
+    }
   }
 
   str_t in_file;

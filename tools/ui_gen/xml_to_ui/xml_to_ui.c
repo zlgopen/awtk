@@ -217,7 +217,8 @@ int wmain(int argc, wchar_t* argv[]) {
   platform_prepare();
 
   if (argc < 3) {
-    printf("Usage: %S in_filename out_filename [src_filename] [bin] [res_name] [theme] \n", argv[0]);
+    printf("Usage: %S in_filename out_filename [bin] [res_name] [theme] [src_filename] \n",
+           argv[0]);
 
     return 0;
   }
@@ -244,18 +245,9 @@ int wmain(int argc, wchar_t* argv[]) {
   fs_stat(os_fs(), in_filename, &in_stat_info);
   fs_stat(os_fs(), out_filename, &out_stat_info);
 
-  str_init(&src_file, 0);
-  if (argc > 3) {
-    str_from_wstr(&src_file, argv[3]);
-    str_trim(&src_file, " ");
-    if (!str_eq(&src_file, "")) {
-      src_filename = src_file.str;
-    }
-  }
-
   str_init(&_output_type, 0);
-  if (argc > 4) {
-    str_from_wstr(&_output_type, argv[4]);
+  if (argc > 3) {
+    str_from_wstr(&_output_type, argv[3]);
     str_trim(&_output_type, " ");
     output_type = _output_type.str;
     if (tk_str_eq(output_type, "bin")) {
@@ -264,16 +256,25 @@ int wmain(int argc, wchar_t* argv[]) {
   }
 
   str_init(&_res_name, 0);
-  if (argc > 5) {  //custom output res name
-    str_from_wstr(&_res_name, argv[5]);
+  if (argc > 4) {  //custom output res name
+    str_from_wstr(&_res_name, argv[4]);
     str_trim(&_res_name, " ");
     res_name = _res_name.str;
   }
 
   str_init(&str_theme, 0);
-  if (argc > 6) {  // theme
-    str_from_wstr(&str_theme, argv[6]);
+  if (argc > 5) {  // theme
+    str_from_wstr(&str_theme, argv[5]);
     theme_name = str_theme.str;
+  }
+
+  str_init(&src_file, 0);
+  if (argc > 6) {
+    str_from_wstr(&src_file, argv[6]);
+    str_trim(&src_file, " ");
+    if (!str_eq(&src_file, "")) {
+      src_filename = src_file.str;
+    }
   }
 
   if (in_stat_info.is_dir == TRUE && out_stat_info.is_dir == TRUE) {

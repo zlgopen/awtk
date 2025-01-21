@@ -177,7 +177,7 @@ int wmain(int argc, wchar_t* argv[]) {
   platform_prepare();
 
   if (argc < 3) {
-    printf("Usage: %S input output [src_filename] [bin] [theme]\n", argv[0]);
+    printf("Usage: %S input output [bin] [theme] [src_filename]\n", argv[0]);
     return 0;
   }
 
@@ -195,18 +195,9 @@ int wmain(int argc, wchar_t* argv[]) {
   in_filename = in_file.str;
   out_filename = out_file.str;
 
-  str_init(&src_file, 0);
-  if (argc > 3) {
-    str_from_wstr(&src_file, argv[3]);
-    str_trim(&src_file, " ");
-    if (!str_eq(&src_file, "")) {
-      src_filename = src_file.str;
-    }
-  }
-
   str_init(&_output_type, 0);
-  if(argc > 4) {
-    str_from_wstr(&_output_type, argv[4]);
+  if(argc > 3) {
+    str_from_wstr(&_output_type, argv[3]);
     str_trim(&_output_type, " ");
     output_type = _output_type.str;
     if(tk_str_eq(output_type, "bin")) {
@@ -215,8 +206,17 @@ int wmain(int argc, wchar_t* argv[]) {
   }
 
   str_init(&theme_name, 0);
+  if (argc > 4) {
+    str_from_wstr(&theme_name, argv[4]);
+  }
+
+  str_init(&src_file, 0);
   if (argc > 5) {
-    str_from_wstr(&theme_name, argv[5]);
+    str_from_wstr(&src_file, argv[5]);
+    str_trim(&src_file, " ");
+    if (!str_eq(&src_file, "")) {
+      src_filename = src_file.str;
+    }
   }
 
   fs_stat_info_t in_stat_info;

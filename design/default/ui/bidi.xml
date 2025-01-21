@@ -1,5 +1,5 @@
 ﻿<window anim_hint="htranslate" text="hscroll_label" children_layout="default(c=1,h=30,xm=10,s=5)">
-  <label text="الصين" style.font_size="24" style.font_name="trado"/>
+  <label text=" الأساسيَّةُ " style.font_size="24" style.font_name="trado"/>
   <label text="مصر" style.font_size="24" style.font_name="trado"/>
   <label text="الظلال أخفى القمر." style.font_size="24" style.font_name="trado"/>
   <label text="bahrain مصر kuwait" style.font_size="24" style.font_name="trado"/>

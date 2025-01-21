@@ -169,7 +169,6 @@ static ret_t gen_folder(const char* in_foldername, const char* out_foldername, c
   return ret;
 }
 
-
 static ret_t gen_sources(const char* src_filename, const char* in_foldername,
                          const char* out_foldername, const char* theme, const char* extname,
                          const char* dir_name, bool_t data_folder) {
@@ -252,7 +251,6 @@ bool_t is_data_folder(const char* folder_name) {
   return tk_str_eq(basename, "data");
 }
 
-
 int wmain(int argc, wchar_t* argv[]) {
   const char* in_filename = NULL;
   const char* out_filename = NULL;
@@ -260,7 +258,7 @@ int wmain(int argc, wchar_t* argv[]) {
   platform_prepare();
 
   if (argc < 3) {
-    printf("Usage: %S in_filename out_filename [src_filename] [theme] [out_extname]\n", argv[0]);
+    printf("Usage: %S in_filename out_filename [theme] [out_extname] [src_filename]\n", argv[0]);
     return 0;
   }
 
@@ -276,22 +274,22 @@ int wmain(int argc, wchar_t* argv[]) {
   str_from_wstr(&in_file, argv[1]);
   str_from_wstr(&out_file, argv[2]);
 
-  str_init(&src_file, 0);
+  str_init(&theme_name, 0);
   if (argc > 3) {
-    str_from_wstr(&src_file, argv[3]);
+    str_from_wstr(&theme_name, argv[3]);
+  }
+  str_init(&str_extname, 0);
+  if (argc > 4) {
+    str_from_wstr(&str_extname, argv[4]);
+  }
+
+  str_init(&src_file, 0);
+  if (argc > 5) {
+    str_from_wstr(&src_file, argv[5]);
     str_trim(&src_file, " ");
     if (!str_eq(&src_file, "")) {
       src_filename = src_file.str;
     }
-  }
-
-  str_init(&theme_name, 0);
-  if (argc > 4) {
-    str_from_wstr(&theme_name, argv[4]);
-  }
-  str_init(&str_extname, 0);
-  if (argc > 5) {
-    str_from_wstr(&str_extname, argv[5]);
   }
 
   in_filename = in_file.str;

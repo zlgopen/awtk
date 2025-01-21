@@ -192,6 +192,10 @@ class IDLGen {
 
     property.desc = this.normalizeDesc(property.desc);
     if(this.cls) {
+      if (!this.cls.properties) {
+        console.log(this.cls);
+        console.log(property);
+      }
       this.cls.properties.push(property);
     }
 

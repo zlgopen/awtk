@@ -385,11 +385,11 @@ def exec_cmd(cmd):
 
 
 def themegen(raw, inc, theme, sources_file = ' '):
-    exec_cmd('\"' + to_exe('themegen') + '\" \"' + raw + '\" \"' + inc + '\" \"' + sources_file + '\" data ' + theme)
+    exec_cmd('\"' + to_exe('themegen') + '\" \"' + raw + '\" \"' + inc + '\" data ' + theme + ' \"' + sources_file + '\"')
 
 
 def themegen_bin(raw, bin, sources_file = ' '):
-    exec_cmd('\"' + to_exe('themegen') + '\" \"' + raw + '\" \"' + bin + '\" \"' + sources_file +  '\" bin')
+    exec_cmd('\"' + to_exe('themegen') + '\" \"' + raw + '\" \"' + bin + '\" bin' + ' \"' + sources_file + '\"')
 
 
 def strgen(raw, inc, theme):
@@ -400,7 +400,7 @@ def strgen_bin(raw, bin):
     exec_cmd('\"' + to_exe('strgen') + '\" \"' + raw + '\" \"' + bin + '\" bin')
 
 def resgen(raw, inc, theme, outExtname, sources_file = ' '):
-    exec_cmd('\"' + to_exe('resgen') + '\" \"' + raw + '\" \"' + inc + '\" \"' + sources_file + '\" ' + theme + ' ' + outExtname)
+    exec_cmd('\"' + to_exe('resgen') + '\" \"' + raw + '\" \"' + inc + '\" ' + theme + ' ' + outExtname + ' \"' + sources_file + '\"')
 
 
 def fontgen(raw, text, inc, size, options, theme):
@@ -415,23 +415,23 @@ def fontgen(raw, text, inc, size, options, theme):
 def imagegen(raw, inc, options, theme, lcd_orientation, lcd_fast_rotation_mode, sources_file = ' '):
     if not lcd_fast_rotation_mode :
         lcd_orientation = '0'
-    exec_cmd('\"' + to_exe('imagegen') + '\" \"' + raw + '\" \"' + inc + '\" ' + options + ' \"' + sources_file + '\" ' + theme + ' ' + lcd_orientation)
+    exec_cmd('\"' + to_exe('imagegen') + '\" \"' + raw + '\" \"' + inc + '\" ' + options + ' ' + theme + ' ' + lcd_orientation + ' \"' + sources_file + '\"')
 
 
 def svggen(raw, inc, theme, sources_file = ' '):
-    exec_cmd('\"' + to_exe('bsvggen') + '\" \"' + raw + '\" \"' + inc + '\" \"' + sources_file + '\" data ' + theme)
+    exec_cmd('\"' + to_exe('bsvggen') + '\" \"' + raw + '\" \"' + inc + '\" data ' + theme + ' \"' + sources_file + '\"')
 
 
 def svggen_bin(raw, bin, sources_file = ' '):
-    exec_cmd('\"' + to_exe('bsvggen') + '\" \"' + raw + '\" \"' + bin + '\" \"' + sources_file + '\" bin')
+    exec_cmd('\"' + to_exe('bsvggen') + '\" \"' + raw + '\" \"' + bin + '\" bin' + ' \"' + sources_file + '\"')
 
 
 def xml_to_ui(raw, inc, theme, sources_file = ' '):
-    exec_cmd('\"' + to_exe('xml_to_ui') + '\" \"' + raw + '\" \"' + inc + '\" \"' + sources_file + '\" data \"\" ' + theme)
+    exec_cmd('\"' + to_exe('xml_to_ui') + '\" \"' + raw + '\" \"' + inc  + '\" data \"\" ' + theme + ' \"' + sources_file + '\"')
 
 
 def xml_to_ui_bin(raw, bin, sources_file = ' '):
-    exec_cmd('\"' + to_exe('xml_to_ui') + '\" \"' + raw + '\" \"' + bin + '\" \"' + sources_file + '\" bin')
+    exec_cmd('\"' + to_exe('xml_to_ui') + '\" \"' + raw + '\" \"' + bin + '\" bin \"\" \"\" \"' + sources_file + '\"')
 
 
 def gen_res_all_style():
