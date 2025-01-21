@@ -41,6 +41,21 @@ TEST(Str, append_lowercase) {
   str_reset(&s);
 }
 
+TEST(Str, str_append_wchar) {
+  str_t s;
+  str_init(&s, 0);
+
+  str_append_wchar(&s, L"a");
+  str_append_wchar(&s, L"ABC");
+  str_append_wchar(&s, L"123");
+  ASSERT_STREQ(s.str, "aABC123");
+
+  str_append_wchar_with_len(&s, L"ABCABCABC", 3);
+  ASSERT_STREQ(s.str, "aABC123ABC");
+
+  str_reset(&s);
+}
+
 TEST(Str, shrink) {
   str_t s;
   str_init(&s, 0);

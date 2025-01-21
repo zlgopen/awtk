@@ -225,6 +225,27 @@ ret_t str_set_with_len(str_t* str, const char* text, uint32_t len);
 ret_t str_append(str_t* str, const char* text);
 
 /**
+ * @method str_append_wchar_with_len
+ * 追加字符串。
+ * @param {str_t*} str str对象。
+ * @param {const wchar_t*} text 要追加的字符串。
+ * @param {uint32_t} len 字符串长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_wchar_with_len(str_t* str, const wchar_t* text, uint32_t len);
+
+/**
+ * @method str_append_wchar
+ * 追加字符串。
+ * @param {str_t*} str str对象。
+ * @param {const wchar_t*} text 要追加的字符串。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_wchar(str_t* str, const wchar_t* text);
+
+/**
  * @method str_append_uppercase
  * 将text转换为大写，并追加到str中。
  * @param {str_t*} str str对象。

@@ -158,6 +158,23 @@ ret_t str_append(str_t* str, const char* text) {
   return str_append_with_len(str, text, strlen(text));
 }
 
+ret_t str_append_wchar_with_len(str_t* str, const wchar_t* text, uint32_t len) {
+  uint32_t size = len * 6 + 1;
+  return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(str_extend(str, str->size + size + 1) == RET_OK, RET_OOM);
+
+  tk_utf8_from_utf16_ex(text, len, str->str + str->size, str->capacity - str->size - 1);
+  str->size += len;
+  return RET_OK;
+}
+
+
+ret_t str_append_wchar(str_t* str, const wchar_t* text) {
+  return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
+
+  return str_append_wchar_with_len(str, text, wcslen(text));
+}
+
 ret_t str_append_uppercase(str_t* str, const char* text) {
   ret_t ret = RET_OK;
   const char* p = text;
