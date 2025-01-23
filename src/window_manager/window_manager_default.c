@@ -1711,7 +1711,6 @@ static ret_t window_manager_default_dispatch_input_event(widget_t* widget, event
 
   native_window_preprocess_event(wm->native_window, e);
   if (wm->ignore_user_input) {
-    log_debug("animating ignore input\n");
     input_device_status_on_ignore_input_event(ids, widget, e);
     return RET_OK;
   }

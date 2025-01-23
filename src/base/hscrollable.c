@@ -154,8 +154,6 @@ ret_t hscrollable_on_event(hscrollable_t* hscrollable, event_t* e) {
   return_value_if_fail(hscrollable != NULL && widget != NULL && e != NULL, RET_BAD_PARAMS);
 
   if (hscrollable->wa != NULL) {
-    log_debug("animating ignore event\n");
-
     return RET_STOP;
   }
 
