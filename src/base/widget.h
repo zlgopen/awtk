@@ -2920,7 +2920,7 @@ ret_t widget_set_children_layout(widget_t* widget, const char* params);
 
 /**
  * @method widget_set_self_layout_params
- * 设置控件自己的布局(缺省布局器)参数(过时，请用widget\_set\_self\_layout)。
+ * 设置控件自己的布局(缺省布局器)参数(建议用widget\_set\_self\_layout)。
  * 备注：下一帧才会生效数据
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
@@ -2931,7 +2931,6 @@ ret_t widget_set_children_layout(widget_t* widget, const char* params);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-TK_DEPRECATED("Please use widget_set_self_layout() instead.")
 ret_t widget_set_self_layout_params(widget_t* widget, const char* x, const char* y, const char* w,
                                     const char* h);
 
