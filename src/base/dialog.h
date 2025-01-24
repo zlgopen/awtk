@@ -121,7 +121,7 @@ typedef enum _dialog_quit_code_t {
  * </dialog>
  * ```
  *
- * 打开非模态对话框时，其用法与普通窗口一样。打开非模态对话框时，还需要调用dialog\_modal。
+ * 打开非模态对话框时，其用法与普通窗口一样。打开模态对话框时，还需要调用dialog\_modal。
  *
  * ```c
  *  widget_t* dlg = dialog_open(name);
