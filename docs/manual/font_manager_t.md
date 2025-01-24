@@ -16,11 +16,13 @@
 | <a href="#font_manager_t_font_manager_deinit">font\_manager\_deinit</a> | 析构字体管理器。 |
 | <a href="#font_manager_t_font_manager_destroy">font\_manager\_destroy</a> | 析构并释放字体管理器。 |
 | <a href="#font_manager_t_font_manager_get_font">font\_manager\_get\_font</a> | 从缓存中查找字体，如果没找到，再加载字体，并缓存。 |
+| <a href="#font_manager_t_font_manager_get_standard_font_size">font\_manager\_get\_standard\_font\_size</a> | 获取是否使用标准字号 |
 | <a href="#font_manager_t_font_manager_init">font\_manager\_init</a> | 初始化字体管理器。 |
 | <a href="#font_manager_t_font_manager_lookup">font\_manager\_lookup</a> | 查找字体。 |
 | <a href="#font_manager_t_font_manager_set">font\_manager\_set</a> | 设置缺省的字体管理器。 |
 | <a href="#font_manager_t_font_manager_set_assets_manager">font\_manager\_set\_assets\_manager</a> | 设置资源管理器对象 |
 | <a href="#font_manager_t_font_manager_set_fallback_get_font">font\_manager\_set\_fallback\_get\_font</a> | 设置一个函数，该函数在找不到字体时加载后补字体。 |
+| <a href="#font_manager_t_font_manager_set_standard_font_size">font\_manager\_set\_standard\_font\_size</a> | 设置是否使用标准字号 |
 | <a href="#font_manager_t_font_manager_shrink_cache">font\_manager\_shrink\_cache</a> | 清除最久没有被使用的缓冲字模。 |
 | <a href="#font_manager_t_font_manager_unload_all">font\_manager\_unload\_all</a> | 卸载全部字体。 |
 | <a href="#font_manager_t_font_manager_unload_font">font\_manager\_unload\_font</a> | 卸载指定的字体。 |
@@ -145,6 +147,25 @@ font_t* font_manager_get_font (font_manager_t* fm, const char* name, font_size_t
 | fm | font\_manager\_t* | 字体管理器对象。 |
 | name | const char* | 字体名，为NULL时使用缺省字体。 |
 | size | font\_size\_t | 字体的大小。 |
+#### font\_manager\_get\_standard\_font\_size 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="font_manager_t_font_manager_get_standard_font_size">获取是否使用标准字号
+
+* 函数原型：
+
+```
+bool_t font_manager_get_standard_font_size (font_manager_t* fm);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示使用标准字号，否则表示不是。 |
+| fm | font\_manager\_t* | 字体管理器对象。 |
 #### font\_manager\_init 函数
 -----------------------
 
@@ -254,6 +275,26 @@ ret_t font_manager_set_fallback_get_font (font_manager_t* fm, font_manager_get_f
 | fm | font\_manager\_t* | 字体管理器对象。 |
 | fallback\_get\_font | font\_manager\_get\_font\_t | 回调函数。 |
 | ctx | void* | 回调函数的上下文。 |
+#### font\_manager\_set\_standard\_font\_size 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="font_manager_t_font_manager_set_standard_font_size">设置是否使用标准字号
+
+* 函数原型：
+
+```
+ret_t font_manager_set_standard_font_size (font_manager_t* fm, bool_t is_standard);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| fm | font\_manager\_t* | 字体管理器对象。 |
+| is\_standard | bool\_t | 是否使用标准字号 |
 #### font\_manager\_shrink\_cache 函数
 -----------------------
 

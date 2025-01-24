@@ -41,6 +41,7 @@ slist_destroy(slist);
 | <a href="#slist_t_slist_remove">slist\_remove</a> | 删除第一个满足条件的元素。 |
 | <a href="#slist_t_slist_remove_all">slist\_remove\_all</a> | 删除全部元素。 |
 | <a href="#slist_t_slist_remove_ex">slist\_remove\_ex</a> | 删除满足条件的元素。 |
+| <a href="#slist_t_slist_reverse">slist\_reverse</a> | 反转链表。 |
 | <a href="#slist_t_slist_size">slist\_size</a> | 返回元素个数。 |
 | <a href="#slist_t_slist_tail">slist\_tail</a> | 返回最后一个元素。 |
 | <a href="#slist_t_slist_tail_pop">slist\_tail\_pop</a> | 弹出最后一个元素。 |
@@ -52,6 +53,8 @@ slist_destroy(slist);
 | <a href="#slist_t_compare">compare</a> | tk\_compare\_t | 元素比较函数。 |
 | <a href="#slist_t_destroy">destroy</a> | tk\_destroy\_t | 元素销毁函数。 |
 | <a href="#slist_t_first">first</a> | slist\_node\_t* | 首节点。 |
+| <a href="#slist_t_last">last</a> | slist\_node\_t* | 尾节点。 |
+| <a href="#slist_t_size">size</a> | int32\_t | 元素个数。 |
 #### slist\_append 函数
 -----------------------
 
@@ -396,6 +399,25 @@ ret_t slist_remove_ex (slist_t* slist, tk_compare_t compare, void* ctx, int32_t 
 | compare | tk\_compare\_t | 元素比较函数。 |
 | ctx | void* | 比较函数的上下文。 |
 | remove\_size | int32\_t | 删除个数。 |
+#### slist\_reverse 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slist_t_slist_reverse">反转链表。
+
+* 函数原型：
+
+```
+ret_t slist_reverse (slist_t* slist);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| slist | slist\_t* | 单向链表对象。 |
 #### slist\_size 函数
 -----------------------
 
@@ -478,6 +500,26 @@ void* slist_tail_pop (slist_t* slist);
 > <p id="slist_t_first">首节点。
 
 * 类型：slist\_node\_t*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+#### last 属性
+-----------------------
+> <p id="slist_t_last">尾节点。
+
+* 类型：slist\_node\_t*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+#### size 属性
+-----------------------
+> <p id="slist_t_size">元素个数。
+
+* 类型：int32\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

@@ -52,6 +52,7 @@
 | <a href="#utils_t_tk_memset16">tk\_memset16</a> | 设置数据2字节。 |
 | <a href="#utils_t_tk_memset24">tk\_memset24</a> | 设置数据3字节。 |
 | <a href="#utils_t_tk_memset32">tk\_memset32</a> | 设置数据4字节。 |
+| <a href="#utils_t_tk_mergesort">tk\_mergesort</a> | 归并排序(如果需要稳定的排序，可以选择归并排序，而不是快速排序)。 |
 | <a href="#utils_t_tk_normalize_key_name">tk\_normalize\_key\_name</a> | 标准化key_name |
 | <a href="#utils_t_tk_pixel_copy">tk\_pixel\_copy</a> | 已bpp字节为标准拷贝数据。 |
 | <a href="#utils_t_tk_pointer_from_int">tk\_pointer\_from\_int</a> | 将int转换成指针。 |
@@ -89,6 +90,7 @@
 | <a href="#utils_t_tk_strndup">tk\_strndup</a> | 字符串拷贝函数，最多复制len个字符串。 |
 | <a href="#utils_t_tk_strnlen">tk\_strnlen</a> | 获取字符串的长度。str为空时返回0。 |
 | <a href="#utils_t_tk_strrstr">tk\_strrstr</a> | 从后往前查找指定的字符串。 |
+| <a href="#utils_t_tk_strs_bsearch">tk\_strs\_bsearch</a> | 在字符串数组中查找字符串。 |
 | <a href="#utils_t_tk_strtoi">tk\_strtoi</a> | 将字符串转换为整型。 |
 | <a href="#utils_t_tk_strtol">tk\_strtol</a> | 将字符串转换为长整型。 |
 | <a href="#utils_t_tk_strtoll">tk\_strtoll</a> | 将字符串转换为长整型。 |
@@ -676,6 +678,9 @@ uint32_t tk_count_char (const char* str, char c);
 * H 代表时(1-12)
 * m 代表分(0-59)
 * s 代表秒(0-59)
+* w 代表星期(0-6)
+* W 代表星期的英文缩写
+* T 代表时段AM/PM
 * YY 代表年(只显示末两位)
 * MM 代表月(01-12)
 * DD 代表日(01-31)
@@ -683,6 +688,7 @@ uint32_t tk_count_char (const char* str, char c);
 * HH 代表时(01-12)
 * mm 代表分(00-59)
 * ss 代表秒(00-59)
+* MMM 代表月的英文缩写
 
 如 日期时间为：2018/11/12 9:10:20
 * "Y/M/D"显示为"2018/11/12"
@@ -1066,6 +1072,28 @@ uint32_t* tk_memset32 (uint32_t* buff, uint32_t val, uint32_t size);
 | buff | uint32\_t* | buff。 |
 | val | uint32\_t | 值。 |
 | size | uint32\_t | 个数。 |
+#### tk\_mergesort 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_mergesort">归并排序(如果需要稳定的排序，可以选择归并排序，而不是快速排序)。
+
+* 函数原型：
+
+```
+ret_t tk_mergesort (void* base, size_t nmemb, size_t size, tk_compare_t cmp);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| base | void* | 数据。 |
+| nmemb | size\_t | 元素个数。 |
+| size | size\_t | 元素大小。 |
+| cmp | tk\_compare\_t | 比较函数。 |
 #### tk\_normalize\_key\_name 函数
 -----------------------
 
@@ -1822,6 +1850,28 @@ const char* tk_strrstr (const char* str, const char* substr);
 | 返回值 | const char* | 返回字符串的位置或者NULL。 |
 | str | const char* | 字符串。 |
 | substr | const char* | 子字符串。 |
+#### tk\_strs\_bsearch 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_strs_bsearch">在字符串数组中查找字符串。
+
+* 函数原型：
+
+```
+const char* tk_strs_bsearch (const char** strs, uint32_t nr, const char* str, bool_t case_sensitive);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回找到的字符串。 |
+| strs | const char** | 字符串数组(已排序)。 |
+| nr | uint32\_t | 字符串个数。 |
+| str | const char* | 字符串。 |
+| case\_sensitive | bool\_t | 是否区分大小写。 |
 #### tk\_strtoi 函数
 -----------------------
 

@@ -1,5 +1,7 @@
 ## named\_value\_t
 ### 概述
+![image](images/named_value_t_0.png)
+
 命名的值。
 ----------------------------------
 ### 函数

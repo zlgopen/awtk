@@ -13,6 +13,8 @@
 | <a href="#g2d_t_g2d_fill_rect">g2d\_fill\_rect</a> | 用颜色填充指定的区域。 |
 | <a href="#g2d_t_g2d_rotate_image">g2d\_rotate\_image</a> | 把图片指定的区域进行旋转并拷贝到framebuffer相应的区域，本函数主要用于辅助实现横屏和竖屏的切换，一般支持90度旋转即可。 |
 | <a href="#g2d_t_g2d_rotate_image_ex">g2d\_rotate\_image\_ex</a> | 把图片指定的区域进行旋转。 |
+| <a href="#g2d_t_tk_g2d_deinit">tk\_g2d\_deinit</a> | 反初始化g2d模块。 |
+| <a href="#g2d_t_tk_g2d_init">tk\_g2d\_init</a> | 初始化g2d模块。 |
 #### g2d\_blend\_image 函数
 -----------------------
 
@@ -152,3 +154,39 @@ ret_t g2d_rotate_image_ex (bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy
 | dx | xy\_t | 目标位置的x坐标。（坐标原点为旋转后的坐标系原点，并非是 dst 的左上角） |
 | dy | xy\_t | 目标位置的y坐标。（坐标原点为旋转后的坐标系原点，并非是 dst 的左上角） |
 | o | lcd\_orientation\_t | 旋转角度(一般支持90度即可，旋转方向为逆时针)。 |
+#### tk\_g2d\_deinit 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="g2d_t_tk_g2d_deinit">反初始化g2d模块。
+
+* 函数原型：
+
+```
+ret_t tk_g2d_deinit ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+#### tk\_g2d\_init 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="g2d_t_tk_g2d_init">初始化g2d模块。
+
+* 函数原型：
+
+```
+ret_t tk_g2d_init ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |

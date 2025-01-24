@@ -155,8 +155,8 @@ ret_t vgcanvas_arc (vgcanvas_t* vg, float_t x, float_t y, float_t r, float_t sta
 | x | float\_t | 原点x坐标。 |
 | y | float\_t | 原点y坐标。 |
 | r | float\_t | 半径。 |
-| start\_angle | float\_t | 起始角度。 |
-| end\_angle | float\_t | 结束角度。 |
+| start\_angle | float\_t | 起始角度（单位：弧度）。 |
+| end\_angle | float\_t | 结束角度（单位：弧度）。 |
 | ccw | bool\_t | 是否逆时针。 |
 #### vgcanvas\_arc\_to 函数
 -----------------------
@@ -1151,7 +1151,7 @@ ret_t vgcanvas_rotate (vgcanvas_t* vg, float_t rad);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
-| rad | float\_t | 旋转角度(单位弧度) |
+| rad | float\_t | 旋转角度(单位：弧度) |
 #### vgcanvas\_rounded\_rect 函数
 -----------------------
 

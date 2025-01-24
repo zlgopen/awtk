@@ -20,6 +20,7 @@
 | <a href="#pointer_event_t_button">button</a> | xy\_t | button。 |
 | <a href="#pointer_event_t_cmd">cmd</a> | bool\_t | cmd键是否按下。 |
 | <a href="#pointer_event_t_ctrl">ctrl</a> | bool\_t | ctrl键是否按下。 |
+| <a href="#pointer_event_t_finger_id">finger\_id</a> | int32\_t | 触摸ID。 |
 | <a href="#pointer_event_t_menu">menu</a> | bool\_t | menu键是否按下。 |
 | <a href="#pointer_event_t_pressed">pressed</a> | bool\_t | 指针是否按下。 |
 | <a href="#pointer_event_t_shift">shift</a> | bool\_t | shift键是否按下。 |
@@ -108,6 +109,17 @@ PC ：左键为 1，中键为 2，右键为 3
 > <p id="pointer_event_t_ctrl">ctrl键是否按下。
 
 * 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可脚本化   | 是 |
+#### finger\_id 属性
+-----------------------
+> <p id="pointer_event_t_finger_id">触摸ID。
+
+* 类型：int32\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

@@ -28,6 +28,7 @@ str_reset(&s);
 | <a href="#str_t_str_append_double">str\_append\_double</a> | 追加一个浮点数。 |
 | <a href="#str_t_str_append_escape">str\_append\_escape</a> | 对字符串s进行转义，并追加到str对象。 |
 | <a href="#str_t_str_append_format">str\_append\_format</a> | 通过格式追加字符串。 |
+| <a href="#str_t_str_append_format_padding">str\_append\_format\_padding</a> | 通过格式追加字符串(字符串不够size长时，自动填充空格)。 |
 | <a href="#str_t_str_append_int">str\_append\_int</a> | 追加一个整数。 |
 | <a href="#str_t_str_append_int64">str\_append\_int64</a> | 追加一个int64整数。 |
 | <a href="#str_t_str_append_json_bool_pair">str\_append\_json\_bool\_pair</a> | 追加bool格式的json键值对。 |
@@ -43,6 +44,8 @@ str_reset(&s);
 | <a href="#str_t_str_append_uint64">str\_append\_uint64</a> | 追加一个uint64整数。 |
 | <a href="#str_t_str_append_unescape">str\_append\_unescape</a> | 对字符串s进行反转义，并追加到str对象。 |
 | <a href="#str_t_str_append_uppercase">str\_append\_uppercase</a> | 将text转换为大写，并追加到str中。 |
+| <a href="#str_t_str_append_wchar">str\_append\_wchar</a> | 追加字符串。 |
+| <a href="#str_t_str_append_wchar_with_len">str\_append\_wchar\_with\_len</a> | 追加字符串。 |
 | <a href="#str_t_str_append_with_len">str\_append\_with\_len</a> | 追加字符串。 |
 | <a href="#str_t_str_attach">str\_attach</a> | 通过附加到一个buff来初始化str。 |
 | <a href="#str_t_str_attach_with_size">str\_attach\_with\_size</a> | 通过附加到一个buff来初始化str。 |
@@ -212,6 +215,27 @@ ret_t str_append_escape (str_t* str, const char* s, uint32_t size);
 
 ```
 ret_t str_append_format (str_t* str, uint32_t size, const char* format);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| size | uint32\_t | format生成的字符串的最大长度(用于预先分配内存)。 |
+| format | const char* | 格式。 |
+#### str\_append\_format\_padding 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_format_padding">通过格式追加字符串(字符串不够size长时，自动填充空格)。
+
+* 函数原型：
+
+```
+ret_t str_append_format_padding (str_t* str, uint32_t size, const char* format);
 ```
 
 * 参数说明：
@@ -541,6 +565,47 @@ ret_t str_append_uppercase (str_t* str, const char* text);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
 | text | const char* | 要追加的字符串。 |
+#### str\_append\_wchar 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_wchar">追加字符串。
+
+* 函数原型：
+
+```
+ret_t str_append_wchar (str_t* str, const wchar_t* text);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| text | const wchar\_t* | 要追加的字符串。 |
+#### str\_append\_wchar\_with\_len 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_wchar_with_len">追加字符串。
+
+* 函数原型：
+
+```
+ret_t str_append_wchar_with_len (str_t* str, const wchar_t* text, uint32_t len);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| text | const wchar\_t* | 要追加的字符串。 |
+| len | uint32\_t | 字符串长度。 |
 #### str\_append\_with\_len 函数
 -----------------------
 

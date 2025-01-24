@@ -12,6 +12,7 @@
 | <a href="#theme_t_theme_find_style">theme\_find\_style</a> | 查找满足条件的style。 |
 | <a href="#theme_t_theme_foreach">theme\_foreach</a> | 遍历全部数据。 |
 | <a href="#theme_t_theme_get_style_type">theme\_get\_style\_type</a> | 获取窗体样式的风格类型。 |
+| <a href="#theme_t_theme_load_from_asset">theme\_load\_from\_asset</a> | 加载窗体样式对象。 |
 | <a href="#theme_t_theme_load_from_data">theme\_load\_from\_data</a> | 加载窗体样式对象。 |
 | <a href="#theme_t_theme_set">theme\_set</a> | 设置缺省的窗体样式对象。 |
 | <a href="#theme_t_theme_set_theme_data">theme\_set\_theme\_data</a> | 设置窗体样式的数据。 |
@@ -114,6 +115,25 @@ const char* theme_get_style_type (theme_t* theme);
 | -------- | ----- | --------- |
 | 返回值 | const char* | 返回风格类型。 |
 | theme | theme\_t* | 窗体样式对象。 |
+#### theme\_load\_from\_asset 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="theme_t_theme_load_from_asset">加载窗体样式对象。
+
+* 函数原型：
+
+```
+theme_t* theme_load_from_asset (asset_info_t* info);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | theme\_t* | 返回窗体样式对象。 |
+| info | asset\_info\_t* | 资源对象。 |
 #### theme\_load\_from\_data 函数
 -----------------------
 

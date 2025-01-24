@@ -37,9 +37,9 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#conf_node_t_next">next</a> | conf\_node\_t* | 下一个兄弟节点。 |
-| <a href="#conf_node_t_node_type">node\_type</a> | uint8\_t | 节点类型。 |
+| <a href="#conf_node_t_node_type">node\_type</a> | conf\_node\_type\_t | 节点类型。 |
 | <a href="#conf_node_t_parent">parent</a> | conf\_node\_t* | 父节点。 |
-| <a href="#conf_node_t_value_type">value\_type</a> | uint8\_t | 值的类型。 |
+| <a href="#conf_node_t_value_type">value\_type</a> | conf\_node\_value\_t | 值的类型。 |
 #### conf\_doc\_foreach 函数
 -----------------------
 
@@ -536,7 +536,7 @@ ret_t conf_node_set_value (conf_node_t* node, const value_t* v);
 -----------------------
 > <p id="conf_node_t_node_type">节点类型。
 
-* 类型：uint8\_t
+* 类型：conf\_node\_type\_t
 
 #### parent 属性
 -----------------------
@@ -548,5 +548,5 @@ ret_t conf_node_set_value (conf_node_t* node, const value_t* v);
 -----------------------
 > <p id="conf_node_t_value_type">值的类型。
 
-* 类型：uint8\_t
+* 类型：conf\_node\_value\_t
 

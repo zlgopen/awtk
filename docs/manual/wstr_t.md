@@ -41,6 +41,7 @@ wstr_reset(&s);
 | <a href="#wstr_t_wstr_get_utf8">wstr\_get\_utf8</a> | 获取UTF8字符串。 |
 | <a href="#wstr_t_wstr_init">wstr\_init</a> | 初始化字符串对象。 |
 | <a href="#wstr_t_wstr_insert">wstr\_insert</a> | 在指定位置插入字符串。 |
+| <a href="#wstr_t_wstr_modify_wchar">wstr\_modify\_wchar</a> | 修改字符。 |
 | <a href="#wstr_t_wstr_normalize_newline">wstr\_normalize\_newline</a> | 规范化换行符。 |
 | <a href="#wstr_t_wstr_pop">wstr\_pop</a> | 删除尾部字符。 |
 | <a href="#wstr_t_wstr_push">wstr\_push</a> | 追加一个字符。 |
@@ -509,6 +510,27 @@ ret_t wstr_insert (wstr_t* str, uint32_t offset, const wchar_t* text, uint32_t n
 | offset | uint32\_t | 指定的位置。 |
 | text | const wchar\_t* | 待插入的文本。 |
 | nr | uint32\_t | 要插入的字符数。 |
+#### wstr\_modify\_wchar 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wstr_t_wstr_modify_wchar">修改字符。
+
+* 函数原型：
+
+```
+ret_t wstr_modify_wchar (wstr_t* str, uint32_t pos, wchar_t c);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | wstr\_t* | str对象。 |
+| pos | uint32\_t | 修改的位置。 |
+| c | wchar\_t | 修改的字符。 |
 #### wstr\_normalize\_newline 函数
 -----------------------
 

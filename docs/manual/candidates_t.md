@@ -37,6 +37,7 @@
 | <a href="#candidates_t_candidates_set_button_style">candidates\_set\_button\_style</a> | 设置按钮的style名称。 |
 | <a href="#candidates_t_candidates_set_pre">candidates\_set\_pre</a> | 设置是否为预候选字列表。 |
 | <a href="#candidates_t_candidates_set_select_by_num">candidates\_set\_select\_by\_num</a> | 设置是否启用用数字选择候选字。 |
+| <a href="#candidates_t_candidates_set_visible_num">candidates\_set\_visible\_num</a> | 设置可见候选词个数。 |
 ### 属性
 <p id="candidates_t_properties">
 
@@ -47,6 +48,7 @@
 | <a href="#candidates_t_enable_preview">enable\_preview</a> | bool\_t | 是否启用候选字预览。 |
 | <a href="#candidates_t_pre">pre</a> | bool\_t | 是否为预候选字。 |
 | <a href="#candidates_t_select_by_num">select\_by\_num</a> | bool\_t | 是否启用用数字选择候选字。比如按下1选择第1个候选字，按下2选择第2个候选字。 |
+| <a href="#candidates_t_visible_num">visible\_num</a> | uint32\_t | 候选字可见个数。 |
 #### candidates\_cast 函数
 -----------------------
 
@@ -189,6 +191,26 @@ ret_t candidates_set_select_by_num (widget_t* widget, bool_t select_by_num);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | select\_by\_num | bool\_t | 是否启用用数字选择候选字。 |
+#### candidates\_set\_visible\_num 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="candidates_t_candidates_set_visible_num">设置可见候选词个数。
+
+* 函数原型：
+
+```
+ret_t candidates_set_visible_num (widget_t* widget, uint32_t visible_num);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| visible\_num | uint32\_t | 可见个数。 |
 #### auto\_hide 属性
 -----------------------
 > <p id="candidates_t_auto_hide">没有候选字时，是否自动隐藏控件。
@@ -261,6 +283,22 @@ ret_t candidates_set_select_by_num (widget_t* widget, bool_t select_by_num);
 > <p id="candidates_t_select_by_num">是否启用用数字选择候选字。比如按下1选择第1个候选字，按下2选择第2个候选字。
 
 * 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### visible\_num 属性
+-----------------------
+> <p id="candidates_t_visible_num">候选字可见个数。
+
+* 类型：uint32\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

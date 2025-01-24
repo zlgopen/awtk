@@ -167,14 +167,14 @@ ret_t grid_set_show_grid (widget_t* widget, bool_t show_grid);
 
 col(w=?,left_margin=?,right_margin=?,top_maorgin=?,bottom_margin=?)
 
-* w 为列的宽度(必须存在)。取值在(0-1]区间时，视为grid控件宽度的比例，否则为像素宽度。
-(如果为负数，将计算结果加上控件的宽度)
-* left_margin(可选，可缩写为l) 该列左边的边距。
-* right_margin(可选，可缩写为r) 该列右边的边距。
-* top_margin(可选，可缩写为t) 该列顶部的边距。
-* bottom_margin(可选，可缩写为b) 该列底部的边距。
-* margin(可选，可缩写为m) 同时指定上面4个边距。
-* fill_available(可选，可缩写为f) 填充剩余宽度(只有一列可以指定)。
+* w 为列的宽度（必须存在）。取值在 (0-1] 区间时，视为 grid 控件宽度的比例，否则为像素宽度。
+（如果为负数，将计算结果加上控件的宽度）
+* left_margin（可选，可缩写为 l）该列左边的边距。
+* right_margin（可选，可缩写为 r）该列右边的边距。
+* top_margin（可选，可缩写为 t）该列顶部的边距。
+* bottom_margin（可选，可缩写为 b）该列底部的边距。
+* margin（可选，可缩写为 m）同时指定上面 4 个边距。
+* fill_available（可选，可缩写为f）填充剩余宽度（只有一列可以指定）。
 
 * 类型：char*
 

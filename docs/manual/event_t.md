@@ -11,9 +11,11 @@
 | <a href="#event_t_event_clone">event\_clone</a> | clone事件对象。 |
 | <a href="#event_t_event_create">event\_create</a> | 创建event对象。 |
 | <a href="#event_t_event_destroy">event\_destroy</a> | 销毁事件对象。 |
-| <a href="#event_t_event_from_name">event\_from\_name</a> | 将事件名转换成事件的值。 |
+| <a href="#event_t_event_from_name">event\_from\_name</a> | 将事件名转换成事件的类型。 |
 | <a href="#event_t_event_get_type">event\_get\_type</a> | 获取event类型。 |
 | <a href="#event_t_event_init">event\_init</a> | 初始化事件。 |
+| <a href="#event_t_event_register_custom_name">event\_register\_custom\_name</a> | 给事件注册名称。 |
+| <a href="#event_t_event_unregister_custom_name">event\_unregister\_custom\_name</a> | 注销事件名称。 |
 ### 属性
 <p id="event_t_properties">
 
@@ -111,7 +113,7 @@ ret_t event_destroy (event_t* event);
 
 * 函数功能：
 
-> <p id="event_t_event_from_name">将事件名转换成事件的值。
+> <p id="event_t_event_from_name">将事件名转换成事件的类型。
 
 * 函数原型：
 
@@ -123,7 +125,7 @@ int32_t event_from_name (const char* name);
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | int32\_t | 返回事件的值。 |
+| 返回值 | int32\_t | 返回事件的类型。 |
 | name | const char* | 事件名。 |
 #### event\_get\_type 函数
 -----------------------
@@ -164,6 +166,45 @@ event_t event_init (uint32_t type, void* target);
 | 返回值 | event\_t | 事件对象。 |
 | type | uint32\_t | 事件类型。 |
 | target | void* | 目标对象。 |
+#### event\_register\_custom\_name 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="event_t_event_register_custom_name">给事件注册名称。
+
+* 函数原型：
+
+```
+ret_t event_register_custom_name (int32_t event_type, const char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| event\_type | int32\_t | 事件类型。 |
+| name | const char* | 事件名。 |
+#### event\_unregister\_custom\_name 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="event_t_event_unregister_custom_name">注销事件名称。
+
+* 函数原型：
+
+```
+ret_t event_unregister_custom_name (const char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| name | const char* | 事件名。 |
 #### native\_window\_handle 属性
 -----------------------
 > <p id="event_t_native_window_handle">原生窗口句柄。

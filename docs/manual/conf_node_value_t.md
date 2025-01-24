@@ -16,6 +16,7 @@
 | CONF\_NODE\_VALUE\_UINT32 | uint32\_t类型。 |
 | CONF\_NODE\_VALUE\_INT64 | int64\_t类型。 |
 | CONF\_NODE\_VALUE\_UINT64 | uint64\_t类型。 |
+| CONF\_NODE\_VALUE\_POINTER | 指针类型。 |
 | CONF\_NODE\_VALUE\_FLOAT32 | float类型。 |
 | CONF\_NODE\_VALUE\_DOUBLE | double类型。 |
 | CONF\_NODE\_VALUE\_STRING | 字符串类型。 |

@@ -11,8 +11,10 @@
 | -------- | ------------ | 
 | <a href="#tk_object_t_tk_object_can_exec">tk\_object\_can\_exec</a> | 检查是否可以执行指定的命令。 |
 | <a href="#tk_object_t_tk_object_can_exec_by_path">tk\_object\_can\_exec\_by\_path</a> | 检查是否可以执行指定的命令。 |
+| <a href="#tk_object_t_tk_object_clear_props">tk\_object\_clear\_props</a> | 清除全部属性。 |
 | <a href="#tk_object_t_tk_object_clone">tk\_object\_clone</a> | clone对象。 |
 | <a href="#tk_object_t_tk_object_compare">tk\_object\_compare</a> | 比较两个对象。 |
+| <a href="#tk_object_t_tk_object_compare_name_without_nullptr">tk\_object\_compare\_name\_without\_nullptr</a> | 根据名称比较两个对象，如果两个对象的名称都为NULL，则比较两个对象的地址。 |
 | <a href="#tk_object_t_tk_object_copy_prop">tk\_object\_copy\_prop</a> | 拷贝指定的属性。 |
 | <a href="#tk_object_t_tk_object_copy_props">tk\_object\_copy\_props</a> | 拷贝全部的属性。 |
 | <a href="#tk_object_t_tk_object_create">tk\_object\_create</a> | 创建对象。 |
@@ -20,6 +22,8 @@
 | <a href="#tk_object_t_tk_object_eval">tk\_object\_eval</a> | 计算一个表达式，表达式中引用的变量从prop中获取。 |
 | <a href="#tk_object_t_tk_object_exec">tk\_object\_exec</a> | 执行指定的命令。 |
 | <a href="#tk_object_t_tk_object_exec_by_path">tk\_object\_exec\_by\_path</a> | 执行指定的命令。 |
+| <a href="#tk_object_t_tk_object_find_prop">tk\_object\_find\_prop</a> | 查找满足条件的属性，并返回它的值。 |
+| <a href="#tk_object_t_tk_object_find_props">tk\_object\_find\_props</a> | 查找全部满足条件的属性。 |
 | <a href="#tk_object_t_tk_object_foreach_prop">tk\_object\_foreach\_prop</a> | 遍历所有属性。 |
 | <a href="#tk_object_t_tk_object_get_child_object">tk\_object\_get\_child\_object</a> | 获取下一级子对象。 |
 | <a href="#tk_object_t_tk_object_get_desc">tk\_object\_get\_desc</a> | 获取对象的描述信息。 |
@@ -132,6 +136,25 @@ bool_t tk_object_can_exec_by_path (tk_object_t* obj, const char* path, const cha
 | obj | tk\_object\_t* | object对象。 |
 | path | const char* | 命令的path。 |
 | args | const char* | 命令的参数。 |
+#### tk\_object\_clear\_props 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_object_t_tk_object_clear_props">清除全部属性。
+
+* 函数原型：
+
+```
+ret_t tk_object_clear_props (tk_object_t* obj);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | tk\_object\_t* | 对象。 |
 #### tk\_object\_clone 函数
 -----------------------
 
@@ -161,14 +184,34 @@ tk_object_t* tk_object_clone (tk_object_t* obj);
 * 函数原型：
 
 ```
-int tk_object_compare (tk_object_t* obj, tk_object_t* other);
+int32_t tk_object_compare (tk_object_t* obj, tk_object_t* other);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | int | 返回比较结果。 |
+| 返回值 | int32\_t | 返回比较结果。 |
+| obj | tk\_object\_t* | object对象。 |
+| other | tk\_object\_t* | 比较的object对象。 |
+#### tk\_object\_compare\_name\_without\_nullptr 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_object_t_tk_object_compare_name_without_nullptr">根据名称比较两个对象，如果两个对象的名称都为NULL，则比较两个对象的地址。
+
+* 函数原型：
+
+```
+int32_t tk_object_compare_name_without_nullptr (tk_object_t* obj, tk_object_t* other);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int32\_t | 返回比较结果。 |
 | obj | tk\_object\_t* | object对象。 |
 | other | tk\_object\_t* | 比较的object对象。 |
 #### tk\_object\_copy\_prop 函数
@@ -319,6 +362,57 @@ ret_t tk_object_exec_by_path (tk_object_t* obj, const char* path, const char* ar
 | obj | tk\_object\_t* | object对象。 |
 | path | const char* | 命令的path。 |
 | args | const char* | 命令的参数。 |
+#### tk\_object\_find\_prop 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_object_t_tk_object_find_prop">查找满足条件的属性，并返回它的值。
+
+* 函数原型：
+
+```
+value_t* tk_object_find_prop (tk_object_t* obj, tk_compare_t cmp, const void* data);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | value\_t* | 返回属性的值。 |
+| obj | tk\_object\_t* | 对象。 |
+| cmp | tk\_compare\_t | 比较函数。 |
+| data | const void* | 要比较的数据。 |
+#### tk\_object\_find\_props 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_object_t_tk_object_find_props">查找全部满足条件的属性。
+
+```c
+darray_t matched;
+darray_init(&matched, 0, NULL, NULL);
+tk_object_find_props(obj, my_cmp, my_data, &matched);
+...
+darray_deinit(&matched);
+```
+
+* 函数原型：
+
+```
+ret_t tk_object_find_props (tk_object_t* obj, tk_compare_t cmp, const void* data, darray_t* matched);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | tk\_object\_t* | 对象。 |
+| cmp | tk\_compare\_t | 比较函数。 |
+| data | const void* | 要比较的数据。 |
+| matched | darray\_t* | 返回满足条件的属性。 |
 #### tk\_object\_foreach\_prop 函数
 -----------------------
 

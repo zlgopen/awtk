@@ -14,6 +14,7 @@
 | <a href="#debugger_t_debugger_dispatch_messages">debugger\_dispatch\_messages</a> | dispatch_messages(仅适用于客户端) |
 | <a href="#debugger_t_debugger_get_break_points">debugger\_get\_break\_points</a> | 获取断点列表。 |
 | <a href="#debugger_t_debugger_get_callstack">debugger\_get\_callstack</a> | 获取当前线程的callstack。 |
+| <a href="#debugger_t_debugger_get_callstack_ex">debugger\_get\_callstack\_ex</a> | 获取当前线程的callstack。 |
 | <a href="#debugger_t_debugger_get_code">debugger\_get\_code</a> | 获取代码。 |
 | <a href="#debugger_t_debugger_get_current_frame">debugger\_get\_current\_frame</a> | 获取当前callstack的frame。 |
 | <a href="#debugger_t_debugger_get_current_thread_id">debugger\_get\_current\_thread\_id</a> | 获取当前线程 ID。 |
@@ -187,6 +188,31 @@ tk_object_t* debugger_get_callstack (debugger_t* debugger);
 | -------- | ----- | --------- |
 | 返回值 | tk\_object\_t* | 返回堆栈信息。 |
 | debugger | debugger\_t* | debugger对象。 |
+#### debugger\_get\_callstack\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="debugger_t_debugger_get_callstack_ex">获取当前线程的callstack。
+备注：
+1，如果 tk_object_t 的 callstack.#size 返回来的长度小于 levels 的话，就已经全部拿完了。
+2，返回值和 debugger_get_callstack 是一样的。
+
+* 函数原型：
+
+```
+tk_object_t* debugger_get_callstack_ex (debugger_t* debugger, uint32_t start, uint32_t levels, uint64_t thread_id);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | tk\_object\_t* | 返回堆栈信息。 |
+| debugger | debugger\_t* | debugger对象。 |
+| start | uint32\_t | 堆栈 startFrame。 |
+| levels | uint32\_t | 堆栈层数。（如果是输入 0 的话，就获取最大层数） |
+| thread\_id | uint64\_t | 线程 id。 |
 #### debugger\_get\_code 函数
 -----------------------
 

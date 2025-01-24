@@ -235,7 +235,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_set_prop_str">widget\_set\_prop\_str</a> | 设置字符串格式的属性。 |
 | <a href="#widget_t_widget_set_props">widget\_set\_props</a> | 设置多个参数。 |
 | <a href="#widget_t_widget_set_self_layout">widget\_set\_self\_layout</a> | 设置控件自己的布局参数。 |
-| <a href="#widget_t_widget_set_self_layout_params">widget\_set\_self\_layout\_params</a> | 设置控件自己的布局(缺省布局器)参数(过时，请用widget\_set\_self\_layout)。 |
+| <a href="#widget_t_widget_set_self_layout_params">widget\_set\_self\_layout\_params</a> | 设置控件自己的布局(缺省布局器)参数(建议用widget\_set\_self\_layout)。 |
 | <a href="#widget_t_widget_set_sensitive">widget\_set\_sensitive</a> | 设置控件是否接受用户事件。 |
 | <a href="#widget_t_widget_set_state">widget\_set\_state</a> | 设置控件的状态。 |
 | <a href="#widget_t_widget_set_style">widget\_set\_style</a> | 设置widget私有样式。 |
@@ -4241,7 +4241,7 @@ ret_t widget_set_self_layout (widget_t* widget, const char* params);
 
 * 函数功能：
 
-> <p id="widget_t_widget_set_self_layout_params">设置控件自己的布局(缺省布局器)参数(过时，请用widget\_set\_self\_layout)。
+> <p id="widget_t_widget_set_self_layout_params">设置控件自己的布局(缺省布局器)参数(建议用widget\_set\_self\_layout)。
 备注：下一帧才会生效数据
 
 * 函数原型：

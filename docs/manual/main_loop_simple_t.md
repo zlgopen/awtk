@@ -12,6 +12,7 @@
 | <a href="#main_loop_simple_t_main_loop_post_key_event">main\_loop\_post\_key\_event</a> | 发送按键事件。 |
 | <a href="#main_loop_simple_t_main_loop_post_multi_gesture_event">main\_loop\_post\_multi\_gesture\_event</a> | 发送多点触控事件。 |
 | <a href="#main_loop_simple_t_main_loop_post_pointer_event">main\_loop\_post\_pointer\_event</a> | 发送指针事件。 |
+| <a href="#main_loop_simple_t_main_loop_post_touch_event">main\_loop\_post\_touch\_event</a> | 发送触摸事件。 |
 | <a href="#main_loop_simple_t_main_loop_simple_init">main\_loop\_simple\_init</a> | 初始化main_loop_simple_t对象。 |
 | <a href="#main_loop_simple_t_main_loop_simple_reset">main\_loop\_simple\_reset</a> | 销毁main_loop_simple_t对象。 |
 #### main\_loop\_post\_key\_event 函数
@@ -75,6 +76,28 @@ ret_t main_loop_post_pointer_event (main_loop_t* l, bool_t pressed, xy_t x, xy_t
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | l | main\_loop\_t* | 主循环对象。 |
 | pressed | bool\_t | 是否按下。 |
+| x | xy\_t | x坐标。 |
+| y | xy\_t | y坐标。 |
+#### main\_loop\_post\_touch\_event 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="main_loop_simple_t_main_loop_post_touch_event">发送触摸事件。
+
+* 函数原型：
+
+```
+ret_t main_loop_post_touch_event (main_loop_t* l, event_type_t event_type, xy_t x, xy_t y);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| l | main\_loop\_t* | 主循环对象。 |
+| event\_type | event\_type\_t | 事件类型(EVT\_TOUCH\_DOWN/EVT\_TOUCH\_UP/EVT\_TOUCH\_MOVE)。 |
 | x | xy\_t | x坐标。 |
 | y | xy\_t | y坐标。 |
 #### main\_loop\_simple\_init 函数

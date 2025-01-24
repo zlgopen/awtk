@@ -17,7 +17,7 @@
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#qaction_t_args">args</a> | uint32\_t* | exec的参数(视具体的action而不同)。 |
+| <a href="#qaction_t_args">args</a> | uint64\_t* | exec的参数(视具体的action而不同)。 |
 | <a href="#qaction_t_exec">exec</a> | qaction\_exec\_t | 执行函数。 |
 | <a href="#qaction_t_on_event">on\_event</a> | qaction\_on\_event\_t | 事件处理函数。如进度、错误和完成等。 |
 #### qaction\_create 函数
@@ -125,7 +125,7 @@ ret_t qaction_set_on_event (qaction_t* action, qaction_on_event_t on_event);
 -----------------------
 > <p id="qaction_t_args">exec的参数(视具体的action而不同)。
 
-* 类型：uint32\_t*
+* 类型：uint64\_t*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

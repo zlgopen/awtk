@@ -15,6 +15,7 @@
 | <a href="#tk_client_t_tk_client_request">tk\_client\_request</a> | 客户端发送请求，并读取响应。 |
 | <a href="#tk_client_t_tk_client_send_req">tk\_client\_send\_req</a> | 客户端发送请求。 |
 | <a href="#tk_client_t_tk_client_set_retry_times">tk\_client\_set\_retry\_times</a> | 设置重试次数。 |
+| <a href="#tk_client_t_tk_client_set_timeout_ms">tk\_client\_set\_timeout\_ms</a> | 设置超时时间。 |
 | <a href="#tk_client_t_tk_client_upload_file">tk\_client\_upload\_file</a> | 客户端上传文件。 |
 ### 属性
 <p id="tk_client_t_properties">
@@ -189,6 +190,27 @@ ret_t tk_client_set_retry_times (tk_client_t* client, uint32_t retry_times);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | client | tk\_client\_t* | client对象。 |
 | retry\_times | uint32\_t | 重试次数。 |
+#### tk\_client\_set\_timeout\_ms 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_client_t_tk_client_set_timeout_ms">设置超时时间。
+
+* 函数原型：
+
+```
+ret_t tk_client_set_timeout_ms (tk_client_t* client, uint32_t wtimeout_ms, uint32_t rtimeout_ms);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| client | tk\_client\_t* | client对象。 |
+| wtimeout\_ms | uint32\_t | 读数据超时时间。 |
+| rtimeout\_ms | uint32\_t | 写数据超时时间。 |
 #### tk\_client\_upload\_file 函数
 -----------------------
 

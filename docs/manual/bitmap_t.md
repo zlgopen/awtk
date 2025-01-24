@@ -10,6 +10,9 @@
 | <a href="#bitmap_t_bitmap_clone">bitmap\_clone</a> | Clone图片。 |
 | <a href="#bitmap_t_bitmap_create">bitmap\_create</a> | 创建图片对象(一般供脚本语言中使用)。 |
 | <a href="#bitmap_t_bitmap_create_ex">bitmap\_create\_ex</a> | 创建图片对象。 |
+| <a href="#bitmap_t_bitmap_create_ex2">bitmap\_create\_ex2</a> | 创建图片对象。 |
+| <a href="#bitmap_t_bitmap_create_ex3">bitmap\_create\_ex3</a> | 创建图片对象。 |
+| <a href="#bitmap_t_bitmap_deinit">bitmap\_deinit</a> | 反初始化图片。 |
 | <a href="#bitmap_t_bitmap_destroy">bitmap\_destroy</a> | 销毁图片。 |
 | <a href="#bitmap_t_bitmap_destroy_with_self">bitmap\_destroy\_with\_self</a> | 销毁图片(for script only)。 |
 | <a href="#bitmap_t_bitmap_get_bpp">bitmap\_get\_bpp</a> | 获取图片一个像素占用的字节数。 |
@@ -21,12 +24,15 @@
 | <a href="#bitmap_t_bitmap_get_pixel">bitmap\_get\_pixel</a> | 获取图片指定像素的rgba颜色值(主要用于测试程序)。 |
 | <a href="#bitmap_t_bitmap_init">bitmap\_init</a> | 初始化图片。 |
 | <a href="#bitmap_t_bitmap_init_ex">bitmap\_init\_ex</a> | 初始化图片。 |
+| <a href="#bitmap_t_bitmap_init_ex2">bitmap\_init\_ex2</a> | 创建图片对象。 |
 | <a href="#bitmap_t_bitmap_init_from_bgra">bitmap\_init\_from\_bgra</a> | 初始化图片。 |
 | <a href="#bitmap_t_bitmap_init_from_rgba">bitmap\_init\_from\_rgba</a> | 初始化图片。 |
+| <a href="#bitmap_t_bitmap_is_dirty">bitmap\_is\_dirty</a> | 获取图片是否脏。 |
 | <a href="#bitmap_t_bitmap_lock_buffer_for_read">bitmap\_lock\_buffer\_for\_read</a> | 为读取数据而锁定bitmap的图片缓冲区。 |
 | <a href="#bitmap_t_bitmap_lock_buffer_for_write">bitmap\_lock\_buffer\_for\_write</a> | 为修改数据而锁定bitmap的图片缓冲区。 |
 | <a href="#bitmap_t_bitmap_mono_dump">bitmap\_mono\_dump</a> | dump mono bitmap。 |
 | <a href="#bitmap_t_bitmap_save_png">bitmap\_save\_png</a> | 把bitmap保存为png。 |
+| <a href="#bitmap_t_bitmap_set_dirty">bitmap\_set\_dirty</a> | 设置图片是否脏。 |
 | <a href="#bitmap_t_bitmap_set_line_length">bitmap\_set\_line\_length</a> | 设置line_length。 |
 | <a href="#bitmap_t_bitmap_transform">bitmap\_transform</a> | 对图片每个像素进行变换。 |
 | <a href="#bitmap_t_bitmap_unlock_buffer">bitmap\_unlock\_buffer</a> | 解锁图像缓冲区。 |
@@ -102,6 +108,74 @@ bitmap_t* bitmap_create_ex (uint32_t w, uint32_t h, uint32_t line_length, bitmap
 | h | uint32\_t | 高度。 |
 | line\_length | uint32\_t | line\_length。 |
 | format | bitmap\_format\_t | 格式。 |
+#### bitmap\_create\_ex2 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="bitmap_t_bitmap_create_ex2">创建图片对象。
+
+* 函数原型：
+
+```
+bitmap_t* bitmap_create_ex2 (uint32_t w, uint32_t h, uint32_t line_length, bitmap_format_t format, uint8_t* data, bool_t should_free_data);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bitmap\_t* | 返回bitmap对象。 |
+| w | uint32\_t | 宽度。 |
+| h | uint32\_t | 高度。 |
+| line\_length | uint32\_t | line\_length。 |
+| format | bitmap\_format\_t | 格式。 |
+| data | uint8\_t* | 图像数据。 |
+| should\_free\_data | bool\_t | 是否释放数据。 |
+#### bitmap\_create\_ex3 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="bitmap_t_bitmap_create_ex3">创建图片对象。
+
+* 函数原型：
+
+```
+bitmap_t* bitmap_create_ex3 (uint32_t w, uint32_t h, uint32_t line_length, bitmap_format_t format, uint8_t* data, uint8_t* physical_data_addr, bool_t should_free_data);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bitmap\_t* | 返回bitmap对象。 |
+| w | uint32\_t | 宽度。 |
+| h | uint32\_t | 高度。 |
+| line\_length | uint32\_t | line\_length。 |
+| format | bitmap\_format\_t | 格式。 |
+| data | uint8\_t* | 图像数据。 |
+| physical\_data\_addr | uint8\_t* | 物理地址(部分硬件加速需要)。 |
+| should\_free\_data | bool\_t | 是否释放数据。 |
+#### bitmap\_deinit 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="bitmap_t_bitmap_deinit">反初始化图片。
+
+* 函数原型：
+
+```
+ret_t bitmap_deinit (bitmap_t* bitmap);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| bitmap | bitmap\_t* | bitmap对象。 |
 #### bitmap\_destroy 函数
 -----------------------
 
@@ -323,6 +397,32 @@ ret_t bitmap_init_ex (bitmap_t* bitmap, uint32_t w, uint32_t h, uint32_t line_le
 | line\_length | uint32\_t | 行长。 |
 | format | bitmap\_format\_t | 格式。 |
 | data | uint8\_t* | 数据，直接引用，但不负责释放。如果为空，由内部自动分配和释放。 |
+#### bitmap\_init\_ex2 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="bitmap_t_bitmap_init_ex2">创建图片对象。
+
+* 函数原型：
+
+```
+ret_t bitmap_init_ex2 (bitmap_t* bitmap, uint32_t w, uint32_t h, uint32_t line_length, bitmap_format_t format, uint8_t* data, uint8_t* physical_data_addr, bool_t should_free_data);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| bitmap | bitmap\_t* | bitmap对象。 |
+| w | uint32\_t | 宽度。 |
+| h | uint32\_t | 高度。 |
+| line\_length | uint32\_t | line\_length。 |
+| format | bitmap\_format\_t | 格式。 |
+| data | uint8\_t* | 图像数据。 |
+| physical\_data\_addr | uint8\_t* | 物理地址(部分硬件加速需要)。 |
+| should\_free\_data | bool\_t | 是否释放数据。 |
 #### bitmap\_init\_from\_bgra 函数
 -----------------------
 
@@ -373,6 +473,25 @@ ret_t bitmap_init_from_rgba (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_fo
 | data | const uint8\_t* | 数据。3通道时为RGB888格式，4通道时为RGBA888格式(内部拷贝该数据，不会引用，调用者自行释放)。 |
 | comp | uint32\_t | 颜色通道数(目前支持3(rgb)和4(rgba))。 |
 | o | lcd\_orientation\_t | 旋转方向。 |
+#### bitmap\_is\_dirty 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="bitmap_t_bitmap_is_dirty">获取图片是否脏。
+
+* 函数原型：
+
+```
+bool_t bitmap_is_dirty (bitmap_t* bitmap);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示脏，FALSE表示不脏。 |
+| bitmap | bitmap\_t* | bitmap对象。 |
 #### bitmap\_lock\_buffer\_for\_read 函数
 -----------------------
 
@@ -452,6 +571,26 @@ bool_t bitmap_save_png (bitmap_t* bitmap, const char* filename);
 | 返回值 | bool\_t | 返回TRUE表示成功，FALSE表示失败。 |
 | bitmap | bitmap\_t* | bitmap对象。 |
 | filename | const char* | 文件名。 |
+#### bitmap\_set\_dirty 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="bitmap_t_bitmap_set_dirty">设置图片是否脏。
+
+* 函数原型：
+
+```
+ret_t bitmap_set_dirty (bitmap_t* bitmap, bool_t dirty);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| bitmap | bitmap\_t* | bitmap对象。 |
+| dirty | bool\_t | 是否脏。 |
 #### bitmap\_set\_line\_length 函数
 -----------------------
 

@@ -10,6 +10,7 @@ graphic_buffer。
 | <a href="#graphic_buffer_t_graphic_buffer_attach">graphic\_buffer\_attach</a> | 附件到指定的内存。 |
 | <a href="#graphic_buffer_t_graphic_buffer_create_for_bitmap">graphic\_buffer\_create\_for\_bitmap</a> | 为位图创建缓冲区。 |
 | <a href="#graphic_buffer_t_graphic_buffer_create_with_data">graphic\_buffer\_create\_with\_data</a> | 创建缓冲区。 |
+| <a href="#graphic_buffer_t_graphic_buffer_create_with_data_ex">graphic\_buffer\_create\_with\_data\_ex</a> | 创建缓冲区。 |
 | <a href="#graphic_buffer_t_graphic_buffer_destroy">graphic\_buffer\_destroy</a> | 销毁缓冲区。 |
 | <a href="#graphic_buffer_t_graphic_buffer_get_physical_height">graphic\_buffer\_get\_physical\_height</a> | 获取 graphic_buffer 真实物理的的高度 |
 | <a href="#graphic_buffer_t_graphic_buffer_get_physical_line_length">graphic\_buffer\_get\_physical\_line\_length</a> | 获取 graphic_buffer 真实物理的的行长度 |
@@ -17,6 +18,9 @@ graphic_buffer。
 | <a href="#graphic_buffer_t_graphic_buffer_is_valid_for">graphic\_buffer\_is\_valid\_for</a> | 用于检查graphic buffer的有效性。 |
 | <a href="#graphic_buffer_t_graphic_buffer_lock_for_read">graphic\_buffer\_lock\_for\_read</a> | 为读取数据而锁定缓冲区。 |
 | <a href="#graphic_buffer_t_graphic_buffer_lock_for_write">graphic\_buffer\_lock\_for\_write</a> | 为修改数据而锁定缓冲区。 |
+| <a href="#graphic_buffer_t_graphic_buffer_set_physical_height">graphic\_buffer\_set\_physical\_height</a> | 设置 graphic_buffer 真实物理的的高度 |
+| <a href="#graphic_buffer_t_graphic_buffer_set_physical_line_length">graphic\_buffer\_set\_physical\_line\_length</a> | 设置 graphic_buffer 真实物理的的行长度 |
+| <a href="#graphic_buffer_t_graphic_buffer_set_physical_width">graphic\_buffer\_set\_physical\_width</a> | 设置 graphic_buffer 真实物理的的宽度 |
 | <a href="#graphic_buffer_t_graphic_buffer_unlock">graphic\_buffer\_unlock</a> | 解锁缓冲区。 |
 #### graphic\_buffer\_attach 函数
 -----------------------
@@ -82,6 +86,32 @@ graphic_buffer_t* graphic_buffer_create_with_data (const uint8_t* data, uint32_t
 | data | const uint8\_t* | 数据。 |
 | w | uint32\_t | 宽度。 |
 | h | uint32\_t | 宽度。 |
+| format | bitmap\_format\_t | 格式。 |
+#### graphic\_buffer\_create\_with\_data\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="graphic_buffer_t_graphic_buffer_create_with_data_ex">创建缓冲区。
+
+> 为了兼容raw图像。
+
+* 函数原型：
+
+```
+graphic_buffer_t* graphic_buffer_create_with_data_ex (const uint8_t* virtual_data, const uint8_t* physical_data, uint32_t w, uint32_t h, uint32_t line_length, bitmap_format_t format);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | graphic\_buffer\_t* | 返回缓存区。 |
+| virtual\_data | const uint8\_t* | 数据虚拟地址。 |
+| physical\_data | const uint8\_t* | 数据物理地址。 |
+| w | uint32\_t | 宽度。 |
+| h | uint32\_t | 宽度。 |
+| line\_length | uint32\_t | 每行宽度(字节数) |
 | format | bitmap\_format\_t | 格式。 |
 #### graphic\_buffer\_destroy 函数
 -----------------------
@@ -217,6 +247,66 @@ uint8_t* graphic_buffer_lock_for_write (graphic_buffer_t* buffer);
 | -------- | ----- | --------- |
 | 返回值 | uint8\_t* | 返回缓存区的首地址。 |
 | buffer | graphic\_buffer\_t* | 图像缓冲区对象。 |
+#### graphic\_buffer\_set\_physical\_height 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="graphic_buffer_t_graphic_buffer_set_physical_height">设置 graphic_buffer 真实物理的的高度
+
+* 函数原型：
+
+```
+ret_t graphic_buffer_set_physical_height (graphic_buffer_t* buffer, uint32_t height);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| buffer | graphic\_buffer\_t* | 图像缓冲区对象。 |
+| height | uint32\_t | 真实物理的的高度。 |
+#### graphic\_buffer\_set\_physical\_line\_length 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="graphic_buffer_t_graphic_buffer_set_physical_line_length">设置 graphic_buffer 真实物理的的行长度
+
+* 函数原型：
+
+```
+ret_t graphic_buffer_set_physical_line_length (graphic_buffer_t* buffer, uint32_t line_length);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| buffer | graphic\_buffer\_t* | 图像缓冲区对象。 |
+| line\_length | uint32\_t | 真实物理的的行长度。 |
+#### graphic\_buffer\_set\_physical\_width 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="graphic_buffer_t_graphic_buffer_set_physical_width">设置 graphic_buffer 真实物理的的宽度
+
+* 函数原型：
+
+```
+ret_t graphic_buffer_set_physical_width (graphic_buffer_t* buffer, uint32_t width);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| buffer | graphic\_buffer\_t* | 图像缓冲区对象。 |
+| width | uint32\_t | 真实物理的的宽度。 |
 #### graphic\_buffer\_unlock 函数
 -----------------------
 

@@ -23,6 +23,7 @@
 | <a href="#text_edit_t_text_edit_key_down">text\_edit\_key\_down</a> | 处理按键事件。 |
 | <a href="#text_edit_t_text_edit_key_up">text\_edit\_key\_up</a> | 处理按键事件。 |
 | <a href="#text_edit_t_text_edit_layout">text\_edit\_layout</a> | 重新排版。 |
+| <a href="#text_edit_t_text_edit_muti_line_insert_text_layout">text\_edit\_muti\_line\_insert\_text\_layout</a> | 插入字符串后的重新排版。（内部使用函数） |
 | <a href="#text_edit_t_text_edit_paint">text\_edit\_paint</a> | 绘制文本。 |
 | <a href="#text_edit_t_text_edit_paste">text\_edit\_paste</a> | 粘贴文本。 |
 | <a href="#text_edit_t_text_edit_preedit">text\_edit\_preedit</a> | 进入预编辑状态。 |
@@ -362,6 +363,30 @@ ret_t text_edit_layout (text_edit_t* text_edit);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | text\_edit | text\_edit\_t* | text\_edit对象。 |
+#### text\_edit\_muti\_line\_insert\_text\_layout 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_edit_t_text_edit_muti_line_insert_text_layout">插入字符串后的重新排版。（内部使用函数）
+
+* 函数原型：
+
+```
+ret_t text_edit_muti_line_insert_text_layout (text_edit_t* text_edit, uint32_t offset, uint32_t insert_length, const wchar_t* wtext, bool_t overwrite, uint32_t rm_num);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| text\_edit | text\_edit\_t* | text\_edit对象。 |
+| offset | uint32\_t | 插入的字符串偏移。 |
+| insert\_length | uint32\_t | 插入的字符串长度。 |
+| wtext | const wchar\_t* | 插入的字符串。 |
+| overwrite | bool\_t | 是否为覆写模式。 |
+| rm\_num | uint32\_t | 移除的字符串长度。 |
 #### text\_edit\_paint 函数
 -----------------------
 

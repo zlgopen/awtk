@@ -40,6 +40,7 @@ widget\_t的函数均适用于tab\_button\_group\_t控件。
 | <a href="#tab_button_group_t_tab_button_group_cast">tab\_button\_group\_cast</a> | 转换tab_button_group对象(供脚本语言使用)。 |
 | <a href="#tab_button_group_t_tab_button_group_create">tab\_button\_group\_create</a> | 创建tab_button_group对象 |
 | <a href="#tab_button_group_t_tab_button_group_get_widget_vtable">tab\_button\_group\_get\_widget\_vtable</a> | 获取 tab_button_group 虚表。 |
+| <a href="#tab_button_group_t_tab_button_group_remove_index">tab\_button\_group\_remove\_index</a> | 设置删除 tab_button_group 控件中的 tab_button 控件和对应页。 |
 | <a href="#tab_button_group_t_tab_button_group_set_compact">tab\_button\_group\_set\_compact</a> | 设置compact。 |
 | <a href="#tab_button_group_t_tab_button_group_set_drag_child">tab\_button\_group\_set\_drag\_child</a> | 设置拖拽 tab_button 控件位置。 |
 | <a href="#tab_button_group_t_tab_button_group_set_scrollable">tab\_button\_group\_set\_scrollable</a> | 设置scrollable。 |
@@ -113,6 +114,26 @@ const widget_vtable_t* tab_button_group_get_widget_vtable ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | const widget\_vtable\_t* | 成功返回 tab\_button\_group 虚表。 |
+#### tab\_button\_group\_remove\_index 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tab_button_group_t_tab_button_group_remove_index">设置删除 tab_button_group 控件中的 tab_button 控件和对应页。
+
+* 函数原型：
+
+```
+ret_t tab_button_group_remove_index (widget_t* widget, uint32_t index);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| index | uint32\_t | tab\_button 的序号。 |
 #### tab\_button\_group\_set\_compact 函数
 -----------------------
 
@@ -251,7 +272,6 @@ ret_t tab_button_group_set_scrollable (widget_t* widget, bool_t scrollable);
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
 | 可持久化   | 是 |
-| 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |

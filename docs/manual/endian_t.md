@@ -55,6 +55,15 @@ ENSURE(double_to_big_endian(d3) == d2);
 | <a href="#endian_t_int64_from_big_endian">int64\_from\_big\_endian</a> | 64 整数转换为小端模式。 |
 | <a href="#endian_t_int64_to_big_endian">int64\_to\_big\_endian</a> | 64 整数转换为大端模式。 |
 | <a href="#endian_t_is_little_endian">is\_little\_endian</a> | 检查当前系统是否是小端模式。 |
+| <a href="#endian_t_uint16_endian_invert">uint16\_endian\_invert</a> | 16 无符号整数大小端模式转换。 |
+| <a href="#endian_t_uint16_from_big_endian">uint16\_from\_big\_endian</a> | 16 无符号整数转换为小端模式。 |
+| <a href="#endian_t_uint16_to_big_endian">uint16\_to\_big\_endian</a> | 16 无符号整数转换为大端模式。 |
+| <a href="#endian_t_uint32_endian_invert">uint32\_endian\_invert</a> | 32 无符号整数大小端模式转换。 |
+| <a href="#endian_t_uint32_from_big_endian">uint32\_from\_big\_endian</a> | 32 无符号整数转换为小端模式。 |
+| <a href="#endian_t_uint32_to_big_endian">uint32\_to\_big\_endian</a> | 32 无符号整数转换为大端模式。 |
+| <a href="#endian_t_uint64_endian_invert">uint64\_endian\_invert</a> | 64 无符号整数大小端模式转换。 |
+| <a href="#endian_t_uint64_from_big_endian">uint64\_from\_big\_endian</a> | 64 无符号整数转换为小端模式。 |
+| <a href="#endian_t_uint64_to_big_endian">uint64\_to\_big\_endian</a> | 64 无符号整数转换为大端模式。 |
 #### double\_endian\_invert 函数
 -----------------------
 
@@ -358,3 +367,174 @@ bool_t is_little_endian ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回TRUE表示是，否则表示不是。 |
+#### uint16\_endian\_invert 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="endian_t_uint16_endian_invert">16 无符号整数大小端模式转换。
+
+* 函数原型：
+
+```
+uint16_t uint16_endian_invert (uint16_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint16\_t | 返回转换后的数据。 |
+| value | uint16\_t | 输入数据。 |
+#### uint16\_from\_big\_endian 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="endian_t_uint16_from_big_endian">16 无符号整数转换为小端模式。
+
+* 函数原型：
+
+```
+uint16_t uint16_from_big_endian (uint16_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint16\_t | 返回转换后的数据。 |
+| value | uint16\_t | 输入数据。 |
+#### uint16\_to\_big\_endian 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="endian_t_uint16_to_big_endian">16 无符号整数转换为大端模式。
+
+* 函数原型：
+
+```
+uint16_t uint16_to_big_endian (uint16_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint16\_t | 返回转换后的数据。 |
+| value | uint16\_t | 输入数据。 |
+#### uint32\_endian\_invert 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="endian_t_uint32_endian_invert">32 无符号整数大小端模式转换。
+
+* 函数原型：
+
+```
+uint32_t uint32_endian_invert (uint32_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回转换后的数据。 |
+| value | uint32\_t | 输入数据。 |
+#### uint32\_from\_big\_endian 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="endian_t_uint32_from_big_endian">32 无符号整数转换为小端模式。
+
+* 函数原型：
+
+```
+uint32_t uint32_from_big_endian (uint32_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回转换后的数据。 |
+| value | uint32\_t | 输入数据。 |
+#### uint32\_to\_big\_endian 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="endian_t_uint32_to_big_endian">32 无符号整数转换为大端模式。
+
+* 函数原型：
+
+```
+uint32_t uint32_to_big_endian (uint32_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回转换后的数据。 |
+| value | uint32\_t | 输入数据。 |
+#### uint64\_endian\_invert 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="endian_t_uint64_endian_invert">64 无符号整数大小端模式转换。
+
+* 函数原型：
+
+```
+uint64_t uint64_endian_invert (uint64_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint64\_t | 返回转换后的数据。 |
+| value | uint64\_t | 输入数据。 |
+#### uint64\_from\_big\_endian 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="endian_t_uint64_from_big_endian">64 无符号整数转换为小端模式。
+
+* 函数原型：
+
+```
+uint64_t uint64_from_big_endian (uint64_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint64\_t | 返回转换后的数据。 |
+| value | uint64\_t | 输入数据。 |
+#### uint64\_to\_big\_endian 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="endian_t_uint64_to_big_endian">64 无符号整数转换为大端模式。
+
+* 函数原型：
+
+```
+uint64_t uint64_to_big_endian (uint64_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint64\_t | 返回转换后的数据。 |
+| value | uint64\_t | 输入数据。 |

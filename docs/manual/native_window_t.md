@@ -25,6 +25,7 @@
 | <a href="#native_window_t_native_window_set_fullscreen">native\_window\_set\_fullscreen</a> | 是否全屏。 |
 | <a href="#native_window_t_native_window_set_orientation">native\_window\_set\_orientation</a> | 调整窗口旋转。 |
 | <a href="#native_window_t_native_window_set_title">native\_window\_set\_title</a> | 设置程序窗口的名称。 |
+| <a href="#native_window_t_native_window_set_window_hit_test">native\_window\_set\_window\_hit\_test</a> | 设置hitTest。 |
 | <a href="#native_window_t_native_window_show_border">native\_window\_show\_border</a> | 是否显示边框。 |
 | <a href="#native_window_t_native_window_swap_buffer">native\_window\_swap\_buffer</a> | 交换缓冲区。 |
 #### native\_window\_center 函数
@@ -346,6 +347,29 @@ ret_t native_window_set_title (native_window_t* win, const char* app_name);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | win | native\_window\_t* | win对象。 |
 | app\_name | const char* | 程序窗口的名称。 |
+#### native\_window\_set\_window\_hit\_test 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="native_window_t_native_window_set_window_hit_test">设置hitTest。
+
+* 函数原型：
+
+```
+ret_t native_window_set_window_hit_test (native_window_t* win, xy_t x, xy_t y, wh_t w, wh_t h);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| win | native\_window\_t* | win对象。 |
+| x | xy\_t | x坐标。 |
+| y | xy\_t | y坐标。 |
+| w | wh\_t | w宽度。 |
+| h | wh\_t | h高度。 |
 #### native\_window\_show\_border 函数
 -----------------------
 

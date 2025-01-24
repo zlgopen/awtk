@@ -104,6 +104,9 @@
 | EVT\_ACTIVATED | 控件进入激活状态(event\_t)。 |
 | EVT\_UNACTIVATED | 控件退出激活状态(event\_t)。 |
 | EVT\_UI\_LOAD | UI加载完成事件(event\_t)。 |
+| EVT\_TOUCH\_DOWN | 触摸按下事件名(touch\_event\_t)。 |
+| EVT\_TOUCH\_MOVE | 触摸移动事件名(touch\_event\_t)。 |
+| EVT\_TOUCH\_UP | 触摸抬起事件名(touch\_event\_t)。 |
 | EVT\_REQ\_START | event queue其它请求编号起始值。 |
 | EVT\_USER\_START | 用户定义事件起始值。 |
 | EVT\_NONE | 无效事件名称。 |

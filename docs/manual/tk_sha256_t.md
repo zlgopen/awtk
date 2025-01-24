@@ -11,6 +11,8 @@ sha256
 | <a href="#tk_sha256_t_tk_sha256_done">tk\_sha256\_done</a> | 完成计算。 |
 | <a href="#tk_sha256_t_tk_sha256_file">tk\_sha256\_file</a> | 计算文件的sha256哈希值。 |
 | <a href="#tk_sha256_t_tk_sha256_hash">tk\_sha256\_hash</a> | 更新数据。 |
+| <a href="#tk_sha256_t_tk_sha256_hash_from_str">tk\_sha256\_hash\_from\_str</a> | 从字符串中提取哈希值。 |
+| <a href="#tk_sha256_t_tk_sha256_hash_to_str">tk\_sha256\_hash\_to\_str</a> | 哈希值转为字符串形式。 |
 | <a href="#tk_sha256_t_tk_sha256_init">tk\_sha256\_init</a> | 初始化。 |
 #### tk\_sha256 函数
 -----------------------
@@ -95,6 +97,46 @@ ret_t tk_sha256_hash (tk_sha256_t* sha256, const uint8_t* data, uint32_t len);
 | sha256 | tk\_sha256\_t* | sha256对象。 |
 | data | const uint8\_t* | 数据。 |
 | len | uint32\_t | 数据长度。 |
+#### tk\_sha256\_hash\_from\_str 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_sha256_t_tk_sha256_hash_from_str">从字符串中提取哈希值。
+
+* 函数原型：
+
+```
+ret_t tk_sha256_hash_from_str (uint8_t* hash, const char* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| hash | uint8\_t* | 哈希值。 |
+| str | const char* | 哈希值字符串形式。 |
+#### tk\_sha256\_hash\_to\_str 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_sha256_t_tk_sha256_hash_to_str">哈希值转为字符串形式。
+
+* 函数原型：
+
+```
+ret_t tk_sha256_hash_to_str (uint8_t* hash, const char* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| hash | uint8\_t* | 哈希值。 |
+| str | const char* | 哈希值字符串形式。 |
 #### tk\_sha256\_init 函数
 -----------------------
 
