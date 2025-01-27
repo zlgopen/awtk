@@ -3957,8 +3957,11 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent) {
   clone = widget->vt->create(parent, widget->x, widget->y, widget->w, widget->h);
   return_value_if_fail(clone != NULL, NULL);
 
+  clone->loading = TRUE;
   widget_copy(clone, widget);
-
+  widget_dispatch_simple_event(widget, EVT_WIDGET_LOAD);
+  clone->loading = FALSE;
+  
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   if (iter->auto_created != TRUE) {
     widget_clone(iter, clone);

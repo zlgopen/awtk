@@ -2,6 +2,7 @@
 
 2025/01/27
   * 事件名支持 anim_start/anim_once/anim_end
+  * widget_clone 触发 EVT_WIDGET_LOAD 事件。
 
 2025/01/21
   * 调整打包工具参数顺序，兼容原来打包工具的使用方式(感谢培煌提供补丁)
