@@ -391,6 +391,16 @@ int32_t event_from_name(const char* name) {
       }
       break;
     }
+    case 'a': {
+      if (tk_str_eq(name, "anim_end")) {
+        return EVT_ANIM_END;
+      } else if (tk_str_eq(name, "anim_start")) {
+        return EVT_ANIM_START;
+      } else if (tk_str_eq(name, "anim_once")) {
+        return EVT_ANIM_ONCE;
+      }
+      break;
+    }
     case 'v': {
       if (tk_str_eq(name, "value_changed")) {
         return EVT_VALUE_CHANGED;
