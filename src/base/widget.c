@@ -3959,7 +3959,7 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent) {
 
   clone->loading = TRUE;
   widget_copy(clone, widget);
-  widget_dispatch_simple_event(widget, EVT_WIDGET_LOAD);
+  widget_dispatch_simple_event(clone, EVT_WIDGET_LOAD);
   clone->loading = FALSE;
   
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
