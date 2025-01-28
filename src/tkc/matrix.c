@@ -46,19 +46,40 @@ matrix_t* matrix_identity(matrix_t* m) {
   return m;
 }
 
-matrix_t* matrix_invert(matrix_t* m) {
+static inline double matrix_compute_determinant(matrix_t* m) {
   /**
-   *    ⌈aa ac atx⌉   aa * det⌈ad aty⌉ - ac * det⌈ab aty⌉ + atx * det⌈ab ad⌉
-   * det|ab ad aty| =         ⌊0    1⌋           ⌊0    1⌋            ⌊0   0⌋
-   *    ⌊ 0  0   1⌋
-   *                = aa *(ad*1-aty*0) - ac *(ab*1-aty*0) + atx *(ab*0-ad*0)
-   *                = aa * ad - ac * ab
+   *    ⌈a c a4⌉   a * det⌈d a5⌉ - c * det⌈b a5⌉ + a4 * det⌈b d⌉
+   * det|b d a5| =        ⌊0  1⌋          ⌊0  1⌋           ⌊0 0⌋
+   *    ⌊0  0 1⌋
+   *             = a *(d*1-a5*0) - c *(b*1-a5*0) + a4 *(b*0-d*0)
+   *             = a * d - c * b
    */
-  float aa = m->a0, ab = m->a1, ac = m->a2, ad = m->a3;
-  float atx = m->a4, aty = m->a5;
-  float det = aa * ad - ab * ac;
+  double a = m->a0;
+  double b = m->a1;
+  double c = m->a2;
+  double d = m->a3;
 
-  if (!det) {
+  return a * d - b * c;
+}
+
+static inline bool_t matrix_is_invertible_ex(matrix_t* m, float* det) {
+  double det_d = matrix_compute_determinant(m);
+
+  if (det != NULL) {
+    *det = det_d;
+  }
+
+  return TK_ISFINITE(det_d) && det_d != 0.;
+}
+
+bool_t matrix_is_invertible(matrix_t* m) {
+  return matrix_is_invertible_ex(m, NULL);
+}
+
+matrix_t* matrix_invert(matrix_t* m) {
+  float aa = m->a0, ab = m->a1, ac = m->a2, ad = m->a3, atx = m->a4, aty = m->a5;
+  float det = 0;
+  if (!matrix_is_invertible_ex(m, &det)) {
     return NULL;
   }
 
@@ -86,7 +107,7 @@ matrix_t* matrix_invert(matrix_t* m) {
    * 
    * ∵ A-1 = A* / det(A)
    * ∴ ⌈aa ac atx⌉-1  ⌈ ad/det -ac/det   (ac*aty-atx*ad)/det⌉
-   *   |ab ad aty|  = |-ab/det  aa/det -(aa*aty-atx*ab)/det|
+   *   |ab ad aty|  = |-ab/det  aa/det  -(aa*aty-atx*ab)/det|
    *   ⌊ 0  0   1⌋    ⌊      0       0     (aa*ad-ac*ab)/det⌋
    *
    * ∵ det = aa*ad-ac*ab
@@ -138,54 +159,43 @@ matrix_t* matrix_multiply(matrix_t* m, matrix_t* b) {
 
 matrix_t* matrix_translate(matrix_t* m, xy_t x, xy_t y) {
   /**
-   * ⌈a0 a2 a4⌉ ⌈1 0 x⌉    ⌈a0*1+a2*0+a4*0 a0*0+a2*1+a4*0 a0*x+a2*y+a4*1⌉   ⌈a0 a2 a0*x+a2*y+a4⌉
-   * |a1 a3 a5| |0 1 y| = |a1*1+a3*0+a5*0 a1*0+a3*1+a5*0 a1*x+a3*y+a5*1| = |a1 a3 a1*x+a3*y+a5|
-   * ⌊ 0  0  1⌋ ⌊0 0 1⌋    ⌊ 0*1+ 0*0+ 1*0  0*0+ 0*1+ 1*0  0*x+ 0*y+ 1*1⌋   ⌊ 0  0            1⌋
+   * ⌈1 0 x⌉
+   * |0 1 y|
+   * ⌊0 0 1⌋
    */
-  float a0 = m->a0, a1 = m->a1, a2 = m->a2, a3 = m->a3, a4 = m->a4, a5 = m->a5;
+  matrix_t tmp = {1, 0, 0, 1, x, y};
 
-  m->a0 = a0;
-  m->a1 = a1;
-  m->a2 = a2;
-  m->a3 = a3;
-  m->a4 = a0 * x + a2 * y + a4;
-  m->a5 = a1 * x + a3 * y + a5;
+  matrix_multiply(&tmp, m);
+  *m = tmp;
 
   return m;
 }
 
 matrix_t* matrix_scale(matrix_t* m, float sx, float sy) {
   /**
-   * ⌈a0 a2 a4⌉ ⌈Sx  0 0⌉    ⌈a0*Sx+a2*0+a4*0 a0*0+a2*Sy+a4*0 a0*0+a2*0+a4*1⌉   ⌈a0*Sx a2*Sy a4⌉
-   * |a1 a3 a5| | 0 Sy 0| = |a1*Sx+a3*0+a5*0 a1*0+a3*Sy+a5*0 a1*0+a3*0+a5*1| = |a1*Sx a3*Sy a5|
-   * ⌊ 0  0  1⌋ ⌊ 0  0 1⌋    ⌊ 0*Sx+ 0*0+ 1*0  0*0+ 0*Sy+ 1*0  0*0+ 0*0+ 1*1⌋   ⌊    0     0  1⌋
+   * ⌈Sx  0 0⌉
+   * | 0 Sy 0|
+   * ⌊ 0  0 1⌋
    */
-  float a0 = m->a0, a1 = m->a1, a2 = m->a2, a3 = m->a3, a4 = m->a4, a5 = m->a5;
-  m->a0 = a0 * sx;
-  m->a1 = a1 * sx;
-  m->a2 = a2 * sy;
-  m->a3 = a3 * sy;
-  m->a4 = a4;
-  m->a5 = a5;
+  matrix_t tmp = {sx, 0, 0, sy, 0, 0};
+
+  matrix_multiply(&tmp, m);
+  *m = tmp;
 
   return m;
 }
 
 matrix_t* matrix_rotate(matrix_t* m, float rad) {
   /**
-   * ⌈a0 a2 a4⌉ ⌈cos -sin 0⌉    ⌈a0*cos+a2*sin+a4*0 a0*-sin+a2*cos+a4*0 a0*0+a2*0+a4*1⌉   ⌈a0*cos+a2*sin a0*-sin+a2*cos a4⌉
-   * |a1 a3 a5| |sin  cos 0| = |a1*cos+a3*sin+a5*0 a1*-sin+a3*cos+a5*0 a1*0+a3*0+a5*1| = |a1*cos+a3*sin a1*-sin+a3*cos a5|
-   * ⌊ 0  0  1⌋ ⌊  0   0  1⌋    ⌊   0*cos+0*sin+1*0    0*-sin+0*cos+1*0    0*0+0*0+1*1⌋   ⌊            0              0  1⌋
+   * ⌈cos -sin 0⌉
+   * |sin  cos 0|
+   * ⌊  0   0  1⌋
    */
-  float a0 = m->a0, a1 = m->a1, a2 = m->a2, a3 = m->a3, a4 = m->a4, a5 = m->a5, s = sin(rad),
-        c = cos(rad);
+  float s = sin(rad), c = cos(rad);
+  matrix_t tmp = {c, s, -s, c, 0, 0};
 
-  m->a0 = a0 * c + a2 * s;
-  m->a1 = a1 * c + a3 * s;
-  m->a2 = a0 * -s + a2 * c;
-  m->a3 = a1 * -s + a3 * c;
-  m->a4 = a4;
-  m->a5 = a5;
+  matrix_multiply(&tmp, m);
+  *m = tmp;
 
   return m;
 }
@@ -214,26 +224,4 @@ matrix_t* matrix_transform_pointf(matrix_t* m, float x, float y, float* ox, floa
   *oy = y1;
 
   return m;
-}
-
-static double matrix_compute_determinant(matrix_t* m) {
-  /**
-   *    ⌈a c a4⌉   a * det⌈d a5⌉ - c * det⌈b a5⌉ + a4 * det⌈b d⌉
-   * det|b d a5| =        ⌊0  1⌋          ⌊0  1⌋           ⌊0 0⌋
-   *    ⌊0  0 1⌋
-   *             = a *(d*1-a5*0) - c *(b*1-a5*0) + a4 *(b*0-d*0)
-   *             = a * d - c * b
-   */
-  double a = m->a0;
-  double b = m->a1;
-  double c = m->a2;
-  double d = m->a3;
-
-  return a * d - b * c;
-}
-
-bool_t matrix_is_invertible(matrix_t* m) {
-  double det = matrix_compute_determinant(m);
-
-  return TK_ISFINITE(det) && det != 0.;
 }
