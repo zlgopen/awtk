@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/01/28
+  * 补充注释(感谢兆坤提供补丁) 
+
 2025/01/27
   * 事件名支持 anim_start/anim_once/anim_end
   * widget_clone 触发 EVT_WIDGET_LOAD 事件。

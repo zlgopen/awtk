@@ -31,6 +31,11 @@ BEGIN_C_DECLS
  * 2D矩阵对象。
  */
 typedef struct _matrix_t {
+  /**
+   * ⌈a0 a2 a4⌉
+   * |a1 a3 a5|
+   * ⌊ 0  0  1⌋
+   */
   float a0;
   float a1;
   float a2;
