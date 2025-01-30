@@ -6,7 +6,7 @@
  * Copyright (c) 2018 - 2025 Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; withm even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * License file for more details.
  *
@@ -30,20 +30,12 @@ matrix_t* matrix_init(matrix_t* m) {
 }
 
 matrix_t* matrix_identity(matrix_t* m) {
-  return_value_if_fail(m != NULL, NULL);
   /**
    * ⌈1 0 0⌉
    * |0 1 0|
    * ⌊0 0 1⌋
    */
-  m->a0 = 1;
-  m->a1 = 0;
-  m->a2 = 0;
-  m->a3 = 1;
-  m->a4 = 0;
-  m->a5 = 0;
-
-  return m;
+  return matrix_set(m, 1, 0, 0, 1, 0, 0);
 }
 
 static inline double matrix_compute_determinant(matrix_t* m) {
@@ -63,6 +55,8 @@ static inline double matrix_compute_determinant(matrix_t* m) {
 }
 
 static inline bool_t matrix_is_invertible_ex(matrix_t* m, float* det) {
+  return_value_if_fail(m != NULL, FALSE);
+
   double det_d = matrix_compute_determinant(m);
 
   if (det != NULL) {
@@ -77,6 +71,8 @@ bool_t matrix_is_invertible(matrix_t* m) {
 }
 
 matrix_t* matrix_invert(matrix_t* m) {
+  return_value_if_fail(m != NULL, NULL);
+
   float aa = m->a0, ab = m->a1, ac = m->a2, ad = m->a3, atx = m->a4, aty = m->a5;
   float det = 0;
   if (!matrix_is_invertible_ex(m, &det)) {
@@ -128,6 +124,8 @@ matrix_t* matrix_invert(matrix_t* m) {
 }
 
 matrix_t* matrix_set(matrix_t* m, float a0, float a1, float a2, float a3, float a4, float a5) {
+  return_value_if_fail(m != NULL, NULL);
+
   m->a0 = a0;
   m->a1 = a1;
   m->a2 = a2;
@@ -139,6 +137,8 @@ matrix_t* matrix_set(matrix_t* m, float a0, float a1, float a2, float a3, float 
 }
 
 matrix_t* matrix_multiply(matrix_t* m, matrix_t* b) {
+  return_value_if_fail(m != NULL && b != NULL, NULL);
+
   /**
    * ⌈a0 a2 a4⌉ ⌈b0 b2 b4⌉    ⌈a0*b0+a2*b1+a4*0 a0*b2+a2*b3+a4*0 a0*b4+a2*b5+a4*1⌉   ⌈a0*b0+a2*b1 a0*b2+a2*b3 a0*b4+a2*b5+a4⌉
    * |a1 a3 a5| |b1 b3 b5| = |a1*b0+a3*b1+a5*0 a1*b2+a3*b3+a5*0 a1*b4+a3*b5+a5*1| = |a1*b0+a3*b1 a1*b2+a3*b3 a1*b4+a3*b5+a5|
@@ -158,6 +158,8 @@ matrix_t* matrix_multiply(matrix_t* m, matrix_t* b) {
 }
 
 matrix_t* matrix_translate(matrix_t* m, xy_t x, xy_t y) {
+  return_value_if_fail(m != NULL, NULL);
+
   /**
    * ⌈1 0 x⌉
    * |0 1 y|
@@ -172,6 +174,8 @@ matrix_t* matrix_translate(matrix_t* m, xy_t x, xy_t y) {
 }
 
 matrix_t* matrix_scale(matrix_t* m, float sx, float sy) {
+  return_value_if_fail(m != NULL, NULL);
+
   /**
    * ⌈Sx  0 0⌉
    * | 0 Sy 0|
@@ -186,6 +190,8 @@ matrix_t* matrix_scale(matrix_t* m, float sx, float sy) {
 }
 
 matrix_t* matrix_rotate(matrix_t* m, float rad) {
+  return_value_if_fail(m != NULL, NULL);
+
   /**
    * ⌈cos -sin 0⌉
    * |sin  cos 0|
@@ -201,16 +207,21 @@ matrix_t* matrix_rotate(matrix_t* m, float rad) {
 }
 
 matrix_t* matrix_transform_point(matrix_t* m, xy_t x, xy_t y, xy_t* ox, xy_t* oy) {
-  float x1 = m->a0 * x + m->a2 * y + m->a4;
-  float y1 = m->a1 * x + m->a3 * y + m->a5;
+  return_value_if_fail(m != NULL, NULL);
 
-  *ox = x1 > 0 ? x1 + 0.5f : x1 - 0.5f;
-  *oy = y1 > 0 ? y1 + 0.5f : y1 - 0.5f;
+  float x1 = 0, y1 = 0;
+
+  matrix_transform_pointf(m, x, y, &x1, &y1);
+
+  *ox = tk_roundi(x1);
+  *oy = tk_roundi(y1);
 
   return m;
 }
 
 matrix_t* matrix_transform_pointf(matrix_t* m, float x, float y, float* ox, float* oy) {
+  return_value_if_fail(m != NULL, NULL);
+
   /**
    * 齐次坐标点(x, y, w=1)
    *
@@ -218,10 +229,8 @@ matrix_t* matrix_transform_pointf(matrix_t* m, float x, float y, float* ox, floa
    * |a1 a3 a5| |y| = |a1*x+a3*y+a5*1| = |a1*x+a3*y+a5|
    * ⌊ 0  0  1⌋ ⌊1⌋    ⌊ 0*x+ 0*y+ 1*1⌋   ⌊           1⌋
    */
-  float x1 = m->a0 * x + m->a2 * y + m->a4;
-  float y1 = m->a1 * x + m->a3 * y + m->a5;
-  *ox = x1;
-  *oy = y1;
+  *ox = m->a0 * x + m->a2 * y + m->a4;
+  *oy = m->a1 * x + m->a3 * y + m->a5;
 
   return m;
 }

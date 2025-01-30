@@ -50,10 +50,10 @@ static rect_t gauge_pointer_calc_dirty_rect(widget_t* widget, int32_t img_w, int
   float_t anchor_y = tk_eval_ratio_or_px(gauge_pointer->anchor_y, widget->h);
 
   matrix_init(&m);
-  matrix_translate(&m, ox, oy);
-  matrix_translate(&m, anchor_x, anchor_y);
-  matrix_rotate(&m, rotation);
   matrix_translate(&m, -anchor_x, -anchor_y);
+  matrix_rotate(&m, rotation);
+  matrix_translate(&m, anchor_x, anchor_y);
+  matrix_translate(&m, ox, oy);
 
   matrix_transform_point(&m, 0, 0, &(x), &(y));
   min_x = x;
