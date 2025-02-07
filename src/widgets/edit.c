@@ -1073,6 +1073,8 @@ ret_t edit_set_text_limit(widget_t* widget, uint32_t min, uint32_t max) {
   edit->min = min;
   edit->max = max;
   edit->input_type = INPUT_TEXT;
+  edit_check_valid_value(widget);
+  edit_update_status(widget);
 
   return RET_OK;
 }
@@ -1090,6 +1092,8 @@ ret_t edit_set_int_limit(widget_t* widget, int32_t min, int32_t max, uint32_t st
     edit->max = (uint32_t)max;
   }
   edit->step = step;
+  edit_check_valid_value(widget);
+  edit_update_status(widget);
   return RET_OK;
 }
 
@@ -1104,7 +1108,8 @@ ret_t edit_set_float_limit(widget_t* widget, double min, double max, double step
   if (edit->input_type != INPUT_UFLOAT) {
     edit->input_type = INPUT_FLOAT;
   }
-
+  edit_check_valid_value(widget);
+  edit_update_status(widget);
   return RET_OK;
 }
 
@@ -1517,6 +1522,8 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     } else {
       edit->min = value_int(v);
     }
+    edit_check_valid_value(widget);
+    edit_update_status(widget);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
     if (input_type == INPUT_FLOAT || input_type == INPUT_UFLOAT) {
@@ -1524,6 +1531,8 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     } else {
       edit->max = value_int64(v);
     }
+    edit_check_valid_value(widget);
+    edit_update_status(widget);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_STEP)) {
     edit->step = value_double(v);
