@@ -133,7 +133,7 @@ wbuffer_t* wbuffer_create_extendable(void);
  * 重置当前写入位置。
  * @annotation ["constructor"]
  * @param {wbuffer_t*} wbuffer wbuffer对象。
- * 
+ *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t wbuffer_rewind(wbuffer_t* wbuffer);
@@ -288,6 +288,32 @@ ret_t wbuffer_write_double(wbuffer_t* wbuffer, double value);
 ret_t wbuffer_write_binary(wbuffer_t* wbuffer, const void* data, uint32_t size);
 
 /**
+ * @method wbuffer_modify_binary
+ * 修改指定位置的二进制数据。
+ *
+ * @param {wbuffer_t*}  wb      wbuffer对象。
+ * @param {uint32_t}    offset  要修改的位置。
+ * @param {const void*} data    要修改的数据。
+ * @param {uint32_t}    dsize   要修改的数据长度。
+ *
+ * @return {ret_t} 返回 ret_t 值
+ */
+ret_t wbuffer_modify_binary(wbuffer_t* wb, uint32_t offset, const void* data, uint32_t dsize);
+
+/**
+ * @method wbuffer_insert_binary
+ * 在指定位置插入二进制数据。
+ *
+ * @param {wbuffer_t*}  wb      wbuffer对象。
+ * @param {uint32_t}    offset  插入位置。
+ * @param {const void*} data    要插入的数据。
+ * @param {uint32_t}    dsize   要插入的数据长度。
+ *
+ * @return {ret_t} 返回 ret_t 值
+ */
+ret_t wbuffer_insert_binary(wbuffer_t* wb, uint32_t offset, const void* data, uint32_t dsize);
+
+/**
  * @method wbuffer_write_value
  * 写入value数据。
  * @param {wbuffer_t*} wbuffer wbuffer对象。
@@ -394,7 +420,7 @@ bool_t rbuffer_has_more(rbuffer_t* rbuffer);
  * 重置当前读取位置。
  * @annotation ["constructor"]
  * @param {rbuffer_t*} rbuffer rbuffer对象。
- * 
+ *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t rbuffer_rewind(rbuffer_t* rbuffer);

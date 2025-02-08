@@ -248,6 +248,21 @@ ret_t wbuffer_write_binary(wbuffer_t* wbuffer, const void* data, uint32_t size) 
   return RET_OK;
 }
 
+ret_t wbuffer_modify_binary(wbuffer_t* wb, uint32_t offset, const void* data, uint32_t dsize) {
+  return_value_if_fail(wb && offset + dsize <= wb->cursor, RET_BAD_PARAMS);
+  memcpy(wb->data + offset, data, dsize);
+  return RET_OK;
+}
+
+ret_t wbuffer_insert_binary(wbuffer_t* wb, uint32_t offset, const void* data, uint32_t dsize) {
+  return_value_if_fail(wbuffer_extend_delta(wb, dsize) == RET_OK, RET_BAD_PARAMS);
+
+  memmove(wb->data + offset + dsize, wb->data + offset, wb->cursor - offset);
+  memcpy(wb->data + offset, data, dsize);
+  wb->cursor += dsize;
+  return RET_OK;
+}
+
 ret_t wbuffer_write_value(wbuffer_t* wbuffer, const value_t* v) {
   ret_t ret = RET_FAIL;
   return_value_if_fail(wbuffer != NULL && v != NULL, RET_BAD_PARAMS);

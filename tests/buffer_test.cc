@@ -17,6 +17,39 @@ TEST(Buffer, binary0) {
   wbuffer_deinit(&wbuffer);
 }
 
+TEST(Buffer, replace_binary) {
+  wbuffer_t wbuffer;
+  wbuffer_init_extendable(&wbuffer);
+
+  wbuffer_write_string(&wbuffer, "hello");
+  ASSERT_STREQ((char*)(wbuffer.data), "hello");
+  ASSERT_EQ(wbuffer.data[5], 0);
+
+  wbuffer_modify_binary(&wbuffer, 1, "EL", 2);
+  ASSERT_STREQ((char*)(wbuffer.data), "hELlo");
+  ASSERT_EQ(wbuffer.data[5], 0);
+
+  wbuffer_deinit(&wbuffer);
+}
+
+TEST(Buffer, insert_binary) {
+  wbuffer_t wbuffer;
+  wbuffer_init_extendable(&wbuffer);
+
+  wbuffer_write_string(&wbuffer, "llo !");
+  ASSERT_STREQ((char*)(wbuffer.data), "llo !");
+
+  wbuffer_insert_binary(&wbuffer, 0, "he", 2);
+  ASSERT_STREQ((char*)(wbuffer.data), "hello !");
+  ASSERT_EQ(wbuffer.cursor, 8);
+
+  wbuffer_insert_binary(&wbuffer, 5, " world", 6);
+  ASSERT_STREQ((char*)(wbuffer.data), "hello world !");
+  ASSERT_EQ(wbuffer.cursor, 14);
+
+  wbuffer_deinit(&wbuffer);
+}
+
 TEST(Buffer, demo1) {
   wbuffer_t wbuffer;
   wbuffer_init_extendable(&wbuffer);
