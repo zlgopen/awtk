@@ -184,10 +184,18 @@ void nvgp_reset_curr_state(nvgp_context_t* ctx) {
 
 }
 
+static void nvgp_set_ratio(nvgp_context_t* ctx, float ratio) {
+  ctx->ratio = ratio;
+  ctx->tess_tol = 0.25f / ratio;
+  ctx->dist_tol = 0.01f / ratio;
+  ctx->fringe_width = 1.0f / ratio;
+}
+
 static int nvgp_init(nvgp_context_t* context, nvgp_mode_t nvgp_mode, uint32_t w, uint32_t h) {
   context->nvgp_mode = nvgp_mode;
   context->context_width = w;
   context->context_height = h;
+  nvgp_set_ratio(context, 1.0f);
   nvgp_darray_init(&context->commands, NVGP_INIT_COMMANDS_SIZE, 0);
   nvgp_darray_init(&context->states, NVGP_INIT_STATES, sizeof(nvgp_state_t));
 
@@ -302,10 +310,7 @@ void nvgp_begin_frame_ex(nvgp_context_t *ctx, float width, float height, float p
   CHECK_OBJECT_IS_NULL(ctx);
   ctx->width = width;
   ctx->height = height;
-  ctx->ratio = pixel_ratio;
-  ctx->tess_tol = 0.25f / pixel_ratio;
-  ctx->dist_tol = 0.01f / pixel_ratio;
-  ctx->fringe_width = 1.0f / pixel_ratio;
+  nvgp_set_ratio(ctx, pixel_ratio);
 
   if (reset) {
     nvgp_darray_clear(&ctx->states);
