@@ -144,6 +144,7 @@
 #include "default/inc/ui/spinbox.data"
 #include "default/inc/ui/label.data"
 #include "default/inc/ui/list_view_auto_resize.data"
+#include "default/inc/ui/edit_suggest.data"
 #include "default/inc/ui/gif_image.data"
 #include "default/inc/ui/menu_down_center.data"
 #include "default/inc/ui/test_view.data"
@@ -1081,6 +1082,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_spinbox_default);
   assets_manager_add(am, ui_label_default);
   assets_manager_add(am, ui_list_view_auto_resize_default);
+  assets_manager_add(am, ui_edit_suggest_default);
   assets_manager_add(am, ui_gif_image_default);
   assets_manager_add(am, ui_menu_down_center_default);
   assets_manager_add(am, ui_test_view_default);

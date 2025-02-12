@@ -27,3 +27,4 @@ env.Program(os.path.join(BIN_DIR, 'demo_desktop'), ['demo_desktop.c']);
 env.Program(os.path.join(BIN_DIR, 'demo_overlay'), ['demo_overlay.c']);
 env.Program(os.path.join(BIN_DIR, 'demo_file_browser'), ['demo_file_browser.c']);
 env.Program(os.path.join(BIN_DIR, 'demo_canvas_offline'), ['demo_canvas_offline.c']);
+env.Program(os.path.join(BIN_DIR, 'demo_edit_suggest'), ['demo_edit_suggest.c']);

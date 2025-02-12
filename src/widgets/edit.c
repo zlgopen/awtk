@@ -31,6 +31,7 @@
 #include "tkc/time_now.h"
 #include "base/enums.h"
 #include "base/events.h"
+#include "base/window.h"
 #include "base/clip_board.h"
 #include "base/widget_vtable.h"
 #include "base/window_manager.h"
@@ -38,6 +39,8 @@
 #include "widgets/edit_date.h"
 #include "widgets/edit_time.h"
 #include "widgets/edit_time_full.h"
+#include "widgets/popup.h"
+#include "widgets/combo_box_item.h"
 
 #define ACTION_TEXT_NEXT "next"
 #define ACTION_TEXT_DONE "done"
@@ -51,6 +54,7 @@ static ret_t edit_check_valid_value(widget_t* widget);
 static ret_t edit_select_all_async(const idle_info_t* info);
 static ret_t edit_dispatch_value_change_event(widget_t* widget, uint32_t type);
 static ret_t edit_paste(widget_t* widget, const wchar_t* str, uint32_t size);
+static ret_t edit_show_suggest_words(widget_t* widget);
 
 static ret_t edit_save_text(widget_t* widget) {
   edit_t* edit = EDIT(widget);
@@ -977,6 +981,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
         edit_on_focused(widget);
       }
       edit_save_text(widget);
+      edit_show_suggest_words(widget);
       break;
     }
     case EVT_WHEEL: {
@@ -1001,6 +1006,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_VALUE_CHANGING: {
+      edit_show_suggest_words(widget);
       edit_update_status(widget);
       widget_invalidate(widget, NULL);
       break;
@@ -2002,6 +2008,11 @@ ret_t edit_on_destroy(widget_t* widget) {
     edit->idle_id = TK_INVALID_ID;
   }
 
+  if (edit->suggest_words_window != NULL) {
+    widget_destroy(edit->suggest_words_window);
+  }
+  TKMEM_FREE(edit->theme_of_default_suggest_words_window);
+
   TKMEM_FREE(edit->tips);
   TKMEM_FREE(edit->tr_tips);
   TKMEM_FREE(edit->keyboard);
@@ -2202,6 +2213,290 @@ ret_t edit_set_pre_delete(widget_t* widget, edit_pre_delete_t pre_delete) {
 
   return RET_OK;
 }
+
+/* suggest_words *************************************************************************** */
+static ret_t edit_suggest_words_window_on_open(void* ctx, event_t* e) {
+  edit_t* edit = EDIT(ctx);
+  widget_t* window = WIDGET(e->target);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+
+  widget_set_sensitive(window, TRUE);
+
+  return RET_OK;
+}
+
+static ret_t edit_suggest_words_window_on_close(void* ctx, event_t* e) {
+  edit_t* edit = EDIT(ctx);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+
+  edit->suggest_words_window = NULL;
+
+  return RET_OK;
+}
+
+static widget_t* edit_create_suggest_words_window_default(widget_t* widget, void* ctx) {
+  /* base on combo_box_create_popup() */
+  const int32_t margin = 1;
+  int32_t w = 0;
+  int32_t h = 2 * margin;
+  const char* applet_name = NULL;
+  widget_t* win = NULL;
+  edit_t* edit = EDIT(widget);
+  (void)ctx;
+  return_value_if_fail(edit != NULL, NULL);
+
+  w = widget->w;
+  win = popup_create(NULL, 0, 0, w, h);
+  applet_name = widget_get_prop_str(win, WIDGET_PROP_APPLET_NAME, NULL);
+  widget_set_prop_str(win, WIDGET_PROP_APPLET_NAME, applet_name);
+
+  widget_set_prop_bool(win, WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE, TRUE);
+
+  widget_use_style(win, "combobox_popup");
+
+  if (edit->theme_of_default_suggest_words_window != NULL) {
+    widget_set_prop_str(win, WIDGET_PROP_THEME, edit->theme_of_default_suggest_words_window);
+  } else {
+    widget_set_prop_str(win, WIDGET_PROP_THEME, "combobox_popup");
+  }
+
+  widget_set_prop_str(win, WIDGET_PROP_MOVE_FOCUS_PREV_KEY, "up");
+  widget_set_prop_str(win, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, "down");
+
+  widget_set_focused_internal(widget, TRUE);
+
+  return win;
+}
+
+static ret_t edit_suggest_words_window_on_item_click(void* ctx, event_t* e) {
+  /* base on combo_box_on_item_click() */
+  value_t v;
+  widget_t* item = WIDGET(e->target);
+  widget_t* widget = WIDGET(ctx);
+  edit_t* edit = EDIT(widget);
+  ENSURE(edit);
+  return_value_if_fail(widget != NULL && item != NULL, RET_BAD_PARAMS);
+
+  edit_set_text(widget, value_set_wstr(&v, widget_get_text(item)));
+
+  widget->target = NULL;
+  widget->key_target = NULL;
+  window_close(edit->suggest_words_window);
+  widget_set_focused_internal(widget, TRUE);
+
+  return RET_OK;
+}
+
+typedef struct _edit_update_suggest_words_window_default_ctx_t {
+  edit_t* edit;
+  darray_t* suggest_words;
+  uint32_t curr_index;
+} edit_update_suggest_words_window_default_ctx_t;
+
+static ret_t edit_update_suggest_words_window_default_on_item_visit(void* ctx, const void* data) {
+  /* base on combo_box_visit_item() */
+  edit_update_suggest_words_window_default_ctx_t* actx =
+      (edit_update_suggest_words_window_default_ctx_t*)(ctx);
+  widget_t* iter = WIDGET(data);
+  return_value_if_fail(actx != NULL && iter != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(widget_get_type(iter), WIDGET_TYPE_COMBO_BOX_ITEM)) {
+    if (actx->curr_index < actx->suggest_words->size) {
+      widget_set_visible(iter, TRUE);
+      widget_set_sensitive(iter, TRUE);
+      if (iter->emitter == NULL ||
+          !emitter_exist(iter->emitter, EVT_CLICK, edit_suggest_words_window_on_item_click,
+                         actx->edit)) {
+        widget_on(iter, EVT_CLICK, edit_suggest_words_window_on_item_click, actx->edit);
+      }
+    } else {
+      widget_set_sensitive(iter, FALSE);
+      widget_set_visible(iter, FALSE);
+    }
+    actx->curr_index++;
+  }
+
+  return RET_OK;
+}
+
+static ret_t edit_update_suggest_words_window_default_on_visit(void* ctx, const void* data) {
+  edit_update_suggest_words_window_default_ctx_t* actx =
+      (edit_update_suggest_words_window_default_ctx_t*)(ctx);
+  const char* suggest = (const char*)(data);
+  widget_t* item = NULL;
+  return_value_if_fail(actx != NULL && suggest != NULL, RET_BAD_PARAMS);
+
+  item = widget_get_child(actx->edit->suggest_words_window, actx->curr_index);
+  if (item == NULL) {
+    item = combo_box_item_create(actx->edit->suggest_words_window, 0, 0, 0, 0);
+    return_value_if_fail(item != NULL, RET_OOM);
+  }
+  widget_set_text_utf8(item, suggest);
+  actx->curr_index++;
+
+  return RET_OK;
+}
+
+static ret_t edit_update_suggest_words_window_default(widget_t* widget, void* suggest_words,
+                                                      void* ctx) {
+  /* base on combo_box_create_popup() */
+  const int32_t margin = 1;
+  int32_t w = 0;
+  int32_t h = 2 * margin;
+  int32_t nr = 0;
+  char params[128];
+  widget_t* win = NULL;
+  int32_t item_height = 0;
+  darray_t* suggest_words_impl = suggest_words;
+  edit_t* edit = EDIT(widget);
+  edit_update_suggest_words_window_default_ctx_t update_ctx = {
+      .edit = edit,
+      .suggest_words = suggest_words_impl,
+  };
+  (void)ctx;
+  return_value_if_fail(edit != NULL && suggest_words_impl != NULL, RET_BAD_PARAMS);
+
+  win = edit->suggest_words_window;
+  return_value_if_fail(win != NULL, RET_FAIL);
+
+  item_height = widget->h;
+  nr = suggest_words_impl->size;
+  w = widget->w;
+  h = nr * item_height + 2 * margin;
+
+  tk_snprintf(params, sizeof(params) - 1, "default(m=%d,r=%d,c=%d)", margin, nr, 1);
+  widget_set_children_layout(win, params);
+
+  darray_foreach(suggest_words_impl, edit_update_suggest_words_window_default_on_visit,
+                 &update_ctx);
+  update_ctx.curr_index = 0;
+  widget_foreach(edit->suggest_words_window, edit_update_suggest_words_window_default_on_item_visit,
+                 &update_ctx);
+
+  widget_resize(edit->suggest_words_window, w, h);
+
+  return RET_OK;
+}
+
+static ret_t edit_suggest_words_window_calc_position(widget_t* widget, point_t* p) {
+  /* base on combo_box_combobox_popup_calc_position() */
+  widget_t* wm = window_manager();
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(wm != NULL && edit != NULL && edit->suggest_words_window != NULL,
+                       RET_BAD_PARAMS);
+
+  if (!widget_is_popup(edit->suggest_words_window)) {
+    return RET_SKIP;
+  }
+
+  *p = point_init(0, 0);
+  widget_to_screen(widget, p);
+
+  if ((p->y + widget->h + edit->suggest_words_window->h) < wm->h) {
+    p->y += widget->h;
+  } else if (p->y >= edit->suggest_words_window->h) {
+    p->y -= edit->suggest_words_window->h;
+  } else {
+    p->y = 0;
+  }
+
+  return RET_OK;
+}
+
+static ret_t edit_update_suggest_words(widget_t* widget, const char* input) {
+  ret_t ret = RET_OK;
+  edit_t* edit = EDIT(widget);
+  point_t p;
+  void* suggest_words = NULL;
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+
+  if (edit->get_suggest_words != NULL) {
+    suggest_words = edit->get_suggest_words(widget, input, edit->suggest_words_ctx);
+  }
+  if (suggest_words == NULL) {
+    if (edit->suggest_words_window != NULL) {
+      window_close(edit->suggest_words_window);
+    }
+    return RET_OK;
+  }
+
+  if (edit->suggest_words_window == NULL) {
+    if (edit->create_suggest_words_window != NULL) {
+      edit->suggest_words_window =
+          edit->create_suggest_words_window(widget, edit->suggest_words_ctx);
+    } else {
+      goto exit;
+    }
+    goto_error_if_fail_ex(edit->suggest_words_window != NULL, ret = RET_FAIL);
+
+    /* 为了焦点不移动到 suggest_words_window 上，所以打开前先将 sensitive 设置为 FALSE，打开窗口后再设置为 TRUE。 */
+    widget_set_sensitive(edit->suggest_words_window, FALSE);
+    widget_on(edit->suggest_words_window, EVT_WINDOW_OPEN, edit_suggest_words_window_on_open,
+              widget);
+
+    widget_on(edit->suggest_words_window, EVT_WINDOW_CLOSE, edit_suggest_words_window_on_close,
+              widget);
+  }
+
+  if (edit->update_suggest_words_window != NULL) {
+    edit->update_suggest_words_window(widget, suggest_words, edit->suggest_words_ctx);
+  }
+  widget_layout(edit->suggest_words_window);
+
+  if (RET_OK == edit_suggest_words_window_calc_position(widget, &p)) {
+    widget_move(edit->suggest_words_window, p.x, p.y);
+  }
+
+exit:
+error:
+  if (edit->free_suggest_words != NULL && suggest_words != NULL) {
+    edit->free_suggest_words(widget, suggest_words, edit->suggest_words_ctx);
+  }
+  return ret;
+}
+
+static ret_t edit_show_suggest_words(widget_t* widget) {
+  ret_t ret = RET_OK;
+  str_t str;
+  str_init(&str, 0);
+  str_from_wstr(&str, widget_get_text(widget));
+
+  ret = edit_update_suggest_words(widget, str.str);
+
+  str_reset(&str);
+  return ret;
+}
+
+ret_t edit_set_suggest_words_callback(widget_t* widget, edit_get_suggest_words_t get_cb,
+                                      edit_free_suggest_words_t free_cb,
+                                      create_suggest_words_window_t create_win_cb,
+                                      update_suggest_words_window_t update_win_cb, void* ctx) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+
+  edit->get_suggest_words = get_cb;
+  edit->free_suggest_words = free_cb;
+  edit->create_suggest_words_window = create_win_cb;
+  edit->update_suggest_words_window = update_win_cb;
+  edit->suggest_words_ctx = ctx;
+
+  return RET_OK;
+}
+
+ret_t edit_set_suggest_words_callback_simple(widget_t* widget, edit_get_suggest_words_t get_cb,
+                                             edit_free_suggest_words_t free_cb, const char* theme,
+                                             void* ctx) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+
+  edit->theme_of_default_suggest_words_window =
+      tk_str_copy(edit->theme_of_default_suggest_words_window, theme);
+
+  return edit_set_suggest_words_callback(widget, get_cb, free_cb,
+                                         edit_create_suggest_words_window_default,
+                                         edit_update_suggest_words_window_default, ctx);
+}
+/* ***************************************************************************************** */
 
 ret_t edit_set_select(widget_t* widget, uint32_t start, uint32_t end) {
   edit_t* edit = EDIT(widget);

@@ -144,6 +144,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_scroll_bar_h_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_spinbox_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_label_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_list_view_auto_resize_default[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_edit_suggest_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_gif_image_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_menu_down_center_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_test_view_default[]);
@@ -1081,6 +1082,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_spinbox_default);
   assets_manager_add(am, ui_label_default);
   assets_manager_add(am, ui_list_view_auto_resize_default);
+  assets_manager_add(am, ui_edit_suggest_default);
   assets_manager_add(am, ui_gif_image_default);
   assets_manager_add(am, ui_menu_down_center_default);
   assets_manager_add(am, ui_test_view_default);
