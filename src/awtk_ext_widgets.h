@@ -52,6 +52,7 @@
 #include "progress_circle/progress_circle.h"
 #include "image_animation/image_animation.h"
 #include "mutable_image/mutable_image.h"
+#include "edit_ex/edit_ex.h"
 #include "combo_box_ex/combo_box_ex.h"
 #include "scroll_label/hscroll_label.h"
 #include "mledit/line_number.h"

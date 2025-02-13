@@ -64,6 +64,7 @@
 #include "scroll_view/scroll_bar.h"
 #include "scroll_view/scroll_view.h"
 #include "scroll_view/list_view_h.h"
+#include "edit_ex/edit_ex.h"
 #include "combo_box_ex/combo_box_ex.h"
 #include "color_picker/color_picker.h"
 #include "scroll_label/hscroll_label.h"
@@ -128,6 +129,7 @@ ret_t tk_ext_widgets_init(void) {
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_MLEDIT, mledit_create)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_LINE_NUMBER, line_number_create)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_HSCROLL_LABEL, hscroll_label_create)
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_EDIT_EX, edit_ex_create)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_COMBO_BOX_EX, combo_box_ex_create)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_DRAGGABLE, draggable_create)
 

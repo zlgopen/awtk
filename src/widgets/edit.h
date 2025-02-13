@@ -37,11 +37,6 @@ typedef ret_t (*edit_pre_input_t)(widget_t* widget, uint32_t key);
 typedef ret_t (*edit_pre_delete_t)(widget_t* widget, delete_type_t delete_type);
 typedef bool_t (*edit_is_valid_char_t)(widget_t* widget, wchar_t c);
 
-typedef void* (*edit_get_suggest_words_t)(widget_t* widget, const char* input, void* ctx);
-typedef ret_t (*edit_free_suggest_words_t)(widget_t* widget, void* suggest_words, void* ctx);
-typedef widget_t* (*create_suggest_words_window_t)(widget_t* widget, void* ctx);
-typedef ret_t (*update_suggest_words_window_t)(widget_t* widget, void* suggest_words, void* ctx);
-
 /**
  * @class edit_t
  * @parent widget_t
@@ -261,14 +256,6 @@ typedef struct _edit_t {
   edit_pre_delete_t pre_delete;
   edit_is_valid_char_t is_valid_char;
   edit_is_valid_value_t is_valid_value;
-
-  edit_get_suggest_words_t get_suggest_words;
-  edit_free_suggest_words_t free_suggest_words;
-  create_suggest_words_window_t create_suggest_words_window;
-  update_suggest_words_window_t update_suggest_words_window;
-  void* suggest_words_ctx;
-  widget_t* suggest_words_window;
-  char* theme_of_default_suggest_words_window;
 } edit_t;
 
 /**
@@ -667,40 +654,6 @@ ret_t edit_set_pre_input(widget_t* widget, edit_pre_input_t pre_input);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t edit_set_pre_delete(widget_t* widget, edit_pre_delete_t pre_delete);
-
-/**
- * @method edit_set_suggest_words_callback
- * 设置输入建议相关的回调函数。
- *
- * @param {widget_t*} widget widget对象。
- * @param {edit_get_suggest_words_t} get_cb 获取输入建议的回调函数。
- * @param {edit_free_suggest_words_t} free_cb 释放输入建议的回调函数。
- * @param {create_suggest_words_window_t} create_win_cb 创建输入建议窗口的回调函数。
- * @param {update_suggest_words_window_t} update_win_cb 更新输入建议窗口的回调函数。
- * @param {void*} ctx 回调函数上下文。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t edit_set_suggest_words_callback(widget_t* widget, edit_get_suggest_words_t get_cb,
-                                      edit_free_suggest_words_t free_cb,
-                                      create_suggest_words_window_t create_win_cb,
-                                      update_suggest_words_window_t update_win_cb, void* ctx);
-
-/**
- * @method edit_set_suggest_words_callback_simple
- * 设置输入建议相关的回调函数。
- *
- * @param {widget_t*} widget widget对象。
- * @param {edit_get_suggest_words_t} get_cb 获取输入建议的回调函数（suggest_words为一个装有char*的darray*）。
- * @param {edit_free_suggest_words_t} free_cb 释放输入建议的回调函数。
- * @param {const char*} theme 输入建议窗口的主题。
- * @param {void*} ctx 回调函数上下文。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t edit_set_suggest_words_callback_simple(widget_t* widget, edit_get_suggest_words_t get_cb,
-                                             edit_free_suggest_words_t free_cb, const char* theme,
-                                             void* ctx);
 
 /**
  * @method edit_set_select
