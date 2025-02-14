@@ -33,27 +33,24 @@ static int get_suggest_words_cmp(const void* iter, const void* ctx) {
 }
 
 static ret_t suggest_words_on_update(void* ctx, event_t* e) {
-  ret_t ret = RET_OK;
-  darray_t matched;
+  uint32_t i = 0;
   const char* input = NULL;
   value_change_event_t* evt = value_change_event_cast(e);
   return_value_if_fail(evt != NULL, RET_BAD_PARAMS);
 
   input = value_str(&evt->new_value);
-  darray_init(&matched, 32, NULL, (tk_compare_t)tk_str_cmp);
-  ret = darray_find_all(s_suggest_words_origin, get_suggest_words_cmp, (void*)input, &matched);
-  if (RET_OK == ret) {
-    uint32_t i = 0;
-    tk_object_clear_props(s_suggest_words);
-    for (i = 0; i < matched.size; i++) {
+
+  tk_object_clear_props(s_suggest_words);
+
+  for (i = 0; i < s_suggest_words_origin->size; i++) {
+    const char* iter = (const char*)darray_get(s_suggest_words_origin, i);
+    if (0 == get_suggest_words_cmp(iter, input)) {
       value_t v;
-      const char* iter = darray_get(&matched, i);
-      object_array_push(s_suggest_words, value_set_str(&v, (const char*)iter));
+      object_array_push(s_suggest_words, value_set_str(&v, iter));
     }
   }
-  darray_deinit(&matched);
 
-  return ret;
+  return RET_OK;
 }
 
 static ret_t mledit_suggest_words_init(widget_t* mledit) {
