@@ -40,7 +40,7 @@ static ret_t suggest_words_on_update(void* ctx, event_t* e) {
   return_value_if_fail(evt != NULL, RET_BAD_PARAMS);
 
   input = value_str(&evt->new_value);
-  darray_init(&matched, 32, NULL, tk_str_cmp);
+  darray_init(&matched, 32, NULL, (tk_compare_t)tk_str_cmp);
   ret = darray_find_all(s_suggest_words_origin, get_suggest_words_cmp, (void*)input, &matched);
   if (RET_OK == ret) {
     uint32_t i = 0;
@@ -115,7 +115,7 @@ static void init_children_widget(widget_t* widget, void* ctx) {
 ret_t application_init(void) {
   widget_t* win = window_open("edit_suggest");
 
-  s_suggest_words_origin = darray_create(32, default_destroy, tk_str_cmp);
+  s_suggest_words_origin = darray_create(32, default_destroy, (tk_compare_t)tk_str_cmp);
   s_suggest_words = object_array_create();
   emitter_on(EMITTER(s_suggest_words), EVT_VALUE_CHANGED, suggest_words_on_update, NULL);
 
