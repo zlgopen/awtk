@@ -271,3 +271,99 @@ TEST(UBJsonParser, ubjson_writer_write_kv_value) {
 
   tk_object_unref(obj);
 }
+
+TEST(UBJsonParser, optimized_array_uint8) {
+  uint8_t buff[256];
+  uint8_t data[] = {100, 200, 255};
+  value_t v;
+  wbuffer_t wb;
+  ubjson_writer_t ub;
+  tk_object_t* obj = NULL;
+  wbuffer_init(&wb, buff, sizeof(buff));
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+
+  ASSERT_EQ(ubjson_writer_write_object_begin(&ub), RET_OK);
+  ASSERT_EQ(ubjson_writer_write_key(&ub, "values"), RET_OK);
+
+  ASSERT_EQ(ubjson_writer_write_array_uint8(&ub, data, ARRAY_SIZE(data)), RET_OK);
+
+  ASSERT_EQ(ubjson_writer_write_object_end(&ub), RET_OK);
+
+  obj = object_from_ubjson(wb.data, wb.cursor);
+  ASSERT_EQ(tk_object_get_prop_by_path(obj, "values.0", &v), RET_OK);
+  ASSERT_EQ(v.type == VALUE_TYPE_UINT8, true);
+  ASSERT_EQ(value_int(&v), 100);
+
+  ASSERT_EQ(tk_object_get_prop_int_by_path(obj, "values.1", 0), 200);
+  ASSERT_EQ(tk_object_get_prop_int_by_path(obj, "values.2", 0), 255);
+  ASSERT_EQ(tk_object_get_prop_int_by_path(obj, "values.size", 0), 3);
+
+  tk_object_unref(obj);
+}
+TEST(UBJsonParser, optimized_array_int32) {
+  uint8_t buff[256];
+  int32_t data[] = {100, 200, 300};
+  value_t v;
+  wbuffer_t wb;
+  ubjson_writer_t ub;
+  tk_object_t* obj = NULL;
+  wbuffer_init(&wb, buff, sizeof(buff));
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+
+  ASSERT_EQ(ubjson_writer_write_object_begin(&ub), RET_OK);
+  ASSERT_EQ(ubjson_writer_write_key(&ub, "values"), RET_OK);
+
+  ASSERT_EQ(ubjson_writer_write_array_int32(&ub, data, ARRAY_SIZE(data)), RET_OK);
+
+  ASSERT_EQ(ubjson_writer_write_object_end(&ub), RET_OK);
+
+  obj = object_from_ubjson(wb.data, wb.cursor);
+  ASSERT_EQ(tk_object_get_prop_by_path(obj, "values.0", &v), RET_OK);
+  ASSERT_EQ(v.type == VALUE_TYPE_INT32, true);
+  ASSERT_EQ(value_int(&v), 100);
+
+  ASSERT_EQ(tk_object_get_prop_int_by_path(obj, "values.1", 0), 200);
+  ASSERT_EQ(tk_object_get_prop_int_by_path(obj, "values.2", 0), 300);
+  ASSERT_EQ(tk_object_get_prop_int_by_path(obj, "values.size", 0), 3);
+
+  tk_object_unref(obj);
+}
+
+TEST(UBJsonParser, optimized_array_float64) {
+  uint8_t buff[256];
+  double data[] = {100.11, 200.11, 300.11};
+  value_t v;
+  wbuffer_t wb;
+  ubjson_writer_t ub;
+  tk_object_t* obj = NULL;
+  wbuffer_init(&wb, buff, sizeof(buff));
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+
+  ASSERT_EQ(ubjson_writer_write_object_begin(&ub), RET_OK);
+
+  ASSERT_EQ(ubjson_writer_write_key(&ub, "values"), RET_OK);
+  ASSERT_EQ(ubjson_writer_write_array_float64(&ub, data, ARRAY_SIZE(data)), RET_OK);
+
+  ASSERT_EQ(ubjson_writer_write_kv_str(&ub, "name", "optimized_array"), RET_OK);
+
+  ASSERT_EQ(ubjson_writer_write_object_end(&ub), RET_OK);
+
+  obj = object_from_ubjson(wb.data, wb.cursor);
+  ASSERT_EQ(tk_object_get_prop_by_path(obj, "values.0", &v), RET_OK);
+  ASSERT_EQ(v.type == VALUE_TYPE_DOUBLE, true);
+  ASSERT_EQ(value_double(&v), 100.11);
+
+  ASSERT_EQ(tk_object_get_prop_by_path(obj, "values.1", &v), RET_OK);
+  ASSERT_EQ(v.type == VALUE_TYPE_DOUBLE, true);
+  ASSERT_EQ(value_double(&v), 200.11);
+
+  ASSERT_EQ(tk_object_get_prop_by_path(obj, "values.2", &v), RET_OK);
+  ASSERT_EQ(v.type == VALUE_TYPE_DOUBLE, true);
+  ASSERT_EQ(value_double(&v), 300.11);
+
+  ASSERT_EQ(tk_object_get_prop_int_by_path(obj, "values.size", 0), 3);
+
+  ASSERT_STREQ(tk_object_get_prop_str_by_path(obj, "name"), "optimized_array");
+
+  tk_object_unref(obj);
+}

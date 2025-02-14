@@ -38,6 +38,7 @@ struct _ubjson_reader_t {
   str_t str;
   wstr_t wstr;
   ubjson_read_callback_t read;
+  uint8_t optimized_type;
 };
 
 ubjson_reader_t* ubjson_reader_init(ubjson_reader_t* reader, ubjson_read_callback_t read,

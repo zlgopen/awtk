@@ -57,11 +57,78 @@ static bool_t is_binary(const char* str, uint32_t len) {
 
   return FALSE;
 }
+static ret_t ubjson_reader_read_optimized_array(ubjson_reader_t* reader, uint8_t type, int count,
+                                                value_t* v) {
+  return_value_if_fail(reader != NULL && reader->read != NULL && v != NULL, RET_BAD_PARAMS);
+
+  ret_t ret = RET_OK;
+  value_t vlen;
+  int len = 0;
+  str_t* str = &(reader->str);
+
+  if (type == UBJSON_MARKER_UINT8 || type == UBJSON_MARKER_INT8) {
+    len = count;
+  } else if (type == UBJSON_MARKER_INT16) {
+    len = count * sizeof(int16_t);
+  } else if (type == UBJSON_MARKER_INT32) {
+    len = count * sizeof(int32_t);
+  } else if (type == UBJSON_MARKER_INT64) {
+    len = count * sizeof(int64_t);
+  } else if (type == UBJSON_MARKER_FLOAT32) {
+    len = count * sizeof(float);
+  } else if (type == UBJSON_MARKER_FLOAT64) {
+    len = count * sizeof(double);
+  }
+
+  return_value_if_fail(str_extend(str, len + 1) == RET_OK, RET_OOM);
+  return_value_if_fail(ubjson_reader_read_data(reader, str->str, len) == RET_OK, RET_FAIL);
+
+  str->size = len;
+  str->str[len] = '\0';
+
+  if (type == UBJSON_MARKER_INT16) {
+    int16_t* p = (int16_t*)str->str;
+    for (int i = 0; i < count; i++) {
+      int16_t vp = uint16_from_big_endian(p[i]);
+      p[i] = vp;
+    }
+
+  } else if (type == UBJSON_MARKER_INT32) {
+    int32_t* p = (int32_t*)str->str;
+    for (int i = 0; i < count; i++) {
+      int32_t vp = int32_from_big_endian(p[i]);
+      p[i] = vp;
+    }
+  } else if (type == UBJSON_MARKER_INT64) {
+    int64_t* p = (int64_t*)str->str;
+    for (int i = 0; i < count; i++) {
+      int64_t vp = int64_from_big_endian(p[i]);
+      p[i] = vp;
+    }
+  } else if (type == UBJSON_MARKER_FLOAT32) {
+    float* p = (float*)str->str;
+    for (int i = 0; i < count; i++) {
+      float vp = float_from_big_endian(p[i]);
+      p[i] = vp;
+    }
+  } else if (type == UBJSON_MARKER_FLOAT64) {
+    double* p = (double*)str->str;
+    for (int i = 0; i < count; i++) {
+      double vp = double_from_big_endian(p[i]);
+      p[i] = vp;
+    }
+  }
+
+  value_set_binary_data(v, str->str, len);
+
+  return RET_OK;
+}
 
 ret_t ubjson_reader_read(ubjson_reader_t* reader, value_t* v) {
   ret_t ret = RET_OK;
   uint8_t marker = 0;
   return_value_if_fail(reader != NULL && reader->read != NULL && v != NULL, RET_BAD_PARAMS);
+
   ret = ubjson_reader_read_data(reader, &marker, 1);
 
   if (ret != RET_OK) {
@@ -217,6 +284,24 @@ ret_t ubjson_reader_read(ubjson_reader_t* reader, value_t* v) {
     }
     case UBJSON_MARKER_OBJECT_END: {
       value_set_token(v, UBJSON_MARKER_OBJECT_END);
+      break;
+    }
+    case UBJSON_MARKER_CONTAINER_TYPE: {
+      ret = ubjson_reader_read_data(reader, &marker, 1);
+      return_value_if_fail(ret == RET_OK, RET_FAIL);
+      value_set_token(v, marker);
+
+      reader->optimized_type = marker;
+      break;
+    }
+    case UBJSON_MARKER_CONTAINER_COUNT: {
+      value_t vlen;
+      ret = ubjson_reader_read(reader, &vlen);
+      return_value_if_fail(ret == RET_OK, RET_FAIL);
+
+      ret = ubjson_reader_read_optimized_array(reader, reader->optimized_type, value_int(&vlen), v);
+      reader->optimized_type = 0;
+
       break;
     }
     default: {

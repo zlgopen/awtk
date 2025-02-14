@@ -705,6 +705,91 @@ ret_t ubjson_writer_write_kv_wstr_len(ubjson_writer_t* writer, const char* key,
  */
 ret_t ubjson_writer_write_kv_value(ubjson_writer_t* writer, const char* key, const value_t* value);
 
+
+/**
+ * @method ubjson_writer_write_array_uint8
+ * 写入 uint8 数组。
+ *
+ * @param {ubjson_writer_t*} writer writer对象。
+ * @param {uint8_t*}         data   数组。
+ * @param {uint32_t}         count  数组元素计数。
+ *
+ * @return {ret_t} 返回 ret_t 值
+ */
+ret_t ubjson_writer_write_array_uint8(ubjson_writer_t* writer, uint8_t* data, uint32_t count);
+
+/**
+ * @method ubjson_writer_write_array_int8
+ * 写入 int8 数组。
+ *
+ * @param {ubjson_writer_t*} writer writer对象。
+ * @param {int8_t*}          data   数组。
+ * @param {uint32_t}         count  数组元素计数。
+ *
+ * @return {ret_t} 返回 ret_t 值
+ */
+ret_t ubjson_writer_write_array_int8(ubjson_writer_t* writer, int8_t* data, uint32_t count);
+
+/**
+ * @method ubjson_writer_write_array_int16
+ * 写入 int16 数组。
+ *
+ * @param {ubjson_writer_t*} writer writer对象。
+ * @param {int16_t*}         data   数组。
+ * @param {uint32_t}         count  数组元素计数。
+ *
+ * @return {ret_t} 返回 ret_t 值
+ */
+ret_t ubjson_writer_write_array_int16(ubjson_writer_t* writer, int16_t* data, uint32_t count);
+
+/**
+ * @method ubjson_writer_write_array_int32
+ * 写入 int32 数组。
+ *
+ * @param {ubjson_writer_t*} writer writer对象。
+ * @param {int32_t*}         data   数组。
+ * @param {uint32_t}         count  数组元素计数。
+ *
+ * @return {ret_t} 返回 ret_t 值
+ */
+ret_t ubjson_writer_write_array_int32(ubjson_writer_t* writer, int32_t* data, uint32_t count);
+
+/**
+ * @method ubjson_writer_write_array_int64
+ * 写入 int64 数组。
+ *
+ * @param {ubjson_writer_t*} writer writer对象。
+ * @param {int32_t*}         data   数组。
+ * @param {uint32_t}         count  数组元素计数。
+ *
+ * @return {ret_t} 返回 ret_t 值
+ */
+ret_t ubjson_writer_write_array_int64(ubjson_writer_t* writer, int64_t* data, uint32_t count);
+
+/**
+ * @method ubjson_writer_write_array_float32
+ * 写入 float32 数组。
+ *
+ * @param {ubjson_writer_t*} writer writer对象。
+ * @param {int32_t*}         data   数组。
+ * @param {uint32_t}         count  数组元素计数。
+ *
+ * @return {ret_t} 返回 ret_t 值
+ */
+ret_t ubjson_writer_write_array_float32(ubjson_writer_t* writer, float* data, uint32_t count);
+
+/**
+ * @method ubjson_writer_write_array_float64
+ * 写入 float64 数组。
+ *
+ * @param {ubjson_writer_t*} writer writer对象。
+ * @param {int32_t*}         data   数组。
+ * @param {uint32_t}         count  数组元素计数。
+ *
+ * @return {ret_t} 返回 ret_t 值
+ */
+ret_t ubjson_writer_write_array_float64(ubjson_writer_t* writer, double* data, uint32_t count);
+
 END_C_DECLS
 
 #endif /*TK_UBJSON_WRITER_H*/

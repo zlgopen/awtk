@@ -45,18 +45,23 @@ static ret_t ubjson_writer_write_marker(ubjson_writer_t* writer, uint8_t marker)
   return ubjson_writer_write_data(writer, &marker, 1);
 }
 
+static ret_t ubjson_writer_write_length(ubjson_writer_t* writer, uint32_t len) {
+  ret_t ret = RET_BAD_PARAMS;
+  if (len <= INT8_MAX) {
+    ret = ubjson_writer_write_int8(writer, (int8_t)len);
+  } else if (len <= INT16_MAX) {
+    ret = ubjson_writer_write_int16(writer, (int16_t)len);
+  } else if (len <= INT_MAX) {
+    ret = ubjson_writer_write_int32(writer, (int32_t)len);
+  }
+
+  return ret;
+}
+
 static ret_t ubjson_writer_write_key_len(ubjson_writer_t* writer, const char* value, uint32_t len) {
   return_value_if_fail(writer != NULL && value != NULL, RET_BAD_PARAMS);
 
-  if (len <= INT8_MAX) {
-    ubjson_writer_write_int8(writer, (int8_t)len);
-  } else if (len <= INT16_MAX) {
-    ubjson_writer_write_int16(writer, (int16_t)len);
-  } else if (len <= INT_MAX) {
-    ubjson_writer_write_int32(writer, (int32_t)len);
-  } else {
-    return RET_BAD_PARAMS;
-  }
+  return_value_if_fail(ubjson_writer_write_length(writer, len) == RET_OK, RET_OOM);
 
   return_value_if_fail(ubjson_writer_write_data(writer, value, len) == RET_OK, RET_OOM);
 
@@ -495,4 +500,105 @@ ret_t ubjson_writer_write_object_end(ubjson_writer_t* writer) {
                        RET_OOM);
 
   return RET_OK;
+}
+
+static ret_t ubjson_writer_write_optimized_array(ubjson_writer_t* writer, char type, uint32_t count,
+                                                 void* array) {
+  ret_t ret;
+  return_value_if_fail(writer != NULL && array != NULL && count > 0, RET_BAD_PARAMS);
+
+  return_value_if_fail(ubjson_writer_write_marker(writer, UBJSON_MARKER_ARRAY_BEGIN) == RET_OK,
+                       RET_OOM);
+  return_value_if_fail(ubjson_writer_write_marker(writer, UBJSON_MARKER_CONTAINER_TYPE) == RET_OK,
+                       RET_OOM);
+  return_value_if_fail(ubjson_writer_write_marker(writer, type) == RET_OK, RET_OOM);
+  return_value_if_fail(ubjson_writer_write_marker(writer, UBJSON_MARKER_CONTAINER_COUNT) == RET_OK,
+                       RET_OOM);
+
+  return_value_if_fail(ubjson_writer_write_length(writer, count) == RET_OK, RET_OOM);
+
+  if (type == UBJSON_MARKER_INT8 || type == UBJSON_MARKER_UINT8) {
+    ret = ubjson_writer_write_data(writer, array, count);
+    return_value_if_fail(ret == RET_OK, RET_OOM);
+
+  } else if (type == UBJSON_MARKER_INT16) {
+    int16_t* p = (int16_t*)array;
+
+    for (uint32_t i = 0; i < count; i++) {
+      int16_t val = p[i];
+      val = int16_to_big_endian(val);
+      ret = ubjson_writer_write_data(writer, &val, sizeof(val));
+      return_value_if_fail(ret == RET_OK, RET_OOM);
+    }
+
+  } else if (type == UBJSON_MARKER_INT32) {
+    int32_t* p = (int32_t*)array;
+
+    for (uint32_t i = 0; i < count; i++) {
+      int32_t val = p[i];
+      val = int32_to_big_endian(val);
+      ret = ubjson_writer_write_data(writer, &val, sizeof(val));
+      return_value_if_fail(ret == RET_OK, RET_OOM);
+    }
+
+  } else if (type == UBJSON_MARKER_INT64) {
+    int64_t* p = (int64_t*)array;
+
+    for (uint32_t i = 0; i < count; i++) {
+      int64_t val = p[i];
+      val = int64_to_big_endian(val);
+      ret = ubjson_writer_write_data(writer, &val, sizeof(val));
+      return_value_if_fail(ret == RET_OK, RET_OOM);
+    }
+
+  } else if (type == UBJSON_MARKER_FLOAT32) {
+    float* p = (float*)array;
+
+    for (uint32_t i = 0; i < count; i++) {
+      float val = p[i];
+      val = float_to_big_endian(val);
+      ret = ubjson_writer_write_data(writer, &val, sizeof(val));
+      return_value_if_fail(ret == RET_OK, RET_OOM);
+    }
+  } else if (type == UBJSON_MARKER_FLOAT64) {
+    double* p = (double*)array;
+
+    for (uint32_t i = 0; i < count; i++) {
+      double val = p[i];
+      val = double_to_big_endian(val);
+      ret = ubjson_writer_write_data(writer, &val, sizeof(val));
+      return_value_if_fail(ret == RET_OK, RET_OOM);
+    }
+  }
+
+  /* 优化数组，没有结束标记 */
+
+  return RET_OK;
+}
+
+ret_t ubjson_writer_write_array_uint8(ubjson_writer_t* writer, uint8_t* data, uint32_t count) {
+  return ubjson_writer_write_optimized_array(writer, UBJSON_MARKER_UINT8, count, data);
+}
+
+ret_t ubjson_writer_write_array_int8(ubjson_writer_t* writer, int8_t* data, uint32_t count) {
+  return ubjson_writer_write_optimized_array(writer, UBJSON_MARKER_INT8, count, data);
+}
+
+ret_t ubjson_writer_write_array_int16(ubjson_writer_t* writer, int16_t* data, uint32_t count) {
+  return ubjson_writer_write_optimized_array(writer, UBJSON_MARKER_INT16, count, data);
+}
+
+ret_t ubjson_writer_write_array_int32(ubjson_writer_t* writer, int32_t* data, uint32_t count) {
+  return ubjson_writer_write_optimized_array(writer, UBJSON_MARKER_INT32, count, data);
+}
+
+ret_t ubjson_writer_write_array_int64(ubjson_writer_t* writer, int64_t* data, uint32_t count) {
+  return ubjson_writer_write_optimized_array(writer, UBJSON_MARKER_INT64, count, data);
+}
+ret_t ubjson_writer_write_array_float32(ubjson_writer_t* writer, float* data, uint32_t count) {
+  return ubjson_writer_write_optimized_array(writer, UBJSON_MARKER_FLOAT32, count, data);
+}
+
+ret_t ubjson_writer_write_array_float64(ubjson_writer_t* writer, double* data, uint32_t count) {
+  return ubjson_writer_write_optimized_array(writer, UBJSON_MARKER_FLOAT64, count, data);
 }

@@ -39,6 +39,8 @@ typedef struct _ubjson_parser_t {
   bool_t error;
   uint32_t level;
   tk_object_t* stack[MAX_LEVEL + 1];
+
+  uint32_t optimized_type;
 } ubjson_parser_t;
 
 static ret_t ubjson_do_parse_object(ubjson_parser_t* parser);
@@ -123,6 +125,65 @@ static ret_t ubjson_parser_read(ubjson_parser_t* parser, value_t* v) {
   return ubjson_reader_read(reader, v);
 }
 
+static ret_t ubjson_on_optimized_array_object(ubjson_parser_t* parser, const char* key,
+                                              value_t* v) {
+  ret_t ret = RET_OK;
+  uint32_t type = parser->optimized_type;
+  parser->optimized_type = 0;
+
+  if (type == UBJSON_MARKER_UINT8) {
+    uint8_t* p = v->value.binary_data.data;
+    for (uint32_t i = 0; i < v->value.binary_data.size; i++) {
+      ret = tk_object_set_prop_uint8(parser->obj, key, p[i]);
+      return_value_if_fail(ret == RET_OK, ret);
+    }
+  } else if (type == UBJSON_MARKER_INT8) {
+    int8_t* p = v->value.binary_data.data;
+    for (uint32_t i = 0; i < v->value.binary_data.size; i++) {
+      ret = tk_object_set_prop_int8(parser->obj, key, p[i]);
+      return_value_if_fail(ret == RET_OK, ret);
+    }
+  } else if (type == UBJSON_MARKER_INT16) {
+    int16_t* p = v->value.binary_data.data;
+    uint32_t count = v->value.binary_data.size / sizeof(int16_t);
+    for (uint32_t i = 0; i < count; i++) {
+      ret = tk_object_set_prop_int16(parser->obj, key, p[i]);
+      return_value_if_fail(ret == RET_OK, ret);
+    }
+  } else if (type == UBJSON_MARKER_INT32) {
+    int32_t* p = v->value.binary_data.data;
+    uint32_t count = v->value.binary_data.size / sizeof(int32_t);
+    for (uint32_t i = 0; i < count; i++) {
+      ret = tk_object_set_prop_int32(parser->obj, key, p[i]);
+      return_value_if_fail(ret == RET_OK, ret);
+    }
+  } else if (type == UBJSON_MARKER_INT64) {
+    int64_t* p = v->value.binary_data.data;
+    uint32_t count = v->value.binary_data.size / sizeof(int64_t);
+    for (uint32_t i = 0; i < count; i++) {
+      ret = tk_object_set_prop_int64(parser->obj, key, p[i]);
+      return_value_if_fail(ret == RET_OK, ret);
+    }
+  } else if (type == UBJSON_MARKER_FLOAT32) {
+    float* p = v->value.binary_data.data;
+    uint32_t count = v->value.binary_data.size / sizeof(float);
+    for (uint32_t i = 0; i < count; i++) {
+      ret = tk_object_set_prop_float(parser->obj, key, p[i]);
+      return_value_if_fail(ret == RET_OK, ret);
+    }
+  } else if (type == UBJSON_MARKER_FLOAT64) {
+    double* p = v->value.binary_data.data;
+    uint32_t count = v->value.binary_data.size / sizeof(double);
+    for (uint32_t i = 0; i < count; i++) {
+      ret = tk_object_set_prop_double(parser->obj, key, p[i]);
+      return_value_if_fail(ret == RET_OK, ret);
+    }
+  } else {
+    return_value_if_fail(!"not support!", RET_FAIL);
+  }
+  return ret;
+}
+
 static ret_t ubjson_on_key_value_object(void* ctx, const char* key, value_t* v) {
   ret_t ret = RET_OK;
   ubjson_parser_t* parser = (ubjson_parser_t*)ctx;
@@ -134,6 +195,7 @@ static ret_t ubjson_on_key_value_object(void* ctx, const char* key, value_t* v) 
 
   if (v->type == VALUE_TYPE_TOKEN) {
     uint32_t token = value_token(v);
+
     if (token == UBJSON_MARKER_OBJECT_BEGIN || token == UBJSON_MARKER_ARRAY_BEGIN) {
       tk_object_t* obj =
           token == UBJSON_MARKER_OBJECT_BEGIN ? object_default_create() : object_array_create();
@@ -152,12 +214,26 @@ static ret_t ubjson_on_key_value_object(void* ctx, const char* key, value_t* v) 
       tk_object_unref(obj);
     } else if (token == UBJSON_MARKER_OBJECT_END || token == UBJSON_MARKER_ARRAY_END) {
       ret = ubjson_parser_pop(parser);
+
+    } else if (token == UBJSON_MARKER_UINT8 || token == UBJSON_MARKER_INT8 ||
+               token == UBJSON_MARKER_INT16 || token == UBJSON_MARKER_INT32 ||
+               token == UBJSON_MARKER_INT64 || token == UBJSON_MARKER_FLOAT32 ||
+               token == UBJSON_MARKER_FLOAT64) {
+      parser->optimized_type = token;
     } else {
       assert(!"not supported");
       ret = RET_NOT_IMPL;
     }
   } else {
-    ret = tk_object_set_prop(parser->obj, key, v);
+    if (parser->optimized_type != 0) {
+      return_value_if_fail(v->type == VALUE_TYPE_BINARY, RET_FAIL);
+
+      ubjson_on_optimized_array_object(parser, key, v);
+      ret = ubjson_parser_pop(parser);
+
+    } else {
+      ret = tk_object_set_prop(parser->obj, key, v);
+    }
   }
 
   return ret;
@@ -248,8 +324,11 @@ static ret_t ubjson_do_parse_array(ubjson_parser_t* parser) {
         ubjson_do_parse_array(parser);
         continue;
       } else {
-        assert(!"invalid format");
-        return RET_BAD_PARAMS;
+        ubjson_parser_on_key_value(parser, NULL, v); /* 上报优化数组的类型 */
+
+        return_value_if_fail(ubjson_parser_read(parser, &value) == RET_OK, RET_FAIL);
+        ubjson_parser_on_key_value(parser, NULL, v);
+        return RET_OK;
       }
     }
 

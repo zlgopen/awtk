@@ -48,7 +48,11 @@ typedef enum _ubjson_marker_t {
   UBJSON_MARKER_ARRAY_BEGIN = '[',
   UBJSON_MARKER_ARRAY_END = ']',
   UBJSON_MARKER_OBJECT_BEGIN = '{',
-  UBJSON_MARKER_OBJECT_END = '}'
+  UBJSON_MARKER_OBJECT_END = '}',
+
+  /* container optimized format */
+  UBJSON_MARKER_CONTAINER_TYPE = '&',
+  UBJSON_MARKER_CONTAINER_COUNT = '#',
 } ubjson_marker_t;
 
 END_C_DECLS

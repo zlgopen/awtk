@@ -4,7 +4,7 @@
 #include "ubjson/ubjson_reader.h"
 
 #define PREPARE_TEST()                                                         \
-  uint8_t buff[256];                                                           \
+  uint8_t buff[4096];                                                          \
   value_t v;                                                                   \
   wbuffer_t wb;                                                                \
   rbuffer_t rb;                                                                \
@@ -264,6 +264,93 @@ TEST(UBJsonReader, wstring) {
   ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);
   ASSERT_EQ(v.type == VALUE_TYPE_WSTRING, true);
   ASSERT_EQ(wcscmp(value_wstr(&v), L"abc"), 0);
+
+  ubjson_reader_reset(&ur);
+}
+
+TEST(UBJsonReader, optimized_array_uint8) {
+  PREPARE_TEST();
+
+  uint8_t data[120];
+  for (int i = 0; i < ARRAY_SIZE(data); i++) {
+    data[i] = i;
+  }
+
+  ASSERT_EQ(ubjson_writer_write_array_uint8(&ub, data, ARRAY_SIZE(data)), RET_OK);
+
+  rb.capacity = wb.cursor;
+  ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);
+  ASSERT_EQ(v.type == VALUE_TYPE_TOKEN, true);
+  ASSERT_EQ(value_token(&v), UBJSON_MARKER_ARRAY_BEGIN);
+
+  // 优化数组的类型
+  ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);
+  ASSERT_EQ(v.type == VALUE_TYPE_TOKEN, true);
+  ASSERT_EQ(value_token(&v), UBJSON_MARKER_UINT8);
+
+  // 数据
+  ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_BINARY);
+  ASSERT_TRUE(memcmp(v.value.binary_data.data, data, ARRAY_SIZE(data)) == 0);
+  ASSERT_EQ(v.value.binary_data.size, ARRAY_SIZE(data));
+
+  ubjson_reader_reset(&ur);
+}
+
+TEST(UBJsonReader, optimized_array_int32) {
+  PREPARE_TEST();
+
+  int32_t data[120];
+  for (int i = 0; i < ARRAY_SIZE(data); i++) {
+    data[i] = i;
+  }
+
+  ASSERT_EQ(ubjson_writer_write_array_int32(&ub, data, ARRAY_SIZE(data)), RET_OK);
+
+  rb.capacity = wb.cursor;
+  ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);
+  ASSERT_EQ(v.type == VALUE_TYPE_TOKEN, true);
+  ASSERT_EQ(value_token(&v), UBJSON_MARKER_ARRAY_BEGIN);
+
+  // 优化数组的类型
+  ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);
+  ASSERT_EQ(v.type == VALUE_TYPE_TOKEN, true);
+  ASSERT_EQ(value_token(&v), UBJSON_MARKER_INT32);
+
+  // 数据
+  ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_BINARY);
+  ASSERT_TRUE(memcmp(v.value.binary_data.data, data, sizeof(data)) == 0);
+  ASSERT_EQ(v.value.binary_data.size, sizeof(data));
+
+  ubjson_reader_reset(&ur);
+}
+
+TEST(UBJsonReader, optimized_array_double) {
+  PREPARE_TEST();
+
+  double data[120];
+  for (int i = 0; i < ARRAY_SIZE(data); i++) {
+    data[i] = i * 1.11;
+  }
+
+  ASSERT_EQ(ubjson_writer_write_array_float64(&ub, data, ARRAY_SIZE(data)), RET_OK);
+
+  rb.capacity = wb.cursor;
+  ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);
+  ASSERT_EQ(v.type == VALUE_TYPE_TOKEN, true);
+  ASSERT_EQ(value_token(&v), UBJSON_MARKER_ARRAY_BEGIN);
+
+  // 优化数组的类型
+  ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);
+  ASSERT_EQ(v.type == VALUE_TYPE_TOKEN, true);
+  ASSERT_EQ(value_token(&v), UBJSON_MARKER_FLOAT64);
+
+  // 数据
+  ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_BINARY);
+  ASSERT_TRUE(memcmp(v.value.binary_data.data, data, sizeof(data)) == 0);
+  ASSERT_EQ(v.value.binary_data.size, sizeof(data));
 
   ubjson_reader_reset(&ur);
 }

@@ -1,5 +1,6 @@
 ﻿#include "gtest/gtest.h"
 #include "tkc/buffer.h"
+#include "tkc/endian.h"
 #include "ubjson/ubjson_writer.h"
 
 TEST(UBJsonWriter, null) {
@@ -354,4 +355,86 @@ TEST(UBJsonWriter, kv_wstring_len) {
   ASSERT_EQ(buff[5], 0x1);
   ASSERT_EQ(buff[6], 'b');
   ASSERT_EQ(wb.cursor, 7u);
+}
+
+TEST(UBJsonWriter, optimized_array_uint8) {
+  uint8_t buff[256];
+  uint8_t data[120];
+  wbuffer_t wb;
+  ubjson_writer_t ub;
+  wbuffer_init(&wb, buff, sizeof(buff));
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+
+  for (int i = 0; i < ARRAY_SIZE(data); i++) {
+    data[i] = i;
+  }
+
+  ASSERT_EQ(ubjson_writer_write_array_uint8(&ub, data, ARRAY_SIZE(data)), RET_OK);
+
+  ASSERT_EQ(wb.cursor, 6 + sizeof(data));
+  ASSERT_EQ(buff[0], UBJSON_MARKER_ARRAY_BEGIN);
+  ASSERT_EQ(buff[1], UBJSON_MARKER_CONTAINER_TYPE);
+  ASSERT_EQ(buff[2], UBJSON_MARKER_UINT8);
+  ASSERT_EQ(buff[3], UBJSON_MARKER_CONTAINER_COUNT);
+  ASSERT_EQ(buff[4], UBJSON_MARKER_INT8);
+  ASSERT_EQ(buff[5], ARRAY_SIZE(data));
+  ASSERT_EQ(memcmp(buff + 6, data, sizeof(data)), 0);
+}
+
+TEST(UBJsonWriter, optimized_array_int32) {
+  uint8_t buff[256 + 120 * sizeof(int32_t)];
+  int32_t data[120];
+  wbuffer_t wb;
+  ubjson_writer_t ub;
+  wbuffer_init(&wb, buff, sizeof(buff));
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+
+  for (int i = 0; i < ARRAY_SIZE(data); i++) {
+    data[i] = i;
+  }
+
+  ASSERT_EQ(ubjson_writer_write_array_int32(&ub, data, ARRAY_SIZE(data)), RET_OK);
+
+  ASSERT_EQ(wb.cursor, 6 + sizeof(data));
+  ASSERT_EQ(buff[0], UBJSON_MARKER_ARRAY_BEGIN);
+  ASSERT_EQ(buff[1], UBJSON_MARKER_CONTAINER_TYPE);
+  ASSERT_EQ(buff[2], UBJSON_MARKER_INT32);
+  ASSERT_EQ(buff[3], UBJSON_MARKER_CONTAINER_COUNT);
+  ASSERT_EQ(buff[4], UBJSON_MARKER_INT8);
+  ASSERT_EQ(buff[5], ARRAY_SIZE(data));
+
+  int32_t* p = (int32_t*)(buff + 6);
+  for (int i = 0; i < ARRAY_SIZE(data); i++) {
+    int32_t v = int32_from_big_endian(p[i]);
+    ASSERT_EQ(v, data[i]);
+  }
+}
+
+TEST(UBJsonWriter, optimized_array_float64) {
+  uint8_t buff[256 + 120 * sizeof(double)];
+  double data[120];
+  wbuffer_t wb;
+  ubjson_writer_t ub;
+  wbuffer_init(&wb, buff, sizeof(buff));
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+
+  for (int i = 0; i < ARRAY_SIZE(data); i++) {
+    data[i] = i * 1.11;
+  }
+
+  ASSERT_EQ(ubjson_writer_write_array_float64(&ub, data, ARRAY_SIZE(data)), RET_OK);
+
+  ASSERT_EQ(wb.cursor, 6 + sizeof(data));
+  ASSERT_EQ(buff[0], UBJSON_MARKER_ARRAY_BEGIN);
+  ASSERT_EQ(buff[1], UBJSON_MARKER_CONTAINER_TYPE);
+  ASSERT_EQ(buff[2], UBJSON_MARKER_FLOAT64);
+  ASSERT_EQ(buff[3], UBJSON_MARKER_CONTAINER_COUNT);
+  ASSERT_EQ(buff[4], UBJSON_MARKER_INT8);
+  ASSERT_EQ(buff[5], ARRAY_SIZE(data));
+
+  double* p = (double*)(buff + 6);
+  for (int i = 0; i < ARRAY_SIZE(data); i++) {
+    double v = double_from_big_endian(p[i]);
+    ASSERT_EQ(v, data[i]);
+  }
 }
