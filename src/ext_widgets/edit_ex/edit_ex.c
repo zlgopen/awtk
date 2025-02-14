@@ -19,18 +19,10 @@
  *
  */
 
+#include "tkc/object_default.h"
 #include "base/widget_vtable.h"
 #include "ext_widgets/edit_ex/edit_ex.h"
 #include "ext_widgets/edit_ex/edit_ex_suggest_words_helper.inc"
-
-ret_t edit_ex_set_theme_of_popup(widget_t* widget, const char* theme_of_popup) {
-  edit_ex_t* edit_ex = EDIT_EX(widget);
-  return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
-
-  edit_ex->theme_of_popup = tk_str_copy(edit_ex->theme_of_popup, theme_of_popup);
-
-  return RET_OK;
-}
 
 ret_t edit_ex_set_suggest_words(widget_t* widget, tk_object_t* suggest_words) {
   edit_ex_t* edit_ex = EDIT_EX(widget);
@@ -43,10 +35,23 @@ ret_t edit_ex_set_suggest_words(widget_t* widget, tk_object_t* suggest_words) {
 }
 
 static ret_t edit_ex_set_prop(widget_t* widget, const char* name, const value_t* v) {
+  edit_ex_t* edit_ex = EDIT_EX(widget);
+  return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
+
   if (tk_str_eq(name, EDIT_EX_PROP_SUGGEST_WORDS)) {
     return edit_ex_set_suggest_words(widget, value_object(v));
-  } else if (tk_str_eq(name, WIDGET_PROP_THEME_OF_POPUP)) {
-    return edit_ex_set_theme_of_popup(widget, value_str(v));
+  } else if (tk_str_start_with(name, EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS)) {
+    ret_t ret = RET_OK;
+    str_t sub_prop;
+    str_init(&sub_prop, 0);
+    str_set(&sub_prop, name);
+    ret = str_remove(&sub_prop, 0, sizeof(EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS_PREFIX) - 1);
+    return_value_if_fail(RET_OK == ret, (str_reset(&sub_prop), ret));
+
+    ret = tk_object_set_prop(edit_ex->suggest_words_ui_props, sub_prop.str, v);
+
+    str_reset(&sub_prop);
+    return ret;
   }
 
   return widget_vtable_set_prop_by_parent(widget, name, v, WIDGET_VTABLE_GET_VTABLE(edit_ex));
@@ -59,9 +64,18 @@ static ret_t edit_ex_get_prop(widget_t* widget, const char* name, value_t* v) {
   if (tk_str_eq(name, EDIT_EX_PROP_SUGGEST_WORDS)) {
     value_set_object(v, edit_ex->suggest_words);
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_THEME_OF_POPUP)) {
-    value_set_str(v, edit_ex->theme_of_popup);
-    return RET_OK;
+  } else if (tk_str_start_with(name, EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS)) {
+    ret_t ret = RET_OK;
+    str_t sub_prop;
+    str_init(&sub_prop, 0);
+    str_set(&sub_prop, name);
+    ret = str_remove(&sub_prop, 0, sizeof(EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS_PREFIX) - 1);
+    return_value_if_fail(RET_OK == ret, (str_reset(&sub_prop), ret));
+
+    ret = tk_object_get_prop(edit_ex->suggest_words_ui_props, sub_prop.str, v);
+
+    str_reset(&sub_prop);
+    return ret;
   }
 
   return widget_vtable_get_prop_by_parent(widget, name, v, WIDGET_VTABLE_GET_VTABLE(edit_ex));
@@ -109,15 +123,37 @@ static ret_t edit_ex_on_destroy(widget_t* widget) {
   if (edit_ex->suggest_words_popup != NULL) {
     widget_destroy(edit_ex->suggest_words_popup);
   }
-  TKMEM_FREE(edit_ex->theme_of_popup);
+  TK_OBJECT_UNREF(edit_ex->suggest_words_ui_props);
   TK_OBJECT_UNREF(edit_ex->suggest_words);
 
   return widget_vtable_on_destroy_by_parent(widget, WIDGET_VTABLE_GET_VTABLE(edit_ex));
 }
 
 static ret_t edit_ex_init(widget_t* widget) {
+  uint32_t i = 0;
+  const char* suggest_words_ui_prop_names[] = {
+      EDIT_EX_SUGGEST_WORDS_UI_NAME_POPUP,
+      EDIT_EX_SUGGEST_WORDS_UI_NAME_LIST_VIEW,
+      EDIT_EX_SUGGEST_WORDS_UI_NAME_VBAR,
+      EDIT_EX_SUGGEST_WORDS_UI_NAME_SCROLL_VIEW,
+  };
+  edit_ex_t* edit_ex = EDIT_EX(widget);
   ret_t ret = widget_vtable_init_by_parent(widget, WIDGET_VTABLE_GET_VTABLE(edit_ex));
   return_value_if_fail(ret == RET_OK || ret == RET_NOT_IMPL, ret);
+
+  edit_ex->suggest_words_ui_props = object_default_create();
+  ENSURE(edit_ex->suggest_words_ui_props != NULL);
+  return_value_if_fail(edit_ex->suggest_words_ui_props != NULL, RET_OOM);
+
+  for (i = 0; i < ARRAY_SIZE(suggest_words_ui_prop_names); i++) {
+    tk_object_t* ui_props = object_default_create_ex(FALSE);
+    ENSURE(ui_props != NULL);
+    return_value_if_fail(ui_props != NULL, RET_OOM);
+
+    tk_object_set_prop_object(edit_ex->suggest_words_ui_props, suggest_words_ui_prop_names[i],
+                              ui_props);
+    tk_object_unref(ui_props);
+  }
 
   return RET_OK;
 }

@@ -37,13 +37,6 @@ typedef struct _edit_ex_t {
   edit_t edit;
 
   /**
-   * @property {char*} theme_of_popup
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 弹出窗口的主题(对应的style文件必须存在)，方便为不同edit的弹出窗口指定不同的样式。
-   */
-  char* theme_of_popup;
-
-  /**
    * @property {tk_object_t*} suggest_words
    * @annotation ["set_prop","get_prop","readable","persitent","scriptable"]
    * 输入建议词。
@@ -51,6 +44,7 @@ typedef struct _edit_ex_t {
   tk_object_t* suggest_words;
 
   /* private */
+  tk_object_t* suggest_words_ui_props;
   widget_t* suggest_words_popup;
 } edit_ex_t;
 
@@ -67,17 +61,6 @@ typedef struct _edit_ex_t {
  * @return {widget_t*} 对象。
  */
 widget_t* edit_ex_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
-
-/**
- * @method edit_ex_set_theme_of_popup
- * 设置弹出窗口的主题。
- * @annotation ["scriptable"]
- * @param {widget_t*} widget edit_ex对象。
- * @param {const char*} theme_of_popup 弹出的窗口主题。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t edit_ex_set_theme_of_popup(widget_t* widget, const char* theme_of_popup);
 
 /**
  * @method edit_ex_set_suggest_words
@@ -106,6 +89,22 @@ widget_t* edit_ex_cast(widget_t* widget);
  * 输入建议词。
  */
 #define EDIT_EX_PROP_SUGGEST_WORDS "suggest_words"
+
+/**
+ * @const EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS
+ * 输入建议词相关ui属性。
+ * eg:
+ * ```xml
+ * <edit_ex suggest_words_ui_props.popup.theme="number"/>
+ * ```
+ */
+#define EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS "suggest_words_ui_props"
+#define EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS_PREFIX EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS "."
+
+#define EDIT_EX_SUGGEST_WORDS_UI_NAME_POPUP "popup"
+#define EDIT_EX_SUGGEST_WORDS_UI_NAME_LIST_VIEW "list_view"
+#define EDIT_EX_SUGGEST_WORDS_UI_NAME_VBAR "vbar"
+#define EDIT_EX_SUGGEST_WORDS_UI_NAME_SCROLL_VIEW "scroll_view"
 
 #define WIDGET_TYPE_EDIT_EX "edit_ex"
 
