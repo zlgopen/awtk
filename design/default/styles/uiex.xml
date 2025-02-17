@@ -383,6 +383,30 @@
     <pressed bg_color="#678C16" text_color="#FFFFFF"/>
     <pressed_of_checked bg_color="#678C16" text_color="#FFFFFF"/>
   </style>
+  <style name="odd" bg_color="#FFFFFF" font_size="22" icon_at="left" margin_left="26" text_color="#333333">
+    <normal/>
+    <normal_of_checked bg_color="#709918" text_color="#FFFFFF"/>
+    <disable bg_color="#FFFFFF66" text_color="#33333366"/>
+    <disable_of_checked bg_color="#70991866" text_color="#FFFFFF66"/>
+    <focused bg_color="#8ABC1D" text_color="#FFFFFF"/>
+    <focused_of_checked bg_color="#80B01B" text_color="#FFFFFF"/>
+    <over bg_color="#8ABC1D" text_color="#FFFFFF"/>
+    <over_of_checked bg_color="#80B01B" text_color="#FFFFFF"/>
+    <pressed bg_color="#678C16" text_color="#FFFFFF"/>
+    <pressed_of_checked bg_color="#678C16" text_color="#FFFFFF"/>
+  </style>
+  <style name="even" bg_color="#FAFAFA" font_size="22" icon_at="left" margin_left="26" text_color="#333333">
+    <normal/>
+    <normal_of_checked bg_color="#709918" text_color="#FFFFFF"/>
+    <disable bg_color="#FAFAFA66" text_color="#33333366"/>
+    <disable_of_checked bg_color="#70991866" text_color="#FFFFFF66"/>
+    <focused bg_color="#8ABC1D" text_color="#FFFFFF"/>
+    <focused_of_checked bg_color="#80B01B" text_color="#FFFFFF"/>
+    <over bg_color="#8ABC1D" text_color="#FFFFFF"/>
+    <over_of_checked bg_color="#80B01B" text_color="#FFFFFF"/>
+    <pressed bg_color="#678C16" text_color="#FFFFFF"/>
+    <pressed_of_checked bg_color="#678C16" text_color="#FFFFFF"/>
+  </style>
 </combo_box_item>
 <dialog>
   <style name="default">

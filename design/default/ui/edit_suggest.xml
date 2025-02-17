@@ -2,5 +2,5 @@
   <mledit name="suggest_words" x="0" y="b" w="100%" h="50%" max_lines="100" scroll_line="10" wrap_word="true" readonly="true" text="AWTK\nGUI\ntkc\nGraphical User Interface\naa\nbbb\nccc\ndddddd\neeeeeee\nffffffff\nggggg">
     <scroll_bar_d name="scroll_bar_d" x="right" y="0" w="14" h="100%" value="0"/>
   </mledit>
-  <edit_ex min="0" max="1024" step="1" name="edit" x="c" y="25%" w="200" h="28" tips="Please enter your text" auto_fix="true" suggest_words_ui_props.popup.theme="uiex" suggest_words_ui_props.popup.min_w="240" suggest_words_ui_props.list_view.item_height="20" suggest_words_ui_props.vbar.w="8" suggest_words_ui_props.vbar.animatable="false"/>
+  <edit_ex min="0" max="1024" step="1" name="edit" x="c" y="25%" w="200" h="28" tips="Please enter your text" auto_fix="true" suggest_words_ui_props.popup.theme="uiex" suggest_words_ui_props.popup.min_w="240" suggest_words_ui_props.list_view.item_height="20" suggest_words_ui_props.list_view.item_odd_style="odd" suggest_words_ui_props.list_view.item_even_style="even" suggest_words_ui_props.vbar.w="8" suggest_words_ui_props.vbar.animatable="false"/>
 </window>

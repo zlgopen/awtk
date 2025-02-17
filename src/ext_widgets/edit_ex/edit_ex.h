@@ -106,6 +106,42 @@ widget_t* edit_ex_cast(widget_t* widget);
 #define EDIT_EX_SUGGEST_WORDS_UI_NAME_VBAR "vbar"
 #define EDIT_EX_SUGGEST_WORDS_UI_NAME_SCROLL_VIEW "scroll_view"
 
+/**
+ * @const EDIT_EX_PROP_SUGGEST_WORDS_ITEM_ODD_STYLE
+ * 奇数项的样式。
+ * eg:
+ * ```xml
+ * <edit_ex suggest_words_ui_props.list_view.item_odd_style="odd"/>
+ * ```
+ * 
+ * style
+ * ```xml
+ * <combo_box_item>
+ *   <style name="odd">
+ *   </style>
+ * </combo_box_item>
+ * ```
+ */
+#define EDIT_EX_PROP_SUGGEST_WORDS_ITEM_ODD_STYLE "item_odd_style"
+
+/**
+ * @const EDIT_EX_PROP_SUGGEST_WORDS_ITEM_EVEN_STYLE
+ * 偶数项的样式。
+ * eg:
+ * ```xml
+ * <edit_ex suggest_words_ui_props.list_view.item_even_style="even"/>
+ * ```
+ * 
+ * style
+ * ```xml
+ * <combo_box_item>
+ *   <style name="even">
+ *   </style>
+ * </combo_box_item>
+ * ```
+ */
+#define EDIT_EX_PROP_SUGGEST_WORDS_ITEM_EVEN_STYLE "item_even_style"
+
 #define WIDGET_TYPE_EDIT_EX "edit_ex"
 
 #define EDIT_EX(widget) ((edit_ex_t*)(edit_ex_cast(WIDGET(widget))))
