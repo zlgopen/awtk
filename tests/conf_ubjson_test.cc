@@ -121,6 +121,85 @@ TEST(ConfUBJson, create_doc) {
   conf_doc_destroy(idoc);
 }
 
+TEST(ConfUBJson, optimized_array) {
+  value_t v;
+  wbuffer_t wb;
+  uint8_t buff[1024];
+  uint8_t data[256];
+  ubjson_writer_t ub;
+  wbuffer_init(&wb, buff, sizeof(buff));
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+
+  conf_doc_t* idoc = create_doc();
+  {
+    ASSERT_EQ(conf_doc_set(idoc, "tom.array1", value_set_binary_data(&v, data, sizeof(data))),
+              RET_OK);
+    ASSERT_EQ(conf_doc_set(idoc, "tom.array2", value_set_binary_data(&v, data, sizeof(data))),
+              RET_OK);
+    ASSERT_EQ(conf_doc_get(idoc, "tom.array1", &v), RET_OK);
+    ASSERT_EQ(v.type, VALUE_TYPE_BINARY);
+    ASSERT_EQ(v.value.binary_data.size, sizeof(data));
+    ASSERT_EQ(memcmp(v.value.binary_data.data, data, sizeof(data)), 0);
+
+    ASSERT_EQ(conf_doc_save_ubjson(idoc, &ub), RET_OK);
+    conf_doc_destroy(idoc);
+  }
+
+  {
+    conf_doc_t* doc = conf_doc_load_ubjson(wb.data, wb.cursor);
+    ubjson_dump(wb.data, wb.cursor);
+
+    ASSERT_EQ(conf_doc_get(doc, "tom.name", &v), RET_OK);
+    ASSERT_STREQ(value_str(&v), "tom");
+
+    ASSERT_EQ(conf_doc_get(doc, "tom.age", &v), RET_OK);
+    ASSERT_EQ(value_int(&v), 28);
+
+    ASSERT_EQ(conf_doc_get(doc, "tom.data.[2]", &v), RET_OK);
+    ASSERT_EQ(value_int(&v), 2);
+
+    ASSERT_EQ(conf_doc_get(doc, "tom.array1", &v), RET_OK);
+    ASSERT_EQ(v.type, VALUE_TYPE_BINARY);
+    ASSERT_EQ(v.value.binary_data.size, sizeof(data));
+    ASSERT_EQ(memcmp(v.value.binary_data.data, data, sizeof(data)), 0);
+
+    ASSERT_EQ(conf_doc_get(doc, "tom.array2", &v), RET_OK);
+    ASSERT_EQ(v.type, VALUE_TYPE_BINARY);
+    ASSERT_EQ(v.value.binary_data.size, sizeof(data));
+    ASSERT_EQ(memcmp(v.value.binary_data.data, data, sizeof(data)), 0);
+    conf_doc_destroy(doc);
+  }
+}
+
+TEST(ConfUBJson, optimized_array_to_root) {
+  value_t v;
+  wbuffer_t wb;
+  uint8_t buff[1024];
+  uint8_t data[] = {0x11, 0x22, 0x33, 0x44, 0x55};
+  ubjson_writer_t ub;
+  wbuffer_init(&wb, buff, sizeof(buff));
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+
+  conf_doc_t* doc = conf_doc_create(100);
+  conf_node_t* node = NULL;
+
+  doc->root = conf_doc_create_node(doc, "root");
+
+  ASSERT_EQ(conf_node_set_value(doc->root, value_set_binary_data(&v, data, sizeof(data))), RET_OK);
+  ASSERT_EQ(conf_doc_save_ubjson(doc, &ub), RET_OK);
+
+  ubjson_dump(wb.data, wb.cursor);
+
+  conf_doc_t* doc2 = conf_doc_load_ubjson(wb.data, wb.cursor);
+  ASSERT_EQ(conf_node_get_value(doc2->root, &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_BINARY);
+  ASSERT_EQ(v.value.binary_data.size, sizeof(data));
+  ASSERT_EQ(memcmp(v.value.binary_data.data, data, sizeof(data)), 0);
+
+  conf_doc_destroy(doc);
+  conf_doc_destroy(doc2);
+}
+
 TEST(UbJson, file) {
   tk_object_t* conf = conf_ubjson_load("file://./tests/testdata/test.ubjson", TRUE);
 

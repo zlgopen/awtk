@@ -215,6 +215,40 @@ TEST(ConfNode, set_get_wstr) {
   wbuffer_deinit(&wb);
 }
 
+TEST(ConfNode, binary) {
+  value_t v;
+  conf_doc_t* doc = conf_doc_create(100);
+
+  ASSERT_EQ(conf_doc_set(doc, "names.[0]", value_set_binary_data(&v, (void*)"jim", 3)), RET_OK);
+  ASSERT_EQ(conf_doc_set(doc, "names.[1]", value_set_binary_data(&v, (void*)"tom", 3)), RET_OK);
+
+  ASSERT_EQ(conf_doc_get(doc, "names.[0]", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_BINARY);
+
+  ASSERT_EQ(conf_doc_get(doc, "names.[1]", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_BINARY);
+  ASSERT_EQ(memcmp(v.value.binary_data.data, "tom", v.value.binary_data.size), 0);
+  ASSERT_EQ(memcmp(v.value.binary_data.data, "tom", v.value.binary_data.size), 0);
+
+  conf_node_t* node;
+  node = conf_doc_find_node(doc, doc->root, "names.[0]", FALSE);
+  ASSERT_TRUE(node != NULL);
+  ASSERT_EQ(node->node_type, CONF_NODE_ARRAY_UINT8);
+  ASSERT_EQ(node->value_type, CONF_NODE_VALUE_BINARY);
+
+  node = conf_doc_find_node(doc, doc->root, "names.[1]", FALSE);
+  ASSERT_TRUE(node != NULL);
+  ASSERT_EQ(node->node_type, CONF_NODE_ARRAY_UINT8);
+  ASSERT_EQ(node->value_type, CONF_NODE_VALUE_BINARY);
+
+  ASSERT_EQ(conf_doc_set(doc, "names.[0]", value_set_int32(&v, 1)), RET_OK);
+  conf_doc_get(doc, "names.[0]", &v);
+  ASSERT_EQ(v.type, VALUE_TYPE_INT32);
+  ASSERT_EQ(value_int(&v), 1);
+
+  conf_doc_destroy(doc);
+}
+
 static tk_object_t* conf_node_test_object_create(void) {
   tk_object_t* ret = object_default_create();
   tk_object_set_prop_str(ret, "name", "test1");

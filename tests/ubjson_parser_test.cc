@@ -299,6 +299,8 @@ TEST(UBJsonParser, optimized_array_uint8) {
   ASSERT_EQ(tk_object_get_prop_int_by_path(obj, "values.size", 0), 3);
 
   tk_object_unref(obj);
+
+  ubjson_dump(wb.data, wb.cursor);
 }
 TEST(UBJsonParser, optimized_array_int32) {
   uint8_t buff[256];
@@ -327,6 +329,8 @@ TEST(UBJsonParser, optimized_array_int32) {
   ASSERT_EQ(tk_object_get_prop_int_by_path(obj, "values.size", 0), 3);
 
   tk_object_unref(obj);
+
+  ubjson_dump(wb.data, wb.cursor);
 }
 
 TEST(UBJsonParser, optimized_array_float64) {
@@ -366,4 +370,6 @@ TEST(UBJsonParser, optimized_array_float64) {
   ASSERT_STREQ(tk_object_get_prop_str_by_path(obj, "name"), "optimized_array");
 
   tk_object_unref(obj);
+
+  ubjson_dump(wb.data, wb.cursor);
 }

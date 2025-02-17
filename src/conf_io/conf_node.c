@@ -506,6 +506,14 @@ ret_t conf_node_set_value(conf_node_t* node, const value_t* v) {
       }
     }
     TKMEM_FREE(node->value.wstr);
+  } else if (node->value_type == CONF_NODE_VALUE_BINARY) {
+    if (v->type == VALUE_TYPE_BINARY) {
+      if (node->value.binary_data.data == v->value.binary_data.data &&
+          node->value.binary_data.size == v->value.binary_data.size) {
+        return RET_OK;
+      }
+    }
+    TKMEM_FREE(node->value.binary_data.data);
   }
 
   switch (v->type) {
@@ -598,6 +606,21 @@ ret_t conf_node_set_value(conf_node_t* node, const value_t* v) {
       }
       break;
     }
+    case VALUE_TYPE_BINARY: {
+      binary_data_t* bdata = value_binary_data(v);
+      node->value_type = CONF_NODE_VALUE_BINARY;
+      if (bdata == NULL) {
+        node->value.binary_data.data = NULL;
+        node->value.binary_data.size = 0;
+      } else {
+        node->value.binary_data.data = tk_memdup(bdata->data, bdata->size);
+        return_value_if_fail(node->value.binary_data.data != NULL, RET_OOM);
+        node->value.binary_data.size = bdata->size;
+      }
+
+      node->node_type = CONF_NODE_ARRAY_UINT8;
+      return RET_OK;
+    }
     default: {
       return RET_NOT_IMPL;
     }
@@ -669,6 +692,10 @@ ret_t conf_node_get_value(conf_node_t* node, value_t* v) {
     }
     case CONF_NODE_VALUE_SMALL_STR: {
       value_set_str(v, node->value.small_str);
+      break;
+    }
+    case CONF_NODE_VALUE_BINARY: {
+      value_set_binary_data(v, node->value.binary_data.data, node->value.binary_data.size);
       break;
     }
     default: {

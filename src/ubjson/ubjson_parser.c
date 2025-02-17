@@ -371,20 +371,77 @@ tk_object_t* ubjson_to_object(void* data, uint32_t size) {
   return parser.root;
 }
 
+typedef struct {
+  int32_t level;
+  uint32_t optimized_type;
+} dump_ctx_t;
+
+static ret_t ubjson_on_optimized_array_dump(dump_ctx_t* ctx, const char* key, value_t* v) {
+  uint32_t type = ctx->optimized_type;
+  ctx->optimized_type = 0;
+
+  if (type == UBJSON_MARKER_UINT8 || type == UBJSON_MARKER_INT8) {
+    uint8_t* p = v->value.binary_data.data;
+    for (uint32_t i = 0; i < v->value.binary_data.size - 1; i++) {
+      log_debug("0x%02x, ", p[i]);
+    }
+    log_debug("0x%02x", p[v->value.binary_data.size - 1]);
+  } else if (type == UBJSON_MARKER_INT16) {
+    int16_t* p = v->value.binary_data.data;
+    uint32_t count = v->value.binary_data.size / sizeof(int16_t);
+    for (uint32_t i = 0; i < count - 1; i++) {
+      log_debug("0x%04x, ", p[i]);
+    }
+    log_debug("0x%04x", p[count - 1]);
+  } else if (type == UBJSON_MARKER_INT32) {
+    int32_t* p = v->value.binary_data.data;
+    uint32_t count = v->value.binary_data.size / sizeof(int32_t);
+    for (uint32_t i = 0; i < count - 1; i++) {
+      log_debug("0x%08x, ", p[i]);
+    }
+    log_debug("0x%08x", p[count - 1]);
+  } else if (type == UBJSON_MARKER_INT64) {
+    int64_t* p = v->value.binary_data.data;
+    uint32_t count = v->value.binary_data.size / sizeof(int64_t);
+    for (uint32_t i = 0; i < count - 1; i++) {
+      log_debug("0x%016"PRIx64", ", p[i]);
+    }
+    log_debug("0x%016"PRIx64, p[count - 1]);
+  } else if (type == UBJSON_MARKER_FLOAT32) {
+    float* p = v->value.binary_data.data;
+    uint32_t count = v->value.binary_data.size / sizeof(float);
+    for (uint32_t i = 0; i < count - 1; i++) {
+      log_debug("%f, ", p[i]);
+    }
+    log_debug("%f", p[count - 1]);
+  } else if (type == UBJSON_MARKER_FLOAT64) {
+    double* p = v->value.binary_data.data;
+    uint32_t count = v->value.binary_data.size / sizeof(double);
+    for (uint32_t i = 0; i < count - 1; i++) {
+      log_debug("%f, ", p[i]);
+    }
+    log_debug("%f", p[count - 1]);
+  } else {
+    return_value_if_fail(!"invalid format", RET_NOT_IMPL);
+  }
+
+  return RET_OK;
+}
+
 static ret_t ubjson_on_key_value_dump(void* ctx, const char* key, value_t* v) {
   int32_t i = 0;
   ret_t ret = RET_OK;
-  int32_t* level = (int32_t*)ctx;
+  dump_ctx_t* dump_ctx = (dump_ctx_t*)ctx;
 
   if (v->type == VALUE_TYPE_TOKEN) {
     uint32_t token = value_token(v);
 
     if (token == UBJSON_MARKER_OBJECT_END) {
-      *level = *level - 1;
+      dump_ctx->level = dump_ctx->level - 1;
     }
   }
 
-  for (i = 0; i < *level; i++) {
+  for (i = 0; i < dump_ctx->level; i++) {
     log_debug(" ");
   }
 
@@ -397,13 +454,18 @@ static ret_t ubjson_on_key_value_dump(void* ctx, const char* key, value_t* v) {
 
     if (token == UBJSON_MARKER_OBJECT_BEGIN) {
       log_debug("{\n");
-      *level = *level + 1;
+      dump_ctx->level = dump_ctx->level + 1;
     } else if (token == UBJSON_MARKER_OBJECT_END) {
       log_debug("},\n");
     } else if (token == UBJSON_MARKER_ARRAY_BEGIN) {
       log_debug("[");
     } else if (token == UBJSON_MARKER_ARRAY_END) {
       log_debug("],\n");
+    } else if (token == UBJSON_MARKER_UINT8 || token == UBJSON_MARKER_INT8 ||
+               token == UBJSON_MARKER_INT16 || token == UBJSON_MARKER_INT32 ||
+               token == UBJSON_MARKER_INT64 || token == UBJSON_MARKER_FLOAT32 ||
+               token == UBJSON_MARKER_FLOAT64) {
+      dump_ctx->optimized_type = token;
     } else {
       assert(!"not supported");
       ret = RET_NOT_IMPL;
@@ -420,13 +482,21 @@ static ret_t ubjson_on_key_value_dump(void* ctx, const char* key, value_t* v) {
     } else if (v->type == VALUE_TYPE_POINTER) {
       log_debug("\"%p\"", value_pointer(v));
     } else if (v->type == VALUE_TYPE_BINARY) {
-      uint32_t i = 0;
-      binary_data_t* data = value_binary_data(v);
-      log_debug("{");
-      for (i = 0; i < data->size - 1; i++) {
-        log_debug("0x%02x, ", ((uint8_t*)data->data)[i]);
+      if (dump_ctx->optimized_type != 0) {
+        ubjson_on_optimized_array_dump(dump_ctx, key, v);
+        log_debug("],\n");
+        return ret;
+      } else {
+        uint32_t i = 0;
+        binary_data_t* data = value_binary_data(v);
+
+        log_debug("{");
+        for (i = 0; i < data->size - 1; i++) {
+          log_debug("0x%02x, ", ((uint8_t*)data->data)[i]);
+        }
+        log_debug("0x%02x}", ((uint8_t*)data->data)[i]);
       }
-      log_debug("0x%02x}", ((uint8_t*)data->data)[i]);
+
     } else {
       log_debug("%d", value_int(v));
     }
@@ -453,7 +523,7 @@ ret_t ubjson_parse(void* data, uint32_t size, ubjson_on_key_value_t on_key_value
 }
 
 ret_t ubjson_dump(void* data, uint32_t size) {
-  int32_t level = 0;
+  dump_ctx_t ctx = {0};
 
-  return ubjson_parse(data, size, ubjson_on_key_value_dump, &level);
+  return ubjson_parse(data, size, ubjson_on_key_value_dump, &ctx);
 }

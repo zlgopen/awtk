@@ -499,6 +499,11 @@ typedef enum _conf_node_type_t {
    */
   CONF_NODE_ARRAY,
   /**
+   * @const CONF_NODE_ARRAY_UINT8
+   * uint8_t 类型的数组节点。
+   */
+  CONF_NODE_ARRAY_UINT8,
+  /**
    * @const CONF_NODE_SIMPLE
    * 简单节点。
    */
@@ -592,6 +597,11 @@ typedef enum _conf_node_value_t {
    */
   CONF_NODE_VALUE_SMALL_STR,
   /**
+   * @const CONF_NODE_VALUE_BINARY
+   * 二进制数据类型。
+   */
+  CONF_NODE_VALUE_BINARY,
+  /**
    * @const CONF_NODE_VALUE_NODE
    * 节点类型。
    */
@@ -650,6 +660,7 @@ struct _conf_node_t {
     wchar_t* wstr;
     char small_str[8];
     conf_node_t* first_child;
+    binary_data_t binary_data;
   } value;
 };
 
