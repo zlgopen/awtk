@@ -60,7 +60,7 @@ static ret_t list_view_get_prop(widget_t* widget, const char* name, value_t* v) 
 
 static ret_t list_view_on_pointer_up(list_view_t* list_view, pointer_event_t* e) {
   scroll_bar_t* scroll_bar = (scroll_bar_t*)list_view->scroll_bar;
-  if (scroll_bar != NULL && scroll_bar->wa_opactiy == NULL && list_view->scroll_bar->visible &&
+  if (scroll_bar != NULL && scroll_bar->wa_opacity == NULL && list_view->scroll_bar->visible &&
       scroll_bar_is_mobile(list_view->scroll_bar)) {
     scroll_bar_hide_by_opacity_animation(list_view->scroll_bar,
                                          LIST_VIEW_FLOATING_SCROLL_BAR_HIDE_TIME,
@@ -98,7 +98,7 @@ static ret_t list_view_handle_wheel_event(list_view_t* list_view, event_t* e) {
   return RET_STOP;
 }
 
-static bool_t list_view_is_play_auto_hide_scroll_bar_animtion(list_view_t* list_view) {
+static bool_t list_view_is_play_auto_hide_scroll_bar_animation(list_view_t* list_view) {
   scroll_view_t* scroll_view = NULL;
   return_value_if_fail(list_view != NULL && list_view->scroll_view != NULL, FALSE);
 
@@ -116,7 +116,7 @@ static bool_t list_view_is_play_auto_hide_scroll_bar_animtion(list_view_t* list_
 static ret_t list_view_on_pointer_leave(list_view_t* list_view) {
   return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
   list_view->is_over = FALSE;
-  if (list_view_is_play_auto_hide_scroll_bar_animtion(list_view)) {
+  if (list_view_is_play_auto_hide_scroll_bar_animation(list_view)) {
     scroll_bar_hide_by_opacity_animation(list_view->scroll_bar,
                                          LIST_VIEW_FLOATING_SCROLL_BAR_HIDE_TIME, 0);
   }
@@ -126,7 +126,7 @@ static ret_t list_view_on_pointer_leave(list_view_t* list_view) {
 static ret_t list_view_on_pointer_enter(list_view_t* list_view) {
   return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
   list_view->is_over = TRUE;
-  if (list_view_is_play_auto_hide_scroll_bar_animtion(list_view)) {
+  if (list_view_is_play_auto_hide_scroll_bar_animation(list_view)) {
     scroll_bar_show_by_opacity_animation(list_view->scroll_bar,
                                          LIST_VIEW_FLOATING_SCROLL_BAR_SHOW_TIME, 0);
   }

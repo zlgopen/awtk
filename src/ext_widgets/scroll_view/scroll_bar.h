@@ -124,7 +124,7 @@ typedef struct _scroll_bar_t {
   bool_t user_wheel_scroll;
   widget_t* dragger;
   widget_animator_t* wa_value;
-  widget_animator_t* wa_opactiy;
+  widget_animator_t* wa_opacity;
 
   uint32_t wheel_before_id;
 } scroll_bar_t;

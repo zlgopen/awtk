@@ -601,7 +601,7 @@ static ret_t slide_indicator_on_animate_end(void* ctx, event_t* e) {
   slide_indicator_t* slide_indicator = SLIDE_INDICATOR(widget);
   return_value_if_fail(widget != NULL && slide_indicator != NULL, RET_REMOVE);
 
-  slide_indicator->wa_opactiy = NULL;
+  slide_indicator->wa_opacity = NULL;
   widget_set_visible(widget, FALSE, FALSE);
   widget_set_opacity(widget, 0xff);
   return RET_REMOVE;
@@ -611,19 +611,19 @@ static ret_t slide_indicator_set_visible(widget_t* widget, bool_t visible) {
   slide_indicator_t* slide_indicator = SLIDE_INDICATOR(widget);
   return_value_if_fail(widget != NULL && slide_indicator != NULL, RET_REMOVE);
 
-  if (slide_indicator->wa_opactiy != NULL) {
-    widget_animator_destroy(slide_indicator->wa_opactiy);
-    slide_indicator->wa_opactiy = NULL;
+  if (slide_indicator->wa_opacity != NULL) {
+    widget_animator_destroy(slide_indicator->wa_opacity);
+    slide_indicator->wa_opacity = NULL;
   }
 
   if (!visible && slide_indicator->auto_hide) {
-    slide_indicator->wa_opactiy = widget_animator_opacity_create(
+    slide_indicator->wa_opacity = widget_animator_opacity_create(
         widget, SLIDE_INDICATOR_HIDE_ANIMATOR_TIME, 0, EASING_SIN_INOUT);
-    widget_animator_on(slide_indicator->wa_opactiy, EVT_ANIM_END, slide_indicator_on_animate_end,
+    widget_animator_on(slide_indicator->wa_opacity, EVT_ANIM_END, slide_indicator_on_animate_end,
                        slide_indicator);
-    widget_animator_opacity_set_params(slide_indicator->wa_opactiy, 0xff, 0);
+    widget_animator_opacity_set_params(slide_indicator->wa_opacity, 0xff, 0);
     widget_set_opacity(widget, 0xff);
-    widget_animator_start(slide_indicator->wa_opactiy);
+    widget_animator_start(slide_indicator->wa_opacity);
   } else {
     if (visible) {
       widget_set_opacity(widget, 0xff);
@@ -773,7 +773,7 @@ static ret_t slide_indicator_set_indicated_widget(widget_t* widget, widget_t* ta
 
   if (widget_get_prop(target, WIDGET_PROP_PAGE_MAX_NUMBER, &v) == RET_OK) {
     slide_indicator->max = value_uint32(&v);
-    slide_indicator->chilren_indicated = TRUE;
+    slide_indicator->children_indicated = TRUE;
   }
 
   if (widget_get_prop(target, WIDGET_PROP_CURR_PAGE, &v) != RET_OK) {
@@ -799,7 +799,7 @@ ret_t slide_indicator_on_paint_begin(widget_t* widget, canvas_t* c) {
   slide_indicator_t* slide_indicator = SLIDE_INDICATOR(widget);
   return_value_if_fail(widget != NULL && slide_indicator != NULL, RET_BAD_PARAMS);
 
-  if (slide_indicator->chilren_indicated) {
+  if (slide_indicator->children_indicated) {
     if (widget_get_prop(slide_indicator->indicated_widget, WIDGET_PROP_PAGE_MAX_NUMBER, &v) ==
         RET_OK) {
       slide_indicator->max = value_uint32(&v);
@@ -903,7 +903,7 @@ ret_t slide_indicator_on_idle_chech_hide(const idle_info_t* idle) {
     return RET_OK;
   }
   if (slide_indicator->last_move_point_time + slide_indicator->auto_hide < curr_time) {
-    if (slide_indicator->wa_opactiy == NULL && widget->visible) {
+    if (slide_indicator->wa_opacity == NULL && widget->visible) {
       slide_indicator_set_visible(widget, FALSE);
     }
   }
@@ -974,8 +974,8 @@ widget_t* slide_indicator_create_internal(widget_t* parent, xy_t x, xy_t y, wh_t
   slide_indicator->margin = 0;
   slide_indicator->spacing = 16;
   slide_indicator->size = 8;
-  slide_indicator->wa_opactiy = NULL;
-  slide_indicator->chilren_indicated = FALSE;
+  slide_indicator->wa_opacity = NULL;
+  slide_indicator->children_indicated = FALSE;
   slide_indicator->reset_icon_rect_list = FALSE;
   slide_indicator->check_hide_idle = TK_INVALID_ID;
 
@@ -1056,7 +1056,7 @@ ret_t slide_indicator_set_max(widget_t* widget, uint32_t max) {
   return_value_if_fail(slide_indicator != NULL, RET_BAD_PARAMS);
 
   slide_indicator->max = max;
-  slide_indicator->chilren_indicated = FALSE;
+  slide_indicator->children_indicated = FALSE;
   slide_indicator->reset_icon_rect_list = TRUE;
   return widget_invalidate(widget, NULL);
 }

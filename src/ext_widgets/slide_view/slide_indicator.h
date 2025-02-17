@@ -181,11 +181,11 @@ typedef struct _slide_indicator_t {
 
   /*private*/
   uint8_t pressed : 1;
-  uint8_t chilren_indicated : 1;
+  uint8_t children_indicated : 1;
   bool_t reset_icon_rect_list;
   bool_t loop;
   bool_t is_value_changing;
-  widget_animator_t* wa_opactiy;
+  widget_animator_t* wa_opacity;
   widget_t* indicated_widget;
   uint64_t last_move_point_time;
   point_t last_move_point;
