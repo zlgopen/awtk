@@ -602,7 +602,7 @@ static ret_t lcd_mem_flush(lcd_t* lcd) {
   const dirty_rects_t* dirty_rects;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   system_info_t* info = system_info();
-  uint8_t* fb = lcd_mem_get_offline_fb(mem);
+  uint8_t* fb = lcd_mem_get_online_fb(mem);
   lcd_orientation_t o = info->lcd_orientation;
 
   lcd_mem_init_drawing_fb(lcd, &offline_fb);
@@ -649,6 +649,7 @@ static ret_t lcd_mem_flush(lcd_t* lcd) {
       }
     }
   }
+  lcd_fb_dirty_rects_reset_dirty_rects_by_fb(&(mem->fb_dirty_rects_list), fb);
   return RET_OK;
 }
 
