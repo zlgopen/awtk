@@ -37,6 +37,7 @@ BEGIN_C_DECLS
 
 #define EDIT_SUGGEST_WORDS_WINDOW_DEFAULT_MARGIN 1
 #define EDIT_SUGGEST_WORDS_WINDOW_DEFAULT_MAXNR 5
+#define EDIT_SUGGEST_WORDS_SCROLL_BAR_DEFAULT_WH 12
 
 static ret_t edit_ex_suggest_words_popup_on_open(void* ctx, event_t* e) {
   edit_ex_t* edit_ex = EDIT_EX(ctx);
@@ -78,10 +79,11 @@ static widget_t* edit_ex_create_suggest_words_popup(widget_t* widget) {
   tk_object_t* obj_props = NULL;
   return_value_if_fail(edit_ex != NULL, NULL);
 
-  w = widget->w;
+  w = tk_max_int(widget->w, tk_object_get_prop_int(
+                                edit_ex->suggest_words_ui_props,
+                                EDIT_EX_SUGGEST_WORDS_UI_NAME_POPUP "." WIDGET_PROP_MIN_W, 0));
   item_height = widget->h;
   win = popup_create(NULL, 0, 0, w, h);
-  widget_set_name(win, EDIT_EX_SUGGEST_WORDS_UI_NAME_POPUP);
   applet_name = widget_get_prop_str(win, WIDGET_PROP_APPLET_NAME, NULL);
   widget_set_prop_str(win, WIDGET_PROP_APPLET_NAME, applet_name);
 
@@ -94,17 +96,20 @@ static widget_t* edit_ex_create_suggest_words_popup(widget_t* widget) {
   widget_set_prop_str(win, WIDGET_PROP_MOVE_FOCUS_PREV_KEY, "up");
   widget_set_prop_str(win, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, "down");
 
+  widget_set_name(win, EDIT_EX_SUGGEST_WORDS_UI_NAME_POPUP);
   obj_props = tk_object_get_prop_object(edit_ex->suggest_words_ui_props, win->name);
   tk_object_foreach_prop(obj_props, edit_ex_widget_set_prop_by_object_on_visit, win);
 
   { /* children */
     char param[128] = {'\0'};
     widget_t* list_view = NULL;
+    widget_t* hbar = NULL;
     widget_t* vbar = NULL;
     widget_t* scroll_view = NULL;
+    int32_t hbar_h = 0;
+    int32_t vbar_w = 0;
     // create list view
     list_view = list_view_create(win, 0, 0, 0, 0);
-    widget_set_name(list_view, EDIT_EX_SUGGEST_WORDS_UI_NAME_LIST_VIEW);
     widget_set_prop_int(list_view, WIDGET_PROP_ITEM_HEIGHT, item_height);
     widget_set_prop_bool(list_view, WIDGET_PROP_AUTO_HIDE_SCROLL_BAR, TRUE);
 
@@ -114,24 +119,50 @@ static widget_t* edit_ex_create_suggest_words_popup(widget_t* widget) {
                 -2 * EDIT_SUGGEST_WORDS_WINDOW_DEFAULT_MARGIN);
     widget_set_self_layout(list_view, param);
 
+    widget_set_name(list_view, EDIT_EX_SUGGEST_WORDS_UI_NAME_LIST_VIEW);
     obj_props = tk_object_get_prop_object(edit_ex->suggest_words_ui_props, list_view->name);
     tk_object_foreach_prop(obj_props, edit_ex_widget_set_prop_by_object_on_visit, list_view);
-    // create vbar
-    vbar = scroll_bar_create(list_view, 0, 0, 12, 0);
-    widget_set_name(vbar, EDIT_EX_SUGGEST_WORDS_UI_NAME_VBAR);
+    // create hbar
+    if (w < tk_object_get_prop_int(
+                edit_ex->suggest_words_ui_props,
+                EDIT_EX_SUGGEST_WORDS_UI_NAME_LIST_VIEW "." WIDGET_PROP_ITEM_WIDTH, w)) {
+      hbar = scroll_bar_create(list_view, 0, 0, -EDIT_SUGGEST_WORDS_SCROLL_BAR_DEFAULT_WH,
+                               EDIT_SUGGEST_WORDS_SCROLL_BAR_DEFAULT_WH);
 
-    tk_snprintf(param, sizeof(param) - 1, "default(x=r,y=0,w=%d,h=100%%)", vbar->w);
+      tk_snprintf(param, sizeof(param) - 1, "default(x=0,y=b,w=%d,h=%d)", hbar->w, hbar->h);
+      widget_set_self_layout(hbar, param);
+
+      widget_set_name(hbar, EDIT_EX_SUGGEST_WORDS_UI_NAME_HBAR);
+      obj_props = tk_object_get_prop_object(edit_ex->suggest_words_ui_props, hbar->name);
+      tk_object_foreach_prop(obj_props, edit_ex_widget_set_prop_by_object_on_visit, hbar);
+      hbar_h = widget_get_prop_int(hbar, WIDGET_PROP_LAYOUT_H, hbar->h);
+    }
+    // create vbar
+    if (hbar != NULL) {
+      vbar = scroll_bar_create(list_view, 0, 0, hbar_h, -hbar_h);
+      tk_snprintf(param, sizeof(param) - 1, "default(x=r,y=0,w=%d,h=%d)", vbar->w, vbar->h);
+    } else {
+      vbar = scroll_bar_create(list_view, 0, 0, EDIT_SUGGEST_WORDS_SCROLL_BAR_DEFAULT_WH, 0);
+      tk_snprintf(param, sizeof(param) - 1, "default(x=r,y=0,w=%d,h=100%%)", vbar->w);
+    }
     widget_set_self_layout(vbar, param);
 
+    widget_set_name(vbar, EDIT_EX_SUGGEST_WORDS_UI_NAME_VBAR);
     obj_props = tk_object_get_prop_object(edit_ex->suggest_words_ui_props, vbar->name);
     tk_object_foreach_prop(obj_props, edit_ex_widget_set_prop_by_object_on_visit, vbar);
+    vbar_w = widget_get_prop_int(vbar, WIDGET_PROP_LAYOUT_W, vbar->w);
     // create scroll view
-    scroll_view = scroll_view_create(list_view, 0, 0, -vbar->w, 0);
-    widget_set_name(scroll_view, EDIT_EX_SUGGEST_WORDS_UI_NAME_SCROLL_VIEW);
-
-    tk_snprintf(param, sizeof(param) - 1, "default(x=0,y=0,w=%d,h=100%%)", scroll_view->w);
+    if (hbar != NULL) {
+      scroll_view = scroll_view_create(list_view, 0, 0, -vbar_w, -hbar_h);
+      tk_snprintf(param, sizeof(param) - 1, "default(x=0,y=0,w=%d,h=%d)", scroll_view->w,
+                  scroll_view->h);
+    } else {
+      scroll_view = scroll_view_create(list_view, 0, 0, -vbar_w, 0);
+      tk_snprintf(param, sizeof(param) - 1, "default(x=0,y=0,w=%d,h=100%%)", scroll_view->w);
+    }
     widget_set_self_layout(scroll_view, param);
 
+    widget_set_name(scroll_view, EDIT_EX_SUGGEST_WORDS_UI_NAME_SCROLL_VIEW);
     obj_props = tk_object_get_prop_object(edit_ex->suggest_words_ui_props, scroll_view->name);
     tk_object_foreach_prop(obj_props, edit_ex_widget_set_prop_by_object_on_visit, scroll_view);
   }
@@ -257,6 +288,7 @@ static ret_t edit_ex_update_suggest_words_popup(widget_t* widget) {
   int32_t h = 2 * EDIT_SUGGEST_WORDS_WINDOW_DEFAULT_MARGIN;
   int32_t nr = 0;
   int32_t item_height = 0;
+  widget_t* hbar = NULL;
   edit_ex_t* edit_ex = EDIT_EX(widget);
   edit_ex_update_suggest_words_popup_ctx_t update_ctx = {
       .edit_ex = edit_ex,
@@ -273,6 +305,9 @@ static ret_t edit_ex_update_suggest_words_popup(widget_t* widget) {
       widget_lookup(edit_ex->suggest_words_popup, EDIT_EX_SUGGEST_WORDS_UI_NAME_SCROLL_VIEW, TRUE);
   return_value_if_fail(update_ctx.scroll_view != NULL, RET_FAIL);
 
+  w = tk_max_int(widget->w,
+                 widget_get_prop_int(edit_ex->suggest_words_popup, WIDGET_PROP_MIN_W, 0));
+
   item_height = widget_get_prop_int(update_ctx.list_view, WIDGET_PROP_ITEM_HEIGHT, widget->h);
   nr = tk_object_get_prop_int(edit_ex->suggest_words, TK_OBJECT_PROP_SIZE, 0);
   if (nr <= EDIT_SUGGEST_WORDS_WINDOW_DEFAULT_MAXNR) {
@@ -281,8 +316,10 @@ static ret_t edit_ex_update_suggest_words_popup(widget_t* widget) {
     h = EDIT_SUGGEST_WORDS_WINDOW_DEFAULT_MAXNR * item_height +
         2 * EDIT_SUGGEST_WORDS_WINDOW_DEFAULT_MARGIN;
   }
-  w = tk_max_int(widget->w,
-                 widget_get_prop_int(edit_ex->suggest_words_popup, WIDGET_PROP_MIN_W, 0));
+  hbar = widget_lookup(edit_ex->suggest_words_popup, EDIT_EX_SUGGEST_WORDS_UI_NAME_HBAR, TRUE);
+  if (hbar != NULL) {
+    h += widget_get_prop_int(hbar, WIDGET_PROP_LAYOUT_H, hbar->h);
+  }
 
   tk_object_foreach_prop(edit_ex->suggest_words, edit_ex_update_suggest_words_popup_on_visit,
                          &update_ctx);

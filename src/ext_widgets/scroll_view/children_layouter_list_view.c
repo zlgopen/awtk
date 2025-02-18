@@ -553,8 +553,12 @@ static ret_t children_layouter_list_view_for_list_view_layout(children_layouter_
   default_item_height =
       list_view->default_item_height ? list_view->default_item_height : l->default_item_height;
 
+  scroll_bar = children_layouter_list_view_get_scroll_bar(list_view, FALSE);
+  scroll_bar_h = children_layouter_list_view_get_scroll_bar(list_view, TRUE);
+
   if (widget->children != NULL) {
     int32_t scroll_view_w = 0;
+    int32_t scroll_view_h = widget->h;
     darray_t children_for_layout;
     uint32_t cols = l->cols <= 1 ? 1 : l->cols;
 
@@ -573,8 +577,14 @@ static ret_t children_layouter_list_view_for_list_view_layout(children_layouter_
     scroll_view_w =
         children_layouter_list_view_for_list_view_get_scroll_view_w(list_view, widget, virtual_h);
 
-    widget_move_resize_ex(widget, widget->x, widget->y, scroll_view_w, widget->h, FALSE);
-    virtual_w = tk_max(list_view->item_width, widget->w);
+    virtual_w = tk_max(list_view->item_width, scroll_view_w);
+    if (scroll_bar_h != NULL) {
+      if (virtual_w == scroll_view_w) {
+        scroll_view_h = widget->h + scroll_bar_h->h;
+      }
+    }
+
+    widget_move_resize_ex(widget, widget->x, widget->y, scroll_view_w, scroll_view_h, FALSE);
     children_layouter_list_view_for_list_view_children_layout_w(layouter, &children_for_layout,
                                                                 virtual_w);
 
@@ -582,8 +592,7 @@ static ret_t children_layouter_list_view_for_list_view_layout(children_layouter_
   }
 
   virtual_w = tk_max(list_view->item_width, widget->w);
-  scroll_bar = children_layouter_list_view_get_scroll_bar(list_view, FALSE);
-  scroll_bar_h = children_layouter_list_view_get_scroll_bar(list_view, TRUE);
+
   children_layouter_list_view_for_list_view_set_scroll_view_info(
       layouter, widget, scroll_bar, virtual_h, scroll_bar_h, virtual_w);
 

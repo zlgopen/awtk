@@ -196,6 +196,13 @@ static ret_t list_view_on_event(widget_t* widget, event_t* e) {
             uint32_t item_height = tk_max(list_view->item_height, list_view->default_item_height);
             scroll_view_scroll_delta_to(list_view->scroll_view, 0, item_height, TK_ANIMATING_TIME);
             ret = RET_STOP;
+          } else if (evt->key == TK_KEY_LEFT) {
+            scroll_view_scroll_delta_to(list_view->scroll_view, -30, 0, TK_ANIMATING_TIME);
+            ret = RET_STOP;
+          } else if (evt->key == TK_KEY_RIGHT) {
+            uint32_t item_height = tk_max(list_view->item_height, list_view->default_item_height);
+            scroll_view_scroll_delta_to(list_view->scroll_view, 30, 0, TK_ANIMATING_TIME);
+            ret = RET_STOP;
           }
         }
       }
@@ -259,7 +266,7 @@ static ret_t list_view_on_scroll_bar_value_changed(void* ctx, event_t* e) {
   return_value_if_fail(list_view != NULL && scroll_bar != NULL, RET_REMOVE);
 
   offset = scroll_bar_to_scroll_view(list_view, scroll_bar, scroll_bar->value);
-  if (widget_get_prop_bool(scroll_bar, SCROLL_BAR_PROP_IS_HORIZON, FALSE)) {
+  if (widget_get_prop_bool(WIDGET(scroll_bar), SCROLL_BAR_PROP_IS_HORIZON, FALSE)) {
     scroll_view_set_offset(list_view->scroll_view, offset,
                            SCROLL_VIEW(list_view->scroll_view)->yoffset);
   } else {
@@ -330,19 +337,24 @@ static ret_t list_view_on_scroll_view_scroll(widget_t* widget, int32_t xoffset, 
 
 static ret_t list_view_on_scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end,
                                                 int32_t yoffset_end, int32_t duration) {
-  int32_t value = 0;
+  uint32_t i = 0;
   list_view_t* list_view = LIST_VIEW(widget->parent);
   return_value_if_fail(widget != NULL && list_view != NULL, RET_BAD_PARAMS);
 
-  if (widget_get_prop_bool(widget, SCROLL_BAR_PROP_IS_HORIZON, FALSE)) {
-    value = scroll_view_to_h_scroll_bar(list_view, SCROLL_BAR(widget), xoffset_end);
-  } else {
-    value = scroll_view_to_v_scroll_bar(list_view, SCROLL_BAR(widget), yoffset_end);
+  for (i = 0; i < ARRAY_SIZE(list_view->scroll_bars); i++) {
+    widget_t* scroll_bar = list_view->scroll_bars[i];
+    if (scroll_bar != NULL) {
+      int32_t value = 0;
+      if (widget_get_prop_bool(scroll_bar, SCROLL_BAR_PROP_IS_HORIZON, FALSE)) {
+        value = scroll_view_to_h_scroll_bar(list_view, SCROLL_BAR(scroll_bar), xoffset_end);
+      } else {
+        value = scroll_view_to_v_scroll_bar(list_view, SCROLL_BAR(scroll_bar), yoffset_end);
+      }
+      emitter_disable(scroll_bar->emitter);
+      scroll_bar_scroll_to(scroll_bar, value, duration);
+      emitter_enable(scroll_bar->emitter);
+    }
   }
-
-  emitter_disable(widget->emitter);
-  scroll_bar_scroll_to(widget, value, duration);
-  emitter_enable(widget->emitter);
 
   return RET_OK;
 }

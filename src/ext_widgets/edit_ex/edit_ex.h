@@ -104,6 +104,7 @@ widget_t* edit_ex_cast(widget_t* widget);
 #define EDIT_EX_SUGGEST_WORDS_UI_NAME_POPUP "popup"
 #define EDIT_EX_SUGGEST_WORDS_UI_NAME_LIST_VIEW "list_view"
 #define EDIT_EX_SUGGEST_WORDS_UI_NAME_VBAR "vbar"
+#define EDIT_EX_SUGGEST_WORDS_UI_NAME_HBAR "hbar"
 #define EDIT_EX_SUGGEST_WORDS_UI_NAME_SCROLL_VIEW "scroll_view"
 
 /**

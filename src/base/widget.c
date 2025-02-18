@@ -2362,11 +2362,33 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
   /*default*/
   if (ret == RET_NOT_FOUND) {
     if (tk_str_eq(name, WIDGET_PROP_LAYOUT_W)) {
-      value_set_int32(v, widget->w);
-      ret = RET_OK;
+      if (widget->self_layout != NULL) {
+        w_attr_t w_attr = self_layouter_get_param_int(widget->self_layout, "w_attr", W_ATTR_UNDEF);
+        if (W_ATTR_PIXEL == w_attr) {
+          ret = self_layouter_get_param(widget->self_layout, "w", v);
+          if (value_int(v) < 0) {
+            ret = RET_CONTINUE;
+          }
+        }
+      }
+      if (RET_OK != ret) {
+        value_set_int32(v, widget->w);
+        ret = RET_OK;
+      }
     } else if (tk_str_eq(name, WIDGET_PROP_LAYOUT_H)) {
-      value_set_int32(v, widget->h);
-      ret = RET_OK;
+      if (widget->self_layout != NULL) {
+        h_attr_t h_attr = self_layouter_get_param_int(widget->self_layout, "h_attr", H_ATTR_UNDEF);
+        if (H_ATTR_PIXEL == h_attr) {
+          ret = self_layouter_get_param(widget->self_layout, "h", v);
+          if (value_int(v) < 0) {
+            ret = RET_CONTINUE;
+          }
+        }
+      }
+      if (RET_OK != ret) {
+        value_set_int32(v, widget->h);
+        ret = RET_OK;
+      }
     } else if (tk_str_eq(name, WIDGET_PROP_TR_TEXT)) {
       value_set_str(v, widget->tr_text);
       ret = RET_OK;
@@ -3961,7 +3983,7 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent) {
   widget_copy(clone, widget);
   widget_dispatch_simple_event(clone, EVT_WIDGET_LOAD);
   clone->loading = FALSE;
-  
+
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   if (iter->auto_created != TRUE) {
     widget_clone(iter, clone);
@@ -4189,17 +4211,18 @@ static ret_t widget_ensure_visible_in_scroll_view(widget_t* scroll_view, widget_
 
   func(&r, ox, oy, scroll_view->w, scroll_view->h, &ox, &oy);
 
-  if (widget_get_prop(scroll_view, WIDGET_PROP_VIRTUAL_W, &v) == RET_OK) {
-    ox = tk_min(ox, value_uint32(&v) - scroll_view->w);
+  if (!tk_str_eq(widget_get_type(scroll_view->parent), WIDGET_TYPE_LIST_VIEW)) {
+    if (widget_get_prop(scroll_view, WIDGET_PROP_VIRTUAL_W, &v) == RET_OK) {
+      ox = tk_min(ox, value_uint32(&v) - scroll_view->w);
+    }
+    if (ox != old_ox) {
+      widget_set_prop_int(scroll_view, WIDGET_PROP_XOFFSET, ox);
+    }
   }
+
   if (widget_get_prop(scroll_view, WIDGET_PROP_VIRTUAL_H, &v) == RET_OK) {
     oy = tk_min(oy, value_uint32(&v) - scroll_view->h);
   }
-
-  if (ox != old_ox) {
-    widget_set_prop_int(scroll_view, WIDGET_PROP_XOFFSET, ox);
-  }
-
   if (oy != old_oy) {
     widget_set_prop_int(scroll_view, WIDGET_PROP_YOFFSET, oy);
   }

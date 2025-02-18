@@ -132,9 +132,8 @@ static ret_t edit_ex_on_destroy(widget_t* widget) {
 static ret_t edit_ex_init(widget_t* widget) {
   uint32_t i = 0;
   const char* suggest_words_ui_prop_names[] = {
-      EDIT_EX_SUGGEST_WORDS_UI_NAME_POPUP,
-      EDIT_EX_SUGGEST_WORDS_UI_NAME_LIST_VIEW,
-      EDIT_EX_SUGGEST_WORDS_UI_NAME_VBAR,
+      EDIT_EX_SUGGEST_WORDS_UI_NAME_POPUP,       EDIT_EX_SUGGEST_WORDS_UI_NAME_LIST_VIEW,
+      EDIT_EX_SUGGEST_WORDS_UI_NAME_VBAR,        EDIT_EX_SUGGEST_WORDS_UI_NAME_HBAR,
       EDIT_EX_SUGGEST_WORDS_UI_NAME_SCROLL_VIEW,
   };
   edit_ex_t* edit_ex = EDIT_EX(widget);
