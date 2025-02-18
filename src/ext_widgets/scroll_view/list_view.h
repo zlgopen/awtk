@@ -114,10 +114,17 @@ typedef struct _list_view_t {
    */
   bool_t floating_scroll_bar;
 
+  /**
+   * @property {int32_t} item_width
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 列表项的宽度。如果 item_width > 0，所有列表项使用该宽度，否则使用让列表项的宽度等于scroll_view的宽度。
+   */
+  int32_t item_width;
+
   /*private*/
   bool_t is_over;
   widget_t* scroll_view;
-  widget_t* scroll_bar;
+  widget_t* scroll_bars[2];
 } list_view_t;
 
 /**
