@@ -357,6 +357,28 @@ TEST(UBJsonWriter, kv_wstring_len) {
   ASSERT_EQ(wb.cursor, 7u);
 }
 
+TEST(UBJsonWriter, optimized_array) {
+  uint8_t buff[256];
+  uint8_t data[] = {1, 2, 3};
+  wbuffer_t wb;
+  ubjson_writer_t ub;
+  wbuffer_init(&wb, buff, sizeof(buff));
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+
+  ASSERT_EQ(ubjson_writer_write_object_begin(&ub), RET_OK);
+  ASSERT_EQ(ubjson_writer_write_kv_int(&ub, "opr", 1), RET_OK);
+  ASSERT_EQ(ubjson_writer_write_kv_str(&ub, "name", "tom"), RET_OK);
+  ASSERT_EQ(ubjson_writer_write_key(&ub, "datas"), RET_OK);
+  ASSERT_EQ(ubjson_writer_write_array_uint8(&ub, data, ARRAY_SIZE(data)), RET_OK);
+  ASSERT_EQ(ubjson_writer_write_object_end(&ub), RET_OK);
+
+  uint8_t ubjdata[] = {0x7b, 0x69, 0x3,  0x6f, 0x70, 0x72, 0x69, 0x1,  0x69, 0x4,  0x6e, 0x61, 0x6d,
+                       0x65, 0x53, 0x69, 0x3,  0x74, 0x6f, 0x6d, 0x69, 0x5,  0x64, 0x61, 0x74, 0x61,
+                       0x73, 0x5b, 0x24, 0x55, 0x23, 0x69, 0x3,  0x1,  0x2,  0x3,  0x7d};
+  ASSERT_EQ(wb.cursor, sizeof(ubjdata));
+  ASSERT_EQ(memcmp(buff, ubjdata, sizeof(ubjdata)), 0);
+}
+
 TEST(UBJsonWriter, optimized_array_uint8) {
   uint8_t buff[256];
   uint8_t data[120];

@@ -272,6 +272,27 @@ TEST(UBJsonParser, ubjson_writer_write_kv_value) {
   tk_object_unref(obj);
 }
 
+TEST(UBJsonParser, optimized_array) {
+  uint8_t buff[256];
+  uint8_t data[] = {0x7b, 0x55, 0x3,  0x6f, 0x70, 0x72, 0x55, 0x1,  0x55, 0x4,  0x6e, 0x61, 0x6d,
+                    0x65, 0x53, 0x55, 0x3,  0x74, 0x6f, 0x6d, 0x55, 0x5,  0x64, 0x61, 0x74, 0x61,
+                    0x73, 0x5b, 0x24, 0x55, 0x23, 0x55, 0x3,  0x1,  0x2,  0x3,  0x7d};
+  value_t v;
+  tk_object_t* obj = NULL;
+
+  ubjson_dump(data, sizeof(data));
+
+  obj = object_from_ubjson(data, sizeof(data));
+
+  ASSERT_EQ(tk_object_get_prop_int(obj, "opr", 0), 1);
+  ASSERT_STREQ(tk_object_get_prop_str(obj, "name"), "tom");
+  ASSERT_EQ(tk_object_get_prop_int_by_path(obj, "datas.[0]", -1), 1);
+  ASSERT_EQ(tk_object_get_prop_int_by_path(obj, "datas.[1]", -1), 2);
+  ASSERT_EQ(tk_object_get_prop_int_by_path(obj, "datas.[2]", -1), 3);
+
+  tk_object_unref(obj);
+}
+
 TEST(UBJsonParser, optimized_array_uint8) {
   uint8_t buff[256];
   uint8_t data[] = {100, 200, 255};
@@ -302,6 +323,7 @@ TEST(UBJsonParser, optimized_array_uint8) {
 
   ubjson_dump(wb.data, wb.cursor);
 }
+
 TEST(UBJsonParser, optimized_array_int32) {
   uint8_t buff[256];
   int32_t data[] = {100, 200, 300};
