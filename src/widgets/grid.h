@@ -64,7 +64,7 @@ typedef struct _grid_t {
    * 各列的参数。
    * 各列的参数之间用英文的分号(;)分隔，每列参数的格式为：
    *
-   * col(w=?,left_margin=?,right_margin=?,top_maorgin=?,bottom_margin=?)
+   * col(w=?,left_margin=?,right_margin=?,top_margin=?,bottom_margin=?)
    *
    * * w 为列的宽度（必须存在）。取值在 (0-1] 区间时，视为 grid 控件宽度的比例，否则为像素宽度。
    *   （如果为负数，将计算结果加上控件的宽度）
