@@ -65,6 +65,16 @@ ret_t tk_cond_var_awake(tk_cond_var_t* cond_var) {
   return RET_OK;
 }
 
+ret_t tk_cond_var_clear(tk_cond_var_t* cond_var) {
+  return_value_if_fail(cond_var != NULL && cond_var->inited, RET_BAD_PARAMS);
+
+  tk_mutex_lock(cond_var->mutex);
+  cond_var->has_signal = FALSE;
+  tk_mutex_unlock(cond_var->mutex);
+
+  return RET_OK;
+}
+
 ret_t tk_cond_var_destroy(tk_cond_var_t* cond_var) {
   return_value_if_fail(cond_var != NULL && cond_var->inited, RET_BAD_PARAMS);
 

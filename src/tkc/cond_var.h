@@ -61,6 +61,14 @@ ret_t tk_cond_var_wait(tk_cond_var_t* cond_var, uint32_t timeout);
 ret_t tk_cond_var_awake(tk_cond_var_t* cond_var);
 
 /**
+ * @method tk_cond_var_clear
+ * 清除。
+ * @param {tk_cond_var_t*}    cond_var cond_var对象。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_cond_var_clear(tk_cond_var_t* cond_var);
+
+/**
  * @method tk_cond_var_destroy
  * 销毁cond_var对象。
  * @param {tk_cond_var_t*}    cond_var cond_var对象。
