@@ -818,14 +818,14 @@ ret_t widget_set_focused_internal(widget_t* widget, bool_t focused) {
   int32_t stage;
   widget_t* win = widget_get_window(widget);
   if (win == NULL) {
-    log_debug("You can not set focus of a widget when window do not find");
+    log_debug("You can not set focus of a widget when window do not find.\n");
     return RET_FAIL;
   }
   stage = widget_get_prop_int(win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
 
   if (WINDOW_STAGE_SUSPEND == stage) {
-    log_debug("You can not set focus of a widget when window is in background");
+    log_debug("You can not set focus of a widget when window is in background.\n");
     return RET_FAIL;
   }
 
