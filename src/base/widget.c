@@ -3876,8 +3876,9 @@ ret_t widget_prepare_text_style(widget_t* widget, canvas_t* c) {
 }
 
 static ret_t widget_copy_style(widget_t* clone, widget_t* widget) {
-  if (style_is_mutable(widget->astyle) && style_mutable_cast(widget->astyle) != NULL) {
-    if (!style_is_mutable(clone->astyle)) {
+  if (widget->astyle != NULL && style_is_mutable(widget->astyle) &&
+      style_mutable_cast(widget->astyle) != NULL) {
+    if (clone->astyle == NULL || !style_is_mutable(clone->astyle)) {
       widget_ensure_style_mutable(clone);
     }
 
