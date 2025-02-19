@@ -26,6 +26,7 @@
 
 BEGIN_C_DECLS
 
+#include "tkc/named_value.h"
 #include "base/window.h"
 #include "base/window_manager.h"
 #include "widgets/popup.h"
@@ -34,6 +35,8 @@ BEGIN_C_DECLS
 #include "ext_widgets/scroll_view/list_view.h"
 #include "ext_widgets/scroll_view/scroll_view.h"
 #include "ext_widgets/scroll_view/scroll_bar.h"
+
+#include "ext_widgets/edit_ex/edit_ex_suggest_words_item_formats_parse.inc"
 
 #define EDIT_SUGGEST_WORDS_WINDOW_DEFAULT_MARGIN 1
 #define EDIT_SUGGEST_WORDS_WINDOW_DEFAULT_MAXNR 5
@@ -123,9 +126,11 @@ static widget_t* edit_ex_create_suggest_words_popup(widget_t* widget) {
     obj_props = tk_object_get_prop_object(edit_ex->suggest_words_ui_props, list_view->name);
     tk_object_foreach_prop(obj_props, edit_ex_widget_set_prop_by_object_on_visit, list_view);
     // create hbar
-    if (w < tk_object_get_prop_int(
-                edit_ex->suggest_words_ui_props,
-                EDIT_EX_SUGGEST_WORDS_UI_NAME_LIST_VIEW "." WIDGET_PROP_ITEM_WIDTH, w)) {
+    if ((w < tk_object_get_prop_int(
+                 edit_ex->suggest_words_ui_props,
+                 EDIT_EX_SUGGEST_WORDS_UI_NAME_LIST_VIEW "." WIDGET_PROP_ITEM_WIDTH, w)) ||
+        (edit_ex->suggest_words_model_items != NULL &&
+         edit_ex->suggest_words_model_items->size > 0)) {
       hbar = scroll_bar_create(list_view, 0, 0, -EDIT_SUGGEST_WORDS_SCROLL_BAR_DEFAULT_WH,
                                EDIT_SUGGEST_WORDS_SCROLL_BAR_DEFAULT_WH);
 
@@ -174,20 +179,43 @@ static widget_t* edit_ex_create_suggest_words_popup(widget_t* widget) {
 
 static ret_t edit_ex_suggest_words_popup_confirm(widget_t* widget, widget_t* item) {
   /* base on combo_box_on_item_click() */
+  ret_t ret = RET_OK;
   edit_ex_t* edit_ex = EDIT_EX(widget);
   ENSURE(edit_ex);
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
 
   if (item != NULL) {
-    widget_set_text(widget, widget_get_text(item));
+    if (edit_ex->suggest_words_model_items != NULL &&
+        edit_ex->suggest_words_model_items->size > 0) {
+      tk_object_t* data = NULL;
+      char index_str[32] = {'\0'};
+      const char* text = NULL;
+      const char* input_name = TK_STR_IS_NOT_EMPTY(edit_ex->suggest_words_input_name)
+                                   ? edit_ex->suggest_words_input_name
+                                   : EDIT_EX_DEFAULT_SUGGEST_WORDS_INPUT_NAME;
+      int32_t index = widget_index_of(item);
+      goto_error_if_fail_ex(index >= 0, ret = RET_FAIL);
+
+      tk_snprintf(index_str, sizeof(index_str) - 1, "[%d]", index);
+
+      data = tk_object_get_prop_object(edit_ex->suggest_words, index_str);
+      goto_error_if_fail_ex(data != NULL, ret = RET_NOT_FOUND);
+
+      text = tk_object_get_prop_str(data, input_name);
+      widget_set_text_utf8(widget, text);
+    } else {
+      const wchar_t* text = widget_get_text(item);
+      widget_set_text(widget, text);
+    }
   }
 
+error:
   widget->target = NULL;
   widget->key_target = NULL;
   window_close(edit_ex->suggest_words_popup);
   widget_set_focused_internal(widget, TRUE);
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t edit_ex_suggest_words_popup_on_item_click(void* ctx, event_t* e) {
@@ -217,6 +245,8 @@ typedef struct _edit_ex_update_suggest_words_popup_ctx_t {
   widget_t* list_view;
   widget_t* scroll_view;
   uint32_t curr_index;
+  int32_t item_width;
+  tk_object_t* format_exist;
 } edit_ex_update_suggest_words_popup_ctx_t;
 
 static ret_t edit_ex_update_suggest_words_popup_on_item_visit(void* ctx, const void* data) {
@@ -224,11 +254,7 @@ static ret_t edit_ex_update_suggest_words_popup_on_item_visit(void* ctx, const v
   edit_ex_update_suggest_words_popup_ctx_t* actx = (edit_ex_update_suggest_words_popup_ctx_t*)(ctx);
   widget_t* iter = WIDGET(data);
   return_value_if_fail(actx != NULL && iter != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(actx->edit_ex != NULL && actx->scroll_view != NULL, RET_BAD_PARAMS);
-
-  if (iter == actx->scroll_view) {
-    return RET_OK;
-  }
+  return_value_if_fail(actx->edit_ex != NULL, RET_BAD_PARAMS);
 
   if (actx->curr_index != 0) {
     widget_set_visible(iter, TRUE);
@@ -238,6 +264,26 @@ static ret_t edit_ex_update_suggest_words_popup_on_item_visit(void* ctx, const v
                        actx->edit_ex)) {
       widget_on(iter, EVT_CLICK, edit_ex_suggest_words_popup_on_item_click, actx->edit_ex);
     }
+
+    if (actx->edit_ex->suggest_words_model_items != NULL &&
+        actx->edit_ex->suggest_words_model_items->size > 0) {
+      const char* iter_format_name =
+          widget_get_prop_str(iter, EDIT_EX_SUGGEST_WORDS_PROP_FORMAT_NAME, "[0]");
+
+      if (!tk_object_has_prop(actx->format_exist, iter_format_name)) {
+        uint32_t item_children_size = widget_count_children(iter);
+        if (item_children_size > 0) {
+          widget_t* last = NULL;
+          widget_set_prop_int(iter, WIDGET_PROP_W, actx->item_width);
+          widget_set_prop_int(iter, WIDGET_PROP_H, LIST_VIEW(actx->list_view)->item_height);
+          widget_layout_children(iter);
+          last = widget_get_child(iter, item_children_size - 1);
+          actx->item_width = tk_max(actx->item_width, last->x + last->w);
+        }
+        tk_object_set_prop_bool(actx->format_exist, iter_format_name, TRUE);
+      }
+    }
+
     actx->curr_index--;
   } else {
     widget_set_sensitive(iter, FALSE);
@@ -247,36 +293,121 @@ static ret_t edit_ex_update_suggest_words_popup_on_item_visit(void* ctx, const v
   return RET_OK;
 }
 
+typedef struct _edit_ex_item_set_suggest_words_ctx_t {
+  widget_t* widget;
+  tk_object_t* suggest_words;
+} edit_ex_item_set_suggest_words_ctx_t;
+
+static ret_t edit_ex_item_set_suggest_words_on_visit(void* ctx, const void* data) {
+  edit_ex_item_set_suggest_words_ctx_t* actx = (edit_ex_item_set_suggest_words_ctx_t*)(ctx);
+  const named_value_t* nv = (const named_value_t*)(data);
+  return_value_if_fail(actx != NULL && nv != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(actx->widget != NULL && actx->suggest_words != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_start_with(nv->name, EDIT_EX_SUGGEST_WORDS_ITEM_FORMAT_PREFIX)) {
+    value_t tmp;
+    if (RET_OK == tk_object_get_prop(actx->suggest_words, value_str(&nv->value), &tmp)) {
+      const char* name = nv->name + sizeof(EDIT_EX_SUGGEST_WORDS_ITEM_FORMAT_PREFIX) - 1;
+      widget_set_prop(actx->widget, name, &tmp);
+    }
+  }
+
+  return RET_OK;
+}
+
+static ret_t edit_ex_item_set_suggest_words(tk_object_t* suggest_words, widget_t* widget) {
+  if (widget->custom_props != NULL) {
+    edit_ex_item_set_suggest_words_ctx_t ctx = {.widget = widget, .suggest_words = suggest_words};
+    return tk_object_foreach_prop(widget->custom_props, edit_ex_item_set_suggest_words_on_visit,
+                                  &ctx);
+  }
+  return RET_OK;
+}
+
 static ret_t edit_ex_update_suggest_words_popup_on_visit(void* ctx, const void* data) {
   edit_ex_update_suggest_words_popup_ctx_t* actx = (edit_ex_update_suggest_words_popup_ctx_t*)(ctx);
   const value_t* v = (const value_t*)data;
-  const char* suggest = NULL;
   widget_t* item = NULL;
+  bool_t index_changed = FALSE;
   return_value_if_fail(actx != NULL && v != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(actx->scroll_view != NULL && actx->list_view != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(
+      actx->edit_ex != NULL && actx->scroll_view != NULL && actx->list_view != NULL,
+      RET_BAD_PARAMS);
 
-  suggest = value_str(v);
-  return_value_if_fail(suggest != NULL, RET_FAIL);
+  if (actx->edit_ex->suggest_words_model_items != NULL &&
+      actx->edit_ex->suggest_words_model_items->size > 0) {
+    tk_object_t* suggest_words = value_object(v);
+    const char* format_name = NULL;
+    return_value_if_fail(suggest_words != NULL, RET_FAIL);
 
-  item = widget_get_child(actx->scroll_view, actx->curr_index);
-  if (item == NULL) {
-    item = combo_box_item_create(actx->scroll_view, 0, 0, 0, 0);
-    return_value_if_fail(item != NULL, RET_OOM);
-    if ((actx->curr_index + 1) % 2 != 0) { /* 0 为第一项，所以是奇数项 */
-      value_t tmp;
-      if (RET_OK ==
-          widget_get_prop(actx->list_view, EDIT_EX_PROP_SUGGEST_WORDS_ITEM_ODD_STYLE, &tmp)) {
-        widget_use_style(item, value_str(&tmp));
-      }
-    } else {
-      value_t tmp;
-      if (RET_OK ==
-          widget_get_prop(actx->list_view, EDIT_EX_PROP_SUGGEST_WORDS_ITEM_EVEN_STYLE, &tmp)) {
-        widget_use_style(item, value_str(&tmp));
+    format_name = tk_object_get_prop_str(suggest_words, EDIT_EX_SUGGEST_WORDS_PROP_FORMAT_NAME);
+    if (TK_STR_IS_EMPTY(format_name)) {
+      format_name = "";
+    }
+
+    item = widget_get_child(actx->scroll_view, actx->curr_index);
+
+    if (item != NULL) {
+      const char* item_format_name =
+          widget_get_prop_str(item, EDIT_EX_SUGGEST_WORDS_PROP_FORMAT_NAME, "");
+      if (!tk_str_eq(item_format_name, format_name)) {
+        item = NULL;
+        WIDGET_FOR_EACH_CHILD_BEGIN_R(actx->scroll_view, iter, i)
+        const char* iter_format_name = NULL;
+        if (i <= actx->curr_index) {
+          break;
+        }
+        iter_format_name = widget_get_prop_str(iter, EDIT_EX_SUGGEST_WORDS_PROP_FORMAT_NAME, "");
+        if (tk_str_eq(iter_format_name, format_name)) {
+          item = iter;
+          widget_restack(item, actx->curr_index);
+          index_changed = TRUE;
+          break;
+        }
+        WIDGET_FOR_EACH_CHILD_END()
       }
     }
+
+    if (item == NULL) {
+      widget_t* model = edit_ex_suggest_words_model_items_find(
+          actx->edit_ex->suggest_words_model_items, format_name);
+      return_value_if_fail(model != NULL, RET_FAIL);
+
+      item = widget_clone(model, actx->scroll_view);
+      return_value_if_fail(item != NULL, RET_OOM);
+      widget_restack(item, actx->curr_index);
+      index_changed = TRUE;
+    }
+
+    WIDGET_FOR_EACH_CHILD_BEGIN(item, iter, i)
+    widget_foreach(iter, (tk_visit_t)edit_ex_item_set_suggest_words, suggest_words);
+    WIDGET_FOR_EACH_CHILD_END()
+  } else {
+    const char* suggest = value_str(v);
+    return_value_if_fail(suggest != NULL, RET_FAIL);
+
+    item = widget_get_child(actx->scroll_view, actx->curr_index);
+    if (item == NULL) {
+      item = combo_box_item_create(actx->scroll_view, 0, 0, 0, 0);
+      return_value_if_fail(item != NULL, RET_OOM);
+      index_changed = TRUE;
+    }
+    widget_set_text_utf8(item, suggest);
   }
-  widget_set_text_utf8(item, suggest);
+
+  if (index_changed) {
+    ret_t ret = RET_OK;
+    value_t tmp;
+    if ((actx->curr_index + 1) % 2 != 0) { /* 0 为第一项，所以是奇数项 */
+      ret = widget_get_prop(actx->list_view, EDIT_EX_PROP_SUGGEST_WORDS_ITEM_ODD_STYLE, &tmp);
+    } else {
+      ret = widget_get_prop(actx->list_view, EDIT_EX_PROP_SUGGEST_WORDS_ITEM_EVEN_STYLE, &tmp);
+    }
+    if (RET_OK == ret) {
+      widget_use_style(item, value_str(&tmp));
+    }
+  }
+
   actx->curr_index++;
 
   return RET_OK;
@@ -307,6 +438,8 @@ static ret_t edit_ex_update_suggest_words_popup(widget_t* widget) {
 
   w = tk_max_int(widget->w,
                  widget_get_prop_int(edit_ex->suggest_words_popup, WIDGET_PROP_MIN_W, 0));
+  update_ctx.item_width = widget_get_prop_int(update_ctx.list_view, WIDGET_PROP_ITEM_WIDTH, 0);
+  update_ctx.item_width = tk_max(update_ctx.item_width, w);
 
   item_height = widget_get_prop_int(update_ctx.list_view, WIDGET_PROP_ITEM_HEIGHT, widget->h);
   nr = tk_object_get_prop_int(edit_ex->suggest_words, TK_OBJECT_PROP_SIZE, 0);
@@ -321,12 +454,18 @@ static ret_t edit_ex_update_suggest_words_popup(widget_t* widget) {
     h += widget_get_prop_int(hbar, WIDGET_PROP_LAYOUT_H, hbar->h);
   }
 
+  widget_resize(edit_ex->suggest_words_popup, w, h);
+  widget_layout(edit_ex->suggest_words_popup);
+
   tk_object_foreach_prop(edit_ex->suggest_words, edit_ex_update_suggest_words_popup_on_visit,
                          &update_ctx);
-  widget_foreach(update_ctx.scroll_view, edit_ex_update_suggest_words_popup_on_item_visit,
-                 &update_ctx);
 
-  widget_resize(edit_ex->suggest_words_popup, w, h);
+  update_ctx.format_exist = object_default_create_ex(FALSE);
+  WIDGET_FOR_EACH_CHILD_BEGIN(update_ctx.scroll_view, iter, i)
+  edit_ex_update_suggest_words_popup_on_item_visit(&update_ctx, iter);
+  WIDGET_FOR_EACH_CHILD_END()
+  widget_set_prop_int(update_ctx.list_view, WIDGET_PROP_ITEM_WIDTH, update_ctx.item_width);
+  TK_OBJECT_UNREF(update_ctx.format_exist);
 
   return RET_OK;
 }

@@ -23,6 +23,7 @@
 #include "base/widget_vtable.h"
 #include "ext_widgets/edit_ex/edit_ex.h"
 #include "ext_widgets/edit_ex/edit_ex_suggest_words_helper.inc"
+#include "ext_widgets/edit_ex/edit_ex_suggest_words_item_formats_parse.inc"
 
 ret_t edit_ex_set_suggest_words(widget_t* widget, tk_object_t* suggest_words) {
   edit_ex_t* edit_ex = EDIT_EX(widget);
@@ -30,6 +31,72 @@ ret_t edit_ex_set_suggest_words(widget_t* widget, tk_object_t* suggest_words) {
 
   TK_OBJECT_UNREF(edit_ex->suggest_words);
   edit_ex->suggest_words = TK_OBJECT_REF(suggest_words);
+
+  return RET_OK;
+}
+
+static ret_t edit_ex_set_suggest_words_item_formats_on_load(void* ctx, event_t* e) {
+  edit_ex_t* edit_ex = EDIT_EX(e->target);
+  char* formats = (char*)(ctx);
+  bool_t loading = FALSE;
+  return_value_if_fail(formats != NULL, RET_REMOVE);
+  goto_error_if_fail(edit_ex != NULL);
+
+  //FIXME: 已经加载完成了，但是 loading 还是为 TRUE。
+  loading = WIDGET(edit_ex)->loading;
+  WIDGET(edit_ex)->loading = FALSE;
+  edit_ex_set_suggest_words_item_formats(WIDGET(edit_ex), formats);
+  WIDGET(edit_ex)->loading = loading;
+
+error:
+  TKMEM_FREE(formats);
+  return RET_REMOVE;
+}
+
+ret_t edit_ex_set_suggest_words_item_formats(widget_t* widget, const char* formats) {
+  ret_t ret = RET_OK;
+  edit_ex_t* edit_ex = EDIT_EX(widget);
+  darray_t* model_item = NULL;
+  return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
+
+  if (TK_STR_IS_EMPTY(formats)) {
+    if (edit_ex->suggest_words_model_items != NULL) {
+      darray_destroy(edit_ex->suggest_words_model_items);
+    }
+    TKMEM_FREE(edit_ex->suggest_words_item_formats);
+    return RET_OK;
+  }
+
+  if (widget->loading) {
+    char* dup_formats = tk_strdup(formats);
+    return_value_if_fail(dup_formats != NULL, RET_OOM);
+
+    return widget_on(widget, EVT_WIDGET_LOAD, edit_ex_set_suggest_words_item_formats_on_load,
+                     dup_formats);
+  }
+
+  model_item = darray_create(4, (tk_destroy_t)widget_unref, NULL);
+  return_value_if_fail(model_item != NULL, RET_OOM);
+
+  ret = edit_ex_suggest_words_item_formats_parse(edit_ex, formats, model_item);
+
+  if (RET_OK == ret) {
+    edit_ex->suggest_words_item_formats = tk_str_copy(edit_ex->suggest_words_item_formats, formats);
+
+    if (edit_ex->suggest_words_model_items != NULL) {
+      darray_destroy(edit_ex->suggest_words_model_items);
+    }
+    edit_ex->suggest_words_model_items = model_item;
+  }
+
+  return ret;
+}
+
+ret_t edit_ex_set_suggest_words_input_name(widget_t* widget, const char* name) {
+  edit_ex_t* edit_ex = EDIT_EX(widget);
+  return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
+
+  edit_ex->suggest_words_input_name = tk_str_copy(edit_ex->suggest_words_input_name, name);
 
   return RET_OK;
 }
@@ -52,6 +119,10 @@ static ret_t edit_ex_set_prop(widget_t* widget, const char* name, const value_t*
 
     str_reset(&sub_prop);
     return ret;
+  } else if (tk_str_eq(name, EDIT_EX_PROP_SUGGEST_WORDS_ITEM_FORMATS)) {
+    return edit_ex_set_suggest_words_item_formats(widget, value_str(v));
+  } else if (tk_str_eq(name, EDIT_EX_PROP_SUGGEST_WORDS_INPUT_NAME)) {
+    return edit_ex_set_suggest_words_input_name(widget, value_str(v));
   }
 
   return widget_vtable_set_prop_by_parent(widget, name, v, WIDGET_VTABLE_GET_VTABLE(edit_ex));
@@ -76,6 +147,14 @@ static ret_t edit_ex_get_prop(widget_t* widget, const char* name, value_t* v) {
 
     str_reset(&sub_prop);
     return ret;
+  } else if (tk_str_eq(name, EDIT_EX_PROP_SUGGEST_WORDS_ITEM_FORMATS)) {
+    value_set_str(v, edit_ex->suggest_words_item_formats);
+    return RET_OK;
+  } else if (tk_str_eq(name, EDIT_EX_PROP_SUGGEST_WORDS_INPUT_NAME)) {
+    value_set_str(v, TK_STR_IS_NOT_EMPTY(edit_ex->suggest_words_input_name)
+                         ? edit_ex->suggest_words_input_name
+                         : EDIT_EX_DEFAULT_SUGGEST_WORDS_INPUT_NAME);
+    return RET_OK;
   }
 
   return widget_vtable_get_prop_by_parent(widget, name, v, WIDGET_VTABLE_GET_VTABLE(edit_ex));
@@ -123,6 +202,9 @@ static ret_t edit_ex_on_destroy(widget_t* widget) {
   if (edit_ex->suggest_words_popup != NULL) {
     widget_destroy(edit_ex->suggest_words_popup);
   }
+
+  edit_ex_set_suggest_words_item_formats(widget, NULL);
+
   TK_OBJECT_UNREF(edit_ex->suggest_words_ui_props);
   TK_OBJECT_UNREF(edit_ex->suggest_words);
 
