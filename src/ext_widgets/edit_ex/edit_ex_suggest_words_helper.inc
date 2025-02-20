@@ -246,7 +246,7 @@ typedef struct _edit_ex_update_suggest_words_popup_ctx_t {
   widget_t* scroll_view;
   uint32_t curr_index;
   int32_t item_width;
-  tk_object_t* format_exist;
+  darray_t* used_format_names;
 } edit_ex_update_suggest_words_popup_ctx_t;
 
 static ret_t edit_ex_update_suggest_words_popup_on_item_visit(void* ctx, const void* data) {
@@ -270,7 +270,7 @@ static ret_t edit_ex_update_suggest_words_popup_on_item_visit(void* ctx, const v
       const char* iter_format_name =
           widget_get_prop_str(iter, EDIT_EX_SUGGEST_WORDS_PROP_FORMAT_NAME, "[0]");
 
-      if (!tk_object_has_prop(actx->format_exist, iter_format_name)) {
+      if (darray_bsearch_index(actx->used_format_names, NULL, iter_format_name) < 0) {
         uint32_t item_children_size = widget_count_children(iter);
         if (item_children_size > 0) {
           widget_t* last = NULL;
@@ -280,7 +280,7 @@ static ret_t edit_ex_update_suggest_words_popup_on_item_visit(void* ctx, const v
           last = widget_get_child(iter, item_children_size - 1);
           actx->item_width = tk_max(actx->item_width, last->x + last->w);
         }
-        tk_object_set_prop_bool(actx->format_exist, iter_format_name, TRUE);
+        darray_sorted_insert(actx->used_format_names, tk_strdup(iter_format_name), NULL, TRUE);
       }
     }
 
@@ -338,18 +338,21 @@ static ret_t edit_ex_update_suggest_words_popup_on_visit(void* ctx, const void* 
       actx->edit_ex->suggest_words_model_items->size > 0) {
     tk_object_t* suggest_words = value_object(v);
     const char* format_name = NULL;
+    widget_t* model = NULL;
     return_value_if_fail(suggest_words != NULL, RET_FAIL);
 
-    format_name = tk_object_get_prop_str(suggest_words, EDIT_EX_SUGGEST_WORDS_PROP_FORMAT_NAME);
-    if (TK_STR_IS_EMPTY(format_name)) {
-      format_name = "";
-    }
+    model = edit_ex_suggest_words_model_items_find(
+        actx->edit_ex->suggest_words_model_items,
+        tk_object_get_prop_str(suggest_words, EDIT_EX_SUGGEST_WORDS_PROP_FORMAT_NAME));
+    return_value_if_fail(model != NULL, RET_FAIL);
+
+    format_name = widget_get_prop_str(model, EDIT_EX_SUGGEST_WORDS_PROP_FORMAT_NAME, "[0]");
 
     item = widget_get_child(actx->scroll_view, actx->curr_index);
 
     if (item != NULL) {
       const char* item_format_name =
-          widget_get_prop_str(item, EDIT_EX_SUGGEST_WORDS_PROP_FORMAT_NAME, "");
+          widget_get_prop_str(item, EDIT_EX_SUGGEST_WORDS_PROP_FORMAT_NAME, "[0]");
       if (!tk_str_eq(item_format_name, format_name)) {
         item = NULL;
         WIDGET_FOR_EACH_CHILD_BEGIN_R(actx->scroll_view, iter, i)
@@ -357,7 +360,7 @@ static ret_t edit_ex_update_suggest_words_popup_on_visit(void* ctx, const void* 
         if (i <= actx->curr_index) {
           break;
         }
-        iter_format_name = widget_get_prop_str(iter, EDIT_EX_SUGGEST_WORDS_PROP_FORMAT_NAME, "");
+        iter_format_name = widget_get_prop_str(iter, EDIT_EX_SUGGEST_WORDS_PROP_FORMAT_NAME, "[0]");
         if (tk_str_eq(iter_format_name, format_name)) {
           item = iter;
           widget_restack(item, actx->curr_index);
@@ -369,10 +372,6 @@ static ret_t edit_ex_update_suggest_words_popup_on_visit(void* ctx, const void* 
     }
 
     if (item == NULL) {
-      widget_t* model = edit_ex_suggest_words_model_items_find(
-          actx->edit_ex->suggest_words_model_items, format_name);
-      return_value_if_fail(model != NULL, RET_FAIL);
-
       item = widget_clone(model, actx->scroll_view);
       return_value_if_fail(item != NULL, RET_OOM);
       widget_restack(item, actx->curr_index);
@@ -421,8 +420,10 @@ static ret_t edit_ex_update_suggest_words_popup(widget_t* widget) {
   int32_t item_height = 0;
   widget_t* hbar = NULL;
   edit_ex_t* edit_ex = EDIT_EX(widget);
+  darray_t used_format_names;
   edit_ex_update_suggest_words_popup_ctx_t update_ctx = {
       .edit_ex = edit_ex,
+      .used_format_names = &used_format_names,
   };
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
   return_value_if_fail(edit_ex->suggest_words != NULL && edit_ex->suggest_words_popup != NULL,
@@ -435,6 +436,8 @@ static ret_t edit_ex_update_suggest_words_popup(widget_t* widget) {
   update_ctx.scroll_view =
       widget_lookup(edit_ex->suggest_words_popup, EDIT_EX_SUGGEST_WORDS_UI_NAME_SCROLL_VIEW, TRUE);
   return_value_if_fail(update_ctx.scroll_view != NULL, RET_FAIL);
+
+  darray_init(&used_format_names, 4, default_destroy, (tk_compare_t)tk_str_cmp);
 
   w = tk_max_int(widget->w,
                  widget_get_prop_int(edit_ex->suggest_words_popup, WIDGET_PROP_MIN_W, 0));
@@ -460,12 +463,12 @@ static ret_t edit_ex_update_suggest_words_popup(widget_t* widget) {
   tk_object_foreach_prop(edit_ex->suggest_words, edit_ex_update_suggest_words_popup_on_visit,
                          &update_ctx);
 
-  update_ctx.format_exist = object_default_create_ex(FALSE);
   WIDGET_FOR_EACH_CHILD_BEGIN(update_ctx.scroll_view, iter, i)
   edit_ex_update_suggest_words_popup_on_item_visit(&update_ctx, iter);
   WIDGET_FOR_EACH_CHILD_END()
   widget_set_prop_int(update_ctx.list_view, WIDGET_PROP_ITEM_WIDTH, update_ctx.item_width);
-  TK_OBJECT_UNREF(update_ctx.format_exist);
+
+  darray_deinit(&used_format_names);
 
   return RET_OK;
 }

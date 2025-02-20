@@ -59,6 +59,10 @@ static ret_t suggest_words_list_on_update(void* ctx, event_t* e) {
 
       object_set_prop_str(obj, EDIT_EX_DEFAULT_SUGGEST_WORDS_INPUT_NAME, iter);
 
+      if (tk_str_eq("AWTK", iter)) {
+        object_set_prop_str(obj, EDIT_EX_SUGGEST_WORDS_PROP_FORMAT_NAME, "AWTK");
+      }
+
       object_array_push(s_suggest_words_list, value_set_object(&v, obj));
 
       log_debug("%s,\n", iter);

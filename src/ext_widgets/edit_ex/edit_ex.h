@@ -207,12 +207,12 @@ widget_t* edit_ex_cast(widget_t* widget);
  *   * 1. {}里包含一个格式的内容，格式与格式间用;相隔，格式为：格式名可忽略{内容}
  *   * 2. 格式内容由控件组成，控件格式为：控件类型默认为label(控件属性)[子控件]
  *   * 3. 控件可用分隔为,或|，如果使用|则自动生成分隔线。
- *   * 4. 控件可变属性用<>括起来，属性会替换为输入建议词里的属性，如{(text=<title>)}，label控件的属性text会替换为输入关键词里的title属性。
+ *   * 4. 控件可变属性前有$符号，属性会替换为输入建议词里的属性，如{(text=$title)}，label控件的属性text会替换为输入关键词里的title属性。
  * * 完整格式参考：
  * *   格式名{控件1类型(控件属性)[子控件1类型(子控件1属性),(类型为label的子控件2属性)]|(类型为label的控件2属性)};格式名2{...}
  * eg:
  * ```xml
- * <edit_ex suggest_words_item_formats="{view(w=20%)[image(w=20,text=<title>),(text=<title>,w=-20,m=5)]|(text=<desc>,w=80%)}"/>
+ * <edit_ex suggest_words_item_formats="{view(w=20%)[image(w=20,image=$img),(text=$INPUT,w=-20,m=5)]|(text=$desc,w=80%)}"/>
  * ```
  */
 #define EDIT_EX_PROP_SUGGEST_WORDS_ITEM_FORMATS "suggest_words_item_formats"
@@ -222,7 +222,7 @@ widget_t* edit_ex_cast(widget_t* widget);
  * 建议词源属性：使用的格式名。
  * eg:
  * ```xml
- * <edit_ex suggest_words_item_formats="{view(w=20%)[image(w=20,text=<title>),(text=<title>,w=-20,m=5)]|(text=<desc>,w=80%)};A{(text=<title>,w=2%0,m=5)|(text=<desc>,w=80%)}"/>
+ * <edit_ex suggest_words_item_formats="{view(w=20%)[image(w=20,image=$img),(text=$INPUT,w=-20,m=5)]|(text=$desc,w=80%)};A{(text=$INPUT,w=20%,m=5)|(text=$desc,w=80%)}"/>
  * ```
  * ```c
  * obj_t* obj = object_default_create();// 某个item的数据源。

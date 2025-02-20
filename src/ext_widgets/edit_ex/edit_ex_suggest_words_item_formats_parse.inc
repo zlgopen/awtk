@@ -147,13 +147,13 @@ static ret_t edit_ex_suggest_words_widget_props_format_parse(edit_ex_t* edit_ex,
     tokenizer_t t_sub;
     tokenizer_init(&t_sub, prop_format, UINT32_MAX, "=");
     str_set(&name, tokenizer_next(&t_sub));
+    str_trim(&name, " \r\n");
     str_set(&value, tokenizer_next(&t_sub));
+    str_trim(&value, " \r\n");
     if (name.size > 0 && value.size > 0) {
-      if (value.str[0] == '<' && value.str[value.size - 1] == '>') {
+      if (value.str[0] == '$') {
         str_insert(&name, 0, EDIT_EX_SUGGEST_WORDS_ITEM_FORMAT_PREFIX);
-
-        str_pop(&value);          /* 去掉 > */
-        str_remove(&value, 0, 1); /* 去掉 < */
+        str_remove(&value, 0, 1); /* 去掉 $ */
       }
       widget_set_prop_str(widget, name.str, value.str);
     }
@@ -181,6 +181,7 @@ static ret_t edit_ex_suggest_words_item_format_parse(edit_ex_t* edit_ex, const c
         if (curr_item == NULL) {
           str_t* type = edit_ex_suggest_words_create_str_by_slice(last_p, p);
           return_value_if_fail(type != NULL, RET_FAIL);
+          str_trim(type, " \r\n");
           curr_item = edit_ex_suggest_words_widget_create_by_type(curr_parent, type->str);
           str_destroy(type);
           return_value_if_fail(curr_item != NULL, RET_FAIL);
@@ -211,6 +212,7 @@ static ret_t edit_ex_suggest_words_item_format_parse(edit_ex_t* edit_ex, const c
         if (curr_item == NULL) {
           str_t* type = edit_ex_suggest_words_create_str_by_slice(last_p, p);
           return_value_if_fail(type != NULL, RET_FAIL);
+          str_trim(type, " \r\n");
           curr_item = edit_ex_suggest_words_widget_create_by_type(curr_parent, type->str);
           str_destroy(type);
           return_value_if_fail(curr_item != NULL, RET_FAIL);
@@ -254,47 +256,57 @@ static ret_t edit_ex_suggest_words_item_format_parse(edit_ex_t* edit_ex, const c
 
 static ret_t edit_ex_suggest_words_item_formats_parse(edit_ex_t* edit_ex, const char* item_formats,
                                                       darray_t* result) {
+  const char* item_format = NULL;
   ret_t ret = RET_OK;
   uint32_t i = 0;
+  tokenizer_t t;
   return_value_if_fail(item_formats != NULL && result != NULL, RET_BAD_PARAMS);
 
-  {
-    const char* item_format = NULL;
-    tokenizer_t t;
-    tokenizer_init(&t, item_formats, UINT32_MAX, ";");
+  tokenizer_init(&t, item_formats, UINT32_MAX, ";");
 
-    for (item_format = tokenizer_next(&t); item_format != NULL; item_format = tokenizer_next(&t)) {
-      uint32_t len = tk_strlen(item_format);
-      const char* brace_left = strchr(item_format, '{');
-      if (brace_left != NULL && item_format[len - 1] == '}') {
-        str_t str_format;
-        widget_t* item = combo_box_item_create(NULL, 0, 0, 0, 0);
-        return_value_if_fail(item != NULL, RET_OOM);
+  for (item_format = tokenizer_next(&t), i = 0; item_format != NULL;
+       item_format = tokenizer_next(&t), i++) {
+    uint32_t len = tk_strlen(item_format);
+    const char* brace_left = strchr(item_format, '{');
+    if (brace_left != NULL && item_format[len - 1] == '}') {
+      str_t str_format;
+      widget_t* item = combo_box_item_create(NULL, 0, 0, 0, 0);
+      return_value_if_fail(item != NULL, RET_OOM);
 
-        widget_set_children_layout(item, "default(r=1,c=0)");
+      widget_set_children_layout(item, "default(r=1,c=0)");
 
-        str_init(&str_format, 0);
+      str_init(&str_format, 0);
 
-        str_set_with_len(&str_format, item_format, brace_left - item_format); /* 设置 { 前的名称 */
-        widget_set_prop_str(item, EDIT_EX_SUGGEST_WORDS_PROP_FORMAT_NAME, str_format.str);
-        widget_set_name(item, str_format.str);
+      str_set_with_len(&str_format, item_format, brace_left - item_format); /* 设置 { 前的名称 */
+      str_trim(&str_format, " \r\n");
 
-        str_set_with_len(&str_format, brace_left + 1,
-                         len - 2 - (brace_left - item_format)); /* 去掉 {} 和名称 */
+      /* 避免与索引产生冲突 */
+      return_value_if_fail(!tk_str_indexable(str_format.str), (str_reset(&str_format), RET_FAIL));
 
-        ret = edit_ex_suggest_words_item_format_parse(edit_ex, str_format.str, item);
-        return_value_if_fail(ret == RET_OK, ret);
-
-        darray_push(result, item);
-
-        str_reset(&str_format);
-      } else {
-        log_debug("%s:fail to parse item_format:\"%s\"!\n", __FUNCTION__, item_format);
+      if (str_format.size == 0) {
+        str_set(&str_format, "[");
+        str_append_uint32(&str_format, i);
+        str_append(&str_format, "]");
       }
-    }
 
-    tokenizer_deinit(&t);
+      widget_set_prop_str(item, EDIT_EX_SUGGEST_WORDS_PROP_FORMAT_NAME, str_format.str);
+      widget_set_name(item, str_format.str);
+
+      str_set_with_len(&str_format, brace_left + 1,
+                       len - 2 - (brace_left - item_format)); /* 去掉 {} 和名称 */
+
+      ret = edit_ex_suggest_words_item_format_parse(edit_ex, str_format.str, item);
+      return_value_if_fail(ret == RET_OK, ret);
+
+      darray_push(result, item);
+
+      str_reset(&str_format);
+    } else {
+      log_debug("%s:fail to parse item_format:\"%s\"!\n", __FUNCTION__, item_format);
+    }
   }
+
+  tokenizer_deinit(&t);
 
   return RET_OK;
 }
