@@ -8,6 +8,7 @@
   * word_suggests窗口applet name和theme与edit_ex所在窗口保持一致(感谢兆坤提供补丁)
   * edit_ex word_suggests窗口分隔线从label改为view(感谢兆坤提供补丁)
   * widget 增加状态同步到子控件的功能(感谢兆坤提供补丁)
+  * 修复拼写错误(感谢兆坤提供补丁)
 
 2025/02/20
   * edit_ex 修改 format 规则2(感谢兆坤提供补丁)

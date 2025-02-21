@@ -10,7 +10,7 @@
                                };
                                AWTK {
                                  image (image = uiex_editor_TextAlignleft, w = 14),
-                                 image (image = logo                     , w = 199, darw_type = scale_h)|
+                                 image (image = logo                     , w = 199, draw_type = scale_h)|
                                        ( text = $desc                    , w = 401, style = item, state_from_parent_sync = true)
                                };"
    suggest_words_ui_props.popup.min_w="300"
