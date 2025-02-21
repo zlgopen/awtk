@@ -13,7 +13,6 @@
                                  image (image = logo                     , w = 199, darw_type = scale_h)|
                                        ( text = $desc                    , w = 401, style:normal:text_align_h = left, style:normal:margin_left = 20)
                                };"
-   suggest_words_ui_props.popup.theme="uiex"
    suggest_words_ui_props.popup.min_w="300"
    suggest_words_ui_props.list_view.item_odd_style="odd"
    suggest_words_ui_props.list_view.item_even_style="even"
@@ -23,7 +22,6 @@
    suggest_words_ui_props.vbar.animatable="false"
    suggest_words_ui_props.hbar.animatable="false"/>
   <edit_ex min="0" max="1024" step="1" name="edit2" x="c" y="37.5%" w="200" h="28" tips="Please enter your text" auto_fix="true"
-   suggest_words_ui_props.popup.theme="uiex"
    suggest_words_ui_props.list_view.item_odd_style="odd"
    suggest_words_ui_props.list_view.item_even_style="even"
    suggest_words_ui_props.vbar.animatable="false"/>

@@ -2,6 +2,11 @@
 
 2025/02/21
   * 增加 list_view_get_scroll_bar(感谢兆坤提供补丁)
+  * word_suggests窗口优化水平滚动条是否显示(感谢兆坤提供补丁)
+  * format 完善分隔线布局(感谢兆坤提供补丁)
+  * 完善edit_ex word_suggests窗口resize(感谢兆坤提供补丁)
+  * word_suggests窗口applet name和theme与edit_ex所在窗口保持一致(感谢兆坤提供补丁)
+  * edit_ex word_suggests窗口分隔线从label改为view(感谢兆坤提供补丁)
 
 2025/02/20
   * edit_ex 修改 format 规则2(感谢兆坤提供补丁)

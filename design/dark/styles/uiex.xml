@@ -972,6 +972,9 @@
   <style name="toolbar">
     <normal border="right" border_color="#000000"/>
   </style>
+  <style name="sep" bg_color="#4D4D4D">
+    <normal/>
+  </style>
 </view>
 <window>
   <style name="default">

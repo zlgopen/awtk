@@ -192,10 +192,10 @@ widget_t* edit_ex_cast(widget_t* widget);
  * 
  * style:
  * ```xml
- * <label>
+ * <view>
  *   <style name="separate">
  *   </style>
- * </label>
+ * </view>
  * ```
  */
 #define EDIT_EX_PROP_SUGGEST_WORDS_ITEM_SEPARATE_STYLE "item_separate_style"

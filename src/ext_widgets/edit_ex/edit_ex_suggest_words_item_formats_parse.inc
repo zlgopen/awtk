@@ -64,7 +64,7 @@ static widget_t* edit_ex_suggest_words_create_separator(edit_ex_t* edit_ex, widg
   char param[128] = {'\0'};
   return_value_if_fail(edit_ex != NULL && edit_ex->suggest_words_ui_props != NULL, NULL);
 
-  ret = label_create(parent, 0, 0, 1, 0);
+  ret = view_create(parent, 0, 0, 1, 0);
   widget_set_name(ret, "@separator");
 
   tk_snprintf(param, sizeof(param) - 1, "default(w=%d,h=100%%)", ret->w);
@@ -201,9 +201,14 @@ static ret_t edit_ex_suggest_words_item_format_parse(edit_ex_t* edit_ex, const c
         }
 
         if (curr_parent != parent) { /* 分隔线布局 */
-          int32_t w = widget_get_prop_int(curr_item, WIDGET_PROP_W, 0);
-          widget_set_prop_int(curr_parent, WIDGET_PROP_W, w);
-          widget_set_prop_int(curr_item, WIDGET_PROP_W, w - 1); /* 减去分隔线宽度 */
+          const char* layout = self_layouter_to_string(curr_item->self_layout);
+          if (layout != NULL) {
+            widget_set_self_layout(curr_parent, layout);
+          } else {
+            int32_t w = widget_get_prop_int(curr_item, WIDGET_PROP_W, 0);
+            widget_set_prop_int(curr_parent, WIDGET_PROP_W, w);
+          }
+          widget_set_self_layout_params(curr_item, NULL, NULL, "-1", NULL); /* 减去分隔线宽度 */
         }
 
         last_p = ++p;
