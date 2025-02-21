@@ -370,27 +370,13 @@ static int32_t children_layouter_list_view_for_list_view_get_virtual_h(
   return virtual_h;
 }
 
-static widget_t* children_layouter_list_view_get_scroll_bar(list_view_t* list_view,
-                                                            bool_t is_horizon) {
-  uint32_t i = 0;
-  for (i = 0; i < ARRAY_SIZE(list_view->scroll_bars); i++) {
-    widget_t* scroll_bar = list_view->scroll_bars[i];
-    if (scroll_bar != NULL) {
-      if (is_horizon == widget_get_prop_bool(scroll_bar, SCROLL_BAR_PROP_IS_HORIZON, FALSE)) {
-        return scroll_bar;
-      }
-    }
-  }
-  return NULL;
-}
-
 static int32_t children_layouter_list_view_for_list_view_get_scroll_view_w(list_view_t* list_view,
                                                                            widget_t* scroll_view,
                                                                            int32_t virtual_h) {
   int32_t scroll_view_w = 0;
   widget_t* scroll_bar = NULL;
   return_value_if_fail(list_view != NULL && scroll_view != NULL, 0);
-  scroll_bar = children_layouter_list_view_get_scroll_bar(list_view, FALSE);
+  scroll_bar = list_view_get_scroll_bar(WIDGET(list_view), FALSE);
   if (list_view->floating_scroll_bar) {
     scroll_view_w = scroll_view->w;
   } else if (scroll_bar == NULL || scroll_bar_is_mobile(scroll_bar) ||
@@ -553,8 +539,8 @@ static ret_t children_layouter_list_view_for_list_view_layout(children_layouter_
   default_item_height =
       list_view->default_item_height ? list_view->default_item_height : l->default_item_height;
 
-  scroll_bar = children_layouter_list_view_get_scroll_bar(list_view, FALSE);
-  scroll_bar_h = children_layouter_list_view_get_scroll_bar(list_view, TRUE);
+  scroll_bar = list_view_get_scroll_bar(WIDGET(list_view), FALSE);
+  scroll_bar_h = list_view_get_scroll_bar(WIDGET(list_view), TRUE);
 
   if (widget->children != NULL) {
     int32_t scroll_view_w = 0;

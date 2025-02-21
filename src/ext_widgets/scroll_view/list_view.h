@@ -186,6 +186,16 @@ ret_t list_view_set_auto_hide_scroll_bar(widget_t* widget, bool_t auto_hide_scro
 ret_t list_view_set_floating_scroll_bar(widget_t* widget, bool_t floating_scroll_bar);
 
 /**
+ * @method list_view_get_scroll_bar
+ * 获取滚动条。
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} horizon 是否为水平方向。
+ *
+ * @return {widget_t*} 返回对应的滚动条。
+ */
+widget_t* list_view_get_scroll_bar(widget_t* widget, bool_t horizon);
+
+/**
  * @method list_view_cast
  * 转换为list_view对象(供脚本语言使用)。
  * @annotation ["cast", "scriptable"]

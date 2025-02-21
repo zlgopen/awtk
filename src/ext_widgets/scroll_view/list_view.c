@@ -200,7 +200,6 @@ static ret_t list_view_on_event(widget_t* widget, event_t* e) {
             scroll_view_scroll_delta_to(list_view->scroll_view, -30, 0, TK_ANIMATING_TIME);
             ret = RET_STOP;
           } else if (evt->key == TK_KEY_RIGHT) {
-            uint32_t item_height = tk_max(list_view->item_height, list_view->default_item_height);
             scroll_view_scroll_delta_to(list_view->scroll_view, 30, 0, TK_ANIMATING_TIME);
             ret = RET_STOP;
           }
@@ -484,7 +483,6 @@ static ret_t list_view_on_add_child(widget_t* widget, widget_t* child) {
 
 static ret_t list_view_on_remove_child(widget_t* widget, widget_t* child) {
   list_view_t* list_view = LIST_VIEW(widget);
-  const char* type = widget_get_type(child);
   return_value_if_fail(list_view != NULL && widget != NULL && child != NULL, RET_BAD_PARAMS);
   if (list_view->scroll_view == child) {
     scroll_view_t* scroll_view = SCROLL_VIEW(child);
@@ -594,6 +592,23 @@ ret_t list_view_set_floating_scroll_bar(widget_t* widget, bool_t floating_scroll
   list_view->floating_scroll_bar = floating_scroll_bar;
 
   return RET_OK;
+}
+
+widget_t* list_view_get_scroll_bar(widget_t* widget, bool_t horizon) {
+  uint32_t i = 0;
+  list_view_t* list_view = LIST_VIEW(widget);
+  return_value_if_fail(list_view != NULL, NULL);
+
+  for (i = 0; i < ARRAY_SIZE(list_view->scroll_bars); i++) {
+    widget_t* scroll_bar = list_view->scroll_bars[i];
+    if (scroll_bar != NULL) {
+      if (horizon == widget_get_prop_bool(scroll_bar, SCROLL_BAR_PROP_IS_HORIZON, FALSE)) {
+        return scroll_bar;
+      }
+    }
+  }
+
+  return NULL;
 }
 
 widget_t* list_view_cast(widget_t* widget) {
