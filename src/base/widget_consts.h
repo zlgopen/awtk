@@ -1118,6 +1118,18 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_VALIDATOR "validator"
 
 /**
+ * @const WIDGET_PROP_SYNC_STATE_TO_CHILDREN
+ * 标识是否将当前控件状态同步到子控件中。
+ */
+#define WIDGET_PROP_SYNC_STATE_TO_CHILDREN "sync_state_to_children"
+
+/**
+ * @const WIDGET_PROP_STATE_FROM_PARENT_SYNC
+ * 标识是否接收父控件的状态同步。
+ */
+#define WIDGET_PROP_STATE_FROM_PARENT_SYNC "state_from_parent_sync"
+
+/**
  * @enum widget_type_t
  * @annotation ["scriptable", "string"]
  * @prefix WIDGET_TYPE_

@@ -452,6 +452,18 @@ struct _widget_t {
    */
   bool_t destroying;
   /**
+   * @property {bool_t} sync_state_to_children
+   * @annotation ["set_prop","get_prop","readable"]
+   * 标识是否将当前控件状态同步到子控件中。
+   */
+  bool_t sync_state_to_children;
+  /**
+   * @property {bool_t} state_from_parent_sync
+   * @annotation ["set_prop","get_prop","readable"]
+   * 标识是否接收父控件的状态同步。
+   */
+  bool_t state_from_parent_sync;
+  /**
    * @property {char*} state
    * @annotation ["set_prop","get_prop","readable"]
    * 控件的状态(取值参考widget_state_t)。

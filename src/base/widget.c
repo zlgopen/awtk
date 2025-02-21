@@ -869,7 +869,7 @@ ret_t widget_set_focusable(widget_t* widget, bool_t focusable) {
   return RET_OK;
 }
 
-ret_t widget_set_state(widget_t* widget, const char* state) {
+static ret_t widget_set_state_impl(widget_t* widget, const char* state) {
   return_value_if_fail(widget != NULL && state != NULL, RET_BAD_PARAMS);
 
   if (!tk_str_eq(widget->state, state)) {
@@ -877,6 +877,31 @@ ret_t widget_set_state(widget_t* widget, const char* state) {
     widget->state = tk_str_copy(widget->state, state);
     widget_set_need_update_style(widget);
     widget_invalidate_force(widget, NULL);
+    return RET_OK;
+  }
+
+  return RET_SKIP;
+}
+
+static ret_t widget_sync_children_state_on_visit(widget_t* widget, widget_t* child) {
+  if (widget == child) {
+    return RET_OK;
+  }
+
+  if (child->state_from_parent_sync) {
+    widget_set_state_impl(child, widget->state);
+  }
+
+  return RET_OK;
+}
+
+ret_t widget_set_state(widget_t* widget, const char* state) {
+  return_value_if_fail(widget != NULL && state != NULL, RET_BAD_PARAMS);
+
+  if (RET_OK == widget_set_state_impl(widget, state)) {
+    if (widget->sync_state_to_children) {
+      widget_foreach(widget, (tk_visit_t)widget_sync_children_state_on_visit, widget);
+    }
   }
 
   return RET_OK;
@@ -2190,6 +2215,10 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     widget_set_children_layout(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_POINTER_CURSOR)) {
     widget_set_pointer_cursor(widget, value_str(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_STATE_FROM_PARENT_SYNC)) {
+    widget->state_from_parent_sync = value_bool(v);
+  } else if (tk_str_eq(name, WIDGET_PROP_SYNC_STATE_TO_CHILDREN)) {
+    widget->sync_state_to_children = value_bool(v);
   } else {
     ret = RET_NOT_FOUND;
   }
@@ -2352,6 +2381,10 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     } else {
       ret = RET_NOT_FOUND;
     }
+  } else if (tk_str_eq(name, WIDGET_PROP_STATE_FROM_PARENT_SYNC)) {
+    value_set_bool(v, widget->state_from_parent_sync);
+  } else if (tk_str_eq(name, WIDGET_PROP_SYNC_STATE_TO_CHILDREN)) {
+    value_set_bool(v, widget->sync_state_to_children);
   } else {
     ret = widget_vtable_get_prop(widget, name, v);
     if (ret == RET_NOT_IMPL) {
@@ -3937,6 +3970,8 @@ static ret_t widget_copy_base_props(widget_t* widget, widget_t* other) {
   widget->auto_created = other->auto_created;
   widget->with_focus_state = other->with_focus_state;
   widget->dirty_rect_tolerance = other->dirty_rect_tolerance;
+  widget->sync_state_to_children = other->sync_state_to_children;
+  widget->state_from_parent_sync = other->state_from_parent_sync;
 
   if (other->animation != NULL && *(other->animation)) {
     widget_set_animation(widget, other->animation);

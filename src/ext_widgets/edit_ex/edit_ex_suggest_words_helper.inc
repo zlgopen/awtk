@@ -30,7 +30,6 @@ BEGIN_C_DECLS
 #include "base/window.h"
 #include "base/window_manager.h"
 #include "widgets/popup.h"
-#include "widgets/combo_box_item.h"
 #include "ext_widgets/edit_ex/edit_ex.h"
 #include "ext_widgets/scroll_view/list_view.h"
 #include "ext_widgets/scroll_view/scroll_view.h"
@@ -425,7 +424,7 @@ static ret_t edit_ex_update_suggest_words_popup_on_visit(void* ctx, const void* 
 
     item = widget_get_child(actx->scroll_view, actx->curr_index);
     if (item == NULL) {
-      item = combo_box_item_create(actx->scroll_view, 0, 0, 0, 0);
+      item = edit_ex_suggest_words_create_item(actx->edit_ex, actx->scroll_view);
       return_value_if_fail(item != NULL, RET_OOM);
       index_changed = TRUE;
     }

@@ -32,6 +32,7 @@ BEGIN_C_DECLS
 #include "tkc/tokenizer.h"
 #include "widgets/label.h"
 #include "widgets/view.h"
+#include "widgets/combo_box_item.h"
 #include "base/widget_factory.h"
 
 /**
@@ -56,6 +57,19 @@ static widget_t* edit_ex_suggest_words_model_items_find(darray_t* model_items, c
     return (widget_t*)darray_find_ex(model_items, (tk_compare_t)model_items_format_name_compare,
                                      (void*)name);
   }
+}
+
+static widget_t* edit_ex_suggest_words_create_item(edit_ex_t* edit_ex, widget_t* parent) {
+  widget_t* ret = NULL;
+  return_value_if_fail(edit_ex != NULL, NULL);
+
+  ret = combo_box_item_create(parent, 0, 0, 0, 0);
+  return_value_if_fail(ret != NULL, NULL);
+
+  widget_set_children_layout(ret, "default(r=1,c=0)");
+  widget_set_prop_bool(ret, WIDGET_PROP_SYNC_STATE_TO_CHILDREN, TRUE);
+
+  return ret;
 }
 
 static widget_t* edit_ex_suggest_words_create_separator(edit_ex_t* edit_ex, widget_t* parent) {
@@ -275,10 +289,8 @@ static ret_t edit_ex_suggest_words_item_formats_parse(edit_ex_t* edit_ex, const 
     const char* brace_left = strchr(item_format, '{');
     if (brace_left != NULL && item_format[len - 1] == '}') {
       str_t str_format;
-      widget_t* item = combo_box_item_create(NULL, 0, 0, 0, 0);
+      widget_t* item = edit_ex_suggest_words_create_item(edit_ex, NULL);
       return_value_if_fail(item != NULL, RET_OOM);
-
-      widget_set_children_layout(item, "default(r=1,c=0)");
 
       str_init(&str_format, 0);
 

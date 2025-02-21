@@ -566,6 +566,18 @@
   <style name="text_selector_mask">
     <normal bg_color="#FFFFFF"/>
   </style>
+  <style name="item" font_size="22" text_color="#FFFFFF" text_align_h="left" margin_left="20">
+    <normal text_color="#000000"/>
+    <normal_of_checked/>
+    <disable text_color="#00000066"/>
+    <disable_of_checked/>
+    <focused/>
+    <focused_of_checked/>
+    <over/>
+    <over_of_checked/>
+    <pressed/>
+    <pressed_of_checked/>
+  </style>
 </label>
 <line_number>
   <style name="default" font_size="22" text_align_h="center">

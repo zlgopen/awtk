@@ -5,13 +5,13 @@
   <edit_ex min="0" max="1024" step="1" name="edit1" x="0" y="12.5%" w="200" h="28" tips="Please enter your text" auto_fix="true" 
    suggest_words_item_formats="{
                                  image (image = uiex_editor_TextAlignleft, w = 14),
-                                       ( text = $INPUT                   , w = 199, style:normal:text_align_h = left, style:normal:margin_left = 20)|
-                                       ( text = $desc                    , w = 401, style:normal:text_align_h = left, style:normal:margin_left = 20)
+                                       ( text = $INPUT                   , w = 199, style = item, state_from_parent_sync = true)|
+                                       ( text = $desc                    , w = 401, style = item, state_from_parent_sync = true)
                                };
                                AWTK {
                                  image (image = uiex_editor_TextAlignleft, w = 14),
                                  image (image = logo                     , w = 199, darw_type = scale_h)|
-                                       ( text = $desc                    , w = 401, style:normal:text_align_h = left, style:normal:margin_left = 20)
+                                       ( text = $desc                    , w = 401, style = item, state_from_parent_sync = true)
                                };"
    suggest_words_ui_props.popup.min_w="300"
    suggest_words_ui_props.list_view.item_odd_style="odd"
