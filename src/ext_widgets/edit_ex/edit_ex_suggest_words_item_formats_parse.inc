@@ -67,7 +67,7 @@ static widget_t* edit_ex_suggest_words_create_item(edit_ex_t* edit_ex, widget_t*
   return_value_if_fail(ret != NULL, NULL);
 
   widget_set_children_layout(ret, "default(r=1,c=0)");
-  widget_set_prop_bool(ret, WIDGET_PROP_SYNC_STATE_TO_CHILDREN, TRUE);
+  widget_set_sync_state_to_children(ret, TRUE);
 
   return ret;
 }

@@ -883,16 +883,30 @@ static ret_t widget_set_state_impl(widget_t* widget, const char* state) {
   return RET_SKIP;
 }
 
-static ret_t widget_sync_children_state_on_visit(widget_t* widget, widget_t* child) {
-  if (widget == child) {
+typedef struct _widget_sync_children_state_on_visit_ctx_t {
+  widget_t* widget;
+  const char* state_for_style;
+} widget_sync_children_state_on_visit_ctx_t;
+
+static ret_t widget_sync_children_state_on_visit(widget_sync_children_state_on_visit_ctx_t* ctx,
+                                                 widget_t* child) {
+  if (ctx->widget == child) {
     return RET_OK;
   }
 
   if (child->state_from_parent_sync) {
-    widget_set_state_impl(child, widget->state);
+    widget_set_state_impl(child, ctx->state_for_style);
   }
 
   return RET_OK;
+}
+
+static ret_t widget_sync_state_to_children(widget_t* widget, const char* state_for_style) {
+  widget_sync_children_state_on_visit_ctx_t ctx = {
+      .widget = widget,
+      .state_for_style = state_for_style,
+  };
+  return widget_foreach(widget, (tk_visit_t)widget_sync_children_state_on_visit, &ctx);
 }
 
 ret_t widget_set_state(widget_t* widget, const char* state) {
@@ -900,19 +914,39 @@ ret_t widget_set_state(widget_t* widget, const char* state) {
 
   if (RET_OK == widget_set_state_impl(widget, state)) {
     if (widget->sync_state_to_children) {
-      widget_foreach(widget, (tk_visit_t)widget_sync_children_state_on_visit, widget);
+      widget_sync_state_to_children(
+          widget, widget_get_prop_str(widget, WIDGET_PROP_STATE_FOR_STYLE, widget->state));
     }
   }
 
   return RET_OK;
 }
 
-const char* widget_get_state_for_style(widget_t* widget, bool_t active, bool_t checked) {
-  const char* state = WIDGET_STATE_NORMAL;
-  widget_t* iter = widget;
-  return_value_if_fail(widget != NULL && widget->vt != NULL, state);
+ret_t widget_set_sync_state_to_children(widget_t* widget, bool_t sync_state_to_children) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  state = (const char*)(widget->state);
+  widget->sync_state_to_children = sync_state_to_children;
+
+  if (widget->sync_state_to_children) {
+    return widget_sync_state_to_children(
+        widget, widget_get_prop_str(widget, WIDGET_PROP_STATE_FOR_STYLE, widget->state));
+  }
+
+  return RET_OK;
+}
+
+ret_t widget_set_state_from_parent_sync(widget_t* widget, bool_t state_from_parent_sync) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  widget->state_from_parent_sync = state_from_parent_sync;
+
+  return RET_OK;
+}
+
+static const char* widget_get_state_for_style_impl(widget_t* widget, bool_t active,
+                                                   bool_t checked) {
+  widget_t* iter = widget;
+  const char* state = (const char*)(widget->state);
 
   while (iter != NULL) {
     if (!iter->enable) {
@@ -958,6 +992,25 @@ const char* widget_get_state_for_style(widget_t* widget, bool_t active, bool_t c
   }
 
   return state;
+}
+
+const char* widget_get_state_for_style(widget_t* widget, bool_t active, bool_t checked) {
+  const char* ret = WIDGET_STATE_NORMAL;
+  return_value_if_fail(widget != NULL, ret);
+
+  if (widget->last_state_for_style == NULL) {
+    widget->last_state_for_style = (const char*)(widget->state);
+  }
+
+  ret = widget_get_state_for_style_impl(widget, active, checked);
+
+  if (widget->sync_state_to_children && !tk_str_eq(ret, widget->last_state_for_style)) {
+    widget_sync_state_to_children(widget, ret);
+  }
+
+  widget->last_state_for_style = ret;
+
+  return ret;
 }
 
 ret_t widget_set_opacity(widget_t* widget, uint8_t opacity) {
@@ -2216,9 +2269,9 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_POINTER_CURSOR)) {
     widget_set_pointer_cursor(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_STATE_FROM_PARENT_SYNC)) {
-    widget->state_from_parent_sync = value_bool(v);
+    widget_set_state_from_parent_sync(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_SYNC_STATE_TO_CHILDREN)) {
-    widget->sync_state_to_children = value_bool(v);
+    widget_set_sync_state_to_children(widget, value_bool(v));
   } else {
     ret = RET_NOT_FOUND;
   }

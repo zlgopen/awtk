@@ -453,13 +453,13 @@ struct _widget_t {
   bool_t destroying;
   /**
    * @property {bool_t} sync_state_to_children
-   * @annotation ["set_prop","get_prop","readable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 标识是否将当前控件状态同步到子控件中。
    */
   bool_t sync_state_to_children;
   /**
    * @property {bool_t} state_from_parent_sync
-   * @annotation ["set_prop","get_prop","readable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 标识是否接收父控件的状态同步。
    */
   bool_t state_from_parent_sync;
@@ -563,6 +563,9 @@ struct _widget_t {
    * 虚函数表。
    */
   const widget_vtable_t* vt;
+
+  /* private */
+  const char* last_state_for_style; /* 上一次的 state_for_style */
 };
 
 /**
@@ -1574,6 +1577,28 @@ ret_t widget_set_focusable(widget_t* widget, bool_t focusable);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_state(widget_t* widget, const char* state);
+
+/**
+ * @method widget_set_sync_state_to_children
+ * 标识是否将当前控件状态同步到子控件中。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} sync_state_to_children 是否将当前控件状态同步到子控件中。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_sync_state_to_children(widget_t* widget, bool_t sync_state_to_children);
+
+/**
+ * @method widget_set_state_from_parent_sync
+ * 标识是否接收父控件的状态同步。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} state_from_parent_sync 是否接收父控件的状态同步。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_state_from_parent_sync(widget_t* widget, bool_t state_from_parent_sync);
 
 /**
  * @method widget_set_opacity
