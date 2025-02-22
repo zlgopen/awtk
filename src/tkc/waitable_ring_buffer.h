@@ -83,6 +83,14 @@ ret_t waitable_ring_buffer_write(waitable_ring_buffer_t* rb, const void* buff, u
                                  uint32_t timeout_ms);
 
 /**
+ * @method waitable_ring_buffer_is_empty
+ * 判断是否为空。
+ * @param {waitable_ring_buffer_t*} rb waitable_ring_buffer对象。
+ * @return {bool_t} 返回TRUE表示为空，否则表示非空。
+ */
+bool_t waitable_ring_buffer_is_empty(waitable_ring_buffer_t* rb);
+
+/**
  * @method waitable_ring_buffer_destroy
  * 销毁。
  *

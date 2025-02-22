@@ -100,6 +100,12 @@ ret_t waitable_ring_buffer_write(waitable_ring_buffer_t* rb, const void* buff, u
   return ret;
 }
 
+bool_t waitable_ring_buffer_is_empty(waitable_ring_buffer_t* rb) {
+  return_value_if_fail(rb != NULL, TRUE);
+
+  return ring_buffer_is_empty(rb->ring_buffer);
+}
+
 ret_t waitable_ring_buffer_destroy(waitable_ring_buffer_t* rb) {
   return_value_if_fail(rb != NULL, RET_BAD_PARAMS);
 

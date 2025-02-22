@@ -2,6 +2,7 @@
 
 2025/02/22
   * 完善状态同步到子控件的功能(感谢兆坤提供补丁) 
+  * 增加函数 waitable_ring_buffer_is_empty
 
 2025/02/21
   * 增加 list_view_get_scroll_bar(感谢兆坤提供补丁)
