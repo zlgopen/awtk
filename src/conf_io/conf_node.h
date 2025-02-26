@@ -634,7 +634,7 @@ struct _conf_node_t {
    * @property {conf_node_type_t} node_type
    * 节点类型。
    */
-  conf_node_type_t node_type : 3;
+  conf_node_type_t node_type : 4;
 
   /*private*/
   bool_t is_small_name : 1;

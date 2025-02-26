@@ -157,6 +157,11 @@ TEST(ConfNode, set_get_str) {
   ASSERT_EQ(conf_doc_set(doc, "names.[1]", value_set_str(&v, "tom")), RET_OK);
   ASSERT_EQ(conf_doc_set(doc, "names.[2]", value_set_str(&v, "anny")), RET_OK);
 
+  conf_node_t* node;
+  node = conf_doc_find_node(doc, doc->root, "names.[0]", FALSE);
+  ASSERT_TRUE(node != NULL);
+  ASSERT_EQ(node->node_type, CONF_NODE_SIMPLE);
+
   ASSERT_EQ(conf_doc_save_json(doc, &str), RET_OK);
   ASSERT_STREQ(
       str.str,
