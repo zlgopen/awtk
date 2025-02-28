@@ -60,12 +60,29 @@ static ret_t edit_ex_suggest_words_popup_on_close(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static inline bool_t edit_ex_widget_set_prop_is_support(const char* name) {
+  const char* not_support_props[] = {
+      WIDGET_PROP_NAME,
+  };
+  uint32_t i = 0;
+  for (i = 0; i < ARRAY_SIZE(not_support_props); i++) {
+    if (tk_str_eq(name, not_support_props[i])) {
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
+
 static ret_t edit_ex_widget_set_prop_by_object_on_visit(void* ctx, const void* data) {
   widget_t* widget = WIDGET(ctx);
   const named_value_t* nv = (const named_value_t*)(data);
   return_value_if_fail(widget != NULL && nv != NULL, RET_BAD_PARAMS);
 
-  widget_set_prop(widget, nv->name, &nv->value);
+  if (edit_ex_widget_set_prop_is_support(nv->name)) {
+    widget_set_prop(widget, nv->name, &nv->value);
+  } else {
+    log_error("%s : Not support set prop \"%s\"!\n", __FUNCTION__, nv->name);
+  }
 
   return RET_OK;
 }

@@ -2,6 +2,7 @@
 
 2025/02/28
   * 完善 sync state to children(感谢兆坤提供补丁)
+  * 完善 edit_ex(感谢兆坤提供补丁)
 
 2025/02/27
   * 增加event_source_fd对象支持fd为-1和设置fd的情况(感谢智明提供补丁)
