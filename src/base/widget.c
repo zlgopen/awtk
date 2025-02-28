@@ -901,12 +901,23 @@ static ret_t widget_sync_children_state_on_visit(widget_sync_children_state_on_v
   return RET_OK;
 }
 
-static ret_t widget_sync_state_to_children(widget_t* widget, const char* state_for_style) {
+static inline void widget_sync_state_to_children_impl(widget_t* widget,
+                                                      const char* state_for_style) {
   widget_sync_children_state_on_visit_ctx_t ctx = {
       .widget = widget,
       .state_for_style = state_for_style,
   };
-  return widget_foreach(widget, (tk_visit_t)widget_sync_children_state_on_visit, &ctx);
+  widget_foreach(widget, (tk_visit_t)widget_sync_children_state_on_visit, &ctx);
+}
+
+static inline void widget_sync_state_to_children(widget_t* widget, const char* state_for_style) {
+  if (widget->last_state_for_style == NULL) {
+    widget->last_state_for_style = (const char*)(widget->state);
+  }
+  if (!tk_str_eq(state_for_style, widget->last_state_for_style)) {
+    widget_sync_state_to_children_impl(widget, state_for_style);
+  }
+  widget->last_state_for_style = state_for_style;
 }
 
 ret_t widget_set_state(widget_t* widget, const char* state) {
@@ -914,8 +925,8 @@ ret_t widget_set_state(widget_t* widget, const char* state) {
 
   if (RET_OK == widget_set_state_impl(widget, state)) {
     if (widget->sync_state_to_children) {
-      widget_sync_state_to_children(
-          widget, widget_get_prop_str(widget, WIDGET_PROP_STATE_FOR_STYLE, widget->state));
+      /* 在获取 state_for_style 属性后，会调用 widget_sync_state_to_children 函数更新 */
+      widget_get_prop_str(widget, WIDGET_PROP_STATE_FOR_STYLE, widget->state);
     }
   }
 
@@ -928,8 +939,8 @@ ret_t widget_set_sync_state_to_children(widget_t* widget, bool_t sync_state_to_c
   widget->sync_state_to_children = sync_state_to_children;
 
   if (widget->sync_state_to_children) {
-    return widget_sync_state_to_children(
-        widget, widget_get_prop_str(widget, WIDGET_PROP_STATE_FOR_STYLE, widget->state));
+    /* 在获取 state_for_style 属性后，会调用 widget_sync_state_to_children 函数更新 */
+    widget_get_prop_str(widget, WIDGET_PROP_STATE_FOR_STYLE, widget->state);
   }
 
   return RET_OK;
@@ -943,10 +954,12 @@ ret_t widget_set_state_from_parent_sync(widget_t* widget, bool_t state_from_pare
   return RET_OK;
 }
 
-static const char* widget_get_state_for_style_impl(widget_t* widget, bool_t active,
-                                                   bool_t checked) {
+const char* widget_get_state_for_style(widget_t* widget, bool_t active, bool_t checked) {
+  const char* state = WIDGET_STATE_NORMAL;
   widget_t* iter = widget;
-  const char* state = (const char*)(widget->state);
+  return_value_if_fail(widget != NULL && widget->vt != NULL, state);
+
+  state = (const char*)(widget->state);
 
   while (iter != NULL) {
     if (!iter->enable) {
@@ -992,25 +1005,6 @@ static const char* widget_get_state_for_style_impl(widget_t* widget, bool_t acti
   }
 
   return state;
-}
-
-const char* widget_get_state_for_style(widget_t* widget, bool_t active, bool_t checked) {
-  const char* ret = WIDGET_STATE_NORMAL;
-  return_value_if_fail(widget != NULL, ret);
-
-  if (widget->last_state_for_style == NULL) {
-    widget->last_state_for_style = (const char*)(widget->state);
-  }
-
-  ret = widget_get_state_for_style_impl(widget, active, checked);
-
-  if (widget->sync_state_to_children && !tk_str_eq(ret, widget->last_state_for_style)) {
-    widget_sync_state_to_children(widget, ret);
-  }
-
-  widget->last_state_for_style = ret;
-
-  return ret;
 }
 
 ret_t widget_set_opacity(widget_t* widget, uint8_t opacity) {
@@ -2505,6 +2499,10 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
       value_set_str(v, widget->vt->type);
       ret = RET_OK;
     }
+  }
+
+  if (widget->sync_state_to_children && tk_str_eq(name, WIDGET_PROP_STATE_FOR_STYLE)) {
+    widget_sync_state_to_children(widget, value_str(v));
   }
 
   return ret;
