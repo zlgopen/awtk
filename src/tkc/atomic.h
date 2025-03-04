@@ -154,9 +154,9 @@ static ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v);
  * @param {tk_atomic_t*} atomic 原子操作类对象。
  * @param {value_t*} v 值。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {value_t} 返回操作前的旧值。
  */
-static ret_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v);
+static value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v);
 
 /**
  * @method tk_atomic_fetch_sub
@@ -166,9 +166,9 @@ static ret_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v);
  * @param {tk_atomic_t*} atomic 原子操作类对象。
  * @param {value_t*} v 值。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {value_t} 返回操作前的旧值。
  */
-static ret_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v);
+static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v);
 
 #if defined(WIN32) && !defined(MINGW)
 #include <winnt.h>
@@ -373,155 +373,193 @@ static ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v) {
   return RET_OK;
 }
 
-static ret_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
-  return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
+static value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
+  value_t ret = {};
+  return_value_if_fail(atomic != NULL && v != NULL, ret);
 
   switch (atomic->value.type) {
     case VALUE_TYPE_BOOL: {
       if (value_bool(v)) {
-        tk_atomic_store(atomic, v);
+        value_copy(&ret, v);
+        tk_atomic_exchange(atomic, &ret);
+      } else {
+        tk_atomic_load(atomic, &ret);
       }
     } break;
     case VALUE_TYPE_INT8: {
       if (1 == value_int(v)) {
-        InterlockedIncrement16((SHORT*)(&atomic->value.value.i8));
+        value_set_int8(&ret, InterlockedIncrement16((SHORT*)(&atomic->value.value.i8)));
       } else {
-        InterlockedAdd((LONG*)(&atomic->value.value.i8), (LONG)value_int8(v));
+        value_set_int8(&ret, InterlockedAdd((LONG*)(&atomic->value.value.i8), (LONG)value_int8(v)));
       }
+      /* InterlockedIncrement 和 InterlockedAdd 的返回值都是新值，需要减去增加的值得到旧值 */
+      value_sub(&ret, v, &ret);
     } break;
     case VALUE_TYPE_UINT8: {
       if (1 == value_int(v)) {
-        InterlockedIncrement16((SHORT*)(&atomic->value.value.u8));
+        value_set_uint8(&ret, InterlockedIncrement16((SHORT*)(&atomic->value.value.u8)));
       } else {
-        InterlockedAdd((LONG*)(&atomic->value.value.u8), (LONG)value_uint8(v));
+        value_set_uint8(&ret,
+                        InterlockedAdd((LONG*)(&atomic->value.value.u8), (LONG)value_uint8(v)));
       }
+      value_sub(&ret, v, &ret);
     } break;
     case VALUE_TYPE_INT16: {
       if (1 == value_int(v)) {
-        InterlockedIncrement16((SHORT*)(&atomic->value.value.i16));
+        value_set_int16(&ret, InterlockedIncrement16((SHORT*)(&atomic->value.value.i16)));
       } else {
-        InterlockedAdd((LONG*)(&atomic->value.value.i16), (LONG)value_int16(v));
+        value_set_int16(&ret,
+                        InterlockedAdd((LONG*)(&atomic->value.value.i16), (LONG)value_int16(v)));
       }
+      value_sub(&ret, v, &ret);
     } break;
     case VALUE_TYPE_UINT16: {
       if (1 == value_int(v)) {
-        InterlockedIncrement16((SHORT*)(&atomic->value.value.u16));
+        value_set_uint16(&ret, InterlockedIncrement16((SHORT*)(&atomic->value.value.u16)));
       } else {
-        InterlockedAdd((LONG*)(&atomic->value.value.u16), (LONG)value_uint16(v));
+        value_set_uint16(&ret,
+                         InterlockedAdd((LONG*)(&atomic->value.value.u16), (LONG)value_uint16(v)));
       }
+      value_sub(&ret, v, &ret);
     } break;
     case VALUE_TYPE_INT32: {
       if (1 == value_int(v)) {
-        InterlockedIncrement((LONG*)(&atomic->value.value.i32));
+        value_set_int32(&ret, InterlockedIncrement((LONG*)(&atomic->value.value.i32)));
       } else {
-        InterlockedAdd((LONG*)(&atomic->value.value.i32), (LONG)value_int32(v));
+        value_set_int32(&ret,
+                        InterlockedAdd((LONG*)(&atomic->value.value.i32), (LONG)value_int32(v)));
       }
+      value_sub(&ret, v, &ret);
     } break;
     case VALUE_TYPE_UINT32: {
       if (1 == value_int(v)) {
-        InterlockedIncrement((LONG*)(&atomic->value.value.u32));
+        value_set_uint32(&ret, InterlockedIncrement((LONG*)(&atomic->value.value.u32)));
       } else {
-        InterlockedAdd((LONG*)(&atomic->value.value.u32), (LONG)value_uint32(v));
+        value_set_uint32(&ret,
+                         InterlockedAdd((LONG*)(&atomic->value.value.u32), (LONG)value_uint32(v)));
       }
+      value_sub(&ret, v, &ret);
     } break;
     case VALUE_TYPE_INT64: {
       if (1 == value_int(v)) {
-        InterlockedIncrement64((LONG64*)(&atomic->value.value.i64));
+        value_set_int64(&ret, InterlockedIncrement64((LONG64*)(&atomic->value.value.i64)));
       } else {
-        InterlockedAdd64((LONG64*)(&atomic->value.value.i64), (LONG64)value_int64(v));
+        value_set_int64(
+            &ret, InterlockedAdd64((LONG64*)(&atomic->value.value.i64), (LONG64)value_int64(v)));
       }
+      value_sub(&ret, v, &ret);
     } break;
     case VALUE_TYPE_UINT64: {
       if (1 == value_int(v)) {
-        InterlockedIncrement64((LONG64*)(&atomic->value.value.u64));
+        value_set_uint64(&ret, InterlockedIncrement64((LONG64*)(&atomic->value.value.u64)));
       } else {
-        InterlockedAdd64((LONG64*)(&atomic->value.value.u64), (LONG64)value_uint64(v));
+        value_set_uint64(
+            &ret, InterlockedAdd64((LONG64*)(&atomic->value.value.u64), (LONG64)value_uint64(v)));
       }
+      value_sub(&ret, v, &ret);
     } break;
     default: {
       /* tk_atomic_support_value_type() 已经判断过了，正常不可能会跑到这里 */
       assert(!"Not support type!");
-      return RET_BAD_PARAMS;
     } break;
   }
 
-  return RET_OK;
+  return ret;
 }
 
-static ret_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
-  return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
+static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
+  value_t ret = {};
+  return_value_if_fail(atomic != NULL && v != NULL, ret);
 
   switch (atomic->value.type) {
     case VALUE_TYPE_BOOL: {
       if (value_bool(v)) {
-        value_t tmp;
-        tk_atomic_store(atomic, value_set_bool(&tmp, FALSE));
+        value_set_bool(&ret, FALSE);
+        tk_atomic_exchange(atomic, &ret);
+      } else {
+        tk_atomic_load(atomic, &ret);
       }
     } break;
     case VALUE_TYPE_INT8: {
       if (1 == value_int(v)) {
-        InterlockedDecrement16((SHORT*)(&atomic->value.value.i8));
+        value_set_int8(&ret, InterlockedDecrement16((SHORT*)(&atomic->value.value.i8)));
       } else {
-        InterlockedAdd((LONG*)(&atomic->value.value.i8), -(LONG)value_int8(v));
+        value_set_int8(&ret,
+                       InterlockedAdd((LONG*)(&atomic->value.value.i8), -(LONG)value_int8(v)));
       }
+      /* InterlockedDecrement 和 InterlockedAdd 的返回值都是新值，需要增加减去的值得到旧值 */
+      value_add(&ret, v, &ret);
     } break;
     case VALUE_TYPE_UINT8: {
       if (1 == value_int(v)) {
-        InterlockedDecrement16((SHORT*)(&atomic->value.value.u8));
+        value_set_uint8(&ret, InterlockedDecrement16((SHORT*)(&atomic->value.value.u8)));
       } else {
-        InterlockedAdd((LONG*)(&atomic->value.value.u8), -(LONG)value_uint8(v));
+        value_set_uint8(&ret,
+                        InterlockedAdd((LONG*)(&atomic->value.value.u8), -(LONG)value_uint8(v)));
       }
+      value_add(&ret, v, &ret);
     } break;
     case VALUE_TYPE_INT16: {
       if (1 == value_int(v)) {
-        InterlockedDecrement16((SHORT*)(&atomic->value.value.i16));
+        value_set_int16(&ret, InterlockedDecrement16((SHORT*)(&atomic->value.value.i16)));
       } else {
-        InterlockedAdd((LONG*)(&atomic->value.value.i16), -(LONG)value_int16(v));
+        value_set_int16(&ret,
+                        InterlockedAdd((LONG*)(&atomic->value.value.i16), -(LONG)value_int16(v)));
       }
+      value_add(&ret, v, &ret);
     } break;
     case VALUE_TYPE_UINT16: {
       if (1 == value_int(v)) {
-        InterlockedDecrement16((SHORT*)(&atomic->value.value.u16));
+        value_set_uint16(&ret, InterlockedDecrement16((SHORT*)(&atomic->value.value.u16)));
       } else {
-        InterlockedAdd((LONG*)(&atomic->value.value.u16), -(LONG)value_uint16(v));
+        value_set_uint16(&ret,
+                         InterlockedAdd((LONG*)(&atomic->value.value.u16), -(LONG)value_uint16(v)));
       }
+      value_add(&ret, v, &ret);
     } break;
     case VALUE_TYPE_INT32: {
       if (1 == value_int(v)) {
-        InterlockedDecrement((LONG*)(&atomic->value.value.i32));
+        value_set_int32(&ret, InterlockedDecrement((LONG*)(&atomic->value.value.i32)));
       } else {
-        InterlockedAdd((LONG*)(&atomic->value.value.i32), -(LONG)value_int32(v));
+        value_set_int32(&ret,
+                        InterlockedAdd((LONG*)(&atomic->value.value.i32), -(LONG)value_int32(v)));
       }
+      value_add(&ret, v, &ret);
     } break;
     case VALUE_TYPE_UINT32: {
       if (1 == value_int(v)) {
-        InterlockedDecrement((LONG*)(&atomic->value.value.u32));
+        value_set_uint32(&ret, InterlockedDecrement((LONG*)(&atomic->value.value.u32)));
       } else {
-        InterlockedAdd((LONG*)(&atomic->value.value.u32), -(LONG)value_uint32(v));
+        value_set_uint32(&ret,
+                         InterlockedAdd((LONG*)(&atomic->value.value.u32), -(LONG)value_uint32(v)));
       }
+      value_add(&ret, v, &ret);
     } break;
     case VALUE_TYPE_INT64: {
       if (1 == value_int(v)) {
-        InterlockedDecrement64((LONG64*)(&atomic->value.value.i64));
+        value_set_int64(&ret, InterlockedDecrement64((LONG64*)(&atomic->value.value.i64)));
       } else {
-        InterlockedAdd64((LONG64*)(&atomic->value.value.i64), -(LONG64)value_int64(v));
+        value_set_int64(
+            &ret, InterlockedAdd64((LONG64*)(&atomic->value.value.i64), -(LONG64)value_int64(v)));
       }
+      value_add(&ret, v, &ret);
     } break;
     case VALUE_TYPE_UINT64: {
       if (1 == value_int(v)) {
-        InterlockedDecrement64((LONG64*)(&atomic->value.value.u64));
+        value_set_uint64(&ret, InterlockedDecrement64((LONG64*)(&atomic->value.value.u64)));
       } else {
-        InterlockedAdd64((LONG64*)(&atomic->value.value.u64), -(LONG64)value_uint64(v));
+        value_set_uint64(
+            &ret, InterlockedAdd64((LONG64*)(&atomic->value.value.u64), -(LONG64)value_uint64(v)));
       }
+      value_add(&ret, v, &ret);
     } break;
     default: {
       /* tk_atomic_support_value_type() 已经判断过了，正常不可能会跑到这里 */
       assert(!"Not support type!");
-      return RET_BAD_PARAMS;
     } break;
   }
 
-  return RET_OK;
+  return ret;
 }
 #elif ((__cplusplus >= 201103L) || (__STDC_VERSION__ >= 201112L)) && !defined(__STDC_NO_ATOMICS__)
 #ifdef __cplusplus
@@ -846,91 +884,96 @@ static ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v) {
   return RET_OK;
 }
 
-static ret_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
-  return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
+static value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
+  value_t ret = {};
+  return_value_if_fail(atomic != NULL && v != NULL, ret);
 
   switch (atomic->type) {
     case VALUE_TYPE_BOOL: {
       if (value_bool(v)) {
-        tk_atomic_store(atomic, v);
+        value_copy(&ret, v);
+        tk_atomic_exchange(atomic, &ret);
+      } else {
+        tk_atomic_load(atomic, &ret);
       }
     } break;
     case VALUE_TYPE_INT8: {
-      atomic_fetch_add(&atomic->value.i8, value_int8(v));
+      value_set_int8(&ret, atomic_fetch_add(&atomic->value.i8, value_int8(v)));
     } break;
     case VALUE_TYPE_UINT8: {
-      atomic_fetch_add(&atomic->value.u8, value_uint8(v));
+      value_set_uint8(&ret, atomic_fetch_add(&atomic->value.u8, value_uint8(v)));
     } break;
     case VALUE_TYPE_INT16: {
-      atomic_fetch_add(&atomic->value.i16, value_int16(v));
+      value_set_int16(&ret, atomic_fetch_add(&atomic->value.i16, value_int16(v)));
     } break;
     case VALUE_TYPE_UINT16: {
-      atomic_fetch_add(&atomic->value.u16, value_uint16(v));
+      value_set_uint16(&ret, atomic_fetch_add(&atomic->value.u16, value_uint16(v)));
     } break;
     case VALUE_TYPE_INT32: {
-      atomic_fetch_add(&atomic->value.i32, value_int32(v));
+      value_set_int32(&ret, atomic_fetch_add(&atomic->value.i32, value_int32(v)));
     } break;
     case VALUE_TYPE_UINT32: {
-      atomic_fetch_add(&atomic->value.u32, value_uint32(v));
+      value_set_uint32(&ret, atomic_fetch_add(&atomic->value.u32, value_uint32(v)));
     } break;
     case VALUE_TYPE_INT64: {
-      atomic_fetch_add(&atomic->value.i64, value_int64(v));
+      value_set_int64(&ret, atomic_fetch_add(&atomic->value.i64, value_int64(v)));
     } break;
     case VALUE_TYPE_UINT64: {
-      atomic_fetch_add(&atomic->value.u64, value_uint64(v));
+      value_set_uint64(&ret, atomic_fetch_add(&atomic->value.u64, value_uint64(v)));
     } break;
     default: {
       /* tk_atomic_support_value_type() 已经判断过了，正常不可能会跑到这里 */
       assert(!"Not support type!");
-      return RET_BAD_PARAMS;
     } break;
   }
 
-  return RET_OK;
+  return ret;
 }
 
-static ret_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
-  return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
+static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
+  value_t ret = {};
+  return_value_if_fail(atomic != NULL && v != NULL, ret);
 
   switch (atomic->type) {
     case VALUE_TYPE_BOOL: {
       if (value_bool(v)) {
-        value_t tmp;
-        tk_atomic_store(atomic, value_set_bool(&tmp, FALSE));
+        value_set_bool(&ret, FALSE);
+        tk_atomic_exchange(atomic, &ret);
+      } else {
+        tk_atomic_load(atomic, &ret);
       }
     } break;
     case VALUE_TYPE_INT8: {
-      atomic_fetch_sub(&atomic->value.i8, value_int8(v));
+      value_set_int8(&ret, atomic_fetch_sub(&atomic->value.i8, value_int8(v)));
     } break;
     case VALUE_TYPE_UINT8: {
-      atomic_fetch_sub(&atomic->value.u8, value_uint8(v));
+      value_set_uint8(&ret, atomic_fetch_sub(&atomic->value.u8, value_uint8(v)));
     } break;
     case VALUE_TYPE_INT16: {
-      atomic_fetch_sub(&atomic->value.i16, value_int16(v));
+      value_set_int16(&ret, atomic_fetch_sub(&atomic->value.i16, value_int16(v)));
     } break;
     case VALUE_TYPE_UINT16: {
-      atomic_fetch_sub(&atomic->value.u16, value_uint16(v));
+      value_set_uint16(&ret, atomic_fetch_sub(&atomic->value.u16, value_uint16(v)));
     } break;
     case VALUE_TYPE_INT32: {
-      atomic_fetch_sub(&atomic->value.i32, value_int32(v));
+      value_set_int32(&ret, atomic_fetch_sub(&atomic->value.i32, value_int32(v)));
     } break;
     case VALUE_TYPE_UINT32: {
-      atomic_fetch_sub(&atomic->value.u32, value_uint32(v));
+      value_set_uint32(&ret, atomic_fetch_sub(&atomic->value.u32, value_uint32(v)));
     } break;
     case VALUE_TYPE_INT64: {
-      atomic_fetch_sub(&atomic->value.i64, value_int64(v));
+      value_set_int64(&ret, atomic_fetch_sub(&atomic->value.i64, value_int64(v)));
     } break;
     case VALUE_TYPE_UINT64: {
-      atomic_fetch_sub(&atomic->value.u64, value_uint64(v));
+      value_set_uint64(&ret, atomic_fetch_sub(&atomic->value.u64, value_uint64(v)));
     } break;
     default: {
       /* tk_atomic_support_value_type() 已经判断过了，正常不可能会跑到这里 */
       assert(!"Not support type!");
-      return RET_BAD_PARAMS;
     } break;
   }
 
-  return RET_OK;
+  return ret;
 }
 #else
 /* 不支持原子操作，已退化为互斥锁，编译时请指定C11以上的C语言标准，以确保支持原子操作！ */
@@ -1065,29 +1108,31 @@ static inline ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v) {
   return ret;
 }
 
-static inline ret_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
-  ret_t ret = RET_OK;
-  return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
+static inline value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
+  value_t ret = {};
+  return_value_if_fail(atomic != NULL && v != NULL, ret);
 
-  ret = tk_mutex_lock(atomic->lock);
-  return_value_if_fail(RET_OK == ret, ret);
+  return_value_if_fail(RET_OK == tk_mutex_lock(atomic->lock), ret);
 
-  ret = value_add(&atomic->value, v, &atomic->value);
+  value_copy(&ret, &atomic->value);
+  value_add(&atomic->value, v, &atomic->value);
 
   tk_mutex_unlock(atomic->lock);
+
   return ret;
 }
 
-static inline ret_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
-  ret_t ret = RET_OK;
-  return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
+static inline value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
+  value_t ret = {};
+  return_value_if_fail(atomic != NULL && v != NULL, ret);
 
-  ret = tk_mutex_lock(atomic->lock);
-  return_value_if_fail(RET_OK == ret, ret);
+  return_value_if_fail(RET_OK == tk_mutex_lock(atomic->lock), ret);
 
-  ret = value_sub(&atomic->value, v, &atomic->value);
+  value_copy(&ret, &atomic->value);
+  value_sub(&atomic->value, v, &atomic->value);
 
   tk_mutex_unlock(atomic->lock);
+
   return ret;
 }
 #endif
