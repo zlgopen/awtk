@@ -158,11 +158,12 @@ static ret_t edit_ex_suggest_words_widget_props_format_parse(edit_ex_t* edit_ex,
   str_init(&value, 0);
 
   for (prop_format = tokenizer_next(&t); prop_format != NULL; prop_format = tokenizer_next(&t)) {
-    tokenizer_t t_sub;
-    tokenizer_init(&t_sub, prop_format, UINT32_MAX, "=");
-    str_set(&name, tokenizer_next(&t_sub));
+    const char* iter_eq = strchr(prop_format, '=');
+    return_value_if_fail(iter_eq != NULL, RET_BAD_PARAMS);
+
+    str_set_with_len(&name, prop_format, iter_eq - prop_format);
     str_trim(&name, " \r\n");
-    str_set(&value, tokenizer_next(&t_sub));
+    str_set(&value, iter_eq + 1);
     str_trim(&value, " \r\n");
     if (name.size > 0 && value.size > 0) {
       if (value.str[0] == '$') {
@@ -171,7 +172,6 @@ static ret_t edit_ex_suggest_words_widget_props_format_parse(edit_ex_t* edit_ex,
       }
       widget_set_prop_str(widget, name.str, value.str);
     }
-    tokenizer_deinit(&t_sub);
   }
 
   str_reset(&value);
