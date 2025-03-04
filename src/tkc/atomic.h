@@ -374,7 +374,8 @@ static ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v) {
 }
 
 static value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
-  value_t ret = {};
+  value_t ret;
+  memset(&ret, 0, sizeof(value_t));
   return_value_if_fail(atomic != NULL && v != NULL, ret);
 
   switch (atomic->value.type) {
@@ -468,7 +469,8 @@ static value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
 }
 
 static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
-  value_t ret = {};
+  value_t ret;
+  memset(&ret, 0, sizeof(value_t));
   return_value_if_fail(atomic != NULL && v != NULL, ret);
 
   switch (atomic->value.type) {
@@ -885,7 +887,8 @@ static ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v) {
 }
 
 static value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
-  value_t ret = {};
+  value_t ret;
+  memset(&ret, 0, sizeof(value_t));
   return_value_if_fail(atomic != NULL && v != NULL, ret);
 
   switch (atomic->type) {
@@ -931,7 +934,8 @@ static value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
 }
 
 static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
-  value_t ret = {};
+  value_t ret;
+  memset(&ret, 0, sizeof(value_t));
   return_value_if_fail(atomic != NULL && v != NULL, ret);
 
   switch (atomic->type) {
@@ -1109,7 +1113,8 @@ static inline ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v) {
 }
 
 static inline value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
-  value_t ret = {};
+  value_t ret;
+  memset(&ret, 0, sizeof(value_t));
   return_value_if_fail(atomic != NULL && v != NULL, ret);
 
   return_value_if_fail(RET_OK == tk_mutex_lock(atomic->lock), ret);
@@ -1123,7 +1128,8 @@ static inline value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
 }
 
 static inline value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
-  value_t ret = {};
+  value_t ret;
+  memset(&ret, 0, sizeof(value_t));
   return_value_if_fail(atomic != NULL && v != NULL, ret);
 
   return_value_if_fail(RET_OK == tk_mutex_lock(atomic->lock), ret);

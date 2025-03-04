@@ -4,6 +4,7 @@
   * 完善 edit_ex(感谢兆坤提供补丁)
   * 完善 atomic(感谢兆坤提供补丁)
   * 完善 sync state to children(感谢兆坤提供补丁)
+  * 修复 atomic 在 c 上编译报错的问题(感谢兆坤提供补丁)
 
 2025/02/28
   * 完善 sync state to children(感谢兆坤提供补丁)
