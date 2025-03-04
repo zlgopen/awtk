@@ -911,8 +911,8 @@ static inline void widget_sync_state_to_children_impl(widget_t* widget,
 }
 
 static inline void widget_sync_state_to_children(widget_t* widget, const char* state_for_style) {
-  if (widget->last_state_for_style == NULL) {
-    widget->last_state_for_style = (const char*)(widget->state);
+  if (widget->loading || !widget_is_window_opened(widget)) {
+    return;
   }
   if (!tk_str_eq(state_for_style, widget->last_state_for_style)) {
     widget_sync_state_to_children_impl(widget, state_for_style);
