@@ -45,6 +45,12 @@
 #endif
 #endif /* TK_DISABLE_DEPRECATE_WARNINGS */
 
+#if defined(__GNUC__)
+#define TK_MAYBE_UNUSED __attribute__((unused))
+#else
+#define TK_MAYBE_UNUSED
+#endif
+
 #include <stdarg.h>
 #include <ctype.h>
 #include <errno.h>

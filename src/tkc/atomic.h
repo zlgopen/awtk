@@ -37,7 +37,7 @@
  *
  * @return {bool_t} 返回 TRUE 表示支持，FALSE 表示不支持。
  */
-static inline bool_t tk_atomic_support_value_type(value_type_t type) {
+inline static bool_t tk_atomic_support_value_type(value_type_t type) {
   switch (type) {
     case VALUE_TYPE_BOOL:
     case VALUE_TYPE_INT8:
@@ -177,13 +177,13 @@ struct _tk_atomic_t {
   volatile value_t value;
 };
 
-static inline ret_t tk_atomic_deinit(tk_atomic_t* atomic) {
+inline static ret_t tk_atomic_deinit(tk_atomic_t* atomic) {
   return_value_if_fail(atomic != NULL, RET_BAD_PARAMS);
   memset(atomic, 0, sizeof(tk_atomic_t));
   return RET_OK;
 }
 
-static inline ret_t tk_atomic_init(tk_atomic_t* atomic, const value_t* v) {
+inline static ret_t tk_atomic_init(tk_atomic_t* atomic, const value_t* v) {
   ret_t ret = RET_OK;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(tk_atomic_support_value_type(v->type), RET_BAD_PARAMS);
@@ -197,7 +197,7 @@ static inline ret_t tk_atomic_init(tk_atomic_t* atomic, const value_t* v) {
   return ret;
 }
 
-static ret_t tk_atomic_exchange(tk_atomic_t* atomic, value_t* v) {
+TK_MAYBE_UNUSED static ret_t tk_atomic_exchange(tk_atomic_t* atomic, value_t* v) {
   value_t tmp;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
 
@@ -248,13 +248,13 @@ static ret_t tk_atomic_exchange(tk_atomic_t* atomic, value_t* v) {
   return value_copy(v, &tmp);
 }
 
-static inline bool_t tk_atomic_compare_exchange_weak(tk_atomic_t* atomic, value_t* expect,
+inline static bool_t tk_atomic_compare_exchange_weak(tk_atomic_t* atomic, value_t* expect,
                                                      value_t* desire) {
   return tk_atomic_compare_exchange_strong(atomic, expect, desire);
 }
 
-static bool_t tk_atomic_compare_exchange_strong(tk_atomic_t* atomic, value_t* expect,
-                                                value_t* desire) {
+TK_MAYBE_UNUSED static bool_t tk_atomic_compare_exchange_strong(tk_atomic_t* atomic,
+                                                                value_t* expect, value_t* desire) {
   bool_t ret = TRUE;
   value_t tmp;
   return_value_if_fail(atomic != NULL && expect != NULL && desire != NULL, FALSE);
@@ -320,7 +320,7 @@ static bool_t tk_atomic_compare_exchange_strong(tk_atomic_t* atomic, value_t* ex
   return ret;
 }
 
-static inline ret_t tk_atomic_store(tk_atomic_t* atomic, const value_t* v) {
+inline static ret_t tk_atomic_store(tk_atomic_t* atomic, const value_t* v) {
   value_t tmp;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
 
@@ -328,7 +328,7 @@ static inline ret_t tk_atomic_store(tk_atomic_t* atomic, const value_t* v) {
   return tk_atomic_exchange(atomic, &tmp);
 }
 
-static ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v) {
+TK_MAYBE_UNUSED static ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v) {
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
 
   value_set_int(v, 0);
@@ -373,7 +373,7 @@ static ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v) {
   return RET_OK;
 }
 
-static value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
+TK_MAYBE_UNUSED static value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
   value_t ret;
   memset(&ret, 0, sizeof(value_t));
   return_value_if_fail(atomic != NULL && v != NULL, ret);
@@ -468,7 +468,7 @@ static value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
   return ret;
 }
 
-static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
+TK_MAYBE_UNUSED static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
   value_t ret;
   memset(&ret, 0, sizeof(value_t));
   return_value_if_fail(atomic != NULL && v != NULL, ret);
@@ -586,13 +586,13 @@ struct _tk_atomic_t {
   } value;
 };
 
-static inline ret_t tk_atomic_deinit(tk_atomic_t* atomic) {
+inline static ret_t tk_atomic_deinit(tk_atomic_t* atomic) {
   return_value_if_fail(atomic != NULL, RET_BAD_PARAMS);
   memset(atomic, 0, sizeof(tk_atomic_t));
   return RET_OK;
 }
 
-static ret_t tk_atomic_init(tk_atomic_t* atomic, const value_t* v) {
+TK_MAYBE_UNUSED static ret_t tk_atomic_init(tk_atomic_t* atomic, const value_t* v) {
   ret_t ret = RET_OK;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(tk_atomic_support_value_type(v->type), RET_BAD_PARAMS);
@@ -640,7 +640,7 @@ static ret_t tk_atomic_init(tk_atomic_t* atomic, const value_t* v) {
   return ret;
 }
 
-static ret_t tk_atomic_exchange(tk_atomic_t* atomic, value_t* v) {
+TK_MAYBE_UNUSED static ret_t tk_atomic_exchange(tk_atomic_t* atomic, value_t* v) {
   value_t tmp;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
 
@@ -682,8 +682,8 @@ static ret_t tk_atomic_exchange(tk_atomic_t* atomic, value_t* v) {
   return value_copy(v, &tmp);
 }
 
-static bool_t tk_atomic_compare_exchange_weak(tk_atomic_t* atomic, value_t* expect,
-                                              value_t* desire) {
+TK_MAYBE_UNUSED static bool_t tk_atomic_compare_exchange_weak(tk_atomic_t* atomic, value_t* expect,
+                                                              value_t* desire) {
   bool_t ret = TRUE;
   return_value_if_fail(atomic != NULL && expect != NULL && desire != NULL, FALSE);
 
@@ -743,8 +743,8 @@ static bool_t tk_atomic_compare_exchange_weak(tk_atomic_t* atomic, value_t* expe
   return ret;
 }
 
-static bool_t tk_atomic_compare_exchange_strong(tk_atomic_t* atomic, value_t* expect,
-                                                value_t* desire) {
+TK_MAYBE_UNUSED static bool_t tk_atomic_compare_exchange_strong(tk_atomic_t* atomic,
+                                                                value_t* expect, value_t* desire) {
   bool_t ret = TRUE;
   return_value_if_fail(atomic != NULL && expect != NULL && desire != NULL, FALSE);
 
@@ -804,7 +804,7 @@ static bool_t tk_atomic_compare_exchange_strong(tk_atomic_t* atomic, value_t* ex
   return ret;
 }
 
-static ret_t tk_atomic_store(tk_atomic_t* atomic, const value_t* v) {
+TK_MAYBE_UNUSED static ret_t tk_atomic_store(tk_atomic_t* atomic, const value_t* v) {
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
 
   switch (atomic->type) {
@@ -845,7 +845,7 @@ static ret_t tk_atomic_store(tk_atomic_t* atomic, const value_t* v) {
   return RET_OK;
 }
 
-static ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v) {
+TK_MAYBE_UNUSED static ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v) {
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
 
   switch (atomic->type) {
@@ -886,7 +886,7 @@ static ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v) {
   return RET_OK;
 }
 
-static value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
+TK_MAYBE_UNUSED static value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
   value_t ret;
   memset(&ret, 0, sizeof(value_t));
   return_value_if_fail(atomic != NULL && v != NULL, ret);
@@ -933,7 +933,7 @@ static value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
   return ret;
 }
 
-static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
+TK_MAYBE_UNUSED static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
   value_t ret;
   memset(&ret, 0, sizeof(value_t));
   return_value_if_fail(atomic != NULL && v != NULL, ret);
@@ -1002,7 +1002,7 @@ struct _tk_atomic_t {
   tk_mutex_t* lock;
 };
 
-static inline ret_t tk_atomic_deinit(tk_atomic_t* atomic) {
+inline static ret_t tk_atomic_deinit(tk_atomic_t* atomic) {
   ret_t ret = RET_OK;
   return_value_if_fail(atomic != NULL, RET_BAD_PARAMS);
   if (atomic->lock != NULL) {
@@ -1014,7 +1014,7 @@ static inline ret_t tk_atomic_deinit(tk_atomic_t* atomic) {
   return ret;
 }
 
-static inline ret_t tk_atomic_init(tk_atomic_t* atomic, const value_t* v) {
+inline static ret_t tk_atomic_init(tk_atomic_t* atomic, const value_t* v) {
   ret_t ret = RET_OK;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(tk_atomic_support_value_type(v->type), RET_BAD_PARAMS);
@@ -1031,7 +1031,7 @@ static inline ret_t tk_atomic_init(tk_atomic_t* atomic, const value_t* v) {
   return ret;
 }
 
-static inline ret_t tk_atomic_exchange(tk_atomic_t* atomic, value_t* v) {
+inline static ret_t tk_atomic_exchange(tk_atomic_t* atomic, value_t* v) {
   ret_t ret = RET_OK;
   value_t tmp;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
@@ -1048,7 +1048,7 @@ static inline ret_t tk_atomic_exchange(tk_atomic_t* atomic, value_t* v) {
   return ret;
 }
 
-static inline bool_t tk_atomic_compare_exchange_weak(tk_atomic_t* atomic, value_t* expect,
+inline static bool_t tk_atomic_compare_exchange_weak(tk_atomic_t* atomic, value_t* expect,
                                                      value_t* desire) {
   bool_t ret = TRUE;
   return_value_if_fail(atomic != NULL && expect != NULL && desire != NULL, FALSE);
@@ -1068,7 +1068,7 @@ static inline bool_t tk_atomic_compare_exchange_weak(tk_atomic_t* atomic, value_
   return ret;
 }
 
-static inline bool_t tk_atomic_compare_exchange_strong(tk_atomic_t* atomic, value_t* expect,
+inline static bool_t tk_atomic_compare_exchange_strong(tk_atomic_t* atomic, value_t* expect,
                                                        value_t* desire) {
   bool_t ret = TRUE;
   return_value_if_fail(atomic != NULL && expect != NULL && desire != NULL, FALSE);
@@ -1086,7 +1086,7 @@ static inline bool_t tk_atomic_compare_exchange_strong(tk_atomic_t* atomic, valu
   return ret;
 }
 
-static inline ret_t tk_atomic_store(tk_atomic_t* atomic, const value_t* v) {
+inline static ret_t tk_atomic_store(tk_atomic_t* atomic, const value_t* v) {
   ret_t ret = RET_OK;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
 
@@ -1099,7 +1099,7 @@ static inline ret_t tk_atomic_store(tk_atomic_t* atomic, const value_t* v) {
   return ret;
 }
 
-static inline ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v) {
+inline static ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v) {
   ret_t ret = RET_OK;
   return_value_if_fail(atomic != NULL && v != NULL, RET_BAD_PARAMS);
 
@@ -1112,7 +1112,7 @@ static inline ret_t tk_atomic_load(const tk_atomic_t* atomic, value_t* v) {
   return ret;
 }
 
-static inline value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
+inline static value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
   value_t ret;
   memset(&ret, 0, sizeof(value_t));
   return_value_if_fail(atomic != NULL && v != NULL, ret);
@@ -1127,7 +1127,7 @@ static inline value_t tk_atomic_fetch_add(tk_atomic_t* atomic, value_t* v) {
   return ret;
 }
 
-static inline value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
+inline static value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
   value_t ret;
   memset(&ret, 0, sizeof(value_t));
   return_value_if_fail(atomic != NULL && v != NULL, ret);
@@ -1153,7 +1153,7 @@ static inline value_t tk_atomic_fetch_sub(tk_atomic_t* atomic, value_t* v) {
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-static inline ret_t tk_atomic_destroy(tk_atomic_t* atomic) {
+inline static ret_t tk_atomic_destroy(tk_atomic_t* atomic) {
   ret_t ret = RET_OK;
   return_value_if_fail(atomic != NULL, RET_BAD_PARAMS);
 
@@ -1175,7 +1175,7 @@ static inline ret_t tk_atomic_destroy(tk_atomic_t* atomic) {
  *
  * @return {tk_atomic_t*} 返回原子操作类对象。
  */
-static inline tk_atomic_t* tk_atomic_create(const value_t* v) {
+inline static tk_atomic_t* tk_atomic_create(const value_t* v) {
   tk_atomic_t* ret = NULL;
   return_value_if_fail(v != NULL, NULL);
   return_value_if_fail(tk_atomic_support_value_type(v->type), NULL);
