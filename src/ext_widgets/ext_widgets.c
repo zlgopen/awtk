@@ -34,6 +34,9 @@
 #define WITH_WIDGET_SERIAL 1
 #endif /*WITH_WIDGET_SERIAL*/
 
+#ifndef WITH_WIDGET_EDIT_EX
+#define WITH_WIDGET_EDIT_EX 1
+#endif /*WITH_WIDGET_EDIT_EX*/
 #endif /*WITH_SDL*/
 
 #include "ext_widgets.h"
@@ -129,7 +132,6 @@ ret_t tk_ext_widgets_init(void) {
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_MLEDIT, mledit_create)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_LINE_NUMBER, line_number_create)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_HSCROLL_LABEL, hscroll_label_create)
-  FACTORY_TABLE_ENTRY(WIDGET_TYPE_EDIT_EX, edit_ex_create)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_COMBO_BOX_EX, combo_box_ex_create)
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_DRAGGABLE, draggable_create)
 
@@ -151,6 +153,10 @@ ret_t tk_ext_widgets_init(void) {
 #ifdef TK_FILE_BROWSER_VIEW_H
   FACTORY_TABLE_ENTRY(WIDGET_TYPE_FILE_BROWSER_VIEW, file_browser_view_create)
 #endif /*TK_FILE_BROWSER_VIEW_H*/
+
+#ifdef WITH_WIDGET_EDIT_EX
+  FACTORY_TABLE_ENTRY(WIDGET_TYPE_EDIT_EX, edit_ex_create)
+#endif /*WITH_WIDGET_EDIT_EX*/
   FACTORY_TABLE_END()
 
   children_layouter_register_ext_builtins();
