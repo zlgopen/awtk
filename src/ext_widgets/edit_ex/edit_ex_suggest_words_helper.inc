@@ -296,9 +296,10 @@ typedef struct _edit_ex_update_suggest_words_popup_ctx_t {
   edit_ex_t* edit_ex;
   widget_t* list_view;
   widget_t* scroll_view;
+  darray_t* used_format_names;
   uint32_t curr_index;
   int32_t item_width;
-  darray_t* used_format_names;
+  bool_t index_changed : 1;
 } edit_ex_update_suggest_words_popup_ctx_t;
 
 static ret_t edit_ex_update_suggest_words_popup_on_item_visit(void* ctx, const void* data) {
@@ -382,7 +383,6 @@ static ret_t edit_ex_update_suggest_words_popup_on_visit(void* ctx, const void* 
   edit_ex_update_suggest_words_popup_ctx_t* actx = (edit_ex_update_suggest_words_popup_ctx_t*)(ctx);
   const value_t* v = (const value_t*)data;
   widget_t* item = NULL;
-  bool_t index_changed = FALSE;
   return_value_if_fail(actx != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(
       actx->edit_ex != NULL && actx->scroll_view != NULL && actx->list_view != NULL,
@@ -418,7 +418,7 @@ static ret_t edit_ex_update_suggest_words_popup_on_visit(void* ctx, const void* 
         if (tk_str_eq(iter_format_name, format_name)) {
           item = iter;
           widget_restack(item, actx->curr_index);
-          index_changed = TRUE;
+          actx->index_changed = TRUE;
           break;
         }
         WIDGET_FOR_EACH_CHILD_END()
@@ -429,7 +429,7 @@ static ret_t edit_ex_update_suggest_words_popup_on_visit(void* ctx, const void* 
       item = widget_clone(model, actx->scroll_view);
       return_value_if_fail(item != NULL, RET_OOM);
       widget_restack(item, actx->curr_index);
-      index_changed = TRUE;
+      actx->index_changed = TRUE;
     }
 
     WIDGET_FOR_EACH_CHILD_BEGIN(item, iter, i)
@@ -439,16 +439,18 @@ static ret_t edit_ex_update_suggest_words_popup_on_visit(void* ctx, const void* 
     const char* suggest = value_str(v);
     return_value_if_fail(suggest != NULL, RET_FAIL);
 
+    actx->index_changed = FALSE;
+
     item = widget_get_child(actx->scroll_view, actx->curr_index);
     if (item == NULL) {
       item = edit_ex_suggest_words_create_item(actx->edit_ex, actx->scroll_view);
       return_value_if_fail(item != NULL, RET_OOM);
-      index_changed = TRUE;
+      actx->index_changed = TRUE;
     }
     widget_set_text_utf8(item, suggest);
   }
 
-  if (index_changed) {
+  if (actx->index_changed) {
     ret_t ret = RET_OK;
     value_t tmp;
     if ((actx->curr_index + 1) % 2 != 0) { /* 0 为第一项，所以是奇数项 */
