@@ -694,7 +694,7 @@ ret_t vgcanvas_close_path(vgcanvas_t* vg);
  * @method vgcanvas_path_winding
  * 设置路径填充实心与否。
  *
- * >CCW(1)为实心，CW(2)为镂空，设置其他则默认根据非零环绕规则判断(nonzero)。
+ * >设置为FALSE为实心，TRUE为镂空。
  *
  * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。

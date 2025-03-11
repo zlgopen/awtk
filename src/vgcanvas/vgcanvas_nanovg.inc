@@ -246,7 +246,7 @@ static ret_t vgcanvas_nanovg_close_path(vgcanvas_t* vgcanvas) {
 static ret_t vgcanvas_nanovg_path_winding(vgcanvas_t* vgcanvas, bool_t dir) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
-  nvgPathWinding(vg, dir);
+  nvgPathWinding(vg, dir ? NVG_CW : NVG_CCW);
 
   return RET_OK;
 }
