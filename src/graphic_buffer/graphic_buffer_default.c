@@ -206,18 +206,30 @@ graphic_buffer_t* graphic_buffer_create_with_data_ex(const uint8_t* virtual_data
                                                      const uint8_t* physical_data, uint32_t w,
                                                      uint32_t h, uint32_t line_length,
                                                      bitmap_format_t format) {
-  return graphic_buffer_create_with_data(virtual_data, w, h, format);
+  graphic_buffer_default_t* buffer = (graphic_buffer_default_t*)graphic_buffer_create_with_data(virtual_data, w, h, format);
+  if (buffer != NULL && line_length != 0) {
+    buffer->line_length = line_length;
+  }
+  return GRAPHIC_BUFFER(buffer);
 }
 
 ret_t graphic_buffer_create_for_bitmap(bitmap_t* bitmap) {
+  graphic_buffer_default_t* buffer = NULL;
   uint32_t line_length = bitmap_get_line_length(bitmap);
   return_value_if_fail(bitmap != NULL && bitmap->buffer == NULL, RET_BAD_PARAMS);
 
-  bitmap->buffer = graphic_buffer_default_create(bitmap->w, bitmap->h,
-                                                 (bitmap_format_t)(bitmap->format), line_length);
-  bitmap->should_free_data = bitmap->buffer != NULL;
-
-  return bitmap->buffer != NULL ? RET_OK : RET_OOM;
+  buffer = (graphic_buffer_default_t*)graphic_buffer_default_create(bitmap->w, bitmap->h,
+                                                                    (bitmap_format_t)(bitmap->format), line_length);
+  if (buffer != NULL) {
+    bitmap->buffer = GRAPHIC_BUFFER(buffer);
+    bitmap->should_free_data = TRUE;
+    bitmap->line_length = buffer->line_length;
+    return RET_OK;
+  } else {
+    bitmap->buffer = NULL;
+    bitmap->should_free_data = FALSE; 
+    return RET_OOM;
+  }
 }
 
 static graphic_buffer_default_t* graphic_buffer_default_cast(graphic_buffer_t* buffer) {

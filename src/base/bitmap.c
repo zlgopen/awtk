@@ -675,41 +675,17 @@ uint32_t bitmap_get_line_length(bitmap_t* bitmap) {
 
 uint32_t bitmap_get_physical_line_length(bitmap_t* bitmap) {
   return_value_if_fail(bitmap != NULL, 0);
-
-  if (bitmap_flag_is_lcd_orientation(bitmap)) {
-    uint32_t ret = graphic_buffer_get_physical_line_length(bitmap->buffer);
-    if (ret != 0) {
-      return ret;
-    }
-  }
-
-  return bitmap_get_line_length(bitmap);
+  return graphic_buffer_get_physical_line_length(bitmap->buffer);
 }
 
 uint32_t bitmap_get_physical_width(bitmap_t* bitmap) {
-  uint32_t ret = 0;
   return_value_if_fail(bitmap != NULL, 0);
-
-  if (bitmap_flag_is_lcd_orientation(bitmap)) {
-    ret = graphic_buffer_get_physical_width(bitmap->buffer);
-    if (ret != 0) {
-      return ret;
-    }
-  }
-  return bitmap->w;
+  return graphic_buffer_get_physical_width(bitmap->buffer);
 }
 
 uint32_t bitmap_get_physical_height(bitmap_t* bitmap) {
-  uint32_t ret = 0;
   return_value_if_fail(bitmap != NULL, 0);
-
-  if (bitmap_flag_is_lcd_orientation(bitmap)) {
-    ret = graphic_buffer_get_physical_height(bitmap->buffer);
-    if (ret != 0) {
-      return ret;
-    }
-  }
-  return bitmap->h;
+  return graphic_buffer_get_physical_height(bitmap->buffer);
 }
 
 ret_t rgba_data_premulti_alpha(const uint8_t* data, uint8_t a_index, uint32_t w, uint32_t h) {
@@ -949,6 +925,7 @@ uint8_t* bitmap_lock_buffer_for_read(bitmap_t* bitmap) {
   if (bitmap->buffer != NULL) {
     if (!graphic_buffer_is_valid_for(bitmap->buffer, bitmap)) {
       assert(!" graphic_buffer is not valid ");
+      return NULL;
     }
     data = graphic_buffer_lock_for_read(bitmap->buffer);
   }
@@ -967,6 +944,7 @@ uint8_t* bitmap_lock_buffer_for_write(bitmap_t* bitmap) {
   if (bitmap->buffer != NULL) {
     if (!graphic_buffer_is_valid_for(bitmap->buffer, bitmap)) {
       assert(!" graphic_buffer is not valid ");
+      return NULL;
     }
     data = graphic_buffer_lock_for_write(bitmap->buffer);
   }
