@@ -989,14 +989,14 @@ float_t vgcanvas_measure_text(vgcanvas_t* vg, const char* text);
  * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {bitmap_t*} img 图片。
- * @param {float_t} sx sx
- * @param {float_t} sy sy
- * @param {float_t} sw sw
- * @param {float_t} sh sh
- * @param {float_t} dx dx
- * @param {float_t} dy dy
- * @param {float_t} dw dw
- * @param {float_t} dh dh
+ * @param {float_t} sx 原图区域的 x
+ * @param {float_t} sy 原图区域的 y
+ * @param {float_t} sw 原图区域的 w
+ * @param {float_t} sh 原图区域的 h
+ * @param {float_t} dx 绘制区域的 x
+ * @param {float_t} dy 绘制区域的 y
+ * @param {float_t} dw 绘制区域的 w
+ * @param {float_t} dh 绘制区域的 h
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -1040,14 +1040,14 @@ ret_t vgcanvas_draw_image_repeat(vgcanvas_t* vg, bitmap_t* img, float_t sx, floa
  * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {bitmap_t*} img 图片。
- * @param {float_t} sx sx
- * @param {float_t} sy sy
- * @param {float_t} sw sw
- * @param {float_t} sh sh
- * @param {float_t} dx dx
- * @param {float_t} dy dy
- * @param {float_t} dw dw
- * @param {float_t} dh dh
+ * @param {float_t} sx 原图区域的 x
+ * @param {float_t} sy 原图区域的 y
+ * @param {float_t} sw 原图区域的 w
+ * @param {float_t} sh 原图区域的 h
+ * @param {float_t} dx 绘制区域的 x
+ * @param {float_t} dy 绘制区域的 y
+ * @param {float_t} dw 绘制区域的 w
+ * @param {float_t} dh 绘制区域的 h
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
