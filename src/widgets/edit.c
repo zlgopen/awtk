@@ -1499,7 +1499,8 @@ static ret_t edit_set_text(widget_t* widget, const value_t* v) {
     }
     wstr_set_with_len(&(widget->text), str.str, len);
 
-    text_edit_set_cursor(edit->model, widget->text.size);
+    text_edit_set_cursor(edit->model, 0);
+    text_edit_layout(edit->model);
     edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGED);
     edit->is_text_error = FALSE;
     edit_update_status(widget);
