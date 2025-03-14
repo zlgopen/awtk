@@ -33,8 +33,6 @@ BEGIN_C_DECLS
  * @annotation ["scriptable","design","widget"]
  * 滚动条控件。
  *
- *> 目前只支持垂直滚动。
- *
  * scroll\_bar\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于scroll\_bar\_t控件。
  *
  * 在xml中使用"scroll\_bar"或"scroll\_bar\_d"或"scroll\_bar\_m"标签创建滚动条控件。如：
