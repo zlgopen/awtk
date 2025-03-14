@@ -754,8 +754,6 @@ TEST(SelfLayoutDefault, set_self_layout2) {
 
   ASSERT_EQ(widget_layout_self(btn), RET_OK);
 
-  self_layouter_t* layouter = btn->self_layout;
-
   ASSERT_EQ(widget_get_prop_int(btn, "x", 0), 100);
   ASSERT_EQ(widget_get_prop_int(btn, "y", 0), 90);
   ASSERT_EQ(widget_get_prop_int(btn, "w", 0), 100);
@@ -797,10 +795,10 @@ TEST(SelfLayoutDefault, set_self_layout2) {
   ASSERT_EQ(widget_get_prop_int(btn, "w", 0), 100);
   ASSERT_EQ(widget_get_prop_int(btn, "h", 0), 50);
 
-  ASSERT_EQ(self_layouter_get_param_int(layouter, "x_attr", 0), X_ATTR_CENTER);
-  ASSERT_EQ(self_layouter_get_param_int(layouter, "y_attr", 0), Y_ATTR_MIDDLE);
-  ASSERT_EQ(self_layouter_get_param_int(layouter, "w_attr", 0), W_ATTR_UNDEF);
-  ASSERT_EQ(self_layouter_get_param_int(layouter, "h_attr", 0), W_ATTR_UNDEF);
+  ASSERT_EQ(self_layouter_get_param_int(btn->self_layout, "x_attr", 0), X_ATTR_CENTER);
+  ASSERT_EQ(self_layouter_get_param_int(btn->self_layout, "y_attr", 0), Y_ATTR_MIDDLE);
+  ASSERT_EQ(self_layouter_get_param_int(btn->self_layout, "w_attr", 0), W_ATTR_UNDEF);
+  ASSERT_EQ(self_layouter_get_param_int(btn->self_layout, "h_attr", 0), W_ATTR_UNDEF);
 
   widget_set_self_layout(btn, "default(x=100)");
   ASSERT_EQ(widget_layout_self(btn), RET_OK);

@@ -64,6 +64,7 @@ TEST(Edit, time_full_inc_dec) {
   widget_t* w = edit_create(NULL, 10, 20, 30, 40);
 
   widget_set_text_utf8(w, "18:12:01");
+  edit_set_cursor(w, w->text.size);
   ASSERT_EQ(edit_time_full_inc_value(w), RET_OK);
   ASSERT_EQ(wcscmp(w->text.str, L"18:12:02"), 0);
 

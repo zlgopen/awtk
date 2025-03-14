@@ -67,9 +67,11 @@ TEST(Edit, inc_dec) {
   ASSERT_EQ(edit_date_fix_ex(w, TRUE), RET_OK);
   ASSERT_EQ(wcscmp(w->text.str, L"2020/12/01"), 0);
 
+  edit_set_cursor(w, w->text.size);
   ASSERT_EQ(edit_date_inc_value(w), RET_OK);
   ASSERT_EQ(wcscmp(w->text.str, L"2020/12/02"), 0);
 
+  edit_set_cursor(w, w->text.size);
   ASSERT_EQ(edit_date_dec_value(w), RET_OK);
   ASSERT_EQ(wcscmp(w->text.str, L"2020/12/01"), 0);
 

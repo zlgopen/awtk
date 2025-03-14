@@ -116,6 +116,10 @@ TEST(Edit, set_text) {
   widget_set_text_utf8(b, "hello");
 
   ASSERT_EQ(text_edit_get_state(EDIT(b)->model, &state), RET_OK);
+  ASSERT_EQ(state.cursor, 0u);
+
+  edit_set_cursor(b, b->text.size);
+  ASSERT_EQ(text_edit_get_state(EDIT(b)->model, &state), RET_OK);
   ASSERT_EQ(state.cursor, 5u);
 
   widget_destroy(b);
@@ -516,7 +520,7 @@ TEST(Edit, events) {
   event_log = "";
   edit_input_char(b, 'a');
   ASSERT_EQ(event_log, "value_changing");
-  ASSERT_EQ(wcscmp(b->text.str, L"1a"), 0);
+  ASSERT_EQ(wcscmp(b->text.str, L"a1"), 0);
 
   widget_destroy(b);
 }
