@@ -204,11 +204,18 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
       f = NVG_TEXTURE_BGR565;
       break;
     }
+    case BITMAP_FMT_RGB565: {
+      f = NVG_TEXTURE_RGB565;
+      break;
+    }
     case BITMAP_FMT_RGB888: {
       f = NVG_TEXTURE_RGB;
       break;
     }
-    default: { assert(!"not supported format"); }
+    default: {
+      log_error("not supported format:%d \n", img->format);
+      assert(!"not supported format"); 
+    }
   }
 
   img_data = bitmap_lock_buffer_for_read(img);

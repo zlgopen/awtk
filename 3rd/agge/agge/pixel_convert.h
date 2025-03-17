@@ -86,6 +86,11 @@ inline void pixel_convert(pixel32_rgba& t, const pixel16_bgr565& s) {
   PIXEL_CONVERT_FROM_565(t, s);
 }
 
+template <>
+inline void pixel_convert(pixel32_rgba& t, const pixel16_rgb565& s) {
+  PIXEL_CONVERT_FROM_565(t, s);
+}
+
 // pixel32_abgr
 template <>
 inline void pixel_convert(pixel32_abgr& t, const pixel32_rgba& s) {
@@ -104,6 +109,11 @@ inline void pixel_convert(pixel32_abgr& t, const pixel32_argb& s) {
 
 template <>
 inline void pixel_convert(pixel32_abgr& t, const pixel16_bgr565& s) {
+  PIXEL_CONVERT_FROM_565(t, s);
+}
+
+template <>
+inline void pixel_convert(pixel32_abgr& t, const pixel16_rgb565& s) {
   PIXEL_CONVERT_FROM_565(t, s);
 }
 
@@ -128,6 +138,11 @@ inline void pixel_convert(pixel32_bgra& t, const pixel16_bgr565& s) {
   PIXEL_CONVERT_FROM_565(t, s);
 }
 
+template <>
+inline void pixel_convert(pixel32_bgra& t, const pixel16_rgb565& s) {
+  PIXEL_CONVERT_FROM_565(t, s);
+}
+
 // pixel32_argb
 template <>
 inline void pixel_convert(pixel32_argb& t, const pixel32_rgba& s) {
@@ -146,5 +161,10 @@ inline void pixel_convert(pixel32_argb& t, const pixel32_bgra& s) {
 
 template <>
 inline void pixel_convert(pixel32_argb& t, const pixel16_bgr565& s) {
+  PIXEL_CONVERT_FROM_565(t, s);
+}
+
+template <>
+inline void pixel_convert(pixel32_argb& t, const pixel16_rgb565& s) {
   PIXEL_CONVERT_FROM_565(t, s);
 }

@@ -357,6 +357,13 @@ void renderPaint(AGGENVGcontext* agge, NVGpaint* paint) {
         ren(surface, 0, ras, color, agge::winding<>());
         break;
       }
+      case NVG_TEXTURE_RGB565: {
+        typedef agge::bitmap<agge::pixel16_rgb565, agge::raw_bitmap> rgb565_bitmap_t;
+        rgb565_bitmap_t src(tex->width, tex->height, tex->stride, tex->flags, tex->orientation, (uint8_t*)(tex->data));
+        agge::nanovg_image_blender<PixelT, rgb565_bitmap_t> color(&src, (float*)invxform, paint->innerColor.a);
+        ren(surface, 0, ras, color, agge::winding<>());
+        break;
+      }
       case NVG_TEXTURE_RGB: {
         typedef agge::bitmap<agge::pixel24_rgb, agge::raw_bitmap> rgb_bitmap_t;
         rgb_bitmap_t src(tex->width, tex->height, tex->stride, tex->flags, tex->orientation, (uint8_t*)(tex->data));
@@ -365,6 +372,7 @@ void renderPaint(AGGENVGcontext* agge, NVGpaint* paint) {
         break;
       }
       default: {
+        printf("not supported format \n");
         assert(!"not supported format");
         break;
       }
