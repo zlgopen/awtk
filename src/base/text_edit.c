@@ -1874,6 +1874,15 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
       break;
     }
     case TK_KEY_BACKSPACE: {
+#if defined(WITH_SDL)
+#if defined(MOBILE_APP)
+      return RET_OK;
+#else
+      if (system_info()->app_type == APP_DESKTOP) {
+        return RET_OK;
+      }
+#endif /*MOBILE_APP*/
+#endif /*WITH_SDL*/
       key = STB_TEXTEDIT_K_BACKSPACE;
       break;
     }
@@ -2072,6 +2081,30 @@ ret_t text_edit_cut(text_edit_t* text_edit) {
 ret_t text_edit_paste(text_edit_t* text_edit, const wchar_t* str, uint32_t size) {
   DECL_IMPL(text_edit);
   return_value_if_fail(text_edit != NULL && str != NULL, RET_BAD_PARAMS);
+
+  if (size == 1) {
+    uint32_t key = 0;
+    char text[4] = {0};
+    delete_type_t delete_type;
+    tk_utf8_from_utf16(str, text, 4);
+    if (tk_strlen(text) == 1 && *text == 8) {
+      key = STB_TEXTEDIT_K_BACKSPACE;
+      delete_type = DELETE_BY_KEY_BACKSPACE;
+    } else if (tk_strlen(text) == 1 && *text == 127) {
+      key = STB_TEXTEDIT_K_DELETE;
+      delete_type = DELETE_BY_KEY_DELETE;
+    }
+    if (key != 0) {
+      if (impl->on_text_will_delete && 
+          impl->on_text_will_delete(impl->on_text_will_delete_ctx, delete_type) == RET_STOP) {
+        return RET_OK;
+      }
+      stb_textedit_key(text_edit, &(impl->state), key);
+      text_edit_layout(text_edit);
+      text_edit_update_input_rect(text_edit);
+      return RET_OK;
+    }
+  }
 
   if (impl->on_text_will_delete) {
     if (impl->on_text_will_delete(impl->on_text_will_delete_ctx, DELETE_BY_INPUT) == RET_STOP) {

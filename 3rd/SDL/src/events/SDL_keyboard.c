@@ -792,7 +792,7 @@ SDL_SendKeyboardText(const char *text)
     int posted;
 
     /* Don't post text events for unprintable characters */
-    if ((unsigned char)*text < ' ' || *text == 127) {
+    if ((unsigned char)*text < ' ' && *text != 8) {
         return 0;
     }
 
