@@ -100,7 +100,6 @@ static ret_t edit_pattern_fix_ex(widget_t* widget, bool_t strict, const char* de
   } while (TRUE);
 
   widget_set_text(widget, str);
-  edit_set_cursor(widget, widget->text.size);
 
   return RET_OK;
 }
