@@ -528,14 +528,23 @@ static void stb_textedit_find_charpos(StbFindState *find, STB_TEXTEDIT_STRING *s
          find->y = 0;
          find->x = 0;
          find->height = 1;
-         while (i < z) {
+         STB_TEXTEDIT_LAYOUTROW(&r, str, i);
+         while (i + r.num_chars < z) {
+            prev_start = i;
+            i += r.num_chars;
+            STB_TEXTEDIT_LAYOUTROW(&r, str, i);
+         }
+         if (str->widget->text.str[z - 1] == L'\n' || str->widget->text.str[z - 1] == L'\r') {
             STB_TEXTEDIT_LAYOUTROW(&r, str, i);
             prev_start = i;
             i += r.num_chars;
          }
-         find->first_char = i;
+         find->first_char = first = i;
          find->length = 0;
          find->prev_first = prev_start;
+         find->x = r.x0;
+         for (i=0; first+i < n; ++i)
+            find->x += STB_TEXTEDIT_GETWIDTH(str, first, i);
       }
       return;
    }
@@ -920,7 +929,6 @@ retry:
          stb_textedit_clamp(str, state);
          stb_textedit_find_charpos(&find, str, state->cursor, state->single_line);
 
-         // can only go up if there's a previous row
          if (find.prev_first != find.first_char) {
             // now find character position up a row
             float goal_x = state->has_preferred_x ? state->preferred_x : find.x;
@@ -943,10 +951,17 @@ retry:
 
             state->has_preferred_x = 1;
             state->preferred_x = goal_x;
+         } else {
+            float goal_x = state->has_preferred_x ? state->preferred_x : find.x;
+            state->cursor = 0;
+            stb_textedit_clamp(str, state);
 
-            if (sel)
-               state->select_end = state->cursor;
+            state->has_preferred_x = 1;
+            state->preferred_x = goal_x;
          }
+
+         if (sel)
+            state->select_end = state->cursor;
          break;
       }
 
