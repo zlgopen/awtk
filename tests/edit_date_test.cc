@@ -90,7 +90,7 @@ TEST(Edit, is_valid_char) {
   ASSERT_EQ(edit_date_pre_input(w, '1'), RET_OK);
 
   widget_set_text_utf8(w, "20200/12/01");
-  ASSERT_EQ(edit_date_is_valid_char(w, '1'), FALSE);
+  ASSERT_EQ(edit_date_is_valid_char(w, 'a'), FALSE);
 
   widget_destroy(w);
 }

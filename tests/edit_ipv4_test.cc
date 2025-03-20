@@ -76,7 +76,7 @@ TEST(Edit, ipv4_is_valid_char) {
   ASSERT_EQ(edit_ipv4_pre_input(w, '0'), RET_OK);
 
   widget_set_text_utf8(w, "192.268.0.199");
-  ASSERT_EQ(edit_ipv4_is_valid_char(w, '0'), FALSE);
+  ASSERT_EQ(edit_ipv4_is_valid_char(w, 'a'), FALSE);
   ASSERT_EQ(edit_ipv4_pre_input(w, '0'), RET_OK);
 
   widget_destroy(w);

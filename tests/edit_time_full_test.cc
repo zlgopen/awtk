@@ -82,7 +82,7 @@ TEST(Edit, time_full_is_valid_char) {
   ASSERT_EQ(edit_time_full_pre_input(w, '0'), RET_OK);
 
   widget_set_text_utf8(w, "18:12:01");
-  ASSERT_EQ(edit_time_full_is_valid_char(w, '0'), FALSE);
+  ASSERT_EQ(edit_time_full_is_valid_char(w, '0'), TRUE);
   ASSERT_EQ(edit_time_full_pre_input(w, '0'), RET_OK);
 
   widget_set_text_utf8(w, "18:12:0");

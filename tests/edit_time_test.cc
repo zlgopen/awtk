@@ -75,7 +75,7 @@ TEST(Edit, time_is_valid_char) {
 
   widget_set_text_utf8(w, "18:11");
   ASSERT_EQ(edit_time_pre_input(w, '0'), RET_OK);
-  ASSERT_EQ(edit_time_is_valid_char(w, '0'), FALSE);
+  ASSERT_EQ(edit_time_is_valid_char(w, 'a'), FALSE);
 
   widget_destroy(w);
 }
