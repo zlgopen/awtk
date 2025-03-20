@@ -244,6 +244,7 @@ ret_t bitmap_get_pixel(bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* rgba);
 /**
  * @method bitmap_set_line_length
  * 设置line_length。
+ * 备注：如果使用该函数设置位图的行长的时候，需要特别注意该位图的 graphic_buffer_t 对象的行长是否与设置的一致，否则容易导致位图异常。
  * @param {bitmap_t*} bitmap bitmap对象。
  * @param {uint32_t} line_length line_length。
  *

@@ -103,8 +103,7 @@ static ret_t lcd_sdl2_flush(lcd_t* lcd) {
     }
 
     SDL_LockTexture(info->texture, NULL, (void**)&(addr), &pitch);
-    bitmap_init(&dst, sr.w, sr.h, special->format, addr);
-    bitmap_set_line_length(&dst, pitch);
+    bitmap_init_ex(&dst, sr.w, sr.h, pitch, special->format, addr);
     bitmap_init(&src, lcd_w, lcd_h, special->format, offline_fb);
     if (dirty_rects->disable_multiple) {
       const rect_t* dr = (const rect_t*)&(dirty_rects->max);
