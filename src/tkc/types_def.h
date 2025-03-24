@@ -149,6 +149,14 @@ typedef int socklen_t;
 #define _TK_STRINGIZE_(symbol) #symbol
 #define TK_STRINGIZE(macro) _TK_STRINGIZE_(macro)
 
+#define _TK_CONCAT_(a, b) a##b
+#define TK_CONCAT(a, b) _TK_CONCAT_(a, b)
+
+#define TK_STATIC_ASSERT(p)                                                                  \
+  typedef struct {                                                                           \
+    TK_MAYBE_UNUSED char TK_CONCAT(Static_Assert_Failed_at_Line_, __LINE__)[!!(p) ? 1 : -1]; \
+  } TK_CONCAT(_sTATIC_aSSERT_, __LINE__)
+
 #if defined(__GNUC__) && !defined(__cplusplus)
 typedef _Bool bool_t;
 #else
