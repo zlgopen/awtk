@@ -665,6 +665,7 @@ static ret_t value_from_str(value_t* v, int32_t value_type, const char* str) {
 #endif /*WITH_FULL_REMOTE_UI*/
 
 ret_t remote_ui_dispatch_one(remote_ui_t* ui, rbuffer_t* rb) {
+  ret_t ret = RET_FAIL;
   uint32_t type = 0;
   const char* target = NULL;
   return_value_if_fail(ui != NULL && rb != NULL, RET_BAD_PARAMS);
@@ -672,7 +673,11 @@ ret_t remote_ui_dispatch_one(remote_ui_t* ui, rbuffer_t* rb) {
   rbuffer_read_string(rb, &target);
   rbuffer_read_uint32(rb, &type);
 
-  if (target != NULL && type != 0) {
+  if (ui->fallback_on_event != NULL) {
+    ret = ui->fallback_on_event(ui, rb, target, type);
+  }
+
+  if (ret != RET_OK && target != NULL && type != 0) {
     emitter_t* emitter = tk_object_get_prop_pointer(ui->event_handlers, target);
     if (emitter != NULL || type == EVT_LOG_MESSAGE) {
       switch (type) {
@@ -786,6 +791,20 @@ ret_t remote_ui_dispatch(remote_ui_t* ui) {
 ret_t remote_ui_off_all_events(remote_ui_t* ui) {
   return_value_if_fail(ui != NULL, RET_BAD_PARAMS);
   /*TODO*/
+  return RET_OK;
+}
+
+emitter_t* remote_ui_get_event_hander(remote_ui_t* ui, const char* target) {
+  return_value_if_fail(ui != NULL && ui->event_handlers != NULL && target != NULL, NULL);
+
+  return tk_object_get_prop_pointer(ui->event_handlers, target);
+}
+
+ret_t remote_ui_set_fallback_on_event(remote_ui_t* ui, remote_ui_on_event_func_t fallback_on_event) {
+  return_value_if_fail(ui != NULL, RET_BAD_PARAMS);
+  
+  ui->fallback_on_event = fallback_on_event;
+  
   return RET_OK;
 }
 

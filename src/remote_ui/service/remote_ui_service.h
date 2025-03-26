@@ -25,13 +25,19 @@
 #include "tkc/buffer.h"
 #include "tkc/darray.h"
 #include "tkc/iostream.h"
+#include "tkc/event.h"
 #include "ubjson/ubjson_writer.h"
 #include "service/service.h"
 #include "remote_ui/shared/remote_ui_types_def.h"
 
 BEGIN_C_DECLS
 
+struct _remote_ui_service_t;
+typedef struct _remote_ui_service_t remote_ui_service_t;
+
 typedef tk_object_t* (*remote_ui_service_find_target_t)(tk_service_t* service, const char* target);
+typedef ret_t (*remote_ui_service_on_event_func_t)(remote_ui_service_t* ui, wbuffer_t* wb, event_t* evt);
+
 /**
  * @class remote_ui_service_args_t
  * remote ui服务端启动参数。 
@@ -57,6 +63,13 @@ typedef struct _remote_ui_service_args_t {
    * 查找target的函数。
    */
   remote_ui_service_find_target_t find_target;
+
+  /**
+   * @property {remote_ui_service_on_event_func_t} fallback_on_event
+   * @annotation ["readable"]
+   * 事件回调函数。
+   */
+  remote_ui_service_on_event_func_t fallback_on_event;
 } remote_ui_service_args_t;
 
 /**
@@ -74,6 +87,7 @@ typedef struct _remote_ui_service_t {
   tk_service_auth_t auth;
   tk_service_logout_t logout;
   remote_ui_service_find_target_t find_target;
+  remote_ui_service_on_event_func_t fallback_on_event;
   bool_t dispatching;
 } remote_ui_service_t;
 
@@ -108,6 +122,16 @@ tk_service_t* remote_ui_service_start_with_uart(tk_iostream_t* io, void* args);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t remote_ui_service_hook_log(remote_ui_service_t* ui, bool_t hook);
+
+/**
+ * @method remote_ui_service_set_fallback_on_event
+ * 设置fallback_on_event。
+ * @param {remote_ui_service_t*} ui remote ui服务端。
+ * @param {remote_ui_service_on_event_func_t} fallback_on_event 回调函数。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t remote_ui_service_set_fallback_on_event(remote_ui_service_t* ui,
+                                              remote_ui_service_on_event_func_t fallback_on_event);
 
 END_C_DECLS
 

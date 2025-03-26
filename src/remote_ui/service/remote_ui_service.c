@@ -70,6 +70,10 @@ tk_service_t* remote_ui_service_create(tk_iostream_t* io, void* args) {
     if (service_args->logout != NULL) {
       ui->logout = service_args->logout;
     }
+
+    if (service_args->fallback_on_event!= NULL) {
+      ui->fallback_on_event = service_args->fallback_on_event;
+    }
   }
 
   return (tk_service_t*)ui;
@@ -236,7 +240,7 @@ static ret_t remote_ui_service_prepare_xml_source(remote_ui_service_t* ui, const
 }
 
 static ret_t remote_ui_service_on_event_func(void* ctx, event_t* e) {
-  ret_t ret = RET_OK;
+  ret_t ret = RET_FAIL;
   wbuffer_t* wb = NULL;
   char target[32] = {0};
   remote_ui_service_t* ui = (remote_ui_service_t*)ctx;
@@ -258,43 +262,49 @@ static ret_t remote_ui_service_on_event_func(void* ctx, event_t* e) {
   wbuffer_write_string(wb, target);
   wbuffer_write_int32(wb, e->type);
 
-  switch (e->type) {
-    case EVT_VALUE_CHANGED: {
-      value_change_event_t* event = value_change_event_cast(e);
-      value_t* v = &(event->new_value);
-      wbuffer_write_value(wb, v);
-      break;
-    }
-    case EVT_PROP_CHANGED: {
-      value_t vv;
-      value_t* v = NULL;
-      prop_change_event_t* event = prop_change_event_cast(e);
-      /*保持类型不变*/
-      if (tk_object_get_prop(OBJECT(e->target), event->name, &vv) == RET_OK) {
-        v = &vv;
-      } else {
-        v = (value_t*)(event->value);
+  if (ui->fallback_on_event != NULL) {
+    ret = ui->fallback_on_event(ui, wb, e);
+  }
+
+  if (ret != RET_OK) {
+    switch (e->type) {
+      case EVT_VALUE_CHANGED: {
+        value_change_event_t* event = value_change_event_cast(e);
+        value_t* v = &(event->new_value);
+        wbuffer_write_value(wb, v);
+        break;
       }
-      wbuffer_write_string(wb, event->name);
-      wbuffer_write_value(wb, v);
-      break;
+      case EVT_PROP_CHANGED: {
+        value_t vv;
+        value_t* v = NULL;
+        prop_change_event_t* event = prop_change_event_cast(e);
+        /*保持类型不变*/
+        if (tk_object_get_prop(OBJECT(e->target), event->name, &vv) == RET_OK) {
+          v = &vv;
+        } else {
+          v = (value_t*)(event->value);
+        }
+        wbuffer_write_string(wb, event->name);
+        wbuffer_write_value(wb, v);
+        break;
+      }
+      case EVT_KEY_DOWN:
+      case EVT_KEY_UP: {
+        key_event_t* event = key_event_cast(e);
+        wbuffer_write_int32(wb, event->key);
+        break;
+      }
+      case EVT_POINTER_DOWN:
+      case EVT_POINTER_MOVE:
+      case EVT_POINTER_UP: {
+        pointer_event_t* event = pointer_event_cast(e);
+        wbuffer_write_int32(wb, event->x);
+        wbuffer_write_int32(wb, event->y);
+        break;
+      }
+      default:
+        break;
     }
-    case EVT_KEY_DOWN:
-    case EVT_KEY_UP: {
-      key_event_t* event = key_event_cast(e);
-      wbuffer_write_int32(wb, event->key);
-      break;
-    }
-    case EVT_POINTER_DOWN:
-    case EVT_POINTER_MOVE:
-    case EVT_POINTER_UP: {
-      pointer_event_t* event = pointer_event_cast(e);
-      wbuffer_write_int32(wb, event->x);
-      wbuffer_write_int32(wb, event->y);
-      break;
-    }
-    default:
-      break;
   }
 
   ret = tk_service_send_resp(&(ui->service), MSG_CODE_NOTIFY, MSG_DATA_TYPE_BINARY, RET_OK, wb);
@@ -1072,6 +1082,15 @@ ret_t remote_ui_service_hook_log(remote_ui_service_t* ui, bool_t hook) {
   } else {
     log_set_hook(NULL, NULL);
   }
+
+  return RET_OK;
+}
+
+ret_t remote_ui_service_set_fallback_on_event(remote_ui_service_t* ui,
+                                              remote_ui_service_on_event_func_t fallback_on_event) {
+  return_value_if_fail(ui != NULL, RET_BAD_PARAMS);
+
+  ui->fallback_on_event = fallback_on_event;
 
   return RET_OK;
 }

@@ -33,7 +33,11 @@
 #define WITH_FULL_REMOTE_UI 1
 #endif /*TK_IS_PC*/
 
+struct _remote_ui_t;
+typedef struct _remote_ui_t remote_ui_t;
+
 typedef ret_t (*remote_ui_on_log_message_t)(void* ctx, tk_log_level_t level, const char* msg);
+typedef ret_t (*remote_ui_on_event_func_t)(remote_ui_t* ui, rbuffer_t* rb, const char* target, uint32_t type);
 
 BEGIN_C_DECLS
 
@@ -51,6 +55,7 @@ typedef struct _remote_ui_t {
   darray_t dispatching_events;
   remote_ui_on_log_message_t log_hook;
   void* log_hook_ctx;
+  remote_ui_on_event_func_t fallback_on_event;
 } remote_ui_t;
 
 /**
@@ -490,6 +495,27 @@ ret_t remote_ui_unhook_log(remote_ui_t* ui);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t remote_ui_dispatch(remote_ui_t* ui);
+
+/**
+ * @method remote_ui_get_event_hander
+ * 获取事件处理器。
+ * @param {remote_ui_t*} ui remote ui客户端对象。
+ * @param {const char*} target 目标。
+ *
+ * @return {emitter_t*} 返回事件处理器对象。
+ */
+emitter_t* remote_ui_get_event_hander(remote_ui_t* ui, const char* target);
+
+/**
+ * @method remote_ui_set_fallback_on_event
+ * 设置fallback_on_event。
+ *
+ * @param {remote_ui_t*} ui remote ui客户端对象。
+ * @param {remote_ui_on_event_func_t} fallback_on_event 回调函数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t remote_ui_set_fallback_on_event(remote_ui_t* ui, remote_ui_on_event_func_t fallback_on_event);
 
 /**
  * @method remote_ui_destroy
