@@ -1279,6 +1279,10 @@ static void nvg__appendCommands(NVGcontext* ctx, float* vals, int nvals)
 	NVGstate* state = nvg__getState(ctx);
 	int i;
 
+	if (state->xform[0] == 0.0f || state->xform[3] == 0.0f) {
+		return;
+	}
+
 	if (ctx->ncommands+nvals > ctx->ccommands) {
 		float* commands;
 		int ccommands = ctx->ncommands+nvals + ctx->ccommands/2;
