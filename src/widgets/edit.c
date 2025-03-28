@@ -608,6 +608,13 @@ static ret_t edit_on_blur(widget_t* widget) {
     widget_remove_idle(widget, edit->selected_idle_id);
     edit->selected_idle_id = TK_INVALID_ID;
   }
+
+  if (edit->selected_idle_id != TK_INVALID_ID) {
+    timer_remove(edit->timer_id);
+    edit->timer_id = TK_INVALID_ID;
+  }
+  text_edit_set_caret_visible(edit->model, FALSE);
+
   edit->is_text_error = FALSE;
   edit_update_status(widget);
   edit_check_valid_value(widget);
@@ -2084,7 +2091,7 @@ static ret_t edit_init(widget_t* widget) {
   edit->bottom_margin = 0;
   edit->close_im_when_blured = TRUE;
   edit->open_im_when_focused = TRUE;
-  edit->focus_next_when_enter = TRUE;
+  edit->focus_next_when_enter = FALSE;
   edit_set_text_limit(widget, 0, 1024);
 
   edit_update_status(widget);
