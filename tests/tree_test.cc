@@ -300,35 +300,6 @@ TEST(Tree, depth) {
   tree_deinit(&tree);
 }
 
-TEST(Tree, width) {
-  tree_t tree;
-  ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
-  ASSERT_EQ(build_tree_for_test(&tree), RET_OK);
-
-  // 验证各层级宽度
-  tree_node_t* root = tree.root;
-  tree_node_t* node1 =
-      tree_find(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(1));
-  tree_node_t* node2 =
-      tree_find(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(2));
-  tree_node_t* node12 =
-      tree_find(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(12));
-
-  // 根节点所在层宽度为1
-  ASSERT_EQ(tree_width(&tree, root), 1);
-
-  // 第一子层宽度（节点1/2/3）
-  ASSERT_EQ(tree_width(&tree, node1), 3);
-
-  // 节点1的子层宽度（11/12）
-  ASSERT_EQ(tree_width(&tree, tree_get_child_node(&tree, node1, 0)), 2);
-
-  // 节点12的子层宽度（121/122/123）
-  ASSERT_EQ(tree_width(&tree, tree_get_child_node(&tree, node12, 0)), 3);
-
-  tree_deinit(&tree);
-}
-
 TEST(Tree, height) {
   tree_t tree;
   ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
@@ -353,6 +324,37 @@ TEST(Tree, height) {
 
   // 叶子节点高度为0
   ASSERT_EQ(tree_height(&tree, node2211), 0);
+
+  tree_deinit(&tree);
+}
+
+TEST(Tree, degree) {
+  tree_t tree;
+  ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
+  ASSERT_EQ(build_tree_for_test(&tree), RET_OK);
+
+  tree_node_t* root = tree.root;
+  tree_node_t* node1 =
+      tree_find(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(1));
+  tree_node_t* node2 =
+      tree_find(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(2));
+  tree_node_t* node12 =
+      tree_find(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(12));
+
+  // 根节点的度为3（1/2/3三个子节点）
+  ASSERT_EQ(tree_node_degree(root), 3);
+
+  // 节点1的度为2（11/12两个子节点）
+  ASSERT_EQ(tree_node_degree(node1), 2);
+
+  // 节点11的度为0（叶子节点）
+  ASSERT_EQ(tree_node_degree(tree_get_child_node(&tree, node1, 0)), 0);
+
+  // 节点12的度为3（121/122/123三个子节点）
+  ASSERT_EQ(tree_node_degree(node12), 3);
+
+  // 树的度为3（来自节点12的度）
+  ASSERT_EQ(tree_degree(&tree), 3);
 
   tree_deinit(&tree);
 }

@@ -51,6 +51,15 @@ struct _tree_node_t {
 tree_node_t* tree_node_create(void* data);
 
 /**
+ * @method tree_node_degree
+ * 获取树结点的度（子节点数量）
+ * @param {tree_node_t*} node 树结点对象。
+ *
+ * @return {int32_t} 返回树结点的度。
+ */
+int32_t tree_node_degree(tree_node_t* node);
+
+/**
  * @method tree_node_destroy
  * @annotation ["deconstructor"]
  * 销毁树结点对象
@@ -264,7 +273,7 @@ tree_node_t* tree_get_sibling_node(tree_t* tree, tree_node_t* node, uint32_t ind
  * @method tree_set_root
  * 设置根节点。
  * @param {tree_t*} tree 树结构对象
- * @param {tree_node_t*} root root节点
+ * @param {tree_node_t*} root 根节点
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -377,21 +386,21 @@ int32_t tree_size(tree_t* tree, tree_node_t* node);
  * @method tree_depth
  * 获取树节点深度。
  * @param {tree_t*} tree 树结构对象。
- * @param {tree_node_t*} node 节点（为NULL时，返回树的深度）。
+ * @param {tree_node_t*} node 节点（为NULL时，为根节点）。
  *
  * @return {int32_t} 返回树节点深度。
  */
 int32_t tree_depth(tree_t* tree, tree_node_t* node);
 
 /**
- * @method tree_width
- * 获取树节点宽度。
+ * @method tree_level
+ * 获取树节点的层级。
  * @param {tree_t*} tree 树结构对象。
- * @param {tree_node_t*} node 节点（为NULL时，返回树的宽度）。
+ * @param {tree_node_t*} node 节点（为NULL时，为根节点）。
  *
- * @return {int32_t} 返回树节点宽度。
+ * @return {int32_t} 返回树节点层级。
  */
-int32_t tree_width(tree_t* tree, tree_node_t* node);
+int32_t tree_level(tree_t* tree, tree_node_t* node);
 
 /**
  * @method tree_height
@@ -402,6 +411,15 @@ int32_t tree_width(tree_t* tree, tree_node_t* node);
  * @return {int32_t} 返回树节点高度。
  */
 int32_t tree_height(tree_t* tree, tree_node_t* node);
+
+/**
+ * @method tree_degree
+ * 获取树的度（树中所有节点的度的最大值）。
+ * @param {tree_t*} tree 树结构对象。
+ *
+ * @return {int32_t} 返回树的宽度。
+ */
+int32_t tree_degree(tree_t* tree);
 
 /**
  * @method tree_deinit
