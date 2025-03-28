@@ -64,6 +64,7 @@ static ret_t widget_on_paint_end(widget_t* widget, canvas_t* c);
 
 typedef widget_t* (*widget_find_wanted_focus_widget_t)(widget_t* widget, darray_t* all_focusable);
 static ret_t widget_move_focus(widget_t* widget, widget_find_wanted_focus_widget_t find);
+static widget_t* widget_get_real_window_or_keyboard(widget_t* widget);
 
 #define widget_set_xywh(widget, val, update_layout, invalidate)    \
   do {                                                             \
@@ -2820,7 +2821,7 @@ static bool_t shortcut_fast_match(const char* shortcut, key_event_t* e) {
 
 static bool_t widget_match_key(widget_t* widget, const char* prop, key_event_t* e) {
   const char* shortcut = NULL;
-  widget_t* win = widget_get_window(widget);
+  widget_t* win = widget_get_real_window_or_keyboard(widget);
 
   if (widget_is_window_manager(widget)) {
     return FALSE;
