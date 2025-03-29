@@ -1344,6 +1344,34 @@ ret_t tk_mergesort(void* base, size_t nmemb, size_t size, tk_compare_t cmp);
  */
 const char* tk_strs_bsearch(const char** strs, uint32_t nr, const char* str, bool_t case_sensitive);
 
+/**
+ * @method tk_str_indexable
+ * 判断字符串是否可索引。
+ * > '['整数']' 表示可索引。
+ * @param {const char*} str 字符串。
+ * @return {bool_t} 返回TRUE表示可索引，否则表示不可索引。
+ */
+bool_t tk_str_indexable(const char* str);
+
+/**
+ * @method tk_normalize_rad
+ * 将角度转换为0到2*PI之间的值。
+ * @param {double} value 角度(单位：弧度)。
+ * @return {double} 返回转换后的值。
+ */
+double tk_normalize_rad(double value);
+
+/**
+ * @method tk_rad_equal
+ * 比较两个角度是否相等。
+ * > 先转换到0到2*PI之间，然后比较。
+ * @param {double} rad1 角度1(单位：弧度)。
+ * @param {double} rad2 角度2(单位：弧度)。
+ * @param {double} epsilon 精度。
+ * @return {bool_t} 返回TRUE表示相等，否则表示不相等。
+ */
+bool_t tk_rad_equal(double rad1, double rad2, double epsilon);
+
 #define TK_STRDUP(str) ((str) != NULL) ? tk_strdup(str) : NULL
 #define TK_STRNDUP(str, len) ((str) != NULL) ? tk_strndup(str, len) : NULL
 
@@ -1377,8 +1405,6 @@ ret_t xml_file_expand(const char* filename, str_t* s, const char* data);
 #include "tkc/date_time.h"
 ret_t tk_date_time_format_impl(const date_time_t* dt, const char* format, str_t* result,
                                tk_on_result_t translate_callback);
-
-bool_t tk_str_indexable(const char* str);
 
 END_C_DECLS
 

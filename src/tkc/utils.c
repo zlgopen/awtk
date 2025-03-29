@@ -2675,3 +2675,24 @@ bool_t tk_str_indexable(const char* str) {
 
   return ret;
 }
+
+double tk_normalize_rad(double value) {
+  const double two_pi = 2 * M_PI;
+  value = fmod(value, two_pi);
+  if (value < 0) {
+    value += two_pi;
+  }
+
+  return value;
+}
+
+bool_t tk_rad_equal(double rad1, double rad2, double epsilon) {
+  rad1 = tk_normalize_rad(rad1);
+  rad2 = tk_normalize_rad(rad2);
+
+  double diff = fabs(rad1 - rad2);
+
+  double alt_diff = fabs(2 * M_PI - diff);
+
+  return (diff <= epsilon) || (alt_diff <= epsilon);
+}

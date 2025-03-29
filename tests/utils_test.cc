@@ -1992,3 +1992,74 @@ TEST(Utils, tk_strs_bsearch) {
     }
   }
 }
+
+TEST(Utils, tk_str_indexable) {
+  ASSERT_EQ(tk_str_indexable("abc"), FALSE);
+  ASSERT_EQ(tk_str_indexable(""), FALSE);
+  ASSERT_EQ(tk_str_indexable("[]"), FALSE);
+  ASSERT_EQ(tk_str_indexable("[1]"), TRUE);
+  ASSERT_EQ(tk_str_indexable("[123]"), TRUE);
+  ASSERT_EQ(tk_str_indexable("[-123]"), TRUE);
+}
+
+TEST(Utils, tk_normalize_rad) {
+  double twopi = 2 * M_PI;
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(0), 0);
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(1), 1);
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(2), 2);
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(3), 3);
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(4), 4);
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(5), 5);
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(6), 6);
+
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(0 + twopi), 0);
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(1 + twopi), 1);
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(2 + twopi), 2);
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(3 + twopi), 3);
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(4 + twopi), 4);
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(5 + twopi), 5);
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(6 + twopi), 6);
+
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(0 - twopi), 0);
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(1 - twopi), 1);
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(2 - twopi), 2);
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(3 - twopi), 3);
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(4 - twopi), 4);
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(5 - twopi), 5);
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(6 - twopi), 6);  
+}
+
+TEST(Utils, tk_compare_rad) {
+  double twopi = 2 * M_PI;
+  ASSERT_EQ(tk_rad_equal(0, 0, 0.0001), TRUE);
+  ASSERT_EQ(tk_rad_equal(1, 1, 0.0001), TRUE);
+  ASSERT_EQ(tk_rad_equal(2, 2, 0.0001), TRUE);
+  ASSERT_EQ(tk_rad_equal(3, 3, 0.0001), TRUE);
+  ASSERT_EQ(tk_rad_equal(4, 4, 0.0001), TRUE);
+  ASSERT_EQ(tk_rad_equal(5, 5, 0.0001), TRUE);
+  ASSERT_EQ(tk_rad_equal(6, 6, 0.0001), TRUE);
+
+  ASSERT_EQ(tk_rad_equal(0, 0 + twopi, 0.0001), TRUE);
+  ASSERT_EQ(tk_rad_equal(1, 1 + twopi, 0.0001), TRUE);
+  ASSERT_EQ(tk_rad_equal(2, 2 + twopi, 0.0001), TRUE);
+  ASSERT_EQ(tk_rad_equal(3, 3 + twopi, 0.0001), TRUE);
+  ASSERT_EQ(tk_rad_equal(4, 4 + twopi, 0.0001), TRUE);
+  ASSERT_EQ(tk_rad_equal(5, 5 + twopi, 0.0001), TRUE);
+  ASSERT_EQ(tk_rad_equal(6, 6 + twopi, 0.0001), TRUE);  
+
+  ASSERT_EQ(tk_rad_equal(0, 0 - twopi, 0.0001), TRUE);
+  ASSERT_EQ(tk_rad_equal(1, 1 - twopi, 0.0001), TRUE);
+  ASSERT_EQ(tk_rad_equal(2, 2 - twopi, 0.0001), TRUE);
+  ASSERT_EQ(tk_rad_equal(3, 3 - twopi, 0.0001), TRUE);
+  ASSERT_EQ(tk_rad_equal(4, 4 - twopi, 0.0001), TRUE);
+  ASSERT_EQ(tk_rad_equal(5, 5 - twopi, 0.0001), TRUE);
+  ASSERT_EQ(tk_rad_equal(6, 6 - twopi, 0.0001), TRUE);    
+
+  ASSERT_EQ(tk_rad_equal(0, 0 - twopi + 1, 0.0001), FALSE);
+  ASSERT_EQ(tk_rad_equal(1, 1 - twopi + 1, 0.0001), FALSE);
+  ASSERT_EQ(tk_rad_equal(2, 2 - twopi + 1, 0.0001), FALSE);
+  ASSERT_EQ(tk_rad_equal(3, 3 - twopi + 1, 0.0001), FALSE);
+  ASSERT_EQ(tk_rad_equal(4, 4 - twopi + 1, 0.0001), FALSE);
+  ASSERT_EQ(tk_rad_equal(5, 5 - twopi + 1, 0.0001), FALSE);
+  ASSERT_EQ(tk_rad_equal(6, 6 - twopi + 1, 0.0001), FALSE);      
+}
