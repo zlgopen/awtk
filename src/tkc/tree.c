@@ -19,10 +19,11 @@
  *
  */
 
+#include "tkc/tree.h"
+
 #include "tkc/mem.h"
 #include "tkc/utils.h"
-#include "tkc/tree.h"
-#include "tkc/slist.h"
+#include "tkc/darray.h"
 
 inline static tree_node_t* tree_node_get_first_sibling(tree_node_t* node) {
   while (node != NULL && node->prev_sibling != NULL) {
@@ -33,11 +34,21 @@ inline static tree_node_t* tree_node_get_first_sibling(tree_node_t* node) {
 
 inline static int32_t tree_node_sibling_size(const tree_node_t* first_sibling) {
   int32_t ret = 0;
-  const tree_node_t* node = first_sibling;
-  for (; node != NULL; node = node->next_sibling) {
+  const tree_node_t* iter = first_sibling;
+  for (; iter != NULL; iter = iter->next_sibling) {
     ret++;
   }
   return ret;
+}
+
+inline static tree_node_t* tree_node_get_sibling_by_index(tree_node_t* first_sibling,
+                                                          uint32_t index) {
+  uint32_t i = 0;
+  tree_node_t* node = first_sibling;
+  for (; node != NULL && node->next_sibling != NULL && i < index; i++) {
+    node = node->next_sibling;
+  }
+  return node;
 }
 
 tree_node_t* tree_node_create(void* data) {
@@ -125,7 +136,7 @@ typedef struct _tree_remove_on_visit_ctx_t {
   void* data;
   tk_compare_t compare;
   int32_t remove_size;
-  slist_t* remove_list;
+  darray_t* remove_list;
 } tree_remove_on_visit_ctx_t;
 
 static ret_t tree_remove_on_visit(void* ctx, const void* data) {
@@ -137,7 +148,7 @@ static ret_t tree_remove_on_visit(void* ctx, const void* data) {
   }
 
   if (0 == actx->compare(node->data, actx->data)) {
-    slist_append(actx->remove_list, (tree_node_t*)node);
+    darray_push(actx->remove_list, (tree_node_t*)node);
     actx->remove_size--;
   }
 
@@ -151,7 +162,7 @@ ret_t tree_remove(tree_t* tree, tree_node_t* node, tree_foreach_type_t foreach_t
 ret_t tree_remove_ex(tree_t* tree, tree_node_t* node, tree_foreach_type_t foreach_type,
                      tk_compare_t compare, void* ctx, int32_t remove_size) {
   ret_t ret = RET_OK;
-  slist_t remove_list;
+  darray_t remove_list;
   tree_node_t* iter = NULL;
   tree_remove_on_visit_ctx_t actx = {
       .tree = tree,
@@ -162,15 +173,15 @@ ret_t tree_remove_ex(tree_t* tree, tree_node_t* node, tree_foreach_type_t foreac
   };
   return_value_if_fail(tree != NULL && compare != NULL, RET_BAD_PARAMS);
 
-  slist_init(&remove_list, NULL, NULL);
+  darray_init(&remove_list, remove_size, NULL, NULL);
 
   ret = tree_foreach(tree, node, foreach_type, tree_remove_on_visit, &actx);
 
-  while ((iter = slist_head_pop(&remove_list)) != NULL) {
+  while ((iter = darray_pop(&remove_list)) != NULL) {
     tree_remove_node(tree, iter);
   }
 
-  slist_deinit(&remove_list);
+  darray_deinit(&remove_list);
 
   return ret;
 }
@@ -253,14 +264,13 @@ static ret_t tree_link_sibling(tree_t* tree, tree_node_t* prev_sibling, tree_nod
 }
 
 tree_node_t* tree_get_child_node(tree_t* tree, tree_node_t* node, uint32_t index) {
-  tree_node_t* ret = NULL;
   return_value_if_fail(tree != NULL && node != NULL, NULL);
 
   if (node->child != NULL) {
-    ret = tree_get_sibling_node(tree, node->child, index);
+    return tree_get_sibling_node(tree, node->child, index);
   }
 
-  return ret;
+  return NULL;
 }
 
 ret_t tree_set_root(tree_t* tree, tree_node_t* root) {
@@ -293,52 +303,38 @@ ret_t tree_insert_child_node(tree_t* tree, tree_node_t* node, uint32_t index, tr
 }
 
 tree_node_t* tree_get_sibling_node(tree_t* tree, tree_node_t* node, uint32_t index) {
-  uint32_t i = 0;
-  int32_t size = 0;
-  tree_node_t* iter = NULL;
-  tree_node_t* ret = NULL;
+  tree_node_t* first_sibling = NULL;
   return_value_if_fail(tree != NULL && node != NULL, NULL);
 
-  iter = tree_node_get_first_sibling(node);
-  size = tree_node_sibling_size(iter);
-  index = tk_min(index, size);
+  first_sibling = tree_node_get_first_sibling(node);
 
-  for (i = 0; iter != NULL; iter = iter->next_sibling, i++) {
-    if (i == index) {
-      ret = iter;
-      break;
-    }
+  if (index == 0) {
+    return first_sibling;
+  } else {
+    return tree_node_get_sibling_by_index(first_sibling, index);
   }
-
-  return ret;
 }
 
 ret_t tree_insert_sibling_node(tree_t* tree, tree_node_t* node, uint32_t index,
                                tree_node_t* sibling) {
-  ret_t ret = RET_FAIL;
-  tree_node_t *iter = NULL, *prev = NULL;
-  int32_t size = 0;
-  uint32_t i = 0;
+  tree_node_t* first_sibling = NULL;
   return_value_if_fail(tree != NULL && node != NULL && sibling != NULL, RET_BAD_PARAMS);
   return_value_if_fail(node != tree->root, RET_FAIL);
 
-  iter = tree_node_get_first_sibling(node);
-  size = tree_node_sibling_size(iter);
-  index = tk_min(index, size);
+  first_sibling = tree_node_get_first_sibling(node);
 
-  for (i = 0; iter != NULL || prev != NULL; i++) {
-    if (i == index) {
-      ret = tree_link_sibling(tree, prev, iter, sibling);
-      break;
-    }
+  if (index == 0) {
+    return tree_link_sibling(tree, NULL, first_sibling, sibling);
+  } else {
+    tree_node_t* pos_node = tree_node_get_sibling_by_index(first_sibling, index);
+    int32_t size = tree_node_sibling_size(first_sibling);
 
-    prev = iter;
-    if (iter != NULL) {
-      iter = iter->next_sibling;
+    if (index < size) {
+      return tree_link_sibling(tree, pos_node->prev_sibling, pos_node, sibling);
+    } else {
+      return tree_link_sibling(tree, pos_node, NULL, sibling);
     }
   }
-
-  return ret;
 }
 
 ret_t tree_append_child_node(tree_t* tree, tree_node_t* node, tree_node_t* child) {
@@ -366,26 +362,26 @@ static ret_t tree_foreach_breadth_first(tree_t* tree, tree_node_t* node, tk_visi
   }
 
   if (node != NULL) {
-    slist_t queue;
-    slist_init(&queue, NULL, NULL);
-    slist_append(&queue, node);
+    uint32_t i = 0;
+    darray_t queue;
+    darray_init(&queue, 64, NULL, NULL);
+    darray_push(&queue, node);
 
-    while (!slist_is_empty(&queue)) {
-      tree_node_t* child = NULL;
-      tree_node_t* iter = (tree_node_t*)slist_head_pop(&queue);
+    for (i = 0; i < queue.size; i++) {
+      tree_node_t* iter = (tree_node_t*)darray_get(&queue, i);
       ret_t ret = visit(ctx, iter);
 
       if (ret != RET_OK) {
         break;
       }
 
-      for (child = tree_node_get_first_sibling(iter->child); child != NULL;
-           child = child->next_sibling) {
-        slist_append(&queue, child);
+      for (iter = tree_node_get_first_sibling(iter->child); iter != NULL;
+           iter = iter->next_sibling) {
+        darray_push(&queue, iter);
       }
     }
 
-    slist_deinit(&queue);
+    darray_deinit(&queue);
   }
 
   return RET_OK;
@@ -399,30 +395,29 @@ static ret_t tree_foreach_preorder(tree_t* tree, tree_node_t* node, tk_visit_t v
   }
 
   if (node != NULL) {
-    slist_t stack;
-    slist_init(&stack, NULL, NULL);
-    slist_prepend(&stack, node);
+    darray_t stack;
+    darray_init(&stack, 16, NULL, NULL);
+    darray_push(&stack, node);
 
-    while (!slist_is_empty(&stack)) {
-      tree_node_t* child = NULL;
-      tree_node_t* iter = (tree_node_t*)slist_head_pop(&stack);
+    while (stack.size > 0) {
+      tree_node_t* iter = (tree_node_t*)darray_pop(&stack);
       ret_t ret = visit(ctx, iter);
 
       if (ret != RET_OK) {
         break;
       }
 
-      if (iter->next_sibling != NULL) {
-        slist_prepend(&stack, iter->next_sibling);
+      if (iter != node && iter->next_sibling != NULL) {
+        darray_push(&stack, iter->next_sibling);
       }
 
-      child = tree_node_get_first_sibling(iter->child);
-      if (child != NULL) {
-        slist_prepend(&stack, child);
+      iter = tree_node_get_first_sibling(iter->child);
+      if (iter != NULL) {
+        darray_push(&stack, iter);
       }
     }
 
-    slist_deinit(&stack);
+    darray_deinit(&stack);
   }
 
   return RET_OK;
@@ -436,27 +431,33 @@ static ret_t tree_foreach_postorder(tree_t* tree, tree_node_t* node, tk_visit_t 
   }
 
   if (node != NULL) {
-    slist_t stack;
-    slist_t result;
-    slist_init(&stack, NULL, NULL);
-    slist_init(&result, NULL, NULL);
-    slist_prepend(&stack, node);
+    tree_node_t* iter = NULL;
+    darray_t result_stack;
+    darray_t process_stack;
+    darray_init(&result_stack, 128, NULL, NULL);
+    darray_init(&process_stack, 32, NULL, NULL);
+    darray_push(&process_stack, node);
 
-    while (!slist_is_empty(&stack)) {
-      tree_node_t* child = NULL;
-      tree_node_t* iter = (tree_node_t*)slist_head_pop(&stack);
-      slist_prepend(&result, iter);
+    while (process_stack.size > 0) {
+      iter = (tree_node_t*)darray_pop(&process_stack);
+      darray_push(&result_stack, iter);
 
-      for (child = tree_node_get_first_sibling(iter->child); child != NULL;
-           child = child->next_sibling) {
-        slist_prepend(&stack, child);
+      for (iter = tree_node_get_first_sibling(iter->child); iter != NULL;
+           iter = iter->next_sibling) {
+        darray_push(&process_stack, iter);
       }
     }
 
-    slist_foreach(&result, visit, ctx);
+    while ((iter = (tree_node_t*)darray_pop(&result_stack)) != NULL) {
+      ret_t ret = visit(ctx, iter);
 
-    slist_deinit(&stack);
-    slist_deinit(&result);
+      if (ret != RET_OK) {
+        break;
+      }
+    }
+
+    darray_deinit(&process_stack);
+    darray_deinit(&result_stack);
   }
 
   return RET_OK;
@@ -496,7 +497,10 @@ static ret_t tree_size_on_visit(void* ctx, const void* data) {
 
 int32_t tree_size(tree_t* tree, tree_node_t* node) {
   int32_t ret = 0;
-  tree_foreach(tree, node, TREE_FOREACH_TYPE_BREADTH_FIRST, tree_size_on_visit, &ret);
+  return_value_if_fail(tree != NULL, -1);
+
+  tree_foreach(tree, node, TREE_FOREACH_TYPE_PREORDER, tree_size_on_visit, &ret);
+
   return ret;
 }
 
@@ -559,7 +563,7 @@ int32_t tree_height(tree_t* tree, tree_node_t* node) {
   memset(&ctx, 0, sizeof(tree_height_on_visit_ctx_t));
   ctx.root = node;
 
-  tree_foreach(tree, node, TREE_FOREACH_TYPE_BREADTH_FIRST, tree_height_on_visit, &ctx);
+  tree_foreach(tree, node, TREE_FOREACH_TYPE_PREORDER, tree_height_on_visit, &ctx);
 
   return ctx.max_height;
 }
@@ -580,7 +584,7 @@ int32_t tree_degree(tree_t* tree) {
   int32_t ret = 0;
   return_value_if_fail(tree != NULL, -1);
 
-  tree_foreach(tree, tree->root, TREE_FOREACH_TYPE_BREADTH_FIRST, tree_degree_on_visit, &ret);
+  tree_foreach(tree, tree->root, TREE_FOREACH_TYPE_PREORDER, tree_degree_on_visit, &ret);
 
   return ret;
 }
