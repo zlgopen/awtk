@@ -38,6 +38,7 @@ typedef struct _remote_ui_t remote_ui_t;
 
 typedef ret_t (*remote_ui_on_log_message_t)(void* ctx, tk_log_level_t level, const char* msg);
 typedef ret_t (*remote_ui_on_event_func_t)(remote_ui_t* ui, rbuffer_t* rb, const char* target, uint32_t type);
+typedef ret_t (*remote_ui_on_notify_t)(remote_ui_t* ui, void* ctx);
 
 BEGIN_C_DECLS
 
@@ -56,6 +57,8 @@ typedef struct _remote_ui_t {
   remote_ui_on_log_message_t log_hook;
   void* log_hook_ctx;
   remote_ui_on_event_func_t fallback_on_event;
+  remote_ui_on_notify_t on_notify;
+  void* on_notify_ctx;
 } remote_ui_t;
 
 /**
@@ -516,6 +519,18 @@ emitter_t* remote_ui_get_event_hander(remote_ui_t* ui, const char* target);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t remote_ui_set_fallback_on_event(remote_ui_t* ui, remote_ui_on_event_func_t fallback_on_event);
+
+/**
+ * @method remote_ui_set_on_notify
+ * 设置on_notify回调。
+ * 
+ * @param {remote_ui_t*} ui remote ui客户端对象。
+ * @param {remote_ui_on_notify_t} on_notify 回调函数。
+ * @param {void*} ctx 上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t remote_ui_set_on_notify(remote_ui_t* ui, remote_ui_on_notify_t on_notify, void* ctx);
 
 /**
  * @method remote_ui_destroy

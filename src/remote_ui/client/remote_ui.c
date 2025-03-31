@@ -86,6 +86,10 @@ static ret_t remote_ui_on_notify(remote_ui_t* ui, tk_msg_header_t* header, wbuff
     my_rbuffer_destroy(rb);
   }
 
+  if (ui->on_notify != NULL) {
+    ui->on_notify(ui, ui->on_notify_ctx);
+  }
+
   return RET_OK;
 }
 
@@ -805,6 +809,15 @@ ret_t remote_ui_set_fallback_on_event(remote_ui_t* ui, remote_ui_on_event_func_t
   
   ui->fallback_on_event = fallback_on_event;
   
+  return RET_OK;
+}
+
+ret_t remote_ui_set_on_notify(remote_ui_t* ui, remote_ui_on_notify_t on_notify, void* ctx) {
+  return_value_if_fail(ui!= NULL, RET_BAD_PARAMS);
+
+  ui->on_notify = on_notify;
+  ui->on_notify_ctx = ctx;
+
   return RET_OK;
 }
 
