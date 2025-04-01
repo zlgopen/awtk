@@ -23,6 +23,7 @@
 #define TK_TREE_H
 
 #include "tkc/types_def.h"
+#include "tkc/str.h"
 
 BEGIN_C_DECLS
 
@@ -420,6 +421,19 @@ int32_t tree_height(tree_t* tree, tree_node_t* node);
  * @return {int32_t} 返回树的宽度。
  */
 int32_t tree_degree(tree_t* tree);
+
+/**
+ * @method tree_to_string
+ * 树结构转换为字符串。
+ * @param {tree_t*} tree 树结构对象。
+ * @param {tree_node_t*} node 节点（为NULL时，遍历整个树）。
+ * @param {str_t*} result 字符串对象。
+ * @param {tk_visit_t} node_str_append_func 节点字符串追加函数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tree_to_string(tree_t* tree, tree_node_t* node, str_t* result,
+                     tk_visit_t node_str_append_func);
 
 /**
  * @method tree_deinit

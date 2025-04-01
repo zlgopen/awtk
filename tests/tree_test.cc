@@ -1,6 +1,7 @@
 ﻿#include "gtest/gtest.h"
 #include "tkc/tree.h"
 #include "tkc/utils.h"
+#include "tkc/fs.h"
 
 TEST(Tree, create) {
   tree_t* tree = tree_create(NULL, NULL);
@@ -357,4 +358,29 @@ TEST(Tree, degree) {
   ASSERT_EQ(tree_degree(&tree), 3);
 
   tree_deinit(&tree);
+}
+
+static ret_t tree_node_str_append(void* ctx, const void* data) {
+  const tree_node_t* node = (const tree_node_t*)(data);
+  str_t* str = (str_t*)(ctx);
+
+  return str_append_int(str, tk_pointer_to_int(node->data));
+}
+
+TEST(Tree, to_string) {
+  str_t str;
+  str_init(&str, 1024);
+  tree_t tree;
+  ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
+  ASSERT_EQ(build_tree_for_test(&tree), RET_OK);
+
+  ASSERT_EQ(tree_to_string(&tree, NULL, &str, tree_node_str_append), RET_OK);
+
+  fs_file_t* f = fs_open_file(os_fs(), "tree_to_string.txt", "w");
+  fs_file_write(f, str.str, str.size);
+  fs_file_close(f);
+  fs_remove_file(os_fs(), "tree_to_string.txt");
+
+  tree_deinit(&tree);
+  str_reset(&str);
 }
