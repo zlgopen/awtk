@@ -43,6 +43,9 @@ static ret_t main_loop_sdl2_dispatch_text_input(main_loop_simple_t* loop, SDL_Ev
   memset(&event, 0x00, sizeof(event));
   event.e = event_init(EVT_IM_COMMIT, NULL);
   event.text = text_input_event->text;
+  if (loop->key_pressed && *(event.text) == '\b') {
+    return RET_OK;
+  }
 
   return input_method_dispatch_to_widget(input_method(), &(event.e));
 }
@@ -68,6 +71,7 @@ static ret_t main_loop_sdl2_dispatch_key_event(main_loop_simple_t* loop, SDL_Eve
       main_loop_sdl2_set_key_event_mod(&event, sdl_event->key.keysym.mod);
       event.e.native_window_handle = SDL_GetWindowFromID(sdl_event->key.windowID);
       window_manager_dispatch_input_event(widget, (event_t*)&event);
+      loop->key_pressed = TRUE;
       break;
     }
     case SDL_KEYUP: {
@@ -75,6 +79,7 @@ static ret_t main_loop_sdl2_dispatch_key_event(main_loop_simple_t* loop, SDL_Eve
       main_loop_sdl2_set_key_event_mod(&event, sdl_event->key.keysym.mod);
       event.e.native_window_handle = SDL_GetWindowFromID(sdl_event->key.windowID);
       window_manager_dispatch_input_event(widget, (event_t*)&event);
+      loop->key_pressed = FALSE;
       break;
     }
     default:

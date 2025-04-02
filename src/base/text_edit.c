@@ -1874,15 +1874,6 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
       break;
     }
     case TK_KEY_BACKSPACE: {
-#if defined(WITH_SDL)
-#if defined(MOBILE_APP)
-      return RET_OK;
-#else
-      if (system_info()->app_type == APP_DESKTOP) {
-        return RET_OK;
-      }
-#endif /*MOBILE_APP*/
-#endif /*WITH_SDL*/
       key = STB_TEXTEDIT_K_BACKSPACE;
       break;
     }
