@@ -254,10 +254,13 @@ static ret_t edit_ex_suggest_words_popup_confirm(widget_t* widget, widget_t* ite
       goto_error_if_fail_ex(data != NULL, ret = RET_NOT_FOUND);
 
       text = tk_object_get_prop_str(data, input_name);
-      widget_set_text_utf8(widget, text);
+      ret = widget_set_text_utf8(widget, text);
     } else {
       const wchar_t* text = widget_get_text(item);
-      widget_set_text(widget, text);
+      ret = widget_set_text(widget, text);
+    }
+    if (RET_OK == ret) {
+      edit_set_cursor(widget, -1);
     }
   }
 
