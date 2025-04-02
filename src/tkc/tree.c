@@ -51,6 +51,108 @@ inline static tree_node_t* tree_node_get_sibling_by_index(tree_node_t* first_sib
   return node;
 }
 
+static ret_t tree_node_foreach_breadth_first(tree_node_t* node, tk_visit_t visit, void* ctx) {
+  uint32_t i = 0;
+  darray_t queue;
+  darray_init(&queue, 64, NULL, NULL);
+  darray_push(&queue, node);
+
+  for (i = 0; i < queue.size; i++) {
+    tree_node_t* iter = (tree_node_t*)darray_get(&queue, i);
+    ret_t ret = visit(ctx, iter);
+
+    if (ret != RET_OK) {
+      break;
+    }
+
+    for (iter = tree_node_get_first_sibling(iter->child); iter != NULL; iter = iter->next_sibling) {
+      darray_push(&queue, iter);
+    }
+  }
+
+  darray_deinit(&queue);
+
+  return RET_OK;
+}
+
+static ret_t tree_node_foreach_preorder(tree_node_t* node, tk_visit_t visit, void* ctx) {
+  darray_t stack;
+  darray_init(&stack, 16, NULL, NULL);
+  darray_push(&stack, node);
+
+  while (stack.size > 0) {
+    tree_node_t* iter = (tree_node_t*)darray_pop(&stack);
+    ret_t ret = visit(ctx, iter);
+
+    if (ret != RET_OK) {
+      break;
+    }
+
+    if (iter != node && iter->next_sibling != NULL) {
+      darray_push(&stack, iter->next_sibling);
+    }
+
+    iter = tree_node_get_first_sibling(iter->child);
+    if (iter != NULL) {
+      darray_push(&stack, iter);
+    }
+  }
+
+  darray_deinit(&stack);
+
+  return RET_OK;
+}
+
+static ret_t tree_node_foreach_postorder(tree_node_t* node, tk_visit_t visit, void* ctx) {
+  darray_t result_stack;
+  darray_t process_stack;
+  darray_init(&result_stack, 128, NULL, NULL);
+  darray_init(&process_stack, 32, NULL, NULL);
+  darray_push(&process_stack, node);
+
+  while (process_stack.size > 0) {
+    tree_node_t* iter = (tree_node_t*)darray_pop(&process_stack);
+    darray_push(&result_stack, iter);
+
+    for (iter = tree_node_get_first_sibling(iter->child); iter != NULL; iter = iter->next_sibling) {
+      darray_push(&process_stack, iter);
+    }
+  }
+
+  while (result_stack.size > 0) {
+    tree_node_t* iter = (tree_node_t*)darray_pop(&result_stack);
+    ret_t ret = visit(ctx, iter);
+
+    if (ret != RET_OK) {
+      break;
+    }
+  }
+
+  darray_deinit(&process_stack);
+  darray_deinit(&result_stack);
+
+  return RET_OK;
+}
+
+inline static ret_t tree_node_foreach(tree_node_t* node, tree_foreach_type_t foreach_type,
+                                      tk_visit_t visit, void* ctx) {
+  if (node != NULL) {
+    switch (foreach_type) {
+      case TREE_FOREACH_TYPE_BREADTH_FIRST:
+        return tree_node_foreach_breadth_first(node, visit, ctx);
+      case TREE_FOREACH_TYPE_PREORDER:
+        return tree_node_foreach_preorder(node, visit, ctx);
+      case TREE_FOREACH_TYPE_POSTORDER:
+        return tree_node_foreach_postorder(node, visit, ctx);
+      default:
+        ENSURE(!"Not support foreach type!");
+        return RET_NOT_IMPL;
+    }
+  }
+
+  return RET_OK;
+}
+
 tree_node_t* tree_node_create(void* data) {
   tree_node_t* ret = TKMEM_ZALLOC(tree_node_t);
   return_value_if_fail(ret != NULL, NULL);
@@ -66,13 +168,26 @@ int32_t tree_node_degree(tree_node_t* node) {
   return tree_node_sibling_size(tree_node_get_first_sibling(node->child));
 }
 
-ret_t tree_node_destroy(tree_node_t* node, tk_destroy_t destroy) {
+static ret_t tree_node_destroy_impl(tree_node_t* node, tk_destroy_t destroy) {
   return_value_if_fail(node != NULL && destroy != NULL, RET_BAD_PARAMS);
 
   destroy(node->data);
   TKMEM_FREE(node);
 
   return RET_OK;
+}
+
+static ret_t tree_node_destroy_on_visit(void* ctx, const void* data) {
+  tk_destroy_t destroy = (tk_destroy_t)(ctx);
+  tree_node_t* node = (tree_node_t*)(data);
+  tree_node_destroy_impl(node, destroy);
+  return RET_OK;
+}
+
+ret_t tree_node_destroy(tree_node_t* node, tk_destroy_t destroy) {
+  return_value_if_fail(node != NULL && destroy != NULL, RET_BAD_PARAMS);
+
+  return tree_node_foreach(node, TREE_FOREACH_TYPE_POSTORDER, tree_node_destroy_on_visit, destroy);
 }
 
 tree_t* tree_create(tk_destroy_t destroy, tk_compare_t compare) {
@@ -357,90 +472,6 @@ ret_t tree_prepend_sibling_node(tree_t* tree, tree_node_t* node, tree_node_t* si
   return tree_insert_sibling_node(tree, node, 0, sibling);
 }
 
-static ret_t tree_foreach_breadth_first(tree_t* tree, tree_node_t* node, tk_visit_t visit,
-                                        void* ctx) {
-  uint32_t i = 0;
-  darray_t queue;
-  darray_init(&queue, 64, NULL, NULL);
-  darray_push(&queue, node);
-
-  for (i = 0; i < queue.size; i++) {
-    tree_node_t* iter = (tree_node_t*)darray_get(&queue, i);
-    ret_t ret = visit(ctx, iter);
-
-    if (ret != RET_OK) {
-      break;
-    }
-
-    for (iter = tree_node_get_first_sibling(iter->child); iter != NULL; iter = iter->next_sibling) {
-      darray_push(&queue, iter);
-    }
-  }
-
-  darray_deinit(&queue);
-
-  return RET_OK;
-}
-
-static ret_t tree_foreach_preorder(tree_t* tree, tree_node_t* node, tk_visit_t visit, void* ctx) {
-  darray_t stack;
-  darray_init(&stack, 16, NULL, NULL);
-  darray_push(&stack, node);
-
-  while (stack.size > 0) {
-    tree_node_t* iter = (tree_node_t*)darray_pop(&stack);
-    ret_t ret = visit(ctx, iter);
-
-    if (ret != RET_OK) {
-      break;
-    }
-
-    if (iter != node && iter->next_sibling != NULL) {
-      darray_push(&stack, iter->next_sibling);
-    }
-
-    iter = tree_node_get_first_sibling(iter->child);
-    if (iter != NULL) {
-      darray_push(&stack, iter);
-    }
-  }
-
-  darray_deinit(&stack);
-
-  return RET_OK;
-}
-
-static ret_t tree_foreach_postorder(tree_t* tree, tree_node_t* node, tk_visit_t visit, void* ctx) {
-  darray_t result_stack;
-  darray_t process_stack;
-  darray_init(&result_stack, 128, NULL, NULL);
-  darray_init(&process_stack, 32, NULL, NULL);
-  darray_push(&process_stack, node);
-
-  while (process_stack.size > 0) {
-    tree_node_t* iter = (tree_node_t*)darray_pop(&process_stack);
-    darray_push(&result_stack, iter);
-
-    for (iter = tree_node_get_first_sibling(iter->child); iter != NULL; iter = iter->next_sibling) {
-      darray_push(&process_stack, iter);
-    }
-  }
-
-  while (result_stack.size > 0) {
-    tree_node_t* iter = (tree_node_t*)darray_pop(&result_stack);
-    ret_t ret = visit(ctx, iter);
-
-    if (ret != RET_OK) {
-      break;
-    }
-  }
-
-  darray_deinit(&process_stack);
-  darray_deinit(&result_stack);
-
-  return RET_OK;
-}
-
 ret_t tree_foreach(tree_t* tree, tree_node_t* node, tree_foreach_type_t foreach_type,
                    tk_visit_t visit, void* ctx) {
   return_value_if_fail(tree != NULL && visit != NULL, RET_BAD_PARAMS);
@@ -449,21 +480,7 @@ ret_t tree_foreach(tree_t* tree, tree_node_t* node, tree_foreach_type_t foreach_
     node = tree->root;
   }
 
-  if (node != NULL) {
-    switch (foreach_type) {
-      case TREE_FOREACH_TYPE_BREADTH_FIRST:
-        return tree_foreach_breadth_first(tree, node, visit, ctx);
-      case TREE_FOREACH_TYPE_PREORDER:
-        return tree_foreach_preorder(tree, node, visit, ctx);
-      case TREE_FOREACH_TYPE_POSTORDER:
-        return tree_foreach_postorder(tree, node, visit, ctx);
-      default:
-        ENSURE(!"Not support foreach type!");
-        return RET_NOT_IMPL;
-    }
-  }
-
-  return RET_OK;
+  return tree_node_foreach(node, foreach_type, visit, ctx);
 }
 
 bool_t tree_is_empty(tree_t* tree, tree_node_t* node) {
