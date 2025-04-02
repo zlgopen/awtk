@@ -87,20 +87,22 @@ static ret_t build_tree_for_test(tree_t* tree) {
 
   /**
    * 0
-   * ├─ 1
-   * │  ├─ 11
-   * │  └─ 12
-   * │     ├─ 121
-   * │     ├─ 122
-   * │     └─ 123
-   * ├─ 2
-   * │  └─ 21 → 22 → 23
-   * │          └─ 221
-   * │             ├─ 2211
-   * │             └─ 2212
-   * └─ 3
-   *    ├─ 31
-   *    └─ 32
+   * ├── 1
+   * │   ├── 11
+   * │   └── 12
+   * │       ├── 121
+   * │       ├── 122
+   * │       └── 123
+   * ├── 2
+   * │   ├── 21
+   * │   ├── 22
+   * │   │   └── 221
+   * │   │       ├── 2211
+   * │   │       └── 2212
+   * │   └── 23
+   * └── 3
+   *     ├── 31
+   *     └── 32
    */
 
   // 创建根节点
@@ -368,6 +370,24 @@ static ret_t tree_node_str_append(void* ctx, const void* data) {
 }
 
 TEST(Tree, to_string) {
+  const char* const expected_str =
+      "0\n"
+      "├── 1\n"
+      "│   ├── 11\n"
+      "│   └── 12\n"
+      "│       ├── 121\n"
+      "│       ├── 122\n"
+      "│       └── 123\n"
+      "├── 2\n"
+      "│   ├── 21\n"
+      "│   ├── 22\n"
+      "│   │   └── 221\n"
+      "│   │       ├── 2211\n"
+      "│   │       └── 2212\n"
+      "│   └── 23\n"
+      "└── 3\n"
+      "    ├── 31\n"
+      "    └── 32\n";
   str_t str;
   str_init(&str, 1024);
   tree_t tree;
@@ -375,11 +395,7 @@ TEST(Tree, to_string) {
   ASSERT_EQ(build_tree_for_test(&tree), RET_OK);
 
   ASSERT_EQ(tree_to_string(&tree, NULL, &str, tree_node_str_append), RET_OK);
-
-  fs_file_t* f = fs_open_file(os_fs(), "tree_to_string.txt", "w");
-  fs_file_write(f, str.str, str.size);
-  fs_file_close(f);
-  fs_remove_file(os_fs(), "tree_to_string.txt");
+  ASSERT_STREQ(str.str, expected_str);
 
   tree_deinit(&tree);
   str_reset(&str);
