@@ -370,32 +370,41 @@ static ret_t tree_node_str_append(void* ctx, const void* data) {
 }
 
 TEST(Tree, to_string) {
-  const char* const expected_str =
-      "0\n"
-      "├── 1\n"
-      "│   ├── 11\n"
-      "│   └── 12\n"
-      "│       ├── 121\n"
-      "│       ├── 122\n"
-      "│       └── 123\n"
-      "├── 2\n"
-      "│   ├── 21\n"
-      "│   ├── 22\n"
-      "│   │   └── 221\n"
-      "│   │       ├── 2211\n"
-      "│   │       └── 2212\n"
-      "│   └── 23\n"
-      "└── 3\n"
-      "    ├── 31\n"
-      "    └── 32\n";
   str_t str;
   str_init(&str, 1024);
   tree_t tree;
   ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
-  ASSERT_EQ(build_tree_for_test(&tree), RET_OK);
 
   ASSERT_EQ(tree_to_string(&tree, NULL, &str, tree_node_str_append), RET_OK);
-  ASSERT_STREQ(str.str, expected_str);
+  ASSERT_EQ(str.size, 0);
+
+  ASSERT_EQ(build_tree_for_test(&tree), RET_OK);
+  ASSERT_EQ(tree_to_string(&tree, NULL, &str, tree_node_str_append), RET_OK);
+  ASSERT_STREQ(str.str,
+               "0\n"
+               "├── 1\n"
+               "│   ├── 11\n"
+               "│   └── 12\n"
+               "│       ├── 121\n"
+               "│       ├── 122\n"
+               "│       └── 123\n"
+               "├── 2\n"
+               "│   ├── 21\n"
+               "│   ├── 22\n"
+               "│   │   └── 221\n"
+               "│   │       ├── 2211\n"
+               "│   │       └── 2212\n"
+               "│   └── 23\n"
+               "└── 3\n"
+               "    ├── 31\n"
+               "    └── 32");
+
+  tree_node_t* node3 = tree_find(&tree, NULL, TREE_FOREACH_TYPE_PREORDER, tk_pointer_from_int(3));
+  ASSERT_EQ(tree_to_string(&tree, node3, &str, tree_node_str_append), RET_OK);
+  ASSERT_STREQ(str.str,
+               "3\n"
+               "├── 31\n"
+               "└── 32");
 
   tree_deinit(&tree);
   str_reset(&str);

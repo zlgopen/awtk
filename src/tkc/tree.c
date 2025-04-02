@@ -588,6 +588,7 @@ static ret_t tree_node_str_append_default(void* ctx, const void* data) {
 
 typedef struct _tree_to_string_on_visit_ctx_t {
   tree_t* tree;
+  tree_node_t* root;
   str_t* result;
   tk_visit_t node_str_append_func;
 } tree_to_string_on_visit_ctx_t;
@@ -596,16 +597,18 @@ static ret_t tree_to_string_on_visit(void* ctx, const void* data) {
   ret_t ret = RET_OK;
   tree_to_string_on_visit_ctx_t* actx = (tree_to_string_on_visit_ctx_t*)ctx;
   const tree_node_t* node = (const tree_node_t*)data;
-  int32_t depth = tree_depth(actx->tree, (tree_node_t*)node);
 
-  if (depth > 0) {
+  if (actx->result->size > 0) {
+    str_append(actx->result, "\n");
+  }
+
+  if (node != NULL && node != actx->root) {
     const tree_node_t* iter = NULL;
-    int32_t i = 0;
     darray_t stack;
-    darray_init(&stack, depth, NULL, NULL);
+    darray_init(&stack, 16, NULL, NULL);
 
-    for (iter = node, i = depth; iter != NULL && i > 0; iter = iter->parent, i--) {
-      if (i == depth) {
+    for (iter = node; iter != NULL && iter != actx->root; iter = iter->parent) {
+      if (iter == node) {
         darray_push(&stack, iter->next_sibling != NULL ? "├── " : "└── ");
       } else if (iter->next_sibling != NULL) {
         darray_push(&stack, "│   ");
@@ -622,8 +625,6 @@ static ret_t tree_to_string_on_visit(void* ctx, const void* data) {
 
   ret = actx->node_str_append_func(actx->result, node);
 
-  str_append(actx->result, "\n");
-
   return ret;
 }
 
@@ -636,6 +637,11 @@ ret_t tree_to_string(tree_t* tree, tree_node_t* node, str_t* result,
           (node_str_append_func != NULL) ? node_str_append_func : tree_node_str_append_default,
   };
   return_value_if_fail(tree != NULL && result != NULL, RET_BAD_PARAMS);
+
+  if (node == NULL) {
+    node = tree->root;
+  }
+  ctx.root = node;
 
   str_clear(result);
 
