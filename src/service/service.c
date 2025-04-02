@@ -70,16 +70,29 @@ ret_t tk_service_destroy(tk_service_t* service) {
 }
 
 static ret_t tk_service_on_data(event_source_t* source) {
-  event_source_fd_t* event_source_fd = (event_source_fd_t*)source;
+  event_source_fd_t* event_source_fd = EVENT_SOURCE_FD(source);
   tk_service_t* service = (tk_service_t*)(event_source_fd->ctx);
 
   if (tk_service_dispatch(service) != RET_OK) {
     tk_service_destroy(service);
+    event_source_fd->ctx = NULL;
     log_debug("client disconnected\n");
     return RET_REMOVE;
   } else {
     return RET_OK;
   }
+}
+
+static ret_t tk_service_on_destory(void* ctx, event_t* e) {
+  event_source_fd_t* event_source_fd = EVENT_SOURCE_FD(ctx);
+  tk_service_t* service = (tk_service_t*)(event_source_fd->ctx);
+
+  if (service != NULL) {
+    tk_service_destroy(service);
+    event_source_fd->ctx = NULL;
+  }
+
+  return RET_OK;
 }
 
 #ifdef WITH_SOCKET
@@ -99,6 +112,7 @@ static ret_t tk_service_tcp_on_client(event_source_t* source) {
         event_source_manager_t* esm = source->manager;
         event_source_t* client_source = event_source_fd_create(sock, tk_service_on_data, service);
         event_source_manager_add(esm, client_source);
+        emitter_on(EMITTER(client_source), EVT_DESTROY, tk_service_on_destory, client_source);
         TK_OBJECT_UNREF(client_source);
       } else {
         TK_OBJECT_UNREF(io);
