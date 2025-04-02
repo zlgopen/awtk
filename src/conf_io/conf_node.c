@@ -226,9 +226,10 @@ ret_t conf_doc_destroy_node(conf_doc_t* doc, conf_node_t* node) {
 
   if (node->value_type == CONF_NODE_VALUE_STRING) {
     TKMEM_FREE(node->value.str);
-  }
-  if (node->value_type == CONF_NODE_VALUE_WSTRING) {
+  } else if (node->value_type == CONF_NODE_VALUE_WSTRING) {
     TKMEM_FREE(node->value.wstr);
+  } else if (node->value_type == CONF_NODE_VALUE_BINARY) {
+    TKMEM_FREE(node->value.binary_data.data);
   }
 
   memset(node, 0x00, sizeof(*node));
