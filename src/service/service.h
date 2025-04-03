@@ -172,6 +172,7 @@ ret_t tk_service_download_file(tk_service_t* service, const char* filename);
 /**
  * @method tk_service_set_retry_times
  * 设置重试次数。
+ * > 注意：client 和 service 的 retry_times 必须一起配置为 0 或者非 0，两边同时禁用或者启用确认机制。
  * @param {tk_service_t*} service service对象。
  * @param {uint32_t} retry_times 重试次数。
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

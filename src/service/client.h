@@ -145,6 +145,7 @@ ret_t tk_client_upload_file(tk_client_t* client, const char* remote_file, const 
 /**
  * @method tk_client_set_retry_times
  * 设置重试次数。
+ * > 注意：client 和 service 的 retry_times 必须一起配置为 0 或者非 0，两边同时禁用或者启用确认机制。
  * @param {tk_client_t*} client client对象。
  * @param {uint32_t} retry_times 重试次数。
  *

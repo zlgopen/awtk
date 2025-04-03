@@ -99,6 +99,7 @@ ret_t tk_client_send_req(tk_client_t* client, uint32_t type, uint32_t data_type,
   tk_msg_header_t header;
   return_value_if_fail(client != NULL && client->io != NULL, RET_BAD_PARAMS);
 
+  /* 要和 service 的 retry_times 一起配置为 0，两边一起禁用确认机制 */
   if (client->retry_times < 1) {
     return tk_client_send_req_impl(client, type, data_type, wb);
   }
@@ -177,6 +178,7 @@ static ret_t tk_client_read_resp_ex(tk_client_t* client, bool_t read_notify,
   int32_t retry_times = 0;
   return_value_if_fail(client != NULL && client->io != NULL, RET_BAD_PARAMS);
 
+  /* 要和 service 的 retry_times 一起配置为 0，两边一起禁用确认机制 */
   if (client->retry_times < 1) {
     while (TRUE) {
       ret = tk_client_read_resp_impl(client, header, wb);

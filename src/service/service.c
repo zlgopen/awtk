@@ -277,6 +277,7 @@ ret_t tk_service_send_resp(tk_service_t* service, uint32_t type, uint32_t data_t
   return_value_if_fail(service != NULL && wb != NULL, RET_BAD_PARAMS);
 
   tk_service_lock(service);
+  /* 要和 client 的 retry_times 一起配置为 0，两边一起禁用确认机制 */
   if (service->retry_times < 1) {
     ret = tk_service_send_resp_impl(service, type, data_type, resp_code, wb);
     goto end;
@@ -350,6 +351,7 @@ ret_t tk_service_read_req(tk_service_t* service, tk_msg_header_t* header, wbuffe
   int32_t retry_times = 0;
   return_value_if_fail(service != NULL && header != NULL && wb != NULL, RET_BAD_PARAMS);
 
+  /* 要和 client 的 retry_times 一起配置为 0，两边一起禁用确认机制 */
   if (service->retry_times < 1) {
     return tk_service_read_req_impl(service, header, wb);
   }
