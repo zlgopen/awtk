@@ -138,7 +138,7 @@ ret_t remote_ui_get_dev_info(remote_ui_t* ui, remote_ui_dev_info_t* info) {
   ret = tk_client_request(&(ui->client), REMOTE_UI_GET_DEV_INFO, MSG_DATA_TYPE_NONE, wb);
   if (ret == RET_OK) {
     rbuffer_t rb;
-    if (rbuffer_init(&rb, wb->data, wb->cursor) == RET_OK) {
+    if (rbuffer_init(&rb, wb->data, wb->cursor) != NULL) {
       const char* p = NULL;
 
       if (rbuffer_read_string(&rb, &p) == RET_OK) {
