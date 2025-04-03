@@ -116,7 +116,11 @@ typedef enum _tk_msg_code_t {
    * 下载文件请求结束。
    */
   MSG_CODE_DOWNLOAD_FILE_END,
-
+  /**
+   * @const MSG_CODE_GET_VERSION
+   * 获取版本。
+   */
+  MSG_CODE_GET_VERSION,
   /**
    * @const MSG_USER_START
    * 用户扩展消息起始值。
