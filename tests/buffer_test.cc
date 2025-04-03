@@ -17,6 +17,27 @@ TEST(Buffer, binary0) {
   wbuffer_deinit(&wbuffer);
 }
 
+TEST(Buffer, clone) {
+  wbuffer_t wbuffer1;
+  wbuffer_init_extendable(&wbuffer1);
+
+  wbuffer_write_binary(&wbuffer1, "hello", 5);
+  ASSERT_STREQ((char*)(wbuffer1.data), "hello");
+  ASSERT_EQ(wbuffer1.data[5], 0);
+
+  wbuffer_t* wbuffer2 = wbuffer_clone(&wbuffer1);
+  ASSERT_EQ(wbuffer2 != NULL, true);
+  ASSERT_EQ(wbuffer2->capacity, wbuffer1.capacity);
+  ASSERT_EQ(wbuffer2->cursor, wbuffer1.cursor);
+  ASSERT_EQ(memcmp(wbuffer1.data, wbuffer2->data, wbuffer1.cursor), 0);
+  wbuffer1.data[0] = 'H';
+  ASSERT_EQ(memcmp(wbuffer1.data, wbuffer2->data, wbuffer1.cursor) != 0, true);
+
+  ASSERT_EQ(wbuffer_destroy(wbuffer2), RET_OK);
+
+  wbuffer_deinit(&wbuffer1);
+}
+
 TEST(Buffer, replace_binary) {
   wbuffer_t wbuffer;
   wbuffer_init_extendable(&wbuffer);

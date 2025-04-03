@@ -129,6 +129,16 @@ wbuffer_t* wbuffer_create(void* data, uint32_t capacity);
 wbuffer_t* wbuffer_create_extendable(void);
 
 /**
+ * @method wbuffer_clone
+ * 克隆wbuffer对象。（需要使用 wbuffer_destroy 来销毁对象）
+ * @annotation ["constructor"]
+ * @param {const wbuffer_t*} wbuffer wbuffer对象。
+ * 
+ * @return {wbuffer_t*} 成功返回 wbuffer 对象，失败返回 NULL。
+ */
+wbuffer_t* wbuffer_clone(const wbuffer_t* wbuffer);
+
+/**
  * @method wbuffer_rewind
  * 重置当前写入位置。
  * @annotation ["constructor"]

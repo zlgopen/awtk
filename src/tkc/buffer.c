@@ -137,6 +137,22 @@ wbuffer_t* wbuffer_init_extendable(wbuffer_t* wbuffer) {
   return wbuffer;
 }
 
+wbuffer_t* wbuffer_clone(const wbuffer_t* wbuffer) {
+  wbuffer_t* wb = NULL;
+  return_value_if_fail(wbuffer != NULL, NULL);
+  wb = wbuffer_create_extendable();
+  return_value_if_fail(wb!= NULL, NULL);
+  memcpy(wb, wbuffer, sizeof(wbuffer_t));
+  wb->data = (uint8_t*)TKMEM_ALLOC(wbuffer->capacity);
+  goto_error_if_fail(wb->data!= NULL);
+
+  memcpy(wb->data, wbuffer->data, wbuffer->capacity);
+  return wb;
+error:
+  wbuffer_destroy(wb);
+  return NULL;
+}
+
 ret_t wbuffer_skip(wbuffer_t* wbuffer, int32_t delta) {
   int32_t cursor = 0;
   return_value_if_fail(wbuffer != NULL, RET_BAD_PARAMS);
