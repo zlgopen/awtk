@@ -61,6 +61,36 @@ tree_node_t* tree_node_create(void* data);
 int32_t tree_node_degree(tree_node_t* node);
 
 /**
+ * @method tree_node_is_ancestor
+ * 判断树结点是否为祖先结点
+ * @param {tree_node_t*} node 树结点对象。
+ * @param {tree_node_t*} ancestor 祖先结点对象。
+ *
+ * @return {bool_t} 返回是否为祖先结点。
+ */
+bool_t tree_node_is_ancestor(const tree_node_t* node, const tree_node_t* ancestor);
+
+/**
+ * @method tree_node_get_sibling
+ * 获取指定位置的兄弟节点。
+ * @param {tree_node_t*} node 树结点对象。
+ * @param {uint32_t} index 索引。
+ *
+ * @return {tree_node_t*} 返回兄弟节点。
+ */
+tree_node_t* tree_node_get_sibling(tree_node_t* node, uint32_t index);
+
+/**
+ * @method tree_node_get_child
+ * 获取指定位置的子节点。
+ * @param {tree_node_t*} node 树结点对象。
+ * @param {uint32_t} index 索引。
+ *
+ * @return {tree_node_t*} 返回子节点。
+ */
+tree_node_t* tree_node_get_child(tree_node_t* node, uint32_t index);
+
+/**
  * @method tree_node_destroy
  * @annotation ["deconstructor"]
  * 销毁树结点对象
@@ -247,28 +277,6 @@ ret_t tree_unlink_node(tree_t* tree, tree_node_t* node);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t tree_clear(tree_t* tree);
-
-/**
- * @method tree_get_child_node
- * 获取指定位置的子节点。
- * @param {tree_t*} tree 树结构对象
- * @param {tree_node_t*} node 节点
- * @param {uint32_t} index 索引。
- *
- * @return {tree_node_t*} 返回子节点。
- */
-tree_node_t* tree_get_child_node(tree_t* tree, tree_node_t* node, uint32_t index);
-
-/**
- * @method tree_get_sibling_node
- * 获取指定位置的兄弟节点。
- * @param {tree_t*} tree 树结构对象
- * @param {tree_node_t*} node 节点
- * @param {uint32_t} index 索引。
- *
- * @return {tree_node_t*} 返回兄弟节点。
- */
-tree_node_t* tree_get_sibling_node(tree_t* tree, tree_node_t* node, uint32_t index);
 
 /**
  * @method tree_set_root

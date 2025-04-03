@@ -25,6 +25,28 @@
 #include "tkc/utils.h"
 #include "tkc/darray.h"
 
+bool_t tree_node_is_ancestor(const tree_node_t* node, const tree_node_t* ancestor) {
+  return_value_if_fail(node != NULL && ancestor != NULL, FALSE);
+
+  for (node = node->parent; node != NULL; node = node->parent) {
+    if (node == ancestor) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+static int tree_node_is_ancestor_cmp(const void* iter, const void* ctx) {
+  const tree_node_t* node = (const tree_node_t*)(iter);
+  const tree_node_t* ancestor = (const tree_node_t*)(ctx);
+  return tree_node_is_ancestor(node, ancestor) ? 0 : -1;
+}
+
+inline static bool_t tree_node_is_leaf(tree_node_t* node) {
+  return_value_if_fail(node != NULL, FALSE);
+  return node->child == NULL;
+}
+
 inline static tree_node_t* tree_node_get_first_sibling(tree_node_t* node) {
   while (node != NULL && node->prev_sibling != NULL) {
     node = node->prev_sibling;
@@ -51,7 +73,66 @@ inline static tree_node_t* tree_node_get_sibling_by_index(tree_node_t* first_sib
   return node;
 }
 
-static ret_t tree_node_foreach_breadth_first(tree_node_t* node, tk_visit_t visit, void* ctx) {
+static ret_t tree_node_unlink(tree_node_t* node) {
+  return_value_if_fail(node != NULL, RET_BAD_PARAMS);
+
+  if (node->parent != NULL) {
+    if (node->parent->child == node) {
+      if (node->prev_sibling != NULL) {
+        node->parent->child = node->prev_sibling;
+      } else {
+        node->parent->child = node->next_sibling;
+      }
+    }
+    node->parent = NULL;
+  }
+
+  if (node->prev_sibling != NULL) {
+    node->prev_sibling->next_sibling = node->next_sibling;
+  }
+
+  if (node->next_sibling != NULL) {
+    node->next_sibling->prev_sibling = node->prev_sibling;
+  }
+
+  node->prev_sibling = NULL;
+  node->next_sibling = NULL;
+
+  return RET_OK;
+}
+
+static ret_t tree_node_link_sibling(tree_node_t* node, tree_node_t* prev_sibling,
+                                    tree_node_t* next_sibling) {
+  return_value_if_fail(node != NULL && (prev_sibling != NULL || next_sibling != NULL),
+                       RET_BAD_PARAMS);
+
+  if (prev_sibling != NULL) {
+    node->parent = prev_sibling->parent;
+
+    node->prev_sibling = prev_sibling;
+    node->next_sibling = prev_sibling->next_sibling;
+
+    prev_sibling->next_sibling = node;
+    if (node->next_sibling != NULL) {
+      node->next_sibling->prev_sibling = node;
+    }
+  } else {
+    node->parent = next_sibling->parent;
+
+    node->next_sibling = next_sibling;
+    node->prev_sibling = next_sibling->prev_sibling;
+
+    next_sibling->prev_sibling = node;
+    if (node->prev_sibling != NULL) {
+      node->prev_sibling->next_sibling = node;
+    }
+  }
+
+  return RET_OK;
+}
+
+static ret_t tree_node_foreach_breadth_first(tree_node_t* node, tk_visit_t visit,
+                                             tk_destroy_t destroy, void* ctx) {
   uint32_t i = 0;
   darray_t queue;
   darray_init(&queue, 64, NULL, NULL);
@@ -61,7 +142,10 @@ static ret_t tree_node_foreach_breadth_first(tree_node_t* node, tk_visit_t visit
     tree_node_t* iter = (tree_node_t*)darray_get(&queue, i);
     ret_t ret = visit(ctx, iter);
 
-    if (ret != RET_OK) {
+    if (ret == RET_REMOVE) {
+      tree_node_destroy(node, destroy);
+      continue;
+    } else if (ret != RET_OK) {
       break;
     }
 
@@ -75,7 +159,8 @@ static ret_t tree_node_foreach_breadth_first(tree_node_t* node, tk_visit_t visit
   return RET_OK;
 }
 
-static ret_t tree_node_foreach_preorder(tree_node_t* node, tk_visit_t visit, void* ctx) {
+static ret_t tree_node_foreach_preorder(tree_node_t* node, tk_visit_t visit, tk_destroy_t destroy,
+                                        void* ctx) {
   darray_t stack;
   darray_init(&stack, 16, NULL, NULL);
   darray_push(&stack, node);
@@ -84,12 +169,15 @@ static ret_t tree_node_foreach_preorder(tree_node_t* node, tk_visit_t visit, voi
     tree_node_t* iter = (tree_node_t*)darray_pop(&stack);
     ret_t ret = visit(ctx, iter);
 
-    if (ret != RET_OK) {
-      break;
-    }
-
     if (iter != node && iter->next_sibling != NULL) {
       darray_push(&stack, iter->next_sibling);
+    }
+
+    if (ret == RET_REMOVE) {
+      tree_node_destroy(node, destroy);
+      continue;
+    } else if (ret != RET_OK) {
+      break;
     }
 
     iter = tree_node_get_first_sibling(iter->child);
@@ -103,7 +191,8 @@ static ret_t tree_node_foreach_preorder(tree_node_t* node, tk_visit_t visit, voi
   return RET_OK;
 }
 
-static ret_t tree_node_foreach_postorder(tree_node_t* node, tk_visit_t visit, void* ctx) {
+static ret_t tree_node_foreach_postorder(tree_node_t* node, tk_visit_t visit, tk_destroy_t destroy,
+                                         void* ctx) {
   darray_t result_stack;
   darray_t process_stack;
   darray_init(&result_stack, 128, NULL, NULL);
@@ -123,7 +212,10 @@ static ret_t tree_node_foreach_postorder(tree_node_t* node, tk_visit_t visit, vo
     tree_node_t* iter = (tree_node_t*)darray_pop(&result_stack);
     ret_t ret = visit(ctx, iter);
 
-    if (ret != RET_OK) {
+    if (ret == RET_REMOVE) {
+      tree_node_destroy(node, destroy);
+      continue;
+    } else if (ret != RET_OK) {
       break;
     }
   }
@@ -135,15 +227,15 @@ static ret_t tree_node_foreach_postorder(tree_node_t* node, tk_visit_t visit, vo
 }
 
 inline static ret_t tree_node_foreach(tree_node_t* node, tree_foreach_type_t foreach_type,
-                                      tk_visit_t visit, void* ctx) {
+                                      tk_visit_t visit, tk_destroy_t destroy, void* ctx) {
   if (node != NULL) {
     switch (foreach_type) {
       case TREE_FOREACH_TYPE_BREADTH_FIRST:
-        return tree_node_foreach_breadth_first(node, visit, ctx);
+        return tree_node_foreach_breadth_first(node, visit, destroy, ctx);
       case TREE_FOREACH_TYPE_PREORDER:
-        return tree_node_foreach_preorder(node, visit, ctx);
+        return tree_node_foreach_preorder(node, visit, destroy, ctx);
       case TREE_FOREACH_TYPE_POSTORDER:
-        return tree_node_foreach_postorder(node, visit, ctx);
+        return tree_node_foreach_postorder(node, visit, destroy, ctx);
       default:
         ENSURE(!"Not support foreach type!");
         return RET_NOT_IMPL;
@@ -168,6 +260,29 @@ int32_t tree_node_degree(tree_node_t* node) {
   return tree_node_sibling_size(tree_node_get_first_sibling(node->child));
 }
 
+tree_node_t* tree_node_get_sibling(tree_node_t* node, uint32_t index) {
+  tree_node_t* first_sibling = NULL;
+  return_value_if_fail(node != NULL, NULL);
+
+  first_sibling = tree_node_get_first_sibling(node);
+
+  if (index == 0) {
+    return first_sibling;
+  } else {
+    return tree_node_get_sibling_by_index(first_sibling, index);
+  }
+}
+
+tree_node_t* tree_node_get_child(tree_node_t* node, uint32_t index) {
+  return_value_if_fail(node != NULL, NULL);
+
+  if (!tree_node_is_leaf(node)) {
+    return tree_node_get_sibling(node->child, index);
+  }
+
+  return NULL;
+}
+
 static ret_t tree_node_destroy_impl(tree_node_t* node, tk_destroy_t destroy) {
   return_value_if_fail(node != NULL && destroy != NULL, RET_BAD_PARAMS);
 
@@ -186,8 +301,10 @@ static ret_t tree_node_destroy_on_visit(void* ctx, const void* data) {
 
 ret_t tree_node_destroy(tree_node_t* node, tk_destroy_t destroy) {
   return_value_if_fail(node != NULL && destroy != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(RET_OK == tree_node_unlink(node), RET_FAIL);
 
-  return tree_node_foreach(node, TREE_FOREACH_TYPE_POSTORDER, tree_node_destroy_on_visit, destroy);
+  return tree_node_foreach(node, TREE_FOREACH_TYPE_POSTORDER, tree_node_destroy_on_visit, destroy,
+                           destroy);
 }
 
 tree_t* tree_create(tk_destroy_t destroy, tk_compare_t compare) {
@@ -286,17 +403,26 @@ ret_t tree_remove_ex(tree_t* tree, tree_node_t* node, tree_foreach_type_t foreac
       .tree = tree,
       .data = ctx,
       .compare = compare,
-      .remove_size = remove_size,
       .remove_list = &remove_list,
   };
   return_value_if_fail(tree != NULL && compare != NULL, RET_BAD_PARAMS);
 
-  darray_init(&remove_list, remove_size, NULL, NULL);
+  if (remove_size == 0) {
+    return RET_OK;
+  } else if (remove_size < 0) {
+    actx.remove_size = tree_size(tree, node);
+  } else {
+    int32_t size = tree_size(tree, node);
+    actx.remove_size = tk_min(remove_size, size);
+  }
+
+  darray_init(&remove_list, actx.remove_size, NULL, NULL);
 
   ret = tree_foreach(tree, node, foreach_type, tree_remove_on_visit, &actx);
 
   while (remove_list.size > 0) {
     tree_node_t* iter = darray_pop(&remove_list);
+    darray_remove_all(&remove_list, tree_node_is_ancestor_cmp, iter);
     tree_remove_node(tree, iter);
   }
 
@@ -307,7 +433,6 @@ ret_t tree_remove_ex(tree_t* tree, tree_node_t* node, tree_foreach_type_t foreac
 
 ret_t tree_remove_node(tree_t* tree, tree_node_t* node) {
   return_value_if_fail(tree != NULL && node != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(RET_OK == tree_unlink_node(tree, node), RET_FAIL);
 
   return tree_node_destroy(node, tree->destroy);
 }
@@ -315,29 +440,7 @@ ret_t tree_remove_node(tree_t* tree, tree_node_t* node) {
 ret_t tree_unlink_node(tree_t* tree, tree_node_t* node) {
   return_value_if_fail(tree != NULL && node != NULL, RET_BAD_PARAMS);
 
-  if (node->parent != NULL) {
-    if (node->parent->child == node) {
-      if (node->prev_sibling != NULL) {
-        node->parent->child = node->prev_sibling;
-      } else {
-        node->parent->child = node->next_sibling;
-      }
-    }
-    node->parent = NULL;
-  }
-
-  if (node->prev_sibling != NULL) {
-    node->prev_sibling->next_sibling = node->next_sibling;
-  }
-
-  if (node->next_sibling != NULL) {
-    node->next_sibling->prev_sibling = node->prev_sibling;
-  }
-
-  node->prev_sibling = NULL;
-  node->next_sibling = NULL;
-
-  return RET_OK;
+  return tree_node_unlink(node);
 }
 
 ret_t tree_clear(tree_t* tree) {
@@ -349,47 +452,6 @@ ret_t tree_clear(tree_t* tree) {
   }
 
   return RET_OK;
-}
-
-static ret_t tree_link_sibling(tree_t* tree, tree_node_t* prev_sibling, tree_node_t* next_sibling,
-                               tree_node_t* node) {
-  return_value_if_fail(
-      tree != NULL && (prev_sibling != NULL || next_sibling != NULL) && node != NULL,
-      RET_BAD_PARAMS);
-
-  if (prev_sibling != NULL) {
-    node->parent = prev_sibling->parent;
-
-    node->prev_sibling = prev_sibling;
-    node->next_sibling = prev_sibling->next_sibling;
-
-    prev_sibling->next_sibling = node;
-    if (node->next_sibling != NULL) {
-      node->next_sibling->prev_sibling = node;
-    }
-  } else {
-    node->parent = next_sibling->parent;
-
-    node->next_sibling = next_sibling;
-    node->prev_sibling = next_sibling->prev_sibling;
-
-    next_sibling->prev_sibling = node;
-    if (node->prev_sibling != NULL) {
-      node->prev_sibling->next_sibling = node;
-    }
-  }
-
-  return RET_OK;
-}
-
-tree_node_t* tree_get_child_node(tree_t* tree, tree_node_t* node, uint32_t index) {
-  return_value_if_fail(tree != NULL && node != NULL, NULL);
-
-  if (node->child != NULL) {
-    return tree_get_sibling_node(tree, node->child, index);
-  }
-
-  return NULL;
 }
 
 ret_t tree_set_root(tree_t* tree, tree_node_t* root) {
@@ -412,25 +474,12 @@ ret_t tree_insert_child_node(tree_t* tree, tree_node_t* node, uint32_t index, tr
     node = tree->root;
   }
 
-  if (node->child == NULL) {
+  if (tree_node_is_leaf(node)) {
     node->child = child;
     child->parent = node;
     return RET_OK;
   } else {
     return tree_insert_sibling_node(tree, node->child, index, child);
-  }
-}
-
-tree_node_t* tree_get_sibling_node(tree_t* tree, tree_node_t* node, uint32_t index) {
-  tree_node_t* first_sibling = NULL;
-  return_value_if_fail(tree != NULL && node != NULL, NULL);
-
-  first_sibling = tree_node_get_first_sibling(node);
-
-  if (index == 0) {
-    return first_sibling;
-  } else {
-    return tree_node_get_sibling_by_index(first_sibling, index);
   }
 }
 
@@ -443,15 +492,15 @@ ret_t tree_insert_sibling_node(tree_t* tree, tree_node_t* node, uint32_t index,
   first_sibling = tree_node_get_first_sibling(node);
 
   if (index == 0) {
-    return tree_link_sibling(tree, NULL, first_sibling, sibling);
+    return tree_node_link_sibling(sibling, NULL, first_sibling);
   } else {
     tree_node_t* pos_node = tree_node_get_sibling_by_index(first_sibling, index);
     int32_t size = tree_node_sibling_size(first_sibling);
 
     if (index < size) {
-      return tree_link_sibling(tree, pos_node->prev_sibling, pos_node, sibling);
+      return tree_node_link_sibling(sibling, pos_node->prev_sibling, pos_node);
     } else {
-      return tree_link_sibling(tree, pos_node, NULL, sibling);
+      return tree_node_link_sibling(sibling, pos_node, NULL);
     }
   }
 }
@@ -480,7 +529,7 @@ ret_t tree_foreach(tree_t* tree, tree_node_t* node, tree_foreach_type_t foreach_
     node = tree->root;
   }
 
-  return tree_node_foreach(node, foreach_type, visit, ctx);
+  return tree_node_foreach(node, foreach_type, visit, tree->destroy, ctx);
 }
 
 bool_t tree_is_empty(tree_t* tree, tree_node_t* node) {
@@ -490,7 +539,7 @@ bool_t tree_is_empty(tree_t* tree, tree_node_t* node) {
     node = tree->root;
   }
 
-  return node == NULL || node->child == NULL;
+  return node == NULL || tree_node_is_leaf(node);
 }
 
 static ret_t tree_size_on_visit(void* ctx, const void* data) {

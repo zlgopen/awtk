@@ -207,6 +207,17 @@ TEST(Tree, find) {
   tree_deinit(&tree);
 }
 
+static int tree_node_is_ancestor_or_self_cmp(const void* iter, const void* ctx) {
+  char str_ctx[32] = {'\0'};
+  char str_iter[32] = {'\0'};
+  int32_t num_ctx = tk_pointer_to_int(ctx);
+  int32_t num_iter = tk_pointer_to_int(iter);
+  return tk_str_start_with(tk_itoa(str_iter, sizeof(str_iter), num_iter),
+                           tk_itoa(str_ctx, sizeof(str_ctx), num_ctx))
+             ? 0
+             : -1;
+}
+
 TEST(Tree, remove) {
   tree_t tree;
   tree_node_t* node = NULL;
@@ -217,25 +228,38 @@ TEST(Tree, remove) {
   ASSERT_EQ(build_tree_for_test(&tree), RET_OK);
 
   str_clear(&str);
-  tree_remove(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(123));
+  ASSERT_EQ(tree_remove(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(123)),
+            RET_OK);
   ASSERT_EQ(
       tree_foreach(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tree_node_gen_str_on_visit, &str),
       RET_OK);
   ASSERT_STREQ(str.str, "0 1 2 3 11 12 21 22 23 31 32 121 122 221 2211 2212 ");
 
   str_clear(&str);
-  tree_remove(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(221));
+  ASSERT_EQ(tree_remove(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(221)),
+            RET_OK);
   ASSERT_EQ(
       tree_foreach(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tree_node_gen_str_on_visit, &str),
       RET_OK);
   ASSERT_STREQ(str.str, "0 1 2 3 11 12 21 22 23 31 32 121 122 ");
 
   str_clear(&str);
-  tree_remove(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(3));
+  ASSERT_EQ(tree_remove(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(3)),
+            RET_OK);
   ASSERT_EQ(
       tree_foreach(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tree_node_gen_str_on_visit, &str),
       RET_OK);
   ASSERT_STREQ(str.str, "0 1 2 11 12 21 22 23 121 122 ");
+
+  /* 测试节点和节点的子节点一起删除 */
+  str_clear(&str);
+  ASSERT_EQ(tree_remove_ex(&tree, NULL, TREE_FOREACH_TYPE_POSTORDER,
+                           tree_node_is_ancestor_or_self_cmp, tk_pointer_from_int(2), -1),
+            RET_OK);
+  ASSERT_EQ(
+      tree_foreach(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tree_node_gen_str_on_visit, &str),
+      RET_OK);
+  ASSERT_STREQ(str.str, "0 1 11 12 121 122 ");
 
   tree_deinit(&tree);
   str_reset(&str);
@@ -351,7 +375,7 @@ TEST(Tree, degree) {
   ASSERT_EQ(tree_node_degree(node1), 2);
 
   // 节点11的度为0（叶子节点）
-  ASSERT_EQ(tree_node_degree(tree_get_child_node(&tree, node1, 0)), 0);
+  ASSERT_EQ(tree_node_degree(tree_node_get_child(node1, 0)), 0);
 
   // 节点12的度为3（121/122/123三个子节点）
   ASSERT_EQ(tree_node_degree(node12), 3);
