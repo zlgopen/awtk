@@ -1,7 +1,8 @@
 # 最新动态
 
-2025/04/08
+2025/04/07
   * 给window增加accept_button和cancel_button的属性(感谢智明提供补丁)
+  * 增加文档 how_to_set_form_enter_and_esc.md(感谢智明提供补丁)
 
 2025/04/03
   * 完善tree(感谢兆坤提供补丁)
