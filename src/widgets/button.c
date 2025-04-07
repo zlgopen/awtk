@@ -322,6 +322,16 @@ static ret_t button_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_ENABLE_PREVIEW)) {
     value_set_bool(v, button->enable_preview);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_STATE_FOR_STYLE)) {
+    if (button->is_accept_status) {
+      if (widget->visible && widget->sensitive && widget->enable) {
+        value_set_str(v, WIDGET_STATE_FOCUSED);
+        return RET_OK;
+      }
+    }
+  } else if (tk_str_eq(name, WIDGET_PROP_IS_ACCEPT_STATUS)) {
+    value_set_bool(v, button->is_accept_status);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -348,7 +358,8 @@ static ret_t button_get_prop_default_value(widget_t* widget, const char* name, v
 }
 
 static ret_t button_set_prop(widget_t* widget, const char* name, const value_t* v) {
-  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  button_t* button = BUTTON(widget);
+  return_value_if_fail(button != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_REPEAT)) {
     return button_set_repeat(widget, value_int(v));
@@ -358,6 +369,9 @@ static ret_t button_set_prop(widget_t* widget, const char* name, const value_t* 
     return button_set_enable_long_press(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_ENABLE_PREVIEW)) {
     return button_set_enable_preview(widget, value_bool(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_IS_ACCEPT_STATUS)) {
+    button->is_accept_status = value_bool(v);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;

@@ -1,0 +1,24 @@
+<dialog x="c" y="m" w="50%" h="50%" highlight="default(alpha=100)" accept_button="ok" cancel_button="close" style:normal:bg_color="#f0f0f0" >
+  <view w="100%" h="27" style:bg_color="gray">
+    <label name="title" x="15" y="0" w="-15" h="100%" text="title"/>
+    <button name="close" x="r:0" y="0" w="27" h="100%" text="X"/>
+  </view>
+  <view name="separator" x="0" y="b:65" w="100%" h="1" style:normal:bg_color="gray"/>
+  <button name="ok" x="r:90" y="b:21" w="60" h="27" focusable="true" text="Ok"/>
+  <button name="close" x="r:15" y="b:21" w="60" h="27" focusable="true" text="Close"/>
+  <view name="view" x="10" y="30" w="380" h="50">
+    <edit min="0" max="1024" step="1" name="edit" x="75" y="10" w="202" h="28" focused="true" />
+    <button name="open:toast" x="287" y="10" w="82" h="28" focusable="true" text="toast"/>
+    <label name="label" x="0" y="10" w="65" h="28" text="FilePath:"/>
+  </view>
+  <view name="view" x="10" y="80" w="380" h="50">
+    <edit min="0" max="1024" step="1" name="edit" x="75" y="10" w="202" h="28" />
+    <button name="open:info" x="287" y="10" w="82" h="28" focusable="true" text="info"/>
+    <label name="label" x="10" y="10" w="65" h="28" text="DirPath:"/>
+  </view>
+  <view name="view" x="10" y="120" w="380" h="50">
+    <check_button x="75" y="10" w="70" h="28" text="Book" focusable="true"/>
+    <mledit x="145" y="0" h="100%" w="100" text="accept = false" accept_return="false" accept_tab="false" />
+    <mledit x="250" y="0" h="100%" w="100" text="asdfasdf" />
+  </view>
+</dialog>

@@ -107,12 +107,12 @@ typedef struct _button_t {
   bool_t enable_preview;
 
   /**
-   * @property {uint32_t} long_press_time
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 触发长按事件的时间(毫秒)
+   * @property {bool_t} is_accept_status
+   * @annotation ["set_prop","get_prop","readable","scriptable"]
+   * 是否为 accept 状态
    *
    */
-  uint32_t long_press_time;
+  bool_t is_accept_status;
 
   /**
    * @property {bool_t} pressed
@@ -121,6 +121,14 @@ typedef struct _button_t {
    *
    */
   bool_t pressed;
+
+  /**
+   * @property {uint32_t} long_press_time
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 触发长按事件的时间(毫秒)
+   *
+   */
+  uint32_t long_press_time;
 
   /*private*/
   int32_t timer_id;

@@ -851,6 +851,12 @@ ret_t widget_set_focused_internal(widget_t* widget, bool_t focused) {
   return RET_OK;
 }
 
+ret_t widget_set_accept_button_widget_state(widget_t* widget, bool_t accept_state) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
+  widget_set_prop_bool(widget, WIDGET_PROP_IS_ACCEPT_STATUS, accept_state);
+  return widget_set_need_update_style(widget);
+}
+
 ret_t widget_set_focused(widget_t* widget, bool_t focused) {
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
 
@@ -2820,13 +2826,18 @@ static bool_t shortcut_fast_match(const char* shortcut, key_event_t* e) {
 }
 
 static bool_t widget_match_key(widget_t* widget, const char* prop, key_event_t* e) {
+  widget_t* win = NULL;
   const char* shortcut = NULL;
-  widget_t* win = widget_get_real_window_or_keyboard(widget);
 
   if (widget_is_window_manager(widget)) {
     return FALSE;
   }
 
+  if (e->key == TK_KEY_TAB && widget_get_prop_bool(widget, WIDGET_PROP_ACCEPT_TAB, FALSE)) {
+    return FALSE;
+  }
+
+  win = widget_get_real_window_or_keyboard(widget);
   return_value_if_fail(win != NULL, FALSE);
   shortcut = widget_get_prop_str(win, prop, NULL);
 
@@ -2964,9 +2975,40 @@ static ret_t widget_on_keyup_before_children(widget_t* widget, key_event_t* e) {
   return widget_on_event_before_children(widget, (event_t*)e);
 }
 
+static widget_t* widget_get_final_key_target(widget_t* widget) {
+  widget_t* key_target = NULL;
+  return_value_if_fail(widget != NULL, NULL);
+  if (widget->key_target != NULL) {
+    key_target = widget_get_final_key_target(widget->key_target);
+    if (key_target == NULL) {
+      return widget->key_target;
+    } else {
+      return key_target;
+    }
+  }
+  return NULL;
+}
+
 static ret_t widget_on_keyup_children(widget_t* widget, key_event_t* e) {
   ret_t ret = RET_OK;
 
+  if (widget_is_window(widget)) {
+    widget_t* accept_button_widget = WIDGET(widget_get_prop_pointer(widget, WIDGET_PROP_ACCEPT_BUTTON));
+    widget_t* cancel_button_widget = WIDGET(widget_get_prop_pointer(widget, WIDGET_PROP_CANCEL_BUTTON));
+    if (accept_button_widget != NULL && key_code_is_enter(e->key)) {
+#ifdef MACOS
+      bool_t is_control = e->cmd;
+#else
+      bool_t is_control = e->ctrl;
+#endif
+      widget_t* final_key_target = widget_get_final_key_target(widget);
+      if (!final_key_target->vt->return_key_to_activate && !is_control && !widget_get_prop_bool(final_key_target, WIDGET_PROP_ACCEPT_RETRUN, FALSE)) {
+        return widget_on_keyup(accept_button_widget, e);
+      }
+    } else if (cancel_button_widget!= NULL && e->key == TK_KEY_ESCAPE) {
+      return widget_on_keyup(cancel_button_widget, e);
+    }
+  }
   if (widget->key_target != NULL) {
     ret = widget_on_keyup(widget->key_target, e);
   }
@@ -2984,6 +3026,7 @@ static ret_t widget_on_keyup_after_children(widget_t* widget, key_event_t* e) {
 
 static ret_t widget_on_keyup_impl(widget_t* widget, key_event_t* e) {
   ret_t ret = RET_OK;
+  widget_t* cancel_button_widget = NULL;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
@@ -2991,7 +3034,14 @@ static ret_t widget_on_keyup_impl(widget_t* widget, key_event_t* e) {
   return_value_if_equal(widget_on_keyup_children(widget, e), RET_STOP);
   return_value_if_equal(widget_on_keyup_after_children(widget, e), RET_STOP);
 
-  if (widget_is_activate_key(widget, e)) {
+  if (e->key == TK_KEY_ESCAPE) {
+    widget_t* win = widget_get_window(widget);
+    if (win != NULL) {
+      cancel_button_widget = WIDGET(widget_get_prop_pointer(win, WIDGET_PROP_CANCEL_BUTTON));
+    }
+  }
+
+  if (widget_is_activate_key(widget, e) || cancel_button_widget == widget) {
     pointer_event_t click;
     if (widget_is_focusable(widget)) {
       widget_set_state(widget, WIDGET_STATE_FOCUSED);
@@ -3223,6 +3273,14 @@ ret_t widget_on_pointer_down_children(widget_t* widget, pointer_event_t* e) {
       widget_dispatch_leave_event(widget->target, e);
     }
     widget->target = target;
+  }
+
+  if (widget->target == NULL) {
+    widget_t* accept_button_widget = WIDGET(widget_get_prop_pointer(widget_get_window(widget), WIDGET_PROP_ACCEPT_BUTTON));
+    if (accept_button_widget != NULL) {
+      bool_t accept = !widget->vt->return_key_to_activate && !widget_get_prop_bool(widget, WIDGET_PROP_ACCEPT_RETRUN, FALSE);
+      widget_set_accept_button_widget_state(accept_button_widget, accept);
+    }
   }
 
   if (widget->target != NULL && widget->target->enable && widget->target->sensitive) {
@@ -4671,6 +4729,13 @@ ret_t widget_move_focus(widget_t* widget, widget_find_wanted_focus_widget_t find
     widget_t* focus = find(widget, &all_focusable);
 
     if (focus != NULL && focus != widget) {
+      widget_t* win = widget_get_window(widget);
+      widget_t* accept_button_widget = WIDGET(widget_get_prop_pointer(win, WIDGET_PROP_ACCEPT_BUTTON));
+      if (accept_button_widget != NULL) {
+        bool_t accept = !focus->vt->return_key_to_activate && !widget_get_prop_bool(focus, WIDGET_PROP_ACCEPT_RETRUN, FALSE);
+        widget_set_accept_button_widget_state(accept_button_widget, accept);
+      }
+
       widget_set_prop_bool(widget, WIDGET_PROP_FOCUSED, FALSE);
       widget_set_prop_bool(focus, WIDGET_PROP_FOCUSED, TRUE);
       ret = RET_OK;

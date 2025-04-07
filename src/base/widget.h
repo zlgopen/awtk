@@ -3385,6 +3385,7 @@ ret_t widget_remove_child_prepare(widget_t* widget, widget_t* child);
 ret_t widget_set_text_impl(widget_t* widget, const wchar_t* text, bool_t check_diff);
 ret_t widget_set_text_utf8_impl(widget_t* widget, const char* text, bool_t check_diff);
 
+ret_t widget_set_accept_button_widget_state(widget_t* widget, bool_t accept_state);
 ret_t widget_on_visit_focusable(void* ctx, const void* data);
 
 /*public for input_device_status*/

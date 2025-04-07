@@ -329,6 +329,12 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_APPLET_NAME)) {
     value_set_str(v, window_base->applet_name);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ACCEPT_BUTTON)) {
+    value_set_pointer(v, window_base->accept_button_widget);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CANCEL_BUTTON)) {
+    value_set_pointer(v, window_base->cancel_button_widget);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -363,6 +369,47 @@ static ret_t window_base_set_applet_name(widget_t* widget, const char* applet_na
     window_base->locale_info = locale_infos_ref(applet_name);
   }
 
+  return RET_OK;
+}
+
+ret_t window_base_set_accept_button(widget_t* widget, const char* accept_button) {
+  window_base_t* window_base = WINDOW_BASE(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  if (accept_button == NULL) {
+    if (window_base->accept_button != NULL) {
+      TKMEM_FREE(window_base->accept_button);
+      window_base->accept_button = NULL;
+    }
+    if (window_base->accept_button_widget != NULL) {
+      widget_set_accept_button_widget_state(window_base->accept_button_widget, FALSE);
+    }
+    window_base->accept_button_widget = NULL;
+    return RET_OK;
+  } else {
+    window_base->accept_button = tk_str_copy(window_base->accept_button, accept_button);
+    window_base->accept_button_widget = widget_lookup(widget, accept_button, TRUE);
+    return_value_if_fail(window_base->accept_button_widget != NULL, RET_FAIL);
+    widget_set_accept_button_widget_state(window_base->accept_button_widget, TRUE);
+  }
+  return RET_OK;
+}
+
+ret_t window_base_set_cancel_button(widget_t* widget, const char* cancel_button) {
+  window_base_t* window_base = WINDOW_BASE(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  window_base->cancel_button = cancel_button;
+  if (cancel_button == NULL) {
+    if (window_base->cancel_button != NULL) {
+      TKMEM_FREE(window_base->cancel_button);
+      window_base->cancel_button = NULL;
+    }
+    window_base->cancel_button_widget = NULL;
+    return RET_OK;
+  } else {
+    window_base->cancel_button = tk_str_copy(window_base->cancel_button, cancel_button);
+    window_base->cancel_button_widget = widget_lookup(widget, cancel_button, TRUE);
+    return_value_if_fail(window_base->cancel_button_widget != NULL, RET_FAIL);
+  }
   return RET_OK;
 }
 
@@ -446,6 +493,20 @@ ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v)
   } else if (tk_str_eq(name, WIDGET_PROP_APPLET_NAME)) {
     window_base_set_applet_name(widget, value_str(v));
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ACCEPT_BUTTON)) {
+    if (widget->loading) {
+      window_base->accept_button = tk_str_copy(window_base->accept_button, value_str(v));
+    } else {
+      window_base_set_accept_button(widget, value_str(v));
+    }
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CANCEL_BUTTON)) {
+    if (widget->loading) { 
+      window_base->cancel_button = tk_str_copy(window_base->cancel_button, value_str(v));
+    } else {
+      window_base_set_cancel_button(widget, value_str(v));
+    }
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -470,6 +531,9 @@ ret_t window_base_on_destroy(widget_t* widget) {
   TKMEM_FREE(window_base->move_focus_down_key);
   TKMEM_FREE(window_base->move_focus_left_key);
   TKMEM_FREE(window_base->move_focus_right_key);
+
+  TKMEM_FREE(window_base->accept_button);
+  TKMEM_FREE(window_base->cancel_button);
 
   window_base_unload_theme_obj(widget);
 
@@ -553,6 +617,8 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
     if (widget->sensitive) {
       widget_set_focused_internal(widget, TRUE);
     }
+    window_base_set_accept_button(widget, win->accept_button);
+    window_base_set_cancel_button(widget, win->cancel_button);
   } else if (e->type == EVT_WINDOW_OPEN) {
     win->stage = WINDOW_STAGE_OPENED;
     if (widget->sensitive) {

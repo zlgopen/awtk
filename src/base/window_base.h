@@ -244,6 +244,20 @@ typedef struct _window_base_t {
   char* move_focus_right_key;
 
   /**
+   * @property {char*} accept_button
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 窗口中按下 Enter 按钮默认触发单击 button 控件名字
+   */
+  char* accept_button;
+
+  /**
+   * @property {char*} cancel_button
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 窗口中按下 Esc 按钮默认触发单击 button 控件名字
+   */
+  char* cancel_button;
+
+  /**
    * @property {char*} applet_name
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 小应用程序(applet)的名称。
@@ -280,6 +294,9 @@ typedef struct _window_base_t {
   assets_manager_t* assets_manager;
   image_manager_t* image_manager;
   locale_info_t* locale_info;
+
+  widget_t* accept_button_widget;
+  widget_t* cancel_button_widget;
 } window_base_t;
 
 /**
@@ -448,6 +465,26 @@ ret_t window_base_set_need_relayout(widget_t* widget, bool_t need_relayout);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
  */
 ret_t window_base_on_copy(widget_t* widget, widget_t* other);
+
+/**
+ * @method window_base_set_accept_button
+ * 设置 accept_button 控件。
+ * @param {widget_t*} widget window_base对象。
+ * @param {const char*} accept_button 控件名字。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
+ */
+ret_t window_base_set_accept_button(widget_t* widget, const char* accept_button);
+
+/**
+ * @method window_base_set_cancel_button
+ * 设置 cancel_button 控件。
+ * @param {widget_t*} widget window_base对象。
+ * @param {const char*} cancel_button 控件名字。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
+ */
+ret_t window_base_set_cancel_button(widget_t* widget, const char* cancel_button);
 
 #define WINDOW_BASE(widget) ((window_base_t*)(window_base_cast(WIDGET(widget))))
 

@@ -788,6 +788,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_ENABLE_PREVIEW "enable_preview"
 
 /**
+ * @const WIDGET_PROP_IS_ACCEPT_STATUS
+ * 是否为 accept 状态
+ */
+#define WIDGET_PROP_IS_ACCEPT_STATUS "is_accept_status"
+
+/**
  * @const WIDGET_PROP_CLICK_THROUGH
  * 是否启用点击穿透。
  */
@@ -1044,6 +1050,31 @@ BEGIN_C_DECLS
  * 将焦点向右移动的键值。
  */
 #define WIDGET_PROP_MOVE_FOCUS_RIGHT_KEY "move_focus_right_key"
+
+/**
+ * @const WIDGET_PROP_ACCEPT_BUTTON
+ * 窗口中按下 Enter 默认触发单击 button 控件名字。
+ * 备注：如果控件接管了 Enter 的话，accept_button 控件是不会进入 focused 风格，例如：设置 accept_return 为 true 或者 widget->vt->return_key_to_activate 为 true
+ */
+#define WIDGET_PROP_ACCEPT_BUTTON "accept_button"
+
+/**
+ * @const WIDGET_PROP_CANCEL_BUTTON
+ * 窗口中按下 Esc 默认触发单击 button 控件名字。
+ */
+#define WIDGET_PROP_CANCEL_BUTTON "cancel_button"
+
+/**
+ * @const WIDGET_PROP_ACCEPT_RETRUN
+ * 控件中是否支持 Enter 按钮输入。
+ */
+#define WIDGET_PROP_ACCEPT_RETRUN "accept_return"
+
+/**
+ * @const WIDGET_PROP_ACCEPT_TAB
+ * 控件中是否支持 Tab 按钮输入。
+ */
+#define WIDGET_PROP_ACCEPT_TAB "accept_tab"
 
 /**
  * @const WIDGET_PROP_ROWS

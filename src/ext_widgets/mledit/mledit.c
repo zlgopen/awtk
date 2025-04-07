@@ -329,6 +329,12 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
     }
     value_set_bool(v, inputing);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ACCEPT_RETRUN)) {
+    value_set_bool(v, mledit->accept_return);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ACCEPT_TAB)) {
+    value_set_bool(v, mledit->accept_tab);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -426,6 +432,12 @@ static ret_t mledit_set_prop(widget_t* widget, const char* name, const value_t* 
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_KEYBOARD)) {
     mledit_set_keyboard(widget, value_str(v));
+    return RET_OK;
+  }  else if (tk_str_eq(name, WIDGET_PROP_ACCEPT_RETRUN)) {
+    mledit->accept_return = value_bool(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ACCEPT_TAB)) {
+    mledit->accept_tab = value_bool(v);
     return RET_OK;
   }
 
@@ -749,6 +761,10 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
         } else {
           break;
         }
+      }
+      if ((!mledit->accept_tab && !is_control && key == TK_KEY_TAB) || (!mledit->accept_return && !is_control && key_code_is_enter(key))) {
+        ret = RET_OK;
+        break;
       }
       if ((key < 128 && tk_isprint(key)) || key == TK_KEY_BACKSPACE || key == TK_KEY_DELETE ||
           key == TK_KEY_TAB || key_code_is_enter(key)) {
@@ -1289,6 +1305,8 @@ static ret_t mledit_init(widget_t* widget) {
   mledit->bottom_margin = 0;
   mledit->scroll_line = 1.0f;
   mledit->max_lines = 100;
+  mledit->accept_tab = TRUE;
+  mledit->accept_return = TRUE;
   wstr_init(&(mledit->temp), 0);
   wstr_init(&(mledit->last_changing_text), 0);
   wstr_init(&(mledit->last_changed_text), 0);

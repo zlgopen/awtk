@@ -139,6 +139,22 @@ typedef struct _mledit_t {
    *
    */
   bool_t close_im_when_blured;
+  /**
+   * @property {bool_t} accept_return
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 
+   * 是否支持 Enter 按钮输入。
+   *
+   */
+  bool_t accept_return;
+  /**
+   * @property {bool_t} accept_tab
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 
+   * 是否支持 Tab 按钮输入。
+   *
+   */
+  bool_t accept_tab;
   /*private*/
   bool_t lock_scrollbar_value;
   uint8_t margin;

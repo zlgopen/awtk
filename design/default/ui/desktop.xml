@@ -15,6 +15,7 @@
   <edit x="c" y="350" w="50%" h="30" tips="input text here"/>
   <mledit x="c" y="390" w="50%" h="80" tips="input text here"/>
 
+  <button x="c:-150" y="b:10" w="80" h="30" name="open:dialog_win" focusable="true" text="dialog_win"/>
   <button x="c:-50" y="b:10" w="80" h="30" name="enlarge" text="Enlarge"/>
-  <button x="c:50" y="b:10" w="80" h="30" name="close" text="Close"/>
+  <button x="c:50" y="b:10" w="80" h="30" name="win_close" text="Close"/>
 </window>
