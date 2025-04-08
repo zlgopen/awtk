@@ -281,6 +281,8 @@ static bool_t vgcanvas_nanovg_is_rectf_in_clip_rect(vgcanvas_t* vgcanvas, float_
 
 
 static const rectf_t* vgcanvas_nanovg_get_clip_rect(vgcanvas_t* vgcanvas) {
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+  nvgGetCurrScissor(vg, &vgcanvas->clip_rect.x, &vgcanvas->clip_rect.y, &vgcanvas->clip_rect.w, &vgcanvas->clip_rect.h);
   return &(vgcanvas->clip_rect);
 }
 
