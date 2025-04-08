@@ -298,6 +298,17 @@ rect_t rect_fix(rect_t* r, wh_t max_w, wh_t max_h);
 rect_t rect_intersect(const rect_t* r1, const rect_t* r2);
 
 /**
+ * @method rectf_intersect
+ * 求两个rectf的交集。
+ *
+ * @param {const rectf_t*} r1 rect对象。
+ * @param {const rectf_t*} r2 rect对象。
+ *
+ * @return {rectf_t} 返回交集。
+ */
+rectf_t rectf_intersect(const rectf_t* r1, const rectf_t* r2);
+
+/**
  * @method rect_has_intersect
  * 判断两个rect的是否存在交集。
  *

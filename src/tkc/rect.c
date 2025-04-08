@@ -194,6 +194,37 @@ rect_t rect_intersect(const rect_t* r1, const rect_t* r2) {
   return r;
 }
 
+rectf_t rectf_intersect(const rectf_t* r1, const rectf_t* r2) {
+  float_t top = 0;
+  float_t left = 0;
+  float_t bottom = 0;
+  float_t right = 0;
+  float_t bottom1 = 0;
+  float_t right1 = 0;
+  float_t bottom2 = 0;
+  float_t right2 = 0;
+  rectf_t r = rectf_init(0.0f, 0.0f, 0.0f, 0.0f);
+
+  return_value_if_fail(r1 != NULL && r2 != NULL, r);
+
+  bottom1 = r1->y + r1->h - 1.0f;
+  bottom2 = r2->y + r2->h - 1.0f;
+  right1 = r1->x + r1->w - 1.0f;
+  right2 = r2->x + r2->w - 1.0f;
+
+  top = tk_max(r1->y, r2->y);
+  left = tk_max(r1->x, r2->x);
+  right = tk_min(right1, right2);
+  bottom = tk_min(bottom1, bottom2);
+
+  r.x = left;
+  r.y = top;
+  r.w = right >= left ? (right - left + 1) : 0.0f;
+  r.h = bottom >= top ? (bottom - top + 1) : 0.0f;
+
+  return r;
+}
+
 rect_t rect_fix(rect_t* r, wh_t max_w, wh_t max_h) {
   rectX_fix;
   return *r;

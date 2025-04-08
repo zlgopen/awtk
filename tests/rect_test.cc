@@ -450,6 +450,36 @@ TEST(Rect, intersect) {
   ASSERT_EQ(r.h, 4);
 }
 
+TEST(Rect, float_intersect) {
+  rectf_t r;
+  rectf_t r1;
+  rectf_t r2;
+
+  r1 = rectf_init(0.5f, 0.5f, 10.5f, 10.5f);
+  r2 = rectf_init(10.5f, 10.5f, 10.5f, 10.5f);
+  r = rectf_intersect(&r1, &r2);
+  ASSERT_EQ(r.x, 10.5f);
+  ASSERT_EQ(r.y, 10.5f);
+  ASSERT_EQ(r.w, 0.0f);
+  ASSERT_EQ(r.h, 0.0f);
+
+  r1 = rectf_init(0.5f, 0.5f, 11.5f, 11.5f);
+  r2 = rectf_init(10.5f, 10.5f, 10.5f, 10.5f);
+  r = rectf_intersect(&r1, &r2);
+  ASSERT_EQ(r.x, 10.5f);
+  ASSERT_EQ(r.y, 10.5f);
+  ASSERT_EQ(r.w, 1.5f);
+  ASSERT_EQ(r.h, 1.5f);
+
+  r1 = rectf_init(0.5f, 0.5f, 14.5f, 14.5f);
+  r2 = rectf_init(10.5f, 10.5f, 10.5f, 10.5f);
+  r = rectf_intersect(&r1, &r2);
+  ASSERT_EQ(r.x, 10.5f);
+  ASSERT_EQ(r.y, 10.5f);
+  ASSERT_EQ(r.w, 4.5f);
+  ASSERT_EQ(r.h, 4.5f);
+}
+
 TEST(Point, init) {
   point_t p = point_init(10, 20);
   ASSERT_EQ(p.x, 10);

@@ -791,7 +791,19 @@ ret_t vgcanvas_clip_path(vgcanvas_t* vg);
 /**
  * @method vgcanvas_clip_rect
  * 矩形裁剪。
- *
+ * 备注：
+ * 1. 在绘图的时候脏矩形和裁剪区是一样的。
+ * 2. 该函数是不合并裁剪区的，所有可能出现裁剪区被扩大导致绘图在脏矩形以外的情况，导致残影的情况。
+ * 3. 如果旋转或者缩放了，请使用 vgcanvas_intersect_clip_rect 函数，不要使用该函数。
+ * ........
+ *   rect_t r;
+ *   rect_t r_save;
+ *   r = rectf_init(c->ox, c->oy, widget->w, widget->h); 
+ *   r_save = *vgcanvas_get_clip_rect(vg);
+ *   r = rectf_intersect(&r, &r_save);
+ *   vgcanvas_clip_rect(vg, (float_t)r.x, (float_t)r.y, (float_t)r.w, (float_t)r.h);
+ * ........
+ * 
  * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
  * @param {float_t} x x坐标。
