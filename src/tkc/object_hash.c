@@ -25,6 +25,9 @@
 
 #include "tkc/object_hash.h"
 
+#define OBJECT_HASH_FIND_PROP_BY_NAME_PROPS_SIZE_THRESHOLD 8
+#define OBJECT_HASH_FIND_PROP_BY_NAME_LEN_THRESHOLD 16
+
 static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char* name,
                                                    bool_t* p_is_gen_hash, uint64_t* p_hash) {
   int32_t ret = -1;
@@ -34,6 +37,10 @@ static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char*
   if (tk_str_indexable(name)) {
     ret = tk_atoi(name + 1);
     return_value_if_fail(ret < o->props.size, -1);
+  } else if (p_hash == NULL &&
+             o->props.size <= OBJECT_HASH_FIND_PROP_BY_NAME_PROPS_SIZE_THRESHOLD &&
+             tk_strlen(name) <= OBJECT_HASH_FIND_PROP_BY_NAME_LEN_THRESHOLD) {
+    ret = darray_find_index_ex(&(o->props), (tk_compare_t)named_value_compare_by_name, (void*)name);
   } else {
     uint64_t hash = named_value_hash_get_hash_from_str(name);
     if (p_hash != NULL) {
