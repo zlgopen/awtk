@@ -1,4 +1,6 @@
 ﻿#include "base/locale_info.h"
+#include "base/locale_info_xml.h"
+#include "tkc/fs.h"
 #include "gtest/gtest.h"
 
 #include "common.h"
@@ -47,4 +49,38 @@ TEST(Locale, basic) {
   ASSERT_EQ(string("4stars"), string(locale_info_tr(locale_info, "AAAA")));
 
   locale_info_destroy(locale_info);
+}
+
+static ret_t prepare_test_file(const char* file_name) {
+  const char* content =
+      "<string name=\"test\">\n<language name=\"en_US\">TEST</language>\n"
+      "<language name=\"zh_CN\">测试</language>\n</string>\n"
+      "<string name=\"cn\">\n<language name=\"en_US\">CN</language>\n"
+      "<language name=\"zh_CN\">中文</language>\n</string>\n"
+      "<string name=\"en\">\n<language name=\"en_US\">EN</language>\n"
+      "<language name=\"zh_CN\">英文</language>\n</string>\n";
+
+  return file_write(file_name, content, strlen(content));
+}
+
+TEST(Locale, xml_basic) {
+  const char* file_name = "locale_info_xml_test.xml";
+  prepare_test_file(file_name);
+
+  const char* str = "test";
+  uint32_t id = 0;
+  locale_info_t* locale_info = locale_info_xml_create("en", "US");
+  locale_info_xml_set_url(locale_info, file_name);
+
+  ASSERT_EQ(string("TEST"), string(locale_info_tr(locale_info, str)));
+  locale_info_change(locale_info, "zh", "CN");
+  assert_str_eq(L"测试", locale_info_tr(locale_info, str));
+
+  str = "cn";
+  assert_str_eq(L"中文", locale_info_tr(locale_info, str));
+  locale_info_change(locale_info, "en", "US");
+  ASSERT_EQ(string("CN"), string(locale_info_tr(locale_info, str)));
+
+  locale_info_xml_destroy(locale_info);
+  file_remove(file_name);
 }

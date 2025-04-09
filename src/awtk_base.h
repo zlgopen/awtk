@@ -55,6 +55,7 @@
 #include "base/lcd_profile.h"
 #include "base/line_break.h"
 #include "base/locale_info.h"
+#include "base/locale_info_xml.h"
 #include "base/main_loop.h"
 #include "base/pixel.h"
 #include "base/pixel_pack_unpack.h"

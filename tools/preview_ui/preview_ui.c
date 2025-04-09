@@ -24,9 +24,7 @@
 #endif
 
 #include "awtk.h"
-#include "tkc/dl.h"
-#include "tkc/log.h"
-#include "base/timer.h"
+#include "base/locale_info_xml.h"
 
 #include "ui_loader/ui_loader_xml.h"
 #include "ui_loader/ui_loader_default.h"
@@ -51,6 +49,7 @@ static const char* s_theme = NULL;
 static const char* s_log_level = NULL;
 static const char* s_fps = NULL;
 static bool_t s_enable_std_font = FALSE;
+static locale_info_t* s_old_locale_info = NULL;
 
 #undef APP_RES_ROOT  // 以便可以通过命令行参数指定res目录
 
@@ -66,68 +65,68 @@ static bool_t s_enable_std_font = FALSE;
   { log_debug(usage, argv[0]); }
 #endif /*WIN32 && !NDEBUG*/
 
-#define ON_CMD_LINE(argc, argv)                                                   \
-  {                                                                               \
-    const char* usage =                                                           \
-        "Usage: %s ui=xxx [lcd_w=800] [lcd_h=480] [res_root=xxx] "                \
-        "[language=xxx] [theme=xxx] [system_bar=xxx] [bottom_system_bar=xxx] "    \
-        "[plugins_path=xxx] [render_mode=xxx] [enable_std_font=xxx] [enable_console=xxx]\n";            \
-    if (argc >= 2) {                                                              \
-      char key[TK_NAME_LEN + 1];                                                  \
-      int i = 1;                                                                  \
-                                                                                  \
-      for (i = 1; i < argc; i++) {                                                \
-        const char* p = argv[i];                                                  \
-        const char* val = strstr(p, "=");                                         \
-        uint32_t len = (uint32_t)(val - p);                                       \
-                                                                                  \
-        if (*(argv[i]) == '\0') {                                                 \
-          continue;                                                               \
-        }                                                                         \
-                                                                                  \
-        if (val == NULL || val == p || *(val + 1) == '\0' || len > TK_NAME_LEN) { \
-          log_debug(usage, argv[0]);                                              \
-          exit(0);                                                                \
-        }                                                                         \
-                                                                                  \
-        tk_strncpy(key, p, len);                                                  \
-        key[len] = '\0';                                                          \
-                                                                                  \
-        if (tk_str_icmp(key, "res_root") == 0) {                                  \
-          s_res_root = val + 1;                                                   \
-        } else if (tk_str_icmp(key, "ui") == 0) {                                 \
-          s_ui = val + 1;                                                         \
-        } else if (tk_str_icmp(key, "system_bar") == 0) {                         \
-          s_system_bar = val + 1;                                                 \
-        } else if (tk_str_icmp(key, "bottom_system_bar") == 0) {                  \
-          s_system_bar_bottom = val + 1;                                          \
-        } else if (tk_str_icmp(key, "lcd_w") == 0) {                              \
-          lcd_w = tk_atoi(val + 1);                                               \
-        } else if (tk_str_icmp(key, "lcd_h") == 0) {                              \
-          lcd_h = tk_atoi(val + 1);                                               \
-        } else if (tk_str_icmp(key, "plugins_path") == 0) {                       \
-          s_plugins_path = val + 1;                                               \
-        } else if (tk_str_icmp(key, "render_mode") == 0) {                        \
-          s_render_mode = val + 1;                                                \
-        } else if (tk_str_icmp(key, "language") == 0) {                           \
-          s_language = val + 1;                                                   \
-        } else if (tk_str_icmp(key, "theme") == 0) {                              \
-          s_theme = val + 1;                                                      \
-        } else if (tk_str_icmp(key, "log_level") == 0) {                          \
-          s_log_level = val + 1;                                                  \
-        } else if (tk_str_icmp(key, "fps") == 0) {                                \
-          s_fps = val + 1;                                                        \
-        }  else if (tk_str_icmp(key, "enable_std_font") == 0) {                   \
-          s_enable_std_font = tk_atob(val + 1);                                   \
-        } else {                                                                  \
-          SET_ENABLE_CONSOLE()                                                    \
-        }                                                                         \
-      }                                                                           \
-                                                                                  \
-    } else {                                                                      \
-      log_debug(usage, argv[0]);                                                  \
-      exit(0);                                                                    \
-    }                                                                             \
+#define ON_CMD_LINE(argc, argv)                                                              \
+  {                                                                                          \
+    const char* usage =                                                                      \
+        "Usage: %s ui=xxx [lcd_w=800] [lcd_h=480] [res_root=xxx] "                           \
+        "[language=xxx] [theme=xxx] [system_bar=xxx] [bottom_system_bar=xxx] "               \
+        "[plugins_path=xxx] [render_mode=xxx] [enable_std_font=xxx] [enable_console=xxx]\n"; \
+    if (argc >= 2) {                                                                         \
+      char key[TK_NAME_LEN + 1];                                                             \
+      int i = 1;                                                                             \
+                                                                                             \
+      for (i = 1; i < argc; i++) {                                                           \
+        const char* p = argv[i];                                                             \
+        const char* val = strstr(p, "=");                                                    \
+        uint32_t len = (uint32_t)(val - p);                                                  \
+                                                                                             \
+        if (*(argv[i]) == '\0') {                                                            \
+          continue;                                                                          \
+        }                                                                                    \
+                                                                                             \
+        if (val == NULL || val == p || *(val + 1) == '\0' || len > TK_NAME_LEN) {            \
+          log_debug(usage, argv[0]);                                                         \
+          exit(0);                                                                           \
+        }                                                                                    \
+                                                                                             \
+        tk_strncpy(key, p, len);                                                             \
+        key[len] = '\0';                                                                     \
+                                                                                             \
+        if (tk_str_icmp(key, "res_root") == 0) {                                             \
+          s_res_root = val + 1;                                                              \
+        } else if (tk_str_icmp(key, "ui") == 0) {                                            \
+          s_ui = val + 1;                                                                    \
+        } else if (tk_str_icmp(key, "system_bar") == 0) {                                    \
+          s_system_bar = val + 1;                                                            \
+        } else if (tk_str_icmp(key, "bottom_system_bar") == 0) {                             \
+          s_system_bar_bottom = val + 1;                                                     \
+        } else if (tk_str_icmp(key, "lcd_w") == 0) {                                         \
+          lcd_w = tk_atoi(val + 1);                                                          \
+        } else if (tk_str_icmp(key, "lcd_h") == 0) {                                         \
+          lcd_h = tk_atoi(val + 1);                                                          \
+        } else if (tk_str_icmp(key, "plugins_path") == 0) {                                  \
+          s_plugins_path = val + 1;                                                          \
+        } else if (tk_str_icmp(key, "render_mode") == 0) {                                   \
+          s_render_mode = val + 1;                                                           \
+        } else if (tk_str_icmp(key, "language") == 0) {                                      \
+          s_language = val + 1;                                                              \
+        } else if (tk_str_icmp(key, "theme") == 0) {                                         \
+          s_theme = val + 1;                                                                 \
+        } else if (tk_str_icmp(key, "log_level") == 0) {                                     \
+          s_log_level = val + 1;                                                             \
+        } else if (tk_str_icmp(key, "fps") == 0) {                                           \
+          s_fps = val + 1;                                                                   \
+        } else if (tk_str_icmp(key, "enable_std_font") == 0) {                               \
+          s_enable_std_font = tk_atob(val + 1);                                              \
+        } else {                                                                             \
+          SET_ENABLE_CONSOLE()                                                               \
+        }                                                                                    \
+      }                                                                                      \
+                                                                                             \
+    } else {                                                                                 \
+      log_debug(usage, argv[0]);                                                             \
+      exit(0);                                                                               \
+    }                                                                                        \
   }
 
 static ret_t get_default_res_root(char path[MAX_PATH + 1]) {
@@ -251,18 +250,33 @@ static ret_t refresh_in_timer(const timer_info_t* info) {
   return RET_REPEAT;
 }
 
+static ret_t get_res_strings_file_path(char* result, size_t size) {
+  return path_build(result, size, s_res_root, s_theme, "strings", "strings.xml", NULL);
+}
+
 static ret_t application_on_launch(void) {
   // 当程序初始化完成时调用，全局只触发一次。
 
   if (s_language != NULL && *s_language != '\0') {
+    char language[TK_NAME_LEN + 1] = {0};
+    const char* country = NULL;
     const char* p = strstr(s_language, "_");
+
     if (p != NULL) {
-      char language[TK_NAME_LEN + 1] = {0};
       tk_strncpy(language, s_language, tk_min((size_t)(p - s_language), sizeof(language)));
-      locale_info_change(locale_info(), language, p + 1);
+      country = (p + 1);
     } else {
-      locale_info_change(locale_info(), s_language, "");
+      country = "";
     }
+
+    s_old_locale_info = locale_info();
+    locale_info_t* info = locale_info_xml_create(language, country);
+    locale_info_set(info);
+    assets_manager_t* am = s_old_locale_info->assets_manager != NULL
+                               ? s_old_locale_info->assets_manager
+                               : assets_manager();
+    locale_info_xml_set_assets_manager(info, am);
+    locale_info_change(info, s_language, country);
   }
 
   widget_set_style_str(window_manager(), "bg_color", "white");
@@ -273,6 +287,9 @@ static ret_t application_on_launch(void) {
 
 static ret_t application_on_exit(void) {
   // 当程序退出时调用，全局只触发一次。
+  locale_info_t* info = locale_info();
+  locale_info_set(s_old_locale_info);
+  locale_info_xml_destroy(info);
 
   return RET_OK;
 }
@@ -338,6 +355,7 @@ static ret_t application_init(void) {
   if (s_system_bar_bottom != NULL && *s_system_bar_bottom != '\0') {
     window_open(s_system_bar_bottom);
   }
+
   preview_ui(s_ui);
 
   return RET_OK;
@@ -385,7 +403,10 @@ ret_t assets_init(void) {
   res_root = assets_manager_get_res_root(am);
   tk_snprintf(path, sizeof(path), "%s/assets/default/raw/ui", res_root);
   if (!dir_exist(path)) {
-    run_default = TRUE;
+    tk_snprintf(path, sizeof(path), "%s/default/ui", res_root);
+    if (!dir_exist(path)) {
+      run_default = TRUE;
+    }
   }
 
   if (run_default) {
