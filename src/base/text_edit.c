@@ -636,7 +636,7 @@ static ret_t text_edit_row_transfer(text_edit_t* text_edit, uint32_t start, uint
   if (forward) {
     for (i = start; i < interval + start; i++) {
       row = impl->rows->row + i;
-      darray_clear(&row->info);
+      darray_deinit(&row->info);
     }
     for (i = start; i < impl->rows->size - interval; i++) {
       row = impl->rows->row + i;
@@ -649,18 +649,25 @@ static ret_t text_edit_row_transfer(text_edit_t* text_edit, uint32_t start, uint
       row->line_num = row_temp->line_num;
       row->info = row_temp->info;
     }
+    for (; i < impl->rows->size; i++) {
+      row = impl->rows->row + i;
+      row->length = 0;
+      row->line_num = 1;
+      darray_init(&row->info, 4, default_destroy, NULL);
+      darray_push(&row->info, TKMEM_ZALLOC(line_info_t));
+    }
   } else {
     for (i = impl->rows->size + interval; i > impl->rows->size; i--) {
-      if (i > impl->rows->capacity || (overwrite && i <= impl->rows->size + rm_row_num)) {
+      if (i > impl->rows->capacity || (overwrite && i <= impl->rows->size)) {
         continue;
       }
       row = impl->rows->row + i - 1;
-      darray_clear(&row->info);
+      darray_deinit(&row->info);
     }
     for (i = impl->rows->size; i > start + 1; i--) {
       row = impl->rows->row + i - 1;
       if (i + interval > impl->rows->capacity) {
-        darray_clear(&row->info);
+        darray_deinit(&row->info);
         continue;
       }
       row_temp = impl->rows->row + i + interval - 1;
@@ -671,6 +678,13 @@ static ret_t text_edit_row_transfer(text_edit_t* text_edit, uint32_t start, uint
       row_temp->length = row->length;
       row_temp->line_num = row->line_num;
       row_temp->info = row->info;
+    }
+    for (; i < start + interval + 1; i++) {
+      row = impl->rows->row + i;
+      row->length = 0;
+      row->line_num = 1;
+      darray_init(&row->info, 4, default_destroy, NULL);
+      darray_push(&row->info, TKMEM_ZALLOC(line_info_t));
     }
   }
   return RET_OK;
@@ -755,6 +769,7 @@ ret_t text_edit_muti_line_insert_text_layout(text_edit_t* text_edit, uint32_t of
         row = impl->rows->row + i;
         row->length = row_tmp[i].length;
         row->line_num = row_tmp[i].line_num;
+        darray_deinit(&row->info);
         row->info = row_tmp[i].info;
       }
       impl->rows->size = impl->rows->size + row_num - row_num_tmp;
@@ -769,7 +784,7 @@ ret_t text_edit_muti_line_insert_text_layout(text_edit_t* text_edit, uint32_t of
       }
       if (row_num < layout_row_num) {
         for (i = row_num; i < layout_row_num; i++) {
-          darray_clear(&row_tmp[i].info);
+          darray_deinit(&row_tmp[i].info);
         }
       }
       TKMEM_FREE(row_tmp);
@@ -863,20 +878,15 @@ ret_t text_edit_muti_line_insert_text_layout(text_edit_t* text_edit, uint32_t of
   text_edit_row_transfer(text_edit, row_num, insert_row_num, FALSE, insert_length, overwrite,
                          rm_row_num);
 
-  row = impl->rows->row + row_num;
-  if (row_num < impl->rows->capacity) {
-    if (!overwrite || row_num >= impl->rows->size + rm_row_num) {
-      darray_clear(&row->info);
-    }
-  }
   for (i = 0; i < layout_row_num; i++) {
     if (i + row_num > impl->rows->capacity) {
-      darray_clear(&row_tmp[i].info);
+      darray_deinit(&row_tmp[i].info);
       continue;
     }
     row = impl->rows->row + i + row_num;
     row->length = row_tmp[i].length;
     row->line_num = row_tmp[i].line_num;
+    darray_deinit(&row->info);
     row->info = row_tmp[i].info;
   }
 
