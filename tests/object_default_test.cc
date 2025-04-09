@@ -199,7 +199,7 @@ static ret_t visit_test_busy(void* ctx, const void* data) {
   return RET_OK;
 }
 
-TEST(ObjectDefault, visis_remove) {
+TEST(ObjectDefault, visit_remove) {
   value_t v;
   string log;
   tk_object_t* obj = object_default_create();

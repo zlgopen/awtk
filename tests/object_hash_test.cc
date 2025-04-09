@@ -200,7 +200,7 @@ static ret_t visit_test_busy(void* ctx, const void* data) {
   return RET_OK;
 }
 
-TEST(ObjectHash, visis_remove) {
+TEST(ObjectHash, visit_remove) {
   value_t v;
   string log;
   tk_object_t* obj = object_hash_create();
