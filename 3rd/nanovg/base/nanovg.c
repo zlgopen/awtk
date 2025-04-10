@@ -1067,6 +1067,8 @@ NVGpaint nvgImagePattern(NVGcontext* ctx,
 // Scissoring
 void nvgScissor(NVGcontext* ctx, float x, float y, float w, float h)
 {
+	float scale_x = 0.0f;
+	float scale_y = 0.0f;
 	NVGstate* state = nvg__getState(ctx);
 
 	w = nvg__maxf(0.0f, w);
@@ -1082,8 +1084,11 @@ void nvgScissor(NVGcontext* ctx, float x, float y, float w, float h)
 	state->scissor.xform[5] = y+h*0.5f;
 	nvgTransformMultiply(state->scissor.xform, state->xform);
 
-	state->scissor.extent[0] = w*0.5f;
-	state->scissor.extent[1] = h*0.5f;
+	scale_x = sqrtf(state->scissor.xform[0]*state->scissor.xform[0] + state->scissor.xform[2]*state->scissor.xform[2]);
+	scale_y = sqrtf(state->scissor.xform[1]*state->scissor.xform[1] + state->scissor.xform[3]*state->scissor.xform[3]);
+
+	state->scissor.extent[0] = w*0.5f*scale_x;
+	state->scissor.extent[1] = h*0.5f*scale_y;
 }
 
 static void nvg__isectRects(float* dst,

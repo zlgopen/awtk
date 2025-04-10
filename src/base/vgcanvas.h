@@ -794,7 +794,7 @@ ret_t vgcanvas_clip_path(vgcanvas_t* vg);
  * 备注：
  * 1. 在绘图的时候脏矩形和裁剪区是一样的。
  * 2. 该函数是不合并裁剪区的，所有可能出现裁剪区被扩大导致绘图在脏矩形以外的情况，导致残影的情况。
- * 3. 如果旋转或者缩放了，请使用 vgcanvas_intersect_clip_rect 函数，不要使用该函数。
+ * 3. 该函数不支持旋转后调用，会导致裁剪区异常。
  * ........
  *   rect_t r;
  *   rect_t r_save;
@@ -844,9 +844,11 @@ bool_t vgcanvas_is_rectf_in_clip_rect(vgcanvas_t* vg, float_t left, float_t top,
 /**
  * @method vgcanvas_intersect_clip_rect
  * 设置一个与前一个裁剪区做交集的矩形裁剪区。
- * 如果下面这种情况，则不能直接调用 rect_intersect 函数来做矩形交集和 vgcanvas_clip_rect 函数设置裁剪区，而采用本函数做交集。
- * 由于缩放和旋转以及平移会导致 vg 的坐标系和上一个裁剪区的坐标系不同，
- * 导致直接使用做交集的话，裁剪区会出错。
+ * 备注：
+ * 1. 如果下面这种情况，则不能直接调用 rect_intersect 函数来做矩形交集和 vgcanvas_clip_rect 函数设置裁剪区，而采用本函数做交集。
+ *    由于缩放和旋转以及平移会导致 vg 的坐标系和上一个裁剪区的坐标系不同，
+ *    导致直接使用做交集的话，裁剪区会出错。
+ * 2. 该函数不支持旋转后调用，会导致裁剪区异常。
  * 
  * ```
  * vgcanvas_clip_rect(vg, old_r.x, old_r.y, old_r.w, old_r.h);

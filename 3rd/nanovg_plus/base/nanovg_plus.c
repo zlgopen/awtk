@@ -1062,6 +1062,8 @@ static void nvgp_isect_rects(float* dst,
 }
 
 nvgp_error_t nvgp_scissor(nvgp_context_t* ctx, float x, float y, float w, float h) {
+  float scale_x = 0.0f;
+  float scale_y = 0.0f;
   nvgp_state_t* state = NULL;
   CHECK_OBJECT_IS_NULL(ctx);
   state = nvgp_get_state(ctx);
@@ -1079,8 +1081,11 @@ nvgp_error_t nvgp_scissor(nvgp_context_t* ctx, float x, float y, float w, float 
     state->scissor.matrix.mat.trans_y = y + h * 0.5f;
     nvgp_transform_multiply_to_t(&state->scissor.matrix, &state->matrix);
 
-    state->scissor.extent[0] = w * 0.5f;
-    state->scissor.extent[1] = h * 0.5f;
+    scale_x = sqrtf(state->scissor.matrix.mat.scale_x * state->scissor.matrix.mat.scale_x + state->scissor.matrix.mat.skew_x * state->scissor.matrix.mat.skew_x);
+    scale_y = sqrtf(state->scissor.matrix.mat.scale_y * state->scissor.matrix.mat.scale_y + state->scissor.matrix.mat.skew_y * state->scissor.matrix.mat.skew_y);
+
+    state->scissor.extent[0] = w * 0.5f * scale_x;
+    state->scissor.extent[1] = h * 0.5f * scale_y;
     return NVGP_OK;
   }
   return NVGP_FAIL;
