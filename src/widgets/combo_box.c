@@ -242,6 +242,32 @@ static ret_t combo_box_get_prop(widget_t* widget, const char* name, value_t* v) 
   }
 }
 
+static ret_t combo_box_get_prop_default_value(widget_t* widget, const char* name, value_t* v) {
+  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(name, WIDGET_PROP_OPEN_WINDOW)) {
+    value_set_str(v, NULL);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_THEME_OF_POPUP)) {
+    value_set_str(v, NULL);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SELECTED_INDEX)) {
+    value_set_int(v, 0);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
+    value_set_int(v, 0);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_LOCALIZE_OPTIONS)) {
+    value_set_bool(v, TRUE);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_OPTIONS)) {
+    value_set_str(v, NULL);
+    return RET_OK;
+  }
+
+  return RET_NOT_FOUND;
+}
+
 ret_t combo_box_parse_options(widget_t* widget, const char* str) {
   str_t s;
   int32_t i = 0;
@@ -609,6 +635,7 @@ TK_DECL_VTABLE(combo_box) = {.size = sizeof(combo_box_t),
                              .on_paint_self = edit_on_paint_self,
                              .set_prop = combo_box_set_prop,
                              .get_prop = combo_box_get_prop,
+                             .get_prop_default_value = combo_box_get_prop_default_value,
                              .on_add_child = combo_box_on_add_child,
                              .on_remove_child = combo_box_on_remove_child,
                              .on_layout_children = combo_box_on_layout_children,

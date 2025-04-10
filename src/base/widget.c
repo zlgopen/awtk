@@ -2483,6 +2483,8 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
       wchar_t* text = widget->text.str;
       if (text != NULL) {
         text[widget->text.size] = 0;
+      } else {
+        text = L"";
       }
       value_set_wstr(v, text);
       ret = RET_OK;
