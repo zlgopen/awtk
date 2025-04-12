@@ -397,7 +397,6 @@ ret_t window_base_set_accept_button(widget_t* widget, const char* accept_button)
 ret_t window_base_set_cancel_button(widget_t* widget, const char* cancel_button) {
   window_base_t* window_base = WINDOW_BASE(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-  window_base->cancel_button = cancel_button;
   if (cancel_button == NULL) {
     if (window_base->cancel_button != NULL) {
       TKMEM_FREE(window_base->cancel_button);
