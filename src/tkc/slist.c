@@ -23,19 +23,24 @@
 #include "tkc/utils.h"
 #include "tkc/slist.h"
 
-static slist_node_t* slist_node_create(void* data) {
-  slist_node_t* node = TKMEM_ZALLOC(slist_node_t);
-  return_value_if_fail(node != NULL, NULL);
+static slist_node_t* slist_create_node(slist_t* slist, void* data) {
+  slist_node_t* ret = NULL;
+  return_value_if_fail(slist != NULL, NULL);
 
-  node->data = data;
+  ret = TKMEM_ZALLOC(slist_node_t);
+  return_value_if_fail(ret != NULL, NULL);
 
-  return node;
+  ret->data = data;
+
+  return ret;
 }
 
-static ret_t slist_node_destroy(slist_node_t* node, tk_destroy_t destroy) {
-  return_value_if_fail(node != NULL && destroy != NULL, RET_OK);
+static ret_t slist_destroy_node(slist_t* slist, slist_node_t* node) {
+  return_value_if_fail(slist != NULL && node != NULL, RET_OK);
 
-  destroy(node->data);
+  if (node->data != NULL) {
+    slist->destroy(node->data);
+  }
   TKMEM_FREE(node);
 
   return RET_OK;
@@ -50,9 +55,9 @@ slist_t* slist_create(tk_destroy_t destroy, tk_compare_t compare) {
 
 slist_t* slist_init(slist_t* slist, tk_destroy_t destroy, tk_compare_t compare) {
   return_value_if_fail(slist != NULL, NULL);
-  slist->first = NULL;
-  slist->last = NULL;
-  slist->size = 0;
+
+  memset(slist, 0, sizeof(slist_t));
+
   slist->destroy = destroy != NULL ? destroy : dummy_destroy;
   slist->compare = compare != NULL ? compare : pointer_compare;
 
@@ -107,16 +112,16 @@ static ret_t slist_insert_node(slist_t* slist, slist_node_t* node, slist_node_t*
   return RET_OK;
 }
 
-static ret_t slist_remove_node(slist_t* slist, slist_node_t* prev, slist_node_t* iter) {
-  return_value_if_fail(slist != NULL, RET_BAD_PARAMS);
+static ret_t slist_remove_node(slist_t* slist, slist_node_t* node, slist_node_t* prev) {
+  return_value_if_fail(slist != NULL && node != NULL, RET_BAD_PARAMS);
   return_value_if_fail(slist->size > 0, RET_FAIL);
 
   if (slist->first == slist->last) {
     slist->first = slist->last = NULL;
-  } else if (prev == NULL || iter == slist->first) {
+  } else if (prev == NULL || node == slist->first) {
     /* head_pop */
     slist->first = slist->first->next;
-  } else if (prev->next == slist->last || iter == slist->last) {
+  } else if (prev->next == slist->last || node == slist->last) {
     /* tail_pop */
     prev->next = NULL;
     slist->last = prev;
@@ -139,8 +144,8 @@ ret_t slist_remove_ex(slist_t* slist, tk_compare_t compare, void* ctx, int32_t r
   while (iter != NULL) {
     if (compare(iter->data, ctx) == 0) {
       slist_node_t* next = iter->next;
-      slist_remove_node(slist, prev, iter);
-      slist_node_destroy(iter, slist->destroy);
+      slist_remove_node(slist, iter, prev);
+      slist_destroy_node(slist, iter);
       iter = next;
       if (--n == 0) {
         return RET_OK;
@@ -161,7 +166,8 @@ ret_t slist_remove(slist_t* slist, void* ctx) {
 ret_t slist_append(slist_t* slist, void* data) {
   slist_node_t* node = NULL;
   return_value_if_fail(slist != NULL, RET_BAD_PARAMS);
-  node = slist_node_create(data);
+
+  node = slist_create_node(slist, data);
   return_value_if_fail(node != NULL, RET_OOM);
 
   return slist_insert_node(slist, node, slist->last);
@@ -171,7 +177,7 @@ ret_t slist_prepend(slist_t* slist, void* data) {
   slist_node_t* node = NULL;
   return_value_if_fail(slist != NULL, RET_BAD_PARAMS);
 
-  node = slist_node_create(data);
+  node = slist_create_node(slist, data);
   return_value_if_fail(node != NULL, RET_OOM);
 
   return slist_insert_node(slist, node, NULL);
@@ -188,8 +194,8 @@ ret_t slist_foreach(slist_t* slist, tk_visit_t visit, void* ctx) {
     ret = visit(ctx, iter->data);
     if (ret == RET_REMOVE) {
       slist_node_t* next = iter->next;
-      slist_remove_node(slist, prev, iter);
-      slist_node_destroy(iter, slist->destroy);
+      slist_remove_node(slist, iter, prev);
+      slist_destroy_node(slist, iter);
       iter = next;
       continue;
     } else if (ret != RET_OK) {
@@ -217,10 +223,11 @@ void* slist_tail_pop(slist_t* slist) {
     prev = iter;
     iter = iter->next;
   }
-  slist_remove_node(slist, prev, iter);
+  slist_remove_node(slist, iter, prev);
 
   data = iter->data;
-  TKMEM_FREE(iter);
+  iter->data = NULL;
+  slist_destroy_node(slist, iter);
 
   return data;
 }
@@ -235,10 +242,11 @@ void* slist_head_pop(slist_t* slist) {
     return NULL;
   }
 
-  slist_remove_node(slist, NULL, iter);
+  slist_remove_node(slist, iter, NULL);
 
   data = iter->data;
-  TKMEM_FREE(iter);
+  iter->data = NULL;
+  slist_destroy_node(slist, iter);
 
   return data;
 }
@@ -304,7 +312,7 @@ ret_t slist_remove_all(slist_t* slist) {
 
     while (iter != NULL) {
       slist_node_t* next = iter->next;
-      slist_node_destroy(iter, slist->destroy);
+      slist_destroy_node(slist, iter);
 
       iter = next;
     }
@@ -337,7 +345,7 @@ ret_t slist_insert(slist_t* slist, uint32_t index, void* data) {
     iter = iter->next;
   }
 
-  node = slist_node_create(data);
+  node = slist_create_node(slist, data);
   return_value_if_fail(node != NULL, RET_OOM);
 
   return slist_insert_node(slist, node, prev);

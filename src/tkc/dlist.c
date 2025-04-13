@@ -23,19 +23,24 @@
 #include "tkc/utils.h"
 #include "tkc/dlist.h"
 
-static dlist_node_t* dlist_node_create(void* data) {
-  dlist_node_t* node = TKMEM_ZALLOC(dlist_node_t);
-  return_value_if_fail(node != NULL, NULL);
+static dlist_node_t* dlist_create_node(dlist_t* dlist, void* data) {
+  dlist_node_t* ret = NULL;
+  return_value_if_fail(dlist != NULL, NULL);
 
-  node->data = data;
+  ret = TKMEM_ZALLOC(dlist_node_t);
+  return_value_if_fail(ret != NULL, NULL);
 
-  return node;
+  ret->data = data;
+
+  return ret;
 }
 
-static ret_t dlist_node_destroy(dlist_node_t* node, tk_destroy_t destroy) {
-  return_value_if_fail(node != NULL && destroy != NULL, RET_OK);
+static ret_t dlist_destroy_node(dlist_t* dlist, dlist_node_t* node) {
+  return_value_if_fail(dlist != NULL && node != NULL, RET_OK);
 
-  destroy(node->data);
+  if (node->data != NULL) {
+    dlist->destroy(node->data);
+  }
   TKMEM_FREE(node);
 
   return RET_OK;
@@ -50,9 +55,9 @@ dlist_t* dlist_create(tk_destroy_t destroy, tk_compare_t compare) {
 
 dlist_t* dlist_init(dlist_t* dlist, tk_destroy_t destroy, tk_compare_t compare) {
   return_value_if_fail(dlist != NULL, NULL);
-  dlist->first = NULL;
-  dlist->last = NULL;
-  dlist->size = 0;
+
+  memset(dlist, 0, sizeof(dlist_t));
+
   dlist->destroy = destroy != NULL ? destroy : dummy_destroy;
   dlist->compare = compare != NULL ? compare : pointer_compare;
 
@@ -94,28 +99,28 @@ void* dlist_find_last(dlist_t* dlist, void* ctx) {
   return dlist_find_ex(dlist, NULL, ctx, TRUE);
 }
 
-static ret_t dlist_insert_node(dlist_t* dlist, dlist_node_t* node, dlist_node_t* iter) {
+static ret_t dlist_insert_node(dlist_t* dlist, dlist_node_t* node, dlist_node_t* next) {
   return_value_if_fail(dlist != NULL && node != NULL, RET_BAD_PARAMS);
 
   if (dlist->first == NULL || dlist->last == NULL) {
     dlist->first = dlist->last = node;
-  } else if (iter == NULL) {
+  } else if (next == NULL) {
     /* append */
     dlist->last->next = node;
     node->prev = dlist->last;
     dlist->last = node;
-  } else if (iter == dlist->first) {
+  } else if (next == dlist->first) {
     /* prepend */
     dlist->first->prev = node;
     node->next = dlist->first;
     dlist->first = node;
   } else {
-    node->next = iter;
-    node->prev = iter->prev;
+    node->next = next;
+    node->prev = next->prev;
 
-    ENSURE(iter->prev != NULL);
-    iter->prev->next = node;
-    iter->prev = node;
+    ENSURE(next->prev != NULL);
+    next->prev->next = node;
+    next->prev = node;
   }
 
   dlist->size++;
@@ -160,7 +165,7 @@ ret_t dlist_remove_ex(dlist_t* dlist, tk_compare_t compare, void* ctx, int32_t r
       if (compare(iter->data, ctx) == 0) {
         dlist_node_t* next = iter->next;
         dlist_remove_node(dlist, iter);
-        dlist_node_destroy(iter, dlist->destroy);
+        dlist_destroy_node(dlist, iter);
         iter = next;
         if (--n == 0) {
           return RET_OK;
@@ -175,7 +180,7 @@ ret_t dlist_remove_ex(dlist_t* dlist, tk_compare_t compare, void* ctx, int32_t r
       if (compare(iter->data, ctx) == 0) {
         dlist_node_t* prev = iter->prev;
         dlist_remove_node(dlist, iter);
-        dlist_node_destroy(iter, dlist->destroy);
+        dlist_destroy_node(dlist, iter);
         iter = prev;
         if (--n == 0) {
           return RET_OK;
@@ -201,7 +206,7 @@ ret_t dlist_append(dlist_t* dlist, void* data) {
   dlist_node_t* node = NULL;
   return_value_if_fail(dlist != NULL, RET_BAD_PARAMS);
 
-  node = dlist_node_create(data);
+  node = dlist_create_node(dlist, data);
   return_value_if_fail(node != NULL, RET_OOM);
 
   return dlist_insert_node(dlist, node, NULL);
@@ -211,7 +216,7 @@ ret_t dlist_prepend(dlist_t* dlist, void* data) {
   dlist_node_t* node = NULL;
   return_value_if_fail(dlist != NULL, RET_BAD_PARAMS);
 
-  node = dlist_node_create(data);
+  node = dlist_create_node(dlist, data);
   return_value_if_fail(node != NULL, RET_OOM);
 
   return dlist_insert_node(dlist, node, dlist->first);
@@ -228,7 +233,7 @@ ret_t dlist_foreach(dlist_t* dlist, tk_visit_t visit, void* ctx) {
     if (ret == RET_REMOVE) {
       dlist_node_t* next = iter->next;
       dlist_remove_node(dlist, iter);
-      dlist_node_destroy(iter, dlist->destroy);
+      dlist_destroy_node(dlist, iter);
       iter = next;
       continue;
     } else if (ret != RET_OK) {
@@ -251,7 +256,7 @@ ret_t dlist_foreach_reverse(dlist_t* dlist, tk_visit_t visit, void* ctx) {
     if (ret == RET_REMOVE) {
       dlist_node_t* prev = iter->prev;
       dlist_remove_node(dlist, iter);
-      dlist_node_destroy(iter, dlist->destroy);
+      dlist_destroy_node(dlist, iter);
       iter = prev;
       continue;
     } else if (ret != RET_OK) {
@@ -276,7 +281,8 @@ static void* dlist_pop(dlist_t* dlist, bool_t head) {
   dlist_remove_node(dlist, iter);
 
   data = iter->data;
-  TKMEM_FREE(iter);
+  iter->data = NULL;
+  dlist_destroy_node(dlist, iter);
 
   return data;
 }
@@ -350,7 +356,7 @@ ret_t dlist_remove_all(dlist_t* dlist) {
 
     while (iter != NULL) {
       dlist_node_t* next = iter->next;
-      dlist_node_destroy(iter, dlist->destroy);
+      dlist_destroy_node(dlist, iter);
 
       iter = next;
     }
@@ -381,7 +387,7 @@ ret_t dlist_insert(dlist_t* dlist, uint32_t index, void* data) {
     iter = iter->next;
   }
 
-  node = dlist_node_create(data);
+  node = dlist_create_node(dlist, data);
   return_value_if_fail(node != NULL, RET_OOM);
 
   return dlist_insert_node(dlist, node, iter);
