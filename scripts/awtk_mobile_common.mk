@@ -81,6 +81,7 @@ file(GLOB AWTK_BASE_SOURCE_FILES
   ${AWTK_3RD_PATH}/miniz/*.c
   ${AWTK_SRC_PATH}/tkc/*.c
   ${AWTK_SRC_PATH}/base/*.c
+  ${AWTK_SRC_PATH}/service/*.c
   ${AWTK_SRC_PATH}/layouters/*.c
   ${AWTK_SRC_PATH}/widgets/*.c
   ${AWTK_SRC_PATH}/ui_loader/*.c
