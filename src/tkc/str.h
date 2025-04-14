@@ -853,6 +853,25 @@ ret_t str_append_format_padding(str_t* str, uint32_t size, const char* format, .
  */
 ret_t str_append_json_pair(str_t* str, const char* key, const value_t* value);
 
+/**
+ * @method str_escape_char
+ * 转义字符。
+ * > 如：'\n'转义为"n"。
+ * @param {char} c 字符。
+ * @return {char} 返回转义后的字符。
+ */
+char str_escape_char(char c);
+
+/**
+ * @method str_unescape_char
+ * 反转义字符。
+ * > 如："n"反转义为'\n'。
+ * @param {const char*} s 字符串。
+ * @param {uint32_t*} nr 返回读取的字符数。
+ * @return {char} 返回反转义后的字符。
+ */
+char str_unescape_char(const char* s, uint32_t* nr);
+
 #define STR_DESTROY(str) \
   if (str != NULL) {     \
     str_destroy(str);    \

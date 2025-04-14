@@ -662,6 +662,9 @@ struct _conf_node_t {
     conf_node_t* first_child;
     binary_data_t binary_data;
   } value;
+
+  /*for yaml only*/
+  uint8_t leading_spaces;
 };
 
 /**
@@ -966,6 +969,9 @@ ret_t conf_doc_foreach(conf_doc_t* doc, conf_doc_on_visit_t on_visit, void* ctx)
 /* private */
 ret_t conf_doc_set_ex(conf_doc_t* doc, conf_node_t* node, const char* path, const value_t* v);
 ret_t conf_doc_get_value_extend_type(conf_doc_t* doc, conf_node_t* node, value_t* v);
+
+/*ini/yaml使用*/
+ret_t conf_node_save_value(str_t* str, const value_t* v, char comment_char);
 
 END_C_DECLS
 

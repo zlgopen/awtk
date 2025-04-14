@@ -27,6 +27,8 @@
 #include "tkc/data_reader_factory.h"
 #include "tkc/data_writer_factory.h"
 
+#define INI_COMMENT_CHAR '#'
+
 typedef enum _parser_state_t {
   STATE_NONE = 0,
   STATE_BEFORE_GROUP,
@@ -176,65 +178,6 @@ conf_doc_t* conf_doc_load_ini(const char* data) {
   return doc;
 }
 
-static ret_t conf_doc_save_str(const char* p, str_t* str) {
-  return_value_if_fail(p != NULL, RET_BAD_PARAMS);
-
-  while (*p) {
-    if (*p == '#' || *p == '\\' || *p == '\n') {
-      return_value_if_fail(str_append_char(str, '\\') == RET_OK, RET_OOM);
-    }
-    return_value_if_fail(str_append_char(str, *p) == RET_OK, RET_OOM);
-    p++;
-  }
-  return RET_OK;
-}
-
-static ret_t conf_doc_save_value(const value_t* v, str_t* str) {
-  char buff[64] = {0};
-  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
-
-  switch (v->type) {
-    case VALUE_TYPE_STRING: {
-      const char* p = value_str(v);
-      return_value_if_fail(p != NULL, RET_BAD_PARAMS);
-      return conf_doc_save_str(p, str);
-    }
-    case VALUE_TYPE_WSTRING: {
-      str_t s;
-      ret_t ret = RET_OK;
-
-      str_init(&s, 0);
-      str_from_wstr(&s, value_wstr(v));
-      ret = conf_doc_save_str(s.str, str);
-      str_reset(&s);
-      return ret;
-    }
-    case VALUE_TYPE_FLOAT32: {
-      tk_snprintf(buff, sizeof(buff) - 1, "%f", value_float32(v));
-      break;
-    }
-    case VALUE_TYPE_FLOAT:
-    case VALUE_TYPE_DOUBLE: {
-      tk_snprintf(buff, sizeof(buff) - 1, "%lf", value_double(v));
-      break;
-    }
-    case VALUE_TYPE_INT64: {
-      tk_snprintf(buff, sizeof(buff) - 1, "%lld", value_int64(v));
-      break;
-    }
-    case VALUE_TYPE_UINT64: {
-      tk_snprintf(buff, sizeof(buff) - 1, "%llu", value_uint64(v));
-      break;
-    }
-    default: {
-      tk_snprintf(buff, sizeof(buff) - 1, "%d", value_int(v));
-      break;
-    }
-  }
-
-  return str_append(str, buff);
-}
-
 static ret_t conf_doc_save_leaf_node(conf_node_t* node, str_t* str) {
   value_t v;
   const char* key = conf_node_get_name(node);
@@ -242,7 +185,7 @@ static ret_t conf_doc_save_leaf_node(conf_node_t* node, str_t* str) {
   conf_node_get_value(node, &v);
 
   return_value_if_fail(str_append_more(str, "  ", key, " = ", NULL) == RET_OK, RET_OOM);
-  return_value_if_fail(conf_doc_save_value(&v, str) == RET_OK, RET_OOM);
+  return_value_if_fail(conf_node_save_value(str, &v, INI_COMMENT_CHAR) == RET_OK, RET_OOM);
   return_value_if_fail(str_append(str, "\n") == RET_OK, RET_OOM);
 
   return RET_OK;

@@ -1,8 +1,8 @@
-# 读写 XML/JSON/INI 和 UBJSON 等格式的数据文件
+# 读写 XML/JSON/INI/YAML 和 UBJSON 等格式的数据文件
 
 > 将抽象放进代码，细节放进元数据。
 
-开发应用程序，会经常使用各种数据文件（如配置数据和元数据），常见的数据文件格式有 INI、XML、JSON 和 UBJSON，对一个复杂的应用程序，其中可能会同时使用多种不同格式的数据文件。
+开发应用程序，会经常使用各种数据文件（如配置数据和元数据），常见的数据文件格式有 INI、YAML、XML、JSON 和 UBJSON，对一个复杂的应用程序，其中可能会同时使用多种不同格式的数据文件。
 
 通常，操作这些数据文件的函数各不相同，对于程序员来说即是学习负担，也是记忆负担。AWTK 提供了一套统一的接口函数，同一套接口函数，可以操作不同的格式的数据文件。
 
@@ -313,6 +313,42 @@ tk_object_t* conf_ubjson_load(const char* url, bool_t create_if_not_exist);
  * @return {ret_t} 返回 RET_OK 表示成功，否则表示失败
  */
 ret_t conf_ubjson_save_as(tk_object_t* obj, const char* url);
+```
+
+### 3.5 YAML 格式
+
+* 打开
+
+```c
+/**
+ * @method conf_yaml_load 
+ * 从指定 URL 加载 YAML 对象。 
+ * 
+ * @annotation ["constructor"]
+ * 
+ * @param {const char*} url 路径（通常是文件路径）。
+ * @param {bool_t} create_if_not_exist 如果不存在是否创建。 
+ * 
+ * @return {tk_object_t*} 返回配置对象。
+ */
+tk_object_t* conf_yaml_load(const char* url, bool_t create_if_not_exist);
+```
+
+* 保存
+
+```c
+/**
+ * @method conf_yaml_save_as
+ * 将 doc 对象保存到指定 URL。
+ * @annotation ["static"]
+ * 
+ * @param {tk_object_t*} obj doc 对象。
+ * @param {const char*} url 保存的位置。
+ * 
+ * @return {ret_t} 返回 RET_OK 表示成功，否则表示失败
+ */
+ret_t conf_yaml_save_as(tk_object_t* obj, const char* url);
+
 ```
 
 ## 完整示例

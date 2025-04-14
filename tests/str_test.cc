@@ -1137,3 +1137,47 @@ TEST(Str, append_format_ex) {
 
   str_reset(&s);
 }
+
+TEST(Str, unescape_char1) {
+  str_t s;
+  uint32_t n = 0;
+  str_init(&s, 0);
+  const char* data = "abc\\r\\nd";
+  const char* p = data;
+
+  while (*p != '\0') {
+    if (*p == '\\') {
+      p++;
+      char c = str_unescape_char(p, &n);
+      str_append_char(&s, c);
+      p += n;
+    } else {
+      str_append_char(&s, *p);
+      p++;
+    }
+  }
+  ASSERT_STREQ(s.str, "abc\r\nd");
+
+  str_reset(&s);
+}
+
+TEST(Str, escape_char1) {
+  str_t s;
+  str_init(&s, 0);
+  const char* data = "abc\r\nd";
+  const char* p = data;
+
+  while (*p != '\0') {
+    char c = str_escape_char(*p);
+    if (*p != c) {
+      str_append_char(&s, '\\');
+      str_append_char(&s, c);
+    } else {
+      str_append_char(&s, *p);
+    }
+    p++;
+  }
+  ASSERT_STREQ(s.str, "abc\\r\\nd");
+
+  str_reset(&s);
+}

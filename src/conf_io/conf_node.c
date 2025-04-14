@@ -1327,3 +1327,64 @@ ret_t conf_doc_foreach(conf_doc_t* doc, conf_doc_on_visit_t on_visit, void* ctx)
   return_value_if_fail(doc && on_visit, RET_BAD_PARAMS);
   return conf_node_foreach_sibling(NULL, conf_node_get_first_child(doc->root), on_visit, ctx);
 }
+
+static ret_t conf_doc_save_str(const char* p, str_t* str, char comment_char) {
+  return_value_if_fail(p != NULL, RET_BAD_PARAMS);
+
+  while (*p) {
+    char c = str_escape_char(*p);
+    if (c != *p || *p == comment_char || *p == '\\' || *p == '\n') {
+      return_value_if_fail(str_append_char(str, '\\') == RET_OK, RET_OOM);
+    }
+    return_value_if_fail(str_append_char(str, c) == RET_OK, RET_OOM);
+    p++;
+  }
+
+  return RET_OK;
+}
+
+ret_t conf_node_save_value(str_t* str, const value_t* v, char comment_char) {
+  char buff[64] = {0};
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+
+  switch (v->type) {
+    case VALUE_TYPE_STRING: {
+      const char* p = value_str(v);
+      return_value_if_fail(p != NULL, RET_BAD_PARAMS);
+      return conf_doc_save_str(p, str, comment_char);
+    }
+    case VALUE_TYPE_WSTRING: {
+      str_t s;
+      ret_t ret = RET_OK;
+
+      str_init(&s, 0);
+      str_from_wstr(&s, value_wstr(v));
+      ret = conf_doc_save_str(s.str, str, comment_char);
+      str_reset(&s);
+      return ret;
+    }
+    case VALUE_TYPE_FLOAT32: {
+      tk_snprintf(buff, sizeof(buff) - 1, "%f", value_float32(v));
+      break;
+    }
+    case VALUE_TYPE_FLOAT:
+    case VALUE_TYPE_DOUBLE: {
+      tk_snprintf(buff, sizeof(buff) - 1, "%lf", value_double(v));
+      break;
+    }
+    case VALUE_TYPE_INT64: {
+      tk_snprintf(buff, sizeof(buff) - 1, "%lld", value_int64(v));
+      break;
+    }
+    case VALUE_TYPE_UINT64: {
+      tk_snprintf(buff, sizeof(buff) - 1, "%llu", value_uint64(v));
+      break;
+    }
+    default: {
+      tk_snprintf(buff, sizeof(buff) - 1, "%d", value_int(v));
+      break;
+    }
+  }
+
+  return str_append(str, buff);
+}

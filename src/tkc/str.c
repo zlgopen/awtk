@@ -370,7 +370,7 @@ ret_t str_encode_xml_entity_with_len(str_t* str, const char* text, uint32_t len)
 }
 
 /*https://en.wikipedia.org/wiki/Escape_sequences_in_C*/
-static char str_escape_char(char c) {
+char str_escape_char(char c) {
   switch (c) {
     case '\a': {
       c = 'a';
@@ -412,7 +412,7 @@ static char str_escape_char(char c) {
   return c;
 }
 
-static char str_unescape_char(const char* s, uint32_t* nr) {
+char str_unescape_char(const char* s, uint32_t* nr) {
   char c = 0;
   const char* start = s;
   return_value_if_fail(s != NULL && nr != NULL, 0);
