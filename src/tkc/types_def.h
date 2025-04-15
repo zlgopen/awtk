@@ -51,6 +51,7 @@
 #define TK_MAYBE_UNUSED
 #endif
 
+#include <stddef.h>
 #include <stdarg.h>
 #include <ctype.h>
 #include <errno.h>

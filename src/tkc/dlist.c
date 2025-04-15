@@ -27,7 +27,11 @@ static dlist_node_t* dlist_create_node(dlist_t* dlist, void* data) {
   dlist_node_t* ret = NULL;
   return_value_if_fail(dlist != NULL, NULL);
 
-  ret = TKMEM_ZALLOC(dlist_node_t);
+  if (dlist->node_allocator != NULL) {
+    ret = mem_allocator_alloc(dlist->node_allocator, sizeof(dlist_node_t), __FUNCTION__, __LINE__);
+  } else {
+    ret = TKMEM_ZALLOC(dlist_node_t);
+  }
   return_value_if_fail(ret != NULL, NULL);
 
   ret->data = data;
@@ -41,7 +45,11 @@ static ret_t dlist_destroy_node(dlist_t* dlist, dlist_node_t* node) {
   if (node->data != NULL) {
     dlist->destroy(node->data);
   }
-  TKMEM_FREE(node);
+  if (dlist->node_allocator != NULL) {
+    mem_allocator_free(dlist->node_allocator, node);
+  } else {
+    TKMEM_FREE(node);
+  }
 
   return RET_OK;
 }
@@ -346,7 +354,14 @@ int32_t dlist_count(dlist_t* dlist, void* ctx) {
 }
 
 ret_t dlist_deinit(dlist_t* dlist) {
-  return dlist_remove_all(dlist);
+  ret_t ret = RET_OK;
+  return_value_if_fail(dlist != NULL, RET_BAD_PARAMS);
+
+  ret = dlist_remove_all(dlist);
+  if (RET_OK == ret) {
+    dlist_set_node_allocator(dlist, NULL);
+  }
+  return ret;
 }
 
 ret_t dlist_remove_all(dlist_t* dlist) {
@@ -403,6 +418,21 @@ ret_t dlist_reverse(dlist_t* dlist) {
     iter = iter->prev;
   }
   tk_swap(dlist->first, dlist->last, dlist_node_t*);
+
+  return RET_OK;
+}
+
+ret_t dlist_set_node_allocator(dlist_t* dlist, mem_allocator_t* allocator) {
+  return_value_if_fail(dlist != NULL, RET_BAD_PARAMS);
+
+  if (dlist->node_allocator != allocator) {
+    return_value_if_fail(dlist_is_empty(dlist), RET_FAIL);
+
+    if (dlist->node_allocator != NULL) {
+      mem_allocator_destroy(dlist->node_allocator);
+    }
+    dlist->node_allocator = allocator;
+  }
 
   return RET_OK;
 }

@@ -1,7 +1,7 @@
 ﻿#include "gtest/gtest.h"
 #include "tkc/tree.h"
 #include "tkc/utils.h"
-#include "tkc/fs.h"
+#include "tkc/mem_allocator_fixed_block.h"
 
 TEST(Tree, create) {
   tree_t* tree = tree_create(NULL, NULL);
@@ -17,26 +17,26 @@ TEST(Tree, insert_child) {
   ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
   ASSERT_EQ(0, tree_size(&tree, NULL));
 
-  node = tree_node_create(tk_pointer_from_int(0));
+  node = tree_create_node(&tree, tk_pointer_from_int(0));
   ASSERT_EQ(node != NULL, TRUE);
   ASSERT_EQ(0, tk_pointer_to_int(node->data));
   ASSERT_EQ(RET_OK, tree_set_root(&tree, node));
   ASSERT_EQ(tree.root == node, TRUE);
   ASSERT_EQ(1, tree_size(&tree, NULL));
 
-  node = tree_node_create(tk_pointer_from_int(1));
+  node = tree_create_node(&tree, tk_pointer_from_int(1));
   ASSERT_EQ(node != NULL, TRUE);
   ASSERT_EQ(1, tk_pointer_to_int(node->data));
   ASSERT_EQ(RET_OK, tree_append_child_node(&tree, NULL, node));
   ASSERT_EQ(2, tree_size(&tree, NULL));
 
-  node = tree_node_create(tk_pointer_from_int(2));
+  node = tree_create_node(&tree, tk_pointer_from_int(2));
   ASSERT_EQ(node != NULL, TRUE);
   ASSERT_EQ(2, tk_pointer_to_int(node->data));
   ASSERT_EQ(RET_OK, tree_prepend_child_node(&tree, NULL, node));
   ASSERT_EQ(3, tree_size(&tree, NULL));
 
-  node = tree_node_create(tk_pointer_from_int(3));
+  node = tree_create_node(&tree, tk_pointer_from_int(3));
   ASSERT_EQ(node != NULL, TRUE);
   ASSERT_EQ(3, tk_pointer_to_int(node->data));
   ASSERT_EQ(RET_OK, tree_insert_child_node(&tree, NULL, 1, node));
@@ -52,28 +52,28 @@ TEST(Tree, insert_sibling) {
   ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
   ASSERT_EQ(0, tree_size(&tree, NULL));
 
-  node = tree_node_create(tk_pointer_from_int(0));
+  node = tree_create_node(&tree, tk_pointer_from_int(0));
   ASSERT_EQ(node != NULL, TRUE);
   ASSERT_EQ(RET_OK, tree_set_root(&tree, node));
   ASSERT_EQ(tree.root != NULL, TRUE);
 
-  insert_pos = tree_node_create(tk_pointer_from_int(1));
+  insert_pos = tree_create_node(&tree, tk_pointer_from_int(1));
   ASSERT_EQ(insert_pos != NULL, TRUE);
   ASSERT_EQ(RET_OK, tree_append_child_node(&tree, NULL, insert_pos));
 
-  node = tree_node_create(tk_pointer_from_int(2));
+  node = tree_create_node(&tree, tk_pointer_from_int(2));
   ASSERT_EQ(node != NULL, TRUE);
   ASSERT_EQ(2, tk_pointer_to_int(node->data));
   ASSERT_EQ(RET_OK, tree_append_sibling_node(&tree, insert_pos, node));
   ASSERT_EQ(3, tree_size(&tree, NULL));
 
-  node = tree_node_create(tk_pointer_from_int(3));
+  node = tree_create_node(&tree, tk_pointer_from_int(3));
   ASSERT_EQ(node != NULL, TRUE);
   ASSERT_EQ(3, tk_pointer_to_int(node->data));
   ASSERT_EQ(RET_OK, tree_prepend_sibling_node(&tree, insert_pos, node));
   ASSERT_EQ(4, tree_size(&tree, NULL));
 
-  node = tree_node_create(tk_pointer_from_int(4));
+  node = tree_create_node(&tree, tk_pointer_from_int(4));
   ASSERT_EQ(node != NULL, TRUE);
   ASSERT_EQ(4, tk_pointer_to_int(node->data));
   ASSERT_EQ(RET_OK, tree_insert_sibling_node(&tree, insert_pos, 1, node));
@@ -106,52 +106,52 @@ static ret_t build_tree_for_test(tree_t* tree) {
    */
 
   // 创建根节点
-  tree_node_t* root = tree_node_create(tk_pointer_from_int(0));
+  tree_node_t* root = tree_create_node(tree, tk_pointer_from_int(0));
   tree_set_root(tree, root);
 
   // 第一层子节点（使用节点操作接口）
-  tree_node_t* node1 = tree_node_create(tk_pointer_from_int(1));
+  tree_node_t* node1 = tree_create_node(tree, tk_pointer_from_int(1));
   tree_prepend_child_node(tree, NULL, node1);
 
-  tree_node_t* node3 = tree_node_create(tk_pointer_from_int(3));
+  tree_node_t* node3 = tree_create_node(tree, tk_pointer_from_int(3));
   tree_append_child_node(tree, NULL, node3);
 
-  tree_node_t* node2 = tree_node_create(tk_pointer_from_int(2));
+  tree_node_t* node2 = tree_create_node(tree, tk_pointer_from_int(2));
   tree_insert_child_node(tree, NULL, 1, node2);
 
   // 第二层子节点
-  tree_node_t* node11 = tree_node_create(tk_pointer_from_int(11));
+  tree_node_t* node11 = tree_create_node(tree, tk_pointer_from_int(11));
   tree_prepend_child_node(tree, node1, node11);
 
-  tree_node_t* node12 = tree_node_create(tk_pointer_from_int(12));
+  tree_node_t* node12 = tree_create_node(tree, tk_pointer_from_int(12));
   tree_append_child_node(tree, node1, node12);
 
-  tree_node_t* node21 = tree_node_create(tk_pointer_from_int(21));
+  tree_node_t* node21 = tree_create_node(tree, tk_pointer_from_int(21));
   tree_append_child_node(tree, node2, node21);
 
-  tree_node_t* node22 = tree_node_create(tk_pointer_from_int(22));
+  tree_node_t* node22 = tree_create_node(tree, tk_pointer_from_int(22));
   tree_append_sibling_node(tree, node21, node22);
 
-  tree_node_t* node23 = tree_node_create(tk_pointer_from_int(23));
+  tree_node_t* node23 = tree_create_node(tree, tk_pointer_from_int(23));
   tree_append_sibling_node(tree, node22, node23);
 
-  tree_node_t* node31 = tree_node_create(tk_pointer_from_int(31));
+  tree_node_t* node31 = tree_create_node(tree, tk_pointer_from_int(31));
   tree_append_child_node(tree, node3, node31);
 
-  tree_node_t* node32 = tree_node_create(tk_pointer_from_int(32));
+  tree_node_t* node32 = tree_create_node(tree, tk_pointer_from_int(32));
   tree_append_child_node(tree, node3, node32);
 
   // 第三层子节点
-  tree_append_child_node(tree, node12, tree_node_create(tk_pointer_from_int(121)));
-  tree_append_child_node(tree, node12, tree_node_create(tk_pointer_from_int(122)));
-  tree_append_child_node(tree, node12, tree_node_create(tk_pointer_from_int(123)));
+  tree_append_child_node(tree, node12, tree_create_node(tree, tk_pointer_from_int(121)));
+  tree_append_child_node(tree, node12, tree_create_node(tree, tk_pointer_from_int(122)));
+  tree_append_child_node(tree, node12, tree_create_node(tree, tk_pointer_from_int(123)));
 
-  tree_node_t* node221 = tree_node_create(tk_pointer_from_int(221));
+  tree_node_t* node221 = tree_create_node(tree, tk_pointer_from_int(221));
   tree_append_child_node(tree, node22, node221);
 
   // 第四层子节点
-  tree_append_child_node(tree, node221, tree_node_create(tk_pointer_from_int(2211)));
-  tree_append_child_node(tree, node221, tree_node_create(tk_pointer_from_int(2212)));
+  tree_append_child_node(tree, node221, tree_create_node(tree, tk_pointer_from_int(2211)));
+  tree_append_child_node(tree, node221, tree_create_node(tree, tk_pointer_from_int(2212)));
 
   return RET_OK;
 }
@@ -432,4 +432,17 @@ TEST(Tree, to_string) {
 
   tree_deinit(&tree);
   str_reset(&str);
+}
+
+TEST(Tree, node_allocator) {
+  tree_t tree;
+  ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
+  ASSERT_EQ(
+      tree_set_node_allocator(&tree, mem_allocator_fixed_block_create(sizeof(tree_node_t), 5)),
+      RET_OK);
+
+  ASSERT_EQ(build_tree_for_test(&tree), RET_OK);
+  mem_allocator_dump(tree.node_allocator);
+
+  tree_deinit(&tree);
 }
