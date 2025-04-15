@@ -30,9 +30,11 @@ static slist_node_t* slist_create_node(slist_t* slist, void* data) {
   if (slist->node_allocator != NULL) {
     ret = mem_allocator_alloc(slist->node_allocator, sizeof(slist_node_t), __FUNCTION__, __LINE__);
   } else {
-    ret = TKMEM_ZALLOC(slist_node_t);
+    ret = TKMEM_ALLOC(sizeof(slist_node_t));
   }
   return_value_if_fail(ret != NULL, NULL);
+
+  memset(ret, 0, sizeof(*ret));
 
   ret->data = data;
 

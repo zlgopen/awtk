@@ -2,6 +2,7 @@
 
 2025/04/15
   * 增加mem_allocator_fixed_block，dlist/slist/tree使用该内存分配器管理内存(感谢兆坤提供补丁)。
+  * 完善mem_allocator_fixed_block(感谢兆坤提供补丁)。
 
 2025/04/14
   * conf_io 支持 YAML格式。

@@ -254,9 +254,11 @@ static inline tree_node_t* tree_node_create(void* data, mem_allocator_t* allocat
   if (allocator != NULL) {
     ret = mem_allocator_alloc(allocator, sizeof(tree_node_t), __FUNCTION__, __LINE__);
   } else {
-    ret = TKMEM_ZALLOC(tree_node_t);
+    ret = TKMEM_ALLOC(sizeof(tree_node_t));
   }
   return_value_if_fail(ret != NULL, NULL);
+
+  memset(ret, 0, sizeof(*ret));
 
   ret->data = data;
 

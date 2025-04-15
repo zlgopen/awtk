@@ -186,10 +186,13 @@ inline static mem_allocator_fixed_block_pool_t* mem_allocator_fixed_block_pool_c
   mem_allocator_fixed_block_pool_t* ret = NULL;
   return_value_if_fail(allocator != NULL && num > 0, NULL);
 
-  ret = TKMEM_CALLOC(1, MEM_ALLOCATOR_FIXED_BLOCK_POOL_SIZE(allocator->size, num));
+  ret = TKMEM_ALLOC(MEM_ALLOCATOR_FIXED_BLOCK_POOL_SIZE(allocator->size, num));
   return_value_if_fail(ret != NULL, NULL);
 
   ret->num = num;
+  ret->used_units = NULL;
+  ret->unused_units = NULL;
+  ret->next = NULL;
 
   mem_allocator_fixed_block_pool_init(allocator, ret);
 
