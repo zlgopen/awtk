@@ -35,6 +35,28 @@ typedef struct _lcd_vgcanvas_t {
 
 #define LCD(lcd) ((lcd_vgcanvas_t*)lcd)
 
+#ifdef WITH_FAST_LCD_PORTRAIT
+static wh_t lcd_vgcanvas_get_physical_width(lcd_t* lcd) {
+  system_info_t* info = system_info();
+  if (info != NULL && info->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
+    if (info->lcd_orientation == LCD_ORIENTATION_90 || info->lcd_orientation == LCD_ORIENTATION_270) {
+      return lcd->h;
+    }
+  }
+  return lcd->w;
+}
+
+static wh_t lcd_vgcanvas_get_physical_height(lcd_t* lcd) {
+  system_info_t* info = system_info();
+  if (info != NULL && info->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
+    if (info->lcd_orientation == LCD_ORIENTATION_90 || info->lcd_orientation == LCD_ORIENTATION_270) {
+      return lcd->w;
+    }
+  }
+  return lcd->h;
+}
+#endif
+
 static ret_t lcd_vgcanvas_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length) {
   lcd->w = w;
   lcd->h = h;
@@ -359,6 +381,11 @@ lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
   base->ratio = canvas->ratio;
   base->type = LCD_VGCANVAS;
   base->support_dirty_rect = FALSE;
+
+#ifdef WITH_FAST_LCD_PORTRAIT
+  base->get_physical_width = lcd_vgcanvas_get_physical_width;
+  base->get_physical_height = lcd_vgcanvas_get_physical_height;
+#endif
 
   system_info_set_lcd_w(info, base->w);
   system_info_set_lcd_h(info, base->h);

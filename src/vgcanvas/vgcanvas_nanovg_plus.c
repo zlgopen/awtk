@@ -38,12 +38,42 @@ static ret_t vgcanvas_nanovg_plus_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h,
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_plus_begin_frame(vgcanvas_t* vgcanvas,
-                                              const dirty_rects_t* dirty_rects) {
+static ret_t vgcanvas_nanovg_plus_begin_frame_set_lcd_orientation_matrix(nvgp_context_t* vg, system_info_t* info, uint32_t w, int32_t h, float_t ratio) {
   float_t angle = 0.0f;
   float_t anchor_x = 0.0f;
   float_t anchor_y = 0.0f;
+  switch (info->lcd_orientation) {
+    case LCD_ORIENTATION_0:
+      angle = 0.0f;
+      break;
+    case LCD_ORIENTATION_90:
+      angle = TK_D2R(270);
+      break;
+    case LCD_ORIENTATION_180:
+      angle = TK_D2R(180);
+      break;
+    case LCD_ORIENTATION_270:
+      angle = TK_D2R(90);
+      break;
+  }
 
+  anchor_x = w * ratio / 2.0f;
+  anchor_y = h * ratio / 2.0f;
+
+  if (info->lcd_orientation == LCD_ORIENTATION_90 || info->lcd_orientation == LCD_ORIENTATION_270) {
+    nvgp_translate(vg, anchor_x, anchor_y);
+    nvgp_rotate(vg, angle);
+    nvgp_translate(vg, -anchor_y, -anchor_x);
+  } else if (info->lcd_orientation == LCD_ORIENTATION_180) {
+    nvgp_translate(vg, anchor_x, anchor_y);
+    nvgp_rotate(vg, angle);
+    nvgp_translate(vg, -anchor_x, -anchor_y);
+  }
+  return RET_OK;
+}
+
+static ret_t vgcanvas_nanovg_plus_begin_frame(vgcanvas_t* vgcanvas,
+                                              const dirty_rects_t* dirty_rects) {
   system_info_t* info = system_info();
   vgcanvas_nanovg_plus_t* canvas = (vgcanvas_nanovg_plus_t*)vgcanvas;
   const rect_t* dirty_rect = dirty_rects != NULL ? &(dirty_rects->max) : NULL;
@@ -63,35 +93,9 @@ static ret_t vgcanvas_nanovg_plus_begin_frame(vgcanvas_t* vgcanvas,
 
   nvgp_begin_frame(canvas->vg, info->lcd_w, info->lcd_h, info->device_pixel_ratio);
 
-  switch (info->lcd_orientation) {
-    case LCD_ORIENTATION_0:
-      angle = 0.0f;
-      break;
-    case LCD_ORIENTATION_90:
-      angle = TK_D2R(270);
-      break;
-    case LCD_ORIENTATION_180:
-      angle = TK_D2R(180);
-      break;
-    case LCD_ORIENTATION_270:
-      angle = TK_D2R(90);
-      break;
-  }
-
-  anchor_x = info->lcd_w / 2.0f;
-  anchor_y = info->lcd_h / 2.0f;
-
   nvgp_save(canvas->vg);
 
-  if (info->lcd_orientation == LCD_ORIENTATION_90 || info->lcd_orientation == LCD_ORIENTATION_270) {
-    nvgp_translate(canvas->vg, anchor_x, anchor_y);
-    nvgp_rotate(canvas->vg, angle);
-    nvgp_translate(canvas->vg, -anchor_y, -anchor_x);
-  } else if (info->lcd_orientation == LCD_ORIENTATION_180) {
-    nvgp_translate(canvas->vg, anchor_x, anchor_y);
-    nvgp_rotate(canvas->vg, angle);
-    nvgp_translate(canvas->vg, -anchor_x, -anchor_y);
-  }
+  vgcanvas_nanovg_plus_begin_frame_set_lcd_orientation_matrix(canvas->vg, info, info->lcd_w, info->lcd_h, info->device_pixel_ratio);
 
   return RET_OK;
 }
@@ -146,6 +150,8 @@ static ret_t vgcanvas_nanovg_plus_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_obj
 
   vg = canvas->vg;
 
+  fbo->online_w = nvgp_get_width(vg);
+  fbo->online_h = nvgp_get_height(vg);
   fbo->online_fbo = nvgp_gl_get_curr_framebuffer();
   fbo->online_dirty_rect = rect_init(vgcanvas->dirty_rect.x, vgcanvas->dirty_rect.y,
                                      vgcanvas->dirty_rect.w, vgcanvas->dirty_rect.h);
@@ -166,6 +172,9 @@ static ret_t vgcanvas_nanovg_plus_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_obj
     nvgp_begin_frame_ex(vg, fbo->w, fbo->h, fbo->ratio, FALSE);
     nvgp_save(vg);
     nvgp_reset_curr_state(vg);
+#ifdef WITH_FAST_LCD_PORTRAIT
+    vgcanvas_nanovg_plus_begin_frame_set_lcd_orientation_matrix(vg, system_info(), fbo->w, fbo->h, fbo->ratio);
+#endif
   }
 
   return RET_OK;
@@ -188,10 +197,10 @@ static ret_t vgcanvas_nanovg_plus_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_o
 
   vgcanvas->dirty_rect = rect_init(fbo->online_dirty_rect.x, fbo->online_dirty_rect.y,
                                    fbo->online_dirty_rect.w, fbo->online_dirty_rect.h);
-  glViewport(0, 0, vgcanvas->w * fbo->ratio, vgcanvas->h * fbo->ratio);
-  glScissor(0, 0, vgcanvas->w * fbo->ratio, vgcanvas->h * fbo->ratio);
+  glViewport(0, 0, fbo->online_w * fbo->ratio, fbo->online_h * fbo->ratio);
+  glScissor(0, 0, fbo->online_w * fbo->ratio, fbo->online_h * fbo->ratio);
   if (!fbo->custom_draw_model) {
-    nvgp_begin_frame_ex(vg, vgcanvas->w, vgcanvas->h, fbo->ratio, FALSE);
+    nvgp_begin_frame_ex(vg, fbo->online_w, fbo->online_h, fbo->ratio, FALSE);
   }
   return RET_OK;
 }

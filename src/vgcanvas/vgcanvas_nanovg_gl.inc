@@ -1,10 +1,6 @@
 ﻿#include "tkc/utils.h"
 #include "vgcanvas_nanovg.inc" 
 
-#ifdef WITH_FAST_LCD_PORTRAIT
-  #error "OpenGL do not supported fast lcd portrait"
-#endif
-
 static enum NVGorientation vgcanvas_nanovg_lcd_orientation_to_NVGorientation(lcd_orientation_t orientation) {
   switch (orientation) {
   case LCD_ORIENTATION_0:
@@ -98,6 +94,9 @@ static ret_t vgcanvas_nanovg_destroy_fbo(vgcanvas_t* vgcanvas, framebuffer_objec
 
 static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
   NVGcontext* vg = NULL;
+	float anchor_x = 0.0f;
+	float anchor_y = 0.0f;
+  enum NVGorientation orientation = NVG_ORIENTATION_0;
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGLUframebuffer* handle = (NVGLUframebuffer*)fbo->handle;
   
@@ -119,9 +118,12 @@ static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
       fbo->init = TRUE;
     }
-    nvgBeginFrameEx(vg, fbo->w, fbo->h, fbo->ratio, FALSE, NVG_ORIENTATION_0);
+#ifdef WITH_FAST_LCD_PORTRAIT
+    orientation = vgcanvas_nanovg_lcd_orientation_to_NVGorientation(system_info()->lcd_orientation);
+#endif
     nvgSave(vg);
     nvgReset(vg);
+    nvgBeginFrameEx(vg, fbo->w, fbo->h, fbo->ratio, FALSE, orientation);
   }
 
   return RET_OK;

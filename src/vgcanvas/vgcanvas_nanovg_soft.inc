@@ -166,7 +166,6 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
   int32_t f = 0;
   uint8_t* img_data = NULL;
   vgcanvas_nanovg_soft_texture_t* texture = NULL;
-  enum NVGorientation image_orientation = NVG_ORIENTATION_0;
 
   if (img->flags & BITMAP_FLAG_TEXTURE) {
     if (img->specific != 0) {
@@ -189,7 +188,6 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
 #endif
 
   flag = (int)vgcanvas_nanovg_bitmap_flag_to_NVGimageFlags((bitmap_flag_t)(img->flags));
-  image_orientation = vgcanvas_nanovg_bitmap_orientation_to_NVGorientation(img->orientation);
 
   switch (img->format) {
     case BITMAP_FMT_RGBA8888: {
@@ -220,8 +218,8 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
 
   img_data = bitmap_lock_buffer_for_read(img);
 
-  i = nvgCreateImageRaw(canvas->vg, img->w, img->h, f, bitmap_get_physical_line_length(img), flag, image_orientation,
-                        img_data);
+  i = nvgCreateImageRaw(canvas->vg, bitmap_get_physical_width(img), bitmap_get_physical_height(img), f, bitmap_get_physical_line_length(img), 
+                        flag, NVG_ORIENTATION_0, img_data);
 
   if (i >= 0) {
     texture = TKMEM_ZALLOC(vgcanvas_nanovg_soft_texture_t);

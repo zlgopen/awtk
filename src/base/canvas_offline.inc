@@ -352,8 +352,10 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas) {
     vgcanvas_bind_fbo(vg, c->fbo);
     vgcanvas_save(vg);
 
+#if !defined(WITH_FAST_LCD_PORTRAIT)
     canvas->lcd->w = vg->w = c->fbo->w;
     canvas->lcd->h = vg->h = c->fbo->h;
+#endif
     canvas_set_clip_rect(canvas, NULL);
   }
 #else
@@ -534,7 +536,7 @@ ret_t canvas_offline_flush_bitmap(canvas_t* canvas) {
     }
     r = rect_init(0, 0, bitmap->w, bitmap->h);
 
-    graphic_buffer_attach(bitmap->buffer, data, bitmap->w, bitmap->h);
+    graphic_buffer_attach(bitmap->buffer, data, bitmap_get_physical_width(bitmap), bitmap_get_physical_height(bitmap));
     vgcanvas_fbo_to_bitmap(vg, fbo, bitmap, &r);
   }
 #endif

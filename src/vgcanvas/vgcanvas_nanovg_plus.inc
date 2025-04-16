@@ -8,8 +8,10 @@
 #include "base/font_manager.h"
 #include "base/assets_manager.h"
 #include "base/vgcanvas_asset_manager.h"
+#include "base/lcd_orientation_helper.h"
 
 static int vgcanvas_nanovg_plus_ensure_image(vgcanvas_nanovg_plus_t* canvas, bitmap_t* img);
+static ret_t vgcanvas_nanovg_plus_image_orientation_matrix(nvgp_context_t* vg, bitmap_t* img);
 
 static ret_t vgcanvas_nanovg_plus_destroy(vgcanvas_t* vgcanvas);
 static ret_t vgcanvas_nanovg_plus_end_frame(vgcanvas_t* vgcanvas);
@@ -277,6 +279,8 @@ static ret_t vgcanvas_nanovg_plus_clip_rect(vgcanvas_t* vgcanvas, float_t x, flo
 }
 
 const rectf_t* vgcanvas_nanovg_plus_get_clip_rect(vgcanvas_t* vgcanvas) {
+  nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
+  nvgp_get_curr_clip_rect(vg, &vgcanvas->clip_rect.x, &vgcanvas->clip_rect.y, &vgcanvas->clip_rect.w, &vgcanvas->clip_rect.h);
   return &(vgcanvas->clip_rect);
 }
 
@@ -303,6 +307,26 @@ static int vgcanvas_nanovg_plus_bitmap_flag_to_NVGimageFlags(bitmap_flag_t flags
   return 0;
 }
 
+static inline uint8_t* vgcanvas_nanovg_plus_ensure_buffer(uint8_t* img_data, uint32_t img_w, uint32_t img_h, uint32_t bpp, uint32_t img_line_length) {
+  int32_t j = 0;
+  uint32_t size = 0;
+  uint8_t* data = NULL;
+
+  if (bpp * img_w == img_line_length) {
+    data = (uint8_t*)(img_data);
+  } else {
+    size = bpp * img_w * img_h;
+    size = TK_ROUND_TO(size, BITMAP_ALIGN_SIZE) + BITMAP_ALIGN_SIZE;
+    data = (uint8_t*)TKMEM_ALLOC(size);
+    return_value_if_fail(data != NULL, NULL);
+    memset(data, 0x00, size);
+    for (j = 0; j < img_h; j++) {
+      memcpy(data + j * img_w * bpp, img_data + j * img_line_length, img_w * bpp);
+    }
+  }
+  return data;
+}
+
 static int vgcanvas_nanovg_plus_ensure_image(vgcanvas_nanovg_plus_t* canvas, bitmap_t* img) {
   int flag = 0;
   int32_t i = 0;
@@ -311,6 +335,9 @@ static int vgcanvas_nanovg_plus_ensure_image(vgcanvas_nanovg_plus_t* canvas, bit
   uint32_t bpp = bitmap_get_bpp(img);
   vgcanvas_nanovg_plus_gl_texture_t* texture = NULL;
   uint8_t* img_data = bitmap_lock_buffer_for_read(img);
+  uint32_t img_w = bitmap_get_physical_width(img);
+  uint32_t img_h = bitmap_get_physical_height(img);
+  uint32_t img_line_length = bitmap_get_physical_line_length(img);
   return_value_if_fail(img != NULL && graphic_buffer_is_valid_for(img->buffer, img), -1);
 
   if (img->flags & BITMAP_FLAG_TEXTURE) {
@@ -329,7 +356,16 @@ static int vgcanvas_nanovg_plus_ensure_image(vgcanvas_nanovg_plus_t* canvas, bit
 
       if (bitmap_is_dirty(img)) {
         bitmap_set_dirty(img, FALSE);
-        nvgp_update_image_rgba(canvas->vg, i, img_data);
+        image_manager_update_specific(img->image_manager, img);
+        data = vgcanvas_nanovg_plus_ensure_buffer(img_data, img_w, img_h, bpp, img_line_length);
+        if (data != NULL) {
+          nvgp_update_image_rgba(canvas->vg, i, data);
+          if (data != img_data) {
+            TKMEM_FREE(data);
+          }
+        } else {
+          assert(!"data is NULL");
+        }
       }
       bitmap_unlock_buffer(img);
 
@@ -339,24 +375,18 @@ static int vgcanvas_nanovg_plus_ensure_image(vgcanvas_nanovg_plus_t* canvas, bit
 
   flag = (int)vgcanvas_nanovg_plus_bitmap_flag_to_NVGimageFlags((bitmap_flag_t)(img->flags));
 
-  if (bpp * img->w == img->line_length) {
-    data = (uint8_t*)(img_data);
-  } else {
-    uint32_t size = 0;
-    size = bpp * img->w * img->h;
-    size = TK_ROUND_TO(size, BITMAP_ALIGN_SIZE) + BITMAP_ALIGN_SIZE;
-    data = (uint8_t*)TKMEM_ALLOC(size);
-    memset(data, 0x00, size);
-    int j;
-    for (j = 0; j < img->h; j++) {
-      memcpy(data + j * img->w * bpp, img_data + j * img->line_length, img->w * bpp);
+  data = vgcanvas_nanovg_plus_ensure_buffer(img_data, img_w, img_h, bpp, img_line_length);
+  if (data != NULL) {
+    i = nvgp_create_image_rgba(canvas->vg, img_w, img_h, flag, data);
+    if (data != img_data) {
+      TKMEM_FREE(data);
     }
+  } else {
+    assert(!"data is NULL");
   }
 
-  i = nvgp_create_image_rgba(canvas->vg, img->w, img->h, flag, data);
-
-  if (data != img_data) {
-    TKMEM_FREE(data);
+  if (bitmap_is_dirty(img)) {
+    bitmap_set_dirty(img, FALSE);
   }
 
 create_texture_info:
@@ -374,16 +404,17 @@ create_texture_info:
 }
 
 static ret_t vgcanvas_nanovg_plus_paint(vgcanvas_t* vgcanvas, bool_t stroke, bitmap_t* img) {
-  int iw = img->w;
-  int ih = img->h;
   nvgp_paint_t img_paint;
+  int iw = bitmap_get_physical_width(img);
+  int ih = bitmap_get_physical_height(img);
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
   vgcanvas_nanovg_plus_t* canvas = (vgcanvas_nanovg_plus_t*)vgcanvas;
   int id = vgcanvas_nanovg_plus_ensure_image(canvas, img);
   return_value_if_fail(id >= 0, RET_BAD_PARAMS);
 
   img_paint = nvgp_image_pattern(vg, 0, 0, iw, ih, 0, id, 0xFF);
-
+  nvgp_save(vg);
+  vgcanvas_nanovg_plus_image_orientation_matrix(vg, img);
   if (stroke) {
     nvgp_set_stroke_paint(vg, img_paint);
     nvgp_stroke(vg);
@@ -392,7 +423,7 @@ static ret_t vgcanvas_nanovg_plus_paint(vgcanvas_t* vgcanvas, bool_t stroke, bit
     nvgp_close_path(vg);
     nvgp_fill(vg);
   }
-
+  nvgp_restore(vg);
   return RET_OK;
 }
 
@@ -527,14 +558,34 @@ static ret_t vgcanvas_nanovg_plus_get_text_metrics(vgcanvas_t* vgcanvas, float_t
 #define vgcanvas_nanovg_plus_get_text_metrics NULL
 #endif /*WITH_GPU*/
 
+// 快速旋转会让 bitmap 旋转，通过变换矩阵来把旋转后的 bitmap 旋转回来正常未旋转的状态。
+static ret_t vgcanvas_nanovg_plus_image_orientation_matrix(nvgp_context_t* vg, bitmap_t* img) {
+  if (img->orientation == LCD_ORIENTATION_90 || img->orientation == LCD_ORIENTATION_270) {
+    float_t anchor_x = img->w / 2.0f;
+    float_t anchor_y = img->h / 2.0f;
+    nvgp_translate(vg, anchor_x, anchor_y);
+		nvgp_rotate(vg, TK_D2R((float_t)(img->orientation)));
+		nvgp_translate(vg, -anchor_y, -anchor_x);
+  } else if (img->orientation == LCD_ORIENTATION_180) {
+    float_t anchor_x = img->w / 2.0f;
+    float_t anchor_y = img->h / 2.0f;
+		nvgp_translate(vg, anchor_x, anchor_y);
+		nvgp_rotate(vg, TK_D2R(180.0f));
+		nvgp_translate(vg, -anchor_x, -anchor_y);
+  }
+  return RET_OK;
+}
+
 static ret_t vgcanvas_nanovg_plus_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, float_t sx, float_t sy,
                                         float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,
                                         float_t dh) {
-  int iw = img->w;
-  int ih = img->h;
+  rectf_t r_src;
   nvgp_paint_t img_paint;
   float scaleX = (float)dw / sw;
   float scaleY = (float)dh / sh;
+  rectf_t src_r = {sx, sy, sw, sh};
+  int iw = bitmap_get_physical_width(img);
+  int ih = bitmap_get_physical_height(img);
   vgcanvas_nanovg_plus_t* canvas = (vgcanvas_nanovg_plus_t*)vgcanvas;
   nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
 
@@ -547,7 +598,9 @@ static ret_t vgcanvas_nanovg_plus_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img
   nvgp_begin_path(vg);
   nvgp_translate(vg, dx - (sx * scaleX), dy - (sy * scaleY));
   nvgp_scale(vg, scaleX, scaleY);
-  nvgp_rect(vg, sx, sy, sw, sh);
+  vgcanvas_nanovg_plus_image_orientation_matrix(vg, img);
+  r_src = lcd_orientation_rectf_rotate_by_anticlockwise(&src_r, img->orientation, img->w, img->h);
+  nvgp_rect(vg, r_src.x, r_src.y, r_src.w, r_src.h);
   nvgp_set_fill_paint(vg, img_paint);
   nvgp_close_path(vg);
   nvgp_fill(vg);
@@ -557,6 +610,8 @@ static ret_t vgcanvas_nanovg_plus_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img
   return RET_OK;
 }
 
+#if 0
+// 在快速旋转的兼容性上面有问题，而且原来的实现在 dst_w/dst_h 比 image 宽/高 大的时候，出来的效果和 agge 的不一样，所以暂时禁用。
 static ret_t vgcanvas_nanovg_plus_draw_image_repeat(vgcanvas_t* vgcanvas, bitmap_t* img, float_t sx, float_t sy,
                                                     float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,
                                                     float_t dh, float_t dst_w, float_t dst_h) {
@@ -585,6 +640,7 @@ static ret_t vgcanvas_nanovg_plus_draw_image_repeat(vgcanvas_t* vgcanvas, bitmap
 
   return RET_OK;
 }
+#endif
 
 static ret_t vgcanvas_nanovg_plus_set_antialias(vgcanvas_t* vgcanvas, bool_t value) {
   vgcanvas_nanovg_plus_t* canvas = (vgcanvas_nanovg_plus_t*)vgcanvas;
@@ -776,7 +832,6 @@ static const vgcanvas_vtable_t vt = {
     .fill_text = vgcanvas_nanovg_plus_fill_text,
     .measure_text = vgcanvas_nanovg_plus_measure_text,
     .draw_image = vgcanvas_nanovg_plus_draw_image,
-    .draw_image_repeat = vgcanvas_nanovg_plus_draw_image_repeat,
     .set_antialias = vgcanvas_nanovg_plus_set_antialias,
     .set_global_alpha = vgcanvas_nanovg_plus_set_global_alpha,
     .set_line_width = vgcanvas_nanovg_plus_set_line_width,

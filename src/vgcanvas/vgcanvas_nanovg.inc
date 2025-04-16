@@ -8,8 +8,10 @@
 #include "base/font_manager.h"
 #include "base/assets_manager.h"
 #include "base/vgcanvas_asset_manager.h"
+#include "base/lcd_orientation_helper.h"
 
 static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img);
+static ret_t vgcanvas_nanovg_image_orientation_matrix(NVGcontext* vg, bitmap_t* img);
 
 static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas);
 static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas);
@@ -303,15 +305,17 @@ static ret_t vgcanvas_nanovg_stroke(vgcanvas_t* vgcanvas) {
 }
 
 static ret_t vgcanvas_nanovg_paint(vgcanvas_t* vgcanvas, bool_t stroke, bitmap_t* img) {
-  int iw = img->w;
-  int ih = img->h;
   NVGpaint imgPaint;
+  int iw = bitmap_get_physical_width(img);
+  int ih = bitmap_get_physical_height(img);
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   int id = vgcanvas_nanovg_ensure_image(canvas, img);
   return_value_if_fail(id >= 0, RET_BAD_PARAMS);
 
   imgPaint = nvgImagePattern(vg, 0, 0, iw, ih, 0, id, 1);
+  nvgSave(vg);
+  vgcanvas_nanovg_image_orientation_matrix(vg, img);
 
   if (stroke) {
     nvgStrokePaint(vg, imgPaint);
@@ -321,7 +325,7 @@ static ret_t vgcanvas_nanovg_paint(vgcanvas_t* vgcanvas, bool_t stroke, bitmap_t
     nvgClosePath(vg);
     nvgFill(vg);
   }
-
+  nvgRestore(vg);
   return RET_OK;
 }
 
@@ -460,14 +464,34 @@ static ret_t vgcanvas_nanovg_get_text_metrics(vgcanvas_t* vgcanvas, float_t* asc
 #define vgcanvas_nanovg_get_text_metrics NULL
 #endif /*WITH_NANOVG_GPU*/
 
+// 快速旋转会让 bitmap 旋转，通过变换矩阵来把旋转后的 bitmap 旋转回来正常未旋转的状态。
+static ret_t vgcanvas_nanovg_image_orientation_matrix(NVGcontext* vg, bitmap_t* img) {
+  if (img->orientation == LCD_ORIENTATION_90 || img->orientation == LCD_ORIENTATION_270) {
+    float_t anchor_x = img->w / 2.0f;
+    float_t anchor_y = img->h / 2.0f;
+    nvgTranslate(vg, anchor_x, anchor_y);
+		nvgRotate(vg, TK_D2R((float_t)(img->orientation)));
+		nvgTranslate(vg, -anchor_y, -anchor_x);
+  } else if (img->orientation == LCD_ORIENTATION_180) {
+    float_t anchor_x = img->w / 2.0f;
+    float_t anchor_y = img->h / 2.0f;
+		nvgTranslate(vg, anchor_x, anchor_y);
+		nvgRotate(vg, TK_D2R(180.0f));
+		nvgTranslate(vg, -anchor_x, -anchor_y);
+  }
+  return RET_OK;
+}
+
 static ret_t vgcanvas_nanovg_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, float_t sx, float_t sy,
                                         float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,
                                         float_t dh) {
-  int iw = img->w;
-  int ih = img->h;
+  rectf_t r_src;
   NVGpaint imgPaint;
   float scaleX = (float)dw / sw;
   float scaleY = (float)dh / sh;
+  rectf_t src_r = {sx, sy, sw, sh};
+  int iw = bitmap_get_physical_width(img);
+  int ih = bitmap_get_physical_height(img);
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
@@ -480,7 +504,9 @@ static ret_t vgcanvas_nanovg_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, flo
   nvgBeginPath(vg);
   nvgTranslate(vg, dx - (sx * scaleX), dy - (sy * scaleY));
   nvgScale(vg, scaleX, scaleY);
-  nvgRect(vg, sx, sy, sw, sh);
+  vgcanvas_nanovg_image_orientation_matrix(vg, img);
+  r_src = lcd_orientation_rectf_rotate_by_anticlockwise(&src_r, img->orientation, img->w, img->h);
+  nvgRect(vg, r_src.x, r_src.y, r_src.w, r_src.h);
   nvgFillPaint(vg, imgPaint);
   nvgClosePath(vg);
   nvgFill(vg);
