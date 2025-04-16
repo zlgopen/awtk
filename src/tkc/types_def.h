@@ -445,12 +445,11 @@ typedef enum _ret_t {
 #define tk_roundi64(a) (int64_t)(((a) >= 0) ? ((a) + 0.5f) : ((a) - 0.5f))
 #define tk_clamp(a, mn, mx) ((a) < (mn) ? (mn) : ((a) > (mx) ? (mx) : (a)))
 #define tk_clampi(a, mn, mx) (int32_t)((a) < (mn) ? (mn) : ((a) > (mx) ? (mx) : (a)))
-#define tk_swap(a, b, type)                                         \
-  do {                                                              \
-    ENSURE(!tk_str_eq("_tEMP__", #a) && !tk_str_eq("_tEMP__", #b)); \
-    type _tEMP__ = a;                                               \
-    a = b;                                                          \
-    b = _tEMP__;                                                    \
+#define tk_swap(a, b, type)               \
+  do {                                    \
+    type TK_CONCAT(_tEMP_, __LINE__) = a; \
+    a = b;                                \
+    b = TK_CONCAT(_tEMP_, __LINE__);      \
   } while (0)
 
 #ifndef ARRAY_SIZE

@@ -2063,3 +2063,15 @@ TEST(Utils, tk_compare_rad) {
   ASSERT_EQ(tk_rad_equal(5, 5 - twopi + 1, 0.0001), FALSE);
   ASSERT_EQ(tk_rad_equal(6, 6 - twopi + 1, 0.0001), FALSE);      
 }
+
+TEST(Utils, tk_swap) {
+  int a = 1;
+  int b = 2;
+  tk_swap(a, b, int);
+  ASSERT_EQ(a, 2);
+  ASSERT_EQ(b, 1);
+  
+  tk_swap(a, b, int);
+  ASSERT_EQ(a, 1);
+  ASSERT_EQ(b, 2);
+}
