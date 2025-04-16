@@ -238,6 +238,26 @@ void nvgp_destroy(nvgp_context_t* ctx);
 void nvgp_reset_curr_state(nvgp_context_t* ctx);
 
 /**
+ * @method nvgp_get_height
+ * 获取矢量画布宽
+ * @annotation ["constructor", "scriptable"]
+ * @param {nvgp_context_t*} ctx 矢量画布上下文
+ *
+ * @return {float} 返回矢量画布宽。
+ */
+float nvgp_get_width(nvgp_context_t* ctx);
+
+/**
+ * @method nvgp_get_height
+ * 获取矢量画布高
+ * @annotation ["constructor", "scriptable"]
+ * @param {nvgp_context_t*} ctx 矢量画布上下文
+ *
+ * @return {float} 返回矢量画布高。
+ */
+float nvgp_get_height(nvgp_context_t* ctx);
+
+/**
  * @method nvgp_begin_frame_ex
  * 开始当前帧
  * @annotation ["constructor", "scriptable"]

@@ -306,6 +306,16 @@ static void nvgp_clear_path_cache(nvgp_path_cache_t* cache) {
   nvgp_darray_clear(&cache->points);
 }
 
+float nvgp_get_width(nvgp_context_t* ctx) {
+  CHECK_OBJECT_IS_NULL(ctx);
+  return ctx->width;
+}
+
+float nvgp_get_height(nvgp_context_t* ctx) {
+  CHECK_OBJECT_IS_NULL(ctx);
+  return ctx->height; 
+}
+
 void nvgp_begin_frame_ex(nvgp_context_t *ctx, float width, float height, float pixel_ratio, nvgp_bool_t reset) {
   CHECK_OBJECT_IS_NULL(ctx);
   ctx->width = width;
@@ -652,6 +662,7 @@ void nvgp_quad_to(nvgp_context_t *ctx, float cx, float cy, float x, float y) {
 }
 
 void nvgp_arc(nvgp_context_t *ctx, float cx, float cy, float r, float a0, float a1, nvgp_bool_t ccw) {
+  floatptr_t ads_da = 0;
   floatptr_t vals[3 + 5 * 7 + 100];
   floatptr_t a = 0, da = 0, hda = 0, kappa = 0;
   floatptr_t px = 0, py = 0, ptanx = 0, ptany = 0;
@@ -662,14 +673,15 @@ void nvgp_arc(nvgp_context_t *ctx, float cx, float cy, float r, float a0, float 
   CHECK_OBJECT_IS_NULL(ctx);
   // Clamp angles
   da = a1 - a0;
+  ads_da = nvgp_abs(da);
   if (!ccw) {
-    if (nvgp_abs(da) >= NVGP_PI * 2.0f) {
+    if (ads_da >= NVGP_PI * 2.0f || nvgp_fequalf(ads_da, NVGP_PI * 2)) {
       da = NVGP_PI * 2.0f;
     } else {
       while (da < 0.0f) da += NVGP_PI * 2.0f;
     }
   } else {
-    if (nvgp_abs(da) >= NVGP_PI * 2.0f) {
+    if (ads_da >= NVGP_PI * 2.0f || nvgp_fequalf(ads_da, NVGP_PI * 2)) {
       da = -NVGP_PI * 2.0f;
     } else {
       while (da > 0.0f) da -= NVGP_PI * 2.0f;

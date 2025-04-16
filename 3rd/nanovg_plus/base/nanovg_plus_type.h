@@ -72,6 +72,7 @@ typedef enum _nvgp_error_t {
 #define nvgp_signf(a) ((a) >= 0.0f ? 1.0f : -1.0f)
 #define nvgp_cross(dx0, dy0, dx1, dy1) (dx1) * (dy0) - (dx0) * (dy1)
 #define nvgp_clamp(a, mn, mx) (a) < (mn) ? (mn) : ((a) > (mx) ? (mx) : (a))
+static int nvgp_fequalf(float a, float b) { float t = a - b; return t > -1e-6 && t < 1e-6; }
 
 #define nvgp_get_arrary_size(arr) (sizeof(arr) / sizeof(0[(arr)]))
 

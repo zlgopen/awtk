@@ -53,6 +53,7 @@ typedef enum _nvgp_gl_call_type_t {
   NVGP_GL_CALL_FAST_FILL_RECT,
   NVGP_GL_CALL_CONVEX_FILL,
   NVGP_GL_CALL_FILL,
+  NVGP_GL_CALL_FILL_IMAGE,
   NVGP_GL_CALL_FAST_FILL_COLOR,
   NVGP_GL_CALL_IMAGE,
   NVGP_GL_CALL_STROKE,
@@ -201,6 +202,7 @@ typedef struct _nvgp_gl_call_fill_t {
   uint32_t triangle_offset;
   uint32_t triangle_count;
   uint32_t uniform_offset;
+  int32_t image;
   nvgp_gl_blend_t blend_func;
 } nvgp_gl_call_fill_t;
 
@@ -881,6 +883,61 @@ static void nvgp_gl_flush_fill_by_color(nvgp_gl_context_t* gl, nvgp_gl_call_t* c
   glDisable(GL_STENCIL_TEST);
 }
 
+static void nvgp_gl_flush_fill_by_image(nvgp_gl_context_t* gl, nvgp_gl_call_t* call_base) {
+  int32_t i;
+  nvgp_gl_shader_t* shader = &gl->shader_list[call_base->shader_type];
+  nvgp_gl_call_fill_t* call = (nvgp_gl_call_fill_t*)call_base;
+  int32_t is_same_shader_prog = nvgp_gl_is_same_shader_prog(gl, shader);
+
+  nvgp_gl_use_shader_prog(gl, shader);
+  nvgp_gl_set_shader_data(gl, shader, is_same_shader_prog);
+  nvgp_gl_check_error(gl, "convex fill");
+
+  nvgp_gl_blend_func_separate(gl, &call->blend_func);
+
+  // Draw shapes
+  glEnable(GL_STENCIL_TEST);
+  nvgp_gl_stencil_mask(gl, 0xff);
+  nvgp_gl_stencil_func(gl, GL_ALWAYS, 0, 0xff);
+  glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+
+  // set bindpoint for solid loc
+  nvgp_gl_set_uniforms(gl, shader, call->uniform_offset, 0);
+  nvgp_gl_check_error(gl, "fill simple");
+
+  glStencilOpSeparate(GL_FRONT, GL_KEEP, GL_KEEP, GL_INCR_WRAP);
+  glStencilOpSeparate(GL_BACK, GL_KEEP, GL_KEEP, GL_DECR_WRAP);
+  glDisable(GL_CULL_FACE);
+  for (i = 0; i < call->path_count; i++) {
+    nvgp_gl_path_t* paths = nvgp_darray_get_ptr(&gl->paths, call->path_index + i, nvgp_gl_path_t);
+    glDrawArrays(GL_TRIANGLE_FAN, paths->fill_offset, paths->fill_count);
+  }
+  glEnable(GL_CULL_FACE);
+
+  // Draw anti-aliased pixels
+  glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
+  nvgp_gl_set_uniforms(gl, shader, call->uniform_offset + shader->frag_size, call->image);
+  nvgp_gl_check_error(gl, "fill fill");
+
+  if (gl->flags & NVGP_GL_FLAG_ANTIALIAS) {
+    nvgp_gl_stencil_func(gl, GL_EQUAL, 0x00, 0xff);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+    // Draw fringes
+    for (i = 0; i < call->path_count; i++) {
+      nvgp_gl_path_t* paths = nvgp_darray_get_ptr(&gl->paths, call->path_index + i, nvgp_gl_path_t);
+      glDrawArrays(GL_TRIANGLE_STRIP, paths->stroke_offset, paths->stroke_count);
+    }
+  }
+
+  // Draw fill
+  nvgp_gl_stencil_func(gl, GL_NOTEQUAL, 0x0, 0xff);
+  glStencilOp(GL_ZERO, GL_ZERO, GL_ZERO);
+  glDrawArrays(GL_TRIANGLE_STRIP, call->triangle_offset, call->triangle_count);
+
+  glDisable(GL_STENCIL_TEST);
+}
+
 static void nvgp_gl_flush_fast_fill_by_color(nvgp_gl_context_t* gl, nvgp_gl_call_t* call_base) {
   int32_t i;
   nvgp_gl_shader_t* shader = &gl->shader_list[call_base->shader_type];
@@ -1079,6 +1136,9 @@ static void nvgp_gl_flush(nvgp_gl_context_t* gl) {
       break;
     case NVGP_GL_CALL_CONVEX_FILL:
       nvgp_gl_flush_by_convex_fill_by_color(gl, call_base);
+      break;
+    case NVGP_GL_CALL_FILL_IMAGE :
+      nvgp_gl_flush_fill_by_image(gl, call_base);
       break;
     case NVGP_GL_CALL_FILL:
       nvgp_gl_flush_fill_by_color(gl, call_base);
@@ -1502,6 +1562,82 @@ error:
   return FALSE;
 }
 
+static nvgp_bool_t nvgp_gl_render_fill_by_image(nvgp_gl_context_t* gl, nvgp_paint_t* paint, nvgp_scissor_t* scissor, float fringe, const float* bounds, const nvgp_darray_t* paths) {
+  nvgp_vertex_t* quad;
+  nvgp_gl_shader_t* shader;
+  int32_t i, max_verts, offset;
+  nvgp_gl_frag_uniforms_t* frag = NULL;
+  const nvgp_path_t* first_path = nvgp_darray_get_ptr(paths, 0, nvgp_path_t);
+  if (paint->image != 0 && first_path != NULL && !first_path->convex) {
+    nvgp_gl_call_fill_t* call = NVGP_ZALLOC(nvgp_gl_call_fill_t);
+    if (call == NULL) {
+      goto error;
+    }
+    call->base.call_type = NVGP_GL_CALL_FILL_IMAGE;
+    call->base.shader_type = NVGP_GL_SHADER_FILLIMG_RGBA;
+
+    call->triangle_count = 4;
+    call->path_count = paths->size;
+    call->path_index = gl->paths.size;
+    call->blend_func = nvgp_gl_composite_operation_state(NVGP_GL_SOURCE_OVER);
+
+    shader = &(gl->shader_list[call->base.shader_type]);
+    max_verts = nvgp_gl_max_vert_count(paths) + call->triangle_count;
+    offset = nvgp_gl_alloc_verts(shader, max_verts);
+    if (offset == -1) {
+      NVGP_FREE(call);
+      goto error;
+    }
+
+    for (i = 0; i < paths->size; i++) {
+      const nvgp_path_t* path = nvgp_darray_get_ptr(paths, i, nvgp_path_t);
+      nvgp_gl_path_t* gl_path = nvgp_darray_get_empty_data_by_tail(&gl->paths);
+      if (gl_path == NULL) {
+        NVGP_FREE(call);
+        goto error;
+      }
+      NVGP_MEMSET(gl_path, 0x0, sizeof(nvgp_gl_path_t));
+      if (path->nfill > 0) {
+        gl_path->fill_offset = offset;
+        gl_path->fill_count = path->nfill;
+        NVGP_MEMCPY(&shader->verts[offset], path->fill, sizeof(nvgp_vertex_t) * path->nfill);
+        offset += path->nfill;
+      }
+      if (path->nstroke > 0) {
+        gl_path->stroke_offset = offset;
+        gl_path->stroke_count = path->nstroke;
+        NVGP_MEMCPY(&shader->verts[offset], path->stroke, sizeof(nvgp_vertex_t) * path->nstroke);
+        offset += path->nstroke;
+      }
+    }
+
+    call->image = paint->image;
+    call->triangle_offset = offset;
+    quad = &shader->verts[call->triangle_offset];
+    nvgp_gl_vset(&quad[0], bounds[2], bounds[3], 0.5f, 1.0f);
+    nvgp_gl_vset(&quad[1], bounds[2], bounds[1], 0.5f, 1.0f);
+    nvgp_gl_vset(&quad[2], bounds[0], bounds[3], 0.5f, 1.0f);
+    nvgp_gl_vset(&quad[3], bounds[0], bounds[1], 0.5f, 1.0f);
+
+    call->uniform_offset = nvgp_gl_alloc_frag_uniforms(shader, 2);
+    if (call->uniform_offset == -1) {
+      NVGP_FREE(call);
+      goto error;
+    }
+    // Simple shader for stencil
+    frag = nvgp_gl_frag_uniform_ptr(shader, call->uniform_offset);
+    NVGP_MEMSET(frag, 0, sizeof(*frag));
+    frag->strokeThr = -1.0f;
+    // Fill shader
+    nvgp_gl_convert_paint(gl, nvgp_gl_frag_uniform_ptr(shader, call->uniform_offset + shader->frag_size), paint, scissor, fringe, fringe, -1.0f);
+
+    nvgp_darray_push(&gl->calls, call);
+    return TRUE;
+  }
+error:
+  return FALSE;
+}
+
 static int32_t nvgp_gl_texture_is_premulti(nvgp_gl_texture_t* tex) {
   return tex->flags & NVGP_GL_IMAGE_PREMULTIPLIED;
 }
@@ -1894,6 +2030,8 @@ static void nvgp_gl_render_fill(void* uptr, nvgp_paint_t* paint, nvgp_scissor_t*
   if (nvgp_gl_render_convex_fill_by_color(gl, paint, scissor, fringe, bounds, paths, is_gradient)) {
     return;
   } else if (nvgp_gl_render_fill_by_color(gl, paint, scissor, fringe, bounds, paths, is_gradient)) {
+    return;
+  } else if (nvgp_gl_render_fill_by_image(gl, paint, scissor, fringe, bounds, paths)) {
     return;
   } else if (nvgp_gl_render_draw_image(gl, paint, scissor, fringe, bounds, paths)) {
     return;
