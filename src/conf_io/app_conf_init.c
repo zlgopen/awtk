@@ -84,6 +84,12 @@ ret_t app_conf_init(conf_load_t load, const char* app_name, const char* extname)
 
   app_conf_set_instance(obj);
   app_conf_set_str(CONF_OBJ_PROP_DEFAULT_URL, path);
+  assert(obj->ref_count > 0);
+  assert(user_obj->ref_count > 0);
+  assert(default_obj->ref_count > 0);
+  TK_OBJECT_UNREF(obj);
+  TK_OBJECT_UNREF(user_obj);
+  TK_OBJECT_UNREF(default_obj);
 
   return RET_OK;
 error:
