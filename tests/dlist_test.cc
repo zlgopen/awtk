@@ -1,5 +1,6 @@
 ﻿#include "tkc/utils.h"
 #include "tkc/dlist.h"
+#include "tkc/mem_allocator_fixed_block.h"
 #include "gtest/gtest.h"
 
 #include <string>
@@ -25,6 +26,39 @@ TEST(DList, basic) {
   dlist_t* s = &dlist;
 
   dlist_init(s, NULL, NULL);
+
+  ASSERT_EQ(dlist_size(s), 0);
+  ASSERT_EQ(dlist_append(s, TO_POINTER(1)), RET_OK);
+
+  ASSERT_EQ(dlist_size(s), 1);
+
+  ASSERT_EQ(dlist_append(s, TO_POINTER(2)), RET_OK);
+
+  ASSERT_EQ(dlist_size(s), 2);
+
+  ASSERT_EQ(dlist_append(s, TO_POINTER(3)), RET_OK);
+
+  ASSERT_EQ(dlist_size(s), 3);
+
+  ASSERT_EQ(dlist_prepend(s, TO_POINTER(4)), RET_OK);
+
+  ASSERT_EQ(dlist_size(s), 4);
+
+  ASSERT_EQ(dlist_prepend(s, TO_POINTER(5)), RET_OK);
+
+  ASSERT_EQ(dlist_size(s), 5);
+
+  dlist_deinit(s);
+}
+
+TEST(DList, node_allocator) {
+  dlist_t dlist;
+  dlist_t* s = &dlist;
+
+  dlist_init(s, NULL, NULL);
+
+  ASSERT_EQ(dlist_set_node_allocator(s, mem_allocator_fixed_block_create(sizeof(dlist_node_t), 2)),
+            RET_OK);
 
   ASSERT_EQ(dlist_size(s), 0);
   ASSERT_EQ(dlist_append(s, TO_POINTER(1)), RET_OK);

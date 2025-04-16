@@ -23,6 +23,7 @@
 #define TK_DLIST_H
 
 #include "tkc/types_def.h"
+#include "tkc/mem_allocator.h"
 
 BEGIN_C_DECLS
 
@@ -91,6 +92,12 @@ typedef struct _dlist_t {
    * 元素比较函数。
    */
   tk_compare_t compare;
+
+  /**
+   * @property {mem_allocator_t*} node_allocator
+   * 节点内存分配器。
+   */
+  mem_allocator_t* node_allocator;
 } dlist_t;
 
 /**
@@ -319,6 +326,16 @@ int32_t dlist_count(dlist_t* dlist, void* ctx);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t dlist_reverse(dlist_t* dlist);
+
+/**
+ * @method dlist_set_node_allocator
+ * 设置节点内存分配器。
+ * @param {dlist_t*} dlist 双向链表对象。
+ * @param {mem_allocator_t*} allocator 内存分配器对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t dlist_set_node_allocator(dlist_t* dlist, mem_allocator_t* allocator);
 
 /**
  * @method dlist_deinit

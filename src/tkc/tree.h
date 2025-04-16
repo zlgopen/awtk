@@ -23,6 +23,7 @@
 #define TK_TREE_H
 
 #include "tkc/types_def.h"
+#include "tkc/mem_allocator.h"
 #include "tkc/str.h"
 
 BEGIN_C_DECLS
@@ -40,16 +41,6 @@ struct _tree_node_t {
   tree_node_t* next_sibling;
   void* data;
 };
-
-/**
- * @method tree_node_create
- * @annotation ["constructor"]
- * 创建树结点对象
- * @param {void*} data 节点数据。
- *
- * @return {tree_node_t*} 树结点对象。
- */
-tree_node_t* tree_node_create(void* data);
 
 /**
  * @method tree_node_degree
@@ -89,17 +80,6 @@ tree_node_t* tree_node_get_sibling(tree_node_t* node, uint32_t index);
  * @return {tree_node_t*} 返回子节点。
  */
 tree_node_t* tree_node_get_child(tree_node_t* node, uint32_t index);
-
-/**
- * @method tree_node_destroy
- * @annotation ["deconstructor"]
- * 销毁树结点对象
- * @param {tree_node_t*} node 树结点对象。
- * @param {tk_destroy_t} destroy 元素销毁函数。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t tree_node_destroy(tree_node_t* node, tk_destroy_t destroy);
 
 /**
  * @enum tree_foreach_type_t
@@ -167,6 +147,12 @@ typedef struct _tree_t {
    * 元素比较函数。
    */
   tk_compare_t compare;
+
+  /**
+   * @property {mem_allocator_t*} node_allocator
+   * 节点内存分配器。
+   */
+  mem_allocator_t* node_allocator;
 } tree_t;
 
 /**
@@ -248,6 +234,16 @@ ret_t tree_remove(tree_t* tree, tree_node_t* node, tree_foreach_type_t foreach_t
  */
 ret_t tree_remove_ex(tree_t* tree, tree_node_t* node, tree_foreach_type_t foreach_type,
                      tk_compare_t compare, void* ctx, int32_t remove_size);
+
+/**
+ * @method tree_create_node
+ * 创建树结点对象。
+ * @param {tree_t*} tree 树结构对象。
+ * @param {void*} data 节点数据。
+ *
+ * @return {tree_node_t*} 树结点对象。
+ */
+tree_node_t* tree_create_node(tree_t* tree, void* data);
 
 /**
  * @method tree_remove_node
@@ -442,6 +438,16 @@ int32_t tree_degree(tree_t* tree);
  */
 ret_t tree_to_string(tree_t* tree, tree_node_t* node, str_t* result,
                      tk_visit_t node_str_append_func);
+
+/**
+ * @method tree_set_node_allocator
+ * 设置节点内存分配器。
+ * @param {tree_t*} tree 树结构对象。
+ * @param {mem_allocator_t*} allocator 内存分配器对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tree_set_node_allocator(tree_t* tree, mem_allocator_t* allocator);
 
 /**
  * @method tree_deinit

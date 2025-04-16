@@ -25,6 +25,8 @@
 #include "tkc/utils.h"
 #include "tkc/darray.h"
 
+static ret_t tree_node_destroy(tree_node_t* node, tk_destroy_t destroy, mem_allocator_t* allocator);
+
 bool_t tree_node_is_ancestor(const tree_node_t* node, const tree_node_t* ancestor) {
   return_value_if_fail(node != NULL && ancestor != NULL, FALSE);
 
@@ -132,7 +134,8 @@ static ret_t tree_node_link_sibling(tree_node_t* node, tree_node_t* prev_sibling
 }
 
 static ret_t tree_node_foreach_breadth_first(tree_node_t* node, tk_visit_t visit,
-                                             tk_destroy_t destroy, void* ctx) {
+                                             tk_destroy_t destroy, mem_allocator_t* allocator,
+                                             void* ctx) {
   uint32_t i = 0;
   darray_t queue;
   darray_init(&queue, 64, NULL, NULL);
@@ -143,7 +146,7 @@ static ret_t tree_node_foreach_breadth_first(tree_node_t* node, tk_visit_t visit
     ret_t ret = visit(ctx, iter);
 
     if (ret == RET_REMOVE) {
-      tree_node_destroy(node, destroy);
+      tree_node_destroy(node, destroy, allocator);
       continue;
     } else if (ret != RET_OK) {
       break;
@@ -160,7 +163,7 @@ static ret_t tree_node_foreach_breadth_first(tree_node_t* node, tk_visit_t visit
 }
 
 static ret_t tree_node_foreach_preorder(tree_node_t* node, tk_visit_t visit, tk_destroy_t destroy,
-                                        void* ctx) {
+                                        mem_allocator_t* allocator, void* ctx) {
   darray_t stack;
   darray_init(&stack, 16, NULL, NULL);
   darray_push(&stack, node);
@@ -174,7 +177,7 @@ static ret_t tree_node_foreach_preorder(tree_node_t* node, tk_visit_t visit, tk_
     }
 
     if (ret == RET_REMOVE) {
-      tree_node_destroy(node, destroy);
+      tree_node_destroy(node, destroy, allocator);
       continue;
     } else if (ret != RET_OK) {
       break;
@@ -192,7 +195,7 @@ static ret_t tree_node_foreach_preorder(tree_node_t* node, tk_visit_t visit, tk_
 }
 
 static ret_t tree_node_foreach_postorder(tree_node_t* node, tk_visit_t visit, tk_destroy_t destroy,
-                                         void* ctx) {
+                                         mem_allocator_t* allocator, void* ctx) {
   darray_t result_stack;
   darray_t process_stack;
   darray_init(&result_stack, 128, NULL, NULL);
@@ -213,7 +216,7 @@ static ret_t tree_node_foreach_postorder(tree_node_t* node, tk_visit_t visit, tk
     ret_t ret = visit(ctx, iter);
 
     if (ret == RET_REMOVE) {
-      tree_node_destroy(node, destroy);
+      tree_node_destroy(node, destroy, allocator);
       continue;
     } else if (ret != RET_OK) {
       break;
@@ -227,15 +230,16 @@ static ret_t tree_node_foreach_postorder(tree_node_t* node, tk_visit_t visit, tk
 }
 
 inline static ret_t tree_node_foreach(tree_node_t* node, tree_foreach_type_t foreach_type,
-                                      tk_visit_t visit, tk_destroy_t destroy, void* ctx) {
+                                      tk_visit_t visit, tk_destroy_t destroy,
+                                      mem_allocator_t* allocator, void* ctx) {
   if (node != NULL) {
     switch (foreach_type) {
       case TREE_FOREACH_TYPE_BREADTH_FIRST:
-        return tree_node_foreach_breadth_first(node, visit, destroy, ctx);
+        return tree_node_foreach_breadth_first(node, visit, destroy, allocator, ctx);
       case TREE_FOREACH_TYPE_PREORDER:
-        return tree_node_foreach_preorder(node, visit, destroy, ctx);
+        return tree_node_foreach_preorder(node, visit, destroy, allocator, ctx);
       case TREE_FOREACH_TYPE_POSTORDER:
-        return tree_node_foreach_postorder(node, visit, destroy, ctx);
+        return tree_node_foreach_postorder(node, visit, destroy, allocator, ctx);
       default:
         ENSURE(!"Not support foreach type!");
         return RET_NOT_IMPL;
@@ -245,13 +249,25 @@ inline static ret_t tree_node_foreach(tree_node_t* node, tree_foreach_type_t for
   return RET_OK;
 }
 
-tree_node_t* tree_node_create(void* data) {
-  tree_node_t* ret = TKMEM_ZALLOC(tree_node_t);
+static inline tree_node_t* tree_node_create(void* data, mem_allocator_t* allocator) {
+  tree_node_t* ret = NULL;
+  if (allocator != NULL) {
+    ret = mem_allocator_alloc(allocator, sizeof(tree_node_t), __FUNCTION__, __LINE__);
+  } else {
+    ret = TKMEM_ALLOC(sizeof(tree_node_t));
+  }
   return_value_if_fail(ret != NULL, NULL);
+
+  memset(ret, 0, sizeof(*ret));
 
   ret->data = data;
 
   return ret;
+}
+
+tree_node_t* tree_create_node(tree_t* tree, void* data) {
+  return_value_if_fail(tree != NULL, NULL);
+  return tree_node_create(data, tree->node_allocator);
 }
 
 int32_t tree_node_degree(tree_node_t* node) {
@@ -283,28 +299,45 @@ tree_node_t* tree_node_get_child(tree_node_t* node, uint32_t index) {
   return NULL;
 }
 
-static ret_t tree_node_destroy_impl(tree_node_t* node, tk_destroy_t destroy) {
+static ret_t tree_node_destroy_impl(tree_node_t* node, tk_destroy_t destroy,
+                                    mem_allocator_t* allocator) {
   return_value_if_fail(node != NULL && destroy != NULL, RET_BAD_PARAMS);
 
-  destroy(node->data);
-  TKMEM_FREE(node);
+  if (node->data != NULL) {
+    destroy(node->data);
+  }
+  if (allocator != NULL) {
+    mem_allocator_free(allocator, node);
+  } else {
+    TKMEM_FREE(node);
+  }
 
   return RET_OK;
 }
+
+typedef struct _tree_node_destroy_on_visit_ctx_t {
+  tk_destroy_t destroy;
+  mem_allocator_t* allocator;
+} tree_node_destroy_on_visit_ctx_t;
 
 static ret_t tree_node_destroy_on_visit(void* ctx, const void* data) {
-  tk_destroy_t destroy = (tk_destroy_t)(ctx);
+  tree_node_destroy_on_visit_ctx_t* actx = (tree_node_destroy_on_visit_ctx_t*)(ctx);
   tree_node_t* node = (tree_node_t*)(data);
-  tree_node_destroy_impl(node, destroy);
+  tree_node_destroy_impl(node, actx->destroy, actx->allocator);
   return RET_OK;
 }
 
-ret_t tree_node_destroy(tree_node_t* node, tk_destroy_t destroy) {
+inline static ret_t tree_node_destroy(tree_node_t* node, tk_destroy_t destroy,
+                                      mem_allocator_t* allocator) {
+  tree_node_destroy_on_visit_ctx_t ctx = {
+      .destroy = destroy,
+      .allocator = allocator,
+  };
   return_value_if_fail(node != NULL && destroy != NULL, RET_BAD_PARAMS);
   return_value_if_fail(RET_OK == tree_node_unlink(node), RET_FAIL);
 
   return tree_node_foreach(node, TREE_FOREACH_TYPE_POSTORDER, tree_node_destroy_on_visit, destroy,
-                           destroy);
+                           allocator, &ctx);
 }
 
 tree_t* tree_create(tk_destroy_t destroy, tk_compare_t compare) {
@@ -322,7 +355,8 @@ error:
 ret_t tree_init(tree_t* tree, tk_destroy_t destroy, tk_compare_t compare) {
   return_value_if_fail(tree != NULL, RET_BAD_PARAMS);
 
-  tree->root = NULL;
+  memset(tree, 0, sizeof(tree_t));
+
   tree->destroy = destroy != NULL ? destroy : dummy_destroy;
   tree->compare = compare != NULL ? compare : pointer_compare;
 
@@ -434,7 +468,7 @@ ret_t tree_remove_ex(tree_t* tree, tree_node_t* node, tree_foreach_type_t foreac
 ret_t tree_remove_node(tree_t* tree, tree_node_t* node) {
   return_value_if_fail(tree != NULL && node != NULL, RET_BAD_PARAMS);
 
-  return tree_node_destroy(node, tree->destroy);
+  return tree_node_destroy(node, tree->destroy, tree->node_allocator);
 }
 
 ret_t tree_unlink_node(tree_t* tree, tree_node_t* node) {
@@ -529,7 +563,7 @@ ret_t tree_foreach(tree_t* tree, tree_node_t* node, tree_foreach_type_t foreach_
     node = tree->root;
   }
 
-  return tree_node_foreach(node, foreach_type, visit, tree->destroy, ctx);
+  return tree_node_foreach(node, foreach_type, visit, tree->destroy, tree->node_allocator, ctx);
 }
 
 bool_t tree_is_empty(tree_t* tree, tree_node_t* node) {
@@ -714,10 +748,30 @@ ret_t tree_to_string(tree_t* tree, tree_node_t* node, str_t* result,
   return tree_foreach(tree, node, TREE_FOREACH_TYPE_PREORDER, tree_to_string_on_visit, &ctx);
 }
 
-ret_t tree_deinit(tree_t* tree) {
+ret_t tree_set_node_allocator(tree_t* tree, mem_allocator_t* allocator) {
   return_value_if_fail(tree != NULL, RET_BAD_PARAMS);
 
-  return tree_clear(tree);
+  if (tree->node_allocator != allocator) {
+    return_value_if_fail(tree_is_empty(tree, NULL), RET_FAIL);
+
+    if (tree->node_allocator != NULL) {
+      mem_allocator_destroy(tree->node_allocator);
+    }
+    tree->node_allocator = allocator;
+  }
+
+  return RET_OK;
+}
+
+ret_t tree_deinit(tree_t* tree) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(tree != NULL, RET_BAD_PARAMS);
+
+  ret = tree_clear(tree);
+  if (RET_OK == ret) {
+    tree_set_node_allocator(tree, NULL);
+  }
+  return ret;
 }
 
 ret_t tree_destroy(tree_t* tree) {
