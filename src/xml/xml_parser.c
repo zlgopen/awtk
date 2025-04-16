@@ -417,10 +417,10 @@ static void xml_parser_parse_pi(XmlParser* parser) {
 
     switch (state) {
       case STAT_NAME: {
-        if (tk_isspace(c) || c == '>') {
+        if (tk_isspace(c) || c == '?' || c == '>') {
           tag_name =
               tk_pointer_from_int(xml_parser_strdup(parser, start, parser->read_ptr - start, TRUE));
-          state = c != '>' ? STAT_ATTR : STAT_END;
+          state = tk_isspace(c) ? STAT_ATTR : STAT_END;
         }
 
         break;
