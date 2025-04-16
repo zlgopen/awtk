@@ -43,6 +43,7 @@ TEST(Bitmap, basic2) {
     bitmap_unlock_buffer(b);
     ASSERT_EQ(bitmap_is_dirty(b), TRUE);
     ASSERT_EQ(b->should_free_handle, FALSE);
+    bitmap_deinit(b);
   }
 
   for (i = 0; i < n; i++) {
@@ -52,6 +53,7 @@ TEST(Bitmap, basic2) {
     ASSERT_EQ(bitmap_get_line_length(b), b->w * 2u);
     bitmap_unlock_buffer(b);
     ASSERT_EQ(b->should_free_handle, FALSE);
+    bitmap_deinit(b);
   }
 }
 
