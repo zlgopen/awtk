@@ -203,6 +203,7 @@ static ret_t foo_service_dispatch(foo_service_t* foo) {
 static ret_t foo_service_destroy(foo_service_t* foo) {
   return_value_if_fail(foo != NULL, RET_BAD_PARAMS);
 
+  str_reset(&foo->str);
   memset(foo, 0x00, sizeof(*foo));
   TKMEM_FREE(foo);
 

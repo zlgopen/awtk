@@ -97,6 +97,7 @@ static void test_foo(uint32_t retry_times, foo_service_args_t* args) {
   str_reset(&str);
   tk_service_destroy(service);
   foo_client_destroy(client);
+  tk_thread_destroy(thread);
 }
 
 TEST(foo, retry_times0) {
