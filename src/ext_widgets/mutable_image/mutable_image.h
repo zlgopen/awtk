@@ -77,6 +77,7 @@ typedef struct _mutable_image_t {
   image_base_t image_base;
 
   /*private*/
+  bool_t is_need_redraw;
   uint32_t timer_id;
   void* prepare_image_ctx;
   mutable_image_prepare_image_t prepare_image;
@@ -110,7 +111,7 @@ widget_t* mutable_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 /**
  * @method mutable_image_set_need_redraw
  * 设置need_redraw回调函数。
- *
+ * 备注：该函数不负责更新界面数据，只是询问刷新时机同时更新控件脏矩形。（需要配合 mutable_image_set_prepare_image 来设置图片数据）
  * 缺省每16ms刷新一次。但有时只是在变化时刷新，所以提供一个回调函数由用户决定是否需要重绘。
  *
  * @param {widget_t*} widget mutable_image对象。

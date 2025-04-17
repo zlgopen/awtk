@@ -75,12 +75,12 @@ ret_t mutable_image_on_paint_self(widget_t* widget, canvas_t* canvas) {
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
   ENSURE(mutable_image);
 
-  if (mutable_image->need_redraw != NULL &&
-      !mutable_image->need_redraw(mutable_image->need_redraw_ctx)) {
+  if (!mutable_image->is_need_redraw) {
     bitmap = mutable_image->user_image != NULL ? mutable_image->user_image : mutable_image->image;
   } else {
     bitmap = mutable_image->user_image != NULL ? mutable_image->user_image
                                                : mutable_image_prepare_image(widget, canvas);
+    mutable_image->is_need_redraw = FALSE;
   }
 
   if (bitmap == NULL) {
@@ -190,6 +190,7 @@ static ret_t mutable_image_invalidate(const timer_info_t* info) {
 
   if (mutable_image->need_redraw == NULL ||
       mutable_image->need_redraw(mutable_image->need_redraw_ctx)) {
+    mutable_image->is_need_redraw = TRUE;
     widget_invalidate_force(WIDGET(info->ctx), NULL);
   }
 
