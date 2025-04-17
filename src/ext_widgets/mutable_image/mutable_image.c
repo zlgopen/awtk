@@ -175,12 +175,21 @@ static ret_t mutable_image_init_impl(widget_t* widget) {
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
   return_value_if_fail(mutable_image != NULL, RET_BAD_PARAMS);
   image_base_init(widget);
+  mutable_image->is_need_redraw = TRUE;
   mutable_image->timer_id = widget_add_timer(widget, mutable_image_invalidate, 16);
 
   if (widget != NULL && widget->parent != NULL) {
     mutable_image_on_attach_parent(widget, widget->parent);
   }
   return RET_OK;
+}
+
+ret_t mutable_image_invalidate_force(widget_t* widget) {
+  mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
+  return_value_if_fail(mutable_image != NULL, RET_BAD_PARAMS);
+
+  mutable_image->is_need_redraw = TRUE;
+  return widget_invalidate_force(widget, NULL);
 }
 
 static ret_t mutable_image_invalidate(const timer_info_t* info) {
@@ -190,8 +199,7 @@ static ret_t mutable_image_invalidate(const timer_info_t* info) {
 
   if (mutable_image->need_redraw == NULL ||
       mutable_image->need_redraw(mutable_image->need_redraw_ctx)) {
-    mutable_image->is_need_redraw = TRUE;
-    widget_invalidate_force(WIDGET(info->ctx), NULL);
+    mutable_image_invalidate_force(widget);
   }
 
   return RET_REPEAT;

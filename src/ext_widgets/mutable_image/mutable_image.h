@@ -108,6 +108,19 @@ typedef struct _mutable_image_t {
  */
 widget_t* mutable_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
+
+/**
+ * @method mutable_image_invalidate_force
+ * mutable_image 强制刷新。
+ * 备注：
+ * 1. 该函数不负责更新界面数据，只是刷新更新控件脏矩形和触发刷新事件，会强制刷新并且无视 need_redraw 回调函数。
+ * 2. 可以配合 need_redraw 回调函数来使用，当 need_redraw 回调函数固定返回 false 时，同时按照用户自己的周期节拍调用该函数强制刷新，就可以实现外部控制 mutable_image 刷新时机。
+ * @param {widget_t*} widget mutable_image对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t mutable_image_invalidate_force(widget_t* widget);
+
 /**
  * @method mutable_image_set_need_redraw
  * 设置need_redraw回调函数。
