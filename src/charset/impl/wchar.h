@@ -19,6 +19,7 @@
 #ifndef PG_WCHAR_H
 #define PG_WCHAR_H
 
+#include <stdbool.h>
 #include "tkc/types_def.h"
 
 #define Assert assert
@@ -44,7 +45,6 @@
  */
 #define Abs(x) ((x) >= 0 ? (x) : -(x))
 
-typedef bool_t bool;
 typedef uint32_t uint32;
 #define lengthof(array) (sizeof(array) / sizeof((array)[0]))
 
