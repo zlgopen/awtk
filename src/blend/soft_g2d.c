@@ -458,7 +458,7 @@ ret_t soft_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r
             return soft_copy_image(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x),
                                    (xy_t)(dst_r->y));
 
-          } else if (alpha > 0xf8) {
+          } else if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8) {
             rect_t tmp_src = rect_from_rectf(src_r);
             rect_t tmp_dst = soft_blend_image_rotate_get_dst_point(dst, dst_r, o);
             return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), tmp_dst.x, tmp_dst.y,
@@ -492,7 +492,7 @@ ret_t soft_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r
             rect_t tmp_src = rect_from_rectf(src_r);
             return soft_copy_image(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x),
                                    (xy_t)(dst_r->y));
-          } else if (alpha > 0xf8) {
+          } else if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8) {
             rect_t tmp_src = rect_from_rectf(src_r);
             rect_t tmp_dst = soft_blend_image_rotate_get_dst_point(dst, dst_r, o);
             return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), tmp_dst.x, tmp_dst.y,
@@ -529,7 +529,7 @@ ret_t soft_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r
             rect_t tmp_src = rect_from_rectf(src_r);
             return soft_copy_image(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x),
                                    (xy_t)(dst_r->y));
-          } else if (alpha > 0xf8) {
+          } else if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8) {
             rect_t tmp_src = rect_from_rectf(src_r);
             rect_t tmp_dst = soft_blend_image_rotate_get_dst_point(dst, dst_r, o);
             return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), tmp_dst.x, tmp_dst.y,
@@ -563,7 +563,7 @@ ret_t soft_blend_image_rotate(bitmap_t* dst, bitmap_t* src, const rectf_t* dst_r
             rect_t tmp_src = rect_from_rectf(src_r);
             return soft_copy_image(dst, src, (const rect_t*)(&tmp_src), (xy_t)(dst_r->x),
                                    (xy_t)(dst_r->y));
-          } else if (alpha > 0xf8) {
+          } else if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8) {
             rect_t tmp_src = rect_from_rectf(src_r);
             rect_t tmp_dst = soft_blend_image_rotate_get_dst_point(dst, dst_r, o);
             return soft_rotate_image_ex(dst, src, (const rect_t*)(&tmp_src), tmp_dst.x, tmp_dst.y,
