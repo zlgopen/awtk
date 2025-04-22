@@ -372,7 +372,6 @@ void renderPaint(AGGENVGcontext* agge, NVGpaint* paint) {
         break;
       }
       default: {
-        printf("not supported format \n");
         assert(!"not supported format");
         break;
       }
