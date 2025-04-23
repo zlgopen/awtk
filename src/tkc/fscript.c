@@ -1027,6 +1027,26 @@ static ret_t fscript_parser_deinit(fscript_parser_t* parser) {
   return RET_OK;
 }
 
+static char fscript_parser_peek_next_non_space_char(fscript_parser_t* parser) {
+  char c = '\0';
+  const char* p = parser->cursor;
+  return_value_if_fail(parser != NULL, c);
+
+  if (parser->c && !tk_isspace(parser->c)) {
+    return parser->c;
+  }
+
+  while (*p) {
+    if (!tk_isspace(*p)) {
+      return *p;
+    } else {
+      p++;
+    }
+  }
+
+  return c;
+}
+
 static char fscript_parser_get_char(fscript_parser_t* parser) {
   char c = '\0';
   return_value_if_fail(parser != NULL, c);
@@ -1667,8 +1687,19 @@ static ret_t fexpr_parse_term(fscript_parser_t* parser, value_t* result) {
     }
     ret = token_to_value(parser, t, result);
   } else if (t->type == TOKEN_FUNC) {
-    fscript_parser_unget_token(parser);
-    ret = fexpr_parse_function(parser, result);
+    char c = fscript_parser_peek_next_non_space_char(parser);
+    if (tk_str_eq(t->token, "%") && tk_isalpha(c)) {
+      token_t* t = fscript_parser_get_token(parser);
+      str_t* str = &(parser->temp);
+
+      str_insert(str, 0, "%");
+      TOKEN_INIT(t, TOKEN_ID, str);
+
+      ret = token_to_value(parser, t, result);
+    } else {
+      fscript_parser_unget_token(parser);
+      ret = fexpr_parse_function(parser, result);
+    }
   } else if (t->type == TOKEN_RETURN) {
     fscript_func_call_t* acall = fscript_func_call_create(parser, "return", 6);
     return_value_if_fail(acall != NULL, RET_OOM);
