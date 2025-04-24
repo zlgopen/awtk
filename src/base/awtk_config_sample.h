@@ -292,4 +292,29 @@
  * #define WITH_OS_MEM 1
  */
 
+/**
+ * 是否启用默认输入法。
+ * #define WITH_DEFAULT_IM 1
+ */
+
+/**
+ * 是否禁用输入法引擎。
+ * #define WITH_IME_NULL 1
+ */
+
+/**
+ * 是否启用T9输入法。
+ * #define WITH_IME_T9 1
+ */
+
+/**
+ * 是否启用T9EXT输入法。
+ * #define WITH_IME_T9EXT 1
+ */
+
+/**
+ * 启用输入法，但不想启用联想功能，请定义本宏。
+ *
+ * #define WITHOUT_SUGGEST_WORDS 1
+ */
 #endif /*AWTK_CONFIG_H*/
