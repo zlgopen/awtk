@@ -344,6 +344,10 @@ ret_t tk_object_remove_prop(tk_object_t* obj, const char* name) {
     ret = obj->vt->remove_prop(obj, name);
   }
 
+  if (RET_OK == ret) {
+    tk_object_notify_changed(obj);
+  }
+
   return ret;
 }
 
@@ -859,6 +863,10 @@ ret_t tk_object_clear_props(tk_object_t* obj) {
 
   if (obj->vt->clear_props != NULL) {
     ret = obj->vt->clear_props(obj);
+  }
+
+  if (RET_OK == ret) {
+    tk_object_notify_changed(obj);
   }
 
   return ret;

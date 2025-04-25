@@ -268,6 +268,7 @@ static ret_t object_default_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, v
   object_default_t* o = OBJECT_DEFAULT(obj);
   return_value_if_fail(o != NULL && on_prop != NULL, RET_BAD_PARAMS);
   if (o->props.size > 0) {
+    bool_t has_removed = FALSE;
     uint32_t i = 0;
     for (i = 0; i < o->props.size; i++) {
       named_value_t* iter = (named_value_t*)(o->props.elms[i]);
@@ -275,11 +276,15 @@ static ret_t object_default_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, v
       if (ret == RET_REMOVE) {
         named_value_destroy(iter);
         o->props.elms[i] = NULL;
+        has_removed = TRUE;
       } else if (ret != RET_OK) {
         break;
       }
     }
-    darray_remove_all(&(o->props), pointer_compare, NULL);
+    if (has_removed) {
+      darray_remove_all(&(o->props), pointer_compare, NULL);
+      tk_object_notify_changed(obj);
+    }
   }
 
   return ret;

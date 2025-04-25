@@ -51,6 +51,7 @@ static ret_t object_array_clean_invalid_props(tk_object_t* obj) {
 
     if (changed) {
       emitter_dispatch_simple_event(EMITTER(o), EVT_ITEMS_CHANGED);
+      object_notify_changed(obj);
     }
   }
 
