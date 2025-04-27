@@ -525,6 +525,66 @@ ret_t value_deep_copy(value_t* dst, const value_t* src) {
   return RET_OK;
 }
 
+static bool_t value_mem_equal(const value_t* v, const value_t* other) {
+  return_value_if_fail(v != NULL && other != NULL, FALSE);
+
+  if (v == other) {
+    return TRUE;
+  }
+
+  if (v->type != other->type) {
+    return FALSE;
+  }
+
+  switch (v->type) {
+    case VALUE_TYPE_SIZED_STRING:
+      return v->value.sized_str.str == other->value.sized_str.str;
+    case VALUE_TYPE_BINARY:
+    case VALUE_TYPE_UBJSON:
+    case VALUE_TYPE_GRADIENT:
+      return v->value.binary_data.data == other->value.binary_data.data;
+    case VALUE_TYPE_STRING:
+      return v->value.str == other->value.str;
+    case VALUE_TYPE_WSTRING:
+      return v->value.wstr == other->value.wstr;
+    case VALUE_TYPE_OBJECT:
+      return v->value.object == other->value.object;
+    case VALUE_TYPE_ID:
+      return v->value.id.id == other->value.id.id;
+    case VALUE_TYPE_FUNC:
+      return v->value.func.func == other->value.func.func;
+    case VALUE_TYPE_POINTER_REF:
+      return v->value.ptr_ref == other->value.ptr_ref;
+    default:
+      return FALSE;
+  }
+}
+
+ret_t value_replace(value_t* dst, const value_t* src, bool_t deep_copy) {
+  return_value_if_fail(dst != NULL && src != NULL, RET_BAD_PARAMS);
+
+  if (value_mem_equal(dst, src)) {
+    if (dst->free_handle && !src->free_handle) {
+      if (deep_copy) {
+        value_copy(dst, src);
+        dst->free_handle = TRUE;
+        return RET_OK;
+      } else {
+        log_error(
+            "%s: dst(%p) and src(%p) have the same value pointer, "
+            "but dst has free handle while src doesn't, and deep copy isn't enabled."
+            "Replacing them would cause memory leak!\n",
+            __FUNCTION__, dst, src);
+        return RET_FAIL;
+      }
+    }
+  } else {
+    value_reset(dst);
+  }
+
+  return deep_copy ? value_deep_copy(dst, src) : value_copy(dst, src);
+}
+
 bool_t value_is_null(value_t* v) {
   return v == NULL || v->type == VALUE_TYPE_INVALID;
 }

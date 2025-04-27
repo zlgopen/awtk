@@ -196,10 +196,7 @@ static ret_t fscript_locals_get(fscript_t* fscript, const value_t* name, value_t
 
 static ret_t fscript_locals_set_with_index(fscript_t* fscript, uint32_t index, const value_t* v) {
   named_value_t* nv = (named_value_t*)(fscript->locals->elms[index]);
-  if (nv->value.free_handle) {
-    value_reset(&(nv->value));
-  }
-  return value_deep_copy(&(nv->value), v);
+  return value_replace(&(nv->value), v, TRUE);
 }
 
 static ret_t fscript_locals_set(fscript_t* fscript, const value_t* name, value_t* v) {

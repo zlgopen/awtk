@@ -241,8 +241,7 @@ ret_t object_array_set(tk_object_t* obj, uint32_t index, const value_t* v) {
 
   if (index < o->size) {
     value_t* iter = o->props + index;
-    value_reset(iter);
-    ret = value_deep_copy(iter, v);
+    ret = value_replace(iter, v, TRUE);
     emitter_dispatch(EMITTER(o), &e);
   } else if (index == -1) {
     ret = object_array_push(obj, v);

@@ -159,8 +159,7 @@ static ret_t value_deep_copy_keep_type(value_t* dst, const value_t* src) {
     }
     default: {
       if (dst->type == src->type) {
-        value_reset(dst);
-        value_deep_copy(dst, src);
+        value_replace(dst, src, TRUE);
       } else {
         ret = RET_FAIL;
         log_debug("not support type:%d\n", dst->type);
@@ -190,8 +189,7 @@ static ret_t object_default_set_prop(tk_object_t* obj, const char* name, const v
     if (o->keep_prop_type) {
       ret = value_deep_copy_keep_type(vv, v);
     } else {
-      value_reset(vv);
-      ret = value_deep_copy(vv, v);
+      ret = value_replace(vv, v, TRUE);
     }
   } else {
     named_value_t* nv = named_value_create_ex(name, v);

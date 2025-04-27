@@ -320,6 +320,30 @@ TEST(ValueTest, copy_str) {
   value_reset(&other);
 }
 
+TEST(ValueTest, replace) {
+  value_t v;
+  value_t other;
+
+  value_dup_str(&v, "hello");
+  value_dup_str(&other, "awtk");
+
+  ASSERT_EQ(value_replace(&v, &other, FALSE), RET_OK);
+  ASSERT_STREQ(value_str(&v), "awtk");
+  ASSERT_EQ(v.free_handle, FALSE);
+
+  ASSERT_NE(value_replace(&other, &v, FALSE), RET_OK);
+  ASSERT_EQ(value_replace(&other, &v, TRUE), RET_OK);
+
+  ASSERT_EQ(value_replace(&v, &other, TRUE), RET_OK);
+  ASSERT_STREQ(value_str(&v), "awtk");
+  ASSERT_EQ(v.free_handle, TRUE);
+
+  ASSERT_EQ(value_replace(&v, &other, TRUE), RET_OK);
+
+  value_reset(&v);
+  value_reset(&other);
+}
+
 TEST(ValueTest, ubjson) {
   value_t v;
   const char* str = "str";

@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/04/27
+  * 增加value_replace，用于避免value\ data的内存地址相同导致先reset后deep_copy出现野指针的问题(感谢兆坤提供补丁)。
+
 2025/04/25
   * object有属性删除时发送EVT_PROPS_CHANGED事件(感谢兆坤提供补丁)。 
 

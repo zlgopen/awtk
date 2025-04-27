@@ -817,6 +817,17 @@ ret_t value_copy(value_t* dst, const value_t* src);
 ret_t value_deep_copy(value_t* dst, const value_t* src);
 
 /**
+ * @method value_replace
+ * 替换value的值。
+ * @param {value_t*} dst 目的value对象。
+ * @param {const value_t*} src 源value对象。
+ * @param {bool_t} deep_copy 是否深拷贝。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t value_replace(value_t* dst, const value_t* src, bool_t deep_copy);
+
+/**
  * @method value_create
  * @annotation ["constructor", "scriptable", "gc"]
  * 创建value对象。
