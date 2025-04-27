@@ -696,6 +696,7 @@ enum NVGtexture {
 struct NVGscissor {
 	float xform[6];
 	float extent[2];
+	int state_index;
 };
 typedef struct NVGscissor NVGscissor;
 

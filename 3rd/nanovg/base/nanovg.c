@@ -305,6 +305,14 @@ static NVGstate* nvg__getState(NVGcontext* ctx)
 	return &ctx->states[ctx->nstates-1];
 }
 
+static NVGstate* nvg__getStateByIndex(NVGcontext* ctx, int idx)
+{
+	if (idx < 0 || idx >= ctx->nstates) {
+		return NULL;
+	}
+	return &ctx->states[idx];
+}
+
 void nvgGetStateXfrom(NVGcontext* ctx, float* xform)
 {
 	if(xform != NULL) {
@@ -1089,6 +1097,7 @@ void nvgScissor(NVGcontext* ctx, float x, float y, float w, float h)
 
 	state->scissor.extent[0] = w*0.5f*scale_x;
 	state->scissor.extent[1] = h*0.5f*scale_y;
+	state->scissor.state_index = ctx->nstates - 1;
 }
 
 static void nvg__isectRects(float* dst,
@@ -1108,8 +1117,11 @@ static void nvg__isectRects(float* dst,
 int nvgGetCurrScissor(NVGcontext* ctx, float* x, float* y, float* w, float* h) 
 {
 	NVGstate* state = nvg__getState(ctx);
+	NVGstate* scissorState = nvg__getStateByIndex(ctx, state->scissor.state_index);
 	float pxform[6], invxorm[6];
 	float ex, ey, tex, tey;
+	float scale_x = 0.0f;
+	float scale_y = 0.0f;
 
 	// If no previous scissor has been set, set the scissor as current scissor.
 	if (state->scissor.extent[0] < 0) {
@@ -1117,13 +1129,17 @@ int nvgGetCurrScissor(NVGcontext* ctx, float* x, float* y, float* w, float* h)
 		*h = 0;
 		return 0;
 	}
+	scissorState = scissorState == NULL ? state : scissorState;
+
+	scale_x = sqrtf(state->scissor.xform[0]*state->scissor.xform[0] + state->scissor.xform[2]*state->scissor.xform[2]);
+	scale_y = sqrtf(state->scissor.xform[1]*state->scissor.xform[1] + state->scissor.xform[3]*state->scissor.xform[3]);
 
 	// Transform the current scissor rect into current transform space.
 	// If there is difference in rotation, this will be approximation.
 	memcpy(pxform, state->scissor.xform, sizeof(float)*6);
-	ex = state->scissor.extent[0];
-	ey = state->scissor.extent[1];
-	nvgTransformInverse(invxorm, state->xform);
+	ex = state->scissor.extent[0] / scale_x;
+	ey = state->scissor.extent[1] / scale_y;
+	nvgTransformInverse(invxorm, scissorState->xform);
 	nvgTransformMultiply(pxform, invxorm);
 	tex = ex*nvg__absf(pxform[0]) + ey*nvg__absf(pxform[2]);
 	tey = ex*nvg__absf(pxform[1]) + ey*nvg__absf(pxform[3]);
@@ -1162,9 +1178,12 @@ void nvgIntersectScissorForOtherRect(NVGcontext* ctx, float x, float y, float w,
 void nvgIntersectScissor_ex(NVGcontext* ctx, float* x, float* y, float* w, float* h)
 {
 	NVGstate* state = nvg__getState(ctx);
+	NVGstate* scissorState = nvg__getStateByIndex(ctx, state->scissor.state_index);
 	float pxform[6], invxorm[6];
 	float rect[4];
 	float ex, ey, tex, tey;
+	float scale_x = 0.0f;
+	float scale_y = 0.0f;
 
 	// If no previous scissor has been set, set the scissor as current scissor.
 	if (state->scissor.extent[0] < 0) {
@@ -1172,12 +1191,16 @@ void nvgIntersectScissor_ex(NVGcontext* ctx, float* x, float* y, float* w, float
 		return;
 	}
 
+	scissorState = scissorState == NULL ? state : scissorState;
+	scale_x = sqrtf(state->scissor.xform[0]*state->scissor.xform[0] + state->scissor.xform[2]*state->scissor.xform[2]);
+	scale_y = sqrtf(state->scissor.xform[1]*state->scissor.xform[1] + state->scissor.xform[3]*state->scissor.xform[3]);
+
 	// Transform the current scissor rect into current transform space.
 	// If there is difference in rotation, this will be approximation.
 	memcpy(pxform, state->scissor.xform, sizeof(float)*6);
-	ex = state->scissor.extent[0];
-	ey = state->scissor.extent[1];
-	nvgTransformInverse(invxorm, state->xform);
+	ex = state->scissor.extent[0] / scale_x;
+	ey = state->scissor.extent[1] / scale_y;
+	nvgTransformInverse(invxorm, scissorState->xform);
 	nvgTransformMultiply(pxform, invxorm);
 	tex = ex*nvg__absf(pxform[0]) + ey*nvg__absf(pxform[2]);
 	tey = ex*nvg__absf(pxform[1]) + ey*nvg__absf(pxform[3]);
@@ -1197,9 +1220,12 @@ void nvgIntersectScissor_ex(NVGcontext* ctx, float* x, float* y, float* w, float
 void nvgIntersectScissor(NVGcontext* ctx, float x, float y, float w, float h)
 {
 	NVGstate* state = nvg__getState(ctx);
+	NVGstate* scissorState = nvg__getStateByIndex(ctx, state->scissor.state_index);
 	float pxform[6], invxorm[6];
 	float rect[4];
 	float ex, ey, tex, tey;
+	float scale_x = 0.0f;
+	float scale_y = 0.0f;
 
 	// If no previous scissor has been set, set the scissor as current scissor.
 	if (state->scissor.extent[0] < 0) {
@@ -1207,12 +1233,16 @@ void nvgIntersectScissor(NVGcontext* ctx, float x, float y, float w, float h)
 		return;
 	}
 
+	scissorState = scissorState == NULL ? state : scissorState;
+	scale_x = sqrtf(state->scissor.xform[0]*state->scissor.xform[0] + state->scissor.xform[2]*state->scissor.xform[2]);
+	scale_y = sqrtf(state->scissor.xform[1]*state->scissor.xform[1] + state->scissor.xform[3]*state->scissor.xform[3]);
+
 	// Transform the current scissor rect into current transform space.
 	// If there is difference in rotation, this will be approximation.
 	memcpy(pxform, state->scissor.xform, sizeof(float)*6);
-	ex = state->scissor.extent[0];
-	ey = state->scissor.extent[1];
-	nvgTransformInverse(invxorm, state->xform);
+	ex = state->scissor.extent[0] / scale_x;
+	ey = state->scissor.extent[1] / scale_y;
+	nvgTransformInverse(invxorm, scissorState->xform);
 	nvgTransformMultiply(pxform, invxorm);
 	tex = ex*nvg__absf(pxform[0]) + ey*nvg__absf(pxform[2]);
 	tey = ex*nvg__absf(pxform[1]) + ey*nvg__absf(pxform[3]);
