@@ -1346,10 +1346,14 @@ static nvgp_bool_t nvgp_gl_convert_paint(nvgp_gl_context_t* gl, nvgp_gl_frag_uni
     frag->scissorScale[0] = 1.0f;
     frag->scissorScale[1] = 1.0f;
   } else {
+    float scale_x = 0.0f;
+    float scale_y = 0.0f;
+    scale_x = sqrtf(scissor->matrix.mat.scale_x * scissor->matrix.mat.scale_x + scissor->matrix.mat.skew_x * scissor->matrix.mat.skew_x);
+    scale_y = sqrtf(scissor->matrix.mat.scale_y * scissor->matrix.mat.scale_y + scissor->matrix.mat.skew_y * scissor->matrix.mat.skew_y);
     nvgp_transform_inverse(&invxform, &scissor->matrix);
     nvgp_gl_mat_to_mat3x4(frag->scissorMat, &invxform);
-    frag->scissorExt[0] = scissor->extent[0];
-    frag->scissorExt[1] = scissor->extent[1];
+    frag->scissorExt[0] = scissor->extent[0] / scale_x;
+    frag->scissorExt[1] = scissor->extent[1] / scale_x;
     frag->scissorScale[0] =
         nvgp_sqrtf(scissor->matrix.mat.scale_x * scissor->matrix.mat.scale_x + scissor->matrix.mat.skew_x * scissor->matrix.mat.skew_x) / fringe;
     frag->scissorScale[1] =

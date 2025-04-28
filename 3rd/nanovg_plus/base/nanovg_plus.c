@@ -153,10 +153,6 @@ static nvgp_state_t* nvgp_get_state(nvgp_context_t* ctx) {
   return nvgp_darray_get_ptr(&ctx->states, ctx->states.size - 1, nvgp_state_t);
 }
 
-static nvgp_state_t* nvgp_get_state_by_index(nvgp_context_t* ctx, int idx) {
-  return nvgp_darray_get_ptr(&ctx->states, idx, nvgp_state_t);
-}
-
 static nvgp_state_t* nvgp_get_empty_state_by_tail(nvgp_context_t* ctx) {
   return nvgp_darray_get_empty_by_tail(&ctx->states, nvgp_state_t);
 }
@@ -1102,7 +1098,7 @@ nvgp_error_t nvgp_scissor(nvgp_context_t* ctx, float x, float y, float w, float 
 
     state->scissor.extent[0] = w * 0.5f * scale_x;
     state->scissor.extent[1] = h * 0.5f * scale_y;
-    state->scissor.state_index = ctx->states.size - 1;
+    NVGP_MEMCPY(&state->scissor.state_matrix, &state->matrix, sizeof(nvgp_matrix_t));
     return NVGP_OK;
   }
   return NVGP_FAIL;
@@ -1112,14 +1108,11 @@ nvgp_error_t nvgp_get_curr_clip_rect(nvgp_context_t* ctx, float* x, float* y, fl
   float scale_x = 0.0f;
   float scale_y = 0.0f;
   nvgp_state_t* state = NULL;
-  nvgp_state_t* scissor_state = NULL;
   CHECK_OBJECT_IS_NULL(ctx);
   state = nvgp_get_state(ctx);
   if (state != NULL) {
     float ex, ey, tex, tey;
     nvgp_matrix_t pxform, invxorm;
-    scissor_state = nvgp_get_state_by_index(ctx, state->scissor.state_index);
-    scissor_state = scissor_state == NULL ? state : scissor_state;
     
     scale_x = sqrtf(state->scissor.matrix.mat.scale_x * state->scissor.matrix.mat.scale_x + state->scissor.matrix.mat.skew_x * state->scissor.matrix.mat.skew_x);
     scale_y = sqrtf(state->scissor.matrix.mat.scale_y * state->scissor.matrix.mat.scale_y + state->scissor.matrix.mat.skew_y * state->scissor.matrix.mat.skew_y);
@@ -1127,7 +1120,7 @@ nvgp_error_t nvgp_get_curr_clip_rect(nvgp_context_t* ctx, float* x, float* y, fl
     NVGP_MEMCPY(&pxform, &state->scissor.matrix, sizeof(nvgp_matrix_t));
     ex = state->scissor.extent[0] / scale_x;
     ey = state->scissor.extent[1] / scale_y;
-    nvgp_transform_inverse(&invxorm, &scissor_state->matrix);
+    nvgp_transform_inverse(&invxorm, &state->scissor.state_matrix);
     nvgp_transform_multiply_to_t(&pxform, &invxorm);
     tex = ex * nvgp_abs(pxform.mat.scale_x) + ey * nvgp_abs(pxform.mat.skew_x);
     tey = ex * nvgp_abs(pxform.mat.skew_y) + ey * nvgp_abs(pxform.mat.scale_y);
@@ -1146,7 +1139,6 @@ nvgp_error_t nvgp_intersect_scissor(nvgp_context_t* ctx, float* x, float* y, flo
   float scale_x = 0.0f;
   float scale_y = 0.0f;
   nvgp_state_t* state = NULL;
-  nvgp_state_t* scissor_state = NULL;
   CHECK_OBJECT_IS_NULL(ctx);
   state = nvgp_get_state(ctx);
   if (state != NULL) {
@@ -1159,9 +1151,6 @@ nvgp_error_t nvgp_intersect_scissor(nvgp_context_t* ctx, float* x, float* y, flo
       nvgp_scissor(ctx, *x, *y, *w, *h);
       return NVGP_OK;
     }
-    
-    scissor_state = nvgp_get_state_by_index(ctx, state->scissor.state_index);
-    scissor_state = scissor_state == NULL ? state : scissor_state;
 
     scale_x = sqrtf(state->scissor.matrix.mat.scale_x * state->scissor.matrix.mat.scale_x + state->scissor.matrix.mat.skew_x * state->scissor.matrix.mat.skew_x);
     scale_y = sqrtf(state->scissor.matrix.mat.scale_y * state->scissor.matrix.mat.scale_y + state->scissor.matrix.mat.skew_y * state->scissor.matrix.mat.skew_y);
@@ -1171,7 +1160,7 @@ nvgp_error_t nvgp_intersect_scissor(nvgp_context_t* ctx, float* x, float* y, flo
     NVGP_MEMCPY(&pxform, &state->scissor.matrix, sizeof(nvgp_matrix_t));
     ex = state->scissor.extent[0] / scale_x;
     ey = state->scissor.extent[1] / scale_y;
-    nvgp_transform_inverse(&invxorm, &scissor_state->matrix);
+    nvgp_transform_inverse(&invxorm, &state->scissor.state_matrix);
     nvgp_transform_multiply_to_t(&pxform, &invxorm);
     tex = ex * nvgp_abs(pxform.mat.scale_x) + ey * nvgp_abs(pxform.mat.skew_x);
     tey = ex * nvgp_abs(pxform.mat.skew_y) + ey * nvgp_abs(pxform.mat.scale_y);

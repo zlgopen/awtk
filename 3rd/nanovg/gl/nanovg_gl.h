@@ -918,10 +918,14 @@ static int glnvg__convertPaint(GLNVGcontext* gl, GLNVGfragUniforms* frag, NVGpai
     frag->scissorScale[0] = 1.0f;
     frag->scissorScale[1] = 1.0f;
   } else {
+    float scale_x = 0.0f;
+    float scale_y = 0.0f;
     nvgTransformInverse(invxform, scissor->xform);
     glnvg__xformToMat3x4(frag->scissorMat, invxform);
-    frag->scissorExt[0] = scissor->extent[0];
-    frag->scissorExt[1] = scissor->extent[1];
+    scale_x = sqrtf(scissor->xform[0]*scissor->xform[0] + scissor->xform[2]*scissor->xform[2]);
+    scale_y = sqrtf(scissor->xform[1]*scissor->xform[1] + scissor->xform[3]*scissor->xform[3]);
+    frag->scissorExt[0] = scissor->extent[0] / scale_x;
+    frag->scissorExt[1] = scissor->extent[1] / scale_x;
     frag->scissorScale[0] =
         sqrtf(scissor->xform[0] * scissor->xform[0] + scissor->xform[2] * scissor->xform[2]) /
         fringe;
