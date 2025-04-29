@@ -345,6 +345,31 @@ void nvgp_begin_frame(nvgp_context_t *ctx, float width, float height, float pixe
 void nvgp_end_frame(nvgp_context_t *ctx) {
   CHECK_OBJECT_IS_NULL(ctx);
   ctx->vt->end_frame(ctx->vt_ctx);
+  if (ctx->fontImageIdx != 0) {
+    int fontImage = ctx->fontImages[ctx->fontImageIdx];
+    int i, j, iw, ih;
+    // delete images that smaller than current one
+    if (fontImage == 0)
+      return;
+    nvgp_get_image_size(ctx, fontImage, &iw, &ih);
+    for (i = j = 0; i < ctx->fontImageIdx; i++) {
+      if (ctx->fontImages[i] != 0) {
+        int nw, nh;
+        nvgp_get_image_size(ctx, ctx->fontImages[i], &nw, &nh);
+        if (nw < iw || nh < ih)
+          nvgp_delete_image(ctx, ctx->fontImages[i]);
+        else
+          ctx->fontImages[j++] = ctx->fontImages[i];
+      }
+    }
+    // make current font image to first
+    ctx->fontImages[j++] = ctx->fontImages[0];
+    ctx->fontImages[0] = fontImage;
+    ctx->fontImageIdx = 0;
+    // clear all images after j
+    for (i = j; i < NVGP_MAX_FONTIMAGES; i++)
+      ctx->fontImages[i] = 0;
+  }
 }
 
 void nvgp_save(nvgp_context_t *ctx) {
@@ -1098,7 +1123,6 @@ nvgp_error_t nvgp_scissor(nvgp_context_t* ctx, float x, float y, float w, float 
 
     state->scissor.extent[0] = w * 0.5f * scale_x;
     state->scissor.extent[1] = h * 0.5f * scale_y;
-    NVGP_MEMCPY(&state->scissor.state_matrix, &state->matrix, sizeof(nvgp_matrix_t));
     return NVGP_OK;
   }
   return NVGP_FAIL;
@@ -1120,7 +1144,7 @@ nvgp_error_t nvgp_get_curr_clip_rect(nvgp_context_t* ctx, float* x, float* y, fl
     NVGP_MEMCPY(&pxform, &state->scissor.matrix, sizeof(nvgp_matrix_t));
     ex = state->scissor.extent[0] / scale_x;
     ey = state->scissor.extent[1] / scale_y;
-    nvgp_transform_inverse(&invxorm, &state->scissor.state_matrix);
+    nvgp_transform_inverse(&invxorm, &state->matrix);
     nvgp_transform_multiply_to_t(&pxform, &invxorm);
     tex = ex * nvgp_abs(pxform.mat.scale_x) + ey * nvgp_abs(pxform.mat.skew_x);
     tey = ex * nvgp_abs(pxform.mat.skew_y) + ey * nvgp_abs(pxform.mat.scale_y);
@@ -1160,7 +1184,7 @@ nvgp_error_t nvgp_intersect_scissor(nvgp_context_t* ctx, float* x, float* y, flo
     NVGP_MEMCPY(&pxform, &state->scissor.matrix, sizeof(nvgp_matrix_t));
     ex = state->scissor.extent[0] / scale_x;
     ey = state->scissor.extent[1] / scale_y;
-    nvgp_transform_inverse(&invxorm, &state->scissor.state_matrix);
+    nvgp_transform_inverse(&invxorm, &state->matrix);
     nvgp_transform_multiply_to_t(&pxform, &invxorm);
     tex = ex * nvgp_abs(pxform.mat.scale_x) + ey * nvgp_abs(pxform.mat.skew_x);
     tey = ex * nvgp_abs(pxform.mat.skew_y) + ey * nvgp_abs(pxform.mat.scale_y);

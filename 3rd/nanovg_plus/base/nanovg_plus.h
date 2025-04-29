@@ -140,7 +140,6 @@ typedef union _nvgp_matrix_t {
 typedef struct _nvgp_scissor_t {
   float extent[2];
   nvgp_matrix_t matrix;
-  nvgp_matrix_t state_matrix;
 } nvgp_scissor_t;
 
 typedef struct _nvgp_paint_t {
