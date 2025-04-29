@@ -488,25 +488,6 @@ void nvgResetScissor(NVGcontext* ctx);
  */
 int nvgGetCurrScissor(NVGcontext* ctx, float* x, float* y, float* w, float* h);
 
-/**
- * @method nvgIntersectScissorForOtherRect
- * 设置一个裁剪区，但是该裁剪区收到脏矩形的影响
- * 首先会把脏矩形根据当前 nanovg 的坐标系转换为新的脏矩形区域，再和裁剪区做交集，把交集设为新的裁剪区
- * 
- * @annotation ["scriptable"]
- * @param {NVGcontext*} ctx nanovg的对象
- * @param {float_t} x 裁剪区x坐标。
- * @param {float_t} y 裁剪区y坐标。
- * @param {float_t} w 裁剪区宽度。
- * @param {float_t} h 裁剪区高度。
- * @param {float_t} dx 脏矩形x坐标。
- * @param {float_t} dy 脏矩形y坐标。
- * @param {float_t} dw 脏矩形宽度。
- * @param {float_t} dh 脏矩形高度。
- *
- */
-void nvgIntersectScissorForOtherRect(NVGcontext* ctx, float x, float y, float w, float h, float dx, float dy, float dw, float dh);
-
 //
 // Paths
 //
@@ -696,7 +677,6 @@ enum NVGtexture {
 struct NVGscissor {
 	float xform[6];
 	float extent[2];
-	float state_xform[6];
 };
 typedef struct NVGscissor NVGscissor;
 

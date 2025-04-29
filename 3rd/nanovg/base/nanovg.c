@@ -1089,7 +1089,6 @@ void nvgScissor(NVGcontext* ctx, float x, float y, float w, float h)
 
 	state->scissor.extent[0] = w*0.5f*scale_x;
 	state->scissor.extent[1] = h*0.5f*scale_y;
-	memcpy(state->scissor.state_xform, state->xform, sizeof(float)*6);
 }
 
 static void nvg__isectRects(float* dst,
@@ -1129,7 +1128,7 @@ int nvgGetCurrScissor(NVGcontext* ctx, float* x, float* y, float* w, float* h)
 	memcpy(pxform, state->scissor.xform, sizeof(float)*6);
 	ex = state->scissor.extent[0] / scale_x;
 	ey = state->scissor.extent[1] / scale_y;
-	nvgTransformInverse(invxorm, state->scissor.state_xform);
+	nvgTransformInverse(invxorm, state->xform);
 	nvgTransformMultiply(pxform, invxorm);
 	tex = ex*nvg__absf(pxform[0]) + ey*nvg__absf(pxform[2]);
 	tey = ex*nvg__absf(pxform[1]) + ey*nvg__absf(pxform[3]);
@@ -1139,30 +1138,6 @@ int nvgGetCurrScissor(NVGcontext* ctx, float* x, float* y, float* w, float* h)
 	*w = tex * 2;
 	*h = tey * 2;
 	return 1;
-}
-
-void nvgIntersectScissorForOtherRect(NVGcontext* ctx, float x, float y, float w, float h, float dx, float dy, float dw, float dh)
-{
-	NVGstate* state = nvg__getState(ctx);
-	float rect[4];
-	float invxorm[6];
-	float ex = 0.0f, ey = 0.0f, tex = 0.0f, tey = 0.0f;
-	/* 因为脏矩形默认坐标系就是没有旋转没有缩放没有平移的状态 */
-	float pxform[6] = { 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f };
-	ex = dw * 0.5f;
-	ey = dh * 0.5f;
-	pxform[4] = dx + dw * 0.5f;
-	pxform[5] = dy + dh * 0.5f;
-	memset(invxorm, 0, sizeof(float) * 6);
-	nvgTransformInverse(invxorm, state->xform);
-	nvgTransformMultiply(pxform, invxorm);
-	tex = ex*nvg__absf(pxform[0]) + ey*nvg__absf(pxform[2]);
-	tey = ex*nvg__absf(pxform[1]) + ey*nvg__absf(pxform[3]);
-
-	// Intersect rects.
-	nvg__isectRects(rect, pxform[4] - tex, pxform[5] - tey, tex * 2, tey * 2, x, y, w, h);
-
-	nvgScissor(ctx, rect[0], rect[1], rect[2], rect[3]);
 }
 
 void nvgIntersectScissor_ex(NVGcontext* ctx, float* x, float* y, float* w, float* h)
@@ -1188,7 +1163,7 @@ void nvgIntersectScissor_ex(NVGcontext* ctx, float* x, float* y, float* w, float
 	memcpy(pxform, state->scissor.xform, sizeof(float)*6);
 	ex = state->scissor.extent[0] / scale_x;
 	ey = state->scissor.extent[1] / scale_y;
-	nvgTransformInverse(invxorm, state->scissor.state_xform);
+	nvgTransformInverse(invxorm, state->xform);
 	nvgTransformMultiply(pxform, invxorm);
 	tex = ex*nvg__absf(pxform[0]) + ey*nvg__absf(pxform[2]);
 	tey = ex*nvg__absf(pxform[1]) + ey*nvg__absf(pxform[3]);
@@ -1228,7 +1203,7 @@ void nvgIntersectScissor(NVGcontext* ctx, float x, float y, float w, float h)
 	memcpy(pxform, state->scissor.xform, sizeof(float)*6);
 	ex = state->scissor.extent[0] / scale_x;
 	ey = state->scissor.extent[1] / scale_y;
-	nvgTransformInverse(invxorm, state->scissor.state_xform);
+	nvgTransformInverse(invxorm, state->xform);
 	nvgTransformMultiply(pxform, invxorm);
 	tex = ex*nvg__absf(pxform[0]) + ey*nvg__absf(pxform[2]);
 	tey = ex*nvg__absf(pxform[1]) + ey*nvg__absf(pxform[3]);
