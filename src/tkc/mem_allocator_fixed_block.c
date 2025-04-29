@@ -96,6 +96,9 @@ typedef struct _mem_allocator_fixed_block_t {
 
 #define MEM_ALLOCATOR_FIXED_BLOCK_NUM_EXTEND(num) (((num) >> 1) + (num) + 1)
 
+#define MEM_ALLOCATOR_FIXED_BLOCK_MOD(num, div) \
+  (((div) & ((div)-1) /* 块大小是否为2的幂次方 */) ? (num) % (div) : (num) & ((div)-1))
+
 inline static bool_t mem_allocator_fixed_block_pool_is_full(
     mem_allocator_fixed_block_pool_t* pool) {
   return_value_if_fail(pool != NULL, FALSE);
@@ -167,28 +170,18 @@ inline static uint32_t mem_allocator_fixed_block_pool_num(mem_allocator_fixed_bl
 static ret_t mem_allocator_fixed_block_pool_init(mem_allocator_fixed_block_t* allocator,
                                                  mem_allocator_fixed_block_pool_t* pool) {
   uint32_t i = 0;
-  mem_allocator_fixed_block_node_t *iter = NULL, *prev = NULL;
-  mem_allocator_fixed_block_node_t* start = NULL;
   return_value_if_fail(allocator != NULL && pool != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(pool->num > 0, RET_BAD_PARAMS);
 
-  start = &(&pool->list)[i];
+  pool->used_list = NULL;
+  pool->unused_list = &pool->list;
 
-  for (iter = start, prev = NULL; iter != NULL && i < pool->num;
-       prev = iter, iter = iter->next, i++) {
-    iter->prev = prev;
-    if (i + 1 < pool->num) {
-      iter->next = iter + 1;
-    } else {
-      iter->next = NULL;
-    }
+  (&pool->list)[0].prev = NULL;
+  for (i = 0; i < pool->num - 1; i++) {
+    (&pool->list)[i].next = &(&pool->list)[i + 1];
+    (&pool->list)[i + 1].prev = &(&pool->list)[i];
   }
-
-  if (pool->unused_list == NULL) {
-    pool->unused_list = start;
-  } else {
-    prev->next = pool->unused_list;
-    pool->unused_list->prev = prev;
-  }
+  (&pool->list)[pool->num - 1].next = NULL;
 
   return RET_OK;
 }
@@ -202,8 +195,6 @@ inline static mem_allocator_fixed_block_pool_t* mem_allocator_fixed_block_pool_c
   return_value_if_fail(ret != NULL, NULL);
 
   ret->num = num;
-  ret->used_list = NULL;
-  ret->unused_list = NULL;
   ret->next = NULL;
 
   mem_allocator_fixed_block_pool_init(allocator, ret);
@@ -278,8 +269,6 @@ static ret_t mem_allocator_fixed_block_pools_merge(mem_allocator_fixed_block_t* 
   return_value_if_fail(pool != NULL, RET_OOM);
 
   pool->num = num;
-  pool->used_list = NULL;
-  pool->unused_list = NULL;
 
   allocator->pools = pool;
 
@@ -364,16 +353,10 @@ static mem_allocator_fixed_block_node_t* mem_allocator_fixed_block_node_find(
       if (start <= (uint8_t*)(ptr) && (uint8_t*)(ptr) <= end) {
         uint32_t index = 0;
         const ptrdiff_t offset = (uint8_t*)(ptr)-start;
-        bool_t ptr_align = FALSE;
         return_value_if_fail(allocator->size > 0, NULL);
 
         /* 地址对齐检查 */
-        if ((allocator->size & (allocator->size - 1)) == 0) { /* 块大小是否为2的幂次方 */
-          ptr_align = ((offset & (allocator->size - 1)) == 0);
-        } else {
-          ptr_align = ((offset % allocator->size) == 0);
-        }
-        return_value_if_fail(ptr_align, NULL);
+        return_value_if_fail(0 == MEM_ALLOCATOR_FIXED_BLOCK_MOD(offset, allocator->size), NULL);
 
         index = MEM_ALLOCATOR_FIXED_BLOCK_GET_INDEX(ptr, start, allocator->size);
 
