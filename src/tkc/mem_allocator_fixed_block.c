@@ -97,7 +97,7 @@ typedef struct _mem_allocator_fixed_block_t {
 #define MEM_ALLOCATOR_FIXED_BLOCK_NUM_EXTEND(num) (((num) >> 1) + (num) + 1)
 
 #define MEM_ALLOCATOR_FIXED_BLOCK_MOD(num, div) \
-  (((div) & ((div)-1) /* 块大小是否为2的幂次方 */) ? (num) % (div) : (num) & ((div)-1))
+  (((div) & ((div)-1) /* 是否为2的幂次方 */) ? (num) % (div) : (num) & ((div)-1))
 
 inline static bool_t mem_allocator_fixed_block_pool_is_full(
     mem_allocator_fixed_block_pool_t* pool) {
@@ -137,6 +137,132 @@ inline static bool_t mem_allocator_fixed_block_is_empty(mem_allocator_fixed_bloc
   return TRUE;
 }
 
+inline static ret_t mem_allocator_fixed_block_pools_push(mem_allocator_fixed_block_pool_t** head,
+                                                         mem_allocator_fixed_block_pool_t* pool) {
+  return_value_if_fail(head != NULL && pool != NULL, RET_BAD_PARAMS);
+
+  pool->next = *head;
+  *head = pool;
+
+  return RET_OK;
+}
+
+inline static mem_allocator_fixed_block_pool_t* mem_allocator_fixed_block_pools_pop(
+    mem_allocator_fixed_block_pool_t** head) {
+  mem_allocator_fixed_block_pool_t* ret = NULL;
+  return_value_if_fail(head != NULL, NULL);
+
+  if (*head != NULL) {
+    ret = *head;
+    *head = ret->next;
+    ret->next = NULL;
+  }
+
+  return ret;
+}
+
+inline static ret_t mem_allocator_fixed_block_pool_link(mem_allocator_fixed_block_pool_t** head,
+                                                        mem_allocator_fixed_block_pool_t* pool,
+                                                        mem_allocator_fixed_block_pool_t* prev) {
+  return_value_if_fail(head != NULL && pool != NULL, RET_BAD_PARAMS);
+
+  if (prev == NULL) {
+    return mem_allocator_fixed_block_pools_push(head, pool);
+  }
+
+  pool->next = prev->next;
+  prev->next = pool;
+
+  return RET_OK;
+}
+
+inline static ret_t mem_allocator_fixed_block_pool_unlink(mem_allocator_fixed_block_pool_t** head,
+                                                          mem_allocator_fixed_block_pool_t* pool,
+                                                          mem_allocator_fixed_block_pool_t* prev) {
+  return_value_if_fail(head != NULL && pool != NULL, RET_BAD_PARAMS);
+
+  if (*head == pool) {
+    mem_allocator_fixed_block_pools_pop(head);
+    return RET_OK;
+  }
+
+  ENSURE(prev != NULL);
+  prev->next = pool->next;
+  pool->next = NULL;
+
+  return RET_OK;
+}
+
+inline static ret_t mem_allocator_fixed_block_pool_move_to_top(
+    mem_allocator_fixed_block_pool_t** head, mem_allocator_fixed_block_pool_t* pool,
+    mem_allocator_fixed_block_pool_t* prev) {
+  return_value_if_fail(head != NULL && pool != NULL, RET_BAD_PARAMS);
+
+  if (*head != pool) {
+    ENSURE(prev != NULL);
+    prev->next = pool->next;
+    pool->next = *head;
+    *head = pool;
+  }
+
+  return RET_OK;
+}
+
+inline static ret_t mem_allocator_fixed_block_list_push(mem_allocator_fixed_block_node_t** head,
+                                                        mem_allocator_fixed_block_node_t* node) {
+  return_value_if_fail(head != NULL && node != NULL, RET_BAD_PARAMS);
+
+  ENSURE(node->prev == NULL);
+
+  node->next = *head;
+  if (*head != NULL) {
+    (*head)->prev = node;
+  }
+  *head = node;
+
+  return RET_OK;
+}
+
+inline static mem_allocator_fixed_block_node_t* mem_allocator_fixed_block_list_pop(
+    mem_allocator_fixed_block_node_t** head) {
+  mem_allocator_fixed_block_node_t* ret = NULL;
+  return_value_if_fail(head != NULL, NULL);
+
+  if (*head != NULL) {
+    ret = *head;
+    if (ret->next != NULL) {
+      *head = ret->next;
+      (*head)->prev = NULL;
+      ret->next = NULL;
+    } else {
+      *head = NULL;
+    }
+  }
+
+  return ret;
+}
+
+inline static ret_t mem_allocator_fixed_block_node_unlink(mem_allocator_fixed_block_node_t** head,
+                                                          mem_allocator_fixed_block_node_t* node) {
+  return_value_if_fail(head != NULL && node != NULL, RET_BAD_PARAMS);
+
+  if (node == *head) {
+    mem_allocator_fixed_block_list_pop(head);
+    return RET_OK;
+  }
+
+  if (node->prev != NULL) {
+    node->prev->next = node->next;
+  }
+  if (node->next != NULL) {
+    node->next->prev = node->prev;
+  }
+  node->prev = NULL;
+  node->next = NULL;
+
+  return RET_OK;
+}
+
 inline static uint32_t mem_allocator_fixed_block_num(mem_allocator_fixed_block_t* allocator,
                                                      bool_t only_empty) {
   uint32_t ret = 0;
@@ -171,6 +297,7 @@ static ret_t mem_allocator_fixed_block_pool_init(mem_allocator_fixed_block_t* al
                                                  mem_allocator_fixed_block_pool_t* pool) {
   uint32_t i = 0;
   return_value_if_fail(allocator != NULL && pool != NULL, RET_BAD_PARAMS);
+  ENSURE(pool->num > 0);
   return_value_if_fail(pool->num > 0, RET_BAD_PARAMS);
 
   pool->used_list = NULL;
@@ -204,28 +331,29 @@ inline static mem_allocator_fixed_block_pool_t* mem_allocator_fixed_block_pool_c
 
 static ret_t mem_allocator_fixed_block_pools_destroy(mem_allocator_fixed_block_t* allocator,
                                                      bool_t only_empty) {
-  mem_allocator_fixed_block_pool_t *iter = NULL, *prev = NULL;
+  mem_allocator_fixed_block_pool_t* iter = NULL;
   return_value_if_fail(allocator != NULL, RET_BAD_PARAMS);
 
   iter = allocator->pools;
-  allocator->pools = NULL;
 
-  while (iter != NULL) {
-    mem_allocator_fixed_block_pool_t* next = iter->next;
-    if (!only_empty || mem_allocator_fixed_block_pool_is_empty(iter)) {
-      if (prev != NULL && prev->next == iter) {
-        prev->next = NULL;
-      }
-      TKMEM_FREE(iter);
-    } else {
-      if (prev != NULL) {
-        prev->next = iter;
+  if (only_empty) {
+    mem_allocator_fixed_block_pool_t* prev = NULL;
+    while (iter != NULL) {
+      mem_allocator_fixed_block_pool_t* next = iter->next;
+      if (mem_allocator_fixed_block_pool_is_empty(iter)) {
+        mem_allocator_fixed_block_pool_unlink(&allocator->pools, iter, prev);
+        TKMEM_FREE(iter);
       } else {
-        allocator->pools = iter;
+        prev = iter;
       }
-      prev = iter;
+      iter = next;
     }
-    iter = next;
+  } else {
+    while (iter != NULL) {
+      mem_allocator_fixed_block_pool_t* next = iter->next;
+      TKMEM_FREE(iter);
+      iter = next;
+    }
   }
 
   return RET_OK;
@@ -233,46 +361,46 @@ static ret_t mem_allocator_fixed_block_pools_destroy(mem_allocator_fixed_block_t
 
 static ret_t mem_allocator_fixed_block_pools_merge(mem_allocator_fixed_block_t* allocator) {
   uint32_t num = 0;
-  mem_allocator_fixed_block_pool_t *pool = NULL, *prev_pool = NULL;
+  mem_allocator_fixed_block_pool_t *pool = NULL, *prev_pool = NULL, *new_prev_pool = NULL;
   mem_allocator_fixed_block_pool_t *iter = NULL, *prev = NULL;
   return_value_if_fail(allocator != NULL, RET_BAD_PARAMS);
 
   num = mem_allocator_fixed_block_num(allocator, TRUE);
   return_value_if_fail(num > 0, RET_FAIL);
 
-  /* 保留一个空间最大的空内存池复用 */
   for (iter = allocator->pools, prev = NULL; iter != NULL; prev = iter, iter = iter->next) {
+    /* 保留一个空间最大的空内存池复用 */
     if (mem_allocator_fixed_block_pool_is_empty(iter)) {
       if (pool == NULL || pool->num < iter->num) {
         pool = iter;
         prev_pool = prev;
       }
     }
+    /* 复用的空池放到最后一个非满池的后，让分配器优先分配非满池里的内存 */
+    else if (!mem_allocator_fixed_block_pool_is_full(iter)) {
+      new_prev_pool = iter;
+    }
   }
   return_value_if_fail(pool != NULL, RET_FAIL);
 
-  if (allocator->pools == pool) {
-    allocator->pools = pool->next;
-  } else {
-    prev_pool->next = pool->next;
-  }
-  pool->next = NULL;
+  mem_allocator_fixed_block_pool_unlink(&allocator->pools, pool, prev_pool);
 
   mem_allocator_fixed_block_pools_destroy(allocator, TRUE);
 
-  if (allocator->pools != NULL) {
-    pool->next = allocator->pools;
-  }
-  allocator->pools = pool;
+  mem_allocator_fixed_block_pool_link(&allocator->pools, pool, new_prev_pool);
 
   pool = TKMEM_REALLOC(pool, MEM_ALLOCATOR_FIXED_BLOCK_POOL_SIZE(allocator->size, num));
   return_value_if_fail(pool != NULL, RET_OOM);
 
   pool->num = num;
 
-  allocator->pools = pool;
+  if (new_prev_pool == NULL) {
+    allocator->pools = pool;
+  } else {
+    new_prev_pool->next = pool;
+  }
 
-  return mem_allocator_fixed_block_pool_init(allocator, allocator->pools);
+  return mem_allocator_fixed_block_pool_init(allocator, pool);
 }
 
 static ret_t mem_allocator_fixed_block_extend(mem_allocator_fixed_block_t* allocator) {
@@ -286,10 +414,7 @@ static ret_t mem_allocator_fixed_block_extend(mem_allocator_fixed_block_t* alloc
         mem_allocator_fixed_block_pool_create(allocator, extend_num - num);
     return_value_if_fail(pool != NULL, RET_OOM);
 
-    if (allocator->pools != NULL) {
-      pool->next = allocator->pools;
-    }
-    allocator->pools = pool;
+    return mem_allocator_fixed_block_pools_push(&allocator->pools, pool);
   }
 
   return RET_OK;
@@ -310,25 +435,12 @@ static void* mem_allocator_fixed_block_allocate(mem_allocator_fixed_block_t* all
   }
   return_value_if_fail(pool != NULL, NULL);
 
-  node = pool->unused_list;
-  pool->unused_list = node->next;
-  if (pool->unused_list != NULL) {
-    pool->unused_list->prev = NULL;
-  }
+  node = mem_allocator_fixed_block_list_pop(&pool->unused_list);
 
-  node->next = pool->used_list;
-  if (pool->used_list != NULL) {
-    pool->used_list->prev = node;
-  }
-  pool->used_list = node;
+  mem_allocator_fixed_block_list_push(&pool->used_list, node);
 
-  ENSURE(node->prev == NULL);
-
-  /* 将当前池未满，则移至顶部 */
-  if (allocator->pools != pool && !mem_allocator_fixed_block_pool_is_full(pool)) {
-    prev_pool->next = pool->next;
-    pool->next = allocator->pools;
-    allocator->pools = pool;
+  if (!mem_allocator_fixed_block_pool_is_full(pool)) {
+    mem_allocator_fixed_block_pool_move_to_top(&allocator->pools, pool, prev_pool);
   }
 
   index = MEM_ALLOCATOR_FIXED_BLOCK_GET_INDEX(node, &pool->list,
@@ -342,32 +454,33 @@ static mem_allocator_fixed_block_node_t* mem_allocator_fixed_block_node_find(
     mem_allocator_fixed_block_pool_t** p_prev_pool) {
   mem_allocator_fixed_block_node_t* ret = NULL;
   mem_allocator_fixed_block_pool_t *pool = NULL, *prev_pool = NULL;
-  return_value_if_fail(allocator != NULL, NULL);
+  return_value_if_fail(allocator != NULL && allocator->size > 0, NULL);
 
   for (pool = allocator->pools, prev_pool = NULL; pool != NULL;
        prev_pool = pool, pool = pool->next) {
     if (pool->num > 0) {
       uint8_t* start = MEM_ALLOCATOR_FIXED_BLOCK_MEM_START(pool);
-      uint8_t* end = MEM_ALLOCATOR_FIXED_BLOCK_MEM_GET(pool, allocator->size, pool->num - 1);
+      if (start <= (uint8_t*)(ptr)) {
+        uint8_t* end = start + MEM_ALLOCATOR_FIXED_BLOCK_MEM_SIZE(allocator->size, pool->num - 1);
+        if ((uint8_t*)(ptr) <= end) {
+          uint32_t index = 0;
+          const ptrdiff_t offset = (uint8_t*)(ptr)-start;
 
-      if (start <= (uint8_t*)(ptr) && (uint8_t*)(ptr) <= end) {
-        uint32_t index = 0;
-        const ptrdiff_t offset = (uint8_t*)(ptr)-start;
-        return_value_if_fail(allocator->size > 0, NULL);
+          /* 地址对齐检查 */
+          ENSURE(allocator->size > 0);
+          return_value_if_fail(0 == MEM_ALLOCATOR_FIXED_BLOCK_MOD(offset, allocator->size), NULL);
 
-        /* 地址对齐检查 */
-        return_value_if_fail(0 == MEM_ALLOCATOR_FIXED_BLOCK_MOD(offset, allocator->size), NULL);
+          index = MEM_ALLOCATOR_FIXED_BLOCK_GET_INDEX(ptr, start, allocator->size);
 
-        index = MEM_ALLOCATOR_FIXED_BLOCK_GET_INDEX(ptr, start, allocator->size);
-
-        ret = &(&pool->list)[index];
-        if (p_pool != NULL) {
-          *p_pool = pool;
+          ret = &(&pool->list)[index];
+          if (p_pool != NULL) {
+            *p_pool = pool;
+          }
+          if (p_prev_pool != NULL) {
+            *p_prev_pool = prev_pool;
+          }
+          break;
         }
-        if (p_prev_pool != NULL) {
-          *p_prev_pool = prev_pool;
-        }
-        break;
       }
     }
   }
@@ -388,36 +501,18 @@ static ret_t mem_allocator_fixed_block_deallocate(mem_allocator_fixed_block_t* a
   node = mem_allocator_fixed_block_node_find(allocator, ptr, &pool, &prev_pool);
   return_value_if_fail(node != NULL, RET_NOT_FOUND);
 
-  if (node == pool->used_list) {
-    pool->used_list = node->next;
-  }
+  mem_allocator_fixed_block_node_unlink(&pool->used_list, node);
 
   if (mem_allocator_fixed_block_pool_is_empty(pool) &&
       mem_allocator_fixed_block_pool_num(allocator, TRUE) > 1) {
-    mem_allocator_fixed_block_pools_merge(allocator);
-  } else {
-    if (node->prev != NULL) {
-      node->prev->next = node->next;
-    }
-    if (node->next != NULL) {
-      node->next->prev = node->prev;
-    }
-    node->prev = NULL;
-    node->next = pool->unused_list;
-    if (pool->unused_list != NULL) {
-      pool->unused_list->prev = node;
-    }
-    pool->unused_list = node;
-
-    /* 如果顶池已满，将当前活跃池移至顶部 */
-    if (allocator->pools != pool && mem_allocator_fixed_block_pool_is_full(allocator->pools)) {
-      prev_pool->next = pool->next;
-      pool->next = allocator->pools;
-      allocator->pools = pool;
-    }
+    return mem_allocator_fixed_block_pools_merge(allocator);
   }
 
-  return RET_OK;
+  if (mem_allocator_fixed_block_pool_is_full(allocator->pools)) {
+    mem_allocator_fixed_block_pool_move_to_top(&allocator->pools, pool, prev_pool);
+  }
+
+  return mem_allocator_fixed_block_list_push(&pool->unused_list, node);
 }
 
 inline static ret_t mem_allocator_fixed_block_clear(mem_allocator_fixed_block_t* allocator) {
