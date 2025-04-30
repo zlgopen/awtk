@@ -3587,10 +3587,23 @@ TEST(FExr, direct_var1) {
   ASSERT_EQ(value_int32(&v), 12);
   value_reset(&v);
   
-  fscript_eval(obj, "1 + (%iw3.3 + %iw2.2)", &v);
+  ASSERT_EQ(fscript_eval(obj, "1 + (%iw3.3 + %iw2.2)", &v), RET_OK);
   ASSERT_EQ(value_int32(&v), 56);
   value_reset(&v);
 
   TK_OBJECT_UNREF(obj);
 }
 
+TEST(FExr, direct_var2) {
+  value_t v;
+  tk_object_t* obj = object_default_create();
+  tk_object_set_prop_int(obj, "%iw1", 1);
+  tk_object_set_prop_int(obj, "%iw1.1", 11);
+  tk_object_set_prop_int(obj, "%iw2.2", 22);
+  tk_object_set_prop_int(obj, "%iw3.3", 33);
+ 
+  ASSERT_NE(fscript_eval(obj, "5%% iw2", &v), RET_OK);
+  ASSERT_EQ(value_int32(&v), 0);
+  value_reset(&v);
+  TK_OBJECT_UNREF(obj);
+}

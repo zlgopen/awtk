@@ -1024,6 +1024,16 @@ static ret_t fscript_parser_deinit(fscript_parser_t* parser) {
   return RET_OK;
 }
 
+static char fscript_parser_peek_char(fscript_parser_t* parser) {
+  return_value_if_fail(parser != NULL, '\0');
+
+  if (parser->c) {
+    return parser->c;
+  }
+
+  return parser->cursor[0];
+}
+
 static char fscript_parser_peek_next_non_space_char(fscript_parser_t* parser) {
   char c = '\0';
   const char* p = parser->cursor;
@@ -1529,7 +1539,13 @@ static ret_t token_to_value(fscript_parser_t* parser, token_t* t, value_t* v) {
 ret_t fscript_eval(tk_object_t* obj, const char* script, value_t* result) {
   value_t v;
   ret_t ret = RET_OK;
-  fscript_t* fscript = fscript_create(obj, script);
+  fscript_t* fscript = NULL;
+  
+  if (result != NULL) {
+    value_set_int(result, 0);
+  }
+
+  fscript = fscript_create(obj, script);
   return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
 
   if (fscript_exec(fscript, &v) == RET_OK && result != NULL) {
@@ -1684,7 +1700,8 @@ static ret_t fexpr_parse_term(fscript_parser_t* parser, value_t* result) {
     }
     ret = token_to_value(parser, t, result);
   } else if (t->type == TOKEN_FUNC) {
-    char c = fscript_parser_peek_next_non_space_char(parser);
+    char c = fscript_parser_peek_char(parser);
+    char nsc = fscript_parser_peek_next_non_space_char(parser);
     if (tk_str_eq(t->token, "%") && tk_isalpha(c)) {
       token_t* t = fscript_parser_get_token(parser);
       str_t* str = &(parser->temp);
@@ -1693,9 +1710,12 @@ static ret_t fexpr_parse_term(fscript_parser_t* parser, value_t* result) {
       TOKEN_INIT(t, TOKEN_ID, str);
 
       ret = token_to_value(parser, t, result);
-    } else {
+    } else if (nsc == '(') {
       fscript_parser_unget_token(parser);
       ret = fexpr_parse_function(parser, result);
+    } else {
+      fscript_parser_unget_token(parser);
+      return fscript_parser_set_error(parser, "unexpected token");
     }
   } else if (t->type == TOKEN_RETURN) {
     fscript_func_call_t* acall = fscript_func_call_create(parser, "return", 6);
@@ -2159,7 +2179,11 @@ static ret_t fscript_parse_all(fscript_parser_t* parser, fscript_func_call_t* ac
     }
   }
 
-  return ret;
+  if (parser->error != NULL && parser->error->message != NULL) {
+    return RET_FAIL;
+  } else {
+    return ret;
+  }
 }
 
 fscript_parser_error_t* fscript_parser_error_init(fscript_parser_error_t* error) {

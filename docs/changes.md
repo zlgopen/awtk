@@ -3,6 +3,7 @@
 2025/04/30
   * 完善 mem_allocator_fixed_block(感谢兆坤提供补丁)。
   * 修复OpenGL下vg写字无法水平或者垂直翻转的问题(感谢智明提供补丁)
+  * 完善fscript对 % 的处理(感谢福明发现问题)
 
 2025/04/29
   * 优化nanovg_plus_gl (感谢智明提供补丁)
