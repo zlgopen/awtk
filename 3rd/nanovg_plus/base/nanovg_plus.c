@@ -1631,6 +1631,12 @@ float nvgp_text_bounds(nvgp_context_t* ctx, float x, float y, const char* string
   return state->text_width;
 }
 
+static inline int nvgp_triangles_is_cw(floatptr_t x1, floatptr_t y1, floatptr_t x2, floatptr_t y2, floatptr_t x3, floatptr_t y3) {
+  floatptr_t ret = (x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1);
+  assert(ret != 0.0f);
+  return ret < 0.0f ? 1 : 0;
+}
+
 float nvgp_text(nvgp_context_t* ctx, float x, float y, const char* string, const char* end) {
   FONSquad q;
   uint32_t nverts = 0;
@@ -1688,12 +1694,24 @@ float nvgp_text(nvgp_context_t* ctx, float x, float y, const char* string, const
     nvgp_transform_point(&c[6],&c[7], &state->matrix, q.x0*invscale, q.y1*invscale);
     // Create triangles
     if (nverts+6 <= cverts) {
+      // 把顶点数据改为顺时针方向，由于使用 glEnable(GL_CULL_FACE); 面剔除，如果是逆时针的话，就无法显示
       nvgp_vset(&verts[nverts], c[0], c[1], q.s0, q.t0); nverts++;
-      nvgp_vset(&verts[nverts], c[4], c[5], q.s1, q.t1); nverts++;
-      nvgp_vset(&verts[nverts], c[2], c[3], q.s1, q.t0); nverts++;
+      if (nvgp_triangles_is_cw(c[0], c[1], c[4], c[5], c[2], c[3])) {
+        nvgp_vset(&verts[nverts], c[4], c[5], q.s1, q.t1); nverts++;
+        nvgp_vset(&verts[nverts], c[2], c[3], q.s1, q.t0); nverts++;
+      } else {
+        nvgp_vset(&verts[nverts], c[2], c[3], q.s1, q.t0); nverts++;
+        nvgp_vset(&verts[nverts], c[4], c[5], q.s1, q.t1); nverts++;
+      }
+
       nvgp_vset(&verts[nverts], c[0], c[1], q.s0, q.t0); nverts++;
-      nvgp_vset(&verts[nverts], c[6], c[7], q.s0, q.t1); nverts++;
-      nvgp_vset(&verts[nverts], c[4], c[5], q.s1, q.t1); nverts++;
+      if (nvgp_triangles_is_cw(c[0], c[1], c[6], c[7], c[4], c[5])) {
+        nvgp_vset(&verts[nverts], c[6], c[7], q.s0, q.t1); nverts++;
+        nvgp_vset(&verts[nverts], c[4], c[5], q.s1, q.t1); nverts++;
+      } else {
+        nvgp_vset(&verts[nverts], c[4], c[5], q.s1, q.t1); nverts++;
+        nvgp_vset(&verts[nverts], c[6], c[7], q.s0, q.t1); nverts++;
+      }
     }
   }
 

@@ -386,6 +386,24 @@ static void draw_text(vgcanvas_t* vg) {
   vgcanvas_fill_text(vg, text, 10, 10, 100);
   log_debug("text=%s w=%f\n", text, w);
   vgcanvas_restore(vg);
+
+  vgcanvas_translate(vg, w * 2, -h);
+  vgcanvas_fill_text(vg, text, 10, 10, 100);
+  vgcanvas_save(vg);
+  vgcanvas_scale(vg, -1, 1);
+  vgcanvas_fill_text(vg, text, 10, 10, 100);
+  vgcanvas_restore(vg);
+
+  vgcanvas_save(vg);
+  vgcanvas_scale(vg, 1, -1);
+  vgcanvas_fill_text(vg, text, 10, 10, 100);
+  vgcanvas_restore(vg);
+
+  vgcanvas_save(vg);
+  vgcanvas_scale(vg, -1, -1);
+  vgcanvas_fill_text(vg, text, 10, 10, 100);
+  vgcanvas_restore(vg);
+
 }
 
 static inline ret_t on_paint_text(void* ctx, event_t* e) {

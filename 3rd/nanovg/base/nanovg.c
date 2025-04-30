@@ -2849,6 +2849,12 @@ static void nvg__renderText(NVGcontext* ctx, NVGvertex* verts, int nverts)
 	ctx->textTriCount += nverts/3;
 }
 
+static inline int nvgpTrianglesIsCW(float x1, float y1, float x2, float y2, float x3, float y3) {
+  float ret = (x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1);
+  assert(ret != 0.0f);
+  return ret < 0.0f ? 1 : 0;
+}
+
 float nvgText(NVGcontext* ctx, float x, float y, const char* string, const char* end)
 {
 	NVGstate* state = nvg__getState(ctx);
@@ -2900,11 +2906,21 @@ float nvgText(NVGcontext* ctx, float x, float y, const char* string, const char*
 		// Create triangles
 		if (nverts+6 <= cverts) {
 			nvg__vset(&verts[nverts], c[0], c[1], q.s0, q.t0); nverts++;
-			nvg__vset(&verts[nverts], c[4], c[5], q.s1, q.t1); nverts++;
-			nvg__vset(&verts[nverts], c[2], c[3], q.s1, q.t0); nverts++;
+			if (nvgpTrianglesIsCW(c[0], c[1], c[4], c[5], c[2], c[3])) {
+				nvg__vset(&verts[nverts], c[4], c[5], q.s1, q.t1); nverts++;
+				nvg__vset(&verts[nverts], c[2], c[3], q.s1, q.t0); nverts++;
+			} else {
+				nvg__vset(&verts[nverts], c[2], c[3], q.s1, q.t0); nverts++;
+				nvg__vset(&verts[nverts], c[4], c[5], q.s1, q.t1); nverts++;
+			}
 			nvg__vset(&verts[nverts], c[0], c[1], q.s0, q.t0); nverts++;
-			nvg__vset(&verts[nverts], c[6], c[7], q.s0, q.t1); nverts++;
-			nvg__vset(&verts[nverts], c[4], c[5], q.s1, q.t1); nverts++;
+			if (nvgpTrianglesIsCW(c[0], c[1], c[6], c[7], c[4], c[5])) {
+				nvg__vset(&verts[nverts], c[6], c[7], q.s0, q.t1); nverts++;
+				nvg__vset(&verts[nverts], c[4], c[5], q.s1, q.t1); nverts++;
+			} else {
+				nvg__vset(&verts[nverts], c[4], c[5], q.s1, q.t1); nverts++;
+				nvg__vset(&verts[nverts], c[6], c[7], q.s0, q.t1); nverts++;
+			}
 		}
 	}
 
