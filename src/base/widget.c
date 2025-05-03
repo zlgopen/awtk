@@ -826,7 +826,6 @@ ret_t widget_set_focused_internal(widget_t* widget, bool_t focused) {
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
 
   if (WINDOW_STAGE_SUSPEND == stage) {
-    log_debug("You can not set focus of a widget when window is in background.\n");
     return RET_FAIL;
   }
 
