@@ -1,5 +1,6 @@
 ﻿#ifndef USE_TK_PREFIX
 #define tcp_listen tk_tcp_listen
+#define tcp_listen_ex tk_tcp_listen_ex
 #define tcp_accept tk_tcp_accept
 #define tcp_connect tk_tcp_connect
 #define udp_listen tk_udp_listen

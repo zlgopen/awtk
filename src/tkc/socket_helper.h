@@ -20,6 +20,7 @@
  */
 
 #include "tkc/types_def.h"
+#include "tkc/darray.h"
 
 #ifdef WITH_SOCKET
 
@@ -61,6 +62,26 @@ ret_t tk_socket_deinit(void);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t tk_socket_close(int sock);
+
+/**
+ * @method tk_socket_get_ips_by_ifname
+ * @annotation ["static"]
+ * 根据网卡名字获取该网卡下的 ip 列表。
+ * 例子：
+ *   darray_t ips;
+ *   darray_init(&ips, 10, default_destroy, NULL);
+ *   ret_t ret = tk_socket_get_ips_by_ifname(L"以太网 3", &ips);
+ *   for (size_t i = 0; i < ips.size; i++) {
+ *     printf("%s \r\n", (char*)darray_get(&ips, i));
+ *   }
+ *   darray_deinit(&ips);
+ *
+ * @param {const wchar_t*} ifname 网卡名字。
+ * @param {darray_t*} ips ip 列表。（数组中的数据都是字符串，需要用户调用释放函数，用户创建 darray_t 对象的时候可以直接配置 default_destroy 释放函数）
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_socket_get_ips_by_ifname(const wchar_t* ifname, darray_t* ips);
 
 /**
  * @method tk_socket_send
@@ -249,6 +270,17 @@ const char* tk_socket_get_self_ip_str(int sockfd, char* ip, int len);
  * @class tcp_t
  * @annotation ["fake"]
  */
+
+/**
+ * @method tk_tcp_listen_ex
+ * @annotation ["static"]
+ * 监听指定ip 和端口，成功返回sock句柄。
+ * @param {const char*} ip ip。（这里的 ip 是指绑定在网卡中的 ip，可以通过 tk_socket_get_ips_by_ifname 获取，如果设置为 NULL，则绑定到 0.0.0.0 中）
+ * @param {int} port 端口号。
+ *
+ * @return {int} 返回sock句柄。
+ */
+int tk_tcp_listen_ex(const char* ip, int port);
 
 /**
  * @method tk_tcp_listen

@@ -24,6 +24,7 @@
 #endif /*WIN32_LEAN_AND_MEAN*/
 
 #include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "tkc/socket_helper.h"
 
 #ifdef WITH_SOCKET
@@ -40,7 +41,9 @@ static ret_t tk_ignore_sig_pipe(void) {
 
 #ifdef WIN32
 #include <ws2tcpip.h>
+#include <iphlpapi.h>
 #pragma comment(lib, "ws2_32")
+#pragma comment(lib, "iphlpapi")
 ret_t tk_socket_init() {
   int iResult;
   WSADATA wsaData;
@@ -64,7 +67,73 @@ ret_t tk_socket_close(int sock) {
 
   return RET_OK;
 }
+
+ret_t tk_socket_get_ips_by_ifname(const wchar_t* ifname, darray_t* ips) {
+  ULONG ret = 0;
+  ULONG size = 0;
+  ret_t push_ret = RET_FAIL;
+  PIP_ADAPTER_ADDRESSES pAddr = NULL;
+  return_value_if_fail(ifname != NULL && ips != NULL, RET_BAD_PARAMS);
+  ret = GetAdaptersAddresses(AF_INET, 0, NULL, NULL, &size);
+  
+  if (ret == ERROR_BUFFER_OVERFLOW) {
+    pAddr = (PIP_ADAPTER_ADDRESSES)malloc(size);
+    ret = GetAdaptersAddresses(AF_INET, 0, NULL, pAddr, &size);
+  }
+  
+  while (pAddr && ret == NO_ERROR) {
+    if (wcscmp(pAddr->FriendlyName, ifname) == 0) {
+      PIP_ADAPTER_UNICAST_ADDRESS pUnicast = pAddr->FirstUnicastAddress;
+       while (pUnicast) {
+        char ip[16] = {0};
+        size_t len = sizeof(ip);
+        struct sockaddr_in* sa = (struct sockaddr_in*)pUnicast->Address.lpSockaddr;
+        inet_ntop(AF_INET, &(sa->sin_addr), ip, len);
+        push_ret = darray_push(ips, tk_strdup(ip));
+        break_if_fail(push_ret == RET_OK);
+        pUnicast = pUnicast->Next;
+      }
+    }
+    pAddr = pAddr->Next;
+  }
+  
+  free(pAddr);
+  return push_ret;
+}
 #else
+#if defined(LINUX) || defined(MACOS)
+#include <ifaddrs.h>
+ret_t tk_socket_get_ips_by_ifname(const wchar_t* ifname, darray_t* ips) {
+  ret_t ret = RET_FAIL;
+  const char* name = NULL;
+  struct ifaddrs *ifaddr, *ifa;
+  return_value_if_fail(ifname != NULL && ips != NULL, RET_BAD_PARAMS);
+
+  name = tk_utf8_dup_wstr(ifname);
+  return_value_if_fail(name != NULL, RET_OOM);
+
+  if (getifaddrs(&ifaddr) == -1) {
+    TKMEM_FREE(name);
+    return RET_FAIL;
+  }
+
+  for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
+    if (ifa->ifa_addr && strcmp(ifa->ifa_name, name) == 0) {
+      if (ifa->ifa_addr->sa_family == AF_INET) {
+        struct sockaddr_in* sa = (struct sockaddr_in*)ifa->ifa_addr;
+        char ip[INET_ADDRSTRLEN];
+        inet_ntop(AF_INET, &sa->sin_addr, ip, sizeof(ip));
+        ret = darray_push(ips, tk_strdup(ip));
+        break_if_fail(ret == RET_OK);
+      }
+    }
+  }
+
+  freeifaddrs(ifaddr);
+  TKMEM_FREE(name);
+  return ret;
+}
+#endif
 
 ret_t tk_socket_init() {
   tk_ignore_sig_pipe();
@@ -120,7 +189,7 @@ int tk_socket_get_port(int sock) {
   return -1;
 }
 
-int tk_tcp_listen(int port) {
+int tk_tcp_listen_ex(const char* ip, int port) {
   int sock;
   int on = 1;
 
@@ -134,7 +203,7 @@ int tk_tcp_listen(int port) {
     return -1;
   }
 
-  return_value_if_fail(tk_socket_bind(sock, port) == RET_OK, -1);
+  return_value_if_fail(tk_socket_bind_ex(sock, ip, port) == RET_OK, -1);
 
   if (listen(sock, 5) < 0) {
     log_debug("listen error\n");
@@ -151,6 +220,10 @@ int tk_tcp_listen(int port) {
   }
 
   return (sock);
+}
+
+int tk_tcp_listen(int port) {
+  return tk_tcp_listen_ex(NULL, port);
 }
 
 int tk_udp_listen(int port) {
