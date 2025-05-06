@@ -743,7 +743,7 @@ int tk_watoi(const wchar_t* str) {
 }
 
 bool_t tk_watob(const wchar_t* str) {
-  if (str == NULL || *str == 'f' || *str == 'F') {
+  if (TK_STR_IS_EMPTY(str) || *str == 'f' || *str == 'F' || tk_wstr_eq(str, L"0")) {
     return FALSE;
   }
 

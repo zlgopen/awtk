@@ -1974,6 +1974,39 @@ TEST(Utils, atob) {
   ASSERT_EQ(tk_atob("abcd"), TRUE);
 }
 
+TEST(Utils, watob) {
+  ASSERT_EQ(tk_watob(L"FALSE"), FALSE);
+  ASSERT_EQ(tk_watob(L"False"), FALSE);
+  ASSERT_EQ(tk_watob(L"F"), FALSE);
+  ASSERT_EQ(tk_watob(L"f"), FALSE);
+
+  ASSERT_EQ(tk_watob(L"\"FALSE\""), TRUE);
+  ASSERT_EQ(tk_watob(L"'FALSE'"), TRUE);
+  ASSERT_EQ(tk_watob(L" FALSE "), TRUE);
+
+  ASSERT_EQ(tk_watob(L"TRUE"), TRUE);
+  ASSERT_EQ(tk_watob(L"True"), TRUE);
+  ASSERT_EQ(tk_watob(L"T"), TRUE);
+  ASSERT_EQ(tk_watob(L"t"), TRUE);
+
+  ASSERT_EQ(tk_watob(L"\"TRUE\""), TRUE);
+  ASSERT_EQ(tk_watob(L"'TRUE'"), TRUE);
+  ASSERT_EQ(tk_watob(L" TRUE "), TRUE);
+
+  ASSERT_EQ(tk_watob(NULL), FALSE);
+  ASSERT_EQ(tk_watob(L""), FALSE);
+  ASSERT_EQ(tk_watob(L" "), TRUE);
+
+  ASSERT_EQ(tk_watob(L"0"), FALSE);
+  ASSERT_EQ(tk_watob(L"00"), TRUE);
+  ASSERT_EQ(tk_watob(L"0AWTK"), TRUE);
+  ASSERT_EQ(tk_watob(L"1"), TRUE);
+  ASSERT_EQ(tk_watob(L"-1"), TRUE);
+  ASSERT_EQ(tk_watob(L"2"), TRUE);
+
+  ASSERT_EQ(tk_watob(L"abcd"), TRUE);
+}
+
 TEST(Utils, tk_strs_bsearch) {
   const char* strs[] = {"abc1", "abc2", "abc3", "abc4", "abc5", "b", "c", "d"};
   ASSERT_EQ(tk_strs_bsearch(strs, 0, "Abc1", TRUE), (char*)NULL);
@@ -2026,7 +2059,7 @@ TEST(Utils, tk_normalize_rad) {
   ASSERT_DOUBLE_EQ(tk_normalize_rad(3 - twopi), 3);
   ASSERT_DOUBLE_EQ(tk_normalize_rad(4 - twopi), 4);
   ASSERT_DOUBLE_EQ(tk_normalize_rad(5 - twopi), 5);
-  ASSERT_DOUBLE_EQ(tk_normalize_rad(6 - twopi), 6);  
+  ASSERT_DOUBLE_EQ(tk_normalize_rad(6 - twopi), 6);
 }
 
 TEST(Utils, tk_compare_rad) {
@@ -2045,7 +2078,7 @@ TEST(Utils, tk_compare_rad) {
   ASSERT_EQ(tk_rad_equal(3, 3 + twopi, 0.0001), TRUE);
   ASSERT_EQ(tk_rad_equal(4, 4 + twopi, 0.0001), TRUE);
   ASSERT_EQ(tk_rad_equal(5, 5 + twopi, 0.0001), TRUE);
-  ASSERT_EQ(tk_rad_equal(6, 6 + twopi, 0.0001), TRUE);  
+  ASSERT_EQ(tk_rad_equal(6, 6 + twopi, 0.0001), TRUE);
 
   ASSERT_EQ(tk_rad_equal(0, 0 - twopi, 0.0001), TRUE);
   ASSERT_EQ(tk_rad_equal(1, 1 - twopi, 0.0001), TRUE);
@@ -2053,7 +2086,7 @@ TEST(Utils, tk_compare_rad) {
   ASSERT_EQ(tk_rad_equal(3, 3 - twopi, 0.0001), TRUE);
   ASSERT_EQ(tk_rad_equal(4, 4 - twopi, 0.0001), TRUE);
   ASSERT_EQ(tk_rad_equal(5, 5 - twopi, 0.0001), TRUE);
-  ASSERT_EQ(tk_rad_equal(6, 6 - twopi, 0.0001), TRUE);    
+  ASSERT_EQ(tk_rad_equal(6, 6 - twopi, 0.0001), TRUE);
 
   ASSERT_EQ(tk_rad_equal(0, 0 - twopi + 1, 0.0001), FALSE);
   ASSERT_EQ(tk_rad_equal(1, 1 - twopi + 1, 0.0001), FALSE);
@@ -2061,7 +2094,7 @@ TEST(Utils, tk_compare_rad) {
   ASSERT_EQ(tk_rad_equal(3, 3 - twopi + 1, 0.0001), FALSE);
   ASSERT_EQ(tk_rad_equal(4, 4 - twopi + 1, 0.0001), FALSE);
   ASSERT_EQ(tk_rad_equal(5, 5 - twopi + 1, 0.0001), FALSE);
-  ASSERT_EQ(tk_rad_equal(6, 6 - twopi + 1, 0.0001), FALSE);      
+  ASSERT_EQ(tk_rad_equal(6, 6 - twopi + 1, 0.0001), FALSE);
 }
 
 TEST(Utils, tk_swap) {
@@ -2070,7 +2103,7 @@ TEST(Utils, tk_swap) {
   tk_swap(a, b, int);
   ASSERT_EQ(a, 2);
   ASSERT_EQ(b, 1);
-  
+
   tk_swap(a, b, int);
   ASSERT_EQ(a, 1);
   ASSERT_EQ(b, 2);

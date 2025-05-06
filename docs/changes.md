@@ -2,6 +2,7 @@
 
 2025/05/06
   * object hash 兼容32位系统(感谢兆坤提供补丁)。
+  * 完善tk_watob，与tk_atob逻辑相同(感谢兆坤提供补丁)。
 
 2025/04/30
   * 完善 mem_allocator_fixed_block(感谢兆坤提供补丁)。
