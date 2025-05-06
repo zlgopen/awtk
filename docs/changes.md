@@ -4,6 +4,7 @@
   * object hash 兼容32位系统(感谢兆坤提供补丁)。
   * 完善tk_watob，与tk_atob逻辑相同(感谢兆坤提供补丁)。
   * 增加根据网卡名字获取ip的函数和增加listen_ex可以增加ip参数(感谢智明提供补丁)
+  * 给service对象增加可以配置绑定指定ip的机制(感谢智明提供补丁)
 
 2025/04/30
   * 完善 mem_allocator_fixed_block(感谢兆坤提供补丁)。

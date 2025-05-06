@@ -144,12 +144,14 @@ static ret_t tk_service_start_tcp(event_source_manager_t* esm, const char* url,
                                   tk_service_create_t create, void* args) {
   int port = 0;
   int listen_sock = -1;
+  const char* ip = NULL;
   event_source_t* source = NULL;
   url_t* aurl = url_create(url);
   return_value_if_fail(esm != NULL && aurl != NULL && create != NULL, RET_BAD_PARAMS);
 
   port = aurl->port;
-  listen_sock = tcp_listen(port);
+  ip = (tk_str_eq(aurl->host, "localhost") || tk_str_eq(aurl->host, "127.0.0.1") || tk_str_eq(aurl->host, "0.0.0.0")) ? NULL : aurl->host;
+  listen_sock = tcp_listen_ex(ip, port);
   url_destroy(aurl);
   return_value_if_fail(listen_sock >= 0, RET_BAD_PARAMS);
 
