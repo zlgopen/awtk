@@ -103,7 +103,7 @@ named_value_hash_t* named_value_hash_create(void) {
   return named_value_hash_create_ex(NULL, NULL);
 }
 
-static int32_t named_value_hash_hash_compare(uint64_t hash1, uint64_t hash2) {
+static inline int32_t named_value_hash_hash_compare(uint64_t hash1, uint64_t hash2) {
   if (hash1 > hash2) {
     // uint64_t d = hash1 - hash2;
     // return tk_min(d, INT32_MAX);
@@ -124,10 +124,10 @@ int32_t named_value_hash_compare(const named_value_hash_t* nvh, const named_valu
   return named_value_hash_hash_compare(nvh->hash, other->hash);
 }
 
-int32_t named_value_hash_compare_by_hash(const named_value_hash_t* nvh, uint64_t hash) {
-  return_value_if_fail(nvh != NULL, -1);
+int32_t named_value_hash_compare_by_hash(const named_value_hash_t* nvh, const uint64_t* hash) {
+  return_value_if_fail(nvh != NULL && hash != NULL, -1);
 
-  return named_value_hash_hash_compare(nvh->hash, hash);
+  return named_value_hash_hash_compare(nvh->hash, *hash);
 }
 
 named_value_hash_t* named_value_hash_clone(named_value_hash_t* nvh) {

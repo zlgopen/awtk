@@ -51,11 +51,11 @@ static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char*
     }
 
     if (!o->keep_props_order) {
-      ret = darray_bsearch_index(&(o->props), (tk_compare_t)named_value_hash_compare_by_hash,
-                                 tk_pointer_from_long(hash));
+      ret =
+          darray_bsearch_index(&(o->props), (tk_compare_t)named_value_hash_compare_by_hash, &hash);
     } else {
-      ret = darray_find_index_ex(&(o->props), (tk_compare_t)named_value_hash_compare_by_hash,
-                                 tk_pointer_from_long(hash));
+      ret =
+          darray_find_index_ex(&(o->props), (tk_compare_t)named_value_hash_compare_by_hash, &hash);
     }
 
     if (ret >= 0) {
@@ -71,7 +71,7 @@ static int32_t object_hash_find_prop_index_by_name(tk_object_t* obj, const char*
 
         ret = -1;
         if (RET_OK == darray_find_all(&o->props, (tk_compare_t)named_value_hash_compare_by_hash,
-                                      tk_pointer_from_long(hash), &bucket)) {
+                                      &hash, &bucket)) {
           named_value_hash_t* right_nvh = (named_value_hash_t*)darray_find_ex(
               &bucket, (tk_compare_t)named_value_compare_by_name, (void*)name);
           if (right_nvh != NULL) {

@@ -124,11 +124,11 @@ int32_t named_value_hash_compare(const named_value_hash_t* nvh, const named_valu
  * 比较。
  *
  * @param {const named_value_hash_t*} nvh named_value_hash对象。
- * @param {uint64_t} hash 散列值。
+ * @param {const uint64_t*} hash 散列值指针。
  *
  * @return {int32_t} 返回RET_OK表示成功，否则表示失败。
  */
-int32_t named_value_hash_compare_by_hash(const named_value_hash_t* nvh, uint64_t hash);
+int32_t named_value_hash_compare_by_hash(const named_value_hash_t* nvh, const uint64_t* hash);
 
 /**
  * @method named_value_hash_destroy

@@ -896,6 +896,7 @@ uint64_t tk_pointer_to_long(const void* p) {
 }
 
 void* tk_pointer_from_long(uint64_t v) {
+  ENSURE(v <= UINTPTR_MAX);
   return (void*)(uintptr_t)v;
 }
 
