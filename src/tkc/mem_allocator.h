@@ -145,6 +145,18 @@ static inline ret_t mem_allocator_destroy(mem_allocator_t* allocator) {
 
 #define MEM_ALLOCATOR(allocator) ((mem_allocator_t*)(allocator))
 
+#define MEM_ALLOCATOR_ALLOC(allocator, size) \
+  mem_allocator_alloc(MEM_ALLOCATOR(allocator), size, __FUNCTION__, __LINE__)
+
+#define MEM_ALLOCATOR_REALLOC(allocator, ptr, size) \
+  mem_allocator_realloc(MEM_ALLOCATOR(allocator), ptr, size, __FUNCTION__, __LINE__)
+
+#define MEM_ALLOCATOR_FREE(allocator, ptr)             \
+  do {                                                 \
+    mem_allocator_free(MEM_ALLOCATOR(allocator), ptr); \
+    ptr = NULL;                                        \
+  } while (0)
+
 END_C_DECLS
 
 #endif /*TK_MEM_ALLOCATOR_H*/

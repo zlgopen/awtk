@@ -252,7 +252,7 @@ inline static ret_t tree_node_foreach(tree_node_t* node, tree_foreach_type_t for
 static inline tree_node_t* tree_node_create(void* data, mem_allocator_t* allocator) {
   tree_node_t* ret = NULL;
   if (allocator != NULL) {
-    ret = mem_allocator_alloc(allocator, sizeof(tree_node_t), __FUNCTION__, __LINE__);
+    ret = MEM_ALLOCATOR_ALLOC(allocator, sizeof(tree_node_t));
   } else {
     ret = TKMEM_ALLOC(sizeof(tree_node_t));
   }
@@ -307,7 +307,7 @@ static ret_t tree_node_destroy_impl(tree_node_t* node, tk_destroy_t destroy,
     destroy(node->data);
   }
   if (allocator != NULL) {
-    mem_allocator_free(allocator, node);
+    MEM_ALLOCATOR_FREE(allocator, node);
   } else {
     TKMEM_FREE(node);
   }

@@ -164,7 +164,7 @@ static const mem_allocator_vtable_t s_mem_allocator_pool_vtable = {
 
 static mem_pool_t* mem_pool_create(mem_allocator_t* impl, uint32_t block_size, uint32_t block_nr) {
   uint32_t size = mem_pool_get_min_size(block_size, block_nr);
-  uint8_t* addr = (uint8_t*)mem_allocator_alloc(impl, size, __FUNCTION__, __LINE__);
+  uint8_t* addr = (uint8_t*)MEM_ALLOCATOR_ALLOC(impl, size);
   return_value_if_fail(addr != NULL, NULL);
 
   return mem_pool_init(addr, size, block_size, block_nr);

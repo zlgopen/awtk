@@ -28,7 +28,7 @@ static dlist_node_t* dlist_create_node(dlist_t* dlist, void* data) {
   return_value_if_fail(dlist != NULL, NULL);
 
   if (dlist->node_allocator != NULL) {
-    ret = mem_allocator_alloc(dlist->node_allocator, sizeof(dlist_node_t), __FUNCTION__, __LINE__);
+    ret = MEM_ALLOCATOR_ALLOC(dlist->node_allocator, sizeof(dlist_node_t));
   } else {
     ret = TKMEM_ALLOC(sizeof(dlist_node_t));
   }
@@ -48,7 +48,7 @@ static ret_t dlist_destroy_node(dlist_t* dlist, dlist_node_t* node) {
     dlist->destroy(node->data);
   }
   if (dlist->node_allocator != NULL) {
-    mem_allocator_free(dlist->node_allocator, node);
+    MEM_ALLOCATOR_FREE(dlist->node_allocator, node);
   } else {
     TKMEM_FREE(node);
   }
