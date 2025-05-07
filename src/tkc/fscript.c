@@ -271,11 +271,12 @@ ret_t fscript_set_error(fscript_t* fscript, ret_t code, const char* func, const 
 
     if (code != RET_OK) {
       const char* code_str = NULL;
+      const char* name = fscript->name != NULL ? fscript->name : "";
       if (ret_name_from_value(code, &code_str) == RET_OK) {
-        log_debug("(%d:%d): %s code=%s %s\n", fscript->curr->row, fscript->curr->col, func,
+        log_debug("%s(%d:%d): %s code=%s %s\n", name, fscript->curr->row, fscript->curr->col, func,
                   code_str, message);
       } else {
-        log_debug("(%d:%d): %s code=%d %s\n", fscript->curr->row, fscript->curr->col, func, code,
+        log_debug("%s(%d:%d): %s code=%d %s\n", name, fscript->curr->row, fscript->curr->col, func, code,
                   message);
       }
     }
@@ -957,6 +958,7 @@ ret_t fscript_clean(fscript_t* fscript) {
   TK_OBJECT_UNREF(fscript->funcs_def);
   TKMEM_FREE(fscript->error_message);
   TKMEM_FREE(fscript->code_id);
+  TKMEM_FREE(fscript->name);
 
   if (fscript->first != NULL) {
     fscript_func_call_destroy(fscript->first);
@@ -2197,6 +2199,14 @@ ret_t fscript_parser_error_deinit(fscript_parser_error_t* error) {
   return_value_if_fail(error != NULL, RET_BAD_PARAMS);
   TKMEM_FREE(error->token);
   TKMEM_FREE(error->message);
+
+  return RET_OK;
+}
+
+ret_t fscript_set_name(fscript_t* fscript, const char* name) {
+  return_value_if_fail(fscript != NULL && name != NULL, RET_BAD_PARAMS);
+  TKMEM_FREE(fscript->name);
+  fscript->name = tk_strdup(name);
 
   return RET_OK;
 }

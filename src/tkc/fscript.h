@@ -127,6 +127,12 @@ typedef ret_t (*fscript_func_t)(fscript_t* fscript, fscript_args_t* args, value_
  */
 struct _fscript_t {
   /**
+   * @property {char*} name
+   * @annotation ["readable"]
+   * 脚本名称(用于调试信息)。
+   */
+  char* name;
+  /**
    * @property {str_t} str
    * @annotation ["readable"]
    * C语言实现函数可以使用这个变量，可以有效避免内存分配。
@@ -228,6 +234,16 @@ fscript_t* fscript_create_ex(tk_object_t* obj, const char* script, bool_t keep_f
  */
 fscript_t* fscript_init(fscript_t* fscript, tk_object_t* obj, const char* script,
                         const char* first_call_name, bool_t keep_func_name);
+
+
+/**
+ * @method fscript_set_name
+ * 设置脚本名称。
+ * @param {fscript_t*} fscript 脚本引擎对象。
+ * @param {const char*} name 脚本名称。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */                        
+ret_t fscript_set_name(fscript_t* fscript, const char* name);
 
 /**
  * @method fscript_syntax_check
