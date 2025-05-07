@@ -51,7 +51,6 @@
 #define TK_MAYBE_UNUSED
 #endif
 
-#include <stddef.h>
 #include <stdarg.h>
 #include <ctype.h>
 #include <errno.h>
@@ -76,6 +75,7 @@
 #endif /*TK_IS_PC*/
 
 #ifndef WITH_WASM
+#include <stddef.h>
 #include <math.h>
 #include <time.h>
 #include <wchar.h>
