@@ -26,6 +26,7 @@
 #include "scroll_view/scroll_view.h"
 
 static ret_t list_view_h_on_add_child(widget_t* widget, widget_t* child);
+static ret_t list_view_h_on_remove_child(widget_t* widget, widget_t* child);
 
 static ret_t list_view_h_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);
@@ -95,6 +96,7 @@ TK_DECL_VTABLE(list_view_h) = {.type = WIDGET_TYPE_LIST_VIEW_H,
                                .get_prop = list_view_h_get_prop,
                                .on_event = list_view_h_on_event,
                                .on_add_child = list_view_h_on_add_child,
+                               .on_remove_child = list_view_h_on_remove_child,
                                .on_paint_self = list_view_h_on_paint_self};
 
 static ret_t list_view_h_on_scroll_view_layout_children(widget_t* widget) {
@@ -161,6 +163,28 @@ static ret_t list_view_h_on_add_child(widget_t* widget, widget_t* child) {
 
     list_view_h->scroll_view = child;
     scroll_view->on_layout_children = list_view_h_on_scroll_view_layout_children;
+  }
+
+  return RET_CONTINUE;
+}
+
+static ret_t list_view_h_on_remove_child(widget_t* widget, widget_t* child) {
+  list_view_h_t* list_view_h = LIST_VIEW_H(widget);
+  ENSURE(list_view_h);
+
+  if (list_view_h->scroll_view == child) {
+    scroll_view_t* scroll_view = SCROLL_VIEW(child);
+
+    list_view_h->scroll_view = NULL;
+    scroll_view->on_layout_children = NULL;
+
+    WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+    if (iter && iter != child && tk_str_eq(iter->vt->type, WIDGET_TYPE_SCROLL_VIEW)) {
+      list_view_h->scroll_view = iter;
+      scroll_view->on_layout_children = list_view_h_on_scroll_view_layout_children;
+      break;
+    }
+    WIDGET_FOR_EACH_CHILD_END();
   }
 
   return RET_CONTINUE;
