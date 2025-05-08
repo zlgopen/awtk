@@ -4,6 +4,7 @@
   * 完善 fscript_func_call_init_func
   * 完善宏定义(感谢兆坤提供补丁)。
   * 完善custom_keys(感谢兆坤提供补丁)。
+  * 完善typed_array
 
 2025/05/07
   * 增加函数 fscript_set_name

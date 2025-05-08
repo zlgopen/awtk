@@ -2386,6 +2386,24 @@ for_in(i, a) {\
   TK_OBJECT_UNREF(obj);
 }
 
+
+TEST(FExr, typed_array_bool) {
+  const char* str =
+      "var b = 0;\
+var a = typed_array_create(\"bool\", 100);\
+typed_array_push(a, true)\
+typed_array_push(a, false)\
+typed_array_push(a, true)\
+a.size; \
+  ";
+
+  value_t v1;
+  tk_object_t* obj = object_default_create();
+  fscript_eval(obj, str, &v1);
+  ASSERT_EQ(value_int(&v1), 3);
+
+  TK_OBJECT_UNREF(obj);
+}
 TEST(FScript, flow) {
   value_t v;
   tk_object_t* obj = object_default_create();
