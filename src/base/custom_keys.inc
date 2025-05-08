@@ -27,7 +27,7 @@ static key_type_value_t* custom_keys_load(uint32_t* nr) {
   conf = conf_json_load(CUSTOM_KEYS_FILEPATH, FALSE);
   return_value_if_fail(conf != NULL, NULL);
 
-  *nr = tk_object_get_prop_uint32(conf, "#size", 0);
+  *nr = tk_object_get_prop_uint32(conf, CONF_SPECIAL_ATTR_SIZE, 0);
   if (*nr > 0) {
     uint32_t i = 0;
     char key[TK_NAME_LEN + 1] = {0};
@@ -36,7 +36,7 @@ static key_type_value_t* custom_keys_load(uint32_t* nr) {
     for (i = 0; i < *nr; i++) {
       value_t value;
 
-      tk_snprintf(key, sizeof(key), "[%d].#name", i);
+      tk_snprintf(key, sizeof(key), "[%d]." CONF_SPECIAL_ATTR_NAME, i);
       ret[i].name = tk_strdup(tk_object_get_prop_str(conf, key));
 
       tk_snprintf(key, sizeof(key), "[%d].type", i);
@@ -71,14 +71,14 @@ static ret_t custom_keys_unload(key_type_value_t* table, uint32_t nr) {
   return RET_OK;
 }
 
-static void custom_keys_init(bool_t set) {
+static inline void custom_keys_init(bool_t set) {
   s_custom_keys = custom_keys_load(&s_custom_keys_nr);
   if (set) {
     keys_type_set_custom_keys(s_custom_keys, s_custom_keys_nr);
   }
 }
 
-static void custom_keys_deinit(bool_t set) {
+static inline void custom_keys_deinit(bool_t set) {
   if (set) {
     keys_type_set_custom_keys(NULL, 0);
   }
