@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/05/08
+  * 完善 fscript_func_call_init_func
+
 2025/05/07
   * 增加函数 fscript_set_name
   * 修改移除list_view_h内的scroll_view时没有复位相关数据导致可能访问野指针的问题(感谢朝泽提供补丁)

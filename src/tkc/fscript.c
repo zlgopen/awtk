@@ -3360,10 +3360,10 @@ static ret_t fscript_func_call_init_func(fscript_func_call_t* call, tk_object_t*
                                          tk_object_t* funcs_def, const char* name, uint32_t size) {
   uint32_t i = 0;
   fscript_func_t func = NULL;
-  char func_name[TK_NAME_LEN + 1];
+  char func_name[2 * TK_NAME_LEN + 1];
   char full_func_name[2 * TK_NAME_LEN + 1];
 
-  tk_strncpy(func_name, name, tk_min(size, TK_NAME_LEN));
+  tk_strncpy(func_name, name, tk_min_int(size, sizeof(func_name)-1));
   for (i = 0; i < ARRAY_SIZE(s_builtin_funcs); i++) {
     const func_entry_t* iter = s_builtin_funcs + i;
     if (tk_str_eq(iter->name, func_name)) {
