@@ -151,11 +151,15 @@ static inline ret_t mem_allocator_destroy(mem_allocator_t* allocator) {
 #define MEM_ALLOCATOR_REALLOC(allocator, ptr, size) \
   mem_allocator_realloc(MEM_ALLOCATOR(allocator), ptr, size, __FUNCTION__, __LINE__)
 
+#ifdef WITH_CPPCHECK
+#define MEM_ALLOCATOR_FREE(allocator, ptr) mem_allocator_free(MEM_ALLOCATOR(allocator), ptr)
+#else
 #define MEM_ALLOCATOR_FREE(allocator, ptr)             \
   do {                                                 \
     mem_allocator_free(MEM_ALLOCATOR(allocator), ptr); \
     ptr = NULL;                                        \
   } while (0)
+#endif /*WITH_CPPCHECK*/
 
 END_C_DECLS
 

@@ -2,6 +2,7 @@
 
 2025/05/08
   * 完善 fscript_func_call_init_func
+  * 完善宏定义(感谢兆坤提供补丁)。
 
 2025/05/07
   * 增加函数 fscript_set_name

@@ -162,7 +162,7 @@ static ret_t get_ip_adapter_address_by_friendly_name(
           break;
         case LOCAL_IF_DESC:
           if (windows_network_interface->description_name != NULL) {
-            TKMEM_FREE(windows_network_interface->description_name)
+            TKMEM_FREE(windows_network_interface->description_name);
           }
 
           windows_network_interface->description_name = tk_wstrdup(current_addresses->Description);
@@ -170,7 +170,7 @@ static ret_t get_ip_adapter_address_by_friendly_name(
           adapter_name = char_to_wchar(current_addresses->AdapterName);
           if (adapter_name != NULL) {
             if (windows_network_interface->adapter_name != NULL) {
-              TKMEM_FREE(windows_network_interface->adapter_name)
+              TKMEM_FREE(windows_network_interface->adapter_name);
             }
 
             windows_network_interface->adapter_name = tk_wstrdup(adapter_name);

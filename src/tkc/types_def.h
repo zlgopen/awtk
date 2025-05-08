@@ -533,12 +533,12 @@ typedef void (*tk_sleep_ms_t)(uint32_t ms);
 
 #if defined(WIN32) && !defined(NDEBUG) && defined(_CONSOLE)
 #define TK_ENABLE_CONSOLE()                   \
-  {                                           \
+  do {                                        \
     AllocConsole();                           \
     FILE* fp = NULL;                          \
     freopen_s(&fp, "CONOUT$", "w+t", stdout); \
     system("chcp 65001");                     \
-  }
+  } while (0)
 #else
 #define TK_ENABLE_CONSOLE()
 #endif /*WIN32 && !NDEBUG*/
