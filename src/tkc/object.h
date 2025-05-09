@@ -45,6 +45,8 @@ typedef ret_t (*tk_object_find_props_t)(tk_object_t* obj, tk_compare_t cmp, cons
                                         darray_t* matched);
 typedef bool_t (*tk_object_can_exec_t)(tk_object_t* obj, const char* name, const char* args);
 typedef ret_t (*tk_object_exec_t)(tk_object_t* obj, const char* name, const char* args);
+typedef ret_t (*tk_object_exec_ex_t)(tk_object_t* obj, const char* name, const char* args,
+                                     value_t* result);
 typedef tk_object_t* (*tk_object_clone_t)(tk_object_t* obj);
 
 struct _tk_object_vtable_t {
@@ -65,6 +67,7 @@ struct _tk_object_vtable_t {
   tk_object_find_props_t find_props;
   tk_object_can_exec_t can_exec;
   tk_object_exec_t exec;
+  tk_object_exec_ex_t exec_ex;
   tk_object_clone_t clone;
 };
 
@@ -556,6 +559,21 @@ bool_t tk_object_can_exec(tk_object_t* obj, const char* name, const char* args);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t tk_object_exec(tk_object_t* obj, const char* name, const char* args);
+
+/**
+ * @method tk_object_exec_ex
+ * 执行指定的命令。
+ *
+ * @alias execute_ex
+ * @annotation ["scriptable"]
+ * @param {tk_object_t*} obj object对象。
+ * @param {const char*} name 命令的名称。
+ * @param {const char*} args 命令的参数。
+ * @param {value_t*} result 执行命令的结果。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_object_exec_ex(tk_object_t* obj, const char* name, const char* args, value_t* result);
 
 /**
  * @method tk_object_notify_changed

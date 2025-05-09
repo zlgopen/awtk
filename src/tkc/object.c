@@ -410,10 +410,21 @@ bool_t tk_object_can_exec(tk_object_t* obj, const char* name, const char* args) 
 }
 
 ret_t tk_object_exec(tk_object_t* obj, const char* name, const char* args) {
+  ret_t ret = RET_OK;
+  value_t result;
+  value_set_int(&result, 0);
+  ret = tk_object_exec_ex(obj, name, args, &result);
+  value_reset(&result);
+  return ret;
+}
+
+ret_t tk_object_exec_ex(tk_object_t* obj, const char* name, const char* args, value_t* result) {
   cmd_exec_event_t e;
   event_t* evt = NULL;
+  bool_t not_found = TRUE;
   ret_t ret = RET_NOT_IMPL;
   return_value_if_fail(name != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(result != NULL, RET_BAD_PARAMS);
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, RET_BAD_PARAMS);
 
   if (emitter_dispatch(EMITTER(obj), cmd_exec_event_init(&e, EVT_CMD_WILL_EXEC, name, args)) !=
@@ -421,8 +432,16 @@ ret_t tk_object_exec(tk_object_t* obj, const char* name, const char* args) {
     return RET_FAIL;
   }
 
-  if (obj->vt->exec != NULL) {
-    ret = obj->vt->exec(obj, name, args);
+  if (obj->vt->exec_ex != NULL) {
+    ret = obj->vt->exec_ex(obj, name, args, result);
+    not_found = (RET_NOT_FOUND == ret);
+  }
+
+  if (not_found) {
+    if (obj->vt->exec != NULL) {
+      ret = obj->vt->exec(obj, name, args);
+    }
+    value_set_int(result, ret);
   }
 
   evt = cmd_exec_event_init(&e, EVT_CMD_EXECED, name, args);
