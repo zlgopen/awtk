@@ -1030,7 +1030,7 @@ GetOSVersionGreater8_1()
 
 	enum { BUFF_SIZE = 30 };
 	char osName[BUFF_SIZE] = "UNKNOWN";
-	if (MyGetVersionEx(&g_osverinfo))
+	if (MyGetVersionEx())
 	{
 		switch (g_osverinfo.dwPlatformId)
 		{
@@ -1227,11 +1227,10 @@ WIN_GetWindowDpiRatio(_THIS, SDL_Window *window)
 			setDpiAwareness(2);
 			HMONITOR hMonitor;
 			POINT    pt;
-			HRESULT  hr = E_FAIL;
 			pt.x = 1;
 			pt.y = 1;
 			hMonitor = MonitorFromPoint(pt, MONITOR_DEFAULTTONEAREST);
-			hr = myGetDpi(hMonitor, MDT_EFFECTIVE_DPI, &x, &y);
+			myGetDpi(hMonitor, MDT_EFFECTIVE_DPI, &x, &y);
 		}
 		FreeLibrary(hModule);
 	}
