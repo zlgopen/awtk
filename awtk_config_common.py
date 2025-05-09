@@ -173,7 +173,7 @@ elif OS_NAME == 'Windows':
 
     elif TOOLS_NAME == 'mingw':
         OS_LIBS = ['kernel32', 'gdi32', 'user32', 'winmm', 'imm32', 'version', 'shell32', 'Setupapi',
-                   'ole32', 'Oleaut32', 'Advapi32', 'oleaut32', 'uuid', 'stdc++', "ws2_32"]
+                   'ole32', 'Oleaut32', 'Advapi32', 'oleaut32', 'uuid', 'stdc++', "ws2_32", "iphlpapi"]
         OS_FLAGS = '-DMINGW -DWINDOWS -D_CONSOLE  -Wall'
         OS_LINKFLAGS = ' -Wl,-rpath=./bin -Wl,-rpath=./ '
         OS_SUBSYSTEM_CONSOLE = ' -mconsole  '
