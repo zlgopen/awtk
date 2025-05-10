@@ -896,9 +896,32 @@ fformat(format, value) => str
 fformat("hello:%lf", 123)
 ```
 
-#### 4.1.25 exec
+#### 4.1.25 can_exec
+
+> 判断 object 里的一个命令是否可执行。
+
+----------------------------
+
+##### 原型
+
+```js
+can_exec(cmd, arg) => bool
+```
+
+##### 示例
+
+```js
+if (can_exec("clear", "all")) {
+  exec("clear", "all")
+}
+```
+
+> 具体功能与 object 的实现有关。
+
+#### 4.1.26 exec
 
 > 执行 object 里的一个命令。
+
 ----------------------------
 
 ##### 原型
@@ -915,23 +938,22 @@ exec("clear", "all")
 
 > 具体功能与 object 的实现有关。
 
-#### 4.1.26 can_exec
+#### 4.1.27 exec_ex
 
-> 判断 object 里的一个命令是否可执行。
+> 执行 object 里的一个命令。
+
 ----------------------------
 
 ##### 原型
 
 ```js
-can_exec(cmd, arg) => bool
+exec_ex(cmd, arg) => value
 ```
 
 ##### 示例
 
 ```js
-if (can_exec("clear", "all")) {
-  exec("clear", "all")
-}
+a = exec_ex("clear", "all")
 ```
 
 > 具体功能与 object 的实现有关。
