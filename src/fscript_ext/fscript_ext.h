@@ -19,7 +19,6 @@
 
 #include "tkc/str.h"
 #include "tkc/object.h"
-#include "fscript_ext/fscript_ext.h"
 
 BEGIN_C_DECLS
 
