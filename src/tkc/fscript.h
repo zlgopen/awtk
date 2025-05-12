@@ -235,14 +235,13 @@ fscript_t* fscript_create_ex(tk_object_t* obj, const char* script, bool_t keep_f
 fscript_t* fscript_init(fscript_t* fscript, tk_object_t* obj, const char* script,
                         const char* first_call_name, bool_t keep_func_name);
 
-
 /**
  * @method fscript_set_name
  * 设置脚本名称。
  * @param {fscript_t*} fscript 脚本引擎对象。
  * @param {const char*} name 脚本名称。
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */                        
+ */
 ret_t fscript_set_name(fscript_t* fscript, const char* name);
 
 /**
@@ -499,11 +498,13 @@ struct _fscript_func_call_t {
 #define STR_FSCRIPT_FUNCTION_PREFIX "function."
 
 /*用于扩展函数里检查参数*/
-#define FSCRIPT_FUNC_CHECK(predicate, code)                                          \
-  if (!(predicate)) {                                                                \
-    fscript_set_error(fscript, code, __FUNCTION__, "" #predicate " not satisfied."); \
-    return code;                                                                     \
-  }
+#define FSCRIPT_FUNC_CHECK(predicate, code)                                            \
+  do {                                                                                 \
+    if (!(predicate)) {                                                                \
+      fscript_set_error(fscript, code, __FUNCTION__, "" #predicate " not satisfied."); \
+      return code;                                                                     \
+    }                                                                                  \
+  } while (0)
 
 #define FSCRIPT_STR_GLOBAL_PREFIX "global."
 #define FSCRIPT_GLOBAL_PREFIX_LEN 7

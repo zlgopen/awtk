@@ -308,14 +308,18 @@ ret_t emitter_forward_retarget(void* ctx, event_t* e);
 
 #define EMITTER(emitter) ((emitter_t*)(emitter))
 
-#define EMITTER_ENABLE(emitter)       \
-  if ((emitter) != NULL) {            \
-    emitter_enable(EMITTER(emitter)); \
-  }
-#define EMITTER_DISABLE(emitter)       \
-  if ((emitter) != NULL) {             \
-    emitter_disable(EMITTER(emitter)); \
-  }
+#define EMITTER_ENABLE(emitter)         \
+  do {                                  \
+    if ((emitter) != NULL) {            \
+      emitter_enable(EMITTER(emitter)); \
+    }                                   \
+  } while (0)
+#define EMITTER_DISABLE(emitter)         \
+  do {                                   \
+    if ((emitter) != NULL) {             \
+      emitter_disable(EMITTER(emitter)); \
+    }                                    \
+  } while (0)
 
 /*public for test*/
 ret_t emitter_remove_item(emitter_t* emitter, emitter_item_t* item);

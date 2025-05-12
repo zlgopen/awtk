@@ -321,14 +321,16 @@ struct _widget_animator_t;
 typedef struct _widget_animator_t widget_animator_t;
 
 #define fix_xywh(x, y, w, h) \
-  if (w < 0) {               \
-    w = -w;                  \
-    x = x - w + 1;           \
-  }                          \
-  if (h < 0) {               \
-    h = -h;                  \
-    y = y - h + 1;           \
-  }
+  do {                       \
+    if (w < 0) {             \
+      w = -w;                \
+      x = x - w + 1;         \
+    }                        \
+    if (h < 0) {             \
+      h = -h;                \
+      y = y - h + 1;         \
+    }                        \
+  } while (0)
 
 #define TK_LONG_PRESS_TIME 1000
 #ifndef TK_KEY_LONG_PRESS_TIME

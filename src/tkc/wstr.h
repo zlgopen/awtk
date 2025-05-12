@@ -485,10 +485,12 @@ wchar_t* wcsdup(const wchar_t* s);
 #endif /*WITH_WCSXXX*/
 
 #define WSTR_DESTROY(str) \
-  if (str != NULL) {      \
-    wstr_destroy(str);    \
-    str = NULL;           \
-  }
+  do {                    \
+    if (str != NULL) {    \
+      wstr_destroy(str);  \
+      str = NULL;         \
+    }                     \
+  } while (0)
 
 END_C_DECLS
 

@@ -169,146 +169,194 @@ ret_t log_set_hook(tk_log_hook_t log, void* ctx);
 
 #ifdef ANDROID
 #include "android/log.h"
-#define log_debug(...)                                           \
-  if (log_get_log_level() <= LOG_LEVEL_DEBUG) {                  \
-    log_notify(LOG_LEVEL_DEBUG, __VA_ARGS__);                    \
-    __android_log_print(ANDROID_LOG_DEBUG, "AWTK", __VA_ARGS__); \
-  }
-#define log_info(...)                                           \
-  if (log_get_log_level() <= LOG_LEVEL_INFO) {                  \
-    log_notify(LOG_LEVEL_INFO, __VA_ARGS__);                    \
-    __android_log_print(ANDROID_LOG_INFO, "AWTK", __VA_ARGS__); \
-  }
-#define log_warn(...)                                           \
-  if (log_get_log_level() <= LOG_LEVEL_WARN) {                  \
-    log_notify(LOG_LEVEL_WARN, __VA_ARGS__);                    \
-    __android_log_print(ANDROID_LOG_WARN, "AWTK", __VA_ARGS__); \
-  }
-#define log_error(...)                                           \
-  if (log_get_log_level() <= LOG_LEVEL_ERROR) {                  \
-    log_notify(LOG_LEVEL_ERROR, __VA_ARGS__);                    \
-    __android_log_print(ANDROID_LOG_ERROR, "AWTK", __VA_ARGS__); \
-  }
+#define log_debug(...)                                             \
+  do {                                                             \
+    if (log_get_log_level() <= LOG_LEVEL_DEBUG) {                  \
+      log_notify(LOG_LEVEL_DEBUG, __VA_ARGS__);                    \
+      __android_log_print(ANDROID_LOG_DEBUG, "AWTK", __VA_ARGS__); \
+    }                                                              \
+  } while (0)
+#define log_info(...)                                             \
+  do {                                                            \
+    if (log_get_log_level() <= LOG_LEVEL_INFO) {                  \
+      log_notify(LOG_LEVEL_INFO, __VA_ARGS__);                    \
+      __android_log_print(ANDROID_LOG_INFO, "AWTK", __VA_ARGS__); \
+    }                                                             \
+  } while (0)
+#define log_warn(...)                                             \
+  do {                                                            \
+    if (log_get_log_level() <= LOG_LEVEL_WARN) {                  \
+      log_notify(LOG_LEVEL_WARN, __VA_ARGS__);                    \
+      __android_log_print(ANDROID_LOG_WARN, "AWTK", __VA_ARGS__); \
+    }                                                             \
+  } while (0)
+#define log_error(...)                                             \
+  do {                                                             \
+    if (log_get_log_level() <= LOG_LEVEL_ERROR) {                  \
+      log_notify(LOG_LEVEL_ERROR, __VA_ARGS__);                    \
+      __android_log_print(ANDROID_LOG_ERROR, "AWTK", __VA_ARGS__); \
+    }                                                              \
+  } while (0)
 #elif defined(IOS)
 void awtk_ios_log(const char* message, ...);
-#define log_debug(format, args...)               \
-  if (log_get_log_level() <= LOG_LEVEL_DEBUG) {  \
-    log_notify(LOG_LEVEL_DEBUG, format, ##args); \
-    awtk_ios_log(format, ##args);                \
-  }
-#define log_info(format, args...)               \
-  if (log_get_log_level() <= LOG_LEVEL_INFO) {  \
-    log_notify(LOG_LEVEL_INFO, format, ##args); \
-    awtk_ios_log(format, ##args);               \
-  }
-#define log_warn(format, args...)               \
-  if (log_get_log_level() <= LOG_LEVEL_WARN) {  \
-    log_notify(LOG_LEVEL_WARN, format, ##args); \
-    awtk_ios_log(format, ##args);               \
-  }
-#define log_error(format, args...)               \
-  if (log_get_log_level() <= LOG_LEVEL_ERROR) {  \
-    log_notify(LOG_LEVEL_ERROR, format, ##args); \
-    awtk_ios_log(format, ##args);                \
-  }
+#define log_debug(format, args...)                 \
+  do {                                             \
+    if (log_get_log_level() <= LOG_LEVEL_DEBUG) {  \
+      log_notify(LOG_LEVEL_DEBUG, format, ##args); \
+      awtk_ios_log(format, ##args);                \
+    }                                              \
+  } while (0)
+#define log_info(format, args...)                 \
+  do {                                            \
+    if (log_get_log_level() <= LOG_LEVEL_INFO) {  \
+      log_notify(LOG_LEVEL_INFO, format, ##args); \
+      awtk_ios_log(format, ##args);               \
+    }                                             \
+  } while (0)
+#define log_warn(format, args...)                 \
+  do {                                            \
+    if (log_get_log_level() <= LOG_LEVEL_WARN) {  \
+      log_notify(LOG_LEVEL_WARN, format, ##args); \
+      awtk_ios_log(format, ##args);               \
+    }                                             \
+  } while (0)
+#define log_error(format, args...)                 \
+  do {                                             \
+    if (log_get_log_level() <= LOG_LEVEL_ERROR) {  \
+      log_notify(LOG_LEVEL_ERROR, format, ##args); \
+      awtk_ios_log(format, ##args);                \
+    }                                              \
+  } while (0)
 #elif defined(WIN32)
 #include <windows.h>
 #if defined(__GNUC__)
 /*MINGW*/
-#define log_debug(format, args...)               \
-  if (log_get_log_level() <= LOG_LEVEL_DEBUG) {  \
-    log_notify(LOG_LEVEL_DEBUG, format, ##args); \
-    printf(format, ##args);                      \
-  }
-#define log_info(format, args...)               \
-  if (log_get_log_level() <= LOG_LEVEL_INFO) {  \
-    log_notify(LOG_LEVEL_INFO, format, ##args); \
-    printf(format, ##args);                     \
-  }
-#define log_warn(format, args...)               \
-  if (log_get_log_level() <= LOG_LEVEL_WARN) {  \
-    log_notify(LOG_LEVEL_WARN, format, ##args); \
-    printf(format, ##args);                     \
-  }
-#define log_error(format, args...)               \
-  if (log_get_log_level() <= LOG_LEVEL_ERROR) {  \
-    log_notify(LOG_LEVEL_ERROR, format, ##args); \
-    printf(format, ##args);                      \
-  }
+#define log_debug(format, args...)                 \
+  do {                                             \
+    if (log_get_log_level() <= LOG_LEVEL_DEBUG) {  \
+      log_notify(LOG_LEVEL_DEBUG, format, ##args); \
+      printf(format, ##args);                      \
+    }                                              \
+  } while (0)
+#define log_info(format, args...)                 \
+  do {                                            \
+    if (log_get_log_level() <= LOG_LEVEL_INFO) {  \
+      log_notify(LOG_LEVEL_INFO, format, ##args); \
+      printf(format, ##args);                     \
+    }                                             \
+  } while (0)
+#define log_warn(format, args...)                 \
+  do {                                            \
+    if (log_get_log_level() <= LOG_LEVEL_WARN) {  \
+      log_notify(LOG_LEVEL_WARN, format, ##args); \
+      printf(format, ##args);                     \
+    }                                             \
+  } while (0)
+#define log_error(format, args...)                 \
+  do {                                             \
+    if (log_get_log_level() <= LOG_LEVEL_ERROR) {  \
+      log_notify(LOG_LEVEL_ERROR, format, ##args); \
+      printf(format, ##args);                      \
+    }                                              \
+  } while (0)
 #else
 /*MSVC*/
-#define log_debug(format, ...)                        \
-  if (log_get_log_level() <= LOG_LEVEL_DEBUG) {       \
-    log_notify(LOG_LEVEL_DEBUG, format, __VA_ARGS__); \
-    printf(format, __VA_ARGS__);                      \
-    fflush(stdout);                                   \
-  }
-#define log_info(format, ...)                        \
-  if (log_get_log_level() <= LOG_LEVEL_INFO) {       \
-    log_notify(LOG_LEVEL_INFO, format, __VA_ARGS__); \
-    printf(format, __VA_ARGS__);                     \
-    fflush(stdout);                                  \
-  }
-#define log_warn(format, ...)                        \
-  if (log_get_log_level() <= LOG_LEVEL_WARN) {       \
-    log_notify(LOG_LEVEL_WARN, format, __VA_ARGS__); \
-    printf(format, __VA_ARGS__);                     \
-    fflush(stdout);                                  \
-  }
-#define log_error(format, ...)                        \
-  if (log_get_log_level() <= LOG_LEVEL_ERROR) {       \
-    log_notify(LOG_LEVEL_ERROR, format, __VA_ARGS__); \
-    printf(format, __VA_ARGS__);                      \
-    fflush(stdout);                                   \
-  }
+#define log_debug(format, ...)                          \
+  do {                                                  \
+    if (log_get_log_level() <= LOG_LEVEL_DEBUG) {       \
+      log_notify(LOG_LEVEL_DEBUG, format, __VA_ARGS__); \
+      printf(format, __VA_ARGS__);                      \
+      fflush(stdout);                                   \
+    }                                                   \
+  } while (0)
+#define log_info(format, ...)                          \
+  do {                                                 \
+    if (log_get_log_level() <= LOG_LEVEL_INFO) {       \
+      log_notify(LOG_LEVEL_INFO, format, __VA_ARGS__); \
+      printf(format, __VA_ARGS__);                     \
+      fflush(stdout);                                  \
+    }                                                  \
+  } while (0)
+#define log_warn(format, ...)                          \
+  do {                                                 \
+    if (log_get_log_level() <= LOG_LEVEL_WARN) {       \
+      log_notify(LOG_LEVEL_WARN, format, __VA_ARGS__); \
+      printf(format, __VA_ARGS__);                     \
+      fflush(stdout);                                  \
+    }                                                  \
+  } while (0)
+#define log_error(format, ...)                          \
+  do {                                                  \
+    if (log_get_log_level() <= LOG_LEVEL_ERROR) {       \
+      log_notify(LOG_LEVEL_ERROR, format, __VA_ARGS__); \
+      printf(format, __VA_ARGS__);                      \
+      fflush(stdout);                                   \
+    }                                                   \
+  } while (0)
 #endif
 #elif defined(HAS_STDIO) || defined(AWTK_WEB)
 #include <stdio.h>
-#define log_debug(format, args...)               \
-  if (log_get_log_level() <= LOG_LEVEL_DEBUG) {  \
-    log_notify(LOG_LEVEL_DEBUG, format, ##args); \
-    printf(format, ##args);                      \
-    fflush(stdout);                              \
-  }
-#define log_info(format, args...)               \
-  if (log_get_log_level() <= LOG_LEVEL_INFO) {  \
-    log_notify(LOG_LEVEL_INFO, format, ##args); \
-    printf(format, ##args);                     \
-    fflush(stdout);                             \
-  }
-#define log_warn(format, args...)               \
-  if (log_get_log_level() <= LOG_LEVEL_WARN) {  \
-    log_notify(LOG_LEVEL_WARN, format, ##args); \
-    printf(format, ##args);                     \
-    fflush(stdout);                             \
-  }
-#define log_error(format, args...)               \
-  if (log_get_log_level() <= LOG_LEVEL_ERROR) {  \
-    log_notify(LOG_LEVEL_ERROR, format, ##args); \
-    printf(format, ##args);                      \
-    fflush(stdout);                              \
-  }
+#define log_debug(format, args...)                 \
+  do {                                             \
+    if (log_get_log_level() <= LOG_LEVEL_DEBUG) {  \
+      log_notify(LOG_LEVEL_DEBUG, format, ##args); \
+      printf(format, ##args);                      \
+      fflush(stdout);                              \
+    }                                              \
+  } while (0)
+#define log_info(format, args...)                 \
+  do {                                            \
+    if (log_get_log_level() <= LOG_LEVEL_INFO) {  \
+      log_notify(LOG_LEVEL_INFO, format, ##args); \
+      printf(format, ##args);                     \
+      fflush(stdout);                             \
+    }                                             \
+  } while (0)
+#define log_warn(format, args...)                 \
+  do {                                            \
+    if (log_get_log_level() <= LOG_LEVEL_WARN) {  \
+      log_notify(LOG_LEVEL_WARN, format, ##args); \
+      printf(format, ##args);                     \
+      fflush(stdout);                             \
+    }                                             \
+  } while (0)
+#define log_error(format, args...)                 \
+  do {                                             \
+    if (log_get_log_level() <= LOG_LEVEL_ERROR) {  \
+      log_notify(LOG_LEVEL_ERROR, format, ##args); \
+      printf(format, ##args);                      \
+      fflush(stdout);                              \
+    }                                              \
+  } while (0)
 #elif defined(log_impl)
-#define log_debug(format, args...)               \
-  if (log_get_log_level() <= LOG_LEVEL_DEBUG) {  \
-    log_notify(LOG_LEVEL_DEBUG, format, ##args); \
-    log_impl(format, ##args);                    \
-  }
-#define log_info(format, args...)               \
-  if (log_get_log_level() <= LOG_LEVEL_INFO) {  \
-    log_notify(LOG_LEVEL_INFO, format, ##args); \
-    log_impl(format, ##args);                   \
-  }
-#define log_warn(format, args...)               \
-  if (log_get_log_level() <= LOG_LEVEL_WARN) {  \
-    log_notify(LOG_LEVEL_WARN, format, ##args); \
-    log_impl(format, ##args);                   \
-  }
-#define log_error(format, args...)               \
-  if (log_get_log_level() <= LOG_LEVEL_ERROR) {  \
-    log_notify(LOG_LEVEL_ERROR, format, ##args); \
-    log_impl(format, ##args);                    \
-  }
+#define log_debug(format, args...)                 \
+  do {                                             \
+    if (log_get_log_level() <= LOG_LEVEL_DEBUG) {  \
+      log_notify(LOG_LEVEL_DEBUG, format, ##args); \
+      log_impl(format, ##args);                    \
+    }                                              \
+  } while (0)
+#define log_info(format, args...)                 \
+  do {                                            \
+    if (log_get_log_level() <= LOG_LEVEL_INFO) {  \
+      log_notify(LOG_LEVEL_INFO, format, ##args); \
+      log_impl(format, ##args);                   \
+    }                                             \
+  } while (0)
+#define log_warn(format, args...)                 \
+  do {                                            \
+    if (log_get_log_level() <= LOG_LEVEL_WARN) {  \
+      log_notify(LOG_LEVEL_WARN, format, ##args); \
+      log_impl(format, ##args);                   \
+    }                                             \
+  } while (0)
+#define log_error(format, args...)                 \
+  do {                                             \
+    if (log_get_log_level() <= LOG_LEVEL_ERROR) {  \
+      log_notify(LOG_LEVEL_ERROR, format, ##args); \
+      log_impl(format, ##args);                    \
+    }                                              \
+  } while (0)
 #else
 #ifdef WITH_LOG_NOTIFY
 #define log_debug(format, args...) log_notify(LOG_LEVEL_DEBUG, format, ##args)

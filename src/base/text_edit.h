@@ -27,14 +27,14 @@
 BEGIN_C_DECLS
 
 #define TEXT_EDIT_GET_STYLE_MARGIN(style, out_value, type)             \
-  {                                                                    \
+  do {                                                                 \
     if ((out_value) == 0) {                                            \
       (out_value) = style_get_int((style), STYLE_ID_MARGIN_##type, 0); \
     }                                                                  \
     if ((out_value) == 0) {                                            \
       (out_value) = style_get_int((style), STYLE_ID_MARGIN, 0);        \
     }                                                                  \
-  }
+  } while (0)
 
 #define CHAR_IS_LINE_BREAK(c) ((c) == '\r' || (c) == '\n')
 #define TWINS_CHAR_IS_LINE_BREAK(c1, c2) ((c1) == '\r' && (c2) == '\n')

@@ -187,7 +187,7 @@ static align_h_t widget_get_text_align_h(widget_t* widget) {
     if (widget_get_prop((widget), WIDGET_PROP_##type##_MARGIN, &v) == RET_OK) { \
       (out_value) = value_int(&v);                                              \
     }                                                                           \
-    TEXT_EDIT_GET_STYLE_MARGIN(style, out_value, type)                          \
+    TEXT_EDIT_GET_STYLE_MARGIN(style, out_value, type);                         \
   }
 
 static ret_t widget_get_text_layout_info(widget_t* widget, text_layout_info_t* info) {
@@ -2096,7 +2096,7 @@ ret_t text_edit_paste(text_edit_t* text_edit, const wchar_t* str, uint32_t size)
       delete_type = DELETE_BY_KEY_DELETE;
     }
     if (key != 0) {
-      if (impl->on_text_will_delete && 
+      if (impl->on_text_will_delete &&
           impl->on_text_will_delete(impl->on_text_will_delete_ctx, delete_type) == RET_STOP) {
         return RET_OK;
       }

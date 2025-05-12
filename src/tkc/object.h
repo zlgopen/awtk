@@ -1107,11 +1107,13 @@ int32_t tk_object_compare_name_without_nullptr(tk_object_t* obj, tk_object_t* ot
 
 #define TK_OBJECT_REF(obj) tk_object_ref((tk_object_t*)(obj))
 
-#define TK_OBJECT_UNREF(obj)              \
-  if ((obj) != NULL) {                    \
-    tk_object_unref((tk_object_t*)(obj)); \
-    (obj) = NULL;                         \
-  }
+#define TK_OBJECT_UNREF(obj)                \
+  do {                                      \
+    if ((obj) != NULL) {                    \
+      tk_object_unref((tk_object_t*)(obj)); \
+      (obj) = NULL;                         \
+    }                                       \
+  } while (0)
 
 /**
  * @enum object_cmd_t

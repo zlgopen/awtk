@@ -873,10 +873,12 @@ char str_escape_char(char c);
 char str_unescape_char(const char* s, uint32_t* nr);
 
 #define STR_DESTROY(str) \
-  if (str != NULL) {     \
-    str_destroy(str);    \
-    str = NULL;          \
-  }
+  do {                   \
+    if (str != NULL) {   \
+      str_destroy(str);  \
+      str = NULL;        \
+    }                    \
+  } while (0)
 
 END_C_DECLS
 
