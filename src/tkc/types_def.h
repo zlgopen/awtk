@@ -361,10 +361,12 @@ typedef enum _ret_t {
 
 #endif /*TK_PATH_SEP*/
 
-#define log_if_fail(p)                                                     \
-  if (!(p)) {                                                              \
-    log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
-  }
+#define log_if_fail(p)                                                       \
+  do {                                                                       \
+    if (!(p)) {                                                              \
+      log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
+    }                                                                        \
+  } while (0)
 
 #if defined(NDEBUG) || defined(SYLIXOS)
 #ifdef WITH_INFERCHECK
@@ -374,69 +376,90 @@ typedef enum _ret_t {
 #define ENSURE(p) (void)(p)
 #endif
 #define goto_error_if_fail(p) \
-  if (!(p)) {                 \
-    goto error;               \
-  }
+  do {                        \
+    if (!(p)) {               \
+      goto error;             \
+    }                         \
+  } while (0)
 
 #define goto_error_if_fail_ex(p, sentence) \
-  if (!(p)) {                              \
-    sentence;                              \
-    goto error;                            \
-  }
+  do {                                     \
+    if (!(p)) {                            \
+      sentence;                            \
+      goto error;                          \
+    }                                      \
+  } while (0)
 
 #define return_if_fail(p) \
-  if (!(p)) {             \
-    return;               \
-  }
+  do {                    \
+    if (!(p)) {           \
+      return;             \
+    }                     \
+  } while (0)
 
 #define break_if_fail(p) \
-  if (!(p)) {            \
-    break;               \
+  {                      \
+    if (!(p)) {          \
+      break;             \
+    }                    \
   }
 
 #define return_value_if_fail(p, value) \
-  if (!(p)) {                          \
-    return (value);                    \
-  }
+  do {                                 \
+    if (!(p)) {                        \
+      return (value);                  \
+    }                                  \
+  } while (0)
 #else
 #define ENSURE(p) assert(p)
-#define goto_error_if_fail(p)                                              \
-  if (!(p)) {                                                              \
-    log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
-    goto error;                                                            \
+#define goto_error_if_fail(p)                                                \
+  do {                                                                       \
+    if (!(p)) {                                                              \
+      log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
+      goto error;                                                            \
+    }                                                                        \
+  } while (0)
+
+#define goto_error_if_fail_ex(p, sentence)                                   \
+  do {                                                                       \
+    if (!(p)) {                                                              \
+      log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
+      sentence;                                                              \
+      goto error;                                                            \
+    }                                                                        \
+  } while (0)
+
+#define break_if_fail(p)                                                     \
+  {                                                                          \
+    if (!(p)) {                                                              \
+      log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
+      break;                                                                 \
+    }                                                                        \
   }
 
-#define goto_error_if_fail_ex(p, sentence)                                 \
-  if (!(p)) {                                                              \
-    log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
-    sentence;                                                              \
-    goto error;                                                            \
-  }
+#define return_if_fail(p)                                                    \
+  do {                                                                       \
+    if (!(p)) {                                                              \
+      log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
+      return;                                                                \
+    }                                                                        \
+  } while (0)
 
-#define break_if_fail(p)                                                   \
-  if (!(p)) {                                                              \
-    log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
-    break;                                                                 \
-  }
-
-#define return_if_fail(p)                                                  \
-  if (!(p)) {                                                              \
-    log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
-    return;                                                                \
-  }
-
-#define return_value_if_fail(p, value)                                     \
-  if (!(p)) {                                                              \
-    log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
-    return (value);                                                        \
-  }
-
+#define return_value_if_fail(p, value)                                       \
+  do {                                                                       \
+    if (!(p)) {                                                              \
+      log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
+      return (value);                                                        \
+    }                                                                        \
+  } while (0)
 #endif
 
 #define return_value_if_equal(p, value) \
-  if ((p) == value) {                   \
-    return (value);                     \
-  }
+  do {                                  \
+    if ((p) == value) {                 \
+      return (value);                   \
+    }                                   \
+  } while (0)
 
 #define tk_min(a, b) ((a) < (b) ? (a) : (b))
 #define tk_abs(a) ((a) < (0) ? (-(a)) : (a))

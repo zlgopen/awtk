@@ -44,9 +44,9 @@ TK_DECL_VTABLE(dialog_client) = {.size = sizeof(dialog_client_t),
 widget_t* dialog_client_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(dialog_client), x, y, w, h);
   return_value_if_fail(widget != NULL, NULL);
-  return_value_if_fail(dialog_client_init(widget) == RET_OK, NULL)
+  return_value_if_fail(dialog_client_init(widget) == RET_OK, NULL);
 
-      return widget;
+  return widget;
 }
 
 widget_t* dialog_client_cast(widget_t* widget) {
