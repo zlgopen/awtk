@@ -791,7 +791,7 @@ fs_t* os_fs(void);
  *  }
  *  return RET_OK;
  * }
- * ...  
+ * ...
  * fs_foreach_file("tests/testdata", on_file, (void*)".json");
  *```
  *
@@ -802,6 +802,33 @@ fs_t* os_fs(void);
  * @return {ret_t} 返回TRUE表示成功，否则表示失败。
  */
 ret_t fs_foreach_file(const char* path, tk_visit_t on_file, void* ctx);
+
+/**
+ * @method fs_foreach_dir
+ * 遍历指定目录下全部文件夹。
+ *
+ * @param {const char*} path 目录。
+ * @param {int} depth 遍历深度。
+ * @param {tk_visit_t} on_dir 回调函数(完整目录名通过data参数传入)。
+ * @param {void*} ctx 回调函数上下文。
+ *
+ * @return {ret_t} 返回TRUE表示成功，否则表示失败。
+ */
+ret_t fs_foreach_dir(const char* path, int depth, tk_visit_t on_dir, void* ctx);
+
+/**
+ * @method fs_foreach
+ * 遍历指定目录下全部文件和文件夹。
+ *
+ * @param {const char*} path    要遍历的目录路径。
+ * @param {int}         depth   遍历的最大深度。
+ * @param {tk_visit_t}  on_file 文件的回调函数(完整文件名通过data参数传入)。
+ * @param {tk_visit_t}  on_dir  文件夹的回调函数(完整文件名通过data参数传入)。
+ * @param {void*}       ctx     传递给回调函数的上下文数据。
+ *
+ * @return {ret_t} 返回 RET_OK 表示成功。
+ */
+ret_t fs_foreach(const char* path, int depth, tk_visit_t on_file, tk_visit_t on_dir, void* ctx);
 
 /**
  * @method file_exist

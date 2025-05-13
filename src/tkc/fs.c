@@ -775,12 +775,17 @@ ret_t fs_copy_dir_ex(fs_t* fs, const char* src, const char* dst, bool_t overwrit
   return ret;
 }
 
-ret_t fs_foreach_file(const char* path, tk_visit_t on_file, void* ctx) {
+ret_t fs_foreach(const char* path, int depth, tk_visit_t on_file, tk_visit_t on_dir, void* ctx) {
   fs_item_t item;
   fs_t* fs = os_fs();
   fs_dir_t* dir = NULL;
   char filename[MAX_PATH + 1];
-  return_value_if_fail(fs != NULL && path != NULL && on_file != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(fs != NULL && path != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(on_file || on_dir, RET_BAD_PARAMS);
+
+  if (depth == 0) {
+    return RET_OK;
+  }
 
   dir = fs_open_dir(fs, path);
   return_value_if_fail(dir != NULL, RET_BAD_PARAMS);
@@ -791,14 +796,25 @@ ret_t fs_foreach_file(const char* path, tk_visit_t on_file, void* ctx) {
 
     path_build(filename, MAX_PATH, path, item.name, NULL);
     if (item.is_reg_file) {
-      if (on_file(ctx, filename) != RET_OK) {
+      if (on_file != NULL && on_file(ctx, filename) != RET_OK) {
         break;
       }
     } else if (item.is_dir) {
-      fs_foreach_file(filename, on_file, ctx);
+      if (on_dir != NULL && on_dir(ctx, filename) != RET_OK) {
+        break;
+      }
+      fs_foreach(filename, depth - 1, on_file, on_dir, ctx);
     }
   }
   fs_dir_close(dir);
 
   return RET_OK;
+}
+
+ret_t fs_foreach_file(const char* path, tk_visit_t on_file, void* ctx) {
+  return fs_foreach(path, -1, on_file, NULL, ctx);
+}
+
+ret_t fs_foreach_dir(const char* path, int depth, tk_visit_t on_dir, void* ctx) {
+  return fs_foreach(path, depth, NULL, on_dir, ctx);
 }

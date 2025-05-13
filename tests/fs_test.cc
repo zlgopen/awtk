@@ -1,6 +1,7 @@
 ﻿#include "tkc/fs.h"
 #include "tkc/mem.h"
 #include "tkc/utils.h"
+#include "tkc/darray.h"
 #include "gtest/gtest.h"
 
 TEST(Fs, basic) {
@@ -227,6 +228,71 @@ static ret_t on_file(void* ctx, const void* data) {
 
 TEST(Fs, foreach_file) {
   fs_foreach_file("tests/testdata", on_file, (void*)".json");
+}
+
+static int on_dir_cmp(const void* a, const void* ctx) {
+  return strstr((const char*)a, (const char*)ctx) ? 0 : -1;
+}
+
+static ret_t on_dir(void* ctx, const void* data) {
+  darray_t* dirs = (darray_t*)ctx;
+  const char* dpath = (const char*)data;
+
+  darray_push(dirs, tk_strdup(dpath));
+  return RET_OK;
+}
+
+TEST(Fs, foreach_dir) {
+  darray_t* dirs = darray_create(4, default_destroy, (tk_compare_t)on_dir_cmp);
+
+  ASSERT_EQ(fs_create_dir_r(os_fs(), "./tmp1/a1/b1"), RET_OK);
+  ASSERT_EQ(fs_create_dir_r(os_fs(), "./tmp1/a1/b2"), RET_OK);
+  ASSERT_EQ(fs_create_dir_r(os_fs(), "./tmp1/a1/b3"), RET_OK);
+
+  ASSERT_EQ(file_write("./tmp1/s.txt", "hello", 5), RET_OK);
+  ASSERT_EQ(file_write("./tmp1/a1/s.txt", "hello", 5), RET_OK);
+
+  ASSERT_EQ(fs_create_dir_r(os_fs(), "./tmp1/a2/b1"), RET_OK);
+  ASSERT_EQ(fs_create_dir_r(os_fs(), "./tmp1/a2/b2"), RET_OK);
+  ASSERT_EQ(fs_create_dir_r(os_fs(), "./tmp1/a2/b2/c1"), RET_OK);
+  ASSERT_EQ(fs_create_dir_r(os_fs(), "./tmp1/a2/b2/c2"), RET_OK);
+  ASSERT_EQ(file_write("./tmp1/a2/s.txt", "hello", 5), RET_OK);
+  ASSERT_EQ(file_write("./tmp1/a2/b2/c1/s.txt", "hello", 5), RET_OK);
+
+  ASSERT_EQ(fs_create_dir_r(os_fs(), "./tmp1/a3"), RET_OK);
+  ASSERT_EQ(file_write("./tmp1/a3/s.txt", "hello", 5), RET_OK);
+
+  fs_foreach_dir("./tmp1", 1, on_dir, dirs);
+  ASSERT_EQ(dirs->size, 3);
+  ASSERT_TRUE(darray_find(dirs, (void*)"a1") != NULL);
+  ASSERT_TRUE(darray_find(dirs, (void*)"a2") != NULL);
+  ASSERT_TRUE(darray_find(dirs, (void*)"a3") != NULL);
+  ASSERT_TRUE(darray_find(dirs, (void*)"b1") == NULL);
+  ASSERT_TRUE(darray_find(dirs, (void*)"s.txt") == NULL);
+  darray_clear(dirs);
+
+  fs_foreach_dir("./tmp1", 2, on_dir, dirs);
+  ASSERT_EQ(dirs->size, 3 + 5);
+  ASSERT_TRUE(darray_find(dirs, (void*)"b1") != NULL);
+  ASSERT_TRUE(darray_find(dirs, (void*)"b2") != NULL);
+  ASSERT_TRUE(darray_find(dirs, (void*)"b3") != NULL);
+  ASSERT_TRUE(darray_find(dirs, (void*)"c1") == NULL);
+  ASSERT_TRUE(darray_find(dirs, (void*)"s.txt") == NULL);
+  darray_clear(dirs);
+
+  fs_foreach_dir("./tmp1", 0xffff, on_dir, dirs);
+  ASSERT_EQ(dirs->size, 3 + 5 + 2);
+  ASSERT_TRUE(darray_find(dirs, (void*)"b1") != NULL);
+  ASSERT_TRUE(darray_find(dirs, (void*)"b2") != NULL);
+  ASSERT_TRUE(darray_find(dirs, (void*)"b3") != NULL);
+  ASSERT_TRUE(darray_find(dirs, (void*)"c1") != NULL);
+  ASSERT_TRUE(darray_find(dirs, (void*)"c2") != NULL);
+  ASSERT_TRUE(darray_find(dirs, (void*)"s.txt") == NULL);
+  darray_clear(dirs);
+
+  darray_destroy(dirs);
+
+  ASSERT_EQ(fs_remove_dir_r(os_fs(), "./tmp1"), RET_OK);
 }
 
 #ifdef WIN32
