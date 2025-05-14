@@ -320,6 +320,7 @@ CPU_haveAltiVec(void)
 }
 
 #if (defined(__LINUX__) || defined(__ANDROID__)) && defined(__ARM_ARCH) && !defined(HAVE_GETAUXVAL)
+#include <unistd.h>
 static int
 readProcAuxvForNeon(void)
 {

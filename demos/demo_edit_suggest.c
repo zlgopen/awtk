@@ -140,7 +140,7 @@ static ret_t init_widget(void* ctx, const void* iter) {
     if (tk_str_eq(name, "close()")) {
       widget_on(widget, EVT_CLICK, on_close_window, win);
     } else if (tk_str_eq(type, WIDGET_TYPE_EDIT_EX)) {
-      edit_ex_t* edit_ex = edit_ex_cast(widget);
+      edit_ex_t* edit_ex = EDIT_EX(widget);
       if (TK_STR_IS_NOT_EMPTY(edit_ex->suggest_words_item_formats)) {
         edit_ex_set_suggest_words(widget, s_suggest_words_list);
       } else {
