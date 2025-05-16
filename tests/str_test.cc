@@ -2,6 +2,7 @@
 #include "tkc/utils.h"
 #include "tkc/object_default.h"
 #include "gtest/gtest.h"
+#include "common.h"
 #include <string>
 
 using std::string;
@@ -52,6 +53,12 @@ TEST(Str, str_append_wchar) {
 
   str_append_wchar_with_len(&s, L"ABCABCABC", 3);
   ASSERT_STREQ(s.str, "aABC123ABC");
+
+  str_append_wchar(&s, L"中文");
+  assert_str_eq(L"aABC123ABC中文", s.str);
+
+  str_append_wchar_with_len(&s, L"一二三四五", 3);
+  assert_str_eq(L"aABC123ABC中文一二三", s.str);
 
   str_reset(&s);
 }

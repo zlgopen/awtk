@@ -164,7 +164,7 @@ ret_t str_append_wchar_with_len(str_t* str, const wchar_t* text, uint32_t len) {
   return_value_if_fail(str_extend(str, str->size + size + 1) == RET_OK, RET_OOM);
 
   tk_utf8_from_utf16_ex(text, len, str->str + str->size, str->capacity - str->size - 1);
-  str->size += len;
+  str->size += strlen(str->str + str->size);
   return RET_OK;
 }
 
