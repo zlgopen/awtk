@@ -1228,6 +1228,7 @@ ret_t edit_set_input_type(widget_t* widget, input_type_t type) {
     edit->pre_delete = edit_time_full_pre_delete;
   }
 
+  edit_check_valid_value(widget);
   return RET_OK;
 }
 
@@ -1565,6 +1566,9 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_AUTO_FIX)) {
     edit->auto_fix = value_bool(v);
+    if (edit->auto_fix) {
+      edit_check_valid_value(widget);
+    }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_SELECT_NONE_WHEN_FOCUSED)) {
     edit->select_none_when_focused = value_bool(v);
