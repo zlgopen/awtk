@@ -276,8 +276,8 @@ ret_t fscript_set_error(fscript_t* fscript, ret_t code, const char* func, const 
         log_debug("%s(%d:%d): %s code=%s %s\n", name, fscript->curr->row, fscript->curr->col, func,
                   code_str, message);
       } else {
-        log_debug("%s(%d:%d): %s code=%d %s\n", name, fscript->curr->row, fscript->curr->col, func, code,
-                  message);
+        log_debug("%s(%d:%d): %s code=%d %s\n", name, fscript->curr->row, fscript->curr->col, func,
+                  code, message);
       }
     }
   }
@@ -973,7 +973,7 @@ static ret_t fscript_reset(fscript_t* fscript) {
 
   fscript_hook_on_deinit(fscript);
   fscript_clean(fscript);
-
+  TK_OBJECT_UNREF(fscript->obj);
   memset(fscript, 0x00, sizeof(fscript_t));
 
   return RET_OK;
@@ -1542,7 +1542,7 @@ ret_t fscript_eval(tk_object_t* obj, const char* script, value_t* result) {
   value_t v;
   ret_t ret = RET_OK;
   fscript_t* fscript = NULL;
-  
+
   if (result != NULL) {
     value_set_int(result, 0);
   }
@@ -2019,7 +2019,7 @@ static fscript_t* fscript_init_with_parser(fscript_t* fscript, fscript_parser_t*
   fscript = fscript != NULL ? fscript : TKMEM_ZALLOC(fscript_t);
   return_value_if_fail(fscript != NULL, NULL);
   fscript->str = parser->temp;
-  fscript->obj = parser->obj;
+  fscript->obj = TK_OBJECT_REF(parser->obj);
   fscript->first = parser->first;
   fscript->funcs_def = parser->funcs_def;
   fscript->code_id = parser->code_id;
@@ -3375,7 +3375,7 @@ static ret_t fscript_func_call_init_func(fscript_func_call_t* call, tk_object_t*
   char func_name[2 * TK_NAME_LEN + 1];
   char full_func_name[2 * TK_NAME_LEN + 1];
 
-  tk_strncpy(func_name, name, tk_min_int(size, sizeof(func_name)-1));
+  tk_strncpy(func_name, name, tk_min_int(size, sizeof(func_name) - 1));
   for (i = 0; i < ARRAY_SIZE(s_builtin_funcs); i++) {
     const func_entry_t* iter = s_builtin_funcs + i;
     if (tk_str_eq(iter->name, func_name)) {
