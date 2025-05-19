@@ -245,7 +245,7 @@ widget_t* edit_ex_cast(widget_t* widget);
 
 #define WIDGET_TYPE_EDIT_EX "edit_ex"
 
-#define EDIT_EX(widget) ((edit_ex_t*)(edit_ex_cast(WIDGET(widget))))
+#define EDIT_EX(widget) ((edit_ex_t*)edit_ex_cast(WIDGET(widget)))
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(edit_ex);

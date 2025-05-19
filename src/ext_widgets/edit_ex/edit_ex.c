@@ -108,17 +108,8 @@ static ret_t edit_ex_set_prop(widget_t* widget, const char* name, const value_t*
   if (tk_str_eq(name, EDIT_EX_PROP_SUGGEST_WORDS)) {
     return edit_ex_set_suggest_words(widget, value_object(v));
   } else if (tk_str_start_with(name, EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS)) {
-    ret_t ret = RET_OK;
-    str_t sub_prop;
-    str_init(&sub_prop, 0);
-    str_set(&sub_prop, name);
-    ret = str_remove(&sub_prop, 0, sizeof(EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS_PREFIX) - 1);
-    return_value_if_fail(RET_OK == ret, (str_reset(&sub_prop), ret));
-
-    ret = tk_object_set_prop(edit_ex->suggest_words_ui_props, sub_prop.str, v);
-
-    str_reset(&sub_prop);
-    return ret;
+    const char* sub_name = name + sizeof(EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS_PREFIX) - 1;
+    return tk_object_set_prop(edit_ex->suggest_words_ui_props, sub_name, v);
   } else if (tk_str_eq(name, EDIT_EX_PROP_SUGGEST_WORDS_ITEM_FORMATS)) {
     return edit_ex_set_suggest_words_item_formats(widget, value_str(v));
   } else if (tk_str_eq(name, EDIT_EX_PROP_SUGGEST_WORDS_INPUT_NAME)) {
@@ -136,17 +127,8 @@ static ret_t edit_ex_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_object(v, edit_ex->suggest_words);
     return RET_OK;
   } else if (tk_str_start_with(name, EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS)) {
-    ret_t ret = RET_OK;
-    str_t sub_prop;
-    str_init(&sub_prop, 0);
-    str_set(&sub_prop, name);
-    ret = str_remove(&sub_prop, 0, sizeof(EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS_PREFIX) - 1);
-    return_value_if_fail(RET_OK == ret, (str_reset(&sub_prop), ret));
-
-    ret = tk_object_get_prop(edit_ex->suggest_words_ui_props, sub_prop.str, v);
-
-    str_reset(&sub_prop);
-    return ret;
+    const char* sub_name = name + sizeof(EDIT_EX_PROP_SUGGEST_WORDS_UI_PROPS_PREFIX) - 1;
+    return tk_object_get_prop(edit_ex->suggest_words_ui_props, sub_name, v);
   } else if (tk_str_eq(name, EDIT_EX_PROP_SUGGEST_WORDS_ITEM_FORMATS)) {
     value_set_str(v, edit_ex->suggest_words_item_formats);
     return RET_OK;
