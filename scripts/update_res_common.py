@@ -1,4 +1,5 @@
-﻿import os
+﻿# -*- coding: utf-8 -*-
+import os
 import sys
 import stat
 import re
@@ -1451,11 +1452,11 @@ def find_ttf_files(folder):
 
 def get_res_names_from_sources_file(sources_file):
     try:
-        with open(sources_file, 'r', encoding='utf-8') as file:
+        with io.open(sources_file, 'r', encoding='utf-8') as file:
             data = json.load(file)
             if 'sources' in data:
                 return data['sources']
             return []
-    except (FileNotFoundError, json.JSONDecodeError) as e:
+    except (IOError, ValueError) as e:
         print('An error occurred: {}'.format(e))
         return None
