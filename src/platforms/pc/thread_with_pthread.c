@@ -155,7 +155,7 @@ ret_t tk_cond_wait_timeout(tk_cond_t* cond, tk_mutex_t* mutex, uint32_t ms) {
   abstime.tv_sec = delta.tv_sec + (ms / 1000);
   abstime.tv_nsec = (delta.tv_usec + (ms % 1000) * 1000) * 1000;
 #endif
-  if (abstime.tv_nsec > 1000000000) {
+  if (abstime.tv_nsec >= 1000000000) {
     abstime.tv_sec += 1;
     abstime.tv_nsec -= 1000000000;
   }
@@ -172,7 +172,7 @@ tryagain:
     case 0:
       break;
     default: {
-      log_error("pthread_cond_timedwait() failed");
+      log_error("pthread_cond_timedwait() failed, code=%d, ms=%d\r\n", code, ms);
       ret = RET_FAIL;
     }
   }
