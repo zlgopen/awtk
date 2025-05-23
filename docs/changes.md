@@ -2,6 +2,7 @@
 
 2025/05/23
   * 完善 value_bool
+  * 修复nanovg_plus离线画布的OpenGL的裁剪区设置不正常的问题(感谢智明提供补丁)
 
 2025/05/22
   * 修复pthread_cond_timedwait返回EINVAL的问题(感谢智明提供补丁)
