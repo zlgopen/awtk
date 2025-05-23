@@ -38,6 +38,15 @@ bool_t value_bool(const value_t* v) {
     case VALUE_TYPE_WSTRING: {
       return tk_watob(v->value.wstr);
     }
+    case VALUE_TYPE_OBJECT: {
+      return (v->value.object != NULL);
+    }
+    case VALUE_TYPE_POINTER: {
+      return (v->value.ptr != NULL);
+    }
+    case VALUE_TYPE_POINTER_REF: {
+      return (v->value.ptr_ref->data != NULL);
+    }
     default: {
       return value_int(v) ? TRUE : FALSE;
     }

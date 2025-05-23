@@ -1644,3 +1644,26 @@ TEST(value, equal) {
   value_set_wstr(&v2, L"hello");
   ASSERT_EQ(value_equal(&v1, &v2), TRUE);
 }
+
+TEST(ValueTest, bool_object) {
+  value_t v;
+  tk_object_t* o = object_default_create();
+
+  ASSERT_EQ(&v, value_set_object(&v, o));
+  ASSERT_EQ(value_bool(&v), TRUE);
+
+  tk_object_unref(o);
+}
+
+TEST(ValueTest, bool_pointer) {
+  value_t v;
+  value_set_pointer(&v, &v);
+  ASSERT_EQ(value_bool(&v), TRUE);
+}
+
+TEST(ValueTest, bool_pointer_ex) {
+  value_t v;
+  void* data = malloc(100);
+  value_set_pointer_ex(&v, data, default_destroy);
+  ASSERT_EQ(value_bool(&v), TRUE);
+}
