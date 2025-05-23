@@ -87,9 +87,12 @@ static ret_t svg_image_draw_type_ex(widget_t* widget, void* ctx) {
     default: {
       log_debug("not impl svg draw type: %d\n", svg_image->draw_type);
       svg_image->draw_type = IMAGE_DRAW_DEFAULT;
+      svg_image->scale_x = 1.0f;
+      svg_image->scale_y = 1.0f;
       break;
     }
   }
+
   return RET_OK;
 }
 
@@ -111,14 +114,19 @@ static ret_t svg_image_paint_before_adjust(widget_t* widget) {
   if (svg_image->org_h != widget->h || svg_image->org_w != widget->w) {
     svg_image->org_w = widget->w;
     svg_image->org_h = widget->h;
-    svg_image_draw_type_ex(widget, &bsvg);
+    svg_image->is_need_repaint = TRUE;
+  }
 
-    /* change svg image or resize widget need destory */
+  /* repaint check */
+  if (svg_image->is_need_repaint) {
+    svg_image_draw_type_ex(widget, &bsvg);
     if (svg_image->canvas_offline != NULL) {
       canvas_offline_destroy(svg_image->canvas_offline);
       svg_image->canvas_offline = NULL;
     }
+    svg_image->is_need_repaint = FALSE;
   }
+
   return RET_OK;
 }
 
@@ -250,6 +258,7 @@ ret_t svg_image_set_image(widget_t* widget, const char* name) {
 
   image_base_set_image(widget, name);
   svg_image_load_bsvg(widget);
+  svg_image->is_need_repaint = TRUE;
 
   return widget_invalidate(widget, NULL);
 }
@@ -259,6 +268,7 @@ ret_t svg_image_set_cache_mode(widget_t* widget, bool_t is_cache_mode) {
   return_value_if_fail(svg_image != NULL, RET_BAD_PARAMS);
 
   svg_image->is_cache_mode = is_cache_mode;
+  svg_image->is_need_repaint = TRUE;
 
   return widget_invalidate(widget, NULL);
 }
@@ -268,6 +278,7 @@ ret_t svg_image_set_draw_type(widget_t* widget, image_draw_type_t draw_type) {
   return_value_if_fail(svg_image != NULL, RET_BAD_PARAMS);
 
   svg_image->draw_type = draw_type;
+  svg_image->is_need_repaint = TRUE;
 
   return widget_invalidate(widget, NULL);
 }

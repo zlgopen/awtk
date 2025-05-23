@@ -92,6 +92,7 @@ typedef struct _svg_image_t {
   wh_t org_h;
   float_t scale_x;
   float_t scale_y;
+  bool_t is_need_repaint;
   canvas_t* canvas_offline;
   const asset_info_t* bsvg_asset;
 } svg_image_t;
