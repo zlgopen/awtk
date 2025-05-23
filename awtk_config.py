@@ -66,7 +66,7 @@ NANOVG_BACKEND = compile_helper.get_value('NANOVG_BACKEND', NANOVG_BACKEND)
 FRAME_BUFFER_FORMAT = ''
 if VGCANVAS == 'CAIRO':
     LCD = 'SDL_FB'
-    FRAME_BUFFER_FORMAT = 'bgr565'
+    FRAME_BUFFER_FORMAT = compile_helper.get_value('LCD_COLOR_FORMAT', 'bgr565')
     # FRAME_BUFFER_FORMAT='bgra8888'
 else:
     if NANOVG_BACKEND == 'AGGE' or NANOVG_BACKEND == 'AGG':

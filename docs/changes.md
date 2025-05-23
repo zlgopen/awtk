@@ -6,6 +6,7 @@
   * 修复svg控件在切换绘制模式时，没有重绘的问题(感谢高源提供补丁)
   * 修复重新设置grid控件中的columns_definition属性时，不会自动更新的问题（感谢俊杰提供补丁)
   * 修复 scroll_view设置xoffset和yoffset后，然后list_view调用widget_layout后，xoffset和yoffset的值又被重置为0的问题（感谢俊杰提供补丁)
+  * 修复CAIRO模式不支持命令修改lcd颜色的问题(感谢智明提供补丁)
 
 2025/05/22
   * 修复pthread_cond_timedwait返回EINVAL的问题(感谢智明提供补丁)
