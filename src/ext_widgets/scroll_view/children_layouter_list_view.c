@@ -409,7 +409,6 @@ static ret_t children_layouter_list_view_for_list_view_set_scroll_view_info(
   scroll_view_set_virtual_w(widget, virtual_w);
 
   if (!scroll_view->dragged && scroll_view->wa == NULL) {
-    scroll_view->xoffset = 0;
     yoffset = scroll_view->yoffset;
 
     if (widget->h >= virtual_h) {
@@ -426,8 +425,6 @@ static ret_t children_layouter_list_view_for_list_view_set_scroll_view_info(
                   WIDGET_PROP_YOFFSET);
       widget_set_prop_int(widget, WIDGET_PROP_ANIMATE_ANIMATING_TIME, l->animating_time);
       widget_set_prop_int(widget, animate_yoffset, yoffset);
-    } else {
-      scroll_view->yoffset = yoffset;
     }
 
     if (scroll_view->on_scroll) {
