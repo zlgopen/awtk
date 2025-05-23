@@ -152,6 +152,7 @@ ret_t grid_set_columns_definition(widget_t* widget, const char* columns_definiti
 
   if (grid->columns_definition != NULL) {
     grid_parse_columns_definition(widget, grid->columns_definition);
+    widget_layout_children(widget);
   }
 
   return RET_OK;

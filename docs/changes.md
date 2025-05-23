@@ -4,6 +4,7 @@
   * 完善 value_bool
   * 修复nanovg_plus离线画布的OpenGL的裁剪区设置不正常的问题(感谢智明提供补丁)
   * 修复svg控件在切换绘制模式时，没有重绘的问题(感谢高源提供补丁)
+  * 修复重新设置grid控件中的columns_definition属性时，不会自动更新的问题（感谢俊杰提供补丁)
 
 2025/05/22
   * 修复pthread_cond_timedwait返回EINVAL的问题(感谢智明提供补丁)
