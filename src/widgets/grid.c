@@ -289,10 +289,6 @@ static ret_t grid_on_layout_children_impl(widget_t* widget) {
   log_if_fail(h <= row_height);
 
   widget_move_resize_ex(iter, x, y, w, h, FALSE);
-  if (iter->self_layout) {
-    rect_t area = rect_init(x, y, w, h);
-    self_layouter_layout(iter->self_layout, iter, &area);
-  }
   widget_layout_children(iter);
 
   if ((col + 1) == cols) {

@@ -6,6 +6,7 @@
     - 如果slide_indicator设置indicated_target的值对应的控件类型不是slide_view，而是pages控件时不生效。
     - 设置anchor_x和anchor_y属性，不能生效。
   * 增加 image anchor 演示。
+  * 修复 grid控件添加子控件后，子控件的位置和大小不正确（感谢俊杰提供补丁)
 
 2025/05/23
   * 完善 value_bool
