@@ -112,7 +112,7 @@ typedef struct _slide_indicator_t {
   /**
    * @property {uint32_t} max
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 最大值(缺省为100)。
+   * 最大值(缺省为3)。
    */
   uint32_t max;
 
@@ -154,14 +154,14 @@ typedef struct _slide_indicator_t {
   /**
    * @property {char*} anchor_x
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+   * 锚点x坐标。(后面加上px为像素点，不加px为相对百分取值范围为0.0f到1.0f)
    */
   char* anchor_x;
 
   /**
    * @property {char*} anchor_y
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 锚点y坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+   * 锚点y坐标。(后面加上px为像素点，不加px为相对百分取值范围为0.0f到1.0f)
    */
   char* anchor_y;
 

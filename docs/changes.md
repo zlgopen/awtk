@@ -1,5 +1,11 @@
 # 最新动态
 
+2025/05/24
+  * 修复slide_indicator控件以下问题（感谢俊杰提供补丁)
+    - 没有设置max默认值，这与注释中的描述不符合。
+    - 如果slide_indicator设置indicated_target的值对应的控件类型不是slide_view，而是pages控件时不生效。
+    - 设置anchor_x和anchor_y属性，不能生效。
+
 2025/05/23
   * 完善 value_bool
   * 修复nanovg_plus离线画布的OpenGL的裁剪区设置不正常的问题(感谢智明提供补丁)

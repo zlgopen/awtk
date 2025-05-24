@@ -95,8 +95,9 @@ ret_t slide_indicator_set_anchor_x(widget_t* widget, const char* anchor) {
   return_value_if_fail(slide_indicator != NULL && anchor != NULL, RET_BAD_PARAMS);
 
   slide_indicator->anchor_x = tk_str_copy(slide_indicator->anchor_x, anchor);
+  slide_indicator->reset_icon_rect_list = TRUE;
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 ret_t slide_indicator_set_anchor_y(widget_t* widget, const char* anchor) {
@@ -104,8 +105,9 @@ ret_t slide_indicator_set_anchor_y(widget_t* widget, const char* anchor) {
   return_value_if_fail(slide_indicator != NULL && anchor != NULL, RET_BAD_PARAMS);
 
   slide_indicator->anchor_y = tk_str_copy(slide_indicator->anchor_y, anchor);
+  slide_indicator->reset_icon_rect_list = TRUE;
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 static ret_t slide_indicator_get_prop(widget_t* widget, const char* name, value_t* v) {
@@ -686,16 +688,18 @@ static ret_t slide_indicator_target_on_value_changed(void* ctx, event_t* e) {
   widget_t* indicator = WIDGET(ctx);
   slide_indicator_t* slide_indicator = SLIDE_INDICATOR(indicator);
   return_value_if_fail(widget != NULL && slide_indicator != NULL, RET_BAD_PARAMS);
+  bool_t has_prop_curr_page = TRUE;
 
   if (widget_get_prop(widget, WIDGET_PROP_CURR_PAGE, &v) != RET_OK) {
     widget_get_prop(widget, WIDGET_PROP_VALUE, &v);
+    has_prop_curr_page = FALSE;
   }
 
   if (slide_indicator->value != value_int(&v)) {
     slide_indicator_set_value_impl(indicator, value_int(&v), TRUE);
   }
 
-  if (widget_get_prop(widget, WIDGET_PROP_PAGE_MAX_NUMBER, &v) != RET_OK) {
+  if (has_prop_curr_page && widget_get_prop(widget, WIDGET_PROP_PAGE_MAX_NUMBER, &v) != RET_OK) {
     uint32_t max = value_int(&v);
     if (slide_indicator->max != max) {
       slide_indicator->max = max;
@@ -978,7 +982,7 @@ widget_t* slide_indicator_create_internal(widget_t* parent, xy_t x, xy_t y, wh_t
   slide_indicator->children_indicated = FALSE;
   slide_indicator->reset_icon_rect_list = FALSE;
   slide_indicator->check_hide_idle = TK_INVALID_ID;
-
+  slide_indicator->max = 3;
   darray_init(&(slide_indicator->icon_rect_list), 10, default_destroy, NULL);
 
   slide_indicator->indicated_target = NULL;
@@ -1018,6 +1022,7 @@ static ret_t slide_indicator_set_value_impl(widget_t* widget, uint32_t value, bo
     value_t v;
     ret_t ret = RET_OK;
     value_change_event_t evt;
+    const char* widget_prop = WIDGET_PROP_CURR_PAGE;
     value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
     value_set_uint32(&(evt.old_value), slide_indicator->value);
     value_set_uint32(&(evt.new_value), value);
@@ -1027,11 +1032,12 @@ static ret_t slide_indicator_set_value_impl(widget_t* widget, uint32_t value, bo
         if (widget_get_prop(slide_indicator->indicated_widget, WIDGET_PROP_CURR_PAGE, &v) !=
             RET_OK) {
           widget_get_prop(slide_indicator->indicated_widget, WIDGET_PROP_VALUE, &v);
+          widget_prop = WIDGET_PROP_VALUE;
         }
         if (value != value_int(&v)) {
           value_t v1;
           value_set_int(&v1, value);
-          ret = widget_set_prop(slide_indicator->indicated_widget, WIDGET_PROP_CURR_PAGE, &v1);
+          ret = widget_set_prop(slide_indicator->indicated_widget, widget_prop, &v1);
         } else {
           ret = RET_FAIL;
         }
