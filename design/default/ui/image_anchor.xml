@@ -1,0 +1,13 @@
+<window anim_hint="htranslate" text="Image">
+  <grid x="c" y="m" w="300" h="300" children_layout="default(r=5,c=5,x=5,s=10)">
+    <image draw_type="icon" image="earth" style.normal.border_color="#0000ff" anchor_x="0" anchor_y="0" 
+      animation="rotation(from=0, to=6.28, repeat_times=0, duration=2000, easing=linear)"/>
+    <image draw_type="icon" image="earth" style.normal.border_color="#0000ff" 
+      animation="rotation(from=0, to=6.28, repeat_times=0, duration=2000, easing=linear)"/>
+    <image draw_type="icon" image="earth" style.normal.border_color="#0000ff" anchor_x="1" anchor_y="1"  
+      animation="rotation(from=0, to=6.28, repeat_times=0, duration=2000, easing=linear)"/>
+    
+    <image draw_type="icon" image="earth" style.normal.border_color="#0000ff" anchor_x="0" anchor_y="0" scale_x="1.5" scale_y="1.5" /> 
+    <image draw_type="icon" image="earth" style.normal.border_color="#0000ff"  scale_x="1.5" scale_y="1.5" />
+    <image draw_type="icon" image="earth" style.normal.border_color="#0000ff" anchor_x="1" anchor_y="1"   scale_x="1.5" scale_y="1.5" />
+</window>

@@ -57,6 +57,7 @@
 #include "assets/default/inc/ui/kb_phone.data"
 #include "assets/default/inc/ui/tab_scrollable.data"
 #include "assets/default/inc/ui/main.data"
+#include "assets/default/inc/ui/image_anchor.data"
 #include "assets/default/inc/ui/tab_button_view_page1.data"
 #include "assets/default/inc/ui/digit_clock.data"
 #include "assets/default/inc/ui/scroll_bar.data"
@@ -619,6 +620,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_kb_phone_default);
   assets_manager_add(am, ui_tab_scrollable_default);
   assets_manager_add(am, ui_main_default);
+  assets_manager_add(am, ui_image_anchor_default);
   assets_manager_add(am, ui_tab_button_view_page1_default);
   assets_manager_add(am, ui_digit_clock_default);
   assets_manager_add(am, ui_scroll_bar_default);

@@ -5,6 +5,7 @@
     - 没有设置max默认值，这与注释中的描述不符合。
     - 如果slide_indicator设置indicated_target的值对应的控件类型不是slide_view，而是pages控件时不生效。
     - 设置anchor_x和anchor_y属性，不能生效。
+  * 增加 image anchor 演示。
 
 2025/05/23
   * 完善 value_bool

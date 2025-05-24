@@ -57,6 +57,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_color_tile_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_kb_phone_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_tab_scrollable_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_main_default[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_image_anchor_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_tab_button_view_page1_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_digit_clock_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_scroll_bar_default[]);
@@ -619,6 +620,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_kb_phone_default);
   assets_manager_add(am, ui_tab_scrollable_default);
   assets_manager_add(am, ui_main_default);
+  assets_manager_add(am, ui_image_anchor_default);
   assets_manager_add(am, ui_tab_button_view_page1_default);
   assets_manager_add(am, ui_digit_clock_default);
   assets_manager_add(am, ui_scroll_bar_default);

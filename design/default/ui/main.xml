@@ -60,6 +60,7 @@
       <button focusable="true" name="open:modeless" text="Modeless"/>
     </view>
     <view x="0" y="0" w="100%" h="100%" children_layout="default(c=1,r=8,m=5,s=5)">
+      <button focusable="true" name="open:image_anchor" text="Image Anchor"/>
       <button focusable="true" name="open:check_button" text="Icon At"/>
       <button focusable="true" name="open:drop_file" text="Drop File"/>
       <button focusable="true" name="open:memtest" text="MemTest"/>
