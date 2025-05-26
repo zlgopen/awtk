@@ -406,6 +406,7 @@ ret_t tab_button_group_set_compact(widget_t* widget, bool_t compact) {
   return_value_if_fail(tab_button_group != NULL, RET_BAD_PARAMS);
 
   tab_button_group->compact = compact;
+  widget_layout_children(widget);
 
   return RET_OK;
 }
