@@ -30,11 +30,6 @@ TEST(MLEdit, int) {
   ASSERT_EQ(widget_get_prop(b, MLEDIT_PROP_MAX_LINES, &v2), RET_OK);
   ASSERT_EQ(value_int(&v1), value_int(&v2));
 
-  value_set_int(&v1, 12);
-  ASSERT_EQ(widget_set_prop(b, MLEDIT_PROP_SCROLL_LINE, &v1), RET_OK);
-  ASSERT_EQ(widget_get_prop(b, MLEDIT_PROP_SCROLL_LINE, &v2), RET_OK);
-  ASSERT_EQ(value_int(&v1), value_int(&v2));
-
   value_set_bool(&v1, true);
   ASSERT_EQ(widget_set_prop(b, MLEDIT_PROP_WRAP_WORD, &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(b, MLEDIT_PROP_WRAP_WORD, &v2), RET_OK);

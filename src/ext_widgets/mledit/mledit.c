@@ -241,9 +241,6 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, MLEDIT_PROP_MAX_CHARS)) {
     value_set_int(v, mledit->max_chars);
     return RET_OK;
-  } else if (tk_str_eq(name, MLEDIT_PROP_SCROLL_LINE)) {
-    value_set_int(v, mledit->scroll_line);
-    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LEFT_MARGIN)) {
     uint32_t margin = 0;
     if (widget->astyle != NULL) {
@@ -392,9 +389,6 @@ static ret_t mledit_set_prop(widget_t* widget, const char* name, const value_t* 
   } else if (tk_str_eq(name, MLEDIT_PROP_MAX_CHARS)) {
     mledit_set_max_chars(widget, value_int(v));
     return RET_OK;
-  } else if (tk_str_eq(name, MLEDIT_PROP_SCROLL_LINE)) {
-    mledit_set_scroll_line(widget, value_int(v));
-    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_OPEN_IM_WHEN_FOCUSED)) {
     mledit->open_im_when_focused = value_bool(v);
     return RET_OK;
@@ -433,7 +427,7 @@ static ret_t mledit_set_prop(widget_t* widget, const char* name, const value_t* 
   } else if (tk_str_eq(name, WIDGET_PROP_KEYBOARD)) {
     mledit_set_keyboard(widget, value_str(v));
     return RET_OK;
-  }  else if (tk_str_eq(name, WIDGET_PROP_ACCEPT_RETRUN)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_ACCEPT_RETRUN)) {
     mledit->accept_return = value_bool(v);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_ACCEPT_TAB)) {
@@ -617,13 +611,6 @@ uint32_t mledit_get_cursor(widget_t* widget) {
   return_value_if_fail(widget != NULL && mledit != NULL, 0);
 
   return text_edit_get_cursor(mledit->model);
-}
-
-ret_t mledit_set_scroll_line(widget_t* widget, uint32_t scroll_line) {
-  mledit_t* mledit = MLEDIT(widget);
-  return_value_if_fail(widget != NULL && mledit != NULL, RET_BAD_PARAMS);
-  mledit->scroll_line = scroll_line;
-  return RET_OK;
 }
 
 ret_t mledit_scroll_to_offset(widget_t* widget, uint32_t offset) {
@@ -1268,7 +1255,6 @@ const char* s_mledit_properties[] = {WIDGET_PROP_READONLY,
                                      MLEDIT_PROP_MAX_LINES,
                                      MLEDIT_PROP_MAX_CHARS,
                                      MLEDIT_PROP_WRAP_WORD,
-                                     MLEDIT_PROP_SCROLL_LINE,
                                      MLEDIT_PROP_OVERWRITE,
                                      NULL};
 
@@ -1303,7 +1289,6 @@ static ret_t mledit_init(widget_t* widget) {
   mledit->left_margin = 0;
   mledit->right_margin = 0;
   mledit->bottom_margin = 0;
-  mledit->scroll_line = 1.0f;
   mledit->max_lines = 100;
   mledit->accept_tab = TRUE;
   mledit->accept_return = TRUE;

@@ -90,12 +90,6 @@ typedef struct _mledit_t {
    */
   uint32_t max_chars;
   /**
-   * @property {uint32_t} scroll_line
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 鼠标一次滚动行数。
-   */
-  uint32_t scroll_line;
-  /**
    * @property {bool_t} overwrite
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否启用覆盖行。
@@ -332,17 +326,6 @@ ret_t mledit_set_cursor(widget_t* widget, uint32_t cursor);
 uint32_t mledit_get_cursor(widget_t* widget);
 
 /**
- * @method mledit_set_scroll_line
- * 设置编辑器滚动速度。
- * @annotation ["scriptable"]
- * @param {widget_t*} widget widget对象。
- * @param {uint32_t} scroll_line 滚动行数。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t mledit_set_scroll_line(widget_t* widget, uint32_t scroll_line);
-
-/**
  * @method mledit_scroll_to_offset
  * 设置编辑器滚动到指定偏移位置。
  * @annotation ["scriptable"]
@@ -451,7 +434,6 @@ widget_t* mledit_cast(widget_t* widget);
 #define MLEDIT_PROP_MAX_CHARS "max_chars"
 #define MLEDIT_PROP_WRAP_WORD "wrap_word"
 #define MLEDIT_PROP_OVERWRITE "overwrite"
-#define MLEDIT_PROP_SCROLL_LINE "scroll_line"
 #define MLEDIT(widget) ((mledit_t*)(mledit_cast(WIDGET(widget))))
 
 /*for compatability*/
