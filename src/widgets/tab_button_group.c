@@ -222,7 +222,9 @@ static ret_t tab_button_group_update_active(widget_t* widget) {
 }
 
 static ret_t tab_button_group_ensure_active(widget_t* widget) {
-  widget_t* first = NULL;
+  widget_t* active_tab_button = NULL;
+  uint32_t active = 0;
+  widget_t* pages = NULL;
   tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
   return_value_if_fail(tab_button_group != NULL, RET_BAD_PARAMS);
 
@@ -232,10 +234,19 @@ static ret_t tab_button_group_ensure_active(widget_t* widget) {
     return RET_OK;
   }
 
-  first = widget_get_child(widget, 0);
-  if (first != NULL) {
-    tab_button_group->active = 0;
-    widget_set_value(first, TRUE);
+  pages = widget_lookup_by_type(widget->parent, WIDGET_TYPE_PAGES, TRUE);
+  if (pages != NULL) {
+    value_t v;
+
+    if (widget_get_prop(pages, WIDGET_PROP_ACTIVE, &v) == RET_OK) {
+      active = value_uint32(&v);
+    }
+  }
+
+  active_tab_button = widget_get_child(widget, active);
+  if (active_tab_button != NULL) {
+    tab_button_group->active = active;
+    widget_set_value(active_tab_button, TRUE);
   }
 
   return RET_OK;
