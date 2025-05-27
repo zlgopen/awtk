@@ -55,6 +55,7 @@ static ret_t list_view_h_set_prop(widget_t* widget, const char* name, const valu
 
   if (tk_str_eq(name, WIDGET_PROP_ITEM_WIDTH)) {
     list_view_h->item_width = value_int(v);
+    widget_layout_children(widget);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_SPACING)) {
     list_view_h->spacing = value_int(v);

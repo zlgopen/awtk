@@ -1,5 +1,5 @@
 <window anim_hint="htranslate">
-  <list_view_h x="center"  y="10" w="90%" h="100" item_width="200" spacing="5">
+  <list_view_h x="center" y="10" w="90%" h="100" item_width="200" spacing="5" name="list_view_item_width">
     <scroll_view name="view" w="100%" h="100%">
       <image style="border" draw_type="auto" image="1" text="1"/>
       <image style="border" draw_type="auto" image="2" text="2"/>
@@ -21,8 +21,10 @@
       <image style="border" draw_type="auto" image="3" text="18"/>
     </scroll_view>
   </list_view_h>
-  
-  <list_view_h name="variable width" x="center"  y="128" w="90%" h="100" spacing="5">
+
+  <button name="list_view_change_item_width" x="center" y="130" w="250" h="30" text="change top list_view_h item_width"/>
+
+  <list_view_h name="variable width" x="center" y="180" w="90%" h="100" spacing="5">
     <scroll_view name="view" w="100%" h="100%">
       <button focusable="true" text="0" w="50%"/>
       <button focusable="true" text="1" w="50px"/>
@@ -38,8 +40,8 @@
       <button focusable="true" text="11.hello AWTK" w="240px"/>
     </scroll_view>
   </list_view_h>
-  
-  <list_view_h name="variable width" x="center"  y="258" w="90%" h="100" spacing="5">
+
+  <list_view_h name="variable width" x="center" y="330" w="90%" h="100" spacing="5">
     <scroll_view name="view" w="100%" h="100%">
       <button auto_adjust_size="true" focusable="true" text="a" />
       <button auto_adjust_size="true" focusable="true" text="ab" />

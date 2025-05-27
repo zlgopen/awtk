@@ -1074,6 +1074,17 @@ static ret_t on_click_scroll(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_list_view_change_item_width(void* ctx, event_t* e) {
+  widget_t* win = (widget_t*)ctx;
+  widget_t* list_view = widget_lookup(win, "list_view_item_width", TRUE);
+  return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
+  int32_t item_width = widget_get_prop_int(list_view, WIDGET_PROP_ITEM_WIDTH, 200);
+
+  widget_set_prop_int(list_view, WIDGET_PROP_ITEM_WIDTH, 200 == item_width ? 150 : 200);
+
+  return RET_OK;
+}
+
 static ret_t on_click_slide_view_appoint_remove_evt(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
@@ -1235,6 +1246,8 @@ static ret_t install_one(void* ctx, const void* iter) {
       widget_on(widget, EVT_CLICK, on_click_slide_view_appoint_remove_evt, widget);
     } else if (strstr(name, "scroll:") == name) {
       widget_on(widget, EVT_CLICK, on_click_scroll, (void*)(name + strlen("scroll:")));
+    } else if (tk_str_eq(name, "list_view_change_item_width")) {
+      widget_on(widget, EVT_CLICK, on_list_view_change_item_width, win);
     }
   } else if (tk_str_eq(widget->vt->type, "combo_box")) {
     widget_on(widget, EVT_VALUE_CHANGED, on_combo_box_changed, widget);
