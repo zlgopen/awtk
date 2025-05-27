@@ -381,10 +381,13 @@ ret_t tab_button_restack(widget_t* widget, uint32_t index) {
   widget_t* page = NULL;
   widget_t* pages = tab_button_get_pages(widget);
   int32_t page_index = tab_button_page_index_of(widget);
-  return_value_if_fail(widget != NULL && pages != NULL && page_index >= 0, RET_BAD_PARAMS);
-  page = widget_get_child(pages, page_index);
+  return_value_if_fail(widget != NULL && page_index >= 0, RET_BAD_PARAMS);
 
-  widget_restack(page, index);
+  if (pages != NULL) {
+    page = widget_get_child(pages, page_index);
+    widget_restack(page, index);
+  }
+
   widget_restack(widget, index);
 
   return RET_OK;

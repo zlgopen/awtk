@@ -5,6 +5,7 @@
   * 修正pages页面设置active属性不生效的问题（感谢俊杰提供补丁)。
   * 修复pages控件的auto_focused属性不生效的问题（感谢俊杰提供补丁)。
   * 修复list_view_h控件修改item_width属性时没有生效的问题（感谢俊杰提供补丁)。
+  * 修复tab_button_group控件没有和pages控件一起用的时候，设置drag_child属性不生效的问题（感谢俊杰提供补丁)。
 
 2025/05/26
   * 修复 tab\_button\_group\_set\_compact 没有立即生效的问题（感谢俊杰提供补丁)。
