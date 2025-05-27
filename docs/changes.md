@@ -3,6 +3,7 @@
 2025/05/27
   * mledit 去掉 scroll_line 属性（感谢俊杰提供补丁)。
   * 修正pages页面设置active属性不生效的问题（感谢俊杰提供补丁)。
+  * 修复pages控件的auto_focused属性不生效的问题（感谢俊杰提供补丁)。
 
 2025/05/26
   * 修复 tab\_button\_group\_set\_compact 没有立即生效的问题（感谢俊杰提供补丁)。
