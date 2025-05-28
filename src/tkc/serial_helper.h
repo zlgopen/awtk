@@ -302,6 +302,16 @@ ret_t serial_wait_for_data(serial_handle_t handle, uint32_t timeout_ms);
 stopbits_t serial_stopbits_from_str(const char* str);
 
 /**
+ * @method serial_stopbits_to_str
+ * stopbits转字符串
+ * @annotation ["static"]
+ * @param {stopbits_t} stopbits stopbits。
+ *
+ * @return {const char*} 返回字符串。
+ */
+const char* serial_stopbits_to_str(stopbits_t stopbits);
+
+/**
  * @method serial_flowcontrol_from_str
  * 字符串转flowcontrol
  * @annotation ["static"]
@@ -310,6 +320,16 @@ stopbits_t serial_stopbits_from_str(const char* str);
  * @return {flowcontrol_t} 返回flowcontrol。
  */
 flowcontrol_t serial_flowcontrol_from_str(const char* str);
+
+/**
+ * @method serial_flowcontrol_to_str
+ * flowcontrol转字符串
+ * @annotation ["static"]
+ * @param {flowcontrol_t} flowcontrol flowcontrol。
+ *
+ * @return {const char*} 返回字符串。
+ */
+const char* serial_flowcontrol_to_str(flowcontrol_t flowcontrol);
 
 /**
  * @method serial_parity_from_str
@@ -322,6 +342,16 @@ flowcontrol_t serial_flowcontrol_from_str(const char* str);
 parity_t serial_parity_from_str(const char* str);
 
 /**
+ * @method serial_parity_to_str
+ * parity转字符串
+ * @annotation ["static"]
+ * @param {parity_t} parity parity。
+ *
+ * @return {const char*} 返回字符串。
+ */
+const char* serial_parity_to_str(parity_t parity);
+
+/**
  * @method serial_bytesize_from_str
  * 字符串转bytesize
  * @annotation ["static"]
@@ -330,6 +360,16 @@ parity_t serial_parity_from_str(const char* str);
  * @return {bytesize_t} 返回bytesize。
  */
 bytesize_t serial_bytesize_from_str(const char* str);
+
+/**
+ * @method serial_bytesize_to_str
+ * bytesize转字符串
+ * @annotation ["static"]
+ * @param {bytesize_t} bytesize bytesize。
+ *
+ * @return {const char*} 返回字符串。
+ */
+const char* serial_bytesize_to_str(bytesize_t bytesize);
 
 /*不再使用 begin{*/
 typedef struct {

@@ -1035,6 +1035,17 @@ stopbits_t serial_stopbits_from_str(const char* str) {
   }
 }
 
+const char* serial_stopbits_to_str(stopbits_t stopbits) {
+  switch (stopbits) {
+    case stopbits_two:
+      return "2";
+    case stopbits_one_point_five:
+      return "1.5";
+    default:
+      return "1";
+  }
+}
+
 flowcontrol_t serial_flowcontrol_from_str(const char* str) {
   if (str == NULL) {
     return flowcontrol_none;
@@ -1046,6 +1057,17 @@ flowcontrol_t serial_flowcontrol_from_str(const char* str) {
     return flowcontrol_hardware;
   } else {
     return flowcontrol_none;
+  }
+}
+
+const char* serial_flowcontrol_to_str(flowcontrol_t flowcontrol) {
+  switch (flowcontrol) {
+    case flowcontrol_software:
+      return "soft";
+    case flowcontrol_hardware:
+      return "hard";
+    default:
+      return "none";
   }
 }
 
@@ -1067,6 +1089,21 @@ parity_t serial_parity_from_str(const char* str) {
   }
 }
 
+const char* serial_parity_to_str(parity_t parity) {
+  switch (parity) {
+    case parity_odd:
+      return "odd";
+    case parity_even:
+      return "even";
+    case parity_mark:
+      return "mark";
+    case parity_space:
+      return "space";
+    default:
+      return "none";
+  }
+}
+
 bytesize_t serial_bytesize_from_str(const char* str) {
   if (str == NULL) {
     return eightbits;
@@ -1083,4 +1120,17 @@ bytesize_t serial_bytesize_from_str(const char* str) {
   }
 
   return eightbits;
+}
+
+const char* serial_bytesize_to_str(bytesize_t bytesize) {
+  switch (bytesize) {
+    case sevenbits:
+      return "7";
+    case sixbits:
+      return "6";
+    case fivebits:
+      return "5";
+    default:
+      return "8";
+  }
 }
