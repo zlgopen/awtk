@@ -57,9 +57,9 @@ typedef struct _view_t {
   widget_t widget;
   /**
    * @property {char*} default_focused_child
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","scriptable"]
    * 
-   * 缺省获得焦点的子控件(可用控件名或类型)。
+   * 缺省获得焦点的子控件(可用控件名或类型)。(该属性废弃。)
    * 
    *> view作为pages/slideview的直接子控件才需要设置。
    *> 正常情况下，一个窗口只能指定一个初始焦点。
