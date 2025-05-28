@@ -1085,6 +1085,62 @@ static ret_t on_list_view_change_item_width(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_slide_menu_change_comm(void* ctx, const char* widget_prop,
+                                       value_type_t value_type) {
+  widget_t* combo_box = WIDGET(ctx);
+  widget_t* win = widget_get_window(combo_box);
+  widget_t* slide_menu = widget_lookup(win, "slide_menu_change_attr", TRUE);
+  return_value_if_fail(slide_menu != NULL, RET_BAD_PARAMS);
+  value_t v;
+  char text[32] = {0};
+
+  widget_get_text_utf8(combo_box, text, sizeof(text));
+
+  if (value_type == VALUE_TYPE_STRING) {
+    value_set_str(&v, text);
+  } else if (value_type == VALUE_TYPE_FLOAT32) {
+    value_set_float32(&v, tk_atof(text));
+  } else if (value_type == VALUE_TYPE_INT32) {
+    value_set_int32(&v, tk_atoi(text));
+  } else if (value_type == VALUE_TYPE_BOOL) {
+    value_set_bool(&v, tk_str_eq(text, "true") ? TRUE : FALSE);
+  }
+
+  widget_set_prop(slide_menu, widget_prop, &v);
+
+  return RET_OK;
+}
+
+static ret_t on_combo_box_align_v_change(void* ctx, event_t* e) {
+  (void)e;
+
+  return on_slide_menu_change_comm(ctx, WIDGET_PROP_ALIGN_V, VALUE_TYPE_STRING);
+}
+
+static ret_t on_combo_box_min_scale_change(void* ctx, event_t* e) {
+  (void)e;
+
+  return on_slide_menu_change_comm(ctx, SLIDE_MENU_PROP_MIN_SCALE, VALUE_TYPE_FLOAT32);
+}
+
+static ret_t on_combo_box_space_change(void* ctx, event_t* e) {
+  (void)e;
+
+  return on_slide_menu_change_comm(ctx, SLIDE_MENU_PROP_SPACER, VALUE_TYPE_INT32);
+}
+
+static ret_t on_combo_box_clip_change(void* ctx, event_t* e) {
+  (void)e;
+
+  return on_slide_menu_change_comm(ctx, SLIDE_MENU_PROP_CLIP, VALUE_TYPE_BOOL);
+}
+
+static ret_t on_combo_box_menu_w_change(void* ctx, event_t* e) {
+  (void)e;
+
+  return on_slide_menu_change_comm(ctx, SLIDE_MENU_PROP_MENU_W, VALUE_TYPE_STRING);
+}
+
 static ret_t on_click_slide_view_appoint_remove_evt(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
@@ -1248,6 +1304,16 @@ static ret_t install_one(void* ctx, const void* iter) {
       widget_on(widget, EVT_CLICK, on_click_scroll, (void*)(name + strlen("scroll:")));
     } else if (tk_str_eq(name, "list_view_change_item_width")) {
       widget_on(widget, EVT_CLICK, on_list_view_change_item_width, win);
+    } else if (strstr(name, "combo_box_align_v") == name) {
+      widget_on(widget, EVT_VALUE_CHANGED, on_combo_box_align_v_change, widget);
+    } else if (strstr(name, "combo_box_min_scale") == name) {
+      widget_on(widget, EVT_VALUE_CHANGED, on_combo_box_min_scale_change, widget);
+    } else if (strstr(name, "combo_box_space") == name) {
+      widget_on(widget, EVT_VALUE_CHANGED, on_combo_box_space_change, widget);
+    } else if (strstr(name, "combo_box_clip") == name) {
+      widget_on(widget, EVT_VALUE_CHANGED, on_combo_box_clip_change, widget);
+    } else if (strstr(name, "combo_box_menu_w") == name) {
+      widget_on(widget, EVT_VALUE_CHANGED, on_combo_box_menu_w_change, widget);
     }
   } else if (tk_str_eq(widget->vt->type, "combo_box")) {
     widget_on(widget, EVT_VALUE_CHANGED, on_combo_box_changed, widget);

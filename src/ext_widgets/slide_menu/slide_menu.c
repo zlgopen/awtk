@@ -840,6 +840,7 @@ ret_t slide_menu_set_min_scale(widget_t* widget, float_t min_scale) {
   return_value_if_fail(slide_menu != NULL, RET_BAD_PARAMS);
 
   slide_menu->min_scale = tk_max(SLIDE_MENU_MIN_SCALE, tk_min(min_scale, 1));
+  widget_layout_children(widget);
 
   return widget_invalidate(widget, NULL);
 }
@@ -849,6 +850,7 @@ ret_t slide_menu_set_align_v(widget_t* widget, align_v_t align_v) {
   return_value_if_fail(slide_menu != NULL, RET_BAD_PARAMS);
 
   slide_menu->align_v = align_v;
+  widget_layout_children(widget);
 
   return widget_invalidate(widget, NULL);
 }
@@ -858,6 +860,7 @@ ret_t slide_menu_set_spacer(widget_t* widget, int32_t spacer) {
   return_value_if_fail(slide_menu != NULL, RET_BAD_PARAMS);
 
   slide_menu->spacer = spacer;
+  widget_layout_children(widget);
 
   return widget_invalidate(widget, NULL);
 }
@@ -867,6 +870,7 @@ ret_t slide_menu_set_menu_w(widget_t* widget, const char* menu_w) {
   return_value_if_fail(slide_menu != NULL && menu_w != NULL, RET_BAD_PARAMS);
 
   slide_menu->menu_w = tk_str_copy(slide_menu->menu_w, menu_w);
+  widget_layout_children(widget);
 
   return widget_invalidate(widget, NULL);
 }
@@ -876,6 +880,7 @@ ret_t slide_menu_set_clip(widget_t* widget, bool_t clip) {
   return_value_if_fail(slide_menu != NULL, RET_BAD_PARAMS);
 
   slide_menu->clip = clip;
+  widget_layout_children(widget);
 
   return widget_invalidate(widget, NULL);
 }

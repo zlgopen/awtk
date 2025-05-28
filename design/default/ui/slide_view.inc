@@ -103,7 +103,22 @@
       </button>
     </view>
     <view x="0" y="0" w="100%" h="100%" >
-      <slide_menu align_v="top" x="c" y="m" w="100%" h="80">
+      <label x="10" y="30" w="50" h="30" text="min_scale: "/>
+      <combo_box x="70" y="30" w="80" h="30" options="0.5;0.8" text="0.8" readonly="true" name="combo_box_min_scale"/>
+
+      <label x="r:100" y="30" w="50" h="30" text="align_v: "/>
+      <combo_box x="r:10" y="30" w="90" h="30" options="none;middle;top;bottom" text="none" readonly="true" name="combo_box_align_v"/>
+
+      <label x="10" y="80" w="50" h="30" text="space: "/>
+      <combo_box x="70" y="80" w="80" h="30" options="0;5;10" text="0" readonly="true" name="combo_box_space"/>
+
+      <label x="r:100" y="80" w="50" h="30" text="clip: "/>
+      <combo_box x="r:10" y="80" w="90" h="30" options="true;false" text="true" readonly="true" name="combo_box_clip"/>
+
+      <label x="10" y="130" w="50" h="30" text="menu_w: "/>
+      <combo_box x="70" y="130" w="80" h="30" options="80px;50px" text="80px" readonly="true" name="combo_box_menu_w"/>
+
+      <slide_menu align_v="top" x="c" y="200" w="100%" h="80" name="slide_menu_change_attr">
         <button text="0"/>
         <button text="1"/>
         <button text="2"/>

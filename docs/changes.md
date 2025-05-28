@@ -6,6 +6,12 @@
   * 修复color_tile控件如果同时设置了border_color属性和style:normal:border_color属性，style:normal:border_color属性会覆盖border_color属性的问题（感谢俊杰提供补丁)
   * 修复spin_box，edit，combo_box_ex控件注册EVT_POINTER_UP事件，其回调函数不会被调用的问题（感谢俊杰提供补丁)。
   * 增加了对OpenRTOS（FreeRTOS的商业版）的头文件包含，并修正线程退出时自动释放资源（感谢陈谭提供补丁)。
+  * 修复slide_menu控件下面问题（感谢俊杰提供补丁)。
+     - 修改align_y属性，控件不会立即更新。
+     - 修改min_scale属性，控件不会立即更新。
+     - 修改spacer属性，控件不会立即更新。
+     - 修改clip属性，控件不会立即更新。
+     - 修改menu_w属性，控件不会立即更新。
 
 2025/05/27
   * mledit 去掉 scroll_line 属性（感谢俊杰提供补丁)。
