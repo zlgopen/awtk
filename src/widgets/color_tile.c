@@ -120,11 +120,18 @@ static ret_t color_tile_on_paint_fill(widget_t* widget, canvas_t* c) {
   return ret;
 }
 
+static ret_t color_tile_on_paint_border(widget_t* widget, canvas_t* c) {
+  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
+
+  color_tile_on_paint_stroke(widget, c);
+
+  return RET_OK;
+}
+
 static ret_t color_tile_on_paint_self(widget_t* widget, canvas_t* c) {
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
   color_tile_on_paint_fill(widget, c);
   widget_paint_helper(widget, c, NULL, NULL);
-  color_tile_on_paint_stroke(widget, c);
 
   return RET_OK;
 }
@@ -184,6 +191,7 @@ TK_DECL_VTABLE(color_tile) = {.size = sizeof(color_tile_t),
                               .persistent_properties = s_color_tile_properties,
                               .set_prop = color_tile_set_prop,
                               .get_prop = color_tile_get_prop,
+                              .on_paint_border = color_tile_on_paint_border,
                               .on_paint_self = color_tile_on_paint_self};
 
 widget_t* color_tile_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
