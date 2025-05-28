@@ -84,6 +84,8 @@ static void tk_thread_entry(void* arg) {
   thread->entry(thread->args);
   thread->running = FALSE;
   tk_mutex_unlock(thread->mutex);
+
+  vTaskDelete(NULL);
 }
 
 tk_thread_t* tk_thread_create(tk_thread_entry_t entry, void* args) {
@@ -129,7 +131,6 @@ ret_t tk_thread_destroy(tk_thread_t* thread) {
     tk_mutex_destroy(thread->mutex);
   }
 
-  vTaskDelete(thread->task);
   memset(thread, 0x00, sizeof(tk_thread_t));
   TKMEM_FREE(thread);
 
