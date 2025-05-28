@@ -2,6 +2,7 @@
 
 2025/05/28
   * 完善 tk_object_exec_ex(感谢兆坤提供补丁)。
+  * 完善 auto_adjust_size  属性的文档 （感谢俊杰提供补丁)。
 
 2025/05/27
   * mledit 去掉 scroll_line 属性（感谢俊杰提供补丁)。
