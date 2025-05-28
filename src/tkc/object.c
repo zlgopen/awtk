@@ -434,7 +434,7 @@ ret_t tk_object_exec_ex(tk_object_t* obj, const char* name, const char* args, va
 
   if (obj->vt->exec_ex != NULL) {
     ret = obj->vt->exec_ex(obj, name, args, result);
-    not_found = (RET_NOT_FOUND == ret);
+    not_found = (RET_NOT_FOUND == ret || RET_NOT_IMPL == ret);
   }
 
   if (not_found) {
