@@ -27,6 +27,7 @@
 #include "base/layout.h"
 #include "widgets/popup.h"
 #include "base/window.h"
+#include "base/enums.h"
 #include "tkc/tokenizer.h"
 #include "text_selector/text_selector.h"
 #include "base/widget_animator_manager.h"
@@ -485,7 +486,11 @@ static ret_t text_selector_set_prop(widget_t* widget, const char* name, const va
   } else if (tk_str_eq(name, TEXT_SELECTOR_PROP_ENABLE_VALUE_ANIMATOR)) {
     return text_selector_set_enable_value_animator(widget, value_bool(v));
   } else if (tk_str_eq(name, TEXT_SELECTOR_PROP_MASH_EASING)) {
-    return text_selector_set_mask_easing(widget, (easing_type_t)value_int(v));
+    const key_type_value_t* kv = easing_type_find(value_str(v));
+
+    if (kv != NULL) {
+      return text_selector_set_mask_easing(widget, (easing_type_t)kv->value);
+    }
   } else if (tk_str_eq(name, TEXT_SELECTOR_PROP_MASH_AREA_SCALE)) {
     return text_selector_set_mask_area_scale(widget, value_float(v));
   }

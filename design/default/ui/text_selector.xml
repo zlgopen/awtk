@@ -8,8 +8,9 @@
   <row x="0" y="middle:55" w="100%" h="90" children_layout="default(c=1,r=1,x=20,s=20)">
     <text_selector ellipses="true" loop_options="true" visible_nr="3" style:normal:border_color="#000000" options="this is long text option! this is long text option! this is long text option! this is long text option! this is long text option! this is long text option!;this is normal text option!;ellipses test"/>
   </row>
-  <row x="10" y="bottom:20" w="100%" h="90" children_layout="default(row=1,col=3)">
-    <text_selector style="dark" visible_nr="3" text="2018" options="2000-2050"/>
+  <row x="10" y="bottom:20" w="100%" h="90" children_layout="default(row=1,col=4)">
+    <text_selector style="dark" visible_nr="3" text="2018" options="2000-2050" mask_easing="linear"/>
+    <text_selector style="dark" visible_nr="3" text="2018" options="2000-2050" mask_easing="bounce_in"/>
     <text_selector visible_nr="3" text="05" options="0-60-%02d-5"/>
     <text_selector visible_nr="3" text="red" options="red;green;blue;gold;orange"/>
   </row>
