@@ -328,7 +328,7 @@ static int32_t hscroll_label_get_range(widget_t* widget, bool_t stop_at_begin) {
   int32_t left_margin = style_get_int(widget->astyle, STYLE_ID_MARGIN_LEFT, 2);
   int32_t right_margin = style_get_int(widget->astyle, STYLE_ID_MARGIN_RIGHT, 2);
   int32_t w = widget->w - left_margin - right_margin;
-  if (stop_at_begin) {
+  if (stop_at_begin && !hscroll_label->yoyo) {
     return hscroll_label->text_w + hscroll_label_get_loop_end_and_begin_distance(widget);
   } else {
     return hscroll_label->text_w - w;
