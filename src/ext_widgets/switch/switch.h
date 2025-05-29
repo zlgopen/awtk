@@ -79,7 +79,7 @@ typedef struct _switch_t {
   /**
    * @property {float_t} max_xoffset_ratio
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 当开关处于关闭时，图片偏移相对于图片宽度的比例(缺省为1/3)。
+   * 主要用于当开关处于关闭时，图片偏移相对于图片宽度的比例(缺省为1/3)。
    */
   float_t max_xoffset_ratio;
 

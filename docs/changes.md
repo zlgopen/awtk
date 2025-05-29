@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/05/29
+  * 完善switch控件中max_xoffset_ratio属性文档（感谢俊杰提供补丁)。
+
 2025/05/28
   * 完善 tk_object_exec_ex(感谢兆坤提供补丁)。
   * 完善 auto_adjust_size  属性的文档 （感谢俊杰提供补丁)。
