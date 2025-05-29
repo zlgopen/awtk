@@ -213,7 +213,6 @@ ret_t tab_button_set_value(widget_t* widget, bool_t value) {
         tab_button_load_ui(tab_button, pages);
         widget_set_value(pages, index);
       }
-      widget_set_focused(pages, TRUE);
     } else {
       widget_on(widget, EVT_BEFORE_PAINT, tab_button_sync_pages, widget);
     }
