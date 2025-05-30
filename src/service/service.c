@@ -101,7 +101,7 @@ static ret_t tk_service_tcp_on_client(event_source_t* source) {
   tk_service_create_t create = (tk_service_create_t)(event_source_fd->ctx);
 
   int listen_sock = event_source_get_fd(source);
-  int sock = tcp_accept(listen_sock);
+  int sock = tk_tcp_accept(listen_sock);
 
   if (sock >= 0) {
     log_debug("client connected:%d\n", sock);
@@ -135,7 +135,7 @@ static ret_t on_source_destroy(void* ctx, event_t* e) {
   int port = tk_pointer_to_int(ctx);
 
   log_debug("stop service: socket=%d port=%d\n", listen_sock, port);
-  socket_close(listen_sock);
+  tk_socket_close(listen_sock);
 
   return RET_OK;
 }
@@ -151,7 +151,7 @@ static ret_t tk_service_start_tcp(event_source_manager_t* esm, const char* url,
 
   port = aurl->port;
   ip = (tk_str_eq(aurl->host, "localhost") || tk_str_eq(aurl->host, "127.0.0.1") || tk_str_eq(aurl->host, "0.0.0.0")) ? NULL : aurl->host;
-  listen_sock = tcp_listen_ex(ip, port);
+  listen_sock = tk_tcp_listen_ex(ip, port);
   url_destroy(aurl);
   return_value_if_fail(listen_sock >= 0, RET_BAD_PARAMS);
 
@@ -163,7 +163,7 @@ static ret_t tk_service_start_tcp(event_source_manager_t* esm, const char* url,
   event_source_manager_add(esm, source);
   emitter_on(EMITTER(source), EVT_DESTROY, on_source_destroy, tk_pointer_from_int(port));
 
-  OBJECT_UNREF(source);
+  TK_OBJECT_UNREF(source);
   log_debug("service start: %s\n", url);
 
   return RET_OK;

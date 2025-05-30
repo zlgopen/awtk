@@ -55,12 +55,12 @@ static ret_t suggest_words_list_on_update(void* ctx, event_t* e) {
       str_init(&desc, 0);
       str_set(&desc, "This is description by ");
       str_append(&desc, iter);
-      object_set_prop_str(obj, "desc", desc.str);
+      tk_object_set_prop_str(obj, "desc", desc.str);
 
-      object_set_prop_str(obj, EDIT_EX_DEFAULT_SUGGEST_WORDS_INPUT_NAME, iter);
+      tk_object_set_prop_str(obj, EDIT_EX_DEFAULT_SUGGEST_WORDS_INPUT_NAME, iter);
 
       if (tk_str_eq("AWTK", iter)) {
-        object_set_prop_str(obj, EDIT_EX_SUGGEST_WORDS_PROP_FORMAT_NAME, "AWTK");
+        tk_object_set_prop_str(obj, EDIT_EX_SUGGEST_WORDS_PROP_FORMAT_NAME, "AWTK");
       }
 
       object_array_push(s_suggest_words_list, value_set_object(&v, obj));

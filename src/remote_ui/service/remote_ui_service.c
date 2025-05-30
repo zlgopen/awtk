@@ -279,7 +279,7 @@ static ret_t remote_ui_service_on_event_func(void* ctx, event_t* e) {
         value_t* v = NULL;
         prop_change_event_t* event = prop_change_event_cast(e);
         /*保持类型不变*/
-        if (tk_object_get_prop(OBJECT(e->target), event->name, &vv) == RET_OK) {
+        if (tk_object_get_prop(TK_OBJECT(e->target), event->name, &vv) == RET_OK) {
           v = &vv;
         } else {
           v = (value_t*)(event->value);

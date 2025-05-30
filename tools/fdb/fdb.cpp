@@ -720,7 +720,7 @@ static ret_t func_help(app_info_t* app, tokenizer_t* tokenizer) {
   return fdb_show_help(app, NULL);
 }
 
-static ret_t register_functions(object_t* obj) {
+static ret_t register_functions(tk_object_t* obj) {
   uint32_t i = 0;
   while (s_cmds[i].name != NULL) {
     const cmd_entry_t* iter = s_cmds + i;
@@ -745,7 +745,7 @@ static ret_t fdb_shell_exec(app_info_t* app, const char* line) {
     return RET_OK;
   }
 
-  func = (cmd_line_func_t)object_get_prop_pointer(app->obj, name);
+  func = (cmd_line_func_t)tk_object_get_prop_pointer(app->obj, name);
   if (func == NULL) {
     func = func_help;
   }

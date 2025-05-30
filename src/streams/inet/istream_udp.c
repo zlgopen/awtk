@@ -35,7 +35,7 @@ static int32_t tk_istream_udp_read(tk_istream_t* stream, uint8_t* buff, uint32_t
                            (struct sockaddr*)&(istream_udp->addr), &addr_size);
 
   if (ret <= 0) {
-    if (socket_last_io_has_error()) {
+    if (tk_socket_last_io_has_error()) {
       perror("tk_socket_recvfrom");
       istream_udp->is_broken = TRUE;
     }
@@ -97,7 +97,7 @@ ret_t tk_istream_udp_set_target_with_addr(tk_istream_t* stream, struct sockaddr_
 ret_t tk_istream_udp_set_target_with_host(tk_istream_t* stream, const char* host, int port) {
   struct sockaddr_in addr_in;
   return_value_if_fail(stream != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(socket_resolve(host, port, &addr_in) != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(tk_socket_resolve(host, port, &addr_in) != NULL, RET_BAD_PARAMS);
 
   return tk_istream_udp_set_target_with_addr(stream, addr_in);
 }

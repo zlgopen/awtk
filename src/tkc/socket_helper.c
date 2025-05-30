@@ -322,7 +322,7 @@ int tk_tcp_connect_ex(const char* host, int port, int timeout, void* opts) {
   fd_set rset, wset;
   struct sockaddr_in s_in;
   struct timeval tv = {0, 0};
-  struct sockaddr* addr = socket_resolve(host, port, &s_in);
+  struct sockaddr* addr = tk_socket_resolve(host, port, &s_in);
   return_value_if_fail(addr != NULL, -1);
   return_value_if_fail(opts == NULL, -1);
 

@@ -405,9 +405,9 @@ TEST(ConfNode, set_get_object_array) {
 
 static ret_t conf_doc_on_check_data(void* ctx, const char* path, value_t* v) {
   value_t vv;
-  ENSURE(tk_object_get_prop(OBJECT(ctx), path, &vv) == RET_OK);
+  ENSURE(tk_object_get_prop(TK_OBJECT(ctx), path, &vv) == RET_OK);
   ENSURE(value_equal(&vv, v));
-  tk_object_remove_prop(OBJECT(ctx), path);
+  tk_object_remove_prop(TK_OBJECT(ctx), path);
   log_info("    %s=%s\n", path, value_str(v));
   return RET_OK;
 }
@@ -432,7 +432,7 @@ TEST(ConfNode, foreach) {
   tk_object_foreach_prop(data, conf_doc_on_copy_data, doc);
 
   conf_doc_foreach(doc, conf_doc_on_check_data, data);
-  ENSURE(tk_object_get_prop_int(data, OBJECT_PROP_SIZE, -1) == 0);
+  ENSURE(tk_object_get_prop_int(data, TK_OBJECT_PROP_SIZE, -1) == 0);
 
   conf_doc_destroy(doc);
   TK_OBJECT_UNREF(data);

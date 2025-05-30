@@ -101,7 +101,7 @@ tk_iostream_t* tk_iostream_udp_create_client_ex(const char* host, int port, cons
   int sock = 0;
   struct sockaddr_in addr_in;
   tk_iostream_udp_t* iostream_udp = NULL;
-  struct sockaddr* addr = socket_resolve(host, port, &addr_in);
+  struct sockaddr* addr = tk_socket_resolve(host, port, &addr_in);
   return_value_if_fail(addr != NULL, NULL);
 
   sock = tk_udp_socket();

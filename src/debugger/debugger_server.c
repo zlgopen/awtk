@@ -352,7 +352,7 @@ static debugger_t* debugger_server_init_debugger(debugger_server_t* server, debu
 
   ret = darray_push(&(server->debuggers), debugger);
   if (ret != RET_OK) {
-    OBJECT_UNREF(debugger);
+    TK_OBJECT_UNREF(debugger);
   } else {
     emitter_on(EMITTER(debugger), DEBUGGER_RESP_MSG_LOG, debugger_server_on_events, server);
     emitter_on(EMITTER(debugger), DEBUGGER_RESP_MSG_ERROR, debugger_server_on_events, server);

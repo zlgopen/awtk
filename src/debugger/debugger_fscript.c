@@ -470,7 +470,7 @@ static ret_t debugger_fscript_exec_async(void* ctx) {
   value_set_int(&v, 0);
   fscript_exec(fscript, &v);
   value_reset(&v);
-  OBJECT_UNREF(fscript->obj);
+  TK_OBJECT_UNREF(fscript->obj);
   fscript_destroy(fscript);
 
   return RET_OK;

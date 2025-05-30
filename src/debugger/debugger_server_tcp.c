@@ -91,7 +91,7 @@ ret_t debugger_server_tcp_start_async(void) {
 
 ret_t debugger_server_tcp_deinit(void) {
   return_value_if_fail(s_server_sock >= 0, RET_BAD_PARAMS);
-  socket_close(s_server_sock);
+  tk_socket_close(s_server_sock);
   s_server_sock = -1;
 
   if (s_accept_thread != NULL) {

@@ -1704,7 +1704,7 @@ debugger_t* debugger_lldb_create_ex(const char* host, uint32_t port, uint32_t ti
     TK_OBJECT_UNREF(io);
     debugger_lldb_init(debugger);
   } else {
-    socket_close(sock);
+    tk_socket_close(sock);
   }
 
   return debugger;

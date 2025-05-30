@@ -164,7 +164,7 @@ static const struct object_custom_vtable_t : object_vtable_t {
 } s_object_custom_vtable;
 
 tk_object_t* object_custom_create(void) {
-  tk_object_t* obj = object_create(&s_object_custom_vtable);
+  tk_object_t* obj = tk_object_create(&s_object_custom_vtable);
   object_custom_t* model = (object_custom_t*)(obj);
   return_value_if_fail(model != NULL, NULL);
 
