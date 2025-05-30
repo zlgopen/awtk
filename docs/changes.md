@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/05/30
+  * 修正progress_bar的注释（感谢福明提供以下补丁）
+
 2025/05/29
   * 完善switch控件中max_xoffset_ratio属性文档（感谢俊杰提供补丁)。
   * 修复text_selector控件设置mask_easing属性不生效的问题（感谢俊杰提供补丁)。

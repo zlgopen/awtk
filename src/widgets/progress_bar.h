@@ -86,7 +86,7 @@ typedef struct _progress_bar_t {
   /**
    * @property {char*} format
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 数值到字符串转换时的格式，缺省为"%d"。
+   * 数值到字符串转换时的格式，缺省为"%d%%"。
    */
   char* format;
 
