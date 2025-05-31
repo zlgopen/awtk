@@ -2,6 +2,7 @@
 
 2025/05/31
   * 修复rich_text控件设置了line_gap属性后，然后再修改rich_text的text属性，line_gap又被重置为5的问题（感谢俊杰提供补丁)。
+  * 完善rich_text控件yslidable属性的描述（感谢俊杰提供补丁)。
 
 2025/05/30
   * 修正progress_bar的注释（感谢福明提供以下补丁）

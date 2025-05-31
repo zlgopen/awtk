@@ -6,8 +6,9 @@
   </rich_text>
 
   <rich_text x="0" y="70" w="100%" h="60" tr_text="hello world" />
+  <rich_text x="0" y="150" w="100%" h="40" tr_text="hello world" yslidable="true"/>
 
-  <rich_text line_gap="5" x="0" y="140" w="100%" h="300">
+  <rich_text line_gap="5" x="0" y="230" w="100%" h="300">
     <property name="text">
       <![CDATA[
  <image name="bricks"/><font color="gold" align_v="bottom" size="24">hello awtk!</font><font color="green" size="20">ProTip! The feed shows you events from people you follow and repositories you watch. 

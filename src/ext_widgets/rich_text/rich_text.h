@@ -103,7 +103,7 @@ typedef struct _rich_text_t {
   /**
    * @property {bool_t} yslidable
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 标识控件是否允许上下拖动。
+   * 标识控件是否允许上下拖动。(需满足文字的高度大于控件的高度)
    */
   bool_t yslidable;
 
