@@ -519,8 +519,6 @@ static ret_t rich_text_set_text_form_value(widget_t* widget, const value_t* v) {
   return_value_if_fail(rich_text != NULL, RET_BAD_PARAMS);
   wstr_from_value(&(widget->text), v);
   rich_text->need_reset = TRUE;
-  rich_text->line_gap = 5;
-  rich_text->margin = 2;
 
   return RET_OK;
 }
