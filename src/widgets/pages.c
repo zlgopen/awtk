@@ -49,6 +49,21 @@ static ret_t pages_save_target(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t pages_on_idle_set_page_focused(const idle_info_t* idle) {
+  pages_t* pages = NULL;
+  return_value_if_fail(idle != NULL, RET_BAD_PARAMS);
+  pages = PAGES(idle->ctx);
+  ENSURE(pages);
+
+  if (!pages->widget.focused) {
+    widget_set_focused(&(pages->widget), TRUE);
+  }
+
+  pages->page_focused_idle_id = TK_INVALID_ID;
+
+  return RET_OK;
+}
+
 static ret_t pages_on_idle_set_target_focused(const idle_info_t* idle) {
   pages_t* pages = NULL;
   system_info_t* info = system_info();
@@ -129,6 +144,11 @@ ret_t pages_set_active(widget_t* widget, uint32_t index) {
       widget_dispatch_simple_event(widget, EVT_PAGE_CHANGED);
       widget_invalidate(widget, NULL);
     }
+
+    if (pages->page_focused_idle_id == TK_INVALID_ID) {
+      pages->page_focused_idle_id = idle_add(pages_on_idle_set_page_focused, widget);
+    }
+
     pages_restore_target(widget);
   } else {
     pages->active = index;

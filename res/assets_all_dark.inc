@@ -199,6 +199,7 @@
 #include "assets/default/inc/ui/button.data"
 #include "assets/default/inc/ui/edit_menu.data"
 #include "assets/default/inc/ui/menu.data"
+#include "assets/default/inc/ui/tab_auto_focused.data"
 #include "assets/default/inc/ui/text_selector_fscript.data"
 #include "assets/default/inc/ui/button_fscript.data"
 #include "assets/default/inc/ui/file_chooser_for_save.data"
@@ -1139,6 +1140,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_button_default);
   assets_manager_add(am, ui_edit_menu_default);
   assets_manager_add(am, ui_menu_default);
+  assets_manager_add(am, ui_tab_auto_focused_default);
   assets_manager_add(am, ui_text_selector_fscript_default);
   assets_manager_add(am, ui_button_fscript_default);
   assets_manager_add(am, ui_file_chooser_for_save_default);

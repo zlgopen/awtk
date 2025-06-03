@@ -196,6 +196,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_top_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_button_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_edit_menu_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_menu_default[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_tab_auto_focused_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_text_selector_fscript_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_button_fscript_default[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_file_chooser_for_save_default[]);
@@ -759,6 +760,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_button_default);
   assets_manager_add(am, ui_edit_menu_default);
   assets_manager_add(am, ui_menu_default);
+  assets_manager_add(am, ui_tab_auto_focused_default);
   assets_manager_add(am, ui_text_selector_fscript_default);
   assets_manager_add(am, ui_button_fscript_default);
   assets_manager_add(am, ui_file_chooser_for_save_default);

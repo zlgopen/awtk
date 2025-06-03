@@ -1,0 +1,28 @@
+<window anim_hint="htranslate" name="home_page" theme="tab_top">
+  <tab_button_group x="13" y="0" w="300" h="50" style="highlight" drag_child="false">
+    <tab_button text="a"/>
+    <tab_button text="b">
+      <button x="r" y="b" w="20" h="30" text="x" name="close_button" on:click="close()"/>
+    </tab_button>
+    <tab_button text="c"/>
+    <tab_button text="d"/>
+  </tab_button_group>
+  <pages x="0" y="50" w="100%" h="200" auto_focused="true" style.focused.bg_color="#FF0000">
+    <view w="100%" h="100%" name="page1">
+      <edit x="c" y="80" w="100" h="30" text="" />
+      <button x="c" y="130" w="100" h="30" text="a" />
+    </view>
+    <view w="100%" h="100%" name="page2">
+      <edit x="c" y="80" w="100" h="30" text="" />
+      <button x="c" y="130" w="100" h="30" text="b" />
+    </view>
+    <view w="100%" h="100%" name="page3">
+      <edit x="c" y="80" w="100" h="30" text="" />
+      <button x="c" y="130" w="100" h="30" text="c" />
+    </view>
+    <view w="100%" h="100%" name="page4">
+      <edit x="c" y="80" w="100" h="30" text="" />
+      <button x="c" y="130" w="100" h="30" text="d" />
+    </view>
+  </pages>
+</window>

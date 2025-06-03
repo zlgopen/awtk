@@ -10,5 +10,6 @@
     <button name="open:tab_remove" text="tab_remove"/>
     <button name="open:tab_invisible" text="Invisible"/>
     <button name="open:tab_invisible_compact" text="Invisible Compact"/>
+    <button name="open:tab_auto_focused" text="auto_focused"/>
     <button name="close" text="Close"/>
 </window>
