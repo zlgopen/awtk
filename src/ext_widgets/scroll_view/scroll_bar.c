@@ -548,7 +548,11 @@ static ret_t scroll_bar_set_prop(widget_t* widget, const char* name, const value
     scroll_bar->virtual_size = value_int(v);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_ROW)) {
-    scroll_bar->row = value_int(v);
+    if (v->type == VALUE_TYPE_STRING) {
+      scroll_bar->row = tk_atoi(value_str(v));
+    } else {
+      scroll_bar->row = value_int(v);
+    }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_ANIMATABLE)) {
     scroll_bar->animatable = value_bool(v);

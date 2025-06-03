@@ -580,9 +580,16 @@ static ret_t children_layouter_list_view_for_list_view_layout(children_layouter_
       layouter, widget, scroll_bar, virtual_h, scroll_bar_h, virtual_w);
 
   if (scroll_bar != NULL) {
-    children_layouter_list_view_for_list_view_set_scroll_bar_info(
-        scroll_bar, list_view, widget, virtual_h,
-        item_height > 0 ? item_height : default_item_height);
+    int32_t row_height = 0;
+    scroll_bar_t* bar = SCROLL_BAR(scroll_bar);
+
+    if (bar != NULL && bar->row > 0) {
+      row_height = bar->row;
+    } else {
+      row_height = item_height > 0 ? item_height : default_item_height;
+    }
+    children_layouter_list_view_for_list_view_set_scroll_bar_info(scroll_bar, list_view, widget,
+                                                                  virtual_h, row_height);
   }
 
   if (scroll_bar_h != NULL) {
