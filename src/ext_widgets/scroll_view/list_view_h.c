@@ -54,11 +54,10 @@ static ret_t list_view_h_set_prop(widget_t* widget, const char* name, const valu
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_ITEM_WIDTH)) {
-    list_view_h->item_width = value_int(v);
-    widget_layout_children(widget);
+    list_view_h_set_item_width(widget, value_int(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_SPACING)) {
-    list_view_h->spacing = value_int(v);
+    list_view_h_set_spacing(widget, value_int(v));
     return RET_OK;
   }
 
@@ -201,6 +200,7 @@ ret_t list_view_h_set_item_width(widget_t* widget, int32_t item_width) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   list_view_h->item_width = item_width;
+  widget_layout_children(widget);
 
   return RET_OK;
 }
@@ -211,6 +211,7 @@ ret_t list_view_h_set_spacing(widget_t* widget, int32_t spacing) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   list_view_h->spacing = spacing;
+  widget_layout_children(widget);
 
   return RET_OK;
 }
