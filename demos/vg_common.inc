@@ -1,3 +1,4 @@
+#include "awtk.h"
 
 static inline ret_t on_paint_rect(void* ctx, event_t* e) {
   paint_event_t* evt = (paint_event_t*)e;
@@ -305,6 +306,7 @@ static void draw_basic_shapes(vgcanvas_t* vg, bool_t stroke) {
 
 static void stroke_lines(vgcanvas_t* vg) {
   vgcanvas_save(vg);
+
   vgcanvas_set_stroke_color(vg, color_init(0, 0, 0xff, 0xff));
   vgcanvas_move_to(vg, 0, 0);
   vgcanvas_line_to(vg, 40, 40);
@@ -326,12 +328,38 @@ static void stroke_lines(vgcanvas_t* vg) {
 
   vgcanvas_translate(vg, 40, 0);
   vgcanvas_set_line_width(vg, 2);
-  vgcanvas_set_line_cap(vg, "round");
+  vgcanvas_set_line_cap(vg, VGCANVAS_LINE_CAP_ROUND);
   vgcanvas_begin_path(vg);
   vgcanvas_arc(vg, 20, 20, 20, 0, 3.14 / 2, FALSE);
   vgcanvas_stroke(vg);
 
   vgcanvas_stroke(vg);
+
+  /*************************************************/
+  vgcanvas_translate(vg, 50, 0);
+  vgcanvas_set_line_width(vg, 2);
+  vgcanvas_set_line_cap(vg, VGCANVAS_LINE_CAP_BUTT);
+
+  point_t points[] = {
+      {0, 20}, {8, 20}, {8, 20}, {8 * 2, 20}, {8 * 3, 20}, {8 * 4, 20}, {8 * 4, 20}, {8 * 5, 20},
+  };
+
+  vgcanvas_begin_path(vg);
+  for (size_t start = 1, i = start; i < ARRAY_SIZE(points); i++) {
+    if (i == start) {
+      vgcanvas_move_to(vg, points[i].x, points[i].y);
+    } else {
+      vgcanvas_line_to(vg, points[i].x, points[i].y);
+    }
+  }
+  vgcanvas_stroke(vg);
+
+  vgcanvas_begin_path(vg);
+  vgcanvas_move_to(vg, points[0].x, points[0].y);
+  vgcanvas_line_to(vg, points[1].x, points[1].y);
+  vgcanvas_stroke(vg);
+  /*************************************************/
+
   vgcanvas_restore(vg);
 }
 
@@ -403,7 +431,6 @@ static void draw_text(vgcanvas_t* vg) {
   vgcanvas_scale(vg, -1, -1);
   vgcanvas_fill_text(vg, text, 10, 10, 100);
   vgcanvas_restore(vg);
-
 }
 
 static inline ret_t on_paint_text(void* ctx, event_t* e) {
