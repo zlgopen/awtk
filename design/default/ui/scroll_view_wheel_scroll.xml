@@ -1,0 +1,24 @@
+<window name="scroll_view_ym">
+  <list_view name="list_view" x="0" y="0" w="100%" h="200" default_item_height="60" style:normal:border_color="#000000">
+    <scroll_view name="scroll_view" x="0" y="0" w="-10" h="100%" children_layout="list_view(xm=20)" style:normal:bg_color="#D9E2F2">
+      <list_item name="list_item" style:normal:border="top|bottom" style:pressed:border="top|bottom" style:over:border="top|bottom" style:disable:border="top|bottom" style:focused:border="top|bottom" text="1"/>
+      <list_item name="list_item" h="60" text="2"/>
+      <list_item name="list_item" h="60" text="3"/>
+      <list_item name="list_item" h="60" text="4"/>
+      <list_item name="list_item" h="60" text="5"/>
+      <list_item name="list_item" h="60" text="6"/>
+    </scroll_view>
+    <scroll_bar_d name="scroll_bar" x="r" y="0" w="10" h="100%" wheel_scroll="true"/>
+  </list_view>
+  <list_view name="list_view" x="0" y="230" w="100%" h="200" default_item_height="60" style:normal:border_color="#000000">
+    <scroll_view name="scroll_view" x="0" y="0" w="-10" h="100%" children_layout="list_view(xm=20)" style:normal:bg_color="#D9E2F2">
+      <list_item name="list_item" style:normal:border="top|bottom" style:pressed:border="top|bottom" style:over:border="top|bottom" style:disable:border="top|bottom" style:focused:border="top|bottom" text="1"/>
+      <list_item name="list_item" h="60" text="2"/>
+      <list_item name="list_item" h="60" text="3"/>
+      <list_item name="list_item" h="60" text="4"/>
+      <list_item name="list_item" h="60" text="5"/>
+      <list_item name="list_item" h="60" text="6"/>
+    </scroll_view>
+    <scroll_bar_d name="scroll_bar" x="r" y="0" w="10" h="100%" wheel_scroll="false"/>
+  </list_view>
+</window>

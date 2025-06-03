@@ -1,6 +1,6 @@
 <window anim_hint="htranslate">
     <list_view x="0" y="0" w="100%" h="100%" item_height="30">
-        <scroll_view name="view" x="0"  y="0" w="-12" h="100%" children_layout="list_view(x_margin=5,spacing=5)">
+        <scroll_view name="view" x="0" y="0" w="-12" h="100%" children_layout="list_view(x_margin=5,spacing=5)">
             <button name="open:list_view_d" text="Desktop Style" focused="true"/>
             <button name="open:list_view_d_f" text="Desktop Floating Style"/>
             <button name="open:list_view_m" text="Mobile Style"/>
@@ -16,7 +16,8 @@
             <button name="open:list_view_animate" text="Animate"/>
             <button name="open:list_view_sync" text="Sync Scrolling"/>
             <button name="open:list_view_check_button" text="Check Button"/>
-			<button name="open:scroll_view_ym" text="Test Scroll View ym"/>
+            <button name="open:scroll_view_ym" text="Test Scroll View ym"/>
+            <button name="open:scroll_view_wheel_scroll" text="Test Wheel Scroll"/>
             <button name="close" text="Close"/>
         </scroll_view>
         <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" animator_time="0" value="0"/>

@@ -105,7 +105,13 @@ static ret_t list_view_handle_wheel_event(list_view_t* list_view, event_t* e) {
     widget_t* scroll_bar = list_view->scroll_bars[i];
     if (scroll_bar != NULL &&
         !widget_get_prop_bool(scroll_bar, SCROLL_BAR_PROP_IS_HORIZON, FALSE)) {
-      scroll_bar_add_delta(scroll_bar, delta);
+      scroll_bar_t* bar = SCROLL_BAR(scroll_bar);
+
+      if (scroll_bar_is_mobile(scroll_bar)) {
+        scroll_bar_add_delta(scroll_bar, delta);
+      } else if (!scroll_bar_is_mobile(scroll_bar) && bar != NULL && bar->wheel_scroll) {
+        scroll_bar_add_delta(scroll_bar, delta);
+      }
       log_debug("wheel: %d\n", delta);
     }
   }
