@@ -2,6 +2,7 @@
 
 2025/06/03
   * 修复pages控件的auto_focused属性不生效的问题（感谢俊杰提供补丁)。
+  * 修复tab_button中嵌套一个button按钮，然后点击button时会切换tab页面的问题（感谢俊杰提供补丁)。
 
 2025/05/31
   * 修复rich_text控件设置了line_gap属性后，然后再修改rich_text的text属性，line_gap又被重置为5的问题（感谢俊杰提供补丁)。

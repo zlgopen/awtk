@@ -271,7 +271,7 @@ static ret_t tab_button_group_on_pointer_down(widget_t* widget, pointer_event_t*
   return_value_if_fail(tab_button_group != NULL && e != NULL, RET_BAD_PARAMS);
 
   target = widget_find_target(widget, e->x, e->y);
-  if (target != NULL) {
+  if (target != NULL && target->grab_widget == NULL) {
     if (tab_button_group->drag_child) {
       widget_grab(widget->parent, widget);
       tab_button_group->dragged = target;
