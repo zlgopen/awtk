@@ -137,7 +137,7 @@ typedef struct _scroll_view_t {
   /**
    * @property {bool_t} recursive
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 是否递归查找全部子控件。
+   * 是否递归查找全部子控件。(当scroll_view的父控件是list_view_h或list_view时无效)
    */
   bool_t recursive;
   /**
