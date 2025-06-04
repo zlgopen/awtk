@@ -27,11 +27,11 @@ TEST(Utils, basic) {
   ASSERT_EQ(tk_atol("#f321"), 0xf321);
   ASSERT_EQ(tk_atol("#f321"), 0xf321);
   ASSERT_EQ(tk_atol("#13211234"), 0x13211234);
-  ASSERT_EQ(tk_atoul("#f"), 0xf);
-  ASSERT_EQ(tk_atoul("#f3"), 0xf3);
-  ASSERT_EQ(tk_atoul("#f321"), 0xf321);
-  ASSERT_EQ(tk_atoul("#f321"), 0xf321);
-  ASSERT_EQ(tk_atoul("#f3211234"), 0xf3211234);
+  ASSERT_EQ(tk_atoul("#f"), (unsigned long)0xf);
+  ASSERT_EQ(tk_atoul("#f3"), (unsigned long)0xf3);
+  ASSERT_EQ(tk_atoul("#f321"), (unsigned long)0xf321);
+  ASSERT_EQ(tk_atoul("#f321"), (unsigned long)0xf321);
+  ASSERT_EQ(tk_atoul("#f3211234"), (unsigned long)0xf3211234);
 
   ASSERT_EQ(tk_atol("0b11"), 3);
   ASSERT_EQ(tk_atol("0B101"), 5);
@@ -1073,19 +1073,19 @@ TEST(Utils, sscanf_simple_lu) {
   unsigned long d = 0;
   unsigned long d1 = 0;
   tk_sscanf_simple("123", "%lu", &d);
-  ASSERT_EQ(d, 123);
+  ASSERT_EQ(d, 123u);
 
   tk_sscanf_simple("-123", "%lu", &d);
   ASSERT_EQ(d, -123);
 
   tk_sscanf_simple("aaa123", "aaa%lu", &d);
-  ASSERT_EQ(d, 123);
+  ASSERT_EQ(d, 123u);
 
   tk_sscanf_simple("aaa-123bbb", "aaa%lubbb", &d);
   ASSERT_EQ(d, -123);
 
   tk_sscanf_simple("aaa123b100", "aaa%lub%lu", &d, &d1);
-  ASSERT_EQ(d, 123);
+  ASSERT_EQ(d, 123u);
   ASSERT_EQ(d1, 100);
 }
 

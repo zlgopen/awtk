@@ -396,7 +396,7 @@ TEST(Tree, to_string) {
   ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
 
   ASSERT_EQ(tree_to_string(&tree, NULL, &str, tree_node_str_append), RET_OK);
-  ASSERT_EQ(str.size, 0);
+  ASSERT_EQ(str.size, 0u);
 
   ASSERT_EQ(build_tree_for_test(&tree), RET_OK);
   ASSERT_EQ(tree_to_string(&tree, NULL, &str, tree_node_str_append), RET_OK);

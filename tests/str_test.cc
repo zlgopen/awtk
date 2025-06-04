@@ -154,12 +154,12 @@ TEST(Str, set_with_len) {
   ASSERT_EQ(str_eq(s, "hello"), TRUE);
 
   ASSERT_EQ(str_set_with_len(s, &c, 1), RET_OK);
-  ASSERT_EQ(s->size, 1);
+  ASSERT_EQ(s->size, 1u);
   ASSERT_EQ(str_eq(s, "a"), TRUE);
 
   c = '\0';
   ASSERT_EQ(str_set_with_len(s, &c, 1), RET_OK);
-  ASSERT_EQ(s->size, 0);
+  ASSERT_EQ(s->size, 0u);
   ASSERT_EQ(str_eq(s, ""), TRUE);
 
   str_reset(s);
@@ -656,16 +656,16 @@ TEST(Str, count) {
   str_t str;
   str_init(&str, 100);
   str_set(&str, "ABCD");
-  ASSERT_EQ(str_count(&str, "BC"), 1);
-  ASSERT_EQ(str_count(&str, "ABC"), 1);
-  ASSERT_EQ(str_count(&str, "ABCD"), 1);
-  ASSERT_EQ(str_count(&str, "ABCDE"), 0);
+  ASSERT_EQ(str_count(&str, "BC"), 1u);
+  ASSERT_EQ(str_count(&str, "ABC"), 1u);
+  ASSERT_EQ(str_count(&str, "ABCD"), 1u);
+  ASSERT_EQ(str_count(&str, "ABCDE"), 0u);
 
   str_set(&str, "ABCD ABCD");
-  ASSERT_EQ(str_count(&str, "BC"), 2);
-  ASSERT_EQ(str_count(&str, "ABC"), 2);
-  ASSERT_EQ(str_count(&str, "ABCD"), 2);
-  ASSERT_EQ(str_count(&str, "ABCDE"), 0);
+  ASSERT_EQ(str_count(&str, "BC"), 2u);
+  ASSERT_EQ(str_count(&str, "ABC"), 2u);
+  ASSERT_EQ(str_count(&str, "ABCD"), 2u);
+  ASSERT_EQ(str_count(&str, "ABCDE"), 0u);
   str_reset(&str);
 }
 
@@ -674,15 +674,15 @@ TEST(Str, format) {
   str_init(&str, 0);
   str_format(&str, 10, "%d", 123);
   ASSERT_STREQ(str.str, "123");
-  ASSERT_EQ(str.size, 3);
+  ASSERT_EQ(str.size, 3u);
 
   str_format(&str, 10, "%s", "abcd");
   ASSERT_STREQ(str.str, "abcd");
-  ASSERT_EQ(str.size, 4);
+  ASSERT_EQ(str.size, 4u);
 
   str_format(&str, 10, "", "abcd");
   ASSERT_STREQ(str.str, "");
-  ASSERT_EQ(str.size, 0);
+  ASSERT_EQ(str.size, 0u);
 
   str_reset(&str);
 }
@@ -692,15 +692,15 @@ TEST(Str, append_format) {
   str_init(&str, 0);
   str_append_format(&str, 10, "%d", 123);
   ASSERT_STREQ(str.str, "123");
-  ASSERT_EQ(str.size, 3);
+  ASSERT_EQ(str.size, 3u);
 
   str_append_format(&str, 10, "%s", "abcd");
   ASSERT_STREQ(str.str, "123abcd");
-  ASSERT_EQ(str.size, 7);
+  ASSERT_EQ(str.size, 7u);
 
   str_append_format(&str, 10, "", "abcd");
   ASSERT_STREQ(str.str, "123abcd");
-  ASSERT_EQ(str.size, 7);
+  ASSERT_EQ(str.size, 7u);
 
   str_reset(&str);
 }

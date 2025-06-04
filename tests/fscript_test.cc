@@ -1929,7 +1929,7 @@ TEST(FScript, convert1) {
 
   fscript_eval(obj, "u16(\"123\")", &v);
   ASSERT_EQ(v.type == VALUE_TYPE_UINT16, true);
-  ASSERT_EQ(123, value_uint16(&v));
+  ASSERT_EQ(123u, value_uint16(&v));
 
   fscript_eval(obj, "i32(\"123\")", &v);
   ASSERT_EQ(v.type == VALUE_TYPE_INT32, true);
@@ -1937,7 +1937,7 @@ TEST(FScript, convert1) {
 
   fscript_eval(obj, "u32(\"123\")", &v);
   ASSERT_EQ(v.type == VALUE_TYPE_UINT32, true);
-  ASSERT_EQ(123, value_uint32(&v));
+  ASSERT_EQ(123u, value_uint32(&v));
 
   fscript_eval(obj, "i64(\"123\")", &v);
   ASSERT_EQ(v.type == VALUE_TYPE_INT64, true);
@@ -1945,7 +1945,7 @@ TEST(FScript, convert1) {
 
   fscript_eval(obj, "u64(\"123\")", &v);
   ASSERT_EQ(v.type == VALUE_TYPE_UINT64, true);
-  ASSERT_EQ(123, value_uint64(&v));
+  ASSERT_EQ(123u, value_uint64(&v));
 
   fscript_eval(obj, "f32(\"123\")", &v);
   ASSERT_EQ(v.type == VALUE_TYPE_FLOAT32, true);
@@ -2747,7 +2747,7 @@ TEST(FScript, crc32) {
   value_reset(&v);
 
   fscript_eval(obj, "crc32(a, 1)", &v);
-  ASSERT_EQ(1855256856, value_uint32(&v));
+  ASSERT_EQ(1855256856u, value_uint32(&v));
   value_reset(&v);
 
   tk_object_set_prop_pointer(obj, "a", (void*)"hello");
@@ -2756,26 +2756,26 @@ TEST(FScript, crc32) {
   value_reset(&v);
 
   fscript_eval(obj, "crc32(a, 1)", &v);
-  ASSERT_EQ(1855256856, value_uint32(&v));
+  ASSERT_EQ(1855256856u, value_uint32(&v));
   value_reset(&v);
 
   value_set_binary_data(&v, (void*)"hello", 5);
   tk_object_set_prop(obj, "a", &v);
 
   fscript_eval(obj, "crc32(a)", &v);
-  ASSERT_EQ(3387906425, value_uint32(&v));
+  ASSERT_EQ(3387906425u, value_uint32(&v));
   value_reset(&v);
 
   fscript_eval(obj, "crc32(a, 5)", &v);
-  ASSERT_EQ(3387906425, value_uint32(&v));
+  ASSERT_EQ(3387906425u, value_uint32(&v));
   value_reset(&v);
 
   fscript_eval(obj, "crc32(a, -1)", &v);
-  ASSERT_EQ(3387906425, value_uint32(&v));
+  ASSERT_EQ(3387906425u, value_uint32(&v));
   value_reset(&v);
 
   fscript_eval(obj, "crc32(a, 1)", &v);
-  ASSERT_EQ(1855256856, value_uint32(&v));
+  ASSERT_EQ(1855256856u, value_uint32(&v));
   value_reset(&v);
 
   TK_OBJECT_UNREF(obj);
@@ -2787,7 +2787,7 @@ TEST(FScript, binary_len) {
   value_set_binary_data(&v, (void*)"hello", 5);
   tk_object_set_prop(obj, "a", &v);
   fscript_eval(obj, "len(a)", &v);
-  ASSERT_EQ(5, value_uint32(&v));
+  ASSERT_EQ(5u, value_uint32(&v));
   value_reset(&v);
 
   TK_OBJECT_UNREF(obj);
@@ -3544,7 +3544,7 @@ TEST(FExr, sum_bin1) {
   fscript_eval(obj, "v1+v2", &v);
   binary_data_t* b = value_binary_data(&v);
   ASSERT_STREQ((char*)(b->data), "abc123");
-  ASSERT_EQ(b->size, 6);
+  ASSERT_EQ(b->size, 6u);
   value_reset(&v);
 
   TK_OBJECT_UNREF(obj);
@@ -3563,7 +3563,7 @@ TEST(FExr, sum_bin2) {
   fscript_eval(obj, "v1+v2", &v);
   binary_data_t* b = value_binary_data(&v);
   ASSERT_STREQ((char*)(b->data), "abc123");
-  ASSERT_EQ(b->size, 7);
+  ASSERT_EQ(b->size, 7u);
   value_reset(&v);
 
   TK_OBJECT_UNREF(obj);

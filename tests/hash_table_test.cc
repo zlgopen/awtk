@@ -13,15 +13,15 @@ TEST(DHashTable, int_add_remove) {
 
   for (i = 0; i < n; i++) {
     ASSERT_EQ(hash_table_add(ht, tk_pointer_from_int(i), TRUE), RET_OK);
-    ASSERT_EQ(hash_table_count(ht, compare_always_equal, NULL), (i + 1));
-    ASSERT_EQ(hash_table_size(ht), (i + 1));
-    ASSERT_EQ(tk_pointer_to_int(hash_table_find(ht, int_compare, tk_pointer_from_int(i))), i);
+    ASSERT_EQ(hash_table_count(ht, compare_always_equal, NULL), (int32_t)(i + 1));
+    ASSERT_EQ(hash_table_size(ht), (int32_t)(i + 1));
+    ASSERT_EQ(tk_pointer_to_int(hash_table_find(ht, int_compare, tk_pointer_from_int(i))), (int32_t)i);
   }
 
   for (i = 0; i < n; i++) {
     ASSERT_EQ(hash_table_remove(ht, int_compare, tk_pointer_from_int(i)), RET_OK);
-    ASSERT_EQ(hash_table_count(ht, compare_always_equal, NULL), n - i - 1);
-    ASSERT_EQ(hash_table_size(ht), n - i - 1);
+    ASSERT_EQ(hash_table_count(ht, compare_always_equal, NULL), (int32_t)(n - i - 1));
+    ASSERT_EQ(hash_table_size(ht), (int32_t)(n - i - 1));
     ASSERT_EQ(tk_pointer_to_int(hash_table_find(ht, int_compare, tk_pointer_from_int(i))), 0);
   }
 
@@ -35,8 +35,8 @@ TEST(DHashTable, int_add_clear) {
 
   for (i = 0; i < n; i++) {
     ASSERT_EQ(hash_table_add(ht, tk_pointer_from_int(i), TRUE), RET_OK);
-    ASSERT_EQ(hash_table_count(ht, compare_always_equal, NULL), (i + 1));
-    ASSERT_EQ(tk_pointer_to_int(hash_table_find(ht, int_compare, tk_pointer_from_int(i))), i);
+    ASSERT_EQ(hash_table_count(ht, compare_always_equal, NULL), (int32_t)(i + 1));
+    ASSERT_EQ(tk_pointer_to_int(hash_table_find(ht, int_compare, tk_pointer_from_int(i))), (int32_t)i);
   }
 
   ASSERT_EQ(hash_table_clear(ht), RET_OK);
@@ -52,8 +52,8 @@ TEST(DHashTable, int_remove_all) {
 
   for (i = 0; i < n; i++) {
     ASSERT_EQ(hash_table_add(ht, tk_pointer_from_int(i), TRUE), RET_OK);
-    ASSERT_EQ(hash_table_count(ht, compare_always_equal, NULL), (i + 1));
-    ASSERT_EQ(tk_pointer_to_int(hash_table_find(ht, int_compare, tk_pointer_from_int(i))), i);
+    ASSERT_EQ(hash_table_count(ht, compare_always_equal, NULL), (int32_t)(i + 1));
+    ASSERT_EQ(tk_pointer_to_int(hash_table_find(ht, int_compare, tk_pointer_from_int(i))), (int32_t)i);
   }
 
   ASSERT_EQ(hash_table_remove_all(ht, compare_always_equal, NULL), RET_OK);
@@ -79,8 +79,8 @@ TEST(DHashTable, int_foreach) {
 
   for (i = 0; i < n; i++) {
     ASSERT_EQ(hash_table_add(ht, tk_pointer_from_int(i), TRUE), RET_OK);
-    ASSERT_EQ(hash_table_count(ht, compare_always_equal, NULL), (i + 1));
-    ASSERT_EQ(tk_pointer_to_int(hash_table_find(ht, int_compare, tk_pointer_from_int(i))), i);
+    ASSERT_EQ(hash_table_count(ht, compare_always_equal, NULL), (int32_t)(i + 1));
+    ASSERT_EQ(tk_pointer_to_int(hash_table_find(ht, int_compare, tk_pointer_from_int(i))), (int32_t)i);
   }
 
   str_init(&str, 0);
@@ -101,7 +101,7 @@ TEST(DHashTable, str_add_remove) {
   for (i = 0; i < n; i++) {
     tk_snprintf(str, sizeof(str), "%u", i);
     ASSERT_EQ(hash_table_add(ht, tk_strdup(str), TRUE), RET_OK);
-    ASSERT_EQ(hash_table_count(ht, compare_always_equal, NULL), (i + 1));
+    ASSERT_EQ(hash_table_count(ht, compare_always_equal, NULL), (int32_t)(i + 1));
     ASSERT_STREQ((char*)hash_table_find(ht, (tk_compare_t)strcmp, str), str);
   }
 

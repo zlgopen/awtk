@@ -8,8 +8,8 @@ static float_t easing_linear(float_t k) {
 }
 
 TEST(easing, basic) {
-  ASSERT_EQ(easing_register("test1", easing_linear), EASING_FUNC_NR + 1);
-  ASSERT_EQ(easing_register("test2", easing_linear), EASING_FUNC_NR + 2);
+  ASSERT_EQ(easing_register("test1", easing_linear), EASING_FUNC_NR + 1u);
+  ASSERT_EQ(easing_register("test2", easing_linear), EASING_FUNC_NR + 2u);
 
   uint32_t easing_type = easing_register("test3", easing_linear);
   widget_t* button = button_create(NULL, 0, 0, 100, 30);

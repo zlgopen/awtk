@@ -34,38 +34,39 @@ TEST(GroupBox, radio_button) {
 
   widget_set_value_int(w, 0);
   ASSERT_EQ(widget_get_value_int(r0), TRUE);
-  ASSERT_EQ(value1, 0);
-  ASSERT_EQ(value2, 0);
-  ASSERT_EQ(group_box->value, 0);
+  ASSERT_EQ(value1, 0u);
+  ASSERT_EQ(value2, 0u);
+  ASSERT_EQ(group_box->value, 0u);
 
   widget_set_value_int(w, 1);
   ASSERT_EQ(widget_get_value_int(r1), TRUE);
-  ASSERT_EQ(value1, 1);
-  ASSERT_EQ(value2, 1);
-  ASSERT_EQ(group_box->value, 1);
+  ASSERT_EQ(value1, 1u);
+  ASSERT_EQ(value2, 1u);
+  ASSERT_EQ(group_box->value, 1u);
 
   widget_set_value_int(w, 2);
   ASSERT_EQ(widget_get_value_int(r2), TRUE);
-  ASSERT_EQ(value1, 2);
-  ASSERT_EQ(value2, 2);
-  ASSERT_EQ(group_box->value, 2);
+  ASSERT_EQ(value1, 2u);
+  ASSERT_EQ(value2, 2u);
+  ASSERT_EQ(group_box->value, 2u);
 
   widget_set_value_int(w, 3);
   ASSERT_EQ(widget_get_value_int(r3), TRUE);
-  ASSERT_EQ(value1, 3);
-  ASSERT_EQ(value2, 3);
-  ASSERT_EQ(group_box->value, 3);
+  ASSERT_EQ(value1, 3u);
+  ASSERT_EQ(value2, 3u);
+  ASSERT_EQ(group_box->value, 3u);
 
   widget_set_value_int(r0, 1);
-  ASSERT_EQ(value1, 0);
-  ASSERT_EQ(value2, 0);
-  ASSERT_EQ(group_box->value, 0);
+  ASSERT_EQ(value1, 0u);
+  ASSERT_EQ(value2, 0u);
+  ASSERT_EQ(group_box->value, 0u);
 
   widget_set_value_int(r3, 1);
-  ASSERT_EQ(value1, 3);
-  ASSERT_EQ(value2, 3);
-  ASSERT_EQ(group_box->value, 3);
+  ASSERT_EQ(value1, 3u);
+  ASSERT_EQ(value2, 3u);
+  ASSERT_EQ(group_box->value, 3u);
 
   widget_destroy(w);
   idle_dispatch();
 }
+

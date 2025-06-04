@@ -7,7 +7,7 @@ TEST(DateTime, convert) {
   date_time_t* dt = date_time_create();
 
   ASSERT_EQ(date_time_from_time(dt, now), RET_OK);
-  ASSERT_EQ(date_time_to_time(dt), now);
+  ASSERT_EQ(date_time_to_time(dt), (int64_t)now);
 
   memset(dt, 0x00, sizeof(*dt));
   dt->year = 1970;

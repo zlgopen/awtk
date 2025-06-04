@@ -258,8 +258,8 @@ TEST(MLEdit, insert_text_overwrite) {
   mledit_set_select(e, 2, 4);
   mledit_insert_text(e, -1, "\n6");
   text_edit_get_state(mledit->model, &state);
-  ASSERT_EQ(state.select_start, 0);
-  ASSERT_EQ(state.select_end, 2);
+  ASSERT_EQ(state.select_start, 0u);
+  ASSERT_EQ(state.select_end, 2u);
 
   widget_set_text_utf8(e, str);
   mledit_set_select(e, 2, 4);

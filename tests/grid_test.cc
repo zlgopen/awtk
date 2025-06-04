@@ -13,11 +13,11 @@ TEST(Grid, basic1) {
   ASSERT_EQ(g->show_grid, FALSE);
 
   ASSERT_EQ(grid_set_rows(w, 2), RET_OK);
-  ASSERT_EQ(g->rows, 2);
+  ASSERT_EQ(g->rows, 2u);
 
   ASSERT_EQ(grid_set_columns_definition(w, "col(w=100,margin=2)"), RET_OK);
   ASSERT_STREQ(g->columns_definition, "col(w=100,margin=2)");
-  ASSERT_EQ(g->cols_definition.size, 1);
+  ASSERT_EQ(g->cols_definition.size, 1u);
 
   widget_destroy(w);
   idle_dispatch();
@@ -34,7 +34,7 @@ TEST(Grid, layout) {
 
   grid_set_rows(w, 2);
   ASSERT_EQ(grid_set_columns_definition(w, "col(w=0.4,margin=2);col(w=0.6,margin=2);"), RET_OK);
-  ASSERT_EQ(g->cols_definition.size, 2);
+  ASSERT_EQ(g->cols_definition.size, 2u);
   widget_layout(w);
 
   ASSERT_EQ(b1->x, 2);
@@ -72,7 +72,7 @@ TEST(Grid, layout2) {
 
   grid_set_rows(w, 2);
   ASSERT_EQ(grid_set_columns_definition(w, "col(w=80,margin=2);col(w=120,margin=2);"), RET_OK);
-  ASSERT_EQ(g->cols_definition.size, 2);
+  ASSERT_EQ(g->cols_definition.size, 2u);
   widget_layout(w);
 
   ASSERT_EQ(b1->x, 2);
@@ -110,7 +110,7 @@ TEST(Grid, layout3) {
 
   grid_set_rows(w, 2);
   ASSERT_EQ(grid_set_columns_definition(w, "col(w=80,margin=2);col(w=-80,margin=2);"), RET_OK);
-  ASSERT_EQ(g->cols_definition.size, 2);
+  ASSERT_EQ(g->cols_definition.size, 2u);
   widget_layout(w);
 
   ASSERT_EQ(b1->x, 2);
@@ -148,7 +148,7 @@ TEST(Grid, layout4) {
 
   grid_set_rows(w, 2);
   ASSERT_EQ(grid_set_columns_definition(w, "col(w=0.4,margin=2);col(w=-0.4,margin=2);"), RET_OK);
-  ASSERT_EQ(g->cols_definition.size, 2);
+  ASSERT_EQ(g->cols_definition.size, 2u);
   widget_layout(w);
 
   ASSERT_EQ(b1->x, 2);
@@ -188,7 +188,7 @@ TEST(Grid, layout5) {
   ASSERT_EQ(
       grid_set_columns_definition(w, "col(w=0.4,margin=2);col(w=0,fill_available=true,margin=2);"),
       RET_OK);
-  ASSERT_EQ(g->cols_definition.size, 2);
+  ASSERT_EQ(g->cols_definition.size, 2u);
   widget_layout(w);
 
   ASSERT_EQ(b1->x, 2);

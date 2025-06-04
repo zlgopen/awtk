@@ -52,27 +52,27 @@ TEST(RLog, basic2) {
     ASSERT_EQ(log->index, 1u);
   }
   rlog_size(log, &size);
-  ASSERT_EQ(size, 16 * 96);
+  ASSERT_EQ(size, 16u * 96u);
 
   memset(buff, 0, sizeof(buff));
   ret = rlog_read(log, 512, buff, sizeof(buff) - 1, &size);
   ASSERT_EQ(ret, RET_OK);
-  ASSERT_EQ(size, 1024);
+  ASSERT_EQ(size, 1024u);
   ASSERT_EQ(tk_str_eq_with_len(buff, "helloworld 0032\n", 16), 0);
 
   ASSERT_EQ(rlog_clear(log), RET_OK);
   rlog_size(log, &size);
-  ASSERT_EQ(size, 0);
+  ASSERT_EQ(size, 0u);
 
   ret = rlog_print(log, "hellowolrd %04d\n", i + 64);
   ASSERT_EQ(ret, RET_OK);
   rlog_size(log, &size);
-  ASSERT_EQ(size, 16);
+  ASSERT_EQ(size, 16u);
 
   memset(buff, 0, sizeof(buff));
   ret = rlog_read(log, 0, buff, sizeof(buff) - 1, &size);
   ASSERT_EQ(ret, RET_OK);
-  ASSERT_EQ(size, 16);
+  ASSERT_EQ(size, 16u);
   ASSERT_EQ(tk_str_eq_with_len(buff, "helloworld 0096\n", 16), 0);
 
   rlog_destroy(log);

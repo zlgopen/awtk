@@ -922,9 +922,9 @@ TEST(Widget, calc_icon_text_rect_icon_right) {
   widget_calc_icon_text_rect(&ir, font_size, 10.0f, ICON_AT_RIGHT, img_w1, 10, spacer, &r_text,
                              &r_icon);
 
-  ASSERT_EQ(r_icon.x, ir.x + ir.w - img_w1);
+  ASSERT_EQ(r_icon.x, (xy_t)(ir.x + ir.w - img_w1));
   ASSERT_EQ(r_icon.y, ir.y);
-  ASSERT_EQ(r_icon.w, img_w1);
+  ASSERT_EQ(r_icon.w, (wh_t)img_w1);
   ASSERT_EQ(r_icon.h, ir.h);
 
   widget_calc_icon_text_rect(&ir, font_size, 10.0f, ICON_AT_RIGHT, img_w2, 10, spacer, &r_text,
@@ -1214,10 +1214,10 @@ TEST(Widget, get_style) {
   ASSERT_EQ(value_int(&v), value_int(&v1));
 
   ASSERT_EQ(widget_get_style(b, "pressed:x_offset", &v1), RET_OK);
-  ASSERT_EQ(1, value_uint32(&v1));
+  ASSERT_EQ(1u, value_uint32(&v1));
 
   ASSERT_EQ(widget_get_style(b, "pressed:y_offset", &v1), RET_OK);
-  ASSERT_EQ(1, value_uint32(&v1));
+  ASSERT_EQ(1u, value_uint32(&v1));
 
   widget_set_enable(b, FALSE);
   widget_update_style(b);

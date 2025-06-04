@@ -92,9 +92,9 @@ TEST(ScrollBar, auto_hide) {
 TEST(ScrollBar, animator_time) {
   widget_t* w = scroll_bar_create_mobile(NULL, 10, 20, 30, 40);
 
-  ASSERT_EQ(SCROLL_BAR(w)->animator_time, TK_ANIMATING_TIME);
+  ASSERT_EQ(SCROLL_BAR(w)->animator_time, (uint32_t)TK_ANIMATING_TIME);
   scroll_bar_set_animator_time(w, 0);
-  ASSERT_EQ(SCROLL_BAR(w)->animator_time, 0);
+  ASSERT_EQ(SCROLL_BAR(w)->animator_time, 0u);
 
   ASSERT_EQ(widget_set_prop_int(w, SCROLL_BAR_PROP_ANIMATOR_TIME, 200), RET_OK);
   ASSERT_EQ(SCROLL_BAR(w)->auto_hide, TRUE);

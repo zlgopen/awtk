@@ -387,7 +387,7 @@ TEST(UBJsonWriter, optimized_array_uint8) {
   wbuffer_init(&wb, buff, sizeof(buff));
   ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
 
-  for (int i = 0; i < ARRAY_SIZE(data); i++) {
+  for (uint32_t i = 0; i < ARRAY_SIZE(data); i++) {
     data[i] = i;
   }
 
@@ -411,7 +411,7 @@ TEST(UBJsonWriter, optimized_array_int32) {
   wbuffer_init(&wb, buff, sizeof(buff));
   ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
 
-  for (int i = 0; i < ARRAY_SIZE(data); i++) {
+  for (uint32_t i = 0; i < ARRAY_SIZE(data); i++) {
     data[i] = i;
   }
 
@@ -426,7 +426,7 @@ TEST(UBJsonWriter, optimized_array_int32) {
   ASSERT_EQ(buff[5], ARRAY_SIZE(data));
 
   int32_t* p = (int32_t*)(buff + 6);
-  for (int i = 0; i < ARRAY_SIZE(data); i++) {
+  for (uint32_t i = 0; i < ARRAY_SIZE(data); i++) {
     int32_t v = int32_from_big_endian(p[i]);
     ASSERT_EQ(v, data[i]);
   }
@@ -440,7 +440,7 @@ TEST(UBJsonWriter, optimized_array_float64) {
   wbuffer_init(&wb, buff, sizeof(buff));
   ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
 
-  for (int i = 0; i < ARRAY_SIZE(data); i++) {
+  for (uint32_t i = 0; i < ARRAY_SIZE(data); i++) {
     data[i] = i * 1.11;
   }
 
@@ -455,7 +455,7 @@ TEST(UBJsonWriter, optimized_array_float64) {
   ASSERT_EQ(buff[5], ARRAY_SIZE(data));
 
   double* p = (double*)(buff + 6);
-  for (int i = 0; i < ARRAY_SIZE(data); i++) {
+  for (uint32_t i = 0; i < ARRAY_SIZE(data); i++) {
     double v = double_from_big_endian(p[i]);
     ASSERT_EQ(v, data[i]);
   }

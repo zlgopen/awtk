@@ -10,7 +10,7 @@ TEST(DataReaderHTTP, http) {
     uint32_t size = data_reader_get_size(reader);
     int32_t ret = data_reader_read(reader, 0, buffer, sizeof(buffer));
     ASSERT_EQ(size > 0, true);
-    ASSERT_EQ(ret, sizeof(buffer));
+    ASSERT_EQ((size_t)ret, sizeof(buffer));
     ret = data_reader_read(reader, 0, buffer, sizeof(buffer));
     data_reader_destroy(reader);
   }
@@ -24,7 +24,7 @@ TEST(DataReaderHTTP, https) {
     uint32_t size = data_reader_get_size(reader);
     int32_t ret = data_reader_read(reader, 0, buffer, sizeof(buffer));
     ASSERT_EQ(size > 0, true);
-    ASSERT_EQ(ret, sizeof(buffer));
+    ASSERT_EQ((size_t)ret, sizeof(buffer));
 
     ret = data_reader_read(reader, 0, buffer, sizeof(buffer));
     data_reader_destroy(reader);

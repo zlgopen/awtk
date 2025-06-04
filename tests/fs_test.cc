@@ -263,7 +263,7 @@ TEST(Fs, foreach_dir) {
   ASSERT_EQ(file_write("./tmp1/a3/s.txt", "hello", 5), RET_OK);
 
   fs_foreach_dir("./tmp1", 1, on_dir, dirs);
-  ASSERT_EQ(dirs->size, 3);
+  ASSERT_EQ(dirs->size, 3u);
   ASSERT_TRUE(darray_find(dirs, (void*)"a1") != NULL);
   ASSERT_TRUE(darray_find(dirs, (void*)"a2") != NULL);
   ASSERT_TRUE(darray_find(dirs, (void*)"a3") != NULL);
@@ -272,7 +272,7 @@ TEST(Fs, foreach_dir) {
   darray_clear(dirs);
 
   fs_foreach_dir("./tmp1", 2, on_dir, dirs);
-  ASSERT_EQ(dirs->size, 3 + 5);
+  ASSERT_EQ(dirs->size, 3u + 5u);
   ASSERT_TRUE(darray_find(dirs, (void*)"b1") != NULL);
   ASSERT_TRUE(darray_find(dirs, (void*)"b2") != NULL);
   ASSERT_TRUE(darray_find(dirs, (void*)"b3") != NULL);
@@ -281,7 +281,7 @@ TEST(Fs, foreach_dir) {
   darray_clear(dirs);
 
   fs_foreach_dir("./tmp1", 0xffff, on_dir, dirs);
-  ASSERT_EQ(dirs->size, 3 + 5 + 2);
+  ASSERT_EQ(dirs->size, 3u + 5u + 2u);
   ASSERT_TRUE(darray_find(dirs, (void*)"b1") != NULL);
   ASSERT_TRUE(darray_find(dirs, (void*)"b2") != NULL);
   ASSERT_TRUE(darray_find(dirs, (void*)"b3") != NULL);

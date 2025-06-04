@@ -597,7 +597,7 @@ TEST(DArrayTest, remove_range) {
 
   size = darray.size;
   ASSERT_EQ(darray_remove_range(&darray, 0, size), RET_OK);
-  ASSERT_EQ(darray.size, 0);
+  ASSERT_EQ(darray.size, 0u);
 
   darray_deinit(&darray);
 }

@@ -100,7 +100,7 @@ TEST(CmdArgs, basic1) {
   ASSERT_STREQ(args.locale, "zh_CN");
   ASSERT_STREQ(args.output, "test.st");
   ASSERT_STREQ(args.strings_file, "strings.xml");
-  ASSERT_EQ(args.sources.size, 2);
+  ASSERT_EQ(args.sources.size, 2u);
 
   ASSERT_STREQ((char*)darray_get(&(args.sources), 0), "a.st");
   ASSERT_STREQ((char*)darray_get(&(args.sources), 1), "b.st");
@@ -119,7 +119,7 @@ TEST(CmdArgs, basic2) {
   cmd_args_process_str(&parser, cmd_line);
   ASSERT_STREQ(args.locale, "zh_CN");
   ASSERT_STREQ(args.strings_file, "strings.xml");
-  ASSERT_EQ(args.sources.size, 2);
+  ASSERT_EQ(args.sources.size, 2u);
 
   ASSERT_STREQ((char*)darray_get(&(args.sources), 0), "a.st");
   ASSERT_STREQ((char*)darray_get(&(args.sources), 1), "b.st");
@@ -146,7 +146,7 @@ TEST(CmdArgs, wstr) {
 
   ASSERT_STREQ(args.locale, "zh_CN");
   ASSERT_STREQ(args.strings_file, "strings.xml");
-  ASSERT_EQ(args.sources.size, 2);
+  ASSERT_EQ(args.sources.size, 2u);
 
   ASSERT_STREQ((char*)darray_get(&(args.sources), 0), "a.st");
   ASSERT_STREQ((char*)darray_get(&(args.sources), 1), "b.st");

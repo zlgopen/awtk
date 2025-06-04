@@ -72,7 +72,7 @@ typedef enum _foo_msg_code_t {
 #define FOO_URL "tcp://localhost:2233"
 #endif /*FOO_URL*/
 
-#define FOO_VERSION 0x01
+#define FOO_VERSION 0x01u
 #define FOO_RETRY_TIMES 0
 
 END_C_DECLS

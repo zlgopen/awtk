@@ -211,7 +211,7 @@ TEST(UBJsonReader, uint64) {
   rb.capacity = wb.cursor;
   ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);
   ASSERT_EQ(v.type == VALUE_TYPE_UINT64, true);
-  ASSERT_EQ(value_uint64(&v), 0x1122334455667788);
+  ASSERT_EQ(value_uint64(&v), (uint64_t)0x1122334455667788);
 
   ubjson_reader_reset(&ur);
 }
@@ -272,7 +272,7 @@ TEST(UBJsonReader, optimized_array_uint8) {
   PREPARE_TEST();
 
   uint8_t data[120];
-  for (int i = 0; i < ARRAY_SIZE(data); i++) {
+  for (uint32_t i = 0; i < ARRAY_SIZE(data); i++) {
     data[i] = i;
   }
 
@@ -301,7 +301,7 @@ TEST(UBJsonReader, optimized_array_int32) {
   PREPARE_TEST();
 
   int32_t data[120];
-  for (int i = 0; i < ARRAY_SIZE(data); i++) {
+  for (uint32_t i = 0; i < ARRAY_SIZE(data); i++) {
     data[i] = i;
   }
 
@@ -330,7 +330,7 @@ TEST(UBJsonReader, optimized_array_double) {
   PREPARE_TEST();
 
   double data[120];
-  for (int i = 0; i < ARRAY_SIZE(data); i++) {
+  for (uint32_t i = 0; i < ARRAY_SIZE(data); i++) {
     data[i] = i * 1.11;
   }
 

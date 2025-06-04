@@ -264,10 +264,10 @@ TEST(UBJsonParser, ubjson_writer_write_kv_value) {
   ASSERT_EQ(tk_object_get_prop_int16(obj, "int16", 0), -4);
   ASSERT_EQ(tk_object_get_prop_int32(obj, "int32", 0), -5);
   ASSERT_EQ(tk_object_get_prop_int64(obj, "int64", 0), -6);
-  ASSERT_EQ(tk_object_get_prop_uint8(obj, "uint8", 0), 7);
-  ASSERT_EQ(tk_object_get_prop_uint16(obj, "uint16", 0), 8);
-  ASSERT_EQ(tk_object_get_prop_uint32(obj, "uint32", 0), 9);
-  ASSERT_EQ(tk_object_get_prop_uint64(obj, "uint64", 0), 10);
+  ASSERT_EQ(tk_object_get_prop_uint8(obj, "uint8", 0), 7u);
+  ASSERT_EQ(tk_object_get_prop_uint16(obj, "uint16", 0), 8u);
+  ASSERT_EQ(tk_object_get_prop_uint32(obj, "uint32", 0), 9u);
+  ASSERT_EQ(tk_object_get_prop_uint64(obj, "uint64", 0), 10u);
 
   tk_object_unref(obj);
 }

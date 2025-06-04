@@ -258,17 +258,17 @@ TEST(InputDeviceStatus, long_press) {
   ASSERT_EQ(input_device_status_set_key_long_press_time(ids, TK_KEY_0, 2000), RET_OK);
   info = input_device_status_find_key_long_press_info(ids, TK_KEY_0);
   ASSERT_EQ(info->key, TK_KEY_0);
-  ASSERT_EQ(info->time, 2000);
+  ASSERT_EQ(info->time, 2000u);
 
   ASSERT_EQ(input_device_status_set_key_long_press_time(ids, TK_KEY_1, 3000), RET_OK);
   info = input_device_status_find_key_long_press_info(ids, TK_KEY_1);
   ASSERT_EQ(info->key, TK_KEY_1);
-  ASSERT_EQ(info->time, 3000);
+  ASSERT_EQ(info->time, 3000u);
 
   ASSERT_EQ(input_device_status_set_key_long_press_time(ids, TK_KEY_2, 4000), RET_OK);
   info = input_device_status_find_key_long_press_info(ids, TK_KEY_2);
   ASSERT_EQ(info->key, TK_KEY_2);
-  ASSERT_EQ(info->time, 4000);
+  ASSERT_EQ(info->time, 4000u);
 
   input_device_status_deinit(ids);
 }

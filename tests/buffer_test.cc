@@ -62,11 +62,11 @@ TEST(Buffer, insert_binary) {
 
   wbuffer_insert_binary(&wbuffer, 0, "he", 2);
   ASSERT_STREQ((char*)(wbuffer.data), "hello !");
-  ASSERT_EQ(wbuffer.cursor, 8);
+  ASSERT_EQ(wbuffer.cursor, 8u);
 
   wbuffer_insert_binary(&wbuffer, 5, " world", 6);
   ASSERT_STREQ((char*)(wbuffer.data), "hello world !");
-  ASSERT_EQ(wbuffer.cursor, 14);
+  ASSERT_EQ(wbuffer.cursor, 14u);
 
   wbuffer_deinit(&wbuffer);
 }
@@ -242,6 +242,7 @@ TEST(Buffer, WbufferSkip) {
 TEST(Buffer, RbufferSkip) {
   uint8_t data[128];
   rbuffer_t rbuffer;
+  memset(data, 0x00, sizeof(data));
   ASSERT_EQ(rbuffer_init(&rbuffer, data, sizeof(data)), &rbuffer);
 
   ASSERT_EQ(rbuffer_skip(&rbuffer, 10), RET_OK);
@@ -260,6 +261,7 @@ TEST(Buffer, string) {
   uint8_t data[128];
   wbuffer_t wbuffer;
   rbuffer_t rbuffer;
+  memset(data, 0x00, sizeof(data));
   ASSERT_EQ(wbuffer_init(&wbuffer, data, sizeof(data)), &wbuffer);
   ASSERT_EQ(rbuffer_init(&rbuffer, data, sizeof(data)), &rbuffer);
 
@@ -318,6 +320,7 @@ TEST(Buffer, create) {
   const char* str = NULL;
   uint8_t data[20] = {0};
 
+  memset(data, 0x00, sizeof(data));
   wbuffer = wbuffer_create(data, sizeof(data));
   ASSERT_EQ(wbuffer_write_string(wbuffer, "hello"), RET_OK);
 
@@ -422,7 +425,7 @@ TEST(Buffer, value) {
   ASSERT_EQ(v.type, VALUE_TYPE_INT8);
 
   ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
-  ASSERT_EQ(value_uint8(&v), 2);
+  ASSERT_EQ(value_uint8(&v), 2u);
   ASSERT_EQ(v.type, VALUE_TYPE_UINT8);
 
   ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
@@ -430,7 +433,7 @@ TEST(Buffer, value) {
   ASSERT_EQ(v.type, VALUE_TYPE_INT16);
 
   ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
-  ASSERT_EQ(value_uint16(&v), 4);
+  ASSERT_EQ(value_uint16(&v), 4u);
   ASSERT_EQ(v.type, VALUE_TYPE_UINT16);
 
   ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
@@ -438,7 +441,7 @@ TEST(Buffer, value) {
   ASSERT_EQ(v.type, VALUE_TYPE_INT32);
 
   ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
-  ASSERT_EQ(value_uint32(&v), 6);
+  ASSERT_EQ(value_uint32(&v), 6u);
   ASSERT_EQ(v.type, VALUE_TYPE_UINT32);
 
   ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
@@ -446,7 +449,7 @@ TEST(Buffer, value) {
   ASSERT_EQ(v.type, VALUE_TYPE_INT64);
 
   ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);
-  ASSERT_EQ(value_uint64(&v), 8);
+  ASSERT_EQ(value_uint64(&v), 8u);
   ASSERT_EQ(v.type, VALUE_TYPE_UINT64);
 
   ASSERT_EQ(rbuffer_read_value(&rbuffer, &v), RET_OK);

@@ -779,13 +779,13 @@ TEST(ObjectArray, push_and_remove) {
 
   value_set_int(&v, 10);
   ASSERT_EQ(object_array_remove_value(obj, &v), RET_OK);
-  ASSERT_EQ(OBJECT_ARRAY(obj)->size, 3);
+  ASSERT_EQ(OBJECT_ARRAY(obj)->size, 3u);
   ASSERT_EQ(object_array_get(obj, 0, &v), RET_OK);
   ASSERT_EQ(value_int(&v), 20);
 
   value_set_int(&v, 30);
   ASSERT_EQ(object_array_remove_value(obj, &v), RET_OK);
-  ASSERT_EQ(OBJECT_ARRAY(obj)->size, 2);
+  ASSERT_EQ(OBJECT_ARRAY(obj)->size, 2u);
   ASSERT_EQ(object_array_get(obj, 1, &v), RET_OK);
   ASSERT_EQ(value_int(&v), 40);
   ASSERT_EQ(tk_object_is_instance_of(obj, OBJECT_ARRAY_TYPE), TRUE);
@@ -803,7 +803,7 @@ TEST(ObjectArray, find_prop) {
   tk_object_t* obj = object_array_create_with_str("1,2,3,4", ",", VALUE_TYPE_UINT32);
   value_t* v = tk_object_find_prop(obj, is_even, NULL);
   ASSERT_EQ(v != NULL, TRUE);
-  ASSERT_EQ(value_uint32(v), 2);
+  ASSERT_EQ(value_uint32(v), 2u);
   TK_OBJECT_UNREF(obj);
 }
 
@@ -835,7 +835,7 @@ TEST(ObjectArray, copy_props) {
 
   ASSERT_EQ(tk_object_copy_props(dst, src, TRUE), RET_OK);
 
-  ASSERT_EQ(OBJECT_ARRAY(dst)->size, 4);
+  ASSERT_EQ(OBJECT_ARRAY(dst)->size, 4u);
 
   ASSERT_EQ(object_array_get(dst, 0, &v), RET_OK);
   ASSERT_EQ(value_int(&v), 10);
@@ -864,7 +864,7 @@ TEST(ObjectArray, copy_props) {
 
   ASSERT_EQ(tk_object_copy_props(dst, src, FALSE), RET_OK);
 
-  ASSERT_EQ(OBJECT_ARRAY(dst)->size, 6);
+  ASSERT_EQ(OBJECT_ARRAY(dst)->size, 6u);
 
   ASSERT_EQ(object_array_get(dst, 0, &v), RET_OK);
   ASSERT_EQ(value_int(&v), 10);
@@ -881,7 +881,7 @@ TEST(ObjectArray, copy_props) {
 
   ASSERT_EQ(tk_object_copy_props(dst, src, TRUE), RET_OK);
 
-  ASSERT_EQ(OBJECT_ARRAY(dst)->size, 6);
+  ASSERT_EQ(OBJECT_ARRAY(dst)->size, 6u);
 
   ASSERT_EQ(object_array_get(dst, 0, &v), RET_OK);
   ASSERT_EQ(value_int(&v), 11);

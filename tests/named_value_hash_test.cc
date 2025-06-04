@@ -11,7 +11,7 @@ TEST(NamedValueHash, basic) {
 
   named_value_hash_init(nvh, NULL, NULL);
 
-  ASSERT_EQ(nvh->hash, 0);
+  ASSERT_EQ(nvh->hash, 0u);
   ASSERT_EQ(nvh->base.name, (char*)NULL);
   ASSERT_EQ(nvh->base.value.type, VALUE_TYPE_INVALID);
 
@@ -32,7 +32,7 @@ TEST(NamedValueHash, init) {
 
   named_value_hash_deinit(nvh);
 
-  ASSERT_EQ(nvh->hash, 0);
+  ASSERT_EQ(nvh->hash, 0u);
   ASSERT_EQ(nvh->base.name, (char*)NULL);
   ASSERT_EQ(nvh->base.value.type, VALUE_TYPE_INVALID);
 }
