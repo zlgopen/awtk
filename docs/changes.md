@@ -3,6 +3,7 @@
 2025/06/04
   * 修复编译警告。
   * 完善scroll_view控件中的recursive属性文档（感谢俊杰提供补丁)。
+  * 完善candidates控件中的select_by_num属性文档（感谢俊杰提供补丁)。
 
 2025/06/03
   * 修复pages控件的auto_focused属性不生效的问题（感谢俊杰提供补丁)。

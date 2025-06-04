@@ -72,7 +72,7 @@ typedef struct _candidates_t {
   /**
    * @property {bool_t} select_by_num
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 是否启用用数字选择候选字。比如按下1选择第1个候选字，按下2选择第2个候选字。
+   * 是否启用用数字选择候选字。比如按下1选择第1个候选字，按下2选择第2个候选字。(需在keyboard中设置grab_keys="true"方可生效)
    * 
    */
   bool_t select_by_num;

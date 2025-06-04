@@ -1,4 +1,4 @@
-<keyboard theme="keyboard" x="0" y="bottom" w="100%" h="40%">
+<keyboard theme="keyboard" x="0" y="bottom" w="100%" h="40%" grab_keys="true">
   <pages x="0" y="bottom" w="100%" h="-28" active="4">
     <view name="upper" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=1,s=2,m=2)">
       <group_box children_layout="default(r=1,c=10,s=2,m=2)">
