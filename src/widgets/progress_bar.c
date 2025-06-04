@@ -41,6 +41,25 @@ uint32_t progress_bar_get_percent(widget_t* widget) {
   return tk_roundi(percent);
 }
 
+static ret_t progress_bar_update_text(widget_t* widget) {
+  char str[TK_NUM_MAX_LEN + 1];
+  progress_bar_t* progress_bar = PROGRESS_BAR(widget);
+  return_value_if_fail(progress_bar != NULL, RET_BAD_PARAMS);
+
+  if (progress_bar->format != NULL) {
+    if (strchr(progress_bar->format, 'd') != NULL || strchr(progress_bar->format, 'x') != NULL ||
+        strchr(progress_bar->format, 'X') != NULL) {
+      tk_snprintf(str, TK_NUM_MAX_LEN, progress_bar->format, tk_roundi(progress_bar->value));
+    } else {
+      tk_snprintf(str, TK_NUM_MAX_LEN, progress_bar->format, progress_bar->value);
+    }
+  } else {
+    tk_snprintf(str, TK_NUM_MAX_LEN, "%d%%", progress_bar_get_percent(widget));
+  }
+
+  return widget_set_text_utf8(widget, str);
+}
+
 static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   rect_t r;
   style_t* style = widget->astyle;
@@ -86,6 +105,7 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   widget_fill_fg_rect(widget, c, &r, draw_type);
 
   if (progress_bar->show_text) {
+    progress_bar_update_text(widget);
     return widget_paint_helper(widget, c, NULL, NULL);
   }
 
@@ -93,25 +113,6 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   widget_stroke_border_rect(widget, c, &r);
 
   return RET_OK;
-}
-
-static ret_t progress_bar_update_text(widget_t* widget) {
-  char str[TK_NUM_MAX_LEN + 1];
-  progress_bar_t* progress_bar = PROGRESS_BAR(widget);
-  return_value_if_fail(progress_bar != NULL, RET_BAD_PARAMS);
-
-  if (progress_bar->format != NULL) {
-    if (strchr(progress_bar->format, 'd') != NULL || strchr(progress_bar->format, 'x') != NULL ||
-        strchr(progress_bar->format, 'X') != NULL) {
-      tk_snprintf(str, TK_NUM_MAX_LEN, progress_bar->format, tk_roundi(progress_bar->value));
-    } else {
-      tk_snprintf(str, TK_NUM_MAX_LEN, progress_bar->format, progress_bar->value);
-    }
-  } else {
-    tk_snprintf(str, TK_NUM_MAX_LEN, "%d%%", progress_bar_get_percent(widget));
-  }
-
-  return widget_set_text_utf8(widget, str);
 }
 
 ret_t progress_bar_set_value(widget_t* widget, double value) {
