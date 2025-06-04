@@ -172,7 +172,6 @@ static ret_t gen_folder(const char* in_foldername, const char* out_foldername, c
 static ret_t gen_sources(const char* src_filename, const char* in_foldername,
                          const char* out_foldername, const char* theme, const char* extname,
                          const char* dir_name, bool_t data_folder) {
-  fs_item_t item;
   ret_t ret = RET_OK;
   char in_name[MAX_PATH] = {0};
   char out_name[MAX_PATH] = {0};

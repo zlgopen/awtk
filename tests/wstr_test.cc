@@ -321,7 +321,6 @@ TEST(WStr, wcs_dup) {
 
 TEST(WStr, modify) {
   wstr_t str;
-  int32_t v = 0;
   wstr_t* s = &str;
 	wchar_t wstr[] = L"1234567890";
   ASSERT_EQ(wstr_init(&str, 0), &str);

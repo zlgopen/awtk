@@ -3,7 +3,6 @@
 
 TEST(MemAllocatorFixedBlock, base) {
   int* user = NULL;
-  ptrdiff_t diff = 0;
   mem_allocator_t* allocator = mem_allocator_fixed_block_create(sizeof(int), 0);
   ASSERT_EQ(allocator != NULL, TRUE);
 
@@ -19,7 +18,6 @@ TEST(MemAllocatorFixedBlock, base) {
 
 TEST(MemAllocatorFixedBlock, multiple_alloc) {
   int *p1 = NULL, *p2 = NULL, *p3 = NULL;
-  ptrdiff_t diff = 0;
   mem_allocator_t* allocator = mem_allocator_fixed_block_create(sizeof(int), 2);
   ASSERT_EQ(allocator != NULL, TRUE);
 
@@ -68,7 +66,6 @@ TEST(MemAllocatorFixedBlock, reuse) {
 TEST(MemAllocatorFixedBlock, invalid_free) {
   int dummy = 0;
   int *p1 = NULL, *p2 = NULL, *p3 = NULL;
-  ptrdiff_t diff = 0;
   mem_allocator_t* allocator = mem_allocator_fixed_block_create(sizeof(int), 2);
 
   // 测试无效指针释放
@@ -90,6 +87,9 @@ TEST(MemAllocatorFixedBlock, invalid_free) {
             TRUE);
 
   ASSERT_EQ(mem_allocator_destroy(allocator), RET_OK);
+
+  (void)p2;
+  (void)p3;
 }
 
 TEST(MemAllocatorFixedBlock, realloc) {

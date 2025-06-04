@@ -40,9 +40,7 @@ ret_t gen_one(const char* input_file, const char* output_file, const char* theme
 static ret_t gen_sources(const char* src_filename, const char* in_foldername,
                          const char* out_foldername, const char* theme, const char* dir_name,
                          bool_t output_bin) {
-  fs_item_t item;
   ret_t ret = RET_OK;
-  const char* c_xml = ".xml";
   char in_name[MAX_PATH] = {0};
   char out_name[MAX_PATH] = {0};
 

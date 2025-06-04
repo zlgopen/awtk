@@ -61,8 +61,6 @@ static ret_t ubjson_reader_read_optimized_array(ubjson_reader_t* reader, uint8_t
                                                 value_t* v) {
   return_value_if_fail(reader != NULL && reader->read != NULL && v != NULL, RET_BAD_PARAMS);
 
-  ret_t ret = RET_OK;
-  value_t vlen;
   int len = 0;
   str_t* str = &(reader->str);
 

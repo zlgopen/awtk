@@ -2,7 +2,6 @@
 #include "gtest_nvpg.h"
 
 static nvgp_bool_t gtest_clear_cache(void* uptr) {
-  gtest_nvgp_ctx_t* ctx = (gtest_nvgp_ctx_t*)uptr;
   return TRUE;
 }
 

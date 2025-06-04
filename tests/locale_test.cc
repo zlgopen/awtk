@@ -68,7 +68,6 @@ TEST(Locale, xml_basic) {
   prepare_test_file(file_name);
 
   const char* str = "test";
-  uint32_t id = 0;
   locale_info_t* locale_info = locale_info_xml_create("en", "US");
   locale_info_xml_set_url(locale_info, file_name);
 

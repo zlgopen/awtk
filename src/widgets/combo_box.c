@@ -447,7 +447,7 @@ static ret_t combo_box_on_key_event(widget_t* widget, key_event_t* evt) {
     }
   } else if (widget_is_activate_key(widget, evt) && evt->e.type == EVT_KEY_UP) {
     if (edit->focus_next_when_enter) {
-      ret = edit_on_event(widget, evt);
+      ret = edit_on_event(widget, (event_t*)evt);
     } else if (edit->readonly) {
       ret = RET_STOP;
       combo_box_active(widget);

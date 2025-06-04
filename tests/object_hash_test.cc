@@ -640,7 +640,6 @@ static int value_type_compare(const void* iter, const void* ctx) {
 
 TEST(ObjectHash, find_prop) {
   tk_object_t* obj = object_hash_create();
-  object_hash_t* o = OBJECT_HASH(obj);
   value_t* v = NULL;
 
   tk_object_set_prop_uint32(obj, "id", 1001);
@@ -659,7 +658,6 @@ TEST(ObjectHash, find_prop) {
 
 TEST(ObjectHash, find_props) {
   tk_object_t* obj = object_hash_create();
-  object_hash_t* o = OBJECT_HASH(obj);
   darray_t matched;
   darray_init(&matched, 0, NULL, NULL);
 

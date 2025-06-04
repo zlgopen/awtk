@@ -639,7 +639,6 @@ static int value_type_compare(const void* iter, const void* ctx) {
 
 TEST(ObjectDefault, find_prop) {
   tk_object_t* obj = object_default_create();
-  object_default_t* o = OBJECT_DEFAULT(obj);
   value_t* v = NULL;
 
   tk_object_set_prop_uint32(obj, "id", 1001);
@@ -658,7 +657,6 @@ TEST(ObjectDefault, find_prop) {
 
 TEST(ObjectDefault, find_props) {
   tk_object_t* obj = object_default_create();
-  object_default_t* o = OBJECT_DEFAULT(obj);
   darray_t matched;
   darray_init(&matched, 0, NULL, NULL);
 

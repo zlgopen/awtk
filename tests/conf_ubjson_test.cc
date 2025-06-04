@@ -181,7 +181,6 @@ TEST(ConfUBJson, optimized_array_to_root) {
   ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
 
   conf_doc_t* doc = conf_doc_create(100);
-  conf_node_t* node = NULL;
 
   doc->root = conf_doc_create_node(doc, "root");
 

@@ -409,7 +409,6 @@ static ret_t mem_allocator_fixed_block_extend(mem_allocator_fixed_block_t* alloc
   if (mem_allocator_fixed_block_is_full(allocator)) {
     uint32_t num = mem_allocator_fixed_block_num(allocator, FALSE);
     uint32_t extend_num = MEM_ALLOCATOR_FIXED_BLOCK_NUM_EXTEND(num);
-    mem_allocator_fixed_block_pool_t* iter = NULL;
     mem_allocator_fixed_block_pool_t* pool =
         mem_allocator_fixed_block_pool_create(allocator, extend_num - num);
     return_value_if_fail(pool != NULL, RET_OOM);

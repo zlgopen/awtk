@@ -144,11 +144,9 @@ static ret_t gen_folder(const char* in_foldername, const char* out_foldername, c
 static ret_t gen_sources(const char* src_filename, const char* in_foldername,
                          const char* out_foldername, const char* theme, const char* dir_name,
                          image_format_t* image_format, lcd_orientation_t o) {
-  fs_item_t item;
   ret_t ret = RET_OK;
   char in_name[MAX_PATH] = {0};
   char out_name[MAX_PATH] = {0};
-  fs_dir_t* dir = fs_open_dir(os_fs(), in_foldername);
 
   if (!fs_file_exist(os_fs(), src_filename)) {
     log_debug("gen fail, sources file \"%s\" not exist!", src_filename);
@@ -221,7 +219,6 @@ int wmain(int argc, wchar_t* argv[]) {
   const char* out_filename = NULL;
   const char* src_filename = NULL;
   const wchar_t* format = NULL;
-  const char* sources = NULL;
   lcd_orientation_t lcd_orientation = LCD_ORIENTATION_0;
 
   platform_prepare();
