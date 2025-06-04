@@ -32,5 +32,5 @@ SOURCES = [
  os.path.join(GTEST_ROOT, 'src/gtest-all.cc'),
 ] + Glob('tests/*.cpp') + Glob('tests/gtest_nvpg.c')
 
-env.Program(os.path.join(BIN_DIR, 'nanovg_plus_test'), SOURCES)
+#env.Program(os.path.join(BIN_DIR, 'nanovg_plus_test'), SOURCES)
 

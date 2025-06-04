@@ -40,7 +40,7 @@ SOURCES = [
  os.path.join(GTEST_ROOT, 'src/gtest-all.cc'),
 ] + Glob('*.cc') + Glob('*.c')
 
-env['LIBS']=['debugger'] + env['LIBS']
+env['LIBS']=env['LIBS']
 env.Program(os.path.join(BIN_DIR, 'runTest'), SOURCES);
 env.Program(os.path.join(BIN_DIR, 'recycle_test'), ["recycle_test.cpp"])
 env.Program(os.path.join(BIN_DIR, 'waitable_action_queue_test'), ["waitable_action_queue_test.cpp"])
