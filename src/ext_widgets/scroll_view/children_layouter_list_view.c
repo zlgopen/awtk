@@ -593,8 +593,9 @@ static ret_t children_layouter_list_view_for_list_view_layout(children_layouter_
   }
 
   if (scroll_bar_h != NULL) {
+    float_t ratio = scroll_bar_h->w / (float_t)widget->w;
     children_layouter_list_view_for_list_view_set_scroll_bar_h_info(scroll_bar_h, list_view, widget,
-                                                                    virtual_w);
+                                                                    virtual_w * ratio);
   }
 
   return RET_OK;
