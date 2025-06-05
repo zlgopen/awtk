@@ -46,6 +46,8 @@
 #define SCROLL_BAR_UP_AND_DOWN_BUTTON_STYLE_IS_EXIST(up, down) \
   ((up) != NULL && (up)->style != NULL && (down) != NULL && (down)->style != NULL)
 
+#define SCROLL_BAR_IS_HORIZON(widget) ((widget)->w > (widget)->h)
+
 static ret_t scroll_bar_init(widget_t* widget);
 static ret_t scroll_bar_desktop_init(widget_t* widget);
 static ret_t scroll_bar_update_dragger(widget_t* widget);
@@ -72,8 +74,7 @@ static ret_t scroll_bar_mobile_get_dragger_size(widget_t* widget, rect_t* r) {
 
   virtual_size = scroll_bar->virtual_size;
   value = scroll_bar->value;
-  if (widget_w > widget_h) {
-    /*horizon*/
+  if (SCROLL_BAR_IS_HORIZON(widget)) {
     return_value_if_fail(virtual_size >= widget_w, RET_BAD_PARAMS);
     y = 1;
     h = widget_h - 2;
@@ -81,7 +82,6 @@ static ret_t scroll_bar_mobile_get_dragger_size(widget_t* widget, rect_t* r) {
     w = tk_max(w, 4);
     x = (widget_w - w) * value / virtual_size;
   } else {
-    /*vertical*/
     return_value_if_fail(virtual_size >= widget_h, RET_BAD_PARAMS);
     x = 1;
     w = widget_w - 2;
@@ -129,7 +129,7 @@ static ret_t scroll_bar_desktop_on_click(widget_t* widget, pointer_event_t* e) {
   }
 
   widget_to_local(widget, &p);
-  if (widget->w > widget->h) {
+  if (SCROLL_BAR_IS_HORIZON(widget)) {
     if (p.x < scroll_bar->dragger->x) {
       delta = -widget->w;
     } else {
@@ -179,7 +179,7 @@ static ret_t scroll_bar_desktop_on_event(widget_t* widget, event_t* e) {
     case EVT_MOVE_RESIZE: {
       widget_t* up = widget_lookup(widget, CHILD_UP, FALSE);
       widget_t* down = widget_lookup(widget, CHILD_DOWN, FALSE);
-      bool_t horizon = widget->w > widget->h;
+      bool_t horizon = SCROLL_BAR_IS_HORIZON(widget);
       if (!scroll_bar->user_wheel_scroll) {
         scroll_bar->wheel_scroll = !horizon;
       }
@@ -228,7 +228,7 @@ static ret_t scroll_bar_destop_get_dragger_size(widget_t* widget, rect_t* r) {
   }
 
   if (SCROLL_BAR_UP_AND_DOWN_BUTTON_STYLE_IS_EXIST(up, down)) {
-    if (widget_w > widget_h) {
+    if (SCROLL_BAR_IS_HORIZON(widget)) {
       button_margin = widget_h;
     } else {
       button_margin = widget_w;
@@ -236,9 +236,8 @@ static ret_t scroll_bar_destop_get_dragger_size(widget_t* widget, rect_t* r) {
   }
 
   value = scroll_bar->value;
-  if (widget_w > widget_h) {
+  if (SCROLL_BAR_IS_HORIZON(widget)) {
     int64_t max_bar_w = widget_w - 2 * button_margin;
-    /*horizon*/
     virtual_size = tk_max(widget_w, scroll_bar->virtual_size);
 
     y = 1;
@@ -247,7 +246,6 @@ static ret_t scroll_bar_destop_get_dragger_size(widget_t* widget, rect_t* r) {
     w = tk_max(w, TK_DRAGGER_MIN_SIZE);
     x = (widget_w - w - 2 * button_margin) * value / virtual_size + button_margin;
   } else {
-    /*vertical*/
     int64_t max_bar_h = widget_h - 2 * button_margin;
     virtual_size = tk_max(widget_h, scroll_bar->virtual_size);
 
@@ -272,7 +270,7 @@ ret_t scroll_bar_add_delta_ex(widget_t* widget, int32_t d, bool_t animatable) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   ENSURE(scroll_bar);
 
-  if (widget->w > widget->h) {
+  if (SCROLL_BAR_IS_HORIZON(widget)) {
     if (scroll_bar->virtual_size > widget->w) {
       double scale = (double)(scroll_bar->virtual_size) / (scroll_bar->virtual_size - widget->w);
       delta = d * scale;
@@ -328,14 +326,14 @@ static ret_t scroll_bar_on_drag(void* ctx, event_t* e) {
   widget_t* down = widget_lookup(widget, CHILD_DOWN, FALSE);
 
   if (SCROLL_BAR_UP_AND_DOWN_BUTTON_STYLE_IS_EXIST(up, down)) {
-    if (widget_w > widget_h) {
+    if (SCROLL_BAR_IS_HORIZON(widget)) {
       button_margin = widget_h;
     } else {
       button_margin = widget_w;
     }
   }
 
-  if (widget_w > widget_h) {
+  if (SCROLL_BAR_IS_HORIZON(widget)) {
     int64_t x = scroll_bar->dragger->x;
     int64_t max_x = (widget_w - 2 * button_margin - dragger->w);
     if (max_x <= 0) {
@@ -386,7 +384,7 @@ static ret_t scroll_bar_on_layout_children(widget_t* widget) {
   if (SCROLL_BAR_UP_AND_DOWN_BUTTON_STYLE_IS_EXIST(up, down)) {
     widget_set_visible(up, TRUE);
     widget_set_visible(down, TRUE);
-    if (widget->w > widget->h) {
+    if (SCROLL_BAR_IS_HORIZON(widget)) {
       button_margin = widget_h;
       widget_move_resize(up, 0, 0, widget->h, widget->h);
       widget_move_resize(down, widget->w - widget->h, 0, widget->h, widget->h);
@@ -410,7 +408,7 @@ static ret_t scroll_bar_on_layout_children(widget_t* widget) {
   return_value_if_fail(scroll_bar_destop_get_dragger_size(widget, &r) == RET_OK, RET_FAIL);
 
   if (dragger != NULL) {
-    if (widget->w > widget->h) {
+    if (SCROLL_BAR_IS_HORIZON(widget)) {
       int32_t max_x = button_margin + (widget_w - 2 * button_margin - r.w);
       max_x = tk_max(max_x, button_margin);
       dragger_set_range(dragger, button_margin, r.y, max_x, r.y);
@@ -457,7 +455,7 @@ static ret_t scroll_bar_create_children(widget_t* widget) {
   widget_use_style(dragger, "scroll_bar");
   widget_on(dragger, EVT_DRAG, scroll_bar_on_drag, widget);
 
-  if (widget->w > widget->h) {
+  if (SCROLL_BAR_IS_HORIZON(widget)) {
     if (widget_is_style_exist(up, SCROLL_BAR_LEFT_BUTTON_STYLE_NAME, NULL)) {
       widget_use_style(up, SCROLL_BAR_LEFT_BUTTON_STYLE_NAME);
     }
@@ -526,7 +524,7 @@ static ret_t scroll_bar_get_prop(widget_t* widget, const char* name, value_t* v)
     value_set_uint32(v, scroll_bar->animator_time);
     return RET_OK;
   } else if (tk_str_eq(name, SCROLL_BAR_PROP_IS_HORIZON)) {
-    bool_t is_horizon = (widget->w > widget->h) ? TRUE : FALSE;
+    bool_t is_horizon = SCROLL_BAR_IS_HORIZON(widget);
     value_set_bool(v, is_horizon);
     return RET_OK;
   } else if (tk_str_eq(name, SCROLL_BAR_PROP_WHEEL_SCROLL)) {

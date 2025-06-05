@@ -119,20 +119,43 @@ static ret_t list_view_handle_wheel_event(list_view_t* list_view, event_t* e) {
   return RET_STOP;
 }
 
+inline static wh_t list_view_get_virtual_w(list_view_t* list_view) {
+  wh_t ret = 0;
+  return_value_if_fail(list_view != NULL, 0);
+
+  if (list_view->scroll_view != NULL) {
+    ret = widget_get_prop_int(list_view->scroll_view, WIDGET_PROP_VIRTUAL_W,
+                              list_view->scroll_view->w);
+  }
+
+  return ret;
+}
+
+inline static wh_t list_view_get_virtual_h(list_view_t* list_view) {
+  wh_t ret = 0;
+  return_value_if_fail(list_view != NULL, 0);
+
+  if (list_view->scroll_view != NULL) {
+    ret = widget_get_prop_int(list_view->scroll_view, WIDGET_PROP_VIRTUAL_H,
+                              list_view->scroll_view->h);
+  }
+
+  return ret;
+}
+
 static bool_t list_view_is_play_auto_hide_scroll_bar_animation(list_view_t* list_view,
                                                                widget_t* scroll_bar) {
   return_value_if_fail(list_view != NULL && list_view->scroll_view != NULL, FALSE);
 
   if (scroll_bar != NULL) {
-    scroll_view_t* scroll_view = SCROLL_VIEW(list_view->scroll_view);
-    return_value_if_fail(scroll_view != NULL, FALSE);
-
     if (widget_get_prop_bool(scroll_bar, SCROLL_BAR_PROP_IS_HORIZON, FALSE)) {
-      if (list_view->auto_hide_scroll_bar && scroll_view->virtual_w > list_view->widget.w) {
+      wh_t virtual_w = list_view_get_virtual_w(list_view);
+      if (list_view->auto_hide_scroll_bar && virtual_w > list_view->widget.w) {
         return TRUE;
       }
     } else {
-      if (list_view->auto_hide_scroll_bar && scroll_view->virtual_h > list_view->widget.h) {
+      wh_t virtual_h = list_view_get_virtual_h(list_view);
+      if (list_view->auto_hide_scroll_bar && virtual_h > list_view->widget.h) {
         return TRUE;
       }
     }
@@ -246,37 +269,45 @@ TK_DECL_VTABLE(list_view) = {.type = WIDGET_TYPE_LIST_VIEW,
 
 static int32_t scroll_bar_to_scroll_view(list_view_t* list_view, scroll_bar_t* scroll_bar,
                                          int32_t v) {
+  int32_t ret = 0;
   int32_t range = 0;
   float_t percent = 0;
-  scroll_view_t* scroll_view = NULL;
   return_value_if_fail(list_view != NULL && scroll_bar != NULL, 0);
 
-  scroll_view = SCROLL_VIEW(list_view->scroll_view);
-  return_value_if_fail(scroll_view != NULL, 0);
+  if (list_view->scroll_view == NULL) {
+    return 0;
+  }
 
   range = scroll_bar->virtual_size;
   percent = range > 0 ? (float_t)v / (float_t)(range) : 0;
 
   if (widget_get_prop_bool(WIDGET(scroll_bar), SCROLL_BAR_PROP_IS_HORIZON, FALSE)) {
-    return percent * (scroll_view->virtual_w - list_view->scroll_view->w);
+    wh_t virtual_w = list_view_get_virtual_w(list_view);
+    ret = percent * (virtual_w - list_view->scroll_view->w);
   } else {
-    return percent * (scroll_view->virtual_h - list_view->scroll_view->h);
+    wh_t virtual_h = list_view_get_virtual_h(list_view);
+    ret = percent * (virtual_h - list_view->scroll_view->h);
   }
+
+  return ret;
 }
 
 static ret_t list_view_on_scroll_bar_value_changed(void* ctx, event_t* e) {
-  int32_t offset = 0;
   scroll_bar_t* scroll_bar = SCROLL_BAR(e->target);
   list_view_t* list_view = LIST_VIEW(ctx);
   return_value_if_fail(list_view != NULL && scroll_bar != NULL, RET_REMOVE);
 
-  offset = scroll_bar_to_scroll_view(list_view, scroll_bar, scroll_bar->value);
-  if (widget_get_prop_bool(WIDGET(scroll_bar), SCROLL_BAR_PROP_IS_HORIZON, FALSE)) {
-    scroll_view_set_offset(list_view->scroll_view, offset,
-                           SCROLL_VIEW(list_view->scroll_view)->yoffset);
-  } else {
-    scroll_view_set_offset(list_view->scroll_view, SCROLL_VIEW(list_view->scroll_view)->xoffset,
-                           offset);
+  if (list_view->scroll_view != NULL) {
+    int32_t offset = 0;
+    scroll_view_t* scroll_view = SCROLL_VIEW(list_view->scroll_view);
+    return_value_if_fail(scroll_view != NULL, RET_FAIL);
+
+    offset = scroll_bar_to_scroll_view(list_view, scroll_bar, scroll_bar->value);
+    if (widget_get_prop_bool(WIDGET(scroll_bar), SCROLL_BAR_PROP_IS_HORIZON, FALSE)) {
+      scroll_view_set_offset(list_view->scroll_view, offset, scroll_view->yoffset);
+    } else {
+      scroll_view_set_offset(list_view->scroll_view, scroll_view->xoffset, offset);
+    }
   }
 
   return RET_OK;
@@ -286,13 +317,16 @@ static int32_t scroll_view_to_v_scroll_bar(list_view_t* list_view, scroll_bar_t*
                                            int32_t v) {
   int32_t range = 0;
   float_t percent = 0;
-  scroll_view_t* scroll_view = NULL;
+  wh_t virtual_h = 0;
   return_value_if_fail(list_view != NULL && scroll_bar != NULL, 0);
 
-  scroll_view = SCROLL_VIEW(list_view->scroll_view);
-  return_value_if_fail(scroll_view != NULL, 0);
+  if (list_view->scroll_view == NULL) {
+    return 0;
+  }
 
-  range = scroll_view->virtual_h - list_view->scroll_view->h;
+  virtual_h = list_view_get_virtual_h(list_view);
+
+  range = virtual_h - list_view->scroll_view->h;
   percent = range > 0 ? (float_t)v / (float_t)range : 0;
 
   return percent * scroll_bar->virtual_size;
@@ -302,13 +336,16 @@ static int32_t scroll_view_to_h_scroll_bar(list_view_t* list_view, scroll_bar_t*
                                            int32_t v) {
   int32_t range = 0;
   float_t percent = 0;
-  scroll_view_t* scroll_view = NULL;
+  wh_t virtual_w = 0;
   return_value_if_fail(list_view != NULL && scroll_bar != NULL, 0);
 
-  scroll_view = SCROLL_VIEW(list_view->scroll_view);
-  return_value_if_fail(scroll_view != NULL, 0);
+  if (list_view->scroll_view == NULL) {
+    return 0;
+  }
 
-  range = scroll_view->virtual_w - list_view->scroll_view->w;
+  virtual_w = list_view_get_virtual_w(list_view);
+
+  range = virtual_w - list_view->scroll_view->w;
   percent = range > 0 ? (float_t)v / (float_t)range : 0;
 
   return percent * scroll_bar->virtual_size;
@@ -477,7 +514,6 @@ static ret_t list_view_on_add_child(widget_t* widget, widget_t* child) {
     scroll_view->on_layout_children = list_view_on_scroll_view_layout_children;
     scroll_view->on_paint_children = list_view_on_scroll_view_paint_children;
     scroll_view_set_recursive_only(child, FALSE);
-
   } else if (tk_str_eq(type, WIDGET_TYPE_SCROLL_BAR) ||
              tk_str_eq(type, WIDGET_TYPE_SCROLL_BAR_DESKTOP) ||
              tk_str_eq(type, WIDGET_TYPE_SCROLL_BAR_MOBILE)) {
