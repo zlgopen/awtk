@@ -59,6 +59,8 @@ static ret_t conf_ubjson_save_node_value_simple(conf_node_t* node, ubjson_writer
     return ubjson_writer_write_float32(writer, value_float32(&v));
   } else if (v.type == VALUE_TYPE_DOUBLE) {
     return ubjson_writer_write_float64(writer, value_double(&v));
+  } else if (v.type == VALUE_TYPE_UINT64 || v.type == VALUE_TYPE_INT64) {
+    return ubjson_writer_write_int64(writer, value_int64(&v));
   } else {
     return ubjson_writer_write_int(writer, value_int(&v));
   }
