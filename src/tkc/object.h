@@ -564,8 +564,6 @@ ret_t tk_object_exec(tk_object_t* obj, const char* name, const char* args);
  * @method tk_object_exec_ex
  * 执行指定的命令。
  *
- * @alias execute_ex
- * @annotation ["scriptable"]
  * @param {tk_object_t*} obj object对象。
  * @param {const char*} name 命令的名称。
  * @param {const char*} args 命令的参数。

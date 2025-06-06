@@ -112,7 +112,7 @@ ret_t timer_remove(uint32_t timer_id);
 /**
  * @method timer_remove_all_by_ctx
  * 根据上下文删除所有对应的timer。
- * @annotation ["scriptable", "static"]
+ * @annotation ["static"]
  * @param {void*} ctx timer回调函数的上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

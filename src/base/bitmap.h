@@ -142,7 +142,6 @@ bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, uint32_t line_length, bitmap_
 /**
  * @method bitmap_create_ex2
  * 创建图片对象。
- * @annotation ["constructor", "scriptable", "gc"]
  * @param {uint32_t} w 宽度。
  * @param {uint32_t} h 高度。
  * @param {uint32_t} line_length line_length。
@@ -158,7 +157,6 @@ bitmap_t* bitmap_create_ex2(uint32_t w, uint32_t h, uint32_t line_length, bitmap
 /**
  * @method bitmap_create_ex3
  * 创建图片对象。
- * @annotation ["constructor", "scriptable", "gc"]
  * @param {uint32_t} w 宽度。
  * @param {uint32_t} h 高度。
  * @param {uint32_t} line_length line_length。
@@ -174,7 +172,6 @@ bitmap_t* bitmap_create_ex3(uint32_t w, uint32_t h, uint32_t line_length, bitmap
 /**
  * @method bitmap_init_ex2
  * 创建图片对象。
- * @annotation ["constructor", "scriptable", "gc"]
  * @param {bitmap_t*} bitmap bitmap对象。
  * @param {uint32_t} w 宽度。
  * @param {uint32_t} h 高度。

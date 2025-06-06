@@ -12,6 +12,7 @@
 #define object_create_ex tk_object_create_ex
 #define object_eval tk_object_eval
 #define object_exec tk_object_exec
+#define object_exec_ex tk_object_exec_ex
 #define object_exec_by_path tk_object_exec_by_path
 #define object_exec_t tk_object_exec_t
 #define object_foreach_prop tk_object_foreach_prop

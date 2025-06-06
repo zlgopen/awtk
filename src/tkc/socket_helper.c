@@ -104,6 +104,9 @@ ret_t tk_socket_get_ips_by_ifname(const wchar_t* ifname, darray_t* ips) {
 #if defined(LINUX) || defined(MACOS)
 #include <ifaddrs.h>
 ret_t tk_socket_get_ips_by_ifname(const wchar_t* ifname, darray_t* ips) {
+#if defined(ANDROID) || defined(IOS)
+  return RET_NOT_IMPL;
+#else
   ret_t ret = RET_FAIL;
   const char* name = NULL;
   struct ifaddrs *ifaddr, *ifa;
@@ -128,10 +131,10 @@ ret_t tk_socket_get_ips_by_ifname(const wchar_t* ifname, darray_t* ips) {
       }
     }
   }
-
   freeifaddrs(ifaddr);
   TKMEM_FREE(name);
   return ret;
+#endif
 }
 #endif
 
