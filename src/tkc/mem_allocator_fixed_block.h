@@ -49,7 +49,7 @@ BEGIN_C_DECLS
  * @param {uint32_t} size 每个内存块的大小。
  * @param {uint32_t} num 内存块的数量。
  *
- * @return {allocator_t*} 返回内存块分配器对象。
+ * @return {mem_allocator_t*} 返回内存块分配器对象。
  */
 mem_allocator_t* mem_allocator_fixed_block_create(uint32_t size, uint32_t num);
 

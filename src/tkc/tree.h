@@ -54,8 +54,8 @@ int32_t tree_node_degree(tree_node_t* node);
 /**
  * @method tree_node_is_ancestor
  * 判断树结点是否为祖先结点
- * @param {tree_node_t*} node 树结点对象。
- * @param {tree_node_t*} ancestor 祖先结点对象。
+ * @param {const tree_node_t*} node 树结点对象。
+ * @param {const tree_node_t*} ancestor 祖先结点对象。
  *
  * @return {bool_t} 返回是否为祖先结点。
  */
