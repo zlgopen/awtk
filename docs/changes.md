@@ -1,5 +1,9 @@
 # 最新动态
 
+2025/06/07
+  * 增加 fscript_create_ex2(修复awtk-mvvm data binding出现循环引用计数的问题)
+  * 增加 tk_object_life_t
+
 2025/06/06
   * 修复脚本绑定的问题。
   * 完善 conf_ubjson (感谢林福提供补丁)

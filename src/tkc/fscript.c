@@ -973,7 +973,10 @@ static ret_t fscript_reset(fscript_t* fscript) {
 
   fscript_hook_on_deinit(fscript);
   fscript_clean(fscript);
-  TK_OBJECT_UNREF(fscript->obj);
+
+  if (fscript->obj_life != TK_OBJECT_LIFE_NONE) {
+    TK_OBJECT_UNREF(fscript->obj);
+  }
   memset(fscript, 0x00, sizeof(fscript_t));
 
   return RET_OK;
@@ -2015,11 +2018,16 @@ static ret_t fexpr_parse(fscript_parser_t* parser, value_t* result) {
   return RET_OK;
 }
 
-static fscript_t* fscript_init_with_parser(fscript_t* fscript, fscript_parser_t* parser) {
+static fscript_t* fscript_init_with_parser(fscript_t* fscript, fscript_parser_t* parser, tk_object_life_t obj_life) {
   fscript = fscript != NULL ? fscript : TKMEM_ZALLOC(fscript_t);
   return_value_if_fail(fscript != NULL, NULL);
   fscript->str = parser->temp;
-  fscript->obj = TK_OBJECT_REF(parser->obj);
+  fscript->obj_life = obj_life;
+  if (obj_life == TK_OBJECT_LIFE_HOLD) {
+    fscript->obj = TK_OBJECT_REF(parser->obj);
+  } else {
+    fscript->obj = parser->obj;
+  }
   fscript->first = parser->first;
   fscript->funcs_def = parser->funcs_def;
   fscript->code_id = parser->code_id;
@@ -2226,7 +2234,7 @@ ret_t fscript_syntax_check(tk_object_t* obj, const char* script, fscript_parser_
 }
 
 static fscript_t* fscript_load(fscript_t* fscript, tk_object_t* obj, const char* script,
-                               const char* first_call_name, bool_t keep_func_name) {
+                               const char* first_call_name, bool_t keep_func_name, tk_object_life_t obj_life) {
   ret_t ret = RET_OK;
   fscript_parser_t parser;
   fscript_parser_error_t error;
@@ -2238,7 +2246,7 @@ static fscript_t* fscript_load(fscript_t* fscript, tk_object_t* obj, const char*
   parser.first = fscript_func_call_create(&parser, first_call_name, strlen(first_call_name));
   ret = fscript_parse_all(&parser, parser.first);
   if (ret == RET_OK) {
-    fscript = fscript_init_with_parser(fscript, &parser);
+    fscript = fscript_init_with_parser(fscript, &parser, obj_life);
     fscript_parser_deinit(&parser);
   } else {
     log_warn("parser error:%s\n", script);
@@ -2255,16 +2263,20 @@ ret_t fscript_reload(fscript_t* fscript, const char* script) {
   obj = fscript->obj;
   fscript_reset(fscript);
 
-  return fscript_load(fscript, obj, script, "expr", FALSE) != NULL ? RET_OK : RET_FAIL;
+  return fscript_load(fscript, obj, script, "expr", FALSE, TK_OBJECT_LIFE_HOLD) != NULL ? RET_OK : RET_FAIL;
 }
 
 fscript_t* fscript_init(fscript_t* fscript, tk_object_t* obj, const char* script,
                         const char* first_call_name, bool_t keep_func_name) {
-  return fscript_load(fscript, obj, script, first_call_name, keep_func_name);
+  return fscript_load(fscript, obj, script, first_call_name, keep_func_name, TK_OBJECT_LIFE_HOLD);
 }
 
 fscript_t* fscript_create_ex(tk_object_t* obj, const char* script, bool_t keep_func_name) {
-  return fscript_load(NULL, obj, script, "expr", keep_func_name);
+  return fscript_load(NULL, obj, script, "expr", keep_func_name, TK_OBJECT_LIFE_HOLD);
+}
+
+fscript_t* fscript_create_ex2(tk_object_t* obj, const char* script, bool_t keep_func_name, tk_object_life_t obj_life) {
+  return fscript_load(NULL, obj, script, "expr", keep_func_name, obj_life);
 }
 
 fscript_t* fscript_create(tk_object_t* obj, const char* script) {

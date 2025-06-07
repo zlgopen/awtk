@@ -185,7 +185,7 @@ struct _fscript_t {
   bool_t returned;
   bool_t rerun;
   uint8_t loop_count;
-
+  tk_object_life_t obj_life;
   /*预解析的临时变量*/
   darray_t* symbols;
   /*函数局部变量和参数*/
@@ -220,6 +220,18 @@ fscript_t* fscript_create(tk_object_t* obj, const char* script);
  * @return {fscript_t*} 返回fscript对象。
  */
 fscript_t* fscript_create_ex(tk_object_t* obj, const char* script, bool_t keep_func_name);
+
+/**
+ * @method fscript_create_ex2
+ * 创建引擎对象，并解析代码。
+ * @param {tk_object_t*} obj 脚本执行上下文。
+ * @param {const char*} script 脚本代码。
+ * @param {bool_t} keep_func_name 是否在func_call结构后保存函数名。
+ * @param {tk_object_life_t} obj_life 如何管理obj的生命周期。
+ *
+ * @return {fscript_t*} 返回fscript对象。
+ */
+fscript_t* fscript_create_ex2(tk_object_t* obj, const char* script, bool_t keep_func_name, tk_object_life_t obj_life);
 
 /**
  * @method fscript_init

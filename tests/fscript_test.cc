@@ -3625,3 +3625,27 @@ TEST(FExr, direct_var2) {
   value_reset(&v);
   TK_OBJECT_UNREF(obj);
 }
+
+TEST(FScript, create_ex2_1) {
+  tk_object_t* obj = object_default_create();
+  fscript_t* fscript = fscript_create_ex2(obj, "print(123)", FALSE, TK_OBJECT_LIFE_HOLD);
+  ASSERT_EQ(obj->ref_count, 2);
+  fscript_destroy(fscript);
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, create_ex2_2) {
+  tk_object_t* obj = object_default_create();
+  fscript_t* fscript = fscript_create_ex2(obj, "print(123)", FALSE, TK_OBJECT_LIFE_NONE);
+  ASSERT_EQ(obj->ref_count, 1);
+  fscript_destroy(fscript);
+  TK_OBJECT_UNREF(obj);
+}
+
+TEST(FScript, create_ex2_3) {
+  tk_object_t* obj = object_default_create();
+  fscript_t* fscript = fscript_create_ex2(obj, "print(123)", FALSE, TK_OBJECT_LIFE_OWN);
+  ASSERT_EQ(obj->ref_count, 1);
+  fscript_destroy(fscript);
+}
+

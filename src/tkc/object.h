@@ -1215,6 +1215,30 @@ int32_t tk_object_compare_name_without_nullptr(tk_object_t* obj, tk_object_t* ot
 
 #include "tkc/object_compat.h"
 
+/**
+ * @enum tk_object_life_t
+ * @prefix TK_OBJECT_LIFE_
+ * @annotation ["scriptable"]
+ * 对象生命周期的定义。如果需要保存对象的实例，如何决定对象的生命周期。 
+ */
+typedef enum _tk_object_life_t {
+  /**
+   * @const TK_OBJECT_LIFE_NONE
+   * 不关心对象的生命周期(假设对象的生命周期长于当前的上下文)。
+   */
+  TK_OBJECT_LIFE_NONE,
+  /**
+   * @const TK_OBJECT_LIFE_OWN
+   * 拥有对象的生命周期。当前上下文开始时，*不会* 增加对象的引用计数。当前上下文结束时，自动减少(unref)对象引用计数。
+   */
+  TK_OBJECT_LIFE_OWN,
+  /**
+   * @const TK_OBJECT_LIFE_HOLD
+   * 持有对象的生命周期。当前上下文开始时，增加对象的引用计数。当前上下文结束时，自动减少(unref)对象引用计数。
+   */
+  TK_OBJECT_LIFE_HOLD
+} tk_object_life_t;
+
 END_C_DECLS
 
 #endif /*TK_OBJECT_H*/
