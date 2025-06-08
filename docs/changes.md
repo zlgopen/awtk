@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/06/08
+  * 完善 system_info
+
 2025/06/07
   * 增加 fscript_create_ex2(修复awtk-mvvm data binding出现循环引用计数的问题)
   * 增加 tk_object_life_t

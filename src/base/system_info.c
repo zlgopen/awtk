@@ -192,7 +192,7 @@ ret_t system_info_set_app_info(system_info_t* info, app_type_t app_type, const c
 
   info->app_type = app_type;
   system_info_normalize_app_root(info, app_root);
-  info->app_name = app_name ? app_name : "AWTK Simulator";
+  system_info_set_app_name(info, app_name);
 
   return RET_OK;
 }
@@ -271,6 +271,8 @@ static ret_t system_info_on_destroy(tk_object_t* obj) {
   return_value_if_fail(info != NULL, RET_FAIL);
 
   TKMEM_FREE(info->app_root);
+  TKMEM_FREE(info->app_name);
+  TKMEM_FREE(info->default_font);
 
   return RET_OK;
 }
@@ -407,7 +409,7 @@ done:
 ret_t system_info_set_app_name(system_info_t* info, const char* app_name) {
   return_value_if_fail(info != NULL, RET_BAD_PARAMS);
 
-  info->app_name = app_name ? app_name : "AWTK Simulator";
+  info->app_name = tk_str_copy(info->app_name, app_name);
 
   return RET_OK;
 }
@@ -415,7 +417,7 @@ ret_t system_info_set_app_name(system_info_t* info, const char* app_name) {
 ret_t system_info_set_default_font(system_info_t* info, const char* default_font) {
   return_value_if_fail(info != NULL && default_font != NULL, RET_BAD_PARAMS);
 
-  info->default_font = default_font;
+  info->default_font = tk_str_copy(info->default_font, default_font);
 
   return RET_OK;
 }

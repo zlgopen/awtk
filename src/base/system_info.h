@@ -90,11 +90,11 @@ struct _system_info_t {
   float_t font_scale;
 
   /**
-   * @property {const char*} default_font
+   * @property {char*} default_font
    * @annotation ["readable"]
    * 缺省字体。
    */
-  const char* default_font;
+  char* default_font;
 
   /**
    * @property {lcd_orientation_t} lcd_orientation
@@ -142,11 +142,11 @@ struct _system_info_t {
   app_type_t app_type;
 
   /**
-   * @property {const char*} app_name
+   * @property {char*} app_name
    * @annotation ["readable"]
    * 应用程序的名称。
    */
-  const char* app_name;
+  char* app_name;
 
   /**
    * @property {char*} app_root
