@@ -41,7 +41,7 @@ const char* self_layouter_default_to_string(self_layouter_t* layouter) {
   str_t* str = &(layouter->params);
   self_layouter_default_t* layout = (self_layouter_default_t*)layouter;
   return_value_if_fail(layout != NULL, NULL);
-  str_set(str, "default(");
+  str_set(str, SELF_LAYOUTER_DEFAULT "(");
   memset(value, 0x00, sizeof(value));
 
   switch (layout->x_attr) {
@@ -470,7 +470,7 @@ static self_layouter_t* self_layouter_default_clone(self_layouter_t* layouter) {
 }
 
 static const self_layouter_vtable_t s_self_layouter_default_vtable = {
-    .type = "default",
+    .type = SELF_LAYOUTER_DEFAULT,
     .clone = self_layouter_default_clone,
     .to_string = self_layouter_default_to_string,
     .get_param = self_layouter_default_get_param,

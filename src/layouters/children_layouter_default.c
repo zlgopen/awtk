@@ -32,7 +32,7 @@ static const char* children_layouter_default_to_string(children_layouter_t* layo
   str_t* str = &(layouter->params);
   children_layouter_default_t* layout = (children_layouter_default_t*)layouter;
   return_value_if_fail(layout != NULL, NULL);
-  str_set(str, "default(");
+  str_set(str, CHILDREN_LAYOUTER_DEFAULT "(");
   if (layout->cols_is_width) {
     tk_snprintf(temp, sizeof(temp) - 1, "w=%d,", (int)(layout->cols));
   } else {
@@ -469,7 +469,7 @@ static children_layouter_t* children_layouter_default_clone(children_layouter_t*
 }
 
 static const children_layouter_vtable_t s_children_layouter_default_vtable = {
-    .type = "default",
+    .type = CHILDREN_LAYOUTER_DEFAULT,
     .clone = children_layouter_default_clone,
     .to_string = children_layouter_default_to_string,
     .get_param = children_layouter_default_get_param,

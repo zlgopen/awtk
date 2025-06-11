@@ -51,7 +51,7 @@ const char* self_layouter_menu_to_string(self_layouter_t* layouter) {
   str_t* str = &(layouter->params);
   self_layouter_menu_t* layout = (self_layouter_menu_t*)layouter;
   return_value_if_fail(layout != NULL, NULL);
-  str_set(str, "menu(");
+  str_set(str, SELF_LAYOUTER_MENU "(");
   memset(value, 0x00, sizeof(value));
 
   switch (layout->position) {
@@ -547,7 +547,7 @@ static self_layouter_t* self_layouter_menu_clone(self_layouter_t* layouter) {
 }
 
 static const self_layouter_vtable_t s_self_layouter_menu_vtable = {
-    .type = "menu",
+    .type = SELF_LAYOUTER_MENU,
     .clone = self_layouter_menu_clone,
     .to_string = self_layouter_menu_to_string,
     .get_param = self_layouter_menu_get_param,
