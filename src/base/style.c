@@ -192,6 +192,8 @@ static uint32_t to_icon_at(const char* value) {
     return ICON_AT_TOP;
   } else if (strstr(value, "bottom")) {
     return ICON_AT_BOTTOM;
+  } else if (strstr(value, "auto")) {
+    return ICON_AT_AUTO;
   }
 
   return ICON_AT_LEFT;
