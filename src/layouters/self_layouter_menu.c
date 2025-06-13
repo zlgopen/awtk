@@ -548,8 +548,8 @@ static self_layouter_t* self_layouter_menu_clone(self_layouter_t* layouter) {
 }
 
 static ret_t self_layouter_menu_init(self_layouter_t* layouter) {
-  self_layouter_menu_t* l = TKMEM_ZALLOC(self_layouter_menu_t);
-  return_value_if_fail(l != NULL, RET_OOM);
+  self_layouter_menu_t* l = (self_layouter_menu_t*)layouter;
+  return_value_if_fail(l != NULL, RET_BAD_PARAMS);
 
   l->x_attr = X_ATTR_UNDEF;
   l->y_attr = Y_ATTR_UNDEF;
