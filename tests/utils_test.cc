@@ -2108,3 +2108,37 @@ TEST(Utils, tk_swap) {
   ASSERT_EQ(a, 1);
   ASSERT_EQ(b, 2);
 }
+
+TEST(Utils, tk_isxxx) {
+  ASSERT_TRUE(tk_isspace(' '));
+  ASSERT_TRUE(!tk_isspace(-1));
+  ASSERT_TRUE(!tk_isspace(160));
+
+  ASSERT_TRUE(tk_isdigit('0'));
+  ASSERT_TRUE(!tk_isdigit(-1));
+  ASSERT_TRUE(!tk_isdigit(160));
+  
+  ASSERT_TRUE(tk_isxdigit('a'));
+  ASSERT_TRUE(!tk_isxdigit(-1));
+  ASSERT_TRUE(!tk_isxdigit(160));
+  
+  ASSERT_TRUE(tk_isprint('a'));
+  ASSERT_TRUE(!tk_isprint(-1));
+  ASSERT_TRUE(!tk_isprint(160));
+  
+  ASSERT_TRUE(tk_isalpha('a'));
+  ASSERT_TRUE(!tk_isalpha(-1));
+  ASSERT_TRUE(!tk_isalpha(160));
+  
+  ASSERT_TRUE(tk_islower('a'));
+  ASSERT_TRUE(!tk_islower(-1));
+  ASSERT_TRUE(!tk_islower(160));
+  
+  ASSERT_TRUE(tk_isupper('A'));
+  ASSERT_TRUE(!tk_isupper(-1));
+  ASSERT_TRUE(!tk_isupper(160));
+  
+  ASSERT_TRUE(tk_isalnum('a'));
+  ASSERT_TRUE(!tk_isalnum(-1));
+  ASSERT_TRUE(!tk_isalnum(160));
+}

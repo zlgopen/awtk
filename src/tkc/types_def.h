@@ -605,6 +605,7 @@ typedef struct _event_source_manager_t event_source_manager_t;
 #define tk_isalpha(c) ((0 <= (int)(c)) && ((int)(c) < 128) && isalpha(c))
 #define tk_islower(c) ((0 <= (int)(c)) && ((int)(c) < 128) && islower(c))
 #define tk_isupper(c) ((0 <= (int)(c)) && ((int)(c) < 128) && isupper(c))
+#define tk_isalnum(c) ((0 <= (int)(c)) && ((int)(c) < 128) && isalnum(c))
 
 #define STR_SCHEMA_TCP "tcp://"
 #define STR_SCHEMA_UDP "udp://"
