@@ -806,6 +806,9 @@ ret_t scroll_view_set_virtual_w(widget_t* widget, wh_t w) {
   return_value_if_fail(scroll_view != NULL, RET_BAD_PARAMS);
 
   scroll_view->virtual_w = w;
+  if (scroll_view->xoffset + widget->w > scroll_view->virtual_w) {
+    scroll_view_set_offset(widget, scroll_view->virtual_w - widget->w, scroll_view->yoffset);
+  }
 
   return RET_OK;
 }
@@ -815,6 +818,9 @@ ret_t scroll_view_set_virtual_h(widget_t* widget, wh_t h) {
   return_value_if_fail(scroll_view != NULL, RET_BAD_PARAMS);
 
   scroll_view->virtual_h = h;
+  if (scroll_view->yoffset + widget->h > scroll_view->virtual_h) {
+    scroll_view_set_offset(widget, scroll_view->xoffset, scroll_view->virtual_h - widget->h);
+  }
 
   return RET_OK;
 }
