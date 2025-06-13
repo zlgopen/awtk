@@ -46,7 +46,7 @@ static ret_t percent_to_string(char* buff, uint32_t size, const char* prefix, do
   return RET_OK;
 }
 
-const char* self_layouter_menu_to_string(self_layouter_t* layouter) {
+static const char* self_layouter_menu_to_string(self_layouter_t* layouter) {
   char value[32];
   str_t* str = &(layouter->params);
   self_layouter_menu_t* layout = (self_layouter_menu_t*)layouter;
@@ -181,7 +181,7 @@ const char* self_layouter_menu_to_string(self_layouter_t* layouter) {
   return str->str;
 }
 
-ret_t self_layouter_menu_get_param(self_layouter_t* layouter, const char* name, value_t* v) {
+static ret_t self_layouter_menu_get_param(self_layouter_t* layouter, const char* name, value_t* v) {
   self_layouter_menu_t* l = (self_layouter_menu_t*)layouter;
 
   switch (*name) {
@@ -242,7 +242,8 @@ ret_t self_layouter_menu_get_param(self_layouter_t* layouter, const char* name, 
   }
 }
 
-ret_t self_layouter_menu_set_param(self_layouter_t* layouter, const char* name, const value_t* v) {
+static ret_t self_layouter_menu_set_param(self_layouter_t* layouter, const char* name,
+                                          const value_t* v) {
   const char* value = value_str(v);
   self_layouter_menu_t* layout = (self_layouter_menu_t*)layouter;
 
@@ -515,7 +516,7 @@ static ret_t widget_layout_self_get_trigger(self_layouter_t* layouter, point_t* 
   return RET_OK;
 }
 
-ret_t self_layouter_menu_layout(self_layouter_t* layouter, widget_t* widget, rect_t* area) {
+static ret_t self_layouter_menu_layout(self_layouter_t* layouter, widget_t* widget, rect_t* area) {
   self_layouter_menu_t* l = (self_layouter_menu_t*)layouter;
   return_value_if_fail(widget != NULL && widget->parent != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget_is_window(widget), RET_BAD_PARAMS);
@@ -546,14 +547,31 @@ static self_layouter_t* self_layouter_menu_clone(self_layouter_t* layouter) {
   return (self_layouter_t*)l;
 }
 
+static ret_t self_layouter_menu_init(self_layouter_t* layouter) {
+  self_layouter_menu_t* l = TKMEM_ZALLOC(self_layouter_menu_t);
+  return_value_if_fail(l != NULL, RET_OOM);
+
+  l->x_attr = X_ATTR_UNDEF;
+  l->y_attr = Y_ATTR_UNDEF;
+  l->w_attr = W_ATTR_UNDEF;
+  l->h_attr = H_ATTR_UNDEF;
+  l->position = POSITION_UNDEF;
+
+  str_init(&(layouter->params), 0);
+
+  return RET_OK;
+}
+
 static const self_layouter_vtable_t s_self_layouter_menu_vtable = {
     .type = SELF_LAYOUTER_MENU,
+    .init = self_layouter_menu_init,
     .clone = self_layouter_menu_clone,
     .to_string = self_layouter_menu_to_string,
     .get_param = self_layouter_menu_get_param,
     .set_param = self_layouter_menu_set_param,
     .layout = self_layouter_menu_layout,
-    .destroy = self_layouter_menu_destroy};
+    .destroy = self_layouter_menu_destroy,
+};
 
 bool_t self_layouter_menu_is_valid(self_layouter_t* layouter) {
   return layouter && layouter->vt == &s_self_layouter_menu_vtable;
@@ -561,23 +579,15 @@ bool_t self_layouter_menu_is_valid(self_layouter_t* layouter) {
 
 self_layouter_t* self_layouter_menu_create(void) {
   self_layouter_t* l = NULL;
-  self_layouter_menu_t* layouter = NULL;
-
-  layouter = TKMEM_ZALLOC(self_layouter_menu_t);
+  self_layouter_menu_t* layouter = TKMEM_ZALLOC(self_layouter_menu_t);
   return_value_if_fail(layouter != NULL, NULL);
 
   l = (self_layouter_t*)layouter;
 
-  layouter->x_attr = X_ATTR_UNDEF;
-  layouter->y_attr = Y_ATTR_UNDEF;
-  layouter->w_attr = W_ATTR_UNDEF;
-  layouter->h_attr = H_ATTR_UNDEF;
-  layouter->position = POSITION_UNDEF;
-
-  str_init(&(l->params), 0);
   l->vt = &s_self_layouter_menu_vtable;
+  self_layouter_menu_init(l);
 
-  return (self_layouter_t*)layouter;
+  return l;
 }
 
 ret_t widget_layout_self_set_trigger(self_layouter_t* layouter, point_t pressed,

@@ -42,6 +42,7 @@ typedef ret_t (*self_layouter_destroy_t)(self_layouter_t* layouter);
 
 typedef self_layouter_t* (*self_layouter_create_t)(void);
 typedef self_layouter_t* (*self_layouter_clone_t)(self_layouter_t* layouter);
+typedef ret_t (*self_layouter_init_t)(self_layouter_t* layouter);
 
 typedef struct _self_layouter_vtable_t {
   const char* type;
@@ -51,6 +52,7 @@ typedef struct _self_layouter_vtable_t {
   self_layouter_set_param_t set_param;
   self_layouter_clone_t clone;
   self_layouter_destroy_t destroy;
+  self_layouter_init_t init;
 } self_layouter_vtable_t;
 
 /**

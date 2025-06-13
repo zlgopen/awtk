@@ -36,7 +36,7 @@ static ret_t percent_to_string(char* buff, uint32_t size, const char* prefix, do
   return RET_OK;
 }
 
-const char* self_layouter_default_to_string(self_layouter_t* layouter) {
+static const char* self_layouter_default_to_string(self_layouter_t* layouter) {
   char value[32];
   str_t* str = &(layouter->params);
   self_layouter_default_t* layout = (self_layouter_default_t*)layouter;
@@ -155,7 +155,8 @@ const char* self_layouter_default_to_string(self_layouter_t* layouter) {
   return str->str;
 }
 
-ret_t self_layouter_default_get_param(self_layouter_t* layouter, const char* name, value_t* v) {
+static ret_t self_layouter_default_get_param(self_layouter_t* layouter, const char* name,
+                                             value_t* v) {
   self_layouter_default_t* l = (self_layouter_default_t*)layouter;
   return_value_if_fail(l != NULL, RET_BAD_PARAMS);
   switch (*name) {
@@ -202,8 +203,8 @@ ret_t self_layouter_default_get_param(self_layouter_t* layouter, const char* nam
   }
 }
 
-ret_t self_layouter_default_set_param(self_layouter_t* layouter, const char* name,
-                                      const value_t* v) {
+static ret_t self_layouter_default_set_param(self_layouter_t* layouter, const char* name,
+                                             const value_t* v) {
   const char* value = value_str(v);
   self_layouter_default_t* layout = (self_layouter_default_t*)layouter;
   return_value_if_fail(layout != NULL, RET_BAD_PARAMS);
@@ -396,58 +397,60 @@ static ret_t widget_layout_calc(self_layouter_default_t* layout, rect_t* r, wh_t
   return RET_OK;
 }
 
-ret_t widget_layout_self_with_rect(self_layouter_t* layouter, widget_t* widget, rect_t* area) {
-  rect_t r = rect_init(widget->x, widget->y, widget->w, widget->h);
+static ret_t self_layouter_default_layout(self_layouter_t* layouter, widget_t* widget,
+                                          rect_t* area) {
+  rect_t r;
+  bool_t has_max_w = FALSE;
   self_layouter_default_t* l = (self_layouter_default_t*)layouter;
+  return_value_if_fail(layouter != NULL && widget != NULL && widget->parent != NULL && area != NULL,
+                       RET_BAD_PARAMS);
 
-  return_value_if_fail(widget != NULL && area != NULL, RET_BAD_PARAMS);
+  r = rect_init(widget->x, widget->y, widget->w, widget->h);
+  has_max_w = (widget->auto_adjust_size && widget_get_prop_int(widget, WIDGET_PROP_MAX_W, 0) != 0);
+
+  /*如果有指定max_w，需要在layout之前，先计算需要的高宽。*/
+  if (has_max_w && widget->auto_adjust_size) {
+    widget_vtable_auto_adjust_size(widget);
+    r.w = widget->w;
+    r.h = widget->h;
+    l->w_attr = W_ATTR_UNDEF;
+    l->h_attr = H_ATTR_UNDEF;
+  }
+
+  widget_layout_calc(l, &r, area->w, area->h);
+
+  /*如果没有指定max_w，需要在layout之后，根据layout的高宽计算实际需要的高宽。*/
+  if (!has_max_w && widget->auto_adjust_size) {
+    wh_t w = widget->w;
+    wh_t h = widget->h;
+    widget->w = r.w;
+    widget->h = r.h;
+    widget_vtable_auto_adjust_size(widget);
+    r.w = widget->w;
+    r.h = widget->h;
+    if (l->x_attr != X_ATTR_UNDEF && area->w > 0) {
+      r.x = tk_roundi(widget_layout_calc_by_x(l->x_attr, l->x, (double)r.w, area->w));
+    }
+    if (l->y_attr != Y_ATTR_UNDEF && area->h > 0) {
+      r.y = tk_roundi(widget_layout_calc_by_y(l->y_attr, l->y, (double)r.h, area->h));
+    }
+    widget->w = w;
+    widget->h = h;
+  }
+
+  widget_move_resize_ex(widget, r.x + area->x, r.y + area->y, r.w, r.h, FALSE);
+
+  return RET_OK;
+}
+
+ret_t widget_layout_self_with_rect(self_layouter_t* layouter, widget_t* widget, rect_t* area) {
+  return_value_if_fail(layouter != NULL && widget != NULL && area != NULL, RET_BAD_PARAMS);
 
   if (self_layouter_default_is_valid(layouter)) {
-    bool_t has_max_w =
-        (widget->auto_adjust_size && widget_get_prop_int(widget, WIDGET_PROP_MAX_W, 0) != 0);
-
-    /*如果有指定max_w，需要在layout之前，先计算需要的高宽。*/
-    if (has_max_w && widget->auto_adjust_size) {
-      widget_vtable_auto_adjust_size(widget);
-      r.w = widget->w;
-      r.h = widget->h;
-      l->w_attr = W_ATTR_UNDEF;
-      l->h_attr = H_ATTR_UNDEF;
-    }
-
-    widget_layout_calc(l, &r, area->w, area->h);
-
-    /*如果没有指定max_w，需要在layout之后，根据layout的高宽计算实际需要的高宽。*/
-    if (!has_max_w && widget->auto_adjust_size) {
-      wh_t w = widget->w;
-      wh_t h = widget->h;
-      widget->w = r.w;
-      widget->h = r.h;
-      widget_vtable_auto_adjust_size(widget);
-      r.w = widget->w;
-      r.h = widget->h;
-      if (l->x_attr != X_ATTR_UNDEF && area->w > 0) {
-        r.x = tk_roundi(widget_layout_calc_by_x(l->x_attr, l->x, (double)r.w, area->w));
-      }
-      if (l->y_attr != Y_ATTR_UNDEF && area->h > 0) {
-        r.y = tk_roundi(widget_layout_calc_by_y(l->y_attr, l->y, (double)r.h, area->h));
-      }
-      widget->w = w;
-      widget->h = h;
-    }
-
-    widget_move_resize_ex(widget, r.x + area->x, r.y + area->y, r.w, r.h, FALSE);
-
-    return RET_OK;
+    return self_layouter_default_layout(layouter, widget, area);
   }
 
   return RET_FAIL;
-}
-
-ret_t self_layouter_default_layout(self_layouter_t* layouter, widget_t* widget, rect_t* area) {
-  return_value_if_fail(widget != NULL && widget->parent != NULL, RET_BAD_PARAMS);
-
-  return widget_layout_self_with_rect(layouter, widget, area);
 }
 
 static ret_t self_layouter_default_destroy(self_layouter_t* layouter) {
@@ -469,14 +472,34 @@ static self_layouter_t* self_layouter_default_clone(self_layouter_t* layouter) {
   return (self_layouter_t*)l;
 }
 
+static ret_t self_layouter_default_init(self_layouter_t* layouter) {
+  self_layouter_default_t* l = (self_layouter_default_t*)layouter;
+  return_value_if_fail(layouter != NULL, RET_BAD_PARAMS);
+
+  l->x_attr = X_ATTR_UNDEF;
+  l->y_attr = Y_ATTR_UNDEF;
+  l->w_attr = W_ATTR_UNDEF;
+  l->h_attr = H_ATTR_UNDEF;
+
+  str_init(&(layouter->params), 0);
+
+  return RET_OK;
+}
+
 static const self_layouter_vtable_t s_self_layouter_default_vtable = {
     .type = SELF_LAYOUTER_DEFAULT,
+    .init = self_layouter_default_init,
     .clone = self_layouter_default_clone,
     .to_string = self_layouter_default_to_string,
     .get_param = self_layouter_default_get_param,
     .set_param = self_layouter_default_set_param,
     .layout = self_layouter_default_layout,
-    .destroy = self_layouter_default_destroy};
+    .destroy = self_layouter_default_destroy,
+};
+
+const self_layouter_vtable_t* self_layouter_default_vtable(void) {
+  return &s_self_layouter_default_vtable;
+}
 
 bool_t self_layouter_default_is_valid(self_layouter_t* layouter) {
   return layouter && layouter->vt == &s_self_layouter_default_vtable;
@@ -484,20 +507,13 @@ bool_t self_layouter_default_is_valid(self_layouter_t* layouter) {
 
 self_layouter_t* self_layouter_default_create(void) {
   self_layouter_t* l = NULL;
-  self_layouter_default_t* layouter = NULL;
-
-  layouter = TKMEM_ZALLOC(self_layouter_default_t);
+  self_layouter_default_t* layouter = TKMEM_ZALLOC(self_layouter_default_t);
   return_value_if_fail(layouter != NULL, NULL);
 
   l = (self_layouter_t*)layouter;
 
-  layouter->x_attr = X_ATTR_UNDEF;
-  layouter->y_attr = Y_ATTR_UNDEF;
-  layouter->w_attr = W_ATTR_UNDEF;
-  layouter->h_attr = H_ATTR_UNDEF;
-
-  str_init(&(l->params), 0);
   l->vt = &s_self_layouter_default_vtable;
+  self_layouter_default_init(l);
 
-  return (self_layouter_t*)layouter;
+  return l;
 }

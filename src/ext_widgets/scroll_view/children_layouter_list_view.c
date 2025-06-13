@@ -226,6 +226,7 @@ static ret_t children_layouter_list_view_for_list_view_children_layout_h(
   n = children_for_layout->size;
   children = (widget_t**)children_for_layout->elms;
   for (i = 0; i < n; i++) {
+    bool_t resize = TRUE;
     widget_t* iter = children[i];
 
     if (iter->w == 0) {
@@ -242,11 +243,15 @@ static ret_t children_layouter_list_view_for_list_view_children_layout_h(
     h = item_height;
     if (h <= 0) {
       h = iter->h;
+      resize = FALSE;
     }
     if (h <= 0) {
       h = default_item_height;
+      resize = TRUE;
     }
-    widget_resize(iter, iter->w, h);
+    if (resize) {
+      widget_resize(iter, iter->w, h);
+    }
   }
   return RET_OK;
 }
@@ -270,7 +275,7 @@ static ret_t children_layouter_list_view_for_list_view_children_layout_w_with_an
   if (cols <= 1) {
     for (i = 0; i < children_for_layout->size; i++) {
       widget_t* iter = children[i];
-      widget_move_resize(iter, l->x_margin, iter->y, w, iter->h);
+      widget_move_resize_ex(iter, l->x_margin, iter->y, w, iter->h, FALSE);
       widget_set_prop_int(iter, WIDGET_PROP_ANIMATE_ANIMATING_TIME, l->animating_time);
       widget_set_prop_int(iter, animate_y, y);
       widget_layout_children(iter);
@@ -311,7 +316,7 @@ static ret_t children_layouter_list_view_for_list_view_children_layout_w(
       } else {
         for (i = 0; i < children_for_layout->size; i++) {
           widget_t* iter = children[i];
-          widget_move_resize(iter, x, y, w, iter->h);
+          widget_move_resize_ex(iter, x, y, w, iter->h, FALSE);
           widget_layout_children(iter);
           y += (iter->h + l->spacing);
         }
@@ -328,7 +333,7 @@ static ret_t children_layouter_list_view_for_list_view_children_layout_w(
         for (j = 0; j < cols && n < size; j++, n++) {
           widget_t* iter = children[n];
           int32_t tmp_x = x + j * (w + l->spacing);
-          widget_move_resize(iter, tmp_x, y, w, iter->h);
+          widget_move_resize_ex(iter, tmp_x, y, w, iter->h, FALSE);
           widget_layout_children(iter);
           h = tk_max(h, iter->h);
         }

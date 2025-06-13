@@ -2,6 +2,7 @@
 
 2025/06/13
   * 增加 tk_isalnum
+  * 增加 self_layouter_flex (感谢兆坤提供补丁)。
 
 2025/06/11
   * 完善 layouter(感谢兆坤提供补丁)。

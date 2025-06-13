@@ -21,14 +21,16 @@
 
 #include "base/self_layouter_factory.h"
 #include "layouters/self_layouter_builtins.h"
-#include "layouters/self_layouter_menu.h"
 #include "layouters/self_layouter_default.h"
+#include "layouters/self_layouter_menu.h"
+#include "layouters/self_layouter_flex.h"
 
 ret_t self_layouter_register_builtins(void) {
   self_layouter_factory_t* f = self_layouter_factory();
 
   self_layouter_factory_register(f, SELF_LAYOUTER_DEFAULT, self_layouter_default_create);
   self_layouter_factory_register(f, SELF_LAYOUTER_MENU, self_layouter_menu_create);
+  self_layouter_factory_register(f, SELF_LAYOUTER_FLEX, self_layouter_flex_create);
 
   return RET_OK;
 }
