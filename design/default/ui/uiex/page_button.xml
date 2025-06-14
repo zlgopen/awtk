@@ -26,26 +26,26 @@
     </view>
     <view name="view_icon_btn" children_layout="default(r=0,c=1,x=0,y=0,s=13)" self_layout="flex(h=flex)">
       <hscroll_label h="22" style="title" loop="true" yoyo="true" tr_text="Button With Icon"/>
-      <view self_layout="flex(h=flex)" children_layout="default(w=50,h=50,x=20,y=0,s=20,flexible=true)">
+      <view self_layout="flex(h=flex)" children_layout="default(w=40,h=50,x=20,y=0,s=20,flexible=true)">
         <view>
           <button x="c" y="0" w="30" h="30" style="search"/>
-          <label x="c" y="b" w="50" h="20" style="icon_btn" tr_text="search"/>
+          <label x="c" y="b" w="100%" h="20" style="icon_btn" tr_text="search"/>
         </view>
         <view>
           <button x="c" y="0" w="30" h="30" style="time"/>
-          <label x="c" y="b" w="50" h="20" style="icon_btn" tr_text="time"/>
+          <label x="c" y="b" w="100%" h="20" style="icon_btn" tr_text="time"/>
         </view>
         <view>
           <button x="c" y="0" w="30" h="30" style="import"/>
-          <label x="c" y="b" w="50" h="20" style="icon_btn" tr_text="import"/>
+          <label x="c" y="b" w="100%" h="20" style="icon_btn" tr_text="import"/>
         </view>
         <view>
           <button x="c" y="0" w="30" h="30" style="export"/>
-          <label x="c" y="b" w="50" h="20" style="icon_btn" tr_text="export"/>
+          <label x="c" y="b" w="100%" h="20" style="icon_btn" tr_text="export"/>
         </view>
         <view>
           <button x="c" y="0" w="30" h="30" style="empty"/>
-          <label x="c" y="b" w="50" h="20" style="icon_btn" tr_text="empty"/>
+          <label x="c" y="b" w="100%" h="20" style="icon_btn" tr_text="empty"/>
         </view>
       </view>
     </view>
