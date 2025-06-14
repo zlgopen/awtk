@@ -95,8 +95,8 @@ static inline uint32_t custom_keys_nr(void) {
   return s_custom_keys_nr;
 }
 #else
-#define custom_keys_init(set)
-#define custom_keys_deinit(set)
+#define custom_keys_init(set) (void)(set)
+#define custom_keys_deinit(set) (void)(set)
 #define custom_keys() (NULL)
 #define custom_keys_nr() (0)
 #endif /* ENABLE_CUSTOM_KEYS && defined(CUSTOM_KEYS_FILEPATH) */

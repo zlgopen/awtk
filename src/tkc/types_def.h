@@ -563,7 +563,9 @@ typedef void (*tk_sleep_ms_t)(uint32_t ms);
     system("chcp 65001");                     \
   } while (0)
 #else
-#define TK_ENABLE_CONSOLE()
+#define TK_ENABLE_CONSOLE() \
+  do {                      \
+  } while (0)
 #endif /*WIN32 && !NDEBUG*/
 
 struct _event_source_t;
