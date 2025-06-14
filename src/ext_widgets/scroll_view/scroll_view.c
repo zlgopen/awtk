@@ -806,9 +806,6 @@ ret_t scroll_view_set_virtual_w(widget_t* widget, wh_t w) {
   return_value_if_fail(scroll_view != NULL, RET_BAD_PARAMS);
 
   scroll_view->virtual_w = w;
-  if (scroll_view->xoffset + widget->w > scroll_view->virtual_w) {
-    scroll_view_set_offset(widget, scroll_view->virtual_w - widget->w, scroll_view->yoffset);
-  }
 
   return RET_OK;
 }
@@ -818,11 +815,30 @@ ret_t scroll_view_set_virtual_h(widget_t* widget, wh_t h) {
   return_value_if_fail(scroll_view != NULL, RET_BAD_PARAMS);
 
   scroll_view->virtual_h = h;
-  if (scroll_view->yoffset + widget->h > scroll_view->virtual_h) {
-    scroll_view_set_offset(widget, scroll_view->xoffset, scroll_view->virtual_h - widget->h);
-  }
 
   return RET_OK;
+}
+
+ret_t scroll_view_fix_offset(widget_t* widget) {
+  int32_t xoffset = 0, yoffset = 0;
+  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  return_value_if_fail(scroll_view != NULL, RET_BAD_PARAMS);
+
+  if (scroll_view->xoffset + widget->w > scroll_view->virtual_w) {
+    xoffset = scroll_view->virtual_w - widget->w;
+  } else {
+    xoffset = scroll_view->xoffset;
+  }
+  xoffset = tk_max(0, xoffset);
+
+  if (scroll_view->yoffset + widget->h > scroll_view->virtual_h) {
+    yoffset = scroll_view->virtual_h - widget->h;
+  } else {
+    yoffset = scroll_view->yoffset;
+  }
+  yoffset = tk_max(0, yoffset);
+
+  return scroll_view_set_offset(widget, xoffset, yoffset);
 }
 
 ret_t scroll_view_set_speed_scale(widget_t* widget, float_t xspeed_scale, float_t yspeed_scale) {

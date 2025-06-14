@@ -413,6 +413,8 @@ static ret_t children_layouter_list_view_for_list_view_set_scroll_view_info(
   }
   scroll_view_set_virtual_w(widget, virtual_w);
 
+  scroll_view_fix_offset(widget);
+
   if (!scroll_view->dragged && scroll_view->wa == NULL) {
     yoffset = scroll_view->yoffset;
 

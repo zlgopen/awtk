@@ -243,6 +243,16 @@ ret_t scroll_view_set_virtual_w(widget_t* widget, wh_t w);
 ret_t scroll_view_set_virtual_h(widget_t* widget, wh_t h);
 
 /**
+ * @method scroll_view_fix_offset
+ * 修复偏移量。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t scroll_view_fix_offset(widget_t* widget);
+
+/**
  * @method scroll_view_set_xslidable
  * 设置是否允许x方向滑动。
  * @annotation ["scriptable"]
