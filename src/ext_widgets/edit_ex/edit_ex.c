@@ -1,5 +1,5 @@
 ﻿/**
- * File:   edit_ex.h
+ * File:   edit_ex.c
  * Author: AWTK Develop Team
  * Brief:  扩展edit控件
  *

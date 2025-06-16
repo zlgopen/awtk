@@ -1,7 +1,7 @@
 ﻿/**
- * File:   self_layouter_flex.h
+ * File:   self_layouter_flex.c
  * Author: AWTK Develop Team
- * Brief:  self layouter default
+ * Brief:  self layouter flex
  *
  * Copyright (c) 2025 - 2025 Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -188,7 +188,6 @@ static ret_t self_layouter_flex_layout(self_layouter_t* layouter, widget_t* widg
 }
 
 static ret_t self_layouter_flex_destroy(self_layouter_t* layouter) {
-  self_layouter_flex_t* l = (self_layouter_flex_t*)layouter;
   return_value_if_fail(layouter != NULL, RET_BAD_PARAMS);
 
   if (self_layouter_default_vtable() != NULL && self_layouter_default_vtable()->destroy != NULL) {
