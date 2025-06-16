@@ -38,6 +38,7 @@ static ret_t self_layouter_flex_replace_param(self_layouter_t* layouter, const c
   tk_snprintf(buff, sizeof(buff) - 1, "%s=", name);
   start = strstr(l->params.str, name);
   if (start != NULL) {
+    start += tk_strlen(buff);
     const char* end = strchr(start, ',');
     if (end == NULL) {
       end = strchr(start, ')');
@@ -45,7 +46,7 @@ static ret_t self_layouter_flex_replace_param(self_layouter_t* layouter, const c
     if (end == NULL) {
       end = l->params.str + l->params.size;
     }
-    str_remove(&l->params, start - l->params.str, end - start - 1);
+    str_remove(&l->params, start - l->params.str, end - start);
     str_insert(&l->params, start - l->params.str, value);
   } else {
     if (l->params.size == (sizeof(SELF_LAYOUTER_FLEX "()") - 1) &&
@@ -76,21 +77,19 @@ static const char* self_layouter_flex_to_string(self_layouter_t* layouter) {
       self_layouter_flex_replace_param(layouter, "w", SELF_LAYOUTER_FLEX_ATTR_NAME);
     }
   } else {
-    bool_t first = TRUE;
     str_set(str, SELF_LAYOUTER_FLEX "(");
     if (W_ATTR_FLEX == layout->layouter.w_attr) {
-      first = FALSE;
       str_append(str, "w=" SELF_LAYOUTER_FLEX_ATTR_NAME);
+      str_append_char(str, ',');
     }
     if (H_ATTR_FLEX == layout->layouter.h_attr) {
-      if (!first) {
-        str_append_char(str, ',');
-      } else {
-        first = FALSE;
-      }
       str_append(str, "h=" SELF_LAYOUTER_FLEX_ATTR_NAME);
     }
     str_append_char(str, ')');
+  }
+
+  if (str_end_with(str, ",)")) {
+    str_remove(str, str->size - 2, 1);
   }
 
   return str->str;

@@ -30,7 +30,10 @@ BEGIN_C_DECLS
  * @class self_layouter_flex_t
  * @parent self_layouter_default_t
  *
- * 根据子控件的内容大小自动调整的自身布局算法实现。
+ * 弹性自身布局算法实现。
+ *
+ * > 用法请参考：[弹性自身布局器](
+ * https://github.com/zlgopen/awtk/blob/master/docs/self_layouter_flex.md)
  *
  */
 typedef struct _self_layouter_flex_t {

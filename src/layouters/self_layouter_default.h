@@ -32,8 +32,8 @@ BEGIN_C_DECLS
  *
  * 缺省的控件自身布局算法实现。
  *
- *> 用法请参考：[缺省控件自身布局算法](
- *https://github.com/zlgopen/awtk/blob/master/docs/self_layouter_default.md)
+ * > 用法请参考：[缺省的控件自身布局器](
+ * https://github.com/zlgopen/awtk/blob/master/docs/self_layouter_default.md)
  *
  */
 typedef struct _self_layouter_default_t {
