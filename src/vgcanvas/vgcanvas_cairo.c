@@ -371,7 +371,7 @@ static ret_t vgcanvas_cairo_fill(vgcanvas_t* vgcanvas) {
     cairo_set_source_color(vg, c);
   }
 
-  cairo_fill(vg);
+  cairo_fill_preserve(vg);
 
   return RET_OK;
 }
@@ -407,6 +407,22 @@ static ret_t vgcanvas_cairo_clip_rect(vgcanvas_t* vgcanvas, float_t x, float_t y
   return RET_OK;
 }
 
+static ret_t vgcanvas_cairo_set_fill_mode(vgcanvas_t* vgcanvas, vgcanvas_fill_mode_t fill_mode) {
+  cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
+  switch (fill_mode) {
+  case VGCANVAS_FILL_MODE_NON_ZERO:
+    cairo_set_fill_rule(vg, CAIRO_FILL_RULE_WINDING);
+    break;
+  case VGCANVAS_FILL_MODE_EVEN_ODD:
+    cairo_set_fill_rule(vg, CAIRO_FILL_RULE_EVEN_ODD);
+    break;
+  default:
+    cairo_set_fill_rule(vg, CAIRO_FILL_RULE_WINDING);
+    break;
+  }
+  return RET_OK;
+}
+
 static ret_t vgcanvas_cairo_clip_path(vgcanvas_t* vgcanvas) {
   cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
 
@@ -428,7 +444,7 @@ static ret_t vgcanvas_cairo_stroke(vgcanvas_t* vgcanvas) {
     cairo_set_source_color(vg, c);
   }
 
-  cairo_stroke(vg);
+  cairo_stroke_preserve(vg);
 
   return RET_OK;
 }
@@ -910,9 +926,9 @@ static ret_t vgcanvas_cairo_paint(vgcanvas_t* vgcanvas, bool_t stroke, bitmap_t*
   cairo_pattern_set_filter(cairo_get_source(vg), CAIRO_FILTER_BEST);
 
   if (stroke) {
-    cairo_stroke(vg);
+    cairo_stroke_preserve(vg);
   } else {
-    cairo_fill(vg);
+    cairo_fill_preserve(vg);
   }
 
   return RET_OK;
@@ -965,6 +981,7 @@ static const vgcanvas_vtable_t vt = {
     .set_fill_gradient = vgcanvas_cairo_set_fill_gradient,
     .is_rectf_in_clip_rect = vgcanvas_cairo_is_rectf_in_clip_rect,
     .get_clip_rect = vgcanvas_cairo_get_clip_rect,
+    .set_fill_mode = vgcanvas_cairo_set_fill_mode,
 
     .set_line_join = vgcanvas_cairo_set_line_join,
     .set_line_cap = vgcanvas_cairo_set_line_cap,

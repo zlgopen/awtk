@@ -85,8 +85,9 @@ typedef enum _nvgp_draw_image_type_t {
 typedef enum _nvgp_point_flags_t {
   NVGP_PT_CORNER = 0x01,
   NVGP_PT_LEFT = 0x02,
-  NVGP_PT_BEVEL = 0x04,
-  NVGP_PR_INNERBEVEL = 0x08,
+  NVGP_PT_RIGHT = 0x04,
+  NVGP_PT_BEVEL = 0x08,
+  NVGP_PR_INNERBEVEL = 0x10,
 } nvgp_point_flags_t;
 
 typedef enum _nvgp_align_t {
@@ -110,6 +111,17 @@ typedef enum _nvgp_texture_format_t {
   NVGP_TEXTURE_FMT_RGB565 = 32,
   NVGP_TEXTURE_FMT_BGR565 = 64
 }nvgp_texture_format_t;
+
+typedef enum _nvgp_fill_mode_t {
+	NVGP_FILLMODE_All = 0,
+	NVGP_FILLMODE_NONZERO = 1,
+	NVGP_FILLMODE_EVENODD = 2,
+} nvgp_fill_mode_t;
+
+typedef enum _nvgp_winding_t {
+  NVGP_CCW = 1,       // Winding for solid shapes
+  NVGP_CW = 2,        // Winding for holes
+} nvgp_winding_t;
 
 typedef struct _nvgp_vertex_t {
   float x,y,u,v;
@@ -165,6 +177,7 @@ typedef struct _nvgp_path_t {
   uint32_t nstroke;
   nvgp_vertex_t* stroke;
   uint32_t winding;
+  uint32_t path_winding;
   uint32_t convex;
 } nvgp_path_t;
 
@@ -185,7 +198,7 @@ typedef struct _nvgp_vtable_t {
   void (*set_line_cap)(void* uptr, int line_cap);
   void (*set_line_join)(void* uptr, int line_join);
   void (*render_cancel)(void* uptr);
-  void (*render_fill)(void* uptr, nvgp_paint_t* paint, nvgp_scissor_t* scissor, float fringe, const float* bounds, const nvgp_darray_t* paths);
+  void (*render_fill)(void* uptr, nvgp_paint_t* paint, nvgp_scissor_t* scissor, float fringe, const float* bounds, const nvgp_darray_t* paths, nvgp_fill_mode_t fill_mode);
   void (*render_stroke)(void* uptr, nvgp_paint_t* paint, nvgp_scissor_t* scissor, float fringe, float stroke_width, const nvgp_darray_t* paths);
   void (*render_draw_text)(void* uptr, nvgp_paint_t* paint, nvgp_scissor_t* scissor, nvgp_vertex_t* verts, uint32_t nverts);
   void (*destroy)(void* uptr);
@@ -887,6 +900,16 @@ nvgp_error_t nvgp_set_fill_paint(nvgp_context_t* ctx, nvgp_paint_t paint);
  */
 nvgp_error_t nvgp_set_stroke_paint(nvgp_context_t* ctx, nvgp_paint_t paint);
 
+/**
+ * @method ncgp_set_fill_mode
+ * 设置填充模式
+ * @annotation ["constructor", "scriptable"]
+ * @param {nvgp_context_t*} ctx 矢量画布上下文
+ * @param {nvgp_fill_mode_t} fill_mode 填充模式
+ * 
+ * @return {nvgp_error_t} 成功返回 NVGP_OK。
+ */
+nvgp_error_t ncgp_set_fill_mode(nvgp_context_t *ctx, nvgp_fill_mode_t fill_mode);
 
 
 

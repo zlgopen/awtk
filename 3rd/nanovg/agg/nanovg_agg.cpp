@@ -287,13 +287,17 @@ void renderPaint(AGGNVGcontext* agg, NVGpaint* paint) {
 template <typename PixelT>
 void renderFill(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation,
                 NVGscissor* scissor, float fringe, const float* bounds, const NVGpath* paths,
-                int npaths) {
+                int npaths, enum NVGFillMode fillMode) {
   AGGNVGcontext* agg = (AGGNVGcontext*)uptr;
   
   prepareRasterizer(agg, scissor, paint);
   
   agg::rasterizer_scanline_aa<>& ras = agg->ras;
-
+  if (fillMode == NVG_FILLMODE_EVENODD) {
+    ras.filling_rule(agg::fill_even_odd);
+  } else {
+    ras.filling_rule(agg::fill_non_zero);
+  }
   ras.reset();
   for (int i = 0; i < npaths; i++) {
     const NVGpath* p = paths + i;

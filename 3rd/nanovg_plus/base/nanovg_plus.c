@@ -42,11 +42,6 @@
 #define NVGP_MAX_FONTIMAGE_SIZE   2048
 #define NVGP_MAX_FONTIMAGES       4
 
-typedef enum _nvgp_winding_t {
-  NVGP_CCW = 1,       // Winding for solid shapes
-  NVGP_CW = 2,        // Winding for holes
-} nvgp_winding_t;
-
 typedef enum _nvgp_command_t {
   NVGP_MOVETO = 0,
   NVGP_LINETO = 1,
@@ -58,6 +53,7 @@ typedef enum _nvgp_command_t {
 typedef struct _nvgp_point_t {
   float x,y;
   float dx, dy;
+  float dlx, dly;
   float len;
   float dmx, dmy;
   uint32_t flags;
@@ -83,6 +79,7 @@ typedef struct _nvgp_state_t {
   nvgp_paint_t fill;
   nvgp_paint_t stroke;
   float stroke_width;
+  nvgp_fill_mode_t fill_mode;
 
   uint32_t font_id;
   int32_t text_align;
@@ -1373,6 +1370,18 @@ nvgp_error_t nvgp_set_stroke_paint(nvgp_context_t* ctx, nvgp_paint_t paint) {
 }
 
 
+nvgp_error_t ncgp_set_fill_mode(nvgp_context_t *ctx, nvgp_fill_mode_t fill_mode) {
+  nvgp_state_t* state = NULL;
+  CHECK_OBJECT_IS_NULL(ctx);
+  state = nvgp_get_state(ctx);
+  if (state != NULL) {
+    state->fill_mode = fill_mode;
+    return NVGP_OK;
+  }
+  return NVGP_FAIL;
+}
+
+
 /***********************************************************************************************/
 
 
@@ -1768,7 +1777,7 @@ static void nvgp_poly_reverse(nvgp_darray_t* points, int32_t first, int npts) {
   NVGP_FREE(tmp);
 }
 
-static void nvgp_flatten_paths(nvgp_context_t* ctx) {
+static void nvgp_flatten_paths(nvgp_context_t* ctx, nvgp_fill_mode_t fill_mode) {
   int32_t i, j;
   floatptr_t p_0;
   floatptr_t p_1;
@@ -1845,19 +1854,15 @@ static void nvgp_flatten_paths(nvgp_context_t* ctx) {
       p0 = nvgp_darray_get_ptr(&cache->points, path->first + path->count - 1, nvgp_point_t);
       path->closed = 1;
     }
-
-    // Enforce winding.
-    if (path->count > 2) {
-      area = nvgp_poly_area(&cache->points, path->first, path->count);
+  
+		area = nvgp_poly_area(&cache->points, path->first, path->count);
+		path->path_winding = area >= 0.0f ? NVGP_CCW : NVGP_CW;
+    if (fill_mode == NVGP_FILLMODE_All && path->count > 2) {
       if (path->winding == NVGP_CCW && area < 0.0f) {
         nvgp_poly_reverse(&cache->points, path->first, path->count);
         p0 = nvgp_darray_get_ptr(&cache->points, path->first + path->count - 1, nvgp_point_t);
         p1 = nvgp_darray_get_ptr(&cache->points, path->first, nvgp_point_t);
-      }
-      if (path->winding == NVGP_CW && area > 0.0f) {
-        nvgp_poly_reverse(&cache->points, path->first, path->count);
-        p0 = nvgp_darray_get_ptr(&cache->points, path->first + path->count - 1, nvgp_point_t);
-        p1 = nvgp_darray_get_ptr(&cache->points, path->first, nvgp_point_t);
+        path->path_winding = NVGP_CCW;
       }
     }
 
@@ -1866,6 +1871,13 @@ static void nvgp_flatten_paths(nvgp_context_t* ctx) {
       p0->dx = p1->x - p0->x;
       p0->dy = p1->y - p0->y;
       p0->len = nvgp_normalize(&p0->dx, &p0->dy);
+      if (path->path_winding == NVGP_CCW) {
+				p0->dlx = p0->dy;
+				p0->dly = -p0->dx;
+			} else {
+				p0->dlx = -p0->dy;
+				p0->dly = p0->dx;
+			}
       // Update bounds
       cache->bounds[0] = nvgp_min(cache->bounds[0], p0->x);
       cache->bounds[1] = nvgp_min(cache->bounds[1], p0->y);
@@ -1890,6 +1902,7 @@ static void nvgp_calculate_joins(nvgp_context_t* ctx, float w, nvgp_line_join_t 
   // Calculate which joins needs extra vertices to append, and gather vertex count.
   for (i = 0; i < cache->paths.size; i++) {
     int32_t nleft = 0;
+    int32_t nright = 0;
     nvgp_path_t* path =nvgp_darray_get_ptr(&cache->paths, i, nvgp_path_t);
     nvgp_point_t* pts = nvgp_darray_get_ptr(&cache->points, path->first, nvgp_point_t);
     nvgp_point_t* p0 = nvgp_darray_get_ptr(&cache->points, path->first + path->count-1, nvgp_point_t);
@@ -1899,10 +1912,10 @@ static void nvgp_calculate_joins(nvgp_context_t* ctx, float w, nvgp_line_join_t 
 
     for (j = 0; j < path->count; j++) {
       float dlx0, dly0, dlx1, dly1, dmr2, cross, limit;
-      dlx0 = p0->dy;
-      dly0 = -p0->dx;
-      dlx1 = p1->dy;
-      dly1 = -p1->dx;
+      dlx0 = p0->dlx;
+      dly0 = p0->dly;
+      dlx1 = p1->dlx;
+      dly1 = p1->dly;
       // Calculate extrusions
       p1->dmx = (dlx0 + dlx1) * 0.5f;
       p1->dmy = (dly0 + dly1) * 0.5f;
@@ -1924,6 +1937,9 @@ static void nvgp_calculate_joins(nvgp_context_t* ctx, float w, nvgp_line_join_t 
       if (cross > 0.0f) {
         nleft++;
         p1->flags |= NVGP_PT_LEFT;
+      } else if (cross < 0.0f) {
+        nright++;
+        p1->flags |= NVGP_PT_RIGHT;
       }
 
       // Calculate if we should use bevel or miter for inner join.
@@ -1945,7 +1961,7 @@ static void nvgp_calculate_joins(nvgp_context_t* ctx, float w, nvgp_line_join_t 
       p1 = nvgp_darray_get_ptr(&cache->points, path->first + j + 1, nvgp_point_t);
     }
 
-    path->convex = (nleft == path->count) ? 1 : 0;
+    path->convex = (nleft == path->count || nright == path->count) ? 1 : 0;
   }
 }
 
@@ -1973,13 +1989,13 @@ static void nvgp_choose_bevel(int32_t bevel, nvgp_point_t* p0, nvgp_point_t* p1,
 static nvgp_vertex_t* nvgp_bevel_join(nvgp_vertex_t* dst, nvgp_point_t* p0, nvgp_point_t* p1, float lw, float rw, float lu, float ru, float fringe) {
   float rx0,ry0,rx1,ry1;
   float lx0,ly0,lx1,ly1;
-  float dlx0 = p0->dy;
-  float dly0 = -p0->dx;
-  float dlx1 = p1->dy;
-  float dly1 = -p1->dx;
+  float dlx0 = p0->dlx;
+  float dly0 = p0->dly;
+  float dlx1 = p1->dlx;
+  float dly1 = p1->dly;
   (void)fringe;
 
-  if (p1->flags & NVGP_PT_LEFT) {
+  if (p1->flags & NVGP_PT_LEFT || p1->flags & NVGP_PT_RIGHT) {
     nvgp_choose_bevel(p1->flags & NVGP_PR_INNERBEVEL, p0, p1, lw, &lx0, &ly0, &lx1, &ly1);
 
     nvgp_vset(dst, lx0, ly0, lu,1); dst++;
@@ -2058,7 +2074,7 @@ static nvgp_error_t nvgp_expand_fill(nvgp_context_t* ctx, float w, nvgp_line_joi
   nvgp_vertex_t* dst;
   nvgp_vertex_t* verts;
   int fringe = w > 0.0f;
-  int cverts, convex, i, j;
+  int cverts, i, j;
   float aa = ctx->fringe_width;
   nvgp_path_cache_t* cache = &ctx->cache;
 
@@ -2078,8 +2094,6 @@ static nvgp_error_t nvgp_expand_fill(nvgp_context_t* ctx, float w, nvgp_line_joi
     return NVGP_OOM;
   }
 
-  convex = cache->paths.size == 1 && nvgp_darray_get_ptr(&cache->paths, 0, nvgp_path_t)->convex;
-
   for (i = 0; i < cache->paths.size; i++) {
     float ru, lu;
     float rw, lw, woff;
@@ -2098,11 +2112,11 @@ static nvgp_error_t nvgp_expand_fill(nvgp_context_t* ctx, float w, nvgp_line_joi
       p1 = nvgp_darray_get_ptr(&cache->points, path->first, nvgp_point_t);
       for (j = 0; j < path->count; ++j) {
         if (p1->flags & NVGP_PT_BEVEL) {
-          float dlx0 = p0->dy;
-          float dly0 = -p0->dx;
-          float dlx1 = p1->dy;
-          float dly1 = -p1->dx;
-          if (p1->flags & NVGP_PT_LEFT) {
+          float dlx0 = p0->dlx;
+          float dly0 = p0->dly;
+          float dlx1 = p1->dlx;
+          float dly1 = p1->dly;
+          if (p1->flags & NVGP_PT_LEFT || p1->flags & NVGP_PT_RIGHT) {
             float lx = p1->x + p1->dmx * woff;
             float ly = p1->y + p1->dmy * woff;
             nvgp_vset(dst, lx, ly, 0.5f,1); dst++;
@@ -2142,7 +2156,7 @@ static nvgp_error_t nvgp_expand_fill(nvgp_context_t* ctx, float w, nvgp_line_joi
 
       // Create only half a fringe for convex shapes so that
       // the shape can be rendered without stenciling.
-      if (convex) {
+      if (path->convex) {
         lw = woff;  // This should generate the same vertex as fill inset above.
         lu = 0.5f;  // Set outline fade at middle.
       }
@@ -2215,13 +2229,13 @@ static nvgp_vertex_t* nvgp_round_join(nvgp_vertex_t* dst, nvgp_point_t* p0, nvgp
                                       float lw, float rw, float lu, float ru, int ncap,
                                       float fringe) {
   int i, n;
-  float dlx0 = p0->dy;
-  float dly0 = -p0->dx;
-  float dlx1 = p1->dy;
-  float dly1 = -p1->dx;
+  float dlx0 = p0->dlx;
+  float dly0 = p0->dly;
+  float dlx1 = p1->dlx;
+  float dly1 = p1->dly;
   (void)fringe;
 
-  if (p1->flags & NVGP_PT_LEFT) {
+  if (p1->flags & NVGP_PT_LEFT || p1->flags & NVGP_PT_RIGHT) {
     float lx0,ly0,lx1,ly1,a0,a1;
     nvgp_choose_bevel(p1->flags & NVGP_PR_INNERBEVEL, p0, p1, lw, &lx0,&ly0, &lx1,&ly1);
     a0 = nvgp_atan2f(-dly0, -dlx0);
@@ -2446,7 +2460,7 @@ nvgp_error_t nvgp_fill(nvgp_context_t* ctx) {
   CHECK_OBJECT_IS_NULL(state);
   fill_paint = state->fill;
 
-  nvgp_flatten_paths(ctx);
+  nvgp_flatten_paths(ctx, state->fill_mode);
   if (ctx->vt->get_edge_anti_alias(ctx->vt_ctx) && state->shape_anti_alias)
     nvgp_expand_fill(ctx, ctx->fringe_width, NVGP_MITER, 2.4f);
   else
@@ -2455,7 +2469,7 @@ nvgp_error_t nvgp_fill(nvgp_context_t* ctx) {
   fill_paint.inner_color.rgba.a = fill_paint.inner_color.rgba.a * state->alpha / 255;
   fill_paint.outer_color.rgba.a = fill_paint.outer_color.rgba.a * state->alpha / 255;
 
-  ctx->vt->render_fill(ctx->vt_ctx, &fill_paint, &state->scissor, ctx->fringe_width, ctx->cache.bounds, &ctx->cache.paths);
+  ctx->vt->render_fill(ctx->vt_ctx, &fill_paint, &state->scissor, ctx->fringe_width, ctx->cache.bounds, &ctx->cache.paths, state->fill_mode);
 
   // Count triangles
   for (i = 0; i < ctx->cache.paths.size; i++) {
@@ -2495,7 +2509,7 @@ nvgp_error_t nvgp_stroke(nvgp_context_t* ctx) {
   stroke_paint.inner_color.rgba.a = stroke_paint.inner_color.rgba.a * state->alpha / 255;
   stroke_paint.outer_color.rgba.a = stroke_paint.outer_color.rgba.a * state->alpha / 255;
 
-  nvgp_flatten_paths(ctx);
+  nvgp_flatten_paths(ctx, NVGP_FILLMODE_All);
 
   if (ctx->vt->get_edge_anti_alias(ctx->vt_ctx) && state->shape_anti_alias) {
     nvgp_expand_stroke(ctx, stroke_width * 0.5f, ctx->fringe_width, state->line_cap, state->line_join, state->miter_limit);

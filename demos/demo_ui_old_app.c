@@ -328,9 +328,13 @@ static ret_t on_paint_vgcanvas(void* ctx, event_t* e) {
 
   vgcanvas_translate(vg, 50, 100);
   draw_matrix(vg);
-  vgcanvas_translate(vg, 0, 100);
+  vgcanvas_translate(vg, -50, 50);
 
   draw_text(vg);
+
+  vgcanvas_translate(vg, 0, 60);
+  draw_fill_mode(vg);
+
   vgcanvas_restore(vg);
 
   return RET_OK;

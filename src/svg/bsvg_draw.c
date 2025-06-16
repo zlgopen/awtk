@@ -28,8 +28,6 @@ ret_t bsvg_draw_path(bsvg_draw_ctx_t* ctx, const svg_path_t* path) {
     case SVG_PATH_M: {
       const svg_path_move_t* p = (const svg_path_move_t*)path;
       vgcanvas_move_to(canvas, p->x, p->y);
-      /* 屏蔽了 vg 的路径镂空函数，修复 gles 和 agge 的 svg 效果同步的问题，会导致 svg 没有了路径消除的逻辑 */
-      /* vgcanvas_path_winding(canvas, 0); */
       break;
     }
     case SVG_PATH_L: {
@@ -163,6 +161,7 @@ ret_t bsvg_draw(bsvg_t* svg, vgcanvas_t* canvas) {
 
   vgcanvas_save(canvas);
   /* vgcanvas_scale(canvas, 1, 1); */
+  vgcanvas_set_fill_mode(canvas, VGCANVAS_FILL_MODE_NON_ZERO);
   vgcanvas_set_line_cap(canvas, "butt");
   /* 默认应该是miter，但因为有bug，暂时先不设置 */
   /* vgcanvas_set_line_join(canvas, "miter"); */

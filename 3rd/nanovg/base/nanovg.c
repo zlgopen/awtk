@@ -66,8 +66,9 @@ enum NVGpointFlags
 {
 	NVG_PT_CORNER = 0x01,
 	NVG_PT_LEFT = 0x02,
-	NVG_PT_BEVEL = 0x04,
-	NVG_PR_INNERBEVEL = 0x08,
+	NVG_PT_RIGHT = 0x04,
+	NVG_PT_BEVEL = 0x08,
+	NVG_PR_INNERBEVEL = 0x10,
 };
 
 struct NVGstate {
@@ -75,6 +76,7 @@ struct NVGstate {
 	int shapeAntiAlias;
 	NVGpaint fill;
 	NVGpaint stroke;
+	enum NVGFillMode fillMode;
 	float strokeWidth;
 	float miterLimit;
 	int lineJoin;
@@ -94,6 +96,7 @@ typedef struct NVGstate NVGstate;
 struct NVGpoint {
 	float x,y;
 	float dx, dy;
+	float dlx, dly;
 	float len;
 	float dmx, dmy;
 	unsigned char flags;
@@ -733,6 +736,7 @@ void nvgReset(NVGcontext* ctx)
 	state->miterLimit = 10.0f;
 	state->lineCap = NVG_BUTT;
 	state->lineJoin = NVG_MITER;
+	state->fillMode = NVG_FILLMODE_All;
 	state->alpha = 1.0f;
 	nvgTransformIdentity(state->xform);
 
@@ -784,6 +788,12 @@ void nvgLineJoin(NVGcontext* ctx, int join)
 	{
 		ctx->params.setLineJoin(ctx->params.userPtr, join);
 	}
+}
+
+void nvgFillMode(NVGcontext* ctx, enum NVGFillMode fillMode)
+{
+	NVGstate* state = nvg__getState(ctx);
+	state->fillMode = fillMode;
 }
 
 void nvgGlobalAlpha(NVGcontext* ctx, float alpha)
@@ -1523,7 +1533,7 @@ static void nvg__tesselateBezier(NVGcontext* ctx,
 	nvg__tesselateBezier(ctx, x1234,y1234, x234,y234, x34,y34, x4,y4, level+1, type);
 }
 
-static void nvg__flattenPaths(NVGcontext* ctx)
+static void nvg__flattenPaths(NVGcontext* ctx, enum NVGFillMode fillMode)
 {
 	NVGpathCache* cache = ctx->cache;
 //	NVGstate* state = nvg__getState(ctx);
@@ -1597,13 +1607,13 @@ static void nvg__flattenPaths(NVGcontext* ctx)
 			path->closed = 1;
 		}
 
-		// Enforce winding.
-		if (path->count > 2) {
-			area = nvg__polyArea(pts, path->count);
-			if (path->winding == NVG_CCW && area < 0.0f)
+		area = nvg__polyArea(pts, path->count);
+		path->path_winding = area >= 0.0f ? NVG_CCW : NVG_CW;
+		if (fillMode == NVG_FILLMODE_All && path->count > 2) {
+			if (path->winding == NVG_CCW && area < 0.0f) {
 				nvg__polyReverse(pts, path->count);
-			if (path->winding == NVG_CW && area > 0.0f)
-				nvg__polyReverse(pts, path->count);
+				path->path_winding = NVG_CCW;
+			}
 		}
 
 		for(i = 0; i < path->count; i++) {
@@ -1611,6 +1621,13 @@ static void nvg__flattenPaths(NVGcontext* ctx)
 			p0->dx = p1->x - p0->x;
 			p0->dy = p1->y - p0->y;
 			p0->len = nvg__normalize(&p0->dx, &p0->dy);
+			if (path->path_winding == NVG_CCW) {
+				p0->dlx = p0->dy;
+				p0->dly = -p0->dx;
+			} else {
+				p0->dlx = -p0->dy;
+				p0->dly = p0->dx;
+			}
 			// Update bounds
 			cache->bounds[0] = nvg__minf(cache->bounds[0], p0->x);
 			cache->bounds[1] = nvg__minf(cache->bounds[1], p0->y);
@@ -1650,13 +1667,13 @@ static NVGvertex* nvg__roundJoin(NVGvertex* dst, NVGpoint* p0, NVGpoint* p1,
 								 float fringe)
 {
 	int i, n;
-	float dlx0 = p0->dy;
-	float dly0 = -p0->dx;
-	float dlx1 = p1->dy;
-	float dly1 = -p1->dx;
+	float dlx0 = p0->dlx;
+	float dly0 = p0->dly;
+	float dlx1 = p1->dlx;
+	float dly1 = p1->dly;
 	NVG_NOTUSED(fringe);
 
-	if (p1->flags & NVG_PT_LEFT) {
+	if (p1->flags & NVG_PT_LEFT || p1->flags & NVG_PT_RIGHT) {
 		float lx0,ly0,lx1,ly1,a0,a1;
 		nvg__chooseBevel(p1->flags & NVG_PR_INNERBEVEL, p0, p1, lw, &lx0,&ly0, &lx1,&ly1);
 		a0 = atan2f(-dly0, -dlx0);
@@ -1711,13 +1728,13 @@ static NVGvertex* nvg__bevelJoin(NVGvertex* dst, NVGpoint* p0, NVGpoint* p1,
 {
 	float rx0,ry0,rx1,ry1;
 	float lx0,ly0,lx1,ly1;
-	float dlx0 = p0->dy;
-	float dly0 = -p0->dx;
-	float dlx1 = p1->dy;
-	float dly1 = -p1->dx;
+	float dlx0 = p0->dlx;
+	float dly0 = p0->dly;
+	float dlx1 = p1->dlx;
+	float dly1 = p1->dly;
 	NVG_NOTUSED(fringe);
 
-	if (p1->flags & NVG_PT_LEFT) {
+	if (p1->flags & NVG_PT_LEFT || p1->flags & NVG_PT_RIGHT) {
 		nvg__chooseBevel(p1->flags & NVG_PR_INNERBEVEL, p0, p1, lw, &lx0,&ly0, &lx1,&ly1);
 
 		nvg__vset(dst, lx0, ly0, lu,1); dst++;
@@ -1868,15 +1885,16 @@ static void nvg__calculateJoins(NVGcontext* ctx, float w, int lineJoin, float mi
 		NVGpoint* p0 = &pts[path->count-1];
 		NVGpoint* p1 = &pts[0];
 		int nleft = 0;
+		int nright = 0;
 
 		path->nbevel = 0;
 
 		for (j = 0; j < path->count; j++) {
 			float dlx0, dly0, dlx1, dly1, dmr2, cross, limit;
-			dlx0 = p0->dy;
-			dly0 = -p0->dx;
-			dlx1 = p1->dy;
-			dly1 = -p1->dx;
+			dlx0 = p0->dlx;
+			dly0 = p0->dly;
+			dlx1 = p1->dlx;
+			dly1 = p1->dly;
 			// Calculate extrusions
 			p1->dmx = (dlx0 + dlx1) * 0.5f;
 			p1->dmy = (dly0 + dly1) * 0.5f;
@@ -1898,6 +1916,9 @@ static void nvg__calculateJoins(NVGcontext* ctx, float w, int lineJoin, float mi
 			if (cross > 0.0f) {
 				nleft++;
 				p1->flags |= NVG_PT_LEFT;
+			} else if (cross < 0.0f) {
+				nright++;
+				p1->flags |= NVG_PT_RIGHT;
 			}
 
 			// Calculate if we should use bevel or miter for inner join.
@@ -1918,7 +1939,7 @@ static void nvg__calculateJoins(NVGcontext* ctx, float w, int lineJoin, float mi
 			p0 = p1++;
 		}
 
-		path->convex = (nleft == path->count) ? 1 : 0;
+		path->convex = (nleft == path->count || nright == path->count) ? 1 : 0;
 	}
 }
 
@@ -2052,7 +2073,7 @@ static int nvg__expandFill(NVGcontext* ctx, float w, int lineJoin, float miterLi
 	NVGpathCache* cache = ctx->cache;
 	NVGvertex* verts;
 	NVGvertex* dst;
-	int cverts, convex, i, j;
+	int cverts, i, j;
 	float aa = ctx->fringeWidth;
 	int fringe = w > 0.0f;
 
@@ -2069,8 +2090,6 @@ static int nvg__expandFill(NVGcontext* ctx, float w, int lineJoin, float miterLi
 
 	verts = nvg__allocTempVerts(ctx, cverts);
 	if (verts == NULL) return 0;
-
-	convex = cache->npaths == 1 && cache->paths[0].convex;
 
 	for (i = 0; i < cache->npaths; i++) {
 		NVGpath* path = &cache->paths[i];
@@ -2091,11 +2110,11 @@ static int nvg__expandFill(NVGcontext* ctx, float w, int lineJoin, float miterLi
 			p1 = &pts[0];
 			for (j = 0; j < path->count; ++j) {
 				if (p1->flags & NVG_PT_BEVEL) {
-					float dlx0 = p0->dy;
-					float dly0 = -p0->dx;
-					float dlx1 = p1->dy;
-					float dly1 = -p1->dx;
-					if (p1->flags & NVG_PT_LEFT) {
+					float dlx0 = p0->dlx;
+					float dly0 = p0->dly;
+					float dlx1 = p1->dlx;
+					float dly1 = p1->dly;
+					if (p1->flags & NVG_PT_LEFT || p1->flags & NVG_PT_RIGHT) {
 						float lx = p1->x + p1->dmx * woff;
 						float ly = p1->y + p1->dmy * woff;
 						nvg__vset(dst, lx, ly, 0.5f,1); dst++;
@@ -2133,7 +2152,7 @@ static int nvg__expandFill(NVGcontext* ctx, float w, int lineJoin, float miterLi
 
 			// Create only half a fringe for convex shapes so that
 			// the shape can be rendered without stenciling.
-			if (convex) {
+			if (path->convex) {
 				lw = woff;	// This should generate the same vertex as fill inset above.
 				lu = 0.5f;	// Set outline fade at middle.
 			}
@@ -2632,7 +2651,7 @@ void nvgFill(NVGcontext* ctx)
 	NVGpaint fillPaint = state->fill;
 	int i;
 
-	nvg__flattenPaths(ctx);
+	nvg__flattenPaths(ctx, state->fillMode);
 	if (ctx->params.edgeAntiAlias && state->shapeAntiAlias)
 		nvg__expandFill(ctx, ctx->fringeWidth, NVG_MITER, 2.4f);
 	else
@@ -2648,7 +2667,7 @@ void nvgFill(NVGcontext* ctx)
 	}
 
 	ctx->params.renderFill(ctx->params.userPtr, &fillPaint, state->compositeOperation, &state->scissor, ctx->fringeWidth,
-						   ctx->cache->bounds, ctx->cache->paths, ctx->cache->npaths);
+						   ctx->cache->bounds, ctx->cache->paths, ctx->cache->npaths, state->fillMode);
 
 	// Count triangles
 	for (i = 0; i < ctx->cache->npaths; i++) {
@@ -2682,7 +2701,7 @@ void nvgStroke(NVGcontext* ctx)
 	strokePaint.innerColor.a *= state->alpha;
 	strokePaint.outerColor.a *= state->alpha;
 
-	nvg__flattenPaths(ctx);
+	nvg__flattenPaths(ctx, NVG_FILLMODE_All);
 
 	if (ctx->params.edgeAntiAlias && state->shapeAntiAlias)
 		nvg__expandStroke(ctx, strokeWidth*0.5f, ctx->fringeWidth, state->lineCap, state->lineJoin, state->miterLimit);

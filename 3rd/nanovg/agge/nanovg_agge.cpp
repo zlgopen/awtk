@@ -310,7 +310,7 @@ static int clip_rect_is_zero(NVGscissor* scissor) {
 }
 
 template <typename PixelT>
-void renderPaint(AGGENVGcontext* agge, NVGpaint* paint) {
+void renderPaint(AGGENVGcontext* agge, NVGpaint* paint, enum NVGFillMode fillMode) {
   agge::renderer& ren = agge->ren;
   agge::rasterizer<agge::clipper<int> >& ras = agge->ras;
   agge::bitmap<PixelT, agge::raw_bitmap> surface(agge->w, agge->h, agge->stride, agge->data);
@@ -379,7 +379,11 @@ void renderPaint(AGGENVGcontext* agge, NVGpaint* paint) {
   } else {
     if(memcmp(&(paint->innerColor), &(paint->outerColor), sizeof(paint->outerColor)) == 0) {
       agge::blender_solid_color_rgb<PixelT> color(agge->r, agge->g, agge->b, agge->a);
-      ren(surface, 0, ras, color, agge::winding<>());
+      if (fillMode == NVG_FILLMODE_EVENODD ) {
+        ren(surface, 0, ras, color, agge::alternate<>());
+      } else {
+        ren(surface, 0, ras, color, agge::winding<>());
+      }
     } else if(paint->radius == 0) {
       const float large = 1e5;
       float dx = paint->xform[2];
@@ -412,7 +416,7 @@ void renderPaint(AGGENVGcontext* agge, NVGpaint* paint) {
 template <typename PixelT>
 void renderFill(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation,
                 NVGscissor* scissor, float fringe, const float* bounds, const NVGpath* paths,
-                int npaths) {
+                int npaths, enum NVGFillMode fillMode) {
   if(clip_rect_is_zero(scissor) == 0) return; 
   AGGENVGcontext* agge = (AGGENVGcontext*)uptr;
   agge::rasterizer<agge::clipper<int> >& ras = agge->ras;
@@ -433,7 +437,7 @@ void renderFill(void* uptr, NVGpaint* paint, NVGcompositeOperationState composit
   }
 
   ras.sort();
-  renderPaint<PixelT>(agge, paint);
+  renderPaint<PixelT>(agge, paint, fillMode);
 }
 
 template <typename PixelT>
@@ -457,7 +461,7 @@ void renderStroke(void* uptr, NVGpaint* paint, NVGcompositeOperationState compos
   }
 
   ras.sort();
-  renderPaint<PixelT>(agge, paint);
+  renderPaint<PixelT>(agge, paint, NVG_FILLMODE_All);
 }
 
 template <typename PixelT>

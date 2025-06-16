@@ -174,6 +174,7 @@ struct GLNVGcall {
   int triangleCount;
   int uniformOffset;
   GLNVGblend blendFunc;
+  enum NVGFillMode fillMode;
 };
 typedef struct GLNVGcall GLNVGcall;
 
@@ -182,6 +183,7 @@ struct GLNVGpath {
   int fillCount;
   int strokeOffset;
   int strokeCount;
+  int winding;
 };
 typedef struct GLNVGpath GLNVGpath;
 
@@ -905,6 +907,7 @@ static int glnvg__convertPaint(GLNVGcontext* gl, GLNVGfragUniforms* frag, NVGpai
                                NVGscissor* scissor, float width, float fringe, float strokeThr) {
   GLNVGtexture* tex = NULL;
   float invxform[6];
+  int is_gradient = memcmp(&(paint->innerColor), &(paint->outerColor), sizeof(paint->outerColor));
 
   memset(frag, 0, sizeof(*frag));
 
@@ -964,7 +967,7 @@ static int glnvg__convertPaint(GLNVGcontext* gl, GLNVGfragUniforms* frag, NVGpai
 #endif
     //    printf("frag->texType = %d\n", frag->texType);
   } else {
-    frag->type = NSVG_SHADER_FILLGRAD;
+    frag->type = is_gradient ? NSVG_SHADER_FILLGRAD : NSVG_SHADER_FILLCOLOR;
     frag->radius = paint->radius;
     frag->feather = paint->feather;
     nvgTransformInverse(invxform, paint->xform);
@@ -1018,31 +1021,75 @@ static void glnvg__fill(GLNVGcontext* gl, GLNVGcall* call) {
   glnvg__setUniforms(gl, call->uniformOffset, 0);
   glnvg__checkError(gl, "fill simple");
 
-  glStencilOpSeparate(GL_FRONT, GL_KEEP, GL_KEEP, GL_INCR_WRAP);
-  glStencilOpSeparate(GL_BACK, GL_KEEP, GL_KEEP, GL_DECR_WRAP);
-  glDisable(GL_CULL_FACE);
-  for (i = 0; i < npaths; i++)
-    glDrawArrays(GL_TRIANGLE_FAN, paths[i].fillOffset, paths[i].fillCount);
-  glEnable(GL_CULL_FACE);
-
-  // Draw anti-aliased pixels
-  glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-
-  glnvg__setUniforms(gl, call->uniformOffset + gl->fragSize, call->image);
-  glnvg__checkError(gl, "fill fill");
-
-  if (gl->flags & NVG_ANTIALIAS) {
-    glnvg__stencilFunc(gl, GL_EQUAL, 0x00, 0xff);
-    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-    // Draw fringes
+  if(call->fillMode == NVG_FILLMODE_All || call->fillMode == NVG_FILLMODE_NONZERO) {
+    glStencilOpSeparate(GL_FRONT, GL_KEEP, GL_KEEP, GL_INCR_WRAP);
+    glStencilOpSeparate(GL_BACK, GL_KEEP, GL_KEEP, GL_DECR_WRAP);
+    glDisable(GL_CULL_FACE);
     for (i = 0; i < npaths; i++)
-      glDrawArrays(GL_TRIANGLE_STRIP, paths[i].strokeOffset, paths[i].strokeCount);
-  }
+      glDrawArrays(GL_TRIANGLE_FAN, paths[i].fillOffset, paths[i].fillCount);
+    glEnable(GL_CULL_FACE);
 
-  // Draw fill
-  glnvg__stencilFunc(gl, GL_NOTEQUAL, 0x0, 0xff);
-  glStencilOp(GL_ZERO, GL_ZERO, GL_ZERO);
-  glDrawArrays(GL_TRIANGLE_STRIP, call->triangleOffset, call->triangleCount);
+    // Draw anti-aliased pixels
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
+    glnvg__setUniforms(gl, call->uniformOffset + gl->fragSize, call->image);
+    glnvg__checkError(gl, "fill fill");
+
+    if (gl->flags & NVG_ANTIALIAS) {
+      glnvg__stencilFunc(gl, GL_EQUAL, 0x00, 0xff);
+      glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+      // Draw fringes
+      for (i = 0; i < npaths; i++) {
+        if (paths[i].winding == NVG_CW) {
+          glFrontFace(GL_CW);
+        } else {
+          glFrontFace(GL_CCW);
+        }
+        glDrawArrays(GL_TRIANGLE_STRIP, paths[i].strokeOffset, paths[i].strokeCount);
+      }
+
+      glFrontFace(GL_CCW);
+    }
+  
+    // Draw fill
+    glnvg__stencilFunc(gl, GL_NOTEQUAL, 0x0, 0xff);
+    glStencilOp(GL_ZERO, GL_ZERO, GL_ZERO);
+    glDrawArrays(GL_TRIANGLE_STRIP, call->triangleOffset, call->triangleCount);
+  } else {
+    glStencilOpSeparate(GL_FRONT, GL_KEEP, GL_KEEP, GL_INCR_WRAP);
+    glStencilOpSeparate(GL_BACK, GL_KEEP, GL_KEEP, GL_INCR_WRAP);
+    glDisable(GL_CULL_FACE);
+    for (i = 0; i < npaths; i++)
+      glDrawArrays(GL_TRIANGLE_FAN, paths[i].fillOffset, paths[i].fillCount);
+    glEnable(GL_CULL_FACE);
+
+    // Draw anti-aliased pixels
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
+    glnvg__setUniforms(gl, call->uniformOffset + gl->fragSize, call->image);
+    glnvg__checkError(gl, "fill fill");
+
+    if (gl->flags & NVG_ANTIALIAS) {
+      glnvg__stencilFunc(gl, GL_EQUAL, 0x00, 0x01);
+      glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+      // Draw fringes
+      for (i = 0; i < npaths; i++) {
+        if (paths[i].winding == NVG_CW) {
+          glFrontFace(GL_CW);
+        } else {
+          glFrontFace(GL_CCW);
+        }
+        glDrawArrays(GL_TRIANGLE_STRIP, paths[i].strokeOffset, paths[i].strokeCount);
+      }
+
+      glFrontFace(GL_CCW);
+    }
+    
+    // Draw fill
+    glnvg__stencilFunc(gl, GL_NOTEQUAL, 0x0, 0x01);
+    glStencilOp(GL_ZERO, GL_ZERO, GL_ZERO);
+    glDrawArrays(GL_TRIANGLE_STRIP, call->triangleOffset, call->triangleCount);
+  }
 
   glDisable(GL_STENCIL_TEST);
 }
@@ -1383,7 +1430,7 @@ static int glnvg__pathInScissor(const NVGpath* path, NVGscissor* scissor) {
 
 static void glnvg__renderFill(void* uptr, NVGpaint* paint,
                               NVGcompositeOperationState compositeOperation, NVGscissor* scissor,
-                              float fringe, const float* bounds, const NVGpath* paths, int npaths) {
+                              float fringe, const float* bounds, const NVGpath* paths, int npaths, enum NVGFillMode fillMode) {
   int support_fast_draw = 0;
   int is_gradient = memcmp(&(paint->innerColor), &(paint->outerColor), sizeof(paint->outerColor));
 
@@ -1395,6 +1442,7 @@ static void glnvg__renderFill(void* uptr, NVGpaint* paint,
 
   if (call == NULL) return;
 
+  call->fillMode = fillMode;
   call->type = GLNVG_FILL;
   call->triangleCount = 4;
   call->pathOffset = glnvg__allocPaths(gl, npaths);
@@ -1403,7 +1451,7 @@ static void glnvg__renderFill(void* uptr, NVGpaint* paint,
   call->image = paint->image;
   call->blendFunc = glnvg__blendCompositeOperation(compositeOperation);
 
-  if (npaths == 1 && paths[0].convex) {
+  if (fillMode == NVG_FILLMODE_All) {
     call->type = GLNVG_CONVEXFILL;
     call->triangleCount = 0;  // Bounding box fill quad not needed for convex fill
   }
@@ -1429,6 +1477,7 @@ static void glnvg__renderFill(void* uptr, NVGpaint* paint,
     if (path->nstroke > 0) {
       copy->strokeOffset = offset;
       copy->strokeCount = path->nstroke;
+      copy->winding = path->path_winding;
       memcpy(&gl->verts[offset], path->stroke, sizeof(NVGvertex) * path->nstroke);
       offset += path->nstroke;
     }
@@ -1464,15 +1513,17 @@ static void glnvg__renderFill(void* uptr, NVGpaint* paint,
                         fringe, -1.0f);
   }
 
-  if (support_fast_draw) {
-    if (paint->image != 0) {
-      frag->type = NSVG_SHADER_FAST_FILLIMG;
-    } else if (!is_gradient) {
-      frag->type = NSVG_SHADER_FAST_FILLCOLOR;
-    }
-  } else {
-    if (paint->image == 0 && !is_gradient) {
-      frag->type = NSVG_SHADER_FILLCOLOR;
+  if (frag->type != NSVG_SHADER_SIMPLE) {
+    if (support_fast_draw) {
+      if (paint->image != 0) {
+        frag->type = NSVG_SHADER_FAST_FILLIMG;
+      } else if (!is_gradient) {
+        frag->type = NSVG_SHADER_FAST_FILLCOLOR;
+      }
+    } else {
+      if (paint->image == 0 && !is_gradient) {
+        frag->type = NSVG_SHADER_FILLCOLOR;
+      }
     }
   }
 

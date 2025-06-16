@@ -193,10 +193,10 @@ ret_t vgcanvas_close_path(vgcanvas_t* vg) {
   return vg->vt->close_path(vg);
 }
 
-ret_t vgcanvas_path_winding(vgcanvas_t* vg, bool_t dir) {
-  return_value_if_fail(vg != NULL && vg->vt->path_winding != NULL, RET_BAD_PARAMS);
+ret_t vgcanvas_set_fill_mode(vgcanvas_t* vg, vgcanvas_fill_mode_t fill_mode) {
+  return_value_if_fail(vg != NULL && vg->vt->set_fill_mode != NULL, RET_BAD_PARAMS);
 
-  return vg->vt->path_winding(vg, dir);
+  return vg->vt->set_fill_mode(vg, fill_mode);
 }
 
 ret_t vgcanvas_transform(vgcanvas_t* vg, float_t a, float_t b, float_t c, float_t d, float_t e,

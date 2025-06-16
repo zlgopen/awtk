@@ -46,6 +46,30 @@ typedef struct _framebuffer_object_t {
   rect_t online_dirty_rect;
 } framebuffer_object_t;
 
+/**
+ * @enum vgcanvas_fill_mode_t
+ * @annotation ["scriptable"]
+ * @prefix VGCANVAS_FILL_MODE_
+ * 填充规则。
+ */
+typedef enum _vgcanvas_fill_mode_t {
+  /**
+   * @const VGCANVAS_FILL_MODE_ALL_FILL
+   * 全部填充。（部分vg渲染引擎可能不支持，会退化为非零规则填充）
+   */
+  VGCANVAS_FILL_MODE_ALL_FILL = 0,
+  /**
+   * @const VGCANVAS_FILL_MODE_NON_ZERO
+   * 非零规则填充。
+   */
+  VGCANVAS_FILL_MODE_NON_ZERO,
+  /**
+   * @const VGCANVAS_FILL_MODE_EVEN_ODD
+   * 奇偶规则填充。
+   */
+  VGCANVAS_FILL_MODE_EVEN_ODD,
+} vgcanvas_fill_mode_t;
+
 struct _vgcanvas_t;
 typedef struct _vgcanvas_t vgcanvas_t;
 
@@ -76,7 +100,7 @@ typedef ret_t (*vgcanvas_rounded_rect_t)(vgcanvas_t* vg, float_t x, float_t y, f
                                          float_t r);
 typedef ret_t (*vgcanvas_ellipse_t)(vgcanvas_t* vg, float_t x, float_t y, float_t rx, float_t ry);
 typedef ret_t (*vgcanvas_close_path_t)(vgcanvas_t* vg);
-typedef ret_t (*vgcanvas_path_winding_t)(vgcanvas_t* vg, bool_t dir);
+typedef ret_t (*vgcanvas_set_fill_mode_t)(vgcanvas_t* vg, vgcanvas_fill_mode_t fill_mode);
 
 typedef ret_t (*vgcanvas_rotate_t)(vgcanvas_t* vg, float_t rad);
 typedef ret_t (*vgcanvas_scale_t)(vgcanvas_t* vg, float_t x, float_t y);
@@ -180,7 +204,7 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_ellipse_t ellipse;
   vgcanvas_rounded_rect_t rounded_rect;
   vgcanvas_close_path_t close_path;
-  vgcanvas_path_winding_t path_winding;
+  vgcanvas_set_fill_mode_t set_fill_mode;
 
   vgcanvas_scale_t scale;
   vgcanvas_rotate_t rotate;
@@ -690,19 +714,20 @@ ret_t vgcanvas_ellipse(vgcanvas_t* vg, float_t x, float_t y, float_t rx, float_t
  */
 ret_t vgcanvas_close_path(vgcanvas_t* vg);
 
+// 该函数已经被移除，用户可以改用 vgcanvas_fill_mode 函数来实现设置填充规则
+// ret_t vgcanvas_path_winding(vgcanvas_t* vg, bool_t dir);
+
 /**
- * @method vgcanvas_path_winding
- * 设置路径填充实心与否。
- *
- * >设置为FALSE为实心，TRUE为镂空。
+ * @method vgcanvas_set_fill_mode
+ * 设置填充规则。
  *
  * @annotation ["scriptable"]
  * @param {vgcanvas_t*} vg vgcanvas对象。
- * @param {bool_t} dir 填充方法。
+ * @param {vgcanvas_fill_mode_t} fill_mode 填充规则。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t vgcanvas_path_winding(vgcanvas_t* vg, bool_t dir);
+ret_t vgcanvas_set_fill_mode(vgcanvas_t* vg, vgcanvas_fill_mode_t fill_mode);
 
 /**
  * @method vgcanvas_rotate

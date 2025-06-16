@@ -415,7 +415,9 @@ static void draw_text(vgcanvas_t* vg) {
   log_debug("text=%s w=%f\n", text, w);
   vgcanvas_restore(vg);
 
-  vgcanvas_translate(vg, w * 2, -h);
+  vgcanvas_save(vg);
+
+  vgcanvas_translate(vg, w * 3, h);
   vgcanvas_fill_text(vg, text, 10, 10, 100);
   vgcanvas_save(vg);
   vgcanvas_scale(vg, -1, 1);
@@ -430,6 +432,63 @@ static void draw_text(vgcanvas_t* vg) {
   vgcanvas_save(vg);
   vgcanvas_scale(vg, -1, -1);
   vgcanvas_fill_text(vg, text, 10, 10, 100);
+  vgcanvas_restore(vg);
+
+  vgcanvas_restore(vg);
+}
+
+static void draw_fill_mode_test(vgcanvas_t* vg, vgcanvas_fill_mode_t fill_mode) {
+  vgcanvas_save(vg);
+
+  vgcanvas_begin_path(vg);
+
+  vgcanvas_move_to(vg, 0, 0);
+  vgcanvas_line_to(vg, 40, 0);
+  vgcanvas_line_to(vg, 40, 40);
+  vgcanvas_line_to(vg, 0, 40);
+  vgcanvas_close_path(vg);
+
+  vgcanvas_move_to(vg, 10, 10);
+  vgcanvas_line_to(vg, 10, 30);
+  vgcanvas_line_to(vg, 30, 30);
+  vgcanvas_line_to(vg, 30, 10);
+  vgcanvas_close_path(vg);
+
+  vgcanvas_move_to(vg, 15, 15);
+  vgcanvas_line_to(vg, 15, 25);
+  vgcanvas_line_to(vg, 25, 25);
+  vgcanvas_line_to(vg, 25, 15);
+  vgcanvas_close_path(vg);
+
+  // 因为星星路径多个区域出现交叠，如果使用 VGCANVAS_FILL_MODE_ALL_FILL 的话，就不会是一个星星的图案了。
+  if (fill_mode != VGCANVAS_FILL_MODE_ALL_FILL) {
+    vgcanvas_translate(vg, 0, 50);
+    vgcanvas_scale(vg, 0.2f, 0.2f);
+    vgcanvas_move_to(vg, 100, 0);
+    vgcanvas_line_to(vg, 159, 181);
+    vgcanvas_line_to(vg, 5, 69);
+    vgcanvas_line_to(vg, 195, 69);
+    vgcanvas_line_to(vg, 41, 181);
+    vgcanvas_line_to(vg, 100, 0);
+    vgcanvas_close_path(vg);
+  }
+
+  vgcanvas_set_fill_mode(vg, fill_mode);
+  vgcanvas_fill(vg);
+
+  vgcanvas_restore(vg);
+}
+
+static void draw_fill_mode(vgcanvas_t* vg) {
+  vgcanvas_save(vg);
+  vgcanvas_translate(vg, 10, 0);
+  draw_fill_mode_test(vg, VGCANVAS_FILL_MODE_ALL_FILL);
+
+  vgcanvas_translate(vg, 50, 0);
+  draw_fill_mode_test(vg, VGCANVAS_FILL_MODE_NON_ZERO);
+
+  vgcanvas_translate(vg, 50, 0);
+  draw_fill_mode_test(vg, VGCANVAS_FILL_MODE_EVEN_ODD);
   vgcanvas_restore(vg);
 }
 
@@ -479,9 +538,13 @@ static inline ret_t on_paint_vg(void* ctx, event_t* e) {
 
   vgcanvas_translate(vg, 50, 100);
   draw_matrix(vg);
-  vgcanvas_translate(vg, 0, 100);
+  vgcanvas_translate(vg, -50, 50);
 
   draw_text(vg);
+
+  vgcanvas_translate(vg, 0, 60);
+  draw_fill_mode(vg);
+
   vgcanvas_restore(vg);
 
   return RET_OK;

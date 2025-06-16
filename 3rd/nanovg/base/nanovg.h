@@ -151,6 +151,12 @@ enum NVGorientation {
 	NVG_ORIENTATION_270 = 270
 };
 
+enum NVGFillMode {
+	NVG_FILLMODE_All = 0,
+	NVG_FILLMODE_NONZERO = 1,
+	NVG_FILLMODE_EVENODD = 2,
+};
+
 // Begin drawing a new frame
 // Calls to nanovg drawing API should be wrapped in nvgBeginFrame() & nvgEndFrame()
 // nvgBeginFrame() defines the size of the window to render to in relation currently
@@ -529,6 +535,9 @@ void nvgClosePath(NVGcontext* ctx);
 // Sets the current sub-path winding, see NVGwinding and NVGsolidity.
 void nvgPathWinding(NVGcontext* ctx, int dir);
 
+// sets fill mode
+void nvgFillMode(NVGcontext* ctx, enum NVGFillMode fillMode);
+
 // Creates new circle arc shaped sub-path. The arc center is at cx,cy, the arc radius is r,
 // and the arc is drawn from angle a0 to a1, and swept in direction dir (NVG_CCW, or NVG_CW).
 // Angles are specified in radians.
@@ -695,6 +704,7 @@ struct NVGpath {
 	NVGvertex* stroke;
 	int nstroke;
 	int winding;
+	int path_winding;
 	int convex;
 };
 typedef struct NVGpath NVGpath;
@@ -718,7 +728,7 @@ struct NVGparams {
 	void (*renderCancel)(void* uptr);
 	void (*renderFlush)(void* uptr);
 	void (*globalSreenOrientation)(void* uptr, enum NVGorientation orientation);
-	void (*renderFill)(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation, NVGscissor* scissor, float fringe, const float* bounds, const NVGpath* paths, int npaths);
+	void (*renderFill)(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation, NVGscissor* scissor, float fringe, const float* bounds, const NVGpath* paths, int npaths, enum NVGFillMode fillMode);
 	void (*renderStroke)(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation, NVGscissor* scissor, float fringe, float strokeWidth, const NVGpath* paths, int npaths);
 	void (*renderTriangles)(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation, NVGscissor* scissor, const NVGvertex* verts, int nverts);
 	void (*renderDelete)(void* uptr);

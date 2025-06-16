@@ -245,11 +245,23 @@ static ret_t vgcanvas_nanovg_close_path(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_path_winding(vgcanvas_t* vgcanvas, bool_t dir) {
+static ret_t vgcanvas_nanovg_set_fill_mode(vgcanvas_t* vgcanvas, vgcanvas_fill_mode_t fill_mode) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
-  nvgPathWinding(vg, dir ? NVG_CW : NVG_CCW);
-
+  switch (fill_mode) {
+  case VGCANVAS_FILL_MODE_ALL_FILL:
+    nvgFillMode(vg, NVG_FILLMODE_All);
+    break;
+  case VGCANVAS_FILL_MODE_NON_ZERO:
+    nvgFillMode(vg, NVG_FILLMODE_NONZERO);
+    break;
+  case VGCANVAS_FILL_MODE_EVEN_ODD:
+    nvgFillMode(vg, NVG_FILLMODE_EVENODD);
+    break;
+  default:
+    nvgFillMode(vg, NVG_FILLMODE_All);
+    break;
+  }
   return RET_OK;
 }
 
@@ -701,7 +713,7 @@ static const vgcanvas_vtable_t vt = {
     .get_clip_rect = vgcanvas_nanovg_get_clip_rect,
     .is_rectf_in_clip_rect = vgcanvas_nanovg_is_rectf_in_clip_rect,
     .intersect_clip_rect = vgcanvas_nanovg_intersect_clip_rect,
-    .path_winding = vgcanvas_nanovg_path_winding,
+    .set_fill_mode = vgcanvas_nanovg_set_fill_mode,
     .fill = vgcanvas_nanovg_fill,
     .stroke = vgcanvas_nanovg_stroke,
     .paint = vgcanvas_nanovg_paint,
