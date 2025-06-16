@@ -61,6 +61,13 @@ struct _action_thread_t {
    */
   uint32_t executed_actions_nr;
 
+  /**
+   * @property {uint32_t} wait_timeout
+   * @annotation ["readable"]
+   * 等待超时时间(单位：毫秒)
+   */
+  uint32_t wait_timeout;
+
   /*private*/
   /*请求退出*/
   bool_t quit;
@@ -101,6 +108,18 @@ action_thread_t* action_thread_create_ex(const char* name, uint32_t stack_size,
                                          tk_thread_priority_t priority);
 
 /**
+ * @method action_thread_create_ex2
+ * @annotation ["constructor"]
+ * 创建action_thread对象。
+ * @param {const char*}  name 名称。
+ * @param {uint32_t}  stack_size 栈的大小。
+ * @param {tk_thread_priority_t}  priority 优先级。
+ * @param {uint32_t}  wait_timeout 等待超时时间(单位：毫秒)
+ * @return {action_thread_t*} action_thread对象。
+ */
+action_thread_t* action_thread_create_ex2(const char* name, uint32_t stack_size,
+                                          tk_thread_priority_t priority, uint32_t wait_timeout);
+/**
  * @method action_thread_create_with_queue
  * @annotation ["constructor"]
  * 创建action_thread对象。
@@ -128,6 +147,21 @@ action_thread_t* action_thread_create_with_queue_ex(waitable_action_queue_t* que
                                                     tk_thread_priority_t priority);
 
 /**
+ * @method action_thread_create_with_queue_ex2
+ * @annotation ["constructor"]
+ * 创建action_thread对象。
+ * @param {waitable_action_queue_t*} queue queue对象。
+ * @param {const char*}  name 名称。
+ * @param {uint32_t}  stack_size 栈的大小。
+ * @param {tk_thread_priority_t}  priority 优先级。
+ * @param {uint32_t}  wait_timeout 等待超时时间(单位：毫秒)
+ * 
+ * @return {action_thread_t*} action_thread对象。
+ */
+action_thread_t* action_thread_create_with_queue_ex2(waitable_action_queue_t* queue,
+                                                    const char* name, uint32_t stack_size,
+                                                    tk_thread_priority_t priority, uint32_t wait_timeout);
+/**
  * @method action_thread_exec
  * 让线程执行action。
  *
@@ -140,7 +174,7 @@ ret_t action_thread_exec(action_thread_t* thread, qaction_t* action);
 
 /**
  * @method action_thread_set_on_idle
- * 设置空闲时的回调函数。
+ * 设置空闲时的回调函数。如果需要设置，请在创建后立即设置。
  *
  * @param {action_thread_t*} thread action_thread对象。
  * @param {action_thread_on_idle_t} on_idle 空闲时的回调函数。
@@ -153,8 +187,7 @@ ret_t action_thread_set_on_idle(action_thread_t* thread, action_thread_on_idle_t
 
 /**
  * @method action_thread_set_on_quit
- * 设置退出时的回调函数。
- *
+ * 设置退出时的回调函数。如果需要设置，请在创建后立即设置。
  * @param {action_thread_t*} thread action_thread对象。
  * @param {action_thread_on_quit_t} on_quit 退出时的回调函数。
  * @param {void*} ctx 回调函数的上下文。
