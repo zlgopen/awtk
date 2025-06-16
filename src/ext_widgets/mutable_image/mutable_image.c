@@ -196,6 +196,7 @@ static ret_t mutable_image_invalidate(const timer_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
   ENSURE(mutable_image);
+  return_value_if_fail(widget->visible, RET_REPEAT);
 
   if (mutable_image->need_redraw == NULL ||
       mutable_image->need_redraw(mutable_image->need_redraw_ctx)) {
