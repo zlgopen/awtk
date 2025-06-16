@@ -139,7 +139,7 @@ static ret_t window_animator_vtranslate_draw_curr(window_animator_t* wa) {
   widget_t* win = wa->curr_win;
   float_t percent = wa->percent;
   float_t h = tk_roundi(win->h * percent);
-  float_t y = win->parent->h - h;
+  float_t y = win->parent->h - h - (win->parent->h - win->y - win->h);
 
 #ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
   rectf_t src = rectf_init(win->x, win->y, win->w, h);
