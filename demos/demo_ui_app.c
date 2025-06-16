@@ -24,8 +24,8 @@
 #define WINDOW_NAME_PREFIX "uiex/"
 #define THEME_NAME_PREFIX "uiex_"
 
-#define PRELOAD_DURATION 2000 /* 预加载窗口显示时长（单位：毫秒） */
-#define ENABLE_PAGE_SWITCH 0  /* 是否开启滚动切换页面功能 */
+#define PRELOAD_DURATION 2000    /* 预加载窗口显示时长（单位：毫秒） */
+#define ENABLE_PAGE_SWITCH FALSE /* 是否开启滚动切换页面功能 */
 
 #define PAGE_NUM 18
 #if !defined(PAGE_NUM) || PAGE_NUM <= 0
@@ -1282,11 +1282,14 @@ ret_t application_init(void) {
   win = window_open_with_prefix(s_win_name);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(window_manager(), root, i)
-  widget_set_visible_only(root, FALSE);
   init_children_widget(root, (void*)win);
   WIDGET_FOR_EACH_CHILD_END()
 
 #if defined(PRELOAD_DURATION) && PRELOAD_DURATION > 0
+  WIDGET_FOR_EACH_CHILD_BEGIN(window_manager(), root, i)
+  widget_set_visible_only(root, FALSE);
+  WIDGET_FOR_EACH_CHILD_END()
+
   show_preload_window();
 #endif /* PRELOAD_DURATION > 0 */
 
