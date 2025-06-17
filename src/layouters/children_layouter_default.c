@@ -320,6 +320,7 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
     area = rect_init(0, 0, w, h);
     for (i = 0; i < n; i++) {
       iter = children[i];
+      widget_move_resize_ex(iter, iter->x, iter->y, iter->w, h, FALSE);
       if (iter->self_layout) {
         self_layouter_layout(iter->self_layout, iter, &area);
       }
@@ -366,6 +367,7 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
     area = rect_init(0, 0, w, h);
     for (i = 0; i < n; i++) {
       iter = children[i];
+      widget_move_resize_ex(iter, iter->x, iter->y, w, iter->h, FALSE);
       if (iter->self_layout) {
         self_layouter_layout(iter->self_layout, iter, &area);
       }

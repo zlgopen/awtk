@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/06/17
+  * 完善 children_layouter_default(感谢兆坤提供补丁)。
+
 2025/06/16
   * 完善 self_layouter_flex 测试和文档(感谢兆坤提供补丁)。 
   * 完善 demoui2(感谢兆坤提供补丁)。
