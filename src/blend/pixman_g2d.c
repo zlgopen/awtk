@@ -1,4 +1,4 @@
-
+﻿
 /**
  * File:   pixman_g2d.c
  * Author: AWTK Develop Team

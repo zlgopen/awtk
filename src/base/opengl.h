@@ -1,4 +1,4 @@
-#ifndef AWTK_OPENGL_H
+﻿#ifndef AWTK_OPENGL_H
 #define AWTK_OPENGL_H
 #if defined(WITH_GPU_GL)
 

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   locale_info_xml.c
  * Author: AWTK Develop Team
  * Brief:  locale_info_xml

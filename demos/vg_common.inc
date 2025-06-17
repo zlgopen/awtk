@@ -1,4 +1,4 @@
-#include "awtk.h"
+﻿#include "awtk.h"
 
 static inline ret_t on_paint_rect(void* ctx, event_t* e) {
   paint_event_t* evt = (paint_event_t*)e;

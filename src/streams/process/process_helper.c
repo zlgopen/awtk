@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   process_helper.c
  * Author: AWTK Develop Team
  * Brief:  process helper

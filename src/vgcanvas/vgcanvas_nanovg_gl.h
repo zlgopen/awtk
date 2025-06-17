@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   vgcanvas_nanovg_gl.h
  * Author: AWTK Develop Team
  * Brief:  vgcanvas_nanovg_gl 

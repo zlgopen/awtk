@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   main_loop_sdl.c
  * Author: AWTK Develop Team
  * Brief:  sdl2 implemented main_loop interface

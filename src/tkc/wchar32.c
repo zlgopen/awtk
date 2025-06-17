@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   wchar32.c
  * Author: AWTK Develop Team
  * Brief:  32bits wide char
