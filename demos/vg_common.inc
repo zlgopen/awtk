@@ -304,6 +304,83 @@ static void draw_basic_shapes(vgcanvas_t* vg, bool_t stroke) {
   vgcanvas_restore(vg);
 }
 
+static ret_t build_dashed_line_path(vgcanvas_t* vg, point_t p1, point_t p2, uint32_t on,
+                                    uint32_t off) {
+  float x = p1.x;
+  float y = p1.y;
+  float ddx_on = 0;
+  float ddy_on = 0;
+  float ddx_off = 0;
+  float ddy_off = 0;
+  bool_t done = FALSE;
+  int32_t dx = p2.x - p1.x;
+  int32_t dy = p2.y - p1.y;
+  return_value_if_fail(vg != NULL && on != 0 && off != 0, RET_BAD_PARAMS);
+
+  if (dx == 0 && dy == 0) {
+    return RET_OK;
+  }
+
+  if (dx == 0) {
+    /*垂直*/
+    ddx_on = 0;
+    ddx_off = 0;
+    if (dy < 0) {
+      ddy_on = -(int)on;
+      ddy_off = -(int)off;
+    } else {
+      ddy_on = on;
+      ddy_off = off;
+    }
+  } else if (dy == 0) {
+    /*水平*/
+    ddy_on = 0;
+    ddy_off = 0;
+    if (dx < 0) {
+      ddx_on = -(int)on;
+      ddx_off = -(int)off;
+    } else {
+      ddx_on = on;
+      ddx_off = off;
+    }
+  } else {
+    float len = sqrt(dx * dx + dy * dy);
+    float scalex = dx / len;
+    float scaley = dy / len;
+    ddy_on = scaley * on;
+    ddy_off = scaley * off;
+    ddx_on = scalex * on;
+    ddx_off = scalex * off;
+  }
+
+  while (!done) {
+    if ((dx > 0 && x >= p2.x) || (dx <= 0 && x < p2.x)) {
+      break;
+    }
+    if ((dy > 0 && y >= p2.y) || (dy <= 0 && y < p2.y)) {
+      break;
+    }
+    vgcanvas_move_to(vg, x, y);
+    x += ddx_on;
+    y += ddy_on;
+    if (dx > 0) {
+      x = tk_min(x, p2.x);
+    } else {
+      x = tk_max(x, p2.x);
+    }
+    if (dy > 0) {
+      y = tk_min(y, p2.y);
+    } else {
+      y = tk_max(y, p2.y);
+    }
+    vgcanvas_line_to(vg, x, y);
+    x += ddx_off;
+    y += ddy_off;
+  }
+
+  return RET_OK;
+}
+
 static void stroke_lines(vgcanvas_t* vg) {
   vgcanvas_save(vg);
 
@@ -357,6 +434,25 @@ static void stroke_lines(vgcanvas_t* vg) {
   vgcanvas_begin_path(vg);
   vgcanvas_move_to(vg, points[0].x, points[0].y);
   vgcanvas_line_to(vg, points[1].x, points[1].y);
+  vgcanvas_stroke(vg);
+  /*************************************************/
+  const uint32_t dashed_on = 2;
+  const uint32_t dashed_off = 2;
+  vgcanvas_translate(vg, 50, 0);
+  vgcanvas_set_line_width(vg, 1);
+
+  vgcanvas_begin_path(vg);
+
+  build_dashed_line_path(vg, point_init(0, 0), point_init(50, 0), dashed_on, dashed_off);
+
+  build_dashed_line_path(vg, point_init(0, 0), point_init(0, 50), dashed_on, dashed_off);
+
+  build_dashed_line_path(vg, point_init(0, 0), point_init(50, 50), dashed_on, dashed_off);
+
+  build_dashed_line_path(vg, point_init(0, 0), point_init(50, 10), dashed_on, dashed_off);
+
+  build_dashed_line_path(vg, point_init(0, 0), point_init(25, 50), dashed_on, dashed_off);
+
   vgcanvas_stroke(vg);
   /*************************************************/
 
