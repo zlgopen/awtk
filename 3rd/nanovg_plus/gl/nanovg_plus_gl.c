@@ -1647,13 +1647,12 @@ error:
   return FALSE;
 }
 
-static nvgp_bool_t nvgp_gl_render_fill_by_image(nvgp_gl_context_t* gl, nvgp_paint_t* paint, nvgp_scissor_t* scissor, float fringe, const float* bounds, const nvgp_darray_t* paths) {
+static nvgp_bool_t nvgp_gl_render_fill_by_image(nvgp_gl_context_t* gl, nvgp_paint_t* paint, nvgp_scissor_t* scissor, float fringe, const float* bounds, const nvgp_darray_t* paths, nvgp_fill_mode_t fill_mode) {
   nvgp_vertex_t* quad;
   nvgp_gl_shader_t* shader;
   int32_t i, max_verts, offset;
   nvgp_gl_frag_uniforms_t* frag = NULL;
-  const nvgp_path_t* first_path = nvgp_darray_get_ptr(paths, 0, nvgp_path_t);
-  if (paint->image != 0 && first_path != NULL && !first_path->convex) {
+  if (paint->image != 0 && fill_mode != NVGP_FILLMODE_All) {
     nvgp_gl_call_fill_t* call = NVGP_ZALLOC(nvgp_gl_call_fill_t);
     if (call == NULL) {
       goto error;
@@ -2117,7 +2116,7 @@ static void nvgp_gl_render_fill(void* uptr, nvgp_paint_t* paint, nvgp_scissor_t*
     return;
   } else if (nvgp_gl_render_fill_by_color(gl, paint, scissor, fringe, bounds, paths, is_gradient, fill_mode)) {
     return;
-  } else if (nvgp_gl_render_fill_by_image(gl, paint, scissor, fringe, bounds, paths)) {
+  } else if (nvgp_gl_render_fill_by_image(gl, paint, scissor, fringe, bounds, paths, fill_mode)) {
     return;
   } else if (nvgp_gl_render_draw_image(gl, paint, scissor, fringe, bounds, paths)) {
     return;

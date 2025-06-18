@@ -208,6 +208,7 @@ static ret_t progress_circle_on_paint_self(widget_t* widget, canvas_t* c) {
       vgcanvas_set_line_cap(vg, VGCANVAS_LINE_CAP_BUTT);
     }
     vgcanvas_begin_path(vg);
+    vgcanvas_set_fill_mode(vg, VGCANVAS_FILL_MODE_NON_ZERO);
 
     if (end_angle > start_angle) {
       float max_r = tk_min(widget->w, widget->h) / 2;
