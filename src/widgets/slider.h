@@ -146,7 +146,7 @@ typedef struct _slider_t {
   /**
    * @property {uint32_t} drag_threshold
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 拖动临界值。
+   * 进入拖动状态的拖动临界值。
    *
    */
   uint32_t drag_threshold;
