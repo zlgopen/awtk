@@ -400,6 +400,11 @@ ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
         widget_dispatch(wm, system_event_init(&e, NULL, &event));
         break;
       }
+      case SDL_RENDER_TARGETS_RESET : {
+        widget_invalidate_force(wm, NULL);
+        log_debug("SDL_RENDER_TARGETS_RESET\n");
+        break;
+      }
       case SDL_QUIT: {
         event_t e = event_init(EVT_REQUEST_QUIT_APP, NULL);
         if (widget_dispatch(wm, &e) == RET_OK) {
