@@ -64,7 +64,7 @@ static const char* fill_frag_shader_1 =
       "void main(void) {\n"
       " vec4 result;\n"
       " float strokeAlpha;\n"
-      " if(draw_info.x == 1) {\n"
+      " if(draw_info.x == 1.0) {\n"
       "   result = vec4(1,1,1,1);\n"
       " } else {\n"
       "   strokeAlpha = strokeMask();\n"
