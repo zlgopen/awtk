@@ -390,17 +390,30 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
     uint8_t c = 0;
     wh_t item_w = 0;
     wh_t item_h = 0;
-    w = layout_w - 2 * x_margin - (cols - 1) * spacing;
-    h = layout_h - 2 * y_margin - (rows - 1) * spacing;
-    item_w = w / cols;
-    item_h = h / rows;
+
+    if (layout->cols_is_width) {
+      item_w = layout->cols;
+      w = layout_w;
+    } else {
+      w = layout_w - 2 * x_margin - (cols - 1) * spacing;
+      item_w = w / cols;
+      w = (cols - 1) * spacing + cols * item_w;
+      x_margin = (layout_w - w) >> 1;
+    }
+
+    if (layout->rows_is_height) {
+      item_h = layout->rows;
+      h = layout_h;
+    } else {
+      h = layout_h - 2 * y_margin - (rows - 1) * spacing;
+      item_h = h / rows;
+      h = (rows - 1) * spacing + rows * item_h;
+      y_margin = (layout_h - h) >> 1;
+    }
     goto_error_if_fail(item_w > 0 && item_h > 0);
 
-    w = (cols - 1) * spacing + cols * item_w;
-    h = (rows - 1) * spacing + rows * item_h;
-
-    x = x_margin = (layout_w - w) >> 1;
-    y = y_margin = (layout_h - h) >> 1;
+    x = x_margin;
+    y = y_margin;
 
     for (i = 0; i < n; i++) {
       iter = children[i];
@@ -431,6 +444,11 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
         x = x_margin;
       } else {
         x += item_w + spacing;
+        if (layout->cols_is_width && (x + item_w > w)) {
+          y += item_h + spacing;
+          c = 0;
+          x = x_margin;
+        }
       }
 
       widget_layout_children(children[i]);
