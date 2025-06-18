@@ -444,7 +444,21 @@ template <typename PixelT>
 void renderStroke(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation,
                   NVGscissor* scissor, float fringe, float strokeWidth, const NVGpath* paths,
                   int npaths) {
-  if(paths->count <= 0 || clip_rect_is_zero(scissor) == 0) return; 
+  if (!clip_rect_is_zero(scissor)) {
+    return;
+  } else {
+    int skip = 1;
+    for (int i = 0; i < npaths && skip; i++) {
+      const NVGpath* p = paths + i;
+      if (p->count > 0) {
+        skip = 0;
+      }
+    }
+    if (skip) {
+      return;
+    }
+  }
+
   AGGENVGcontext* agge = (AGGENVGcontext*)uptr;
   agge::stroke& line_style = agge->line_style;
   agge::rasterizer<agge::clipper<int> >& ras = agge->ras;

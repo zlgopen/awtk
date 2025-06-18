@@ -443,6 +443,8 @@ static void stroke_lines(vgcanvas_t* vg) {
 
   vgcanvas_begin_path(vg);
 
+  vgcanvas_move_to(vg, 0, 0);
+
   build_dashed_line_path(vg, point_init(0, 0), point_init(50, 0), dashed_on, dashed_off);
 
   build_dashed_line_path(vg, point_init(0, 0), point_init(0, 50), dashed_on, dashed_off);
