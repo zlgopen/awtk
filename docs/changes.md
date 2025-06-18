@@ -7,6 +7,7 @@
   * children_layouter_default指定子控件的宽高后，不再根据行列数重新计算子控件的宽高(感谢兆坤提供补丁)。
   * 修复编译OpenGLes2的时候nanovg_plus的着色器编译有问题(感谢智明提供补丁)。
   * 修复hscroll_label控件设置 focusable="true"和only_focus="true"后，鼠标点击文本，文本不会滚动的问题(感谢俊杰提供补丁)
+  * 修复pages控件的auto_focused属性不生效的问题(感谢俊杰提供补丁)
 
 2025/06/17
   * 完善 demovg(感谢兆坤提供补丁)。

@@ -99,6 +99,10 @@ static ret_t pages_restore_target(widget_t* widget) {
     }
     if (pages->auto_focused == FALSE) {
       target = active_view;
+    } else {
+      if (pages->page_focused_idle_id == TK_INVALID_ID) {
+        pages->page_focused_idle_id = idle_add(pages_on_idle_set_page_focused, widget);
+      }
     }
     if (pages_target_is_page(target)) {
       pages_restore_target(target);
@@ -143,10 +147,6 @@ ret_t pages_set_active(widget_t* widget, uint32_t index) {
       widget_dispatch(widget, (event_t*)&evt);
       widget_dispatch_simple_event(widget, EVT_PAGE_CHANGED);
       widget_invalidate(widget, NULL);
-    }
-
-    if (pages->page_focused_idle_id == TK_INVALID_ID) {
-      pages->page_focused_idle_id = idle_add(pages_on_idle_set_page_focused, widget);
     }
 
     pages_restore_target(widget);
