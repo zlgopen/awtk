@@ -311,7 +311,7 @@ def genDllLinkFlags(libs, defFile):
         if TOOLS_NAME == '':
             linkFlags += ' /DEF:"dllexports/'+defFile+'.def" '
         elif TOOLS_NAME == 'mingw':
-            linkFlags += wholeArch
+            linkFlags += wholeArch + ' "dllexports/'+defFile+'.def" '
     elif OS_NAME == 'Darwin':
         linkFlags += ' -all_load '
     elif OS_NAME == 'Linux':
