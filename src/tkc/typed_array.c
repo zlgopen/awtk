@@ -45,23 +45,38 @@ static bool_t typed_array_is_type_supported(value_type_t type) {
   }
 }
 
-typed_array_t* typed_array_create(value_type_t type, uint32_t capacity) {
-  typed_array_t* typed_array = NULL;
-  uint32_t element_size = value_type_size(type);
-  return_value_if_fail(typed_array_is_type_supported(type), NULL);
-  typed_array = TKMEM_ZALLOC(typed_array_t);
-  return_value_if_fail(typed_array != NULL, NULL);
+inline static ret_t typed_array_init_impl(typed_array_t* typed_array, value_type_t type,
+                                          uint32_t capacity) {
+  ret_t ret = RET_OK;
 
+  memset(typed_array, 0x00, sizeof(typed_array_t));
   typed_array->type = type;
-  typed_array->element_size = element_size;
+  typed_array->element_size = value_type_size(type);
   if (capacity > 0) {
-    if (typed_array_extend(typed_array, capacity) != RET_OK) {
-      TKMEM_FREE(typed_array);
-      return NULL;
-    }
+    ret = typed_array_extend(typed_array, capacity);
   }
 
-  return typed_array;
+  return ret;
+}
+
+ret_t typed_array_init(typed_array_t* typed_array, value_type_t type, uint32_t capacity) {
+  return_value_if_fail(typed_array_is_type_supported(type), RET_BAD_PARAMS);
+  return typed_array_init_impl(typed_array, type, capacity);
+}
+
+typed_array_t* typed_array_create(value_type_t type, uint32_t capacity) {
+  typed_array_t* ret = NULL;
+  return_value_if_fail(typed_array_is_type_supported(type), NULL);
+
+  ret = TKMEM_ALLOC(sizeof(typed_array_t));
+  return_value_if_fail(ret != NULL, NULL);
+
+  goto_error_if_fail(RET_OK == typed_array_init_impl(ret, type, capacity));
+
+  return ret;
+error:
+  typed_array_destroy(ret);
+  return NULL;
 }
 
 ret_t typed_array_get(typed_array_t* typed_array, uint32_t index, value_t* v) {
@@ -295,11 +310,20 @@ ret_t typed_array_clear(typed_array_t* typed_array) {
   return RET_OK;
 }
 
-ret_t typed_array_destroy(typed_array_t* typed_array) {
+ret_t typed_array_deinit(typed_array_t* typed_array) {
   return_value_if_fail(typed_array != NULL, RET_BAD_PARAMS);
+
   typed_array_clear(typed_array);
   TKMEM_FREE(typed_array->data);
   memset(typed_array, 0x00, sizeof(typed_array_t));
+
+  return RET_OK;
+}
+
+ret_t typed_array_destroy(typed_array_t* typed_array) {
+  return_value_if_fail(typed_array != NULL, RET_BAD_PARAMS);
+
+  typed_array_deinit(typed_array);
   TKMEM_FREE(typed_array);
 
   return RET_OK;

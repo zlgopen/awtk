@@ -89,10 +89,22 @@ typedef struct _typed_array_t {
 typed_array_t* typed_array_create(value_type_t type, uint32_t capacity);
 
 /**
+ * @method typed_array_init
+ * 初始化typed_array对象。
+ *
+ * @param {typed_array_t*} typed_array 数组对象。
+ * @param {value_type_t} type 元素的类型。
+ * @param {uint32_t} capacity 数组的初始容量(元素个数)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t typed_array_init(typed_array_t* typed_array, value_type_t type, uint32_t capacity);
+
+/**
  * @method typed_array_extend
  * 扩展typed_array到指定容量。
  *
- * @param {typed_array_t*} typed_array 元素的类型。
+ * @param {typed_array_t*} typed_array 数组对象。
  * @param {uint32_t} capacity 数组的容量(元素个数)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -182,7 +194,17 @@ ret_t typed_array_push(typed_array_t* typed_array, const value_t* v);
 ret_t typed_array_clear(typed_array_t* typed_array);
 
 /**
+ * @method typed_array_deinit
+ * 反初始化typed_array对象。
+ * @param {typed_array_t*} typed_array 数组对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t typed_array_deinit(typed_array_t* typed_array);
+
+/**
  * @method typed_array_destroy
+ * @annotation ["deconstructor"]
  * 销毁typed_array对象。
  * @param {typed_array_t*} typed_array 数组对象。
  *
