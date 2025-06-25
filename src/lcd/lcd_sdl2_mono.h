@@ -31,6 +31,9 @@ lcd_t* lcd_sdl2_mono_init(SDL_Renderer* render);
 
 ret_t lcd_sdl2_mono_reinit(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length);
 
+// 用于重置 SDL 绘图画布
+ret_t lcd_sdl2_texture_reset(lcd_t* lcd);
+
 END_C_DECLS
 
 #endif /*LCD_SDL_MONO_H*/
