@@ -1,4 +1,4 @@
-/*
+﻿/*
   Simple DirectMedia Layer
   Copyright (C) 1997-2018 Sam Lantinga <slouken@libsdl.org>
 
@@ -388,7 +388,7 @@ D3D11_ReleaseAll(SDL_Renderer * renderer)
                 SAFE_RELEASE(data->blendModes[i].blendState);
             }
             SDL_free(data->blendModes);
-
+            data->blendModes = NULL;
             data->blendModesCount = 0;
         }
         SAFE_RELEASE(data->nearestPixelSampler);
@@ -1645,6 +1645,14 @@ D3D11_UnlockTexture(SDL_Renderer * renderer, SDL_Texture * texture)
         (ID3D11Resource *)textureData->stagingTexture,
         0,
         NULL);
+
+    // 由于隐藏状态下，不会调用 D3D11_RenderPresent，同时 ID3D11DeviceContext_XXX 函数大部分都是异步调用的，
+    // 所以 textureData->stagingTexture 此时会被异步操作的函数锁定，导致后面 SAFE_RELEASE(textureData->stagingTexture) 无法释放该纹理显存，
+    // 必须要等待调用 D3D11_RenderPresent 或者 ID3D11DeviceContext_Flush 才会释放 textureData->stagingTexture 的显存，
+    // 同时由于在 D3D11_LockTexture 中会不断的创建新的 textureData->stagingTexture，所以如果长期处于隐藏状态的话，会导致画面显存泄露的问题。
+    if (renderer->hidden) {
+        ID3D11DeviceContext_Flush(rendererData->d3dContext);
+    }
 
     SAFE_RELEASE(textureData->stagingTexture);
 }

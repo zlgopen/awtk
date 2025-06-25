@@ -96,8 +96,8 @@ static ret_t lcd_sdl2_flush(lcd_t* lcd) {
       sr.h = lcd->w;
     }
 
-    SDL_LockTexture(info->texture, NULL, (void**)&(addr), &pitch);
-    bitmap_init_ex(&dst, sr.w, sr.h, pitch, special->format, addr);
+    if (SDL_LockTexture(info->texture, NULL, (void**)&(addr), &pitch) == 0) {
+      bitmap_init_ex(&dst, sr.w, sr.h, pitch, special->format, addr);
 #ifdef WITH_FAST_LCD_PORTRAIT
       if (system_info()->flags & SYSTEM_INFO_FLAG_FAST_LCD_PORTRAIT) {
         bitmap_init(&src, sr.w, sr.h, special->format, offline_fb);
@@ -117,20 +117,21 @@ static ret_t lcd_sdl2_flush(lcd_t* lcd) {
         }
       }
 
-    SDL_UnlockTexture(info->texture);
+      SDL_UnlockTexture(info->texture);
 
-    SDL_RenderCopy(info->render, info->texture, &sr, &sr);
+      SDL_RenderCopy(info->render, info->texture, &sr, &sr);
 
-    if (src.buffer != NULL) {
-      graphic_buffer_destroy(src.buffer);
+      if (src.buffer != NULL) {
+        graphic_buffer_destroy(src.buffer);
+      }
+      if (dst.buffer != NULL) {
+        graphic_buffer_destroy(dst.buffer);
+      }
     }
-    if (dst.buffer != NULL) {
-      graphic_buffer_destroy(dst.buffer);
-    }
-  }
 
-  if (lcd->draw_mode != LCD_DRAW_OFFLINE) {
-    SDL_RenderPresent(info->render);
+    if (lcd->draw_mode != LCD_DRAW_OFFLINE) {
+      SDL_RenderPresent(info->render);
+    }
   }
 
   return RET_OK;
@@ -153,6 +154,22 @@ static ret_t lcd_sdl2_destroy(lcd_t* lcd) {
 
   special_info_destroy((special_info_t*)(special->ctx));
   special->ctx = NULL;
+
+  return RET_OK;
+}
+
+ret_t lcd_sdl2_texture_reset(lcd_t* lcd) {
+  int w = 0;
+  int h = 0;
+  lcd_mem_special_t* special = (lcd_mem_special_t*)lcd;
+  special_info_t* info = (special_info_t*)(special->ctx);
+  return_value_if_fail(info != NULL, RET_BAD_PARAMS);
+
+  SDL_GetRendererOutputSize(info->render, &w, &h);
+
+  SDL_DestroyTexture(info->texture);
+  info->texture = NULL;
+  special_info_create_texture(info, w, h);
 
   return RET_OK;
 }

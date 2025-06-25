@@ -29,6 +29,9 @@ BEGIN_C_DECLS
 
 lcd_t* lcd_sdl2_init(SDL_Renderer* render);
 
+// 用于重置 SDL 绘图画布
+ret_t lcd_sdl2_texture_reset(lcd_t* lcd);
+
 END_C_DECLS
 
 #endif /*LCD_SDL_H*/

@@ -115,7 +115,7 @@ ret_t application_init(void) {
   widget_child_on(win, "win_close", EVT_CLICK, on_click_win_close, NULL);
   widget_child_on(win, "enlarge", EVT_CLICK, on_click_enlarge, NULL);
   widget_child_on(win, "fullscreen", EVT_CLICK, on_fullscreen, win);
-
+  window_manager_set_show_fps(window_manager(), TRUE);
   widget_foreach(win, install_one, win);
   return RET_OK;
 }
