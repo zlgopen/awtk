@@ -59,9 +59,11 @@ inline static ret_t typed_array_init_impl(typed_array_t* typed_array, value_type
   return ret;
 }
 
-ret_t typed_array_init(typed_array_t* typed_array, value_type_t type, uint32_t capacity) {
-  return_value_if_fail(typed_array_is_type_supported(type), RET_BAD_PARAMS);
-  return typed_array_init_impl(typed_array, type, capacity);
+typed_array_t* typed_array_init(typed_array_t* typed_array, value_type_t type, uint32_t capacity) {
+  return_value_if_fail(typed_array != NULL, NULL);
+  return_value_if_fail(typed_array_is_type_supported(type), NULL);
+  return_value_if_fail(RET_OK == typed_array_init_impl(typed_array, type, capacity), NULL);
+  return typed_array;
 }
 
 typed_array_t* typed_array_create(value_type_t type, uint32_t capacity) {

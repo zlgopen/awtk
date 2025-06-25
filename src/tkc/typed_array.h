@@ -96,9 +96,9 @@ typed_array_t* typed_array_create(value_type_t type, uint32_t capacity);
  * @param {value_type_t} type 元素的类型。
  * @param {uint32_t} capacity 数组的初始容量(元素个数)。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {typed_array_t*} 数组对象。
  */
-ret_t typed_array_init(typed_array_t* typed_array, value_type_t type, uint32_t capacity);
+typed_array_t* typed_array_init(typed_array_t* typed_array, value_type_t type, uint32_t capacity);
 
 /**
  * @method typed_array_extend
