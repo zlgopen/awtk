@@ -125,7 +125,7 @@ static ret_t on_dialog_quit(void* ctx, event_t* e) {
 static widget_t* window_open_with_prefix(const char* name) {
   char name_with_prefix[TK_NAME_LEN + 1] = {0};
 
-  tk_snprintf(name_with_prefix, ARRAY_SIZE(name_with_prefix), "%s%s", WINDOW_NAME_PREFIX, name);
+  tk_snprintf(name_with_prefix, ARRAY_SIZE(name_with_prefix), WINDOW_NAME_PREFIX "%s", name);
   return window_open(name_with_prefix);
 }
 
@@ -257,14 +257,12 @@ static widget_t* find_bind_value_target(widget_t* widget, const char* name) {
 }
 
 static ret_t on_bind_value_changed(void* ctx, event_t* e) {
-  char prop_name[16] = {0};
   widget_t* widget = WIDGET(ctx);
   widget_t* target = WIDGET(e->target);
   return_value_if_fail(widget != NULL && target != NULL, RET_BAD_PARAMS);
 
-  tk_snprintf(prop_name, sizeof(prop_name), "%s%s", WIDGET_PROP_ANIMATE_PREFIX, WIDGET_PROP_VALUE);
-
-  return widget_set_prop_float(widget, prop_name, widget_get_value(target));
+  return widget_set_prop_float(widget, WIDGET_PROP_ANIMATE_PREFIX WIDGET_PROP_VALUE,
+                               widget_get_value(target));
 }
 
 static ret_t common_init_widget(void* ctx, const void* iter) {

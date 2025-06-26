@@ -262,7 +262,6 @@ static ret_t children_layouter_list_view_for_list_view_children_layout_w_with_an
   int32_t i = 0;
   int32_t y = 0;
   uint32_t cols = 0;
-  char animate_y[16] = {0};
   widget_t** children = NULL;
   children_layouter_list_view_t* l = (children_layouter_list_view_t*)layouter;
   return_value_if_fail(l != NULL && children_for_layout != NULL, RET_BAD_PARAMS);
@@ -270,14 +269,13 @@ static ret_t children_layouter_list_view_for_list_view_children_layout_w_with_an
   y = l->y_margin;
   cols = l->cols <= 1 ? 1 : l->cols;
   children = (widget_t**)children_for_layout->elms;
-  tk_snprintf(animate_y, sizeof(animate_y), "%s%s", WIDGET_PROP_ANIMATE_PREFIX, WIDGET_PROP_Y);
 
   if (cols <= 1) {
     for (i = 0; i < children_for_layout->size; i++) {
       widget_t* iter = children[i];
       widget_move_resize_ex(iter, l->x_margin, iter->y, w, iter->h, FALSE);
       widget_set_prop_int(iter, WIDGET_PROP_ANIMATE_ANIMATING_TIME, l->animating_time);
-      widget_set_prop_int(iter, animate_y, y);
+      widget_set_prop_int(iter, WIDGET_PROP_ANIMATE_PREFIX WIDGET_PROP_Y, y);
       widget_layout_children(iter);
       y += (iter->h + l->spacing);
     }
@@ -416,11 +414,9 @@ static ret_t children_layouter_list_view_for_list_view_set_scroll_view_info(
     scroll_view_fix_offset(widget);
 
     if (l->animating_time) {
-      char animate_yoffset[16] = {0};
-      tk_snprintf(animate_yoffset, sizeof(animate_yoffset), "%s%s", WIDGET_PROP_ANIMATE_PREFIX,
-                  WIDGET_PROP_YOFFSET);
       widget_set_prop_int(widget, WIDGET_PROP_ANIMATE_ANIMATING_TIME, l->animating_time);
-      widget_set_prop_int(widget, animate_yoffset, scroll_view->yoffset);
+      widget_set_prop_int(widget, WIDGET_PROP_ANIMATE_PREFIX WIDGET_PROP_YOFFSET,
+                          scroll_view->yoffset);
     }
 
     if (scroll_view->on_scroll) {

@@ -35,7 +35,7 @@ static void init_children_widget(widget_t* widget, void* ctx);
 
 static widget_t* window_open_with_prefix(const char* name) {
   char name_with_prefix[TK_NAME_LEN + 1] = {0};
-  tk_snprintf(name_with_prefix, ARRAY_SIZE(name_with_prefix), "%s%s", WINDOW_NAME_PREFIX, name);
+  tk_snprintf(name_with_prefix, ARRAY_SIZE(name_with_prefix), WINDOW_NAME_PREFIX "%s", name);
   return window_open(name_with_prefix);
 }
 

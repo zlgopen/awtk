@@ -2018,7 +2018,8 @@ static ret_t fexpr_parse(fscript_parser_t* parser, value_t* result) {
   return RET_OK;
 }
 
-static fscript_t* fscript_init_with_parser(fscript_t* fscript, fscript_parser_t* parser, tk_object_life_t obj_life) {
+static fscript_t* fscript_init_with_parser(fscript_t* fscript, fscript_parser_t* parser,
+                                           tk_object_life_t obj_life) {
   fscript = fscript != NULL ? fscript : TKMEM_ZALLOC(fscript_t);
   return_value_if_fail(fscript != NULL, NULL);
   fscript->str = parser->temp;
@@ -2234,7 +2235,8 @@ ret_t fscript_syntax_check(tk_object_t* obj, const char* script, fscript_parser_
 }
 
 static fscript_t* fscript_load(fscript_t* fscript, tk_object_t* obj, const char* script,
-                               const char* first_call_name, bool_t keep_func_name, tk_object_life_t obj_life) {
+                               const char* first_call_name, bool_t keep_func_name,
+                               tk_object_life_t obj_life) {
   ret_t ret = RET_OK;
   fscript_parser_t parser;
   fscript_parser_error_t error;
@@ -2263,7 +2265,8 @@ ret_t fscript_reload(fscript_t* fscript, const char* script) {
   obj = fscript->obj;
   fscript_reset(fscript);
 
-  return fscript_load(fscript, obj, script, "expr", FALSE, TK_OBJECT_LIFE_HOLD) != NULL ? RET_OK : RET_FAIL;
+  return fscript_load(fscript, obj, script, "expr", FALSE, TK_OBJECT_LIFE_HOLD) != NULL ? RET_OK
+                                                                                        : RET_FAIL;
 }
 
 fscript_t* fscript_init(fscript_t* fscript, tk_object_t* obj, const char* script,
@@ -2275,7 +2278,8 @@ fscript_t* fscript_create_ex(tk_object_t* obj, const char* script, bool_t keep_f
   return fscript_load(NULL, obj, script, "expr", keep_func_name, TK_OBJECT_LIFE_HOLD);
 }
 
-fscript_t* fscript_create_ex2(tk_object_t* obj, const char* script, bool_t keep_func_name, tk_object_life_t obj_life) {
+fscript_t* fscript_create_ex2(tk_object_t* obj, const char* script, bool_t keep_func_name,
+                              tk_object_life_t obj_life) {
   return fscript_load(NULL, obj, script, "expr", keep_func_name, obj_life);
 }
 
@@ -3355,7 +3359,7 @@ fscript_func_t fscript_find_func(fscript_t* fscript, const char* name, uint32_t 
   }
 
   if (func == NULL) {
-    tk_snprintf(full_func_name, sizeof(full_func_name) - 1, "%s%s", STR_FSCRIPT_FUNCTION_PREFIX,
+    tk_snprintf(full_func_name, sizeof(full_func_name) - 1, STR_FSCRIPT_FUNCTION_PREFIX "%s",
                 func_name);
     func = (fscript_func_t)tk_object_get_prop_pointer(obj, full_func_name);
   }
@@ -3413,7 +3417,7 @@ static ret_t fscript_func_call_init_func(fscript_func_call_t* call, tk_object_t*
   }
 
   if (func == NULL) {
-    tk_snprintf(full_func_name, sizeof(full_func_name) - 1, "%s%s", STR_FSCRIPT_FUNCTION_PREFIX,
+    tk_snprintf(full_func_name, sizeof(full_func_name) - 1, STR_FSCRIPT_FUNCTION_PREFIX "%s",
                 func_name);
     func = (fscript_func_t)tk_object_get_prop_pointer(obj, full_func_name);
   }
