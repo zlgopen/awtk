@@ -59,10 +59,19 @@ static ret_t conf_ubjson_save_node_value_simple(conf_node_t* node, ubjson_writer
     return ubjson_writer_write_float32(writer, value_float32(&v));
   } else if (v.type == VALUE_TYPE_DOUBLE) {
     return ubjson_writer_write_float64(writer, value_double(&v));
-  } else if (v.type == VALUE_TYPE_UINT64 || v.type == VALUE_TYPE_INT64) {
-    return ubjson_writer_write_int64(writer, value_int64(&v));
   } else {
-    return ubjson_writer_write_int(writer, value_int(&v));
+    int64_t value = value_int64(&v);
+    if (INT8_MIN <= value && value <= INT8_MAX) {
+      return ubjson_writer_write_int8(writer, (int8_t)value);
+    } else if (0 <= value && value <= UINT8_MAX) {
+      return ubjson_writer_write_uint8(writer, (uint8_t)value);
+    } else if (INT16_MIN <= value && value <= INT16_MAX) {
+      return ubjson_writer_write_int16(writer, (int16_t)value);
+    } else if (INT32_MIN <= value && value <= INT32_MAX) {
+      return ubjson_writer_write_int32(writer, (int32_t)value);
+    } else {
+      return ubjson_writer_write_int64(writer, (int64_t)value);
+    }
   }
 }
 
