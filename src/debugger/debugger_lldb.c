@@ -1400,13 +1400,13 @@ static tk_object_t* debugger_lldb_get_callstack_ex_impl(debugger_t* debugger, ui
     tk_snprintf(path, sizeof(path), "body.stackFrames.[%d].line", i);
     line_number = tk_object_get_prop_uint32(callstack, path, 0);
 
-    tk_snprintf(path, sizeof(path), "%s.[%d].name", DEBUGER_CALLSTACK_NODE_NAME, i);
+    tk_snprintf(path, sizeof(path), "%s.[%d].name", DEBUGGER_CALLSTACK_NODE_NAME, i);
     tk_object_set_prop_str(ret_obj, path, name);
 
-    tk_snprintf(path, sizeof(path), "%s.[%d].path", DEBUGER_CALLSTACK_NODE_NAME, i);
+    tk_snprintf(path, sizeof(path), "%s.[%d].path", DEBUGGER_CALLSTACK_NODE_NAME, i);
     tk_object_set_prop_str(ret_obj, path, file_path);
 
-    tk_snprintf(path, sizeof(path), "%s.[%d].line", DEBUGER_CALLSTACK_NODE_NAME, i);
+    tk_snprintf(path, sizeof(path), "%s.[%d].line", DEBUGGER_CALLSTACK_NODE_NAME, i);
     tk_object_set_prop_uint32(ret_obj, path, line_number);
   }
 

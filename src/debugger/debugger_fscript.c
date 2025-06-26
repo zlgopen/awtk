@@ -349,7 +349,7 @@ static tk_object_t* debugger_fscript_get_callstack(debugger_t* debugger) {
   for (i = 0; i < n; i++) {
     char path[MAX_PATH + 1] = {0};
     call_stack_frame_t* iter = (call_stack_frame_t*)darray_get(&(d->call_stack_frames), n - i - 1);
-    tk_snprintf(path, sizeof(path), "%s.[%d].name", DEBUGER_CALLSTACK_NODE_NAME, i);
+    tk_snprintf(path, sizeof(path), "%s.[%d].name", DEBUGGER_CALLSTACK_NODE_NAME, i);
     tk_object_set_prop_str(ret_obj, path, iter->name);
   }
 

@@ -124,8 +124,8 @@ TEST(Debugger, launch) {
 
   tk_object_t* ret_obj = debugger_get_callstack(client);
   ASSERT_EQ(ret_obj != NULL, true);
-  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".#size", 0), 1u);
-  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[0].name"), "<root>");
+  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".#size", 0), 1u);
+  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".[0].name"), "<root>");
   TK_OBJECT_UNREF(ret_obj);
 
   ASSERT_EQ(debugger_step_over(client), RET_OK);
@@ -193,8 +193,8 @@ TEST(Debugger, step_over) {
 
   tk_object_t* ret_obj = debugger_get_callstack(client);
   ASSERT_EQ(ret_obj != NULL, true);
-  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".#size", 0), 1u);
-  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[0].name"), "<root>");
+  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".#size", 0), 1u);
+  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".[0].name"), "<root>");
   TK_OBJECT_UNREF(ret_obj);
 
   ASSERT_EQ(debugger_step_over(client), RET_OK);
@@ -307,9 +307,9 @@ TEST(Debugger, callstack1) {
 
   tk_object_t* ret_obj = debugger_get_callstack(client);
   ASSERT_EQ(ret_obj != NULL, true);
-  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".#size", 0), 2u);
-  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[0].name"), "foo");
-  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[1].name"), "<root>");
+  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".#size", 0), 2u);
+  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".[0].name"), "foo");
+  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".[1].name"), "<root>");
   TK_OBJECT_UNREF(ret_obj);
 
   tk_object_t* local = debugger_get_local(client, 0);
@@ -373,10 +373,10 @@ TEST(Debugger, callstack2) {
 
   tk_object_t* ret_obj = debugger_get_callstack(client);
   ASSERT_EQ(ret_obj != NULL, true);
-  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".#size", 0), 3u);
-  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[0].name"), "bar");
-  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[1].name"), "foo");
-  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[2].name"), "<root>");
+  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".#size", 0), 3u);
+  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".[0].name"), "bar");
+  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".[1].name"), "foo");
+  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".[2].name"), "<root>");
   TK_OBJECT_UNREF(ret_obj);
 
   tk_object_t* local = debugger_get_local(client, 0);
@@ -500,8 +500,8 @@ TEST(Debugger, step_in) {
 
   tk_object_t* ret_obj = debugger_get_callstack(client);
   ASSERT_EQ(ret_obj != NULL, true);
-  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".#size", 0), 1u);
-  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[0].name"), "<root>");
+  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".#size", 0), 1u);
+  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".[0].name"), "<root>");
 
   tk_object_t* local = NULL;
 
@@ -510,9 +510,9 @@ TEST(Debugger, step_in) {
 
   ret_obj = debugger_get_callstack(client);
   ASSERT_EQ(ret_obj != NULL, true);
-  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".#size", 0), 2u);
-  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[0].name"), "foo");
-  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[1].name"), "<root>");
+  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".#size", 0), 2u);
+  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".[0].name"), "foo");
+  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".[1].name"), "<root>");
   TK_OBJECT_UNREF(ret_obj);
 
   local = debugger_get_local(client, 0);
@@ -524,10 +524,10 @@ TEST(Debugger, step_in) {
   sleep_ms(500);
   ret_obj = debugger_get_callstack(client);
   ASSERT_EQ(ret_obj != NULL, true);
-  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".#size", 0), 3u);
-  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[0].name"), "bar");
-  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[1].name"), "foo");
-  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[2].name"), "<root>");
+  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".#size", 0), 3u);
+  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".[0].name"), "bar");
+  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".[1].name"), "foo");
+  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".[2].name"), "<root>");
   TK_OBJECT_UNREF(ret_obj);
 
   local = debugger_get_local(client, 0);
@@ -540,17 +540,17 @@ TEST(Debugger, step_in) {
 
   ret_obj = debugger_get_callstack(client);
   ASSERT_EQ(ret_obj != NULL, true);
-  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".#size", 0), 2u);
-  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[0].name"), "foo");
-  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[1].name"), "<root>");
+  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".#size", 0), 2u);
+  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".[0].name"), "foo");
+  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".[1].name"), "<root>");
   TK_OBJECT_UNREF(ret_obj);
 
   ASSERT_EQ(debugger_step_out(client), RET_OK);
   sleep_ms(500);
   ret_obj = debugger_get_callstack(client);
   ASSERT_EQ(ret_obj != NULL, true);
-  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".#size", 0), 1u);
-  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[0].name"), "<root>");
+  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".#size", 0), 1u);
+  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".[0].name"), "<root>");
   TK_OBJECT_UNREF(ret_obj);
 
   ASSERT_EQ(debugger_continue(client), RET_OK);
@@ -602,8 +602,8 @@ TEST(Debugger, step_loop_over) {
 
   tk_object_t* ret_obj = debugger_get_callstack(client);
   ASSERT_EQ(ret_obj != NULL, true);
-  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".#size", 0), 1u);
-  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[0].name"), "<root>");
+  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".#size", 0), 1u);
+  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".[0].name"), "<root>");
   TK_OBJECT_UNREF(ret_obj);
 
   ASSERT_EQ(debugger_step_loop_over(client), RET_OK);
@@ -949,8 +949,8 @@ TEST(Debugger, callstack) {
 
   tk_object_t* ret_obj = debugger_get_callstack(client);
   ASSERT_EQ(ret_obj != NULL, true);
-  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".#size", 0), 1u);
-  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGER_CALLSTACK_NODE_NAME ".[0].name"), "<root>");
+  ASSERT_EQ(tk_object_get_prop_uint32(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".#size", 0), 1u);
+  ASSERT_STREQ(tk_object_get_prop_str(ret_obj, DEBUGGER_CALLSTACK_NODE_NAME ".[0].name"), "<root>");
   TK_OBJECT_UNREF(ret_obj);
 
   ASSERT_EQ(debugger_clear_break_points(client), RET_OK);

@@ -29,7 +29,7 @@
 
 BEGIN_C_DECLS
 
-#define DEBUGER_CALLSTACK_NODE_NAME "callstack"
+#define DEBUGGER_CALLSTACK_NODE_NAME "callstack"
 
 struct _debugger_t;
 typedef struct _debugger_t debugger_t;

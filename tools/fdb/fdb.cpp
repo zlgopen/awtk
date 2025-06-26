@@ -472,20 +472,20 @@ static ret_t fdb_show_callstack(app_info_t* app, uint32_t start, uint32_t level,
 
   log_debug("thread_id:%" PRIu64 " callstack:\n---------------------------\n",
             debugger_get_current_thread_id(app->debugger));
-  n = tk_object_get_prop_uint32(obj, DEBUGER_CALLSTACK_NODE_NAME ".#size", 0);
+  n = tk_object_get_prop_uint32(obj, DEBUGGER_CALLSTACK_NODE_NAME ".#size", 0);
   for (i = 0; i < n; i++) {
     char path[MAX_PATH + 1] = {0};
     uint32_t line_number = 0;
     const char* func = NULL;
     const char* file_path = NULL;
 
-    tk_snprintf(path, sizeof(path), DEBUGER_CALLSTACK_NODE_NAME ".[%d].name", i);
+    tk_snprintf(path, sizeof(path), DEBUGGER_CALLSTACK_NODE_NAME ".[%d].name", i);
     func = tk_object_get_prop_str(obj, path);
 
-    tk_snprintf(path, sizeof(path), DEBUGER_CALLSTACK_NODE_NAME ".[%d].path", i);
+    tk_snprintf(path, sizeof(path), DEBUGGER_CALLSTACK_NODE_NAME ".[%d].path", i);
     file_path = tk_object_get_prop_str(obj, path);
 
-    tk_snprintf(path, sizeof(path), DEBUGER_CALLSTACK_NODE_NAME ".[%d].line", i);
+    tk_snprintf(path, sizeof(path), DEBUGGER_CALLSTACK_NODE_NAME ".[%d].line", i);
     line_number = tk_object_get_prop_uint32(obj, path, 0);
 
     if (i == debugger_get_current_frame(app->debugger)) {
