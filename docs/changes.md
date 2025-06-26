@@ -2,6 +2,7 @@
 
 2025/06/26
   * 完善 conf_ubjson (感谢林福提供补丁)
+  * 完善 children_layouter_list_view (感谢兆坤提供补丁)。
 
 2025/06/25
   * 完善 typed_array (感谢兆坤提供补丁)。

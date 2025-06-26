@@ -398,7 +398,6 @@ static int32_t children_layouter_list_view_for_list_view_get_scroll_view_w(list_
 static ret_t children_layouter_list_view_for_list_view_set_scroll_view_info(
     children_layouter_t* layouter, widget_t* widget, widget_t* scroll_bar, int32_t virtual_h,
     widget_t* scroll_bar_h, int32_t virtual_w) {
-  int32_t yoffset = 0;
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
   children_layouter_list_view_t* l = (children_layouter_list_view_t*)layouter;
   return_value_if_fail(scroll_view != NULL && l != NULL, RET_BAD_PARAMS);
@@ -413,25 +412,15 @@ static ret_t children_layouter_list_view_for_list_view_set_scroll_view_info(
   }
   scroll_view_set_virtual_w(widget, virtual_w);
 
-  scroll_view_fix_offset(widget);
-
   if (!scroll_view->dragged && scroll_view->wa == NULL) {
-    yoffset = scroll_view->yoffset;
-
-    if (widget->h >= virtual_h) {
-      yoffset = 0;
-    }
-
-    if (yoffset + widget->h > scroll_view->virtual_h) {
-      yoffset = tk_max(scroll_view->virtual_h - widget->h, 0);
-    }
+    scroll_view_fix_offset(widget);
 
     if (l->animating_time) {
       char animate_yoffset[16] = {0};
       tk_snprintf(animate_yoffset, sizeof(animate_yoffset), "%s%s", WIDGET_PROP_ANIMATE_PREFIX,
                   WIDGET_PROP_YOFFSET);
       widget_set_prop_int(widget, WIDGET_PROP_ANIMATE_ANIMATING_TIME, l->animating_time);
-      widget_set_prop_int(widget, animate_yoffset, yoffset);
+      widget_set_prop_int(widget, animate_yoffset, scroll_view->yoffset);
     }
 
     if (scroll_view->on_scroll) {
