@@ -27,6 +27,18 @@
 
 static ret_t tree_node_destroy(tree_node_t* node, tk_destroy_t destroy, mem_allocator_t* allocator);
 
+inline static int32_t tree_node_depth(tree_node_t* node) {
+  int32_t depth = -1;
+  const tree_node_t* iter = NULL;
+  return_value_if_fail(node != NULL, -1);
+
+  for (iter = node; iter != NULL; iter = iter->parent) {
+    depth++;
+  }
+
+  return depth;
+}
+
 bool_t tree_node_is_ancestor(const tree_node_t* node, const tree_node_t* ancestor) {
   return_value_if_fail(node != NULL && ancestor != NULL, FALSE);
 
@@ -36,6 +48,37 @@ bool_t tree_node_is_ancestor(const tree_node_t* node, const tree_node_t* ancesto
     }
   }
   return FALSE;
+}
+
+tree_node_t* tree_node_get_lowest_common_ancestor(tree_node_t* node1, tree_node_t* node2) {
+  return_value_if_fail(node1 != NULL && node2 != NULL, NULL);
+
+  if (node1 == node2) {
+    return node1;
+  } else {
+    tree_node_t* n1 = node1;
+    tree_node_t* n2 = node2;
+    int32_t depth_diff = tree_node_depth(n1) - tree_node_depth(n2);
+
+    while (depth_diff > 0 && n1 != NULL) {
+      n1 = n1->parent;
+      depth_diff--;
+    }
+    while (depth_diff < 0 && n2 != NULL) {
+      n2 = n2->parent;
+      depth_diff++;
+    }
+
+    while (n1 != NULL && n2 != NULL) {
+      if (n1 == n2) {
+        return n1;
+      }
+      n1 = n1->parent;
+      n2 = n2->parent;
+    }
+  }
+
+  return NULL;
 }
 
 static int tree_node_is_ancestor_cmp(const void* iter, const void* ctx) {
@@ -593,19 +636,13 @@ int32_t tree_size(tree_t* tree, tree_node_t* node) {
 }
 
 int32_t tree_depth(tree_t* tree, tree_node_t* node) {
-  int32_t depth = -1;
-  const tree_node_t* iter = NULL;
   return_value_if_fail(tree != NULL, -1);
 
   if (node == NULL) {
     node = tree->root;
   }
 
-  for (iter = node; iter != NULL; iter = iter->parent) {
-    depth++;
-  }
-
-  return depth;
+  return tree_node_depth(node);
 }
 
 int32_t tree_level(tree_t* tree, tree_node_t* node) {

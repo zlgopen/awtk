@@ -62,6 +62,16 @@ int32_t tree_node_degree(tree_node_t* node);
 bool_t tree_node_is_ancestor(const tree_node_t* node, const tree_node_t* ancestor);
 
 /**
+ * @method tree_node_get_lowest_common_ancestor
+ * 获取两个树节点的最近公共祖先(LCA)结点。
+ * @param {tree_node_t*} node1 树结点对象。
+ * @param {tree_node_t*} node2 树结点对象。
+ *
+ * @return {tree_node_t*} 返回最近公共祖先节点。
+ */
+tree_node_t* tree_node_get_lowest_common_ancestor(tree_node_t* node1, tree_node_t* node2);
+
+/**
  * @method tree_node_get_sibling
  * 获取指定位置的兄弟节点。
  * @param {tree_node_t*} node 树结点对象。

@@ -382,6 +382,26 @@ TEST(Tree, degree) {
   tree_deinit(&tree);
 }
 
+TEST(Tree, lowest_common_ancestor) {
+  tree_t tree;
+  ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
+  ASSERT_EQ(build_tree_for_test(&tree), RET_OK);
+
+  tree_node_t* node1 =
+      tree_find(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(1));
+  tree_node_t* node2 =
+      tree_find(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(2));
+  tree_node_t* node122 =
+      tree_find(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(122));
+
+  ASSERT_EQ(tree.root, tree_node_get_lowest_common_ancestor(node1, tree.root));
+  ASSERT_EQ(node1, tree_node_get_lowest_common_ancestor(node1, node122));
+  ASSERT_EQ(node122, tree_node_get_lowest_common_ancestor(node122, node122));
+  ASSERT_EQ(tree.root, tree_node_get_lowest_common_ancestor(node2, node122));
+
+  tree_deinit(&tree);
+}
+
 static ret_t tree_node_str_append(void* ctx, const void* data) {
   const tree_node_t* node = (const tree_node_t*)(data);
   str_t* str = (str_t*)(ctx);
