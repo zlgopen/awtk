@@ -785,19 +785,29 @@ ret_t tree_to_string(tree_t* tree, tree_node_t* node, str_t* result,
   return tree_foreach(tree, node, TREE_FOREACH_TYPE_PREORDER, tree_to_string_on_visit, &ctx);
 }
 
-ret_t tree_set_node_allocator(tree_t* tree, mem_allocator_t* allocator) {
+inline static ret_t tree_set_node_allocator_impl(tree_t* tree, mem_allocator_t* allocator,
+                                                 bool_t shared) {
   return_value_if_fail(tree != NULL, RET_BAD_PARAMS);
 
   if (tree->node_allocator != allocator) {
     return_value_if_fail(tree_is_empty(tree, NULL), RET_FAIL);
 
-    if (tree->node_allocator != NULL) {
+    if (tree->node_allocator != NULL && !tree->node_allocator_is_shared) {
       mem_allocator_destroy(tree->node_allocator);
     }
     tree->node_allocator = allocator;
   }
+  tree->node_allocator_is_shared = shared;
 
   return RET_OK;
+}
+
+ret_t tree_set_node_allocator(tree_t* tree, mem_allocator_t* allocator) {
+  return tree_set_node_allocator_impl(tree, allocator, FALSE);
+}
+
+ret_t tree_set_shared_node_allocator(tree_t* tree, mem_allocator_t* allocator) {
+  return tree_set_node_allocator_impl(tree, allocator, TRUE);
 }
 
 ret_t tree_deinit(tree_t* tree) {

@@ -1,4 +1,8 @@
 # 最新动态
+
+2025/06/30
+  * set shared node allocator(感谢兆坤提供补丁)。
+
 2025/06/27
   * add tree_node_get_lowest_common_ancestor (感谢兆坤提供补丁)。
 

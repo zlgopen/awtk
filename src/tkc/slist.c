@@ -385,17 +385,27 @@ ret_t slist_reverse(slist_t* slist) {
   return RET_OK;
 }
 
-ret_t slist_set_node_allocator(slist_t* slist, mem_allocator_t* allocator) {
+inline static ret_t slist_set_node_allocator_impl(slist_t* slist, mem_allocator_t* allocator,
+                                                  bool_t shared) {
   return_value_if_fail(slist != NULL, RET_BAD_PARAMS);
 
   if (slist->node_allocator != allocator) {
     return_value_if_fail(slist_is_empty(slist), RET_FAIL);
 
-    if (slist->node_allocator != NULL) {
+    if (slist->node_allocator != NULL && !slist->node_allocator_is_shared) {
       mem_allocator_destroy(slist->node_allocator);
     }
     slist->node_allocator = allocator;
   }
+  slist->node_allocator_is_shared = shared;
 
   return RET_OK;
+}
+
+ret_t slist_set_node_allocator(slist_t* slist, mem_allocator_t* allocator) {
+  return slist_set_node_allocator_impl(slist, allocator, FALSE);
+}
+
+ret_t slist_set_shared_node_allocator(slist_t* slist, mem_allocator_t* allocator) {
+  return slist_set_node_allocator_impl(slist, allocator, TRUE);
 }

@@ -98,6 +98,12 @@ typedef struct _dlist_t {
    * 节点内存分配器。
    */
   mem_allocator_t* node_allocator;
+
+  /**
+   * @property {bool_t} node_allocator_is_shared
+   * 节点内存分配器是否共享。
+   */
+  bool_t node_allocator_is_shared;
 } dlist_t;
 
 /**
@@ -336,6 +342,16 @@ ret_t dlist_reverse(dlist_t* dlist);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t dlist_set_node_allocator(dlist_t* dlist, mem_allocator_t* allocator);
+
+/**
+ * @method dlist_set_shared_node_allocator
+ * 设置共享节点内存分配器。
+ * @param {dlist_t*} dlist 双向链表对象。
+ * @param {mem_allocator_t*} allocator 内存分配器对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t dlist_set_shared_node_allocator(dlist_t* dlist, mem_allocator_t* allocator);
 
 /**
  * @method dlist_deinit

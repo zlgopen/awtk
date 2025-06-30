@@ -163,6 +163,12 @@ typedef struct _tree_t {
    * 节点内存分配器。
    */
   mem_allocator_t* node_allocator;
+
+  /**
+   * @property {mem_allocator_t*} node_allocator_is_shared
+   * 节点内存分配器是否共享。
+   */
+  bool_t node_allocator_is_shared;
 } tree_t;
 
 /**
@@ -458,6 +464,16 @@ ret_t tree_to_string(tree_t* tree, tree_node_t* node, str_t* result,
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t tree_set_node_allocator(tree_t* tree, mem_allocator_t* allocator);
+
+/**
+ * @method tree_set_shared_node_allocator
+ * 设置共享节点内存分配器。
+ * @param {tree_t*} tree 树结构对象。
+ * @param {mem_allocator_t*} allocator 内存分配器对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tree_set_shared_node_allocator(tree_t* tree, mem_allocator_t* allocator);
 
 /**
  * @method tree_deinit
