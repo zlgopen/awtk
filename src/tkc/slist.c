@@ -409,3 +409,19 @@ ret_t slist_set_node_allocator(slist_t* slist, mem_allocator_t* allocator) {
 ret_t slist_set_shared_node_allocator(slist_t* slist, mem_allocator_t* allocator) {
   return slist_set_node_allocator_impl(slist, allocator, TRUE);
 }
+
+void* slist_get(slist_t* slist, uint32_t index) {
+  uint32_t i = 0;
+  slist_node_t* iter = NULL;
+  return_value_if_fail(slist != NULL, NULL);
+  return_value_if_fail(index < slist->size, NULL);
+
+  iter = slist->first;
+  while (iter != NULL && i < index) {
+    iter = iter->next;
+    i++;
+  }
+
+  assert(iter != NULL);
+  return iter->data;
+}

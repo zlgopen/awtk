@@ -239,6 +239,16 @@ ret_t dlist_insert(dlist_t* dlist, uint32_t index, void* data);
 ret_t dlist_prepend(dlist_t* dlist, void* data);
 
 /**
+ * @method dlist_get
+ * 获取指定序数的元素。
+ * @param {dlist_t*} dlist 双向链表对象。
+ * @param {uint32_t} index 序数。
+ *
+ * @return {void*} 返回满足条件的对象，否则返回NULL。
+ */
+void* dlist_get(dlist_t* dlist, uint32_t index);
+
+/**
  * @method dlist_foreach
  * 遍历元素。
  * @param {dlist_t*} dlist 双向链表对象。

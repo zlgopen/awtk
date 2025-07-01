@@ -1,5 +1,9 @@
 # 最新动态
 
+2025/07/01
+  * 增加函数 dlist_get
+  * 增加函数 slist_get
+
 2025/06/30
   * set shared node allocator(感谢兆坤提供补丁)。
 

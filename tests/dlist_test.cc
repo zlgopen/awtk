@@ -415,3 +415,18 @@ TEST(DList, find_last) {
 
   dlist_deinit(&dlist);
 }
+
+TEST(DList, get) {
+  dlist_t dlist;
+  dlist_t* d = &dlist;
+  uint32_t i = 0;
+  dlist_init(d, NULL, NULL);
+
+  for (i = 0; i < 1000; i++) {
+    ASSERT_EQ(dlist_append(d, TO_POINTER(i)), RET_OK);
+    ASSERT_EQ(TO_INT(dlist_get(d, i)), i);
+  }
+
+  ASSERT_EQ(TO_INT(dlist_get(d, i)), 0);
+  dlist_deinit(d);
+}

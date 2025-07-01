@@ -355,3 +355,18 @@ TEST(SList, reverse) {
 
   slist_deinit(&slist);
 }
+
+TEST(SList, get) {
+  slist_t slist;
+  slist_t* s = &slist;
+  uint32_t i = 0;
+  slist_init(s, NULL, NULL);
+
+  for (i = 0; i < 1000; i++) {
+    ASSERT_EQ(slist_append(s, TO_POINTER(i)), RET_OK);
+    ASSERT_EQ(TO_INT(slist_get(s, i)), i);
+  }
+  ASSERT_EQ(TO_INT(slist_get(s, i)), 0);
+  
+  slist_deinit(s);
+}

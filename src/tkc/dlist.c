@@ -448,3 +448,19 @@ ret_t dlist_set_node_allocator(dlist_t* dlist, mem_allocator_t* allocator) {
 ret_t dlist_set_shared_node_allocator(dlist_t* dlist, mem_allocator_t* allocator) {
   return dlist_set_node_allocator_impl(dlist, allocator, TRUE);
 }
+
+void* dlist_get(dlist_t* dlist, uint32_t index) {
+  uint32_t i = 0;
+  dlist_node_t* iter = NULL;
+  return_value_if_fail(dlist != NULL, NULL);
+  return_value_if_fail(index < dlist->size, NULL);
+
+  iter = dlist->first;
+  while (iter != NULL && i < index) {
+    iter = iter->next;
+    i++;
+  }
+
+  assert(iter != NULL);
+  return iter->data;
+}

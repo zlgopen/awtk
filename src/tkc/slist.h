@@ -229,6 +229,16 @@ ret_t slist_prepend(slist_t* slist, void* data);
 ret_t slist_foreach(slist_t* slist, tk_visit_t visit, void* ctx);
 
 /**
+ * @method slist_get
+ * 获取指定序数的元素。
+ * @param {slist_t*} slist 单向链表对象。
+ * @param {uint32_t} index 序数。
+ *
+ * @return {void*} 返回满足条件的对象，否则返回NULL。
+ */
+void* slist_get(slist_t* slist, uint32_t index);
+
+/**
  * @method slist_tail_pop
  * 弹出最后一个元素。
  * @param {slist_t*} slist 单向链表对象。
