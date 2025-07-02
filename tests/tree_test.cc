@@ -402,13 +402,13 @@ TEST(Tree, lowest_common_ancestor) {
   tree_deinit(&tree);
 }
 
-static ret_t tree_to_string_on_append_node(const tree_node_t* node, str_t* result, void* ctx) {
+static ret_t tree_to_string_on_node(const tree_node_t* node, str_t* result, void* ctx) {
   (void)ctx;
   return str_append_int(result, tk_pointer_to_int(node->data));
 }
 
 TEST(Tree, to_string) {
-  tree_to_string_handler_t handler = {tree_to_string_on_append_node};
+  tree_to_string_handler_t handler = {tree_to_string_on_node};
   str_t str;
   str_init(&str, 1024);
   tree_t tree;

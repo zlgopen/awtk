@@ -2,6 +2,7 @@
 
 2025/07/02
   * 完善 tree_to_string (感谢兆坤提供补丁)。
+  * 完善 tree_to_string2 (感谢兆坤提供补丁)。
   * 修改主题变化事件统一用theme_change_event_t，和修正font_manager_get_standard_font_size的返回值错误(感谢朝泽提供补丁)
 
 2025/07/01

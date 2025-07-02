@@ -714,13 +714,13 @@ int32_t tree_degree(tree_t* tree) {
   return ret;
 }
 
-inline static ret_t tree_to_string_on_append_node_default(const tree_node_t* node, str_t* result,
-                                                          void* ctx) {
+inline static ret_t tree_to_string_on_node_default(const tree_node_t* node, str_t* result,
+                                                   void* ctx) {
   (void)ctx;
   return str_append_format(result, 2 + 16 + 1, "%p", node->data);
 }
 
-inline static ret_t tree_to_string_on_swap_default(const tree_node_t* node, str_t* result,
+inline static ret_t tree_to_string_on_next_default(const tree_node_t* node, str_t* result,
                                                    void* ctx) {
   (void)node, (void)ctx;
   return str_append(result, "\n");
@@ -732,14 +732,14 @@ inline static ret_t tree_to_string_on_empty_default(const tree_node_t* node, str
   return str_append(result, "    ");
 }
 
-inline static ret_t tree_to_string_on_connect_child_default(const tree_node_t* node, str_t* result,
-                                                            void* ctx) {
+inline static ret_t tree_to_string_on_connect_default(const tree_node_t* node, str_t* result,
+                                                      void* ctx) {
   (void)ctx;
   return str_append(result, node->next_sibling != NULL ? "├── " : "└── ");
 }
 
-inline static ret_t tree_to_string_on_connect_sibling_default(const tree_node_t* node,
-                                                              str_t* result, void* ctx) {
+inline static ret_t tree_to_string_on_connect_extend_default(const tree_node_t* node, str_t* result,
+                                                             void* ctx) {
   (void)node, (void)ctx;
   return str_append(result, "│   ");
 }
@@ -757,7 +757,7 @@ static ret_t tree_to_string_on_visit(void* ctx, const void* data) {
   const tree_node_t* node = (const tree_node_t*)data;
 
   if (actx->result->size > 0) {
-    actx->handler->on_swap(node, actx->result, actx->handler->ctx);
+    actx->handler->on_next(node, actx->result, actx->handler->ctx);
   }
 
   if (node != NULL && node != actx->root) {
@@ -768,9 +768,9 @@ static ret_t tree_to_string_on_visit(void* ctx, const void* data) {
     for (iter = node; iter != NULL && iter != actx->root; iter = iter->parent) {
       str_t* iter_str = str_create(0);
       if (iter == node) {
-        actx->handler->on_connect_child(node, iter_str, actx->handler->ctx);
+        actx->handler->on_connect(node, iter_str, actx->handler->ctx);
       } else if (iter->next_sibling != NULL) {
-        actx->handler->on_connect_sibling(node, iter_str, actx->handler->ctx);
+        actx->handler->on_connect_extend(node, iter_str, actx->handler->ctx);
       } else {
         actx->handler->on_empty(node, iter_str, actx->handler->ctx);
       }
@@ -785,7 +785,7 @@ static ret_t tree_to_string_on_visit(void* ctx, const void* data) {
     darray_deinit(&stack);
   }
 
-  ret = actx->handler->on_append_node(node, actx->result, actx->handler->ctx);
+  ret = actx->handler->on_node(node, actx->result, actx->handler->ctx);
 
   return ret;
 }
@@ -793,19 +793,18 @@ static ret_t tree_to_string_on_visit(void* ctx, const void* data) {
 ret_t tree_to_string(tree_t* tree, tree_node_t* node, str_t* result,
                      tree_to_string_handler_t* handler) {
   tree_to_string_handler_t real_handler = {
-      .on_append_node = (handler != NULL && handler->on_append_node != NULL)
-                            ? handler->on_append_node
-                            : tree_to_string_on_append_node_default,
-      .on_swap = (handler != NULL && handler->on_swap != NULL) ? handler->on_swap
-                                                               : tree_to_string_on_swap_default,
+      .on_node = (handler != NULL && handler->on_node != NULL) ? handler->on_node
+                                                               : tree_to_string_on_node_default,
+      .on_next = (handler != NULL && handler->on_next != NULL) ? handler->on_next
+                                                               : tree_to_string_on_next_default,
       .on_empty = (handler != NULL && handler->on_empty != NULL) ? handler->on_empty
                                                                  : tree_to_string_on_empty_default,
-      .on_connect_child = (handler != NULL && handler->on_connect_child != NULL)
-                              ? handler->on_connect_child
-                              : tree_to_string_on_connect_child_default,
-      .on_connect_sibling = (handler != NULL && handler->on_connect_sibling != NULL)
-                                ? handler->on_connect_sibling
-                                : tree_to_string_on_connect_sibling_default,
+      .on_connect = (handler != NULL && handler->on_connect != NULL)
+                        ? handler->on_connect
+                        : tree_to_string_on_connect_default,
+      .on_connect_extend = (handler != NULL && handler->on_connect_extend != NULL)
+                               ? handler->on_connect_extend
+                               : tree_to_string_on_connect_extend_default,
       .ctx = (handler != NULL) ? handler->ctx : NULL,
   };
   tree_to_string_on_visit_ctx_t ctx = {

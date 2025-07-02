@@ -91,24 +91,23 @@ tree_node_t* tree_node_get_sibling(tree_node_t* node, uint32_t index);
  */
 tree_node_t* tree_node_get_child(tree_node_t* node, uint32_t index);
 
-typedef ret_t (*tree_to_string_on_append_node_t)(const tree_node_t* node, str_t* result, void* ctx);
-typedef ret_t (*tree_to_string_on_swap_t)(const tree_node_t* node, str_t* result, void* ctx);
+typedef ret_t (*tree_to_string_on_node_t)(const tree_node_t* node, str_t* result, void* ctx);
+typedef ret_t (*tree_to_string_on_next_t)(const tree_node_t* node, str_t* result, void* ctx);
 typedef ret_t (*tree_to_string_on_empty_t)(const tree_node_t* node, str_t* result, void* ctx);
-typedef ret_t (*tree_to_string_on_connect_child_t)(const tree_node_t* node, str_t* result,
-                                                   void* ctx);
-typedef ret_t (*tree_to_string_on_connect_sibling_t)(const tree_node_t* node, str_t* result,
-                                                     void* ctx);
+typedef ret_t (*tree_to_string_on_connect_t)(const tree_node_t* node, str_t* result, void* ctx);
+typedef ret_t (*tree_to_string_on_connect_extend_t)(const tree_node_t* node, str_t* result,
+                                                    void* ctx);
 
 /**
  * @struct tree_to_string_handler_t
  * 树结构转字符串处理。
  */
 typedef struct _tree_to_string_handler_t {
-  tree_to_string_on_append_node_t on_append_node;
-  tree_to_string_on_swap_t on_swap;
+  tree_to_string_on_node_t on_node;
+  tree_to_string_on_next_t on_next;
   tree_to_string_on_empty_t on_empty;
-  tree_to_string_on_connect_child_t on_connect_child;
-  tree_to_string_on_connect_sibling_t on_connect_sibling;
+  tree_to_string_on_connect_t on_connect;
+  tree_to_string_on_connect_extend_t on_connect_extend;
   void* ctx;
 } tree_to_string_handler_t;
 
