@@ -91,6 +91,27 @@ tree_node_t* tree_node_get_sibling(tree_node_t* node, uint32_t index);
  */
 tree_node_t* tree_node_get_child(tree_node_t* node, uint32_t index);
 
+typedef ret_t (*tree_to_string_on_append_node_t)(const tree_node_t* node, str_t* result, void* ctx);
+typedef ret_t (*tree_to_string_on_swap_t)(const tree_node_t* node, str_t* result, void* ctx);
+typedef ret_t (*tree_to_string_on_empty_t)(const tree_node_t* node, str_t* result, void* ctx);
+typedef ret_t (*tree_to_string_on_connect_child_t)(const tree_node_t* node, str_t* result,
+                                                   void* ctx);
+typedef ret_t (*tree_to_string_on_connect_sibling_t)(const tree_node_t* node, str_t* result,
+                                                     void* ctx);
+
+/**
+ * @struct tree_to_string_handler_t
+ * 树结构转字符串处理。
+ */
+typedef struct _tree_to_string_handler_t {
+  tree_to_string_on_append_node_t on_append_node;
+  tree_to_string_on_swap_t on_swap;
+  tree_to_string_on_empty_t on_empty;
+  tree_to_string_on_connect_child_t on_connect_child;
+  tree_to_string_on_connect_sibling_t on_connect_sibling;
+  void* ctx;
+} tree_to_string_handler_t;
+
 /**
  * @enum tree_foreach_type_t
  * @prefix TREE_FOREACH_TYPE_
@@ -448,12 +469,12 @@ int32_t tree_degree(tree_t* tree);
  * @param {tree_t*} tree 树结构对象。
  * @param {tree_node_t*} node 节点（为NULL时，遍历整个树）。
  * @param {str_t*} result 字符串对象。
- * @param {tk_visit_t} node_str_append_func 节点字符串追加函数。
+ * @param {tree_to_string_handler_t*} handler 树结构转字符串处理。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t tree_to_string(tree_t* tree, tree_node_t* node, str_t* result,
-                     tk_visit_t node_str_append_func);
+                     tree_to_string_handler_t* handler);
 
 /**
  * @method tree_set_node_allocator

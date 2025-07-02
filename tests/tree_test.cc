@@ -402,24 +402,23 @@ TEST(Tree, lowest_common_ancestor) {
   tree_deinit(&tree);
 }
 
-static ret_t tree_node_str_append(void* ctx, const void* data) {
-  const tree_node_t* node = (const tree_node_t*)(data);
-  str_t* str = (str_t*)(ctx);
-
-  return str_append_int(str, tk_pointer_to_int(node->data));
+static ret_t tree_to_string_on_append_node(const tree_node_t* node, str_t* result, void* ctx) {
+  (void)ctx;
+  return str_append_int(result, tk_pointer_to_int(node->data));
 }
 
 TEST(Tree, to_string) {
+  tree_to_string_handler_t handler = {tree_to_string_on_append_node};
   str_t str;
   str_init(&str, 1024);
   tree_t tree;
   ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
 
-  ASSERT_EQ(tree_to_string(&tree, NULL, &str, tree_node_str_append), RET_OK);
+  ASSERT_EQ(tree_to_string(&tree, NULL, &str, &handler), RET_OK);
   ASSERT_EQ(str.size, 0u);
 
   ASSERT_EQ(build_tree_for_test(&tree), RET_OK);
-  ASSERT_EQ(tree_to_string(&tree, NULL, &str, tree_node_str_append), RET_OK);
+  ASSERT_EQ(tree_to_string(&tree, NULL, &str, &handler), RET_OK);
   ASSERT_STREQ(str.str,
                "0\n"
                "├── 1\n"
@@ -440,7 +439,7 @@ TEST(Tree, to_string) {
                "    └── 32");
 
   tree_node_t* node3 = tree_find(&tree, NULL, TREE_FOREACH_TYPE_PREORDER, tk_pointer_from_int(3));
-  ASSERT_EQ(tree_to_string(&tree, node3, &str, tree_node_str_append), RET_OK);
+  ASSERT_EQ(tree_to_string(&tree, node3, &str, &handler), RET_OK);
   ASSERT_STREQ(str.str,
                "3\n"
                "├── 31\n"
