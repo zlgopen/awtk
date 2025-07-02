@@ -533,11 +533,15 @@ static ret_t on_theme_changed(void* ctx, const void* data) {
 }
 
 ret_t window_manager_on_theme_changed(widget_t* widget) {
+  assets_manager_t* am = assets_manager();
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  ENSURE(am != NULL);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  event_t e = event_init(EVT_THEME_CHANGED, iter);
-  widget_dispatch(iter, &e);
+  theme_change_event_t event;
+  event_t* e = theme_change_event_init(&event, EVT_THEME_CHANGED, am->theme);
+  e->target = iter;
+  widget_dispatch(iter, e);
   widget_foreach(iter, on_theme_changed, NULL);
   WIDGET_FOR_EACH_CHILD_END();
 

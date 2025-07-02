@@ -206,7 +206,7 @@ ret_t font_manager_set_standard_font_size(font_manager_t* fm, bool_t is_standard
 }
 
 bool_t font_manager_get_standard_font_size(font_manager_t* fm) {
-  return_value_if_fail(fm != NULL, NULL);
+  return_value_if_fail(fm != NULL, FALSE);
 
   return fm->standard_font_size;
 }
