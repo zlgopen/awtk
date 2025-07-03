@@ -1365,12 +1365,12 @@ double tk_normalize_rad(double value);
  * @method tk_rad_equal
  * 比较两个角度是否相等。
  * > 先转换到0到2*PI之间，然后比较。
- * @param {double} rad1 角度1(单位：弧度)。
- * @param {double} rad2 角度2(单位：弧度)。
+ * @param {double} r1 角度1(单位：弧度)。
+ * @param {double} r2 角度2(单位：弧度)。
  * @param {double} epsilon 精度。
  * @return {bool_t} 返回TRUE表示相等，否则表示不相等。
  */
-bool_t tk_rad_equal(double rad1, double rad2, double epsilon);
+bool_t tk_rad_equal(double r1, double r2, double epsilon);
 
 #define TK_STRDUP(str) ((str) != NULL) ? tk_strdup(str) : NULL
 #define TK_STRNDUP(str, len) ((str) != NULL) ? tk_strndup(str, len) : NULL

@@ -1511,7 +1511,8 @@ uint32_t tk_strnlen(const char* str, uint32_t maxlen) {
   const char* s;
   return_value_if_fail(str != NULL, 0);
 
-  for (s = str; maxlen-- && *s != '\0'; ++s);
+  for (s = str; maxlen-- && *s != '\0'; ++s)
+    ;
   return s - str;
 }
 
@@ -2687,11 +2688,11 @@ double tk_normalize_rad(double value) {
   return value;
 }
 
-bool_t tk_rad_equal(double rad1, double rad2, double epsilon) {
-  rad1 = tk_normalize_rad(rad1);
-  rad2 = tk_normalize_rad(rad2);
+bool_t tk_rad_equal(double r1, double r2, double epsilon) {
+  r1 = tk_normalize_rad(r1);
+  r2 = tk_normalize_rad(r2);
 
-  double diff = fabs(rad1 - rad2);
+  double diff = fabs(r1 - r2);
 
   double alt_diff = fabs(2 * M_PI - diff);
 
