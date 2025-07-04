@@ -369,9 +369,14 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
       /* 从底部的 edit 框切换到上面的 edit 框，界面不会跳变 */
       im->win_delta_y = tk_max(im->last_win_delta_y, im->win_delta_y);
       if (widget_is_normal_window(win)) {
-        tk_snprintf(anim_hint, sizeof(anim_hint), "vtranslate(" WINDOW_ANIMATOR_VTRANSLATE_PROP_PREV_WIN_Y_RANGE "=%d)", im->win_delta_y);
+        tk_snprintf(anim_hint, sizeof(anim_hint),
+                    "vtranslate(" WINDOW_ANIMATOR_VTRANSLATE_PROP_PREV_WIN_Y_RANGE "=%d)",
+                    im->win_delta_y);
       } else {
-        tk_snprintf(anim_hint, sizeof(anim_hint), "vtranslate(" WINDOW_ANIMATOR_VTRANSLATE_PROP_PREV_WIN_Y_RANGE "=%d," WINDOW_ANIMATOR_VTRANSLATE_PROP_PREV_WIN_INDEX "=%d)", im->win_delta_y, widget_index_of(win));
+        tk_snprintf(anim_hint, sizeof(anim_hint),
+                    "vtranslate(" WINDOW_ANIMATOR_VTRANSLATE_PROP_PREV_WIN_Y_RANGE
+                    "=%d," WINDOW_ANIMATOR_VTRANSLATE_PROP_PREV_WIN_INDEX "=%d)",
+                    im->win_delta_y, widget_index_of(win));
       }
       close_anim_hint = anim_hint;
     } else {
@@ -384,7 +389,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
     widget_on(im->keyboard, EVT_WINDOW_OPEN, on_push_window, im);
   } else if (win_is_keyboard && (win->y + win->h) < im->keyboard->y) {
     /*when new keyboard height is not eq old keyboard height*/
-    
+
     if (tk_str_eq(widget->vt->type, WIDGET_TYPE_MLEDIT) && widget_is_normal_window(win)) {
       /* 
        * 为了效果好一点，普通窗口的多行编辑框不能被 system_bar 挡住，所以把多行编辑框的 y 平移到 system_bar 下就好了。
@@ -514,6 +519,15 @@ static ret_t input_method_default_on_keyboard_close(void* ctx, event_t* e) {
     im->win = NULL;
     im->keyboard = NULL;
     input_method_set_target_widget(im, NULL);
+  }
+
+  if (im->timer_close_id != TK_INVALID_ID) {
+    const timer_info_t* timer = timer_find(im->timer_close_id);
+    timer_close_info_t* info = (timer_close_info_t*)(timer->ctx);
+    if (info->keyboard == widget) {
+      timer_remove(im->timer_close_id);
+      TKMEM_FREE(info);
+    }
   }
 
   return RET_REMOVE;
