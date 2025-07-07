@@ -1451,7 +1451,7 @@ static void glnvg__renderFill(void* uptr, NVGpaint* paint,
   call->image = paint->image;
   call->blendFunc = glnvg__blendCompositeOperation(compositeOperation);
 
-  if (fillMode == NVG_FILLMODE_All) {
+  if ((npaths == 1 && paths[0].convex) || (npaths > 1 && fillMode == NVG_FILLMODE_All)) {
     call->type = GLNVG_CONVEXFILL;
     call->triangleCount = 0;  // Bounding box fill quad not needed for convex fill
   }
