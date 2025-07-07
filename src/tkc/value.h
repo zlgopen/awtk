@@ -643,6 +643,17 @@ bool_t value_is_null(value_t* value);
 bool_t value_equal(const value_t* value, const value_t* other);
 
 /**
+ * @method value_compare
+ * 比较两个value。
+ * @annotation ["scriptable"]
+ * @param {const value_t*} value value对象。
+ * @param {const value_t*} other value对象。
+ *
+ * @return {int} 小于返回-1，等于返回0，大于返回1。
+ */
+int value_compare(const value_t* v, const value_t* other);
+
+/**
  * @method value_int
  * 转换为int的值。
  * @param {const value_t*} v value对象。

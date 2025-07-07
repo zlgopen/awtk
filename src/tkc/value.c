@@ -652,74 +652,112 @@ int value_int(const value_t* v) {
   return 0;
 }
 
-bool_t value_equal(const value_t* v, const value_t* other) {
-  return_value_if_fail(v != NULL && other != NULL, FALSE);
+int value_compare(const value_t* v, const value_t* other) {
+  return_value_if_fail(v != NULL && other != NULL, -1);
   if (v->type != other->type) {
-    return FALSE;
+    return -1;
   }
 
   switch (v->type) {
+    case VALUE_TYPE_BOOL: {
+      return v->value.b - other->value.b;
+    }
     case VALUE_TYPE_INT8: {
-      return v->value.i8 == other->value.i8;
+      return v->value.i8 - other->value.i8;
     }
     case VALUE_TYPE_UINT8: {
-      return v->value.u8 == other->value.u8;
+      if (v->value.u8 > other->value.u8) {
+        return v->value.u8 - other->value.u8;
+      } else {
+        return -(int)(other->value.u8 - v->value.u8);
+      }
     }
     case VALUE_TYPE_INT16: {
-      return v->value.i16 == other->value.i16;
+      return v->value.i16 - other->value.i16;
     }
     case VALUE_TYPE_UINT16: {
-      return v->value.u16 == other->value.u16;
+      if (v->value.u16 > other->value.u16) {
+        return v->value.u16 - other->value.u16;
+      } else {
+        return -(int)(other->value.u16 - v->value.u16);
+      }
     }
     case VALUE_TYPE_INT32: {
-      return v->value.i32 == other->value.i32;
+      return v->value.i32 - other->value.i32;
     }
     case VALUE_TYPE_UINT32: {
-      return v->value.u32 == other->value.u32;
+      if (v->value.u32 > other->value.u32) {
+        return v->value.u32 - other->value.u32;
+      } else {
+        return -(int)(other->value.u32 - v->value.u32);
+      }
     }
     case VALUE_TYPE_INT64: {
-      return v->value.i64 == other->value.i64;
-    }
-    case VALUE_TYPE_BOOL: {
-      return v->value.b == other->value.b;
-    }
-    case VALUE_TYPE_POINTER: {
-      return v->value.ptr == other->value.ptr;
-    }
-    case VALUE_TYPE_POINTER_REF: {
-      return v->value.ptr_ref == other->value.ptr_ref;
+      return v->value.i64 - other->value.i64;
     }
     case VALUE_TYPE_UINT64: {
-      return v->value.u64 == other->value.u64;
+      if (v->value.u64 > other->value.u64) {
+        return v->value.u64 - other->value.u64;
+      } else {
+        return -(int)(other->value.u64 - v->value.u64);
+      }
+    }
+    case VALUE_TYPE_POINTER: {
+      return pointer_compare(v->value.ptr, other->value.ptr);
+    }
+    case VALUE_TYPE_POINTER_REF: {
+      return pointer_compare(v->value.ptr_ref, other->value.ptr_ref);
     }
     case VALUE_TYPE_FLOAT: {
-      return tk_fequal(v->value.f, other->value.f);
+      if (tk_fequal(v->value.f, other->value.f)) {
+        return 0;
+      } else if (v->value.f > other->value.f) {
+        return 1;
+      } else {
+        return -1;
+      }
     }
     case VALUE_TYPE_FLOAT32: {
-      return tk_fequal(v->value.f32, other->value.f32);
+      if (tk_fequal(v->value.f32, other->value.f32)) {
+        return 0;
+      } else if (v->value.f32 > other->value.f32) {
+        return 1;
+      } else {
+        return -1;
+      }
     }
     case VALUE_TYPE_DOUBLE: {
-      return tk_lfequal(v->value.f64, other->value.f64);
+      if (tk_fequal(v->value.f64, other->value.f64)) {
+        return 0;
+      } else if (v->value.f64 > other->value.f64) {
+        return 1;
+      } else {
+        return -1;
+      }
     }
     case VALUE_TYPE_STRING: {
-      return (v->value.str == other->value.str) || tk_str_eq(v->value.str, other->value.str);
+      return tk_str_cmp(v->value.str, other->value.str);
     }
     case VALUE_TYPE_WSTRING: {
-      return (v->value.wstr == other->value.wstr) || tk_wstr_eq(v->value.wstr, other->value.wstr);
+      return tk_wstrcmp(v->value.wstr, other->value.wstr);
     }
     case VALUE_TYPE_BINARY:
     case VALUE_TYPE_GRADIENT:
     case VALUE_TYPE_UBJSON: {
-      return (v->value.binary_data.data == other->value.binary_data.data);
+      return pointer_compare(v->value.binary_data.data, other->value.binary_data.data);
     }
     case VALUE_TYPE_OBJECT: {
-      return tk_object_compare(v->value.object, other->value.object) == 0;
+      return tk_object_compare(v->value.object, other->value.object);
     }
     default:
       break;
   }
 
-  return FALSE;
+  return -1;
+}
+
+bool_t value_equal(const value_t* v, const value_t* other) {
+  return value_compare(v, other) == 0;
 }
 
 value_t* value_set_int(value_t* v, int32_t value) {
