@@ -1519,7 +1519,7 @@ static nvgp_bool_t nvgp_gl_render_convex_fill_by_color(nvgp_gl_context_t* gl, nv
   int32_t max_verts, offset;
   nvgp_gl_frag_uniforms_t* frag = NULL;
   nvgp_path_t* path = nvgp_darray_get_ptr(paths, 0, nvgp_path_t);
-  if (paint->image == 0 && fill_mode == NVGP_FILLMODE_All) {
+  if (paint->image == 0 && ((paths->size == 1 && path->convex) || (paths->size > 1 && fill_mode == NVGP_FILLMODE_All))) {
     nvgp_gl_call_convex_fill_t* call = NVGP_ZALLOC(nvgp_gl_call_convex_fill_t);
     nvgp_gl_path_t* gl_path = nvgp_darray_get_empty_data_by_tail(&gl->paths);
     if (call == NULL || gl_path == NULL) {
