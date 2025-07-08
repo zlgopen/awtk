@@ -23,7 +23,7 @@
 #include "base/event_queue.h"
 
 event_queue_t* event_queue_create(uint16_t capacity) {
-  uint16_t size = 0;
+  uint32_t size = 0;
   event_queue_t* q = NULL;
   return_value_if_fail(capacity > 1, NULL);
 
