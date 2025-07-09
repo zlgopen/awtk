@@ -119,6 +119,37 @@ tk_object_t* tk_object_clone(tk_object_t* obj) {
   return obj->vt->clone(obj);
 }
 
+#ifndef WITHOUT_FSCRIPT
+static ret_t object_fscript_exec_func(fscript_t* fscript, fscript_args_t* args, value_t* v) {
+  ret_t ret = RET_OK;
+  const char* cmd = NULL;
+  const char* param = NULL;
+  tk_object_t* obj = TK_OBJECT(fscript->curr->ctx);
+  FSCRIPT_FUNC_CHECK(obj != NULL, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  cmd = value_str(args->args);
+  param = value_str(args->args + 1);
+
+  ret = tk_object_exec(obj, cmd, param);
+  value_set_int(v, ret);
+
+  return RET_OK;
+}
+
+static ret_t object_fscript_exec_ex_func(fscript_t* fscript, fscript_args_t* args, value_t* v) {
+  const char* cmd = NULL;
+  const char* param = NULL;
+  tk_object_t* obj = TK_OBJECT(fscript->curr->ctx);
+  FSCRIPT_FUNC_CHECK(obj != NULL, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  cmd = value_str(args->args);
+  param = value_str(args->args + 1);
+  value_set_int(v, 0);
+
+  return tk_object_exec_ex(obj, cmd, param, v);
+}
+#endif/*WITHOUT_FSCRIPT*/
+
 static ret_t object_get_prop_by_name(tk_object_t* obj, const char* name, value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   return_value_if_fail(obj != NULL && obj->vt != NULL, RET_BAD_PARAMS);
@@ -128,7 +159,18 @@ static ret_t object_get_prop_by_name(tk_object_t* obj, const char* name, value_t
   if (obj->vt->get_prop != NULL) {
     ret = obj->vt->get_prop(obj, name, v);
   }
-
+  
+#ifndef WITHOUT_FSCRIPT
+  if (ret == RET_NOT_FOUND) {
+    if (tk_str_eq(name, TK_OBJECT_EXEC)) {
+      value_set_func(v, (void*)object_fscript_exec_func);
+      return RET_OK;
+    } else if (tk_str_eq(name, TK_OBJECT_EXEC_EX)) {
+      value_set_func(v, (void*)object_fscript_exec_ex_func);
+      return RET_OK;
+    }
+  }
+#endif/*WITHOUT_FSCRIPT*/
   return ret;
 }
 

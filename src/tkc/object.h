@@ -1239,6 +1239,9 @@ typedef enum _tk_object_life_t {
   TK_OBJECT_LIFE_HOLD
 } tk_object_life_t;
 
+#define TK_OBJECT_EXEC "exec"
+#define TK_OBJECT_EXEC_EX "exec_ex"
+
 END_C_DECLS
 
 #endif /*TK_OBJECT_H*/

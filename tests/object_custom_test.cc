@@ -1,5 +1,7 @@
-﻿#include "tkc/object.h"
-#include "gtest/gtest.h"
+﻿#include "gtest/gtest.h"
+#include "tkc/fscript.h"
+#include "tkc/object.h"
+#include "tkc/object_default.h"
 
 typedef struct _object_custom_t {
   tk_object_t obj;
@@ -203,4 +205,38 @@ TEST(ObjectCustom, exec_ex) {
   ASSERT_STREQ(value_str(&result), "ok");
 
   TK_OBJECT_UNREF(obj);
+}
+
+TEST(ObjectCustom, fscript1) {
+  tk_object_t* obj_fscript = object_default_create();
+  tk_object_t* obj = object_custom_create();
+  value_t result = {};
+
+  tk_object_set_prop_object(obj_fscript, "self", obj);
+
+  fscript_eval(obj_fscript, "self.exec_ex('cmd1', '')", &result);
+  ASSERT_STREQ(value_str(&result), "ok");
+  
+  fscript_eval(obj_fscript, "self.exec_ex('cmd_not_exist', '')", &result);
+  ASSERT_EQ(value_int(&result), RET_NOT_FOUND);
+
+  TK_OBJECT_UNREF(obj);
+  TK_OBJECT_UNREF(obj_fscript);
+}
+
+TEST(ObjectCustom, fscript2) {
+  tk_object_t* obj_fscript = object_default_create();
+  tk_object_t* obj = object_custom_create();
+  value_t result = {};
+
+  tk_object_set_prop_object(obj_fscript, "self", obj);
+
+  fscript_eval(obj_fscript, "self.exec('cmd0', '')", &result);
+  ASSERT_EQ(value_int(&result), RET_OK);
+  
+  fscript_eval(obj_fscript, "self.exec('cmd_not_exist', '')", &result);
+  ASSERT_EQ(value_int(&result), RET_NOT_FOUND);
+
+  TK_OBJECT_UNREF(obj);
+  TK_OBJECT_UNREF(obj_fscript);
 }

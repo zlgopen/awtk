@@ -3407,11 +3407,24 @@ static ret_t fscript_func_call_init_func(fscript_func_call_t* call, tk_object_t*
 
   if (func == NULL) {
     value_t v;
-    if (tk_object_get_prop(obj, func_name, &v) == RET_OK && v.type == VALUE_TYPE_FUNC_DEF) {
-      fscript_function_def_t* def = (fscript_function_def_t*)value_func_def(&v);
-      if (def != NULL) {
-        func = func_function;
-        call->ctx = def;
+    if (tk_object_get_prop_by_path(obj, func_name, &v) == RET_OK) {
+      if (v.type == VALUE_TYPE_FUNC_DEF) {
+        fscript_function_def_t* def = (fscript_function_def_t*)value_func_def(&v);
+        if (def != NULL) {
+          func = func_function;
+          call->ctx = def;
+        }
+      } else if (v.type == VALUE_TYPE_FUNC) {
+        char object_name[MAX_PATH + 1] = {0};
+        const char* p = strrchr(func_name, '.');
+
+        func = value_func(&v);
+        if (p != NULL) {
+          tk_strncpy(object_name, func_name, p - func_name);
+          call->ctx = tk_object_get_prop_object(obj, object_name);
+        } else {
+          call->ctx = obj;
+        }
       }
     }
   }
