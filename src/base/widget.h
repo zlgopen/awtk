@@ -624,17 +624,6 @@ struct _widget_t {
  */
 
 /**
- * @event {event_t} EVT_WIDGET_WILL_RESTACK_CHILD
- * 控件即将调整子控件位置序数。
- * 在该的回调函数中返回RET_STOP停止调整动作。
- */
-
-/**
- * @event {event_t} EVT_WIDGET_RESTACK_CHILD
- * 控件调整子控件位置序数。
- */
-
-/**
  * @event {prop_change_event_t} EVT_PROP_WILL_CHANGE
  * 控件属性改变前触发(通过set_prop设置属性，才会触发)。
  */

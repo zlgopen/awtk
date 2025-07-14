@@ -1,4 +1,7 @@
 # 最新动态
+2025/07/14
+  * 移除EVT_WIDGET_RESTACK_CHILD的事件注释(感谢福明提供补丁)
+
 2025/07/09
   * fscript 支持 obj.exec/obj.exec_ex
 
