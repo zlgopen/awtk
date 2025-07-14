@@ -267,6 +267,9 @@ static ret_t pages_on_destroy(widget_t* widget) {
   if (pages->focused_idle_id != TK_INVALID_ID) {
     idle_remove(pages->focused_idle_id);
   }
+  if (pages->page_focused_idle_id != TK_INVALID_ID) {
+    idle_remove(pages->page_focused_idle_id);
+  }
 
   str_reset(&(pages->str_target));
 
