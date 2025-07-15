@@ -241,19 +241,15 @@ static ret_t children_layouter_default_get_param(children_layouter_t* layouter, 
 }
 
 static ret_t children_layouter_default_layout(children_layouter_t* layouter, widget_t* widget) {
-  wh_t w = 0;
-  wh_t h = 0;
-  xy_t x = 0;
-  xy_t y = 0;
+  ret_t ret = RET_OK;
+  wh_t w = 0, h = 0;
+  xy_t x = 0, y = 0;
   uint32_t i = 0;
   uint32_t n = 0;
-  uint32_t rows = 0;
-  uint32_t cols = 0;
+  uint32_t rows = 0, cols = 0;
   uint8_t spacing = 0;
-  int32_t layout_w = 0;
-  int32_t layout_h = 0;
-  uint8_t x_margin = 0;
-  uint8_t y_margin = 0;
+  int32_t layout_w = 0, layout_h = 0;
+  uint8_t x_margin = 0, y_margin = 0;
   rect_t area = {0, 0, 0, 0};
   widget_t* iter = NULL;
   widget_t** children = NULL;
@@ -315,7 +311,10 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
     h = layout_h - 2 * y_margin;
     w = layout_w - 2 * x_margin - (n - 1) * spacing;
 
-    goto_error_if_fail(h > 0 && w > 0);
+    if (!(h > 0 && w > 0)) {
+      ret = RET_SKIP;
+      goto exit;
+    }
 
     area = rect_init(0, 0, w, h);
     for (i = 0; i < n; i++) {
@@ -362,7 +361,11 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
   } else if (cols == 1 && rows == 0) { /*vbox*/
     w = layout_w - 2 * x_margin;
     h = layout_h - 2 * y_margin - (n - 1) * spacing;
-    goto_error_if_fail(w > 0 && h > 0);
+
+    if (!(w > 0 && h > 0)) {
+      ret = RET_SKIP;
+      goto exit;
+    }
 
     area = rect_init(0, 0, w, h);
     for (i = 0; i < n; i++) {
@@ -410,7 +413,11 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
       h = (rows - 1) * spacing + rows * item_h;
       y_margin = (layout_h - h) >> 1;
     }
-    goto_error_if_fail(item_w > 0 && item_h > 0);
+
+    if (!(item_w > 0 && item_h > 0)) {
+      ret = RET_SKIP;
+      goto exit;
+    }
 
     x = x_margin;
     y = y_margin;
@@ -457,10 +464,10 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
     log_debug("not supported(rows=%d, cols=%d)\n", rows, cols);
   }
 
-error:
+exit:
   darray_deinit(&(children_for_layout));
 
-  return RET_OK;
+  return ret;
 }
 
 static bool_t children_layouter_default_is_valid(children_layouter_t* layouter) {
