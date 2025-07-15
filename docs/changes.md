@@ -1,4 +1,8 @@
 # 最新动态
+
+2025/07/15
+  * 增加文档[如何让 json 文件和 object 之间相互转换](how_to_convert_between_json_file_and_object.md) (感谢兆坤提供补丁)。
+
 2025/07/14
   * 移除EVT_WIDGET_RESTACK_CHILD的事件注释(感谢福明提供补丁)
   * 修复pages控件销毁时没有移除idle的问题(感谢福明提供补丁)
