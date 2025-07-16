@@ -317,7 +317,7 @@ static ret_t edit_ex_suggest_words_item_formats_parse(edit_ex_t* edit_ex, const 
                        len - 2 - (brace_left - item_format)); /* 去掉 {} 和名称 */
 
       ret = edit_ex_suggest_words_item_format_parse(edit_ex, str_format.str, item);
-      return_value_if_fail(ret == RET_OK, ret);
+      return_value_if_fail(ret == RET_OK, (str_reset(&str_format), ret));
 
       darray_push(result, item);
 
