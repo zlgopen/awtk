@@ -2,6 +2,7 @@
 
 2025/07/16
   * 完善date类型编辑框的校验(感谢培煌提供补丁)
+  * 修复 edit_ex(感谢兆坤提供补丁)
 
 2025/07/15
   * 增加文档[如何让 json 文件和 object 之间相互转换](how_to_convert_between_json_file_and_object.md) (感谢兆坤提供补丁)。

@@ -154,22 +154,23 @@ static ret_t edit_ex_on_event(widget_t* widget, event_t* e) {
 
   switch (type) {
     case EVT_KEY_DOWN: {
-      key_event_t* evt = (key_event_t*)e;
-      int32_t key = evt->key;
-      if (RET_OK == edit_ex_suggest_words_focus_by_key(widget, key)) {
+      key_event_t* evt = key_event_cast(e);
+      if (RET_OK == edit_ex_suggest_words_focus_by_key(widget, evt->key)) {
         return RET_STOP;
       }
-      break;
-    }
+      edit_ex_suggest_words_enable_focus(widget, FALSE);
+    } break;
+    case EVT_KEY_UP: {
+      edit_ex_suggest_words_enable_focus(widget, TRUE);
+    } break;
     case EVT_FOCUS: {
       ret = widget_vtable_on_event_by_parent(widget, e, WIDGET_VTABLE_GET_VTABLE(edit_ex));
       edit_ex_show_suggest_words(widget);
       return ret;
-    }
+    } break;
     case EVT_VALUE_CHANGING: {
       edit_ex_show_suggest_words(widget);
-      break;
-    }
+    } break;
     default: {
     } break;
   }

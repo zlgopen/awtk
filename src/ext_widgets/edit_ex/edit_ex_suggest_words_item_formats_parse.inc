@@ -30,10 +30,10 @@ BEGIN_C_DECLS
 
 #include "tkc/darray.h"
 #include "tkc/tokenizer.h"
+#include "base/widget_factory.h"
 #include "widgets/label.h"
 #include "widgets/view.h"
 #include "widgets/combo_box_item.h"
-#include "base/widget_factory.h"
 
 /**
  * @const EDIT_EX_SUGGEST_WORDS_ITEM_FORMAT_PREFIX
@@ -46,7 +46,8 @@ static int model_items_format_name_compare(widget_t* iter, const char* name) {
   return tk_str_cmp(iter_name, name);
 }
 
-static widget_t* edit_ex_suggest_words_model_items_find(darray_t* model_items, const char* name) {
+inline static widget_t* edit_ex_suggest_words_model_items_find(darray_t* model_items,
+                                                               const char* name) {
   if (TK_STR_IS_EMPTY(name)) {
     name = "[0]";
   }
@@ -59,7 +60,7 @@ static widget_t* edit_ex_suggest_words_model_items_find(darray_t* model_items, c
   }
 }
 
-static widget_t* edit_ex_suggest_words_create_item(edit_ex_t* edit_ex, widget_t* parent) {
+inline static widget_t* edit_ex_suggest_words_create_item(edit_ex_t* edit_ex, widget_t* parent) {
   widget_t* ret = NULL;
   return_value_if_fail(edit_ex != NULL, NULL);
 
@@ -72,7 +73,8 @@ static widget_t* edit_ex_suggest_words_create_item(edit_ex_t* edit_ex, widget_t*
   return ret;
 }
 
-static widget_t* edit_ex_suggest_words_create_separator(edit_ex_t* edit_ex, widget_t* parent) {
+inline static widget_t* edit_ex_suggest_words_create_separator(edit_ex_t* edit_ex,
+                                                               widget_t* parent) {
   widget_t* ret = NULL;
   const char* style = NULL;
   char param[128] = {'\0'};
@@ -93,7 +95,8 @@ static widget_t* edit_ex_suggest_words_create_separator(edit_ex_t* edit_ex, widg
   return ret;
 }
 
-static widget_t* edit_ex_suggest_words_create_separator_view(edit_ex_t* edit_ex, widget_t* parent) {
+inline static widget_t* edit_ex_suggest_words_create_separator_view(edit_ex_t* edit_ex,
+                                                                    widget_t* parent) {
   widget_t* ret = view_create(parent, 0, 0, 0, 0);
   (void)edit_ex;
   widget_set_name(ret, "@separator_view");
@@ -104,8 +107,8 @@ static widget_t* edit_ex_suggest_words_create_separator_view(edit_ex_t* edit_ex,
   return ret;
 }
 
-static const char* edit_ex_suggest_words_find_pair_char(const char* str, char rep_char,
-                                                        char pair_char) {
+inline static const char* edit_ex_suggest_words_find_pair_char(const char* str, char rep_char,
+                                                               char pair_char) {
   const char* ret = str;
   uint32_t need_num = 1;
 
@@ -126,7 +129,7 @@ static const char* edit_ex_suggest_words_find_pair_char(const char* str, char re
   return ret;
 }
 
-static str_t* edit_ex_suggest_words_create_str_by_slice(const char* start, const char* end) {
+inline static str_t* edit_ex_suggest_words_create_str_by_slice(const char* start, const char* end) {
   str_t* ret = NULL;
   return_value_if_fail(start != NULL && end != NULL && end >= start, NULL);
 
@@ -136,7 +139,8 @@ static str_t* edit_ex_suggest_words_create_str_by_slice(const char* start, const
   return ret;
 }
 
-static widget_t* edit_ex_suggest_words_widget_create_by_type(widget_t* parent, const char* type) {
+inline static widget_t* edit_ex_suggest_words_widget_create_by_type(widget_t* parent,
+                                                                    const char* type) {
   widget_t* ret = NULL;
   if (TK_STR_IS_NOT_EMPTY(type)) {
     ret = widget_factory_create_widget(widget_factory(), type, parent, 0, 0, 0, 0);

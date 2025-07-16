@@ -46,9 +46,7 @@ static ret_t edit_ex_suggest_words_popup_on_open(void* ctx, event_t* e) {
   widget_t* window = WIDGET(e->target);
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
 
-  widget_set_sensitive(window, TRUE);
-
-  return RET_OK;
+  return widget_set_sensitive(window, !edit_ex->edit.is_key_inputing);
 }
 
 static ret_t edit_ex_suggest_words_popup_on_close(void* ctx, event_t* e) {
@@ -60,7 +58,24 @@ static ret_t edit_ex_suggest_words_popup_on_close(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static inline bool_t edit_ex_widget_set_prop_is_support(const char* name) {
+static ret_t edit_ex_suggest_words_popup_on_key_down(void* ctx, event_t* e) {
+  edit_ex_t* edit_ex = EDIT_EX(ctx);
+  key_event_t* evt = key_event_cast(e);
+  return_value_if_fail(edit_ex != NULL && evt != NULL, RET_BAD_PARAMS);
+
+  if (TK_KEY_BACKSPACE == evt->key || TK_KEY_DELETE == evt->key) {
+    /* 将删除操作转抛给 edit_ex */
+    key_event_t clone_evt = *evt;
+    widget_dispatch(WIDGET(edit_ex), &clone_evt.e);
+    clone_evt.e.type = EVT_KEY_UP;
+    widget_dispatch(WIDGET(edit_ex), &clone_evt.e);
+    return RET_STOP;
+  }
+
+  return RET_OK;
+}
+
+inline static bool_t edit_ex_widget_set_prop_is_support(const char* name) {
   const char* not_support_props[] = {
       WIDGET_PROP_NAME,
   };
@@ -87,7 +102,8 @@ static ret_t edit_ex_widget_set_prop_by_object_on_visit(void* ctx, const void* d
   return RET_OK;
 }
 
-static widget_t* edit_ex_create_suggest_words_hbar_create(edit_ex_t* edit_ex, widget_t* popup) {
+inline static widget_t* edit_ex_create_suggest_words_hbar_create(edit_ex_t* edit_ex,
+                                                                 widget_t* popup) {
   tk_object_t* obj_props = NULL;
   char param[128] = {'\0'};
   widget_t* list_view = widget_lookup(popup, EDIT_EX_SUGGEST_WORDS_UI_NAME_LIST_VIEW, TRUE);
@@ -104,8 +120,8 @@ static widget_t* edit_ex_create_suggest_words_hbar_create(edit_ex_t* edit_ex, wi
   return hbar;
 }
 
-static ret_t edit_ex_create_suggest_words_vbar_init(edit_ex_t* edit_ex, widget_t* vbar,
-                                                    widget_t* popup) {
+inline static ret_t edit_ex_create_suggest_words_vbar_init(edit_ex_t* edit_ex, widget_t* vbar,
+                                                           widget_t* popup) {
   tk_object_t* obj_props = NULL;
   char param[128] = {'\0'};
   widget_t* hbar = widget_lookup(popup, EDIT_EX_SUGGEST_WORDS_UI_NAME_HBAR, TRUE);
@@ -126,8 +142,9 @@ static ret_t edit_ex_create_suggest_words_vbar_init(edit_ex_t* edit_ex, widget_t
   return RET_OK;
 }
 
-static ret_t edit_ex_create_suggest_words_scroll_view_init(edit_ex_t* edit_ex,
-                                                           widget_t* scroll_view, widget_t* popup) {
+inline static ret_t edit_ex_create_suggest_words_scroll_view_init(edit_ex_t* edit_ex,
+                                                                  widget_t* scroll_view,
+                                                                  widget_t* popup) {
   tk_object_t* obj_props = NULL;
   char param[128] = {'\0'};
   widget_t* hbar = widget_lookup(popup, EDIT_EX_SUGGEST_WORDS_UI_NAME_HBAR, TRUE);
@@ -281,7 +298,16 @@ static ret_t edit_ex_suggest_words_popup_on_item_click(void* ctx, event_t* e) {
   return edit_ex_suggest_words_popup_confirm(widget, item);
 }
 
-static ret_t edit_ex_suggest_words_focus_by_key(widget_t* widget, int32_t key) {
+inline static ret_t edit_ex_suggest_words_enable_focus(widget_t* widget, bool_t enable) {
+  edit_ex_t* edit_ex = EDIT_EX(widget);
+  return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
+  if (edit_ex->suggest_words_popup != NULL) {
+    widget_set_sensitive(edit_ex->suggest_words_popup, enable);
+  }
+  return RET_OK;
+}
+
+static ret_t edit_ex_suggest_words_focus_by_key(widget_t* widget, uint32_t key) {
   ret_t ret = RET_SKIP;
   edit_ex_t* edit_ex = EDIT_EX(widget);
   return_value_if_fail(edit_ex != NULL, RET_BAD_PARAMS);
@@ -289,6 +315,9 @@ static ret_t edit_ex_suggest_words_focus_by_key(widget_t* widget, int32_t key) {
   if (edit_ex->suggest_words_popup != NULL) {
     if (key == TK_KEY_DOWN) {
       ret = widget_focus_first(edit_ex->suggest_words_popup);
+      if (RET_OK == ret) {
+        widget_set_sensitive(edit_ex->suggest_words_popup, TRUE);
+      }
     }
   }
 
@@ -559,7 +588,7 @@ static ret_t edit_ex_update_suggest_words_popup(widget_t* widget) {
   return RET_OK;
 }
 
-static ret_t edit_ex_suggest_words_popup_calc_position(widget_t* widget, point_t* p) {
+inline static ret_t edit_ex_suggest_words_popup_calc_position(widget_t* widget, point_t* p) {
   /* base on combo_box_combobox_popup_calc_position() */
   widget_t* wm = window_manager();
   edit_ex_t* edit_ex = EDIT_EX(widget);
@@ -605,12 +634,15 @@ static ret_t edit_ex_update_suggest_words(widget_t* widget, const char* input) {
     edit_ex->suggest_words_popup = edit_ex_create_suggest_words_popup(widget);
     return_value_if_fail(edit_ex->suggest_words_popup != NULL, RET_FAIL);
 
-    /* 为了焦点不移动到 suggest_words_popup 上，所以打开前先将 sensitive 设置为 FALSE，打开窗口后再设置为 TRUE。 */
+    /* 为了焦点不移动到 suggest_words_popup 上，所以打开前先将 sensitive 设置为 FALSE，打开窗口后若没有处于输入中时再设置为 TRUE。 */
     widget_set_sensitive(edit_ex->suggest_words_popup, FALSE);
     widget_on(edit_ex->suggest_words_popup, EVT_WINDOW_OPEN, edit_ex_suggest_words_popup_on_open,
               widget);
 
     widget_on(edit_ex->suggest_words_popup, EVT_WINDOW_CLOSE, edit_ex_suggest_words_popup_on_close,
+              widget);
+
+    widget_on(edit_ex->suggest_words_popup, EVT_KEY_DOWN, edit_ex_suggest_words_popup_on_key_down,
               widget);
   }
 
