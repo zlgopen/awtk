@@ -85,6 +85,7 @@ typedef struct _vgcanvas_nanovg_t {
 
 vgcanvas_t* VGCANVAS_CREATE_GL(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
                             void* win) {
+  int32_t flags = 0;
   native_window_info_t info;
   native_window_t* window = NATIVE_WINDOW(win);
   return_value_if_fail(native_window_get_info(win, &info) == RET_OK, NULL);
@@ -99,8 +100,18 @@ vgcanvas_t* VGCANVAS_CREATE_GL(uint32_t w, uint32_t h, uint32_t stride, bitmap_f
   nanovg->base.ratio = info.ratio;
 
 #if defined(WITH_NANOVG_PLUS_GPU)
+#if !defined(WITH_ANTIALIAS) || defined(WITH_OPENGL_HW_ANTIALIAS)
+  flags = NVGP_GL_FLAG_STENCIL_STROKES;
+#else
+  flags = NVGP_GL_FLAG_ANTIALIAS | NVGP_GL_FLAG_STENCIL_STROKES;
+#endif
   nanovg->base.vt = vgcanvas_nanovg_plus_get_vt();
 #else
+#if !defined(WITH_ANTIALIAS) || defined(WITH_OPENGL_HW_ANTIALIAS)
+  flags = NVG_STENCIL_STROKES;
+#else
+  flags = NVG_ANTIALIAS | NVG_STENCIL_STROKES;
+#endif
   nanovg->base.vt = &vt;
 #endif
 
@@ -109,15 +120,15 @@ vgcanvas_t* VGCANVAS_CREATE_GL(uint32_t w, uint32_t h, uint32_t stride, bitmap_f
   opengl_init();
 
 #if defined(WITH_NANOVG_PLUS_GPU)
-  nanovg->vg = nvgp_create(NVGP_MODE_GPU, w, h);
+  nanovg->vg = nvgp_create(NVGP_MODE_GPU, w, h, flags);
 #elif defined(WITH_NANOVG_GL2)
-  nanovg->vg = nvgCreateGL2(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
+  nanovg->vg = nvgCreateGL2(flags);
 #elif defined(WITH_NANOVG_GL3)
-  nanovg->vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
+  nanovg->vg = nvgCreateGL3(flags);
 #elif defined(WITH_NANOVG_GLES2)
-  nanovg->vg = nvgCreateGLES2(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
+  nanovg->vg = nvgCreateGLES2(flags);
 #elif defined(WITH_NANOVG_GLES3)
-  nanovg->vg = nvgCreateGLES3(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
+  nanovg->vg = nvgCreateGLES3(flags);
 #endif
 
   if (nanovg->vg == NULL) {

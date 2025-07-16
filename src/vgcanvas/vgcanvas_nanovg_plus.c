@@ -315,6 +315,7 @@ ret_t vgcanvas_asset_manager_nanovg_plus_bitmap_destroy(void* vg, void* specific
 
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
                             void* win) {
+  uint32_t flags = 0;
   native_window_info_t info;
   native_window_t* window = NATIVE_WINDOW(win);
   return_value_if_fail(native_window_get_info(win, &info) == RET_OK, NULL);
@@ -333,7 +334,12 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
 
   opengl_init();
 
-  nanovg->vg = nvgp_create(NVGP_MODE_GPU, w, h);
+#if !defined(WITH_ANTIALIAS) || defined(WITH_OPENGL_HW_ANTIALIAS)
+  flags = NVGP_GL_FLAG_STENCIL_STROKES;
+#else
+  flags = NVGP_GL_FLAG_ANTIALIAS | NVGP_GL_FLAG_STENCIL_STROKES;
+#endif
+  nanovg->vg = nvgp_create(NVGP_MODE_GPU, w, h, flags);
 
   if (nanovg->vg == NULL) {
     assert(!"OpenGL is not supported!");

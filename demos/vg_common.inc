@@ -546,10 +546,10 @@ static void draw_fill_mode_test(vgcanvas_t* vg, vgcanvas_fill_mode_t fill_mode) 
   vgcanvas_line_to(vg, 0, 40);
   vgcanvas_close_path(vg);
 
-  vgcanvas_move_to(vg, 10, 10);
-  vgcanvas_line_to(vg, 10, 30);
-  vgcanvas_line_to(vg, 30, 30);
-  vgcanvas_line_to(vg, 30, 10);
+  vgcanvas_move_to(vg, 10, 20);
+  vgcanvas_line_to(vg, 10, 40);
+  vgcanvas_line_to(vg, 30, 40);
+  vgcanvas_line_to(vg, 30, 20);
   vgcanvas_close_path(vg);
 
   vgcanvas_move_to(vg, 15, 15);

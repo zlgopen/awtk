@@ -224,10 +224,11 @@ nvgp_context_t* nvgp_create_by_vt(uint32_t w, uint32_t h, const nvgp_vtable_t* v
  * @param {nvgp_mode_t} nvgp_mode 矢量画布类型
  * @param {uint32_t} w 矢量画布宽
  * @param {uint32_t} h 矢量画布高
+ * @param {uint32_t} flags flags
  * 
  * @return {nvgp_context_t*} 成功返回矢量画布对象。
  */
-nvgp_context_t* nvgp_create(nvgp_mode_t nvgp_mode, uint32_t w, uint32_t h);
+nvgp_context_t* nvgp_create(nvgp_mode_t nvgp_mode, uint32_t w, uint32_t h, uint32_t flags);
 
 /**
  * @method nvgp_destroy

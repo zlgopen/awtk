@@ -227,14 +227,14 @@ error:
   return NULL;
 }
 
-nvgp_context_t* nvgp_create(nvgp_mode_t nvgp_mode, uint32_t w, uint32_t h) {
+nvgp_context_t* nvgp_create(nvgp_mode_t nvgp_mode, uint32_t w, uint32_t h, uint32_t flags) {
   nvgp_context_t* context = NVGP_ZALLOC(nvgp_context_t);
   if (context != NULL) {
 #ifdef WITH_NANOVG_PLUS_GPU
     if (nvgp_mode == NVGP_MODE_GPU) {
       FONSparams fontParams;
       context->vt = nvgp_gl_vtable();
-      context->vt_ctx = nvgp_gl_create(NVGP_GL_FLAG_ANTIALIAS | NVGP_GL_FLAG_STENCIL_STROKES);
+      context->vt_ctx = nvgp_gl_create(flags);
 
       NVGP_MEMSET(&fontParams, 0, sizeof(fontParams));
       fontParams.width = NVGP_INIT_FONTIMAGE_SIZE;

@@ -680,6 +680,11 @@ static ret_t sdl_init_gl(void) {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 #endif
 
+#if defined(WITH_ANTIALIAS) && defined(WITH_OPENGL_HW_ANTIALIAS)
+  SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);  // 启用多重采样缓冲
+  SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);  // 4倍采样
+#endif
+
   log_debug("Init opengl done.\n");
   return RET_OK;
 }
