@@ -33,7 +33,7 @@ static bool_t edit_date_part_len_is_valid(uint32_t index, uint32_t len) {
     return len == 4;
   } else {
     /*month/day*/
-    return len == 2;
+    return len > 0 && len <= 2;
   }
 }
 
