@@ -58,18 +58,31 @@ static ret_t edit_ex_suggest_words_popup_on_close(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t edit_ex_suggest_words_popup_on_key_down(void* ctx, event_t* e) {
+static ret_t edit_ex_suggest_words_popup_on_key_down_before_children(void* ctx, event_t* e) {
   edit_ex_t* edit_ex = EDIT_EX(ctx);
   key_event_t* evt = key_event_cast(e);
   return_value_if_fail(edit_ex != NULL && evt != NULL, RET_BAD_PARAMS);
 
-  if (TK_KEY_BACKSPACE == evt->key || TK_KEY_DELETE == evt->key) {
-    /* 将删除操作转抛给 edit_ex */
-    key_event_t clone_evt = *evt;
-    widget_dispatch(WIDGET(edit_ex), &clone_evt.e);
-    clone_evt.e.type = EVT_KEY_UP;
-    widget_dispatch(WIDGET(edit_ex), &clone_evt.e);
-    return RET_STOP;
+  switch (evt->key) {
+    /* 删除 */
+    case TK_KEY_DELETE:
+    case TK_KEY_BACKSPACE:
+    /* 移动光标 */
+    case TK_KEY_LEFT:
+    case TK_KEY_RIGHT: {
+      /* 转抛给 edit_ex */
+      key_event_t clone_evt = *evt;
+
+      clone_evt.e.type = EVT_KEY_DOWN;
+      widget_dispatch(WIDGET(edit_ex), &clone_evt.e);
+
+      clone_evt.e.type = EVT_KEY_UP;
+      widget_dispatch(WIDGET(edit_ex), &clone_evt.e);
+
+      return RET_STOP;
+    } break;
+    default: {
+    } break;
   }
 
   return RET_OK;
@@ -642,8 +655,8 @@ static ret_t edit_ex_update_suggest_words(widget_t* widget, const char* input) {
     widget_on(edit_ex->suggest_words_popup, EVT_WINDOW_CLOSE, edit_ex_suggest_words_popup_on_close,
               widget);
 
-    widget_on(edit_ex->suggest_words_popup, EVT_KEY_DOWN, edit_ex_suggest_words_popup_on_key_down,
-              widget);
+    widget_on(edit_ex->suggest_words_popup, EVT_KEY_DOWN_BEFORE_CHILDREN,
+              edit_ex_suggest_words_popup_on_key_down_before_children, widget);
   }
 
   edit_ex_update_suggest_words_popup(widget);
