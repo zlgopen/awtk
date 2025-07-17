@@ -2,7 +2,7 @@ import os
 import sys
 import platform
 
-OS_NAME=platform.system()
+OS_NAME=os.environ['TARGET_OS'];
 
 env=DefaultEnvironment().Clone()
 BIN_DIR=os.environ['BIN_DIR'];

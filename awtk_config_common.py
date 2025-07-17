@@ -16,10 +16,11 @@ OS_NAME = platform.system()
 import subprocess
 
 def is_raspberrypi():
-  if OS_NAME == "Windows":
+  try:
+    result = str(subprocess.check_output(["uname", "-a"]))
+    return result.find('Linux raspberrypi') >= 0
+  except Exception as e:
     return False
-  result = str(subprocess.check_output(["uname", "-a"]))
-  return result.find('Linux raspberrypi') >= 0
 
 #######################################################
 # XXX: This file can be edited only in tkc project
@@ -136,6 +137,7 @@ elif OS_NAME == 'Linux':
     OS_LINKFLAGS = ' -Wl,-rpath=./bin -Wl,-rpath=./ '
     if is_raspberrypi():
       OS_FLAGS = OS_FLAGS + ' -DRASPBERRYPI '
+      OS_LIBS = OS_LIBS + ['atomic']
       os.environ['RASPBERRYPI'] = 'true'
     
     SDL_VIDEODRIVER=os.getenv('SDL_VIDEODRIVER');

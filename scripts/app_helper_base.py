@@ -8,7 +8,6 @@ import res_config
 import compile_config
 from SCons import Script, Environment
 
-PLATFORM = platform.system()
 
 SRT_SCONS_CONFIG_FUN = 'get_scons_config'
 SRT_SCONS_CONFIG_SCRIPT = 'SCONS_CONFIG_SCRIPT'
@@ -122,7 +121,7 @@ class AppHelperBase:
         return self
 
     def add_platform_libs(self, plat, PLATFORM_LIBS):
-        if plat == PLATFORM:
+        if plat == self.OS_NAME:
             self.PLATFORM_LIBS += PLATFORM_LIBS
         return self
 
@@ -131,7 +130,7 @@ class AppHelperBase:
         return self
 
     def add_platform_libpath(self, plat, APP_LIBPATH):
-        if plat == PLATFORM:
+        if plat == self.OS_NAME:
             self.APP_LIBPATH += APP_LIBPATH
         return self
 
@@ -140,7 +139,7 @@ class AppHelperBase:
         return self
 
     def add_platform_cpppath(self, plat, APP_CPPPATH):
-        if plat == PLATFORM:
+        if plat == self.OS_NAME:
             self.APP_CPPPATH += APP_CPPPATH
         return self
 
@@ -153,12 +152,12 @@ class AppHelperBase:
         return self
 
     def add_platform_ccflags(self, plat, APP_CCFLAGS):
-        if plat == PLATFORM:
+        if plat == self.OS_NAME:
             self.APP_CCFLAGS += APP_CCFLAGS
         return self
 
     def use_std_cxx(self, VERSION):
-      if platform.system() == 'Windows':
+      if self.OS_NAME == 'Windows':
         self.APP_CXXFLAGS += ' /std:c++'+str(VERSION)+' '
       else:
         self.APP_CXXFLAGS += ' -std=c++'+str(VERSION)+' '
@@ -168,7 +167,7 @@ class AppHelperBase:
         return self
 
     def add_platform_cxxflags(self, plat, APP_CXXFLAGS):
-        if plat == PLATFORM:
+        if plat == self.OS_NAME:
             self.APP_CXXFLAGS += APP_CXXFLAGS
         return self
 
@@ -177,7 +176,7 @@ class AppHelperBase:
         return self
 
     def add_platform_linkflags(self, plat, APP_LINKFLAGS):
-        if plat == PLATFORM:
+        if plat == self.OS_NAME:
             self.APP_LINKFLAGS += APP_LINKFLAGS
         return self
 
@@ -323,6 +322,7 @@ class AppHelperBase:
         os.environ['APP_ROOT'] = self.APP_ROOT
         os.environ['BIN_DIR'] = self.APP_BIN_DIR
         os.environ['LIB_DIR'] = self.APP_LIB_DIR
+        os.environ['TARGET_OS'] = self.OS_NAME
         os.environ['LINUX_FB'] = 'false'
         os.environ['BUILD_DIR'] = self.BUILD_DIR
         if self.LINUX_FB:
@@ -528,7 +528,7 @@ class AppHelperBase:
         self.APP_CCFLAGS = APP_CCFLAGS + self.compile_helper.get_value('FLAGS', '')
         self.APP_CXXFLAGS = ''
 
-        if PLATFORM == 'Linux':
+        if self.OS_NAME == 'Linux':
             self.APP_LINKFLAGS += ' -Wl,-rpath=' + self.APP_BIN_DIR + ' '
 
         if not self.isBuildShared() and hasattr(awtk, 'AWTK_CCFLAGS'):
@@ -543,8 +543,6 @@ class AppHelperBase:
             if awtk.TOOLS_NAME != '':
                 if awtk.TOOLS_NAME == 'mingw':
                     self.APP_TOOLS = ['mingw']
-            elif awtk.TOOLS_NAME == '' and PLATFORM == 'Windows':
-                APP_TOOLS = ['msvc', 'masm', 'mslink', "mslib"]
 
         os.environ['BUILD_SHARED'] = str(self.isBuildShared())
         if LCD_ORIENTATION == '90' or LCD_ORIENTATION == '270' :
@@ -704,7 +702,8 @@ class AppHelperBase:
                 AR=awtk.AR,
                 STRIP=awtk.STRIP,
                 RANLIB=awtk.RANLIB,
-                TOOLS=APP_TOOLS,
+                TOOLS=['gcc', 'g++', 'gnulink', 'ar', 'gas', 'gfortran', 'm4'],
+                PROGPREFIX='',PROGSUFFIX='',LIBPREFIX='lib',LIBSUFFIX='.a',SHLIBPREFIX='lib',SHLIBSUFFIX='.so',LIBPREFIXES=['lib'],LIBSUFFIXES=['.a', '.so'],
                 CPPPATH=CPPPATH,
                 LINKFLAGS=LINKFLAGS,
                 LIBS=LIBS,

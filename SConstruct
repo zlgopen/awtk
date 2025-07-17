@@ -12,14 +12,11 @@ compile_config.set_curr_config(compile_helper)
 import awtk_config as awtk
 
 APP_TOOLS = ['default']
-OS_NAME = platform.system()
 awtk.scons_db_check_and_remove()
 
 if awtk.TOOLS_NAME != '' :
   if awtk.TOOLS_NAME == 'mingw':
     APP_TOOLS = ['mingw']
-elif awtk.TOOLS_NAME == '' and OS_NAME == 'Windows':
-    APP_TOOLS = ['msvc', 'masm', 'mslink', "mslib"]
 
 awtk.genIdlAndDef();
 DefaultEnvironment(TOOLS = APP_TOOLS,
@@ -90,6 +87,7 @@ SConscriptFiles += awtk.OS_PROJECTS
 os.environ['TK_ROOT'] = awtk.TK_ROOT;
 os.environ['BIN_DIR'] = awtk.TK_BIN_DIR;
 os.environ['LIB_DIR'] = awtk.TK_LIB_DIR;
+os.environ['TARGET_OS'] = awtk.OS_NAME;
 os.environ['AWTK_SHARED_LIBS'] = ';'.join(awtk.SHARED_LIBS);
 
 SConscript(SConscriptFiles)

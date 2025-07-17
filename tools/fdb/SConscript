@@ -4,7 +4,7 @@ import platform
 env=DefaultEnvironment().Clone()
 BIN_DIR=os.environ['BIN_DIR'];
 
-OS_NAME = platform.system();
+OS_NAME=os.environ['TARGET_OS'];
 CROSS_COMPILE='CROSS_COMPILE' in os.environ and os.environ['CROSS_COMPILE'] == 'True'
 if not CROSS_COMPILE:
   LIBS=env['LIBS']

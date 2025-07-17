@@ -9,7 +9,6 @@ NANOVG_BACKEND = os.environ['NANOVG_BACKEND']
 VGCANVAS = os.environ['VGCANVAS']
 NATIVE_WINDOW = os.environ['NATIVE_WINDOW']
 GRAPHIC_BUFFER = os.environ['GRAPHIC_BUFFER']
-TOOLS_NAME = os.environ['TOOLS_NAME']
 
 BASE_SOURCES = Glob('layouters/*.c') + \
     Glob('base/*.c') + \
