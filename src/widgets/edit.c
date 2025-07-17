@@ -658,7 +658,7 @@ static ret_t edit_pointer_up_cleanup(widget_t* widget) {
   return_value_if_fail(edit != NULL && widget != NULL, RET_BAD_PARAMS);
 
   widget_ungrab(widget->parent, widget);
-  widget_set_state(widget, WIDGET_STATE_NORMAL);
+  edit_update_status(widget);
 
   return RET_OK;
 }
