@@ -414,6 +414,7 @@ static void stroke_lines(vgcanvas_t* vg) {
 
   /*************************************************/
   vgcanvas_translate(vg, 50, 0);
+  vgcanvas_save(vg);
   vgcanvas_set_line_width(vg, 2);
   vgcanvas_set_line_cap(vg, VGCANVAS_LINE_CAP_BUTT);
 
@@ -435,11 +436,13 @@ static void stroke_lines(vgcanvas_t* vg) {
   vgcanvas_move_to(vg, points[0].x, points[0].y);
   vgcanvas_line_to(vg, points[1].x, points[1].y);
   vgcanvas_stroke(vg);
+  vgcanvas_restore(vg);
   /*************************************************/
   const uint32_t dashed_on = 2;
   const uint32_t dashed_off = 2;
   vgcanvas_translate(vg, 50, 0);
-  vgcanvas_set_line_width(vg, 1);
+  vgcanvas_save(vg);
+  vgcanvas_set_stroke_color(vg, color_parse("violet"));
 
   vgcanvas_begin_path(vg);
 
@@ -456,6 +459,7 @@ static void stroke_lines(vgcanvas_t* vg) {
   build_dashed_line_path(vg, point_init(0, 0), point_init(25, 50), dashed_on, dashed_off);
 
   vgcanvas_stroke(vg);
+  vgcanvas_restore(vg);
   /*************************************************/
 
   vgcanvas_restore(vg);

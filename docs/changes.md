@@ -2,6 +2,7 @@
 2025/07/18
   * slist_remove_ex 替换 slist_remove_with_compare (感谢兆坤提供补丁)
   * 修复 agge 画线时，有空路径绘制会不正常的问题(感谢兆坤提供补丁)
+  * 完善demovg(感谢兆坤提供补丁)
 
 2025/07/17
   * 完善edit_ex(感谢兆坤提供补丁)
