@@ -133,15 +133,14 @@ ret_t timer_manager_all_remove_by_ctx_and_type(timer_manager_t* timer_manager, u
   timer_info_t timer;
   return_value_if_fail(timer_manager != NULL, RET_BAD_PARAMS);
 
-  return slist_remove_with_compare(&(timer_manager->timers),
-                                   timer_info_init_dummy_with_ctx_and_type(&timer, type, ctx),
-                                   timer_info_compare_by_ctx_and_type, -1);
+  return slist_remove_ex(&(timer_manager->timers), timer_info_compare_by_ctx_and_type,
+                         timer_info_init_dummy_with_ctx_and_type(&timer, type, ctx), -1);
 }
 
 ret_t timer_manager_all_remove_by_ctx(timer_manager_t* timer_manager, void* ctx) {
   return_value_if_fail(timer_manager != NULL, RET_BAD_PARAMS);
 
-  return slist_remove_with_compare(&(timer_manager->timers), ctx, timer_info_compare_by_ctx, -1);
+  return slist_remove_ex(&(timer_manager->timers), timer_info_compare_by_ctx, ctx, -1);
 }
 
 ret_t timer_manager_remove(timer_manager_t* timer_manager, uint32_t timer_id) {

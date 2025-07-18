@@ -67,15 +67,14 @@ ret_t idle_manager_remove_all_by_ctx_and_type(idle_manager_t* idle_manager, uint
   idle_info_t idle;
   return_value_if_fail(idle_manager != NULL, RET_BAD_PARAMS);
 
-  return slist_remove_with_compare(&(idle_manager->idles),
-                                   idle_info_init_dummy_with_ctx_and_type(&idle, type, ctx),
-                                   idle_info_compare_by_ctx_and_type, -1);
+  return slist_remove_ex(&(idle_manager->idles), idle_info_compare_by_ctx_and_type,
+                         idle_info_init_dummy_with_ctx_and_type(&idle, type, ctx), -1);
 }
 
 ret_t idle_manager_remove_all_by_ctx(idle_manager_t* idle_manager, void* ctx) {
   return_value_if_fail(idle_manager != NULL, RET_BAD_PARAMS);
 
-  return slist_remove_with_compare(&(idle_manager->idles), ctx, idle_info_compare_by_ctx, -1);
+  return slist_remove_ex(&(idle_manager->idles), idle_info_compare_by_ctx, ctx, -1);
 }
 
 ret_t idle_manager_destroy(idle_manager_t* idle_manager) {

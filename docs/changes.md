@@ -1,4 +1,6 @@
 # 最新动态
+2025/07/18
+  * slist_remove_ex 替换 slist_remove_with_compare (感谢兆坤提供补丁)
 
 2025/07/17
   * 完善edit_ex(感谢兆坤提供补丁)
