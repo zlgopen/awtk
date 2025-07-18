@@ -468,6 +468,9 @@ void renderStroke(void* uptr, NVGpaint* paint, NVGcompositeOperationState compos
 
   for (int i = 0; i < npaths; i++) {
     const NVGpath* p = paths + i;
+    if (p->count <= 0) {
+      continue;
+    }
     agge::nanovg_vertex::iterator iter(p->stroke, p->nstroke);
     agge::path_generator_adapter<agge::nanovg_vertex::iterator, agge::stroke> path_gen(iter,
                                                                                        line_style);
