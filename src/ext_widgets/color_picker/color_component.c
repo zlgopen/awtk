@@ -316,6 +316,8 @@ ret_t color_component_set_color(widget_t* widget, color_t c) {
   color_component_t* color_component = COLOR_COMPONENT(widget);
   return_value_if_fail(color_component != NULL, RET_BAD_PARAMS);
 
+  color_component_ensure_image(widget);
+
   color_component->c = c;
   convertRGBtoHSV(c.rgba.r, c.rgba.g, c.rgba.b, &H, &S, &V);
   if (color_component->update == color_component_update_sv) {
@@ -338,6 +340,8 @@ ret_t color_component_set_hsv(widget_t* widget, float h, float s, float v) {
   color_t* c;
   color_component_t* color_component = COLOR_COMPONENT(widget);
   return_value_if_fail(color_component != NULL, RET_BAD_PARAMS);
+
+  color_component_ensure_image(widget);
 
   c = &(color_component->c);
   convertHSVtoRGB(h, s, v, &(c->rgba.r), &(c->rgba.g), &(c->rgba.b));
