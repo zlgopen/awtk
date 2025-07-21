@@ -1372,6 +1372,24 @@ double tk_normalize_rad(double value);
  */
 bool_t tk_rad_equal(double r1, double r2, double epsilon);
 
+/**
+ * @method tk_str_trim_left
+ * 去除字符串左边的指定字符。
+ * @param {char*} str 字符串。
+ * @param {const char*} chars 要去除的字符集。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_str_trim_left(char* str, const char* chars);
+
+/**
+ * @method tk_str_trim_right
+ * 去除字符串右边的指定字符。
+ * @param {char*} str 字符串。
+ * @param {const char*} chars 要去除的字符集。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_str_trim_right(char* str, const char* chars);
+
 #define TK_STRDUP(str) ((str) != NULL) ? tk_strdup(str) : NULL
 #define TK_STRNDUP(str, len) ((str) != NULL) ? tk_strndup(str, len) : NULL
 

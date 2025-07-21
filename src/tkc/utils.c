@@ -1511,8 +1511,7 @@ uint32_t tk_strnlen(const char* str, uint32_t maxlen) {
   const char* s;
   return_value_if_fail(str != NULL, 0);
 
-  for (s = str; maxlen-- && *s != '\0'; ++s)
-    ;
+  for (s = str; maxlen-- && *s != '\0'; ++s);
   return s - str;
 }
 
@@ -2697,4 +2696,32 @@ bool_t tk_rad_equal(double r1, double r2, double epsilon) {
   double alt_diff = fabs(2 * M_PI - diff);
 
   return (diff <= epsilon) || (alt_diff <= epsilon);
+}
+
+ret_t tk_str_trim_left(char* str, const char* chars) {
+  const char* p = str;
+  return_value_if_fail(str != NULL && chars != NULL, RET_BAD_PARAMS);
+
+  while (*p && strchr(chars, *p) != NULL) {
+    p++;
+  }
+
+  if (p != str) {
+    memmove(str, p, strlen(p) + 1);
+  }
+
+  return RET_OK;
+}
+
+ret_t tk_str_trim_right(char* str, const char* chars) {
+  char* p = str + strlen(str) - 1;
+  return_value_if_fail(str != NULL && chars != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(p >= str, RET_BAD_PARAMS);
+
+  while (p >= str && strchr(chars, *p) != NULL) {
+    p--;
+  }
+  *(p + 1) = '\0';
+  
+  return RET_OK;
 }

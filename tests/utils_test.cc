@@ -2117,27 +2117,27 @@ TEST(Utils, tk_isxxx) {
   ASSERT_TRUE(tk_isdigit('0'));
   ASSERT_TRUE(!tk_isdigit(-1));
   ASSERT_TRUE(!tk_isdigit(160));
-  
+
   ASSERT_TRUE(tk_isxdigit('a'));
   ASSERT_TRUE(!tk_isxdigit(-1));
   ASSERT_TRUE(!tk_isxdigit(160));
-  
+
   ASSERT_TRUE(tk_isprint('a'));
   ASSERT_TRUE(!tk_isprint(-1));
   ASSERT_TRUE(!tk_isprint(160));
-  
+
   ASSERT_TRUE(tk_isalpha('a'));
   ASSERT_TRUE(!tk_isalpha(-1));
   ASSERT_TRUE(!tk_isalpha(160));
-  
+
   ASSERT_TRUE(tk_islower('a'));
   ASSERT_TRUE(!tk_islower(-1));
   ASSERT_TRUE(!tk_islower(160));
-  
+
   ASSERT_TRUE(tk_isupper('A'));
   ASSERT_TRUE(!tk_isupper(-1));
   ASSERT_TRUE(!tk_isupper(160));
-  
+
   ASSERT_TRUE(tk_isalnum('a'));
   ASSERT_TRUE(!tk_isalnum(-1));
   ASSERT_TRUE(!tk_isalnum(160));
@@ -2155,4 +2155,68 @@ static ret_t test_return_ret_if_fail(void) {
 
 TEST(Utils, return_ret_if_fail) {
   test_return_ret_if_fail();
+}
+
+TEST(Utils, tk_str_trim_left) {
+  char str[1024] = {0};
+
+  strncpy(str, "abc", sizeof(str));
+  ASSERT_EQ(tk_str_trim_left(str, " "), RET_OK);
+  ASSERT_STREQ(str, "abc");
+
+  strncpy(str, " abc", sizeof(str));
+  ASSERT_EQ(tk_str_trim_left(str, " "), RET_OK);
+  ASSERT_STREQ(str, "abc");
+
+  strncpy(str, "abc ", sizeof(str));
+  ASSERT_EQ(tk_str_trim_left(str, " "), RET_OK);
+  ASSERT_STREQ(str, "abc ");
+
+  strncpy(str, " abc ", sizeof(str));
+  ASSERT_EQ(tk_str_trim_left(str, " "), RET_OK);
+  ASSERT_STREQ(str, "abc ");
+
+  strncpy(str, "::;; abc", sizeof(str));
+  ASSERT_EQ(tk_str_trim_left(str, ":; "), RET_OK);
+  ASSERT_STREQ(str, "abc");
+
+  strncpy(str, "::;; abc", sizeof(str));
+  ASSERT_EQ(tk_str_trim_left(str, ":; "), RET_OK);
+  ASSERT_STREQ(str, "abc");
+
+  strncpy(str, "::;; ", sizeof(str));
+  ASSERT_EQ(tk_str_trim_left(str, ":; "), RET_OK);
+  ASSERT_STREQ(str, "");
+}
+
+TEST(Utils, tk_str_trim_right) {
+  char str[1024] = {0};
+
+  strncpy(str, "abc", sizeof(str));
+  ASSERT_EQ(tk_str_trim_right(str, " "), RET_OK);
+  ASSERT_STREQ(str, "abc");
+
+  strncpy(str, " abc", sizeof(str));
+  ASSERT_EQ(tk_str_trim_right(str, " "), RET_OK);
+  ASSERT_STREQ(str, " abc");
+
+  strncpy(str, " 123abc", sizeof(str));
+  ASSERT_EQ(tk_str_trim_right(str, " "), RET_OK);
+  ASSERT_STREQ(str, " 123abc");
+
+  strncpy(str, " abc ", sizeof(str));
+  ASSERT_EQ(tk_str_trim_right(str, " "), RET_OK);
+  ASSERT_STREQ(str, " abc");
+
+  strncpy(str, "::;; abc", sizeof(str));
+  ASSERT_EQ(tk_str_trim_right(str, ":; "), RET_OK);
+  ASSERT_STREQ(str, "::;; abc");
+
+  strncpy(str, "abc ::;; ", sizeof(str));
+  ASSERT_EQ(tk_str_trim_right(str, ":; "), RET_OK);
+  ASSERT_STREQ(str, "abc");
+
+  strncpy(str, "::;; ", sizeof(str));
+  ASSERT_EQ(tk_str_trim_right(str, ":; "), RET_OK);
+  ASSERT_STREQ(str, "");
 }

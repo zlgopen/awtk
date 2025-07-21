@@ -693,59 +693,29 @@ bool_t str_start_with(str_t* str, const char* text) {
 }
 
 ret_t str_trim_left(str_t* str, const char* text) {
-  uint32_t i = 0;
-  uint32_t k = 0;
-  char* p = str->str;
-  uint32_t n = str->size;
+  return_value_if_fail(text != NULL, RET_BAD_PARAMS);
   return_value_if_fail(str != NULL && str->str != NULL, RET_BAD_PARAMS);
 
   if (!str->size) {
     return RET_OK;
   }
 
-  if (text == NULL) {
-    text = " ";
-  }
-
-  for (i = 0; i < n; i++) {
-    char c = p[i];
-    if (strchr(text, c) == NULL) {
-      break;
-    }
-  }
-
-  str->size = n - i;
-  for (k = 0; i < n; i++, k++) {
-    p[k] = p[i];
-  }
-  str->str[str->size] = '\0';
+  tk_str_trim_left(str->str, text);
+  str->size = tk_strlen(str->str);
 
   return RET_OK;
 }
 
 ret_t str_trim_right(str_t* str, const char* text) {
-  int32_t i = 0;
-  char* p = str->str;
-  uint32_t n = str->size;
+  return_value_if_fail(text != NULL, RET_BAD_PARAMS);
   return_value_if_fail(str != NULL && str->str != NULL, RET_BAD_PARAMS);
 
   if (!str->size) {
     return RET_OK;
   }
 
-  if (text == NULL) {
-    text = " ";
-  }
-
-  for (i = n - 1; i >= 0; i--) {
-    char c = p[i];
-    if (strchr(text, c) == NULL) {
-      break;
-    }
-  }
-
-  p[i + 1] = '\0';
-  str->size = i + 1;
+  tk_str_trim_right(str->str, text);
+  str->size = tk_strlen(str->str);
 
   return RET_OK;
 }
