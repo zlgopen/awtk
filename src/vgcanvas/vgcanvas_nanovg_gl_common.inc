@@ -102,6 +102,9 @@ vgcanvas_t* VGCANVAS_CREATE_GL(uint32_t w, uint32_t h, uint32_t stride, bitmap_f
 #if defined(WITH_NANOVG_PLUS_GPU)
 #if !defined(WITH_ANTIALIAS) || defined(WITH_OPENGL_HW_ANTIALIAS)
   flags = NVGP_GL_FLAG_STENCIL_STROKES;
+  if (!window->supported_opengl_antialias_hw) {
+    flags |= NVGP_GL_FLAG_ANTIALIAS;
+  }
 #else
   flags = NVGP_GL_FLAG_ANTIALIAS | NVGP_GL_FLAG_STENCIL_STROKES;
 #endif
@@ -109,6 +112,9 @@ vgcanvas_t* VGCANVAS_CREATE_GL(uint32_t w, uint32_t h, uint32_t stride, bitmap_f
 #else
 #if !defined(WITH_ANTIALIAS) || defined(WITH_OPENGL_HW_ANTIALIAS)
   flags = NVG_STENCIL_STROKES;
+  if (!window->supported_opengl_antialias_hw) {
+    flags |= NVG_ANTIALIAS;
+  }
 #else
   flags = NVG_ANTIALIAS | NVG_STENCIL_STROKES;
 #endif

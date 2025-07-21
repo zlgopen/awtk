@@ -220,6 +220,12 @@ static native_window_t* native_window_create_internal(uint32_t w, uint32_t h, fl
   win->vt = &s_native_window_vtable;
   win->rect = rect_init(0, 0, w, h);
 
+#if defined(WITH_ANTIALIAS) && defined(WITH_OPENGL_HW_ANTIALIAS)
+  win->supported_opengl_antialias_hw = TRUE;
+#else
+  win->supported_opengl_antialias_hw = FALSE;
+#endif
+
   opengl_init();
 
   canvas_t* c = &(fb_gl->canvas);

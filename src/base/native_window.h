@@ -94,6 +94,7 @@ struct _native_window_t {
 
   void* handle;
   bool_t shared;
+  bool_t supported_opengl_antialias_hw;
 
   rect_t rect;
   float_t ratio;

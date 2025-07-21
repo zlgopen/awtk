@@ -336,6 +336,9 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
 
 #if !defined(WITH_ANTIALIAS) || defined(WITH_OPENGL_HW_ANTIALIAS)
   flags = NVGP_GL_FLAG_STENCIL_STROKES;
+  if (!window->supported_opengl_antialias_hw) {
+    flags |= NVGP_GL_FLAG_ANTIALIAS;
+  }
 #else
   flags = NVGP_GL_FLAG_ANTIALIAS | NVGP_GL_FLAG_STENCIL_STROKES;
 #endif

@@ -3,6 +3,7 @@
   * 增加 return_ret_if_fail
   * 修正颜色选择器的颜色分量没有正确显示初始值的问题(感谢福明提供补丁)
   * 增加 tk_str_trim_right/tk_str_trim_left
+  * 修复无法启动多重采样抗锯齿的情况下自动切换为软件抗锯齿(感谢智明提供补丁)。
 
 2025/07/18
   * slist_remove_ex 替换 slist_remove_with_compare (感谢兆坤提供补丁)

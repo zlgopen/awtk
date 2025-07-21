@@ -579,6 +579,13 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
 
 #ifndef WITH_NANOVG_SOFT
   flags |= SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI;
+
+#if defined(WITH_ANTIALIAS) && defined(WITH_OPENGL_HW_ANTIALIAS)
+  win->supported_opengl_antialias_hw = TRUE;
+#else
+  win->supported_opengl_antialias_hw = FALSE;
+#endif
+
 #endif /*WITH_NANOVG_SOFT*/
 
 #ifdef NATIVE_WINDOW_BORDERLESS
@@ -592,6 +599,15 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
       SDL_CreateRenderer(sdl->window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
   if (sdl->render == NULL) {
     sdl->render = SDL_CreateRenderer(sdl->window, -1, SDL_RENDERER_SOFTWARE);
+  }
+#elif defined(WITH_ANTIALIAS) && defined(WITH_OPENGL_HW_ANTIALIAS)
+  if (sdl->window == NULL) {
+    log_warn("Window could not be created! SDL_Error: %s !\n", SDL_GetError());
+    log_warn("OPENGL_ANTIALIAS not supported HW, changed SW !\n");
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);  // 启用多重采样缓冲
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);  // 4倍采样
+    sdl->window = SDL_CreateWindow(title, x, y, w, h, flags);
+    win->supported_opengl_antialias_hw = FALSE;
   }
 #endif /*WITH_NANOVG_SOFT*/
 
