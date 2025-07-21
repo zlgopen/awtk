@@ -410,6 +410,13 @@ typedef enum _ret_t {
       return (value);                  \
     }                                  \
   } while (0)
+#define return_ret_if_fail(p) \
+  do {                        \
+    ret_t __ret = p;          \
+    if (__ret != RET_OK) {    \
+      return __ret;           \
+    }                         \
+  } while (0)
 #else
 #define ENSURE(p) assert(p)
 #define goto_error_if_fail(p)                                                \
@@ -451,6 +458,14 @@ typedef enum _ret_t {
       log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
       return (value);                                                        \
     }                                                                        \
+  } while (0)
+#define return_ret_if_fail(p)                                                   \
+  do {                                                                          \
+    ret_t __ret = p;                                                            \
+    if (__ret != RET_OK) {                                                      \
+      log_warn("%s:%d " #p " != RET_OK!\n", __FUNCTION__, __LINE__); \
+      return __ret;                                                             \
+    }                                                                           \
   } while (0)
 #endif
 

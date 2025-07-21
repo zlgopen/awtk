@@ -1,4 +1,7 @@
 # 最新动态
+2025/07/21
+  * 增加 return_ret_if_fail
+
 2025/07/18
   * slist_remove_ex 替换 slist_remove_with_compare (感谢兆坤提供补丁)
   * 修复 agge 画线时，有空路径绘制会不正常的问题(感谢兆坤提供补丁)

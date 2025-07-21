@@ -2142,3 +2142,17 @@ TEST(Utils, tk_isxxx) {
   ASSERT_TRUE(!tk_isalnum(-1));
   ASSERT_TRUE(!tk_isalnum(160));
 }
+
+static ret_t return_ret_fail(void) {
+  return RET_FAIL;
+}
+
+static ret_t test_return_ret_if_fail(void) {
+  return_ret_if_fail(return_ret_fail());
+
+  return RET_OK;
+}
+
+TEST(Utils, return_ret_if_fail) {
+  test_return_ret_if_fail();
+}
