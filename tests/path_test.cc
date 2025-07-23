@@ -50,6 +50,20 @@ TEST(Path, extname_is) {
   ASSERT_EQ(path_extname_is("test.jpg", NULL), FALSE);
 }
 
+TEST(Path, path_extname_is_one_of) {
+  ASSERT_EQ(path_extname_is_one_of("test.bin", ".bin,.jpg"), TRUE);
+  ASSERT_EQ(path_extname_is_one_of("test.jpg", ".bin,.jpg"), TRUE);
+  ASSERT_EQ(path_extname_is_one_of("test.jpg", ".bin"), FALSE);
+  ASSERT_EQ(path_extname_is_one_of("test.jpg", ".bin,.JPG"), TRUE);
+  ASSERT_EQ(path_extname_is_one_of("test.jpg", ".JPG,png"), TRUE);
+  ASSERT_EQ(path_extname_is_one_of("test.jpg", ".bin,.JPG,png,jpeg"), TRUE);
+  ASSERT_EQ(path_extname_is_one_of("test.jpg", NULL), FALSE);
+  ASSERT_EQ(path_extname_is_one_of("test.txt", ".bin,.JPG,png,jpeg"), FALSE);
+  ASSERT_EQ(path_extname_is_one_of("test.txt", ""), FALSE);
+  ASSERT_EQ(path_extname_is_one_of("test.txt", NULL), FALSE);
+  ASSERT_EQ(path_extname_is_one_of(NULL, NULL), FALSE);
+}
+
 TEST(Path, extname) {
   char result[MAX_PATH + 1];
   ASSERT_EQ(path_extname("/a/test.bin", result, sizeof(result)), RET_OK);

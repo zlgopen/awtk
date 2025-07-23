@@ -77,6 +77,34 @@ ret_t path_extname(const char* path, char* result, int32_t size) {
   return RET_FAIL;
 }
 
+bool_t path_extname_is(const char* path, const char* extname) {
+  char extname_local[64] = {0};
+  return_value_if_fail(path != NULL && extname != NULL, FALSE);
+
+  path_extname(path, extname_local, sizeof(extname_local));
+
+  return strcasecmp(extname_local, extname) == 0;
+}
+
+bool_t path_extname_is_one_of(const char* path, const char* extnames) {
+  const char* p = NULL;
+  char extname_local[64] = {0};
+  return_value_if_fail(path != NULL && extnames != NULL, FALSE);
+
+  p = strchr(extnames, ',');
+  while (p != NULL) {
+    tk_strncpy(extname_local, extnames, p - extnames);
+    if (path_extname_is(path, extname_local)) {
+      return TRUE;
+    }
+    extnames = p + 1;
+    p = strchr(extnames, ',');
+  }
+
+  tk_strncpy(extname_local, extnames, sizeof(extname_local) - 1);
+  return path_extname_is(path, extname_local);
+}
+
 ret_t path_dirname(const char* path, char* result, int32_t size) {
   const char* p = NULL;
   const char* p1 = NULL;
@@ -320,14 +348,6 @@ ret_t path_remove_last_slash(char* path) {
   }
 
   return RET_OK;
-}
-
-bool_t path_extname_is(const char* path, const char* extname) {
-  const char* p = NULL;
-  return_value_if_fail(path != NULL && extname != NULL, FALSE);
-
-  p = strrchr(path, '.');
-  return (p != NULL && tk_str_ieq(p, extname));
 }
 
 ret_t path_app_root_ex(char path[MAX_PATH + 1], const char* subpath) {

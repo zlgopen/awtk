@@ -88,6 +88,20 @@ ret_t path_extname(const char* path, char* result, int32_t size);
  */
 bool_t path_extname_is(const char* path, const char* extname);
 
+bool_t path_extname_is(const char* path, const char* extname);
+
+/**
+ * @method path_extname_is_one_of
+ *
+ * 检查是否是指定的扩展名之一。
+ *
+ * @param {const char*} path 路径。
+ * @param {const char*} extnames 扩展名列表(用逗号分隔)。例如：".jpg,.png"。
+ *
+ * @return {bool_t} 返回TRUE表示是，否则表示不是。
+ */
+bool_t path_extname_is_one_of(const char* path, const char* extnames);
+
 /**
  * @method path_dirname
  *
