@@ -19,7 +19,7 @@ if awtk.TOOLS_NAME != '' :
     APP_TOOLS = ['mingw']
 
 awtk.genIdlAndDef();
-DefaultEnvironment(TOOLS = APP_TOOLS,
+env = DefaultEnvironment(TOOLS = APP_TOOLS,
   CCFLAGS = awtk.AWTK_CCFLAGS + awtk.BUILD_DEBUG_FLAG,
   LIBS = awtk.LIBS,
   LIBPATH = awtk.LIBPATH,
@@ -29,6 +29,9 @@ DefaultEnvironment(TOOLS = APP_TOOLS,
   OS_SUBSYSTEM_CONSOLE=awtk.OS_SUBSYSTEM_CONSOLE,
   OS_SUBSYSTEM_WINDOWS=awtk.OS_SUBSYSTEM_WINDOWS
 )
+
+if awtk.OS_NAME == 'Darwin':
+  env.AppendUnique(SHLINKFLAGS=['-install_name', '@rpath/$TARGET.name'])
 
 SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
   '3rd/cjson/SConscript',

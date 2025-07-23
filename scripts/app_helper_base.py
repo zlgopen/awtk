@@ -529,7 +529,9 @@ class AppHelperBase:
         self.APP_CXXFLAGS = ''
 
         if self.OS_NAME == 'Linux':
-            self.APP_LINKFLAGS += ' -Wl,-rpath=' + self.APP_BIN_DIR + ' '
+            self.APP_LINKFLAGS += ' \'-Wl,-rpath,$$ORIGIN/\' '
+        elif self.OS_NAME == 'Darwin':
+            self.APP_LINKFLAGS += ' -Wl,-rpath,@loader_path/ '
 
         if not self.isBuildShared() and hasattr(awtk, 'AWTK_CCFLAGS'):
             self.AWTK_CCFLAGS = awtk.AWTK_CCFLAGS
@@ -752,6 +754,9 @@ class AppHelperBase:
         def variant_SConscript(env, SConscriptFiles):
             self.SConscript(SConscriptFiles)
         env.AddMethod(variant_SConscript, "SConscript")
+
+        if self.OS_NAME == 'Darwin':
+            env.AppendUnique(SHLINKFLAGS=['-install_name', '@rpath/$TARGET.name'])
 
         if not Script.GetOption('clean'):
             self.prepare()
