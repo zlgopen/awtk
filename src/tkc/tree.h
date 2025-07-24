@@ -185,7 +185,7 @@ typedef struct _tree_t {
   mem_allocator_t* node_allocator;
 
   /**
-   * @property {mem_allocator_t*} node_allocator_is_shared
+   * @property {bool_t} node_allocator_is_shared
    * 节点内存分配器是否共享。
    */
   bool_t node_allocator_is_shared;
