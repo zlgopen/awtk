@@ -88,8 +88,6 @@ ret_t path_extname(const char* path, char* result, int32_t size);
  */
 bool_t path_extname_is(const char* path, const char* extname);
 
-bool_t path_extname_is(const char* path, const char* extname);
-
 /**
  * @method path_extname_is_one_of
  *
