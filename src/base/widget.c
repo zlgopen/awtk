@@ -349,7 +349,7 @@ ret_t widget_add_value_int(widget_t* widget, int32_t delta) {
   return widget_set_value_int(widget, widget_get_value_int(widget) + delta);
 }
 
-static ret_t widget_animate_prop_float_to(widget_t* widget, const char* name, float_t value,
+ret_t widget_animate_prop_float_to(widget_t* widget, const char* name, float_t value,
                                           uint32_t duration) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && name != NULL, RET_BAD_PARAMS);
@@ -369,7 +369,27 @@ static ret_t widget_animate_prop_float_to(widget_t* widget, const char* name, fl
   return ret;
 }
 
+ret_t widget_animate_position_to(widget_t* widget, xy_t x, xy_t y, uint32_t duration) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
+
+  widget_animate_prop_float_to(widget, WIDGET_PROP_X, x, duration);
+  widget_animate_prop_float_to(widget, WIDGET_PROP_Y, y, duration);
+
+  return RET_OK;
+}
+
+ret_t widget_animate_size_to(widget_t* widget, wh_t w, wh_t h, uint32_t duration) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
+
+  widget_animate_prop_float_to(widget, WIDGET_PROP_W, w, duration);
+  widget_animate_prop_float_to(widget, WIDGET_PROP_H, h, duration);
+
+  return RET_OK;
+}
+
 ret_t widget_animate_value_to(widget_t* widget, float_t value, uint32_t duration) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
+  
   return widget_animate_prop_float_to(widget, WIDGET_PROP_VALUE, value, duration);
 }
 

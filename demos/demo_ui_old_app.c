@@ -836,6 +836,60 @@ static ret_t progress_bar_animate_delta(widget_t* win, const char* name, int32_t
   return RET_OK;
 }
 
+static ret_t on_move_forward(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(ctx);
+  widget_t* value = widget_lookup(win, "value", TRUE);
+  widget_animate_position_to(value, value->x + 100, value->y + 100, 500);
+
+  (void)e;
+  return RET_OK;
+}
+
+static ret_t on_move_backward(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(ctx);
+  widget_t* value = widget_lookup(win, "value", TRUE);
+  widget_animate_position_to(value, value->x - 100, value->y - 100, 500);
+  (void)e;
+
+  return RET_OK;
+}
+
+static ret_t on_resize_inc(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(ctx);
+  widget_t* value = widget_lookup(win, "value", TRUE);
+  widget_animate_size_to(value, value->w + 100, value->h + 100, 500);
+
+  (void)e;
+  return RET_OK;
+}
+
+static ret_t on_resize_dec(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(ctx);
+  widget_t* value = widget_lookup(win, "value", TRUE);
+  widget_animate_size_to(value, value->w - 100, value->h - 100, 500);
+  (void)e;
+
+  return RET_OK;
+}
+
+static ret_t on_value_inc(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(ctx);
+  widget_t* value = widget_lookup(win, "value", TRUE);
+  widget_animate_value_to(value, PROGRESS_BAR(value)->value + 30, 500);
+
+  (void)e;
+  return RET_OK;
+}
+
+static ret_t on_value_dec(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(ctx);
+  widget_t* value = widget_lookup(win, "value", TRUE);
+  widget_animate_value_to(value, PROGRESS_BAR(value)->value - 30, 500);
+  (void)e;
+
+  return RET_OK;
+}
+
 static ret_t on_inc(void* ctx, event_t* e) {
   widget_t* win = WIDGET(ctx);
   progress_bar_animate_delta(win, "bar1", 10);
@@ -1242,6 +1296,24 @@ static ret_t install_one(void* ctx, const void* iter) {
     } else if (strstr(name, "dec_value") != NULL) {
       widget_t* win = widget_get_window(widget);
       widget_on(widget, EVT_CLICK, on_dec, win);
+    } else if (tk_str_eq(name, "move_forward")) {
+      widget_t* win = widget_get_window(widget);
+      widget_on(widget, EVT_CLICK, on_move_forward, win);
+    } else if (tk_str_eq(name, "move_backward")) {
+      widget_t* win = widget_get_window(widget);
+      widget_on(widget, EVT_CLICK, on_move_backward, win);
+    } else if (tk_str_eq(name, "resize_inc")) {
+      widget_t* win = widget_get_window(widget);
+      widget_on(widget, EVT_CLICK, on_resize_inc, win);
+    } else if (tk_str_eq(name, "resize_dec")) {
+      widget_t* win = widget_get_window(widget);
+      widget_on(widget, EVT_CLICK, on_resize_dec, win);
+    } else if (tk_str_eq(name, "value_inc")) {
+      widget_t* win = widget_get_window(widget);
+      widget_on(widget, EVT_CLICK, on_value_inc, win);
+    } else if (tk_str_eq(name, "value_dec")) {
+      widget_t* win = widget_get_window(widget);
+      widget_on(widget, EVT_CLICK, on_value_dec, win);
     } else if (tk_str_eq(name, "close")) {
       widget_on(widget, EVT_CLICK, on_close, win);
     } else if (tk_str_eq(name, "widget_layout")) {

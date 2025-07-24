@@ -1,0 +1,7 @@
+<window>
+  <progress_bar name="value" x="0" y="0" w="100" h="30" />
+
+  <button name="move_forward" x="10" y="bottom:10" w="25%" h="30" text="+"/>
+  <button name="move_backward" x="center" y="bottom:10" w="25%" h="30" text="-"/>
+  <button name="close" x="r:10" y="bottom:10" w="25%" h="30" text="Close"/>
+</window>

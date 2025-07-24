@@ -38,7 +38,8 @@ static ret_t assets_init_internal(const char* theme) {
 #if !defined(WITH_FS_RES) || defined(AWTK_WEB)
 static ret_t widget_set_theme_without_file_system(widget_t* widget, const char* name) {
   const asset_info_t* info = NULL;
-  event_t e = event_init(EVT_THEME_CHANGED, NULL);
+  theme_change_event_t event;
+  event_t* e = theme_change_event_init(&event, EVT_THEME_CHANGED, name);
   widget_t* wm = widget_get_window_manager(widget);
   font_manager_t* fm = widget_get_font_manager(widget);
   image_manager_t* imm = widget_get_image_manager(widget);
@@ -60,7 +61,7 @@ static ret_t widget_set_theme_without_file_system(widget_t* widget, const char* 
   theme_set_theme_data(theme(), info->data);
   assets_manager_unref(assets_manager(), info);
 
-  widget_dispatch(wm, &e);
+  widget_dispatch(wm, e);
   widget_invalidate_force(wm, NULL);
 
   log_debug("theme changed: %s\n", name);

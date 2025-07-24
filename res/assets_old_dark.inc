@@ -58,6 +58,7 @@
 #include "assets/default/inc/ui/tab_scrollable.data"
 #include "assets/default/inc/ui/main.data"
 #include "assets/default/inc/ui/image_anchor.data"
+#include "assets/default/inc/ui/animator_move.data"
 #include "assets/default/inc/ui/tab_button_view_page1.data"
 #include "assets/default/inc/ui/digit_clock.data"
 #include "assets/default/inc/ui/scroll_bar.data"
@@ -86,6 +87,7 @@
 #include "assets/default/inc/ui/kb_int_floating.data"
 #include "assets/default/inc/ui/keyboard.data"
 #include "assets/default/inc/ui/kb_hex.data"
+#include "assets/default/inc/ui/animator_value.data"
 #include "assets/default/inc/ui/gauge_h.data"
 #include "assets/default/inc/ui/popdown.data"
 #include "assets/default/inc/ui/svg_test.data"
@@ -215,6 +217,7 @@
 #include "assets/default/inc/ui/tab_button_view_page2.data"
 #include "assets/default/inc/ui/slide_view_remove_loop.data"
 #include "assets/default/inc/ui/slide_up.data"
+#include "assets/default/inc/ui/animator_resize.data"
 #include "assets/default/inc/ui/rich_text2.data"
 #include "assets/default/inc/ui/list_view_h.data"
 #include "assets/default/inc/ui/floating_keyboard.data"
@@ -623,6 +626,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_tab_scrollable_default);
   assets_manager_add(am, ui_main_default);
   assets_manager_add(am, ui_image_anchor_default);
+  assets_manager_add(am, ui_animator_move_default);
   assets_manager_add(am, ui_tab_button_view_page1_default);
   assets_manager_add(am, ui_digit_clock_default);
   assets_manager_add(am, ui_scroll_bar_default);
@@ -651,6 +655,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_kb_int_floating_default);
   assets_manager_add(am, ui_keyboard_default);
   assets_manager_add(am, ui_kb_hex_default);
+  assets_manager_add(am, ui_animator_value_default);
   assets_manager_add(am, ui_gauge_h_default);
   assets_manager_add(am, ui_popdown_default);
   assets_manager_add(am, ui_svg_test_default);
@@ -780,6 +785,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_tab_button_view_page2_default);
   assets_manager_add(am, ui_slide_view_remove_loop_default);
   assets_manager_add(am, ui_slide_up_default);
+  assets_manager_add(am, ui_animator_resize_default);
   assets_manager_add(am, ui_rich_text2_default);
   assets_manager_add(am, ui_list_view_h_default);
   assets_manager_add(am, ui_floating_keyboard_default);

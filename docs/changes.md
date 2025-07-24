@@ -2,6 +2,8 @@
 2025/07/24
   * 删除多余的path_extname_is原型声明(感谢兆坤发现问题)
   * 修复api comment
+  * 增加 widget_animate_position_to/widget_animate_size_to
+  * 公开 widget_animate_prop_float_to
 
 2025/07/23
   * 优化了linux和macos系统中awtk程序搜索动态库的路径，程序加载时会自动搜索同目录的动态库文件 (感谢陈谭提供补丁)

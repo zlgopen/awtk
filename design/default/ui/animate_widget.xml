@@ -2,5 +2,8 @@
   <button name="open:animator" text="Animate"/>
   <button name="open:value_anim" text="Value Change Animate"/>
   <button name="open:animator_layout" text="layout"/>
+  <button name="open:animator_move" text="Animate Move"/>
+  <button name="open:animator_resize" text="Animate Resize"/>
+  <button name="open:animator_value" text="Animate Value"/>
   <button name="close" text="Close"/>
 </window>

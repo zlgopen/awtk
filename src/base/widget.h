@@ -996,6 +996,44 @@ ret_t widget_add_value_int(widget_t* widget, int32_t delta);
 ret_t widget_animate_value_to(widget_t* widget, float_t value, uint32_t duration);
 
 /**
+ * @method widget_animate_prop_float_to
+ * 设置控件的属性(以动画形式变化到指定的值)。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} name 属性名称。
+ * @param {float_t} value 值。
+ * @param {uint32_t} duration 动画持续时间(毫秒)。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_animate_prop_float_to(widget_t* widget, const char* name, float_t value,
+                                   uint32_t duration);
+
+/**
+ * @method widget_animate_position_to
+ * 设置控件的位置(以动画形式变化到指定的位置)。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y y坐标。
+ * @param {uint32_t} duration 动画持续时间(毫秒)。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_animate_position_to(widget_t* widget, xy_t x, xy_t y, uint32_t duration);
+
+/**
+ * @method widget_animate_size_to
+ * 设置控件的大小(以动画形式变化到指定的大小)。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {wh_t} w 宽度。
+ * @param {wh_t} h 高度。
+ * @param {uint32_t} duration 动画持续时间(毫秒)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_animate_size_to(widget_t* widget, wh_t w, wh_t h, uint32_t duration);
+
+/**
  * @method widget_set_text
  * 设置控件的文本。（如果字符串相同，则不会重复设置以及触发事件）
  * @param {widget_t*} widget 控件对象。

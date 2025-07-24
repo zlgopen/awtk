@@ -1,0 +1,7 @@
+<window>
+  <progress_bar name="value" x="center" y="m" w="90%" h="30" />
+
+  <button name="value_inc" x="10" y="bottom:10" w="25%" h="30" text="+"/>
+  <button name="value_dec" x="center" y="bottom:10" w="25%" h="30" text="-"/>
+  <button name="close" x="r:10" y="bottom:10" w="25%" h="30" text="Close"/>
+</window>
