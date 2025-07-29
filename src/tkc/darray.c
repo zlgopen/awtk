@@ -60,12 +60,18 @@ static bool_t darray_extend(darray_t* darray) {
     return TRUE;
   } else {
     void* elms = NULL;
+    uint32_t old_capacity = darray->capacity;
     uint32_t capacity = (darray->capacity >> 1) + darray->capacity + 1;
 
     elms = TKMEM_REALLOCT(void*, darray->elms, capacity);
     if (elms) {
       darray->elms = elms;
       darray->capacity = capacity;
+      
+      /* 将新分配的内存区域初始化为NULL */
+      if (capacity > old_capacity) {
+        memset(darray->elms + old_capacity, 0, (capacity - old_capacity) * sizeof(void*));
+      }
 
       return TRUE;
     } else {
@@ -124,21 +130,26 @@ ret_t darray_remove_range(darray_t* darray, uint32_t start, uint32_t end) {
   return_value_if_fail(darray != NULL && start < end && end <= darray->size, RET_BAD_PARAMS);
 
   if (darray->elms != NULL) {
-    uint32_t i = 0, j = 0;
+    uint32_t i = 0;
+    uint32_t range_size = end - start;
     void** elms = darray->elms;
 
-    for (i = start, j = end; i < darray->size; i++, j++) {
-      if (i < end) {
-        void* iter = elms[i];
-        darray->destroy(iter);
-      }
-      if (j < darray->size) {
-        elms[i] = elms[j];
-      } else {
-        elms[i] = NULL;
-      }
+    /* 首先销毁要删除范围内的元素 */
+    for (i = start; i < end; i++) {
+      darray->destroy(elms[i]);
     }
-    darray->size -= (end - start);
+
+    /* 将end之后的元素向前移动 */
+    for (i = start; i + range_size < darray->size; i++) {
+      elms[i] = elms[i + range_size];
+    }
+
+    /* 清空尾部的元素指针 */
+    for (i = darray->size - range_size; i < darray->size; i++) {
+      elms[i] = NULL;
+    }
+
+    darray->size -= range_size;
   }
 
   return RET_OK;
@@ -284,12 +295,15 @@ ret_t darray_sorted_insert(darray_t* darray, void* data, tk_compare_t cmp,
   if (index >= 0) {
     if (replace_if_exist) {
       return darray_replace(darray, index, data);
+    } else {
+      /* 元素已存在但不替换，插入到找到位置之后 */
+      index++;
     }
   } else {
     index = low;
   }
 
-  if (index >= darray->size) {
+  if (index >= (int32_t)darray->size) {
     return darray_push(darray, data);
   } else {
     return darray_insert(darray, index, data);
@@ -422,6 +436,9 @@ int32_t darray_bsearch_index_ex(darray_t* darray, tk_compare_t cmp, void* ctx, i
   return_value_if_fail(darray != NULL, -1);
 
   if (darray->size == 0) {
+    if (ret_low != NULL) {
+      *ret_low = 0;
+    }
     return -1;
   }
   if (cmp == NULL) {

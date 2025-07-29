@@ -601,3 +601,335 @@ TEST(DArrayTest, remove_range) {
 
   darray_deinit(&darray);
 }
+
+TEST(DArrayTest, find_ex) {
+  darray_t darray;
+  char* p = NULL;
+  darray_init(&darray, 10, NULL, NULL);
+
+  // Test with empty array
+  ASSERT_EQ(darray_find_ex(&darray, NULL, p + 1), (void*)NULL);
+
+  // Add some elements
+  darray_push(&darray, p + 1);
+  darray_push(&darray, p + 2);
+  darray_push(&darray, p + 3);
+
+  // Test finding existing elements
+  ASSERT_EQ(darray_find_ex(&darray, NULL, p + 1), p + 1);
+  ASSERT_EQ(darray_find_ex(&darray, NULL, p + 2), p + 2);
+  ASSERT_EQ(darray_find_ex(&darray, NULL, p + 3), p + 3);
+
+  // Test finding non-existing element
+  ASSERT_EQ(darray_find_ex(&darray, NULL, p + 4), (void*)NULL);
+
+  // Test with custom compare function
+  ASSERT_EQ(darray_find_ex(&darray, cmp_int, tk_pointer_from_int(1)), p + 1);
+
+  darray_deinit(&darray);
+}
+
+TEST(DArrayTest, find_index) {
+  darray_t darray;
+  char* p = NULL;
+  darray_init(&darray, 10, NULL, NULL);
+
+  // Test with empty array
+  ASSERT_EQ(darray_find_index(&darray, p + 1), -1);
+
+  // Add some elements
+  darray_push(&darray, p + 1);
+  darray_push(&darray, p + 2);
+  darray_push(&darray, p + 3);
+
+  // Test finding existing elements
+  ASSERT_EQ(darray_find_index(&darray, p + 1), 0);
+  ASSERT_EQ(darray_find_index(&darray, p + 2), 1);
+  ASSERT_EQ(darray_find_index(&darray, p + 3), 2);
+
+  // Test finding non-existing element
+  ASSERT_EQ(darray_find_index(&darray, p + 4), -1);
+
+  darray_deinit(&darray);
+}
+
+TEST(DArrayTest, find_index_ex) {
+  darray_t darray;
+  char* p = NULL;
+  darray_init(&darray, 10, NULL, NULL);
+
+  // Test with empty array
+  ASSERT_EQ(darray_find_index_ex(&darray, NULL, p + 1), -1);
+
+  // Add some elements
+  darray_push(&darray, p + 1);
+  darray_push(&darray, p + 2);
+  darray_push(&darray, p + 3);
+
+  // Test finding existing elements with NULL compare function
+  ASSERT_EQ(darray_find_index_ex(&darray, NULL, p + 1), 0);
+  ASSERT_EQ(darray_find_index_ex(&darray, NULL, p + 2), 1);
+  ASSERT_EQ(darray_find_index_ex(&darray, NULL, p + 3), 2);
+
+  // Test finding non-existing element
+  ASSERT_EQ(darray_find_index_ex(&darray, NULL, p + 4), -1);
+
+  // Test with custom compare function
+  ASSERT_EQ(darray_find_index_ex(&darray, cmp_int, tk_pointer_from_int(1)), 0);
+  ASSERT_EQ(darray_find_index_ex(&darray, cmp_int, tk_pointer_from_int(2)), 1);
+  ASSERT_EQ(darray_find_index_ex(&darray, cmp_int, tk_pointer_from_int(3)), 2);
+  ASSERT_EQ(darray_find_index_ex(&darray, cmp_int, tk_pointer_from_int(4)), -1);
+
+  darray_deinit(&darray);
+}
+
+TEST(DArrayTest, remove_ex) {
+  darray_t darray;
+  char* p = NULL;
+  darray_init(&darray, 10, NULL, NULL);
+
+  // Test removing from empty array
+  ASSERT_EQ(darray_remove_ex(&darray, NULL, p + 1), RET_NOT_FOUND);
+
+  // Add some elements
+  darray_push(&darray, p + 1);
+  darray_push(&darray, p + 2);
+  darray_push(&darray, p + 3);
+  ASSERT_EQ(darray.size, 3u);
+
+  // Test removing existing element with NULL compare function
+  ASSERT_EQ(darray_remove_ex(&darray, NULL, p + 2), RET_OK);
+  ASSERT_EQ(darray.size, 2u);
+  ASSERT_EQ(darray_find(&darray, p + 2), (void*)NULL);
+
+  // Test removing non-existing element
+  ASSERT_EQ(darray_remove_ex(&darray, NULL, p + 4), RET_NOT_FOUND);
+  ASSERT_EQ(darray.size, 2u);
+
+  // Test with custom compare function
+  ASSERT_EQ(darray_remove_ex(&darray, cmp_int, tk_pointer_from_int(1)), RET_OK);
+  ASSERT_EQ(darray.size, 1u);
+  ASSERT_EQ(darray_find(&darray, p + 1), (void*)NULL);
+
+  darray_deinit(&darray);
+}
+
+TEST(DArrayTest, remove_index) {
+  darray_t darray;
+  char* p = NULL;
+  darray_init(&darray, 10, NULL, NULL);
+
+  // Test removing from empty array
+  ASSERT_EQ(darray_remove_index(&darray, 0), RET_BAD_PARAMS);
+
+  // Add some elements
+  darray_push(&darray, p + 1);
+  darray_push(&darray, p + 2);
+  darray_push(&darray, p + 3);
+  darray_push(&darray, p + 4);
+  ASSERT_EQ(darray.size, 4u);
+
+  // Test removing invalid index
+  ASSERT_EQ(darray_remove_index(&darray, 4), RET_BAD_PARAMS);
+  ASSERT_EQ(darray.size, 4u);
+
+  // Test removing middle element
+  ASSERT_EQ(darray_remove_index(&darray, 1), RET_OK);
+  ASSERT_EQ(darray.size, 3u);
+  ASSERT_EQ(darray_get(&darray, 0), p + 1);
+  ASSERT_EQ(darray_get(&darray, 1), p + 3);
+  ASSERT_EQ(darray_get(&darray, 2), p + 4);
+
+  // Test removing first element
+  ASSERT_EQ(darray_remove_index(&darray, 0), RET_OK);
+  ASSERT_EQ(darray.size, 2u);
+  ASSERT_EQ(darray_get(&darray, 0), p + 3);
+  ASSERT_EQ(darray_get(&darray, 1), p + 4);
+
+  // Test removing last element
+  ASSERT_EQ(darray_remove_index(&darray, 1), RET_OK);
+  ASSERT_EQ(darray.size, 1u);
+  ASSERT_EQ(darray_get(&darray, 0), p + 3);
+
+  darray_deinit(&darray);
+}
+
+TEST(DArrayTest, replace) {
+  darray_t darray;
+  my_data_t* data1 = NULL;
+  my_data_t* data2 = NULL;
+  darray_init(&darray, 10, (tk_destroy_t)my_data_destroy, NULL);
+
+  // Test replacing in empty array
+  ASSERT_EQ(darray_replace(&darray, 0, my_data_create("test", 1)), RET_BAD_PARAMS);
+
+  // Add some elements
+  data1 = my_data_create("jack", 100);
+  data2 = my_data_create("tom", 200);
+  darray_push(&darray, data1);
+  darray_push(&darray, data2);
+  ASSERT_EQ(darray.size, 2u);
+
+  // Test replacing with invalid index
+  ASSERT_EQ(darray_replace(&darray, 2, my_data_create("invalid", 999)), RET_BAD_PARAMS);
+  ASSERT_EQ(darray.size, 2u);
+
+  // Test replacing valid element
+  my_data_t* new_data = my_data_create("alice", 300);
+  ASSERT_EQ(darray_replace(&darray, 0, new_data), RET_OK);
+  ASSERT_EQ(darray.size, 2u);
+  
+  my_data_t* retrieved = (my_data_t*)darray_get(&darray, 0);
+  ASSERT_STREQ(retrieved->name, "alice");
+  ASSERT_EQ(retrieved->value, 300);
+
+  darray_deinit(&darray);
+}
+
+static ret_t visit_count(void* ctx, const void* data) {
+  int32_t* count = (int32_t*)ctx;
+  (*count)++;
+  return RET_OK;
+}
+
+static ret_t visit_sum(void* ctx, const void* data) {
+  int32_t* sum = (int32_t*)ctx;
+  *sum += tk_pointer_to_int((void*)data);
+  return RET_OK;
+}
+
+static ret_t visit_stop_at_3(void* ctx, const void* data) {
+  int32_t* count = (int32_t*)ctx;
+  (*count)++;
+  if (tk_pointer_to_int((void*)data) == 3) {
+    return RET_STOP;
+  }
+  return RET_OK;
+}
+
+TEST(DArrayTest, foreach) {
+  darray_t darray;
+  int32_t count = 0;
+  int32_t sum = 0;
+  char* p = NULL;
+  darray_init(&darray, 10, NULL, NULL);
+
+  // Test foreach on empty array
+  ASSERT_EQ(darray_foreach(&darray, visit_count, &count), RET_OK);
+  ASSERT_EQ(count, 0);
+
+  // Test with NULL visit function
+  ASSERT_EQ(darray_foreach(&darray, NULL, &count), RET_BAD_PARAMS);
+
+  // Add some elements
+  darray_push(&darray, p + 1);
+  darray_push(&darray, p + 2);
+  darray_push(&darray, p + 3);
+  darray_push(&darray, p + 4);
+
+  // Test counting
+  count = 0;
+  ASSERT_EQ(darray_foreach(&darray, visit_count, &count), RET_OK);
+  ASSERT_EQ(count, 4);
+
+  // Test summing
+  sum = 0;
+  ASSERT_EQ(darray_foreach(&darray, visit_sum, &sum), RET_OK);
+  ASSERT_EQ(sum, 10); // 1+2+3+4 = 10
+
+  // Test early stop
+  count = 0;
+  ASSERT_EQ(darray_foreach(&darray, visit_stop_at_3, &count), RET_STOP);
+  ASSERT_EQ(count, 3);
+
+  darray_deinit(&darray);
+}
+
+TEST(DArrayTest, bsearch_index_ex) {
+  darray_t darray;
+  int32_t low = -1;
+  darray_init(&darray, 10, NULL, NULL);
+
+  // Test with empty array - low should remain unchanged when array is empty
+  low = -1;
+  ASSERT_EQ(darray_bsearch_index_ex(&darray, NULL, tk_pointer_from_int(1), &low), -1);
+  // Note: when array is empty, low is not modified by the implementation
+
+  // Add sorted elements
+  darray_push(&darray, tk_pointer_from_int(1));
+  darray_push(&darray, tk_pointer_from_int(3));
+  darray_push(&darray, tk_pointer_from_int(5));
+  darray_push(&darray, tk_pointer_from_int(7));
+  darray_push(&darray, tk_pointer_from_int(9));
+
+  // Test finding existing elements
+  ASSERT_EQ(darray_bsearch_index_ex(&darray, NULL, tk_pointer_from_int(1), &low), 0);
+  ASSERT_EQ(darray_bsearch_index_ex(&darray, NULL, tk_pointer_from_int(5), &low), 2);
+  ASSERT_EQ(darray_bsearch_index_ex(&darray, NULL, tk_pointer_from_int(9), &low), 4);
+
+  // Test finding non-existing elements and getting low index
+  ASSERT_EQ(darray_bsearch_index_ex(&darray, NULL, tk_pointer_from_int(0), &low), -1);
+  ASSERT_EQ(low, 0); // Should insert at beginning
+
+  ASSERT_EQ(darray_bsearch_index_ex(&darray, NULL, tk_pointer_from_int(4), &low), -1);
+  ASSERT_EQ(low, 2); // Should insert between 3 and 5
+
+  ASSERT_EQ(darray_bsearch_index_ex(&darray, NULL, tk_pointer_from_int(10), &low), -1);
+  ASSERT_EQ(low, 5); // Should insert at end
+
+  // Test without ret_low parameter
+  ASSERT_EQ(darray_bsearch_index_ex(&darray, NULL, tk_pointer_from_int(6), NULL), -1);
+
+  darray_deinit(&darray);
+}
+
+TEST(DArrayTest, edge_cases) {
+  darray_t darray;
+  char* p = NULL;
+  darray_init(&darray, 0, NULL, NULL);
+
+  // Test head/tail on empty array
+  ASSERT_EQ(darray_head(&darray), (void*)NULL);
+  ASSERT_EQ(darray_tail(&darray), (void*)NULL);
+
+  // Test pop on empty array
+  ASSERT_EQ(darray_pop(&darray), (void*)NULL);
+
+  // Add one element
+  darray_push(&darray, p + 1);
+  ASSERT_EQ(darray_head(&darray), p + 1);
+  ASSERT_EQ(darray_tail(&darray), p + 1);
+
+  // Add more elements
+  darray_push(&darray, p + 2);
+  darray_push(&darray, p + 3);
+  ASSERT_EQ(darray_head(&darray), p + 1);
+  ASSERT_EQ(darray_tail(&darray), p + 3);
+
+  // Test invalid parameters
+  ASSERT_EQ(darray_get(&darray, 100), (void*)NULL);
+  ASSERT_EQ(darray_set(&darray, 100, p + 1), RET_BAD_PARAMS);
+
+  darray_deinit(&darray);
+}
+
+TEST(DArrayTest, null_params) {
+  // Test NULL parameters for various functions
+  ASSERT_EQ(darray_find(NULL, NULL), (void*)NULL);
+  ASSERT_EQ(darray_find_ex(NULL, NULL, NULL), (void*)NULL);
+  ASSERT_EQ(darray_find_index(NULL, NULL), -1);
+  ASSERT_EQ(darray_find_index_ex(NULL, NULL, NULL), -1);
+  ASSERT_EQ(darray_remove(NULL, NULL), RET_BAD_PARAMS);
+  ASSERT_EQ(darray_remove_ex(NULL, NULL, NULL), RET_BAD_PARAMS);
+  ASSERT_EQ(darray_remove_index(NULL, 0), RET_BAD_PARAMS);
+  ASSERT_EQ(darray_push(NULL, NULL), RET_BAD_PARAMS);
+  ASSERT_EQ(darray_pop(NULL), (void*)NULL);
+  ASSERT_EQ(darray_head(NULL), (void*)NULL);
+  ASSERT_EQ(darray_tail(NULL), (void*)NULL);
+  ASSERT_EQ(darray_get(NULL, 0), (void*)NULL);
+  ASSERT_EQ(darray_set(NULL, 0, NULL), RET_BAD_PARAMS);
+  ASSERT_EQ(darray_replace(NULL, 0, NULL), RET_BAD_PARAMS);
+  ASSERT_EQ(darray_foreach(NULL, NULL, NULL), RET_BAD_PARAMS);
+  ASSERT_EQ(darray_bsearch_index(NULL, NULL, NULL), -1);
+  ASSERT_EQ(darray_bsearch_index_ex(NULL, NULL, NULL, NULL), -1);
+}

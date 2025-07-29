@@ -167,12 +167,16 @@ static ret_t dlist_remove_node(dlist_t* dlist, dlist_node_t* node) {
 ret_t dlist_remove_ex(dlist_t* dlist, tk_compare_t compare, void* ctx, int32_t remove_size,
                       bool_t reverse) {
   int32_t n = remove_size;
+  tk_compare_t real_compare = NULL;
   return_value_if_fail(dlist != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(remove_size > 0, RET_BAD_PARAMS);
+
+  real_compare = (compare != NULL) ? compare : dlist->compare;
 
   if (!reverse) {
     dlist_node_t* iter = dlist->first;
     while (iter != NULL) {
-      if (compare(iter->data, ctx) == 0) {
+      if (real_compare(iter->data, ctx) == 0) {
         dlist_node_t* next = iter->next;
         dlist_remove_node(dlist, iter);
         dlist_destroy_node(dlist, iter);
@@ -187,7 +191,7 @@ ret_t dlist_remove_ex(dlist_t* dlist, tk_compare_t compare, void* ctx, int32_t r
   } else {
     dlist_node_t* iter = dlist->last;
     while (iter != NULL) {
-      if (compare(iter->data, ctx) == 0) {
+      if (real_compare(iter->data, ctx) == 0) {
         dlist_node_t* prev = iter->prev;
         dlist_remove_node(dlist, iter);
         dlist_destroy_node(dlist, iter);
