@@ -2170,7 +2170,7 @@ static ret_t fscript_parse_statements(fscript_parser_t* parser, fscript_func_cal
     }
   } while (parser->token.type != TOKEN_EOF);
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t fscript_parse_all(fscript_parser_t* parser, fscript_func_call_t* acall) {
