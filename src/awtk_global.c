@@ -575,31 +575,71 @@ static ret_t idle_func_of_callback(const idle_info_t* info) {
   }
 }
 
+typedef struct _idle_func_queue_ret_t {
+  ret_t func_ret;
+  ret_t queue_ret;
+} idle_func_queue_ret_t;
+
+static idle_func_queue_ret_t idle_func_queue(tk_callback_t func, void* ctx,
+                                             bool_t wait_until_done) {
+  idle_func_queue_ret_t ret = {RET_FAIL, RET_FAIL};
+  idle_callback_info_t* info = idle_callback_info_create(func, ctx);
+  return_value_if_fail(info != NULL, ret);
+
+  info->sync = wait_until_done;
+  if (idle_queue(idle_func_of_callback, info) == RET_OK) {
+    ret.func_ret = RET_OK;
+    ret.queue_ret = RET_OK;
+
+    if (wait_until_done) {
+      while (!(info->done)) {
+        sleep_ms(20);
+      }
+      ret.func_ret = info->result;
+      idle_callback_info_destroy(info);
+    }
+
+    return ret;
+  } else {
+    idle_callback_info_destroy(info);
+    return ret;
+  }
+}
+
 ret_t tk_run_in_ui_thread(tk_callback_t func, void* ctx, bool_t wait_until_done) {
   return_value_if_fail(func != NULL, RET_BAD_PARAMS);
 
   if (tk_is_ui_thread()) {
     return func(ctx);
   } else {
-    idle_callback_info_t* info = idle_callback_info_create(func, ctx);
-    return_value_if_fail(info != NULL, RET_OOM);
+    idle_func_queue_ret_t ret = idle_func_queue(func, ctx, wait_until_done);
+    return ret.queue_ret == RET_OK ? ret.func_ret : RET_FAIL;
+  }
+}
 
-    info->sync = wait_until_done;
-    if (idle_queue(idle_func_of_callback, info) == RET_OK) {
-      ret_t ret = RET_OK;
+ret_t tk_run_in_ui_thread_ensure_queue(tk_callback_t func, void* ctx, bool_t wait_until_done,
+                                       uint32_t timeout_ms) {
+  return_value_if_fail(func != NULL, RET_BAD_PARAMS);
 
-      if (wait_until_done) {
-        while (!(info->done)) {
-          sleep_ms(20);
-        }
-        ret = info->result;
-        idle_callback_info_destroy(info);
-      }
-
-      return ret;
+  if (tk_is_ui_thread()) {
+    return func(ctx);
+  } else {
+    uint32_t retry_count = 0;
+    uint32_t retry_sleep_ms = 20;
+    idle_func_queue_ret_t ret = idle_func_queue(func, ctx, wait_until_done);
+    if (ret.queue_ret == RET_OK) {
+      return ret.func_ret;
     } else {
-      idle_callback_info_destroy(info);
-      return RET_FAIL;
+      while (retry_count * retry_sleep_ms < timeout_ms) {
+        sleep_ms(retry_sleep_ms);
+        retry_count++;
+
+        ret = idle_func_queue(func, ctx, wait_until_done);
+        if (ret.queue_ret == RET_OK) {
+          return ret.func_ret;
+        }
+      }
+      return RET_TIMEOUT;
     }
   }
 }
