@@ -410,12 +410,12 @@ typedef enum _ret_t {
       return (value);                  \
     }                                  \
   } while (0)
-#define return_ret_if_fail(p) \
-  do {                        \
-    ret_t __ret = p;          \
-    if (__ret != RET_OK) {    \
-      return __ret;           \
-    }                         \
+#define return_ret_if_fail(p)                    \
+  do {                                           \
+    ret_t TK_CONCAT(__ret_, __LINE__) = p;       \
+    if (TK_CONCAT(__ret_, __LINE__) != RET_OK) { \
+      return TK_CONCAT(__ret_, __LINE__);        \
+    }                                            \
   } while (0)
 #else
 #define ENSURE(p) assert(p)
@@ -459,13 +459,13 @@ typedef enum _ret_t {
       return (value);                                                        \
     }                                                                        \
   } while (0)
-#define return_ret_if_fail(p)                                                   \
-  do {                                                                          \
-    ret_t __ret = p;                                                            \
-    if (__ret != RET_OK) {                                                      \
+#define return_ret_if_fail(p)                                        \
+  do {                                                               \
+    ret_t TK_CONCAT(__ret_, __LINE__) = p;                           \
+    if (TK_CONCAT(__ret_, __LINE__) != RET_OK) {                     \
       log_warn("%s:%d " #p " != RET_OK!\n", __FUNCTION__, __LINE__); \
-      return __ret;                                                             \
-    }                                                                           \
+      return TK_CONCAT(__ret_, __LINE__);                            \
+    }                                                                \
   } while (0)
 #endif
 
