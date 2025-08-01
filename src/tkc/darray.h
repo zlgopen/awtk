@@ -406,6 +406,15 @@ ret_t darray_clear(darray_t* darray);
 ret_t darray_foreach(darray_t* darray, tk_visit_t visit, void* ctx);
 
 /**
+ * @method darray_reverse
+ * 反转。
+ * @param {darray_t*} darray 数组对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t darray_reverse(darray_t* darray);
+
+/**
  * @method darray_deinit
  * 清除全部元素，并释放elms。
  * @param {darray_t*} darray 数组对象。

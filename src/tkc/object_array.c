@@ -823,15 +823,8 @@ ret_t object_array_reverse(tk_object_t* obj) {
     return RET_OK;
   }
 
-  start = 0;
-  end = o->size - 1;
-
-  while (start < end) {
-    value_t v = o->props[start];
-    o->props[start] = o->props[end];
-    o->props[end] = v;
-    start++;
-    end--;
+  for (start = 0, end = o->size - 1; start < end; start++, end--) {
+    tk_swap(o->props[start], o->props[end], value_t);
   }
 
   return RET_OK;

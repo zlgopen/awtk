@@ -778,7 +778,7 @@ TEST(DArrayTest, replace) {
   my_data_t* new_data = my_data_create("alice", 300);
   ASSERT_EQ(darray_replace(&darray, 0, new_data), RET_OK);
   ASSERT_EQ(darray.size, 2u);
-  
+
   my_data_t* retrieved = (my_data_t*)darray_get(&darray, 0);
   ASSERT_STREQ(retrieved->name, "alice");
   ASSERT_EQ(retrieved->value, 300);
@@ -835,7 +835,7 @@ TEST(DArrayTest, foreach) {
   // Test summing
   sum = 0;
   ASSERT_EQ(darray_foreach(&darray, visit_sum, &sum), RET_OK);
-  ASSERT_EQ(sum, 10); // 1+2+3+4 = 10
+  ASSERT_EQ(sum, 10);  // 1+2+3+4 = 10
 
   // Test early stop
   count = 0;
@@ -869,13 +869,13 @@ TEST(DArrayTest, bsearch_index_ex) {
 
   // Test finding non-existing elements and getting low index
   ASSERT_EQ(darray_bsearch_index_ex(&darray, NULL, tk_pointer_from_int(0), &low), -1);
-  ASSERT_EQ(low, 0); // Should insert at beginning
+  ASSERT_EQ(low, 0);  // Should insert at beginning
 
   ASSERT_EQ(darray_bsearch_index_ex(&darray, NULL, tk_pointer_from_int(4), &low), -1);
-  ASSERT_EQ(low, 2); // Should insert between 3 and 5
+  ASSERT_EQ(low, 2);  // Should insert between 3 and 5
 
   ASSERT_EQ(darray_bsearch_index_ex(&darray, NULL, tk_pointer_from_int(10), &low), -1);
-  ASSERT_EQ(low, 5); // Should insert at end
+  ASSERT_EQ(low, 5);  // Should insert at end
 
   // Test without ret_low parameter
   ASSERT_EQ(darray_bsearch_index_ex(&darray, NULL, tk_pointer_from_int(6), NULL), -1);
@@ -932,4 +932,25 @@ TEST(DArrayTest, null_params) {
   ASSERT_EQ(darray_foreach(NULL, NULL, NULL), RET_BAD_PARAMS);
   ASSERT_EQ(darray_bsearch_index(NULL, NULL, NULL), -1);
   ASSERT_EQ(darray_bsearch_index_ex(NULL, NULL, NULL, NULL), -1);
+}
+
+TEST(DArrayTest, reverse) {
+  darray_t darray;
+  darray_init(&darray, 5, NULL, NULL);
+
+  darray_push(&darray, tk_pointer_from_int(0));
+  darray_push(&darray, tk_pointer_from_int(1));
+  darray_push(&darray, tk_pointer_from_int(2));
+  darray_push(&darray, tk_pointer_from_int(3));
+  darray_push(&darray, tk_pointer_from_int(4));
+
+  ASSERT_EQ(darray_reverse(&darray), RET_OK);
+
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 0)), 4);
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 1)), 3);
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 2)), 2);
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 3)), 1);
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 4)), 0);
+
+  darray_deinit(&darray);
 }

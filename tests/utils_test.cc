@@ -613,14 +613,59 @@ TEST(Utils, to_json) {
   str_init(&str, 1000);
   ASSERT_EQ(object_to_json(obj, &str), RET_OK);
   ASSERT_STREQ(str.str,
-               "{\n  \"addr\":    {\n      \"city\": \"sz\",\n      \"country\": \"zh\"\n   },\n  "
-               "\"age\": 100,\n  \"arr\":    [\n      1,\n      2,\n      \"abc\",\n      "
-               "\"hello\"\n   ],\n  \"name\": \"jim\"\n}");
+               "{\n"
+               "  \"addr\":    {\n"
+               "      \"city\": \"sz\",\n"
+               "      \"country\": \"zh\"\n"
+               "   },\n"
+               "  \"age\": 100,\n"
+               "  \"arr\":    [\n"
+               "      1,\n"
+               "      2,\n"
+               "      \"abc\",\n"
+               "      \"hello\"\n"
+               "   ],\n"
+               "  \"name\": \"jim\"\n"
+               "}");
 
   str_reset(&str);
   TK_OBJECT_UNREF(obj);
   TK_OBJECT_UNREF(arr);
   TK_OBJECT_UNREF(addr);
+}
+
+TEST(Utils, from_json) {
+  tk_object_t* obj = object_default_create();
+
+  ASSERT_EQ(object_from_json(obj,
+                             "{\n"
+                             "  \"addr\":    {\n"
+                             "      \"city\": \"sz\",\n"
+                             "      \"country\": \"zh\"\n"
+                             "   },\n"
+                             "  \"age\": 100,\n"
+                             "  \"arr\":    [\n"
+                             "      1,\n"
+                             "      2,\n"
+                             "      \"abc\",\n"
+                             "      \"hello\"\n"
+                             "   ],\n"
+                             "  \"name\": \"jim\"\n"
+                             "}"),
+            RET_OK);
+
+  ASSERT_STREQ(tk_object_get_prop_str(obj, "name"), "jim");
+  ASSERT_EQ(tk_object_get_prop_int(obj, "age", 0), 100);
+
+  ASSERT_EQ(tk_object_get_prop_int(obj, "arr.[0]", 0), 1);
+  ASSERT_EQ(tk_object_get_prop_int(obj, "arr.[1]", 0), 2);
+  ASSERT_STREQ(tk_object_get_prop_str(obj, "arr.[2]"), "abc");
+  ASSERT_STREQ(tk_object_get_prop_str(obj, "arr.[3]"), "hello");
+
+  ASSERT_STREQ(tk_object_get_prop_str(obj, "addr.city"), "sz");
+  ASSERT_STREQ(tk_object_get_prop_str(obj, "addr.country"), "zh");
+
+  TK_OBJECT_UNREF(obj);
 }
 
 TEST(Utils, strrstr) {

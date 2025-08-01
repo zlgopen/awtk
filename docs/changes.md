@@ -3,6 +3,8 @@
   * 完善 return_ret_if_fail(感谢兆坤提供补丁)
   * self_layouter_flex 兼容旧项目(感谢兆坤提供补丁)
   * 新增tk_run_in_ui_thread_ensure_queue接口(感谢雨欣提供补丁)
+  * 增加 object_from_json(感谢兆坤提供补丁)
+  * 增加 darray_revers(感谢兆坤提供补丁)
 
 2025/07/29
   * 修复由于没有正确返回返回值导致诸如"&q"表达式会死循环的问题(感谢朝泽提供补丁)

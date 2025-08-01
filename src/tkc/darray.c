@@ -67,7 +67,7 @@ static bool_t darray_extend(darray_t* darray) {
     if (elms) {
       darray->elms = elms;
       darray->capacity = capacity;
-      
+
       /* 将新分配的内存区域初始化为NULL */
       if (capacity > old_capacity) {
         memset(darray->elms + old_capacity, 0, (capacity - old_capacity) * sizeof(void*));
@@ -479,4 +479,20 @@ void* darray_bsearch(darray_t* darray, tk_compare_t cmp, void* ctx) {
   } else {
     return NULL;
   }
+}
+
+ret_t darray_reverse(darray_t* darray) {
+  uint32_t start = 0;
+  uint32_t end = 0;
+  return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
+
+  if (darray->size < 2) {
+    return RET_OK;
+  }
+
+  for (start = 0, end = darray->size - 1; start < end; start++, end--) {
+    tk_swap(darray->elms[start], darray->elms[end], void*);
+  }
+
+  return RET_OK;
 }
