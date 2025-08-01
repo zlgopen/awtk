@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   self_layouter_flex.h
  * Author: AWTK Develop Team
  * Brief:  self layouter flex
@@ -39,19 +39,6 @@ BEGIN_C_DECLS
 typedef struct _self_layouter_flex_t {
   self_layouter_default_t layouter;
 } self_layouter_flex_t;
-
-/**
- * @method self_layouter_flex_create
- * @annotation ["constructor"]
- *
- * 创建控件自身布局对象。
- *
- * @return {self_layouter_t*} 返回创建控件自身布局对象。
- *
- */
-self_layouter_t* self_layouter_flex_create(void);
-
-bool_t self_layouter_flex_is_valid(self_layouter_t* layouter);
 
 #define SELF_LAYOUTER_FLEX "flex"
 

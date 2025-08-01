@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   self_layouter_builts.h
  * Author: AWTK Develop Team
  * Brief:  builts self_layouter
@@ -23,7 +23,7 @@
 #include "layouters/self_layouter_builtins.h"
 #include "layouters/self_layouter_default.h"
 #include "layouters/self_layouter_menu.h"
-#include "layouters/self_layouter_flex.h"
+#include "layouters/self_layouter_flex.inc"
 
 ret_t self_layouter_register_builtins(void) {
   self_layouter_factory_t* f = self_layouter_factory();

@@ -1,5 +1,5 @@
-﻿#include "gtest/gtest.h"
-#include "layouters/self_layouter_flex.h"
+#include "gtest/gtest.h"
+#include "layouters/self_layouter_flex.inc"
 #include "base/self_layouter_factory.h"
 #include "base/layout.h"
 #include "base/window.h"

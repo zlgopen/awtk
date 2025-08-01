@@ -1,5 +1,5 @@
 ﻿/**
- * File:   self_layouter_flex.c
+ * File:   self_layouter_flex.inc
  * Author: AWTK Develop Team
  * Brief:  self layouter flex
  *
@@ -19,9 +19,13 @@
  *
  */
 
+#ifndef TK_SELF_LAYOUTER_FLEX_INC
+#define TK_SELF_LAYOUTER_FLEX_INC
+
+#include "layouters/self_layouter_flex.h"
+
 #include "tkc/utils.h"
 #include "base/widget.h"
-#include "layouters/self_layouter_flex.h"
 
 #define SELF_LAYOUTER_FLEX_ATTR_NAME "flex"
 
@@ -221,6 +225,20 @@ static ret_t self_layouter_flex_init(self_layouter_t* layouter) {
   }
 }
 
+#ifdef __cplusplus
+static const struct self_layouter_flex_vtable_t : self_layouter_vtable_t {
+  self_layouter_flex_vtable_t() {
+    type = SELF_LAYOUTER_FLEX;
+    init = self_layouter_flex_init;
+    clone = self_layouter_flex_clone;
+    to_string = self_layouter_flex_to_string;
+    get_param = self_layouter_flex_get_param;
+    set_param = self_layouter_flex_set_param;
+    layout = self_layouter_flex_layout;
+    destroy = self_layouter_flex_destroy;
+  }
+} s_self_layouter_flex_vtable;
+#else
 static const self_layouter_vtable_t s_self_layouter_flex_vtable = {
     .type = SELF_LAYOUTER_FLEX,
     .init = self_layouter_flex_init,
@@ -231,12 +249,23 @@ static const self_layouter_vtable_t s_self_layouter_flex_vtable = {
     .layout = self_layouter_flex_layout,
     .destroy = self_layouter_flex_destroy,
 };
+#endif /* __cplusplus */
 
-bool_t self_layouter_flex_is_valid(self_layouter_t* layouter) {
+inline static bool_t self_layouter_flex_is_valid(self_layouter_t* layouter) {
   return layouter && layouter->vt == &s_self_layouter_flex_vtable;
 }
 
-self_layouter_t* self_layouter_flex_create(void) {
+/**
+ * @method self_layouter_flex_create
+ * @annotation ["constructor"]
+ * @export none
+ *
+ * 创建控件自身布局对象。
+ *
+ * @return {self_layouter_t*} 返回创建控件自身布局对象。
+ *
+ */
+inline static self_layouter_t* self_layouter_flex_create(void) {
   self_layouter_t* l = NULL;
   self_layouter_flex_t* layouter = TKMEM_ZALLOC(self_layouter_flex_t);
   return_value_if_fail(layouter != NULL, NULL);
@@ -248,3 +277,5 @@ self_layouter_t* self_layouter_flex_create(void) {
 
   return l;
 }
+
+#endif /*TK_SELF_LAYOUTER_FLEX_INC*/
