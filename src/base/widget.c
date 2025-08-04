@@ -2788,6 +2788,7 @@ static ret_t widget_on_keydown_before_children(widget_t* widget, key_event_t* e)
   if (widget->emitter != NULL) {
     key_event_t before = *e;
     before.e.type = EVT_KEY_DOWN_BEFORE_CHILDREN;
+    before.e.target = widget;
     return_value_if_equal(emitter_dispatch(widget->emitter, (event_t*)&(before)), RET_STOP);
   }
 
@@ -2987,6 +2988,7 @@ static ret_t widget_on_keyup_before_children(widget_t* widget, key_event_t* e) {
   if (widget->emitter != NULL) {
     key_event_t before = *e;
     before.e.type = EVT_KEY_UP_BEFORE_CHILDREN;
+    before.e.target = widget;
     return_value_if_equal(emitter_dispatch(widget->emitter, (event_t*)&(before)), RET_STOP);
   }
 
@@ -3126,6 +3128,7 @@ static ret_t widget_on_wheel_before_children(widget_t* widget, wheel_event_t* e)
   if (widget->emitter != NULL) {
     wheel_event_t before = *e;
     before.e.type = EVT_WHEEL_BEFORE_CHILDREN;
+    before.e.target = widget;
     return_value_if_equal(emitter_dispatch(widget->emitter, (event_t*)&(before)), RET_STOP);
   }
 
@@ -3252,6 +3255,7 @@ static ret_t widget_on_pointer_down_before_children(widget_t* widget, pointer_ev
   if (widget->emitter != NULL) {
     pointer_event_t before = *e;
     before.e.type = EVT_POINTER_DOWN_BEFORE_CHILDREN;
+    before.e.target = widget;
     return_value_if_equal(emitter_dispatch(widget->emitter, (event_t*)&(before)), RET_STOP);
   }
 
@@ -3353,6 +3357,7 @@ static ret_t widget_on_pointer_move_before_children(widget_t* widget, pointer_ev
   if (widget->emitter != NULL) {
     pointer_event_t before = *e;
     before.e.type = EVT_POINTER_MOVE_BEFORE_CHILDREN;
+    before.e.target = widget;
     return_value_if_equal(emitter_dispatch(widget->emitter, (event_t*)&(before)), RET_STOP);
   }
 
@@ -3440,6 +3445,7 @@ static ret_t widget_on_pointer_up_before_children(widget_t* widget, pointer_even
   if (widget->emitter != NULL) {
     pointer_event_t before = *e;
     before.e.type = EVT_POINTER_UP_BEFORE_CHILDREN;
+    before.e.target = widget;
     return_value_if_equal(emitter_dispatch(widget->emitter, (event_t*)&(before)), RET_STOP);
   }
 
