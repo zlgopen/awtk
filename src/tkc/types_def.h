@@ -60,6 +60,14 @@
 #include <limits.h>
 #include <inttypes.h>
 
+BEGIN_C_DECLS
+int32_t tk_strcmp(const char* a, const char* b);
+int32_t tk_strncmp(const char* a, const char* b, size_t n);
+int32_t tk_stricmp(const char* a, const char* b);
+int32_t tk_wstrcmp(const wchar_t* a, const wchar_t* b);
+int32_t tk_wstricmp(const wchar_t* a, const wchar_t* b);
+END_C_DECLS
+
 #if defined(HAS_AWTK_CONFIG) || defined(CONFIG_HAS_AWTK_CONFIG)
 #include "awtk_config.h"
 #endif /*HAS_AWTK_CONFIG*/
@@ -521,18 +529,18 @@ int __cppcheck__strncmp(const char* s1, const char* s2, size_t n);
 #define tk_str_eq(s1, s2)                                                           \
   (((s1) == NULL && (s2) == NULL) ||                                                \
    (((s1) != NULL) && ((s2) != NULL) && *((const char*)s1) == *((const char*)s2) && \
-    strcmp((s1), (s2)) == 0))
+    tk_strcmp((s1), (s2)) == 0))
 #define tk_str_eq_with_len(s1, s2, len)                                            \
   (((s1) != NULL) && ((s2) != NULL) && *((const char*)s1) == *((const char*)s2) && \
-   strncmp((s1), (s2), len) == 0)
+   tk_strncmp((s1), (s2), len) == 0)
 
 #define tk_str_ieq(s1, s2)           \
   (((s1) == NULL && (s2) == NULL) || \
-   (((s1) != NULL) && ((s2) != NULL) && strcasecmp((s1), (s2)) == 0))
+   (((s1) != NULL) && ((s2) != NULL) && tk_stricmp((s1), (s2)) == 0))
 #define tk_wstr_eq(s1, s2)                                                                \
   (((s1) == NULL && (s2) == NULL) ||                                                      \
    (((s1) != NULL) && ((s2) != NULL) && *((const wchar_t*)s1) == *((const wchar_t*)s2) && \
-    wcscmp((s1), (s2)) == 0))
+    tk_wstricmp((s1), (s2)) == 0))
 #endif /*WITH_CPPCHECK*/
 
 #define tk_fequal(f1, f2) (fabs((f1) - (f2)) < 0.0001)

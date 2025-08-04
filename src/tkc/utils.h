@@ -98,9 +98,22 @@ double tk_atof(const char* str);
  * @param {const char*} a 要进行比较的第一个字符串。
  * @param {const char*} b 要进行比较的第二个字符串。
  *
- * @return {int32_t} 如果返回值=-1，则表示a为NULL；如果返回值=1，则表示b为NULL；如果返回值<0，则表示a小于b；如果返回值>0，则表示a大于b；如果返回值=0，则表示a等于b。
+ * @return {int32_t} a为NULL返回-1；b为NULL返回1；其它与strcmp一致。
  */
 int32_t tk_strcmp(const char* a, const char* b);
+
+/**
+ * @method tk_strncmp
+ *
+ * 字符串比较函数。
+ *
+ * @param {const char*} a 要进行比较的第一个字符串。
+ * @param {const char*} b 要进行比较的第二个字符串。
+ * @param {size_t} n 长度。
+ *
+ * @return {int32_t} a为NULL返回-1；b为NULL返回1；其它与strncmp一致。
+ */
+int32_t tk_strncmp(const char* a, const char* b, size_t n);
 
 /**
  * @method tk_stricmp

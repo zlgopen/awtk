@@ -645,6 +645,22 @@ int32_t tk_strcmp(const char* a, const char* b) {
   return strcmp(a, b);
 }
 
+int32_t tk_strncmp(const char* a, const char* b, size_t n) {
+  if (a == b) {
+    return 0;
+  }
+
+  if (a == NULL) {
+    return -1;
+  }
+
+  if (b == NULL) {
+    return 1;
+  }
+
+  return strncmp(a, b, n);
+}
+
 int32_t tk_stricmp(const char* a, const char* b) {
   if (a == b) {
     return 0;
