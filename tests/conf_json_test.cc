@@ -1,6 +1,7 @@
 ﻿#include "gtest/gtest.h"
 #include "tkc/named_value.h"
 #include "conf_io/conf_json.h"
+#include "conf_io/conf_utils.h"
 #include "tkc/object_default.h"
 
 TEST(ConfJson, arr) {

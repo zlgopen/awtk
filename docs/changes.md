@@ -1,4 +1,7 @@
 # 最新动态
+2025/08/4
+  * move object_to_json/object_from_json to conf_utils.h
+
 2025/08/1
   * 完善 return_ret_if_fail(感谢兆坤提供补丁)
   * self_layouter_flex 兼容旧项目(感谢兆坤提供补丁)

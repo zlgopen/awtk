@@ -7,7 +7,8 @@ static void* thread_entry(void* args) {
   tk_semaphore_t* sem = (tk_semaphore_t*)args;
 
   sleep_ms(100);
-  tk_semaphore_post(sem);
+  ret_t ret = tk_semaphore_post(sem);
+  log_debug("tk_semaphore_post: ret=%d\n", ret);
 
   return NULL;
 }

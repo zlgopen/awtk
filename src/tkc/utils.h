@@ -863,28 +863,6 @@ ret_t tk_wstr_select_word(const wchar_t* str, uint32_t len, uint32_t index, int3
 ret_t image_region_parse(uint32_t img_w, uint32_t img_h, const char* region, rect_t* r);
 
 /**
- * @method object_to_json
- * 将对象转换成json字符串。
- *
- * @param {tk_object_t*} obj object对象。
- * @param {str_t*} str 用于返回结果。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t object_to_json(tk_object_t* obj, str_t* str);
-
-/**
- * @method object_from_json
- * 将json字符串转换成对象。
- *
- * @param {tk_object_t*} obj object对象, 用于返回结果。
- * @param {const char*} str json字符串。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t object_from_json(tk_object_t* obj, const char* str);
-
-/**
  * @method data_url_copy
  * 
  * 将数据从源URL拷贝到目标URL。
