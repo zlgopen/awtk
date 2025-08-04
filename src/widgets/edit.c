@@ -762,15 +762,16 @@ static ret_t edit_on_key_up(widget_t* widget, key_event_t* e) {
   if (key_code_is_enter(key)) {
     if (edit->timer_id == TK_INVALID_ID) {
       edit_on_focused(widget);
+      ret = RET_STOP;
     } else {
       keyboard_type_t keyboard_type = system_info()->keyboard_type;
       if (edit->focus_next_when_enter && keyboard_type != KEYBOARD_3KEYS &&
           keyboard_type != KEYBOARD_5KEYS) {
         widget_focus_next(widget);
         widget_set_focused(widget, FALSE);
+        ret = RET_STOP;
       }
     }
-    ret = RET_STOP;
   } else {
     ret = text_edit_key_up(edit->model, e);
   }
