@@ -216,9 +216,11 @@ TEST(ObjectCustom, fscript1) {
 
   fscript_eval(obj_fscript, "self.exec_ex('cmd1', '')", &result);
   ASSERT_STREQ(value_str(&result), "ok");
+  value_reset(&result);
   
   fscript_eval(obj_fscript, "self.exec_ex('cmd_not_exist', '')", &result);
   ASSERT_EQ(value_int(&result), RET_NOT_FOUND);
+  value_reset(&result);
 
   TK_OBJECT_UNREF(obj);
   TK_OBJECT_UNREF(obj_fscript);

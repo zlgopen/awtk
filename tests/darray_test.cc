@@ -761,7 +761,9 @@ TEST(DArrayTest, replace) {
   darray_init(&darray, 10, (tk_destroy_t)my_data_destroy, NULL);
 
   // Test replacing in empty array
-  ASSERT_EQ(darray_replace(&darray, 0, my_data_create("test", 1)), RET_BAD_PARAMS);
+  data1 = my_data_create("test", 1);
+  ASSERT_EQ(darray_replace(&darray, 0, data1), RET_BAD_PARAMS);
+  my_data_destroy(data1);
 
   // Add some elements
   data1 = my_data_create("jack", 100);
@@ -771,7 +773,9 @@ TEST(DArrayTest, replace) {
   ASSERT_EQ(darray.size, 2u);
 
   // Test replacing with invalid index
-  ASSERT_EQ(darray_replace(&darray, 2, my_data_create("invalid", 999)), RET_BAD_PARAMS);
+  data1 = my_data_create("invalid", 999);
+  ASSERT_EQ(darray_replace(&darray, 2, data1), RET_BAD_PARAMS);
+  my_data_destroy(data1);
   ASSERT_EQ(darray.size, 2u);
 
   // Test replacing valid element

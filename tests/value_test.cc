@@ -1731,4 +1731,5 @@ TEST(ValueTest, bool_pointer_ex) {
   void* data = malloc(100);
   value_set_pointer_ex(&v, data, default_destroy);
   ASSERT_EQ(value_bool(&v), TRUE);
+  value_reset(&v);
 }
