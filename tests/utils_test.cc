@@ -589,6 +589,18 @@ TEST(Utils, image_region_parse) {
   ASSERT_EQ(r.h, 25);
 }
 
+TEST(Utils, strrstr) {
+  ASSERT_STREQ(tk_strrstr("abc", "abc"), "abc");
+  ASSERT_STREQ(tk_strrstr("1abc", "abc"), "abc");
+  ASSERT_STREQ(tk_strrstr("1abc2", "abc"), "abc2");
+  ASSERT_STREQ(tk_strrstr("abc abc", "abc"), "abc");
+  ASSERT_STREQ(tk_strrstr("abc abc123", "abc"), "abc123");
+  ASSERT_STREQ(tk_strrstr("abc abc123aaabc", "abc"), "abc");
+
+  ASSERT_EQ(tk_strrstr("bc", "abc") == NULL, true);
+  ASSERT_EQ(tk_strrstr("bc", "123") == NULL, true);
+}
+
 TEST(Utils, totitle) {
   char str[] = "it is nice!";
   ASSERT_STREQ(tk_str_totitle(str), "It Is Nice!");

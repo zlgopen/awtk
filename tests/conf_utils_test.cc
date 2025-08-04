@@ -1,13 +1,10 @@
-#include <string>
-#include "tkc/mem.h"
-#include "tkc/utils.h"
 #include "tkc/object_default.h"
 #include "tkc/object_array.h"
 #include "conf_io/conf_utils.h"
 
 #include "gtest/gtest.h"
 
-TEST(Utils, to_json) {
+TEST(ConfUtils, object_to_json) {
   str_t str;
   value_t v;
   tk_object_t* obj = object_default_create();
@@ -52,7 +49,7 @@ TEST(Utils, to_json) {
   TK_OBJECT_UNREF(addr);
 }
 
-TEST(Utils, from_json) {
+TEST(ConfUtils, object_from_json) {
   tk_object_t* obj = object_default_create();
 
   ASSERT_EQ(object_from_json(obj,
@@ -85,16 +82,3 @@ TEST(Utils, from_json) {
 
   TK_OBJECT_UNREF(obj);
 }
-
-TEST(Utils, strrstr) {
-  ASSERT_STREQ(tk_strrstr("abc", "abc"), "abc");
-  ASSERT_STREQ(tk_strrstr("1abc", "abc"), "abc");
-  ASSERT_STREQ(tk_strrstr("1abc2", "abc"), "abc2");
-  ASSERT_STREQ(tk_strrstr("abc abc", "abc"), "abc");
-  ASSERT_STREQ(tk_strrstr("abc abc123", "abc"), "abc123");
-  ASSERT_STREQ(tk_strrstr("abc abc123aaabc", "abc"), "abc");
-
-  ASSERT_EQ(tk_strrstr("bc", "abc") == NULL, true);
-  ASSERT_EQ(tk_strrstr("bc", "123") == NULL, true);
-}
-

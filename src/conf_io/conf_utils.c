@@ -96,4 +96,3 @@ ret_t object_from_json(tk_object_t* obj, const char* str) {
 
   return ret;
 }
-
