@@ -19,6 +19,8 @@
  *
  */
 
+#include "tkc/utils.h"
+
 #ifndef WITH_WASM
 #include "tkc/thread.h"
 #endif /*WITH_WASM*/
@@ -27,14 +29,9 @@
 #include "tkc/path.h"
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
-#include "tkc/wstr.h"
-#include "tkc/utils.h"
 #include "tkc/object.h"
-#include "tkc/named_value.h"
 #include "tkc/data_reader_factory.h"
 #include "tkc/data_writer_factory.h"
-#include "tkc/data_reader_mem.h"
-#include "tkc/object_array.h"
 
 #define IS_ADDRESS_ALIGN_4(addr) !((((size_t)(addr)) & 0x3) | 0x0)
 
