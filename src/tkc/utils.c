@@ -34,7 +34,6 @@
 #include "tkc/data_reader_factory.h"
 #include "tkc/data_writer_factory.h"
 #include "tkc/data_reader_mem.h"
-#include "tkc/object_hash.h"
 #include "tkc/object_array.h"
 
 #define IS_ADDRESS_ALIGN_4(addr) !((((size_t)(addr)) & 0x3) | 0x0)

@@ -60,14 +60,6 @@
 #include <limits.h>
 #include <inttypes.h>
 
-BEGIN_C_DECLS
-int32_t tk_strcmp(const char* a, const char* b);
-int32_t tk_strncmp(const char* a, const char* b, size_t n);
-int32_t tk_stricmp(const char* a, const char* b);
-int32_t tk_wstrcmp(const wchar_t* a, const wchar_t* b);
-int32_t tk_wstricmp(const wchar_t* a, const wchar_t* b);
-END_C_DECLS
-
 #if defined(HAS_AWTK_CONFIG) || defined(CONFIG_HAS_AWTK_CONFIG)
 #include "awtk_config.h"
 #endif /*HAS_AWTK_CONFIG*/
@@ -115,6 +107,14 @@ typedef int socklen_t;
 #else
 #include "tkc/wasm_helper.h"
 #endif /*WITH_WASM*/
+
+BEGIN_C_DECLS
+int32_t tk_strcmp(const char* a, const char* b);
+int32_t tk_strncmp(const char* a, const char* b, size_t n);
+int32_t tk_stricmp(const char* a, const char* b);
+int32_t tk_wstrcmp(const wchar_t* a, const wchar_t* b);
+int32_t tk_wstricmp(const wchar_t* a, const wchar_t* b);
+END_C_DECLS
 
 #if defined(__MINGW32__) || defined(__MINGW64__)
 #ifndef MINGW
