@@ -1,4 +1,7 @@
 # 最新动态
+2025/08/5
+  * 完善 src/README.md (感谢兆坤发现问题)
+
 2025/08/4
   * move object_to_json/object_from_json to conf_utils.h
   * 完善测试(感谢兆坤提供补丁)
