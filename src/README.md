@@ -30,10 +30,16 @@
 
 ## 使用方法
 
-应用程序只需包含awtk.h即可。
+应用程序一般只需包含 awtk.h 即可。
 
 ```
 #include "awtk.h"
 ```
 
+如果需要使用 xml/ubjson/conf_io 等扩展库，则需要包含对应的头文件。如：
+
+
+```c
+#include "conf_io/conf_json.h"
+```
 
