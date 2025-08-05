@@ -3,6 +3,7 @@
 2025/08/5
   * 完善 src/README.md (感谢兆坤发现问题)
   * 完善 utils.c(感谢兆坤提供补丁)
+  * 修复 HAS_NO_LIBC 时 缺少 tk_strtoi 实现的问题(感谢兆坤提供补丁)
 
 2025/08/4
   * move object_to_json/object_from_json to conf_utils.h

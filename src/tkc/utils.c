@@ -21,10 +21,6 @@
 
 #include "tkc/utils.h"
 
-#ifndef WITH_WASM
-#include "tkc/thread.h"
-#endif /*WITH_WASM*/
-
 #include "tkc/fs.h"
 #include "tkc/path.h"
 #include "tkc/mem.h"
@@ -36,6 +32,8 @@
 #define IS_ADDRESS_ALIGN_4(addr) !((((size_t)(addr)) & 0x3) | 0x0)
 
 #ifndef WITH_WASM
+#include "tkc/thread.h"
+
 static uint64_t s_ui_thread_id = 0;
 
 ret_t tk_set_ui_thread(uint64_t ui_thread_id) {
@@ -236,16 +234,6 @@ double tk_atof(const char* str) {
   return atof(str);
 }
 
-int32_t tk_strtoi(const char* str, const char** end, int base) {
-  long ret = tk_strtol(str, end, base);
-  if (ret > INT32_MAX) {
-    ret = INT32_MAX;
-  } else if (ret < INT32_MIN) {
-    ret = INT32_MIN;
-  }
-  return (int32_t)ret;
-}
-
 long tk_strtol(const char* str, const char** end, int base) {
   return_value_if_fail(str != NULL, 0);
 
@@ -276,6 +264,16 @@ const char* tk_lltoa(char* str, int len, int64_t n) {
   return str;
 }
 #endif /*HAS_NO_LIBC*/
+
+int32_t tk_strtoi(const char* str, const char** end, int base) {
+  long ret = tk_strtol(str, end, base);
+  if (ret > INT32_MAX) {
+    ret = INT32_MAX;
+  } else if (ret < INT32_MIN) {
+    ret = INT32_MIN;
+  }
+  return (int32_t)ret;
+}
 
 #define IS_HEX_NUM(s) (s[0] == '0' && (s[1] == 'x' || s[1] == 'X'))
 #define IS_BIN_NUM(s) (s[0] == '0' && (s[1] == 'b' || s[1] == 'B'))
@@ -1526,7 +1524,9 @@ uint32_t tk_strnlen(const char* str, uint32_t maxlen) {
   const char* s;
   return_value_if_fail(str != NULL, 0);
 
-  for (s = str; maxlen-- && *s != '\0'; ++s);
+  for (s = str; maxlen-- && *s != '\0'; ++s) {
+  };
+
   return s - str;
 }
 
@@ -2733,6 +2733,6 @@ ret_t tk_str_trim_right(char* str, const char* chars) {
     p--;
   }
   *(p + 1) = '\0';
-  
+
   return RET_OK;
 }
