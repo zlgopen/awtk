@@ -624,7 +624,10 @@ static const char* s_scroll_bar_clone_properties[] = {WIDGET_PROP_MAX,
                                                       WIDGET_PROP_ROW,
                                                       WIDGET_PROP_ANIMATABLE,
                                                       WIDGET_PROP_VALUE,
+                                                      WIDGET_PROP_AUTO_HIDE,
                                                       SCROLL_BAR_PROP_ANIMATOR_TIME,
+                                                      SCROLL_BAR_PROP_SCROLL_DELTA,
+                                                      SCROLL_BAR_PROP_WHEEL_SCROLL,
                                                       NULL};
 static const char* s_scroll_bar_persitent_properties[] = {WIDGET_PROP_ANIMATABLE, NULL};
 
