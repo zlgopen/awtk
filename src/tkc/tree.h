@@ -189,6 +189,12 @@ typedef struct _tree_t {
    * 节点内存分配器是否共享。
    */
   bool_t node_allocator_is_shared;
+
+  /**
+   * @property {tk_object_t*} node_features_size_map
+   * 节点特征大小映射表。
+   */
+  tk_object_t* node_features_size_map;
 } tree_t;
 
 /**
@@ -494,6 +500,49 @@ ret_t tree_set_node_allocator(tree_t* tree, mem_allocator_t* allocator);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t tree_set_shared_node_allocator(tree_t* tree, mem_allocator_t* allocator);
+
+/**
+ * @method tree_get_node_size
+ * 获取节点大小。
+ * @param {tree_t*} tree 树结构对象。
+ *
+ * @return {uint32_t} 返回节点大小。
+ */
+uint32_t tree_get_node_size(tree_t* tree);
+
+/**
+ * @method tree_get_node_feature_offset
+ * 获取节点特征偏移。
+ * @param {tree_t*} tree 树结构对象。
+ * @param {const char*} name 特征名称。
+ *
+ * @return {uint32_t} 返回特征偏移。
+ */
+uint32_t tree_get_node_feature_offset(tree_t* tree, const char* name);
+#define TREE_GET_NODE_FEATURE_OFFSET(tree, type) tree_get_node_feature_offset(tree, #type)
+
+/**
+ * @method tree_append_node_feature
+ * 追加节点特征。
+ * @param {tree_t*} tree 树结构对象。
+ * @param {const char*} name 特征名称。
+ * @param {uint32_t} size 特征大小。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tree_append_node_feature(tree_t* tree, const char* name, uint32_t size);
+#define TREE_APPEND_NODE_FEATURE(tree, type) tree_append_node_feature(tree, #type, sizeof(type))
+
+/**
+ * @method tree_has_node_feature
+ * 是否有指定节点特征。
+ * @param {tree_t*} tree 树结构对象。
+ * @param {const char*} name 特征名称。
+ *
+ * @return {bool_t} 返回 TRUE 表示有指定节点特征，返回 FALSE 表示没有指定节点特征。
+ */
+bool_t tree_has_node_feature(tree_t* tree, const char* name);
+#define TREE_HAS_NODE_FEATURE(tree, type) tree_has_node_feature(tree, #type)
 
 /**
  * @method tree_deinit

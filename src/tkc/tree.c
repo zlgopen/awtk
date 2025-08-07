@@ -24,6 +24,7 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/darray.h"
+#include "tkc/object_default.h"
 
 static ret_t tree_node_destroy(tree_node_t* node, tk_destroy_t destroy, mem_allocator_t* allocator);
 
@@ -292,16 +293,16 @@ inline static ret_t tree_node_foreach(tree_node_t* node, tree_foreach_type_t for
   return RET_OK;
 }
 
-static inline tree_node_t* tree_node_create(void* data, mem_allocator_t* allocator) {
+static inline tree_node_t* tree_node_create(void* data, mem_allocator_t* allocator, uint32_t size) {
   tree_node_t* ret = NULL;
   if (allocator != NULL) {
-    ret = MEM_ALLOCATOR_ALLOC(allocator, sizeof(tree_node_t));
+    ret = MEM_ALLOCATOR_ALLOC(allocator, size);
   } else {
-    ret = TKMEM_ALLOC(sizeof(tree_node_t));
+    ret = TKMEM_ALLOC(size);
   }
   return_value_if_fail(ret != NULL, NULL);
 
-  memset(ret, 0, sizeof(*ret));
+  memset(ret, 0, size);
 
   ret->data = data;
 
@@ -310,7 +311,7 @@ static inline tree_node_t* tree_node_create(void* data, mem_allocator_t* allocat
 
 tree_node_t* tree_create_node(tree_t* tree, void* data) {
   return_value_if_fail(tree != NULL, NULL);
-  return tree_node_create(data, tree->node_allocator);
+  return tree_node_create(data, tree->node_allocator, tree_get_node_size(tree));
 }
 
 int32_t tree_node_degree(tree_node_t* node) {
@@ -849,6 +850,84 @@ ret_t tree_set_shared_node_allocator(tree_t* tree, mem_allocator_t* allocator) {
   return tree_set_node_allocator_impl(tree, allocator, TRUE);
 }
 
+typedef struct _tree_node_feature_get_offset_on_visit_ctx_t {
+  const char* name;
+  uint32_t offset;
+  bool_t found;
+} tree_node_feature_get_offset_on_visit_ctx_t;
+
+static ret_t tree_node_feature_get_offset_on_visit(void* ctx, const void* data) {
+  const named_value_t* nv = (const named_value_t*)(data);
+  tree_node_feature_get_offset_on_visit_ctx_t* actx =
+      (tree_node_feature_get_offset_on_visit_ctx_t*)(ctx);
+
+  if (actx->name != NULL && tk_str_eq(actx->name, nv->name)) {
+    actx->found = TRUE;
+    return RET_STOP;
+  }
+
+  actx->offset += value_uint32(&nv->value);
+
+  return RET_OK;
+}
+
+inline static uint32_t tree_get_node_features_size(tree_t* tree) {
+  tree_node_feature_get_offset_on_visit_ctx_t ctx = {.offset = 0};
+  return_value_if_fail(tree != NULL, 0);
+
+  if (tree->node_features_size_map != NULL) {
+    tk_object_foreach_prop(tree->node_features_size_map, tree_node_feature_get_offset_on_visit,
+                           &ctx);
+  }
+
+  return ctx.offset;
+}
+
+uint32_t tree_get_node_size(tree_t* tree) {
+  return_value_if_fail(tree != NULL, 0);
+  return sizeof(tree_node_t) + tree_get_node_features_size(tree);
+}
+
+uint32_t tree_get_node_feature_offset(tree_t* tree, const char* name) {
+  tree_node_feature_get_offset_on_visit_ctx_t ctx = {.offset = 0, .name = name};
+  return_value_if_fail(tree != NULL, -1);
+  return_value_if_fail(tree->node_features_size_map != NULL, -1);
+
+  tk_object_foreach_prop(tree->node_features_size_map, tree_node_feature_get_offset_on_visit, &ctx);
+  return_value_if_fail(ctx.found, -1);
+
+  return sizeof(tree_node_t) + ctx.offset;
+}
+
+ret_t tree_append_node_feature(tree_t* tree, const char* name, uint32_t size) {
+  return_value_if_fail(tree != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(tree_is_empty(tree, NULL), RET_FAIL);
+
+  if (NULL == tree->node_features_size_map) {
+    tree->node_features_size_map = object_default_create_ex(FALSE);
+    return_value_if_fail(tree->node_features_size_map != NULL, RET_OOM);
+  }
+
+  return tk_object_set_prop_uint32(tree->node_features_size_map, name, size);
+}
+
+bool_t tree_has_node_feature(tree_t* tree, const char* name) {
+  bool_t ret = FALSE;
+  return_value_if_fail(tree != NULL, FALSE);
+
+  if (tree->node_features_size_map != NULL) {
+    ret = tk_object_has_prop(tree->node_features_size_map, name);
+  }
+
+  return ret;
+}
+
+inline static ret_t tree_clear_node_feature(tree_t* tree) {
+  return_value_if_fail(tree != NULL, RET_BAD_PARAMS);
+  TK_OBJECT_UNREF(tree->node_features_size_map);
+  return RET_OK;
+}
+
 ret_t tree_deinit(tree_t* tree) {
   ret_t ret = RET_OK;
   return_value_if_fail(tree != NULL, RET_BAD_PARAMS);
@@ -856,6 +935,7 @@ ret_t tree_deinit(tree_t* tree) {
   ret = tree_clear(tree);
   if (RET_OK == ret) {
     tree_set_node_allocator(tree, NULL);
+    tree_clear_node_feature(tree);
   }
   return ret;
 }
