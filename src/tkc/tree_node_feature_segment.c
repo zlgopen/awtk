@@ -21,35 +21,43 @@
 
 #include "tkc/tree_node_feature_segment.h"
 
+const tree_node_feature_info_t s_tree_node_feature_segment_info = {
+    .size = sizeof(tree_node_feature_segment_t),
+};
+
+const tree_node_feature_info_t* tree_node_feature_segment_info(void) {
+  return &s_tree_node_feature_segment_info;
+}
+
 bool_t segment_tree_node_is_ancestor(tree_t* tree, const tree_node_t* node,
                                      const tree_node_t* ancestor) {
-  uint32_t offset = 0;
   tree_node_feature_segment_t *node_feature = NULL, *ancestor_feature = NULL;
-  return_value_if_fail(TREE_HAS_NODE_FEATURE(tree, tree_node_feature_segment_t), FALSE);
+  return_value_if_fail(tree_has_node_feature(tree, &s_tree_node_feature_segment_info), FALSE);
   return_value_if_fail(node != NULL && ancestor != NULL, FALSE);
 
   if (node == ancestor) {
     return FALSE;
   }
 
-  offset = TREE_GET_NODE_FEATURE_OFFSET(tree, tree_node_feature_segment_t);
-  node_feature = TREE_NODE_GET_SEGMENT_FEATURE(node, offset);
-  ancestor_feature = TREE_NODE_GET_SEGMENT_FEATURE(ancestor, offset);
+  node_feature = (tree_node_feature_segment_t*)tree_get_node_feature(
+      tree, node, &s_tree_node_feature_segment_info);
+  ancestor_feature = (tree_node_feature_segment_t*)tree_get_node_feature(
+      tree, ancestor, &s_tree_node_feature_segment_info);
 
   return ancestor_feature->start <= node_feature->start &&
          node_feature->end <= ancestor_feature->end;
 }
 
 typedef struct _segment_tree_update_range_by_order_ctx_t {
-  uint32_t node_feature_offset;
+  tree_t* tree;
   int32_t index;
 } segment_tree_update_range_by_order_ctx_t;
 
 static ret_t segment_tree_update_range_by_order_on_visit(void* ctx, const void* data) {
   segment_tree_update_range_by_order_ctx_t* actx = (segment_tree_update_range_by_order_ctx_t*)ctx;
   const tree_node_t* node = (const tree_node_t*)data;
-  tree_node_feature_segment_t* node_feature =
-      TREE_NODE_GET_SEGMENT_FEATURE(node, actx->node_feature_offset);
+  tree_node_feature_segment_t* node_feature = (tree_node_feature_segment_t*)tree_get_node_feature(
+      actx->tree, node, &s_tree_node_feature_segment_info);
 
   if (node->child == NULL) {
     node_feature->start = node_feature->end = actx->index;
@@ -61,7 +69,8 @@ static ret_t segment_tree_update_range_by_order_on_visit(void* ctx, const void* 
     for (iter = tree_node_get_child((tree_node_t*)node, 0); iter != NULL;
          iter = iter->next_sibling) {
       tree_node_feature_segment_t* iter_feature =
-          TREE_NODE_GET_SEGMENT_FEATURE(iter, actx->node_feature_offset);
+          (tree_node_feature_segment_t*)tree_get_node_feature(actx->tree, iter,
+                                                              &s_tree_node_feature_segment_info);
       node_feature->start = tk_min(iter_feature->start, node_feature->start);
       node_feature->end = tk_max(iter_feature->end, node_feature->end);
     }
@@ -71,10 +80,8 @@ static ret_t segment_tree_update_range_by_order_on_visit(void* ctx, const void* 
 }
 
 ret_t segment_tree_update_range_by_order(tree_t* tree) {
-  segment_tree_update_range_by_order_ctx_t ctx = {.index = 0};
-  return_value_if_fail(TREE_HAS_NODE_FEATURE(tree, tree_node_feature_segment_t), RET_BAD_PARAMS);
-
-  ctx.node_feature_offset = TREE_GET_NODE_FEATURE_OFFSET(tree, tree_node_feature_segment_t);
+  segment_tree_update_range_by_order_ctx_t ctx = {.tree = tree};
+  return_value_if_fail(tree_has_node_feature(tree, &s_tree_node_feature_segment_info), FALSE);
 
   return tree_foreach(tree, NULL, TREE_FOREACH_TYPE_POSTORDER,
                       segment_tree_update_range_by_order_on_visit, &ctx);

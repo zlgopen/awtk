@@ -23,6 +23,7 @@
 #define TK_TREE_NODE_FEATURE_SEGMENT_H
 
 #include "tkc/tree.h"
+#include "tkc/tree_node_feature_info_list.h"
 
 BEGIN_C_DECLS
 
@@ -34,6 +35,15 @@ typedef struct _tree_node_feature_segment_t {
   int32_t start;
   int32_t end;
 } tree_node_feature_segment_t;
+
+/**
+ * @method tree_node_feature_segment_info
+ * @annotation ["static"]
+ * 线段树结点特征信息
+ *
+ * @return {const tree_node_feature_info_t*} 线段树结点特征信息。
+ */
+const tree_node_feature_info_t* tree_node_feature_segment_info(void);
 
 /**
  * @class segment_tree_t
@@ -62,9 +72,6 @@ bool_t segment_tree_node_is_ancestor(tree_t* tree, const tree_node_t* node,
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t segment_tree_update_range_by_order(tree_t* tree);
-
-#define TREE_NODE_GET_SEGMENT_FEATURE(node, offset) \
-  ((tree_node_feature_segment_t*)((uint8_t*)(node) + (offset)))
 
 END_C_DECLS
 

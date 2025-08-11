@@ -77,27 +77,34 @@ static ret_t build_tree_for_test(tree_t* tree) {
 }
 
 static ret_t tree_to_string_range_on_node(const tree_node_t* node, str_t* result, void* ctx) {
-  uint32_t offset = (uint32_t)tk_pointer_to_int(ctx);
-  tree_node_feature_segment_t* segment_feature = TREE_NODE_GET_SEGMENT_FEATURE(node, offset);
+  tree_t* tree = (tree_t*)(ctx);
+  tree_node_feature_segment_t* segment_feature =
+      (tree_node_feature_segment_t*)tree_get_node_feature(tree, node,
+                                                          tree_node_feature_segment_info());
   return str_append_format(result, (TK_NAME_LEN + 1) * 2, "[%d,%d]", segment_feature->start,
                            segment_feature->end);
 }
 
 TEST(TreeNodeFeatureSegment, basic) {
   tree_t tree;
+  tree_node_feature_info_list_t* features = tree_node_feature_info_list_create();
+  ASSERT_EQ(features != NULL, TRUE);
   ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
-  ASSERT_EQ(TREE_APPEND_NODE_FEATURE(&tree, tree_node_feature_segment_t), RET_OK);
+  ASSERT_EQ(tree_node_feature_info_list_append(features, tree_node_feature_segment_info()), RET_OK);
+  ASSERT_EQ(tree_set_node_features(&tree, features), RET_OK);
 
   ASSERT_EQ(tree_get_node_size(&tree), sizeof(tree_node_t) + sizeof(tree_node_feature_segment_t));
-  ASSERT_EQ(TREE_GET_NODE_FEATURE_OFFSET(&tree, tree_node_feature_segment_t), sizeof(tree_node_t));
 
   tree_deinit(&tree);
 }
 
 TEST(TreeNodeFeatureSegment, update_range_by_order) {
   tree_t tree;
+  tree_node_feature_info_list_t* features = tree_node_feature_info_list_create();
+  ASSERT_EQ(features != NULL, TRUE);
   ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
-  ASSERT_EQ(TREE_APPEND_NODE_FEATURE(&tree, tree_node_feature_segment_t), RET_OK);
+  ASSERT_EQ(tree_node_feature_info_list_append(features, tree_node_feature_segment_info()), RET_OK);
+  ASSERT_EQ(tree_set_node_features(&tree, features), RET_OK);
 
   ASSERT_EQ(build_tree_for_test(&tree), RET_OK);
   ASSERT_EQ(segment_tree_update_range_by_order(&tree), RET_OK);
@@ -106,8 +113,7 @@ TEST(TreeNodeFeatureSegment, update_range_by_order) {
   str_init(&str, 1024);
   tree_to_string_handler_t handler = {};
   handler.on_node = tree_to_string_range_on_node;
-  handler.ctx =
-      tk_pointer_from_int(TREE_GET_NODE_FEATURE_OFFSET(&tree, tree_node_feature_segment_t));
+  handler.ctx = &tree;
   tree_to_string(&tree, NULL, &str, &handler);
   ASSERT_STREQ(str.str,
                "[0,9]\n"
@@ -134,8 +140,11 @@ TEST(TreeNodeFeatureSegment, update_range_by_order) {
 
 TEST(TreeNodeFeatureSegment, node_is_ancestor) {
   tree_t tree;
+  tree_node_feature_info_list_t* features = tree_node_feature_info_list_create();
+  ASSERT_EQ(features != NULL, TRUE);
   ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
-  ASSERT_EQ(TREE_APPEND_NODE_FEATURE(&tree, tree_node_feature_segment_t), RET_OK);
+  ASSERT_EQ(tree_node_feature_info_list_append(features, tree_node_feature_segment_info()), RET_OK);
+  ASSERT_EQ(tree_set_node_features(&tree, features), RET_OK);
 
   ASSERT_EQ(build_tree_for_test(&tree), RET_OK);
   ASSERT_EQ(segment_tree_update_range_by_order(&tree), RET_OK);

@@ -24,9 +24,27 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/darray.h"
-#include "tkc/object_default.h"
 
-static ret_t tree_node_destroy(tree_node_t* node, tk_destroy_t destroy, mem_allocator_t* allocator);
+#define TREE_NODE_GET_FEATURE(node, offset) ((uint8_t*)(node) + sizeof(tree_node_t) + (offset))
+
+typedef struct _tree_node_mem_context_t {
+  mem_allocator_t* allocator;
+  tree_node_feature_info_list_t* node_features_info_list;
+} tree_node_mem_context_t;
+
+inline static ret_t tree_node_mem_context_init(tree_node_mem_context_t* mem_ctx, tree_t* tree) {
+  return_value_if_fail(mem_ctx != NULL && tree != NULL, RET_BAD_PARAMS);
+
+  memset(mem_ctx, 0, sizeof(tree_node_mem_context_t));
+
+  mem_ctx->allocator = tree->node_allocator;
+  mem_ctx->node_features_info_list = tree->node_features_info_list;
+
+  return RET_OK;
+}
+
+static ret_t tree_node_destroy(tree_node_t* node, tk_destroy_t destroy,
+                               tree_node_mem_context_t* mem_ctx);
 
 inline static int32_t tree_node_depth(tree_node_t* node) {
   int32_t depth = -1;
@@ -178,7 +196,7 @@ static ret_t tree_node_link_sibling(tree_node_t* node, tree_node_t* prev_sibling
 }
 
 static ret_t tree_node_foreach_breadth_first(tree_node_t* node, tk_visit_t visit,
-                                             tk_destroy_t destroy, mem_allocator_t* allocator,
+                                             tk_destroy_t destroy, tree_node_mem_context_t* mem_ctx,
                                              void* ctx) {
   uint32_t i = 0;
   darray_t queue;
@@ -190,7 +208,7 @@ static ret_t tree_node_foreach_breadth_first(tree_node_t* node, tk_visit_t visit
     ret_t ret = visit(ctx, iter);
 
     if (ret == RET_REMOVE) {
-      tree_node_destroy(node, destroy, allocator);
+      tree_node_destroy(node, destroy, mem_ctx);
       continue;
     } else if (ret != RET_OK) {
       break;
@@ -207,7 +225,7 @@ static ret_t tree_node_foreach_breadth_first(tree_node_t* node, tk_visit_t visit
 }
 
 static ret_t tree_node_foreach_preorder(tree_node_t* node, tk_visit_t visit, tk_destroy_t destroy,
-                                        mem_allocator_t* allocator, void* ctx) {
+                                        tree_node_mem_context_t* mem_ctx, void* ctx) {
   darray_t stack;
   darray_init(&stack, 16, NULL, NULL);
   darray_push(&stack, node);
@@ -221,7 +239,7 @@ static ret_t tree_node_foreach_preorder(tree_node_t* node, tk_visit_t visit, tk_
     }
 
     if (ret == RET_REMOVE) {
-      tree_node_destroy(node, destroy, allocator);
+      tree_node_destroy(node, destroy, mem_ctx);
       continue;
     } else if (ret != RET_OK) {
       break;
@@ -239,7 +257,7 @@ static ret_t tree_node_foreach_preorder(tree_node_t* node, tk_visit_t visit, tk_
 }
 
 static ret_t tree_node_foreach_postorder(tree_node_t* node, tk_visit_t visit, tk_destroy_t destroy,
-                                         mem_allocator_t* allocator, void* ctx) {
+                                         tree_node_mem_context_t* mem_ctx, void* ctx) {
   darray_t result_stack;
   darray_t process_stack;
   darray_init(&result_stack, 128, NULL, NULL);
@@ -260,7 +278,7 @@ static ret_t tree_node_foreach_postorder(tree_node_t* node, tk_visit_t visit, tk
     ret_t ret = visit(ctx, iter);
 
     if (ret == RET_REMOVE) {
-      tree_node_destroy(node, destroy, allocator);
+      tree_node_destroy(node, destroy, mem_ctx);
       continue;
     } else if (ret != RET_OK) {
       break;
@@ -275,15 +293,15 @@ static ret_t tree_node_foreach_postorder(tree_node_t* node, tk_visit_t visit, tk
 
 inline static ret_t tree_node_foreach(tree_node_t* node, tree_foreach_type_t foreach_type,
                                       tk_visit_t visit, tk_destroy_t destroy,
-                                      mem_allocator_t* allocator, void* ctx) {
+                                      tree_node_mem_context_t* mem_ctx, void* ctx) {
   if (node != NULL) {
     switch (foreach_type) {
       case TREE_FOREACH_TYPE_BREADTH_FIRST:
-        return tree_node_foreach_breadth_first(node, visit, destroy, allocator, ctx);
+        return tree_node_foreach_breadth_first(node, visit, destroy, mem_ctx, ctx);
       case TREE_FOREACH_TYPE_PREORDER:
-        return tree_node_foreach_preorder(node, visit, destroy, allocator, ctx);
+        return tree_node_foreach_preorder(node, visit, destroy, mem_ctx, ctx);
       case TREE_FOREACH_TYPE_POSTORDER:
-        return tree_node_foreach_postorder(node, visit, destroy, allocator, ctx);
+        return tree_node_foreach_postorder(node, visit, destroy, mem_ctx, ctx);
       default:
         ENSURE(!"Not support foreach type!");
         return RET_NOT_IMPL;
@@ -293,10 +311,24 @@ inline static ret_t tree_node_foreach(tree_node_t* node, tree_foreach_type_t for
   return RET_OK;
 }
 
-static inline tree_node_t* tree_node_create(void* data, mem_allocator_t* allocator, uint32_t size) {
+static ret_t tree_node_feature_init_on_visit(void* ctx, const void* data) {
+  tree_node_t* node = (tree_node_t*)(ctx);
+  const tree_node_feature_info_list_item_t* item =
+      (const tree_node_feature_info_list_item_t*)(data);
+  return_value_if_fail(node != NULL && item != NULL, RET_BAD_PARAMS);
+
+  if (item->info->init != NULL) {
+    item->info->init(TREE_NODE_GET_FEATURE(node, item->offset));
+  }
+
+  return RET_OK;
+}
+
+static inline tree_node_t* tree_node_create(void* data, tree_node_mem_context_t* mem_ctx,
+                                            uint32_t size) {
   tree_node_t* ret = NULL;
-  if (allocator != NULL) {
-    ret = MEM_ALLOCATOR_ALLOC(allocator, size);
+  if (mem_ctx->allocator != NULL) {
+    ret = MEM_ALLOCATOR_ALLOC(mem_ctx->allocator, size);
   } else {
     ret = TKMEM_ALLOC(size);
   }
@@ -304,14 +336,22 @@ static inline tree_node_t* tree_node_create(void* data, mem_allocator_t* allocat
 
   memset(ret, 0, size);
 
+  if (mem_ctx->node_features_info_list != NULL) {
+    slist_foreach(&(mem_ctx->node_features_info_list->base), tree_node_feature_init_on_visit, ret);
+  }
+
   ret->data = data;
 
   return ret;
 }
 
 tree_node_t* tree_create_node(tree_t* tree, void* data) {
+  tree_node_mem_context_t mem_ctx;
   return_value_if_fail(tree != NULL, NULL);
-  return tree_node_create(data, tree->node_allocator, tree_get_node_size(tree));
+
+  tree_node_mem_context_init(&mem_ctx, tree);
+
+  return tree_node_create(data, &mem_ctx, tree_get_node_size(tree));
 }
 
 int32_t tree_node_degree(tree_node_t* node) {
@@ -343,15 +383,32 @@ tree_node_t* tree_node_get_child(tree_node_t* node, uint32_t index) {
   return NULL;
 }
 
+static ret_t tree_node_feature_deinit_on_visit(void* ctx, const void* data) {
+  tree_node_t* node = (tree_node_t*)(ctx);
+  const tree_node_feature_info_list_item_t* item =
+      (const tree_node_feature_info_list_item_t*)(data);
+  return_value_if_fail(node != NULL && item != NULL, RET_BAD_PARAMS);
+
+  if (item->info->deinit != NULL) {
+    item->info->deinit(TREE_NODE_GET_FEATURE(node, item->offset));
+  }
+
+  return RET_OK;
+}
+
 static ret_t tree_node_destroy_impl(tree_node_t* node, tk_destroy_t destroy,
-                                    mem_allocator_t* allocator) {
+                                    tree_node_mem_context_t* mem_ctx) {
   return_value_if_fail(node != NULL && destroy != NULL, RET_BAD_PARAMS);
 
   if (node->data != NULL) {
     destroy(node->data);
   }
-  if (allocator != NULL) {
-    MEM_ALLOCATOR_FREE(allocator, node);
+  if (mem_ctx->node_features_info_list != NULL) {
+    slist_foreach(&(mem_ctx->node_features_info_list->base), tree_node_feature_deinit_on_visit,
+                  node);
+  }
+  if (mem_ctx->allocator != NULL) {
+    MEM_ALLOCATOR_FREE(mem_ctx->allocator, node);
   } else {
     TKMEM_FREE(node);
   }
@@ -361,27 +418,27 @@ static ret_t tree_node_destroy_impl(tree_node_t* node, tk_destroy_t destroy,
 
 typedef struct _tree_node_destroy_on_visit_ctx_t {
   tk_destroy_t destroy;
-  mem_allocator_t* allocator;
+  tree_node_mem_context_t* mem_ctx;
 } tree_node_destroy_on_visit_ctx_t;
 
 static ret_t tree_node_destroy_on_visit(void* ctx, const void* data) {
   tree_node_destroy_on_visit_ctx_t* actx = (tree_node_destroy_on_visit_ctx_t*)(ctx);
   tree_node_t* node = (tree_node_t*)(data);
-  tree_node_destroy_impl(node, actx->destroy, actx->allocator);
+  tree_node_destroy_impl(node, actx->destroy, actx->mem_ctx);
   return RET_OK;
 }
 
 inline static ret_t tree_node_destroy(tree_node_t* node, tk_destroy_t destroy,
-                                      mem_allocator_t* allocator) {
+                                      tree_node_mem_context_t* mem_ctx) {
   tree_node_destroy_on_visit_ctx_t ctx = {
       .destroy = destroy,
-      .allocator = allocator,
+      .mem_ctx = mem_ctx,
   };
   return_value_if_fail(node != NULL && destroy != NULL, RET_BAD_PARAMS);
   return_value_if_fail(RET_OK == tree_node_unlink(node), RET_FAIL);
 
   return tree_node_foreach(node, TREE_FOREACH_TYPE_POSTORDER, tree_node_destroy_on_visit, destroy,
-                           allocator, &ctx);
+                           mem_ctx, &ctx);
 }
 
 tree_t* tree_create(tk_destroy_t destroy, tk_compare_t compare) {
@@ -510,9 +567,12 @@ ret_t tree_remove_ex(tree_t* tree, tree_node_t* node, tree_foreach_type_t foreac
 }
 
 ret_t tree_remove_node(tree_t* tree, tree_node_t* node) {
+  tree_node_mem_context_t mem_ctx;
   return_value_if_fail(tree != NULL && node != NULL, RET_BAD_PARAMS);
 
-  return tree_node_destroy(node, tree->destroy, tree->node_allocator);
+  tree_node_mem_context_init(&mem_ctx, tree);
+
+  return tree_node_destroy(node, tree->destroy, &mem_ctx);
 }
 
 ret_t tree_unlink_node(tree_t* tree, tree_node_t* node) {
@@ -601,13 +661,16 @@ ret_t tree_prepend_sibling_node(tree_t* tree, tree_node_t* node, tree_node_t* si
 
 ret_t tree_foreach(tree_t* tree, tree_node_t* node, tree_foreach_type_t foreach_type,
                    tk_visit_t visit, void* ctx) {
+  tree_node_mem_context_t mem_ctx;
   return_value_if_fail(tree != NULL && visit != NULL, RET_BAD_PARAMS);
 
   if (node == NULL) {
     node = tree->root;
   }
 
-  return tree_node_foreach(node, foreach_type, visit, tree->destroy, tree->node_allocator, ctx);
+  tree_node_mem_context_init(&mem_ctx, tree);
+
+  return tree_node_foreach(node, foreach_type, visit, tree->destroy, &mem_ctx, ctx);
 }
 
 bool_t tree_is_empty(tree_t* tree, tree_node_t* node) {
@@ -850,82 +913,64 @@ ret_t tree_set_shared_node_allocator(tree_t* tree, mem_allocator_t* allocator) {
   return tree_set_node_allocator_impl(tree, allocator, TRUE);
 }
 
-typedef struct _tree_node_feature_get_offset_on_visit_ctx_t {
-  const char* name;
-  uint32_t offset;
-  bool_t found;
-} tree_node_feature_get_offset_on_visit_ctx_t;
-
-static ret_t tree_node_feature_get_offset_on_visit(void* ctx, const void* data) {
-  const named_value_t* nv = (const named_value_t*)(data);
-  tree_node_feature_get_offset_on_visit_ctx_t* actx =
-      (tree_node_feature_get_offset_on_visit_ctx_t*)(ctx);
-
-  if (actx->name != NULL && tk_str_eq(actx->name, nv->name)) {
-    actx->found = TRUE;
-    return RET_STOP;
-  }
-
-  actx->offset += value_uint32(&nv->value);
-
-  return RET_OK;
-}
-
-inline static uint32_t tree_get_node_features_size(tree_t* tree) {
-  tree_node_feature_get_offset_on_visit_ctx_t ctx = {.offset = 0};
-  return_value_if_fail(tree != NULL, 0);
-
-  if (tree->node_features_size_map != NULL) {
-    tk_object_foreach_prop(tree->node_features_size_map, tree_node_feature_get_offset_on_visit,
-                           &ctx);
-  }
-
-  return ctx.offset;
-}
-
 uint32_t tree_get_node_size(tree_t* tree) {
+  uint32_t ret = sizeof(tree_node_t);
   return_value_if_fail(tree != NULL, 0);
-  return sizeof(tree_node_t) + tree_get_node_features_size(tree);
-}
 
-uint32_t tree_get_node_feature_offset(tree_t* tree, const char* name) {
-  tree_node_feature_get_offset_on_visit_ctx_t ctx = {.offset = 0, .name = name};
-  return_value_if_fail(tree != NULL, -1);
-  return_value_if_fail(tree->node_features_size_map != NULL, -1);
-
-  tk_object_foreach_prop(tree->node_features_size_map, tree_node_feature_get_offset_on_visit, &ctx);
-  return_value_if_fail(ctx.found, -1);
-
-  return sizeof(tree_node_t) + ctx.offset;
-}
-
-ret_t tree_append_node_feature(tree_t* tree, const char* name, uint32_t size) {
-  return_value_if_fail(tree != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(tree_is_empty(tree, NULL), RET_FAIL);
-
-  if (NULL == tree->node_features_size_map) {
-    tree->node_features_size_map = object_default_create_ex(FALSE);
-    return_value_if_fail(tree->node_features_size_map != NULL, RET_OOM);
-  }
-
-  return tk_object_set_prop_uint32(tree->node_features_size_map, name, size);
-}
-
-bool_t tree_has_node_feature(tree_t* tree, const char* name) {
-  bool_t ret = FALSE;
-  return_value_if_fail(tree != NULL, FALSE);
-
-  if (tree->node_features_size_map != NULL) {
-    ret = tk_object_has_prop(tree->node_features_size_map, name);
+  if (tree->node_features_info_list != NULL) {
+    ret += tree->node_features_info_list->features_size;
   }
 
   return ret;
 }
 
-inline static ret_t tree_clear_node_feature(tree_t* tree) {
+ret_t tree_set_node_features(tree_t* tree, tree_node_feature_info_list_t* features) {
   return_value_if_fail(tree != NULL, RET_BAD_PARAMS);
-  TK_OBJECT_UNREF(tree->node_features_size_map);
+
+  if (tree->node_features_info_list != features) {
+    return_value_if_fail(tree_is_empty(tree, NULL), RET_FAIL);
+    if (features != NULL) {
+      return_value_if_fail(RET_OK == tree_node_feature_info_list_attach(features, tree), RET_FAIL);
+    }
+    if (tree->node_features_info_list != NULL) {
+      tree_node_feature_info_list_detach(tree->node_features_info_list);
+      tree_node_feature_info_list_destroy(tree->node_features_info_list);
+    }
+    tree->node_features_info_list = features;
+  }
+
   return RET_OK;
+}
+
+void* tree_get_node_feature(tree_t* tree, const tree_node_t* node,
+                            const tree_node_feature_info_t* info) {
+  return_value_if_fail(tree != NULL && node != NULL, NULL);
+  return_value_if_fail(info != NULL, NULL);
+
+  if (tree->node_features_info_list != NULL) {
+    tree_node_feature_info_list_item_t* item =
+        tree_node_feature_info_list_find(tree->node_features_info_list, info);
+    if (item != NULL) {
+      return TREE_NODE_GET_FEATURE(node, item->offset);
+    }
+  }
+
+  return NULL;
+}
+
+bool_t tree_has_node_feature(tree_t* tree, const tree_node_feature_info_t* info) {
+  return_value_if_fail(tree != NULL, FALSE);
+  return_value_if_fail(info != NULL, FALSE);
+
+  if (tree->node_features_info_list != NULL) {
+    tree_node_feature_info_list_item_t* item =
+        tree_node_feature_info_list_find(tree->node_features_info_list, info);
+    if (item != NULL) {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
 }
 
 ret_t tree_deinit(tree_t* tree) {
@@ -935,7 +980,7 @@ ret_t tree_deinit(tree_t* tree) {
   ret = tree_clear(tree);
   if (RET_OK == ret) {
     tree_set_node_allocator(tree, NULL);
-    tree_clear_node_feature(tree);
+    tree_set_node_features(tree, NULL);
   }
   return ret;
 }

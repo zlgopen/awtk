@@ -452,9 +452,9 @@ TEST(Tree, to_string) {
 TEST(Tree, node_allocator) {
   tree_t tree;
   ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
-  ASSERT_EQ(
-      tree_set_node_allocator(&tree, mem_allocator_fixed_block_create(sizeof(tree_node_t), 5)),
-      RET_OK);
+  ASSERT_EQ(tree_set_node_allocator(&tree,
+                                    mem_allocator_fixed_block_create(tree_get_node_size(&tree), 5)),
+            RET_OK);
 
   ASSERT_EQ(build_tree_for_test(&tree), RET_OK);
   mem_allocator_dump(tree.node_allocator);

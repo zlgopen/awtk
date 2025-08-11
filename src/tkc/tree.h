@@ -23,6 +23,7 @@
 #define TK_TREE_H
 
 #include "tkc/types_def.h"
+#include "tkc/tree_node_feature_info_list.h"
 #include "tkc/mem_allocator.h"
 #include "tkc/str.h"
 
@@ -191,10 +192,10 @@ typedef struct _tree_t {
   bool_t node_allocator_is_shared;
 
   /**
-   * @property {tk_object_t*} node_features_size_map
-   * 节点特征大小映射表。
+   * @property {tree_node_feature_info_list_t*} node_features_info_list
+   * 树结点特征信息列表。
    */
-  tk_object_t* node_features_size_map;
+  tree_node_feature_info_list_t* node_features_info_list;
 } tree_t;
 
 /**
@@ -511,38 +512,36 @@ ret_t tree_set_shared_node_allocator(tree_t* tree, mem_allocator_t* allocator);
 uint32_t tree_get_node_size(tree_t* tree);
 
 /**
- * @method tree_get_node_feature_offset
- * 获取节点特征偏移。
+ * @method tree_set_node_features
+ * 设置节点特征。
  * @param {tree_t*} tree 树结构对象。
- * @param {const char*} name 特征名称。
- *
- * @return {uint32_t} 返回特征偏移。
- */
-uint32_t tree_get_node_feature_offset(tree_t* tree, const char* name);
-#define TREE_GET_NODE_FEATURE_OFFSET(tree, type) tree_get_node_feature_offset(tree, #type)
-
-/**
- * @method tree_append_node_feature
- * 追加节点特征。
- * @param {tree_t*} tree 树结构对象。
- * @param {const char*} name 特征名称。
- * @param {uint32_t} size 特征大小。
+ * @param {tree_node_feature_info_list_t*} features 特征信息列表对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tree_append_node_feature(tree_t* tree, const char* name, uint32_t size);
-#define TREE_APPEND_NODE_FEATURE(tree, type) tree_append_node_feature(tree, #type, sizeof(type))
+ret_t tree_set_node_features(tree_t* tree, tree_node_feature_info_list_t* features);
+
+/**
+ * @method tree_get_node_feature
+ * 获取节点特征。
+ * @param {tree_t*} tree 树结构对象。
+ * @param {const tree_node_t*} node 节点。
+ * @param {const tree_node_feature_info_t*} info 特征信息对象。
+ *
+ * @return {void*} 返回特征。
+ */
+void* tree_get_node_feature(tree_t* tree, const tree_node_t* node,
+                            const tree_node_feature_info_t* info);
 
 /**
  * @method tree_has_node_feature
  * 是否有指定节点特征。
  * @param {tree_t*} tree 树结构对象。
- * @param {const char*} name 特征名称。
+ * @param {const tree_node_feature_info_t*} info 特征信息对象。
  *
  * @return {bool_t} 返回 TRUE 表示有指定节点特征，返回 FALSE 表示没有指定节点特征。
  */
-bool_t tree_has_node_feature(tree_t* tree, const char* name);
-#define TREE_HAS_NODE_FEATURE(tree, type) tree_has_node_feature(tree, #type)
+bool_t tree_has_node_feature(tree_t* tree, const tree_node_feature_info_t* info);
 
 /**
  * @method tree_deinit
