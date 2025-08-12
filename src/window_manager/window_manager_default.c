@@ -1352,7 +1352,7 @@ static ret_t window_manager_default_on_remove_child(widget_t* widget, widget_t* 
     widget_off_by_ctx(window, widget);
   }
 
-  return RET_FAIL;
+  return RET_CONTINUE;
 }
 
 static ret_t window_manager_default_get_prop(widget_t* widget, const char* name, value_t* v) {
