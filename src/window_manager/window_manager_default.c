@@ -622,10 +622,10 @@ static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info
   window_manager_dispatch_window_event(curr_win, EVT_WINDOW_WILL_OPEN);
   wm->ready_animator = FALSE;
   if (window_manager_create_animator(wm, curr_win, TRUE) != RET_OK) {
-    widget_t* prev_win = window_manager_find_prev_window(WIDGET(wm));
-    if (prev_win != NULL) {
+    widget_t* foreground_window = window_manager_get_foreground_window(WIDGET(wm));
+    if (foreground_window != NULL) {
       if (!widget_is_keyboard(curr_win) && !widget_is_overlay(curr_win)) {
-        window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_BACKGROUND);
+        window_manager_dispatch_window_event(foreground_window, EVT_WINDOW_TO_BACKGROUND);
       }
     }
     window_manager_dispatch_window_event(curr_win, EVT_WINDOW_OPEN);
@@ -1136,10 +1136,10 @@ static ret_t window_manager_animate_done(widget_t* widget) {
 
     if (is_open && !close_window_when_open_animate) {
       /*此时前一个窗口并非是真正的前一个窗口，而是前一个normal窗口，所以这里重新找真正的前一个窗口*/
-      prev_win = window_manager_find_prev_window(WIDGET(wm));
+      widget_t* foreground_window = window_manager_get_foreground_window(WIDGET(wm));
       /* 结束打开窗口动画后 */
-      if (!curr_win_is_keyboard && prev_win != curr_win) {
-        window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_BACKGROUND);
+      if (!curr_win_is_keyboard && foreground_window != curr_win) {
+        window_manager_dispatch_window_event(foreground_window, EVT_WINDOW_TO_BACKGROUND);
       }
       if (!curr_win_is_normal_window) {
         top_dialog_highlight = window_manager_default_find_top_dialog_highlighter(

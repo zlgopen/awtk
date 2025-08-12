@@ -4,6 +4,7 @@
   * improve tree(感谢兆坤提供补丁)
   * 修复children size产生变换时错误的问题(感谢兆坤提供补丁)
   * 完善window_manager_default_on_remove_child(感谢兆坤提供补丁)
+  * 修复在部分情况下没有正确将前台窗口设置为后台的问题(感谢泽武提供补丁)
 
 2025/08/11
   * improve tree(感谢兆坤提供补丁)
