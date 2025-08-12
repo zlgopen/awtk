@@ -2639,17 +2639,15 @@ ret_t widget_unref(widget_t* widget);
 #define WIDGET_FOR_EACH_CHILD_BEGIN(twidget, iter, i)             \
   if (twidget->children != NULL && twidget->children->size > 0) { \
     int32_t i = 0;                                                \
-    int32_t nr = twidget->children->size;                         \
     widget_t** children = (widget_t**)(twidget->children->elms);  \
-    for (i = 0; i < nr; i++) {                                    \
+    for (i = 0; i < twidget->children->size; i++) {               \
       widget_t* iter = children[i];
 
 #define WIDGET_FOR_EACH_CHILD_BEGIN_R(twidget, iter, i)           \
   if (twidget->children != NULL && twidget->children->size > 0) { \
     int32_t i = 0;                                                \
-    int32_t nr = twidget->children->size;                         \
     widget_t** children = (widget_t**)(twidget->children->elms);  \
-    for (i = nr - 1; i >= 0; i--) {                               \
+    for (i = twidget->children->size - 1; i >= 0; i--) {          \
       widget_t* iter = children[i];
 
 #define WIDGET_FOR_EACH_CHILD_END() \
