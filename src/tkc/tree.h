@@ -23,7 +23,7 @@
 #define TK_TREE_H
 
 #include "tkc/types_def.h"
-#include "tkc/tree_node_feature_info_list.h"
+#include "tkc/feature_info_list.h"
 #include "tkc/mem_allocator.h"
 #include "tkc/str.h"
 
@@ -192,10 +192,10 @@ typedef struct _tree_t {
   bool_t node_allocator_is_shared;
 
   /**
-   * @property {tree_node_feature_info_list_t*} node_features_info_list
+   * @property {feature_info_list_t*} node_features_info_list
    * 树结点特征信息列表。
    */
-  tree_node_feature_info_list_t* node_features_info_list;
+  feature_info_list_t* node_features_info_list;
 } tree_t;
 
 /**
@@ -515,33 +515,33 @@ uint32_t tree_get_node_size(tree_t* tree);
  * @method tree_set_node_features
  * 设置节点特征。
  * @param {tree_t*} tree 树结构对象。
- * @param {tree_node_feature_info_list_t*} features 特征信息列表对象。
+ * @param {feature_info_list_t*} features 特征信息列表对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tree_set_node_features(tree_t* tree, tree_node_feature_info_list_t* features);
+ret_t tree_set_node_features(tree_t* tree, feature_info_list_t* features);
 
 /**
  * @method tree_get_node_feature
  * 获取节点特征。
  * @param {tree_t*} tree 树结构对象。
  * @param {const tree_node_t*} node 节点。
- * @param {const tree_node_feature_info_t*} info 特征信息对象。
+ * @param {const feature_info_list_feature_info_t*} info 特征信息对象。
  *
  * @return {void*} 返回特征。
  */
 void* tree_get_node_feature(tree_t* tree, const tree_node_t* node,
-                            const tree_node_feature_info_t* info);
+                            const feature_info_list_feature_info_t* info);
 
 /**
  * @method tree_has_node_feature
  * 是否有指定节点特征。
  * @param {tree_t*} tree 树结构对象。
- * @param {const tree_node_feature_info_t*} info 特征信息对象。
+ * @param {const feature_info_list_feature_info_t*} info 特征信息对象。
  *
  * @return {bool_t} 返回 TRUE 表示有指定节点特征，返回 FALSE 表示没有指定节点特征。
  */
-bool_t tree_has_node_feature(tree_t* tree, const tree_node_feature_info_t* info);
+bool_t tree_has_node_feature(tree_t* tree, const feature_info_list_feature_info_t* info);
 
 /**
  * @method tree_deinit

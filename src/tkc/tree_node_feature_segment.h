@@ -23,7 +23,7 @@
 #define TK_TREE_NODE_FEATURE_SEGMENT_H
 
 #include "tkc/tree.h"
-#include "tkc/tree_node_feature_info_list.h"
+#include "tkc/feature_info_list.h"
 
 BEGIN_C_DECLS
 
@@ -41,9 +41,9 @@ typedef struct _tree_node_feature_segment_t {
  * @annotation ["static"]
  * 线段树结点特征信息
  *
- * @return {const tree_node_feature_info_t*} 线段树结点特征信息。
+ * @return {const feature_info_list_feature_info_t*} 线段树结点特征信息。
  */
-const tree_node_feature_info_t* tree_node_feature_segment_info(void);
+const feature_info_list_feature_info_t* tree_node_feature_segment_info(void);
 
 /**
  * @class segment_tree_t

@@ -25,11 +25,9 @@
 #include "tkc/utils.h"
 #include "tkc/darray.h"
 
-#define TREE_NODE_GET_FEATURE(node, offset) ((uint8_t*)(node) + sizeof(tree_node_t) + (offset))
-
 typedef struct _tree_node_mem_context_t {
   mem_allocator_t* allocator;
-  tree_node_feature_info_list_t* node_features_info_list;
+  feature_info_list_t* node_features_info_list;
 } tree_node_mem_context_t;
 
 inline static ret_t tree_node_mem_context_init(tree_node_mem_context_t* mem_ctx, tree_t* tree) {
@@ -311,19 +309,6 @@ inline static ret_t tree_node_foreach(tree_node_t* node, tree_foreach_type_t for
   return RET_OK;
 }
 
-static ret_t tree_node_feature_init_on_visit(void* ctx, const void* data) {
-  tree_node_t* node = (tree_node_t*)(ctx);
-  const tree_node_feature_info_list_item_t* item =
-      (const tree_node_feature_info_list_item_t*)(data);
-  return_value_if_fail(node != NULL && item != NULL, RET_BAD_PARAMS);
-
-  if (item->info->init != NULL) {
-    item->info->init(TREE_NODE_GET_FEATURE(node, item->offset));
-  }
-
-  return RET_OK;
-}
-
 static inline tree_node_t* tree_node_create(void* data, tree_node_mem_context_t* mem_ctx,
                                             uint32_t size) {
   tree_node_t* ret = NULL;
@@ -337,7 +322,7 @@ static inline tree_node_t* tree_node_create(void* data, tree_node_mem_context_t*
   memset(ret, 0, size);
 
   if (mem_ctx->node_features_info_list != NULL) {
-    slist_foreach(&(mem_ctx->node_features_info_list->base), tree_node_feature_init_on_visit, ret);
+    feature_info_list_init_features(mem_ctx->node_features_info_list, ret);
   }
 
   ret->data = data;
@@ -383,19 +368,6 @@ tree_node_t* tree_node_get_child(tree_node_t* node, uint32_t index) {
   return NULL;
 }
 
-static ret_t tree_node_feature_deinit_on_visit(void* ctx, const void* data) {
-  tree_node_t* node = (tree_node_t*)(ctx);
-  const tree_node_feature_info_list_item_t* item =
-      (const tree_node_feature_info_list_item_t*)(data);
-  return_value_if_fail(node != NULL && item != NULL, RET_BAD_PARAMS);
-
-  if (item->info->deinit != NULL) {
-    item->info->deinit(TREE_NODE_GET_FEATURE(node, item->offset));
-  }
-
-  return RET_OK;
-}
-
 static ret_t tree_node_destroy_impl(tree_node_t* node, tk_destroy_t destroy,
                                     tree_node_mem_context_t* mem_ctx) {
   return_value_if_fail(node != NULL && destroy != NULL, RET_BAD_PARAMS);
@@ -404,8 +376,7 @@ static ret_t tree_node_destroy_impl(tree_node_t* node, tk_destroy_t destroy,
     destroy(node->data);
   }
   if (mem_ctx->node_features_info_list != NULL) {
-    slist_foreach(&(mem_ctx->node_features_info_list->base), tree_node_feature_deinit_on_visit,
-                  node);
+    feature_info_list_deinit_features(mem_ctx->node_features_info_list, node);
   }
   if (mem_ctx->allocator != NULL) {
     MEM_ALLOCATOR_FREE(mem_ctx->allocator, node);
@@ -924,17 +895,18 @@ uint32_t tree_get_node_size(tree_t* tree) {
   return ret;
 }
 
-ret_t tree_set_node_features(tree_t* tree, tree_node_feature_info_list_t* features) {
+ret_t tree_set_node_features(tree_t* tree, feature_info_list_t* features) {
   return_value_if_fail(tree != NULL, RET_BAD_PARAMS);
 
   if (tree->node_features_info_list != features) {
     return_value_if_fail(tree_is_empty(tree, NULL), RET_FAIL);
     if (features != NULL) {
-      return_value_if_fail(RET_OK == tree_node_feature_info_list_attach(features, tree), RET_FAIL);
+      return_value_if_fail(RET_OK == feature_info_list_attach(features, tree, sizeof(tree_node_t)),
+                           RET_FAIL);
     }
     if (tree->node_features_info_list != NULL) {
-      tree_node_feature_info_list_detach(tree->node_features_info_list);
-      tree_node_feature_info_list_destroy(tree->node_features_info_list);
+      feature_info_list_detach(tree->node_features_info_list);
+      feature_info_list_destroy(tree->node_features_info_list);
     }
     tree->node_features_info_list = features;
   }
@@ -943,28 +915,26 @@ ret_t tree_set_node_features(tree_t* tree, tree_node_feature_info_list_t* featur
 }
 
 void* tree_get_node_feature(tree_t* tree, const tree_node_t* node,
-                            const tree_node_feature_info_t* info) {
+                            const feature_info_list_feature_info_t* info) {
   return_value_if_fail(tree != NULL && node != NULL, NULL);
   return_value_if_fail(info != NULL, NULL);
 
   if (tree->node_features_info_list != NULL) {
-    tree_node_feature_info_list_item_t* item =
-        tree_node_feature_info_list_find(tree->node_features_info_list, info);
+    feature_info_list_item_t* item = feature_info_list_find(tree->node_features_info_list, info);
     if (item != NULL) {
-      return TREE_NODE_GET_FEATURE(node, item->offset);
+      return FEATURE_INFO_LIST_ITEM_GET_FEATURE(item, node);
     }
   }
 
   return NULL;
 }
 
-bool_t tree_has_node_feature(tree_t* tree, const tree_node_feature_info_t* info) {
+bool_t tree_has_node_feature(tree_t* tree, const feature_info_list_feature_info_t* info) {
   return_value_if_fail(tree != NULL, FALSE);
   return_value_if_fail(info != NULL, FALSE);
 
   if (tree->node_features_info_list != NULL) {
-    tree_node_feature_info_list_item_t* item =
-        tree_node_feature_info_list_find(tree->node_features_info_list, info);
+    feature_info_list_item_t* item = feature_info_list_find(tree->node_features_info_list, info);
     if (item != NULL) {
       return TRUE;
     }

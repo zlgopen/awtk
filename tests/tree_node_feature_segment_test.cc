@@ -87,10 +87,10 @@ static ret_t tree_to_string_range_on_node(const tree_node_t* node, str_t* result
 
 TEST(TreeNodeFeatureSegment, basic) {
   tree_t tree;
-  tree_node_feature_info_list_t* features = tree_node_feature_info_list_create();
+  feature_info_list_t* features = feature_info_list_create();
   ASSERT_EQ(features != NULL, TRUE);
   ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
-  ASSERT_EQ(tree_node_feature_info_list_append(features, tree_node_feature_segment_info()), RET_OK);
+  ASSERT_EQ(feature_info_list_append(features, tree_node_feature_segment_info()), RET_OK);
   ASSERT_EQ(tree_set_node_features(&tree, features), RET_OK);
 
   ASSERT_EQ(tree_get_node_size(&tree), sizeof(tree_node_t) + sizeof(tree_node_feature_segment_t));
@@ -100,10 +100,10 @@ TEST(TreeNodeFeatureSegment, basic) {
 
 TEST(TreeNodeFeatureSegment, update_range_by_order) {
   tree_t tree;
-  tree_node_feature_info_list_t* features = tree_node_feature_info_list_create();
+  feature_info_list_t* features = feature_info_list_create();
   ASSERT_EQ(features != NULL, TRUE);
   ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
-  ASSERT_EQ(tree_node_feature_info_list_append(features, tree_node_feature_segment_info()), RET_OK);
+  ASSERT_EQ(feature_info_list_append(features, tree_node_feature_segment_info()), RET_OK);
   ASSERT_EQ(tree_set_node_features(&tree, features), RET_OK);
 
   ASSERT_EQ(build_tree_for_test(&tree), RET_OK);
@@ -140,10 +140,10 @@ TEST(TreeNodeFeatureSegment, update_range_by_order) {
 
 TEST(TreeNodeFeatureSegment, node_is_ancestor) {
   tree_t tree;
-  tree_node_feature_info_list_t* features = tree_node_feature_info_list_create();
+  feature_info_list_t* features = feature_info_list_create();
   ASSERT_EQ(features != NULL, TRUE);
   ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
-  ASSERT_EQ(tree_node_feature_info_list_append(features, tree_node_feature_segment_info()), RET_OK);
+  ASSERT_EQ(feature_info_list_append(features, tree_node_feature_segment_info()), RET_OK);
   ASSERT_EQ(tree_set_node_features(&tree, features), RET_OK);
 
   ASSERT_EQ(build_tree_for_test(&tree), RET_OK);

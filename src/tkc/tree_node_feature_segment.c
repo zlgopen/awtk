@@ -21,11 +21,11 @@
 
 #include "tkc/tree_node_feature_segment.h"
 
-const tree_node_feature_info_t s_tree_node_feature_segment_info = {
+const feature_info_list_feature_info_t s_tree_node_feature_segment_info = {
     .size = sizeof(tree_node_feature_segment_t),
 };
 
-const tree_node_feature_info_t* tree_node_feature_segment_info(void) {
+const feature_info_list_feature_info_t* tree_node_feature_segment_info(void) {
   return &s_tree_node_feature_segment_info;
 }
 
