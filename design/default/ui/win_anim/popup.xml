@@ -1,4 +1,4 @@
-<popup name="popup" x="c" y="m" w="294" h="136" close_when_click="true">
+<popup name="popup" x="c" y="m" w="294" h="136" close_when_click_outside="true">
   <label x="c" y="0" h="36" w="50" text="popup"/>
   <view x="0" y="b" w="100%" h="-36">
     <button name="open:center" x="c:-55" y="50" w="100" h="36" text="open dialog"/>
