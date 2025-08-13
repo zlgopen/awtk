@@ -698,11 +698,13 @@ static ret_t scroll_view_set_prop(widget_t* widget, const char* name, const valu
     scroll_view_set_xoffset(scroll_view, value_int(v));
     scroll_view_notify_scrolled(scroll_view);
     widget_invalidate_force(widget, NULL);
+    widget_layout(widget);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_YOFFSET)) {
     scroll_view_set_yoffset(scroll_view, value_int(v));
     scroll_view_notify_scrolled(scroll_view);
     widget_invalidate_force(widget, NULL);
+    widget_layout(widget);
     return RET_OK;
   } else if (tk_str_eq(name, SCROLL_VIEW_X_SPEED_SCALE)) {
     scroll_view->xspeed_scale = value_float(v);

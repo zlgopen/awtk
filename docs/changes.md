@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/08/13
+  * 修复scroll_view设置xoffset和yoffset属性后与在awstudio中的预览效果不一致的问题(感谢俊杰提供补丁)
+
 2025/08/12
   * improve tree(感谢兆坤提供补丁)
   * 修复children size产生变换时错误的问题(感谢兆坤提供补丁)
