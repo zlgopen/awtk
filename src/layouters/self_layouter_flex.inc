@@ -158,6 +158,24 @@ static ret_t self_layouter_flex_layout(self_layouter_t* layouter, widget_t* widg
     if (W_ATTR_FLEX == layout->layouter.w_attr || H_ATTR_FLEX == layout->layouter.h_attr) {
       widget_t* window_manager = widget_get_window_manager(widget);
       wh_t w = widget->w, h = widget->h;
+      wh_t x_margin = 0, y_margin = 0;
+      bool_t keep_invisible = FALSE, keep_disable = TRUE;
+
+      if (widget->children_layout != NULL) {
+        value_t v;
+        if (RET_OK == children_layouter_get_param(widget->children_layout, "xm", &v)) {
+          x_margin = value_int(&v);
+        }
+        if (RET_OK == children_layouter_get_param(widget->children_layout, "ym", &v)) {
+          y_margin = value_int(&v);
+        }
+        if (RET_OK == children_layouter_get_param(widget->children_layout, "ki", &v)) {
+          keep_invisible = value_bool(&v);
+        }
+        if (RET_OK == children_layouter_get_param(widget->children_layout, "kd", &v)) {
+          keep_disable = value_bool(&v);
+        }
+      }
 
       /* 将容器尺寸改成一个很大的值，等子控件layout好之后再改回来 */
       if (W_ATTR_FLEX == layout->layouter.w_attr) {
@@ -173,15 +191,21 @@ static ret_t self_layouter_flex_layout(self_layouter_t* layouter, widget_t* widg
       if (W_ATTR_FLEX == layout->layouter.w_attr) {
         w = 0;
         WIDGET_FOR_EACH_CHILD_BEGIN(widget, child, i)
-        w = tk_max(w, child->x + child->w);
+        if ((keep_invisible || child->visible) && (keep_disable || child->enable)) {
+          w = tk_max(w, child->x + child->w);
+        }
         WIDGET_FOR_EACH_CHILD_END()
+        w += x_margin;
       }
 
       if (H_ATTR_FLEX == layout->layouter.h_attr) {
         h = 0;
         WIDGET_FOR_EACH_CHILD_BEGIN(widget, child, i)
-        h = tk_max(h, child->y + child->h);
+        if ((keep_invisible || child->visible) && (keep_disable || child->enable)) {
+          h = tk_max(h, child->y + child->h);
+        }
         WIDGET_FOR_EACH_CHILD_END()
+        h += y_margin;
       }
 
       ret = widget_move_resize_ex(widget, widget->x, widget->y, w, h, FALSE);
