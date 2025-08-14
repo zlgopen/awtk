@@ -2,7 +2,7 @@
 
 2025/08/14
   * improve self_layouter_flex(感谢兆坤提供补丁)
-
+  * add demo flex dialog(感谢兆坤提供补丁)
 
 2025/08/13
   * 修复scroll_view设置xoffset和yoffset属性后与在awstudio中的预览效果不一致的问题(感谢俊杰提供补丁)

@@ -938,12 +938,11 @@ static widget_t* find_bind_value_target(widget_t* widget, const char* name) {
   widget_t* target = NULL;
   return_value_if_fail(widget != NULL && name != NULL, NULL);
 
-  if (tk_str_start_with(name, "bind_value:")) {
+  {
     widget_t* parent = widget->parent;
     const char* subname = NULL;
     tokenizer_t t;
 
-    name += 11;
     tokenizer_init(&t, name, tk_strlen(name), "/");
 
     while ((subname = tokenizer_next(&t)) != NULL) {
@@ -977,6 +976,14 @@ static ret_t on_bind_value_changed(void* ctx, event_t* e) {
 
   return widget_set_prop_float(widget, WIDGET_PROP_ANIMATE_PREFIX WIDGET_PROP_VALUE,
                                widget_get_value(target));
+}
+
+static ret_t on_bind_visible_changed(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  widget_t* target = WIDGET(e->target);
+  return_value_if_fail(widget != NULL && target != NULL, RET_BAD_PARAMS);
+
+  return widget_set_prop_bool(widget, WIDGET_PROP_VISIBLE, !!widget_get_value_int(target));
 }
 
 static ret_t on_action_list(void* ctx, event_t* e) {
@@ -1349,9 +1356,12 @@ static ret_t install_one(void* ctx, const void* iter) {
       }
     } else if (tk_str_eq(name, "pages")) {
       widget_on(widget, EVT_WIDGET_ADD_CHILD, on_pages_add_child, widget);
-    } else if (strstr(name, "bind_value:") != NULL) {
-      widget_t* target = find_bind_value_target(widget, name);
+    } else if (tk_str_start_with(name, "bind_value:")) {
+      widget_t* target = find_bind_value_target(widget, name + (sizeof("bind_value:") - 1));
       widget_on(target, EVT_VALUE_CHANGED, on_bind_value_changed, (void*)widget);
+    } else if (tk_str_start_with(name, "bind_visible:")) {
+      widget_t* target = find_bind_value_target(widget, name + (sizeof("bind_visible:") - 1));
+      widget_on(target, EVT_VALUE_CHANGED, on_bind_visible_changed, (void*)widget);
     } else if (strstr(name, "action_list:") != NULL) {
       widget_on(widget, EVT_CLICK, on_action_list, (void*)widget);
     } else if (strstr(name, "cursor") != NULL) {

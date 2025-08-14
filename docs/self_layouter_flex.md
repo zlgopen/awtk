@@ -87,3 +87,9 @@ widget_set_self_layout_params(button2, "50", "0", "40", "40");
 widget_set_self_layout_params(button3, "100", "0", "50", "50");
 widget_layout(view);
 ```
+
+## 示例
+
+[list_view 示例](https://github.com/zlgopen/awtk/blob/master/design/default/ui/uiex/page_button.xml)
+
+[dialog 示例](https://github.com/zlgopen/awtk/blob/master/design/default/ui/dialog_flex.xml)
