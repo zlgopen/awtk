@@ -3,6 +3,7 @@
 2025/08/15
   * 完善 lcd 模版文件。
   * 增加 lcd_mem_argb8888
+  * log_get_log_level/log_get_log_level支持脚本。
 
 2025/08/14
   * improve self_layouter_flex(感谢兆坤提供补丁)

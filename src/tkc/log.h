@@ -27,6 +27,7 @@ BEGIN_C_DECLS
 /**
  * @enum tk_log_level_t
  * @prefix LOG_LEVEL_
+ * @annotation ["scriptable"]
  * LOG的级别。 
  */
 typedef enum _tk_log_level_t {
@@ -54,7 +55,7 @@ typedef enum _tk_log_level_t {
 
 /**
  * @class log_t
- * @annotation ["fake"]
+ * @annotation ["scriptable", "fake"]
  * log。
  *
  */
@@ -63,6 +64,7 @@ typedef enum _tk_log_level_t {
  * @method log_get_log_level
  *
  * 获取log的级别。
+ * @annotation ["static", "scriptable"]
  *
  * @return {tk_log_level_t} 返回log的级别。
  */
@@ -72,6 +74,7 @@ tk_log_level_t log_get_log_level(void);
  * @method log_set_log_level
  *
  * 设置log的级别。
+ * @annotation ["static", "scriptable"]
  *
  * @param {tk_log_level_t} log_level log的级别。
  *
