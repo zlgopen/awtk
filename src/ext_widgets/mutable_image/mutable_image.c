@@ -48,6 +48,11 @@ static bitmap_t* mutable_image_prepare_image(widget_t* widget, canvas_t* c) {
   bitmap_format_t format = mutable_image_get_disire_format(widget, c);
   return_value_if_fail(mutable_image != NULL && mutable_image->prepare_image != NULL, NULL);
 
+  if (mutable_image->image != NULL) {
+    bitmap_destroy(mutable_image->image);
+    mutable_image->image = NULL;
+  }
+
   if (mutable_image->create_image != NULL) {
     void* ctx = mutable_image->create_image_ctx;
     mutable_image->image = mutable_image->create_image(ctx, format, mutable_image->image);
@@ -259,6 +264,11 @@ ret_t mutable_image_set_framebuffer(widget_t* widget, uint32_t w, uint32_t h,
                                     bitmap_format_t format, uint8_t* buff) {
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
   return_value_if_fail(mutable_image != NULL && buff != NULL, RET_BAD_PARAMS);
+
+  if (mutable_image->fb != NULL) {
+    bitmap_destroy(mutable_image->fb);
+    mutable_image->fb = NULL;
+  }
 
   mutable_image->fb = bitmap_create();
   return_value_if_fail(mutable_image->fb != NULL, RET_OOM);

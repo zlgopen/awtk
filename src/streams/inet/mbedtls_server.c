@@ -18,6 +18,7 @@ static ret_t mbedtls_conn_server_destroy(mbedtls_conn_t* conn) {
   mbedtls_net_free(&(server_conn->client_fd));
   mbedtls_ssl_free(&(conn->ssl));
 
+  TKMEM_FREE(conn);
   return RET_OK;
 }
 
@@ -191,6 +192,7 @@ ret_t mbedtls_server_destroy(mbedtls_server_t* server) {
   mbedtls_ctr_drbg_free(&(server->ctr_drbg));
   mbedtls_entropy_free(&(server->entropy));
 
+  TKMEM_FREE(server);
   return RET_OK;
 }
 #endif /*WITH_MBEDTLS*/

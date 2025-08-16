@@ -41,6 +41,7 @@ typedef struct _xml_builder_t {
 } xml_builder_t;
 
 static void xml_rich_text_push_font(xml_builder_t* b) {
+  return_if_fail(b->font_level + 1 < MAX_FONT_LEVEL);
   b->font_level++;
   b->fonts[b->font_level] = b->fonts[b->font_level - 1];
 
@@ -51,6 +52,7 @@ static void xml_rich_text_push_font(xml_builder_t* b) {
 }
 
 static void xml_rich_text_pop_font(xml_builder_t* b) {
+  return_if_fail(b->font_level > 0);
   rich_text_font_t* font = b->fonts + b->font_level;
 
   if (font->name != NULL) {
@@ -156,6 +158,18 @@ static void xml_rich_text_on_error(XmlBuilder* thiz, int line, int row, const ch
 
 static void xml_rich_text_destroy(XmlBuilder* thiz) {
   xml_builder_t* b = (xml_builder_t*)thiz;
+
+  int i = 0;
+  for (i = 0; i <= b->font_level; i++) {
+    rich_text_font_t* iter = b->fonts + i;
+    if (iter->name != NULL) {
+      TKMEM_FREE(iter->name);
+      iter->name = NULL;
+    }
+  }
+
+  b->font_level = 0;
+
   str_reset(&(b->temp));
   return;
 }
@@ -172,13 +186,10 @@ static XmlBuilder* builder_init(xml_builder_t* b, const char* font_name, uint16_
   b->builder.destroy = xml_rich_text_destroy;
   b->font = b->fonts;
 
-  for (i = 0; i < MAX_FONT_LEVEL; i++) {
-    rich_text_font_t* iter = b->fonts + i;
-    iter->size = font_size;
-    iter->color = color;
-    iter->align_v = align_v;
-    iter->name = font_name == NULL ? NULL : tk_strdup(font_name);
-  }
+  b->fonts[0].size = font_size;
+  b->fonts[0].color = color;
+  b->fonts[0].align_v = align_v;
+  b->fonts[0].name = font_name == NULL ? NULL : tk_strdup(font_name);
   str_init(&(b->temp), 100);
 
   return &(b->builder);

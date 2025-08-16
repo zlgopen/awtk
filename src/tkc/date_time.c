@@ -55,7 +55,12 @@ ret_t date_time_set_impl(date_time_get_now_t date_time_get_now) {
 date_time_t* date_time_create(void) {
   date_time_t* dt = TKMEM_ZALLOC(date_time_t);
 
-  return date_time_init(dt);
+  if (date_time_init(dt)) {
+    return dt;
+  } else {
+    TKMEM_FREE(dt);
+    return NULL;
+  }
 }
 
 ret_t date_time_from_time(date_time_t* dt, int64_t time) {
