@@ -2288,7 +2288,7 @@ ret_t edit_pre_delete_with_sep(widget_t* widget, delete_type_t delete_type, char
     for (i = state.select_start; i < state.select_end; i++, s++) {
       if (*s == sep) {
         *d++ = sep;
-      } else if (d[-1] == sep) {
+      } else if ((d > text->str) && d[-1] == sep) {
         /*避免连续分隔符*/
         *d++ = EDIT_DEFAULT_CHAR;
       }
