@@ -4,6 +4,7 @@
   * 修复 edit中可能存在的越界读取。
   * 完善 window_manager_animate_done
   * 修复 内存泄漏(#958)
+  * 完善 file_browser_refresh
 
 2025/08/15
   * 完善 lcd 模版文件。

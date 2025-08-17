@@ -248,7 +248,11 @@ ret_t file_browser_refresh(file_browser_t* fb) {
       continue;
     }
 
-    path_build(fullpath, MAX_PATH, fb->cwd, info.name, NULL);
+    if (path_build(fullpath, MAX_PATH, fb->cwd, info.name, NULL) != RET_OK) {
+      log_debug("path_build failed:%s/%s\n", fb->cwd, info.name);
+      continue;
+    }
+
     if (fs_stat(os_fs(), fullpath, &st) != RET_OK) {
       log_debug("stat file failed:%s\n", fullpath);
       continue;
