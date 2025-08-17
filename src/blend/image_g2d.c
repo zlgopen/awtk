@@ -301,10 +301,10 @@ ret_t image_g2d_benchmark(void) {
   cost = time_now_us() - start;
   log_debug("g2d_blend_image cost=%u\n", cost);
 
-  bitmap_destroy(img_rgba8888);
-  bitmap_destroy(img_rgba8888_src);
-  bitmap_destroy(img_rgb565);
-  bitmap_destroy(img_rgb565_src);
+  BITMAP_DESTROY(img_rgba8888);
+  BITMAP_DESTROY(img_rgba8888_src);
+  BITMAP_DESTROY(img_rgb565);
+  BITMAP_DESTROY(img_rgb565_src);
 
   return RET_OK;
 }

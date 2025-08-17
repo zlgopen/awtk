@@ -30,8 +30,10 @@ void* realloc(void* ptr, size_t size);
 #define TKMEM_REALLOC(p, size) realloc(p, size)
 #define TKMEM_FREE(p) \
   do {                \
-    free((void*)p);   \
-    p = NULL;         \
+    if (p != NULL) {  \
+      free((void*)p); \
+      p = NULL;       \
+    }                 \
   } while (0)
 #define TKMEM_ZALLOC(type) (type*)TKMEM_CALLOC(1, sizeof(type))
 #define TKMEM_REALLOCT(type, p, n) (type*)realloc(p, (n) * sizeof(type))
@@ -122,10 +124,12 @@ void tk_free(void* ptr);
 #ifdef WITH_CPPCHECK
 #define TKMEM_FREE tk_free
 #else
-#define TKMEM_FREE(p)  \
-  do {                 \
-    tk_free((void*)p); \
-    p = NULL;          \
+#define TKMEM_FREE(p)    \
+  do {                   \
+    if (p != NULL) {     \
+      tk_free((void*)p); \
+      p = NULL;          \
+    }                    \
   } while (0)
 #endif /*WITH_CPPCHECK*/
 

@@ -613,6 +613,15 @@ bool_t bitmap_mono_get_pixel(const uint8_t* buff, uint32_t w, uint32_t h, uint32
 ret_t bitmap_mono_set_pixel(uint8_t* buff, uint32_t w, uint32_t h, uint32_t x, uint32_t y,
                             bool_t pixel);
 uint32_t bitmap_get_mem_size(bitmap_t* bitmap);
+
+#define BITMAP_DESTROY(p) \
+  do {                \
+    if (p != NULL) {  \
+      bitmap_destroy((void*)p); \
+      p = NULL;       \
+    }                 \
+  } while (0)
+
 END_C_DECLS
 
 #endif /*TK_BITMAP_H*/

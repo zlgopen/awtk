@@ -100,6 +100,9 @@ ret_t bidi_log2vis(bidi_t* bidi, const wchar_t* str, uint32_t size) {
   FriBidiLevel level = 0;
   FriBidiParType type = FRIBIDI_PAR_ON;
   return_value_if_fail(bidi != NULL && str != NULL && size > 0, RET_BAD_PARAMS);
+  return_value_if_fail(sizeof(wchar_t) == sizeof(FriBidiChar), RET_BAD_PARAMS);
+  return_value_if_fail(sizeof(uint32_t) == sizeof(FriBidiStrIndex), RET_BAD_PARAMS);
+
   if (ARRAY_SIZE(bidi->vis_str_static) > size) {
     bidi->vis_str_size = size;
     bidi->vis_str = bidi->vis_str_static;
@@ -109,9 +112,6 @@ ret_t bidi_log2vis(bidi_t* bidi, const wchar_t* str, uint32_t size) {
     bidi->vis_str = TKMEM_ALLOC((size + 1) * sizeof(wchar_t));
   }
   return_value_if_fail(bidi->vis_str != NULL, RET_FAIL);
-
-  return_value_if_fail(sizeof(wchar_t) == sizeof(FriBidiChar), RET_BAD_PARAMS);
-  return_value_if_fail(sizeof(uint32_t) == sizeof(FriBidiStrIndex), RET_BAD_PARAMS);
 
   if (bidi->alloc_l2v) {
     bidi->positions_L_to_V = TKMEM_ZALLOCN(int32_t, size);

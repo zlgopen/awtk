@@ -163,3 +163,19 @@ TEST(RichTextParser, bui2) {
 
   rich_text_node_destroy(node);
 }
+
+TEST(RichTextParser, font2) {
+  const char* str = "<font color=\"#123456\" size=\"12\" name=\"test\">text</font>";
+  rich_text_node_t* node = rich_text_parse(str, strlen(str), "foo", TK_DEFAULT_FONT_SIZE,
+                                           color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
+
+  rich_text_node_destroy(node);
+}
+
+TEST(RichTextParser, font3) {
+  const char* str = "<font color=\"#123456\" size=\"12\" name=\"test\">123<font name=\"test1\">text</font></font>";
+  rich_text_node_t* node = rich_text_parse(str, strlen(str), "foo", TK_DEFAULT_FONT_SIZE,
+                                           color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
+
+  rich_text_node_destroy(node);
+}

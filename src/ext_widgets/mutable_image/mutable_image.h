@@ -157,7 +157,11 @@ ret_t mutable_image_set_prepare_image(widget_t* widget, mutable_image_prepare_im
 /**
  * @method mutable_image_set_create_image
  * 设置create_image回调函数。
- * 
+ *
+ * 由create_image函数决定是否重新创建image:
+ * 一般情况下(比如大小和格式不变时)，create_image 可以重用 old_image，直接返回 old_image。
+ * 如果重新创建新的图片，则create_image必须销毁old_image。
+ *
  * @param {widget_t*} widget mutable_image对象。
  * @param {mutable_image_create_image_t} create_image 创建图片的回调函数。
  * @param {void*} create_image_ctx create_image回调函数的上下文。

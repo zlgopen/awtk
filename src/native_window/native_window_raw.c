@@ -181,5 +181,7 @@ ret_t native_window_raw_init(lcd_t* lcd) {
 }
 
 ret_t native_window_raw_deinit(void) {
+  TK_OBJECT_UNREF(s_shared_win);
+
   return RET_OK;
 }

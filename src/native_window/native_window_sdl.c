@@ -746,8 +746,7 @@ ret_t native_window_sdl_deinit(void) {
       sdl->cursor_surface = NULL;
     }
 
-    tk_object_unref(TK_OBJECT(s_shared_win));
-    s_shared_win = NULL;
+    TK_OBJECT_UNREF(s_shared_win);
   }
 
   return RET_OK;

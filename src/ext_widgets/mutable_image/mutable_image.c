@@ -50,6 +50,12 @@ static bitmap_t* mutable_image_prepare_image(widget_t* widget, canvas_t* c) {
 
   if (mutable_image->create_image != NULL) {
     void* ctx = mutable_image->create_image_ctx;
+    /*
+     * 由create_image函数决定是否重新创建image:
+     * 一般情况下(比如大小和格式不变时)，create_image 可以重用 mutable_image->image，直接返回 mutable_image->image。
+     * 如果重新创建新的图片，则create_image必须销毁mutable_image->image。
+     * 所以此处并不销毁 mutable_image->image。
+     */
     mutable_image->image = mutable_image->create_image(ctx, format, mutable_image->image);
   } else if (mutable_image->image == NULL) {
     mutable_image->image = bitmap_create_ex(widget->w, widget->h, 0, format);
@@ -122,15 +128,8 @@ ret_t mutable_image_on_destroy(widget_t* widget) {
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
   return_value_if_fail(widget != NULL && mutable_image != NULL, RET_BAD_PARAMS);
 
-  if (mutable_image->fb != NULL) {
-    bitmap_destroy(mutable_image->fb);
-    mutable_image->fb = NULL;
-  }
-
-  if (mutable_image->image != NULL) {
-    bitmap_destroy(mutable_image->image);
-    mutable_image->image = NULL;
-  }
+  BITMAP_DESTROY(mutable_image->fb);
+  BITMAP_DESTROY(mutable_image->image);
 
   return image_base_on_destroy(widget);
 }
@@ -150,9 +149,8 @@ static ret_t mutable_image_set_prop(widget_t* widget, const char* name, const va
   ENSURE(mutable_image);
   if (tk_str_eq(name, WIDGET_PROP_IMAGE) || tk_str_eq(name, WIDGET_PROP_VALUE)) {
     mutable_image->user_image = (bitmap_t*)value_bitmap(v);
-    if (mutable_image->user_image != NULL && mutable_image->image != NULL) {
-      bitmap_destroy(mutable_image->image);
-      mutable_image->image = NULL;
+    if (mutable_image->user_image != NULL) {
+      BITMAP_DESTROY(mutable_image->image);
     }
     return mutable_image->user_image != NULL ? RET_OK : RET_BAD_PARAMS;
   }
@@ -260,6 +258,7 @@ ret_t mutable_image_set_framebuffer(widget_t* widget, uint32_t w, uint32_t h,
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
   return_value_if_fail(mutable_image != NULL && buff != NULL, RET_BAD_PARAMS);
 
+  BITMAP_DESTROY(mutable_image->fb);
   mutable_image->fb = bitmap_create();
   return_value_if_fail(mutable_image->fb != NULL, RET_OOM);
 

@@ -185,7 +185,7 @@ static ret_t remote_ui_service_take_snapshot(remote_ui_service_t* ui, const char
   } else {
     fs_remove_file(os_fs(), filename);
   }
-  bitmap_destroy(image);
+  BITMAP_DESTROY(image);
 
   return ret;
 }

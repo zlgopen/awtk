@@ -122,6 +122,9 @@ static window_animator_t* window_animator_create_impl(const char* type, bool_t o
   return_value_if_fail(args != NULL && args->name[0], NULL);
 
   wa = window_animator_factory_create_animator(factory, open, args);
+  if (wa == NULL) {
+    TK_OBJECT_UNREF(args);
+  }
   return_value_if_fail(wa != NULL, NULL);
 
   if (tk_object_get_prop(args, "duration", &v) == RET_OK) {
@@ -136,7 +139,7 @@ static window_animator_t* window_animator_create_impl(const char* type, bool_t o
     }
   }
 
-  tk_object_unref(args);
+  TK_OBJECT_UNREF(args);
 
   return wa;
 }

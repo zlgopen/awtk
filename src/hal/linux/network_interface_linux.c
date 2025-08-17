@@ -212,10 +212,12 @@ static int network_interface_linux_mobile_get_quality(network_interface_t* inter
 
 static void network_interface_linux_destroy(network_interface_t* interface) {
   network_interface_linux_t* linux_network_interface = (network_interface_linux_t*)interface;
+
   TKMEM_FREE(interface->interface_name);
+  TKMEM_FREE(linux_network_interface->ipaddr);
+  TKMEM_FREE(linux_network_interface->macaddr);
+  
   TKMEM_FREE(interface);
-  if (linux_network_interface->ipaddr != NULL) TKMEM_FREE(linux_network_interface->ipaddr);
-  if (linux_network_interface->macaddr != NULL) TKMEM_FREE(linux_network_interface->macaddr);
 }
 
 static const network_interface_vtable_t s_linux_eth_vtable = {

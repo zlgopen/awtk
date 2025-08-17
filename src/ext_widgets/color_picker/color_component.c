@@ -144,9 +144,8 @@ static ret_t color_component_on_paint_self(widget_t* widget, canvas_t* c) {
 static ret_t color_component_on_destroy(widget_t* widget) {
   color_component_t* color_component = COLOR_COMPONENT(widget);
   return_value_if_fail(color_component != NULL, RET_BAD_PARAMS);
-  if (color_component->image != NULL) {
-    bitmap_destroy((color_component->image));
-  }
+  
+  BITMAP_DESTROY((color_component->image));
 
   return RET_OK;
 }
@@ -181,8 +180,7 @@ static ret_t color_component_ensure_image(widget_t* widget) {
 
   if (color_component->image != NULL) {
     if (color_component->image->w != widget->w || color_component->image->h != widget->h) {
-      bitmap_destroy(color_component->image);
-      color_component->image = NULL;
+      BITMAP_DESTROY(color_component->image);
     }
   }
 

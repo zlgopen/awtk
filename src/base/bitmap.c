@@ -833,7 +833,7 @@ bool_t bitmap_save_png(bitmap_t* bitmap, const char* filename) {
   if (bitmap->format != BITMAP_FMT_RGBA8888 || bitmap->line_length != bitmap->w * 4) {
     bitmap_t* t = bitmap_rgba8888_from_bitmap(bitmap);
     bitmap_rgba8888_save_png(t, filename);
-    bitmap_destroy(t);
+    BITMAP_DESTROY(t);
   } else {
     bitmap_rgba8888_save_png(bitmap, filename);
   }

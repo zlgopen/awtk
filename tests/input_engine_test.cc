@@ -282,6 +282,7 @@ TEST(input_engine, input_key) {
   candidate_info_t pre_candidate_info;
   input_method_t* im = input_method_create();
   ASSERT_EQ(im != NULL, TRUE);
+  input_method_t* old_im = input_method();
   input_method_set(im);
 
   uint32_t event_id = input_method_on(input_method(), EVT_IM_SHOW_CANDIDATES,
@@ -343,6 +344,6 @@ TEST(input_engine, input_key) {
 #elif defined(WITH_IME_NULL)
 #endif
 #endif
-  input_method_set(NULL);
+  input_method_set(old_im);
   input_method_destroy(im);
 }

@@ -104,6 +104,10 @@ tk_thread_t* tk_thread_create(tk_thread_entry_t entry, void* args) {
 ret_t tk_thread_start(tk_thread_t* thread) {
   return_value_if_fail(thread != NULL && !thread->running, RET_BAD_PARAMS);
 
+  if (thread->stackbase != NULL) {
+    TKMEM_FREE(thread->stackbase);
+  }
+
   thread->stackbase = TKMEM_ALLOC(thread->stack_size);
   return_value_if_fail(thread->stackbase != NULL, RET_OOM);
 

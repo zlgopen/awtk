@@ -5222,7 +5222,7 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r) {
     bitmap_clip = bitmap_create_ex(r->w, r->h, r->w * 4, BITMAP_FMT_RGBA8888);
 
     if (image_copy(bitmap_clip, bitmap, &clip_r, 0, 0) == RET_OK) {
-      bitmap_destroy(bitmap);
+      BITMAP_DESTROY(bitmap);
       return bitmap_clip;
     } else {
       return NULL;

@@ -41,22 +41,20 @@ typedef struct _xml_builder_t {
 } xml_builder_t;
 
 static void xml_rich_text_push_font(xml_builder_t* b) {
+  return_if_fail((b->font_level + 1) < MAX_FONT_LEVEL);
+
   b->font_level++;
   b->fonts[b->font_level] = b->fonts[b->font_level - 1];
 
   b->font = b->fonts + b->font_level;
-  if (b->font->name != NULL) {
-    b->font->name = tk_strdup(b->font->name);
-  }
+  b->font->name = TK_STRDUP(b->font->name);
 }
 
 static void xml_rich_text_pop_font(xml_builder_t* b) {
   rich_text_font_t* font = b->fonts + b->font_level;
+  return_if_fail(b->font_level > 0);
 
-  if (font->name != NULL) {
-    TKMEM_FREE(font->name);
-    font->name = NULL;
-  }
+  TKMEM_FREE(font->name);
 
   b->font_level--;
   b->font = b->fonts + b->font_level;
@@ -84,7 +82,7 @@ static void xml_rich_text_on_start(XmlBuilder* thiz, const char* tag, const char
         }
       } else if (tk_str_eq(key, "name")) {
         TKMEM_FREE(b->font->name);
-        b->font->name = tk_strdup(value);
+        b->font->name = TK_STRDUP(value);
       }
       i += 2;
     }
@@ -155,14 +153,22 @@ static void xml_rich_text_on_error(XmlBuilder* thiz, int line, int row, const ch
 }
 
 static void xml_rich_text_destroy(XmlBuilder* thiz) {
+  int32_t i = 0;
   xml_builder_t* b = (xml_builder_t*)thiz;
+
+  for (i = 0; i < MAX_FONT_LEVEL; i++) {
+    rich_text_font_t* iter = b->fonts + i;
+    TKMEM_FREE(iter->name);
+  }
+
   str_reset(&(b->temp));
+
   return;
 }
 
 static XmlBuilder* builder_init(xml_builder_t* b, const char* font_name, uint16_t font_size,
                                 color_t color, align_v_t align_v) {
-  int32_t i = 0;
+  rich_text_font_t* level0 = NULL;
   memset(b, 0x00, sizeof(xml_builder_t));
 
   b->builder.on_start = xml_rich_text_on_start;
@@ -172,13 +178,12 @@ static XmlBuilder* builder_init(xml_builder_t* b, const char* font_name, uint16_
   b->builder.destroy = xml_rich_text_destroy;
   b->font = b->fonts;
 
-  for (i = 0; i < MAX_FONT_LEVEL; i++) {
-    rich_text_font_t* iter = b->fonts + i;
-    iter->size = font_size;
-    iter->color = color;
-    iter->align_v = align_v;
-    iter->name = font_name == NULL ? NULL : tk_strdup(font_name);
-  }
+  level0 = b->fonts;
+  level0->size = font_size;
+  level0->color = color;
+  level0->align_v = align_v;
+  level0->name = TK_STRDUP(font_name);
+
   str_init(&(b->temp), 100);
 
   return &(b->builder);

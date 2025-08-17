@@ -54,8 +54,14 @@ ret_t date_time_set_impl(date_time_get_now_t date_time_get_now) {
 
 date_time_t* date_time_create(void) {
   date_time_t* dt = TKMEM_ZALLOC(date_time_t);
+  return_value_if_fail(dt != NULL, NULL);
 
-  return date_time_init(dt);
+  if (date_time_init(dt) == NULL) {
+    TKMEM_FREE(dt);
+    return NULL;
+  }
+
+  return dt;
 }
 
 ret_t date_time_from_time(date_time_t* dt, int64_t time) {
@@ -73,6 +79,7 @@ date_time_t* date_time_init(date_time_t* dt) {
     s_date_time_get_now(dt);
     return dt;
   } else {
+    log_debug("s_date_time_get_now is not set.\n");
     return NULL;
   }
 }
