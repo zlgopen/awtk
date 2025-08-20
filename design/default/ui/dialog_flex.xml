@@ -1,7 +1,7 @@
 <dialog name="dialog_flex" theme="dialog" style="custom" highlight="default(alpha=100)" self_layout="flex(x=c,y=m,w=80%,h=flex)">
   <dialog_title style="custom" x="0" y="0" w="100%" h="30" text="Resize dialog by switch">
     <draggable drag_window="true"/>
-    <button name="close" x="r:5" y="5" w="20" h="20" text="X"/>
+    <button name="quit" x="r:5" y="5" w="20" h="20" text="X"/>
   </dialog_title>
   <dialog_client style="custom" self_layout="flex(x=c,y=30,w=100%,h=flex)" children_layout="default(r=0,c=1,xm=10,ym=10,s=10)">
     <view name="switch_view" h="20">

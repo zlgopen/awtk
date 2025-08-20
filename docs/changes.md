@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/08/20
+  * 修复demouiold崩溃问题(感谢兆坤提供补丁)
+
 2025/08/17
   * 修复 edit中可能存在的越界读取。
   * 完善 window_manager_animate_done
