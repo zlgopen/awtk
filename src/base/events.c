@@ -82,7 +82,7 @@ orientation_event_t* orientation_event_cast(event_t* event) {
 
 pointer_event_t* pointer_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);
-  return_value_if_fail(event->type >= EVT_POINTER_DOWN && event->type <= EVT_CLICK, NULL);
+  return_value_if_fail(event->type >= EVT_POINTER_DOWN && event->type <= EVT_DOUBLE_CLICK, NULL);
   return_value_if_fail(event->size == sizeof(pointer_event_t), NULL);
 
   return (pointer_event_t*)event;
