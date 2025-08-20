@@ -134,6 +134,9 @@ static ret_t list_view_h_on_scroll_view_layout_children(widget_t* widget) {
 
       if (widget->children_layout == NULL) {
         widget_move_resize_ex(iter, x, y, w, h, FALSE);
+        if (widget->children_layout == NULL) {
+          scroll_view_set_virtual_w(list_view_h->scroll_view, virtual_w);
+        }
         widget_layout(iter);
       }
       x = iter->x + iter->w + spacing;
