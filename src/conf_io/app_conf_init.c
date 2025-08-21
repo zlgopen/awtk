@@ -43,13 +43,13 @@ static ret_t app_conf_get_url(char url[MAX_PATH + 1], const char* app_name, cons
     return_value_if_fail(fs_create_dir(fs, path) == RET_OK, RET_FAIL);
   }
 
-  path_build(app_dir, MAX_PATH, path, app_name, NULL);
+  return_value_if_fail(path_build(app_dir, MAX_PATH, path, app_name, NULL) == RET_OK, RET_FAIL);
   if (!path_exist(app_dir)) {
     return_value_if_fail(fs_create_dir(fs, app_dir) == RET_OK, RET_FAIL);
   }
 
   tk_snprintf(url, MAX_PATH, "app_conf.%s", extname);
-  path_build(path, MAX_PATH, app_dir, url, NULL);
+  return_value_if_fail(path_build(path, MAX_PATH, app_dir, url, NULL) == RET_OK, RET_FAIL);
   tk_snprintf(url, MAX_PATH, "file://%s", path);
 
   return RET_OK;

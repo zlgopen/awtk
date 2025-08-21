@@ -1027,18 +1027,22 @@ assets_manager_t* assets_managers_ref(const char* name) {
     uint32_t i = 0;
     const char* iter = NULL;
     char res_root[MAX_PATH + 1] = {0};
-    am = assets_manager_create(5);
-    return_value_if_fail(am != NULL, NULL);
+    bool_t applet_res_root_found = FALSE;
+    return_value_if_fail(assets_managers_is_applet_assets_supported(), NULL);
 
-    if (s_applet_res_roots != NULL) {
-      for (i = 0; i < s_applet_res_roots->size; i++) {
-        iter = (const char*)darray_get(s_applet_res_roots, i);
-        path_build(res_root, MAX_PATH, iter, name, NULL);
+    for (i = 0; i < s_applet_res_roots->size; i++) {
+      iter = (const char*)darray_get(s_applet_res_roots, i);
+      if (path_build(res_root, MAX_PATH, iter, name, NULL) == RET_OK) {
         if (fs_dir_exist(os_fs(), res_root)) {
+          applet_res_root_found = TRUE;
           break;
         }
       }
     }
+    return_value_if_fail(applet_res_root_found, NULL);
+
+    am = assets_manager_create(5);
+    return_value_if_fail(am != NULL, NULL);
     am->name = tk_strdup(name);
     darray_push(s_assets_managers, am);
     assets_manager_set_res_root(am, res_root);

@@ -151,7 +151,7 @@ ret_t path_app_root(char path[MAX_PATH + 1]) {
   memset(exe_path, 0x00, sizeof(exe_path));
 
   if (fs_get_exe(os_fs(), exe_path) == RET_OK) {
-    path_normalize(exe_path, path, MAX_PATH + 1);
+    return_value_if_fail(path_normalize(exe_path, path, MAX_PATH + 1) == RET_OK, RET_FAIL);
     p = strrchr(path, TK_PATH_SEP);
     if (p != NULL) {
       *p = '\0';
@@ -308,8 +308,8 @@ ret_t path_replace_basename(char* result, int32_t size, const char* filename,
   char dirname[MAX_PATH + 1];
   return_value_if_fail(result != NULL && filename != NULL && basename != NULL, RET_BAD_PARAMS);
 
-  path_normalize(filename, result, size);
-  path_dirname(result, dirname, MAX_PATH);
+  return_value_if_fail(path_normalize(filename, result, size) == RET_OK, RET_FAIL);
+  return_value_if_fail(path_dirname(result, dirname, MAX_PATH) == RET_OK, RET_FAIL);
 
   dirname[MAX_PATH] = '\0';
   return path_build(result, size, dirname, basename, NULL);
@@ -320,7 +320,7 @@ ret_t path_replace_extname(char* result, int32_t size, const char* filename, con
   return_value_if_fail(result != NULL && filename != NULL && extname != NULL, RET_BAD_PARAMS);
 
   memset(result, 0x00, size);
-  path_normalize(filename, result, size);
+  return_value_if_fail(path_normalize(filename, result, size) == RET_OK, RET_FAIL);
   p = strrchr(result, '.');
   if (p != NULL) {
     uint32_t n = 0;
@@ -354,9 +354,7 @@ ret_t path_app_root_ex(char path[MAX_PATH + 1], const char* subpath) {
   char app_root[MAX_PATH + 1] = {0};
   return_value_if_fail(path_app_root(app_root) == RET_OK, RET_BAD_PARAMS);
 
-  path_build(path, MAX_PATH, app_root, subpath, NULL);
-
-  return RET_OK;
+  return path_build(path, MAX_PATH, app_root, subpath, NULL);
 }
 
 const char* path_prepend_app_root(char full_path[MAX_PATH + 1], const char* path) {
@@ -364,7 +362,7 @@ const char* path_prepend_app_root(char full_path[MAX_PATH + 1], const char* path
   return_value_if_fail(path != NULL, NULL);
   return_value_if_fail(path_app_root(app_root) == RET_OK, NULL);
 
-  path_build(full_path, MAX_PATH, app_root, path, NULL);
+  return_value_if_fail(path_build(full_path, MAX_PATH, app_root, path, NULL) == RET_OK, NULL);
 
   return full_path;
 }
@@ -374,7 +372,7 @@ const char* path_prepend_temp_path(char full_path[MAX_PATH + 1], const char* pat
   return_value_if_fail(path != NULL, NULL);
   return_value_if_fail(fs_get_temp_path(os_fs(), temp_path) == RET_OK, NULL);
 
-  path_build(full_path, MAX_PATH, temp_path, path, NULL);
+  return_value_if_fail(path_build(full_path, MAX_PATH, temp_path, path, NULL) == RET_OK, NULL);
 
   return full_path;
 }
@@ -384,7 +382,8 @@ const char* path_prepend_user_storage_path(char full_path[MAX_PATH + 1], const c
   return_value_if_fail(path != NULL, NULL);
   return_value_if_fail(fs_get_user_storage_path(os_fs(), user_storage_path) == RET_OK, NULL);
 
-  path_build(full_path, MAX_PATH, user_storage_path, path, NULL);
+  return_value_if_fail(path_build(full_path, MAX_PATH, user_storage_path, path, NULL) == RET_OK,
+                       NULL);
 
   return full_path;
 }
@@ -393,7 +392,7 @@ ret_t path_abs_normalize(const char* filename, char* result, int32_t size) {
   char path[MAX_PATH + 1];
   return_value_if_fail(filename != NULL && result != NULL && size > 0, RET_BAD_PARAMS);
 
-  path_abs(filename, path, MAX_PATH);
+  return_value_if_fail(path_abs(filename, path, MAX_PATH) == RET_OK, RET_FAIL);
   return path_normalize(path, result, size);
 }
 
@@ -403,10 +402,10 @@ const char* path_abs_normalize_with_root(const char* root, const char* rel_filen
   char abs_root[MAX_PATH + 1];
   return_value_if_fail(root != NULL && rel_filename != NULL, NULL);
 
-  path_abs_normalize(root, abs_root, MAX_PATH);
+  return_value_if_fail(path_abs_normalize(root, abs_root, MAX_PATH) == RET_OK, NULL);
 
-  path_build(path, MAX_PATH, abs_root, rel_filename, NULL);
-  path_normalize(path, filename, MAX_PATH);
+  return_value_if_fail(path_build(path, MAX_PATH, abs_root, rel_filename, NULL) == RET_OK, NULL);
+  return_value_if_fail(path_normalize(path, filename, MAX_PATH) == RET_OK, NULL);
 
   if (strncmp(filename, abs_root, strlen(abs_root)) == 0) {
     return filename;

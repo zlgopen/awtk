@@ -575,7 +575,7 @@ ret_t fs_remove_dir_r(fs_t* fs, const char* name) {
       continue;
     } else {
       char subname[MAX_PATH + 1];
-      path_build(subname, MAX_PATH, name, item.name, NULL);
+      break_if_fail(path_build(subname, MAX_PATH, name, item.name, NULL));
       if (item.is_dir) {
         ret = fs_remove_dir_r(fs, subname);
       } else {
@@ -717,8 +717,10 @@ static ret_t fs_copy_item(fs_t* fs, fs_item_t* item, const char* src, const char
                           bool_t overwrite) {
   char subsrc[MAX_PATH + 1];
   char subdst[MAX_PATH + 1];
-  path_build(subsrc, MAX_PATH, src, item->name, NULL);
-  path_build(subdst, MAX_PATH, dst, item->name, NULL);
+  return_value_if_fail(path_build(subsrc, MAX_PATH, src, item->name, NULL) == RET_OK,
+                       RET_BAD_PARAMS);
+  return_value_if_fail(path_build(subdst, MAX_PATH, dst, item->name, NULL) == RET_OK,
+                       RET_BAD_PARAMS);
 
   if (!fs_dir_exist(fs, dst)) {
     return_value_if_fail(fs_create_dir_r(fs, dst) == RET_OK, RET_IO);
@@ -794,7 +796,8 @@ ret_t fs_foreach(const char* path, int depth, tk_visit_t on_file, tk_visit_t on_
       continue;
     }
 
-    path_build(filename, MAX_PATH, path, item.name, NULL);
+    break_if_fail(path_build(filename, MAX_PATH, path, item.name, NULL) == RET_OK);
+
     if (item.is_reg_file) {
       if (on_file != NULL && on_file(ctx, filename) != RET_OK) {
         break;
