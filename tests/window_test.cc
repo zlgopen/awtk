@@ -233,8 +233,8 @@ TEST(Window, applet_name) {
   widget_t* b1 = button_create(w1, 0, 0, 20, 20);
   widget_t* b2 = button_create(w1, 0, 0, 20, 20);
 
-  widget_set_prop_str(w1, WIDGET_PROP_APPLET_NAME, "demo1");
-  widget_set_prop_str(w2, WIDGET_PROP_APPLET_NAME, "demo2");
+  widget_set_prop_str(w1, WIDGET_PROP_APPLET_NAME, "bar");
+  widget_set_prop_str(w2, WIDGET_PROP_APPLET_NAME, "foo");
 
   am = widget_get_assets_manager(w1);
   ASSERT_NE(am, assets_manager());

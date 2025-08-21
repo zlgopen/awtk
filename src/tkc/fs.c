@@ -575,7 +575,7 @@ ret_t fs_remove_dir_r(fs_t* fs, const char* name) {
       continue;
     } else {
       char subname[MAX_PATH + 1];
-      break_if_fail(path_build(subname, MAX_PATH, name, item.name, NULL));
+      break_if_fail(path_build(subname, MAX_PATH, name, item.name, NULL) == RET_OK);
       if (item.is_dir) {
         ret = fs_remove_dir_r(fs, subname);
       } else {
