@@ -1102,12 +1102,18 @@ static void glnvg__convexFill(GLNVGcontext* gl, GLNVGcall* call) {
   glnvg__checkError(gl, "convex fill");
 
   for (i = 0; i < npaths; i++) {
+    if (paths[i].winding == NVG_CW) {
+      glFrontFace(GL_CW);
+    } else {
+      glFrontFace(GL_CCW);
+    }
     glDrawArrays(GL_TRIANGLE_FAN, paths[i].fillOffset, paths[i].fillCount);
     // Draw fringes
     if (paths[i].strokeCount > 0) {
       glDrawArrays(GL_TRIANGLE_STRIP, paths[i].strokeOffset, paths[i].strokeCount);
     }
   }
+  glFrontFace(GL_CCW);
 }
 
 static void glnvg__stroke(GLNVGcontext* gl, GLNVGcall* call) {

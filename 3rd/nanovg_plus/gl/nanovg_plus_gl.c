@@ -834,12 +834,18 @@ static void nvgp_gl_flush_by_convex_fill_by_color(nvgp_gl_context_t* gl, nvgp_gl
   nvgp_gl_check_error(gl, "convex fill");
 
   for (i = 0; i < call->path_count; i++) {
+    if (paths[i].winding == NVGP_CW) {
+      glFrontFace(GL_CW);
+    } else {
+      glFrontFace(GL_CCW);
+    }
     glDrawArrays(GL_TRIANGLE_FAN, paths[i].fill_offset, paths[i].fill_count);
     // Draw fringes
     if (paths[i].stroke_count > 0) {
       glDrawArrays(GL_TRIANGLE_STRIP, paths[i].stroke_offset, paths[i].stroke_count);
     }
   }
+  glFrontFace(GL_CCW);
 }
 
 static void nvgp_gl_flush_fill_by_color(nvgp_gl_context_t* gl, nvgp_gl_call_t* call_base) {
@@ -1541,7 +1547,7 @@ static nvgp_bool_t nvgp_gl_render_convex_fill_by_color(nvgp_gl_context_t* gl, nv
       NVGP_FREE(call);
       goto error;
     }
-
+    gl_path->winding = path->path_winding;
     if (path->nfill > 0) {
       gl_path->fill_offset = offset;
       gl_path->fill_count = path->nfill;
@@ -1605,6 +1611,7 @@ static nvgp_bool_t nvgp_gl_render_fill_by_color(nvgp_gl_context_t* gl, nvgp_pain
         goto error;
       }
       NVGP_MEMSET(gl_path, 0x0, sizeof(nvgp_gl_path_t));
+      gl_path->winding = path->path_winding;
       if (path->nfill > 0) {
         gl_path->fill_offset = offset;
         gl_path->fill_count = path->nfill;
@@ -1614,7 +1621,6 @@ static nvgp_bool_t nvgp_gl_render_fill_by_color(nvgp_gl_context_t* gl, nvgp_pain
       if (path->nstroke > 0) {
         gl_path->stroke_offset = offset;
         gl_path->stroke_count = path->nstroke;
-        gl_path->winding = path->path_winding;
         NVGP_MEMCPY(&shader->verts[offset], path->stroke, sizeof(nvgp_vertex_t) * path->nstroke);
         offset += path->nstroke;
       }
