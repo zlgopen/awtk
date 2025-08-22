@@ -71,10 +71,10 @@ feature_info_list_t* feature_info_list_create(void);
 /**
  * @method feature_info_list_find
  * 查找特征信息
- * @param {tree_node_feature_info_list_t*} list 特征信息列表对象
+ * @param {feature_info_list_t*} list 特征信息列表对象
  * @param {const feature_info_list_feature_info_t*} info 特征信息
  *
- * @return {tree_node_feature_info_list_item_t*} 返回特征信息列表项对象
+ * @return {feature_info_list_item_t*} 返回特征信息列表项对象
  */
 feature_info_list_item_t* feature_info_list_find(feature_info_list_t* list,
                                                  const feature_info_list_feature_info_t* info);
