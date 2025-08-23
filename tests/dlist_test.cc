@@ -233,6 +233,34 @@ TEST(DList, remove_ex) {
   dlist_deinit(s);
 }
 
+TEST(DList, remove_ex1) {
+  dlist_t dlist;
+  dlist_t* s = &dlist;
+
+  dlist_init(s, NULL, NULL);
+
+  ASSERT_EQ(dlist_is_empty(s), TRUE);
+  ASSERT_EQ(dlist_size(s), 0);
+
+  ASSERT_EQ(dlist_append(s, TO_POINTER(1)), RET_OK);
+  ASSERT_EQ(dlist_append(s, TO_POINTER(2)), RET_OK);
+  ASSERT_EQ(dlist_append(s, TO_POINTER(1)), RET_OK);
+  ASSERT_EQ(dlist_append(s, TO_POINTER(1)), RET_OK);
+  ASSERT_EQ(dlist_append(s, TO_POINTER(3)), RET_OK);
+  ASSERT_EQ(dlist_is_empty(s), FALSE);
+
+  ASSERT_EQ(dlist_remove_ex(s, pointer_compare, TO_POINTER(1), -1, FALSE), RET_OK);
+  ASSERT_EQ(dlist_size(s), 2);
+  
+  ASSERT_EQ(dlist_remove_ex(s, pointer_compare, TO_POINTER(2), -1, FALSE), RET_OK);
+  ASSERT_EQ(dlist_size(s), 1);
+  
+  ASSERT_EQ(dlist_remove_ex(s, pointer_compare, TO_POINTER(3), -1, FALSE), RET_OK);
+  ASSERT_EQ(dlist_size(s), 0);
+
+  dlist_deinit(s);
+}
+
 TEST(DList, foreach) {
   string log;
   dlist_t dlist;

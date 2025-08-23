@@ -166,10 +166,10 @@ static ret_t dlist_remove_node(dlist_t* dlist, dlist_node_t* node) {
 
 ret_t dlist_remove_ex(dlist_t* dlist, tk_compare_t compare, void* ctx, int32_t remove_size,
                       bool_t reverse) {
-  int32_t n = remove_size;
+  int32_t n = remove_size < 0 ? INT32_MAX : remove_size;
   tk_compare_t real_compare = NULL;
   return_value_if_fail(dlist != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(remove_size > 0, RET_BAD_PARAMS);
+  return_value_if_fail(n > 0, RET_BAD_PARAMS);
 
   real_compare = (compare != NULL) ? compare : dlist->compare;
 

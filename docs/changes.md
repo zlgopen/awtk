@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/08/23
+  * 完善 dlist_remove_ex
+
 2025/08/22
   * 完善tree_node_feature_segment(感谢兆坤提供补丁)
   * 完善注释(感谢兆坤提供补丁)
