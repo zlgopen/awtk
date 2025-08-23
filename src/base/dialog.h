@@ -285,6 +285,9 @@ ret_t dialog_set_title(widget_t* widget, const char* title);
  * dialog_modal返回后，dialog对象将在下一个idle函数中回收。
  * 也就是在dialog_modal调用完成后仍然可以访问dialog中控件，直到本次事件结束。
  * 调用该函数会使线程进入阻塞状态，需要调用dialog_quit来解除阻塞。
+ * > 建议尽量少用模态对话框，特别不要多级嵌套模态对话框，部分平台(如WEB)不支持模态对话框。
+ * > AWTK本身是不能操作对话框后面的窗口的，相当于是模态的，只是事件是异步的，传统模态对话框都是可以用非模态对话框实现的。
+ * 
  * @annotation ["scriptable"]
  * @param {widget_t*} widget dialog对象。
  *
