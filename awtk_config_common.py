@@ -146,10 +146,9 @@ elif OS_NAME == 'Linux':
   
     if SDL_VIDEODRIVER == 'wayland':
       OS_LIBS = ['GL', 'xkbcommon', 'wayland-cursor', 'wayland-egl', 'wayland-client'] + OS_LIBS;
-      OS_FLAGS += '-DWITHOUT_NATIVE_FILE_DIALOG '
+      OS_FLAGS += '-DWITHOUT_NATIVE_FILE_DIALOG -DSDL_VIDEO_DRIVER_WAYLAND=1 '
     else:
       OS_LIBS = ['GL', 'gtk-3', 'gdk-3', 'glib-2.0', 'gobject-2.0', 'Xext', 'X11'] + OS_LIBS;
-
 
 elif OS_NAME == 'Windows':
     if not os.path.exists(os.path.abspath(TK_BIN_DIR)):

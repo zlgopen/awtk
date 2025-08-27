@@ -48,6 +48,8 @@
 #endif
 
 #include "SDL_config.h"
+#include <string.h>
+#include <stdlib.h>
 
 #endif /* SDL_internal_h_ */
 
