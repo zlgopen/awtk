@@ -5,6 +5,9 @@
 #include <math.h>
 #include <stdlib.h>
 
+#include <string>
+using std::string;
+
 #define NR 1000
 
 static void test_add(darray_t* darray, void* pv) {
@@ -845,6 +848,52 @@ TEST(DArrayTest, foreach) {
   count = 0;
   ASSERT_EQ(darray_foreach(&darray, visit_stop_at_3, &count), RET_STOP);
   ASSERT_EQ(count, 3);
+
+  darray_deinit(&darray);
+}
+
+static ret_t visit_dump(void* ctx, const void* data) {
+  char text[32];
+  string& str = *(string*)ctx;
+  int32_t n = (const char*)data - (const char*)NULL;
+  tk_snprintf(text, sizeof(text), "%d:", n);
+
+  str += text;
+
+  return RET_OK;
+}
+
+static ret_t remove_data(void* ctx, const void* data) {
+  char text[32];
+  string& str = *(string*)ctx;
+  int32_t n = (const char*)data - (const char*)NULL;
+  tk_snprintf(text, sizeof(text), "%d:", n);
+
+  str += text;
+  if (n % 2 == 0) {
+    return RET_OK;
+  } else {
+    return RET_REMOVE;
+  }
+}
+
+TEST(DArrayTest, foreach_ex) {
+  string log;
+  darray_t darray;
+  darray_init(&darray, 10, NULL, NULL);
+
+  ASSERT_EQ(darray_push(&darray, tk_pointer_from_int(1)), RET_OK);
+  ASSERT_EQ(darray_push(&darray, tk_pointer_from_int(2)), RET_OK);
+  ASSERT_EQ(darray_push(&darray, tk_pointer_from_int(3)), RET_OK);
+  ASSERT_EQ(darray_push(&darray, tk_pointer_from_int(4)), RET_OK);
+
+  log = "";
+  darray_foreach(&darray, remove_data, &log);
+  ASSERT_EQ(log, "1:2:3:4:");
+
+  log = "";
+  darray_foreach(&darray, visit_dump, &log);
+  ASSERT_EQ(log, "2:4:");
 
   darray_deinit(&darray);
 }

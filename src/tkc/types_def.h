@@ -669,6 +669,7 @@ typedef struct _key_type_value_t {
       continue;                                                             \
     } else if (RET_REPEAT == result) {                                      \
       log_warn("%s: result type REPEAT is not supported!\n", __FUNCTION__); \
+      result = RET_OK;                                                      \
     } else if (result != RET_OK) {                                          \
       break;                                                                \
     }                                                                       \
