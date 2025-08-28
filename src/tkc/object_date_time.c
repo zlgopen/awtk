@@ -123,44 +123,28 @@ static ret_t object_date_time_get_prop(tk_object_t* obj, const char* name, value
 static ret_t object_date_time_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, void* ctx) {
   named_value_t nv;
   ret_t ret = RET_OK;
+  uint32_t i = 0;
   object_date_time_t* o = OBJECT_DATE_TIME(obj);
   return_value_if_fail(on_prop != NULL, RET_BAD_PARAMS);
   return_value_if_fail(o != NULL && o->dt != NULL, RET_BAD_PARAMS);
 
-  nv.name = OBJECT_DATE_TIME_PROP_YEAR;
-  value_set_uint32(&(nv.value), o->dt->year);
-  ret = on_prop(ctx, &nv);
-  return_value_if_fail(ret == RET_OK, RET_FAIL);
+  key_type_value_t key_values[] = {
+      {.name = OBJECT_DATE_TIME_PROP_YEAR, .value = o->dt->year},
+      {.name = OBJECT_DATE_TIME_PROP_MONTH, .value = o->dt->month},
+      {.name = OBJECT_DATE_TIME_PROP_MINUTE, .value = o->dt->minute},
+      {.name = OBJECT_DATE_TIME_PROP_DAY, .value = o->dt->day},
+      {.name = OBJECT_DATE_TIME_PROP_HOUR, .value = o->dt->hour},
+      {.name = OBJECT_DATE_TIME_PROP_SECOND, .value = o->dt->second},
+      {.name = OBJECT_DATE_TIME_PROP_WDAY, .value = o->dt->wday},
+  };
 
-  nv.name = OBJECT_DATE_TIME_PROP_MONTH;
-  value_set_uint32(&(nv.value), o->dt->month);
-  ret = on_prop(ctx, &nv);
-  return_value_if_fail(ret == RET_OK, RET_FAIL);
-
-  nv.name = OBJECT_DATE_TIME_PROP_MINUTE;
-  value_set_uint32(&(nv.value), o->dt->minute);
-  ret = on_prop(ctx, &nv);
-  return_value_if_fail(ret == RET_OK, RET_FAIL);
-
-  nv.name = OBJECT_DATE_TIME_PROP_DAY;
-  value_set_uint32(&(nv.value), o->dt->day);
-  ret = on_prop(ctx, &nv);
-  return_value_if_fail(ret == RET_OK, RET_FAIL);
-
-  nv.name = OBJECT_DATE_TIME_PROP_HOUR;
-  value_set_uint32(&(nv.value), o->dt->hour);
-  ret = on_prop(ctx, &nv);
-  return_value_if_fail(ret == RET_OK, RET_FAIL);
-
-  nv.name = OBJECT_DATE_TIME_PROP_SECOND;
-  value_set_uint32(&(nv.value), o->dt->second);
-  ret = on_prop(ctx, &nv);
-  return_value_if_fail(ret == RET_OK, RET_FAIL);
-
-  nv.name = OBJECT_DATE_TIME_PROP_WDAY;
-  value_set_uint32(&(nv.value), o->dt->wday);
-  ret = on_prop(ctx, &nv);
-  return_value_if_fail(ret == RET_OK, RET_FAIL);
+  for (i = 0; i < ARRAY_SIZE(key_values); i++) {
+    nv.name = key_values[i].name;
+    value_set_uint32(&(nv.value), key_values[i].value);
+    ret = on_prop(ctx, &nv);
+    TK_FOREACH_VISIT_RESULT_PROCESSING(
+        ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
+  }
 
   return RET_OK;
 }

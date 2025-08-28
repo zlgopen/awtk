@@ -363,11 +363,7 @@ static ret_t object_array_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, voi
       value_copy(&(nv.value), iter);
       ret = on_prop(ctx, &nv);
 
-      if (ret == RET_REMOVE) {
-        value_reset(iter);
-      } else if (ret != RET_OK) {
-        break;
-      }
+      TK_FOREACH_VISIT_RESULT_PROCESSING(ret, value_reset(iter));
     }
 
     object_array_clean_invalid_props(obj);

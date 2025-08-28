@@ -271,13 +271,8 @@ static ret_t object_default_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, v
     for (i = 0; i < o->props.size; i++) {
       named_value_t* iter = (named_value_t*)(o->props.elms[i]);
       ret = on_prop(ctx, iter);
-      if (ret == RET_REMOVE) {
-        named_value_destroy(iter);
-        o->props.elms[i] = NULL;
-        has_removed = TRUE;
-      } else if (ret != RET_OK) {
-        break;
-      }
+      TK_FOREACH_VISIT_RESULT_PROCESSING(ret, named_value_destroy(iter); o->props.elms[i] = NULL;
+                                         has_removed = TRUE);
     }
     if (has_removed) {
       darray_remove_all(&(o->props), pointer_compare, NULL);

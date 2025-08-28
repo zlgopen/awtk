@@ -75,6 +75,8 @@ static ret_t conf_node_obj_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, vo
       ret = on_prop(ctx, (const void*)&nv);
     }
     named_value_deinit(&nv);
+    TK_FOREACH_VISIT_RESULT_PROCESSING(
+        ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
   }
 
   return ret;

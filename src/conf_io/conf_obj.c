@@ -111,9 +111,8 @@ static ret_t conf_obj_foreach_node(conf_doc_t* doc, conf_node_t* node, tk_visit_
       ret = on_prop(ctx, &nv);
     }
 
-    if (ret != RET_OK) {
-      break;
-    }
+    TK_FOREACH_VISIT_RESULT_PROCESSING(
+        ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
   }
 
   return ret;

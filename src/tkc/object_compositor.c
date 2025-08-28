@@ -74,11 +74,18 @@ static ret_t object_compositor_get_prop(tk_object_t* obj, const char* name, valu
 
 static ret_t object_compositor_foreach_prop(tk_object_t* obj, tk_visit_t on_prop, void* ctx) {
   ret_t ret = RET_OK;
+  uint32_t i = 0;
+  tk_object_t* objs[2] = {NULL};
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-  ret = tk_object_foreach_prop(o->obj1, on_prop, ctx);
-  if (ret != RET_STOP) {
-    ret = tk_object_foreach_prop(o->obj2, on_prop, ctx);
+
+  objs[0] = o->obj1;
+  objs[1] = o->obj2;
+
+  for (i = 0; i < ARRAY_SIZE(objs); i++) {
+    ret = tk_object_foreach_prop(objs[i], on_prop, ctx);
+    TK_FOREACH_VISIT_RESULT_PROCESSING(
+        ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
   }
 
   return ret;
