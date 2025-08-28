@@ -22,14 +22,21 @@ struct NVGLUframebuffer {
 	NVGcontext* ctx;
 	GLuint fbo;
 	GLuint rbo;
+	GLuint self_fbo;
+	GLuint temp_fbo;
+	GLuint mass_rbo;
+	GLuint mass_stencil_rbo;
 	GLuint texture;
 	int image;
+	uint32_t samples;
+	uint32_t width;
+	uint32_t height;
 };
 typedef struct NVGLUframebuffer NVGLUframebuffer;
 
 // Helper function to create GL frame buffer to render to.
 static void nvgluBindFramebuffer(NVGLUframebuffer* fb);
-static NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* ctx, int w, int h, int imageFlags);
+static NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* ctx, int w, int h, int imageFlags, int samples);
 static void nvgluDeleteFramebuffer(NVGLUframebuffer* fb);
 
 #endif // NANOVG_GL_UTILS_H
@@ -59,7 +66,7 @@ static int nvgluGetCurrFramebuffer() {
 #endif
 }
 
-static NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* ctx, int w, int h, int imageFlags)
+static NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* ctx, int w, int h, int imageFlags, int samples)
 {
 #ifdef NANOVG_FBO_VALID
 	GLint defaultFBO;
@@ -86,10 +93,29 @@ static NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* ctx, int w, int h, i
 #endif
 
 	fb->ctx = ctx;
-
+	fb->width = w;
+	fb->height = h;
+	fb->samples = samples;
 	// frame buffer object
 	glGenFramebuffers(1, &fb->fbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, fb->fbo);
+
+	if (samples > 0) { 
+		glGenRenderbuffers(1, &fb->mass_rbo);
+		glBindRenderbuffer(GL_RENDERBUFFER, fb->mass_rbo);
+		glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, GL_RGBA8, w, h);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, fb->mass_rbo);
+
+		glGenRenderbuffers(1, &fb->mass_stencil_rbo);
+		glBindRenderbuffer(GL_RENDERBUFFER, fb->mass_stencil_rbo);
+		glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, GL_STENCIL_INDEX8, w, h);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, fb->mass_stencil_rbo);
+
+		fb->self_fbo = fb->fbo;
+		// 创建中间FBO用于解析多重采样结果
+		glGenFramebuffers(1, &fb->temp_fbo);
+		glBindFramebuffer(GL_FRAMEBUFFER, fb->temp_fbo);
+	}
 
 	// render buffer object
 	glGenRenderbuffers(1, &fb->rbo);
@@ -134,6 +160,12 @@ static void nvgluBindFramebuffer(NVGLUframebuffer* fb)
 {
 #ifdef NANOVG_FBO_VALID
 	if (defaultFBO == -1) glGetIntegerv(GL_FRAMEBUFFER_BINDING, &defaultFBO);
+	if (fb != NULL && fb->fbo != fb->self_fbo && fb->temp_fbo > 0 && fb->samples > 0) {
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, fb->self_fbo);
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb->temp_fbo);
+    // 执行多重采样解析
+		glBlitFramebuffer(0, 0, fb->width, fb->height, 0, 0, fb->width, fb->height, GL_COLOR_BUFFER_BIT, GL_LINEAR);
+	}
 	glBindFramebuffer(GL_FRAMEBUFFER, fb != NULL ? fb->fbo : defaultFBO);
 #else
 	NVG_NOTUSED(fb);
@@ -158,6 +190,12 @@ static void nvgluDeleteFramebuffer(NVGLUframebuffer* fb)
 		glDeleteRenderbuffers(1, &fb->rbo);
 	if (fb->image >= 0)
 		nvgDeleteImage(fb->ctx, fb->image);
+	if (fb->temp_fbo != 0) 
+		glDeleteFramebuffers(1, &fb->temp_fbo);
+	if (fb->mass_rbo != 0)
+		glDeleteRenderbuffers(1, &fb->mass_rbo);
+	if (fb->mass_stencil_rbo != 0)
+		glDeleteRenderbuffers(1, &fb->mass_stencil_rbo);
 	fb->ctx = NULL;
 	fb->fbo = 0;
 	fb->rbo = 0;

@@ -73,6 +73,7 @@ typedef struct _vgcanvas_nanovg_t {
   uint32_t text_align_h;
 
   native_window_t* window;
+  bool_t supported_opengl_antialias_hw;
 } vgcanvas_nanovg_t;
 
 #ifdef WITH_NANOVG_PLUS_GPU
@@ -105,6 +106,7 @@ vgcanvas_t* VGCANVAS_CREATE_GL(uint32_t w, uint32_t h, uint32_t stride, bitmap_f
   if (!window->supported_opengl_antialias_hw) {
     flags |= NVGP_GL_FLAG_ANTIALIAS;
   }
+  nanovg->supported_opengl_antialias_hw = window->supported_opengl_antialias_hw;
 #else
   flags = NVGP_GL_FLAG_ANTIALIAS | NVGP_GL_FLAG_STENCIL_STROKES;
 #endif
@@ -115,6 +117,7 @@ vgcanvas_t* VGCANVAS_CREATE_GL(uint32_t w, uint32_t h, uint32_t stride, bitmap_f
   if (!window->supported_opengl_antialias_hw) {
     flags |= NVG_ANTIALIAS;
   }
+  nanovg->supported_opengl_antialias_hw = window->supported_opengl_antialias_hw;
 #else
   flags = NVG_ANTIALIAS | NVG_STENCIL_STROKES;
 #endif

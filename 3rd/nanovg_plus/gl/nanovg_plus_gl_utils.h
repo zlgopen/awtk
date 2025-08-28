@@ -28,8 +28,15 @@ typedef struct _nvgp_gl_util_framebuffer {
   nvgp_context_t* ctx;
   GLuint fbo;
   GLuint rbo;
+  GLuint self_fbo;
+  GLuint temp_fbo;
+  GLuint mass_rbo;
+  GLuint mass_stencil_rbo;
   GLuint texture;
   int32_t image;
+  uint32_t samples;
+  uint32_t width;
+  uint32_t height;
 } nvgp_gl_util_framebuffer;
 
 #if defined(NVGP_GL3) || defined(NVGP_GLES2) || defined(NVGP_GLES3)
@@ -64,6 +71,15 @@ void nvgp_gl_delete_framebuffer(nvgp_gl_util_framebuffer* fb) {
   if (fb->rbo != 0) {
     glDeleteRenderbuffers(1, &fb->rbo);
   }
+  if (fb->temp_fbo != 0) {
+    glDeleteFramebuffers(1, &fb->temp_fbo);
+  }
+  if (fb->mass_rbo != 0) {
+    glDeleteRenderbuffers(1, &fb->mass_rbo);
+  }
+  if (fb->mass_stencil_rbo != 0) {
+    glDeleteRenderbuffers(1, &fb->mass_stencil_rbo);
+  }
   if (fb->image >= 0) {
     nvgp_delete_image(fb->ctx, fb->image);
   }
@@ -78,7 +94,7 @@ void nvgp_gl_delete_framebuffer(nvgp_gl_util_framebuffer* fb) {
 #endif
 }
 
-nvgp_gl_util_framebuffer* nvgp_gl_create_framebuffer(nvgp_context_t* ctx, int32_t w, int32_t h, int32_t imageFlags) {
+nvgp_gl_util_framebuffer* nvgp_gl_create_framebuffer(nvgp_context_t* ctx, int32_t w, int32_t h, int32_t imageFlags, int32_t samples) {
 #ifdef NVGP_FBO_VALID
   GLint s_nvgp_gl_default_fbo;
   GLint defaultRBO;
@@ -92,7 +108,9 @@ nvgp_gl_util_framebuffer* nvgp_gl_create_framebuffer(nvgp_context_t* ctx, int32_
     goto error;
   }
   NVGP_MEMSET(fb, 0, sizeof(nvgp_gl_util_framebuffer));
-
+  fb->width = w;
+  fb->height = h;
+  fb->samples = samples;
   fb->image = nvgp_create_image_rgba(ctx, w, h, imageFlags | NVGP_GL_IMAGE_FLIPY | NVGP_GL_IMAGE_PREMULTIPLIED, NULL);
 
   fb->texture = nvgp_gl_get_gpu_texture_id((nvgp_gl_context_t*)nvgp_get_vt_ctx(ctx), fb->image);
@@ -102,6 +120,23 @@ nvgp_gl_util_framebuffer* nvgp_gl_create_framebuffer(nvgp_context_t* ctx, int32_
   // frame buffer object
   glGenFramebuffers(1, &fb->fbo);
   glBindFramebuffer(GL_FRAMEBUFFER, fb->fbo);
+
+  if (samples > 0) { 
+    glGenRenderbuffers(1, &fb->mass_rbo);
+    glBindRenderbuffer(GL_RENDERBUFFER, fb->mass_rbo);
+    glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, GL_RGBA8, w, h);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, fb->mass_rbo);
+
+    glGenRenderbuffers(1, &fb->mass_stencil_rbo);
+    glBindRenderbuffer(GL_RENDERBUFFER, fb->mass_stencil_rbo);
+    glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, GL_STENCIL_INDEX8, w, h);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, fb->mass_stencil_rbo);
+
+    fb->self_fbo = fb->fbo;
+    // 创建中间FBO用于解析多重采样结果
+    glGenFramebuffers(1, &fb->temp_fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, fb->temp_fbo);
+  }
 
   // render buffer object
   glGenRenderbuffers(1, &fb->rbo);
@@ -146,6 +181,14 @@ void nvgp_gl_bind_framebuffer(nvgp_gl_util_framebuffer* fb) {
 #ifdef NVGP_FBO_VALID
   if (s_nvgp_gl_default_fbo == -1) {
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &s_nvgp_gl_default_fbo);
+  }
+  if (fb != NULL && fb->fbo != fb->self_fbo && fb->temp_fbo > 0 && fb->samples > 0) {
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, fb->self_fbo);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb->temp_fbo);
+    // 执行多重采样解析
+    glBlitFramebuffer(0, 0, fb->width, fb->height,
+                      0, 0, fb->width, fb->height,
+                      GL_COLOR_BUFFER_BIT, GL_LINEAR);
   }
   glBindFramebuffer(GL_FRAMEBUFFER, fb != NULL ? fb->fbo : s_nvgp_gl_default_fbo);
 #else

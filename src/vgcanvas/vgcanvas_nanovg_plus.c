@@ -17,6 +17,7 @@ typedef struct _vgcanvas_nanovg_plus_t {
   nvgp_context_t* vg;
   uint32_t text_align_v;
   uint32_t text_align_h;
+  bool_t supported_opengl_antialias_hw;
 
   native_window_t* window;
 } vgcanvas_nanovg_plus_t;
@@ -115,10 +116,11 @@ static ret_t vgcanvas_nanovg_plus_end_frame(vgcanvas_t* vgcanvas) {
 static ret_t vgcanvas_nanovg_plus_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h,
                                              bool_t custom_draw_model, framebuffer_object_t* fbo) {
   nvgp_gl_util_framebuffer* handle = NULL;
-  nvgp_context_t* vg = ((vgcanvas_nanovg_plus_t*)vgcanvas)->vg;
-
+  vgcanvas_nanovg_plus_t* nanovg = (vgcanvas_nanovg_plus_t*)vgcanvas;
+  nvgp_context_t* vg = nanovg->vg;
+  int32_t samples = nanovg->supported_opengl_antialias_hw ? 4 : 0;
   handle =
-      nvgp_gl_create_framebuffer(vg, (int)(w * vgcanvas->ratio), (int)(h * vgcanvas->ratio), 0);
+      nvgp_gl_create_framebuffer(vg, (int)(w * vgcanvas->ratio), (int)(h * vgcanvas->ratio), 0, samples);
   return_value_if_fail(handle != NULL, RET_FAIL);
 
   fbo->w = w;
@@ -339,6 +341,7 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   if (!window->supported_opengl_antialias_hw) {
     flags |= NVGP_GL_FLAG_ANTIALIAS;
   }
+  nanovg->supported_opengl_antialias_hw = window->supported_opengl_antialias_hw;
 #else
   flags = NVGP_GL_FLAG_ANTIALIAS | NVGP_GL_FLAG_STENCIL_STROKES;
 #endif

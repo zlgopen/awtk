@@ -64,10 +64,12 @@ static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
 
 static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h, bool_t custom_draw_model, framebuffer_object_t* fbo) {
   NVGLUframebuffer* handle = NULL;
-  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+  vgcanvas_nanovg_t* nanovg = (vgcanvas_nanovg_t*)vgcanvas;
+  NVGcontext* vg = nanovg->vg;
+  int samples = nanovg->supported_opengl_antialias_hw ? 4 : 0;
 
   handle = nvgluCreateFramebuffer(vg, (int)(w * vgcanvas->ratio),
-                                  (int)(h * vgcanvas->ratio), 0);
+                                  (int)(h * vgcanvas->ratio), 0, samples);
   return_value_if_fail(handle != NULL, RET_FAIL);
 
   fbo->w = w;
