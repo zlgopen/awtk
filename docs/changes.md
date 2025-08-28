@@ -6,6 +6,8 @@
   * object 统一foreach visit返回值处理逻辑(感谢兆坤提供补丁)
   * 补充统一foreach visit返回值处理逻辑(感谢兆坤提供补丁)
   * improve darray_foreach.diff(感谢兆坤提供补丁)
+  * 补充style_mutable 统一foreach visit返回值处理逻辑(感谢兆坤提供补丁)
+
 
 2025/08/23
   * 完善 dlist_remove_ex

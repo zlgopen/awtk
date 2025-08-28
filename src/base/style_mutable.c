@@ -398,6 +398,7 @@ ret_t style_mutable_set_str(style_t* s, const char* state, const char* name, con
 }
 
 ret_t style_mutable_foreach(style_t* s, tk_on_style_item_t on_style_item, void* ctx) {
+  ret_t ret = RET_OK;
   style_item_t* iter = NULL;
   widget_state_style_t* witer = NULL;
   style_mutable_t* style = STYLE_MUTABLE(s);
@@ -405,15 +406,17 @@ ret_t style_mutable_foreach(style_t* s, tk_on_style_item_t on_style_item, void* 
 
   witer = style->styles;
   while (witer != NULL) {
-    iter = witer->items;
-    while (iter != NULL) {
-      on_style_item(ctx, witer->state, iter->name, &(iter->value));
-      iter = iter->next;
+    for (iter = witer->items; iter != NULL; iter = iter->next) {
+      ret = on_style_item(ctx, witer->state, iter->name, &(iter->value));
+      TK_FOREACH_VISIT_RESULT_PROCESSING(
+          ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
     }
+    TK_FOREACH_VISIT_RESULT_PROCESSING(
+        ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
     witer = witer->next;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t style_mutable_state_style_free(widget_state_style_t* witer) {
