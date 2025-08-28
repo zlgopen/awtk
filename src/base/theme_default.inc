@@ -51,6 +51,7 @@ static const uint8_t* theme_default_find_style(theme_t* theme, const char* widge
 }
 
 static ret_t theme_default_foreach(theme_t* theme, theme_on_data_t on_data, void* ctx) {
+  ret_t ret = RET_OK;
   uint32_t i = 0;
   const theme_item_t* iter = NULL;
   const theme_header_t* header = NULL;
@@ -60,15 +61,15 @@ static ret_t theme_default_foreach(theme_t* theme, theme_on_data_t on_data, void
   header = (const theme_header_t*)(theme->data);
   iter = (const theme_item_t*)(theme->data + sizeof(theme_header_t));
 
-  for (i = 0; i < header->nr; i++) {
+  for (i = 0; i < header->nr; i++, iter++) {
     const uint8_t* data = theme->data + iter->offset;
-    if (on_data(ctx, iter->widget_type, iter->name, iter->state, data) == RET_STOP) {
-      break;
-    }
-    iter++;
+
+    ret = on_data(ctx, iter->widget_type, iter->name, iter->state, data);
+    TK_FOREACH_VISIT_RESULT_PROCESSING(
+        ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
   }
 
-  return RET_OK;
+  return ret;
 }
 
 theme_t* theme_default_create_ex(const uint8_t* data, bool_t need_free_data) {
