@@ -349,13 +349,14 @@ ret_t darray_foreach(darray_t* darray, tk_visit_t visit, void* ctx) {
   return_value_if_fail(darray != NULL && visit != NULL, RET_BAD_PARAMS);
 
   if (darray->elms != NULL) {
-    int64_t i = 0;
+    uint32_t i = 0;
     void** elms = darray->elms;
 
-    for (i = 0; i < darray->size; i++) {
+    for (i = 0; i < darray->size;) {
       void* iter = elms[i];
       ret = visit(ctx, iter);
-      TK_FOREACH_VISIT_RESULT_PROCESSING(ret, darray_remove_index(darray, i); i--);
+      TK_FOREACH_VISIT_RESULT_PROCESSING(ret, darray_remove_index(darray, i));
+      i++;
     }
   }
 
