@@ -807,10 +807,15 @@ ret_t fs_foreach(const char* path, int depth, tk_visit_t on_file, tk_visit_t on_
             ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
       }
     } else if (item.is_dir) {
+      bool_t is_skip = FALSE;
       if (on_dir != NULL) {
         ret = on_dir(ctx, filename);
+        is_skip = (RET_SKIP == ret);
         TK_FOREACH_VISIT_RESULT_PROCESSING(
             ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
+      }
+      if (is_skip) {
+        continue;
       }
       ret = fs_foreach(filename, depth - 1, on_file, on_dir, ctx);
       TK_FOREACH_VISIT_RESULT_PROCESSING(
