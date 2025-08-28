@@ -411,8 +411,9 @@ ret_t style_mutable_foreach(style_t* s, tk_on_style_item_t on_style_item, void* 
       TK_FOREACH_VISIT_RESULT_PROCESSING(
           ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
     }
-    TK_FOREACH_VISIT_RESULT_PROCESSING(
-        ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
+    if (ret != RET_OK) {
+      break;
+    }
     witer = witer->next;
   }
 
