@@ -778,6 +778,7 @@ ret_t fs_copy_dir_ex(fs_t* fs, const char* src, const char* dst, bool_t overwrit
 }
 
 ret_t fs_foreach(const char* path, int depth, tk_visit_t on_file, tk_visit_t on_dir, void* ctx) {
+  ret_t ret = RET_OK;
   fs_item_t item;
   fs_t* fs = os_fs();
   fs_dir_t* dir = NULL;
@@ -791,27 +792,34 @@ ret_t fs_foreach(const char* path, int depth, tk_visit_t on_file, tk_visit_t on_
 
   dir = fs_open_dir(fs, path);
   return_value_if_fail(dir != NULL, RET_BAD_PARAMS);
+
   while (fs_dir_read(dir, &item) == RET_OK) {
     if (tk_str_eq(item.name, ".") || tk_str_eq(item.name, "..")) {
       continue;
     }
 
-    break_if_fail(path_build(filename, MAX_PATH, path, item.name, NULL) == RET_OK);
+    break_if_fail((ret = path_build(filename, MAX_PATH, path, item.name, NULL)) == RET_OK);
 
     if (item.is_reg_file) {
-      if (on_file != NULL && on_file(ctx, filename) != RET_OK) {
-        break;
+      if (on_file != NULL) {
+        ret = on_file(ctx, filename);
+        TK_FOREACH_VISIT_RESULT_PROCESSING(
+            ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
       }
     } else if (item.is_dir) {
-      if (on_dir != NULL && on_dir(ctx, filename) != RET_OK) {
-        break;
+      if (on_dir != NULL) {
+        ret = on_dir(ctx, filename);
+        TK_FOREACH_VISIT_RESULT_PROCESSING(
+            ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
       }
-      fs_foreach(filename, depth - 1, on_file, on_dir, ctx);
+      ret = fs_foreach(filename, depth - 1, on_file, on_dir, ctx);
+      TK_FOREACH_VISIT_RESULT_PROCESSING(
+          ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
     }
   }
   fs_dir_close(dir);
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t fs_foreach_file(const char* path, tk_visit_t on_file, void* ctx) {

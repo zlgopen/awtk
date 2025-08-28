@@ -169,23 +169,21 @@ ret_t hash_table_clear(hash_table_t* hash_table) {
 }
 
 ret_t hash_table_foreach(hash_table_t* hash_table, tk_visit_t visit, void* ctx) {
+  ret_t ret = RET_OK;
   uint32_t i = 0;
-  uint32_t n = 0;
   darray_t** arrs = NULL;
   return_value_if_fail(hash_table != NULL, RET_BAD_PARAMS);
 
-  n = hash_table->buckets.size;
   arrs = (darray_t**)(hash_table->buckets.elms);
 
-  for (i = 0; i < n; i++) {
+  for (i = 0; i < hash_table->buckets.size; i++) {
     darray_t* iter = arrs[i];
-    ret_t ret = darray_foreach(iter, visit, ctx);
-    if (ret != RET_OK) {
-      return ret;
-    }
+    ret = darray_foreach(iter, visit, ctx);
+    TK_FOREACH_VISIT_RESULT_PROCESSING(
+        ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
   }
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t hash_table_deinit(hash_table_t* hash_table) {
