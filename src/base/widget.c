@@ -3601,12 +3601,12 @@ ret_t widget_foreach(widget_t* widget, tk_visit_t visit, void* ctx) {
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   ret = widget_foreach(iter, visit, ctx);
-  if (ret == RET_STOP || ret == RET_DONE) {
-    return ret;
-  }
+
+  TK_FOREACH_VISIT_RESULT_PROCESSING(
+      ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
   WIDGET_FOR_EACH_CHILD_END()
 
-  return RET_OK;
+  return ret;
 }
 
 widget_t* widget_get_window(widget_t* widget) {

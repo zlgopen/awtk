@@ -244,19 +244,13 @@ ret_t dlist_foreach(dlist_t* dlist, tk_visit_t visit, void* ctx) {
   iter = dlist->first;
   while (iter != NULL) {
     ret = visit(ctx, iter->data);
-    if (ret == RET_REMOVE) {
-      dlist_node_t* next = iter->next;
-      dlist_remove_node(dlist, iter);
-      dlist_destroy_node(dlist, iter);
-      iter = next;
-      continue;
-    } else if (ret != RET_OK) {
-      break;
-    }
+    TK_FOREACH_VISIT_RESULT_PROCESSING(ret, dlist_node_t* next = iter->next;
+                                       dlist_remove_node(dlist, iter);
+                                       dlist_destroy_node(dlist, iter); iter = next);
     iter = iter->next;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t dlist_foreach_reverse(dlist_t* dlist, tk_visit_t visit, void* ctx) {
@@ -267,19 +261,13 @@ ret_t dlist_foreach_reverse(dlist_t* dlist, tk_visit_t visit, void* ctx) {
   iter = dlist->last;
   while (iter != NULL) {
     ret = visit(ctx, iter->data);
-    if (ret == RET_REMOVE) {
-      dlist_node_t* prev = iter->prev;
-      dlist_remove_node(dlist, iter);
-      dlist_destroy_node(dlist, iter);
-      iter = prev;
-      continue;
-    } else if (ret != RET_OK) {
-      break;
-    }
+    TK_FOREACH_VISIT_RESULT_PROCESSING(ret, dlist_node_t* prev = iter->prev;
+                                       dlist_remove_node(dlist, iter);
+                                       dlist_destroy_node(dlist, iter); iter = prev);
     iter = iter->prev;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static void* dlist_pop(dlist_t* dlist, bool_t head) {

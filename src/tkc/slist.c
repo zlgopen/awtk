@@ -202,20 +202,14 @@ ret_t slist_foreach(slist_t* slist, tk_visit_t visit, void* ctx) {
   iter = slist->first;
   while (iter != NULL) {
     ret = visit(ctx, iter->data);
-    if (ret == RET_REMOVE) {
-      slist_node_t* next = iter->next;
-      slist_remove_node(slist, iter, prev);
-      slist_destroy_node(slist, iter);
-      iter = next;
-      continue;
-    } else if (ret != RET_OK) {
-      break;
-    }
+    TK_FOREACH_VISIT_RESULT_PROCESSING(ret, slist_node_t* next = iter->next;
+                                       slist_remove_node(slist, iter, prev);
+                                       slist_destroy_node(slist, iter); iter = next);
     prev = iter;
     iter = iter->next;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 void* slist_tail_pop(slist_t* slist) {

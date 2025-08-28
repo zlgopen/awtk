@@ -659,4 +659,19 @@ typedef struct _key_type_value_t {
   uint32_t value;
 } key_type_value_t;
 
+#define TK_FOREACH_VISIT_RESULT_PROCESSING(result, remove_sentence)         \
+  {                                                                         \
+    if (RET_CONTINUE == result || RET_SKIP == result) {                     \
+      result = RET_OK;                                                      \
+    } else if (RET_REMOVE == result) {                                      \
+      remove_sentence;                                                      \
+      result = RET_OK;                                                      \
+      continue;                                                             \
+    } else if (RET_REPEAT == result) {                                      \
+      log_warn("%s: result type REPEAT is not supported!\n", __FUNCTION__); \
+    } else if (result != RET_OK) {                                          \
+      break;                                                                \
+    }                                                                       \
+  }
+
 #endif /*TYPES_DEF_H*/

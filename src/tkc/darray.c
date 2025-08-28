@@ -345,6 +345,7 @@ int32_t darray_count(darray_t* darray, void* data) {
 }
 
 ret_t darray_foreach(darray_t* darray, tk_visit_t visit, void* ctx) {
+  ret_t ret = RET_OK;
   return_value_if_fail(darray != NULL && visit != NULL, RET_BAD_PARAMS);
 
   if (darray->elms != NULL) {
@@ -353,14 +354,12 @@ ret_t darray_foreach(darray_t* darray, tk_visit_t visit, void* ctx) {
 
     for (i = 0; i < darray->size; i++) {
       void* iter = elms[i];
-      ret_t ret = visit(ctx, iter);
-      if (ret != RET_OK) {
-        return ret;
-      }
+      ret = visit(ctx, iter);
+      TK_FOREACH_VISIT_RESULT_PROCESSING(ret, darray_remove_index(darray, i));
     }
   }
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t darray_clear(darray_t* darray) {
