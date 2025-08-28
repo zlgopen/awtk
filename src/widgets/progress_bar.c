@@ -66,6 +66,10 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
   ENSURE(progress_bar);
   uint32_t radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
+  uint32_t radius_bl = style_get_int(style, STYLE_ID_ROUND_RADIUS_BOTTOM_LETF, radius);
+  uint32_t radius_br = style_get_int(style, STYLE_ID_ROUND_RADIUS_BOTTOM_RIGHT, radius);
+  uint32_t radius_tl = style_get_int(style, STYLE_ID_ROUND_RADIUS_TOP_LEFT, radius);
+  uint32_t radius_tr = style_get_int(style, STYLE_ID_ROUND_RADIUS_TOP_RIGHT, radius);
   const char* bg_image = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
   image_draw_type_t draw_type = progress_bar->vertical ? IMAGE_DRAW_PATCH3_Y : IMAGE_DRAW_PATCH3_X;
   double progress = progress_bar_get_progress(widget);
@@ -85,7 +89,7 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
     r.x = reverse ? 0 : (widget->w - r.w);
   }
 
-  if (radius || bg_image != NULL) {
+  if (radius_bl || radius_br || radius_tl || radius_tr || bg_image != NULL) {
     r = rect_init(0, 0, widget->w, widget->h);
   }
 
