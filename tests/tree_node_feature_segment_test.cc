@@ -116,23 +116,23 @@ TEST(TreeNodeFeatureSegment, update_range_by_order) {
   handler.ctx = &tree;
   tree_to_string(&tree, NULL, &str, &handler);
   ASSERT_STREQ(str.str,
-               "[0,9]\n"
+               "[0,10]\n"
                "├── [0,3]\n"
                "│   ├── [0,0]\n"
                "│   └── [1,3]\n"
                "│       ├── [1,1]\n"
                "│       ├── [2,2]\n"
                "│       └── [3,3]\n"
-               "├── [4,7]\n"
+               "├── [4,8]\n"
                "│   ├── [4,4]\n"
-               "│   ├── [5,6]\n"
+               "│   ├── [5,7]\n"
                "│   │   └── [5,6]\n"
                "│   │       ├── [5,5]\n"
                "│   │       └── [6,6]\n"
-               "│   └── [7,7]\n"
-               "└── [8,9]\n"
-               "    ├── [8,8]\n"
-               "    └── [9,9]");
+               "│   └── [8,8]\n"
+               "└── [9,10]\n"
+               "    ├── [9,9]\n"
+               "    └── [10,10]");
   str_reset(&str);
 
   tree_deinit(&tree);
@@ -155,11 +155,17 @@ TEST(TreeNodeFeatureSegment, node_is_ancestor) {
       tree_find(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(2));
   tree_node_t* node122 =
       tree_find(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(122));
+  tree_node_t* node22 =
+      tree_find(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(22));
+  tree_node_t* node221 =
+      tree_find(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(221));
 
   ASSERT_EQ(segment_tree_node_is_ancestor(&tree, node122, node1), TRUE);
   ASSERT_EQ(segment_tree_node_is_ancestor(&tree, node122, node2), FALSE);
   ASSERT_EQ(segment_tree_node_is_ancestor(&tree, node1, node122), FALSE);
   ASSERT_EQ(segment_tree_node_is_ancestor(&tree, node2, node122), FALSE);
+  ASSERT_EQ(segment_tree_node_is_ancestor(&tree, node221, node22), TRUE);
+  ASSERT_EQ(segment_tree_node_is_ancestor(&tree, node22, node221), FALSE);
 
   tree_deinit(&tree);
 }

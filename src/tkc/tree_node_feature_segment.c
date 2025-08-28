@@ -63,16 +63,23 @@ static ret_t segment_tree_update_range_by_order_on_visit(void* ctx, const void* 
     node_feature->start = node_feature->end = actx->index;
     actx->index++;
   } else {
+    uint32_t i = 0;
     const tree_node_t* iter = NULL;
     node_feature->start = INT32_MAX;
     node_feature->end = INT32_MIN;
-    for (iter = tree_node_get_child((tree_node_t*)node, 0); iter != NULL;
-         iter = iter->next_sibling) {
+    for (iter = tree_node_get_child((tree_node_t*)node, 0), i = 0; iter != NULL;
+         iter = iter->next_sibling, i++) {
       tree_node_feature_segment_t* iter_feature =
           (tree_node_feature_segment_t*)tree_get_node_feature(actx->tree, iter,
                                                               &s_tree_node_feature_segment_info);
       node_feature->start = tk_min(iter_feature->start, node_feature->start);
       node_feature->end = tk_max(iter_feature->end, node_feature->end);
+    }
+
+    /* 如果只有一个子结点，那么假定多一个假的子结点，让其保证结点的区间范围比子结点的大 */
+    if (i < 2) {
+      node_feature->end = actx->index;
+      actx->index++;
     }
   }
 
