@@ -8,7 +8,7 @@
   * improve darray_foreach.diff(感谢兆坤提供补丁)
   * 补充style_mutable 统一foreach visit返回值处理逻辑(感谢兆坤提供补丁)
   * 补充theme_default 统一foreach visit返回值处理逻辑(感谢兆坤提供补丁)
-
+  * 修复nanovg_plus在OpenGL2es下多次是分配和释放导致显存出现内存碎片导致在显存比较小的 机器侠出现显存分配失败的情况(感谢智明提供补丁)
 
 2025/08/23
   * 完善 dlist_remove_ex

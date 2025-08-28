@@ -715,7 +715,14 @@ static void nvgp_gl_set_shader_data(nvgp_gl_context_t* gl, nvgp_gl_shader_t* sha
     glBindVertexArray(shader->vert_arr);
 #endif
     glBindBuffer(GL_ARRAY_BUFFER, shader->vert_buf);
+#ifdef NVGP_GL3
     glBufferData(GL_ARRAY_BUFFER, shader->nverts * sizeof(nvgp_vertex_t), shader->verts, GL_STREAM_DRAW);
+#else
+    if (!shader->setted_data) {
+      shader->setted_data = 1;
+      glBufferData(GL_ARRAY_BUFFER, shader->nverts * sizeof(nvgp_vertex_t), shader->verts, GL_STREAM_DRAW);
+    }
+#endif
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(nvgp_vertex_t), (const GLvoid*)(size_t)0);
