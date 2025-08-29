@@ -3592,7 +3592,7 @@ ret_t widget_ungrab(widget_t* widget, widget_t* child) {
 
 ret_t widget_foreach(widget_t* widget, tk_visit_t visit, void* ctx) {
   ret_t ret = RET_OK;
-  bool_t is_break = TRUE;
+  bool_t pass = FALSE;
   return_value_if_fail(widget != NULL && visit != NULL, RET_BAD_PARAMS);
 
   ret = visit(ctx, widget);
@@ -3601,12 +3601,14 @@ ret_t widget_foreach(widget_t* widget, tk_visit_t visit, void* ctx) {
     return ret;
   }
 
-  for (is_break = TRUE; is_break; is_break = FALSE) {
+  do {
     ret_t tmp_ret = ret;
     TK_FOREACH_VISIT_RESULT_PROCESSING(
         tmp_ret, log_warn("%s: result type REMOVE is not supported!\n", __FUNCTION__));
-  }
-  if (is_break) {
+    pass = TRUE;
+  } while (0);
+
+  if (!pass) {
     return ret;
   }
 

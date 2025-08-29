@@ -449,6 +449,87 @@ TEST(Tree, to_string) {
   str_reset(&str);
 }
 
+static ret_t tree_to_string_skip_on_node(const tree_node_t* node, str_t* result, void* ctx) {
+  (void)ctx;
+  int32_t num = tk_pointer_to_int(node->data);
+  bool_t pass = num % 2 == 0;
+  str_append_int(result, num);
+  return pass ? RET_OK : RET_SKIP;
+}
+
+static ret_t tree_node_gen_str_skip_on_visit(void* ctx, const void* data) {
+  const tree_node_t* node = (const tree_node_t*)data;
+  str_t* str = (str_t*)ctx;
+  int32_t num = tk_pointer_to_int(node->data);
+  bool_t pass = num % 2 == 0;
+  str_append_int(str, num);
+  str_append_char(str, ' ');
+  return pass ? RET_OK : RET_SKIP;
+}
+
+TEST(Tree, foreach_skip) {
+  tree_to_string_handler_t handler = {tree_to_string_skip_on_node};
+  tree_t tree;
+  str_t str;
+  str_init(&str, 1024);
+  ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
+
+  ASSERT_EQ(build_tree_for_test(&tree), RET_OK);
+
+  str_clear(&str);
+  /* 前序遍历 */
+  ASSERT_EQ(tree_to_string(&tree, NULL, &str, &handler), RET_OK);
+  ASSERT_STREQ(str.str,
+               "0\n"
+               "├── 1\n"
+               "├── 2\n"
+               "│   ├── 21\n"
+               "│   ├── 22\n"
+               "│   │   └── 221\n"
+               "│   └── 23\n"
+               "└── 3");
+
+  str_clear(&str);
+  ASSERT_EQ(tree_foreach(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST,
+                         tree_node_gen_str_skip_on_visit, &str),
+            RET_OK);
+  ASSERT_STREQ(str.str, "0 1 2 3 21 22 23 221 ");
+
+  tree_deinit(&tree);
+  str_reset(&str);
+}
+
+static ret_t tree_node_remove_on_visit(void* ctx, const void* data) {
+  const tree_node_t* node = (const tree_node_t*)data;
+  int32_t num = tk_pointer_to_int(node->data);
+  bool_t pass = num % 2 == 0;
+  (void)ctx;
+  return pass ? RET_OK : RET_REMOVE;
+}
+
+TEST(Tree, foreach_remove) {
+  tree_to_string_handler_t handler = {tree_to_string_on_node};
+  tree_t tree;
+  str_t str;
+  str_init(&str, 1024);
+  ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
+
+  ASSERT_EQ(build_tree_for_test(&tree), RET_OK);
+
+  str_clear(&str);
+  ASSERT_EQ(
+      tree_foreach(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tree_node_remove_on_visit, NULL),
+      RET_OK);
+  ASSERT_EQ(tree_to_string(&tree, NULL, &str, &handler), RET_OK);
+  ASSERT_STREQ(str.str,
+               "0\n"
+               "└── 2\n"
+               "    └── 22");
+
+  tree_deinit(&tree);
+  str_reset(&str);
+}
+
 TEST(Tree, node_allocator) {
   tree_t tree;
   ASSERT_EQ(tree_init(&tree, NULL, NULL), RET_OK);
