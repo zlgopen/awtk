@@ -2,6 +2,7 @@
 
 2025/08/29
   * 完善 foreach (感谢兆坤提供补丁)
+  * improve widget_foreach (感谢兆坤提供补丁)
 
 2025/08/28
   * 完善tree_node_feature_segment(感谢兆坤提供补丁)
