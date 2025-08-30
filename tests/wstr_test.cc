@@ -322,21 +322,20 @@ TEST(WStr, wcs_dup) {
 TEST(WStr, modify) {
   wstr_t str;
   wstr_t* s = &str;
-	wchar_t wstr[] = L"1234567890";
+  wchar_t wstr[] = L"1234567890";
   ASSERT_EQ(wstr_init(&str, 0), &str);
 
   ASSERT_EQ(wstr_append_with_len(s, wstr, ARRAY_SIZE(wstr)), RET_OK);
-	ASSERT_EQ(s->size, 11u);
+  ASSERT_EQ(s->size, 11u);
 
   ASSERT_EQ(wstr_modify_wchar(s, 0, L'A'), RET_OK);
-	ASSERT_EQ(s->str[0], L'A');
+  ASSERT_EQ(s->str[0], L'A');
 
-	ASSERT_EQ(wstr_modify_wchar(s, 9, L'Z'), RET_OK);
-	ASSERT_EQ(s->str[9], L'Z');
+  ASSERT_EQ(wstr_modify_wchar(s, 9, L'Z'), RET_OK);
+  ASSERT_EQ(s->str[9], L'Z');
 
   wstr_reset(&str);
 }
-
 
 TEST(WStr, push) {
   wstr_t str;

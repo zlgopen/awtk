@@ -146,8 +146,8 @@ static ret_t bitmap_platform_create(bitmap_t* bitmap) {
   return_value_if_fail(format == BITMAP_FMT_RGBA8888, RET_BAD_PARAMS);
 
   data = bitmap_lock_buffer_for_write(bitmap);
-  id = EM_ASM_INT({ return VGCanvas.createMutableImage($0, $1, $2, $3, $4); }, data, w, h,
-                  line_length, format);
+  id = EM_ASM_INT(
+      { return VGCanvas.createMutableImage($0, $1, $2, $3, $4); }, data, w, h, line_length, format);
   bitmap->specific = tk_pointer_from_int(id);
   bitmap->specific_destroy = bitmap_web_destroy;
   bitmap_unlock_buffer(bitmap);
@@ -634,7 +634,8 @@ ret_t bitmap_init_ex2(bitmap_t* bitmap, uint32_t w, uint32_t h, uint32_t line_le
   if (data == NULL) {
     bitmap_alloc_data(bitmap);
   } else {
-    bitmap->buffer = GRAPHIC_BUFFER_CREATE_WITH_DATA_EX(data, physical_data_addr, w, h, line_length, format);
+    bitmap->buffer =
+        GRAPHIC_BUFFER_CREATE_WITH_DATA_EX(data, physical_data_addr, w, h, line_length, format);
     bitmap->should_free_data = TRUE;
   }
 

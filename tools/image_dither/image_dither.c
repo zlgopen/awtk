@@ -2169,7 +2169,7 @@ ret_t image_dither_load_image(const uint8_t* buff, uint32_t buff_size, bitmap_t*
     n = 4;
     data = image_dither_convert_2_to_4(stb_data, w, h);
   } else {
-    data = TKMEM_ZALLOCN(uint8_t, w * h * n);
+    data = TKMEM_ZALLOCN(uint8_t, w* h* n);
     if (bg_color.color > 0) {
       bg_color.rgba.r = (bg_color.rgba.r >> 3) << 3;
       bg_color.rgba.g = (bg_color.rgba.g >> 2) << 2;

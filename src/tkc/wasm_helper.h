@@ -24,7 +24,7 @@ BEGIN_C_DECLS
 
 #ifndef PRIx64
 #define PRIx64 "llx"
-#endif/*PRIx64*/
+#endif /*PRIx64*/
 
 #ifdef WITH_EASTL
 #include <wchar.h>

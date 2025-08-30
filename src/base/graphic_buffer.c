@@ -74,7 +74,8 @@ ret_t graphic_buffer_set_physical_height(graphic_buffer_t* buffer, uint32_t heig
 }
 
 ret_t graphic_buffer_set_physical_line_length(graphic_buffer_t* buffer, uint32_t line_length) {
-  return_value_if_fail(buffer != NULL && buffer->vt != NULL && buffer->vt->set_line_length != NULL, 0);
+  return_value_if_fail(buffer != NULL && buffer->vt != NULL && buffer->vt->set_line_length != NULL,
+                       0);
 
   return buffer->vt->set_line_length(buffer, line_length);
 }

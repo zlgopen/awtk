@@ -86,7 +86,7 @@ lcd_t* lcd_mem_argb8888_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uin
  * @return {lcd_t*} 返回lcd对象。
  */
 lcd_t* lcd_mem_argb8888_create_three_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb,
-                                      uint8_t* next_fb);
+                                        uint8_t* next_fb);
 
 /**
  * @method lcd_mem_argb8888_init
@@ -123,7 +123,8 @@ lcd_t* lcd_mem_argb8888_create_single_fb_bitmap(bitmap_t* offline_fb_bitmap);
  *
  * @return {lcd_t*} 返回lcd对象。
  */
-lcd_t* lcd_mem_argb8888_create_double_fb_bitmap(bitmap_t* online_fb_bitmap, bitmap_t* offline_fb_bitmap);
+lcd_t* lcd_mem_argb8888_create_double_fb_bitmap(bitmap_t* online_fb_bitmap,
+                                                bitmap_t* offline_fb_bitmap);
 
 /**
  * @method lcd_mem_argb8888_create_three_fb_bitmap
@@ -136,8 +137,9 @@ lcd_t* lcd_mem_argb8888_create_double_fb_bitmap(bitmap_t* online_fb_bitmap, bitm
  *
  * @return {lcd_t*} 返回lcd对象。
  */
-lcd_t* lcd_mem_argb8888_create_three_fb_bitmap(bitmap_t* online_fb_bitmap, bitmap_t* offline_fb_bitmap,
-                                      bitmap_t* next_fb_bitmap);
+lcd_t* lcd_mem_argb8888_create_three_fb_bitmap(bitmap_t* online_fb_bitmap,
+                                               bitmap_t* offline_fb_bitmap,
+                                               bitmap_t* next_fb_bitmap);
 END_C_DECLS
 
 #endif /*TK_LCD_MEM_ARGB8888_H*/

@@ -35,7 +35,7 @@ TEST(Yaml, basic2) {
   ASSERT_STREQ(conf_node_get_name(node), "name");
 
   ASSERT_STREQ(conf_node_get_child_value_str(doc->root, "name", ""), "jim");
-  
+
   str_t str;
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
@@ -54,7 +54,7 @@ TEST(Yaml, basic3) {
 
   ASSERT_STREQ(conf_doc_get_str(doc, "person.name", ""), "jim");
   ASSERT_EQ(conf_doc_get_int(doc, "person.age", 0), 100);
-  
+
   str_t str;
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
@@ -89,10 +89,10 @@ TEST(Yaml, basic5) {
 
   ASSERT_EQ(conf_doc_get(doc, "#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 1);
-  
+
   ASSERT_EQ(conf_doc_get(doc, "jim.#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 2);
-  
+
   ASSERT_EQ(conf_doc_get_int(doc, "jim.age", 0), 100);
   ASSERT_EQ(conf_doc_get_int(doc, "jim.weight", 0), 60);
 
@@ -107,14 +107,15 @@ TEST(Yaml, basic5) {
 
 TEST(Yaml, basic6) {
   value_t v;
-  conf_doc_t* doc = conf_doc_load_yaml("jim:\r\n  age:100\n  weight: 60\ntom:\n  age:99\n  weight:70");
+  conf_doc_t* doc =
+      conf_doc_load_yaml("jim:\r\n  age:100\n  weight: 60\ntom:\n  age:99\n  weight:70");
 
   ASSERT_EQ(conf_doc_get(doc, "#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 2);
-  
+
   ASSERT_EQ(conf_doc_get(doc, "jim.#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 2);
-  
+
   ASSERT_EQ(conf_doc_get(doc, "tom.#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 2);
 
@@ -134,7 +135,8 @@ TEST(Yaml, basic6) {
 
 TEST(Yaml, basic7) {
   value_t v;
-  const char* data = "plan_request_params:\n\
+  const char* data =
+      "plan_request_params:\n\
   planning_attempts: 1\n\
   planning_pipeline: ompl\n\
   max_velocity_scaling_factor: 1.0\n\
@@ -144,26 +146,31 @@ TEST(Yaml, basic7) {
 
   ASSERT_EQ(conf_doc_get(doc, "#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 1);
-  
+
   ASSERT_EQ(conf_doc_get(doc, "plan_request_params.#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 4);
 
   ASSERT_EQ(conf_doc_get_int(doc, "plan_request_params.planning_attempts", 0), 1);
   ASSERT_STREQ(conf_doc_get_str(doc, "plan_request_params.planning_pipeline", ""), "ompl");
-  ASSERT_FLOAT_EQ(conf_doc_get_float(doc, "plan_request_params.max_velocity_scaling_factor", 0), 1.0f);
-  ASSERT_FLOAT_EQ(conf_doc_get_float(doc, "plan_request_params.max_acceleration_scaling_factor", 0), 0.5f);
+  ASSERT_FLOAT_EQ(conf_doc_get_float(doc, "plan_request_params.max_velocity_scaling_factor", 0),
+                  1.0f);
+  ASSERT_FLOAT_EQ(conf_doc_get_float(doc, "plan_request_params.max_acceleration_scaling_factor", 0),
+                  0.5f);
 
   str_t str;
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
-  ASSERT_STREQ(str.str, "plan_request_params:\n  planning_attempts: 1\n  planning_pipeline: ompl\n  max_velocity_scaling_factor: 1.0\n  max_acceleration_scaling_factor: 0.5\n");
+  ASSERT_STREQ(str.str,
+               "plan_request_params:\n  planning_attempts: 1\n  planning_pipeline: ompl\n  "
+               "max_velocity_scaling_factor: 1.0\n  max_acceleration_scaling_factor: 0.5\n");
   str_reset(&str);
   conf_doc_destroy(doc);
 }
 
 TEST(Yaml, list1) {
   value_t v;
-  const char* data = "planning_pipelines:\n\
+  const char* data =
+      "planning_pipelines:\n\
   pipeline_names:\n\
     - ompl\n";
 
@@ -171,10 +178,10 @@ TEST(Yaml, list1) {
 
   ASSERT_EQ(conf_doc_get(doc, "#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 1);
-  
+
   ASSERT_EQ(conf_doc_get(doc, "planning_pipelines.#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 1);
-  
+
   ASSERT_EQ(conf_doc_get(doc, "planning_pipelines.pipeline_names.#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 1);
 
@@ -188,7 +195,8 @@ TEST(Yaml, list1) {
 
 TEST(Yaml, list2) {
   value_t v;
-  const char* data = "planning_pipelines:\n\
+  const char* data =
+      "planning_pipelines:\n\
   pipeline_names:\n\
     - ompl\n\
     - kdl\n\
@@ -198,17 +206,18 @@ TEST(Yaml, list2) {
 
   ASSERT_EQ(conf_doc_get(doc, "#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 1);
-  
+
   ASSERT_EQ(conf_doc_get(doc, "planning_pipelines.#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 1);
-  
+
   ASSERT_EQ(conf_doc_get(doc, "planning_pipelines.pipeline_names.#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 3);
 
   str_t str;
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
-  ASSERT_STREQ(str.str, "planning_pipelines:\n  pipeline_names:\n    - ompl\n    - kdl\n    - ikfast\n");
+  ASSERT_STREQ(str.str,
+               "planning_pipelines:\n  pipeline_names:\n    - ompl\n    - kdl\n    - ikfast\n");
   str_reset(&str);
   conf_doc_destroy(doc);
 }
@@ -226,7 +235,7 @@ TEST(Yaml, comment1) {
   ASSERT_STREQ(conf_node_get_name(node), "name");
 
   ASSERT_STREQ(conf_node_get_child_value_str(doc->root, "name", ""), "jim");
-  
+
   str_t str;
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
@@ -249,7 +258,7 @@ TEST(Yaml, comment2) {
   ASSERT_STREQ(conf_node_get_name(node), "name");
 
   ASSERT_STREQ(conf_node_get_child_value_str(doc->root, "name", ""), "jim");
-  
+
   str_t str;
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
@@ -261,7 +270,8 @@ TEST(Yaml, comment2) {
 
 TEST(Yaml, comment3) {
   value_t v;
-  const char* data = "planning_pipelines:#comment\n\
+  const char* data =
+      "planning_pipelines:#comment\n\
   pipeline_names:#comment\n\
     - ompl#comment\n\
     #comment\n\
@@ -272,17 +282,18 @@ TEST(Yaml, comment3) {
 
   ASSERT_EQ(conf_doc_get(doc, "#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 1);
-  
+
   ASSERT_EQ(conf_doc_get(doc, "planning_pipelines.#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 1);
-  
+
   ASSERT_EQ(conf_doc_get(doc, "planning_pipelines.pipeline_names.#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 3);
 
   str_t str;
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
-  ASSERT_STREQ(str.str, "planning_pipelines:\n  pipeline_names:\n    - ompl\n    - kdl\n    - ikfast\n");
+  ASSERT_STREQ(str.str,
+               "planning_pipelines:\n  pipeline_names:\n    - ompl\n    - kdl\n    - ikfast\n");
   str_reset(&str);
   conf_doc_destroy(doc);
 }
@@ -364,7 +375,7 @@ TEST(Yaml, escape1) {
 
   const char* value = conf_node_get_child_value_str(doc->root, "name", "");
   ASSERT_STREQ(value, "hello\nworld");
-  
+
   str_t str;
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
@@ -388,7 +399,7 @@ TEST(Yaml, escape2) {
 
   const char* value = conf_node_get_child_value_str(doc->root, "name", "");
   ASSERT_STREQ(value, "#hello");
-  
+
   str_t str;
   str_init(&str, 100);
   conf_doc_save_yaml(doc, &str);
@@ -453,12 +464,13 @@ TEST(Yaml, file) {
 
   ASSERT_STREQ(tk_object_get_prop_str(conf, "plan_request_params.planning_pipeline"), "ompl");
   ASSERT_STREQ(tk_object_get_prop_str(conf, "plan_request_params.planning_attempts"), "1");
-  ASSERT_STREQ(tk_object_get_prop_str(conf, "plan_request_params.max_velocity_scaling_factor"), "1.0");
-  ASSERT_STREQ(tk_object_get_prop_str(conf, "plan_request_params.max_acceleration_scaling_factor"), "1.0");
+  ASSERT_STREQ(tk_object_get_prop_str(conf, "plan_request_params.max_velocity_scaling_factor"),
+               "1.0");
+  ASSERT_STREQ(tk_object_get_prop_str(conf, "plan_request_params.max_acceleration_scaling_factor"),
+               "1.0");
 
   ASSERT_STREQ(tk_object_get_prop_str(conf, "planning_pipelines.pipeline_names.[0]"), "ompl");
   ASSERT_STREQ(tk_object_get_prop_str(conf, "planning_pipelines.pipeline_names.[1]"), "kdl");
-
 
   TK_OBJECT_UNREF(conf);
 }

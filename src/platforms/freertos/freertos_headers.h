@@ -11,10 +11,9 @@
 #include "openrtos/task.h"
 #include "openrtos/semphr.h"
 
-
 #else
 #include "FreeRTOS.h"
 #include "task.h"
 #include "semphr.h"
 
-#endif/*WITH_FREE_RTOS_DIR*/
+#endif /*WITH_FREE_RTOS_DIR*/

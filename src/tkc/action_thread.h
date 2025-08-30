@@ -159,8 +159,9 @@ action_thread_t* action_thread_create_with_queue_ex(waitable_action_queue_t* que
  * @return {action_thread_t*} action_thread对象。
  */
 action_thread_t* action_thread_create_with_queue_ex2(waitable_action_queue_t* queue,
-                                                    const char* name, uint32_t stack_size,
-                                                    tk_thread_priority_t priority, uint32_t wait_timeout);
+                                                     const char* name, uint32_t stack_size,
+                                                     tk_thread_priority_t priority,
+                                                     uint32_t wait_timeout);
 /**
  * @method action_thread_exec
  * 让线程执行action。

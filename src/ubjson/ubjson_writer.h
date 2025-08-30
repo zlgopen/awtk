@@ -705,7 +705,6 @@ ret_t ubjson_writer_write_kv_wstr_len(ubjson_writer_t* writer, const char* key,
  */
 ret_t ubjson_writer_write_kv_value(ubjson_writer_t* writer, const char* key, const value_t* value);
 
-
 /**
  * @method ubjson_writer_write_array_uint8
  * 写入 uint8 数组。

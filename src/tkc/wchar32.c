@@ -504,5 +504,4 @@ int iswspace(wint_t ch) {
 int towlower(wint_t ch) {
   return tolower(ch);
 }
-#endif/*WITH_WCSXXX*/
-
+#endif /*WITH_WCSXXX*/

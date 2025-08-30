@@ -350,7 +350,7 @@ ret_t widget_add_value_int(widget_t* widget, int32_t delta) {
 }
 
 ret_t widget_animate_prop_float_to(widget_t* widget, const char* name, float_t value,
-                                          uint32_t duration) {
+                                   uint32_t duration) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && name != NULL, RET_BAD_PARAMS);
   if (duration == 0) {
@@ -389,7 +389,7 @@ ret_t widget_animate_size_to(widget_t* widget, wh_t w, wh_t h, uint32_t duration
 
 ret_t widget_animate_value_to(widget_t* widget, float_t value, uint32_t duration) {
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
-  
+
   return widget_animate_prop_float_to(widget, WIDGET_PROP_VALUE, value, duration);
 }
 
@@ -1868,8 +1868,8 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, const rect_t* r) 
   if (bd.rgba.a) {
     canvas_set_stroke_color(c, bd);
     if (radius_tl > 3 || radius_tr > 3 || radius_bl > 3 || radius_br > 3) {
-      if (canvas_stroke_rounded_rect_ex(c, r, NULL, &bd, radius_tl, radius_tr, radius_bl,
-                                        radius_br, border_width, border) != RET_OK) {
+      if (canvas_stroke_rounded_rect_ex(c, r, NULL, &bd, radius_tl, radius_tr, radius_bl, radius_br,
+                                        border_width, border) != RET_OK) {
         widget_stroke_border_rect_for_border_type(c, r, bd, border, border_width);
       }
     } else {
@@ -3013,8 +3013,10 @@ static ret_t widget_on_keyup_children(widget_t* widget, key_event_t* e) {
   ret_t ret = RET_OK;
 
   if (widget_is_window(widget)) {
-    widget_t* accept_button_widget = WIDGET(widget_get_prop_pointer(widget, WIDGET_PROP_ACCEPT_BUTTON));
-    widget_t* cancel_button_widget = WIDGET(widget_get_prop_pointer(widget, WIDGET_PROP_CANCEL_BUTTON));
+    widget_t* accept_button_widget =
+        WIDGET(widget_get_prop_pointer(widget, WIDGET_PROP_ACCEPT_BUTTON));
+    widget_t* cancel_button_widget =
+        WIDGET(widget_get_prop_pointer(widget, WIDGET_PROP_CANCEL_BUTTON));
     if (accept_button_widget != NULL && key_code_is_enter(e->key)) {
 #ifdef MACOS
       bool_t is_control = e->cmd;
@@ -3022,10 +3024,11 @@ static ret_t widget_on_keyup_children(widget_t* widget, key_event_t* e) {
       bool_t is_control = e->ctrl;
 #endif
       widget_t* final_key_target = widget_get_final_key_target(widget);
-      if (!final_key_target->vt->return_key_to_activate && !is_control && !widget_get_prop_bool(final_key_target, WIDGET_PROP_ACCEPT_RETRUN, FALSE)) {
+      if (!final_key_target->vt->return_key_to_activate && !is_control &&
+          !widget_get_prop_bool(final_key_target, WIDGET_PROP_ACCEPT_RETRUN, FALSE)) {
         return widget_on_keyup(accept_button_widget, e);
       }
-    } else if (cancel_button_widget!= NULL && e->key == TK_KEY_ESCAPE) {
+    } else if (cancel_button_widget != NULL && e->key == TK_KEY_ESCAPE) {
       return widget_on_keyup(cancel_button_widget, e);
     }
   }
@@ -3298,9 +3301,11 @@ ret_t widget_on_pointer_down_children(widget_t* widget, pointer_event_t* e) {
   }
 
   if (widget->target == NULL) {
-    widget_t* accept_button_widget = WIDGET(widget_get_prop_pointer(widget_get_window(widget), WIDGET_PROP_ACCEPT_BUTTON));
+    widget_t* accept_button_widget =
+        WIDGET(widget_get_prop_pointer(widget_get_window(widget), WIDGET_PROP_ACCEPT_BUTTON));
     if (accept_button_widget != NULL) {
-      bool_t accept = !widget->vt->return_key_to_activate && !widget_get_prop_bool(widget, WIDGET_PROP_ACCEPT_RETRUN, FALSE);
+      bool_t accept = !widget->vt->return_key_to_activate &&
+                      !widget_get_prop_bool(widget, WIDGET_PROP_ACCEPT_RETRUN, FALSE);
       widget_set_accept_button_widget_state(accept_button_widget, accept);
     }
   }
@@ -4765,9 +4770,11 @@ ret_t widget_move_focus(widget_t* widget, widget_find_wanted_focus_widget_t find
 
     if (focus != NULL && focus != widget) {
       widget_t* win = widget_get_window(widget);
-      widget_t* accept_button_widget = WIDGET(widget_get_prop_pointer(win, WIDGET_PROP_ACCEPT_BUTTON));
+      widget_t* accept_button_widget =
+          WIDGET(widget_get_prop_pointer(win, WIDGET_PROP_ACCEPT_BUTTON));
       if (accept_button_widget != NULL) {
-        bool_t accept = !focus->vt->return_key_to_activate && !widget_get_prop_bool(focus, WIDGET_PROP_ACCEPT_RETRUN, FALSE);
+        bool_t accept = !focus->vt->return_key_to_activate &&
+                        !widget_get_prop_bool(focus, WIDGET_PROP_ACCEPT_RETRUN, FALSE);
         widget_set_accept_button_widget_state(accept_button_widget, accept);
       }
 

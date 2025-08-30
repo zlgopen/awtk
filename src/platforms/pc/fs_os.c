@@ -172,7 +172,7 @@ static ret_t fs_os_dir_read(fs_dir_t* dir, fs_item_t* item) {
 #ifdef QNX
     struct stat st;
     char filename[MAX_PATH + 1] = {0};
-    tk_snprintf(filename, sizeof(filename) - 1, "%s/%s", dir->dirname,  ent->d_name);
+    tk_snprintf(filename, sizeof(filename) - 1, "%s/%s", dir->dirname, ent->d_name);
 
     if (stat(filename, &st) == 0) {
       item->is_dir = (st.st_mode & S_IFDIR) != 0;

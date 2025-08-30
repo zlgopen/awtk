@@ -168,7 +168,6 @@ ret_t str_append_wchar_with_len(str_t* str, const wchar_t* text, uint32_t len) {
   return RET_OK;
 }
 
-
 ret_t str_append_wchar(str_t* str, const wchar_t* text) {
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
 

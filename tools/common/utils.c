@@ -203,17 +203,17 @@ static str_t* format_folder_name(const char* name) {
   tokenizer_init(&t, name, strlen(name), "/\\");
   while (tokenizer_has_more(&t)) {
     const char* text = tokenizer_next(&t);
-    if(str->size == 0) {
+    if (str->size == 0) {
       str_set(str, text);
     } else {
-      str_append(str, "_"); // 目录名称前再加一个 "_"，避免文件重名冲突。
+      str_append(str, "_");  // 目录名称前再加一个 "_"，避免文件重名冲突。
       str_append(str, text);
     }
-    str_append(str, "_"); // 将斜杠替换为 "_"
+    str_append(str, "_");  // 将斜杠替换为 "_"
   }
   tokenizer_deinit(&t);
 
-  str_pop(str); // 去掉末尾多余的"_"
+  str_pop(str);  // 去掉末尾多余的"_"
   return str;
 }
 

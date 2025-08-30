@@ -65,7 +65,8 @@ static action_thread_t* action_thread_create_demo1(void) {
 }
 
 static action_thread_t* action_thread_create_demo2(void) {
-  action_thread_t* thread = action_thread_create_ex("action_thread2", 10 * 1024, TK_THREAD_PRIORITY_NORMAL);
+  action_thread_t* thread =
+      action_thread_create_ex("action_thread2", 10 * 1024, TK_THREAD_PRIORITY_NORMAL);
   action_thread_set_on_idle(thread, on_idle, NULL);
   action_thread_set_on_quit(thread, on_quit, NULL);
 
@@ -73,7 +74,8 @@ static action_thread_t* action_thread_create_demo2(void) {
 }
 
 static action_thread_t* action_thread_create_demo3(void) {
-  action_thread_t* thread = action_thread_create_ex2("action_thread3", 10 * 1024, TK_THREAD_PRIORITY_NORMAL, 500);
+  action_thread_t* thread =
+      action_thread_create_ex2("action_thread3", 10 * 1024, TK_THREAD_PRIORITY_NORMAL, 500);
   action_thread_set_on_idle(thread, on_idle, NULL);
   action_thread_set_on_quit(thread, on_quit, NULL);
 

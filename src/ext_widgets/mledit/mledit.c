@@ -749,7 +749,8 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
           break;
         }
       }
-      if ((!mledit->accept_tab && !is_control && key == TK_KEY_TAB) || (!mledit->accept_return && !is_control && key_code_is_enter(key))) {
+      if ((!mledit->accept_tab && !is_control && key == TK_KEY_TAB) ||
+          (!mledit->accept_return && !is_control && key_code_is_enter(key))) {
         ret = RET_OK;
         break;
       }

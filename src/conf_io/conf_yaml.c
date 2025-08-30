@@ -150,7 +150,7 @@ static const char* yaml_parser_parse_value(yaml_parser_t* parser, uint32_t csep)
     }
 
     str_append_char(s, c);
-  } while(1);
+  } while (1);
 
   parser->cursor = p;
   str_trim(s, " \t\r\n");
@@ -180,7 +180,7 @@ static const char* yaml_parser_parse_name(yaml_parser_t* parser) {
       log_warn("yaml invalid char '%c' for name\n", c);
     }
     p++;
-  } while(1);
+  } while (1);
 
   parser->cursor = p;
   str_trim(s, " \t\r\n");

@@ -804,16 +804,17 @@ emitter_t* remote_ui_get_event_hander(remote_ui_t* ui, const char* target) {
   return tk_object_get_prop_pointer(ui->event_handlers, target);
 }
 
-ret_t remote_ui_set_fallback_on_event(remote_ui_t* ui, remote_ui_on_event_func_t fallback_on_event) {
+ret_t remote_ui_set_fallback_on_event(remote_ui_t* ui,
+                                      remote_ui_on_event_func_t fallback_on_event) {
   return_value_if_fail(ui != NULL, RET_BAD_PARAMS);
-  
+
   ui->fallback_on_event = fallback_on_event;
-  
+
   return RET_OK;
 }
 
 ret_t remote_ui_set_on_notify(remote_ui_t* ui, remote_ui_on_notify_t on_notify, void* ctx) {
-  return_value_if_fail(ui!= NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ui != NULL, RET_BAD_PARAMS);
 
   ui->on_notify = on_notify;
   ui->on_notify_ctx = ctx;

@@ -75,16 +75,16 @@ ret_t tk_socket_get_ips_by_ifname(const wchar_t* ifname, darray_t* ips) {
   PIP_ADAPTER_ADDRESSES pAddr = NULL;
   return_value_if_fail(ifname != NULL && ips != NULL, RET_BAD_PARAMS);
   ret = GetAdaptersAddresses(AF_INET, 0, NULL, NULL, &size);
-  
+
   if (ret == ERROR_BUFFER_OVERFLOW) {
     pAddr = (PIP_ADAPTER_ADDRESSES)malloc(size);
     ret = GetAdaptersAddresses(AF_INET, 0, NULL, pAddr, &size);
   }
-  
+
   while (pAddr && ret == NO_ERROR) {
     if (wcscmp(pAddr->FriendlyName, ifname) == 0) {
       PIP_ADAPTER_UNICAST_ADDRESS pUnicast = pAddr->FirstUnicastAddress;
-       while (pUnicast) {
+      while (pUnicast) {
         char ip[16] = {0};
         size_t len = sizeof(ip);
         struct sockaddr_in* sa = (struct sockaddr_in*)pUnicast->Address.lpSockaddr;
@@ -96,7 +96,7 @@ ret_t tk_socket_get_ips_by_ifname(const wchar_t* ifname, darray_t* ips) {
     }
     pAddr = pAddr->Next;
   }
-  
+
   free(pAddr);
   return push_ret;
 }

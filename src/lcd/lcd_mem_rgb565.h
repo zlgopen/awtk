@@ -123,7 +123,8 @@ lcd_t* lcd_mem_rgb565_create_single_fb_bitmap(bitmap_t* offline_fb_bitmap);
  *
  * @return {lcd_t*} 返回lcd对象。
  */
-lcd_t* lcd_mem_rgb565_create_double_fb_bitmap(bitmap_t* online_fb_bitmap, bitmap_t* offline_fb_bitmap);
+lcd_t* lcd_mem_rgb565_create_double_fb_bitmap(bitmap_t* online_fb_bitmap,
+                                              bitmap_t* offline_fb_bitmap);
 
 /**
  * @method lcd_mem_rgb565_create_three_fb_bitmap
@@ -136,8 +137,8 @@ lcd_t* lcd_mem_rgb565_create_double_fb_bitmap(bitmap_t* online_fb_bitmap, bitmap
  *
  * @return {lcd_t*} 返回lcd对象。
  */
-lcd_t* lcd_mem_rgb565_create_three_fb_bitmap(bitmap_t* online_fb_bitmap, bitmap_t* offline_fb_bitmap,
-                                      bitmap_t* next_fb_bitmap);
+lcd_t* lcd_mem_rgb565_create_three_fb_bitmap(bitmap_t* online_fb_bitmap,
+                                             bitmap_t* offline_fb_bitmap, bitmap_t* next_fb_bitmap);
 END_C_DECLS
 
 #endif /*TK_LCD_MEM_RGB565_H*/

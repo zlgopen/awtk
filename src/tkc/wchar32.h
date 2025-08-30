@@ -28,7 +28,7 @@ BEGIN_C_DECLS
 
 #ifdef WIN32
 typedef uint32_t wchar32_t;
-#else 
+#else
 typedef wchar_t wchar32_t;
 #endif
 

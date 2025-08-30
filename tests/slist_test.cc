@@ -367,6 +367,6 @@ TEST(SList, get) {
     ASSERT_EQ(TO_INT(slist_get(s, i)), i);
   }
   ASSERT_EQ(TO_INT(slist_get(s, i)), 0);
-  
+
   slist_deinit(s);
 }

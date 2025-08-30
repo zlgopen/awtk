@@ -500,7 +500,7 @@ ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v)
     }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_CANCEL_BUTTON)) {
-    if (widget->loading) { 
+    if (widget->loading) {
       window_base->cancel_button = tk_str_copy(window_base->cancel_button, value_str(v));
     } else {
       window_base_set_cancel_button(widget, value_str(v));

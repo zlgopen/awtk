@@ -85,7 +85,6 @@ TEST(Wchar32, wcs32dup) {
   TKMEM_FREE(ret);
 }
 
-
 TEST(Wchar32, wcs32lcat) {
   wchar32_t src[10] = {0};
   wchar32_t dst[20] = {0};
@@ -97,13 +96,12 @@ TEST(Wchar32, wcs32lcat) {
   size_t ret = wcs32lcat(dst, src, 5);
   EXPECT_EQ(wcs32cmp(dst, result), 0);
   EXPECT_EQ(ret, (size_t)5);
-  
+
   wcs32_init_with_wcs(dst, L"hEllo");
   ret = wcs32lcat(dst, src, 30);
   EXPECT_EQ(wcs32cmp(dst, result), 0);
   EXPECT_EQ(ret, (size_t)5);
 }
-
 
 TEST(Wchar32, wcs32lcpy) {
   wchar32_t src[10] = {0};
@@ -116,7 +114,7 @@ TEST(Wchar32, wcs32lcpy) {
   size_t ret = wcs32lcpy(dst, src, 5);
   EXPECT_EQ(wcs32cmp(dst, src), 0);
   EXPECT_EQ(ret, (size_t)5);
-  
+
   ret = wcs32lcpy(dst, src, 50);
   EXPECT_EQ(wcs32cmp(dst, src), 0);
   EXPECT_EQ(ret, (size_t)5);
@@ -143,7 +141,7 @@ TEST(Wchar32, wcs32ncat) {
   wchar32_t* ret = wcs32ncat(dst, src, 5);
   EXPECT_EQ(wcs32cmp(dst, result), 0);
   EXPECT_EQ(ret, dst);
-  
+
   wcs32_init_with_wcs(dst, L"hEllo");
   ret = wcs32ncat(dst, src, 30);
   EXPECT_EQ(wcs32cmp(dst, result), 0);
@@ -171,7 +169,7 @@ TEST(Wchar32, wcs32ncpy) {
   wchar32_t* ret = wcs32ncpy(dst, src, 5);
   EXPECT_EQ(wcs32cmp(dst, src), 0);
   EXPECT_EQ(ret, dst);
-  
+
   ret = wcs32ncpy(dst, src, 50);
   EXPECT_EQ(wcs32cmp(dst, src), 0);
   EXPECT_EQ(ret, dst);
@@ -232,7 +230,7 @@ TEST(Wchar32, wcs32str) {
 
   wchar32_t* ret = wcs32str(src, dst);
   EXPECT_EQ(wcs32cmp(ret, src + 4), 0);
-  
+
   ret = wcs32str(dst, src);
   EXPECT_EQ(ret, (wchar32_t*)NULL);
 }

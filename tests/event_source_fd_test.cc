@@ -49,4 +49,3 @@ TEST(EventSourceFd, none_fd) {
 
   tk_object_unref(TK_OBJECT(event_source));
 }
-

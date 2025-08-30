@@ -366,19 +366,19 @@ TEST(FScript, mod) {
   fscript_eval(obj, "%(23, 7)", &v);
   ASSERT_EQ(value_int(&v), 2);
   value_reset(&v);
-  
+
   fscript_eval(obj, "23 % 7", &v);
   ASSERT_EQ(value_int(&v), 2);
   value_reset(&v);
-  
+
   fscript_eval(obj, "23 % 7 + 2", &v);
   ASSERT_EQ(value_int(&v), 4);
   value_reset(&v);
-  
+
   fscript_eval(obj, "(23 % 7) + 2", &v);
   ASSERT_EQ(value_int(&v), 4);
   value_reset(&v);
-  
+
   fscript_eval(obj, "23 % (1 + 2)", &v);
   ASSERT_EQ(value_int(&v), 2);
   value_reset(&v);
@@ -422,7 +422,7 @@ TEST(FScript, or) {
   TK_OBJECT_UNREF(obj);
 }
 
-TEST(FScript, not ) {
+TEST(FScript, not) {
   value_t v;
   tk_object_t* obj = object_default_create();
 
@@ -2386,7 +2386,6 @@ for_in(i, a) {\
   TK_OBJECT_UNREF(obj);
 }
 
-
 TEST(FExr, typed_array_bool) {
   const char* str =
       "var b = 0;\
@@ -3576,7 +3575,7 @@ TEST(FExr, direct_var1) {
   tk_object_set_prop_int(obj, "%iw1.1", 11);
   tk_object_set_prop_int(obj, "%iw2.2", 22);
   tk_object_set_prop_int(obj, "%iw3.3", 33);
-  
+
   fscript_eval(obj, "5  % 3", &v);
   ASSERT_EQ(value_int32(&v), 2);
   value_reset(&v);
@@ -3584,27 +3583,27 @@ TEST(FExr, direct_var1) {
   fscript_eval(obj, "1 + %iw1", &v);
   ASSERT_EQ(value_int32(&v), 2);
   value_reset(&v);
-  
+
   fscript_eval(obj, "1 + %iw1.1", &v);
   ASSERT_EQ(value_int32(&v), 12);
   value_reset(&v);
-  
+
   fscript_eval(obj, "1 + %iw2.2", &v);
   ASSERT_EQ(value_int32(&v), 23);
   value_reset(&v);
-  
+
   fscript_eval(obj, "1 + %iw3.3", &v);
   ASSERT_EQ(value_int32(&v), 34);
   value_reset(&v);
-  
+
   fscript_eval(obj, "1 + (%iw3.3 % 10)", &v);
   ASSERT_EQ(value_int32(&v), 4);
   value_reset(&v);
-  
+
   fscript_eval(obj, "1 + (%iw3.3 % %iw2.2)", &v);
   ASSERT_EQ(value_int32(&v), 12);
   value_reset(&v);
-  
+
   ASSERT_EQ(fscript_eval(obj, "1 + (%iw3.3 + %iw2.2)", &v), RET_OK);
   ASSERT_EQ(value_int32(&v), 56);
   value_reset(&v);
@@ -3619,7 +3618,7 @@ TEST(FExr, direct_var2) {
   tk_object_set_prop_int(obj, "%iw1.1", 11);
   tk_object_set_prop_int(obj, "%iw2.2", 22);
   tk_object_set_prop_int(obj, "%iw3.3", 33);
- 
+
   ASSERT_NE(fscript_eval(obj, "5%% iw2", &v), RET_OK);
   ASSERT_EQ(value_int32(&v), 0);
   value_reset(&v);
@@ -3648,4 +3647,3 @@ TEST(FScript, create_ex2_3) {
   ASSERT_EQ(obj->ref_count, 1);
   fscript_destroy(fscript);
 }
-

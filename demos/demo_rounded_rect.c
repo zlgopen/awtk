@@ -42,7 +42,7 @@ static ret_t on_value_changed(void* ctx, event_t* e) {
     widget_set_style_int(view, STYLE_ID_ROUND_RADIUS_BOTTOM_RIGHT, s_radius_br);
     widget_set_style_int(view, STYLE_ID_BORDER_WIDTH, s_border_width);
   }
-  
+
   return RET_OK;
 }
 
@@ -50,7 +50,7 @@ ret_t create_input_widget(widget_t* win, xy_t y) {
   xy_t x = 0;
   widget_t* radius_tl_edit = NULL;
   widget_t* radius_tl_label = NULL;
-  widget_t* radius_tr_edit = NULL;  
+  widget_t* radius_tr_edit = NULL;
   widget_t* radius_tr_label = NULL;
   widget_t* radius_bl_edit = NULL;
   widget_t* radius_bl_label = NULL;
@@ -89,7 +89,7 @@ ret_t create_input_widget(widget_t* win, xy_t y) {
   radius_br_edit = edit_create(win, x, y, 70, 30);
   edit_set_keyboard(radius_br_edit, "");
   widget_set_value_int(radius_br_edit, s_radius_br);
-  
+
   x += radius_br_edit->w;
   border_width_label = label_create(win, radius_br_edit->x + radius_br_edit->w, y, 100, 30);
   widget_set_text_utf8(border_width_label, "border_width:");
@@ -129,7 +129,7 @@ ret_t application_init() {
   rect_t r = rect_init(0, 0, w, h);
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
   darray_init(&s_rounded_rects, 16, NULL, NULL);
-  
+
   create_test_view(win, &r, 0);
   r.x += w + 30;
   create_test_view(win, &r, BORDER_LEFT | BORDER_RIGHT | BORDER_TOP | BORDER_BOTTOM);

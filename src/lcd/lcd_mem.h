@@ -196,7 +196,8 @@ static inline ret_t lcd_mem_set_single_fb_bitmap(lcd_t* lcd, bitmap_t* offline_f
   return RET_OK;
 }
 
-static inline ret_t lcd_mem_set_double_fb_bitmap(lcd_t* lcd, bitmap_t* online_fb_bitmap, bitmap_t* offline_fb_bitmap) {
+static inline ret_t lcd_mem_set_double_fb_bitmap(lcd_t* lcd, bitmap_t* online_fb_bitmap,
+                                                 bitmap_t* offline_fb_bitmap) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   return_value_if_fail(mem != NULL, RET_BAD_PARAMS);
   return_value_if_fail(online_fb_bitmap != NULL && offline_fb_bitmap != NULL, RET_BAD_PARAMS);
@@ -207,18 +208,21 @@ static inline ret_t lcd_mem_set_double_fb_bitmap(lcd_t* lcd, bitmap_t* online_fb
 
   lcd_mem_set_online_fb(mem, bitmap_lock_buffer_for_write(online_fb_bitmap));
   lcd_mem_set_offline_fb(mem, bitmap_lock_buffer_for_write(offline_fb_bitmap));
-  
+
   mem->fb_bitmaps[0] = offline_fb_bitmap;
   mem->fb_bitmaps[1] = online_fb_bitmap;
 
   return RET_OK;
 }
 
-static inline ret_t lcd_mem_set_three_fb_bitmap(lcd_t* lcd, bitmap_t* online_fb_bitmap, bitmap_t* offline_fb_bitmap,
-                                      bitmap_t* next_fb_bitmap) {
+static inline ret_t lcd_mem_set_three_fb_bitmap(lcd_t* lcd, bitmap_t* online_fb_bitmap,
+                                                bitmap_t* offline_fb_bitmap,
+                                                bitmap_t* next_fb_bitmap) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   return_value_if_fail(mem != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(online_fb_bitmap != NULL && offline_fb_bitmap != NULL && next_fb_bitmap != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(
+      online_fb_bitmap != NULL && offline_fb_bitmap != NULL && next_fb_bitmap != NULL,
+      RET_BAD_PARAMS);
 
   assert(online_fb_bitmap->w == next_fb_bitmap->w);
   assert(online_fb_bitmap->h == next_fb_bitmap->h);

@@ -36,7 +36,8 @@ struct _remote_ui_service_t;
 typedef struct _remote_ui_service_t remote_ui_service_t;
 
 typedef tk_object_t* (*remote_ui_service_find_target_t)(tk_service_t* service, const char* target);
-typedef ret_t (*remote_ui_service_on_event_func_t)(remote_ui_service_t* ui, wbuffer_t* wb, event_t* evt);
+typedef ret_t (*remote_ui_service_on_event_func_t)(remote_ui_service_t* ui, wbuffer_t* wb,
+                                                   event_t* evt);
 
 /**
  * @class remote_ui_service_args_t

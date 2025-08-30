@@ -59,11 +59,13 @@ lcd_t* lcd_mem_bgr565_create_single_fb_bitmap(bitmap_t* offline_fb_bitmap) {
   return lcd_mem_create_single_fb_bitmap(offline_fb_bitmap);
 }
 
-lcd_t* lcd_mem_bgr565_create_double_fb_bitmap(bitmap_t* online_fb_bitmap, bitmap_t* offline_fb_bitmap) {
+lcd_t* lcd_mem_bgr565_create_double_fb_bitmap(bitmap_t* online_fb_bitmap,
+                                              bitmap_t* offline_fb_bitmap) {
   return lcd_mem_create_double_fb_bitmap(online_fb_bitmap, offline_fb_bitmap);
 }
 
-lcd_t* lcd_mem_bgr565_create_three_fb_bitmap(bitmap_t* online_fb_bitmap, bitmap_t* offline_fb_bitmap,
-                                      bitmap_t* next_fb_bitmap) {
+lcd_t* lcd_mem_bgr565_create_three_fb_bitmap(bitmap_t* online_fb_bitmap,
+                                             bitmap_t* offline_fb_bitmap,
+                                             bitmap_t* next_fb_bitmap) {
   return lcd_mem_create_three_fb_bitmap(online_fb_bitmap, offline_fb_bitmap, next_fb_bitmap);
 }

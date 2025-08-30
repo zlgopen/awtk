@@ -217,7 +217,7 @@ TEST(ObjectCustom, fscript1) {
   fscript_eval(obj_fscript, "self.exec_ex('cmd1', '')", &result);
   ASSERT_STREQ(value_str(&result), "ok");
   value_reset(&result);
-  
+
   fscript_eval(obj_fscript, "self.exec_ex('cmd_not_exist', '')", &result);
   ASSERT_EQ(value_int(&result), RET_NOT_FOUND);
   value_reset(&result);
@@ -235,7 +235,7 @@ TEST(ObjectCustom, fscript2) {
 
   fscript_eval(obj_fscript, "self.exec('cmd0', '')", &result);
   ASSERT_EQ(value_int(&result), RET_OK);
-  
+
   fscript_eval(obj_fscript, "self.exec('cmd_not_exist', '')", &result);
   ASSERT_EQ(value_int(&result), RET_NOT_FOUND);
 

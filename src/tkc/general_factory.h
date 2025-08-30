@@ -36,7 +36,9 @@ typedef struct _general_factory_const_item_t {
 #define FACTORY_TABLE_BEGIN(name) static const general_factory_const_item_t name[] = {
 #define FACTORY_TABLE_ENTRY(name, create) {name, (tk_create_t)create},
 #define FACTORY_TABLE_END() \
-  { NULL, NULL }            \
+  {                         \
+    NULL, NULL              \
+  }                         \
   }                         \
   ;
 

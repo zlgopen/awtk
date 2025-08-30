@@ -251,10 +251,10 @@ TEST(DList, remove_ex1) {
 
   ASSERT_EQ(dlist_remove_ex(s, pointer_compare, TO_POINTER(1), -1, FALSE), RET_OK);
   ASSERT_EQ(dlist_size(s), 2);
-  
+
   ASSERT_EQ(dlist_remove_ex(s, pointer_compare, TO_POINTER(2), -1, FALSE), RET_OK);
   ASSERT_EQ(dlist_size(s), 1);
-  
+
   ASSERT_EQ(dlist_remove_ex(s, pointer_compare, TO_POINTER(3), -1, FALSE), RET_OK);
   ASSERT_EQ(dlist_size(s), 0);
 
@@ -463,15 +463,15 @@ TEST(DList, get) {
   // 测试边界情况
   ASSERT_EQ(TO_INT(dlist_get(d, 0)), 0);      // 第一个元素
   ASSERT_EQ(TO_INT(dlist_get(d, 999)), 999);  // 最后一个元素
-  
+
   // 测试超出范围的索引，应该返回NULL
-  ASSERT_EQ(dlist_get(d, 1000), (void*)NULL);  // 超出范围
-  ASSERT_EQ(dlist_get(d, 1001), (void*)NULL);  // 远超范围
+  ASSERT_EQ(dlist_get(d, 1000), (void*)NULL);        // 超出范围
+  ASSERT_EQ(dlist_get(d, 1001), (void*)NULL);        // 远超范围
   ASSERT_EQ(dlist_get(d, UINT32_MAX), (void*)NULL);  // 最大值
 
   // 验证列表大小没有改变
   ASSERT_EQ(dlist_size(d), 1000);
-  
+
   dlist_deinit(d);
 }
 

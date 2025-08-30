@@ -148,7 +148,7 @@ static ret_t object_fscript_exec_ex_func(fscript_t* fscript, fscript_args_t* arg
 
   return tk_object_exec_ex(obj, cmd, param, v);
 }
-#endif/*WITHOUT_FSCRIPT*/
+#endif /*WITHOUT_FSCRIPT*/
 
 static ret_t object_get_prop_by_name(tk_object_t* obj, const char* name, value_t* v) {
   ret_t ret = RET_NOT_FOUND;
@@ -159,7 +159,7 @@ static ret_t object_get_prop_by_name(tk_object_t* obj, const char* name, value_t
   if (obj->vt->get_prop != NULL) {
     ret = obj->vt->get_prop(obj, name, v);
   }
-  
+
 #ifndef WITHOUT_FSCRIPT
   if (ret == RET_NOT_FOUND) {
     if (tk_str_eq(name, TK_OBJECT_EXEC)) {
@@ -170,7 +170,7 @@ static ret_t object_get_prop_by_name(tk_object_t* obj, const char* name, value_t
       return RET_OK;
     }
   }
-#endif/*WITHOUT_FSCRIPT*/
+#endif /*WITHOUT_FSCRIPT*/
   return ret;
 }
 

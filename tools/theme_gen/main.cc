@@ -194,11 +194,11 @@ int wmain(int argc, wchar_t* argv[]) {
   out_filename = out_file.str;
 
   str_init(&_output_type, 0);
-  if(argc > 3) {
+  if (argc > 3) {
     str_from_wstr(&_output_type, argv[3]);
     str_trim(&_output_type, " ");
     output_type = _output_type.str;
-    if(tk_str_eq(output_type, "bin")) {
+    if (tk_str_eq(output_type, "bin")) {
       output_bin = TRUE;
     }
   }

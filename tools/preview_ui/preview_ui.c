@@ -61,8 +61,10 @@ static locale_info_t* s_old_locale_info = NULL;
     log_debug(usage, argv[0]);                   \
   }
 #else
-#define SET_ENABLE_CONSOLE() \
-  { log_debug(usage, argv[0]); }
+#define SET_ENABLE_CONSOLE()   \
+  {                            \
+    log_debug(usage, argv[0]); \
+  }
 #endif /*WIN32 && !NDEBUG*/
 
 #define ON_CMD_LINE(argc, argv)                                                              \

@@ -71,7 +71,7 @@ tk_service_t* remote_ui_service_create(tk_iostream_t* io, void* args) {
       ui->logout = service_args->logout;
     }
 
-    if (service_args->fallback_on_event!= NULL) {
+    if (service_args->fallback_on_event != NULL) {
       ui->fallback_on_event = service_args->fallback_on_event;
     }
   }

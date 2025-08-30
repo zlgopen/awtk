@@ -108,7 +108,8 @@ static ret_t graphic_buffer_default_set_physical_height(graphic_buffer_t* buffer
   return RET_OK;
 }
 
-static ret_t graphic_buffer_default_set_physical_line_length(graphic_buffer_t* buffer, uint32_t line_length) {
+static ret_t graphic_buffer_default_set_physical_line_length(graphic_buffer_t* buffer,
+                                                             uint32_t line_length) {
   graphic_buffer_default_t* b = GRAPHIC_BUFFER_DEFAULT(buffer);
   return_value_if_fail(b != NULL, RET_BAD_PARAMS);
   b->line_length = line_length;
@@ -206,7 +207,8 @@ graphic_buffer_t* graphic_buffer_create_with_data_ex(const uint8_t* virtual_data
                                                      const uint8_t* physical_data, uint32_t w,
                                                      uint32_t h, uint32_t line_length,
                                                      bitmap_format_t format) {
-  graphic_buffer_default_t* buffer = (graphic_buffer_default_t*)graphic_buffer_create_with_data(virtual_data, w, h, format);
+  graphic_buffer_default_t* buffer =
+      (graphic_buffer_default_t*)graphic_buffer_create_with_data(virtual_data, w, h, format);
   if (buffer != NULL && line_length != 0) {
     buffer->line_length = line_length;
   }
@@ -218,8 +220,8 @@ ret_t graphic_buffer_create_for_bitmap(bitmap_t* bitmap) {
   uint32_t line_length = bitmap_get_line_length(bitmap);
   return_value_if_fail(bitmap != NULL && bitmap->buffer == NULL, RET_BAD_PARAMS);
 
-  buffer = (graphic_buffer_default_t*)graphic_buffer_default_create(bitmap->w, bitmap->h,
-                                                                    (bitmap_format_t)(bitmap->format), line_length);
+  buffer = (graphic_buffer_default_t*)graphic_buffer_default_create(
+      bitmap->w, bitmap->h, (bitmap_format_t)(bitmap->format), line_length);
   if (buffer != NULL) {
     bitmap->buffer = GRAPHIC_BUFFER(buffer);
     bitmap->should_free_data = TRUE;
@@ -227,7 +229,7 @@ ret_t graphic_buffer_create_for_bitmap(bitmap_t* bitmap) {
     return RET_OK;
   } else {
     bitmap->buffer = NULL;
-    bitmap->should_free_data = FALSE; 
+    bitmap->should_free_data = FALSE;
     return RET_OOM;
   }
 }

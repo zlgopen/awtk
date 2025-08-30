@@ -400,10 +400,10 @@ ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
         widget_dispatch(wm, system_event_init(&e, NULL, &event));
         break;
       }
-      case SDL_RENDER_DEVICE_RESET : {
+      case SDL_RENDER_DEVICE_RESET: {
 #ifdef WITH_NANOVG_SOFT
         native_window_t* native_window =
-          (native_window_t*)widget_get_prop_pointer(window_manager(), WIDGET_PROP_NATIVE_WINDOW);
+            (native_window_t*)widget_get_prop_pointer(window_manager(), WIDGET_PROP_NATIVE_WINDOW);
         canvas_t* canvas = native_window_get_canvas(native_window);
         if (canvas != NULL) {
           lcd_sdl2_texture_reset(canvas->lcd);
@@ -413,7 +413,7 @@ ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
         log_debug("SDL_RENDER_DEVICE_RESET\n");
         break;
       }
-      case SDL_RENDER_TARGETS_RESET : {
+      case SDL_RENDER_TARGETS_RESET: {
         widget_invalidate_force(wm, NULL);
         log_debug("SDL_RENDER_TARGETS_RESET\n");
         break;

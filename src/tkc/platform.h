@@ -72,7 +72,7 @@ void sleep_ms(uint32_t ms);
 void sleep_us(uint32_t us);
 #else
 void sleep_us(uint64_t us);
-#endif/*HAS_SLEEP_US64*/
+#endif /*HAS_SLEEP_US64*/
 
 /**
  * @method platform_prepare

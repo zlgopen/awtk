@@ -546,7 +546,7 @@ ret_t serial_wait_for_data(serial_handle_t handle, uint32_t timeout_ms) {
 #include <sys/signal.h>
 #else
 #include <signal.h>
-#endif/*QNX*/
+#endif /*QNX*/
 
 #if defined(__linux__)
 #include <linux/serial.h>
@@ -928,7 +928,7 @@ ret_t serial_config(serial_handle_t handle, uint32_t baudrate, bytesize_t bytesi
   else
     options.c_iflag &= (tcflag_t) ~(IXON | IXOFF);
 #endif
-    // rtscts
+  // rtscts
 #ifdef CRTSCTS
   if (rtscts)
     options.c_cflag |= (CRTSCTS);

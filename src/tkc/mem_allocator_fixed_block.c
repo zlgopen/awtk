@@ -97,7 +97,7 @@ typedef struct _mem_allocator_fixed_block_t {
 #define MEM_ALLOCATOR_FIXED_BLOCK_NUM_EXTEND(num) (((num) >> 1) + (num) + 1)
 
 #define MEM_ALLOCATOR_FIXED_BLOCK_MOD(num, div) \
-  (((div) & ((div)-1) /* 是否为2的幂次方 */) ? (num) % (div) : (num) & ((div)-1))
+  (((div) & ((div) - 1) /* 是否为2的幂次方 */) ? (num) % (div) : (num) & ((div) - 1))
 
 inline static bool_t mem_allocator_fixed_block_pool_is_full(
     mem_allocator_fixed_block_pool_t* pool) {

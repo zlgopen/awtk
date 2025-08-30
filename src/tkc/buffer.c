@@ -141,10 +141,10 @@ wbuffer_t* wbuffer_clone(const wbuffer_t* wbuffer) {
   wbuffer_t* wb = NULL;
   return_value_if_fail(wbuffer != NULL, NULL);
   wb = wbuffer_create_extendable();
-  return_value_if_fail(wb!= NULL, NULL);
+  return_value_if_fail(wb != NULL, NULL);
   memcpy(wb, wbuffer, sizeof(wbuffer_t));
   wb->data = (uint8_t*)TKMEM_ALLOC(wbuffer->capacity);
-  goto_error_if_fail(wb->data!= NULL);
+  goto_error_if_fail(wb->data != NULL);
 
   memcpy(wb->data, wbuffer->data, wbuffer->capacity);
   return wb;

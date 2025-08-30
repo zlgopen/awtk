@@ -414,7 +414,6 @@ static ret_t func_config(app_info_t* app, tokenizer_t* tokenizer) {
   return debugger_load_config(app->debugger, filename);
 }
 
-
 static ret_t func_set_break(app_info_t* app, tokenizer_t* tokenizer) {
   if (app->debugger->vt->set_break_point_ex != NULL) {
     const char* position = tokenizer_next(tokenizer);
@@ -465,7 +464,8 @@ static ret_t fdb_show_callstack(app_info_t* app, uint32_t start, uint32_t level,
   tk_object_t* obj = debugger_get_callstack(app->debugger);
   return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
   if (is_ex) {
-    obj = debugger_get_callstack_ex(app->debugger, start, level, debugger_get_current_thread_id(app->debugger));
+    obj = debugger_get_callstack_ex(app->debugger, start, level,
+                                    debugger_get_current_thread_id(app->debugger));
   } else {
     obj = debugger_get_callstack(app->debugger);
   }

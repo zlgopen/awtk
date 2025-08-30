@@ -216,7 +216,7 @@ static void network_interface_linux_destroy(network_interface_t* interface) {
   TKMEM_FREE(interface->interface_name);
   TKMEM_FREE(linux_network_interface->ipaddr);
   TKMEM_FREE(linux_network_interface->macaddr);
-  
+
   TKMEM_FREE(interface);
 }
 

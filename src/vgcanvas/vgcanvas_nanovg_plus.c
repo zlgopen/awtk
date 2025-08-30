@@ -39,7 +39,10 @@ static ret_t vgcanvas_nanovg_plus_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h,
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_plus_begin_frame_set_lcd_orientation_matrix(nvgp_context_t* vg, system_info_t* info, uint32_t w, int32_t h, float_t ratio) {
+static ret_t vgcanvas_nanovg_plus_begin_frame_set_lcd_orientation_matrix(nvgp_context_t* vg,
+                                                                         system_info_t* info,
+                                                                         uint32_t w, int32_t h,
+                                                                         float_t ratio) {
   float_t angle = 0.0f;
   float_t anchor_x = 0.0f;
   float_t anchor_y = 0.0f;
@@ -96,7 +99,8 @@ static ret_t vgcanvas_nanovg_plus_begin_frame(vgcanvas_t* vgcanvas,
 
   nvgp_save(canvas->vg);
 
-  vgcanvas_nanovg_plus_begin_frame_set_lcd_orientation_matrix(canvas->vg, info, info->lcd_w, info->lcd_h, info->device_pixel_ratio);
+  vgcanvas_nanovg_plus_begin_frame_set_lcd_orientation_matrix(
+      canvas->vg, info, info->lcd_w, info->lcd_h, info->device_pixel_ratio);
 
   return RET_OK;
 }
@@ -119,8 +123,8 @@ static ret_t vgcanvas_nanovg_plus_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, u
   vgcanvas_nanovg_plus_t* nanovg = (vgcanvas_nanovg_plus_t*)vgcanvas;
   nvgp_context_t* vg = nanovg->vg;
   int32_t samples = nanovg->supported_opengl_antialias_hw ? 4 : 0;
-  handle =
-      nvgp_gl_create_framebuffer(vg, (int)(w * vgcanvas->ratio), (int)(h * vgcanvas->ratio), 0, samples);
+  handle = nvgp_gl_create_framebuffer(vg, (int)(w * vgcanvas->ratio), (int)(h * vgcanvas->ratio), 0,
+                                      samples);
   return_value_if_fail(handle != NULL, RET_FAIL);
 
   fbo->w = w;
@@ -175,7 +179,8 @@ static ret_t vgcanvas_nanovg_plus_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_obj
     nvgp_save(vg);
     nvgp_reset_curr_state(vg);
 #ifdef WITH_FAST_LCD_PORTRAIT
-    vgcanvas_nanovg_plus_begin_frame_set_lcd_orientation_matrix(vg, system_info(), fbo->w, fbo->h, fbo->ratio);
+    vgcanvas_nanovg_plus_begin_frame_set_lcd_orientation_matrix(vg, system_info(), fbo->w, fbo->h,
+                                                                fbo->ratio);
 #endif
   }
 

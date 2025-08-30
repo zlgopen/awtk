@@ -404,9 +404,9 @@ static ret_t ubjson_on_optimized_array_dump(dump_ctx_t* ctx, const char* key, va
     int64_t* p = v->value.binary_data.data;
     uint32_t count = v->value.binary_data.size / sizeof(int64_t);
     for (uint32_t i = 0; i < count - 1; i++) {
-      log_debug("0x%016"PRIx64", ", p[i]);
+      log_debug("0x%016" PRIx64 ", ", p[i]);
     }
-    log_debug("0x%016"PRIx64, p[count - 1]);
+    log_debug("0x%016" PRIx64, p[count - 1]);
   } else if (type == UBJSON_MARKER_FLOAT32) {
     float* p = v->value.binary_data.data;
     uint32_t count = v->value.binary_data.size / sizeof(float);

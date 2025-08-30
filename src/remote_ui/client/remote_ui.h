@@ -37,7 +37,8 @@ struct _remote_ui_t;
 typedef struct _remote_ui_t remote_ui_t;
 
 typedef ret_t (*remote_ui_on_log_message_t)(void* ctx, tk_log_level_t level, const char* msg);
-typedef ret_t (*remote_ui_on_event_func_t)(remote_ui_t* ui, rbuffer_t* rb, const char* target, uint32_t type);
+typedef ret_t (*remote_ui_on_event_func_t)(remote_ui_t* ui, rbuffer_t* rb, const char* target,
+                                           uint32_t type);
 typedef ret_t (*remote_ui_on_notify_t)(remote_ui_t* ui, void* ctx);
 
 BEGIN_C_DECLS

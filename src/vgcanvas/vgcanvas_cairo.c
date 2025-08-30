@@ -410,15 +410,15 @@ static ret_t vgcanvas_cairo_clip_rect(vgcanvas_t* vgcanvas, float_t x, float_t y
 static ret_t vgcanvas_cairo_set_fill_mode(vgcanvas_t* vgcanvas, vgcanvas_fill_mode_t fill_mode) {
   cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
   switch (fill_mode) {
-  case VGCANVAS_FILL_MODE_NON_ZERO:
-    cairo_set_fill_rule(vg, CAIRO_FILL_RULE_WINDING);
-    break;
-  case VGCANVAS_FILL_MODE_EVEN_ODD:
-    cairo_set_fill_rule(vg, CAIRO_FILL_RULE_EVEN_ODD);
-    break;
-  default:
-    cairo_set_fill_rule(vg, CAIRO_FILL_RULE_WINDING);
-    break;
+    case VGCANVAS_FILL_MODE_NON_ZERO:
+      cairo_set_fill_rule(vg, CAIRO_FILL_RULE_WINDING);
+      break;
+    case VGCANVAS_FILL_MODE_EVEN_ODD:
+      cairo_set_fill_rule(vg, CAIRO_FILL_RULE_EVEN_ODD);
+      break;
+    default:
+      cairo_set_fill_rule(vg, CAIRO_FILL_RULE_WINDING);
+      break;
   }
   return RET_OK;
 }

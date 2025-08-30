@@ -231,7 +231,8 @@ fscript_t* fscript_create_ex(tk_object_t* obj, const char* script, bool_t keep_f
  *
  * @return {fscript_t*} 返回fscript对象。
  */
-fscript_t* fscript_create_ex2(tk_object_t* obj, const char* script, bool_t keep_func_name, tk_object_life_t obj_life);
+fscript_t* fscript_create_ex2(tk_object_t* obj, const char* script, bool_t keep_func_name,
+                              tk_object_life_t obj_life);
 
 /**
  * @method fscript_init

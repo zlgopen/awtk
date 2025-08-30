@@ -69,4 +69,3 @@ TEST(GroupBox, radio_button) {
   widget_destroy(w);
   idle_dispatch();
 }
-

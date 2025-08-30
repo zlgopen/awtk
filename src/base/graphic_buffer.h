@@ -36,7 +36,8 @@ typedef uint32_t (*graphic_buffer_get_physical_height_t)(graphic_buffer_t* buffe
 typedef uint32_t (*graphic_buffer_get_physical_line_length_t)(graphic_buffer_t* buffer);
 typedef ret_t (*graphic_buffer_set_physical_width_t)(graphic_buffer_t* buffer, uint32_t width);
 typedef ret_t (*graphic_buffer_set_physical_height_t)(graphic_buffer_t* buffer, uint32_t height);
-typedef ret_t (*graphic_buffer_set_physical_line_length_t)(graphic_buffer_t* buffer, uint32_t line_length);
+typedef ret_t (*graphic_buffer_set_physical_line_length_t)(graphic_buffer_t* buffer,
+                                                           uint32_t line_length);
 typedef ret_t (*graphic_buffer_unlock_t)(graphic_buffer_t* buffer);
 typedef ret_t (*graphic_buffer_attach_t)(graphic_buffer_t* buffer, void* data, uint32_t w,
                                          uint32_t h);
