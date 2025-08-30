@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   self_layouter_flex.h
  * Author: AWTK Develop Team
  * Brief:  self layouter flex

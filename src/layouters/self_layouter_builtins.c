@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   self_layouter_builts.h
  * Author: AWTK Develop Team
  * Brief:  builts self_layouter
