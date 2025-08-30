@@ -110,7 +110,6 @@ nvgp_gl_util_framebuffer* nvgp_gl_create_framebuffer(nvgp_context_t* ctx, int32_
   NVGP_MEMSET(fb, 0, sizeof(nvgp_gl_util_framebuffer));
   fb->width = w;
   fb->height = h;
-  fb->samples = samples;
   fb->image = nvgp_create_image_rgba(ctx, w, h, imageFlags | NVGP_GL_IMAGE_FLIPY | NVGP_GL_IMAGE_PREMULTIPLIED, NULL);
 
   fb->texture = nvgp_gl_get_gpu_texture_id((nvgp_gl_context_t*)nvgp_get_vt_ctx(ctx), fb->image);
@@ -121,6 +120,8 @@ nvgp_gl_util_framebuffer* nvgp_gl_create_framebuffer(nvgp_context_t* ctx, int32_
   glGenFramebuffers(1, &fb->fbo);
   glBindFramebuffer(GL_FRAMEBUFFER, fb->fbo);
 
+#if defined(NVGP_GL3) || defined(NVGP_GLES3)
+  fb->samples = samples;
   if (samples > 0) { 
     glGenRenderbuffers(1, &fb->mass_rbo);
     glBindRenderbuffer(GL_RENDERBUFFER, fb->mass_rbo);
@@ -137,6 +138,7 @@ nvgp_gl_util_framebuffer* nvgp_gl_create_framebuffer(nvgp_context_t* ctx, int32_
     glGenFramebuffers(1, &fb->temp_fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, fb->temp_fbo);
   }
+#endif
 
   // render buffer object
   glGenRenderbuffers(1, &fb->rbo);
@@ -196,7 +198,14 @@ void nvgp_gl_bind_framebuffer(nvgp_gl_util_framebuffer* fb) {
 #endif
 }
 
-void nvgp_gl_read_current_framebuffer_data(unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int width, unsigned int height, void* pixels) {
+void nvgp_gl_read_current_framebuffer_data(uint32_t x, uint32_t y, uint32_t w, uint32_t h, uint32_t width, uint32_t height, nvgp_gl_util_framebuffer* fb, void* pixels) {
+  if (fb != NULL) {
+    if (fb->temp_fbo > 0 && fb->samples > 0) {
+      glBindFramebuffer(GL_FRAMEBUFFER, fb->temp_fbo);
+    } else if (fb->samples == 0) {
+      glBindFramebuffer(GL_FRAMEBUFFER, fb->fbo);
+    }
+  }
   if(x + w <= width && y + h <= height && pixels != NULL) {
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glReadPixels(x, y, w, h, GL_RGBA, GL_UNSIGNED_BYTE, pixels);

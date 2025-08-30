@@ -95,11 +95,11 @@ static NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* ctx, int w, int h, i
 	fb->ctx = ctx;
 	fb->width = w;
 	fb->height = h;
-	fb->samples = samples;
 	// frame buffer object
 	glGenFramebuffers(1, &fb->fbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, fb->fbo);
-
+#if defined(NANOVG_GL3) || defined(NANOVG_GLES3)
+	fb->samples = samples;
 	if (samples > 0) { 
 		glGenRenderbuffers(1, &fb->mass_rbo);
 		glBindRenderbuffer(GL_RENDERBUFFER, fb->mass_rbo);
@@ -116,7 +116,7 @@ static NVGLUframebuffer* nvgluCreateFramebuffer(NVGcontext* ctx, int w, int h, i
 		glGenFramebuffers(1, &fb->temp_fbo);
 		glBindFramebuffer(GL_FRAMEBUFFER, fb->temp_fbo);
 	}
-
+#endif
 	// render buffer object
 	glGenRenderbuffers(1, &fb->rbo);
 	glBindRenderbuffer(GL_RENDERBUFFER, fb->rbo);
@@ -172,8 +172,15 @@ static void nvgluBindFramebuffer(NVGLUframebuffer* fb)
 #endif
 }
 
-static void nvgluReadCurrentFramebufferData(unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int width, unsigned int height, void* pixels)
+static void nvgluReadCurrentFramebufferData(unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int width, unsigned int height, NVGLUframebuffer* fb, void* pixels)
 {
+	if (fb != NULL) {
+		if (fb->temp_fbo > 0 && fb->samples > 0) {
+			glBindFramebuffer(GL_FRAMEBUFFER, fb->temp_fbo);
+		} else if (fb->samples == 0) {
+			glBindFramebuffer(GL_FRAMEBUFFER, fb->fbo);
+		}
+	}
 	if(x + w <= width && y + h <= height && pixels != NULL) {
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		glReadPixels(x, y, w, h, GL_RGBA, GL_UNSIGNED_BYTE, pixels);

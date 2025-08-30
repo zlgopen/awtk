@@ -220,8 +220,6 @@ static ret_t vgcanvas_nanovg_plus_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffe
   int online_fbo = nvgp_gl_get_curr_framebuffer();
   nvgp_gl_util_framebuffer* handle = (nvgp_gl_util_framebuffer*)fbo->handle;
 
-  handle->fbo = fbo->offline_fbo;
-  nvgp_gl_bind_framebuffer(handle);
   data = TKMEM_ZALLOCN(uint8_t, img->h * img->line_length);
   img_data = (uint8_t*)bitmap_lock_buffer_for_write(img);
   height = fbo->h * fbo->ratio;
@@ -232,7 +230,7 @@ static ret_t vgcanvas_nanovg_plus_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffe
 
   /* 因为 opengles 的原点坐标为左下角，所以需要把 AWTK 的坐标（AWTK 是右上角为原点的坐标系）转换为左下角为原点的坐标系*/
   nvgp_gl_read_current_framebuffer_data(x, height - img->h - y, img->w, img->h, fbo->w * fbo->ratio,
-                                        height, data);
+                                        height, handle, data);
 
   p = data + ((img->h - 1) * img->line_length);
 
