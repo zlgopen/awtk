@@ -897,6 +897,7 @@ static ret_t slide_indicator_on_event(widget_t* widget, event_t* e) {
 }
 
 ret_t slide_indicator_on_idle_chech_hide(const idle_info_t* idle) {
+  uint16_t diff = 0;
   uint64_t curr_time = timer_manager()->get_time();
   widget_t* widget = WIDGET(idle->ctx);
   slide_indicator_t* slide_indicator = SLIDE_INDICATOR(widget);
@@ -906,7 +907,8 @@ ret_t slide_indicator_on_idle_chech_hide(const idle_info_t* idle) {
     slide_indicator->check_hide_idle = TK_INVALID_ID;
     return RET_OK;
   }
-  if (slide_indicator->last_move_point_time + slide_indicator->auto_hide < curr_time) {
+  diff = curr_time - slide_indicator->last_move_point_time;
+  if (slide_indicator->auto_hide < diff) {
     if (slide_indicator->wa_opacity == NULL && widget->visible) {
       slide_indicator_set_visible(widget, FALSE);
     }

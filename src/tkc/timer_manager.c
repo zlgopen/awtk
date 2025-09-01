@@ -168,7 +168,7 @@ const timer_info_t* timer_manager_find(timer_manager_t* timer_manager, uint32_t 
 }
 
 static ret_t timer_manager_dispatch_one(timer_manager_t* timer_manager, uint64_t now,
-                                        int32_t delta_time) {
+                                        uint32_t delta_time) {
   slist_node_t* iter = timer_manager->timers.first;
 
   while (iter != NULL && !timer_info_is_available(TIMER_INFO(iter->data), now)) {
@@ -176,11 +176,13 @@ static ret_t timer_manager_dispatch_one(timer_manager_t* timer_manager, uint64_t
   }
 
   if (iter != NULL) {
+    uint32_t diff = 0;
     timer_info_t* timer = (timer_info_t*)tk_object_ref((tk_object_t*)(iter->data));
     return_value_if_fail(timer != NULL, RET_BAD_PARAMS);
 
     timer->now = now;
-    if (!timer->suspend && (timer->start + timer->duration) <= now) {
+    diff = (uint32_t)(now - timer->start);
+    if (!timer->suspend && timer->duration <= diff) {
       if (timer_info_on_timer(timer, now) != RET_REPEAT) {
         timer_manager_remove(timer_manager, timer->id);
       } else {
@@ -198,7 +200,7 @@ static ret_t timer_manager_dispatch_one(timer_manager_t* timer_manager, uint64_t
 
 ret_t timer_manager_dispatch(timer_manager_t* timer_manager) {
   uint64_t now = 0;
-  int32_t delta_time = 0;
+  uint32_t delta_time = 0;
   return_value_if_fail(timer_manager != NULL, RET_BAD_PARAMS);
 
   now = timer_manager->get_time();
@@ -233,7 +235,8 @@ uint64_t timer_manager_next_time(timer_manager_t* timer_manager) {
   iter = timer_manager->timers.first;
   while (iter != NULL) {
     timer_info_t* timer = TIMER_INFO(iter->data);
-    if ((timer->start + timer->duration) < t) {
+    uint32_t diff = t - timer->start;
+    if (timer->duration < diff) {
       t = timer->start + timer->duration;
     }
     iter = iter->next;

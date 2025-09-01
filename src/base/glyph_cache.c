@@ -50,7 +50,7 @@ static glyph_cache_item_t* glyph_cache_get_empty(glyph_cache_t* cache) {
   uint32_t nr = 0;
   uint32_t oldest = 0;
   glyph_cache_item_t* item = NULL;
-  uint32_t oldest_time = 0xffffffff;
+  uint64_t oldest_time = 0xffffffffffffffff;
 
   return_value_if_fail(cache != NULL && cache->items != NULL, NULL);
 

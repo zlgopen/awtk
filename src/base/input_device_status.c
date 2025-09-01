@@ -398,7 +398,7 @@ static ret_t input_device_status_dispatch_input_event(input_device_status_t* ids
     }
     case EVT_POINTER_UP: {
       if (dispatch || ids->pressed) {
-        int32_t delta_time = e->time - ids->last_pointer_up_time;
+        uint32_t delta_time = e->time - ids->last_pointer_up_time;
         int32_t delta_x, delta_y;
         pointer_event_t* evt = (pointer_event_t*)e;
         pointer_event_rotate(evt, system_info());

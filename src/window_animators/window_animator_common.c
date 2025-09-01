@@ -156,13 +156,14 @@ static ret_t window_animator_close_destroy(window_animator_t* wa) {
 }
 
 ret_t window_animator_update(window_animator_t* wa, uint64_t time_ms) {
+  uint32_t diff = 0;
   return_value_if_fail(wa != NULL, RET_FAIL);
 
   if (wa->start_time == 0) {
     wa->start_time = time_ms;
   }
-
-  wa->time_percent = (time_ms - wa->start_time) / (float_t)(wa->duration);
+  diff = time_ms - wa->start_time;
+  wa->time_percent = (float_t)diff / (float_t)(wa->duration);
   if (wa->time_percent >= 1) {
     wa->time_percent = 1;
   }

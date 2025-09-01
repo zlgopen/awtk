@@ -77,7 +77,7 @@ static inline ret_t fps_inc(fps_t* fps) {
  * @return {uint32_t} 返回FPS(帧率)。
  */
 static inline uint32_t fps_get(fps_t* fps) {
-  uint64_t elapse = 0;
+  uint32_t elapse = 0;
   uint64_t now = time_now_ms();
   return_value_if_fail(fps != NULL, 0);
 
