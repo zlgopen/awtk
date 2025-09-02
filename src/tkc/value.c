@@ -727,7 +727,7 @@ int value_compare(const value_t* v, const value_t* other) {
       }
     }
     case VALUE_TYPE_DOUBLE: {
-      if (tk_fequal(v->value.f64, other->value.f64)) {
+      if (tk_lfequal(v->value.f64, other->value.f64)) {
         return 0;
       } else if (v->value.f64 > other->value.f64) {
         return 1;
