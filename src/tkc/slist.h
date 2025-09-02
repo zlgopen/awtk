@@ -60,14 +60,14 @@ typedef struct _slist_t {
   /**
    * @property {slist_node_t*} first
    * @annotation ["readable"]
-   * 首节点。
+   * 首结点。
    */
   slist_node_t* first;
 
   /**
    * @property {slist_node_t*} last
    * @annotation ["readable"]
-   * 尾节点。
+   * 尾结点。
    */
   slist_node_t* last;
 
@@ -94,13 +94,13 @@ typedef struct _slist_t {
 
   /**
    * @property {mem_allocator_t*} node_allocator
-   * 节点内存分配器。
+   * 结点内存分配器。
    */
   mem_allocator_t* node_allocator;
 
   /**
    * @property {bool_t} node_allocator_is_shared
-   * 节点内存分配器是否共享。
+   * 结点内存分配器是否共享。
    */
   bool_t node_allocator_is_shared;
 } slist_t;
@@ -144,7 +144,7 @@ void* slist_find(slist_t* slist, void* ctx);
  * @param {tk_compare_t} compare 元素比较函数。
  * @param {void*} ctx 比较函数的上下文。
  *
- * @return {void*} 返回节点。
+ * @return {void*} 返回结点。
  */
 void* slist_find_ex(slist_t* slist, tk_compare_t compare, void* ctx);
 
@@ -313,7 +313,7 @@ ret_t slist_reverse(slist_t* slist);
 
 /**
  * @method slist_set_node_allocator
- * 设置节点内存分配器。
+ * 设置结点内存分配器。
  * @param {slist_t*} slist 单向链表对象。
  * @param {mem_allocator_t*} allocator 内存分配器对象。
  *
@@ -323,7 +323,7 @@ ret_t slist_set_node_allocator(slist_t* slist, mem_allocator_t* allocator);
 
 /**
  * @method slist_set_shared_node_allocator
- * 设置共享节点内存分配器。
+ * 设置共享结点内存分配器。
  * @param {slist_t*} slist 单向链表对象。
  * @param {mem_allocator_t*} allocator 内存分配器对象。
  *

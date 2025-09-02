@@ -61,14 +61,14 @@ typedef struct _dlist_t {
   /**
    * @property {dlist_node_t*} first
    * @annotation ["readable"]
-   * 首节点。
+   * 首结点。
    */
   dlist_node_t* first;
 
   /**
    * @property {dlist_node_t*} last
    * @annotation ["readable"]
-   * 尾节点。
+   * 尾结点。
    */
   dlist_node_t* last;
 
@@ -95,13 +95,13 @@ typedef struct _dlist_t {
 
   /**
    * @property {mem_allocator_t*} node_allocator
-   * 节点内存分配器。
+   * 结点内存分配器。
    */
   mem_allocator_t* node_allocator;
 
   /**
    * @property {bool_t} node_allocator_is_shared
-   * 节点内存分配器是否共享。
+   * 结点内存分配器是否共享。
    */
   bool_t node_allocator_is_shared;
 } dlist_t;
@@ -156,7 +156,7 @@ void* dlist_find_last(dlist_t* dlist, void* ctx);
  * @param {void*} ctx 比较函数的上下文。
  * @param {bool_t} reverse 逆序查找。
  *
- * @return {void*} 返回节点。
+ * @return {void*} 返回结点。
  */
 void* dlist_find_ex(dlist_t* dlist, tk_compare_t compare, void* ctx, bool_t reverse);
 
@@ -345,7 +345,7 @@ ret_t dlist_reverse(dlist_t* dlist);
 
 /**
  * @method dlist_set_node_allocator
- * 设置节点内存分配器。
+ * 设置结点内存分配器。
  * @param {dlist_t*} dlist 双向链表对象。
  * @param {mem_allocator_t*} allocator 内存分配器对象。
  *
@@ -355,7 +355,7 @@ ret_t dlist_set_node_allocator(dlist_t* dlist, mem_allocator_t* allocator);
 
 /**
  * @method dlist_set_shared_node_allocator
- * 设置共享节点内存分配器。
+ * 设置共享结点内存分配器。
  * @param {dlist_t*} dlist 双向链表对象。
  * @param {mem_allocator_t*} allocator 内存分配器对象。
  *

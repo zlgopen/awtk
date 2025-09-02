@@ -25,11 +25,11 @@ static ret_t build_tree_for_test(tree_t* tree) {
    *     └── 32
    */
 
-  // 创建根节点
+  // 创建根结点
   tree_node_t* root = tree_create_node(tree, tk_pointer_from_int(0));
   tree_set_root(tree, root);
 
-  // 第一层子节点（使用节点操作接口）
+  // 第一层子结点（使用结点操作接口）
   tree_node_t* node1 = tree_create_node(tree, tk_pointer_from_int(1));
   tree_prepend_child_node(tree, NULL, node1);
 
@@ -39,7 +39,7 @@ static ret_t build_tree_for_test(tree_t* tree) {
   tree_node_t* node2 = tree_create_node(tree, tk_pointer_from_int(2));
   tree_insert_child_node(tree, NULL, 1, node2);
 
-  // 第二层子节点
+  // 第二层子结点
   tree_node_t* node11 = tree_create_node(tree, tk_pointer_from_int(11));
   tree_prepend_child_node(tree, node1, node11);
 
@@ -61,7 +61,7 @@ static ret_t build_tree_for_test(tree_t* tree) {
   tree_node_t* node32 = tree_create_node(tree, tk_pointer_from_int(32));
   tree_append_child_node(tree, node3, node32);
 
-  // 第三层子节点
+  // 第三层子结点
   tree_append_child_node(tree, node12, tree_create_node(tree, tk_pointer_from_int(121)));
   tree_append_child_node(tree, node12, tree_create_node(tree, tk_pointer_from_int(122)));
   tree_append_child_node(tree, node12, tree_create_node(tree, tk_pointer_from_int(123)));
@@ -69,7 +69,7 @@ static ret_t build_tree_for_test(tree_t* tree) {
   tree_node_t* node221 = tree_create_node(tree, tk_pointer_from_int(221));
   tree_append_child_node(tree, node22, node221);
 
-  // 第四层子节点
+  // 第四层子结点
   tree_append_child_node(tree, node221, tree_create_node(tree, tk_pointer_from_int(2211)));
   tree_append_child_node(tree, node221, tree_create_node(tree, tk_pointer_from_int(2212)));
 

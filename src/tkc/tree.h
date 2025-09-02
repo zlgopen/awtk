@@ -45,7 +45,7 @@ struct _tree_node_t {
 
 /**
  * @method tree_node_degree
- * 获取树结点的度（子节点数量）
+ * 获取树结点的度（子结点数量）
  * @param {tree_node_t*} node 树结点对象。
  *
  * @return {int32_t} 返回树结点的度。
@@ -64,31 +64,31 @@ bool_t tree_node_is_ancestor(const tree_node_t* node, const tree_node_t* ancesto
 
 /**
  * @method tree_node_get_lowest_common_ancestor
- * 获取两个树节点的最近公共祖先(LCA)结点。
+ * 获取两个树结点的最近公共祖先(LCA)结点。
  * @param {tree_node_t*} node1 树结点对象。
  * @param {tree_node_t*} node2 树结点对象。
  *
- * @return {tree_node_t*} 返回最近公共祖先节点。
+ * @return {tree_node_t*} 返回最近公共祖先结点。
  */
 tree_node_t* tree_node_get_lowest_common_ancestor(tree_node_t* node1, tree_node_t* node2);
 
 /**
  * @method tree_node_get_sibling
- * 获取指定位置的兄弟节点。
+ * 获取指定位置的兄弟结点。
  * @param {tree_node_t*} node 树结点对象。
  * @param {uint32_t} index 索引。
  *
- * @return {tree_node_t*} 返回兄弟节点。
+ * @return {tree_node_t*} 返回兄弟结点。
  */
 tree_node_t* tree_node_get_sibling(tree_node_t* node, uint32_t index);
 
 /**
  * @method tree_node_get_child
- * 获取指定位置的子节点。
+ * 获取指定位置的子结点。
  * @param {tree_node_t*} node 树结点对象。
  * @param {uint32_t} index 索引。
  *
- * @return {tree_node_t*} 返回子节点。
+ * @return {tree_node_t*} 返回子结点。
  */
 tree_node_t* tree_node_get_child(tree_node_t* node, uint32_t index);
 
@@ -161,7 +161,7 @@ typedef struct _tree_t {
   /**
    * @property {tree_node_t*} root
    * @annotation ["readable"]
-   * 根节点。
+   * 根结点。
    */
   tree_node_t* root;
 
@@ -181,13 +181,13 @@ typedef struct _tree_t {
 
   /**
    * @property {mem_allocator_t*} node_allocator
-   * 节点内存分配器。
+   * 结点内存分配器。
    */
   mem_allocator_t* node_allocator;
 
   /**
    * @property {bool_t} node_allocator_is_shared
-   * 节点内存分配器是否共享。
+   * 结点内存分配器是否共享。
    */
   bool_t node_allocator_is_shared;
 
@@ -224,7 +224,7 @@ ret_t tree_init(tree_t* tree, tk_destroy_t destroy, tk_compare_t compare);
  * @method tree_find
  * 查找第一个满足条件的元素。
  * @param {tree_t*} tree 树结构对象。
- * @param {tree_node_t*} node 节点（为NULL时，遍历整个树）。
+ * @param {tree_node_t*} node 结点（为NULL时，遍历整个树）。
  * @param {tree_foreach_type_t} foreach_type 遍历类型。
  * @param {void*} ctx 比较函数的上下文。
  *
@@ -237,12 +237,12 @@ tree_node_t* tree_find(tree_t* tree, tree_node_t* node, tree_foreach_type_t fore
  * @method tree_find_ex
  * 查找第一个满足条件的元素。
  * @param {tree_t*} tree 树结构对象。
- * @param {tree_node_t*} node 节点（为NULL时，遍历整个树）。
+ * @param {tree_node_t*} node 结点（为NULL时，遍历整个树）。
  * @param {tree_foreach_type_t} foreach_type 遍历类型。
  * @param {tk_compare_t} compare 元素比较函数。
  * @param {void*} ctx 比较函数的上下文。
  *
- * @return {tree_node_t*} 返回节点。
+ * @return {tree_node_t*} 返回结点。
  */
 tree_node_t* tree_find_ex(tree_t* tree, tree_node_t* node, tree_foreach_type_t foreach_type,
                           tk_compare_t compare, void* ctx);
@@ -251,7 +251,7 @@ tree_node_t* tree_find_ex(tree_t* tree, tree_node_t* node, tree_foreach_type_t f
  * @method tree_remove
  * 删除第一个满足条件的元素。
  * @param {tree_t*} tree 树结构对象。
- * @param {tree_node_t*} node 节点（为NULL时，遍历整个树）。
+ * @param {tree_node_t*} node 结点（为NULL时，遍历整个树）。
  * @param {tree_foreach_type_t} foreach_type 遍历类型。
  * @param {void*} ctx 比较函数的上下文。
  *
@@ -267,7 +267,7 @@ ret_t tree_remove(tree_t* tree, tree_node_t* node, tree_foreach_type_t foreach_t
  * 如果树结构中符合条件的元素大于 remove_size，在树结构中移除 remove_size 个元素后返回 RET_OK。
  * remove_size 为负数则会移除所有符合条件的元素。
  * @param {tree_t*} tree 树结构对象。
- * @param {tree_node_t*} node 节点（为NULL时，遍历整个树）。
+ * @param {tree_node_t*} node 结点（为NULL时，遍历整个树）。
  * @param {tree_foreach_type_t} foreach_type 遍历类型。
  * @param {tk_compare_t} compare 元素比较函数。
  * @param {void*} ctx 比较函数的上下文。
@@ -282,7 +282,7 @@ ret_t tree_remove_ex(tree_t* tree, tree_node_t* node, tree_foreach_type_t foreac
  * @method tree_create_node
  * 创建树结点对象。
  * @param {tree_t*} tree 树结构对象。
- * @param {void*} data 节点数据。
+ * @param {void*} data 结点数据。
  *
  * @return {tree_node_t*} 树结点对象。
  */
@@ -290,9 +290,9 @@ tree_node_t* tree_create_node(tree_t* tree, void* data);
 
 /**
  * @method tree_remove_node
- * 删除指定节点。
+ * 删除指定结点。
  * @param {tree_t*} tree 树结构对象。
- * @param {tree_node_t*} node 节点。
+ * @param {tree_node_t*} node 结点。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -300,9 +300,9 @@ ret_t tree_remove_node(tree_t* tree, tree_node_t* node);
 
 /**
  * @method tree_unlink_node
- * 解绑节点（保持子树结构，仅解除与父节点和兄弟节点的链接）
+ * 解绑结点（保持子树结构，仅解除与父结点和兄弟结点的链接）
  * @param {tree_t*} tree 树结构对象
- * @param {tree_node_t*} node 待解绑节点
+ * @param {tree_node_t*} node 待解绑结点
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -319,9 +319,9 @@ ret_t tree_clear(tree_t* tree);
 
 /**
  * @method tree_set_root
- * 设置根节点。
+ * 设置根结点。
  * @param {tree_t*} tree 树结构对象
- * @param {tree_node_t*} root 根节点
+ * @param {tree_node_t*} root 根结点
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -329,11 +329,11 @@ ret_t tree_set_root(tree_t* tree, tree_node_t* root);
 
 /**
  * @method tree_insert_child_node
- * 插入子节点到指定位置
+ * 插入子结点到指定位置
  * @param {tree_t*} tree 树结构对象
- * @param {tree_node_t*} node 节点 （为NULL时，插入到根节点）
+ * @param {tree_node_t*} node 结点 （为NULL时，插入到根结点）
  * @param {uint32_t} index 插入位置
- * @param {tree_node_t*} child 子节点。
+ * @param {tree_node_t*} child 子结点。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -341,11 +341,11 @@ ret_t tree_insert_child_node(tree_t* tree, tree_node_t* node, uint32_t index, tr
 
 /**
  * @method tree_insert_sibling_node
- * 插入兄弟节点到指定位置
+ * 插入兄弟结点到指定位置
  * @param {tree_t*} tree 树结构对象
- * @param {tree_node_t*} node 节点
+ * @param {tree_node_t*} node 结点
  * @param {uint32_t} index 插入位置
- * @param {tree_node_t*} sibling 兄弟节点。
+ * @param {tree_node_t*} sibling 兄弟结点。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -354,10 +354,10 @@ ret_t tree_insert_sibling_node(tree_t* tree, tree_node_t* node, uint32_t index,
 
 /**
  * @method tree_append_child_node
- * 追加子节点
+ * 追加子结点
  * @param {tree_t*} tree 树结构对象
- * @param {tree_node_t*} node 节点 （为NULL时，插入到根节点）
- * @param {tree_node_t*} child 子节点。
+ * @param {tree_node_t*} node 结点 （为NULL时，插入到根结点）
+ * @param {tree_node_t*} child 子结点。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -365,10 +365,10 @@ ret_t tree_append_child_node(tree_t* tree, tree_node_t* node, tree_node_t* child
 
 /**
  * @method tree_append_sibling_node
- * 追加兄弟节点
+ * 追加兄弟结点
  * @param {tree_t*} tree 树结构对象
- * @param {tree_node_t*} node 节点
- * @param {tree_node_t*} sibling 兄弟节点。
+ * @param {tree_node_t*} node 结点
+ * @param {tree_node_t*} sibling 兄弟结点。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -376,10 +376,10 @@ ret_t tree_append_sibling_node(tree_t* tree, tree_node_t* node, tree_node_t* sib
 
 /**
  * @method tree_prepend_child_node
- * 头部追加子节点
+ * 头部追加子结点
  * @param {tree_t*} tree 树结构对象
- * @param {tree_node_t*} node 节点 （为NULL时，插入到根节点）
- * @param {tree_node_t*} child 子节点。
+ * @param {tree_node_t*} node 结点 （为NULL时，插入到根结点）
+ * @param {tree_node_t*} child 子结点。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -387,10 +387,10 @@ ret_t tree_prepend_child_node(tree_t* tree, tree_node_t* node, tree_node_t* chil
 
 /**
  * @method tree_prepend_sibling_node
- * 头部追加兄弟节点
+ * 头部追加兄弟结点
  * @param {tree_t*} tree 树结构对象
- * @param {tree_node_t*} node 节点
- * @param {tree_node_t*} sibling 兄弟节点。
+ * @param {tree_node_t*} node 结点
+ * @param {tree_node_t*} sibling 兄弟结点。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -400,7 +400,7 @@ ret_t tree_prepend_sibling_node(tree_t* tree, tree_node_t* node, tree_node_t* si
  * @method tree_foreach
  * 遍历元素。
  * @param {tree_t*} tree 树结构对象。
- * @param {tree_node_t*} node 节点（为NULL时，遍历整个树）。
+ * @param {tree_node_t*} node 结点（为NULL时，遍历整个树）。
  * @param {tree_foreach_type_t} foreach_type 遍历类型。
  * @param {tk_visit_t} visit 遍历函数。
  * @param {void*} ctx 遍历函数的上下文。
@@ -412,9 +412,9 @@ ret_t tree_foreach(tree_t* tree, tree_node_t* node, tree_foreach_type_t foreach_
 
 /**
  * @method tree_is_empty
- * 树节点是否为空。
+ * 树结点是否为空。
  * @param {tree_t*} tree 树结构对象。
- * @param {tree_node_t*} node 节点（为NULL时，返回树是否为空）。
+ * @param {tree_node_t*} node 结点（为NULL时，返回树是否为空）。
  *
  * @return {bool_t} 返回 TRUE 表示空树，返回 FALSE 表示树有数据。
  */
@@ -422,47 +422,47 @@ bool_t tree_is_empty(tree_t* tree, tree_node_t* node);
 
 /**
  * @method tree_size
- * 返回树节点子节点个数。
+ * 返回树结点子结点个数。
  * @param {tree_t*} tree 树结构对象。
- * @param {tree_node_t*} node 节点（为NULL时，返回树的节点个数）。
+ * @param {tree_node_t*} node 结点（为NULL时，返回树的结点个数）。
  *
- * @return {int32_t} 返回树节点子节点个数。
+ * @return {int32_t} 返回树结点子结点个数。
  */
 int32_t tree_size(tree_t* tree, tree_node_t* node);
 
 /**
  * @method tree_depth
- * 获取树节点深度。
+ * 获取树结点深度。
  * @param {tree_t*} tree 树结构对象。
- * @param {tree_node_t*} node 节点（为NULL时，为根节点）。
+ * @param {tree_node_t*} node 结点（为NULL时，为根结点）。
  *
- * @return {int32_t} 返回树节点深度。
+ * @return {int32_t} 返回树结点深度。
  */
 int32_t tree_depth(tree_t* tree, tree_node_t* node);
 
 /**
  * @method tree_level
- * 获取树节点的层级。
+ * 获取树结点的层级。
  * @param {tree_t*} tree 树结构对象。
- * @param {tree_node_t*} node 节点（为NULL时，为根节点）。
+ * @param {tree_node_t*} node 结点（为NULL时，为根结点）。
  *
- * @return {int32_t} 返回树节点层级。
+ * @return {int32_t} 返回树结点层级。
  */
 int32_t tree_level(tree_t* tree, tree_node_t* node);
 
 /**
  * @method tree_height
- * 获取树节点高度。
+ * 获取树结点高度。
  * @param {tree_t*} tree 树结构对象。
- * @param {tree_node_t*} node 节点（为NULL时，返回树的高度）。
+ * @param {tree_node_t*} node 结点（为NULL时，返回树的高度）。
  *
- * @return {int32_t} 返回树节点高度。
+ * @return {int32_t} 返回树结点高度。
  */
 int32_t tree_height(tree_t* tree, tree_node_t* node);
 
 /**
  * @method tree_degree
- * 获取树的度（树中所有节点的度的最大值）。
+ * 获取树的度（树中所有结点的度的最大值）。
  * @param {tree_t*} tree 树结构对象。
  *
  * @return {int32_t} 返回树的宽度。
@@ -473,7 +473,7 @@ int32_t tree_degree(tree_t* tree);
  * @method tree_to_string
  * 树结构转换为字符串。
  * @param {tree_t*} tree 树结构对象。
- * @param {tree_node_t*} node 节点（为NULL时，遍历整个树）。
+ * @param {tree_node_t*} node 结点（为NULL时，遍历整个树）。
  * @param {str_t*} result 字符串对象。
  * @param {tree_to_string_handler_t*} handler 树结构转字符串处理。
  *
@@ -484,7 +484,7 @@ ret_t tree_to_string(tree_t* tree, tree_node_t* node, str_t* result,
 
 /**
  * @method tree_set_node_allocator
- * 设置节点内存分配器。
+ * 设置结点内存分配器。
  * @param {tree_t*} tree 树结构对象。
  * @param {mem_allocator_t*} allocator 内存分配器对象。
  *
@@ -494,7 +494,7 @@ ret_t tree_set_node_allocator(tree_t* tree, mem_allocator_t* allocator);
 
 /**
  * @method tree_set_shared_node_allocator
- * 设置共享节点内存分配器。
+ * 设置共享结点内存分配器。
  * @param {tree_t*} tree 树结构对象。
  * @param {mem_allocator_t*} allocator 内存分配器对象。
  *
@@ -504,16 +504,16 @@ ret_t tree_set_shared_node_allocator(tree_t* tree, mem_allocator_t* allocator);
 
 /**
  * @method tree_get_node_size
- * 获取节点大小。
+ * 获取结点大小。
  * @param {tree_t*} tree 树结构对象。
  *
- * @return {uint32_t} 返回节点大小。
+ * @return {uint32_t} 返回结点大小。
  */
 uint32_t tree_get_node_size(tree_t* tree);
 
 /**
  * @method tree_set_node_features
- * 设置节点特征。
+ * 设置结点特征。
  * @param {tree_t*} tree 树结构对象。
  * @param {feature_info_list_t*} features 特征信息列表对象。
  *
@@ -523,9 +523,9 @@ ret_t tree_set_node_features(tree_t* tree, feature_info_list_t* features);
 
 /**
  * @method tree_get_node_feature
- * 获取节点特征。
+ * 获取结点特征。
  * @param {tree_t*} tree 树结构对象。
- * @param {const tree_node_t*} node 节点。
+ * @param {const tree_node_t*} node 结点。
  * @param {const feature_info_list_feature_info_t*} info 特征信息对象。
  *
  * @return {void*} 返回特征。
@@ -535,11 +535,11 @@ void* tree_get_node_feature(tree_t* tree, const tree_node_t* node,
 
 /**
  * @method tree_has_node_feature
- * 是否有指定节点特征。
+ * 是否有指定结点特征。
  * @param {tree_t*} tree 树结构对象。
  * @param {const feature_info_list_feature_info_t*} info 特征信息对象。
  *
- * @return {bool_t} 返回 TRUE 表示有指定节点特征，返回 FALSE 表示没有指定节点特征。
+ * @return {bool_t} 返回 TRUE 表示有指定结点特征，返回 FALSE 表示没有指定结点特征。
  */
 bool_t tree_has_node_feature(tree_t* tree, const feature_info_list_feature_info_t* info);
 

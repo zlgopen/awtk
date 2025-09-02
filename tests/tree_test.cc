@@ -105,11 +105,11 @@ static ret_t build_tree_for_test(tree_t* tree) {
    *     └── 32
    */
 
-  // 创建根节点
+  // 创建根结点
   tree_node_t* root = tree_create_node(tree, tk_pointer_from_int(0));
   tree_set_root(tree, root);
 
-  // 第一层子节点（使用节点操作接口）
+  // 第一层子结点（使用结点操作接口）
   tree_node_t* node1 = tree_create_node(tree, tk_pointer_from_int(1));
   tree_prepend_child_node(tree, NULL, node1);
 
@@ -119,7 +119,7 @@ static ret_t build_tree_for_test(tree_t* tree) {
   tree_node_t* node2 = tree_create_node(tree, tk_pointer_from_int(2));
   tree_insert_child_node(tree, NULL, 1, node2);
 
-  // 第二层子节点
+  // 第二层子结点
   tree_node_t* node11 = tree_create_node(tree, tk_pointer_from_int(11));
   tree_prepend_child_node(tree, node1, node11);
 
@@ -141,7 +141,7 @@ static ret_t build_tree_for_test(tree_t* tree) {
   tree_node_t* node32 = tree_create_node(tree, tk_pointer_from_int(32));
   tree_append_child_node(tree, node3, node32);
 
-  // 第三层子节点
+  // 第三层子结点
   tree_append_child_node(tree, node12, tree_create_node(tree, tk_pointer_from_int(121)));
   tree_append_child_node(tree, node12, tree_create_node(tree, tk_pointer_from_int(122)));
   tree_append_child_node(tree, node12, tree_create_node(tree, tk_pointer_from_int(123)));
@@ -149,7 +149,7 @@ static ret_t build_tree_for_test(tree_t* tree) {
   tree_node_t* node221 = tree_create_node(tree, tk_pointer_from_int(221));
   tree_append_child_node(tree, node22, node221);
 
-  // 第四层子节点
+  // 第四层子结点
   tree_append_child_node(tree, node221, tree_create_node(tree, tk_pointer_from_int(2211)));
   tree_append_child_node(tree, node221, tree_create_node(tree, tk_pointer_from_int(2212)));
 
@@ -250,7 +250,7 @@ TEST(Tree, remove) {
       RET_OK);
   ASSERT_STREQ(str.str, "0 1 2 11 12 21 22 23 121 122 ");
 
-  /* 测试节点和节点的子节点一起删除 */
+  /* 测试结点和结点的子结点一起删除 */
   str_clear(&str);
   ASSERT_EQ(tree_remove_ex(&tree, NULL, TREE_FOREACH_TYPE_POSTORDER,
                            tree_node_is_ancestor_or_self_cmp, tk_pointer_from_int(2), -1),
@@ -272,7 +272,7 @@ TEST(Tree, move) {
 
   ASSERT_EQ(build_tree_for_test(&tree), RET_OK);
 
-  // 移动 221 节点到 12 的子节点末尾
+  // 移动 221 结点到 12 的子结点末尾
   tree_node_t* node221 =
       tree_find(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(221));
   tree_node_t* node12 =
@@ -281,13 +281,13 @@ TEST(Tree, move) {
   ASSERT_EQ(tree_unlink_node(&tree, node221), RET_OK);
   ASSERT_EQ(tree_append_child_node(&tree, node12, node221), RET_OK);
 
-  // 移动 22 节点到根节点的子节点末尾
+  // 移动 22 结点到根结点的子结点末尾
   tree_node_t* node22 =
       tree_find(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(22));
   ASSERT_EQ(tree_unlink_node(&tree, node22), RET_OK);
   ASSERT_EQ(tree_append_child_node(&tree, tree.root, node22), RET_OK);
 
-  // 移动 23 节点到 22 的兄弟节点末尾
+  // 移动 23 结点到 22 的兄弟结点末尾
   tree_node_t* node23 =
       tree_find(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(23));
   ASSERT_EQ(tree_unlink_node(&tree, node23), RET_OK);
@@ -338,16 +338,16 @@ TEST(Tree, height) {
   tree_node_t* node2211 =
       tree_find(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(2211));
 
-  // 根节点高度（最长路径：0→2→22→221→2211）
+  // 根结点高度（最长路径：0→2→22→221→2211）
   ASSERT_EQ(tree_height(&tree, root), 4);
 
-  // 节点2的高度（2→22→221→2211）
+  // 结点2的高度（2→22→221→2211）
   ASSERT_EQ(tree_height(&tree, node2), 3);
 
-  // 节点22的高度（22→221→2211）
+  // 结点22的高度（22→221→2211）
   ASSERT_EQ(tree_height(&tree, node22), 2);
 
-  // 叶子节点高度为0
+  // 叶子结点高度为0
   ASSERT_EQ(tree_height(&tree, node2211), 0);
 
   tree_deinit(&tree);
@@ -364,19 +364,19 @@ TEST(Tree, degree) {
   tree_node_t* node12 =
       tree_find(&tree, NULL, TREE_FOREACH_TYPE_BREADTH_FIRST, tk_pointer_from_int(12));
 
-  // 根节点的度为3（1/2/3三个子节点）
+  // 根结点的度为3（1/2/3三个子结点）
   ASSERT_EQ(tree_node_degree(root), 3);
 
-  // 节点1的度为2（11/12两个子节点）
+  // 结点1的度为2（11/12两个子结点）
   ASSERT_EQ(tree_node_degree(node1), 2);
 
-  // 节点11的度为0（叶子节点）
+  // 结点11的度为0（叶子结点）
   ASSERT_EQ(tree_node_degree(tree_node_get_child(node1, 0)), 0);
 
-  // 节点12的度为3（121/122/123三个子节点）
+  // 结点12的度为3（121/122/123三个子结点）
   ASSERT_EQ(tree_node_degree(node12), 3);
 
-  // 树的度为3（来自节点12的度）
+  // 树的度为3（来自结点12的度）
   ASSERT_EQ(tree_degree(&tree), 3);
 
   tree_deinit(&tree);
