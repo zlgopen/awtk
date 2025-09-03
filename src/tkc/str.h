@@ -832,6 +832,21 @@ ret_t str_format(str_t* str, uint32_t size, const char* format, ...);
 ret_t str_append_format(str_t* str, uint32_t size, const char* format, ...);
 
 /**
+ * @method str_append_vformat
+ * 通过格式追加字符串。
+ * 备注：
+ * 将可变参数ap按照format格式化字符串，并将字符串复制到str中。
+ *
+ * @param {str_t*} str str对象。
+ * @param {uint32_t} size format生成的字符串的最大长度(用于预先分配内存)。
+ * @param {const char*} format 格式。
+ * @param {va_list} ap 可变参数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_vformat(str_t* str, uint32_t size, const char* format, va_list ap);
+
+/**
  * @method str_append_format_padding
  * 通过格式追加字符串(字符串不够size长时，自动填充空格)。
  * @param {str_t*} str str对象。
