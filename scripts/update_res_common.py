@@ -27,6 +27,7 @@ APP_THEME = 'default'
 THEME = 'default'
 THEME_PACKAGED = True
 IMAGEGEN_OPTIONS = 'bgra+bgr565'
+FONT_BPPS = None
 LCD_ORIENTATION = '0'
 LCD_FAST_ROTATION_MODE = False
 ON_GENERATE_RES_BEFORE = None
@@ -87,6 +88,7 @@ def emit_generate_res_before(type):
             'type': type,
             'theme': THEME,
             'imagegen_options': IMAGEGEN_OPTIONS,
+            'font_bpps': FONT_BPPS,
             'lcd_orientation' : LCD_ORIENTATION,
             'lcd_fast_rotation_mode' : LCD_FAST_ROTATION_MODE,
             'input': INPUT_DIR,
@@ -102,6 +104,7 @@ def emit_generate_res_after(type):
             'type': type,
             'theme': THEME,
             'imagegen_options': IMAGEGEN_OPTIONS,
+            'font_bpps': FONT_BPPS,
             'lcd_orientation' : LCD_ORIENTATION,
             'lcd_fast_rotation_mode' : LCD_FAST_ROTATION_MODE,
             'input': INPUT_DIR,
@@ -160,6 +163,7 @@ def set_current_theme(index):
     global THEME
     global THEME_PACKAGED
     global IMAGEGEN_OPTIONS
+    global FONT_BPPS
     global INPUT_DIR
     global OUTPUT_DIR
     global STORAGE_DIR
@@ -177,6 +181,9 @@ def set_current_theme(index):
         IMAGEGEN_OPTIONS = 'bgra+bgr565'
         if 'imagegen_options' in theme:
             IMAGEGEN_OPTIONS = theme['imagegen_options']
+        FONT_BPPS = None
+        if 'font_bpps' in theme:
+            FONT_BPPS = theme['font_bpps']
         if 'packaged' in theme:
             THEME_PACKAGED = theme['packaged']
         if 'storage_dir' in theme:
@@ -679,7 +686,6 @@ def gen_res_bitmap_font(input_dir, font_options, theme):
     for f in glob.glob(join_path(storage_dir, 'fonts/config/*.txt')):
         filename, extname = os.path.splitext(f)
         fontname = os.path.basename(filename)
-
         index = fontname.rfind('_')
         if index > 0:
             size = fontname[index + 1 : len(fontname)]
@@ -688,13 +694,17 @@ def gen_res_bitmap_font(input_dir, font_options, theme):
             if font_names and fontname not in font_names: #有指定资源,但当前字体不在指定资源内，则跳过
                 continue
 
+            bpp = font_options
+            if bpp != 'mono' and FONT_BPPS != None and fontname in FONT_BPPS:
+                bpp = FONT_BPPS[fontname]
+
             raw = join_path(storage_dir, 'fonts') + '/origin/' + fontname + '.ttf'
             if not os.path.exists(raw):
                 raw = join_path(input_dir, 'fonts') + '/' + fontname + '.ttf'
 
             if os.path.exists(raw) and size.isdigit():
                 inc = join_path(OUTPUT_DIR, 'inc/fonts/' + fontname + '_' + str(size) + '.data')
-                fontgen(raw, f, inc, size, font_options, theme)
+                fontgen(raw, f, inc, size, bpp, theme)
 
 
 def gen_res_all_font():

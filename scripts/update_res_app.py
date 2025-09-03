@@ -68,6 +68,12 @@ def use_theme_config_from_res_config(res_config_path, config = None):
             else:
                 imagegen_options = 'rgba'
 
+        font_bpps = {}
+        font_names = content.get_res_fonts_key(theme_name)
+        for font_name in font_names:
+            bpp = content.get_res_font_bpp(theme_name, font_name, '8bits')
+            font_bpps[font_name] = bpp
+
         if IS_GENERATE_INC_BITMAP and not content.get_storage_dir():
             config_dir = common.join_path(ASSETS_ROOT, common.join_path(theme_name, 'fonts/config'))
             common.remove_dir(config_dir)
@@ -79,7 +85,7 @@ def use_theme_config_from_res_config(res_config_path, config = None):
                     filename = common.join_path(config_dir, font_name+'_'+font_size+'.txt')
                     common.write_file(filename, content.get_res_font_value(theme_name, font_name, font_size, ''))
 
-        theme = {'name': theme_name, 'imagegen_options': imagegen_options, 'packaged': content.get_res_packaged(theme_name), 'storage_dir': content.get_storage_dir()}
+        theme = {'name': theme_name, 'imagegen_options': imagegen_options, 'font_bpps': font_bpps, 'packaged': content.get_res_packaged(theme_name), 'storage_dir': content.get_storage_dir()}
         if theme_name == 'default':
             THEMES.insert(0, theme)
         else:
