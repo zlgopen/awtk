@@ -956,7 +956,7 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
 
 ret_t text_edit_layout(text_edit_t* text_edit) {
   if (text_edit == NULL || GET_CANVAS(text_edit) == NULL || text_edit->widget == NULL ||
-      text_edit->widget->initializing) {
+      text_edit->widget->initializing || text_edit->widget->astyle == NULL) {
     return RET_BAD_PARAMS;
   }
   if (text_edit->ignore_layout) {

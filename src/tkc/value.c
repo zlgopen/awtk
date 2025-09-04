@@ -228,7 +228,7 @@ value_t* value_set_pointer(value_t* v, void* value) {
 value_t* value_set_pointer_ex(value_t* v, void* value, tk_destroy_t destroy) {
   return_value_if_fail(v != NULL, NULL);
 
-  if (destroy != NULL) {
+  if (value != NULL && destroy != NULL) {
     pointer_ref_t* ref = TKMEM_ZALLOC(pointer_ref_t);
     return_value_if_fail(ref != NULL, NULL);
     ref->refcount = 1;

@@ -1003,6 +1003,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       }
       break;
     }
+    case EVT_WIDGET_UPDATE_STYLE:
     case EVT_RESIZE:
     case EVT_MOVE_RESIZE: {
       edit_reset_layout(widget);

@@ -902,6 +902,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       widget_invalidate(widget, NULL);
       break;
     }
+    case EVT_WIDGET_UPDATE_STYLE:
     case EVT_RESIZE:
     case EVT_MOVE_RESIZE: {
       mledit_reset_text_edit_layout(mledit->model);

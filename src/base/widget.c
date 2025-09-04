@@ -1375,7 +1375,9 @@ static ret_t widget_set_visible_self(widget_t* widget, bool_t visible) {
     widget->visible = visible;
     widget_set_need_update_style(widget);
     widget_invalidate_force(widget, NULL);
-    widget_set_need_relayout_children(widget->parent);
+    if (widget->parent != NULL) {
+      widget_set_need_relayout_children(widget->parent);
+    }
   }
 
   return RET_OK;

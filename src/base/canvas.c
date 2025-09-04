@@ -128,7 +128,7 @@ static ret_t canvas_on_font_manager_events(void* ctx, event_t* e) {
 }
 
 ret_t canvas_set_font_manager(canvas_t* c, font_manager_t* font_manager) {
-  return_value_if_fail(c != NULL && font_manager != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
   if (c->font_manager) {
     emitter_off_by_func(EMITTER(c->font_manager), EVT_ASSET_MANAGER_UNLOAD_ASSET,
@@ -145,7 +145,7 @@ ret_t canvas_set_font_manager(canvas_t* c, font_manager_t* font_manager) {
 
 ret_t canvas_set_assets_manager(canvas_t* c, assets_manager_t* assets_manager) {
   vgcanvas_t* vgcanvas = NULL;
-  return_value_if_fail(c != NULL && assets_manager != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
   vgcanvas = lcd_get_vgcanvas(c->lcd);
   c->assets_manager = assets_manager;

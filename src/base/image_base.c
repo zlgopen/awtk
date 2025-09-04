@@ -177,7 +177,7 @@ widget_t* image_base_init(widget_t* widget) {
 
 ret_t image_base_set_image(widget_t* widget, const char* name) {
   image_base_t* image = IMAGE_BASE(widget);
-  return_value_if_fail(image != NULL && name != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image != NULL, RET_BAD_PARAMS);
 
   if (!tk_str_eq(image->image, name)) {
     image->image = tk_str_copy(image->image, name);
