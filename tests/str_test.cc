@@ -258,7 +258,78 @@ TEST(Str, remove) {
   str_reset(s);
 }
 
-TEST(Str, unescap) {
+TEST(Str, escape) {
+  str_t str;
+  str_t* s = str_init(&str, 0);
+
+  ASSERT_EQ(str_set(s, "\\"), RET_OK);
+  ASSERT_EQ(str_escape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "\\\\");
+
+  ASSERT_EQ(str_set(s, "abc"), RET_OK);
+  ASSERT_EQ(str_escape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "abc");
+
+  ASSERT_EQ(str_set(s, "a\nbc"), RET_OK);
+  ASSERT_EQ(str_escape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "a\\nbc");
+
+  ASSERT_EQ(str_set(s, "\ra\rbc\r"), RET_OK);
+  ASSERT_EQ(str_escape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "\\ra\\rbc\\r");
+
+  ASSERT_EQ(str_set(s, "\ta\tbc\t"), RET_OK);
+  ASSERT_EQ(str_escape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "\\ta\\tbc\\t");
+
+  ASSERT_EQ(str_set(s, "\\a\\bc\\"), RET_OK);
+  ASSERT_EQ(str_escape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "\\\\a\\\\bc\\\\");
+
+  ASSERT_EQ(str_set(s, "\a"), RET_OK);
+  ASSERT_EQ(str_escape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "\\a");
+
+  ASSERT_EQ(str_set(s, "\b"), RET_OK);
+  ASSERT_EQ(str_escape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "\\b");
+
+  ASSERT_EQ(str_set(s, "\033"), RET_OK);
+  ASSERT_EQ(str_escape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "\\e");
+
+  ASSERT_EQ(str_set(s, "\f"), RET_OK);
+  ASSERT_EQ(str_escape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "\\f");
+
+  ASSERT_EQ(str_set(s, "\v"), RET_OK);
+  ASSERT_EQ(str_escape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "\\v");
+
+  ASSERT_EQ(str_set(s, ""), RET_OK);
+  ASSERT_EQ(str_escape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "");
+
+  ASSERT_EQ(str_set(s, ":"), RET_OK);
+  ASSERT_EQ(str_escape(s), RET_OK);
+  ASSERT_EQ(string(s->str), ":");
+
+  ASSERT_EQ(str_set(s, ";"), RET_OK);
+  ASSERT_EQ(str_escape(s), RET_OK);
+  ASSERT_EQ(string(s->str), ";");
+
+  ASSERT_EQ(str_set(s, "-"), RET_OK);
+  ASSERT_EQ(str_escape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "-");
+
+  ASSERT_EQ(str_set(s, "\0"), RET_OK);
+  ASSERT_EQ(str_escape(s), RET_OK);
+  ASSERT_EQ(string(s->str), "");
+
+  str_reset(s);
+}
+
+TEST(Str, unescape) {
   str_t str;
   str_t* s = str_init(&str, 0);
 
@@ -876,6 +947,13 @@ TEST(Str, escape_unescape) {
   str_t str1;
   str_t* s = str_init(&str, 0);
   str_t* s1 = str_init(&str1, 0);
+
+  str_clear(s);
+  str_clear(s1);
+  ASSERT_EQ(str_append_unescape(s, "\\\\", 0xffff), RET_OK);
+  ASSERT_EQ(string(s->str), "\\");
+  ASSERT_EQ(str_append_escape(s1, s->str, s->size), RET_OK);
+  ASSERT_STREQ(s1->str, "\\\\");
 
   str_clear(s);
   str_clear(s1);

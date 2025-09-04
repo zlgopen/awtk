@@ -369,46 +369,26 @@ ret_t str_encode_xml_entity_with_len(str_t* str, const char* text, uint32_t len)
 }
 
 /*https://en.wikipedia.org/wiki/Escape_sequences_in_C*/
+typedef struct _str_char_escape_pair_t {
+  char escape;
+  char unescape;
+} str_char_escape_pair_t;
+
+static str_char_escape_pair_t s_str_char_escape_pairs[] = {
+    {'n', '\n'}, {'t', '\t'}, {'r', '\r'}, {'b', '\b'},
+    {'f', '\f'}, {'a', '\a'}, {'v', '\v'}, {'e', '\033'},
+};
+
 char str_escape_char(char c) {
-  switch (c) {
-    case '\a': {
-      c = 'a';
-      break;
-    }
-    case '\b': {
-      c = 'b';
-      break;
-    }
-    case '\033': {
-      c = 'e';
-      break;
-    }
-    case '\f': {
-      c = 'f';
-      break;
-    }
-    case '\n': {
-      c = 'n';
-      break;
-    }
-    case '\r': {
-      c = 'r';
-      break;
-    }
-    case '\t': {
-      c = 't';
-      break;
-    }
-    case '\v': {
-      c = 'v';
-      break;
-    }
-    default: {
+  char ret = c;
+  uint32_t i = 0;
+  for (i = 0; i < ARRAY_SIZE(s_str_char_escape_pairs); i++) {
+    if (s_str_char_escape_pairs[i].unescape == c) {
+      ret = s_str_char_escape_pairs[i].escape;
       break;
     }
   }
-
-  return c;
+  return ret;
 }
 
 char str_unescape_char(const char* s, uint32_t* nr) {
@@ -417,38 +397,6 @@ char str_unescape_char(const char* s, uint32_t* nr) {
   return_value_if_fail(s != NULL && nr != NULL, 0);
 
   switch (*s++) {
-    case 'a': {
-      c = '\a';
-      break;
-    }
-    case 'b': {
-      c = '\b';
-      break;
-    }
-    case 'e': {
-      c = '\033';
-      break;
-    }
-    case 'f': {
-      c = '\f';
-      break;
-    }
-    case 'n': {
-      c = '\n';
-      break;
-    }
-    case 'r': {
-      c = '\r';
-      break;
-    }
-    case 't': {
-      c = '\t';
-      break;
-    }
-    case 'v': {
-      c = '\v';
-      break;
-    }
     case '\'': {
       c = '\'';
       break;
@@ -477,7 +425,16 @@ char str_unescape_char(const char* s, uint32_t* nr) {
       break;
     }
     default: {
-      log_warn("not support char: [%c]\n", *s);
+      uint32_t i = 0;
+      for (i = 0; i < ARRAY_SIZE(s_str_char_escape_pairs); i++) {
+        if (s_str_char_escape_pairs[i].escape == *start) {
+          c = s_str_char_escape_pairs[i].unescape;
+          break;
+        }
+      }
+      if (0 == c) {
+        log_warn("not support char: [%c]\n", *start);
+      }
       break;
     }
   }
@@ -517,6 +474,22 @@ ret_t str_append_escape(str_t* str, const char* s, uint32_t size) {
       str_append_char(str, '\\');
     }
     str_append_char(str, c);
+  }
+
+  return RET_OK;
+}
+
+ret_t str_escape(str_t* str) {
+  uint32_t i = 0;
+  return_value_if_fail(str != NULL && str->str != NULL, RET_BAD_PARAMS);
+
+  for (i = 0; i < str->size; i++) {
+    char c = str_escape_char(str->str[i]);
+    if (c != str->str[i] || c == '\\' || c == '\'' || c == '\"') {
+      str_insert_with_len(str, i, "\\", 1);
+      i++;
+    }
+    str->str[i] = c;
   }
 
   return RET_OK;

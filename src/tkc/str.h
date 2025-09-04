@@ -478,6 +478,15 @@ ret_t str_append_json_bool_pair(str_t* str, const char* key, bool_t value);
 ret_t str_pop(str_t* str);
 
 /**
+ * @method str_escape
+ * 对字符串进行转义。如：把'\n'转换成"\n"。
+ * @param {str_t*} str str对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_escape(str_t* str);
+
+/**
  * @method str_unescape
  * 对字符串进行反转义。如：把"\n"转换成'\n'。
  * @param {str_t*} str str对象。
