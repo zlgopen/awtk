@@ -256,9 +256,18 @@ static ret_t list_view_on_event(widget_t* widget, event_t* e) {
   return ret;
 }
 
+static const char* s_list_view_clone_properties[] = {WIDGET_PROP_ITEM_WIDTH,
+                                                     WIDGET_PROP_ITEM_HEIGHT,
+                                                     WIDGET_PROP_DEFAULT_ITEM_HEIGHT,
+                                                     WIDGET_PROP_AUTO_HIDE_SCROLL_BAR,
+                                                     LIST_VIEW_PROP_FLOATING_SCROLL_BAR,
+                                                     NULL};
+
 TK_DECL_VTABLE(list_view) = {.type = WIDGET_TYPE_LIST_VIEW,
                              .size = sizeof(list_view_t),
                              .get_parent_vt = TK_GET_PARENT_VTABLE(widget),
+                             .clone_properties = s_list_view_clone_properties,
+                             .persistent_properties = s_list_view_clone_properties,
                              .create = list_view_create,
                              .set_prop = list_view_set_prop,
                              .get_prop = list_view_get_prop,
