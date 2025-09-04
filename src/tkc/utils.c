@@ -834,7 +834,7 @@ bool_t tk_is_valid_name(const char* name) {
 bool_t tk_str_start_with(const char* str, const char* prefix) {
   return_value_if_fail(str != NULL && prefix != NULL, FALSE);
 
-  return strncmp(str, prefix, tk_strlen(prefix)) == 0;
+  return tk_strncmp(str, prefix, tk_strlen(prefix)) == 0;
 }
 
 bool_t tk_str_end_with(const char* str, const char* appendix) {
@@ -848,7 +848,7 @@ bool_t tk_str_end_with(const char* str, const char* appendix) {
   if (len_str < len_appendix) {
     return FALSE;
   } else {
-    return strncmp(str + len_str - len_appendix, appendix, len_appendix) == 0;
+    return tk_strncmp(str + len_str - len_appendix, appendix, len_appendix) == 0;
   }
 }
 
@@ -970,7 +970,7 @@ const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN 
 }
 
 uint32_t tk_strlen(const char* str) {
-  if (str == NULL || *str == '\0') {
+  if (TK_STR_IS_EMPTY(str)) {
     return 0;
   }
 
@@ -1106,7 +1106,7 @@ ret_t image_region_parse(uint32_t img_w, uint32_t img_h, const char* region, rec
     region++;
   }
 
-  if (strncmp(region, "xywh(", 5) == 0) {
+  if (tk_strncmp(region, "xywh(", 5) == 0) {
     int x = 0;
     int y = 0;
     int w = 0;
@@ -1115,7 +1115,7 @@ ret_t image_region_parse(uint32_t img_w, uint32_t img_h, const char* region, rec
 
     *r = rect_init(x, y, w, h);
     return RET_OK;
-  } else if (strncmp(region, "grid(", 5) == 0) {
+  } else if (tk_strncmp(region, "grid(", 5) == 0) {
     int rows = 0;
     int cols = 0;
     int row = 0;
@@ -1229,7 +1229,7 @@ const char* tk_strrstr(const char* str, const char* substr) {
 
   for (p = end; p >= str; p--) {
     if (*p == c) {
-      if (strncmp(p, substr, len) == 0) {
+      if (tk_strncmp(p, substr, len) == 0) {
         return p;
       }
     }
@@ -2639,7 +2639,7 @@ const char* tk_strs_bsearch(const char** strs, uint32_t nr, const char* str,
   int32_t high = 0;
   int32_t result = 0;
   const char* iter = NULL;
-  tk_compare_t cmp = case_sensitive ? (tk_compare_t)strcmp : (tk_compare_t)strcasecmp;
+  tk_compare_t cmp = case_sensitive ? (tk_compare_t)tk_strcmp : (tk_compare_t)tk_stricmp;
   return_value_if_fail(strs != NULL && str != NULL, NULL);
 
   if (nr == 0) {
@@ -2718,14 +2718,14 @@ ret_t tk_str_trim_left(char* str, const char* chars) {
   }
 
   if (p != str) {
-    memmove(str, p, strlen(p) + 1);
+    memmove(str, p, tk_strlen(p) + 1);
   }
 
   return RET_OK;
 }
 
 ret_t tk_str_trim_right(char* str, const char* chars) {
-  char* p = str + strlen(str) - 1;
+  char* p = str + tk_strlen(str) - 1;
   return_value_if_fail(str != NULL && chars != NULL, RET_BAD_PARAMS);
   return_value_if_fail(p >= str, RET_BAD_PARAMS);
 

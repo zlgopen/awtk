@@ -155,7 +155,7 @@ ret_t str_append_with_len(str_t* str, const char* text, uint32_t size) {
 ret_t str_append(str_t* str, const char* text) {
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
 
-  return str_append_with_len(str, text, strlen(text));
+  return str_append_with_len(str, text, tk_strlen(text));
 }
 
 ret_t str_append_wchar_with_len(str_t* str, const wchar_t* text, uint32_t len) {
@@ -164,7 +164,7 @@ ret_t str_append_wchar_with_len(str_t* str, const wchar_t* text, uint32_t len) {
   return_value_if_fail(str_extend(str, str->size + size + 1) == RET_OK, RET_OOM);
 
   tk_utf8_from_utf16_ex(text, len, str->str + str->size, str->capacity - str->size - 1);
-  str->size += strlen(str->str + str->size);
+  str->size += tk_strlen(str->str + str->size);
   return RET_OK;
 }
 
@@ -299,19 +299,19 @@ ret_t str_decode_xml_entity_with_len(str_t* str, const char* text, uint32_t len)
   while (*s && (s - text) < len) {
     char c = *s++;
     if (c == '&') {
-      if (strncmp(s, "lt;", 3) == 0) {
+      if (tk_strncmp(s, "lt;", 3) == 0) {
         c = '<';
         s += 3;
-      } else if (strncmp(s, "gt;", 3) == 0) {
+      } else if (tk_strncmp(s, "gt;", 3) == 0) {
         c = '>';
         s += 3;
-      } else if (strncmp(s, "amp;", 4) == 0) {
+      } else if (tk_strncmp(s, "amp;", 4) == 0) {
         c = '&';
         s += 4;
-      } else if (strncmp(s, "quot;", 5) == 0 || strncmp(s, "quota;", 6) == 0) {
+      } else if (tk_strncmp(s, "quot;", 5) == 0 || tk_strncmp(s, "quota;", 6) == 0) {
         c = '\"';
         s += 5;
-      } else if (strncmp(s, "nbsp;", 5) == 0) {
+      } else if (tk_strncmp(s, "nbsp;", 5) == 0) {
         c = ' ';
         s += 5;
       }
@@ -327,12 +327,12 @@ ret_t str_decode_xml_entity_with_len(str_t* str, const char* text, uint32_t len)
 ret_t str_decode_xml_entity(str_t* str, const char* text) {
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
 
-  return str_decode_xml_entity_with_len(str, text, strlen(text));
+  return str_decode_xml_entity_with_len(str, text, tk_strlen(text));
 }
 
 ret_t str_encode_xml_entity(str_t* str, const char* text) {
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
-  return str_encode_xml_entity_with_len(str, text, strlen(text));
+  return str_encode_xml_entity_with_len(str, text, tk_strlen(text));
 }
 
 ret_t str_encode_xml_entity_with_len(str_t* str, const char* text, uint32_t len) {
@@ -490,7 +490,7 @@ ret_t str_append_unescape(str_t* str, const char* s, uint32_t size) {
   uint32_t i = 0;
   return_value_if_fail(str != NULL && s != NULL, RET_BAD_PARAMS);
 
-  size = tk_min_int(strlen(s), size);
+  size = tk_min_int(tk_strlen(s), size);
   for (i = 0; i < size; i++) {
     char c = *s++;
     if (c == '\\') {
@@ -510,7 +510,7 @@ ret_t str_append_escape(str_t* str, const char* s, uint32_t size) {
   uint32_t i = 0;
   return_value_if_fail(str != NULL && s != NULL, RET_BAD_PARAMS);
 
-  size = tk_min_int(strlen(s), size);
+  size = tk_min_int(tk_strlen(s), size);
   for (i = 0; i < size; i++) {
     char c = str_escape_char(s[i]);
     if (c != s[i] || c == '\\' || c == '\'' || c == '\"') {
@@ -557,7 +557,7 @@ bool_t str_eq(str_t* str, const char* text) {
     return FALSE;
   }
 
-  return strcmp(str->str, text) == 0;
+  return tk_strcmp(str->str, text) == 0;
 }
 
 bool_t str_equal(str_t* str, str_t* other) {
@@ -577,7 +577,7 @@ bool_t str_equal(str_t* str, str_t* other) {
     return FALSE;
   }
 
-  return strcmp(str->str, other->str) == 0;
+  return tk_strcmp(str->str, other->str) == 0;
 }
 
 ret_t str_from_int(str_t* str, int32_t value) {
@@ -632,7 +632,7 @@ ret_t str_from_wstr_with_len(str_t* str, const wchar_t* wstr, uint32_t len) {
 
     if (size > 0) {
       tk_utf8_from_utf16_ex(wstr, len, str->str, size);
-      str->size = strlen(str->str);
+      str->size = tk_strlen(str->str);
     } else {
       str_set(str, "");
     }
@@ -677,18 +677,18 @@ bool_t str_end_with(str_t* str, const char* text) {
   size_t len = 0;
   return_value_if_fail(str != NULL && str->str != NULL && text != NULL, FALSE);
 
-  len = strlen(text);
+  len = tk_strlen(text);
   if (len > str->size) {
     return FALSE;
   }
 
-  return strncmp(str->str + str->size - len, text, len) == 0;
+  return tk_strncmp(str->str + str->size - len, text, len) == 0;
 }
 
 bool_t str_start_with(str_t* str, const char* text) {
   return_value_if_fail(str != NULL && str->str != NULL && text != NULL, FALSE);
 
-  return strncmp(str->str, text, strlen(text)) == 0;
+  return tk_strncmp(str->str, text, tk_strlen(text)) == 0;
 }
 
 ret_t str_trim_left(str_t* str, const char* text) {
@@ -732,7 +732,7 @@ ret_t str_trim(str_t* str, const char* text) {
 static uint32_t str_count_sub_str(str_t* s, const char* str) {
   char* p = s->str;
   uint32_t count = 0;
-  uint32_t size = strlen(str);
+  uint32_t size = tk_strlen(str);
 
   if (size == 0) {
     return 0;
@@ -752,8 +752,8 @@ static uint32_t str_count_sub_str(str_t* s, const char* str) {
 static uint32_t str_replace_impl(char* dst, char* src, const char* text, const char* new_text) {
   char* d = dst;
   char* s = src;
-  uint32_t text_len = strlen(text);
-  uint32_t new_text_len = strlen(new_text);
+  uint32_t text_len = tk_strlen(text);
+  uint32_t new_text_len = tk_strlen(new_text);
 
   while (*s) {
     if (memcmp(s, text, text_len) == 0) {
@@ -777,8 +777,8 @@ ret_t str_replace(str_t* str, const char* text, const char* new_text) {
   return_value_if_fail(text != NULL && new_text != NULL, RET_BAD_PARAMS);
   return_value_if_fail(*text, RET_BAD_PARAMS);
 
-  text_len = strlen(text);
-  new_text_len = strlen(new_text);
+  text_len = tk_strlen(text);
+  new_text_len = tk_strlen(new_text);
   count = str_count_sub_str(str, text);
   if (count > 0) {
     int32_t delta_len = new_text_len - text_len;
@@ -834,7 +834,7 @@ ret_t str_insert_with_len(str_t* s, uint32_t offset, const char* text, uint32_t 
   return_value_if_fail(s != NULL && offset <= s->size && text != NULL, RET_BAD_PARAMS);
   return_value_if_fail(str_extend(s, s->size + size + 1) == RET_OK, RET_OOM);
 
-  memmove(s->str + offset + size, s->str + offset, strlen(s->str + offset));
+  memmove(s->str + offset + size, s->str + offset, tk_strlen(s->str + offset));
   memcpy(s->str + offset, text, size);
   s->size += size;
   s->str[s->size] = '\0';
@@ -845,13 +845,13 @@ ret_t str_insert_with_len(str_t* s, uint32_t offset, const char* text, uint32_t 
 ret_t str_insert(str_t* s, uint32_t offset, const char* text) {
   return_value_if_fail(s != NULL && offset <= s->size && text != NULL, RET_BAD_PARAMS);
 
-  return str_insert_with_len(s, offset, text, strlen(text));
+  return str_insert_with_len(s, offset, text, tk_strlen(text));
 }
 
 ret_t str_remove(str_t* s, uint32_t offset, uint32_t size) {
   return_value_if_fail(s != NULL && (offset + size) <= s->size && size > 0, RET_BAD_PARAMS);
 
-  memmove(s->str + offset, s->str + offset + size, strlen(s->str + offset + size));
+  memmove(s->str + offset, s->str + offset + size, tk_strlen(s->str + offset + size));
   s->size -= size;
   s->str[s->size] = '\0';
 
@@ -895,7 +895,7 @@ ret_t str_expand_vars(str_t* str, const char* src, const tk_object_t* obj) {
     char c = *p;
 
     if (c == '$') {
-      if (strncmp(p, "${}", 3) == 0) {
+      if (tk_strncmp(p, "${}", 3) == 0) {
         p += 3;
       } else if (p[1] && p[2]) {
         p = expand_var(str, p + 2, obj);
@@ -934,7 +934,7 @@ ret_t str_append_c_str(str_t* str, const char* c_str) {
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
   return_value_if_fail(str_append_char(str, '\"') == RET_OK, RET_OOM);
   if (c_str != NULL) {
-    str_append_escape(str, c_str, strlen(c_str));
+    str_append_escape(str, c_str, tk_strlen(c_str));
   }
   return_value_if_fail(str_append_char(str, '\"') == RET_OK, RET_OOM);
   return RET_OK;
